@@ -1,0 +1,17 @@
+name: SuperLinter
+
+trigger:
+- main
+
+pool:
+  vmImage: ubuntu-latest
+
+jobs:
+
+  - job: lint
+    displayName: Linter
+    steps:
+    - script: |
+        docker pull github/super-linter:latest
+        docker run -e RUN_LOCAL=true -v $(System.DefaultWorkingDirectory):/tmp/lint github/super-linter
+      displayName: 'Lint Code Base'

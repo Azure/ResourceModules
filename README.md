@@ -1,14 +1,120 @@
-# Project
+# ![AzureIcon] Modules
 
-> This repo has been populated by an initial template to help get you started. Please
-> make sure to update the content to build a great experience for community-building.
+This repository consists of a collection of compliant [Azure Resource Manager (ARM)][AzureResourceManager] and [Bicep][Bicep] templates as well as [template specs](<https://docs.microsoft.com/en-us/azure/azure-resource-manager/templates/template-specs>).
 
-As the maintainer of this project, please make a few updates:
+## Description
 
-- Improving this README.MD file to provide a great experience
-- Updating SUPPORT.MD with content about this project's support experience
-- Understanding the security reporting process in SECURITY.MD
-- Remove this section from the README
+## Status
+
+[![Super Linter](<https://github.com/Azure/Modules/actions/workflows/linter.yml/badge.svg>)](<https://github.com/Azure/Modules/actions/workflows/linter.yml>)
+
+[![Sample Workflow](<https://github.com/Azure/Modules/actions/workflows/workflow.yml/badge.svg>)](<https://github.comAzure/Modules/actions/workflows/workflow.yml>)
+
+## Getting Started
+
+This is an example of how you may give instructions on setting up your project locally.
+To get a local copy up and running follow these simple example steps.
+
+### Prerequisites
+
+To be able to deploy [ARM][AzureResourceManager] templates you should have latest version [PowerShell 7][PowerShellDocs] + [Azure Az Module][InstallAzPs] or [Azure CLI](<https://docs.microsoft.com/en-us/cli/azure/>)as well as [Bicep][Bicep] installed.
+
+### Installation
+
+#### One-liner to install or update Azure CLI on Windows 10
+
+```PowerShell
+iwr https://aka.ms/installazurecliwindows -OutFile .\AzureCLI.msi; start msiexec.exe -Wait -ArgumentList '/I AzureCLI.msi /quiet'; rm .\AzureCLI.msi
+```
+
+#### One-liner to install or update Azure CLI on Linux
+```bash
+curl -L https://aka.ms/InstallAzureCli | bash
+```
+
+# One-liner to install or update PowerShell 7 on Windows 10
+
+```PowerShell
+iex "&amp; { $(irm https://aka.ms/install-powershell.ps1) } -UseMSI"
+Install-Module -Name Az -Scope CurrentUser -Repository PSGallery -Force
+```
+
+Make sure to install Azure Az Module as well.
+
+```PowerShell
+iex "&amp; { $(irm https://aka.ms/install-powershell.ps1) } -UseMSI"
+Install-Module -Name Az -Scope CurrentUser -Repository PSGallery -Force
+```
+
+### Usage
+
+#### Deploy local template (Azure CLI)
+
+```bash
+az group create --name ExampleGroup --location "Central US"
+az deployment group create \
+  --name ExampleDeployment \
+  --resource-group ExampleGroup \
+  --template-file <path-to-template> \
+  --parameters storageAccountType=Standard_GRS
+```
+
+#### Deploy local template (PowerShell)
+
+```PowerShell
+New-AzResourceGroup -Name ExampleGroup -Location "Central US"
+New-AzResourceGroupDeployment `
+  -Name ExampleDeployment `
+  -ResourceGroupName ExampleGroup `
+  -TemplateFile <path-to-template>
+```
+
+#### Deploy remote template (Azure CLI)
+
+```bash
+az group create --name ExampleGroup --location "Central US"
+az deployment group create \
+  --name ExampleDeployment \
+  --resource-group ExampleGroup \
+  --template-uri "https://raw.githubusercontent.com/Azure/azure-quickstart-templates/master/quickstarts/microsoft.storage/storage-account-create/azuredeploy.json" \
+  --parameters storageAccountType=Standard_GRS
+```
+
+#### Deploy remote template (PowerShell)
+
+```PowerShell
+New-AzResourceGroup -Name ExampleGroup -Location "Central US"
+New-AzResourceGroupDeployment `
+  -Name remoteTemplateDeployment `
+  -ResourceGroupName ExampleGroup `
+  -TemplateUri https://raw.githubusercontent.com/Azure/azure-quickstart-templates/master/quickstarts/microsoft.storage/storage-account-create/azuredeploy.json
+```
+
+## FAQ and Known Issues
+
+Any advise for common problems or issues.
+  ```bash
+  command to run if program contains helper info
+  ```
+
+## Reporting Issues and Feedback
+
+### Issues and Bugs
+
+If you find any bugs, please file an issue in the [GitHub Issues][GitHubIssues] page. Please search the existing issues before filing new issues to avoid duplicates. Please fill out the provided template with the appropriate information.
+
+If you are taking the time to mention a problem, even a seemingly minor one, it is greatly appreciated, and a totally valid contribution to this project. **Thank you!**
+
+### Feedback
+
+If there is a feature you would like to see in here, please file an issue or feature request in the [GitHub Issues][GitHubIssues] page to provide direct feedback.
+
+## Contributors
+
+Contributors names and contact info
+
+* You, Yourself and the Universe
+* [@your_twitter](<https://twitter.com/your_username>)
 
 ## Contributing
 
@@ -26,8 +132,40 @@ contact [opencode@microsoft.com](mailto:opencode@microsoft.com) with any additio
 
 ## Trademarks
 
-This project may contain trademarks or logos for projects, products, or services. Authorized use of Microsoft 
-trademarks or logos is subject to and must follow 
+This project may contain trademarks or logos for projects, products, or services. Authorized use of Microsoft
+trademarks or logos is subject to and must follow
 [Microsoft's Trademark & Brand Guidelines](https://www.microsoft.com/en-us/legal/intellectualproperty/trademarks/usage/general).
 Use of Microsoft trademarks or logos in modified versions of this project must not cause confusion or imply Microsoft sponsorship.
 Any use of third-party trademarks or logos are subject to those third-party's policies.
+
+## Learn More
+
+* [PowerShell Documentation][PowerShellDocs]
+* [Microsoft Azure Documentation][MicrosoftAzureDocs]
+* [Azure Resource Manager][AzureResourceManager]
+* [Bicep][Bicep]
+
+<!-- References -->
+
+<!-- Local -->
+[ProjectSetup]: <https://docs.github.com/en/communities/setting-up-your-project-for-healthy-contributions>
+[CreateFromTemplate]: <https://docs.github.com/en/github/creating-cloning-and-archiving-repositories/creating-a-repository-on-github/creating-a-repository-from-a-template>
+[GitHubDocs]: <https://docs.github.com/>
+[AzureDevOpsDocs]: <https://docs.microsoft.com/en-us/azure/devops/?view=azure-devops>
+[GitHubIssues]: <https://github.com/Azure/Modules/issues>
+[Contributing]: CONTRIBUTING.md
+[AzureIcon]: docs/media/MicrosoftAzure-32px.png
+[PowershellIcon]: docs/media/MicrosoftPowerShellCore-32px.png
+[BashIcon]: docs/media/Bash_Logo_black_and_white_icon_only-32px.svg.png
+
+<!-- External -->
+[Bicep]: <https://github.com/Azure/bicep>
+[Az]: <https://img.shields.io/powershellgallery/v/Az.svg?style=flat-square&label=Az>
+[AzGallery]: <https://www.powershellgallery.com/packages/Az/>
+[PowerShellCore]: <https://github.com/PowerShell/PowerShell/releases/latest>
+[InstallAzPs]: <https://docs.microsoft.com/en-us/powershell/azure/install-az-ps>
+[AzureResourceManager]: <https://docs.microsoft.com/en-us/azure/azure-resource-manager/management/overview>
+
+<!-- Docs -->
+[MicrosoftAzureDocs]: <https://docs.microsoft.com/en-us/azure/>
+[PowerShellDocs]: <https://docs.microsoft.com/en-us/powershell/>

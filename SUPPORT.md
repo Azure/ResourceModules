@@ -1,25 +1,28 @@
-# TODO: The maintainer of this repo has not yet edited this file
-
-**REPO OWNER**: Do you want Customer Service & Support (CSS) support for this product/project?
-
-- **No CSS support:** Fill out this template with information about how to file issues and get help.
-- **Yes CSS support:** Fill out an intake form at [aka.ms/spot](https://aka.ms/spot). CSS will work with/help you to determine next steps. More details also available at [aka.ms/onboardsupport](https://aka.ms/onboardsupport).
-- **Not sure?** Fill out a SPOT intake as though the answer were "Yes". CSS will help you decide.
-
-*Then remove this first heading from this SUPPORT.MD file before publishing your repo.*
-
 # Support
 
-## How to file issues and get help  
+## Reporting Issues and Feedback
 
-This project uses GitHub Issues to track bugs and feature requests. Please search the existing 
-issues before filing new issues to avoid duplicates.  For new issues, file your bug or 
-feature request as a new Issue.
+### Issues and Bugs
 
-For help and questions about using this project, please **REPO MAINTAINER: INSERT INSTRUCTIONS HERE 
-FOR HOW TO ENGAGE REPO OWNERS OR COMMUNITY FOR HELP. COULD BE A STACK OVERFLOW TAG OR OTHER
-CHANNEL. WHERE WILL YOU HELP PEOPLE?**.
+If you find any bugs, please file an issue in the [GitHub Issues][GitHubIssues] page. Please search the existing issues before filing new issues to avoid duplicates. Please fill out the provided template with the appropriate information.
 
-## Microsoft Support Policy  
+If you are taking the time to mention a problem, even a seemingly minor one, it is greatly appreciated, and a totally valid contribution to this project. **Thank you!**
 
-Support for this **PROJECT or PRODUCT** is limited to the resources listed above.
+## Feedback
+
+If there is a feature you would like to see in here, please file an issue or feature request in the [GitHub Issues][GitHubIssues] page to provide direct feedback.
+
+## Microsoft Support Policy
+
+Support for this **PROJECT** is limited to the resources listed above.
+<!-- References -->
+
+<!-- Local -->
+[ProjectSetup]: <https://docs.github.com/en/communities/
+[GitHubDocs]: <https://docs.github.com/>
+[AzureDevOpsDocs]: <https://docs.microsoft.com/en-us/azure/devops/?view=azure-devops>
+[GitHubIssues]: <https://github.com/Azure/Modules/issues>
+[Contributing]: CONTRIBUTING.md
+[AzureIcon]: docs/media/MicrosoftAzure-32px.png
+[PowershellIcon]: docs/media/MicrosoftPowerShellCore-32px.png
+[BashIcon]: docs/media/Bash_Logo_black_and_white_icon_only-32px.svg.png
