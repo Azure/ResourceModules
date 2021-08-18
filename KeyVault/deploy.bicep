@@ -274,4 +274,4 @@ module rbac_name './nested_rbac_name.bicep' = [for (item, i) in roleAssignments:
 output keyVaultResourceId string = keyVaultName_resource.id
 output keyVaultResourceGroup string = resourceGroup().name
 output keyVaultName string = keyVaultName_var
-output keyVaultUrl string = reference(keyVaultName_resource.id, '2016-10-01').vaultUri
+output keyVaultUrl string = reference(keyVaultName_resource.id, '2019-09-01').vaultUri

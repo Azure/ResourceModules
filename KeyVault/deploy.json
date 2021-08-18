@@ -602,7 +602,7 @@
         },
         "keyVaultUrl": {
             "type": "string",
-            "value": "[reference(resourceId('Microsoft.KeyVault/vaults', variables('keyVaultName')),'2016-10-01').vaultUri]",
+            "value": "[reference(resourceId('Microsoft.KeyVault/vaults', variables('keyVaultName')),'2019-09-01').vaultUri]",
             "metadata": {
                 "description": "The URL of the Key Vault."
             }
