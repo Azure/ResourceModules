@@ -2,6 +2,12 @@
 
 This module deploys Key Vault, with resource lock.
 
+[![Deploy to Azure](https://aka.ms/deploytoazurebutton)](<https://portal.azure.com/#create/Microsoft.Template/uri/https%3A%2F%2Fraw.githubusercontent.com%2FAzure%2FModules%2Fmain%2FKeyVault%2Fdeploy.json>)
+
+[![Deploy To Azure US Gov](docs/media/deploytoazuregov.svg?sanitize=true)](<https://portal.azure.us/#create/Microsoft.Template/uri/https%3A%2F%2Fraw.githubusercontent.com%2FAzure%2FModules%2Fmain%2FKeyVault%2Fdeploy.json>)
+
+[![Visualize](docs/media/visualizebutton.svg?sanitize=true)](<http://armviz.io/#/?load=https%3A%2F%2Fraw.githubusercontent.com%2FAzure%2FModules%2Fmain%2FKeyVault%2Fdeploy.json>)
+
 ## Resource types
 
 | Resource Type | Api Version |
