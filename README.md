@@ -80,8 +80,8 @@ Any use of third-party trademarks or logos are subject to those third-party's po
 [AzGallery]: <https://www.powershellgallery.com/packages/Az/>
 [PowerShellCore]: <https://github.com/PowerShell/PowerShell/releases/latest>
 [InstallAzPs]: <https://docs.microsoft.com/en-us/powershell/azure/install-az-ps>
-[AzureResourceManager]: <https://docs.microsoft.com/en-us/azure/>
-[TemplateSpecs]: <https://docs.microsoft.com/en-us/azure/azure-resource-manager/templates/template-specs>azure-resource-manager/management/overview>
+[AzureResourceManager]: <https://docs.microsoft.com/en-us/azure/azure-resource-manager/management/overview>
+[TemplateSpecs]: <https://docs.microsoft.com/en-us/azure/azure-resource-manager/templates/template-specs>
 
 [ESLZ]: <https://github.com/Azure/Enterprise-Scale>
 [AzureSecurityBenchmark]: <https://docs.microsoft.com/en-us/azure/cloud-adoption-framework/ready/enterprise-scale/security-governance-and-compliance#azure-security-benchmark>
