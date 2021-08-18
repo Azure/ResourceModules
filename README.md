@@ -10,7 +10,7 @@ This library of **Modules** ensures organizations can deploy compliant Azure ser
 ## Status
 [![Super Linter](<https://github.com/Azure/Modules/actions/workflows/linter.yml/badge.svg>)](<https://github.com/Azure/Modules/actions/workflows/linter.yml>)
 
-[![Workflow](<https://github.com/Azure/Modules/actions/workflows/workflow.yml/badge.svg>)](<https://github.comAzure/Modules/actions/workflows/workflow.yml>)
+[![Workflow](https://github.com/Azure/Modules/actions/workflows/workflow.yml/badge.svg)](https://github.com/Azure/Modules/actions/workflows/workflow.yml)
 
 <!-- will be set once public
 <p align="center">
