@@ -12,6 +12,7 @@ jobs:
     displayName: Linter
     steps:
     - script: |
-        docker pull github/super-linter:slim-v4
+        # docker pull github/super-linter:latest
+        docker pull docker://ghcr.io/github/super-linter:slim-v4
         docker run -e RUN_LOCAL=true -v $(System.DefaultWorkingDirectory):/tmp/lint github/super-linter
       displayName: 'Lint Code Base'
