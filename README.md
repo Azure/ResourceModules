@@ -8,13 +8,22 @@ This library of **Modules** ensures organizations can deploy compliant Azure ser
 
 > This repository serves ***currently*** as a temporary extension and **active** development site for [ESLZ Workload Templates library][ESLZWorkloadTemplatesLibrary].
 ## Status
-
+<!--
 [![Super Linter](<https://github.com/Azure/Modules/actions/workflows/linter.yml/badge.svg>)](<https://github.com/Azure/Modules/actions/workflows/linter.yml>)
 
 [![Workflow](<https://github.com/Azure/Modules/actions/workflows/workflow.yml/badge.svg>)](<https://github.comAzure/Modules/actions/workflows/workflow.yml>)
 
 ![GitHub issues by-label](https://img.shields.io/github/issues/Azure/Modules)
+-->
 
+<p align="center">
+
+<a href="https://github.com/Azure/Modules/actions/workflows/linter.yml">
+  <img alt="Super Linter" src="https://github.com/Azure/Modules/actions/workflows/linter.yml/badge.svg" />
+</a>
+<a href="https://github.com/Azure/Modules/actions/workflows/workflow.yml">
+  <img alt="Workflow" src="https://github.com/Azure/Modules/actions/workflows/workflow.yml/badge.svg" />
+</a>
 <a href="https://github.com/Azure/Modules/issues">
   <img alt="Issues" src="https://img.shields.io/github/issues/Azure/Modules?color=0088ff" />
 </a> <br>
@@ -22,12 +31,14 @@ This library of **Modules** ensures organizations can deploy compliant Azure ser
   <img alt="Pull requests" src="https://img.shields.io/github/issues-pr/Azure/Modules?color=0088ff" />
 </a>
 
-## Getting Started
+</p>
 
-For introduction guidance visit the [Wiki](https://github.com/azure/Modules/wiki)
-For reference documentation visit [Enterprise-Scale](https://github.com/azure/enterprise-scale)
-For information on contributing, see [Contribution](<https://github.com/Azure/Modules/wiki#contributing>)
-File an issue via [GitHub Issues](https://github.com/azure/Modules/issues/new/choose)
+## Get started
+
+* For introduction guidance visit the [Wiki](https://github.com/azure/Modules/wiki)
+* For reference documentation visit [Enterprise-Scale](https://github.com/azure/enterprise-scale)
+* For information on contributing, see [Contribution](<https://github.com/Azure/Modules/wiki#contributing>)
+* File an issue via [GitHub Issues](https://github.com/azure/Modules/issues/new/choose)
 
 <!-- ## Contributors
 
