@@ -1,121 +1,41 @@
 # ![AzureIcon] Modules
 
-This repository consists of a collection of compliant [Azure Resource Manager (ARM)][AzureResourceManager] and [Bicep][Bicep] templates as well as supporting [template specs](<https://docs.microsoft.com/en-us/azure/azure-resource-manager/templates/template-specs>).
-
-This library of **Modules** ensures organizations can deploy compliant Azure services aligned with the proactive and preventive policies provided by [Enterprise-Scale landing zones (ESLZ)](<https://github.com/Azure/Enterprise-Scale>), aligned with [Azure Security Benchmark](<https://docs.microsoft.com/en-us/azure/cloud-adoption-framework/ready/enterprise-scale/security-governance-and-compliance#azure-security-benchmark>).
-
-> This repository serves ***currently*** as a temporary extension and development site for [ESLZ Workload Templates library](<https://github.com/Azure/Enterprise-Scale/tree/main/workloads>).
+This repository consists of a collection of compliant [Azure Resource Manager (ARM)][AzureResourceManager] and [Bicep][Bicep] templates as well as supporting [template specs][TemplateSpecs].
 
 ## Description
 
+This library of **Modules** ensures organizations can deploy compliant Azure services aligned with the proactive and preventive policies provided by [Enterprise-Scale landing zones (ESLZ)][ESLZ], aligned with [Azure Security Benchmark][AzureSecurityBenchmark].
+
+> This repository serves ***currently*** as a temporary extension and **active** development site for [ESLZ Workload Templates library][ESLZWorkloadTemplatesLibrary].
 ## Status
 
 [![Super Linter](<https://github.com/Azure/Modules/actions/workflows/linter.yml/badge.svg>)](<https://github.com/Azure/Modules/actions/workflows/linter.yml>)
 
-[![Sample Workflow](<https://github.com/Azure/Modules/actions/workflows/workflow.yml/badge.svg>)](<https://github.comAzure/Modules/actions/workflows/workflow.yml>)
+[![Workflow](<https://github.com/Azure/Modules/actions/workflows/workflow.yml/badge.svg>)](<https://github.comAzure/Modules/actions/workflows/workflow.yml>)
+
+![GitHub issues by-label](https://img.shields.io/github/issues/Azure/Modules)
+
+<a href="https://github.com/Azure/Modules/issues">
+  <img alt="Issues" src="https://img.shields.io/github/issues/Azure/Modules?color=0088ff" />
+</a> <br>
+<a href="https://github.com/Azure/Modules/pulls">
+  <img alt="Pull requests" src="https://img.shields.io/github/issues-pr/Azure/Modules?color=0088ff" />
+</a>
 
 ## Getting Started
 
-### Prerequisites
+For introduction guidance visit the [Wiki](https://github.com/azure/Modules/wiki)
+For reference documentation visit [Enterprise-Scale](https://github.com/azure/enterprise-scale)
+For information on contributing, see [Contribution](<https://github.com/Azure/Modules/wiki#contributing>)
+File an issue via [GitHub Issues](https://github.com/azure/Modules/issues/new/choose)
 
-To be able to deploy [ARM][AzureResourceManager] templates you should have latest version [PowerShell 7][PowerShellDocs] + [Azure Az Module][InstallAzPs] or [Azure CLI](<https://docs.microsoft.com/en-us/cli/azure/>)as well as [Bicep][Bicep] installed.
-
-### Installation
-
-#### One-liner to install or update Azure CLI on Windows 10
-
-```PowerShell
-iwr https://aka.ms/installazurecliwindows -OutFile .\AzureCLI.msi; start msiexec.exe -Wait -ArgumentList '/I AzureCLI.msi /quiet'; rm .\AzureCLI.msi
-```
-
-#### One-liner to install or update Azure CLI on Linux
-```bash
-curl -L https://aka.ms/InstallAzureCli | bash
-```
-
-#### One-liner to install or update PowerShell 7 on Windows 10
-
-```PowerShell
-iex "&amp; { $(irm https://aka.ms/install-powershell.ps1) } -UseMSI"
-Install-Module -Name Az -Scope CurrentUser -Repository PSGallery -Force
-```
-
-Make sure to install Azure Az Module as well.
-
-```PowerShell
-iex "&amp; { $(irm https://aka.ms/install-powershell.ps1) } -UseMSI"
-Install-Module -Name Az -Scope CurrentUser -Repository PSGallery -Force
-```
-
-### Usage
-
-#### Deploy local template (Azure CLI)
-
-```bash
-az group create --name ExampleGroup --location "Central US"
-az deployment group create \
-  --name ExampleDeployment \
-  --resource-group ExampleGroup \
-  --template-file <path-to-template> \
-  --parameters storageAccountType=Standard_GRS
-```
-
-#### Deploy local template (PowerShell)
-
-```PowerShell
-New-AzResourceGroup -Name ExampleGroup -Location "Central US"
-New-AzResourceGroupDeployment `
-  -Name ExampleDeployment `
-  -ResourceGroupName ExampleGroup `
-  -TemplateFile <path-to-template>
-```
-
-#### Deploy remote template (Azure CLI)
-
-```bash
-az group create --name ExampleGroup --location "Central US"
-az deployment group create \
-  --name ExampleDeployment \
-  --resource-group ExampleGroup \
-  --template-uri "https://raw.githubusercontent.com/Azure/azure-quickstart-templates/master/quickstarts/microsoft.storage/storage-account-create/azuredeploy.json" \
-  --parameters storageAccountType=Standard_GRS
-```
-
-#### Deploy remote template (PowerShell)
-
-```PowerShell
-New-AzResourceGroup -Name ExampleGroup -Location "Central US"
-New-AzResourceGroupDeployment `
-  -Name remoteTemplateDeployment `
-  -ResourceGroupName ExampleGroup `
-  -TemplateUri https://raw.githubusercontent.com/Azure/azure-quickstart-templates/master/quickstarts/microsoft.storage/storage-account-create/azuredeploy.json
-```
-
-## FAQ and Known Issues
-
-Any advise for common problems or issues.
-```bash
-command to run if program contains helper info
-```
-
-## Reporting Issues and Feedback
-
-### Issues and Bugs
-
-If you find any bugs, please file an issue in the [GitHub Issues][GitHubIssues] page. Please fill out the provided template with the appropriate information.
-> Please search the existing issues before filing new issues to avoid duplicates.
-
-If you are taking the time to mention a problem, even a seemingly minor one, it is greatly appreciated, and a totally valid contribution to this project. **Thank you!**
-
-### Feedback
-
-If there is a feature you would like to see in here, please file an issue or feature request in the [GitHub Issues][GitHubIssues] page to provide direct feedback.
-
-## Contributors
+<!-- ## Contributors
 
 Contributors names and contact info
 
 * [@segraef](<https://twitter.com/segraef>)
+
+-->
 
 ## Contributing
 
@@ -137,13 +57,14 @@ Any use of third-party trademarks or logos are subject to those third-party's po
 
 * [PowerShell Documentation][PowerShellDocs]
 * [Microsoft Azure Documentation][MicrosoftAzureDocs]
+* [GitHubDocs][GitHubDocs]
 * [Azure Resource Manager][AzureResourceManager]
 * [Bicep][Bicep]
-* [GitHubDocs][GitHubDocs]
 
 <!-- References -->
 
 <!-- Local -->
+[Wiki]: <https://github.com/Azure/Modules/wiki>
 [ProjectSetup]: <https://docs.github.com/en/communities/setting-up-your-project-for-healthy-contributions>
 [GitHubDocs]: <https://docs.github.com/>
 [AzureDevOpsDocs]: <https://docs.microsoft.com/en-us/azure/devops/?view=azure-devops>
@@ -159,7 +80,12 @@ Any use of third-party trademarks or logos are subject to those third-party's po
 [AzGallery]: <https://www.powershellgallery.com/packages/Az/>
 [PowerShellCore]: <https://github.com/PowerShell/PowerShell/releases/latest>
 [InstallAzPs]: <https://docs.microsoft.com/en-us/powershell/azure/install-az-ps>
-[AzureResourceManager]: <https://docs.microsoft.com/en-us/azure/azure-resource-manager/management/overview>
+[AzureResourceManager]: <https://docs.microsoft.com/en-us/azure/>
+[TemplateSpecs]: <https://docs.microsoft.com/en-us/azure/azure-resource-manager/templates/template-specs>azure-resource-manager/management/overview>
+
+[ESLZ]: <https://github.com/Azure/Enterprise-Scale>
+[AzureSecurityBenchmark]: <https://docs.microsoft.com/en-us/azure/cloud-adoption-framework/ready/enterprise-scale/security-governance-and-compliance#azure-security-benchmark>
+[ESLZWorkloadTemplatesLibrary]: <https://github.com/Azure/Enterprise-Scale/tree/main/workloads>
 
 <!-- Docs -->
 [MicrosoftAzureDocs]: <https://docs.microsoft.com/en-us/azure/>
