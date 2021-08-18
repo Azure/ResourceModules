@@ -1,0 +1,25 @@
+name: "Sample Workflow"
+on:
+  workflow_dispatch:
+    inputs:
+      name:
+        description: 'Person to greet'
+        required: true
+        default: 'You'
+      home:
+        description: 'location'
+        required: false
+        default: 'The Universe'
+
+jobs:
+  job:
+    name: "Job"
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+      - name: Hello
+        shell: pwsh
+        run: |
+          echo "Hello ${{ github.event.inputs.name }}!"
+          echo "- in ${{ github.event.inputs.home }}!"
