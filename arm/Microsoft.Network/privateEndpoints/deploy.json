@@ -1,0 +1,142 @@
+{
+    "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "privateEndpointName": {
+            "type": "string",
+            "metadata": {
+                "description": "Required. Name of the private endpoint resource to create."
+            }
+        },
+        "targetSubnetId": {
+            "type": "string",
+            "metadata": {
+                "description": "Required. Resource Id of the subnet where the endpoint needs to be created."
+            }
+        },
+        "serviceResourceId": {
+            "type": "string",
+            "metadata": {
+                "description": "Required. Resource Id of the resource that needs to be connected to the network."
+            }
+        },
+        "groupId": {
+            "type": "array",
+            "metadata": {
+                "description": "Required. Subtype(s) of the connection to be created. The allowed values depend on the type serviceResourceId refers to."
+            }
+        },
+        "privateDNSId": {
+            "type": "string",
+            "defaultValue":"",
+            "metadata": {
+                "description": "Optional. Resource id of the private DNS zone."
+            }
+        },
+        "location": {
+            "type": "string",
+            "defaultValue": "[resourceGroup().location]",
+            "metadata": {
+                "description": "Optional. Location for all Resources."
+            }
+        },
+        "tags": {
+            "type": "object",
+            "defaultValue": {},
+            "metadata": {
+                "description": "Optional. Tags to be applied on all resources/resource groups in this deployment."
+            }
+        },
+        "cuaId": {
+            "type": "string",
+            "defaultValue": "",
+            "metadata": {
+                "description": "Optional. Customer Usage Attribution id (GUID). This GUID must be previously registered"
+            }
+        }
+    },
+    "variables": {},
+    "resources": [
+        {
+            "type": "Microsoft.Resources/deployments",
+            "apiVersion": "2020-10-01",
+            "name": "[concat('pid-', parameters('cuaId'))]",
+            "condition": "[not(empty(parameters('cuaId')))]",
+            "properties": {
+                "mode": "Incremental",
+                "template": {
+                    "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+                    "contentVersion": "1.0.0.0",
+                    "resources": [
+                    ]
+                }
+            }
+        },
+        {
+            "type": "Microsoft.Network/privateEndpoints",
+            "apiVersion": "2020-07-01",
+            "name": "[parameters('privateEndpointName')]",
+            "location": "[parameters('location')]",
+            "tags": "[parameters('tags')]",
+            "properties": {
+                "privateLinkServiceConnections": [
+                    {
+                        "name": "[parameters('privateEndpointName')]",
+                        "properties": {
+                            "privateLinkServiceId": "[parameters('serviceResourceId')]",
+                            "groupIds": "[parameters('groupId')]"
+                        }
+                    }
+                ],
+                "manualPrivateLinkServiceConnections": [],
+                "subnet": {
+                    "id": "[parameters('targetSubnetId')]"
+                },
+                "customDnsConfigs": []
+            }
+        },
+        {
+            "type": "Microsoft.Network/privateEndpoints/privateDnsZoneGroups",
+            "apiVersion": "2020-07-01",
+            "condition": "[not(empty(parameters('privateDNSId')))]",
+            "name": "[concat(parameters('privateEndpointName'),'/default')]",
+            "dependsOn": [
+                "[resourceId('Microsoft.Network/privateEndpoints', parameters('privateEndpointName'))]"
+            ],
+            "properties": {
+                "privateDnsZoneConfigs": [
+                    {
+                        "name": "[parameters('privateEndpointName')]",
+                        "properties": {
+                            "privateDnsZoneId": "[parameters('privateDNSId')]"
+                        }
+                    }
+                ]
+            }
+        }
+    ],
+    "functions": [],
+    "outputs": {
+        "privateEndpointResourceGroup": {
+            "type": "string",
+            "value": "[resourceGroup().name]",
+            "metadata": {
+                "description": "The name of the Resource Group the resources was deployed to."
+            }
+        },
+        "privateEndpointResourceId": {
+            "type": "string",
+            "value": "[resourceId('Microsoft.Network/privateEndpoints', parameters('privateEndpointName'))]",
+            "metadata": {
+                "description": "The Resource Id of the private Endpoint."
+            }
+        },
+        "privateEndpointName": {
+            "type": "string",
+            "value": "[parameters('privateEndpointName')]",
+            "metadata": {
+                "description": "The Name of the deployed private endpoint."
+            }
+        }
+    }
+}

@@ -1,0 +1,68 @@
+{
+  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    "keyVaultName": {
+     "value": "sxx-az-kv-weu-x-001"
+    },
+    "keysObject": {
+      "value": {
+        "keys": [
+          {
+            "keyName": "keyRSA",
+            "keyType": "RSA",
+            "keyOps": [
+              "encrypt",
+              "decrypt",
+              "sign",
+              "verify",
+              "wrapKey",
+              "unwrapKey"
+            ],
+            "keySize": "2048",
+            "curveName": ""
+          }
+        ]
+      }
+    },
+     "accessPolicies": {
+       "value": [
+         {
+           "tenantId": "",
+           "objectId": "",
+           "permissions": {
+             "certificates": ["All"],
+             "keys": ["All"],
+             "secrets": ["All"]
+           }
+         },
+         {
+          "tenantId": "",
+          "objectId": "",
+          "permissions": {
+            "certificates": ["All"],
+            "keys": ["All"],
+            "secrets": ["All"]
+          }
+        }
+       ]
+     },
+     "enableSoftDelete": {
+       "value": true
+     },
+     "softDeleteRetentionInDays": {
+       "value": 7
+     },
+//     "networkAcls": {
+//       "value": {
+//         "bypass": "AzureServices",
+//         "defaultAction": "Deny",
+//         "virtualNetworkRules": [],
+//         "ipRules": []
+//       }
+//     },
+     "enableRbacAuthorization": {
+       "value": false
+     }
+  }
+}

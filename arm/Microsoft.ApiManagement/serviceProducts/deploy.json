@@ -1,0 +1,231 @@
+{
+  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    "apiManagementServiceName": {
+      "type": "string",
+      "metadata": {
+        "description": "Required. The name of the of the Api Management service."
+      }
+    },
+    "approvalRequired": {
+      "type": "bool",
+      "defaultValue": false,
+      "metadata": {
+        "description": "Optional. Whether subscription approval is required. If false, new subscriptions will be approved automatically enabling developers to call the product’s APIs immediately after subscribing. If true, administrators must manually approve the subscription before the developer can any of the product’s APIs. Can be present only if subscriptionRequired property is present and has a value of false."
+      }
+    },
+    "cuaId": {
+      "type": "string",
+      "defaultValue": "",
+      "metadata": {
+        "description": "Optional. Customer Usage Attribution id (GUID). This GUID must be previously registered"
+      }
+    },
+    "description": {
+      "type": "string",
+      "defaultValue": "",
+      "metadata": {
+        "description": "Optional. Product description. May include HTML formatting tags."
+      }
+    },
+    "location": {
+      "type": "string",
+      "defaultValue": "[resourceGroup().location]",
+      "metadata": {
+        "description": "Optional. Location for all Resources."
+      }
+    },
+    "productApis": {
+      "type": "array",
+      "defaultValue": [],
+      "metadata": {
+        "description": "Optional. Product API's name list."
+      }
+    },
+    "productGroups": {
+      "type": "array",
+      "defaultValue": [],
+      "metadata": {
+        "description": "Optional. Product's Group name list."
+      }
+    },
+    "productName": {
+      "type": "string",
+      "defaultValue": "",
+      "metadata": {
+        "description": "Required. Product Name."
+      }
+    },
+    "state": {
+      "type": "string",
+      "defaultValue": "published",
+      "metadata": {
+        "description": "Optional. whether product is published or not. Published products are discoverable by users of developer portal. Non published products are visible only to administrators. Default state of Product is notPublished. - notPublished or published"
+      }
+    },
+    "subscriptionRequired": {
+      "type": "bool",
+      "defaultValue": false,
+      "metadata": {
+        "description": "Optional. Whether a product subscription is required for accessing APIs included in this product. If true, the product is referred to as \"protected\" and a valid subscription key is required for a request to an API included in the product to succeed. If false, the product is referred to as \"open\" and requests to an API included in the product can be made without a subscription key. If property is omitted when creating a new product it's value is assumed to be true."
+      }
+    },
+    "subscriptionsLimit": {
+      "type": "int",
+      "defaultValue": 1,
+      "metadata": {
+        "description": "Optional. Whether the number of subscriptions a user can have to this product at the same time. Set to null or omit to allow unlimited per user subscriptions. Can be present only if subscriptionRequired property is present and has a value of false."
+      }
+    },
+    "tags": {
+      "type": "object",
+      "defaultValue": {
+      },
+      "metadata": {
+        "description": "Optional. Tags of the resource."
+      }
+    },
+    "terms": {
+      "type": "string",
+      "defaultValue": " ",
+      "metadata": {
+        "description": "Optional. Product terms of use. Developers trying to subscribe to the product will be presented and required to accept these terms before they can complete the subscription process."
+      }
+    }
+  },
+  "variables": {},
+  "resources": [
+    {
+      "condition": "[not(empty(parameters('cuaId')))]",
+      "type": "Microsoft.Resources/deployments",
+      "apiVersion": "2020-06-01",
+      "name": "[concat('pid-', parameters('cuaId'))]",
+      "properties": {
+        "mode": "Incremental",
+        "template": {
+          "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+          "contentVersion": "1.0.0.0",
+          "resources": [
+          ]
+        }
+      }
+    },
+    {
+      "type": "Microsoft.ApiManagement/service/products",
+      "apiVersion": "2020-06-01-preview",
+      "name": "[concat(parameters('apiManagementServiceName'),'/',parameters('productName'))]",
+      "location": "[parameters('location')]",
+      "tags": "[parameters('tags')]",
+      "properties": {
+        "description": "[parameters('description')]",
+        "displayName": "[parameters('productName')]",
+        "terms": "[parameters('terms')]",
+        "subscriptionRequired": "[parameters('subscriptionRequired')]",
+        "approvalRequired": "[if(parameters('subscriptionRequired'), parameters('approvalRequired'), json('null'))]", 
+        "subscriptionsLimit": "[if(parameters('subscriptionRequired'), parameters('subscriptionsLimit'), json('null'))]",
+        "state": "[parameters('state')]"
+      }
+    },
+    {
+      "condition": "[not(empty(parameters('productApis')))]",
+      "name": "[concat('productApis-', deployment().name, '-', copyIndex())]",
+      "type": "Microsoft.Resources/deployments",
+      "apiVersion": "2020-10-01",
+      "copy": {
+        "count": "[length(parameters('productApis'))]",
+        "name": "productApisCopy"
+      },
+      "dependsOn": [
+        "[resourceId('Microsoft.ApiManagement/service/products', parameters('apiManagementServiceName'), parameters('productName'))]"
+      ],
+      "properties": {
+        "expressionEvaluationOptions": {
+          "scope": "outer"
+        },
+        "mode": "Incremental",
+        "template": {
+          "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+          "contentVersion": "1.0.0.0",
+          "resources": [
+            {
+              "name": "[concat(parameters('apiManagementServiceName'),'/',parameters('productName'), '/', parameters('productApis')[copyIndex()])]",
+              "type": "Microsoft.ApiManagement/service/products/apis",
+              "apiVersion": "2020-06-01-preview",
+              "properties": {}
+            }
+          ],
+          "outputs": {}
+        }
+      }
+    },
+    {
+      "condition": "[not(empty(parameters('productGroups')))]",
+      "name": "[concat('group-', deployment().name, '-', copyIndex())]",
+      "type": "Microsoft.Resources/deployments",
+      "apiVersion": "2020-10-01",
+      "copy": {
+        "count": "[length(parameters('productGroups'))]",
+        "name": "productGroupsCopy"
+      },
+      "dependsOn": [
+        "[resourceId('Microsoft.ApiManagement/service/products', parameters('apiManagementServiceName'), parameters('productName'))]"
+      ],
+      "properties": {
+        "expressionEvaluationOptions": {
+          "scope": "outer"
+        },
+        "mode": "Incremental",
+        "template": {
+          "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+          "contentVersion": "1.0.0.0",
+          "resources": [
+            {
+              "name": "[concat(parameters('apiManagementServiceName'),'/',parameters('productName'), '/', parameters('productGroups')[copyIndex()])]",
+              "type": "Microsoft.ApiManagement/service/products/groups",
+              "apiVersion": "2020-06-01-preview",
+              "properties": {}
+            }
+          ],
+          "outputs": {}
+        }
+      }
+    }
+  ],
+  "functions": [
+  ],
+  "outputs": {
+    "productResourceId": {
+      "type": "string",
+      "value": "[resourceId('Microsoft.ApiManagement/service/products', parameters('apiManagementServiceName'), parameters('productName'))]",
+      "metadata": {
+        "description": "Resource id of the service product."
+      }
+    },
+    "productApisResourceIds": {
+      "type": "array",
+      "condition": "[not(empty(parameters('productApis')))]",
+      "copy": {
+        "count": "[length(parameters('productApis'))]",
+        "input": "[resourceId('Microsoft.ApiManagement/service/products/apis', parameters('apiManagementServiceName'), parameters('productName'), parameters('productApis')[copyIndex()])]"
+      },
+      "metadata": {
+        "description": "The Resources Ids of the Product apis."
+      }
+    },
+    "productResourceName": {
+      "type": "string",
+      "value": "[parameters('productName')]",
+      "metadata": {
+        "description": "The Api Management Service product Name"
+      }
+    },
+    "productResourceGroup": {
+      "type": "string",
+      "value": "[resourceGroup().name]",
+      "metadata": {
+        "description": "The name of the Resource Group with the Api Management Service product"
+      }
+    }
+  }
+}

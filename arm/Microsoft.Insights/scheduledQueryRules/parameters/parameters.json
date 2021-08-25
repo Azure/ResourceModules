@@ -1,0 +1,27 @@
+{
+    "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "alertName": {
+            "value": "myAlert01"
+        },
+        "workspaceResourceId": {
+            "value": "/subscriptions/8629be3b-96bc-482d-a04b-ffff597c65a2/resourceGroups/artifacts-rg/providers/Microsoft.OperationalInsights/workspaces/myLogAnalytics01"
+        },
+        "query": {
+            "value": "Perf | where ObjectName == \"LogicalDisk\" | where CounterName == \"% Free Space\" | where InstanceName <> \"HarddiskVolume1\" and InstanceName <> \"_Total\" | summarize AggregatedValue = min(CounterValue) by Computer, InstanceName, bin(TimeGenerated,5m)"
+        },
+        "breachesThresholdOperator": {
+            "value": "LessThan"
+        },
+        "metricColumn": {
+            "value": "Computer,InstanceName"
+        },
+        "breachesTriggerType": {
+            "value": "Total"
+        },
+        "breachesThreshold": {
+            "value": 3
+        }
+    }
+}

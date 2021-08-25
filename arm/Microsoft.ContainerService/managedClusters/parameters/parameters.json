@@ -1,0 +1,135 @@
+{
+    "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "aksClusterName": {
+            "value": "testcluster2431"
+        },
+        "primaryAgentPoolProfile": {
+            "value": [
+                {
+                    "name": "agentpool",
+                    "osDiskSizeGB": 0,
+                    "count": 1,
+                    "enableAutoScaling": true,
+                    "minCount": 1,
+                    "maxCount": 3,
+                    "vmSize": "Standard_DS2_v2",
+                    "osType": "Linux",
+                    "storageProfile": "ManagedDisks",
+                    "type": "VirtualMachineScaleSets",
+                    "mode": "System",
+                    "maxPods": 110,
+                    "availabilityZones": [
+                        "1",
+                        "2",
+                        "3"
+                    ]
+                }
+            ]
+        }
+        // "aksClusterEnablePrivateCluster": {
+        //     "value": true
+        // }
+        // "aksClusterNetworkPlugin": {
+        //     "value": "azure"
+        // },
+        // "aksClusterNetworkPolicy": {
+        //     "value": "azure"
+        // },
+        // "aksClusterPodCidr": {
+        //     "value": "10.244.0.0/16"
+        // },
+        // "aksClusterServiceCidr": {
+        //     "value": "10.2.0.0/16"
+        // },
+        // "aksClusterDnsServiceIP": {
+        //     "value": "10.2.0.10"
+        // },
+        // "aksClusterDockerBridgeCidr": {
+        //     "value": "172.17.0.1/16"
+        // },
+        // "aksClusterOutboundType": {
+        //     "value": "loadBalancer"
+        // },
+        // "aksClusterKubernetesVersion": {
+        //     "value": "1.20.5"
+        // },
+        // "identity": {
+        //     "value": {
+        //         "type": "SystemAssigned"
+        //     }
+        // },
+        // "aadProfileManaged": {
+        //     "value": true
+        // },
+        // "aadProfileEnableAzureRBAC": {
+        //     "value": true
+        // },
+        // "aadProfileAdminGroupObjectIDs": {
+        //     "value": []
+        // },
+        // "additionalAgentPools": {
+        //     "value": [
+        //         {
+        //             "name": "userpool1",
+        //             "properties": {
+        //                 "vmSize": "Standard_DS2_v2",
+        //                 "osDiskSizeGB": 128,
+        //                 "count": 2,
+        //                 "osType": "Linux",
+        //                 "maxCount": 5,
+        //                 "minCount": 1,
+        //                 "enableAutoScaling": true,
+        //                 "scaleSetPriority": "Regular",
+        //                 "scaleSetEvictionPolicy": "Delete",
+        //                 "nodeLabels": {},
+        //                 "nodeTaints": [
+        //                     "CriticalAddonsOnly=true:NoSchedule"
+        //                 ],
+        //                 "type": "VirtualMachineScaleSets",
+        //                 "availabilityZones": [
+        //                     "1",
+        //                     "2",
+        //                     "3"
+        //                 ],
+        //                 "minPods": 2,
+        //                 "maxPods": 12,
+        //                 "storageProfile": "ManagedDisks",
+        //                 "mode": "User",
+        //                 "vnetSubnetID": "/subscriptions/8629be3b-96bc-482d-a04b-ffff597c65a2/resourceGroups/dependencies-rg/providers/Microsoft.Network/virtualNetworks/sxx-az-vnet-weu-x-005/subnets/sxx-az-subnet-weu-x-002"
+        //             }
+        //         },
+        //         {
+        //             "name": "userpool2",
+        //             "properties": {
+        //                 "vmSize": "Standard_DS2_v2",
+        //                 "osDiskSizeGB": 128,
+        //                 "count": 2,
+        //                 "osType": "Linux",
+        //                 "maxCount": 5,
+        //                 "minCount": 1,
+        //                 "enableAutoScaling": true,
+        //                 "scaleSetPriority": "Regular",
+        //                 "scaleSetEvictionPolicy": "Delete",
+        //                 "nodeLabels": {},
+        //                 "nodeTaints": [
+        //                     "CriticalAddonsOnly=true:NoSchedule"
+        //                 ],
+        //                 "type": "VirtualMachineScaleSets",
+        //                 "availabilityZones": [
+        //                     "1",
+        //                     "2",
+        //                     "3"
+        //                 ],
+        //                 "minPods": 2,
+        //                 "maxPods": 12,
+        //                 "storageProfile": "ManagedDisks",
+        //                 "mode": "User",
+        //                 "vnetSubnetID": "/subscriptions/8629be3b-96bc-482d-a04b-ffff597c65a2/resourceGroups/dependencies-rg/providers/Microsoft.Network/virtualNetworks/sxx-az-vnet-weu-x-005/subnets/sxx-az-subnet-weu-x-003"
+        //             }
+        //         }
+        //     ]
+        // }
+    }
+}

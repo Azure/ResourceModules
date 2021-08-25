@@ -1,0 +1,35 @@
+{
+    "$schema": "https://schema.management.azure.com/schemas/2018-05-01/subscriptionDeploymentParameters.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "registrationDefinitionName": {
+            "value": "Component Validation"
+        },
+        "registrationDescription": {
+            "value": "Managed by CCoE"
+        },
+        "managedByTenantId": {
+            "value": "83747c5c-1c32-4c6f-b391-bbdbcf9dd934"
+        },
+        "authorizations": {
+            "value": [
+                {
+                    "principalId": "9d949eef-00d5-45d9-8586-56be91a13398",
+                    "principalIdDisplayName": "MSX-Sub_ABC-Reader",
+                    "roleDefinitionId": "acdd72a7-3385-48ef-bd42-f606fba81ae7"
+                    
+                },
+                {
+                    "principalId": "06eb144f-1a10-4935-881b-757efd1d0b58",
+                    "principalIdDisplayName": "MSX-Sub_ABC-Contributor",
+                    "roleDefinitionId": "b24988ac-6180-42a0-ab88-20f7382dd24c"
+                },
+                {
+                    "principalId": "9cd792b0-dc7c-4551-84f8-dd87388030fb",
+                    "principalIdDisplayName": "MSX-Sub_ABC-LHManagement",
+                    "roleDefinitionId": "91c1777a-f3dc-4fae-b103-61d183457e46"
+                }
+            ]
+        }
+    }
+}

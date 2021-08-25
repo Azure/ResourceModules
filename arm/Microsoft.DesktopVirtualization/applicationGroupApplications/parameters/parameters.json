@@ -1,0 +1,38 @@
+{
+    "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "applications": {
+            "value": [
+                {
+                    "name": "notepad",
+                    "description": "Notepad by ARM template",
+                    "friendlyName": "Notepad",
+                    "filePath": "C:\\Windows\\System32\\notepad.exe",
+                    "commandLineSetting": "DoNotAllow",
+                    "commandLineArguments": "",
+                    "showInPortal": true,
+                    "iconPath": "C:\\Windows\\System32\\notepad.exe",
+                    "iconIndex": 0
+                },
+                {
+                    "name": "wordpad",
+                    "description": "WordPad by ARM template 2",
+                    "friendlyName": "WordPad",
+                    "filePath": "C:\\Program Files\\Windows NT\\Accessories\\wordpad.exe",
+                    "commandLineSetting": "DoNotAllow",
+                    "commandLineArguments": "",
+                    "showInPortal": true,
+                    "iconPath": "C:\\Program Files\\Windows NT\\Accessories\\wordpad.exe",
+                    "iconIndex": 0
+                }
+            ]
+        },
+        "location": {
+            "value": "eastus"
+        },
+        "appGroupName": {
+            "value": "sxx-az-wvdag-weu-x-001"
+        }
+    }
+}

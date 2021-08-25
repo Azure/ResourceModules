@@ -1,0 +1,294 @@
+{
+    "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "collation": {
+            "type": "string",
+            "metadata": {
+                "description": "Optional. The collation of the database."
+            }
+        },
+        "databaseName": {
+            "type": "string",
+            "metadata": {
+                "description": "Required. The name of the database."
+            }
+        },
+        "tier": {
+            "type": "string",
+            "metadata": {
+                "description": "Optional. The tier or edition of the particular SKU."
+            }
+        },
+        "skuName": {
+            "type": "string",
+            "metadata": {
+                "description": "Required. The name of the SKU."
+            }
+        },
+        "maxSizeBytes": {
+            "type": "int",
+            "metadata": {
+                "description": "Optional. The max size of the database expressed in bytes."
+            }
+        },
+        "serverName": {
+            "type": "string",
+            "metadata": {
+                "description": "Required. The Name of SQL Server"
+            }
+        },
+        "sampleName": {
+            "type": "string",
+            "defaultValue": "",
+            "metadata": {
+                "description": "Optional. The name of the sample schema to apply when creating this database."
+            }
+        },
+        "zoneRedundant": {
+            "type": "bool",
+            "defaultValue": false,
+            "metadata": {
+                "description": "Optional. Whether or not this database is zone redundant."
+            }
+        },
+        "licenseType": {
+            "type": "string",
+            "defaultValue": "",
+            "metadata": {
+                "description": "Optional. The license type to apply for this database."
+            }
+        },
+        "readScaleOut": {
+            "type": "string",
+            "defaultValue": "Disabled",
+            "metadata": {
+                "description": "Optional. The state of read-only routing."
+            }
+        },
+        "numberOfReplicas": {
+            "type": "int",
+            "defaultValue": 0,
+            "metadata": {
+                "description": "Optional. The number of readonly secondary replicas associated with the database."
+            }
+        },
+        "minCapacity": {
+            "type": "string",
+            "defaultValue": "",
+            "metadata": {
+                "description": "Optional. Minimal capacity that database will always have allocated."
+            }
+        },
+        "autoPauseDelay": {
+            "type": "string",
+            "defaultValue": "",
+            "metadata": {
+                "description": "Optional. Time in minutes after which database is automatically paused."
+            }
+        },
+        "enableADS": {
+            "type": "bool",
+            "defaultValue": false,
+            "metadata": {
+                "description": "Optional. Whether or not ADS is enabled."
+            }
+        },
+        "enableVA": {
+            "type": "bool",
+            "defaultValue": false,
+            "metadata": {
+                "description": "Optional. Whether or not VA is enabled."
+            }
+        },
+        "enablePrivateEndpoint": {
+            "type": "bool",
+            "defaultValue": false,
+            "metadata": {
+                "description": "Optional. Whether or not private Endpoint is enabled"
+            }
+        },
+        "privateEndpointNestedTemplateId": {
+            "type": "string",
+            "defaultValue": "",
+            "metadata": {
+                "description": "Optional. Nested template ID."
+            }
+        },
+        "privateEndpointSubscriptionId": {
+            "type": "string",
+            "defaultValue": "",
+            "metadata": {
+                "description": "Optional. This is not requried anymore."
+            }
+        },
+        "privateEndpointResourceGroup": {
+            "type": "string",
+            "defaultValue": "",
+            "metadata": {
+                "description": "Optional. private Endpoint Resource Group."
+            }
+        },
+        "privateEndpointName": {
+            "type": "string",
+            "defaultValue": "",
+            "metadata": {
+                "description": "Optional. Private Endpoint Name."
+            }
+        },
+        "privateEndpointLocation": {
+            "type": "string",
+            "defaultValue": "",
+            "metadata": {
+                "description": "Optional. This is not required anymore."
+            }
+        },
+        "privateEndpointSubnetId": {
+            "type": "string",
+            "defaultValue": "",
+            "metadata": {
+                "description": "Optional. Subnet of Private endpoint."
+            }
+        },
+        "privateLinkServiceName": {
+            "type": "string",
+            "defaultValue": "",
+            "metadata": {
+                "description": "Optional. privatelink service name."
+            }
+        },
+        "privateLinkServiceServiceId": {
+            "type": "string",
+            "defaultValue": "",
+            "metadata": {
+                "description": "Optional. For setting service connection."
+            }
+        },
+        "tags": {
+            "type": "object",
+            "defaultValue": {
+            },
+            "metadata": {
+                "description": "Optional. Tags of the resource."
+            }
+        },
+        "location": {
+            "type": "string",
+            "defaultValue": "[resourceGroup().location]",
+            "metadata": {
+                "description": "Optional. Location for all resources."
+            }
+        },
+        "cuaId": {
+            "type": "string",
+            "defaultValue": "",
+            "metadata": {
+                "description": "Optional. Customer Usage Attribution id (GUID). This GUID must be previously registered"
+            }
+        }
+    },
+    "variables": {
+    },
+    "resources": [
+        {
+            "condition": "[not(empty(parameters('cuaId')))]",
+            "type": "Microsoft.Resources/deployments",
+            "apiVersion": "2020-06-01",
+            "name": "[concat('pid-', parameters('cuaId'))]",
+            "properties": {
+                "mode": "Incremental",
+                "template": {
+                    "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+                    "contentVersion": "1.0.0.0",
+                    "resources": [
+                    ]
+                }
+            }
+        },
+        {
+            "type": "Microsoft.Sql/servers/databases",
+            "apiVersion": "2019-06-01-preview",
+            "location": "[parameters('location')]",
+            "tags": "[parameters('tags')]",
+            "name": "[concat(parameters('serverName'), '/', parameters('databaseName'))]",
+            "properties": {
+                "collation": "[parameters('collation')]",
+                "maxSizeBytes": "[parameters('maxSizeBytes')]",
+                "sampleName": "[parameters('sampleName')]",
+                "zoneRedundant": "[parameters('zoneRedundant')]",
+                "licenseType": "[parameters('licenseType')]",
+                "readScale": "[parameters('readScaleOut')]",
+                "readReplicaCount": "[parameters('numberOfReplicas')]",
+                "minCapacity": "[parameters('minCapacity')]",
+                "autoPauseDelay": "[parameters('autoPauseDelay')]"
+            },
+            "sku": {
+                "name": "[parameters('skuName')]",
+                "tier": "[parameters('tier')]"
+            }
+        },
+        {
+            "condition": "[parameters('enablePrivateEndpoint')]",
+            "type": "Microsoft.Resources/deployments",
+            "apiVersion": "2020-06-01",
+            "name": "[parameters('privateEndpointNestedTemplateId')]",
+            "properties": {
+                "mode": "Incremental",
+                "template": {
+                    "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+                    "contentVersion": "1.0.0.0",
+                    "resources": [
+                        {
+                            "apiVersion": "2019-02-01",
+                            "location": "[parameters('location')]",
+                            "name": "[parameters('privateEndpointName')]",
+                            "properties": {
+                                "privateLinkServiceConnections": [
+                                    {
+                                        "name": "[parameters('privateLinkServiceName')]",
+                                        "properties": {
+                                            "privateLinkServiceId": "[parameters('privateLinkServiceServiceId')]",
+                                            "groupIds": [
+                                                "SqlServer"
+                                            ],
+                                            "requestMessage": "AutoApproved"
+                                        }
+                                    }
+                                ],
+                                "subnet": {
+                                    "id": "[parameters('privateEndpointSubnetId')]"
+                                }
+                            },
+                            "type": "Microsoft.Network/privateEndpoints"
+                        }
+                    ]
+                }
+            }
+        }
+    ],
+    "functions": [
+    ],
+    "outputs": {
+        "databaseName": {
+            "type": "string",
+            "value": "[parameters('databaseName')]",
+            "metadata": {
+                "description": "The name of the created database."
+            }
+        },
+        "databaseResourceGroup": {
+            "type": "string",
+            "value": "[resourceGroup().name]",
+            "metadata": {
+                "description": "Name of the Databse ResourceGroup."
+            }
+        },
+        "serverName": {
+            "type": "string",
+            "value": "[parameters('serverName')]",
+            "metadata": {
+                "description": "The name of the target SQL Server instance."
+            }
+        }
+    }
+}

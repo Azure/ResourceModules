@@ -1,0 +1,44 @@
+{
+    "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "LogicAppName": {
+            "value": "sxx-az-wvdss-weu-x-001"
+        },
+        // "webhookURI": {
+        //     "reference": {
+        //         "keyVault": {
+        //          "id": "/subscriptions/[subscriptionId]/resourceGroups/[wvd-mgmt-rg]/providers/Microsoft.KeyVault/vaults/[keyVaultName]"
+        //         },
+        //         "secretName": "WVDAutoScaleWebhook-Uri"
+        //     }
+        // },
+        "webhookURI": {
+            "value": "https://testStringForValidation.com"
+        },
+        "actionSettingsBody": {
+            "value": {
+                "HostPoolName": "[HostPoolName]",
+                "LAWorkspaceName": "[LAWorkspaceName]",
+                "LimitSecondsToForceLogOffUser": "[LimitSecondsToForceLogOffUser]",
+                "EndPeakTime": "[EndPeakTime]",
+                "BeginPeakTime": "[BeginPeakTime]",
+                "UtcOffset": "[UtcOffset]",
+                "LogOffMessageBody": "[LogOffMessageBody]",
+                "LogOffMessageTitle": "[LogOffMessageTitle]",
+                "MinimumNumberOfRDSH": 1,
+                "SessionThresholdPerCPU": 1,
+                "ResourceGroupName": "[ResourceGroupName]"
+            }
+        },
+        "recurrenceInterval": {
+            "value": 15
+        },
+        "tags": {
+            "value": {
+                "Type": "LogicApp",
+                "Purpose": "Scaling"
+            }
+        }
+    }
+}

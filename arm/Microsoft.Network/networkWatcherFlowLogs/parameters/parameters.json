@@ -1,0 +1,36 @@
+{
+  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    "networkWatcherName": {
+      "value": "NetworkWatcher_westeurope"
+    },
+    "networkSecurityGroupResourceId": {
+      "value": "/subscriptions/8629be3b-96bc-482d-a04b-ffff597c65a2/resourceGroups/dependencies-rg/providers/Microsoft.Network/networkSecurityGroups/sxx-az-nsg-weu-x-003"
+    },
+    "diagnosticStorageAccountId": {
+      "value": "/subscriptions/8629be3b-96bc-482d-a04b-ffff597c65a2/resourceGroups/dependencies-rg/providers/Microsoft.Storage/storageAccounts/sxxazsaweux003"
+    },
+    "retentionEnabled": {
+      "value": false
+    },
+    "flowLogEnabled": {
+      "value": true
+    },
+    "logFormatVersion": {
+      "value": 2
+    },
+    "flowLogIntervalInMinutes": {
+      "value": 10
+    },
+    "retentionInDays": {
+      "value": 8
+    },
+    "flowAnalyticsEnabled": {
+      "value": false
+    },
+    "workspaceResourceId": {
+      "value": "/subscriptions/8629be3b-96bc-482d-a04b-ffff597c65a2/resourcegroups/dependencies-rg/providers/microsoft.operationalinsights/workspaces/sxx-az-la-weu-x-003"
+    }
+  }
+}

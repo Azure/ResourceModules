@@ -1,0 +1,81 @@
+{
+    "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "storageAccountKind": {
+            "value": "StorageV2"
+        },
+        "storageAccountSku": {
+            "value": "Standard_LRS"
+        },
+        "storageAccountAccessTier": {
+            "value": "Hot"
+        },
+        "deleteRetentionPolicy": {
+            "value": true
+        },
+        "deleteRetentionPolicyDays": {
+            "value": 7
+        },
+        "automaticSnapshotPolicyEnabled": {
+            "value": false
+        },
+        "minimumTlsVersion": {
+            "value": "TLS1_2"
+        },
+        "blobContainers": {
+            "value": [
+                {
+                    "name": "wvdscripts",
+                    "publicAccess": "Container",
+                    "roleAssignments": []
+                },
+                {
+                    "name": "wvdsoftware",
+                    "publicAccess": "Container",
+                    "roleAssignments": []
+                },
+                {
+                    "name": "archivecontainer",
+                    "publicAccess": "Container",
+                    "enableWORM": true,
+                    "WORMRetention": 666,
+                    "allowProtectedAppendWrites": false,
+                    "roleAssignments": []
+                }
+            ]
+        },
+        "enableArchiveAndDelete": {
+            "value": true
+        },
+        "fileShares": {
+            "value": [
+                {
+                    "name": "wvdprofiles",
+                    "shareQuota": "5120",
+                    "roleAssignments": []
+                },
+                {
+                    "name": "wvdprofiles2",
+                    "shareQuota": "5120",
+                    "roleAssignments": []
+                }
+            ]
+        },
+        "tables": {
+            "value": [
+                "table1",
+                "table2"
+            ]
+        },
+        "queues": {
+            "value": [
+                {
+                    "name": "queue1",
+                    "metadata": {},
+                    "roleAssignments": []
+                }
+            ]
+        }
+    }
+}

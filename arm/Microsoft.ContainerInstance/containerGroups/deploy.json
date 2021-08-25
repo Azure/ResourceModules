@@ -1,0 +1,217 @@
+{
+  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    "containergroupname": {
+      "type": "string",
+      "metadata": {
+        "description": "Required. Name for the container group."
+      }
+    },
+    "containername": {
+      "type": "string",
+      "metadata": {
+        "description": "Required. Name for the container."
+      }
+    },
+    "image": {
+      "type": "string",
+      "metadata": {
+        "description": "Required. Name of the image."
+      }
+    },
+    "ports": {
+      "type": "array",
+      "metadata": {
+        "description": "Optional. Port to open on the container and the public IP address."
+      },
+      "defaultValue": [
+        {
+          "name": "Tcp",
+          "value": "443"
+        }
+      ]
+    },
+    "cpuCores": {
+      "type": "string",
+      "metadata": {
+        "description": "Optional. The number of CPU cores to allocate to the container."
+      },
+      "defaultValue": "1.0"
+    },
+    "memoryInGB": {
+      "type": "string",
+      "metadata": {
+        "description": "Optional. The amount of memory to allocate to the container in gigabytes."
+      },
+      "defaultValue": "1.5"
+    },
+    "osType": {
+      "type": "string",
+      "metadata": {
+        "description": "Optional. The operating system type required by the containers in the container group. - Windows or Linux."
+      },
+      "defaultValue": "Linux"
+    },
+    "restartPolicy": {
+      "type": "string",
+      "metadata": {
+        "description": "Optional. Restart policy for all containers within the container group. - Always: Always restart. OnFailure: Restart on failure. Never: Never restart. - Always, OnFailure, Never"
+      },
+      "defaultValue": "Always"
+    },
+    "ipAddressType": {
+      "type": "string",
+      "metadata": {
+        "description": "Optional. Specifies if the IP is exposed to the public internet or private VNET. - Public or Private"
+      },
+      "defaultValue": "Public"
+    },
+    "imageRegistryCredentials": {
+      "type": "array",
+      "defaultValue": [
+      ],
+      "metadata": {
+        "description": "Optional. The image registry credentials by which the container group is created from."
+      }
+    },
+    "environmentVariables": {
+      "type": "array",
+      "defaultValue": [
+      ],
+      "metadata": {
+        "description": "Optional. Envrionment variables of the container group."
+      }
+    },
+    "location": {
+      "type": "string",
+      "defaultValue": "[resourceGroup().location]",
+      "metadata": {
+        "description": "Optional. Location for all Resources."
+      }
+    },
+    "lockForDeletion": {
+      "type": "bool",
+      "defaultValue": false,
+      "metadata": {
+        "description": "Optional. Switch to lock resource from deletion."
+      }
+    },
+    "tags": {
+      "type": "object",
+      "defaultValue": {
+      },
+      "metadata": {
+        "description": "Optional. Tags of the resource."
+      }
+    },
+    "cuaId": {
+      "type": "string",
+      "defaultValue": "",
+      "metadata": {
+        "description": "Optional. Customer Usage Attribution id (GUID). This GUID must be previously registered"
+      }
+    }
+  },
+  "variables": {
+
+  },
+  "resources": [
+    {
+      "condition": "[not(empty(parameters('cuaId')))]",
+      "type": "Microsoft.Resources/deployments",
+      "apiVersion": "2020-06-01",
+      "name": "[concat('pid-', parameters('cuaId'))]",
+      "properties": {
+        "mode": "Incremental",
+        "template": {
+          "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+          "contentVersion": "1.0.0.0",
+          "resources": [
+          ]
+        }
+      }
+    },
+    {
+      "name": "[parameters('containergroupname')]",
+      "type": "Microsoft.ContainerInstance/containerGroups",
+      "apiVersion": "2019-12-01",
+      "location": "[parameters('location')]",
+      "tags": "[parameters('tags')]",
+      "dependsOn": [],
+      "properties": {
+        "containers": [
+          {
+            "name": "[parameters('containername')]",
+            "properties": {
+              "command": [],
+              "image": "[parameters('image')]",
+              "ports": "[parameters('ports')]",
+              "resources": {
+                "requests": {
+                  "cpu": "[parameters('cpuCores')]",
+                  "memoryInGB": "[parameters('memoryInGB')]"
+                }
+              },
+              "environmentVariables": "[parameters('environmentVariables')]"
+            }
+          }
+        ],
+        "imageRegistryCredentials": "[parameters('imageRegistryCredentials')]",
+        "restartPolicy": "[parameters('restartPolicy')]",
+        "osType": "[parameters('osType')]",
+        "ipAddress": {
+          "type": "[parameters('ipAddressType')]",
+          "ports": "[parameters('ports')]"
+        }
+      },
+      "resources": [
+        {
+          "type": "providers/locks",
+          "apiVersion": "2016-09-01",
+          "condition": "[parameters('lockForDeletion')]",
+          "name": "Microsoft.Authorization/containerGroupDoNotDelete",
+          "dependsOn": [
+            "[concat('Microsoft.ContainerInstance/containerGroups/', parameters('containergroupname'))]"
+          ],
+          "comments": "Resource lock",
+          "properties": {
+            "level": "CannotDelete"
+          }
+        }
+      ]
+    }
+  ],
+  "functions": [
+  ],
+  "outputs": {
+    "containerGroupName": {
+      "type": "string",
+      "value": "[parameters('containergroupname')]",
+      "metadata": {
+        "description": "The Name of the resource"
+      }
+    },
+    "containerGroupResourceId": {
+      "type": "string",
+      "value": "[resourceId('Microsoft.ContainerInstance/containerGroups',parameters('containergroupname'))]",
+      "metadata": {
+        "description": "The Resource Id of the resource"
+      }
+    },
+    "containerGroupResourceGroup": {
+      "type": "string",
+      "value": "[resourceGroup().name]",
+      "metadata": {
+        "description": "The name of the Resource Group the resource resides"
+      }
+    },
+    "containerGroupIPv4Address": {
+      "type": "string",
+      "value": "[reference(resourceId('Microsoft.ContainerInstance/containerGroups/', parameters('containergroupname'))).ipAddress.ip]",
+      "metadata": {
+        "description": "The public IP of the resource"
+      }
+    }
+  }
+}

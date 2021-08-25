@@ -1,0 +1,61 @@
+{
+	"$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
+	"contentVersion": "1.0.0.0",
+	"parameters": {
+		"logAnalyticsWorkspaceName": {
+			"value": "test-az-la-weu-x-001"
+		},
+        "publicNetworkAccessForIngestion": {
+			"value": "Disabled"
+		},
+        "publicNetworkAccessForQuery": {
+			"value": "Disabled"
+		},
+        "dailyQuotaGb": {
+			"value": 10
+		},
+        // "solutions": {
+        //     "value": [
+        //         "Updates",
+        //         "AzureAutomation",
+        //         "AntiMalware",
+        //         "SQLAssessment",
+        //         "Security",
+        //         "SecurityCenterFree",
+        //         "ChangeTracking",
+        //         "KeyVaultAnalytics",
+        //         "AzureSQLAnalytics",
+        //         "ServiceMap",
+        //         "AgentHealthAssessment",
+        //         "AlertManagement",
+        //         "AzureActivity",
+        //         "AzureAppGatewayAnalytics",
+        //         "AzureCdnCoreAnalytics",
+        //         "AzureDataFactoryAnalytics",
+        //         "AzureNSGAnalytics",
+        //         "Containers",
+        //         "InfrastructureInsights",
+        //         "LogicAppsManagement",
+        //         "NetworkMonitoring",
+        //         "ServiceFabric",
+        //         "VMInsights",
+        //         "WaaSUpdateInsights",
+        //         "WireData2"
+        //     ]
+        // },
+        "useResourcePermissions": {
+            "value": true
+        }
+		// "roleAssignments": {
+        //     "value": [
+        //         {
+        //             "roleDefinitionIdOrName": "Desktop Virtualization User",
+        //             "principalIds": [
+        //                 "12345678-1234-1234-1234-123456789012", // object 1
+        //                 "78945612-1234-1234-1234-123456789012" // object 2
+        //             ]
+        //         }
+        //     ]
+        // }
+	}
+}

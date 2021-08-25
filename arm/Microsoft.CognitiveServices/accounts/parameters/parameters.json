@@ -1,0 +1,24 @@
+{
+  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    "accountName": {
+      "value": "sxx-az-cgs-weu-x-001"
+    },
+    "kind": {
+      "value": "Face"
+    },
+    "sku": {
+      "value": "F0"
+    },
+    "diagnosticStorageAccountId": {
+      "value": "/subscriptions/8629be3b-96bc-482d-a04b-ffff597c65a2/resourceGroups/dependencies-rg/providers/Microsoft.Storage/storageAccounts/sxxazsaweux003"
+    },
+    "workspaceId": {
+      "value": "/subscriptions/8629be3b-96bc-482d-a04b-ffff597c65a2/resourcegroups/dependencies-rg/providers/microsoft.operationalinsights/workspaces/sxx-az-la-weu-x-003"
+    },
+    "cuaId": {
+      "value": "00000000-0000-0000-0000-000000000000"
+    }
+  }
+}

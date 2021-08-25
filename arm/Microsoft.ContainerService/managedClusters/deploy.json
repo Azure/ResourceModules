@@ -1,0 +1,779 @@
+{
+    "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+    "contentVersion": "1.0.0.1",
+    "parameters": {
+        "aksClusterName": {
+            "type": "string",
+            "metadata": {
+                "description": "Required. Specifies the name of the AKS cluster."
+            }
+        },
+        "location": {
+            "defaultValue": "[resourceGroup().location]",
+            "type": "string",
+            "metadata": {
+                "description": "Optional. Specifies the location of AKS cluster. It picks up Resource Group's location by default."
+            }
+        },
+        "aksClusterDnsPrefix": {
+            "defaultValue": "[parameters('aksClusterName')]",
+            "type": "string",
+            "metadata": {
+                "description": "Optional. Specifies the DNS prefix specified when creating the managed cluster."
+            }
+        },
+        "identity": {
+            "type": "object",
+            "defaultValue": { "type": "SystemAssigned" },
+            "metadata": {
+                "description": "Optional. The identity of the managed cluster."
+            }
+        },
+        "aksClusterNetworkPlugin": {
+            "defaultValue": "",
+            "type": "string",
+            "allowedValues": [
+                "",
+                "azure",
+                "kubenet"
+            ],
+            "metadata": {
+                "description": "Optional. Specifies the network plugin used for building Kubernetes network. - azure or kubenet."
+            }
+        },
+        "aksClusterNetworkPolicy": {
+            "defaultValue": "",
+            "type": "string",
+            "allowedValues": [
+                "",
+                "azure",
+                "calico"
+            ],
+            "metadata": {
+                "description": "Optional. Specifies the network policy used for building Kubernetes network. - calico or azure"
+            }
+        },
+        "aksClusterPodCidr": {
+            "defaultValue": "",
+            "type": "string",
+            "metadata": {
+                "description": "Optional. Specifies the CIDR notation IP range from which to assign pod IPs when kubenet is used."
+            }
+        },
+        "aksClusterServiceCidr": {
+            "defaultValue": "",
+            "type": "string",
+            "metadata": {
+                "description": "Optional. A CIDR notation IP range from which to assign service cluster IPs. It must not overlap with any Subnet IP ranges."
+            }
+        },
+        "aksClusterDnsServiceIP": {
+            "defaultValue": "",
+            "type": "string",
+            "metadata": {
+                "description": "Optional. Specifies the IP address assigned to the Kubernetes DNS service. It must be within the Kubernetes service address range specified in serviceCidr."
+            }
+        },
+        "aksClusterDockerBridgeCidr": {
+            "defaultValue": "",
+            "type": "string",
+            "metadata": {
+                "description": "Optional. Specifies the CIDR notation IP range assigned to the Docker bridge network. It must not overlap with any Subnet IP ranges or the Kubernetes service address range."
+            }
+        },
+        "aksClusterLoadBalancerSku": {
+            "defaultValue": "standard",
+            "type": "string",
+            "allowedValues": [
+                "basic",
+                "standard"
+            ],
+            "metadata": {
+                "description": "Optional. Specifies the sku of the load balancer used by the virtual machine scale sets used by nodepools."
+            }
+        },
+        "managedOutboundIPCount": {
+            "defaultValue": 0,
+            "type": "int",
+            "metadata": {
+                "description": "Optional. Outbound IP Count for the Load balancer."
+            }
+        },
+        "aksClusterOutboundType": {
+            "defaultValue": "loadBalancer",
+            "type": "string",
+            "allowedValues": [
+                "loadBalancer",
+                "userDefinedRouting"
+            ],
+            "metadata": {
+                "description": "Optional. Specifies outbound (egress) routing method. - loadBalancer or userDefinedRouting."
+            }
+        },
+        "aksClusterSkuTier": {
+            "type": "string",
+            "defaultValue": "Free",
+            "allowedValues": [
+                "Free",
+                "Paid"
+            ],
+            "metadata": {
+                "description": "Optional. Tier of a managed cluster SKU. - Free or Paid"
+            }
+        },
+        "aksClusterKubernetesVersion": {
+            "type": "string",
+            "defaultValue": "",
+            "metadata": {
+                "description": "Optional. Version of Kubernetes specified when creating the managed cluster."
+            }
+        },
+        "aksClusterAdminUsername": {
+            "defaultValue": "azureuser",
+            "type": "string",
+            "metadata": {
+                "description": "Optional. Specifies the administrator username of Linux virtual machines."
+            }
+        },
+        "aksClusterSshPublicKey": {
+            "defaultValue": "",
+            "type": "string",
+            "metadata": {
+                "description": "Optional. Specifies the SSH RSA public key string for the Linux nodes."
+            }
+        },
+        "aksServicePrincipalProfile": {
+            "defaultValue": {},
+            "type": "object",
+            "metadata": {
+                "description": "Optional. Information about a service principal identity for the cluster to use for manipulating Azure APIs."
+            }
+        },
+        "aadProfileClientAppID": {
+            "defaultValue": "",
+            "type": "string",
+            "metadata": {
+                "description": "Optional. The client AAD application ID."
+            }
+        },
+        "aadProfileServerAppID": {
+            "defaultValue": "",
+            "type": "string",
+            "metadata": {
+                "description": "Optional. The server AAD application ID."
+            }
+        },
+        "aadProfileServerAppSecret": {
+            "defaultValue": "",
+            "type": "string",
+            "metadata": {
+                "description": "Optional. The server AAD application secret."
+            }
+        },
+        "aadProfileTenantId": {
+            "defaultValue": "[subscription().tenantId]",
+            "type": "string",
+            "metadata": {
+                "description": "Optional. Specifies the tenant id of the Azure Active Directory used by the AKS cluster for authentication."
+            }
+        },
+        "aadProfileAdminGroupObjectIDs": {
+            "defaultValue": [],
+            "type": "array",
+            "metadata": {
+                "description": "Optional. Specifies the AAD group object IDs that will have admin role of the cluster."
+            }
+        },
+        "aadProfileManaged": {
+            "defaultValue": true,
+            "type": "bool",
+            "metadata": {
+                "description": "Optional. Specifies whether to enable managed AAD integration."
+            }
+        },
+        "aadProfileEnableAzureRBAC": {
+            "defaultValue": true,
+            "type": "bool",
+            "metadata": {
+                "description": "Optional. Specifies whether to enable Azure RBAC for Kubernetes authorization."
+            }
+        },
+        "nodeResourceGroup": {
+            "defaultValue": "[concat(resourceGroup().name,'_aks_', parameters('aksClusterName'), '_nodes')]",
+            "type": "string",
+            "metadata": {
+                "description": "Optional. Name of the resource group containing agent pool nodes."
+            }
+        },
+        "aksClusterEnablePrivateCluster": {
+            "defaultValue": false,
+            "type": "bool",
+            "metadata": {
+                "description": "Optional. Specifies whether to create the cluster as a private cluster or not."
+            }
+        },
+        "primaryAgentPoolProfile": {
+            "type": "array",
+            "metadata": {
+                "description": "Required. Properties of the primary agent pool."
+            }
+        },
+        "additionalAgentPools": {
+            "defaultValue": [],
+            "type": "array",
+            "metadata": {
+                "description": "Optional. Define one or multiple node pools"
+            }
+        },
+        "httpApplicationRoutingEnabled": {
+            "type": "bool",
+            "defaultValue": false,
+            "metadata": {
+                "description": "Optional. Specifies whether the httpApplicationRouting add-on is enabled or not."
+            }
+        },
+        "aciConnectorLinuxEnabled": {
+            "type": "bool",
+            "defaultValue": false,
+            "metadata": {
+                "description": "Optional. Specifies whether the aciConnectorLinux add-on is enabled or not."
+            }
+        },
+        "azurePolicyEnabled": {
+            "type": "bool",
+            "defaultValue": true,
+            "metadata": {
+                "description": "Optional. Specifies whether the azurepolicy add-on is enabled or not."
+            }
+        },
+        "azurePolicyVersion": {
+            "type": "string",
+            "defaultValue": "v2",
+            "metadata": {
+                "description": "Optional. Specifies the azure policy version to use."
+            }
+        },
+        "kubeDashboardEnabled": {
+            "type": "bool",
+            "defaultValue": false,
+            "metadata": {
+                "description": "Optional. Specifies whether the kubeDashboard add-on is enabled or not."
+            }
+        },
+        "autoScalerProfileScanInterval": {
+            "type": "string",
+            "defaultValue": "10s",
+            "metadata": {
+                "description": "Optional. Specifies the scan interval of the auto-scaler of the AKS cluster."
+            }
+        },
+        "autoScalerProfileScaleDownDelayAfterAdd": {
+            "type": "string",
+            "defaultValue": "10m",
+            "metadata": {
+                "description": "Optional. Specifies the scale down delay after add of the auto-scaler of the AKS cluster."
+            }
+        },
+        "autoScalerProfileScaleDownDelayAfterDelete": {
+            "type": "string",
+            "defaultValue": "20s",
+            "metadata": {
+                "description": "Optional. Specifies the scale down delay after delete of the auto-scaler of the AKS cluster."
+            }
+        },
+        "autoScalerProfileScaleDownDelayAfterFailure": {
+            "type": "string",
+            "defaultValue": "3m",
+            "metadata": {
+                "description": "Optional. Specifies scale down delay after failure of the auto-scaler of the AKS cluster."
+            }
+        },
+        "autoScalerProfileScaleDownUnneededTime": {
+            "type": "string",
+            "defaultValue": "10m",
+            "metadata": {
+                "description": "Optional. Specifies the scale down unneeded time of the auto-scaler of the AKS cluster."
+            }
+        },
+        "autoScalerProfileScaleDownUnreadyTime": {
+            "type": "string",
+            "defaultValue": "20m",
+            "metadata": {
+                "description": "Optional. Specifies the scale down unready time of the auto-scaler of the AKS cluster."
+            }
+        },
+        "autoScalerProfileUtilizationThreshold": {
+            "type": "string",
+            "defaultValue": "0.5",
+            "metadata": {
+                "description": "Optional. Specifies the utilization threshold of the auto-scaler of the AKS cluster."
+            }
+        },
+        "autoScalerProfileMaxGracefulTerminationSec": {
+            "type": "string",
+            "defaultValue": "600",
+            "metadata": {
+                "description": "Optional. Specifies the max graceful termination time interval in seconds for the auto-scaler of the AKS cluster."
+            }
+        },
+        "diagnosticSettingName": {
+            "type": "string",
+            "defaultValue": "service",
+            "metadata": {
+                "description": "Optional. Resource identifier of the Diagnostic Storage Account."
+            }
+        },
+        "diagnosticStorageAccountId": {
+            "type": "string",
+            "defaultValue": "",
+            "metadata": {
+                "description": "Optional. Resource identifier of the Diagnostic Storage Account."
+            }
+        },
+        "workspaceId": {
+            "type": "string",
+            "defaultValue": "",
+            "metadata": {
+                "description": "Optional. Resource identifier of Log Analytics."
+            }
+        },
+        "omsAgentEnabled": {
+            "type": "bool",
+            "defaultValue": true,
+            "metadata": {
+                "description": "Optional. Specifies whether the OMS agent is enabled."
+            }
+        },
+        "eventHubAuthorizationRuleId": {
+            "type": "string",
+            "defaultValue": "",
+            "metadata": {
+                "description": "Optional. Resource ID of the event hub authorization rule for the Event Hubs namespace in which the event hub should be created or streamed to."
+            }
+        },
+        "eventHubName": {
+            "type": "string",
+            "defaultValue": "",
+            "metadata": {
+                "description": "Optional. Name of the event hub within the namespace to which logs are streamed. Without this, an event hub is created for each log category."
+            }
+        },
+        "diagnosticLogsRetentionInDays": {
+            "type": "int",
+            "defaultValue": 365,
+            "minValue": 0,
+            "maxValue": 365,
+            "metadata": {
+                "description": "Optional. Specifies the number of days that logs will be kept for; a value of 0 will retain data indefinitely."
+            }
+        },
+        "cuaId": {
+            "type": "string",
+            "defaultValue": "",
+            "metadata": {
+                "description": "Optional. Customer Usage Attribution id (GUID). This GUID must be previously registered"
+            }
+        },
+        "roleAssignments": {
+            "defaultValue": [],
+            "type": "array",
+            "metadata": {
+                "description": "Optional. Array of role assignment objects that contain the 'roleDefinitionIdOrName' and 'principalId' to define RBAC role assignments on this resource. In the roleDefinitionIdOrName attribute, you can provide either the display name of the role definition, or its fully qualified ID in the following format: '/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11'"
+            }
+        },
+        "lockForDeletion": {
+            "defaultValue": false,
+            "type": "bool",
+            "metadata": {
+                "description": "Optional. Switch to lock Key Vault from deletion."
+            }
+        },
+        "tags": {
+            "type": "object",
+            "defaultValue": {},
+            "metadata": {
+                "description": "Optional. Tags of the resource."
+            }
+        }
+    },
+    "variables": {
+        "aksClusterLinuxProfile": {
+            "adminUsername": "[parameters('aksClusterAdminUsername')]",
+            "ssh": {
+                "publicKeys": [
+                    {
+                        "keyData": "[parameters('aksClusterSshPublicKey')]"
+                    }
+                ]
+            }
+        },
+        "diagnosticsMetrics": [
+            {
+                "category": "AllMetrics",
+                "timeGrain": null,
+                "enabled": true,
+                "retentionPolicy": {
+                    "enabled": true,
+                    "days": "[parameters('diagnosticLogsRetentionInDays')]"
+                }
+            }
+        ],
+        "diagnosticsLogs": [
+            {
+                "category": "kube-apiserver",
+                "enabled": true,
+                "retentionPolicy": {
+                    "enabled": true,
+                    "days": "[parameters('diagnosticLogsRetentionInDays')]"
+                }
+            },
+            {
+                "category": "kube-audit",
+                "enabled": true,
+                "retentionPolicy": {
+                    "enabled": true,
+                    "days": "[parameters('diagnosticLogsRetentionInDays')]"
+                }
+            },
+            {
+                "category": "kube-controller-manager",
+                "enabled": true,
+                "retentionPolicy": {
+                    "enabled": true,
+                    "days": "[parameters('diagnosticLogsRetentionInDays')]"
+                }
+            },
+            {
+                "category": "kube-scheduler",
+                "enabled": true,
+                "retentionPolicy": {
+                    "enabled": true,
+                    "days": "[parameters('diagnosticLogsRetentionInDays')]"
+                }
+            },
+            {
+                "category": "cluster-autoscaler",
+                "enabled": true,
+                "retentionPolicy": {
+                    "enabled": true,
+                    "days": "[parameters('diagnosticLogsRetentionInDays')]"
+                }
+            }
+        ],
+        "lbProfile": {
+            "managedOutboundIPs": {
+                "count": "[parameters('managedOutboundIPCount')]"
+            },
+            "effectiveOutboundIPs": [
+            ]
+        },
+        "builtInRoleNames": {
+            "Azure Kubernetes Service Cluster Admin Role": "[concat('/subscriptions/', subscription().subscriptionId, '/providers/Microsoft.Authorization/roleDefinitions/', '0ab0b1a8-8aac-4efd-b8c2-3ee1fb270be8')]",
+            "Azure Kubernetes Service Cluster User Role": "[concat('/subscriptions/', subscription().subscriptionId, '/providers/Microsoft.Authorization/roleDefinitions/', '4abbcc35-e782-43d8-92c5-2d3f1bd2253f')]",
+            "Azure Kubernetes Service Contributor Role": "[concat('/subscriptions/', subscription().subscriptionId, '/providers/Microsoft.Authorization/roleDefinitions/', 'ed7f3fbd-7b88-4dd4-9017-9adb7ce333f8')]",
+            "Azure Kubernetes Service RBAC Admin": "[concat('/subscriptions/', subscription().subscriptionId, '/providers/Microsoft.Authorization/roleDefinitions/', '3498e952-d568-435e-9b2c-8d77e338d7f7')]",
+            "Azure Kubernetes Service RBAC Cluster Admin": "[concat('/subscriptions/', subscription().subscriptionId, '/providers/Microsoft.Authorization/roleDefinitions/', 'b1ff04bb-8a4e-4dc4-8eb5-8693973ce19b')]",
+            "Azure Kubernetes Service RBAC Reader": "[concat('/subscriptions/', subscription().subscriptionId, '/providers/Microsoft.Authorization/roleDefinitions/', '7f6c6a51-bcf8-42ba-9220-52d62157d7db')]",
+            "Azure Kubernetes Service RBAC Writer": "[concat('/subscriptions/', subscription().subscriptionId, '/providers/Microsoft.Authorization/roleDefinitions/', 'a7ffa36f-339b-4b5c-8bdf-e2c188b2c0eb')]",
+            "Contributor": "[concat('/subscriptions/', subscription().subscriptionId, '/providers/Microsoft.Authorization/roleDefinitions/', 'b24988ac-6180-42a0-ab88-20f7382dd24c')]",
+            "Log Analytics Contributor": "[concat('/subscriptions/', subscription().subscriptionId, '/providers/Microsoft.Authorization/roleDefinitions/', '92aaf0da-9dab-42b6-94a3-d43ce8d16293')]",
+            "Log Analytics Reader": "[concat('/subscriptions/', subscription().subscriptionId, '/providers/Microsoft.Authorization/roleDefinitions/', '73c42c96-874c-492b-b04d-ab87d138a893')]",
+            "Managed Application Contributor Role": "[concat('/subscriptions/', subscription().subscriptionId, '/providers/Microsoft.Authorization/roleDefinitions/', '641177b8-a67a-45b9-a033-47bc880bb21e')]",
+            "Managed Application Operator Role": "[concat('/subscriptions/', subscription().subscriptionId, '/providers/Microsoft.Authorization/roleDefinitions/', 'c7393b34-138c-406f-901b-d8cf2b17e6ae')]",
+            "Managed Applications Reader": "[concat('/subscriptions/', subscription().subscriptionId, '/providers/Microsoft.Authorization/roleDefinitions/', 'b9331d33-8a36-4f8c-b097-4f54124fdb44')]",
+            "Monitoring Contributor": "[concat('/subscriptions/', subscription().subscriptionId, '/providers/Microsoft.Authorization/roleDefinitions/', '749f88d5-cbae-40b8-bcfc-e573ddc772fa')]",
+            "Monitoring Metrics Publisher": "[concat('/subscriptions/', subscription().subscriptionId, '/providers/Microsoft.Authorization/roleDefinitions/', '3913510d-42f4-4e42-8a64-420c390055eb')]",
+            "Monitoring Reader": "[concat('/subscriptions/', subscription().subscriptionId, '/providers/Microsoft.Authorization/roleDefinitions/', '43d0d8ad-25c7-4714-9337-8ba259a9fe05')]",
+            "Owner": "[concat('/subscriptions/', subscription().subscriptionId, '/providers/Microsoft.Authorization/roleDefinitions/', '8e3af657-a8ff-443c-a75c-2fe8c4bcb635')]",
+            "Reader": "[concat('/subscriptions/', subscription().subscriptionId, '/providers/Microsoft.Authorization/roleDefinitions/', 'acdd72a7-3385-48ef-bd42-f606fba81ae7')]",
+            "Resource Policy Contributor": "[concat('/subscriptions/', subscription().subscriptionId, '/providers/Microsoft.Authorization/roleDefinitions/', '36243c78-bf99-498c-9df9-86d9f8d28608')]",
+            "User Access Administrator": "[concat('/subscriptions/', subscription().subscriptionId, '/providers/Microsoft.Authorization/roleDefinitions/', '18d7d88d-d35e-4fb5-a5c3-7773c20a72d9')]"
+        }
+    },
+    "resources": [
+        {
+            "condition": "[not(empty(parameters('cuaId')))]",
+            "type": "Microsoft.Resources/deployments",
+            "apiVersion": "2020-06-01",
+            "name": "[concat('pid-', parameters('cuaId'))]",
+            "properties": {
+                "mode": "Incremental",
+                "template": {
+                    "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+                    "contentVersion": "1.0.0.0",
+                    "resources": []
+                }
+            }
+        },
+        // Cluster
+        {
+            "type": "Microsoft.ContainerService/managedClusters",
+            "apiVersion": "2021-05-01",
+            "name": "[parameters('aksClusterName')]",
+            "location": "[parameters('location')]",
+            "tags": "[if(empty(parameters('tags')), json('null'), parameters('tags'))]",
+            "identity": "[parameters('identity')]",
+            "dependsOn": [],
+            "properties": {
+                "kubernetesVersion": "[if(empty(parameters('aksClusterKubernetesVersion')), json('null'), parameters('aksClusterKubernetesVersion'))]",
+                "dnsPrefix": "[parameters('aksClusterDnsPrefix')]",
+                "agentPoolProfiles": "[parameters('primaryAgentPoolProfile')]",
+                "sku": {
+                    "name": "Basic",
+                    "tier": "[parameters('aksClusterSkuTier')]"
+                },
+                "linuxProfile": "[if(empty(parameters('aksClusterSshPublicKey')), json('null'), variables('aksClusterLinuxProfile'))]",
+                "servicePrincipalProfile": "[if(empty(parameters('aksServicePrincipalProfile')), json('null'), parameters('aksServicePrincipalProfile'))]",
+                "addonProfiles": {
+                    "httpApplicationRouting": {
+                        "enabled": "[parameters('httpApplicationRoutingEnabled')]"
+                    },
+                    "omsagent": {
+                        "enabled": "[and(parameters('omsAgentEnabled'), not(empty(parameters('workspaceId'))))]",
+                        "config": {
+                            "logAnalyticsWorkspaceResourceID": "[if(not(empty(parameters('workspaceId'))), parameters('workspaceId'), json('null'))]"
+                        }
+                    },
+                    "aciConnectorLinux": {
+                        "enabled": "[parameters('aciConnectorLinuxEnabled')]"
+                    },
+                    "azurepolicy": {
+                        "enabled": "[parameters('azurePolicyEnabled')]",
+                        "config": {
+                            "version": "[parameters('azurePolicyVersion')]"
+                        }
+                    },
+                    "kubeDashboard": {
+                        "enabled": "[parameters('kubeDashboardEnabled')]"
+                    }
+                },
+                "enableRBAC": "[parameters('aadProfileEnableAzureRBAC')]",
+                "nodeResourceGroup": "[parameters('nodeResourceGroup')]",
+                "networkProfile": {
+                    "networkPlugin": "[if(empty(parameters('aksClusterNetworkPlugin')), json('null'), parameters('aksClusterNetworkPlugin'))]",
+                    "networkPolicy": "[if(empty(parameters('aksClusterNetworkPolicy')), json('null'), parameters('aksClusterNetworkPolicy'))]",
+                    "podCidr": "[if(empty(parameters('aksClusterPodCidr')), json('null'), parameters('aksClusterPodCidr'))]",
+                    "serviceCidr": "[if(empty(parameters('aksClusterServiceCidr')), json('null'), parameters('aksClusterServiceCidr'))]",
+                    "dnsServiceIP": "[if(empty(parameters('aksClusterDnsServiceIP')), json('null'), parameters('aksClusterDnsServiceIP'))]",
+                    "dockerBridgeCidr": "[if(empty(parameters('aksClusterDockerBridgeCidr')), json('null'), parameters('aksClusterDockerBridgeCidr'))]",
+                    "outboundType": "[parameters('aksClusterOutboundType')]",
+                    "loadBalancerSku": "[parameters('aksClusterLoadBalancerSku')]",
+                    "loadBalancerProfile": "[if(equals(parameters('managedOutboundIPCount'), 0), json('null'), variables('lbProfile'))]"
+                },
+                "aadProfile": {
+                    "clientAppId": "[parameters('aadProfileClientAppID')]",
+                    "serverAppId": "[parameters('aadProfileServerAppID')]",
+                    "serverAppSecret": "[parameters('aadProfileServerAppSecret')]",
+                    "managed": "[parameters('aadProfileManaged')]",
+                    "enableAzureRBAC": "[parameters('aadProfileEnableAzureRBAC')]",
+                    "adminGroupObjectIDs": "[parameters('aadProfileAdminGroupObjectIDs')]",
+                    "tenantID": "[parameters('aadProfileTenantId')]"
+                },
+                "autoScalerProfile": {
+                    "scan-interval": "[parameters('autoScalerProfileScanInterval')]",
+                    "scale-down-delay-after-add": "[parameters('autoScalerProfileScaleDownDelayAfterAdd')]",
+                    "scale-down-delay-after-delete": "[parameters('autoScalerProfileScaleDownDelayAfterDelete')]",
+                    "scale-down-delay-after-failure": "[parameters('autoScalerProfileScaleDownDelayAfterFailure')]",
+                    "scale-down-unneeded-time": "[parameters('autoScalerProfileScaleDownUnneededTime')]",
+                    "scale-down-unready-time": "[parameters('autoScalerProfileScaleDownUnreadyTime')]",
+                    "scale-down-utilization-threshold": "[parameters('autoScalerProfileUtilizationThreshold')]",
+                    "max-graceful-termination-sec": "[parameters('autoScalerProfileMaxGracefulTerminationSec')]"
+                },
+                "apiServerAccessProfile": {
+                    "enablePrivateCluster": "[parameters('aksClusterEnablePrivateCluster')]"
+                },
+                "resources": [
+                    {
+                        "type": "providers/locks",
+                        "apiVersion": "2016-09-01",
+                        "condition": "[parameters('lockForDeletion')]",
+                        "name": "Microsoft.Authorization/aksDoNotDelete",
+                        "dependsOn": [
+                            "[concat('Microsoft.ContainerService/managedClusters/', parameters('aksClusterName'))]"
+                        ],
+                        "comments": "Resource lock on Azure Kubernetes Service",
+                        "properties": {
+                            "level": "CannotDelete"
+                        }
+                    }
+                ]
+            }
+        },
+        // Diagnostic Settings
+        {
+            "type": "Microsoft.ContainerService/managedClusters/providers/diagnosticsettings",
+            "apiVersion": "2017-05-01-preview",
+            "name": "[concat(parameters('aksClusterName'), '/Microsoft.Insights/', parameters('diagnosticSettingName'))]",
+            "location": "[parameters('location')]",
+            "condition": "[not(empty(parameters('workspaceId')))]",
+            "dependsOn": [
+                "[concat('Microsoft.ContainerService/managedClusters/', parameters('aksClusterName'))]"
+            ],
+            "properties": {
+                "name": "diagnostics",
+                "storageAccountId": "[if(empty(parameters('diagnosticStorageAccountId')), json('null'), parameters('diagnosticStorageAccountId'))]",
+                "eventHubAuthorizationRuleId": "[if(empty(parameters('eventHubAuthorizationRuleId')), json('null'), parameters('eventHubAuthorizationRuleId'))]",
+                "eventHubName": "[if(empty(parameters('eventHubName')), json('null'), parameters('eventHubName'))]",
+                "workspaceId": "[if(empty(parameters('workspaceId')), json('null'), parameters('workspaceId'))]",
+                "metrics": "[if(empty(parameters('workspaceId')), json('null'), variables('diagnosticsMetrics'))]",
+                "logs": "[if(empty(parameters('workspaceId')), json('null'), variables('diagnosticsLogs'))]"
+            }
+        },
+        // Additional Node Pools
+        {
+            "type": "Microsoft.Resources/deployments",
+            "name": "[concat('anp-',deployment().name, copyIndex('agentPoolProfiles'))]",
+            "apiVersion": "2020-06-01",
+            "condition": "[not(empty(parameters('additionalAgentPools')))]",
+            "dependsOn": [
+                "[parameters('aksClusterName')]"
+            ],
+            "copy": {
+                "name": "agentPoolProfiles",
+                "count": "[length(parameters('additionalAgentPools'))]"
+            },
+            "properties": {
+                "mode": "Incremental",
+                "expressionEvaluationOptions": {
+                    "scope": "inner"
+                },
+                "parameters": {
+                    "nodePoolName": {
+                        "value": "[parameters('additionalAgentPools')[copyIndex('agentPoolProfiles')].name]"
+                    },
+                    "nodePoolProperties": {
+                        "value": "[parameters('additionalAgentPools')[copyIndex('agentPoolProfiles')].properties]"
+                    },
+                    "aksClusterName": {
+                        "value": "[parameters('aksClusterName')]"
+                    },
+                    "location": {
+                        "value": "[parameters('location')]"
+                    }
+                },
+                "template": {
+                    "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+                    "contentVersion": "1.0.0.0",
+                    "parameters": {
+                        "nodePoolName": {
+                            "type": "string"
+                        },
+                        "nodePoolProperties": {
+                            "type": "object"
+                        },
+                        "aksClusterName": {
+                            "type": "string"
+                        },
+                        "location": {
+                            "type": "string"
+                        }
+                    },
+                    "resources": [
+                        {
+                            "type": "Microsoft.ContainerService/managedClusters/agentPools",
+                            "name": "[concat(parameters('aksClusterName'), '/', parameters('nodePoolName'))]",
+                            "apiVersion": "2021-05-01",
+                            "location": "[parameters('location')]",
+                            "properties": "[parameters('nodePoolProperties')]"
+                        }
+                    ]
+                }
+            }
+        },
+        // RBAC
+        {
+            "type": "Microsoft.Resources/deployments",
+            "name": "[concat('rbac-',deployment().name, copyIndex())]",
+            "apiVersion": "2020-06-01",
+            "condition": "[not(empty(parameters('roleAssignments')))]",
+            "dependsOn": [
+                "[parameters('aksClusterName')]"
+            ],
+            "copy": {
+                "name": "rbacDeplCopy",
+                "count": "[length(parameters('roleAssignments'))]"
+            },
+            "properties": {
+                "mode": "Incremental",
+                "expressionEvaluationOptions": {
+                    "scope": "inner"
+                },
+                "parameters": {
+                    "roleAssignment": {
+                        "value": "[parameters('roleAssignments')[copyIndex()]]"
+                    },
+                    "builtInRoleNames": {
+                        "value": "[variables('builtInRoleNames')]"
+                    },
+                    "aksClusterName": {
+                        "value": "[parameters('aksClusterName')]"
+                    }
+                },
+                "template": {
+                    "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+                    "contentVersion": "1.0.0.0",
+                    "parameters": {
+                        "roleAssignment": {
+                            "type": "object"
+                        },
+                        "builtInRoleNames": {
+                            "type": "object"
+                        },
+                        "aksClusterName": {
+                            "type": "string"
+                        }
+                    },
+                    "resources": [
+                        {
+                            "type": "Microsoft.ContainerService/managedClusters/providers/roleAssignments",
+                            "apiVersion": "2018-09-01-preview",
+                            "name": "[concat(parameters('aksClusterName'), '/Microsoft.Authorization/', guid(uniqueString(concat(parameters('aksClusterName'), array(parameters('roleAssignment').principalIds)[copyIndex('innerRbacCopy')], parameters('roleAssignment').roleDefinitionIdOrName ) )))]",
+                            "dependsOn": [
+                            ],
+                            "copy": {
+                                "name": "innerRbacCopy",
+                                "count": "[length(parameters('roleAssignment').principalIds)]"
+                            },
+                            "properties": {
+                                "roleDefinitionId": "[if(contains(parameters('builtInRoleNames'), parameters('roleAssignment').roleDefinitionIdOrName ), parameters('builtInRoleNames')[parameters('roleAssignment').roleDefinitionIdOrName] , parameters('roleAssignment').roleDefinitionIdOrName )]",
+                                "principalId": "[array(parameters('roleAssignment').principalIds)[copyIndex()]]"
+                            }
+                        }
+                    ]
+                }
+            }
+        }
+    ],
+    "functions": [
+    ],
+    "outputs": {
+        "azureKubernetesServiceResourceId": {
+            "type": "string",
+            "value": "[resourceId('Microsoft.ContainerService/managedClusters', parameters('aksClusterName'))]",
+            "metadata": {
+                "description": "The Resource Id of the Azure Kubernetes Service."
+            }
+        },
+        "azureKubernetesServiceResourceGroup": {
+            "type": "string",
+            "value": "[resourceGroup().name]",
+            "metadata": {
+                "description": "The name of the Resource Group the Azure Kubernetes Service was created in."
+            }
+        },
+        "azureKubernetesServiceName": {
+            "type": "string",
+            "value": "[parameters('aksClusterName')]",
+            "metadata": {
+                "description": "The Name of the Azure Kubernetes Service."
+            }
+        },
+        "controlPlaneFQDN": {
+            "type": "string",
+            "value": "[if(parameters('aksClusterEnablePrivateCluster'), reference(parameters('aksClusterName')).privateFQDN, reference(parameters('aksClusterName')).fqdn)]",
+            "metadata": {
+                "description": "The FQDN of the Azure Kubernetes Service."
+            }
+        }
+    }
+}

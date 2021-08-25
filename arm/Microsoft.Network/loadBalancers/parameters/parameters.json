@@ -1,0 +1,87 @@
+{
+    "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "loadBalancerName": {
+            "value": "sxx-az-lb-x-001"
+        },
+        "frontendIPConfigurations": {
+            "value": [{
+                    "name": "publicIPConfig",
+                    "properties": {
+                        "publicIPAddressId": "/subscriptions/8629be3b-96bc-482d-a04b-ffff597c65a2/resourceGroups/dependencies-rg/providers/Microsoft.Network/publicIPAddresses/sxx-az-pip-weu-x-003",
+                        "subnetId": "",
+                        "privateIPAddress": ""
+                    }
+                }
+                // {
+                //   "name": "privateIPConfigDynamic",
+                //   "properties": {
+                //     "publicIPAddressId": "",
+                //     "subnetId":  "/subscriptions/8629be3b-96bc-482d-a04b-ffff597c65a2/resourceGroups/validation-rg/providers/Microsoft.Network/virtualNetworks/sxx-az-vnet-weu-x-001/subnets/sxx-az-subnet-x-001",
+                //     "privateIPAddress": ""
+                //   }
+                // }
+                // {
+                //   "name": "privateIPConfigStatic",
+                //   "properties": {
+                //     "publicIPAddressId": "",
+                //     "subnetId":  "/subscriptions/8629be3b-96bc-482d-a04b-ffff597c65a2/resourceGroups/validation-rg/providers/Microsoft.Network/virtualNetworks/sxx-az-vnet-weu-x-001/subnets/sxx-az-subnet-x-001",
+                //     "privateIPAddress": "X.X.X.X"
+                //   }
+                // }
+            ]
+        },
+        "backendAddressPools": {
+            "value": [{
+                "name": "backendAddressPool"
+            }]
+        },
+        "loadBalancingRules": {
+            "value": [{
+                    "name": "publicIPLBRule",
+                    "properties": {
+                        "frontendIPConfigurationName": "publicIPConfig",
+                        "frontendPort": 80,
+                        "backendPort": 80,
+                        "enableFloatingIP": false,
+                        "idleTimeoutInMinutes": 5,
+                        "protocol": "TCP",
+                        "enableTcpReset": false,
+                        "loadDistribution": "Default",
+                        "disableOutboundSnat": false,
+                        "probeName": "probe",
+                        "backendAddressPoolName": "backendAddressPool"
+                    }
+                }
+                // {
+                //   "name": "privateIPLBRule",
+                //   "properties": {
+                //     "frontendIPConfigurationName": "privateIPConfig",
+                //     "frontendPort": 80,
+                //     "backendPort": 80,
+                //     "enableFloatingIP": false,
+                //     "idleTimeoutInMinutes": 5,
+                //     "protocol": "TCP",
+                //     "enableTcpReset": false,
+                //     "loadDistribution": false,
+                //     "disableOutboundSnat": false,
+                //     "probeName": "probe"
+                //   }
+                // }
+            ]
+        },
+        "probes": {
+            "value": [{
+                "name": "probe",
+                "properties": {
+                    "protocol": "TCP",
+                    "port": 80,
+                    "requestPath": "/",
+                    "intervalInSeconds": 10,
+                    "numberOfProbes": 5
+                }
+            }]
+        }
+    }
+}

@@ -1,0 +1,309 @@
+{
+    "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "alertName": {
+            "type": "string",
+            "metadata": {
+                "description": "Required. The name of the Alert."
+            }
+        },
+        "location": {
+            "type": "string",
+            "defaultValue": "[resourceGroup().location]",
+            "metadata": {
+                "description": "Optional. Location for all resources."
+            }
+        },
+        "alertDescription": {
+            "type": "string",
+            "defaultValue": "",
+            "metadata": {
+                "description": "Optional. Description of the alert."
+            }
+        },
+        "enabled": {
+            "type": "string",
+            "defaultValue": "true",
+            "allowedValues": [
+                "true",
+                "false"
+            ],
+            "metadata": {
+                "description": "Optional. Indicates whether this alert is enabled."
+            }
+        },
+        "workspaceResourceId": {
+            "type": "string",
+            "metadata": {
+                "description": "Required. Resource ID of the Log Analytics workspace where the query needs to be executed"
+            }
+        },
+        "severity": {
+            "type": "int",
+            "allowedValues": [
+                0,
+                1,
+                2,
+                3,
+                4
+            ],
+            "defaultValue": 3,
+            "metadata": {
+                "description": "Optional. The severity of the alert."
+            }
+        },
+        "evaluationFrequency": {
+            "type": "int",
+            "allowedValues": [
+                5,
+                10,
+                15,
+                30,
+                45,
+                60,
+                120,
+                180,
+                240,
+                300,
+                360,
+                1440
+            ],
+            "defaultValue": 5,
+            "metadata": {
+                "description": "Optional. How often the metric alert is evaluated (in minutes)."
+            }
+        },
+        "windowSize": {
+            "type": "int",
+            "allowedValues": [
+                5,
+                10,
+                15,
+                30,
+                45,
+                60,
+                120,
+                180,
+                240,
+                300,
+                360,
+                1440,
+                2880
+            ],
+            "defaultValue": 60,
+            "metadata": {
+                "description": "Optional. The period of time (in minutes) that is used to monitor alert activity based on the threshold."
+            }
+        },
+        "authorizedResources": {
+            "type": "array",
+            "defaultValue": [
+            ],
+            "metadata": {
+                "description": "Optional. The list of resource id's referenced in the query."
+            }
+        },
+        "query": {
+            "type": "string",
+            "defaultValue": "",
+            "metadata": {
+                "description": "Optional. The query to execute"
+            }
+        },
+        "metricResultCountThresholdOperator": {
+            "type": "string",
+            "defaultValue": "GreaterThan",
+            "allowedValues": [
+                "GreaterThan",
+                "Equal",
+                "LessThan"
+            ],
+            "metadata": {
+                "description": "Optional. Operator of threshold breaches to trigger the alert."
+            }
+        },
+        "metricResultCountThreshold": {
+            "type": "int",
+            "minValue": 0,
+            "maxValue": 10000,
+            "defaultValue": 0,
+            "metadata": {
+                "description": "Optional. Operator for metric or number of result evaluation."
+            }
+        },
+        "metricColumn": {
+            "type": "string",
+            "defaultValue": "",
+            "metadata": {
+                "description": "Optional. Variable (column) on which the query result will be grouped and then evaluated for trigger condition. Use comma to specify more than one. Leave empty to use \"Number of results\" type of alert logic"
+            }
+        },
+        "breachesThresholdOperator": {
+            "type": "string",
+            "defaultValue": "GreaterThan",
+            "allowedValues": [
+                "GreaterThan",
+                "Equal",
+                "LessThan"
+            ],
+            "metadata": {
+                "description": "Optional. If `metricColumn` is specified, operator for the breaches count evaluation to trigger the alert. Not used if using result count trigger."
+            }
+        },
+        "breachesTriggerType": {
+            "type": "string",
+            "defaultValue": "Consecutive",
+            "allowedValues": [
+                "Consecutive",
+                "Total"
+            ],
+            "metadata": {
+                "description": "Optional. Type of aggregation of threadshold violation"
+            }
+        },
+        "breachesThreshold": {
+            "type": "int",
+            "defaultValue": 3,
+            "minValue": 0,
+            "maxValue": 10000,
+            "metadata": {
+                "description": "Optional. Number of threadshold violation to trigger the alert"
+            }
+        },
+        "actions": {
+            "type": "array",
+            "defaultValue": [
+            ],
+            "metadata": {
+                "description": "Optional. The list of actions to take when alert triggers."
+            }
+        },
+        "criterias": {
+            "type": "array",
+            "defaultValue": [
+            ],
+            "metadata": {
+                "description": "Optional. The list of action alert creterias."
+            }
+        },
+        "odataType": {
+            "type": "string",
+            "defaultValue": "AlertingAction",
+            "allowedValues": [
+                "AlertingAction",
+                "LogToMetricAction"
+            ],
+            "metadata": {
+                "description": "Optional. Type of the alert criteria."
+            }
+        },
+        "suppressForMinutes": {
+            "type": "int",
+            "defaultValue": 0,
+            "metadata": {
+                "description": "Optional. Suppress Alert for (in minutes)."
+            }
+        },
+        "tags": {
+            "type": "object",
+            "defaultValue": {
+            },
+            "metadata": {
+                "description": "Optional. Tags of the resource."
+            }
+        },
+        "cuaId": {
+            "type": "string",
+            "defaultValue": "",
+            "metadata": {
+                "description": "Optional. Customer Usage Attribution id (GUID). This GUID must be previously registered"
+            }
+        }
+    },
+    "variables": {
+        "metricTrigger": {
+            "metricColumn": "[parameters('metricColumn')]",
+            "metricTriggerType": "[parameters('breachesTriggerType')]",
+            "threshold": "[parameters('breachesThreshold')]",
+            "thresholdOperator": "[parameters('breachesThresholdOperator')]"
+        }
+    },
+    "resources": [
+        {
+            "condition": "[not(empty(parameters('cuaId')))]",
+            "type": "Microsoft.Resources/deployments",
+            "apiVersion": "2020-06-01",
+            "name": "[concat('pid-', parameters('cuaId'))]",
+            "properties": {
+                "mode": "Incremental",
+                "template": {
+                    "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+                    "contentVersion": "1.0.0.0",
+                    "resources": [
+                    ]
+                }
+            }
+        },
+        {
+            "name": "[parameters('alertName')]",
+            "type": "microsoft.insights/scheduledQueryRules",
+            "apiVersion": "2018-04-16",
+            "location": "[parameters('location')]",
+            "tags": "[parameters('tags')]",
+            "properties": {
+                "description": "[parameters('alertDescription')]",
+                "enabled": "[parameters('enabled')]",
+                "source": {
+                    "query": "[parameters('query')]",
+                    "authorizedResources": "[parameters('authorizedResources')]",
+                    "dataSourceId": "[parameters('workspaceResourceId')]",
+                    "queryType": "ResultCount"
+                },
+                "schedule": {
+                    "frequencyInMinutes": "[parameters('evaluationFrequency')]",
+                    "timeWindowInMinutes": "[parameters('windowSize')]"
+                },
+                "action": {
+                    "severity": "[parameters('severity')]",
+                    "aznsAction": {
+                        "actionGroup": "[parameters('actions')]"
+                    },
+                    "throttlingInMin": "[parameters('suppressForMinutes')]",
+                    "trigger": {
+                        "thresholdOperator": "[parameters('metricResultCountThresholdOperator')]",
+                        "threshold": "[parameters('metricResultCountThreshold')]",
+                        "metricTrigger": "[if(empty(parameters('metricColumn')),json('null'),variables('metricTrigger'))]"
+                    },
+                    "criteria": "[parameters('criterias')]",
+                    "odata.type": "[concat('Microsoft.WindowsAzure.Management.Monitoring.Alerts.Models.Microsoft.AppInsights.Nexus.DataContracts.Resources.ScheduledQueryRules.', parameters('odataType'))]"
+                }
+            }
+        }
+    ],
+    "functions": [
+    ],
+    "outputs": {
+        "deploymentName": {
+            "type": "string",
+            "value": "[parameters('alertName')]",
+            "metadata": {
+                "description": "The Deployment Name."
+            }
+        },
+        "deploymentResourceGroup": {
+            "type": "string",
+            "value": "[resourceGroup().name]",
+            "metadata": {
+                "description": "The name of the Resource Group the Resource was created in."
+            }
+        },
+        "queryAlertResourceId": {
+            "type": "string",
+            "value": "[resourceId('Microsoft.Insights/metricAlerts',parameters('alertName'))]",
+            "metadata": {
+                "description": "The Resource Id of the Alert deployed."
+            }
+        }
+    }
+}

@@ -1,0 +1,149 @@
+{
+    "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "storageAccountName": {
+            "value": "sxxazsacacy1312"
+        },
+        "storageAccountKind": {
+            "value": "StorageV2"
+        },
+        "managedServiceIdentity": {
+            "value": "SystemAssigned"
+        },
+        "storageAccountSku": {
+            "value": "Standard_LRS"
+        },
+        "storageAccountAccessTier": {
+            "value": "Hot"
+        },
+        "deleteRetentionPolicy": {
+            "value": true
+        },
+        "deleteRetentionPolicyDays": {
+            "value": 7
+        },
+        "automaticSnapshotPolicyEnabled": {
+            "value": false
+        },
+        "minimumTlsVersion": {
+            "value": "TLS1_2"
+        },
+        "blobContainers": {
+            "value": [
+                {
+                    "name": "wvdscripts",
+                    "publicAccess": "Container", //Container, Blob, None
+                    "roleAssignments": [
+                        // {
+                        //     "roleDefinitionIdOrName": "Reader",
+                        //     "principalIds": [
+                        //         "12345678-1234-1234-1234-123456789012" // object 1
+                        //     ]
+                        // }
+                    ]
+                },
+                {
+                    "name": "wvdsoftware",
+                    "publicAccess": "Container", //Container, Blob, None
+                    "roleAssignments": [
+                        // {
+                        //     "roleDefinitionIdOrName": "Reader",
+                        //     "principalIds": [
+                        //         "12345678-1234-1234-1234-123456789012" // object 1
+                        //     ]
+                        // }
+                    ]
+                },
+                {
+                    "name": "archivecontainer",
+                    "publicAccess": "Container",
+                    "enableWORM": true,
+                    "WORMRetention": 666,
+                    "allowProtectedAppendWrites": false,
+                    "roleAssignments": []
+                }
+            ]
+        },
+        "enableArchiveAndDelete": {
+            "value": true
+        },
+        "fileShares": {
+            "value": [
+                {
+                    "name": "wvdprofiles",
+                    "shareQuota": "5120",
+                    "roleAssignments": [
+                        // {
+                        //     "roleDefinitionIdOrName": "Reader",
+                        //     "principalIds": [
+                        //         "12345678-1234-1234-1234-123456789012" // object 1
+                        //     ]
+                        // }
+                    ]
+                },
+                {
+                    "name": "wvdprofiles2",
+                    "shareQuota": "5120",
+                    "roleAssignments": [
+                        // {
+                        //     "roleDefinitionIdOrName": "Reader",
+                        //     "principalIds": [
+                        //         "12345678-1234-1234-1234-123456789012" // object 1
+                        //     ]
+                        // }
+                    ]
+                }
+            ]
+        },
+        "tables": {
+            "value": [
+                "table1",
+                "table2"
+            ]
+        },
+        "queues": {
+            "value": [
+                {
+                    "name": "queue1",
+                    "metadata": {},
+                    "roleAssignments": [
+                        // {
+                        //     "roleDefinitionIdOrName": "Reader",
+                        //     "principalIds": [
+                        //         "12345678-1234-1234-1234-123456789012" // object 1
+                        //     ]
+                        // }
+                    ]
+                }
+            ]
+        }
+        // "roleAssignments": {
+        //     "value": [
+        //         {
+        //             "roleDefinitionIdOrName": "Reader",
+        //             "principalIds": [
+        //                 "12345678-1234-1234-1234-123456789012" // object 1
+        //             ]
+        //         }
+        //     ]
+        // }
+        // "privateEndpoints": {
+        //     "value": [
+        //         { // Example showing all available fields
+        //             "name": "sxx-az-sa-cac-y-123-pe",
+        //             "subnetResourceId": "/subscriptions/8629be3b-96bc-482d-a04b-ffff597c65a2/resourceGroups/dependencies-rg/providers/Microsoft.Network/virtualNetworks/sxx-az-vnet-weu-x-002/subnets/sxx-az-subnet-weu-x-005",
+        //             "service": "blob",
+        //             "privateDnsZoneResourceIds": [
+        //                 "/subscriptions/8629be3b-96bc-482d-a04b-ffff597c65a2/resourceGroups/dependencies-rg/providers/Microsoft.Network/privateDnsZones/test.local"
+        //             ],
+        //             "customDnsConfigs": [] // Optional
+        //         },
+        //         { // Example showing only mandatory fields
+        //             "subnetResourceId": "/subscriptions/8629be3b-96bc-482d-a04b-ffff597c65a2/resourceGroups/dependencies-rg/providers/Microsoft.Network/virtualNetworks/sxx-az-vnet-weu-x-002/subnets/sxx-az-subnet-weu-x-005",
+        //             "service": "file"
+        //         }
+        //     ]
+        // }
+    }
+}

@@ -1,0 +1,32 @@
+{
+  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    "connectionName": {
+      "value": "sxx-az-vnetgwc-weu-x-001"
+    },
+    "localVirtualNetworkGatewayName": {
+      "value": "sxx-az-vnet-vpn-gw-weu-p-001"
+    },
+    "vpnSharedKey": {
+      "reference": {
+        "keyVault": {
+          "id": "/subscriptions/8629be3b-96bc-482d-a04b-ffff597c65a2/resourceGroups/dependencies-rg/providers/Microsoft.KeyVault/vaults/sxx-az-kv-weu-x-004"
+        },
+        "secretName": "vpnSharedKey"
+      }
+    },
+    "remoteEntityName": {
+      "value": "sxx-az-lng-weu-x-001"
+    },
+    "remoteEntityResourceGroup": {
+      "value": ""
+    },
+    "remoteEntitySubscriptionId": {
+      "value": ""
+    },
+    "enableBgp": {
+      "value": true
+    }
+  }
+}

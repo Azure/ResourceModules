@@ -1,0 +1,53 @@
+{
+  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    "workspaceName": {
+      "value": "sxx-az-adb-weu-x-001"
+    }
+  //   "pricingTier": {
+  //     "value": "premium"
+  //   },
+  //   "location": {
+  //     "value": "westeurope"
+  //   },
+  //   "roleAssignments": {
+  //     "value": [
+  //       {
+  //         "roleDefinitionIdOrName": "Contributor",
+  //         "principalIds": [
+  //           "3f57dd49-0e2b-4723-a5a5-8ffde4e2cb02"
+  //         ]
+  //       }
+  //     ]
+  //   },
+  //   "workspaceParameters": {
+  //     "value": {
+  //       "amlWorkspaceId": {
+  //         "value": "/subscriptions/5f16aec9-df80-46b4-9a12-9fa0d301b578/resourceGroups/adls-databricks/providers/Microsoft.MachineLearningServices/workspaces/test-mlr-workspace"
+  //       },
+  //       "customVirtualNetworkId": {
+  //         "value": "/subscriptions/5f16aec9-df80-46b4-9a12-9fa0d301b578/resourceGroups/adls-databricks/providers/Microsoft.Network/virtualNetworks/test-vnet"
+  //       },
+  //       "customPublicSubnetName": {
+  //         "value": "dbs-public"
+  //       },
+  //       "customPrivateSubnetName": {
+  //         "value": "dbs-private"
+  //       },
+  //       "enableNoPublicIp": {
+  //         "value": true
+  //       }
+  //     }
+  //   },
+  //   "diagnosticsSettingsName": {
+  //     "value": "TestSetting"
+  //   },
+  //   "diagnosticLogsRetentionInDays": {
+  //     "value": 7
+  //   },
+  //   "workspaceId": {
+  //     "value": "/subscriptions/5f16aec9-df80-46b4-9a12-9fa0d301b578/resourcegroups/adls-databricks/providers/microsoft.operationalinsights/workspaces/test-log-analytics-workspace-xx"
+  //   }
+  }
+}

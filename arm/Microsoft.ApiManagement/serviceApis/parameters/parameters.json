@@ -1,0 +1,31 @@
+{
+  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    "apiManagementServiceName": {
+      "value": "sxx-az-am-weu-x-001"
+    },
+    "apiManagementServiceApiName": {
+      "value": "echo-api"
+    },
+    "displayName": {
+      "value": "Echo API"
+    },
+    "path": {
+      "value": "echo"
+    },
+    "serviceUrl": {
+      "value": "http://echoapi.cloudapp.net/api"
+    },
+    "apiVersionSet": {
+      "value": {
+        "name": "echo-version-set",
+        "properties": {
+          "description": "echo-version-set",
+          "displayName": "echo-version-set",
+          "versioningScheme": "Segment"
+        }
+      }
+    }
+  }
+}

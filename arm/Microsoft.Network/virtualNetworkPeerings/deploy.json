@@ -1,0 +1,166 @@
+{
+    "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "peeringName": {
+            "type": "string",
+            "defaultValue": "",
+            "metadata": {
+                "description": "Optional. Required if not using remoteVirtualNetworksProperties. The Name of the virtual network peering resource."
+            }
+        },
+        "cuaId": {
+            "type": "string",
+            "defaultValue": "",
+            "metadata": {
+                "description": "Optional. Customer Usage Attribution id (GUID). This GUID must be previously registered"
+            }
+        },
+        "location": {
+            "type": "string",
+            "defaultValue": "[resourceGroup().location]",
+            "metadata": {
+                "description": "Optional. Location for all resources."
+            }
+        },
+        "localVnetName": {
+            "type": "string",
+            "metadata": {
+                "description": "Required. The Name of the Virtual Network to add the peering to."
+            }
+        },
+        "remoteVirtualNetworkId": {
+            "type": "string",
+            "defaultValue": "",
+            "metadata": {
+                "description": "Optional. Required if not using remoteVirtualNetworksProperties. The Resource Id of the remote virtual network. The remove virtual network can be in the same or different region."
+            }
+        },
+        "allowVirtualNetworkAccess": {
+            "type": "bool",
+            "defaultValue": true,
+            "metadata": {
+                "description": "Optional. Whether the VMs in the local virtual network space would be able to access the VMs in remote virtual network space."
+            }
+        },
+        "allowForwardedTraffic": {
+            "type": "bool",
+            "defaultValue": true,
+            "metadata": {
+                "description": "Optional. Whether the forwarded traffic from the VMs in the local virtual network will be allowed/disallowed in remote virtual network."
+            }
+        },
+        "allowGatewayTransit": {
+            "type": "bool",
+            "defaultValue": false,
+            "metadata": {
+                "description": "Optional. If gateway links can be used in remote virtual networking to link to this virtual network."
+            }
+        },
+        "useRemoteGateways": {
+            "type": "bool",
+            "defaultValue": true,
+            "metadata": {
+                "description": "Optional. If remote gateways can be used on this virtual network. If the flag is set to true, and allowGatewayTransit on remote peering is also true, virtual network will use gateways of remote virtual network for transit. Only one peering can have this flag set to true. This flag cannot be set if virtual network already has a gateway."
+            }
+        },
+        "remoteVirtualNetworksProperties": {
+            "type": "array",
+            "defaultValue": [],
+            "metadata": {
+                "description": "Optional. Required when not using remoteVirtualNetworkId (i.e. Single Peering deployment). Array containing multiple objects for different VNETs to peer with. Format: Object of remoteVirtualNetwork:Id (string-required), allowVirtualNetworkAccess (bool-optional-default-true), allowForwardedTraffic (bool-optional-default-true), allowGatewayTransit (bool-optional-default-false), useRemoteGateways (bool-optional-default-true)."
+            }
+        }
+    },
+    "variables": {
+        "localToRemotePeeringName": "[concat(parameters('localVnetName'),'/', if(empty(parameters('peeringName')),'tempValue',parameters('peeringName')))]",
+        "peeringResourceIdsToOutput": {
+            "copy": [
+                {
+                    "name": "peeringResourceIdsOutput",
+                    "count": "[length(parameters('remoteVirtualNetworksProperties'))]",
+                    "input": "[resourceId('Microsoft.Network/virtualNetworks/virtualNetworkPeerings', parameters('localVnetName'), concat(parameters('localVnetName'),'-', last(split(parameters('remoteVirtualNetworksProperties')[copyIndex('peeringResourceIdsOutput')].remoteVirtualNetwork.Id,'/'))))]"
+                }
+            ]
+        }
+    },
+    "resources": [
+        {
+            "condition": "[not(empty(parameters('cuaId')))]",
+            "type": "Microsoft.Resources/deployments",
+            "apiVersion": "2020-06-01",
+            "name": "[concat('pid-', parameters('cuaId'))]",
+            "properties": {
+                "mode": "Incremental",
+                "template": {
+                    "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+                    "contentVersion": "1.0.0.0",
+                    "resources": [
+                    ]
+                }
+            }
+        },
+        {
+            "condition": "[not(empty(parameters('remoteVirtualNetworkId')))]",
+            "comments": "Deployment of VNET Peering to a single VNET",
+            "type": "Microsoft.Network/virtualNetworks/virtualNetworkPeerings",
+            "apiVersion": "2020-05-01",
+            "name": "[variables('localToRemotePeeringName')]",
+            "location": "[parameters('location')]",
+            "properties": {
+                "allowVirtualNetworkAccess": "[parameters('allowVirtualNetworkAccess')]",
+                "allowForwardedTraffic": "[parameters('allowForwardedTraffic')]",
+                "allowGatewayTransit": "[parameters('allowGatewayTransit')]",
+                "useRemoteGateways": "[parameters('useRemoteGateways')]",
+                "remoteVirtualNetwork": {
+                    "id": "[parameters('remoteVirtualNetworkId')]"
+                }
+            }
+        },
+        {
+            "condition": "[not(empty(parameters('remoteVirtualNetworksProperties')))]",
+            "comments": "Deployment of VNET Peering for multiple VNETs",
+            "type": "Microsoft.Network/virtualNetworks/virtualNetworkPeerings",
+            "apiVersion": "2020-05-01",
+            "copy": {
+                "count": "[length(parameters('remoteVirtualNetworksProperties'))]",
+                "name": "peering-counter"
+            },
+            "name": "[concat(parameters('localVnetName'),'/',concat(parameters('localVnetName'),'-', last(split(parameters('remoteVirtualNetworksProperties')[copyIndex('peering-counter')].remoteVirtualNetwork.id,'/'))))]",
+            "location": "[parameters('location')]",
+            "properties": "[parameters('remoteVirtualNetworksProperties')[copyIndex('peering-counter')]]"
+        }
+    ],
+    "functions": [
+    ],
+    "outputs": {
+        "virtualNetworkPeeringResourceGroup": {
+            "type": "string",
+            "value": "[resourceGroup().name]",
+            "metadata": {
+                "description": "The Resource Group the vNet Peering was deployed to."
+            }
+        },
+        "virtualNetworkPeeringName": {
+            "type": "string",
+            "value": "[parameters('peeringName')]",
+            "metadata": {
+                "description": "The Name of the vNet Peering."
+            }
+        },
+        "virtualNetworkPeeringResourceId": {
+            "type": "string",
+            "value": "[resourceId('Microsoft.Network/virtualNetworks/virtualNetworkPeerings', parameters('localVnetName'), parameters('peeringName'))]",
+            "metadata": {
+                "description": "The Resource Id of the vNet Peering."
+            }
+        },
+        "virtualNetworkPeeringResourceIds": {
+            "type": "array",
+            "value": "[variables('peeringResourceIdsToOutput').peeringResourceIdsOutput]",
+            "metadata": {
+                "description": "The Resource Ids of the vNet Peering."
+            }
+        }
+    }
+}

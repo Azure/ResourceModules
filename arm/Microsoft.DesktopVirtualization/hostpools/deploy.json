@@ -1,0 +1,355 @@
+{
+    "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "hostPoolName": {
+            "type": "string",
+            "minLength": 1,
+            "metadata": {
+                "description": "Required. Name of the Host Pool"
+            }
+        },
+        "location": {
+            "type": "string",
+            "defaultValue": "[resourceGroup().location]",
+            "metadata": {
+                "description": "Optional. Location for all resources."
+            }
+        },
+        "hostpoolFriendlyName": {
+            "defaultValue": "",
+            "type": "string",
+            "metadata": {
+                "description": "Optional. The friendly name of the Host Pool to be created."
+            }
+        },
+        "hostpoolDescription": {
+            "defaultValue": "",
+            "type": "string",
+            "metadata": {
+                "description": "Optional. The description of the Host Pool to be created."
+            }
+        },
+        "hostpoolType": {
+            "defaultValue": "Pooled",
+            "allowedValues": [
+                "Personal",
+                "Pooled"
+            ],
+            "type": "string",
+            "metadata": {
+                "description": "Optional. Set this parameter to Personal if you would like to enable Persistent Desktop experience. Defaults to Pooled."
+            }
+        },
+        "personalDesktopAssignmentType": {
+            "defaultValue": "",
+            "allowedValues": [
+                "Automatic",
+                "Direct",
+                ""
+            ],
+            "type": "string",
+            "metadata": {
+                "description": "Optional. Set the type of assignment for a Personal Host Pool type"
+            }
+        },
+        "loadBalancerType": {
+            "defaultValue": "BreadthFirst",
+            "allowedValues": [
+                "BreadthFirst",
+                "DepthFirst",
+                "Persistent"
+            ],
+            "type": "string",
+            "metadata": {
+                "description": "Optional. Type of load balancer algorithm."
+            }
+        },
+        "maxSessionLimit": {
+            "defaultValue": 99999,
+            "type": "int",
+            "metadata": {
+                "description": "Optional. Maximum number of sessions."
+            }
+        },
+        "customRdpProperty": {
+            "defaultValue": "audiocapturemode:i:1;audiomode:i:0;drivestoredirect:s:;redirectclipboard:i:1;redirectcomports:i:1;redirectprinters:i:1;redirectsmartcards:i:1;screen mode id:i:2;",
+            "type": "string",
+            "metadata": {
+                "description": "Optional. Host Pool RDP properties"
+            }
+        },
+        "validationEnviroment": {
+            "defaultValue": false,
+            "type": "bool",
+            "metadata": {
+                "description": "Optional. Whether to use validation enviroment. When set to true, the Host Pool will be deployed in a validation 'ring' (environment) that receives all the new features (might be less stable). Ddefaults to false that stands for the stable, production-ready environment."
+            }
+        },
+        "vmTemplate": {
+            "type": "object",
+            "defaultValue": {
+            },
+            "metadata": {
+                "description": "Optional. The necessary information for adding more VMs to this Host Pool."
+            }
+        },
+        "tokenValidityLength": {
+            "defaultValue": "PT8H",
+            "type": "string",
+            "metadata": {
+                "description": "Optional. Host Pool token validity length. Usage: 'PT8H' - valid for 8 hours; 'P5D' - valid for 5 days; 'P1Y' - valid for 1 year. When not provided, the token will be valid for 8 hours."
+            }
+        },
+        "baseTime": {
+            "type": "string",
+            "defaultValue": "[utcNow('u')]",
+            "metadata": {
+                "description": "Generated. Do not provide a value! This date value is used to generate a registration token."
+            }
+        },
+        "diagnosticLogsRetentionInDays": {
+            "type": "int",
+            "defaultValue": 365,
+            "minValue": 0,
+            "maxValue": 365,
+            "metadata": {
+                "description": "Optional. Specifies the number of days that logs will be kept for; a value of 0 will retain data indefinitely."
+            }
+        },
+        "diagnosticStorageAccountId": {
+            "type": "string",
+            "defaultValue": "",
+            "metadata": {
+                "description": "Optional. Resource identifier of the Diagnostic Storage Account."
+            }
+        },
+        "workspaceId": {
+            "type": "string",
+            "defaultValue": "",
+            "metadata": {
+                "description": "Optional. Resource identifier of Log Analytics."
+            }
+        },
+        "eventHubAuthorizationRuleId": {
+            "type": "string",
+            "defaultValue": "",
+            "metadata": {
+                "description": "Optional. Resource ID of the event hub authorization rule for the Event Hubs namespace in which the event hub should be created or streamed to."
+            }
+        },
+        "eventHubName": {
+            "type": "string",
+            "defaultValue": "",
+            "metadata": {
+                "description": "Optional. Name of the event hub within the namespace to which logs are streamed. Without this, an event hub is created for each log category."
+            }
+        },
+        "lockForDeletion": {
+            "type": "bool",
+            "defaultValue": false,
+            "metadata": {
+                "description": "Optional. Switch to lock Resource from deletion."
+            }
+        },
+        "tags": {
+            "type": "object",
+            "defaultValue": {
+            },
+            "metadata": {
+                "description": "Optional. Tags of the resource."
+            }
+        },
+        "cuaId": {
+            "type": "string",
+            "defaultValue": "",
+            "metadata": {
+                "description": "Optional. Customer Usage Attribution id (GUID). This GUID must be previously registered"
+            }
+        },
+        "startVMOnConnect": {
+            "type": "bool",
+            "defaultValue": false,
+            "metadata": {
+                "description": "Optional. Enable Start VM on connect to allow users to start the virtual machine from a deallocated state. Important: Custom RBAC role required to power manage VMs."
+            }
+        },
+        "validationEnvironment": {
+            "type": "bool",
+            "defaultValue": false,
+            "metadata": {
+                "description": "Optional. Validation host pool allows you to test service changes before they are deployed to production."
+            }
+        }
+    },
+    "variables": {
+        "diagnosticsMetrics": [
+        ],
+        "diagnosticsLogs": [
+            {
+                "category": "Checkpoint",
+                "enabled": true,
+                "retentionPolicy": {
+                    "enabled": true,
+                    "days": "[parameters('diagnosticLogsRetentionInDays')]"
+                }
+            },
+            {
+                "category": "Error",
+                "enabled": true,
+                "retentionPolicy": {
+                    "enabled": true,
+                    "days": "[parameters('diagnosticLogsRetentionInDays')]"
+                }
+            },
+            {
+                "category": "Management",
+                "enabled": true,
+                "retentionPolicy": {
+                    "enabled": true,
+                    "days": "[parameters('diagnosticLogsRetentionInDays')]"
+                }
+            },
+            {
+                "category": "Connection",
+                "enabled": true,
+                "retentionPolicy": {
+                    "enabled": true,
+                    "days": "[parameters('diagnosticLogsRetentionInDays')]"
+                }
+            },
+            {
+                "category": "HostRegistration",
+                "enabled": true,
+                "retentionPolicy": {
+                    "enabled": true,
+                    "days": "[parameters('diagnosticLogsRetentionInDays')]"
+                }
+            },
+            {
+                "category": "AgentHealthStatus",
+                "enabled": true,
+                "retentionPolicy": {
+                    "enabled": true,
+                    "days": "[parameters('diagnosticLogsRetentionInDays')]"
+                }
+            }
+        ],
+        "tokenExpirationTime": "[dateTimeAdd(parameters('baseTime'), parameters('tokenValidityLength'))]"
+    },
+    "resources": [
+        {
+            "condition": "[not(empty(parameters('cuaId')))]",
+            "type": "Microsoft.Resources/deployments",
+            "apiVersion": "2020-06-01",
+            "name": "[concat('pid-', parameters('cuaId'))]",
+            "properties": {
+                "mode": "Incremental",
+                "template": {
+                    "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+                    "contentVersion": "1.0.0.0",
+                    "resources": [
+                    ]
+                }
+            }
+        },
+        {
+            "type": "Microsoft.DesktopVirtualization/hostpools",
+            "apiVersion": "2020-11-02-preview",
+            "name": "[parameters('hostpoolName')]",
+            "location": "[parameters('location')]",
+            "tags": "[parameters('tags')]",
+            "properties": {
+                "friendlyName": "[parameters('hostpoolFriendlyName')]",
+                "description": "[parameters('hostpoolDescription')]",
+                "hostpoolType": "[parameters('hostpoolType')]",
+                "customRdpProperty": "[parameters('customRdpProperty')]",
+                "personalDesktopAssignmentType": "[parameters('personalDesktopAssignmentType')]",
+                "maxSessionLimit": "[parameters('maxSessionLimit')]",
+                "loadBalancerType": "[parameters('loadBalancerType')]",
+                "validationEnviroment": "[parameters('validationEnviroment')]",
+                "startVMOnConnect": "[parameters('startVMOnConnect')]",
+                "validationEnvironment": "[parameters('validationEnvironment')]",
+                "registrationInfo": {
+                    "expirationTime": "[variables('tokenExpirationTime')]",
+                    "token": null,
+                    "registrationTokenOperation": "Update"
+                    // "resetToken": false
+                },
+                "vmTemplate": "[if(not(empty(parameters('vmTemplate'))), json('null'),string(parameters('vmTemplate')))]"
+            },
+            "resources": [
+                {
+                    "type": "providers/locks",
+                    "apiVersion": "2016-09-01",
+                    "condition": "[parameters('lockForDeletion')]",
+                    "name": "Microsoft.Authorization/hostPoolDoNotDelete",
+                    "dependsOn": [
+                        "[concat('Microsoft.DesktopVirtualization/hostpools/', parameters('hostPoolName'))]"
+                    ],
+                    "comments": "Resource lock on Host Pool",
+                    "properties": {
+                        "level": "CannotDelete"
+                    }
+                },
+                {
+                    "type": "Microsoft.DesktopVirtualization/hostpools/providers/diagnosticsettings",
+                    "apiVersion": "2017-05-01-preview",
+                    "name": "[concat(parameters('hostPoolName'), '/Microsoft.Insights/diagnosticsetting')]",
+                    "location": "[parameters('location')]",
+                    "condition": "[or(not(empty(parameters('diagnosticStorageAccountId'))),not(empty(parameters('workspaceId'))),not(empty(parameters('eventHubAuthorizationRuleId'))),not(empty(parameters('eventHubName'))))]",
+                    "dependsOn": [
+                        "[concat('Microsoft.DesktopVirtualization/hostpools/', parameters('hostPoolName'))]"
+                    ],
+                    "properties": {
+                        "storageAccountId": "[if(empty(parameters('diagnosticStorageAccountId')), json('null'), parameters('diagnosticStorageAccountId'))]",
+                        "workspaceId": "[if(empty(parameters('workspaceId')), json('null'), parameters('workspaceId'))]",
+                        "eventHubAuthorizationRuleId": "[if(empty(parameters('eventHubAuthorizationRuleId')), json('null'), parameters('eventHubAuthorizationRuleId'))]",
+                        "eventHubName": "[if(empty(parameters('eventHubName')), json('null'), parameters('eventHubName'))]",
+                        "metrics": "[if(and(empty(parameters('diagnosticStorageAccountId')), empty(parameters('workspaceId')), empty(parameters('eventHubAuthorizationRuleId')), empty(parameters('eventHubName'))), json('null'), variables('diagnosticsMetrics'))]",
+                        "logs": "[if(and(empty(parameters('diagnosticStorageAccountId')), empty(parameters('workspaceId')), empty(parameters('eventHubAuthorizationRuleId')), empty(parameters('eventHubName'))), json('null'), variables('diagnosticsLogs'))]"
+                    }
+                }
+            ]
+        }
+    ],
+    "functions": [
+    ],
+    "outputs": {
+        "hostPoolResourceId": {
+            "type": "string",
+            "value": "[resourceId('Microsoft.DesktopVirtualization/hostpools', parameters('hostPoolName'))]",
+            "metadata": {
+                "description": "The Resource Id of the Host Pool."
+            }
+        },
+        "hostPoolResourceGroup": {
+            "type": "string",
+            "value": "[resourceGroup().name]",
+            "metadata": {
+                "description": "The name of the Resource Group the Host Pool was created in."
+            }
+        },
+        "hostPoolName": {
+            "type": "string",
+            "value": "[parameters('hostPoolName')]",
+            "metadata": {
+                "description": "The Name of the Host Pool."
+            }
+        },
+        "tokenExpirationTime": {
+            "type": "string",
+            "value": "[dateTimeAdd(parameters('baseTime'), parameters('tokenValidityLength'))]",
+            "metadata": {
+                "description": "The expiration time of the Host Pool registration token."
+            }
+        },
+        "hostpoolToken": {
+            "type": "string",
+            "value": "[reference(parameters('hostpoolName')).registrationInfo.token]",
+            "metadata": {
+                "description": "The token that has to be used to register a VM to the Host Pool."
+            }
+        }
+    }
+}

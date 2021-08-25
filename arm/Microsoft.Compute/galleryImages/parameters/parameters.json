@@ -1,0 +1,56 @@
+{
+  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    "imageDefinitionName": {
+      "value": "sxx-az-imgd-weu-x-001"
+    },
+    "location": {
+      "value": "westeurope"
+    },
+    "galleryName": {
+      "value": "sxxazsigweux003"
+    },
+    "osType": {
+      "value": "Windows"
+    },
+    "osState": {
+      "value": "Generalized"
+    },
+    "publisher": {
+      "value": "MicrosoftWindowsServer"
+    },
+    "offer": {
+      "value": "WindowsServer"
+    },
+    "sku": {
+      "value": "2019-Datacenter"
+    },
+    "minRecommendedvCPUs": {
+      "value": 2
+    },
+    "maxRecommendedvCPUs": {
+      "value": 8
+    },
+    "minRecommendedMemory": {
+      "value": 4
+    },
+    "maxRecommendedMemory": {
+      "value": 16
+    },
+    "hyperVGeneration": {
+      "value": "V1"
+    }
+    // "roleAssignments": {
+    //     "value": [
+    //         {
+    //             "roleDefinitionIdOrName": "Desktop Virtualization User",
+    //             "principalIds": [
+    //                 "12345678-1234-1234-1234-123456789012", // object 1
+    //                 "78945612-1234-1234-1234-123456789012" // object 2
+    //             ]
+    //         }
+    //     ]
+    // }
+  }
+}

@@ -1,0 +1,38 @@
+{
+  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    "apiManagementServiceName": {
+      "value": "sxx-az-am-weu-x-002"
+    },
+    "publisherEmail": {
+      "value": "apimgmt-noreply@mail.windowsazure.com"
+    },
+    "publisherName": {
+      "value": "sxx-az-amorg-weu-x-001"
+    },
+    "cuaId": {
+      "value": "00000-0-000000"
+    },
+    "apiManagementServicePolicy": {
+      "value": {
+        "value": "<policies> <inbound> <rate-limit-by-key calls='250' renewal-period='60' counter-key='@(context.Request.IpAddress)' /> </inbound> <backend> <forward-request /> </backend> <outbound> </outbound> </policies>",
+        "format": "xml"
+      }
+    },
+    "portalSignIn": {
+      "value": {
+        "enabled": false
+      }
+    },
+    "portalSignUp": {
+      "value": {
+        "enabled": false,
+        "termsOfService": {
+          "enabled": false,
+          "consentRequired": false
+        }
+      }
+    }
+  }
+}

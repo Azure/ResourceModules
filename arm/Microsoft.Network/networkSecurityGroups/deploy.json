@@ -1,0 +1,534 @@
+{
+    "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "networkSecurityGroupName": {
+            "type": "string",
+            "metadata": {
+                "description": "Required. Name of the Network Security Group."
+            }
+        },
+        "location": {
+            "type": "string",
+            "defaultValue": "[resourceGroup().location]",
+            "metadata": {
+                "description": "Optional. Location for all resources."
+            }
+        },
+        "networkSecurityGroupSecurityRules": {
+            "type": "array",
+            "defaultValue": [
+            ],
+            "metadata": {
+                "description": "Optional. Array of Security Rules to deploy to the Network Security Group. When not provided, an NSG including only the built-in roles will be deployed."
+            }
+        },
+        "flowLogEnabled": {
+            "type": "bool",
+            "defaultValue": false,
+            "metadata": {
+                "description": "Optional. If the flow log should be enabled"
+            }
+        },
+        "networkWatcherName": {
+            "type": "string",
+            "defaultValue": "",
+            "metadata": {
+                "description": "Optional. Name of the network watcher resource. Must be in the resource group where the Flow log will be created and same region as the NSG"
+            }
+        },
+        "retentionEnabled": {
+            "type": "bool",
+            "defaultValue": true,
+            "metadata": {
+                "description": "Optional. If the flow log retention should be enabled"
+            }
+        },
+        "logFormatVersion": {
+            "type": "int",
+            "defaultValue": 2,
+            "allowedValues": [
+                1,
+                2
+            ],
+            "metadata": {
+                "description": "Optional. The flow log format version"
+            }
+        },
+        "flowLogName": {
+            "type": "string",
+            "defaultValue": "",
+            "metadata": {
+                "description": "Optional. Name of the NSG flow log. If empty, no flow log will be deployed."
+            }
+        },
+        "flowLogworkspaceId": {
+            "type": "string",
+            "defaultValue": "",
+            "metadata": {
+                "description": "Optional. Resource identifier of Log Analytics for the flow logs."
+            }
+        },
+        "flowAnalyticsEnabled": {
+            "type": "bool",
+            "defaultValue": false,
+            "metadata": {
+                "description": "Optional. Enables/disables flow analytics. If Flow Analytics was previously enabled, workspaceResourceID is mandatory (even when disabling it)"
+            }
+        },
+        "flowLogIntervalInMinutes": {
+            "type": "int",
+            "allowedValues": [
+                10,
+                60
+            ],
+            "defaultValue": 60,
+            "metadata": {
+                "description": "Optional. The interval in minutes which would decide how frequently TA service should do flow analytics."
+            }
+        },
+        "diagnosticStorageAccountId": {
+            "type": "string",
+            "defaultValue": "",
+            "metadata": {
+                "description": "Optional. Resource identifier of the Diagnostic Storage Account."
+            }
+        },
+        "diagnosticLogsRetentionInDays": {
+            "type": "int",
+            "defaultValue": 365,
+            "minValue": 0,
+            "maxValue": 365,
+            "metadata": {
+                "description": "Optional. Specifies the number of days that logs will be kept for; a value of 0 will retain data indefinitely."
+            }
+        },
+        "workspaceId": {
+            "type": "string",
+            "defaultValue": "",
+            "metadata": {
+                "description": "Optional. Resource identifier of Log Analytics."
+            }
+        },
+        "eventHubAuthorizationRuleId": {
+            "type": "string",
+            "defaultValue": "",
+            "metadata": {
+                "description": "Optional. Resource ID of the event hub authorization rule for the Event Hubs namespace in which the event hub should be created or streamed to."
+            }
+        },
+        "eventHubName": {
+            "type": "string",
+            "defaultValue": "",
+            "metadata": {
+                "description": "Optional. Name of the event hub within the namespace to which logs are streamed. Without this, an event hub is created for each log category."
+            }
+        },
+        "lockForDeletion": {
+            "type": "bool",
+            "defaultValue": false,
+            "metadata": {
+                "description": "Optional. Switch to lock NSG from deletion."
+            }
+        },
+        "roleAssignments": {
+            "defaultValue": [
+            ],
+            "type": "array",
+            "metadata": {
+                "description": "Optional. Array of role assignment objects that contain the 'roleDefinitionIdOrName' and 'principalId' to define RBAC role assignments on this resource. In the roleDefinitionIdOrName attribute, you can provide either the display name of the role definition, or its fully qualified ID in the following format: '/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11'"
+            }
+        },
+        "tags": {
+            "type": "object",
+            "defaultValue": {
+            },
+            "metadata": {
+                "description": "Optional. Tags of the NSG resource."
+            }
+        },
+        "cuaId": {
+            "type": "string",
+            "defaultValue": "",
+            "metadata": {
+                "description": "Optional. Customer Usage Attribution id (GUID). This GUID must be previously registered"
+            }
+        },
+        "networkwatcherResourceGroup": {
+            "type": "string",
+            "defaultValue": "NetworkWatcherRG",
+            "metadata": {
+                "description": "Required. Resource Group Name of the network watcher in whcih the NSG flow log would be created."
+            }
+        }
+    },
+    "variables": {
+        "emptyArray": [
+        ],
+        "nsgResourceGroup": "[resourceGroup().name]",
+        "flowLogName": "[if(not(empty(parameters('flowLogName'))), concat(parameters('networkWatcherName'),'/', parameters('flowLogName')), 'dummy/dummy')]",
+        "flowAnalyticsConfig": {
+            "networkWatcherFlowAnalyticsConfiguration": {
+                "enabled": "[parameters('flowAnalyticsEnabled')]",
+                "workspaceResourceId": "[parameters('flowLogworkspaceId')]",
+                "trafficAnalyticsInterval": "[parameters('flowLogIntervalInMinutes')]"
+            }
+        },
+        "diagnosticsMetrics": [
+        ],
+        "diagnosticsLogs": [
+            {
+                "category": "NetworkSecurityGroupEvent",
+                "enabled": true,
+                "retentionPolicy": {
+                    "days": "[parameters('diagnosticLogsRetentionInDays')]",
+                    "enabled": true
+                }
+            },
+            {
+                "category": "NetworkSecurityGroupRuleCounter",
+                "enabled": true,
+                "retentionPolicy": {
+                    "days": "[parameters('diagnosticLogsRetentionInDays')]",
+                    "enabled": true
+                }
+            }
+        ],
+        "builtInRoleNames": {
+            "Avere Cluster Create": "[concat('/subscriptions/', subscription().subscriptionId, '/providers/Microsoft.Authorization/roleDefinitions/', 'a7b1b19a-0e83-4fe5-935c-faaefbfd18c3')]",
+            "Avere Cluster Runtime Operator": "[concat('/subscriptions/', subscription().subscriptionId, '/providers/Microsoft.Authorization/roleDefinitions/', 'e078ab98-ef3a-4c9a-aba7-12f5172b45d0')]",
+            "Avere Contributor": "[concat('/subscriptions/', subscription().subscriptionId, '/providers/Microsoft.Authorization/roleDefinitions/', '4f8fab4f-1852-4a58-a46a-8eaf358af14a')]",
+            "Avere Operator": "[concat('/subscriptions/', subscription().subscriptionId, '/providers/Microsoft.Authorization/roleDefinitions/', 'c025889f-8102-4ebf-b32c-fc0c6f0c6bd9')]",
+            "Azure Service Deploy Release Management Contributor": "[concat('/subscriptions/', subscription().subscriptionId, '/providers/Microsoft.Authorization/roleDefinitions/', '21d96096-b162-414a-8302-d8354f9d91b2')]",
+            "CAL-Custom-Role": "[concat('/subscriptions/', subscription().subscriptionId, '/providers/Microsoft.Authorization/roleDefinitions/', '7b266cd7-0bba-4ae2-8423-90ede5e1e898')]",
+            "Contributor": "[concat('/subscriptions/', subscription().subscriptionId, '/providers/Microsoft.Authorization/roleDefinitions/', 'b24988ac-6180-42a0-ab88-20f7382dd24c')]",
+            "Log Analytics Contributor": "[concat('/subscriptions/', subscription().subscriptionId, '/providers/Microsoft.Authorization/roleDefinitions/', '92aaf0da-9dab-42b6-94a3-d43ce8d16293')]",
+            "Log Analytics Reader": "[concat('/subscriptions/', subscription().subscriptionId, '/providers/Microsoft.Authorization/roleDefinitions/', '73c42c96-874c-492b-b04d-ab87d138a893')]",
+            "Managed Application Contributor Role": "[concat('/subscriptions/', subscription().subscriptionId, '/providers/Microsoft.Authorization/roleDefinitions/', '641177b8-a67a-45b9-a033-47bc880bb21e')]",
+            "Managed Application Operator Role": "[concat('/subscriptions/', subscription().subscriptionId, '/providers/Microsoft.Authorization/roleDefinitions/', 'c7393b34-138c-406f-901b-d8cf2b17e6ae')]",
+            "Managed Applications Reader": "[concat('/subscriptions/', subscription().subscriptionId, '/providers/Microsoft.Authorization/roleDefinitions/', 'b9331d33-8a36-4f8c-b097-4f54124fdb44')]",
+            "masterreader": "[concat('/subscriptions/', subscription().subscriptionId, '/providers/Microsoft.Authorization/roleDefinitions/', 'a48d7796-14b4-4889-afef-fbb65a93e5a2')]",
+            "Monitoring Contributor": "[concat('/subscriptions/', subscription().subscriptionId, '/providers/Microsoft.Authorization/roleDefinitions/', '749f88d5-cbae-40b8-bcfc-e573ddc772fa')]",
+            "Monitoring Metrics Publisher": "[concat('/subscriptions/', subscription().subscriptionId, '/providers/Microsoft.Authorization/roleDefinitions/', '3913510d-42f4-4e42-8a64-420c390055eb')]",
+            "Monitoring Reader": "[concat('/subscriptions/', subscription().subscriptionId, '/providers/Microsoft.Authorization/roleDefinitions/', '43d0d8ad-25c7-4714-9337-8ba259a9fe05')]",
+            "Network Contributor": "[concat('/subscriptions/', subscription().subscriptionId, '/providers/Microsoft.Authorization/roleDefinitions/', '4d97b98b-1d4f-4787-a291-c67834d212e7')]",
+            "Owner": "[concat('/subscriptions/', subscription().subscriptionId, '/providers/Microsoft.Authorization/roleDefinitions/', '8e3af657-a8ff-443c-a75c-2fe8c4bcb635')]",
+            "Reader": "[concat('/subscriptions/', subscription().subscriptionId, '/providers/Microsoft.Authorization/roleDefinitions/', 'acdd72a7-3385-48ef-bd42-f606fba81ae7')]",
+            "Resource Policy Contributor": "[concat('/subscriptions/', subscription().subscriptionId, '/providers/Microsoft.Authorization/roleDefinitions/', '36243c78-bf99-498c-9df9-86d9f8d28608')]",
+            "SQL Managed Instance Contributor": "[concat('/subscriptions/', subscription().subscriptionId, '/providers/Microsoft.Authorization/roleDefinitions/', '4939a1f6-9ae0-4e48-a1e0-f2cbe897382d')]",
+            "User Access Administrator": "[concat('/subscriptions/', subscription().subscriptionId, '/providers/Microsoft.Authorization/roleDefinitions/', '18d7d88d-d35e-4fb5-a5c3-7773c20a72d9')]",
+            "Virtual Machine Contributor": "[concat('/subscriptions/', subscription().subscriptionId, '/providers/Microsoft.Authorization/roleDefinitions/', '9980e02c-c2be-4d73-94e8-173b1dc7cf3c')]"
+        }
+    },
+    "resources": [
+        {
+            "condition": "[not(empty(parameters('cuaId')))]",
+            "type": "Microsoft.Resources/deployments",
+            "apiVersion": "2020-06-01",
+            "name": "[concat('pid-', parameters('cuaId'))]",
+            "properties": {
+                "mode": "Incremental",
+                "template": {
+                    "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+                    "contentVersion": "1.0.0.0",
+                    "resources": [
+                    ]
+                }
+            }
+        },
+        {
+            "type": "Microsoft.Network/networkSecurityGroups",
+            "apiVersion": "2020-08-01",
+            "name": "[parameters('networkSecurityGroupName')]",
+            "location": "[parameters('location')]",
+            "tags": "[parameters('tags')]",
+            "dependsOn": [
+            ],
+            "properties": {
+                "copy": [
+                    {
+                        "name": "securityRules",
+                        "count": "[length(parameters('networkSecurityGroupSecurityRules'))]",
+                        "input": {
+                            "name": "[parameters('networkSecurityGroupSecurityRules')[copyIndex('securityRules')].name]",
+                            "properties": {
+                                "description": "[if(contains(parameters('networkSecurityGroupSecurityRules')[copyIndex('securityRules')].properties,'description'),parameters('networkSecurityGroupSecurityRules')[copyIndex('securityRules')].properties.description,'')]",
+                                "protocol": "[parameters('networkSecurityGroupSecurityRules')[copyIndex('securityRules')].properties.protocol]",
+                                "sourcePortRange": "[if(contains(parameters('networkSecurityGroupSecurityRules')[copyIndex('securityRules')].properties,'sourcePortRange'),parameters('networkSecurityGroupSecurityRules')[copyIndex('securityRules')].properties.sourcePortRange,'')]",
+                                "destinationPortRange": "[if(contains(parameters('networkSecurityGroupSecurityRules')[copyIndex('securityRules')].properties,'destinationPortRange'),parameters('networkSecurityGroupSecurityRules')[copyIndex('securityRules')].properties.destinationPortRange,'')]",
+                                "sourceAddressPrefix": "[if(contains(parameters('networkSecurityGroupSecurityRules')[copyIndex('securityRules')].properties,'sourceAddressPrefix'),parameters('networkSecurityGroupSecurityRules')[copyIndex('securityRules')].properties.sourceAddressPrefix,'')]",
+                                "destinationAddressPrefix": "[if(contains(parameters('networkSecurityGroupSecurityRules')[copyIndex('securityRules')].properties,'destinationAddressPrefix'),parameters('networkSecurityGroupSecurityRules')[copyIndex('securityRules')].properties.destinationAddressPrefix,'')]",
+                                "access": "[parameters('networkSecurityGroupSecurityRules')[copyIndex('securityRules')].properties.access]",
+                                "priority": "[int(parameters('networkSecurityGroupSecurityRules')[copyIndex('securityRules')].properties.priority)]",
+                                "direction": "[parameters('networkSecurityGroupSecurityRules')[copyIndex('securityRules')].properties.direction]",
+                                "sourcePortRanges": "[if(contains(parameters('networkSecurityGroupSecurityRules')[copyIndex('securityRules')].properties,'sourcePortRanges'),parameters('networkSecurityGroupSecurityRules')[copyIndex('securityRules')].properties.sourcePortRanges,json('null'))]",
+                                "destinationPortRanges": "[if(contains(parameters('networkSecurityGroupSecurityRules')[copyIndex('securityRules')].properties,'destinationPortRanges'),parameters('networkSecurityGroupSecurityRules')[copyIndex('securityRules')].properties.destinationPortRanges,json('null'))]",
+                                "sourceAddressPrefixes": "[if(contains(parameters('networkSecurityGroupSecurityRules')[copyIndex('securityRules')].properties,'sourceAddressPrefixes'),parameters('networkSecurityGroupSecurityRules')[copyIndex('securityRules')].properties.sourceAddressPrefixes,json('null'))]",
+                                "destinationAddressPrefixes": "[if(contains(parameters('networkSecurityGroupSecurityRules')[copyIndex('securityRules')].properties,'destinationAddressPrefixes'),parameters('networkSecurityGroupSecurityRules')[copyIndex('securityRules')].properties.destinationAddressPrefixes,json('null'))]",
+                                "sourceApplicationSecurityGroups": "[if(and(contains(parameters('networkSecurityGroupSecurityRules')[copyIndex('securityRules')].properties,'sourceApplicationSecurityGroupIds'),not(empty(parameters('networkSecurityGroupSecurityRules')[copyIndex('securityRules')].properties.sourceApplicationSecurityGroupIds))),concat(variables('emptyArray'),array(json(concat('{\"id\": \"',parameters('networkSecurityGroupSecurityRules')[copyIndex('securityRules')].properties.sourceApplicationSecurityGroupIds[0],'\", \"location\": \"',parameters('location'),'\"}')))),json('null'))]",
+                                "destinationApplicationSecurityGroups": "[if(and(contains(parameters('networkSecurityGroupSecurityRules')[copyIndex('securityRules')].properties,'destinationApplicationSecurityGroupIds'),not(empty(parameters('networkSecurityGroupSecurityRules')[copyIndex('securityRules')].properties.destinationApplicationSecurityGroupIds))),concat(variables('emptyArray'),array(json(concat('{\"id\": \"',parameters('networkSecurityGroupSecurityRules')[copyIndex('securityRules')].properties.destinationApplicationSecurityGroupIds[0],'\", \"location\": \"',parameters('location'),'\"}')))),json('null'))]"
+                            }
+                        }
+                    }
+                ]
+            },
+            "resources": [
+                {
+                    "type": "providers/locks",
+                    "apiVersion": "2016-09-01",
+                    "condition": "[parameters('lockForDeletion')]",
+                    "name": "Microsoft.Authorization/networkSecurityGroupDoNotDelete",
+                    "dependsOn": [
+                        "[concat('Microsoft.Network/networkSecurityGroups/', parameters('networkSecurityGroupName'))]"
+                    ],
+                    "comments": "Resource lock on Network Security Group",
+                    "properties": {
+                        "level": "CannotDelete"
+                    }
+                },
+                {
+                    "type": "Microsoft.Network/networkSecurityGroups/providers/diagnosticsettings",
+                    "apiVersion": "2017-05-01-preview",
+                    "name": "[concat(parameters('networkSecurityGroupName'), '/Microsoft.Insights/service')]",
+                    "location": "[parameters('location')]",
+                    "condition": "[or(not(empty(parameters('diagnosticStorageAccountId'))),not(empty(parameters('workspaceId'))),not(empty(parameters('eventHubAuthorizationRuleId'))),not(empty(parameters('eventHubName'))))]",
+                    "dependsOn": [
+                        "[concat('Microsoft.Network/networkSecurityGroups/', parameters('networkSecurityGroupName'))]"
+                    ],
+                    "properties": {
+                        "storageAccountId": "[if(empty(parameters('diagnosticStorageAccountId')), json('null'), parameters('diagnosticStorageAccountId'))]",
+                        "workspaceId": "[if(empty(parameters('workspaceId')), json('null'), parameters('workspaceId'))]",
+                        "eventHubAuthorizationRuleId": "[if(empty(parameters('eventHubAuthorizationRuleId')), json('null'), parameters('eventHubAuthorizationRuleId'))]",
+                        "eventHubName": "[if(empty(parameters('eventHubName')), json('null'), parameters('eventHubName'))]",
+                        "metrics": "[if(and(empty(parameters('diagnosticStorageAccountId')), empty(parameters('workspaceId')), empty(parameters('eventHubAuthorizationRuleId')), empty(parameters('eventHubName'))), json('null'), variables('diagnosticsMetrics'))]",
+                        "logs": "[if(and(empty(parameters('diagnosticStorageAccountId')), empty(parameters('workspaceId')), empty(parameters('eventHubAuthorizationRuleId')), empty(parameters('eventHubName'))), json('null'), variables('diagnosticsLogs'))]"
+                    }
+                }
+            ]
+        },
+        {
+            "type": "Microsoft.Resources/deployments",
+            "apiVersion": "2020-06-01",
+            "name": "deployFlowLogs",
+            "condition": "[not(empty(parameters('flowLogName')))]",
+            "resourceGroup": "[parameters('networkwatcherResourceGroup')]",
+            "dependsOn": [
+                    "[concat('Microsoft.Network/networkSecurityGroups/', parameters('networkSecurityGroupName'))]"
+            ],
+            "properties": {
+                "mode": "Incremental",
+                "expressionEvaluationOptions": {
+                "scope": "inner"
+                },
+                "parameters": {
+                    "location": {
+                    "value": "[parameters('location')]"
+                    },
+                    "nsgResourceGroup": {
+                        "value": "[variables('nsgResourceGroup')]"
+                    },
+                    "networkSecurityGroupName": {
+                    "value": "[parameters('networkSecurityGroupName')]"
+                    },
+                    "flowLogName": {
+                    "value": "[variables('flowLogName')]"
+                    },
+                    "flowLogEnabled": {
+                    "value": "[parameters('flowLogEnabled')]"
+                    },
+                    "retentionEnabled": {
+                    "value": "[parameters('retentionEnabled')]"
+                    },
+                    "logFormatVersion": {
+                    "value": "[parameters('logFormatVersion')]"
+                    },
+                    "diagnosticStorageAccountId": {
+                    "value": "[parameters('diagnosticStorageAccountId')]"
+                    },
+                    "diagnosticLogsRetentionInDays":{
+                        "value": "[parameters('diagnosticLogsRetentionInDays')]"
+                    },
+                    "tags": {
+                    "value": "[parameters('tags')]"
+                    },
+                    "flowLogworkspaceId": {
+                        "value": "[parameters('flowLogworkspaceId')]"
+                    },
+                    "flowAnalyticsConfig": {
+                        "value": "[variables('flowAnalyticsConfig')]"
+                    }
+                },
+                "template": {
+                    "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+                    "contentVersion": "1.0.0.0",
+                    "parameters": {
+                        
+                        "location": {
+                        "type": "string"
+                        },
+                        "networkSecurityGroupName": {
+                        "type": "string"
+                        },
+                        "flowLogName": {
+                        "type": "string"
+                        },
+                        "flowLogEnabled": {
+                        "type": "bool"
+                        },
+                        "retentionEnabled": {
+                        "type": "bool"
+                        },
+                        "logFormatVersion": {
+                        "type": "int"
+                        },
+                        "diagnosticStorageAccountId": {
+                        "type": "string"
+                        },
+                        "diagnosticLogsRetentionInDays":{
+                        "type": "int"
+                        },
+                        "tags": {
+                        "type": "object"
+                        },
+                        "flowLogworkspaceId": {
+                            "type": "string"
+                        },
+                        "flowAnalyticsConfig": {
+                            "type": "object"
+                        },
+                        "nsgResourceGroup": {
+                            "type": "string"
+                        }
+                    },
+                    "resources": [
+                        {
+                            "name": "[parameters('flowLogName')]",
+                            "type": "Microsoft.Network/networkWatchers/flowLogs",
+                            "apiVersion": "2020-05-01",
+                            "location": "[parameters('location')]",
+                            "tags": "[parameters('tags')]",
+                            "properties": {
+                                "targetResourceId": "[resourceId(parameters('nsgResourceGroup'),'Microsoft.Network/networkSecurityGroups', parameters('networkSecurityGroupName'))]",
+                                "storageId": "[parameters('diagnosticStorageAccountId')]",
+                                "enabled": "[parameters('flowLogEnabled')]",
+                                "retentionPolicy": {
+                                "days": "[parameters('diagnosticLogsRetentionInDays')]",
+                                "enabled": "[parameters('retentionEnabled')]"
+                            },
+                            "format": {
+                                "type": "JSON",
+                                "version": "[parameters('logFormatVersion')]"
+                            },
+                            "flowAnalyticsConfiguration": "[if(empty(parameters('flowLogworkspaceId')),json('null'),parameters('flowAnalyticsConfig'))]"
+                            }
+                        }
+                    ]
+                }
+            }
+        }, 
+
+        {
+            "name": "[concat('rbac-',deployment().name, copyIndex())]",
+            "apiVersion": "2020-06-01",
+            "type": "Microsoft.Resources/deployments",
+            "condition": "[not(empty(parameters('roleAssignments')))]",
+            "dependsOn": [
+                "[parameters('networkSecurityGroupName')]"
+            ],
+            "copy": {
+                "name": "rbacDeplCopy",
+                "count": "[length(parameters('roleAssignments'))]"
+            },
+            "properties": {
+                "mode": "Incremental",
+                "expressionEvaluationOptions": {
+                    "scope": "inner"
+                },
+                "parameters": {
+                    "roleAssignment": {
+                        "value": "[parameters('roleAssignments')[copyIndex()]]"
+                    },
+                    "builtInRoleNames": {
+                        "value": "[variables('builtInRoleNames')]"
+                    },
+                    "networkSecurityGroupName": {
+                        "value": "[parameters('networkSecurityGroupName')]"
+                    }
+                },
+                "template": {
+                    "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+                    "contentVersion": "1.0.0.0",
+                    "parameters": {
+                        "roleAssignment": {
+                            "type": "object"
+                        },
+                        "builtInRoleNames": {
+                            "type": "object"
+                        },
+                        "networkSecurityGroupName": {
+                            "type": "string"
+                        }
+                    },
+                    "resources": [
+                        {
+                            "type": "Microsoft.Network/networkSecurityGroups/providers/roleAssignments",
+                            "apiVersion": "2020-03-01-preview",
+                            "name": "[concat(parameters('networkSecurityGroupName'), '/Microsoft.Authorization/', guid(uniqueString(concat(parameters('networkSecurityGroupName'), array(parameters('roleAssignment').principalIds)[copyIndex('innerRbacCopy')], parameters('roleAssignment').roleDefinitionIdOrName ) )))]",
+                            "dependsOn": [
+                            ],
+                            "copy": {
+                                "name": "innerRbacCopy",
+                                "count": "[length(parameters('roleAssignment').principalIds)]"
+                            },
+                            "properties": {
+                                "roleDefinitionId": "[if(contains(parameters('builtInRoleNames'), parameters('roleAssignment').roleDefinitionIdOrName ), parameters('builtInRoleNames')[parameters('roleAssignment').roleDefinitionIdOrName] , parameters('roleAssignment').roleDefinitionIdOrName )]",
+                                "principalId": "[array(parameters('roleAssignment').principalIds)[copyIndex()]]"
+                            }
+                        }
+                    ]
+                }
+            }
+        }
+    ],
+    "functions": [
+    ],
+    "outputs": {
+        "networkSecurityGroupsResourceGroup": {
+            "type": "string",
+            "value": "[resourceGroup().name]",
+            "metadata": {
+                "description": "The name of the Resource Group the Network Security Groups were created in."
+            }
+        },
+        "networkSecurityGroupsResourceId": {
+            "type": "string",
+            "value": "[resourceId('Microsoft.Network/networkSecurityGroups', parameters('networkSecurityGroupName'))]",
+            "metadata": {
+                "description": "The Resource Ids of the Network Security Group deployed."
+            }
+        },
+        "networkSecurityGroupsName": {
+            "type": "string",
+            "value": "[parameters('networkSecurityGroupName')]",
+            "metadata": {
+                "description": "The Name of the Network Security Group deployed."
+            }
+        },
+        "flowLogResourceId": {
+            "type": "string",
+            "condition": "[parameters('flowLogEnabled')]",
+            "value": "[concat(resourceId('Microsoft.Network/networkWatchers',parameters('networkWatcherName')),'/flowLogs/Microsoft.Network',resourceGroup().name, parameters('networkSecurityGroupName'))]",
+            "metadata": {
+                "description": "The Resource Ids of the Network Security Group deployed."
+            }
+        },
+        "flowLogName": {
+            "type": "string",
+            "condition": "[parameters('flowLogEnabled')]",
+            "value": "[variables('flowLogName')]",
+            "metadata": {
+                "description": "The Name of the FlowLog deployed."
+            }
+        }
+    }
+}

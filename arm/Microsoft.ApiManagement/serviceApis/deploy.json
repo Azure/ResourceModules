@@ -1,0 +1,287 @@
+{
+	"$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+	"contentVersion": "1.0.0.0",
+	"parameters": {
+		"apiManagementServiceApiName": {
+			"type": "string",
+			"metadata": {
+				"description": "Required. API revision identifier. Must be unique in the current API Management service instance. Non-current revision has ;rev=n as a suffix where n is the revision number."
+			}
+		},
+		"apiManagementServiceApiPolicy": {
+			"type": "object",
+			"defaultValue": {},
+			"metadata": {
+				"description": "Optional. Policies to apply to the Service Api."
+			}
+		},
+		"apiManagementServiceName": {
+			"type": "string",
+			"metadata": {
+				"description": "Required. The name of the of the Api Management service."
+			}
+		},
+		"apiRevision": {
+			"type": "string",
+			"defaultValue": "",
+			"metadata": {
+				"description": "Optional. Describes the Revision of the Api. If no value is provided, default revision 1 is created"
+			}
+		},
+		"apiRevisionDescription": {
+			"type": "string",
+			"defaultValue": "",
+			"metadata": {
+				"description": "Optional. Description of the Api Revision."
+			}
+		},
+		"apiType": {
+			"type": "string",
+			"defaultValue": "http",
+			"allowedValues": [ "http", "soap" ],
+			"metadata": {
+				"description": "Optional. Type of Api to create. * http creates a SOAP to REST API * soap creates a SOAP pass-through API."
+			}
+		},
+		"apiVersion": {
+			"type": "string",
+			"defaultValue": "",
+			"metadata": {
+				"description": "Optional. Indicates the Version identifier of the API if the API is versioned"
+			}
+		},
+		"apiVersionDescription": {
+			"type": "string",
+			"defaultValue": "",
+			"metadata": {
+				"description": "Optional. Description of the Api Version."
+			}
+		},
+		"apiVersionSet": {
+			"type": "object",
+			"defaultValue": {},
+			"metadata": {
+				"description": "Optional. Version set details"
+			}
+		},
+		"authenticationSettings": {
+			"type": "object",
+			"defaultValue": {},
+			"metadata": {
+				"description": "Optional. Collection of authentication settings included into this API."
+			}
+		},
+		"cuaId": {
+			"type": "string",
+			"defaultValue": "",
+			"metadata": {
+				"description": "Optional. Customer Usage Attribution id (GUID). This GUID must be previously registered"
+			}
+		},
+		"description": {
+			"type": "string",
+			"defaultValue": "",
+			"metadata": {
+				"description": "Optional. Description of the API. May include HTML formatting tags."
+			}
+		},
+		"displayName": {
+			"type": "string",
+			"maxLength": 300,
+			"metadata": {
+				"description": "Required. API name. Must be 1 to 300 characters long."
+			}
+		},
+		"format": {
+			"type": "string",
+			"defaultValue": "openapi",
+			"allowedValues": [ "wadl-xml", "wadl-link-json", "swagger-json", "swagger-link-json", "wsdl", "wsdl-link", "openapi", "openapi+json", "openapi-link", "openapi+json-link" ],
+			"metadata": {
+				"description": "Optional. Format of the Content in which the API is getting imported."
+			}
+		},
+		"isCurrent": {
+			"type": "bool",
+			"defaultValue": true,
+			"metadata": {
+				"description": "Optional. Indicates if API revision is current api revision."
+			}
+		},
+		"location": {
+			"type": "string",
+			"defaultValue": "[resourceGroup().location]",
+			"metadata": {
+				"description": "Optional. Location for all Resources."
+			}
+		},
+		"path": {
+			"type": "string",
+			"metadata": {
+				"description": "Required. Relative URL uniquely identifying this API and all of its resource paths within the API Management service instance. It is appended to the API endpoint base URL specified during the service instance creation to form a public URL for this API."
+			}
+		},
+		"protocols": {
+			"type": "array",
+			"defaultValue": [ "https" ],
+			"metadata": {
+				"description": "Optional. Describes on which protocols the operations in this API can be invoked. - http or https"
+			}
+		},
+		"serviceUrl": {
+			"type": "string",
+			"defaultValue": "",
+			"maxLength": 2000,
+			"metadata": {
+				"description": "Optional. Absolute URL of the backend service implementing this API. Cannot be more than 2000 characters long."
+			}
+		},
+		"sourceApiId": {
+			"type": "string",
+			"defaultValue": "",
+			"metadata": {
+				"description": "Optional. API identifier of the source API."
+			}
+		},
+		"subscriptionKeyParameterNames": {
+			"type": "object",
+			"defaultValue": {},
+			"metadata": {
+				"description": "Optional. Protocols over which API is made available."
+			}
+		},
+		"subscriptionRequired": {
+			"type": "bool",
+			"defaultValue": false,
+			"metadata": {
+				"description": "Optional. Specifies whether an API or Product subscription is required for accessing the API."
+			}
+		},
+		"tags": {
+			"type": "object",
+			"defaultValue": {},
+			"metadata": {
+				"description": "Optional. Tags of the resource."
+			}
+		},
+		"type": {
+			"type": "string",
+			"defaultValue": "http",
+			"allowedValues": [ "http", "soap" ],
+			"metadata": {
+				"description": "Optional. Type of API."
+			}
+		},
+		"value": {
+			"type": "string",
+			"defaultValue": "",
+			"metadata": {
+				"description": "Optional. Content value when Importing an API."
+			}
+		},
+		"wsdlSelector": {
+			"type": "object",
+			"defaultValue": {},
+			"metadata": {
+				"description": "Optional. Criteria to limit import of WSDL to a subset of the document."
+			}
+		}
+	},
+	"variables": {
+		"apiVersionSetNotEmpty": "[not(empty(parameters('apiVersionSet')))]",
+		"apiVersionSetName": "[if(variables('apiVersionSetNotEmpty'),parameters('apiVersionSet').name,'default')]"
+	},
+	"resources": [
+		{
+			"condition": "[not(empty(parameters('cuaId')))]",
+			"type": "Microsoft.Resources/deployments",
+			"apiVersion": "2020-06-01",
+			"name": "[concat('pid-', parameters('cuaId'))]",
+			"properties": {
+				"mode": "Incremental",
+				"template": {
+					"$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+					"contentVersion": "1.0.0.0",
+					"resources": [
+					]
+				}
+			}
+		},
+		{
+			"name": "[concat(parameters('apiManagementServiceName'),'/',variables('apiVersionSetName'))]",
+			"condition": "[variables('apiVersionSetNotEmpty')]",
+			"type": "Microsoft.ApiManagement/service/apiVersionSets",
+			"apiVersion": "2020-06-01-preview",
+			"properties": "[parameters('apiVersionSet').properties]"
+		},
+		{
+			"type": "Microsoft.ApiManagement/service/apis",
+			"apiVersion": "2020-06-01-preview",
+			"name": "[concat(parameters('apiManagementServiceName'),'/',parameters('apiManagementServiceApiName'))]",
+			"location": "[parameters('location')]",
+			"tags": "[parameters('tags')]",
+			"dependsOn": [
+				"[resourceId('Microsoft.ApiManagement/service/apiVersionSets', parameters('apiManagementServiceName'), variables('apiVersionSetName'))]"
+			],
+			"properties": {
+				"apiRevision": "[if(not(empty(parameters('apiRevision'))), parameters('apiRevision'), json('null'))]",
+				"apiRevisionDescription": "[if(not(empty(parameters('apiRevisionDescription'))), parameters('apiRevisionDescription'), json('null'))]",
+				"apiType": "[if(not(empty(parameters('apiType'))), parameters('apiType'), json('null'))]",
+				"apiVersion": "[if(not(empty(parameters('apiVersion'))), parameters('apiVersion'), json('null'))]",
+				"apiVersionDescription": "[if(not(empty(parameters('apiVersionDescription'))), parameters('apiVersionDescription'), json('null'))]",
+				"apiVersionSetId": "[if(variables('apiVersionSetNotEmpty'), resourceId('Microsoft.ApiManagement/service/apiVersionSets', parameters('apiManagementServiceName'), variables('apiVersionSetName')), json('null'))]",
+				"authenticationSettings": "[parameters('authenticationSettings')]",
+				"description": "[parameters('description')]",
+				"displayName": "[parameters('displayName')]",
+				"format": "[if(not(empty(parameters('value'))), parameters('format'), json('null'))]",
+				"isCurrent": "[parameters('isCurrent')]",
+				"path": "[parameters('path')]",
+				"protocols": "[parameters('protocols')]",
+				"serviceUrl": "[if(not(empty(parameters('serviceUrl'))), parameters('serviceUrl'), json('null'))]",
+				"sourceApiId": "[if(not(empty(parameters('sourceApiId'))), parameters('sourceApiId'), json('null'))]",
+				"subscriptionKeyParameterNames": "[if(not(empty(parameters('subscriptionKeyParameterNames'))), parameters('subscriptionKeyParameterNames'), json('null'))]",
+				"subscriptionRequired": "[parameters('subscriptionRequired')]",
+				"type": "[parameters('type')]",
+				"value": "[if(not(empty(parameters('value'))), parameters('value'), json('null'))]",
+				"wsdlSelector": "[parameters('wsdlSelector')]"
+			}
+		},
+		{
+			"type": "Microsoft.ApiManagement/service/apis/policies",
+			"name": "[concat(parameters('apiManagementServiceName'),'/',parameters('apiManagementServiceApiName'),'/policy')]",
+			"condition": "[not(empty(parameters('apiManagementServiceApiPolicy')))]",
+			"dependsOn": [
+				"[resourceId('Microsoft.ApiManagement/service/apis', parameters('apiManagementServiceName'), parameters('apiManagementServiceApiName'))]"
+			],
+			"apiVersion": "2020-06-01-preview",
+			"properties": {
+				"value": "[parameters('apiManagementServiceApiPolicy').value]",
+				"format": "[parameters('apiManagementServiceApiPolicy').format]"
+			}
+		}
+	],
+	"functions": [
+	],
+	"outputs": {
+		"apimServiceApiName": {
+			"type": "string",
+			"value": "[parameters('apiManagementServiceApiName')]",
+			"metadata": {
+				"description": "The Api Management Service API Name"
+			}
+		},
+		"apimServiceApiResourceId": {
+			"type": "string",
+			"value": "[resourceId('Microsoft.ApiManagement/service', parameters('apiManagementServiceApiName'))]",
+			"metadata": {
+				"description": "The Resource Id of the Api Management Service API"
+			}
+		},
+		"apimServiceApiResourceGroup": {
+			"type": "string",
+			"value": "[resourceGroup().name]",
+			"metadata": {
+				"description": "The name of the Resource Group with the Api Management Service API"
+			}
+		}
+	}
+}

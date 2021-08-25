@@ -1,0 +1,155 @@
+{
+  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    "netAppAccountName": {
+      "value": "sxx-az-anf-weu-x-001"
+    },
+    "domainName": {
+      "value": ""
+    },
+    "domainJoinUser": {
+      "value": ""
+    },
+    // "domainJoinPassword": {
+    //   "reference": {
+    //     "keyVault": {
+    //       "id": "/subscriptions/8629be3b-96bc-482d-a04b-ffff597c65a2/resourceGroups/dependencies-rg/providers/Microsoft.KeyVault/vaults/sxx-az-kv-weu-x-004"
+    //     },
+    //     "secretName": "adadmin-Password"
+    //   }
+    // },
+    "dnsServers": {
+      "value": ""
+    },
+    "smbServerNamePrefix": {
+      "value": ""
+    },
+    "domainJoinOU": {
+      "value": ""
+    },
+    "capacityPools": {
+      "value": [
+        {
+          "poolName": "sxx-az-anfcp-weu-x-001",
+          "poolServiceLevel": "Premium",
+          "poolSize": 4398046511104,
+          "volumes": [
+            // NFS3 VOL
+            {
+              "poolVolumeName": "vol01-nfsv3",
+              "creationToken": "vol01-nfsv3",
+              "poolVolumeQuota": 107374182400,
+              "protocolTypes": [
+                "NFSv3"
+              ],
+              "subnetId": "/subscriptions/8629be3b-96bc-482d-a04b-ffff597c65a2/resourceGroups/dependencies-rg/providers/Microsoft.Network/virtualNetworks/sxx-az-vnet-weu-x-003/subnets/sxx-az-subnet-weu-x-004",
+              "roleAssignments": [
+                // {
+                //   "roleDefinitionIdOrName": "Reader",
+                //   "principalIds": [
+                //     "56789123-1234-1234-1234-123456789012" // object 2
+                //   ]
+                // }
+              ]
+            },
+            // NFS41 VOL
+            {
+              "poolVolumeName": "vol01-nfsv41",
+              "creationToken": "vol01-nfsv41",
+              "poolVolumeQuota": 107374182400,
+              "protocolTypes": [
+                "NFSv4.1"
+              ],
+              "exportPolicy": {
+                "rules": [
+                  {
+                    "ruleIndex": 1,
+                    "unixReadOnly": false,
+                    "unixReadWrite": true,
+                    "nfsv3": false,
+                    "nfsv41": true,
+                    "allowedClients": "0.0.0.0/0"
+                  }
+                ]
+              },
+              "subnetId": "/subscriptions/8629be3b-96bc-482d-a04b-ffff597c65a2/resourceGroups/dependencies-rg/providers/Microsoft.Network/virtualNetworks/sxx-az-vnet-weu-x-003/subnets/sxx-az-subnet-weu-x-004",
+              "roleAssignments": [
+                // {
+                //   "roleDefinitionIdOrName": "Reader",
+                //   "principalIds": [
+                //     "12345678-1234-1234-1234-123456789012" // object 1
+                //   ]
+                // }
+              ]
+            }
+            // ,
+            // SMB VOL (Requires enabling AD connection)
+            // {
+            //   "poolVolumeName": "vol01-smb",
+            //   "creationToken": "vol01-smb",
+            //   "poolVolumeQuota": 107374182400,
+            //   "protocolTypes": [
+            //     "CIFS"
+            //   ],
+            //   "subnetId": "/subscriptions/8629be3b-96bc-482d-a04b-ffff597c65a2/resourceGroups/dependencies-rg/providers/Microsoft.Network/virtualNetworks/sxx-az-vnet-weu-x-003/subnets/sxx-az-subnet-weu-x-004",
+            //   "roleAssignments": [
+            // //     {
+            // //       "roleDefinitionIdOrName": "Reader",
+            // //       "principalIds": [
+            // //         "78945612-1234-1234-1234-123456789012"  // object 3
+            // //       ]
+            // //     }
+            //   ]
+            // }
+          ],
+          "roleAssignments": [
+            // {
+            //   "roleDefinitionIdOrName": "Reader",
+            //   "principalIds": [
+            //     "12345678-1234-1234-1234-123456789012" // object 1
+            //   ]
+            // }
+          ]
+        },
+        {
+          "poolName": "sxx-az-anfcp-weu-x-002",
+          "poolServiceLevel": "Premium",
+          "poolSize": 4398046511104,
+          "volumes": [],
+          "roleAssignments": [
+            // {
+            //   "roleDefinitionIdOrName": "Reader",
+            //   "principalIds": [
+            //     "12345678-1234-1234-1234-123456789012" // object 1
+            //   ]
+            // }
+          ]
+        }
+      ]
+    },
+    // "roleAssignments": {
+    //   "value": [
+    //     {
+    //       "roleDefinitionIdOrName": "Reader",
+    //       "principalIds": [
+    //         "12345678-1234-1234-1234-123456789012" // object 1
+    //       ]
+    //     }
+    //   ]
+    // },
+    "tags": {
+      "value": {
+        "Environment": "Non-Prod",
+        "Contact": "test.user@testcompany.com",
+        "PurchaseOrder": "1234",
+        "CostCenter": "7890",
+        "ServiceName": "DeploymentValidation",
+        "Role": "DeploymentValidation"
+      }
+    },
+    "lockForDeletion": {
+      "value": false
+    }
+  }
+}

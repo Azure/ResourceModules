@@ -1,0 +1,43 @@
+{
+    "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "webAppName": {
+            "value": "sxx-az-wa-weu-x-001"
+        },
+        "appServicePlanId": {
+            "value": "/subscriptions/8629be3b-96bc-482d-a04b-ffff597c65a2/resourceGroups/dependencies-rg/providers/Microsoft.Web/serverFarms/sxx-az-asp-weu-x-003"
+        },
+        "managedServiceIdentity": {
+            "value": "SystemAssigned"
+        },
+        "siteConfig": {
+            "value": {
+                "metadata": [
+                    {
+                        "name": "CURRENT_STACK",
+                        "value": "dotnetcore"
+                    }
+                ],
+                "alwaysOn": true
+            }
+        },
+        "httpsOnly": {
+            "value": true
+        },
+        "enableMonitoring": {
+            "value": true
+        }
+        // "roleAssignments": {
+        //     "value": [
+        //         {
+        //             "roleDefinitionIdOrName": "Desktop Virtualization User",
+        //             "principalIds": [
+        //                 "12345678-1234-1234-1234-123456789012", // object 1
+        //                 "78945612-1234-1234-1234-123456789012" // object 2
+        //             ]
+        //         }
+        //     ]
+        // }
+    }
+}

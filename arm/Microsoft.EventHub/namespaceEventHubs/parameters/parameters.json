@@ -1,0 +1,39 @@
+{
+  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    "namespaceName": {
+      "value": "sxx-az-evhns-weu-x-001"
+    },
+    "eventHubName": {
+      "value": "sxx-az-evh-weu-x-001"
+    },
+    "authorizationRules": {
+      "value": [
+        {
+          "name": "RootManageSharedAccessKey",
+          "properties": {
+            "rights": ["Listen", "Manage", "Send"]
+          }
+        },
+        {
+          "name": "SendListenAccess",
+          "properties": {
+            "rights": ["Listen", "Send"]
+          }
+        }
+      ]
+    }
+    // "roleAssignments": {
+    //     "value": [
+    //         {
+    //             "roleDefinitionIdOrName": "Desktop Virtualization User",
+    //             "principalIds": [
+    //                 "12345678-1234-1234-1234-123456789012", // object 1
+    //                 "78945612-1234-1234-1234-123456789012" // object 2
+    //             ]
+    //         }
+    //     ]
+    // },
+  }
+}

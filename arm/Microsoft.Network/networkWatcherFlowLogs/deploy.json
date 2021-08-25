@@ -1,0 +1,180 @@
+{
+    "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "location": {
+            "type": "string",
+            "defaultValue": "[resourceGroup().location]",
+            "metadata": {
+                "description": "Optional. Location for all resources."
+            }
+        },
+        "tags": {
+            "type": "object",
+            "defaultValue": {},
+            "metadata": {
+                "description": "Optional. Tags of the resource."
+            }
+        },
+        "networkWatcherName": {
+            "type": "string",
+            "metadata": {
+                "description": "Required. Name of the network watcher resource. Must be in the resource group where the Flow log will be created and same region as the NSG"
+            }
+        },
+        "networkSecurityGroupResourceId": {
+            "type": "string",
+            "metadata": {
+                "description": "Required. Resource ID of the NSG that must be enabled for Flow Logs."
+            }
+        },
+        "diagnosticStorageAccountId": {
+            "type": "string",
+            "metadata": {
+                "description": "Required. Resource identifier of the Diagnostic Storage Account."
+            }
+        },
+        "retentionEnabled": {
+            "type": "bool",
+            "defaultValue": true,
+            "metadata": {
+                "description": "Optional. If the flow log retention should be enabled"
+            }
+        },
+        "flowLogEnabled": {
+            "type": "bool",
+            "defaultValue": true,
+            "metadata": {
+                "description": "Optional. If the flow log should be enabled"
+            }
+        },
+        "logFormatVersion": {
+            "type": "int",
+            "defaultValue": 2,
+            "allowedValues": [
+                1,
+                2
+            ],
+            "metadata": {
+                "description": "Optional. The flow log format version"
+            }
+        },
+        "flowAnalyticsEnabled": {
+            "type": "bool",
+            "defaultValue": false,
+            "metadata": {
+                "description": "Optional. Enables/disables flow analytics. If Flow Analytics was previously enabled, workspaceResourceID is mandatory (even when disabling it)"
+            }
+        },
+        "workspaceResourceId": {
+            "type": "string",
+            "defaultValue": "",
+            "metadata": {
+                "description": "Optional. Resource identifier of Log Analytics."
+            }
+        },
+        "flowLogIntervalInMinutes": {
+            "type": "int",
+            "allowedValues": [
+                10,
+                60
+            ],
+            "defaultValue": 60,
+            "metadata": {
+                "description": "Optional. The interval in minutes which would decide how frequently TA service should do flow analytics."
+            }
+        },
+        "retentionInDays": {
+            "type": "int",
+            "defaultValue": 365,
+            "minValue": 0,
+            "maxValue": 365,
+            "metadata": {
+                "description": "Optional. Specifies the number of days that logs will be kept for; a value of 0 will retain data indefinitely."
+            }
+        },
+        "cuaId": {
+            "type": "string",
+            "defaultValue": "",
+            "metadata": {
+                "description": "Optional. Customer Usage Attribution id (GUID). This GUID must be previously registered"
+            }
+        }
+    },
+    "variables": {
+        "nsgName": "[split(parameters('networkSecurityGroupResourceId'),'/')[8]]",
+        "nsgResourceGroupName": "[split(parameters('networkSecurityGroupResourceId'),'/')[4]]",
+        //"flowLogName": "[concat(parameters('networkWatcherName'),'/Microsoft.Network',variables('nsgResourceGroupName'), variables('nsgName'))]", # "retro-compatibility" name. May go over 80 char limit.
+        "flowLogName": "[concat(parameters('networkWatcherName'),'/',uniqueString(variables('nsgName')))]",
+        "flowAnalyticsConfig": {
+            "networkWatcherFlowAnalyticsConfiguration": {
+                "enabled": "[parameters('flowAnalyticsEnabled')]",
+                "workspaceResourceId": "[parameters('workspaceResourceId')]",
+                "trafficAnalyticsInterval": "[parameters('flowLogIntervalInMinutes')]"
+            }
+        }
+    },
+    "resources": [
+        {
+            "condition": "[not(empty(parameters('cuaId')))]",
+            "type": "Microsoft.Resources/deployments",
+            "apiVersion": "2020-06-01",
+            "name": "[concat('pid-', parameters('cuaId'))]",
+            "properties": {
+                "mode": "Incremental",
+                "template": {
+                    "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+                    "contentVersion": "1.0.0.0",
+                    "resources": [
+                    ]
+                }
+            }
+        },
+        {
+            "name": "[variables('flowLogName')]",
+            "type": "Microsoft.Network/networkWatchers/flowLogs",
+            "apiVersion": "2020-05-01",
+            "location": "[parameters('location')]",
+            "tags": "[parameters('tags')]",
+            "properties": {
+                "targetResourceId": "[parameters('networkSecurityGroupResourceId')]",
+                "storageId": "[parameters('diagnosticStorageAccountId')]",
+                "enabled": "[parameters('flowLogEnabled')]",
+                "retentionPolicy": {
+                    "days": "[parameters('retentionInDays')]",
+                    "enabled": "[parameters('retentionEnabled')]"
+                },
+                "format": {
+                    "type": "JSON",
+                    "version": "[parameters('logFormatVersion')]"
+                },
+                "flowAnalyticsConfiguration": "[if(empty(parameters('workspaceResourceId')),json('null'),variables('flowAnalyticsConfig'))]"
+            }
+        }
+    ],
+    "functions": [
+    ],
+    "outputs": {
+        "deploymentResourceGroup": {
+            "type": "string",
+            "value": "[resourceGroup().name]",
+            "metadata": {
+                "description": "The name of the Resource Group the Network Security Groups were created in."
+            }
+        },
+        "flowLogResourceId": {
+            "type": "string",
+            "value": "[concat(resourceId('Microsoft.Network/networkWatchers',parameters('networkWatcherName')),'/flowLogs/Microsoft.Network',variables('nsgResourceGroupName'), variables('nsgName'))]",
+            "metadata": {
+                "description": "The Resource Ids of the Network Security Group deployed."
+            }
+        },
+        "flowLogName": {
+            "type": "string",
+            "value": "[variables('flowLogName')]",
+            "metadata": {
+                "description": "The Name of the FlowLog deployed."
+            }
+        }
+    }
+}
