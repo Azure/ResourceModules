@@ -1,0 +1,90 @@
+{
+  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    "subscriptionAliasName": {
+      "type": "string",
+      "metadata": {
+        "description": "Required. Unique alias name."
+      }
+    },
+    "displayName": {
+      "type": "string",
+      "metadata": {
+        "description": "Required. Subscription display name."
+      }
+    },
+    "targetManagementGroupId": {
+      "type": "string",
+      "metadata": {
+        "details": "Optional. Target management group where the subscription will be created."
+      }
+    },
+    "billingScope": {
+      "type": "string",
+      "metadata": {
+        "description": "Required. The account to be invoiced for the subscription."
+      }
+    },
+    "workLoad": {
+      "type": "string",
+      "defaultValue": "Production",
+      "metadata": {
+        "description": "Optional. Subscription workload."
+      }
+    },
+    "location": {
+      "type": "string",
+      "metadata": {
+        "description": "Required. Location is required for DeploymentTemplate."
+      }
+    }
+  },
+  "variables": {},
+  "resources": [
+    {
+      "name": "[concat('subscription-',deployment().name)]",
+      "type": "Microsoft.Resources/deployments",
+      "apiVersion": "2019-10-01",
+      "location": "[parameters('location')]",
+      "properties": {
+        "expressionEvaluationOptions": {
+          "scope": "outer" // default
+        },
+        "mode": "Incremental", // default
+        "template": {
+          "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+          "contentVersion": "1.0.0.0",
+          "variables": {},
+          "resources": [
+            {
+              "name": "[parameters('subscriptionAliasName')]",
+              "type": "Microsoft.Subscription/aliases",
+              "apiVersion": "2020-09-01",
+              "properties": {
+                "workLoad": "[parameters('workLoad')]",
+                "displayName": "[parameters('displayName')]",
+                "billingScope": "[parameters('billingScope')]",
+                "managementGroupId": "[tenantResourceId('Microsoft.Management/managementGroups/', parameters('targetManagementGroupId'))]"
+              },
+              "dependsOn": [],
+              "tags": {}
+            }
+          ],
+          "outputs": {
+            "subscriptionId": {
+              "type": "string",
+              "value": "[replace(reference(parameters('subscriptionAliasName')).subscriptionId, 'invalidrandom/', '')]"
+            }
+          }
+        }
+      }
+    }
+  ],
+  "outputs": {
+    "messageFromLinkedTemplate": {
+      "type": "string",
+      "value": "[reference('subscription-',deployment().name).outputs.subscriptionId.value]"
+    }
+  }
+}

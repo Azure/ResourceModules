@@ -1,0 +1,238 @@
+{
+    "$schema": "https://schema.management.azure.com/schemas/2018-05-01/subscriptionDeploymentTemplate.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "roleName": {
+            "type": "string",
+            "metadata": {
+                "description": "Required. Name of the custom RBAC role to be created."
+            }
+        },
+        "resourceGroupName": {
+            "type": "string",
+            "defaultValue": "",
+            "metadata": {
+                "description": "Optional. Name of the Resource Group to deploy the custom role in. If no Resource Group name is provided, the module deploys at subscription level, therefore registers the custom RBAC role definition in the subscription."
+            }
+        },
+        "roleDescription": {
+            "type": "string",
+            "defaultValue": "",
+            "metadata": {
+                "description": "Optional. Description of the custom RBAC role to be created."
+            }
+        },
+        "actions": {
+            "type": "array",
+            "defaultValue": [
+            ],
+            "metadata": {
+                "description": "Optional. List of allowed actions."
+            }
+        },
+        "notActions": {
+            "type": "array",
+            "defaultValue": [
+            ],
+            "metadata": {
+                "description": "Optional. List of denied actions."
+            }
+        },
+        "dataActions": {
+            "type": "array",
+            "defaultValue": [
+            ],
+            "metadata": {
+                "description": "Optional. List of allowed data actions."
+            }
+        },
+        "notDataActions": {
+            "type": "array",
+            "defaultValue": [
+            ],
+            "metadata": {
+                "description": "Optional. List of denied data actions."
+            }
+        },
+        "cuaId": {
+            "type": "string",
+            "defaultValue": "",
+            "metadata": {
+                "description": "Optional. Customer Usage Attribution id (GUID). This GUID must be previously registered"
+            }
+        }
+    },
+    "variables": {
+    },
+    "resources": [
+        // CUA on Subscription scope
+        {
+            "condition": "[and(not(empty(parameters('cuaId'))), empty(parameters('resourceGroupName')))]",
+            "type": "Microsoft.Resources/deployments",
+            "apiVersion": "2020-06-01",
+            "name": "[concat('pid-', parameters('cuaId'))]",
+            "properties": {
+                "mode": "Incremental",
+                "template": {
+                    "$schema": "https://schema.management.azure.com/schemas/2018-05-01/subscriptionDeploymentTemplate.json#",
+                    "contentVersion": "1.0.0.0",
+                    "resources": [
+                    ]
+                }
+            }
+        },
+        // Role Definitions on Subscription scope
+        {
+            "name": "[guid(parameters('roleName'), subscription().id)]",
+            "type": "Microsoft.Authorization/roleDefinitions",
+            "apiVersion": "2018-01-01-preview",
+            "condition": "[empty(parameters('resourceGroupName'))]",
+            "properties": {
+                "roleName": "[parameters('roleName')]",
+                "description": "[parameters('roleDescription')]",
+                "type": "customRole",
+                "permissions": [
+                    {
+                        "actions": "[parameters('actions')]",
+                        "notActions": "[parameters('notActions')]",
+                        "dataActions": "[parameters('dataActions')]",
+                        "notDataActions": "[parameters('notDataActions')]"
+                    }
+                ],
+                "assignableScopes": [
+                    "[subscription().id]"
+                ]
+            }
+        },
+        // CUA & Role Definitions on Resource Group scope
+        {
+            "name": "roleDefinitionDeployment",
+            "apiVersion": "2020-06-01",
+            "type": "Microsoft.Resources/deployments",
+            "resourceGroup": "[parameters('resourceGroupName')]",
+            "condition": "[not(empty(parameters('resourceGroupName')))]",
+            "properties": {
+                "mode": "Incremental",
+                "expressionEvaluationOptions": {
+                    "scope": "inner"
+                },
+                "parameters": {
+                    "roleName": {
+                        "value": "[parameters('roleName')]"
+                    },
+                    "roleDescription": {
+                        "value": "[parameters('roleDescription')]"
+                    },
+                    "actions": {
+                        "value": "[parameters('actions')]"
+                    },
+                    "notActions": {
+                        "value": "[parameters('notActions')]"
+                    },
+                    "dataActions": {
+                        "value": "[parameters('dataActions')]"
+                    },
+                    "notDataActions": {
+                        "value": "[parameters('notDataActions')]"
+                    },
+                    "cuaId": {
+                        "value": "[parameters('cuaId')]"
+                    }
+                },
+                "template": {
+                    "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+                    "contentVersion": "1.0.0.0",
+                    "parameters": {
+                        "roleName": {
+                            "type": "string"
+                        },
+                        "roleDescription": {
+                            "type": "string"
+                        },
+                        "actions": {
+                            "type": "array"
+                        },
+                        "notActions": {
+                            "type": "array"
+                        },
+                        "dataActions": {
+                            "type": "array"
+                        },
+                        "notDataActions": {
+                            "type": "array"
+                        },
+                        "cuaId": {
+                            "type": "string"
+                        }
+                    },
+                    "resources": [
+                        {
+                            "condition": "[not(empty(parameters('cuaId')))]",
+                            "type": "Microsoft.Resources/deployments",
+                            "apiVersion": "2020-06-01",
+                            "name": "[concat('pid-', parameters('cuaId'))]",
+                            "properties": {
+                                "mode": "Incremental",
+                                "template": {
+                                    "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+                                    "contentVersion": "1.0.0.0",
+                                    "resources": [
+                                    ]
+                                }
+                            }
+                        },
+                        {
+                            "name": "[guid(parameters('roleName'), resourceGroup().id)]",
+                            "type": "Microsoft.Authorization/roleDefinitions",
+                            "apiVersion": "2018-01-01-preview",
+                            "properties": {
+                                "roleName": "[parameters('roleName')]",
+                                "description": "[parameters('roleDescription')]",
+                                "type": "customRole",
+                                "permissions": [
+                                    {
+                                        "actions": "[parameters('actions')]",
+                                        "notActions": "[parameters('notActions')]",
+                                        "dataActions": "[parameters('dataActions')]",
+                                        "notDataActions": "[parameters('notDataActions')]"
+                                    }
+                                ],
+                                "assignableScopes": [
+                                    "[resourceGroup().id]"
+                                ]
+                            }
+                        }
+                    ],
+                    "outputs": {
+                        "resourceGroupId": {
+                            "type": "string",
+                            "value": "[resourceGroup().id]"
+                        },
+                        "id": {
+                            "type": "string",
+                            "value": "[resourceId('Microsoft.Authorization/roleDefinitions', guid(parameters('roleName'), resourceGroup().id))]"
+                        }
+                    }
+                }
+            }
+        }
+    ],
+    "functions": [
+    ],
+    "outputs": {
+        "definitionId": {
+            "type": "string",
+            "value": "[if(not(empty(parameters('resourceGroupName'))), resourceId('Microsoft.Authorization/roleDefinitions', guid(parameters('roleName'), reference(extensionResourceId(format('/subscriptions/{0}/resourceGroups/{1}', subscription().id, parameters('resourceGroupName')), 'Microsoft.Resources/deployments', 'roleDefinitionDeployment'), '2019-10-01').outputs.resourceGroupId.value)), resourceId('Microsoft.Authorization/roleDefinitions', guid(parameters('roleName'), subscription().id)))]",
+            "metadata": {
+                "description": "The id of the role definition that was created."
+            }
+        },
+        "definitionScope": {
+            "type": "string",
+            "value": "[if(empty(parameters('resourceGroupName')), subscription().id, reference('roleDefinitionDeployment').outputs.resourceGroupId.value)]",
+            "metadata": {
+                "description": "The scope (subscription or resource group) this definition was created on."
+            }
+        }
+    }
+}

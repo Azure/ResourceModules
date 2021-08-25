@@ -1,0 +1,25 @@
+{
+  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    "policyAssignmentName": {
+      "value": "Allowed locations 2"
+    },
+    "policyDefinitionID": {
+      "value": "/providers/Microsoft.Authorization/policyDefinitions/e56962a6-4747-49cd-b67b-bf8b01975c4c"
+    },
+    "parameters": {
+      "value": {
+        "listOfAllowedLocations": {
+          "value": ["westus","westus2"]
+        }
+      }
+    },
+    "location": {
+      "value": "westus2"
+    },
+    "identity": {
+      "value": "None"
+    }
+  }
+}
