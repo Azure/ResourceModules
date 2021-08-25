@@ -1,0 +1,649 @@
+{
+    "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "vmSize": {
+            "type": "string",
+            "defaultValue": "Standard_D8s_v3",
+            "metadata": {
+                "description": "Required. Size of VM."
+            }
+        },
+        "cuaId": {
+            "type": "string",
+            "defaultValue": "",
+            "metadata": {
+                "description": "Optional. Customer Usage Attribution id (GUID). This GUID must be previously registered"
+            }
+        },
+        "location": {
+            "type": "string",
+            "defaultValue": "[resourceGroup().location]",
+            "metadata": {
+                "description": "Optional. Location for all resources."
+            }
+        },
+        "osImage": {
+            "type": "string",
+            "defaultValue": "/subscriptions/<subscriptionId>/resourceGroups/dependencies-rg/providers/Microsoft.Compute/images/sxx-az-img-weu-x-002",
+            "metadata": {
+                "description": "Required. OS Image for VM."
+            }
+        },
+        "vnetId": {
+            "type": "string",
+            "defaultValue": "/subscriptions/<subscriptionId>/resourceGroups/dependencies-rg/providers/Microsoft.Network/virtualNetworks/sxx-az-vnet-weu-x-002", 
+            "metadata": {
+                "description": "Required. Virtual Network resource ID."
+            } },
+        "eth0SubnetName": {
+            "type": "string",
+            "defaultValue": "sxx-az-subnet-weu-x-001",
+            "metadata": {
+                "description": "Required. External Subnet for interface eth0"
+            }
+        },
+        "eth1SubnetName": {
+            "type": "string",
+            "defaultValue": "sxx-az-subnet-weu-x-002",
+            "metadata": {
+                "description": "Required. Internal Subnet for interface eth1"
+            }
+        },
+        "eth2SubnetName": {
+            "type": "string",
+            "defaultValue": "sxx-az-subnet-weu-x-003",
+            "metadata": {
+                "description": "Required. External Subnet for interface eth2"
+            }
+        },
+        "eth3SubnetName": {
+            "type": "string",
+            "defaultValue": "sxx-az-subnet-weu-x-004",
+            "metadata": {
+                "description": "Required. External Subnet for interface eth3"
+            }
+        },
+        "vm1Eth0PrivateAddress": {
+            "type": "string",
+            "defaultValue": "10.0.0.6",
+            "metadata": {
+                "description": "Required. VM1 private address."
+            }
+        },
+        "vm1Eth1PrivateAddress": {
+            "type": "string",
+            "defaultValue": "10.0.1.6",
+            "metadata": {
+                "description": "Required. VM1 private address."
+            }
+        },
+        "vm1Eth2PrivateAddress": {
+            "type": "string",
+            "defaultValue": "10.0.2.6",
+            "metadata": {
+                "description": "Required. VM1 private address."
+            }
+        },
+        "vm1Eth3PrivateAddress": {
+            "type": "string",
+            "defaultValue": "10.0.3.6",
+            "metadata": {
+                "description": "Required. VM1 private address."
+            }
+        },
+        "vm2Eth0PrivateAddress": {
+            "type": "string",
+            "defaultValue": "10.0.0.7",
+            "metadata": {
+                "description": "Required. VM2 private address."
+            }
+        },
+        "vm2Eth1PrivateAddress": {
+            "type": "string",
+            "defaultValue": "10.0.1.7",
+            "metadata": {
+                "description": "Required. VM2 private address."
+            }
+        },
+        "vm2Eth2PrivateAddress": {
+            "type": "string",
+            "defaultValue": "10.0.2.7",
+            "metadata": {
+                "description": "Required. VM2 private address."
+            }
+        },
+        "vm2Eth3PrivateAddress": {
+            "type": "string",
+            "defaultValue": "10.0.3.7",
+            "metadata": {
+                "description": "Required. VM2 private address."
+            }
+        },
+        "availabilitySetName": {
+            "type": "string",
+            "defaultValue": "AS-wind-sg000",
+            "metadata": {
+                "description": "Required. Availability Set Name."
+            }
+        },
+        "vm1Name": {
+            "type": "string",
+            "defaultValue": "wind-sg000-azu-euw-1",
+            "metadata": {
+                "description": "Required. VM1 Name."
+            }
+        },
+        "vm2Name": {
+            "type": "string",
+            "defaultValue": "wind-sg000-azu-euw-2",
+            "metadata": {
+                "description": "Required. VM2 Name."
+            }
+        }
+    },
+    "variables": {
+
+        "metadata": { "comment": "!!!!!!!!!!!!!!!!!!!!  BEGIN OF CUSTOMIZATION !!!!!!!!!!!!!!!!!!!!!!!!!!!" },
+
+        "vm1Nic0Name": "[concat(parameters('vm1Name'), '-eth0')]",
+        "vm1Nic1Name": "[concat(parameters('vm1Name'), '-eth1')]",
+        "vm1Nic2Name": "[concat(parameters('vm1Name'), '-eth2')]",
+        "vm1Nic3Name": "[concat(parameters('vm1Name'), '-eth3')]",
+        "vm2Nic0Name": "[concat(parameters('vm2Name'), '-eth0')]",
+        "vm2Nic1Name": "[concat(parameters('vm2Name'), '-eth1')]",
+        "vm2Nic2Name": "[concat(parameters('vm2Name'), '-eth2')]",
+        "vm2Nic3Name": "[concat(parameters('vm2Name'), '-eth3')]",
+        "resourceGroupName": "resourceGroup().name",
+        "location": "[resourceGroup().location]",
+        "osType": "Linux",
+        "vm1PublicIPAddressName": "[concat(variables('vm1Nic0Name'), '-pub')]",
+        "vm1PublicIPAddressName2": "[concat(variables('vm1Nic2Name'), '-pub')]",
+        "vm1PublicIPAddressName3": "[concat(variables('vm1Nic3Name'), '-pub')]",
+        "vm2PublicIPAddressName": "[concat(variables('vm2Nic0Name'), '-pub')]",
+        "vm2PublicIPAddressName2": "[concat(variables('vm2Nic2Name'), '-pub')]",
+        "vm2PublicIPAddressName3": "[concat(variables('vm2Nic3Name'), '-pub')]",
+        "eth0SubnetId": "[concat(parameters('vnetId'), '/subnets/', parameters('eth0SubnetName'))]",
+        "eth1SubnetId": "[concat(parameters('vnetId'), '/subnets/', parameters('eth1SubnetName'))]",
+        "eth2SubnetId": "[concat(parameters('vnetId'), '/subnets/', parameters('eth2SubnetName'))]",
+        "eth3SubnetId": "[concat(parameters('vnetId'), '/subnets/', parameters('eth3SubnetName'))]",
+
+        "metadata": { "comment": "!!!!!!!!!!!!!!!!!!!!  END OF CUSTOMIZATION !!!!!!!!!!!!!!!!!!!!!!!!!!!" }
+    },
+    "resources": [
+        {
+            
+                "condition": "[not(empty(parameters('cuaId')))]",
+                "type": "Microsoft.Resources/deployments",
+                "apiVersion": "2020-06-01",
+                "name": "[concat('pid-', parameters('cuaId'))]",
+                "properties": {
+                    "mode": "Incremental",
+                    "template": {
+                        "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+                        "contentVersion": "1.0.0.0",
+                        "resources": [
+                    ]
+                }
+            }
+        },
+        {
+            "apiVersion": "2019-12-01",
+            "type": "Microsoft.Compute/availabilitySets",
+            "sku": {
+                "name": "Aligned"
+            },
+            "name": "[parameters('availabilitySetName')]",
+            "location": "[parameters('location')]",
+            "tags": {},
+            "scale": null,
+            "properties": {
+                "platformUpdateDomainCount": 5,
+                "platformFaultDomainCount": 2
+            }
+        },
+        {
+            "type": "Microsoft.Network/publicIPAddresses",
+            "apiVersion": "2020-08-01",
+            "name": "[variables('vm1PublicIPAddressName')]",
+            "location": "[parameters('location')]",
+            "properties": {
+                "publicIPAddressVersion": "IPv4",
+                "publicIPAllocationMethod": "static",
+                "idleTimeoutInMinutes": 30
+            }
+        },
+        {
+            "type": "Microsoft.Network/publicIPAddresses",
+            "apiVersion": "2020-08-01",
+            "name": "[variables('vm1PublicIPAddressName2')]",
+            "location": "[parameters('location')]",
+            "properties": {
+                "publicIPAddressVersion": "IPv4",
+                "publicIPAllocationMethod": "static",
+                "idleTimeoutInMinutes": 30
+            }
+        },
+        {
+            "type": "Microsoft.Network/publicIPAddresses",
+            "apiVersion": "2020-08-01",
+            "name": "[variables('vm1PublicIPAddressName3')]",
+            "location": "[parameters('location')]",
+            "properties": {
+                "publicIPAddressVersion": "IPv4",
+                "publicIPAllocationMethod": "static",
+                "idleTimeoutInMinutes": 30
+            }
+        },
+        {
+            "type": "Microsoft.Network/publicIPAddresses",
+            "apiVersion": "2020-08-01",
+            "name": "[variables('vm2PublicIPAddressName')]",
+            "location": "[parameters('location')]",
+            "properties": {
+                "publicIPAddressVersion": "IPv4",
+                "publicIPAllocationMethod": "static",
+                "idleTimeoutInMinutes": 30
+            }
+        },
+        {
+            "type": "Microsoft.Network/publicIPAddresses",
+            "apiVersion": "2020-08-01",
+            "name": "[variables('vm2PublicIPAddressName2')]",
+            "location": "[parameters('location')]",
+            "properties": {
+                "publicIPAddressVersion": "IPv4",
+                "publicIPAllocationMethod": "static",
+                "idleTimeoutInMinutes": 30
+            }
+        },
+        {
+            "type": "Microsoft.Network/publicIPAddresses",
+            "apiVersion": "2020-08-01",
+            "name": "[variables('vm2PublicIPAddressName3')]",
+            "location": "[parameters('location')]",
+            "properties": {
+                "publicIPAddressVersion": "IPv4",
+                "publicIPAllocationMethod": "static",
+                "idleTimeoutInMinutes": 30
+            }
+        },
+        {
+            "type": "Microsoft.Network/networkInterfaces",
+            "apiVersion": "2020-08-01",
+            "name": "[variables('vm1Nic0Name')]",
+            "location": "[parameters('location')]",
+            "dependsOn": [
+                "[resourceId('Microsoft.Network/publicIPAddresses', variables('vm1PublicIPAddressName'))]"
+            ],
+            "properties": {
+                "ipConfigurations": [
+                    {
+                        "name": "ip-eth0",
+                        "properties": {
+                            "primary": true,
+                            "privateIPAddress": "[parameters('vm1Eth0PrivateAddress')]",
+                            "privateIPAllocationMethod": "Static",
+                            "publicIPAddress": {
+                                "id": "[resourceId('Microsoft.Network/publicIPAddresses',variables('vm1PublicIPAddressName'))]"
+                            },
+                            "subnet": {
+                                "id": "[variables('eth0SubnetId')]"
+                            }
+                        }
+                    }
+                ],
+                "enableIPForwarding": true
+            }
+        },
+        {
+            "type": "Microsoft.Network/networkInterfaces",
+            "apiVersion": "2020-08-01",
+            "name": "[variables('vm1Nic1Name')]",
+            "location": "[parameters('location')]",
+            "properties": {
+                "ipConfigurations": [
+                    {
+                        "name": "ip-eth1",
+                        "properties": {
+                            "privateIPAddress": "[parameters('vm1Eth1PrivateAddress')]",
+                            "privateIPAllocationMethod": "Static",
+                            "subnet": {
+                                "id": "[variables('eth1SubnetId')]"
+                            }
+                        }
+                    }
+                ],
+                "enableIPForwarding": true
+            }
+        },
+        {
+            "type": "Microsoft.Network/networkInterfaces",
+            "apiVersion": "2020-08-01",
+            "name": "[variables('vm1Nic2Name')]",
+            "location": "[parameters('location')]",
+            "dependsOn": [
+                "[resourceId('Microsoft.Network/publicIPAddresses', variables('vm1PublicIPAddressName2'))]"
+            ],
+            "properties": {
+                "ipConfigurations": [
+                    {
+                        "name": "ip-eth2",
+                        "properties": {
+                            "privateIPAddress": "[parameters('vm1Eth2PrivateAddress')]",
+                            "privateIPAllocationMethod": "Static",
+                            "publicIPAddress": {
+                                "id": "[resourceId('Microsoft.Network/publicIPAddresses',variables('vm1PublicIPAddressName2'))]"
+                            },
+                            "subnet": {
+                                "id": "[variables('eth2SubnetId')]"
+                            }
+                        }
+                    }
+                ],
+                "enableIPForwarding": true
+            }
+        },
+        {
+            "type": "Microsoft.Network/networkInterfaces",
+            "apiVersion": "2020-08-01",
+            "name": "[variables('vm1Nic3Name')]",
+            "location": "[parameters('location')]",
+            "dependsOn": [
+                "[resourceId('Microsoft.Network/publicIPAddresses', variables('vm1PublicIPAddressName3'))]"
+            ],
+            "properties": {
+                "ipConfigurations": [
+                    {
+                        "name": "ip-eth3",
+                        "properties": {
+                            "privateIPAddress": "[parameters('vm1Eth3PrivateAddress')]",
+                            "privateIPAllocationMethod": "Static",
+                            "publicIPAddress": {
+                                "id": "[resourceId('Microsoft.Network/publicIPAddresses',variables('vm1PublicIPAddressName3'))]"
+                            },
+                            "subnet": {
+                                "id": "[variables('eth3SubnetId')]"
+                            }
+                        }
+                    }
+                ],
+                "enableIPForwarding": true
+            }
+        },
+        {
+            "apiVersion": "2019-12-01",
+            "type": "Microsoft.Compute/virtualMachines",
+            "identity": {
+                "type": "SystemAssigned"
+            },
+            "name": "[parameters('vm1Name')]",
+            "location": "[parameters('location')]",
+            "scale": null,
+            "dependsOn": [
+                "[resourceId('Microsoft.Compute/availabilitySets', parameters('availabilitySetName'))]",
+                "[resourceId('Microsoft.Network/networkInterfaces', variables('vm1Nic0Name'))]",
+                "[resourceId('Microsoft.Network/networkInterfaces', variables('vm1Nic1Name'))]",
+                "[resourceId('Microsoft.Network/networkInterfaces', variables('vm1Nic2Name'))]",
+                "[resourceId('Microsoft.Network/networkInterfaces', variables('vm1Nic3Name'))]"
+            ],
+            "properties": {
+                "osProfile": {
+                    "computerName": "[parameters('vm1Name')]",
+                    "adminUsername": "nouser",
+                    "adminPassword": "this.Password.1s.never.used!!!"
+                },
+                "hardwareProfile": {
+                    "vmSize": "[parameters('vmSize')]"
+                },
+                "storageProfile": {
+                    "imageReference": {
+                        "id": "[parameters('osImage')]"
+                    },
+                    "osDisk": {
+                        "osType": "[variables('osType')]",
+                        "name": "[concat(parameters('vm1Name'),'-osDisk')]",
+                        "createOption": "FromImage",
+                        "caching": "ReadWrite",
+                        "managedDisk": {
+                            "storageAccountType": "Premium_LRS"
+                        }
+                    },
+                    "dataDisks": []
+                },
+                "networkProfile": {
+                    "networkInterfaces": [
+                        {
+                            "id": "[resourceId('Microsoft.Network/networkInterfaces', variables('vm1Nic0Name'))]",
+                            "properties": {
+                                "primary": true
+                            }
+                        },
+                        {
+                            "id": "[resourceId('Microsoft.Network/networkInterfaces', variables('vm1Nic1Name'))]",
+                            "properties": {
+                                "primary": false
+                            }
+                        },
+                        {
+                            "id": "[resourceId('Microsoft.Network/networkInterfaces', variables('vm1Nic2Name'))]",
+                            "properties": {
+                                "primary": false
+                            }
+                        },
+                        {
+                            "id": "[resourceId('Microsoft.Network/networkInterfaces', variables('vm1Nic3Name'))]",
+                            "properties": {
+                                "primary": false
+                            }
+                        }
+                    ]
+                },
+                "availabilitySet": {
+                    "id": "[resourceId('Microsoft.Compute/availabilitySets', parameters('availabilitySetName'))]"
+                }
+            }
+        },
+        {
+            "type": "Microsoft.Network/networkInterfaces",
+            "apiVersion": "2020-08-01",
+            "name": "[variables('vm2Nic0Name')]",
+            "location": "[parameters('location')]",
+            "dependsOn": [
+                "[resourceId('Microsoft.Network/publicIPAddresses', variables('vm2PublicIPAddressName'))]"
+            ],
+            "properties": {
+                "ipConfigurations": [
+                    {
+                        "name": "ip-eth0",
+                        "properties": {
+                            "primary": true,
+                            "privateIPAddress": "[parameters('vm2Eth0PrivateAddress')]",
+                            "privateIPAllocationMethod": "Static",
+                            "publicIPAddress": {
+                                "id": "[resourceId('Microsoft.Network/publicIPAddresses',variables('vm2PublicIPAddressName'))]"
+                            },
+                            "subnet": {
+                                "id": "[variables('eth0SubnetId')]"
+                            }
+                        }
+                    }
+                ],
+                "enableIPForwarding": true
+            }
+        },
+        {
+            "type": "Microsoft.Network/networkInterfaces",
+            "apiVersion": "2020-08-01",
+            "name": "[variables('vm2Nic1Name')]",
+            "location": "[parameters('location')]",
+            "properties": {
+                "ipConfigurations": [
+                    {
+                        "name": "ip-eth1",
+                        "properties": {
+                            "privateIPAddress": "[parameters('vm2Eth1PrivateAddress')]",
+                            "privateIPAllocationMethod": "Static",
+                            "subnet": {
+                                "id": "[variables('eth1SubnetId')]"
+                            }
+                        }
+                    }
+                ],
+                "enableIPForwarding": true
+            }
+        },
+        {
+            "type": "Microsoft.Network/networkInterfaces",
+            "apiVersion": "2020-08-01",
+            "name": "[variables('vm2Nic2Name')]",
+            "location": "[parameters('location')]",
+            "dependsOn": [
+                "[resourceId('Microsoft.Network/publicIPAddresses', variables('vm2PublicIPAddressName2'))]"
+            ],
+            "properties": {
+                "ipConfigurations": [
+                    {
+                        "name": "ip-eth2",
+                        "properties": {
+                            "privateIPAddress": "[parameters('vm2Eth2PrivateAddress')]",
+                            "privateIPAllocationMethod": "Static",
+                            "publicIPAddress": {
+                                "id": "[resourceId('Microsoft.Network/publicIPAddresses',variables('vm2PublicIPAddressName2'))]"
+                            },
+                            "subnet": {
+                                "id": "[variables('eth2SubnetId')]"
+                            }
+                        }
+                    }
+                ],
+                "enableIPForwarding": true
+            }
+        },
+        {
+            "type": "Microsoft.Network/networkInterfaces",
+            "apiVersion": "2020-08-01",
+            "name": "[variables('vm2Nic3Name')]",
+            "location": "[parameters('location')]",
+            "dependsOn": [
+                "[resourceId('Microsoft.Network/publicIPAddresses', variables('vm2PublicIPAddressName3'))]"
+            ],
+            "properties": {
+                "ipConfigurations": [
+                    {
+                        "name": "ip-eth3",
+                        "properties": {
+                            "privateIPAddress": "[parameters('vm2Eth3PrivateAddress')]",
+                            "privateIPAllocationMethod": "Static",
+                            "publicIPAddress": {
+                                "id": "[resourceId('Microsoft.Network/publicIPAddresses',variables('vm2PublicIPAddressName3'))]"
+                            },
+                            "subnet": {
+                                "id": "[variables('eth3SubnetId')]"
+                            }
+                        }
+                    }
+                ],
+                "enableIPForwarding": true
+            }
+        },
+        {
+            "apiVersion": "2019-12-01",
+            "type": "Microsoft.Compute/virtualMachines",
+            "identity": {
+                "type": "SystemAssigned"
+            },
+            "name": "[parameters('vm2Name')]",
+            "location": "[parameters('location')]",
+            "scale": null,
+            "dependsOn": [
+                "[resourceId('Microsoft.Compute/availabilitySets', parameters('availabilitySetName'))]",
+                "[resourceId('Microsoft.Network/networkInterfaces', variables('vm2Nic0Name'))]",
+                "[resourceId('Microsoft.Network/networkInterfaces', variables('vm2Nic1Name'))]",
+                "[resourceId('Microsoft.Network/networkInterfaces', variables('vm2Nic2Name'))]",
+                "[resourceId('Microsoft.Network/networkInterfaces', variables('vm2Nic3Name'))]"
+            ],
+            "properties": {
+                "osProfile": {
+                    "computerName": "[parameters('vm2Name')]",
+                    "adminUsername": "nouser",
+                    "adminPassword": "this.Password.1s.never.used!!!"
+                },
+                "hardwareProfile": {
+                    "vmSize": "[parameters('vmSize')]"
+                },
+                "storageProfile": {
+                    "imageReference": {
+                        "id": "[parameters('osImage')]"
+                    },
+                    "osDisk": {
+                        "osType": "[variables('osType')]",
+                        "name": "[concat(parameters('vm2Name'),'-osDisk')]",
+                        "createOption": "FromImage",
+                        "caching": "ReadWrite",
+                        "managedDisk": {
+                            "storageAccountType": "Premium_LRS"
+                        }
+                    },
+                    "dataDisks": []
+                },
+                "networkProfile": {
+                    "networkInterfaces": [
+                        {
+                            "id": "[resourceId('Microsoft.Network/networkInterfaces', variables('vm2Nic0Name'))]",
+                            "properties": {
+                                "primary": true
+                            }
+                        },
+                        {
+                            "id": "[resourceId('Microsoft.Network/networkInterfaces', variables('vm2Nic1Name'))]",
+                            "properties": {
+                                "primary": false
+                            }
+                        },
+                        {
+                            "id": "[resourceId('Microsoft.Network/networkInterfaces', variables('vm2Nic2Name'))]",
+                            "properties": {
+                                "primary": false
+                            }
+                        },
+                        {
+                            "id": "[resourceId('Microsoft.Network/networkInterfaces', variables('vm2Nic3Name'))]",
+                            "properties": {
+                                "primary": false
+                            }
+                        }
+                    ]
+                },
+                "availabilitySet": {
+                    "id": "[resourceId('Microsoft.Compute/availabilitySets', parameters('availabilitySetName'))]"
+                }
+            }
+        }
+    ],
+    "functions": [],
+    "outputs": {
+        "vm1Name": {
+            "type": "string",
+            "value": "[parameters('vm1Name')]",
+            "metadata": {
+                "description": "The name of the VM."
+            }
+        },
+        "vm1NameResourceId": {
+            "type": "string",
+            "value": "[resourceId('Microsoft.Compute/virtualMachines', parameters('vm1Name'))]",
+            "metadata": {
+                "description": "The VM Resource ID."
+            }
+        },
+        "vm1NameResourceGroup": {
+            "type": "string",
+            "value": "[resourceGroup().name]",
+            "metadata": {
+                "description": "The Resource Group in which the resource is created."
+            }
+        }
+
+    }
+}
