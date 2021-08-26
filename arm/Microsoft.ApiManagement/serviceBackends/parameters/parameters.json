@@ -1,0 +1,21 @@
+{
+  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    "apiManagementServiceName": {
+      "value": "sxx-az-am-weu-x-001"
+    },
+    "backendName": {
+      "value": "backend"
+    },
+    "url": {
+      "value": "http://echoapi.cloudapp.net/api"
+    },
+    "tls": {
+      "value": {
+        "validateCertificateChain": false,
+        "validateCertificateName": false
+      }
+    }
+  }
+}

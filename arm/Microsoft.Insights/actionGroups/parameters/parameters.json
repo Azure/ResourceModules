@@ -1,0 +1,46 @@
+{
+  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    "actionGroupName": {
+      "value": "sxx-az-ag-weu-x-001"
+    },
+    "groupShortName":{
+      "value": "azagweux001"
+    },
+    // "roleAssignments": {
+    //     "value": [
+    //         {
+    //             "roleDefinitionIdOrName": "Desktop Virtualization User",
+    //             "principalIds": [
+    //                 "12345678-1234-1234-1234-123456789012", // object 1
+    //                 "78945612-1234-1234-1234-123456789012" // object 2
+    //             ]
+    //         }
+    //     ]
+    // },
+    "emailReceivers":{
+      "value":[
+        {
+          "name": "TestUser_-EmailAction-",
+          "emailAddress": "test.user@testcompany.com",
+          "useCommonAlertSchema": true
+        },
+        {
+          "name": "TestUser2",
+          "emailAddress": "test.user2@testcompany.com",
+          "useCommonAlertSchema": true
+        }
+      ]
+    },
+    "smsReceivers":{
+      "value": [
+        {
+          "name": "TestUser_-SMSAction-",
+          "countryCode": "1",
+          "phoneNumber": "2345678901"
+        }
+      ]
+    }
+  }
+}

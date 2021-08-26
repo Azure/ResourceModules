@@ -1,0 +1,44 @@
+{
+    "$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentParameters.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "privateLinkScopeName": {
+            "value": "test-az-pls-weu-x-001"
+        }
+        // "scopedResources": {
+        //     "value": [
+        //         {
+        //             "linkedResourceId": "/subscriptions/xxx-xxx-xxx-xxx-xxx/resourceGroups/xxx/providers/Microsoft.OperationalInsights/workspaces/testlaw"
+        //         },
+        //         {
+        //             "linkedResourceId": "/subscriptions/xxx-xxx-xxx-xxx-xxx/resourceGroups/xxx/providers/microsoft.insights/components/testai"
+        //         }
+        //     ]
+        // },
+        // "privateEndpoints": {
+        //     "value": [
+        //         {
+        //             "name": "test-az-sa-cac-y-123-pe",
+        //             "subnetResourceId": "/subscriptions/xxx-xxx-xxx-xxx-xxx/resourceGroups/xxx/providers/Microsoft.Network/virtualNetworks/testvnet/subnets/testnet",
+        //             "service": "azuremonitor",
+        //             "privateDnsZoneResourceIds": [ 
+        //                 "/subscriptions/xxx-xxx-xxx-xxx-xxx/resourceGroups/xxx/providers/Microsoft.Network/privateDnsZones/privatelink.agentsvc.azure-automation.net",
+        //                 "/subscriptions/xxx-xxx-xxx-xxx-xxx/resourceGroups/xxx/providers/Microsoft.Network/privateDnsZones/privatelink.monitor.azure.com",
+        //                 "/subscriptions/xxx-xxx-xxx-xxx-xxx/resourceGroups/xxx/providers/Microsoft.Network/privateDnsZones/privatelink.ods.opinsights.azure.com",
+        //                 "/subscriptions/xxx-xxx-xxx-xxx-xxx/resourceGroups/xxx/providers/Microsoft.Network/privateDnsZones/privatelink.oms.opinsights.azure.com"
+        //             ]
+        //         }
+        //     ]
+        // },
+        // "roleAssignments": {
+        //     "value": [
+        //         {
+        //             "roleDefinitionIdOrName": "User Access Administrator",
+        //             "principalIds": [
+        //                 "xxx-xxx-xxx-xxx-xxx"
+        //             ]
+        //         }
+        //     ]
+        // }
+    }
+}

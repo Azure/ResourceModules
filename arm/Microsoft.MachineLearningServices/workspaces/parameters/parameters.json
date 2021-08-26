@@ -1,0 +1,57 @@
+{
+  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    "workspaceName": {
+      "value": "sxx-az-mls-weu-x-001"
+    },
+    "sku": {
+      "value": "Basic"
+    },
+    "associatedStorageAccountResourceId": {
+      "value": "/subscriptions/8629be3b-96bc-482d-a04b-ffff597c65a2/resourceGroups/dependencies-rg/providers/Microsoft.Storage/storageAccounts/sxxazsaweux003"
+    },
+    "associatedKeyVaultResourceId": {
+      "value": "/subscriptions/8629be3b-96bc-482d-a04b-ffff597c65a2/resourceGroups/dependencies-rg/providers/Microsoft.KeyVault/vaults/sxx-az-kv-weu-x-004"
+    },
+    "associatedApplicationInsightsResourceId": {
+      "value": "/subscriptions/8629be3b-96bc-482d-a04b-ffff597c65a2/resourceGroups/dependencies-rg/providers/Microsoft.Insights/components/test-az-appi-weu-x-02"
+    }
+    // "associatedContainerRegistryResourceId": {
+    //   "value": "/subscriptions/xxx-xxx-xxx-xxx-xxx/resourcegroups/iacs/providers/Microsoft.ContainerRegistry/registries/acrtest2428"
+    // },
+    // "roleAssignments": {
+    //   "value": [
+    //     {
+    //       "roleDefinitionIdOrName": "User Access Administrator",
+    //       "principalIds": [
+    //         "xxx-xxx-xxx-xxx-xxx"
+    //       ]
+    //     }
+    //   ]
+    // },
+    // "privateEndpoints": {
+    //   "value": [
+    //     {
+    //       "name": "acrtestedp",
+    //       "subnetResourceId": "/subscriptions/xxx-xxx-xxx-xxx-xxx/resourceGroups/iacs/providers/Microsoft.Network/virtualNetworks/acrtestvnet/subnets/default",
+    //       "service": "amlworkspace",
+    //       "privateDnsZoneResourceIds": [
+    //         "/subscriptions/xxx-xxx-xxx-xxx-xxx/resourcegroups/iacs/providers/Microsoft.Network/privateDnsZones/privatelink.api.azureml.ms",
+    //         "/subscriptions/xxx-xxx-xxx-xxx-xxx/resourcegroups/iacs/providers/Microsoft.Network/privateDnsZones/privatelink.notebooks.azure.net"
+    //       ]
+    //     }
+    //   ]
+    // },
+    // // Diagnostic Settings
+    // "diagnosticSettingName": {
+    //   "value": "testsetting"
+    // },
+    // "diagnosticLogsRetentionInDays": {
+    //   "value": 7
+    // },
+    // "workspaceId": {
+    //   "value": "/subscriptions/xxx-xxx-xxx-xxx-xxx/resourceGroups/iacs/providers/Microsoft.OperationalInsights/workspaces/acrtest2428"
+    // }
+  }
+}

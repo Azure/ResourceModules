@@ -1,0 +1,59 @@
+{
+    "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "virtualNetworkGatewayName": {
+            "value": "acf-sb-ccoe-np-01-euw-vnet-validate-01-ergw-01"
+        },
+        "gatewayPipName": {
+            "value": [
+                "acf-sb-ccoe-np-01-euw-vnet-validate-01-ergw-01-pip-s-01"
+            ]
+        },
+        "publicIPPrefixId": {
+            "value": "/subscriptions/12345678-1234-1234-1234-123456789012/resourceGroups/dependencies-rg/providers/Microsoft.Network/publicIPPrefixes/acf-sb-ccoe-np-01-euw-pippfx-01"
+        },
+        "domainNameLabel": {
+            "value": [
+                "acfsbccoenp01euw-ergw-01-pip-s-01"
+            ]
+        },
+        "virtualNetworkGatewayType": {
+            "value": "ExpressRoute"
+        },
+        "virtualNetworkGatewaySku": {
+            "value": "ErGw1AZ"
+        },
+        "vNetId": {
+            "value": "/subscriptions/12345678-1234-1234-1234-123456789012/resourceGroups/dependencies-rg/providers/Microsoft.Network/virtualNetworks/acf-sb-ccoe-np-01-euw-vnet-validate-01"
+        },
+        "diagnosticLogsRetentionInDays": {
+            "value": 365
+        },
+        "diagnosticStorageAccountId": {
+            "value": "/subscriptions/12345678-1234-1234-1234-123456789012/resourceGroups/dependencies-rg/providers/Microsoft.Storage/storageAccounts/acfsbccoenp1validate02"
+        },
+        "workspaceId": {
+            "value": "/subscriptions/12345678-1234-1234-1234-123456789012/resourceGroups/dependencies-rg/providers/Microsoft.OperationalInsights/workspaces/acf-sb-ccoe-np-01-euw-loganalytics-validate-01"
+        },
+        "eventHubAuthorizationRuleId": {
+            "value": "/subscriptions/12345678-1234-1234-1234-123456789012/resourceGroups/dependencies-rg/providers/Microsoft.EventHub/namespaces/acf-sb-ccoe-np-01-euw-evhns-logging-np-01/AuthorizationRules/RootManageSharedAccessKey"
+        },
+        "eventHubName": {
+            "value": "acf-sb-ccoe-np-01-euw-evh-logging-np-01"
+        },
+        "lockForDeletion": {
+            "value": false
+        },
+        "tags": {
+            "value": {
+                "Environment": "Validation",
+                "Contact": "test.user@testcompany.com",
+                "PurchaseOrder": "",
+                "CostCenter": "",
+                "ServiceName": "DeploymentValidation",
+                "Role": "DeploymentValidation"
+            }
+        }
+    }
+}

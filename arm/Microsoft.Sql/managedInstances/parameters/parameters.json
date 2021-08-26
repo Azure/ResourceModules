@@ -1,0 +1,76 @@
+{
+  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    "managedInstanceName": {
+      "value": "sxx-az-sqlmi-weu-x-001"
+    },
+    "administratorLogin": {
+      "reference": {
+        "keyVault": {
+          "id": "/subscriptions/8629be3b-96bc-482d-a04b-ffff597c65a2/resourceGroups/dependencies-rg/providers/Microsoft.KeyVault/vaults/sxx-az-kv-weu-x-004"
+        },
+        "secretName": "administratorLogin"
+      }
+    },
+    "administratorLoginPassword": {
+      "reference": {
+        "keyVault": {
+          "id": "/subscriptions/8629be3b-96bc-482d-a04b-ffff597c65a2/resourceGroups/dependencies-rg/providers/Microsoft.KeyVault/vaults/sxx-az-kv-weu-x-004"
+        },
+        "secretName": "administratorLoginPassword"
+      }
+    },
+    "subnetId": {
+      "value": "/subscriptions/8629be3b-96bc-482d-a04b-ffff597c65a2/resourceGroups/dependencies-sqlmi-rg/providers/Microsoft.Network/virtualNetworks/sxx-az-vnet-weu-x-005/subnets/sxx-az-subnet-weu-x-003"
+    },
+    "skuName": {
+      "value": "GP_Gen5"
+    },
+    "skuTier": {
+      "value": "GeneralPurpose"
+    },
+    "storageSizeInGB": {
+      "value": 32
+    },
+    "vCores": {
+      "value": 4
+    },
+    "licenseType": {
+      "value": "LicenseIncluded"
+    },
+    "hardwareFamily": {
+      "value": "Gen5"
+    },
+    "dnsZonePartner": {
+      "value": ""
+    },
+    "timezoneId": {
+      "value": "UTC"
+    },
+    "collation": {
+      "value": "SQL_Latin1_General_CP1_CI_AS"
+    },
+    "proxyOverride": {
+      "value": "Proxy"
+    },
+    "publicDataEndpointEnabled": {
+      "value": false
+    },
+    "enableAdvancedDataSecurity": {
+      "value": false
+    },
+    "enableRecuringVulnerabilityAssessmentsScans": {
+      "value": false
+    },
+    "sendScanReportEmailsToSubscriptionAdmins": {
+      "value": true
+    },
+    "sendScanReportToEmailAddresses": {
+      "value": ["test1@contoso.com", "test2@contoso.com"]
+    },
+    "lockForDeletion": {
+      "value": false
+    }
+  }
+}

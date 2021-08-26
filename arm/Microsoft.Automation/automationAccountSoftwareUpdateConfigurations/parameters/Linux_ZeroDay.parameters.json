@@ -1,0 +1,43 @@
+{
+    "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "deploymentScheduleName": {
+            "value": "Linux_ZeroDay"
+        },
+        "automationAccountName": {
+            "value": "sxx-wd-aut-weu-x-741"
+        },
+        "operatingSystem": {
+            "value": "Linux"
+        },
+        "maintenanceWindow": {
+            "value": "PT4H"
+        },
+        "updateClassifications": {
+            "value": [
+                "Critical",
+                "Security"
+            ]
+        },
+        "includeUpdates": {
+            "value": [
+                "kernel"
+            ]
+        },
+        "excludeUpdates": {
+            "value": [
+                "icacls"
+            ]
+        },
+        "rebootSetting": {
+            "value": "IfRequired"
+        },
+        "frequency": {
+            "value": "OneTime"
+        },
+        "startTime": {
+            "value": "2021-12-31T06:00"
+        }
+    }
+}

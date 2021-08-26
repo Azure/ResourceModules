@@ -1,0 +1,28 @@
+{
+  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    "resourceGroupName": {
+      "value": ""
+    },
+    "policyAssignmentName": {
+      "value": "Add a tag to resources"
+    },
+    "policyDefinitionID": {
+      "value": "/providers/Microsoft.Authorization/policyDefinitions/4f9dc7db-30c1-420c-b61a-e1d640128d26"
+    },
+    "parameters": {
+      "value": {
+        "tagName": {
+          "value": "Tag"
+        },
+        "tagValue": {
+          "value": "Value"
+        }
+      }
+    },
+    "location": {
+      "value": "westeurope"
+    }
+  }
+}

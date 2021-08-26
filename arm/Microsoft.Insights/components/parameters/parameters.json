@@ -1,0 +1,28 @@
+{
+  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    "appInsightsName": {
+      "value": "test-az-appi-weu-x-02"
+    },
+    "appInsightsWorkspaceResourceId": {
+      "value": "/subscriptions/8629be3b-96bc-482d-a04b-ffff597c65a2/resourceGroups/dependencies-rg/providers/Microsoft.OperationalInsights/workspaces/sxx-az-la-weu-x-003"
+    }
+    // "appInsightsPublicNetworkAccessForIngestion": {
+    //   "value": "Disabled"
+    // },
+    // "appInsightsPublicNetworkAccessForQuery": {
+    //   "value": "Disabled"
+    // },
+    // "roleAssignments": {
+    //   "value": [
+    //     {
+    //       "roleDefinitionIdOrName": "User Access Administrator",
+    //       "principalIds": [
+    //         "xxx-xxx-xxx-xxx-xxx"
+    //       ]
+    //     }
+    //   ]
+    // }
+  }
+}

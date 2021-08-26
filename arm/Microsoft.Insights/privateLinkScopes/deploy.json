@@ -1,0 +1,377 @@
+{
+    "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "privateLinkScopeName": {
+            "type": "string",
+            "minLength": 1,
+            "metadata": {
+                "description": "Required. Name of the Private Link Scope."
+            }
+        },
+        "location": {
+            "type": "string",
+            "defaultValue": "global",
+            "metadata": {
+                "description": "Optional. The location of the Private Link Scope. Should be global."
+            }
+        },
+        "lockForDeletion": {
+            "type": "bool",
+            "defaultValue": false,
+            "metadata": {
+                "description": "Optional. Switch to lock Private Link Scope from deletion."
+            }
+        },
+        "roleAssignments": {
+            "defaultValue": [],
+            "type": "array",
+            "metadata": {
+                "description": "Optional. Array of role assignment objects that contain the 'roleDefinitionIdOrName' and 'principalId' to define RBAC role assignments on this resource. In the roleDefinitionIdOrName attribute, you can provide either the display name of the role definition, or its fully qualified ID in the following format: '/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11'"
+            }
+        },
+        "scopedResources": {
+            "type": "array",
+            "defaultValue": [],
+            "metadata": {
+                "description": "Optional. Configuration Details for Azure Monitor Resources."
+            }
+        },
+        "privateEndpoints": {
+            "type": "array",
+            "defaultValue": [],
+            "metadata": {
+                "description": "Optional. Configuration Details for private endpoints."
+            }
+        },
+        "tags": {
+            "type": "object",
+            "defaultValue": {},
+            "metadata": {
+                "description": "Optional. Resource tags."
+            }
+        },
+        "cuaId": {
+            "type": "string",
+            "defaultValue": "",
+            "metadata": {
+                "description": "Optional. Customer Usage Attribution id (GUID). This GUID must be previously registered"
+            }
+        }
+    },
+    "variables": {
+        "builtInRoleNames": {
+            "Contributor": "[concat('/subscriptions/', subscription().subscriptionId, '/providers/Microsoft.Authorization/roleDefinitions/', 'b24988ac-6180-42a0-ab88-20f7382dd24c')]",
+            "Log Analytics Contributor": "[concat('/subscriptions/', subscription().subscriptionId, '/providers/Microsoft.Authorization/roleDefinitions/', '92aaf0da-9dab-42b6-94a3-d43ce8d16293')]",
+            "Log Analytics Reader": "[concat('/subscriptions/', subscription().subscriptionId, '/providers/Microsoft.Authorization/roleDefinitions/', '73c42c96-874c-492b-b04d-ab87d138a893')]",
+            "Managed Application Contributor Role": "[concat('/subscriptions/', subscription().subscriptionId, '/providers/Microsoft.Authorization/roleDefinitions/', '641177b8-a67a-45b9-a033-47bc880bb21e')]",
+            "Managed Application Operator Role": "[concat('/subscriptions/', subscription().subscriptionId, '/providers/Microsoft.Authorization/roleDefinitions/', 'c7393b34-138c-406f-901b-d8cf2b17e6ae')]",
+            "Managed Applications Reader": "[concat('/subscriptions/', subscription().subscriptionId, '/providers/Microsoft.Authorization/roleDefinitions/', 'b9331d33-8a36-4f8c-b097-4f54124fdb44')]",
+            "Monitoring Contributor": "[concat('/subscriptions/', subscription().subscriptionId, '/providers/Microsoft.Authorization/roleDefinitions/', '749f88d5-cbae-40b8-bcfc-e573ddc772fa')]",
+            "Monitoring Metrics Publisher": "[concat('/subscriptions/', subscription().subscriptionId, '/providers/Microsoft.Authorization/roleDefinitions/', '3913510d-42f4-4e42-8a64-420c390055eb')]",
+            "Monitoring Reader": "[concat('/subscriptions/', subscription().subscriptionId, '/providers/Microsoft.Authorization/roleDefinitions/', '43d0d8ad-25c7-4714-9337-8ba259a9fe05')]",
+            "Owner": "[concat('/subscriptions/', subscription().subscriptionId, '/providers/Microsoft.Authorization/roleDefinitions/', '8e3af657-a8ff-443c-a75c-2fe8c4bcb635')]",
+            "Reader": "[concat('/subscriptions/', subscription().subscriptionId, '/providers/Microsoft.Authorization/roleDefinitions/', 'acdd72a7-3385-48ef-bd42-f606fba81ae7')]",
+            "Resource Policy Contributor": "[concat('/subscriptions/', subscription().subscriptionId, '/providers/Microsoft.Authorization/roleDefinitions/', '36243c78-bf99-498c-9df9-86d9f8d28608')]",
+            "User Access Administrator": "[concat('/subscriptions/', subscription().subscriptionId, '/providers/Microsoft.Authorization/roleDefinitions/', '18d7d88d-d35e-4fb5-a5c3-7773c20a72d9')]"
+        }
+    },
+    "resources": [
+        {
+            "condition": "[not(empty(parameters('cuaId')))]",
+            "type": "Microsoft.Resources/deployments",
+            "apiVersion": "2020-06-01",
+            "name": "[concat('pid-', parameters('cuaId'))]",
+            "properties": {
+                "mode": "Incremental",
+                "template": {
+                    "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+                    "contentVersion": "1.0.0.0",
+                    "resources": [
+                    ]
+                }
+            }
+        },
+        {
+            "type": "Microsoft.Insights/privateLinkScopes",
+            "apiVersion": "2019-10-17-preview",
+            "name": "[parameters('privateLinkScopeName')]",
+            "location": "[parameters('location')]",
+            "tags": "[parameters('tags')]",
+            "properties": {},
+            "resources": [
+                {
+                    "type": "providers/locks",
+                    "apiVersion": "2016-09-01",
+                    "condition": "[parameters('lockForDeletion')]",
+                    "name": "Microsoft.Authorization/privateLinkScopeDoNotDelete",
+                    "dependsOn": [
+                        "[concat('Microsoft.Insights/privateLinkScopes/', parameters('privateLinkScopeName'))]"
+                    ],
+                    "comments": "Resource lock on Private Link Scope",
+                    "properties": {
+                        "level": "CannotDelete"
+                    }
+                }
+            ]
+        },
+        // Scoped Resources
+        {
+            "type": "Microsoft.Resources/deployments",
+            "apiVersion": "2020-06-01",
+            "condition": "[not(empty(parameters('scopedResources')))]",
+            "name": "[concat('scopedResources','-',copyIndex())]",
+            "copy": {
+                "name": "scopedResourcesCopy",
+                "count": "[length(parameters('scopedResources'))]"
+            },
+            "dependsOn": [
+                "[parameters('privateLinkScopeName')]"
+            ],
+            "properties": {
+                "mode": "Incremental",
+                "expressionEvaluationOptions": {
+                    "scope": "inner"
+                },
+                "parameters": {
+                    "privateLinkScopeName": {
+                        "value": "[parameters('privateLinkScopeName')]"
+                    },
+                    "scopedResource": {
+                        "value": "[parameters('scopedResources')[copyIndex()]]"
+                    }
+                },
+                "template": {
+                    "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+                    "contentVersion": "1.0.0.0",
+                    "parameters": {
+                        "privateLinkScopeName": {
+                            "type": "string"
+                        },
+                        "scopedResource": {
+                            "type": "object"
+                        }
+                    },
+                    "variables": {
+                        "scopedResourceName": "[last(split(parameters('scopedResource').linkedResourceId,'/'))]",
+                        "scopedResource": {
+                            "name": "[concat(parameters('privateLinkScopeName'),'/scoped-', variables('scopedResourceName'), '-', guid(uniqueString(concat(parameters('privateLinkScopeName'),  parameters('scopedResource').linkedResourceId) )))]",
+                            "linkedResourceId": "[parameters('scopedResource').linkedResourceId]"
+                        }
+                    },
+                    "resources": [
+                        {
+                            "type": "microsoft.insights/privatelinkscopes/scopedresources",
+                            "apiVersion": "2019-10-17-preview",
+                            "name": "[variables('scopedResource').name]",
+                            "properties": {
+                                "linkedResourceId": "[variables('scopedResource').linkedResourceId]"
+                            }
+                        }
+                    ]
+                }
+            }
+        },
+        // Private Endpoints
+        {
+            "type": "Microsoft.Resources/deployments",
+            "apiVersion": "2020-06-01",
+            "condition": "[not(empty(parameters('privateEndpoints')))]",
+            "name": "[concat('privateEndpoints','-',copyIndex())]",
+            "copy": {
+                "name": "privateEndpointsCopy",
+                "count": "[length(parameters('privateEndpoints'))]"
+            },
+            "dependsOn": [
+                "[parameters('privateLinkScopeName')]",
+                "scopedResourcesCopy"
+            ],
+            "properties": {
+                "mode": "Incremental",
+                "expressionEvaluationOptions": {
+                    "scope": "inner"
+                },
+                "parameters": {
+                    "privateEndpointResourceId": {
+                        "value": "[resourceId('Microsoft.Insights/privateLinkScopes/', parameters('privateLinkScopeName'))]"
+                    },
+                    "privateEndpointVnetLocation": {
+                        "value": "[if(empty(parameters('privateEndpoints')),'dummy',reference(split(parameters('privateEndpoints')[copyIndex()].subnetResourceId,'/subnets/')[0],'2020-06-01', 'Full').location)]"
+                    },
+                    "privateEndpoint": {
+                        "value": "[parameters('privateEndpoints')[copyIndex()]]"
+                    },
+                    "tags": {
+                        "value": "[parameters('tags')]"
+                    }
+                },
+                "template": {
+                    "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+                    "contentVersion": "1.0.0.0",
+                    "parameters": {
+                        "privateEndpointResourceId": {
+                            "type": "string"
+                        },
+                        "privateEndpointVnetLocation": {
+                            "type": "string"
+                        },
+                        "privateEndpoint": {
+                            "type": "object"
+                        },
+                        "tags": {
+                            "type": "object"
+                        }
+                    },
+                    "variables": {
+                        "privateEndpointResourceName": "[last(split(parameters('privateEndpointResourceId'),'/'))]",
+                        "privateEndpoint": {
+                            "name": "[if(contains(parameters('privateEndpoint'), 'name'),if(empty(parameters('privateEndpoint').name),concat(variables('privateEndpointResourceName'),'-',parameters('privateEndpoint').service),parameters('privateEndpoint').name),concat(variables('privateEndpointResourceName'),'-',parameters('privateEndpoint').service))]",
+                            "subnetResourceId": "[parameters('privateEndpoint').subnetResourceId]",
+                            "service": [
+                                "[parameters('privateEndpoint').service]"
+                            ],
+                            "privateDnsZoneResourceIds": "[if(contains(parameters('privateEndpoint'), 'privateDnsZoneResourceIds'),if(empty(parameters('privateEndpoint').privateDnsZoneResourceIds),createArray(),parameters('privateEndpoint').privateDnsZoneResourceIds),createArray())]",
+                            "customDnsConfigs": "[if(contains(parameters('privateEndpoint'), 'customDnsConfigs'),if(empty(parameters('privateEndpoint').customDnsConfigs),json('null'),parameters('privateEndpoint').customDnsConfigs),json('null'))]"
+                        }
+                    },
+                    "resources": [
+                        {
+                            "type": "Microsoft.Network/privateEndpoints",
+                            "apiVersion": "2020-05-01",
+                            "name": "[variables('privateEndpoint').name]",
+                            "location": "[parameters('privateEndpointVnetLocation')]",
+                            "tags": "[parameters('tags')]",
+                            "properties": {
+                                "privateLinkServiceConnections": [
+                                    {
+                                        "name": "[variables('privateEndpoint').name]",
+                                        "properties": {
+                                            "privateLinkServiceId": "[parameters('privateEndpointResourceId')]",
+                                            "groupIds": "[variables('privateEndpoint').service]"
+                                        }
+                                    }
+                                ],
+                                "manualPrivateLinkServiceConnections": [],
+                                "subnet": {
+                                    "id": "[variables('privateEndpoint').subnetResourceId]"
+                                },
+                                "customDnsConfigs": "[variables('privateEndpoint').customDnsConfigs]"
+                            }
+                        },
+                        {
+                            "type": "Microsoft.Network/privateEndpoints/privateDnsZoneGroups",
+                            "apiVersion": "2020-05-01",
+                            "condition": "[not(empty(variables('privateEndpoint').privateDnsZoneResourceIds))]",
+                            "name": "[concat(variables('privateEndpoint').name, '/default')]",
+                            "dependsOn": [
+                                "[resourceId('Microsoft.Network/privateEndpoints', variables('privateEndpoint').name)]"
+                            ],
+                            "properties": {
+                                "copy": [
+                                    {
+                                        "name": "privateDnsZoneConfigs",
+                                        "count": "[length(variables('privateEndpoint').privateDnsZoneResourceIds)]",
+                                        "input": {
+                                            "name": "[last(split(variables('privateEndpoint').privateDnsZoneResourceIds[copyIndex('privateDnsZoneConfigs')],'/'))]",
+                                            "properties": {
+                                                "privateDnsZoneId": "[variables('privateEndpoint').privateDnsZoneResourceIds[copyIndex('privateDnsZoneConfigs')]]"
+                                            }
+                                        }
+                                    }
+                                ]
+                            }
+                        }
+                    ]
+                }
+            }
+        },
+        // Role Assignments
+        {
+            "name": "[concat('rbac-',deployment().name, copyIndex())]",
+            "apiVersion": "2020-06-01",
+            "type": "Microsoft.Resources/deployments",
+            "condition": "[not(empty(parameters('roleAssignments')))]",
+            "dependsOn": [
+                "[parameters('privateLinkScopeName')]"
+            ],
+            "copy": {
+                "name": "rbacDeplCopy",
+                "count": "[length(parameters('roleAssignments'))]"
+            },
+            "properties": {
+                "mode": "Incremental",
+                "expressionEvaluationOptions": {
+                    "scope": "inner"
+                },
+                "parameters": {
+                    "roleAssignment": {
+                        "value": "[parameters('roleAssignments')[copyIndex()]]"
+                    },
+                    "builtInRoleNames": {
+                        "value": "[variables('builtInRoleNames')]"
+                    },
+                    "privateLinkScopeName": {
+                        "value": "[parameters('privateLinkScopeName')]"
+                    }
+                },
+                "template": {
+                    "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+                    "contentVersion": "1.0.0.0",
+                    "parameters": {
+                        "roleAssignment": {
+                            "type": "object"
+                        },
+                        "builtInRoleNames": {
+                            "type": "object"
+                        },
+                        "privateLinkScopeName": {
+                            "type": "string"
+                        }
+                    },
+                    "resources": [
+                        {
+                            "type": "Microsoft.Insights/privateLinkScopes/providers/roleAssignments",
+                            "apiVersion": "2018-09-01-preview",
+                            "name": "[concat(parameters('privateLinkScopeName'), '/Microsoft.Authorization/', guid(uniqueString(concat(parameters('privateLinkScopeName'), array(parameters('roleAssignment').principalIds)[copyIndex('innerRbacCopy')], parameters('roleAssignment').roleDefinitionIdOrName ) )))]",
+                            "dependsOn": [
+                            ],
+                            "copy": {
+                                "name": "innerRbacCopy",
+                                "count": "[length(parameters('roleAssignment').principalIds)]"
+                            },
+                            "properties": {
+                                "roleDefinitionId": "[if(contains(parameters('builtInRoleNames'), parameters('roleAssignment').roleDefinitionIdOrName ), parameters('builtInRoleNames')[parameters('roleAssignment').roleDefinitionIdOrName] , parameters('roleAssignment').roleDefinitionIdOrName )]",
+                                "principalId": "[array(parameters('roleAssignment').principalIds)[copyIndex()]]"
+                            }
+                        }
+                    ]
+                }
+            }
+        }
+    ],
+    "functions": [
+    ],
+    "outputs": {
+        "privateLinkScopeResourceId": {
+            "type": "string",
+            "value": "[resourceId('Microsoft.Insights/privateLinkScopes', parameters('privateLinkScopeName'))]",
+            "metadata": {
+                "description": "The Resource Id of the Private Link Scope."
+            }
+        },
+        "privateLinkScopeResourceGroup": {
+            "type": "string",
+            "value": "[resourceGroup().name]",
+            "metadata": {
+                "description": "The name of the Resource Group the Private Link Scope was created in."
+            }
+        },
+        "privateLinkScopeName": {
+            "type": "string",
+            "value": "[parameters('privateLinkScopeName')]",
+            "metadata": {
+                "description": "The Name of the Private Link Scope."
+            }
+        }
+    }
+}

@@ -1,0 +1,36 @@
+{
+    "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "scriptName": {
+            "value": "sxx-az-ds-weu-x-001"
+        },
+        "userMsiName": {
+            "value": "sxx-az-msi-weu-x-002"
+        },
+        "userMsiResourceGroup": {
+            "value": "dependencies-rg"
+        },
+        "kind": {
+            "value": "AzurePowerShell"
+        },
+        "azPowerShellVersion": {
+            "value": "3.0"
+        },
+        "scriptContent": {
+            "value": "Write-Host 'Running PowerShell from template'"
+        },
+        "retentionInterval": {
+            "value": "P1D"
+        },
+        "runOnce": {
+            "value": false
+        },
+        "cleanupPreference": {
+            "value": "Always"
+        },
+        "timeout": {
+            "value": "PT30M"
+        }
+    }
+}

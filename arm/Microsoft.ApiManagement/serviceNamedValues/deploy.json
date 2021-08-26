@@ -1,0 +1,136 @@
+{
+  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    "apiManagementServiceName": {
+      "type": "string",
+      "defaultValue":"",
+      "metadata": {
+        "description": "Required. The name of the of the Api Management service."
+      }
+    },
+    "cuaId": {
+      "type": "string",
+      "defaultValue": "",
+      "metadata": {
+        "description": "Optional. Customer Usage Attribution id (GUID). This GUID must be previously registered"
+      }
+    },
+    "displayName": {
+      "type": "string",
+      "defaultValue":"",
+      "metadata": {
+        "description": "Required. Unique name of NamedValue. It may contain only letters, digits, period, dash, and underscore characters."
+      }
+    },
+    "keyVault": {
+      "type": "object",
+      "defaultValue": {},
+      "metadata": {
+        "description": "Optional. KeyVault location details of the namedValue. "
+      }
+    },
+    "location": {
+      "type": "string",
+      "defaultValue": "[resourceGroup().location]",
+      "metadata": {
+        "description": "Optional. Location for all Resources."
+      }
+    },
+    "namedValueName": {
+      "type": "string",
+      "defaultValue": "",
+      "metadata": {
+        "description": "Required. Named value Name."
+      }
+    },
+    "tags": {
+      "type": "object",
+      "defaultValue": {
+      },
+      "metadata": {
+        "description": "Optional. Tags of the resource."
+      }
+    },
+    "namedValueTags": {
+      "type": "array",
+      "defaultValue": [],
+      "metadata": {
+        "description": "Optional. Tags that when provided can be used to filter the NamedValue list. - string"
+      }
+    },
+    "secret": {
+      "type": "bool",
+      "defaultValue": false,
+      "metadata": {
+        "description": "Optional. Determines whether the value is a secret and should be encrypted or not. Default value is false."
+      }
+    },
+    "value": {
+      "type": "string",
+      "defaultValue": "[newGuid()]",
+      "metadata": {
+        "description": "Optional. Value of the NamedValue. Can contain policy expressions. It may not be empty or consist only of whitespace. This property will not be filled on 'GET' operations! Use '/listSecrets' POST request to get the value."
+      }
+    }
+
+  },
+  "variables": {
+    "keyVaultEmpty":"[empty(parameters('keyVault'))]"
+  },
+  "resources": [
+    {
+      "condition": "[not(empty(parameters('cuaId')))]",
+      "type": "Microsoft.Resources/deployments",
+      "apiVersion": "2020-06-01",
+      "name": "[concat('pid-', parameters('cuaId'))]",
+      "properties": {
+        "mode": "Incremental",
+        "template": {
+          "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+          "contentVersion": "1.0.0.0",
+          "resources": [
+          ]
+        }
+      }
+    },
+    {
+      "name": "[concat(parameters('apiManagementServiceName'),'/',parameters('namedValueName'))]",
+      "type": "Microsoft.ApiManagement/service/namedValues",
+      "location": "[parameters('location')]",
+      "apiVersion": "2020-06-01-preview",
+      "tags":"[parameters('tags')]",
+      "properties": {
+        "tags": "[if(not(empty(parameters('namedValueTags'))),parameters('namedValueTags'),json('null'))]",
+        "secret": "[parameters('secret')]",
+        "displayName": "[parameters('displayName')]",
+        "value": "[if(variables('keyVaultEmpty'), parameters('value'), json('null'))]",
+        "keyVault": "[if(not(variables('keyVaultEmpty')),parameters('keyVault'),json('null'))]"
+      }
+    }
+  ],
+  "functions": [],
+  "outputs": {
+    "namedValueResourceId": {
+      "type": "string",
+      "value": "[resourceId('Microsoft.ApiManagement/service/namedValues', parameters('apiManagementServiceName'), parameters('namedValueName'))]",
+      "metadata": {
+        "description": "The Api Management Service named value Id"
+      }
+    },
+    "namedValueResourceName": {
+      "type": "string",
+      "value": "[parameters('namedValueName')]",
+      "metadata": {
+        "description": "The Api Management Service named value Name"
+      }
+    },
+    "namedValueResourceGroup": {
+      "type": "string",
+      "value": "[resourceGroup().name]",
+      "metadata": {
+        "description": "The name of the Resource Group with the Api Management Service named value"
+      }
+    }
+  }
+}

@@ -1,0 +1,40 @@
+{
+    "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "functionAppName": {
+            "value": "azfaweux01"
+        },
+        "appServicePlanId": {
+            "value": "/subscriptions/8629be3b-96bc-482d-a04b-ffff597c65a2/resourceGroups/dependencies-rg/providers/Microsoft.Web/serverFarms/sxx-az-asp-weu-x-003"
+        },
+        "siteConfig": {
+            "value": {
+                "alwaysOn": true
+            }
+        },
+        "storageAccountName": {
+            "value": "sxxazsaweux005"
+        },
+        "storageAccountResourceGroupName": {
+            "value": "validation-rg"
+        },
+        "functionsWorkerRuntime": {
+            "value": "powershell"
+        },
+        "enableMonitoring": {
+            "value": false
+        }
+    // "roleAssignments": {
+        //     "value": [
+        //         {
+        //             "roleDefinitionIdOrName": "Desktop Virtualization User",
+        //             "principalIds": [
+        //                 "12345678-1234-1234-1234-123456789012", // object 1
+        //                 "78945612-1234-1234-1234-123456789012" // object 2
+        //             ]
+        //         }
+        //     ]
+        // }
+    }
+}

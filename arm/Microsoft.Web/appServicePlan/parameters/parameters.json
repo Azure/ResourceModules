@@ -1,0 +1,29 @@
+{
+  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    "appServicePlanName": {
+      "value": "sxx-az-asp-weu-x-001"
+    },
+    "sku": {
+      "value": {
+        "name": "S1",
+        "tier": "Standard",
+        "size": "S1",
+        "family": "S",
+        "capacity": "1"
+      }
+    }
+    // "roleAssignments": {
+    //     "value": [
+    //         {
+    //             "roleDefinitionIdOrName": "Desktop Virtualization User",
+    //             "principalIds": [
+    //                 "12345678-1234-1234-1234-123456789012", // object 1
+    //                 "78945612-1234-1234-1234-123456789012" // object 2
+    //             ]
+    //         }
+    //     ]
+    // }
+  }
+}

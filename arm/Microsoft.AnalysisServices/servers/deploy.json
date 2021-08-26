@@ -1,0 +1,227 @@
+{
+  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    "analysisServicesName": {
+      "type": "string",
+      "metadata": {
+        "description": "Required. The name of the Azure Analysis Services server to create."
+      }
+    },
+    "skuName": {
+      "type": "string",
+      "defaultValue": "S0",
+      "metadata": {
+        "description": "Optional. The sku name of the Azure Analysis Services server to create."
+      }
+    },
+    "skuCapacity": {
+      "type": "int",
+      "defaultValue": 1,
+      "metadata": {
+        "description": "Optional. The total number of query replica scale-out instances."
+      }
+    },
+    "firewallSettings": {
+      "type": "object",
+      "defaultValue": {
+        "firewallRules": [
+          {
+            "firewallRuleName": "AllowFromAll",
+            "rangeStart": "0.0.0.0",
+            "rangeEnd": "255.255.255.255"
+          }
+        ],
+        "enablePowerBIService": true
+      },
+      "metadata": {
+        "description": "Optional. The inbound firewall rules to define on the server. If not specified, firewall is disabled."
+      }
+    },
+    "location": {
+      "type": "string",
+      "defaultValue": "[resourceGroup().location]",
+      "metadata": {
+        "description": "Optional. Location for all Resources."
+      }
+    },
+    "diagnosticLogsRetentionInDays": {
+      "type": "int",
+      "defaultValue": 365,
+      "minValue": 0,
+      "maxValue": 365,
+      "metadata": {
+        "description": "Optional. Specifies the number of days that logs will be kept for; a value of 0 will retain data indefinitely."
+      }
+    },
+    "diagnosticStorageAccountId": {
+      "type": "string",
+      "defaultValue": "",
+      "metadata": {
+        "description": "Optional. Resource identifier of the Diagnostic Storage Account."
+      }
+    },
+    "workspaceId": {
+      "type": "string",
+      "defaultValue": "",
+      "metadata": {
+        "description": "Optional. Resource identifier of Log Analytics."
+      }
+    },
+    "eventHubAuthorizationRuleId": {
+      "type": "string",
+      "defaultValue": "",
+      "metadata": {
+        "description": "Optional. Resource ID of the event hub authorization rule for the Event Hubs namespace in which the event hub should be created or streamed to."
+      }
+    },
+    "eventHubName": {
+      "type": "string",
+      "defaultValue": "",
+      "metadata": {
+        "description": "Optional. Name of the event hub within the namespace to which logs are streamed. Without this, an event hub is created for each log category."
+      }
+    },
+    "lockForDeletion": {
+      "type": "bool",
+      "defaultValue": false,
+      "metadata": {
+        "description": "Optional. Switch to lock Key Vault from deletion."
+      }
+    },
+    "tags": {
+      "type": "object",
+      "defaultValue": {
+      },
+      "metadata": {
+        "description": "Optional. Tags of the resource."
+      }
+    },
+    "cuaId": {
+      "type": "string",
+      "defaultValue": "",
+      "metadata": {
+        "description": "Optional. Customer Usage Attribution id (GUID). This GUID must be previously registered"
+      }
+    }
+  },
+  "variables": {
+    "diagnosticsMetrics": [
+      {
+        "category": "AllMetrics",
+        "timeGrain": null,
+        "enabled": true,
+        "retentionPolicy": {
+          "enabled": true,
+          "days": "[parameters('diagnosticLogsRetentionInDays')]"
+        }
+      }
+    ],
+    "diagnosticsLogs": [
+      {
+        "category": "Engine",
+        "enabled": true,
+        "retentionPolicy": {
+          "enabled": true,
+          "days": "[parameters('diagnosticLogsRetentionInDays')]"
+        }
+      },
+      {
+        "category": "Service",
+        "enabled": true,
+        "retentionPolicy": {
+          "enabled": true,
+          "days": "[parameters('diagnosticLogsRetentionInDays')]"
+        }
+      }
+    ]
+  },
+  "resources": [
+    {
+      "condition": "[not(empty(parameters('cuaId')))]",
+      "type": "Microsoft.Resources/deployments",
+      "apiVersion": "2020-06-01",
+      "name": "[concat('pid-', parameters('cuaId'))]",
+      "properties": {
+        "mode": "Incremental",
+        "template": {
+          "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+          "contentVersion": "1.0.0.0",
+          "resources": [
+          ]
+        }
+      }
+    },
+    {
+      "type": "Microsoft.AnalysisServices/servers",
+      "apiVersion": "2017-08-01",
+      "name": "[parameters('analysisServicesName')]",
+      "location": "[parameters('location')]",
+      "tags": "[parameters('tags')]",
+      "sku": {
+        "name": "[parameters('skuName')]",
+        "capacity": "[parameters('skuCapacity')]"
+      },
+      "properties": {
+        "ipV4FirewallSettings": "[parameters('firewallSettings')]"
+      },
+      "resources": [
+        {
+          "type": "providers/locks",
+          "apiVersion": "2016-09-01",
+          "condition": "[parameters('lockForDeletion')]",
+          "name": "Microsoft.Authorization/analysisServicesDoNotDelete",
+          "dependsOn": [
+            "[concat('Microsoft.AnalysisServices/servers/', parameters('analysisServicesName'))]"
+          ],
+          "comments": "Resource lock",
+          "properties": {
+            "level": "CannotDelete"
+          }
+        },
+        {
+          "type": "Microsoft.AnalysisServices/servers/providers/diagnosticsettings",
+          "apiVersion": "2017-05-01-preview",
+          "name": "[concat(parameters('analysisServicesName'), '/Microsoft.Insights/service')]",
+          "condition": "[or(not(empty(parameters('diagnosticStorageAccountId'))),not(empty(parameters('workspaceId'))),not(empty(parameters('eventHubAuthorizationRuleId'))),not(empty(parameters('eventHubName'))))]",
+          "dependsOn": [
+            "[concat('Microsoft.AnalysisServices/servers/', parameters('analysisServicesName'))]"
+          ],
+          "properties": {
+            "storageAccountId": "[if(empty(parameters('diagnosticStorageAccountId')), json('null'), parameters('diagnosticStorageAccountId'))]",
+            "workspaceId": "[if(empty(parameters('workspaceId')), json('null'), parameters('workspaceId'))]",
+            "eventHubAuthorizationRuleId": "[if(empty(parameters('eventHubAuthorizationRuleId')), json('null'), parameters('eventHubAuthorizationRuleId'))]",
+            "eventHubName": "[if(empty(parameters('eventHubName')), json('null'), parameters('eventHubName'))]",
+            "metrics": "[if(and(empty(parameters('diagnosticStorageAccountId')), empty(parameters('workspaceId')), empty(parameters('eventHubAuthorizationRuleId')), empty(parameters('eventHubName'))), json('null'), variables('diagnosticsMetrics'))]",
+            "logs": "[if(and(empty(parameters('diagnosticStorageAccountId')), empty(parameters('workspaceId')), empty(parameters('eventHubAuthorizationRuleId')), empty(parameters('eventHubName'))), json('null'), variables('diagnosticsLogs'))]"
+          }
+        }
+      ]
+    }
+  ],
+  "functions": [
+  ],
+  "outputs": {
+    "analysisServicesName": {
+      "type": "string",
+      "value": "[parameters('analysisServicesName')]",
+      "metadata": {
+        "description": "The Name of the Analysis Services."
+      }
+    },
+    "analysisServicesResourceId": {
+      "type": "string",
+      "value": "[resourceId('Microsoft.AnalysisServices/servers', parameters('analysisServicesName'))]",
+      "metadata": {
+        "description": "The Resource Id of the Analysis Services."
+      }
+    },
+    "analysisServicesResourceGroup": {
+      "type": "string",
+      "value": "[resourceGroup().name]",
+      "metadata": {
+        "description": "The name of the Resource Group with the Analysis Services."
+      }
+    }
+  }
+}

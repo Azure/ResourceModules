@@ -1,0 +1,38 @@
+{
+  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    "imageName": {
+      "value": "sxx-az-img-weu-x-001"
+    },
+    "osAccountType": {
+      "value": "Premium_LRS"
+    },
+    "osType": {
+      "value": "Linux"
+    },
+    "osDiskBlobUri": {
+      "value": "https://rgwesteuimage.blob.core.windows.net/opensystemsimage/osix-11.82.0-100GB.vhd"
+    },
+    "osDiskCaching": {
+      "value": "ReadWrite"
+    },
+    "zoneResilient": {
+      "value": true
+    },
+    "hyperVGeneration": {
+      "value": "V1"
+    }
+    // "roleAssignments": {
+    //     "value": [
+    //         {
+    //             "roleDefinitionIdOrName": "Desktop Virtualization User",
+    //             "principalIds": [
+    //                 "12345678-1234-1234-1234-123456789012", // object 1
+    //                 "78945612-1234-1234-1234-123456789012" // object 2
+    //             ]
+    //         }
+    //     ]
+    // }
+  }
+}

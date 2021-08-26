@@ -1,0 +1,1299 @@
+{
+    "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "vmssName": {
+            "type": "string",
+            "metadata": {
+                "description": "Optional. Name of the VMSS."
+            }
+        },
+        "location": {
+            "type": "string",
+            "defaultValue": "[resourceGroup().location]",
+            "metadata": {
+                "description": "Optional. Location for all resources."
+            }
+        },
+        "imageReference": {
+            "type": "object",
+            "defaultValue": {
+            },
+            "metadata": {
+                "description": "Optional. OS image reference. In case of marketplace images, it's the combination of the publisher, offer, sku, version attributes. In case of custom images it's the resource ID of the custom image."
+            }
+        },
+        "plan": {
+            "type": "object",
+            "defaultValue": {
+            },
+            "metadata": {
+                "description": "Optional. Specifies information about the marketplace image used to create the virtual machine. This element is only used for marketplace images. Before you can use a marketplace image from an API, you must enable the image for programmatic use."
+            }
+        },
+        "osDisk": {
+            "type": "object",
+            "metadata": {
+                "description": "Required. Specifies the OS disk."
+            }
+        },
+        "dataDisks": {
+            "type": "array",
+            "defaultValue": [],
+            "metadata": {
+                "description": "Optional. Specifies the data disks."
+            }
+        },
+        "ultraSSDEnabled": {
+            "type": "bool",
+            "defaultValue": false,
+            "metadata": {
+                "description": "Optional. The flag that enables or disables a capability to have one or more managed data disks with UltraSSD_LRS storage account type on the VM or VMSS. Managed disks with storage account type UltraSSD_LRS can be added to a virtual machine or virtual machine scale set only if this property is enabled."
+            }
+        },
+        "adminUsername": {
+            "type": "securestring",
+            "metadata": {
+                "description": "Required. Administrator username"
+            }
+        },
+        "adminPassword": {
+            "type": "securestring",
+            "defaultValue": "",
+            "metadata": {
+                "description": "Required. When specifying a Windows Virtual Machine, this value should be passed"
+            }
+        },
+        "customData": {
+            "type": "string",
+            "defaultValue": "",
+            "metadata": {
+                "description": "Optional. Custom data associated to the VM, this value will be automatically converted into base64 to account for the expected VM format."
+            }
+        },
+        "roleAssignments": {
+            "type": "array",
+            "defaultValue": [],
+            "metadata": {
+                "description": "Optional. Array of role assignment objects that contain the 'roleDefinitionIdOrName' and 'principalId' to define RBAC role assignments on this resource. In the roleDefinitionIdOrName attribute, you can provide either the display name of the role definition, or its fully qualified ID in the following format: '/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11'"
+            }
+        },
+        "scaleSetFaultDomain": {
+            "type": "int",
+            "defaultValue": 2,
+            "metadata": {
+                "description": "Optional. Fault Domain count for each placement group."
+            }
+        },
+        "proximityPlacementGroupName": {
+            "type": "string",
+            "defaultValue": "",
+            "metadata": {
+                "description": "Optional. Creates an proximity placement group and adds the VMs to it."
+            }
+        },
+        "proximityPlacementGroupType": {
+            "type": "string",
+            "allowedValues": [
+                "Standard",
+                "Ultra"
+            ],
+            "defaultValue": "Standard",
+            "metadata": {
+                "description": "Optional. Specifies the type of the proximity placement group."
+            }
+        },
+        "nicConfigurations": {
+            "type": "array",
+            "defaultValue": [],
+            "metadata": {
+                "description": "Required. Configures NICs and PIPs."
+            }
+        },
+        "vmPriority": {
+            "type": "string",
+            "defaultValue": "Regular",
+            "allowedValues": [
+                "Regular",
+                "Low",
+                "Spot"
+            ],
+            "metadata": {
+                "description": "Optional. Specifies the priority for the virtual machine."
+            }
+        },
+        "enableEvictionPolicy": {
+            "type": "bool",
+            "defaultValue": false,
+            "metadata": {
+                "description": "Optional. Specifies the eviction policy for the low priority virtual machine. Will result in 'Deallocate' eviction policy."
+            }
+        },
+        "maxPriceForLowPriorityVm": {
+            "type": "string",
+            "defaultValue": "",
+            "metadata": {
+                "description": "Optional. Specifies the maximum price you are willing to pay for a low priority VM/VMSS. This price is in US Dollars."
+            }
+        },
+        "licenseType": {
+            "type": "string",
+            "defaultValue": "",
+            "allowedValues": [
+                "Windows_Client",
+                "Windows_Server",
+                ""
+            ],
+            "metadata": {
+                "description": "Optional. Specifies that the image or disk that is being used was licensed on-premises. This element is only used for images that contain the Windows Server operating system."
+            }
+        },
+        "enableMicrosoftAntiMalware": {
+            "type": "bool",
+            "defaultValue": false,
+            "metadata": {
+                "description": "Optional. Enables Microsoft Windows Defender AV."
+            }
+        },
+        "microsoftAntiMalwareSettings": {
+            "type": "object",
+            "defaultValue": {
+            },
+            "metadata": {
+                "description": "Optional. Settings for Microsoft Windows Defender AV extension."
+            }
+        },
+        "enableWindowsMMAAgent": {
+            "type": "bool",
+            "defaultValue": false,
+            "metadata": {
+                "description": "Optional. Specifies if MMA agent for Windows VM should be enabled."
+            }
+        },
+        "enableLinuxMMAAgent": {
+            "type": "bool",
+            "defaultValue": false,
+            "metadata": {
+                "description": "Optional. Specifies if MMA agent for Linux VM should be enabled."
+            }
+        },
+        "enableWindowsDependencyAgent": {
+            "type": "bool",
+            "defaultValue": false,
+            "metadata": {
+                "description": "Optional. Specifies if Azure Dependency Agent for Windows VM should be enabled. Requires WindowsMMAAgent to be enabled."
+            }
+        },
+        "enableLinuxDependencyAgent": {
+            "type": "bool",
+            "defaultValue": false,
+            "metadata": {
+                "description": "Optional. Specifies if Azure Dependency Agent for Linux VM should be enabled. Requires LinuxMMAAgent to be enabled."
+            }
+        },
+        "enableNetworkWatcherWindows": {
+            "type": "bool",
+            "defaultValue": false,
+            "metadata": {
+                "description": "Optional. Specifies if Azure Network Watcher Agent for Windows VM should be enabled."
+            }
+        },
+        "enableNetworkWatcherLinux": {
+            "type": "bool",
+            "defaultValue": false,
+            "metadata": {
+                "description": "Optional. Specifies if Azure Network Watcher Agent for Linux VM should be enabled."
+            }
+        },
+        "enableWindowsDiskEncryption": {
+            "type": "bool",
+            "defaultValue": false,
+            "metadata": {
+                "description": "Optional. Specifies if Windows VM disks should be encrypted. If enabled, boot diagnostics must be enabled as well."
+            }
+        },
+        "enableServerSideEncryption": {
+            "type": "bool",
+            "defaultValue": false,
+            "metadata": {
+                "description": "Optional. Specifies if Windows VM disks should be encrypted with Server-side encryption + Customer managed Key."
+            }
+        },
+        "enableLinuxDiskEncryption": {
+            "type": "bool",
+            "defaultValue": false,
+            "metadata": {
+                "description": "Optional. Specifies if Linux VM disks should be encrypted. If enabled, boot diagnostics must be enabled as well."
+            }
+        },
+        "diskKeyEncryptionAlgorithm": {
+            "type": "string",
+            "defaultValue": "RSA-OAEP",
+            "allowedValues": [
+                "RSA-OAEP",
+                "RSA-OAEP-256",
+                "RSA1_5"
+            ],
+            "metadata": {
+                "description": "Optional. Specifies disk key encryption algorithm."
+            }
+        },
+        "keyEncryptionKeyURL": {
+            "type": "string",
+            "defaultValue": "",
+            "metadata": {
+                "description": "Optional. URL of the KeyEncryptionKey used to encrypt the volume encryption key"
+            }
+        },
+        "keyVaultUri": {
+            "type": "string",
+            "defaultValue": "",
+            "metadata": {
+                "description": "Optional. URL of the Key Vault instance where the Key Encryption Key (KEK) resides"
+            }
+        },
+        "keyVaultId": {
+            "type": "string",
+            "defaultValue": "",
+            "metadata": {
+                "description": "Optional. Resource identifier of the Key Vault instance where the Key Encryption Key (KEK) resides"
+            }
+        },
+        "diskEncryptionVolumeType": {
+            "type": "string",
+            "defaultValue": "All",
+            "allowedValues": [
+                "OS",
+                "Data",
+                "All"
+            ],
+            "metadata": {
+                "description": "Optional. Type of the volume OS or Data to perform encryption operation"
+            }
+        },
+        "forceUpdateTag": {
+            "type": "string",
+            "defaultValue": "1.0",
+            "metadata": {
+                "description": "Optional. Pass in an unique value like a GUID everytime the operation needs to be force run"
+            }
+        },
+        "resizeOSDisk": {
+            "type": "bool",
+            "defaultValue": false,
+            "metadata": {
+                "description": "Optional. Should the OS partition be resized to occupy full OS VHD before splitting system volume"
+            }
+        },
+        "windowsScriptExtensionFileData": {
+            "type": "array",
+            "defaultValue": [
+            ],
+            "metadata": {
+                "description": "Optional. Array of objects that specifies URIs and the storageAccountId of the scripts that need to be downloaded and run by the Custom Script Extension on a Windows VM."
+            }
+        },
+        "windowsScriptExtensionCommandToExecute": {
+            "type": "securestring",
+            "defaultValue": "",
+            "metadata": {
+                "description": "Optional. Specifies the command that should be run on a Windows VM."
+            }
+        },
+        "cseStorageAccountName": {
+            "type": "string",
+            "defaultValue": "",
+            "metadata": {
+                "description": "Optional. The name of the storage account to access for the CSE script(s)."
+            }
+        },
+        "cseStorageAccountKey": {
+            "type": "string",
+            "defaultValue": "",
+            "metadata": {
+                "description": "Optional. The storage key of the storage account to access for the CSE script(s)."
+            }
+        },
+        "cseManagedIdentity": {
+            "type": "object",
+            "defaultValue": {},
+            "metadata": {
+                "description": "Optional. A managed identity to use for the CSE."
+            }
+        },
+        "domainName": {
+            "type": "string",
+            "defaultValue": "",
+            "metadata": {
+                "description": "Optional. Specifies the FQDN the of the domain the VM will be joined to. Currently implemented for Windows VMs only"
+            }
+        },
+        "domainJoinUser": {
+            "type": "string",
+            "defaultValue": "",
+            "metadata": {
+                "description": "Optional. Mandatory if domainName is specified. User used for the join to the domain. Format: username@domainFQDN"
+            }
+        },
+        "domainJoinOU": {
+            "type": "string",
+            "defaultValue": "",
+            "metadata": {
+                "description": "Optional. Specifies an organizational unit (OU) for the domain account. Enter the full distinguished name of the OU in quotation marks. Example: \"OU=testOU; DC=domain; DC=Domain; DC=com\""
+            }
+        },
+        "domainJoinPassword": {
+            "type": "securestring",
+            "defaultValue": "",
+            "metadata": {
+                "description": "Optional. Required if domainName is specified. Password of the user specified in domainJoinUser parameter"
+            }
+        },
+        "domainJoinRestart": {
+            "type": "bool",
+            "defaultValue": false,
+            "metadata": {
+                "description": "Optional. Controls the restart of vm after executing domain join"
+            }
+        },
+        "domainJoinOptions": {
+            "type": "int",
+            "defaultValue": 3,
+            "metadata": {
+                "description": "Optional. Set of bit flags that define the join options. Default value of 3 is a combination of NETSETUP_JOIN_DOMAIN (0x00000001) & NETSETUP_ACCT_CREATE (0x00000002) i.e. will join the domain and create the account on the domain. For more information see https://msdn.microsoft.com/en-us/library/aa392154(v=vs.85).aspx"
+            }
+        },
+        "dscConfiguration": {
+            "type": "object",
+            "defaultValue": {
+            },
+            "metadata": {
+                "description": "Optional. The DSC configuration object"
+            }
+        },
+        "bootDiagnosticStorageAccountUri": {
+            "type": "string",
+            "defaultValue": ".blob.core.windows.net/",
+            "metadata": {
+                "description": "Optional. Storage account boot diagnostic base URI."
+            }
+        },
+        "bootDiagnosticStorageAccountName": {
+            "type": "string",
+            "defaultValue": "",
+            "metadata": {
+                "description": "Optional. Storage account used to store boot diagnostic information. Boot diagnostics will be disabled if no value is provided."
+            }
+        },
+        "diagnosticLogsRetentionInDays": {
+            "type": "int",
+            "defaultValue": 365,
+            "minValue": 0,
+            "maxValue": 365,
+            "metadata": {
+                "description": "Optional. Specifies the number of days that logs will be kept for; a value of 0 will retain data indefinitely."
+            }
+        },
+        "diagnosticStorageAccountId": {
+            "type": "string",
+            "defaultValue": "",
+            "metadata": {
+                "description": "Optional. Resource identifier of the Diagnostic Storage Account."
+            }
+        },
+        "workspaceId": {
+            "type": "string",
+            "defaultValue": "",
+            "metadata": {
+                "description": "Optional. Resource identifier of Log Analytics."
+            }
+        },
+        "eventHubAuthorizationRuleId": {
+            "type": "string",
+            "defaultValue": "",
+            "metadata": {
+                "description": "Optional. Resource ID of the event hub authorization rule for the Event Hubs namespace in which the event hub should be created or streamed to."
+            }
+        },
+        "eventHubName": {
+            "type": "string",
+            "defaultValue": "",
+            "metadata": {
+                "description": "Optional. Name of the event hub within the namespace to which logs are streamed. Without this, an event hub is created for each log category."
+            }
+        },
+        "lockForDeletion": {
+            "type": "bool",
+            "defaultValue": false,
+            "metadata": {
+                "description": "Optional. Switch to lock VM from deletion."
+            }
+        },
+        "upgradePolicyMode": {
+            "defaultValue": "Manual",
+            "type": "string",
+            "allowedValues": [
+                "Manual",
+                "Automatic",
+                "Rolling"
+            ],
+            "metadata": {
+                "description": "Optional. Specifies the mode of an upgrade to virtual machines in the scale set.' Manual - You control the application of updates to virtual machines in the scale set. You do this by using the manualUpgrade action. ; Automatic - All virtual machines in the scale set are automatically updated at the same time. - Automatic, Manual, Rolling"
+            }
+        },
+        "maxBatchInstancePercent": {
+            "type": "int",
+            "defaultValue": 20,
+            "metadata": {
+                "description": "Optional. The maximum percent of total virtual machine instances that will be upgraded simultaneously by the rolling upgrade in one batch. As this is a maximum, unhealthy instances in previous or future batches can cause the percentage of instances in a batch to decrease to ensure higher reliability."
+            }
+        },
+        "maxUnhealthyInstancePercent": {
+            "type": "int",
+            "defaultValue": 20,
+            "metadata": {
+                "description": "Optional. The maximum percentage of the total virtual machine instances in the scale set that can be simultaneously unhealthy, either as a result of being upgraded, or by being found in an unhealthy state by the virtual machine health checks before the rolling upgrade aborts. This constraint will be checked prior to starting any batch"
+            }
+        },
+        "maxUnhealthyUpgradedInstancePercent": {
+            "type": "int",
+            "defaultValue": 20,
+            "metadata": {
+                "description": "Optional. The maximum percentage of the total virtual machine instances in the scale set that can be simultaneously unhealthy, either as a result of being upgraded, or by being found in an unhealthy state by the virtual machine health checks before the rolling upgrade aborts. This constraint will be checked prior to starting any batch."
+            }
+        },
+        "pauseTimeBetweenBatches": {
+            "type": "string",
+            "defaultValue": "PT0S",
+            "metadata": {
+                "description": "Optional. The wait time between completing the update for all virtual machines in one batch and starting the next batch. The time duration should be specified in ISO 8601 format"
+            }
+        },
+        "enableAutomaticOSUpgrade": {
+            "type": "bool",
+            "defaultValue": false,
+            "metadata": {
+                "description": "Optional. Indicates whether OS upgrades should automatically be applied to scale set instances in a rolling fashion when a newer version of the OS image becomes available. Default value is false. If this is set to true for Windows based scale sets, enableAutomaticUpdates is automatically set to false and cannot be set to true."
+            }
+        },
+        "disableAutomaticRollback": {
+            "type": "bool",
+            "defaultValue": false,
+            "metadata": {
+                "description": "Optional. Whether OS image rollback feature should be disabled."
+            }
+        },
+        "automaticRepairsPolicyEnabled": {
+            "type": "bool",
+            "defaultValue": false,
+            "metadata": {
+                "description": "Optional. Specifies whether automatic repairs should be enabled on the virtual machine scale set."
+            }
+        },
+        "gracePeriod": {
+            "type": "string",
+            "defaultValue": "PT30M",
+            "metadata": {
+                "description": "Optional. The amount of time for which automatic repairs are suspended due to a state change on VM. The grace time starts after the state change has completed. This helps avoid premature or accidental repairs. The time duration should be specified in ISO 8601 format. The minimum allowed grace period is 30 minutes (PT30M). The maximum allowed grace period is 90 minutes (PT90M)."
+            }
+        },
+        "vmNamePrefix": {
+            "type": "string",
+            "defaultValue": "vmssvm",
+            "minLength": 1,
+            "maxLength": 15,
+            "metadata": {
+                "description": "Optional. Specifies the computer name prefix for all of the virtual machines in the scale set."
+            }
+        },
+        "provisionVMAgent": {
+            "type": "bool",
+            "defaultValue": true,
+            "metadata": {
+                "description": "Optional. Indicates whether virtual machine agent should be provisioned on the virtual machine. When this property is not specified in the request body, default behavior is to set it to true. This will ensure that VM Agent is installed on the VM so that extensions can be added to the VM later."
+            }
+        },
+        "enableAutomaticUpdates": {
+            "type": "bool",
+            "defaultValue": true,
+            "metadata": {
+                "description": "Optional. Indicates whether Automatic Updates is enabled for the Windows virtual machine. Default value is true. For virtual machine scale sets, this property can be updated and updates will take effect on OS reprovisioning."
+            }
+        },
+        "timeZone": {
+            "type": "string",
+            "defaultValue": "",
+            "metadata": {
+                "description": "Optional. Specifies the time zone of the virtual machine. e.g. 'Pacific Standard Time'. Possible values can be TimeZoneInfo.Id value from time zones returned by TimeZoneInfo.GetSystemTimeZones."
+            }
+        },
+        "additionalUnattendContent": {
+            "type": "array",
+            "defaultValue": [],
+            "metadata": {
+                "description": "Optional. Specifies additional base-64 encoded XML formatted information that can be included in the Unattend.xml file, which is used by Windows Setup. - AdditionalUnattendContent object"
+            }
+        },
+        "winRMListeners": {
+            "type": "object",
+            "defaultValue": {},
+            "metadata": {
+                "description": "Optional. Specifies the Windows Remote Management listeners. This enables remote Windows PowerShell. - WinRMConfiguration object."
+            }
+        },
+        "disablePasswordAuthentication": {
+            "type": "bool",
+            "defaultValue": false,
+            "metadata": {
+                "description": "Optional. Specifies whether password authentication should be disabled."
+            }
+        },
+        "publicKeys": {
+            "type": "array",
+            "defaultValue": [],
+            "metadata": {
+                "description": "Optional. The list of SSH public keys used to authenticate with linux based VMs"
+            }
+        },
+        "secrets": {
+            "type": "array",
+            "defaultValue": [],
+            "metadata": {
+                "description": "Optional. Specifies set of certificates that should be installed onto the virtual machines in the scale set."
+            }
+        },
+        "scheduledEventsProfile": {
+            "type": "object",
+            "defaultValue": {},
+            "metadata": {
+                "description": "Optional. Specifies Scheduled Event related configurations"
+            }
+        },
+        "overprovision": {
+            "type": "bool",
+            "defaultValue": false,
+            "metadata": {
+                "description": "Optional. Specifies whether the Virtual Machine Scale Set should be overprovisioned."
+            }
+        },
+        "doNotRunExtensionsOnOverprovisionedVMs": {
+            "type": "bool",
+            "defaultValue": false,
+            "metadata": {
+                "description": "Optional. When Overprovision is enabled, extensions are launched only on the requested number of VMs which are finally kept. This property will hence ensure that the extensions do not run on the extra overprovisioned VMs."
+            }
+        },
+        "zoneBalance": {
+            "type": "bool",
+            "defaultValue": false,
+            "metadata": {
+                "description": "Optional. Whether to force strictly even Virtual Machine distribution cross x-zones in case there is zone outage."
+            }
+        },
+        "singlePlacementGroup": {
+            "type": "bool",
+            "defaultValue": true,
+            "metadata": {
+                "description": "Optional. When true this limits the scale set to a single placement group, of max size 100 virtual machines. NOTE: If singlePlacementGroup is true, it may be modified to false. However, if singlePlacementGroup is false, it may not be modified to true."
+            }
+        },
+        "scaleInPolicy": {
+            "type": "object",
+            "defaultValue": {
+                "rules": [
+                    "Default"
+                ]
+            },
+            "metadata": {
+                "description": "Optional. Specifies the scale-in policy that decides which virtual machines are chosen for removal when a Virtual Machine Scale Set is scaled-in"
+            }
+        },
+        "instanceSize": {
+            "type": "string",
+            "defaultValue": {},
+            "metadata": {
+                "description": "Optional. The SKU size of the VMs."
+            }
+        },
+        "instanceCount": {
+            "type": "string",
+            "defaultValue": 1,
+            "metadata": {
+                "description": "Optional. The initial instance count of scale set VMs."
+            }
+        },
+        "availabilityZones": {
+            "type": "array",
+            "defaultValue": [],
+            "metadata": {
+                "description": "Optional. The virtual machine scale set zones. NOTE: Availability zones can only be set when you create the scale set."
+            }
+        },
+        "tags": {
+            "type": "object",
+            "defaultValue": {
+            },
+            "metadata": {
+                "description": "Optional. Tags of the resource."
+            }
+        },
+        "cuaId": {
+            "type": "string",
+            "defaultValue": "",
+            "metadata": {
+                "description": "Optional. Customer Usage Attribution id (GUID). This GUID must be previously registered"
+            }
+        },
+        "osType": {
+            "type": "string",
+            "allowedValues": [
+                "Windows",
+                "Linux"
+            ],
+            "metadata": {
+                "description": "Optional. The chosen OS type"
+            }
+        },
+        "baseTime": {
+            "type": "string",
+            "defaultValue": "[utcNow('u')]",
+            "metadata": {
+                "description": "Generated. Do not provide a value! This date value is used to generate a registration token."
+            }
+        },
+        "sasTokenValidityLength": {
+            "defaultValue": "PT8H",
+            "type": "string",
+            "metadata": {
+                "description": "Optional. SAS token validity length to use to download files from storage accounts. Usage: 'PT8H' - valid for 8 hours; 'P5D' - valid for 5 days; 'P1Y' - valid for 1 year. When not provided, the SAS token will be valid for 8 hours."
+            }
+        },
+        "managedIdentityType": {
+            "type": "string",
+            "allowedValues": [
+                "SystemAssigned", 
+                "UserAssigned",
+                "None",
+                ""
+            ],
+            "defaultValue": "",
+            "metadata": {
+                "description": "Optional. The type of identity used for the virtual machine scale set. The type 'SystemAssigned, UserAssigned' includes both an implicitly created identity and a set of user assigned identities. The type 'None' will remove any identities from the virtual machine scale set. - SystemAssigned, UserAssigned, SystemAssigned, UserAssigned, None"
+            }
+        },
+        "managedIdentityIdentities": {
+            "type": "object",
+            "defaultValue": {},
+            "metadata": {
+                "description": "Optional. The list of user identities associated with the virtual machine scale set. The user identity dictionary key references will be ARM resource ids in the form: '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ManagedIdentity/userAssignedIdentities/{identityName}'."
+            } 
+        }        
+    },
+    "variables": {
+        "linuxConfiguration": {
+            "disablePasswordAuthentication": "[parameters('disablePasswordAuthentication')]",
+            "ssh": {
+                "copy": [
+                    {
+                        "name": "publicKeys",
+                        "count": "[length(parameters('publicKeys'))]",
+                        "input": {
+                            "path": "[parameters('publicKeys')[copyIndex('publicKeys')].path]",
+                            "keyData": "[parameters('publicKeys')[copyIndex('publicKeys')].keyData]"
+                        }
+                    }
+                ]
+            },
+            "provisionVMAgent": "[parameters('provisionVMAgent')]"
+        },
+        "windowsConfiguration": {
+            "provisionVMAgent": "[parameters('provisionVMAgent')]",
+            "enableAutomaticUpdates": "[ parameters('enableAutomaticUpdates')]",
+            "timeZone": "[if(empty(parameters('timeZone')), json('null'), parameters('timeZone'))]",
+            "additionalUnattendContent": "[if(empty(parameters('additionalUnattendContent')), json('null'), parameters('additionalUnattendContent'))]",
+            "winRM": "[if(empty(parameters('winRMListeners')), json('null'), json(concat('{\"listeners\": \"', parameters('winRMListeners'), '\"}')))]"
+        },
+        "diagnosticsMetrics": [
+            {
+                "category": "AllMetrics",
+                "timeGrain": null,
+                "enabled": true,
+                "retentionPolicy": {
+                    "enabled": true,
+                    "days": "[parameters('diagnosticLogsRetentionInDays')]"
+                }
+            }
+        ],
+        "accountSasProperties": {
+            "signedServices": "b", //Blob (b), Queue (q), Table (t), File (f).
+            "signedPermission": "r", //Read (r), Write (w), Delete (d), List (l), Add (a), Create (c), Update (u) and Process (p)
+            "signedExpiry": "[dateTimeAdd(parameters('baseTime'), parameters('sasTokenValidityLength'))]", //format: 2017-05-24T10:42:03Z
+            "signedResourceTypes": "o", //Service (s): Access to service-level APIs; Container (c): Access to container-level APIs; Object (o): Access to object-level APIs for blobs, queue messages, table entities, and files.
+            "signedProtocol": "https"
+        },
+        "diagnosticLogs": [],
+        "pidName": "[concat('pid-', parameters('cuaId'))]",
+        "builtInRoleNames": {
+            "Avere Contributor": "[concat('/subscriptions/', subscription().subscriptionId, '/providers/Microsoft.Authorization/roleDefinitions/', '4f8fab4f-1852-4a58-a46a-8eaf358af14a')]",
+            "Contributor": "[concat('/subscriptions/', subscription().subscriptionId, '/providers/Microsoft.Authorization/roleDefinitions/', 'b24988ac-6180-42a0-ab88-20f7382dd24c')]",
+            "DevTest Labs User": "[concat('/subscriptions/', subscription().subscriptionId, '/providers/Microsoft.Authorization/roleDefinitions/', '76283e04-6283-4c54-8f91-bcf1374a3c64')]",
+            "Log Analytics Contributor": "[concat('/subscriptions/', subscription().subscriptionId, '/providers/Microsoft.Authorization/roleDefinitions/', '92aaf0da-9dab-42b6-94a3-d43ce8d16293')]",
+            "Log Analytics Reader": "[concat('/subscriptions/', subscription().subscriptionId, '/providers/Microsoft.Authorization/roleDefinitions/', '73c42c96-874c-492b-b04d-ab87d138a893')]",
+            "Managed Application Contributor Role": "[concat('/subscriptions/', subscription().subscriptionId, '/providers/Microsoft.Authorization/roleDefinitions/', '641177b8-a67a-45b9-a033-47bc880bb21e')]",
+            "Managed Application Operator Role": "[concat('/subscriptions/', subscription().subscriptionId, '/providers/Microsoft.Authorization/roleDefinitions/', 'c7393b34-138c-406f-901b-d8cf2b17e6ae')]",
+            "Managed Applications Reader": "[concat('/subscriptions/', subscription().subscriptionId, '/providers/Microsoft.Authorization/roleDefinitions/', 'b9331d33-8a36-4f8c-b097-4f54124fdb44')]",
+            "Monitoring Contributor": "[concat('/subscriptions/', subscription().subscriptionId, '/providers/Microsoft.Authorization/roleDefinitions/', '749f88d5-cbae-40b8-bcfc-e573ddc772fa')]",
+            "Monitoring Metrics Publisher": "[concat('/subscriptions/', subscription().subscriptionId, '/providers/Microsoft.Authorization/roleDefinitions/', '3913510d-42f4-4e42-8a64-420c390055eb')]",
+            "Monitoring Reader": "[concat('/subscriptions/', subscription().subscriptionId, '/providers/Microsoft.Authorization/roleDefinitions/', '43d0d8ad-25c7-4714-9337-8ba259a9fe05')]",
+            "Owner": "[concat('/subscriptions/', subscription().subscriptionId, '/providers/Microsoft.Authorization/roleDefinitions/', '8e3af657-a8ff-443c-a75c-2fe8c4bcb635')]",
+            "Reader": "[concat('/subscriptions/', subscription().subscriptionId, '/providers/Microsoft.Authorization/roleDefinitions/', 'acdd72a7-3385-48ef-bd42-f606fba81ae7')]",
+            "Resource Policy Contributor": "[concat('/subscriptions/', subscription().subscriptionId, '/providers/Microsoft.Authorization/roleDefinitions/', '36243c78-bf99-498c-9df9-86d9f8d28608')]",
+            "User Access Administrator": "[concat('/subscriptions/', subscription().subscriptionId, '/providers/Microsoft.Authorization/roleDefinitions/', '18d7d88d-d35e-4fb5-a5c3-7773c20a72d9')]",
+            "Virtual Machine Administrator Login": "[concat('/subscriptions/', subscription().subscriptionId, '/providers/Microsoft.Authorization/roleDefinitions/', '1c0163c0-47e6-4577-8991-ea5c82e286e4')]",
+            "Virtual Machine Contributor": "[concat('/subscriptions/', subscription().subscriptionId, '/providers/Microsoft.Authorization/roleDefinitions/', '9980e02c-c2be-4d73-94e8-173b1dc7cf3c')]",
+            "Virtual Machine User Login": "[concat('/subscriptions/', subscription().subscriptionId, '/providers/Microsoft.Authorization/roleDefinitions/', 'fb879df8-f326-4884-b1cf-06f3ad86be52')]"
+        }
+    },
+    "resources": [
+        {
+            "name": "[variables('pidName')]",
+            "condition": "[not(empty(parameters('cuaId')))]",
+            "type": "Microsoft.Resources/deployments",
+            "apiVersion": "2020-06-01",
+            "properties": {
+                "mode": "Incremental",
+                "template": {
+                    "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+                    "contentVersion": "1.0.0.0",
+                    "resources": [
+                    ]
+                }
+            }
+        },
+        {
+            "name": "[if(not(empty(parameters('proximityPlacementGroupName'))),parameters('proximityPlacementGroupName'),'dummyProximityGroup')]",
+            "type": "Microsoft.Compute/proximityPlacementGroups",
+            "apiVersion": "2019-12-01",
+            "condition": "[not(empty(parameters('proximityPlacementGroupName')))]",
+            "location": "[parameters('location')]",
+            "tags": "[parameters('tags')]",
+            "properties": {
+                "proximityPlacementGroupType": "[parameters('proximityPlacementGroupType')]"
+            }
+        },
+        {
+            "type": "Microsoft.Compute/virtualMachineScaleSets",
+            "name": "[parameters('vmssName')]",
+            "apiVersion": "2020-06-01",
+            "condition": "[not(empty(parameters('vmssName')))]",
+            "location": "[parameters('location')]",
+            "tags": "[parameters('tags')]",
+            "dependsOn": [
+                "[if(not(empty(parameters('proximityPlacementGroupName'))),parameters('proximityPlacementGroupName'),'dummyProximityGroup')]"
+            ],
+            "identity": "[if(empty(parameters('managedIdentityType')), json('null'), json(concat('{\"type\":\"', parameters('managedIdentityType'), if(not(empty(parameters('managedIdentityIdentities'))),concat(',\"userAssignedIdentities\":\"',parameters('managedIdentityIdentities') ),''), '\"}')))]",
+            "zones": "[parameters('availabilityZones')]",
+            "properties": {
+                "proximityPlacementGroup": "[if(empty(parameters('proximityPlacementGroupName')), json('null'), json(concat('{\"id\":\"', resourceId('Microsoft.Compute/proximityPlacementGroups', parameters('proximityPlacementGroupName')),'\"}')))]",
+                "upgradePolicy": {
+                    "mode": "[parameters('upgradePolicyMode')]",
+                    "rollingUpgradePolicy": {
+                        "maxBatchInstancePercent": "[parameters('maxBatchInstancePercent')]",
+                        "maxUnhealthyInstancePercent": "[parameters('maxUnhealthyInstancePercent')]",
+                        "maxUnhealthyUpgradedInstancePercent": "[parameters('maxUnhealthyUpgradedInstancePercent')]",
+                        "pauseTimeBetweenBatches": "[parameters('pauseTimeBetweenBatches')]"
+                    },
+                    "automaticOSUpgradePolicy": {
+                        "enableAutomaticOSUpgrade": "[parameters('enableAutomaticOSUpgrade')]",
+                        "disableAutomaticRollback": "[parameters('disableAutomaticRollback')]"
+                    }
+                },
+                "automaticRepairsPolicy": {
+                    "enabled": "[parameters('automaticRepairsPolicyEnabled')]",
+                    "gracePeriod": "[parameters('gracePeriod')]"
+                },
+                "virtualMachineProfile": {
+                    "osProfile": {
+                        "computerNamePrefix": "[parameters('vmNamePrefix')]",
+                        "adminUsername": "[parameters('adminUsername')]",
+                        "adminPassword": "[if(empty(parameters('adminPassword')), json('null'), parameters('adminPassword'))]",
+                        "customData": "[if(empty(parameters('customData')), json('null'), base64(parameters('customData')))]",
+                        "windowsConfiguration": "[if(equals(parameters('osType'), 'Windows'), variables('windowsConfiguration'), json('null'))]",
+                        "linuxConfiguration": "[if(equals(parameters('osType'), 'Linux'), variables('linuxConfiguration'), json('null'))]",
+                        "secrets": "[parameters('secrets')]"
+                    },
+                    "storageProfile": {
+                        "imageReference": "[parameters('imageReference')]",
+                        "osDisk": {
+                            "createOption": "[parameters('osDisk').createOption]",
+                            "diskSizeGB": "[parameters('osDisk').diskSizeGB]",
+                            "caching": "[if(contains(parameters('osDisk'), 'caching'), parameters('osDisk').caching, json('null'))]",
+                            "writeAcceleratorEnabled": "[if(contains(parameters('osDisk'), 'writeAcceleratorEnabled'), parameters('osDisk').writeAcceleratorEnabled, json('null'))]",
+                            "diffDiskSettings": "[if(contains(parameters('osDisk'), 'diffDiskSettings'), parameters('osDisk').diffDiskSettings, json('null'))]",
+                            "osType": "[if(contains(parameters('osDisk'), 'osType'), parameters('osDisk').osType, json('null'))]",
+                            "image": "[if(contains(parameters('osDisk'), 'image'), parameters('osDisk').image, json('null'))]",
+                            "vhdContainers": "[if(contains(parameters('osDisk'), 'vhdContainers'), parameters('osDisk').vhdContainers, json('null'))]",
+                            "managedDisk": {
+                                "storageAccountType": "[parameters('osDisk').managedDisk.storageAccountType]",
+                                "diskEncryptionSet": "[if(contains(parameters('osDisk'), 'diskEncryptionSet'), parameters('osDisk').diskEncryptionSet, json('null'))]"
+                            }
+                        },
+                        "copy": [
+                            {
+                                "name": "dataDisks",
+                                "count": "[length(parameters('dataDisks'))]",
+                                "input": {
+                                    "lun": "[copyIndex('dataDisks')]",
+                                    "diskSizeGB": "[parameters('dataDisks')[copyIndex('dataDisks')].diskSizeGB]",
+                                    "createOption": "[parameters('dataDisks')[copyIndex('dataDisks')].createOption]",
+                                    "caching": "[parameters('dataDisks')[copyIndex('dataDisks')].caching]",
+                                    "writeAcceleratorEnabled": "[if(contains(parameters('osDisk'), 'writeAcceleratorEnabled'), parameters('osDisk').writeAcceleratorEnabled, json('null'))]",
+                                    "managedDisk": {
+                                        "storageAccountType": "[parameters('dataDisks')[copyIndex('dataDisks')].managedDisk.storageAccountType]",
+                                        "diskEncryptionSet": {
+                                            "id": "[if(parameters('enableServerSideEncryption'), parameters('dataDisks')[copyIndex('dataDisks')].managedDisk.diskEncryptionSet.id, json('null'))]"
+                                        }
+                                    },
+                                    "diskIOPSReadWrite": "[if(contains(parameters('osDisk'), 'diskIOPSReadWrite'),parameters('dataDisks')[copyIndex('dataDisks')].diskIOPSReadWrite, json('null'))]",
+                                    "diskMBpsReadWrite": "[if(contains(parameters('osDisk'), 'diskMBpsReadWrite'),parameters('dataDisks')[copyIndex('dataDisks')].diskMBpsReadWrite, json('null'))]"
+                                }
+                            }
+                        ]
+                    },
+                    "networkProfile": {
+                        "copy": [
+                            {
+                                "name": "networkInterfaceConfigurations",
+                                "count": "[length(parameters('nicConfigurations'))]",
+                                "input": {
+                                    "name": "[concat(parameters('vmssName'), parameters('nicConfigurations')[copyIndex('networkInterfaceConfigurations')].nicSuffix, 'configuration-', copyIndex('networkInterfaceConfigurations'))]",
+                                    "properties": {
+                                        "primary": "[if(equals(copyIndex('networkInterfaceConfigurations'), 0), 'true', 'false')]",
+                                        "enableAcceleratedNetworking": "[if(contains(parameters('nicConfigurations'), 'enableAcceleratedNetworking'), parameters('nicConfigurations')[copyIndex('networkInterfaceConfigurations')].enableAcceleratedNetworking, json('null'))]",
+                                        "networkSecurityGroup": "[if(contains(parameters('nicConfigurations'), 'nsgId'), json(concat('{\"id\": \"', parameters('nicConfigurations')[copyIndex('networkInterfaceConfigurations')].nsgId, '\"}')), json('null'))]",
+                                        "ipConfigurations": "[parameters('nicConfigurations')[copyIndex('networkInterfaceConfigurations')].ipConfigurations]"
+                                    }
+                                }
+                            }
+                        ]
+                    },
+                    "diagnosticsProfile": {
+                        "bootDiagnostics": {
+                            "enabled": "[not(empty(parameters('bootDiagnosticStorageAccountName')))]",
+                            "storageUri": "[if(empty(parameters('bootDiagnosticStorageAccountName')), json('null'), concat('https://', parameters('bootDiagnosticStorageAccountName'), parameters('bootDiagnosticStorageAccountUri')))]"
+                        }
+                    },
+                    "licenseType": "[if(empty(parameters('licenseType')), json('null'),parameters('licenseType'))]",
+                    "priority": "[parameters('vmPriority')]",
+                    "evictionPolicy": "[if(parameters('enableEvictionPolicy'), 'Deallocate', json('null'))]",
+                    "billingProfile": "[if(and(not(empty(parameters('vmPriority'))),not(empty(parameters('maxPriceForLowPriorityVm')))), json(concat('{\"maxPrice\":\"',parameters('maxPriceForLowPriorityVm'),'\"}')), json('null'))]",
+                    "scheduledEventsProfile": "[parameters('scheduledEventsProfile')]"
+                },
+                "overprovision": "[parameters('overprovision')]",
+                "doNotRunExtensionsOnOverprovisionedVMs": "[parameters('doNotRunExtensionsOnOverprovisionedVMs')]",
+                "zoneBalance": "[if(equals(parameters('zoneBalance'), 'true'), parameters('zoneBalance'), json('null'))]",
+                "platformFaultDomainCount": "[parameters('scaleSetFaultDomain')]",
+                "singlePlacementGroup": "[parameters('singlePlacementGroup')]",
+                "additionalCapabilities": {
+                    "ultraSSDEnabled": "[parameters('ultraSSDEnabled')]"
+                },
+                "scaleInPolicy": "[parameters('scaleInPolicy')]"
+            },
+            "sku": {
+                "name": "[parameters('instanceSize')]",
+                "capacity": "[int(parameters('instanceCount'))]"
+            },
+            "plan": "[if(empty(parameters('plan')), json('null'),parameters('plan'))]",
+            "resources": [
+                {
+                    "type": "providers/locks",
+                    "apiVersion": "2016-09-01",
+                    "condition": "[parameters('lockForDeletion')]",
+                    "name": "Microsoft.Authorization/vmssDoNotDelete",
+                    "dependsOn": [
+                        "[concat('Microsoft.Compute/virtualMachineScaleSets/', parameters('vmssName'))]"
+                    ],
+                    "comments": "Resource lock on VM Scale Set",
+                    "properties": {
+                        "level": "CannotDelete"
+                    }
+                },
+                {
+                    "type": "Microsoft.Compute/virtualMachineScaleSets/extensions",
+                    "name": "[concat(parameters('vmssName'),'/DomainJoin')]",
+                    "apiVersion": "2020-06-01",
+                    "location": "[parameters('location')]",
+                    "condition": "[not(empty(parameters('domainName')))]",
+                    "dependsOn": [
+                        "[concat('Microsoft.Compute/virtualMachineScaleSets/', parameters('vmssName'))]"
+                    ],
+                    "properties": {
+                        "publisher": "Microsoft.Compute",
+                        "type": "JsonADDomainExtension",
+                        "typeHandlerVersion": "1.3",
+                        "autoUpgradeMinorVersion": true,
+                        "settings": {
+                            "Name": "[parameters('domainName')]",
+                            "User": "[parameters('domainJoinUser')]",
+                            "OUPath": "[parameters('domainJoinOU')]",
+                            "Restart": "[parameters('domainJoinRestart')]",
+                            "Options": "[parameters('domainJoinOptions')]"
+                        },
+                        "protectedSettings": {
+                            "Password": "[parameters('domainJoinPassword')]"
+                        }
+                    }
+                },
+                {
+                    "type": "Microsoft.Compute/virtualMachineScaleSets/extensions",
+                    "name": "[concat(parameters('vmssName'), '/MicrosoftAntiMalware')]",
+                    "apiVersion": "2020-06-01",
+                    "location": "[parameters('location')]",
+                    "condition": "[parameters('enableMicrosoftAntiMalware')]",
+                    "dependsOn": [
+                        "[concat('Microsoft.Compute/virtualMachineScaleSets/', parameters('vmssName'))]",
+                        "[resourceId('Microsoft.Compute/virtualMachineScaleSets/extensions', parameters('vmssName'), 'DomainJoin')]"
+                    ],
+                    "properties": {
+                        "publisher": "Microsoft.Azure.Security",
+                        "type": "IaaSAntimalware",
+                        "typeHandlerVersion": "1.3",
+                        "autoUpgradeMinorVersion": true,
+                        "settings": "[parameters('microsoftAntiMalwareSettings')]"
+                    }
+                },
+                {
+                    "type": "Microsoft.Compute/virtualMachineScaleSets/extensions",
+                    "name": "[concat(parameters('vmssName'), '/WindowsMMAAgent')]",
+                    "apiVersion": "2020-06-01",
+                    "location": "[parameters('location')]",
+                    "condition": "[parameters('enableWindowsMMAAgent')]",
+                    "dependsOn": [
+                        "[concat('Microsoft.Compute/virtualMachineScaleSets/', parameters('vmssName'))]",
+                        "[resourceId('Microsoft.Compute/virtualMachineScaleSets/extensions', parameters('vmssName'), 'MicrosoftAntiMalware')]"
+                    ],
+                    "properties": {
+                        "publisher": "Microsoft.EnterpriseCloud.Monitoring",
+                        "type": "MicrosoftMonitoringAgent",
+                        "typeHandlerVersion": "1.0",
+                        "autoUpgradeMinorVersion": true,
+                        "settings": {
+                            "workspaceId": "[if(empty(parameters('workspaceId')), 'dummy', reference(parameters('workspaceId'), '2015-11-01-preview').customerId)]"
+                        },
+                        "protectedSettings": {
+                            "workspaceKey": "[if(empty(parameters('workspaceId')), 'dummy', listKeys(parameters('workspaceId'), '2015-11-01-preview').primarySharedKey)]"
+                        }
+                    }
+                },
+                {
+                    "type": "Microsoft.Compute/virtualMachineScaleSets/extensions",
+                    "name": "[concat(parameters('vmssName'), '/LinuxMMAAgent')]",
+                    "apiVersion": "2020-06-01",
+                    "location": "[parameters('location')]",
+                    "condition": "[parameters('enableLinuxMMAAgent')]",
+                    "dependsOn": [
+                        "[concat('Microsoft.Compute/virtualMachineScaleSets/', parameters('vmssName'))]",
+                        "[resourceId('Microsoft.Compute/virtualMachineScaleSets/extensions', parameters('vmssName'), 'WindowsMMAAgent')]"
+                    ],
+                    "properties": {
+                        "publisher": "Microsoft.EnterpriseCloud.Monitoring",
+                        "type": "OmsAgentForLinux",
+                        "typeHandlerVersion": "1.7",
+                        "autoUpgradeMinorVersion": true,
+                        "settings": {
+                            "workspaceId": "[if(empty(parameters('workspaceId')), 'dummy', reference(parameters('workspaceId'), '2015-11-01-preview').customerId)]"
+                        },
+                        "protectedSettings": {
+                            "workspaceKey": "[if(empty(parameters('workspaceId')), 'dummy', listKeys(parameters('workspaceId'), '2015-11-01-preview').primarySharedKey)]"
+                        }
+                    }
+                },
+                {
+                    "type": "Microsoft.Compute/virtualMachineScaleSets/extensions",
+                    "name": "[concat(parameters('vmssName'), '/WindowsDiskEncryption')]",
+                    "apiVersion": "2019-07-01",
+                    "location": "[parameters('location')]",
+                    "condition": "[parameters('enableWindowsDiskEncryption')]",
+                    "dependsOn": [
+                        "[concat('Microsoft.Compute/virtualMachineScaleSets/', parameters('vmssName'))]",
+                        "[resourceId('Microsoft.Compute/virtualMachineScaleSets/extensions', parameters('vmssName'), 'LinuxMMAAgent')]"
+                    ],
+                    "properties": {
+                        "publisher": "Microsoft.Azure.Security",
+                        "type": "AzureDiskEncryption",
+                        "typeHandlerVersion": "2.2",
+                        "autoUpgradeMinorVersion": true,
+                        "forceUpdateTag": "[parameters('forceUpdateTag')]",
+                        "settings": {
+                            "EncryptionOperation": "EnableEncryption",
+                            "KeyVaultURL": "[parameters('keyVaultUri')]",
+                            "KeyVaultResourceId": "[parameters('keyVaultId')]",
+                            "KeyEncryptionKeyURL": "[parameters('keyEncryptionKeyURL')]",
+                            "KekVaultResourceId": "[parameters('keyVaultId')]",
+                            "KeyEncryptionAlgorithm": "[parameters('diskKeyEncryptionAlgorithm')]",
+                            "VolumeType": "[parameters('diskEncryptionVolumeType')]",
+                            "ResizeOSDisk": "[parameters('resizeOSDisk')]"
+                        }
+                    }
+                },
+                {
+                    "type": "Microsoft.Compute/virtualMachineScaleSets/extensions",
+                    "name": "[concat(parameters('vmssName'), '/LinuxDiskEncryption')]",
+                    "apiVersion": "2020-06-01",
+                    "location": "[parameters('location')]",
+                    "condition": "[parameters('enableLinuxDiskEncryption')]",
+                    "dependsOn": [
+                        "[concat('Microsoft.Compute/virtualMachineScaleSets/', parameters('vmssName'))]",
+                        "[resourceId('Microsoft.Compute/virtualMachineScaleSets/extensions', parameters('vmssName'), 'WindowsDiskEncryption')]"
+                    ],
+                    "properties": {
+                        "publisher": "Microsoft.Azure.Security",
+                        "type": "AzureDiskEncryptionForLinux",
+                        "typeHandlerVersion": "1.1",
+                        "autoUpgradeMinorVersion": true,
+                        "forceUpdateTag": "[parameters('forceUpdateTag')]",
+                        "settings": {
+                            "EncryptionOperation": "EnableEncryption",
+                            "KeyVaultURL": "[parameters('keyVaultUri')]",
+                            "KeyVaultResourceId": "[parameters('keyVaultId')]",
+                            "KeyEncryptionKeyURL": "[parameters('keyEncryptionKeyURL')]",
+                            "KekVaultResourceId": "[parameters('keyVaultId')]",
+                            "KeyEncryptionAlgorithm": "[parameters('diskKeyEncryptionAlgorithm')]",
+                            "VolumeType": "[parameters('diskEncryptionVolumeType')]"
+                        }
+                    }
+                },
+                {
+                    "type": "Microsoft.Compute/virtualMachineScaleSets/extensions",
+                    "apiVersion": "2020-06-01",
+                    "name": "[concat(parameters('vmssName'), '/DependencyAgentWindows')]",
+                    "location": "[parameters('location')]",
+                    "condition": "[parameters('enableWindowsDependencyAgent')]",
+                    "dependsOn": [
+                        "[concat('Microsoft.Compute/virtualMachineScaleSets/', parameters('vmssName'))]",
+                        "[resourceId('Microsoft.Compute/virtualMachineScaleSets/extensions', parameters('vmssName'), 'LinuxDiskEncryption')]"
+                    ],
+                    "properties": {
+                        "publisher": "Microsoft.Azure.Monitoring.DependencyAgent",
+                        "type": "DependencyAgentWindows",
+                        "typeHandlerVersion": "9.5",
+                        "autoUpgradeMinorVersion": true
+                    }
+                },
+                {
+                    "type": "Microsoft.Compute/virtualMachineScaleSets/extensions",
+                    "apiVersion": "2020-06-01",
+                    "name": "[concat(parameters('vmssName'), '/DependencyAgentLinux')]",
+                    "location": "[parameters('location')]",
+                    "condition": "[parameters('enableLinuxDependencyAgent')]",
+                    "dependsOn": [
+                        "[concat('Microsoft.Compute/virtualMachineScaleSets/', parameters('vmssName'))]",
+                        "[resourceId('Microsoft.Compute/virtualMachineScaleSets/extensions', parameters('vmssName'), 'DependencyAgentWindows')]"
+                    ],
+                    "properties": {
+                        "publisher": "Microsoft.Azure.Monitoring.DependencyAgent",
+                        "type": "DependencyAgentLinux",
+                        "typeHandlerVersion": "9.5",
+                        "autoUpgradeMinorVersion": true
+                    }
+                },
+                {
+                    "type": "Microsoft.Compute/virtualMachineScaleSets/extensions",
+                    "name": "[concat(parameters('vmssName'), '/NetworkWatcherAgentWindows')]",
+                    "apiVersion": "2020-06-01",
+                    "location": "[parameters('location')]",
+                    "condition": "[parameters('enableNetworkWatcherWindows')]",
+                    "dependsOn": [
+                        "[concat('Microsoft.Compute/virtualMachineScaleSets/', parameters('vmssName'))]",
+                        "[resourceId('Microsoft.Compute/virtualMachineScaleSets/extensions', parameters('vmssName'), 'DependencyAgentLinux')]"
+                    ],
+                    "properties": {
+                        "publisher": "Microsoft.Azure.NetworkWatcher",
+                        "type": "NetworkWatcherAgentWindows",
+                        "typeHandlerVersion": "1.4",
+                        "autoUpgradeMinorVersion": true,
+                        "settings": {
+                        }
+                    }
+                },
+                {
+                    "type": "Microsoft.Compute/virtualMachineScaleSets/extensions",
+                    "name": "[concat(parameters('vmssName'), '/NetworkWatcherAgentLinux')]",
+                    "apiVersion": "2020-06-01",
+                    "location": "[parameters('location')]",
+                    "condition": "[parameters('enableNetworkWatcherLinux')]",
+                    "dependsOn": [
+                        "[concat('Microsoft.Compute/virtualMachineScaleSets/', parameters('vmssName'))]",
+                        "[resourceId('Microsoft.Compute/virtualMachineScaleSets/extensions', parameters('vmssName'), 'NetworkWatcherAgentWindows')]"
+                    ],
+                    "properties": {
+                        "publisher": "Microsoft.Azure.NetworkWatcher",
+                        "type": "NetworkWatcherAgentLinux",
+                        "typeHandlerVersion": "1.4",
+                        "autoUpgradeMinorVersion": true,
+                        "settings": {
+                        }
+                    }
+                },
+                {
+                    "type": "Microsoft.Compute/virtualMachineScaleSets/extensions",
+                    "name": "[concat(parameters('vmssName'), '/windowsDsc')]",
+                    "apiVersion": "2020-06-01",
+                    "location": "[parameters('location')]",
+                    "condition": "[not(empty(parameters('dscConfiguration')))]",
+                    "dependsOn": [
+                        "[concat('Microsoft.Compute/virtualMachineScaleSets/', parameters('vmssName'))]",
+                        "[resourceId('Microsoft.Compute/virtualMachineScaleSets/extensions', parameters('vmssName'), 'NetworkWatcherAgentLinux')]"
+                    ],
+                    "properties": {
+                        "publisher": "Microsoft.Powershell",
+                        "type": "DSC",
+                        "typeHandlerVersion": "2.77",
+                        "autoUpgradeMinorVersion": true,
+                        "settings": "[parameters('dscConfiguration').settings]",
+                        "protectedSettings": "[if( contains(parameters('dscConfiguration'), 'protectedSettings'), parameters('dscConfiguration').protectedSettings, json('null') )]"
+                    }
+                }
+            ]
+        },
+        {
+            "type": "Microsoft.Compute/virtualMachineScaleSets/providers/diagnosticSettings",
+            "apiVersion": "2017-05-01-preview",
+            "location": "[parameters('location')]",
+            "tags": "[parameters('tags')]",
+            "name": "[concat(parameters('vmssName'), '/Microsoft.Insights/service')]",
+            "condition": "[or(not(empty(parameters('diagnosticStorageAccountId'))),not(empty(parameters('workspaceId'))),not(empty(parameters('eventHubAuthorizationRuleId'))),not(empty(parameters('eventHubName'))))]",
+            "dependsOn": [
+                "[concat('Microsoft.Compute/virtualMachineScaleSets/', parameters('vmssName'))]"
+            ],
+            "properties": {
+                "storageAccountId": "[if(empty(parameters('diagnosticStorageAccountId')), json('null'), parameters('diagnosticStorageAccountId'))]",
+                "workspaceId": "[if(empty(parameters('workspaceId')), json('null'), parameters('workspaceId'))]",
+                "eventHubAuthorizationRuleId": "[if(empty(parameters('eventHubAuthorizationRuleId')), json('null'), parameters('eventHubAuthorizationRuleId'))]",
+                "eventHubName": "[if(empty(parameters('eventHubName')), json('null'), parameters('eventHubName'))]",
+                "metrics": "[if(and(empty(parameters('diagnosticStorageAccountId')), empty(parameters('workspaceId')), empty(parameters('eventHubAuthorizationRuleId')), empty(parameters('eventHubName'))), json('null'), variables('diagnosticsMetrics'))]",
+                "logs": "[if(and(empty(parameters('diagnosticStorageAccountId')), empty(parameters('workspaceId')), empty(parameters('eventHubAuthorizationRuleId')), empty(parameters('eventHubName'))), json('null'), variables('diagnosticLogs'))]"
+            }
+        },
+        // This WindowsCustomScriptExtension has to be a top level resource, as the 'fileUris' property copy loop only works if this extension is not a nested resource within the VM.
+        {
+            "apiVersion": "2019-07-01",
+            "type": "Microsoft.Compute/virtualMachineScaleSets/extensions",
+            "name": "[concat(parameters('vmssName'), '/WindowsCustomScriptExtension')]",
+            "location": "[parameters('location')]",
+            "condition": "[and(not(empty(parameters('windowsScriptExtensionFileData'))),not(empty(parameters('windowsScriptExtensionCommandToExecute'))))]",
+            "dependsOn": [
+                "[concat('Microsoft.Compute/virtualMachineScaleSets/', parameters('vmssName'))]",
+                "[resourceId('Microsoft.Compute/virtualMachineScaleSets/extensions', parameters('vmssName'), 'windowsDsc')]"
+            ],
+            "properties": {
+                "publisher": "Microsoft.Compute",
+                "type": "CustomScriptExtension",
+                "typeHandlerVersion": "1.9",
+                "autoUpgradeMinorVersion": true,
+                "settings": {
+                    "copy": [
+                        {
+                            "name": "fileUris",
+                            "count": "[length(parameters('windowsScriptExtensionFileData'))]",
+                            "input": "[concat(parameters('windowsScriptExtensionFileData')[copyIndex('fileUris')].uri,if(contains(parameters('windowsScriptExtensionFileData')[copyIndex('fileUris')], 'storageAccountId'),concat('?',listAccountSas(parameters('windowsScriptExtensionFileData')[copyIndex('fileUris')].storageAccountId, '2019-04-01', variables('accountSasProperties')).accountSasToken) , '' ))]"
+                        }
+                    ]
+                },
+                "protectedSettings": {
+                    "commandToExecute": "[parameters('windowsScriptExtensionCommandToExecute')]",
+                    "storageAccountName": "[if(not(empty(parameters('cseStorageAccountName'))), parameters('cseStorageAccountName'), json('null'))]",
+                    "storageAccountKey": "[if(not(empty(parameters('cseStorageAccountKey'))), parameters('cseStorageAccountKey'), json('null'))]",
+                    "managedIdentity": "[if(not(empty(parameters('cseManagedIdentity'))), parameters('cseManagedIdentity'), json('null'))]"
+                }
+            }
+        },
+        {
+            "name": "[concat('rbac-',deployment().name, copyIndex())]",
+            "apiVersion": "2020-06-01",
+            "type": "Microsoft.Resources/deployments",
+            "condition": "[not(empty(parameters('roleAssignments')))]",
+            "dependsOn": [
+                "[parameters('vmssName')]"
+            ],
+            "copy": {
+                "name": "rbacDeplCopy",
+                "count": "[length(parameters('roleAssignments'))]"
+            },
+            "properties": {
+                "mode": "Incremental",
+                "expressionEvaluationOptions": {
+                    "scope": "inner"
+                },
+                "parameters": {
+                    "roleAssignment": {
+                        "value": "[parameters('roleAssignments')[copyIndex()]]"
+                    },
+                    "builtInRoleNames": {
+                        "value": "[variables('builtInRoleNames')]"
+                    },
+                    "vmssName": {
+                        "value": "[parameters('vmssName')]"
+                    }
+                },
+                "template": {
+                    "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+                    "contentVersion": "1.0.0.0",
+                    "parameters": {
+                        "roleAssignment": {
+                            "type": "object"
+                        },
+                        "builtInRoleNames": {
+                            "type": "object"
+                        },
+                        "vmssName": {
+                            "type": "string"
+                        }
+                    },
+                    "resources": [
+                        {
+                            "type": "Microsoft.Compute/virtualMachineScaleSets/providers/roleAssignments",
+                            "apiVersion": "2018-09-01-preview",
+                            "name": "[concat(parameters('vmssName'), '/Microsoft.Authorization/', guid(uniqueString(concat(parameters('vmssName'), array(parameters('roleAssignment').principalIds)[copyIndex('innerRbacCopy')], parameters('roleAssignment').roleDefinitionIdOrName ))))]",
+                            "dependsOn": [
+                            ],
+                            "copy": {
+                                "name": "innerRbacCopy",
+                                "count": "[length(parameters('roleAssignment').principalIds)]"
+                            },
+                            "properties": {
+                                "roleDefinitionId": "[if(contains(parameters('builtInRoleNames'), parameters('roleAssignment').roleDefinitionIdOrName ), parameters('builtInRoleNames')[parameters('roleAssignment').roleDefinitionIdOrName] , parameters('roleAssignment').roleDefinitionIdOrName )]",
+                                "principalId": "[array(parameters('roleAssignment').principalIds)[copyIndex()]]"
+                            }
+                        }
+                    ]
+                }
+            }
+        }
+    ],
+    "functions": [
+    ],
+    "outputs": {
+        "vmssResourceIds": {
+            "type": "string",
+            "value": "[resourceId('Microsoft.Compute/virtualMachineScaleSets', parameters('vmssName'))]",
+            "metadata": {
+                "description": "The Resource Id of the VMSS."
+            }
+        },
+        "vmssResourceGroup": {
+            "type": "string",
+            "value": "[resourceGroup().name]",
+            "metadata": {
+                "description": "The name of the Resource Group the VMSS was/were created in."
+            }
+        },
+        "vmssName": {
+            "type": "string",
+            "value": "[parameters('vmssName')]",
+            "metadata": {
+                "description": "The Names of the VMSS"
+            }
+        }
+    }
+}

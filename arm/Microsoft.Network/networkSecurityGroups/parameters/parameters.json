@@ -1,0 +1,117 @@
+{
+    "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "networkSecurityGroupName": {
+            "value": "sxx-az-nsg-weu-x-001"
+        },
+        "networkwatcherResourceGroup":{
+            "value": "NetworkWatcherRG"
+        },
+        "networkSecurityGroupSecurityRules": {
+            "value": [{
+                    "name": "Specific",
+                    "properties": {
+                        "description": "Tests specific IPs and ports",
+                        "protocol": "*",
+                        "sourcePortRange": "*",
+                        "destinationPortRange": "8080",
+                        "sourceAddressPrefix": "*",
+                        "destinationAddressPrefix": "*",
+                        "access": "Allow",
+                        "priority": 100,
+                        "direction": "Inbound"
+                    }
+                },
+                {
+                    "name": "Ranges",
+                    "properties": {
+                        "description": "Tests Ranges",
+                        "protocol": "*",
+                        "access": "Allow",
+                        "priority": 101,
+                        "direction": "Inbound",
+                        "sourcePortRanges": [
+                            "80",
+                            "81"
+                        ],
+                        "destinationPortRanges": [
+                            "90",
+                            "91"
+                        ],
+                        "sourceAddressPrefixes": [
+                            "10.0.0.0/16",
+                            "10.1.0.0/16"
+                        ],
+                        "destinationAddressPrefixes": [
+                            "10.2.0.0/16",
+                            "10.3.0.0/16"
+                        ]
+                    }
+                },
+                {
+                    "name": "Port_8082",
+                    "properties": {
+                        "description": "Allow inbound access on TCP 8082",
+                        "protocol": "*",
+                        "sourcePortRange": "*",
+                        "destinationPortRange": "8082",
+                        "access": "Allow",
+                        "priority": 102,
+                        "direction": "Inbound",
+                        "sourceApplicationSecurityGroupIds": [
+                            "/subscriptions/8629be3b-96bc-482d-a04b-ffff597c65a2/resourceGroups/dependencies-rg/providers/Microsoft.Network/applicationSecurityGroups/sxx-az-asg-weu-x-003"
+                        ],
+                        "destinationApplicationSecurityGroupIds": [
+                            "/subscriptions/8629be3b-96bc-482d-a04b-ffff597c65a2/resourceGroups/dependencies-rg/providers/Microsoft.Network/applicationSecurityGroups/sxx-az-asg-weu-x-003"
+                        ]
+                    }
+                }
+            ]
+        },
+        // "networkWatcherName": {
+        //     "value": "NetworkWatcher_westeurope"
+        // },
+        "diagnosticStorageAccountId": {
+            "value": "/subscriptions/8629be3b-96bc-482d-a04b-ffff597c65a2/resourceGroups/dependencies-rg/providers/Microsoft.Storage/storageAccounts/sxxazsaweux003"
+        },
+        "retentionEnabled": {
+            "value": false
+        },
+        // "flowLogName": {
+        //     "value": "sxx-az-fl-weu-001"
+        // },
+        // "flowLogworkspaceId": {
+        //     "value": "/subscriptions/8629be3b-96bc-482d-a04b-ffff597c65a2/resourcegroups/dependencies-rg/providers/microsoft.operationalinsights/workspaces/sxx-az-la-weu-x-003"
+        // },
+        // "flowLogEnabled": {
+        //     "value": false
+        // },
+        // "logFormatVersion": {
+        //     "value": 2
+        // },
+        // "flowLogIntervalInMinutes": {
+        //     "value": 10
+        // },
+        "diagnosticLogsRetentionInDays": {
+            "value": 7
+        },
+        // "flowAnalyticsEnabled": {
+        //     "value": false
+        // },
+        "workspaceId": {
+            "value": "/subscriptions/8629be3b-96bc-482d-a04b-ffff597c65a2/resourcegroups/dependencies-rg/providers/microsoft.operationalinsights/workspaces/sxx-az-la-weu-x-003"
+        }
+        // "roleAssignments": {
+        //     "value": [
+        //         {
+        //             "roleDefinitionIdOrName": "Desktop Virtualization User",
+        //             "principalIds": [
+        //                 "12345678-1234-1234-1234-123456789012", // object 1
+        //                 "78945612-1234-1234-1234-123456789012" // object 2
+        //             ]
+        //         }
+        //     ]
+        // }
+    }
+}

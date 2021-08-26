@@ -1,0 +1,87 @@
+{
+    "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "vmNamePrefix": {
+            "value": "iacs"
+        },
+        "vmNumberOfInstances": {
+            "value": 2
+        },
+        "vmInitialNumber": {
+            "value": 0
+        },
+        // "managedServiceIdentity": {
+        //     "value": "SystemAssigned"
+        // },
+        "imageReference": {
+            "value": {
+                "publisher": "MicrosoftWindowsServer",
+                "offer": "WindowsServer",
+                "sku": "2016-Datacenter",
+                "version": "latest"
+            }
+        },
+        "osDisk": {
+            "value": {
+                "createOption": "fromImage",
+                "diskSizeGB": "128",
+                "managedDisk": {
+                    "storageAccountType": "Premium_LRS"
+                }
+            }
+        },
+        "adminUsername": {
+            "value": "localAdminUser"
+        },
+        "adminPassword": {
+            "reference": {
+                "keyVault": {
+                    "id": "/subscriptions/8629be3b-96bc-482d-a04b-ffff597c65a2/resourceGroups/dependencies-rg/providers/Microsoft.KeyVault/vaults/sxx-az-kv-weu-x-004"
+                },
+                "secretName": "adminPassword"
+            }
+        },
+        "nicConfigurations": {
+            "value": [
+                {
+                    "nicSuffix": "-nic-01",
+                    "ipConfigurations": [
+                        {
+                            "name": "ipconfig1",
+                            "subnetId": "/subscriptions/8629be3b-96bc-482d-a04b-ffff597c65a2/resourceGroups/dependencies-rg/providers/Microsoft.Network/virtualNetworks/sxx-az-vnet-weu-x-002/subnets/sxx-az-subnet-weu-x-001",
+                            // "enablePublicIP": true,
+                            // "publicIpNameSuffix": "-pip-01"
+                        }
+                    ]
+                }
+            ]
+        }
+        // "diagnosticSettingName": {
+        //     "value": "testsetting"
+        // },
+        // "workspaceId": {
+        //     "value": "/subscriptions/8629be3b-96bc-482d-a04b-ffff597c65a2/resourcegroups/dependencies-rg/providers/microsoft.operationalinsights/workspaces/sxx-az-la-weu-x-003"
+        // },
+        // "diagnosticStorageAccountId": {
+        //     "value": "/subscriptions/8629be3b-96bc-482d-a04b-ffff597c65a2/resourceGroups/dependencies-rg/providers/Microsoft.Storage/storageAccounts/sxxazsaweux003"
+        // },
+        // "enableWindowsMMAAgent": {
+        //     "value": true
+        // },
+        // "bootDiagnosticStorageAccountName": {
+        //     "value": "sxxazsaweux003"
+        // }
+        // "roleAssignments": {
+        //     "value": [
+        //         {
+        //             "roleDefinitionIdOrName": "Desktop Virtualization User",
+        //             "principalIds": [
+        //                 "12345678-1234-1234-1234-123456789012", // object 1
+        //                 "78945612-1234-1234-1234-123456789012" // object 2
+        //             ]
+        //         }
+        //     ]
+        // }
+    }
+}

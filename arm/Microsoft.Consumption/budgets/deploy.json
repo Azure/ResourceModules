@@ -1,0 +1,115 @@
+{
+    "$schema": "https://schema.management.azure.com/schemas/2018-05-01/subscriptionDeploymentTemplate.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "budgetName": {
+            "type": "string",
+            "minLength": 1,
+            "metadata": {
+                "description": "Required. The name of the budget."
+            }
+        },
+        "category": {
+            "type": "string",
+            "defaultValue": "Cost",
+            "allowedValues": [ "Cost", "Usage" ],
+            "metadata": {
+                "description": "Optional. The category of the budget, whether the budget tracks cost or usage."
+            }
+        },
+        "amount": {
+            "type": "int",
+            "metadata": {
+                "description": "Required. The total amount of cost to track with the budget."
+            }
+        },
+        "resetPeriod": {
+            "type": "string",
+            "defaultValue": "Monthly",
+            "allowedValues": [ "Monthly", "Quarterly", "Annually", "BillingMonth", "BillingQuarter", "BillingAnnual" ],
+            "metadata": {
+                "description": "Optional. The time covered by a budget. Tracking of the amount will be reset based on the time grain. BillingMonth, BillingQuarter, and BillingAnnual are only supported by WD customers."
+            }
+        },
+        "startDate": {
+            "type": "string",
+            "defaultValue": "[concat(utcNow('yyyy'), '-', utcNow('MM'), '-01T00:00:00Z')]",
+            "metadata": {
+                "description": "Optional. The start date for the budget. Start date should be the first day of the month and cannot be in the past (except for the current month)."
+            }
+        },
+        "endDate": {
+            "type": "string",
+            "defaultValue": "",
+            "metadata": {
+                "description": "Optional. The end date for the budget. If not provided, it will default to 10 years from the start date."
+            }
+        },
+        "alertPercentage": {
+            "type": "int",
+            "metadata": {
+                "description": "Required. Alert % must be between 1 and 1000."
+            }
+        },
+        "contactEmails": {
+            "type": "array",
+            "defaultValue": [],
+            "metadata": {
+                "description": "Optional. List of email addresses that will receive the alert."
+            }
+        },
+        "actionGroups": {
+            "type": "array",
+            "defaultValue": [],
+            "metadata": {
+                "description": "Optional. List of fully qualified action group resource IDs that will receive the alert."
+            }
+        }
+    },
+    "variables": {},
+    "resources": [
+        {
+            "name": "[parameters('budgetName')]",
+            "type": "Microsoft.Consumption/budgets",
+            "apiVersion": "2019-10-01",
+            "properties": {
+                "category": "[parameters('category')]",
+                "amount": "[parameters('amount')]",
+                "timeGrain": "[parameters('resetPeriod')]",
+                "timePeriod": {
+                    "startDate": "[parameters('startDate')]",
+                    "endDate": "[parameters('endDate')]"
+                },
+                "notifications": {
+                    "actual_GreaterThan_Percentage": {
+                        "enabled": true,
+                        "operator": "GreaterThan",
+                        "threshold": "[parameters('alertPercentage')]",
+                        "contactEmails": "[parameters('contactEmails')]",
+                        "contactRoles": [],
+                        "contactGroups": "[parameters('actionGroups')]",
+                        "thresholdType": "Actual"
+                    }
+                }
+            }
+        }
+    ],
+    "functions": [
+    ],
+    "outputs": {
+        "budgetName": {
+            "type": "string",
+            "value": "[parameters('budgetName')]",
+            "metadata": {
+                "description": "The name of the budget."
+            }
+        },
+        "budgetResourceId": {
+            "type": "string",
+            "value": "[resourceId('Microsoft.Consumption/budgets', parameters('budgetName'))]",
+            "metadata": {
+                "description": "The Resource Id of the budget."
+            }
+        }
+    }
+}

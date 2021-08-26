@@ -1,0 +1,161 @@
+{
+    "$schema": "https://schema.management.azure.com/schemas/2018-05-01/subscriptionDeploymentTemplate.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "registrationDefinitionName": {
+            "type": "string",
+            "metadata": {
+                "description": "Required. Specify a unique name for your offer/registration. i.e '<Managing Tenant> - <Remote Tenant> - <ResourceName>'"
+            }
+        },
+        "registrationDescription": {
+            "type": "string",
+            "metadata": {
+                "description": "Required. Description of the offer/registration. i.e. 'Managed by <Managing Org Name>'"
+            }
+        },
+        "managedByTenantId": {
+            "type": "string",
+            "metadata": {
+                "description": "Required. Specify the tenant ID of the tenant which homes the principals you are delegating permissions to."
+            }
+        },
+        "authorizations": {
+            "type": "array",
+            "metadata": {
+                "description": "Required. Specify an array of objects, containing object of Azure Active Directory principalId, a Azure roleDefinitionId, and an optional principalIdDisplayName. The roleDefinition specified is granted to the principalId in the provider's Active Directory and the principalIdDisplayName is visible to customers."
+            }
+        },
+        "resourceGroupName": {
+            "type": "string",
+            "defaultValue": "",
+            "metadata": {
+                "description": "Optional. Specify the name of the Resource Group to delegate access to. If not provided, delegation will be done on the targeted subscription."
+            }
+        }
+    },
+    "variables": {
+        "registrationDefinitionId": "[guid(parameters('registrationDefinitionName'))]",
+        "assignmentId": "[
+            if(
+                empty(parameters('resourceGroupName')),
+                guid(
+                    concat(
+                        parameters('managedByTenantId'),
+                        subscription().subscriptionId
+                    )
+                ),
+                guid(
+                    concat(
+                        parameters('managedByTenantId'),
+                        subscription().subscriptionId,
+                        parameters('resourceGroupName')
+                    )
+                )
+            )
+        ]"
+    },
+    "resources": [
+        {
+            "type": "Microsoft.ManagedServices/registrationDefinitions",
+            "apiVersion": "2019-06-01",
+            "name": "[variables('registrationDefinitionId')]",
+            "properties": {
+                "registrationDefinitionName": "[parameters('registrationDefinitionName')]",
+                "description": "[parameters('registrationDescription')]",
+                "managedByTenantId": "[parameters('managedByTenantId')]",
+                "authorizations": "[parameters('authorizations')]"
+            }
+        },
+        // Subscription deployment
+        {
+            "condition": "[empty(parameters('resourceGroupName'))]",
+            "type": "Microsoft.ManagedServices/registrationAssignments",
+            "apiVersion": "2019-06-01",
+            "name": "[variables('assignmentId')]",
+            "dependsOn": [
+                "[resourceId('Microsoft.ManagedServices/registrationDefinitions/', variables('registrationDefinitionId'))]"
+            ],
+            "properties": {
+                "registrationDefinitionId": "[resourceId('Microsoft.ManagedServices/registrationDefinitions/', variables('registrationDefinitionId'))]"
+            }
+        },
+        // Resource Group deployment
+        {
+            "condition": "[not(empty(parameters('resourceGroupName')))]",
+            "type": "Microsoft.Resources/deployments",
+            "apiVersion": "2018-05-01",
+            "name": "[concat('rgAssignment-', guid(parameters('resourceGroupName')))]",
+            "resourceGroup": "[parameters('resourceGroupName')]",
+            "dependsOn": [
+                "[resourceId('Microsoft.ManagedServices/registrationDefinitions/', variables('registrationDefinitionId'))]"
+            ],
+            "properties": {
+                "mode": "Incremental",
+                "template": {
+                    "$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
+                    "contentVersion": "1.0.0.0",
+                    "parameters": {},
+                    "resources": [
+                        {
+                            "type": "Microsoft.ManagedServices/registrationAssignments",
+                            "apiVersion": "2019-06-01",
+                            "name": "[variables('assignmentId')]",
+                            "properties": {
+                                "registrationDefinitionId": "[resourceId('Microsoft.ManagedServices/registrationDefinitions/', variables('registrationDefinitionId'))]"
+                            }
+                        }
+                    ]
+                }
+            }
+        }
+    ],
+    "functions": [
+    ],
+    "outputs": {
+        "registrationDefinitionName": {
+            "type": "string",
+            "value": "[parameters('registrationDefinitionName')]",
+            "metadata": {
+                "description": "The name of the offer/registration."
+            }
+        },
+        "registrationDefinitionId": {
+            "type": "string",
+            "value": "[variables('registrationDefinitionId')]",
+            "metadata": {
+                "description": "The ID of the offer/registration."
+            }
+        },
+        "assignmentId": {
+            "type": "string",
+            "value": "[variables('assignmentId')]",
+            "metadata": {
+                "description": "The ID of the resource delegation."
+            }
+        },
+        "authorizations": {
+            "type": "array",
+            "value": "[parameters('authorizations')]",
+            "metadata": {
+                "description": "The resource delegation authorizations that were created."
+            }
+        },
+        "subscriptionId": {
+            "condition": "[empty(parameters('resourceGroupName'))]",
+            "type": "string",
+            "value": "[subscription().id]",
+            "metadata": {
+                "description": "The ID of the subscription to which resource delegation authorizations were created."
+            }
+        },
+        "resourceGroupId": {
+            "condition": "[not(empty(parameters('resourceGroupName')))]",
+            "type": "string",
+            "value": "[concat(subscription().id, '/resourceGroups/', parameters('resourceGroupName'))]",
+            "metadata": {
+                "description": "The ID of the Resource Group to which resource delegation authorizations were created."
+            }
+        }
+    }
+}

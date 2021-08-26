@@ -1,0 +1,36 @@
+{
+  "$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentParameters.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    "autoManageAccountSubscriptionId": {
+      "value": ""
+    },
+    "autoManageAccountResourceGroup": {
+      "value": ""
+    },
+    "autoManageAccountName": {
+      "value": ""
+    },
+    "location": {
+      "value": ""
+    },
+    "vMResourceGroup": {
+      "value": ""
+    },
+    "vMName": {
+      "value": ""
+    },
+    "configurationProfile": {
+      "value": ""
+    },
+    "autoManageAccountDeployName": {
+      "value": ""
+    },
+    "assignmentDeployName": {
+      "value": ""
+    },
+    "createAutoManageAccount": {
+      "value": true
+    }
+  }
+}

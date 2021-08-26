@@ -1,0 +1,155 @@
+{
+    "$schema": "https://schema.management.azure.com/schemas/2018-05-01/subscriptionDeploymentTemplate.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "policyAssignmentName": {
+            "type": "string",
+            "metadata": {
+                "description": "Required. Specifies the name of the policy assignment."
+            }
+        },
+       "location": {
+            "type": "string",
+            "defaultValue": "[deployment().location]",
+            "metadata": {
+                "description": "Optional. Location for all resources."
+            }
+        },
+        "resourceGroupName": {
+            "type": "string",
+            "defaultValue": "",
+            "metadata": {
+                "description": "Optional. Specifies the name of the resource group where you want to assign the policy."
+            }
+        },
+        "policyDefinitionID": {
+            "type": "string",
+            "metadata": {
+                "description": "Required. Specifies the ID of the policy definition or policy set definition being assigned."
+            }
+        },
+        "parameters": {
+            "type": "object",
+            "defaultValue": {
+            },
+            "metadata": {
+                "description": "Optional. Parameters for the policy assignment if needed."
+            }
+        },
+        "identity": {
+            "type": "string",
+            "defaultValue": "SystemAssigned",
+            "metadata": {
+                "description": "Optional. The managed identity associated with the policy assignment. Policy assignments must include a resource identity when assigning 'Modify' policy definitions."
+            }
+        },
+        "cuaId": {
+            "type": "string",
+            "defaultValue": "",
+            "metadata": {
+                "description": "Optional. Customer Usage Attribution id (GUID). This GUID must be previously registered"
+            }
+        }
+    },
+    "variables": {
+        "policyAssignmentName": "[replace(parameters('policyAssignmentName'),' ','')]"
+    },
+    "resources": [
+        {
+            "condition": "[not(empty(parameters('cuaId')))]",
+            "type": "Microsoft.Resources/deployments",
+            "apiVersion": "2020-06-01",
+            "name": "[concat('pid-', parameters('cuaId'))]",
+            "properties": {
+                "mode": "Incremental",
+                "template": {
+                    "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+                    "contentVersion": "1.0.0.0",
+                    "resources": [
+                    ]
+                }
+            }
+        },
+        // Policy Assignment on Subscription scope
+        {
+            "name": "[concat(variables('policyAssignmentName'), '-subDeployment')]",
+            "apiVersion": "2020-06-01",
+            "type": "Microsoft.Resources/deployments",
+            "location": "[parameters('location')]",
+            "condition": "[empty(parameters('resourceGroupName'))]",
+            "dependsOn": [
+            ],
+            "properties": {
+                "mode": "Incremental",
+                "template": {
+                    "$schema": "https://schema.management.azure.com/schemas/2018-05-01/subscriptionDeploymentTemplate.json#",
+                    "contentVersion": "1.0.0.0",
+                    "resources": [
+                        {
+                            "type": "Microsoft.Authorization/policyAssignments",
+                            "name": "[variables('policyAssignmentName')]",
+                            "location": "[parameters('location')]",
+                            "apiVersion": "2019-09-01",
+                            "properties": {
+                                "policyDefinitionId": "[parameters('policyDefinitionID')]",
+                                "parameters": "[parameters('parameters')]"
+                            },
+                            "identity": {
+                                "type": "[parameters('identity')]"
+                            }
+                        }
+                    ]
+                }
+            }
+        },
+        // Policy Assignment on Resource group scope
+        {
+            "name": "[concat(variables('policyAssignmentName'), '-rgDeployment')]",
+            "apiVersion": "2020-06-01",
+            "type": "Microsoft.Resources/deployments",
+            "condition": "[not(empty(parameters('resourceGroupName')))]",
+            "dependsOn": [
+            ],
+            "properties": {
+                "mode": "Incremental",
+                "template": {
+                    "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+                    "contentVersion": "1.0.0.0",
+                    "resources": [
+                        {
+                            "type": "Microsoft.Authorization/policyAssignments",
+                            "name": "[variables('policyAssignmentName')]",
+                            "location": "[resourceGroup().location]",
+                            "apiVersion": "2019-09-01",
+                            "properties": {
+                                "policyDefinitionId": "[parameters('policyDefinitionID')]",
+                                "parameters": "[parameters('parameters')]"
+                            },
+                            "identity": {
+                                "type": "[parameters('identity')]"
+                            }
+                        }
+                    ]
+                }
+            }
+        }
+    ],
+    "functions": [
+    ],
+    "outputs": {
+        "policyAssignmentName": {
+            "type": "string",
+            "value": "[variables('policyAssignmentName')]",
+            "metadata": {
+                "description": "Name of the policy assignment."
+            }
+        },
+        "assignmentScope": {
+            "type": "string",
+            "value": "[if(empty(parameters('resourceGroupName')), subscription().id , concat(subscription().id, '/resourceGroups/', parameters('resourceGroupName')))]",
+            "metadata": {
+                "description": "The scope (subscription or resource group) of the assignment."
+            }
+        }
+    }
+}

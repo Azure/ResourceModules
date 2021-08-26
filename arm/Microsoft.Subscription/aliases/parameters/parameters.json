@@ -1,0 +1,39 @@
+{
+    "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "subscriptionAliasName": {
+            "value": "Sample-Subscription-01"
+        },
+        "displayName": {
+            "value": "Sample-Subscription-01"
+        },
+        "targetManagementGroupId": {
+            "value": "d2bdaa69-7c9c-467d-87b8-aba30eb8987a"
+        },
+        "billingScope": {
+            "value": "/providers/Microsoft.Billing/billingAccounts/5e98e158-xxxx-xxxx-xxxx-xxxxxxxxxxxx:xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx_xxxx-xx-xx/billingProfiles/AW4F-xxxx-xxx-xxx/invoiceSections/SH3V-xxxx-xxx-xxx"
+        }, //,
+        // "billingScope": {
+        //   "value": "/providers/Microsoft.Billing/billingAccounts/XXXXXXX/enrollmentAccounts/XXXXXX"
+        // }
+        // "roleAssignments": {
+        //     "value": [
+        //         {
+        //             "roleDefinitionIdOrName": "Desktop Virtualization User",
+        //             "principalIds": [
+        //                 "12345678-1234-1234-1234-123456789012", // object 1
+        //                 "78945612-1234-1234-1234-123456789012" // object 2
+        //             ]
+        //         }
+        //     ]
+        // },
+        "tags": {
+            "value": {
+                "costCenter": "1234",
+                "environment": "prod",
+                "contactinfo": "someone@company.com"
+            }
+        }
+    }
+}

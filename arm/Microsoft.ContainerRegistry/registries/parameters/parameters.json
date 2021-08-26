@@ -1,0 +1,34 @@
+{
+  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    "acrName": {
+      "value": "acrservices001"
+    },
+    "acrAdminUserEnabled": {
+      "value": false
+    }
+    // "acrSku": {
+    //   "value": "Premium"
+    // },
+    // "dataEndpointEnabled": {
+    //   "value": false
+    // },
+    // "publicNetworkAccess": {
+    //   "value": "Disabled"
+    // },
+    // "networkRuleBypassOptions": {
+    //   "value": "AzureServices"
+    // },
+    // // Diagnostic Settings
+    // "diagnosticSettingName": {
+    //   "value": "test"
+    // },
+    // "diagnosticLogsRetentionInDays": {
+    //   "value": 7
+    // },
+    // "workspaceId": {
+    //   "value": "/subscriptions/xxx-xxx-xxx-xxx-xxx/resourcegroups/iacs/providers/Microsoft.OperationalInsights/workspaces/xxx"
+    // }
+  }
+}

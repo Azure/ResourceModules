@@ -1,0 +1,45 @@
+{
+    "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "alertName": {
+            "value": "sxx-az-ala-weu-x-001"
+        },
+        "scopes": {
+            "value": [
+                "/subscriptions/8629be3b-96bc-482d-a04b-ffff597c65a2"
+            ]
+        },
+        "conditions": {
+            "value": [{
+                    "field": "category",
+                    "equals": "Administrative"
+                },
+                {
+                    "field": "resourceType",
+                    "equals": "microsoft.compute/virtualmachines"
+                },
+                {
+                    "field": "operationName",
+                    "equals": "Microsoft.Compute/virtualMachines/performMaintenance/action"
+                }
+            ]
+        },
+        "actions": {
+            "value": [{
+                "actionGroupId": "/subscriptions/8629be3b-96bc-482d-a04b-ffff597c65a2/resourceGroups/dependencies-rg/providers/microsoft.insights/actiongroups/sxx-az-ag-weu-x-003"
+            }]
+        }
+        // "roleAssignments": {
+        //     "value": [
+        //         {
+        //             "roleDefinitionIdOrName": "Desktop Virtualization User",
+        //             "principalIds": [
+        //                 "12345678-1234-1234-1234-123456789012", // object 1
+        //                 "78945612-1234-1234-1234-123456789012" // object 2
+        //             ]
+        //         }
+        //     ]
+        // },
+    }
+}

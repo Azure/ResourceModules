@@ -1,0 +1,62 @@
+{
+    "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "imageTemplateName": {
+            "value": "sxx-az-imgt-weu-x-001"
+        },
+        "location": {
+            "value": "eastus"
+        },
+        "userMsiName": {
+            "value": "sxx-az-msi-weu-x-002"
+        },
+        "userMsiResourceGroup": {
+            "value": "dependencies-rg"
+        },
+        "buildTimeoutInMinutes": {
+            "value": 0
+        },
+        "vmSize": {
+            "value": "Standard_D2s_v3"
+        },
+        "osDiskSizeGB": {
+            "value": 127
+        },
+        "subnetId": {
+            "value": ""
+        },
+        "imageSource": {
+            "value": {
+                "type": "PlatformImage",
+                "publisher": "MicrosoftWindowsDesktop",
+                "offer": "Windows-10",
+                "sku": "19h2-evd",
+                "version": "latest"
+            }
+        },
+        "customizationSteps": {
+            "value": [
+                {
+                    "type": "WindowsRestart",
+                    "restartTimeout": "30m"
+                }
+            ]
+        },
+        "managedImageName": {
+            "value": "sxx-az-mi-weu-x-001"
+        },
+        "unManagedImageName": {
+            "value": "sxx-az-umi-weu-x-001"
+        },
+        "sigImageDefinitionId": {
+            "value": "/subscriptions/8629be3b-96bc-482d-a04b-ffff597c65a2/resourceGroups/dependencies-rg/providers/Microsoft.Compute/galleries/sxxazsigweux001/images/sxx-az-imgd-weu-x-002"
+        },
+        "imageReplicationRegions": {
+            "value": []
+        },
+        "lockForDeletion": {
+            "value": false
+        }
+    }
+}

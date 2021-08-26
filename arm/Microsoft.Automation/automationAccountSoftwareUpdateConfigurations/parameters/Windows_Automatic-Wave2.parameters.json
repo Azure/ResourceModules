@@ -1,0 +1,57 @@
+{
+    "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "deploymentScheduleName": {
+            "value": "Windows_Wave2"
+        },
+        "automationAccountName": {
+            "value": "sxx-wd-aut-weu-x-741"
+        },
+        "operatingSystem": {
+            "value": "Windows"
+        },
+        "scopeByTags": {
+            "value": {
+                "Update": [
+                    "Automatic-Wave2"
+                ]
+            }
+        },
+        "maintenanceWindow": {
+            "value": "PT4H"
+        },
+        "updateClassifications": {
+            "value": [
+                "Critical",
+                "Security",
+                "UpdateRollup",
+                "FeaturePack",
+                "ServicePack",
+                "Definition",
+                "Tools",
+                "Updates"
+            ]
+        },
+        "rebootSetting": {
+            "value": "IfRequired"
+        },
+        "interval": {
+            "value": 1
+        },
+        "frequency": {
+            "value": "Month"
+        },
+        "monthlyOccurrences": {
+            "value": [
+                {
+                    "occurrence": 3,
+                    "day": "Saturday"
+                }
+            ]
+        },
+        "startTime": {
+            "value": "22:00"
+        }
+    }
+}

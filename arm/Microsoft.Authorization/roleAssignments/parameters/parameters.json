@@ -1,0 +1,54 @@
+{
+  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    // Resource Group name is optional, when provided, the Role Assignment will target the RG. When not provided the scope will be the subscription.
+    "resourceGroupName": {
+      "value": "artifacts-rg"
+    },
+    "roleAssignments": {
+      "value": [
+        // Built-in Role Definition, referenced by Name
+        {
+          "roleDefinitionIdOrName": "Owner",
+          "principalIds": [
+            // "12345678-1234-1234-1234-123456780123"
+            // "abcd5678-1234-1234-1234-123456780123"
+          ]
+        },
+        // Built-in Role Definition, referenced by Name
+        {
+          "roleDefinitionIdOrName": "Reader",
+          "principalIds": [
+            // "12345678-1234-1234-1234-123456780123"
+            // "abcd5678-1234-1234-1234-123456780123"
+          ]
+        },
+        // // Built-in Role Definition, referenced by ID
+        // {
+        //   "roleDefinitionIdOrName": "/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11",
+        //   "principalIds": [
+        //     // "12345678-1234-1234-1234-123456780123"
+        //     // "abcd5678-1234-1234-1234-123456780123"
+        //   ]
+        // },
+        // // Custom Role Definition on Resource Group scope
+        // {
+        //   "roleDefinitionIdOrName": "/subscriptions/62826c76-d304-46d8-a0f6-718dbdcc536c/providers/Microsoft.Authorization/roleDefinitions/54597af5-2126-5a52-a2ce-4bb56e90d3c8",
+        //   "principalIds": [
+        //     // "12345678-1234-1234-1234-123456780123"
+        //     // "abcd5678-1234-1234-1234-123456780123"
+        //   ]
+        // },
+        // // Custom Role Definition on Subscription scope
+        // {
+        //   "roleDefinitionIdOrName": "/subscriptions/62826c76-d304-46d8-a0f6-718dbdcc536c/resourceGroups/rbacTest/providers/Microsoft.Authorization/roleDefinitions/08e417aa-3d20-5a4e-94da-b2aa45bd5929",
+        //   "principalIds": [
+        //     // "12345678-1234-1234-1234-123456780123"
+        //     // "abcd5678-1234-1234-1234-123456780123"
+        //   ]
+        // }
+      ]
+    }
+  }
+}

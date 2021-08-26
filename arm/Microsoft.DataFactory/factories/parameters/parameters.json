@@ -1,0 +1,72 @@
+{
+  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    "dataFactoryName": {
+      "value": "sxxazdfweux044"
+    },
+    "publicNetworkAccess": {
+      "value": true
+    },
+    "gitConfigureLater": {
+      "value": true
+    }
+    // "gitRepoType": {
+    //   "value": "FactoryVSTSConfiguration"
+    // },
+    // "gitAccountName": {
+    //   "value": "xxx"
+    // },
+    // "gitProjectName": {
+    //   "value": "xxx"
+    // },
+    // "gitRepositoryName": {
+    //   "value": "xxx"
+    // },
+    // "gitCollaborationBranch": {
+    //   "value": "main"
+    // },
+    // "gitRootFolder": {
+    //   "value": "/"
+    // },
+    // "vNetEnabled": {
+    //   "value": true
+    // },
+    // "roleAssignments": {
+    //   "value": [
+    //     {
+    //       "roleDefinitionIdOrName": "Contributor",
+    //       "principalIds": [
+    //         "xxx-xxx-xxx-xxx-xxx"
+    //       ]
+    //     }
+    //   ]
+    // },
+    // "privateEndpoints": {
+    //   "value": [
+    //     {
+    //       "name": "sxx-az-sa-cac-y-123-pe",
+    //       "subnetResourceId": "/subscriptions/xxx-xxx-xxx-xxx-xxx/resourceGroups/iacs/providers/Microsoft.Network/virtualNetworks/str-test-vnet/subnets/default",
+    //       "service": "dataFactory",
+    //       "privateDnsZoneResourceIds": [
+    //         "/subscriptions/xxx-xxx-xxx-xxx-xxx/resourceGroups/iacs/providers/Microsoft.Network/privateDnsZones/privatelink.datafactory.azure.net"
+    //       ]
+    //     },
+    //     {
+    //       "name": "sxx-az-sa-cac-y-124-pe",
+    //       "subnetResourceId": "/subscriptions/xxx-xxx-xxx-xxx-xxx/resourceGroups/iacs/providers/Microsoft.Network/virtualNetworks/str-test-vnet/subnets/default",
+    //       "service": "portal",
+    //       "privateDnsZoneResourceIds": [
+    //         "/subscriptions/xxx-xxx-xxx-xxx-xxx/resourceGroups/iacs/providers/Microsoft.Network/privateDnsZones/privatelink.azure.com"
+    //       ]
+    //     }
+    //   ]
+    // }
+    // "diagnosticLogsRetentionInDays": {
+    //   "value": 1
+    // },
+    // "diagnosticStorageAccountId": {
+    //   "value": "/subscriptions/xxx-xxx-xxx-xxx-xxx/resourceGroups/dependencies-rg/providers/Microsoft.Storage/storageAccounts/sxxazsaweux003"
+    // }
+  }
+}

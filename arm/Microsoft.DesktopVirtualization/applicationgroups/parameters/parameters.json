@@ -1,0 +1,35 @@
+{
+    "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "appGroupName": {
+            "value": "sxx-az-wvdag-weu-x-001"
+        },
+        "location": {
+            "value": "eastus"
+        },
+        "appGroupType": {
+            "value": "RemoteApp"
+        },
+        "hostpoolName": {
+            "value": "sxx-az-wvdhp-weu-x-001"
+        },
+        "appGroupFriendlyName": {
+            "value": "Remote Applications 1"
+        },
+        "appGroupDescription": {
+            "value": "This is my first Remote Applications bundle"
+        }
+        // "roleAssignments": {
+        //     "value": [
+        //         {
+        //             "roleDefinitionIdOrName": "Desktop Virtualization User",
+        //             "principalIds": [
+        //                 "12345678-1234-1234-1234-123456789012", // object 1
+        //                 "78945612-1234-1234-1234-123456789012" // object 2
+        //             ]
+        //         }
+        //     ]
+        // }
+    }
+}

@@ -1,0 +1,45 @@
+{
+    "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "deploymentScheduleName": {
+            "value": "Windows_ZeroDay"
+        },
+        "automationAccountName": {
+            "value": "sxx-wd-aut-weu-x-741"
+        },
+        "operatingSystem": {
+            "value": "Windows"
+        },
+        "maintenanceWindow": {
+            "value": "PT4H"
+        },
+        "updateClassifications": {
+            "value": [
+                "Critical"
+            ]
+        },
+        "includeUpdates": {
+            "value": [
+                "KB123456"
+            ]
+        },
+        "excludeUpdates": {
+            "value": [
+                "KB654321"
+            ]
+        },
+        "rebootSetting": {
+            "value": "IfRequired"
+        },
+        "frequency": {
+            "value": "OneTime"
+        },
+        "startTime": {
+            "value": "2021-12-31T06:00"
+        },
+        "timeZone": {
+            "value": "Europe/Oslo"
+        }
+    }
+}

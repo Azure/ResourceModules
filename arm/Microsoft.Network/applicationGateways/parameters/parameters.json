@@ -1,0 +1,145 @@
+{
+  "$schema": "http://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    "applicationGatewayName": {
+      "value": "sxx-az-apgw-weu-x-002"
+    },
+    "sku": {
+      "value": "WAF_v2"
+    },
+    "vNetName": {
+      "value": "sxx-az-vnet-weu-x-003"
+    },
+    "subnetName": {
+      "value": "sxx-az-subnet-weu-x-003"
+    },
+    "vNetResourceGroup": {
+      "value": "dependencies-rg"
+    },
+    "frontendPrivateIpAddress": {
+      "value": "10.1.2.6"
+    },
+    "frontendpublicIpResourceId": {
+      "value": "/subscriptions/8629be3b-96bc-482d-a04b-ffff597c65a2/resourceGroups/dependencies-rg/providers/Microsoft.Network/publicIPAddresses/sxx-az-pip-weu-x-003"
+    },
+    "managedIdentityResourceId":{
+      "value": "/subscriptions/8629be3b-96bc-482d-a04b-ffff597c65a2/resourceGroups/dependencies-rg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/sxx-az-msi-weu-x-002"
+    },
+    "sslCertificateKeyVaultSecretId": {
+      "value": "https://sxx-az-kv-weu-x-004.vault.azure.net/secrets/applicationGatewaySslCertificate/b664f0004c734e838c42091705b001b6"
+    },
+    "backendPools": {
+      "value": [
+        {
+          "backendPoolName": "appServiceBackendPool",
+          "backendAddresses": [
+            {
+              "fqdn": "aghapp.azurewebsites.net"
+            }
+          ]
+        },
+        {
+          "backendPoolName": "privateVmBackendPool",
+          "backendAddresses": [
+            {
+              "ipAddress": "10.0.0.4"
+            }
+          ]
+        }
+      ]
+    },
+    "backendHttpConfigurations": {
+      "value": [
+        {
+          "backendHttpConfigurationName": "appServiceBackendHttpsSetting",
+          "port": 443,
+          "protocol": "https",
+          "cookieBasedAffinity": "Disabled",
+          "pickHostNameFromBackendAddress": true,
+          "probeEnabled": false
+        },
+        {
+          "backendHttpConfigurationName": "privateVmHttpSetting",
+          "port": 80,
+          "protocol": "http",
+          "cookieBasedAffinity": "Disabled",
+          "pickHostNameFromBackendAddress": false,
+          "probeEnabled": true
+        }
+      ]
+    },
+    "probes":{
+      "value": [
+        {
+          "backendHttpConfigurationName": "privateVmHttpSetting",
+          "protocol": "http",
+          "host": "10.0.0.4",
+          "path": "/",
+          "interval": 60,
+          "timeout": 15,
+          "unhealthyThreshold": 5,
+          "minServers": 3,
+          "body": "",
+          "statusCodes": [
+            "200",
+            "401"
+          ]
+        }
+      ]
+    },    
+    "frontendHttpsListeners": {
+      "value": [
+        {
+          "frontendListenerName": "public443",
+          "frontendIPType": "Public",
+          "port": 443
+        },
+        {
+          "frontendListenerName": "private4433",
+          "frontendIPType": "Private",
+          "port": 4433
+        }
+      ]
+    },
+    "frontendHttpRedirects": {
+      "value": [
+        {
+          "frontendIPType": "Public",
+          "port": 80,
+          "frontendListenerName": "public443"
+        },
+        {
+          "frontendIPType": "Private",
+          "port": 8080,
+          "frontendListenerName": "private4433"
+        }
+      ]
+    },
+    "routingRules": {
+      "value": [
+        {
+          "frontendListenerName": "public443",
+          "backendPoolName": "appServiceBackendPool",
+          "backendHttpConfigurationName": "appServiceBackendHttpsSetting"
+        },
+        {
+          "frontendListenerName": "private4433",
+          "backendPoolName": "privateVmBackendPool",
+          "backendHttpConfigurationName": "privateVmHttpSetting"
+        }
+      ]
+    },
+    // "roleAssignments": {
+    //     "value": [
+    //         {
+    //             "roleDefinitionIdOrName": "Contributor",
+    //             "principalIds": [
+    //                 "12345678-1234-1234-1234-123456789012", // object 1
+    //                 "78945612-1234-1234-1234-123456789012" // object 2
+    //             ]
+    //         }
+    //     ]
+    // },
+  }
+}

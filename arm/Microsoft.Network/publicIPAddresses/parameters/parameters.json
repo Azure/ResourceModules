@@ -1,0 +1,18 @@
+{
+    "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "publicIPAddressesName": {
+            "value": "sxx-az-pip-weu-x-001"
+        },
+        "skuName": {
+            "value": "Standard"
+        },
+        "publicIPAllocationMethod": {
+            "value": "Static"
+        },
+        "workspaceId": {
+            "value": "/subscriptions/8629be3b-96bc-482d-a04b-ffff597c65a2/resourcegroups/dependencies-rg/providers/microsoft.operationalinsights/workspaces/sxx-az-la-weu-x-003"
+        }
+    }
+}

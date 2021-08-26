@@ -1,0 +1,49 @@
+{
+    "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "deploymentScheduleName": {
+            "value": "Linux_Wave1"
+        },
+        "automationAccountName": {
+            "value": "sxx-wd-aut-weu-x-741"
+        },
+        "operatingSystem": {
+            "value": "Linux"
+        },
+        "scopeByTags": {
+            "value": {
+                "Update": [
+                    "Automatic-Wave1"
+                ]
+            }
+        },
+        "maintenanceWindow": {
+            "value": "PT4H"
+        },
+        "updateClassifications": {
+            "value": [
+                "Critical",
+                "Security",
+                "Other"
+            ]
+        },
+        "rebootSetting": {
+            "value": "IfRequired"
+        },
+        "interval": {
+            "value": 1
+        },
+        "frequency": {
+            "value": "Week"
+        },
+        "weekDays": {
+            "value": [
+                "Friday"
+            ]
+        },
+        "startTime": {
+            "value": "22:00"
+        }
+    }
+}

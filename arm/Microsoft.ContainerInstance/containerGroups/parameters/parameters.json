@@ -1,0 +1,47 @@
+{
+  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    "containergroupName": {
+      "value": "sxx-az-acg-weu-x-001"
+    },
+    "containerName": {
+      "value": "sxx-az-aci-weu-x-001"
+    },
+    "image": {
+      "value": "microsoft/aci-helloworld"
+    },
+    "ports": {
+      "value": [
+        {
+          "protocol": "Tcp",
+          "port": "80"
+        },
+        {
+          "protocol": "Tcp",
+          "port": "443"
+        }
+      ]
+    }
+    // "environmentVariables": {
+    //   "value": [
+    //     {
+    //       "name": "<environmentVariablesName>",
+    //       "secureValue": "<environmentVariableValue>"
+    //     },
+    //     {
+    //       "name": "<environmentVariablesName2>",
+    //       "value": "<environmentVariableValue2>"
+    //     }
+    //   ]
+    // },
+    // "imageRegistryCredentials": {
+    //   "value": [
+    //     {
+    //       "server": "sxxazacrx001.azurecr.io",
+    //       "username": "sxxazacrx001"
+    //     }
+    //   ]
+    // }
+  }
+}

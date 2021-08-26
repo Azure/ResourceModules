@@ -1,0 +1,32 @@
+{
+	"$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
+	"contentVersion": "1.0.0.0",
+	"parameters": {
+		"routeTableName": {
+			"value": "sxx-az-udr-weu-x-001"
+		},
+		"routes": {
+			"value": [
+				{
+					"name": "default",
+					"properties": {
+						"addressPrefix": "0.0.0.0/0",
+						"nextHopType": "VirtualAppliance",
+						"nextHopIpAddress": "172.16.0.20"
+					}
+				}
+			]
+		}
+		// "roleAssignments": {
+        //     "value": [
+        //         {
+        //             "roleDefinitionIdOrName": "Desktop Virtualization User",
+        //             "principalIds": [
+        //                 "12345678-1234-1234-1234-123456789012", // object 1
+        //                 "78945612-1234-1234-1234-123456789012" // object 2
+        //             ]
+        //         }
+        //     ]
+        // }
+	}
+}

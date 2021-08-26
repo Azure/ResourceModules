@@ -1,0 +1,35 @@
+{
+    "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "deploymentScheduleName": {
+            "value": "Windows_DefUpdate"
+        },
+        "automationAccountName": {
+            "value": "sxx-wd-aut-weu-x-741"
+        },
+        "operatingSystem": {
+            "value": "Windows"
+        },
+        "maintenanceWindow": {
+            "value": "PT1H"
+        },
+        "updateClassifications": {
+            "value": [
+                "Definition"
+            ]
+        },
+        "rebootSetting": {
+            "value": "Never"
+        },
+        "interval": {
+            "value": 8
+        },
+        "frequency": {
+            "value": "Hour"
+        },
+        "startTime": {
+            "value": "00:00"
+        }
+    }
+}

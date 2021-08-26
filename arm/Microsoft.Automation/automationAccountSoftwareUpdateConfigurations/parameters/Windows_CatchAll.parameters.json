@@ -1,0 +1,44 @@
+{
+    "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "deploymentScheduleName": {
+            "value": "Windows_CatchAll"
+        },
+        "automationAccountName": {
+            "value": "sxx-wd-aut-weu-x-741"
+        },
+        "operatingSystem": {
+            "value": "Windows"
+        },
+        "maintenanceWindow": {
+            "value": "PT4H"
+        },
+        "updateClassifications": {
+            "value": [
+                "Critical",
+                "Security"
+            ]
+        },
+        "rebootSetting": {
+            "value": "IfRequired"
+        },
+        "interval": {
+            "value": 1
+        },
+        "frequency": {
+            "value": "Month"
+        },
+        "monthlyOccurrences": {
+            "value": [
+                {
+                    "occurrence": 4,
+                    "day": "Saturday"
+                }
+            ]
+        },
+        "startTime": {
+            "value": "22:00"
+        }
+    }
+}

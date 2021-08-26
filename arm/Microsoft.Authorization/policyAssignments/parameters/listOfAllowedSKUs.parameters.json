@@ -1,0 +1,25 @@
+{
+  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    "policyAssignmentName": {
+      "value": "Allowed virtual machine SKUs"
+    },
+    "policyDefinitionID": {
+      "value": "/providers/Microsoft.Authorization/policyDefinitions/cccc23c7-8427-4f53-ad12-b6a63eb452b3"
+    },
+    "parameters": {
+      "value": {
+        "listOfAllowedSKUs": {
+          "value": ["Standard_B2s","Standard_D2s_v3","Standard_D4s_v3"]
+        }
+      }
+    },
+    "location": {
+      "value": "westus2"
+    },
+    "identity": {
+      "value": "None"
+    }
+  }
+}
