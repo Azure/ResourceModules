@@ -12,12 +12,12 @@ jobs:
 
       - name: Lint Code Base
         # docker://ghcr.io/github/super-linter:slim-v4
-        uses: github/super-linter@v4
+        uses: github/super-linter:v4
         env:
           VALIDATE_ALL_CODEBASE: false
           VALIDATE_MARKDOWN: false
           VALIDATE_ARM: false
           VALIDATE_JSON: false
-          if: ${{ github.event_name == 'pull_request' }}
-          DEFAULT_BRANCH: ${{ github.base_ref }}
+          # if: ${{ github.event_name == 'pull_request' }}
+          # DEFAULT_BRANCH: ${{ github.base_ref }}
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
