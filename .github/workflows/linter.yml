@@ -12,7 +12,7 @@ jobs:
 
       - name: Lint Code Base
         # docker://ghcr.io/github/super-linter:slim-v4
-        uses: github/super-linter:latest
+        uses: github/super-linter@v4
         env:
           VALIDATE_ALL_CODEBASE: false
           VALIDATE_MARKDOWN: false
