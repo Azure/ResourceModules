@@ -8,26 +8,16 @@ This library of **Modules** ensures organizations can deploy compliant Azure ser
 
 > This repository serves ***currently*** as a temporary extension and **active** development site for [ESLZ Workload Templates library][ESLZWorkloadTemplatesLibrary].
 ## Status
-[![Super Linter](<https://github.com/Azure/Modules/actions/workflows/linter.yml/badge.svg>)](<https://github.com/Azure/Modules/actions/workflows/linter.yml>)
 
-[![Workflow](https://github.com/Azure/Modules/actions/workflows/workflow.yml/badge.svg)](https://github.com/Azure/Modules/actions/workflows/workflow.yml)
-
-<!-- will be set once public
-<p align="center">
 <a href="https://github.com/Azure/Modules/actions/workflows/linter.yml">
   <img alt="Super Linter" src="https://github.com/Azure/Modules/actions/workflows/linter.yml/badge.svg" />
 </a>
-<a href="https://github.com/Azure/Modules/actions/workflows/workflow.yml">
-  <img alt="Workflow" src="https://github.com/Azure/Modules/actions/workflows/workflow.yml/badge.svg" />
-</a>
 <a href="https://github.com/Azure/Modules/issues">
   <img alt="Issues" src="https://img.shields.io/github/issues/Azure/Modules?color=0088ff" />
-</a> <br>
+</a>
 <a href="https://github.com/Azure/Modules/pulls">
   <img alt="Pull requests" src="https://img.shields.io/github/issues-pr/Azure/Modules?color=0088ff" />
 </a>
-</p>
--->
 
 ## Get started
 
