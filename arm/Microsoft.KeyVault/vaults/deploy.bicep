@@ -246,7 +246,7 @@ resource keysObject_keys_keyVaultName_keyEntity_keyVaultName_keysObject_keys_key
   ]
 }]
 
-module name_location_KeyVault_PrivateEndpoints './nested_name_location_KeyVault_PrivateEndpoints.bicep' = [for (item, i) in privateEndpoints: {
+module name_location_KeyVault_PrivateEndpoints './.bicep/nested_privateEndpoint.bicep' = [for (item, i) in privateEndpoints: {
   name: '${uniqueString(deployment().name, location)}-KeyVault-PrivateEndpoints-${i}'
   params: {
     privateEndpointResourceId: keyVaultName_resource.id
@@ -259,7 +259,7 @@ module name_location_KeyVault_PrivateEndpoints './nested_name_location_KeyVault_
   ]
 }]
 
-module rbac_name './nested_rbac_name.bicep' = [for (item, i) in roleAssignments: {
+module rbac_name './.bicep/nested_rbac.bicep' = [for (item, i) in roleAssignments: {
   name: 'rbac-${deployment().name}${i}'
   params: {
     roleAssignment: item
