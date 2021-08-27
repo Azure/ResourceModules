@@ -1,5 +1,3 @@
-# TODO: Support also non '_' as parent folders
-
 function Get-RelevantDepth {
 
     [CmdletBinding()]
@@ -63,10 +61,10 @@ function Get-ModulesAsMarkdownTable {
 
     $topLevelFolders = Get-ChildItem -Path $path -Depth 1 -Filter "Microsoft.*"
 
-    Clear-Host
-    Write-Host ""
-    Write-Host "Resource provider namespace | Azure service"
-    Write-Host "--------------------------- | -------------"
+    $output = [System.Collections.ArrayList]@()
+
+    $null = $output += "Resource provider namespace | Azure service"
+    $null = $output += "--------------------------- | -------------"
 
     foreach ($topLevelFolder in $topLevelFolders.FullName) {
         $provider = Split-Path $topLevelFolder -Leaf
@@ -79,14 +77,13 @@ function Get-ModulesAsMarkdownTable {
             $concatedBase = $subfolder.Replace((Split-Path $topLevelFolder -Parent), '').Substring(1)
 
             if ((Get-RelevantDepth -path $subfolder) -gt 0) {
-                #if ($subFolderName -like "*_") {
-                #$baseName = $subFolderName.Replace('_','')
-                Get-ResolvedSubServiceRow -subPath $subfolder -concatedBase $concatedBase -row $row -provider $provider
+                $row = Get-ResolvedSubServiceRow -subPath $subfolder -concatedBase $concatedBase -row $row -provider $provider
             }
             else {
                 $row += ('<p>[{0}](.\{1})' -f $subFolderName, $concatedBase)
             }
         }
-        Write-Host $row
+        $null = $output += $row
     }
+    return $output
 }
