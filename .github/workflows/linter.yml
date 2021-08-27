@@ -9,14 +9,18 @@ jobs:
     steps:
       - name: Checkout Code
         uses: actions/checkout@v2
+        with:
+          # Full git history is needed to get a proper list of changed files within `super-linter`
+          fetch-depth: 0
 
       - name: Lint Code Base
-        uses: github/super-linter:latest
-        # uses: docker://ghcr.io/github/super-linter:slim-v4
+        uses: docker://ghcr.io/github/super-linter:slim-v4
+        # uses: github/super-linter@v4
         env:
           VALIDATE_ALL_CODEBASE: false
           VALIDATE_MARKDOWN: false
           VALIDATE_ARM: false
           VALIDATE_JSON: false
-          DEFAULT_BRANCH: main
+          if: ${{ github.event_name == 'pull_request' }}
+          DEFAULT_BRANCH: ${{ github.base_ref }}
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
