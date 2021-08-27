@@ -80,10 +80,10 @@ function Get-ModulesAsMarkdownTable {
                 $row = Get-ResolvedSubServiceRow -subPath $subfolder -concatedBase $concatedBase -row $row -provider $provider
             }
             else {
-                $row += ('<p>[{0}](.\{1})' -f $subFolderName, $concatedBase)
+                $row += ('<p>[{0}]({1})' -f $subFolderName, $concatedBase)
             }
         }
-        $null = $output += $row
+        $null = $output += $row.Replace('\','/')
     }
     return $output
 }
