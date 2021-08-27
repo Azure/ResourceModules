@@ -1,3 +1,5 @@
+Outline of the currently available resources:
+
 Resource provider namespace | Azure service
 --------------------------- | -------------
 | Microsoft.AnalysisServices | <p>[servers](Microsoft.AnalysisServices/servers)
