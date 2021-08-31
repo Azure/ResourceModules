@@ -44,7 +44,7 @@ function Get-ResolvedSubServiceRow {
         }
         else {
             $relativePath = Join-Path $concatedBase $subFolderName
-            $subName = $relativePath.Replace("$provider\", '').Replace('_', '')
+            $subName = $relativePath.Replace("$provider\", '').Replace('Resources\','\')
             $row += ('<p>[{0}](.\{1})' -f $subName, $relativePath) # $subfolder.Replace((Split-Path $subPath -Parent), '').Substring(1))
         }
     }
