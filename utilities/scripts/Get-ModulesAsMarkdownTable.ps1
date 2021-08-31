@@ -126,8 +126,8 @@ function Get-ModulesAsMarkdownTable {
 
     [CmdletBinding()]
     param (
-        [Parameter(Mandatory = $false)]
-        [string] $path = 'C:\dev\ip\Azure-Modules\Modules\arm'
+        [Parameter(Mandatory)]
+        [string] $path
     )
 
     $output = [System.Collections.ArrayList]@()
