@@ -1,0 +1,43 @@
+In this section you can find useful information regarding the modules that are contained in this repository.
+
+# Available modules
+The following table provides you with an outline of all modules that are currently available for use. Several sub-resources may be their own modules and are hence displayed as a child path (e.g. `service/caches`).
+
+| Resource provider namespace | Azure service |
+| --------------------------- | ------------- |
+| `Microsoft.AnalysisServices` | <p>[servers](Microsoft.AnalysisServices/servers)
+| `Microsoft.ApiManagement` | <p>[service](Microsoft.ApiManagement/service)<p>[service/apis](./Microsoft.ApiManagement/serviceResources/apis)<p>[service/authorizationServers](./Microsoft.ApiManagement/serviceResources/authorizationServers)<p>[service/backends](./Microsoft.ApiManagement/serviceResources/backends)<p>[service/caches](./Microsoft.ApiManagement/serviceResources/caches)<p>[service/namedValues](./Microsoft.ApiManagement/serviceResources/namedValues)<p>[service/products](./Microsoft.ApiManagement/serviceResources/products)<p>[service/subscriptions](./Microsoft.ApiManagement/serviceResources/subscriptions)
+| `Microsoft.Authorization` | <p>[policyAssignments](Microsoft.Authorization/policyAssignments)<p>[roleAssignments](Microsoft.Authorization/roleAssignments)<p>[roleDefinitions](Microsoft.Authorization/roleDefinitions)
+| `Microsoft.Automanage` | <p>[accounts](Microsoft.Automanage/accounts)
+| `Microsoft.Automation` | <p>[automationAccounts](Microsoft.Automation/automationAccounts)<p>[automationAccounts/softwareUpdateConfigurations](./Microsoft.Automation/automationAccountsResources/softwareUpdateConfigurations)
+| `Microsoft.Batch` | <p>[batchAccounts](Microsoft.Batch/batchAccounts)
+| `Microsoft.CognitiveServices` | <p>[accounts](Microsoft.CognitiveServices/accounts)
+| `Microsoft.Compute` | <p>[diskEncryptionSets](Microsoft.Compute/diskEncryptionSets)<p>[galleries](Microsoft.Compute/galleries)<p>[galleries/images](./Microsoft.Compute/galleriesResources/images)<p>[images](Microsoft.Compute/images)<p>[virtualMachines](Microsoft.Compute/virtualMachines)<p>[virtualMachineScaleSets](Microsoft.Compute/virtualMachineScaleSets)
+| `Microsoft.Consumption` | <p>[budgets](Microsoft.Consumption/budgets)
+| `Microsoft.ContainerInstance` | <p>[containerGroups](Microsoft.ContainerInstance/containerGroups)
+| `Microsoft.ContainerRegistry` | <p>[registries](Microsoft.ContainerRegistry/registries)
+| `Microsoft.ContainerService` | <p>[managedClusters](Microsoft.ContainerService/managedClusters)
+| `Microsoft.Databricks` | <p>[workspaces](Microsoft.Databricks/workspaces)
+| `Microsoft.DataFactory` | <p>[factories](Microsoft.DataFactory/factories)
+| `Microsoft.DesktopVirtualization` | <p>[applicationgroups](Microsoft.DesktopVirtualization/applicationgroups)<p>[applicationGroups/applications](./Microsoft.DesktopVirtualization/applicationGroupsResources/applications)<p>[hostpools](Microsoft.DesktopVirtualization/hostpools)<p>[workspaces](Microsoft.DesktopVirtualization/workspaces)<p>[wvdScalingScheduler](Microsoft.DesktopVirtualization/wvdScalingScheduler)
+| `Microsoft.EventGrid` | <p>[topics](Microsoft.EventGrid/topics)
+| `Microsoft.EventHub` | <p>[namespaces](Microsoft.EventHub/namespaces)<p>[namespaces/eventhubs](./Microsoft.EventHub/namespacesResources/eventhubs)
+| `Microsoft.HealthBot` | <p>[healthBots](Microsoft.HealthBot/healthBots)
+| `Microsoft.Insights` | <p>[actionGroups](Microsoft.Insights/actionGroups)<p>[activityLogAlerts](Microsoft.Insights/activityLogAlerts)<p>[components](Microsoft.Insights/components)<p>[diagnosticSettings](Microsoft.Insights/diagnosticSettings)<p>[metricAlerts](Microsoft.Insights/metricAlerts)<p>[privateLinkScopes](Microsoft.Insights/privateLinkScopes)<p>[scheduledQueryRules](Microsoft.Insights/scheduledQueryRules)
+| `Microsoft.KeyVault` | <p>[vaults](Microsoft.KeyVault/vaults)
+| `Microsoft.MachineLearningServices` | <p>[workspaces](Microsoft.MachineLearningServices/workspaces)
+| `Microsoft.ManagedIdentity` | <p>[userAssignedIdentities](Microsoft.ManagedIdentity/userAssignedIdentities)
+| `Microsoft.ManagedServices` | <p>[registrationDefinitions/.attachments](./Microsoft.ManagedServices/registrationDefinitions/.attachments)
+| `Microsoft.Management` | <p>[managementGroups](Microsoft.Management/managementGroups)
+| `Microsoft.NetApp` | <p>[netAppAccounts](Microsoft.NetApp/netAppAccounts)
+| `Microsoft.Network` | <p>[applicationGateways](Microsoft.Network/applicationGateways)<p>[applicationSecurityGroups](Microsoft.Network/applicationSecurityGroups)<p>[azureFirewalls](Microsoft.Network/azureFirewalls)<p>[bastionHosts](Microsoft.Network/bastionHosts)<p>[connections](Microsoft.Network/connections)<p>[ddosProtectionPlans](Microsoft.Network/ddosProtectionPlans)<p>[expressRouteCircuits](Microsoft.Network/expressRouteCircuits)<p>[ipGroups](Microsoft.Network/ipGroups)<p>[loadBalancers](Microsoft.Network/loadBalancers)<p>[localNetworkGateways](Microsoft.Network/localNetworkGateways)<p>[natGateways](Microsoft.Network/natGateways)<p>[networkSecurityGroups](Microsoft.Network/networkSecurityGroups)<p>[networkWatcherFlowLogs](Microsoft.Network/networkWatcherFlowLogs)<p>[networkWatchers](Microsoft.Network/networkWatchers)<p>[privateDnsZones](Microsoft.Network/privateDnsZones)<p>[privateEndpoints](Microsoft.Network/privateEndpoints)<p>[publicIPAddresses](Microsoft.Network/publicIPAddresses)<p>[publicIPPrefixes](Microsoft.Network/publicIPPrefixes)<p>[routeTables](Microsoft.Network/routeTables)<p>[trafficmanagerprofiles](Microsoft.Network/trafficmanagerprofiles)<p>[virtualNetworkGateways](Microsoft.Network/virtualNetworkGateways)<p>[virtualNetworkPeerings](Microsoft.Network/virtualNetworkPeerings)<p>[virtualNetworks](Microsoft.Network/virtualNetworks)<p>[virtualWans](Microsoft.Network/virtualWans)
+| `Microsoft.OperationalInsights` | <p>[workspaces](Microsoft.OperationalInsights/workspaces)
+| `Microsoft.RecoveryServices` | <p>[vaults](Microsoft.RecoveryServices/vaults)
+| `Microsoft.Resources` | <p>[deploymentScripts](Microsoft.Resources/deploymentScripts)<p>[resourceGroups](Microsoft.Resources/resourceGroups)
+| `Microsoft.Security` | <p>[azureSecurityCenter](Microsoft.Security/azureSecurityCenter)
+| `Microsoft.ServiceBus` | <p>[namespaces](Microsoft.ServiceBus/namespaces)<p>[namespaces/queues](./Microsoft.ServiceBus/namespacesResources/queues)
+| `Microsoft.Sql` | <p>[managedInstances](Microsoft.Sql/managedInstances)<p>[managedInstances/databases](./Microsoft.Sql/managedInstancesResources/databases)<p>[servers](Microsoft.Sql/servers)<p>[servers/databases](./Microsoft.Sql/serversResources/databases)
+| `Microsoft.Storage` | <p>[storageAccounts](Microsoft.Storage/storageAccounts)
+| `Microsoft.Subscription` | <p>[aliases](Microsoft.Subscription/aliases)
+| `Microsoft.VirtualMachineImages` | <p>[imageTemplates](Microsoft.VirtualMachineImages/imageTemplates)
+| `Microsoft.Web` | <p>[connections](Microsoft.Web/connections)<p>[hostingEnvironments](Microsoft.Web/hostingEnvironments)<p>[serverfarms](Microsoft.Web/serverfarms)<p>[sites/appService](./Microsoft.Web/sites/appService)<p>[sites/functionApp](./Microsoft.Web/sites/functionApp)<p>[sites/webApp](./Microsoft.Web/sites/webApp)
