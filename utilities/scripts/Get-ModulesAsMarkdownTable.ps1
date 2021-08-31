@@ -68,7 +68,7 @@ function Get-ResolvedSubServiceRow {
         [string] $concatedBase,
 
         [Parameter(Mandatory)]
-        [string] $row,
+        [string[]] $output,
 
         [Parameter(Mandatory)]
         [string] $provider
@@ -81,16 +81,37 @@ function Get-ResolvedSubServiceRow {
 
         if ((Get-RelevantDepth -path $subfolder) -gt 0) {
             $concatedBase = Join-Path $concatedBase $subFolderName
-            $row += Get-ResolvedSubServiceRow -subPath $subfolder -concatedBase $concatedBase -row $row -provider $provider
+            $output += Get-ResolvedSubServiceRow -subPath $subfolder -concatedBase $concatedBase -output $output -provider $provider
         }
         else {
             $relativePath = Join-Path $concatedBase $subFolderName
-            $subName = $relativePath.Replace("$provider\", '').Replace('Resources\','\')
-            $row += ('<p>[{0}](.\{1})' -f $subName, $relativePath) # $subfolder.Replace((Split-Path $subPath -Parent), '').Substring(1))
+            $subName = $relativePath.Replace("$provider\", '').Replace('Resources\', '\')
+
+            $outputString = '| | [{0}](.\{1}) |' -f $subName, $relativePath
+
+            $moduleFiles = Get-ChildItem -Path $subfolder -File
+
+            if ($moduleFiles.Name -contains 'deploy.json') {
+                # ARM exists
+                $outputString += " :heavy_check_mark: |"
+            }
+            else {
+                $outputString += " |"
+            }
+
+            if ($moduleFiles.Name -contains 'deploy.bicep') {
+                # bicep exists
+                $outputString += " :heavy_check_mark: |"
+            }
+            else {
+                $outputString += " |"
+            }
+
+            $output += $outputString
         }
     }
 
-    return $row
+    return $output
 }
 
 <#
@@ -130,20 +151,21 @@ function Get-ModulesAsMarkdownTable {
         [string] $path
     )
 
-    $output = [System.Collections.ArrayList]@()
+    $output = [System.Collections.ArrayList]@(
+        "| Resource provider namespace | Azure service | ARM | Bicep |",
+        "| --------------------------- | ------------- | --- | ----- |"
+    )
 
-    $null = $output += "| Resource provider namespace | Azure service |"
-    $null = $output += "| --------------------------- | ------------- |"
-
-    if($topLevelFolders = Get-ChildItem -Path $path -Depth 1 -Filter "Microsoft.*") {
+    if ($topLevelFolders = Get-ChildItem -Path $path -Depth 1 -Filter "Microsoft.*") {
         $topLevelFolders = $topLevelFolders.FullName | Sort-Object
-    } else {
+    }
+    else {
         return $output
     }
 
+    $previousProvider = ''
     foreach ($topLevelFolder in $topLevelFolders) {
         $provider = Split-Path $topLevelFolder -Leaf
-        $row = "| ``$provider`` | "
 
         $subFolders = Get-ChildItem -Path $topLevelFolder -Directory -Recurse -Exclude @('.bicep', 'parameters') -Depth 0
 
@@ -152,13 +174,20 @@ function Get-ModulesAsMarkdownTable {
             $concatedBase = $subfolder.Replace((Split-Path $topLevelFolder -Parent), '').Substring(1)
 
             if ((Get-RelevantDepth -path $subfolder) -gt 0) {
-                $row = Get-ResolvedSubServiceRow -subPath $subfolder -concatedBase $concatedBase -row $row -provider $provider
+                $null = $output = Get-ResolvedSubServiceRow -subPath $subfolder -concatedBase $concatedBase -output $output -provider $provider
             }
             else {
-                $row += ('<p>[{0}]({1})' -f $subFolderName, $concatedBase)
+                if ($previousProvider -eq $provider) {
+                    $row = "| | "
+                }
+                else {
+                    $row = "| ``$provider`` | "
+                    $previousProvider = $provider
+                }
+                $row += ('[{0}]({1})' -f $subFolderName, $concatedBase)
+                $null = $output += $row.Replace('\', '/')
             }
         }
-        $null = $output += $row.Replace('\','/')
     }
     return $output
 }
