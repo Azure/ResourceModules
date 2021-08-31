@@ -1,3 +1,35 @@
+function Get-TypeColumnString {
+
+    [CmdletBinding()]
+    param (
+        [Parameter(Mandatory)]
+        [string] $path
+    )
+
+    $moduleFiles = Get-ChildItem -Path $path -File
+
+    $outputString = ""
+
+    if ($moduleFiles.Name -contains 'deploy.json') {
+        # ARM exists
+        $outputString += " :heavy_check_mark: |"
+    }
+    else {
+        $outputString += " |"
+    }
+
+    if ($moduleFiles.Name -contains 'deploy.bicep') {
+        # bicep exists
+        $outputString += " :heavy_check_mark: |"
+    }
+    else {
+        $outputString += " |"
+    }
+
+    return $outputString
+}
+
+
 <#
 .SYNOPSIS
 Get the number of nested module levels
@@ -23,12 +55,13 @@ function Get-RelevantDepth {
         [string] $path
     )
 
+    # Get only folders that contain no files (aka are parent folders)
     if (-not ($relevantSubfolders = (Get-Childitem $path -Directory -Recurse -Exclude @('.bicep', 'parameters')).fullName)) {
-        return
+        return 0
     }
-    $santiziedPaths = $relevantSubfolders | ForEach-Object { $_.Replace($path, '') }
+    $sanitizedPaths = $relevantSubfolders | ForEach-Object { $_.Replace($path, '') }
 
-    $depths = $santiziedPaths | ForEach-Object { ($_.Split('\') | Measure-Object).Count - 1 }
+    $depths = $sanitizedPaths | ForEach-Object { ($_.Split('\') | Measure-Object).Count - 1 }
 
     return ($depths | Measure-Object -Maximum).Maximum
 }
@@ -87,25 +120,9 @@ function Get-ResolvedSubServiceRow {
             $relativePath = Join-Path $concatedBase $subFolderName
             $subName = $relativePath.Replace("$provider\", '').Replace('Resources\', '\')
 
-            $outputString = '| | [{0}](.\{1}) |' -f $subName, $relativePath
+            $outputString = '| | [{0}]({1}) |' -f $subName, $relativePath
 
-            $moduleFiles = Get-ChildItem -Path $subfolder -File
-
-            if ($moduleFiles.Name -contains 'deploy.json') {
-                # ARM exists
-                $outputString += " :heavy_check_mark: |"
-            }
-            else {
-                $outputString += " |"
-            }
-
-            if ($moduleFiles.Name -contains 'deploy.bicep') {
-                # bicep exists
-                $outputString += " :heavy_check_mark: |"
-            }
-            else {
-                $outputString += " |"
-            }
+            $outputString += Get-TypeColumnString -path $subfolder
 
             $output += $outputString
         }
@@ -184,7 +201,10 @@ function Get-ModulesAsMarkdownTable {
                     $row = "| ``$provider`` | "
                     $previousProvider = $provider
                 }
-                $row += ('[{0}]({1})' -f $subFolderName, $concatedBase)
+
+                $row += ('[{0}]({1}) |' -f $subFolderName, $concatedBase)
+                $row += Get-TypeColumnString -path $subfolder
+
                 $null = $output += $row.Replace('\', '/')
             }
         }
