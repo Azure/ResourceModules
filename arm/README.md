@@ -1,7 +1,7 @@
-In this section you can find useful information regarding the modules that are contained in this repository.
+In this section you can find useful information regarding the Modules that are contained in this repository.
 
-# Available modules
-The following table provides you with an outline of all modules that are currently available for use. Several sub-resources may be their own modules and are hence displayed as a child path (e.g. `service/caches`).
+# Available Modules
+The following table provides you with an outline of all Modules that are currently available for use. Several sub-resources may be their own Modules and are hence displayed as a child path (e.g. `service/caches`).
 
 | Resource provider namespace | Azure service | ARM | Bicep |
 | --------------------------- | ------------- | --- | ----- |
