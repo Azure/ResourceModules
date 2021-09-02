@@ -7,24 +7,24 @@ The following table provides you with an outline of all Modules that are current
 | --------------------------- | ------------- | --- | ----- |
 | `Microsoft.AnalysisServices` | [servers](Microsoft.AnalysisServices/servers) | :heavy_check_mark: | |
 | `Microsoft.ApiManagement` | [service](Microsoft.ApiManagement/service) | :heavy_check_mark: | |
-| | [service\apis](Microsoft.ApiManagement\serviceResources\apis) | :heavy_check_mark: | |
-| | [service\authorizationServers](Microsoft.ApiManagement\serviceResources\authorizationServers) | :heavy_check_mark: | |
-| | [service\backends](Microsoft.ApiManagement\serviceResources\backends) | :heavy_check_mark: | |
-| | [service\caches](Microsoft.ApiManagement\serviceResources\caches) | :heavy_check_mark: | |
-| | [service\namedValues](Microsoft.ApiManagement\serviceResources\namedValues) | :heavy_check_mark: | |
-| | [service\products](Microsoft.ApiManagement\serviceResources\products) | :heavy_check_mark: | |
-| | [service\subscriptions](Microsoft.ApiManagement\serviceResources\subscriptions) | :heavy_check_mark: | |
+| | [service/apis](Microsoft.ApiManagement/serviceResources/apis) | :heavy_check_mark: | |
+| | [service/authorizationServers](Microsoft.ApiManagement/serviceResources/authorizationServers) | :heavy_check_mark: | |
+| | [service/backends](Microsoft.ApiManagement/serviceResources/backends) | :heavy_check_mark: | |
+| | [service/caches](Microsoft.ApiManagement/serviceResources/caches) | :heavy_check_mark: | |
+| | [service/namedValues](Microsoft.ApiManagement/serviceResources/namedValues) | :heavy_check_mark: | |
+| | [service/products](Microsoft.ApiManagement/serviceResources/products) | :heavy_check_mark: | |
+| | [service/subscriptions](Microsoft.ApiManagement/serviceResources/subscriptions) | :heavy_check_mark: | |
 | `Microsoft.Authorization` | [policyAssignments](Microsoft.Authorization/policyAssignments) | :heavy_check_mark: | |
 | | [roleAssignments](Microsoft.Authorization/roleAssignments) | :heavy_check_mark: | |
 | | [roleDefinitions](Microsoft.Authorization/roleDefinitions) | :heavy_check_mark: | |
 | `Microsoft.Automanage` | [accounts](Microsoft.Automanage/accounts) | :heavy_check_mark: | |
 | `Microsoft.Automation` | [automationAccounts](Microsoft.Automation/automationAccounts) | :heavy_check_mark: | |
-| | [automationAccounts\softwareUpdateConfigurations](Microsoft.Automation\automationAccountsResources\softwareUpdateConfigurations) | :heavy_check_mark: | |
+| | [automationAccounts/softwareUpdateConfigurations](Microsoft.Automation/automationAccountsResources/softwareUpdateConfigurations) | :heavy_check_mark: | |
 | `Microsoft.Batch` | [batchAccounts](Microsoft.Batch/batchAccounts) | :heavy_check_mark: | |
 | `Microsoft.CognitiveServices` | [accounts](Microsoft.CognitiveServices/accounts) | :heavy_check_mark: | |
 | `Microsoft.Compute` | [diskEncryptionSets](Microsoft.Compute/diskEncryptionSets) | :heavy_check_mark: | |
 | | [galleries](Microsoft.Compute/galleries) | :heavy_check_mark: | :heavy_check_mark: |
-| | [galleries\images](Microsoft.Compute\galleriesResources\images) | :heavy_check_mark: | |
+| | [galleries/images](Microsoft.Compute/galleriesResources/images) | :heavy_check_mark: | |
 | | [images](Microsoft.Compute/images) | :heavy_check_mark: | |
 | | [virtualMachines](Microsoft.Compute/virtualMachines) | :heavy_check_mark: | |
 | | [virtualMachineScaleSets](Microsoft.Compute/virtualMachineScaleSets) | :heavy_check_mark: | |
@@ -35,13 +35,13 @@ The following table provides you with an outline of all Modules that are current
 | `Microsoft.Databricks` | [workspaces](Microsoft.Databricks/workspaces) | :heavy_check_mark: | |
 | `Microsoft.DataFactory` | [factories](Microsoft.DataFactory/factories) | :heavy_check_mark: | |
 | `Microsoft.DesktopVirtualization` | [applicationgroups](Microsoft.DesktopVirtualization/applicationgroups) | :heavy_check_mark: | |
-| | [applicationGroups\applications](Microsoft.DesktopVirtualization\applicationGroupsResources\applications) | :heavy_check_mark: | :heavy_check_mark: |
+| | [applicationGroups/applications](Microsoft.DesktopVirtualization/applicationGroupsResources/applications) | :heavy_check_mark: | :heavy_check_mark: |
 | | [hostpools](Microsoft.DesktopVirtualization/hostpools) | :heavy_check_mark: | |
 | | [workspaces](Microsoft.DesktopVirtualization/workspaces) | :heavy_check_mark: | |
 | | [wvdScalingScheduler](Microsoft.DesktopVirtualization/wvdScalingScheduler) | :heavy_check_mark: | |
 | `Microsoft.EventGrid` | [topics](Microsoft.EventGrid/topics) | :heavy_check_mark: | |
 | `Microsoft.EventHub` | [namespaces](Microsoft.EventHub/namespaces) | :heavy_check_mark: | |
-| | [namespaces\eventhubs](Microsoft.EventHub\namespacesResources\eventhubs) | :heavy_check_mark: | |
+| | [namespaces/eventhubs](Microsoft.EventHub/namespacesResources/eventhubs) | :heavy_check_mark: | |
 | `Microsoft.HealthBot` | [healthBots](Microsoft.HealthBot/healthBots) | :heavy_check_mark: | |
 | `Microsoft.Insights` | [actionGroups](Microsoft.Insights/actionGroups) | :heavy_check_mark: | |
 | | [activityLogAlerts](Microsoft.Insights/activityLogAlerts) | :heavy_check_mark: | |
@@ -77,8 +77,8 @@ The following table provides you with an outline of all Modules that are current
 | | [routeTables](Microsoft.Network/routeTables) | :heavy_check_mark: | |
 | | [trafficmanagerprofiles](Microsoft.Network/trafficmanagerprofiles) | :heavy_check_mark: | |
 | | [virtualNetworkGateways](Microsoft.Network/virtualNetworkGateways) | :heavy_check_mark: | |
-| | [virtualNetworkPeerings](Microsoft.Network/virtualNetworkPeerings) | :heavy_check_mark: | |
 | | [virtualNetworks](Microsoft.Network/virtualNetworks) | :heavy_check_mark: | |
+| | [virtualNetworks/virtualNetworkPeerings](Microsoft.Network/virtualNetworksResources/virtualNetworkPeerings) | :heavy_check_mark: | |
 | | [virtualWans](Microsoft.Network/virtualWans) | :heavy_check_mark: | |
 | `Microsoft.OperationalInsights` | [workspaces](Microsoft.OperationalInsights/workspaces) | :heavy_check_mark: | |
 | `Microsoft.RecoveryServices` | [vaults](Microsoft.RecoveryServices/vaults) | :heavy_check_mark: | |
@@ -86,17 +86,17 @@ The following table provides you with an outline of all Modules that are current
 | | [resourceGroups](Microsoft.Resources/resourceGroups) | :heavy_check_mark: | :heavy_check_mark: |
 | `Microsoft.Security` | [azureSecurityCenter](Microsoft.Security/azureSecurityCenter) | :heavy_check_mark: | |
 | `Microsoft.ServiceBus` | [namespaces](Microsoft.ServiceBus/namespaces) | :heavy_check_mark: | |
-| | [namespaces\queues](Microsoft.ServiceBus\namespacesResources\queues) | :heavy_check_mark: | |
+| | [namespaces/queues](Microsoft.ServiceBus/namespacesResources/queues) | :heavy_check_mark: | |
 | `Microsoft.Sql` | [managedInstances](Microsoft.Sql/managedInstances) | :heavy_check_mark: | |
-| | [managedInstances\databases](Microsoft.Sql\managedInstancesResources\databases) | :heavy_check_mark: | |
+| | [managedInstances/databases](Microsoft.Sql/managedInstancesResources/databases) | :heavy_check_mark: | |
 | | [servers](Microsoft.Sql/servers) | :heavy_check_mark: | |
-| | [servers\databases](Microsoft.Sql\serversResources\databases) | :heavy_check_mark: | |
+| | [servers/databases](Microsoft.Sql/serversResources/databases) | :heavy_check_mark: | |
 | `Microsoft.Storage` | [storageAccounts](Microsoft.Storage/storageAccounts) | :heavy_check_mark: | :heavy_check_mark: |
 | `Microsoft.Subscription` | [aliases](Microsoft.Subscription/aliases) | :heavy_check_mark: | |
 | `Microsoft.VirtualMachineImages` | [imageTemplates](Microsoft.VirtualMachineImages/imageTemplates) | :heavy_check_mark: | |
 | `Microsoft.Web` | [connections](Microsoft.Web/connections) | :heavy_check_mark: | |
 | | [hostingEnvironments](Microsoft.Web/hostingEnvironments) | :heavy_check_mark: | |
 | | [serverfarms](Microsoft.Web/serverfarms) | :heavy_check_mark: | |
-| | [sites\appService](Microsoft.Web\sites\appService) | :heavy_check_mark: | |
-| | [sites\functionApp](Microsoft.Web\sites\functionApp) | :heavy_check_mark: | |
-| | [sites\webApp](Microsoft.Web\sites\webApp) | :heavy_check_mark: | |
+| | [sites/appService](Microsoft.Web/sites/appService) | :heavy_check_mark: | |
+| | [sites/functionApp](Microsoft.Web/sites/functionApp) | :heavy_check_mark: | |
+| | [sites/webApp](Microsoft.Web/sites/webApp) | :heavy_check_mark: | |
