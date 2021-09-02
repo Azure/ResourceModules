@@ -1,12 +1,9 @@
-# ![AzureIcon] Modules
-
-This repository consists of a collection of compliant [Azure Resource Manager (ARM)][AzureResourceManager] and [Bicep][Bicep] templates as well as supporting [template specs][TemplateSpecs].
+# ![AzureIcon] Components
 
 ## Description
 
-This library of **Modules** ensures organizations can deploy compliant Azure services aligned with the proactive and preventive policies provided by [Enterprise-Scale landing zones (ESLZ)][ESLZ], aligned with [Azure Security Benchmark][AzureSecurityBenchmark].
+This repository includes a collection of advanced and curated Components / Units consisting of [Azure Resource Manager (ARM)][AzureResourceManager] and [Bicep][Bicep] templates.
 
-> This repository serves ***currently*** as a temporary extension and **active** development site for [ESLZ Workload Templates library][ESLZWorkloadTemplatesLibrary].
 ## Status
 
 <a href="https://github.com/Azure/Modules/actions/workflows/linter.yml">
@@ -25,14 +22,6 @@ This library of **Modules** ensures organizations can deploy compliant Azure ser
 * For reference documentation visit [Enterprise-Scale](https://github.com/azure/enterprise-scale)
 * For information on contributing, see [Contribution](<https://github.com/Azure/Modules/wiki#contributing>)
 * File an issue via [GitHub Issues](https://github.com/azure/Modules/issues/new/choose)
-
-<!-- ## Contributors
-
-Contributors names and contact info
-
-* [@segraef](<https://twitter.com/segraef>)
-
--->
 
 ## Contributing
 
