@@ -209,5 +209,11 @@ function Get-ModulesAsMarkdownTable {
             }
         }
     }
+
+    # Flip slashes
+    for ($rowIndex = 0; $rowIndex -lt $output.Count; $rowIndex++) {
+        $output[$rowIndex] = $output[$rowIndex].Replace('\', '/')
+    }
+
     return $output
 }
