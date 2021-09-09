@@ -215,6 +215,7 @@ function Get-ResolvedSubServiceRow {
         [string] $provider,
 
         [Parameter(Mandatory)]
+        [ValidateSet('Name', 'ProviderNamespace', 'ResourceType', 'TemplateType', 'Deploy')]
         [string[]] $columnsInOrder,
 
         [Parameter(Mandatory)]
@@ -269,7 +270,7 @@ function Get-ResolvedSubServiceRow {
                     $row['Deploy'] += Get-DeployToAzureUrl -path $subfolder -repositoryName $repositoryName
                 }
                 Default {
-                    Write-Warning "Column [$column] not existing. Available are: [ Name |Provider namespace | Resource Type | ARM / Bicep | Deploy ]"
+                    Write-Warning "Column [$column] not existing. Available are: [Name|ProviderNamespace|ResourceType|TemplateType|Deploy]"
                 }
             }
         }
@@ -337,7 +338,7 @@ function Get-ModulesAsMarkdownTable {
         [string] $path,
 
         [Parameter(Mandatory = $false)]
-        [ValidateSet('Name', 'ProviderNamespace', 'ResourceType', 'ARM / Bicep', 'Deploy')]
+        [ValidateSet('Name', 'ProviderNamespace', 'ResourceType', 'TemplateType', 'Deploy')]
         [string[]] $columnsInOrder = @('Name', 'ProviderNamespace', 'ResourceType', 'TemplateType', 'Deploy'),
 
         [Parameter(Mandatory = $false)]
@@ -359,7 +360,7 @@ function Get-ModulesAsMarkdownTable {
             'TemplateType' { $headerRow += ' ARM / Bicep |' }
             'Deploy' { $headerRow += ' Deploy |' }
             Default {
-                Write-Warning "Column [$column] not existing. Available are: [ Name |Provider namespace | Resource Type | ARM / Bicep | Deploy ]"
+                Write-Warning "Column [$column] not existing. Available are: [Name|ProviderNamespace|ResourceType|TemplateType|Deploy]"
             }
         }
     }
@@ -436,7 +437,7 @@ function Get-ModulesAsMarkdownTable {
                             $row['Deploy'] += Get-DeployToAzureUrl -path $subfolder -repositoryName $repositoryName
                         }
                         Default {
-                            Write-Warning "Column [$column] not existing. Available are: [ Name |Provider namespace | Resource Type | ARM / Bicep | Deploy ]"
+                            Write-Warning "Column [$column] not existing. Available are: [Name|ProviderNamespace|ResourceType|TemplateType|Deploy]"
                         }
                     }
                 }
