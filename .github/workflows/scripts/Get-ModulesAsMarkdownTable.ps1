@@ -8,17 +8,17 @@ function Get-ResourceModuleName {
 
     if (-not (Test-Path "$path/readme.md")) {
         Write-Warning "No [readme.md] found in folder [$path]"
-        return " |"
+        return ""
     }
 
     $moduleReadMeContent = Get-Content -Path "$path/readme.md"
     $moduleName = $moduleReadMeContent[0].TrimStart('# ')
 
     if (-not [String]::IsNullOrEmpty($moduleName)) {
-        return " $moduleName |"
+        return $moduleName
     }
     else {
-        return " |"
+        return ""
     }
 }
 
@@ -53,18 +53,18 @@ function Get-TypeColumnString {
 
     if ($moduleFiles.Name -contains 'deploy.json') {
         # ARM exists
-        $outputString += " :heavy_check_mark: |"
+        $outputString += " :heavy_check_mark: /"
     }
     else {
-        $outputString += " |"
+        $outputString += " /"
     }
 
     if ($moduleFiles.Name -contains 'deploy.bicep') {
         # bicep exists
-        $outputString += " :heavy_check_mark: |"
+        $outputString += " :heavy_check_mark: "
     }
     else {
-        $outputString += " |"
+        $outputString += ""
     }
 
     return $outputString
@@ -161,16 +161,17 @@ function Get-ResolvedSubServiceRow {
             $relativePath = Join-Path $concatedBase $subFolderName
             $subName = $relativePath.Replace("$provider\", '').Replace('Resources\', '\')
 
-            $outputString = '| |'
+            # Start with name column
+            $outputString = "| {0} | |" -f (Get-ResourceModuleName -path $subfolder)
 
             # Service column
             $outputString += ' [{0}]({1}) |' -f $subName, $relativePath
 
-            # Name column
-            $outputString += Get-ResourceModuleName -path $subfolder
+            # Type column
+            $outputString += "{0} |" -f (Get-TypeColumnString -path $subfolder)
 
-            # Type columns
-            $outputString += Get-TypeColumnString -path $subfolder
+            # Deploy to Azure column
+            $outputString += " [Deploy] |"
 
             $output += $outputString
         }
@@ -196,10 +197,10 @@ Where sub-resources are part of a subfolder [<parentResource>Resources]
 
 Results in a table like
 
-    "| Resource provider namespace | Azure service | Resource Name                  | ARM | Bicep |"
-    "| --------------------------- | ------------- | ------------------------------ | --- | ----- |"
-    "| `Microsoft.Sql`             | [managedInstances](Microsoft.Sql/managedInstances) | SQL Managed Instances | :heavy_check_mark: | |
-    "|                             | [managedInstances\databases](Microsoft.Sql\managedInstancesResources\databases) | SQL Managed Instances Database | :heavy_check_mark: | |
+    "| Name                           | Provider namespace | Resource Type                                                                   | ARM / Bicep |"
+    "| ------------------------------ | ------------------ | ------------------------------------------------------------------------------- | ----------- |"
+    "| SQL Managed Instances          | `Microsoft.Sql`    | [managedInstances](Microsoft.Sql/managedInstances)                              | :heavy_check_mark: / |
+    "| SQL Managed Instances Database |                    | [managedInstances\databases](Microsoft.Sql\managedInstancesResources\databases) | :heavy_check_mark: / :heavy_check_mark: |
 
 .PARAMETER path
 Mandatory. The path to resolve
@@ -218,8 +219,8 @@ function Get-ModulesAsMarkdownTable {
     )
 
     $output = [System.Collections.ArrayList]@(
-        "| Resource provider namespace | Azure service | Resource Name | ARM | Bicep |",
-        "| --------------------------- | ------------- | ------------- | --- | ----- |"
+        "| Name | Provider namespace | Resource Type | ARM / Bicep | Deploy |",
+        "| ---- | ------------------ | ------------- | ----------- | ------ |"
     )
 
     if ($topLevelFolders = Get-ChildItem -Path $path -Depth 1 -Filter "Microsoft.*") {
@@ -243,18 +244,22 @@ function Get-ModulesAsMarkdownTable {
                 $output = Get-ResolvedSubServiceRow -subPath $subfolder -concatedBase $concatedBase -output $output -provider $provider
             }
             else {
+
+                # Start with name column
+                $row = "| {0} |" -f (Get-ResourceModuleName -path $subfolder)
+
                 # Provider columns
                 if ($previousProvider -eq $provider) {
-                    $row = "| | "
+                    $row += " | "
                 }
                 else {
                     if ($provider -like "Microsoft.*") {
                         # Shorten Microsoft to save some space
                         $shortProvider = "MS.{0}" -f ($provider.TrimStart('Microsoft.'))
-                        $row = "| ``$shortProvider`` | "
+                        $row += " ``$shortProvider`` | "
                     }
                     else {
-                        $row = "| ``$provider`` | "
+                        $row += " ``$provider`` | "
                     }
                     $previousProvider = $provider
                 }
@@ -262,11 +267,11 @@ function Get-ModulesAsMarkdownTable {
                 # Service column
                 $row += ('[{0}]({1}) |' -f $subFolderName, $concatedBase)
 
-                # Name column
-                $row += Get-ResourceModuleName -path $subfolder
+                # Type column
+                $row += "{0} |" -f (Get-TypeColumnString -path $subfolder)
 
-                # Type columns
-                $row += Get-TypeColumnString -path $subfolder
+                # Deploy to Azure column
+                $row += " [Deploy] |"
 
                 $output += $row.Replace('\', '/')
             }
