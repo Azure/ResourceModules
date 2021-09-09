@@ -1,3 +1,43 @@
+function Get-ResourceModuleName {
+
+    [CmdletBinding()]
+    param (
+        [Parameter(Mandatory)]
+        [string] $path
+    )
+
+    if(-not (Test-Path "$path/readme.md")) {
+        Write-Warning "No [readme.md] found in folder [$path]"
+        return " |"
+    }
+
+    $moduleReadMeContent = Get-Content -Path "$path/readme.md"
+    $moduleName = $moduleReadMeContent[0].TrimStart('# ')
+
+    if(-not [String]::IsNullOrEmpty($moduleName)) {
+        return " $moduleName |"
+    } else {
+        return " |"
+    }
+}
+
+<#
+.SYNOPSIS
+Get a string that indicates whether there are ARM/Bicep templates available in the given path
+
+.DESCRIPTION
+Get a string that indicates whether there are ARM/Bicep templates available in the given path.
+The string represents markdown table columns.
+Files must follow the naming schema 'deploy.json' & 'deploy.bicep'
+
+.PARAMETER path
+Mandatory. The path to check for templates
+
+.EXAMPLE
+Get-TypeColumnString -path 'C:\MyModule'
+
+May return a string like ':heavy_check_mark: | :heavy_check_mark: |' if both ARM & bicep templates are available in the given module path
+#>
 function Get-TypeColumnString {
 
     [CmdletBinding()]
@@ -120,7 +160,12 @@ function Get-ResolvedSubServiceRow {
             $relativePath = Join-Path $concatedBase $subFolderName
             $subName = $relativePath.Replace("$provider\", '').Replace('Resources\', '\')
 
-            $outputString = '| | [{0}]({1}) |' -f $subName, $relativePath
+            $outputString = '| |'
+
+            # Name column
+            $outputString += Get-ResourceModuleName -path $subfolder
+
+            $outputString += ' [{0}]({1}) |' -f $subName, $relativePath
 
             $outputString += Get-TypeColumnString -path $subfolder
 
@@ -148,9 +193,10 @@ Where sub-resources are part of a subfolder [<parentResource>Resources]
 
 Results in a table like
 
-    "| Resource provider namespace | Azure service |"
-    "| --------------------------- | ------------- |"
-    "| `Microsoft.Sql` | <p>[managedInstances](Microsoft.Sql/managedInstances)<p>[managedInstances/databases](./Microsoft.Sql/managedInstancesResources/databases)<p>[servers](Microsoft.Sql/servers)<p>[servers/databases](./Microsoft.Sql/serversResources/databases)"
+    "| Resource provider namespace | Resource Name                  | Azure service | ARM | Bicep |"
+    "| --------------------------- | ------------------------------ | ------------- | --- | ----- |"
+    "| `Microsoft.Sql`             | SQL Managed Instances          | [managedInstances](Microsoft.Sql/managedInstances) | :heavy_check_mark: | |
+    "|                             | SQL Managed Instances Database | [managedInstances\databases](Microsoft.Sql\managedInstancesResources\databases) | :heavy_check_mark: | |
 
 .PARAMETER path
 Mandatory. The path to resolve
@@ -169,8 +215,8 @@ function Get-ModulesAsMarkdownTable {
     )
 
     $output = [System.Collections.ArrayList]@(
-        "| Resource provider namespace | Azure service | ARM | Bicep |",
-        "| --------------------------- | ------------- | --- | ----- |"
+        "| Resource provider namespace | Resource Name | Azure service | ARM | Bicep |",
+        "| --------------------------- | ------------- | ------------- | --- | ----- |"
     )
 
     if ($topLevelFolders = Get-ChildItem -Path $path -Depth 1 -Filter "Microsoft.*") {
@@ -191,9 +237,10 @@ function Get-ModulesAsMarkdownTable {
             $concatedBase = $subfolder.Replace((Split-Path $topLevelFolder -Parent), '').Substring(1)
 
             if ((Get-RelevantDepth -path $subfolder) -gt 0) {
-                $null = $output = Get-ResolvedSubServiceRow -subPath $subfolder -concatedBase $concatedBase -output $output -provider $provider
+                $output = Get-ResolvedSubServiceRow -subPath $subfolder -concatedBase $concatedBase -output $output -provider $provider
             }
             else {
+                # Provider columns
                 if ($previousProvider -eq $provider) {
                     $row = "| | "
                 }
@@ -202,12 +249,24 @@ function Get-ModulesAsMarkdownTable {
                     $previousProvider = $provider
                 }
 
+                # Name column
+                $row += Get-ResourceModuleName -path $subfolder
+
+                # Path column
                 $row += ('[{0}]({1}) |' -f $subFolderName, $concatedBase)
+
+                # Type columns
                 $row += Get-TypeColumnString -path $subfolder
 
-                $null = $output += $row.Replace('\', '/')
+                $output += $row.Replace('\', '/')
             }
         }
     }
+
+    # Flip slashes
+    for ($rowIndex = 0; $rowIndex -lt $output.Count; $rowIndex++) {
+        $output[$rowIndex] = $output[$rowIndex].Replace('\', '/')
+    }
+
     return $output
 }
