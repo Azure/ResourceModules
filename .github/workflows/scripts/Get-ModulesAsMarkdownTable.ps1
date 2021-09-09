@@ -129,7 +129,6 @@ function Get-TypeColumnString {
     return $outputString
 }
 
-
 <#
 .SYNOPSIS
 Get the number of nested module levels
@@ -179,20 +178,24 @@ Mandatory. The path to process with respect to its contained modules
 .PARAMETER concatedBase
 Mandatory. The relative folder path from root down to the current level.
 
-.PARAMETER row
-Mandatory. The table row to populate/concat with additional modules
+.PARAMETER output
+Mandatory. List to populate/concat with additional modules
 
 .PARAMETER provider
 Mandatory. The current provider for this path
 
 .PARAMETER columnsInOrder
 Mandatory. The set of columns to add to the table in the order you expect them in the table.
-Available are 'Name', 'Provider namespace', 'Resource Type', 'ARM / Bicep' and 'Deploy'
+Available are 'Name', 'ProviderNamespace', 'ResourceType', 'TemplateType' and 'Deploy'
+
+.PARAMETER sortByColumn
+Mandatory. The column to sort the table by.
+Can be either 'Name' or 'ProviderNamespace'
 
 .EXAMPLE
-> Get-ResolvedSubServiceRow -subPath 'C:\dev\Microsoft.ApiManagement\serviceResources' -concatedBase "Microsoft.ApiManagement\serviceResources" -row "| `Microsoft.ApiManagement` | <p>[service](Microsoft.ApiManagement\service)" -provider "Microsoft.ApiManagement"
+> Get-ResolvedSubServiceRow -subPath 'C:\dev\Microsoft.ApiManagement\serviceResources' -concatedBase "Microsoft.ApiManagement\serviceResources" -output @() -provider 'Microsoft.ApiManagement' -columnsInOrder @('Name','ProviderNamespace') -sortByColumn 'Name'
 
-Populate row "| `Microsoft.ApiManagement` | <p>[service](Microsoft.ApiManagement\service)" with additional modules found in path 'C:\dev\Microsoft.ApiManagement\serviceResources'
+Adds a hashtable like  @{ Name = 'Api Management'; 'Provider Namespace' = `Microsoft.ApiManagement` }. As the specified column for sorting is 'Name', the 'Provider Namespace' will be added to each entry.
 #>
 function Get-ResolvedSubServiceRow {
 
@@ -304,16 +307,27 @@ Mandatory. The path to resolve
 .PARAMETER columnsInOrder
 Optional. The set of columns to add to the table in the order you expect them in the table.
 Available are 'Name', 'ProviderNamespace', 'ResourceType', 'TemplateType' and 'Deploy'
+If no value is provided, all are added
+
+.PARAMETER sortByColumn
+Optional. The column to sort the table by.
+Can be either 'Name' or 'ProviderNamespace'
+If no value is provided it defaults to 'ProviderNamespace'
 
 .EXAMPLE
 Get-ModulesAsMarkdownTable -path 'C:\dev\Modules'
 
-Generate a markdown table for all modules in path 'C:\dev\Modules' with all default columns
+Generate a markdown table for all modules in path 'C:\dev\Modules' with all default columns, sorted by 'Provider Namespace'
 
 .EXAMPLE
 Get-ModulesAsMarkdownTable -path 'C:\dev\Modules' -columnsInOrder @('Resource Type', 'Name')
 
-Generate a markdown table for all modules in path 'C:\dev\Modules' with only the 'Resource Type' & 'Name' columns
+Generate a markdown table for all modules in path 'C:\dev\Modules' with only the 'Resource Type' & 'Name' columns, sorted by 'Provider Namespace'
+
+.EXAMPLE
+Get-ModulesAsMarkdownTable -path 'C:\dev\Modules' -columnsInOrder @('Resource Type', 'Name') -sortByColumn 'Name'
+
+Generate a markdown table for all modules in path 'C:\dev\Modules' with only the 'Resource Type' & 'Name' columns, , sorted by 'Name'
 #>
 function Get-ModulesAsMarkdownTable {
 
