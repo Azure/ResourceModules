@@ -31,7 +31,7 @@ function Get-DeployToAzureUrl {
         [string] $repositoryName
     )
 
-    if(-not (Test-Path -Path "$path\deploy.json")) {
+    if (-not (Test-Path -Path "$path\deploy.json")) {
         Write-Warning "ARM Template in path [$path\deploy.json] not found. Unable to generate 'Deploy to Azure' button."
         return ''
     }
@@ -112,7 +112,7 @@ function Get-TypeColumnString {
 
     if ($moduleFiles.Name -contains 'deploy.json') {
         # ARM exists
-        $outputString += " :heavy_check_mark: /"
+        $outputString += ":heavy_check_mark:/"
     }
     else {
         $outputString += " /"
@@ -120,7 +120,7 @@ function Get-TypeColumnString {
 
     if ($moduleFiles.Name -contains 'deploy.bicep') {
         # bicep exists
-        $outputString += " :heavy_check_mark: "
+        $outputString += ":heavy_check_mark:"
     }
     else {
         $outputString += ""
@@ -205,13 +205,18 @@ function Get-ResolvedSubServiceRow {
         [string] $concatedBase,
 
         [Parameter(Mandatory)]
-        [string[]] $output,
+        [System.Collections.ArrayList] $output,
 
         [Parameter(Mandatory)]
+        [AllowEmptyCollection()]
         [string] $provider,
 
         [Parameter(Mandatory)]
         [string[]] $columnsInOrder,
+
+        [Parameter(Mandatory)]
+        [ValidateSet("Name", "ProviderNamespace")]
+        [string] $sortByColumn,
 
         [Parameter(Mandatory = $false)]
         [string] $repositoryName
@@ -222,45 +227,51 @@ function Get-ResolvedSubServiceRow {
     foreach ($subfolder in $subFolders.FullName) {
         $subFolderName = (Split-Path $subfolder -Leaf)
 
-        if ((Get-RelevantDepth -path $subfolder) -gt 0) {
-            $concatedBase = Join-Path $concatedBase $subFolderName
-            $output += Get-ResolvedSubServiceRow -subPath $subfolder -concatedBase $concatedBase -output $output -provider $provider
-        }
-        else {
-            $relativePath = Join-Path $concatedBase $subFolderName
-            $subName = $relativePath.Replace("$provider\", '').Replace('Resources\', '\')
+        $relativePath = Join-Path $concatedBase $subFolderName
+        $subName = $relativePath.Replace("$provider\", '').Replace('Resources\', '\')
 
-            $outputString = "|"
-            foreach ($column in $columnsInOrder) {
-                switch ($column) {
-                    'Name' {
-                        $outputString += ' {0} |' -f (Get-ResourceModuleName -path $subfolder)
-                    }
-                    'Provider namespace' {
-
-                        $outputString += ' |'
-                    }
-                    'Resource Type' {
-                        $outputString += (' [{0}]({1}) |' -f $subName, $relativePath)
-                    }
-                    'ARM / Bicep' {
-                        $outputString += "{0} |" -f (Get-TypeColumnString -path $subfolder)
-                    }
-                    'Deploy' {
-                        if(-not $repositoryName) {
-                            throw "If you want to generate a 'Deploy to Azure button' you must provide the 'repositoryName' parameter"
+        $row = @{}
+        foreach ($column in $columnsInOrder) {
+            switch ($column) {
+                'Name' {
+                    $row['Name'] = Get-ResourceModuleName -path $subfolder
+                }
+                'ProviderNamespace' {
+                    # If we don't sort by provider, we have to add the provider to each row to ensure readability of each row
+                    if ($sortByColumn -eq "Name") {
+                        if ($provider -like "Microsoft.*") {
+                            # Shorten Microsoft to save some space
+                            $shortProvider = "MS.{0}" -f ($provider.TrimStart('Microsoft.'))
+                            $row['ProviderNamespace'] += "``$shortProvider``"
                         }
-                        $outputString += ' {0} |' -f (Get-DeployToAzureUrl -path $subfolder -repositoryName $repositoryName)
+                        else {
+                            $row['ProviderNamespace'] += "``$provider``"
+                        }
                     }
-                    Default {
-                        Write-Warning "Column [$column] not existing. Available are: [ Name |Provider namespace | Resource Type | ARM / Bicep | Deploy ]"
+                    else {
+                        $row['ProviderNamespace'] = ''
                     }
                 }
-            }
-            $output += $outputString
-        }
-    }
+                'ResourceType' {
+                    $row['ResourceType'] += ('[{0}]({1})' -f $subName, $relativePath).Replace('\', '/')
+                }
+                'TemplateType' {
+                    $row['TemplateType'] += Get-TypeColumnString -path $subfolder
+                }
+                'Deploy' {
 
+                    if (-not $repositoryName) {
+                        throw "If you want to generate a 'Deploy to Azure button' you must provide the 'repositoryName' parameter"
+                    }
+                    $row['Deploy'] += Get-DeployToAzureUrl -path $subfolder -repositoryName $repositoryName
+                }
+                Default {
+                    Write-Warning "Column [$column] not existing. Available are: [ Name |Provider namespace | Resource Type | ARM / Bicep | Deploy ]"
+                }
+            }
+        }
+        $null = $output += $row
+    }
     return $output
 }
 #endregion
@@ -292,7 +303,7 @@ Mandatory. The path to resolve
 
 .PARAMETER columnsInOrder
 Optional. The set of columns to add to the table in the order you expect them in the table.
-Available are 'Name', 'Provider namespace', 'Resource Type', 'ARM / Bicep' and 'Deploy'
+Available are 'Name', 'ProviderNamespace', 'ResourceType', 'TemplateType' and 'Deploy'
 
 .EXAMPLE
 Get-ModulesAsMarkdownTable -path 'C:\dev\Modules'
@@ -312,39 +323,43 @@ function Get-ModulesAsMarkdownTable {
         [string] $path,
 
         [Parameter(Mandatory = $false)]
-        [string[]] $columnsInOrder = @('Name', 'Provider namespace', 'Resource Type', 'ARM / Bicep', 'Deploy'),
+        [ValidateSet('Name', 'ProviderNamespace', 'ResourceType', 'ARM / Bicep', 'Deploy')]
+        [string[]] $columnsInOrder = @('Name', 'ProviderNamespace', 'ResourceType', 'TemplateType', 'Deploy'),
+
+        [Parameter(Mandatory = $false)]
+        [ValidateSet("Name", "ProviderNamespace")]
+        [string] $sortByColumn = 'ProviderNamespace',
 
         [Parameter(Mandatory = $false)]
         [string] $repositoryName
     )
 
-    $output = [System.Collections.ArrayList]@()
+    # Header
+    # ------
     $headerRow = "|"
     foreach ($column in $columnsInOrder) {
         switch ($column) {
             'Name' { $headerRow += ' Name |' }
-            'Provider namespace' { $headerRow += ' Provider namespace |' }
-            'Resource Type' { $headerRow += ' Resource Type |' }
-            'ARM / Bicep' { $headerRow += ' ARM / Bicep |' }
+            'ProviderNamespace' { $headerRow += ' Provider namespace |' }
+            'ResourceType' { $headerRow += ' Resource Type |' }
+            'TemplateType' { $headerRow += ' ARM / Bicep |' }
             'Deploy' { $headerRow += ' Deploy |' }
             Default {
                 Write-Warning "Column [$column] not existing. Available are: [ Name |Provider namespace | Resource Type | ARM / Bicep | Deploy ]"
             }
         }
     }
-    $output += $headerRow
 
     $headerSubRow = "|"
     for ($index = 0; $index -lt $columnsInOrder.Count; $index++) {
         $headerSubRow += ' - |'
     }
-    $output += $headerSubRow
 
+    # Content
+    # -------
+    $output = [System.Collections.ArrayList]@()
     if ($topLevelFolders = Get-ChildItem -Path $path -Depth 1 -Filter "Microsoft.*") {
         $topLevelFolders = $topLevelFolders.FullName | Sort-Object
-    }
-    else {
-        return $output
     }
 
     $previousProvider = ''
@@ -358,59 +373,82 @@ function Get-ModulesAsMarkdownTable {
             $concatedBase = $subfolder.Replace((Split-Path $topLevelFolder -Parent), '').Substring(1)
 
             if ((Get-RelevantDepth -path $subfolder) -gt 0) {
-                $output = Get-ResolvedSubServiceRow -subPath $subfolder -concatedBase $concatedBase -output $output -provider $provider -columnsInOrder $columnsInOrder -repositoryName $repositoryName
+                $recursiveSubServiceInputObject = @{
+                    subPath        = $subfolder
+                    concatedBase   = $concatedBase
+                    output         = $output
+                    provider       = $provider
+                    columnsInOrder = $columnsInOrder
+                    repositoryName = $repositoryName
+                    sortByColumn   = $sortByColumn
+                }
+                $output = Get-ResolvedSubServiceRow @recursiveSubServiceInputObject
             }
             else {
 
-                $row = '|'
+                $row = @{}
 
                 foreach ($column in $columnsInOrder) {
                     switch ($column) {
                         'Name' {
-                            $row += ' {0} |' -f (Get-ResourceModuleName -path $subfolder)
+                            $row['Name'] = Get-ResourceModuleName -path $subfolder
                         }
-                        'Provider namespace' {
-                            if ($previousProvider -eq $provider) {
-                                $row += " |"
+                        'ProviderNamespace' {
+                            if ($previousProvider -eq $provider -and $sortByColumn -ne 'Name') {
+                                $row['ProviderNamespace'] += ""
                             }
                             else {
                                 if ($provider -like "Microsoft.*") {
                                     # Shorten Microsoft to save some space
                                     $shortProvider = "MS.{0}" -f ($provider.TrimStart('Microsoft.'))
-                                    $row += " ``$shortProvider`` |"
+                                    $row['ProviderNamespace'] += "``$shortProvider``"
                                 }
                                 else {
-                                    $row += " ``$provider`` |"
+                                    $row['ProviderNamespace'] += "``$provider``"
                                 }
                                 $previousProvider = $provider
                             }
                         }
-                        'Resource Type' {
-                            $row += (' [{0}]({1}) |' -f $subFolderName, $concatedBase)
+                        'ResourceType' {
+                            $row['ResourceType'] += ('[{0}]({1})' -f $subFolderName, $concatedBase).Replace('\', '/')
                         }
-                        'ARM / Bicep' {
-                            $row += "{0} |" -f (Get-TypeColumnString -path $subfolder)
+                        'TemplateType' {
+                            $row['TemplateType'] += Get-TypeColumnString -path $subfolder
                         }
                         'Deploy' {
-                            if(-not $repositoryName) {
+                            if (-not $repositoryName) {
                                 throw "If you want to generate a 'Deploy to Azure button' you must provide the 'repositoryName' parameter"
                             }
-                            $row += ' {0} |' -f (Get-DeployToAzureUrl -path $subfolder -repositoryName $repositoryName)
+                            $row['Deploy'] += Get-DeployToAzureUrl -path $subfolder -repositoryName $repositoryName
                         }
                         Default {
                             Write-Warning "Column [$column] not existing. Available are: [ Name |Provider namespace | Resource Type | ARM / Bicep | Deploy ]"
                         }
                     }
                 }
-                $output += $row.Replace('\', '/')
+
+                $null = $output += $row
             }
         }
     }
 
-    # Flip slashes
-    for ($rowIndex = 0; $rowIndex -lt $output.Count; $rowIndex++) {
-        $output[$rowIndex] = $output[$rowIndex].Replace('\', '/')
+    # Validate order
+    if ($sortByColumn -eq 'Name') {
+        $output = $output | Sort-Object -Property 'Name'
     }
 
-    return $output
+    # Build result set
+    $table = [System.Collections.ArrayList]@(
+        $headerRow,
+        $headerSubRow
+    )
+    foreach ($rowColumns in $output) {
+        $rowString = "|"
+        foreach ($column in $columnsInOrder) {
+            $rowString += ' {0} |' -f $rowColumns[$column]
+        }
+        $table += $rowString
+    }
+
+    return $table
 }
