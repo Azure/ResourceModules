@@ -1,3 +1,20 @@
+#region Helper functions
+
+<#
+.SYNOPSIS
+Extract the resource name from the provided module path's readme
+
+.DESCRIPTION
+Extract the resource name from the provided module path's readme
+
+.PARAMETER path
+Mandatory. The path to the module to process
+
+.EXAMPLE
+Get-ResourceModuleName -path 'C:\KeyVault'
+
+Get the resource name defined in the KeyVault-Module's readme. E.g. 'Key Vault'
+#>
 function Get-ResourceModuleName {
 
     [CmdletBinding()]
@@ -126,6 +143,10 @@ Mandatory. The table row to populate/concat with additional modules
 .PARAMETER provider
 Mandatory. The current provider for this path
 
+.PARAMETER columnsInOrder
+Mandatory. The set of columns to add to the table in the order you expect them in the table.
+Available are 'Name', 'Provider namespace', 'Resource Type', 'ARM / Bicep' and 'Deploy'
+
 .EXAMPLE
 > Get-ResolvedSubServiceRow -subPath 'C:\dev\Microsoft.ApiManagement\serviceResources' -concatedBase "Microsoft.ApiManagement\serviceResources" -row "| `Microsoft.ApiManagement` | <p>[service](Microsoft.ApiManagement\service)" -provider "Microsoft.ApiManagement"
 
@@ -145,7 +166,10 @@ function Get-ResolvedSubServiceRow {
         [string[]] $output,
 
         [Parameter(Mandatory)]
-        [string] $provider
+        [string] $provider,
+
+        [Parameter(Mandatory)]
+        [string[]] $columnsInOrder
     )
 
     $subFolders = Get-ChildItem -Path $subPath -Directory -Recurse -Exclude @('.bicep', 'parameters')
@@ -161,24 +185,37 @@ function Get-ResolvedSubServiceRow {
             $relativePath = Join-Path $concatedBase $subFolderName
             $subName = $relativePath.Replace("$provider\", '').Replace('Resources\', '\')
 
-            # Start with name column
-            $outputString = "| {0} | |" -f (Get-ResourceModuleName -path $subfolder)
+            $outputString = "|"
+            foreach ($column in $columnsInOrder) {
+                switch ($column) {
+                    'Name' {
+                        $outputString += ' {0} |' -f (Get-ResourceModuleName -path $subfolder)
+                    }
+                    'Provider namespace' {
 
-            # Service column
-            $outputString += ' [{0}]({1}) |' -f $subName, $relativePath
-
-            # Type column
-            $outputString += "{0} |" -f (Get-TypeColumnString -path $subfolder)
-
-            # Deploy to Azure column
-            $outputString += " [Deploy] |"
-
+                        $outputString += ' |'
+                    }
+                    'Resource Type' {
+                        $outputString += (' [{0}]({1}) |' -f $subName, $relativePath)
+                    }
+                    'ARM / Bicep' {
+                        $outputString += "{0} |" -f (Get-TypeColumnString -path $subfolder)
+                    }
+                    'Deploy' {
+                        $outputString += ' {0} |' -f ('[Deploy]')
+                    }
+                    Default {
+                        Write-Warning "Column [$column] not existing. Available are: [ Name |Provider namespace | Resource Type | ARM / Bicep | Deploy ]"
+                    }
+                }
+            }
             $output += $outputString
         }
     }
 
     return $output
 }
+#endregion
 
 <#
 .SYNOPSIS
@@ -205,23 +242,52 @@ Results in a table like
 .PARAMETER path
 Mandatory. The path to resolve
 
+.PARAMETER columnsInOrder
+Optional. The set of columns to add to the table in the order you expect them in the table.
+Available are 'Name', 'Provider namespace', 'Resource Type', 'ARM / Bicep' and 'Deploy'
+
 .EXAMPLE
 Get-ModulesAsMarkdownTable -path 'C:\dev\Modules'
 
-Generate a markdown table for all modules in path 'C:\dev\Modules'
+Generate a markdown table for all modules in path 'C:\dev\Modules' with all default columns
+
+.EXAMPLE
+Get-ModulesAsMarkdownTable -path 'C:\dev\Modules' -columnsInOrder @('Resource Type', 'Name')
+
+Generate a markdown table for all modules in path 'C:\dev\Modules' with only the 'Resource Type' & 'Name' columns
 #>
 function Get-ModulesAsMarkdownTable {
 
     [CmdletBinding()]
     param (
         [Parameter(Mandatory)]
-        [string] $path
+        [string] $path,
+
+        [Parameter(Mandatory = $false)]
+        [string[]] $columnsInOrder = @('Name', 'Provider namespace', 'Resource Type', 'ARM / Bicep', 'Deploy')
     )
 
-    $output = [System.Collections.ArrayList]@(
-        "| Name | Provider namespace | Resource Type | ARM / Bicep | Deploy |",
-        "| ---- | ------------------ | ------------- | ----------- | ------ |"
-    )
+    $output = [System.Collections.ArrayList]@()
+    $headerRow = "|"
+    foreach ($column in $columnsInOrder) {
+        switch ($column) {
+            'Name' { $headerRow += ' Name |' }
+            'Provider namespace' { $headerRow += ' Provider namespace |' }
+            'Resource Type' { $headerRow += ' Resource Type |' }
+            'ARM / Bicep' { $headerRow += ' ARM / Bicep |' }
+            'Deploy' { $headerRow += ' Deploy |' }
+            Default {
+                Write-Warning "Column [$column] not existing. Available are: [ Name |Provider namespace | Resource Type | ARM / Bicep | Deploy ]"
+            }
+        }
+    }
+    $output += $headerRow
+
+    $headerSubRow = "|"
+    for ($index = 0; $index -lt $columnsInOrder.Count; $index++) {
+        $headerSubRow += ' - |'
+    }
+    $output += $headerSubRow
 
     if ($topLevelFolders = Get-ChildItem -Path $path -Depth 1 -Filter "Microsoft.*") {
         $topLevelFolders = $topLevelFolders.FullName | Sort-Object
@@ -241,38 +307,47 @@ function Get-ModulesAsMarkdownTable {
             $concatedBase = $subfolder.Replace((Split-Path $topLevelFolder -Parent), '').Substring(1)
 
             if ((Get-RelevantDepth -path $subfolder) -gt 0) {
-                $output = Get-ResolvedSubServiceRow -subPath $subfolder -concatedBase $concatedBase -output $output -provider $provider
+                $output = Get-ResolvedSubServiceRow -subPath $subfolder -concatedBase $concatedBase -output $output -provider $provider -columnsInOrder $columnsInOrder
             }
             else {
 
-                # Start with name column
-                $row = "| {0} |" -f (Get-ResourceModuleName -path $subfolder)
+                $row = '|'
 
-                # Provider columns
-                if ($previousProvider -eq $provider) {
-                    $row += " | "
-                }
-                else {
-                    if ($provider -like "Microsoft.*") {
-                        # Shorten Microsoft to save some space
-                        $shortProvider = "MS.{0}" -f ($provider.TrimStart('Microsoft.'))
-                        $row += " ``$shortProvider`` | "
+                foreach ($column in $columnsInOrder) {
+                    switch ($column) {
+                        'Name' {
+                            $row += ' {0} |' -f (Get-ResourceModuleName -path $subfolder)
+                        }
+                        'Provider namespace' {
+                            if ($previousProvider -eq $provider) {
+                                $row += " |"
+                            }
+                            else {
+                                if ($provider -like "Microsoft.*") {
+                                    # Shorten Microsoft to save some space
+                                    $shortProvider = "MS.{0}" -f ($provider.TrimStart('Microsoft.'))
+                                    $row += " ``$shortProvider`` |"
+                                }
+                                else {
+                                    $row += " ``$provider`` |"
+                                }
+                                $previousProvider = $provider
+                            }
+                        }
+                        'Resource Type' {
+                            $row += (' [{0}]({1}) |' -f $subFolderName, $concatedBase)
+                        }
+                        'ARM / Bicep' {
+                            $row += "{0} |" -f (Get-TypeColumnString -path $subfolder)
+                        }
+                        'Deploy' {
+                            $row += ' {0} |' -f ('[Deploy]')
+                        }
+                        Default {
+                            Write-Warning "Column [$column] not existing. Available are: [ Name |Provider namespace | Resource Type | ARM / Bicep | Deploy ]"
+                        }
                     }
-                    else {
-                        $row += " ``$provider`` | "
-                    }
-                    $previousProvider = $provider
                 }
-
-                # Service column
-                $row += ('[{0}]({1}) |' -f $subFolderName, $concatedBase)
-
-                # Type column
-                $row += "{0} |" -f (Get-TypeColumnString -path $subfolder)
-
-                # Deploy to Azure column
-                $row += " [Deploy] |"
-
                 $output += $row.Replace('\', '/')
             }
         }
