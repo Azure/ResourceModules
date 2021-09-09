@@ -1,5 +1,28 @@
 #region Helper functions
 
+function Get-DeployToAzureUrl {
+
+
+    [CmdletBinding()]
+    param (
+        [Parameter(Mandatory)]
+        [string] $path,
+
+        [Parameter(Mandatory = $true)]
+        [string] $repositoryName
+    )
+
+    if(-not (Test-Path -Path "$path\deploy.json")) {
+        Write-Warning "ARM Template in path [$path\deploy.json] not found. Unable to generate 'Deploy to Azure' button."
+        return ''
+    }
+
+    $baseUrl = "[![Deploy to Azure](/docs/media/deploytoazure.svg?sanitize=true)](<https://portal.azure.com/#create/Microsoft.Template/uri/"
+    $templateUri = "https://raw.githubusercontent.com/Azure/{0}/main/{1}/deploy.json" -f $repositoryName, ($path -split "\\$repositoryName\\")[1]
+
+    return ("{0}{1}>)" -f $baseUrl, ([System.Web.HttpUtility]::UrlEncode($templateUri)))
+}
+
 <#
 .SYNOPSIS
 Extract the resource name from the provided module path's readme
@@ -169,7 +192,10 @@ function Get-ResolvedSubServiceRow {
         [string] $provider,
 
         [Parameter(Mandatory)]
-        [string[]] $columnsInOrder
+        [string[]] $columnsInOrder,
+
+        [Parameter(Mandatory = $false)]
+        [string] $repositoryName
     )
 
     $subFolders = Get-ChildItem -Path $subPath -Directory -Recurse -Exclude @('.bicep', 'parameters')
@@ -202,7 +228,10 @@ function Get-ResolvedSubServiceRow {
                         $outputString += "{0} |" -f (Get-TypeColumnString -path $subfolder)
                     }
                     'Deploy' {
-                        $outputString += ' {0} |' -f ('[Deploy]')
+                        if(-not $repositoryName) {
+                            throw "If you want to generate a 'Deploy to Azure button' you must provide the 'repositoryName' parameter"
+                        }
+                        $outputString += ' {0} |' -f (Get-DeployToAzureUrl -path $subfolder -repositoryName $repositoryName)
                     }
                     Default {
                         Write-Warning "Column [$column] not existing. Available are: [ Name |Provider namespace | Resource Type | ARM / Bicep | Deploy ]"
@@ -264,7 +293,10 @@ function Get-ModulesAsMarkdownTable {
         [string] $path,
 
         [Parameter(Mandatory = $false)]
-        [string[]] $columnsInOrder = @('Name', 'Provider namespace', 'Resource Type', 'ARM / Bicep', 'Deploy')
+        [string[]] $columnsInOrder = @('Name', 'Provider namespace', 'Resource Type', 'ARM / Bicep', 'Deploy'),
+
+        [Parameter(Mandatory = $false)]
+        [string] $repositoryName
     )
 
     $output = [System.Collections.ArrayList]@()
@@ -307,7 +339,7 @@ function Get-ModulesAsMarkdownTable {
             $concatedBase = $subfolder.Replace((Split-Path $topLevelFolder -Parent), '').Substring(1)
 
             if ((Get-RelevantDepth -path $subfolder) -gt 0) {
-                $output = Get-ResolvedSubServiceRow -subPath $subfolder -concatedBase $concatedBase -output $output -provider $provider -columnsInOrder $columnsInOrder
+                $output = Get-ResolvedSubServiceRow -subPath $subfolder -concatedBase $concatedBase -output $output -provider $provider -columnsInOrder $columnsInOrder -repositoryName $repositoryName
             }
             else {
 
@@ -341,7 +373,10 @@ function Get-ModulesAsMarkdownTable {
                             $row += "{0} |" -f (Get-TypeColumnString -path $subfolder)
                         }
                         'Deploy' {
-                            $row += ' {0} |' -f ('[Deploy]')
+                            if(-not $repositoryName) {
+                                throw "If you want to generate a 'Deploy to Azure button' you must provide the 'repositoryName' parameter"
+                            }
+                            $row += ' {0} |' -f (Get-DeployToAzureUrl -path $subfolder -repositoryName $repositoryName)
                         }
                         Default {
                             Write-Warning "Column [$column] not existing. Available are: [ Name |Provider namespace | Resource Type | ARM / Bicep | Deploy ]"
