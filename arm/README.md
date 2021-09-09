@@ -4,7 +4,7 @@ In this section you can find useful information regarding the Modules that are c
 The following table provides you with an outline of all Modules that are currently available for use. Several sub-resources may be their own Modules and are hence displayed as a child path (e.g. `service/caches`).
 
 | Name | Provider namespace | Resource Type | ARM / Bicep | Deploy |
-| ---- | ------------------ | ------------- | ----------- | ------ |
+| - | - | - | - | - |
 | Analysis Services | `MS.AnalysisServices` | [servers](Microsoft.AnalysisServices/servers) | :heavy_check_mark: / | [Deploy] |
 | Api Management | `MS.ApiManagement` | [service](Microsoft.ApiManagement/service) | :heavy_check_mark: / | [Deploy] |
 | Api Management Service Apis | | [service/apis](Microsoft.ApiManagement/serviceResources/apis) | :heavy_check_mark: / | [Deploy] |
