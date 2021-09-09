@@ -6,7 +6,7 @@ function Get-ResourceModuleName {
         [string] $path
     )
 
-    if(-not (Test-Path "$path/readme.md")) {
+    if (-not (Test-Path "$path/readme.md")) {
         Write-Warning "No [readme.md] found in folder [$path]"
         return " |"
     }
@@ -14,9 +14,10 @@ function Get-ResourceModuleName {
     $moduleReadMeContent = Get-Content -Path "$path/readme.md"
     $moduleName = $moduleReadMeContent[0].TrimStart('# ')
 
-    if(-not [String]::IsNullOrEmpty($moduleName)) {
+    if (-not [String]::IsNullOrEmpty($moduleName)) {
         return " $moduleName |"
-    } else {
+    }
+    else {
         return " |"
     }
 }
@@ -162,11 +163,13 @@ function Get-ResolvedSubServiceRow {
 
             $outputString = '| |'
 
+            # Service column
+            $outputString += ' [{0}]({1}) |' -f $subName, $relativePath
+
             # Name column
             $outputString += Get-ResourceModuleName -path $subfolder
 
-            $outputString += ' [{0}]({1}) |' -f $subName, $relativePath
-
+            # Type columns
             $outputString += Get-TypeColumnString -path $subfolder
 
             $output += $outputString
@@ -193,10 +196,10 @@ Where sub-resources are part of a subfolder [<parentResource>Resources]
 
 Results in a table like
 
-    "| Resource provider namespace | Resource Name                  | Azure service | ARM | Bicep |"
-    "| --------------------------- | ------------------------------ | ------------- | --- | ----- |"
-    "| `Microsoft.Sql`             | SQL Managed Instances          | [managedInstances](Microsoft.Sql/managedInstances) | :heavy_check_mark: | |
-    "|                             | SQL Managed Instances Database | [managedInstances\databases](Microsoft.Sql\managedInstancesResources\databases) | :heavy_check_mark: | |
+    "| Resource provider namespace | Azure service | Resource Name                  | ARM | Bicep |"
+    "| --------------------------- | ------------- | ------------------------------ | --- | ----- |"
+    "| `Microsoft.Sql`             | [managedInstances](Microsoft.Sql/managedInstances) | SQL Managed Instances | :heavy_check_mark: | |
+    "|                             | [managedInstances\databases](Microsoft.Sql\managedInstancesResources\databases) | SQL Managed Instances Database | :heavy_check_mark: | |
 
 .PARAMETER path
 Mandatory. The path to resolve
@@ -215,7 +218,7 @@ function Get-ModulesAsMarkdownTable {
     )
 
     $output = [System.Collections.ArrayList]@(
-        "| Resource provider namespace | Resource Name | Azure service | ARM | Bicep |",
+        "| Resource provider namespace | Azure service | Resource Name | ARM | Bicep |",
         "| --------------------------- | ------------- | ------------- | --- | ----- |"
     )
 
@@ -245,15 +248,22 @@ function Get-ModulesAsMarkdownTable {
                     $row = "| | "
                 }
                 else {
-                    $row = "| ``$provider`` | "
+                    if ($provider -like "Microsoft.*") {
+                        # Shorten Microsoft to save some space
+                        $shortProvider = "MS.{0}" -f ($provider.TrimStart('Microsoft.'))
+                        $row = "| ``$shortProvider`` | "
+                    }
+                    else {
+                        $row = "| ``$provider`` | "
+                    }
                     $previousProvider = $provider
                 }
 
+                # Service column
+                $row += ('[{0}]({1}) |' -f $subFolderName, $concatedBase)
+
                 # Name column
                 $row += Get-ResourceModuleName -path $subfolder
-
-                # Path column
-                $row += ('[{0}]({1}) |' -f $subFolderName, $concatedBase)
 
                 # Type columns
                 $row += Get-TypeColumnString -path $subfolder
