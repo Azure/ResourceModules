@@ -1,5 +1,24 @@
 #region Helper functions
 
+<#
+.SYNOPSIS
+Get a properly formatted 'Deploy to Azure' button for the template in the given path
+
+.DESCRIPTION
+Get a properly formatted 'Deploy to Azure' button for the template in the given path
+NOTE: This function requires that the Repo lives inside the 'Azure' organization
+
+.PARAMETER path
+Mandatory. The path to the module to generate the url for
+
+.PARAMETER repositoryName
+Mandatory. The name of the repository the content is included in.
+
+.EXAMPLE
+Get-DeployToAzureUrl -path 'C:\Modules\MyModule' -repositoryName 'Modules'
+
+Generate an 'Deploy to Azure' button for module 'MyModule'
+#>
 function Get-DeployToAzureUrl {
 
 
@@ -8,7 +27,7 @@ function Get-DeployToAzureUrl {
         [Parameter(Mandatory)]
         [string] $path,
 
-        [Parameter(Mandatory = $true)]
+        [Parameter(Mandatory)]
         [string] $repositoryName
     )
 
