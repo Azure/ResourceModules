@@ -1,0 +1,119 @@
+name: "Storage Account - Test Pipeline"
+
+on:
+  workflow_dispatch:
+
+inputs:
+  isRemoveModule:
+    description: 'Remove deplyoed module'
+    required: false
+    default: true
+
+jobs:
+  job_validate:
+    runs-on: ubuntu-20.04
+    name: "Test module"
+    env:
+      ARM_CLIENT_ID: ${{ secrets.ARM_CLIENT_ID }}
+      ARM_CLIENT_SECRET: ${{ secrets.ARM_CLIENT_SECRET }}
+      ARM_TENANT_ID: ${{ secrets.ARM_TENANT_ID }}
+      ARM_SUBSCRIPTION_ID: ${{ secrets.ARM_SUBSCRIPTION_ID }}
+    steps:
+    - name: "Checkout"
+      uses: actions/checkout@v2
+      with:
+        fetch-depth: 0
+
+    - name: Set environment variables
+      uses: deep-mm/set-variables@v1.0
+      with:
+        # Name of variable file
+        variableFileName: 'variables.module' # Don't write .json here
+
+    - name: "Test module"
+      uses: ./.github/actions/templates/validate
+      with:
+        templateFilePath: 'dummyFilePath'
+        parameterFilePath: 'dummyFilePath'
+
+  job_deploy:
+    runs-on: ubuntu-20.04
+    name: "Deploy module"
+    needs: job_validate
+    env:
+      ARM_CLIENT_ID: ${{ secrets.ARM_CLIENT_ID }}
+      ARM_CLIENT_SECRET: ${{ secrets.ARM_CLIENT_SECRET }}
+      ARM_TENANT_ID: ${{ secrets.ARM_TENANT_ID }}
+      ARM_SUBSCRIPTION_ID: ${{ secrets.ARM_SUBSCRIPTION_ID }}
+    steps:
+    - name: "Checkout"
+      uses: actions/checkout@v2
+      with:
+        fetch-depth: 0
+
+    - name: Set environment variables
+      uses: deep-mm/set-variables@v1.0
+      with:
+        # Name of variable file
+        variableFileName: 'variables.module' # Don't write .json here
+
+    - name: "Deploy module"
+      uses: ./.github/actions/templates/deploy
+      with:
+        templateFilePath: 'dummyFilePath'
+        parameterFilePath: 'dummyFilePath'
+
+  job_publish:
+    runs-on: ubuntu-20.04
+    name: "Publish module"
+    needs: job_deploy
+    env:
+      ARM_CLIENT_ID: ${{ secrets.ARM_CLIENT_ID }}
+      ARM_CLIENT_SECRET: ${{ secrets.ARM_CLIENT_SECRET }}
+      ARM_TENANT_ID: ${{ secrets.ARM_TENANT_ID }}
+      ARM_SUBSCRIPTION_ID: ${{ secrets.ARM_SUBSCRIPTION_ID }}
+    steps:
+    - name: "Checkout"
+      uses: actions/checkout@v2
+      with:
+        fetch-depth: 0
+
+    - name: Set environment variables
+      uses: deep-mm/set-variables@v1.0
+      with:
+        # Name of variable file
+        variableFileName: 'variables.module' # Don't write .json here
+
+    - name: "Publish module"
+      uses: ./.github/actions/templates/validate
+      with:
+        templateFilePath: 'dummyFilePath'
+        parameterFilePath: 'dummyFilePath'
+
+  job_remove:
+    runs-on: ubuntu-20.04
+    name: "Remove module"
+    needs: job_deploy
+    if: ${{ inputs.isRemoveModule == 'true' }}
+    env:
+      ARM_CLIENT_ID: ${{ secrets.ARM_CLIENT_ID }}
+      ARM_CLIENT_SECRET: ${{ secrets.ARM_CLIENT_SECRET }}
+      ARM_TENANT_ID: ${{ secrets.ARM_TENANT_ID }}
+      ARM_SUBSCRIPTION_ID: ${{ secrets.ARM_SUBSCRIPTION_ID }}
+    steps:
+    - name: "Checkout"
+      uses: actions/checkout@v2
+      with:
+        fetch-depth: 0
+
+    - name: Set environment variables
+      uses: deep-mm/set-variables@v1.0
+      with:
+        # Name of variable file
+        variableFileName: 'variables.module' # Don't write .json here
+
+    - name: "Remove module"
+      uses: ./.github/actions/templates/validate
+      with:
+        templateFilePath: 'dummyFilePath'
+        parameterFilePath: 'dummyFilePath'

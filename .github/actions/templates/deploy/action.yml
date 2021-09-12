@@ -1,0 +1,83 @@
+name: 'Deploy module'
+description: 'Deploy module'
+
+inputs:
+  templateFilePath:
+    description: 'The path to the template file to use for testing & deployment'
+    required: true
+  parameterFilePath:
+    description: 'The path to the parameter file to use for testing & deployment'
+    required: true
+  location:
+    description: 'The location to test and deploy in'
+    required: true
+  resourceGroupName:
+    description: 'The name of the resource group to test and deploy in'
+    required: false
+  subscriptionId:
+    description: 'The subscription ID to test and deploy in'
+    required: false
+  managementGroupId:
+    description: 'The management group ID to test and deploy in'
+    required: false
+  environment:
+    description: 'The environment to test and deploy in'
+    required: false
+
+runs:
+  using: "composite"
+  steps:
+  - name: "Setup agent & login"
+    shell: pwsh
+    run: |
+      # Load used functions
+      . "$env:GITHUB_ACTION_PATH/scripts/Set-AgentUp.ps1"
+
+      $setupInputParameters = @{
+        clientID       = $env:ARM_CLIENT_ID
+        clientSecret   = ConvertTo-SecureString -String $env:ARM_CLIENT_SECRET -AsPlainText -Force
+        tenantId       = $env:ARM_TENANT_ID
+        subscriptionId = $env:ARM_SUBSCRIPTION_ID
+      }
+      Set-AgentUp @setupInputParameters
+  - name: "Test in environment '${{ inputs.environment }}'"
+    shell: pwsh
+    run: |
+      # Load used functions
+      . "$env:GITHUB_ACTION_PATH/scripts/Test-ALZDeployment.ps1"
+
+      $functionInput = @{
+        templateFilePath   = '${{ inputs.templateFilePath }}'
+        parameterFilePath  = '${{ inputs.parameterFilePath }}'
+        location           = '${{ inputs.location }}'
+        resourceGroupName  = '${{ inputs.resourceGroupName }}'
+        subscriptionId     = '${{ inputs.subscriptionId }}'
+        managementGroupId  = '${{ inputs.managementGroupId }}'
+      }
+
+      Write-Verbose "Invoke task with" -Verbose
+      $functionInput
+
+      # Test deployment
+      Test-ALZDeployment @functionInput -Verbose
+
+  - name: "Deployment in environment '${{ inputs.environment }}'"
+    shell: pwsh
+    run: |
+      # Load used functions
+      . "$env:GITHUB_ACTION_PATH/scripts/New-ALZDeployment.ps1"
+
+      $functionInput = @{
+        templateFilePath   = '${{ inputs.templateFilePath }}'
+        parameterFilePath  = '${{ inputs.parameterFilePath }}'
+        location           = '${{ inputs.location }}'
+        resourceGroupName  = '${{ inputs.resourceGroupName }}'
+        subscriptionId     = '${{ inputs.subscriptionId }}'
+        managementGroupId  = '${{ inputs.managementGroupId }}'
+      }
+
+      Write-Verbose "Invoke task with" -Verbose
+      $functionInput
+
+      # Invoke deployment
+      New-ALZDeployment @functionInput -Verbose

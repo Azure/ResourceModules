@@ -1,0 +1,16 @@
+{
+    "variables": [
+        {
+            "name": "defaultLocation",
+            "value": "WestEurope"
+        },
+        {
+            "name": "SubscriptionId",
+            "value": "<FillMe>"
+        },
+        {
+            "name": "BuildAgent",
+            "value": "<FillMe>"
+        }
+    ]
+}
