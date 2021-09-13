@@ -1,0 +1,66 @@
+name: 'Validate module'
+description: 'Validate module'
+
+inputs:
+  templateFilePath:
+    description: 'The path to the template file to use for testing & deployment'
+    required: true
+  parameterFilePaths:
+    description: 'The path to the parameter file to use for testing & deployment'
+    required: true
+    default: []
+  modulePath:
+    description: 'The path to the module folder'
+    required: true
+  moduleName:
+    description: 'The name of the module to process'
+    required: true
+
+runs:
+  using: "composite"
+  strategy:
+    matrix:
+      parameterFilePath: ${{ inputs.parameterFilePaths }}
+  steps:
+  - name: "Setup agent & login"
+    shell: pwsh
+    run: |
+      # Load used functions
+      . "$env:GITHUB_ACTION_PATH/scripts/Set-AgentUp.ps1"
+
+      $setupInputParameters = @{
+        clientID       = $env:ARM_CLIENT_ID
+        clientSecret   = ConvertTo-SecureString -String $env:ARM_CLIENT_SECRET -AsPlainText -Force
+        tenantId       = $env:ARM_TENANT_ID
+        subscriptionId = $env:ARM_SUBSCRIPTION_ID
+      }
+      Set-AgentUp @setupInputParameters
+
+    # [Test Deployment] task(s)
+    #--------------------------
+  - name: 'Validate [${{ inputs.moduleName }}]'
+    shell: pwsh
+    run: |
+      # Load used functions
+      . "$env:GITHUB_ACTION_PATH/scripts/Test-TemplateWithParameterFile.ps1"
+
+      # ----------- #
+      # INVOKE TEST #
+      # ----------- #
+      $functionInput = @{
+        componentsBasePath = 'arm'
+        modulePath         = '${{ inputs.modulePath }}'
+        parametersBasePath = '${{ inputs.parametersBasePath }}'
+        parameterFilePath  = '${{ $env:parameterFilePath }}'
+        location           = '${{ inputs.location }}'
+        resourceGroupName  = '${{ inputs.resourceGroupName }}'
+        subscriptionId     = '${{ inputs.subscriptionId }}'
+        managementGroupId  = '${{ inputs.managementGroupId }}'
+      }
+
+      Write-Verbose "Invoke task with" -Verbose
+      $functionInput
+
+      Test-TemplateWithParameterFile @functionInput -Verbose
+    env:
+      parameterFilePath: ${{ matrix.parameterFilePath }}

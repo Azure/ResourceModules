@@ -10,9 +10,62 @@ inputs:
     default: true
 
 jobs:
-  job_validate:
+  #############
+  #   TESTS   #
+  #############
+  # Individual tests
+  # ----------------
+  job_tests_module_individual:
     runs-on: ubuntu-20.04
-    name: "Test module"
+    name: "Run individual module tests"
+    steps:
+    - name: "Checkout"
+      uses: actions/checkout@v2
+      with:
+        fetch-depth: 0
+    - name: "Test module"
+      uses: ./.github/actions/templates/validateModuleIndividual
+      with:
+        modulePath: 'dummyFilePath'
+        moduleName: 'dummyFilePath'
+
+  # Global tests
+  # ------------
+  job_tests_module_global:
+    runs-on: ubuntu-20.04
+    name: "Run global module tests"
+    steps:
+    - name: "Checkout"
+      uses: actions/checkout@v2
+      with:
+        fetch-depth: 0
+    - name: "Test module"
+      uses: ./.github/actions/templates/validateModuleGeneral
+      with:
+        modulePath: 'dummyFilePath'
+        moduleName: 'dummyFilePath'
+
+  # Global API tests
+  # ----------------
+  job_tests_module_global_api:
+    runs-on: ubuntu-20.04
+    name: "Run global API module tests"
+    steps:
+    - name: "Checkout"
+      uses: actions/checkout@v2
+      with:
+        fetch-depth: 0
+    - name: "Test module"
+      uses: ./.github/actions/templates/validateModuleApis
+      with:
+        modulePath: 'dummyFilePath'
+        moduleName: 'dummyFilePath'
+
+  # Validate deployment module tests
+  # --------------------------------
+  job_tests_module_deploy_validate:
+    runs-on: ubuntu-20.04
+    name: "Run deployment validation module tests"
     env:
       ARM_CLIENT_ID: ${{ secrets.ARM_CLIENT_ID }}
       ARM_CLIENT_SECRET: ${{ secrets.ARM_CLIENT_SECRET }}
@@ -31,15 +84,28 @@ jobs:
         variableFileName: 'variables.module' # Don't write .json here
 
     - name: "Test module"
-      uses: ./.github/actions/templates/validate
+      uses: ./.github/actions/templates/validateModuleDeploy
       with:
-        templateFilePath: 'dummyFilePath'
-        parameterFilePath: 'dummyFilePath'
+        templateFilePath: 'arm/Microsoft.Storage/storageAccounts/deploy.json'
+        parametersBasePath: 'arm/Microsoft.Storage/storageAccounts/parameters'
+        parameterFilePaths:
+        - 'noname.parameters.json'
+        - 'parameters.json'
+        modulePath: 'arm/Microsoft.Storage/storageAccounts'
+        moduleName: 'storageAccounts'
+        location: '${{ env.location }}'
+        resourceGroupName: '${{ env.resourceGroupName }}'
+        subscriptionId: '${{ env.subscriptionId }}'
+        managementGroupId: '${{ env.managementGroupId }}'
 
   job_deploy:
     runs-on: ubuntu-20.04
     name: "Deploy module"
-    needs: job_validate
+    needs:
+    - job_tests_module_individual
+    - job_tests_module_global
+    - job_tests_module_global_api
+    - job_tests_module_deploy_validate
     env:
       ARM_CLIENT_ID: ${{ secrets.ARM_CLIENT_ID }}
       ARM_CLIENT_SECRET: ${{ secrets.ARM_CLIENT_SECRET }}

@@ -1,0 +1,54 @@
+name: 'Execute general module API tests'
+description: 'Execute general module API tests (if any)'
+
+inputs:
+  modulePath:
+    description: 'The path to the module folder'
+    required: true
+  moduleName:
+    description: 'The name of the module to process'
+    required: true
+
+runs:
+  using: "composite"
+  steps:
+  # [Module Pester Test] task(s)
+  #-----------------------------
+  - name: "Run [${{ inputs.moduleName }}] API tests via (Pester)"
+    shell: pwsh
+    run: |
+      # --------------------- #
+      # INVOKE PESTER TEST(S) #
+      # --------------------- #
+      Install-Module Pester -Force -ErrorAction Stop -RequiredVersion 5.3.0
+
+      Invoke-Pester -Configuration @{
+        Run        = @{
+          Container = New-PesterContainer -Path 'arm/.global/global.module.tests.ps1' -Data @{
+            moduleFolderPaths = "${{ inputs.modulePath }}"
+          }
+        }
+        Filter     = @{
+          Tag = 'ApiCheck'
+        }
+        TestResult = @{
+          TestSuiteName = 'Global Module Tests'
+          OutputPath    = 'arm/.global/api-testResults.xml'
+          OutputFormat  = 'NUnitXml'
+          Enabled       = $true
+        }
+        Output     = @{
+          Verbosity = 'Detailed'
+        }
+      }
+
+  # - task: PublishTestResults@2
+  #   displayName: Publish Test Results
+  #   inputs:
+  #     testRunTitle: "Global Module Tests"
+  #     testResultsFormat: NUnit
+  #     testResultsFiles: api-testResults.xml
+  #     failTaskOnFailedTests: false
+  #     searchFolder: 'arm/.global'
+  #   continueOnError: false
+  #   condition: succeededOrFailed()
