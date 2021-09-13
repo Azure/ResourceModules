@@ -263,7 +263,6 @@ function Get-ResolvedSubServiceRow {
                     $row['TemplateType'] += Get-TypeColumnString -path $subfolder
                 }
                 'Deploy' {
-
                     if (-not $repositoryName) {
                         throw "If you want to generate a 'Deploy to Azure button' you must provide the 'repositoryName' parameter"
                     }
