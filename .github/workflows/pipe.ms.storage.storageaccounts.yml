@@ -71,6 +71,9 @@ jobs:
       ARM_CLIENT_SECRET: ${{ secrets.ARM_CLIENT_SECRET }}
       ARM_TENANT_ID: ${{ secrets.ARM_TENANT_ID }}
       ARM_SUBSCRIPTION_ID: ${{ secrets.ARM_SUBSCRIPTION_ID }}
+    strategy:
+      matrix:
+        parameterFilePaths: ['noname.parameters.json','parameters.json']
     steps:
     - name: "Checkout"
       uses: actions/checkout@v2
@@ -88,9 +91,7 @@ jobs:
       with:
         templateFilePath: 'arm/Microsoft.Storage/storageAccounts/deploy.json'
         parametersBasePath: 'arm/Microsoft.Storage/storageAccounts/parameters'
-        parameterFilePaths:
-        - 'noname.parameters.json'
-        - 'parameters.json'
+        parameterFilePath: ${{ matrix.parameterFilePaths }}
         modulePath: 'arm/Microsoft.Storage/storageAccounts'
         moduleName: 'storageAccounts'
         location: '${{ env.location }}'

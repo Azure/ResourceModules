@@ -5,10 +5,9 @@ inputs:
   templateFilePath:
     description: 'The path to the template file to use for testing & deployment'
     required: true
-  parameterFilePaths:
+  parameterFilePath:
     description: 'The path to the parameter file to use for testing & deployment'
     required: true
-    default: []
   modulePath:
     description: 'The path to the module folder'
     required: true
@@ -18,9 +17,6 @@ inputs:
 
 runs:
   using: "composite"
-  strategy:
-    matrix:
-      parameterFilePath: ${{ inputs.parameterFilePaths }}
   steps:
   - name: "Setup agent & login"
     shell: pwsh
@@ -51,7 +47,7 @@ runs:
         componentsBasePath = 'arm'
         modulePath         = '${{ inputs.modulePath }}'
         parametersBasePath = '${{ inputs.parametersBasePath }}'
-        parameterFilePath  = '${{ $env:parameterFilePath }}'
+        parameterFilePath  = '${{ inputs.parameterFilePath }}'
         location           = '${{ inputs.location }}'
         resourceGroupName  = '${{ inputs.resourceGroupName }}'
         subscriptionId     = '${{ inputs.subscriptionId }}'
@@ -62,5 +58,3 @@ runs:
       $functionInput
 
       Test-TemplateWithParameterFile @functionInput -Verbose
-    env:
-      parameterFilePath: ${{ matrix.parameterFilePath }}
