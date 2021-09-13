@@ -112,6 +112,9 @@ jobs:
       ARM_CLIENT_SECRET: ${{ secrets.ARM_CLIENT_SECRET }}
       ARM_TENANT_ID: ${{ secrets.ARM_TENANT_ID }}
       ARM_SUBSCRIPTION_ID: ${{ secrets.ARM_SUBSCRIPTION_ID }}
+    strategy:
+      matrix:
+        parameterFilePaths: ['noname.parameters.json','parameters.json']
     steps:
     - name: "Checkout"
       uses: actions/checkout@v2
@@ -128,7 +131,7 @@ jobs:
       uses: ./.github/actions/templates/deploy
       with:
         templateFilePath: 'dummyFilePath'
-        parameterFilePath: 'dummyFilePath'
+        parameterFilePath: '${{ matrix.parameterFilePaths }}'
 
   job_publish:
     runs-on: ubuntu-20.04
