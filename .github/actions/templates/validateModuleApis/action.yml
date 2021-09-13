@@ -42,6 +42,12 @@ runs:
         }
       }
 
+  - name: Publish Test Results
+    uses: EnricoMi/publish-unit-test-result-action@v1
+    if: always()
+    with:
+      files: arm/.global/api-testResults.xml
+
   # - task: PublishTestResults@2
   #   displayName: Publish Test Results
   #   inputs:

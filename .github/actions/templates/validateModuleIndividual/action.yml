@@ -36,6 +36,11 @@ runs:
           Verbosity = 'Detailed'
         }
       }
+  - name: Publish Test Results
+    uses: EnricoMi/publish-unit-test-result-action@v1
+    if: always()
+    with:
+      files: module-testResults.xml
 
   # - task: PublishTestResults@2
   #   displayName: Publish Test Results
