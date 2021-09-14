@@ -12,41 +12,41 @@ inputs:
 runs:
   using: "composite"
   steps:
-  # [Module Pester Test] task(s)
-  #-----------------------------
-  - name: "Run [${{ inputs.moduleName }}] API tests via (Pester)"
-    shell: pwsh
-    run: |
-      # --------------------- #
-      # INVOKE PESTER TEST(S) #
-      # --------------------- #
-      Install-Module Pester -Force -ErrorAction Stop -RequiredVersion 5.3.0
+    # [Module Pester Test] task(s)
+    #-----------------------------
+    - name: "Run [${{ inputs.moduleName }}] API tests via (Pester)"
+      shell: pwsh
+      run: |
+        # --------------------- #
+        # INVOKE PESTER TEST(S) #
+        # --------------------- #
+        Install-Module Pester -Force -ErrorAction Stop -RequiredVersion 5.3.0
 
-      Invoke-Pester -Configuration @{
-        Run        = @{
-          Container = New-PesterContainer -Path 'arm/.global/global.module.tests.ps1' -Data @{
-            moduleFolderPaths = "${{ inputs.modulePath }}"
+        Invoke-Pester -Configuration @{
+          Run        = @{
+            Container = New-PesterContainer -Path 'arm/.global/global.module.tests.ps1' -Data @{
+              moduleFolderPaths = "${{ inputs.modulePath }}"
+            }
+          }
+          Filter     = @{
+            Tag = 'ApiCheck'
+          }
+          TestResult = @{
+            TestSuiteName = 'Global Module Tests'
+            OutputPath    = 'arm/.global/api-testResults.xml'
+            OutputFormat  = 'NUnitXml'
+            Enabled       = $true
+          }
+          Output     = @{
+            Verbosity = 'Detailed'
           }
         }
-        Filter     = @{
-          Tag = 'ApiCheck'
-        }
-        TestResult = @{
-          TestSuiteName = 'Global Module Tests'
-          OutputPath    = 'arm/.global/api-testResults.xml'
-          OutputFormat  = 'NUnitXml'
-          Enabled       = $true
-        }
-        Output     = @{
-          Verbosity = 'Detailed'
-        }
-      }
 
-  - name: Publish Test Results
-    if: always()
-    uses: EnricoMi/publish-unit-test-result-action@v1
-    with:
-      files: arm/.global/api-testResults.xml
+    - name: Publish Test Results
+      uses: EnricoMi/publish-unit-test-result-action@v1
+      if: always()
+      with:
+        files: arm/.global/api-testResults.xml
 
   # - task: PublishTestResults@2
   #   displayName: Publish Test Results

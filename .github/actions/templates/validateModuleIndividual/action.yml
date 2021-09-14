@@ -12,35 +12,35 @@ inputs:
 runs:
   using: "composite"
   steps:
-  # [Module Pester Test] task(s)
-  #-----------------------------
-  - name: "Run [${{ inputs.moduleName }}] tests via (Pester)"
-    shell: pwsh
-    run: |
-      # --------------------- #
-      # INVOKE PESTER TEST(S) #
-      # --------------------- #
-      Install-Module Pester -Force -ErrorAction Stop -RequiredVersion 5.3.0
+    # [Module Pester Test] task(s)
+    #-----------------------------
+    - name: "Run [${{ inputs.moduleName }}] tests via (Pester)"
+      shell: pwsh
+      run: |
+        # --------------------- #
+        # INVOKE PESTER TEST(S) #
+        # --------------------- #
+        Install-Module Pester -Force -ErrorAction Stop -RequiredVersion 5.3.0
 
-      Invoke-Pester -Configuration @{
-        Run        = @{
-          Path = "${{ inputs.modulePath }}/Tests/*.tests.ps1"
+        Invoke-Pester -Configuration @{
+          Run        = @{
+            Path = "${{ inputs.modulePath }}/Tests/*.tests.ps1"
+          }
+          TestResult = @{
+            TestSuiteName = 'Module Tests'
+            OutputPath    = 'module-testResults.xml'
+            OutputFormat  = 'NUnitXml'
+            Enabled       = $true
+          }
+          Output     = @{
+            Verbosity = 'Detailed'
+          }
         }
-        TestResult = @{
-          TestSuiteName = 'Module Tests'
-          OutputPath    = 'module-testResults.xml'
-          OutputFormat  = 'NUnitXml'
-          Enabled       = $true
-        }
-        Output     = @{
-          Verbosity = 'Detailed'
-        }
-      }
-  - name: Publish Test Results
-    if: always()
-    uses: EnricoMi/publish-unit-test-result-action@v1
-    with:
-      files: module-testResults.xml
+    - name: Publish Test Results
+      uses: EnricoMi/publish-unit-test-result-action@v1
+      if: always()
+      with:
+        files: module-testResults.xml
 
   # - task: PublishTestResults@2
   #   displayName: Publish Test Results
