@@ -99,7 +99,10 @@ jobs:
         subscriptionId: '${{ env.subscriptionId }}'
         managementGroupId: '${{ env.managementGroupId }}'
 
-  job_deploy:
+  ##############
+  #   DEPLOY   #
+  ##############
+  job_deploy_module:
     runs-on: ubuntu-20.04
     name: "Deploy module"
     needs:
@@ -133,10 +136,13 @@ jobs:
         templateFilePath: 'dummyFilePath'
         parameterFilePath: '${{ matrix.parameterFilePaths }}'
 
-  job_publish:
+  ###############
+  #   PUBLISH   #
+  ###############
+  job_publish_module:
     runs-on: ubuntu-20.04
     name: "Publish module"
-    needs: job_deploy
+    needs: job_deploy_module
     env:
       ARM_CLIENT_ID: ${{ secrets.ARM_CLIENT_ID }}
       ARM_CLIENT_SECRET: ${{ secrets.ARM_CLIENT_SECRET }}
@@ -160,10 +166,13 @@ jobs:
         templateFilePath: 'dummyFilePath'
         parameterFilePath: 'dummyFilePath'
 
-  job_remove:
+  ##############
+  #   REMOVE   #
+  ##############
+  job_remove_module:
     runs-on: ubuntu-20.04
     name: "Remove module"
-    needs: job_deploy
+    needs: job_deploy_module
     if: ${{ inputs.isRemoveModule == 'true' }}
     env:
       ARM_CLIENT_ID: ${{ secrets.ARM_CLIENT_ID }}
