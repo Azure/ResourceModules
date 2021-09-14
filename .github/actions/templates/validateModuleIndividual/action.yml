@@ -24,7 +24,7 @@ runs:
 
         Invoke-Pester -Configuration @{
           Run        = @{
-            Path = "${{ inputs.modulePath }}/Tests/*.tests.ps1"
+            Path = "${{ inputs.modulePath }}/tests/*.tests.ps1"
           }
           TestResult = @{
             TestSuiteName = 'Module Tests'

@@ -141,12 +141,12 @@ Describe "File/folder tests" -Tag Modules {
                 $FilepathTestJsonFolder += Get-ChildItem -Path $folderPath
             }
             else {
-                $FilepathTestJsonFolder += Get-ChildItem -Path (Join-Path -Path $folderPath 'Tests')
+                $FilepathTestJsonFolder += Get-ChildItem -Path (Join-Path -Path $folderPath 'tests')
             }
 
         }
         foreach ($File in $FilepathTestJsonFolder) {
-            if ($File.Directory.Name -eq "Tests") {
+            if ($File.Directory.Name -eq "tests") {
                 $directoryPath = $File.DirectoryName
                 $modulePath = Split-Path -Parent -Path $directoryPath
                 $moduleName = Split-Path $modulePath -Leaf
@@ -158,7 +158,7 @@ Describe "File/folder tests" -Tag Modules {
                 }
             }
             else {
-                if ($File.Name -eq "Tests") {
+                if ($File.Name -eq "tests") {
                     $missingModulePath = (Split-Path -Parent -Path $File.FullName)
                     $missingModuleName = Split-Path $missingModulePath -Leaf
                     $testFolderTestCases += @{
