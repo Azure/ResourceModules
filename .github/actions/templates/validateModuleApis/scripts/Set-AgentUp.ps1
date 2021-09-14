@@ -87,7 +87,8 @@ function Set-AgentUp {
     ##   Install PowerShell Modules   ##
     ####################################
     $Modules = @(
-        @{ Name = 'Az.Accounts' }
+        @{ Name = 'Az.Accounts' },
+        @{ Name = 'Az.Resources' }
     )
     $count = 1
     Write-Verbose ("Try installing:") -Verbose
