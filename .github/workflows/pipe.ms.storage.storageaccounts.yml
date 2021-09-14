@@ -5,12 +5,11 @@ on:
     branches:
       - users/alsehr/testPipelines
   workflow_dispatch:
-
-inputs:
-  isRemoveModule:
-    description: 'Remove deployed module'
-    required: false
-    default: true
+    inputs:
+      isRemoveModule:
+        description: 'Remove deployed module'
+        required: false
+        default: true
 
 jobs:
   #############
