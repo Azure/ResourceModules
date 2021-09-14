@@ -29,6 +29,7 @@ Describe "File/folder tests" -Tag Modules {
             }
         }
 
+        # TODO: Still valid for new module repo?
         # It "[<moduleFolderName>] Module name should be Pascal cased" -TestCases $moduleFolderTestCases {
         #     param( [string] $moduleFolderName )
         #     $moduleFolderName | Should -MatchExactly "^[A-Z]"
@@ -218,24 +219,25 @@ Describe "Readme tests" -Tag Readme {
             (Get-Content $fileContent) | Should -Not -Be $null
         }
 
-        It "[<moduleFolderName>] Heading1 title should be identical with the module's folder name" -TestCases $readmeFolderTestCases {
-            param(
-                $moduleFolderName,
-                $moduleFolderPath,
-                $fileContent
-            )
-            $TemplateContentHeading = Get-Content ($fileContent) -ErrorAction SilentlyContinue
-            $ReadmeHTML = ($TemplateContentHeading  | ConvertFrom-Markdown -ErrorAction SilentlyContinue).Html
-            $HeaderNames = @()
-            foreach ($H in $ReadmeHTML) {
-                if ($H.Contains("<h")) {
-                    $StartingIndex = $H.IndexOf(">") + 1
-                    $EndIndex = $H.LastIndexof("<")
-                    $HeaderNames += $H.Substring($StartingIndex, $EndIndex - $StartingIndex)
-                }
-            }
-            ($moduleFolderPaths -notcontains (join-path -path $Parent "\"$HeaderNames[0].Replace(" ", ""))) | Should -Be $false
-        }
+        # TODO: Still valid for new module repo?
+        # It "[<moduleFolderName>] Heading1 title should be identical with the module's folder name" -TestCases $readmeFolderTestCases {
+        #     param(
+        #         $moduleFolderName,
+        #         $moduleFolderPath,
+        #         $fileContent
+        #     )
+        #     $TemplateContentHeading = Get-Content ($fileContent) -ErrorAction SilentlyContinue
+        #     $ReadmeHTML = ($TemplateContentHeading  | ConvertFrom-Markdown -ErrorAction SilentlyContinue).Html
+        #     $HeaderNames = @()
+        #     foreach ($H in $ReadmeHTML) {
+        #         if ($H.Contains("<h")) {
+        #             $StartingIndex = $H.IndexOf(">") + 1
+        #             $EndIndex = $H.LastIndexof("<")
+        #             $HeaderNames += $H.Substring($StartingIndex, $EndIndex - $StartingIndex)
+        #         }
+        #     }
+        #     ($moduleFolderPaths -notcontains (join-path -path $Parent "\"$HeaderNames[0].Replace(" ", ""))) | Should -Be $false
+        # }
 
         It "[<moduleFolderName>] Readme.md file should contain the these Heading2 titles in order: Resource Types, parameters, Outputs, Considerations, Additional resources" -TestCases $readmeFolderTestCases {
             param(

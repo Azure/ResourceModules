@@ -41,6 +41,13 @@ jobs:
       uses: actions/checkout@v2
       with:
         fetch-depth: 0
+
+    - name: Set environment variables
+      uses: deep-mm/set-variables@v1.0
+      with:
+        # Name of variable file
+        variableFileName: 'variables.module' # Don't write .json here
+
     - name: "Test module"
       uses: ./.github/actions/templates/validateModuleGeneral
       with:
@@ -57,6 +64,13 @@ jobs:
       uses: actions/checkout@v2
       with:
         fetch-depth: 0
+
+    - name: Set environment variables
+      uses: deep-mm/set-variables@v1.0
+      with:
+        # Name of variable file
+        variableFileName: 'variables.module' # Don't write .json here
+
     - name: "Test module"
       uses: ./.github/actions/templates/validateModuleApis
       with:

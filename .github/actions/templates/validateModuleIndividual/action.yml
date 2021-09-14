@@ -29,7 +29,7 @@ runs:
           TestResult = @{
             TestSuiteName = 'Module Tests'
             OutputPath    = 'module-testResults.xml'
-            OutputFormat  = 'NUnitXml'
+            OutputFormat  = 'JUnitXml'
             Enabled       = $true
           }
           Output     = @{
