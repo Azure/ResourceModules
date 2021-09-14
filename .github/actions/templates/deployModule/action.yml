@@ -58,11 +58,11 @@ runs:
         resourceGroupName  = '${{ inputs.resourceGroupName }}'
         subscriptionId     = '${{ inputs.subscriptionId }}'
         managementGroupId  = '${{ inputs.managementGroupId }}'
-        removeDeployment  = '${{ inputs.removeDeployment }}'
+        removeDeployment  = [System.Convert]::ToBoolean('${{ inputs.removeDeployment }}')
       }
 
       Write-Verbose "Invoke task with" -Verbose
-      $functionInput
+      $functionInput | Format-Table -AutoSize
 
       # Invoke deployment
       New-ModuleDeployment @functionInput -Verbose
