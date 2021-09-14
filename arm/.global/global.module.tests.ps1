@@ -131,78 +131,12 @@ Describe "File/folder tests" -Tag Modules {
 
     }
 
-    Context "Pipeline folder" {
-
-        $pipelineFolderTestCases = [System.Collections.ArrayList] @()
-        $FilepathPipelineJsonFolder = @()
-        foreach ($folderPath in $moduleFolderPaths) {
-            $PipelineFilecount = Get-ChildItem -Path (Join-Path -Path $folderPath \Pipeline\)
-            if ($PipelineFilecount.count -eq 0) {
-                $FilepathPipelineJsonFolder += Get-ChildItem -Path $folderPath
-            }
-            else {
-                $FilepathPipelineJsonFolder += Get-ChildItem -Path (Join-Path -Path $folderPath 'Pipeline')
-            }
-
-        }
-        foreach ($File in $FilepathPipelineJsonFolder) {
-            if ($File.Directory.Name -eq "Pipeline") {
-                $directoryPath = $File.DirectoryName
-                $modulePath = Split-Path -Parent -Path $directoryPath
-                $moduleName = Split-Path $modulePath -Leaf
-                $pipelineFolderTestCases += @{
-                    moduleFolderName = $moduleName
-                    moduleFolderPath = $modulePath
-                    pipelineFileName = $File.Name
-                    fileContent      = $File.FullName
-                }
-            }
-            else {
-                if ($File.Name -eq "Pipeline") {
-                    $missingModulePath = (Split-Path -Parent -Path $File.FullName)
-                    $missingModuleName = Split-Path $missingModulePath -Leaf
-                    $pipelineFolderTestCases += @{
-                        moduleFolderName = $missingModuleName
-                        moduleFolderPath = $missingModulePath
-                        pipelineFileName = "MissingFile"
-                        fileContent      = $null
-                    }
-                }
-            }
-        }
-
-        It "[<moduleFolderName>] Pipeline folder should contain one or more *.yml files (pipeline files)" -TestCases $pipelineFolderTestCases {
-            param(
-                $moduleFolderName,
-                $moduleFolderPath,
-                $pipelineFileName,
-                $fileContent
-            )
-            ($pipelineFileName -like "*.yml" -or $pipelineFileName -like "THIS_IS_A_UNIQUE_PIPELINE.md")  | Should -Be $true
-        }
-
-        It "[<moduleFolderName>] Pipeline folder should contain a THIS_IS_A_UNIQUE_PIPELINE.md marker, if it contains more than one *.yml files" -TestCases $pipelineFolderTestCases {
-            param(
-                $moduleFolderName,
-                $moduleFolderPath,
-                $pipelineFileName,
-                $fileContent
-            )
-            $Mdfile = (Get-ChildItem -Path (Join-Path -Path $moduleFolderPath \Pipeline\) -Filter "THIS_IS_A_UNIQUE_PIPELINE.md").count
-            $Filepathpipeline = (Get-ChildItem -Path (Join-Path -Path $moduleFolderPath \Pipeline\) -Filter "*.yml").count
-            if ($Filepathpipeline -gt 1) {
-                ($Mdfile -eq 1) | Should -Be $true
-            }
-        }
-
-    }
-
     Context "Tests folder" {
 
         $testFolderTestCases = [System.Collections.ArrayList] @()
         $FilepathTestJsonFolder = @()
         foreach ($folderPath in $moduleFolderPaths) {
-            $TestFilecount = Get-ChildItem -Path (Join-Path -Path $folderPath \Tests\)
+            $TestFilecount = Get-ChildItem -Path (Join-Path -Path $folderPath \tests\)
             if ($TestFilecount.count -eq 0) {
                 $FilepathTestJsonFolder += Get-ChildItem -Path $folderPath
             }

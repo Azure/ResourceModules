@@ -16,10 +16,5 @@
             "name": "managementGroupId",
             "value": "alsehreslz-platform"
         }
-        //,
-        // {
-        //     "name": "BuildAgent",
-        //     "value": "<FillMe>"
-        // }
     ]
 }
