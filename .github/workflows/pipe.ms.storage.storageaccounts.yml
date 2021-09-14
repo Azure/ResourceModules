@@ -36,6 +36,11 @@ jobs:
   job_tests_module_global:
     runs-on: ubuntu-20.04
     name: "Run global module tests"
+    env:
+      ARM_CLIENT_ID: ${{ secrets.ARM_CLIENT_ID }}
+      ARM_CLIENT_SECRET: ${{ secrets.ARM_CLIENT_SECRET }}
+      ARM_TENANT_ID: ${{ secrets.ARM_TENANT_ID }}
+      ARM_SUBSCRIPTION_ID: ${{ secrets.ARM_SUBSCRIPTION_ID }}
     steps:
     - name: "Checkout"
       uses: actions/checkout@v2
@@ -59,6 +64,11 @@ jobs:
   job_tests_module_global_api:
     runs-on: ubuntu-20.04
     name: "Run global API module tests"
+    env:
+      ARM_CLIENT_ID: ${{ secrets.ARM_CLIENT_ID }}
+      ARM_CLIENT_SECRET: ${{ secrets.ARM_CLIENT_SECRET }}
+      ARM_TENANT_ID: ${{ secrets.ARM_TENANT_ID }}
+      ARM_SUBSCRIPTION_ID: ${{ secrets.ARM_SUBSCRIPTION_ID }}
     steps:
     - name: "Checkout"
       uses: actions/checkout@v2
