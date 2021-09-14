@@ -28,8 +28,8 @@ jobs:
     - name: "Test module"
       uses: ./.github/actions/templates/validateModuleIndividual
       with:
-        modulePath: 'dummyFilePath'
-        moduleName: 'dummyFilePath'
+        modulePath: 'arm/Microsoft.Storage/storageAccounts'
+        moduleName: 'storageAccounts'
 
   # Global tests
   # ------------
@@ -44,8 +44,8 @@ jobs:
     - name: "Test module"
       uses: ./.github/actions/templates/validateModuleGeneral
       with:
-        modulePath: 'dummyFilePath'
-        moduleName: 'dummyFilePath'
+        modulePath: 'arm/Microsoft.Storage/storageAccounts'
+        moduleName: 'storageAccounts'
 
   # Global API tests
   # ----------------
@@ -60,8 +60,8 @@ jobs:
     - name: "Test module"
       uses: ./.github/actions/templates/validateModuleApis
       with:
-        modulePath: 'dummyFilePath'
-        moduleName: 'dummyFilePath'
+        modulePath: 'arm/Microsoft.Storage/storageAccounts'
+        moduleName: 'storageAccounts'
 
   # Validate deployment module tests
   # --------------------------------
