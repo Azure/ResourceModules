@@ -37,8 +37,8 @@ runs:
         }
       }
   - name: Publish Test Results
-    uses: EnricoMi/publish-unit-test-result-action@v1
     if: always()
+    uses: EnricoMi/publish-unit-test-result-action@v1
     with:
       files: module-testResults.xml
 
