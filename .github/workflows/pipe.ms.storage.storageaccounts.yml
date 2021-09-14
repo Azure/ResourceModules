@@ -6,7 +6,7 @@ on:
       - users/alsehr/testPipelines
   workflow_dispatch:
     inputs:
-      isRemoveModule:
+      removeDeployment:
         description: 'Remove deployed module'
         required: false
         default: true
@@ -156,12 +156,14 @@ jobs:
     - name: "Deploy module"
       uses: ./.github/actions/templates/deployModule
       with:
+        moduleName: storageAccounts
         templateFilePath: 'arm/Microsoft.Storage/storageAccounts/deploy.json'
         parameterFilePath: 'arm/Microsoft.Storage/storageAccounts/parameters/${{ matrix.parameterFilePaths }}'
         location: '${{ env.defaultLocation }}'
         resourceGroupName: '${{ env.resourceGroupName }}'
         subscriptionId: '${{ env.subscriptionId }}'
         managementGroupId: '${{ env.managementGroupId }}'
+        removeDeployment: '${{ inputs.removeDeployment }}'
 
   ###############
   #   PUBLISH   #
