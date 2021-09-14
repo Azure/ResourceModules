@@ -25,7 +25,7 @@ inputs:
     required: false
   removeDeployment:
     description: 'Set "true" to set module up for removal'
-    default: false
+    default: 'true' 
     required: false
 
 runs:

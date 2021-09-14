@@ -9,7 +9,7 @@ on:
       removeDeployment:
         description: 'Remove deployed module'
         required: false
-        default: true
+        default: 'true' 
 
 jobs:
   # #############
