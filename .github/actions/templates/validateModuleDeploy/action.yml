@@ -50,7 +50,7 @@ runs:
       # INVOKE TEST #
       # ----------- #
       $functionInput = @{
-        templateFilePath   = '${{ inputs.templateFilePath }}''
+        templateFilePath   = '${{ inputs.templateFilePath }}'
         parameterFilePath  = '${{ inputs.parameterFilePath }}'
         location           = '${{ inputs.location }}'
         resourceGroupName  = '${{ inputs.resourceGroupName }}'
