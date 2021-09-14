@@ -6,14 +6,11 @@ Run a template validation using a given parameter file
 Run a template validation using a given parameter file
 Works on a resource group, subscription, managementgroup and tenant level
 
-.PARAMETER componentsBasePath
-Mandatory. The path to the component/module root
-
 .PARAMETER parametersBasePath
 Mandatory. The path to the root of the parameters folder to test with
 
-.PARAMETER modulePath
-Mandatory. Path to the module from root.
+.PARAMETER templateFilePath
+Mandatory. Path to the template file from root.
 
 .PARAMETER parameterFilePath
 Mandatory. Path to the parameter file from root.
@@ -31,12 +28,12 @@ Optional. Id of the subscription to deploy into. Mandatory if deploying into a s
 Optional. Name of the management group to deploy into. Mandatory if deploying into a management group (management group level)
 
 .EXAMPLE
-Test-TemplateWithParameterFile -componentsBasePath "$(System.DefaultWorkingDirectory)" -parametersBasePath "$(Build.Repository.LocalPath)" -modulePath 'Modules/ARM/KeyVault' -parameterFilePath 'Modules/ARM/KeyVault/Parameters/parameters.json' -location 'WestEurope' -resourceGroupName 'aLegendaryRg'
+Test-TemplateWithParameterFile templateFilePath 'ARM/KeyVault/deploy.json' -parameterFilePath 'ARM/KeyVault/Parameters/parameters.json' -location 'WestEurope' -resourceGroupName 'aLegendaryRg'
 
 Test the deploy.json of the KeyVault module with the parameter file 'parameters.json' using the resource group 'aLegendaryRg' in location 'WestEurope'
 
 .EXAMPLE
-Test-TemplateWithParameterFile -componentsBasePath "$(System.DefaultWorkingDirectory)" -parametersBasePath "$(Build.Repository.LocalPath)" -modulePath 'Modules/ARM/ResourceGroup' -parameterFilePath 'Modules/ARM/ResourceGroup/Parameters/parameters.json' -location 'WestEurope'
+Test-TemplateWithParameterFile templateFilePath 'ARM/ResourceGroup/deploy.json' -parameterFilePath 'ARM/ResourceGroup/Parameters/parameters.json' -location 'WestEurope'
 
 Test the deploy.json of the ResourceGroup module with the parameter file 'parameters.json' in location 'WestEurope'
 #>
@@ -45,13 +42,7 @@ function Test-TemplateWithParameterFile {
     [CmdletBinding(SupportsShouldProcess)]
     param (
         [Parameter(Mandatory)]
-        [string] $componentsBasePath,
-
-        [Parameter(Mandatory)]
-        [string] $parametersBasePath,
-
-        [Parameter(Mandatory)]
-        [string] $modulePath,
+        [string] $templateFilePath,
 
         [Parameter(Mandatory)]
         [string] $parameterFilePath,
@@ -74,10 +65,9 @@ function Test-TemplateWithParameterFile {
     }
 
     process {
-        $templateFilePath = "$componentsBasePath/$modulePath/deploy.json"
         $DeploymentInputs = @{
             TemplateFile          = $templateFilePath
-            TemplateParameterFile = "$parametersBasePath/$parameterFilePath"
+            TemplateParameterFile = $parameterFilePath
             Verbose               = $true
             OutVariable           = 'ValidationErrors'
         }

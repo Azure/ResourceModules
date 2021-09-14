@@ -505,7 +505,7 @@
         // storage account
         {
             "type": "Microsoft.Storage/storageAccounts",
-            "apiVersion": "2019-06-01",
+            "apiVersion": "2021-06-01",
             "name": "[variables('storageAccountName')]",
             "location": "[parameters('location')]",
             "kind": "[parameters('storageAccountKind')]",
@@ -717,7 +717,7 @@
         {
 
             "type": "Microsoft.Storage/storageAccounts/blobServices",
-            "apiVersion": "2019-06-01",
+            "apiVersion": "2021-06-01",
             "name": "[concat(variables('storageAccountName'), '/default')]",
             "condition": "[not(empty(parameters('blobContainers')))]",
             "dependsOn": [
@@ -734,7 +734,7 @@
         // storage container
         {
             "type": "Microsoft.Storage/storageAccounts/blobServices/containers",
-            "apiVersion": "2019-06-01",
+            "apiVersion": "2021-06-01",
             "name": "[if(empty(parameters('blobContainers')), concat(variables('storageAccountName'), '/', 'default/dummy'), concat(variables('storageAccountName'), '/default/', parameters('blobContainers')[copyIndex()].name))]",
             "condition": "[not(empty(parameters('blobContainers')))]",
             "dependsOn": [
@@ -750,7 +750,7 @@
             "resources": [
                 {
                     "type": "immutabilityPolicies",
-                    "apiVersion": "2019-06-01",
+                    "apiVersion": "2021-06-01",
                     "name": "default",
                     "condition": "[and(not(empty(parameters('blobContainers'))),contains(parameters('blobContainers')[copyIndex('containerLoop')],'enableWORM'),parameters('blobContainers')[copyIndex('containerLoop')].enableWORM)]",
                     "dependsOn": [
@@ -766,7 +766,7 @@
         // lifecycle policy
         {
             "type": "Microsoft.Storage/storageAccounts/managementPolicies",
-            "apiVersion": "2019-06-01",
+            "apiVersion": "2021-06-01",
             "name": "[concat(variables('storageAccountName'), '/default')]",
             "condition": "[parameters('enableArchiveAndDelete')]",
             "dependsOn": [
@@ -923,7 +923,7 @@
         // file share
         {
             "type": "Microsoft.Storage/storageAccounts/fileServices/shares",
-            "apiVersion": "2019-06-01",
+            "apiVersion": "2021-06-01",
             "name": "[if(empty(parameters('fileShares')), concat(variables('storageAccountName'), '/', 'default/dummy'), concat(variables('storageAccountName'), '/default/', parameters('fileShares')[copyIndex()].name))]",
             "condition": "[not(empty(parameters('fileShares')))]",
             "dependsOn": [
@@ -1054,7 +1054,7 @@
         // queue
         {
             "type": "Microsoft.Storage/storageAccounts/queueServices/queues",
-            "apiVersion": "2019-06-01",
+            "apiVersion": "2021-06-01",
             "name": "[if(empty(parameters('queues')), concat(variables('storageAccountName'), '/', 'default/dummy'), concat(variables('storageAccountName'), '/default/', parameters('queues')[copyIndex()].name))]",
             "condition": "[not(empty(parameters('queues')))]",
             "dependsOn": [
@@ -1185,7 +1185,7 @@
         // table
         {
             "type": "Microsoft.Storage/storageAccounts/tableServices/tables",
-            "apiVersion": "2019-06-01",
+            "apiVersion": "2021-06-01",
             "name": "[if(empty(parameters('tables')), concat(variables('storageAccountName'), '/default/dummy'), concat(variables('storageAccountName'), '/default/', parameters('tables')[copyIndex()]))]",
             "dependsOn": [
                 "[concat('Microsoft.Storage/storageAccounts/', variables('storageAccountName'))]"
@@ -1278,7 +1278,7 @@
         },
         "assignedIdentityID": {
             "type": "string",
-            "value":"[if(contains(parameters('managedServiceIdentity'),'SystemAssigned'),reference(resourceId('Microsoft.Storage/storageAccounts', parameters('storageAccountName')), '2019-06-01', 'full').identity.principalId,'')]",
+            "value":"[if(contains(parameters('managedServiceIdentity'),'SystemAssigned'),reference(resourceId('Microsoft.Storage/storageAccounts', parameters('storageAccountName')), '2021-06-01', 'full').identity.principalId,'')]",
             "metadata": {
                 "description": "User id of the created system assigned identity"
             }

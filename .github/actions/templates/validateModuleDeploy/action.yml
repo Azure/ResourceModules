@@ -8,12 +8,18 @@ inputs:
   parameterFilePath:
     description: 'The path to the parameter file to use for testing & deployment'
     required: true
-  modulePath:
-    description: 'The path to the module folder'
+  location:
+    description: 'The location to use for deployment'
     required: true
-  moduleName:
-    description: 'The name of the module to process'
-    required: true
+  resourceGroupName:
+    description: 'The resource group to deploy to'
+    required: false
+  subscriptionId:
+    description: 'The subscriptionId to deploy to'
+    required: false
+  managementGroupId:
+    description: 'The managementGroupId to deploy to'
+    required: false
 
 runs:
   using: "composite"
@@ -34,7 +40,7 @@ runs:
 
     # [Test Deployment] task(s)
     #--------------------------
-  - name: 'Validate [${{ inputs.moduleName }}]'
+  - name: 'Validate [${{ inputs.templateFilePath }}]'
     shell: pwsh
     run: |
       # Load used functions
@@ -44,9 +50,7 @@ runs:
       # INVOKE TEST #
       # ----------- #
       $functionInput = @{
-        componentsBasePath = 'arm'
-        modulePath         = '${{ inputs.modulePath }}'
-        parametersBasePath = '${{ inputs.parametersBasePath }}'
+        templateFilePath   = '${{ inputs.templateFilePath }}''
         parameterFilePath  = '${{ inputs.parameterFilePath }}'
         location           = '${{ inputs.location }}'
         resourceGroupName  = '${{ inputs.resourceGroupName }}'

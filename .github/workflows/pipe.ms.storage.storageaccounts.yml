@@ -116,10 +116,7 @@ jobs:
       uses: ./.github/actions/templates/validateModuleDeploy
       with:
         templateFilePath: 'arm/Microsoft.Storage/storageAccounts/deploy.json'
-        parametersBasePath: 'arm/Microsoft.Storage/storageAccounts/parameters'
-        parameterFilePath: ${{ matrix.parameterFilePaths }}
-        modulePath: 'arm/Microsoft.Storage/storageAccounts'
-        moduleName: 'storageAccounts'
+        parameterFilePath: 'arm/Microsoft.Storage/storageAccounts/parameters/${{ matrix.parameterFilePaths }}'
         location: '${{ env.defaultLocation }}'
         resourceGroupName: '${{ env.resourceGroupName }}'
         subscriptionId: '${{ env.subscriptionId }}'
