@@ -3,21 +3,68 @@ description: 'Publish module'
 
 inputs:
   templateFilePath:
-    description: 'The path to the template file to use for testing & deployment'
+    description: 'The path to the template file to publish'
     required: true
-  parameterFilePath:
-    description: 'The path to the parameter file to use for testing & deployment'
-    required: true
+  componentTemplateSpecRGName:
+    description: 'Required to publish to template spec. ResourceGroup of the template spec to publish to'
+    required: false
+  componentTemplateSpecRGLocation:
+    description: 'Required to publish to template spec. Location of the template spec resource group'
+    required: false
+  componentTemplateSpecName:
+    description: 'Required to publish to template spec. Name of the template spec to publish to'
+    required: false
+  componentTemplateSpecDescription:
+    description: 'Required to publish to template spec. Description of the template spec to publish to'
+    required: false
+  publishToTemplateSpec:
+    description: 'Flag to indicate whether or not to publish to template specs'
+    default: 'false'
+    required: false
+  versioningOption:
+    description: '...'
+    default: '...'
+    required: false
+  customVersion:
+    description: '...'
+    default: '...'
+    required: false
 
 runs:
   using: "composite"
   steps:
-  - name: "Publish module"
-    shell: pwsh
-    run: |
-      # Load used functions
-      . "$env:GITHUB_ACTION_PATH/scripts/<ScriptName>.ps1"
+    - name: "Setup agent & login"
+      shell: pwsh
+      run: |
+        # Load used functions
+        . "$env:GITHUB_ACTION_PATH/scripts/Set-AgentUp.ps1"
 
-      $setupInputParameters = @{
-      }
-      <FunctionName> @setupInputParameters
+        $setupInputParameters = @{
+          clientID       = $env:ARM_CLIENT_ID
+          clientSecret   = ConvertTo-SecureString -String $env:ARM_CLIENT_SECRET -AsPlainText -Force
+          tenantId       = $env:ARM_TENANT_ID
+          subscriptionId = $env:ARM_SUBSCRIPTION_ID
+        }
+        Set-AgentUp @setupInputParameters
+
+    - name: "Publish module to template spec"
+      shell: pwsh
+      if: ${{ inputs.publishToTemplateSpec == 'true' }}
+      run: |
+        # Load used functions
+        . "$env:GITHUB_ACTION_PATH/scripts/Publish-ModuleToTemplateSpec.ps1"
+
+        $functionInput = @{
+          templateFilePath                      = '${{ inputs.templateFilePath }}'
+          componentTemplateSpecName             = '${{ inputs.componentTemplateSpecName }}'
+          componentTemplateSpecRGName           = '${{ inputs.componentTemplateSpecRGName }}'
+          componentTemplateSpecRGLocation       = '${{ inputs.componentTemplateSpecRGLocation }}'
+          componentTemplateSpecDescription      = '${{ inputs.componentTemplateSpecDescription }}'
+          customVersion                         = '${{ inputs.customVersion }}'
+          versioningOption                      = '${{ inputs.versioningOption }}'
+        }
+
+        Write-Verbose "Invoke task with" -Verbose
+        $functionInput
+
+        Publish-ModuleToTemplateSpec @functionInput -Verbose

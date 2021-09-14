@@ -122,48 +122,48 @@ jobs:
   #       subscriptionId: '${{ env.subscriptionId }}'
   #       managementGroupId: '${{ env.managementGroupId }}'
 
-  ##############
-  #   DEPLOY   #
-  ##############
-  job_deploy_module:
-    runs-on: ubuntu-20.04
-    name: "Deploy module"
-    # needs:
-    # - job_tests_module_individual
-    # - job_tests_module_global
-    # - job_tests_module_global_api
-    # - job_tests_module_deploy_validate
-    env:
-      ARM_CLIENT_ID: ${{ secrets.ARM_CLIENT_ID }}
-      ARM_CLIENT_SECRET: ${{ secrets.ARM_CLIENT_SECRET }}
-      ARM_TENANT_ID: ${{ secrets.ARM_TENANT_ID }}
-      ARM_SUBSCRIPTION_ID: ${{ secrets.ARM_SUBSCRIPTION_ID }}
-    strategy:
-      matrix:
-        parameterFilePaths: ['noname.parameters.json','parameters.json']
-    steps:
-    - name: "Checkout"
-      uses: actions/checkout@v2
-      with:
-        fetch-depth: 0
+  # ##############
+  # #   DEPLOY   #
+  # ##############
+  # job_deploy_module:
+  #   runs-on: ubuntu-20.04
+  #   name: "Deploy module"
+  #   # needs:
+  #   # - job_tests_module_individual
+  #   # - job_tests_module_global
+  #   # - job_tests_module_global_api
+  #   # - job_tests_module_deploy_validate
+  #   env:
+  #     ARM_CLIENT_ID: ${{ secrets.ARM_CLIENT_ID }}
+  #     ARM_CLIENT_SECRET: ${{ secrets.ARM_CLIENT_SECRET }}
+  #     ARM_TENANT_ID: ${{ secrets.ARM_TENANT_ID }}
+  #     ARM_SUBSCRIPTION_ID: ${{ secrets.ARM_SUBSCRIPTION_ID }}
+  #   strategy:
+  #     matrix:
+  #       parameterFilePaths: ['noname.parameters.json','parameters.json']
+  #   steps:
+  #   - name: "Checkout"
+  #     uses: actions/checkout@v2
+  #     with:
+  #       fetch-depth: 0
 
-    - name: Set environment variables
-      uses: deep-mm/set-variables@v1.0
-      with:
-        # Name of variable file
-        variableFileName: 'variables.module' # Don't write .json here
+  #   - name: Set environment variables
+  #     uses: deep-mm/set-variables@v1.0
+  #     with:
+  #       # Name of variable file
+  #       variableFileName: 'variables.module' # Don't write .json here
 
-    - name: "Deploy module"
-      uses: ./.github/actions/templates/deployModule
-      with:
-        moduleName: storageAccounts
-        templateFilePath: 'arm/Microsoft.Storage/storageAccounts/deploy.json'
-        parameterFilePath: 'arm/Microsoft.Storage/storageAccounts/parameters/${{ matrix.parameterFilePaths }}'
-        location: '${{ env.defaultLocation }}'
-        resourceGroupName: '${{ env.resourceGroupName }}'
-        subscriptionId: '${{ env.subscriptionId }}'
-        managementGroupId: '${{ env.managementGroupId }}'
-        removeDeployment: '${{ inputs.removeDeployment }}'
+  #   - name: "Deploy module"
+  #     uses: ./.github/actions/templates/deployModule
+  #     with:
+  #       moduleName: storageAccounts
+  #       templateFilePath: 'arm/Microsoft.Storage/storageAccounts/deploy.json'
+  #       parameterFilePath: 'arm/Microsoft.Storage/storageAccounts/parameters/${{ matrix.parameterFilePaths }}'
+  #       location: '${{ env.defaultLocation }}'
+  #       resourceGroupName: '${{ env.resourceGroupName }}'
+  #       subscriptionId: '${{ env.subscriptionId }}'
+  #       managementGroupId: '${{ env.managementGroupId }}'
+  #       removeDeployment: '${{ inputs.removeDeployment }}'
 
   ###############
   #   PUBLISH   #
@@ -192,8 +192,14 @@ jobs:
     - name: "Publish module"
       uses: ./.github/actions/templates/publishModule
       with:
-        templateFilePath: 'dummyFilePath'
-        parameterFilePath: 'dummyFilePath'
+        templateFilePath: 'arm/Microsoft.Storage/storageAccounts/deploy.json'
+        componentTemplateSpecRGName: '...'
+        componentTemplateSpecRGLocation: '...'
+        componentTemplateSpecName: '...'
+        componentTemplateSpecDescription: '...'
+        publishToTemplateSpec: '...'
+        versioningOption: '...'
+        customVersion: '...'
 
   ##############
   #   REMOVE   #
@@ -201,7 +207,16 @@ jobs:
   job_remove_module:
     runs-on: ubuntu-20.04
     name: "Remove module"
-    needs: job_deploy_module
+    # needs: 
+    # - job_deploy_module
+    env:
+      ARM_CLIENT_ID: ${{ secrets.ARM_CLIENT_ID }}
+      ARM_CLIENT_SECRET: ${{ secrets.ARM_CLIENT_SECRET }}
+      ARM_TENANT_ID: ${{ secrets.ARM_TENANT_ID }}
+      ARM_SUBSCRIPTION_ID: ${{ secrets.ARM_SUBSCRIPTION_ID }}
+    strategy:
+      matrix:
+        parameterFilePaths: ['noname.parameters.json','parameters.json']
     if: ${{ inputs.isRemoveModule == 'true' }}
     env:
       ARM_CLIENT_ID: ${{ secrets.ARM_CLIENT_ID }}
@@ -223,5 +238,5 @@ jobs:
     - name: "Remove module"
       uses: ./.github/actions/templates/removeModule
       with:
-        templateFilePath: 'dummyFilePath'
-        parameterFilePath: 'dummyFilePath'
+        templateFilePath: 'arm/Microsoft.Storage/storageAccounts/deploy.json'
+        parameterFilePath: 'arm/Microsoft.Storage/storageAccounts/parameters/${{ matrix.parameterFilePaths }}'
