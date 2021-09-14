@@ -96,7 +96,7 @@ jobs:
         parameterFilePath: ${{ matrix.parameterFilePaths }}
         modulePath: 'arm/Microsoft.Storage/storageAccounts'
         moduleName: 'storageAccounts'
-        location: '${{ env.location }}'
+        location: '${{ env.defaultLocation }}'
         resourceGroupName: '${{ env.resourceGroupName }}'
         subscriptionId: '${{ env.subscriptionId }}'
         managementGroupId: '${{ env.managementGroupId }}'

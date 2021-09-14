@@ -29,10 +29,10 @@ Describe "File/folder tests" -Tag Modules {
             }
         }
 
-        It "[<moduleFolderName>] Module name should be Pascal cased" -TestCases $moduleFolderTestCases {
-            param( [string] $moduleFolderName )
-            $moduleFolderName | Should -MatchExactly "^[A-Z]"
-        }
+        # It "[<moduleFolderName>] Module name should be Pascal cased" -TestCases $moduleFolderTestCases {
+        #     param( [string] $moduleFolderName )
+        #     $moduleFolderName | Should -MatchExactly "^[A-Z]"
+        # }
 
         It "[<moduleFolderName>] Module should contain a [deploy.json] file" -TestCases $moduleFolderTestCases {
             param( [string] $folderPath )
@@ -55,22 +55,22 @@ Describe "File/folder tests" -Tag Modules {
         }
     }
 
-    Context "Parameters folder" {
+    Context "parameters folder" {
 
         $parameterFolderTestCases = [System.Collections.ArrayList] @()
         $FilepathParamJsonFolder = @()
         foreach ($folderPath in $moduleFolderPaths) {
-            $ParameterFilecount = Get-ChildItem -Path (Join-Path -Path $folderPath \Parameters\)
+            $ParameterFilecount = Get-ChildItem -Path (Join-Path -Path $folderPath \parameters\)
             if ($ParameterFilecount.count -eq 0) {
                 $FilepathParamJsonFolder += Get-ChildItem -Path $folderPath
             }
             else {
-                $FilepathParamJsonFolder += Get-ChildItem -Path (Join-Path -Path $folderPath 'Parameters')
+                $FilepathParamJsonFolder += Get-ChildItem -Path (Join-Path -Path $folderPath 'parameters')
             }
 
         }
         foreach ($File in $FilepathParamJsonFolder) {
-            if ($File.Directory.Name -eq "Parameters") {
+            if ($File.Directory.Name -eq "parameters") {
                 $directoryPath = $File.DirectoryName
                 $modulePath = Split-Path -Parent -Path $directoryPath
                 $moduleName = Split-Path $modulePath -Leaf
@@ -82,7 +82,7 @@ Describe "File/folder tests" -Tag Modules {
                 }
             }
             else {
-                if ($File.Name -eq "Parameters") {
+                if ($File.Name -eq "parameters") {
                     $missingModulePath = (Split-Path -Parent -Path $File.FullName)
                     $missingModuleName = Split-Path $missingModulePath -Leaf
                     $parameterFolderTestCases += @{
@@ -107,7 +107,7 @@ Describe "File/folder tests" -Tag Modules {
             $parametersFileName | Should -BeLike "*parameters.json"
         }
 
-        It "[<moduleFolderName>] *parameters.json files in the Parameters folder should not be empty" -TestCases $parameterFolderTestCases {
+        It "[<moduleFolderName>] *parameters.json files in the parameters folder should not be empty" -TestCases $parameterFolderTestCases {
             param(
                 $moduleFolderName,
                 $moduleFolderPath,
@@ -117,7 +117,7 @@ Describe "File/folder tests" -Tag Modules {
             (Get-Content $fileContent) | Should -Not -Be $null
         }
 
-        It "[<moduleFolderName>] *parameters.json files in the Parameters folder should be valid JSON" -TestCases $parameterFolderTestCases {
+        It "[<moduleFolderName>] *parameters.json files in the parameters folder should be valid JSON" -TestCases $parameterFolderTestCases {
             param(
                 $moduleFolderName,
                 $moduleFolderPath,
@@ -303,7 +303,7 @@ Describe "Readme tests" -Tag Readme {
             ($moduleFolderPaths -notcontains (join-path -path $Parent "\"$HeaderNames[0].Replace(" ", ""))) | Should -Be $false
         }
 
-        It "[<moduleFolderName>] Readme.md file should contain the these Heading2 titles in order: Resource Types, Parameters, Outputs, Considerations, Additional resources" -TestCases $readmeFolderTestCases {
+        It "[<moduleFolderName>] Readme.md file should contain the these Heading2 titles in order: Resource Types, parameters, Outputs, Considerations, Additional resources" -TestCases $readmeFolderTestCases {
             param(
                 $moduleFolderName,
                 $moduleFolderPath,
@@ -319,7 +319,7 @@ Describe "Readme tests" -Tag Readme {
                     $Headings += , (@($H.Substring($StartingIndex, $EndIndex - $StartingIndex), $ReadmeHTML.IndexOf($H)))
                 }
             }
-            $Heading2Order = @("Resource Types", "Parameters", "Outputs", "Considerations", "Additional resources")
+            $Heading2Order = @("Resource Types", "parameters", "Outputs", "Considerations", "Additional resources")
             $Headings2List = @()
             foreach ($H in $ReadmeHTML) {
                 if ($H.Contains("<h2")) {
@@ -368,7 +368,7 @@ Describe "Readme tests" -Tag Readme {
             (Compare-Object -ReferenceObject $ResourceTypes -DifferenceObject $ResourcesList) | Should -Be $null
         }
 
-        It "[<moduleFolderName>] Parameters section should contain a table with these column names in order: Parameter Name, Type, Description, Default Value, Possible values" -TestCases $readmeFolderTestCases {
+        It "[<moduleFolderName>] parameters section should contain a table with these column names in order: Parameter Name, Type, Description, Default Value, Possible values" -TestCases $readmeFolderTestCases {
             param(
                 $moduleFolderName,
                 $moduleFolderPath,
@@ -388,9 +388,9 @@ Describe "Readme tests" -Tag Readme {
                     $Headings += , (@($H.Substring($StartingIndex, $EndIndex - $StartingIndex), $ReadmeHTML.IndexOf($H)))
                 }
             }
-            $HeadingIndex = $Headings | Where-Object { $_ -eq "Parameters" }
+            $HeadingIndex = $Headings | Where-Object { $_ -eq "parameters" }
             if ($HeadingIndex -eq $null) {
-                Write-Verbose "[Parameters section should contain a table with these column names in order: Parameter Name, Type, Description, Default Value, Possible values] Error At ($moduleFolderName)" -Verbose
+                Write-Verbose "[parameters section should contain a table with these column names in order: Parameter Name, Type, Description, Default Value, Possible values] Error At ($moduleFolderName)" -Verbose
                 $true | Should -Be $false
             }
             $ParameterHeadingsList = $ReadmeHTML[$HeadingIndex[1] + 2].Replace("<p>|", "").Replace("|</p>", "").Split("|").Trim()
@@ -406,7 +406,7 @@ Describe "Readme tests" -Tag Readme {
             ($ComparisonFlag -gt 2) | Should -Be $false
         }
 
-        It "[<moduleFolderName>] Parameters section should contain all parameters from the deploy.json file" -TestCases $readmeFolderTestCases {
+        It "[<moduleFolderName>] parameters section should contain all parameters from the deploy.json file" -TestCases $readmeFolderTestCases {
             param(
                 $moduleFolderName,
                 $moduleFolderPath,
@@ -417,7 +417,7 @@ Describe "Readme tests" -Tag Readme {
             $ReadmeHTML = ($TemplateReadme  | ConvertFrom-Markdown -ErrorAction SilentlyContinue).Html
             $Template = ConvertFrom-Json -InputObject $TemplateARM -ErrorAction SilentlyContinue
             ##get param from deploy.json
-            $Parameters = Get-Member -InputObject $Template.parameters -MemberType NoteProperty
+            $parameters = Get-Member -InputObject $Template.parameters -MemberType NoteProperty
             $Headings = @(@())
             foreach ($H in $ReadmeHTML) {
                 if ($H.Contains("<h")) {
@@ -427,16 +427,16 @@ Describe "Readme tests" -Tag Readme {
                 }
             }
             ##get param from readme.md
-            $HeadingIndex = $Headings | Where-Object { $_ -eq "Parameters" }
+            $HeadingIndex = $Headings | Where-Object { $_ -eq "parameters" }
             if ($HeadingIndex -eq $null) {
-                Write-Verbose "[Parameters section should contain all parameters from the deploy.json file] Error At ($moduleFolderName)" -Verbose
+                Write-Verbose "[parameters section should contain all parameters from the deploy.json file] Error At ($moduleFolderName)" -Verbose
                 $true | Should -Be $false
             }
-            $ParametersList = @()
+            $parametersList = @()
             for ($j = $HeadingIndex[1] + 4; $ReadmeHTML[$j] -ne ""; $j++) {
-                $ParametersList += $ReadmeHTML[$j].Replace("<p>| <code>", "").Replace("|</p>", "").Replace("</code>", "").Split("|")[0].Trim()
+                $parametersList += $ReadmeHTML[$j].Replace("<p>| <code>", "").Replace("|</p>", "").Replace("</code>", "").Split("|")[0].Trim()
             }
-            (Compare-Object -ReferenceObject $Parameters.Name -DifferenceObject $ParametersList) | Should -Be $null
+            (Compare-Object -ReferenceObject $parameters.Name -DifferenceObject $parametersList) | Should -Be $null
         }
 
         It "[<moduleFolderName>] Outputs section should contain a table with these column names in order: Output Name, Value, Type" -TestCases $readmeFolderTestCases {
@@ -922,7 +922,7 @@ Describe "Deployment template tests" -Tag Template {
 
         }
 
-        It "[<moduleFolderName>] Parameters' description shoud start either by 'Optional.' or 'Required.' or 'Generated.'" -TestCases $deploymentFolderTestCases {
+        It "[<moduleFolderName>] parameters' description shoud start either by 'Optional.' or 'Required.' or 'Generated.'" -TestCases $deploymentFolderTestCases {
             param(
                 $moduleFolderName,
                 $moduleFolderPath,
@@ -933,7 +933,7 @@ Describe "Deployment template tests" -Tag Template {
                 $Template = ConvertFrom-Json -InputObject $TemplateARM -ErrorAction SilentlyContinue
             }
             catch {
-                Write-Verbose "[Parameters' description shoud start either by 'Optional.' or 'Required.' or 'Generated.'] Json conversion Error at ($moduleFolderName)" -Verbose
+                Write-Verbose "[parameters' description shoud start either by 'Optional.' or 'Required.' or 'Generated.'] Json conversion Error at ($moduleFolderName)" -Verbose
                 Continue
             }
             $ParamDescriptionFlag = @()

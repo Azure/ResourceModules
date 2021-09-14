@@ -6,11 +6,20 @@
         },
         {
             "name": "SubscriptionId",
-            "value": "<FillMe>"
+            "value": "b765c5e5-ae60-4724-9b59-36fbcf56795b"
         },
         {
-            "name": "BuildAgent",
-            "value": "<FillMe>"
+            "name": "resourceGroupName",
+            "value": "validation-rg"
+        },
+        {
+            "name": "managementGroupId",
+            "value": "alsehreslz-platform"
         }
+        //,
+        // {
+        //     "name": "BuildAgent",
+        //     "value": "<FillMe>"
+        // }
     ]
 }
