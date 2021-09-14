@@ -154,10 +154,14 @@ jobs:
         variableFileName: 'variables.module' # Don't write .json here
 
     - name: "Deploy module"
-      uses: ./.github/actions/templates/deploy
+      uses: ./.github/actions/templates/deployModule
       with:
-        templateFilePath: 'dummyFilePath'
-        parameterFilePath: '${{ matrix.parameterFilePaths }}'
+        templateFilePath: 'arm/Microsoft.Storage/storageAccounts/deploy.json'
+        parameterFilePath: 'arm/Microsoft.Storage/storageAccounts/parameters/${{ matrix.parameterFilePaths }}'
+        location: '${{ env.defaultLocation }}'
+        resourceGroupName: '${{ env.resourceGroupName }}'
+        subscriptionId: '${{ env.subscriptionId }}'
+        managementGroupId: '${{ env.managementGroupId }}'
 
   ###############
   #   PUBLISH   #
@@ -184,7 +188,7 @@ jobs:
         variableFileName: 'variables.module' # Don't write .json here
 
     - name: "Publish module"
-      uses: ./.github/actions/templates/validate
+      uses: ./.github/actions/templates/publishModule
       with:
         templateFilePath: 'dummyFilePath'
         parameterFilePath: 'dummyFilePath'
@@ -215,7 +219,7 @@ jobs:
         variableFileName: 'variables.module' # Don't write .json here
 
     - name: "Remove module"
-      uses: ./.github/actions/templates/validate
+      uses: ./.github/actions/templates/removeModule
       with:
         templateFilePath: 'dummyFilePath'
         parameterFilePath: 'dummyFilePath'
