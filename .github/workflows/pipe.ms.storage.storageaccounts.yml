@@ -5,7 +5,7 @@ on:
 
 inputs:
   isRemoveModule:
-    description: 'Remove deplyoed module'
+    description: 'Remove deployed module'
     required: false
     default: true
 
