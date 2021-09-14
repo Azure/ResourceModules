@@ -11,10 +11,10 @@ $script:Subscriptiondeployment = "https://schema.management.azure.com/schemas/20
 $script:MGdeployment = "https://schema.management.azure.com/schemas/2019-08-01/managementGroupDeploymentTemplate.json#"
 $script:Tenantdeployment = "https://schema.management.azure.com/schemas/2019-08-01/tenantDeploymentTemplate.json#"
 $script:Parentlocation = $Parentlocation
-$script:Parent =  $Parent
+$script:Parent = $Parent
 $script:moduleFolderPaths = $moduleFolderPaths
 
-$locationTestExceptions = @( "AzureNetappFiles", "TrafficManager", "PrivateDnsZones","ManagementGroups")
+$locationTestExceptions = @( "AzureNetappFiles", "TrafficManager", "PrivateDnsZones", "ManagementGroups")
 $script:folderPathsToScanExcludeRG = $moduleFolderPaths | Where-Object { (Split-Path $_ -Leaf) -notin $locationTestExceptions }
 
 Describe "File/folder tests" -Tag Modules {
@@ -44,24 +44,14 @@ Describe "File/folder tests" -Tag Modules {
             (Test-Path (Join-Path -Path $moduleFolderPath 'readme.md')) | Should -Be $true
         }
 
-        It "[<moduleFolderName>] Module should contain a [Parameters] folder" -TestCases $moduleFolderTestCases {
+        It "[<moduleFolderName>] Module should contain a [parameters] folder" -TestCases $moduleFolderTestCases {
             param( [string] $folderPath )
-            (Test-Path (Join-Path -Path $moduleFolderPath 'Parameters')) | Should -Be $true
+            (Test-Path (Join-Path -Path $moduleFolderPath 'parameters')) | Should -Be $true
         }
 
-        It "[<moduleFolderName>] Module should contain a [Pipeline] folder" -TestCases $moduleFolderTestCases {
+        It "[<moduleFolderName>] Module should contain a [tests] folder" -TestCases $moduleFolderTestCases {
             param( [string] $folderPath )
-            (Test-Path (Join-Path -Path $moduleFolderPath 'Pipeline')) | Should -Be $true
-        }
-
-        It "[<moduleFolderName>] Module should contain a [Scripts] folder" -TestCases $moduleFolderTestCases {
-            param( [string] $folderPath )
-            (Test-Path (Join-Path -Path $moduleFolderPath 'Scripts')) | Should -Be $true
-        }
-
-        It "[<moduleFolderName>] Module should contain a [Tests] folder" -TestCases $moduleFolderTestCases {
-            param( [string] $folderPath )
-            (Test-Path (Join-Path -Path $moduleFolderPath 'Tests')) | Should -Be $true
+            (Test-Path (Join-Path -Path $moduleFolderPath 'tests')) | Should -Be $true
         }
     }
 
@@ -72,36 +62,36 @@ Describe "File/folder tests" -Tag Modules {
         foreach ($folderPath in $moduleFolderPaths) {
             $ParameterFilecount = Get-ChildItem -Path (Join-Path -Path $folderPath \Parameters\)
             if ($ParameterFilecount.count -eq 0) {
-               $FilepathParamJsonFolder += Get-ChildItem -Path $folderPath
+                $FilepathParamJsonFolder += Get-ChildItem -Path $folderPath
             }
-            else{
+            else {
                 $FilepathParamJsonFolder += Get-ChildItem -Path (Join-Path -Path $folderPath 'Parameters')
             }
 
         }
-        foreach ($File in $FilepathParamJsonFolder){
-            if($File.Directory.Name -eq "Parameters"){
+        foreach ($File in $FilepathParamJsonFolder) {
+            if ($File.Directory.Name -eq "Parameters") {
                 $directoryPath = $File.DirectoryName
                 $modulePath = Split-Path -Parent -Path $directoryPath
                 $moduleName = Split-Path $modulePath -Leaf
                 $parameterFolderTestCases += @{
-                    moduleFolderName = $moduleName
-                    moduleFolderPath = $modulePath
+                    moduleFolderName   = $moduleName
+                    moduleFolderPath   = $modulePath
                     parametersFileName = $File.Name
-                    fileContent = $File.FullName
+                    fileContent        = $File.FullName
                 }
             }
             else {
-                if($File.Name -eq "Parameters"){
+                if ($File.Name -eq "Parameters") {
                     $missingModulePath = (Split-Path -Parent -Path $File.FullName)
                     $missingModuleName = Split-Path $missingModulePath -Leaf
                     $parameterFolderTestCases += @{
-                        moduleFolderName = $missingModuleName
-                        moduleFolderPath = $missingModulePath
+                        moduleFolderName   = $missingModuleName
+                        moduleFolderPath   = $missingModulePath
                         parametersFileName = "MissingFile"
-                        fileContent = $null
-                        }
+                        fileContent        = $null
                     }
+                }
             }
         }
 
@@ -109,30 +99,30 @@ Describe "File/folder tests" -Tag Modules {
 
         It "[<moduleFolderName>] folder should contain one or more *parameters.json files" -TestCases $parameterFolderTestCases {
             param(
-            $moduleFolderName,
-            $moduleFolderPath,
-            $parametersFileName,
-            $fileContent
+                $moduleFolderName,
+                $moduleFolderPath,
+                $parametersFileName,
+                $fileContent
             )
             $parametersFileName | Should -BeLike "*parameters.json"
         }
 
         It "[<moduleFolderName>] *parameters.json files in the Parameters folder should not be empty" -TestCases $parameterFolderTestCases {
             param(
-            $moduleFolderName,
-            $moduleFolderPath,
-            $parametersFileName,
-            $fileContent
+                $moduleFolderName,
+                $moduleFolderPath,
+                $parametersFileName,
+                $fileContent
             )
             (Get-Content $fileContent) | Should -Not -Be $null
         }
 
         It "[<moduleFolderName>] *parameters.json files in the Parameters folder should be valid JSON" -TestCases $parameterFolderTestCases {
             param(
-            $moduleFolderName,
-            $moduleFolderPath,
-            $parametersFileName,
-            $fileContent
+                $moduleFolderName,
+                $moduleFolderPath,
+                $parametersFileName,
+                $fileContent
             )
             $TemplateContent = Get-Content $fileContent -Raw -ErrorAction SilentlyContinue
             $TemplateContent | ConvertFrom-Json -ErrorAction SilentlyContinue | Should -Not -Be $Null
@@ -148,15 +138,15 @@ Describe "File/folder tests" -Tag Modules {
         foreach ($folderPath in $moduleFolderPaths) {
             $PipelineFilecount = Get-ChildItem -Path (Join-Path -Path $folderPath \Pipeline\)
             if ($PipelineFilecount.count -eq 0) {
-               $FilepathPipelineJsonFolder += Get-ChildItem -Path $folderPath
+                $FilepathPipelineJsonFolder += Get-ChildItem -Path $folderPath
             }
-            else{
+            else {
                 $FilepathPipelineJsonFolder += Get-ChildItem -Path (Join-Path -Path $folderPath 'Pipeline')
             }
 
         }
-        foreach ($File in $FilepathPipelineJsonFolder){
-            if($File.Directory.Name -eq "Pipeline"){
+        foreach ($File in $FilepathPipelineJsonFolder) {
+            if ($File.Directory.Name -eq "Pipeline") {
                 $directoryPath = $File.DirectoryName
                 $modulePath = Split-Path -Parent -Path $directoryPath
                 $moduleName = Split-Path $modulePath -Leaf
@@ -164,43 +154,43 @@ Describe "File/folder tests" -Tag Modules {
                     moduleFolderName = $moduleName
                     moduleFolderPath = $modulePath
                     pipelineFileName = $File.Name
-                    fileContent = $File.FullName
+                    fileContent      = $File.FullName
                 }
             }
             else {
-                if($File.Name -eq "Pipeline"){
+                if ($File.Name -eq "Pipeline") {
                     $missingModulePath = (Split-Path -Parent -Path $File.FullName)
                     $missingModuleName = Split-Path $missingModulePath -Leaf
                     $pipelineFolderTestCases += @{
                         moduleFolderName = $missingModuleName
                         moduleFolderPath = $missingModulePath
                         pipelineFileName = "MissingFile"
-                        fileContent = $null
-                        }
+                        fileContent      = $null
                     }
+                }
             }
         }
 
         It "[<moduleFolderName>] Pipeline folder should contain one or more *.yml files (pipeline files)" -TestCases $pipelineFolderTestCases {
             param(
-            $moduleFolderName,
-            $moduleFolderPath,
-            $pipelineFileName,
-            $fileContent
+                $moduleFolderName,
+                $moduleFolderPath,
+                $pipelineFileName,
+                $fileContent
             )
             ($pipelineFileName -like "*.yml" -or $pipelineFileName -like "THIS_IS_A_UNIQUE_PIPELINE.md")  | Should -Be $true
         }
 
         It "[<moduleFolderName>] Pipeline folder should contain a THIS_IS_A_UNIQUE_PIPELINE.md marker, if it contains more than one *.yml files" -TestCases $pipelineFolderTestCases {
             param(
-            $moduleFolderName,
-            $moduleFolderPath,
-            $pipelineFileName,
-            $fileContent
+                $moduleFolderName,
+                $moduleFolderPath,
+                $pipelineFileName,
+                $fileContent
             )
             $Mdfile = (Get-ChildItem -Path (Join-Path -Path $moduleFolderPath \Pipeline\) -Filter "THIS_IS_A_UNIQUE_PIPELINE.md").count
             $Filepathpipeline = (Get-ChildItem -Path (Join-Path -Path $moduleFolderPath \Pipeline\) -Filter "*.yml").count
-            if ($Filepathpipeline -gt 1){
+            if ($Filepathpipeline -gt 1) {
                 ($Mdfile -eq 1) | Should -Be $true
             }
         }
@@ -214,55 +204,55 @@ Describe "File/folder tests" -Tag Modules {
         foreach ($folderPath in $moduleFolderPaths) {
             $TestFilecount = Get-ChildItem -Path (Join-Path -Path $folderPath \Tests\)
             if ($TestFilecount.count -eq 0) {
-               $FilepathTestJsonFolder += Get-ChildItem -Path $folderPath
+                $FilepathTestJsonFolder += Get-ChildItem -Path $folderPath
             }
-            else{
+            else {
                 $FilepathTestJsonFolder += Get-ChildItem -Path (Join-Path -Path $folderPath 'Tests')
             }
 
         }
-        foreach ($File in $FilepathTestJsonFolder){
-            if($File.Directory.Name -eq "Tests"){
+        foreach ($File in $FilepathTestJsonFolder) {
+            if ($File.Directory.Name -eq "Tests") {
                 $directoryPath = $File.DirectoryName
                 $modulePath = Split-Path -Parent -Path $directoryPath
                 $moduleName = Split-Path $modulePath -Leaf
                 $testFolderTestCases += @{
                     moduleFolderName = $moduleName
                     moduleFolderPath = $modulePath
-                    testFileName = $File.Name
-                    fileContent = $File.FullName
+                    testFileName     = $File.Name
+                    fileContent      = $File.FullName
                 }
             }
             else {
-                if($File.Name -eq "Tests"){
+                if ($File.Name -eq "Tests") {
                     $missingModulePath = (Split-Path -Parent -Path $File.FullName)
                     $missingModuleName = Split-Path $missingModulePath -Leaf
                     $testFolderTestCases += @{
                         moduleFolderName = $missingModuleName
                         moduleFolderPath = $missingModulePath
-                        testFileName = "MissingFile"
-                        fileContent = $null
-                        }
+                        testFileName     = "MissingFile"
+                        fileContent      = $null
                     }
+                }
             }
         }
 
         It "[<moduleFolderName>] Tests folder should contain one or more *.tests.ps1 files" -TestCases $testFolderTestCases {
             param(
-            $moduleFolderName,
-            $moduleFolderPath,
-            $testFileName,
-            $fileContent
+                $moduleFolderName,
+                $moduleFolderPath,
+                $testFileName,
+                $fileContent
             )
             $testFileName | Should -BeLike "*.tests.ps1"
         }
 
         It "[<moduleFolderName>] *.tests.ps1 files should not be empty" -TestCases $testFolderTestCases {
             param(
-            $moduleFolderName,
-            $moduleFolderPath,
-            $testFileName,
-            $fileContent
+                $moduleFolderName,
+                $moduleFolderPath,
+                $testFileName,
+                $fileContent
             )
             (Get-Content $fileContent) | Should -Not -Be $null
         }
@@ -277,10 +267,10 @@ Describe "Readme tests" -Tag Readme {
         $readmeFolderTestCases = [System.Collections.ArrayList] @()
         foreach ($folderPath in $moduleFolderPaths) {
             $readmeFolderTestCases += @{
-            moduleFolderName = Split-Path $folderPath -Leaf
-            moduleFolderPath = $folderPath
-            #readmeFileName = $File.Name
-            fileContent = (Join-Path -Path $folderPath \readme.md)
+                moduleFolderName = Split-Path $folderPath -Leaf
+                moduleFolderPath = $folderPath
+                #readmeFileName = $File.Name
+                fileContent      = (Join-Path -Path $folderPath \readme.md)
             }
         }
 
@@ -290,7 +280,7 @@ Describe "Readme tests" -Tag Readme {
                 $moduleFolderName,
                 $moduleFolderPath,
                 $fileContent
-                )
+            )
             (Get-Content $fileContent) | Should -Not -Be $null
         }
 
@@ -299,21 +289,21 @@ Describe "Readme tests" -Tag Readme {
                 $moduleFolderName,
                 $moduleFolderPath,
                 $fileContent
-                )
+            )
             $TemplateContentHeading = Get-Content ($fileContent) -ErrorAction SilentlyContinue
             $ReadmeHTML = ($TemplateContentHeading  | ConvertFrom-Markdown -ErrorAction SilentlyContinue).Html
-                $HeaderNames = @()
-                foreach ($H in $ReadmeHTML) {
-                    if ($H.Contains("<h")) {
-                        $StartingIndex = $H.IndexOf(">") + 1
-                        $EndIndex = $H.LastIndexof("<")
-                        $HeaderNames += $H.Substring($StartingIndex, $EndIndex - $StartingIndex)
-                    }
+            $HeaderNames = @()
+            foreach ($H in $ReadmeHTML) {
+                if ($H.Contains("<h")) {
+                    $StartingIndex = $H.IndexOf(">") + 1
+                    $EndIndex = $H.LastIndexof("<")
+                    $HeaderNames += $H.Substring($StartingIndex, $EndIndex - $StartingIndex)
                 }
+            }
             ($moduleFolderPaths -notcontains (join-path -path $Parent "\"$HeaderNames[0].Replace(" ", ""))) | Should -Be $false
         }
 
-        It "[<moduleFolderName>] Readme.md file should contain the these Heading2 titles in order: Resource Types, Parameters, Outputs, Considerations, Additional resources" -TestCases $readmeFolderTestCases{
+        It "[<moduleFolderName>] Readme.md file should contain the these Heading2 titles in order: Resource Types, Parameters, Outputs, Considerations, Additional resources" -TestCases $readmeFolderTestCases {
             param(
                 $moduleFolderName,
                 $moduleFolderPath,
@@ -393,9 +383,9 @@ Describe "Readme tests" -Tag Readme {
             $Headings = @(@())
             foreach ($H in $ReadmeHTML) {
                 if ($H.Contains("<h")) {
-                $StartingIndex = $H.IndexOf(">") + 1
-                $EndIndex = $H.LastIndexof("<")
-                $Headings += , (@($H.Substring($StartingIndex, $EndIndex - $StartingIndex), $ReadmeHTML.IndexOf($H)))
+                    $StartingIndex = $H.IndexOf(">") + 1
+                    $EndIndex = $H.LastIndexof("<")
+                    $Headings += , (@($H.Substring($StartingIndex, $EndIndex - $StartingIndex), $ReadmeHTML.IndexOf($H)))
                 }
             }
             $HeadingIndex = $Headings | Where-Object { $_ -eq "Parameters" }
@@ -404,12 +394,12 @@ Describe "Readme tests" -Tag Readme {
                 $true | Should -Be $false
             }
             $ParameterHeadingsList = $ReadmeHTML[$HeadingIndex[1] + 2].Replace("<p>|", "").Replace("|</p>", "").Split("|").Trim()
-                if (Compare-Object -ReferenceObject $ParameterHeadingOrder -DifferenceObject $ParameterHeadingsList -SyncWindow 0) {
+            if (Compare-Object -ReferenceObject $ParameterHeadingOrder -DifferenceObject $ParameterHeadingsList -SyncWindow 0) {
                 $ComparisonFlag = $ComparisonFlag + 1
-                }
+            }
             if (Compare-Object -ReferenceObject $ParameterHeadingOrderNewVersion -DifferenceObject $ParameterHeadingsList -SyncWindow 0) {
                 $ComparisonFlag = $ComparisonFlag + 1
-                }
+            }
             if (Compare-Object -ReferenceObject $ParameterHeadingOrderLatestVersion -DifferenceObject $ParameterHeadingsList -SyncWindow 0) {
                 $ComparisonFlag = $ComparisonFlag + 1
             }
@@ -444,7 +434,7 @@ Describe "Readme tests" -Tag Readme {
             }
             $ParametersList = @()
             for ($j = $HeadingIndex[1] + 4; $ReadmeHTML[$j] -ne ""; $j++) {
-                 $ParametersList += $ReadmeHTML[$j].Replace("<p>| <code>", "").Replace("|</p>", "").Replace("</code>", "").Split("|")[0].Trim()
+                $ParametersList += $ReadmeHTML[$j].Replace("<p>| <code>", "").Replace("|</p>", "").Replace("</code>", "").Split("|")[0].Trim()
             }
             (Compare-Object -ReferenceObject $Parameters.Name -DifferenceObject $ParametersList) | Should -Be $null
         }
@@ -543,18 +533,18 @@ Describe "Deployment template tests" -Tag Template {
         $deploymentFolderTestCasesException = [System.Collections.ArrayList] @()
         foreach ($folderPath in $moduleFolderPaths) {
             $deploymentFolderTestCases += @{
-            moduleFolderName = Split-Path $folderPath -Leaf
-            moduleFolderPath = $folderPath
-            #readmeFileName = $File.Name
-            fileContent = (Join-Path -Path $folderPath \deploy.json)
+                moduleFolderName = Split-Path $folderPath -Leaf
+                moduleFolderPath = $folderPath
+                #readmeFileName = $File.Name
+                fileContent      = (Join-Path -Path $folderPath \deploy.json)
             }
         }
         foreach ($folderPath in $folderPathsToScanExcludeRG) {
             $deploymentFolderTestCasesException += @{
-            moduleFolderNameException = Split-Path $folderPath -Leaf
-            moduleFolderPathException = $folderPath
-            #readmeFileName = $File.Name
-            fileContentException = (Join-Path -Path $folderPath \deploy.json)
+                moduleFolderNameException = Split-Path $folderPath -Leaf
+                moduleFolderPathException = $folderPath
+                #readmeFileName = $File.Name
+                fileContentException      = (Join-Path -Path $folderPath \deploy.json)
             }
         }
 
@@ -563,7 +553,7 @@ Describe "Deployment template tests" -Tag Template {
                 $moduleFolderName,
                 $moduleFolderPath,
                 $fileContent
-                )
+            )
             (Get-Content $fileContent) | Should -Not -Be $null
         }
 
@@ -572,10 +562,10 @@ Describe "Deployment template tests" -Tag Template {
                 $moduleFolderName,
                 $moduleFolderPath,
                 $fileContent
-                )
+            )
             $TemplateARM = Get-Content ($fileContent) -Raw -ErrorAction SilentlyContinue
             Test-Path $fileContent -PathType Leaf -Include '*.json' | Should -Be $true
-            try{
+            try {
                 ConvertFrom-Json -InputObject $TemplateARM -ErrorAction SilentlyContinue
             }
             catch {
@@ -755,7 +745,7 @@ Describe "Deployment template tests" -Tag Template {
         It "Resource level RBAC should be implemented - if the resource type supports it" {
         }
 
-        It "[<moduleFolderName>] Parameter, Output and variable names should be camel-cased (no dashes or underscores and must start with lower-case letter)" -TestCases $deploymentFolderTestCases{
+        It "[<moduleFolderName>] Parameter, Output and variable names should be camel-cased (no dashes or underscores and must start with lower-case letter)" -TestCases $deploymentFolderTestCases {
             param(
                 $moduleFolderName,
                 $moduleFolderPath,
@@ -955,7 +945,7 @@ Describe "Deployment template tests" -Tag Template {
                     $ParamDescriptionFlag += $true
                 }
                 else {
-                   $ParamDescriptionFlag += $false
+                    $ParamDescriptionFlag += $false
                 }
             }
             $ParamDescriptionFlag | Should -Not -Contain $false
