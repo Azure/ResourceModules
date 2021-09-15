@@ -30,10 +30,6 @@ jobs:
     runs-on: ubuntu-20.04
     name: "Run individual module tests"
     steps:
-    - name: "Checkout"
-      uses: actions/checkout@v2
-      with:
-        fetch-depth: 0
     - name: "Test module"
       uses: ./.github/actions/templates/validateModuleIndividual
       with:
@@ -51,17 +47,6 @@ jobs:
       ARM_TENANT_ID: ${{ secrets.ARM_TENANT_ID }}
       ARM_SUBSCRIPTION_ID: ${{ secrets.ARM_SUBSCRIPTION_ID }}
     steps:
-    - name: "Checkout"
-      uses: actions/checkout@v2
-      with:
-        fetch-depth: 0
-
-    - name: Set environment variables
-      uses: deep-mm/set-variables@v1.0
-      with:
-        # Name of variable file
-        variableFileName: 'variables.module' # Don't write .json here
-
     - name: "Test module"
       uses: ./.github/actions/templates/validateModuleGeneral
       with:
@@ -79,17 +64,6 @@ jobs:
       ARM_TENANT_ID: ${{ secrets.ARM_TENANT_ID }}
       ARM_SUBSCRIPTION_ID: ${{ secrets.ARM_SUBSCRIPTION_ID }}
     steps:
-    - name: "Checkout"
-      uses: actions/checkout@v2
-      with:
-        fetch-depth: 0
-
-    - name: Set environment variables
-      uses: deep-mm/set-variables@v1.0
-      with:
-        # Name of variable file
-        variableFileName: 'variables.module' # Don't write .json here
-
     - name: "Test module"
       uses: ./.github/actions/templates/validateModuleApis
       with:
@@ -110,17 +84,6 @@ jobs:
       matrix:
         parameterFilePaths: ['noname.parameters.json','parameters.json']
     steps:
-    - name: "Checkout"
-      uses: actions/checkout@v2
-      with:
-        fetch-depth: 0
-
-    - name: Set environment variables
-      uses: deep-mm/set-variables@v1.0
-      with:
-        # Name of variable file
-        variableFileName: 'variables.module' # Don't write .json here
-
     - name: "Test module"
       uses: ./.github/actions/templates/validateModuleDeploy
       with:
@@ -151,17 +114,6 @@ jobs:
       matrix:
         parameterFilePaths: ['noname.parameters.json','parameters.json']
     steps:
-    - name: "Checkout"
-      uses: actions/checkout@v2
-      with:
-        fetch-depth: 0
-
-    - name: Set environment variables
-      uses: deep-mm/set-variables@v1.0
-      with:
-        # Name of variable file
-        variableFileName: 'variables.module' # Don't write .json here
-
     - name: "Deploy module"
       uses: ./.github/actions/templates/deployModule
       with:
@@ -188,17 +140,6 @@ jobs:
       ARM_TENANT_ID: ${{ secrets.ARM_TENANT_ID }}
       ARM_SUBSCRIPTION_ID: ${{ secrets.ARM_SUBSCRIPTION_ID }}
     steps:
-    - name: "Checkout"
-      uses: actions/checkout@v2
-      with:
-        fetch-depth: 0
-
-    - name: Set environment variables
-      uses: deep-mm/set-variables@v1.0
-      with:
-        # Name of variable file
-        variableFileName: 'variables.module' # Don't write .json here
-
     - name: "Publish module"
       uses: ./.github/actions/templates/publishModule
       with:
@@ -226,17 +167,6 @@ jobs:
       ARM_TENANT_ID: ${{ secrets.ARM_TENANT_ID }}
       ARM_SUBSCRIPTION_ID: ${{ secrets.ARM_SUBSCRIPTION_ID }}
     steps:
-    - name: "Checkout"
-      uses: actions/checkout@v2
-      with:
-        fetch-depth: 0
-
-    - name: Set environment variables
-      uses: deep-mm/set-variables@v1.0
-      with:
-        # Name of variable file
-        variableFileName: 'variables.module' # Don't write .json here
-
     - name: "Remove module"
       uses: ./.github/actions/templates/removeModule
       with:

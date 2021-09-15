@@ -15,33 +15,42 @@ inputs:
 runs:
   using: "composite"
   steps:
-  - name: "Setup agent & login"
-    shell: pwsh
-    run: |
-      # Load used functions
-      . "$env:GITHUB_ACTION_PATH/scripts/Set-AgentUp.ps1"
+    - name: "Checkout"
+      uses: actions/checkout@v2
+      with:
+        fetch-depth: 0
+    - name: Set environment variables
+      uses: deep-mm/set-variables@v1.0
+      with:
+        # Name of variable file
+        variableFileName: 'variables.module' # Don't write .json here
+    - name: "Setup agent & login"
+      shell: pwsh
+      run: |
+        # Load used functions
+        . "$env:GITHUB_ACTION_PATH/scripts/Set-AgentUp.ps1"
 
-      $functionInput = @{
-        clientID       = $env:ARM_CLIENT_ID
-        clientSecret   = ConvertTo-SecureString -String $env:ARM_CLIENT_SECRET -AsPlainText -Force
-        tenantId       = $env:ARM_TENANT_ID
-        subscriptionId = $env:ARM_SUBSCRIPTION_ID
-      }
-      Set-AgentUp @functionInput
+        $functionInput = @{
+          clientID       = $env:ARM_CLIENT_ID
+          clientSecret   = ConvertTo-SecureString -String $env:ARM_CLIENT_SECRET -AsPlainText -Force
+          tenantId       = $env:ARM_TENANT_ID
+          subscriptionId = $env:ARM_SUBSCRIPTION_ID
+        }
+        Set-AgentUp @functionInput
 
-  - name: "Remove module"
-    shell: pwsh
-    run: |
-      # Load used functions
-      . "$env:GITHUB_ACTION_PATH/scripts/Remove-DeployedModule.ps1"
+    - name: "Remove module"
+      shell: pwsh
+      run: |
+        # Load used functions
+        . "$env:GITHUB_ACTION_PATH/scripts/Remove-DeployedModule.ps1"
 
-      $functionInput = @{
-        moduleName        = '${{ inputs.moduleName }}'
-        resourceGroupName = '${{ inputs.resourceGroupName }}'
-        templateFilePath  = '${{ inputs.templateFilePath }}'
-      }
+        $functionInput = @{
+          moduleName        = '${{ inputs.moduleName }}'
+          resourceGroupName = '${{ inputs.resourceGroupName }}'
+          templateFilePath  = '${{ inputs.templateFilePath }}'
+        }
 
-      Write-Verbose "Invoke task with" -Verbose
-      $functionInput | Format-Table -AutoSize
+        Write-Verbose "Invoke task with" -Verbose
+        $functionInput | Format-Table -AutoSize
 
-      Remove-DeployedModule @functionInput -Verbose
+        Remove-DeployedModule @functionInput -Verbose
