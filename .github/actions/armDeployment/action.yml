@@ -1,0 +1,67 @@
+name: armDeployment
+
+description: "Triggers an ARM Template Deployment at Different Scopes"
+
+inputs:
+  # Required Parameters
+  templateFile:
+    description: "Path to the ARM Template File (Module)"
+    required: true
+
+  templateParametersFile:
+    description: "Directory for ARM Template Parameter Files or Direct Path to ARM Template Parameter File"
+    required: true
+
+  scope:
+    description: "Required. Defines the scope that is being targeted for an ARM Template Deployment. Can be resourceGroup, subscription, managementGroup"
+    required: true
+
+  # Optional Parameters
+  tags:
+    description: "Provide an Object of Key Value Pairs in the form of String that are passed to the script as Tags"
+    required: false
+    default: "$null"
+
+  resourceGroupName:
+    description: "Name of the Resource Group if the Scope is set to resourceGroup"
+    required: false
+
+  subscriptionId:
+    description: "The ID the Azure Subscription if the Scope is set to resourceGroup or subscription"
+    required: false
+
+  managementGroupId:
+    description: "The ID the Azure Management Group if the Scope is set to managementGroup"
+    required: false
+
+  location:
+    description: "The location for the deployment if using Scope or subscription Scopes"
+    required: false
+
+runs:
+  using: "composite"
+  steps:
+    - name: "${{ inputs.scope }}_deployment"
+      uses: azure/powershell@v1
+      with:
+        azPSVersion: "6.4.0"
+        inlineScript: |
+          $CommonParameters = @{
+            templateFile          = "${{ inputs.templateFile }}"
+            templateParametersFile = "${{ inputs.templateParametersFile }}"
+            scope                 = "${{ inputs.scope }}" 
+            tags  = "${{ inputs.tags }}"
+          }
+
+          switch ("${{ inputs.scope }}"){
+            resourceGroup {
+                ${{ github.action_path }}/New-ArmDeployment.ps1 @CommonParameters -ResourceGroupName ${{ inputs.resourceGroupName }} -subscriptionId ${{ inputs.subscriptionId }} -Verbose
+            }
+            subscription {
+                ${{ github.action_path }}/New-ArmDeployment.ps1 @CommonParameters -subscriptionId ${{ inputs.subscriptionId }} -location ${{ inputs.location }} -Verbose
+            }
+            managementGroup {
+                ${{ github.action_path }}/New-ArmDeployment.ps1 @CommonParameters -managementGroupId ${{ inputs.managementGroupId }} -location ${{ inputs.location }} -Verbose
+            }
+            Default {}
+          }
