@@ -1,4 +1,3 @@
-
 # Image Templates
 
 This module deploys an Image Template (for Azure Image Builder service) that can be consumed by the Azure Image Builder service
