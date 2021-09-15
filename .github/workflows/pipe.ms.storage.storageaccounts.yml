@@ -127,85 +127,85 @@ jobs:
   #       subscriptionId: '${{ env.subscriptionId }}'
   #       managementGroupId: '${{ env.managementGroupId }}'
 
-  # ##############
-  # #   DEPLOY   #
-  # ##############
-  # job_deploy_module:
-  #   runs-on: ubuntu-20.04
-  #   name: "Deploy module"
-  #   needs:
-  #   - job_tests_module_individual
-  #   - job_tests_module_global
-  #   - job_tests_module_global_api
-  #   - job_tests_module_deploy_validate
-  #   env:
-  #     ARM_CLIENT_ID: ${{ secrets.ARM_CLIENT_ID }}
-  #     ARM_CLIENT_SECRET: ${{ secrets.ARM_CLIENT_SECRET }}
-  #     ARM_TENANT_ID: ${{ secrets.ARM_TENANT_ID }}
-  #     ARM_SUBSCRIPTION_ID: ${{ secrets.ARM_SUBSCRIPTION_ID }}
-  #   strategy:
-  #     matrix:
-  #       parameterFilePaths: ['noname.parameters.json','parameters.json']
-  #   steps:
-  #   - name: "Checkout"
-  #     uses: actions/checkout@v2
-  #     with:
-  #       fetch-depth: 0
+  ##############
+  #   DEPLOY   #
+  ##############
+  job_deploy_module:
+    runs-on: ubuntu-20.04
+    name: "Deploy module"
+    needs:
+    - job_tests_module_individual
+    - job_tests_module_global
+    - job_tests_module_global_api
+    - job_tests_module_deploy_validate
+    env:
+      ARM_CLIENT_ID: ${{ secrets.ARM_CLIENT_ID }}
+      ARM_CLIENT_SECRET: ${{ secrets.ARM_CLIENT_SECRET }}
+      ARM_TENANT_ID: ${{ secrets.ARM_TENANT_ID }}
+      ARM_SUBSCRIPTION_ID: ${{ secrets.ARM_SUBSCRIPTION_ID }}
+    strategy:
+      matrix:
+        parameterFilePaths: ['noname.parameters.json','parameters.json']
+    steps:
+    - name: "Checkout"
+      uses: actions/checkout@v2
+      with:
+        fetch-depth: 0
 
-  #   - name: Set environment variables
-  #     uses: deep-mm/set-variables@v1.0
-  #     with:
-  #       # Name of variable file
-  #       variableFileName: 'variables.module' # Don't write .json here
+    - name: Set environment variables
+      uses: deep-mm/set-variables@v1.0
+      with:
+        # Name of variable file
+        variableFileName: 'variables.module' # Don't write .json here
 
-  #   - name: "Deploy module"
-  #     uses: ./.github/actions/templates/deployModule
-  #     with:
-  #       moduleName: storageAccounts
-  #       templateFilePath: 'arm/Microsoft.Storage/storageAccounts/deploy.json'
-  #       parameterFilePath: 'arm/Microsoft.Storage/storageAccounts/parameters/${{ matrix.parameterFilePaths }}'
-  #       location: '${{ env.defaultLocation }}'
-  #       resourceGroupName: '${{ env.resourceGroupName }}'
-  #       subscriptionId: '${{ env.subscriptionId }}'
-  #       managementGroupId: '${{ env.managementGroupId }}'
-  #       removeDeployment: '${{ inputs.removeDeployment }}'
+    - name: "Deploy module"
+      uses: ./.github/actions/templates/deployModule
+      with:
+        moduleName: storageAccounts
+        templateFilePath: 'arm/Microsoft.Storage/storageAccounts/deploy.json'
+        parameterFilePath: 'arm/Microsoft.Storage/storageAccounts/parameters/${{ matrix.parameterFilePaths }}'
+        location: '${{ env.defaultLocation }}'
+        resourceGroupName: '${{ env.resourceGroupName }}'
+        subscriptionId: '${{ env.subscriptionId }}'
+        managementGroupId: '${{ env.managementGroupId }}'
+        removeDeployment: '${{ inputs.removeDeployment }}'
 
-  # ###############
-  # #   PUBLISH   #
-  # ###############
-  # job_publish_module:
-  #   runs-on: ubuntu-20.04
-  #   name: "Publish module"
-  #   needs: 
-  #   - job_deploy_module
-  #   env:
-  #     ARM_CLIENT_ID: ${{ secrets.ARM_CLIENT_ID }}
-  #     ARM_CLIENT_SECRET: ${{ secrets.ARM_CLIENT_SECRET }}
-  #     ARM_TENANT_ID: ${{ secrets.ARM_TENANT_ID }}
-  #     ARM_SUBSCRIPTION_ID: ${{ secrets.ARM_SUBSCRIPTION_ID }}
-  #   steps:
-  #   - name: "Checkout"
-  #     uses: actions/checkout@v2
-  #     with:
-  #       fetch-depth: 0
+  ###############
+  #   PUBLISH   #
+  ###############
+  job_publish_module:
+    runs-on: ubuntu-20.04
+    name: "Publish module"
+    needs: 
+    - job_deploy_module
+    env:
+      ARM_CLIENT_ID: ${{ secrets.ARM_CLIENT_ID }}
+      ARM_CLIENT_SECRET: ${{ secrets.ARM_CLIENT_SECRET }}
+      ARM_TENANT_ID: ${{ secrets.ARM_TENANT_ID }}
+      ARM_SUBSCRIPTION_ID: ${{ secrets.ARM_SUBSCRIPTION_ID }}
+    steps:
+    - name: "Checkout"
+      uses: actions/checkout@v2
+      with:
+        fetch-depth: 0
 
-  #   - name: Set environment variables
-  #     uses: deep-mm/set-variables@v1.0
-  #     with:
-  #       # Name of variable file
-  #       variableFileName: 'variables.module' # Don't write .json here
+    - name: Set environment variables
+      uses: deep-mm/set-variables@v1.0
+      with:
+        # Name of variable file
+        variableFileName: 'variables.module' # Don't write .json here
 
-  #   - name: "Publish module"
-  #     uses: ./.github/actions/templates/publishModule
-  #     with:
-  #       templateFilePath: 'arm/Microsoft.Storage/storageAccounts/deploy.json'
-  #       componentTemplateSpecRGName: '${{ env.componentTemplateSpecRGName }}'
-  #       componentTemplateSpecRGLocation: '${{ env.componentTemplateSpecRGLocation }}'
-  #       componentTemplateSpecName: 'storageAccounts'
-  #       componentTemplateSpecDescription: '${{ env.componentTemplateSpecDescription }}'
-  #       publishToTemplateSpec: '${{ env.publishToTemplateSpec }}'
-  #       versioningOption: '${{ github.event.inputs.versioningOption }}'
-  #       customVersion: '${{ github.event.inputs.customVersion }}'
+    - name: "Publish module"
+      uses: ./.github/actions/templates/publishModule
+      with:
+        templateFilePath: 'arm/Microsoft.Storage/storageAccounts/deploy.json'
+        componentTemplateSpecRGName: '${{ env.componentTemplateSpecRGName }}'
+        componentTemplateSpecRGLocation: '${{ env.componentTemplateSpecRGLocation }}'
+        componentTemplateSpecName: 'storageAccounts'
+        componentTemplateSpecDescription: '${{ env.componentTemplateSpecDescription }}'
+        publishToTemplateSpec: '${{ env.publishToTemplateSpec }}'
+        versioningOption: '${{ github.event.inputs.versioningOption }}'
+        customVersion: '${{ github.event.inputs.customVersion }}'
 
   ##############
   #   REMOVE   #
@@ -214,8 +214,8 @@ jobs:
     runs-on: ubuntu-20.04
     name: "Remove module"
     if: ${{ github.event.inputs.removeDeployment == 'true' }}
-    # needs: 
-    # - job_deploy_module
+    needs: 
+    - job_deploy_module
     env:
       ARM_CLIENT_ID: ${{ secrets.ARM_CLIENT_ID }}
       ARM_CLIENT_SECRET: ${{ secrets.ARM_CLIENT_SECRET }}
