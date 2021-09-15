@@ -16,6 +16,10 @@ on:
         required: false
         default: '1.0.0' 
 
+env:
+  moduleName: storageAccounts
+  modulePath: arm/Microsoft.Storage/storageAccounts
+
 jobs:
   # #############
   # #   TESTS   #
@@ -236,6 +240,6 @@ jobs:
     - name: "Remove module"
       uses: ./.github/actions/templates/removeModule
       with:
-        moduleName: 'storageAccounts'
-        templateFilePath: 'arm/Microsoft.Storage/storageAccounts/deploy.json'
+        moduleName: '${{ env.moduleName }}'
+        templateFilePath: '${{ env.modulePath }}/deploy.json'
         resourceGroupName: '${{ env.resourceGroupName }}'
