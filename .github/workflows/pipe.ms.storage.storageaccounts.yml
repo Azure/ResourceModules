@@ -14,7 +14,7 @@ on:
       customVersion:
         description: 'The version to enforce if [versionOption] is set to [custom]'
         required: false
-        default: '1.0.0' 
+        default: '0.0.1' 
 
 env:
   moduleName: 'storageAccounts'
