@@ -35,7 +35,7 @@ runs:
       shell: pwsh
       run: |
         # Load used functions
-        . "$env:GITHUB_ACTION_PATH/scripts/Set-AgentUp.ps1"
+        . ".github/actions/sharedScripts/Set-AgentUp.ps1"
 
         $setupInputParameters = @{
           clientID       = $env:ARM_CLIENT_ID
