@@ -22,12 +22,12 @@ inputs:
     default: 'false'
     required: false
   versioningOption:
-    description: '...'
-    default: '...'
+    description: 'The mode to handle the version increments [major|minor|patch|custom].'
+    default: 'patch'
     required: false
   customVersion:
-    description: '...'
-    default: '...'
+    description: 'The version to enforce if [versionOption] is set to [custom]'
+    default: '0.0.1'
     required: false
 
 runs:
@@ -49,7 +49,7 @@ runs:
 
     - name: "Publish module to template spec"
       shell: pwsh
-      if: ${{ inputs.publishToTemplateSpec == 'true' }}
+      # if: ${{ inputs.publishToTemplateSpec == 'true' }}
       run: |
         # Load used functions
         . "$env:GITHUB_ACTION_PATH/scripts/Publish-ModuleToTemplateSpec.ps1"

@@ -15,6 +15,29 @@
         {
             "name": "managementGroupId",
             "value": "alsehreslz-platform"
+        },
+
+
+
+        {
+            "name": "componentTemplateSpecRGName",
+            "value": "artifacts-rg"
+        },
+        {
+            "name": "componentTemplateSpecRGLocation",
+            "value": "WestEurope"
+        },
+        {
+            "name": "componentTemplateSpecName",
+            "value": "..."
+        },
+        {
+            "name": "componentTemplateSpecDescription",
+            "value": "components"
+        },
+        {
+            "name": "publishToTemplateSpec",
+            "value": "true"
         }
     ]
 }

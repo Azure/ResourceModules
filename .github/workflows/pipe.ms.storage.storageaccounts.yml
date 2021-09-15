@@ -10,6 +10,14 @@ on:
         description: 'Remove deployed module'
         required: false
         default: 'true' 
+      versioningOption:
+        description: 'The mode to handle the version increments [major|minor|patch|custom]'
+        required: false
+        default: 'patch' 
+      customVersion:
+        description: 'The version to enforce if [versionOption] is set to [custom]'
+        required: false
+        default: '1.0.0' 
 
 jobs:
   # #############
@@ -194,13 +202,13 @@ jobs:
       uses: ./.github/actions/templates/publishModule
       with:
         templateFilePath: 'arm/Microsoft.Storage/storageAccounts/deploy.json'
-        componentTemplateSpecRGName: '...'
-        componentTemplateSpecRGLocation: '...'
-        componentTemplateSpecName: '...'
-        componentTemplateSpecDescription: '...'
-        publishToTemplateSpec: '...'
-        versioningOption: '...'
-        customVersion: '...'
+        componentTemplateSpecRGName: '${{ env.componentTemplateSpecRGName }}'
+        componentTemplateSpecRGLocation: '${{ env.componentTemplateSpecRGLocation }}'
+        componentTemplateSpecName: 'storageAccounts'
+        componentTemplateSpecDescription: '${{ env.componentTemplateSpecDescription }}'
+        publishToTemplateSpec: '${{ env.publishToTemplateSpec }}'
+        versioningOption: '${{ inputs.versioningOption }}'
+        customVersion: '${{ inputs.customVersion }}'
 
   ##############
   #   REMOVE   #
