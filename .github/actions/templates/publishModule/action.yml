@@ -26,7 +26,7 @@ inputs:
     default: 'patch'
     required: false
   customVersion:
-    description: 'The version to enforce if [versionOption] is set to [custom]'
+    description: 'The version to enforce if [versioningOption] is set to [custom]'
     default: '0.0.1'
     required: false
 

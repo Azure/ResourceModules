@@ -204,8 +204,8 @@ jobs:
         componentTemplateSpecName: 'storageAccounts'
         componentTemplateSpecDescription: '${{ env.componentTemplateSpecDescription }}'
         publishToTemplateSpec: '${{ env.publishToTemplateSpec }}'
-        versioningOption: '${{ inputs.versioningOption }}'
-        customVersion: '${{ inputs.customVersion }}'
+        versioningOption: '${{ github.event.inputs.versioningOption }}'
+        customVersion: '${{ github.event.inputs.customVersion }}'
 
   ##############
   #   REMOVE   #
