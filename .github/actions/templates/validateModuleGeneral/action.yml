@@ -66,14 +66,3 @@ runs:
       # if: always()
       with:
         files: arm/.global/global-testResults.xml
-
-  # - task: PublishTestResults@2
-  #   displayName: Publish Test Results
-  #   inputs:
-  #     testRunTitle: "Global Module Tests"
-  #     testResultsFormat: NUnit
-  #     testResultsFiles: global-testResults.xml
-  #     failTaskOnFailedTests: false
-  #     searchFolder: 'arm/.global'
-  #   continueOnError: false
-  #   condition: succeededOrFailed()

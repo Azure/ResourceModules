@@ -41,13 +41,3 @@ runs:
       # if: always()
       with:
         files: module-testResults.xml
-
-  # - task: PublishTestResults@2
-  #   displayName: Publish Test Results
-  #   inputs:
-  #     testRunTitle: "Module Tests"
-  #     testResultsFormat: NUnit
-  #     testResultsFiles: module-testResults.xml
-  #     failTaskOnFailedTests: false
-  #   continueOnError: false
-  #   condition: succeededOrFailed()
