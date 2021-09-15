@@ -31,38 +31,44 @@ inputs:
 runs:
   using: "composite"
   steps:
-  - name: "Setup agent & login"
-    shell: pwsh
-    run: |
-      # Load used functions
-      . "$env:GITHUB_ACTION_PATH/scripts/Set-AgentUp.ps1"
+    - name: "Setup agent & login"
+      shell: pwsh
+      run: |
+        # Load used functions
+        . ".github/actions/sharedScripts/Connect-ToAzure.ps1"
+        . ".github/actions/sharedScripts/Set-EnvironmentOnAgent.ps1"
 
-      $setupInputParameters = @{
-        clientID       = $env:ARM_CLIENT_ID
-        clientSecret   = ConvertTo-SecureString -String $env:ARM_CLIENT_SECRET -AsPlainText -Force
-        tenantId       = $env:ARM_TENANT_ID
-        subscriptionId = $env:ARM_SUBSCRIPTION_ID
-      }
-      Set-AgentUp @setupInputParameters
-  - name: 'Validate [${{ inputs.templateFilePath }}]'
-    shell: pwsh
-    run: |
-      # Load used functions
-      . "$env:GITHUB_ACTION_PATH/scripts/New-ModuleDeployment.ps1"
+        # Set agent up
+        Set-EnvironmentOnAgent    
+        
+        # Login
+        $functionInput = @{
+          clientID       = $env:ARM_CLIENT_ID
+          clientSecret   = ConvertTo-SecureString -String $env:ARM_CLIENT_SECRET -AsPlainText -Force
+          tenantId       = $env:ARM_TENANT_ID
+          subscriptionId = $env:ARM_SUBSCRIPTION_ID
+        }
+        Connect-ToAzure @functionInput
 
-      $functionInput = @{
-        moduleName         = '${{ inputs.moduleName }}'
-        templateFilePath   = '${{ inputs.templateFilePath }}'
-        parameterFilePath  = '${{ inputs.parameterFilePath }}'
-        location           = '${{ inputs.location }}'
-        resourceGroupName  = '${{ inputs.resourceGroupName }}'
-        subscriptionId     = '${{ inputs.subscriptionId }}'
-        managementGroupId  = '${{ inputs.managementGroupId }}'
-        removeDeployment  = [System.Convert]::ToBoolean('${{ inputs.removeDeployment }}')
-      }
+    - name: 'Validate [${{ inputs.templateFilePath }}]'
+      shell: pwsh
+      run: |
+        # Load used functions
+        . "$env:GITHUB_ACTION_PATH/scripts/New-ModuleDeployment.ps1"
 
-      Write-Verbose "Invoke task with" -Verbose
-      $functionInput | Format-Table -AutoSize
+        $functionInput = @{
+          moduleName         = '${{ inputs.moduleName }}'
+          templateFilePath   = '${{ inputs.templateFilePath }}'
+          parameterFilePath  = '${{ inputs.parameterFilePath }}'
+          location           = '${{ inputs.location }}'
+          resourceGroupName  = '${{ inputs.resourceGroupName }}'
+          subscriptionId     = '${{ inputs.subscriptionId }}'
+          managementGroupId  = '${{ inputs.managementGroupId }}'
+          removeDeployment  = [System.Convert]::ToBoolean('${{ inputs.removeDeployment }}')
+        }
 
-      # Invoke deployment
-      New-ModuleDeployment @functionInput -Verbose
+        Write-Verbose "Invoke task with" -Verbose
+        $functionInput | Format-Table -AutoSize
+
+        # Invoke deployment
+        New-ModuleDeployment @functionInput -Verbose
