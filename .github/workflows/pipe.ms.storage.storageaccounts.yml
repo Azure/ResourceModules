@@ -4,6 +4,19 @@ on:
   push:
     branches:
       - users/alsehr/testPipelines
+    inputs:
+      removeDeployment:
+        description: 'Remove deployed module'
+        required: false
+        default: 'true' 
+      versioningOption:
+        description: 'The mode to handle the version increments [major|minor|patch|custom]'
+        required: false
+        default: 'patch' 
+      customVersion:
+        description: 'The version to enforce if [versionOption] is set to [custom]'
+        required: false
+        default: '1.0.0'
   workflow_dispatch:
     inputs:
       removeDeployment:
