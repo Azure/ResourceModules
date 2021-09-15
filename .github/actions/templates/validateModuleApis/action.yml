@@ -16,15 +16,18 @@ runs:
       shell: pwsh
       run: |
         # Load used functions
-        . ".github/actions/sharedScripts/Set-AgentUp.ps1"
+        . ".github/actions/sharedScripts/Connect-ToAzure.ps1"
+        . ".github/actions/sharedScripts/Set-EnvironmentOnAgent.ps1"
 
-        $setupInputParameters = @{
+        $functionInput = @{
           clientID       = $env:ARM_CLIENT_ID
           clientSecret   = ConvertTo-SecureString -String $env:ARM_CLIENT_SECRET -AsPlainText -Force
           tenantId       = $env:ARM_TENANT_ID
           subscriptionId = $env:ARM_SUBSCRIPTION_ID
         }
-        Set-AgentUp @setupInputParameters
+        Connect-ToAzure @functionInput
+
+        Set-EnvironmentOnAgent
 
     # [Module Pester Test] task(s)
     #-----------------------------

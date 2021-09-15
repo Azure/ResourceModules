@@ -19,7 +19,8 @@ runs:
       shell: pwsh
       run: |
         # Load used functions
-        . ".github/actions/sharedScripts/Set-AgentUp.ps1"
+        . ".github/actions/sharedScripts/Connect-ToAzure.ps1"
+        . ".github/actions/sharedScripts/Set-EnvironmentOnAgent.ps1"
 
         $functionInput = @{
           clientID       = $env:ARM_CLIENT_ID
@@ -27,7 +28,9 @@ runs:
           tenantId       = $env:ARM_TENANT_ID
           subscriptionId = $env:ARM_SUBSCRIPTION_ID
         }
-        Set-AgentUp @functionInput
+        Set-EnvironmentOnAgent @functionInput
+
+        Set-EnvironmentOnAgent
 
     - name: "Remove module"
       shell: pwsh
