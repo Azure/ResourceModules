@@ -1,8 +1,6 @@
 #Requires -Version 7
 
 param (
-    [string] $Parentlocation = (Split-Path -Parent $MyInvocation.MyCommand.Path -Resolve),
-    [string] $Parent = (Split-Path -Parent -Path $Parentlocation),
     [array] $moduleFolderPaths = ((Get-ChildItem -Path $Parent -Directory -Exclude ".global").FullName)
 )
 
@@ -10,8 +8,6 @@ $script:RGdeployment = "https://schema.management.azure.com/schemas/2019-04-01/d
 $script:Subscriptiondeployment = "https://schema.management.azure.com/schemas/2018-05-01/subscriptionDeploymentTemplate.json#"
 $script:MGdeployment = "https://schema.management.azure.com/schemas/2019-08-01/managementGroupDeploymentTemplate.json#"
 $script:Tenantdeployment = "https://schema.management.azure.com/schemas/2019-08-01/tenantDeploymentTemplate.json#"
-$script:Parentlocation = $Parentlocation
-$script:Parent = $Parent
 $script:moduleFolderPaths = $moduleFolderPaths
 
 $locationTestExceptions = @( "AzureNetappFiles", "TrafficManager", "PrivateDnsZones", "ManagementGroups")
