@@ -171,7 +171,8 @@ jobs:
   job_publish_module:
     runs-on: ubuntu-20.04
     name: "Publish module"
-    needs: job_deploy_module
+    # needs: 
+    # - job_deploy_module
     env:
       ARM_CLIENT_ID: ${{ secrets.ARM_CLIENT_ID }}
       ARM_CLIENT_SECRET: ${{ secrets.ARM_CLIENT_SECRET }}
