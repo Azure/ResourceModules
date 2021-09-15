@@ -17,158 +17,158 @@ on:
         default: '1.0.0' 
 
 jobs:
-  #############
-  #   TESTS   #
-  #############
-  # Individual tests
-  # ----------------
-  job_tests_module_individual:
-    runs-on: ubuntu-20.04
-    name: "Run individual module tests"
-    steps:
-    - name: "Checkout"
-      uses: actions/checkout@v2
-      with:
-        fetch-depth: 0
-    - name: "Test module"
-      uses: ./.github/actions/templates/validateModuleIndividual
-      with:
-        modulePath: 'arm/Microsoft.Storage/storageAccounts'
-        moduleName: 'storageAccounts'
+  # #############
+  # #   TESTS   #
+  # #############
+  # # Individual tests
+  # # ----------------
+  # job_tests_module_individual:
+  #   runs-on: ubuntu-20.04
+  #   name: "Run individual module tests"
+  #   steps:
+  #   - name: "Checkout"
+  #     uses: actions/checkout@v2
+  #     with:
+  #       fetch-depth: 0
+  #   - name: "Test module"
+  #     uses: ./.github/actions/templates/validateModuleIndividual
+  #     with:
+  #       modulePath: 'arm/Microsoft.Storage/storageAccounts'
+  #       moduleName: 'storageAccounts'
 
-  # Global tests
-  # ------------
-  job_tests_module_global:
-    runs-on: ubuntu-20.04
-    name: "Run global module tests"
-    env:
-      ARM_CLIENT_ID: ${{ secrets.ARM_CLIENT_ID }}
-      ARM_CLIENT_SECRET: ${{ secrets.ARM_CLIENT_SECRET }}
-      ARM_TENANT_ID: ${{ secrets.ARM_TENANT_ID }}
-      ARM_SUBSCRIPTION_ID: ${{ secrets.ARM_SUBSCRIPTION_ID }}
-    steps:
-    - name: "Checkout"
-      uses: actions/checkout@v2
-      with:
-        fetch-depth: 0
+  # # Global tests
+  # # ------------
+  # job_tests_module_global:
+  #   runs-on: ubuntu-20.04
+  #   name: "Run global module tests"
+  #   env:
+  #     ARM_CLIENT_ID: ${{ secrets.ARM_CLIENT_ID }}
+  #     ARM_CLIENT_SECRET: ${{ secrets.ARM_CLIENT_SECRET }}
+  #     ARM_TENANT_ID: ${{ secrets.ARM_TENANT_ID }}
+  #     ARM_SUBSCRIPTION_ID: ${{ secrets.ARM_SUBSCRIPTION_ID }}
+  #   steps:
+  #   - name: "Checkout"
+  #     uses: actions/checkout@v2
+  #     with:
+  #       fetch-depth: 0
 
-    - name: Set environment variables
-      uses: deep-mm/set-variables@v1.0
-      with:
-        # Name of variable file
-        variableFileName: 'variables.module' # Don't write .json here
+  #   - name: Set environment variables
+  #     uses: deep-mm/set-variables@v1.0
+  #     with:
+  #       # Name of variable file
+  #       variableFileName: 'variables.module' # Don't write .json here
 
-    - name: "Test module"
-      uses: ./.github/actions/templates/validateModuleGeneral
-      with:
-        modulePath: 'arm/Microsoft.Storage/storageAccounts'
-        moduleName: 'storageAccounts'
+  #   - name: "Test module"
+  #     uses: ./.github/actions/templates/validateModuleGeneral
+  #     with:
+  #       modulePath: 'arm/Microsoft.Storage/storageAccounts'
+  #       moduleName: 'storageAccounts'
 
-  # Global API tests
-  # ----------------
-  job_tests_module_global_api:
-    runs-on: ubuntu-20.04
-    name: "Run global API module tests"
-    env:
-      ARM_CLIENT_ID: ${{ secrets.ARM_CLIENT_ID }}
-      ARM_CLIENT_SECRET: ${{ secrets.ARM_CLIENT_SECRET }}
-      ARM_TENANT_ID: ${{ secrets.ARM_TENANT_ID }}
-      ARM_SUBSCRIPTION_ID: ${{ secrets.ARM_SUBSCRIPTION_ID }}
-    steps:
-    - name: "Checkout"
-      uses: actions/checkout@v2
-      with:
-        fetch-depth: 0
+  # # Global API tests
+  # # ----------------
+  # job_tests_module_global_api:
+  #   runs-on: ubuntu-20.04
+  #   name: "Run global API module tests"
+  #   env:
+  #     ARM_CLIENT_ID: ${{ secrets.ARM_CLIENT_ID }}
+  #     ARM_CLIENT_SECRET: ${{ secrets.ARM_CLIENT_SECRET }}
+  #     ARM_TENANT_ID: ${{ secrets.ARM_TENANT_ID }}
+  #     ARM_SUBSCRIPTION_ID: ${{ secrets.ARM_SUBSCRIPTION_ID }}
+  #   steps:
+  #   - name: "Checkout"
+  #     uses: actions/checkout@v2
+  #     with:
+  #       fetch-depth: 0
 
-    - name: Set environment variables
-      uses: deep-mm/set-variables@v1.0
-      with:
-        # Name of variable file
-        variableFileName: 'variables.module' # Don't write .json here
+  #   - name: Set environment variables
+  #     uses: deep-mm/set-variables@v1.0
+  #     with:
+  #       # Name of variable file
+  #       variableFileName: 'variables.module' # Don't write .json here
 
-    - name: "Test module"
-      uses: ./.github/actions/templates/validateModuleApis
-      with:
-        modulePath: 'arm/Microsoft.Storage/storageAccounts'
-        moduleName: 'storageAccounts'
+  #   - name: "Test module"
+  #     uses: ./.github/actions/templates/validateModuleApis
+  #     with:
+  #       modulePath: 'arm/Microsoft.Storage/storageAccounts'
+  #       moduleName: 'storageAccounts'
 
-  # Validate deployment module tests
-  # --------------------------------
-  job_tests_module_deploy_validate:
-    runs-on: ubuntu-20.04
-    name: "Run deployment validation module tests"
-    env:
-      ARM_CLIENT_ID: ${{ secrets.ARM_CLIENT_ID }}
-      ARM_CLIENT_SECRET: ${{ secrets.ARM_CLIENT_SECRET }}
-      ARM_TENANT_ID: ${{ secrets.ARM_TENANT_ID }}
-      ARM_SUBSCRIPTION_ID: ${{ secrets.ARM_SUBSCRIPTION_ID }}
-    strategy:
-      matrix:
-        parameterFilePaths: ['noname.parameters.json','parameters.json']
-    steps:
-    - name: "Checkout"
-      uses: actions/checkout@v2
-      with:
-        fetch-depth: 0
+  # # Validate deployment module tests
+  # # --------------------------------
+  # job_tests_module_deploy_validate:
+  #   runs-on: ubuntu-20.04
+  #   name: "Run deployment validation module tests"
+  #   env:
+  #     ARM_CLIENT_ID: ${{ secrets.ARM_CLIENT_ID }}
+  #     ARM_CLIENT_SECRET: ${{ secrets.ARM_CLIENT_SECRET }}
+  #     ARM_TENANT_ID: ${{ secrets.ARM_TENANT_ID }}
+  #     ARM_SUBSCRIPTION_ID: ${{ secrets.ARM_SUBSCRIPTION_ID }}
+  #   strategy:
+  #     matrix:
+  #       parameterFilePaths: ['noname.parameters.json','parameters.json']
+  #   steps:
+  #   - name: "Checkout"
+  #     uses: actions/checkout@v2
+  #     with:
+  #       fetch-depth: 0
 
-    - name: Set environment variables
-      uses: deep-mm/set-variables@v1.0
-      with:
-        # Name of variable file
-        variableFileName: 'variables.module' # Don't write .json here
+  #   - name: Set environment variables
+  #     uses: deep-mm/set-variables@v1.0
+  #     with:
+  #       # Name of variable file
+  #       variableFileName: 'variables.module' # Don't write .json here
 
-    - name: "Test module"
-      uses: ./.github/actions/templates/validateModuleDeploy
-      with:
-        templateFilePath: 'arm/Microsoft.Storage/storageAccounts/deploy.json'
-        parameterFilePath: 'arm/Microsoft.Storage/storageAccounts/parameters/${{ matrix.parameterFilePaths }}'
-        location: '${{ env.defaultLocation }}'
-        resourceGroupName: '${{ env.resourceGroupName }}'
-        subscriptionId: '${{ env.subscriptionId }}'
-        managementGroupId: '${{ env.managementGroupId }}'
+  #   - name: "Test module"
+  #     uses: ./.github/actions/templates/validateModuleDeploy
+  #     with:
+  #       templateFilePath: 'arm/Microsoft.Storage/storageAccounts/deploy.json'
+  #       parameterFilePath: 'arm/Microsoft.Storage/storageAccounts/parameters/${{ matrix.parameterFilePaths }}'
+  #       location: '${{ env.defaultLocation }}'
+  #       resourceGroupName: '${{ env.resourceGroupName }}'
+  #       subscriptionId: '${{ env.subscriptionId }}'
+  #       managementGroupId: '${{ env.managementGroupId }}'
 
-  ##############
-  #   DEPLOY   #
-  ##############
-  job_deploy_module:
-    runs-on: ubuntu-20.04
-    name: "Deploy module"
-    needs:
-    - job_tests_module_individual
-    - job_tests_module_global
-    - job_tests_module_global_api
-    - job_tests_module_deploy_validate
-    env:
-      ARM_CLIENT_ID: ${{ secrets.ARM_CLIENT_ID }}
-      ARM_CLIENT_SECRET: ${{ secrets.ARM_CLIENT_SECRET }}
-      ARM_TENANT_ID: ${{ secrets.ARM_TENANT_ID }}
-      ARM_SUBSCRIPTION_ID: ${{ secrets.ARM_SUBSCRIPTION_ID }}
-    strategy:
-      matrix:
-        parameterFilePaths: ['noname.parameters.json','parameters.json']
-    steps:
-    - name: "Checkout"
-      uses: actions/checkout@v2
-      with:
-        fetch-depth: 0
+  # ##############
+  # #   DEPLOY   #
+  # ##############
+  # job_deploy_module:
+  #   runs-on: ubuntu-20.04
+  #   name: "Deploy module"
+  #   needs:
+  #   - job_tests_module_individual
+  #   - job_tests_module_global
+  #   - job_tests_module_global_api
+  #   - job_tests_module_deploy_validate
+  #   env:
+  #     ARM_CLIENT_ID: ${{ secrets.ARM_CLIENT_ID }}
+  #     ARM_CLIENT_SECRET: ${{ secrets.ARM_CLIENT_SECRET }}
+  #     ARM_TENANT_ID: ${{ secrets.ARM_TENANT_ID }}
+  #     ARM_SUBSCRIPTION_ID: ${{ secrets.ARM_SUBSCRIPTION_ID }}
+  #   strategy:
+  #     matrix:
+  #       parameterFilePaths: ['noname.parameters.json','parameters.json']
+  #   steps:
+  #   - name: "Checkout"
+  #     uses: actions/checkout@v2
+  #     with:
+  #       fetch-depth: 0
 
-    - name: Set environment variables
-      uses: deep-mm/set-variables@v1.0
-      with:
-        # Name of variable file
-        variableFileName: 'variables.module' # Don't write .json here
+  #   - name: Set environment variables
+  #     uses: deep-mm/set-variables@v1.0
+  #     with:
+  #       # Name of variable file
+  #       variableFileName: 'variables.module' # Don't write .json here
 
-    - name: "Deploy module"
-      uses: ./.github/actions/templates/deployModule
-      with:
-        moduleName: storageAccounts
-        templateFilePath: 'arm/Microsoft.Storage/storageAccounts/deploy.json'
-        parameterFilePath: 'arm/Microsoft.Storage/storageAccounts/parameters/${{ matrix.parameterFilePaths }}'
-        location: '${{ env.defaultLocation }}'
-        resourceGroupName: '${{ env.resourceGroupName }}'
-        subscriptionId: '${{ env.subscriptionId }}'
-        managementGroupId: '${{ env.managementGroupId }}'
-        removeDeployment: '${{ inputs.removeDeployment }}'
+  #   - name: "Deploy module"
+  #     uses: ./.github/actions/templates/deployModule
+  #     with:
+  #       moduleName: storageAccounts
+  #       templateFilePath: 'arm/Microsoft.Storage/storageAccounts/deploy.json'
+  #       parameterFilePath: 'arm/Microsoft.Storage/storageAccounts/parameters/${{ matrix.parameterFilePaths }}'
+  #       location: '${{ env.defaultLocation }}'
+  #       resourceGroupName: '${{ env.resourceGroupName }}'
+  #       subscriptionId: '${{ env.subscriptionId }}'
+  #       managementGroupId: '${{ env.managementGroupId }}'
+  #       removeDeployment: '${{ inputs.removeDeployment }}'
 
   ###############
   #   PUBLISH   #
@@ -176,8 +176,8 @@ jobs:
   job_publish_module:
     runs-on: ubuntu-20.04
     name: "Publish module"
-    needs: 
-    - job_deploy_module
+    # needs: 
+    # - job_deploy_module
     env:
       ARM_CLIENT_ID: ${{ secrets.ARM_CLIENT_ID }}
       ARM_CLIENT_SECRET: ${{ secrets.ARM_CLIENT_SECRET }}
@@ -214,8 +214,8 @@ jobs:
     runs-on: ubuntu-20.04
     name: "Remove module"
     if: ${{ inputs.isRemoveModule == 'true' }}
-    needs: 
-    - job_deploy_module
+    # needs: 
+    # - job_deploy_module
     env:
       ARM_CLIENT_ID: ${{ secrets.ARM_CLIENT_ID }}
       ARM_CLIENT_SECRET: ${{ secrets.ARM_CLIENT_SECRET }}
