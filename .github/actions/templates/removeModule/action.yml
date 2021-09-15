@@ -1,0 +1,23 @@
+name: 'Remove module'
+description: 'Remove module'
+
+inputs:
+  templateFilePath:
+    description: 'The path to the template file to use for testing & deployment'
+    required: true
+  parameterFilePath:
+    description: 'The path to the parameter file to use for testing & deployment'
+    required: true
+
+runs:
+  using: "composite"
+  steps:
+  - name: "Remove module"
+    shell: pwsh
+    run: |
+      # Load used functions
+      . "$env:GITHUB_ACTION_PATH/scripts/<ScriptName>.ps1"
+
+      $setupInputParameters = @{
+      }
+      <FunctionName> @setupInputParameters
