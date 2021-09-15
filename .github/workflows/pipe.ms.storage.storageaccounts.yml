@@ -1,9 +1,6 @@
 name: "Storage Account - Test Pipeline"
 
 on:
-  push:
-    branches:
-      - users/alsehr/testPipelines
   workflow_dispatch:
     inputs:
       removeDeployment:
