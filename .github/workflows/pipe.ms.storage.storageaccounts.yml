@@ -207,6 +207,7 @@ jobs:
   job_remove_module:
     runs-on: ubuntu-20.04
     name: "Remove module"
+    if: ${{ inputs.isRemoveModule == 'true' }}
     # needs: 
     # - job_deploy_module
     env:
@@ -217,12 +218,6 @@ jobs:
     strategy:
       matrix:
         parameterFilePaths: ['noname.parameters.json','parameters.json']
-    if: ${{ inputs.isRemoveModule == 'true' }}
-    env:
-      ARM_CLIENT_ID: ${{ secrets.ARM_CLIENT_ID }}
-      ARM_CLIENT_SECRET: ${{ secrets.ARM_CLIENT_SECRET }}
-      ARM_TENANT_ID: ${{ secrets.ARM_TENANT_ID }}
-      ARM_SUBSCRIPTION_ID: ${{ secrets.ARM_SUBSCRIPTION_ID }}
     steps:
     - name: "Checkout"
       uses: actions/checkout@v2
