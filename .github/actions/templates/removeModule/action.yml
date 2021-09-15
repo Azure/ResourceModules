@@ -2,22 +2,46 @@ name: 'Remove module'
 description: 'Remove module'
 
 inputs:
-  templateFilePath:
-    description: 'The path to the template file to use for testing & deployment'
+  moduleName:
+    description: 'The name of the module to remove'
     required: true
-  parameterFilePath:
-    description: 'The path to the parameter file to use for testing & deployment'
+  templateFilePath:
+    description: 'The path to the template file set for removal. Used to determine the type of resource.'
+    required: true
+  resourceGroupName:
+    description: 'The resource group the module is deployed into'
     required: true
 
 runs:
   using: "composite"
   steps:
+  - name: "Setup agent & login"
+    shell: pwsh
+    run: |
+      # Load used functions
+      . "$env:GITHUB_ACTION_PATH/scripts/Set-AgentUp.ps1"
+
+      $functionInput = @{
+        clientID       = $env:ARM_CLIENT_ID
+        clientSecret   = ConvertTo-SecureString -String $env:ARM_CLIENT_SECRET -AsPlainText -Force
+        tenantId       = $env:ARM_TENANT_ID
+        subscriptionId = $env:ARM_SUBSCRIPTION_ID
+      }
+      Set-AgentUp @functionInput
+
   - name: "Remove module"
     shell: pwsh
     run: |
       # Load used functions
-      . "$env:GITHUB_ACTION_PATH/scripts/<ScriptName>.ps1"
+      . "$env:GITHUB_ACTION_PATH/scripts/Remove-DeployedModule.ps1"
 
-      $setupInputParameters = @{
+      $functionInput = @{
+        moduleName        = '${{ inputs.moduleName }}'
+        resourceGroupName = '${{ inputs.resourceGroupName }}'
+        templateFilePath  = '${{ inputs.templateFilePath }}'
       }
-      <FunctionName> @setupInputParameters
+
+      Write-Verbose "Invoke task with" -Verbose
+      $functionInput | Format-Table -AutoSize
+
+      Remove-DeployedModule @functionInput -Verbose

@@ -16,6 +16,10 @@ on:
         required: false
         default: '1.0.0' 
 
+env:
+  moduleName: 'storageAccounts'
+  modulePath: 'arm/Microsoft.Storage/storageAccounts'
+
 jobs:
   #############
   #   TESTS   #
@@ -33,8 +37,8 @@ jobs:
     - name: "Test module"
       uses: ./.github/actions/templates/validateModuleIndividual
       with:
-        modulePath: 'arm/Microsoft.Storage/storageAccounts'
-        moduleName: 'storageAccounts'
+        modulePath: '${{ env.modulePath }}'
+        moduleName: '${{ env.moduleName}}'
 
   # Global tests
   # ------------
@@ -61,8 +65,8 @@ jobs:
     - name: "Test module"
       uses: ./.github/actions/templates/validateModuleGeneral
       with:
-        modulePath: 'arm/Microsoft.Storage/storageAccounts'
-        moduleName: 'storageAccounts'
+        modulePath: '${{ env.modulePath }}'
+        moduleName: '${{ env.moduleName}}'
 
   # Global API tests
   # ----------------
@@ -89,8 +93,8 @@ jobs:
     - name: "Test module"
       uses: ./.github/actions/templates/validateModuleApis
       with:
-        modulePath: 'arm/Microsoft.Storage/storageAccounts'
-        moduleName: 'storageAccounts'
+        modulePath: '${{ env.modulePath }}'
+        moduleName: '${{ env.moduleName}}'
 
   # Validate deployment module tests
   # --------------------------------
@@ -120,8 +124,8 @@ jobs:
     - name: "Test module"
       uses: ./.github/actions/templates/validateModuleDeploy
       with:
-        templateFilePath: 'arm/Microsoft.Storage/storageAccounts/deploy.json'
-        parameterFilePath: 'arm/Microsoft.Storage/storageAccounts/parameters/${{ matrix.parameterFilePaths }}'
+        templateFilePath: '${{ env.modulePath }}/deploy.json'
+        parameterFilePath: '${{ env.modulePath }}/parameters/${{ matrix.parameterFilePaths }}'
         location: '${{ env.defaultLocation }}'
         resourceGroupName: '${{ env.resourceGroupName }}'
         subscriptionId: '${{ env.subscriptionId }}'
@@ -161,14 +165,14 @@ jobs:
     - name: "Deploy module"
       uses: ./.github/actions/templates/deployModule
       with:
-        moduleName: storageAccounts
-        templateFilePath: 'arm/Microsoft.Storage/storageAccounts/deploy.json'
-        parameterFilePath: 'arm/Microsoft.Storage/storageAccounts/parameters/${{ matrix.parameterFilePaths }}'
+        moduleName: '${{ env.moduleName }}'
+        templateFilePath: '${{ env.modulePath }}/deploy.json'
+        parameterFilePath: '${{ env.modulePath }}/parameters/${{ matrix.parameterFilePaths }}'
         location: '${{ env.defaultLocation }}'
         resourceGroupName: '${{ env.resourceGroupName }}'
         subscriptionId: '${{ env.subscriptionId }}'
         managementGroupId: '${{ env.managementGroupId }}'
-        removeDeployment: '${{ inputs.removeDeployment }}'
+        removeDeployment: '${{ github.event.inputs.removeDeployment }}'
 
   ###############
   #   PUBLISH   #
@@ -198,14 +202,14 @@ jobs:
     - name: "Publish module"
       uses: ./.github/actions/templates/publishModule
       with:
-        templateFilePath: 'arm/Microsoft.Storage/storageAccounts/deploy.json'
+        templateFilePath: '${{ env.modulePath }}/deploy.json'
         componentTemplateSpecRGName: '${{ env.componentTemplateSpecRGName }}'
         componentTemplateSpecRGLocation: '${{ env.componentTemplateSpecRGLocation }}'
-        componentTemplateSpecName: 'storageAccounts'
+        componentTemplateSpecName: '${{ env.moduleName }}'
         componentTemplateSpecDescription: '${{ env.componentTemplateSpecDescription }}'
         publishToTemplateSpec: '${{ env.publishToTemplateSpec }}'
-        versioningOption: '${{ inputs.versioningOption }}'
-        customVersion: '${{ inputs.customVersion }}'
+        versioningOption: '${{ github.event.inputs.versioningOption }}'
+        customVersion: '${{ github.event.inputs.customVersion }}'
 
   ##############
   #   REMOVE   #
@@ -213,7 +217,7 @@ jobs:
   job_remove_module:
     runs-on: ubuntu-20.04
     name: "Remove module"
-    if: ${{ inputs.isRemoveModule == 'true' }}
+    if: ${{ github.event.inputs.removeDeployment == 'true' }}
     needs: 
     - job_deploy_module
     env:
@@ -221,9 +225,6 @@ jobs:
       ARM_CLIENT_SECRET: ${{ secrets.ARM_CLIENT_SECRET }}
       ARM_TENANT_ID: ${{ secrets.ARM_TENANT_ID }}
       ARM_SUBSCRIPTION_ID: ${{ secrets.ARM_SUBSCRIPTION_ID }}
-    strategy:
-      matrix:
-        parameterFilePaths: ['noname.parameters.json','parameters.json']
     steps:
     - name: "Checkout"
       uses: actions/checkout@v2
@@ -239,5 +240,6 @@ jobs:
     - name: "Remove module"
       uses: ./.github/actions/templates/removeModule
       with:
-        templateFilePath: 'arm/Microsoft.Storage/storageAccounts/deploy.json'
-        parameterFilePath: 'arm/Microsoft.Storage/storageAccounts/parameters/${{ matrix.parameterFilePaths }}'
+        moduleName: '${{ env.moduleName }}'
+        templateFilePath: '${{ env.modulePath }}/deploy.json'
+        resourceGroupName: '${{ env.resourceGroupName }}'
