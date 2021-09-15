@@ -1,4 +1,4 @@
-# KeyVault
+# IP Groups
 
 This module deploys an IP Group, with resource lock.
 
