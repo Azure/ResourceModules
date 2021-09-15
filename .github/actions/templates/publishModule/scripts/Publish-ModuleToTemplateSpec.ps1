@@ -16,9 +16,6 @@ Mandatory. The name of the module to publish. It will be the name of the templat
 .PARAMETER templateFilePath
 Mandatory. Path to the module deployment file from root.
 
-.PARAMETER componentsBasePath
-Mandatory. The path to the component/module root.
-
 .PARAMETER componentTemplateSpecRGName
 Mandatory. ResourceGroup of the template spec to publish to.
 
@@ -35,7 +32,7 @@ Optional. A custom version that can be provided by the UI. '-' represents an emp
 Optional. A version option that can be specified in the UI. Defaults to 'patch'
 
 .EXAMPLE
-Publish-ModuleToTemplateSpec -componentTemplateSpecName 'KeyVault' templateFilePath 'Modules/ARM/KeyVault/deploy.json' -componentsBasePath '$(System.DefaultWorkingDirectory)' -componentTemplateSpecRGName 'artifacts-rg' -componentTemplateSpecRGLocation 'West Europe' -componentTemplateSpecDescription 'iacs key vault' -customVersion '3.0.0'
+Publish-ModuleToTemplateSpec -componentTemplateSpecName 'KeyVault' templateFilePath 'Modules/ARM/KeyVault/deploy.json' -componentTemplateSpecRGName 'artifacts-rg' -componentTemplateSpecRGLocation 'West Europe' -componentTemplateSpecDescription 'iacs key vault' -customVersion '3.0.0'
 
 Try to publish the KeyVault module with version 3.0.0 to a template spec called KeyVault based on a value provided in the UI
 #>
@@ -48,9 +45,6 @@ function Publish-ModuleToTemplateSpec {
 
         [Parameter(Mandatory)]
         [string] $templateFilePath,
-
-        [Parameter(Mandatory)]
-        [string] $componentsBasePath,
 
         [Parameter(Mandatory)]
         [string] $componentTemplateSpecRGName,

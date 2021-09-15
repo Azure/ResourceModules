@@ -28,10 +28,6 @@
             "value": "WestEurope"
         },
         {
-            "name": "componentTemplateSpecName",
-            "value": "..."
-        },
-        {
             "name": "componentTemplateSpecDescription",
             "value": "components"
         },
