@@ -1,8 +1,8 @@
-# ![AzureIcon] Components
+# ![AzureIcon] Modules
 
 ## Description
 
-This repository includes a collection of advanced and curated Components / Units consisting of [Azure Resource Manager (ARM)][AzureResourceManager] and [Bicep][Bicep] templates.
+This repository includes a collection of advanced and curated Modules consisting of [Azure Resource Manager (ARM)][AzureResourceManager] and [Bicep][Bicep] templates.
 
 ## Status
 
@@ -23,7 +23,7 @@ This repository includes a collection of advanced and curated Components / Units
 * For information on contributing, see [Contribution](<https://github.com/Azure/Modules/wiki#contributing>)
 * File an issue via [GitHub Issues](https://github.com/azure/Modules/issues/new/choose)
 
-## Available modules
+## Available Modules
 | Name | ARM / Bicep | Deploy |
 | - | - | - |
 | Action Group | :heavy_check_mark:/ | [![Deploy to Azure](/docs/media/deploytoazure.svg?sanitize=true)](<https://portal.azure.com/#create/Microsoft.Template/uri/https%3a%2f%2fraw.githubusercontent.com%2fAzure%2fModules%2fmain%2farm%5cMicrosoft.Insights%5cactionGroups%2fdeploy.json>) |
