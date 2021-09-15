@@ -170,42 +170,42 @@ jobs:
   #       managementGroupId: '${{ env.managementGroupId }}'
   #       removeDeployment: '${{ inputs.removeDeployment }}'
 
-  ###############
-  #   PUBLISH   #
-  ###############
-  job_publish_module:
-    runs-on: ubuntu-20.04
-    name: "Publish module"
-    # needs: 
-    # - job_deploy_module
-    env:
-      ARM_CLIENT_ID: ${{ secrets.ARM_CLIENT_ID }}
-      ARM_CLIENT_SECRET: ${{ secrets.ARM_CLIENT_SECRET }}
-      ARM_TENANT_ID: ${{ secrets.ARM_TENANT_ID }}
-      ARM_SUBSCRIPTION_ID: ${{ secrets.ARM_SUBSCRIPTION_ID }}
-    steps:
-    - name: "Checkout"
-      uses: actions/checkout@v2
-      with:
-        fetch-depth: 0
+  # ###############
+  # #   PUBLISH   #
+  # ###############
+  # job_publish_module:
+  #   runs-on: ubuntu-20.04
+  #   name: "Publish module"
+  #   needs: 
+  #   - job_deploy_module
+  #   env:
+  #     ARM_CLIENT_ID: ${{ secrets.ARM_CLIENT_ID }}
+  #     ARM_CLIENT_SECRET: ${{ secrets.ARM_CLIENT_SECRET }}
+  #     ARM_TENANT_ID: ${{ secrets.ARM_TENANT_ID }}
+  #     ARM_SUBSCRIPTION_ID: ${{ secrets.ARM_SUBSCRIPTION_ID }}
+  #   steps:
+  #   - name: "Checkout"
+  #     uses: actions/checkout@v2
+  #     with:
+  #       fetch-depth: 0
 
-    - name: Set environment variables
-      uses: deep-mm/set-variables@v1.0
-      with:
-        # Name of variable file
-        variableFileName: 'variables.module' # Don't write .json here
+  #   - name: Set environment variables
+  #     uses: deep-mm/set-variables@v1.0
+  #     with:
+  #       # Name of variable file
+  #       variableFileName: 'variables.module' # Don't write .json here
 
-    - name: "Publish module"
-      uses: ./.github/actions/templates/publishModule
-      with:
-        templateFilePath: 'arm/Microsoft.Storage/storageAccounts/deploy.json'
-        componentTemplateSpecRGName: '${{ env.componentTemplateSpecRGName }}'
-        componentTemplateSpecRGLocation: '${{ env.componentTemplateSpecRGLocation }}'
-        componentTemplateSpecName: 'storageAccounts'
-        componentTemplateSpecDescription: '${{ env.componentTemplateSpecDescription }}'
-        publishToTemplateSpec: '${{ env.publishToTemplateSpec }}'
-        versioningOption: '${{ github.event.inputs.versioningOption }}'
-        customVersion: '${{ github.event.inputs.customVersion }}'
+  #   - name: "Publish module"
+  #     uses: ./.github/actions/templates/publishModule
+  #     with:
+  #       templateFilePath: 'arm/Microsoft.Storage/storageAccounts/deploy.json'
+  #       componentTemplateSpecRGName: '${{ env.componentTemplateSpecRGName }}'
+  #       componentTemplateSpecRGLocation: '${{ env.componentTemplateSpecRGLocation }}'
+  #       componentTemplateSpecName: 'storageAccounts'
+  #       componentTemplateSpecDescription: '${{ env.componentTemplateSpecDescription }}'
+  #       publishToTemplateSpec: '${{ env.publishToTemplateSpec }}'
+  #       versioningOption: '${{ github.event.inputs.versioningOption }}'
+  #       customVersion: '${{ github.event.inputs.customVersion }}'
 
   ##############
   #   REMOVE   #
@@ -213,7 +213,7 @@ jobs:
   job_remove_module:
     runs-on: ubuntu-20.04
     name: "Remove module"
-    if: ${{ inputs.isRemoveModule == 'true' }}
+    if: ${{ github.event.inputs.isRemoveModule == 'true' }}
     # needs: 
     # - job_deploy_module
     env:
@@ -221,9 +221,6 @@ jobs:
       ARM_CLIENT_SECRET: ${{ secrets.ARM_CLIENT_SECRET }}
       ARM_TENANT_ID: ${{ secrets.ARM_TENANT_ID }}
       ARM_SUBSCRIPTION_ID: ${{ secrets.ARM_SUBSCRIPTION_ID }}
-    strategy:
-      matrix:
-        parameterFilePaths: ['noname.parameters.json','parameters.json']
     steps:
     - name: "Checkout"
       uses: actions/checkout@v2
@@ -239,5 +236,6 @@ jobs:
     - name: "Remove module"
       uses: ./.github/actions/templates/removeModule
       with:
+        moduleName: 'storageAccounts'
         templateFilePath: 'arm/Microsoft.Storage/storageAccounts/deploy.json'
-        parameterFilePath: 'arm/Microsoft.Storage/storageAccounts/parameters/${{ matrix.parameterFilePaths }}'
+        resourceGroupName: '${{ env.resourceGroupName }}'
