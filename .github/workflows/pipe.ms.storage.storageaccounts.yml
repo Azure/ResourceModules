@@ -19,7 +19,6 @@ on:
 env:
   moduleName: 'storageAccounts'
   modulePath: 'arm/Microsoft.Storage/storageAccounts'
-  parameterFilePaths: "['noname.parameters.json','parameters.json']"
   ARM_CLIENT_ID: ${{ secrets.ARM_CLIENT_ID }}
   ARM_CLIENT_SECRET: ${{ secrets.ARM_CLIENT_SECRET }}
   ARM_TENANT_ID: ${{ secrets.ARM_TENANT_ID }}
@@ -84,7 +83,7 @@ jobs:
     name: "Run deployment validation module tests"
     strategy:
       matrix:
-        parameterFilePaths: ${{ fromJSON( env.parameterFilePaths ) }}
+        parameterFilePaths: ['noname.parameters.json','parameters.json']
     steps:
       - name: "Checkout"
         uses: actions/checkout@v2
@@ -118,7 +117,7 @@ jobs:
     - job_tests_module_deploy_validate
     strategy:
       matrix:
-        parameterFilePaths: ${{ fromJSON( env.parameterFilePaths ) }}
+        parameterFilePaths: ['noname.parameters.json','parameters.json']
     steps:
       - name: "Checkout"
         uses: actions/checkout@v2
