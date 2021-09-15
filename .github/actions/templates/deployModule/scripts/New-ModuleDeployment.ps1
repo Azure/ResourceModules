@@ -28,7 +28,7 @@ Optional. Id of the subscription to deploy into. Mandatory if deploying into a s
 Optional. Name of the management group to deploy into. Mandatory if deploying into a management group (management group level) 
 
 .PARAMETER removeDeployment
-Optional. Set to 'true' to add the tag 'RemoveModule = <ModuleName>' to the deployment. Is picked up by the removal stage to remove the resource again.
+Optional. Set to 'true' to add the tag 'removeModule = <ModuleName>' to the deployment. Is picked up by the removal stage to remove the resource again.
 
 .EXAMPLE
 New-ModuleDeployment -ModuleName 'KeyVault' -templateFilePath 'Modules/ARM/KeyVault/deploy.json' -parameterFilePath 'Modules/ARM/KeyVault/Parameters/parameters.json' -location 'WestEurope' -resourceGroupName 'aLegendaryRg'
@@ -87,7 +87,7 @@ function New-ModuleDeployment {
             if (-not $parameterFileTags) {
                 $parameterFileTags = @{}
             }
-            $parameterFileTags['RemoveModule'] = $moduleName
+            $parameterFileTags['removeModule'] = $moduleName
         }
         #######################
         ## INVOKE DEPLOYMENT ##
@@ -107,7 +107,7 @@ function New-ModuleDeployment {
                     }
                 }
                 if ($removeDeployment) {
-                    Write-Verbose "Because the subsequent removal is enabled after the Module $moduleName has been deployed, the following tags (RemoveModule: $moduleName) are now set on the resource."
+                    Write-Verbose "Because the subsequent removal is enabled after the Module $moduleName has been deployed, the following tags (removeModule: $moduleName) are now set on the resource."
                     Write-Verbose "This is necessary so that the later running Removal Stage can remove the corresponding Module from the Resource Group again."
                     # Overwrites parameter file tags parameter  
                     $DeploymentInputs += @{ 
@@ -127,7 +127,7 @@ function New-ModuleDeployment {
                     }
                 }
                 if ($removeDeployment) {
-                    Write-Verbose "Because the subsequent removal is enabled after the Module $moduleName has been deployed, the following tags (RemoveModule: $moduleName) are now set on the resource."
+                    Write-Verbose "Because the subsequent removal is enabled after the Module $moduleName has been deployed, the following tags (removeModule: $moduleName) are now set on the resource."
                     Write-Verbose "This is necessary so that the later running Removal Stage can remove the corresponding Module from the Resource Group again."
                     # Overwrites parameter file tags parameter  
                     $DeploymentInputs += @{ 

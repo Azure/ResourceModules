@@ -4,7 +4,7 @@ Invoke the removal of a deployed module
 
 .DESCRIPTION
 Invoke the removal of a deployed module.
-Requires the resource in question to be tagged with 'RemoveModule = <moduleName>'
+Requires the resource in question to be tagged with 'removeModule = <moduleName>'
 
 .PARAMETER moduleName
 Mandatory. The name of the module to remove
@@ -23,7 +23,7 @@ Mandatory. Path to the module template from root.
 .EXAMPLE
 Remove-DeployedModule -moduleName 'KeyVault' -resourceGroupName 'validation-rg' -modulePath 'Modules/ARM/KeyVault/deploy.json'
 
-Remove any resource in the resource group 'validation-rg' with tag 'RemoveModule = KeyVault'
+Remove any resource in the resource group 'validation-rg' with tag 'removeModule = KeyVault'
 #>
 function Remove-DeployedModule {
 
@@ -51,10 +51,10 @@ function Remove-DeployedModule {
         $deploymentSchema = (ConvertFrom-Json (Get-Content -Path $templateFilePath -Raw )).'$schema'
         if ($deploymentSchema -match '\/subscriptionDeploymentTemplate.json#$') {
             Write-Verbose "Handle subscription level removal"
-            $resourceGroupToRemove = Get-AzResourceGroup -Tag @{ RemoveModule = $moduleName }
+            $resourceGroupToRemove = Get-AzResourceGroup -Tag @{ removeModule = $moduleName }
             if ($resourceGroupToRemove) {
                 if ($resourceGroupToRemove.Count -gt 1) {
-                    Write-Error "More than 1 Resource Group has been found with tag [RemoveModule=$moduleName]. Only 1 Resource Group is expected."
+                    Write-Error "More than 1 Resource Group has been found with tag [removeModule=$moduleName]. Only 1 Resource Group is expected."
                 }
                 elseif (Get-AzResource -ResourceGroupName $resourceGroupToRemove.ResourceGroupName) {
                     Write-Error "Resource Group [$resourceGroupName] still has resources provisioned."
@@ -74,19 +74,19 @@ function Remove-DeployedModule {
                 }
             }
             else {
-                Write-Error ("Unable to find Resource Group by tag [RemoveModule={0}]." -f $moduleName)
+                Write-Error ("Unable to find Resource Group by tag [removeModule={0}]." -f $moduleName)
             }
         }
         else {
             Write-Verbose "Handle resource group level removal"
-            $resourcesToRemove = Get-AzResource -Tag @{ RemoveModule = $moduleName } -ResourceGroupName $resourceGroupName
+            $resourcesToRemove = Get-AzResource -Tag @{ removeModule = $moduleName } -ResourceGroupName $resourceGroupName
             if ($resourcesToRemove) {
 
                 # If VMs are available, delete those first
                 if($vmsContained = $resourcesToRemove | Where-Object { $_.resourcetype -eq 'Microsoft.Compute/virtualMachines' }) {
                     Remove-Resource -resourcesToRemove $vmsContained
                     # refresh
-                    $resourcesToRemove = Get-AzResource -Tag @{ RemoveModule = $moduleName } -ResourceGroupName $resourceGroupName
+                    $resourcesToRemove = Get-AzResource -Tag @{ removeModule = $moduleName } -ResourceGroupName $resourceGroupName
                 }
 
                 $currentRety = 0
@@ -109,7 +109,7 @@ function Remove-DeployedModule {
                 }
             }
             else {
-                Write-Error ("Unable to find resources by tags [RemoveModule=$moduleName] in resource group [$resourceGroupName].")
+                Write-Error ("Unable to find resources by tags [removeModule=$moduleName] in resource group [$resourceGroupName].")
             }
         }
     }
