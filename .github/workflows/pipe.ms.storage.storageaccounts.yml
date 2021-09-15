@@ -89,6 +89,11 @@ jobs:
         uses: actions/checkout@v2
         with:
           fetch-depth: 0
+      - name: Set environment variables
+        uses: deep-mm/set-variables@v1.0
+        with:
+          # Name of variable file
+          variableFileName: 'variables.module' # Don't write .json here
       - name: "Test module"
         uses: ./.github/actions/templates/validateModuleDeploy
         with:
@@ -118,6 +123,11 @@ jobs:
         uses: actions/checkout@v2
         with:
           fetch-depth: 0
+      - name: Set environment variables
+        uses: deep-mm/set-variables@v1.0
+        with:
+          # Name of variable file
+          variableFileName: 'variables.module' # Don't write .json here
       - name: "Deploy module"
         uses: ./.github/actions/templates/deployModule
         with:
@@ -143,6 +153,11 @@ jobs:
         uses: actions/checkout@v2
         with:
           fetch-depth: 0
+      - name: Set environment variables
+        uses: deep-mm/set-variables@v1.0
+        with:
+          # Name of variable file
+          variableFileName: 'variables.module' # Don't write .json here
       - name: "Publish module"
         uses: ./.github/actions/templates/publishModule
         with:
@@ -169,6 +184,11 @@ jobs:
         uses: actions/checkout@v2
         with:
           fetch-depth: 0
+      - name: Set environment variables
+        uses: deep-mm/set-variables@v1.0
+        with:
+          # Name of variable file
+          variableFileName: 'variables.module' # Don't write .json here
       - name: "Remove module"
         uses: ./.github/actions/templates/removeModule
         with:
