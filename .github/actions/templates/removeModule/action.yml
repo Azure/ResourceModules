@@ -28,7 +28,7 @@ runs:
         subscriptionId = $env:ARM_SUBSCRIPTION_ID
       }
       Set-AgentUp @setupInputParameters
-      
+
   - name: "Remove module"
     shell: pwsh
     run: |
@@ -36,8 +36,8 @@ runs:
       . "$env:GITHUB_ACTION_PATH/scripts/Remove-DeployedModule.ps1"
 
       $setupInputParameters = @{
-        moduleName        = '${{ inputs.moduleName }}',
-        resourceGroupName = '${{ inputs.resourceGroupName }}',
-        templateFilePath  = '${{ inputs.templateFilePath }}',
+        moduleName        = '${{ inputs.moduleName }}'
+        resourceGroupName = '${{ inputs.resourceGroupName }}'
+        templateFilePath  = '${{ inputs.templateFilePath }}'
       }
       Remove-DeployedModule @setupInputParameters
