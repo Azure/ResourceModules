@@ -133,11 +133,11 @@ jobs:
   job_deploy_module:
     runs-on: ubuntu-20.04
     name: "Deploy module"
-    needs:
-    - job_tests_module_individual
-    - job_tests_module_global
-    - job_tests_module_global_api
-    - job_tests_module_deploy_validate
+    # needs:
+    # - job_tests_module_individual
+    # - job_tests_module_global
+    # - job_tests_module_global_api
+    # - job_tests_module_deploy_validate
     env:
       ARM_CLIENT_ID: ${{ secrets.ARM_CLIENT_ID }}
       ARM_CLIENT_SECRET: ${{ secrets.ARM_CLIENT_SECRET }}
