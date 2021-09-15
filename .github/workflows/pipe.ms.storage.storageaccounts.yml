@@ -172,7 +172,7 @@ jobs:
         resourceGroupName: '${{ env.resourceGroupName }}'
         subscriptionId: '${{ env.subscriptionId }}'
         managementGroupId: '${{ env.managementGroupId }}'
-        removeDeployment: '${{ inputs.removeDeployment }}'
+        removeDeployment: '${{ github.event.inputs.removeDeployment }}'
 
   ###############
   #   PUBLISH   #
