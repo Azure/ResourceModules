@@ -40,4 +40,8 @@ runs:
         resourceGroupName = '${{ inputs.resourceGroupName }}'
         templateFilePath  = '${{ inputs.templateFilePath }}'
       }
-      Remove-DeployedModule @setupInputParameters
+
+      Write-Verbose "Invoke task with" -Verbose
+      $functionInput | Format-Table -AutoSize
+
+      Remove-DeployedModule @setupInputParameters -Verbose

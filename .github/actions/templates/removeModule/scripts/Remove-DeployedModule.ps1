@@ -50,6 +50,7 @@ function Remove-DeployedModule {
 
         $deploymentSchema = (ConvertFrom-Json (Get-Content -Path $templateFilePath -Raw )).'$schema'
         if ($deploymentSchema -match '\/subscriptionDeploymentTemplate.json#$') {
+            Write-Verbose "Handle subscription level removal"
             $resourceGroupToRemove = Get-AzResourceGroup -Tag @{ RemoveModule = $moduleName }
             if ($resourceGroupToRemove) {
                 if ($resourceGroupToRemove.Count -gt 1) {
@@ -77,6 +78,7 @@ function Remove-DeployedModule {
             }
         }
         else {
+            Write-Verbose "Handle resource group level removal"
             $resourcesToRemove = Get-AzResource -Tag @{ RemoveModule = $moduleName } -ResourceGroupName $resourceGroupName
             if ($resourcesToRemove) {
 
