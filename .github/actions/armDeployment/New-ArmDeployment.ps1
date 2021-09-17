@@ -1,16 +1,15 @@
 Param (
     [string]
     [Parameter(Mandatory = $true)]
-    [ValidateSet("resourceGroup", "subscription", "managementGroup")]
-    $scope,
-
-    [string]
-    [Parameter(Mandatory = $true)]
     $templateFile,
     
     [string[]]
     [Parameter(Mandatory = $true)]
     $templateParametersFile,
+
+    [string]
+    [Parameter(Mandatory = $true)]
+    $location,
 
     [PSCustomObject]
     [Parameter(Mandatory = $false)]
@@ -18,21 +17,15 @@ Param (
     $tags,
 
     [string]
-    [Parameter(Mandatory = $false, ParameterSetName = 'RG')]
+    [Parameter(Mandatory = $false)]
     $resourceGroupName,
 
     [string]
-    [Parameter(Mandatory = $false, ParameterSetName = 'SB')]
-    [Parameter(ParameterSetName = 'MG')]
-    $location,
-
-    [string]
-    [Parameter(Mandatory = $false, ParameterSetName = 'RG')]
-    [Parameter(ParameterSetName = 'SB')]
+    [Parameter(Mandatory = $false)]
     $subscriptionId,
 
     [string]
-    [Parameter(Mandatory = $false, ParameterSetName = 'MG')]
+    [Parameter(Mandatory = $false)]
     $managementGroupId
 )   
 
@@ -66,24 +59,43 @@ foreach ($file in $templateParametersFile) {
     do {
         try {    
             ## Deployment Scope Conditions
-            Write-Verbose "Deployment Scope: $Scope `n"
-            switch ($scope) {
-                resourceGroup {
+            $deploymentSchema = (ConvertFrom-Json (Get-Content -Raw -Path $templateFile)).'$schema'
+ 
+            switch -Regex ($deploymentSchema) {
+                # Resource Group Deployment
+                '\/deploymentTemplate.json#$' {
+                    Write-Verbose "Deployment Scope: resourceGroup `n"
                     Set-AzContext -SubscriptionId $subscriptionId | out-null
+                    # Validate if Resource Group is available, if not.. create it
+                    if (-not (Get-AzResourceGroup -Name $resourceGroupName -ErrorAction SilentlyContinue)) {
+                        Write-Verbose "Resource Group <$resourceGroupName> does not exist.. Creating at location <$location> `n"
+                        New-AzResourceGroup -Name $resourceGroupName -Location $location -ErrorAction Stop | Out-Null     
+                    }
                     New-AzResourceGroupDeployment @CommonDeployParameters `
-                        -ResourceGroupName $resourceGroupName 
+                        -ResourceGroupName $resourceGroupName `
                 }
-                subscription {
+                # Subscription Deployment
+                '\/subscriptionDeploymentTemplate.json#$' {
+                    Write-Verbose "Deployment Scope: subscription. `n"
                     Set-AzContext -SubscriptionId $subscriptionId | out-null
                     New-AzDeployment @CommonDeployParameters `
                         -Location $location
                 }
-                managementGroup {
+                # Management Group Deployment
+                '\/managementGroupDeploymentTemplate.json#$' {
+                    Write-Verbose "Deployment Scope: managementGroup. `n"
                     New-AzManagementGroupDeployment @CommonDeployParameters `
                         -Location $location `
                         -ManagementGroupId $ManagementGroupId
                 }
+                # Tenant Deployment
+                '\/tenantDeploymentTemplate.json#$' {
+                    Write-Verbose "Deployment Scope: tenant. `n"
+                    New-AzTenantDeployment @CommonDeployParameters `
+                        -Location $location `
+                }
                 Default {
+                    throw "[$deploymentSchema] is a non-supported schema"
                     $Stoploop = $true
                 }
             }     

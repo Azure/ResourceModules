@@ -12,8 +12,8 @@ inputs:
     description: "Directory for ARM Template Parameter Files or Direct Path to ARM Template Parameter File"
     required: true
 
-  scope:
-    description: "Required. Defines the scope that is being targeted for an ARM Template Deployment. Can be resourceGroup, subscription, managementGroup"
+  location:
+    description: "The location for the deployment. Applies to all scopes"
     required: true
 
   # Optional Parameters
@@ -23,20 +23,19 @@ inputs:
     default: "$null"
 
   resourceGroupName:
-    description: "Name of the Resource Group if the Scope is set to resourceGroup"
+    description: "Name of the Resource Group if targeting resourceGroup"
     required: false
+    default: "$null"
 
   subscriptionId:
-    description: "The ID the Azure Subscription if the Scope is set to resourceGroup or subscription"
+    description: "The ID the Azure Subscription if targeting resourceGroup or subscription"
     required: false
+    default: "$null"
 
   managementGroupId:
-    description: "The ID the Azure Management Group if the Scope is set to managementGroup"
+    description: "The ID the Azure Management Group if targeting managementGroup"
     required: false
-
-  location:
-    description: "The location for the deployment if using Scope or subscription Scopes"
-    required: false
+    default: "$null"
 
 runs:
   using: "composite"
@@ -47,21 +46,13 @@ runs:
         azPSVersion: "6.4.0"
         inlineScript: |
           $CommonParameters = @{
-            templateFile          = "${{ inputs.templateFile }}"
-            templateParametersFile = "${{ inputs.templateParametersFile }}"
-            scope                 = "${{ inputs.scope }}" 
-            tags  = "${{ inputs.tags }}"
+            templateFile            = "${{ inputs.templateFile }}"
+            templateParametersFile  = "${{ inputs.templateParametersFile }}"
+            location                = "${{ inputs.location }}"
+            tags                    = "${{ inputs.tags }}"
+            resourceGroupName       = "${{ inputs.resourceGroupName }}"
+            subscriptionId          = "${{ inputs.subscriptionId }}"
+            managementGroupId       = "${{ inputs.managementGroupId }}"
           }
 
-          switch ("${{ inputs.scope }}"){
-            resourceGroup {
-                ${{ github.action_path }}/New-ArmDeployment.ps1 @CommonParameters -ResourceGroupName ${{ inputs.resourceGroupName }} -subscriptionId ${{ inputs.subscriptionId }} -Verbose
-            }
-            subscription {
-                ${{ github.action_path }}/New-ArmDeployment.ps1 @CommonParameters -subscriptionId ${{ inputs.subscriptionId }} -location ${{ inputs.location }} -Verbose
-            }
-            managementGroup {
-                ${{ github.action_path }}/New-ArmDeployment.ps1 @CommonParameters -managementGroupId ${{ inputs.managementGroupId }} -location ${{ inputs.location }} -Verbose
-            }
-            Default {}
-          }
+          ${{ github.action_path }}/New-ArmDeployment.ps1 @commonParameters -Verbose

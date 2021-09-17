@@ -15,7 +15,7 @@
 
 ## Description
 
-armDeployment is a simple GitHub composite action that allows deploying Azure Resource Manager (ARM) Templates across 3 scopes: `managementGroup`, `subscription` and `resourceGroup`. 
+armDeployment is a simple GitHub composite action that allows deploying Azure Resource Manager (ARM) Templates across 4 scopes: `tenant`, `managementGroup`, `subscription` and `resourceGroup`. It uses the `$schema` property of the template to determine the target scope of the deployment.
 
 ## Design Principals
 
@@ -26,29 +26,28 @@ armDeployment is a simple GitHub composite action that allows deploying Azure Re
 
 The following table describes the inputs used in the action:
 
-| Input Name             | Type     | Required | Description                                                                                        |
-| ---------------------- | -------- | -------- | -------------------------------------------------------------------------------------------------- |
-| templateFile           | `string` | `true`   | Path to the Template Module (.json)                                                                |
-| templateParametersFile | `string` | `true`   | Path to a template file, files (comma separated), or directory containing files (.parameters.json) |
-| scope                  | `string` | `true`   | Scope for the deployment. Can be: `managementGroup`, `subscription` and `resourceGroup`            |
-| tags                   | `object` | `false`  | Object of key-value pairs for tags (if resource supports tags as an input in the module)           |
-| resourceGroupName      | `string` | `false`  | Name of the Resource Group if the Scope is set to `resourceGroup`                                  |
-| subscriptionId         | `string` | `false`  | The ID the Azure Subscription if the Scope is set to `resourceGroup` or `subscription`             |
-| managementGroupId      | `string` | `false`  | The ID the Azure Management Group if the Scope is set to `managementGroup`                         |
-| location               | `string` | `false`  | The location for the deployment if using Scope type `subscription` or `managementGroup`            |
+| Input Name             | Type     | Required | Description                                                                                                                |
+| ---------------------- | -------- | -------- | -------------------------------------------------------------------------------------------------------------------------- |
+| templateFile           | `string` | `true`   | Path to the Template file (.json)                                                                                          |
+| templateParametersFile | `string` | `true`   | Path to a template file, files (comma separated), or directory containing files (.parameters.json)                         |
+| location               | `string` | `true`   | The location for the deployment. Applies to all scopes                                                                     |
+| tags                   | `object` | `false`  | Object of key-value pairs for tags (if resource supports tags as an input in the template)                                 |
+| resourceGroupName      | `string` | `false`  | Name of the Resource Group if targeting `resourceGroup`. Script will attempt to deploy Resource Group if it does not exist |
+| subscriptionId         | `string` | `false`  | The ID the Azure Subscription if targeting `resourceGroup` or `subscription`                                               |
+| managementGroupId      | `string` | `false`  | The ID the Azure Management Group if targeting `managementGroup`                                                           |
 
 ## Assumptions
 
 - Authentication has previously been performed in a previous action (i.e. azure/login@v1.1)
-- Using the Modules approach defined in the 'modules' folder.
-- the Service Principal and Context used for the deployment already has the required permissions on the target scope.
-- Parameter files have the (.parameters.json) extension.
+- the Service Principal and Context used for the deployment already has the required permissions on the target scope (including 'tenant' level deployments)
+- Parameter Folder contains files that have the (*.parameters.json) extension.
 
 ## Current Features
 
 - Management Group level deployment
 - Subscription level deployment
 - Resource Group level deployment
+- Tenant level deployment
 
 ## Action Logic
 
@@ -65,8 +64,7 @@ See [Script](New-ArmDeployment.ps1) for details on parameters required
 
 #### Features
 
-- Supports single parameter file, multiple files, folder. All files must use the extension 'parameters.json' 
-- Switch Based scope selection.
+- Supports single parameter file, multiple files, folder. All files must use the extension '.parameters.json' 
 - 2 times retry mechanism with 5 seconds apart.
 
 #### Examples
@@ -75,22 +73,25 @@ See [Script](New-ArmDeployment.ps1) for details on parameters required
 
 # Management Group Deployment - Parameter Folder - With Tags
 
-.\.github\actions\armDeployment\New-ArmDeployment.ps1 -templateFile "abc.json" -templateParametersFile "myFiles\prod" -scope managementGroup -managementGroupId "mg-contoso" -location "australiaeast" -tags "@{a=1}" 
+.\.github\actions\armDeployment\New-ArmDeployment.ps1 -templateFile "abc.json" -templateParametersFile "myFiles\prod" -managementGroupId "mg-contoso" -location "australiaeast" -tags "@{a=1}" 
 
 # Management Group Deployment - Parameter File - No Tags
 
-.\.github\actions\armDeployment\New-ArmDeployment.ps1 -templateFile "abc.json" -templateParametersFile "abc.parameters.json" -scope managementGroup -managementGroupId "mg-contoso" -location "australiaeast"
+.\.github\actions\armDeployment\New-ArmDeployment.ps1 -templateFile "abc.json" -templateParametersFile "abc.parameters.json" -managementGroupId "mg-contoso" -location "australiaeast"
 
 # Subscription Deployment - Parameter File(s) - No Tags
 
-.\.github\actions\armDeployment\New-ArmDeployment.ps1 -templateFile "abc.json" -templateParametersFile "abc.parameters.json","abc2.parameters.json" -scope subscription -subscriptionId "abc-defg-hij" -location "australiaeast"
+.\.github\actions\armDeployment\New-ArmDeployment.ps1 -templateFile "abc.json" -templateParametersFile "parameters.json","abc2.parameters.json" -subscriptionId "abc-defg-hij" -location "australiaeast"
 
 # Resource Group Deployment Parameter Folder - With Tags
 
-.\.github\actions\armDeployment\New-ArmDeployment.ps1 -templateFile "abc.json" -templateParametersFile "myFiles\prod" -scope resourceGroup -resourceGroupName "my-RG" -subscriptionId "abc-defg-hij" -tags "@{a=1}" 
+.\.github\actions\armDeployment\New-ArmDeployment.ps1 -templateFile "abc.json" -templateParametersFile "myFiles\prod" -resourceGroupName "my-RG" -subscriptionId "abc-defg-hij" -location "australiaeast" -tags "@{a=1}" 
+
+# Tenant Deployment - No Tags
+
+.\.github\actions\armDeployment\New-ArmDeployment.ps1 -templateFile "abc.json" -templateParametersFile "myFiles\prod" -location "australiaeast" 
 
 ```
-
 
 ## Contributing
 
