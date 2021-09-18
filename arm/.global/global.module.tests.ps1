@@ -1,7 +1,9 @@
 #Requires -Version 7
 
 param (
-    [array] $moduleFolderPaths = ((Get-ChildItem -Path $Parent -Directory -Exclude ".global").FullName)
+    [array] $moduleFolderPaths = ((Get-Childitem (Split-Path (Get-Location) -Parent) -Recurse -Directory).FullName | Where-Object {
+        (Get-Childitem $_ -File -Depth 0 -Include @('deploy.json'<#, 'deploy.bicep'#>)).Count -gt 0
+        })
 )
 
 $script:RGdeployment = "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#"
@@ -25,12 +27,6 @@ Describe "File/folder tests" -Tag Modules {
             }
         }
 
-        # TODO: Still valid for new module repo?
-        # It "[<moduleFolderName>] Module name should be Pascal cased" -TestCases $moduleFolderTestCases {
-        #     param( [string] $moduleFolderName )
-        #     $moduleFolderName | Should -MatchExactly "^[A-Z]"
-        # }
-
         It "[<moduleFolderName>] Module should contain a [deploy.json] file" -TestCases $moduleFolderTestCases {
             param( [string] $folderPath )
             (Test-Path (Join-Path -Path $moduleFolderPath 'deploy.json')) | Should -Be $true
@@ -44,11 +40,6 @@ Describe "File/folder tests" -Tag Modules {
         It "[<moduleFolderName>] Module should contain a [parameters] folder" -TestCases $moduleFolderTestCases {
             param( [string] $folderPath )
             (Test-Path (Join-Path -Path $moduleFolderPath 'parameters')) | Should -Be $true
-        }
-
-        It "[<moduleFolderName>] Module should contain a [tests] folder" -TestCases $moduleFolderTestCases {
-            param( [string] $folderPath )
-            (Test-Path (Join-Path -Path $moduleFolderPath 'tests')) | Should -Be $true
         }
     }
 
@@ -127,69 +118,6 @@ Describe "File/folder tests" -Tag Modules {
         }
 
     }
-
-    Context "Tests folder" {
-
-        $testFolderTestCases = [System.Collections.ArrayList] @()
-        $FilepathTestJsonFolder = @()
-        foreach ($folderPath in $moduleFolderPaths) {
-            $TestFilecount = Get-ChildItem -Path (Join-Path -Path $folderPath \tests\)
-            if ($TestFilecount.count -eq 0) {
-                $FilepathTestJsonFolder += Get-ChildItem -Path $folderPath
-            }
-            else {
-                $FilepathTestJsonFolder += Get-ChildItem -Path (Join-Path -Path $folderPath 'tests')
-            }
-
-        }
-        foreach ($File in $FilepathTestJsonFolder) {
-            if ($File.Directory.Name -eq "tests") {
-                $directoryPath = $File.DirectoryName
-                $modulePath = Split-Path -Parent -Path $directoryPath
-                $moduleName = Split-Path $modulePath -Leaf
-                $testFolderTestCases += @{
-                    moduleFolderName = $moduleName
-                    moduleFolderPath = $modulePath
-                    testFileName     = $File.Name
-                    fileContent      = $File.FullName
-                }
-            }
-            else {
-                if ($File.Name -eq "tests") {
-                    $missingModulePath = (Split-Path -Parent -Path $File.FullName)
-                    $missingModuleName = Split-Path $missingModulePath -Leaf
-                    $testFolderTestCases += @{
-                        moduleFolderName = $missingModuleName
-                        moduleFolderPath = $missingModulePath
-                        testFileName     = "MissingFile"
-                        fileContent      = $null
-                    }
-                }
-            }
-        }
-
-        It "[<moduleFolderName>] Tests folder should contain one or more *.tests.ps1 files" -TestCases $testFolderTestCases {
-            param(
-                $moduleFolderName,
-                $moduleFolderPath,
-                $testFileName,
-                $fileContent
-            )
-            $testFileName | Should -BeLike "*.tests.ps1"
-        }
-
-        It "[<moduleFolderName>] *.tests.ps1 files should not be empty" -TestCases $testFolderTestCases {
-            param(
-                $moduleFolderName,
-                $moduleFolderPath,
-                $testFileName,
-                $fileContent
-            )
-            (Get-Content $fileContent) | Should -Not -Be $null
-        }
-
-    }
-
 }
 
 Describe "Readme tests" -Tag Readme {
@@ -464,18 +392,38 @@ Describe "Deployment template tests" -Tag Template {
         $deploymentFolderTestCases = [System.Collections.ArrayList] @()
         $deploymentFolderTestCasesException = [System.Collections.ArrayList] @()
         foreach ($folderPath in $moduleFolderPaths) {
+
+            # Parameter file test cases
+            $parameterFileTestCases = @()
+            $templateFile_Parameters = ((Get-Content (Join-Path $folderPath 'deploy.json')) | ConvertFrom-Json -ErrorAction SilentlyContinue).Parameters.PSObject.Properties 
+            $TemplateFile_AllParameterNames = $templateFile_Parameters | Sort-Object -Property Name | ForEach-Object Name
+            $TemplateFile_RequiredParametersNames = $templateFile_Parameters | Where-Object -FilterScript { -not ($_.Value.PSObject.Properties.Name -eq "defaultValue") } | Sort-Object -Property Name | ForEach-Object Name
+            
+            $ParameterFilePaths = (Get-ChildItem (Join-Path -Path $folderPath -ChildPath 'parameters' -AdditionalChildPath "*parameters.json") -Recurse).FullName
+            foreach ($ParameterFilePath in $ParameterFilePaths) {
+                $parameterFile_AllParameterNames = (Get-Content $ParameterFilePath | ConvertFrom-Json -ErrorAction SilentlyContinue).Parameters.PSObject.Properties | Sort-Object -Property Name | ForEach-Object Name
+                $parameterFileTestCases += @{
+                    TemplateFileName                     = $TemplateFileName
+                    parameterFile_Path                   = $ParameterFilePath
+                    parameterFile_Name                   = Split-Path $ParameterFilePath -Leaf
+                    parameterFile_AllParameterNames      = $parameterFile_AllParameterNames
+                    templateFile_AllParameterNames       = $TemplateFile_AllParameterNames
+                    templateFile_RequiredParametersNames = $TemplateFile_RequiredParametersNames
+                }
+            }
+            
+            # Test file setup
             $deploymentFolderTestCases += @{
-                moduleFolderName = Split-Path $folderPath -Leaf
-                moduleFolderPath = $folderPath
-                #readmeFileName = $File.Name
-                fileContent      = (Join-Path -Path $folderPath \deploy.json)
+                moduleFolderName       = Split-Path $folderPath -Leaf
+                moduleFolderPath       = $folderPath
+                fileContent            = (Join-Path -Path $folderPath 'deploy.json')
+                parameterFileTestCases = $parameterFileTestCases
             }
         }
         foreach ($folderPath in $folderPathsToScanExcludeRG) {
             $deploymentFolderTestCasesException += @{
                 moduleFolderNameException = Split-Path $folderPath -Leaf
                 moduleFolderPathException = $folderPath
-                #readmeFileName = $File.Name
                 fileContentException      = (Join-Path -Path $folderPath \deploy.json)
             }
         }
@@ -909,6 +857,35 @@ Describe "Deployment template tests" -Tag Template {
                 }
             }
             $OutputDescriptionFlag | Should -Not -Contain $false
+        }
+
+        # PARAMETER Tests
+        It "All parameters in parameters files exist in template file (deploy.json)" -TestCases $deploymentFolderTestCases {
+            param (
+                [hashtable[]] $parameterFileTestCases
+            )
+ 
+            foreach ($parameterFileTestCase in $parameterFileTestCases) {
+                $parameterFile_AllParameterNames = $parameterFileTestCase.parameterFile_AllParameterNames
+                $templateFile_AllParameterNames = $parameterFileTestCase.templateFile_AllParameterNames
+           
+                $nonExistentParameters = $parameterFile_AllParameterNames | Where-Object { $templateFile_AllParameterNames -notcontains $_ }
+                $nonExistentParameters.Count | Should -Be 0 -Because ("no parameter in the parameter file should not exist in the template file. Found excess items: [{0}]" -f ($nonExistentParameters -join ', '))
+            }
+        }
+
+        It "All required parameters in template file (deploy.json) should exist in parameters files" -TestCases $deploymentFolderTestCases {
+            param (
+                [hashtable[]] $parameterFileTestCases
+            )
+
+            foreach ($parameterFileTestCase in $parameterFileTestCases) {
+                $TemplateFile_RequiredParametersNames = $parameterFileTestCase.TemplateFile_RequiredParametersNames
+                $parameterFile_AllParameterNames = $parameterFileTestCase.parameterFile_AllParameterNames
+
+                $missingParameters = $templateFile_RequiredParametersNames | Where-Object { $parameterFile_AllParameterNames -notcontains $_ }
+                $missingParameters.Count | Should -Be 0 -Because ("no required parameters in the template file should be missing in the parameter file. Found missing items: [{0}]" -f ($missingParameters -join ', '))
+            }
         }
     }
 }
