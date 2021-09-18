@@ -67,7 +67,7 @@ jobs:
     name: "Run deployment validation module tests"
     strategy:
       matrix:
-        parameterFilePaths: ['Linux_Automatic-Wave2.parameters.json','Linux_CatchAll.parameters.json','Linux_ZeroDay.parameters.json','Windows_Automatic-DefUpdate.parameters.json','Windows_Automatic-Wave1.parameters.json','Windows_Automatic-Wave2.parameters.json','Windows_CatchAll.parameters.json','Windows_ZeroDay.parameters.json']
+        parameterFilePaths: ['noname.parameters.json','parameters.json']
     steps:
       - name: "Checkout"
         uses: actions/checkout@v2
@@ -95,13 +95,12 @@ jobs:
     runs-on: ubuntu-20.04
     name: "Deploy module"
     needs:
-    - job_tests_module_individual
     - job_tests_module_global
     - job_tests_module_global_api
     - job_tests_module_deploy_validate
     strategy:
       matrix:
-        parameterFilePaths: ['Linux_Automatic-Wave2.parameters.json','Linux_CatchAll.parameters.json','Linux_ZeroDay.parameters.json','Windows_Automatic-DefUpdate.parameters.json','Windows_Automatic-Wave1.parameters.json','Windows_Automatic-Wave2.parameters.json','Windows_CatchAll.parameters.json','Windows_ZeroDay.parameters.json']
+        parameterFilePaths: ['noname.parameters.json','parameters.json']
     steps:
       - name: "Checkout"
         uses: actions/checkout@v2
