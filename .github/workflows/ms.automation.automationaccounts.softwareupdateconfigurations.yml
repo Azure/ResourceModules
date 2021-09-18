@@ -25,25 +25,9 @@ env:
   ARM_SUBSCRIPTION_ID: ${{ secrets.ARM_SUBSCRIPTION_ID }}
 
 jobs:
-  #############
-  #   TESTS   #
-  #############
-  # Individual tests
-  # ----------------
-  job_tests_module_individual:
-    runs-on: ubuntu-20.04
-    name: "Run individual module tests"
-    steps:
-      - name: "Checkout"
-        uses: actions/checkout@v2
-        with:
-          fetch-depth: 0
-      - name: "Test module"
-        uses: ./.github/actions/templates/validateModuleIndividual
-        with:
-          modulePath: '${{ env.modulePath }}'
-          moduleName: '${{ env.moduleName}}'
-
+  ##################
+  #   UNIT TESTS   #
+  ##################
   # Global tests
   # ------------
   job_tests_module_global:
@@ -83,7 +67,7 @@ jobs:
     name: "Run deployment validation module tests"
     strategy:
       matrix:
-        parameterFilePaths: ['parameters.json']
+        parameterFilePaths: ['Linux_Automatic-Wave2.parameters.json','Linux_CatchAll.parameters.json','Linux_ZeroDay.parameters.json','Windows_Automatic-DefUpdate.parameters.json','Windows_Automatic-Wave1.parameters.json','Windows_Automatic-Wave2.parameters.json','Windows_CatchAll.parameters.json','Windows_ZeroDay.parameters.json']
     steps:
       - name: "Checkout"
         uses: actions/checkout@v2
@@ -104,9 +88,9 @@ jobs:
           subscriptionId: '${{ env.subscriptionId }}'
           managementGroupId: '${{ env.managementGroupId }}'
 
-  ##############
-  #   DEPLOY   #
-  ##############
+  ####################
+  #   DEPLOY TESTS   #
+  ####################
   job_deploy_module:
     runs-on: ubuntu-20.04
     name: "Deploy module"
@@ -117,7 +101,7 @@ jobs:
     - job_tests_module_deploy_validate
     strategy:
       matrix:
-        parameterFilePaths: ['parameters.json']
+        parameterFilePaths: ['Linux_Automatic-Wave2.parameters.json','Linux_CatchAll.parameters.json','Linux_ZeroDay.parameters.json','Windows_Automatic-DefUpdate.parameters.json','Windows_Automatic-Wave1.parameters.json','Windows_Automatic-Wave2.parameters.json','Windows_CatchAll.parameters.json','Windows_ZeroDay.parameters.json']
     steps:
       - name: "Checkout"
         uses: actions/checkout@v2
