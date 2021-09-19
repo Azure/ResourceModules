@@ -92,7 +92,7 @@ function Remove-DeployedModule {
                 $currentRety = 0
                 $resourcesToRetry = @()
                 if ($PSCmdlet.ShouldProcess(("[{0}] Resource(s) with a maximum of [$maximumRemovalRetries] attempts." -f $resourcesToRemove.Count), "Remove")) {
-                    while (($resourcesToRetry = Remove-Resource -resourcesToRemove $resourcesToRemove).Count -gt 0 -and $currentRety -le $maximumRemovalRetries) {
+                    while (($resourcesToRetry = Remove-Resource -resourcesToRemove $resourcesToRemove -Verbose).Count -gt 0 -and $currentRety -le $maximumRemovalRetries) {
                         Write-Verbose ("Re-try removal of remaining [{0}] resources. Round [{1}|{2}]" -f $resourcesToRetry.Count, $currentRety, $maximumRemovalRetries)
                         $currentRety++
                     }
