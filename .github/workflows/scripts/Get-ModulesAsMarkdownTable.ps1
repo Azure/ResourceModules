@@ -1,4 +1,23 @@
 #region Helper functions
+function Get-PipelineStatusUrl {
+
+    [CmdletBinding()]
+    param (
+        [Parameter(Mandatory)]
+        [string] $name,
+
+        [Parameter(Mandatory)]
+        [string] $provider
+    )
+    # [![AnalysisServices: Servers - Test Pipeline](https://github.com/MrMCake/ResourceModules/actions/workflows/ms.analysisservices.servers.yml/badge.svg)](https://github.com/MrMCake/ResourceModules/actions/workflows/ms.analysisservices.servers.yml)
+    $shortProvider = $provider.Replace('Microsoft.','MS.')
+    $pipelineFileName = ('{0}.{1}.yml' -f $shortProvider, $name).Replace('\','.').ToLower()
+    $pipelineFileUri = ".github\workflows\$pipelineFileName"
+
+    $pipelineName = (Get-Content -Path $pipelineFileUri)[0].TrimStart('name:')
+
+    return ('[![{0}]({1}/badge.svg)]({1})' -f $pipelineName, $pipelineFileUri)
+}
 
 <#
 .SYNOPSIS
@@ -155,7 +174,7 @@ function Get-RelevantDepth {
     )
 
     # Get only folders that contain no files (aka are parent folders)
-    if (-not ($relevantSubfolders = (Get-Childitem $path -Directory -Recurse -Exclude @('.bicep', 'parameters','tests')).fullName)) {
+    if (-not ($relevantSubfolders = (Get-Childitem $path -Directory -Recurse -Exclude @('.bicep', 'parameters', 'tests')).fullName)) {
         return 0
     }
     $sanitizedPaths = $relevantSubfolders | ForEach-Object { $_.Replace($path, '') }
@@ -215,7 +234,7 @@ function Get-ResolvedSubServiceRow {
         [string] $provider,
 
         [Parameter(Mandatory)]
-        [ValidateSet('Name', 'ProviderNamespace', 'ResourceType', 'TemplateType', 'Deploy')]
+        [ValidateSet('Name', 'ProviderNamespace', 'ResourceType', 'TemplateType', 'Deploy', 'Status')]
         [string[]] $columnsInOrder,
 
         [Parameter(Mandatory)]
@@ -226,7 +245,7 @@ function Get-ResolvedSubServiceRow {
         [string] $repositoryName
     )
 
-    $subFolders = Get-ChildItem -Path $subPath -Directory -Recurse -Exclude @('.bicep', 'parameters','tests')
+    $subFolders = Get-ChildItem -Path $subPath -Directory -Recurse -Exclude @('.bicep', 'parameters', 'tests')
 
     foreach ($subfolder in $subFolders.FullName) {
         $subFolderName = (Split-Path $subfolder -Leaf)
@@ -238,7 +257,7 @@ function Get-ResolvedSubServiceRow {
         foreach ($column in $columnsInOrder) {
             switch ($column) {
                 'Name' {
-                    $row['Name'] = Get-ResourceModuleName -path $subfolder
+                    $row['Name'] = ('[{0}]({1})' -f (Get-ResourceModuleName -path $subfolder), $relativePath.Replace('\', '/'))
                 }
                 'ProviderNamespace' {
                     # If we don't sort by provider, we have to add the provider to each row to ensure readability of each row
@@ -268,8 +287,11 @@ function Get-ResolvedSubServiceRow {
                     }
                     $row['Deploy'] += Get-DeployToAzureUrl -path $subfolder -repositoryName $repositoryName
                 }
+                'Status' {
+                    $row['Status'] += Get-PipelineStatusUrl -name $subName -provider $provider
+                }
                 Default {
-                    Write-Warning "Column [$column] not existing. Available are: [Name|ProviderNamespace|ResourceType|TemplateType|Deploy]"
+                    Write-Warning "Column [$column] not existing. Available are: [Name|ProviderNamespace|ResourceType|TemplateType|Deploy|Status]"
                 }
             }
         }
@@ -337,7 +359,7 @@ function Get-ModulesAsMarkdownTable {
         [string] $path,
 
         [Parameter(Mandatory = $false)]
-        [ValidateSet('Name', 'ProviderNamespace', 'ResourceType', 'TemplateType', 'Deploy')]
+        [ValidateSet('Name', 'ProviderNamespace', 'ResourceType', 'TemplateType', 'Deploy', 'Status')]
         [string[]] $columnsInOrder = @('Name', 'ProviderNamespace', 'ResourceType', 'TemplateType', 'Deploy'),
 
         [Parameter(Mandatory = $false)]
@@ -358,8 +380,9 @@ function Get-ModulesAsMarkdownTable {
             'ResourceType' { $headerRow += ' Resource Type |' }
             'TemplateType' { $headerRow += ' ARM / Bicep |' }
             'Deploy' { $headerRow += ' Deploy |' }
+            'Status' { $headerRow += ' Status |' }
             Default {
-                Write-Warning "Column [$column] not existing. Available are: [Name|ProviderNamespace|ResourceType|TemplateType|Deploy]"
+                Write-Warning "Column [$column] not existing. Available are: [Name|ProviderNamespace|ResourceType|TemplateType|Deploy|Status]"
             }
         }
     }
@@ -380,7 +403,7 @@ function Get-ModulesAsMarkdownTable {
     foreach ($topLevelFolder in $topLevelFolders) {
         $provider = Split-Path $topLevelFolder -Leaf
 
-        $subFolders = Get-ChildItem -Path $topLevelFolder -Directory -Recurse -Exclude @('.bicep', 'parameters','tests') -Depth 0
+        $subFolders = Get-ChildItem -Path $topLevelFolder -Directory -Recurse -Exclude @('.bicep', 'parameters', 'tests') -Depth 0
 
         foreach ($subfolder in $subFolders.FullName) {
             $subFolderName = (Split-Path $subfolder -Leaf)
@@ -405,7 +428,7 @@ function Get-ModulesAsMarkdownTable {
                 foreach ($column in $columnsInOrder) {
                     switch ($column) {
                         'Name' {
-                            $row['Name'] = Get-ResourceModuleName -path $subfolder
+                            $row['Name'] = ('[{0}]({1})' -f (Get-ResourceModuleName -path $subfolder), $concatedBase.Replace('\', '/'))
                         }
                         'ProviderNamespace' {
                             if ($previousProvider -eq $provider -and $sortByColumn -ne 'Name') {
@@ -435,8 +458,11 @@ function Get-ModulesAsMarkdownTable {
                             }
                             $row['Deploy'] += Get-DeployToAzureUrl -path $subfolder -repositoryName $repositoryName
                         }
+                        'Status' {
+                            $row['Status'] += Get-PipelineStatusUrl -name $subFolderName -provider $provider
+                        }
                         Default {
-                            Write-Warning "Column [$column] not existing. Available are: [Name|ProviderNamespace|ResourceType|TemplateType|Deploy]"
+                            Write-Warning "Column [$column] not existing. Available are: [Name|ProviderNamespace|ResourceType|TemplateType|Deploy|Status]"
                         }
                     }
                 }
