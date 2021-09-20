@@ -1,0 +1,75 @@
+name: 'Publish module'
+description: 'Publish module'
+
+inputs:
+  templateFilePath:
+    description: 'The path to the template file to publish'
+    required: true
+  componentTemplateSpecRGName:
+    description: 'Required to publish to template spec. ResourceGroup of the template spec to publish to'
+    required: false
+  componentTemplateSpecRGLocation:
+    description: 'Required to publish to template spec. Location of the template spec resource group'
+    required: false
+  componentTemplateSpecName:
+    description: 'Required to publish to template spec. Name of the template spec to publish to'
+    required: false
+  componentTemplateSpecDescription:
+    description: 'Required to publish to template spec. Description of the template spec to publish to'
+    required: false
+  publishToTemplateSpec:
+    description: 'Flag to indicate whether or not to publish to template specs'
+    default: 'false'
+    required: false
+  versioningOption:
+    description: 'The mode to handle the version increments [major|minor|patch|custom].'
+    default: 'patch'
+    required: false
+  customVersion:
+    description: 'The version to enforce if [versioningOption] is set to [custom]'
+    default: '0.0.1'
+    required: false
+
+runs:
+  using: "composite"
+  steps:
+    - name: "Setup agent & login"
+      shell: pwsh
+      run: |
+        # Load used functions
+        . ".github/actions/sharedScripts/Connect-ToAzure.ps1"
+        . ".github/actions/sharedScripts/Set-EnvironmentOnAgent.ps1"
+
+        # Set agent up
+        Set-EnvironmentOnAgent    
+        
+        # Login
+        $functionInput = @{
+          clientID       = $env:ARM_CLIENT_ID
+          clientSecret   = ConvertTo-SecureString -String $env:ARM_CLIENT_SECRET -AsPlainText -Force
+          tenantId       = $env:ARM_TENANT_ID
+          subscriptionId = $env:ARM_SUBSCRIPTION_ID
+        }
+        Connect-ToAzure @functionInput
+
+    - name: "Publish module to template spec"
+      shell: pwsh
+      # if: ${{ inputs.publishToTemplateSpec == 'true' }}
+      run: |
+        # Load used functions
+        . "$env:GITHUB_ACTION_PATH/scripts/Publish-ModuleToTemplateSpec.ps1"
+
+        $functionInput = @{
+          templateFilePath                      = '${{ inputs.templateFilePath }}'
+          componentTemplateSpecName             = '${{ inputs.componentTemplateSpecName }}'
+          componentTemplateSpecRGName           = '${{ inputs.componentTemplateSpecRGName }}'
+          componentTemplateSpecRGLocation       = '${{ inputs.componentTemplateSpecRGLocation }}'
+          componentTemplateSpecDescription      = '${{ inputs.componentTemplateSpecDescription }}'
+          customVersion                         = '${{ inputs.customVersion }}'
+          versioningOption                      = '${{ inputs.versioningOption }}'
+        }
+
+        Write-Verbose "Invoke task with" -Verbose
+        $functionInput
+
+        Publish-ModuleToTemplateSpec @functionInput -Verbose
