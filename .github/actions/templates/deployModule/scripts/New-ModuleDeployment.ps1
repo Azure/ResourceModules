@@ -31,12 +31,12 @@ Optional. Name of the management group to deploy into. Mandatory if deploying in
 Optional. Set to 'true' to add the tag 'removeModule = <ModuleName>' to the deployment. Is picked up by the removal stage to remove the resource again.
 
 .EXAMPLE
-New-ModuleDeployment -ModuleName 'KeyVault' -templateFilePath 'Modules/ARM/KeyVault/deploy.json' -parameterFilePath 'Modules/ARM/KeyVault/Parameters/parameters.json' -location 'WestEurope' -resourceGroupName 'aLegendaryRg'
+New-ModuleDeployment -ModuleName 'KeyVault' -templateFilePath 'C:/KeyVault/deploy.json' -parameterFilePath 'C:/KeyVault/Parameters/parameters.json' -location 'WestEurope' -resourceGroupName 'aLegendaryRg'
 
 Deploy the deploy.json of the KeyVault module with the parameter file 'parameters.json' using the resource group 'aLegendaryRg' in location 'WestEurope'
 
 .EXAMPLE
-New-ModuleDeployment -ModuleName 'KeyVault' -templateFilePath 'Modules/ARM/ResourceGroup/deploy.json' -parameterFilePath 'Modules/ARM/ResourceGroup/Parameters/parameters.json' -location 'WestEurope'
+New-ModuleDeployment -ModuleName 'KeyVault' -templateFilePath 'C:/ResourceGroup/deploy.json' -parameterFilePath 'C:/ResourceGroup/Parameters/parameters.json' -location 'WestEurope'
 
 Deploy the deploy.json of the ResourceGroup module with the parameter file 'parameters.json' in location 'WestEurope'
 #>
