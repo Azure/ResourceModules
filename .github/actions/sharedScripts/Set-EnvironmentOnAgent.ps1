@@ -1,11 +1,14 @@
 #region Helper Functions
-function Install-CustomModule {
-    <#
+
+<#
     .SYNOPSIS
-    Installes given PowerShell module and saves it to a local store
+    Installes given PowerShell modules
+    
+    .DESCRIPTION
+    Installes given PowerShell modules
 
     .PARAMETER Module
-    Module to be installed, must be Object
+    Modules to be installed, must be Object
     @{
         Name = 'Name'
         Version = '1.0.0' # Optional
@@ -13,8 +16,11 @@ function Install-CustomModule {
 
     .EXAMPLE
     Install-CustomModule @{ Name = 'Pester' } C:\Modules
+
     Installes pester and saves it to C:\Modules
-    #>
+#>
+function Install-CustomModule {
+
     [CmdletBinding(SupportsShouldProcess)]
     Param (
         [Parameter(Mandatory = $true)]
@@ -66,6 +72,25 @@ function Install-CustomModule {
 }
 #endregion
 
+<#
+.SYNOPSIS
+Configure the current agent 
+
+.DESCRIPTION
+Configure the current agent with e.g. the necessary PowerShell modules. 
+
+.PARAMETER Modules
+Optional. The PowerShell modules that should be installed on the agent. Installs default set if not provided.
+@{
+    Name = 'Name'
+    Version = '1.0.0' # Optional
+}
+
+.EXAMPLE
+Set-EnvironmentOnAgent
+
+Install the default PowerShell modules to configure the agent
+#>
 function Set-EnvironmentOnAgent {
 
     [CmdletBinding()]
@@ -80,7 +105,7 @@ function Set-EnvironmentOnAgent {
     ####################################
     ##   Install PowerShell Modules   ##
     ####################################
-    
+
     $count = 1
     Write-Verbose ("Try installing:") -Verbose
     $modules | ForEach-Object {

@@ -1,3 +1,25 @@
+<#
+.SYNOPSIS
+Login to Azure using a service principal
+
+.DESCRIPTION
+Login to Azure using a service principal
+
+.PARAMETER clientID
+Mandatory. The application (client) id of the service principal to log in with 
+
+.PARAMETER clientSecret
+Mandatory. The service principal secret to use for the login
+
+.PARAMETER tenantId
+Optional. The ID of the tenant to log into
+
+.PARAMETER subscriptionId
+Optional. The ID of the subscription to log into
+
+.EXAMPLE
+Connect-ToAzure -clientID '12345' -clientSecret '<Placeholder>' -subscriptionId '12345'
+#>
 function Connect-ToAzure {
 
     [CmdletBinding()]
