@@ -8,5 +8,5 @@
 * @modules-maintainers
 
 .azuredevops/** @modules-maintainers
-.github/** @segraef
+.github/** @modules-admins
 .pipelines/** @modules-maintainers
