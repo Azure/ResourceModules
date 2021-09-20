@@ -14,9 +14,9 @@ function Get-PipelineStatusUrl {
     $pipelineFileName = ('{0}.{1}.yml' -f $shortProvider, $name).Replace('\','.').ToLower()
     $pipelineFileUri = ".github\workflows\$pipelineFileName"
 
-    $pipelineName = (Get-Content -Path $pipelineFileUri)[0].TrimStart('name:')
+    $pipelineName = (Get-Content -Path $pipelineFileUri)[0].TrimStart('name:').Replace('"','').Trim()
 
-    return ('[![{0}]({1}/badge.svg)]({1})' -f $pipelineName, $pipelineFileUri)
+    return ('[![{0}]({1}/badge.svg)]({1})' -f $pipelineName, $pipelineFileUri).Replace('\', '/')
 }
 
 <#
