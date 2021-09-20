@@ -37,9 +37,6 @@ function Connect-ToAzure {
         [string] $subscriptionId = ''
     )
 
-    ###############
-    ##   LOGIN   ##
-    ###############
     Write-Verbose "Login to environment" -Verbose
     $credential = New-Object PSCredential -ArgumentList $clientID, $clientSecret
     $loginInputObject = @{
