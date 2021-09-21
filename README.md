@@ -1,4 +1,4 @@
-# ![AzureIcon] Modules
+# ![AzureIcon] Resource Modules
 
 ## Description
 
