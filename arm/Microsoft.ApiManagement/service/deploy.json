@@ -520,7 +520,7 @@
     },
     {
       "type": "Microsoft.ApiManagement/service",
-      "apiVersion": "2020-06-01-preview",
+      "apiVersion": "2020-12-01",
       "name": "[parameters('apiManagementServiceName')]",
       "location": "[parameters('location')]",
       "tags": "[parameters('tags')]",
@@ -581,7 +581,7 @@
     {
       "name": "[concat(parameters('apiManagementServiceName'),'-','identityProvider')]",
       "type": "Microsoft.Resources/deployments",
-      "apiVersion": "2019-10-01",
+      "apiVersion": "2021-01-01",
       "condition": "[not(empty(parameters('identityProviderType')))]",
       "dependsOn": [
         "[resourceId('Microsoft.ApiManagement/service', parameters('apiManagementServiceName'))]"
