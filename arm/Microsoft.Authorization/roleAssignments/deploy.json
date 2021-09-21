@@ -229,8 +229,8 @@
         // Role Assignments on Subscription scope
         {
             "name": "[concat(uniqueString(deployment().name, parameters('location')), 'subscriptionRbacDeplCopy-', copyIndex())]",
-            "apiVersion": "2020-06-01",
             "type": "Microsoft.Resources/deployments",
+            "apiVersion": "2021-01-01",
             "location": "[parameters('location')]",
             "condition": "[and(not(empty(parameters('roleAssignments'))), empty(parameters('resourceGroupName')))]",
             "dependsOn": [
@@ -294,8 +294,8 @@
         // CUA on Resource Group scope
         {
             "name": "cuaDeploymentOnResourceGroup",
-            "apiVersion": "2020-06-01",
             "type": "Microsoft.Resources/deployments",
+            "apiVersion": "2021-01-01",
             "resourceGroup": "[parameters('resourceGroupName')]",
             "condition": "[not(empty(parameters('resourceGroupName')))]",
             "dependsOn": [
@@ -347,8 +347,8 @@
         // Role Assignments on Resource Group scope
         {
             "name": "[concat('resourceGroupRbacDeplCopy-', copyIndex())]",
-            "apiVersion": "2020-06-01",
             "type": "Microsoft.Resources/deployments",
+            "apiVersion": "2021-01-01",
             "resourceGroup": "[parameters('resourceGroupName')]",
             "condition": "[and(not(empty(parameters('roleAssignments'))), not(empty(parameters('resourceGroupName'))))]",
             "dependsOn": [

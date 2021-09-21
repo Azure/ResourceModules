@@ -266,8 +266,8 @@
         // Management Group RBAC
         {
             "name": "[concat('MGRBAC-', if(empty(parameters('mgStructure')), 'dummy', copyIndex() ) )]",
-            "apiVersion": "2020-06-01",
             "type": "Microsoft.Resources/deployments",
+            "apiVersion": "2021-01-01",
             "condition": "[not(empty(parameters('mgStructure')))]",
             "location": "[deployment().location]",
             "dependsOn": [
