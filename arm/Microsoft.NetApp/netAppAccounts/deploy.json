@@ -285,7 +285,7 @@
         // cuaId
         {
             "type": "Microsoft.Resources/deployments",
-            "apiVersion": "2020-06-01",
+            "apiVersion": "2021-01-01",
             "name": "[concat('pid-', parameters('cuaId'))]",
             "condition": "[not(empty(parameters('cuaId')))]",
             "properties": {
@@ -328,7 +328,7 @@
         // netapp account RBAC loop
         {
             "type": "Microsoft.Resources/deployments",
-            "apiVersion": "2020-06-01",
+            "apiVersion": "2021-01-01",
             "name": "[concat(uniqueString(deployment().name, parameters('location')), '-ANF-Account-Rbac-', copyIndex())]",
             "condition": "[not(empty(parameters('roleAssignments')))]",
             "dependsOn": [
@@ -428,7 +428,7 @@
         // capacity pool RBAC, volume, volume RBAC
         {
             "type": "Microsoft.Resources/deployments",
-            "apiVersion": "2020-06-01",
+            "apiVersion": "2021-01-01",
             "name": "[concat(uniqueString(deployment().name, parameters('location')), '-ANF-CapPool-', if(empty(parameters('capacityPools')), 'dummy', copyIndex()) )]",
             "condition": "[not(empty(parameters('capacityPools')))]",
             "dependsOn": [

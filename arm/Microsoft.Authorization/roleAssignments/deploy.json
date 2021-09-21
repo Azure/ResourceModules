@@ -214,7 +214,7 @@
         {
             "condition": "[and(not(empty(parameters('cuaId'))), empty(parameters('resourceGroupName')))]",
             "type": "Microsoft.Resources/deployments",
-            "apiVersion": "2020-06-01",
+            "apiVersion": "2021-01-01",
             "name": "[concat('pid-', parameters('cuaId'))]",
             "properties": {
                 "mode": "Incremental",
