@@ -65,8 +65,11 @@ Mandatory. The path to the module to generate the url for
 .PARAMETER repositoryName
 Mandatory. The name of the repository the content is included in.
 
+.PARAMETER Organization
+Mandatory. The name of the organization the code resides in
+
 .EXAMPLE
-Get-DeployToAzureUrl -path 'C:\Modules\MyModule' -repositoryName 'Modules'
+Get-DeployToAzureUrl -path 'C:\Modules\MyModule' -repositoryName 'Modules' -organization 'Azure'
 
 Generate an 'Deploy to Azure' button for module 'MyModule'
 #>
@@ -301,7 +304,8 @@ function Get-ResolvedSubServiceRow {
         foreach ($column in $columnsInOrder) {
             switch ($column) {
                 'Name' {
-                    $row['Name'] = ('[{0}]({1})' -f (Get-ResourceModuleName -path $subfolder), $relativePath.Replace('\', '/'))
+                    $row['Name'] = ('[{0}](https://github.com/{1}/{2}/tree/main/arm/{3})' -f (Get-ResourceModuleName -path $subfolder), $organization, $repositoryName, $relativePath.Replace('\', '/'))
+
                 }
                 'ProviderNamespace' {
                     # If we don't sort by provider, we have to add the provider to each row to ensure readability of each row
@@ -320,7 +324,8 @@ function Get-ResolvedSubServiceRow {
                     }
                 }
                 'ResourceType' {
-                    $row['ResourceType'] += ('[{0}]({1})' -f $subName, $relativePath).Replace('\', '/')
+                    $row['ResourceType'] = ('[{0}](https://github.com/{1}/{2}/tree/main/arm/{3})' -f $subName, $organization, $repositoryName, $relativePath.Replace('\', '/'))
+
                 }
                 'TemplateType' {
                     $row['TemplateType'] += Get-TypeColumnString -path $subfolder
@@ -400,6 +405,11 @@ Generate a markdown table for all modules in path 'C:\dev\Modules' with only the
 Get-ModulesAsMarkdownTable -path 'C:\dev\Modules' -columnsInOrder @('Resource Type', 'Name') -sortByColumn 'Name'
 
 Generate a markdown table for all modules in path 'C:\dev\Modules' with only the 'Resource Type' & 'Name' columns, , sorted by 'Name'
+
+.EXAMPLE
+Get-ModulesAsMarkdownTable -path 'C:\dev\ip\Azure-Modules\ResourceModules\arm' -repositoryName 'ResourceModules' -organization 'Azure' -columnsInOrder @('Name','TemplateType','Status','Deploy')
+
+Generate a markdown table for all modules in path 'C:\dev\Modules' with only the 'Name','TemplateType','Status' &'Deploy' columns, sorted by 'Name'
 #>
 function Get-ModulesAsMarkdownTable {
 
@@ -483,7 +493,7 @@ function Get-ModulesAsMarkdownTable {
                     switch ($column) {
                         'Name' {
                             #https://github.com/Azure/ResourceModules/tree/main/arm/Microsoft.ApiManagement/serviceResources/namedValues
-                            $row['Name'] = ('[{0}](https://github.com/{1}/{2}/tree/main/arm/{2})' -f (Get-ResourceModuleName -path $subfolder), $organization, $repositoryName, $concatedBase.Replace('\', '/'))
+                            $row['Name'] = ('[{0}](https://github.com/{1}/{2}/tree/main/arm/{3})' -f (Get-ResourceModuleName -path $subfolder), $organization, $repositoryName, $concatedBase.Replace('\', '/'))
                         }
                         'ProviderNamespace' {
                             if ($previousProvider -eq $provider -and $sortByColumn -ne 'Name') {
@@ -502,7 +512,7 @@ function Get-ModulesAsMarkdownTable {
                             }
                         }
                         'ResourceType' {
-                            $row['ResourceType'] += ('[{0}](https://github.com/{1}/{2}/tree/main/arm/{2})' -f $subFolderName, $organization, $repositoryName, $concatedBase.Replace('\', '/'))
+                            $row['ResourceType'] += ('[{0}](https://github.com/{1}/{2}/tree/main/arm/{3})' -f $subFolderName, $organization, $repositoryName, $concatedBase.Replace('\', '/'))
                         }
                         'TemplateType' {
                             $row['TemplateType'] += Get-TypeColumnString -path $subfolder
