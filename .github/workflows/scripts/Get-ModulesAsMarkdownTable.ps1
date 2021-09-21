@@ -43,12 +43,10 @@ function Get-PipelineStatusUrl {
     $shortProvider = $provider.Replace('Microsoft.', 'MS.')
     $pipelineFileName = ('{0}.{1}.yml' -f $shortProvider, $name).Replace('\', '.').ToLower()
     $pipelineFileUri = ".github\workflows\$pipelineFileName"
-    
-    $pipelineName = (Get-Content -Path $pipelineFileUri)[0].TrimStart('name:').Replace('"', '').Trim()
-    
+
     $pipelineFileGitUri = 'https://github.com/{0}/{1}/actions/workflows/{2}' -f $organization, $repositoryName, $pipelineFileName
 
-    return ('[![{0}]({1}/badge.svg)]({1})' -f $pipelineName, $pipelineFileGitUri).Replace('\', '/')
+    return ('[![CI Pipeline]({0}/badge.svg)]({0})' -f $pipelineFileGitUri).Replace('\', '/')
 }
 
 <#
