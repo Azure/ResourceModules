@@ -220,7 +220,9 @@ function Get-RelevantDepth {
 
     $depths = $sanitizedPaths | ForEach-Object { ($_.Split('\') | Measure-Object).Count - 1 }
 
-    return ($depths | Measure-Object -Maximum).Maximum
+    $maxDepth = ($depths | Measure-Object -Maximum).Maximum
+    Write-Host "Found max depth [$maxDepth] for path [$path]"
+    return $maxDepth
 }
 
 <#
