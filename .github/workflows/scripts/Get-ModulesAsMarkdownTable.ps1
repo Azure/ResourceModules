@@ -212,13 +212,24 @@ function Get-RelevantDepth {
         [string] $path
     )
 
+    Write-Host "Processing path [$path]"
     # Get only folders that contain no files (aka are parent folders)
     if (-not ($relevantSubfolders = (Get-Childitem $path -Directory -Recurse -Exclude @('.bicep', 'parameters')).fullName)) {
+        Write-Host " Found no relevant subfolder"
         return 0
     }
+
+    $relevantSubfolders | ForEach-Object { Write-Host " Found relevant sub folder [$_]" }
+
+
     $sanitizedPaths = $relevantSubfolders | ForEach-Object { $_.Replace($path, '') }
 
+    $sanitizedPaths | ForEach-Object { Write-Host " Checking sanitized path [$_]" }
+
+
     $depths = $sanitizedPaths | ForEach-Object { ($_.Split('\') | Measure-Object).Count - 1 }
+
+    Write-Host (" Found depths [{0}]" -f ($depths | Out-String)) 
 
     $maxDepth = ($depths | Measure-Object -Maximum).Maximum
     Write-Host "Found max depth [$maxDepth] for path [$path]"
@@ -336,7 +347,6 @@ function Get-ResolvedSubServiceRow {
                     $row['Deploy'] += Get-DeployToAzureUrl -path $subfolder -repositoryName $repositoryName -organization $organization
                 }
                 'Status' {
-                    Write-Host "Subservice Path [$subfolder]"
                     $row['Status'] += Get-PipelineStatusUrl -name $subName -provider $provider -repositoryName $repositoryName -organization $organization
                 }
                 Default {
@@ -519,7 +529,6 @@ function Get-ModulesAsMarkdownTable {
                             $row['Deploy'] += Get-DeployToAzureUrl -path $subfolder -repositoryName $repositoryName -organization $organization
                         }
                         'Status' {
-                            Write-Host "Service Path [$subFolderName]"
                             $row['Status'] += Get-PipelineStatusUrl -name $subFolderName -provider $provider -repositoryName $repositoryName -organization $organization
                         }
                         Default {
