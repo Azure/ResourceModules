@@ -307,7 +307,7 @@
         {
             "condition": "[not(empty(parameters('cuaId')))]",
             "type": "Microsoft.Resources/deployments",
-            "apiVersion": "2020-06-01",
+            "apiVersion": "2021-01-01",
             "name": "[concat('pid-', parameters('cuaId'))]",
             "properties": {
                 "mode": "Incremental",
@@ -418,7 +418,7 @@
         // Private Endpoints
         {
             "type": "Microsoft.Resources/deployments",
-            "apiVersion": "2020-06-01",
+            "apiVersion": "2021-01-01",
             "name": "[concat(uniqueString(deployment().name, parameters('location')), '-KeyVault-PrivateEndpoints','-',copyIndex())]",
             "condition": "[not(empty(parameters('privateEndpoints')))]",
             "dependsOn": [
@@ -530,8 +530,8 @@
         // RBAC
         {
             "name": "[concat('rbac-',deployment().name, copyIndex())]",
-            "apiVersion": "2020-06-01",
             "type": "Microsoft.Resources/deployments",
+            "apiVersion": "2021-01-01",
             "condition": "[not(empty(parameters('roleAssignments')))]",
             "dependsOn": [
                 "[variables('keyVaultName')]"

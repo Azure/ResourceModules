@@ -68,7 +68,7 @@ jobs:
     name: "Run deployment validation module tests"
     strategy:
       matrix:
-        parameterFilePaths: ['noname.parameters.json','parameters.json']
+        parameterFilePaths: ['parameters.json']
     steps:
       - name: "Checkout"
         uses: actions/checkout@v2
@@ -101,7 +101,7 @@ jobs:
     - job_tests_module_deploy_validate
     strategy:
       matrix:
-        parameterFilePaths: ['noname.parameters.json','parameters.json']
+        parameterFilePaths: ['parameters.json']
     steps:
       - name: "Checkout"
         uses: actions/checkout@v2

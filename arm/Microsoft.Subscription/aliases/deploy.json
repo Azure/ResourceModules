@@ -64,7 +64,7 @@
     "resources": [
         {
             "type": "Microsoft.Resources/deployments",
-            "apiVersion": "2019-10-01",
+            "apiVersion": "2021-01-01",
             "name": "[variables('subDeploymentName')]",
             "location": "[deployment().location]",
             "properties": {
@@ -134,7 +134,7 @@
         {
             "name": "[variables('tagDeploymentName')]",
             "type": "Microsoft.Resources/deployments",
-            "apiVersion": "2019-10-01",
+            "apiVersion": "2021-01-01",
             "location": "[deployment().location]",
             "condition": "[not(empty(parameters('tags')))]",
             "dependsOn": [
@@ -213,7 +213,7 @@
         {
             "name": "[variables('rbacDeploymentName')]",
             "type": "Microsoft.Resources/deployments",
-            "apiVersion": "2019-10-01",
+            "apiVersion": "2021-01-01",
             "location": "[deployment().location]",
             "condition": "[not(empty(parameters('roleAssignments')))]",
             "dependsOn": [

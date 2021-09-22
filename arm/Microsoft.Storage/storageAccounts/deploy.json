@@ -348,7 +348,7 @@
         // cuaId
         {
             "type": "Microsoft.Resources/deployments",
-            "apiVersion": "2020-06-01",
+            "apiVersion": "2021-01-01",
             "name": "[concat('pid-', parameters('cuaId'))]",
             "condition": "[not(empty(parameters('cuaId')))]",
             "properties": {
@@ -398,7 +398,7 @@
         // private endpoints
         {
             "type": "Microsoft.Resources/deployments",
-            "apiVersion": "2020-06-01",
+            "apiVersion": "2021-01-01",
             "name": "[concat(uniqueString(deployment().name, parameters('location')), '-Storage-PrivateEndpoints','-',copyIndex())]",
             "condition": "[not(empty(parameters('privateEndpoints')))]",
             "dependsOn": [
@@ -511,7 +511,7 @@
         // storage account RBAC
         {
             "type": "Microsoft.Resources/deployments",
-            "apiVersion": "2020-06-01",
+            "apiVersion": "2021-01-01",
             "name": "[concat(uniqueString(deployment().name, parameters('location')), '-Storage-Rbac-', copyIndex())]",
             "condition": "[not(empty(parameters('roleAssignments')))]",
             "dependsOn": [
@@ -665,7 +665,7 @@
         // storage container RBAC
         {
             "type": "Microsoft.Resources/deployments",
-            "apiVersion": "2020-06-01",
+            "apiVersion": "2021-01-01",
             "name": "[concat(uniqueString(deployment().name, parameters('location')), '-Storage-Container-', if(empty(parameters('blobContainers')), 'dummy', copyIndex()) )]",
             "condition": "[not(empty(parameters('blobContainers')))]",
             "dependsOn": [
@@ -795,7 +795,7 @@
         // file share RBAC
         {
             "type": "Microsoft.Resources/deployments",
-            "apiVersion": "2020-06-01",
+            "apiVersion": "2021-01-01",
             "name": "[concat(uniqueString(deployment().name, parameters('location')), '-Storage-FileShare-', if(empty(parameters('fileShares')), 'dummy', copyIndex()) )]",
             "condition": "[not(empty(parameters('fileShares')))]",
             "dependsOn": [
@@ -925,7 +925,7 @@
         // queue RBAC
         {
             "type": "Microsoft.Resources/deployments",
-            "apiVersion": "2020-06-01",
+            "apiVersion": "2021-01-01",
             "name": "[concat(uniqueString(deployment().name, parameters('location')), '-Storage-Queue-', if(empty(parameters('queues')), 'dummy', copyIndex()) )]",
             "condition": "[not(empty(parameters('queues')))]",
             "dependsOn": [
