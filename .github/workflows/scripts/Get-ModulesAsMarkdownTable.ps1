@@ -213,7 +213,7 @@ function Get-RelevantDepth {
     )
 
     # Get only folders that contain no files (aka are parent folders)
-    if (-not ($relevantSubfolders = (Get-Childitem $path -Directory -Recurse -Exclude @('.bicep', 'parameters', 'tests')).fullName)) {
+    if (-not ($relevantSubfolders = (Get-Childitem $path -Directory -Recurse -Exclude @('.bicep', 'parameters')).fullName)) {
         return 0
     }
     $sanitizedPaths = $relevantSubfolders | ForEach-Object { $_.Replace($path, '') }
@@ -293,7 +293,7 @@ function Get-ResolvedSubServiceRow {
         [string] $organization
     )
 
-    $subFolders = Get-ChildItem -Path $subPath -Directory -Recurse -Exclude @('.bicep', 'parameters', 'tests')
+    $subFolders = Get-ChildItem -Path $subPath -Directory -Recurse -Exclude @('.bicep', 'parameters')
 
     foreach ($subfolder in $subFolders.FullName) {
         $subFolderName = (Split-Path $subfolder -Leaf)
@@ -467,7 +467,7 @@ function Get-ModulesAsMarkdownTable {
     foreach ($topLevelFolder in $topLevelFolders) {
         $provider = Split-Path $topLevelFolder -Leaf
 
-        $subFolders = Get-ChildItem -Path $topLevelFolder -Directory -Recurse -Exclude @('.bicep', 'parameters', 'tests') -Depth 0
+        $subFolders = Get-ChildItem -Path $topLevelFolder -Directory -Recurse -Exclude @('.bicep', 'parameters') -Depth 0
 
         foreach ($subfolder in $subFolders.FullName) {
             $subFolderName = (Split-Path $subfolder -Leaf)
