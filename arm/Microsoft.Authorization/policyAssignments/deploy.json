@@ -8,7 +8,7 @@
                 "description": "Required. Specifies the name of the policy assignment."
             }
         },
-       "location": {
+        "location": {
             "type": "string",
             "defaultValue": "[deployment().location]",
             "metadata": {
@@ -30,8 +30,7 @@
         },
         "parameters": {
             "type": "object",
-            "defaultValue": {
-            },
+            "defaultValue": {},
             "metadata": {
                 "description": "Optional. Parameters for the policy assignment if needed."
             }
@@ -58,27 +57,25 @@
         {
             "condition": "[not(empty(parameters('cuaId')))]",
             "type": "Microsoft.Resources/deployments",
-            "apiVersion": "2020-06-01",
+            "apiVersion": "2021-01-01",
             "name": "[concat('pid-', parameters('cuaId'))]",
             "properties": {
                 "mode": "Incremental",
                 "template": {
                     "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
                     "contentVersion": "1.0.0.0",
-                    "resources": [
-                    ]
+                    "resources": []
                 }
             }
         },
         // Policy Assignment on Subscription scope
         {
             "name": "[concat(variables('policyAssignmentName'), '-subDeployment')]",
-            "apiVersion": "2020-06-01",
             "type": "Microsoft.Resources/deployments",
+            "apiVersion": "2021-01-01",
             "location": "[parameters('location')]",
             "condition": "[empty(parameters('resourceGroupName'))]",
-            "dependsOn": [
-            ],
+            "dependsOn": [],
             "properties": {
                 "mode": "Incremental",
                 "template": {
@@ -105,11 +102,10 @@
         // Policy Assignment on Resource group scope
         {
             "name": "[concat(variables('policyAssignmentName'), '-rgDeployment')]",
-            "apiVersion": "2020-06-01",
             "type": "Microsoft.Resources/deployments",
+            "apiVersion": "2021-01-01",
             "condition": "[not(empty(parameters('resourceGroupName')))]",
-            "dependsOn": [
-            ],
+            "dependsOn": [],
             "properties": {
                 "mode": "Incremental",
                 "template": {
@@ -134,8 +130,7 @@
             }
         }
     ],
-    "functions": [
-    ],
+    "functions": [],
     "outputs": {
         "policyAssignmentName": {
             "type": "string",

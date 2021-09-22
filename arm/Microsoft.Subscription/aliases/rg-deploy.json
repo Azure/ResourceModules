@@ -45,7 +45,7 @@
     {
       "name": "[concat('subscription-',deployment().name)]",
       "type": "Microsoft.Resources/deployments",
-      "apiVersion": "2019-10-01",
+      "apiVersion": "2021-01-01",
       "location": "[parameters('location')]",
       "properties": {
         "expressionEvaluationOptions": {
