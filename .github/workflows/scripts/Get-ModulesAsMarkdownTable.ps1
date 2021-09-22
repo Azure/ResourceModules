@@ -493,7 +493,6 @@ function Get-ModulesAsMarkdownTable {
                 foreach ($column in $columnsInOrder) {
                     switch ($column) {
                         'Name' {
-                            #https://github.com/Azure/ResourceModules/tree/main/arm/Microsoft.ApiManagement/serviceResources/namedValues
                             $row['Name'] = ('[{0}](https://github.com/{1}/{2}/tree/main/arm/{3})' -f (Get-ResourceModuleName -path $subfolder), $organization, $repositoryName, $concatedBase.Replace('\', '/'))
                         }
                         'ProviderNamespace' {
