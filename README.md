@@ -24,6 +24,7 @@ This repository includes a collection of advanced and curated Modules consisting
 * File an issue via [GitHub Issues](https://github.com/azure/Modules/issues/new/choose)
 
 ## Available Modules
+<!-- ModuleTableStartMarker -->
 | Name | ARM / Bicep | Status | Deploy |
 | - | - | - | - |
 | [Analysis Services](https://github.com/Azure/ResourceModules/tree/main/arm/Microsoft.AnalysisServices/servers) | :heavy_check_mark:/ | [![AnalysisServices: Servers - Test Pipeline](https://github.com/Azure/ResourceModules/actions/workflows/ms.analysisservices.servers.yml/badge.svg)](https://github.com/Azure/ResourceModules/actions/workflows/ms.analysisservices.servers.yml) | [![Deploy to Azure](/docs/media/deploytoazure.svg?sanitize=true)](<https://portal.azure.com/#create/Microsoft.Template/uri/https%3a%2f%2fraw.githubusercontent.com%2fAzure%2fResourceModules%2fmain%2farm%5cMicrosoft.AnalysisServices%5cservers%2fdeploy.json>) |
@@ -121,6 +122,7 @@ This repository includes a collection of advanced and curated Modules consisting
 | [App Services](https://github.com/Azure/ResourceModules/tree/main/arm/Microsoft.Web/sites/appService) | :heavy_check_mark:/ | [![Web: Sites Appservice - Test Pipeline](https://github.com/Azure/ResourceModules/actions/workflows/ms.web.sites.appservice.yml/badge.svg)](https://github.com/Azure/ResourceModules/actions/workflows/ms.web.sites.appservice.yml) | [![Deploy to Azure](/docs/media/deploytoazure.svg?sanitize=true)](<https://portal.azure.com/#create/Microsoft.Template/uri/https%3a%2f%2fraw.githubusercontent.com%2fAzure%2fResourceModules%2fmain%2farm%5cMicrosoft.Web%5csites%5cappService%2fdeploy.json>) |
 | [FunctionApp](https://github.com/Azure/ResourceModules/tree/main/arm/Microsoft.Web/sites/functionApp) | :heavy_check_mark:/ | [![Web: Sites Functionapp - Test Pipeline](https://github.com/Azure/ResourceModules/actions/workflows/ms.web.sites.functionapp.yml/badge.svg)](https://github.com/Azure/ResourceModules/actions/workflows/ms.web.sites.functionapp.yml) | [![Deploy to Azure](/docs/media/deploytoazure.svg?sanitize=true)](<https://portal.azure.com/#create/Microsoft.Template/uri/https%3a%2f%2fraw.githubusercontent.com%2fAzure%2fResourceModules%2fmain%2farm%5cMicrosoft.Web%5csites%5cfunctionApp%2fdeploy.json>) |
 | [WebApp](https://github.com/Azure/ResourceModules/tree/main/arm/Microsoft.Web/sites/webApp) | :heavy_check_mark:/ | [![Web: Sites Webapp - Test Pipeline](https://github.com/Azure/ResourceModules/actions/workflows/ms.web.sites.webapp.yml/badge.svg)](https://github.com/Azure/ResourceModules/actions/workflows/ms.web.sites.webapp.yml) | [![Deploy to Azure](/docs/media/deploytoazure.svg?sanitize=true)](<https://portal.azure.com/#create/Microsoft.Template/uri/https%3a%2f%2fraw.githubusercontent.com%2fAzure%2fResourceModules%2fmain%2farm%5cMicrosoft.Web%5csites%5cwebApp%2fdeploy.json>) |
+<!-- ModuleTableEndMarker -->
 
 <!-- ## Contributors
 

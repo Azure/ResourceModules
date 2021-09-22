@@ -3,6 +3,7 @@ In this section you can find useful information regarding the Modules that are c
 # Available Modules
 The following table provides you with an outline of all Modules that are currently available for use. Several sub-resources may be their own Modules and are hence displayed as a child path (e.g. `service/caches`).
 
+<!-- ModuleTableStartMarker -->
 | Name | Provider namespace | Resource Type | ARM / Bicep |
 | - | - | - | - |
 | [Analysis Services](Microsoft.AnalysisServices/servers) | `MS.AnalysisServices` | [servers](Microsoft.AnalysisServices/servers) | :heavy_check_mark:/ |
@@ -100,3 +101,4 @@ The following table provides you with an outline of all Modules that are current
 | [App Services](Microsoft.Web/sites/appService) |  | [sites/appService](Microsoft.Web/sites/appService) | :heavy_check_mark:/ |
 | [FunctionApp](Microsoft.Web/sites/functionApp) |  | [sites/functionApp](Microsoft.Web/sites/functionApp) | :heavy_check_mark:/ |
 | [WebApp](Microsoft.Web/sites/webApp) |  | [sites/webApp](Microsoft.Web/sites/webApp) | :heavy_check_mark:/ |
+<!-- ModuleTableEndMarker -->
