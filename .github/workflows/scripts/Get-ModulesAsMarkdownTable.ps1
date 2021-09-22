@@ -331,9 +331,6 @@ function Get-ResolvedSubServiceRow {
                     $row['TemplateType'] += Get-TypeColumnString -path $subfolder
                 }
                 'Deploy' {
-                    if (-not $repositoryName) {
-                        throw "If you want to generate a 'Deploy to Azure button' you must provide the 'repositoryName' parameter"
-                    }
                     $row['Deploy'] += Get-DeployToAzureUrl -path $subfolder -repositoryName $repositoryName -organization $organization
                 }
                 'Status' {
@@ -486,8 +483,6 @@ function Get-ModulesAsMarkdownTable {
                 $output = Get-ResolvedSubServiceRow @recursiveSubServiceInputObject
             }
             else {
-                Write-Host "## Processing top-level [$topLevelFolder]"
-
                 $row = @{}
 
                 foreach ($column in $columnsInOrder) {
@@ -518,9 +513,6 @@ function Get-ModulesAsMarkdownTable {
                             $row['TemplateType'] += Get-TypeColumnString -path $subfolder
                         }
                         'Deploy' {
-                            if (-not $repositoryName) {
-                                throw "If you want to generate a 'Deploy to Azure button' you must provide the 'repositoryName' parameter"
-                            }
                             $row['Deploy'] += Get-DeployToAzureUrl -path $subfolder -repositoryName $repositoryName -organization $organization
                         }
                         'Status' {
