@@ -334,6 +334,7 @@ function Get-ResolvedSubServiceRow {
                     $row['Deploy'] += Get-DeployToAzureUrl -path $subfolder -repositoryName $repositoryName -organization $organization
                 }
                 'Status' {
+                    Write-Host "Subservice Path [$subfolder]"
                     $row['Status'] += Get-PipelineStatusUrl -name $subName -provider $provider -repositoryName $repositoryName -organization $organization
                 }
                 Default {
@@ -516,6 +517,7 @@ function Get-ModulesAsMarkdownTable {
                             $row['Deploy'] += Get-DeployToAzureUrl -path $subfolder -repositoryName $repositoryName -organization $organization
                         }
                         'Status' {
+                            Write-Host "Service Path [$subFolderName]"
                             $row['Status'] += Get-PipelineStatusUrl -name $subFolderName -provider $provider -repositoryName $repositoryName -organization $organization
                         }
                         Default {
