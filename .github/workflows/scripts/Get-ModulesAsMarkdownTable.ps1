@@ -306,7 +306,6 @@ function Get-ResolvedSubServiceRow {
             switch ($column) {
                 'Name' {
                     $row['Name'] = ('[{0}](https://github.com/{1}/{2}/tree/main/arm/{3})' -f (Get-ResourceModuleName -path $subfolder), $organization, $repositoryName, $relativePath.Replace('\', '/'))
-
                 }
                 'ProviderNamespace' {
                     # If we don't sort by provider, we have to add the provider to each row to ensure readability of each row
