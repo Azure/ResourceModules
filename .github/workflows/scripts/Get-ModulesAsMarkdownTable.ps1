@@ -200,11 +200,11 @@ In other words, a module would contain a folder with e.g. a 'parameters' folder 
 Mandatory. The path to search in.
 
 .EXAMPLE
-> (Get-RelevantDepth -path 'C:\dev\ApiManagement') -gt 0
+> (Measure-ContainsModule -path 'C:\dev\ApiManagement') -gt 0
 
 Check if the path 'C:\dev\ApiManagement' contains any number of nested modules
 #>
-function Get-RelevantDepth {
+function Measure-ContainsModule {
 
     [CmdletBinding()]
     param (
@@ -212,28 +212,11 @@ function Get-RelevantDepth {
         [string] $path
     )
 
-    Write-Host "Processing path [$path]"
     # Get only folders that contain no files (aka are parent folders)
-    if (-not ($relevantSubfolders = (Get-Childitem $path -Directory -Recurse -Exclude @('.bicep', 'parameters')).fullName)) {
-        Write-Host " Found no relevant subfolder"
-        return 0
-    }
-
-    $relevantSubfolders | ForEach-Object { Write-Host " Found relevant sub folder [$_]" }
-
-
-    $sanitizedPaths = $relevantSubfolders | ForEach-Object { $_.Replace($path, '') }
-
-    $sanitizedPaths | ForEach-Object { Write-Host " Checking sanitized path [$_]" }
-
-
-    $depths = $sanitizedPaths | ForEach-Object { ($_.Split('\') | Measure-Object).Count - 1 }
-
-    Write-Host (" Found depths [{0}]" -f ($depths | Out-String)) 
-
-    $maxDepth = ($depths | Measure-Object -Maximum).Maximum
-    Write-Host "Found max depth [$maxDepth] for path [$path]"
-    return $maxDepth
+    if (-not ((Get-Childitem $path -Directory -Recurse -Exclude @('.bicep', 'parameters')).fullName)) {
+        return $false
+    } 
+    return $true
 }
 
 <#
@@ -482,7 +465,7 @@ function Get-ModulesAsMarkdownTable {
             $subFolderName = (Split-Path $subfolder -Leaf)
             $concatedBase = $subfolder.Replace((Split-Path $topLevelFolder -Parent), '').Substring(1)
 
-            if ((Get-RelevantDepth -path $subfolder) -gt 0) {
+            if (Measure-ContainsModule -path $subfolder) {
                 $recursiveSubServiceInputObject = @{
                     subPath        = $subfolder
                     concatedBase   = $concatedBase
