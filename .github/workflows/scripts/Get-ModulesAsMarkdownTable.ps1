@@ -486,6 +486,7 @@ function Get-ModulesAsMarkdownTable {
                 $output = Get-ResolvedSubServiceRow @recursiveSubServiceInputObject
             }
             else {
+                Write-Host "## Processing top-level [$topLevelFolder]"
 
                 $row = @{}
 

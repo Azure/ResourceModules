@@ -18,8 +18,6 @@ jobs:
           # Load used functions
           . "$env:GITHUB_WORKSPACE/.github/workflows/scripts/Set-GitHubReadMeModuleTable.ps1"
 
-          $PSVersionTable
-
           $functionInput = @{
             modulesPath    = Join-Path $env:GITHUB_WORKSPACE 'arm'
             filePath       = Join-Path $env:GITHUB_WORKSPACE 'README.md'
