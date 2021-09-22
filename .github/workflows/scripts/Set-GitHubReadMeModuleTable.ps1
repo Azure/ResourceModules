@@ -21,9 +21,7 @@ function Set-GitHubReadMeModuleTable {
     # Load functions
     . (Join-Path $PSScriptRoot 'Get-ModulesAsMarkdownTable.ps1')
 
-    # Logic
-    Write-Verbose "Processing path [$filePath]" -Verbose
-    
+    # Logic    
     $contentArray = Get-Content -Path $filePath
     $startIndex = [array]::IndexOf($contentArray, '<!-- ModuleTableStartMarker -->')
     $endIndex = [array]::IndexOf($contentArray, '<!-- ModuleTableEndMarker -->')
