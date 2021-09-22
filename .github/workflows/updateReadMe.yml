@@ -18,17 +18,31 @@ jobs:
       - name: "Update general ReadMe"
         shell: pwsh
         run: |
-          $workspacePath = $GITHUB_WORKSPACE
-          $readMePath = Join-Path $workspacePath 'README.md'
+          $functionInput = @{
+            modulesPath    = Join-Path $GITHUB_WORKSPACE 'arm'
+            filePath       = Join-Path $GITHUB_WORKSPACE 'README.md'
+            organization   = ($GITHUB_REPOSITORY).split('/')[0] 
+            repositoryName = ($GITHUB_REPOSITORY).split('/')[1]
+            columnsInOrder = @('Name', 'TemplateType', 'Status', 'Deploy')
+          }
 
-          Write-Verbose "Processing path [$readMePath]" -Verbose
-          
+          Write-Verbose "Invoke task with" -Verbose
+          $functionInput | Format-Table -AutoSize
 
-          # ModuleTableStartMarker
-          # ModuleTableEndMarker
+          Set-GitHubReadMeModuleTable @functionInput
 
       - name: "Update module folder ReadMe"
         shell: pwsh
         run: |
-          $workspacePath = $GITHUB_WORKSPACE
-          $readMePath = Join-Path $workspacePath 'arm/README.md'
+          $functionInput = @{
+            modulesPath    = Join-Path $GITHUB_WORKSPACE 'arm' 
+            filePath       = Join-Path $GITHUB_WORKSPACE 'arm/README.md'
+            organization   = ($GITHUB_REPOSITORY).split('/')[0] 
+            repositoryName = ($GITHUB_REPOSITORY).split('/')[1]
+            columnsInOrder = @('Name', 'ProviderNamespace','ResourceType','TemplateType')
+          }
+
+          Write-Verbose "Invoke task with" -Verbose
+          $functionInput | Format-Table -AutoSize
+
+          Set-GitHubReadMeModuleTable @functionInput

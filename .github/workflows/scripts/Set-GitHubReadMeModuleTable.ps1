@@ -1,6 +1,6 @@
 function Set-GitHubReadMeModuleTable {
 
-    [CmdletBinding()]
+    [CmdletBinding(SupportsShouldProcess)]
     param (
         [Parameter(Mandatory)]
         [string] $filePath,
@@ -39,24 +39,9 @@ function Set-GitHubReadMeModuleTable {
     }
     $tableString = Get-ModulesAsMarkdownTable @tableStringInputObject
 
-    $res = $startContent + $tableString + $endContent
-    $res
-
+    $newContent = (($startContent + $tableString + $endContent) | Out-String).TrimEnd()
+    
+    if ($PSCmdlet.ShouldProcess("File in path [$filePath]", "Overwrite")) {
+        Set-Content -Path $filePath -Value $newContent -Force -NoNewLine
+    }
 }
-$input = @{
-    modulesPath    = 'C:\dev\ip\Azure-Modules\ResourceModules\arm' 
-    filePath       = 'C:\dev\ip\Azure-Modules\ResourceModules\arm\README.md' 
-    repositoryName = 'ResourceModules' 
-    organization   = 'Azure' 
-    columnsInOrder = @('Name', 'ProviderNamespace','ResourceType','TemplateType')
-}
-# Set-GitHubReadMeModuleTable @input
-
-$input = @{
-    modulesPath    = 'C:\dev\ip\Azure-Modules\ResourceModules\arm' 
-    filePath       = 'C:\dev\ip\Azure-Modules\ResourceModules\README.md' 
-    repositoryName = 'ResourceModules' 
-    organization   = 'Azure' 
-    columnsInOrder = @('Name', 'TemplateType', 'Status', 'Deploy')
-}
-Set-GitHubReadMeModuleTable @input
