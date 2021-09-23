@@ -42,7 +42,7 @@ function Get-PipelineStatusUrl {
     )
     $shortProvider = $provider.Replace('Microsoft.', 'MS.')
     $pipelineFileName = ('{0}.{1}.yml' -f $shortProvider, $name).Replace('\', '.').ToLower()
-    $pipelineFileUri = ".github\workflows\$pipelineFileName"
+    $pipelineFileUri = ".github/workflows/$pipelineFileName"
     
     $pipelineName = (Get-Content -Path $pipelineFileUri)[0].TrimStart('name:').Replace('"', '').Trim()
     
@@ -189,10 +189,10 @@ function Get-TypeColumnString {
 
 <#
 .SYNOPSIS
-Get the number of nested module levels
+Check for the existens of any nested module levels
 
 .DESCRIPTION
-Get the number of nested module levels. If the return value is greater than 0, the provided folder path contains at least one module in a lower level
+Check for the existens of any nested module levels.
 A module is identified by folders that do not contain module-specific folders such as 'parameters'.
 In other words, a module would contain a folder with e.g. a 'parameters' folder and would hence not count towards the hierarchy of parent folders.
 
@@ -200,7 +200,7 @@ In other words, a module would contain a folder with e.g. a 'parameters' folder 
 Mandatory. The path to search in.
 
 .EXAMPLE
-> (Measure-ContainsModule -path 'C:\dev\ApiManagement') -gt 0
+Measure-ContainsModule -path 'C:\dev\ApiManagement'
 
 Check if the path 'C:\dev\ApiManagement' contains any number of nested modules
 #>
@@ -466,6 +466,7 @@ function Get-ModulesAsMarkdownTable {
             $concatedBase = $subfolder.Replace((Split-Path $topLevelFolder -Parent), '').Substring(1)
 
             if (Measure-ContainsModule -path $subfolder) {
+                Write-Host "Main: Process Sub Elem [$subfolder]"
                 $recursiveSubServiceInputObject = @{
                     subPath        = $subfolder
                     concatedBase   = $concatedBase
@@ -479,6 +480,7 @@ function Get-ModulesAsMarkdownTable {
                 $output = Get-ResolvedSubServiceRow @recursiveSubServiceInputObject
             }
             else {
+                Write-Host "Main: Process Top Elem [$subfolder]"
                 $row = @{}
 
                 foreach ($column in $columnsInOrder) {

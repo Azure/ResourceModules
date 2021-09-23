@@ -27,7 +27,7 @@ function Set-GitHubReadMeModuleTable {
     $endIndex = [array]::IndexOf($contentArray, '<!-- ModuleTableEndMarker -->')
 
     $startContent = $contentArray[0..$startIndex] 
-    $endContent = $contentArray[$endIndex..$contentArray.Count] # | Out-String
+    $endContent = $contentArray[$endIndex..$contentArray.Count]
 
     $tableStringInputObject = @{
         Path           = $modulesPath
