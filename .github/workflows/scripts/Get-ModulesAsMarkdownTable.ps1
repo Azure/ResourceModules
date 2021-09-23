@@ -41,11 +41,6 @@ function Get-PipelineStatusUrl {
         [string] $organization
     )
 
-    Write-Host "Status: Name [$name]"
-    Write-Host "Status: Provider [$provider]"
-    Write-Host "Status: Repository [$repositoryName]"
-    Write-Host "Status: Organization [$organization]"
-
     $shortProvider = $provider.Replace('Microsoft.', 'MS.')
     $pipelineFileName = ('{0}.{1}.yml' -f $shortProvider, $name).Replace('\','/').Replace('/', '.').ToLower()
     $pipelineFileUri = ".github/workflows/$pipelineFileName"
@@ -303,16 +298,10 @@ function Get-ResolvedSubServiceRow {
 
     foreach ($subfolder in $subFolders.FullName) {
         
-        
         $subFolderName = (Split-Path $subfolder -Leaf)
         
         $relativePath = Join-Path $concatedBase $subFolderName
         $subName = $relativePath.Replace('\','/').Replace("$provider/", '').Replace('Resources/', '/')
-        
-        Write-Host "Sub: Process Sub Elem [$subfolder]"
-        Write-Host " Sub: SubFolderName [$subFolderName]"
-        Write-Host " Sub: relativePath [$relativePath]"
-        Write-Host " Sub: subName [$subName]"
 
         $row = @{}
         foreach ($column in $columnsInOrder) {
