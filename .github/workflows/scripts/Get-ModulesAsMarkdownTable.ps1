@@ -40,6 +40,12 @@ function Get-PipelineStatusUrl {
         [Parameter(Mandatory)]
         [string] $organization
     )
+
+    Write-Host "Status: Name [$name]"
+    Write-Host "Status: Provider [$provider]"
+    Write-Host "Status: Repository [$repositoryName]"
+    Write-Host "Status: Organization [$organization]"
+
     $shortProvider = $provider.Replace('Microsoft.', 'MS.')
     $pipelineFileName = ('{0}.{1}.yml' -f $shortProvider, $name).Replace('\', '.').ToLower()
     $pipelineFileUri = ".github/workflows/$pipelineFileName"
