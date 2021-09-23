@@ -12,6 +12,14 @@ inputs:
 runs:
   using: "composite"
   steps:
+    - name: "Setup agent & login"
+      shell: pwsh
+      run: |
+        # Load used functions
+        . ".github/actions/sharedScripts/Set-EnvironmentOnAgent.ps1"
+        # Set agent up
+        Set-EnvironmentOnAgent    
+  
     - name: Azure Login
       uses: Azure/login@v1
       with:
