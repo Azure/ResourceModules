@@ -303,12 +303,16 @@ function Get-ResolvedSubServiceRow {
 
     foreach ($subfolder in $subFolders.FullName) {
         
-        Write-Host "Sub: Process Sub Elem [$subfolder]"
-
+        
         $subFolderName = (Split-Path $subfolder -Leaf)
-
+        
         $relativePath = Join-Path $concatedBase $subFolderName
         $subName = $relativePath.Replace("$provider\", '').Replace('Resources\', '\')
+        
+        Write-Host "Sub: Process Sub Elem [$subfolder]"
+        Write-Host " Sub: SubFolderName [$subFolderName]"
+        Write-Host " Sub: relativePath [$relativePath]"
+        Write-Host " Sub: subName [$subName]"
 
         $row = @{}
         foreach ($column in $columnsInOrder) {
