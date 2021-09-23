@@ -2,7 +2,7 @@
 
 param (
     [array] $moduleFolderPaths = ((Get-Childitem (Split-Path (Get-Location) -Parent) -Recurse -Directory).FullName | Where-Object {
-        (Get-Childitem $_ -File -Depth 0 -Include @('deploy.json'<#, 'deploy.bicep'#>)).Count -gt 0
+        (Get-Childitem $_ -File -Depth 0 -Include @('deploy.json', 'deploy.bicep')).Count -gt 0
         })
 )
 
@@ -15,12 +15,21 @@ $script:moduleFolderPaths = $moduleFolderPaths
 $locationTestExceptions = @( "AzureNetappFiles", "TrafficManager", "PrivateDnsZones", "ManagementGroups")
 $script:folderPathsToScanExcludeRG = $moduleFolderPaths | Where-Object { (Split-Path $_ -Leaf) -notin $locationTestExceptions }
 
+foreach ($moduleFolderPath in $moduleFolderPaths) {
+    $templateFiles = (Get-ChildItem -Path $folderPath -Include @('deploy.json', 'deploy.bicep') -Depth 0).Name
+    if ($templateFiles -contains 'deploy.bicep' -and $templateFiles -notcontains 'deploy.json') {
+        Write-Verbose "Generate ARM file for [$moduleFolderPath]"
+        bicep build (Join-Path $moduleFolderPath 'deploy.bicep')
+    }
+}
+
 Describe "File/folder tests" -Tag Modules {
 
     Context "General module folder tests" {
 
         $moduleFolderTestCases = [System.Collections.ArrayList] @()
         foreach ($folderPath in $moduleFolderPaths) {
+
             $moduleFolderTestCases += @{
                 moduleFolderName = Split-Path $folderPath -Leaf
                 moduleFolderPath = $folderPath
@@ -142,26 +151,6 @@ Describe "Readme tests" -Tag Readme {
             )
             (Get-Content $fileContent) | Should -Not -Be $null
         }
-
-        # TODO: Still valid for new module repo?
-        # It "[<moduleFolderName>] Heading1 title should be identical with the module's folder name" -TestCases $readmeFolderTestCases {
-        #     param(
-        #         $moduleFolderName,
-        #         $moduleFolderPath,
-        #         $fileContent
-        #     )
-        #     $TemplateContentHeading = Get-Content ($fileContent) -ErrorAction SilentlyContinue
-        #     $ReadmeHTML = ($TemplateContentHeading  | ConvertFrom-Markdown -ErrorAction SilentlyContinue).Html
-        #     $HeaderNames = @()
-        #     foreach ($H in $ReadmeHTML) {
-        #         if ($H.Contains("<h")) {
-        #             $StartingIndex = $H.IndexOf(">") + 1
-        #             $EndIndex = $H.LastIndexof("<")
-        #             $HeaderNames += $H.Substring($StartingIndex, $EndIndex - $StartingIndex)
-        #         }
-        #     }
-        #     ($moduleFolderPaths -notcontains (join-path -path $Parent "\"$HeaderNames[0].Replace(" ", ""))) | Should -Be $false
-        # }
 
         It "[<moduleFolderName>] Readme.md file should contain the these Heading2 titles in order: Resource Types, parameters, Outputs, Considerations, Additional resources" -TestCases $readmeFolderTestCases {
             param(
