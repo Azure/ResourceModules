@@ -1,0 +1,55 @@
+name: ".Platform: Update ReadMe Module Tables"
+
+on:
+  workflow_dispatch:
+
+jobs:
+  job_update_readme:
+    runs-on: ubuntu-20.04
+    name: "Update module tables"
+    steps:
+      - name: "Checkout"
+        uses: actions/checkout@v2
+        with:
+          fetch-depth: 0
+      - name: "Update general ReadMe"
+        shell: pwsh
+        run: |
+          # Load used functions
+          . "$env:GITHUB_WORKSPACE/.github/workflows/scripts/Set-GitHubReadMeModuleTable.ps1"
+
+          $functionInput = @{
+            modulesPath    = Join-Path $env:GITHUB_WORKSPACE 'arm'
+            filePath       = Join-Path $env:GITHUB_WORKSPACE 'README.md'
+            organization   = ($env:GITHUB_REPOSITORY).split('/')[0] 
+            repositoryName = ($env:GITHUB_REPOSITORY).split('/')[1]
+            columnsInOrder = @('Name', 'TemplateType', 'Status', 'Deploy')
+          }
+
+          Write-Verbose "Invoke task with" -Verbose
+          $functionInput | Format-Table -AutoSize
+
+          Set-GitHubReadMeModuleTable @functionInput
+
+          # TODO: Add push
+
+      - name: "Update module folder ReadMe"
+        shell: pwsh
+        run: |
+          # Load used functions
+          . "$env:GITHUB_WORKSPACE/.github/workflows/scripts/Set-GitHubReadMeModuleTable.ps1"
+
+          $functionInput = @{
+            modulesPath    = Join-Path $env:GITHUB_WORKSPACE 'arm' 
+            filePath       = Join-Path $env:GITHUB_WORKSPACE 'arm/README.md'
+            organization   = ($env:GITHUB_REPOSITORY).split('/')[0] 
+            repositoryName = ($env:GITHUB_REPOSITORY).split('/')[1]
+            columnsInOrder = @('Name', 'ProviderNamespace','ResourceType','TemplateType')
+          }
+
+          Write-Verbose "Invoke task with" -Verbose
+          $functionInput | Format-Table -AutoSize
+
+          Set-GitHubReadMeModuleTable @functionInput
+
+          # TODO: Add push
