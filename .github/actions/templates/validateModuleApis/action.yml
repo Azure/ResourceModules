@@ -24,6 +24,7 @@ runs:
       uses: Azure/login@v1
       with:
         creds: ${{ env.AZURE_CREDENTIALS }}
+        enable-AzPSSession: true
 
     # [Module Pester Test] task(s)
     #-----------------------------
