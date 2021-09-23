@@ -200,11 +200,11 @@ In other words, a module would contain a folder with e.g. a 'parameters' folder 
 Mandatory. The path to search in.
 
 .EXAMPLE
-Measure-ContainsModule -path 'C:\dev\ApiManagement'
+Measure-FolderHasNestedModule -path 'C:\dev\ApiManagement'
 
 Check if the path 'C:\dev\ApiManagement' contains any number of nested modules
 #>
-function Measure-ContainsModule {
+function Measure-FolderHasNestedModule {
 
     [CmdletBinding()]
     param (
@@ -212,11 +212,17 @@ function Measure-ContainsModule {
         [string] $path
     )
 
-    # Get only folders that contain no files (aka are parent folders)
-    if (-not ((Get-Childitem $path -Directory -Recurse -Exclude @('.bicep', 'parameters')).fullName)) {
+    # Get all folder paths that exist in the given path as long as they are not '.bicep' or 'parameters' folders
+    # This works as long as the folder structure is consistent (e.g. no empty folders are created etc.)
+    $foundFolders = (Get-Childitem $path -Directory -Recurse -Exclude @('.bicep', 'parameters')).fullName
+    if ($foundFolders) {
+        Write-Host "Found folders for path: [$path]"
+        $foundFolders | ForEach-Object { Write-Host "  Found: [$_]" }
+        return $true
+    }
+    else {
         return $false
-    } 
-    return $true
+    }
 }
 
 <#
@@ -465,7 +471,7 @@ function Get-ModulesAsMarkdownTable {
             $subFolderName = (Split-Path $subfolder -Leaf)
             $concatedBase = $subfolder.Replace((Split-Path $topLevelFolder -Parent), '').Substring(1)
 
-            if (Measure-ContainsModule -path $subfolder) {
+            if (Measure-FolderHasNestedModule -path $subfolder) {
                 Write-Host "Main: Process Sub Elem [$subfolder]"
                 $recursiveSubServiceInputObject = @{
                     subPath        = $subfolder
