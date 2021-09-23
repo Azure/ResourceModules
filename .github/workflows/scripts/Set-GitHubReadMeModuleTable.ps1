@@ -41,6 +41,6 @@ function Set-GitHubReadMeModuleTable {
     
     if ($PSCmdlet.ShouldProcess("File in path [$filePath]", "Overwrite")) {
         Set-Content -Path $filePath -Value $newContent -Force -NoNewLine
-        Write-Verbse "File [$filePath] updated" -Verbose
+        Write-Verbose "File [$filePath] updated" -Verbose
     }
 }
