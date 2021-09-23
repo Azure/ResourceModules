@@ -15,7 +15,7 @@ runs:
     - name: Azure Login
       uses: Azure/login@v1
       with:
-        creds: ${{ secrets.AZURE_CREDENTIALS }}
+        creds: ${{ env.AZURE_CREDENTIALS }}
 
     # [Module Pester Test] task(s)
     #-----------------------------

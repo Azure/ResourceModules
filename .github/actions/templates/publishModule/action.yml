@@ -36,7 +36,7 @@ runs:
     - name: Azure Login
       uses: Azure/login@v1
       with:
-        creds: ${{ secrets.AZURE_CREDENTIALS }}
+        creds: ${{ env.AZURE_CREDENTIALS }}
 
     - name: "Publish module to template spec"
       shell: pwsh
