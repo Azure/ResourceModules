@@ -65,6 +65,12 @@ function Test-TemplateWithParameterFile {
     }
 
     process {
+        # Can be removed once bicep supports a test deployment
+        if ((Split-Path $templateFilePath -Extension) -eq '.bicep') {
+            az bicep build -f $templateFilePath
+            $templateFilePath = Join-Path (Split-Path $templateFilePath -Parent) 'deploy.json'
+        }
+
         $DeploymentInputs = @{
             TemplateFile          = $templateFilePath
             TemplateParameterFile = $parameterFilePath
