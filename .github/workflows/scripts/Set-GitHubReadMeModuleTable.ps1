@@ -1,3 +1,35 @@
+<#
+.SYNOPSIS
+Update the given ReadMe file with the latest module table
+
+.DESCRIPTION
+Update the given ReadMe file with the latest module table. 
+You can specify the columns to be generated.
+Note that the ReadMe file should have the following lines right before & after the table to enable the replacement of the correct area:
+- '<!-- ModuleTableStartMarker -->'
+- '<!-- ModuleTableEndMarker -->'
+
+.PARAMETER filePath
+Mandatory. The path to the ReadMe file to update
+
+.PARAMETER modulesPath
+Mandatory. The path to the modules folder to process
+
+.PARAMETER repositoryName
+Mandatory. The name of the repository the modules are in (required to generate the correct links)
+
+.PARAMETER organization
+Mandatory. The name of the organization the modules are in (required to generate the correct links)
+
+.PARAMETER columnsInOrder
+Mandatory. The set of columns to add to the table in the order you expect them in the table.
+Available are 'Name', 'ProviderNamespace', 'ResourceType', 'TemplateType', 'Deploy' & 'Status'
+
+.EXAMPLE
+Set-GitHubReadMeModuleTable -filePath 'C:\readme.md' -modulesPath 'C:\arm' -repositoryName 'ResourceModules' -organization 'Azure' -columnsInOrder @('Name','Status')
+
+Update the defined table section in the 'readme.md' file with a table that has the columns 'Name' & 'Status'
+#>
 function Set-GitHubReadMeModuleTable {
 
     [CmdletBinding(SupportsShouldProcess)]
@@ -15,6 +47,7 @@ function Set-GitHubReadMeModuleTable {
         [string] $organization,
 
         [Parameter(Mandatory)]
+        [ValidateSet('Name', 'ProviderNamespace', 'ResourceType', 'TemplateType', 'Deploy', 'Status')]
         [string[]] $columnsInOrder
     )
 

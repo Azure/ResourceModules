@@ -245,7 +245,7 @@ Mandatory. The current provider for this path
 
 .PARAMETER columnsInOrder
 Mandatory. The set of columns to add to the table in the order you expect them in the table.
-Available are 'Name', 'ProviderNamespace', 'ResourceType', 'TemplateType' and 'Deploy'
+Available are 'Name', 'ProviderNamespace', 'ResourceType', 'TemplateType', 'Deploy' & 'Status'
 
 .PARAMETER sortByColumn
 Mandatory. The column to sort the table by.
@@ -376,7 +376,7 @@ Mandatory. The path to resolve
 
 .PARAMETER columnsInOrder
 Optional. The set of columns to add to the table in the order you expect them in the table.
-Available are 'Name', 'ProviderNamespace', 'ResourceType', 'TemplateType' and 'Deploy'
+Available are 'Name', 'ProviderNamespace', 'ResourceType', 'TemplateType', 'Deploy' & 'Status'
 If no value is provided, all are added
 
 .PARAMETER sortByColumn
