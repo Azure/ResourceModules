@@ -216,8 +216,6 @@ function Measure-FolderHasNestedModule {
     # This works as long as the folder structure is consistent (e.g. no empty folders are created etc.)
     $foundFolders = (Get-Childitem $path -Directory -Recurse -Exclude @('.bicep', 'parameters')).fullName
     if ($foundFolders) {
-        Write-Host "Found folders for path: [$path]"
-        $foundFolders | ForEach-Object { Write-Host "  Found: [$_]" }
         return $true
     }
     else {
@@ -298,6 +296,9 @@ function Get-ResolvedSubServiceRow {
     $subFolders = Get-ChildItem -Path $subPath -Directory -Recurse -Exclude @('.bicep', 'parameters')
 
     foreach ($subfolder in $subFolders.FullName) {
+        
+        Write-Host "Sub: Process Sub Elem [$subfolder]"
+
         $subFolderName = (Split-Path $subfolder -Leaf)
 
         $relativePath = Join-Path $concatedBase $subFolderName
@@ -465,16 +466,15 @@ function Get-ModulesAsMarkdownTable {
     foreach ($topLevelFolder in $topLevelFolders) {
         $provider = Split-Path $topLevelFolder -Leaf
 
-        $subFolders = Get-ChildItem -Path $topLevelFolder -Directory -Recurse -Exclude @('.bicep', 'parameters') -Depth 0
+        $containedFolders = Get-ChildItem -Path $topLevelFolder -Directory -Recurse -Exclude @('.bicep', 'parameters') -Depth 0
 
-        foreach ($subfolder in $subFolders.FullName) {
-            $subFolderName = (Split-Path $subfolder -Leaf)
-            $concatedBase = $subfolder.Replace((Split-Path $topLevelFolder -Parent), '').Substring(1)
+        foreach ($containedFolder in $containedFolders.FullName) {
+            $containedFolderName = (Split-Path $containedFolder -Leaf)
+            $concatedBase = $containedFolder.Replace((Split-Path $topLevelFolder -Parent), '').Substring(1)
 
-            if (Measure-FolderHasNestedModule -path $subfolder) {
-                Write-Host "Main: Process Sub Elem [$subfolder]"
+            if (Measure-FolderHasNestedModule -path $containedFolder) {
                 $recursiveSubServiceInputObject = @{
-                    subPath        = $subfolder
+                    subPath        = $containedFolder
                     concatedBase   = $concatedBase
                     output         = $output
                     provider       = $provider
@@ -486,13 +486,12 @@ function Get-ModulesAsMarkdownTable {
                 $output = Get-ResolvedSubServiceRow @recursiveSubServiceInputObject
             }
             else {
-                Write-Host "Main: Process Top Elem [$subfolder]"
                 $row = @{}
 
                 foreach ($column in $columnsInOrder) {
                     switch ($column) {
                         'Name' {
-                            $row['Name'] = ('[{0}](https://github.com/{1}/{2}/tree/main/arm/{3})' -f (Get-ResourceModuleName -path $subfolder), $organization, $repositoryName, $concatedBase.Replace('\', '/'))
+                            $row['Name'] = ('[{0}](https://github.com/{1}/{2}/tree/main/arm/{3})' -f (Get-ResourceModuleName -path $containedFolder), $organization, $repositoryName, $concatedBase.Replace('\', '/'))
                         }
                         'ProviderNamespace' {
                             if ($previousProvider -eq $provider -and $sortByColumn -ne 'Name') {
@@ -511,16 +510,16 @@ function Get-ModulesAsMarkdownTable {
                             }
                         }
                         'ResourceType' {
-                            $row['ResourceType'] += ('[{0}](https://github.com/{1}/{2}/tree/main/arm/{3})' -f $subFolderName, $organization, $repositoryName, $concatedBase.Replace('\', '/'))
+                            $row['ResourceType'] += ('[{0}](https://github.com/{1}/{2}/tree/main/arm/{3})' -f $containedFolderName, $organization, $repositoryName, $concatedBase.Replace('\', '/'))
                         }
                         'TemplateType' {
-                            $row['TemplateType'] += Get-TypeColumnString -path $subfolder
+                            $row['TemplateType'] += Get-TypeColumnString -path $containedFolder
                         }
                         'Deploy' {
-                            $row['Deploy'] += Get-DeployToAzureUrl -path $subfolder -repositoryName $repositoryName -organization $organization
+                            $row['Deploy'] += Get-DeployToAzureUrl -path $containedFolder -repositoryName $repositoryName -organization $organization
                         }
                         'Status' {
-                            $row['Status'] += Get-PipelineStatusUrl -name $subFolderName -provider $provider -repositoryName $repositoryName -organization $organization
+                            $row['Status'] += Get-PipelineStatusUrl -name $containedFolderName -provider $provider -repositoryName $repositoryName -organization $organization
                         }
                         Default {
                             Write-Warning "Column [$column] not existing. Available are: [Name|ProviderNamespace|ResourceType|TemplateType|Deploy|Status]"
