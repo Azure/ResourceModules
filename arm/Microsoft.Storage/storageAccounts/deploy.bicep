@@ -116,19 +116,6 @@ param tags object = {}
 @description('Optional. Customer Usage Attribution id (GUID). This GUID must be previously registered')
 param cuaId string = ''
 
-@description('Optional. SAS token validity length. Usage: \'PT8H\' - valid for 8 hours; \'P5D\' - valid for 5 days; \'P1Y\' - valid for 1 year. When not provided, the SAS token will be valid for 8 hours.')
-param sasTokenValidityLength string = 'PT8H'
-
-@description('Generated. Do not provide a value! This date value is used to generate a SAS token to access the modules.')
-param baseTime string = utcNow('u')
-
-var accountSasProperties = {
-  signedServices: 'bt'
-  signedPermission: 'racuw'
-  signedExpiry: dateTimeAdd(baseTime, sasTokenValidityLength)
-  signedResourceTypes: 'co'
-  signedProtocol: 'https'
-}
 var virtualNetworkRules = [for networkrule in networkAcls.virtualNetworkRules: {
   id: '${vNetId}/subnets/${networkrule.subnet}'
 }]
@@ -201,11 +188,9 @@ var builtInRoleNames = {
   'Virtual Machine Contributor': '/subscriptions/8629be3b-96bc-482d-a04b-ffff597c65a2/providers/Microsoft.Authorization/roleDefinitions/9980e02c-c2be-4d73-94e8-173b1dc7cf3c'
 }
 
-resource pid_cuaId 'Microsoft.Resources/deployments@2020-06-01' = if (!empty(cuaId)) {
+module pidName './.bicep/nested_cuaId.bicep' = if (!empty(cuaId)) {
   name: 'pid-${cuaId}'
-  properties: {
-    mode: 'Incremental'
-  }
+  params: {}
 }
 
 resource storageAccount 'Microsoft.Storage/storageAccounts@2019-06-01' = {
@@ -234,9 +219,8 @@ resource storageAccount_lock 'Microsoft.Authorization/locks@2016-09-01' = if (lo
   ]
 }
 
-module name_location_Storage_Rbac './.bicep/nested_rbac.bicep' = [for (roleassignment, index) in roleAssignments: {
+module storageAccount_rbac './.bicep/nested_rbac.bicep' = [for (roleassignment, index) in roleAssignments: {
   name: '${uniqueString(deployment().name, location)}-Storage-Rbac-${index}'
-  // scope: storageAccount // module scopes are not yet supported besides subscription & up
   params: {
     roleAssignment: roleassignment
     builtInRoleNames: builtInRoleNames
@@ -247,7 +231,7 @@ module name_location_Storage_Rbac './.bicep/nested_rbac.bicep' = [for (roleassig
   ]
 }]
 
-module private_endpoints './.bicep/nested_privateEndpoint.bicep' = [for (endpoint, index) in privateEndpoints: if (!empty(privateEndpoints)) {
+module storageAccount_private_endpoints './.bicep/nested_privateEndpoint.bicep' = [for (endpoint, index) in privateEndpoints: if (!empty(privateEndpoints)) {
   name: '${uniqueString(deployment().name, location)}-Storage-PrivateEndpoints-${index}'
   params: {
     privateEndpointResourceId: storageAccount.id
@@ -365,9 +349,6 @@ output storageAccountResourceId string = storageAccount.id
 output storageAccountRegion string = location
 output storageAccountName string = storageAccountName
 output storageAccountResourceGroup string = resourceGroup().name
-// Currently not supported
-// output storageAccountSasToken securestring = listAccountSas(storageAccountName, '2019-04-01', accountSasProperties).accountSasToken
-// output storageAccountAccessKey securestring = listKeys(storageAccountName, '2016-12-01').keys[0].value
 output storageAccountPrimaryBlobEndpoint string = (empty(blobContainers) ? '' : reference('Microsoft.Storage/storageAccounts/${storageAccountName}', '2019-04-01').primaryEndpoints.blob)
 output blobContainers array = blobContainers
 output fileShares array = fileShares
