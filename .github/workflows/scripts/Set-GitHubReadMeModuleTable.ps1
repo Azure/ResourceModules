@@ -21,15 +21,13 @@ function Set-GitHubReadMeModuleTable {
     # Load functions
     . (Join-Path $PSScriptRoot 'Get-ModulesAsMarkdownTable.ps1')
 
-    # Logic
-    Write-Verbose "Processing path [$filePath]" -Verbose
-    
+    # Logic    
     $contentArray = Get-Content -Path $filePath
     $startIndex = [array]::IndexOf($contentArray, '<!-- ModuleTableStartMarker -->')
     $endIndex = [array]::IndexOf($contentArray, '<!-- ModuleTableEndMarker -->')
 
     $startContent = $contentArray[0..$startIndex] 
-    $endContent = $contentArray[$endIndex..$contentArray.Count] # | Out-String
+    $endContent = $contentArray[$endIndex..$contentArray.Count]
 
     $tableStringInputObject = @{
         Path           = $modulesPath
@@ -43,5 +41,6 @@ function Set-GitHubReadMeModuleTable {
     
     if ($PSCmdlet.ShouldProcess("File in path [$filePath]", "Overwrite")) {
         Set-Content -Path $filePath -Value $newContent -Force -NoNewLine
+        Write-Verbose "File [$filePath] updated" -Verbose
     }
 }

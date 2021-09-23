@@ -1,10 +1,7 @@
-name: "Maintenance: ReadMe Modules"
+name: ".Platform: Update ReadMe Module Tables"
 
 on:
-  workflow_dispatch: 
-
-env:
-  #moduleName: 'servers'
+  workflow_dispatch:
 
 jobs:
   job_update_readme:
@@ -18,11 +15,14 @@ jobs:
       - name: "Update general ReadMe"
         shell: pwsh
         run: |
+          # Load used functions
+          . "$env:GITHUB_WORKSPACE/.github/workflows/scripts/Set-GitHubReadMeModuleTable.ps1"
+
           $functionInput = @{
-            modulesPath    = Join-Path $GITHUB_WORKSPACE 'arm'
-            filePath       = Join-Path $GITHUB_WORKSPACE 'README.md'
-            organization   = ($GITHUB_REPOSITORY).split('/')[0] 
-            repositoryName = ($GITHUB_REPOSITORY).split('/')[1]
+            modulesPath    = Join-Path $env:GITHUB_WORKSPACE 'arm'
+            filePath       = Join-Path $env:GITHUB_WORKSPACE 'README.md'
+            organization   = ($env:GITHUB_REPOSITORY).split('/')[0] 
+            repositoryName = ($env:GITHUB_REPOSITORY).split('/')[1]
             columnsInOrder = @('Name', 'TemplateType', 'Status', 'Deploy')
           }
 
@@ -31,14 +31,19 @@ jobs:
 
           Set-GitHubReadMeModuleTable @functionInput
 
+          # TODO: Add push
+
       - name: "Update module folder ReadMe"
         shell: pwsh
         run: |
+          # Load used functions
+          . "$env:GITHUB_WORKSPACE/.github/workflows/scripts/Set-GitHubReadMeModuleTable.ps1"
+
           $functionInput = @{
-            modulesPath    = Join-Path $GITHUB_WORKSPACE 'arm' 
-            filePath       = Join-Path $GITHUB_WORKSPACE 'arm/README.md'
-            organization   = ($GITHUB_REPOSITORY).split('/')[0] 
-            repositoryName = ($GITHUB_REPOSITORY).split('/')[1]
+            modulesPath    = Join-Path $env:GITHUB_WORKSPACE 'arm' 
+            filePath       = Join-Path $env:GITHUB_WORKSPACE 'arm/README.md'
+            organization   = ($env:GITHUB_REPOSITORY).split('/')[0] 
+            repositoryName = ($env:GITHUB_REPOSITORY).split('/')[1]
             columnsInOrder = @('Name', 'ProviderNamespace','ResourceType','TemplateType')
           }
 
@@ -46,3 +51,5 @@ jobs:
           $functionInput | Format-Table -AutoSize
 
           Set-GitHubReadMeModuleTable @functionInput
+
+          # TODO: Add push
