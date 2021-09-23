@@ -1,8 +1,7 @@
 name: "Maintenance: ReadMe Modules"
 
 on:
-  #workflow_dispatch:
-  push: 
+  workflow_dispatch:
 
 jobs:
   job_update_readme:
