@@ -1025,6 +1025,14 @@ Describe "Api version tests [All apiVersions in the template should be 'recent']
 
         $namespaceResourceTypes = ($AvailableApiVersions | Where-Object { $_.ProviderNamespace -eq $ProviderNamespace }).ResourceTypes
         $resourceTypeApiVersions = ($namespaceResourceTypes | Where-Object { $_.ResourceTypeName -eq $resourceType }).ApiVersions
-        ($resourceTypeApiVersions | Where-Object { $_ -notlike "*-preview" } | Select-Object -First 5) | Should -Contain $TargetApi
+        $approvedApiVersions = $resourceTypeApiVersions | Where-Object { $_ -notlike "*-preview" } | Select-Object -First 5
+        
+        # NOTE: This is a workaround to account for the 'assumed' deployments version used by bicep when building an ARM template from a bicep file with modules in it
+        # Ref: https://github.com/Azure/bicep/issues/3819
+        if($resourceType -eq 'deployments') {
+            $approvedApiVersions += '2019-10-01'
+        }
+
+        $approvedApiVersions | Should -Contain $TargetApi
     }
 }
