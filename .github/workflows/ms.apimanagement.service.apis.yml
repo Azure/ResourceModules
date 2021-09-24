@@ -129,8 +129,8 @@ jobs:
   ###############
   job_publish_module:
     name: "Publish module"
-    # if: ${{ contains('refs/heads/main, refs/heads/master', github.ref) }}
-    if: github.ref == 'refs/heads/main' || github.ref == 'refs/heads/master'
+    #if: github.ref == 'refs/heads/main' || github.ref == 'refs/heads/master'
+    if: contains(fromJson('['refs/heads/main', 'refs/heads/master']'), github.ref)
     runs-on: ubuntu-20.04
     # needs: 
     # - job_deploy_module
