@@ -30,6 +30,9 @@ Optional. Name of the management group to deploy into. Mandatory if deploying in
 .PARAMETER removeDeployment
 Optional. Set to 'true' to add the tag 'removeModule = <ModuleName>' to the deployment. Is picked up by the removal stage to remove the resource again.
 
+.PARAMETER additionalTags
+Optional. Provde a Key Value Pair (Object) that will be appended to the Parameter file tags. Example: @{myKey = 'myValue',myKey2 = 'myValue2'}
+
 .EXAMPLE
 New-ModuleDeployment -ModuleName 'KeyVault' -templateFilePath 'C:/KeyVault/deploy.json' -parameterFilePath 'C:/KeyVault/Parameters/parameters.json' -location 'WestEurope' -resourceGroupName 'aLegendaryRg'
 
@@ -51,7 +54,7 @@ function New-ModuleDeployment {
         [string] $templateFilePath,
 
         [Parameter(Mandatory)]
-        [string] $parameterFilePath,
+        [string[]] $parameterFilePath,
 
         [Parameter(Mandatory)]
         [string] $location,
@@ -66,7 +69,10 @@ function New-ModuleDeployment {
         [string] $managementGroupId,
 
         [Parameter(Mandatory = $false)]       
-        [bool] $removeDeployment
+        [bool] $removeDeployment,
+
+        [Parameter(Mandatory = $false)]       
+        [PSCustomObject]$additionalTags
     )
     
     begin {
@@ -75,11 +81,11 @@ function New-ModuleDeployment {
     
     process {
 
-        ## Assess Provided Parameter Path
-        if (Test-Path -Path $parameterFilePath -PathType Container) {
+        ## Assess Provided Parameter Path 
+        if ((Test-Path -Path $parameterFilePath -PathType Container) -and $parameterFilePath.Length -eq 1) {
             ## Transform Path to Files
-            $parameterFilePath = Get-ChildItem $parameterFilePath -Recurse -Filter *.parameters.json | Select-Object -ExpandProperty FullName
-            Write-Verbose "Parameter File(s)/Directory - Count: `n $($parameterFilePath.Count)`n"
+            $parameterFilePath = Get-ChildItem $parameterFilePath -Recurse -Filter *.json | Select-Object -ExpandProperty FullName
+            Write-Verbose "Detected Parameter File(s)/Directory - Count: `n $($parameterFilePath.Count)`n"
         }
 
         ## Iterate through each file
@@ -96,14 +102,18 @@ function New-ModuleDeployment {
                 Verbose               = $true
                 ErrorAction           = 'Stop'
             }
-            if ($removeDeployment) {
-                # Fetch tags of parameter file if any (- required for the remove process. Tags may need to be compliant with potential customer requirements)
-                $parameterFileTags = (ConvertFrom-Json (Get-Content -Raw -Path $file) -AsHashtable).parameters.tags.value
-                if (-not $parameterFileTags) {
-                    $parameterFileTags = @{}
-                }
-                $parameterFileTags['removeModule'] = $moduleName
+
+            ## Append Tags to Parameters if Resource supports them
+            $parameterFileTags = (ConvertFrom-Json (Get-Content -Raw -Path $file) -AsHashtable).parameters.tags.value            
+            if (-not $parameterFileTags) { $parameterFileTags = @{} }
+            if ($additionalTags) { $parameterFileTags += $additionalTags } # If additionalTags object is provided, append tag to the resource
+            if ($removeDeployment) { $parameterFileTags += @{removeModule = $moduleName } } # If removeDeployment is set to true, append removeMoule tag to the resource
+            if ($removeDeployment -or $additionalTags) { 
+                # Overwrites parameter file tags parameter
+                Write-Verbose ("removeDeployment for $moduleName= $removeDeployment `nadditionalTags:`n $($additionalTags | ConvertTo-Json)")
+                $DeploymentInputs += @{Tags = $parameterFileTags } 
             }
+
             #######################
             ## INVOKE DEPLOYMENT ##
             #######################
@@ -123,14 +133,6 @@ function New-ModuleDeployment {
                                     New-AzResourceGroup -Name $resourceGroupName -Location $location
                                 }
                             }
-                            if ($removeDeployment) {
-                                Write-Verbose "Because the subsequent removal is enabled after the Module $moduleName has been deployed, the following tags (removeModule: $moduleName) are now set on the resource."
-                                Write-Verbose "This is necessary so that the later running Removal Stage can remove the corresponding Module from the Resource Group again."
-                                # Overwrites parameter file tags parameter  
-                                $DeploymentInputs += @{ 
-                                    Tags = $parameterFileTags
-                                }
-                            }
                             if ($PSCmdlet.ShouldProcess("Resource group level deployment", "Create")) {
                                 New-AzResourceGroupDeployment @DeploymentInputs -ResourceGroupName $resourceGroupName
                             }
@@ -141,14 +143,6 @@ function New-ModuleDeployment {
                                 $Context = Get-AzContext -ListAvailable | Where-Object Subscription -Match $subscriptionId
                                 if ($Context) {
                                     $Context | Set-AzContext
-                                }
-                            }
-                            if ($removeDeployment) {
-                                Write-Verbose "Because the subsequent removal is enabled after the Module $moduleName has been deployed, the following tags (removeModule: $moduleName) are now set on the resource."
-                                Write-Verbose "This is necessary so that the later running Removal Stage can remove the corresponding Module from the Resource Group again."
-                                # Overwrites parameter file tags parameter  
-                                $DeploymentInputs += @{ 
-                                    Tags = $parameterFileTags
                                 }
                             }
                             if ($PSCmdlet.ShouldProcess("Subscription level deployment", "Create")) {
