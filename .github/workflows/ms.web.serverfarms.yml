@@ -128,8 +128,9 @@ jobs:
   #   PUBLISH   #
   ###############
   job_publish_module:
-    runs-on: ubuntu-20.04
     name: "Publish module"
+    if: contains(fromJson('["refs/heads/main", "refs/heads/master"]'), github.ref)
+    runs-on: ubuntu-20.04
     needs:
     - job_deploy_module
     steps:
