@@ -144,7 +144,7 @@ jobs:
       - name: "Publish module"
         uses: ./.github/actions/templates/publishModule
         with:
-          templateFilePath: '${{ env.modulePath }}/bicep.json'
+          templateFilePath: '${{ env.modulePath }}/deploy.bicep'
           componentTemplateSpecRGName: '${{ env.componentTemplateSpecRGName }}'
           componentTemplateSpecRGLocation: '${{ env.componentTemplateSpecRGLocation }}'
           componentTemplateSpecName: '${{ env.moduleName }}'
