@@ -1,4 +1,4 @@
-name: "EventHub: Namespaces Eventhubs - Test Pipeline"
+name: "EventHub: Namespaces Eventhubs"
 
 on:
   workflow_dispatch:
@@ -6,15 +6,15 @@ on:
       removeDeployment:
         description: 'Remove deployed module'
         required: false
-        default: 'true' 
+        default: 'true'
       versioningOption:
         description: 'The mode to handle the version increments [major|minor|patch|custom]'
         required: false
-        default: 'patch' 
+        default: 'patch'
       customVersion:
         description: 'The version to enforce if [versionOption] is set to [custom]'
         required: false
-        default: '0.0.1' 
+        default: '0.0.1'
 
 env:
   moduleName: 'eventhubs'
@@ -130,7 +130,7 @@ jobs:
   job_publish_module:
     runs-on: ubuntu-20.04
     name: "Publish module"
-    needs: 
+    needs:
     - job_deploy_module
     steps:
       - name: "Checkout"
@@ -161,7 +161,7 @@ jobs:
     runs-on: ubuntu-20.04
     name: "Remove module"
     if: ${{ github.event.inputs.removeDeployment == 'true' }}
-    needs: 
+    needs:
     - job_deploy_module
     steps:
       - name: "Checkout"
