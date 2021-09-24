@@ -13,7 +13,7 @@ Mandatory. The name of the module to deploy
 Mandatory. The path to the deployment file
 
 .PARAMETER parameterFilePath
-Mandatory. Path to the parameter file from root.
+Mandatory. Path to the parameter file from root. Can be a single file, multiple files, or directory that conains (.json) files.
 
 .PARAMETER location
 Mandatory. Location to test in. E.g. WestEurope
