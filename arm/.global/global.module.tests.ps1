@@ -161,14 +161,7 @@ Describe "Readme tests" -Tag Readme {
             )
             $TemplateReadme = Get-Content ($fileContent) -ErrorAction SilentlyContinue
             $ReadmeHTML = ($TemplateReadme  | ConvertFrom-Markdown -ErrorAction SilentlyContinue).Html
-            $Headings = @(@())
-            foreach ($H in $ReadmeHTML) {
-                if ($H.Contains("<h")) {
-                    $StartingIndex = $H.IndexOf(">") + 1
-                    $EndIndex = $H.LastIndexof("<")
-                    $Headings += , (@($H.Substring($StartingIndex, $EndIndex - $StartingIndex), $ReadmeHTML.IndexOf($H)))
-                }
-            }
+
             $Heading2Order = @("Resource Types", "parameters", "Outputs", "Considerations", "Additional resources")
             $Headings2List = @()
             foreach ($H in $ReadmeHTML) {
@@ -178,10 +171,17 @@ Describe "Readme tests" -Tag Readme {
                     $headings2List += ($H.Substring($StartingIndex, $EndIndex - $StartingIndex))
                 }
             }
-            (Compare-Object -ReferenceObject $Heading2Order -DifferenceObject $Headings2List) | Should -Be $null
+
+            $differentiatingItems = $Heading2Order | Where-Object { $Headings2List -notcontains $_ }
+            $differentiatingItems.Count | Should -Be 0 -Because ("list of heading titles missing in the ReadMe file [{0}] should be empty" -f $differentiatingItems -join ',')
+
+            $differentiatingItems = $Headings2List | Where-Object { $Heading2Order -notcontains $_ }
+            $differentiatingItems.Count | Should -Be 0 -Because ("list of excess heading titles in the ReadMe file [{0}] should be empty" -f $differentiatingItems -join ',')
+        
+            $Headings2List | Should -Be $Heading2Order -Because 'the order of items should match'
         }
 
-        It "[<moduleFolderName>] Resources section should contain all resources from the template file" -TestCases $readmeFolderTestCases {
+        It "[<moduleFolderName>] Resources section should contain all resources from  the template file" -TestCases $readmeFolderTestCases {
             param(
                 $moduleFolderName,
                 $moduleFolderPath,
@@ -361,7 +361,7 @@ Describe "Readme tests" -Tag Readme {
                 $fileContent
             )
             $TemplateReadme = Get-Content ($fileContent) -ErrorAction SilentlyContinue
-            $TemplateARM = Get-Content (Join-Path -Path $moduleFolderPath \deploy.json) -Raw -ErrorAction SilentlyContinue
+            $TemplateARM = Get-Content (Join-Path -Path $moduleFolderPath 'deploy.json') -Raw -ErrorAction SilentlyContinue
             $ReadmeHTML = ($TemplateReadme  | ConvertFrom-Markdown -ErrorAction SilentlyContinue).Html
             $Template = ConvertFrom-Json -InputObject $TemplateARM -ErrorAction SilentlyContinue
             $Headings = @(@())
@@ -382,7 +382,12 @@ Describe "Readme tests" -Tag Readme {
             for ($j = $HeadingIndex[1] + 4; $ReadmeHTML[$j] -ne ""; $j++) {
                 $OutputsList += $ReadmeHTML[$j].Replace("<p>| <code>", "").Replace("|</p>", "").Replace("</code>", "").Split("|")[0].Trim()
             }
-            (Compare-Object -ReferenceObject $Outputs.Name -DifferenceObject $OutputsList) | Should -Be $null
+
+            $differentiatingItems = $Outputs.Name | Where-Object { $OutputsList -notcontains $_ }
+            $differentiatingItems.Count | Should -Be 0 -Because ("list of template outputs missing in the ReadMe file [{0}] should be empty" -f $differentiatingItems -join ',')
+
+            $differentiatingItems = $OutputsList | Where-Object { $Outputs.Name -notcontains $_ }
+            $differentiatingItems.Count | Should -Be 0 -Because ("list of excess template outputs defined in the ReadMe file [{0}] should be empty" -f $differentiatingItems -join ',')
         }
 
         It "[<moduleFolderName>] Additional resources section should contain at least one bullet point with a reference" -TestCases $readmeFolderTestCases {
@@ -1029,7 +1034,7 @@ Describe "Api version tests [All apiVersions in the template should be 'recent']
         
         # NOTE: This is a workaround to account for the 'assumed' deployments version used by bicep when building an ARM template from a bicep file with modules in it
         # Ref: https://github.com/Azure/bicep/issues/3819
-        if($resourceType -eq 'deployments') {
+        if ($resourceType -eq 'deployments') {
             $approvedApiVersions += '2019-10-01'
         }
 
