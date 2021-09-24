@@ -19,9 +19,7 @@ on:
 env:
   moduleName: 'resourceGroups'
   modulePath: 'arm/Microsoft.Resources/resourceGroups'
-  ARM_CLIENT_ID: ${{ secrets.ARM_CLIENT_ID }}
-  ARM_CLIENT_SECRET: ${{ secrets.ARM_CLIENT_SECRET }}
-  ARM_TENANT_ID: ${{ secrets.ARM_TENANT_ID }}
+  AZURE_CREDENTIALS: ${{ secrets.AZURE_CREDENTIALS }}
   ARM_SUBSCRIPTION_ID: ${{ secrets.ARM_SUBSCRIPTION_ID }}
   ARM_MGMTGROUP_ID: ${{ secrets.ARM_MGMTGROUP_ID }}
 
@@ -82,7 +80,7 @@ jobs:
       - name: "Test module"
         uses: ./.github/actions/templates/validateModuleDeploy
         with:
-          templateFilePath: '${{ env.modulePath }}/deploy.json'
+          templateFilePath: '${{ env.modulePath }}/deploy.bicep'
           parameterFilePath: '${{ env.modulePath }}/parameters/${{ matrix.parameterFilePaths }}'
           location: '${{ env.defaultLocation }}'
           resourceGroupName: '${{ env.resourceGroupName }}'
@@ -116,7 +114,7 @@ jobs:
         uses: ./.github/actions/templates/deployModule
         with:
           moduleName: '${{ env.moduleName }}'
-          templateFilePath: '${{ env.modulePath }}/deploy.json'
+          templateFilePath: '${{ env.modulePath }}/deploy.bicep'
           parameterFilePath: '${{ env.modulePath }}/parameters/${{ matrix.parameterFilePaths }}'
           location: '${{ env.defaultLocation }}'
           resourceGroupName: '${{ env.resourceGroupName }}'
@@ -146,7 +144,7 @@ jobs:
       - name: "Publish module"
         uses: ./.github/actions/templates/publishModule
         with:
-          templateFilePath: '${{ env.modulePath }}/deploy.json'
+          templateFilePath: '${{ env.modulePath }}/bicep.json'
           componentTemplateSpecRGName: '${{ env.componentTemplateSpecRGName }}'
           componentTemplateSpecRGLocation: '${{ env.componentTemplateSpecRGLocation }}'
           componentTemplateSpecName: '${{ env.moduleName }}'
@@ -178,5 +176,5 @@ jobs:
         uses: ./.github/actions/templates/removeModule
         with:
           moduleName: '${{ env.moduleName }}'
-          templateFilePath: '${{ env.modulePath }}/deploy.json'
+          templateFilePath: '${{ env.modulePath }}/deploy.bicep'
           resourceGroupName: '${{ env.resourceGroupName }}'

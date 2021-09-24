@@ -41,3 +41,4 @@ module rbac './.bicep/nested_rbac.bicep' = [for (roleassignment, index) in roleA
 }]
 
 output resourceGroupName string = resourceGroupName
+output resourceGroupResourceId string = resourceGroup.id

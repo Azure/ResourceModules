@@ -20,14 +20,12 @@ param tags object = {}
 @description('Optional. Customer Usage Attribution id (GUID). This GUID must be previously registered')
 param cuaId string = ''
 
-var pidName_var = 'pid-${cuaId}'
-
 module pidName './.bicep/nested_cuaId.bicep' = if (!empty(cuaId)) {
-  name: pidName_var
+  name: 'pid-${cuaId}'
   params: {}
 }
 
-resource galleryName_resource 'Microsoft.Compute/galleries@2019-12-01' = {
+resource gallery 'Microsoft.Compute/galleries@2021-07-01' = {
   name: galleryName
   location: location
   tags: tags
@@ -37,14 +35,12 @@ resource galleryName_resource 'Microsoft.Compute/galleries@2019-12-01' = {
   }
 }
 
-resource galleryName_Microsoft_Authorization_sharedImageGallerDoNotDelete 'Microsoft.Compute/galleries/providers/locks@2016-09-01' = if (lockForDeletion) {
-  name: '${galleryName}/Microsoft.Authorization/sharedImageGallerDoNotDelete'
+resource gallery_lock 'Microsoft.Authorization/locks@2016-09-01' = if (lockForDeletion) {
+  name: '${galleryName}-sharedImageGallerDoNotDelete'
   properties: {
-    level: 'CannotDelete'
+    level: 'CanNotDelete'
   }
-  dependsOn: [
-    galleryName_resource
-  ]
+  scope: gallery
 }
 
 module rbac_name './.bicep/nested_rbac.bicep' = [for (item, i) in roleAssignments: {
@@ -54,10 +50,10 @@ module rbac_name './.bicep/nested_rbac.bicep' = [for (item, i) in roleAssignment
     galleryName: galleryName
   }
   dependsOn: [
-    galleryName_resource
+    gallery
   ]
 }]
 
-output galleryResourceId string = galleryName_resource.id
+output galleryResourceId string = gallery.id
 output galleryResourceGroup string = resourceGroup().name
 output galleryName string = galleryName

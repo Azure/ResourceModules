@@ -135,8 +135,15 @@ function Publish-ModuleToTemplateSpec {
         ##    Create template spec    ##
         ################################
         if ($PSCmdlet.ShouldProcess("Template spec [$componentTemplateSpecName] version [$newVersion]", "Publish")) {
-
-            New-AzTemplateSpec -ResourceGroupName $componentTemplateSpecRGName -Name $componentTemplateSpecName -Version $newVersion -Description $componentTemplateSpecDescription -Location $componentTemplateSpecRGLocation -TemplateFile $templateFilePath
+            $templateSpecInputObject = @{
+                ResourceGroupName = $componentTemplateSpecRGName 
+                Name              = $componentTemplateSpecName 
+                Version           = $newVersion 
+                Description       = $componentTemplateSpecDescription 
+                Location          = $componentTemplateSpecRGLocation 
+                TemplateFile      = $templateFilePath
+            }
+            New-AzTemplateSpec @templateSpecInputObject
         }
         Write-Verbose "Publish complete"
     }
