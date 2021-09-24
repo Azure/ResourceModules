@@ -22,11 +22,10 @@ resource resourceGroup 'Microsoft.Resources/resourceGroups@2019-05-01' = {
   properties: {}
 }
 
-resource lockResource 'Microsoft.Authorization/locks@2016-09-01' = if (lockForDeletion == true) {
+module resourceGroupName_lock './.bicep/nested_lock.bicep' = if (lockForDeletion) {
   name: '${resourceGroupName}-lock'
-  properties: {
-    level: 'CanNotDelete'
-  }
+  scope: resourceGroup
+  params: {}
 }
 
 module rbac './.bicep/nested_rbac.bicep' = [for (roleassignment, index) in roleAssignments: {
