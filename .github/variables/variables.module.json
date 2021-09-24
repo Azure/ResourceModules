@@ -23,7 +23,7 @@
         },
         {
             "name": "publishToTemplateSpec",
-            "value": "true"
+            "value": "false"
         }
     ]
 }
