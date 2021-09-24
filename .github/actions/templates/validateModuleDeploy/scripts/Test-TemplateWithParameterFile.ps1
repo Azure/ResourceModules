@@ -66,10 +66,10 @@ function Test-TemplateWithParameterFile {
 
     process {
         # Can be removed once bicep supports a test deployment
-        if ((Split-Path $templateFilePath -Extension) -eq '.bicep') {
-            az bicep build -f $templateFilePath
-            $templateFilePath = Join-Path (Split-Path $templateFilePath -Parent) 'deploy.json'
-        }
+        # if ((Split-Path $templateFilePath -Extension) -eq '.bicep') {
+        #     az bicep build -f $templateFilePath
+        #     $templateFilePath = Join-Path (Split-Path $templateFilePath -Parent) 'deploy.json'
+        # }
 
         $DeploymentInputs = @{
             TemplateFile          = $templateFilePath
@@ -82,9 +82,35 @@ function Test-TemplateWithParameterFile {
         #####################
         ## TEST DEPLOYMENT ##
         #####################
-        $deploymentSchema = (ConvertFrom-Json (Get-Content -Raw -Path $templateFilePath)).'$schema'
-        switch -regex ($deploymentSchema) {
-            '\/deploymentTemplate.json#$' {
+
+            ################################
+        ## Determine deployment scope ##
+        ################################
+        if ((Split-Path $templateFilePath -Extension) -eq '.bicep') {
+            # Bicep
+            $bicepContent = Get-Content $templateFilePath
+            $bicepScope = $bicepContent | Where-Object { $_ -like "*targetscope =" } 
+            if (-not $bicepScope) {
+                $deploymentScope = "resourceGroup" 
+            }
+            else {
+                $deploymentScope = $bicepScope.Replace('targetscope = ', '').Trim()
+            } 
+        }
+        else {
+            # ARM
+            $armSchema = (ConvertFrom-Json (Get-Content -Raw -Path $templateFilePath)).'$schema'
+            switch -regex ($armSchema) {
+                '\/deploymentTemplate.json#$' { $deploymentScope = "resourceGroup" }
+                '\/subscriptionDeploymentTemplate.json#$'  { $deploymentScope = "subscription" }
+                '\/managementGroupDeploymentTemplate.json#$'  { $deploymentScope = "managementGroup" }
+                '\/tenantDeploymentTemplate.json#$'  { $deploymentScope = "tenant" }
+                Default { throw "[$armSchema] is a non-supported ARM template schema" }
+            }
+        }
+
+        switch ($deploymentScope) {
+            'resourceGroup' {
                 if (-not (Get-AzResourceGroup -Name $resourceGroupName -ErrorAction 'SilentlyContinue')) {
                     if ($PSCmdlet.ShouldProcess("Resource group [$resourceGroupName] in location [$location]", "Create")) {
                         New-AzResourceGroup -Name $resourceGroupName -Location $location
@@ -95,7 +121,7 @@ function Test-TemplateWithParameterFile {
                 }
                 break
             }
-            '\/subscriptionDeploymentTemplate.json#$' {
+            'subscription' {
                 if ($subscriptionId) {
                     $Context = Get-AzContext -ListAvailable | Where-Object Subscription -Match $subscriptionId
                     if ($Context) {
@@ -107,13 +133,13 @@ function Test-TemplateWithParameterFile {
                 }
                 break
             }
-            '\/managementGroupDeploymentTemplate.json#$' {
+            'managementGroup' {
                 if ($PSCmdlet.ShouldProcess("Management group level deployment", "Test")) {
                     Test-AzManagementGroupDeployment @DeploymentInputs -Location $Location -ManagementGroupId $ManagementGroupId
                 }
                 break
             }
-            '\/tenantDeploymentTemplate.json#$' {
+            'tenant' {
                 Write-Verbose 'Handling tenant level validation'
                 if ($PSCmdlet.ShouldProcess("Tenant level deployment", "Test")) {
                     Test-AzTenantDeployment @DeploymentInputs -Location $location
@@ -121,7 +147,7 @@ function Test-TemplateWithParameterFile {
                 break
             }
             default {
-                throw "[$deploymentSchema] is a non-supported ARM template schema"
+                throw "[$deploymentScope] is a non-supported template scope"
             }
         }
         if ($ValidationErrors) {
