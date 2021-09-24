@@ -31,7 +31,10 @@ Optional. Name of the management group to deploy into. Mandatory if deploying in
 Optional. Set to 'true' to add the tag 'removeModule = <ModuleName>' to the deployment. Is picked up by the removal stage to remove the resource again.
 
 .PARAMETER additionalTags
-Optional. Provde a Key Value Pair (Object) that will be appended to the Parameter file tags. Example: @{myKey = 'myValue',myKey2 = 'myValue2'}
+Optional. Provde a Key Value Pair (Object) that will be appended to the Parameter file tags. Example: @{myKey = 'myValue',myKey2 = 'myValue2'}.
+
+.PARAMETER retryLimit
+Optional. Maximum retry limit if the deployment fails. Default is 3.
 
 .EXAMPLE
 New-ModuleDeployment -ModuleName 'KeyVault' -templateFilePath 'C:/KeyVault/deploy.json' -parameterFilePath 'C:/KeyVault/Parameters/parameters.json' -location 'WestEurope' -resourceGroupName 'aLegendaryRg'
@@ -72,7 +75,10 @@ function New-ModuleDeployment {
         [bool] $removeDeployment,
 
         [Parameter(Mandatory = $false)]       
-        [PSCustomObject]$additionalTags
+        [PSCustomObject]$additionalTags,
+
+        [Parameter(Mandatory = $false)]       
+        [int]$retryLimit = 3
     )
     
     begin {
@@ -85,26 +91,26 @@ function New-ModuleDeployment {
         if ((Test-Path -Path $parameterFilePath -PathType Container) -and $parameterFilePath.Length -eq 1) {
             ## Transform Path to Files
             $parameterFilePath = Get-ChildItem $parameterFilePath -Recurse -Filter *.json | Select-Object -ExpandProperty FullName
-            Write-Verbose "Detected Parameter File(s)/Directory - Count: `n $($parameterFilePath.Count)`n"
+            Write-Verbose "Detected Parameter File(s)/Directory - Count: `n $($parameterFilePath.Count)"
         }
 
         ## Iterate through each file
-        foreach ($file in $parameterFilePath) {
-            $fileProperties = Get-Item -Path $file
-            Write-Verbose "Deploying: $($fileProperties.Name) `n"
+        foreach ($parameterFile in $parameterFilePath) {
+            $fileProperties = Get-Item -Path $parameterFile
+            Write-Verbose "Deploying: $($fileProperties.Name)"
             [bool]$Stoploop = $false
-            [int]$Retrycount = 0
+            [int]$retryCount = 1
 
             $DeploymentInputs = @{
                 Name                  = "$moduleName-$(-join (Get-Date -Format yyyyMMddTHHMMssffffZ)[0..63])"
                 TemplateFile          = $templateFilePath
-                TemplateParameterFile = $file
+                TemplateParameterFile = $parameterFile
                 Verbose               = $true
                 ErrorAction           = 'Stop'
             }
 
             ## Append Tags to Parameters if Resource supports them
-            $parameterFileTags = (ConvertFrom-Json (Get-Content -Raw -Path $file) -AsHashtable).parameters.tags.value            
+            $parameterFileTags = (ConvertFrom-Json (Get-Content -Raw -Path $parameterFile) -AsHashtable).parameters.tags.value            
             if (-not $parameterFileTags) { $parameterFileTags = @{} }
             if ($additionalTags) { $parameterFileTags += $additionalTags } # If additionalTags object is provided, append tag to the resource
             if ($removeDeployment) { $parameterFileTags += @{removeModule = $moduleName } } # If removeDeployment is set to true, append removeMoule tag to the resource
@@ -170,18 +176,18 @@ function New-ModuleDeployment {
                     $Stoploop = $true
                 } #end try
                 catch {
-                    if ($Retrycount -gt 1) {
+                    if ($retryCount -gt $retryLimit) {
                         throw $PSitem.Exception.Message
                         $Stoploop = $true
                     }
                     else {
-                        Write-Verbose "Resource deployment Failed.. ($Retrycount/1) Retrying in 5 Seconds.. `n"
+                        Write-Verbose "Resource deployment Failed.. ($retryCount/$retryLimit) Retrying in 5 Seconds.. `n"
                         Start-Sleep -Seconds 5
-                        $Retrycount = $Retrycount + 1
+                        $retryCount++
                     }
                 } #end catch
             } #end do
-            while ($Stoploop -eq $false) { 
+            while ($Stoploop -eq $false -or $retryCount -eq $retryLimit) { 
             } #end while
         } #end foreach parameter file
     } #end process
