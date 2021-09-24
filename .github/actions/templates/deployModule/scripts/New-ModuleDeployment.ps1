@@ -13,7 +13,7 @@ Mandatory. The name of the module to deploy
 Mandatory. The path to the deployment file
 
 .PARAMETER parameterFilePath
-Mandatory. Path to the parameter file from root.
+Mandatory. Path to the parameter file from root. Can be a single file, multiple files, or directory that conains (.json) files.
 
 .PARAMETER location
 Mandatory. Location to test in. E.g. WestEurope
@@ -29,6 +29,12 @@ Optional. Name of the management group to deploy into. Mandatory if deploying in
 
 .PARAMETER removeDeployment
 Optional. Set to 'true' to add the tag 'removeModule = <ModuleName>' to the deployment. Is picked up by the removal stage to remove the resource again.
+
+.PARAMETER additionalTags
+Optional. Provde a Key Value Pair (Object) that will be appended to the Parameter file tags. Example: @{myKey = 'myValue',myKey2 = 'myValue2'}.
+
+.PARAMETER retryLimit
+Optional. Maximum retry limit if the deployment fails. Default is 3.
 
 .EXAMPLE
 New-ModuleDeployment -ModuleName 'KeyVault' -templateFilePath 'C:/KeyVault/deploy.json' -parameterFilePath 'C:/KeyVault/Parameters/parameters.json' -location 'WestEurope' -resourceGroupName 'aLegendaryRg'
@@ -51,7 +57,7 @@ function New-ModuleDeployment {
         [string] $templateFilePath,
 
         [Parameter(Mandatory)]
-        [string] $parameterFilePath,
+        [string[]] $parameterFilePath,
 
         [Parameter(Mandatory)]
         [string] $location,
@@ -66,7 +72,13 @@ function New-ModuleDeployment {
         [string] $managementGroupId,
 
         [Parameter(Mandatory = $false)]       
-        [bool] $removeDeployment
+        [bool] $removeDeployment,
+
+        [Parameter(Mandatory = $false)]       
+        [PSCustomObject]$additionalTags,
+
+        [Parameter(Mandatory = $false)]       
+        [int]$retryLimit = 3
     )
     
     begin {
@@ -74,115 +86,134 @@ function New-ModuleDeployment {
     }
     
     process {
-        $DeploymentInputs = @{
-            Name                  = "$moduleName-$(-join (Get-Date -Format yyyyMMddTHHMMssffffZ)[0..63])"
-            TemplateFile          = $templateFilePath
-            TemplateParameterFile = $parameterFilePath
-            Verbose               = $true
-            ErrorAction           = 'Stop'
-        }
-        if ($removeDeployment) {
-            # Fetch tags of parameter file if any (- required for the remove process. Tags may need to be compliant with potential customer requirements)
-            $parameterFileTags = (ConvertFrom-Json (Get-Content -Raw -Path $parameterFilePath) -AsHashtable).parameters.tags.value
-            if (-not $parameterFileTags) {
-                $parameterFileTags = @{}
-            }
-            $parameterFileTags['removeModule'] = $moduleName
+
+        ## Assess Provided Parameter Path 
+        if ((Test-Path -Path $parameterFilePath -PathType Container) -and $parameterFilePath.Length -eq 1) {
+            ## Transform Path to Files
+            $parameterFilePath = Get-ChildItem $parameterFilePath -Recurse -Filter *.json | Select-Object -ExpandProperty FullName
+            Write-Verbose "Detected Parameter File(s)/Directory - Count: `n $($parameterFilePath.Count)"
         }
 
-        ################################
-        ## Determine deployment scope ##
-        ################################
-        if ((Split-Path $templateFilePath -Extension) -eq '.bicep') {
-            # Bicep
-            $bicepContent = Get-Content $templateFilePath
-            $bicepScope = $bicepContent | Where-Object { $_ -like "*targetscope =*" } 
-            if (-not $bicepScope) {
-                $deploymentScope = "resourceGroup" 
+        ## Iterate through each file
+        foreach ($parameterFile in $parameterFilePath) {
+            $fileProperties = Get-Item -Path $parameterFile
+            Write-Verbose "Deploying: $($fileProperties.Name)"
+            [bool]$Stoploop = $false
+            [int]$retryCount = 1
+
+            $DeploymentInputs = @{
+                Name                  = "$moduleName-$(-join (Get-Date -Format yyyyMMddTHHMMssffffZ)[0..63])"
+                TemplateFile          = $templateFilePath
+                TemplateParameterFile = $parameterFile
+                Verbose               = $true
+                ErrorAction           = 'Stop'
+            }
+
+            ## Append Tags to Parameters if Resource supports them
+            $parameterFileTags = (ConvertFrom-Json (Get-Content -Raw -Path $parameterFile) -AsHashtable).parameters.tags.value            
+            if (-not $parameterFileTags) { $parameterFileTags = @{} }
+            if ($additionalTags) { $parameterFileTags += $additionalTags } # If additionalTags object is provided, append tag to the resource
+            if ($removeDeployment) { $parameterFileTags += @{removeModule = $moduleName } } # If removeDeployment is set to true, append removeMoule tag to the resource
+            if ($removeDeployment -or $additionalTags) { 
+                # Overwrites parameter file tags parameter
+                Write-Verbose ("removeDeployment for $moduleName= $removeDeployment `nadditionalTags:`n $($additionalTags | ConvertTo-Json)")
+                $DeploymentInputs += @{Tags = $parameterFileTags } 
+            }
+
+            if ((Split-Path $templateFilePath -Extension) -eq '.bicep') {
+                # Bicep
+                $bicepContent = Get-Content $templateFilePath
+                $bicepScope = $bicepContent | Where-Object { $_ -like "*targetscope =*" } 
+                if (-not $bicepScope) {
+                    $deploymentScope = "resourceGroup" 
+                }
+                else {
+                    $deploymentScope = $bicepScope.ToLower().Replace('targetscope = ', '').Replace("'",'').Trim()
+                } 
             }
             else {
-                $deploymentScope = $bicepScope.ToLower().Replace('targetscope = ', '').Replace("'",'').Trim()
-            } 
-        }
-        else {
-            # ARM
-            $armSchema = (ConvertFrom-Json (Get-Content -Raw -Path $templateFilePath)).'$schema'
-            switch -regex ($armSchema) {
-                '\/deploymentTemplate.json#$' { $deploymentScope = "resourceGroup" }
-                '\/subscriptionDeploymentTemplate.json#$'  { $deploymentScope = "subscription" }
-                '\/managementGroupDeploymentTemplate.json#$'  { $deploymentScope = "managementGroup" }
-                '\/tenantDeploymentTemplate.json#$'  { $deploymentScope = "tenant" }
-                Default { throw "[$armSchema] is a non-supported ARM template schema" }
+                # ARM
+                $armSchema = (ConvertFrom-Json (Get-Content -Raw -Path $templateFilePath)).'$schema'
+                switch -regex ($armSchema) {
+                    '\/deploymentTemplate.json#$' { $deploymentScope = "resourceGroup" }
+                    '\/subscriptionDeploymentTemplate.json#$'  { $deploymentScope = "subscription" }
+                    '\/managementGroupDeploymentTemplate.json#$'  { $deploymentScope = "managementGroup" }
+                    '\/tenantDeploymentTemplate.json#$'  { $deploymentScope = "tenant" }
+                    Default { throw "[$armSchema] is a non-supported ARM template schema" }
+                }
             }
-        }
 
-        #######################
-        ## INVOKE DEPLOYMENT ##
-        #######################
-        switch ($deploymentScope) {
-            'resourceGroup' {
-                if ($subscriptionId) {
-                    $Context = Get-AzContext -ListAvailable | Where-Object Subscription -Match $subscriptionId
-                    if ($Context) {
-                        $Context | Set-AzContext
+            #######################
+            ## INVOKE DEPLOYMENT ##
+            #######################
+            do {
+                try {
+                    switch ($deploymentScope) {
+                        'resourceGroup' {
+                            if ($subscriptionId) {
+                                $Context = Get-AzContext -ListAvailable | Where-Object Subscription -Match $subscriptionId
+                                if ($Context) {
+                                    $Context | Set-AzContext
+                                }
+                            }
+                            if (-not (Get-AzResourceGroup -Name $resourceGroupName -ErrorAction 'SilentlyContinue')) {
+                                if ($PSCmdlet.ShouldProcess("Resource group [$resourceGroupName] in location [$location]", "Create")) {
+                                    New-AzResourceGroup -Name $resourceGroupName -Location $location
+                                }
+                            }
+                            if ($PSCmdlet.ShouldProcess("Resource group level deployment", "Create")) {
+                                New-AzResourceGroupDeployment @DeploymentInputs -ResourceGroupName $resourceGroupName
+                            }
+                            break
+                        }
+                        'subscription' {
+                            if ($subscriptionId) {
+                                $Context = Get-AzContext -ListAvailable | Where-Object Subscription -Match $subscriptionId
+                                if ($Context) {
+                                    $Context | Set-AzContext
+                                }
+                            }
+                            if ($PSCmdlet.ShouldProcess("Subscription level deployment", "Create")) {
+                                New-AzSubscriptionDeployment @DeploymentInputs -location $location
+                            }
+                            break
+                        }
+                        'managementGroup' {
+                            if ($PSCmdlet.ShouldProcess("Management group level deployment", "Create")) {
+                                New-AzManagementGroupDeployment @DeploymentInputs -location $location -managementGroupId $managementGroupId
+                            }
+                            break
+                        }
+                        'tenant' {
+                            if ($PSCmdlet.ShouldProcess("Tenant level deployment", "Create")) {
+                                New-AzTenantDeployment @DeploymentInputs -location $location
+                            }
+                            break
+                        }
+                        default {
+                            throw "[$deploymentScope] is a non-supported template scope"
+                            $Stoploop = $true
+                        }
                     }
-                }
-                if (-not (Get-AzResourceGroup -Name $resourceGroupName -ErrorAction 'SilentlyContinue')) {
-                    if ($PSCmdlet.ShouldProcess("Resource group [$resourceGroupName] in location [$location]", "Create")) {
-                        New-AzResourceGroup -Name $resourceGroupName -Location $location
+                    $Stoploop = $true
+                } 
+                catch {
+                    if ($retryCount -gt $retryLimit) {
+                        throw $PSitem.Exception.Message
+                        $Stoploop = $true
                     }
-                }
-                if ($removeDeployment) {
-                    Write-Verbose "Because the subsequent removal is enabled after the Module $moduleName has been deployed, the following tags (removeModule: $moduleName) are now set on the resource."
-                    Write-Verbose "This is necessary so that the later running Removal Stage can remove the corresponding Module from the Resource Group again."
-                    # Overwrites parameter file tags parameter  
-                    $DeploymentInputs += @{ 
-                        Tags = $parameterFileTags
+                    else {
+                        Write-Verbose "Resource deployment Failed.. ($retryCount/$retryLimit) Retrying in 5 Seconds.. `n"
+                        Start-Sleep -Seconds 5
+                        $retryCount++
                     }
-                }
-                if ($PSCmdlet.ShouldProcess("Resource group level deployment", "Create")) {
-                    New-AzResourceGroupDeployment @DeploymentInputs -ResourceGroupName $resourceGroupName
-                }
-                break
-            }
-            'subscription' {
-                if ($subscriptionId) {
-                    $Context = Get-AzContext -ListAvailable | Where-Object Subscription -Match $subscriptionId
-                    if ($Context) {
-                        $Context | Set-AzContext
-                    }
-                }
-                if ($removeDeployment) {
-                    Write-Verbose "Because the subsequent removal is enabled after the Module $moduleName has been deployed, the following tags (removeModule: $moduleName) are now set on the resource."
-                    Write-Verbose "This is necessary so that the later running Removal Stage can remove the corresponding Module from the Resource Group again."
-                    # Overwrites parameter file tags parameter  
-                    $DeploymentInputs += @{ 
-                        Tags = $parameterFileTags
-                    }
-                }
-                if ($PSCmdlet.ShouldProcess("Subscription level deployment", "Create")) {
-                    New-AzSubscriptionDeployment @DeploymentInputs -location $location
-                }
-                break
-            }
-            'managementGroup' {
-                if ($PSCmdlet.ShouldProcess("Management group level deployment", "Create")) {
-                    New-AzManagementGroupDeployment @DeploymentInputs -location $location -managementGroupId $managementGroupId
-                }
-                break
-            }
-            'tenant' {
-                if ($PSCmdlet.ShouldProcess("Tenant level deployment", "Create")) {
-                    New-AzTenantDeployment @DeploymentInputs -location $location
-                }
-                break
-            }
-            default {
-                throw "[$deploymentScope] is a non-supported template scope"
-            }
-        }
-    }
-    
+                } 
+            } 
+            while ($Stoploop -eq $false -or $retryCount -eq $retryLimit) { 
+            } 
+        } 
+    } 
+
     end {
         Write-Debug ("{0} exited" -f $MyInvocation.MyCommand)  
     }
