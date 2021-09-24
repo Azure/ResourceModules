@@ -51,20 +51,27 @@ runs:
       shell: pwsh
       # if: ${{ inputs.publishToTemplateSpec == 'true' }}
       run: |
-        # Load used functions
-        . "$env:GITHUB_ACTION_PATH/scripts/Publish-ModuleToTemplateSpec.ps1"
+        # Workaround until composite actions support conditions
+        # Once available, remove this if and enable the step condition
+        if('${{ inputs.publishToTemplateSpec }}' -eq 'true') {
 
-        $functionInput = @{
-          templateFilePath                      = '${{ inputs.templateFilePath }}'
-          componentTemplateSpecName             = '${{ inputs.componentTemplateSpecName }}'
-          componentTemplateSpecRGName           = '${{ inputs.componentTemplateSpecRGName }}'
-          componentTemplateSpecRGLocation       = '${{ inputs.componentTemplateSpecRGLocation }}'
-          componentTemplateSpecDescription      = '${{ inputs.componentTemplateSpecDescription }}'
-          customVersion                         = '${{ inputs.customVersion }}'
-          versioningOption                      = '${{ inputs.versioningOption }}'
+          # Load used functions
+          . "$env:GITHUB_ACTION_PATH/scripts/Publish-ModuleToTemplateSpec.ps1"
+
+          $functionInput = @{
+            templateFilePath                      = '${{ inputs.templateFilePath }}'
+            componentTemplateSpecName             = '${{ inputs.componentTemplateSpecName }}'
+            componentTemplateSpecRGName           = '${{ inputs.componentTemplateSpecRGName }}'
+            componentTemplateSpecRGLocation       = '${{ inputs.componentTemplateSpecRGLocation }}'
+            componentTemplateSpecDescription      = '${{ inputs.componentTemplateSpecDescription }}'
+            customVersion                         = '${{ inputs.customVersion }}'
+            versioningOption                      = '${{ inputs.versioningOption }}'
+          }
+
+          Write-Verbose "Invoke task with" -Verbose
+          $functionInput
+
+          Publish-ModuleToTemplateSpec @functionInput -Verbose
+        } else {
+          Write-Output "Pipeline is configured to not publish to TemplateSpecs"
         }
-
-        Write-Verbose "Invoke task with" -Verbose
-        $functionInput
-
-        Publish-ModuleToTemplateSpec @functionInput -Verbose
