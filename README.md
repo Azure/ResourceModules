@@ -6,24 +6,24 @@ This repository includes a collection of advanced and curated Modules consisting
 
 ## Status
 
-<a href="https://github.com/Azure/Modules/actions/workflows/linter.yml">
-  <img alt="Super Linter" src="https://github.com/Azure/Modules/actions/workflows/linter.yml/badge.svg" />
+<a href="https://github.com/Azure/ResourceModules/actions/workflows/linter.yml">
+  <img alt="Super Linter" src="https://github.com/Azure/ResourceModules/actions/workflows/linter.yml/badge.svg" />
 </a>
-<a href="https://github.com/Azure/Modules/issues">
-  <img alt="Issues" src="https://img.shields.io/github/issues/Azure/Modules?color=0088ff" />
+<a href="https://github.com/Azure/ResourceModules/issues">
+  <img alt="Issues" src="https://img.shields.io/github/issues/Azure/ResourceModules?color=0088ff" />
 </a>
-<a href="https://github.com/Azure/Modules/pulls">
-  <img alt="Pull requests" src="https://img.shields.io/github/issues-pr/Azure/Modules?color=0088ff" />
+<a href="https://github.com/Azure/ResourceModules/pulls">
+  <img alt="Pull requests" src="https://img.shields.io/github/issues-pr/Azure/ResourceModules?color=0088ff" />
 </a>
 
 ## Get started
 
-* For introduction guidance visit the [Wiki](https://github.com/azure/Modules/wiki)
+* For introduction guidance visit the [Wiki](https://github.com/azure/ResourceModules/wiki)
 * For reference documentation visit [Enterprise-Scale](https://github.com/azure/enterprise-scale)
-* For information on contributing, see [Contribution](<https://github.com/Azure/Modules/wiki#contributing>)
-* File an issue via [GitHub Issues](https://github.com/azure/Modules/issues/new/choose)
+* For information on contributing, see [Contribution](<https://github.com/Azure/ResourceModules/wiki#contributing>)
+* File an issue via [GitHub Issues](https://github.com/azure/ResourceModules/issues/new/choose)
 
-## Available Modules
+## Available Resource Modules
 <!-- ModuleTableStartMarker -->
 | Name | ARM / Bicep | Status | Deploy |
 | - | - | - | - |
