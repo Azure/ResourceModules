@@ -90,17 +90,18 @@ function New-ModuleDeployment {
             $parameterFileTags['removeModule'] = $moduleName
         }
 
-        # Determine deployment scope
-        # ==========================
+        ################################
+        ## Determine deployment scope ##
+        ################################
         if ((Split-Path $templateFilePath -Extension) -eq '.bicep') {
             # Bicep
             $bicepContent = Get-Content $templateFilePath
-            $bicepScope = $bicepContent | Where-Object { $_ -like "*targetscope =" } 
+            $bicepScope = $bicepContent | Where-Object { $_ -like "*targetscope =*" } 
             if (-not $bicepScope) {
                 $deploymentScope = "resourceGroup" 
             }
             else {
-                $deploymentScope = $bicepScope.Replace('targetscope = ', '').Trim()
+                $deploymentScope = $bicepScope.ToLower().Replace('targetscope = ', '').Replace("'",'').Trim()
             } 
         }
         else {
