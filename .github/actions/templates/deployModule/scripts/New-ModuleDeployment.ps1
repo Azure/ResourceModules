@@ -162,7 +162,7 @@ function New-ModuleDeployment {
                                 }
                             }
                             if ($PSCmdlet.ShouldProcess("Resource group level deployment", "Create")) {
-                                New-AzResourceGroupDeployment @DeploymentInputs -ResourceGroupName $resourceGroupName
+                                $res = New-AzResourceGroupDeployment @DeploymentInputs -ResourceGroupName $resourceGroupName
                             }
                             break
                         }
@@ -174,19 +174,19 @@ function New-ModuleDeployment {
                                 }
                             }
                             if ($PSCmdlet.ShouldProcess("Subscription level deployment", "Create")) {
-                                New-AzSubscriptionDeployment @DeploymentInputs -location $location
+                                $res = New-AzSubscriptionDeployment @DeploymentInputs -location $location
                             }
                             break
                         }
                         'managementGroup' {
                             if ($PSCmdlet.ShouldProcess("Management group level deployment", "Create")) {
-                                New-AzManagementGroupDeployment @DeploymentInputs -location $location -managementGroupId $managementGroupId
+                                $res = New-AzManagementGroupDeployment @DeploymentInputs -location $location -managementGroupId $managementGroupId
                             }
                             break
                         }
                         'tenant' {
                             if ($PSCmdlet.ShouldProcess("Tenant level deployment", "Create")) {
-                                New-AzTenantDeployment @DeploymentInputs -location $location
+                                $res = New-AzTenantDeployment @DeploymentInputs -location $location
                             }
                             break
                         }
@@ -209,8 +209,9 @@ function New-ModuleDeployment {
                     }
                 } 
             } 
-            while ($Stoploop -eq $false -or $retryCount -eq $retryLimit) { 
-            } 
+            while ($Stoploop -eq $false -or $retryCount -eq $retryLimit) 
+
+            $res | ConvertTo-Json | Out-String
         } 
     } 
 
