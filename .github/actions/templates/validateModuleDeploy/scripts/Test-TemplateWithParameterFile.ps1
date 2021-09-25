@@ -111,7 +111,7 @@ function Test-TemplateWithParameterFile {
                     }
                 }
                 if ($PSCmdlet.ShouldProcess("Resource group level deployment", "Test")) {
-                    Test-AzResourceGroupDeployment @DeploymentInputs -ResourceGroupName $resourceGroupName
+                    $res = Test-AzResourceGroupDeployment @DeploymentInputs -ResourceGroupName $resourceGroupName
                 }
                 break
             }
@@ -123,20 +123,20 @@ function Test-TemplateWithParameterFile {
                     }
                 }
                 if ($PSCmdlet.ShouldProcess("Subscription level deployment", "Test")) {
-                    Test-AzSubscriptionDeployment @DeploymentInputs -Location $Location
+                    $res = Test-AzSubscriptionDeployment @DeploymentInputs -Location $Location
                 }
                 break
             }
             'managementGroup' {
                 if ($PSCmdlet.ShouldProcess("Management group level deployment", "Test")) {
-                    Test-AzManagementGroupDeployment @DeploymentInputs -Location $Location -ManagementGroupId $ManagementGroupId
+                    $res = Test-AzManagementGroupDeployment @DeploymentInputs -Location $Location -ManagementGroupId $ManagementGroupId
                 }
                 break
             }
             'tenant' {
                 Write-Verbose 'Handling tenant level validation'
                 if ($PSCmdlet.ShouldProcess("Tenant level deployment", "Test")) {
-                    Test-AzTenantDeployment @DeploymentInputs -Location $location
+                    $res = Test-AzTenantDeployment @DeploymentInputs -Location $location
                 }
                 break
             }
@@ -146,6 +146,7 @@ function Test-TemplateWithParameterFile {
         }
         if ($ValidationErrors) {
             Write-Error "Template is not valid."
+            Write-Error $res | ConvertTo-Json
         }
     }
 
