@@ -203,14 +203,12 @@ resource hostPool 'Microsoft.DesktopVirtualization/hostpools@2020-11-02-preview'
   }
 }
 
-resource hostpoolName_Microsoft_Authorization_hostPoolDoNotDelete 'Microsoft.Authorization/locks@2016-09-01' = if (lockForDeletion) {
+resource hostPool_lock 'Microsoft.Authorization/locks@2016-09-01' = if (lockForDeletion) {
   name: '${hostPoolName}-hostPoolDoNotDelete'
   properties: {
     level: 'CanNotDelete'
   }
-  dependsOn: [
-    hostPool
-  ]
+  scope: hostPool
 }
 
 resource hostPool_diagnosticSettings 'Microsoft.Insights/diagnosticsettings@2017-05-01-preview' = if ((!empty(diagnosticStorageAccountId)) || (!empty(workspaceId)) || (!empty(eventHubAuthorizationRuleId)) || (!empty(eventHubName))) {
@@ -223,9 +221,7 @@ resource hostPool_diagnosticSettings 'Microsoft.Insights/diagnosticsettings@2017
     metrics: ((empty(diagnosticStorageAccountId) && empty(workspaceId) && empty(eventHubAuthorizationRuleId) && empty(eventHubName)) ? json('null') : diagnosticsMetrics)
     logs: ((empty(diagnosticStorageAccountId) && empty(workspaceId) && empty(eventHubAuthorizationRuleId) && empty(eventHubName)) ? json('null') : diagnosticsLogs)
   }
-  dependsOn: [
-    hostPool
-  ]
+  scope: hostPool
 }
 
 module hostPool_rbac './.bicep/nested_rbac.bicep' = [for (roleassignment, index) in roleAssignments: {
