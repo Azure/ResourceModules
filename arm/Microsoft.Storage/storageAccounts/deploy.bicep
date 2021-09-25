@@ -11,9 +11,8 @@ param roleAssignments array = []
 @allowed([
   'None'
   'SystemAssigned'
+  'SystemAssigned,UserAssigned'
   'UserAssigned'
-  'SystemAssigned, UserAssigned'
-  'UserAssigned, SystemAssigned'
 ])
 @description('Optional. Type of managed service identity.')
 param managedServiceIdentity string = 'None'
@@ -365,9 +364,6 @@ output storageAccountResourceId string = storageAccount.id
 output storageAccountRegion string = location
 output storageAccountName string = storageAccountName
 output storageAccountResourceGroup string = resourceGroup().name
-// Currently not supported
-// output storageAccountSasToken securestring = listAccountSas(storageAccountName, '2019-04-01', accountSasProperties).accountSasToken
-// output storageAccountAccessKey securestring = listKeys(storageAccountName, '2016-12-01').keys[0].value
 output storageAccountPrimaryBlobEndpoint string = (empty(blobContainers) ? '' : reference('Microsoft.Storage/storageAccounts/${storageAccountName}', '2019-04-01').primaryEndpoints.blob)
 output blobContainers array = blobContainers
 output fileShares array = fileShares
