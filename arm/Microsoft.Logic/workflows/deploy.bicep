@@ -142,7 +142,7 @@ resource logicApp 'Microsoft.Logic/workflows@2019-05-01' = {
   name: logicAppName
   location: location
   tags: (empty(tags) ? json('null') : tags)
-  identity: ((!empty(identity)) ? identity : null)
+  identity: ((!empty(identity)) ? identity : any(null))
   properties: {
     state: state
     endpointsConfiguration: {
