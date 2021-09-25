@@ -212,9 +212,7 @@ resource hostPool_diagnosticSettings 'Microsoft.Insights/diagnosticsettings@2017
     metrics: ((empty(diagnosticStorageAccountId) && empty(workspaceId) && empty(eventHubAuthorizationRuleId) && empty(eventHubName)) ? json('null') : diagnosticsMetrics)
     logs: ((empty(diagnosticStorageAccountId) && empty(workspaceId) && empty(eventHubAuthorizationRuleId) && empty(eventHubName)) ? json('null') : diagnosticsLogs)
   }
-  dependsOn: [
-    hostPool
-  ]
+  scope: hostPool
 }
 
 module hostPool_rbac './.bicep/nested_rbac.bicep' = [for (roleassignment, index) in roleAssignments: {
