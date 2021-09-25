@@ -382,7 +382,7 @@
                         "builtInRoleNames": {
                             "type": "object"
                         },
-                        "appGroupName": {
+                        "hostPoolName": {
                             "type": "string"
                         }
                     },
@@ -390,7 +390,7 @@
                         {
                             "type": "Microsoft.DesktopVirtualization/hostpools/providers/roleAssignments",
                             "apiVersion": "2018-09-01-preview",
-                            "name": "[concat(parameters('appGroupName'), '/Microsoft.Authorization/', guid(parameters('appGroupName'), array(parameters('roleAssignment').principalIds)[copyIndex('innerRbacCopy')], parameters('roleAssignment').roleDefinitionIdOrName ))]",
+                            "name": "[concat(parameters('hostPoolName'), '/Microsoft.Authorization/', guid(parameters('hostPoolName'), array(parameters('roleAssignment').principalIds)[copyIndex('innerRbacCopy')], parameters('roleAssignment').roleDefinitionIdOrName ))]",
                             "dependsOn": [
                             ],
                             "copy": {
