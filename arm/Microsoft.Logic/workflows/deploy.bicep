@@ -13,9 +13,6 @@ param cuaId string = ''
 @description('Optional. Parameters for the definition template.')
 param definitionParameters object = {}
 
-@description('Optional. Set the storage account, workspace or eventhub to send metrics or logs.')
-param diagnosticSettings array = []
-
 @description('Optional. Type of managed identity for resource. SystemAssigned or UserAssigned.')
 param identity object = {}
 
@@ -27,9 +24,6 @@ param integrationServiceEnvironment object = {}
 
 @description('Optional. Location for all resources.')
 param location string = resourceGroup().location
-
-@description('Generated. Do not provide a value! This date value is used to generate a registration token.')
-param baseTime string = utcNow('u')
 
 @description('Optional. Specifies the number of days that logs will be kept for; a value of 0 will retain data indefinitely.')
 @minValue(0)
