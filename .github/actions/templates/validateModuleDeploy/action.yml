@@ -59,6 +59,6 @@ runs:
         }
 
         Write-Verbose "Invoke task with" -Verbose
-        $functionInput
+        Write-Verbose ($functionInput | ConvertTo-Json | Out-String) -Verbose
 
         Test-TemplateWithParameterFile @functionInput -Verbose
