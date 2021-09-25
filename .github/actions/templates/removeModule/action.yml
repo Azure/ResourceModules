@@ -42,6 +42,6 @@ runs:
         }
 
         Write-Verbose "Invoke task with" -Verbose
-        $functionInput | Format-Table -AutoSize
+        Write-Verbose ($functionInput | ConvertTo-Json | Out-String) -Verbose
 
         Remove-DeployedModule @functionInput -Verbose
