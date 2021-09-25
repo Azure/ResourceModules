@@ -388,7 +388,7 @@ module pidName './.bicep/nested_cuaId.bicep' = if (!empty(cuaId)) {
   params: {}
 }
 
-resource proximityPlacementGroupName_proximityPlacementGroupName_dummyProximityGroup 'Microsoft.Compute/proximityPlacementGroups@2019-12-01' = if (!empty(proximityPlacementGroupName)) {
+resource proximityPlacementGroup 'Microsoft.Compute/proximityPlacementGroups@2021-04-01' = if (!empty(proximityPlacementGroupName)) {
   name: ((!empty(proximityPlacementGroupName)) ? proximityPlacementGroupName : 'dummyProximityGroup')
   location: location
   tags: tags
@@ -503,7 +503,7 @@ resource vmss 'Microsoft.Compute/virtualMachineScaleSets@2020-06-01' = if (!empt
   }
   plan: (empty(plan) ? json('null') : plan)
   dependsOn: [
-    proximityPlacementGroupName_proximityPlacementGroupName_dummyProximityGroup
+    proximityPlacementGroup
   ]
 }
 
