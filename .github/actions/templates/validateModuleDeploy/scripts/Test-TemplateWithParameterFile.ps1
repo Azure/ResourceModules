@@ -145,8 +145,8 @@ function Test-TemplateWithParameterFile {
             }
         }
         if ($ValidationErrors) {
+            Write-Warning ($res | ConvertTo-Json | Out-String)
             Write-Error "Template is not valid."
-            Write-Error $res | ConvertTo-Json
         }
     }
 
