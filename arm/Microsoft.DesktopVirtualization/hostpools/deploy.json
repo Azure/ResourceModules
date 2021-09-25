@@ -145,6 +145,18 @@
                 "description": "Optional. Name of the event hub within the namespace to which logs are streamed. Without this, an event hub is created for each log category."
             }
         },
+        "preferredAppGroupType": {
+            "type": "string",
+            "defaultValue": "None",
+            "allowedValues": [
+                "Desktop",
+                "None",
+                "RailApplications"
+            ],
+            "metadata": {
+                "description": "Optional. The type of preferred application group type, default to Desktop Application Group."
+            }
+        },
         "lockForDeletion": {
             "type": "bool",
             "defaultValue": false,
@@ -299,6 +311,7 @@
                 "personalDesktopAssignmentType": "[parameters('personalDesktopAssignmentType')]",
                 "maxSessionLimit": "[parameters('maxSessionLimit')]",
                 "loadBalancerType": "[parameters('loadBalancerType')]",
+                "preferredAppGroupType": "[parameters('preferredAppGroupType')]",
                 "validationEnviroment": "[parameters('validationEnviroment')]",
                 "startVMOnConnect": "[parameters('startVMOnConnect')]",
                 "validationEnvironment": "[parameters('validationEnvironment')]",

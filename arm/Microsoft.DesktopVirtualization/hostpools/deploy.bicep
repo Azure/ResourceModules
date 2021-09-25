@@ -78,6 +78,14 @@ param tags object = {}
 @description('Optional. Customer Usage Attribution id (GUID). This GUID must be previously registered')
 param cuaId string = ''
 
+@description('Optional. The type of preferred application group type, default to Desktop Application Group')
+@allowed([
+  'Desktop'
+  'None'
+  'RailApplications'
+])
+param preferredAppGroupType string = 'None'
+
 @description('Optional. Enable Start VM on connect to allow users to start the virtual machine from a deallocated state. Important: Custom RBAC role required to power manage VMs.')
 param startVMOnConnect bool = false
 
@@ -179,7 +187,8 @@ resource hostPool 'Microsoft.DesktopVirtualization/hostpools@2020-11-02-preview'
     description: hostpoolDescription
     hostPoolType: hostpoolType
     customRdpProperty: customRdpProperty
-    personalDesktopAssignmentType: personalDesktopAssignmentType
+    personalDesktopAssignmentType: any(personalDesktopAssignmentType)
+    preferredAppGroupType: preferredAppGroupType
     maxSessionLimit: maxSessionLimit
     loadBalancerType: loadBalancerType
     validationEnviroment: validationEnviroment
