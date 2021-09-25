@@ -37,11 +37,41 @@
                 "description": "Optional. Parameters for the definition template."
             }
         },
-        "diagnosticSettings": {
-            "type": "array",
-            "defaultValue": [],
+        "diagnosticLogsRetentionInDays": {
+            "type": "int",
+            "defaultValue": 365,
+            "minValue": 0,
+            "maxValue": 365,
             "metadata": {
-                "description": "Optional. Set the storage account, workspace or eventhub to send metrics or logs."
+                "description": "Optional. Specifies the number of days that logs will be kept for; a value of 0 will retain data indefinitely."
+            }
+        },
+        "diagnosticStorageAccountId": {
+            "type": "string",
+            "defaultValue": "",
+            "metadata": {
+                "description": "Optional. Resource identifier of the Diagnostic Storage Account."
+            }
+        },
+        "workspaceId": {
+            "type": "string",
+            "defaultValue": "",
+            "metadata": {
+                "description": "Optional. Resource identifier of Log Analytics."
+            }
+        },
+        "eventHubAuthorizationRuleId": {
+            "type": "string",
+            "defaultValue": "",
+            "metadata": {
+                "description": "Optional. Resource ID of the event hub authorization rule for the Event Hubs namespace in which the event hub should be created or streamed to."
+            }
+        },
+        "eventHubName": {
+            "type": "string",
+            "defaultValue": "",
+            "metadata": {
+                "description": "Optional. Name of the event hub within the namespace to which logs are streamed. Without this, an event hub is created for each log category."
             }
         },
         "identity": {
@@ -172,7 +202,6 @@
         }
     },
     "variables": {
-        "deployDiagnosticSettings": "[not(empty(parameters('diagnosticSettings')))]",
         "builtInRoleNames": {
             "Owner": "[subscriptionResourceId('Microsoft.Authorization/roleDefinitions','8e3af657-a8ff-443c-a75c-2fe8c4bcb635')]",
             "Contributor": "[subscriptionResourceId('Microsoft.Authorization/roleDefinitions','b24988ac-6180-42a0-ab88-20f7382dd24c')]",
@@ -253,23 +282,26 @@
                     "properties": {
                         "level": "CannotDelete"
                     }
+                },
+                {
+                    "type": "Microsoft.Logic/workflows/providers/diagnosticsettings",
+                    "apiVersion": "2017-05-01-preview",
+                    "name": "[concat(parameters('logicAppName'), '/Microsoft.Insights/diagnosticsetting')]",
+                    "location": "[parameters('location')]",
+                    "condition": "[or(not(empty(parameters('diagnosticStorageAccountId'))),not(empty(parameters('workspaceId'))),not(empty(parameters('eventHubAuthorizationRuleId'))),not(empty(parameters('eventHubName'))))]",
+                    "dependsOn": [
+                        "[concat('Microsoft.Logic/workflows/', parameters('logicAppName'))]"
+                    ],
+                    "properties": {
+                        "storageAccountId": "[if(empty(parameters('diagnosticStorageAccountId')), json('null'), parameters('diagnosticStorageAccountId'))]",
+                        "workspaceId": "[if(empty(parameters('workspaceId')), json('null'), parameters('workspaceId'))]",
+                        "eventHubAuthorizationRuleId": "[if(empty(parameters('eventHubAuthorizationRuleId')), json('null'), parameters('eventHubAuthorizationRuleId'))]",
+                        "eventHubName": "[if(empty(parameters('eventHubName')), json('null'), parameters('eventHubName'))]",
+                        "metrics": "[if(and(empty(parameters('diagnosticStorageAccountId')), empty(parameters('workspaceId')), empty(parameters('eventHubAuthorizationRuleId')), empty(parameters('eventHubName'))), json('null'), variables('diagnosticsMetrics'))]",
+                        "logs": "[if(and(empty(parameters('diagnosticStorageAccountId')), empty(parameters('workspaceId')), empty(parameters('eventHubAuthorizationRuleId')), empty(parameters('eventHubName'))), json('null'), variables('diagnosticsLogs'))]"
+                    }
                 }
             ]
-        },
-        {
-            "type": "Microsoft.Logic/workflows/providers/diagnosticsettings",
-            "apiVersion": "2017-05-01-preview",
-            "name": "[if(variables('deployDiagnosticSettings'), concat(parameters('logicAppName'), '/Microsoft.Insights/',parameters('diagnosticSettings')[copyIndex()].name),concat(parameters('logicAppName'), '/Microsoft.Insights/dummy'))]",
-            "condition": "[variables('deployDiagnosticSettings')]",
-            "location": "[parameters('location')]",
-            "dependsOn": [
-                "[resourceId('Microsoft.Logic/workflows', parameters('logicAppName'))]"
-            ],
-            "copy": {
-                "name": "diagnosticSettingsCopy",
-                "count": "[length(parameters('diagnosticSettings'))]"
-            },
-            "properties": "[parameters('diagnosticSettings')[copyIndex()].properties]"
         },
         {
             "name": "[concat('rbac-',deployment().name, copyIndex())]",

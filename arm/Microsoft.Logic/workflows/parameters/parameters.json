@@ -10,6 +10,41 @@
         },
         "tags": {
             "value": {}
+        },
+        "workflowActions": {
+            "value": {
+                "HTTP": {
+                    "type": "Http",
+                    "inputs": {
+                        "method": "POST",
+                        "uri": "https://testStringForValidation.com",
+                        "body": {
+                            "HostPoolName": "[HostPoolName]",
+                            "LAWorkspaceName": "[LAWorkspaceName]",
+                            "LimitSecondsToForceLogOffUser": "[LimitSecondsToForceLogOffUser]",
+                            "EndPeakTime": "[EndPeakTime]",
+                            "BeginPeakTime": "[BeginPeakTime]",
+                            "UtcOffset": "[UtcOffset]",
+                            "LogOffMessageBody": "[LogOffMessageBody]",
+                            "LogOffMessageTitle": "[LogOffMessageTitle]",
+                            "MinimumNumberOfRDSH": 1,
+                            "SessionThresholdPerCPU": 1,
+                            "ResourceGroupName": "[ResourceGroupName]"
+                        }
+                    }
+                }
+            }
+        },
+        "workflowTriggers": {
+            "value": {
+                "Recurrence": {
+                    "recurrence": {
+                        "frequency": "Minute",
+                        "interval": 15
+                    },
+                    "type": "Recurrence"
+                }
+            }
         }
     }
 }
