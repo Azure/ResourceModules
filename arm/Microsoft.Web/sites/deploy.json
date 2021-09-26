@@ -2,100 +2,54 @@
     "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
     "contentVersion": "1.0.0.0",
     "parameters": {
-        "functionAppName": {
-            "type": "string",
-            "minLength": 1,
-            "metadata": {
-                "description": "Required. Name of the Function App"
-            }
-        },
-        "storageAccountName": {
+        "appName": {
             "type": "string",
             "metadata": {
-                "description": "Required. The name of the storage account to managing triggers and logging function executions."
-            }
-        },
-        "storageAccountResourceGroupName": {
-            "type": "string",
-            "defaultValue": "[resourceGroup().name]",
-            "metadata": {
-                "description": "Optional. Resource group of the storage account to use. Required if the storage account is in a different resource group than the function app itself."
-            }
-        },
-        "functionsWorkerRuntime": {
-            "type": "string",
-            "allowedValues": [
-                "dotnet",
-                "node",
-                "python",
-                "java",
-                "powershell"
-            ],
-            "metadata": {
-                "description": "Required. Runtime of the function worker."
+                "description": "Required. Name of the Web Application Portal Name"
             }
         },
         "location": {
             "type": "string",
             "defaultValue": "[resourceGroup().location]",
             "metadata": {
-                "description": "Optional. Location for all resources."
+                "description": "Optional. Location for all Resources."
             }
         },
-        "httpsOnly": {
-            "type": "bool",
-            "defaultValue": true,
+        "diagnosticLogsRetentionInDays": {
+            "type": "int",
+            "defaultValue": 365,
+            "minValue": 0,
+            "maxValue": 365,
             "metadata": {
-                "description": "Optional. Configures a web site to accept only https requests. Issues redirect for http requests."
+                "description": "Optional. Specifies the number of days that logs will be kept for; a value of 0 will retain data indefinitely."
             }
         },
-        "appServicePlanId": {
+        "diagnosticStorageAccountId": {
             "type": "string",
             "defaultValue": "",
             "metadata": {
-                "description": "Optional. The Resource Id of the App Service Plan to use for the Function App."
+                "description": "Optional. Resource identifier of the Diagnostic Storage Account."
             }
         },
-        "appServiceEnvironmentId": {
+        "workspaceId": {
             "type": "string",
             "defaultValue": "",
             "metadata": {
-                "description": "Optional. The Resource Id of the App Service Environment to use for the Function App."
+                "description": "Optional. Resource identifier of Log Analytics."
             }
         },
-        "managedServiceIdentity": {
+        "eventHubAuthorizationRuleId": {
             "type": "string",
-            "defaultValue": "None",
-            "allowedValues": [
-                "None",
-                "SystemAssigned",
-                "UserAssigned",
-                "SystemAssigned, UserAssigned",
-                "UserAssigned, SystemAssigned"
-            ],
+            "defaultValue": "",
             "metadata": {
-                "description": "Optional. Type of managed service identity."
+                "description": "Optional. Resource ID of the event hub authorization rule for the Event Hubs namespace in which the event hub should be created or streamed to."
             }
         },
-        "clientAffinityEnabled": {
-            "type": "bool",
-            "defaultValue": true,
-            "metadata": {
-                "description": "Optional. If Client Affinity is enabled."
-            }
-        },
-        "siteConfig": {
-            "type": "object",
-            "defaultValue": {},
-            "metadata": {
-                "description": "Required. Configuration of the app."
-            }
-        },
-        "functionsExtensionVersion": {
+        "eventHubName": {
             "type": "string",
-            "defaultValue": "~3",
+            "defaultValue": "",
             "metadata": {
-                "description": "Optional. Version if the function extension."
+                "description": "Optional. Name of the event hub within the namespace to which logs are streamed. Without this, an event hub is created for each log category."
             }
         },
         "enableMonitoring": {
@@ -107,7 +61,7 @@
         },
         "userAssignedIdentities": {
             "type": "object",
-            "defaultValue":{},
+            "defaultValue": {},
             "metadata": {
                 "description": "Optional. Mandatory 'managedServiceIdentity' contains UserAssigned. The identy to assign to the resource."
             }
@@ -116,15 +70,14 @@
             "type": "bool",
             "defaultValue": false,
             "metadata": {
-                "description": "Optional. Switch to lock Function App from deletion."
+                "description": "Optional. Switch to lock Key Vault from deletion."
             }
         },
-        "roleAssignments": {
-            "defaultValue": [
-            ],
+        "privateEndpoints": {
             "type": "array",
+            "defaultValue": [],
             "metadata": {
-                "description": "Optional. Array of role assignment objects that contain the 'roleDefinitionIdOrName' and 'principalId' to define RBAC role assignments on this resource. In the roleDefinitionIdOrName attribute, you can provide either the display name of the role definition, or its fully qualified ID in the following format: '/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11'"
+                "description": "Optional. Configuration Details for private endpoints."
             }
         },
         "tags": {
@@ -141,12 +94,232 @@
             "metadata": {
                 "description": "Optional. Customer Usage Attribution id (GUID). This GUID must be previously registered"
             }
+        },
+        "roleAssignments": {
+            "defaultValue": [
+            ],
+            "type": "array",
+            "metadata": {
+                "description": "Optional. Array of role assignment objects that contain the 'roleDefinitionIdOrName' and 'principalId' to define RBAC role assignments on this resource. In the roleDefinitionIdOrName attribute, you can provide either the display name of the role definition, or its fully qualified ID in the following format: '/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11'"
+            }
+        },
+        "storageAccountName": {
+            "type": "string",
+            "defaultValue": "",
+            "metadata": {
+                "description": "Optional. The name of the storage account to managing triggers and logging function executions."
+            }
+        },
+        "storageAccountResourceGroupName": {
+            "type": "string",
+            "defaultValue": "[resourceGroup().name]",
+            "metadata": {
+                "description": "Optional. Resource group of the storage account to use. Required if the storage account is in a different resource group than the function app itself."
+            }
+        },
+        "functionsWorkerRuntime": {
+            "type": "string",
+            "defaultValue": "",
+            "allowedValues": [
+                "dotnet",
+                "node",
+                "python",
+                "java",
+                "powershell",
+                ""
+            ],
+            "metadata": {
+                "description": "Optional. Runtime of the function worker."
+            }
+        },
+        "functionsExtensionVersion": {
+            "type": "string",
+            "defaultValue": "~3",
+            "metadata": {
+                "description": "Optional. Version if the function extension."
+            }
+        },
+        "appServicePlanName": {
+            "type": "string",
+            "defaultValue": "",
+            "metadata": {
+                "description": "Optional. Required if no appServicePlanId is provided to deploy a new app service plan."
+            }
+        },
+        "appServicePlanSkuName": {
+            "type": "string",
+            "allowedValues": [
+                "F1",
+                "D1",
+                "B1",
+                "B2",
+                "B3",
+                "S1",
+                "S2",
+                "S3",
+                "P1",
+                "P1v2",
+                "P2",
+                "P3",
+                "P4"
+            ],
+            "defaultValue": "F1",
+            "metadata": {
+                "description": "Optional. The pricing tier for the hosting plan."
+            }
+        },
+        "appServicePlanWorkerSize": {
+            "type": "int",
+            "defaultValue": 2,
+            "metadata": {
+                "description": "Optional. Defines the number of workers from the worker pool that will be used by the app service plan"
+            }
+        },
+        "appServicePlanTier": {
+            "type": "string",
+            "defaultValue": "",
+            "metadata": {
+                "description": "Optional. SkuTier of app service plan deployed if no appServicePlanId was provided."
+            }
+        },
+        "appServicePlanSize": {
+            "type": "string",
+            "defaultValue": "",
+            "metadata": {
+                "description": "Optional. SkuSize of app service plan deployed if no appServicePlanId was provided."
+            }
+        },
+        "appServicePlanFamily": {
+            "type": "string",
+            "defaultValue": "",
+            "metadata": {
+                "description": "Optional. SkuFamily of app service plan deployed if no appServicePlanId was provided."
+            }
+        },
+        "appServicePlanType": {
+            "type": "string",
+            "defaultValue": "linux",
+            "allowedValues": [
+                "linux",
+                "windows"
+            ],
+            "metadata": {
+                "description": "Optional. SkuType of app service plan deployed if no appServicePlanId was provided."
+            }
+        },
+        "appServicePlanId": {
+            "type": "string",
+            "defaultValue": "",
+            "metadata": {
+                "description": "Optional. The Resource Id of the App Service Plan to use for the App. If not provided, the hosting plan name is used to create a new plan."
+            }
+        },
+        "appServiceEnvironmentId": {
+            "type": "string",
+            "defaultValue": "",
+            "metadata": {
+                "description": "Optional. The Resource Id of the App Service Environment to use for the Function App."
+            }
+        },
+        "appType": {
+            "type": "string",
+            "allowedValues": [
+                "functionapp",
+                "app"
+            ],
+            "metadata": {
+                "description": "Required. Type of site to deploy"
+            }
+        },
+        "managedServiceIdentity": {
+            "type": "string",
+            "defaultValue": "None",
+            "allowedValues": [
+                "None",
+                "SystemAssigned",
+                "UserAssigned",
+                "SystemAssigned, UserAssigned",
+                "UserAssigned, SystemAssigned"
+            ],
+            "metadata": {
+                "description": "Optional. Type of managed service identity."
+            }
+        },
+        "httpsOnly": {
+            "type": "bool",
+            "defaultValue": true,
+            "metadata": {
+                "description": "Optional. Configures a web site to accept only https requests. Issues redirect for http requests."
+            }
+        },
+        "clientAffinityEnabled": {
+            "type": "bool",
+            "defaultValue": true,
+            "metadata": {
+                "description": "Optional. If Client Affinity is enabled."
+            }
+        },
+        "siteConfig": {
+            "type": "object",
+            "defaultValue": {},
+            "metadata": {
+                "description": "Required. Configuration of the app."
+            }
         }
     },
     "variables": {
-        "hostingEnvironment": {
-            "id": "[parameters('appServiceEnvironmentId')]"
-        },
+        "diagnosticsMetrics": [
+            {
+                "category": "AllMetrics",
+                "enabled": true,
+                "retentionPolicy": {
+                    "days": "[parameters('diagnosticLogsRetentionInDays')]",
+                    "enabled": true
+                }
+            }
+        ],
+        "diagnosticsLogs": [
+            {
+                "category": "AppServiceHTTPLogs",
+                "enabled": true,
+                "retentionPolicy": {
+                    "enabled": true,
+                    "days": "[parameters('diagnosticLogsRetentionInDays')]"
+                }
+            },
+            {
+                "category": "AppServiceConsoleLogs",
+                "enabled": true,
+                "retentionPolicy": {
+                    "enabled": true,
+                    "days": "[parameters('diagnosticLogsRetentionInDays')]"
+                }
+            },
+            {
+                "category": "AppServiceAppLogs",
+                "enabled": true,
+                "retentionPolicy": {
+                    "enabled": true,
+                    "days": "[parameters('diagnosticLogsRetentionInDays')]"
+                }
+            },
+            {
+                "category": "AppServiceFileAuditLogs",
+                "enabled": true,
+                "retentionPolicy": {
+                    "enabled": true,
+                    "days": "[parameters('diagnosticLogsRetentionInDays')]"
+                }
+            },
+            {
+                "category": "AppServiceAuditLogs",
+                "enabled": true,
+                "retentionPolicy": {
+                    "enabled": true,
+                    "days": "[parameters('diagnosticLogsRetentionInDays')]"
+                }
+            }
+        ],
         "builtInRoleNames": {
             "AcrDelete": "[concat('/subscriptions/', subscription().subscriptionId, '/providers/Microsoft.Authorization/roleDefinitions/', 'c2f4ef07-c644-48eb-af81-4b1b4947fb11')]",
             "AcrImageSigner": "[concat('/subscriptions/', subscription().subscriptionId, '/providers/Microsoft.Authorization/roleDefinitions/', '6cef56e8-d556-48e5-a04f-b8e64114680f')]",
@@ -321,13 +494,16 @@
             "Website Contributor": "[concat('/subscriptions/', subscription().subscriptionId, '/providers/Microsoft.Authorization/roleDefinitions/', 'de139f84-1756-47ae-9be6-808fbbe84772')]",
             "Workbook Contributor": "[concat('/subscriptions/', subscription().subscriptionId, '/providers/Microsoft.Authorization/roleDefinitions/', 'e8ddcd69-c73f-4f9f-9844-4100522f16ad')]",
             "Workbook Reader": "[concat('/subscriptions/', subscription().subscriptionId, '/providers/Microsoft.Authorization/roleDefinitions/', 'b279062a-9be3-42a0-92ae-8b3cf002ec4d')]"
+        },
+        "hostingEnvironment": {
+            "id": "[parameters('appServiceEnvironmentId')]"
         }
     },
     "resources": [
         {
             "condition": "[not(empty(parameters('cuaId')))]",
             "type": "Microsoft.Resources/deployments",
-            "apiVersion": "2021-01-01",
+            "apiVersion": "2020-06-01",
             "name": "[concat('pid-', parameters('cuaId'))]",
             "properties": {
                 "mode": "Incremental",
@@ -340,80 +516,121 @@
             }
         },
         {
+            "type": "Microsoft.Web/serverfarms",
             "apiVersion": "2019-08-01",
-            "type": "Microsoft.Web/sites",
-            "name": "[parameters('functionAppName')]",
+            "name": "[if(not(empty(parameters('appServicePlanName'))),parameters('appServicePlanName'),'dummyAppServicePlanName')]",
+            "kind": "[parameters('appServicePlanType')]",
+            "condition": "[empty(parameters('appServicePlanId'))]",
             "location": "[parameters('location')]",
-            "kind": "functionapp",
             "tags": "[parameters('tags')]",
+            "sku": {
+                "name": "[parameters('appServicePlanSkuName')]",
+                "capacity": "[parameters('appServicePlanWorkerSize')]",
+                "tier": "[parameters('appServicePlanTier')]",
+                "size": "[parameters('appServicePlanSize')]",
+                "family": "[parameters('appServicePlanFamily')]"
+            },
+            "properties": {
+                "name": "[parameters('appServicePlanName')]"
+            }
+        },
+        {
+            "type": "Microsoft.Web/sites",
+            "apiVersion": "2019-08-01",
+            "name": "[parameters('appName')]",
+            "location": "[parameters('location')]",
             "dependsOn": [
-                "[concat('microsoft.insights/components/',parameters('functionAppName'))]"
+                "[if(not(empty(parameters('appServicePlanName'))),parameters('appServicePlanName'),'dummyAppServicePlanName')]"
             ],
+            "kind": "[parameters('appType')]",
+            "tags": "[parameters('tags')]",
             "identity": {
                 "type": "[parameters('managedServiceIdentity')]",
                 "userAssignedIdentities": "[if(empty(parameters('userAssignedIdentities')),json('null'),parameters('userAssignedIdentities') )]"
             },
             "properties": {
-                "name": "[parameters('functionAppName')]",
+                "name": "[parameters('appName')]",
+                "serverFarmId": "[if(not(empty(parameters('appServicePlanId'))),parameters('appServicePlanId'), resourceId('Microsoft.Web/serverfarms',parameters('appServicePlanName')))]",
                 "httpsOnly": "[parameters('httpsOnly')]",
-                "serverFarmId": "[parameters('appServicePlanId')]",
                 "hostingEnvironment": "[if(empty(parameters('appServiceEnvironmentId')), json('null'), variables('hostingEnvironment'))]",
                 "clientAffinityEnabled": "[parameters('clientAffinityEnabled')]",
                 "siteConfig": "[parameters('siteConfig')]"
             },
             "resources": [
+                // App settings
                 {
-                    "apiVersion": "2016-03-01",
+                    "apiVersion": "2019-08-01",
                     "name": "appsettings",
                     "type": "config",
                     "dependsOn": [
-                        "[resourceId('Microsoft.Web/sites', parameters('functionAppName'))]"
+                        "[resourceId('Microsoft.Web/sites', parameters('appName'))]"
                     ],
                     "properties": {
-                        "AzureWebJobsStorage": "[concat('DefaultEndpointsProtocol=https;AccountName=',parameters('storageAccountName'),';AccountKey=',listkeys(resourceId(subscription().subscriptionId ,parameters('storageAccountResourceGroupName'), 'Microsoft.Storage/storageAccounts', parameters('storageAccountName')), '2019-06-01').keys[0].value,';')]",
-                        "AzureWebJobsDashboard": "[concat('DefaultEndpointsProtocol=https;AccountName=',parameters('storageAccountName'),';AccountKey=',listkeys(resourceId(subscription().subscriptionId ,parameters('storageAccountResourceGroupName'), 'Microsoft.Storage/storageAccounts', parameters('storageAccountName')), '2019-06-01').keys[0].value,';')]",
-                        "FUNCTIONS_EXTENSION_VERSION": "[parameters('functionsExtensionVersion')]",
-                        "FUNCTIONS_WORKER_RUNTIME": "[parameters('functionsWorkerRuntime')]",
-                        "APPINSIGHTS_INSTRUMENTATIONKEY": "[if(parameters('enableMonitoring'), reference(concat('microsoft.insights/components/',parameters('functionAppName')), '2015-05-01').InstrumentationKey, json('null'))]",
-                        "APPLICATIONINSIGHTS_CONNECTION_STRING": "[if(parameters('enableMonitoring'), reference(concat('microsoft.insights/components/',parameters('functionAppName')), '2015-05-01').ConnectionString, json('null'))]"
+                        "AzureWebJobsStorage": "[if(not(empty(parameters('storageAccountName'))), concat('DefaultEndpointsProtocol=https;AccountName=',parameters('storageAccountName'),';AccountKey=',listkeys(resourceId(subscription().subscriptionId ,parameters('storageAccountResourceGroupName'), 'Microsoft.Storage/storageAccounts', parameters('storageAccountName')), '2019-06-01').keys[0].value,';'), json('null'))]",
+                        "AzureWebJobsDashboard": "[if(not(empty(parameters('storageAccountName'))), concat('DefaultEndpointsProtocol=https;AccountName=',parameters('storageAccountName'),';AccountKey=',listkeys(resourceId(subscription().subscriptionId ,parameters('storageAccountResourceGroupName'), 'Microsoft.Storage/storageAccounts', parameters('storageAccountName')), '2019-06-01').keys[0].value,';'),  json('null'))]",
+                        "FUNCTIONS_EXTENSION_VERSION": "[if(and(equals(parameters('appServicePlanType'),'functionApp'), not(empty(parameters('functionsExtensionVersion')))), parameters('functionsExtensionVersion'), json('null'))]",
+                        "FUNCTIONS_WORKER_RUNTIME": "[if(and(equals(parameters('appServicePlanType'),'functionApp'),not(empty(parameters('functionsWorkerRuntime')))), parameters('functionsWorkerRuntime'), json('null'))]",
+                        "APPINSIGHTS_INSTRUMENTATIONKEY": "[if(parameters('enableMonitoring'), reference(concat('microsoft.insights/components/',parameters('appName')), '2015-05-01').InstrumentationKey, json('null'))]",
+                        "APPLICATIONINSIGHTS_CONNECTION_STRING": "[if(parameters('enableMonitoring'), reference(concat('microsoft.insights/components/',parameters('appName')), '2015-05-01').ConnectionString, json('null'))]"
                     }
                 },
+                // Lock
                 {
                     "type": "providers/locks",
                     "apiVersion": "2016-09-01",
                     "condition": "[parameters('lockForDeletion')]",
-                    "name": "Microsoft.Authorization/functionAppDoNotDelete",
+                    "name": "Microsoft.Authorization/webAppDoNotDelete",
                     "dependsOn": [
-                        "[concat('Microsoft.Web/sites/', parameters('functionAppName'))]"
+                        "[concat('Microsoft.Web/sites/', parameters('appName'))]"
                     ],
-                    "comments": "Resource lock on Function App",
+                    "comments": "Resource lock",
                     "properties": {
                         "level": "CannotDelete"
+                    }
+                },
+                // Diagnotic settings
+                {
+                    "type": "Microsoft.Web/sites/providers/diagnosticsettings",
+                    "apiVersion": "2017-05-01-preview",
+                    "name": "[concat(parameters('appName'), '/Microsoft.Insights/service')]",
+                    "condition": "[or(not(empty(parameters('diagnosticStorageAccountId'))),not(empty(parameters('workspaceId'))),not(empty(parameters('eventHubAuthorizationRuleId'))),not(empty(parameters('eventHubName'))))]",
+                    "dependsOn": [
+                        "[concat('Microsoft.Web/sites/', parameters('appName'))]"
+                    ],
+                    "properties": {
+                        "storageAccountId": "[if(empty(parameters('diagnosticStorageAccountId')), json('null'), parameters('diagnosticStorageAccountId'))]",
+                        "workspaceId": "[if(empty(parameters('workspaceId')), json('null'), parameters('workspaceId'))]",
+                        "eventHubAuthorizationRuleId": "[if(empty(parameters('eventHubAuthorizationRuleId')), json('null'), parameters('eventHubAuthorizationRuleId'))]",
+                        "eventHubName": "[if(empty(parameters('eventHubName')), json('null'), parameters('eventHubName'))]",
+                        "metrics": "[if(and(empty(parameters('diagnosticStorageAccountId')), empty(parameters('workspaceId')), empty(parameters('eventHubAuthorizationRuleId')), empty(parameters('eventHubName'))), json('null'), variables('diagnosticsMetrics'))]",
+                        "logs": "[if(and(empty(parameters('diagnosticStorageAccountId')), empty(parameters('workspaceId')), empty(parameters('eventHubAuthorizationRuleId')), empty(parameters('eventHubName'))), json('null'), variables('diagnosticsLogs'))]"
                     }
                 }
             ]
         },
+        // Component insights
         {
-            "apiVersion": "2015-05-01",
-            "name": "[parameters('functionAppName')]",
+            "apiVersion": "2018-05-01-preview",
+            "name": "[parameters('appName')]",
             "type": "microsoft.insights/components",
             "location": "[parameters('location')]",
             "condition": "[parameters('enableMonitoring')]",
             "kind": "web",
             "tags": "[parameters('tags')]",
             "properties": {
-                "ApplicationId": "[parameters('functionAppName')]",
+                "ApplicationId": "[parameters('appName')]",
                 "Application_Type": "web",
                 "Request_Source": "IbizaWebAppExtensionCreate"
             }
         },
+        // RBAC
         {
             "name": "[concat('rbac-',deployment().name, copyIndex())]",
             "type": "Microsoft.Resources/deployments",
             "apiVersion": "2021-01-01",
             "condition": "[not(empty(parameters('roleAssignments')))]",
             "dependsOn": [
-                "[parameters('functionAppName')]"
+                "[parameters('appName')]"
             ],
             "copy": {
                 "name": "rbacDeplCopy",
@@ -431,8 +648,8 @@
                     "builtInRoleNames": {
                         "value": "[variables('builtInRoleNames')]"
                     },
-                    "functionAppName": {
-                        "value": "[parameters('functionAppName')]"
+                    "appName": {
+                        "value": "[parameters('appName')]"
                     }
                 },
                 "template": {
@@ -445,15 +662,15 @@
                         "builtInRoleNames": {
                             "type": "object"
                         },
-                        "functionAppName": {
+                        "appName": {
                             "type": "string"
                         }
                     },
                     "resources": [
                         {
                             "type": "Microsoft.Web/sites/providers/roleAssignments",
-                            "apiVersion": "2018-09-01-preview",
-                            "name": "[concat(parameters('functionAppName'), '/Microsoft.Authorization/', guid(uniqueString(concat(parameters('functionAppName'), array(parameters('roleAssignment').principalIds)[copyIndex('innerRbacCopy')], parameters('roleAssignment').roleDefinitionIdOrName ) )))]",
+                            "apiVersion": "2020-04-01-preview",
+                            "name": "[concat(parameters('appName'), '/Microsoft.Authorization/', guid(uniqueString(concat(parameters('appName'), array(parameters('roleAssignment').principalIds)[copyIndex('innerRbacCopy')], parameters('roleAssignment').roleDefinitionIdOrName ) )))]",
                             "dependsOn": [
                             ],
                             "copy": {
@@ -468,37 +685,142 @@
                     ]
                 }
             }
+        },
+        // Private Endpoints
+        {
+            "type": "Microsoft.Resources/deployments",
+            "apiVersion": "2020-06-01",
+            "name": "[concat(uniqueString(deployment().name, parameters('location')), '-AppService-PrivateEndpoints','-',copyIndex())]",
+            "condition": "[not(empty(parameters('privateEndpoints')))]",
+            "dependsOn": [
+                "[parameters('appName')]"
+            ],
+            "copy": {
+                "name": "privateEndpointsCopy",
+                "count": "[length(parameters('privateEndpoints'))]"
+            },
+            "properties": {
+                "mode": "Incremental",
+                "expressionEvaluationOptions": {
+                    "scope": "inner"
+                },
+                "parameters": {
+                    "privateEndpointResourceId": {
+                        "value": "[resourceId('Microsoft.Web/sites/', parameters('appName'))]"
+                    },
+                    "privateEndpointVnetLocation": {
+                        "value": "[if(empty(parameters('privateEndpoints')),'dummy',reference(split(parameters('privateEndpoints')[copyIndex()].subnetResourceId,'/subnets/')[0],'2020-06-01', 'Full').location)]"
+                    },
+                    "privateEndpoint": {
+                        "value": "[parameters('privateEndpoints')[copyIndex()]]"
+                    },
+                    "tags": {
+                        "value": "[parameters('tags')]"
+                    }
+                },
+                "template": {
+                    "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+                    "contentVersion": "1.0.0.0",
+                    "parameters": {
+                        "privateEndpointResourceId": {
+                            "type": "string"
+                        },
+                        "privateEndpointVnetLocation": {
+                            "type": "string"
+                        },
+                        "privateEndpoint": {
+                            "type": "object"
+                        },
+                        "tags": {
+                            "type": "object"
+                        }
+                    },
+                    "variables": {
+                        "privateEndpointResourceName": "[last(split(parameters('privateEndpointResourceId'),'/'))]",
+                        "privateEndpoint": {
+                            "name": "[if(contains(parameters('privateEndpoint'), 'name'),if(empty(parameters('privateEndpoint').name),concat(variables('privateEndpointResourceName'),'-',parameters('privateEndpoint').service),parameters('privateEndpoint').name),concat(variables('privateEndpointResourceName'),'-',parameters('privateEndpoint').service))]",
+                            "subnetResourceId": "[parameters('privateEndpoint').subnetResourceId]",
+                            "service": [
+                                "[parameters('privateEndpoint').service]"
+                            ],
+                            "privateDnsZoneResourceIds": "[if(contains(parameters('privateEndpoint'), 'privateDnsZoneResourceIds'),if(empty(parameters('privateEndpoint').privateDnsZoneResourceIds),createArray(),parameters('privateEndpoint').privateDnsZoneResourceIds),createArray())]",
+                            "customDnsConfigs": "[if(contains(parameters('privateEndpoint'), 'customDnsConfigs'),if(empty(parameters('privateEndpoint').customDnsConfigs),json('null'),parameters('privateEndpoint').customDnsConfigs),json('null'))]"
+                        }
+                    },
+                    "resources": [
+                        {
+                            "type": "Microsoft.Network/privateEndpoints",
+                            "apiVersion": "2020-05-01",
+                            "name": "[variables('privateEndpoint').name]",
+                            "location": "[parameters('privateEndpointVnetLocation')]",
+                            "tags": "[parameters('tags')]",
+                            "properties": {
+                                "privateLinkServiceConnections": [
+                                    {
+                                        "name": "[variables('privateEndpoint').name]",
+                                        "properties": {
+                                            "privateLinkServiceId": "[parameters('privateEndpointResourceId')]",
+                                            "groupIds": "[variables('privateEndpoint').service]"
+                                        }
+                                    }
+                                ],
+                                "manualPrivateLinkServiceConnections": [],
+                                "subnet": {
+                                    "id": "[variables('privateEndpoint').subnetResourceId]"
+                                },
+                                "customDnsConfigs": "[variables('privateEndpoint').customDnsConfigs]"
+                            }
+                        },
+                        {
+                            "type": "Microsoft.Network/privateEndpoints/privateDnsZoneGroups",
+                            "apiVersion": "2020-05-01",
+                            "condition": "[not(empty(variables('privateEndpoint').privateDnsZoneResourceIds))]",
+                            "name": "[concat(variables('privateEndpoint').name, '/default')]",
+                            "dependsOn": [
+                                "[resourceId('Microsoft.Network/privateEndpoints', variables('privateEndpoint').name)]"
+                            ],
+                            "properties": {
+                                "copy": [
+                                    {
+                                        "name": "privateDnsZoneConfigs",
+                                        "count": "[length(variables('privateEndpoint').privateDnsZoneResourceIds)]",
+                                        "input": {
+                                            "name": "[last(split(variables('privateEndpoint').privateDnsZoneResourceIds[copyIndex('privateDnsZoneConfigs')],'/'))]",
+                                            "properties": {
+                                                "privateDnsZoneId": "[variables('privateEndpoint').privateDnsZoneResourceIds[copyIndex('privateDnsZoneConfigs')]]"
+                                            }
+                                        }
+                                    }
+                                ]
+                            }
+                        }
+                    ]
+                }
+            }
         }
     ],
     "functions": [
     ],
     "outputs": {
-        "functionAppName": {
+        "appName": {
             "type": "string",
-            "value": "[parameters('functionAppName')]",
+            "value": "[parameters('appServicePlanName')]",
             "metadata": {
-                "description": "Name of the Function App."
+                "description": "The Name of the Application Web Services"
             }
         },
-        "functionResourceId": {
+        "siteResourceId": {
             "type": "string",
-            "value": "[resourceId('Microsoft.Web/sites', parameters('functionAppName'))]",
+            "value": "[resourceId('Microsoft.Web/serverfarms',parameters('appServicePlanName'))]",
             "metadata": {
-                "description": "The Resource ID of the Function App."
+                "description": "The Resource Id of the Application Web Services"
             }
         },
-        "functionAppResourceGroup": {
+        "siteResourceGroup": {
             "type": "string",
             "value": "[resourceGroup().name]",
             "metadata": {
-                "description": "The Resource group in which the Resource has been created."
-            }
-        },
-        "assignedIdentityID": {
-            "type": "string",
-            "value":"[if(contains(parameters('managedServiceIdentity'),'SystemAssigned'),reference(resourceId('Microsoft.Web/sites', parameters('functionAppName')), '2019-08-01', 'full').identity.principalId,'')]",
-            "metadata": {
-                "description": "User id of the created system assigned identity"
+                "description": "The name of the Resource Group with the Application Web Services"
             }
         }
     }
