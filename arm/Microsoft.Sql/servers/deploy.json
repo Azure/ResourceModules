@@ -66,6 +66,9 @@
         }
     },
     "variables": {
+        "subscriptionId": "[subscription().subscriptionId]",
+        "resourceGroupName": "[resourceGroup().name]",
+        "uniqueStorage": "[uniqueString(variables('subscriptionId'), variables('resourceGroupName'), parameters('location'))]",
         "builtInRoleNames": {
             "AcrDelete": "[concat('/subscriptions/', subscription().subscriptionId, '/providers/Microsoft.Authorization/roleDefinitions/', 'c2f4ef07-c644-48eb-af81-4b1b4947fb11')]",
             "AcrImageSigner": "[concat('/subscriptions/', subscription().subscriptionId, '/providers/Microsoft.Authorization/roleDefinitions/', '6cef56e8-d556-48e5-a04f-b8e64114680f')]",
@@ -271,7 +274,7 @@
             "resources": [
                 {
                     "condition": "[parameters('allowAzureIps')]",
-                    "apiVersion": "2021-02-01-preview",
+                    "apiVersion": "2014-04-01-preview",
                     "dependsOn": [
                         "[concat('Microsoft.Sql/servers/', parameters('serverName'))]"
                     ],
@@ -285,7 +288,7 @@
                 },
                 {
                     "condition": "[parameters('enableADS')]",
-                    "apiVersion": "2021-02-01-preview",
+                    "apiVersion": "2017-03-01-preview",
                     "type": "securityAlertPolicies",
                     "name": "Default",
                     "dependsOn": [
