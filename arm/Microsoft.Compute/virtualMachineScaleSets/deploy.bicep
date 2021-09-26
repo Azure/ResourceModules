@@ -756,7 +756,7 @@ resource vmss_Microsoft_Insights_service 'Microsoft.Insights/diagnosticSettings@
   ]
 }
 
-module rbac_name './.bicep/nested_rbac.bicep' = [for (item, i) in roleAssignments: {
+module vmss_rbac './.bicep/nested_rbac.bicep' = [for (item, i) in roleAssignments: {
   name: 'rbac-${deployment().name}${i}'
   params: {
     roleAssignment: item
