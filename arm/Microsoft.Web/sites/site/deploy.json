@@ -2,7 +2,7 @@
     "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
     "contentVersion": "1.0.0.0",
     "parameters": {
-        "siteName": {
+        "appName": {
             "type": "string",
             "metadata": {
                 "description": "Required. Name of the Web Application Portal Name"
@@ -147,13 +147,14 @@
         },
         "functionsWorkerRuntime": {
             "type": "string",
-            "defaultValue": null,
+            "defaultValue": "",
             "allowedValues": [
                 "dotnet",
                 "node",
                 "python",
                 "java",
-                "powershell"
+                "powershell",
+                ""
             ],
             "metadata": {
                 "description": "Optional. Runtime of the function worker."
@@ -188,13 +189,12 @@
         },
         "appType": {
             "type": "string",
-            "defaultValue": "None",
             "allowedValues": [
                 "functionapp",
                 "app"
             ],
             "metadata": {
-                "description": "Optional. Type of site to deploy"
+                "description": "Required. Type of site to deploy"
             }
         },
         "managedServiceIdentity": {
@@ -500,7 +500,7 @@
         {
             "type": "Microsoft.Web/sites",
             "apiVersion": "2019-08-01",
-            "name": "[parameters('siteName')]",
+            "name": "[parameters('appName')]",
             "location": "[parameters('location')]",
             "dependsOn": [
                 "[resourceId('Microsoft.Web/serverfarms',parameters('hostingPlanName'))]"
@@ -512,7 +512,7 @@
                 "userAssignedIdentities": "[if(empty(parameters('userAssignedIdentities')),json('null'),parameters('userAssignedIdentities') )]"
             },
             "properties": {
-                "name": "[parameters('siteName')]",
+                "name": "[parameters('appName')]",
                 "serverFarmId": "[if(not(empty(parameters('appServicePlanId'))),parameters('appServicePlanId'), resourceId('Microsoft.Web/serverfarms',parameters('hostingPlanName')))]",
                 "httpsOnly": "[parameters('httpsOnly')]",
                 "hostingEnvironment": "[if(empty(parameters('appServiceEnvironmentId')), json('null'), variables('hostingEnvironment'))]",
@@ -526,15 +526,15 @@
                     "name": "appsettings",
                     "type": "config",
                     "dependsOn": [
-                        "[resourceId('Microsoft.Web/sites', parameters('siteName'))]"
+                        "[resourceId('Microsoft.Web/sites', parameters('appName'))]"
                     ],
                     "properties": {
                         "AzureWebJobsStorage": "[if(not(empty(parameters('storageAccountName'))), concat('DefaultEndpointsProtocol=https;AccountName=',parameters('storageAccountName'),';AccountKey=',listkeys(resourceId(subscription().subscriptionId ,parameters('storageAccountResourceGroupName'), 'Microsoft.Storage/storageAccounts', parameters('storageAccountName')), '2019-06-01').keys[0].value,';'), json('null'))]",
                         "AzureWebJobsDashboard": "[if(not(empty(parameters('storageAccountName'))), concat('DefaultEndpointsProtocol=https;AccountName=',parameters('storageAccountName'),';AccountKey=',listkeys(resourceId(subscription().subscriptionId ,parameters('storageAccountResourceGroupName'), 'Microsoft.Storage/storageAccounts', parameters('storageAccountName')), '2019-06-01').keys[0].value,';'),  json('null'))]",
                         "FUNCTIONS_EXTENSION_VERSION":  "[if(not(empty(parameters('functionsExtensionVersion'))), parameters('functionsExtensionVersion'), json('null'))]",
                         "FUNCTIONS_WORKER_RUNTIME": "[if(not(empty(parameters('functionsWorkerRuntime'))), parameters('functionsWorkerRuntime'), json('null'))]",
-                        "APPINSIGHTS_INSTRUMENTATIONKEY": "[if(parameters('enableMonitoring'), reference(concat('microsoft.insights/components/',parameters('siteName')), '2015-05-01').InstrumentationKey, json('null'))]",
-                        "APPLICATIONINSIGHTS_CONNECTION_STRING": "[if(parameters('enableMonitoring'), reference(concat('microsoft.insights/components/',parameters('siteName')), '2015-05-01').ConnectionString, json('null'))]"
+                        "APPINSIGHTS_INSTRUMENTATIONKEY": "[if(parameters('enableMonitoring'), reference(concat('microsoft.insights/components/',parameters('appName')), '2015-05-01').InstrumentationKey, json('null'))]",
+                        "APPLICATIONINSIGHTS_CONNECTION_STRING": "[if(parameters('enableMonitoring'), reference(concat('microsoft.insights/components/',parameters('appName')), '2015-05-01').ConnectionString, json('null'))]"
                     }
                 },
                 // Lock
@@ -544,7 +544,7 @@
                     "condition": "[parameters('lockForDeletion')]",
                     "name": "Microsoft.Authorization/webAppDoNotDelete",
                     "dependsOn": [
-                        "[concat('Microsoft.Web/sites/', parameters('siteName'))]"
+                        "[concat('Microsoft.Web/sites/', parameters('appName'))]"
                     ],
                     "comments": "Resource lock",
                     "properties": {
@@ -555,10 +555,10 @@
                 {
                     "type": "Microsoft.Web/sites/providers/diagnosticsettings",
                     "apiVersion": "2017-05-01-preview",
-                    "name": "[concat(parameters('siteName'), '/Microsoft.Insights/service')]",
+                    "name": "[concat(parameters('appName'), '/Microsoft.Insights/service')]",
                     "condition": "[or(not(empty(parameters('diagnosticStorageAccountId'))),not(empty(parameters('workspaceId'))),not(empty(parameters('eventHubAuthorizationRuleId'))),not(empty(parameters('eventHubName'))))]",
                     "dependsOn": [
-                        "[concat('Microsoft.Web/sites/', parameters('siteName'))]"
+                        "[concat('Microsoft.Web/sites/', parameters('appName'))]"
                     ],
                     "properties": {
                         "storageAccountId": "[if(empty(parameters('diagnosticStorageAccountId')), json('null'), parameters('diagnosticStorageAccountId'))]",
@@ -574,14 +574,14 @@
         // Component insights
         {
             "apiVersion": "2018-05-01-preview",
-            "name": "[parameters('siteName')]",
+            "name": "[parameters('appName')]",
             "type": "microsoft.insights/components",
             "location": "[parameters('location')]",
             "condition": "[parameters('enableMonitoring')]",
             "kind": "web",
             "tags": "[parameters('tags')]",
             "properties": {
-                "ApplicationId": "[parameters('siteName')]",
+                "ApplicationId": "[parameters('appName')]",
                 "Application_Type": "web",
                 "Request_Source": "IbizaWebAppExtensionCreate"
             }
@@ -593,7 +593,7 @@
             "apiVersion": "2021-01-01",
             "condition": "[not(empty(parameters('roleAssignments')))]",
             "dependsOn": [
-                "[parameters('siteName')]"
+                "[parameters('appName')]"
             ],
             "copy": {
                 "name": "rbacDeplCopy",
@@ -611,8 +611,8 @@
                     "builtInRoleNames": {
                         "value": "[variables('builtInRoleNames')]"
                     },
-                    "siteName": {
-                        "value": "[parameters('siteName')]"
+                    "appName": {
+                        "value": "[parameters('appName')]"
                     }
                 },
                 "template": {
@@ -625,7 +625,7 @@
                         "builtInRoleNames": {
                             "type": "object"
                         },
-                        "siteName": {
+                        "appName": {
                             "type": "string"
                         }
                     },
@@ -633,7 +633,7 @@
                         {
                             "type": "Microsoft.Web/sites/providers/roleAssignments",
                             "apiVersion": "2020-04-01-preview",
-                            "name": "[concat(parameters('siteName'), '/Microsoft.Authorization/', guid(uniqueString(concat(parameters('siteName'), array(parameters('roleAssignment').principalIds)[copyIndex('innerRbacCopy')], parameters('roleAssignment').roleDefinitionIdOrName ) )))]",
+                            "name": "[concat(parameters('appName'), '/Microsoft.Authorization/', guid(uniqueString(concat(parameters('appName'), array(parameters('roleAssignment').principalIds)[copyIndex('innerRbacCopy')], parameters('roleAssignment').roleDefinitionIdOrName ) )))]",
                             "dependsOn": [
                             ],
                             "copy": {
@@ -656,7 +656,7 @@
             "name": "[concat(uniqueString(deployment().name, parameters('location')), '-AppService-PrivateEndpoints','-',copyIndex())]",
             "condition": "[not(empty(parameters('privateEndpoints')))]",
             "dependsOn": [
-                "[parameters('siteName')]"
+                "[parameters('appName')]"
             ],
             "copy": {
                 "name": "privateEndpointsCopy",
@@ -669,7 +669,7 @@
                 },
                 "parameters": {
                     "privateEndpointResourceId": {
-                        "value": "[resourceId('Microsoft.Web/sites/', parameters('siteName'))]"
+                        "value": "[resourceId('Microsoft.Web/sites/', parameters('appName'))]"
                     },
                     "privateEndpointVnetLocation": {
                         "value": "[if(empty(parameters('privateEndpoints')),'dummy',reference(split(parameters('privateEndpoints')[copyIndex()].subnetResourceId,'/subnets/')[0],'2020-06-01', 'Full').location)]"
@@ -765,7 +765,7 @@
     "functions": [
     ],
     "outputs": {
-        "siteName": {
+        "appName": {
             "type": "string",
             "value": "[parameters('hostingPlanName')]",
             "metadata": {

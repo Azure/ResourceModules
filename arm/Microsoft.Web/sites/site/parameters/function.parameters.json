@@ -2,8 +2,11 @@
     "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
     "contentVersion": "1.0.0.0",
     "parameters": {
-        "functionAppName": {
+        "appName": {
             "value": "azfaweux01"
+        },
+        "appType": {
+            "value": "functionapp"
         },
         // "appServicePlanId": {
         //     "value": "/subscriptions/8629be3b-96bc-482d-a04b-ffff597c65a2/resourceGroups/dependencies-rg/providers/Microsoft.Web/serverFarms/sxx-az-asp-weu-x-003"
