@@ -206,7 +206,6 @@ resource keyVault_lock 'Microsoft.Authorization/locks@2016-09-01' = if (lockForD
 
 resource keyVault_diagnosticSettings 'Microsoft.Insights/diagnosticsettings@2017-05-01-preview' = if ((!empty(diagnosticStorageAccountId)) || (!empty(workspaceId)) || (!empty(eventHubAuthorizationRuleId)) || (!empty(eventHubName))) {
   name: '${keyVaultName_var}-${diagnosticSettingName}'
-  //location: location
   properties: {
     storageAccountId: (empty(diagnosticStorageAccountId) ? json('null') : diagnosticStorageAccountId)
     workspaceId: (empty(workspaceId) ? json('null') : workspaceId)
@@ -230,7 +229,6 @@ resource keyVault_secrets 'Microsoft.KeyVault/vaults/secrets@2019-09-01' = [for 
 
 resource keyVault_keys 'Microsoft.KeyVault/vaults/keys@2019-09-01' = [for i in range(0, length(keysObject.keys)): if (!empty(keysObject.keys)) {
   name: (empty(keysObject.keys) ? '${keyVaultName_var}/keyEntity' : '${keyVaultName_var}/${keysObject.keys[i].keyName}')
-  //location: location
   properties: {
     kty: keysObject.keys[i].keyType
     keyOps: keysObject.keys[i].keyOps
