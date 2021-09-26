@@ -1,4 +1,4 @@
-name: "Web: Sites Appservice"
+name: "Web: Sites"
 
 on:
   workflow_dispatch:
@@ -17,8 +17,8 @@ on:
         default: '0.0.1'
 
 env:
-  moduleName: 'appService'
-  modulePath: 'arm/Microsoft.Web/sites/appService'
+  moduleName: 'sites'
+  modulePath: 'arm/Microsoft.Web/sites'
   AZURE_CREDENTIALS: ${{ secrets.AZURE_CREDENTIALS }}
   ARM_SUBSCRIPTION_ID: ${{ secrets.ARM_SUBSCRIPTION_ID }}
   ARM_MGMTGROUP_ID: ${{ secrets.ARM_MGMTGROUP_ID }}
@@ -66,7 +66,7 @@ jobs:
     name: "Run deployment validation module tests"
     strategy:
       matrix:
-        parameterFilePaths: ['parameters.json']
+        parameterFilePaths: ['function.parameters.json','webApp.parameters.json']
     steps:
       - name: "Checkout"
         uses: actions/checkout@v2
@@ -80,7 +80,7 @@ jobs:
       - name: "Test module"
         uses: ./.github/actions/templates/validateModuleDeploy
         with:
-          templateFilePath: '${{ env.modulePath }}/deploy.json'
+          templateFilePath: '${{ env.modulePath }}/deploy.bicep'
           parameterFilePath: '${{ env.modulePath }}/parameters/${{ matrix.parameterFilePaths }}'
           location: '${{ env.defaultLocation }}'
           resourceGroupName: '${{ env.resourceGroupName }}'
@@ -99,7 +99,7 @@ jobs:
     - job_tests_module_deploy_validate
     strategy:
       matrix:
-        parameterFilePaths: ['parameters.json']
+        parameterFilePaths: ['function.parameters.json','webApp.parameters.json']
     steps:
       - name: "Checkout"
         uses: actions/checkout@v2
@@ -114,7 +114,7 @@ jobs:
         uses: ./.github/actions/templates/deployModule
         with:
           moduleName: '${{ env.moduleName }}'
-          templateFilePath: '${{ env.modulePath }}/deploy.json'
+          templateFilePath: '${{ env.modulePath }}/deploy.bicep'
           parameterFilePath: '${{ env.modulePath }}/parameters/${{ matrix.parameterFilePaths }}'
           location: '${{ env.defaultLocation }}'
           resourceGroupName: '${{ env.resourceGroupName }}'
@@ -144,7 +144,7 @@ jobs:
       - name: "Publish module"
         uses: ./.github/actions/templates/publishModule
         with:
-          templateFilePath: '${{ env.modulePath }}/deploy.json'
+          templateFilePath: '${{ env.modulePath }}/deploy.bicep'
           componentTemplateSpecRGName: '${{ env.componentTemplateSpecRGName }}'
           componentTemplateSpecRGLocation: '${{ env.componentTemplateSpecRGLocation }}'
           componentTemplateSpecName: '${{ env.moduleName }}'
@@ -176,5 +176,5 @@ jobs:
         uses: ./.github/actions/templates/removeModule
         with:
           moduleName: '${{ env.moduleName }}'
-          templateFilePath: '${{ env.modulePath }}/deploy.json'
+          templateFilePath: '${{ env.modulePath }}/deploy.bicep'
           resourceGroupName: '${{ env.resourceGroupName }}'
