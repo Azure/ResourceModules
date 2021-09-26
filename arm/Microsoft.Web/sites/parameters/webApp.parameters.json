@@ -9,7 +9,7 @@
             "value": "app"
         },
         "appServicePlanId": {
-            "value": "/subscriptions/b765c5e5-ae60-4724-9b59-36fbcf56795b/resourceGroups/validation-rg/providers/Microsoft.Web/serverfarms/sxx-az-app-weu-x-hp-001"
+            "value": "/subscriptions/8629be3b-96bc-482d-a04b-ffff597c65a2/resourceGroups/dependencies-rg/providers/Microsoft.Web/serverFarms/sxx-az-asp-weu-x-003"
         },
         "managedServiceIdentity": {
             "value": "SystemAssigned"
