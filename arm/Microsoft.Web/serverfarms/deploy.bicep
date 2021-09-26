@@ -79,7 +79,7 @@ module pid_cuaId './.bicep/nested_cuaId.bicep' = if (!empty(cuaId)) {
   params: {}
 }
 
-resource appServicePlan 'Microsoft.Web/serverfarms@2019-08-01' = {
+resource appServicePlan 'Microsoft.Web/serverfarms@2021-02-01' = {
   name: appServicePlanName
   kind: ((serverOS == 'Windows') ? '' : 'linux')
   location: location

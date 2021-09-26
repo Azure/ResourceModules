@@ -155,7 +155,7 @@
         {
             "name": "[parameters('appServicePlanName')]",
             "type": "Microsoft.Web/serverfarms",
-            "apiVersion": "2019-08-01",
+            "apiVersion": "2021-02-01",
             "kind": "[if(equals(parameters('serverOS'), 'Windows'),'','linux')]",
             "location": "[parameters('location')]",
             "tags": "[parameters('tags')]",
