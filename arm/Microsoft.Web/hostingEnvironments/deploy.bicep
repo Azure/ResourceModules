@@ -292,7 +292,7 @@ module pid_cuaId './.bicep/nested_cuaId.bicep' = if (!empty(cuaId)) {
   params: {}
 }
 
-resource appServiceEnvironment 'Microsoft.Web/hostingEnvironments@2020-06-01' = {
+resource appServiceEnvironment 'Microsoft.Web/hostingEnvironments@2021-02-01' = {
   name: appServiceEnvironmentName
   kind: kind
   location: location
