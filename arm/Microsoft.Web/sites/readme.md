@@ -12,10 +12,10 @@ This module deploys a Web or Function App
 | `Microsoft.Network/privateEndpoints` | 2020-05-01 |
 | `Microsoft.Resources/deployments` | 2020-06-01 |
 | `Microsoft.Resources/deployments` | 2021-01-01 |
-| `Microsoft.Web/serverfarms` | 2019-08-01 |
+| `Microsoft.Web/serverfarms` | 2021-02-01 |
 | `Microsoft.Web/sites/providers/diagnosticsettings` | 2017-05-01-preview |
 | `Microsoft.Web/sites/providers/roleAssignments` | 2020-04-01-preview |
-| `Microsoft.Web/sites` | 2019-08-01 |
+| `Microsoft.Web/sites` | 2021-02-01 |
 | `providers/locks` | 2016-09-01 |
 
 ### Resource dependency
@@ -124,8 +124,8 @@ Tag names and tag values can be provided as needed. A tag can be left without a 
 - [Use tags to organize your Azure resources](https://docs.microsoft.com/en-us/azure/azure-resource-manager/resource-group-using-tags)
 - [Azure Resource Manager template reference](https://docs.microsoft.com/en-us/azure/templates/)
 - [Deployments](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Resources/2020-06-01/deployments)
-- [ServerfarmS](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Web/2019-08-01/serverfarms)
-- [SiteS](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Web/2019-08-01/sites)
+- [Serverfarms](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Web/2019-08-01/serverfarms)
+- [Sites](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Web/2019-08-01/sites)
 - [Components](https://docs.microsoft.com/en-us/azure/templates/microsoft.insights/2018-05-01-preview/components)
 - [Deployments](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Resources/2021-01-01/deployments)
 - [Deployments](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Resources/2020-06-01/deployments)

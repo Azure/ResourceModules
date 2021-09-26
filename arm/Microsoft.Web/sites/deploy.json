@@ -359,7 +359,7 @@
         },
         {
             "type": "Microsoft.Web/serverfarms",
-            "apiVersion": "2019-08-01",
+            "apiVersion": "2021-02-01",
             "name": "[if(not(empty(parameters('appServicePlanName'))),parameters('appServicePlanName'),'dummyAppServicePlanName')]",
             "kind": "[parameters('appServicePlanType')]",
             "condition": "[empty(parameters('appServicePlanId'))]",
@@ -378,7 +378,7 @@
         },
         {
             "type": "Microsoft.Web/sites",
-            "apiVersion": "2019-08-01",
+            "apiVersion": "2021-02-01",
             "name": "[parameters('appName')]",
             "location": "[parameters('location')]",
             "dependsOn": [
