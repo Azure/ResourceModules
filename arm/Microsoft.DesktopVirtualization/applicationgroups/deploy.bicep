@@ -119,7 +119,7 @@ resource appGroup 'Microsoft.DesktopVirtualization/applicationgroups@2020-11-02-
 }
 
 resource appGroup_lock 'Microsoft.Authorization/locks@2016-09-01' = if (lockForDeletion) {
-  name: '${appGroupName}-hostPoolDoNotDelete'
+  name: '${appGroupName}-appGroupDoNotDelete'
   properties: {
     level: 'CanNotDelete'
   }
