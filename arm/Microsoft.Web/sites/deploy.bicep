@@ -249,7 +249,7 @@ resource app 'Microsoft.Web/sites@2020-12-01' = {
   ]
 }
 
-resource appName_appsettings 'Microsoft.Web/sites/config@2019-08-01' = {
+resource app_appsettings 'Microsoft.Web/sites/config@2019-08-01' = {
   parent: app
   name: 'appsettings'
   properties: {
