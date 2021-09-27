@@ -96,7 +96,7 @@ resource connection_lock 'Microsoft.Authorization/locks@2016-09-01' = if (lockFo
   scope: connection
 }
 
-module rbac_name './.bicep/nested_rbac.bicep' = [for (item, i) in roleAssignments: {
+module connection_rbac './.bicep/nested_rbac.bicep' = [for (item, i) in roleAssignments: {
   name: 'rbac-${deployment().name}${i}'
   params: {
     roleAssignment: item
