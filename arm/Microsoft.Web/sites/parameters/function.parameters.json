@@ -2,31 +2,43 @@
     "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
     "contentVersion": "1.0.0.0",
     "parameters": {
-        "webAppName": {
-            "value": "sxx-az-wa-weu-x-001"
+        "appName": {
+            "value": "azfaweux01"
         },
-        "appServicePlanId": {
-            "value": "/subscriptions/8629be3b-96bc-482d-a04b-ffff597c65a2/resourceGroups/dependencies-rg/providers/Microsoft.Web/serverFarms/sxx-az-asp-weu-x-003"
+        "appType": {
+            "value": "functionapp"
         },
-        "managedServiceIdentity": {
-            "value": "SystemAssigned"
+        "appServicePlanName": {
+            "value": "sxx-az-app-weu-x-hp-001"
+        },
+        "appServicePlanSkuName": {
+            "value": "P1v2"
+        },
+        "appServicePlanTier": {
+            "value": "PremiumV2"
+        },
+        "appServicePlanSize": {
+            "value": "P1v2"
+        },
+        "appServicePlanFamily": {
+            "value": "Pv2"
         },
         "siteConfig": {
             "value": {
-                "metadata": [
-                    {
-                        "name": "CURRENT_STACK",
-                        "value": "dotnetcore"
-                    }
-                ],
                 "alwaysOn": true
             }
         },
-        "httpsOnly": {
-            "value": true
+        "storageAccountName": {
+            "value": "bicepgithubtestsa"
+        },
+        "storageAccountResourceGroupName": {
+            "value": "validation-rg"
+        },
+        "functionsWorkerRuntime": {
+            "value": "powershell"
         },
         "enableMonitoring": {
-            "value": true
+            "value": false
         }
         // "roleAssignments": {
         //     "value": [
