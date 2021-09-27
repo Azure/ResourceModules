@@ -73,7 +73,7 @@ resource server_lock 'Microsoft.Authorization/locks@2016-09-01' = if (lockForDel
   scope: server
 }
 
-resource serverName_AllowAllWindowsAzureIps 'Microsoft.Sql/servers/firewallrules@2021-02-01-preview' = if (allowAzureIps) {
+resource server_AllowAllWindowsAzureIps 'Microsoft.Sql/servers/firewallrules@2021-02-01-preview' = if (allowAzureIps) {
   parent: server
   name: 'AllowAllWindowsAzureIps'
   properties: {
@@ -82,7 +82,7 @@ resource serverName_AllowAllWindowsAzureIps 'Microsoft.Sql/servers/firewallrules
   }
 }
 
-resource serverName_Default 'Microsoft.Sql/servers/securityAlertPolicies@2021-02-01-preview' = if (enableADS) {
+resource server_Default 'Microsoft.Sql/servers/securityAlertPolicies@2021-02-01-preview' = if (enableADS) {
   parent: server
   name: 'Default'
   properties: {
@@ -93,7 +93,7 @@ resource serverName_Default 'Microsoft.Sql/servers/securityAlertPolicies@2021-02
   }
 }
 
-module rbac_name './.bicep/nested_rbac.bicep' = [for (item, i) in roleAssignments: {
+module server_rbac './.bicep/nested_rbac.bicep' = [for (item, i) in roleAssignments: {
   name: 'rbac-${deployment().name}${i}'
   params: {
     roleAssignment: item
