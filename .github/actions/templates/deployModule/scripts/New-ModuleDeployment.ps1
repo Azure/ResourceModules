@@ -109,7 +109,7 @@ function New-ModuleDeployment {
                 ErrorAction           = 'Stop'
             }
 
-            ## Append Tags to Parameters if Resource supports them (all tags must be in one object or they will be delted)
+            ## Append Tags to Parameters if Resource supports them (all tags must be in one object)
             if ($removeDeployment -or $additionalTags) { 
                 
                 # Parameter tags
