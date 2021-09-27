@@ -109,15 +109,44 @@ function New-ModuleDeployment {
                 ErrorAction           = 'Stop'
             }
 
-            ## Append Tags to Parameters if Resource supports them
-            $parameterFileTags = (ConvertFrom-Json (Get-Content -Raw -Path $parameterFile) -AsHashtable).parameters.tags.value            
-            if (-not $parameterFileTags) { $parameterFileTags = @{} }
-            if ($additionalTags) { $parameterFileTags += $additionalTags } # If additionalTags object is provided, append tag to the resource
-            if ($removeDeployment) { $parameterFileTags += @{removeModule = $moduleName } } # If removeDeployment is set to true, append removeMoule tag to the resource
+            ## Append Tags to Parameters if Resource supports them (all tags must be in one object)
             if ($removeDeployment -or $additionalTags) { 
+                
+                # Parameter tags
+                $parameterFileTags = (ConvertFrom-Json (Get-Content -Raw -Path $parameterFile) -AsHashtable).parameters.tags.value            
+                if ($parameterFileTags) { $parameterFileTags = @{} }
+                
+                # Pipeline tags
+                if ($additionalTags) { $parameterFileTags += $additionalTags } # If additionalTags object is provided, append tag to the resource
+                
+                # Removal tags
+                if ($removeDeployment) { $parameterFileTags += @{removeModule = $moduleName } } # If removeDeployment is set to true, append removeMoule tag to the resource
                 # Overwrites parameter file tags parameter
                 Write-Verbose ("removeDeployment for $moduleName= $removeDeployment `nadditionalTags:`n $($additionalTags | ConvertTo-Json)")
                 $DeploymentInputs += @{Tags = $parameterFileTags } 
+            }
+
+            if ((Split-Path $templateFilePath -Extension) -eq '.bicep') {
+                # Bicep
+                $bicepContent = Get-Content $templateFilePath
+                $bicepScope = $bicepContent | Where-Object { $_ -like "*targetscope =*" } 
+                if (-not $bicepScope) {
+                    $deploymentScope = "resourceGroup" 
+                }
+                else {
+                    $deploymentScope = $bicepScope.ToLower().Replace('targetscope = ', '').Replace("'",'').Trim()
+                } 
+            }
+            else {
+                # ARM
+                $armSchema = (ConvertFrom-Json (Get-Content -Raw -Path $templateFilePath)).'$schema'
+                switch -regex ($armSchema) {
+                    '\/deploymentTemplate.json#$' { $deploymentScope = "resourceGroup" }
+                    '\/subscriptionDeploymentTemplate.json#$'  { $deploymentScope = "subscription" }
+                    '\/managementGroupDeploymentTemplate.json#$'  { $deploymentScope = "managementGroup" }
+                    '\/tenantDeploymentTemplate.json#$'  { $deploymentScope = "tenant" }
+                    Default { throw "[$armSchema] is a non-supported ARM template schema" }
+                }
             }
 
             #######################
@@ -125,9 +154,8 @@ function New-ModuleDeployment {
             #######################
             do {
                 try {
-                    $deploymentSchema = (ConvertFrom-Json (Get-Content -Raw -Path $templateFilePath)).'$schema'
-                    switch -regex ($deploymentSchema) {
-                        '\/deploymentTemplate.json#$' {
+                    switch ($deploymentScope) {
+                        'resourceGroup' {
                             if ($subscriptionId) {
                                 $Context = Get-AzContext -ListAvailable | Where-Object Subscription -Match $subscriptionId
                                 if ($Context) {
@@ -140,11 +168,11 @@ function New-ModuleDeployment {
                                 }
                             }
                             if ($PSCmdlet.ShouldProcess("Resource group level deployment", "Create")) {
-                                New-AzResourceGroupDeployment @DeploymentInputs -ResourceGroupName $resourceGroupName
+                                $res = New-AzResourceGroupDeployment @DeploymentInputs -ResourceGroupName $resourceGroupName
                             }
                             break
                         }
-                        '\/subscriptionDeploymentTemplate.json#$' {
+                        'subscription' {
                             if ($subscriptionId) {
                                 $Context = Get-AzContext -ListAvailable | Where-Object Subscription -Match $subscriptionId
                                 if ($Context) {
@@ -152,29 +180,29 @@ function New-ModuleDeployment {
                                 }
                             }
                             if ($PSCmdlet.ShouldProcess("Subscription level deployment", "Create")) {
-                                New-AzSubscriptionDeployment @DeploymentInputs -location $location
+                                $res = New-AzSubscriptionDeployment @DeploymentInputs -location $location
                             }
                             break
                         }
-                        '\/managementGroupDeploymentTemplate.json#$' {
+                        'managementGroup' {
                             if ($PSCmdlet.ShouldProcess("Management group level deployment", "Create")) {
-                                New-AzManagementGroupDeployment @DeploymentInputs -location $location -managementGroupId $managementGroupId
+                                $res = New-AzManagementGroupDeployment @DeploymentInputs -location $location -managementGroupId $managementGroupId
                             }
                             break
                         }
-                        '\/tenantDeploymentTemplate.json#$' {
+                        'tenant' {
                             if ($PSCmdlet.ShouldProcess("Tenant level deployment", "Create")) {
-                                New-AzTenantDeployment @DeploymentInputs -location $location
+                                $res = New-AzTenantDeployment @DeploymentInputs -location $location
                             }
                             break
                         }
                         default {
-                            throw "[$deploymentSchema] is a non-supported ARM template schema"
+                            throw "[$deploymentScope] is a non-supported template scope"
                             $Stoploop = $true
                         }
                     }
                     $Stoploop = $true
-                } #end try
+                } 
                 catch {
                     if ($retryCount -gt $retryLimit) {
                         throw $PSitem.Exception.Message
@@ -185,12 +213,13 @@ function New-ModuleDeployment {
                         Start-Sleep -Seconds 5
                         $retryCount++
                     }
-                } #end catch
-            } #end do
-            while ($Stoploop -eq $false -or $retryCount -eq $retryLimit) { 
-            } #end while
-        } #end foreach parameter file
-    } #end process
+                } 
+            } 
+            while ($Stoploop -eq $false -or $retryCount -eq $retryLimit) 
+
+            Write-Verbose ($res | ConvertTo-Json | Out-String) -Verbose
+        } 
+    } 
 
     end {
         Write-Debug ("{0} exited" -f $MyInvocation.MyCommand)  

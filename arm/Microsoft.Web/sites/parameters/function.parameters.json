@@ -1,0 +1,55 @@
+{
+    "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "appName": {
+            "value": "azfaweux01"
+        },
+        "appType": {
+            "value": "functionapp"
+        },
+        "appServicePlanName": {
+            "value": "sxx-az-app-weu-x-hp-001"
+        },
+        "appServicePlanSkuName": {
+            "value": "P1v2"
+        },
+        "appServicePlanTier": {
+            "value": "PremiumV2"
+        },
+        "appServicePlanSize": {
+            "value": "P1v2"
+        },
+        "appServicePlanFamily": {
+            "value": "Pv2"
+        },
+        "siteConfig": {
+            "value": {
+                "alwaysOn": true
+            }
+        },
+        "storageAccountName": {
+            "value": "sxxazsaweux003"
+        },
+        "storageAccountResourceGroupName": {
+            "value": "dependencies-rg"
+        },
+        "functionsWorkerRuntime": {
+            "value": "powershell"
+        },
+        "enableMonitoring": {
+            "value": false
+        }
+        // "roleAssignments": {
+        //     "value": [
+        //         {
+        //             "roleDefinitionIdOrName": "Desktop Virtualization User",
+        //             "principalIds": [
+        //                 "12345678-1234-1234-1234-123456789012", // object 1
+        //                 "78945612-1234-1234-1234-123456789012" // object 2
+        //             ]
+        //         }
+        //     ]
+        // }
+    }
+}

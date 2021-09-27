@@ -2,7 +2,7 @@
 
 param (
     [array] $moduleFolderPaths = ((Get-Childitem (Split-Path (Get-Location) -Parent) -Recurse -Directory).FullName | Where-Object {
-        (Get-Childitem $_ -File -Depth 0 -Include @('deploy.json'<#, 'deploy.bicep'#>)).Count -gt 0
+        (Get-Childitem $_ -File -Depth 0 -Include @('deploy.json', 'deploy.bicep')).Count -gt 0
         })
 )
 
@@ -15,21 +15,32 @@ $script:moduleFolderPaths = $moduleFolderPaths
 $locationTestExceptions = @( "AzureNetappFiles", "TrafficManager", "PrivateDnsZones", "ManagementGroups")
 $script:folderPathsToScanExcludeRG = $moduleFolderPaths | Where-Object { (Split-Path $_ -Leaf) -notin $locationTestExceptions }
 
+foreach ($moduleFolderPath in $moduleFolderPaths) {
+    $templateFiles = (Get-ChildItem -Path $moduleFolderPath -Include @('deploy.json', 'deploy.bicep') -Depth 0).Name
+    if ($templateFiles -contains 'deploy.bicep' -and $templateFiles -notcontains 'deploy.json') {
+        Write-Verbose "Generate ARM file for [$moduleFolderPath]"
+        az bicep build -f (Join-Path $moduleFolderPath 'deploy.bicep')
+    }
+}
+
 Describe "File/folder tests" -Tag Modules {
 
     Context "General module folder tests" {
 
         $moduleFolderTestCases = [System.Collections.ArrayList] @()
         foreach ($folderPath in $moduleFolderPaths) {
+
             $moduleFolderTestCases += @{
                 moduleFolderName = Split-Path $folderPath -Leaf
                 moduleFolderPath = $folderPath
             }
         }
 
-        It "[<moduleFolderName>] Module should contain a [deploy.json] file" -TestCases $moduleFolderTestCases {
+        It "[<moduleFolderName>] Module should contain a [deploy.json/deploy.bicep] file" -TestCases $moduleFolderTestCases {
             param( [string] $folderPath )
-            (Test-Path (Join-Path -Path $moduleFolderPath 'deploy.json')) | Should -Be $true
+            $hasARM = (Test-Path (Join-Path -Path $moduleFolderPath 'deploy.json'))
+            $hasBicep = (Test-Path (Join-Path -Path $moduleFolderPath 'deploy.bicep'))
+            ($hasARM -or $hasBicep) | Should -Be $true
         }
 
         It "[<moduleFolderName>] Module should contain a [readme.md] file" -TestCases $moduleFolderTestCases {
@@ -128,7 +139,6 @@ Describe "Readme tests" -Tag Readme {
             $readmeFolderTestCases += @{
                 moduleFolderName = Split-Path $folderPath -Leaf
                 moduleFolderPath = $folderPath
-                #readmeFileName = $File.Name
                 fileContent      = (Join-Path -Path $folderPath \readme.md)
             }
         }
@@ -143,26 +153,6 @@ Describe "Readme tests" -Tag Readme {
             (Get-Content $fileContent) | Should -Not -Be $null
         }
 
-        # TODO: Still valid for new module repo?
-        # It "[<moduleFolderName>] Heading1 title should be identical with the module's folder name" -TestCases $readmeFolderTestCases {
-        #     param(
-        #         $moduleFolderName,
-        #         $moduleFolderPath,
-        #         $fileContent
-        #     )
-        #     $TemplateContentHeading = Get-Content ($fileContent) -ErrorAction SilentlyContinue
-        #     $ReadmeHTML = ($TemplateContentHeading  | ConvertFrom-Markdown -ErrorAction SilentlyContinue).Html
-        #     $HeaderNames = @()
-        #     foreach ($H in $ReadmeHTML) {
-        #         if ($H.Contains("<h")) {
-        #             $StartingIndex = $H.IndexOf(">") + 1
-        #             $EndIndex = $H.LastIndexof("<")
-        #             $HeaderNames += $H.Substring($StartingIndex, $EndIndex - $StartingIndex)
-        #         }
-        #     }
-        #     ($moduleFolderPaths -notcontains (join-path -path $Parent "\"$HeaderNames[0].Replace(" ", ""))) | Should -Be $false
-        # }
-
         It "[<moduleFolderName>] Readme.md file should contain the these Heading2 titles in order: Resource Types, parameters, Outputs, Considerations, Additional resources" -TestCases $readmeFolderTestCases {
             param(
                 $moduleFolderName,
@@ -171,14 +161,7 @@ Describe "Readme tests" -Tag Readme {
             )
             $TemplateReadme = Get-Content ($fileContent) -ErrorAction SilentlyContinue
             $ReadmeHTML = ($TemplateReadme  | ConvertFrom-Markdown -ErrorAction SilentlyContinue).Html
-            $Headings = @(@())
-            foreach ($H in $ReadmeHTML) {
-                if ($H.Contains("<h")) {
-                    $StartingIndex = $H.IndexOf(">") + 1
-                    $EndIndex = $H.LastIndexof("<")
-                    $Headings += , (@($H.Substring($StartingIndex, $EndIndex - $StartingIndex), $ReadmeHTML.IndexOf($H)))
-                }
-            }
+
             $Heading2Order = @("Resource Types", "parameters", "Outputs", "Considerations", "Additional resources")
             $Headings2List = @()
             foreach ($H in $ReadmeHTML) {
@@ -188,10 +171,17 @@ Describe "Readme tests" -Tag Readme {
                     $headings2List += ($H.Substring($StartingIndex, $EndIndex - $StartingIndex))
                 }
             }
-            (Compare-Object -ReferenceObject $Heading2Order -DifferenceObject $Headings2List) | Should -Be $null
+
+            $differentiatingItems = $Heading2Order | Where-Object { $Headings2List -notcontains $_ }
+            $differentiatingItems.Count | Should -Be 0 -Because ("list of heading titles missing in the ReadMe file [{0}] should be empty" -f $differentiatingItems -join ',')
+
+            $differentiatingItems = $Headings2List | Where-Object { $Heading2Order -notcontains $_ }
+            $differentiatingItems.Count | Should -Be 0 -Because ("list of excess heading titles in the ReadMe file [{0}] should be empty" -f $differentiatingItems -join ',')
+        
+            $Headings2List | Should -Be $Heading2Order -Because 'the order of items should match'
         }
 
-        It "[<moduleFolderName>] Resources section should contain all resources from the deploy.json file" -TestCases $readmeFolderTestCases {
+        It "[<moduleFolderName>] Resources section should contain all resources from  the template file" -TestCases $readmeFolderTestCases {
             param(
                 $moduleFolderName,
                 $moduleFolderPath,
@@ -218,14 +208,53 @@ Describe "Readme tests" -Tag Readme {
             }
             $HeadingIndex = $Headings | Where-Object { $_ -eq "Resource Types" }
             if ($HeadingIndex -eq $null) {
-                Write-Verbose "[Resources section should contain all resources from the deploy.json file] Error At ($moduleFolderName)" -Verbose
+                Write-Verbose "Error during test [Resources section should contain all resources from the template file] at ($moduleFolderName)" -Verbose
                 $true | Should -Be $false
             }
             $ResourcesList = @()
             for ($j = $HeadingIndex[1] + 4; $ReadmeHTML[$j] -ne ""; $j++) {
                 $ResourcesList += $ReadmeHTML[$j].Replace(" ", "").Replace("<p>|<code>", "").Replace("|</p>", "").Replace("</code>", "").Split("|")[0].Trim()
             }
-            (Compare-Object -ReferenceObject $ResourceTypes -DifferenceObject $ResourcesList) | Should -Be $null
+            $differentiatingItems = $ResourceTypes | Where-Object { $ResourcesList -notcontains $_ }
+            $differentiatingItems.Count | Should -Be 0 -Because ("list of template resources missing from the ReadMe's list [{0}] should be empty" -f $differentiatingItems -join ',')
+        }
+
+        It "[<moduleFolderName>] Resources section should not contain more resources as in the template file" -TestCases $readmeFolderTestCases {
+            param(
+                $moduleFolderName,
+                $moduleFolderPath,
+                $fileContent
+            )
+            $TemplateReadme = Get-Content ($fileContent) -ErrorAction SilentlyContinue
+            $TemplateARM = Get-Content (Join-Path -Path $moduleFolderPath \deploy.json) -Raw -ErrorAction SilentlyContinue
+            $ReadmeHTML = ($TemplateReadme  | ConvertFrom-Markdown -ErrorAction SilentlyContinue).Html
+            $Template = ConvertFrom-Json -InputObject $TemplateARM -ErrorAction SilentlyContinue
+            $ResourceTypes = @()
+            $ResourceTypes += $Template.resources.type
+            $ResourceTypesChild = $Template.resources.resources.type
+            $ResourceTypesInline = $Template.resources.properties.template.resources.type
+            $ResourceTypes += $ResourceTypesChild
+            $ResourceTypes += $ResourceTypesInline
+            $ResourceTypes = $ResourceTypes | Sort-object -Unique
+            $Headings = @(@())
+            foreach ($H in $ReadmeHTML) {
+                if ($H.Contains("<h")) {
+                    $StartingIndex = $H.IndexOf(">") + 1
+                    $EndIndex = $H.LastIndexof("<")
+                    $Headings += , (@($H.Substring($StartingIndex, $EndIndex - $StartingIndex), $ReadmeHTML.IndexOf($H)))
+                }
+            }
+            $HeadingIndex = $Headings | Where-Object { $_ -eq "Resource Types" }
+            if ($HeadingIndex -eq $null) {
+                Write-Verbose "Error during test [Resources section should not contain more resources as in the template file] at ($moduleFolderName)" -Verbose
+                $true | Should -Be $false
+            }
+            $ResourcesList = @()
+            for ($j = $HeadingIndex[1] + 4; $ReadmeHTML[$j] -ne ""; $j++) {
+                $ResourcesList += $ReadmeHTML[$j].Replace(" ", "").Replace("<p>|<code>", "").Replace("|</p>", "").Replace("</code>", "").Split("|")[0].Trim()
+            }
+            $differentiatingItems = $ResourcesList | Where-Object { $ResourceTypes -notcontains $_ }
+            $differentiatingItems.Count | Should -Be 0 -Because ("list of resources in the ReadMe's list [{0}] not in the template file should be empty" -f $differentiatingItems -join ',')
         }
 
         It "[<moduleFolderName>] parameters section should contain a table with these column names in order: Parameter Name, Type, Description, Default Value, Possible values" -TestCases $readmeFolderTestCases {
@@ -332,7 +361,7 @@ Describe "Readme tests" -Tag Readme {
                 $fileContent
             )
             $TemplateReadme = Get-Content ($fileContent) -ErrorAction SilentlyContinue
-            $TemplateARM = Get-Content (Join-Path -Path $moduleFolderPath \deploy.json) -Raw -ErrorAction SilentlyContinue
+            $TemplateARM = Get-Content (Join-Path -Path $moduleFolderPath 'deploy.json') -Raw -ErrorAction SilentlyContinue
             $ReadmeHTML = ($TemplateReadme  | ConvertFrom-Markdown -ErrorAction SilentlyContinue).Html
             $Template = ConvertFrom-Json -InputObject $TemplateARM -ErrorAction SilentlyContinue
             $Headings = @(@())
@@ -353,7 +382,12 @@ Describe "Readme tests" -Tag Readme {
             for ($j = $HeadingIndex[1] + 4; $ReadmeHTML[$j] -ne ""; $j++) {
                 $OutputsList += $ReadmeHTML[$j].Replace("<p>| <code>", "").Replace("|</p>", "").Replace("</code>", "").Split("|")[0].Trim()
             }
-            (Compare-Object -ReferenceObject $Outputs.Name -DifferenceObject $OutputsList) | Should -Be $null
+
+            $differentiatingItems = $Outputs.Name | Where-Object { $OutputsList -notcontains $_ }
+            $differentiatingItems.Count | Should -Be 0 -Because ("list of template outputs missing in the ReadMe file [{0}] should be empty" -f $differentiatingItems -join ',')
+
+            $differentiatingItems = $OutputsList | Where-Object { $Outputs.Name -notcontains $_ }
+            $differentiatingItems.Count | Should -Be 0 -Because ("list of excess template outputs defined in the ReadMe file [{0}] should be empty" -f $differentiatingItems -join ',')
         }
 
         It "[<moduleFolderName>] Additional resources section should contain at least one bullet point with a reference" -TestCases $readmeFolderTestCases {
@@ -395,10 +429,10 @@ Describe "Deployment template tests" -Tag Template {
 
             # Parameter file test cases
             $parameterFileTestCases = @()
-            $templateFile_Parameters = ((Get-Content (Join-Path $folderPath 'deploy.json')) | ConvertFrom-Json -ErrorAction SilentlyContinue).Parameters.PSObject.Properties 
+            $templateFile_Parameters = ((Get-Content (Join-Path $folderPath 'deploy.json')) | ConvertFrom-Json -ErrorAction SilentlyContinue).Parameters.PSObject.Properties
             $TemplateFile_AllParameterNames = $templateFile_Parameters | Sort-Object -Property Name | ForEach-Object Name
             $TemplateFile_RequiredParametersNames = $templateFile_Parameters | Where-Object -FilterScript { -not ($_.Value.PSObject.Properties.Name -eq "defaultValue") } | Sort-Object -Property Name | ForEach-Object Name
-            
+
             $ParameterFilePaths = (Get-ChildItem (Join-Path -Path $folderPath -ChildPath 'parameters' -AdditionalChildPath "*parameters.json") -Recurse).FullName
             foreach ($ParameterFilePath in $ParameterFilePaths) {
                 $parameterFile_AllParameterNames = (Get-Content $ParameterFilePath | ConvertFrom-Json -ErrorAction SilentlyContinue).Parameters.PSObject.Properties | Sort-Object -Property Name | ForEach-Object Name
@@ -411,7 +445,7 @@ Describe "Deployment template tests" -Tag Template {
                     templateFile_RequiredParametersNames = $TemplateFile_RequiredParametersNames
                 }
             }
-            
+
             # Test file setup
             $deploymentFolderTestCases += @{
                 moduleFolderName       = Split-Path $folderPath -Leaf
@@ -542,7 +576,7 @@ Describe "Deployment template tests" -Tag Template {
             $ApiVersionArray | Should -Not -Contain $false
         }
 
-        It "[<moduleFolderName>] The deploy.json file should contain ALL supported elements: schema, contentVersion, parameters, variables, resources, functions, outputs" -TestCases $deploymentFolderTestCases {
+        It "[<moduleFolderName>] The deploy.json file should contain required elements: schema, contentVersion, resources" -TestCases $deploymentFolderTestCases {
             param(
                 $moduleFolderName,
                 $moduleFolderPath,
@@ -551,11 +585,7 @@ Describe "Deployment template tests" -Tag Template {
             $TemplateProperties = (Get-Content ($fileContent) -Raw -ErrorAction SilentlyContinue | ConvertFrom-Json -ErrorAction SilentlyContinue) | Get-Member -MemberType NoteProperty | Sort-Object -Property Name | ForEach-Object Name
             $TemplateProperties | Should -Contain '$schema'
             $TemplateProperties | Should -Contain 'contentVersion'
-            $TemplateProperties | Should -Contain 'parameters'
-            $TemplateProperties | Should -Contain 'variables'
             $TemplateProperties | Should -Contain 'resources'
-            $TemplateProperties | Should -Contain 'functions'
-            $TemplateProperties | Should -Contain 'outputs'
         }
 
         It "Tagging should be implemented - if the resource type supports them" {
@@ -625,7 +655,7 @@ Describe "Deployment template tests" -Tag Template {
         It "Resource level RBAC should be implemented - if the resource type supports it" {
         }
 
-        It "[<moduleFolderName>] Parameter, Output and variable names should be camel-cased (no dashes or underscores and must start with lower-case letter)" -TestCases $deploymentFolderTestCases {
+        It "[<moduleFolderName>] Parameter names should be camel-cased (no dashes or underscores and must start with lower-case letter)" -TestCases $deploymentFolderTestCases {
             param(
                 $moduleFolderName,
                 $moduleFolderPath,
@@ -636,13 +666,17 @@ Describe "Deployment template tests" -Tag Template {
                 $Template = ConvertFrom-Json -InputObject $TemplateARM -ErrorAction SilentlyContinue
             }
             catch {
-                Write-Verbose "[Parameter, Output and variable names should be camel-cased (no dashes or underscores and must start with lower-case letter))] Json conversion Error at ($moduleFolderName)" -Verbose
+                Write-Verbose "[Parameter names should be camel-cased (no dashes or underscores and must start with lower-case letter))] Json conversion Error at ($moduleFolderName)" -Verbose
                 Continue
             }
+
+            if (-not $Template.parameters) {
+                $true | Should -Be $true
+                return
+            }
+
             $CamelCasingFlag = @()
             $Parameter = ($Template.parameters | Get-Member | Where-Object { $_.MemberType -eq "NoteProperty" }).Name
-            $Variable = ($Template.variables | Get-Member | Where-Object { $_.MemberType -eq "NoteProperty" }).Name
-            $Outputs = ($Template.outputs | Get-Member | Where-Object { $_.MemberType -eq "NoteProperty" }).Name
             foreach ($Param in $Parameter) {
                 if ($Param.substring(0, 1) -cnotmatch '[a-z]' -or $Param -match '-' -or $Param -match '_') {
                     $CamelCasingFlag += $false
@@ -651,6 +685,32 @@ Describe "Deployment template tests" -Tag Template {
                     $CamelCasingFlag += $true
                 }
             }
+            $CamelCasingFlag | Should -Not -Contain $false
+        }
+
+        It "[<moduleFolderName>] Variable names should be camel-cased (no dashes or underscores and must start with lower-case letter)" -TestCases $deploymentFolderTestCases {
+            param(
+                $moduleFolderName,
+                $moduleFolderPath,
+                $fileContent
+            )
+            $TemplateARM = Get-Content ($fileContent) -Raw -ErrorAction SilentlyContinue
+            try {
+                $Template = ConvertFrom-Json -InputObject $TemplateARM -ErrorAction SilentlyContinue
+            }
+            catch {
+                Write-Verbose "[Variable names should be camel-cased (no dashes or underscores and must start with lower-case letter))] Json conversion Error at ($moduleFolderName)" -Verbose
+                Continue
+            }
+
+            if (-not $Template.variables) {
+                $true | Should -Be $true
+                return
+            }
+
+            $CamelCasingFlag = @()
+            $Variable = ($Template.variables | Get-Member | Where-Object { $_.MemberType -eq "NoteProperty" }).Name
+
             foreach ($Variab in $Variable) {
                 if ($Variab.substring(0, 1) -cnotmatch '[a-z]' -or $Variab -match '-' -or $Variab -match '_') {
                     $CamelCasingFlag += $false
@@ -659,6 +719,26 @@ Describe "Deployment template tests" -Tag Template {
                     $CamelCasingFlag += $true
                 }
             }
+            $CamelCasingFlag | Should -Not -Contain $false
+        }
+
+        It "[<moduleFolderName>] Output names should be camel-cased (no dashes or underscores and must start with lower-case letter)" -TestCases $deploymentFolderTestCases {
+            param(
+                $moduleFolderName,
+                $moduleFolderPath,
+                $fileContent
+            )
+            $TemplateARM = Get-Content ($fileContent) -Raw -ErrorAction SilentlyContinue
+            try {
+                $Template = ConvertFrom-Json -InputObject $TemplateARM -ErrorAction SilentlyContinue
+            }
+            catch {
+                Write-Verbose "[Output names should be camel-cased (no dashes or underscores and must start with lower-case letter))] Json conversion Error at ($moduleFolderName)" -Verbose
+                Continue
+            }
+            $CamelCasingFlag = @()
+            $Outputs = ($Template.outputs | Get-Member | Where-Object { $_.MemberType -eq "NoteProperty" }).Name
+
             foreach ($Output in $Outputs) {
                 if ($Output.substring(0, 1) -cnotmatch '[a-z]' -or $Output -match '-' -or $Output -match '_') {
                     $CamelCasingFlag += $false
@@ -784,6 +864,7 @@ Describe "Deployment template tests" -Tag Template {
                 Write-Verbose "[Standard outputs should be provided (e.g. resourceName, resourceId, resouceGroupName] Json conversion Error at ($moduleFolderName)" -Verbose
                 Continue
             }
+
             $Stdoutput = ($Template.outputs | Get-Member | Where-Object { $_.MemberType -eq "NoteProperty" }).Name
             $i = 0
             $Schemaverion = $Template.'$schema'
@@ -816,6 +897,12 @@ Describe "Deployment template tests" -Tag Template {
                 Write-Verbose "[parameters' description shoud start either by 'Optional.' or 'Required.' or 'Generated.'] Json conversion Error at ($moduleFolderName)" -Verbose
                 Continue
             }
+
+            if (-not $Template.parameters) {
+                $true | Should -Be $true
+                return
+            }
+
             $ParamDescriptionFlag = @()
             $Paramdescoutput = ($Template.parameters | Get-Member | Where-Object { $_.MemberType -eq "NoteProperty" }).Name
             foreach ($Param in $Paramdescoutput) {
@@ -831,44 +918,16 @@ Describe "Deployment template tests" -Tag Template {
             $ParamDescriptionFlag | Should -Not -Contain $false
         }
 
-        It "[<moduleFolderName>] Output should have descriptions" -TestCases $deploymentFolderTestCases {
-            param(
-                $moduleFolderName,
-                $moduleFolderPath,
-                $fileContent
-            )
-            $TemplateARM = Get-Content ($fileContent) -Raw -ErrorAction SilentlyContinue
-            try {
-                $Template = ConvertFrom-Json -InputObject $TemplateARM -ErrorAction SilentlyContinue
-            }
-            catch {
-                Write-Verbose "[Output should have descriptions'] Json conversion Error at ($moduleFolderName)" -Verbose
-                Continue
-            }
-            $OutputDescriptionFlag = @()
-            $Outputdes = ($Template.outputs | Get-Member | Where-Object { $_.MemberType -eq "NoteProperty" }).Name
-            foreach ($Output in $Outputdes) {
-                $Data = ($Template.outputs.$Output.metadata).description
-                if ($Data -like "[a-zA-Z]*") {
-                    $OutputDescriptionFlag += $true
-                }
-                else {
-                    $OutputDescriptionFlag += $false
-                }
-            }
-            $OutputDescriptionFlag | Should -Not -Contain $false
-        }
-
         # PARAMETER Tests
         It "All parameters in parameters files exist in template file (deploy.json)" -TestCases $deploymentFolderTestCases {
             param (
                 [hashtable[]] $parameterFileTestCases
             )
- 
+
             foreach ($parameterFileTestCase in $parameterFileTestCases) {
                 $parameterFile_AllParameterNames = $parameterFileTestCase.parameterFile_AllParameterNames
                 $templateFile_AllParameterNames = $parameterFileTestCase.templateFile_AllParameterNames
-           
+
                 $nonExistentParameters = $parameterFile_AllParameterNames | Where-Object { $templateFile_AllParameterNames -notcontains $_ }
                 $nonExistentParameters.Count | Should -Be 0 -Because ("no parameter in the parameter file should not exist in the template file. Found excess items: [{0}]" -f ($nonExistentParameters -join ', '))
             }
@@ -971,6 +1030,17 @@ Describe "Api version tests [All apiVersions in the template should be 'recent']
 
         $namespaceResourceTypes = ($AvailableApiVersions | Where-Object { $_.ProviderNamespace -eq $ProviderNamespace }).ResourceTypes
         $resourceTypeApiVersions = ($namespaceResourceTypes | Where-Object { $_.ResourceTypeName -eq $resourceType }).ApiVersions
-        ($resourceTypeApiVersions | Select-Object -First 3) | Should -Contain $TargetApi
+        
+        # We allow the latest 5 including previews (in case somebody wants to use preview), or the latest 3 non-preview
+        $approvedApiVersions = $resourceTypeApiVersions | Select-Object -First 5
+        $approvedApiVersions += $resourceTypeApiVersions | Where-Object { $_ -notlike "*-preview" } | Select-Object -First 3
+        
+        # NOTE: This is a workaround to account for the 'assumed' deployments version used by bicep when building an ARM template from a bicep file with modules in it
+        # Ref: https://github.com/Azure/bicep/issues/3819
+        if ($resourceType -eq 'deployments') {
+            $approvedApiVersions += '2019-10-01'
+        }
+
+        $approvedApiVersions | Should -Contain $TargetApi
     }
 }

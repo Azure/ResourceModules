@@ -31,8 +31,7 @@
                 "None",
                 "SystemAssigned",
                 "UserAssigned",
-                "SystemAssigned, UserAssigned",
-                "UserAssigned, SystemAssigned"
+                "SystemAssigned, UserAssigned"
             ],
             "metadata": {
                 "description": "Optional. Type of managed service identity."
@@ -254,13 +253,6 @@
         "uniqueStoragenameUntrim": "[uniqueString(concat(variables('moduleName'),parameters('baseTime')))]",
         "uniqueStoragename": "[if(greater(length(variables('uniqueStoragenameUntrim')),variables('maxNameLength')),substring(variables('uniqueStoragenameUntrim'),0,variables('maxNameLength')),variables('uniqueStoragenameUntrim'))]",
         "storageAccountName": "[if(empty(parameters('storageAccountName')),variables('uniqueStoragename'),parameters('storageAccountName'))]",
-        "accountSasProperties": {
-            "signedServices": "bt", //Blob (b), Queue (q), Table (t), File (f).
-            "signedPermission": "racuw", //Read (r), Write (w), Delete (d), List (l), Add (a), Create (c), Update (u) and Process (p)
-            "signedExpiry": "[dateTimeAdd(parameters('baseTime'), parameters('sasTokenValidityLength'))]", //format: 2017-05-24T10:42:03Z
-            "signedResourceTypes": "co", //Service (s): Access to service-level APIs; Container (c): Access to container-level APIs; Object (o): Access to object-level APIs for blobs, queue messages, table entities, and files.
-            "signedProtocol": "https"
-        },
         "virtualNetworkRules": {
             "copy": [
                 {
@@ -1077,20 +1069,6 @@
             "value": "[resourceGroup().name]",
             "metadata": {
                 "description": "The name of the Resource Group the Storage Account was created in."
-            }
-        },
-        "storageAccountsSasToken": {
-            "type": "securestring",
-            "value": "[listAccountSas(variables('storageAccountName'), '2019-04-01', variables('accountSasProperties')).accountSasToken]",
-            "metadata": {
-                "description": "The SAS Token for the Storage Account."
-            }
-        },
-        "storageAccountsAccessKey": {
-            "type": "securestring",
-            "value": "[listKeys(variables('storageAccountName'), '2016-12-01').keys[0].value]",
-            "metadata": {
-                "description": "The Access Key for the Storage Account."
             }
         },
         "storageAccountsPrimaryBlobEndpoint": {
