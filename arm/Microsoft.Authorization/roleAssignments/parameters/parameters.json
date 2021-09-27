@@ -7,7 +7,6 @@
       "value": "artifacts-rg"
     },
     "roleAssignments": {
-      // Built-in Role Definition, referenced by Name
       "value": [
         {
           "roleDefinitionIdOrName": "Owner",
@@ -16,7 +15,6 @@
             // "abcd5678-1234-1234-1234-123456780123"
           ]
         },
-        // Built-in Role Definition, referenced by Name
         {
           "roleDefinitionIdOrName": "Reader",
           "principalIds": [
