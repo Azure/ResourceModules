@@ -773,7 +773,7 @@
         {
             "name": "[if(not(empty(parameters('proximityPlacementGroupName'))),parameters('proximityPlacementGroupName'),'dummyProximityGroup')]",
             "type": "Microsoft.Compute/proximityPlacementGroups",
-            "apiVersion": "2019-12-01",
+            "apiVersion": "2021-07-01",
             "condition": "[not(empty(parameters('proximityPlacementGroupName')))]",
             "location": "[parameters('location')]",
             "tags": "[parameters('tags')]",
