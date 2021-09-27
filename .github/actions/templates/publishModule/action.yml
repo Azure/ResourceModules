@@ -69,7 +69,7 @@ runs:
           }
 
           Write-Verbose "Invoke task with" -Verbose
-          $functionInput
+          Write-Verbose ($functionInput | ConvertTo-Json | Out-String) -Verbose
 
           Publish-ModuleToTemplateSpec @functionInput -Verbose
         } else {

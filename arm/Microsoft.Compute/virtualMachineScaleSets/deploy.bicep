@@ -383,7 +383,7 @@ var builtInRoleNames = {
   'Virtual Machine User Login': '/subscriptions/${subscription().subscriptionId}/providers/Microsoft.Authorization/roleDefinitions/fb879df8-f326-4884-b1cf-06f3ad86be52'
 }
 
-module pidName './.bicep/nested_cuaId.bicep' = if (!empty(cuaId)) {
+module pid_cuaId './.bicep/nested_cuaId.bicep' = if (!empty(cuaId)) {
   name: pidName_var
   params: {}
 }
@@ -507,8 +507,8 @@ resource vmss 'Microsoft.Compute/virtualMachineScaleSets@2020-06-01' = if (!empt
   ]
 }
 
-resource storageAccount_lock 'Microsoft.Authorization/locks@2016-09-01' = if (lockForDeletion) {
-  name: '${vmssName}-storageDoNotDelete'
+resource vmss_lock 'Microsoft.Authorization/locks@2016-09-01' = if (lockForDeletion) {
+  name: '${vmssName}-vmssDoNotDelete'
   scope: vmss
   properties: {
     level: 'CanNotDelete'
