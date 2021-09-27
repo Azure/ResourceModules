@@ -168,7 +168,7 @@ var builtInRoleNames = {
   masterreader: '/subscriptions/${subscription().subscriptionId}/providers/Microsoft.Authorization/roleDefinitions/a48d7796-14b4-4889-afef-fbb65a93e5a2'
 }
 
-module pidName './.bicep/nested_cuaId.bicep' = if (!empty(cuaId)) {
+module pid_cuaId './.bicep/nested_cuaId.bicep' = if (!empty(cuaId)) {
   name: 'pid-${cuaId}'
   params: {}
 }
@@ -217,23 +217,23 @@ resource keyVault_diagnosticSettings 'Microsoft.Insights/diagnosticsettings@2017
   scope: keyVault
 }
 
-resource keyVault_secrets 'Microsoft.KeyVault/vaults/secrets@2019-09-01' = [for i in range(0, length(secretsObject.secrets)): if (!empty(secretsObject.secrets)) {
-  name: (empty(secretsObject.secrets) ? '${keyVaultName_var}/secretEntity' : '${keyVaultName_var}/${secretsObject.secrets[i].secretName}')
+resource keyVault_secrets 'Microsoft.KeyVault/vaults/secrets@2019-09-01' = [for secret in secretsObject.secrets: if (!empty(secretsObject.secrets)) {
+  name: (empty(secretsObject.secrets) ? '${keyVaultName_var}/secretEntity' : '${keyVaultName_var}/${secret.secretName}')
   properties: {
-    value: secretsObject.secrets[i].secretValue
+    value: secret.secretValue
   }
   dependsOn: [
     keyVault
   ]
 }]
 
-resource keyVault_keys 'Microsoft.KeyVault/vaults/keys@2019-09-01' = [for i in range(0, length(keysObject.keys)): if (!empty(keysObject.keys)) {
-  name: (empty(keysObject.keys) ? '${keyVaultName_var}/keyEntity' : '${keyVaultName_var}/${keysObject.keys[i].keyName}')
+resource keyVault_keys 'Microsoft.KeyVault/vaults/keys@2019-09-01' = [for key in keysObject.keys: if (!empty(keysObject.keys)) {
+  name: (empty(keysObject.keys) ? '${keyVaultName_var}/keyEntity' : '${keyVaultName_var}/${key.keyName}')
   properties: {
-    kty: keysObject.keys[i].keyType
-    keyOps: keysObject.keys[i].keyOps
-    keySize: keysObject.keys[i].keySize
-    curveName: keysObject.keys[i].curveName
+    kty: key.keyType
+    keyOps: key.keyOps
+    keySize: key.keySize
+    curveName: key.curveName
   }
   dependsOn: [
     keyVault

@@ -187,7 +187,7 @@ var builtInRoleNames = {
   'Virtual Machine Contributor': subscriptionResourceId('Microsoft.Authorization/roleDefinitions', '9980e02c-c2be-4d73-94e8-173b1dc7cf3c')
 }
 
-module pidName './.bicep/nested_cuaId.bicep' = if (!empty(cuaId)) {
+module pid_cuaId './.bicep/nested_cuaId.bicep' = if (!empty(cuaId)) {
   name: 'pid-${cuaId}'
   params: {}
 }
@@ -230,7 +230,7 @@ module storageAccount_rbac './.bicep/nested_rbac.bicep' = [for (roleassignment, 
   ]
 }]
 
-module storageAccount_private_endpoints './.bicep/nested_privateEndpoint.bicep' = [for (endpoint, index) in privateEndpoints: if (!empty(privateEndpoints)) {
+module storageAccount_privateEndpoints './.bicep/nested_privateEndpoint.bicep' = [for (endpoint, index) in privateEndpoints: if (!empty(privateEndpoints)) {
   name: '${uniqueString(deployment().name, location)}-Storage-PrivateEndpoints-${index}'
   params: {
     privateEndpointResourceId: storageAccount.id
@@ -244,7 +244,7 @@ module storageAccount_private_endpoints './.bicep/nested_privateEndpoint.bicep' 
 }]
 
 // lifecycle policy
-resource managementPolicies 'Microsoft.Storage/storageAccounts/managementPolicies@2019-06-01' = if (enableArchiveAndDelete) {
+resource storageAccount_managementPolicies 'Microsoft.Storage/storageAccounts/managementPolicies@2019-06-01' = if (enableArchiveAndDelete) {
   name: 'default'
   parent: storageAccount
   properties: {
@@ -286,7 +286,7 @@ resource managementPolicies 'Microsoft.Storage/storageAccounts/managementPolicie
 }
 
 // Containers
-resource nested_blob_services 'Microsoft.Storage/storageAccounts/blobServices@2019-06-01' = if (!empty(blobContainers)) {
+resource storageAccount_nested_blob_services 'Microsoft.Storage/storageAccounts/blobServices@2019-06-01' = if (!empty(blobContainers)) {
   name: 'default'
   parent: storageAccount
   properties: {
@@ -298,7 +298,7 @@ resource nested_blob_services 'Microsoft.Storage/storageAccounts/blobServices@20
   }
 }
 
-module nested_blob_container './.bicep/nested_container.bicep' = [for (blobContainer, index) in blobContainers: if (!empty(blobContainers)) {
+module storageAccount_nested_blob_container './.bicep/nested_container.bicep' = [for (blobContainer, index) in blobContainers: if (!empty(blobContainers)) {
   name: '${uniqueString(deployment().name, location)}-Storage-Container-${(empty(blobContainers) ? 'dummy' : index)}'
   params: {
     blobContainer: blobContainer
@@ -306,12 +306,12 @@ module nested_blob_container './.bicep/nested_container.bicep' = [for (blobConta
     storageAccountName: storageAccountName
   }
   dependsOn: [
-    nested_blob_services
+    storageAccount_nested_blob_services
   ]
 }]
 
 // File Shares
-module nested_fileShare './.bicep/nested_fileShare.bicep' = [for (fileShare, index) in fileShares: if (!empty(fileShares)) {
+module storageAccount_nested_fileShare './.bicep/nested_fileShare.bicep' = [for (fileShare, index) in fileShares: if (!empty(fileShares)) {
   name: '${uniqueString(deployment().name, location)}-Storage-FileShare-${(empty(fileShares) ? 'dummy' : index)}'
   params: {
     fileShare: fileShare
@@ -324,7 +324,7 @@ module nested_fileShare './.bicep/nested_fileShare.bicep' = [for (fileShare, ind
 }]
 
 // Queue
-module nested_queue './.bicep/nested_queue.bicep' = [for (queue, index) in queues: if (!empty(queues)) {
+module storageAccount_nested_queue './.bicep/nested_queue.bicep' = [for (queue, index) in queues: if (!empty(queues)) {
   name: '${uniqueString(deployment().name, location)}-Storage-Queue-${(empty(queues) ? 'dummy' : index)}'
   params: {
     queue: queue
@@ -337,7 +337,7 @@ module nested_queue './.bicep/nested_queue.bicep' = [for (queue, index) in queue
 }]
 
 // Table
-resource nested_table 'Microsoft.Storage/storageAccounts/tableServices/tables@2019-06-01' = [for table in tables: if (!empty(tables)) {
+resource storageAccount_nested_table 'Microsoft.Storage/storageAccounts/tableServices/tables@2019-06-01' = [for table in tables: if (!empty(tables)) {
   name: (empty(tables) ? '${storageAccountName}/default/dummy' : '${storageAccountName}/default/${table}')
   dependsOn: [
     storageAccount
