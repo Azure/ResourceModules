@@ -1,6 +1,6 @@
-# WVD HostPools
+# AVD HostPools
 
-This module deploys WVD Host Pools, with resource lock and diagnostics configuration.
+This module deploys AVD Host Pools, with resource lock and diagnostics configuration.
 
 
 ## Resource types
@@ -88,7 +88,7 @@ The below parameter object is converted to an in-line string when handed over to
         "imageType": "Gallery",
         "imageUri": null,
         "customImageId": null,
-        "namePrefix": "wvdv2",
+        "namePrefix": "AVDv2",
         "osDiskType": "StandardSSD_LRS",
         "useManagedDisks": true,
         "vmSize": {
