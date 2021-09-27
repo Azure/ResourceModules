@@ -48,8 +48,36 @@ function Remove-DeployedModule {
 
     process {
 
-        $deploymentSchema = (ConvertFrom-Json (Get-Content -Path $templateFilePath -Raw )).'$schema'
-        if ($deploymentSchema -match '\/subscriptionDeploymentTemplate.json#$') {
+        ################################
+        ## Determine deployment scope ##
+        ################################
+        if ((Split-Path $templateFilePath -Extension) -eq '.bicep') {
+            # Bicep
+            $bicepContent = Get-Content $templateFilePath
+            $bicepScope = $bicepContent | Where-Object { $_ -like "*targetscope =*" } 
+            if (-not $bicepScope) {
+                $deploymentScope = "resourceGroup" 
+            }
+            else {
+                $deploymentScope = $bicepScope.ToLower().Replace('targetscope = ', '').Replace("'", '').Trim()
+            } 
+        }
+        else {
+            # ARM
+            $armSchema = (ConvertFrom-Json (Get-Content -Raw -Path $templateFilePath)).'$schema'
+            switch -regex ($armSchema) {
+                '\/deploymentTemplate.json#$' { $deploymentScope = "resourceGroup" }
+                '\/subscriptionDeploymentTemplate.json#$' { $deploymentScope = "subscription" }
+                '\/managementGroupDeploymentTemplate.json#$' { $deploymentScope = "managementGroup" }
+                '\/tenantDeploymentTemplate.json#$' { $deploymentScope = "tenant" }
+                Default { throw "[$armSchema] is a non-supported ARM template schema" }
+            }
+        }
+
+        #####################
+        ## Process Removal ##
+        #####################
+        if ($deploymentScope -eq 'subscription') {
             Write-Verbose "Handle subscription level removal"
             $resourceGroupToRemove = Get-AzResourceGroup -Tag @{ removeModule = $moduleName }
             if ($resourceGroupToRemove) {

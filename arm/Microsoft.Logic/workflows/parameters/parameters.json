@@ -1,0 +1,50 @@
+{
+    "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "logicAppName": {
+            "value": "sxx-az-lga-weu-x-001"
+        },
+        "lockForDeletion": {
+            "value": false
+        },
+        "tags": {
+            "value": {}
+        },
+        "workflowActions": {
+            "value": {
+                "HTTP": {
+                    "type": "Http",
+                    "inputs": {
+                        "method": "POST",
+                        "uri": "https://testStringForValidation.com",
+                        "body": {
+                            "HostPoolName": "[HostPoolName]",
+                            "LAWorkspaceName": "[LAWorkspaceName]",
+                            "LimitSecondsToForceLogOffUser": "[LimitSecondsToForceLogOffUser]",
+                            "EndPeakTime": "[EndPeakTime]",
+                            "BeginPeakTime": "[BeginPeakTime]",
+                            "UtcOffset": "[UtcOffset]",
+                            "LogOffMessageBody": "[LogOffMessageBody]",
+                            "LogOffMessageTitle": "[LogOffMessageTitle]",
+                            "MinimumNumberOfRDSH": 1,
+                            "SessionThresholdPerCPU": 1,
+                            "ResourceGroupName": "[ResourceGroupName]"
+                        }
+                    }
+                }
+            }
+        },
+        "workflowTriggers": {
+            "value": {
+                "Recurrence": {
+                    "recurrence": {
+                        "frequency": "Minute",
+                        "interval": 15
+                    },
+                    "type": "Recurrence"
+                }
+            }
+        }
+    }
+}

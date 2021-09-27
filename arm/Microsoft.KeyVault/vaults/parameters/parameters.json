@@ -3,7 +3,7 @@
   "contentVersion": "1.0.0.0",
   "parameters": {
     "keyVaultName": {
-     "value": "sxx-az-kv-weu-x-001"
+      "value": "sxx-az-kv-weu-x-001"
     },
     "keysObject": {
       "value": {
@@ -25,44 +25,56 @@
         ]
       }
     },
-     "accessPolicies": {
-       "value": [
-         {
-           "tenantId": "",
-           "objectId": "",
-           "permissions": {
-             "certificates": ["All"],
-             "keys": ["All"],
-             "secrets": ["All"]
-           }
-         },
-         {
+    "accessPolicies": {
+      "value": [
+        {
           "tenantId": "",
           "objectId": "",
           "permissions": {
-            "certificates": ["All"],
-            "keys": ["All"],
-            "secrets": ["All"]
+            "certificates": [
+              "All"
+            ],
+            "keys": [
+              "All"
+            ],
+            "secrets": [
+              "All"
+            ]
+          }
+        },
+        {
+          "tenantId": "",
+          "objectId": "",
+          "permissions": {
+            "certificates": [
+              "All"
+            ],
+            "keys": [
+              "All"
+            ],
+            "secrets": [
+              "All"
+            ]
           }
         }
-       ]
-     },
-     "enableSoftDelete": {
-       "value": true
-     },
-     "softDeleteRetentionInDays": {
-       "value": 7
-     },
-//     "networkAcls": {
-//       "value": {
-//         "bypass": "AzureServices",
-//         "defaultAction": "Deny",
-//         "virtualNetworkRules": [],
-//         "ipRules": []
-//       }
-//     },
-     "enableRbacAuthorization": {
-       "value": false
-     }
+      ]
+    },
+    "enableSoftDelete": {
+      "value": true
+    },
+    "softDeleteRetentionInDays": {
+      "value": 7
+    },
+    //     "networkAcls": {
+    //       "value": {
+    //         "bypass": "AzureServices",
+    //         "defaultAction": "Deny",
+    //         "virtualNetworkRules": [],
+    //         "ipRules": []
+    //       }
+    //     },
+    "enableRbacAuthorization": {
+      "value": false
+    }
   }
 }

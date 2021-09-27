@@ -19,7 +19,6 @@ module pid_cuaId './.bicep/nested_cuaId.bicep' = if (!empty(cuaId)) {
 
 resource applications_res 'Microsoft.DesktopVirtualization/applicationGroups/applications@2019-12-10-preview' = [for application in applications: {
   name: '${appGroupName}/${application.name}'
-  location: location
   properties: {
     description: application.description
     friendlyName: application.friendlyName

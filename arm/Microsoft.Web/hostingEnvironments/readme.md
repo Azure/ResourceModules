@@ -6,7 +6,7 @@ This module deploys App Service Environment, with resource lock.
 
 | Resource Type | Api Version |
 | :-- | :-- |
-| `Microsoft.Web/hostingEnvironments` | 2020-06-01 |
+| `Microsoft.Web/hostingEnvironments` | 2021-02-01 |
 | `Microsoft.Web/hostingEnvironments/providers/diagnosticsettings` | 2017-05-01-preview |
 | `Microsoft.Web/hostingEnvironments/providers/roleAssignments` | 2018-09-01-preview |
 | `Microsoft.Resources/deployments` | 2020-06-01 |

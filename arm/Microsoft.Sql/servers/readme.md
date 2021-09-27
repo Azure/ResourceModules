@@ -9,8 +9,8 @@ This module deploys an Azure SQL Server.
 |:--|:--|
 |`Microsoft.Resources/deployments`|2018-02-01|
 |`Microsoft.Sql/servers`|2015-05-01-preview|
-|`firewallrules`|2014-04-01-preview|
-|`securityAlertPolicies`|2017-03-01-preview|
+|`firewallrules`|2021-02-01-preview|
+|`securityAlertPolicies`|2021-02-01-preview|
 |`Microsoft.Sql/servers/providers/roleAssignments`|2018-09-01-preview|
 
 ## Parameters
