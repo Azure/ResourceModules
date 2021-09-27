@@ -1,6 +1,6 @@
-# WVD Application Groups
+# AVD Application Groups
 
-This module deploys WVD Application Groups, with resource lock and diagnostics configuration.
+This module deploys AVD Application Groups, with resource lock and diagnostics configuration.
 
 ## Resource types
 
@@ -83,7 +83,7 @@ Tag names and tag values can be provided as needed. A tag can be left without a 
 | Output Name | Type | Description |
 | :-- | :-- | :-- |
 | `appGroupName` | string | The Name of the Application Group. |
-| `appGroupResourceGroup` | string | The name of the Resource Group the WVD Application Group was created in. |
+| `appGroupResourceGroup` | string | The name of the Resource Group the AVD Application Group was created in. |
 | `appGroupResourceId` | string | The Resource ID of the Application Group deployed. |
 
 ## Considerations

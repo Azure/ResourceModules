@@ -204,7 +204,7 @@
                     "dependsOn": [
                         "[concat('Microsoft.DesktopVirtualization/applicationgroups/', parameters('appGroupName'))]"
                     ],
-                    "comments": "Resource lock on the WVD Workspace",
+                    "comments": "Resource lock on the AVD Workspace",
                     "properties": {
                         "level": "CannotDelete"
                     }
@@ -306,7 +306,7 @@
             "type": "string",
             "value": "[resourceGroup().name]",
             "metadata": {
-                "description": "The name of the Resource Group the WVD Application Group was created in."
+                "description": "The name of the Resource Group the AVD Application Group was created in."
             }
         },
         "appGroupName": {
