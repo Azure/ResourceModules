@@ -1,4 +1,4 @@
-# Resource
+# Web/Function App
 
 This module deploys a Web or Function App 
 

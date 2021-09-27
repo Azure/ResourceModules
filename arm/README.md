@@ -98,5 +98,5 @@ The following table provides you with an outline of all Modules that are current
 | [API Connection](https://github.com/Azure/ResourceModules/tree/main/arm/Microsoft.Web/connections) | `MS.Web` | [connections](https://github.com/Azure/ResourceModules/tree/main/arm/Microsoft.Web/connections) | :heavy_check_mark:/:heavy_check_mark: |
 | [App Service Environment](https://github.com/Azure/ResourceModules/tree/main/arm/Microsoft.Web/hostingEnvironments) |  | [hostingEnvironments](https://github.com/Azure/ResourceModules/tree/main/arm/Microsoft.Web/hostingEnvironments) | :heavy_check_mark:/:heavy_check_mark: |
 | [AppServicePlan](https://github.com/Azure/ResourceModules/tree/main/arm/Microsoft.Web/serverfarms) |  | [serverfarms](https://github.com/Azure/ResourceModules/tree/main/arm/Microsoft.Web/serverfarms) | :heavy_check_mark:/:heavy_check_mark: |
-| [Resource](https://github.com/Azure/ResourceModules/tree/main/arm/Microsoft.Web/sites) |  | [sites](https://github.com/Azure/ResourceModules/tree/main/arm/Microsoft.Web/sites) | :heavy_check_mark:/:heavy_check_mark: |
+| [Web/Function App](https://github.com/Azure/ResourceModules/tree/main/arm/Microsoft.Web/sites) |  | [sites](https://github.com/Azure/ResourceModules/tree/main/arm/Microsoft.Web/sites) | :heavy_check_mark:/:heavy_check_mark: |
 <!-- ModuleTableEndMarker -->
