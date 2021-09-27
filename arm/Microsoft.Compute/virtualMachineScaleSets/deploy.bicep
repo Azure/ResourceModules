@@ -509,13 +509,10 @@ resource vmss 'Microsoft.Compute/virtualMachineScaleSets@2020-06-01' = if (!empt
 
 resource vmss_lock 'Microsoft.Authorization/locks@2016-09-01' = if (lockForDeletion) {
   name: '${vmssName}-vmssDoNotDelete'
-  scope: vmss
   properties: {
     level: 'CanNotDelete'
   }
-  dependsOn: [
-    vmss
-  ]
+  scope: vmss
 }
 
 resource vmss_DomainJoin 'Microsoft.Compute/virtualMachineScaleSets/extensions@2020-06-01' = if (!empty(domainName)) {
@@ -740,8 +737,8 @@ resource vmss_WindowsCustomScriptExtension 'Microsoft.Compute/virtualMachineScal
   ]
 }
 
-resource vmss_Microsoft_Insights_service 'Microsoft.Insights/diagnosticSettings@2021-05-01-preview' = if ((!empty(diagnosticStorageAccountId)) || (!empty(workspaceId)) || (!empty(eventHubAuthorizationRuleId)) || (!empty(eventHubName))) {
-  name: '${vmssName}-service'
+resource vmss_diagnosticSettings 'Microsoft.Insights/diagnosticSettings@2021-05-01-preview' = if ((!empty(diagnosticStorageAccountId)) || (!empty(workspaceId)) || (!empty(eventHubAuthorizationRuleId)) || (!empty(eventHubName))) {
+  name: '${vmssName}-diagnosticSettings'
   properties: {
     storageAccountId: (empty(diagnosticStorageAccountId) ? json('null') : diagnosticStorageAccountId)
     workspaceId: (empty(workspaceId) ? json('null') : workspaceId)
@@ -751,9 +748,6 @@ resource vmss_Microsoft_Insights_service 'Microsoft.Insights/diagnosticSettings@
     logs: ((empty(diagnosticStorageAccountId) && empty(workspaceId) && empty(eventHubAuthorizationRuleId) && empty(eventHubName)) ? json('null') : diagnosticLogs)
   }
   scope: vmss
-  dependsOn: [
-    vmss
-  ]
 }
 
 module vmss_rbac './.bicep/nested_rbac.bicep' = [for (item, i) in roleAssignments: {
