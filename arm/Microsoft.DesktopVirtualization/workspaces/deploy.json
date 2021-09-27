@@ -199,7 +199,7 @@
                     "dependsOn": [
                         "[concat('Microsoft.DesktopVirtualization/workspaces/', parameters('workSpaceName'))]"
                     ],
-                    "comments": "Resource lock on the WVD Workspace",
+                    "comments": "Resource lock on the AVD Workspace",
                     "properties": {
                         "level": "CannotDelete"
                     }
@@ -294,14 +294,14 @@
             "type": "string",
             "value": "[resourceId('Microsoft.DesktopVirtualization/workspaces', parameters('workSpaceName'))]",
             "metadata": {
-                "description": "The Resource Id of the WVD Workspace."
+                "description": "The Resource Id of the AVD Workspace."
             }
         },
         "workspaceResourceGroup": {
             "type": "string",
             "value": "[resourceGroup().name]",
             "metadata": {
-                "description": "The name of the Resource Group the WVD Workspace was created in."
+                "description": "The name of the Resource Group the AVD Workspace was created in."
             }
         },
         "workspaceName": {

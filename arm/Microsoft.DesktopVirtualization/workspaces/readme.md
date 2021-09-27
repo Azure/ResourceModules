@@ -1,6 +1,6 @@
-# WVD Workspaces
+# AVD Workspaces
 
-This module deploys WVD Workspaces, with resource lock and diagnostic configuration.
+This module deploys AVD Workspaces, with resource lock and diagnostic configuration.
 
 
 
@@ -85,8 +85,8 @@ Tag names and tag values can be provided as needed. A tag can be left without a 
 | Output Name | Type | Description |
 | :-- | :-- | :-- |
 | `workspaceName` | string | The Name of the Workspace. |
-| `workspaceResourceGroup` | string | The name of the Resource Group the WVD Workspace was created in. |
-| `workspaceResourceId` | string | The Resource Id of the WVD Workspace. |
+| `workspaceResourceGroup` | string | The name of the Resource Group the AVD Workspace was created in. |
+| `workspaceResourceId` | string | The Resource Id of the AVD Workspace. |
 
 ## Considerations
 
