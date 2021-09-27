@@ -6,7 +6,7 @@
             "value": "sxx-az-ase-weu-x-001"
         },
         "SubnetResourceId": {
-            "value": "/subscriptions/b765c5e5-ae60-4724-9b59-36fbcf56795b/resourceGroups/validation-rg/providers/Microsoft.Network/virtualNetworks/testvnet/subnets/default"
+            "value": "/subscriptions/8629be3b-96bc-482d-a04b-ffff597c65a2/resourceGroups/dependencies-rg/providers/Microsoft.Network/virtualNetworks/sxx-az-vnet-weu-x-003/subnets/sxx-az-subnet-weu-x-001"
         }
     }
 }

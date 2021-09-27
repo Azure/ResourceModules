@@ -29,10 +29,10 @@
             }
         },
         "storageAccountName": {
-            "value": "bicepgithubtestsa"
+            "value": "sxxazsaweux003"
         },
         "storageAccountResourceGroupName": {
-            "value": "validation-rg"
+            "value": "dependency-rg"
         },
         "functionsWorkerRuntime": {
             "value": "powershell"
