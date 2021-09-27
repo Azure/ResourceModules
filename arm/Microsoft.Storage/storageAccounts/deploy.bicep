@@ -220,7 +220,7 @@ resource storageAccount_lock 'Microsoft.Authorization/locks@2016-09-01' = if (lo
   ]
 }
 
-module name_location_Storage_Rbac './.bicep/nested_rbac.bicep' = [for (roleassignment, index) in roleAssignments: {
+module storageAccount_rbac './.bicep/nested_rbac.bicep' = [for (roleassignment, index) in roleAssignments: {
   name: '${uniqueString(deployment().name, location)}-Storage-Rbac-${index}'
   // scope: storageAccount // module scopes are not yet supported besides subscription & up
   params: {
