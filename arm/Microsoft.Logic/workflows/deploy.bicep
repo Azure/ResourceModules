@@ -171,8 +171,8 @@ resource logicApp 'Microsoft.Logic/workflows@2019-05-01' = {
   }
 }
 
-resource hostPool_lock 'Microsoft.Authorization/locks@2016-09-01' = if (lockForDeletion) {
-  name: '${logicAppName}-hostPoolDoNotDelete'
+resource logicApp_lock 'Microsoft.Authorization/locks@2016-09-01' = if (lockForDeletion) {
+  name: '${logicAppName}-logicAppDoNotDelete'
   properties: {
     level: 'CanNotDelete'
   }
