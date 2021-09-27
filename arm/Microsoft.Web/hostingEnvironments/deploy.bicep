@@ -170,7 +170,7 @@ resource appServiceEnvironment_lock 'Microsoft.Authorization/locks@2016-09-01' =
   scope: appServiceEnvironment
 }
 
-resource appGroup_diagnosticSettings 'Microsoft.Insights/diagnosticsettings@2017-05-01-preview' = if ((!empty(diagnosticStorageAccountId)) || (!empty(workspaceId)) || (!empty(eventHubAuthorizationRuleId)) || (!empty(eventHubName))) {
+resource appServiceEnvironment_diagnosticSettings 'Microsoft.Insights/diagnosticsettings@2017-05-01-preview' = if ((!empty(diagnosticStorageAccountId)) || (!empty(workspaceId)) || (!empty(eventHubAuthorizationRuleId)) || (!empty(eventHubName))) {
   name: '${appServiceEnvironmentName}-diagnosticSettings'
   properties: {
     storageAccountId: (empty(diagnosticStorageAccountId) ? json('null') : diagnosticStorageAccountId)
@@ -183,7 +183,7 @@ resource appGroup_diagnosticSettings 'Microsoft.Insights/diagnosticsettings@2017
   scope: appServiceEnvironment
 }
 
-module rbac_name './.bicep/nested_rbac.bicep' = [for (item, i) in roleAssignments: {
+module appServiceEnvironment_rbac './.bicep/nested_rbac.bicep' = [for (item, i) in roleAssignments: {
   name: 'rbac-${deployment().name}${i}'
   params: {
     roleAssignment: item
