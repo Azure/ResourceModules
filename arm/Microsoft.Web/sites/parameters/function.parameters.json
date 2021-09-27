@@ -32,7 +32,7 @@
             "value": "sxxazsaweux003"
         },
         "storageAccountResourceGroupName": {
-            "value": "dependency-rg"
+            "value": "dependencies-rg"
         },
         "functionsWorkerRuntime": {
             "value": "powershell"
