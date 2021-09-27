@@ -115,19 +115,6 @@ param tags object = {}
 @description('Optional. Customer Usage Attribution id (GUID). This GUID must be previously registered')
 param cuaId string = ''
 
-@description('Optional. SAS token validity length. Usage: \'PT8H\' - valid for 8 hours; \'P5D\' - valid for 5 days; \'P1Y\' - valid for 1 year. When not provided, the SAS token will be valid for 8 hours.')
-param sasTokenValidityLength string = 'PT8H'
-
-@description('Generated. Do not provide a value! This date value is used to generate a SAS token to access the modules.')
-param baseTime string = utcNow('u')
-
-var accountSasProperties = {
-  signedServices: 'bt'
-  signedPermission: 'racuw'
-  signedExpiry: dateTimeAdd(baseTime, sasTokenValidityLength)
-  signedResourceTypes: 'co'
-  signedProtocol: 'https'
-}
 var virtualNetworkRules = [for networkrule in networkAcls.virtualNetworkRules: {
   id: '${vNetId}/subnets/${networkrule.subnet}'
 }]
