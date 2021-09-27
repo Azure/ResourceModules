@@ -109,12 +109,18 @@ function New-ModuleDeployment {
                 ErrorAction           = 'Stop'
             }
 
-            ## Append Tags to Parameters if Resource supports them
-            $parameterFileTags = (ConvertFrom-Json (Get-Content -Raw -Path $parameterFile) -AsHashtable).parameters.tags.value            
-            if (-not $parameterFileTags) { $parameterFileTags = @{} }
-            if ($additionalTags) { $parameterFileTags += $additionalTags } # If additionalTags object is provided, append tag to the resource
-            if ($removeDeployment) { $parameterFileTags += @{removeModule = $moduleName } } # If removeDeployment is set to true, append removeMoule tag to the resource
+            ## Append Tags to Parameters if Resource supports them (all tags must be in one object or they will be delted)
             if ($removeDeployment -or $additionalTags) { 
+                
+                # Parameter tags
+                $parameterFileTags = (ConvertFrom-Json (Get-Content -Raw -Path $parameterFile) -AsHashtable).parameters.tags.value            
+                if ($parameterFileTags) { $parameterFileTags = @{} }
+                
+                # Pipeline tags
+                if ($additionalTags) { $parameterFileTags += $additionalTags } # If additionalTags object is provided, append tag to the resource
+                
+                # Removal tags
+                if ($removeDeployment) { $parameterFileTags += @{removeModule = $moduleName } } # If removeDeployment is set to true, append removeMoule tag to the resource
                 # Overwrites parameter file tags parameter
                 Write-Verbose ("removeDeployment for $moduleName= $removeDeployment `nadditionalTags:`n $($additionalTags | ConvertTo-Json)")
                 $DeploymentInputs += @{Tags = $parameterFileTags } 
