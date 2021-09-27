@@ -8,7 +8,6 @@
     },
     "roleAssignments": {
       "value": [
-        // Built-in Role Definition, referenced by Name
         {
           "roleDefinitionIdOrName": "Owner",
           "principalIds": [
@@ -16,7 +15,6 @@
             // "abcd5678-1234-1234-1234-123456780123"
           ]
         },
-        // Built-in Role Definition, referenced by Name
         {
           "roleDefinitionIdOrName": "Reader",
           "principalIds": [
