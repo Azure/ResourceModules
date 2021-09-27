@@ -16,20 +16,15 @@ runs:
       shell: pwsh
       run: |
         # Load used functions
-        . ".github/actions/sharedScripts/Connect-ToAzure.ps1"
         . ".github/actions/sharedScripts/Set-EnvironmentOnAgent.ps1"
-
         # Set agent up
         Set-EnvironmentOnAgent    
-        
-        # Login
-        $functionInput = @{
-          clientID       = $env:ARM_CLIENT_ID
-          clientSecret   = ConvertTo-SecureString -String $env:ARM_CLIENT_SECRET -AsPlainText -Force
-          tenantId       = $env:ARM_TENANT_ID
-          subscriptionId = $env:ARM_SUBSCRIPTION_ID
-        }
-        Connect-ToAzure @functionInput
+  
+    - name: Azure Login
+      uses: Azure/login@v1
+      with:
+        creds: ${{ env.AZURE_CREDENTIALS }}
+        enable-AzPSSession: true
 
     # [Module Pester Test] task(s)
     #-----------------------------

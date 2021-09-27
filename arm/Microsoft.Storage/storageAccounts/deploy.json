@@ -31,8 +31,7 @@
                 "None",
                 "SystemAssigned",
                 "UserAssigned",
-                "SystemAssigned, UserAssigned",
-                "UserAssigned, SystemAssigned"
+                "SystemAssigned, UserAssigned"
             ],
             "metadata": {
                 "description": "Optional. Type of managed service identity."

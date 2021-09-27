@@ -5,7 +5,7 @@ Generate the status Url for GitHub module action workflows
 
 .DESCRIPTION
 Generate the status Url for GitHub module action workflows
-E.g.  # [![AnalysisServices: Servers - Test Pipeline](https://github.com/Azure/ResourceModules/actions/workflows/ms.analysisservices.servers.yml/badge.svg)](https://github.com/Azure/ResourceModules/actions/workflows/ms.analysisservices.servers.yml)
+E.g.  # [![AnalysisServices: Servers](https://github.com/Azure/ResourceModules/actions/workflows/ms.analysisservices.servers.yml/badge.svg)](https://github.com/Azure/ResourceModules/actions/workflows/ms.analysisservices.servers.yml)
 
 .PARAMETER name
 Mandatory. The name of the module to create the url for
@@ -44,9 +44,9 @@ function Get-PipelineStatusUrl {
     $shortProvider = $provider.Replace('Microsoft.', 'MS.')
     $pipelineFileName = ('{0}.{1}.yml' -f $shortProvider, $name).Replace('\','/').Replace('/', '.').ToLower()
     $pipelineFileUri = ".github/workflows/$pipelineFileName"
-    
+
     $pipelineName = (Get-Content -Path $pipelineFileUri)[0].TrimStart('name:').Replace('"', '').Trim()
-    
+
     $pipelineFileGitUri = 'https://github.com/{0}/{1}/actions/workflows/{2}' -f $organization, $repositoryName, $pipelineFileName
 
     # Note: Bade name is automatically the pipeline name
@@ -297,9 +297,9 @@ function Get-ResolvedSubServiceRow {
     $subFolders = Get-ChildItem -Path $subPath -Directory -Recurse -Exclude @('.bicep', 'parameters')
 
     foreach ($subfolder in $subFolders.FullName) {
-        
+
         $subFolderName = (Split-Path $subfolder -Leaf)
-        
+
         $relativePath = Join-Path $concatedBase $subFolderName
         $subName = $relativePath.Replace('\','/').Replace("$provider/", '').Replace('Resources/', '/')
 
@@ -480,7 +480,7 @@ function Get-ModulesAsMarkdownTable {
                     columnsInOrder = $columnsInOrder
                     repositoryName = $repositoryName
                     sortByColumn   = $sortByColumn
-                    organization   = $organization                    
+                    organization   = $organization
                 }
                 $output = Get-ResolvedSubServiceRow @recursiveSubServiceInputObject
             }
