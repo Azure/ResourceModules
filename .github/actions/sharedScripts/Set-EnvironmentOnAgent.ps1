@@ -1,5 +1,6 @@
-#region Helper Functions
+# Note: The installation commands in this script are optimized for Linux
 
+#region Helper Functions
 <#
     .SYNOPSIS
     Installes given PowerShell modules
@@ -101,6 +102,43 @@ function Set-EnvironmentOnAgent {
             @{ Name = 'Az.Resources' }
         )
     )
+
+    ###########################
+    ##   Install Azure CLI   ##
+    ###########################
+    Write-Verbose ("Install azure cli start") -Verbose
+    curl -sL https://aka.ms/InstallAzureCLIDeb | sudo bash
+    Write-Verbose ("Install azure cli end") -Verbose
+
+    ##############################
+    ##   Install Bicep for CLI   #
+    ##############################
+    Write-Verbose ("Install bicep start") -Verbose
+    # Fetch the latest Bicep CLI binary
+    curl -Lo bicep 'https://github.com/Azure/bicep/releases/latest/download/bicep-linux-x64'
+    
+    # Mark it as executable
+    chmod +x ./bicep
+    
+    # Add bicep to your PATH (requires admin)
+    sudo mv ./bicep /usr/local/bin/bicep
+    Write-Verbose ("Install bicep end") -Verbose
+
+    ###############################
+    ##   Install Extensions CLI   #
+    ###############################
+
+    Write-Verbose ("Install cli exentions start") -Verbose
+    $Extensions = @(
+        'azure-devops'
+    )
+    foreach ($extension in $Extensions) {
+        if ((az extension list-available -o json | ConvertFrom-Json).Name -notcontains $extension) {
+            Write-Verbose "Adding CLI extension '$extension'" -Verbose
+            az extension add --name $extension
+        }
+    }
+    Write-Verbose ("Install cli exentions end") -Verbose
 
     ####################################
     ##   Install PowerShell Modules   ##

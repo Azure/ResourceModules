@@ -27,7 +27,7 @@ jobs:
           }
 
           Write-Verbose "Invoke task with" -Verbose
-          $functionInput | Format-Table -AutoSize
+          Write-Verbose ($functionInput | ConvertTo-Json | Out-String) -Verbose
 
           Set-GitHubReadMeModuleTable @functionInput
 
@@ -48,7 +48,7 @@ jobs:
           }
 
           Write-Verbose "Invoke task with" -Verbose
-          $functionInput | Format-Table -AutoSize
+          Write-Verbose ($functionInput | ConvertTo-Json | Out-String) -Verbose
 
           Set-GitHubReadMeModuleTable @functionInput
 
