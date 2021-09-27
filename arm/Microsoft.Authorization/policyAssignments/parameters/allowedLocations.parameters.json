@@ -11,7 +11,7 @@
     "parameters": {
       "value": {
         "listOfAllowedLocations": {
-          "value": ["westus","westus2"]
+          "value": ["westus","westus2","westeu"]
         }
       }
     },
