@@ -51,14 +51,6 @@ param lockForDeletion bool = false
 @description('Optional. Tags of the Recovery Service Vault resource.')
 param tags object = {}
 
-// var dummyProtectionContainers = {
-//   name: 'dummyValue'
-// }
-// var dummyPolicy = {
-//   name: 'dummyValue'
-// }
-// var protectionContainers_var = ((length(protectionContainers) > 0) ? protectionContainers : array(dummyProtectionContainers))
-// var protectionPolicies = ((length(backupPolicies) > 0) ? backupPolicies : array(dummyPolicy))
 var diagnosticsMetrics = [
   {
     category: 'Health'
