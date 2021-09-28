@@ -12,7 +12,7 @@
             "value": "Standard_B2s"
         },
         "instanceCount": {
-            "value": "1"
+            "value": 1
         },
         "upgradePolicyMode": {
             "value": "Manual"

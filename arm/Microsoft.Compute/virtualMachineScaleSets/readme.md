@@ -6,11 +6,11 @@ This module deploys a virtual machine scale set
 
 | Resource Type | Api Version |
 | :-- | :-- |
-| `Microsoft.Compute/ProximityPlacementGroups` | 2019-12-01 |
+| `Microsoft.Compute/ProximityPlacementGroups` | 2021-04-01 |
 | `Microsoft.Compute/virtualMachineScaleSets/extensions` | 2020-06-01 |
 | `Microsoft.Compute/virtualMachineScaleSets/providers/diagnosticSettings` | 2017-05-01-preview |
 | `Microsoft.Compute/virtualMachineScaleSets/providers/roleAssignments` | 2018-09-01-preview |
-| `Microsoft.Compute/virtualMachineScaleSets` | 2020-06-01 |
+| `Microsoft.Compute/virtualMachineScaleSets` | 2021-04-01 |
 | `Microsoft.Resources/deployments` | 2020-06-01 |
 | `providers/locks` | 2016-09-01 |
 
@@ -66,7 +66,7 @@ The following resources are required to be able to deploy this resource.
 | `forceUpdateTag` | string | Optional. Pass in an unique value like a GUID everytime the operation needs to be force run | 1.0 |  |
 | `gracePeriod` | string | Optional. The amount of time for which automatic repairs are suspended due to a state change on VM. The grace time starts after the state change has completed. This helps avoid premature or accidental repairs. The time duration should be specified in ISO 8601 format. The minimum allowed grace period is 30 minutes (PT30M). The maximum allowed grace period is 90 minutes (PT90M). | PT30M |  |
 | `imageReference` | object | Optional. OS image reference. In case of marketplace images, it's the combination of the publisher, offer, sku, version attributes. In case of custom images it's the resource ID of the custom image. |  |  |
-| `instanceCount` | string | Optional. The initial instance count of scale set VMs. | 1 |  |
+| `instanceCount` | int | Optional. The initial instance count of scale set VMs. | 1 |  |
 | `instanceSize` | string | Optional. The SKU size of the VMs. |  |  |
 | `keyEncryptionKeyURL` | string | Optional. URL of the KeyEncryptionKey used to encrypt the volume encryption key |  |  |
 | `keyVaultId` | string | Optional. Resource identifier of the Key Vault instance where the Key Encryption Key (KEK) resides |  |  |
