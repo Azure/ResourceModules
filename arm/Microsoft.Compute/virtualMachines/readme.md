@@ -7,8 +7,8 @@ This module deploys one or multiple Virtual Machines.
 
 |Resource Type|ApiVersion|
 |:--|:--|
-| `Microsoft.Compute/availabilitySets` | 2020-12-01 |
-| `Microsoft.Compute/proximityPlacementGroups` | 2020-12-01 |
+| `Microsoft.Compute/availabilitySets` | 2021-04-01 |
+| `Microsoft.Compute/proximityPlacementGroups` | 2021-04-01 |
 | `Microsoft.Resources/deployments` | 2020-06-01 |
 
 ## Parameters

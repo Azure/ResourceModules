@@ -43,7 +43,7 @@ module pidName './.bicep/nested_cuaId.bicep' = if (!empty(cuaId)) {
   params: {}
 }
 
-resource gallery 'Microsoft.Compute/galleries@2021-07-01' = {
+resource gallery 'Microsoft.Compute/galleries@2020-09-30' = {
   name: galleryName
   location: location
   tags: tags
