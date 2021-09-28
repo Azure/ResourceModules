@@ -212,7 +212,7 @@ module pid_cuaId './.bicep/nested_cuaId.bicep' = if (!empty(cuaId)) {
   params: {}
 }
 
-resource rsv 'Microsoft.RecoveryServices/vaults@2020-10-01' = {
+resource rsv 'Microsoft.RecoveryServices/vaults@2021-08-01' = {
   name: recoveryVaultName
   location: location
   tags: tags
