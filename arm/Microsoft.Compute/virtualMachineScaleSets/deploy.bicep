@@ -397,7 +397,7 @@ resource proximityPlacementGroup 'Microsoft.Compute/proximityPlacementGroups@202
   }
 }
 
-resource vmss 'Microsoft.Compute/virtualMachineScaleSets@2020-06-01' = if (!empty(vmssName)) {
+resource vmss 'Microsoft.Compute/virtualMachineScaleSets@2021-04-01' = if (!empty(vmssName)) {
   name: vmssName
   location: location
   tags: tags
