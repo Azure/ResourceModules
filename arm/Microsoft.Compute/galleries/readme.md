@@ -8,7 +8,7 @@ This module deploys Share Image Gallery, with resource lock.
 |Resource Type|ApiVersion|
 |:--|:--|
 |`Microsoft.Resources/deployments`|2019-10-01|
-|`Microsoft.Compute/galleries`|2019-12-01|
+|`Microsoft.Compute/galleries`|2020-09-30|
 |`Microsoft.Authorization/locks`|2016-09-01|
 |`Microsoft.Compute/galleries/providers/roleAssignments`|2018-09-01-preview|
 
