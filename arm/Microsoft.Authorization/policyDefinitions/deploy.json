@@ -1,0 +1,166 @@
+{
+    "$schema": "https://schema.management.azure.com/schemas/2019-08-01/managementGroupDeploymentTemplate.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "policyDefinitionName": {
+            "type": "string",
+            "maxLength": 64,
+            "metadata": {
+                "description": "Required. Specifies the name of the policy definition. Space characters will be replaced by (-) and converted to lowercase"
+            }
+        },
+        "displayName": {
+            "type": "string",
+            "defaultValue": "",
+            "metadata": {
+                "description": "Optional. The display name of the policy definition. If not provided, will be replaced with the Policy Definition Name"
+            }
+        },
+        "policyDescription": {
+            "type": "string",
+            "defaultValue": "",
+            "metadata": {
+                "description": "Optional. The display name of the policy definition. If not provided, will be replaced with the Policy Definition Name"
+            }
+        },
+        "mode": {
+            "type": "string",
+            "defaultValue": "All",
+            "allowedValues": [
+                "All",
+                "Indexed",
+                "Microsoft.KeyVault.Data",
+                "Microsoft.ContainerService.Data",
+                "Microsoft.Kubernetes.Data"
+            ],
+            "metadata": {
+                "description": "Optional. The policy definition mode. Default is All, Some examples are All, Indexed, Microsoft.KeyVault.Data."
+            }
+        },
+        "metadata": {
+            "type": "object",
+            "defaultValue": {},
+            "metadata": {
+                "description": "Optional. The policy Definition metadata. Metadata is an open ended object and is typically a collection of key value pairs."
+            }
+        },
+        "parameters": {
+            "type": "object",
+            "defaultValue": {},
+            "metadata": {
+                "description": "Optional. The policy set definition parameters that can be used in policy definition references."
+            }
+        },
+        "policyRule": {
+            "type": "object",
+            "metadata": {
+                "description": "Required. The policy rule. Must include '[' when defining parameters to escape the template expressions and prevent them from being evaluated by the top level deployment."
+            }
+        },
+        "location": {
+            "type": "string",
+            "defaultValue": "[deployment().location]",
+            "metadata": {
+                "description": "Optional. Location for all resources."
+            }
+        },
+        "managementGroupId": {
+            "type": "string",
+            "defaultValue": "",
+            "metadata": {
+                "description": "Optional. The ID of the Management Group (Scope). Cannot be used with subscriptionId and does not support tenant level deployment (i.e. '/')"
+            }
+        },
+        "subscriptionId": {
+            "type": "string",
+            "defaultValue": "",
+            "metadata": {
+                "description": "Optional. The ID of the Azure Subscription (Scope). Cannot be used with managementGroupId"
+            }
+        }
+    },
+    "variables": {
+        "policyDefinitionName": "[tolower(replace(parameters('policyDefinitionName'),' ','-'))]",
+        "properties": {
+            "policyType": "Custom",
+            "mode": "[parameters('mode')]",
+            "displayName": "[if(empty(parameters('displayName')),json('null'),parameters('displayName'))]",
+            "description": "[if(empty(parameters('policyDescription')),json('null'),parameters('policyDescription'))]",
+            "metadata": "[if(empty(parameters('metadata')),json('null'),parameters('metadata'))]",
+            "parameters": "[if(empty(parameters('parameters')),json('null'),parameters('parameters'))]",
+            "policyRule": "[parameters('policyRule')]"
+        },
+        "scopeMg": "[tenantResourceId('Microsoft.Management/managementGroups', parameters('managementGroupId'))]"
+    },
+    "resources": [
+        {
+            "comments": "Policy Definition on Management Group Scope",
+            "name": "[concat(variables('policyDefinitionName'), '-mgDeployment')]",
+            "apiVersion": "2020-06-01",
+            "type": "Microsoft.Resources/deployments",
+            "location": "[parameters('location')]",
+            "condition": "[and(empty(parameters('subscriptionId')),not(empty(parameters('managementGroupId'))))]",
+            "dependsOn": [
+            ],
+            "properties": {
+                "mode": "Incremental",
+                "template": {
+                    "$schema": "https://schema.management.azure.com/schemas/2019-08-01/managementGroupDeploymentTemplate.json#",
+                    "contentVersion": "1.0.0.0",
+                    "resources": [
+                        {
+                            "name": "[variables('policyDefinitionName')]",
+                            "type": "Microsoft.Authorization/policyDefinitions",
+                            "apiVersion": "2020-09-01",
+                            "properties": "[variables('properties')]"
+                        }
+                    ]
+                }
+            }
+        },
+        {
+            "comments": "Policy Definition on Subscription Scope",
+            "name": "[concat(variables('policyDefinitionName'), '-subDeployment')]",
+            "apiVersion": "2020-06-01",
+            "type": "Microsoft.Resources/deployments",
+            "subscriptionId": "[parameters('subscriptionId')]",
+            "location": "[parameters('location')]",
+            "condition": "[and(empty(parameters('managementGroupId')),not(empty(parameters('subscriptionId'))))]",
+            "dependsOn": [
+            ],
+            "properties": {
+                "mode": "Incremental",
+                "template": {
+                    "$schema": "https://schema.management.azure.com/schemas/2018-05-01/subscriptionDeploymentTemplate.json#",
+                    "contentVersion": "1.0.0.0",
+                    "resources": [
+                        {
+                            "name": "[variables('policyDefinitionName')]",
+                            "type": "Microsoft.Authorization/policyDefinitions",
+                            "apiVersion": "2020-09-01",
+                            "properties": "[variables('properties')]"
+                        }
+                    ]
+                }
+            }
+        }
+    ],
+    "functions": [
+    ],
+    "outputs": {
+        "policyDefinitionName": {
+            "type": "string",
+            "value": "[variables('policyDefinitionName')]",
+            "metadata": {
+                "description": "Name of the policy definition."
+            }
+        },
+        "policyDefinitionId": {
+            "type": "string",
+            "value": "[if(not(empty(parameters('managementGroupId'))),extensionResourceId(variables('scopeMg'),'Microsoft.Authorization/policyDefinitions',variables('policyDefinitionName')),subscriptionResourceId(parameters('subscriptionId'),'Microsoft.Authorization/policyDefinitions',variables('policyDefinitionName')))]",
+            "metadata": {
+                "description": "The Resource ID of the Policy Definition."
+            }
+        }
+    }
+}
