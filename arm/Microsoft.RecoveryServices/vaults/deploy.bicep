@@ -213,6 +213,14 @@ resource rsv 'Microsoft.RecoveryServices/vaults@2021-08-01' = {
     tier: 'Standard'
   }
   properties: {}
+
+  resource rsv_vaultstorageconfig 'backupstorageconfig@2020-02-02' = {
+    name: 'vaultstorageconfig'
+    properties: {
+      StorageModelType: vaultStorageType
+      CrossRegionRestoreFlag: enableCRR
+    }
+  }
 }
 
 resource rsv_lock 'Microsoft.Authorization/locks@2016-09-01' = if (lockForDeletion) {
@@ -234,15 +242,6 @@ resource rsv_diagnosticSettings 'Microsoft.Insights/diagnosticSettings@2021-05-0
     logs: ((empty(diagnosticStorageAccountId) && empty(workspaceId) && empty(eventHubAuthorizationRuleId) && empty(eventHubName)) ? json('null') : diagnosticLogs)
   }
   scope: rsv
-}
-
-resource rsv_vaultstorageconfig 'Microsoft.RecoveryServices/vaults/backupstorageconfig@2020-02-02' = {
-  parent: rsv
-  name: 'vaultstorageconfig'
-  properties: {
-    StorageModelType: vaultStorageType
-    CrossRegionRestoreFlag: enableCRR
-  }
 }
 
 module rsv_backupPolicies './.bicep/nested_backupPolicies.bicep' = [for (protectionPolicy, index) in backupPolicies: {
