@@ -51,14 +51,14 @@ param lockForDeletion bool = false
 @description('Optional. Tags of the Recovery Service Vault resource.')
 param tags object = {}
 
-var dummyProtectionContainers = {
-  name: 'dummyValue'
-}
-var dummyPolicy = {
-  name: 'dummyValue'
-}
-var protectionContainers_var = ((length(protectionContainers) > 0) ? protectionContainers : array(dummyProtectionContainers))
-var protectionPolicies = ((length(backupPolicies) > 0) ? backupPolicies : array(dummyPolicy))
+// var dummyProtectionContainers = {
+//   name: 'dummyValue'
+// }
+// var dummyPolicy = {
+//   name: 'dummyValue'
+// }
+// var protectionContainers_var = ((length(protectionContainers) > 0) ? protectionContainers : array(dummyProtectionContainers))
+// var protectionPolicies = ((length(backupPolicies) > 0) ? backupPolicies : array(dummyPolicy))
 var diagnosticsMetrics = [
   {
     category: 'Health'
@@ -253,8 +253,8 @@ resource rsv_vaultstorageconfig 'Microsoft.RecoveryServices/vaults/backupstorage
   }
 }
 
-module rsv_backupPolicies './.bicep/nested_backupPolicies.bicep' = [for (protectionPolicy, index) in protectionPolicies: {
-  name: 'backupPolicies-${(empty(protectionPolicies) ? 'dummy' : index)}'
+module rsv_backupPolicies './.bicep/nested_backupPolicies.bicep' = [for (protectionPolicy, index) in backupPolicies: {
+  name: 'backupPolicies-${(empty(backupPolicies) ? 'dummy' : index)}'
   params: {
     protectionPolicyName: protectionPolicy.Name
     protectionPolicyProperties: protectionPolicy.Properties
