@@ -468,7 +468,7 @@ resource vmss 'Microsoft.Compute/virtualMachineScaleSets@2021-04-01' = if (!empt
         networkInterfaceConfigurations: [for (item, j) in nicConfigurations: {
           name: '${vmssName}${item.nicSuffix}configuration-${j}'
           properties: {
-            primary: ((j == 0) ? 'true' : 'false')
+            primary: ((j == 0) ? true : any(null))
             enableAcceleratedNetworking: (contains(nicConfigurations, 'enableAcceleratedNetworking') ? item.enableAcceleratedNetworking : json('null'))
             networkSecurityGroup: (contains(nicConfigurations, 'nsgId') ? json('{"id": "${item.nsgId}"}') : json('null'))
             ipConfigurations: item.ipConfigurations
