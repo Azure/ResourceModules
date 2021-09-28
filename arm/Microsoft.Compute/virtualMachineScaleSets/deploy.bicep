@@ -499,7 +499,7 @@ resource vmss 'Microsoft.Compute/virtualMachineScaleSets@2021-04-01' = if (!empt
   }
   sku: {
     name: instanceSize
-    capacity: int(instanceCount)
+    capacity: instanceCount
   }
   plan: (empty(plan) ? json('null') : plan)
   dependsOn: [

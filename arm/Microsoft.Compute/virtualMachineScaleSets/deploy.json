@@ -616,7 +616,7 @@
             }
         },
         "instanceCount": {
-            "type": "string",
+            "type": "int",
             "defaultValue": 1,
             "metadata": {
                 "description": "Optional. The initial instance count of scale set VMs."
@@ -901,7 +901,7 @@
             },
             "sku": {
                 "name": "[parameters('instanceSize')]",
-                "capacity": "[int(parameters('instanceCount'))]"
+                "capacity": "[parameters('instanceCount')]"
             },
             "plan": "[if(empty(parameters('plan')), json('null'),parameters('plan'))]",
             "resources": [
