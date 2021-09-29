@@ -7,7 +7,7 @@ This module deploys Recovery Service Vault, with resource lock.
 
 |Resource Type|ApiVersion|
 |:--|:--|
-|`Microsoft.RecoveryServices/vaults`|2020-10-01|
+|`Microsoft.RecoveryServices/vaults`|2021-08-01|
 |`Microsoft.RecoveryServices/vaults/backupstorageconfig` | 2020-02-02 |
 |`Microsoft.Resources/deployments`|2019-10-01|
 |`providers/locks`|2016-09-01|

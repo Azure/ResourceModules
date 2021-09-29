@@ -1,4 +1,4 @@
-name: "KeyVault: Vaults"
+name: "Logic: Workflows"
 
 on:
   workflow_dispatch:
