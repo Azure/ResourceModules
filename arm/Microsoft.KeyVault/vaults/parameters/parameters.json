@@ -3,7 +3,7 @@
   "contentVersion": "1.0.0.0",
   "parameters": {
     "keyVaultName": {
-      "value": "sxx-az-kv-weu-x-001"
+      "value": "sxx-az-kv-weu-x-009"
     },
     "keysObject": {
       "value": {
