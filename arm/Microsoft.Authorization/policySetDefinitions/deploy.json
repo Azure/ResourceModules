@@ -77,8 +77,8 @@
         "policySetDefinitionName": "[replace(parameters('policySetDefinitionName'),' ','-')]",
         "properties": {
             "policyType": "Custom",
-            "displayName": "[if(empty(parameters('displayName')),parameters('policySetDefinitionName'),json('null'))]",
-            "description": "[if(empty(parameters('policySetDescription')),parameters('policySetDefinitionName'),json('null'))]",
+            "displayName": "[if(empty(parameters('displayName')),json('null'),parameters('displayName'))]",
+            "description": "[if(empty(parameters('policySetDescription')),json('null'),parameters('policySetDescription'))]",
             "metadata": "[if(empty(parameters('metadata')),json('null'),parameters('metadata'))]",
             "parameters": "[if(empty(parameters('parameters')),json('null'),parameters('parameters'))]",
             "policyDefinitions": "[parameters('policyDefinitions')]",

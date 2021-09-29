@@ -32,8 +32,8 @@ var emptyArray = []
 var var_policySetDefinitionName = replace(policySetDefinitionName, ' ', '-')
 var var_policySetDefinitionProperties = {
   policyType: 'Custom'
-  displayName: (empty(displayName) ? policySetDefinitionName : json('null'))
-  description: (empty(policySetDescription) ? policySetDefinitionName : json('null'))
+  displayName: (empty(displayName) ? json('null') : displayName)
+  description: (empty(policySetDescription) ? json('null') : policySetDescription)
   metadata: (empty(metadata) ? json('null') : metadata)
   parameters: (empty(parameters) ? json('null') : parameters)
   policyDefinitions: policyDefinitions
