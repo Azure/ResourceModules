@@ -169,6 +169,18 @@ resource automationAccount_diagnosticSettings 'Microsoft.Insights/diagnosticSett
 }
 
 ///////////////////////////
+module automationAccount_privateEndpoints './.bicep/nested_privateEndpoint.bicep' = [for (endpoint, index) in privateEndpoints: if (!empty(privateEndpoints)) {
+  name: '${uniqueString(deployment().name, location)}-Automation-PrivateEndpoints-${index}'
+  params: {
+    privateEndpointResourceId: automationAccount.id
+    privateEndpointVnetLocation: (empty(privateEndpoints) ? 'dummy' : reference(split(endpoint.subnetResourceId, '/subnets/')[0], '2020-06-01', 'Full').location)
+    privateEndpoint: endpoint
+    tags: tags
+  }
+  dependsOn: [
+    automationAccount
+  ]
+}]
 
 module automationAccount_rbac './.bicep/nested_rbac.bicep' = [for (item, i) in roleAssignments: {
   name: 'rbac-${deployment().name}${i}'
