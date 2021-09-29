@@ -25,40 +25,40 @@
         ]
       }
     },
-    "accessPolicies": {
-      "value": [
-        {
-          "tenantId": "",
-          "objectId": "",
-          "permissions": {
-            "certificates": [
-              "All"
-            ],
-            "keys": [
-              "All"
-            ],
-            "secrets": [
-              "All"
-            ]
-          }
-        },
-        {
-          "tenantId": "",
-          "objectId": "",
-          "permissions": {
-            "certificates": [
-              "All"
-            ],
-            "keys": [
-              "All"
-            ],
-            "secrets": [
-              "All"
-            ]
-          }
-        }
-      ]
-    },
+    // "accessPolicies": {
+    //   "value": [
+    //     {
+    //       "tenantId": "",
+    //       "objectId": "",
+    //       "permissions": {
+    //         "certificates": [
+    //           "All"
+    //         ],
+    //         "keys": [
+    //           "All"
+    //         ],
+    //         "secrets": [
+    //           "All"
+    //         ]
+    //       }
+    //     },
+    //     {
+    //       "tenantId": "",
+    //       "objectId": "",
+    //       "permissions": {
+    //         "certificates": [
+    //           "All"
+    //         ],
+    //         "keys": [
+    //           "All"
+    //         ],
+    //         "secrets": [
+    //           "All"
+    //         ]
+    //       }
+    //     }
+    //   ]
+    // },
     "enableSoftDelete": {
       "value": true
     },
