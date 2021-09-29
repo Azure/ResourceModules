@@ -28,6 +28,12 @@ param policyDefinitionGroups array = []
 @description('Optional. The policy set definition parameters that can be used in policy definition references.')
 param parameters object = {}
 
+@description('Optional. Location for all resources.')
+param location string = deployment().location
+
+@description('Optional. Customer Usage Attribution id (GUID). This GUID must be previously registered')
+param cuaId string = ''
+
 var emptyArray = []
 var var_policySetDefinitionName = replace(policySetDefinitionName, ' ', '-')
 var var_policySetDefinitionProperties = {
@@ -45,6 +51,7 @@ module policySetDefinition_mg './.bicep/nested_policySetDefinition_mg.bicep' = i
   scope: managementGroup(managementGroupId)
   params: {
     policySetDefinitionName: var_policySetDefinitionName
+    location: location
     properties: var_policySetDefinitionProperties
     managementGroupId: managementGroupId
   }
@@ -55,6 +62,7 @@ module policySetDefinition_sub './.bicep/nested_policySetDefinition_sub.bicep' =
   scope: subscription(subscriptionId)
   params: {
     policySetDefinitionName: var_policySetDefinitionName
+    location: location
     properties: var_policySetDefinitionProperties
     subscriptionId: subscriptionId
   }

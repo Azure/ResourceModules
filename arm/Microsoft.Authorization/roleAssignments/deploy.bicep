@@ -206,6 +206,7 @@ module roleAssignment_mg './.bicep/nested_roleAssignments_mg.bicep' = if ((!empt
     roleDefinitionId: roleDefinitionId
     principalId: principalId
     managementGroupId: managementGroupId
+    location: location
   }
 }
 
@@ -216,6 +217,7 @@ module roleAssignment_sub './.bicep/nested_roleAssignments_sub.bicep' = if (empt
     roleDefinitionId: roleDefinitionId
     principalId: principalId
     subscriptionId: subscriptionId
+    location: location
   }
 }
 
@@ -227,6 +229,7 @@ module roleAssignment_rg './.bicep/nested_roleAssignments_rg.bicep' = if (empty(
     principalId: principalId
     subscriptionId: subscriptionId
     resourceGroupName: resourceGroupName
+    location: location
   }
 }
 

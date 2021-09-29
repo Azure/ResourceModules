@@ -38,6 +38,12 @@ param subscriptionId string = ''
 @description('Optional. Default is false. If set to True, role definitions array will be returned as an output. Only use if the Policy Definition supports it.')
 param returnRoleDefinitions bool = false
 
+@description('Optional. Location for all resources.')
+param location string = deployment().location
+
+@description('Optional. Customer Usage Attribution id (GUID). This GUID must be previously registered')
+param cuaId string = ''
+
 var var_policyDefinitionName = toLower(replace(policyDefinitionName, ' ', '-'))
 var var_policyProperties = {
   policyType: 'Custom'
@@ -54,6 +60,7 @@ module policyDefinitions_mg './.bicep/nested_policyDefinitions_mg.bicep' = if (e
   scope: managementGroup(managementGroupId)
   params: {
     policyDefinitionName: var_policyDefinitionName
+    location: location
     properties: var_policyProperties
     managementGroupId: managementGroupId
     returnRoleDefinitions: returnRoleDefinitions
@@ -65,6 +72,7 @@ module policyDefinitions_sub './.bicep/nested_policyDefinitions_sub.bicep' = if 
   scope: subscription(subscriptionId)
   params: {
     policyDefinitionName: var_policyDefinitionName
+    location: location
     properties: var_policyProperties
     subscriptionId: subscriptionId
     returnRoleDefinitions: returnRoleDefinitions

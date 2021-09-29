@@ -51,6 +51,12 @@ param resourceGroupName string = ''
 @description('Optional. The policy excluded scopes')
 param notScopes array = []
 
+@description('Optional. Location for all resources.')
+param location string = deployment().location
+
+@description('Optional. Customer Usage Attribution id (GUID). This GUID must be previously registered')
+param cuaId string = ''
+
 var nonComplianceMessage_var = {
   message: (empty(nonComplianceMessage) ? 'null' : nonComplianceMessage)
 }
@@ -75,6 +81,7 @@ module policyAssignment_mg '.bicep/nested_policyAssignments_mg.bicep' = if ((!em
   scope: managementGroup(managementGroupId)
   params: {
     policyAssignmentName: policyAssignmentName
+    location: location
     properties: var_properties
     identity: var_identity
     managementGroupId: managementGroupId
@@ -86,6 +93,7 @@ module policyAssignment_sub '.bicep/nested_policyAssignments_sub.bicep' = if (em
   scope: subscription(subscriptionId)
   params: {
     policyAssignmentName: policyAssignmentName
+    location: location
     properties: var_properties
     identity: var_identity
     subscriptionId: subscriptionId
@@ -97,6 +105,7 @@ module policyAssignment_rg '.bicep/nested_policyAssignments_rg.bicep' = if (empt
   scope: resourceGroup(subscriptionId, resourceGroupName)
   params: {
     policyAssignmentName: policyAssignmentName
+    location: location
     properties: var_properties
     identity: var_identity
     resourceGroupName: resourceGroupName
