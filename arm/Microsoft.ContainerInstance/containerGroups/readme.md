@@ -9,7 +9,7 @@ The top-level resource in Azure Container Instances is the container group. A co
 | Resource Type | Api Version |
 | :-- | :-- |
 | `Microsoft.Resources/deployments` | 2018-02-01 |
-| `Microsoft.ContainerInstance/containerGroups` | 2019-12-01 |
+| `Microsoft.ContainerInstance/containerGroups` | 2021-03-01 |
 | `providers/locks` | 2016-09-01 |
 
 ### Resource dependency
@@ -82,11 +82,8 @@ Tag names and tag values can be provided as needed. A tag can be left without a 
 #### Template references
 
 - [Deployments](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Resources/2018-02-01/deployments)
-- [ContainerGroups](https://docs.microsoft.com/en-us/azure/templates/Microsoft.ContainerInstance/2019-12-01/containerGroups)
+- [ContainerGroups](https://docs.microsoft.com/en-us/azure/templates/Microsoft.ContainerInstance/2021-03-01/containerGroups)
 
 ## Considerations
 
 ## Additional resources
-
-- [Deployments](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Resources/2020-06-01/deployments)
-- [ContainerGroups](https://docs.microsoft.com/en-us/azure/templates/Microsoft.ContainerInstance/2019-12-01/containerGroups)
