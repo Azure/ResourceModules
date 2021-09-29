@@ -89,4 +89,4 @@ Tag names and tag values can be provided as needed. A tag can be left without a 
 ## Additional resources
 
 - [Deployments](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Resources/2020-06-01/deployments)
-- [ContainerGroups](https://docs.microsoft.com/en-us/azure/templates/Microsoft.ContainerInstance/2019-12-01/containerGroups)
+- [ContainerGroups](https://docs.microsoft.com/en-us/azure/templates/Microsoft.ContainerInstance/2021-03-01/containerGroups)
