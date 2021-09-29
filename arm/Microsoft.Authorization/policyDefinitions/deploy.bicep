@@ -35,6 +35,9 @@ param managementGroupId string = ''
 @description('Optional. The ID of the Azure Subscription (Scope). Cannot be used with managementGroupId')
 param subscriptionId string = ''
 
+@description('Optional. Default is false. If set to True, role definitions array will be returned as an output. Only use if the Policy Definition supports it.')
+param returnRoleDefinitions bool = false
+
 var var_policyDefinitionName = toLower(replace(policyDefinitionName, ' ', '-'))
 var var_policyProperties = {
   policyType: 'Custom'
@@ -53,6 +56,7 @@ module policyDefinitions_mg './.bicep/nested_policyDefinitions_mg.bicep' = if (e
     policyDefinitionName: var_policyDefinitionName
     properties: var_policyProperties
     managementGroupId: managementGroupId
+    returnRoleDefinitions: returnRoleDefinitions
   }
 }
 
@@ -63,8 +67,10 @@ module policyDefinitions_sub './.bicep/nested_policyDefinitions_sub.bicep' = if 
     policyDefinitionName: var_policyDefinitionName
     properties: var_policyProperties
     subscriptionId: subscriptionId
+    returnRoleDefinitions: returnRoleDefinitions
   }
 }
 
 output policyDefinitionName string = var_policyDefinitionName
 output policyDefinitionId string = (!empty(managementGroupId)) ? policyDefinitions_mg.outputs.policyDefinitionId : policyDefinitions_sub.outputs.policyDefinitionId
+output roleDefinitionIds array = (!empty(managementGroupId)) ? policyDefinitions_mg.outputs.roleDefinitionIds : policyDefinitions_sub.outputs.roleDefinitionIds
