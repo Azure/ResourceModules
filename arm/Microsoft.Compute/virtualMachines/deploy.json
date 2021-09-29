@@ -745,7 +745,7 @@
         // Proximity Placement Groups
         {
             "type": "Microsoft.Compute/proximityPlacementGroups",
-            "apiVersion": "2020-12-01",
+            "apiVersion": "2021-04-01",
             "condition": "[not(empty(parameters('proximityPlacementGroupName')))]",
             "location": "[parameters('location')]",
             "tags": "[parameters('tags')]",
@@ -757,7 +757,7 @@
         // Availability Sets
         {
             "type": "Microsoft.Compute/availabilitySets",
-            "apiVersion": "2020-12-01",
+            "apiVersion": "2021-04-01",
             "condition": "[not(empty(variables('avSetNames')))]",
             "location": "[parameters('location')]",
             "tags": "[parameters('tags')]",

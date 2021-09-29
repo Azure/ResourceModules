@@ -209,13 +209,10 @@ resource storageAccount 'Microsoft.Storage/storageAccounts@2019-06-01' = {
 
 resource storageAccount_lock 'Microsoft.Authorization/locks@2016-09-01' = if (lockForDeletion) {
   name: '${storageAccountName}-storageDoNotDelete'
-  scope: storageAccount
   properties: {
     level: 'CanNotDelete'
   }
-  dependsOn: [
-    storageAccount
-  ]
+  scope: storageAccount
 }
 
 module storageAccount_rbac './.bicep/nested_rbac.bicep' = [for (roleassignment, index) in roleAssignments: {
