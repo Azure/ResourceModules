@@ -20,7 +20,7 @@ This module deploys a subscription wide export of the ActivityLog.
 | `eventHubName` | string | Optional. Name of the event hub within the namespace to which logs are streamed. Without this, an event hub is created for each log category. |  |  |
 | `location` | string | Optional. Location for all resources. | global |  |
 | `workspaceId` | string | Optional. Resource identifier of Log Analytics. |  |  |
-
+| `logsToEnable` | string[] | Optional. The name of logs that will be streamed. | 'Administrative'<br>'Security'<br>'ServiceHealth'<br>'Alert'<br>'Recommendation'<br>'Policy'<br>'Autoscale'<br>'ResourceHealth' | 'Administrative'<br>'Security'<br>'ServiceHealth'<br>'Alert'<br>'Recommendation'<br>'Policy'<br>'Autoscale'<br>'ResourceHealth' |
 
 ## Outputs
 
