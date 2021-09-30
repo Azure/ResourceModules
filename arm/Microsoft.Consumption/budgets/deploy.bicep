@@ -25,7 +25,7 @@ param amount int
 param resetPeriod string = 'Monthly'
 
 @description('Required. The start date for the budget. Start date should be the first day of the month and cannot be in the past (except for the current month).')
-param startDate string
+param startDate string = '${utcNow('yyyy')}-${utcNow('MM')}-01T00:00:00Z'
 
 @description('Optional. The end date for the budget. If not provided, it will default to 10 years from the start date.')
 param endDate string = ''
@@ -79,5 +79,5 @@ resource budget 'Microsoft.Consumption/budgets@2019-05-01' = {
     }
 }
 
-output budgetResourceId string = budget.id
 output budgetName string = budget.name
+output budgetResourceId string = budget.id
