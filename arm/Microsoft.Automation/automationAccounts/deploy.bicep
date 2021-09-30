@@ -169,6 +169,24 @@ resource automationAccount_diagnosticSettings 'Microsoft.Insights/diagnosticSett
 }
 
 ///////////////////////////
+module automationAccount_schedules './.bicep/nested_schedules.bicep' = [for (schedule, index) in schedules: {
+  name: 'schedule-${(empty(schedules) ? 'dummy' : index)}'
+  params: {
+    scheduleName: schedule.scheduleName
+    startTime: schedule.startTime
+    frequency: schedule.frequency
+    expiryTime: schedule.expiryTime
+    interval: schedule.interval
+    timeZone: schedule.timeZone
+    advancedSchedule: schedule.advancedSchedule
+    automationAccountName: automationAccountName
+    baseTime: baseTime
+  }
+  dependsOn: [
+    automationAccount
+  ]
+}]
+
 module automationAccount_privateEndpoints './.bicep/nested_privateEndpoint.bicep' = [for (endpoint, index) in privateEndpoints: if (!empty(privateEndpoints)) {
   name: '${uniqueString(deployment().name, location)}-Automation-PrivateEndpoints-${index}'
   params: {
