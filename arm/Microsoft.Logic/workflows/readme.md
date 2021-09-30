@@ -14,8 +14,6 @@ This module deploys Logic App resource.
 
 ## Parameters
 
-| Parameter Name   | Type   | Description         | DefaultValue     | Possible values |
-| - | - | - | - | - |
 | Parameter Name | Type | Description | DefaultValue | Possible values |
 | :-- | :-- | :-- | :-- | :-- |
 | `actionsAccessControlConfiguration` | object | Optional. The access control configuration for workflow actions. |  |  |
