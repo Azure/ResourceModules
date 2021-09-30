@@ -49,7 +49,7 @@ param contactRoles array = []
 @description('Optional. List of action group resource IDs that will receive the alert.')
 param actionGroups array = []
 
-var budgetName_var = empty(budgetName) ? '${resetPeriod}-${category}-Budget' : budgetName
+var budgetNameVar = empty(budgetName) ? '${resetPeriod}-${category}-Budget' : budgetName
 var notificationsArray = [for threshold in thresholds: {
     'Actual_GreaterThan_${threshold}_Percentage': {
         enabled: true
@@ -65,7 +65,7 @@ var notificationsArray = [for threshold in thresholds: {
 var notifications = json(replace(replace(replace(string(notificationsArray), '[{', '{'), '}]', '}'), '}},{', '},'))
 
 resource budget 'Microsoft.Consumption/budgets@2019-05-01' = {
-    name: budgetName_var
+    name: budgetNameVar
     properties: {
         category: category
         amount: amount
