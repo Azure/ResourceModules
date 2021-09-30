@@ -200,7 +200,7 @@ var builtInRoleNames = {
 var roleDefinitionId = (contains(builtInRoleNames, roleDefinitionIdOrName) ? builtInRoleNames[roleDefinitionIdOrName] : roleDefinitionIdOrName)
 
 module roleAssignment_mg './.bicep/nested_roleAssignments_mg.bicep' = if ((!empty(managementGroupId) && empty(subscriptionId) && empty(resourceGroupName))) {
-  name: 'roleAssignment-mg'
+  name: 'roleAssignment-mg-${guid(roleDefinitionId,principalId)}'
   scope: managementGroup(managementGroupId)
   params: {
     roleDefinitionId: roleDefinitionId
@@ -211,7 +211,7 @@ module roleAssignment_mg './.bicep/nested_roleAssignments_mg.bicep' = if ((!empt
 }
 
 module roleAssignment_sub './.bicep/nested_roleAssignments_sub.bicep' = if (empty(managementGroupId) && (!empty(subscriptionId) && empty(resourceGroupName))) {
-  name: 'roleAssignment-sub'
+  name: 'roleAssignment-sub-${guid(roleDefinitionId,principalId)}'
   scope: subscription(subscriptionId)
   params: {
     roleDefinitionId: roleDefinitionId
@@ -222,7 +222,7 @@ module roleAssignment_sub './.bicep/nested_roleAssignments_sub.bicep' = if (empt
 }
 
 module roleAssignment_rg './.bicep/nested_roleAssignments_rg.bicep' = if (empty(managementGroupId) && !empty(resourceGroupName) && (!empty(subscriptionId))) {
-  name: 'roleAssignment-rg'
+  name: 'roleAssignment-${guid(roleDefinitionId,principalId)}'
   scope: resourceGroup(subscriptionId, resourceGroupName)
   params: {
     roleDefinitionId: roleDefinitionId

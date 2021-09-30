@@ -36,7 +36,7 @@ param managementGroupId string = ''
 param subscriptionId string = ''
 
 @description('Optional. Default is false. If set to True, role definitions array will be returned as an output. Only use if the Policy Definition supports it.')
-param returnRoleDefinitions bool = false
+param returnRoleDefinitionIds bool = false
 
 @description('Optional. Location for all resources.')
 param location string = deployment().location
@@ -63,7 +63,7 @@ module policyDefinitions_mg './.bicep/nested_policyDefinitions_mg.bicep' = if (e
     location: location
     properties: var_policyProperties
     managementGroupId: managementGroupId
-    returnRoleDefinitions: returnRoleDefinitions
+    returnRoleDefinitionIds: returnRoleDefinitionIds
   }
 }
 
@@ -75,7 +75,7 @@ module policyDefinitions_sub './.bicep/nested_policyDefinitions_sub.bicep' = if 
     location: location
     properties: var_policyProperties
     subscriptionId: subscriptionId
-    returnRoleDefinitions: returnRoleDefinitions
+    returnRoleDefinitionIds: returnRoleDefinitionIds
   }
 }
 

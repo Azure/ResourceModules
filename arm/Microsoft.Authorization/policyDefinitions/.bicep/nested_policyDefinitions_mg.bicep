@@ -2,7 +2,7 @@ targetScope = 'managementGroup'
 param policyDefinitionName string
 param properties object
 param managementGroupId string
-param returnRoleDefinitions bool = false
+param returnRoleDefinitionIds bool = false
 param location string = deployment().location
 
 resource policyDefinition 'Microsoft.Authorization/policyDefinitions@2020-09-01' = {
@@ -12,4 +12,4 @@ resource policyDefinition 'Microsoft.Authorization/policyDefinitions@2020-09-01'
 }
 
 output policyDefinitionId string =   extensionResourceId(tenantResourceId('Microsoft.Management/managementGroups',managementGroupId),'Microsoft.Authorization/policyDefinitions',policyDefinition.name)
-output roleDefinitionIds array = returnRoleDefinitions ? properties.policyRule.then.details.roleDefinitionIds : []
+output roleDefinitionIds array = returnRoleDefinitionIds ? properties.policyRule.then.details.roleDefinitionIds : []

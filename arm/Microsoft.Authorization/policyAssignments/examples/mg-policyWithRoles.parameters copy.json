@@ -1,0 +1,39 @@
+{
+  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    "policyAssignmentName": {
+      "value": "test-enable-mmg-agent"
+    },
+    "policyAssignmentDescription": {
+      "value": "[test] enable mma agent"
+    },
+    "displayName": {
+      "value": "[test] enable mma agent"
+    },
+    "policyDefinitionID": {
+      "value": "/providers/Microsoft.Management/managementGroups/mg-contoso/providers/Microsoft.Authorization/policyDefinitions/policy-windows-mma"
+    },
+    "metadata": {
+      "value": {
+        "version" : "2"
+      }
+    },
+    "parameters": {
+      "value": {
+        "logAnalyticsWorkspaceId": {
+          "value": "/subscriptions/20d6fbfe-b049-471c-95af-1369d14d0d45/resourcegroups/az-monitor-ae-rg/providers/microsoft.operationalinsights/workspaces/log-analytics-ae"
+        }
+      }
+    },
+    "roleDefinitionIds": {
+      "value": [
+        "/providers/microsoft.authorization/roleDefinitions/749f88d5-cbae-40b8-bcfc-e573ddc772fa",
+        "/providers/microsoft.authorization/roleDefinitions/92aaf0da-9dab-42b6-94a3-d43ce8d16293"
+      ]
+    },
+    "managementGroupId": {
+      "value": "mg-contoso"
+    }
+  }
+}

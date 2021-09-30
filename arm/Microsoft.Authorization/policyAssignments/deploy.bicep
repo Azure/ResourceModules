@@ -61,6 +61,7 @@ var nonComplianceMessage_var = {
   message: (empty(nonComplianceMessage) ? 'null' : nonComplianceMessage)
 }
 
+var var_policyAssignmentName = replace(policyAssignmentName, ' ', '-')
 var var_properties = {
   displayName: (empty(displayName) ? json('null') : displayName)
   metadata: (empty(metadata) ? json('null') : metadata)
@@ -77,41 +78,45 @@ var var_identity = {
 }
 
 module policyAssignment_mg '.bicep/nested_policyAssignments_mg.bicep' = if ((!empty(managementGroupId) && empty(subscriptionId) && empty(resourceGroupName))) {
-  name: 'policyAssignment_mg'
+  name: '${var_policyAssignmentName}-policyAssignment_mg'
   scope: managementGroup(managementGroupId)
   params: {
-    policyAssignmentName: policyAssignmentName
+    policyAssignmentName: var_policyAssignmentName
     location: location
     properties: var_properties
     identity: var_identity
     managementGroupId: managementGroupId
+    roleDefinitionIds: roleDefinitionIds
   }
 }
 
 module policyAssignment_sub '.bicep/nested_policyAssignments_sub.bicep' = if (empty(managementGroupId) && (!empty(subscriptionId) && empty(resourceGroupName))) {
-  name: 'policyAssignment_sub'
+  name: '${var_policyAssignmentName}-policyAssignment_sub'
   scope: subscription(subscriptionId)
   params: {
-    policyAssignmentName: policyAssignmentName
+    policyAssignmentName: var_policyAssignmentName
     location: location
     properties: var_properties
     identity: var_identity
     subscriptionId: subscriptionId
+    roleDefinitionIds: roleDefinitionIds
   }
 }
 
 module policyAssignment_rg '.bicep/nested_policyAssignments_rg.bicep' = if (empty(managementGroupId) && !empty(resourceGroupName) && (!empty(subscriptionId))) {
-  name: 'policyAssignment_rg'
+  name: '${var_policyAssignmentName}-policyAssignment_rg'
   scope: resourceGroup(subscriptionId, resourceGroupName)
   params: {
-    policyAssignmentName: policyAssignmentName
+    policyAssignmentName: var_policyAssignmentName
     location: location
     properties: var_properties
     identity: var_identity
     resourceGroupName: resourceGroupName
     subscriptionId: subscriptionId
+    roleDefinitionIds: roleDefinitionIds
   }
 }
+
 
 output policyAssignmentName string = policyAssignmentName
 output policyAssignmentPrincipalId string = !empty(managementGroupId) ? policyAssignment_mg.outputs.policyAssignmentPrincipalId : (!empty(resourceGroupName) ? policyAssignment_rg.outputs.policyAssignmentPrincipalId : policyAssignment_sub.outputs.policyAssignmentPrincipalId)

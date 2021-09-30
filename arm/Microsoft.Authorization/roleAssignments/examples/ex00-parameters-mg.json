@@ -1,0 +1,15 @@
+{
+  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    "roleDefinitionIdOrName": {
+      "value": "/providers/microsoft.authorization/roleDefinitions/749f88d5-cbae-40b8-bcfc-e573ddc772fa"
+    },
+    "principalId":{
+      "value": "58d600fd-a119-4bf9-bbca-3b22725e4ce5"
+    },
+    "managementGroupId": {
+      "value": "mg-contoso"
+    }
+  }
+}
