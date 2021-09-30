@@ -7,9 +7,9 @@ This template deploys Azure NetApp Files.
 |Resource Type|ApiVersion|
 |:--|:--|
 |`Microsoft.Resources/deployments`|2020-06-01|
-|`Microsoft.NetApp/netAppAccounts`|2020-08-01|
-|`Microsoft.NetApp/netAppAccounts/capacityPools`|2020-08-01|
-|`Microsoft.NetApp/netAppAccounts/capacityPools/volumes`|2020-08-01|
+|`Microsoft.NetApp/netAppAccounts`|2021-04-01|
+|`Microsoft.NetApp/netAppAccounts/capacityPools`|2021-04-01|
+|`Microsoft.NetApp/netAppAccounts/capacityPools/volumes`|2021-04-01|
 |`Microsoft.NetApp/netAppAccounts/providers/roleAssignments` | 2020-04-01-preview |
 |`providers/locks`|2016-09-01|
 
@@ -189,8 +189,8 @@ This module allows the generic deployment of SMB, NFSv3 and NFSv4.1 NetApp volum
 - [Use tags to organize your Azure resources](https://docs.microsoft.com/en-us/azure/azure-resource-manager/resource-group-using-tags)
 - [Azure Resource Manager template reference](https://docs.microsoft.com/en-us/azure/templates/)
 - [Deployments](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Resources/2020-06-01/deployments)
-- [NetAppAccountS](https://docs.microsoft.com/en-us/azure/templates/microsoft.netapp/2020-06-01/netappaccounts)
-- [NetAppAccountS/capacityPoolS](https://docs.microsoft.com/en-us/azure/templates/microsoft.netapp/2020-06-01/netappaccounts/capacitypools)
-- [NetAppAccountS/capacityPoolS/volumeS](https://docs.microsoft.com/en-us/azure/templates/microsoft.netapp/2020-06-01/netappaccounts/capacitypools/volumes)
+- [NetAppAccountS](https://docs.microsoft.com/en-us/azure/templates/microsoft.netapp/2021-04-01/netappaccounts)
+- [NetAppAccountS/capacityPoolS](https://docs.microsoft.com/en-us/azure/templates/microsoft.netapp/2021-04-01/netappaccounts/capacitypools)
+- [NetAppAccountS/capacityPoolS/volumeS](https://docs.microsoft.com/en-us/azure/templates/microsoft.netapp/2021-04-01/netappaccounts/capacitypools/volumes)
 - [Configure export policy for an NFS volume](https://docs.microsoft.com/en-us/azure/azure-netapp-files/azure-netapp-files-configure-export-policy)
 - [Troubleshoot Azure NetApp Files Resource Provider errors](https://docs.microsoft.com/en-us/azure/azure-netapp-files/azure-netapp-files-troubleshoot-resource-provider-errors)

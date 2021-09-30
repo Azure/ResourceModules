@@ -35,8 +35,8 @@
           "poolServiceLevel": "Premium",
           "poolSize": 4398046511104,
           "volumes": [
-            // NFS3 VOL
             {
+              // NFS3 VOL
               "poolVolumeName": "vol01-nfsv3",
               "creationToken": "vol01-nfsv3",
               "poolVolumeQuota": 107374182400,
@@ -53,8 +53,8 @@
                 // }
               ]
             },
-            // NFS41 VOL
             {
+              // NFS41 VOL
               "poolVolumeName": "vol01-nfsv41",
               "creationToken": "vol01-nfsv41",
               "poolVolumeQuota": 107374182400,
