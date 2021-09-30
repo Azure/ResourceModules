@@ -45,7 +45,7 @@ module roleDefinitionDeployment_mg './.bicep/nested_roleDefinitions_mg.bicep' = 
   }
 }
 
-module roleDefinitionDeployment_sub './.bicep/nested_roleDefinitions_sub.bicep' = if (!empty(managementGroupId) && empty(subscriptionId) && empty(resourceGroupName)) {
+module roleDefinitionDeployment_sub './.bicep/nested_roleDefinitions_sub.bicep' = if (empty(managementGroupId) && !empty(subscriptionId) && empty(resourceGroupName)) {
   name: 'roleDefinition-sub-${guid(roleName,subscriptionId,location)}'
   scope: subscription(subscriptionId)
   params: {
