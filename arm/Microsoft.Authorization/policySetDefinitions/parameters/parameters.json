@@ -6,10 +6,10 @@
         "value": "test-policySetExample"
       },
       "policySetDescription": {
-        "value": "[Test] Set of \"global\" security policies"
+        "value": "[Test] Set of security policies"
       },
       "displayName": {
-        "value": "[Test] contoso global security Policies"
+        "value": "[Test] contoso security Policies"
       },
       "policyDefinitionGroups": {
         "value": [
@@ -60,7 +60,7 @@
                 "value": "Audit"
               }
             },
-            "policyDefinitionId": "/providers/Microsoft.Management/managementGroups/mg-main/providers/Microsoft.Authorization/policyDefinitions/test-deny-keyvault-public-access",
+            "policyDefinitionId": "/providers/Microsoft.Management/managementGroups/mg-contoso/providers/Microsoft.Authorization/policyDefinitions/test-deny-keyvault-public-access",
             "policyDefinitionReferenceId": "test-deny-keyvault-public-access"
           }
         ]
@@ -68,7 +68,7 @@
       "metadata": {
         "value": {
           "category": "Security",
-          "version": "2"
+          "version": "1"
         }
       },
       "subscriptionId": {

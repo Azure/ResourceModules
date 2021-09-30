@@ -20,6 +20,9 @@
     },
     "identity": {
       "value": "None"
+    },
+    "managementGroupId": {
+      "value": "mg-main-preview"
     }
   }
 }
