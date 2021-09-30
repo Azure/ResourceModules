@@ -54,9 +54,6 @@ param notScopes array = []
 @description('Optional. Location for all resources.')
 param location string = deployment().location
 
-@description('Optional. Customer Usage Attribution id (GUID). This GUID must be previously registered')
-param cuaId string = ''
-
 var nonComplianceMessage_var = {
   message: (empty(nonComplianceMessage) ? 'null' : nonComplianceMessage)
 }
@@ -116,7 +113,6 @@ module policyAssignment_rg '.bicep/nested_policyAssignments_rg.bicep' = if (empt
     roleDefinitionIds: roleDefinitionIds
   }
 }
-
 
 output policyAssignmentName string = policyAssignmentName
 output policyAssignmentPrincipalId string = !empty(managementGroupId) ? policyAssignment_mg.outputs.policyAssignmentPrincipalId : (!empty(resourceGroupName) ? policyAssignment_rg.outputs.policyAssignmentPrincipalId : policyAssignment_sub.outputs.policyAssignmentPrincipalId)

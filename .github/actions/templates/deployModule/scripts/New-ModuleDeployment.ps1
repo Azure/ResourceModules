@@ -77,7 +77,8 @@ function New-ModuleDeployment {
         [Parameter(Mandatory = $false)]       
         [PSCustomObject]$additionalTags,
 
-        [Parameter(Mandatory = $false)]       
+        [Parameter(Mandatory = $false)]
+        [ValidateRange(1, 3)]       
         [int]$retryLimit = 3
     )
     
@@ -134,7 +135,7 @@ function New-ModuleDeployment {
                     $deploymentScope = "resourceGroup" 
                 }
                 else {
-                    $deploymentScope = $bicepScope.ToLower().Replace('targetscope = ', '').Replace("'",'').Trim()
+                    $deploymentScope = $bicepScope.ToLower().Replace('targetscope = ', '').Replace("'", '').Trim()
                 } 
             }
             else {
@@ -142,9 +143,9 @@ function New-ModuleDeployment {
                 $armSchema = (ConvertFrom-Json (Get-Content -Raw -Path $templateFilePath)).'$schema'
                 switch -regex ($armSchema) {
                     '\/deploymentTemplate.json#$' { $deploymentScope = "resourceGroup" }
-                    '\/subscriptionDeploymentTemplate.json#$'  { $deploymentScope = "subscription" }
-                    '\/managementGroupDeploymentTemplate.json#$'  { $deploymentScope = "managementGroup" }
-                    '\/tenantDeploymentTemplate.json#$'  { $deploymentScope = "tenant" }
+                    '\/subscriptionDeploymentTemplate.json#$' { $deploymentScope = "subscription" }
+                    '\/managementGroupDeploymentTemplate.json#$' { $deploymentScope = "managementGroup" }
+                    '\/tenantDeploymentTemplate.json#$' { $deploymentScope = "tenant" }
                     Default { throw "[$armSchema] is a non-supported ARM template schema" }
                 }
             }
@@ -215,8 +216,7 @@ function New-ModuleDeployment {
                     }
                 } 
             } 
-            while ($Stoploop -eq $false -or $retryCount -eq $retryLimit) 
-
+            until ($Stoploop -eq $true -or $retryCount -eq $retryLimit)
             Write-Verbose ($res | ConvertTo-Json | Out-String) -Verbose
         } 
     } 

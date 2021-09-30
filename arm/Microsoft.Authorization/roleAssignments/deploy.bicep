@@ -18,9 +18,6 @@ param managementGroupId string = ''
 @description('Optional. Location for all resources.')
 param location string = deployment().location
 
-@description('Optional. Customer Usage Attribution id (GUID). This GUID must be previously registered')
-param cuaId string = ''
-
 var builtInRoleNames = {
   'AcrDelete': '/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11'
   'AcrImageSigner': '/providers/Microsoft.Authorization/roleDefinitions/6cef56e8-d556-48e5-a04f-b8e64114680f'

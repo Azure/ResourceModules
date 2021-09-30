@@ -3,11 +3,9 @@ targetScope = 'subscription'
 param policyExemptionName string
 param properties object
 param subscriptionId string
-param location string = deployment().location
 
 resource policyExemption 'Microsoft.Authorization/policyExemptions@2020-07-01-preview' = {
   name: policyExemptionName
-  location: location
   properties: properties
 }
 

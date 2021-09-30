@@ -11,6 +11,11 @@
       "policyAssignmentId": {
         "value": "/providers/Microsoft.Management/managementGroups/mg-main/providers/Microsoft.Authorization/policyAssignments/test-enable-mmg-agent"
       },
+      "policyDefinitionReferenceIds": {
+        "value": [
+          "abfb7388-5bf4-4ad7-ba99-2cd2f41cebb9"
+        ]
+      },
       "exemptionCategory": {
         "value": "Waiver"
       },
@@ -22,8 +27,8 @@
       "expiresOn": {
         "value": "2023-10-02T03:57:00.000Z"
       },
-      "managementGroupId": {
-        "value": "mg-platform"
+      "subscriptionId": {
+        "value": "20d6fbfe-b049-471c-95af-1369d14d0d45"
       }
     }
   }

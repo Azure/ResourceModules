@@ -60,7 +60,7 @@
                 "value": "Audit"
               }
             },
-            "policyDefinitionId": "/providers/Microsoft.Management/managementGroups/mg-contoso/providers/Microsoft.Authorization/policyDefinitions/test-deny-keyvault-public-access",
+            "policyDefinitionId": "/providers/Microsoft.Management/managementGroups/mg-main/providers/Microsoft.Authorization/policyDefinitions/test-deny-keyvault-public-access",
             "policyDefinitionReferenceId": "test-deny-keyvault-public-access"
           }
         ]

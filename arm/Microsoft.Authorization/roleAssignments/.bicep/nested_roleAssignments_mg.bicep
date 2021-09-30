@@ -6,8 +6,7 @@ param managementGroupId string
 param location string = deployment().location
 
 resource roleAssignment 'Microsoft.Authorization/roleAssignments@2020-04-01-preview' = {
-  name: guid(managementGroupId, roleDefinitionId, principalId)
-  //location: location
+  name: guid(managementGroupId, location, roleDefinitionId, principalId)
   properties: {
     roleDefinitionId: roleDefinitionId
     principalId: principalId

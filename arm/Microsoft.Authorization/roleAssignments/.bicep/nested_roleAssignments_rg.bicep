@@ -8,7 +8,6 @@ param location string = resourceGroup().location
 
 resource roleAssignment 'Microsoft.Authorization/roleAssignments@2020-04-01-preview' = {
   name: guid(subscriptionId, resourceGroupName, location, roleDefinitionId, principalId)
-  location: location
   properties: {
     roleDefinitionId: roleDefinitionId
     principalId: principalId

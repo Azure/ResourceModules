@@ -38,12 +38,6 @@ param subscriptionId string = ''
 @description('Optional. The Target Scope for the Policy. The name of the resource group for the policy assignment')
 param resourceGroupName string = ''
 
-@description('Optional. Location for all resources.')
-param location string = deployment().location
-
-@description('Optional. Customer Usage Attribution id (GUID). This GUID must be previously registered')
-param cuaId string = ''
-
 var var_policyExemptionName = toLower(replace(policyExemptionName, ' ', '-'))
 var var_policyProperties = {
   displayName: (empty(displayName) ? json('null') : displayName)
@@ -60,7 +54,6 @@ module policyExemptions_mg './.bicep/nested_policyexemptions_mg.bicep' = if (!em
   scope: managementGroup(managementGroupId)
   params: {
     policyExemptionName: var_policyExemptionName
-    location: location
     properties: var_policyProperties
     managementGroupId: managementGroupId
   }
@@ -71,7 +64,6 @@ module policyExemptions_sub './.bicep/nested_policyexemptions_sub.bicep' = if (e
   scope: subscription(subscriptionId)
   params: {
     policyExemptionName: var_policyExemptionName
-    location: location
     properties: var_policyProperties
     subscriptionId: subscriptionId
   }
@@ -82,7 +74,6 @@ module policyExemptions_rg './.bicep/nested_policyexemptions_rg.bicep' = if (emp
   scope: resourceGroup(subscriptionId, resourceGroupName)
   params: {
     policyExemptionName: var_policyExemptionName
-    location: location
     properties: var_policyProperties
     subscriptionId: subscriptionId
   }
