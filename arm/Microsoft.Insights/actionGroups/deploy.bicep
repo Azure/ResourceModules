@@ -250,7 +250,7 @@ resource actionGroup 'microsoft.insights/actionGroups@2019-06-01' = {
   }
 }
 
-module app_rbac './.bicep/nested_rbac.bicep' = [for (item, index) in roleAssignments: {
+module actionGroup_rbac './.bicep/nested_rbac.bicep' = [for (item, index) in roleAssignments: {
   name: 'rbac-${deployment().name}${index}'
   params: {
     roleAssignment: item
