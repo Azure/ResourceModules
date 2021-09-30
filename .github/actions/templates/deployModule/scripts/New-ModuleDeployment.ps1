@@ -215,8 +215,7 @@ function New-ModuleDeployment {
                         $retryCount++
                     }
                 } 
-            } 
-            until ($Stoploop -eq $true -or $retryCount -eq $retryLimit)
+            } until ($Stoploop -eq $true -or $retryCount -eq $retryLimit)
             Write-Verbose ($res | ConvertTo-Json | Out-String) -Verbose
         } 
     } 
