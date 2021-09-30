@@ -168,7 +168,22 @@ resource automationAccount_diagnosticSettings 'Microsoft.Insights/diagnosticSett
   scope: automationAccount
 }
 
-///////////////////////////
+module automationAccount_runbooks './.bicep/nested_runbooks.bicep' = [for (runbook, index) in runbooks: {
+  name: 'runbook-${(empty(runbooks) ? 'dummy' : index)}'
+  params: {
+    runbookName: runbook.runbookName
+    runbookType: runbook.runbookType
+    runbookScriptUri: runbook.runbookScriptUri
+    scriptStorageAccountId: runbook.scriptStorageAccountId
+    accountSasProperties: accountSasProperties
+    version: runbook.version
+    automationAccountName: automationAccountName
+  }
+  dependsOn: [
+    automationAccount
+  ]
+}]
+
 module automationAccount_schedules './.bicep/nested_schedules.bicep' = [for (schedule, index) in schedules: {
   name: 'schedule-${(empty(schedules) ? 'dummy' : index)}'
   params: {
