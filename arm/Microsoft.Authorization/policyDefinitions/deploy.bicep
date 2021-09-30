@@ -55,7 +55,7 @@ var var_policyProperties = {
   policyRule: policyRule
 }
 
-module policyDefinitions_mg './.bicep/nested_policyDefinitions_mg.bicep' = if (empty(subscriptionId) && (!empty(managementGroupId))) {
+module policyDefinitions_mg './.bicep/nested_policyDefinitions_mg.bicep' = if (empty(subscriptionId) && !empty(managementGroupId)) {
   name: '${var_policyDefinitionName}-mgDeployment'
   scope: managementGroup(managementGroupId)
   params: {
@@ -67,7 +67,7 @@ module policyDefinitions_mg './.bicep/nested_policyDefinitions_mg.bicep' = if (e
   }
 }
 
-module policyDefinitions_sub './.bicep/nested_policyDefinitions_sub.bicep' = if (empty(managementGroupId) && (!empty(subscriptionId))) {
+module policyDefinitions_sub './.bicep/nested_policyDefinitions_sub.bicep' = if (empty(managementGroupId) && !empty(subscriptionId)) {
   name: '${var_policyDefinitionName}-subDeployment'
   scope: subscription(subscriptionId)
   params: {
@@ -80,5 +80,5 @@ module policyDefinitions_sub './.bicep/nested_policyDefinitions_sub.bicep' = if 
 }
 
 output policyDefinitionName string = var_policyDefinitionName
-output policyDefinitionId string = (!empty(managementGroupId)) ? policyDefinitions_mg.outputs.policyDefinitionId : policyDefinitions_sub.outputs.policyDefinitionId
-output roleDefinitionIds array = (!empty(managementGroupId)) ? policyDefinitions_mg.outputs.roleDefinitionIds : policyDefinitions_sub.outputs.roleDefinitionIds
+output policyDefinitionId string = !empty(managementGroupId) ? policyDefinitions_mg.outputs.policyDefinitionId : policyDefinitions_sub.outputs.policyDefinitionId
+output roleDefinitionIds array = !empty(managementGroupId) ? policyDefinitions_mg.outputs.roleDefinitionIds : policyDefinitions_sub.outputs.roleDefinitionIds

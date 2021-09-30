@@ -77,7 +77,7 @@ var var_identity = {
   type: identity
 }
 
-module policyAssignment_mg '.bicep/nested_policyAssignments_mg.bicep' = if ((!empty(managementGroupId) && empty(subscriptionId) && empty(resourceGroupName))) {
+module policyAssignment_mg '.bicep/nested_policyAssignments_mg.bicep' = if (!empty(managementGroupId) && empty(subscriptionId) && empty(resourceGroupName)) {
   name: '${var_policyAssignmentName}-policyAssignment_mg'
   scope: managementGroup(managementGroupId)
   params: {
@@ -90,7 +90,7 @@ module policyAssignment_mg '.bicep/nested_policyAssignments_mg.bicep' = if ((!em
   }
 }
 
-module policyAssignment_sub '.bicep/nested_policyAssignments_sub.bicep' = if (empty(managementGroupId) && (!empty(subscriptionId) && empty(resourceGroupName))) {
+module policyAssignment_sub '.bicep/nested_policyAssignments_sub.bicep' = if (empty(managementGroupId) && !empty(subscriptionId) && empty(resourceGroupName)) {
   name: '${var_policyAssignmentName}-policyAssignment_sub'
   scope: subscription(subscriptionId)
   params: {
@@ -103,7 +103,7 @@ module policyAssignment_sub '.bicep/nested_policyAssignments_sub.bicep' = if (em
   }
 }
 
-module policyAssignment_rg '.bicep/nested_policyAssignments_rg.bicep' = if (empty(managementGroupId) && !empty(resourceGroupName) && (!empty(subscriptionId))) {
+module policyAssignment_rg '.bicep/nested_policyAssignments_rg.bicep' = if (empty(managementGroupId) && !empty(resourceGroupName) && !empty(subscriptionId)) {
   name: '${var_policyAssignmentName}-policyAssignment_rg'
   scope: resourceGroup(subscriptionId, resourceGroupName)
   params: {
