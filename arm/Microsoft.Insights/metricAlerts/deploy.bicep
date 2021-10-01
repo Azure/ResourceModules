@@ -137,7 +137,7 @@ module metricAlert_rbac './.bicep/nested_rbac.bicep' = [for (item, index) in rol
   params: {
     roleAssignment: item
     builtInRoleNames: builtInRoleNames
-    resourceName: alertName
+    resourceName: metricAlert.name
   }
   dependsOn: [
     metricAlert
