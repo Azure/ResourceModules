@@ -31,7 +31,7 @@
         },
         "publicIpZones": {
             "type": "string",
-            "defaultValue": "1",
+            "defaultValue": "",
             "metadata": {
                 "description": "Optional. Specifies the zones of the Public IP address."
             }
