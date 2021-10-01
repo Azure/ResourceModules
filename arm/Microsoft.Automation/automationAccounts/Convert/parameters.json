@@ -17,6 +17,20 @@
     //         }
     //     ]
     // },
+    "modules": {
+      "value": [
+        {
+          "name": "OMSIngestionAPI",                                    // The module name.
+          "version": "latest",                                          // The module version or specify latest to get the latest version
+          "uri": "https://www.powershellgallery.com/api/v2/package"     // The module package uri, e.g. https://www.powershellgallery.com/api/v2/package
+        },
+        {
+          "name": "PackageManagement",                                  
+          "version": "latest",                                          
+          "uri": "https://www.powershellgallery.com/api/v2/package"     
+        }
+      ]
+    },
     "schedules": {
       "value": [
         {

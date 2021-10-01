@@ -1,5 +1,3 @@
-// PARAMETERS
-
 @description('Required. Name of the Automation Account')
 param automationAccountName string
 
@@ -13,18 +11,23 @@ param location string = resourceGroup().location
 @description('Optional. SKU name of the account')
 param skuName string = 'Basic'
 
-@minLength(0)
+@description('Optional. Modules to import into automation account')
+@metadata({
+  name: 'Module name'
+  version: 'Module version or specify latest to get the latest version'
+  uri: 'Module package uri, e.g. https://www.powershellgallery.com/api/v2/package'
+})
+param modules array = []
+
 @description('Optional. List of runbooks to be created in the automation account')
 param runbooks array = []
 
 @description('Optional. SAS token validity length. Usage: \'PT8H\' - valid for 8 hours; \'P5D\' - valid for 5 days; \'P1Y\' - valid for 1 year. When not provided, the SAS token will be valid for 8 hours.')
 param sasTokenValidityLength string = 'PT8H'
 
-@minLength(0)
 @description('Optional. List of schedules to be created in the automation account')
 param schedules array = []
 
-@minLength(0)
 @description('Optional. List of jobSchedules to be created in the automation account')
 param jobSchedules array = []
 
@@ -62,8 +65,6 @@ param baseTime string = utcNow('u')
 
 @description('Optional. Customer Usage Attribution id (GUID). This GUID must be previously registered')
 param cuaId string = ''
-
-// VARIABLES
 
 var accountSasProperties = {
   signedServices: 'b'
@@ -129,8 +130,6 @@ var builtInRoleNames = {
   'User Access Administrator': subscriptionResourceId('Microsoft.Authorization/roleDefinitions','18d7d88d-d35e-4fb5-a5c3-7773c20a72d9')
 }
 
-// RESOURCES
-
 module pid_cuaId './.bicep/nested_cuaId.bicep' = if (!empty(cuaId)) {
   name: 'pid-${cuaId}'
   params: {}
@@ -145,7 +144,50 @@ resource automationAccount 'Microsoft.Automation/automationAccounts@2020-01-13-p
       name: skuName
     }
   }
+
+  resource automationAccount_modules 'modules@2019-06-01' = [for (module, index) in modules: {
+    name: module.name
+    location: location
+    tags: tags
+    properties: {
+      contentLink: {
+        uri: module.version == 'latest' ? '${module.uri}/${module.name}' : '${module.uri}/${module.name}/${module.version}'
+        version: module.version == 'latest' ? null : module.version
+      }
+    }
+  }]
+
+  resource automationAccount_schedules 'schedules@2015-10-31' = [for (schedule, index) in schedules: {
+    name: schedule.scheduleName
+    properties: {
+      startTime: (empty(schedule.startTime) ? dateTimeAdd(baseTime, 'PT10M') : schedule.startTime)
+      frequency: (empty(schedule.frequency) ? json('null') : schedule.frequency)
+      expiryTime: (empty(schedule.expiryTime) ? json('null') : schedule.expiryTime)
+      interval: ((0 == schedule.interval) ? json('null') : schedule.interval)
+      timeZone: (empty(schedule.timeZone) ? json('null') : schedule.timeZone)
+      advancedSchedule: (empty(schedule.advancedSchedule) ? json('null') : schedule.advancedSchedule)
+    }
+  }]
 }
+
+
+// module automationAccount_schedules './.bicep/nested_schedules.bicep' = [for (schedule, index) in schedules: {
+//   name: 'schedule-${(empty(schedules) ? 'dummy' : index)}'
+//   params: {
+//     scheduleName: schedule.scheduleName
+//     startTime: schedule.startTime
+//     frequency: schedule.frequency
+//     expiryTime: schedule.expiryTime
+//     interval: schedule.interval
+//     timeZone: schedule.timeZone
+//     advancedSchedule: schedule.advancedSchedule
+//     automationAccountName: automationAccountName
+//     baseTime: baseTime
+//   }
+//   dependsOn: [
+//     automationAccount
+//   ]
+// }]
 
 resource automationAccount_lock 'Microsoft.Authorization/locks@2016-09-01' = if (lockForDeletion) {
   name: '${automationAccountName}-automationAccountDoNotDelete'
@@ -184,23 +226,23 @@ module automationAccount_runbooks './.bicep/nested_runbooks.bicep' = [for (runbo
   ]
 }]
 
-module automationAccount_schedules './.bicep/nested_schedules.bicep' = [for (schedule, index) in schedules: {
-  name: 'schedule-${(empty(schedules) ? 'dummy' : index)}'
-  params: {
-    scheduleName: schedule.scheduleName
-    startTime: schedule.startTime
-    frequency: schedule.frequency
-    expiryTime: schedule.expiryTime
-    interval: schedule.interval
-    timeZone: schedule.timeZone
-    advancedSchedule: schedule.advancedSchedule
-    automationAccountName: automationAccountName
-    baseTime: baseTime
-  }
-  dependsOn: [
-    automationAccount
-  ]
-}]
+
+
+// module automationAccount_jobSchedules './.bicep/nested_jobSchedules.bicep' = [for (jobSchedule, index) in jobSchedules: {
+//   name: 'jobschedule-${(empty(jobSchedules) ? 'dummy' : index)}'
+//   params: {
+//     jobScheduleName: jobSchedule.jobScheduleName
+//     parameters: jobSchedule.parameters
+//     runbookName: jobSchedule.runbookName
+//     runOn: jobSchedule.runOn
+//     scheduleName: jobSchedule.scheduleName
+//     automationAccountName: automationAccountName
+//   }
+//   dependsOn: [
+//     automationAccount_runbooks
+//     automationAccount_schedules
+//   ]
+// }]
 
 module automationAccount_privateEndpoints './.bicep/nested_privateEndpoint.bicep' = [for (endpoint, index) in privateEndpoints: if (!empty(privateEndpoints)) {
   name: '${uniqueString(deployment().name, location)}-Automation-PrivateEndpoints-${index}'
