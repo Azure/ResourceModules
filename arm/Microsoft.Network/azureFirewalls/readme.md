@@ -6,9 +6,9 @@ This module deploys Azure Firewall.
 
 |Resource Type|Api Version|
 |:--|:--|
-|`Microsoft.Network/publicIPAddresses`|2020-08-01|
+|`Microsoft.Network/publicIPAddresses`|2021-02-01|
 |`Microsoft.Network/publicIPAddresses/providers/diagnosticSettings`|2017-05-01-preview|
-|`Microsoft.Network/azureFirewalls`|2020-08-01|
+|`Microsoft.Network/azureFirewalls`|2021-02-01|
 |`Microsoft.Resources/deployments`|2019-10-01|
 |`Microsoft.Network/azureFirewalls/providers/diagnosticsettings`|2016-09-01|
 |`Microsoft.Network/azureFirewalls/providers/roleAssignments`|2018-09-01-preview|
@@ -108,5 +108,5 @@ The `networkRuleCollections` parameter accepts a JSON Array of AzureFirewallNetw
 
 ## Additional resources
 
-- [Microsoft.Network azureFirewalls template reference](https://docs.microsoft.com/en-us/azure/templates/microsoft.network/2020-05-01/azurefirewalls)
+- [Microsoft.Network azureFirewalls template reference](https://docs.microsoft.com/en-us/azure/templates/microsoft.network/2021-02-01/azurefirewalls)
 - [Use tags to organize your Azure resources](https://docs.microsoft.com/en-us/azure/azure-resource-manager/resource-group-using-tags)

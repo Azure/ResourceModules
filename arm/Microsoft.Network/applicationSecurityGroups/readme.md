@@ -8,7 +8,7 @@ This module deploys Application Security Groups.
 |Resource Type|Api Version| 
 |:--|:--|
 |`Microsoft.Resources/deployments`|2018-02-01|
-|`Microsoft.Network/applicationSecurityGroups`|2020-08-01|
+|`Microsoft.Network/applicationSecurityGroups`|2021-02-01|
 |`providers/locks`|2016-09-01|
 |`Microsoft.Network/applicationSecurityGroups/providers/roleAssignments`|2018-09-01-preview|
 

@@ -7,7 +7,7 @@ This module deploys an IP Group, with resource lock.
 |Resource Type|ApiVersion|
 |:--|:--|
 |`Microsoft.Network/ipGroups`|2020-08-01|
-|`Microsoft.Resources/deployments`|2020-06-01|
+|`Microsoft.Resources/deployments`|2021-02-01|
 |`providers/locks`|2016-09-01|
 |`Microsoft.Network/ipGroups/providers/roleAssignments`|2018-09-01-preview|
 
@@ -84,5 +84,5 @@ Tag names and tag values can be provided as needed. A tag can be left without a 
 ## Additional resources
 
 - [IP Groups in Azure Firewall](https://docs.microsoft.com/en-us/azure/firewall/ip-groups)
-- [Microsoft.Network ipGroups template reference](https://docs.microsoft.com/en-us/azure/templates/microsoft.network/2020-05-01/ipgroups)
+- [Microsoft.Network ipGroups template reference](https://docs.microsoft.com/en-us/azure/templates/microsoft.network/2021-02-01/ipgroups)
 - [Use tags to organize your Azure resources](https://docs.microsoft.com/en-us/azure/azure-resource-manager/resource-group-using-tags)

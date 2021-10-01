@@ -8,7 +8,7 @@ This template deploys Virtual Network Gateway Connection.
 |Resource Type|ApiVersion|
 |:--|:--|
 |`Microsoft.Resources/deployments`|2018-02-01|
-|`Microsoft.Network/connections`|2020-08-01|
+|`Microsoft.Network/connections`|2021-02-01|
 |`providers/locks`|2016-09-01|
 
 ## Parameters
@@ -98,5 +98,5 @@ Tag names and tag values can be provided as needed. A tag can be left without a 
 
 ## Additional resources
 
-- [Microsoft.Network connections template reference](https://docs.microsoft.com/en-us/azure/templates/microsoft.network/2018-11-01/connections)
+- [Microsoft.Network connections template reference](https://docs.microsoft.com/en-us/azure/templates/microsoft.network/2021-02-01/connections)
 - [Use tags to organize your Azure resources](https://docs.microsoft.com/en-us/azure/azure-resource-manager/resource-group-using-tags)
