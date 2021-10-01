@@ -29,13 +29,6 @@
                 "description": "Optional. Resource Id of the Public IP Prefix object. This is only needed if you want your Public IPs created in a PIP Prefix."
             }
         },
-        "publicIpZones": {
-            "type": "string",
-            "defaultValue": "1,2,3",
-            "metadata": {
-                "description": "Optional. Specifies the zones of the Public IP address."
-            }
-        },
         "domainNameLabel": {
             "type": "array",
             "defaultValue": [
@@ -592,7 +585,6 @@
                 "publicIPPrefix": "[if(not(empty(parameters('publicIPPrefixId'))), variables('publicIPPrefix'), json('null'))]",
                 "dnsSettings": "[if(equals(length(variables('gatewayPipName')),length(parameters('domainNameLabel'))), json(concat('{\"domainNameLabel\": \"', parameters('domainNameLabel')[copyindex()], '\"}')), json('null'))]"
             },
-            "zones": ["[parameters('publicIpZones')]"],
             "resources": [
                 {
                     "type": "providers/locks",
