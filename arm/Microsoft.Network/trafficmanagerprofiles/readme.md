@@ -22,7 +22,7 @@ This module deploys Traffic Manager, with resource lock.
 | `endpoints` | array | Optional. The list of endpoints in the Traffic Manager profile. | System.Object[] |  |
 | `eventHubAuthorizationRuleId` | string | Optional. Resource ID of the event hub authorization rule for the Event Hubs namespace in which the event hub should be created or streamed to. |  |  |
 | `eventHubName` | string | Optional. Name of the event hub within the namespace to which logs are streamed. Without this, an event hub is created for each log category. |  |  |
-| `location` | string  | Optional. Location for diagnostics settings only. Traffic manager will always be deployed globally. | `resourceGroup().location` |  |
+| `diagnosticsLocation` | string  | Optional. Location for diagnostics settings only. Traffic manager will always be deployed globally. | `resourceGroup().location` |  |
 | `lockForDeletion` | bool | Optional. Switch to lock Traffic Manager from deletion. | False |  |
 | `maxReturn` | int | Optional. Maximum number of endpoints to be returned for MultiValue routing type. | 1 | |
 | `monitorConfig` | object | Optional. The endpoint monitoring settings of the Traffic Manager profile. | protocol=http; port=80; path=/ |  |

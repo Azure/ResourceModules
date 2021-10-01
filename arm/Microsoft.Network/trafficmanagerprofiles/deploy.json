@@ -9,7 +9,7 @@
                 "description": "Required. Name of the Traffic Manager"
             }
         },
-        "location": {
+        "diagnosticsLocation": {
             "type": "string",
             "defaultValue": "[resourceGroup().location]",
             "metadata": {
@@ -396,7 +396,7 @@
                     "type": "Microsoft.Network/trafficmanagerprofiles/providers/diagnosticsettings",
                     "apiVersion": "2017-05-01-preview",
                     "name": "[concat(parameters('trafficManagerName'), '/Microsoft.Insights/service')]",
-                    "location": "[parameters('location')]",
+                    "location": "[parameters('diagnosticsLocation')]",
                     "condition": "[or(not(empty(parameters('diagnosticStorageAccountId'))),not(empty(parameters('workspaceId'))),not(empty(parameters('eventHubAuthorizationRuleId'))),not(empty(parameters('eventHubName'))))]",
                     "dependsOn": [
                         "[concat('Microsoft.Network/trafficmanagerprofiles/', parameters('trafficManagerName'))]"
