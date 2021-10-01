@@ -31,4 +31,4 @@ resource roleDefinition 'Microsoft.Authorization/roleDefinitions@2018-01-01-prev
 }
 
 output roleDefinitionScope string = resourceGroup().id
-output roleDefintionId string = roleDefinition.id
+output roleDefinitionId string = roleDefinition.id

@@ -3,15 +3,6 @@ targetScope = 'managementGroup'
 @description('Required. Name of the custom RBAC role to be created.')
 param roleName string
 
-@description('Optional. The ID of the Management Group where the Role Definition and Target Scope will be applied to. Cannot use when Subscription or Resource Groups Parameters are used.')
-param managementGroupId string = ''
-
-@description('Optional. The Subscription ID where the Role Definition and Target Scope will be applied to. Use for both Subscription level and Resource Group Level.')
-param subscriptionId string = ''
-
-@description('Optional. The name of the Resource Group where the Role Definition and Target Scope will be applied to.')
-param resourceGroupName string = ''
-
 @description('Optional. Description of the custom RBAC role to be created.')
 param roleDescription string = ''
 
@@ -26,6 +17,15 @@ param dataActions array = []
 
 @description('Optional. List of denied data actions.')
 param notDataActions array = []
+
+@description('Optional. The ID of the Management Group where the Role Definition and Target Scope will be applied to. Cannot use when Subscription or Resource Groups Parameters are used.')
+param managementGroupId string = ''
+
+@description('Optional. The Subscription ID where the Role Definition and Target Scope will be applied to. Use for both Subscription level and Resource Group Level.')
+param subscriptionId string = ''
+
+@description('Optional. The name of the Resource Group where the Role Definition and Target Scope will be applied to.')
+param resourceGroupName string = ''
 
 @description('Optional. Location for all resources.')
 param location string = deployment().location
@@ -76,5 +76,5 @@ module roleDefinitionDeployment_rg './.bicep/nested_roleDefinitions_rg.bicep' = 
   }
 }
 
-output roleDefintionId string = !empty(managementGroupId) ? roleDefinitionDeployment_mg.outputs.roleDefintionId : (!empty(resourceGroupName) ? roleDefinitionDeployment_rg.outputs.roleDefintionId : roleDefinitionDeployment_sub.outputs.roleDefintionId)
+output roleDefinitionId string = !empty(managementGroupId) ? roleDefinitionDeployment_mg.outputs.roleDefinitionId : (!empty(resourceGroupName) ? roleDefinitionDeployment_rg.outputs.roleDefinitionId : roleDefinitionDeployment_sub.outputs.roleDefinitionId)
 output roleDefinitionScope string = !empty(managementGroupId) ? roleDefinitionDeployment_mg.outputs.roleDefinitionScope : (!empty(resourceGroupName) ? roleDefinitionDeployment_rg.outputs.roleDefinitionScope : roleDefinitionDeployment_sub.outputs.roleDefinitionScope)

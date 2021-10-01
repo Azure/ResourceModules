@@ -30,4 +30,4 @@ resource roleDefinition 'Microsoft.Authorization/roleDefinitions@2018-01-01-prev
 }
 
 output roleDefinitionScope string = tenantResourceId('Microsoft.Management/managementGroups',managementGroupId)
-output roleDefintionId string = extensionResourceId(tenantResourceId('Microsoft.Management/managementGroups',managementGroupId),'Microsoft.Authorization/roleDefinitions',roleDefinition.name)
+output roleDefinitionId string = extensionResourceId(tenantResourceId('Microsoft.Management/managementGroups',managementGroupId),'Microsoft.Authorization/roleDefinitions',roleDefinition.name)

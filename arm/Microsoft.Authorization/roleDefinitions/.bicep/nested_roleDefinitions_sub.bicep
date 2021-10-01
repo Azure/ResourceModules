@@ -30,4 +30,4 @@ resource roleDefinition 'Microsoft.Authorization/roleDefinitions@2018-01-01-prev
 }
 
 output roleDefinitionScope string = subscription().id
-output roleDefintionId string = subscriptionResourceId(subscriptionId,'Microsoft.Authorization/roleDefinitions',roleDefinition.name)
+output roleDefinitionId string = subscriptionResourceId(subscriptionId,'Microsoft.Authorization/roleDefinitions',roleDefinition.name)
