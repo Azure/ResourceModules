@@ -8,7 +8,7 @@ This template deploys a DDoS protection plan.
 |Resource Type|Api Version|
 |:--|:--|
 |`Microsoft.Resources/deployments`|2018-02-01|
-|`Microsoft.Network/ddosProtectionPlans`|2020-08-01|
+|`Microsoft.Network/ddosProtectionPlans`|2021-02-01|
 |`providers/locks`|2016-09-01|
 |`Microsoft.Network/ddosProtectionPlans/providers/roleAssignments`|2018-09-01-preview|
 
