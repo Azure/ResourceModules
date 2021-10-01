@@ -6,8 +6,7 @@
             "value": "sxx-az-diag-weu-x-001"
         },
         "workspaceId": {
-            "value": "/subscriptions/1e5e92b9-986e-42ca-9654-5e41240f8806/resourceGroups/s001-log/providers/microsoft.operationalinsights/workspaces/s001-log"
-            // "value": "/subscriptions/8629be3b-96bc-482d-a04b-ffff597c65a2/resourcegroups/dependencies-rg/providers/microsoft.operationalinsights/workspaces/sxx-az-la-weu-x-003"
+            "value": "/subscriptions/8629be3b-96bc-482d-a04b-ffff597c65a2/resourcegroups/dependencies-rg/providers/microsoft.operationalinsights/workspaces/sxx-az-la-weu-x-003"
         }
     }
 }
