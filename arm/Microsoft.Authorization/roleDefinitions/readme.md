@@ -30,16 +30,7 @@ This module deploys custom RBAC Role Definitions.
 | `roleDefinitionId` | string | The id of the role definition that was created. |
 | `roleDefinitionScope` | string | The scope this definition was created on. |
 
-## Modules
-
-The following 
-
-|`deploy.bicep`
-	|`nested_roleDefinitions_mg.bicep`
-	|`nested_roleDefinitions_sub.bicep`
-	|`nested_roleDefinitions_rg.bicep`
-
-### Modules Details
+## Modules Structure
 
 | Module                             | Level | Type        | Target Scope     |
 | :--------------------------------- | :---- | ----------- | :--------------- |
