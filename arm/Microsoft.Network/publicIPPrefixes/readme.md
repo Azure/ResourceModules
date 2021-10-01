@@ -7,7 +7,7 @@ This template deploys Public IP Prefixes.
 |Resource Type|ApiVersion|
 |:--|:--|
 |`Microsoft.Resources/deployments`|2018-02-01|
-|`Microsoft.Network/publicIPPrefixes`|2020-08-01|
+|`Microsoft.Network/publicIPPrefixes`|2021-02-01|
 |`providers/locks`|2016-09-01|
 |`Microsoft.Network/publicIPPrefixes/providers/roleAssignments`|2018-09-01-preview|
 
@@ -84,4 +84,5 @@ Tag names and tag values can be provided as needed. A tag can be left without a 
 ## Additional resources
 
 - [Public IP address prefix](https://docs.microsoft.com/en-us/azure/virtual-network/public-ip-address-prefix)
+- [Template reference](https://docs.microsoft.com/en-us/azure/templates/microsoft.network/2021-02-01/publicipprefixes)
 - [Use tags to organize your Azure resources](https://docs.microsoft.com/en-us/azure/azure-resource-manager/resource-group-using-tags)
