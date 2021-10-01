@@ -8,7 +8,7 @@ This template deploys Virtual Network Gateway Connection.
 |Resource Type|ApiVersion|
 |:--|:--|
 |`Microsoft.Resources/deployments`|2018-02-01|
-|`Microsoft.Network/connections`|2020-08-01|
+|`Microsoft.Network/connections`|2021-02-01|
 |`providers/locks`|2016-09-01|
 
 ## Parameters
