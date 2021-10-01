@@ -168,26 +168,36 @@ resource automationAccount 'Microsoft.Automation/automationAccounts@2020-01-13-p
       advancedSchedule: (empty(schedule.advancedSchedule) ? json('null') : schedule.advancedSchedule)
     }
   }]
+
+  resource automationAccount_runbooks 'runbooks@2018-06-30' = [for (runbook, index) in runbooks: {
+    name: runbook.runbookName
+    properties: {
+      runbookType: (empty(runbook.runbookType) ? json('null') : runbook.runbookType)
+      publishContentLink: {
+        uri: (empty(runbook.runbookScriptUri) ? json('null') : (empty(runbook.scriptStorageAccountId) ? 'runbook.runbookScriptUri' : 'runbook.runbookScriptUri${listAccountSas(runbook.scriptStorageAccountId, '2019-04-01', accountSasProperties).accountSasToken}'))
+        version: (empty(runbook.version) ? json('null') : runbook.version)
+      }
+    }
+  }]
+
+  resource automationAccount_jobSchedules 'jobSchedules@2015-10-31' = [for (jobSchedule, index) in jobSchedules: {
+    name: jobSchedule.jobScheduleName
+    properties: {
+      parameters: (empty(jobSchedule.parameters) ? json('null') : jobSchedule.parameters)
+      runbook: {
+        name: jobSchedule.runbookName
+      }
+      runOn: (empty(jobSchedule.runOn) ? json('null') : jobSchedule.runOn)
+      schedule: {
+        name: jobSchedule.scheduleName
+      }
+    }
+    dependsOn: [
+      automationAccount_schedules
+      automationAccount_runbooks
+    ]
+  }]
 }
-
-
-// module automationAccount_schedules './.bicep/nested_schedules.bicep' = [for (schedule, index) in schedules: {
-//   name: 'schedule-${(empty(schedules) ? 'dummy' : index)}'
-//   params: {
-//     scheduleName: schedule.scheduleName
-//     startTime: schedule.startTime
-//     frequency: schedule.frequency
-//     expiryTime: schedule.expiryTime
-//     interval: schedule.interval
-//     timeZone: schedule.timeZone
-//     advancedSchedule: schedule.advancedSchedule
-//     automationAccountName: automationAccountName
-//     baseTime: baseTime
-//   }
-//   dependsOn: [
-//     automationAccount
-//   ]
-// }]
 
 resource automationAccount_lock 'Microsoft.Authorization/locks@2016-09-01' = if (lockForDeletion) {
   name: '${automationAccountName}-automationAccountDoNotDelete'
@@ -210,40 +220,6 @@ resource automationAccount_diagnosticSettings 'Microsoft.Insights/diagnosticSett
   scope: automationAccount
 }
 
-module automationAccount_runbooks './.bicep/nested_runbooks.bicep' = [for (runbook, index) in runbooks: {
-  name: 'runbook-${(empty(runbooks) ? 'dummy' : index)}'
-  params: {
-    runbookName: runbook.runbookName
-    runbookType: runbook.runbookType
-    runbookScriptUri: runbook.runbookScriptUri
-    scriptStorageAccountId: runbook.scriptStorageAccountId
-    accountSasProperties: accountSasProperties
-    version: runbook.version
-    automationAccountName: automationAccountName
-  }
-  dependsOn: [
-    automationAccount
-  ]
-}]
-
-
-
-// module automationAccount_jobSchedules './.bicep/nested_jobSchedules.bicep' = [for (jobSchedule, index) in jobSchedules: {
-//   name: 'jobschedule-${(empty(jobSchedules) ? 'dummy' : index)}'
-//   params: {
-//     jobScheduleName: jobSchedule.jobScheduleName
-//     parameters: jobSchedule.parameters
-//     runbookName: jobSchedule.runbookName
-//     runOn: jobSchedule.runOn
-//     scheduleName: jobSchedule.scheduleName
-//     automationAccountName: automationAccountName
-//   }
-//   dependsOn: [
-//     automationAccount_runbooks
-//     automationAccount_schedules
-//   ]
-// }]
-
 module automationAccount_privateEndpoints './.bicep/nested_privateEndpoint.bicep' = [for (endpoint, index) in privateEndpoints: if (!empty(privateEndpoints)) {
   name: '${uniqueString(deployment().name, location)}-Automation-PrivateEndpoints-${index}'
   params: {
@@ -257,8 +233,8 @@ module automationAccount_privateEndpoints './.bicep/nested_privateEndpoint.bicep
   ]
 }]
 
-module automationAccount_rbac './.bicep/nested_rbac.bicep' = [for (item, i) in roleAssignments: {
-  name: 'rbac-${deployment().name}${i}'
+module automationAccount_rbac './.bicep/nested_rbac.bicep' = [for (item, index) in roleAssignments: {
+  name: 'rbac-${deployment().name}${index}'
   params: {
     roleAssignment: item
     builtInRoleNames: builtInRoleNames

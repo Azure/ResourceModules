@@ -6,17 +6,16 @@
       // "value": "sxx-wd-aut-weu-x-001"
       "value": "sxx-wd-aut-weu-x-bicep-001"
     },
-    // "roleAssignments": {
-    //     "value": [
-    //         {
-    //             "roleDefinitionIdOrName": "Desktop Virtualization User",
-    //             "principalIds": [
-    //                 "12345678-1234-1234-1234-123456789012", // object 1
-    //                 "78945612-1234-1234-1234-123456789012" // object 2
-    //             ]
-    //         }
-    //     ]
-    // },
+    "roleAssignments": {
+        "value": [
+            {
+                "roleDefinitionIdOrName": "Reader",
+                "principalIds": [
+                    "9a3c5d32-1219-4623-b198-09959936ba38" 
+                ]
+            }
+        ]
+    },
     "modules": {
       "value": [
         {
