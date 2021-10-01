@@ -348,7 +348,7 @@
         {
             "condition": "[not(empty(parameters('cuaId')))]",
             "type": "Microsoft.Resources/deployments",
-            "apiVersion": "2021-01-01",
+            "apiVersion": "2021-04-01",
             "name": "[concat('pid-', parameters('cuaId'))]",
             "properties": {
                 "mode": "Incremental",
@@ -363,7 +363,7 @@
         {
             "name": "[parameters('trafficManagerName')]",
             "type": "Microsoft.Network/trafficmanagerprofiles",
-            "apiVersion": "2018-04-01",
+            "apiVersion": "2018-08-01",
             "tags": "[parameters('tags')]",
             "location": "global",
             "properties": {
@@ -414,7 +414,7 @@
         },
         {
             "name": "[concat('rbac-',deployment().name, copyIndex())]",
-            "apiVersion": "2019-10-01",
+            "apiVersion": "2021-04-01",
             "type": "Microsoft.Resources/deployments",
             "condition": "[not(empty(parameters('roleAssignments')))]",
             "dependsOn": [

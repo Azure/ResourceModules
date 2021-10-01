@@ -6,8 +6,8 @@ This module deploys Traffic Manager, with resource lock.
 
 | Resource Type | Api Version |
 | :-- | :-- |
-| `Microsoft.Resources/deployments` | 2020-06-01 |
-| `Microsoft.Network/trafficmanagerprofiles` | 2018-04-01 |
+| `Microsoft.Resources/deployments` | 2021-04-01 |
+| `Microsoft.Network/trafficmanagerprofiles` | 2018-08-01 |
 | `Microsoft.Network/trafficmanagerprofiles/providers/diagnosticsettings` | 2017-05-01-preview |
 | `Microsoft.Network/trafficmanagerprofiles/providers/roleAssignments` | 2018-09-01-preview |
 | `providers/locks` |
@@ -135,5 +135,5 @@ Tag names and tag values can be provided as needed. A tag can be left without a 
 ## Additional resources
 
 - [What is Traffic Manager?](https://docs.microsoft.com/en-us/azure/traffic-manager/traffic-manager-overview)
-- [Microsoft.Network/trafficmanagerprofiles template reference](https://docs.microsoft.com/en-us/azure/templates/microsoft.network/2018-04-01/trafficmanagerprofiles)
+- [Microsoft.Network/trafficmanagerprofiles template reference](https://docs.microsoft.com/en-us/azure/templates/microsoft.network/2018-08-01/trafficmanagerprofiles)
 - [Use tags to organize your Azure resources](https://docs.microsoft.com/en-us/azure/azure-resource-manager/resource-group-using-tags)
