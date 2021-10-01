@@ -7,7 +7,7 @@ This module deploys Local Network Gateway, with resource lock.
 |Resource Type|ApiVersion|
 |:--|:--|
 |`Microsoft.Resources/deployments`|2018-02-01|
-|`Microsoft.Network/localNetworkGateways`|2020-08-01|
+|`Microsoft.Network/localNetworkGateways`|2021-02-01|
 |`providers/locks`|2016-09-01|
 |`Microsoft.Network/localNetworkGateways/providers/roleAssignments`|2018-09-01-preview|
 
@@ -90,3 +90,4 @@ Tag names and tag values can be provided as needed. A tag can be left without a 
 
 - [What is VPN Gateway?](https://docs.microsoft.com/en-us/azure/vpn-gateway/vpn-gateway-about-vpngateways)
 - [Use tags to organize your Azure resources](https://docs.microsoft.com/en-us/azure/azure-resource-manager/resource-group-using-tags)
+- [Microsoft.Network localnetworkgateways template reference](https://docs.microsoft.com/en-us/azure/templates/microsoft.network/2021-02-01/localnetworkgateways)
