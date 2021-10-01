@@ -7,8 +7,8 @@ This module deploys an Azure Bastion.
 |Resource Type|Api Version|
 |:--|:--|
 |`Microsoft.Resources/deployments`|2018-02-01|
-|`Microsoft.Network/publicIPAddresses`|2020-08-01|
-|`Microsoft.Network/bastionHosts`|2020-08-01|
+|`Microsoft.Network/publicIPAddresses`|2021-02-01|
+|`Microsoft.Network/bastionHosts`|2021-02-01|
 |`providers/locks`|2016-09-01|
 |`Microsoft.Network/publicIPAddresses/providers/diagnosticSettings`|2017-05-01-preview|
 |`Microsoft.Network/bastionHosts/providers/diagnosticSettings`|2017-05-01-preview|
