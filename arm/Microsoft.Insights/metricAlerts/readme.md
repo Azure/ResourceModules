@@ -165,7 +165,7 @@ Tag names and tag values can be provided as needed. A tag can be left without a 
 
 | Output Name | Type | Description |
 | :-- | :-- | :-- |
-| `alertName` | string | The name of the created database. |
+| `metricAlertName` | string | The name of the created database. |
 | `deploymentResourceGroup` | string | The name of the Resource Group the Resource was created in. |
 | `metricAlertResourceId` | string | The Resource Id of the Alert deployed. |
 
