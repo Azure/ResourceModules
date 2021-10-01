@@ -422,7 +422,7 @@
         {
             "name": "[variables('azureFirewallPipName')]",
             "type": "Microsoft.Network/publicIPAddresses",
-            "apiVersion": "2020-08-01",
+            "apiVersion": "2021-02-01",
             "location": "[parameters('location')]",
             "tags": "[parameters('tags')]",
             "sku": {
@@ -470,7 +470,7 @@
         },
         {
             "type": "Microsoft.Network/azureFirewalls",
-            "apiVersion": "2020-08-01",
+            "apiVersion": "2021-02-01",
             "name": "[parameters('azureFirewallName')]",
             "location": "[parameters('location')]",
             "zones": "[if(equals(length(parameters('availabilityZones')), 0), json('null'), parameters('availabilityZones'))]",
