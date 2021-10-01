@@ -244,3 +244,11 @@ module automationAccount_rbac './.bicep/nested_rbac.bicep' = [for (item, index) 
     automationAccount
   ]
 }]
+
+output automationAccountResourceId string = automationAccount.id
+output automationAccountResourceGroup string = resourceGroup().name
+output automationAccountName string = automationAccountName
+output modules array = modules
+output schedules array = schedules
+output jobSchedules array = jobSchedules
+output runbooks array = runbooks
