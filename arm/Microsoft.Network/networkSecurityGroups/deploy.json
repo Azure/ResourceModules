@@ -238,7 +238,7 @@
         },
         {
             "type": "Microsoft.Network/networkSecurityGroups",
-            "apiVersion": "2020-08-01",
+            "apiVersion": "2021-02-01",
             "name": "[parameters('networkSecurityGroupName')]",
             "location": "[parameters('location')]",
             "tags": "[parameters('tags')]",
@@ -404,7 +404,7 @@
                         {
                             "name": "[parameters('flowLogName')]",
                             "type": "Microsoft.Network/networkWatchers/flowLogs",
-                            "apiVersion": "2020-05-01",
+                            "apiVersion": "2021-02-01",
                             "location": "[parameters('location')]",
                             "tags": "[parameters('tags')]",
                             "properties": {
