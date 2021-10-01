@@ -94,7 +94,7 @@ Tag names and tag values can be provided as needed. A tag can be left without a 
 
 ## Additional resources
 
-- [Microsoft.Network bastionHosts template reference](https://docs.microsoft.com/en-us/azure/templates/microsoft.network/2019-09-01/bastionhosts)
+- [Microsoft.Network bastionHosts template reference](https://docs.microsoft.com/en-us/azure/templates/microsoft.network/2021-02-01/bastionhosts)
 - [What is Azure Bastion?](https://docs.microsoft.com/en-us/azure/bastion/bastion-overview)
 - [Public IP address prefix](https://docs.microsoft.com/en-us/azure/virtual-network/public-ip-address-prefix)
 - [Use tags to organize your Azure resources](https://docs.microsoft.com/en-us/azure/azure-resource-manager/resource-group-using-tags)

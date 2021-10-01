@@ -108,5 +108,5 @@ The `networkRuleCollections` parameter accepts a JSON Array of AzureFirewallNetw
 
 ## Additional resources
 
-- [Microsoft.Network azureFirewalls template reference](https://docs.microsoft.com/en-us/azure/templates/microsoft.network/2020-05-01/azurefirewalls)
+- [Microsoft.Network azureFirewalls template reference](https://docs.microsoft.com/en-us/azure/templates/microsoft.network/2021-02-01/azurefirewalls)
 - [Use tags to organize your Azure resources](https://docs.microsoft.com/en-us/azure/azure-resource-manager/resource-group-using-tags)

@@ -83,7 +83,7 @@ N/A
 
 ## Additional resources
 
-- [Microsoft.Network ddosProtectionPlans template reference](https://docs.microsoft.com/en-us/azure/templates/microsoft.network/2019-04-01/ddosprotectionplans)
+- [Microsoft.Network ddosProtectionPlans template reference](https://docs.microsoft.com/en-us/azure/templates/microsoft.network/2021-02-01/ddosprotectionplans)
 - [Manage Azure DDoS Protection Standard using the Azure portal](https://docs.microsoft.com/en-us/azure/virtual-network/manage-ddos-protection)
 - [Azure DDoS Protection Standard overview](https://docs.microsoft.com/en-us/azure/virtual-network/ddos-protection-overview)
 - [Use tags to organize your Azure resources](https://docs.microsoft.com/en-us/azure/azure-resource-manager/resource-group-using-tags)
