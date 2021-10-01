@@ -8,8 +8,8 @@ This module deploys a Virtual Network Gateway.
 |Resource Type|ApiVersion|
 |:--|:--|
 |`Microsoft.Resources/deployments`|2018-02-01|
-|`Microsoft.Network/publicIPAddresses`|2020-08-01|
-|`Microsoft.Network/virtualNetworkGateways`|2020-08-01|
+|`Microsoft.Network/publicIPAddresses`|2021-02-01|
+|`Microsoft.Network/virtualNetworkGateways`|2021-02-01|
 |`Microsoft.Network/publicIPAddresses/providers/diagnosticSettings`|2017-05-01-preview|
 |`providers/locks`|2016-09-01|
 |`Microsoft.Network/virtualNetworkGateways/providers/diagnosticSettings`|2017-05-01-preview|
@@ -137,7 +137,7 @@ Tag names and tag values can be provided as needed. A tag can be left without a 
 
 ## Additional resources
 
-- [Microsoft.Network virtualNetworkGateways template reference](https://docs.microsoft.com/en-us/azure/templates/microsoft.network/2018-11-01/virtualnetworkgateways)
+- [Microsoft.Network virtualNetworkGateways template reference](https://docs.microsoft.com/en-us/azure/templates/microsoft.network/2021-02-01/virtualnetworkgateways)
 - [What is VPN Gateway?](https://docs.microsoft.com/en-us/azure/vpn-gateway/vpn-gateway-about-vpngateways)
 - [ExpressRoute virtual network gateway and FastPath](https://docs.microsoft.com/en-us/azure/expressroute/expressroute-about-virtual-network-gateways)
 - [Public IP address prefix](https://docs.microsoft.com/en-us/azure/virtual-network/public-ip-address-prefix)

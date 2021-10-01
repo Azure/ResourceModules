@@ -568,7 +568,7 @@
         },
         {
             "type": "Microsoft.Network/publicIPAddresses",
-            "apiVersion": "2020-08-01",
+            "apiVersion": "2021-02-01",
             "name": "[variables('gatewayPipName')[copyindex()]]",
             "location": "[parameters('location')]",
             "tags": "[parameters('tags')]",
@@ -622,7 +622,7 @@
         },
         {
             "type": "Microsoft.Network/virtualNetworkGateways",
-            "apiVersion": "2020-08-01",
+            "apiVersion": "2021-02-01",
             "name": "[parameters('virtualNetworkGatewayName')]",
             "location": "[parameters('location')]",
             "tags": "[parameters('tags')]",
