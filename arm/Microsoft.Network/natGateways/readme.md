@@ -7,9 +7,9 @@ This module deploys a NAT Gateway.
 | Resource Type | Api Version |
 | :-- | :-- |
 | `Microsoft.Network/bastionHosts/providers/roleAssignments` | 2018-09-01-preview |
-| `Microsoft.Network/natGateways` | 2020-08-01 |
+| `Microsoft.Network/natGateways` | 2021-02-01 |
 | `Microsoft.Network/publicIPAddresses/providers/diagnosticSettings` | 2017-05-01-preview |
-| `Microsoft.Network/publicIPAddresses` | 2020-08-01 |
+| `Microsoft.Network/publicIPAddresses` | 2021-02-01 |
 | `Microsoft.Resources/deployments` | 2020-06-01 |
 | `providers/locks` | 2016-09-01 |
 
@@ -104,13 +104,13 @@ Tag names and tag values can be provided as needed. A tag can be left without a 
 #### Template references
 
 - [Deployments](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Resources/2020-06-01/deployments)
-- [PublicIPAddresses](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Network/2020-05-01/publicIPAddresses)
-- [NatGateways](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Network/2020-05-01/natGateways)
+- [PublicIPAddresses](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Network/2021-02-01/publicIPAddresses)
+- [NatGateways](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Network/2021-02-01/natGateways)
 - [Deployments](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Resources/2020-06-01/deployments)
 
 ## Additional resources
 
 - [Deployments](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Resources/2020-06-01/deployments)
-- [PublicIPAddresses](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Network/2020-05-01/publicIPAddresses)
-- [NatGateways](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Network/2020-05-01/natGateways)
+- [PublicIPAddresses](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Network/2021-02-01/publicIPAddresses)
+- [NatGateways](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Network/2021-02-01/natGateways)
 - [Deployments](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Resources/2020-06-01/deployments)
