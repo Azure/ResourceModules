@@ -30,8 +30,8 @@
             }
         },
         "publicIpZones": {
-            "type": "array",
-            "defaultValue": ["1"],
+            "type": "string",
+            "defaultValue": "1",
             "metadata": {
                 "description": "Optional. Specifies the zones of the Public IP address."
             }
