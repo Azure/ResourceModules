@@ -17,12 +17,13 @@
         //    "value": [
         //        {
         //            "actionGroupId": "/subscriptions/1e5e92b9-986e-42ca-9654-5e41240f8806/resourceGroups/validation-rg/providers/microsoft.insights/actionGroups/sxx-az-ag-weu-x-001"
+        //            "actionGroupId": "/subscriptions/8629be3b-96bc-482d-a04b-ffff597c65a2/resourceGroups/dependencies-rg/providers/microsoft.insights/actiongroups/sxx-az-ag-weu-x-003"
         //        }
         //    ]
         //},
         "actions": {
             "value": [
-                "/subscriptions/8629be3b-96bc-482d-a04b-ffff597c65a2/resourceGroups/dependencies-rg/providers/microsoft.insights/actiongroups/sxx-az-ag-weu-x-003"
+                "/subscriptions/1e5e92b9-986e-42ca-9654-5e41240f8806/resourceGroups/validation-rg/providers/microsoft.insights/actionGroups/sxx-az-ag-weu-x-001"
             ]
         },
         "targetResourceType": {
