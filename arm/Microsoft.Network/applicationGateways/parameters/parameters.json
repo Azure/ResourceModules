@@ -6,7 +6,7 @@
       "value": "sxx-az-apgw-weu-x-002"
     },
     "sku": {
-      "value": "Standard_v2"
+      "value": "WAF_v2"
     },
     "vNetName": {
       "value": "sxx-az-vnet-weu-x-003"
