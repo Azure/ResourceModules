@@ -74,7 +74,7 @@
         },
         {
             "type": "Microsoft.Network/privateEndpoints",
-            "apiVersion": "2020-07-01",
+            "apiVersion": "2021-02-01",
             "name": "[parameters('privateEndpointName')]",
             "location": "[parameters('location')]",
             "tags": "[parameters('tags')]",
@@ -97,7 +97,7 @@
         },
         {
             "type": "Microsoft.Network/privateEndpoints/privateDnsZoneGroups",
-            "apiVersion": "2020-07-01",
+            "apiVersion": "2021-02-01",
             "condition": "[not(empty(parameters('privateDNSId')))]",
             "name": "[concat(parameters('privateEndpointName'),'/default')]",
             "dependsOn": [

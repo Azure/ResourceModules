@@ -8,8 +8,8 @@ This module deploys a Virtual Network Gateway.
 |Resource Type|ApiVersion|
 |:--|:--|
 |`Microsoft.Resources/deployments`|2018-02-01|
-|`Microsoft.Network/publicIPAddresses`|2020-08-01|
-|`Microsoft.Network/virtualNetworkGateways`|2020-08-01|
+|`Microsoft.Network/publicIPAddresses`|2021-02-01|
+|`Microsoft.Network/virtualNetworkGateways`|2021-02-01|
 |`Microsoft.Network/publicIPAddresses/providers/diagnosticSettings`|2017-05-01-preview|
 |`providers/locks`|2016-09-01|
 |`Microsoft.Network/virtualNetworkGateways/providers/diagnosticSettings`|2017-05-01-preview|
@@ -34,6 +34,7 @@ This module deploys a Virtual Network Gateway.
 | `location` | string | Optional. Location for all resources. | [resourceGroup().location] |  |
 | `lockForDeletion` | bool | Optional. Switch to lock Virtual Network Gateway from deletion. | False |  |
 | `publicIPPrefixId` | string | Optional. Resource Id of the Public IP Prefix object. This is only needed if you want your Public IPs created in a PIP Prefix. |  |  |
+| `publicIpZones` | string | Optional. Specifies the zones of the Public IP address. | "1" |  |
 | `roleAssignments` | array | Optional. Array of role assignment objects that contain the 'roleDefinitionIdOrName' and 'principalId' to define RBAC role assignments on this resource. In the roleDefinitionIdOrName attribute, you can provide either the display name of the role definition, or its fully qualified ID in the following format: '/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11' | System.Object[] |  |
 | `tags` | object | Optional. Tags of the resource. |  |  |
 | `virtualNetworkGatewayName` | string | Required. Specifies the Virtual Network Gateway name. |  |  |
@@ -137,7 +138,7 @@ Tag names and tag values can be provided as needed. A tag can be left without a 
 
 ## Additional resources
 
-- [Microsoft.Network virtualNetworkGateways template reference](https://docs.microsoft.com/en-us/azure/templates/microsoft.network/2018-11-01/virtualnetworkgateways)
+- [Microsoft.Network virtualNetworkGateways template reference](https://docs.microsoft.com/en-us/azure/templates/microsoft.network/2021-02-01/virtualnetworkgateways)
 - [What is VPN Gateway?](https://docs.microsoft.com/en-us/azure/vpn-gateway/vpn-gateway-about-vpngateways)
 - [ExpressRoute virtual network gateway and FastPath](https://docs.microsoft.com/en-us/azure/expressroute/expressroute-about-virtual-network-gateways)
 - [Public IP address prefix](https://docs.microsoft.com/en-us/azure/virtual-network/public-ip-address-prefix)
