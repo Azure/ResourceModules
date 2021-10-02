@@ -228,7 +228,7 @@ module automationAccount_privateEndpoints './.bicep/nested_privateEndpoint.bicep
   params: {
     privateEndpointResourceId: automationAccount.id
     privateEndpointVnetLocation: (empty(privateEndpoints) ? 'dummy' : reference(split(endpoint.subnetResourceId, '/subnets/')[0], '2020-06-01', 'Full').location)
-    privateEndpoint: endpoint
+    privateEndpointObj: endpoint
     tags: tags
   }
   dependsOn: [

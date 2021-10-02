@@ -1,17 +1,17 @@
 param privateEndpointResourceId string
 param privateEndpointVnetLocation string
-param privateEndpointDef object
+param privateEndpointObj object
 param tags object
 
 var privateEndpointResourceName = last(split(privateEndpointResourceId, '/'))
 var privateEndpoint_var = {
-  name: (contains(privateEndpointDef, 'name') ? (empty(privateEndpointDef.name) ? '${privateEndpointResourceName}-${privateEndpointDef.service}' : privateEndpointDef.name) : '${privateEndpointResourceName}-${privateEndpointDef.service}')
-  subnetResourceId: privateEndpointDef.subnetResourceId
+  name: (contains(privateEndpointObj, 'name') ? (empty(privateEndpointObj.name) ? '${privateEndpointResourceName}-${privateEndpointObj.service}' : privateEndpointObj.name) : '${privateEndpointResourceName}-${privateEndpointObj.service}')
+  subnetResourceId: privateEndpointObj.subnetResourceId
   service: [
-    privateEndpointDef.service
+    privateEndpointObj.service
   ]
-  privateDnsZoneResourceIds: (contains(privateEndpointDef, 'privateDnsZoneResourceIds') ? (empty(privateEndpointDef.privateDnsZoneResourceIds) ? [] : privateEndpointDef.privateDnsZoneResourceIds) : [])
-  customDnsConfigs: (contains(privateEndpointDef, 'customDnsConfigs') ? (empty(privateEndpointDef.customDnsConfigs) ? json('null') : privateEndpointDef.customDnsConfigs) : json('null'))
+  privateDnsZoneResourceIds: (contains(privateEndpointObj, 'privateDnsZoneResourceIds') ? (empty(privateEndpointObj.privateDnsZoneResourceIds) ? [] : privateEndpointObj.privateDnsZoneResourceIds) : [])
+  customDnsConfigs: (contains(privateEndpointObj, 'customDnsConfigs') ? (empty(privateEndpointObj.customDnsConfigs) ? json('null') : privateEndpointObj.customDnsConfigs) : json('null'))
 }
 
 resource privateEndpoint 'Microsoft.Network/privateEndpoints@2020-05-01' = {
@@ -36,7 +36,7 @@ resource privateEndpoint 'Microsoft.Network/privateEndpoints@2020-05-01' = {
   }
 }
 
-resource privateEndpoint_default 'Microsoft.Network/privateEndpoints/privateDnsZoneGroups@2020-05-01' = if (!empty(privateEndpoint_var.privateDnsZoneResourceIds)) {
+resource privateDnsZoneGroup 'Microsoft.Network/privateEndpoints/privateDnsZoneGroups@2020-05-01' = if (!empty(privateEndpoint_var.privateDnsZoneResourceIds)) {
   name: '${privateEndpoint_var.name}/default'
   properties: {
     privateDnsZoneConfigs: [for j in range(0, length(privateEndpoint_var.privateDnsZoneResourceIds)): {
