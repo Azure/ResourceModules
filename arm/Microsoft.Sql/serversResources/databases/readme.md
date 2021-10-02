@@ -8,7 +8,6 @@ This module deploys an Azure SQL Server.
 |:--|:--|
 |`Microsoft.Resources/deployments`|2018-02-01|
 |`Microsoft.Sql/servers/databases`|2017-10-01-preview|
-|`Microsoft.Network/privateEndpoints`|2019-02-01|
 
 ## Parameters
 
@@ -24,14 +23,6 @@ This module deploys an Azure SQL Server.
 | `maxSizeBytes` | int | Optional. The max size of the database expressed in bytes. |  |  |
 | `minCapacity` | string | Optional. Minimal capacity that database will always have allocated. |  |  |
 | `numberOfReplicas` | int | Optional. The number of readonly secondary replicas associated with the database. | 0 |  |      
-| `privateEndpointLocation` | string | Optional. This is not required anymore. |  |  |
-| `privateEndpointName` | string | Optional. Private Endpoint Name. |  |  |
-| `privateEndpointNestedTemplateId` | string | Optional. Nested template ID. |  |  |
-| `privateEndpointResourceGroup` | string | Optional. private Endpoint Resource Group. |  |  |
-| `privateEndpointSubnetId` | string | Optional. Subnet of Private endpoint. |  |  |
-| `privateEndpointSubscriptionId` | string | Optional. This is not requried anymore. |  |  |
-| `privateLinkServiceName` | string | Optional. privatelink service name. |  |  |
-| `privateLinkServiceServiceId` | string | Optional. For setting service connection. |  |  |
 | `readScaleOut` | string | Optional. The state of read-only routing. | Disabled |  |
 | `sampleName` | string | Optional. The name of the sample schema to apply when creating this database. |  |  |
 | `serverName` | string | Required. The Name of SQL Server |  |  |
