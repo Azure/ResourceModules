@@ -11,7 +11,7 @@ param location string = resourceGroup().location
 @description('Optional. SKU name of the account')
 param skuName string = 'Basic'
 
-@description('Optional. Modules to import into automation account')
+@description('Optional. List of modules to be created in the automation account')
 @metadata({
   name: 'Module name'
   version: 'Module version or specify latest to get the latest version'
