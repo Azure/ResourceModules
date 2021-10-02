@@ -75,7 +75,7 @@
         },
         {
             "type": "Microsoft.Network/networkWatchers",
-            "apiVersion": "2020-08-01",
+            "apiVersion": "2021-02-01",
             "location": "[parameters('location')]",
             "name": "[parameters('networkWatcherName')]",
             "properties": {
@@ -85,7 +85,7 @@
         },
         {
             "type": "Microsoft.Network/networkWatchers/connectionMonitors",
-            "apiVersion": "2020-05-01",
+            "apiVersion": "2021-02-01",
             "name": "[if(empty(parameters('monitors')), 'dummy/dummy', concat(parameters('networkWatcherName'),'/', parameters('monitors')[copyIndex()].connectionMonitorName))]",
             "location": "[parameters('location')]",
             "copy": {

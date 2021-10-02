@@ -8,8 +8,8 @@ This template deploys Network Watcher.
 |Resource Type|ApiVersion|
 |:--|:--|
 |`Microsoft.Resources/deployments`|2018-02-01|
-|`Microsoft.Network/networkWatchers`|2020-08-01|
-|`Microsoft.Network/networkWatchers/connectionMonitors`|2019-11-01|
+|`Microsoft.Network/networkWatchers`|2021-02-01|
+|`Microsoft.Network/networkWatchers/connectionMonitors`|2021-02-01|
 
 ## Parameters
 
@@ -111,6 +111,6 @@ Tag names and tag values can be provided as needed. A tag can be left without a 
 
 ## Additional resources
 
-- [Microsoft.Network networkWatchers template reference](https://docs.microsoft.com/en-us/azure/templates/microsoft.network/2019-04-01/networkwatchers)
+- [Microsoft.Network networkWatchers template reference](https://docs.microsoft.com/en-us/azure/templates/microsoft.network/2021-02-01/networkwatchers)
 - [What is Azure Network Watcher?](https://docs.microsoft.com/en-us/azure/network-watcher/network-watcher-monitoring-overview)
 - [Network Connectivity Monitoring with Connection Monitor (Preview)](https://docs.microsoft.com/en-us/azure/network-watcher/connection-monitor-preview)

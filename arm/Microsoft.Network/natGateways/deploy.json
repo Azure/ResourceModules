@@ -395,7 +395,7 @@
         {
             "condition": "[parameters('natGatewayPublicIpAddress')]",
             "type": "Microsoft.Network/publicIPAddresses",
-            "apiVersion": "2020-08-01",
+            "apiVersion": "2021-02-01",
             "name": "[variables('natGatewayPipName')]",
             "location": "[parameters('location')]",
             "tags": "[parameters('tags')]",
@@ -444,7 +444,7 @@
         {
             "name": "[parameters('natGatewayName')]",
             "type": "Microsoft.Network/natGateways",
-            "apiVersion": "2020-08-01",
+            "apiVersion": "2021-02-01",
             "location": "[parameters('location')]",
             "tags": "[parameters('tags')]",
             "sku": {

@@ -7,7 +7,7 @@ This module deploys an Alert based on metrics
 |:--|:--|
 |`Microsoft.Resources/deployments`|2018-02-01|
 |`Microsoft.Insights/metricAlerts`|2018-03-01|
-|`Microsoft.Insights/metricAlerts/providers/roleAssignments`|2018-09-01-preview|
+|`Microsoft.Authorization/roleAssignments`|2020-04-01-preview|
 
 ## Parameters
 
@@ -17,14 +17,14 @@ This module deploys an Alert based on metrics
 | `alertCriteriaType` | string | Optional. Maps to the 'odata.type' field. Specifies the type of the alert criteria. | Microsoft.Azure.Monitor.MultipleResourceMultipleMetricCriteria | System.Object[] |
 | `alertDescription` | string | Optional. Description of the alert. |  |  |
 | `alertName` | string | Required. The name of the Alert. |  |  |
-| `autoMitigate` | bool | Optional. The flag that indicates whether the alert should be auto resolved or not. | True |  |    
-| `criterias` | array | Required. Criterias to trigger the alert. Array of 'Microsoft.Azure.Monitor.SingleResourceMultipleMetricCriteria' or 'Microsoft.Azure.Monitor. MultipleResourceMultipleMetricCriteria' objects |  |  |
+| `autoMitigate` | bool | Optional. The flag that indicates whether the alert should be auto resolved or not. | True |  |
+| `criterias` | array | Required. Criterias to trigger the alert. Array of 'Microsoft.Azure.Monitor.SingleResourceMultipleMetricCriteria' or 'Microsoft.Azure.Monitor.MultipleResourceMultipleMetricCriteria' objects |  |  |
 | `cuaId` | string | Optional. Customer Usage Attribution id (GUID). This GUID must be previously registered |  |  |
 | `enabled` | bool | Optional. Indicates whether this alert is enabled. | True |  |
 | `evaluationFrequency` | string | Optional. how often the metric alert is evaluated represented in ISO 8601 duration format. | PT5M | System.Object[] |
 | `location` | string | Optional. Location for all resources. | global |  |
 | `roleAssignments` | array | Optional. Array of role assignment objects that contain the 'roleDefinitionIdOrName' and 'principalId' to define RBAC role assignments on this resource. In the roleDefinitionIdOrName attribute, you can provide either the display name of the role definition, or its fully qualified ID in the following format: '/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11' | System.Object[] |  |
-| `scopes` | array | Required. the list of resource id's that this metric alert is scoped to. |  |  |
+| `scopes` | array | Optional. the list of resource id\'s that this metric alert is scoped to. | subscription().id |  |
 | `severity` | int | Optional. The severity of the alert. | 3 | System.Object[] |
 | `tags` | object | Optional. Tags of the resource. |  |  |
 | `targetResourceRegion` | string | Optional. The region of the target resource(s) on which the alert is created/updated. Mandatory for MultipleResourceMultipleMetricCriteria. |  |  |
@@ -43,7 +43,18 @@ This module deploys an Alert based on metrics
   ]
 }
 ```
+
 `webhookProperties` is optional.
+
+If you do only want to provide actionGroupIds, a shorthand use of the parameter is available.
+
+```json
+"actions": {
+  "value": [
+      "/subscriptions/xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx/resourceGroups/rgName/providers/microsoft.insights/actiongroups/actionGroupName"
+  ]
+}
+```
 
 ### Parameter Usage: criterias
 
@@ -146,7 +157,7 @@ Tag names and tag values can be provided as needed. A tag can be left without a 
 ```
 
 ### Additional notes on parameters
-- When using MultipleResourceMultipleMetricCriteria criteria type, some parameters becomes mandatory (see above) 
+- When using MultipleResourceMultipleMetricCriteria criteria type, some parameters becomes mandatory (see above)
 - MultipleResourceMultipleMetricCriteria is suggested, as additional scopes can be added later
 - It's not possible to convert from SingleResourceMultipleMetricCriteria to MultipleResourceMultipleMetricCriteria. Delete and re-create the alert.
 
@@ -154,7 +165,7 @@ Tag names and tag values can be provided as needed. A tag can be left without a 
 
 | Output Name | Type | Description |
 | :-- | :-- | :-- |
-| `alertName` | string | The name of the created database. |
+| `metricAlertName` | string | The name of the created database. |
 | `deploymentResourceGroup` | string | The name of the Resource Group the Resource was created in. |
 | `metricAlertResourceId` | string | The Resource Id of the Alert deployed. |
 

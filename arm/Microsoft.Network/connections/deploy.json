@@ -167,7 +167,7 @@
         {
             "name": "[parameters('connectionName')]",
             "type": "Microsoft.Network/connections",
-            "apiVersion": "2020-08-01",
+            "apiVersion": "2021-02-01",
             "location": "[parameters('location')]",
             "tags": "[parameters('tags')]",
             "properties": {

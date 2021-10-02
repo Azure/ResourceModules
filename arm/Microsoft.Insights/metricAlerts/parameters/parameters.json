@@ -5,18 +5,25 @@
         "alertName": {
             "value": "sxx-az-alrt-weu-x-001"
         },
-        "scopes": {
-            "value": [
-                "/subscriptions/8629be3b-96bc-482d-a04b-ffff597c65a2/resourceGroups/validation-rg/providers/Microsoft.Compute/virtualMachines/sxxazvmweux01"
-            ]
-        },
+        //"scopes": {
+        //    "value": [
+        //        "/subscriptions/8629be3b-96bc-482d-a04b-ffff597c65a2/resourceGroups/validation-rg/providers/Microsoft.Compute/virtualMachines/sxxazvmweux01"
+        //    ]
+        //},
         "windowSize": {
             "value": "PT15M"
         },
+        //"actions": {
+        //    "value": [
+        //        {
+        //            "actionGroupId": "/subscriptions/8629be3b-96bc-482d-a04b-ffff597c65a2/resourceGroups/dependencies-rg/providers/microsoft.insights/actiongroups/sxx-az-ag-weu-x-003"
+        //        }
+        //    ]
+        //},
         "actions": {
-            "value": [{
-                "actionGroupId": "/subscriptions/8629be3b-96bc-482d-a04b-ffff597c65a2/resourceGroups/dependencies-rg/providers/microsoft.insights/actiongroups/sxx-az-ag-weu-x-003"
-            }]
+            "value": [
+                "/subscriptions/8629be3b-96bc-482d-a04b-ffff597c65a2/resourceGroups/dependencies-rg/providers/microsoft.insights/actiongroups/sxx-az-ag-weu-x-003"
+            ]
         },
         "targetResourceType": {
             "value": "microsoft.compute/virtualmachines"
