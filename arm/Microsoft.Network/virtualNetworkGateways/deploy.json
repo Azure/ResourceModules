@@ -592,7 +592,7 @@
                 "publicIPPrefix": "[if(not(empty(parameters('publicIPPrefixId'))), variables('publicIPPrefix'), json('null'))]",
                 "dnsSettings": "[if(equals(length(variables('gatewayPipName')),length(parameters('domainNameLabel'))), json(concat('{\"domainNameLabel\": \"', parameters('domainNameLabel')[copyindex()], '\"}')), json('null'))]"
             },
-            "zones": ["[parameters('publicIpZones')]"],
+            "zones": "[parameters('publicIpZones')]",
             "resources": [
                 {
                     "type": "providers/locks",
