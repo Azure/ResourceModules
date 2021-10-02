@@ -18,9 +18,7 @@ This module deploys an Azure SQL Server.
 | `collation` | string | Optional. The collation of the database. |  |  |
 | `cuaId` | string | Optional. Customer Usage Attribution id (GUID). This GUID must be previously registered |  |  |
 | `databaseName` | string | Required. The name of the database. |  |  |
-| `enableADS` | bool | Optional. Whether or not ADS is enabled. | False |  |
 | `enablePrivateEndpoint` | bool | Optional. Whether or not private Endpoint is enabled | False |  |
-| `enableVA` | bool | Optional. Whether or not VA is enabled. | False |  |
 | `licenseType` | string | Optional. The license type to apply for this database. |  |  |
 | `location` | string | Optional. Location for all resources. | [resourceGroup().location] |  |
 | `maxSizeBytes` | int | Optional. The max size of the database expressed in bytes. |  |  |
@@ -41,6 +39,9 @@ This module deploys an Azure SQL Server.
 | `tags` | object | Optional. Tags of the resource. |  |  |
 | `tier` | string | Optional. The tier or edition of the particular SKU. |  |  |
 | `zoneRedundant` | bool | Optional. Whether or not this database is zone redundant. | False |  |
+| `requestedBackupStorageRedundancy` | string | Optional. The storage account type to be used to store backups for this database | |  `Geo`, `Local`, `Zone` |
+| `enableSqlLedger` | bool | Optional.Whether or not this database is a ledger database, which means all tables in the database are ledger tables. Note: the value of this property cannot be changed after the database has been created. | False |  |
+| `maintenanceConfigurationId` | bool | Maintenance configuration id assigned to the database. This configuration defines the period when the maintenance updates will occur | False |  |
 
 ### Parameter Usage: `tags`
 
