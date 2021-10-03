@@ -8,7 +8,6 @@ This module deploys an Azure SQL Server.
 |:--|:--|
 |`Microsoft.Resources/deployments`|2018-02-01|
 |`Microsoft.Sql/servers/databases`|2017-10-01-preview|
-|`Microsoft.Network/privateEndpoints`|2019-02-01|
 
 ## Parameters
 
@@ -18,22 +17,11 @@ This module deploys an Azure SQL Server.
 | `collation` | string | Optional. The collation of the database. |  |  |
 | `cuaId` | string | Optional. Customer Usage Attribution id (GUID). This GUID must be previously registered |  |  |
 | `databaseName` | string | Required. The name of the database. |  |  |
-| `enableADS` | bool | Optional. Whether or not ADS is enabled. | False |  |
-| `enablePrivateEndpoint` | bool | Optional. Whether or not private Endpoint is enabled | False |  |
-| `enableVA` | bool | Optional. Whether or not VA is enabled. | False |  |
 | `licenseType` | string | Optional. The license type to apply for this database. |  |  |
 | `location` | string | Optional. Location for all resources. | [resourceGroup().location] |  |
 | `maxSizeBytes` | int | Optional. The max size of the database expressed in bytes. |  |  |
 | `minCapacity` | string | Optional. Minimal capacity that database will always have allocated. |  |  |
 | `numberOfReplicas` | int | Optional. The number of readonly secondary replicas associated with the database. | 0 |  |      
-| `privateEndpointLocation` | string | Optional. This is not required anymore. |  |  |
-| `privateEndpointName` | string | Optional. Private Endpoint Name. |  |  |
-| `privateEndpointNestedTemplateId` | string | Optional. Nested template ID. |  |  |
-| `privateEndpointResourceGroup` | string | Optional. private Endpoint Resource Group. |  |  |
-| `privateEndpointSubnetId` | string | Optional. Subnet of Private endpoint. |  |  |
-| `privateEndpointSubscriptionId` | string | Optional. This is not requried anymore. |  |  |
-| `privateLinkServiceName` | string | Optional. privatelink service name. |  |  |
-| `privateLinkServiceServiceId` | string | Optional. For setting service connection. |  |  |
 | `readScaleOut` | string | Optional. The state of read-only routing. | Disabled |  |
 | `sampleName` | string | Optional. The name of the sample schema to apply when creating this database. |  |  |
 | `serverName` | string | Required. The Name of SQL Server |  |  |
@@ -41,6 +29,9 @@ This module deploys an Azure SQL Server.
 | `tags` | object | Optional. Tags of the resource. |  |  |
 | `tier` | string | Optional. The tier or edition of the particular SKU. |  |  |
 | `zoneRedundant` | bool | Optional. Whether or not this database is zone redundant. | False |  |
+| `requestedBackupStorageRedundancy` | string | Optional. The storage account type to be used to store backups for this database | |  `Geo`, `Local`, `Zone` |
+| `enableSqlLedger` | bool | Optional.Whether or not this database is a ledger database, which means all tables in the database are ledger tables. Note: the value of this property cannot be changed after the database has been created. | False |  |
+| `maintenanceConfigurationId` | bool | Maintenance configuration id assigned to the database. This configuration defines the period when the maintenance updates will occur | False |  |
 
 ### Parameter Usage: `tags`
 
