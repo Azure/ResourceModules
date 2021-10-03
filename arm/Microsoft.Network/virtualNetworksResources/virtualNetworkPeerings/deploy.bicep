@@ -29,9 +29,9 @@ param useRemoteGateways bool = true
 param remoteVirtualNetworksProperties array = []
 
 var localToRemotePeeringName_var = '${localVnetName}/${(empty(peeringName) ? 'tempValue' : peeringName)}'
-var peeringResourceIdsOutput = [for item in remoteVirtualNetworksProperties: {
-    value: resourceId('Microsoft.Network/virtualNetworks/virtualNetworkPeerings', localVnetName, '${localVnetName}-${last(split(item.remoteVirtualNetwork.Id, '/'))}')
-}]
+var peeringResourceIdsOutput = [for item in remoteVirtualNetworksProperties: [
+  resourceId('Microsoft.Network/virtualNetworks/virtualNetworkPeerings', localVnetName, '${localVnetName}-${last(split(item.remoteVirtualNetwork.Id, '/'))}')
+]]
 
 module pid_cuaId './.bicep/nested_cuaId.bicep' = if (!empty(cuaId)) {
   name: 'pid-${cuaId}'
@@ -59,4 +59,4 @@ resource remoteToLocalPeering 'Microsoft.Network/virtualNetworks/virtualNetworkP
 output virtualNetworkPeeringResourceGroup string = resourceGroup().name
 output virtualNetworkPeeringName string = peeringName
 output virtualNetworkPeeringResourceId string = resourceId('Microsoft.Network/virtualNetworks/virtualNetworkPeerings', localVnetName, peeringName)
-output virtualNetworkPeeringResourceIds array = peeringResourceIdsOutput.value
+output virtualNetworkPeeringResourceIds array = peeringResourceIdsOutput
