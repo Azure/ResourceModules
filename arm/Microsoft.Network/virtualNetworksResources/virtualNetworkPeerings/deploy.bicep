@@ -1,7 +1,7 @@
 @description('Required. The Name of the Virtual Network to add the peering to.')
 param localVnetName string
 
-@description('Optional. Required when not using remoteVirtualNetworkId (i.e. Single Peering deployment). Array containing multiple objects for different VNETs to peer with. Format: Object of remoteVirtualNetwork:Id (string-required), allowVirtualNetworkAccess (bool-optional-default-true), allowForwardedTraffic (bool-optional-default-true), allowGatewayTransit (bool-optional-default-false), useRemoteGateways (bool-optional-default-true).')
+@description('Optional. Optional. The list of remote networks to peering peer with, including the configuration.')
 param peeringConfigurations array = []
 
 @description('Optional. Customer Usage Attribution id (GUID). This GUID must be previously registered')
