@@ -74,10 +74,10 @@ resource activityLogAlert 'Microsoft.Insights/activityLogAlerts@2020-10-01' = {
   }
 }
 
-module activityLogAlert_rbac './.bicep/nested_rbac.bicep' = [for (item, index) in roleAssignments: {
+module activityLogAlert_rbac './.bicep/nested_rbac.bicep' = [for (roleAssignment, index) in roleAssignments: {
   name: 'rbac-${deployment().name}${index}'
   params: {
-    roleAssignment: item
+    roleAssignment: roleAssignment
     builtInRoleNames: builtInRoleNames
     resourceName: activityLogAlert.name
   }
