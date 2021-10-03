@@ -5,11 +5,13 @@
         "resourceGroupName": {
             "value": "sxx-az-rg-weu-x-002"
         },
-        //"lock": {
-        //    "value": "CanNotDelete"
-        //},
+        "lock": {
+            "value": "CanNotDelete"
+        },
         "tags": {
-            "value": {}
+            "value": {
+                "Test": "Yes"
+            }
         }
     }
 }
