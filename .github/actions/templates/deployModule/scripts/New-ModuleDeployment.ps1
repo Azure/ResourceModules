@@ -217,7 +217,7 @@ function New-ModuleDeployment {
             } 
             while ($Stoploop -eq $false -or $retryCount -eq $retryLimit) 
 
-            Write-Verbose ($res | ConvertTo-Json | Out-String) -Verbose
+            Write-Verbose $res.OutputsString -Verbose
         } 
     } 
 
