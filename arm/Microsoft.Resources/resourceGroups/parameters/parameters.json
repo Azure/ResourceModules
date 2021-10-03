@@ -5,8 +5,8 @@
 		"resourceGroupName": {
 			"value": "sxx-az-rg-weu-x-002"
 		},
-		"lock": {
-			"value": "ReadOnly"
+		"lockForDeletion": {
+			"value": false
 		},
 		// "roleAssignments": {
         //     "value": [
