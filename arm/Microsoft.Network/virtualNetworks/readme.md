@@ -8,7 +8,7 @@ This template deploys a Virtual Network (vNet) with 2 optional Subnets.
 |Resource Type|ApiVersion|
 |:--|:--|
 |`Microsoft.Resources/deployments`|2018-02-01|
-|`Microsoft.Network/virtualNetworks`|2020-08-01|
+|`Microsoft.Network/virtualNetworks`|2021-05-01|
 |`providers/locks`|2016-09-01|
 |`Microsoft.Network/virtualNetworks/providers/diagnosticsettings`|2017-05-01-preview|
 |`Microsoft.Network/virtualNetworks/providers/roleAssignments`|2018-09-01-preview|
