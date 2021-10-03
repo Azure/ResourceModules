@@ -205,13 +205,11 @@ resource resourceGroup 'Microsoft.Resources/resourceGroups@2019-05-01' = {
 
 module resourceGroup_lock './.bicep/nested_lock.bicep' = if (lock != 'NotSpecified') {
   scope: resourceGroup
-  name: '${resourceGroup.name}-${lock}-lock'
+  name: '${resourceGroup.name}-${lock}-lock-deployment'
   params: {
+    name: '${resourceGroup.name}-${lock}-lock'
     level: lock
   }
-  dependsOn: [
-    resourceGroup
-  ]
 }
 
 module resourceGroup_rbac './.bicep/nested_rbac.bicep' = [for (roleAssignment, index) in roleAssignments: {
