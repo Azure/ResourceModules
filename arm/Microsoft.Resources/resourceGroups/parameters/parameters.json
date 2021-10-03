@@ -6,7 +6,7 @@
             "value": "sxx-az-rg-weu-x-002"
         },
         "lock": {
-            "value": "CanNotDelete"
+            "value": "ReadOnly"
         },
         "tags": {
             "value": {
