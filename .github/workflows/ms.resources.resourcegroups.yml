@@ -23,6 +23,7 @@ env:
   ARM_SUBSCRIPTION_ID: ${{ secrets.ARM_SUBSCRIPTION_ID }}
   ARM_MGMTGROUP_ID: ${{ secrets.ARM_MGMTGROUP_ID }}
 
+
 jobs:
   ##################
   #   UNIT TESTS   #
