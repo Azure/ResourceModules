@@ -220,10 +220,6 @@ function New-ModuleDeployment {
             Write-Verbose "Result" -Verbose
             Write-Verbose "------" -Verbose
             Write-Verbose ($res | Out-String) -Verbose
-            
-            Write-Verbose "Output" -Verbose
-            Write-Verbose "------" -Verbose
-            Write-Verbose $res.OutputsString -Verbose
         } 
     } 
 
