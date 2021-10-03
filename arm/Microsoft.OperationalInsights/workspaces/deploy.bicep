@@ -13,8 +13,8 @@ param location string = resourceGroup().location
 ])
 param serviceTier string = 'PerGB2018'
 
-@description('Optional. LAW solutions from the gallery.')
-param solutions array = []
+@description('Optional. LAW gallerySolutions from the gallery.')
+param gallerySolutions array = []
 
 @description('Required. Number of days data will be retained for')
 @minValue(0)
@@ -801,15 +801,15 @@ resource linkedServices 'linkedServices@2020-03-01-preview' = if (!empty(automat
 }
 
 @batchSize(1) // Serial loop deployment
-resource solutionRes 'Microsoft.OperationsManagement/solutions@2015-11-01-preview' = [for solution in solutions: if (!empty(solutions)) {
-  name: (empty(solutions) ? 'dummy' : '${solution}(${logAnalyticsWorkspaceName})')
+resource solution 'Microsoft.OperationsManagement/solutions@2015-11-01-preview' = [for gallerySolution in gallerySolutions: if (!empty(gallerySolutions)) {
+  name: (empty(gallerySolutions) ? 'dummy' : '${gallerySolution}(${logAnalyticsWorkspaceName})')
   location: location
   properties: {
     workspaceResourceId: logAnalyticsWorkspace.id
   }
   plan: {
-    name: (empty(solutions) ? 'dummy' : '${solution}(${logAnalyticsWorkspaceName})')
-    product: (empty(solutions) ? 'dummy' : 'OMSGallery/${solution}')
+    name: (empty(gallerySolutions) ? 'dummy' : '${gallerySolution}(${logAnalyticsWorkspaceName})')
+    product: (empty(gallerySolutions) ? 'dummy' : 'OMSGallery/${gallerySolution}')
     promotionCode: ''
     publisher: 'Microsoft'
   }
