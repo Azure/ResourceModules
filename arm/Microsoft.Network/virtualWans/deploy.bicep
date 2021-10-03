@@ -2,7 +2,7 @@
 param location string = resourceGroup().location
 
 @description('Required. Name of the Virtual Wan.')
-param wanName string
+param virtualWanName string
 
 @description('Optional. Sku of the Virtual Wan.')
 @allowed([
@@ -12,7 +12,7 @@ param wanName string
 param wanSku string = 'Standard'
 
 @description('Optional. Name of the Virtual Hub. A virtual hub is created inside a virtual wan.')
-param hubName string = 'SampleVirtualHub'
+param virtualHubName string = 'SampleVirtualHub'
 
 @description('Optional. Name of the Vpn Gateway. A vpn gateway is created inside a virtual hub.')
 param vpnGatewayName string = 'SampleVpnGateway'
@@ -81,7 +81,7 @@ module pid_cuaId './.bicep/nested_cuaId.bicep' = if (!empty(cuaId)) {
 }
 
 resource virtualWan 'Microsoft.Network/virtualWans@2021-05-01' = {
-  name: wanName
+  name: virtualWanName
   location: location
   tags: tags
   properties: {
@@ -89,8 +89,8 @@ resource virtualWan 'Microsoft.Network/virtualWans@2021-05-01' = {
   }
 }
 
-resource vwan_lock 'Microsoft.Authorization/locks@2016-09-01' = if (lockForDeletion) {
-  name: '${wanName}-vwanDoNotDelete'
+resource virtualWan_lock 'Microsoft.Authorization/locks@2016-09-01' = if (lockForDeletion) {
+  name: '${virtualWanName}-virtualWanDoNotDelete'
   properties: {
     level: 'CanNotDelete'
   }
@@ -98,7 +98,7 @@ resource vwan_lock 'Microsoft.Authorization/locks@2016-09-01' = if (lockForDelet
 }
 
 resource virtualHub 'Microsoft.Network/virtualHubs@2021-05-01' = {
-  name: hubName
+  name: virtualHubName
   location: location
   properties: {
     addressPrefix: addressPrefix
@@ -109,7 +109,7 @@ resource virtualHub 'Microsoft.Network/virtualHubs@2021-05-01' = {
 }
 
 resource virtualHub_lock 'Microsoft.Authorization/locks@2016-09-01' = if (lockForDeletion) {
-  name: '${hubName}-vHubDoNotDelete'
+  name: '${virtualHubName}-virtualHubDoNotDelete'
   properties: {
     level: 'CanNotDelete'
   }
@@ -184,13 +184,13 @@ module rbac_name './.bicep/nested_rbac.bicep' = [for (item, i) in roleAssignment
   params: {
     roleAssignment: item
     builtInRoleNames: builtInRoleNames
-    wanName: wanName
+    virtualWanName: virtualWanName
   }
   dependsOn: [
     virtualWan
   ]
 }]
 
-output wanName string = wanName
-output wanNameResourceId string = virtualWan.id
-output wanNameResourceGroup string = resourceGroup().name
+output virtualWanName string = virtualWanName
+output virtualWanNameResourceId string = virtualWan.id
+output virtualWanNameResourceGroup string = resourceGroup().name
