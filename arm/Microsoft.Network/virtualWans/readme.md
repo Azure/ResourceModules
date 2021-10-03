@@ -8,10 +8,10 @@ This template deploys Virtual Wan
 |ResourceType|ApiVersion|
 |:--|:--|
 |`Microsoft.Resources/deployments`|2018-02-01|
-|`Microsoft.Network/virtualWans`|2020-08-01|
-|`Microsoft.Network/virtualHubs`|2020-08-01|
-|`Microsoft.Network/vpnSites`|2020-08-01|
-|`Microsoft.Network/vpnGateways`|2020-08-01|
+|`Microsoft.Network/virtualWans`|2021-05-01|
+|`Microsoft.Network/virtualHubs`|2021-05-01|
+|`Microsoft.Network/vpnSites`|2021-05-01|
+|`Microsoft.Network/vpnGateways`|2021-05-01|
 |`Microsoft.Network/virtualWans/providers/roleAssignments`|2018-09-01-preview|
 
 ## Parameters

@@ -317,7 +317,7 @@
         },
         {
             "type": "Microsoft.Network/virtualWans",
-            "apiVersion": "2020-08-01",
+            "apiVersion": "2021-05-01",
             "name": "[parameters('wanname')]",
             "location": "[parameters('location')]",
             "tags": "[parameters('tags')]",
@@ -327,7 +327,7 @@
         },
         {
             "type": "Microsoft.Network/virtualHubs",
-            "apiVersion": "2020-08-01",
+            "apiVersion": "2021-05-01",
             "name": "[parameters('hubname')]",
             "location": "[parameters('location')]",
             "dependsOn": [
@@ -342,7 +342,7 @@
         },
         {
             "type": "Microsoft.Network/vpnSites",
-            "apiVersion": "2020-08-01",
+            "apiVersion": "2021-05-01",
             "name": "[parameters('vpnsitename')]",
             "location": "[parameters('location')]",
             "dependsOn": [
@@ -368,7 +368,7 @@
         },
         {
             "type": "Microsoft.Network/vpnGateways",
-            "apiVersion": "2020-08-01",
+            "apiVersion": "2021-05-01",
             "name": "[parameters('vpngatewayname')]",
             "location": "[parameters('location')]",
             "dependsOn": [

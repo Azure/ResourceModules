@@ -235,7 +235,7 @@ module pid_cuaId './.bicep/nested_cuaId.bicep' = if (!empty(cuaId)) {
   params: {}
 }
 
-resource virtualWan 'Microsoft.Network/virtualWans@2020-08-01' = {
+resource virtualWan 'Microsoft.Network/virtualWans@2021-05-01' = {
   name: wanName
   location: location
   tags: tags
@@ -244,7 +244,7 @@ resource virtualWan 'Microsoft.Network/virtualWans@2020-08-01' = {
   }
 }
 
-resource virtualHub 'Microsoft.Network/virtualHubs@2020-08-01' = {
+resource virtualHub 'Microsoft.Network/virtualHubs@2021-05-01' = {
   name: hubName
   location: location
   properties: {
@@ -255,7 +255,7 @@ resource virtualHub 'Microsoft.Network/virtualHubs@2020-08-01' = {
   }
 }
 
-resource vpnSite 'Microsoft.Network/vpnSites@2020-08-01' = {
+resource vpnSite 'Microsoft.Network/vpnSites@2021-05-01' = {
   name: vpnSiteName
   location: location
   properties: {
@@ -277,7 +277,7 @@ resource vpnSite 'Microsoft.Network/vpnSites@2020-08-01' = {
   }
 }
 
-resource vpnGateway 'Microsoft.Network/vpnGateways@2020-08-01' = {
+resource vpnGateway 'Microsoft.Network/vpnGateways@2021-05-01' = {
   name: vpnGatewayName
   location: location
   properties: {
