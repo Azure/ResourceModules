@@ -191,6 +191,6 @@ module rbac_name './.bicep/nested_rbac.bicep' = [for (item, i) in roleAssignment
   ]
 }]
 
-output virtualWanName string = virtualWanName
+output virtualWanName string = virtualWan.name
 output virtualWanNameResourceId string = virtualWan.id
 output virtualWanNameResourceGroup string = resourceGroup().name
