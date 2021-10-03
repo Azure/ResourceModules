@@ -105,14 +105,14 @@ var zoneRedundantSkus = [
   'ErGw2AZ'
   'ErGw3AZ'
 ]
-var gatewayPipSku = (contains(zoneRedundantSkus, virtualNetworkGatewaySku) ? 'Standard' : 'Basic')
-var gatewayPipAllocationMethod = (contains(zoneRedundantSkus, virtualNetworkGatewaySku) ? 'Static' : 'Dynamic')
+var gatewayPipSku = contains(zoneRedundantSkus, virtualNetworkGatewaySku) ? 'Standard' : 'Basic'
+var gatewayPipAllocationMethod = contains(zoneRedundantSkus, virtualNetworkGatewaySku) ? 'Static' : 'Dynamic'
 var gatewaySubnetId = '${vNetId}/subnets/GatewaySubnet'
-var activeActive_var = ((virtualNetworkGatewayType == 'ExpressRoute') ? bool('false') : activeActive)
+var activeActive_var = (virtualNetworkGatewayType == 'ExpressRoute') ? bool('false') : activeActive
 
 // Public IP variables
-var gatewayPipName1 = ((length(gatewayPipName) == 0) ? '${virtualNetworkGatewayName}-pip1' : gatewayPipName[0])
-var gatewayPipName2 = (activeActive_var ? ((length(gatewayPipName) == 1) ? '${virtualNetworkGatewayName}-pip2' : gatewayPipName[1]) : '')
+var gatewayPipName1 = (length(gatewayPipName) == 0) ? '${virtualNetworkGatewayName}-pip1' : gatewayPipName[0]
+var gatewayPipName2 = activeActive_var ? ((length(gatewayPipName) == 1) ? '${virtualNetworkGatewayName}-pip2' : gatewayPipName[1]) : ''
 
 var gatewayMultiPipArray = [
   gatewayPipName1
@@ -121,12 +121,12 @@ var gatewayMultiPipArray = [
 var gatewaySinglePipArray = [
   gatewayPipName1
 ]
-var gatewayPipName_var = ((!empty(gatewayPipName2)) ? gatewayMultiPipArray : gatewaySinglePipArray)
+var gatewayPipName_var = (!empty(gatewayPipName2)) ? gatewayMultiPipArray : gatewaySinglePipArray
 var gatewayPipId1 = resourceId('Microsoft.Network/publicIPAddresses', gatewayPipName1)
-var gatewayPipId2 = (activeActive_var ? resourceId('Microsoft.Network/publicIPAddresses', gatewayPipName2) : resourceId('Microsoft.Network/publicIPAddresses', gatewayPipName1))
+var gatewayPipId2 = activeActive_var ? resourceId('Microsoft.Network/publicIPAddresses', gatewayPipName2) : resourceId('Microsoft.Network/publicIPAddresses', gatewayPipName1)
 
-var enableBgp_var = ((virtualNetworkGatewayType == 'ExpressRoute') ? bool('false') : enableBgp)
-var vpnType_var = ((virtualNetworkGatewayType == 'ExpressRoute') ? 'PolicyBased' : vpnType)
+var enableBgp_var = (virtualNetworkGatewayType == 'ExpressRoute') ? bool('false') : enableBgp
+var vpnType_var = (virtualNetworkGatewayType == 'ExpressRoute') ? 'PolicyBased' : vpnType
 var bgpSettings = {
   asn: asn
 }
