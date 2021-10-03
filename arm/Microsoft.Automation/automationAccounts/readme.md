@@ -4,19 +4,18 @@ This module deploys an Azure Automation Account, with resource lock.
 
 ## Resource Types
 
-|Resource Type|Api Version|
+|Resource Type|Api Version|
 |:--|:--|
 |`Microsoft.Automation/automationAccounts`|2015-10-31|
-|`Microsoft.Automation/automationAccounts/runbooks`|2018-06-30|
 |`Microsoft.Automation/automationAccounts/providers/locks`|2016-09-01|
+|`Microsoft.Automation/automationAccounts/modules`|2019-06-01|
 |`Microsoft.Automation/automationAccounts/schedules`|2015-10-31|
 |`Microsoft.Automation/automationAccounts/jobSchedules`|2015-10-31|
-|`Microsoft.Automation/automationAccounts/providers/diagnosticsettings`|2017-05-01-preview| 
-|`Microsoft.Automation/automationAccounts/providers/roleAssignments`|2018-09-01-preview| 
-|`Microsoft.Resources/deployments`|2018-02-01| 
+|`Microsoft.Automation/automationAccounts/runbooks`|2018-06-30|
+|`Microsoft.Automation/automationAccounts/providers/diagnosticsettings`|2017-05-01-preview|
+|`Microsoft.Automation/automationAccounts/providers/roleAssignments`|2018-09-01-preview|
 |`Microsoft.Network/privateEndpoints`|2020-05-01|
 |`Microsoft.Network/privateEndpoints/privateDnsZoneGroups`|2020-05-01|
-
 
 ## Parameters
 
@@ -26,8 +25,9 @@ This module deploys an Azure Automation Account, with resource lock.
 | `automationAccountName` | string | | | Required. Name of the Azure Automation Account
 | `location` | string | `[resourceGroup().location]` | | Optional. Location for all resources.
 | `skuName` | string | `Basic` | `Free`, `Basic`  | Optional. Specifies the SKU for the Automation Account
-| `runbooks` | array | [] | | Optional. List of runbooks to be created in the automation account. Complex structure, see below.
+| `modules` | array | [] | | Optional. List of modules to be created in the automation account. Complex structure, see below.
 | `schedules` | array | [] | | Optional. List of schedules to be created in the automation account. Complex structure, see below.
+| `runbooks` | array | [] | | Optional. List of runbooks to be created in the automation account. Complex structure, see below.
 | `jobSchedules` | array | [] | | Optional. List of jobSchedules to be created in the automation account. Complex structure, see below.
 | `baseTime` | string | [utcNow('u')] | | Optional. Time used as a basis for e.g. the schedule start date |
 | `diagnosticLogsRetentionInDays` | int | `365` | | Optional. Specifies the number of days that logs will be kept for; a value of 0 will retain data indefinitely.
@@ -68,6 +68,27 @@ Specifies the SKU for the Automation Account
 ```json
 "skuName": {
     "value": "Basic"
+}
+```
+
+### Parameter Usage: `modules`
+
+List of modules to be created in the automation account
+
+```json
+"modules": {
+    "value": [
+    {
+        "name": "OMSIngestionAPI",                                    // The module name.
+        "version": "latest",                                          // The module version or specify latest to get the latest version
+        "uri": "https://www.powershellgallery.com/api/v2/package"     // The module package uri, e.g. https://www.powershellgallery.com/api/v2/package
+    },
+    {
+        "name": "PackageManagement",
+        "version": "1.4.5",
+        "uri": "https://www.powershellgallery.com/api/v2/package"
+    }
+    ]
 }
 ```
 
@@ -130,9 +151,12 @@ List of jobSchedules to be created in the automation account
 ```
 
 ### Parameter Usage: `privateEndpoints`
+
 To use Private Endpoint the following dependencies must be deployed:
+
 - Destination subnet must be created with the following configuration option - `"privateEndpointNetworkPolicies": "Disabled"`.  Setting this option acknowledges that NSG rules are not applied to Private Endpoints (this capability is coming soon). A full example is available in the Virtual Network Module.
-- Although not strictly required, it is highly recommened to first create a private DNS Zone to host Private Endpoint DNS records. See [Azure Private Endpoint DNS configuration](https://docs.microsoft.com/en-us/azure/private-link/private-endpoint-dns) for more information.
+- Although not strictly required, it is highly recommended to first create a private DNS Zone to host Private Endpoint DNS records. See [Azure Private Endpoint DNS configuration](https://docs.microsoft.com/en-us/azure/private-link/private-endpoint-dns) for more information.
+
 ```json
 "privateEndpoints": {
     "value": [
@@ -228,7 +252,7 @@ Switch to lock Logic App from deletion.
 "roleAssignments": {
     "value": [
         {
-            "roleDefinitionIdOrName": "Desktop Virtualization User",
+            "roleDefinitionIdOrName": "Automation Contributor",
             "principalIds": [
                 "12345678-1234-1234-1234-123456789012", // object 1
                 "78945612-1234-1234-1234-123456789012" // object 2
@@ -275,8 +299,10 @@ Tag names and tag values can be provided as needed. A tag can be left without a 
 | `automationAccountName` | string | The Name of the Automation Account. |
 | `automationAccountResourceGroup` | string | The Resource Group the Automation Account was deployed to. |
 | `automationAccountResourceId` | string | The Resource Id of the Automation Account. |
-| `dummyObject` | array | The Name of the Automation Account. |
-| `dummyString` | array | The Name of the Automation Account. |
+| `modules` | array | The array of the modules created. |
+| `schedules` | array | The array of the schedules created. |
+| `runbooks` | array | The array of the runbooks created. |
+| `jobSchedules` | array | The array of the jobSchedules created. |
 
 ## Considerations
 

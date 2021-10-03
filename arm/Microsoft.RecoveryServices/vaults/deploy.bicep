@@ -224,7 +224,7 @@ resource rsv 'Microsoft.RecoveryServices/vaults@2021-08-01' = {
 }
 
 resource rsv_lock 'Microsoft.Authorization/locks@2016-09-01' = if (lockForDeletion) {
-  name: '${recoveryVaultName}-vmssDoNotDelete'
+  name: '${recoveryVaultName}-rsvDoNotDelete'
   properties: {
     level: 'CanNotDelete'
   }

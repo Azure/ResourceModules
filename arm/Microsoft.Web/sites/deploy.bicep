@@ -311,7 +311,7 @@ module app_privateEndpoint './.bicep/nested_privateEndpoint.bicep' = [for (item,
   params: {
     privateEndpointResourceId: app.id
     privateEndpointVnetLocation: (empty(privateEndpoints) ? 'dummy' : reference(split(item.subnetResourceId, '/subnets/')[0], '2020-06-01', 'Full').location)
-    privateEndpoint: item
+    privateEndpointObj: item
     tags: tags
   }
   dependsOn: [
