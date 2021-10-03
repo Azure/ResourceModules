@@ -245,7 +245,7 @@ module keyVault_privateEndpoints './.bicep/nested_privateEndpoint.bicep' = [for 
   params: {
     privateEndpointResourceId: keyVault.id
     privateEndpointVnetLocation: (empty(privateEndpoints) ? 'dummy' : reference(split(item.subnetResourceId, '/subnets/')[0], '2020-06-01', 'Full').location)
-    privateEndpointDef: item
+    privateEndpointObj: item
     tags: tags
   }
   dependsOn: [
