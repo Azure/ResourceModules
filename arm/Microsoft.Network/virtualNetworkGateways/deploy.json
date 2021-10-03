@@ -83,17 +83,6 @@
                 "description": "Required. Specifies the VPN type"
             }
         },
-        "vpnGatewayGeneration": {
-            "type": "string",
-            "allowedValues": [
-                "Generation1",
-                "Generation2"
-            ],
-            "defaultValue": "Generation1",
-            "metadata": {
-                "description": "Optional. Specifies the VPN GW generation."
-            }
-        },
         "vNetId": {
             "type": "string",
             "metadata": {
