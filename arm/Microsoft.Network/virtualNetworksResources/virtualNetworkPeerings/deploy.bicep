@@ -28,4 +28,3 @@ resource virtualNetworkPeering 'Microsoft.Network/virtualNetworks/virtualNetwork
 output virtualNetworkPeeringResourceGroup string = resourceGroup().name
 output virtualNetworkPeeringNames array = [for i in range(0, length(peeringConfigurations)): virtualNetworkPeering[i].name]
 output localVirtualNetworkPeeringResourceIds array = [for peeringConfiguration in peeringConfigurations: resourceId('Microsoft.Network/virtualNetworks/virtualNetworkPeerings', localVnetName, (contains(peeringConfiguration, 'peeringName') ? peeringConfiguration.peeringName : '${localVnetName}-${last(split(peeringConfiguration.remoteVirtualNetworkId, '/'))}')) ]
-output remoteVirtualNetworkPeeringResourceIds array = [for item in peeringConfigurations: resourceId('Microsoft.Network/virtualNetworks/virtualNetworkPeerings', localVnetName, '${localVnetName}-${last(split(item.remoteVirtualNetworkId, '/'))}')]

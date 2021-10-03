@@ -47,7 +47,6 @@ Array containing multiple objects for different VNETs to peer with.
 | Output Name | Type | Description |
 | :-- | :-- | :-- |
 | `localVirtualNetworkPeeringResourceIds` | array |  |
-| `remoteVirtualNetworkPeeringResourceIds` | array |  |
 | `virtualNetworkPeeringNames` | array |  |
 | `virtualNetworkPeeringResourceGroup` | string |  |
 
