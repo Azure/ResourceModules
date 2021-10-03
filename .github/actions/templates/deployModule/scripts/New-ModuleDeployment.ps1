@@ -217,6 +217,12 @@ function New-ModuleDeployment {
             } 
             while ($Stoploop -eq $false -or $retryCount -eq $retryLimit) 
 
+            Write-Verbose "Result" -Verbose
+            Write-Verbose "------" -Verbose
+            Write-Verbose ($res | Out-String) -Verbose
+            
+            Write-Verbose "Output" -Verbose
+            Write-Verbose "------" -Verbose
             Write-Verbose $res.OutputsString -Verbose
         } 
     } 
