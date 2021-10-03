@@ -17,9 +17,6 @@
         "maxSizeBytes": {
             "value": 34359738368
         },
-        "sampleName": {
-            "value": ""
-        },
         "serverName": {
             "value": "sxx-az-sqlsrv-weu-x-001"
         },
@@ -28,45 +25,6 @@
         },
         "licenseType": {
             "value": "LicenseIncluded"
-        },
-        "readScaleOut": {
-            "value": "Disabled"
-        },
-        "numberOfReplicas": {
-            "value": 0
-        },
-        "enableADS": {
-            "value": true
-        },
-        "enableVA": {
-            "value": true
-        },
-        "enablePrivateEndpoint": {
-            "value": false
-        },
-        "privateEndpointNestedTemplateId": {
-            "value": "Nested-2019-9-25_11-55-27"
-        },
-        "privateEndpointSubscriptionId": {
-            "value": ""
-        },
-        "privateEndpointResourceGroup": {
-            "value": ""
-        },
-        "privateEndpointName": {
-            "value": ""
-        },
-        "privateEndpointLocation": {
-            "value": ""
-        },
-        "privateEndpointSubnetId": {
-            "value": ""
-        },
-        "privateLinkServiceName": {
-            "value": ""
-        },
-        "privateLinkServiceServiceId": {
-            "value": ""
         },
         "location":{
             "value": "westeurope"

@@ -8,9 +8,6 @@
     "gatewayPipName": {
       "value": ["sxx-az-vnet-vpn-gw-weu-p-001-pip-03"]
     },
-    "publicIPPrefixId": {
-      "value": "/subscriptions/8629be3b-96bc-482d-a04b-ffff597c65a2/resourceGroups/dependencies-rg/providers/Microsoft.Network/publicIPPrefixes/sxx-az-pippfx-weu-x-003"
-    },
     "domainNameLabel": {
       "value": ["sxx-az-vnet-vpn-gw-weu-p-001-pip-03"]
     },

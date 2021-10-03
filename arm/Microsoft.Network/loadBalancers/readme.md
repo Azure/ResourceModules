@@ -7,7 +7,7 @@ This module deploys a Load Balancer
 |Resource Type|ApiVersion|
 |:--|:--|
 |`Microsoft.Resources/deployments`|2018-02-01|
-|`Microsoft.Network/loadBalancers`|2020-08-01|
+|`Microsoft.Network/loadBalancers`|2021-02-01|
 |`Microsoft.Network/loadBalancers/providers/diagnosticSettings`|2017-05-01-preview|
 |`providers/locks`|2016-09-01|
 |`Microsoft.Network/loadBalancers/providers/roleAssignments`|2018-09-01-preview|
@@ -223,5 +223,5 @@ Tag names and tag values can be provided as needed. A tag can be left without a 
 
 ## Additional resources
 
-- [Microsoft.Network loadBalancers template reference](https://docs.microsoft.com/en-us/azure/templates/microsoft.network/2020-05-01/loadbalancers)
+- [Microsoft.Network loadBalancers template reference](https://docs.microsoft.com/en-us/azure/templates/microsoft.network/2021-02-01/loadbalancers)
 - [What is Azure Load Balancer?](https://docs.microsoft.com/en-us/azure/load-balancer/load-balancer-overview)

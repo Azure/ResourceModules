@@ -1,6 +1,6 @@
 # Action Group
-This module deploys an Action Group
 
+This module deploys an Action Group
 
 ## Resource Types
 
@@ -8,8 +8,7 @@ This module deploys an Action Group
 |:--|:--|
 |`Microsoft.Resources/deployments`|2018-02-01|
 |`microsoft.insights/actionGroups`|2019-06-01|
-|`microsoft.insights/actionGroups/providers/roleAssignments`|2018-09-01-preview| 
-
+|`Microsoft.Authorization/roleAssignments`|2020-04-01-preview|
 
 ## Parameters
 
@@ -19,14 +18,14 @@ This module deploys an Action Group
 | `groupShortName`  | string   | | | Required. The short name of the action group. |
 | `enabled`         | bool  | true | true, false | Optional. Indicates whether this action group is enabled. If an action group is not enabled, then none of its receivers will receive communications. |
 | `roleAssignments` | array | [] | Complex structure, see below. | Optional. Array of role assignment objects that contain the 'roleDefinitionIdOrName' and 'principalId' to define RBAC role assignments on this resource. In the roleDefinitionIdOrName attribute, you can provide either the display name of the role definition, or it's fully qualified ID in the following format: '/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11'
-| `emailReceivers` | array | [] | Array of complex structures, see below. | Optional. The list of email receivers that are part of this action group. | 
-| `smsReceivers` | array | [] | Array of complex structures, see below. | Optional. The list of SMS receivers that are part of this action group. | 
-| `webhookReceivers` | array | [] | Array of complex structures, see below. | Optional. The list of webhook receivers that are part of this action group. | 
+| `emailReceivers` | array | [] | Array of complex structures, see below. | Optional. The list of email receivers that are part of this action group. |
+| `smsReceivers` | array | [] | Array of complex structures, see below. | Optional. The list of SMS receivers that are part of this action group. |
+| `webhookReceivers` | array | [] | Array of complex structures, see below. | Optional. The list of webhook receivers that are part of this action group. |
 | `itsmReceivers` | array | [] | Array of complex structures, see below. | Optional. The list of ITSM receivers that are part of this action group. |
-| `azureAppPushReceivers` | array | [] | Array of complex structures, see below. | Optional. The list of AzureAppPush receivers that are part of this action group. | 
-| `automationRunbookReceivers` | array | [] | Array of complex structures, see below. | Optional. The list of AutomationRunbook receivers that are part of this action group. | 
-| `voiceReceivers` | array | [] | Array of complex structures, see below. | Optional. The list of voice receivers. **Only US numbers supported at the moment** | 
-| `logicAppReceivers` | array | [] | Array of complex structures, see below. | Optional. The list of logic app receivers that are part of this action group. | 
+| `azureAppPushReceivers` | array | [] | Array of complex structures, see below. | Optional. The list of AzureAppPush receivers that are part of this action group. |
+| `automationRunbookReceivers` | array | [] | Array of complex structures, see below. | Optional. The list of AutomationRunbook receivers that are part of this action group. |
+| `voiceReceivers` | array | [] | Array of complex structures, see below. | Optional. The list of voice receivers. **Only US numbers supported at the moment** |
+| `logicAppReceivers` | array | [] | Array of complex structures, see below. | Optional. The list of logic app receivers that are part of this action group. |
 | `azureFunctionReceivers` | array | [] | Array of complex structures, see below. | Optional. The list of Azure Function receivers that are part of this action group. |
 | `armRoleReceivers` | array | [] | Array of complex structures, see below. | Optional. The list of ARM role receivers that are part of this action group. Roles are Azure RBAC roles and only built-in roles are supported. |
 | `tags` | object | {}  | Complex structure, see below. | Optional. Tags of the Action Group resource. |
@@ -38,6 +37,7 @@ This module deploys an Action Group
 See [Documentation](https://docs.microsoft.com/en-us/azure/templates/microsoft.insights/2019-06-01/actiongroups) for description of parameters usage and syntax.
 
 Example:
+
 ```json
 "emailReceivers":{
   "value":[
@@ -111,6 +111,7 @@ Tag names and tag values can be provided as needed. A tag can be left without a 
 ```
 
 ### Additional notes on parameters
+
 - Receiver name must be unique across the ActionGroup
 - Email, SMS, Azure App push and Voice can be grouped in the same Action. To do so, the `name` field of the receivers must be in the `RecName_-ActionType-` format where:
   - _RecName_ is the name you want to give to the Action
@@ -120,7 +121,6 @@ Tag names and tag values can be provided as needed. A tag can be left without a 
     - AzureAppAction
     - VoiceAction
 - To understand the impact of the `useCommonAlertSchema` field, see [here](https://docs.microsoft.com/en-us/azure/azure-monitor/platform/alerts-common-schema)
-
 
 ## Outputs
 

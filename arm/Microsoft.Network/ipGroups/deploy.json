@@ -250,7 +250,7 @@
         },
         {
             "type": "Microsoft.Network/ipGroups",
-            "apiVersion": "2020-08-01",
+            "apiVersion": "2021-02-01",
             "name": "[parameters('ipGroupName')]",
             "location": "[parameters('location')]",
             "tags": "[parameters('tags')]",

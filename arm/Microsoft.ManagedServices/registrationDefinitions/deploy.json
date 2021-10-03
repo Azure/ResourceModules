@@ -84,7 +84,7 @@
         {
             "condition": "[not(empty(parameters('resourceGroupName')))]",
             "type": "Microsoft.Resources/deployments",
-            "apiVersion": "2018-05-01",
+            "apiVersion": "2020-06-01",
             "name": "[concat('rgAssignment-', guid(parameters('resourceGroupName')))]",
             "resourceGroup": "[parameters('resourceGroupName')]",
             "dependsOn": [

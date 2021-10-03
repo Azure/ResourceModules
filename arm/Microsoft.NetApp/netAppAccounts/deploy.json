@@ -301,7 +301,7 @@
         // netapp account
         {
             "type": "Microsoft.NetApp/netAppAccounts",
-            "apiVersion": "2020-08-01",
+            "apiVersion": "2021-04-01",
             "name": "[parameters('netAppAccountName')]",
             "tags": "[parameters('tags')]",
             "location": "[parameters('location')]",
@@ -392,7 +392,7 @@
         // capacity pool
         {
             "type": "Microsoft.NetApp/netAppAccounts/capacityPools",
-            "apiVersion": "2020-08-01",
+            "apiVersion": "2021-04-01",
             "name": "[concat(parameters('netAppAccountName'), '/', if(empty(parameters('capacityPools')), 'dummy', parameters('capacityPools')[copyIndex()].poolName))]",
             "condition": "[not(empty(parameters('capacityPools')))]",
             "tags": "[parameters('tags')]",
@@ -559,7 +559,7 @@
                         // volume
                         {
                             "type": "Microsoft.NetApp/netAppAccounts/capacityPools/volumes",
-                            "apiVersion": "2020-08-01",
+                            "apiVersion": "2021-04-01",
                             "name": "[concat(parameters('netAppAccountName'), '/', parameters('capacityPool').poolName, '/', if(empty(parameters('capacityPool').volumes), 'dummy', parameters('capacityPool').volumes[copyIndex('volumeLoop')].poolVolumeName))]",
                             "condition": "[not(empty(parameters('capacityPool').volumes))]",
                             "tags": "[parameters('tags')]",

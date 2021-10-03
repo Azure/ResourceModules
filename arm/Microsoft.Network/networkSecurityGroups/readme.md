@@ -7,11 +7,11 @@ This template deploys a Network Security Groups (NSG) with optional security rul
 |Resource Type|ApiVersion|
 |:--|:--|
 |`Microsoft.Resources/deployments`|2018-02-01|
-|`Microsoft.Network/networkSecurityGroups`|2020-08-01|
+|`Microsoft.Network/networkSecurityGroups`|2021-02-01|
 |`providers/locks`|2016-09-01|
 |`Microsoft.Network/networkSecurityGroups/providers/diagnosticsettings`|2017-05-01-preview|
 |`Microsoft.Network/networkSecurityGroups/providers/roleAssignments`|2018-09-01-preview|
-|`Microsoft.Network/networkWatchers/flowLogs`|2020-05-01|
+|`Microsoft.Network/networkWatchers/flowLogs`|2021-02-01|
 
 ## Parameters
 
@@ -185,8 +185,8 @@ If no Log Analytics Workspace exists or you don't want it to remain stored in th
 ## Additional resources
 
 - [Azure Network Security Groups](https://docs.microsoft.com/en-us/azure/virtual-network/security-overview)
-- [Microsoft.Network networkSecurityGroups template reference](https://docs.microsoft.com/en-us/azure/templates/microsoft.network/2018-11-01/networksecuritygroups)
-- [Microsoft.Network networkSecurityGroups/securityRules template reference](https://docs.microsoft.com/en-us/azure/templates/microsoft.network/2018-11-01/networksecuritygroups/securityrules)
+- [Microsoft.Network networkSecurityGroups template reference](https://docs.microsoft.com/en-us/azure/templates/microsoft.network/2021-02-01/networksecuritygroups)
+- [Microsoft.Network networkSecurityGroups/securityRules template reference](https://docs.microsoft.com/en-us/azure/templates/microsoft.network/2021-02-01/networksecuritygroups/securityrules)
 - [Azure Flow Logs](https://docs.microsoft.com/en-us/azure/network-watcher/network-watcher-nsg-flow-logging-overview)
-- [Microsoft.Network networkWatchers/flowLogs template reference](https://docs.microsoft.com/en-us/azure/templates/microsoft.network/2019-11-01/networkwatchers/flowlogs)
+- [Microsoft.Network networkWatchers/flowLogs template reference](https://docs.microsoft.com/en-us/azure/templates/microsoft.network/2021-02-01/networkwatchers/flowlogs)
 - [Use tags to organize your Azure resources](https://docs.microsoft.com/en-us/azure/azure-resource-manager/resource-group-using-tags)

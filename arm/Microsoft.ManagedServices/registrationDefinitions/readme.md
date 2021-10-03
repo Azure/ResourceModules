@@ -14,7 +14,7 @@ remote/managing tenant.
 | :-------------------------------------------------- | :--------- |
 | `Microsoft.ManagedServices/registrationDefinitions` | 2019-06-01 |
 | `Microsoft.ManagedServices/registrationAssignments` | 2019-06-01 |
-| `Microsoft.Resources/deployments`                   | 2018-05-01 |
+| `Microsoft.Resources/deployments`                   | 2020-06-01 |
 
 ## Parameters
 
