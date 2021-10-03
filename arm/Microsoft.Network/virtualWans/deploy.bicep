@@ -54,6 +54,9 @@ param tags object = {}
 @description('Optional. Customer Usage Attribution id (GUID). This GUID must be previously registered')
 param cuaId string = ''
 
+@description('Optional. Switch to lock storage from deletion.')
+param lockForDeletion bool = false
+
 var builtInRoleNames = {
   'Owner': subscriptionResourceId('Microsoft.Authorization/roleDefinitions','8e3af657-a8ff-443c-a75c-2fe8c4bcb635')
   'Contributor': subscriptionResourceId('Microsoft.Authorization/roleDefinitions','b24988ac-6180-42a0-ab88-20f7382dd24c')
@@ -86,6 +89,14 @@ resource virtualWan 'Microsoft.Network/virtualWans@2021-05-01' = {
   }
 }
 
+resource vwan_lock 'Microsoft.Authorization/locks@2016-09-01' = if (lockForDeletion) {
+  name: '${wanName}-vwanDoNotDelete'
+  properties: {
+    level: 'CanNotDelete'
+  }
+  scope: virtualWan
+}
+
 resource virtualHub 'Microsoft.Network/virtualHubs@2021-05-01' = {
   name: hubName
   location: location
@@ -95,6 +106,14 @@ resource virtualHub 'Microsoft.Network/virtualHubs@2021-05-01' = {
       id: virtualWan.id
     }
   }
+}
+
+resource virtualHub_lock 'Microsoft.Authorization/locks@2016-09-01' = if (lockForDeletion) {
+  name: '${hubName}-vHubDoNotDelete'
+  properties: {
+    level: 'CanNotDelete'
+  }
+  scope: virtualHub
 }
 
 resource vpnSite 'Microsoft.Network/vpnSites@2021-05-01' = {
@@ -117,6 +136,14 @@ resource vpnSite 'Microsoft.Network/vpnSites@2021-05-01' = {
       id: virtualWan.id
     }
   }
+}
+
+resource vpnSite_lock 'Microsoft.Authorization/locks@2016-09-01' = if (lockForDeletion) {
+  name: '${vpnSiteName}-vpnSiteDoNotDelete'
+  properties: {
+    level: 'CanNotDelete'
+  }
+  scope: vpnSite
 }
 
 resource vpnGateway 'Microsoft.Network/vpnGateways@2021-05-01' = {
@@ -142,6 +169,14 @@ resource vpnGateway 'Microsoft.Network/vpnGateways@2021-05-01' = {
       asn: 65515
     }
   }
+}
+
+resource vpnGateway_lock 'Microsoft.Authorization/locks@2016-09-01' = if (lockForDeletion) {
+  name: '${vpnGatewayName}-vpnGatewayDoNotDelete'
+  properties: {
+    level: 'CanNotDelete'
+  }
+  scope: vpnGateway
 }
 
 module rbac_name './.bicep/nested_rbac.bicep' = [for (item, i) in roleAssignments: {
