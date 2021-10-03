@@ -3,7 +3,7 @@
     "contentVersion": "1.0.0.0",
     "parameters": {
         "localVnetName": {
-            "value": "sxx-az-vnet-weu-x-002"
+            "value": "sxx-az-vnet-weu-x-004"
         },
         "peeringConfigurations": {
             "value": [
