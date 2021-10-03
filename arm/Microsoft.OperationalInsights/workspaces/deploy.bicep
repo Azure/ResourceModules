@@ -819,7 +819,7 @@ resource solutionRes 'Microsoft.OperationsManagement/solutions@2015-11-01-previe
 }]
 
 resource logAnalyticsWorkspace_lock 'Microsoft.Authorization/locks@2016-09-01' = if (lockForDeletion) {
-  name: '${logAnalyticsWorkspaceName}-storageDoNotDelete'
+  name: '${logAnalyticsWorkspaceName}-LADoNotDelete'
   properties: {
     level: 'CanNotDelete'
   }
