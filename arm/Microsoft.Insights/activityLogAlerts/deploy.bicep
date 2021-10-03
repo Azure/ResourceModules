@@ -86,6 +86,6 @@ module activityLogAlert_rbac './.bicep/nested_rbac.bicep' = [for (item, index) i
   ]
 }]
 
-output activityLogAlertResourceGroup string = resourceGroup().name
-output activityLogAlertName string = alertName
+output activityLogAlertName string = activityLogAlert.name
 output activityLogAlertResourceId string = activityLogAlert.id
+output activityLogAlertResourceGroup string = resourceGroup().name
