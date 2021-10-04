@@ -169,13 +169,13 @@ function Get-TypeColumnString {
 
     $outputString = ""
 
-    if ($moduleFiles.Name -contains 'deploy.json') {
-        # ARM exists
-        $outputString += ":heavy_check_mark:/"
-    }
-    else {
-        $outputString += " /"
-    }
+    # if ($moduleFiles.Name -contains 'deploy.json') {
+    #     # ARM exists
+    #     $outputString += ":heavy_check_mark:/"
+    # }
+    # else {
+    #     $outputString += " /"
+    # }
 
     if ($moduleFiles.Name -contains 'deploy.bicep') {
         # bicep exists
@@ -440,7 +440,7 @@ function Get-ModulesAsMarkdownTable {
             'Name' { $headerRow += ' Name |' }
             'ProviderNamespace' { $headerRow += ' Provider namespace |' }
             'ResourceType' { $headerRow += ' Resource Type |' }
-            'TemplateType' { $headerRow += ' ARM / Bicep |' }
+            'TemplateType' { $headerRow += ' Bicep |' }
             'Deploy' { $headerRow += ' Deploy |' }
             'Status' { $headerRow += ' Status |' }
             Default {
