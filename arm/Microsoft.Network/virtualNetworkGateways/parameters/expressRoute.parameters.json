@@ -10,9 +10,6 @@
                 "vnet-validate-01-ergw-01-pip-s-01"
             ]
         },
-        "publicIPPrefixId": {
-            "value": "/subscriptions/8629be3b-96bc-482d-a04b-ffff597c65a2/resourceGroups/dependencies-rg/providers/Microsoft.Network/publicIPPrefixes/sxx-az-pippfx-weu-x-003"
-        },
         "domainNameLabel": {
             "value": [
                 "ergw-01-pip-s-01"
@@ -26,7 +23,7 @@
         },
         // Must be in same RG for express route
         "vNetId": {
-            "value": "/subscriptions/8629be3b-96bc-482d-a04b-ffff597c65a2/resourceGroups/validation-rg/providers/Microsoft.Network/virtualNetworks/sxx-az-vnet-weu-x-002" //
+            "value": "/subscriptions/8629be3b-96bc-482d-a04b-ffff597c65a2/resourceGroups/validation-rg/providers/Microsoft.Network/virtualNetworks/sxx-az-vnet-weu-x-002"
         },
         "diagnosticLogsRetentionInDays": {
             "value": 365
