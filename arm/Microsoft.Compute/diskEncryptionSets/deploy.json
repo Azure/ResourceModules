@@ -270,7 +270,7 @@
             }
         },
         {
-            "apiVersion": "2020-06-30",
+            "apiVersion": "2020-12-01",
             "type": "Microsoft.Compute/diskEncryptionSets",
             "name": "[parameters('diskEncryptionSetName')]",
             "location": "[parameters('location')]",
