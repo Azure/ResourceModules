@@ -9,9 +9,7 @@
             "value": ["vnet-validate-01-ergw-01-pip-s-02"]
         },
         "domainNameLabel": {
-            "value": [
-                "ergw-01-pip-s-01"
-            ]
+            "value": ["vnet-validate-01-ergw-01-pip-s-02"]
         },
         "virtualNetworkGatewayType": {
             "value": "ExpressRoute"
