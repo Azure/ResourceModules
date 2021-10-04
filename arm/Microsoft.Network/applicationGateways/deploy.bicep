@@ -144,6 +144,7 @@ var diagnosticsLogs = [
     }
   }
 ]
+var tier = (endsWith(sku, 'v2') ? sku : substring(sku, 0, indexOf(sku, '_')))
 var applicationGatewayResourceId = resourceId('Microsoft.Network/applicationGateways', applicationGatewayName)
 var subnetResourceId = resourceId(vNetSubscriptionId, vNetResourceGroup, 'Microsoft.Network/virtualNetworks/subnets', vNetName, subnetName)
 var frontendPublicIPConfigurationName = 'public'
@@ -347,7 +348,7 @@ resource applicationGateway 'Microsoft.Network/applicationGateways@2021-02-01' =
   properties: {
     sku: {
       name: sku
-      tier: (endsWith(sku, 'v2') ? sku : substring(sku, 0, indexOf(sku, '_')))
+      tier: tier
       capacity: capacity
     }
     gatewayIPConfigurations: [
