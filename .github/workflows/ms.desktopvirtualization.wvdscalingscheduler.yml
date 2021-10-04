@@ -132,7 +132,7 @@ jobs:
     if: contains(fromJson('["refs/heads/main", "refs/heads/master"]'), github.ref)
     runs-on: ubuntu-20.04
     needs:
-    - job_deploy_module
+      - job_deploy_module
     steps:
       - name: "Checkout"
         uses: actions/checkout@v2
@@ -163,7 +163,7 @@ jobs:
     name: "Remove module"
     if: ${{ github.event.inputs.removeDeployment == 'true' }}
     needs:
-    - job_deploy_module
+      - job_deploy_module
     steps:
       - name: "Checkout"
         uses: actions/checkout@v2
