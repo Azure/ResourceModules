@@ -232,7 +232,7 @@ var backendHttpConfigurations_var = [for i in range(0, length(backendHttpConfigu
     cookieBasedAffinity: backendHttpConfigurations[i].cookieBasedAffinity
     pickHostNameFromBackendAddress: backendHttpConfigurations[i].pickHostNameFromBackendAddress
     probeEnabled: backendHttpConfigurations[i].probeEnabled
-    probe: (bool(backendHttpConfigurations[i].probeEnabled) ? '{"id": "${applicationGatewayResourceId}/probes/${backendHttpConfigurations[i].backendHttpConfigurationName}Probe"}' : json('null'))
+    probe: (bool(backendHttpConfigurations[i].probeEnabled) ? json('{"id": "${applicationGatewayResourceId}/probes/${backendHttpConfigurations[i].backendHttpConfigurationName}Probe"}') : json('null'))
   }
 }]
 var frontendHttpsPorts = [for i in range(0, length(frontendHttpsListeners)): {
