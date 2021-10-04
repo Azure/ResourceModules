@@ -1,14 +1,14 @@
 # Activity Log Alert
-This module deploys an Alert based on Activity Log
 
+This module deploys an Alert based on Activity Log
 
 ## Resource Types
 
 |Resource Type|Api Version|
 |:--|:--|
 |`Microsoft.Resources/deployments`|2018-02-01|
-|`Microsoft.Insights/ActivityLogAlerts`|2017-04-01|
-|`Microsoft.Insights/ActivityLogAlerts/providers/roleAssignments`|2018-09-01-preview|
+|`Microsoft.Insights/ActivityLogAlerts`|2020-10-01|
+|`Microsoft.Authorization/roleAssignments`|2020-04-01-preview|
 
 ## Parameters
 
@@ -22,9 +22,8 @@ This module deploys an Alert based on Activity Log
 | `enabled` | bool | Optional. Indicates whether this alert is enabled. | True |  |
 | `location` | string | Optional. Location for all resources. | global |  |
 | `roleAssignments` | array | Optional. Array of role assignment objects that contain the 'roleDefinitionIdOrName' and 'principalId' to define RBAC role assignments on this resource. In the roleDefinitionIdOrName attribute, you can provide either the display name of the role definition, or its fully qualified ID in the following format: '/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11' | System.Object[] |  |
-| `scopes` | array | Required. the list of resource id's that this metric alert is scoped to. |  |  |
+| `scopes` | array | Optional. the list of resource id\'s that this metric alert is scoped to. | subscription().id |  |
 | `tags` | object | Optional. Tags of the resource. |  |  |
-
 
 ### Parameter Usage: actions
 
@@ -32,13 +31,24 @@ This module deploys an Alert based on Activity Log
 "actions": {
   "value": [
     {
-      "actionGroupId": "/subscriptions/xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx/resourceGroups/rgName/providers/microsoft.insights/actiongroups/ActionGroupName",
+      "actionGroupId": "/subscriptions/xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx/resourceGroups/rgName/providers/microsoft.insights/actiongroups/actionGroupName",
       "webhookProperties": {}
     }
   ]
 }
 ```
+
 `webhookProperties` is optional.
+
+If you do only want to provide actionGroupIds, a shorthand use of the parameter is available.
+
+```json
+"actions": {
+  "value": [
+      "/subscriptions/xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx/resourceGroups/rgName/providers/microsoft.insights/actiongroups/actionGroupName"
+  ]
+}
+```
 
 ### Parameter Usage: conditions
 **Conditions can also be combined with logical operators `allOf` and `anyOf`**
@@ -53,11 +63,10 @@ This module deploys an Alert based on Activity Log
 Each condition can specify only one field between `equals` and `containsAny`.
 
 | Parameter Name | Type   | Possible values | Description |
-| :-- | :-- | :-- | :-- | 
+| :-- | :-- | :-- | :-- |
 | `field` | string | `resourceId`,<br>`category`,<br>`caller`,<br>`level`,<br>`operationName`,<br>`resourceGroup`,<br>`resourceProvider`,<br>`status`,<br>`subStatus`,<br>`resourceType`,<br> or anything beginning with `properties.` | Required. The name of the field that this condition will examine.  |
 | `equals` | string | | Optional (Alternative to `containsAny`). The value to confront with. |
 | `containsAny` | array of strings | | Optional (Alternative to `equals`). Condition will be satisfied if value of the field in the event is within one of the specified here. |
-
 
 **Sample**
 
@@ -79,6 +88,7 @@ Each condition can specify only one field between `equals` and `containsAny`.
   ]
 }
 ```
+
 **Sample 2**
 
 ```json
@@ -169,8 +179,8 @@ Tag names and tag values can be provided as needed. A tag can be left without a 
 | Output Name | Type | Description |
 | :-- | :-- | :-- |
 | `activityLogAlertResourceId` | string | The Resource Id of the Alert deployed. |
-| `alertName` | string | The Name of the Alert. |
-| `deploymentResourceGroup` | string | The name of the Resource Group the Alert was created in. | 
+| `activityLogAlertName` | string | The Name of the Alert. |
+| `activityLogAlertResourceGroup` | string | The name of the Resource Group the Alert was created in. |
 
 ## Considerations
 
@@ -179,6 +189,6 @@ Tag names and tag values can be provided as needed. A tag can be left without a 
 ## Additional resources
 
 - [Activity Log alerts](https://docs.microsoft.com/en-us/azure/azure-monitor/platform/activity-log-alerts)
-- [Template reference](https://docs.microsoft.com/en-us/azure/templates/microsoft.insights/2017-04-01/activitylogalerts)
+- [Template reference](https://docs.microsoft.com/en-us/azure/templates/microsoft.insights/2020-10-01/activitylogalerts)
 - [Service Health notification properties](https://docs.microsoft.com/en-us/azure/service-health/service-health-notifications-properties)
 - [Azure monitor documentation](https://docs.microsoft.com/en-us/azure/azure-monitor/)

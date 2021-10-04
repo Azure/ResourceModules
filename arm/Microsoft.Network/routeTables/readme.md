@@ -7,7 +7,7 @@ This template deploys User Defined Route Tables.
 |Resource Type|ApiVersion|
 |:--|:--|
 |`Microsoft.Resources/deployments`|2018-02-01|
-|`Microsoft.Network/routeTables`|2020-08-01|
+|`Microsoft.Network/routeTables`|2021-02-01|
 |`providers/locks`|2016-09-01|
 |`Microsoft.Network/routeTables/providers/roleAssignments`|2018-09-01-preview|
 
@@ -126,5 +126,5 @@ Tag names and tag values can be provided as needed. A tag can be left without a 
 
 ## Additional resources
 
-- [Microsoft.Network routeTables template reference](https://docs.microsoft.com/en-us/azure/templates/microsoft.network/2019-09-01/routetables)
+- [Microsoft.Network routeTables template reference](https://docs.microsoft.com/en-us/azure/templates/microsoft.network/2021-02-01/routetables)
 - [Use tags to organize your Azure resources](https://docs.microsoft.com/en-us/azure/azure-resource-manager/resource-group-using-tags)

@@ -10,7 +10,7 @@ This template deploys Log Analytics.
 |`Microsoft.OperationalInsights/workspaces`|2017-03-15-preview|
 |`Microsoft.OperationalInsights/workspaces/datasources`|2015-11-01-preview|
 |`Microsoft.OperationalInsights/workspaces/storageinsightconfigs`|2015-03-20|
-|`Microsoft.OperationsManagement/solutions`|2015-11-01-preview|
+|`Microsoft.OperationsManagement/gallerySolution`|2015-11-01-preview|
 |`Microsoft.OperationalInsights/workspaces/linkedServices`|2015-11-01-preview|
 |`Microsoft.OperationalInsights/workspaces/providers/locks`|2016-09-01|
 |`savedSearches`|2017-03-15-preview|
@@ -34,14 +34,14 @@ This template deploys Log Analytics.
 | `logAnalyticsWorkspaceName` | string | Required. Name of the Log Analytics workspace |  |  |
 | `roleAssignments` | array | Optional. Array of role assignment objects that contain the 'roleDefinitionIdOrName' and 'principalId' to define RBAC role assignments on this resource. In the roleDefinitionIdOrName attribute, you can provide either the display name of the role definition, or its fully qualified ID in the following format: '/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11' | System.Object[] |  |
 | `serviceTier` | string | Required. Service Tier: PerGB2018, Free, Standalone, PerGB or PerNode | PerGB2018 | System.Object[] |
-| `solutions` | array | Optional. LAW solutions from the gallery. | [] | "Updates", "AzureAutomation", ... (see below) |
+| `gallerySolution` | array | Optional. LAW gallerySolution from the gallery. | [] | "Updates", "AzureAutomation", ... (see below) |
 | `tags` | object | Optional. Tags of the resource. |  |  |
 | `useResourcePermissions` | bool | Optional. Set to 'true' to use resource or workspace permissions and 'false' (or leave empty) to require workspace permissions. | False | true, false |
 
-### Parameter Usage: `solutions`
+### Parameter Usage: `gallerySolution`
 
 ```json
-"solutions": {
+"gallerySolution": {
     "value": [
         "AgentHealthAssessment",
         "AlertManagement",
@@ -135,6 +135,6 @@ Tag names and tag values can be provided as needed. A tag can be left without a 
 ## Additional resources
 
 - [Microsoft.OperationalInsights workspaces template reference](https://docs.microsoft.com/en-us/azure/templates/microsoft.operationalinsights/2015-11-01-preview/workspaces)
-- [Microsoft.OperationalManagement solutions template reference](https://docs.microsoft.com/en-us/azure/templates/microsoft.operationsmanagement/2015-11-01-preview/solutions)
+- [Microsoft.OperationalManagement gallerySolution template reference](https://docs.microsoft.com/en-us/azure/templates/microsoft.operationsmanagement/2015-11-01-preview/gallerySolution)
 - [Use tags to organize your Azure resources](https://docs.microsoft.com/en-us/azure/azure-resource-manager/resource-group-using-tags)
 - [Manage access to log data and workspaces in Azure Monitor](https://docs.microsoft.com/en-us/azure/azure-monitor/logs/manage-access)
