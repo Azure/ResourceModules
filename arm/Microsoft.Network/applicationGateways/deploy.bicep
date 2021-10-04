@@ -161,10 +161,6 @@ var frontendPrivateIPStaticConfiguration = {
     id: subnetResourceId
   }
 }
-var backendPoolsCount = length(backendPools)
-var frontendListenerhttpsCertificateObject = {
-  Id: '${applicationGatewayResourceId}/sslCertificates/${sslCertificateName}'
-}
 var redirectConfigurationsHttpRedirectNamePrefix = 'httpRedirect'
 var httpListenerhttpRedirectNamePrefix = 'httpRedirect'
 var requestRoutingRuleHttpRedirectNamePrefix = 'httpRedirect'
@@ -218,7 +214,7 @@ var builtInRoleNames = {
   'User Access Administrator': subscriptionResourceId('Microsoft.Authorization/roleDefinitions', '18d7d88d-d35e-4fb5-a5c3-7773c20a72d9')
   'Virtual Machine Contributor': subscriptionResourceId('Microsoft.Authorization/roleDefinitions', '9980e02c-c2be-4d73-94e8-173b1dc7cf3c')
 }
-var backendAddressPools = [for i in range(0, backendPoolsCount): {
+var backendAddressPools = [for i in range(0, length(backendPools)): {
   name: backendPools[i].backendPoolName
   type: 'Microsoft.Network/applicationGateways/backendAddressPools'
   properties: {
@@ -269,7 +265,9 @@ var frontendHttpsListeners_var = [for i in range(0, length(frontendHttpsListener
       Id: '${applicationGatewayResourceId}/frontendPorts/port${frontendHttpsListeners[i].port}'
     }
     Protocol: 'https'
-    SslCertificate: frontendListenerhttpsCertificateObject
+    SslCertificate: {
+      Id: '${applicationGatewayResourceId}/sslCertificates/${sslCertificateName}'
+    }
   }
 }]
 var frontendHttpPorts = [for i in range(0, length(frontendHttpListeners)): {
