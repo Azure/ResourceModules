@@ -161,7 +161,7 @@ jobs:
   job_remove_module:
     runs-on: ubuntu-20.04
     name: "Remove module"
-    if: ${{and(always() && github.event.inputs.removeDeployment == 'true' &&  contains(needs.*.result, 'success', 'failure') }})
+    if: ${{ always() && github.event.inputs.removeDeployment == 'true' &&  contains(needs.*.result, 'success', 'failure') }}
     needs:
       - job_deploy_module
     steps:
