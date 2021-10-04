@@ -1,0 +1,52 @@
+{
+    "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "virtualNetworkGatewayName": {
+            "value": "vnet-validate-01-ergw-01"
+        },
+        "gatewayPipName": {
+            "value": ["vnet-validate-01-ergw-01-pip-s-02"]
+        },
+        "domainNameLabel": {
+            "value": ["vnet-validate-01-ergw-01-pip-s-02"]
+        },
+        "virtualNetworkGatewayType": {
+            "value": "ExpressRoute"
+        },
+        "virtualNetworkGatewaySku": {
+            "value": "ErGw1AZ"
+        },
+        "vNetId": {
+            "value": "/subscriptions/8629be3b-96bc-482d-a04b-ffff597c65a2/resourceGroups/validation-rg/providers/Microsoft.Network/virtualNetworks/sxx-az-vnet-weu-x-004"
+        },
+        "diagnosticLogsRetentionInDays": {
+            "value": 365
+        },
+        "diagnosticStorageAccountId": {
+            "value": "/subscriptions/8629be3b-96bc-482d-a04b-ffff597c65a2/resourceGroups/dependencies-rg/providers/Microsoft.Storage/storageAccounts/sxxazsaweux003"
+        },
+        "workspaceId": {
+            "value": "/subscriptions/8629be3b-96bc-482d-a04b-ffff597c65a2/resourceGroups/dependencies-rg/providers/Microsoft.OperationalInsights/workspaces/sxx-az-la-weu-x-003"
+        },
+        "eventHubAuthorizationRuleId": {
+            "value": "/subscriptions/8629be3b-96bc-482d-a04b-ffff597c65a2/resourceGroups/dependencies-rg/providers/Microsoft.EventHub/namespaces/sxx-az-evhns-weu-x-003/AuthorizationRules/RootManageSharedAccessKey"
+        },
+        "eventHubName": {
+            "value": "sxx-az-evhns-weu-x-003"
+        },
+        "lockForDeletion": {
+            "value": false
+        },
+        "tags": {
+            "value": {
+                "Environment": "Validation",
+                "Contact": "test.user@testcompany.com",
+                "PurchaseOrder": "",
+                "CostCenter": "",
+                "ServiceName": "DeploymentValidation",
+                "Role": "DeploymentValidation"
+            }
+        }
+    }
+}
