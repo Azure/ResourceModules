@@ -14,48 +14,13 @@
         "dailyQuotaGb": {
 			"value": 10
 		},
-        // "solutions": {
-        //     "value": [
-        //         "Updates",
-        //         "AzureAutomation",
-        //         "AntiMalware",
-        //         "SQLAssessment",
-        //         "Security",
-        //         "SecurityCenterFree",
-        //         "ChangeTracking",
-        //         "KeyVaultAnalytics",
-        //         "AzureSQLAnalytics",
-        //         "ServiceMap",
-        //         "AgentHealthAssessment",
-        //         "AlertManagement",
-        //         "AzureActivity",
-        //         "AzureAppGatewayAnalytics",
-        //         "AzureCdnCoreAnalytics",
-        //         "AzureDataFactoryAnalytics",
-        //         "AzureNSGAnalytics",
-        //         "Containers",
-        //         "InfrastructureInsights",
-        //         "LogicAppsManagement",
-        //         "NetworkMonitoring",
-        //         "ServiceFabric",
-        //         "VMInsights",
-        //         "WaaSUpdateInsights",
-        //         "WireData2"
-        //     ]
-        // },
+        "solutions": {
+            "value": [
+                "AzureAutomation"
+            ]
+        },
         "useResourcePermissions": {
             "value": true
         }
-		// "roleAssignments": {
-        //     "value": [
-        //         {
-        //             "roleDefinitionIdOrName": "Desktop Virtualization User",
-        //             "principalIds": [
-        //                 "12345678-1234-1234-1234-123456789012", // object 1
-        //                 "78945612-1234-1234-1234-123456789012" // object 2
-        //             ]
-        //         }
-        //     ]
-        // }
 	}
 }
