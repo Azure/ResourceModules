@@ -139,12 +139,12 @@ resource appGroup_diagnosticSettings 'Microsoft.Insights/diagnosticsettings@2017
   scope: appGroup
 }
 
-module appGroup_rbac './.bicep/nested_rbac.bicep' = [for (item, i) in roleAssignments: {
-  name: 'rbac-${deployment().name}${i}'
+module appGroup_rbac './.bicep/nested_rbac.bicep' = [for (roleAssignment, index) in roleAssignments: {
+  name: 'rbac-${deployment().name}${index}'
   params: {
-    roleAssignment: item
+    roleAssignment: roleAssignment
     builtInRoleNames: builtInRoleNames
-    appGroupName: appGroupName
+    resourceName: appGroupName
   }
   dependsOn: [
     appGroup

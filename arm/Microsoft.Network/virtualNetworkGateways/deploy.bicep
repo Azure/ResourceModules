@@ -398,7 +398,7 @@ module virtualNetworkGateway_rbac './.bicep/nested_rbac.bicep' = [for (roleAssig
   params: {
     roleAssignment: roleAssignment
     builtInRoleNames: builtInRoleNames
-    virtualNetworkGatewayName: virtualNetworkGatewayName
+    resourceName: virtualNetworkGatewayName
   }
   dependsOn: [
     virtualNetworkGateway

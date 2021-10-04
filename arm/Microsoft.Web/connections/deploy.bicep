@@ -96,12 +96,12 @@ resource connection_lock 'Microsoft.Authorization/locks@2016-09-01' = if (lockFo
   scope: connection
 }
 
-module connection_rbac './.bicep/nested_rbac.bicep' = [for (item, i) in roleAssignments: {
-  name: 'rbac-${deployment().name}${i}'
+module connection_rbac './.bicep/nested_rbac.bicep' = [for (roleAssignment, index) in roleAssignments: {
+  name: 'rbac-${deployment().name}${index}'
   params: {
-    roleAssignment: item
+    roleAssignment: roleAssignment
     builtInRoleNames: builtInRoleNames
-    connectionName: connectionName
+    resourceName: connectionName
   }
   dependsOn: [
     connection

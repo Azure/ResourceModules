@@ -164,7 +164,7 @@ module virtualNetwork_rbac './.bicep/nested_rbac.bicep' = [for (roleassignment, 
   params: {
     roleAssignment: roleassignment
     builtInRoleNames: builtInRoleNames
-    vNetName: vNetName
+    resourceName: vNetName
   }
   dependsOn: [
     virtualNetwork

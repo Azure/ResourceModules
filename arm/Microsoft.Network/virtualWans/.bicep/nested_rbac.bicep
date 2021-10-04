@@ -1,9 +1,9 @@
 param roleAssignment object
 param builtInRoleNames object
-param virtualWanName string
+param resourceName string
 
 resource nested_rbac 'Microsoft.Storage/storageAccounts/providers/roleAssignments@2020-04-01-preview' = [for principalId in roleAssignment.principalIds: {
-  name: '${virtualWanName}/Microsoft.Authorization/${guid(virtualWanName, principalId, roleAssignment.roleDefinitionIdOrName)}'
+  name: '${resourceName}/Microsoft.Authorization/${guid(resourceName, principalId, roleAssignment.roleDefinitionIdOrName)}'
   properties: {
     roleDefinitionId: (contains(builtInRoleNames, roleAssignment.roleDefinitionIdOrName) ? builtInRoleNames[roleAssignment.roleDefinitionIdOrName] : roleAssignment.roleDefinitionIdOrName)
     principalId: principalId

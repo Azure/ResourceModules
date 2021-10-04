@@ -294,12 +294,12 @@ resource app_insights 'microsoft.insights/components@2020-02-02' = if (enableMon
   }
 }
 
-module app_rbac './.bicep/nested_rbac.bicep' = [for (item, i) in roleAssignments: {
-  name: 'rbac-${deployment().name}${i}'
+module app_rbac './.bicep/nested_rbac.bicep' = [for (roleAssignment, index) in roleAssignments: {
+  name: 'rbac-${deployment().name}${index}'
   params: {
-    roleAssignment: item
+    roleAssignment: resourceName
     builtInRoleNames: builtInRoleNames
-    appName: appName
+    resourceName: appName
   }
   dependsOn: [
     app

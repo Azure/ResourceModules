@@ -253,12 +253,12 @@ module keyVault_privateEndpoints './.bicep/nested_privateEndpoint.bicep' = [for 
   ]
 }]
 
-module keyVault_rbac './.bicep/nested_rbac.bicep' = [for (item, i) in roleAssignments: {
-  name: 'rbac-${deployment().name}${i}'
+module keyVault_rbac './.bicep/nested_rbac.bicep' = [for (roleAssignment, index) in roleAssignments: {
+  name: 'rbac-${deployment().name}${index}'
   params: {
-    roleAssignment: item
+    roleAssignment: roleAssignment
     builtInRoleNames: builtInRoleNames
-    keyVaultName: keyVaultName_var
+    resourceName: keyVaultName_var
   }
   dependsOn: [
     keyVault

@@ -750,12 +750,12 @@ resource vmss_diagnosticSettings 'Microsoft.Insights/diagnosticSettings@2021-05-
   scope: vmss
 }
 
-module vmss_rbac './.bicep/nested_rbac.bicep' = [for (item, i) in roleAssignments: {
-  name: 'rbac-${deployment().name}${i}'
+module vmss_rbac './.bicep/nested_rbac.bicep' = [for (roleAssignment, index) in roleAssignments: {
+  name: 'rbac-${deployment().name}${index}'
   params: {
-    roleAssignment: item
+    roleAssignment: roleAssignment
     builtInRoleNames: builtInRoleNames
-    vmssName: vmssName
+    resourceName: vmssName
   }
   dependsOn: [
     vmss

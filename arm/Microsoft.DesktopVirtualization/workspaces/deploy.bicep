@@ -141,7 +141,7 @@ module workspace_rbac './.bicep/nested_rbac.bicep' = [for (roleassignment, index
   params: {
     roleAssignment: roleassignment
     builtInRoleNames: builtInRoleNames
-    workspaceName: workSpaceName
+    resourceName: workSpaceName
   }
   dependsOn: [
     workspace

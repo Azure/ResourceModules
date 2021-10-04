@@ -220,7 +220,7 @@ module storageAccount_rbac './.bicep/nested_rbac.bicep' = [for (roleassignment, 
   params: {
     roleAssignment: roleassignment
     builtInRoleNames: builtInRoleNames
-    storageAccountName: storageAccountName
+    resourceName: storageAccountName
   }
   dependsOn: [
     storageAccount

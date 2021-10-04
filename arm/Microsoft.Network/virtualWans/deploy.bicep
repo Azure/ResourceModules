@@ -179,12 +179,12 @@ resource vpnGateway_lock 'Microsoft.Authorization/locks@2016-09-01' = if (lockFo
   scope: vpnGateway
 }
 
-module rbac_name './.bicep/nested_rbac.bicep' = [for (item, i) in roleAssignments: {
-  name: 'rbac-${deployment().name}${i}'
+module rbac_name './.bicep/nested_rbac.bicep' = [for (roleAssignment, index) in roleAssignments: {
+  name: 'rbac-${deployment().name}${index}'
   params: {
-    roleAssignment: item
+    roleAssignment: roleAssignment
     builtInRoleNames: builtInRoleNames
-    virtualWanName: virtualWanName
+    resourceName: virtualWanName
   }
   dependsOn: [
     virtualWan

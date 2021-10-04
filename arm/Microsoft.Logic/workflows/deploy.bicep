@@ -192,12 +192,12 @@ resource logicApp_diagnosticSettings 'Microsoft.Insights/diagnosticsettings@2017
   scope: logicApp
 }
 
-module logicApp_rbac './.bicep/nested_rbac.bicep' = [for (item, i) in roleAssignments: {
-  name: 'rbac-${deployment().name}${i}'
+module logicApp_rbac './.bicep/nested_rbac.bicep' = [for (roleAssignment, index) in roleAssignments: {
+  name: 'rbac-${deployment().name}${index}'
   params: {
-    roleAssignment: item
+    roleAssignment: roleAssignment
     builtInRoleNames: builtInRoleNames
-    logicAppName: logicAppName
+    resourceName: logicAppName
   }
   dependsOn: [
     logicApp

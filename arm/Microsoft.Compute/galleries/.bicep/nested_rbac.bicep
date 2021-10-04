@@ -1,9 +1,9 @@
 param roleAssignment object
 param builtInRoleNames object
-param galleryName string
+param resourceName string
 
 resource nested_rbac 'Microsoft.Compute/galleries/providers/roleAssignments@2020-04-01-preview' = [for principalId in roleAssignment.principalIds: {
-  name: '${galleryName}/Microsoft.Authorization/${guid(uniqueString('${galleryName}${principalId}${roleAssignment.roleDefinitionIdOrName}'))}'
+  name: '${resourceName}/Microsoft.Authorization/${guid(uniqueString('${resourceName}${principalId}${roleAssignment.roleDefinitionIdOrName}'))}'
   properties: {
     roleDefinitionId: (contains(builtInRoleNames, roleAssignment.roleDefinitionIdOrName) ? builtInRoleNames[roleAssignment.roleDefinitionIdOrName] : roleAssignment.roleDefinitionIdOrName)
     principalId: principalId

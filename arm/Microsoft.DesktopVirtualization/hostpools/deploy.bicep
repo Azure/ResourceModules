@@ -229,7 +229,7 @@ module hostPool_rbac './.bicep/nested_rbac.bicep' = [for (roleassignment, index)
   params: {
     roleAssignment: roleassignment
     builtInRoleNames: builtInRoleNames
-    hostPoolName: hostPoolName
+    resourceName: hostPoolName
   }
   dependsOn: [
     hostPool

@@ -188,7 +188,7 @@ module appServiceEnvironment_rbac './.bicep/nested_rbac.bicep' = [for (roleassig
   params: {
     roleAssignment: roleassignment
     builtInRoleNames: builtInRoleNames
-    appServiceEnvironmentName: appServiceEnvironmentName
+    resourceName: appServiceEnvironmentName
   }
   dependsOn: [
     appServiceEnvironment
