@@ -301,7 +301,7 @@ var frontendHttpRedirectPorts = [for i in range(0, ((frontendHttpRedirectsCount 
   }
 }]
 var frontendHttpRedirects_var = [for i in range(0, ((frontendHttpRedirectsCount == 0) ? 1 : frontendHttpRedirectsCount)): {
-  name: ((frontendHttpRedirectsCount == 0) ? 'dummy' : concat(httpListenerhttpRedirectNamePrefix, frontendHttpRedirects[i].port))
+  name: ((frontendHttpRedirectsCount == 0) ? 'dummy' : '${httpListenerhttpRedirectNamePrefix}${frontendHttpRedirects[i].port}')
   properties: {
     FrontendIPConfiguration: {
       Id: ((frontendHttpRedirectsCount == 0) ? 'dummy' : '${applicationGatewayResourceId}/frontendIPConfigurations/${frontendHttpRedirects[i].frontendIPType}')
@@ -325,7 +325,7 @@ var httpRequestRoutingRules = [for i in range(0, ((frontendHttpRedirectsCount ==
   }
 }]
 var httpRedirectConfigurations = [for i in range(0, ((frontendHttpRedirectsCount == 0) ? 1 : frontendHttpRedirectsCount)): {
-  name: ((frontendHttpRedirectsCount == 0) ? 'dummy' : concat(redirectConfigurationsHttpRedirectNamePrefix, frontendHttpRedirects[i].port))
+  name: ((frontendHttpRedirectsCount == 0) ? 'dummy' : '${redirectConfigurationsHttpRedirectNamePrefix}${frontendHttpRedirects[i].port}')
   properties: {
     redirectType: 'Permanent'
     includePath: true
