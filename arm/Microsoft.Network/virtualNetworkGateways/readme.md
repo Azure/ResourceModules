@@ -42,7 +42,6 @@ This module deploys a Virtual Network Gateway.
 | `virtualNetworkGatewayType` | string | Required. Specifies the gateway type. E.g. VPN, ExpressRoute |  | System.Object[] | 
 | `vNetId` | string | Required. Virtual Network resource Id |  |  |
 | `vpnClientAddressPoolPrefix` | string | Optional. The IP address range from which VPN clients will receive an IP address when connected. Range specified must not overlap with on-premise network. |  |  |
-| `vpnGatewayGeneration` | string | Optional. Specifies the VPN GW generation. | Generation1 | System.Object[] |
 | `vpnType` | string | Required. Specifies the VPN type | RouteBased | System.Object[] |
 | `workspaceId` | string | Required. Resource identifier of Log Analytics. |  |  |
 
