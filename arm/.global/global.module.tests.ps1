@@ -796,13 +796,16 @@ Describe "Deployment template tests" -Tag Template {
             if ((($Schemaverion.Split('/')[5]).Split('.')[0]) -eq (($RGdeployment.Split('/')[5]).Split('.')[0])) {
                 $Locationparamoutputvalue = $Template.parameters.Location.defaultValue
                 $Locationparamoutput = ($Template.parameters | Get-Member | Where-Object { $_.MemberType -eq "NoteProperty" }).Name
-                if ($Locationparamoutput -contains "Location" -and ($Locationparamoutputvalue -eq "[resourceGroup().Location]" -or $Locationparamoutputvalue -eq "global")) {
-                    $LocationFlag = $true
+                if ($Locationparamoutput -contains "Location") {
+                    if ($Locationparamoutputvalue -eq "[resourceGroup().Location]" -or $Locationparamoutputvalue -eq "global") {
+                        $LocationFlag = $true
+                    }
+                    else {
+
+                        $LocationFlag = $false
+                    }
+                    $LocationFlag | Should -Contain $true
                 }
-                else {
-                    $LocationFlag = $false
-                }
-                $LocationFlag | Should -Contain $true
             }
         }
 
