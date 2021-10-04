@@ -6,7 +6,7 @@
       "value": "sxx-az-apgw-weu-x-002"
     },
     "sku": {
-      "value": "WAF_Medium"
+      "value": "WAF_v2"
     },
     "vNetName": {
       "value": "sxx-az-vnet-weu-x-003"
@@ -22,6 +22,9 @@
     },
     "frontendpublicIpResourceId": {
       "value": "/subscriptions/8629be3b-96bc-482d-a04b-ffff597c65a2/resourceGroups/dependencies-rg/providers/Microsoft.Network/publicIPAddresses/sxx-az-pip-weu-x-003"
+    },
+    "managedIdentityResourceId": {
+      "value": "/subscriptions/8629be3b-96bc-482d-a04b-ffff597c65a2/resourceGroups/dependencies-rg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/sxx-az-msi-weu-x-002"
     },
     "sslCertificateKeyVaultSecretId": {
       "value": "https://sxx-az-kv-weu-x-004.vault.azure.net/secrets/applicationGatewaySslCertificate/b664f0004c734e838c42091705b001b6"
