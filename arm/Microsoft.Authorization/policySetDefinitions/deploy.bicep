@@ -28,37 +28,36 @@ param policyDefinitionGroups array = []
 @description('Optional. The policy set definition parameters that can be used in policy definition references.')
 param parameters object = {}
 
-var emptyArray = []
-var var_policySetDefinitionName = replace(policySetDefinitionName, ' ', '-')
-var var_policySetDefinitionProperties = {
+var policySetDefinitionName_var = replace(policySetDefinitionName, ' ', '-')
+var policySetDefinitionProperties_var = {
   policyType: 'Custom'
   displayName: (empty(displayName) ? json('null') : displayName)
   description: (empty(policySetDescription) ? json('null') : policySetDescription)
   metadata: (empty(metadata) ? json('null') : metadata)
   parameters: (empty(parameters) ? json('null') : parameters)
   policyDefinitions: policyDefinitions
-  policyDefinitionGroups: (empty(policyDefinitionGroups) ? emptyArray : policyDefinitionGroups)
+  policyDefinitionGroups: (empty(policyDefinitionGroups) ? [] : policyDefinitionGroups)
 }
 
 module policySetDefinition_mg './.bicep/nested_policySetDefinition_mg.bicep' = if (empty(subscriptionId) && !empty(managementGroupId)) {
-  name: '${var_policySetDefinitionName}-mgDeployment'
+  name: '${policySetDefinitionName_var}-mgDeployment'
   scope: managementGroup(managementGroupId)
   params: {
-    policySetDefinitionName: var_policySetDefinitionName
-    properties: var_policySetDefinitionProperties
+    policySetDefinitionName: policySetDefinitionName_var
+    policySetDefinitionProperties: policySetDefinitionProperties_var
     managementGroupId: managementGroupId
   }
 }
 
 module policySetDefinition_sub './.bicep/nested_policySetDefinition_sub.bicep' = if (empty(managementGroupId) && !empty(subscriptionId)) {
-  name: '${var_policySetDefinitionName}-subDeployment'
+  name: '${policySetDefinitionName_var}-subDeployment'
   scope: subscription(subscriptionId)
   params: {
-    policySetDefinitionName: var_policySetDefinitionName
-    properties: var_policySetDefinitionProperties
+    policySetDefinitionName: policySetDefinitionName_var
+    policySetDefinitionProperties: policySetDefinitionProperties_var
     subscriptionId: subscriptionId
   }
 }
 
-output policySetDefinitionName string = var_policySetDefinitionName
+output policySetDefinitionName string = policySetDefinitionName_var
 output policySetDefinitionId string = !empty(managementGroupId) ? policySetDefinition_mg.outputs.policySetDefinitionId : policySetDefinition_sub.outputs.policySetDefinitionId

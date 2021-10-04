@@ -50,18 +50,6 @@
             },
             "policyDefinitionId": "/providers/Microsoft.Authorization/policyDefinitions/e765b5de-1225-4ba3-bd56-1ac6695af988",
             "policyDefinitionReferenceId": "Allowed locations for resource groups_1"
-          },
-          {
-            "groupNames": [
-              "Network"
-            ],
-            "parameters": {
-              "effect": {
-                "value": "Audit"
-              }
-            },
-            "policyDefinitionId": "/providers/Microsoft.Management/managementGroups/mg-main/providers/Microsoft.Authorization/policyDefinitions/test-deny-keyvault-public-access",
-            "policyDefinitionReferenceId": "test-deny-keyvault-public-access"
           }
         ]
       },
@@ -72,7 +60,7 @@
         }
       },
       "subscriptionId": {
-        "value": "20d6fbfe-b049-471c-95af-1369d14d0d45"
+        "value": "8629be3b-96bc-482d-a04b-ffff597c65a2"
       }
     }
   }

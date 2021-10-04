@@ -58,8 +58,8 @@ var nonComplianceMessage_var = {
   message: (empty(nonComplianceMessage) ? 'null' : nonComplianceMessage)
 }
 
-var var_policyAssignmentName = replace(policyAssignmentName, ' ', '-')
-var var_properties = {
+var policyAssignmentName_var = replace(policyAssignmentName, ' ', '-')
+var policyAssignmentProperties_var = {
   displayName: (empty(displayName) ? json('null') : displayName)
   metadata: (empty(metadata) ? json('null') : metadata)
   description: (empty(policyAssignmentDescription) ? json('null') : policyAssignmentDescription)
@@ -70,44 +70,44 @@ var var_properties = {
   notScopes: (empty(notScopes) ? [] : notScopes)
 }
 
-var var_identity = {
+var policyAssignmentIdentity_var = {
   type: identity
 }
 
 module policyAssignment_mg '.bicep/nested_policyAssignments_mg.bicep' = if (!empty(managementGroupId) && empty(subscriptionId) && empty(resourceGroupName)) {
-  name: '${var_policyAssignmentName}-policyAssignment_mg'
+  name: '${policyAssignmentName_var}-policyAssignment_mg'
   scope: managementGroup(managementGroupId)
   params: {
-    policyAssignmentName: var_policyAssignmentName
+    policyAssignmentName: policyAssignmentName_var
     location: location
-    properties: var_properties
-    identity: var_identity
+    policyAssignmentProperties: policyAssignmentProperties_var
+    policyAssignmentIdentity: policyAssignmentIdentity_var
     managementGroupId: managementGroupId
     roleDefinitionIds: roleDefinitionIds
   }
 }
 
 module policyAssignment_sub '.bicep/nested_policyAssignments_sub.bicep' = if (empty(managementGroupId) && !empty(subscriptionId) && empty(resourceGroupName)) {
-  name: '${var_policyAssignmentName}-policyAssignment_sub'
+  name: '${policyAssignmentName_var}-policyAssignment_sub'
   scope: subscription(subscriptionId)
   params: {
-    policyAssignmentName: var_policyAssignmentName
+    policyAssignmentName: policyAssignmentName_var
     location: location
-    properties: var_properties
-    identity: var_identity
+    policyAssignmentProperties: policyAssignmentProperties_var
+    policyAssignmentIdentity: policyAssignmentIdentity_var
     subscriptionId: subscriptionId
     roleDefinitionIds: roleDefinitionIds
   }
 }
 
 module policyAssignment_rg '.bicep/nested_policyAssignments_rg.bicep' = if (empty(managementGroupId) && !empty(resourceGroupName) && !empty(subscriptionId)) {
-  name: '${var_policyAssignmentName}-policyAssignment_rg'
+  name: '${policyAssignmentName_var}-policyAssignment_rg'
   scope: resourceGroup(subscriptionId, resourceGroupName)
   params: {
-    policyAssignmentName: var_policyAssignmentName
+    policyAssignmentName: policyAssignmentName_var
     location: location
-    properties: var_properties
-    identity: var_identity
+    policyAssignmentProperties: policyAssignmentProperties_var
+    policyAssignmentIdentity: policyAssignmentIdentity_var
     resourceGroupName: resourceGroupName
     subscriptionId: subscriptionId
     roleDefinitionIds: roleDefinitionIds

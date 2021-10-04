@@ -1,8 +1,8 @@
 targetScope = 'managementGroup'
 param policyAssignmentName string
-param properties object
+param policyAssignmentProperties object
 param managementGroupId string
-param identity object = {
+param policyAssignmentIdentity object = {
   type: 'systemAssigned'
 }
 param location string = deployment().location
@@ -11,11 +11,11 @@ param roleDefinitionIds array = []
 resource policyAssignment 'Microsoft.Authorization/policyAssignments@2020-09-01' = {
   name: policyAssignmentName
   location: location
-  properties: properties
-  identity: identity
+  properties: policyAssignmentProperties
+  identity: policyAssignmentIdentity
 }
 
-resource roleAssignment 'Microsoft.Authorization/roleAssignments@2020-04-01-preview' = [for (roleDefinitionId, index) in roleDefinitionIds: if (!empty(roleDefinitionIds) && !empty(identity)) {
+resource roleAssignment 'Microsoft.Authorization/roleAssignments@2020-04-01-preview' = [for roleDefinitionId in roleDefinitionIds: if (!empty(roleDefinitionIds) && !empty(policyAssignmentIdentity)) {
   name: guid(managementGroupId, roleDefinitionId, location, policyAssignmentName)
   properties: {
     roleDefinitionId: roleDefinitionId
@@ -24,4 +24,4 @@ resource roleAssignment 'Microsoft.Authorization/roleAssignments@2020-04-01-prev
 }]
 
 output policyAssignmentId string = extensionResourceId(tenantResourceId('Microsoft.Management/managementGroups', managementGroupId), 'Microsoft.Authorization/policyAssignments', policyAssignment.name)
-output policyAssignmentPrincipalId string = (identity.type == 'SystemAssigned') ? policyAssignment.identity.principalId : ''
+output policyAssignmentPrincipalId string = (policyAssignmentIdentity.type == 'SystemAssigned') ? policyAssignment.identity.principalId : ''

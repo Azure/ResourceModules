@@ -38,8 +38,8 @@ param subscriptionId string = ''
 @description('Optional. The Target Scope for the Policy. The name of the resource group for the policy assignment')
 param resourceGroupName string = ''
 
-var var_policyExemptionName = toLower(replace(policyExemptionName, ' ', '-'))
-var var_policyProperties = {
+var policyExemptionName_var = toLower(replace(policyExemptionName, ' ', '-'))
+var policyExemptionProperties_var = {
   displayName: (empty(displayName) ? json('null') : displayName)
   description: (empty(policyExemptionDescription) ? json('null') : policyExemptionDescription)
   metadata: (empty(metadata) ? json('null') : metadata)
@@ -50,35 +50,35 @@ var var_policyProperties = {
 }
 
 module policyExemptions_mg './.bicep/nested_policyexemptions_mg.bicep' = if (!empty(managementGroupId) && empty(subscriptionId) && empty(resourceGroupName)) {
-  name: '${var_policyExemptionName}-mg'
+  name: '${policyExemptionName_var}-mg'
   scope: managementGroup(managementGroupId)
   params: {
-    policyExemptionName: var_policyExemptionName
-    properties: var_policyProperties
+    policyExemptionName: policyExemptionName_var
+    policyExemptionProperties: policyExemptionProperties_var
     managementGroupId: managementGroupId
   }
 }
 
 module policyExemptions_sub './.bicep/nested_policyexemptions_sub.bicep' = if (empty(managementGroupId) && !empty(subscriptionId) && empty(resourceGroupName)) {
-  name: '${var_policyExemptionName}-sub'
+  name: '${policyExemptionName_var}-sub'
   scope: subscription(subscriptionId)
   params: {
-    policyExemptionName: var_policyExemptionName
-    properties: var_policyProperties
+    policyExemptionName: policyExemptionName_var
+    policyExemptionProperties: policyExemptionProperties_var
     subscriptionId: subscriptionId
   }
 }
 
 module policyExemptions_rg './.bicep/nested_policyexemptions_rg.bicep' = if (empty(managementGroupId) && !empty(resourceGroupName) && !empty(subscriptionId)) {
-  name: '${var_policyExemptionName}-rg'
+  name: '${policyExemptionName_var}-rg'
   scope: resourceGroup(subscriptionId, resourceGroupName)
   params: {
-    policyExemptionName: var_policyExemptionName
-    properties: var_policyProperties
+    policyExemptionName: policyExemptionName_var
+    policyExemptionProperties: policyExemptionProperties_var
     subscriptionId: subscriptionId
   }
 }
 
-output policyExemptionName string = var_policyExemptionName
+output policyExemptionName string = policyExemptionName_var
 output policyExemptionId string = !empty(managementGroupId) ? policyExemptions_mg.outputs.policyExemptionId : (!empty(resourceGroupName) ? policyExemptions_rg.outputs.policyExemptionId : policyExemptions_sub.outputs.policyExemptionId)
 output policyExemptionScope string = !empty(managementGroupId) ? policyExemptions_mg.outputs.policyExemptionScope : (!empty(resourceGroupName) ? policyExemptions_rg.outputs.policyExemptionScope : policyExemptions_sub.outputs.policyExemptionScope)

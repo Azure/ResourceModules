@@ -3,13 +3,13 @@
     "contentVersion": "1.0.0.0",
     "parameters": {
       "policyExemptionName": {
-        "value": "test-CIS-exempt"
+        "value": "test-policy-exempt"
       },
       "displayName": {
-        "value": "[Test] CIS 1"
+        "value": "[Test] policy exempt"
       },
       "policyAssignmentId": {
-        "value": "/providers/Microsoft.Management/managementGroups/mg-main/providers/Microsoft.Authorization/policyAssignments/test-enable-mmg-agent"
+        "value": "/subscriptions/8629be3b-96bc-482d-a04b-ffff597c65a2/providers/Microsoft.Authorization/policyAssignments/Add-a-tag-to-resources"
       },
       "exemptionCategory": {
         "value": "Waiver"
@@ -22,8 +22,8 @@
       "expiresOn": {
         "value": "2023-10-02T03:57:00.000Z"
       },
-      "managementGroupId": {
-        "value": "mg-platform"
+      "subscriptionId": {
+        "value": "8629be3b-96bc-482d-a04b-ffff597c65a2"
       }
     }
   }

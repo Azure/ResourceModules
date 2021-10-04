@@ -1,12 +1,12 @@
 targetScope = 'subscription'
 
 param policyExemptionName string
-param properties object
+param policyExemptionProperties object
 param subscriptionId string
 
 resource policyExemption 'Microsoft.Authorization/policyExemptions@2020-07-01-preview' = {
   name: policyExemptionName
-  properties: properties
+  properties: policyExemptionProperties
 }
 
 output policyExemptionId string =   subscriptionResourceId(subscriptionId,'Microsoft.Authorization/policyExemptions',policyExemption.name)

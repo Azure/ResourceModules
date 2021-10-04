@@ -77,8 +77,7 @@ function New-ModuleDeployment {
         [Parameter(Mandatory = $false)]       
         [PSCustomObject]$additionalTags,
 
-        [Parameter(Mandatory = $false)]
-        [ValidateRange(1, 3)]       
+        [Parameter(Mandatory = $false)]   
         [int]$retryLimit = 3
     )
     

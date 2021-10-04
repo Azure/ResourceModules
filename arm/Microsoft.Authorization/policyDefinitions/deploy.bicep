@@ -44,8 +44,8 @@ param location string = deployment().location
 @description('Optional. Customer Usage Attribution id (GUID). This GUID must be previously registered')
 param cuaId string = ''
 
-var var_policyDefinitionName = toLower(replace(policyDefinitionName, ' ', '-'))
-var var_policyProperties = {
+var policyDefinitionName_var = toLower(replace(policyDefinitionName, ' ', '-'))
+var policyDefinitionProperties_var = {
   policyType: 'Custom'
   mode: mode
   displayName: (empty(displayName) ? json('null') : displayName)
@@ -56,29 +56,29 @@ var var_policyProperties = {
 }
 
 module policyDefinitions_mg './.bicep/nested_policyDefinitions_mg.bicep' = if (empty(subscriptionId) && !empty(managementGroupId)) {
-  name: '${var_policyDefinitionName}-mgDeployment'
+  name: '${policyDefinitionName_var}-mgDeployment'
   scope: managementGroup(managementGroupId)
   params: {
-    policyDefinitionName: var_policyDefinitionName
+    policyDefinitionName: policyDefinitionName_var
     location: location
-    properties: var_policyProperties
+    policyDefinitionProperties: policyDefinitionProperties_var
     managementGroupId: managementGroupId
     returnRoleDefinitionIds: returnRoleDefinitionIds
   }
 }
 
 module policyDefinitions_sub './.bicep/nested_policyDefinitions_sub.bicep' = if (empty(managementGroupId) && !empty(subscriptionId)) {
-  name: '${var_policyDefinitionName}-subDeployment'
+  name: '${policyDefinitionName_var}-subDeployment'
   scope: subscription(subscriptionId)
   params: {
-    policyDefinitionName: var_policyDefinitionName
+    policyDefinitionName: policyDefinitionName_var
     location: location
-    properties: var_policyProperties
+    policyDefinitionProperties: policyDefinitionProperties_var
     subscriptionId: subscriptionId
     returnRoleDefinitionIds: returnRoleDefinitionIds
   }
 }
 
-output policyDefinitionName string = var_policyDefinitionName
+output policyDefinitionName string = policyDefinitionName_var
 output policyDefinitionId string = !empty(managementGroupId) ? policyDefinitions_mg.outputs.policyDefinitionId : policyDefinitions_sub.outputs.policyDefinitionId
 output roleDefinitionIds array = !empty(managementGroupId) ? policyDefinitions_mg.outputs.roleDefinitionIds : policyDefinitions_sub.outputs.roleDefinitionIds
