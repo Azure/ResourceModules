@@ -65,6 +65,7 @@ jobs:
     runs-on: ubuntu-20.04
     name: "Run deployment validation module tests"
     strategy:
+      fail-fast: false
       matrix:
         parameterFilePaths: ['vpn.parameters.json','expressRoute.parameters.json']
     steps:
@@ -98,6 +99,7 @@ jobs:
     - job_tests_module_global_api
     - job_tests_module_deploy_validate
     strategy:
+      fail-fast: false
       matrix:
         parameterFilePaths: ['vpn.parameters.json','expressRoute.parameters.json']
     steps:
