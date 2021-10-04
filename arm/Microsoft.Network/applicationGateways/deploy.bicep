@@ -397,15 +397,15 @@ resource applicationGateway 'Microsoft.Network/applicationGateways@2021-02-01' =
 }
 
 resource applicationGateway_lock 'Microsoft.Authorization/locks@2016-09-01' = if (lockForDeletion) {
-  name: '${applicationGatewayName}-appGatewaysDoNotDelete'
+  name: '${applicationGateway.name}-appGatewayDoNotDelete'
   properties: {
-    level: 'CannotDelete'
+    level: 'CanNotDelete'
   }
   scope: applicationGateway
 }
 
 resource applicationGateway_diagnosticSettingName 'Microsoft.Insights/diagnosticsettings@2017-05-01-preview' = if ((!empty(diagnosticStorageAccountId)) || (!empty(workspaceId)) || (!empty(eventHubAuthorizationRuleId)) || (!empty(eventHubName))) {
-  name: '${applicationGatewayName}-diagnosticSettings'
+  name: '${applicationGateway.name}-diagnosticSettings'
   properties: {
     storageAccountId: (empty(diagnosticStorageAccountId) ? json('null') : diagnosticStorageAccountId)
     workspaceId: (empty(workspaceId) ? json('null') : workspaceId)
@@ -417,18 +417,18 @@ resource applicationGateway_diagnosticSettingName 'Microsoft.Insights/diagnostic
   scope: applicationGateway
 }
 
-module pplicationGateway_rbac './.bicep/nested_rbac.bicep' = [for (item, i) in roleAssignments: {
-  name: 'rbac-${deployment().name}${i}'
+module applicationGateway_rbac './.bicep/nested_rbac.bicep' = [for (roleAssignment, index) in roleAssignments: {
+  name: 'rbac-${deployment().name}${index}'
   params: {
-    roleAssignment: item
+    roleAssignment: roleAssignment
     builtInRoleNames: builtInRoleNames
-    applicationGatewayName: applicationGatewayName
+    resourceName: applicationGateway.name
   }
   dependsOn: [
     applicationGateway
   ]
 }]
 
-output applicationGatewayName string = applicationGatewayName
+output applicationGatewayName string = applicationGateway.name
 output applicationGatewayResourceId string = applicationGateway.id
 output applicationGatewayResourceGroup string = resourceGroup().name
