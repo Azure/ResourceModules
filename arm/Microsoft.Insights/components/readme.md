@@ -2,11 +2,11 @@
 
 ## Resource Types
 
-| Resource Type                                             | Api Version        |
-| :-------------------------------------------------------- | :----------------- |
-| `Microsoft.Resources/deployments`                         | 2020-06-01         |
-| `Microsoft.Insights/components`                           | 2020-02-02         |
-| `Microsoft.Insights/components/providers/roleAssignments` | 2020-04-01-preview |
+| Resource Type                             | Api Version        |
+| :---------------------------------------- | :----------------- |
+| `Microsoft.Resources/deployments`         | 2020-06-01         |
+| `Microsoft.Insights/components`           | 2020-02-02         |
+| `Microsoft.Authorization/roleAssignments` | 2020-04-01-preview |
 
 ### Resource dependency
 
