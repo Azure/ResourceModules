@@ -218,7 +218,7 @@ module serviceBusNamespace_privateEndpoints './.bicep/nested_privateEndpoints.bi
 module rbac_name './.bicep/nested_rbac.bicep' = [for (roleAssignment, index) in roleAssignments: {
   name: 'rbac-${deployment().name}${index}'
   params: {
-    roleAssignment: roleAssignment    
+    roleAssignment: roleAssignment
     builtInRoleNames: builtInRoleNames
     resourceName: serviceBusNamespaceName_var
   }
