@@ -9,7 +9,7 @@ This module deploys User Assigned Identities, with resource lock.
 |:--|:--|
 |`Microsoft.Resources/deployments`|2018-02-01|
 |`Microsoft.ManagedIdentity/userAssignedIdentities`|2018-11-30|
-|`providers/locks`|2016-09-01|
+|`Microsoft.ManagedIdentity/userAssignedIdentities/providers/locks`|2017-04-01|
 |`Microsoft.ManagedIdentity/userAssignedIdentities/providers/roleAssignments`|2018-09-01-preview|
 
 ## Parameters
