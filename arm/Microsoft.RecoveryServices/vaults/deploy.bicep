@@ -274,15 +274,12 @@ module rsv_protectedContainers './.bicep/nested_protectedContainers.bicep' = [fo
 module rsv_rbac './.bicep/nested_rbac.bicep' = [for (roleAssignment, index) in roleAssignments: {
   name: 'rbac-${deployment().name}${index}'
   params: {
-    roleAssignment: roleAssignment
+    roleAssignmentObj: roleAssignment
     builtInRoleNames: builtInRoleNames
-    resourceName: recoveryVaultName
+    resourceName: rsv.name
   }
-  dependsOn: [
-    rsv
-  ]
 }]
 
 output recoveryServicesVaultResourceId string = rsv.id
 output recoveryServicesVaultResourceGroup string = resourceGroup().name
-output recoveryServicesVaultName string = recoveryVaultName
+output recoveryServicesVaultName string = rsv.name

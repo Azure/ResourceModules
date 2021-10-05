@@ -195,13 +195,10 @@ resource logicApp_diagnosticSettings 'Microsoft.Insights/diagnosticsettings@2017
 module logicApp_rbac './.bicep/nested_rbac.bicep' = [for (roleAssignment, index) in roleAssignments: {
   name: 'rbac-${deployment().name}${index}'
   params: {
-    roleAssignment: roleAssignment
+    roleAssignmentObj: roleAssignment
     builtInRoleNames: builtInRoleNames
-    resourceName: logicAppName
+    resourceName: logicApp.name
   }
-  dependsOn: [
-    logicApp
-  ]
 }]
 
 output logicAppName string = logicAppName

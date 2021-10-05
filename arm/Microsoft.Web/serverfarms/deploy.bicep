@@ -107,15 +107,12 @@ resource appServicePlan_lock 'Microsoft.Authorization/locks@2016-09-01' = if (lo
 module appServicePlan_rbac './.bicep/nested_rbac.bicep' = [for (roleAssignment, index) in roleAssignments: {
   name: 'rbac-${deployment().name}${index}'
   params: {
-    roleAssignment: roleAssignment
+    roleAssignmentObj: roleAssignment
     builtInRoleNames: builtInRoleNames
-    resourceName: appServicePlanName
+    resourceName: appServicePlan.name
   }
-  dependsOn: [
-    appServicePlan
-  ]
 }]
 
 output appServicePlanResourceGroup string = resourceGroup().name
-output appServicePlanName string = appServicePlanName
+output appServicePlanName string = appServicePlan.name
 output appServicePlanResourceId string = appServicePlan.id

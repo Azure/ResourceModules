@@ -61,16 +61,13 @@ resource gallery_lock 'Microsoft.Authorization/locks@2016-09-01' = if (lockForDe
   scope: gallery
 }
 
-module rbac_name './.bicep/nested_rbac.bicep' = [for (roleAssignment, index) in roleAssignments: {
+module gallery_rbac './.bicep/nested_rbac.bicep' = [for (roleAssignment, index) in roleAssignments: {
   name: 'rbac-${deployment().name}${index}'
   params: {
-    roleAssignment: roleAssignment
+    roleAssignmentObj: roleAssignment
     builtInRoleNames: builtInRoleNames
-    resourceName: galleryName
+    resourceName: gallery.name
   }
-  dependsOn: [
-    gallery
-  ]
 }]
 
 output galleryResourceId string = gallery.id

@@ -174,7 +174,7 @@ param domainJoinOptions int = 3
 param dscConfiguration object = {}
 
 @description('Optional. Storage account boot diagnostic base URI.')
-param bootDiagnosticStorageAccountUri string =  '.blob.${environment().suffixes.storage}/'
+param bootDiagnosticStorageAccountUri string = '.blob.${environment().suffixes.storage}/'
 
 @description('Optional. Storage account used to store boot diagnostic information. Boot diagnostics will be disabled if no value is provided.')
 param bootDiagnosticStorageAccountName string = ''
@@ -322,7 +322,7 @@ param managedIdentityType string = ''
 @description('Optional. The list of user identities associated with the virtual machine scale set. The user identity dictionary key references will be ARM resource ids in the form: \'/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ManagedIdentity/userAssignedIdentities/{identityName}\'.')
 param managedIdentityIdentities object = {}
 
-var publicKeysFormatted = [for item in publicKeys : {
+var publicKeysFormatted = [for item in publicKeys: {
   path: item.path
   keyData: item.keyData
 }]
@@ -333,7 +333,6 @@ var linuxConfiguration = {
   }
   provisionVMAgent: provisionVMAgent
 }
-
 
 var windowsConfiguration = {
   provisionVMAgent: provisionVMAgent
@@ -753,13 +752,10 @@ resource vmss_diagnosticSettings 'Microsoft.Insights/diagnosticSettings@2021-05-
 module vmss_rbac './.bicep/nested_rbac.bicep' = [for (roleAssignment, index) in roleAssignments: {
   name: 'rbac-${deployment().name}${index}'
   params: {
-    roleAssignment: roleAssignment
+    roleAssignmentObj: roleAssignment
     builtInRoleNames: builtInRoleNames
-    resourceName: vmssName
+    resourceName: vmss.name
   }
-  dependsOn: [
-    vmss
-  ]
 }]
 
 output vmssResourceIds string = vmss.id

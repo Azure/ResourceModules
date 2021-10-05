@@ -8,5 +8,4 @@ resource roleAssigment 'Microsoft.RecoveryServices/vaults/providers/roleAssignme
     roleDefinitionId: (contains(builtInRoleNames, roleAssignmentObj.roleDefinitionIdOrName) ? builtInRoleNames[roleAssignmentObj.roleDefinitionIdOrName] : roleAssignmentObj.roleDefinitionIdOrName)
     principalId: principalId
   }
-  dependsOn: []
 }]

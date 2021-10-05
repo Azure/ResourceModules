@@ -162,13 +162,10 @@ resource appServiceEnvironment_diagnosticSettings 'Microsoft.Insights/diagnostic
 module virtualNetwork_rbac './.bicep/nested_rbac.bicep' = [for (roleAssignment, index) in roleAssignments: {
   name: '${uniqueString(deployment().name, location)}-Vnet-Rbac-${index}'
   params: {
-    roleAssignment: roleAssignment
+    roleAssignmentObj: roleAssignment
     builtInRoleNames: builtInRoleNames
-    resourceName: vNetName
+    resourceName: virtualNetwork.name
   }
-  dependsOn: [
-    virtualNetwork
-  ]
 }]
 
 output virtualNetworkResourceGroup string = resourceGroup().name
