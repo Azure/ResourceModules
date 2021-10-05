@@ -1,6 +1,6 @@
-# WVD Applications
+# AVD Applications
 
-This module deploys WVD Applications.
+This module deploys AVD Applications.
 
 
 
@@ -56,7 +56,7 @@ This module deploys WVD Applications.
 | Output Name | Type | Description |
 | :-- | :-- | :-- |
 | `appGroupName` | string | The Name of the Application Group to register the Application(s) in. |
-| `applicationResourceGroup` | string | The name of the Resource Group the WVD Applications were created in. |
+| `applicationResourceGroup` | string | The name of the Resource Group the AVD Applications were created in. |
 | `applicationResourceIds` | array | The list of the application resourceIds deployed. |
 
 
