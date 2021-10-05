@@ -62,7 +62,7 @@ resource privateLinkScope 'Microsoft.Insights/privateLinkScopes@2019-10-17-previ
 }
 
 resource privateLinkScope_lock 'Microsoft.Authorization/locks@2016-09-01' = if (lock != 'NotSpecified') {
-    name: '${privateLinkScope}-${lock}-lock'
+    name: '${privateLinkScope.name}-${lock}-lock'
     scope: privateLinkScope
     properties: {
         level: lock
