@@ -76,9 +76,6 @@ module privateLinkScope_scopedResources './.bicep/nested_scopedResources.bicep' 
     privateLinkScopeName: privateLinkScope.name
     scopedResource: scopedResource
   }
-  dependsOn: [
-    privateLinkScope
-  ]
 }]
 
 module privateLinkScope_privateEndpoints './.bicep/nested_privateEndpoint.bicep' = [for (endpoint, index) in privateEndpoints: if (!empty(privateEndpoints)) {
@@ -90,7 +87,6 @@ module privateLinkScope_privateEndpoints './.bicep/nested_privateEndpoint.bicep'
     tags: tags
   }
   dependsOn: [
-    privateLinkScope
     privateLinkScope_scopedResources
   ]
 }]
@@ -98,13 +94,10 @@ module privateLinkScope_privateEndpoints './.bicep/nested_privateEndpoint.bicep'
 module privateLinkScope_rbac './.bicep/nested_rbac.bicep' = [for (roleAssignment, index) in roleAssignments: {
   name: 'rbac-${deployment().name}${index}'
   params: {
-    roleAssignment: roleAssignment
+    roleAssignmentObj: roleAssignment
     builtInRoleNames: builtInRoleNames
     resourceName: privateLinkScope.name
   }
-  dependsOn: [
-    privateLinkScope
-  ]
 }]
 
 output privateLinkScopeName string = privateLinkScope.name
