@@ -45,10 +45,10 @@ resource userMsi 'Microsoft.ManagedIdentity/userAssignedIdentities@2018-11-30' =
   tags: tags
 }
 
-resource userMsi_lock 'Microsoft.ManagedIdentity/userAssignedIdentities/providers/locks@2017-04-01' = if (lockForDeletion) {
-  name: '${userMsiName}/Microsoft.Authorization/msiDoNotDelete'
+resource userMsi_lock 'Microsoft.Authorization/locks@2016-09-01' = if (lockForDeletion) {
+  name: '${userMsi.name}-DoNotDelete'
   properties: {
-    level: 'CannotDelete'
+    level: 'CanNotDelete'
   }
   scope: userMsi
 }
