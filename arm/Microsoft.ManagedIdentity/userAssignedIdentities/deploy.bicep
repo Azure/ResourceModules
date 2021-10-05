@@ -56,13 +56,10 @@ resource userMsi_lock 'Microsoft.Authorization/locks@2016-09-01' = if (lockForDe
 module userMsi_rbac './.bicep/nested_rbac.bicep' = [for (roleassignment, index) in roleAssignments: {
   name: '${uniqueString(deployment().name, location)}-userMsi-Rbac-${index}'
   params: {
-    roleAssignment: roleassignment
+    roleAssignmentObj: roleassignment
     builtInRoleNames: builtInRoleNames
-    resourceName: userMsiName
+    resourceName: userMsi.name
   }
-  dependsOn: [
-    userMsi
-  ]
 }]
 
 output msiName string = userMsiName
