@@ -221,48 +221,48 @@ var backendAddressPools = [for i in range(0, length(backendPools)): {
     backendAddresses: (contains(backendPools[i], 'BackendAddresses') ? backendPools[i].BackendAddresses : [])
   }
 }]
-var probes_var = [for i in range(0, length(probes)): {
-  name: '${probes[i].backendHttpConfigurationName}Probe'
+var probes_var = [for probe in probes: {
+  name: '${probe.backendHttpConfigurationName}Probe'
   type: 'Microsoft.Network/applicationGateways/probes'
   properties: {
-    protocol: probes[i].protocol
-    host: probes[i].host
-    path: probes[i].path
-    interval: (contains(probes[i], 'interval') ? probes[i].interval : 30)
-    timeout: (contains(probes[i], 'timeout') ? probes[i].timeout : 30)
-    unhealthyThreshold: (contains(probes[i], 'timeout') ? probes[i].unhealthyThreshold : 3)
-    minServers: (contains(probes[i], 'timeout') ? probes[i].minServers : 0)
+    protocol: probe.protocol
+    host: probe.host
+    path: probe.path
+    interval: (contains(probe, 'interval') ? probe.interval : 30)
+    timeout: (contains(probe, 'timeout') ? probe.timeout : 30)
+    unhealthyThreshold: (contains(probe, 'timeout') ? probe.unhealthyThreshold : 3)
+    minServers: (contains(probe, 'timeout') ? probe.minServers : 0)
     match: {
-      body: (contains(probes[i], 'timeout') ? probes[i].body : '')
-      statusCodes: probes[i].statusCodes
+      body: (contains(probe, 'timeout') ? probe.body : '')
+      statusCodes: probe.statusCodes
     }
   }
 }]
-var backendHttpConfigurations_var = [for i in range(0, length(backendHttpConfigurations)): {
-  name: backendHttpConfigurations[i].backendHttpConfigurationName
+var backendHttpConfigurations_var = [for backendHttpConfiguration in backendHttpConfigurations: {
+  name: backendHttpConfiguration.backendHttpConfigurationName
   properties: {
-    port: backendHttpConfigurations[i].port
-    protocol: backendHttpConfigurations[i].protocol
-    cookieBasedAffinity: backendHttpConfigurations[i].cookieBasedAffinity
-    pickHostNameFromBackendAddress: backendHttpConfigurations[i].pickHostNameFromBackendAddress
-    probeEnabled: backendHttpConfigurations[i].probeEnabled
-    probe: (bool(backendHttpConfigurations[i].probeEnabled) ? json('{"id": "${applicationGatewayResourceId}/probes/${backendHttpConfigurations[i].backendHttpConfigurationName}Probe"}') : json('null'))
+    port: backendHttpConfiguration.port
+    protocol: backendHttpConfiguration.protocol
+    cookieBasedAffinity: backendHttpConfiguration.cookieBasedAffinity
+    pickHostNameFromBackendAddress: backendHttpConfiguration.pickHostNameFromBackendAddress
+    probeEnabled: backendHttpConfiguration.probeEnabled
+    probe: (bool(backendHttpConfiguration.probeEnabled) ? json('{"id": "${applicationGatewayResourceId}/probes/${backendHttpConfiguration.backendHttpConfigurationName}Probe"}') : json('null'))
   }
 }]
-var frontendHttpsPorts = [for i in range(0, length(frontendHttpsListeners)): {
-  name: 'port${frontendHttpsListeners[i].port}'
+var frontendHttpsPorts = [for frontendHttpsListener in frontendHttpsListeners: {
+  name: 'port${frontendHttpsListener.port}'
   properties: {
-    Port: frontendHttpsListeners[i].port
+    Port: frontendHttpsListener.port
   }
 }]
-var frontendHttpsListeners_var = [for i in range(0, length(frontendHttpsListeners)): {
-  name: frontendHttpsListeners[i].frontendListenerName
+var frontendHttpsListeners_var = [for frontendHttpsListener in frontendHttpsListeners: {
+  name: frontendHttpsListener.frontendListenerName
   properties: {
     FrontendIPConfiguration: {
-      Id: '${applicationGatewayResourceId}/frontendIPConfigurations/${frontendHttpsListeners[i].frontendIPType}'
+      Id: '${applicationGatewayResourceId}/frontendIPConfigurations/${frontendHttpsListener.frontendIPType}'
     }
     FrontendPort: {
-      Id: '${applicationGatewayResourceId}/frontendPorts/port${frontendHttpsListeners[i].port}'
+      Id: '${applicationGatewayResourceId}/frontendPorts/port${frontendHttpsListener.port}'
     }
     Protocol: 'https'
     SslCertificate: {
@@ -270,82 +270,82 @@ var frontendHttpsListeners_var = [for i in range(0, length(frontendHttpsListener
     }
   }
 }]
-var frontendHttpPorts = [for i in range(0, length(frontendHttpListeners)): {
-  name: 'port${frontendHttpListeners[i].port}'
+var frontendHttpPorts = [for frontendHttpListener in frontendHttpListeners: {
+  name: 'port${frontendHttpListener.port}'
   properties: {
-    Port: frontendHttpListeners[i].port
+    Port: frontendHttpListener.port
   }
 }]
-var frontendHttpListeners_var = [for i in range(0, length(frontendHttpListeners)): {
-  name: frontendHttpListeners[i].frontendListenerName
+var frontendHttpListeners_var = [for frontendHttpListener in frontendHttpListeners: {
+  name: frontendHttpListener.frontendListenerName
   properties: {
     FrontendIPConfiguration: {
-      Id: '${applicationGatewayResourceId}/frontendIPConfigurations/${frontendHttpListeners[i].frontendIPType}'
+      Id: '${applicationGatewayResourceId}/frontendIPConfigurations/${frontendHttpListener.frontendIPType}'
     }
     FrontendPort: {
-      Id: '${applicationGatewayResourceId}/frontendPorts/port${frontendHttpListeners[i].port}'
+      Id: '${applicationGatewayResourceId}/frontendPorts/port${frontendHttpListener.port}'
     }
     Protocol: 'http'
   }
 }]
-var httpsRequestRoutingRules = [for i in range(0, length(routingRules)): {
-  name: '${routingRules[i].frontendListenerName}-${routingRules[i].backendHttpConfigurationName}-${routingRules[i].backendHttpConfigurationName}'
+var httpsRequestRoutingRules = [for routingRule in routingRules: {
+  name: '${routingRule.frontendListenerName}-${routingRule.backendHttpConfigurationName}-${routingRule.backendHttpConfigurationName}'
   properties: {
     RuleType: 'Basic'
     httpListener: {
-      id: '${applicationGatewayResourceId}/httpListeners/${routingRules[i].frontendListenerName}'
+      id: '${applicationGatewayResourceId}/httpListeners/${routingRule.frontendListenerName}'
     }
     backendAddressPool: {
-      id: '${applicationGatewayResourceId}/backendAddressPools/${routingRules[i].backendPoolName}'
+      id: '${applicationGatewayResourceId}/backendAddressPools/${routingRule.backendPoolName}'
     }
     backendHttpSettings: {
-      id: '${applicationGatewayResourceId}/backendHttpSettingsCollection/${routingRules[i].backendHttpConfigurationName}'
+      id: '${applicationGatewayResourceId}/backendHttpSettingsCollection/${routingRule.backendHttpConfigurationName}'
     }
   }
 }]
-var frontendHttpRedirectPorts = [for i in range(0, length(frontendHttpRedirects)): {
-  name: 'port${frontendHttpRedirects[i].port}'
+var frontendHttpRedirectPorts = [for frontendHttpRedirect in frontendHttpRedirects: {
+  name: 'port${frontendHttpRedirect.port}'
   properties: {
-    Port: frontendHttpRedirects[i].port
+    Port: frontendHttpRedirect.port
   }
 }]
-var frontendHttpRedirects_var = [for i in range(0, length(frontendHttpRedirects)): {
-  name: '${httpListenerhttpRedirectNamePrefix}${frontendHttpRedirects[i].port}'
+var frontendHttpRedirects_var = [for frontendHttpRedirect in frontendHttpRedirects: {
+  name: '${httpListenerhttpRedirectNamePrefix}${frontendHttpRedirect.port}'
   properties: {
     FrontendIPConfiguration: {
-      Id: '${applicationGatewayResourceId}/frontendIPConfigurations/${frontendHttpRedirects[i].frontendIPType}'
+      Id: '${applicationGatewayResourceId}/frontendIPConfigurations/${frontendHttpRedirect.frontendIPType}'
     }
     FrontendPort: {
-      Id: '${applicationGatewayResourceId}/frontendPorts/port${frontendHttpRedirects[i].port}'
+      Id: '${applicationGatewayResourceId}/frontendPorts/port${frontendHttpRedirect.port}'
     }
     Protocol: 'http'
   }
 }]
-var httpRequestRoutingRules = [for i in range(0, length(frontendHttpRedirects)): {
-  name: '${requestRoutingRuleHttpRedirectNamePrefix}${frontendHttpRedirects[i].port}-${frontendHttpRedirects[i].frontendListenerName}'
+var httpRequestRoutingRules = [for frontendHttpRedirect in frontendHttpRedirects: {
+  name: '${requestRoutingRuleHttpRedirectNamePrefix}${frontendHttpRedirect.port}-${frontendHttpRedirect.frontendListenerName}'
   properties: {
     RuleType: 'Basic'
     httpListener: {
-      id: '${applicationGatewayResourceId}/httpListeners/${httpListenerhttpRedirectNamePrefix}${frontendHttpRedirects[i].port}'
+      id: '${applicationGatewayResourceId}/httpListeners/${httpListenerhttpRedirectNamePrefix}${frontendHttpRedirect.port}'
     }
     redirectConfiguration: {
-      id: '${applicationGatewayResourceId}/redirectConfigurations/${redirectConfigurationsHttpRedirectNamePrefix}${frontendHttpRedirects[i].port}'
+      id: '${applicationGatewayResourceId}/redirectConfigurations/${redirectConfigurationsHttpRedirectNamePrefix}${frontendHttpRedirect.port}'
     }
   }
 }]
-var httpRedirectConfigurations = [for i in range(0, length(frontendHttpRedirects)): {
-  name: '${redirectConfigurationsHttpRedirectNamePrefix}${frontendHttpRedirects[i].port}'
+var httpRedirectConfigurations = [for frontendHttpRedirect in frontendHttpRedirects: {
+  name: '${redirectConfigurationsHttpRedirectNamePrefix}${frontendHttpRedirect.port}'
   properties: {
     redirectType: 'Permanent'
     includePath: true
     includeQueryString: true
     requestRoutingRules: [
       {
-        id: '${applicationGatewayResourceId}/requestRoutingRules/${requestRoutingRuleHttpRedirectNamePrefix}${frontendHttpRedirects[i].port}-${frontendHttpRedirects[i].frontendListenerName}'
+        id: '${applicationGatewayResourceId}/requestRoutingRules/${requestRoutingRuleHttpRedirectNamePrefix}${frontendHttpRedirect.port}-${frontendHttpRedirect.frontendListenerName}'
       }
     ]
     targetListener: {
-      id: '${applicationGatewayResourceId}/httpListeners/${frontendHttpRedirects[i].frontendListenerName}'
+      id: '${applicationGatewayResourceId}/httpListeners/${frontendHttpRedirect.frontendListenerName}'
     }
   }
 }]
