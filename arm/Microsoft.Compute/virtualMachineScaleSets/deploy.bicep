@@ -322,9 +322,9 @@ param managedIdentityType string = ''
 @description('Optional. The list of user identities associated with the virtual machine scale set. The user identity dictionary key references will be ARM resource ids in the form: \'/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ManagedIdentity/userAssignedIdentities/{identityName}\'.')
 param managedIdentityIdentities object = {}
 
-var publicKeysFormatted = [for item in publicKeys: {
-  path: item.path
-  keyData: item.keyData
+var publicKeysFormatted = [for publicKey in publicKeys: {
+  path: publicKey.path
+  keyData: publicKey.keyData
 }]
 var linuxConfiguration = {
   disablePasswordAuthentication: disablePasswordAuthentication
