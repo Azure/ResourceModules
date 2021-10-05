@@ -5,6 +5,9 @@
         "privateLinkScopeName": {
             "value": "test-az-pls-weu-x-001"
         },
+        "lock" :{
+            "value": "ReadOnly"
+        },
         // "scopedResources": {
         //     "value": [
         //         {
