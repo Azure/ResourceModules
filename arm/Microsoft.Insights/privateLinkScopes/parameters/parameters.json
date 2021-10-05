@@ -4,7 +4,7 @@
     "parameters": {
         "privateLinkScopeName": {
             "value": "test-az-pls-weu-x-001"
-        }
+        },
         // "scopedResources": {
         //     "value": [
         //         {
@@ -21,7 +21,7 @@
         //             "name": "test-az-sa-cac-y-123-pe",
         //             "subnetResourceId": "/subscriptions/xxx-xxx-xxx-xxx-xxx/resourceGroups/xxx/providers/Microsoft.Network/virtualNetworks/testvnet/subnets/testnet",
         //             "service": "azuremonitor",
-        //             "privateDnsZoneResourceIds": [ 
+        //             "privateDnsZoneResourceIds": [
         //                 "/subscriptions/xxx-xxx-xxx-xxx-xxx/resourceGroups/xxx/providers/Microsoft.Network/privateDnsZones/privatelink.agentsvc.azure-automation.net",
         //                 "/subscriptions/xxx-xxx-xxx-xxx-xxx/resourceGroups/xxx/providers/Microsoft.Network/privateDnsZones/privatelink.monitor.azure.com",
         //                 "/subscriptions/xxx-xxx-xxx-xxx-xxx/resourceGroups/xxx/providers/Microsoft.Network/privateDnsZones/privatelink.ods.opinsights.azure.com",
@@ -40,5 +40,15 @@
         //         }
         //     ]
         // }
+        "roleAssignments": {
+                 "value": [
+                     {
+                         "roleDefinitionIdOrName": "User Access Administrator",
+                         "principalIds": [
+                             "8629993c-ed4c-4c51-9774-d0285cc0e4c6"
+                         ]
+                     }
+                 ]
+             }
     }
 }
