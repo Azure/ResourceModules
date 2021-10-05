@@ -393,8 +393,8 @@ resource virtualNetworkGateway_diagnosticSettings 'Microsoft.Insights/diagnostic
   scope: virtualNetworkGateway
 }
 
-module virtualNetworkGateway_rbac './.bicep/nested_rbac.bicep' = [for (roleAssignment, idex) in roleAssignments: {
-  name: 'rbac-${deployment().name}${idex}'
+module virtualNetworkGateway_rbac './.bicep/nested_rbac.bicep' = [for (roleAssignment, index) in roleAssignments: {
+  name: 'rbac-${deployment().name}${index}'
   params: {
     roleAssignment: roleAssignment
     builtInRoleNames: builtInRoleNames
