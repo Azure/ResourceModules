@@ -6,6 +6,7 @@ This module deploys custom RBAC Role Definitions.
 
 |Resource Type|ApiVersion|
 |:--|:--|
+|`Microsoft.Resources/deployments`|2019-10-01|
 |`Microsoft.Authorization/roleDefinitions`|2018-01-01-preview|
 
 ## Parameters
@@ -29,15 +30,6 @@ This module deploys custom RBAC Role Definitions.
 | :-- | :-- | :-- |
 | `roleDefinitionId` | string | The id of the role definition that was created. |
 | `roleDefinitionScope` | string | The scope this definition was created on. |
-
-## Modules Structure
-
-| Module                             | Level | Type        | Target Scope     |
-| :--------------------------------- | :---- | ----------- | :--------------- |
-| `deploy.bicep`                     | 0     | Main Module | Management Group |
-| `nested_roleDefinitions_mg.bicep`  | 1     | Sub Module  | Management Group |
-| `nested_roleDefinitions_sub.bicep` | 1     | Sub Module  | Subscription     |
-| `nested_roleDefinitions_rg.bicep`  | 1     | Sub Module  | Resource Group   |
 
 ## Considerations
 

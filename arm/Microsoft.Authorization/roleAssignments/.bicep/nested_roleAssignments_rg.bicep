@@ -14,4 +14,5 @@ resource roleAssignment 'Microsoft.Authorization/roleAssignments@2020-04-01-prev
   }
 }
 
+output roleAssignmentScope string = resourceGroup().id
 output roleAssignmentId string = resourceId(resourceGroupName, 'Microsoft.Authorization/roleAssignments', roleAssignment.name)

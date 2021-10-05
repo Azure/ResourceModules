@@ -30,7 +30,7 @@ param resourceGroupName string = ''
 @description('Optional. Location for all resources.')
 param location string = deployment().location
 
-module roleDefinitionDeployment_mg './.bicep/nested_roleDefinitions_mg.bicep' = if (!empty(managementGroupId) && empty(subscriptionId) && empty(resourceGroupName)) {
+module roleDefinition_mg './.bicep/nested_roleDefinitions_mg.bicep' = if (!empty(managementGroupId) && empty(subscriptionId) && empty(resourceGroupName)) {
   name: 'roleDefinition-mg-${guid(roleName,managementGroupId,location)}'
   scope: managementGroup(managementGroupId)
   params: {
@@ -45,7 +45,7 @@ module roleDefinitionDeployment_mg './.bicep/nested_roleDefinitions_mg.bicep' = 
   }
 }
 
-module roleDefinitionDeployment_sub './.bicep/nested_roleDefinitions_sub.bicep' = if (empty(managementGroupId) && !empty(subscriptionId) && empty(resourceGroupName)) {
+module roleDefinition_sub './.bicep/nested_roleDefinitions_sub.bicep' = if (empty(managementGroupId) && !empty(subscriptionId) && empty(resourceGroupName)) {
   name: 'roleDefinition-sub-${guid(roleName,subscriptionId,location)}'
   scope: subscription(subscriptionId)
   params: {
@@ -60,7 +60,7 @@ module roleDefinitionDeployment_sub './.bicep/nested_roleDefinitions_sub.bicep' 
   }
 }
 
-module roleDefinitionDeployment_rg './.bicep/nested_roleDefinitions_rg.bicep' = if (empty(managementGroupId) && !empty(resourceGroupName) && !empty(subscriptionId)) {
+module roleDefinition_rg './.bicep/nested_roleDefinitions_rg.bicep' = if (empty(managementGroupId) && !empty(resourceGroupName) && !empty(subscriptionId)) {
   name: 'roleDefinition-rg-${guid(roleName,subscriptionId,resourceGroupName,location)}'
   scope: resourceGroup(subscriptionId,resourceGroupName)
   params: {
@@ -76,5 +76,5 @@ module roleDefinitionDeployment_rg './.bicep/nested_roleDefinitions_rg.bicep' = 
   }
 }
 
-output roleDefinitionId string = !empty(managementGroupId) ? roleDefinitionDeployment_mg.outputs.roleDefinitionId : (!empty(resourceGroupName) ? roleDefinitionDeployment_rg.outputs.roleDefinitionId : roleDefinitionDeployment_sub.outputs.roleDefinitionId)
-output roleDefinitionScope string = !empty(managementGroupId) ? roleDefinitionDeployment_mg.outputs.roleDefinitionScope : (!empty(resourceGroupName) ? roleDefinitionDeployment_rg.outputs.roleDefinitionScope : roleDefinitionDeployment_sub.outputs.roleDefinitionScope)
+output roleDefinitionId string = !empty(managementGroupId) ? roleDefinition_mg.outputs.roleDefinitionId : (!empty(resourceGroupName) ? roleDefinition_rg.outputs.roleDefinitionId : roleDefinition_sub.outputs.roleDefinitionId)
+output roleDefinitionScope string = !empty(managementGroupId) ? roleDefinition_mg.outputs.roleDefinitionScope : (!empty(resourceGroupName) ? roleDefinition_rg.outputs.roleDefinitionScope : roleDefinition_sub.outputs.roleDefinitionScope)

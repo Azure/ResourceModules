@@ -231,3 +231,4 @@ module roleAssignment_rg './.bicep/nested_roleAssignments_rg.bicep' = if (empty(
 }
 
 output roleAssignmentId string = !empty(managementGroupId) ? roleAssignment_mg.outputs.roleAssignmentId : (!empty(resourceGroupName) ? roleAssignment_rg.outputs.roleAssignmentId : roleAssignment_sub.outputs.roleAssignmentId)
+output roleAssignmentScope string = !empty(managementGroupId) ? roleAssignment_mg.outputs.roleAssignmentScope : (!empty(resourceGroupName) ? roleAssignment_rg.outputs.roleAssignmentScope : roleAssignment_sub.outputs.roleAssignmentScope)

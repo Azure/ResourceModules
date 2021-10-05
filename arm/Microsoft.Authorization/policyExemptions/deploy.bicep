@@ -49,7 +49,7 @@ var policyExemptionProperties_var = {
   expiresOn: (empty(expiresOn) ? json('null') : expiresOn)
 }
 
-module policyExemptions_mg './.bicep/nested_policyexemptions_mg.bicep' = if (!empty(managementGroupId) && empty(subscriptionId) && empty(resourceGroupName)) {
+module policyExemption_mg './.bicep/nested_policyexemptions_mg.bicep' = if (!empty(managementGroupId) && empty(subscriptionId) && empty(resourceGroupName)) {
   name: '${policyExemptionName_var}-mg'
   scope: managementGroup(managementGroupId)
   params: {
@@ -59,7 +59,7 @@ module policyExemptions_mg './.bicep/nested_policyexemptions_mg.bicep' = if (!em
   }
 }
 
-module policyExemptions_sub './.bicep/nested_policyexemptions_sub.bicep' = if (empty(managementGroupId) && !empty(subscriptionId) && empty(resourceGroupName)) {
+module policyExemption_sub './.bicep/nested_policyexemptions_sub.bicep' = if (empty(managementGroupId) && !empty(subscriptionId) && empty(resourceGroupName)) {
   name: '${policyExemptionName_var}-sub'
   scope: subscription(subscriptionId)
   params: {
@@ -69,7 +69,7 @@ module policyExemptions_sub './.bicep/nested_policyexemptions_sub.bicep' = if (e
   }
 }
 
-module policyExemptions_rg './.bicep/nested_policyexemptions_rg.bicep' = if (empty(managementGroupId) && !empty(resourceGroupName) && !empty(subscriptionId)) {
+module policyExemption_rg './.bicep/nested_policyexemptions_rg.bicep' = if (empty(managementGroupId) && !empty(resourceGroupName) && !empty(subscriptionId)) {
   name: '${policyExemptionName_var}-rg'
   scope: resourceGroup(subscriptionId, resourceGroupName)
   params: {
@@ -80,5 +80,5 @@ module policyExemptions_rg './.bicep/nested_policyexemptions_rg.bicep' = if (emp
 }
 
 output policyExemptionName string = policyExemptionName_var
-output policyExemptionId string = !empty(managementGroupId) ? policyExemptions_mg.outputs.policyExemptionId : (!empty(resourceGroupName) ? policyExemptions_rg.outputs.policyExemptionId : policyExemptions_sub.outputs.policyExemptionId)
-output policyExemptionScope string = !empty(managementGroupId) ? policyExemptions_mg.outputs.policyExemptionScope : (!empty(resourceGroupName) ? policyExemptions_rg.outputs.policyExemptionScope : policyExemptions_sub.outputs.policyExemptionScope)
+output policyExemptionId string = !empty(managementGroupId) ? policyExemption_mg.outputs.policyExemptionId : (!empty(resourceGroupName) ? policyExemption_rg.outputs.policyExemptionId : policyExemption_sub.outputs.policyExemptionId)
+output policyExemptionScope string = !empty(managementGroupId) ? policyExemption_mg.outputs.policyExemptionScope : (!empty(resourceGroupName) ? policyExemption_rg.outputs.policyExemptionScope : policyExemption_sub.outputs.policyExemptionScope)

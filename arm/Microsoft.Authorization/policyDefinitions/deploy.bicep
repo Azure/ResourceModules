@@ -35,14 +35,8 @@ param managementGroupId string = ''
 @description('Optional. The ID of the Azure Subscription (Scope). Cannot be used with managementGroupId')
 param subscriptionId string = ''
 
-@description('Optional. Default is false. If set to True, role definitions array will be returned as an output. Only use if the Policy Definition supports it.')
-param returnRoleDefinitionIds bool = false
-
 @description('Optional. Location for all resources.')
 param location string = deployment().location
-
-@description('Optional. Customer Usage Attribution id (GUID). This GUID must be previously registered')
-param cuaId string = ''
 
 var policyDefinitionName_var = toLower(replace(policyDefinitionName, ' ', '-'))
 var policyDefinitionProperties_var = {
@@ -55,7 +49,7 @@ var policyDefinitionProperties_var = {
   policyRule: policyRule
 }
 
-module policyDefinitions_mg './.bicep/nested_policyDefinitions_mg.bicep' = if (empty(subscriptionId) && !empty(managementGroupId)) {
+module policyDefinition_mg './.bicep/nested_policyDefinitions_mg.bicep' = if (empty(subscriptionId) && !empty(managementGroupId)) {
   name: '${policyDefinitionName_var}-mgDeployment'
   scope: managementGroup(managementGroupId)
   params: {
@@ -63,11 +57,10 @@ module policyDefinitions_mg './.bicep/nested_policyDefinitions_mg.bicep' = if (e
     location: location
     policyDefinitionProperties: policyDefinitionProperties_var
     managementGroupId: managementGroupId
-    returnRoleDefinitionIds: returnRoleDefinitionIds
   }
 }
 
-module policyDefinitions_sub './.bicep/nested_policyDefinitions_sub.bicep' = if (empty(managementGroupId) && !empty(subscriptionId)) {
+module policyDefinition_sub './.bicep/nested_policyDefinitions_sub.bicep' = if (empty(managementGroupId) && !empty(subscriptionId)) {
   name: '${policyDefinitionName_var}-subDeployment'
   scope: subscription(subscriptionId)
   params: {
@@ -75,10 +68,9 @@ module policyDefinitions_sub './.bicep/nested_policyDefinitions_sub.bicep' = if 
     location: location
     policyDefinitionProperties: policyDefinitionProperties_var
     subscriptionId: subscriptionId
-    returnRoleDefinitionIds: returnRoleDefinitionIds
   }
 }
 
 output policyDefinitionName string = policyDefinitionName_var
-output policyDefinitionId string = !empty(managementGroupId) ? policyDefinitions_mg.outputs.policyDefinitionId : policyDefinitions_sub.outputs.policyDefinitionId
-output roleDefinitionIds array = !empty(managementGroupId) ? policyDefinitions_mg.outputs.roleDefinitionIds : policyDefinitions_sub.outputs.roleDefinitionIds
+output policyDefinitionId string = !empty(managementGroupId) ? policyDefinition_mg.outputs.policyDefinitionId : policyDefinition_sub.outputs.policyDefinitionId
+output roleDefinitionIds array = !empty(managementGroupId) ? policyDefinition_mg.outputs.roleDefinitionIds : policyDefinition_sub.outputs.roleDefinitionIds

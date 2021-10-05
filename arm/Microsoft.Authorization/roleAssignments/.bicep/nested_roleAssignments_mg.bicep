@@ -13,4 +13,5 @@ resource roleAssignment 'Microsoft.Authorization/roleAssignments@2020-04-01-prev
   }
 }
 
+output roleAssignmentScope string = tenantResourceId('Microsoft.Management/managementGroups',managementGroupId)
 output roleAssignmentId string = extensionResourceId(tenantResourceId('Microsoft.Management/managementGroups',managementGroupId),'Microsoft.Authorization/roleAssignments',roleAssignment.name)
