@@ -8,9 +8,6 @@ param appInsightsName string
 ])
 param appInsightsType string = 'web'
 
-@description('Optional. The kind of application that this component refers to, used to customize UI. This value is a freeform string, values should typically be one of the following: web, ios, other, store, java, phone.')
-param kind string = ''
-
 @description('Required. Resource Id of the log analytics workspace which the data will be ingested to. This property is required to create an application with this API version. Applications from older versions will not have this property.')
 param appInsightsWorkspaceResourceId string
 
@@ -27,6 +24,9 @@ param appInsightsPublicNetworkAccessForIngestion string = 'Enabled'
   'Disabled'
 ])
 param appInsightsPublicNetworkAccessForQuery string = 'Enabled'
+
+@description('Optional. The kind of application that this component refers to, used to customize UI. This value is a freeform string, values should typically be one of the following: web, ios, other, store, java, phone.')
+param kind string = ''
 
 @description('Optional. Location for all Resources')
 param location string = resourceGroup().location
