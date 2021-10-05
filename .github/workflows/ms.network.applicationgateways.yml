@@ -4,21 +4,21 @@ on:
   workflow_dispatch:
     inputs:
       removeDeployment:
-        description: "Remove deployed module"
+        description: 'Remove deployed module'
         required: false
-        default: "true"
+        default: 'true'
       versioningOption:
-        description: "The mode to handle the version increments [major|minor|patch|custom]"
+        description: 'The mode to handle the version increments [major|minor|patch|custom]'
         required: false
-        default: "patch"
+        default: 'patch'
       customVersion:
-        description: "The version to enforce if [versionOption] is set to [custom]"
+        description: 'The version to enforce if [versionOption] is set to [custom]'
         required: false
-        default: "0.0.1"
+        default: '0.0.1'
 
 env:
-  moduleName: "applicationGateways"
-  modulePath: "arm/Microsoft.Network/applicationGateways"
+  moduleName: 'applicationGateways'
+  modulePath: 'arm/Microsoft.Network/applicationGateways'
   AZURE_CREDENTIALS: ${{ secrets.AZURE_CREDENTIALS }}
   ARM_SUBSCRIPTION_ID: ${{ secrets.ARM_SUBSCRIPTION_ID }}
   ARM_MGMTGROUP_ID: ${{ secrets.ARM_MGMTGROUP_ID }}
@@ -40,8 +40,8 @@ jobs:
       - name: "Test module"
         uses: ./.github/actions/templates/validateModuleGeneral
         with:
-          modulePath: "${{ env.modulePath }}"
-          moduleName: "${{ env.moduleName}}"
+          modulePath: '${{ env.modulePath }}'
+          moduleName: '${{ env.moduleName}}'
 
   # Global API tests
   # ----------------
@@ -56,8 +56,8 @@ jobs:
       - name: "Test module"
         uses: ./.github/actions/templates/validateModuleApis
         with:
-          modulePath: "${{ env.modulePath }}"
-          moduleName: "${{ env.moduleName}}"
+          modulePath: '${{ env.modulePath }}'
+          moduleName: '${{ env.moduleName}}'
 
   # Validate deployment module tests
   # --------------------------------
@@ -67,7 +67,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        parameterFilePaths: ["parameters.json"]
+        parameterFilePaths: ['parameters.json']
     steps:
       - name: "Checkout"
         uses: actions/checkout@v2
@@ -77,16 +77,16 @@ jobs:
         uses: deep-mm/set-variables@v1.0
         with:
           # Name of variable file
-          variableFileName: "variables.module" # Don't write .json here
+          variableFileName: 'variables.module' # Don't write .json here
       - name: "Test module"
         uses: ./.github/actions/templates/validateModuleDeploy
         with:
-          templateFilePath: "${{ env.modulePath }}/deploy.bicep"
-          parameterFilePath: "${{ env.modulePath }}/parameters/${{ matrix.parameterFilePaths }}"
-          location: "${{ env.defaultLocation }}"
-          resourceGroupName: "${{ env.resourceGroupName }}"
-          subscriptionId: "${{ secrets.ARM_SUBSCRIPTION_ID }}"
-          managementGroupId: "${{ secrets.ARM_MGMTGROUP_ID }}"
+          templateFilePath: '${{ env.modulePath }}/deploy.bicep'
+          parameterFilePath: '${{ env.modulePath }}/parameters/${{ matrix.parameterFilePaths }}'
+          location: '${{ env.defaultLocation }}'
+          resourceGroupName: '${{ env.resourceGroupName }}'
+          subscriptionId: '${{ secrets.ARM_SUBSCRIPTION_ID }}'
+          managementGroupId: '${{ secrets.ARM_MGMTGROUP_ID }}'
 
   ####################
   #   DEPLOY TESTS   #
@@ -95,13 +95,13 @@ jobs:
     runs-on: ubuntu-20.04
     name: "Deploy module"
     needs:
-      - job_tests_module_global
-      - job_tests_module_global_api
-      - job_tests_module_deploy_validate
+    - job_tests_module_global
+    - job_tests_module_global_api
+    - job_tests_module_deploy_validate
     strategy:
       fail-fast: false
       matrix:
-        parameterFilePaths: ["parameters.json"]
+        parameterFilePaths: ['parameters.json']
     steps:
       - name: "Checkout"
         uses: actions/checkout@v2
@@ -111,18 +111,18 @@ jobs:
         uses: deep-mm/set-variables@v1.0
         with:
           # Name of variable file
-          variableFileName: "variables.module" # Don't write .json here
+          variableFileName: 'variables.module' # Don't write .json here
       - name: "Deploy module"
         uses: ./.github/actions/templates/deployModule
         with:
-          moduleName: "${{ env.moduleName }}"
-          templateFilePath: "${{ env.modulePath }}/deploy.bicep"
-          parameterFilePath: "${{ env.modulePath }}/parameters/${{ matrix.parameterFilePaths }}"
-          location: "${{ env.defaultLocation }}"
-          resourceGroupName: "${{ env.resourceGroupName }}"
-          subscriptionId: "${{ secrets.ARM_SUBSCRIPTION_ID }}"
-          managementGroupId: "${{ secrets.ARM_MGMTGROUP_ID }}"
-          removeDeployment: "${{ github.event.inputs.removeDeployment }}"
+          moduleName: '${{ env.moduleName }}'
+          templateFilePath: '${{ env.modulePath }}/deploy.bicep'
+          parameterFilePath: '${{ env.modulePath }}/parameters/${{ matrix.parameterFilePaths }}'
+          location: '${{ env.defaultLocation }}'
+          resourceGroupName: '${{ env.resourceGroupName }}'
+          subscriptionId: '${{ secrets.ARM_SUBSCRIPTION_ID }}'
+          managementGroupId: '${{ secrets.ARM_MGMTGROUP_ID }}'
+          removeDeployment: '${{ github.event.inputs.removeDeployment }}'
 
   ###############
   #   PUBLISH   #
@@ -142,18 +142,18 @@ jobs:
         uses: deep-mm/set-variables@v1.0
         with:
           # Name of variable file
-          variableFileName: "variables.module" # Don't write .json here
+          variableFileName: 'variables.module' # Don't write .json here
       - name: "Publish module"
         uses: ./.github/actions/templates/publishModule
         with:
-          templateFilePath: "${{ env.modulePath }}/deploy.bicep"
-          componentTemplateSpecRGName: "${{ env.componentTemplateSpecRGName }}"
-          componentTemplateSpecRGLocation: "${{ env.componentTemplateSpecRGLocation }}"
-          componentTemplateSpecName: "${{ env.moduleName }}"
-          componentTemplateSpecDescription: "${{ env.componentTemplateSpecDescription }}"
-          publishToTemplateSpec: "${{ env.publishToTemplateSpec }}"
-          versioningOption: "${{ github.event.inputs.versioningOption }}"
-          customVersion: "${{ github.event.inputs.customVersion }}"
+          templateFilePath: '${{ env.modulePath }}/deploy.bicep'
+          componentTemplateSpecRGName: '${{ env.componentTemplateSpecRGName }}'
+          componentTemplateSpecRGLocation: '${{ env.componentTemplateSpecRGLocation }}'
+          componentTemplateSpecName: '${{ env.moduleName }}'
+          componentTemplateSpecDescription: '${{ env.componentTemplateSpecDescription }}'
+          publishToTemplateSpec: '${{ env.publishToTemplateSpec }}'
+          versioningOption: '${{ github.event.inputs.versioningOption }}'
+          customVersion: '${{ github.event.inputs.customVersion }}'
 
   ##############
   #   REMOVE   #
@@ -173,10 +173,10 @@ jobs:
         uses: deep-mm/set-variables@v1.0
         with:
           # Name of variable file
-          variableFileName: "variables.module" # Don't write .json here
+          variableFileName: 'variables.module' # Don't write .json here
       - name: "Remove module"
         uses: ./.github/actions/templates/removeModule
         with:
-          moduleName: "${{ env.moduleName }}"
-          templateFilePath: "${{ env.modulePath }}/deploy.bicep"
-          resourceGroupName: "${{ env.resourceGroupName }}"
+          moduleName: '${{ env.moduleName }}'
+          templateFilePath: '${{ env.modulePath }}/deploy.bicep'
+          resourceGroupName: '${{ env.resourceGroupName }}'
