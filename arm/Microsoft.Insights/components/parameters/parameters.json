@@ -6,26 +6,7 @@
       "value": "sxx-az-appi-weu-x-001"
     },
     "appInsightsWorkspaceResourceId": {
-        "value": "/subscriptions/1e5e92b9-986e-42ca-9654-5e41240f8806/resourceGroups/s001-log/providers/microsoft.operationalinsights/workspaces/s001-log"
-    },
-    //"appInsightsWorkspaceResourceId": {
-    //  "value": "/subscriptions/8629be3b-96bc-482d-a04b-ffff597c65a2/resourceGroups/dependencies-rg/providers/Microsoft.OperationalInsights/workspaces/sxx-az-la-weu-x-003"
-    //}
-    // "appInsightsPublicNetworkAccessForIngestion": {
-    //   "value": "Disabled"
-    // },
-    // "appInsightsPublicNetworkAccessForQuery": {
-    //   "value": "Disabled"
-    // },
-    "roleAssignments": {
-      "value": [
-        {
-          "roleDefinitionIdOrName": "User Access Administrator",
-          "principalIds": [
-            "fef294d2-5216-4681-8402-54c6bb670e80"
-          ]
-        }
-      ]
+        "value": "/subscriptions/8629be3b-96bc-482d-a04b-ffff597c65a2/resourceGroups/dependencies-rg/providers/Microsoft.OperationalInsights/workspaces/sxx-az-la-weu-x-003"
     }
   }
 }
