@@ -2,9 +2,6 @@
   "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
   "contentVersion": "1.0.0.0",
   "parameters": {
-    "resourceGroupName": {
-      "value": ""
-    },
     "policyAssignmentName": {
       "value": "Add a tag to resources"
     },
@@ -14,15 +11,18 @@
     "parameters": {
       "value": {
         "tagName": {
-          "value": "Tag"
+          "value": "env"
         },
         "tagValue": {
-          "value": "Value"
+          "value": "prod"
         }
       }
     },
     "location": {
-      "value": "westeurope"
+      "value": "australiaeast"
+    },
+    "subscriptionId": {
+      "value": "8629be3b-96bc-482d-a04b-ffff597c65a2"
     }
   }
 }
