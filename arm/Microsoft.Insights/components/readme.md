@@ -77,13 +77,6 @@ Tag names and tag values can be provided as needed. A tag can be left without a 
 | `appInsightsResourceGroup` | string | Application Insights ResourceGroup                |
 | `appInsightsResourceId`    | string | Application Insights Resource Id                  |
 
-### References
-
-### Template references
-
-- [Deployments](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Resources/2018-02-01/deployments)
-- [Components](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Insights/2020-02-02/components)
-
 ## Considerations
 
 ## Additional resources
