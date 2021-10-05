@@ -3,7 +3,7 @@
   "contentVersion": "1.0.0.0",
   "parameters": {
     "networkWatcherName": {
-      "value": "NetworkWatcher_westeurope"
+      "value": "adp-sxx-az-nw-weu-x-001"
     },
     "networkSecurityGroupResourceId": {
       "value": "/subscriptions/8629be3b-96bc-482d-a04b-ffff597c65a2/resourceGroups/dependencies-rg/providers/Microsoft.Network/networkSecurityGroups/sxx-az-nsg-weu-x-003"
@@ -30,7 +30,7 @@
       "value": false
     },
     "workspaceResourceId": {
-      "value": "/subscriptions/8629be3b-96bc-482d-a04b-ffff597c65a2/resourcegroups/dependencies-rg/providers/microsoft.operationalinsights/workspaces/sxx-az-la-weu-x-003"
+      "value": "/subscriptions/8629be3b-96bc-482d-a04b-ffff597c65a2/resourcegroups/validation-rg/providers/microsoft.operationalinsights/workspaces/adp-sxx-az-la-weu-x-001"
     }
   }
 }

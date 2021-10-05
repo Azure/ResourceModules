@@ -138,13 +138,13 @@ Here's an example of specifying two Blob Containes. The first named "one" with p
 
 The `fileShares` parameter accepts a JSON Array of object with "name" and "shareQuota" properties in each to specify the name of the File Shares to create and the maximum size of the shares, in gigabytes. Also RBAC can be assigned at File Share level.
 
-Here's an example of specifying a single File Share named "wvdprofiles" with 5TB (5120GB) of shareQuota and Reader role assigned to two principal Ids.
+Here's an example of specifying a single File Share named "avdprofiles" with 5TB (5120GB) of shareQuota and Reader role assigned to two principal Ids.
 
 ```json
 "fileShares": {
     "value": [
         {
-            "name": "wvdprofiles",
+            "name": "avdprofiles",
             "shareQuota": "5120",
             "roleAssignments": [
                 {

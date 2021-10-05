@@ -47,7 +47,7 @@ Name of the Azure Automation Account
 
 ```json
 "automationAccountName": {
-    "value": "wvd-scaling-autoaccount"
+    "value": "avd-scaling-autoaccount"
 }
 ```
 
@@ -103,7 +103,7 @@ List of runbooks to be created in the automation account
             "runbookName": "ScalingRunbook", // Name for a runbook if you intent to deploy one
             "runbookType": "PowerShell", // Type of script
             "runbookScriptUri": "https://raw.githubusercontent.com/Azure/basicScale.ps1", // The uri where the runbook script is located
-            "scriptStorageAccountId": "/subscriptions/62826c76-d304-46d8-a0f6-718dbdcc536c/resourceGroups/WVD-Mgmt-PO-RG/providers/Microsoft.Storage/storageAccounts/wvdassetsstore",
+            "scriptStorageAccountId": "/subscriptions/62826c76-d304-46d8-a0f6-718dbdcc536c/resourceGroups/AVD-Mgmt-PO-RG/providers/Microsoft.Storage/storageAccounts/avdassetsstore",
             "version": "1.0.0.0" // version of api
         }
     ]
