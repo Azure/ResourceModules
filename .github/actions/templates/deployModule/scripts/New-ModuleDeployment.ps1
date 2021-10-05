@@ -215,7 +215,7 @@ function New-ModuleDeployment {
                     }
                 } 
             } 
-            while ($Stoploop -eq $false -or $retryCount -eq $retryLimit) 
+            until ($Stoploop -eq $true -or $retryCount -eq $retryLimit) 
 
             Write-Verbose "Result" -Verbose
             Write-Verbose "------" -Verbose
