@@ -13,7 +13,7 @@ module nested_fileShare_rbac './nested_fileShare_rbac.bicep' = [for (roleAssignm
   name: '${deployment().name}-Rbac-${(empty(fileShare.roleAssignments) ? 'dummy' : index)}'
   params: {
     fileShareName: fileShare.name
-    roleAssignment: roleAssignment
+    roleAssignmentObj: roleAssignment
     builtInRoleNames: builtInRoleNames
     storageAccountName: storageAccountName
   }

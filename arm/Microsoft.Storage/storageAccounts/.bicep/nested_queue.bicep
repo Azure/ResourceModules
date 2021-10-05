@@ -13,7 +13,7 @@ module nested_queue_rbac './nested_queue_rbac.bicep' = [for (roleAssignment, ind
   name: '${deployment().name}-Rbac-${(empty(queue.roleAssignments) ? 'dummy' : index)}'
   params: {
     queueName: queue.name
-    roleAssignment: roleAssignment
+    roleAssignmentObj: roleAssignment
     builtInRoleNames: builtInRoleNames
     storageAccountName: storageAccountName
   }

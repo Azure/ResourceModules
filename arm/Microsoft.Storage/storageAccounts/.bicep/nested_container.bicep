@@ -24,7 +24,7 @@ module container_rbac './nested_container_rbac.bicep' = [for (roleAssignment, in
   name: '${deployment().name}-Rbac-${(empty(blobContainer.roleAssignments) ? 'dummy' : index)}'
   params: {
     blobContainerName: blobContainer.name
-    roleAssignment: roleAssignment
+    roleAssignmentObj: roleAssignment
     builtInRoleNames: builtInRoleNames
     storageAccountName: storageAccountName
   }
