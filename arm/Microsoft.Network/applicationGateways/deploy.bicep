@@ -214,11 +214,11 @@ var builtInRoleNames = {
   'User Access Administrator': subscriptionResourceId('Microsoft.Authorization/roleDefinitions', '18d7d88d-d35e-4fb5-a5c3-7773c20a72d9')
   'Virtual Machine Contributor': subscriptionResourceId('Microsoft.Authorization/roleDefinitions', '9980e02c-c2be-4d73-94e8-173b1dc7cf3c')
 }
-var backendAddressPools = [for i in range(0, length(backendPools)): {
-  name: backendPools[i].backendPoolName
+var backendAddressPools = [for backendPool in backendPools: {
+  name: backendPool.backendPoolName
   type: 'Microsoft.Network/applicationGateways/backendAddressPools'
   properties: {
-    backendAddresses: (contains(backendPools[i], 'BackendAddresses') ? backendPools[i].BackendAddresses : [])
+    backendAddresses: (contains(backendPool, 'BackendAddresses') ? backendPool.BackendAddresses : [])
   }
 }]
 var probes_var = [for probe in probes: {
