@@ -26,12 +26,12 @@
         "blobContainers": {
             "value": [
                 {
-                    "name": "wvdscripts",
+                    "name": "avdscripts",
                     "publicAccess": "Container",
                     "roleAssignments": []
                 },
                 {
-                    "name": "wvdsoftware",
+                    "name": "avdsoftware",
                     "publicAccess": "Container",
                     "roleAssignments": []
                 },
@@ -51,12 +51,12 @@
         "fileShares": {
             "value": [
                 {
-                    "name": "wvdprofiles",
+                    "name": "avdprofiles",
                     "shareQuota": "5120",
                     "roleAssignments": []
                 },
                 {
-                    "name": "wvdprofiles2",
+                    "name": "avdprofiles2",
                     "shareQuota": "5120",
                     "roleAssignments": []
                 }
