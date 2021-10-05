@@ -51,7 +51,7 @@ The default parameter values are based on the needs of deploying a diagnostic st
 | `sasTokenValidityLength` | string | PT8H |  | Optional. SAS token validity length. Usage: 'PT8H' - valid for 8 hours; 'P5D' - valid for 5 days; 'P1Y' - valid for 1 year. When not provided, the SAS token will be valid for 8 hours. |
 | `storageAccountAccessTier` | string | Hot | System.Object[] | Optional. Storage Account Access Tier. |
 | `storageAccountKind` | string | StorageV2 | System.Object[] | Optional. Type of Storage Account to create. |
-| `storageAccountName` | string |  |  | Optional. Name of the Storage Account. If no name is provided, then unique name will be created.| 
+| `storageAccountName` | string |  |  | Optional. Name of the Storage Account. If no name is provided, then unique name will be created.|
 | `storageAccountSku` | string | Standard_GRS | System.Object[] | Optional. Storage Account Sku Name. |
 | `tables` | array | System.Object[] |  | Optional. Tables to create. |
 | `tags` | object |  |  | Optional. Tags of the resource. |

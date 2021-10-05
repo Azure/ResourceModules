@@ -13,7 +13,7 @@ This module deploys an Azure Automation Account, with resource lock.
 |`Microsoft.Automation/automationAccounts/jobSchedules`|2015-10-31|
 |`Microsoft.Automation/automationAccounts/runbooks`|2018-06-30|
 |`Microsoft.Automation/automationAccounts/providers/diagnosticsettings`|2017-05-01-preview|
-|`Microsoft.Automation/automationAccounts/providers/roleAssignments`|2018-09-01-preview|
+|`Microsoft.Automation/automationAccounts/providers/roleAssignments`|2020-04-01-preview|
 |`Microsoft.Network/privateEndpoints`|2020-05-01|
 |`Microsoft.Network/privateEndpoints/privateDnsZoneGroups`|2020-05-01|
 
@@ -121,7 +121,7 @@ List of schedules to be created in the automation account
             "scheduleName": "ScalingRunbook_Schedule", // The schedule name.
             "startTime": "", // Gets or sets the start time of the schedule.
             "expiryTime": "9999-12-31T23:59:00+00:00", // Gets or sets the end time of the schedule.
-            "interval": 15, // Gets or sets the interval of the schedule. 
+            "interval": 15, // Gets or sets the interval of the schedule.
             "frequency": "Minute", // Gets or sets the frequency of the schedule. - OneTime, Day, Hour, Week, Month, Minute
             "timeZone": "Europe/Berlin", // Gets or sets the time zone of the schedule.
             "advancedSchedule": "" // Gets or sets the AdvancedSchedule
