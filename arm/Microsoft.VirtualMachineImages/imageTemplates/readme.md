@@ -95,7 +95,7 @@ Tag names and tag values can be provided as needed. A tag can be left without a 
 
 ## Considerations
 
-az network vnet subnet update --name aib --resource-group WVDCustomerEnvironment --vnet-name wvd-vnet --disable-private-link-service-network-policies true
+az network vnet subnet update --name aib --resource-group AVDCustomerEnvironment --vnet-name avd-vnet --disable-private-link-service-network-policies true
 
 ## Additional resources
 

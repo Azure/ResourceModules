@@ -3,16 +3,16 @@
     "contentVersion": "1.0.0.0",
     "parameters": {
         "hostpoolName": {
-            "value": "sxx-az-wvdhp-weu-x-001"
+            "value": "sxx-az-avdhp-weu-x-001"
         },
         "location": {
             "value": "eastus"
         },
         "hostpoolFriendlyName": {
-            "value": "WVDv2"
+            "value": "AVDv2"
         },
         "hostpoolDescription": {
-            "value": "My first WVD Host Pool"
+            "value": "My first AVD Host Pool"
         },
         "hostpoolType": {
             "value": "Pooled"
@@ -38,7 +38,7 @@
                 "imageType": "Gallery",
                 "imageUri": null,
                 "customImageId": null,
-                "namePrefix": "wvdv2",
+                "namePrefix": "avdv2",
                 "osDiskType": "StandardSSD_LRS",
                 "useManagedDisks": true,
                 "vmSize": {

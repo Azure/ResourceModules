@@ -24,6 +24,7 @@ jobs:
             organization   = ($env:GITHUB_REPOSITORY).split('/')[0] 
             repositoryName = ($env:GITHUB_REPOSITORY).split('/')[1]
             columnsInOrder = @('Name', 'TemplateType', 'Status', 'Deploy')
+            sortByColumn   = 'Name'
           }
 
           Write-Verbose "Invoke task with" -Verbose
