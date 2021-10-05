@@ -50,9 +50,7 @@ resource userMsi_lock 'Microsoft.ManagedIdentity/userAssignedIdentities/provider
   properties: {
     level: 'CannotDelete'
   }
-  dependsOn: [
-    userMsi
-  ]
+  scope: userMsi
 }
 
 module userMsi_rbac './.bicep/nested_rbac.bicep' = [for (roleassignment, index) in roleAssignments: {
