@@ -1,13 +1,14 @@
 {
-    "[powershell]": {
-        "editor.wordSeparators": "`~!@#%^&*()=+[{]}\\|;:'\",.<>/?",
-        "files.encoding": "utf8bom"
-    },
-    "[yaml]": {
+    "[bicep]": {
         "editor.insertSpaces": true,
         "editor.tabSize": 2
     },
-    "[bicep]": {
+    "[powershell]": {
+        "editor.insertSpaces": true,
+        "editor.tabSize": 4,
+        "files.encoding": "utf8bom"
+    },
+    "[yaml]": {
         "editor.insertSpaces": true,
         "editor.tabSize": 2
     },
