@@ -712,7 +712,7 @@ Describe "Deployment template tests" -Tag Template {
             $Variable = ($Template.variables | Get-Member | Where-Object { $_.MemberType -eq "NoteProperty" }).Name
 
             foreach ($Variab in $Variable) {
-                if ($Variab.substring(0, 1) -cnotmatch '[a-z]' -or $Variab -match '-' -or $Variab -match '_') {
+                if ($Variab.substring(0, 1) -cnotmatch '[a-z]' -or $Variab -match '-') {
                     $CamelCasingFlag += $false
                 }
                 else {
