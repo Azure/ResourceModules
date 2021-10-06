@@ -29,7 +29,7 @@
             }
         },
         "storageAccountName": {
-            "value": "adpsxxazsaweux001"
+            "value": "adpsxxazsaweux002"
         },
         "storageAccountResourceGroupName": {
             "value": "validation-rg"
