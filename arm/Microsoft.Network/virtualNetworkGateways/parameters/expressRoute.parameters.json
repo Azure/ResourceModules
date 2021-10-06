@@ -30,10 +30,10 @@
             "value": "/subscriptions/8629be3b-96bc-482d-a04b-ffff597c65a2/resourcegroups/validation-rg/providers/microsoft.operationalinsights/workspaces/adp-sxx-az-la-weu-x-001"
         },
         "eventHubAuthorizationRuleId": {
-            "value": "/subscriptions/8629be3b-96bc-482d-a04b-ffff597c65a2/resourceGroups/dependencies-rg/providers/Microsoft.EventHub/namespaces/sxx-az-evhns-weu-x-003/AuthorizationRules/RootManageSharedAccessKey"
+            "value": "/subscriptions/8629be3b-96bc-482d-a04b-ffff597c65a2/resourceGroups/validation-rg/providers/Microsoft.EventHub/namespaces/adp-sxx-az-evhns-weu-x-001/AuthorizationRules/RootManageSharedAccessKey"
         },
         "eventHubName": {
-            "value": "sxx-az-evhns-weu-x-003"
+            "value": "adp-sxx-az-evh-weu-x-001"
         },
         "lockForDeletion": {
             "value": false
