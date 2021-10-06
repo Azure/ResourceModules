@@ -77,7 +77,7 @@ resource privateEndpoint 'Microsoft.Network/privateEndpoints@2021-02-01' = {
     properties: {
       privateDnsZoneConfigs: [
         {
-          name: privateEndpointName
+          name: privateEndpoint.name
           properties: {
             privateDnsZoneId: privateDNSId
           }
@@ -106,4 +106,4 @@ module privateEndpoint_rbac './.bicep/nested_rbac.bicep' = [for (roleAssignment,
 
 output privateEndpointResourceGroup string = resourceGroup().name
 output privateEndpointResourceId string = privateEndpoint.id
-output privateEndpointName string = privateEndpointName
+output privateEndpointName string = privateEndpoint.name
