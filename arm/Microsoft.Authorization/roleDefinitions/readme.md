@@ -24,6 +24,42 @@ This module deploys custom RBAC Role Definitions.
 | `resourceGroupName` | string | "" | | Optional. Name of the Resource Group to deploy the custom role in. If no Resource Group name is provided, the module deploys at subscription level, therefore registers the custom RBAC role definition in the subscription.
 | `location` | string | "" | | Optional. Location for all resources. If not provided, will default to the deployment location.
 
+### Parameter Usage: `managementGroupId`
+
+To deploy resource to a Management Group, provide the `managementGroupId` as an input parameter to the module.
+
+```json
+"managementGroupId": {
+	"value": "contoso-group"
+}
+```
+
+> The name of the Management Group in the deployment does not have to match the value of the `managementGroupId` in the input parameters. 
+
+### Parameter Usage: `subscriptionId`
+
+To deploy resource to an Azure Subscription, provide the `subscriptionId` as an input parameter to the module. **Example**:
+
+```json
+"subscriptionId": {
+	"value": "12345678-b049-471c-95af-123456789012"
+}
+```
+
+### Parameter Usage: `resourceGroupName`
+
+To deploy resource to a Resource Group, provide the `subscriptionId` and `resourceGroupName` as an input parameter to the module. **Example**:
+
+```json
+"subscriptionId": {
+	"value": "12345678-b049-471c-95af-123456789012"
+},
+"resourceGroupName": {
+	"value": "target-resourceGroup"
+}
+```
+> The `subscriptionId` is used to enable deployment to a Resource Group Scope, allowing the use of the `resourceGroup()` function from a Management Group Scope. [Additional Details](https://github.com/Azure/bicep/pull/1420).
+
 ## Outputs
 
 | Output Name | Type | Description |
