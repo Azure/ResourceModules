@@ -27,7 +27,7 @@ This template deploys Log Analytics.
 | `dailyQuotaGb` | int | Optional. The workspace daily quota for ingestion. | -1 |  |
 | `dataRetention` | int | Required. Number of days data will be retained for | 365 |  |
 | `diagnosticStorageAccountId` | string | Optional. Log Analytics workspace resource identifier |  |  |
-| `gallerySolution` | array | Optional. LAW gallerySolution from the gallery. | System.Object[] |  |
+| `gallerySolutions` | array | Optional. LAW gallerySolutions from the gallery. | System.Object[] |  |
 | `location` | string | Optional. Location for all resources. | [resourceGroup().location] |  |
 | `lockForDeletion` | bool | Optional. Switch to lock storage from deletion. | False |  |
 | `logAnalyticsWorkspaceName` | string | Required. Name of the Log Analytics workspace |  |  |
@@ -38,10 +38,10 @@ This template deploys Log Analytics.
 | `tags` | object | Optional. Tags of the resource. |  |  |
 | `useResourcePermissions` | bool | Optional. Set to 'true' to use resource or workspace permissions and 'false' (or leave empty) to require workspace permissions. | False |  |
 
-### Parameter Usage: `gallerySolution`
+### Parameter Usage: `gallerySolutions`
 
 ```json
-"gallerySolution": {
+"gallerySolutions": {
     "value": [
         "AgentHealthAssessment",
         "AlertManagement",
