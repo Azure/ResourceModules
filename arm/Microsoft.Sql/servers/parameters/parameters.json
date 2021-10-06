@@ -8,7 +8,7 @@
         "administratorLogin": {
             "reference": {
                 "keyVault": {
-                    "id": "/subscriptions/8629be3b-96bc-482d-a04b-ffff597c65a2/resourceGroups/dependencies-rg/providers/Microsoft.KeyVault/vaults/sxx-az-kv-weu-x-004"
+                    "id": "/subscriptions/8629be3b-96bc-482d-a04b-ffff597c65a2/resourceGroups/validation-rg/providers/Microsoft.KeyVault/vaults/adp-sxx-az-kv-weu-x-001"
                 },
                 "secretName": "administratorLogin"
             }
@@ -16,7 +16,7 @@
         "administratorLoginPassword": {
             "reference": {
                 "keyVault": {
-                    "id": "/subscriptions/8629be3b-96bc-482d-a04b-ffff597c65a2/resourceGroups/dependencies-rg/providers/Microsoft.KeyVault/vaults/sxx-az-kv-weu-x-004"
+                    "id": "/subscriptions/8629be3b-96bc-482d-a04b-ffff597c65a2/resourceGroups/validation-rg/providers/Microsoft.KeyVault/vaults/adp-sxx-az-kv-weu-x-001"
                 },
                 "secretName": "administratorLoginPassword"
             }
