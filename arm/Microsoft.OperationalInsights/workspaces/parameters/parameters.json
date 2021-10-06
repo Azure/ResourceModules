@@ -14,7 +14,7 @@
         "dailyQuotaGb": {
 			"value": 10
 		},
-        "solutions": {
+        "gallerySolutions": {
             "value": [
                 "AzureAutomation"
             ]
