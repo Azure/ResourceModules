@@ -79,5 +79,5 @@ module privateDnsZone_rbac './.bicep/nested_rbac.bicep' = [for (roleAssignment, 
 }]
 
 output privateDnsZoneResourceGroup string = resourceGroup().name
-output privateDnsZoneName string = privateDnsZoneName
+output privateDnsZoneName string = privateDnsZone.name
 output privateDnsZoneResourceId string = privateDnsZone.id
