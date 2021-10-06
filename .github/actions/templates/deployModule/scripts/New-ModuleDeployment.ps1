@@ -204,7 +204,7 @@ function New-ModuleDeployment {
                     $Stoploop = $true
                 } 
                 catch {
-                    if ($retryCount -gt $retryLimit) {
+                    if ($retryCount -ge $retryLimit) {
                         throw $PSitem.Exception.Message
                         $Stoploop = $true
                     }
@@ -213,9 +213,9 @@ function New-ModuleDeployment {
                         Start-Sleep -Seconds 5
                         $retryCount++
                     }
-                } 
+                }
             } 
-            while ($Stoploop -eq $false -or $retryCount -eq $retryLimit) 
+            until ($Stoploop -eq $true -or $retryCount -gt $retryLimit)
 
             Write-Verbose "Result" -Verbose
             Write-Verbose "------" -Verbose
