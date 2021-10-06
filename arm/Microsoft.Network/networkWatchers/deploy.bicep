@@ -61,7 +61,7 @@ resource networkWatcher 'Microsoft.Network/networkWatchers@2021-02-01' = {
   properties: {}
 
   resource connectionMonitors 'connectionMonitors@2021-02-01' = [for item in monitors: if (!empty(monitors)) {
-    name: (empty(monitors) ? 'dummy/dummy' : '${networkWatcherName}/${item.connectionMonitorName}')
+    name: (empty(monitors) ? 'dummy/dummy' : '${networkWatcher.name}/${item.connectionMonitorName}')
     location: location
     tags: tags
     properties: {
@@ -92,4 +92,4 @@ module networkWatcher_rbac './.bicep/nested_rbac.bicep' = [for (roleAssignment, 
 
 output networkWatcherResourceGroup string = resourceGroup().name
 output networkWatcherResourceId string = networkWatcher.id
-output networkWatcherName string = networkWatcherName
+output networkWatcherName string = networkWatcher.name
