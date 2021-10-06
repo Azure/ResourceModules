@@ -29,10 +29,10 @@
             }
         },
         "storageAccountName": {
-            "value": "sxxazsaweux003"
+            "value": "adpsxxazsaweux001"
         },
         "storageAccountResourceGroupName": {
-            "value": "dependencies-rg"
+            "value": "validation-rg"
         },
         "functionsWorkerRuntime": {
             "value": "powershell"
