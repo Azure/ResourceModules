@@ -4,10 +4,10 @@ targetScope = 'managementGroup'
 @maxLength(64)
 param policyDefinitionName string
 
-@description('Optional. The display name of the policy definition. If not provided, will be replaced with the Policy Definition Name')
+@description('Optional. The display name of the policy definition.')
 param displayName string = ''
 
-@description('Optional. The display name of the policy definition. If not provided, will be replaced with the Policy Definition Name')
+@description('Optional. The policy definition description.')
 param policyDescription string = ''
 
 @description('Optional. The policy definition mode. Default is All, Some examples are All, Indexed, Microsoft.KeyVault.Data.')
@@ -23,10 +23,10 @@ param mode string = 'All'
 @description('Optional. The policy Definition metadata. Metadata is an open ended object and is typically a collection of key value pairs.')
 param metadata object = {}
 
-@description('Optional. The policy set definition parameters that can be used in policy definition references.')
+@description('Optional. The policy definition parameters that can be used in policy definition references.')
 param parameters object = {}
 
-@description('Required. The policy rule. Must include \'[\' when defining parameters to escape the template expressions and prevent them from being evaluated by the top level deployment.')
+@description('Required. The Policy Rule details for the Policy Definition')
 param policyRule object
 
 @description('Optional. The ID of the Management Group (Scope). Cannot be used with subscriptionId and does not support tenant level deployment (i.e. \'/\')')
