@@ -6,6 +6,7 @@ This template deploys Log Analytics.
 
 |ResourceType|ApiVersion|
 |:--|:--|
+| `datasources` | 2020-03-01-preview |
 | `Microsoft.OperationalInsights/workspaces/datasources` | 2020-03-01-preview |
 | `Microsoft.OperationalInsights/workspaces/linkedServices` | 2020-03-01-preview |
 | `Microsoft.OperationalInsights/workspaces/providers/locks` | 2016-09-01 |
@@ -14,6 +15,7 @@ This template deploys Log Analytics.
 | `Microsoft.OperationalInsights/workspaces` | 2020-08-01 |
 | `Microsoft.OperationsManagement/solutions` | 2015-11-01-preview |
 | `Microsoft.Resources/deployments` | 2021-01-01 |
+| `savedSearches` | 2020-03-01-preview |
 
 ## Parameters
 
