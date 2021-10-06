@@ -3,11 +3,14 @@
   "contentVersion": "1.0.0.0",
   "parameters": {
     "roleName": {
-      "value": "myCustomRoleAtSub"
+      "value": "myCustomRoleAtRg"
     },
-    // "resourceGroupName": {
-    //   "value": "rbacTest"
-    // },
+    "subscriptionId": {
+      "value": "20d6fbfe-b049-471c-95af-1369d14d0d45"
+    },
+    "resourceGroupName": {
+      "value": "validation-rg"
+    },
     "roleDescription": {
       "value": ""
     },
