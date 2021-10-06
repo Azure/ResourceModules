@@ -12,12 +12,8 @@ resource fileShare 'Microsoft.Storage/storageAccounts/fileServices/shares@2019-0
 module fileShare_rbac './nested_fileShare_rbac.bicep' = [for (roleAssignment, index) in fileShareObj.roleAssignments: {
   name: '${deployment().name}-Rbac-${(empty(fileShareObj.roleAssignments) ? 'dummy' : index)}'
   params: {
-    fileShareName: fileShareObj.name
     roleAssignmentObj: roleAssignment
     builtInRoleNames: builtInRoleNames
-    storageAccountName: storageAccountName
+    resourceName: fileShare.name
   }
-  dependsOn: [
-    fileShare
-  ]
 }]

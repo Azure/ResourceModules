@@ -1,10 +1,9 @@
-param queueName string
+param resourceName string
 param roleAssignmentObj object
 param builtInRoleNames object
-param storageAccountName string
 
 resource roleAssignment 'Microsoft.Storage/storageAccounts/queueServices/queues/providers/roleAssignments@2020-04-01-preview' = [for principalId in roleAssignmentObj.principalIds: {
-  name: '${storageAccountName}/default/${queueName}/Microsoft.Authorization/${(empty(roleAssignmentObj) ? guid(storageAccountName) : guid(storageAccountName, queueName, principalId, roleAssignmentObj.roleDefinitionIdOrName))}'
+  name: '${resourceName}/Microsoft.Authorization/${(empty(roleAssignmentObj) ? guid(resourceName) : guid(resourceName, principalId, roleAssignmentObj.roleDefinitionIdOrName))}'
   properties: {
     roleDefinitionId: (contains(builtInRoleNames, roleAssignmentObj.roleDefinitionIdOrName) ? builtInRoleNames[roleAssignmentObj.roleDefinitionIdOrName] : roleAssignmentObj.roleDefinitionIdOrName)
     principalId: principalId

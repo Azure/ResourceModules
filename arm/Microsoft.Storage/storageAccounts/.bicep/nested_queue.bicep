@@ -12,12 +12,8 @@ resource queue 'Microsoft.Storage/storageAccounts/queueServices/queues@2019-06-0
 module queue_rbac './nested_queue_rbac.bicep' = [for (roleAssignment, index) in queueObj.roleAssignments: {
   name: '${deployment().name}-Rbac-${(empty(queueObj.roleAssignments) ? 'dummy' : index)}'
   params: {
-    queueName: queueObj.name
     roleAssignmentObj: roleAssignment
     builtInRoleNames: builtInRoleNames
-    storageAccountName: storageAccountName
+    resourceName: queue.name
   }
-  dependsOn: [
-    queue
-  ]
 }]
