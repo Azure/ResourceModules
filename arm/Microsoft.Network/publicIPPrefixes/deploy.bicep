@@ -77,4 +77,4 @@ module publicIpPrefix_rbac './.bicep/nested_rbac.bicep' = [for (roleAssignment, 
 
 output publicIpPrefixResourceId string = publicIpPrefix.id
 output publicIpPrefixResourceGroup string = resourceGroup().name
-output publicIpPrefixName string = publicIpPrefixName
+output publicIpPrefixName string = publicIpPrefix.name
