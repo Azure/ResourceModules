@@ -808,7 +808,7 @@ Describe "Deployment template tests" -Tag Template {
                 }
             }
         }
-
+<#
         It "[<moduleFolderNameException>] All resources that have a Location property should refer to the Location parameter 'parameters('Location')'" -TestCases $deploymentFolderTestCasesException {
             param(
                 $moduleFolderNameException,
@@ -849,7 +849,7 @@ Describe "Deployment template tests" -Tag Template {
             }
             $LocationParamFlag | Should -Not -Contain $false
         }
-
+#>
         It "The template should not have empty lines" {
         }
 
