@@ -9,7 +9,7 @@ This template deploys a Disk Encryption Set
 |:--|:--|
 |`Microsoft.Resources/deployments`|2018-02-01|
 |`Microsoft.KeyVault/vaults/accessPolicies`|2019-09-01|
-|`Microsoft.Compute/diskEncryptionSets`|2019-11-01|
+|`Microsoft.Compute/diskEncryptionSets`|2020-12-01|
 |`Microsoft.Compute/diskEncryptionSets/providers/roleAssignments`|2018-09-01-preview|
 
 ## Parameters
@@ -85,4 +85,4 @@ N/A
 
 ## Additional resources
 
-- [Microsoft.Compute diskEncryptionSets template reference](https://docs.microsoft.com/en-us/azure/templates/microsoft.compute/diskencryptionsets)
+- [Microsoft.Compute diskEncryptionSets template reference](https://docs.microsoft.com/en-us/azure/templates/microsoft.compute/2020-12-01/diskencryptionsets)
