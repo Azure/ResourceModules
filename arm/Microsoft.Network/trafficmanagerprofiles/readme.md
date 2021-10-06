@@ -9,8 +9,8 @@ This module deploys Traffic Manager, with resource lock.
 | `Microsoft.Resources/deployments` | 2021-04-01 |
 | `Microsoft.Network/trafficmanagerprofiles` | 2018-08-01 |
 | `Microsoft.Network/trafficmanagerprofiles/providers/roleAssignments` | 2018-09-01-preview |
-| `Microsoft.Authorization/locks` |
-| `Microsoft.Insights/diagnosticSettings` |
+| `Microsoft.Authorization/locks` | 2016-09-01 |
+| `Microsoft.Insights/diagnosticSettings` | 2017-05-01-preview |
 
 ## Parameters
 
