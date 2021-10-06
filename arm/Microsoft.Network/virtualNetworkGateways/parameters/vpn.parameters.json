@@ -5,11 +5,8 @@
     "virtualNetworkGatewayName": {
       "value": "sxx-az-vnet-vpn-gw-weu-p-001"
     },
-    "gatewayPipName": {
-      "value": ["sxx-az-vnet-vpn-gw-weu-p-001-pip-03"]
-    },
     "domainNameLabel": {
-      "value": ["sxx-az-vnet-vpn-gw-weu-p-001-pip-03"]
+      "value": ["sxx-az-vnet-vpn-gw-weu-p-001-pip-99"]
     },
     "virtualNetworkGatewayType": {
       "value": "Vpn"
