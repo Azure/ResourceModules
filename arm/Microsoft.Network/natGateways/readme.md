@@ -6,12 +6,12 @@ This module deploys a NAT Gateway.
 
 | Resource Type | Api Version |
 | :-- | :-- |
-| `Microsoft.Network/bastionHosts/providers/roleAssignments` | 2018-09-01-preview |
 | `Microsoft.Network/natGateways` | 2021-02-01 |
-| `Microsoft.Network/publicIPAddresses/providers/diagnosticSettings` | 2017-05-01-preview |
 | `Microsoft.Network/publicIPAddresses` | 2021-02-01 |
 | `Microsoft.Resources/deployments` | 2020-06-01 |
-| `providers/locks` | 2016-09-01 |
+| `Microsoft.Authorization/locks` | 2016-09-01 |
+| `Microsoft.Insights/diagnosticSettings` | 2017-05-01-preview |
+| `Microsoft.Network/natGateways/providers/roleAssignments` | 2020-04-01-preview |
 
 ### Resource dependency
 
@@ -30,8 +30,8 @@ The following resources are required to be able to deploy this resource.
 | `location` | string | Optional. Location for all resources. | [resourceGroup().location] |  |
 | `lockForDeletion` | bool | Optional. Switch to lock resource from deletion. | False |  |
 | `natGatewayDomainNameLabel` | string | Optional. DNS name of the Public IP resource. A region specific suffix will be appended to it, e.g.: your-DNS-name.westeurope.cloudapp.azure.com |  |  |
-| `natGatewayName` | string | Required. Name of the Azure Bastion resource |  |  |
-| `natGatewayPipName` | string | Optional. Specifies the name of the Public IP used by the NAT Gateway. If it's not provided, a '-pip' suffix will be appended to the Bastion's name. |  |  |
+| `natGatewayName` | string | Required. Name of the Azure NAT Gateway resource |  |  |
+| `natGatewayPipName` | string | Optional. Specifies the name of the Public IP used by the NAT Gateway. If it's not provided, a '-pip' suffix will be appended to the NAT Gateway's name. |  |  |
 | `natGatewayPublicIpAddress` | bool | Optional. Use to have a new Public IP Address created for the NAT Gateway. | False |  |
 | `natGatewayPublicIPPrefixId` | string | Optional. Resource Id of the Public IP Prefix object. This is only needed if you want your Public IPs created in a PIP Prefix. |  |  |
 | `publicIpAddresses` | array | Optional. Existing Public IP Address resource names to use for the NAT Gateway. | System.Object[] |  |
