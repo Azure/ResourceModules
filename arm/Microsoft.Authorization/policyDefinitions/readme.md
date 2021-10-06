@@ -11,7 +11,7 @@
 
 | Parameter Name | Type | Description | DefaultValue | Possible values |
 | :-- | :-- | :-- | :-- | :-- |
-| `policyDefinitionName` | string | Required. Specifies the name of the policy definition. |  | |
+| `policyDefinitionName` | string | Required. Specifies the name of the policy definition. Space characters will be replaced by (-) and converted to lowercase |  | |
 | `displayName` | string | Optional. The display name of the policy definition. |  | |
 | `policyDescription` | string | Optional. The policy definition description. |  | |
 | `mode` | string | Optional. The policy definition mode. Default is All, Some examples are All, Indexed, Microsoft.KeyVault.Data. | All | |
@@ -57,5 +57,4 @@ To deploy resource to an Azure Subscription, provide the `subscriptionId` as an 
 ## Additional resources
 
 - [Deployments](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Resources/2018-02-01/deployments)
-- [Deployments](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Resources/2019-10-01/deployments)
-- [Deployments](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Resources/2019-10-01/deployments)
+- [Policy Definitions](https://docs.microsoft.com/en-us/azure/templates/microsoft.authorization/policydefinitions?tabs=bicep)

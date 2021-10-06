@@ -9,7 +9,7 @@
         "value": "[Test] policy exempt"
       },
       "policyAssignmentId": {
-        "value": "/subscriptions/8629be3b-96bc-482d-a04b-ffff597c65a2/providers/Microsoft.Authorization/policyAssignments/Add-a-tag-to-resources"
+        "value": "/subscriptions/20d6fbfe-b049-471c-95af-1369d14d0d45/providers/Microsoft.Authorization/policyAssignments/Add-a-tag-to-resources"
       },
       "exemptionCategory": {
         "value": "Waiver"
@@ -23,7 +23,10 @@
         "value": "2023-10-02T03:57:00.000Z"
       },
       "subscriptionId": {
-        "value": "8629be3b-96bc-482d-a04b-ffff597c65a2"
+        "value": "20d6fbfe-b049-471c-95af-1369d14d0d45"
+      },
+      "resourceGroupName": {
+        "value": "validation-rg"
       }
     }
   }

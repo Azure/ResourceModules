@@ -78,5 +78,5 @@ To deploy resource to a Resource Group, provide the `subscriptionId` and `resour
 ## Additional resources
 
 - [Deployments](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Resources/2018-02-01/deployments)
-- [Deployments](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Resources/2019-10-01/deployments)
-- [Deployments](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Resources/2019-10-01/deployments)
+- [Policy Assignments](https://docs.microsoft.com/en-us/azure/templates/microsoft.authorization/policyassignments?tabs=bicep)
+- [Role Assignments](https://docs.microsoft.com/en-us/azure/templates/microsoft.authorization/roleassignments?tabs=bicep)
