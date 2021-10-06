@@ -4,6 +4,16 @@
   "parameters": {
     "applicationSecurityGroupName": {
       "value": "sxx-az-asg-weu-x-001"
+    },
+    "roleAssignments": {
+        "value": [
+            {
+                "roleDefinitionIdOrName": "Avere Cluster Create",
+                "principalIds": [
+                    "eea0b8dd-7d4c-4950-8e5c-0e5cf8b2acd7"
+                ]
+            }
+        ]
     }
   }
 }
