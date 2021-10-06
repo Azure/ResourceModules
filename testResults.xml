@@ -1,0 +1,222 @@
+﻿<?xml version="1.0" encoding="utf-8" standalone="no"?>
+<test-results xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="nunit_schema_2.5.xsd" name="Global Module Tests" total="41" errors="0" failures="0" not-run="0" inconclusive="0" ignored="0" skipped="0" invalid="0" date="2021-10-06" time="16:30:25">
+  <environment clr-version="Unknown" nunit-version="2.5.8.0" user="alsehr" os-version="10.0.19043" machine-name="DESKTOP-7OKH8K1" user-domain="EUROPE" platform="Microsoft Windows 10 Enterprise|C:\WINDOWS|\Device\Harddisk0\Partition3" cwd="C:\dev\ip\Azure-ResourceModules\ResourceModules" />
+  <culture-info current-culture="de-DE" current-uiculture="en-US" />
+  <test-suite type="TestFixture" name="Global Module Tests" executed="True" result="Success" success="True" time="5.472" asserts="0" description="Pester">
+    <results>
+      <test-suite type="TestFixture" name="C:\dev\ip\Azure-ResourceModules\ResourceModules\arm\.global\global.module.tests.ps1" executed="True" result="Success" success="True" time="5.472" asserts="0" description="C:\dev\ip\Azure-ResourceModules\ResourceModules\arm\.global\global.module.tests.ps1">
+        <results>
+          <test-suite type="TestFixture" name="File/folder tests" executed="True" result="Success" success="True" time="0.1148" asserts="0" description="File/folder tests">
+            <results>
+              <test-suite type="TestFixture" name="File/folder tests.General module folder tests" executed="True" result="Success" success="True" time="0.0644" asserts="0" description="File/folder tests.General module folder tests">
+                <results>
+                  <test-suite type="ParameterizedTest" name="File/folder tests.General module folder tests.[&lt;moduleFolderName&gt;] Module should contain a [deploy.json/deploy.bicep] file" executed="True" result="Success" success="True" time="0.0226" asserts="0" description="[&lt;moduleFolderName&gt;] Module should contain a [deploy.json/deploy.bicep] file">
+                    <results>
+                      <test-case description="[publicIPAddresses] Module should contain a [deploy.json/deploy.bicep] file" name="File/folder tests.General module folder tests.[publicIPAddresses] Module should contain a [deploy.json/deploy.bicep] file" time="0.0226" asserts="0" success="True" result="Success" executed="True" />
+                    </results>
+                  </test-suite>
+                  <test-suite type="ParameterizedTest" name="File/folder tests.General module folder tests.[&lt;moduleFolderName&gt;] Module should contain a [readme.md] file" executed="True" result="Success" success="True" time="0.009" asserts="0" description="[&lt;moduleFolderName&gt;] Module should contain a [readme.md] file">
+                    <results>
+                      <test-case description="[publicIPAddresses] Module should contain a [readme.md] file" name="File/folder tests.General module folder tests.[publicIPAddresses] Module should contain a [readme.md] file" time="0.009" asserts="0" success="True" result="Success" executed="True" />
+                    </results>
+                  </test-suite>
+                  <test-suite type="ParameterizedTest" name="File/folder tests.General module folder tests.[&lt;moduleFolderName&gt;] Module should contain a [parameters] folder" executed="True" result="Success" success="True" time="0.024" asserts="0" description="[&lt;moduleFolderName&gt;] Module should contain a [parameters] folder">
+                    <results>
+                      <test-case description="[publicIPAddresses] Module should contain a [parameters] folder" name="File/folder tests.General module folder tests.[publicIPAddresses] Module should contain a [parameters] folder" time="0.024" asserts="0" success="True" result="Success" executed="True" />
+                    </results>
+                  </test-suite>
+                </results>
+              </test-suite>
+              <test-suite type="TestFixture" name="File/folder tests.parameters folder" executed="True" result="Success" success="True" time="0.1085" asserts="0" description="File/folder tests.parameters folder">
+                <results>
+                  <test-suite type="ParameterizedTest" name="File/folder tests.parameters folder.[&lt;moduleFolderName&gt;] *parameters.json files in the parameters folder should not be empty" executed="True" result="Success" success="True" time="0.0096" asserts="0" description="[&lt;moduleFolderName&gt;] *parameters.json files in the parameters folder should not be empty">
+                    <results>
+                      <test-case description="[publicIPAddresses] *parameters.json files in the parameters folder should not be empty" name="File/folder tests.parameters folder.[publicIPAddresses] *parameters.json files in the parameters folder should not be empty" time="0.0096" asserts="0" success="True" result="Success" executed="True" />
+                    </results>
+                  </test-suite>
+                  <test-suite type="ParameterizedTest" name="File/folder tests.parameters folder.[&lt;moduleFolderName&gt;] *parameters.json files in the parameters folder should be valid JSON" executed="True" result="Success" success="True" time="0.0192" asserts="0" description="[&lt;moduleFolderName&gt;] *parameters.json files in the parameters folder should be valid JSON">
+                    <results>
+                      <test-case description="[publicIPAddresses] *parameters.json files in the parameters folder should be valid JSON" name="File/folder tests.parameters folder.[publicIPAddresses] *parameters.json files in the parameters folder should be valid JSON" time="0.0192" asserts="0" success="True" result="Success" executed="True" />
+                    </results>
+                  </test-suite>
+                  <test-suite type="ParameterizedTest" name="File/folder tests.parameters folder.[&lt;moduleFolderName&gt;] folder should contain one or more *parameters.json files" executed="True" result="Success" success="True" time="0.0075" asserts="0" description="[&lt;moduleFolderName&gt;] folder should contain one or more *parameters.json files">
+                    <results>
+                      <test-case description="[publicIPAddresses] folder should contain one or more *parameters.json files" name="File/folder tests.parameters folder.[publicIPAddresses] folder should contain one or more *parameters.json files" time="0.0075" asserts="0" success="True" result="Success" executed="True" />
+                    </results>
+                  </test-suite>
+                </results>
+              </test-suite>
+            </results>
+          </test-suite>
+          <test-suite type="TestFixture" name="Readme tests" executed="True" result="Success" success="True" time="0.342" asserts="0" description="Readme tests">
+            <results>
+              <test-suite type="TestFixture" name="Readme tests.Readme content tests" executed="True" result="Success" success="True" time="0.2217" asserts="0" description="Readme tests.Readme content tests">
+                <results>
+                  <test-suite type="ParameterizedTest" name="Readme tests.Readme content tests.[&lt;moduleFolderName&gt;] Readme.md file should not be empty" executed="True" result="Success" success="True" time="0.0128" asserts="0" description="[&lt;moduleFolderName&gt;] Readme.md file should not be empty">
+                    <results>
+                      <test-case description="[publicIPAddresses] Readme.md file should not be empty" name="Readme tests.Readme content tests.[publicIPAddresses] Readme.md file should not be empty" time="0.0128" asserts="0" success="True" result="Success" executed="True" />
+                    </results>
+                  </test-suite>
+                  <test-suite type="ParameterizedTest" name="Readme tests.Readme content tests.[&lt;moduleFolderName&gt;] Readme.md file should contain the these Heading2 titles in order: Resource Types, parameters, Outputs, Considerations, Additional resources" executed="True" result="Success" success="True" time="0.0307" asserts="0" description="[&lt;moduleFolderName&gt;] Readme.md file should contain the these Heading2 titles in order: Resource Types, parameters, Outputs, Considerations, Additional resources">
+                    <results>
+                      <test-case description="[publicIPAddresses] Readme.md file should contain the these Heading2 titles in order: Resource Types, parameters, Outputs, Considerations, Additional resources" name="Readme tests.Readme content tests.[publicIPAddresses] Readme.md file should contain the these Heading2 titles in order: Resource Types, parameters, Outputs, Considerations, Additional resources" time="0.0307" asserts="0" success="True" result="Success" executed="True" />
+                    </results>
+                  </test-suite>
+                  <test-suite type="ParameterizedTest" name="Readme tests.Readme content tests.[&lt;moduleFolderName&gt;] Resources section should contain all resources from  the template file" executed="True" result="Success" success="True" time="0.0365" asserts="0" description="[&lt;moduleFolderName&gt;] Resources section should contain all resources from  the template file">
+                    <results>
+                      <test-case description="[publicIPAddresses] Resources section should contain all resources from  the template file" name="Readme tests.Readme content tests.[publicIPAddresses] Resources section should contain all resources from  the template file" time="0.0365" asserts="0" success="True" result="Success" executed="True" />
+                    </results>
+                  </test-suite>
+                  <test-suite type="ParameterizedTest" name="Readme tests.Readme content tests.[&lt;moduleFolderName&gt;] Resources section should not contain more resources as in the template file" executed="True" result="Success" success="True" time="0.028" asserts="0" description="[&lt;moduleFolderName&gt;] Resources section should not contain more resources as in the template file">
+                    <results>
+                      <test-case description="[publicIPAddresses] Resources section should not contain more resources as in the template file" name="Readme tests.Readme content tests.[publicIPAddresses] Resources section should not contain more resources as in the template file" time="0.028" asserts="0" success="True" result="Success" executed="True" />
+                    </results>
+                  </test-suite>
+                  <test-suite type="ParameterizedTest" name="Readme tests.Readme content tests.[&lt;moduleFolderName&gt;] parameters section should contain a table with these column names in order: Parameter Name, Type, Description, Default Value, Possible values" executed="True" result="Success" success="True" time="0.0193" asserts="0" description="[&lt;moduleFolderName&gt;] parameters section should contain a table with these column names in order: Parameter Name, Type, Description, Default Value, Possible values">
+                    <results>
+                      <test-case description="[publicIPAddresses] parameters section should contain a table with these column names in order: Parameter Name, Type, Description, Default Value, Possible values" name="Readme tests.Readme content tests.[publicIPAddresses] parameters section should contain a table with these column names in order: Parameter Name, Type, Description, Default Value, Possible values" time="0.0193" asserts="0" success="True" result="Success" executed="True" />
+                    </results>
+                  </test-suite>
+                  <test-suite type="ParameterizedTest" name="Readme tests.Readme content tests.[&lt;moduleFolderName&gt;] parameters section should contain all parameters from the deploy.json file" executed="True" result="Success" success="True" time="0.0242" asserts="0" description="[&lt;moduleFolderName&gt;] parameters section should contain all parameters from the deploy.json file">
+                    <results>
+                      <test-case description="[publicIPAddresses] parameters section should contain all parameters from the deploy.json file" name="Readme tests.Readme content tests.[publicIPAddresses] parameters section should contain all parameters from the deploy.json file" time="0.0242" asserts="0" success="True" result="Success" executed="True" />
+                    </results>
+                  </test-suite>
+                  <test-suite type="ParameterizedTest" name="Readme tests.Readme content tests.[&lt;moduleFolderName&gt;] Outputs section should contain a table with these column names in order: Output Name, Value, Type" executed="True" result="Success" success="True" time="0.0191" asserts="0" description="[&lt;moduleFolderName&gt;] Outputs section should contain a table with these column names in order: Output Name, Value, Type">
+                    <results>
+                      <test-case description="[publicIPAddresses] Outputs section should contain a table with these column names in order: Output Name, Value, Type" name="Readme tests.Readme content tests.[publicIPAddresses] Outputs section should contain a table with these column names in order: Output Name, Value, Type" time="0.0191" asserts="0" success="True" result="Success" executed="True" />
+                    </results>
+                  </test-suite>
+                  <test-suite type="ParameterizedTest" name="Readme tests.Readme content tests.[&lt;moduleFolderName&gt;] Output section should contain all outputs defined in the deploy.json file" executed="True" result="Success" success="True" time="0.0234" asserts="0" description="[&lt;moduleFolderName&gt;] Output section should contain all outputs defined in the deploy.json file">
+                    <results>
+                      <test-case description="[publicIPAddresses] Output section should contain all outputs defined in the deploy.json file" name="Readme tests.Readme content tests.[publicIPAddresses] Output section should contain all outputs defined in the deploy.json file" time="0.0234" asserts="0" success="True" result="Success" executed="True" />
+                    </results>
+                  </test-suite>
+                  <test-suite type="ParameterizedTest" name="Readme tests.Readme content tests.[&lt;moduleFolderName&gt;] Additional resources section should contain at least one bullet point with a reference" executed="True" result="Success" success="True" time="0.0211" asserts="0" description="[&lt;moduleFolderName&gt;] Additional resources section should contain at least one bullet point with a reference">
+                    <results>
+                      <test-case description="[publicIPAddresses] Additional resources section should contain at least one bullet point with a reference" name="Readme tests.Readme content tests.[publicIPAddresses] Additional resources section should contain at least one bullet point with a reference" time="0.0211" asserts="0" success="True" result="Success" executed="True" />
+                    </results>
+                  </test-suite>
+                </results>
+              </test-suite>
+            </results>
+          </test-suite>
+          <test-suite type="TestFixture" name="Deployment template tests" executed="True" result="Success" success="True" time="0.6071" asserts="0" description="Deployment template tests">
+            <results>
+              <test-suite type="TestFixture" name="Deployment template tests.Deployment template tests" executed="True" result="Success" success="True" time="0.2578" asserts="0" description="Deployment template tests.Deployment template tests">
+                <results>
+                  <test-case description="Tagging should be implemented - if the resource type supports them" name="Deployment template tests.Deployment template tests.Tagging should be implemented - if the resource type supports them" time="0.0031" asserts="0" success="True" result="Success" executed="True" />
+                  <test-case description="Delete lock should be implemented - if the resource type supports it" name="Deployment template tests.Deployment template tests.Delete lock should be implemented - if the resource type supports it" time="0.0031" asserts="0" success="True" result="Success" executed="True" />
+                  <test-case description="Diagnostic logs &amp; metrics should be implemented - if the resource type supports them" name="Deployment template tests.Deployment template tests.Diagnostic logs &amp; metrics should be implemented - if the resource type supports them" time="0.0066" asserts="0" success="True" result="Success" executed="True" />
+                  <test-case description="Resource level RBAC should be implemented - if the resource type supports it" name="Deployment template tests.Deployment template tests.Resource level RBAC should be implemented - if the resource type supports it" time="0.0038" asserts="0" success="True" result="Success" executed="True" />
+                  <test-case description="The template should not have empty lines" name="Deployment template tests.Deployment template tests.The template should not have empty lines" time="0.0036" asserts="0" success="True" result="Success" executed="True" />
+                  <test-suite type="ParameterizedTest" name="Deployment template tests.Deployment template tests.[&lt;moduleFolderName&gt;] The deploy.json file should not be empty" executed="True" result="Success" success="True" time="0.0306" asserts="0" description="[&lt;moduleFolderName&gt;] The deploy.json file should not be empty">
+                    <results>
+                      <test-case description="[publicIPAddresses] The deploy.json file should not be empty" name="Deployment template tests.Deployment template tests.[publicIPAddresses] The deploy.json file should not be empty" time="0.0306" asserts="0" success="True" result="Success" executed="True" />
+                    </results>
+                  </test-suite>
+                  <test-suite type="ParameterizedTest" name="Deployment template tests.Deployment template tests.[&lt;moduleFolderName&gt;] The deploy.json file should be a valid JSON" executed="True" result="Success" success="True" time="0.0156" asserts="0" description="[&lt;moduleFolderName&gt;] The deploy.json file should be a valid JSON">
+                    <results>
+                      <test-case description="[publicIPAddresses] The deploy.json file should be a valid JSON" name="Deployment template tests.Deployment template tests.[publicIPAddresses] The deploy.json file should be a valid JSON" time="0.0156" asserts="0" success="True" result="Success" executed="True" />
+                    </results>
+                  </test-suite>
+                  <test-suite type="ParameterizedTest" name="Deployment template tests.Deployment template tests.[&lt;moduleFolderName&gt;] Template schema version should be the latest" executed="True" result="Success" success="True" time="0.0065" asserts="0" description="[&lt;moduleFolderName&gt;] Template schema version should be the latest">
+                    <results>
+                      <test-case description="[publicIPAddresses] Template schema version should be the latest" name="Deployment template tests.Deployment template tests.[publicIPAddresses] Template schema version should be the latest" time="0.0065" asserts="0" success="True" result="Success" executed="True" />
+                    </results>
+                  </test-suite>
+                  <test-suite type="ParameterizedTest" name="Deployment template tests.Deployment template tests.[&lt;moduleFolderName&gt;] Template schema should use HTTPS reference" executed="True" result="Success" success="True" time="0.0071" asserts="0" description="[&lt;moduleFolderName&gt;] Template schema should use HTTPS reference">
+                    <results>
+                      <test-case description="[publicIPAddresses] Template schema should use HTTPS reference" name="Deployment template tests.Deployment template tests.[publicIPAddresses] Template schema should use HTTPS reference" time="0.0071" asserts="0" success="True" result="Success" executed="True" />
+                    </results>
+                  </test-suite>
+                  <test-suite type="ParameterizedTest" name="Deployment template tests.Deployment template tests.[&lt;moduleFolderName&gt;] All apiVersion properties should be set to a static, hard-coded value" executed="True" result="Success" success="True" time="0.011" asserts="0" description="[&lt;moduleFolderName&gt;] All apiVersion properties should be set to a static, hard-coded value">
+                    <results>
+                      <test-case description="[publicIPAddresses] All apiVersion properties should be set to a static, hard-coded value" name="Deployment template tests.Deployment template tests.[publicIPAddresses] All apiVersion properties should be set to a static, hard-coded value" time="0.011" asserts="0" success="True" result="Success" executed="True" />
+                    </results>
+                  </test-suite>
+                  <test-suite type="ParameterizedTest" name="Deployment template tests.Deployment template tests.[&lt;moduleFolderName&gt;] The deploy.json file should contain required elements: schema, contentVersion, resources" executed="True" result="Success" success="True" time="0.0113" asserts="0" description="[&lt;moduleFolderName&gt;] The deploy.json file should contain required elements: schema, contentVersion, resources">
+                    <results>
+                      <test-case description="[publicIPAddresses] The deploy.json file should contain required elements: schema, contentVersion, resources" name="Deployment template tests.Deployment template tests.[publicIPAddresses] The deploy.json file should contain required elements: schema, contentVersion, resources" time="0.0113" asserts="0" success="True" result="Success" executed="True" />
+                    </results>
+                  </test-suite>
+                  <test-suite type="ParameterizedTest" name="Deployment template tests.Deployment template tests.[&lt;moduleFolderName&gt;] If delete lock is implemented, the template should have a lockForDeletion parameter with the default value of false" executed="True" result="Success" success="True" time="0.0072" asserts="0" description="[&lt;moduleFolderName&gt;] If delete lock is implemented, the template should have a lockForDeletion parameter with the default value of false">
+                    <results>
+                      <test-case description="[publicIPAddresses] If delete lock is implemented, the template should have a lockForDeletion parameter with the default value of false" name="Deployment template tests.Deployment template tests.[publicIPAddresses] If delete lock is implemented, the template should have a lockForDeletion parameter with the default value of false" time="0.0072" asserts="0" success="True" result="Success" executed="True" />
+                    </results>
+                  </test-suite>
+                  <test-suite type="ParameterizedTest" name="Deployment template tests.Deployment template tests.[&lt;moduleFolderName&gt;] If delete lock is implemented, it should have a deployment condition with the value of parameters('lockForDeletion')" executed="True" result="Success" success="True" time="0.0068" asserts="0" description="[&lt;moduleFolderName&gt;] If delete lock is implemented, it should have a deployment condition with the value of parameters('lockForDeletion')">
+                    <results>
+                      <test-case description="[publicIPAddresses] If delete lock is implemented, it should have a deployment condition with the value of parameters('lockForDeletion')" name="Deployment template tests.Deployment template tests.[publicIPAddresses] If delete lock is implemented, it should have a deployment condition with the value of parameters('lockForDeletion')" time="0.0068" asserts="0" success="True" result="Success" executed="True" />
+                    </results>
+                  </test-suite>
+                  <test-suite type="ParameterizedTest" name="Deployment template tests.Deployment template tests.[&lt;moduleFolderName&gt;] Parameter names should be camel-cased (no dashes or underscores and must start with lower-case letter)" executed="True" result="Success" success="True" time="0.0094" asserts="0" description="[&lt;moduleFolderName&gt;] Parameter names should be camel-cased (no dashes or underscores and must start with lower-case letter)">
+                    <results>
+                      <test-case description="[publicIPAddresses] Parameter names should be camel-cased (no dashes or underscores and must start with lower-case letter)" name="Deployment template tests.Deployment template tests.[publicIPAddresses] Parameter names should be camel-cased (no dashes or underscores and must start with lower-case letter)" time="0.0094" asserts="0" success="True" result="Success" executed="True" />
+                    </results>
+                  </test-suite>
+                  <test-suite type="ParameterizedTest" name="Deployment template tests.Deployment template tests.[&lt;moduleFolderName&gt;] Variable names should be camel-cased (no dashes or underscores and must start with lower-case letter)" executed="True" result="Success" success="True" time="0.0078" asserts="0" description="[&lt;moduleFolderName&gt;] Variable names should be camel-cased (no dashes or underscores and must start with lower-case letter)">
+                    <results>
+                      <test-case description="[publicIPAddresses] Variable names should be camel-cased (no dashes or underscores and must start with lower-case letter)" name="Deployment template tests.Deployment template tests.[publicIPAddresses] Variable names should be camel-cased (no dashes or underscores and must start with lower-case letter)" time="0.0078" asserts="0" success="True" result="Success" executed="True" />
+                    </results>
+                  </test-suite>
+                  <test-suite type="ParameterizedTest" name="Deployment template tests.Deployment template tests.[&lt;moduleFolderName&gt;] Output names should be camel-cased (no dashes or underscores and must start with lower-case letter)" executed="True" result="Success" success="True" time="0.0113" asserts="0" description="[&lt;moduleFolderName&gt;] Output names should be camel-cased (no dashes or underscores and must start with lower-case letter)">
+                    <results>
+                      <test-case description="[publicIPAddresses] Output names should be camel-cased (no dashes or underscores and must start with lower-case letter)" name="Deployment template tests.Deployment template tests.[publicIPAddresses] Output names should be camel-cased (no dashes or underscores and must start with lower-case letter)" time="0.0113" asserts="0" success="True" result="Success" executed="True" />
+                    </results>
+                  </test-suite>
+                  <test-suite type="ParameterizedTest" name="Deployment template tests.Deployment template tests.[&lt;moduleFolderName&gt;] CUA ID deployment should be present in the template" executed="True" result="Success" success="True" time="0.0073" asserts="0" description="[&lt;moduleFolderName&gt;] CUA ID deployment should be present in the template">
+                    <results>
+                      <test-case description="[publicIPAddresses] CUA ID deployment should be present in the template" name="Deployment template tests.Deployment template tests.[publicIPAddresses] CUA ID deployment should be present in the template" time="0.0073" asserts="0" success="True" result="Success" executed="True" />
+                    </results>
+                  </test-suite>
+                  <test-suite type="ParameterizedTest" name="Deployment template tests.Deployment template tests.[&lt;moduleFolderName&gt;] The Location should be defined as a parameter, with the default value of 'resourceGroup().Location' or global for ResourceGroup deployment scope" executed="True" result="Success" success="True" time="0.0076" asserts="0" description="[&lt;moduleFolderName&gt;] The Location should be defined as a parameter, with the default value of 'resourceGroup().Location' or global for ResourceGroup deployment scope">
+                    <results>
+                      <test-case description="[publicIPAddresses] The Location should be defined as a parameter, with the default value of 'resourceGroup().Location' or global for ResourceGroup deployment scope" name="Deployment template tests.Deployment template tests.[publicIPAddresses] The Location should be defined as a parameter, with the default value of 'resourceGroup().Location' or global for ResourceGroup deployment scope" time="0.0076" asserts="0" success="True" result="Success" executed="True" />
+                    </results>
+                  </test-suite>
+                  <test-suite type="ParameterizedTest" name="Deployment template tests.Deployment template tests.[&lt;moduleFolderNameException&gt;] All resources that have a Location property should refer to the Location parameter 'parameters('Location')'" executed="True" result="Success" success="True" time="0.016" asserts="0" description="[&lt;moduleFolderNameException&gt;] All resources that have a Location property should refer to the Location parameter 'parameters('Location')'">
+                    <results>
+                      <test-case description="[publicIPAddresses] All resources that have a Location property should refer to the Location parameter 'parameters('Location')'" name="Deployment template tests.Deployment template tests.[publicIPAddresses] All resources that have a Location property should refer to the Location parameter 'parameters('Location')'" time="0.016" asserts="0" success="True" result="Success" executed="True" />
+                    </results>
+                  </test-suite>
+                  <test-suite type="ParameterizedTest" name="Deployment template tests.Deployment template tests.[&lt;moduleFolderName&gt;] Standard outputs should be provided (e.g. resourceName, resourceId, resouceGroupName" executed="True" result="Success" success="True" time="0.0187" asserts="0" description="[&lt;moduleFolderName&gt;] Standard outputs should be provided (e.g. resourceName, resourceId, resouceGroupName">
+                    <results>
+                      <test-case description="[publicIPAddresses] Standard outputs should be provided (e.g. resourceName, resourceId, resouceGroupName" name="Deployment template tests.Deployment template tests.[publicIPAddresses] Standard outputs should be provided (e.g. resourceName, resourceId, resouceGroupName" time="0.0187" asserts="0" success="True" result="Success" executed="True" />
+                    </results>
+                  </test-suite>
+                  <test-suite type="ParameterizedTest" name="Deployment template tests.Deployment template tests.[&lt;moduleFolderName&gt;] parameters' description shoud start either by 'Optional.' or 'Required.' or 'Generated.'" executed="True" result="Success" success="True" time="0.0407" asserts="0" description="[&lt;moduleFolderName&gt;] parameters' description shoud start either by 'Optional.' or 'Required.' or 'Generated.'">
+                    <results>
+                      <test-case description="[publicIPAddresses] parameters' description shoud start either by 'Optional.' or 'Required.' or 'Generated.'" name="Deployment template tests.Deployment template tests.[publicIPAddresses] parameters' description shoud start either by 'Optional.' or 'Required.' or 'Generated.'" time="0.0407" asserts="0" success="True" result="Success" executed="True" />
+                    </results>
+                  </test-suite>
+                  <test-suite type="ParameterizedTest" name="Deployment template tests.Deployment template tests.All parameters in parameters files exist in template file (deploy.json)" executed="True" result="Success" success="True" time="0.0067" asserts="0" description="All parameters in parameters files exist in template file (deploy.json)">
+                    <results>
+                      <test-case description="All parameters in parameters files exist in template file (deploy.json)" name="Deployment template tests.Deployment template tests.All parameters in parameters files exist in template file (deploy.json)(&quot;C:\dev\ip\Azure-ResourceModules\ResourceModules\arm\Microsoft.Network\publicIPAddresses\deploy.json&quot;,&quot;publicIPAddresses&quot;,&quot;C:\dev\ip\Azure-ResourceModules\ResourceModules\arm\Microsoft.Network\publicIPAddresses&quot;,System.Collections.Hashtable)" time="0.0067" asserts="0" success="True" result="Success" executed="True" />
+                    </results>
+                  </test-suite>
+                  <test-suite type="ParameterizedTest" name="Deployment template tests.Deployment template tests.All required parameters in template file (deploy.json) should exist in parameters files" executed="True" result="Success" success="True" time="0.0071" asserts="0" description="All required parameters in template file (deploy.json) should exist in parameters files">
+                    <results>
+                      <test-case description="All required parameters in template file (deploy.json) should exist in parameters files" name="Deployment template tests.Deployment template tests.All required parameters in template file (deploy.json) should exist in parameters files(&quot;C:\dev\ip\Azure-ResourceModules\ResourceModules\arm\Microsoft.Network\publicIPAddresses\deploy.json&quot;,&quot;publicIPAddresses&quot;,&quot;C:\dev\ip\Azure-ResourceModules\ResourceModules\arm\Microsoft.Network\publicIPAddresses&quot;,System.Collections.Hashtable)" time="0.0071" asserts="0" success="True" result="Success" executed="True" />
+                    </results>
+                  </test-suite>
+                </results>
+              </test-suite>
+            </results>
+          </test-suite>
+          <test-suite type="TestFixture" name="Api version tests [All apiVersions in the template should be 'recent']" executed="True" result="Success" success="True" time="0.6772" asserts="0" description="Api version tests [All apiVersions in the template should be 'recent']">
+            <results>
+              <test-suite type="ParameterizedTest" name="Api version tests [All apiVersions in the template should be 'recent'].In [&lt;moduleName&gt;] used resource type [&lt;resourceType&gt;] should use on of the recent API version(s). Currently using [&lt;TargetApi&gt;]" executed="True" result="Success" success="True" time="0.0552" asserts="0" description="In [&lt;moduleName&gt;] used resource type [&lt;resourceType&gt;] should use on of the recent API version(s). Currently using [&lt;TargetApi&gt;]">
+                <results>
+                  <test-case description="In [publicIPAddresses] used resource type [deployments] should use on of the recent API version(s). Currently using [2020-06-01]" name="Api version tests [All apiVersions in the template should be 'recent'].In [publicIPAddresses] used resource type [deployments] should use on of the recent API version(s). Currently using [2020-06-01]" time="0.0216" asserts="0" success="True" result="Success" executed="True" />
+                  <test-case description="In [publicIPAddresses] used resource type [publicIPAddresses] should use on of the recent API version(s). Currently using [2021-02-01]" name="Api version tests [All apiVersions in the template should be 'recent'].In [publicIPAddresses] used resource type [publicIPAddresses] should use on of the recent API version(s). Currently using [2021-02-01]" time="0.0202" asserts="0" success="True" result="Success" executed="True" />
+                  <test-case description="In [publicIPAddresses] used resource type [deployments] should use on of the recent API version(s). Currently using [2020-06-01]" name="Api version tests [All apiVersions in the template should be 'recent'].In [publicIPAddresses] used resource type [deployments] should use on of the recent API version(s). Currently using [2020-06-01]" time="0.0135" asserts="0" success="True" result="Success" executed="True" />
+                </results>
+              </test-suite>
+            </results>
+          </test-suite>
+        </results>
+      </test-suite>
+    </results>
+  </test-suite>
+</test-results>
