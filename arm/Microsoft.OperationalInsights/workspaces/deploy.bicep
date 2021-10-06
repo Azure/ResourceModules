@@ -831,7 +831,7 @@ module logAnalyticsWorkspace_rbac './.bicep/nested_rbac.bicep' = [for (roleAssig
   params: {
     roleAssignmentObj: roleAssignment
     builtInRoleNames: builtInRoleNames
-    logAnalyticsWorkspaceName: logAnalyticsWorkspace.name
+    resourceName: logAnalyticsWorkspace.name
   }
 }]
 
