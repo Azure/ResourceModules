@@ -9,7 +9,7 @@
       "value": "westeurope"
     },
     "galleryName": {
-      "value": "sxxazsigweux003"
+      "value": "adpsxxazsigweux001"
     },
     "osType": {
       "value": "Windows"
@@ -24,7 +24,7 @@
       "value": "WindowsServer"
     },
     "sku": {
-      "value": "2019-Datacenter"
+      "value": "2019-Datacenter-Core"
     },
     "minRecommendedvCPUs": {
       "value": 2
