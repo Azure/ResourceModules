@@ -11,16 +11,5 @@
         "keyUrl": {
             "value": "https://adp-sxx-az-kv-weu-x-001.vault.azure.net/keys/keyEncryptionKey/685153483a1140e3856f004a753e1ab4"
         }
-    //  "roleAssignments": {
-        //     "value": [
-        //         {
-        //             "roleDefinitionIdOrName": "Desktop Virtualization User",
-        //             "principalIds": [
-        //                 "12345678-1234-1234-1234-123456789012", // object 1
-        //                 "78945612-1234-1234-1234-123456789012" // object 2
-        //             ]
-        //         }
-        //     ]
-        // },
     }
 }
