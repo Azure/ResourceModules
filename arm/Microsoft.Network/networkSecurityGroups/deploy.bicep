@@ -205,6 +205,6 @@ module networkSecurityGroup_rbac './.bicep/nested_rbac.bicep' = [for (roleAssign
 
 output networkSecurityGroupsResourceGroup string = resourceGroup().name
 output networkSecurityGroupsResourceId string = networkSecurityGroup.id
-output networkSecurityGroupsName string = networkSecurityGroupName
-output flowLogResourceId string = '${resourceId('Microsoft.Network/networkWatchers', networkWatcherName)}/flowLogs/Microsoft.Network${resourceGroup().name}${networkSecurityGroupName}'
+output networkSecurityGroupsName string = networkSecurityGroup.name
+output flowLogResourceId string = '${resourceId('Microsoft.Network/networkWatchers', networkWatcherName)}/flowLogs/Microsoft.Network${resourceGroup().name}${networkSecurityGroup.name}'
 output flowLogName string = flowLogName_var
