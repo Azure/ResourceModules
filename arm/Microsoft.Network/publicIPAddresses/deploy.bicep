@@ -160,5 +160,5 @@ module publicIpAddress_rbac './.bicep/nested_rbac.bicep' = [for (roleAssignment,
 }]
 
 output publicIPAddressResourceGroup string = resourceGroup().name
-output publicIPAddressName string = publicIPAddressName
+output publicIPAddressName string = publicIpAddress.name
 output publicIPAddressResourceId string = publicIpAddress.id
