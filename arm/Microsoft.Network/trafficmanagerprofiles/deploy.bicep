@@ -2,9 +2,6 @@
 @minLength(1)
 param trafficManagerName string
 
-@description('Optional. Location for diagnostics settings only. Traffic manager will always be deployed globally.')
-param diagnosticsLocation string = resourceGroup().location
-
 @description('Optional. The status of the Traffic Manager profile.')
 @allowed([
   'Enabled'
