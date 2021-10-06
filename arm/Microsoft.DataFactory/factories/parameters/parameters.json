@@ -66,7 +66,7 @@
     //   "value": 1
     // },
     // "diagnosticStorageAccountId": {
-    //   "value": "/subscriptions/xxx-xxx-xxx-xxx-xxx/resourceGroups/dependencies-rg/providers/Microsoft.Storage/storageAccounts/sxxazsaweux003"
+    //   "value": "/subscriptions/xxx-xxx-xxx-xxx-xxx/resourceGroups/validation-rg/providers/Microsoft.Storage/storageAccounts/adpsxxazsaweux001"
     // }
   }
 }

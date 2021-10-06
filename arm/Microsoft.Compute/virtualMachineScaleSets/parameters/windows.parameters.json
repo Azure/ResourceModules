@@ -76,8 +76,8 @@
         // "windowsScriptExtensionFileData": {
         //     "value": [
         //         {
-        //             "uri": "https://sxxazsaweux003.blob.core.windows.net/avdscripts/testscript.ps1",
-        //             "storageAccountId": "/subscriptions/<placeholder>/resourceGroups/dependencies-rg/providers/Microsoft.Storage/storageAccounts/sxxazsaweux003"
+        //             "uri": "https://adpsxxazsaweux001.blob.core.windows.net/avdscripts/testscript.ps1",
+        //             "storageAccountId": "/subscriptions/<placeholder>/resourceGroups/dependencies-rg/providers/Microsoft.Storage/storageAccounts/adpsxxazsaweux001"
         //         }
         //     ]
         // },
