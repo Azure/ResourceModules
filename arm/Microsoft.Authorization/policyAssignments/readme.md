@@ -6,6 +6,7 @@
 |:--|:--|
 |`Microsoft.Resources/deployments`|2019-10-01|
 |`Microsoft.Authorization/policyAssignments`|2020-09-01|
+|`Microsoft.Authorization/roleAssignments`|2020-04-01-preview|
 
 ## Parameters
 
