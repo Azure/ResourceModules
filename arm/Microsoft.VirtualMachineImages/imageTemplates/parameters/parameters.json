@@ -50,7 +50,7 @@
             "value": "sxx-az-umi-weu-x-001"
         },
         "sigImageDefinitionId": {
-            "value": "/subscriptions/8629be3b-96bc-482d-a04b-ffff597c65a2/resourceGroups/dependencies-rg/providers/Microsoft.Compute/galleries/sxxazsigweux001/images/sxx-az-imgd-weu-x-002"
+            "value": "/subscriptions/8629be3b-96bc-482d-a04b-ffff597c65a2/resourceGroups/validation-rg/providers/Microsoft.Compute/galleries/sxxazsigweux001/images/adp-sxx-az-imgd-weu-x-001"
         },
         "imageReplicationRegions": {
             "value": []
