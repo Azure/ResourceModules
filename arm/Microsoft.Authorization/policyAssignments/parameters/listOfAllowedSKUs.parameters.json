@@ -3,7 +3,7 @@
   "contentVersion": "1.0.0.0",
   "parameters": {
     "policyAssignmentName": {
-      "value": "Allowed virtual machine SKUs"
+      "value": "Allowed VM SKUs"
     },
     "policyDefinitionID": {
       "value": "/providers/Microsoft.Authorization/policyDefinitions/cccc23c7-8427-4f53-ad12-b6a63eb452b3"
