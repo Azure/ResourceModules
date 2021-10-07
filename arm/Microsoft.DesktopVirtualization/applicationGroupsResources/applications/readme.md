@@ -50,6 +50,7 @@ This module deploys AVD Applications.
         }
     ]
 }
+```
 
 ## Outputs
 

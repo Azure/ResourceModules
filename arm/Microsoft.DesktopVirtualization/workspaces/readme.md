@@ -8,7 +8,7 @@ This module deploys AVD Workspaces, with resource lock and diagnostic configurat
 
 |Resource Type|ApiVersion|
 |:--|:--|
-|`Microsoft.DesktopVirtualization/workspaces`|2019-12-10-preview|
+|`Microsoft.DesktopVirtualization/workspaces`|2021-07-12|
 |`Microsoft.DesktopVirtualization/workspaces/providers/diagnosticsettings`|2017-05-01-preview|
 |`Microsoft.Resources/deployments`|2018-02-01|
 |`providers/locks`|2016-09-01|
@@ -97,3 +97,4 @@ Tag names and tag values can be provided as needed. A tag can be left without a 
 - [What is Windows Virtual Desktop?](https://docs.microsoft.com/en-us/azure/virtual-desktop/overview)
 - [Windows Virtual Desktop environment](https://docs.microsoft.com/en-us/azure/virtual-desktop/environment-setup)
 - [Use tags to organize your Azure resources](https://docs.microsoft.com/en-us/azure/azure-resource-manager/resource-group-using-tags)
+- [Reference](https://docs.microsoft.com/en-us/azure/templates/microsoft.desktopvirtualization/2021-07-12/workspaces)

@@ -104,7 +104,7 @@ module pid_cuaId './.bicep/nested_cuaId.bicep' = if (!empty(cuaId)) {
   params: {}
 }
 
-resource workspace 'Microsoft.DesktopVirtualization/workspaces@2020-11-02-preview' = {
+resource workspace 'Microsoft.DesktopVirtualization/workspaces@2021-07-12' = {
   name: workSpaceName
   location: location
   tags: tags
