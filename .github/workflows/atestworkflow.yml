@@ -27,6 +27,7 @@ on:
 env:
   moduleName: 'servers'
   modulePath: 'arm/Microsoft.AnalysisServices/servers'
+  workflowPath: '.github/workflows/atestworkflow.yml'
   AZURE_CREDENTIALS: ${{ secrets.AZURE_CREDENTIALS }}
   ARM_SUBSCRIPTION_ID: ${{ secrets.ARM_SUBSCRIPTION_ID }}
   ARM_MGMTGROUP_ID: ${{ secrets.ARM_MGMTGROUP_ID }}
@@ -42,7 +43,6 @@ jobs:
         with:
           fetch-depth: 0
       - run: echo ${{ github.event_name }}
-      - run: echo ${{ github.event.workflow }}
       # - name: Dump GitHub context
       #   env:
       #     GITHUB_CONTEXT: ${{ toJson(github) }}
@@ -77,7 +77,7 @@ jobs:
 
           }
           else {
-            $templateFile='${{ github.event.workflow }}'
+            $templateFile='${{ env.workflowPath }}'
             $content = Get-Content $templateFile
             $removeDeploymentRowIndex = ((0..($content.Count-1)) | Where-Object {$content[$_] -like '*removeDeployment:*'})[0]
             $removeDeploymentDefault = $content[$removeDeploymentRowIndex+3].trim().Split(':')[1].Trim().Replace("'","").Replace('"','')
