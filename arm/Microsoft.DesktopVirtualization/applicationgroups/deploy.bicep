@@ -106,7 +106,7 @@ module pid_cuaId './.bicep/nested_cuaId.bicep' = if (!empty(cuaId)) {
   params: {}
 }
 
-resource appGroup 'Microsoft.DesktopVirtualization/applicationgroups@2020-11-02-preview' = {
+resource appGroup 'Microsoft.DesktopVirtualization/applicationgroups@2021-07-12' = {
   name: appGroupName
   location: location
   tags: tags
