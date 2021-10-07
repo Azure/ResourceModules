@@ -35,7 +35,7 @@ jobs:
   
   job_set_trigger:
     runs-on: ubuntu-20.04
-    name: "Set trigger"
+    name: "Set input parameters to output variables"
     steps:
       - name: "Checkout"
         uses: actions/checkout@v2
@@ -46,43 +46,37 @@ jobs:
       #   env:
       #     GITHUB_CONTEXT: ${{ toJson(github) }}
       #   run: echo "$GITHUB_CONTEXT"
-      - name: Set trigger output push
-        # if: github.event_name == 'push'
-        # if: ${{ github.event_name == 'workflow_dispatch'}}
+      - name: Set input parameters
         run: |
-          Write-Host "::set-output name=TRIGGER::${{ github.event_name }}"
-          # Write-Host "::set-output name=removeDeployment::false"
-          # Write-Host "::set-output name=versioningOption::patch"
-          # Write-Host "::set-output name=customVersion::0.0.1"
-          $removeDeployment="false"
+          # Write-Host "::set-output name=TRIGGER::${{ github.event_name }}"
           if ('${{ github.event_name }}' -eq 'workflow_dispatch') {
             $removeDeployment='${{ github.event.inputs.removeDeployment }}'
-            echo "RemoveDeployment workflow_dispatch: " $removeDeployment
+            $versioningOption='${{ github.event.inputs.versioningOption }}'
+            $customVersion='${{ github.event.inputs.customVersion }}'
+            # echo "RemoveDeployment workflow_dispatch: " $removeDeployment
           }
           else {
-            $removeDeployment="false"
-            echo "RemoveDeployment push: " $removeDeployment
+            $removeDeployment='false'
+            $versioningOption='patch'
+            $customVersion='0.0.1'
+            # echo "RemoveDeployment push: " $removeDeployment
           }
-          echo "RemoveDeployment: " $removeDeployment
-          echo "Input: " ${{ github.event.inputs.removeDeployment }}
           Write-Host "::set-output name=removeDeployment::$removeDeployment"
+          Write-Host "::set-output name=versioningOption::$versioningOption"
+          Write-Host "::set-output name=customVersion::$customVersion"
         id: get-trigger
         shell: pwsh
-      # - name: Set trigger output workflow_dispatch
-      #   if: github.event_name == 'workflow_dispatch'
-      #   # if: ${{ github.event_name == 'workflow_dispatch'}}
-      #   run: |
-      #     Write-Host "::set-output name=TRIGGER::${{ github.event_name }}"
-      #     Write-Host "::set-output name=removeDeployment::${{ github.event.inputs.removeDeployment }}"
-      #     Write-Host "::set-output name=versioningOption::${{ github.event.inputs.versioningOption }}"
-      #     Write-Host "::set-output name=customVersion::${{ github.event.inputs.customVersion }}"
-      #   id: get-trigger
-      #   shell: pwsh
       - name: Get trigger output
-        run: echo "The trigger is ${{ steps.get-trigger.outputs.TRIGGER }}"
+        run: |
+          echo "The workflow trigger is ${{ steps.get-trigger.outputs.TRIGGER }}"
+          echo "The removeDeployment is ${{ steps.get-trigger.outputs.removeDeployment }}"
+          echo "The versioningOption is ${{ steps.get-trigger.outputs.versioningOption }}"
+          echo "The customVersion is ${{ steps.get-trigger.outputs.customVersion }}"
     outputs:
       trigger: ${{ steps.get-trigger.outputs.TRIGGER }}
       removeDeployment: ${{ steps.get-trigger.outputs.removeDeployment }}
+      versioningOption: ${{ steps.get-trigger.outputs.versioningOption }}
+      customVersion: ${{ steps.get-trigger.outputs.customVersion }}
     # outputs:
     #   identityApproach: ${{ env.identityApproach }}
       # - run: echo ${{ github.event.inputs.removeDeployment }}
@@ -90,17 +84,19 @@ jobs:
   job_get_trigger:
     runs-on: ubuntu-20.04
     needs: job_set_trigger
-    name: "Get trigger"
+    name: "Get input variables"
     steps:
       # - name: "Checkout"
       #   uses: actions/checkout@v2
       #   with:
       #     fetch-depth: 0
       # ${{ needs.Get_identityApproach.outputs.identityApproach == 'AD' }} 
-      - name: Get trigger output
+      - name: Get output
         run: |
           echo "The trigger is ${{ needs.job_set_trigger.outputs.TRIGGER}}"
           echo "The removeDeployment is ${{ needs.job_set_trigger.outputs.removeDeployment}}"
+          echo "The versioningOption is ${{ needs.job_set_trigger.outputs.versioningOption}}"
+          echo "The customVersion is ${{ needs.job_set_trigger.outputs.customVersion}}"
       - name: Dump set trigger
         env:
           TRIGGER: ${{ toJson(needs.job_set_trigger) }}
