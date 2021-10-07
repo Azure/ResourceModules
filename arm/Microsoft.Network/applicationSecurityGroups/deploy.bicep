@@ -66,9 +66,6 @@ module applicationSecurityGroup_rbac './.bicep/nested_rbac.bicep' = [for (roleAs
     builtInRoleNames: builtInRoleNames
     resourceName: applicationSecurityGroup.name
   }
-  dependsOn: [
-    applicationSecurityGroup
-  ]
 }]
 
 output applicationSecurityGroupsResourceGroup string = resourceGroup().name
