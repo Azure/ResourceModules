@@ -11,7 +11,7 @@ This template deploys private DNS zone.
 | `Microsoft.Resources/deployments`| 2020-06-01 |
 | `Microsoft.Network/privateDnsZones` | 2018-09-01 |
 | `Microsoft.Network/privateDnsZones/virtualNetworkLinks` | 2018-09-01 |
-| `Microsoft.Network/privateDnsZones/providers/roleAssignments` | 2020-03-01-preview |
+| `Microsoft.Network/privateDnsZones/providers/roleAssignments` | 2020-04-01-preview |
 | `Microsoft.Authorization/locks` | 2016-09-01 |
 
 ### Resource dependency
