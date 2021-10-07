@@ -51,7 +51,7 @@
         },
         {
             "type": "Microsoft.DesktopVirtualization/applicationGroups/applications",
-            "apiVersion": "2019-12-10-preview",
+            "apiVersion": "2021-07-12",
             "copy": {
                 "name": "appCopy",
                 "count": "[length(parameters('applications'))]"

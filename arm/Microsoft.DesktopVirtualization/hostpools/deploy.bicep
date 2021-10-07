@@ -178,7 +178,7 @@ module pid_cuaId './.bicep/nested_cuaId.bicep' = if (!empty(cuaId)) {
   params: {}
 }
 
-resource hostPool 'Microsoft.DesktopVirtualization/hostpools@2020-11-02-preview' = {
+resource hostPool 'Microsoft.DesktopVirtualization/hostpools@2021-07-12' = {
   name: hostPoolName
   location: location
   tags: tags
@@ -224,16 +224,13 @@ resource hostPool_diagnosticSettings 'Microsoft.Insights/diagnosticsettings@2017
   scope: hostPool
 }
 
-module hostPool_rbac './.bicep/nested_rbac.bicep' = [for (roleassignment, index) in roleAssignments: {
+module hostPool_rbac './.bicep/nested_rbac.bicep' = [for (roleAssignment, index) in roleAssignments: {
   name: '${uniqueString(deployment().name, location)}-Rbac-${index}'
   params: {
-    roleAssignment: roleassignment
+    roleAssignmentObj: roleAssignment
     builtInRoleNames: builtInRoleNames
-    hostPoolName: hostPoolName
+    resourceName: hostPool.name
   }
-  dependsOn: [
-    hostPool
-  ]
 }]
 
 output hostPoolResourceId string = hostPool.id

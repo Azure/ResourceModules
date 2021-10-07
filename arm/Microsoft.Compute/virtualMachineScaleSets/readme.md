@@ -9,7 +9,7 @@ This module deploys a virtual machine scale set
 | `Microsoft.Compute/ProximityPlacementGroups` | 2021-04-01 |
 | `Microsoft.Compute/virtualMachineScaleSets/extensions` | 2020-06-01 |
 | `Microsoft.Compute/virtualMachineScaleSets/providers/diagnosticSettings` | 2017-05-01-preview |
-| `Microsoft.Compute/virtualMachineScaleSets/providers/roleAssignments` | 2018-09-01-preview |
+| `Microsoft.Compute/virtualMachineScaleSets/providers/roleAssignments` | 2020-04-01-preview |
 | `Microsoft.Compute/virtualMachineScaleSets` | 2021-04-01 |
 | `Microsoft.Resources/deployments` | 2020-06-01 |
 | `providers/locks` | 2016-09-01 |

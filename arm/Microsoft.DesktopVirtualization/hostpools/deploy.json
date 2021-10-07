@@ -299,7 +299,7 @@
         },
         {
             "type": "Microsoft.DesktopVirtualization/hostpools",
-            "apiVersion": "2020-11-02-preview",
+            "apiVersion": "2021-07-12",
             "name": "[parameters('hostpoolName')]",
             "location": "[parameters('location')]",
             "tags": "[parameters('tags')]",

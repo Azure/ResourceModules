@@ -8,7 +8,7 @@ This module deploys App Service Environment, with resource lock.
 | :-- | :-- |
 | `Microsoft.Web/hostingEnvironments` | 2021-02-01 |
 | `Microsoft.Web/hostingEnvironments/providers/diagnosticsettings` | 2017-05-01-preview |
-| `Microsoft.Web/hostingEnvironments/providers/roleAssignments` | 2018-09-01-preview |
+| `Microsoft.Web/hostingEnvironments/providers/roleAssignments` | 2020-04-01-preview |
 | `Microsoft.Resources/deployments` | 2020-06-01 |
 | `providers/locks` | 2016-09-01 |
 
@@ -111,7 +111,7 @@ Tag names and tag values can be provided as needed. A tag can be left without a 
 }
 ```
 
-workerPools can have two properties workerSize and workerCount: 
+workerPools can have two properties workerSize and workerCount:
 
 ```json
     "workerSize": {
@@ -136,7 +136,7 @@ workerPools can have two properties workerSize and workerCount:
         "description": "Number of instances in worker pool one.  Minimum of two."
       }
     }
-```    
+```
 
 ## Outputs
 
