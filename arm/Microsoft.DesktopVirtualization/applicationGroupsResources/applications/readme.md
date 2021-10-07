@@ -9,7 +9,7 @@ This module deploys AVD Applications.
 |Resource Type|ApiVersion|
 |:--|:--|
 |`Microsoft.Resources/deployments`|2018-02-01|
-|`Microsoft.DesktopVirtualization/applicationGroups/applications`|2019-12-10-preview|
+|`Microsoft.DesktopVirtualization/applicationGroups/applications`|2021-07-12|
 
 
 ## Parameters
@@ -50,6 +50,7 @@ This module deploys AVD Applications.
         }
     ]
 }
+```
 
 ## Outputs
 
@@ -68,3 +69,4 @@ This module deploys AVD Applications.
 
 - [What is Windows Virtual Desktop?](https://docs.microsoft.com/en-us/azure/virtual-desktop/overview)
 - [Windows Virtual Desktop environment](https://docs.microsoft.com/en-us/azure/virtual-desktop/environment-setup)
+- [Reference](https://docs.microsoft.com/en-us/azure/templates/microsoft.desktopvirtualization/2021-07-12/applicationgroups/applications)
