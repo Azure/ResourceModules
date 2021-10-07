@@ -7,7 +7,7 @@ This module deploys AVD Application Groups, with resource lock and diagnostics c
 |Resource Type|ApiVersion|
 |:--|:--|
 |`Microsoft.Resources/deployments`|2018-02-01|
-|`Microsoft.DesktopVirtualization/applicationgroups`|2019-12-10-preview|
+|`Microsoft.DesktopVirtualization/applicationgroups`|2021-07-12|
 |`providers/locks`|2016-09-01|
 |`Microsoft.DesktopVirtualization/applicationgroups/providers/diagnosticsettings`|2017-05-01-preview|
 |`Microsoft.DesktopVirtualization/applicationgroups/providers/roleAssignments`|2020-04-01-preview|
@@ -95,3 +95,4 @@ Tag names and tag values can be provided as needed. A tag can be left without a 
 - [What is Windows Virtual Desktop?](https://docs.microsoft.com/en-us/azure/virtual-desktop/overview)
 - [Windows Virtual Desktop environment](https://docs.microsoft.com/en-us/azure/virtual-desktop/environment-setup)
 - [Use tags to organize your Azure resources](https://docs.microsoft.com/en-us/azure/azure-resource-manager/resource-group-using-tags)
+- [Reference](https://docs.microsoft.com/en-us/azure/templates/microsoft.desktopvirtualization/2021-07-12/applicationgroups)

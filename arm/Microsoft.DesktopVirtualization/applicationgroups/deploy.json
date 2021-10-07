@@ -274,7 +274,7 @@
                     "resources": [
                         {
                             "type": "Microsoft.DesktopVirtualization/applicationgroups/providers/roleAssignments",
-                            "apiVersion": "2018-09-01-preview",
+                            "apiVersion": "2021-07-12",
                             "name": "[concat(parameters('appGroupName'), '/Microsoft.Authorization/', guid(parameters('appGroupName'), array(parameters('roleAssignment').principalIds)[copyIndex('innerRbacCopy')], parameters('roleAssignment').roleDefinitionIdOrName ))]",
                             "dependsOn": [
                             ],
