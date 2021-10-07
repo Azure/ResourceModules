@@ -5,7 +5,7 @@
         "privateLinkScopeName": {
             "value": "test-az-pls-weu-x-001"
         },
-        "lock" :{
+        "lock": {
             "value": "ReadOnly"
         },
         // "scopedResources": {
@@ -44,14 +44,14 @@
         //     ]
         // }
         "roleAssignments": {
-                 "value": [
-                     {
-                         "roleDefinitionIdOrName": "User Access Administrator",
-                         "principalIds": [
-                             "8629993c-ed4c-4c51-9774-d0285cc0e4c6"
-                         ]
-                     }
-                 ]
-             }
+            "value": [
+                {
+                    "roleDefinitionIdOrName": "User Access Administrator",
+                    "principalIds": [
+                        "8629993c-ed4c-4c51-9774-d0285cc0e4c6"
+                    ]
+                }
+            ]
+        }
     }
 }
