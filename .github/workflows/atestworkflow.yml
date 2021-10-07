@@ -48,6 +48,7 @@ jobs:
       #   run: echo "$GITHUB_CONTEXT"
       - name: Set trigger output
         run: |
+          Write-Host "::set-output name=TRIGGER::${{ github.event_name }}"
           if (${{ github.event_name == 'workflow_dispatch'}}) {
             Write-Host "::set-output name=TRIGGER::${{ github.event_name }}"
           }
