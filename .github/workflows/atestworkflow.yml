@@ -46,56 +46,72 @@ jobs:
       #   env:
       #     GITHUB_CONTEXT: ${{ toJson(github) }}
       #   run: echo "$GITHUB_CONTEXT"
+      # - name: Set input parameters
+      #   run: |
+      #     if ('${{ github.event_name }}' -eq 'workflow_dispatch') {
+      #       $removeDeployment='${{ github.event.inputs.removeDeployment }}'
+      #       $versioningOption='${{ github.event.inputs.versioningOption }}'
+      #       $customVersion='${{ github.event.inputs.customVersion }}'
+
+      #     }
+      #     else {
+      #       $workflowPath='${{ github.event.workflow }}'
+      #       $workflowObj=ConvertFrom-Yaml -Path $workflowPath
+      #       $removeDeployment=$workflowObj.on.workflow_dispatch.inputs.removeDeployment.default
+      #       $versioningOption=$workflowObj.on.workflow_dispatch.inputs.versioningOption.default
+      #       $customVersion=$workflowObj.on.workflow_dispatch.inputs.customVersion.default
+
+      #     }
+      #     Write-Host "::set-output name=removeDeployment::$removeDeployment"
+      #     Write-Host "::set-output name=versioningOption::$versioningOption"
+      #     Write-Host "::set-output name=customVersion::$customVersion"
+      #   id: get-trigger
+      #   shell: pwsh
       - name: Set input parameters
         run: |
-          # Write-Host "::set-output name=TRIGGER::${{ github.event_name }}"
           if ('${{ github.event_name }}' -eq 'workflow_dispatch') {
             $removeDeployment='${{ github.event.inputs.removeDeployment }}'
             $versioningOption='${{ github.event.inputs.versioningOption }}'
             $customVersion='${{ github.event.inputs.customVersion }}'
-            # echo "RemoveDeployment workflow_dispatch: " $removeDeployment
+
           }
           else {
-            $workflowPath='${{ github.event.workflow }}'
-            $workflowObj=ConvertFrom-Yaml -Path $workflowPath
-            $removeDeployment=$workflowObj.on.workflow_dispatch.inputs.removeDeployment.default
-            $versioningOption=$workflowObj.on.workflow_dispatch.inputs.versioningOption.default
-            $customVersion=$workflowObj.on.workflow_dispatch.inputs.customVersion.default
-            # $removeDeployment='false'
-            # $versioningOption='patch'
-            # $customVersion='0.0.1'
-            # echo "RemoveDeployment push: " $removeDeployment
+            $templateFile='${{ github.event.workflow }}'
+            $content = Get-Content $templateFile
+            $removeDeploymentRowIndex = ((0..($content.Count-1)) | Where-Object {$content[$_] -like '*removeDeployment:*'})[0]
+            $removeDeploymentDefault = $content[$removeDeploymentRowIndex+3].trim().Split(':')[1].Trim().Replace("'","").Replace('"','')
+            $removeDeploymentDefault
+            $versioningOptionRowIndex = ((0..($content.Count-1)) | Where-Object {$content[$_] -like "*versioningOption:*" })[0]
+            $versioningOptionDefault = $content[$versioningOptionRowIndex+3].trim().Split(':')[1].Trim().Replace("'","").Replace('"','')
+            $versioningOptionDefault
+            $customVersionRowIndex = ((0..($content.Count-1)) | Where-Object {$content[$_] -like "*customVersion:*" })[0]
+            $customVersionDefault = $content[$customVersionRowIndex+3].trim().Split(':')[1].Trim().Replace("'","").Replace('"','')
+            $customVersionDefault
           }
           Write-Host "::set-output name=removeDeployment::$removeDeployment"
           Write-Host "::set-output name=versioningOption::$versioningOption"
           Write-Host "::set-output name=customVersion::$customVersion"
         id: get-trigger
         shell: pwsh
+        
+
+
       - name: Get trigger output
         run: |
-          echo "The workflow trigger is ${{ steps.get-trigger.outputs.TRIGGER }}"
           echo "The removeDeployment is ${{ steps.get-trigger.outputs.removeDeployment }}"
           echo "The versioningOption is ${{ steps.get-trigger.outputs.versioningOption }}"
           echo "The customVersion is ${{ steps.get-trigger.outputs.customVersion }}"
     outputs:
-      trigger: ${{ steps.get-trigger.outputs.TRIGGER }}
       removeDeployment: ${{ steps.get-trigger.outputs.removeDeployment }}
       versioningOption: ${{ steps.get-trigger.outputs.versioningOption }}
       customVersion: ${{ steps.get-trigger.outputs.customVersion }}
-    # outputs:
-    #   identityApproach: ${{ env.identityApproach }}
-      # - run: echo ${{ github.event.inputs.removeDeployment }}
+
   
   job_get_trigger:
     runs-on: ubuntu-20.04
     needs: job_set_trigger
-    name: "Get input variables"
+    name: "Get job output variables"
     steps:
-      # - name: "Checkout"
-      #   uses: actions/checkout@v2
-      #   with:
-      #     fetch-depth: 0
-      # ${{ needs.Get_identityApproach.outputs.identityApproach == 'AD' }} 
       - name: Get output
         run: |
           echo "The trigger is ${{ needs.job_set_trigger.outputs.TRIGGER}}"
@@ -104,8 +120,8 @@ jobs:
           echo "The customVersion is ${{ needs.job_set_trigger.outputs.customVersion}}"
       - name: Dump set trigger
         env:
-          TRIGGER: ${{ toJson(needs.job_set_trigger) }}
-        run: echo "$TRIGGER"
+          jobContext: ${{ toJson(needs.job_set_trigger) }}
+        run: echo "$jobContext"
   # ##################
   # #   UNIT TESTS   #
   # ##################
