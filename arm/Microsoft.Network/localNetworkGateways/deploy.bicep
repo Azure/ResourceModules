@@ -97,4 +97,4 @@ module localNetworkGateway_rbac './.bicep/nested_rbac.bicep' = [for (roleAssignm
 
 output localNetworkGatewayResourceId string = localNetworkGateway.id
 output localNetworkGatewayResourceGroup string = resourceGroup().name
-output localNetworkGatewayName string = localNetworkGatewayName
+output localNetworkGatewayName string = localNetworkGateway.name
