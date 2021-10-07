@@ -4,6 +4,10 @@
   "parameters": {
     "eventGridTopicName": {
       "value": "sxx-az-egtn-weu-x-001"
-    }
-  }
+    },
+    "lockForDeletion":{
+      "value": true
+    }  
 }
+}
+
