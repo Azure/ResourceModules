@@ -42,6 +42,7 @@ jobs:
         with:
           fetch-depth: 0
       - run: echo ${{ github.event_name }}
+      - run: echo ${{ github.event.workflow }}
       # - name: Dump GitHub context
       #   env:
       #     GITHUB_CONTEXT: ${{ toJson(github) }}
