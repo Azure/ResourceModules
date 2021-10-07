@@ -34,7 +34,7 @@ env:
 
 jobs:
   
-  job_set_trigger:
+  job_set_workflow_param:
     runs-on: ubuntu-20.04
     name: "Set input parameters to output variables"
     steps:
@@ -43,28 +43,43 @@ jobs:
         with:
           fetch-depth: 0
       - name: "Set input parameters"
-        id: get-trigger
+        id: get-workflow-param
         uses: ./.github/actions/templates/getWorkflowInput
         with:
           workflowPath: '${{ env.workflowPath}}'
     outputs:
-      removeDeployment: ${{ steps.get-trigger.outputs.removeDeployment }}
-      versioningOption: ${{ steps.get-trigger.outputs.versioningOption }}
-      customVersion: ${{ steps.get-trigger.outputs.customVersion }}
+      removeDeployment: ${{ steps.get-workflow-param.outputs.removeDeployment }}
+      versioningOption: ${{ steps.get-workflow-param.outputs.versioningOption }}
+      customVersion: ${{ steps.get-workflow-param.outputs.customVersion }}
   
-  job_get_trigger:
+  job_get_workflow_param_removal:
+    if: ${{ needs.job_set_workflow_param.outputs.removeDeployment == 'true'}}"
     runs-on: ubuntu-20.04
-    needs: job_set_trigger
-    name: "Get job output variables"
+    needs: job_set_workflow_param
+    name: "Get job output variables if removal true"
     steps:
       - name: Access values from another job
         run: |
-          echo "The trigger is ${{ needs.job_set_trigger.outputs.TRIGGER}}"
-          echo "The removeDeployment is ${{ needs.job_set_trigger.outputs.removeDeployment}}"
-          echo "The versioningOption is ${{ needs.job_set_trigger.outputs.versioningOption}}"
-          echo "The customVersion is ${{ needs.job_set_trigger.outputs.customVersion}}"
-      - name: Dump set trigger
+          echo "The removeDeployment is ${{ needs.job_set_workflow_param.outputs.removeDeployment}}"
+          echo "The versioningOption is ${{ needs.job_set_workflow_param.outputs.versioningOption}}"
+          echo "The customVersion is ${{ needs.job_set_workflow_param.outputs.customVersion}}"
+      - name: Dump set workflow param
         env:
-          jobContext: ${{ toJson(needs.job_set_trigger) }}
+          jobContext: ${{ toJson(needs.job_set_workflow_param) }}
         run: echo "$jobContext"
 
+  job_get_workflow_param_noremoval:
+    if: ${{ needs.job_set_workflow_param.outputs.removeDeployment == 'false'}}"
+    runs-on: ubuntu-20.04
+    needs: job_set_workflow_param
+    name: "Get job output variables if removal false"
+    steps:
+      - name: Access values from another job
+        run: |
+          echo "The removeDeployment is ${{ needs.job_set_workflow_param.outputs.removeDeployment}}"
+          echo "The versioningOption is ${{ needs.job_set_workflow_param.outputs.versioningOption}}"
+          echo "The customVersion is ${{ needs.job_set_workflow_param.outputs.customVersion}}"
+      - name: Dump set workflow param
+        env:
+          jobContext: ${{ toJson(needs.job_set_workflow_param) }}
+        run: echo "$jobContext"
