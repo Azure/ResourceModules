@@ -143,6 +143,7 @@ resource azureBastionPip_lock 'Microsoft.Authorization/locks@2016-09-01' = if (l
   properties: {
     level: 'CanNotDelete'
   }
+  scope: azureBastionPip
 }
 
 resource azureBastionPip_diagnosticSettings 'Microsoft.Insights/diagnosticsettings@2017-05-01-preview' = if ((!empty(diagnosticStorageAccountId)) || (!empty(workspaceId)) || (!empty(eventHubAuthorizationRuleId)) || (!empty(eventHubName))) {
@@ -155,6 +156,7 @@ resource azureBastionPip_diagnosticSettings 'Microsoft.Insights/diagnosticsettin
     metrics: ((empty(diagnosticStorageAccountId) && empty(workspaceId) && empty(eventHubAuthorizationRuleId) && empty(eventHubName)) ? json('null') : diagnosticsMetrics)
     logs: ((empty(diagnosticStorageAccountId) && empty(workspaceId) && empty(eventHubAuthorizationRuleId) && empty(eventHubName)) ? json('null') : publicIpDiagnosticsLogs)
   }
+  scope: azureBastionPip
 }
 
 resource azureBastion 'Microsoft.Network/bastionHosts@2021-02-01' = {
@@ -183,6 +185,7 @@ resource azureBastion_lock 'Microsoft.Authorization/locks@2016-09-01' = if (lock
   properties: {
     level: 'CanNotDelete'
   }
+  scope: azureBastion
 }
 
 resource azureBastion_diagnosticSettings 'Microsoft.Insights/diagnosticsettings@2017-05-01-preview' = if ((!empty(diagnosticStorageAccountId)) || (!empty(workspaceId)) || (!empty(eventHubAuthorizationRuleId)) || (!empty(eventHubName))) {
@@ -194,6 +197,7 @@ resource azureBastion_diagnosticSettings 'Microsoft.Insights/diagnosticsettings@
     eventHubName: (empty(eventHubName) ? json('null') : eventHubName)
     logs: ((empty(diagnosticStorageAccountId) && empty(workspaceId) && empty(eventHubAuthorizationRuleId) && empty(eventHubName)) ? json('null') : azureBastionDiagnosticsLogs)
   }
+  scope: azureBastion
 }
 
 module azureBastion_rbac './.bicep/nested_rbac.bicep' = [for (roleAssignment, index) in roleAssignments: {
