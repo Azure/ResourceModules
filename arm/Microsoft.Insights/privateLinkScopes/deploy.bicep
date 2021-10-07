@@ -45,8 +45,8 @@ var builtInRoleNames = {
 }
 
 var lockNotes = {
-    CanNotDelete: 'Cannot delete resource or child resources.'
-    ReadOnly: 'Cannot modify the resource or child resources.'
+  CanNotDelete: 'Cannot delete resource or child resources.'
+  ReadOnly: 'Cannot modify the resource or child resources.'
 }
 
 module pid_cuaId './.bicep/nested_cuaId.bicep' = if (!empty(cuaId)) {
@@ -62,19 +62,18 @@ resource privateLinkScope 'Microsoft.Insights/privateLinkScopes@2019-10-17-previ
 }
 
 resource privateLinkScope_lock 'Microsoft.Authorization/locks@2016-09-01' = if (lock != 'NotSpecified') {
-    name: '${privateLinkScope.name}-${lock}-lock'
-    scope: privateLinkScope
-    properties: {
-        level: lock
-        notes: lockNotes[lock]
-    }
+  name: '${privateLinkScope.name}-${lock}-lock'
+  scope: privateLinkScope
+  properties: {
+    level: lock
+    notes: lockNotes[lock]
+  }
 }
 
-module privateLinkScope_scopedResources './.bicep/nested_scopedResources.bicep' = [for (scopedResource, index) in scopedResources: {
-  name: 'scopedResources-${index}'
-  params: {
-    privateLinkScopeName: privateLinkScope.name
-    scopedResource: scopedResource
+resource privateLinkScope_scopedResources 'microsoft.insights/privatelinkscopes/scopedresources@2019-10-17-preview' = [for (scopedResource, index) in scopedResources: {
+  name: '${privateLinkScope.name}/scoped-${last(split(scopedResource.linkedResourceId, '/'))}-${guid(uniqueString(privateLinkScope.name, scopedResource.linkedResourceId))}'
+  properties: {
+    linkedResourceId: scopedResource.linkedResourceId
   }
 }]
 
