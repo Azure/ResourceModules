@@ -38,10 +38,10 @@ jobs:
     runs-on: ubuntu-20.04
     name: "Set input parameters to output variables"
     steps:
-      - name: "Checkout"
-        uses: actions/checkout@v2
-        with:
-          fetch-depth: 0
+      # - name: "Checkout"
+      #   uses: actions/checkout@v2
+      #   with:
+      #     fetch-depth: 0
       - run: echo ${{ github.event_name }}
       # - name: Dump GitHub context
       #   env:
@@ -70,34 +70,38 @@ jobs:
       #   shell: pwsh
       - name: Set input parameters
         run: |
+
+          # When running from workflow_dispatch event get input values
           if ('${{ github.event_name }}' -eq 'workflow_dispatch') {
             $removeDeployment='${{ github.event.inputs.removeDeployment }}'
             $versioningOption='${{ github.event.inputs.versioningOption }}'
             $customVersion='${{ github.event.inputs.customVersion }}'
 
           }
+
+          # Otherwise retrieve default values
           else {
             $templateFile='${{ env.workflowPath }}'
             $content = Get-Content $templateFile
             $removeDeploymentRowIndex = ((0..($content.Count-1)) | Where-Object {$content[$_] -like '*removeDeployment:*'})[0]
-            $removeDeploymentDefault = $content[$removeDeploymentRowIndex+3].trim().Split(':')[1].Trim().Replace("'","").Replace('"','')
-            $removeDeploymentDefault
+            $removeDeployment = $content[$removeDeploymentRowIndex+3].trim().Split(':')[1].Trim().Replace("'","").Replace('"','')
+            $removeDeployment
             $versioningOptionRowIndex = ((0..($content.Count-1)) | Where-Object {$content[$_] -like "*versioningOption:*" })[0]
-            $versioningOptionDefault = $content[$versioningOptionRowIndex+3].trim().Split(':')[1].Trim().Replace("'","").Replace('"','')
-            $versioningOptionDefault
+            $versioningOption = $content[$versioningOptionRowIndex+3].trim().Split(':')[1].Trim().Replace("'","").Replace('"','')
+            $versioningOption
             $customVersionRowIndex = ((0..($content.Count-1)) | Where-Object {$content[$_] -like "*customVersion:*" })[0]
-            $customVersionDefault = $content[$customVersionRowIndex+3].trim().Split(':')[1].Trim().Replace("'","").Replace('"','')
-            $customVersionDefault
+            $customVersion = $content[$customVersionRowIndex+3].trim().Split(':')[1].Trim().Replace("'","").Replace('"','')
+            $customVersion
           }
-          Write-Host "::set-output name=removeDeployment::$removeDeployment"
-          Write-Host "::set-output name=versioningOption::$versioningOption"
-          Write-Host "::set-output name=customVersion::$customVersion"
+
+          # Output values to be accessed by next jobs
+          echo "::set-output name=removeDeployment::$removeDeployment"
+          echo "::set-output name=versioningOption::$versioningOption"
+          echo "::set-output name=customVersion::$customVersion"
         id: get-trigger
         shell: pwsh
         
-
-
-      - name: Get trigger output
+      - name: Access values within the job
         run: |
           echo "The removeDeployment is ${{ steps.get-trigger.outputs.removeDeployment }}"
           echo "The versioningOption is ${{ steps.get-trigger.outputs.versioningOption }}"
@@ -106,14 +110,13 @@ jobs:
       removeDeployment: ${{ steps.get-trigger.outputs.removeDeployment }}
       versioningOption: ${{ steps.get-trigger.outputs.versioningOption }}
       customVersion: ${{ steps.get-trigger.outputs.customVersion }}
-
   
   job_get_trigger:
     runs-on: ubuntu-20.04
     needs: job_set_trigger
     name: "Get job output variables"
     steps:
-      - name: Get output
+      - name: Access values from another job
         run: |
           echo "The trigger is ${{ needs.job_set_trigger.outputs.TRIGGER}}"
           echo "The removeDeployment is ${{ needs.job_set_trigger.outputs.removeDeployment}}"
@@ -123,159 +126,3 @@ jobs:
         env:
           jobContext: ${{ toJson(needs.job_set_trigger) }}
         run: echo "$jobContext"
-  # ##################
-  # #   UNIT TESTS   #
-  # ##################
-  # # Global tests
-  # # ------------
-  # job_tests_module_global:
-  #   runs-on: ubuntu-20.04
-  #   name: "Run global module tests"
-  #   steps:
-  #     - name: "Checkout"
-  #       uses: actions/checkout@v2
-  #       with:
-  #         fetch-depth: 0
-  #     - name: "Test module"
-  #       uses: ./.github/actions/templates/validateModuleGeneral
-  #       with:
-  #         modulePath: '${{ env.modulePath }}'
-  #         moduleName: '${{ env.moduleName}}'
-
-  # # Global API tests
-  # # ----------------
-  # job_tests_module_global_api:
-  #   runs-on: ubuntu-20.04
-  #   name: "Run global API module tests"
-  #   steps:
-  #     - name: "Checkout"
-  #       uses: actions/checkout@v2
-  #       with:
-  #         fetch-depth: 0
-  #     - name: "Test module"
-  #       uses: ./.github/actions/templates/validateModuleApis
-  #       with:
-  #         modulePath: '${{ env.modulePath }}'
-  #         moduleName: '${{ env.moduleName}}'
-
-  # # Validate deployment module tests
-  # # --------------------------------
-  # job_tests_module_deploy_validate:
-  #   runs-on: ubuntu-20.04
-  #   name: "Run deployment validation module tests"
-  #   strategy:
-  #     fail-fast: false
-  #     matrix:
-  #       parameterFilePaths: ['parameters.json']
-  #   steps:
-  #     - name: "Checkout"
-  #       uses: actions/checkout@v2
-  #       with:
-  #         fetch-depth: 0
-  #     - name: Set environment variables
-  #       uses: deep-mm/set-variables@v1.0
-  #       with:
-  #         # Name of variable file
-  #         variableFileName: 'variables.module' # Don't write .json here
-  #     - name: "Test module"
-  #       uses: ./.github/actions/templates/validateModuleDeploy
-  #       with:
-  #         templateFilePath: '${{ env.modulePath }}/deploy.json'
-  #         parameterFilePath: '${{ env.modulePath }}/parameters/${{ matrix.parameterFilePaths }}'
-  #         location: '${{ env.defaultLocation }}'
-  #         resourceGroupName: '${{ env.resourceGroupName }}'
-  #         subscriptionId: '${{ secrets.ARM_SUBSCRIPTION_ID }}'
-  #         managementGroupId: '${{ secrets.ARM_MGMTGROUP_ID }}'
-
-  # ####################
-  # #   DEPLOY TESTS   #
-  # ####################
-  # job_deploy_module:
-  #   runs-on: ubuntu-20.04
-  #   name: "Deploy module"
-  #   needs:
-  #   - job_tests_module_global
-  #   - job_tests_module_global_api
-  #   - job_tests_module_deploy_validate
-  #   strategy:
-  #     fail-fast: false
-  #     matrix:
-  #       parameterFilePaths: ['parameters.json']
-  #   steps:
-  #     - name: "Checkout"
-  #       uses: actions/checkout@v2
-  #       with:
-  #         fetch-depth: 0
-  #     - name: Set environment variables
-  #       uses: deep-mm/set-variables@v1.0
-  #       with:
-  #         # Name of variable file
-  #         variableFileName: 'variables.module' # Don't write .json here
-  #     - name: "Deploy module"
-  #       uses: ./.github/actions/templates/deployModule
-  #       with:
-  #         moduleName: '${{ env.moduleName }}'
-  #         templateFilePath: '${{ env.modulePath }}/deploy.json'
-  #         parameterFilePath: '${{ env.modulePath }}/parameters/${{ matrix.parameterFilePaths }}'
-  #         location: '${{ env.defaultLocation }}'
-  #         resourceGroupName: '${{ env.resourceGroupName }}'
-  #         subscriptionId: '${{ secrets.ARM_SUBSCRIPTION_ID }}'
-  #         managementGroupId: '${{ secrets.ARM_MGMTGROUP_ID }}'
-  #         removeDeployment: '${{ github.event.inputs.removeDeployment }}'
-
-  # ###############
-  # #   PUBLISH   #
-  # ###############
-  # job_publish_module:
-  #   name: "Publish module"
-  #   if: contains(fromJson('["refs/heads/main", "refs/heads/master"]'), github.ref)
-  #   runs-on: ubuntu-20.04
-  #   needs:
-  #     - job_deploy_module
-  #   steps:
-  #     - name: "Checkout"
-  #       uses: actions/checkout@v2
-  #       with:
-  #         fetch-depth: 0
-  #     - name: Set environment variables
-  #       uses: deep-mm/set-variables@v1.0
-  #       with:
-  #         # Name of variable file
-  #         variableFileName: 'variables.module' # Don't write .json here
-  #     - name: "Publish module"
-  #       uses: ./.github/actions/templates/publishModule
-  #       with:
-  #         templateFilePath: '${{ env.modulePath }}/deploy.json'
-  #         componentTemplateSpecRGName: '${{ env.componentTemplateSpecRGName }}'
-  #         componentTemplateSpecRGLocation: '${{ env.componentTemplateSpecRGLocation }}'
-  #         componentTemplateSpecName: '${{ env.moduleName }}'
-  #         componentTemplateSpecDescription: '${{ env.componentTemplateSpecDescription }}'
-  #         publishToTemplateSpec: '${{ env.publishToTemplateSpec }}'
-  #         versioningOption: '${{ github.event.inputs.versioningOption }}'
-  #         customVersion: '${{ github.event.inputs.customVersion }}'
-
-  # ##############
-  # #   REMOVE   #
-  # ##############
-  # job_remove_module:
-  #   runs-on: ubuntu-20.04
-  #   name: "Remove module"
-  #   if: ${{ always() && !cancelled() && github.event.inputs.removeDeployment == 'true' && (contains(needs.*.result, 'success') || contains(needs.*.result, 'failure')) }}
-  #   needs:
-  #     - job_deploy_module
-  #   steps:
-  #     - name: "Checkout"
-  #       uses: actions/checkout@v2
-  #       with:
-  #         fetch-depth: 0
-  #     - name: Set environment variables
-  #       uses: deep-mm/set-variables@v1.0
-  #       with:
-  #         # Name of variable file
-  #         variableFileName: 'variables.module' # Don't write .json here
-  #     - name: "Remove module"
-  #       uses: ./.github/actions/templates/removeModule
-  #       with:
-  #         moduleName: '${{ env.moduleName }}'
-  #         templateFilePath: '${{ env.modulePath }}/deploy.json'
-  #         resourceGroupName: '${{ env.resourceGroupName }}'
