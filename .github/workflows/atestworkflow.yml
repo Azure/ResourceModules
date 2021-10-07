@@ -41,7 +41,7 @@ jobs:
         uses: actions/checkout@v2
         with:
           fetch-depth: 0
-      - run: echo ${{ github.event.action }}
+      - run: echo ${{ github.event }}
       # - run: echo ${{ github.event.inputs.removeDeployment }}
   
   # ##################
