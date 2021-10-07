@@ -46,8 +46,6 @@ jobs:
         id: get-trigger
         uses: ./.github/actions/templates/getWorkflowInput
         with:
-          modulePath: '${{ env.modulePath }}'
-          moduleName: '${{ env.moduleName}}'
           workflowPath: '${{ env.workflowPath}}'
     outputs:
       removeDeployment: ${{ steps.get-trigger.outputs.removeDeployment }}

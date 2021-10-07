@@ -2,76 +2,13 @@ name: 'Get Workflow Input'
 description: 'Get Workflow Input'
 
 inputs:
-  moduleName:
-    description: 'The name of the module to remove'
-    required: true
   workflowPath:
-    description: 'The path to the template file set for removal. Used to determine the type of resource.'
-    required: true
-  resourceGroupName:
-    description: 'The resource group the module is deployed into'
+    description: 'The path to the current workflow yaml file'
     required: true
 
 runs:
   using: "composite"
   steps:
-    # - name: "Setup agent & login"
-    #   shell: pwsh
-    #   run: |
-    #     # Load used functions
-    #     . ".github/actions/sharedScripts/Set-EnvironmentOnAgent.ps1"
-    #     # Set agent up
-    #     Set-EnvironmentOnAgent    
-  
-    # - name: Azure Login
-    #   uses: Azure/login@v1
-    #   with:
-    #     creds: ${{ env.AZURE_CREDENTIALS }}
-    #     enable-AzPSSession: true
-
-    # - name: "Remove module"
-    #   shell: pwsh
-    #   run: |
-    #     # Load used functions
-    #     . "$env:GITHUB_ACTION_PATH/scripts/Remove-DeployedModule.ps1"
-
-    #     $functionInput = @{
-    #       moduleName        = '${{ inputs.moduleName }}'
-    #       resourceGroupName = '${{ inputs.resourceGroupName }}'
-    #       templateFilePath  = '${{ inputs.templateFilePath }}'
-    #     }
-
-    #     Write-Verbose "Invoke task with" -Verbose
-    #     Write-Verbose ($functionInput | ConvertTo-Json | Out-String) -Verbose
-
-    #     Remove-DeployedModule @functionInput -Verbose
-
-
-      # - name: Dump GitHub context
-      #   env:
-      #     GITHUB_CONTEXT: ${{ toJson(github) }}
-      #   run: echo "$GITHUB_CONTEXT"
-      # - name: Set input parameters
-      #   run: |
-      #     if ('${{ github.event_name }}' -eq 'workflow_dispatch') {
-      #       $removeDeployment='${{ github.event.inputs.removeDeployment }}'
-      #       $versioningOption='${{ github.event.inputs.versioningOption }}'
-      #       $customVersion='${{ github.event.inputs.customVersion }}'
-
-      #     }
-      #     else {
-      #       $workflowPath='${{ github.event.workflow }}'
-      #       $workflowObj=ConvertFrom-Yaml -Path $workflowPath
-      #       $removeDeployment=$workflowObj.on.workflow_dispatch.inputs.removeDeployment.default
-      #       $versioningOption=$workflowObj.on.workflow_dispatch.inputs.versioningOption.default
-      #       $customVersion=$workflowObj.on.workflow_dispatch.inputs.customVersion.default
-
-      #     }
-      #     Write-Host "::set-output name=removeDeployment::$removeDeployment"
-      #     Write-Host "::set-output name=versioningOption::$versioningOption"
-      #     Write-Host "::set-output name=customVersion::$customVersion"
-      #   id: get-trigger
-      #   shell: pwsh
       - name: Set input parameters
         run: |
           # When running from workflow_dispatch event get input values
@@ -82,7 +19,7 @@ runs:
           }
           # Otherwise retrieve default values
           else {
-            $templateFile='${{ inputs.workflowPath }}'
+            $templateFile='${{ env.workflowPath }}'
             $content = Get-Content $templateFile
             $removeDeploymentRowIndex = ((0..($content.Count-1)) | Where-Object {$content[$_] -like '*removeDeployment:*'})[0]
             $removeDeployment = $content[$removeDeploymentRowIndex+3].trim().Split(':')[1].Trim().Replace("'","").Replace('"','')
