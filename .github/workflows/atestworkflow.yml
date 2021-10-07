@@ -47,7 +47,13 @@ jobs:
       #     GITHUB_CONTEXT: ${{ toJson(github) }}
       #   run: echo "$GITHUB_CONTEXT"
       - name: Set trigger output
-        run: echo '::set-output name=TRIGGER::${{ github.event_name }}'
+        run: |
+          if ${{ github.event_name == 'workflow_dispatch'}} {
+            echo '::set-output name=TRIGGER::${{ github.event_name }}'
+          }
+          else {
+            echo '::set-output name=TRIGGER::${{ github.event_name }}'
+          }
         id: get-trigger
       - name: Get trigger output
         run: echo "The trigger is ${{ steps.get-trigger.outputs.TRIGGER }}"
