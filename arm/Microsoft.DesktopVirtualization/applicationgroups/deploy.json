@@ -185,7 +185,7 @@
         },
         {
             "type": "Microsoft.DesktopVirtualization/applicationgroups",
-            "apiVersion": "2020-11-02-preview",
+            "apiVersion": "2021-07-12",
             "name": "[parameters('appGroupName')]",
             "location": "[parameters('location')]",
             "tags": "[parameters('tags')]",
@@ -274,7 +274,7 @@
                     "resources": [
                         {
                             "type": "Microsoft.DesktopVirtualization/applicationgroups/providers/roleAssignments",
-                            "apiVersion": "2021-07-12",
+                            "apiVersion": "2018-09-01-preview",
                             "name": "[concat(parameters('appGroupName'), '/Microsoft.Authorization/', guid(parameters('appGroupName'), array(parameters('roleAssignment').principalIds)[copyIndex('innerRbacCopy')], parameters('roleAssignment').roleDefinitionIdOrName ))]",
                             "dependsOn": [
                             ],
