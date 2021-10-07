@@ -6,100 +6,51 @@ inputs:
     description: 'The path to the template file set for removal. Used to determine the type of resource.'
     required: true
 
+outputs:
+  # removeDeployment: ${{ steps.get-trigger.outputs.removeDeployment }}
+  # removeDeployment: $removeDeployment
+  removeDeployment: 
+    description: removeDeployment
+    value: ${{ steps.get-trigger-action.outputs.removeDeployment }}
+  versioningOption: 
+    description: versioningOption
+    value: ${{ steps.get-trigger-action.outputs.versioningOption }}
+  customVersion: 
+    description: customVersion
+    value: ${{ steps.get-trigger-action.outputs.customVersion }}
+
 runs:
   using: "composite"
   steps:
-    # - name: "Setup agent & login"
-    #   shell: pwsh
-    #   run: |
-    #     # Load used functions
-    #     . ".github/actions/sharedScripts/Set-EnvironmentOnAgent.ps1"
-    #     # Set agent up
-    #     Set-EnvironmentOnAgent    
-  
-    # - name: Azure Login
-    #   uses: Azure/login@v1
-    #   with:
-    #     creds: ${{ env.AZURE_CREDENTIALS }}
-    #     enable-AzPSSession: true
-
-    # - name: "Remove module"
-    #   shell: pwsh
-    #   run: |
-    #     # Load used functions
-    #     . "$env:GITHUB_ACTION_PATH/scripts/Remove-DeployedModule.ps1"
-
-    #     $functionInput = @{
-    #       moduleName        = '${{ inputs.moduleName }}'
-    #       resourceGroupName = '${{ inputs.resourceGroupName }}'
-    #       templateFilePath  = '${{ inputs.templateFilePath }}'
-    #     }
-
-    #     Write-Verbose "Invoke task with" -Verbose
-    #     Write-Verbose ($functionInput | ConvertTo-Json | Out-String) -Verbose
-
-    #     Remove-DeployedModule @functionInput -Verbose
-
-
-      # - name: Dump GitHub context
-      #   env:
-      #     GITHUB_CONTEXT: ${{ toJson(github) }}
-      #   run: echo "$GITHUB_CONTEXT"
-      # - name: Set input parameters
-      #   run: |
-      #     if ('${{ github.event_name }}' -eq 'workflow_dispatch') {
-      #       $removeDeployment='${{ github.event.inputs.removeDeployment }}'
-      #       $versioningOption='${{ github.event.inputs.versioningOption }}'
-      #       $customVersion='${{ github.event.inputs.customVersion }}'
-
-      #     }
-      #     else {
-      #       $workflowPath='${{ github.event.workflow }}'
-      #       $workflowObj=ConvertFrom-Yaml -Path $workflowPath
-      #       $removeDeployment=$workflowObj.on.workflow_dispatch.inputs.removeDeployment.default
-      #       $versioningOption=$workflowObj.on.workflow_dispatch.inputs.versioningOption.default
-      #       $customVersion=$workflowObj.on.workflow_dispatch.inputs.customVersion.default
-
-      #     }
-      #     Write-Host "::set-output name=removeDeployment::$removeDeployment"
-      #     Write-Host "::set-output name=versioningOption::$versioningOption"
-      #     Write-Host "::set-output name=customVersion::$customVersion"
-      #   id: get-trigger
-      #   shell: pwsh
-      - name: Set input parameters
-        run: |
-          # When running from workflow_dispatch event get input values
-          if ('${{ github.event_name }}' -eq 'workflow_dispatch') {
-            $removeDeployment='${{ github.event.inputs.removeDeployment }}'
-            $versioningOption='${{ github.event.inputs.versioningOption }}'
-            $customVersion='${{ github.event.inputs.customVersion }}'
-          }
-          # Otherwise retrieve default values
-          else {
-            $templateFile='${{ inputs.workflowPath }}'
-            $content = Get-Content $templateFile
-            $removeDeploymentRowIndex = ((0..($content.Count-1)) | Where-Object {$content[$_] -like '*removeDeployment:*'})[0]
-            $removeDeployment = $content[$removeDeploymentRowIndex+3].trim().Split(':')[1].Trim().Replace("'","").Replace('"','')
-            $removeDeployment
-            $versioningOptionRowIndex = ((0..($content.Count-1)) | Where-Object {$content[$_] -like "*versioningOption:*" })[0]
-            $versioningOption = $content[$versioningOptionRowIndex+3].trim().Split(':')[1].Trim().Replace("'","").Replace('"','')
-            $versioningOption
-            $customVersionRowIndex = ((0..($content.Count-1)) | Where-Object {$content[$_] -like "*customVersion:*" })[0]
-            $customVersion = $content[$customVersionRowIndex+3].trim().Split(':')[1].Trim().Replace("'","").Replace('"','')
-            $customVersion
-          }
-          # Output values to be accessed by next jobs
-          echo "::set-output name=removeDeployment::$removeDeployment"
-          echo "::set-output name=versioningOption::$versioningOption"
-          echo "::set-output name=customVersion::$customVersion"
-        id: get-trigger
-        shell: pwsh
+    # - name: Set input parameters
+    - id: get-trigger-action
+      run: |
+        # When running from workflow_dispatch event get input values
+        if ('${{ github.event_name }}' -eq 'workflow_dispatch') {
+          $removeDeployment='${{ github.event.inputs.removeDeployment }}'
+          $versioningOption='${{ github.event.inputs.versioningOption }}'
+          $customVersion='${{ github.event.inputs.customVersion }}'
+        }
+        # Otherwise retrieve default values
+        else {
+          $templateFile='${{ inputs.workflowPath }}'
+          $content = Get-Content $templateFile
+          $removeDeploymentRowIndex = ((0..($content.Count-1)) | Where-Object {$content[$_] -like '*removeDeployment:*'})[0]
+          $removeDeployment = $content[$removeDeploymentRowIndex+3].trim().Split(':')[1].Trim().Replace("'","").Replace('"','')
+          $removeDeployment
+          $versioningOptionRowIndex = ((0..($content.Count-1)) | Where-Object {$content[$_] -like "*versioningOption:*" })[0]
+          $versioningOption = $content[$versioningOptionRowIndex+3].trim().Split(':')[1].Trim().Replace("'","").Replace('"','')
+          $versioningOption
+          $customVersionRowIndex = ((0..($content.Count-1)) | Where-Object {$content[$_] -like "*customVersion:*" })[0]
+          $customVersion = $content[$customVersionRowIndex+3].trim().Split(':')[1].Trim().Replace("'","").Replace('"','')
+          $customVersion
+        }
+        # Output values to be accessed by next jobs
+        echo "::set-output name=removeDeployment::$removeDeployment"
+        echo "::set-output name=versioningOption::$versioningOption"
+        echo "::set-output name=customVersion::$customVersion"
+      shell: pwsh
         # outputs:
         #   removeDeployment: ${{ steps.get-trigger.outputs.removeDeployment }}
         #   versioningOption: ${{ steps.get-trigger.outputs.versioningOption }}
         #   customVersion: ${{ steps.get-trigger.outputs.customVersion }}
-outputs:
-  # removeDeployment: ${{ steps.get-trigger.outputs.removeDeployment }}
-  removeDeployment: $removeDeployment
-  versioningOption: ${{ steps.get-trigger.outputs.versioningOption }}
-  customVersion: ${{ steps.get-trigger.outputs.customVersion }}
