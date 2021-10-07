@@ -1,51 +1,31 @@
-@description('Required. Name of the Azure Firewall.')
-param azureFirewallName string
+@description('Required. Name of the Azure Bastion resource')
+param azureBastionName string
 
-@description('Optional. Name of an Azure Firewall SKU.')
-@allowed([
-  'AZFW_VNet'
-  'AZFW_Hub'
-])
-param azureSkuName string = 'AZFW_VNet'
+@description('Optional. Location for all resources.')
+param location string = resourceGroup().location
 
-@description('Optional. Tier of an Azure Firewall.')
-@allowed([
-  'Standard'
-  'Premium'
-])
-param azureSkuTier string = 'Standard'
-
-@description('Optional. Enable the preview feature for DNS proxy.')
-param enableDnsProxy bool = false
-
-@description('Optional. Collection of application rule collections used by Azure Firewall.')
-param applicationRuleCollections array = []
-
-@description('Optional. Collection of network rule collections used by Azure Firewall.')
-param networkRuleCollections array = []
-
-@description('Optional. Collection of NAT rule collections used by Azure Firewall.')
-param natRuleCollections array = []
-
-@description('Required. Shared services Virtual Network resource Id')
+@description('Required. Shared services Virtual Network resource identifier')
 param vNetId string
 
-@description('Optional. Specifies the name of the Public IP used by Azure Firewall. If it\'s not provided, a \'-pip\' suffix will be appended to the Firewall\'s name.')
-param azureFirewallPipName string = ''
+@description('Optional. Specifies the name of the Public IP used by Azure Bastion. If it\'s not provided, a \'-pip\' suffix will be appended to the Bastion\'s name.')
+param azureBastionPipName string = ''
 
 @description('Optional. Resource Id of the Public IP Prefix object. This is only needed if you want your Public IPs created in a PIP Prefix.')
 param publicIPPrefixId string = ''
 
-@description('Optional. Diagnostic Storage Account resource identifier')
-param diagnosticStorageAccountId string = ''
-
-@description('Optional. Log Analytics workspace resource identifier')
-param workspaceId string = ''
+@description('Optional. DNS name of the Public IP resource. A region specific suffix will be appended to it, e.g.: your-DNS-name.westeurope.cloudapp.azure.com')
+param domainNameLabel string = ''
 
 @description('Optional. Specifies the number of days that logs will be kept for; a value of 0 will retain data indefinitely.')
 @minValue(0)
 @maxValue(365)
 param diagnosticLogsRetentionInDays int = 365
+
+@description('Optional. Resource identifier of the Diagnostic Storage Account.')
+param diagnosticStorageAccountId string = ''
+
+@description('Optional. Resource identifier of Log Analytics.')
+param workspaceId string = ''
 
 @description('Optional. Resource ID of the event hub authorization rule for the Event Hubs namespace in which the event hub should be created or streamed to.')
 param eventHubAuthorizationRuleId string = ''
@@ -53,23 +33,13 @@ param eventHubAuthorizationRuleId string = ''
 @description('Optional. Name of the event hub within the namespace to which logs are streamed. Without this, an event hub is created for each log category.')
 param eventHubName string = ''
 
-@description('Optional. Location for all resources.')
-param location string = resourceGroup().location
-
-@description('Optional. Zone numbers e.g. 1,2,3.')
-param availabilityZones array = [
-  '1'
-  '2'
-  '3'
-]
-
-@description('Optional. Switch to lock the Firewall from deletion.')
+@description('Optional. Switch to lock Key Vault from deletion.')
 param lockForDeletion bool = false
 
 @description('Optional. Array of role assignment objects that contain the \'roleDefinitionIdOrName\' and \'principalId\' to define RBAC role assignments on this resource. In the roleDefinitionIdOrName attribute, you can provide either the display name of the role definition, or its fully qualified ID in the following format: \'/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11\'')
 param roleAssignments array = []
 
-@description('Optional. Tags of the Automation Account resource.')
+@description('Optional. Tags of the resource.')
 param tags object = {}
 
 @description('Optional. Customer Usage Attribution id (GUID). This GUID must be previously registered')
@@ -78,9 +48,6 @@ param cuaId string = ''
 var publicIPPrefix = {
   id: publicIPPrefixId
 }
-var azureFirewallSubnetId = '${vNetId}/subnets/AzureFirewallSubnet'
-var azureFirewallPipName_var = (empty(azureFirewallPipName) ? '${azureFirewallName}-pip' : azureFirewallPipName)
-var azureFirewallPipId = azureFirewallPip.id
 var diagnosticsMetrics = [
   {
     category: 'AllMetrics'
@@ -92,33 +59,7 @@ var diagnosticsMetrics = [
     }
   }
 ]
-var diagnosticsLogsAzureFirewall = [
-  {
-    category: 'AzureFirewallApplicationRule'
-    enabled: true
-    retentionPolicy: {
-      enabled: true
-      days: diagnosticLogsRetentionInDays
-    }
-  }
-  {
-    category: 'AzureFirewallNetworkRule'
-    enabled: true
-    retentionPolicy: {
-      enabled: true
-      days: diagnosticLogsRetentionInDays
-    }
-  }
-  {
-    category: 'AzureFirewallDnsProxy'
-    enabled: true
-    retentionPolicy: {
-      enabled: true
-      days: diagnosticLogsRetentionInDays
-    }
-  }
-]
-var diagnosticsLogsPublicIp = [
+var publicIpDiagnosticsLogs = [
   {
     category: 'DDoSProtectionNotifications'
     enabled: true
@@ -137,6 +78,16 @@ var diagnosticsLogsPublicIp = [
   }
   {
     category: 'DDoSMitigationReports'
+    enabled: true
+    retentionPolicy: {
+      enabled: true
+      days: diagnosticLogsRetentionInDays
+    }
+  }
+]
+var azureBastionDiagnosticsLogs = [
+  {
+    category: 'BastionAuditLogs'
     enabled: true
     retentionPolicy: {
       enabled: true
@@ -164,7 +115,7 @@ var builtInRoleNames = {
   'Monitoring Reader': subscriptionResourceId('Microsoft.Authorization/roleDefinitions','43d0d8ad-25c7-4714-9337-8ba259a9fe05')
   'Network Contributor': subscriptionResourceId('Microsoft.Authorization/roleDefinitions','4d97b98b-1d4f-4787-a291-c67834d212e7')
   'Resource Policy Contributor': subscriptionResourceId('Microsoft.Authorization/roleDefinitions','36243c78-bf99-498c-9df9-86d9f8d28608')
-  'User Access Administrator': subscriptionResourceId('Microsoft.Authorization/roleDefinitions','18d7d88d-d35e-4fb5-a5c3-7773c20a72d9') 
+  'User Access Administrator': subscriptionResourceId('Microsoft.Authorization/roleDefinitions','18d7d88d-d35e-4fb5-a5c3-7773c20a72d9')
 }
 
 module pid_cuaId './.bicep/nested_cuaId.bicep' = if (!empty(cuaId)) {
@@ -172,110 +123,91 @@ module pid_cuaId './.bicep/nested_cuaId.bicep' = if (!empty(cuaId)) {
   params: {}
 }
 
-resource azureFirewallPip 'Microsoft.Network/publicIPAddresses@2021-02-01' = {
-  name: azureFirewallPipName_var
+resource azureBastionPip 'Microsoft.Network/publicIPAddresses@2021-02-01' = {
+  name: (empty(azureBastionPipName) ? '${azureBastionName}-pip' : azureBastionPipName)
   location: location
   tags: tags
   sku: {
     name: 'Standard'
   }
-  zones: availabilityZones
   properties: {
     publicIPAllocationMethod: 'Static'
-    publicIPAddressVersion: 'IPv4'
     publicIPPrefix: ((!empty(publicIPPrefixId)) ? publicIPPrefix : json('null'))
+    dnsSettings: ((!empty(domainNameLabel)) ? json('{"domainNameLabel": "${domainNameLabel}"}') : json('null'))
   }
 }
 
-resource azureFirewallPip_lock 'Microsoft.Authorization/locks@2016-09-01' = if (lockForDeletion) {
-  name: '${azureFirewallPip.name}-doNotDelete'
+resource azureBastionPip_lock 'Microsoft.Authorization/locks@2016-09-01' = if (lockForDeletion) {
+  name: '${azureBastionPip.name}-doNotDelete'
   properties: {
     level: 'CanNotDelete'
   }
-  scope: azureFirewallPip
+  scope: azureBastionPip
 }
 
-resource azureFirewallPip_diagnosticSettings 'Microsoft.Insights/diagnosticsettings@2017-05-01-preview' = if ((!empty(diagnosticStorageAccountId)) || (!empty(workspaceId)) || (!empty(eventHubAuthorizationRuleId)) || (!empty(eventHubName))) {
-  name: '${azureFirewallPip.name}-diagnosticSettings'
+resource azureBastionPip_diagnosticSettings 'Microsoft.Insights/diagnosticsettings@2017-05-01-preview' = if ((!empty(diagnosticStorageAccountId)) || (!empty(workspaceId)) || (!empty(eventHubAuthorizationRuleId)) || (!empty(eventHubName))) {
+  name: '${azureBastionPip.name}-diagnosticSettings'
   properties: {
     storageAccountId: (empty(diagnosticStorageAccountId) ? json('null') : diagnosticStorageAccountId)
     workspaceId: (empty(workspaceId) ? json('null') : workspaceId)
     eventHubAuthorizationRuleId: (empty(eventHubAuthorizationRuleId) ? json('null') : eventHubAuthorizationRuleId)
     eventHubName: (empty(eventHubName) ? json('null') : eventHubName)
     metrics: ((empty(diagnosticStorageAccountId) && empty(workspaceId) && empty(eventHubAuthorizationRuleId) && empty(eventHubName)) ? json('null') : diagnosticsMetrics)
-    logs: ((empty(diagnosticStorageAccountId) && empty(workspaceId) && empty(eventHubAuthorizationRuleId) && empty(eventHubName)) ? json('null') : diagnosticsLogsPublicIp)
+    logs: ((empty(diagnosticStorageAccountId) && empty(workspaceId) && empty(eventHubAuthorizationRuleId) && empty(eventHubName)) ? json('null') : publicIpDiagnosticsLogs)
   }
-  scope: azureFirewallPip
+  scope: azureBastionPip
 }
 
-resource azureFirewall 'Microsoft.Network/azureFirewalls@2021-02-01' = {
-  name: azureFirewallName
+resource azureBastion 'Microsoft.Network/bastionHosts@2021-02-01' = {
+  name: azureBastionName
   location: location
-  zones: ((length(availabilityZones) == 0) ? json('null') : availabilityZones)
   tags: tags
   properties: {
-    threatIntelMode: 'Deny'
     ipConfigurations: [
       {
         name: 'IpConf'
         properties: {
           subnet: {
-            id: azureFirewallSubnetId
+            id: '${vNetId}/subnets/AzureBastionSubnet'
           }
           publicIPAddress: {
-            id: azureFirewallPipId
+            id: azureBastionPip.id
           }
         }
       }
     ]
-    sku: {
-      name: azureSkuName
-      tier: azureSkuTier
-    }
-    additionalProperties: {
-      'Network.DNS.EnableProxy': string(enableDnsProxy)
-    }
-    applicationRuleCollections: applicationRuleCollections
-    natRuleCollections: natRuleCollections
-    networkRuleCollections: networkRuleCollections
   }
 }
 
-resource azureFirewall_lock 'Microsoft.Authorization/locks@2016-09-01' = if (lockForDeletion) {
-  name: '${azureFirewall.name}-doNotDelete'
+resource azureBastion_lock 'Microsoft.Authorization/locks@2016-09-01' = if (lockForDeletion) {
+  name: '${azureBastion.name}-doNotDelete'
   properties: {
     level: 'CanNotDelete'
   }
-  scope: azureFirewall
+  scope: azureBastion
 }
 
-resource azureFirewall_diagnosticSettings 'Microsoft.Insights/diagnosticsettings@2017-05-01-preview' = if ((!empty(diagnosticStorageAccountId)) || (!empty(workspaceId)) || (!empty(eventHubAuthorizationRuleId)) || (!empty(eventHubName))) {
-  name: '${azureFirewall.name}-diagnosticSettings'
+resource azureBastion_diagnosticSettings 'Microsoft.Insights/diagnosticsettings@2017-05-01-preview' = if ((!empty(diagnosticStorageAccountId)) || (!empty(workspaceId)) || (!empty(eventHubAuthorizationRuleId)) || (!empty(eventHubName))) {
+  name: '${azureBastion.name}-diagnosticSettings'
   properties: {
     storageAccountId: (empty(diagnosticStorageAccountId) ? json('null') : diagnosticStorageAccountId)
     workspaceId: (empty(workspaceId) ? json('null') : workspaceId)
     eventHubAuthorizationRuleId: (empty(eventHubAuthorizationRuleId) ? json('null') : eventHubAuthorizationRuleId)
     eventHubName: (empty(eventHubName) ? json('null') : eventHubName)
-    metrics: ((empty(diagnosticStorageAccountId) && empty(workspaceId) && empty(eventHubAuthorizationRuleId) && empty(eventHubName)) ? json('null') : diagnosticsMetrics)
-    logs: ((empty(diagnosticStorageAccountId) && empty(workspaceId) && empty(eventHubAuthorizationRuleId) && empty(eventHubName)) ? json('null') : diagnosticsLogsAzureFirewall)
+    logs: ((empty(diagnosticStorageAccountId) && empty(workspaceId) && empty(eventHubAuthorizationRuleId) && empty(eventHubName)) ? json('null') : azureBastionDiagnosticsLogs)
   }
-  scope: azureFirewall
+  scope: azureBastion
 }
 
-module rbac_name './.bicep/nested_rbac.bicep' = [for (roleAssignment, index) in roleAssignments: {
+module azureBastion_rbac './.bicep/nested_rbac.bicep' = [for (roleAssignment, index) in roleAssignments: {
   name: 'rbac-${deployment().name}${index}'
   params: {
     roleAssignmentObj: roleAssignment
     builtInRoleNames: builtInRoleNames
-    resourceName: azureFirewall.name
+    resourceName: azureBastion.name
   }
 }]
 
-output azureFirewallResourceId string = azureFirewall.id
-output azureFirewallName string = azureFirewall.name
-output azureFirewallResourceGroup string = resourceGroup().name
-output azureFirewallPrivateIp string = azureFirewall.properties.ipConfigurations[0].properties.privateIPAddress
-output azureFirewallPublicIp string = azureFirewallPip.properties.ipAddress
-output applicationRuleCollections array = applicationRuleCollections
-output networkRuleCollections array = networkRuleCollections
-output natRuleCollections array = natRuleCollections
+output azureBastionResourceGroup string = resourceGroup().name
+output azureBastionName string = azureBastion.name
+output azureBastionResourceId string = azureBastion.id
