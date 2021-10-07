@@ -56,16 +56,16 @@ jobs:
           Write-Host "::set-output name=customVersion::0.0.1"
         id: get-trigger
         shell: pwsh
-      - name: Set trigger output workflow_dispatch
-        if: github.event_name == 'workflow_dispatch'
-        # if: ${{ github.event_name == 'workflow_dispatch'}}
-        run: |
-          Write-Host "::set-output name=TRIGGER::${{ github.event_name }}"
-          Write-Host "::set-output name=removeDeployment::${{ github.event.inputs.removeDeployment }}"
-          Write-Host "::set-output name=versioningOption::${{ github.event.inputs.versioningOption }}"
-          Write-Host "::set-output name=customVersion::${{ github.event.inputs.customVersion }}"
-        id: get-trigger
-        shell: pwsh
+      # - name: Set trigger output workflow_dispatch
+      #   if: github.event_name == 'workflow_dispatch'
+      #   # if: ${{ github.event_name == 'workflow_dispatch'}}
+      #   run: |
+      #     Write-Host "::set-output name=TRIGGER::${{ github.event_name }}"
+      #     Write-Host "::set-output name=removeDeployment::${{ github.event.inputs.removeDeployment }}"
+      #     Write-Host "::set-output name=versioningOption::${{ github.event.inputs.versioningOption }}"
+      #     Write-Host "::set-output name=customVersion::${{ github.event.inputs.customVersion }}"
+      #   id: get-trigger
+      #   shell: pwsh
       - name: Get trigger output
         run: echo "The trigger is ${{ steps.get-trigger.outputs.TRIGGER }}"
     outputs:
