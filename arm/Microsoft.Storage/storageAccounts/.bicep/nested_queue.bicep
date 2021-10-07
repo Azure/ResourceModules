@@ -1,23 +1,19 @@
-param queue object
+param queueObj object
 param builtInRoleNames object
 param storageAccountName string
 
-resource queueObject 'Microsoft.Storage/storageAccounts/queueServices/queues@2019-06-01' = {
-  name: '${storageAccountName}/default/${queue.name}'
+resource queue 'Microsoft.Storage/storageAccounts/queueServices/queues@2019-06-01' = {
+  name: '${storageAccountName}/default/${queueObj.name}'
   properties: {
-    metadata: (contains(queue, 'metadata') ? queue.metadata : json('null'))
+    metadata: (contains(queueObj, 'metadata') ? queueObj.metadata : json('null'))
   }
 }
 
-module nested_queue_rbac './nested_queue_rbac.bicep' = [for (roleassignment, index) in queue.roleAssignments: {
-  name: '${deployment().name}-Rbac-${(empty(queue.roleAssignments) ? 'dummy' : index)}'
+module queue_rbac './nested_queue_rbac.bicep' = [for (roleAssignment, index) in queueObj.roleAssignments: {
+  name: '${deployment().name}-Rbac-${(empty(queueObj.roleAssignments) ? 'dummy' : index)}'
   params: {
-    queueName: queue.name
-    roleAssignment: roleassignment
+    roleAssignmentObj: roleAssignment
     builtInRoleNames: builtInRoleNames
-    storageAccountName: storageAccountName
+    resourceName: queue.name
   }
-  dependsOn: [
-    queueObject
-  ]
 }]

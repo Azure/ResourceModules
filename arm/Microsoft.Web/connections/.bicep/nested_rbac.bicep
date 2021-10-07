@@ -1,12 +1,11 @@
-param roleAssignment object
+param roleAssignmentObj object
 param builtInRoleNames object
-param connectionName string
+param resourceName string
 
-resource nested_rbac 'Microsoft.DesktopVirtualization/applicationgroups/providers/roleAssignments@2018-09-01-preview' = [for principalId in roleAssignment.principalIds: {
-  name: '${connectionName}/Microsoft.Authorization/${guid(connectionName, principalId, roleAssignment.roleDefinitionIdOrName)}'
+resource roleAssigment 'Microsoft.Web/connections/providers/roleAssignments@2020-04-01-preview' = [for principalId in roleAssignmentObj.principalIds: {
+  name: '${resourceName}/Microsoft.Authorization/${guid(resourceName, principalId, roleAssignmentObj.roleDefinitionIdOrName)}'
   properties: {
-    roleDefinitionId: (contains(builtInRoleNames, roleAssignment.roleDefinitionIdOrName) ? builtInRoleNames[roleAssignment.roleDefinitionIdOrName] : roleAssignment.roleDefinitionIdOrName)
+    roleDefinitionId: (contains(builtInRoleNames, roleAssignmentObj.roleDefinitionIdOrName) ? builtInRoleNames[roleAssignmentObj.roleDefinitionIdOrName] : roleAssignmentObj.roleDefinitionIdOrName)
     principalId: principalId
   }
-  dependsOn: []
 }]

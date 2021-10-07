@@ -215,16 +215,13 @@ resource storageAccount_lock 'Microsoft.Authorization/locks@2016-09-01' = if (lo
   scope: storageAccount
 }
 
-module storageAccount_rbac './.bicep/nested_rbac.bicep' = [for (roleassignment, index) in roleAssignments: {
+module storageAccount_rbac './.bicep/nested_rbac.bicep' = [for (roleAssignment, index) in roleAssignments: {
   name: '${uniqueString(deployment().name, location)}-Storage-Rbac-${index}'
   params: {
-    roleAssignment: roleassignment
+    roleAssignmentObj: roleAssignment
     builtInRoleNames: builtInRoleNames
-    storageAccountName: storageAccountName
+    resourceName: storageAccount.name
   }
-  dependsOn: [
-    storageAccount
-  ]
 }]
 
 module storageAccount_privateEndpoints './.bicep/nested_privateEndpoint.bicep' = [for (endpoint, index) in privateEndpoints: if (!empty(privateEndpoints)) {
@@ -342,8 +339,8 @@ resource storageAccount_nested_table 'Microsoft.Storage/storageAccounts/tableSer
 }]
 
 output storageAccountResourceId string = storageAccount.id
-output storageAccountRegion string = location
-output storageAccountName string = storageAccountName
+output storageAccountRegion string = storageAccount.location
+output storageAccountName string = storageAccount.name
 output storageAccountResourceGroup string = resourceGroup().name
 output storageAccountPrimaryBlobEndpoint string = (empty(blobContainers) ? '' : reference('Microsoft.Storage/storageAccounts/${storageAccountName}', '2019-04-01').primaryEndpoints.blob)
 output blobContainers array = blobContainers

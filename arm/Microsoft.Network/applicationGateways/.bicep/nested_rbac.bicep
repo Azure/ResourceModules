@@ -8,5 +8,4 @@ resource roleAssignment 'Microsoft.Network/applicationGateways/providers/roleAss
     roleDefinitionId: (contains(builtInRoleNames, roleAssignmentObj.roleDefinitionIdOrName) ? builtInRoleNames[roleAssignmentObj.roleDefinitionIdOrName] : roleAssignmentObj.roleDefinitionIdOrName)
     principalId: principalId
   }
-  dependsOn: []
 }]
