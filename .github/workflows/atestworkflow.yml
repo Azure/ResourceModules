@@ -54,13 +54,14 @@ jobs:
           # Write-Host "::set-output name=removeDeployment::false"
           # Write-Host "::set-output name=versioningOption::patch"
           # Write-Host "::set-output name=customVersion::0.0.1"
+          $removeDeployment="false"
           if ('${{ github.event_name == 'workflow_dispatch'}}') {
             $removeDeployment='${{ github.event.inputs.removeDeployment }}'
-            echo "RemoveDeployment: " $removeDeployment
+            echo "RemoveDeployment workflow_dispatch: " $removeDeployment
           }
           else {
             $removeDeployment="false"
-            echo "RemoveDeployment: " $removeDeployment
+            echo "RemoveDeployment push: " $removeDeployment
           }
           echo "RemoveDeployment: " $removeDeployment
           echo "Input: " ${{ github.event.inputs.removeDeployment }}
