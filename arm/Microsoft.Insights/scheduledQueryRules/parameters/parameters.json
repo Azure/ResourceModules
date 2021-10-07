@@ -22,6 +22,11 @@
         },
         "breachesThreshold": {
             "value": 3
+        },
+        "actions": {
+            "value": [
+                "/subscriptions/8629be3b-96bc-482d-a04b-ffff597c65a2/resourceGroups/validation-rg/providers/microsoft.insights/actiongroups/adp-sxx-az-ag-weu-x-001"
+            ]
         }
     }
 }
