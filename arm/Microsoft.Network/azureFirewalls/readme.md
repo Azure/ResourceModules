@@ -7,10 +7,11 @@ This module deploys Azure Firewall.
 |Resource Type|Api Version|
 |:--|:--|
 |`Microsoft.Network/publicIPAddresses`|2021-02-01|
+|`Microsoft.Resources/deployments`|2018-02-01|
 |`Microsoft.Network/azureFirewalls`|2021-02-01|
 |`Microsoft.Insights/diagnosticsettings`|2016-09-01|
 |`Microsoft.Network/azureFirewalls/providers/roleAssignments`|2018-09-01-preview|
-| `Microsoft.Authorization/locks` | 2016-09-01 |
+|`Microsoft.Authorization/locks` | 2016-09-01 |
 
 ## Parameters
 
