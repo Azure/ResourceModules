@@ -178,7 +178,7 @@ module pid_cuaId './.bicep/nested_cuaId.bicep' = if (!empty(cuaId)) {
   params: {}
 }
 
-resource hostPool 'Microsoft.DesktopVirtualization/hostpools@2020-11-02-preview' = {
+resource hostPool 'Microsoft.DesktopVirtualization/hostpools@2021-07-12' = {
   name: hostPoolName
   location: location
   tags: tags
