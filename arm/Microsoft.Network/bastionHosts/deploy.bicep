@@ -45,7 +45,6 @@ param tags object = {}
 @description('Optional. Customer Usage Attribution id (GUID). This GUID must be previously registered')
 param cuaId string = ''
 
-var azureBastionPipName_var = (empty(azureBastionPipName) ? '${azureBastionName}-pip' : azureBastionPipName)
 var publicIPPrefix = {
   id: publicIPPrefixId
 }
@@ -125,7 +124,7 @@ module pid_cuaId './.bicep/nested_cuaId.bicep' = if (!empty(cuaId)) {
 }
 
 resource azureBastionPip 'Microsoft.Network/publicIPAddresses@2021-02-01' = {
-  name: azureBastionPipName_var
+  name: (empty(azureBastionPipName) ? '${azureBastionName}-pip' : azureBastionPipName)
   location: location
   tags: tags
   sku: {
