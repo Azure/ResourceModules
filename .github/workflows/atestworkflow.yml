@@ -60,7 +60,8 @@ jobs:
           else {
             $removeDeployment='false'
           }
-          Write-Host $removeDeployment
+          echo "RemoveDeployment: " $removeDeployment
+          echo "Input: " ${{ github.event.inputs.removeDeployment }}
         id: get-trigger
         shell: pwsh
       # - name: Set trigger output workflow_dispatch
