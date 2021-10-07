@@ -8,7 +8,7 @@ This module deploys Logic App resource.
 | -------------------------------------------------------- | ------------------ |
 | `Microsoft.Logic/workflows`| 2019-05-01         |
 | `Microsoft.Logic/workflows/providers/diagnosticsettings` | 2017-05-01-preview |
-| `Microsoft.Logic/workflows/providers/roleAssignments`    | 2018-09-01-preview |
+| `Microsoft.Logic/workflows/providers/roleAssignments`    | 2020-04-01-preview |
 | `Microsoft.Resources/deployments`    | 2020-06-01         |
 | `providers/locks`| 2016-09-01         |
 

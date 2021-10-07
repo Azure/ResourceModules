@@ -294,16 +294,13 @@ resource app_insights 'microsoft.insights/components@2020-02-02' = if (enableMon
   }
 }
 
-module app_rbac './.bicep/nested_rbac.bicep' = [for (item, i) in roleAssignments: {
-  name: 'rbac-${deployment().name}${i}'
+module app_rbac './.bicep/nested_rbac.bicep' = [for (roleAssignment, index) in roleAssignments: {
+  name: 'rbac-${deployment().name}${index}'
   params: {
-    roleAssignment: item
+    roleAssignmentObj: roleAssignment
     builtInRoleNames: builtInRoleNames
-    appName: appName
+    resourceName: app.name
   }
-  dependsOn: [
-    app
-  ]
 }]
 
 module app_privateEndpoint './.bicep/nested_privateEndpoint.bicep' = [for (item, i) in privateEndpoints: {
@@ -319,6 +316,6 @@ module app_privateEndpoint './.bicep/nested_privateEndpoint.bicep' = [for (item,
   ]
 }]
 
-output appName string = appServicePlanName
+output appName string = appServicePlan.name
 output siteResourceId string = resourceId('Microsoft.Web/serverfarms', appServicePlanName)
 output siteResourceGroup string = resourceGroup().name

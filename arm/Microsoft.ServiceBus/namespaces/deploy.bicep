@@ -215,20 +215,17 @@ module serviceBusNamespace_privateEndpoints './.bicep/nested_privateEndpoints.bi
   ]
 }]
 
-module rbac_name './.bicep/nested_rbac.bicep' = [for (item, i) in roleAssignments: {
-  name: 'rbac-${deployment().name}${i}'
+module serviceBusNamespace_rbac './.bicep/nested_rbac.bicep' = [for (roleAssignment, index) in roleAssignments: {
+  name: 'rbac-${deployment().name}${index}'
   params: {
-    roleAssignment: item
+    roleAssignmentObj: roleAssignment
     builtInRoleNames: builtInRoleNames
-    namespaceName: serviceBusNamespaceName_var
+    resourceName: serviceBusNamespace.name
   }
-  dependsOn: [
-    serviceBusNamespace
-  ]
 }]
 
 output serviceBusNamespaceResourceId string = serviceBusNamespace.id
 output serviceBusNamespaceResourceGroup string = resourceGroup().name
-output serviceBusNamespaceName string = serviceBusNamespaceName_var
+output serviceBusNamespaceName string = serviceBusNamespace.name
 output defaultAuthorizationRuleId string = defaultAuthorizationRuleId
 output serviceBusConnectionString string = 'Endpoint=sb://${serviceBusNamespaceName_var}.servicebus.windows.net/;SharedAccessKeyName=${listkeys(resourceId('Microsoft.ServiceBus/namespaces/authorizationRules', serviceBusNamespaceName_var, 'RootManageSharedAccessKey'), '2017-04-01').primaryKey}'
