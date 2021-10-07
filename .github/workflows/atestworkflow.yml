@@ -52,7 +52,7 @@ jobs:
       - name: Get trigger output
         run: echo "The trigger is ${{ steps.get-trigger.outputs.TRIGGER }}"
     outputs:
-      vars: ${{ steps.get-trigger.TRIGGER }}
+      trigger: ${{ steps.get-trigger.TRIGGER }}
     # outputs:
     #   identityApproach: ${{ env.identityApproach }}
       # - run: echo ${{ github.event.inputs.removeDeployment }}
@@ -68,7 +68,7 @@ jobs:
       #     fetch-depth: 0
       # ${{ needs.Get_identityApproach.outputs.identityApproach == 'AD' }} 
       - name: Get trigger output
-        run: echo "The trigger is ${{ needs.job_set_trigger.steps.get-trigger.outputs.TRIGGER}}"
+        run: echo "The trigger is ${{ needs.job_set_trigger.outputs.TRIGGER}}"
       - name: Dump set trigger
         env:
           TRIGGER: ${{ toJson(needs.job_set_trigger) }}
