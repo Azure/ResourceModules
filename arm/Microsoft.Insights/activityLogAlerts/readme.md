@@ -8,7 +8,7 @@ This module deploys an Alert based on Activity Log
 |:--|:--|
 |`Microsoft.Resources/deployments`|2018-02-01|
 |`Microsoft.Insights/ActivityLogAlerts`|2020-10-01|
-|`Microsoft.Authorization/roleAssignments`|2020-04-01-preview|
+|`Microsoft.Insights/activityLogAlerts/providers/roleAssignments@2020-04-01-preview`|2020-04-01-preview|
 
 ## Parameters
 

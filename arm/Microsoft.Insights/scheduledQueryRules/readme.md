@@ -4,10 +4,11 @@ This module deploys an Alert based on metrics
 
 ## Resource types
 
-| Resource Type                            | ApiVersion |
-| :--------------------------------------- | :--------- |
-| `Microsoft.Resources/deployments`        | 2018-02-01 |
-| `microsoft.insights/scheduledQueryRules` | 2018-04-16 |
+| Resource Type                                                      | ApiVersion         |
+| :----------------------------------------------------------------- | :----------------- |
+| `Microsoft.Resources/deployments`                                  | 2018-02-01         |
+| `microsoft.insights/scheduledQueryRules`                           | 2018-04-16         |
+| `microsoft.insights/scheduledQueryRules/providers/roleAssignments` | 2020-04-01-preview |
 
 ## Parameters
 
