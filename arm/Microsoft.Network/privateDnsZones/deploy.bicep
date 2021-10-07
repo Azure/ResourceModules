@@ -48,14 +48,14 @@ resource privateDnsZone 'Microsoft.Network/privateDnsZones@2018-09-01' = {
   location: location
   tags: tags
   
-  resource virtualNetworkLinks 'virtualNetworkLinks@2018-09-01' = [for item in vnetLinks: if (!empty(vnetLinks)) {
-    name: '${(empty(vnetLinks) ? 'dummy' : last(split(item.vnetResourceId, '/')))}'
+  resource virtualNetworkLinks 'virtualNetworkLinks@2018-09-01' = [for vnetLink in vnetLinks: if (!empty(vnetLinks)) {
+    name: '${(empty(vnetLinks) ? 'dummy' : last(split(vnetLink.vnetResourceId, '/')))}'
     location: location
     tags: tags
     properties: {
-      registrationEnabled: item.registrationEnabled
+      registrationEnabled: vnetLink.registrationEnabled
       virtualNetwork: {
-        id: item.vnetResourceId
+        id: vnetLink.vnetResourceId
       }
     }
   }]
