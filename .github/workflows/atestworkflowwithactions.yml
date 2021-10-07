@@ -1,0 +1,72 @@
+name: "AA test workflow with actions"
+
+on:
+  workflow_dispatch:
+    inputs:
+      removeDeployment:
+        description: 'Remove deployed module'
+        required: false
+        default: 'true'
+      versioningOption:
+        description: 'The mode to handle the version increments [major|minor|patch|custom]'
+        required: false
+        default: 'patch'
+      customVersion:
+        description: 'The version to enforce if [versionOption] is set to [custom]'
+        required: false
+        default: '0.0.1'
+  push:
+    branches:
+      - main
+    # paths:
+    #   - '.github/actions/templates/**'
+    #   - '.github/workflows/ms.analysisservices.servers.yml'
+    #   - 'arm/Microsoft.AnalysisServices/servers/**'
+    #   - '!arm/Microsoft.AnalysisServices/servers/readme.md'
+
+env:
+  moduleName: 'servers'
+  modulePath: 'arm/Microsoft.AnalysisServices/servers'
+  workflowPath: '.github/workflows/atestworkflow.yml'
+  AZURE_CREDENTIALS: ${{ secrets.AZURE_CREDENTIALS }}
+  ARM_SUBSCRIPTION_ID: ${{ secrets.ARM_SUBSCRIPTION_ID }}
+  ARM_MGMTGROUP_ID: ${{ secrets.ARM_MGMTGROUP_ID }}
+
+jobs:
+  
+  job_set_trigger:
+    runs-on: ubuntu-20.04
+    name: "Set input parameters to output variables"
+    steps:
+      - name: "Checkout"
+        uses: actions/checkout@v2
+        with:
+          fetch-depth: 0
+      - name: "Set input parameters"
+        id: get-trigger
+        uses: ./.github/actions/templates/getWorkflowInput
+        with:
+          modulePath: '${{ env.modulePath }}'
+          moduleName: '${{ env.moduleName}}'
+          workflowPath: '${{ env.workflowPath}}'
+    outputs:
+      removeDeployment: ${{ steps.get-trigger.outputs.removeDeployment }}
+      versioningOption: ${{ steps.get-trigger.outputs.versioningOption }}
+      customVersion: ${{ steps.get-trigger.outputs.customVersion }}
+  
+  job_get_trigger:
+    runs-on: ubuntu-20.04
+    needs: job_set_trigger
+    name: "Get job output variables"
+    steps:
+      - name: Access values from another job
+        run: |
+          echo "The trigger is ${{ needs.job_set_trigger.outputs.TRIGGER}}"
+          echo "The removeDeployment is ${{ needs.job_set_trigger.outputs.removeDeployment}}"
+          echo "The versioningOption is ${{ needs.job_set_trigger.outputs.versioningOption}}"
+          echo "The customVersion is ${{ needs.job_set_trigger.outputs.customVersion}}"
+      - name: Dump set trigger
+        env:
+          jobContext: ${{ toJson(needs.job_set_trigger) }}
+        run: echo "$jobContext"
+
