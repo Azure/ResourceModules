@@ -188,17 +188,14 @@ resource azureFirewallPip 'Microsoft.Network/publicIPAddresses@2021-02-01' = {
 }
 
 resource azureFirewallPip_lock 'Microsoft.Authorization/locks@2016-09-01' = if (lockForDeletion) {
-  name: '${azureFirewallPipName_var}-publicIpDoNotDelete'
+  name: '${azureFirewallPip.name}-doNotDelete'
   properties: {
     level: 'CanNotDelete'
   }
-  dependsOn: [
-    azureFirewallPip
-  ]
 }
 
 resource azureFirewallPip_diagnosticSettings 'Microsoft.Insights/diagnosticsettings@2017-05-01-preview' = if ((!empty(diagnosticStorageAccountId)) || (!empty(workspaceId)) || (!empty(eventHubAuthorizationRuleId)) || (!empty(eventHubName))) {
-  name: '${azureFirewallPipName_var}-diagnosticSettings'
+  name: '${azureFirewallPip.name}-diagnosticSettings'
   properties: {
     storageAccountId: (empty(diagnosticStorageAccountId) ? json('null') : diagnosticStorageAccountId)
     workspaceId: (empty(workspaceId) ? json('null') : workspaceId)
@@ -207,9 +204,6 @@ resource azureFirewallPip_diagnosticSettings 'Microsoft.Insights/diagnosticsetti
     metrics: ((empty(diagnosticStorageAccountId) && empty(workspaceId) && empty(eventHubAuthorizationRuleId) && empty(eventHubName)) ? json('null') : diagnosticsMetrics)
     logs: ((empty(diagnosticStorageAccountId) && empty(workspaceId) && empty(eventHubAuthorizationRuleId) && empty(eventHubName)) ? json('null') : diagnosticsLogsPublicIp)
   }
-  dependsOn: [
-    azureFirewallPip
-  ]
 }
 
 resource azureFirewall 'Microsoft.Network/azureFirewalls@2021-02-01' = {
@@ -246,13 +240,10 @@ resource azureFirewall 'Microsoft.Network/azureFirewalls@2021-02-01' = {
 }
 
 resource azureFirewall_lock 'Microsoft.Authorization/locks@2016-09-01' = if (lockForDeletion) {
-  name: '${azureFirewall.name}-azureFirewallDoNotDelete'
+  name: '${azureFirewall.name}-doNotDelete'
   properties: {
     level: 'CanNotDelete'
   }
-  dependsOn: [
-    azureFirewall
-  ]
 }
 
 resource azureFirewall_diagnosticSettings 'Microsoft.Insights/diagnosticsettings@2017-05-01-preview' = if ((!empty(diagnosticStorageAccountId)) || (!empty(workspaceId)) || (!empty(eventHubAuthorizationRuleId)) || (!empty(eventHubName))) {
@@ -265,9 +256,6 @@ resource azureFirewall_diagnosticSettings 'Microsoft.Insights/diagnosticsettings
     metrics: ((empty(diagnosticStorageAccountId) && empty(workspaceId) && empty(eventHubAuthorizationRuleId) && empty(eventHubName)) ? json('null') : diagnosticsMetrics)
     logs: ((empty(diagnosticStorageAccountId) && empty(workspaceId) && empty(eventHubAuthorizationRuleId) && empty(eventHubName)) ? json('null') : diagnosticsLogsAzureFirewall)
   }
-  dependsOn: [
-    azureFirewall
-  ]
 }
 
 module rbac_name './.bicep/nested_rbac.bicep' = [for (roleAssignment, index) in roleAssignments: {
@@ -277,9 +265,6 @@ module rbac_name './.bicep/nested_rbac.bicep' = [for (roleAssignment, index) in 
     builtInRoleNames: builtInRoleNames
     resourceName: azureFirewall.name
   }
-  dependsOn: [
-    azureFirewall
-  ]
 }]
 
 output azureFirewallResourceId string = azureFirewall.id
