@@ -201,6 +201,6 @@ module logicApp_rbac './.bicep/nested_rbac.bicep' = [for (roleAssignment, index)
   }
 }]
 
-output logicAppName string = logicAppName
+output logicAppName string = logicApp.name
 output logicAppResourceGroup string = resourceGroup().name
 output logicAppResourceId string = logicApp.id
