@@ -62,6 +62,7 @@ jobs:
           }
           echo "RemoveDeployment: " $removeDeployment
           echo "Input: " ${{ github.event.inputs.removeDeployment }}
+          Write-Host "::set-output name=removeDeployment::$removeDeployment"
         id: get-trigger
         shell: pwsh
       # - name: Set trigger output workflow_dispatch
@@ -78,6 +79,7 @@ jobs:
         run: echo "The trigger is ${{ steps.get-trigger.outputs.TRIGGER }}"
     outputs:
       trigger: ${{ steps.get-trigger.outputs.TRIGGER }}
+      removeDeployment: ${{ steps.get-trigger.outputs.removeDeployment }}
     # outputs:
     #   identityApproach: ${{ env.identityApproach }}
       # - run: echo ${{ github.event.inputs.removeDeployment }}
