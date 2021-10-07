@@ -60,14 +60,14 @@ resource networkWatcher 'Microsoft.Network/networkWatchers@2021-02-01' = {
   name: networkWatcherName
   properties: {}
 
-  resource connectionMonitors 'connectionMonitors@2021-02-01' = [for item in monitors: if (!empty(monitors)) {
-    name: (empty(monitors) ? 'dummy/dummy' : '${networkWatcher.name}/${item.connectionMonitorName}')
+  resource connectionMonitors 'connectionMonitors@2021-02-01' = [for monitor in monitors: if (!empty(monitors)) {
+    name: (empty(monitors) ? 'dummy/dummy' : '${networkWatcher.name}/${monitor.connectionMonitorName}')
     location: location
     tags: tags
     properties: {
-      endpoints: (empty(monitors) ? json('null') : item.endpoints)
-      testConfigurations: (empty(monitors) ? json('null') : item.testConfigurations)
-      testGroups: (empty(monitors) ? json('null') : item.testGroups)
+      endpoints: (empty(monitors) ? json('null') : monitor.endpoints)
+      testConfigurations: (empty(monitors) ? json('null') : monitor.testConfigurations)
+      testGroups: (empty(monitors) ? json('null') : monitor.testGroups)
       outputs: (empty(workspaceResourceId) ? json('null') : outputs)
     }
   }]
