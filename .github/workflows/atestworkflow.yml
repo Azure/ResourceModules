@@ -46,12 +46,13 @@ jobs:
       #   env:
       #     GITHUB_CONTEXT: ${{ toJson(github) }}
       #   run: echo "$GITHUB_CONTEXT"
-      - name: Set trigger output
+      - name: Set trigger output push
+        if: (${{ github.event_name == 'workflow_dispatch'}}
         run: |
           Write-Host "::set-output name=TRIGGER::${{ github.event_name }}"
-          # if (${{ github.event_name == 'workflow_dispatch'}}) {
-          #   Write-Host "::set-output name=TRIGGER::${{ github.event_name }}"
-          # }
+          if (${{ github.event_name == 'workflow_dispatch'}}) {
+            Write-Host "::set-output name=TRIGGER::${{ github.event_name }}"
+          }
           # else {
           #   Write-Host "::set-output name=TRIGGER::${{ github.event_name }}"
           # }
