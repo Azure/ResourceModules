@@ -23,8 +23,8 @@
     "frontendpublicIpResourceId": {
       "value": "/subscriptions/8629be3b-96bc-482d-a04b-ffff597c65a2/resourceGroups/dependencies-rg/providers/Microsoft.Network/publicIPAddresses/sxx-az-pip-weu-x-003"
     },
-    "managedIdentityResourceId":{
-      "value": "/subscriptions/8629be3b-96bc-482d-a04b-ffff597c65a2/resourceGroups/dependencies-rg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/sxx-az-msi-weu-x-002"
+    "managedIdentityResourceId": {
+      "value": "/subscriptions/8629be3b-96bc-482d-a04b-ffff597c65a2/resourceGroups/validation-rg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/adp-sxx-az-msi-weu-x-001"
     },
     "sslCertificateKeyVaultSecretId": {
       "value": "https://sxx-az-kv-weu-x-004.vault.azure.net/secrets/applicationGatewaySslCertificate/b664f0004c734e838c42091705b001b6"
@@ -69,7 +69,7 @@
         }
       ]
     },
-    "probes":{
+    "probes": {
       "value": [
         {
           "backendHttpConfigurationName": "privateVmHttpSetting",
@@ -87,7 +87,7 @@
           ]
         }
       ]
-    },    
+    },
     "frontendHttpsListeners": {
       "value": [
         {
@@ -129,17 +129,6 @@
           "backendHttpConfigurationName": "privateVmHttpSetting"
         }
       ]
-    },
-    // "roleAssignments": {
-    //     "value": [
-    //         {
-    //             "roleDefinitionIdOrName": "Contributor",
-    //             "principalIds": [
-    //                 "12345678-1234-1234-1234-123456789012", // object 1
-    //                 "78945612-1234-1234-1234-123456789012" // object 2
-    //             ]
-    //         }
-    //     ]
-    // },
+    }
   }
 }
