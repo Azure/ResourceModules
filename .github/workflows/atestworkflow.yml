@@ -56,9 +56,14 @@ jobs:
             # echo "RemoveDeployment workflow_dispatch: " $removeDeployment
           }
           else {
-            $removeDeployment='false'
-            $versioningOption='patch'
-            $customVersion='0.0.1'
+            $workflowPath='${{ github.event.workflow }}'
+            $workflowObj=ConvertFrom-Yaml -Path $workflowPath
+            $removeDeployment=$workflowObj.on.workflow_dispatch.inputs.removeDeployment.default
+            $versioningOption=$workflowObj.on.workflow_dispatch.inputs.versioningOption.default
+            $customVersion=$workflowObj.on.workflow_dispatch.inputs.customVersion.default
+            # $removeDeployment='false'
+            # $versioningOption='patch'
+            # $customVersion='0.0.1'
             # echo "RemoveDeployment push: " $removeDeployment
           }
           Write-Host "::set-output name=removeDeployment::$removeDeployment"
