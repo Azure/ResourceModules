@@ -56,9 +56,11 @@ jobs:
           # Write-Host "::set-output name=customVersion::0.0.1"
           if ('${{ github.event_name == 'workflow_dispatch'}}') {
             $removeDeployment='${{ github.event.inputs.removeDeployment }}'
+            echo "RemoveDeployment: " $removeDeployment
           }
           else {
-            $removeDeployment='false'
+            $removeDeployment="false"
+            echo "RemoveDeployment: " $removeDeployment
           }
           echo "RemoveDeployment: " $removeDeployment
           echo "Input: " ${{ github.event.inputs.removeDeployment }}
