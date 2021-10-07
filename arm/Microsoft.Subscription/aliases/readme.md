@@ -1,4 +1,4 @@
-# Subscription
+# Resource
 
 This template will create a subscription based on the provided parameter.
 
@@ -6,10 +6,9 @@ This template will create a subscription based on the provided parameter.
 
 | Resource Type                             | Api Version        |
 | :---------------------------------------- | :----------------- |
-| `Microsoft.Resources/deployments`         | 2019-10-01         |
-| `Microsoft.Subscription/aliases`          | 2020-09-01         |
-| `Microsoft.Resources/tags`                | 2020-10-01         |
-| `Microsoft.Authorization/roleAssignments` | 2018-09-01-preview |
+| `Microsoft.Resources/deployments` | 2019-10-01 |
+| `Microsoft.Resources/deployments` | 2021-01-01 |
+| `Microsoft.Subscription/aliases` | 2020-09-01 |
 
 ### Resource dependency
 
@@ -19,15 +18,15 @@ The following resources are required to be able to deploy this resource:
 
 ## Parameters
 
-| Parameter Name            | Type   | Default Value | Possible values     | Description                                                               |
-| :------------------------ | :----- | :------------ | :------------------ | :------------------------------------------------------------------------ |
-| `subscriptionAliasName`   | string |               |                     | Required. Unique alias name.                                              |
-| `displayName`             | string |               |                     | Required. Subscription display name.                                      |
-| `targetManagementGroupId` | string | ""            |                     | Optional. Target management group where the subscription will be created. |
-| `billingScope`            | string |               |                     | Required. The account to be invoiced for the subscription.                |
-| `workload`                | string | Production    | Production, DevTest | Optional. Subscription workload.                                          |
-| `tags`                    | object | []            |                     | Optional. Tags of the storage account resource.                           |
-| `roleAssignments`         | array  | []            |                     | Optional. Array of role assignment objects.                               |
+| Parameter Name | Type | Description | DefaultValue | Possible values |
+| :-- | :-- | :-- | :-- | :-- |
+| `billingScope` | string | Required. The account to be invoiced for the subscription. e.g. '/providers/Microsoft.Billing/billingAccounts/12345678/enrollmentAccounts/123456 |  |  |
+| `displayName` | string | Required. Subscription display name. |  |  |
+| `roleAssignments` | array | Optional. Array of role assignment objects that contain the 'roleDefinitionIdOrName' and 'principalIds' to define RBAC role assignments on this resource. In the roleDefinitionIdOrName attribute, you can provide either the display name of the role definition, or it's fully qualified ID in the following format: '/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11' | System.Object[] |  |
+| `subscriptionAliasName` | string | Required. Unique alias name. Unique and linking ID |  |  |
+| `tags` | object | Optional. Tags of the subscription. |  |  |
+| `targetManagementGroupId` | string | Optional. Target management group where the subscription will be created. |  |  |
+| `workload` | string | Optional. Subscription workload. | Production | System.Object[] |
 
 ### Parameter Usage: `tags`
 
@@ -89,13 +88,13 @@ Tag names and tag values can be provided as needed. A tag can be left without a 
 
 ## Outputs
 
-| Output Name       | Type   | Description                                      |
-| :---------------- | :----- | :----------------------------------------------- |
-| `subscriptionId`  | string | The subscription Id of the created subscription. |
-| `tags`            | object | The tags applied to the subscription.            |
-| `roleAssignments` | array  | Array of role assignment objects.                |
+| Output Name | Type | Description |
+| :-- | :-- | :-- |
+| `roleAssignments` | array | Array of role assignment objects. |
+| `subscriptionId` | string | The subscription Id of the created subscription. |
+| `tags` | object | The tags applied to the subscription. |
 
-## Prerequisites
+## Considerations
 
 In order to create a subscription via code, the following pre-requisites are necessary:
 
@@ -103,6 +102,14 @@ In order to create a subscription via code, the following pre-requisites are nec
 - A single SPN used for the template deployment with permissions to both:
   - the billing scope of the EA enrollment account.
   - deployments on the tenant scope and management group where the subscription will be provisioned.
+
+## Additional resources
+
+- [Use tags to organize your Azure resources](https://docs.microsoft.com/en-us/azure/azure-resource-manager/resource-group-using-tags)
+- [Azure Resource Manager template reference](https://docs.microsoft.com/en-us/azure/templates/)
+- [Deployments](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Resources/2021-01-01/deployments)
+- [Deployments](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Resources/2021-01-01/deployments)
+- [Deployments](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Resources/2021-01-01/deployments)
 
 ### Permissions to create subscriptions
 
@@ -153,12 +160,3 @@ A custom role can be created for with following permissions on a management grou
 Scope: `/providers/Microsoft.Management/managementGroups/<targetManagementGroup>`
 
 Consider adding more of the [`Microsoft.Management`](https://docs.microsoft.com/en-us/azure/role-based-access-control/resource-provider-operations#microsoftmanagement) and [`Microsoft.Subscription`](https://docs.microsoft.com/en-us/azure/role-based-access-control/resource-provider-operations#microsoftsubscription) operations to the custom role as needed.
-
-## Additional resources
-
-- [Use tags to organize your Azure resources | Microsoft Docs](https://docs.microsoft.com/en-us/azure/azure-resource-manager/resource-group-using-tags)
-- [Azure Resource Manager template reference | Microsoft Docs](https://docs.microsoft.com/en-us/azure/templates/)
-- [Deployments | Microsoft Docs](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Resources/2019-10-01/deployments)
-- [Aliases | Microsoft Docs](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Subscription/2020-09-01/aliases)
-- [Programmatically create Azure subscriptions with preview APIs | Microsoft Docs](https://docs.microsoft.com/en-us/azure/cost-management-billing/manage/programmatically-create-subscription-preview)
-- [Enable subscription creation to a service principal | GitHub](https://github.com/Azure/Enterprise-Scale/blob/main/docs/Deploy/enable-subscription-creation.md)
