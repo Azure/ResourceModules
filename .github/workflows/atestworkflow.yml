@@ -49,6 +49,12 @@ jobs:
       - name: Set trigger output
         run: |
           Write-Host "::set-output name=TRIGGER::${{ github.event_name }}"
+          # if (${{ github.event_name == 'workflow_dispatch'}}) {
+          #   Write-Host "::set-output name=TRIGGER::${{ github.event_name }}"
+          # }
+          # else {
+          #   Write-Host "::set-output name=TRIGGER::${{ github.event_name }}"
+          # }
         id: get-trigger
         shell: pwsh
       - name: Get trigger output
