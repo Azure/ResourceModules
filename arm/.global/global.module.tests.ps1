@@ -712,7 +712,7 @@ Describe "Deployment template tests" -Tag Template {
             $Variable = ($Template.variables | Get-Member | Where-Object { $_.MemberType -eq "NoteProperty" }).Name
 
             foreach ($Variab in $Variable) {
-                if ($Variab.substring(0, 1) -cnotmatch '[a-z]' -or $Variab -match '-' -or $Variab -match '_') {
+                if ($Variab.substring(0, 1) -cnotmatch '[a-z]' -or $Variab -match '-') {
                     $CamelCasingFlag += $false
                 }
                 else {
@@ -796,13 +796,16 @@ Describe "Deployment template tests" -Tag Template {
             if ((($Schemaverion.Split('/')[5]).Split('.')[0]) -eq (($RGdeployment.Split('/')[5]).Split('.')[0])) {
                 $Locationparamoutputvalue = $Template.parameters.Location.defaultValue
                 $Locationparamoutput = ($Template.parameters | Get-Member | Where-Object { $_.MemberType -eq "NoteProperty" }).Name
-                if ($Locationparamoutput -contains "Location" -and ($Locationparamoutputvalue -eq "[resourceGroup().Location]" -or $Locationparamoutputvalue -eq "global")) {
-                    $LocationFlag = $true
+                if ($Locationparamoutput -contains "Location") {
+                    if ($Locationparamoutputvalue -eq "[resourceGroup().Location]" -or $Locationparamoutputvalue -eq "global") {
+                        $LocationFlag = $true
+                    }
+                    else {
+
+                        $LocationFlag = $false
+                    }
+                    $LocationFlag | Should -Contain $true
                 }
-                else {
-                    $LocationFlag = $false
-                }
-                $LocationFlag | Should -Contain $true
             }
         }
 
@@ -828,6 +831,9 @@ Describe "Deployment template tests" -Tag Template {
                 }
                 elseif (($Locmand | Get-Member | Where-Object { $_.MemberType -eq "NoteProperty" }).Name -notcontains "Location") {
                     $LocationParamFlag += $true
+                }
+                elseif (($Locmand | Get-Member | Where-Object { $_.MemberType -eq "NoteProperty" }).Name -notcontains "resourceGroup") {
+                    $LocationParamFlag += $true    
                 }
                 else {
                     $LocationParamFlag += $false

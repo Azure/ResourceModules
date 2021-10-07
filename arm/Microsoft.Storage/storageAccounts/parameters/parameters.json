@@ -41,28 +41,14 @@
         "blobContainers": {
             "value": [
                 {
-                    "name": "wvdscripts",
-                    "publicAccess": "Container", //Container, Blob, None
-                    "roleAssignments": [
-                        // {
-                        //     "roleDefinitionIdOrName": "Reader",
-                        //     "principalIds": [
-                        //         "12345678-1234-1234-1234-123456789012" // object 1
-                        //     ]
-                        // }
-                    ]
+                    "name": "avdscripts",
+                    "publicAccess": "Container",
+                    "roleAssignments": []
                 },
                 {
-                    "name": "wvdsoftware",
-                    "publicAccess": "Container", //Container, Blob, None
-                    "roleAssignments": [
-                        // {
-                        //     "roleDefinitionIdOrName": "Reader",
-                        //     "principalIds": [
-                        //         "12345678-1234-1234-1234-123456789012" // object 1
-                        //     ]
-                        // }
-                    ]
+                    "name": "avdsoftware",
+                    "publicAccess": "Container",
+                    "roleAssignments": []
                 },
                 {
                     "name": "archivecontainer",
@@ -80,28 +66,14 @@
         "fileShares": {
             "value": [
                 {
-                    "name": "wvdprofiles",
+                    "name": "avdprofiles",
                     "shareQuota": "5120",
-                    "roleAssignments": [
-                        // {
-                        //     "roleDefinitionIdOrName": "Reader",
-                        //     "principalIds": [
-                        //         "12345678-1234-1234-1234-123456789012" // object 1
-                        //     ]
-                        // }
-                    ]
+                    "roleAssignments": []
                 },
                 {
-                    "name": "wvdprofiles2",
+                    "name": "avdprofiles2",
                     "shareQuota": "5120",
-                    "roleAssignments": [
-                        // {
-                        //     "roleDefinitionIdOrName": "Reader",
-                        //     "principalIds": [
-                        //         "12345678-1234-1234-1234-123456789012" // object 1
-                        //     ]
-                        // }
-                    ]
+                    "roleAssignments": []
                 }
             ]
         },
@@ -116,14 +88,7 @@
                 {
                     "name": "queue1",
                     "metadata": {},
-                    "roleAssignments": [
-                        // {
-                        //     "roleDefinitionIdOrName": "Reader",
-                        //     "principalIds": [
-                        //         "12345678-1234-1234-1234-123456789012" // object 1
-                        //     ]
-                        // }
-                    ]
+                    "roleAssignments": []
                 }
             ]
         }

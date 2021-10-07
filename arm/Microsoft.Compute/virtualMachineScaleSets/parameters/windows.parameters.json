@@ -43,7 +43,7 @@
         "adminUsername": {
             "reference": {
                 "keyVault": {
-                    "id": "/subscriptions/8629be3b-96bc-482d-a04b-ffff597c65a2/resourceGroups/dependencies-rg/providers/Microsoft.KeyVault/vaults/sxx-az-kv-weu-x-004"
+                    "id": "/subscriptions/8629be3b-96bc-482d-a04b-ffff597c65a2/resourceGroups/validation-rg/providers/Microsoft.KeyVault/vaults/adp-sxx-az-kv-weu-x-001"
                 },
                 "secretName": "adminUsername"
             }
@@ -51,7 +51,7 @@
         "adminPassword": {
             "reference": {
                 "keyVault": {
-                    "id": "/subscriptions/8629be3b-96bc-482d-a04b-ffff597c65a2/resourceGroups/dependencies-rg/providers/Microsoft.KeyVault/vaults/sxx-az-kv-weu-x-004"
+                    "id": "/subscriptions/8629be3b-96bc-482d-a04b-ffff597c65a2/resourceGroups/validation-rg/providers/Microsoft.KeyVault/vaults/adp-sxx-az-kv-weu-x-001"
                 },
                 "secretName": "adminPassword"
             }
@@ -76,8 +76,8 @@
         // "windowsScriptExtensionFileData": {
         //     "value": [
         //         {
-        //             "uri": "https://sxxazsaweux003.blob.core.windows.net/wvdscripts/testscript.ps1",
-        //             "storageAccountId": "/subscriptions/8629be3b-96bc-482d-a04b-ffff597c65a2/resourceGroups/dependencies-rg/providers/Microsoft.Storage/storageAccounts/sxxazsaweux003"
+        //             "uri": "https://adpsxxazsaweux001.blob.core.windows.net/avdscripts/testscript.ps1",
+        //             "storageAccountId": "/subscriptions/<placeholder>/resourceGroups/dependencies-rg/providers/Microsoft.Storage/storageAccounts/adpsxxazsaweux001"
         //         }
         //     ]
         // },

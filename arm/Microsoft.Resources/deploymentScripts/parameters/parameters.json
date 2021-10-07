@@ -6,10 +6,10 @@
             "value": "sxx-az-ds-weu-x-001"
         },
         "userMsiName": {
-            "value": "sxx-az-msi-weu-x-002"
+            "value": "adp-sxx-az-msi-weu-x-001"
         },
         "userMsiResourceGroup": {
-            "value": "dependencies-rg"
+            "value": "validation-rg"
         },
         "kind": {
             "value": "AzurePowerShell"

@@ -9,7 +9,7 @@ This module deploys a virtual machine scale set
 | `Microsoft.Compute/ProximityPlacementGroups` | 2021-04-01 |
 | `Microsoft.Compute/virtualMachineScaleSets/extensions` | 2020-06-01 |
 | `Microsoft.Compute/virtualMachineScaleSets/providers/diagnosticSettings` | 2017-05-01-preview |
-| `Microsoft.Compute/virtualMachineScaleSets/providers/roleAssignments` | 2018-09-01-preview |
+| `Microsoft.Compute/virtualMachineScaleSets/providers/roleAssignments` | 2020-04-01-preview |
 | `Microsoft.Compute/virtualMachineScaleSets` | 2021-04-01 |
 | `Microsoft.Resources/deployments` | 2020-06-01 |
 | `providers/locks` | 2016-09-01 |
@@ -251,11 +251,11 @@ The following resources are required to be able to deploy this resource.
     "value": [
         //storage accounts with SAS token requirement
         {
-            "uri": "https://storageAccount.blob.core.windows.net/wvdscripts/File1.ps1",
+            "uri": "https://storageAccount.blob.core.windows.net/avdscripts/File1.ps1",
             "storageAccountId": "/subscriptions/12345678-1234-1234-1234-123456789012/resourceGroups/rgName/providers/Microsoft.Storage/storageAccounts/storageAccountName"
         },
         {
-            "uri": "https://storageAccount.blob.core.windows.net/wvdscripts/File2.ps1",
+            "uri": "https://storageAccount.blob.core.windows.net/avdscripts/File2.ps1",
             "storageAccountId": "/subscriptions/12345678-1234-1234-1234-123456789012/resourceGroups/rgName/providers/Microsoft.Storage/storageAccounts/storageAccountName"
         },
         //storage account with public container (no SAS token is required) OR other public URL (not a storage account)
@@ -272,7 +272,7 @@ The following resources are required to be able to deploy this resource.
 "windowsScriptExtensionFileData": {
     "value": [
         {
-            "https://mystorageaccount.blob.core.windows.net/wvdscripts/testscript.ps1"
+            "https://mystorageaccount.blob.core.windows.net/avdscripts/testscript.ps1"
         }
     ]
 },

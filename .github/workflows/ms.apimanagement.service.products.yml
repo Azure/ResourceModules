@@ -65,6 +65,7 @@ jobs:
     runs-on: ubuntu-20.04
     name: "Run deployment validation module tests"
     strategy:
+      fail-fast: false
       matrix:
         parameterFilePaths: ['parameters.json']
     steps:
@@ -98,6 +99,7 @@ jobs:
     - job_tests_module_global_api
     - job_tests_module_deploy_validate
     strategy:
+      fail-fast: false
       matrix:
         parameterFilePaths: ['parameters.json']
     steps:
@@ -130,7 +132,7 @@ jobs:
     if: contains(fromJson('["refs/heads/main", "refs/heads/master"]'), github.ref)
     runs-on: ubuntu-20.04
     needs:
-    - job_deploy_module
+      - job_deploy_module
     steps:
       - name: "Checkout"
         uses: actions/checkout@v2
@@ -159,9 +161,9 @@ jobs:
   job_remove_module:
     runs-on: ubuntu-20.04
     name: "Remove module"
-    if: ${{ github.event.inputs.removeDeployment == 'true' }}
+    if: ${{ always() && !cancelled() && github.event.inputs.removeDeployment == 'true' && (contains(needs.*.result, 'success') || contains(needs.*.result, 'failure')) }}
     needs:
-    - job_deploy_module
+      - job_deploy_module
     steps:
       - name: "Checkout"
         uses: actions/checkout@v2

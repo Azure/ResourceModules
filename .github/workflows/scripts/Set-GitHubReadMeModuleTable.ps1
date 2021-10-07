@@ -45,10 +45,13 @@ function Set-GitHubReadMeModuleTable {
 
         [Parameter(Mandatory)]
         [string] $organization,
-
+        
         [Parameter(Mandatory)]
         [ValidateSet('Name', 'ProviderNamespace', 'ResourceType', 'TemplateType', 'Deploy', 'Status')]
-        [string[]] $columnsInOrder
+        [string[]] $columnsInOrder,
+
+        [Parameter(Mandatory = $false)]
+        [string] $sortByColumn = 'ProviderNamespace'
     )
 
     # Load functions
@@ -67,6 +70,7 @@ function Set-GitHubReadMeModuleTable {
         RepositoryName = $repositoryName 
         Organization   = $organization 
         ColumnsInOrder = $columnsInOrder
+        sortByColumn   = $sortByColumn
     }
     $tableString = Get-ModulesAsMarkdownTable @tableStringInputObject
 

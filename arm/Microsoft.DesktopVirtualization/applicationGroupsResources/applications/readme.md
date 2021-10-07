@@ -1,6 +1,6 @@
-# WVD Applications
+# AVD Applications
 
-This module deploys WVD Applications.
+This module deploys AVD Applications.
 
 
 
@@ -9,7 +9,7 @@ This module deploys WVD Applications.
 |Resource Type|ApiVersion|
 |:--|:--|
 |`Microsoft.Resources/deployments`|2018-02-01|
-|`Microsoft.DesktopVirtualization/applicationGroups/applications`|2019-12-10-preview|
+|`Microsoft.DesktopVirtualization/applicationGroups/applications`|2021-07-12|
 
 
 ## Parameters
@@ -50,13 +50,14 @@ This module deploys WVD Applications.
         }
     ]
 }
+```
 
 ## Outputs
 
 | Output Name | Type | Description |
 | :-- | :-- | :-- |
 | `appGroupName` | string | The Name of the Application Group to register the Application(s) in. |
-| `applicationResourceGroup` | string | The name of the Resource Group the WVD Applications were created in. |
+| `applicationResourceGroup` | string | The name of the Resource Group the AVD Applications were created in. |
 | `applicationResourceIds` | array | The list of the application resourceIds deployed. |
 
 
@@ -68,3 +69,4 @@ This module deploys WVD Applications.
 
 - [What is Windows Virtual Desktop?](https://docs.microsoft.com/en-us/azure/virtual-desktop/overview)
 - [Windows Virtual Desktop environment](https://docs.microsoft.com/en-us/azure/virtual-desktop/environment-setup)
+- [Reference](https://docs.microsoft.com/en-us/azure/templates/microsoft.desktopvirtualization/2021-07-12/applicationgroups/applications)

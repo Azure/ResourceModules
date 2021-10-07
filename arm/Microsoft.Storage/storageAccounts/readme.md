@@ -51,7 +51,7 @@ The default parameter values are based on the needs of deploying a diagnostic st
 | `sasTokenValidityLength` | string | PT8H |  | Optional. SAS token validity length. Usage: 'PT8H' - valid for 8 hours; 'P5D' - valid for 5 days; 'P1Y' - valid for 1 year. When not provided, the SAS token will be valid for 8 hours. |
 | `storageAccountAccessTier` | string | Hot | System.Object[] | Optional. Storage Account Access Tier. |
 | `storageAccountKind` | string | StorageV2 | System.Object[] | Optional. Type of Storage Account to create. |
-| `storageAccountName` | string |  |  | Optional. Name of the Storage Account. If no name is provided, then unique name will be created.| 
+| `storageAccountName` | string |  |  | Optional. Name of the Storage Account. If no name is provided, then unique name will be created.|
 | `storageAccountSku` | string | Standard_GRS | System.Object[] | Optional. Storage Account Sku Name. |
 | `tables` | array | System.Object[] |  | Optional. Tables to create. |
 | `tags` | object |  |  | Optional. Tags of the resource. |
@@ -138,13 +138,13 @@ Here's an example of specifying two Blob Containes. The first named "one" with p
 
 The `fileShares` parameter accepts a JSON Array of object with "name" and "shareQuota" properties in each to specify the name of the File Shares to create and the maximum size of the shares, in gigabytes. Also RBAC can be assigned at File Share level.
 
-Here's an example of specifying a single File Share named "wvdprofiles" with 5TB (5120GB) of shareQuota and Reader role assigned to two principal Ids.
+Here's an example of specifying a single File Share named "avdprofiles" with 5TB (5120GB) of shareQuota and Reader role assigned to two principal Ids.
 
 ```json
 "fileShares": {
     "value": [
         {
-            "name": "wvdprofiles",
+            "name": "avdprofiles",
             "shareQuota": "5120",
             "roleAssignments": [
                 {

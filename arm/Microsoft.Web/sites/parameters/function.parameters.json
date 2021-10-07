@@ -9,7 +9,7 @@
             "value": "functionapp"
         },
         "appServicePlanName": {
-            "value": "sxx-az-app-weu-x-hp-001"
+            "value": "adp-sxx-az-asp-weu-x-001"
         },
         "appServicePlanSkuName": {
             "value": "P1v2"
@@ -29,10 +29,10 @@
             }
         },
         "storageAccountName": {
-            "value": "sxxazsaweux003"
+            "value": "adpsxxazsaweux002"
         },
         "storageAccountResourceGroupName": {
-            "value": "dependencies-rg"
+            "value": "validation-rg"
         },
         "functionsWorkerRuntime": {
             "value": "powershell"
