@@ -6,7 +6,7 @@
             "value": "test-az-pls-weu-x-001"
         },
         "lock": {
-            "value": "ReadOnly"
+            "value": "CanNotDelete"
         },
         // "scopedResources": {
         //     "value": [
