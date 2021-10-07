@@ -95,7 +95,9 @@ jobs:
       #     fetch-depth: 0
       # ${{ needs.Get_identityApproach.outputs.identityApproach == 'AD' }} 
       - name: Get trigger output
-        run: echo "The trigger is ${{ needs.job_set_trigger.outputs.TRIGGER}}"
+        run: |
+          echo "The trigger is ${{ needs.job_set_trigger.outputs.TRIGGER}}"
+          echo "The removeDeployment is ${{ needs.job_set_trigger.outputs.removeDeployment}}"
       - name: Dump set trigger
         env:
           TRIGGER: ${{ toJson(needs.job_set_trigger) }}
