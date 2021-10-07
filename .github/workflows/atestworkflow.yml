@@ -47,15 +47,13 @@ jobs:
       #     GITHUB_CONTEXT: ${{ toJson(github) }}
       #   run: echo "$GITHUB_CONTEXT"
       - name: Set trigger output push
+        if: github.event == 'push'
         # if: ${{ github.event_name == 'workflow_dispatch'}}
         run: |
           Write-Host "::set-output name=TRIGGER::${{ github.event_name }}"
-          if (${{ github.event_name == 'workflow_dispatch'}}) {
-            Write-Host "::set-output name=TRIGGER::${{ github.event_name }}"
-          }
-          # else {
-          #   Write-Host "::set-output name=TRIGGER::${{ github.event_name }}"
-          # }
+          Write-Host "::set-output name=removeDeployment::false"
+          Write-Host "::set-output name=versioningOption::patch"
+          Write-Host "::set-output name=customVersion::0.0.1"
         id: get-trigger
         shell: pwsh
       - name: Get trigger output
