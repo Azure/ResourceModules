@@ -94,3 +94,12 @@ runs:
           echo "::set-output name=customVersion::$customVersion"
         id: get-trigger
         shell: pwsh
+        # outputs:
+        #   removeDeployment: ${{ steps.get-trigger.outputs.removeDeployment }}
+        #   versioningOption: ${{ steps.get-trigger.outputs.versioningOption }}
+        #   customVersion: ${{ steps.get-trigger.outputs.customVersion }}
+outputs:
+  # removeDeployment: ${{ steps.get-trigger.outputs.removeDeployment }}
+  removeDeployment: $removeDeployment
+  versioningOption: ${{ steps.get-trigger.outputs.versioningOption }}
+  customVersion: ${{ steps.get-trigger.outputs.customVersion }}

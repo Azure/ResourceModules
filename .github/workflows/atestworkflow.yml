@@ -15,9 +15,9 @@ on:
         description: 'The version to enforce if [versionOption] is set to [custom]'
         required: false
         default: '0.0.1'
-  # push:
-  #   branches:
-  #     - main
+  push:
+    branches:
+      - main
     # paths:
     #   - '.github/actions/templates/**'
     #   - '.github/workflows/ms.analysisservices.servers.yml'
@@ -70,13 +70,12 @@ jobs:
       #   shell: pwsh
       - name: Set input parameters
         run: |
-
+          
           # When running from workflow_dispatch event get input values
           if ('${{ github.event_name }}' -eq 'workflow_dispatch') {
             $removeDeployment='${{ github.event.inputs.removeDeployment }}'
             $versioningOption='${{ github.event.inputs.versioningOption }}'
             $customVersion='${{ github.event.inputs.customVersion }}'
-
           }
 
           # Otherwise retrieve default values

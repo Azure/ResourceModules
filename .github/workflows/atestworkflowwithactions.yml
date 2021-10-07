@@ -15,9 +15,9 @@ on:
         description: 'The version to enforce if [versionOption] is set to [custom]'
         required: false
         default: '0.0.1'
-  push:
-    branches:
-      - main
+  # push:
+  #   branches:
+  #     - main
     # paths:
     #   - '.github/actions/templates/**'
     #   - '.github/workflows/ms.analysisservices.servers.yml'
