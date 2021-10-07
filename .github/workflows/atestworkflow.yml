@@ -49,12 +49,13 @@ jobs:
       - name: Set trigger output
         run: |
           if ${{ github.event_name == 'workflow_dispatch'}} {
-            echo '::set-output name=TRIGGER::${{ github.event_name }}'
+            Write-Host "::set-output name=TRIGGER::${{ github.event_name }}"
           }
           else {
-            echo '::set-output name=TRIGGER::${{ github.event_name }}'
+            Write-Host "::set-output name=TRIGGER::${{ github.event_name }}"
           }
         id: get-trigger
+        shell: pwsh
       - name: Get trigger output
         run: echo "The trigger is ${{ steps.get-trigger.outputs.TRIGGER }}"
     outputs:
