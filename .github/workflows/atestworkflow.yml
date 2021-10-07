@@ -51,6 +51,8 @@ jobs:
         id: get-trigger
       - name: Get trigger output
         run: echo "The trigger is ${{ steps.get-trigger.outputs.TRIGGER }}"
+    outputs:
+      vars: ${{ steps.get-trigger.outputs }}
     # outputs:
     #   identityApproach: ${{ env.identityApproach }}
       # - run: echo ${{ github.event.inputs.removeDeployment }}
