@@ -13,9 +13,6 @@ param publicNetworkAccess string = 'Enabled'
 @description('Optional. Array of IPs to whitelist.')
 param inboundIpRules array = []
 
-@description('Optional. The name of the Diagnostic setting.')
-param diagnosticSettingName string = 'service'
-
 @description('Optional. Specifies the number of days that logs will be kept for; a value of 0 will retain data indefinitely.')
 @minValue(0)
 @maxValue(365)
@@ -48,7 +45,7 @@ param tags object = {}
 @description('Optional. Customer Usage Attribution id (GUID). This GUID must be previously registered')
 param cuaId string = ''
 
-var eventGridResourceId = eventGridName.id
+var eventGridResourceId = eventGrid.id
 var eventGridApiVersion = providers('Microsoft.EventGrid', 'topics').apiVersions[0]
 var diagnosticsMetrics = [
   {
@@ -120,7 +117,7 @@ resource eventGrid_lock 'Microsoft.Authorization/locks@2016-09-01' = if (lockFor
 }
 
 resource eventGrid_diagnosticSettings 'Microsoft.Insights/diagnosticsettings@2017-05-01-preview' = if ((!empty(diagnosticStorageAccountId)) || (!empty(workspaceId)) || (!empty(eventHubAuthorizationRuleId)) || (!empty(eventHubName))) {
-  name: '${eventGrid.name}-${diagnosticSettingName}'
+  name: '${eventGrid.name}-diagnosticSettings'
   properties: {
     storageAccountId: (empty(diagnosticStorageAccountId) ? json('null') : diagnosticStorageAccountId)
     workspaceId: (empty(workspaceId) ? json('null') : workspaceId)
