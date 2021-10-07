@@ -55,11 +55,12 @@ jobs:
           # Write-Host "::set-output name=versioningOption::patch"
           # Write-Host "::set-output name=customVersion::0.0.1"
           if ('${{ github.event_name == 'workflow_dispatch'}}') {
-            $removeDeployment=${{ github.event.inputs.removeDeployment }}
+            $removeDeployment='${{ github.event.inputs.removeDeployment }}'
           }
           else {
             $removeDeployment='false'
           }
+          Write-Host $removeDeployment
         id: get-trigger
         shell: pwsh
       # - name: Set trigger output workflow_dispatch
