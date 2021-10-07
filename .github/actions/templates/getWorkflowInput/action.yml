@@ -2,15 +2,9 @@ name: 'Get Workflow Input'
 description: 'Get Workflow Input'
 
 inputs:
-  # moduleName:
-  #   description: 'The name of the module to remove'
-  #   required: true
   workflowPath:
     description: 'The path to the template file set for removal. Used to determine the type of resource.'
     required: true
-  # resourceGroupName:
-  #   description: 'The resource group the module is deployed into'
-  #   required: true
 
 runs:
   using: "composite"
