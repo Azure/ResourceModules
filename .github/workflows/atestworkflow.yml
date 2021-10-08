@@ -70,7 +70,7 @@ jobs:
       #   shell: pwsh
       - name: Set input parameters
         run: |
-
+          
           # When running from workflow_dispatch event get input values
           if ('${{ github.event_name }}' -eq 'workflow_dispatch') {
             $removeDeployment='${{ github.event.inputs.removeDeployment }}'
