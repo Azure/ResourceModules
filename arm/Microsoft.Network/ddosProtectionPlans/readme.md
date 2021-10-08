@@ -10,7 +10,7 @@ This template deploys a DDoS protection plan.
 |`Microsoft.Resources/deployments`|2018-02-01|
 |`Microsoft.Network/ddosProtectionPlans`|2021-02-01|
 |`Microsoft.Authorization/locks`|2016-09-01|
-|`Microsoft.Network/ddosProtectionPlans/providers/roleAssignments`|2018-09-01-preview|
+|`Microsoft.Network/ddosProtectionPlans/providers/roleAssignments`|2020-04-01-preview|
 
 ## Parameters
 
