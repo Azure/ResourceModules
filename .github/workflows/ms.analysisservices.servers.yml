@@ -67,11 +67,11 @@ jobs:
         uses: actions/checkout@v2
         with:
           fetch-depth: 0
-      # - name: "Test module"
-      #   uses: ./.github/actions/templates/validateModuleGeneral
-      #   with:
-      #     modulePath: '${{ env.modulePath }}'
-      #     moduleName: '${{ env.moduleName}}'
+      - name: "Test module"
+        uses: ./.github/actions/templates/validateModuleGeneral
+        with:
+          modulePath: '${{ env.modulePath }}'
+          moduleName: '${{ env.moduleName}}'
 
   # Global API tests
   # ----------------
@@ -83,11 +83,11 @@ jobs:
         uses: actions/checkout@v2
         with:
           fetch-depth: 0
-      # - name: "Test module"
-      #   uses: ./.github/actions/templates/validateModuleApis
-      #   with:
-      #     modulePath: '${{ env.modulePath }}'
-      #     moduleName: '${{ env.moduleName}}'
+      - name: "Test module"
+        uses: ./.github/actions/templates/validateModuleApis
+        with:
+          modulePath: '${{ env.modulePath }}'
+          moduleName: '${{ env.moduleName}}'
 
   # Validate deployment module tests
   # --------------------------------
@@ -108,15 +108,15 @@ jobs:
         with:
           # Name of variable file
           variableFileName: 'variables.module' # Don't write .json here
-      # - name: "Test module"
-      #   uses: ./.github/actions/templates/validateModuleDeploy
-      #   with:
-      #     templateFilePath: '${{ env.modulePath }}/deploy.json'
-      #     parameterFilePath: '${{ env.modulePath }}/parameters/${{ matrix.parameterFilePaths }}'
-      #     location: '${{ env.defaultLocation }}'
-      #     resourceGroupName: '${{ env.resourceGroupName }}'
-      #     subscriptionId: '${{ secrets.ARM_SUBSCRIPTION_ID }}'
-      #     managementGroupId: '${{ secrets.ARM_MGMTGROUP_ID }}'
+      - name: "Test module"
+        uses: ./.github/actions/templates/validateModuleDeploy
+        with:
+          templateFilePath: '${{ env.modulePath }}/deploy.json'
+          parameterFilePath: '${{ env.modulePath }}/parameters/${{ matrix.parameterFilePaths }}'
+          location: '${{ env.defaultLocation }}'
+          resourceGroupName: '${{ env.resourceGroupName }}'
+          subscriptionId: '${{ secrets.ARM_SUBSCRIPTION_ID }}'
+          managementGroupId: '${{ secrets.ARM_MGMTGROUP_ID }}'
 
   ####################
   #   DEPLOY TESTS   #
@@ -143,17 +143,17 @@ jobs:
         with:
           # Name of variable file
           variableFileName: 'variables.module' # Don't write .json here
-      # - name: "Deploy module"
-      #   uses: ./.github/actions/templates/deployModule
-      #   with:
-      #     moduleName: '${{ env.moduleName }}'
-      #     templateFilePath: '${{ env.modulePath }}/deploy.json'
-      #     parameterFilePath: '${{ env.modulePath }}/parameters/${{ matrix.parameterFilePaths }}'
-      #     location: '${{ env.defaultLocation }}'
-      #     resourceGroupName: '${{ env.resourceGroupName }}'
-      #     subscriptionId: '${{ secrets.ARM_SUBSCRIPTION_ID }}'
-      #     managementGroupId: '${{ secrets.ARM_MGMTGROUP_ID }}'
-      #     removeDeployment: '${{ needs.job_set_workflow_param.outputs.removeDeployment }}'
+      - name: "Deploy module"
+        uses: ./.github/actions/templates/deployModule
+        with:
+          moduleName: '${{ env.moduleName }}'
+          templateFilePath: '${{ env.modulePath }}/deploy.json'
+          parameterFilePath: '${{ env.modulePath }}/parameters/${{ matrix.parameterFilePaths }}'
+          location: '${{ env.defaultLocation }}'
+          resourceGroupName: '${{ env.resourceGroupName }}'
+          subscriptionId: '${{ secrets.ARM_SUBSCRIPTION_ID }}'
+          managementGroupId: '${{ secrets.ARM_MGMTGROUP_ID }}'
+          removeDeployment: '${{ needs.job_set_workflow_param.outputs.removeDeployment }}'
 
   ###############
   #   PUBLISH   #
@@ -174,17 +174,17 @@ jobs:
         with:
           # Name of variable file
           variableFileName: 'variables.module' # Don't write .json here
-      # - name: "Publish module"
-      #   uses: ./.github/actions/templates/publishModule
-      #   with:
-      #     templateFilePath: '${{ env.modulePath }}/deploy.json'
-      #     componentTemplateSpecRGName: '${{ env.componentTemplateSpecRGName }}'
-      #     componentTemplateSpecRGLocation: '${{ env.componentTemplateSpecRGLocation }}'
-      #     componentTemplateSpecName: '${{ env.moduleName }}'
-      #     componentTemplateSpecDescription: '${{ env.componentTemplateSpecDescription }}'
-      #     publishToTemplateSpec: '${{ env.publishToTemplateSpec }}'
-      #     versioningOption: '${{ needs.job_set_workflow_param.outputs.versioningOption }}'
-      #     customVersion: '${{ needs.job_set_workflow_param.outputs.customVersion }}'
+      - name: "Publish module"
+        uses: ./.github/actions/templates/publishModule
+        with:
+          templateFilePath: '${{ env.modulePath }}/deploy.json'
+          componentTemplateSpecRGName: '${{ env.componentTemplateSpecRGName }}'
+          componentTemplateSpecRGLocation: '${{ env.componentTemplateSpecRGLocation }}'
+          componentTemplateSpecName: '${{ env.moduleName }}'
+          componentTemplateSpecDescription: '${{ env.componentTemplateSpecDescription }}'
+          publishToTemplateSpec: '${{ env.publishToTemplateSpec }}'
+          versioningOption: '${{ needs.job_set_workflow_param.outputs.versioningOption }}'
+          customVersion: '${{ needs.job_set_workflow_param.outputs.customVersion }}'
 
   ##############
   #   REMOVE   #
@@ -205,9 +205,9 @@ jobs:
         with:
           # Name of variable file
           variableFileName: 'variables.module' # Don't write .json here
-      # - name: "Remove module"
-      #   uses: ./.github/actions/templates/removeModule
-      #   with:
-      #     moduleName: '${{ env.moduleName }}'
-      #     templateFilePath: '${{ env.modulePath }}/deploy.json'
-      #     resourceGroupName: '${{ env.resourceGroupName }}'
+      - name: "Remove module"
+        uses: ./.github/actions/templates/removeModule
+        with:
+          moduleName: '${{ env.moduleName }}'
+          templateFilePath: '${{ env.modulePath }}/deploy.json'
+          resourceGroupName: '${{ env.resourceGroupName }}'
