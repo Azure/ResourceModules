@@ -10,6 +10,8 @@ This template deploys Network Watcher.
 |`Microsoft.Resources/deployments`|2018-02-01|
 |`Microsoft.Network/networkWatchers`|2021-02-01|
 |`Microsoft.Network/networkWatchers/connectionMonitors`|2021-02-01|
+| `Microsoft.Authorization/locks` | 2016-09-01 |
+| `Microsoft.Network/networkWatchers/providers/roleAssignments` | 2020-04-01-preview |
 
 ## Parameters
 
@@ -20,6 +22,8 @@ This template deploys Network Watcher.
 | `monitors` | array | [] | complex structure see below | Optional. Array that contains the monitors|
 | `workspaceResourceId` | string | "" | ID of Workspace Resource| Optional. Specify the Workspace Resource ID. If not specified a default workspace will be created |
 | `tags`| object | {} | Complex structure, see below. | Optional. Tags of the Virtual Network Gateway resource. |
+| `lockForDeletion` | bool | Optional. Switch to lock Traffic Manager from deletion. | False |  |
+| `roleAssignments` | array | Optional. Array of role assignment objects that contain the 'roleDefinitionIdOrName' and 'principalId' to define RBAC role assignments on this resource. In the roleDefinitionIdOrName attribute, you can provide either the display name of the role definition, or its fully qualified ID in the following format: '/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11' | System.Object[] |  |
 | `cuaId` | string | {} | | Optional. Customer Usage Attribution id (GUID). This GUID must be previously registered" |
 
 ## Outputs
@@ -86,6 +90,35 @@ Important note: the parameter ``name`` must include the ``resource name`` AND ``
                         "myonpremvm.contoso.com"
                     ]
                 }
+            ]
+        }
+    ]
+}
+```
+
+### Parameter Usage: `roleAssignments`
+
+```json
+"roleAssignments": {
+    "value": [
+        {
+            "roleDefinitionIdOrName": "Desktop Virtualization User",
+            "principalIds": [
+                "12345678-1234-1234-1234-123456789012", // object 1
+                "78945612-1234-1234-1234-123456789012" // object 2
+            ]
+        },
+        {
+            "roleDefinitionIdOrName": "Reader",
+            "principalIds": [
+                "12345678-1234-1234-1234-123456789012", // object 1
+                "78945612-1234-1234-1234-123456789012" // object 2
+            ]
+        },
+        {
+            "roleDefinitionIdOrName": "/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11",
+            "principalIds": [
+                "12345678-1234-1234-1234-123456789012" // object 1
             ]
         }
     ]

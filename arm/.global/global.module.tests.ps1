@@ -173,10 +173,10 @@ Describe "Readme tests" -Tag Readme {
             }
 
             $differentiatingItems = $Heading2Order | Where-Object { $Headings2List -notcontains $_ }
-            $differentiatingItems.Count | Should -Be 0 -Because ("list of heading titles missing in the ReadMe file [{0}] should be empty" -f $differentiatingItems -join ',')
+            $differentiatingItems.Count | Should -Be 0 -Because ("list of heading titles missing in the ReadMe file [{0}] should be empty" -f ($differentiatingItems -join ','))
 
             $differentiatingItems = $Headings2List | Where-Object { $Heading2Order -notcontains $_ }
-            $differentiatingItems.Count | Should -Be 0 -Because ("list of excess heading titles in the ReadMe file [{0}] should be empty" -f $differentiatingItems -join ',')
+            $differentiatingItems.Count | Should -Be 0 -Because ("list of excess heading titles in the ReadMe file [{0}] should be empty" -f ($differentiatingItems -join ','))
         
             $Headings2List | Should -Be $Heading2Order -Because 'the order of items should match'
         }
@@ -216,7 +216,7 @@ Describe "Readme tests" -Tag Readme {
                 $ResourcesList += $ReadmeHTML[$j].Replace(" ", "").Replace("<p>|<code>", "").Replace("|</p>", "").Replace("</code>", "").Split("|")[0].Trim()
             }
             $differentiatingItems = $ResourceTypes | Where-Object { $ResourcesList -notcontains $_ }
-            $differentiatingItems.Count | Should -Be 0 -Because ("list of template resources missing from the ReadMe's list [{0}] should be empty" -f $differentiatingItems -join ',')
+            $differentiatingItems.Count | Should -Be 0 -Because ("list of template resources missing from the ReadMe's list [{0}] should be empty" -f ($differentiatingItems -join ','))
         }
 
         It "[<moduleFolderName>] Resources section should not contain more resources as in the template file" -TestCases $readmeFolderTestCases {
@@ -254,7 +254,7 @@ Describe "Readme tests" -Tag Readme {
                 $ResourcesList += $ReadmeHTML[$j].Replace(" ", "").Replace("<p>|<code>", "").Replace("|</p>", "").Replace("</code>", "").Split("|")[0].Trim()
             }
             $differentiatingItems = $ResourcesList | Where-Object { $ResourceTypes -notcontains $_ }
-            $differentiatingItems.Count | Should -Be 0 -Because ("list of resources in the ReadMe's list [{0}] not in the template file should be empty" -f $differentiatingItems -join ',')
+            $differentiatingItems.Count | Should -Be 0 -Because ("list of resources in the ReadMe's list [{0}] not in the template file should be empty" -f ($differentiatingItems -join ','))
         }
 
         It "[<moduleFolderName>] parameters section should contain a table with these column names in order: Parameter Name, Type, Description, Default Value, Possible values" -TestCases $readmeFolderTestCases {
@@ -384,10 +384,10 @@ Describe "Readme tests" -Tag Readme {
             }
 
             $differentiatingItems = $Outputs.Name | Where-Object { $OutputsList -notcontains $_ }
-            $differentiatingItems.Count | Should -Be 0 -Because ("list of template outputs missing in the ReadMe file [{0}] should be empty" -f $differentiatingItems -join ',')
+            $differentiatingItems.Count | Should -Be 0 -Because ("list of template outputs missing in the ReadMe file [{0}] should be empty" -f ($differentiatingItems -join ','))
 
             $differentiatingItems = $OutputsList | Where-Object { $Outputs.Name -notcontains $_ }
-            $differentiatingItems.Count | Should -Be 0 -Because ("list of excess template outputs defined in the ReadMe file [{0}] should be empty" -f $differentiatingItems -join ',')
+            $differentiatingItems.Count | Should -Be 0 -Because ("list of excess template outputs defined in the ReadMe file [{0}] should be empty" -f ($differentiatingItems -join ','))
         }
 
         It "[<moduleFolderName>] Additional resources section should contain at least one bullet point with a reference" -TestCases $readmeFolderTestCases {
