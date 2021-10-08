@@ -67,7 +67,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        parameterFilePaths: ['vpn.parameters.json','expressRoute.parameters.json']
+        parameterFilePaths: ['vpn.parameters.json','vpn2.parameters.json']
     steps:
       - name: "Checkout"
         uses: actions/checkout@v2
