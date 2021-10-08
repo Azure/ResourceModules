@@ -182,7 +182,7 @@ resource serviceBusNamespace 'Microsoft.ServiceBus/namespaces@2018-01-01-preview
 }
 
 resource serviceBusNamespace_lock 'Microsoft.Authorization/locks@2016-09-01' = if (lockForDeletion) {
-  name: '${serviceBusNamespaceName_var}-namespaceDoNotDelete'
+  name: '${serviceBusNamespaceName_var}-doNotDelete'
   properties: {
     level: 'CanNotDelete'
   }
@@ -210,9 +210,6 @@ module serviceBusNamespace_privateEndpoints './.bicep/nested_privateEndpoints.bi
     privateEndpoint: item
     tags: tags
   }
-  dependsOn: [
-    serviceBusNamespace
-  ]
 }]
 
 module serviceBusNamespace_rbac './.bicep/nested_rbac.bicep' = [for (roleAssignment, index) in roleAssignments: {

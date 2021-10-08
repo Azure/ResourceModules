@@ -13,19 +13,20 @@ This template deploys Virtual Wan
 |`Microsoft.Network/vpnSites`|2021-05-01|
 |`Microsoft.Network/vpnGateways`|2021-05-01|
 |`Microsoft.Network/virtualWans/providers/roleAssignments`|2018-09-01-preview|
-| `providers/locks` | 2016-09-01 |
+|`Microsoft.Authorization/locks` | 2016-09-01 |
 
 ## Parameters
 
 | Parameter Name | Type | Default Value | Possible values | Description |
 | :-             | :-   | :-            | :-              | :-          |
-| `wanName` | string | | | Required. Name given for the Route Table.
 | `location` | string | `[resourceGroup().location]` | | Optional. Location for all resources.
-| `wanSku` | string | Standard |  | Optional. Sku of the Virtual Wan.
+| `virtualWanSku` | string | Standard |  | Optional. Sku of the Virtual Wan.
 | `hubName` | string | SampleVirtualHub | | Optional. Name of the Virtual Hub. A virtual hub is created inside a virtual wan.
 | `vpnGatewayName` | string | SampleVpnGateway | | Optional. Name of the Vpn Gateway. A vpn gateway is created inside a virtual hub.
 | `vpnSiteName` | string | SampleVpnSite | | Optional. Name of the vpnsite. A vpnsite represents the on-premise vpn device. A public ip address is mandatory for a vpn site creation.
 | `connectionName` | string | SampleVpnsiteVpnGwConnection | | Optional. Name of the vpnconnection. A vpn connection is established between a vpnsite and a vpn gateway.
+| `virtualHubName` | string | SampleVirtualHub | | Name of the Virtual Hub. A virtual hub is created inside a virtual wan. |
+| `virtualWanName` | string |  | Required. Name of the Virtual Wan |
 | `vpnsiteAddressspaceList` | array | [] | | Optional. A list of static routes corresponding to the vpn site. These are configured on the vpn gateway.
 | `vpnsitePublicIPAddress` | string | | | Required. he public IP address of a vpn site.
 | `vpnsiteBgpAsn` | int | | | Required. The bgp asn number of a vpnsite.
@@ -87,9 +88,9 @@ Tag names and tag values can be provided as needed. A tag can be left without a 
 
 | Output Name | Type | Description |
 | :-- | :-- | :-- |
-| `wanName` | string | The name of the WAN. |
-| `wanNameResourceGroup` | string | The Resource Group in which the resource is created. |
-| `wanNameResourceId` | string | The Reeosurce ID of the WAN. |
+| `virtualWanName` | string | The name of the WAN. |
+| `virtualWanNameResourceGroup` | string | The Resource Group in which the resource is created. |
+| `virtualWanNameResourceId` | string | The Reeosurce ID of the WAN. |
 
 ## Considerations
 

@@ -163,7 +163,7 @@ resource appServiceEnvironment 'Microsoft.Web/hostingEnvironments@2021-02-01' = 
 }
 
 resource appServiceEnvironment_lock 'Microsoft.Authorization/locks@2016-09-01' = if (lockForDeletion) {
-  name: '${appServiceEnvironment.name}-appServiceEnvironmentDoNotDelete'
+  name: '${appServiceEnvironment.name}-doNotDelete'
   properties: {
     level: 'CanNotDelete'
   }

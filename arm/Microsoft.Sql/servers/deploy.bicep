@@ -84,7 +84,7 @@ resource server 'Microsoft.Sql/servers@2020-02-02-preview' = {
 }
 
 resource server_lock 'Microsoft.Authorization/locks@2016-09-01' = if (lockForDeletion) {
-  name: '${server.name}-serverDoNotDelete'
+  name: '${server.name}-doNotDelete'
   properties: {
     level: 'CanNotDelete'
   }

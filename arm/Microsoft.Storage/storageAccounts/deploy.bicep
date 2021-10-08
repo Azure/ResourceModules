@@ -246,7 +246,7 @@ resource storageAccount 'Microsoft.Storage/storageAccounts@2021-06-01' = {
 }
 
 resource storageAccount_lock 'Microsoft.Authorization/locks@2016-09-01' = if (lockForDeletion) {
-  name: '${storageAccount.name}-storageDoNotDelete'
+  name: '${storageAccount.name}-doNotDelete'
   properties: {
     level: 'CanNotDelete'
   }

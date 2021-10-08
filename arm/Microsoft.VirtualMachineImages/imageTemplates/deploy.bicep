@@ -160,7 +160,7 @@ resource imageTemplate 'Microsoft.VirtualMachineImages/imageTemplates@2020-02-14
 }
 
 resource imageTemplate_lock 'Microsoft.Authorization/locks@2016-09-01' = if (lockForDeletion) {
-  name: '${imageTemplate.name}-imageTemplateDoNotDelete'
+  name: '${imageTemplate.name}-doNotDelete'
   properties: {
     level: 'CanNotDelete'
   }

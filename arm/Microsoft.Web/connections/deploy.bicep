@@ -89,7 +89,7 @@ resource connection 'Microsoft.Web/connections@2016-06-01' = {
 }
 
 resource connection_lock 'Microsoft.Authorization/locks@2016-09-01' = if (lockForDeletion) {
-  name: '${connection.name}-connectionDoNotDelete'
+  name: '${connection.name}-doNotDelete'
   properties: {
     level: 'CanNotDelete'
   }
