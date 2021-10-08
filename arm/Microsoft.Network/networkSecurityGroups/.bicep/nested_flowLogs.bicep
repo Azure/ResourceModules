@@ -11,7 +11,7 @@ param flowLogworkspaceId string
 param flowAnalyticsConfig object
 param nsgResourceGroup string
 
-resource flowLogs 'Microsoft.Network/networkWatchers/flowLogs@2021-02-01' = {
+resource flowLog 'Microsoft.Network/networkWatchers/flowLogs@2021-02-01' = {
   name: flowLogName
   location: location
   tags: tags
@@ -30,3 +30,6 @@ resource flowLogs 'Microsoft.Network/networkWatchers/flowLogs@2021-02-01' = {
     flowAnalyticsConfiguration: (empty(flowLogworkspaceId) ? json('null') : flowAnalyticsConfig)
   }
 }
+
+output flowLogName string = flowLog.name
+output flowLogResourceId string = flowLog.id

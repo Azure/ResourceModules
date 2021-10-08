@@ -131,24 +131,24 @@ resource networkSecurityGroup 'Microsoft.Network/networkSecurityGroups@2021-02-0
   location: location
   tags: tags
   properties: {
-    securityRules: [for item in networkSecurityGroupSecurityRules: {
-      name: item.name
+    securityRules: [for nsgSecurityRule in networkSecurityGroupSecurityRules: {
+      name: nsgSecurityRule.name
       properties: {
-        description: (contains(item.properties, 'description') ? item.properties.description : '')
-        protocol: item.properties.protocol
-        sourcePortRange: (contains(item.properties, 'sourcePortRange') ? item.properties.sourcePortRange : '')
-        destinationPortRange: (contains(item.properties, 'destinationPortRange') ? item.properties.destinationPortRange : '')
-        sourceAddressPrefix: (contains(item.properties, 'sourceAddressPrefix') ? item.properties.sourceAddressPrefix : '')
-        destinationAddressPrefix: (contains(item.properties, 'destinationAddressPrefix') ? item.properties.destinationAddressPrefix : '')
-        access: item.properties.access
-        priority: int(item.properties.priority)
-        direction: item.properties.direction
-        sourcePortRanges: (contains(item.properties, 'sourcePortRanges') ? item.properties.sourcePortRanges : json('null'))
-        destinationPortRanges: (contains(item.properties, 'destinationPortRanges') ? item.properties.destinationPortRanges : json('null'))
-        sourceAddressPrefixes: (contains(item.properties, 'sourceAddressPrefixes') ? item.properties.sourceAddressPrefixes : json('null'))
-        destinationAddressPrefixes: (contains(item.properties, 'destinationAddressPrefixes') ? item.properties.destinationAddressPrefixes : json('null'))
-        sourceApplicationSecurityGroups: ((contains(item.properties, 'sourceApplicationSecurityGroupIds') && (!empty(item.properties.sourceApplicationSecurityGroupIds))) ? concat(emptyArray, array(json('{"id": "${item.properties.sourceApplicationSecurityGroupIds[0]}", "location": "${location}"}'))) : json('null'))
-        destinationApplicationSecurityGroups: ((contains(item.properties, 'destinationApplicationSecurityGroupIds') && (!empty(item.properties.destinationApplicationSecurityGroupIds))) ? concat(emptyArray, array(json('{"id": "${item.properties.destinationApplicationSecurityGroupIds[0]}", "location": "${location}"}'))) : json('null'))
+        description: (contains(nsgSecurityRule.properties, 'description') ? nsgSecurityRule.properties.description : '')
+        protocol: nsgSecurityRule.properties.protocol
+        sourcePortRange: (contains(nsgSecurityRule.properties, 'sourcePortRange') ? nsgSecurityRule.properties.sourcePortRange : '')
+        destinationPortRange: (contains(nsgSecurityRule.properties, 'destinationPortRange') ? nsgSecurityRule.properties.destinationPortRange : '')
+        sourceAddressPrefix: (contains(nsgSecurityRule.properties, 'sourceAddressPrefix') ? nsgSecurityRule.properties.sourceAddressPrefix : '')
+        destinationAddressPrefix: (contains(nsgSecurityRule.properties, 'destinationAddressPrefix') ? nsgSecurityRule.properties.destinationAddressPrefix : '')
+        access: nsgSecurityRule.properties.access
+        priority: int(nsgSecurityRule.properties.priority)
+        direction: nsgSecurityRule.properties.direction
+        sourcePortRanges: (contains(nsgSecurityRule.properties, 'sourcePortRanges') ? nsgSecurityRule.properties.sourcePortRanges : json('null'))
+        destinationPortRanges: (contains(nsgSecurityRule.properties, 'destinationPortRanges') ? nsgSecurityRule.properties.destinationPortRanges : json('null'))
+        sourceAddressPrefixes: (contains(nsgSecurityRule.properties, 'sourceAddressPrefixes') ? nsgSecurityRule.properties.sourceAddressPrefixes : json('null'))
+        destinationAddressPrefixes: (contains(nsgSecurityRule.properties, 'destinationAddressPrefixes') ? nsgSecurityRule.properties.destinationAddressPrefixes : json('null'))
+        sourceApplicationSecurityGroups: ((contains(nsgSecurityRule.properties, 'sourceApplicationSecurityGroupIds') && (!empty(nsgSecurityRule.properties.sourceApplicationSecurityGroupIds))) ? concat(emptyArray, array(json('{"id": "${nsgSecurityRule.properties.sourceApplicationSecurityGroupIds[0]}", "location": "${location}"}'))) : json('null'))
+        destinationApplicationSecurityGroups: ((contains(nsgSecurityRule.properties, 'destinationApplicationSecurityGroupIds') && (!empty(nsgSecurityRule.properties.destinationApplicationSecurityGroupIds))) ? concat(emptyArray, array(json('{"id": "${nsgSecurityRule.properties.destinationApplicationSecurityGroupIds[0]}", "location": "${location}"}'))) : json('null'))
       }
     }]
   }
@@ -175,8 +175,17 @@ resource networkSecurityGroup_diagnosticSettings 'Microsoft.Insights/diagnostics
   scope: networkSecurityGroup
 }
 
-module deployFlowLogs './.bicep/nested_flowLogs.bicep' = if (!empty(flowLogName)) {
-  name: 'deployFlowLogs'
+module networkSecurityGroup_rbac './.bicep/nested_rbac.bicep' = [for (roleAssignment, index) in roleAssignments: {
+  name: 'rbac-${deployment().name}${index}'
+  params: {
+    roleAssignmentObj: roleAssignment
+    builtInRoleNames: builtInRoleNames
+    resourceName: networkSecurityGroup.name
+  }
+}]
+
+module flowLogs './.bicep/nested_flowLogs.bicep' = if (!empty(flowLogName)) {
+  name: 'flowLogs'
   scope: resourceGroup(networkwatcherResourceGroup)
   params: {
     location: location
@@ -194,17 +203,8 @@ module deployFlowLogs './.bicep/nested_flowLogs.bicep' = if (!empty(flowLogName)
   }
 }
 
-module networkSecurityGroup_rbac './.bicep/nested_rbac.bicep' = [for (roleAssignment, index) in roleAssignments: {
-  name: 'rbac-${deployment().name}${index}'
-  params: {
-    roleAssignmentObj: roleAssignment
-    builtInRoleNames: builtInRoleNames
-    resourceName: networkSecurityGroup.name
-  }
-}]
-
 output networkSecurityGroupsResourceGroup string = resourceGroup().name
 output networkSecurityGroupsResourceId string = networkSecurityGroup.id
 output networkSecurityGroupsName string = networkSecurityGroup.name
-output flowLogResourceId string = '${resourceId('Microsoft.Network/networkWatchers', networkWatcherName)}/flowLogs/Microsoft.Network${resourceGroup().name}${networkSecurityGroup.name}'
-output flowLogName string = flowLogName_var
+output flowLogResourceId string = flowLogs.outputs.flowLogResourceId
+output flowLogName string = flowLogs.outputs.flowLogName
