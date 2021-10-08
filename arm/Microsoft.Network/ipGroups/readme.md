@@ -6,10 +6,10 @@ This module deploys an IP Group, with resource lock.
 
 |Resource Type|ApiVersion|
 |:--|:--|
-|`Microsoft.Network/ipGroups`|2020-08-01|
+|`Microsoft.Network/ipGroups`|2021-02-01|
 |`Microsoft.Resources/deployments`|2021-02-01|
 |`Microsoft.Authorization/locks`|2016-09-01|
-|`Microsoft.Network/ipGroups/providers/roleAssignments`|2018-09-01-preview|
+|`Microsoft.Network/ipGroups/providers/roleAssignments`|2020-04-01-preview|
 
 ## Parameters
 
