@@ -16,8 +16,11 @@
         "secretName": "vpnSharedKey"
       }
     },
+    "virtualNetworkGatewayConnectionType":{
+      "value": "VNet2VNet"
+    },
     "remoteEntityName": {
-      "value": "sxx-az-lng-weu-x-001"
+      "value": "sxx-az-vnet-vpn-gw-weu-p-002"
     },
     "remoteEntityResourceGroup": {
       "value": ""
@@ -26,7 +29,7 @@
       "value": ""
     },
     "enableBgp": {
-      "value": true
+      "value": false
     }
   }
 }

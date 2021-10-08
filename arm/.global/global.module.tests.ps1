@@ -173,10 +173,10 @@ Describe "Readme tests" -Tag Readme {
             }
 
             $differentiatingItems = $Heading2Order | Where-Object { $Headings2List -notcontains $_ }
-            $differentiatingItems.Count | Should -Be 0 -Because ("list of heading titles missing in the ReadMe file [{0}] should be empty" -f $differentiatingItems -join ',')
+            $differentiatingItems.Count | Should -Be 0 -Because ("list of heading titles missing in the ReadMe file [{0}] should be empty" -f ($differentiatingItems -join ','))
 
             $differentiatingItems = $Headings2List | Where-Object { $Heading2Order -notcontains $_ }
-            $differentiatingItems.Count | Should -Be 0 -Because ("list of excess heading titles in the ReadMe file [{0}] should be empty" -f $differentiatingItems -join ',')
+            $differentiatingItems.Count | Should -Be 0 -Because ("list of excess heading titles in the ReadMe file [{0}] should be empty" -f ($differentiatingItems -join ','))
         
             $Headings2List | Should -Be $Heading2Order -Because 'the order of items should match'
         }
@@ -385,10 +385,10 @@ Describe "Readme tests" -Tag Readme {
             }
 
             $differentiatingItems = $Outputs.Name | Where-Object { $OutputsList -notcontains $_ }
-            $differentiatingItems.Count | Should -Be 0 -Because ("list of template outputs missing in the ReadMe file [{0}] should be empty" -f $differentiatingItems -join ',')
+            $differentiatingItems.Count | Should -Be 0 -Because ("list of template outputs missing in the ReadMe file [{0}] should be empty" -f ($differentiatingItems -join ','))
 
             $differentiatingItems = $OutputsList | Where-Object { $Outputs.Name -notcontains $_ }
-            $differentiatingItems.Count | Should -Be 0 -Because ("list of excess template outputs defined in the ReadMe file [{0}] should be empty" -f $differentiatingItems -join ',')
+            $differentiatingItems.Count | Should -Be 0 -Because ("list of excess template outputs defined in the ReadMe file [{0}] should be empty" -f ($differentiatingItems -join ','))
         }
 
         It "[<moduleFolderName>] Additional resources section should contain at least one bullet point with a reference" -TestCases $readmeFolderTestCases {
