@@ -59,7 +59,6 @@ jobs:
     name: "Get job output variables if removal true"
     steps:
       - name: Access values from another job
-        if: ${{ needs.job_set_workflow_param.outputs.removeDeployment == 'true' }}"
         run: |
           echo "The removeDeployment is ${{ needs.job_set_workflow_param.outputs.removeDeployment}}"
           echo "The versioningOption is ${{ needs.job_set_workflow_param.outputs.versioningOption}}"
@@ -76,7 +75,6 @@ jobs:
     name: "Get job output variables if removal false"
     steps:
       - name: Access values from another job
-        if: ${{ needs.job_set_workflow_param.outputs.removeDeployment == 'false' }}"
         run: |
           echo "The removeDeployment is ${{ needs.job_set_workflow_param.outputs.removeDeployment}}"
           echo "The versioningOption is ${{ needs.job_set_workflow_param.outputs.versioningOption}}"

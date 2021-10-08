@@ -7,23 +7,21 @@ inputs:
     required: true
 
 outputs:
-  # removeDeployment: ${{ steps.get-trigger.outputs.removeDeployment }}
-  # removeDeployment: $removeDeployment
   removeDeployment: 
-    description: removeDeployment
+    description: 'Remove deployed module'
     value: ${{ steps.get-trigger-action.outputs.removeDeployment }}
   versioningOption: 
-    description: versioningOption
+    description: 'The mode to handle the version increments [major|minor|patch|custom]'
     value: ${{ steps.get-trigger-action.outputs.versioningOption }}
   customVersion: 
-    description: customVersion
+    description: 'The version to enforce if [versionOption] is set to [custom]'
     value: ${{ steps.get-trigger-action.outputs.customVersion }}
 
 runs:
   using: "composite"
   steps:
-    # - name: Set input parameters
-    - id: get-trigger-action
+    - name: Set input parameters
+      id: get-trigger-action
       run: |
         # When running from workflow_dispatch event get input values
         if ('${{ github.event_name }}' -eq 'workflow_dispatch') {
@@ -50,7 +48,3 @@ runs:
         echo "::set-output name=versioningOption::$versioningOption"
         echo "::set-output name=customVersion::$customVersion"
       shell: pwsh
-        # outputs:
-        #   removeDeployment: ${{ steps.get-trigger.outputs.removeDeployment }}
-        #   versioningOption: ${{ steps.get-trigger.outputs.versioningOption }}
-        #   customVersion: ${{ steps.get-trigger.outputs.customVersion }}
