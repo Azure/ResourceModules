@@ -7,8 +7,10 @@ This module deploys an Image Template (for Azure Image Builder service) that can
 |Resource Type|Api Version|
 |:--|:--|
 |`Microsoft.VirtualMachineImages/imageTemplates`|2020-02-14|
-|`providers/locks`|2016-09-01|
+|`Microsoft.Authorization/locks`|2016-09-01|
 |`Microsoft.Resources/deployments`|2018-02-01|
+|`Microsoft.VirtualMachineImages/imageTemplates/providers/roleAssignments` | 2020-04-01-preview |
+
 
 ## Parameters
 
@@ -32,6 +34,7 @@ This module deploys an Image Template (for Azure Image Builder service) that can
 | `tags` | object | {} | Complex structure, see below. | Optional. Tags of the resource.
 | `baseTime` | string | `utcNow('yyyy-MM-dd-HH-mm-ss')` | | Generated. Do not provide a value! This date value is used to generate a unique image template name.
 | `cuaId` | string | "" | | Optional. Customer Usage Attribution id (GUID). This GUID must be previously registered
+| `roleAssignments` | array | [] | Complex structure, see below. | Optional. Array of role assignment objects that contain the 'roleDefinitionIdOrName' and 'principalId' to define RBAC role assignments on this resource. In the roleDefinitionIdOrName attribute, you can provide either the display name of the role definition, or it's fully qualified ID in the following format: '/providers/Microsoft.Authorization/locks/locks/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11'
 
 ### Parameter Usage: `imageSource`
 
@@ -81,6 +84,35 @@ Tag names and tag values can be provided as needed. A tag can be left without a 
         "ServiceName": "DeploymentValidation",
         "Role": "DeploymentValidation"
     }
+}
+```
+
+### Parameter Usage: `roleAssignments`
+
+```json
+"roleAssignments": {
+    "value": [
+        {
+            "roleDefinitionIdOrName": "Desktop Virtualization User",
+            "principalIds": [
+                "12345678-1234-1234-1234-123456789012", // object 1
+                "78945612-1234-1234-1234-123456789012" // object 2
+            ]
+        },
+        {
+            "roleDefinitionIdOrName": "Reader",
+            "principalIds": [
+                "12345678-1234-1234-1234-123456789012", // object 1
+                "78945612-1234-1234-1234-123456789012" // object 2
+            ]
+        },
+        {
+            "roleDefinitionIdOrName": "/providers/Microsoft.Authorization/locks/locks/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11",
+            "principalIds": [
+                "12345678-1234-1234-1234-123456789012" // object 1
+            ]
+        }
+    ]
 }
 ```
 

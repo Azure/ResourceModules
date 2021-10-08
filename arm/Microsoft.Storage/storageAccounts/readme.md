@@ -8,7 +8,6 @@ The default parameter values are based on the needs of deploying a diagnostic st
 
 | Resource Type | Api Version |
 | :-- | :-- |
-| `immutabilityPolicies` | 2019-06-01 |
 | `Microsoft.Network/privateEndpoints/privateDnsZoneGroups` | 2020-05-01 |
 | `Microsoft.Network/privateEndpoints` | 2020-05-01 |
 | `Microsoft.Resources/deployments` | 2020-06-01 |
@@ -19,8 +18,9 @@ The default parameter values are based on the needs of deploying a diagnostic st
 | `Microsoft.Storage/storageAccounts/providers/roleAssignments` | 2020-04-01-preview |
 | `Microsoft.Storage/storageAccounts/queueServices/queues` | 2019-06-01 |
 | `Microsoft.Storage/storageAccounts/tableServices/tables` | 2019-06-01 |
-| `Microsoft.Storage/storageAccounts` | 2019-06-01 |
-| `providers/locks` | 2016-09-01 |
+| `Microsoft.Storage/storageAccounts` | 2021-06-01 |
+| `Microsoft.Authorization/locks` | 2016-09-01 |
+| `Microsoft.Storage/storageAccounts/blobServices/containers/immutabilityPolicies` | 2019-06-01 |
 
 ## Parameters
 
@@ -260,13 +260,11 @@ To use Private Endpoint the following dependencies must be deployed:
 | `blobContainers` | array | The array of the blob containers created. |
 | `fileShares` | array | The array of the file shares created. |
 | `queues` | array | The array of the queues created. |
-| `storageAccountsAccessKey` | securestring | The Access Key for the Storage Account. |
-| `storageAccountsName` | string | The Name of the Storage Account. |
-| `storageAccountsPrimaryBlobEndpoint` | string | The public endpoint of the Storage Account. |
-| `storageAccountsRegion` | string | The Region of the Storage Account. |
-| `storageAccountsResourceGroup` | string | The name of the Resource Group the Storage Account was created in. |
-| `storageAccountsResourceId` | string | The Resource Id of the Storage Account. |
-| `storageAccountsSasToken` | securestring | The SAS Token for the Storage Account. |
+| `storageAccountName` | string | The Name of the Storage Account. |
+| `storageAccountPrimaryBlobEndpoint` | string | The public endpoint of the Storage Account. |
+| `storageAccountRegion` | string | The Region of the Storage Account. |
+| `storageAccountResourceGroup` | string | The name of the Resource Group the Storage Account was created in. |
+| `storageAccountResourceId` | string | The Resource Id of the Storage Account. |
 | `tables` | array | The array of the tables created. |
 | `assignedIdentityID` | string | User id of the created system assigned identity. |
 
