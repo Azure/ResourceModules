@@ -18,11 +18,11 @@ on:
   push:
     branches:
       - main
-    # paths:
-    #   - '.github/actions/templates/**'
-    #   - '.github/workflows/ms.analysisservices.servers.yml'
-    #   - 'arm/Microsoft.AnalysisServices/servers/**'
-    #   - '!arm/Microsoft.AnalysisServices/servers/readme.md'
+    paths:
+      - '.github/actions/templates/**'
+      - '.github/workflows/atestworkflowwithactions.yml'
+      - 'arm/Microsoft.AnalysisServices/servers/**'
+      - '!arm/Microsoft.AnalysisServices/servers/readme.md'
 
 env:
   moduleName: 'servers'

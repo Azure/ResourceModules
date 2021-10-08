@@ -20,7 +20,7 @@ on:
   #     - main
     # paths:
     #   - '.github/actions/templates/**'
-    #   - '.github/workflows/ms.analysisservices.servers.yml'
+    #   - '.github/workflows/atestworkflow.yml'
     #   - 'arm/Microsoft.AnalysisServices/servers/**'
     #   - '!arm/Microsoft.AnalysisServices/servers/readme.md'
 
