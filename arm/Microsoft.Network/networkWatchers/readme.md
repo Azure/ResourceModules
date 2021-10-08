@@ -11,7 +11,7 @@ This template deploys Network Watcher.
 |`Microsoft.Network/networkWatchers`|2021-02-01|
 |`Microsoft.Network/networkWatchers/connectionMonitors`|2021-02-01|
 | `Microsoft.Authorization/locks` | 2016-09-01 |
-| `Microsoft.Network/networkWatchers/providers/roleAssignments` | 2018-09-01-preview |
+| `Microsoft.Network/networkWatchers/providers/roleAssignments` | 2020-04-01-preview |
 
 ## Parameters
 
