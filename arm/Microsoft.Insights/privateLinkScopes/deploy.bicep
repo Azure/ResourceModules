@@ -59,6 +59,13 @@ resource privateLinkScope 'Microsoft.Insights/privateLinkScopes@2019-10-17-previ
   location: location
   tags: tags
   properties: {}
+
+  resource privateLinkScope_scopedResources 'scopedresources@2019-10-17-preview' = [for (scopedResource, index) in scopedResources: {
+    name: 'scoped-${last(split(scopedResource.linkedResourceId, '/'))}-${guid(uniqueString(privateLinkScope.name, scopedResource.linkedResourceId))}'
+    properties: {
+      linkedResourceId: scopedResource.linkedResourceId
+    }
+  }]
 }
 
 resource privateLinkScope_lock 'Microsoft.Authorization/locks@2016-09-01' = if (lock != 'NotSpecified') {
@@ -70,13 +77,6 @@ resource privateLinkScope_lock 'Microsoft.Authorization/locks@2016-09-01' = if (
   }
 }
 
-resource privateLinkScope_scopedResources 'microsoft.insights/privatelinkscopes/scopedresources@2019-10-17-preview' = [for (scopedResource, index) in scopedResources: {
-  name: '${privateLinkScope.name}/scoped-${last(split(scopedResource.linkedResourceId, '/'))}-${guid(uniqueString(privateLinkScope.name, scopedResource.linkedResourceId))}'
-  properties: {
-    linkedResourceId: scopedResource.linkedResourceId
-  }
-}]
-
 module privateLinkScope_privateEndpoints './.bicep/nested_privateEndpoint.bicep' = [for (endpoint, index) in privateEndpoints: if (!empty(privateEndpoints)) {
   name: '${uniqueString(deployment().name, location)}-Storage-PrivateEndpoints-${index}'
   params: {
@@ -85,9 +85,6 @@ module privateLinkScope_privateEndpoints './.bicep/nested_privateEndpoint.bicep'
     privateEndpointObj: endpoint
     tags: tags
   }
-  dependsOn: [
-    privateLinkScope_scopedResources
-  ]
 }]
 
 module privateLinkScope_rbac './.bicep/nested_rbac.bicep' = [for (roleAssignment, index) in roleAssignments: {
