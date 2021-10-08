@@ -163,7 +163,7 @@ resource appServiceEnvironment 'Microsoft.Web/hostingEnvironments@2021-02-01' = 
 }
 
 resource appServiceEnvironment_lock 'Microsoft.Authorization/locks@2016-09-01' = if (lockForDeletion) {
-  name: '${appServiceEnvironmentName}-appServiceEnvironmentDoNotDelete'
+  name: '${appServiceEnvironment.name}-appServiceEnvironmentDoNotDelete'
   properties: {
     level: 'CanNotDelete'
   }
@@ -171,7 +171,7 @@ resource appServiceEnvironment_lock 'Microsoft.Authorization/locks@2016-09-01' =
 }
 
 resource appServiceEnvironment_diagnosticSettings 'Microsoft.Insights/diagnosticsettings@2017-05-01-preview' = if ((!empty(diagnosticStorageAccountId)) || (!empty(workspaceId)) || (!empty(eventHubAuthorizationRuleId)) || (!empty(eventHubName))) {
-  name: '${appServiceEnvironmentName}-diagnosticSettings'
+  name: '${appServiceEnvironment.name}-diagnosticSettings'
   properties: {
     storageAccountId: (empty(diagnosticStorageAccountId) ? json('null') : diagnosticStorageAccountId)
     workspaceId: (empty(workspaceId) ? json('null') : workspaceId)

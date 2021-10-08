@@ -216,7 +216,7 @@ Describe "Readme tests" -Tag Readme {
                 $ResourcesList += $ReadmeHTML[$j].Replace(" ", "").Replace("<p>|<code>", "").Replace("|</p>", "").Replace("</code>", "").Split("|")[0].Trim()
             }
             $differentiatingItems = $ResourceTypes | Where-Object { $ResourcesList -notcontains $_ }
-            $differentiatingItems.Count | Should -Be 0 -Because ("list of template resources missing from the ReadMe's list [{0}] should be empty" -f $differentiatingItems -join ',')
+            $differentiatingItems.Count | Should -Be 0 -Because ("list of template resources missing from the ReadMe's list [{0}] should be empty" -f ($differentiatingItems -join ','))
         }
 
         It "[<moduleFolderName>] Resources section should not contain more resources as in the template file" -TestCases $readmeFolderTestCases {
@@ -254,7 +254,7 @@ Describe "Readme tests" -Tag Readme {
                 $ResourcesList += $ReadmeHTML[$j].Replace(" ", "").Replace("<p>|<code>", "").Replace("|</p>", "").Replace("</code>", "").Split("|")[0].Trim()
             }
             $differentiatingItems = $ResourcesList | Where-Object { $ResourceTypes -notcontains $_ }
-            $differentiatingItems.Count | Should -Be 0 -Because ("list of resources in the ReadMe's list [{0}] not in the template file should be empty" -f $differentiatingItems -join ',')
+            $differentiatingItems.Count | Should -Be 0 -Because ("list of resources in the ReadMe's list [{0}] not in the template file should be empty" -f ($differentiatingItems -join ','))
         }
 
         It "[<moduleFolderName>] parameters section should contain a table with these column names in order: Parameter Name, Type, Description, Default Value, Possible values" -TestCases $readmeFolderTestCases {
@@ -325,7 +325,8 @@ Describe "Readme tests" -Tag Readme {
             for ($j = $HeadingIndex[1] + 4; $ReadmeHTML[$j] -ne ""; $j++) {
                 $parametersList += $ReadmeHTML[$j].Replace("<p>| <code>", "").Replace("|</p>", "").Replace("</code>", "").Split("|")[0].Trim()
             }
-            (Compare-Object -ReferenceObject $parameters.Name -DifferenceObject $parametersList) | Should -Be $null
+            $differentiatingItems = $parameters.Name | Where-Object { $parametersList -notcontains $_ }
+            $differentiatingItems.Count | Should -Be 0 -Because ("list of template parameters missing in the ReadMe file [{0}] should be empty" -f ($differentiatingItems -join ','))
         }
 
         It "[<moduleFolderName>] Outputs section should contain a table with these column names in order: Output Name, Value, Type" -TestCases $readmeFolderTestCases {

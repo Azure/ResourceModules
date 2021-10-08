@@ -211,7 +211,7 @@ module pid_cuaId './.bicep/nested_cuaId.bicep' = if (!empty(cuaId)) {
   params: {}
 }
 
-resource appServicePlan 'Microsoft.Web/serverfarms@2019-08-01' = if (empty(appServicePlanId)) {
+resource appServicePlan 'Microsoft.Web/serverfarms@2021-02-01' = if (empty(appServicePlanId)) {
   name: ((!empty(appServicePlanName)) ? appServicePlanName : 'dummyAppServicePlanName')
   kind: appServicePlanType
   location: location
@@ -226,6 +226,14 @@ resource appServicePlan 'Microsoft.Web/serverfarms@2019-08-01' = if (empty(appSe
   properties: {
     hostingEnvironmentProfile: (empty(appServiceEnvironmentId) ? json('null') : json('{ id: ${hostingEnvironment} }')  )
   }
+}
+
+resource appServicePlan_lock 'Microsoft.Authorization/locks@2016-09-01' = if (lockForDeletion && empty(appServicePlanId)) {
+  name: '${appServicePlan.name}-doNotDelete'
+  properties: {
+    level: 'CanNotDelete'
+  }
+  scope: appServicePlan
 }
 
 resource app 'Microsoft.Web/sites@2020-12-01' = {
@@ -247,23 +255,23 @@ resource app 'Microsoft.Web/sites@2020-12-01' = {
   dependsOn: [
     appServicePlan
   ]
-}
 
-resource app_appsettings 'Microsoft.Web/sites/config@2019-08-01' = {
-  parent: app
-  name: 'appsettings'
-  properties: {
-    AzureWebJobsStorage: ((!empty(storageAccountName)) ? 'DefaultEndpointsProtocol=https;AccountName=${storageAccountName};AccountKey=${listkeys(resourceId(subscription().subscriptionId, storageAccountResourceGroupName, 'Microsoft.Storage/storageAccounts', storageAccountName), '2019-06-01').keys[0].value};' : any(json('null')))
-    AzureWebJobsDashboard: ((!empty(storageAccountName)) ? 'DefaultEndpointsProtocol=https;AccountName=${storageAccountName};AccountKey=${listkeys(resourceId(subscription().subscriptionId, storageAccountResourceGroupName, 'Microsoft.Storage/storageAccounts', storageAccountName), '2019-06-01').keys[0].value};' : any(json('null')))
-    FUNCTIONS_EXTENSION_VERSION: (((appServicePlanType == 'functionApp') && (!empty(functionsExtensionVersion))) ? functionsExtensionVersion : any(json('null')))
-    FUNCTIONS_WORKER_RUNTIME: (((appServicePlanType == 'functionApp') && (!empty(functionsWorkerRuntime))) ? functionsWorkerRuntime : any(json('null')))
-    APPINSIGHTS_INSTRUMENTATIONKEY: (enableMonitoring ? reference('microsoft.insights/components/${appName}', '2015-05-01').InstrumentationKey : json('null'))
-    APPLICATIONINSIGHTS_CONNECTION_STRING: (enableMonitoring ? reference('microsoft.insights/components/${appName}', '2015-05-01').ConnectionString : json('null'))
+  resource app_appsettings 'config@2019-08-01' = {
+    name: 'appsettings'
+    properties: {
+      AzureWebJobsStorage: ((!empty(storageAccountName)) ? 'DefaultEndpointsProtocol=https;AccountName=${storageAccountName};AccountKey=${listkeys(resourceId(subscription().subscriptionId, storageAccountResourceGroupName, 'Microsoft.Storage/storageAccounts', storageAccountName), '2019-06-01').keys[0].value};' : any(json('null')))
+      AzureWebJobsDashboard: ((!empty(storageAccountName)) ? 'DefaultEndpointsProtocol=https;AccountName=${storageAccountName};AccountKey=${listkeys(resourceId(subscription().subscriptionId, storageAccountResourceGroupName, 'Microsoft.Storage/storageAccounts', storageAccountName), '2019-06-01').keys[0].value};' : any(json('null')))
+      FUNCTIONS_EXTENSION_VERSION: (((appServicePlanType == 'functionApp') && (!empty(functionsExtensionVersion))) ? functionsExtensionVersion : any(json('null')))
+      FUNCTIONS_WORKER_RUNTIME: (((appServicePlanType == 'functionApp') && (!empty(functionsWorkerRuntime))) ? functionsWorkerRuntime : any(json('null')))
+      APPINSIGHTS_INSTRUMENTATIONKEY: (enableMonitoring ? reference('microsoft.insights/components/${appName}', '2015-05-01').InstrumentationKey : json('null'))
+      APPLICATIONINSIGHTS_CONNECTION_STRING: (enableMonitoring ? reference('microsoft.insights/components/${appName}', '2015-05-01').ConnectionString : json('null'))
+    }
   }
 }
 
+
 resource app_lock 'Microsoft.Authorization/locks@2016-09-01' = if (lockForDeletion) {
-  name: '${storageAccountName}-appDoNotDelete'
+  name: '${app.name}-doNotDelete'
   properties: {
     level: 'CanNotDelete'
   }
@@ -271,7 +279,7 @@ resource app_lock 'Microsoft.Authorization/locks@2016-09-01' = if (lockForDeleti
 }
 
 resource app_diagnosticSettings 'Microsoft.Insights/diagnosticsettings@2017-05-01-preview' = if ((!empty(diagnosticStorageAccountId)) || (!empty(workspaceId)) || (!empty(eventHubAuthorizationRuleId)) || (!empty(eventHubName))) {
-  name: '${appName}-diagnosticSettings'
+  name: '${app.name}-diagnosticSettings'
   properties: {
     storageAccountId: (empty(diagnosticStorageAccountId) ? json('null') : diagnosticStorageAccountId)
     workspaceId: (empty(workspaceId) ? json('null') : workspaceId)
@@ -284,7 +292,7 @@ resource app_diagnosticSettings 'Microsoft.Insights/diagnosticsettings@2017-05-0
 }
 
 resource app_insights 'microsoft.insights/components@2020-02-02' = if (enableMonitoring) {
-  name: appName
+  name: app.name
   location: location
   kind: 'web'
   tags: tags
@@ -303,12 +311,12 @@ module app_rbac './.bicep/nested_rbac.bicep' = [for (roleAssignment, index) in r
   }
 }]
 
-module app_privateEndpoint './.bicep/nested_privateEndpoint.bicep' = [for (item, i) in privateEndpoints: {
-  name: '${uniqueString(deployment().name, location)}-AppService-PrivateEndpoints-${i}'
+module app_privateEndpoint './.bicep/nested_privateEndpoint.bicep' = [for (privateEndpoint, index) in privateEndpoints: {
+  name: '${uniqueString(deployment().name, location)}-AppService-PrivateEndpoints-${index}'
   params: {
     privateEndpointResourceId: app.id
-    privateEndpointVnetLocation: (empty(privateEndpoints) ? 'dummy' : reference(split(item.subnetResourceId, '/subnets/')[0], '2020-06-01', 'Full').location)
-    privateEndpointObj: item
+    privateEndpointVnetLocation: (empty(privateEndpoints) ? 'dummy' : reference(split(privateEndpoint.subnetResourceId, '/subnets/')[0], '2020-06-01', 'Full').location)
+    privateEndpointObj: privateEndpoint
     tags: tags
   }
   dependsOn: [
@@ -316,6 +324,6 @@ module app_privateEndpoint './.bicep/nested_privateEndpoint.bicep' = [for (item,
   ]
 }]
 
-output appName string = appServicePlan.name
-output siteResourceId string = resourceId('Microsoft.Web/serverfarms', appServicePlanName)
+output siteName string = app.name
+output siteResourceId string = app.id
 output siteResourceGroup string = resourceGroup().name
