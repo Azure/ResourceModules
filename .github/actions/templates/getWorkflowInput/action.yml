@@ -31,7 +31,7 @@ runs:
         }
         # Otherwise retrieve default values
         else {
-          $templateFile='${{ input.workflowPath }}'
+          $templateFile='${{ inputs.workflowPath }}'
           $content = Get-Content $templateFile
           $removeDeploymentRowIndex = ((0..($content.Count-1)) | Where-Object {$content[$_] -like '*removeDeployment:*'})[0]
           $removeDeployment = $content[$removeDeploymentRowIndex+3].trim().Split(':')[1].Trim().Replace("'","").Replace('"','')
