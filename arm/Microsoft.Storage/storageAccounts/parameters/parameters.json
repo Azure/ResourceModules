@@ -29,15 +29,6 @@
         "minimumTlsVersion": {
             "value": "TLS1_2"
         },
-        "networkAcls": {
-            "value": {
-                "bypass": "AzureServices",
-                "defaultAction": "Deny",
-                "virtualNetworkRules": [
-                ],
-                "ipRules": []
-            }
-        },
         "blobContainers": {
             "value": [
                 {

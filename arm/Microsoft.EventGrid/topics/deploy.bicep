@@ -45,7 +45,6 @@ param tags object = {}
 @description('Optional. Customer Usage Attribution id (GUID). This GUID must be previously registered')
 param cuaId string = ''
 
-var eventGridResourceId = eventGrid.id
 var eventGridApiVersion = providers('Microsoft.EventGrid', 'topics').apiVersions[0]
 var diagnosticsMetrics = [
   {
@@ -150,6 +149,6 @@ module eventGrid_rbac './.bicep/nested_rbac.bicep' = [for (roleAssignment, index
 }]
 
 output eventGrid string = eventGrid.name
-output eventGridResourceId string = eventGridResourceId
+output eventGridResourceId string = eventGrid.id
 output eventGridResourceGroup string = resourceGroup().name
 
