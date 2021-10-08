@@ -3,13 +3,7 @@
   "contentVersion": "1.0.0.0",
   "parameters": {
     "roleName": {
-      "value": "myCustomRoleAtRg"
-    },
-    "subscriptionId": {
-      "value": "20d6fbfe-b049-471c-95af-1369d14d0d45"
-    },
-    "resourceGroupName": {
-      "value": "validation-rg"
+      "value": "myCustomRoleAtSub"
     },
     "roleDescription": {
       "value": ""
@@ -35,6 +29,9 @@
     },
     "notDataActions": {
       "value": []
+    },
+    "subscriptionId": {
+      "value": "20d6fbfe-b049-471c-95af-1369d14d0d45"
     }
   }
 }

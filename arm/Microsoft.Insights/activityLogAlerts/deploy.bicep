@@ -12,7 +12,7 @@ param enabled bool = true
 
 @description('Required. the list of resource id\'s that this metric alert is scoped to.')
 param scopes array = [
-    subscription().id
+  subscription().id
 ]
 
 @description('Optional. The list of actions to take when alert triggers.')
@@ -31,8 +31,8 @@ param tags object = {}
 param cuaId string = ''
 
 var actionGroups = [for action in actions: {
-    actionGroupId: contains(action, 'actionGroupId') ? action.actionGroupId : action
-    webhookProperties: contains(action, 'webhookProperties') ? action.webhookProperties : json('null')
+  actionGroupId: contains(action, 'actionGroupId') ? action.actionGroupId : action
+  webhookProperties: contains(action, 'webhookProperties') ? action.webhookProperties : json('null')
 }]
 
 var builtInRoleNames = {
@@ -77,13 +77,10 @@ resource activityLogAlert 'Microsoft.Insights/activityLogAlerts@2020-10-01' = {
 module activityLogAlert_rbac './.bicep/nested_rbac.bicep' = [for (roleAssignment, index) in roleAssignments: {
   name: 'rbac-${deployment().name}${index}'
   params: {
-    roleAssignment: roleAssignment
+    roleAssignmentObj: roleAssignment
     builtInRoleNames: builtInRoleNames
     resourceName: activityLogAlert.name
   }
-  dependsOn: [
-    activityLogAlert
-  ]
 }]
 
 output activityLogAlertName string = activityLogAlert.name

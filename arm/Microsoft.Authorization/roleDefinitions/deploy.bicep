@@ -76,5 +76,6 @@ module roleDefinition_rg './.bicep/nested_roleDefinitions_rg.bicep' = if (empty(
   }
 }
 
+output roleDefinitionName string = !empty(managementGroupId) ? roleDefinition_mg.outputs.roleDefinitionName : (!empty(resourceGroupName) ? roleDefinition_rg.outputs.roleDefinitionName : roleDefinition_sub.outputs.roleDefinitionName)
 output roleDefinitionId string = !empty(managementGroupId) ? roleDefinition_mg.outputs.roleDefinitionId : (!empty(resourceGroupName) ? roleDefinition_rg.outputs.roleDefinitionId : roleDefinition_sub.outputs.roleDefinitionId)
 output roleDefinitionScope string = !empty(managementGroupId) ? roleDefinition_mg.outputs.roleDefinitionScope : (!empty(resourceGroupName) ? roleDefinition_rg.outputs.roleDefinitionScope : roleDefinition_sub.outputs.roleDefinitionScope)

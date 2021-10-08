@@ -20,15 +20,11 @@ resource container_policy 'Microsoft.Storage/storageAccounts/blobServices/contai
   ]
 }
 
-module container_rbac './nested_container_rbac.bicep' = [for (roleassignment, index) in blobContainer.roleAssignments: {
+module container_rbac './nested_container_rbac.bicep' = [for (roleAssignment, index) in blobContainer.roleAssignments: {
   name: '${deployment().name}-Rbac-${(empty(blobContainer.roleAssignments) ? 'dummy' : index)}'
   params: {
-    blobContainerName: blobContainer.name
-    roleAssignment: roleassignment
+    roleAssignmentObj: roleAssignment
     builtInRoleNames: builtInRoleNames
-    storageAccountName: storageAccountName
+    resourceName: container.name
   }
-  dependsOn: [
-    container
-  ]
 }]

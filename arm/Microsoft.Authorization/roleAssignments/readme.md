@@ -60,6 +60,7 @@ To deploy resource to a Resource Group, provide the `subscriptionId` and `resour
 
 | Output Name | Type | Description |
 | :-- | :-- | :-- |
+| `roleAssignmentName` | string | The name of the role assignment |
 | `roleAssignmentScope` | string | The scope of the assignments defined in this module were created on. |
 | `roleAssignmentId` | array | Role Assignment Resource ID |
 

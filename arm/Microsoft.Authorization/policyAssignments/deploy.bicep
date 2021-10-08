@@ -54,36 +54,25 @@ param notScopes array = []
 @description('Optional. Location for all resources.')
 param location string = deployment().location
 
-var nonComplianceMessage_var = {
-  message: (empty(nonComplianceMessage) ? 'null' : nonComplianceMessage)
-}
-
 var policyAssignmentName_var = replace(policyAssignmentName, ' ', '-')
-var policyAssignmentProperties_var = {
-  displayName: (empty(displayName) ? json('null') : displayName)
-  metadata: (empty(metadata) ? json('null') : metadata)
-  description: (empty(policyAssignmentDescription) ? json('null') : policyAssignmentDescription)
-  policyDefinitionId: policyDefinitionID
-  parameters: parameters
-  nonComplianceMessages: (empty(nonComplianceMessage) ? [] : array(nonComplianceMessage_var))
-  enforcementMode: enforcementMode
-  notScopes: (empty(notScopes) ? [] : notScopes)
-}
-
-var policyAssignmentIdentity_var = {
-  type: identity
-}
 
 module policyAssignment_mg '.bicep/nested_policyAssignments_mg.bicep' = if (!empty(managementGroupId) && empty(subscriptionId) && empty(resourceGroupName)) {
   name: '${policyAssignmentName_var}-policyAssignment_mg'
   scope: managementGroup(managementGroupId)
   params: {
     policyAssignmentName: policyAssignmentName_var
-    location: location
-    policyAssignmentProperties: policyAssignmentProperties_var
-    policyAssignmentIdentity: policyAssignmentIdentity_var
-    managementGroupId: managementGroupId
+    policyDefinitionID: policyDefinitionID
+    displayName: displayName
+    policyAssignmentDescription: policyAssignmentDescription
+    parameters: parameters
+    identity: identity
     roleDefinitionIds: roleDefinitionIds
+    metadata: metadata
+    nonComplianceMessage: nonComplianceMessage
+    enforcementMode: enforcementMode
+    notScopes: notScopes
+    managementGroupId: managementGroupId
+    location: location
   }
 }
 
@@ -92,11 +81,18 @@ module policyAssignment_sub '.bicep/nested_policyAssignments_sub.bicep' = if (em
   scope: subscription(subscriptionId)
   params: {
     policyAssignmentName: policyAssignmentName_var
-    location: location
-    policyAssignmentProperties: policyAssignmentProperties_var
-    policyAssignmentIdentity: policyAssignmentIdentity_var
-    subscriptionId: subscriptionId
+    policyDefinitionID: policyDefinitionID
+    displayName: displayName
+    policyAssignmentDescription: policyAssignmentDescription
+    parameters: parameters
+    identity: identity
     roleDefinitionIds: roleDefinitionIds
+    metadata: metadata
+    nonComplianceMessage: nonComplianceMessage
+    enforcementMode: enforcementMode
+    notScopes: notScopes
+    subscriptionId: subscriptionId
+    location: location
   }
 }
 
@@ -105,15 +101,22 @@ module policyAssignment_rg '.bicep/nested_policyAssignments_rg.bicep' = if (empt
   scope: resourceGroup(subscriptionId, resourceGroupName)
   params: {
     policyAssignmentName: policyAssignmentName_var
-    location: location
-    policyAssignmentProperties: policyAssignmentProperties_var
-    policyAssignmentIdentity: policyAssignmentIdentity_var
+    policyDefinitionID: policyDefinitionID
+    displayName: displayName
+    policyAssignmentDescription: policyAssignmentDescription
+    parameters: parameters
+    identity: identity
+    roleDefinitionIds: roleDefinitionIds
+    metadata: metadata
+    nonComplianceMessage: nonComplianceMessage
+    enforcementMode: enforcementMode
+    notScopes: notScopes
     resourceGroupName: resourceGroupName
     subscriptionId: subscriptionId
-    roleDefinitionIds: roleDefinitionIds
+    location: location
   }
 }
 
-output policyAssignmentName string = policyAssignmentName
+output policyAssignmentName string = !empty(managementGroupId) ? policyAssignment_mg.outputs.policyAssignmentName : (!empty(resourceGroupName) ? policyAssignment_rg.outputs.policyAssignmentName : policyAssignment_sub.outputs.policyAssignmentName)
 output policyAssignmentPrincipalId string = !empty(managementGroupId) ? policyAssignment_mg.outputs.policyAssignmentPrincipalId : (!empty(resourceGroupName) ? policyAssignment_rg.outputs.policyAssignmentPrincipalId : policyAssignment_sub.outputs.policyAssignmentPrincipalId)
 output policyAssignmentId string = !empty(managementGroupId) ? policyAssignment_mg.outputs.policyAssignmentId : (!empty(resourceGroupName) ? policyAssignment_rg.outputs.policyAssignmentId : policyAssignment_sub.outputs.policyAssignmentId)

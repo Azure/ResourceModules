@@ -1,11 +1,11 @@
-param roleAssignment object
+param roleAssignmentObj object
 param builtInRoleNames object
 param resourceGroupName string
 
-resource roleAssigment 'Microsoft.Authorization/roleAssignments@2020-04-01-preview' = [for principalId in roleAssignment.principalIds: {
-  name: guid(resourceGroupName, principalId, roleAssignment.roleDefinitionIdOrName)
+resource roleAssigment 'Microsoft.Authorization/roleAssignments@2020-04-01-preview' = [for principalId in roleAssignmentObj.principalIds: {
+  name: guid(resourceGroupName, principalId, roleAssignmentObj.roleDefinitionIdOrName)
   properties: {
-    roleDefinitionId: contains(builtInRoleNames, roleAssignment.roleDefinitionIdOrName) ? builtInRoleNames[roleAssignment.roleDefinitionIdOrName] : roleAssignment.roleDefinitionIdOrName
+    roleDefinitionId: contains(builtInRoleNames, roleAssignmentObj.roleDefinitionIdOrName) ? builtInRoleNames[roleAssignmentObj.roleDefinitionIdOrName] : roleAssignmentObj.roleDefinitionIdOrName
     principalId: principalId
   }
 }]

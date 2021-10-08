@@ -39,15 +39,6 @@ param subscriptionId string = ''
 param location string = deployment().location
 
 var policyDefinitionName_var = toLower(replace(policyDefinitionName, ' ', '-'))
-var policyDefinitionProperties_var = {
-  policyType: 'Custom'
-  mode: mode
-  displayName: (empty(displayName) ? json('null') : displayName)
-  description: (empty(policyDescription) ? json('null') : policyDescription)
-  metadata: (empty(metadata) ? json('null') : metadata)
-  parameters: (empty(parameters) ? json('null') : parameters)
-  policyRule: policyRule
-}
 
 module policyDefinition_mg './.bicep/nested_policyDefinitions_mg.bicep' = if (empty(subscriptionId) && !empty(managementGroupId)) {
   name: '${policyDefinitionName_var}-mgDeployment'
@@ -55,8 +46,13 @@ module policyDefinition_mg './.bicep/nested_policyDefinitions_mg.bicep' = if (em
   params: {
     policyDefinitionName: policyDefinitionName_var
     location: location
-    policyDefinitionProperties: policyDefinitionProperties_var
     managementGroupId: managementGroupId
+    mode: mode
+    displayName: (empty(displayName) ? '' : displayName)
+    policyDescription: (empty(policyDescription) ? '' : policyDescription)
+    metadata: (empty(metadata) ? {} : metadata)
+    parameters: (empty(parameters) ? {} : parameters)
+    policyRule: policyRule
   }
 }
 
@@ -66,11 +62,16 @@ module policyDefinition_sub './.bicep/nested_policyDefinitions_sub.bicep' = if (
   params: {
     policyDefinitionName: policyDefinitionName_var
     location: location
-    policyDefinitionProperties: policyDefinitionProperties_var
     subscriptionId: subscriptionId
+    mode: mode
+    displayName: (empty(displayName) ? '' : displayName)
+    policyDescription: (empty(policyDescription) ? '' : policyDescription)
+    metadata: (empty(metadata) ? {} : metadata)
+    parameters: (empty(parameters) ? {} : parameters)
+    policyRule: policyRule
   }
 }
 
-output policyDefinitionName string = policyDefinitionName_var
+output policyDefinitionName string = !empty(managementGroupId) ? policyDefinition_mg.outputs.policyDefinitionName : policyDefinition_sub.outputs.policyDefinitionName
 output policyDefinitionId string = !empty(managementGroupId) ? policyDefinition_mg.outputs.policyDefinitionId : policyDefinition_sub.outputs.policyDefinitionId
 output roleDefinitionIds array = !empty(managementGroupId) ? policyDefinition_mg.outputs.roleDefinitionIds : policyDefinition_sub.outputs.roleDefinitionIds

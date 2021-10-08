@@ -64,6 +64,7 @@ To deploy resource to a Resource Group, provide the `subscriptionId` and `resour
 
 | Output Name | Type | Description |
 | :-- | :-- | :-- |
+| `roleDefinitionName` | string | The name of the role definition |
 | `roleDefinitionId` | string | The id of the role definition that was created. |
 | `roleDefinitionScope` | string | The scope this definition was created on. |
 

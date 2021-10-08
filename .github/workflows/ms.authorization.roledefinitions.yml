@@ -81,7 +81,7 @@ jobs:
       - name: "Test module"
         uses: ./.github/actions/templates/validateModuleDeploy
         with:
-          templateFilePath: '${{ env.modulePath }}/deploy.bicep'
+          templateFilePath: '${{ env.modulePath }}/.bicep/nested_roleDefinitions_sub.bicep'
           parameterFilePath: '${{ env.modulePath }}/parameters/${{ matrix.parameterFilePaths }}'
           location: '${{ env.defaultLocation }}'
           resourceGroupName: '${{ env.resourceGroupName }}'
@@ -116,7 +116,7 @@ jobs:
         uses: ./.github/actions/templates/deployModule
         with:
           moduleName: '${{ env.moduleName }}'
-          templateFilePath: '${{ env.modulePath }}/deploy.bicep'
+          templateFilePath: '${{ env.modulePath }}/.bicep/nested_roleDefinitions_sub.bicep'
           parameterFilePath: '${{ env.modulePath }}/parameters/${{ matrix.parameterFilePaths }}'
           location: '${{ env.defaultLocation }}'
           resourceGroupName: '${{ env.resourceGroupName }}'

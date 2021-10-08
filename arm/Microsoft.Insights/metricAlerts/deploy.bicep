@@ -45,7 +45,7 @@ param windowSize string = 'PT15M'
 
 @description('Optional. the list of resource id\'s that this metric alert is scoped to.')
 param scopes array = [
-    subscription().id
+  subscription().id
 ]
 
 @description('Optional. The resource type of the target resource(s) on which the alert is created/updated. Mandatory for MultipleResourceMultipleMetricCriteria.')
@@ -81,8 +81,8 @@ param tags object = {}
 param cuaId string = ''
 
 var actionGroups = [for action in actions: {
-    actionGroupId: contains(action, 'actionGroupId') ? action.actionGroupId : action
-    webHookProperties: contains(action, 'webHookProperties') ? action.webHookProperties : json('null')
+  actionGroupId: contains(action, 'actionGroupId') ? action.actionGroupId : action
+  webHookProperties: contains(action, 'webHookProperties') ? action.webHookProperties : json('null')
 }]
 
 var builtInRoleNames = {
@@ -135,13 +135,10 @@ resource metricAlert 'Microsoft.Insights/metricAlerts@2018-03-01' = {
 module metricAlert_rbac './.bicep/nested_rbac.bicep' = [for (roleAssignment, index) in roleAssignments: {
   name: 'rbac-${deployment().name}${index}'
   params: {
-    roleAssignment: roleAssignment
+    roleAssignmentObj: roleAssignment
     builtInRoleNames: builtInRoleNames
     resourceName: metricAlert.name
   }
-  dependsOn: [
-    metricAlert
-  ]
 }]
 
 output deploymentResourceGroup string = resourceGroup().name

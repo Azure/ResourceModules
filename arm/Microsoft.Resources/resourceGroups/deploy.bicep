@@ -216,13 +216,10 @@ module resourceGroup_rbac './.bicep/nested_rbac.bicep' = [for (roleAssignment, i
   name: 'rbac-${deployment().name}-${index}'
   scope: resourceGroup
   params: {
-    roleAssignment: roleAssignment
+    roleAssignmentObj: roleAssignment
     builtInRoleNames: builtInRoleNames
     resourceGroupName: resourceGroup.name
   }
-  dependsOn: [
-    resourceGroup
-  ]
 }]
 
 output resourceGroupName string = resourceGroup.name
