@@ -17,7 +17,7 @@
       }
     },
     "remoteEntityName": {
-      "value": "vnet-validate-01-ergw-01"
+      "value": "sxx-az-vnet-vpn-gw-weu-p-002"
     },
     "remoteEntityResourceGroup": {
       "value": ""
