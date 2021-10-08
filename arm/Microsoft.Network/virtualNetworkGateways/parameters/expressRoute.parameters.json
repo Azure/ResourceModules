@@ -18,7 +18,7 @@
             "value": "ErGw1AZ"
         },
         "vNetId": {
-            "value": "/subscriptions/8629be3b-96bc-482d-a04b-ffff597c65a2/resourceGroups/validation-rg/providers/Microsoft.Network/virtualNetworks/sxx-az-vnet-weu-x-004"
+            "value": "/subscriptions/8629be3b-96bc-482d-a04b-ffff597c65a2/resourceGroups/validation-rg/providers/Microsoft.Network/virtualNetworks/testVnet1"
         },
         "diagnosticLogsRetentionInDays": {
             "value": 365
