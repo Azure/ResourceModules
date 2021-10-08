@@ -115,8 +115,8 @@ param tags object = {}
 @description('Optional. Customer Usage Attribution id (GUID). This GUID must be previously registered')
 param cuaId string = ''
 
-var virtualNetworkRules = [for networkrule in networkAcls.virtualNetworkRules: {
-  id: '${vNetId}/subnets/${networkrule.subnet}'
+var virtualNetworkRules = [for index in range(0, (empty(networkAcls) ? 0 : length(networkAcls.virtualNetworkRules))): {
+  id: '${vNetId}/subnets/${networkAcls.virtualNetworkRules[index].subnet}'
 }]
 var networkAcls_var = {
   bypass: (empty(networkAcls) ? json('null') : networkAcls.bypass)
