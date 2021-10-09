@@ -72,7 +72,15 @@ param identityProviderSignInTenant string = ''
 param identityProviderSignUpPolicyName string = ''
 
 @description('Optional. Identity Provider Type identifier. - aad , aadB2C')
-param identityProviderType string = ''
+@allowed([
+  'aad'
+  'aadB2C'
+  'facebook'
+  'google'
+  'microsoft'
+  'twitter'
+])
+param identityProviderType string = 'aad'
 
 @description('Optional. Location for all Resources.')
 param location string = resourceGroup().location
@@ -211,6 +219,33 @@ resource apiManagementService 'Microsoft.ApiManagement/service@2020-12-01' = {
     apiVersionConstraint: ((!empty(minApiVersion)) ? json('{"minApiVersion": "${minApiVersion}"}') : json('null'))
     restore: restore
   }
+  resource apiManagementService_signin 'portalsettings@2019-12-01' = if (!empty(portalSignIn)) {
+    name: 'signin'
+    properties: portalSignIn
+  }
+  resource apiManagementService_signup 'portalsettings@2019-12-01' = if (!empty(portalSignUp)) {
+    name: 'signup'
+    properties: portalSignUp
+  }
+  resource apiManagementServiceName_policy 'policies@2020-06-01-preview' = {
+    name: 'policy'
+    properties: apiManagementServicePolicy
+  }
+  resource apiManagementService_identityProviderType 'identityProviders@2020-06-01-preview' = {
+    name: identityProviderType
+    properties: {
+      type: identityProviderType
+      signinTenant: identityProviderSignInTenant
+      allowedTenants: identityProviderAllowedTenants
+      authority: identityProviderAuthority
+      signupPolicyName: (isAadB2C ? identityProviderSignUpPolicyName : json('null'))
+      signinPolicyName: (isAadB2C ? identityProviderSignInPolicyName : json('null'))
+      profileEditingPolicyName: (isAadB2C ? identityProviderProfileEditingPolicyName : json('null'))
+      passwordResetPolicyName: (isAadB2C ? identityProviderPasswordResetPolicyName : json('null'))
+      clientId: identityProviderClientId
+      clientSecret: identityProviderClientSecret
+    }
+  }
 }
 
 resource apiManagementService_lock 'Microsoft.Authorization/locks@2016-09-01' = if (lockForDeletion) {
@@ -232,50 +267,6 @@ resource apiManagementService_diagnosticSettings 'Microsoft.Insights/diagnosticS
     logs: ((empty(diagnosticStorageAccountId) && empty(workspaceId) && empty(eventHubAuthorizationRuleId) && empty(eventHubName)) ? json('null') : diagnosticsLogs)
   }
   scope: apiManagementService
-}
-
-module apiManagementService_identityProvider './.bicep/nested_identityProvider.bicep' = if (!empty(identityProviderType)) {
-  name: '${apiManagementServiceName}-identityProvider'
-  params: {
-    variables_isAadB2C: isAadB2C
-    apiManagementServiceName: apiManagementServiceName
-    identityProviderType: identityProviderType
-    identityProviderSignInTenant: identityProviderSignInTenant
-    identityProviderAllowedTenants: identityProviderAllowedTenants
-    identityProviderAuthority: identityProviderAuthority
-    identityProviderSignUpPolicyName: identityProviderSignUpPolicyName
-    identityProviderSignInPolicyName: identityProviderSignInPolicyName
-    identityProviderProfileEditingPolicyName: identityProviderProfileEditingPolicyName
-    identityProviderPasswordResetPolicyName: identityProviderPasswordResetPolicyName
-    identityProviderClientId: identityProviderClientId
-    identityProviderClientSecret: identityProviderClientSecret
-  }
-  dependsOn: [
-    apiManagementService
-  ]
-}
-
-module policy_name './.bicep/nested_policy.bicep' = if (!empty(apiManagementServicePolicy)) {
-  name: 'policy-${deployment().name}'
-  params: {
-    apiManagementServiceName: apiManagementServiceName
-    apiManagementServicePolicy: apiManagementServicePolicy
-  }
-  dependsOn: [
-    apiManagementService
-  ]
-}
-
-resource apiManagementService_signin 'Microsoft.ApiManagement/service/portalsettings@2019-12-01' = if (!empty(portalSignIn)) {
-  parent: apiManagementService
-  name: 'signin'
-  properties: portalSignIn
-}
-
-resource apiManagementService_signup 'Microsoft.ApiManagement/service/portalsettings@2019-12-01' = if (!empty(portalSignUp)) {
-  parent: apiManagementService
-  name: 'signup'
-  properties: portalSignUp
 }
 
 module gallery_rbac './.bicep/nested_rbac.bicep' = [for (roleAssignment, index) in roleAssignments: {
