@@ -227,11 +227,11 @@ resource apiManagementService 'Microsoft.ApiManagement/service@2020-12-01' = {
     name: 'signup'
     properties: portalSignUp
   }
-  resource apiManagementServiceName_policy 'policies@2020-06-01-preview' = {
+  resource apiManagementService_policy 'policies@2020-06-01-preview' = {
     name: 'policy'
     properties: apiManagementServicePolicy
   }
-  resource apiManagementService_identityProviderType 'identityProviders@2020-06-01-preview' = {
+  resource apiManagementService_identityProvider 'identityProviders@2020-06-01-preview' = {
     name: identityProviderType
     properties: {
       type: identityProviderType
@@ -249,7 +249,7 @@ resource apiManagementService 'Microsoft.ApiManagement/service@2020-12-01' = {
 }
 
 resource apiManagementService_lock 'Microsoft.Authorization/locks@2016-09-01' = if (lockForDeletion) {
-  name: '${apiManagementServiceName}-apiManagementServiceDoNotDelete'
+  name: '${apiManagementService.name}-apiManagementServiceDoNotDelete'
   properties: {
     level: 'CanNotDelete'
   }
@@ -257,7 +257,7 @@ resource apiManagementService_lock 'Microsoft.Authorization/locks@2016-09-01' = 
 }
 
 resource apiManagementService_diagnosticSettings 'Microsoft.Insights/diagnosticSettings@2017-05-01-preview' = if ((!empty(diagnosticStorageAccountId)) || (!empty(workspaceId)) || (!empty(eventHubAuthorizationRuleId)) || (!empty(eventHubName))) {
-  name: '${apiManagementServiceName}-diagnosticSettings'
+  name: '${apiManagementService.name}-diagnosticSettings'
   properties: {
     storageAccountId: (empty(diagnosticStorageAccountId) ? json('null') : diagnosticStorageAccountId)
     workspaceId: (empty(workspaceId) ? json('null') : workspaceId)
