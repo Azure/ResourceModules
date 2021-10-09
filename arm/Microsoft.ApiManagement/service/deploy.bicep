@@ -71,7 +71,7 @@ param identityProviderSignInTenant string = ''
 @description('Optional. Signup Policy Name. Only applies to AAD B2C Identity Provider.')
 param identityProviderSignUpPolicyName string = ''
 
-@description('Optional. Identity Provider Type identifier. - aad , aadB2C')
+@description('Optional. Identity Provider Type identifier.')
 @allowed([
   'aad'
   'aadB2C'
