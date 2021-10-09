@@ -29,7 +29,7 @@ The default parameter values are based on the needs of deploying a diagnostic st
 | `allowBlobPublicAccess` | bool | True |  | Optional. Indicates whether public access is enabled for all blobs or containers in the storage account. |
 | `automaticSnapshotPolicyEnabled` | bool | False |  | Optional. Automatic Snapshot is enabled if set to true. |
 | `azureFilesIdentityBasedAuthentication` | object |  |  | Optional. Provides the identity based authentication settings for Azure Files. |
-| `baseTime` | string | [utcNow('u')] |  | Generated. Do not provide a value! This date value is used to generate a SAS token to access the modules. |
+| `baseTime` | string | [utcNow('u')] |  | Generated. Do not provide a value! This date value is used to generate values if e.g. no `storageAccountName` was provided. |
 | `blobContainers` | array | System.Object[] |  | Optional. Blob containers to create. |
 | `cuaId` | string |  |  | Optional. Customer Usage Attribution id (GUID). This GUID must be previously registered |
 | `deleteBlobsAfter` | int | 1096 |  | Optional. Set up the amount of days after which the blobs will be deleted |

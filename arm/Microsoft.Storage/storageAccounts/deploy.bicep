@@ -115,6 +115,9 @@ param tags object = {}
 @description('Optional. Customer Usage Attribution id (GUID). This GUID must be previously registered')
 param cuaId string = ''
 
+@description('Generated. Do not provide a value! This date value is used to generate a SAS token to access the modules.')
+param basetime string = utcNow('u')
+
 var virtualNetworkRules = [for index in range(0, (empty(networkAcls) ? 0 : length(networkAcls.virtualNetworkRules))): {
   id: '${vNetId}/subnets/${networkAcls.virtualNetworkRules[index].subnet}'
 }]
@@ -125,6 +128,12 @@ var networkAcls_var = {
   ipRules: (empty(networkAcls) ? json('null') : ((length(networkAcls.ipRules) == 0) ? json('null') : networkAcls.ipRules))
 }
 var azureFilesIdentityBasedAuthentication_var = azureFilesIdentityBasedAuthentication
+
+var maxNameLength = 24
+var uniqueStoragenameUntrim = '${uniqueString('Storage Account${basetime}')}'
+var uniqueStoragename = length(uniqueStoragenameUntrim) > maxNameLength ? substring(uniqueStoragenameUntrim,0,maxNameLength) : uniqueStoragenameUntrim
+var storageAccountName_var = empty(storageAccountName) ? uniqueStoragename : storageAccountName
+
 var saBaseProperties = {
   encryption: {
     keySource: 'Microsoft.Storage'
@@ -193,7 +202,7 @@ module pid_cuaId './.bicep/nested_cuaId.bicep' = if (!empty(cuaId)) {
 }
 
 resource storageAccount 'Microsoft.Storage/storageAccounts@2021-06-01' = {
-  name: storageAccountName
+  name: storageAccountName_var
   location: location
   kind: storageAccountKind
   sku: {
