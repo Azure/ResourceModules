@@ -1,35 +1,36 @@
 # Metric Alert
+
 This module deploys an Alert based on metrics
 
 ## Resource types
 
-|Resource Type|ApiVersion|
-|:--|:--|
-|`Microsoft.Resources/deployments`|2018-02-01|
-|`Microsoft.Insights/metricAlerts`|2018-03-01|
-|`Microsoft.Authorization/roleAssignments`|2020-04-01-preview|
+| Resource Type                                               | ApiVersion         |
+| :---------------------------------------------------------- | :----------------- |
+| `Microsoft.Resources/deployments`                           | 2018-02-01         |
+| `Microsoft.Insights/metricAlerts`                           | 2018-03-01         |
+| `Microsoft.Insights/metricAlerts/providers/roleAssignments` | 2020-04-01-preview |
 
 ## Parameters
 
-| Parameter Name | Type | Description | DefaultValue | Possible values |
-| :-- | :-- | :-- | :-- | :-- |
-| `actions` | array | Optional. The list of actions to take when alert triggers. | System.Object[] |  |
-| `alertCriteriaType` | string | Optional. Maps to the 'odata.type' field. Specifies the type of the alert criteria. | Microsoft.Azure.Monitor.MultipleResourceMultipleMetricCriteria | System.Object[] |
-| `alertDescription` | string | Optional. Description of the alert. |  |  |
-| `alertName` | string | Required. The name of the Alert. |  |  |
-| `autoMitigate` | bool | Optional. The flag that indicates whether the alert should be auto resolved or not. | True |  |
-| `criterias` | array | Required. Criterias to trigger the alert. Array of 'Microsoft.Azure.Monitor.SingleResourceMultipleMetricCriteria' or 'Microsoft.Azure.Monitor.MultipleResourceMultipleMetricCriteria' objects |  |  |
-| `cuaId` | string | Optional. Customer Usage Attribution id (GUID). This GUID must be previously registered |  |  |
-| `enabled` | bool | Optional. Indicates whether this alert is enabled. | True |  |
-| `evaluationFrequency` | string | Optional. how often the metric alert is evaluated represented in ISO 8601 duration format. | PT5M | System.Object[] |
-| `location` | string | Optional. Location for all resources. | global |  |
-| `roleAssignments` | array | Optional. Array of role assignment objects that contain the 'roleDefinitionIdOrName' and 'principalId' to define RBAC role assignments on this resource. In the roleDefinitionIdOrName attribute, you can provide either the display name of the role definition, or its fully qualified ID in the following format: '/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11' | System.Object[] |  |
-| `scopes` | array | Optional. the list of resource id\'s that this metric alert is scoped to. | subscription().id |  |
-| `severity` | int | Optional. The severity of the alert. | 3 | System.Object[] |
-| `tags` | object | Optional. Tags of the resource. |  |  |
-| `targetResourceRegion` | string | Optional. The region of the target resource(s) on which the alert is created/updated. Mandatory for MultipleResourceMultipleMetricCriteria. |  |  |
-| `targetResourceType` | string | Optional. The resource type of the target resource(s) on which the alert is created/updated. Mandatory for MultipleResourceMultipleMetricCriteria. |  |  |
-| `windowSize` | string | Optional. the period of time (in ISO 8601 duration format) that is used to monitor alert activity based on the threshold. | PT15M | System.Object[] |
+| Parameter Name         | Type   | Description                                                                                                                                                                                                                                                                                                                                                                                                    | DefaultValue                                                   | Possible values |
+| :--------------------- | :----- | :------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | :------------------------------------------------------------- | :-------------- |
+| `actions`              | array  | Optional. The list of actions to take when alert triggers.                                                                                                                                                                                                                                                                                                                                                     | System.Object[]                                                |                 |
+| `alertCriteriaType`    | string | Optional. Maps to the 'odata.type' field. Specifies the type of the alert criteria.                                                                                                                                                                                                                                                                                                                            | Microsoft.Azure.Monitor.MultipleResourceMultipleMetricCriteria | System.Object[] |
+| `alertDescription`     | string | Optional. Description of the alert.                                                                                                                                                                                                                                                                                                                                                                            |                                                                |                 |
+| `alertName`            | string | Required. The name of the Alert.                                                                                                                                                                                                                                                                                                                                                                               |                                                                |                 |
+| `autoMitigate`         | bool   | Optional. The flag that indicates whether the alert should be auto resolved or not.                                                                                                                                                                                                                                                                                                                            | True                                                           |                 |
+| `criterias`            | array  | Required. Criterias to trigger the alert. Array of 'Microsoft.Azure.Monitor.SingleResourceMultipleMetricCriteria' or 'Microsoft.Azure.Monitor.MultipleResourceMultipleMetricCriteria' objects                                                                                                                                                                                                                  |                                                                |                 |
+| `cuaId`                | string | Optional. Customer Usage Attribution id (GUID). This GUID must be previously registered                                                                                                                                                                                                                                                                                                                        |                                                                |                 |
+| `enabled`              | bool   | Optional. Indicates whether this alert is enabled.                                                                                                                                                                                                                                                                                                                                                             | True                                                           |                 |
+| `evaluationFrequency`  | string | Optional. how often the metric alert is evaluated represented in ISO 8601 duration format.                                                                                                                                                                                                                                                                                                                     | PT5M                                                           | System.Object[] |
+| `location`             | string | Optional. Location for all resources.                                                                                                                                                                                                                                                                                                                                                                          | global                                                         |                 |
+| `roleAssignments`      | array  | Optional. Array of role assignment objects that contain the 'roleDefinitionIdOrName' and 'principalId' to define RBAC role assignments on this resource. In the roleDefinitionIdOrName attribute, you can provide either the display name of the role definition, or its fully qualified ID in the following format: '/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11' | System.Object[]                                                |                 |
+| `scopes`               | array  | Optional. the list of resource id\'s that this metric alert is scoped to.                                                                                                                                                                                                                                                                                                                                      | subscription().id                                              |                 |
+| `severity`             | int    | Optional. The severity of the alert.                                                                                                                                                                                                                                                                                                                                                                           | 3                                                              | System.Object[] |
+| `tags`                 | object | Optional. Tags of the resource.                                                                                                                                                                                                                                                                                                                                                                                |                                                                |                 |
+| `targetResourceRegion` | string | Optional. The region of the target resource(s) on which the alert is created/updated. Mandatory for MultipleResourceMultipleMetricCriteria.                                                                                                                                                                                                                                                                    |                                                                |                 |
+| `targetResourceType`   | string | Optional. The resource type of the target resource(s) on which the alert is created/updated. Mandatory for MultipleResourceMultipleMetricCriteria.                                                                                                                                                                                                                                                             |                                                                |                 |
+| `windowSize`           | string | Optional. the period of time (in ISO 8601 duration format) that is used to monitor alert activity based on the threshold.                                                                                                                                                                                                                                                                                      | PT15M                                                          | System.Object[] |
 
 ### Parameter Usage: actions
 
@@ -59,6 +60,7 @@ If you do only want to provide actionGroupIds, a shorthand use of the parameter 
 ### Parameter Usage: criterias
 
 **SingleResourceMultipleMetricCriteria**
+
 ```json
 {
   "criterionType": "string",
@@ -73,6 +75,7 @@ If you do only want to provide actionGroupIds, a shorthand use of the parameter 
 ```
 
 **MultipleResourceMultipleMetricCriteria**
+
 ```json
 {
   "criterionType": "string",
@@ -94,6 +97,7 @@ If you do only want to provide actionGroupIds, a shorthand use of the parameter 
 
 **Sample**
 The following sample can be use both for Single and Multiple criterias. The other parameters are optional.
+
 ```json
 "criterias":{
   "value": [
@@ -157,17 +161,18 @@ Tag names and tag values can be provided as needed. A tag can be left without a 
 ```
 
 ### Additional notes on parameters
+
 - When using MultipleResourceMultipleMetricCriteria criteria type, some parameters becomes mandatory (see above)
 - MultipleResourceMultipleMetricCriteria is suggested, as additional scopes can be added later
 - It's not possible to convert from SingleResourceMultipleMetricCriteria to MultipleResourceMultipleMetricCriteria. Delete and re-create the alert.
 
 ## Outputs
 
-| Output Name | Type | Description |
-| :-- | :-- | :-- |
-| `metricAlertName` | string | The name of the created database. |
+| Output Name               | Type   | Description                                                 |
+| :------------------------ | :----- | :---------------------------------------------------------- |
+| `metricAlertName`         | string | The name of the created database.                           |
 | `deploymentResourceGroup` | string | The name of the Resource Group the Resource was created in. |
-| `metricAlertResourceId` | string | The Resource Id of the Alert deployed. |
+| `metricAlertResourceId`   | string | The Resource Id of the Alert deployed.                      |
 
 ## Considerations
 
