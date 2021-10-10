@@ -269,7 +269,7 @@ resource apiManagementService_diagnosticSettings 'Microsoft.Insights/diagnosticS
   scope: apiManagementService
 }
 
-module gallery_rbac './.bicep/nested_rbac.bicep' = [for (roleAssignment, index) in roleAssignments: {
+module apiManagementService_rbac './.bicep/nested_rbac.bicep' = [for (roleAssignment, index) in roleAssignments: {
   name: 'rbac-${deployment().name}${index}'
   params: {
     roleAssignmentObj: roleAssignment
