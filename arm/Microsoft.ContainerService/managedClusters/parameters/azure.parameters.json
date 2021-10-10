@@ -8,7 +8,7 @@
         "primaryAgentPoolProfile": {
             "value": [
                 {
-                    "name": "agentpool",
+                    "name": "systempool",
                     "osDiskSizeGB": 0,
                     "count": 1,
                     "enableAutoScaling": true,
@@ -19,8 +19,9 @@
                     "storageProfile": "ManagedDisks",
                     "type": "VirtualMachineScaleSets",
                     "mode": "System",
-                    "vnetSubnetID": "/subscriptions/8629be3b-96bc-482d-a04b-ffff597c65a2/resourceGroups/validation-rg/providers/Microsoft.Network/virtualNetworks/sxx-az-vnet-weu-x-004/subnets/sxx-az-subnet-weu-x-001",
-                    "maxPods": 110,
+                    "vnetSubnetID": "/subscriptions/8629be3b-96bc-482d-a04b-ffff597c65a2/resourceGroups/validation-rg/providers/Microsoft.Network/virtualNetworks/MangedInstance-VNET/subnets/Primary",
+                    "serviceCidr": "",
+                    "maxPods": 30,
                     "availabilityZones": [
                         "1"
                     ]
@@ -39,7 +40,7 @@
                         "osDiskSizeGB": 128,
                         "count": 2,
                         "osType": "Linux",
-                        "maxCount": 5,
+                        "maxCount": 3,
                         "minCount": 1,
                         "enableAutoScaling": true,
                         "scaleSetPriority": "Regular",
@@ -53,10 +54,10 @@
                             "1"
                         ],
                         "minPods": 2,
-                        "maxPods": 12,
+                        "maxPods": 30,
                         "storageProfile": "ManagedDisks",
                         "mode": "User",
-                        "vnetSubnetID": "/subscriptions/8629be3b-96bc-482d-a04b-ffff597c65a2/resourceGroups/validation-rg/providers/Microsoft.Network/virtualNetworks/sxx-az-vnet-weu-x-004/subnets/sxx-az-subnet-weu-x-002"
+                        "vnetSubnetID": "/subscriptions/8629be3b-96bc-482d-a04b-ffff597c65a2/resourceGroups/validation-rg/providers/Microsoft.Network/virtualNetworks/MangedInstance-VNET/subnets/Secondary"
                     }
                 },
                 {
@@ -66,7 +67,7 @@
                         "osDiskSizeGB": 128,
                         "count": 2,
                         "osType": "Linux",
-                        "maxCount": 5,
+                        "maxCount": 3,
                         "minCount": 1,
                         "enableAutoScaling": true,
                         "scaleSetPriority": "Regular",
@@ -80,10 +81,10 @@
                             "1"
                         ],
                         "minPods": 2,
-                        "maxPods": 12,
+                        "maxPods": 30,
                         "storageProfile": "ManagedDisks",
                         "mode": "User",
-                        "vnetSubnetID": "/subscriptions/8629be3b-96bc-482d-a04b-ffff597c65a2/resourceGroups/validation-rg/providers/Microsoft.Network/virtualNetworks/sxx-az-vnet-weu-x-004/subnets/sxx-az-subnet-weu-x-003"
+                        "vnetSubnetID": "/subscriptions/8629be3b-96bc-482d-a04b-ffff597c65a2/resourceGroups/validation-rg/providers/Microsoft.Network/virtualNetworks/MangedInstance-VNET/subnets/Tertiary"
                     }
                 }
             ]
