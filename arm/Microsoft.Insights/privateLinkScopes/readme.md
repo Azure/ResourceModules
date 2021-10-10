@@ -4,28 +4,28 @@ This module deploys Azure Monitor Private Link Scope
 
 ## Resource types
 
-| Resource Type | Api Version |
-| :-- | :-- |
-| `Microsoft.Insights/privateLinkScopes` | 2019-10-17-preview |
-| `microsoft.insights/privatelinkscopes/scopedresources` | 2019-10-17-preview |
-| `Microsoft.Network/privateEndpoints` | 2020-05-01 |
-| `Microsoft.Network/privateEndpoints/privateDnsZoneGroups` | 2020-05-01 |
+| Resource Type                                                    | Api Version        |
+| :--------------------------------------------------------------- | :----------------- |
+| `Microsoft.Insights/privateLinkScopes`                           | 2019-10-17-preview |
+| `microsoft.insights/privatelinkscopes/scopedresources`           | 2019-10-17-preview |
+| `Microsoft.Network/privateEndpoints`                             | 2020-05-01         |
+| `Microsoft.Network/privateEndpoints/privateDnsZoneGroups`        | 2020-05-01         |
 | `Microsoft.Insights/privateLinkScopes/providers/roleAssignments` | 2018-09-01-preview |
-| `Microsoft.Resources/deployments` | 2020-06-01 |
-| `providers/locks` | 2016-09-01 |
+| `Microsoft.Resources/deployments`                                | 2020-06-01         |
+| `Microsoft.Authorization/locks`                                  | 2016-09-01         |
 
 ## Parameters
 
-| Parameter Name | Type | Default Value | Possible values | Description |
-| :-             | :-   | :-            | :-              | :-          |
-| `privateLinkScopeName` | string | | | Required. Name of the Private Link Scope.
-| `location` | string | `[resourceGroup().location]` | | Optional. Location for all resources.
-| `lockForDeletion` | bool | `true` | | Optional. Switch to lock Private Link Scope from deletion.
-| `roleAssignments` | array | [] | Complex structure, see below. | Optional. Array of role assignment objects that contain the 'roleDefinitionIdOrName' and 'principalId' to define RBAC role assignments on this resource. In the roleDefinitionIdOrName attribute, you can provide either the display name of the role definition, or it's fully qualified ID in the following format: '/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11'
-| `scopedResources` | array | [] | Complex structure, see below. | Optional. Configuration Details for Azure Monitor Resources.
-| `privateEndpoints` | array | System.Object[] | Complex structure, see below. | Optional. Configuration Details for private endpoints. |
-| `tags` | object | {} | Complex structure, see below. | Optional. Tags of the Azure Key Vault resource.
-| `cuaId` | string | "" | | Optional. Customer Usage Attribution id (GUID). This GUID must be previously registered.
+| Parameter Name         | Type   | Default Value                | Possible values                            | Description                                                                                                                                                                                                                                                                                                                                                                                                     |
+| :--------------------- | :----- | :--------------------------- | :----------------------------------------- | :-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `cuaId`                | string | ""                           |                                            | Optional. Customer Usage Attribution id (GUID). This GUID must be previously registered.                                                                                                                                                                                                                                                                                                                        |
+| `location`             | string | `[resourceGroup().location]` |                                            | Optional. Location for all resources.                                                                                                                                                                                                                                                                                                                                                                           |
+| `lock`                 | string | 'NotSpecified'               | 'CanNotDelete', 'NotSpecified', 'ReadOnly' | Optional. Specify the type of lock.                                                                                                                                                                                                                                                                                                                                                                             |
+| `privateEndpoints`     | array  | System.Object[]              | Complex structure, see below.              | Optional. Configuration Details for private endpoints.                                                                                                                                                                                                                                                                                                                                                          |
+| `privateLinkScopeName` | string |                              |                                            | Required. Name of the Private Link Scope.                                                                                                                                                                                                                                                                                                                                                                       |
+| `roleAssignments`      | array  | []                           | Complex structure, see below.              | Optional. Array of role assignment objects that contain the 'roleDefinitionIdOrName' and 'principalId' to define RBAC role assignments on this resource. In the roleDefinitionIdOrName attribute, you can provide either the display name of the role definition, or it's fully qualified ID in the following format: '/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11' |
+| `scopedResources`      | array  | []                           | Complex structure, see below.              | Optional. Configuration Details for Azure Monitor Resources.                                                                                                                                                                                                                                                                                                                                                    |
+| `tags`                 | object | {}                           | Complex structure, see below.              | Optional. Tags of the Azure Key Vault resource.                                                                                                                                                                                                                                                                                                                                                                 |
 
 ### Parameter Usage: `roleAssignments`
 
@@ -127,11 +127,11 @@ Tag names and tag values can be provided as needed. A tag can be left without a 
 
 ## Outputs
 
-| Output Name | Type | Description |
-| :-- | :-- | :-- |
-| `privateLinkScopeResourceId` | string | The Resource Id of the Private Link Scope. |
+| Output Name                     | Type   | Description                                                           |
+| :------------------------------ | :----- | :-------------------------------------------------------------------- |
+| `privateLinkScopeResourceId`    | string | The Resource Id of the Private Link Scope.                            |
 | `privateLinkScopeResourceGroup` | string | The name of the Resource Group the Private Link Scope was created in. |
-| `privateLinkScopeName` | string | The Name of the Private Link Scope. |
+| `privateLinkScopeName`          | string | The Name of the Private Link Scope.                                   |
 
 ## Considerations
 
