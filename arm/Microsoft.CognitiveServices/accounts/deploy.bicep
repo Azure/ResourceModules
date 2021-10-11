@@ -238,5 +238,5 @@ module cognitiveServices_rbac './.bicep/nested_rbac.bicep' = [for (roleAssignmen
 output cognitiveServicesName string = cognitiveServices.name
 output cognitiveServicesResourceId string = cognitiveServices.id
 output cognitiveServicesResourceGroup string = resourceGroup().name
-output cognitiveServicesEndpoint string = reference(cognitiveServices.id, '2017-04-18').endpoint
+output cognitiveServicesEndpoint string = cognitiveServices.properties.endpoint
 output principalId string = reference(cognitiveServices.id, '2017-04-18', 'Full').identity.principalId
