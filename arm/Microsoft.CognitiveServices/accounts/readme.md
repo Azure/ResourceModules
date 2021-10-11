@@ -8,7 +8,7 @@ This module deploys different kinds of Cognitive Services resources
 | :-- | :-- |
 | `Microsoft.CognitiveServices/accounts` | 2017-04-18 |
 | `Microsoft.Insights/diagnosticsettings` | 2017-05-01-preview |
-| `Microsoft.CognitiveServices/accounts/providers/roleAssignments` | 2018-09-01-preview |
+| `Microsoft.CognitiveServices/accounts/providers/roleAssignments` | 2020-04-01-preview |
 | `Microsoft.Network/privateEndpoints/privateDnsZoneGroups` | 2021-02-01 |
 | `Microsoft.Network/privateEndpoints` | 2021-02-01 |
 | `Microsoft.Resources/deployments` | 2020-06-01 |
