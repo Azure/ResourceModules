@@ -65,7 +65,7 @@ param eventHubName string = ''
 param lockForDeletion bool = false
 
 @description('Required. The name of the Long Term Retention backup policy.')
-param backupLongTermRetentionPoliciesName string = 'LTRdefault'
+param backupLongTermRetentionPoliciesName string = 'default'
 
 @description('Required. The weekly retention policy for an LTR backup in an ISO 8601 format.')
 param weeklyRetention string = 'P1M'
