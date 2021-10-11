@@ -167,7 +167,7 @@ resource managedInstanceDatabase 'Microsoft.Sql/managedInstances/databases@2020-
 }
 
 resource managedInstanceDatabase_lock 'Microsoft.Authorization/locks@2016-09-01' = if (lockForDeletion) {
-  name: '${managedInstanceDatabase.name}-doNotDelete'
+  name: '${split(managedInstanceDatabase.name, '/')[1]}-doNotDelete'
   properties: {
     level: 'CanNotDelete'
   }
@@ -175,7 +175,7 @@ resource managedInstanceDatabase_lock 'Microsoft.Authorization/locks@2016-09-01'
 }
 
 resource managedInstanceDatabase_diagnosticSettings 'Microsoft.Insights/diagnosticsettings@2017-05-01-preview' = if ((!empty(diagnosticStorageAccountId)) || (!empty(workspaceId)) || (!empty(eventHubAuthorizationRuleId)) || (!empty(eventHubName))) {
-  name: '${managedInstanceDatabase.name}-diagnosticSettings'
+  name: '${split(managedInstanceDatabase.name, '/')[1]}-diagnosticSettings'
   properties: {
     storageAccountId: (empty(diagnosticStorageAccountId) ? json('null') : diagnosticStorageAccountId)
     workspaceId: (empty(workspaceId) ? json('null') : workspaceId)
