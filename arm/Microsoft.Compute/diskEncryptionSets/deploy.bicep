@@ -24,8 +24,10 @@ var builtInRoleNames = {
   'Owner': subscriptionResourceId('Microsoft.Authorization/roleDefinitions','8e3af657-a8ff-443c-a75c-2fe8c4bcb635')
   'Contributor': subscriptionResourceId('Microsoft.Authorization/roleDefinitions','b24988ac-6180-42a0-ab88-20f7382dd24c')
   'Reader': subscriptionResourceId('Microsoft.Authorization/roleDefinitions','acdd72a7-3385-48ef-bd42-f606fba81ae7')
-  'Avere Cluster Create': subscriptionResourceId('Microsoft.Authorization/roleDefinitions','a7b1b19a-0e83-4fe5-935c-faaefbfd18c3')'Avere Contributor': subscriptionResourceId('Microsoft.Authorization/roleDefinitions','4f8fab4f-1852-4a58-a46a-8eaf358af14a')
-  'Azure Service Deploy Release Management Contributor': subscriptionResourceId('Microsoft.Authorization/roleDefinitions','21d96096-b162-414a-8302-d8354f9d91b2')'CAL-Custom-Role': subscriptionResourceId('Microsoft.Authorization/roleDefinitions','7b266cd7-0bba-4ae2-8423-90ede5e1e898')
+  'Avere Cluster Create': subscriptionResourceId('Microsoft.Authorization/roleDefinitions','a7b1b19a-0e83-4fe5-935c-faaefbfd18c3')
+  'Avere Contributor': subscriptionResourceId('Microsoft.Authorization/roleDefinitions','4f8fab4f-1852-4a58-a46a-8eaf358af14a')
+  'Azure Service Deploy Release Management Contributor': subscriptionResourceId('Microsoft.Authorization/roleDefinitions','21d96096-b162-414a-8302-d8354f9d91b2')
+  'CAL-Custom-Role': subscriptionResourceId('Microsoft.Authorization/roleDefinitions','7b266cd7-0bba-4ae2-8423-90ede5e1e898')
   'Log Analytics Contributor': subscriptionResourceId('Microsoft.Authorization/roleDefinitions','92aaf0da-9dab-42b6-94a3-d43ce8d16293')
   'Log Analytics Reader': subscriptionResourceId('Microsoft.Authorization/roleDefinitions','73c42c96-874c-492b-b04d-ab87d138a893')
   'Managed Application Contributor Role': subscriptionResourceId('Microsoft.Authorization/roleDefinitions','641177b8-a67a-45b9-a033-47bc880bb21e')
@@ -45,7 +47,7 @@ module pid_cuaId './.bicep/nested_cuaId.bicep' = if (!empty(cuaId)) {
   params: {}
 }
 
-resource keyVault 'Microsoft.KeyVault/vaults/accessPolicies@2019-09-01' = {
+resource keyVaultAccessPolicies 'Microsoft.KeyVault/vaults/accessPolicies@2019-09-01' = {
   name: '${keyVaultName}/add'
   properties: {
     accessPolicies: [
