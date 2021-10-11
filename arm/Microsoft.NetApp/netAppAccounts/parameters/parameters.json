@@ -45,12 +45,12 @@
               ],
               "subnetId": "/subscriptions/8629be3b-96bc-482d-a04b-ffff597c65a2/resourceGroups/dependencies-rg/providers/Microsoft.Network/virtualNetworks/sxx-az-vnet-weu-x-003/subnets/sxx-az-subnet-weu-x-004",
               "roleAssignments": [
-                // {
-                //   "roleDefinitionIdOrName": "Reader",
-                //   "principalIds": [
-                //     "56789123-1234-1234-1234-123456789012" // object 2
-                //   ]
-                // }
+                {
+                  "roleDefinitionIdOrName": "Reader",
+                  "principalIds": [
+                    "5545f7a0-51f4-46af-b3b4-baecf5176a56" // object 2
+                  ]
+                }
               ]
             },
             {
@@ -75,12 +75,12 @@
               },
               "subnetId": "/subscriptions/8629be3b-96bc-482d-a04b-ffff597c65a2/resourceGroups/dependencies-rg/providers/Microsoft.Network/virtualNetworks/sxx-az-vnet-weu-x-003/subnets/sxx-az-subnet-weu-x-004",
               "roleAssignments": [
-                // {
-                //   "roleDefinitionIdOrName": "Reader",
-                //   "principalIds": [
-                //     "12345678-1234-1234-1234-123456789012" // object 1
-                //   ]
-                // }
+                {
+                  "roleDefinitionIdOrName": "Reader",
+                  "principalIds": [
+                    "fc840cfb-ae08-46fb-b13f-829c532992ef"
+                  ]
+                }
               ]
             }
             // ,
@@ -104,12 +104,12 @@
             // }
           ],
           "roleAssignments": [
-            // {
-            //   "roleDefinitionIdOrName": "Reader",
-            //   "principalIds": [
-            //     "12345678-1234-1234-1234-123456789012" // object 1
-            //   ]
-            // }
+            {
+              "roleDefinitionIdOrName": "Reader",
+              "principalIds": [
+                "5545f7a0-51f4-46af-b3b4-baecf5176a56" // object 1
+              ]
+            }
           ]
         },
         {
@@ -118,26 +118,26 @@
           "poolSize": 4398046511104,
           "volumes": [],
           "roleAssignments": [
-            // {
-            //   "roleDefinitionIdOrName": "Reader",
-            //   "principalIds": [
-            //     "12345678-1234-1234-1234-123456789012" // object 1
-            //   ]
-            // }
+            {
+              "roleDefinitionIdOrName": "Reader",
+              "principalIds": [
+                "5545f7a0-51f4-46af-b3b4-baecf5176a56" // object 1
+              ]
+            }
           ]
         }
       ]
     },
-    // "roleAssignments": {
-    //   "value": [
-    //     {
-    //       "roleDefinitionIdOrName": "Reader",
-    //       "principalIds": [
-    //         "12345678-1234-1234-1234-123456789012" // object 1
-    //       ]
-    //     }
-    //   ]
-    // },
+    "roleAssignments": {
+      "value": [
+        {
+          "roleDefinitionIdOrName": "Reader",
+          "principalIds": [
+            "5545f7a0-51f4-46af-b3b4-baecf5176a56" // object 1
+          ]
+        }
+      ]
+    },
     "tags": {
       "value": {
         "Environment": "Non-Prod",

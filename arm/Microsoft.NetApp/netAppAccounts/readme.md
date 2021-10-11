@@ -11,13 +11,13 @@ This template deploys Azure NetApp Files.
 |`Microsoft.NetApp/netAppAccounts/capacityPools`|2021-04-01|
 |`Microsoft.NetApp/netAppAccounts/capacityPools/volumes`|2021-04-01|
 |`Microsoft.NetApp/netAppAccounts/providers/roleAssignments` | 2020-04-01-preview |
-|`providers/locks`|2016-09-01|
+|`Microsoft.Authorization/locks`|2016-09-01|
 
 ## Parameters
 
 | Parameter Name | Type | Description | DefaultValue | Possible values |
 | :-- | :-- | :-- | :-- | :-- |
-| `capacityPools` | array | Required. Capacity pools to create. |  | Complex structure, see below. |
+| `capacityPools` | array | Optional. Capacity pools to create. | `[]` | Complex structure, see below. |
 | `cuaId` | string | Optional. Customer Usage Attribution id (GUID). This GUID must be previously registered. | `""` |  |
 | `dnsServers` | string | Optional. Required if domainName is specified. Comma separated list of DNS server IP addresses (IPv4 only) required for the Active Directory (AD) domain join and SMB authentication operations to succeed. | `""` |  |
 | `domainJoinOU` | string | Optional. Used only if domainName is specified. LDAP Path for the Organization Unit (OU) where SMB Server machine accounts will be created (i.e. `"OU=SecondLevel,OU=FirstLevel"`). | `""` |  |

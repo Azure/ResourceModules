@@ -78,27 +78,7 @@ resource netAppAccount 'Microsoft.NetApp/netAppAccounts@2021-04-01' = {
     activeDirectories: (empty(domainName) ? json('null') : activeDirectoryConnectionProperties)
   }
 
-  // resource netAppAccount_capacityPools_volumes 'volumes@2019-06-01' = [for volume in capacityPool.volumes: {
-  //   name: volume.poolVolumeName
-  //   location: location
-  //   tags: tags
-  //   properties: {
-      
-  //   }
-  // }]
-
 }
-
-module netAppAccount_capacityPools './.bicep/nested_capacityPool.bicep' = [for (capacityPool, index) in capacityPools: {
-  // resource netAppAccount_capacityPools 'capacityPools@2019-06-01' = [for capacityPool in capacityPools: {
-    name: '${uniqueString(deployment().name, location)}-netAppAccount-capacityPool-${(empty(capacityPools) ? 'dummy' : index)}'
-    params: {
-      capacityPoolObj: capacityPool
-      builtInRoleNames: builtInRoleNames
-      location: location
-      netAppAccountName: netAppAccount.name
-    }
-}]
 
 resource netAppAccount_lock 'Microsoft.Authorization/locks@2016-09-01' = if (lockForDeletion) {
   name: '${netAppAccount.name}-DoNotDelete'
@@ -109,12 +89,22 @@ resource netAppAccount_lock 'Microsoft.Authorization/locks@2016-09-01' = if (loc
 }
 
 module netAppAccount_rbac './.bicep/nested_rbac.bicep' = [for (roleAssignment, index) in roleAssignments: {
-  name: 'rbac-${deployment().name}${index}'
+  name: '${uniqueString(deployment().name, location)}-ANFAccount-Rbac-${index}'
   params: {
     roleAssignmentObj: roleAssignment
     builtInRoleNames: builtInRoleNames
     resourceName: netAppAccount.name
   }
+}]
+
+module netAppAccount_capacityPools './.bicep/nested_capacityPool.bicep' = [for (capacityPool, index) in capacityPools: {
+    name: '${uniqueString(deployment().name, location)}-ANFAccount-CapPool-${index}'
+    params: {
+      capacityPoolObj: capacityPool
+      builtInRoleNames: builtInRoleNames
+      location: location
+      netAppAccountName: netAppAccount.name
+    }
 }]
 
 output netAppAccountName string = netAppAccount.name

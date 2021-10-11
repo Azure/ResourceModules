@@ -17,11 +17,11 @@ resource volume 'Microsoft.NetApp/netAppAccounts/capacityPools/volumes@2021-04-0
   }
 }
 
-// module capacityPool_rbac './nested_capacityPool_rbac.bicep' = [for (roleAssignment, index) in volumeObj.roleAssignments: {
-//   name: '${deployment().name}-Rbac-${(empty(volumeObj.roleAssignments) ? 'dummy' : index)}'
-//   params: {
-//     roleAssignmentObj: roleAssignment
-//     builtInRoleNames: builtInRoleNames
-//     resourceName: capacityPool.name
-//   }
-// }]
+module volume_rbac './nested_capacityPool_volume_rbac.bicep' = [for (roleAssignment, index) in volumeObj.roleAssignments: {
+  name: '${deployment().name}-Rbac-${index}'
+  params: {
+    roleAssignmentObj: roleAssignment
+    builtInRoleNames: builtInRoleNames
+    resourceName: volume.name
+  }
+}]
