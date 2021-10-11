@@ -119,7 +119,7 @@ module pid_cuaId './.bicep/nested_cuaId.bicep' = if (!empty(cuaId)) {
   params: {}
 }
 
-resource galleryImage 'Microsoft.Compute/galleries/images@2019-12-01' = {
+resource galleryImage 'Microsoft.Compute/galleries/images@2020-09-30' = {
   name: '${galleryName}/${imageDefinitionName}'
   location: location
   tags: tags
