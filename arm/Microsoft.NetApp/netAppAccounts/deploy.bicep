@@ -20,8 +20,8 @@ param dnsServers string = ''
 @description('Optional. Required if domainName is specified. NetBIOS name of the SMB server. A computer account with this prefix will be registered in the AD and used to mount volumes')
 param smbServerNamePrefix string = ''
 
-@description('Required. Capacity pools to create.')
-param capacityPools array
+@description('Optional. Capacity pools to create.')
+param capacityPools array = []
 
 @description('Optional. Array of role assignment objects that contain the \'roleDefinitionIdOrName\' and \'principalId\' to define RBAC role assignments on this resource. In the roleDefinitionIdOrName attribute, you can provide either the display name of the role definition, or it\'s fully qualified ID in the following format: \'/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11\'')
 param roleAssignments array = []
@@ -48,6 +48,7 @@ var activeDirectoryConnectionProperties = [
     organizationalUnit: (empty(domainJoinOU) ? json('null') : domainJoinOU)
   }
 ]
+
 var builtInRoleNames = {
   'Owner': subscriptionResourceId('Microsoft.Authorization/roleDefinitions','8e3af657-a8ff-443c-a75c-2fe8c4bcb635')
   'Contributor': subscriptionResourceId('Microsoft.Authorization/roleDefinitions','b24988ac-6180-42a0-ab88-20f7382dd24c')
@@ -77,8 +78,27 @@ resource netAppAccount 'Microsoft.NetApp/netAppAccounts@2021-04-01' = {
     activeDirectories: (empty(domainName) ? json('null') : activeDirectoryConnectionProperties)
   }
 
+  // resource netAppAccount_capacityPools_volumes 'volumes@2019-06-01' = [for volume in capacityPool.volumes: {
+  //   name: volume.poolVolumeName
+  //   location: location
+  //   tags: tags
+  //   properties: {
+      
+  //   }
+  // }]
 
 }
+
+module netAppAccount_capacityPools './.bicep/nested_capacityPool.bicep' = [for (capacityPool, index) in capacityPools: {
+  // resource netAppAccount_capacityPools 'capacityPools@2019-06-01' = [for capacityPool in capacityPools: {
+    name: '${uniqueString(deployment().name, location)}-netAppAccount-capacityPool-${(empty(capacityPools) ? 'dummy' : index)}'
+    params: {
+      capacityPoolObj: capacityPool
+      builtInRoleNames: builtInRoleNames
+      location: location
+      netAppAccountName: netAppAccount.name
+    }
+}]
 
 resource netAppAccount_lock 'Microsoft.Authorization/locks@2016-09-01' = if (lockForDeletion) {
   name: '${netAppAccount.name}-DoNotDelete'
@@ -96,3 +116,8 @@ module netAppAccount_rbac './.bicep/nested_rbac.bicep' = [for (roleAssignment, i
     resourceName: netAppAccount.name
   }
 }]
+
+output netAppAccountName string = netAppAccount.name
+output netAppAccountResourceId string = netAppAccount.id
+output netAppAccountResourceGroup string = resourceGroup().name
+
