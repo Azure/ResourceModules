@@ -4,14 +4,16 @@ This template deploys Azure NetApp Files.
 
 ## Resource types
 
-|Resource Type|ApiVersion|
-|:--|:--|
-|`Microsoft.Resources/deployments`|2020-06-01|
-|`Microsoft.NetApp/netAppAccounts`|2021-04-01|
-|`Microsoft.NetApp/netAppAccounts/capacityPools`|2021-04-01|
-|`Microsoft.NetApp/netAppAccounts/capacityPools/volumes`|2021-04-01|
-|`Microsoft.NetApp/netAppAccounts/providers/roleAssignments` | 2020-04-01-preview |
-|`Microsoft.Authorization/locks`|2016-09-01|
+| Resource Type | ApiVersion |
+| :-- | :-- |
+| `Microsoft.Resources/deployments` | 2020-06-01 |
+| `Microsoft.NetApp/netAppAccounts` | 2021-04-01 |
+| `Microsoft.NetApp/netAppAccounts/capacityPools` | 2021-04-01 |
+| `Microsoft.NetApp/netAppAccounts/capacityPools/volumes` | 2021-04-01 |
+| `Microsoft.NetApp/netAppAccounts/providers/roleAssignments` | 2020-04-01-preview |
+| `Microsoft.NetApp/netAppAccounts/capacityPools/providers/roleAssignments` | 2020-04-01-preview |
+| `Microsoft.NetApp/netAppAccounts/capacityPools/volumes/providers/roleAssignments` | 2020-04-01-preview |
+| `Microsoft.Authorization/locks` | 2016-09-01 |
 
 ## Parameters
 
