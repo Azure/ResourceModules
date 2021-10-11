@@ -9,7 +9,7 @@ param virtualWanName string
   'Standard'
   'Basic'
 ])
-param wanSku string = 'Standard'
+param virtualWanSku string = 'Standard'
 
 @description('Optional. Name of the Virtual Hub. A virtual hub is created inside a virtual wan.')
 param virtualHubName string = 'SampleVirtualHub'
@@ -85,12 +85,12 @@ resource virtualWan 'Microsoft.Network/virtualWans@2021-05-01' = {
   location: location
   tags: tags
   properties: {
-    type: wanSku
+    type: virtualWanSku
   }
 }
 
 resource virtualWan_lock 'Microsoft.Authorization/locks@2016-09-01' = if (lockForDeletion) {
-  name: '${virtualWanName}-virtualWanDoNotDelete'
+  name: '${virtualWanName}-doNotDelete'
   properties: {
     level: 'CanNotDelete'
   }
@@ -109,7 +109,7 @@ resource virtualHub 'Microsoft.Network/virtualHubs@2021-05-01' = {
 }
 
 resource virtualHub_lock 'Microsoft.Authorization/locks@2016-09-01' = if (lockForDeletion) {
-  name: '${virtualHubName}-virtualHubDoNotDelete'
+  name: '${virtualHub.name}-doNotDelete'
   properties: {
     level: 'CanNotDelete'
   }
@@ -139,7 +139,7 @@ resource vpnSite 'Microsoft.Network/vpnSites@2021-05-01' = {
 }
 
 resource vpnSite_lock 'Microsoft.Authorization/locks@2016-09-01' = if (lockForDeletion) {
-  name: '${vpnSiteName}-vpnSiteDoNotDelete'
+  name: '${vpnSite.name}-vpnSiteDoNotDelete'
   properties: {
     level: 'CanNotDelete'
   }
@@ -172,7 +172,7 @@ resource vpnGateway 'Microsoft.Network/vpnGateways@2021-05-01' = {
 }
 
 resource vpnGateway_lock 'Microsoft.Authorization/locks@2016-09-01' = if (lockForDeletion) {
-  name: '${vpnGatewayName}-vpnGatewayDoNotDelete'
+  name: '${vpnGateway.name}-vpnGatewayDoNotDelete'
   properties: {
     level: 'CanNotDelete'
   }

@@ -8,7 +8,8 @@ This module deploys an Azure API Connection.
 | ---------------------------------------------------- | ------------------ |
 | `Microsoft.Resources/deployments`                    | 2020-06-01         |
 | `Microsoft.Web/connections`                          | 2016-06-01         |
-| `Microsoft.Web/connection/providers/roleAssignments` | 2020-04-01-preview |
+| `Microsoft.Web/connections/providers/roleAssignments` | 2020-04-01-preview |
+| `Microsoft.Authorization/locks` | 2016-09-01 |
 
 ## Parameters
 
@@ -29,6 +30,7 @@ This module deploys an Azure API Connection.
 | `statuses`                   | array        | **Optional**. Status of the connection.                                                                                                                                                                                                                                                          | System.Object[]          | Array of complex structures, see below. |
 | `tags`                       | object       | **Optional**. Tags of the resource.                                                                                                                                                                                                                                                              | System.Object            | Complex structure, see below.           |
 | `testLinks`                  | array        | **Optional**. Links to test the API connection.                                                                                                                                                                                                                                                  | System.Object[]          | Array of complex structures, see below. |
+| `lockForDeletion` | bool | Optional. Switch to lock App Service Plan from deletion. | False |  |
 
 ### Parameter Usage: `connectionApi`
 

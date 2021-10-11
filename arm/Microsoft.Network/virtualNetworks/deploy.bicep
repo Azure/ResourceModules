@@ -139,7 +139,7 @@ resource virtualNetwork 'Microsoft.Network/virtualNetworks@2021-05-01' = {
 }
 
 resource virtualNetwork_lock 'Microsoft.Authorization/locks@2016-09-01' = if (lockForDeletion) {
-  name: '${vNetName}-virtualNetworkDoNotDelete'
+  name: '${vNetName}-doNotDelete'
   properties: {
     level: 'CanNotDelete'
   }

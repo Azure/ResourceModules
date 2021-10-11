@@ -7,17 +7,14 @@ resource container 'Microsoft.Storage/storageAccounts/blobServices/containers@20
   properties: {
     publicAccess: blobContainer.publicAccess
   }
-}
 
-resource container_policy 'Microsoft.Storage/storageAccounts/blobServices/containers/immutabilityPolicies@2019-06-01' = if (contains(blobContainer, 'enableWORM') && blobContainer.enableWORM) {
-  name: '${storageAccountName}/default/${blobContainer.name}/default'
-  properties: {
-    immutabilityPeriodSinceCreationInDays: (contains(blobContainer, 'WORMRetention') ? blobContainer.WORMRetention : 365)
-    allowProtectedAppendWrites: contains(blobContainer, 'allowProtectedAppendWrites') ? blobContainer.allowProtectedAppendWrites : true
+  resource container_policy 'immutabilityPolicies@2019-06-01' = if (contains(blobContainer, 'enableWORM') && blobContainer.enableWORM) {
+    name: 'default'
+    properties: {
+      immutabilityPeriodSinceCreationInDays: (contains(blobContainer, 'WORMRetention') ? blobContainer.WORMRetention : 365)
+      allowProtectedAppendWrites: contains(blobContainer, 'allowProtectedAppendWrites') ? blobContainer.allowProtectedAppendWrites : true
+    }
   }
-  dependsOn: [
-    container
-  ]
 }
 
 module container_rbac './nested_container_rbac.bicep' = [for (roleAssignment, index) in blobContainer.roleAssignments: {

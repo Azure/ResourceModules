@@ -1,4 +1,4 @@
-# Resource
+# Subscription
 
 This template will create a subscription based on the provided parameter.
 

@@ -1,6 +1,6 @@
 @maxLength(24)
 @description('Required. Name of the Storage Account.')
-param storageAccountName string
+param storageAccountName string = ''
 
 @description('Optional. Location for all resources.')
 param location string = resourceGroup().location
@@ -115,8 +115,11 @@ param tags object = {}
 @description('Optional. Customer Usage Attribution id (GUID). This GUID must be previously registered')
 param cuaId string = ''
 
-var virtualNetworkRules = [for networkrule in networkAcls.virtualNetworkRules: {
-  id: '${vNetId}/subnets/${networkrule.subnet}'
+@description('Generated. Do not provide a value! This date value is used to generate a SAS token to access the modules.')
+param basetime string = utcNow('u')
+
+var virtualNetworkRules = [for index in range(0, (empty(networkAcls) ? 0 : length(networkAcls.virtualNetworkRules))): {
+  id: '${vNetId}/subnets/${networkAcls.virtualNetworkRules[index].subnet}'
 }]
 var networkAcls_var = {
   bypass: (empty(networkAcls) ? json('null') : networkAcls.bypass)
@@ -125,6 +128,12 @@ var networkAcls_var = {
   ipRules: (empty(networkAcls) ? json('null') : ((length(networkAcls.ipRules) == 0) ? json('null') : networkAcls.ipRules))
 }
 var azureFilesIdentityBasedAuthentication_var = azureFilesIdentityBasedAuthentication
+
+var maxNameLength = 24
+var uniqueStoragenameUntrim = '${uniqueString('Storage Account${basetime}')}'
+var uniqueStoragename = length(uniqueStoragenameUntrim) > maxNameLength ? substring(uniqueStoragenameUntrim,0,maxNameLength) : uniqueStoragenameUntrim
+var storageAccountName_var = empty(storageAccountName) ? uniqueStoragename : storageAccountName
+
 var saBaseProperties = {
   encryption: {
     keySource: 'Microsoft.Storage'
@@ -192,8 +201,8 @@ module pid_cuaId './.bicep/nested_cuaId.bicep' = if (!empty(cuaId)) {
   params: {}
 }
 
-resource storageAccount 'Microsoft.Storage/storageAccounts@2019-06-01' = {
-  name: storageAccountName
+resource storageAccount 'Microsoft.Storage/storageAccounts@2021-06-01' = {
+  name: storageAccountName_var
   location: location
   kind: storageAccountKind
   sku: {
@@ -205,10 +214,48 @@ resource storageAccount 'Microsoft.Storage/storageAccounts@2019-06-01' = {
   }
   tags: tags
   properties: saProperties
+
+  // lifecycle policy
+  resource storageAccount_managementPolicies 'managementPolicies@2019-06-01' = if (enableArchiveAndDelete) {
+    name: 'default'
+    properties: {
+      policy: {
+        rules: [
+          {
+            enabled: true
+            name: 'retention-policy'
+            type: 'Lifecycle'
+            definition: {
+              actions: {
+                baseBlob: {
+                  tierToArchive: {
+                    daysAfterModificationGreaterThan: moveToArchiveAfter
+                  }
+                  delete: {
+                    daysAfterModificationGreaterThan: deleteBlobsAfter
+                  }
+                }
+                snapshot: {
+                  delete: {
+                    daysAfterCreationGreaterThan: deleteBlobsAfter
+                  }
+                }
+              }
+              filters: {
+                blobTypes: [
+                  'blockBlob'
+                ]
+              }
+            }
+          }
+        ]
+      }
+    }
+  }
 }
 
 resource storageAccount_lock 'Microsoft.Authorization/locks@2016-09-01' = if (lockForDeletion) {
-  name: '${storageAccountName}-storageDoNotDelete'
+  name: '${storageAccount.name}-doNotDelete'
   properties: {
     level: 'CanNotDelete'
   }
@@ -237,48 +284,6 @@ module storageAccount_privateEndpoints './.bicep/nested_privateEndpoint.bicep' =
   ]
 }]
 
-// lifecycle policy
-resource storageAccount_managementPolicies 'Microsoft.Storage/storageAccounts/managementPolicies@2019-06-01' = if (enableArchiveAndDelete) {
-  name: 'default'
-  parent: storageAccount
-  properties: {
-    policy: {
-      rules: [
-        {
-          enabled: true
-          name: 'retention-policy'
-          type: 'Lifecycle'
-          definition: {
-            actions: {
-              baseBlob: {
-                tierToArchive: {
-                  daysAfterModificationGreaterThan: moveToArchiveAfter
-                }
-                delete: {
-                  daysAfterModificationGreaterThan: deleteBlobsAfter
-                }
-              }
-              snapshot: {
-                delete: {
-                  daysAfterCreationGreaterThan: deleteBlobsAfter
-                }
-              }
-            }
-            filters: {
-              blobTypes: [
-                'blockBlob'
-              ]
-            }
-          }
-        }
-      ]
-    }
-  }
-  dependsOn: [
-    storageAccount
-  ]
-}
-
 // Containers
 resource storageAccount_nested_blob_services 'Microsoft.Storage/storageAccounts/blobServices@2019-06-01' = if (!empty(blobContainers)) {
   name: 'default'
@@ -297,7 +302,7 @@ module storageAccount_nested_blob_container './.bicep/nested_container.bicep' = 
   params: {
     blobContainer: blobContainer
     builtInRoleNames: builtInRoleNames
-    storageAccountName: storageAccountName
+    storageAccountName: storageAccount.name
   }
   dependsOn: [
     storageAccount_nested_blob_services
@@ -308,41 +313,32 @@ module storageAccount_nested_blob_container './.bicep/nested_container.bicep' = 
 module storageAccount_nested_fileShare './.bicep/nested_fileShare.bicep' = [for (fileShare, index) in fileShares: if (!empty(fileShares)) {
   name: '${uniqueString(deployment().name, location)}-Storage-FileShare-${(empty(fileShares) ? 'dummy' : index)}'
   params: {
-    fileShare: fileShare
+    fileShareObj: fileShare
     builtInRoleNames: builtInRoleNames
-    storageAccountName: storageAccountName
+    storageAccountName: storageAccount.name
   }
-  dependsOn: [
-    storageAccount
-  ]
 }]
 
 // Queue
 module storageAccount_nested_queue './.bicep/nested_queue.bicep' = [for (queue, index) in queues: if (!empty(queues)) {
   name: '${uniqueString(deployment().name, location)}-Storage-Queue-${(empty(queues) ? 'dummy' : index)}'
   params: {
-    queue: queue
+    queueObj: queue
     builtInRoleNames: builtInRoleNames
-    storageAccountName: storageAccountName
+    storageAccountName: storageAccount.name
   }
-  dependsOn: [
-    storageAccount
-  ]
 }]
 
 // Table
 resource storageAccount_nested_table 'Microsoft.Storage/storageAccounts/tableServices/tables@2019-06-01' = [for table in tables: if (!empty(tables)) {
-  name: (empty(tables) ? '${storageAccountName}/default/dummy' : '${storageAccountName}/default/${table}')
-  dependsOn: [
-    storageAccount
-  ]
+  name: (empty(tables) ? '${storageAccount.name}/default/dummy' : '${storageAccount.name}/default/${table}')
 }]
 
 output storageAccountResourceId string = storageAccount.id
 output storageAccountRegion string = storageAccount.location
 output storageAccountName string = storageAccount.name
 output storageAccountResourceGroup string = resourceGroup().name
-output storageAccountPrimaryBlobEndpoint string = (empty(blobContainers) ? '' : reference('Microsoft.Storage/storageAccounts/${storageAccountName}', '2019-04-01').primaryEndpoints.blob)
+output storageAccountPrimaryBlobEndpoint string = (empty(blobContainers) ? '' : reference('Microsoft.Storage/storageAccounts/${storageAccount.name}', '2019-04-01').primaryEndpoints.blob)
 output blobContainers array = blobContainers
 output fileShares array = fileShares
 output queues array = queues
