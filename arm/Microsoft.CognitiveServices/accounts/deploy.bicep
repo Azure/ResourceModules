@@ -239,4 +239,4 @@ output cognitiveServicesName string = cognitiveServices.name
 output cognitiveServicesResourceId string = cognitiveServices.id
 output cognitiveServicesResourceGroup string = resourceGroup().name
 output cognitiveServicesEndpoint string = cognitiveServices.properties.endpoint
-output principalId string = reference(cognitiveServices.id, '2017-04-18', 'Full').identity.principalId
+output principalId string = cognitiveServices.identity.principalId
