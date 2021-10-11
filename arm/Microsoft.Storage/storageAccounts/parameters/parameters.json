@@ -5,39 +5,16 @@
         "storageAccountName": {
             "value": "sxxazsacacy1312"
         },
-        "storageAccountKind": {
-            "value": "StorageV2"
-        },
         "managedServiceIdentity": {
             "value": "SystemAssigned"
         },
         "storageAccountSku": {
             "value": "Standard_LRS"
         },
-        "storageAccountAccessTier": {
-            "value": "Hot"
-        },
-        "deleteRetentionPolicy": {
-            "value": true
-        },
-        "deleteRetentionPolicyDays": {
-            "value": 7
-        },
-        "automaticSnapshotPolicyEnabled": {
-            "value": false
-        },
-        "minimumTlsVersion": {
-            "value": "TLS1_2"
-        },
         "blobContainers": {
             "value": [
                 {
                     "name": "avdscripts",
-                    "publicAccess": "Container",
-                    "roleAssignments": []
-                },
-                {
-                    "name": "avdsoftware",
                     "publicAccess": "Container",
                     "roleAssignments": []
                 },
@@ -78,6 +55,11 @@
             "value": [
                 {
                     "name": "queue1",
+                    "metadata": {},
+                    "roleAssignments": []
+                },
+                {
+                    "name": "queue2",
                     "metadata": {},
                     "roleAssignments": []
                 }

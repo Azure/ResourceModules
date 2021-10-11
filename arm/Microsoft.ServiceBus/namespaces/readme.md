@@ -14,10 +14,10 @@ This module deploys Service Bus Namespace resource.
 | `Microsoft.ServiceBus/namespaces/ipFilterRules` | 2018-01-01-preview |
 | `Microsoft.ServiceBus/namespaces/migrationConfigurations` | 2017-04-01 |
 | `Microsoft.ServiceBus/namespaces/virtualNetworkRules` | 2018-01-01-preview |
-| `Microsoft.ServiceBus/namespaces/providers/diagnosticsettings` | 2017-05-01-preview |
+| `Microsoft.Insights/diagnosticSettings` | 2017-05-01-preview |
 | `Microsoft.ServiceBus/namespaces/providers/roleAssignments` | 2018-09-01-preview |
 | `Microsoft.ServiceBus/namespaces` | 2018-01-01-preview |
-| `providers/locks` | 2016-09-01 |
+| `Microsoft.Authorization/locks` | 2016-09-01 |
 
 ## Parameters
 

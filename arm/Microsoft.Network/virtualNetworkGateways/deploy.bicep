@@ -121,7 +121,7 @@ var gatewayMultiPipArray = [
 var gatewaySinglePipArray = [
   gatewayPipName1
 ]
-var gatewayPipName_var = (!empty(gatewayPipName2)) ? gatewayMultiPipArray : gatewaySinglePipArray
+var virtualGatewayPipName_var = (!empty(gatewayPipName2)) ? gatewayMultiPipArray : gatewaySinglePipArray
 var gatewayPipId1 = resourceId('Microsoft.Network/publicIPAddresses', gatewayPipName1)
 var gatewayPipId2 = activeActive_var ? resourceId('Microsoft.Network/publicIPAddresses', gatewayPipName2) : resourceId('Microsoft.Network/publicIPAddresses', gatewayPipName1)
 
@@ -303,8 +303,8 @@ module pid_cuaId './.bicep/nested_cuaId.bicep' = if (!empty(cuaId)) {
 // Public IPs
 // ==========
 @batchSize(1)
-resource virtualGatewayPublicIP 'Microsoft.Network/publicIPAddresses@2021-02-01' = [for (item, i) in gatewayPipName_var: {
-  name: item
+resource virtualGatewayPublicIP 'Microsoft.Network/publicIPAddresses@2021-02-01' = [for (virtualGatewayPublicIpName, index) in virtualGatewayPipName_var: {
+  name: virtualGatewayPublicIpName
   location: location
   tags: tags
   sku: {
@@ -313,25 +313,23 @@ resource virtualGatewayPublicIP 'Microsoft.Network/publicIPAddresses@2021-02-01'
   properties: {
     publicIPAllocationMethod: gatewayPipAllocationMethod
     publicIPPrefix: ((!empty(publicIPPrefixId)) ? publicIPPrefix : json('null'))
-    dnsSettings: ((length(gatewayPipName_var) == length(domainNameLabel)) ? json('{"domainNameLabel": "${domainNameLabel[i]}"}') : json('null'))
+    dnsSettings: ((length(virtualGatewayPipName_var) == length(domainNameLabel)) ? json('{"domainNameLabel": "${domainNameLabel[index]}"}') : json('null'))
   }
   zones: publicIpZones
 }]
 
 @batchSize(1)
-resource virtualNetworkGatewayPublicIp_lock 'Microsoft.Network/publicIPAddresses/providers/locks@2016-09-01' = [for virtualGatewayPublicIpName in gatewayPipName_var: if (lockForDeletion) {
-  name: '${virtualGatewayPublicIpName}/Microsoft.Authorization/virtualNetworkGatewayPublicIpDoNotDelete'
+resource virtualNetworkGatewayPublicIp_lock 'Microsoft.Authorization/locks@2016-09-01' = [for (virtualGatewayPublicIpName,index) in virtualGatewayPipName_var: if (lockForDeletion) {
+  name: '${virtualGatewayPublicIpName}-doNotDelete'
   properties: {
     level: 'CanNotDelete'
   }
-  dependsOn: [
-    virtualGatewayPublicIP
-  ]
+  scope: virtualGatewayPublicIP[index]
 }]
 
 @batchSize(1)
-resource virtualNetworkGatewayPublicIp_diagnosticSettings 'Microsoft.Network/publicIPAddresses/providers/diagnosticsettings@2017-05-01-preview' = [for virtualGatewayPublicIpName in gatewayPipName_var: if ((!empty(diagnosticStorageAccountId)) || (!empty(workspaceId)) || (!empty(eventHubAuthorizationRuleId)) || (!empty(eventHubName))) {
-  name: '${virtualGatewayPublicIpName}/Microsoft.Insights/diagnosticSettings'
+resource virtualNetworkGatewayPublicIp_diagnosticSettings 'Microsoft.Insights/diagnosticsettings@2017-05-01-preview' = [for (virtualGatewayPublicIpName, index) in virtualGatewayPipName_var: if ((!empty(diagnosticStorageAccountId)) || (!empty(workspaceId)) || (!empty(eventHubAuthorizationRuleId)) || (!empty(eventHubName))) {
+  name: '${virtualGatewayPublicIpName}-diagnosticSettings'
   properties: {
     storageAccountId: (empty(diagnosticStorageAccountId) ? json('null') : diagnosticStorageAccountId)
     workspaceId: (empty(workspaceId) ? json('null') : workspaceId)
@@ -340,9 +338,7 @@ resource virtualNetworkGatewayPublicIp_diagnosticSettings 'Microsoft.Network/pub
     metrics: ((empty(diagnosticStorageAccountId) && empty(workspaceId) && empty(eventHubAuthorizationRuleId) && empty(eventHubName)) ? json('null') : diagnosticsMetrics)
     logs: ((empty(diagnosticStorageAccountId) && empty(workspaceId) && empty(eventHubAuthorizationRuleId) && empty(eventHubName)) ? json('null') : publicIpDiagnosticsLogs)
   }
-  dependsOn: [
-    virtualGatewayPublicIP
-  ]
+  scope: virtualGatewayPublicIP[index]
 }]
 
 // VNET Gateway
@@ -370,7 +366,7 @@ resource virtualNetworkGateway 'Microsoft.Network/virtualNetworkGateways@2021-02
 }
 
 resource virtualNetworkGateway_lock 'Microsoft.Authorization/locks@2016-09-01' = if (lockForDeletion) {
-  name: '${virtualNetworkGatewayName}-virtualNetworkGatewayDoNotDelete'
+  name: '${virtualNetworkGateway.name}-doNotDelete'
   properties: {
     level: 'CanNotDelete'
   }
@@ -378,7 +374,7 @@ resource virtualNetworkGateway_lock 'Microsoft.Authorization/locks@2016-09-01' =
 }
 
 resource virtualNetworkGateway_diagnosticSettings 'Microsoft.Insights/diagnosticsettings@2017-05-01-preview' = if ((!empty(diagnosticStorageAccountId)) || (!empty(workspaceId)) || (!empty(eventHubAuthorizationRuleId)) || (!empty(eventHubName))) {
-  name: '${virtualNetworkGatewayName}-diagnosticSettings'
+  name: '${virtualNetworkGateway.name}-diagnosticSettings'
   properties: {
     storageAccountId: (empty(diagnosticStorageAccountId) ? json('null') : diagnosticStorageAccountId)
     workspaceId: (empty(workspaceId) ? json('null') : workspaceId)

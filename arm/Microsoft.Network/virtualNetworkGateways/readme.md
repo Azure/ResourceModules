@@ -10,9 +10,8 @@ This module deploys a Virtual Network Gateway.
 |`Microsoft.Resources/deployments`|2018-02-01|
 |`Microsoft.Network/publicIPAddresses`|2021-02-01|
 |`Microsoft.Network/virtualNetworkGateways`|2021-02-01|
-|`Microsoft.Network/publicIPAddresses/providers/diagnosticSettings`|2017-05-01-preview|
-|`providers/locks`|2016-09-01|
-|`Microsoft.Network/virtualNetworkGateways/providers/diagnosticSettings`|2017-05-01-preview|
+|`Microsoft.Insights/diagnosticSettings`|2017-05-01-preview|
+|`Microsoft.Authorization/locks`|2016-09-01|
 |`Microsoft.Network/virtualNetworkGateways/providers/roleAssignments`|2018-09-01-preview|
 
 ## Parameters

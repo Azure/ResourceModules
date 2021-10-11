@@ -7,10 +7,11 @@ This template deploys an SQL Managed Instances Database.
 
 |Resource Type|Api Version|
 |:--|:--|
-|`Microsoft.Sql/managedInstances/databases`|2019-06-01-preview|
+|`Microsoft.Sql/managedInstances/databases`|2020-02-02-preview|
 |`Microsoft.Sql/managedInstances/databases/backupShortTermRetentionPolicies`|2017-03-01-preview|
-|`Microsoft.Sql/managedInstances/databases/providers/diagnosticsettings`|2017-05-01-preview|
-|`providers/locks`|2016-09-01|
+|`Microsoft.Sql/managedInstances/databases/backupLongTermRetentionPolicies`|2021-02-01-preview|
+|`Microsoft.Insights/diagnosticsettings`|2017-05-01-preview|
+|`Microsoft.Authorization/locks`|2016-09-01|
 |`Microsoft.Resources/deployments`|2018-02-01|
 
 
@@ -86,9 +87,9 @@ Tag names and tag values can be provided as needed. A tag can be left without a 
 
 | Output Name | Type | Description |
 | :-- | :-- | :-- |
-| `managedInstanceName` | string | The name of the SQL managed instance. |
-| `managedInstanceResourceGroup` | string | The Resource Group in which the resource has been created. |
-| `managedInstanceResourceId` | string | The Resource ID of the Manged Instance. |
+| `managedInstanceDatabaseName` | string | The name of the SQL managed instance database. |
+| `managedInstanceDatabaseResourceGroup` | string | The Resource Group in which the resource has been created. |
+| `managedInstanceDatabaseResourceId` | string | The Resource ID of the Manged Instance database. |
 
 ## Considerations
 

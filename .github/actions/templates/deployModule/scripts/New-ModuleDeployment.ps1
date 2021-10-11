@@ -210,6 +210,7 @@ function New-ModuleDeployment {
                     }
                     else {
                         Write-Verbose "Resource deployment Failed.. ($retryCount/$retryLimit) Retrying in 5 Seconds.. `n"
+                        Write-Verbose ($PSitem.Exception.Message | Out-String) -Verbose
                         Start-Sleep -Seconds 5
                         $retryCount++
                     }
