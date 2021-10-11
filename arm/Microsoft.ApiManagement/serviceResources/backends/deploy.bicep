@@ -60,5 +60,5 @@ resource backend 'Microsoft.ApiManagement/service/backends@2020-06-01-preview' =
 }
 
 output backendResourceId string = backend.id
-output backendResourceName string = backend.id
+output backendResourceName string = backend.name
 output backendResourceGroup string = resourceGroup().name

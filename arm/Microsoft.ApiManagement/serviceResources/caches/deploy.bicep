@@ -35,5 +35,5 @@ resource cache 'Microsoft.ApiManagement/service/caches@2020-06-01-preview' = {
 }
 
 output cacheResourceId string = cache.id
-output cacheResourceName string = cache.id
+output cacheResourceName string = cache.name
 output cacheResourceGroup string = resourceGroup().name
