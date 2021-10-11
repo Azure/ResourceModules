@@ -51,7 +51,7 @@ resource keyVault 'Microsoft.KeyVault/vaults/accessPolicies@2019-09-01' = {
     accessPolicies: [
       {
         tenantId: subscription().tenantId
-        objectId: reference('Microsoft.Compute/diskEncryptionSets/${diskEncryptionSet.name}', '2019-11-01', 'Full').identity.principalId
+        objectId: reference('Microsoft.Compute/diskEncryptionSets/${diskEncryptionSet.name}', '2020-12-01', 'Full').identity.principalId
         permissions: {
           keys: [
             'get'
