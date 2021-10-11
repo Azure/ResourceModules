@@ -46,15 +46,16 @@ resource product 'Microsoft.ApiManagement/service/products@2020-06-01-preview' =
     subscriptionsLimit: (subscriptionRequired ? subscriptionsLimit : json('null'))
     state: state
   }
-  resource groups 'groups@2020-06-01-preview' = [for (productGroup, index) in productGroups: {
+  resource groups 'groups@2020-06-01-preview' = [for productGroup in productGroups: {
     name: productGroup
   }]
-  resource apis 'apis@2020-06-01-preview' = [for (productApi, index) in productApis: {
+  resource apis 'apis@2020-06-01-preview' = [for productApi in productApis: {
     name: productApi
   }]
 }
 
 output productResourceId string = product.id
 output productApisResourceIds array = [for item in productApis: resourceId('Microsoft.ApiManagement/service/products/apis', apiManagementServiceName, productName, item)]
+output productGroupsResourceIds array = [for item in productGroups: resourceId('Microsoft.ApiManagement/service/products/groups', apiManagementServiceName, productName, item)]
 output productResourceName string = product.name
 output productResourceGroup string = resourceGroup().name

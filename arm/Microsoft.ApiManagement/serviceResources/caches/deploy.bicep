@@ -34,11 +34,6 @@ resource cache 'Microsoft.ApiManagement/service/caches@2020-06-01-preview' = {
   }
 }
 
-resource apiManagementService 'Microsoft.ApiManagement/service@2020-12-01' existing = {
-  name: apiManagementServiceName
-}
-
-output apimServiceName string = apiManagementServiceName
-output apimExternalCacheResourceId string = cache.id
-output apimServiceResourceId string = apiManagementService.id
-output apimServiceResourceGroup string = resourceGroup().name
+output cacheResourceId string = cache.id
+output cacheResourceName string = cache.id
+output cacheResourceGroup string = resourceGroup().name
