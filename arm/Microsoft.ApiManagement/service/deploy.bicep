@@ -189,7 +189,7 @@ var diagnosticsLogs = [
 ]
 var isAadB2C = (identityProviderType == 'aadB2C')
 
-module pidName './.bicep/nested_cuaId.bicep' = if (!empty(cuaId)) {
+module pid_cuaId './.bicep/nested_cuaId.bicep' = if (!empty(cuaId)) {
   name: 'pid-${cuaId}'
   params: {}
 }
