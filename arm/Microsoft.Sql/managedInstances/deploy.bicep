@@ -222,9 +222,6 @@ resource managedInstance 'Microsoft.Sql/managedInstances@2020-08-01-preview' = {
       serverKeyType: (empty(customerManagedEnryptionKeyUri) ? 'ServiceManaged' : 'AzureKeyVault')
       uri: customerManagedEnryptionKeyUri
     }
-    dependsOn: [
-      keys
-    ]
   }
 
   resource securityAlertPolicies 'securityAlertPolicies@2017-03-01-preview' = {
