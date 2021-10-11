@@ -3,7 +3,7 @@ description: 'Get Workflow Input'
 
 inputs:
   workflowPath:
-    description: 'The path to the template file set for removal. Used to determine the type of resource.'
+    description: 'The path to the workflow file used to retrieve default workflow input parameters.'
     required: true
 
 outputs:
@@ -23,28 +23,48 @@ runs:
     - name: Get workflow input parameters
       id: get-input-param-action
       run: |
+        Write-Output "The workflow trigger is: ${{ github.event_name }}" -Verbose
+
         # When running from workflow_dispatch event get input values
         if ('${{ github.event_name }}' -eq 'workflow_dispatch') {
+          
           $removeDeployment='${{ github.event.inputs.removeDeployment }}'
           $versioningOption='${{ github.event.inputs.versioningOption }}'
           $customVersion='${{ github.event.inputs.customVersion }}'
         }
         # Otherwise retrieve default values
         else {
-          $templateFile='${{ inputs.workflowPath }}'
-          $content = Get-Content $templateFile
-          $removeDeploymentRowIndex = ((0..($content.Count-1)) | Where-Object {$content[$_] -like '*removeDeployment:*'})[0]
-          $removeDeployment = $content[$removeDeploymentRowIndex+3].trim().Split(':')[1].Trim().Replace("'","").Replace('"','')
-          $removeDeployment
-          $versioningOptionRowIndex = ((0..($content.Count-1)) | Where-Object {$content[$_] -like "*versioningOption:*" })[0]
-          $versioningOption = $content[$versioningOptionRowIndex+3].trim().Split(':')[1].Trim().Replace("'","").Replace('"','')
-          $versioningOption
-          $customVersionRowIndex = ((0..($content.Count-1)) | Where-Object {$content[$_] -like "*customVersion:*" })[0]
-          $customVersion = $content[$customVersionRowIndex+3].trim().Split(':')[1].Trim().Replace("'","").Replace('"','')
-          $customVersion
+          # Load used functions
+          . "$env:GITHUB_ACTION_PATH/scripts/Get-WorkflowDefaultInput.ps1"
+
+          $functionInput = @{
+            workflowPath                      = '${{ inputs.workflowPath }}'
+          }
+
+          Write-Verbose "Invoke task with" -Verbose
+          Write-Verbose ($functionInput | ConvertTo-Json | Out-String) -Verbose
+
+          $workflowParameters = Get-WorkflowDefaultInput @functionInput -Verbose
+
+          $removeDeployment = $workflowParameters.removeDeployment
+          $versioningOption = $workflowParameters.versioningOption
+          $customVersion = $workflowParameters.customVersion
+
+        #   $templateFile='${{ inputs.workflowPath }}'
+        #   $content = Get-Content $templateFile
+        #   $removeDeploymentRowIndex = ((0..($content.Count-1)) | Where-Object {$content[$_] -like '*removeDeployment:*'})[0]
+        #   $removeDeployment = $content[$removeDeploymentRowIndex+3].trim().Split(':')[1].Trim().Replace("'","").Replace('"','')
+        #   $removeDeployment
+        #   $versioningOptionRowIndex = ((0..($content.Count-1)) | Where-Object {$content[$_] -like "*versioningOption:*" })[0]
+        #   $versioningOption = $content[$versioningOptionRowIndex+3].trim().Split(':')[1].Trim().Replace("'","").Replace('"','')
+        #   $versioningOption
+        #   $customVersionRowIndex = ((0..($content.Count-1)) | Where-Object {$content[$_] -like "*customVersion:*" })[0]
+        #   $customVersion = $content[$customVersionRowIndex+3].trim().Split(':')[1].Trim().Replace("'","").Replace('"','')
+        #   $customVersion
         }
+
         # Output values to be accessed by next jobs
-        echo "::set-output name=removeDeployment::$removeDeployment"
-        echo "::set-output name=versioningOption::$versioningOption"
-        echo "::set-output name=customVersion::$customVersion"
+        Write-Output "::set-output name=removeDeployment::$removeDeployment"
+        Write-Output "::set-output name=versioningOption::$versioningOption"
+        Write-Output "::set-output name=customVersion::$customVersion"
       shell: pwsh
