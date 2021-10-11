@@ -8,10 +8,7 @@ param approvalRequired bool = false
 param cuaId string = ''
 
 @description('Optional. Product description. May include HTML formatting tags.')
-param description string = ''
-
-@description('Optional. Location for all Resources.')
-param location string = resourceGroup().location
+param productDescription string = ''
 
 @description('Optional. Product API\'s name list.')
 param productApis array = []
@@ -31,23 +28,17 @@ param subscriptionRequired bool = false
 @description('Optional. Whether the number of subscriptions a user can have to this product at the same time. Set to null or omit to allow unlimited per user subscriptions. Can be present only if subscriptionRequired property is present and has a value of false.')
 param subscriptionsLimit int = 1
 
-@description('Optional. Tags of the resource.')
-param tags object = {}
-
 @description('Optional. Product terms of use. Developers trying to subscribe to the product will be presented and required to accept these terms before they can complete the subscription process.')
-param terms string = ' '
+param terms string = ''
 
-module pid_cuaId './nested_pid_cuaId.bicep' = if (!empty(cuaId)) {
+module pid_cuaId './.bicep/nested_cuaId.bicep' = if (!empty(cuaId)) {
   name: 'pid-${cuaId}'
   params: {}
 }
-
-resource apiManagementServiceName_productName 'Microsoft.ApiManagement/service/products@2020-06-01-preview' = {
+resource product 'Microsoft.ApiManagement/service/products@2020-06-01-preview' = {
   name: '${apiManagementServiceName}/${productName}'
-  location: location
-  tags: tags
   properties: {
-    description: description
+    description: productDescription
     displayName: productName
     terms: terms
     subscriptionRequired: subscriptionRequired
@@ -57,7 +48,7 @@ resource apiManagementServiceName_productName 'Microsoft.ApiManagement/service/p
   }
 }
 
-module productApis_name './nested_productApis_name.bicep' = [for i in range(0, length(productApis)): {
+module productApis_name './.bicep/nested_productApis.bicep' = [for i in range(0, length(productApis)): {
   name: 'productApis-${deployment().name}-${i}'
   params: {
     apiManagementServiceName: apiManagementServiceName
@@ -65,11 +56,11 @@ module productApis_name './nested_productApis_name.bicep' = [for i in range(0, l
     productApis: productApis
   }
   dependsOn: [
-    apiManagementServiceName_productName
+    product
   ]
 }]
 
-module group_name './nested_group_name.bicep' = [for i in range(0, length(productGroups)): {
+module group_name './.bicep/nested_group.bicep' = [for i in range(0, length(productGroups)): {
   name: 'group-${deployment().name}-${i}'
   params: {
     apiManagementServiceName: apiManagementServiceName
@@ -77,11 +68,11 @@ module group_name './nested_group_name.bicep' = [for i in range(0, length(produc
     productGroups: productGroups
   }
   dependsOn: [
-    apiManagementServiceName_productName
+    product
   ]
 }]
 
-output productResourceId string = apiManagementServiceName_productName.id
+output productResourceId string = product.id
 output productApisResourceIds array = [for item in productApis: resourceId('Microsoft.ApiManagement/service/products/apis', apiManagementServiceName, productName, item)]
-output productResourceName string = productName
+output productResourceName string = product.name
 output productResourceGroup string = resourceGroup().name
