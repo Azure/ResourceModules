@@ -221,10 +221,27 @@ resource rsv 'Microsoft.RecoveryServices/vaults@2021-08-01' = {
       CrossRegionRestoreFlag: enableCRR
     }
   }
+
+  resource rsv_protectionContainers 'protectionContainers@2016-12-01' = [for (protectionContainer, index) in protectionContainers: {
+    name: protectionContainer.Name
+    location: resourceGroup().location
+    properties: {
+      sourceResourceId: (empty(protectionContainer.sourceResourceId) ? json('null') : protectionContainer.sourceResourceId)
+      friendlyName: (empty(protectionContainer.friendlyName) ? json('null') : protectionContainer.friendlyName)
+      backupManagementType: (empty(protectionContainer.backupManagementType) ? json('null') : protectionContainer.backupManagementType)
+      containerType: (empty(protectionContainer.containerType) ? json('null') : protectionContainer.containerType)
+    }
+  }]
+  
+  resource rsv_backupPolicies 'backupPolicies@2019-06-15' = [for (protectionPolicy, index) in backupPolicies: {
+    name: protectionPolicy.name
+    location: resourceGroup().location
+    properties: protectionPolicy.Properties
+  }]
 }
 
 resource rsv_lock 'Microsoft.Authorization/locks@2016-09-01' = if (lockForDeletion) {
-  name: '${recoveryVaultName}-rsvDoNotDelete'
+  name: '${recoveryVaultName}-doNotDelete'
   properties: {
     level: 'CanNotDelete'
   }
@@ -232,7 +249,7 @@ resource rsv_lock 'Microsoft.Authorization/locks@2016-09-01' = if (lockForDeleti
 }
 
 resource rsv_diagnosticSettings 'Microsoft.Insights/diagnosticSettings@2021-05-01-preview' = if ((!empty(diagnosticStorageAccountId)) || (!empty(workspaceId)) || (!empty(eventHubAuthorizationRuleId)) || (!empty(eventHubName))) {
-  name: '${recoveryVaultName}-diagnosticSettings'
+  name: '${rsv.name}-diagnosticSettings'
   properties: {
     storageAccountId: (empty(diagnosticStorageAccountId) ? json('null') : diagnosticStorageAccountId)
     workspaceId: (empty(workspaceId) ? json('null') : workspaceId)
@@ -243,33 +260,6 @@ resource rsv_diagnosticSettings 'Microsoft.Insights/diagnosticSettings@2021-05-0
   }
   scope: rsv
 }
-
-module rsv_backupPolicies './.bicep/nested_backupPolicies.bicep' = [for (protectionPolicy, index) in backupPolicies: {
-  name: 'backupPolicies-${(empty(backupPolicies) ? 'dummy' : index)}'
-  params: {
-    protectionPolicyName: protectionPolicy.Name
-    protectionPolicyProperties: protectionPolicy.Properties
-    recoveryVaultName: recoveryVaultName
-  }
-  dependsOn: [
-    rsv
-  ]
-}]
-
-module rsv_protectedContainers './.bicep/nested_protectedContainers.bicep' = [for (protectionContainer, index) in protectionContainers: {
-  name: 'protectionContainer-${(empty(protectionContainers) ? 'dummy' : index)}'
-  params: {
-    protectionContainerName: protectionContainer.Name
-    protectionContainerSourceResourceId: protectionContainer.sourceResourceId
-    protectionContainerFriendlyName: protectionContainer.friendlyName
-    protectionContainerBackupManagementType: protectionContainer.backupManagementType
-    protectionContainerContainerType: protectionContainer.containerType
-    recoveryVaultName: recoveryVaultName
-  }
-  dependsOn: [
-    rsv
-  ]
-}]
 
 module rsv_rbac './.bicep/nested_rbac.bicep' = [for (roleAssignment, index) in roleAssignments: {
   name: 'rbac-${deployment().name}${index}'

@@ -57,7 +57,7 @@ resource routeTable 'Microsoft.Network/routeTables@2021-02-01' = {
 }
 
 resource routeTable_lock 'Microsoft.Authorization/locks@2016-09-01' = if (lockForDeletion) {
-  name: '${routeTableName}-routeTableDoNotDelete'
+  name: '${routeTable.name}-doNotDelete'
   properties: {
     level: 'CanNotDelete'
   }
@@ -65,7 +65,7 @@ resource routeTable_lock 'Microsoft.Authorization/locks@2016-09-01' = if (lockFo
 }
 
 module routeTable_rbac './.bicep/nested_rbac.bicep' = [for (roleAssignment, index) in roleAssignments: {
-  name: '${uniqueString(deployment().name, location)}-RouteTable-Rbac-${index}'
+  name: 'rbac-${deployment().name}${index}'
   params: {
     roleAssignmentObj: roleAssignment
     builtInRoleNames: builtInRoleNames

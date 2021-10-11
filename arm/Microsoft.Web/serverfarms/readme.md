@@ -15,8 +15,8 @@ This module deploys an App Service Plan.
 |:--|:--|
 |`Microsoft.Resources/deployments`|2018-02-01|
 |`Microsoft.Web/serverfarms`|2021-02-01|
-|`providers/locks`|2016-09-01| 
-|`Microsoft.Web/serverfarms/providers/roleAssignments`|2018-09-01-preview|
+|`Microsoft.Authorization/locks`|2016-09-01| 
+|`Microsoft.Web/serverfarms/providers/roleAssignments`|2020-04-01-preview|
 
 
 ## Parameters

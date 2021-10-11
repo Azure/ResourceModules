@@ -97,7 +97,7 @@ resource appServicePlan 'Microsoft.Web/serverfarms@2021-02-01' = {
 }
 
 resource appServicePlan_lock 'Microsoft.Authorization/locks@2016-09-01' = if (lockForDeletion) {
-  name: '${appServicePlanName}-appSerivicePlanDoNotDelete'
+  name: '${appServicePlan.name}-doNotDelete'
   properties: {
     level: 'CanNotDelete'
   }

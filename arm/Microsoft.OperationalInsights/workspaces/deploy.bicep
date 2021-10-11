@@ -802,24 +802,21 @@ resource logAnalyticsWorkspace 'Microsoft.OperationalInsights/workspaces@2020-08
 
 @batchSize(1) // Serial loop deployment
 resource solution 'Microsoft.OperationsManagement/solutions@2015-11-01-preview' = [for gallerySolution in gallerySolutions: if (!empty(gallerySolutions)) {
-  name: (empty(gallerySolutions) ? 'dummy' : '${gallerySolution}(${logAnalyticsWorkspaceName})')
+  name: (empty(gallerySolutions) ? 'dummy' : '${gallerySolution}(${logAnalyticsWorkspace.name})')
   location: location
   properties: {
     workspaceResourceId: logAnalyticsWorkspace.id
   }
   plan: {
-    name: (empty(gallerySolutions) ? 'dummy' : '${gallerySolution}(${logAnalyticsWorkspaceName})')
+    name: (empty(gallerySolutions) ? 'dummy' : '${gallerySolution}(${logAnalyticsWorkspace.name})')
     product: (empty(gallerySolutions) ? 'dummy' : 'OMSGallery/${gallerySolution}')
     promotionCode: ''
     publisher: 'Microsoft'
   }
-  dependsOn: [
-    logAnalyticsWorkspace
-  ]
 }]
 
 resource logAnalyticsWorkspace_lock 'Microsoft.Authorization/locks@2016-09-01' = if (lockForDeletion) {
-  name: '${logAnalyticsWorkspaceName}-LADoNotDelete'
+  name: '${logAnalyticsWorkspace.name}-doNotDelete'
   properties: {
     level: 'CanNotDelete'
   }
