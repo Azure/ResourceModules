@@ -13,9 +13,6 @@ param cuaId string = ''
 @description('Optional. Backend Description.')
 param backendDescription string = ''
 
-@description('Optional. Location for all Resources.')
-param location string = resourceGroup().location
-
 @description('Required. Backend communication protocol. - http or soap')
 param protocol string = 'http'
 

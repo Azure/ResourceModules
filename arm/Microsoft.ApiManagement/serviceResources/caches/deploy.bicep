@@ -13,9 +13,6 @@ param cuaId string = ''
 @description('Optional. Cache description')
 param cacheDescription string = ''
 
-// @description('Optional. Location for all Resources.')
-// param location string = resourceGroup().location
-
 @description('Optional. Original uri of entity in external system cache points to.')
 param resourceId string = ''
 
