@@ -3,7 +3,7 @@
   "contentVersion": "1.0.0.0",
   "parameters": {
     "accountName": {
-      "value": "sxx-az-cgs-weu-x-001"
+      "value": "sxx-az-cgs-weu-x-002"
     },
     "kind": {
       "value": "Face"
