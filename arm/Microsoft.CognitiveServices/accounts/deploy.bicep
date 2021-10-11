@@ -233,16 +233,10 @@ module cognitiveServices_rbac './.bicep/nested_rbac.bicep' = [for (roleAssignmen
     builtInRoleNames: builtInRoleNames
     resourceName: cognitiveServices.name
   }
-  dependsOn: [
-    cognitiveServices
-  ]
 }]
 
 output cognitiveServicesName string = cognitiveServices.name
 output cognitiveServicesResourceId string = cognitiveServices.id
 output cognitiveServicesResourceGroup string = resourceGroup().name
-output cognitiveServicesKeys object = listKeys(cognitiveServices.id, '2017-04-18')
-output cognitiveServicesKey1 string = listKeys(cognitiveServices.id, '2017-04-18').key1
-output cognitiveServicesKey2 string = listKeys(cognitiveServices.id, '2017-04-18').key2
 output cognitiveServicesEndpoint string = reference(cognitiveServices.id, '2017-04-18').endpoint
 output principalId string = reference(cognitiveServices.id, '2017-04-18', 'Full').identity.principalId
