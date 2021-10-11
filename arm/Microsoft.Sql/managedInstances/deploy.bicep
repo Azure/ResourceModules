@@ -122,6 +122,17 @@ param tags object = {}
 @description('Optional. Customer Usage Attribution id (GUID). This GUID must be previously registered')
 param cuaId string = ''
 
+@description('Optional. The type of identity used for the managed instance. The type "None" (default) will remove any identities from the managed instance.')
+@allowed([
+  'None'
+  'SystemAssigned'
+  'UserAssigned'
+])
+param managedServiceIdentity string = 'SystemAssigned'
+
+@description('Optional. Mandatory if "managedServiceIdentity" contains UserAssigned. The list of user identities associated with the managed instance.')
+param userAssignedIdentities object =  {}
+
 var splittedKeyUri = split(customerManagedEnryptionKeyUri, '/')
 var serverKeyName = (empty(customerManagedEnryptionKeyUri) ? 'ServiceManaged' : '${split(splittedKeyUri[2], '.')[0]}_${splittedKeyUri[4]}_${splittedKeyUri[5]}')
 var diagnosticsMetrics = [
@@ -181,7 +192,8 @@ resource managedInstance 'Microsoft.Sql/managedInstances@2020-08-01-preview' = {
   name: managedInstanceName
   location: location
   identity: {
-    type: 'SystemAssigned'
+    type: managedServiceIdentity
+    userAssignedIdentities: (empty(userAssignedIdentities)) ? null : userAssignedIdentities
   }
   sku: {
     name: skuName

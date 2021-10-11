@@ -58,9 +58,11 @@ SQL Managed Instance is deployed on a virtual network. This network is required 
 | `subnetId` | string | Required. The fully qualified resource ID of the subnet on which the SQL managed instance will be placed. |  | |
 | `tags` | object | Optional. Tags of the resource. |  | |
 | `timezoneId` | string | Optional. Id of the timezone. Allowed values are timezones supported by Windows. | UTC | |
-| `vCores` | int | Optional. The number of vCores. Allowed values: 8, 16, 24, 32, 40, 64, 80. | 4 | |
+| `vCores` | int | Optional. The number of vCores. | 4 | 8, 16, 24, 32, 40, 64, 80 |
 | `vulnerabilityAssessmentsStorageAccountId` | string | Optional. A blob storage to hold the scan results. |  | |
 | `workspaceId` | string | Optional. Resource identifier of Log Analytics. |  | |
+| `managedServiceIdentity` | string | Optional. The type of identity used for the managed instance. The type "None" (default) will remove any identities from the managed instance. | None | None, SystemAssigned, UserAssigned |
+| `userAssignedIdentities` | object | Optional. Mandatory if "managedServiceIdentity" contains UserAssigned. The list of user identities associated with the managed instance. | {} | |
 
 ### Parameter Usage: `azureAdAdmin`
 
