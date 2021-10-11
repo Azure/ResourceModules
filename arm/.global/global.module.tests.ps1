@@ -325,7 +325,8 @@ Describe "Readme tests" -Tag Readme {
             for ($j = $HeadingIndex[1] + 4; $ReadmeHTML[$j] -ne ""; $j++) {
                 $parametersList += $ReadmeHTML[$j].Replace("<p>| <code>", "").Replace("|</p>", "").Replace("</code>", "").Split("|")[0].Trim()
             }
-            (Compare-Object -ReferenceObject $parameters.Name -DifferenceObject $parametersList) | Should -Be $null
+            $differentiatingItems = $parameters.Name | Where-Object { $parametersList -notcontains $_ }
+            $differentiatingItems.Count | Should -Be 0 -Because ("list of template parameters missing in the ReadMe file [{0}] should be empty" -f ($differentiatingItems -join ','))
         }
 
         It "[<moduleFolderName>] Outputs section should contain a table with these column names in order: Output Name, Value, Type" -TestCases $readmeFolderTestCases {

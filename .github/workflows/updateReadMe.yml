@@ -23,7 +23,7 @@ jobs:
             filePath       = Join-Path $env:GITHUB_WORKSPACE 'README.md'
             organization   = ($env:GITHUB_REPOSITORY).split('/')[0] 
             repositoryName = ($env:GITHUB_REPOSITORY).split('/')[1]
-            columnsInOrder = @('Name', 'TemplateType', 'Status', 'Deploy')
+            columnsInOrder = @('Name', 'TemplateType', 'Status')
             sortByColumn   = 'Name'
           }
 
