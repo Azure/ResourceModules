@@ -6,8 +6,8 @@
 |:--|:--|
 |`Microsoft.Resources/deployments`|2018-02-01|
 |`Microsoft.Batch/batchAccounts`|2020-03-01|
-|`providers/locks`|2016-09-01|
-|`Microsoft.Batch/batchAccounts/providers/diagnosticsettings`|2017-05-01-preview|
+|`Microsoft.Authorization/locks`|2016-09-01|
+|`Microsoft.Insights/diagnosticsettings`|2017-05-01-preview|
 
 ### Resource dependency
 
