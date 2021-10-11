@@ -7,7 +7,7 @@ This module deploys an Image Definition in a Shared Image Gallery.
 |Resource Type|ApiVersion|
 |:--|:--|
 |`Microsoft.Compute/galleries/images`|2019-12-01|
-|`Microsoft.Compute/galleries/images/providers/roleAssignments`|2018-09-01-preview|
+|`Microsoft.Compute/galleries/images/providers/roleAssignments`|2020-04-01-preview|
 |`Microsoft.Resources/deployments`|2020-06-01|
 
 ## Parameters
