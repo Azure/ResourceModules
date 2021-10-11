@@ -46,31 +46,13 @@ resource product 'Microsoft.ApiManagement/service/products@2020-06-01-preview' =
     subscriptionsLimit: (subscriptionRequired ? subscriptionsLimit : json('null'))
     state: state
   }
+  resource groups 'groups@2020-06-01-preview' = [for (productGroup, index) in productGroups: {
+    name: productGroup
+  }]
+  resource apis 'apis@2020-06-01-preview' = [for (productApi, index) in productApis: {
+    name: productApi
+  }]
 }
-
-module productApis_name './.bicep/nested_productApis.bicep' = [for i in range(0, length(productApis)): {
-  name: 'productApis-${deployment().name}-${i}'
-  params: {
-    apiManagementServiceName: apiManagementServiceName
-    productName: productName
-    productApis: productApis
-  }
-  dependsOn: [
-    product
-  ]
-}]
-
-module group_name './.bicep/nested_group.bicep' = [for i in range(0, length(productGroups)): {
-  name: 'group-${deployment().name}-${i}'
-  params: {
-    apiManagementServiceName: apiManagementServiceName
-    productName: productName
-    productGroups: productGroups
-  }
-  dependsOn: [
-    product
-  ]
-}]
 
 output productResourceId string = product.id
 output productApisResourceIds array = [for item in productApis: resourceId('Microsoft.ApiManagement/service/products/apis', apiManagementServiceName, productName, item)]
