@@ -7,12 +7,12 @@ This module deploys different kinds of Cognitive Services resources
 | Resource Type | Api Version |
 | :-- | :-- |
 | `Microsoft.CognitiveServices/accounts` | 2017-04-18 |
-| `Microsoft.CognitiveServices/accounts/providers/diagnosticsettings` | 2017-05-01-preview |
+| `Microsoft.Insights/diagnosticsettings` | 2017-05-01-preview |
 | `Microsoft.CognitiveServices/accounts/providers/roleAssignments` | 2018-09-01-preview |
 | `Microsoft.Network/privateEndpoints/privateDnsZoneGroups` | 2020-05-01 |
 | `Microsoft.Network/privateEndpoints` | 2020-05-01 |
 | `Microsoft.Resources/deployments` | 2020-06-01 |
-| `providers/locks` | 2016-09-01 |
+| `Microsoft.Authorization/locks` | 2016-09-01 |
 
 ## Parameters
 
