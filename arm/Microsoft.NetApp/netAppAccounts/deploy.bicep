@@ -77,7 +77,6 @@ resource netAppAccount 'Microsoft.NetApp/netAppAccounts@2021-04-01' = {
   properties: {
     activeDirectories: (empty(domainName) ? json('null') : activeDirectoryConnectionProperties)
   }
-
 }
 
 resource netAppAccount_lock 'Microsoft.Authorization/locks@2016-09-01' = if (lockForDeletion) {
@@ -110,4 +109,3 @@ module netAppAccount_capacityPools './.bicep/nested_capacityPool.bicep' = [for (
 output netAppAccountName string = netAppAccount.name
 output netAppAccountResourceId string = netAppAccount.id
 output netAppAccountResourceGroup string = resourceGroup().name
-
