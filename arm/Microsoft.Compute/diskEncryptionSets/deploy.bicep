@@ -92,6 +92,9 @@ module diskEncryptionSet_rbac './.bicep/nested_rbac.bicep' = [for (roleAssignmen
     builtInRoleNames: builtInRoleNames
     resourceName: diskEncryptionSet.name
   }
+  dependsOn: [
+    diskEncryptionSet
+  ]
 }]
 
 output diskEncryptionSetResourceId string = diskEncryptionSet.id
