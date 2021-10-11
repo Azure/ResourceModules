@@ -23,7 +23,7 @@ runs:
     - name: Get workflow input parameters
       id: get-input-param-action
       run: |
-        Write-Output "The workflow trigger is: ${{ github.event_name }}" -Verbose
+        Write-Verbose "The workflow trigger is: ${{ github.event_name }}" -Verbose
 
         # When running from workflow_dispatch event get input values
         if ('${{ github.event_name }}' -eq 'workflow_dispatch') {
@@ -38,7 +38,7 @@ runs:
           . "$env:GITHUB_ACTION_PATH/scripts/Get-WorkflowDefaultInput.ps1"
 
           $functionInput = @{
-            workflowPath                      = '${{ inputs.workflowPath }}'
+            workflowPath = '${{ inputs.workflowPath }}'
           }
 
           Write-Verbose "Invoke task with" -Verbose
