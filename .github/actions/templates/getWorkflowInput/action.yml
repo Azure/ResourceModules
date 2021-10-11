@@ -45,22 +45,9 @@ runs:
           Write-Verbose ($functionInput | ConvertTo-Json | Out-String) -Verbose
 
           $workflowParameters = Get-WorkflowDefaultInput @functionInput -Verbose
-
           $removeDeployment = $workflowParameters.removeDeployment
           $versioningOption = $workflowParameters.versioningOption
           $customVersion = $workflowParameters.customVersion
-
-        #   $templateFile='${{ inputs.workflowPath }}'
-        #   $content = Get-Content $templateFile
-        #   $removeDeploymentRowIndex = ((0..($content.Count-1)) | Where-Object {$content[$_] -like '*removeDeployment:*'})[0]
-        #   $removeDeployment = $content[$removeDeploymentRowIndex+3].trim().Split(':')[1].Trim().Replace("'","").Replace('"','')
-        #   $removeDeployment
-        #   $versioningOptionRowIndex = ((0..($content.Count-1)) | Where-Object {$content[$_] -like "*versioningOption:*" })[0]
-        #   $versioningOption = $content[$versioningOptionRowIndex+3].trim().Split(':')[1].Trim().Replace("'","").Replace('"','')
-        #   $versioningOption
-        #   $customVersionRowIndex = ((0..($content.Count-1)) | Where-Object {$content[$_] -like "*customVersion:*" })[0]
-        #   $customVersion = $content[$customVersionRowIndex+3].trim().Split(':')[1].Trim().Replace("'","").Replace('"','')
-        #   $customVersion
         }
 
         # Output values to be accessed by next jobs
