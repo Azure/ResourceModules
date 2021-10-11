@@ -7,6 +7,8 @@ This template deploys Azure NetApp Files.
 | Resource Type | ApiVersion |
 | :-- | :-- |
 | `Microsoft.NetApp/netAppAccounts` | 2021-04-01 |
+| `Microsoft.NetApp/netAppAccounts/capacityPools` | 2021-04-01 |
+| `Microsoft.NetApp/netAppAccounts/capacityPools/volumes` | 2021-04-01 |
 
 ## Parameters
 
