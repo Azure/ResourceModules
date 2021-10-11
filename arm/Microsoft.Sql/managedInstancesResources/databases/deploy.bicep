@@ -166,16 +166,16 @@ resource managedInstanceDatabase 'Microsoft.Sql/managedInstances/databases@2020-
   }
 }
 
-resource managedInstanceDatabase_lock 'Microsoft.Sql/managedInstances/databases/providers/locks@2016-09-01' = if (lockForDeletion) {
-  name: '${managedInstanceName}/${managedInstanceDatabase.name}/Microsoft.Authorization/locks-doNotDelete'
+resource managedInstanceDatabase_lock 'Microsoft.Authorization/locks@2016-09-01' = if (lockForDeletion) {
+  name: '${managedInstanceDatabase.name}-doNotDelete'
   properties: {
     level: 'CanNotDelete'
   }
+  scope: managedInstanceDatabase
 }
 
-resource managedInstanceDatabase_diagnosticSettings 'Microsoft.Sql/managedInstances/databases/providers/diagnosticsettings@2017-05-01-preview' = if ((!empty(diagnosticStorageAccountId)) || (!empty(workspaceId)) || (!empty(eventHubAuthorizationRuleId)) || (!empty(eventHubName))) {
-  name: '${managedInstanceName}/${managedInstanceDatabase.name}/Microsoft.Insights/diagnosticSettings'
-  location: location
+resource managedInstanceDatabase_diagnosticSettings 'Microsoft.Insights/diagnosticsettings@2017-05-01-preview' = if ((!empty(diagnosticStorageAccountId)) || (!empty(workspaceId)) || (!empty(eventHubAuthorizationRuleId)) || (!empty(eventHubName))) {
+  name: '${managedInstanceDatabase.name}-diagnosticSettings'
   properties: {
     storageAccountId: (empty(diagnosticStorageAccountId) ? json('null') : diagnosticStorageAccountId)
     workspaceId: (empty(workspaceId) ? json('null') : workspaceId)
@@ -183,6 +183,7 @@ resource managedInstanceDatabase_diagnosticSettings 'Microsoft.Sql/managedInstan
     eventHubName: (empty(eventHubName) ? json('null') : eventHubName)
     logs: ((empty(diagnosticStorageAccountId) && empty(workspaceId) && empty(eventHubAuthorizationRuleId) && empty(eventHubName)) ? json('null') : diagnosticsLogs)
   }
+  scope: managedInstanceDatabase
 }
 
 output managedInstanceDatabaseName string = managedInstanceDatabase.name

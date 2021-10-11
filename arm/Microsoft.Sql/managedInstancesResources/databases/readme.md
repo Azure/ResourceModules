@@ -9,8 +9,8 @@ This template deploys an SQL Managed Instances Database.
 |:--|:--|
 |`Microsoft.Sql/managedInstances/databases`|2019-06-01-preview|
 |`Microsoft.Sql/managedInstances/databases/backupShortTermRetentionPolicies`|2017-03-01-preview|
-|`Microsoft.Sql/managedInstances/databases/providers/diagnosticsettings`|2017-05-01-preview|
-|`providers/locks`|2016-09-01|
+|`Microsoft.Insights/diagnosticsettings`|2017-05-01-preview|
+|`Microsoft.Authorization/locks`|2016-09-01|
 |`Microsoft.Resources/deployments`|2018-02-01|
 
 
