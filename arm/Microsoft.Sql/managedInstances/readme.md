@@ -7,15 +7,15 @@ This template deploys an SQL Managed Instance, with resource lock.
 
 |Resource Type|ApiVersion|
 |:--|:--|
-|`Microsoft.Sql/managedInstances`|2018-06-01-preview|
+|`Microsoft.Sql/managedInstances`|2020-08-01-preview|
 |`Microsoft.Sql/managedInstances/keys`|2017-10-01-preview|
 |`Microsoft.Sql/managedInstances/encryptionProtector`|2017-10-01-preview|
 |`Microsoft.Sql/managedInstances/securityAlertPolicies`|2017-03-01-preview|
 |`Microsoft.Sql/managedInstances/vulnerabilityAssessments`|2018-06-01-preview|
 |`Microsoft.Sql/managedInstances/administrators`|2017-03-01-preview|
 |`Microsoft.Insights/diagnosticsettings`|2017-05-01-preview|
-|`Microsoft.Authorization/locks`|1900-01-00|
-|`Microsoft.Sql/managedInstances/providers/roleAssignments`|2018-09-01-preview|
+|`Microsoft.Authorization/locks`|2016-09-01|
+|`Microsoft.Sql/managedInstances/providers/roleAssignments`|2020-04-01-preview|
 |`Microsoft.Resources/deployments`|2019-10-01|
 
 ### Deployment prerequisites

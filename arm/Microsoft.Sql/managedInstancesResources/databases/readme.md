@@ -7,7 +7,7 @@ This template deploys an SQL Managed Instances Database.
 
 |Resource Type|Api Version|
 |:--|:--|
-|`Microsoft.Sql/managedInstances/databases`|2019-06-01-preview|
+|`Microsoft.Sql/managedInstances/databases`|2020-02-02-preview|
 |`Microsoft.Sql/managedInstances/databases/backupShortTermRetentionPolicies`|2017-03-01-preview|
 |`Microsoft.Sql/managedInstances/databases/backupLongTermRetentionPolicies`|2021-02-01-preview|
 |`Microsoft.Insights/diagnosticsettings`|2017-05-01-preview|
