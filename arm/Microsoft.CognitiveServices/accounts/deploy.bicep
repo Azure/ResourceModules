@@ -136,12 +136,10 @@ var diagnosticsLogs = [
 ]
 var builtInRoleNames = {
 }
-var deployServiceEndpoint = (!empty(networkAcls))
-var emptyArray = []
 var networkAcls_var = {
-  defaultAction: ((!deployServiceEndpoint) ? json('null') : networkAcls.defaultAction)
-  virtualNetworkRules: ((!deployServiceEndpoint) ? json('null') : ((length(networkAcls.virtualNetworkRules) == 0) ? emptyArray : networkAcls.virtualNetworkRules))
-  ipRules: ((!deployServiceEndpoint) ? json('null') : ((length(networkAcls.ipRules) == 0) ? emptyArray : networkAcls.ipRules))
+  defaultAction: ((empty(networkAcls)) ? json('null') : networkAcls.defaultAction)
+  virtualNetworkRules: ((empty(networkAcls)) ? json('null') : ((length(networkAcls.virtualNetworkRules) == 0) ? [] : networkAcls.virtualNetworkRules))
+  ipRules: ((empty(networkAcls)) ? json('null') : ((length(networkAcls.ipRules) == 0) ? [] : networkAcls.ipRules))
 }
 
 module pid_cuaId './.bicep/nested_cuaId.bicep' = if (!empty(cuaId)) {
@@ -162,7 +160,7 @@ resource cognitiveServices 'Microsoft.CognitiveServices/accounts@2017-04-18' = {
   }
   properties: {
     customSubDomainName: (empty(customSubDomainName) ? json('null') : customSubDomainName)
-    networkAcls: ((!deployServiceEndpoint) ? json('null') : networkAcls_var)
+    networkAcls: ((empty(networkAcls)) ? json('null') : networkAcls_var)
     publicNetworkAccess: publicNetworkAccess
   }
 }
@@ -188,17 +186,14 @@ resource cognitiveServices_diagnosticSettingName 'Microsoft.Insights/diagnostics
   scope: cognitiveServices
 }
 
-module name_location_CognitiveServices_PrivateEndpoints './.bicep/nested_privateEndpoints.bicep' = [for (item, i) in privateEndpoints: {
-  name: '${uniqueString(deployment().name, location)}-CognitiveServices-PrivateEndpoints-${i}'
+module cognitiveServices_privateEndpoints './.bicep/nested_privateEndpoints.bicep' = [for privateEndpoint in privateEndpoints: {
+  name: '${uniqueString(deployment().name, privateEndpoint.name)}-privateEndpoint'
   params: {
     privateEndpointResourceId: cognitiveServices.id
-    privateEndpointVnetLocation: (empty(privateEndpoints) ? 'dummy' : reference(split(item.subnetResourceId, '/subnets/')[0], '2020-06-01', 'Full').location)
-    privateEndpoint: item
+    privateEndpointVnetLocation: (empty(privateEndpoints) ? 'dummy' : reference(split(privateEndpoint.subnetResourceId, '/subnets/')[0], '2020-06-01', 'Full').location)
+    privateEndpoint: privateEndpoint
     tags: tags
   }
-  dependsOn: [
-    cognitiveServices
-  ]
 }]
 
 module cognitiveServices_rbac './.bicep/nested_rbac.bicep' = [for (roleAssignment, index) in roleAssignments: {
