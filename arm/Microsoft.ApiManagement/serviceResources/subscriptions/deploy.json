@@ -1,0 +1,131 @@
+{
+  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+  "contentVersion": "1.0.0.0",
+  "metadata": {
+    "_generator": {
+      "name": "bicep",
+      "version": "0.4.613.9944",
+      "templateHash": "6230326194130358958"
+    }
+  },
+  "parameters": {
+    "allowTracing": {
+      "type": "bool",
+      "defaultValue": true,
+      "metadata": {
+        "description": "Optional. Determines whether tracing can be enabled."
+      }
+    },
+    "apiManagementServiceName": {
+      "type": "string",
+      "metadata": {
+        "description": "Required. The name of the of the Api Management service."
+      }
+    },
+    "cuaId": {
+      "type": "string",
+      "defaultValue": "",
+      "metadata": {
+        "description": "Optional. Customer Usage Attribution id (GUID). This GUID must be previously registered"
+      }
+    },
+    "ownerId": {
+      "type": "string",
+      "defaultValue": "",
+      "metadata": {
+        "description": "Optional. User (user id path) for whom subscription is being created in form /users/{userId}"
+      }
+    },
+    "primaryKey": {
+      "type": "string",
+      "defaultValue": "",
+      "metadata": {
+        "description": "Optional. Primary subscription key. If not specified during request key will be generated automatically."
+      }
+    },
+    "scope": {
+      "type": "string",
+      "defaultValue": "/apis",
+      "metadata": {
+        "description": "Required. Scope type to choose between a product, allApis or a specific api. Scope like /products/{productId} or /apis or /apis/{apiId}."
+      }
+    },
+    "secondaryKey": {
+      "type": "string",
+      "defaultValue": "",
+      "metadata": {
+        "description": "Optional. Secondary subscription key. If not specified during request key will be generated automatically."
+      }
+    },
+    "state": {
+      "type": "string",
+      "defaultValue": "",
+      "metadata": {
+        "description": "Optional. Initial subscription state. If no value is specified, subscription is created with Submitted state. Possible states are * active ? the subscription is active, * suspended ? the subscription is blocked, and the subscriber cannot call any APIs of the product, * submitted ? the subscription request has been made by the developer, but has not yet been approved or rejected, * rejected ? the subscription request has been denied by an administrator, * cancelled ? the subscription has been cancelled by the developer or administrator, * expired ? the subscription reached its expiration date and was deactivated. - suspended, active, expired, submitted, rejected, cancelled"
+      }
+    },
+    "subscriptionName": {
+      "type": "string",
+      "metadata": {
+        "description": "Required. Subscription name."
+      }
+    }
+  },
+  "functions": [],
+  "resources": [
+    {
+      "type": "Microsoft.ApiManagement/service/subscriptions",
+      "apiVersion": "2020-06-01-preview",
+      "name": "[format('{0}/{1}', parameters('apiManagementServiceName'), parameters('subscriptionName'))]",
+      "properties": {
+        "scope": "[parameters('scope')]",
+        "displayName": "[parameters('subscriptionName')]",
+        "ownerId": "[if(not(empty(parameters('ownerId'))), parameters('ownerId'), json('null'))]",
+        "primaryKey": "[if(not(empty(parameters('primaryKey'))), parameters('primaryKey'), json('null'))]",
+        "secondaryKey": "[if(not(empty(parameters('secondaryKey'))), parameters('secondaryKey'), json('null'))]",
+        "state": "[if(not(empty(parameters('state'))), parameters('state'), json('null'))]",
+        "allowTracing": "[parameters('allowTracing')]"
+      }
+    },
+    {
+      "condition": "[not(empty(parameters('cuaId')))]",
+      "type": "Microsoft.Resources/deployments",
+      "apiVersion": "2019-10-01",
+      "name": "[format('pid-{0}', parameters('cuaId'))]",
+      "properties": {
+        "expressionEvaluationOptions": {
+          "scope": "inner"
+        },
+        "mode": "Incremental",
+        "parameters": {},
+        "template": {
+          "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+          "contentVersion": "1.0.0.0",
+          "metadata": {
+            "_generator": {
+              "name": "bicep",
+              "version": "0.4.613.9944",
+              "templateHash": "11855874804898679700"
+            }
+          },
+          "functions": [],
+          "resources": []
+        }
+      }
+    }
+  ],
+  "outputs": {
+    "subscriptionResourceId": {
+      "type": "string",
+      "value": "[resourceId('Microsoft.ApiManagement/service/subscriptions', split(format('{0}/{1}', parameters('apiManagementServiceName'), parameters('subscriptionName')), '/')[0], split(format('{0}/{1}', parameters('apiManagementServiceName'), parameters('subscriptionName')), '/')[1])]"
+    },
+    "subscriptionResourceName": {
+      "type": "string",
+      "value": "[format('{0}/{1}', parameters('apiManagementServiceName'), parameters('subscriptionName'))]"
+    },
+    "subscriptionResourceGroup": {
+      "type": "string",
+      "value": "[resourceGroup().name]"
+    }
+  }
+}
