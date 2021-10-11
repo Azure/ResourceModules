@@ -169,6 +169,6 @@ module galleryImage_rbac './.bicep/nested_rbac.bicep' = [for (roleAssignment, in
 
 output galleryResourceId string = resourceId('Microsoft.Compute/galleries', galleryName)
 output galleryResourceGroup string = resourceGroup().name
-output galleryName string = galleryImage.name
-output imageDefinitionResourceId string = galleryImage.id
-output imageDefinitionName string = imageDefinitionName
+output galleryName string = galleryName
+output galleryImageResourceId string = galleryImage.id
+output galleryImageName string = galleryImage.name
