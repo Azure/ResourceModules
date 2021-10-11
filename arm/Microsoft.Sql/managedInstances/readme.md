@@ -13,8 +13,8 @@ This template deploys an SQL Managed Instance, with resource lock.
 |`Microsoft.Sql/managedInstances/securityAlertPolicies`|2017-03-01-preview|
 |`Microsoft.Sql/managedInstances/vulnerabilityAssessments`|2018-06-01-preview|
 |`Microsoft.Sql/managedInstances/administrators`|2017-03-01-preview|
-|`Microsoft.Sql/managedInstances/providers/diagnosticsettings`|2017-05-01-preview|
-|`providers/locks`|1900-01-00|
+|`Microsoft.Insights/diagnosticsettings`|2017-05-01-preview|
+|`Microsoft.Authorization/locks`|1900-01-00|
 |`Microsoft.Sql/managedInstances/providers/roleAssignments`|2018-09-01-preview|
 |`Microsoft.Resources/deployments`|2019-10-01|
 
