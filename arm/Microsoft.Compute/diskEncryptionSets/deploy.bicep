@@ -83,7 +83,7 @@ resource diskEncryptionSet 'Microsoft.Compute/diskEncryptionSets@2020-12-01' = {
   }
 }
 
-module automationAccount_rbac './.bicep/nested_rbac.bicep' = [for (roleAssignment, index) in roleAssignments: {
+module diskEncryptionSet_rbac './.bicep/nested_rbac.bicep' = [for (roleAssignment, index) in roleAssignments: {
   name: 'rbac-${deployment().name}${index}'
   params: {
     roleAssignmentObj: roleAssignment
