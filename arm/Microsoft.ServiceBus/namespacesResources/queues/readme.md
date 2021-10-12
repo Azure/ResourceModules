@@ -139,8 +139,8 @@ Tag names and tag values can be provided as needed. A tag can be left without a 
 | Output Name | Type | Description |
 | :-- | :-- | :-- |
 | `namespaceQueueName` | string | The Name of the Service Bus Namespace. |
-| `namespaceResourceGroup` | string | The name of the Resource Group with the Service Bus Namespace. |
-| `queueResourceId` | string | The Resource Id of the Service Bus Queue. |
+| `namespaceQueueResourceGroup` | string | The name of the Resource Group with the Service Bus Namespace. |
+| `namespaceQueueResourceId` | string | The Resource Id of the Service Bus Queue. |
 
 ## Considerations
 

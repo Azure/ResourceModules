@@ -146,5 +146,5 @@ module serviceBusNamespaceQueue_rbac './.bicep/nested_rbac.bicep' = [for (roleAs
 }]
 
 output namespaceQueueName string = serviceBusNamespaceQueue.name
-output queueResourceId string = serviceBusNamespaceQueue.id
-output namespaceResourceGroup string = resourceGroup().name
+output namespaceQueueResourceId string = serviceBusNamespaceQueue.id
+output namespaceQueueResourceGroup string = resourceGroup().name
