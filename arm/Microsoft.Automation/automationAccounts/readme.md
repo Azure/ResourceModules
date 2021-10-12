@@ -16,6 +16,7 @@ This module deploys an Azure Automation Account, with resource lock.
 | `Microsoft.Authorization/locks`                                     | 2016-09-01         |
 | `Microsoft.Network/privateEndpoints`                                | 2020-05-01         |
 | `Microsoft.Network/privateEndpoints/privateDnsZoneGroups`           | 2020-05-01         |
+| `Microsoft.Resources/deployments`                                   | 2020-06-01         |
 
 ## Parameters
 
