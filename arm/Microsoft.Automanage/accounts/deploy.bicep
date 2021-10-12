@@ -42,7 +42,7 @@ resource VMResourceGroup 'Microsoft.Resources/resourceGroups@2021-04-01' existin
 }
 
 module autoManageAccount './.bicep/nested_autoManageAccount.bicep' = {
-  name: 'autoManageAccount-${uniqueString(subscription().subscriptionId, autoManageAccountResourceGroupName, autoManageAccountName)}'
+  name: 'autoManageAccount-${uniqueString(subscription().subscriptionId, autoManageAccountResourceGroup.name, autoManageAccountName)}'
   scope: autoManageAccountResourceGroup
   params: {
     location: location
