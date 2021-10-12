@@ -1,4 +1,4 @@
-name: "AnalysisServices: Servers"
+name: 'AnalysisServices: Servers'
 
 on:
   workflow_dispatch:
@@ -38,13 +38,13 @@ jobs:
   ############################
   job_set_workflow_param:
     runs-on: ubuntu-20.04
-    name: "Set input parameters to output variables"
+    name: 'Set input parameters to output variables'
     steps:
-      - name: "Checkout"
+      - name: 'Checkout'
         uses: actions/checkout@v2
         with:
           fetch-depth: 0
-      - name: "Set input parameters"
+      - name: 'Set input parameters'
         id: get-workflow-param
         uses: ./.github/actions/templates/getWorkflowInput
         with:
@@ -61,13 +61,13 @@ jobs:
   # ------------
   job_tests_module_global:
     runs-on: ubuntu-20.04
-    name: "Run global module tests"
+    name: 'Run global module tests'
     steps:
-      - name: "Checkout"
+      - name: 'Checkout'
         uses: actions/checkout@v2
         with:
           fetch-depth: 0
-      - name: "Test module"
+      - name: 'Test module'
         uses: ./.github/actions/templates/validateModuleGeneral
         with:
           modulePath: '${{ env.modulePath }}'
@@ -77,13 +77,13 @@ jobs:
   # ----------------
   job_tests_module_global_api:
     runs-on: ubuntu-20.04
-    name: "Run global API module tests"
+    name: 'Run global API module tests'
     steps:
-      - name: "Checkout"
+      - name: 'Checkout'
         uses: actions/checkout@v2
         with:
           fetch-depth: 0
-      - name: "Test module"
+      - name: 'Test module'
         uses: ./.github/actions/templates/validateModuleApis
         with:
           modulePath: '${{ env.modulePath }}'
@@ -93,13 +93,13 @@ jobs:
   # --------------------------------
   job_tests_module_deploy_validate:
     runs-on: ubuntu-20.04
-    name: "Run deployment validation module tests"
+    name: 'Run deployment validation module tests'
     strategy:
       fail-fast: false
       matrix:
         parameterFilePaths: ['parameters.json']
     steps:
-      - name: "Checkout"
+      - name: 'Checkout'
         uses: actions/checkout@v2
         with:
           fetch-depth: 0
@@ -108,7 +108,7 @@ jobs:
         with:
           # Name of variable file
           variableFileName: 'variables.module' # Don't write .json here
-      - name: "Test module"
+      - name: 'Test module'
         uses: ./.github/actions/templates/validateModuleDeploy
         with:
           templateFilePath: '${{ env.modulePath }}/deploy.bicep'
@@ -123,18 +123,18 @@ jobs:
   ####################
   job_deploy_module:
     runs-on: ubuntu-20.04
-    name: "Deploy module"
+    name: 'Deploy module'
     needs:
-    - job_set_workflow_param
-    - job_tests_module_global
-    - job_tests_module_global_api
-    - job_tests_module_deploy_validate
+      - job_set_workflow_param
+      - job_tests_module_global
+      - job_tests_module_global_api
+      - job_tests_module_deploy_validate
     strategy:
       fail-fast: false
       matrix:
         parameterFilePaths: ['parameters.json']
     steps:
-      - name: "Checkout"
+      - name: 'Checkout'
         uses: actions/checkout@v2
         with:
           fetch-depth: 0
@@ -143,7 +143,7 @@ jobs:
         with:
           # Name of variable file
           variableFileName: 'variables.module' # Don't write .json here
-      - name: "Deploy module"
+      - name: 'Deploy module'
         uses: ./.github/actions/templates/deployModule
         with:
           moduleName: '${{ env.moduleName }}'
@@ -159,13 +159,14 @@ jobs:
   #   PUBLISH   #
   ###############
   job_publish_module:
-    name: "Publish module"
+    name: 'Publish module'
     if: contains(fromJson('["refs/heads/main", "refs/heads/master"]'), github.ref)
     runs-on: ubuntu-20.04
     needs:
-    - job_deploy_module
+      - job_set_workflow_param
+      - job_deploy_module
     steps:
-      - name: "Checkout"
+      - name: 'Checkout'
         uses: actions/checkout@v2
         with:
           fetch-depth: 0
@@ -174,7 +175,7 @@ jobs:
         with:
           # Name of variable file
           variableFileName: 'variables.module' # Don't write .json here
-      - name: "Publish module"
+      - name: 'Publish module'
         uses: ./.github/actions/templates/publishModule
         with:
           templateFilePath: '${{ env.modulePath }}/deploy.bicep'
@@ -191,12 +192,12 @@ jobs:
   ##############
   job_remove_module:
     runs-on: ubuntu-20.04
-    name: "Remove module"
+    name: 'Remove module'
     if: ${{ always() && !cancelled() && needs.job_set_workflow_param.outputs.removeDeployment == 'true' && (contains(needs.*.result, 'success') || contains(needs.*.result, 'failure')) }}
     needs:
-    - job_deploy_module
+      - job_deploy_module
     steps:
-      - name: "Checkout"
+      - name: 'Checkout'
         uses: actions/checkout@v2
         with:
           fetch-depth: 0
@@ -205,7 +206,7 @@ jobs:
         with:
           # Name of variable file
           variableFileName: 'variables.module' # Don't write .json here
-      - name: "Remove module"
+      - name: 'Remove module'
         uses: ./.github/actions/templates/removeModule
         with:
           moduleName: '${{ env.moduleName }}'
