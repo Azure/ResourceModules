@@ -15,11 +15,9 @@ param authorizations array
 @description('Optional. Specify the name of the Resource Group to delegate access to. If not provided, delegation will be done on the targeted subscription.')
 param resourceGroupName string = ''
 
-resource resourceGroup 'Microsoft.Resources/resourceGroups@2021-04-01' existing = if (!empty(resourceGroupName)) {
-  name: resourceGroupName
-}
+var registrationAssignmentId = empty(resourceGroupName) ? guid(managedByTenantId, subscription().subscriptionId) : guid(managedByTenantId, subscription().subscriptionId, resourceGroupName)
 
-resource registrationDefinition 'Microsoft.ManagedServices/registrationDefinitions@2019-06-01' = {
+resource registrationDefinition 'Microsoft.ManagedServices/registrationDefinitions@2019-09-01' = {
   name: guid(registrationDefinitionName)
   properties: {
     registrationDefinitionName: registrationDefinitionName
@@ -29,25 +27,22 @@ resource registrationDefinition 'Microsoft.ManagedServices/registrationDefinitio
   }
 }
 
-resource registrationAssignment 'Microsoft.ManagedServices/registrationAssignments@2019-06-01' = if (empty(resourceGroupName)) {
-  name: guid(managedByTenantId, subscription().subscriptionId)
+resource registrationAssignment_sub 'Microsoft.ManagedServices/registrationAssignments@2019-09-01' = if (empty(resourceGroupName)) {
+  name: registrationAssignmentId
   properties: {
     registrationDefinitionId: registrationDefinition.id
   }
 }
 
-module rgAssignment_resourceGroupName './nested_rgAssignment_resourceGroupName.bicep' = if (!empty(resourceGroupName)) {
-  name: guid(managedByTenantId, subscription().subscriptionId, resourceGroupName)
+module registrationAssignment_rg '.bicep/nested_registrationAssignment.bicep' = if (!empty(resourceGroupName)) {
+  name: 'rgassignment-${uniqueString(registrationAssignmentId)}'
   scope: resourceGroup(resourceGroupName)
   params: {
-    resourceId_Microsoft_ManagedServices_registrationDefinitions_variables_registrationDefinitionId: registrationDefinitionId.id
-    variables_assignmentId: assignmentId
+    registrationDefinitionId: registrationDefinition.id
+    registrationAssignmentId: registrationAssignmentId
   }
 }
 
 output registrationDefinitionName string = registrationDefinition.name
 output registrationDefinitionId string = registrationDefinition.id
-output registrationAssignmentId string = registrationAssignment.id
-output authorizations array = authorizations
-output subscriptionId string = subscription().id
-output resourceGroupId string = resourceGroup.id
+output registrationAssignmentId string = empty(resourceGroupName) ? registrationAssignment_sub.id : registrationAssignment_rg.outputs.registrationAssignmentId
