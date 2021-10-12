@@ -3,7 +3,7 @@
 Update the given ReadMe file with the latest module table
 
 .DESCRIPTION
-Update the given ReadMe file with the latest module table. 
+Update the given ReadMe file with the latest module table.
 You can specify the columns to be generated.
 Note that the ReadMe file should have the following lines right before & after the table to enable the replacement of the correct area:
 - '<!-- ModuleTableStartMarker -->'
@@ -45,39 +45,63 @@ function Set-GitHubReadMeModuleTable {
 
         [Parameter(Mandatory)]
         [string] $organization,
-        
+
         [Parameter(Mandatory)]
         [ValidateSet('Name', 'ProviderNamespace', 'ResourceType', 'TemplateType', 'Deploy', 'Status')]
         [string[]] $columnsInOrder,
 
         [Parameter(Mandatory = $false)]
-        [string] $sortByColumn = 'ProviderNamespace'
+        [string] $sortByColumn = 'ProviderNamespace',
+
+        [Parameter(Mandatory = $false)]
+        [string] $PAT,
+
+        [Parameter(Mandatory = $false)]
+        [string] $gitUserName = 'CARMLPipelinePrincipal',
+
+        [Parameter(Mandatory = $false)]
+        [string] $gitEmail = 'CARML@microsoft.com'
     )
 
     # Load functions
     . (Join-Path $PSScriptRoot 'Get-ModulesAsMarkdownTable.ps1')
 
-    # Logic    
+    # Logic
     $contentArray = Get-Content -Path $filePath
     $startIndex = [array]::IndexOf($contentArray, '<!-- ModuleTableStartMarker -->')
     $endIndex = [array]::IndexOf($contentArray, '<!-- ModuleTableEndMarker -->')
 
-    $startContent = $contentArray[0..$startIndex] 
+    $startContent = $contentArray[0..$startIndex]
     $endContent = $contentArray[$endIndex..$contentArray.Count]
 
     $tableStringInputObject = @{
         Path           = $modulesPath
-        RepositoryName = $repositoryName 
-        Organization   = $organization 
+        RepositoryName = $repositoryName
+        Organization   = $organization
         ColumnsInOrder = $columnsInOrder
         sortByColumn   = $sortByColumn
     }
     $tableString = Get-ModulesAsMarkdownTable @tableStringInputObject
 
     $newContent = (($startContent + $tableString + $endContent) | Out-String).TrimEnd()
-    
-    if ($PSCmdlet.ShouldProcess("File in path [$filePath]", "Overwrite")) {
-        Set-Content -Path $filePath -Value $newContent -Force -NoNewLine
+
+    if ($PSCmdlet.ShouldProcess("File in path [$filePath]", 'Overwrite')) {
+        Set-Content -Path $filePath -Value $newContent -Force -NoNewline
         Write-Verbose "File [$filePath] updated" -Verbose
+        Write-Verbose 'New content:' -Verbose
+        Write-Verbose '============' -Verbose
+        Write-Verbose ($newContent | Out-String) -Verbose
     }
+
+    git config --global user.email $gitEmail
+    git config --global user.name $gitUserName
+
+    if (-not [String]::IsNullOrEmpty($PAT)) {
+        git config --global user.token $PAT
+    }
+
+    git pull
+    git add .
+    git commit -m "Push updated Readme in path [$filePath]"
+    git push
 }
