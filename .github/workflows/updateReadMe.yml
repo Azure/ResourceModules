@@ -13,6 +13,10 @@ on:
       - 'arm/**/deploy.bicep'
       - 'arm/**/deploy.json'
 
+env:
+  gitUserName: 'CARMLPipelinePrincipal'
+  gitEmail: 'CARML@microsoft.com'
+
 jobs:
   job_update_readme:
     runs-on: ubuntu-20.04
@@ -62,3 +66,14 @@ jobs:
           Write-Verbose ($functionInput | ConvertTo-Json | Out-String) -Verbose
 
           Set-GitHubReadMeModuleTable @functionInput
+
+      - name: "Push changes"
+        shell: pwsh
+        run: |
+          git config --global user.email $env:gitEmail
+          git config --global user.name $env:gitUserName
+
+          git pull
+          git add .
+          git commit -m "Push updated Readme file(s)"
+          git push

@@ -25,15 +25,6 @@ Mandatory. The name of the organization the modules are in (required to generate
 Mandatory. The set of columns to add to the table in the order you expect them in the table.
 Available are 'Name', 'ProviderNamespace', 'ResourceType', 'TemplateType', 'Deploy' & 'Status'
 
-.PARAMETER PAT
-Optional. The PAT to push with to the target repository
-
-.PARAMETER gitUserName
-Optional. The username to push with to the target repository
-
-.PARAMETER gitEmail
-Optional. The email address to push with to the target repository
-
 .EXAMPLE
 Set-GitHubReadMeModuleTable -filePath 'C:\readme.md' -modulesPath 'C:\arm' -repositoryName 'ResourceModules' -organization 'Azure' -columnsInOrder @('Name','Status')
 
@@ -60,16 +51,7 @@ function Set-GitHubReadMeModuleTable {
         [string[]] $columnsInOrder,
 
         [Parameter(Mandatory = $false)]
-        [string] $sortByColumn = 'ProviderNamespace',
-
-        [Parameter(Mandatory = $false)]
-        [string] $PAT,
-
-        [Parameter(Mandatory = $false)]
-        [string] $gitUserName = 'CARMLPipelinePrincipal',
-
-        [Parameter(Mandatory = $false)]
-        [string] $gitEmail = 'CARML@microsoft.com'
+        [string] $sortByColumn = 'ProviderNamespace'
     )
 
     # Load functions
@@ -101,16 +83,4 @@ function Set-GitHubReadMeModuleTable {
         Write-Verbose '============' -Verbose
         Write-Verbose ($newContent | Out-String) -Verbose
     }
-
-    git config --global user.email $gitEmail
-    git config --global user.name $gitUserName
-
-    if (-not [String]::IsNullOrEmpty($PAT)) {
-        git config --global user.token $PAT
-    }
-
-    git pull
-    git add .
-    git commit -m "Push updated Readme in path [$filePath]"
-    git push
 }
