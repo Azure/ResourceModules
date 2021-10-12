@@ -19,7 +19,6 @@ This module deploys an Azure Automation Account, with resource lock.
 | `Microsoft.AnalysisServices/servers/providers/diagnosticsettings`   | 2017-05-01-preview |
 | `Microsoft.Resources/deployments`                                   | 2020-06-01         |
 
-
 ## Parameters
 
 | Parameter Name                  | Type   | Default Value                | Possible values               | Description                                                                                                                                                                                                                                                                                                                                                                                                     |
