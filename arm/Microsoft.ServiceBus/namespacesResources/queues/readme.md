@@ -39,9 +39,9 @@ This module deploys Service Bus Queue.
 | `status` | string | Optional. Enumerates the possible values for the status of a messaging entity. - Active, Disabled, Restoring, SendDisabled, ReceiveDisabled, Creating, Deleting, Renaming, Unknown | Active | System.Object[] |
 | `tags` | object | Optional. Tags of the resource. |  |  |
 | `autoDeleteOnIdle` | string | Optional. ISO 8061 timeSpan idle interval after which the queue is automatically deleted. The minimum duration is 5 minutes. |  |  |
-| `tags` | string | Optional. Queue/Topic name to forward the Dead Letter message |  |  |
-| `tags` | string | Optional. Queue/Topic name to forward the messages |  |  |
-| `tags` | int | Optional. Maximum size (in KB) of the message payload that can be accepted by the queue. This property is only used in Premium today | 1024 |  |
+| `forwardDeadLetteredMessagesTo` | string | Optional. Queue/Topic name to forward the Dead Letter message |  |  |
+| `forwardTo` | string | Optional. Queue/Topic name to forward the messages |  |  |
+| `maxMessageSizeInKilobytes` | int | Optional. Maximum size (in KB) of the message payload that can be accepted by the queue. This property is only used in Premium today | 1024 |  |
 
 ### Parameter Usage: `authorizationRules`
 
