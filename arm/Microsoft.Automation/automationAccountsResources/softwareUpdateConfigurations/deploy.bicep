@@ -180,7 +180,7 @@ param baseTime string = utcNow('u')
 @description('Optional. Customer Usage Attribution id (GUID). This GUID must be previously registered')
 param cuaId string = ''
 
-var updateClassifications_var = '${replace(replace(replace(replace(string(updateClassifications),',',', '),'[',''),']',''),'"','')}'
+var updateClassifications_var = '${replace(replace(replace(replace(string(updateClassifications), ',', ', '), '[', ''), ']', ''), '"', '')}'
 var timeLimit = dateTimeAdd(baseTime, 'PT5M', 'u')
 var providedStartTime = dateTimeAdd(startTime, 'PT0S', 'u')
 var startTime_var = ((providedStartTime > timeLimit) ? providedStartTime : dateTimeAdd(providedStartTime, 'P1D', 'u'))
@@ -226,12 +226,12 @@ resource softwareUpdateConfiguration 'Microsoft.Automation/automationAccounts/so
     }
     tasks: {
       preTask: {
-        parameters: preTaskParameters
-        source: preTaskSource
+        parameters: (empty(preTaskParameters) ? json('null') : preTaskParameters)
+        source: (empty(preTaskSource) ? json('null') : preTaskSource)
       }
       postTask: {
-        parameters: postTaskParameters
-        source: postTaskSource
+        parameters: (empty(postTaskParameters) ? json('null') : postTaskParameters)
+        source: (empty(postTaskSource) ? json('null') : postTaskSource)
       }
     }
     scheduleInfo: {
@@ -240,9 +240,9 @@ resource softwareUpdateConfiguration 'Microsoft.Automation/automationAccounts/so
       isEnabled: isEnabled
       timeZone: timeZone
       advancedSchedule: {
-        weekDays: weekDays
-        monthDays:  monthDays
-        monthlyOccurrences:  monthlyOccurrences
+        weekDays: (empty(weekDays) ? json('null') : weekDays)
+        monthDays: (empty(monthDays) ? json('null') : monthDays)
+        monthlyOccurrences: (empty(monthlyOccurrences) ? json('null') : monthlyOccurrences)
       }
       startTime: startTime_var
       expiryTime: expiryTime
@@ -258,4 +258,3 @@ output softwareUpdateConfigurationName string = softwareUpdateConfiguration.name
 output softwareUpdateConfigurationResourceId string = softwareUpdateConfiguration.id
 output softwareUpdateConfigurationResourceGroup string = resourceGroup().name
 output automationAccountName string = automationAccountName
-
