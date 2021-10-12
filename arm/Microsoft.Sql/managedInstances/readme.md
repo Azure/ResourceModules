@@ -7,15 +7,15 @@ This template deploys an SQL Managed Instance, with resource lock.
 
 |Resource Type|ApiVersion|
 |:--|:--|
-|`Microsoft.Sql/managedInstances`|2018-06-01-preview|
+|`Microsoft.Sql/managedInstances`|2020-08-01-preview|
 |`Microsoft.Sql/managedInstances/keys`|2017-10-01-preview|
 |`Microsoft.Sql/managedInstances/encryptionProtector`|2017-10-01-preview|
 |`Microsoft.Sql/managedInstances/securityAlertPolicies`|2017-03-01-preview|
 |`Microsoft.Sql/managedInstances/vulnerabilityAssessments`|2018-06-01-preview|
 |`Microsoft.Sql/managedInstances/administrators`|2017-03-01-preview|
-|`Microsoft.Sql/managedInstances/providers/diagnosticsettings`|2017-05-01-preview|
-|`providers/locks`|1900-01-00|
-|`Microsoft.Sql/managedInstances/providers/roleAssignments`|2018-09-01-preview|
+|`Microsoft.Insights/diagnosticsettings`|2017-05-01-preview|
+|`Microsoft.Authorization/locks`|2016-09-01|
+|`Microsoft.Sql/managedInstances/providers/roleAssignments`|2020-04-01-preview|
 |`Microsoft.Resources/deployments`|2019-10-01|
 
 ### Deployment prerequisites
@@ -58,9 +58,11 @@ SQL Managed Instance is deployed on a virtual network. This network is required 
 | `subnetId` | string | Required. The fully qualified resource ID of the subnet on which the SQL managed instance will be placed. |  | |
 | `tags` | object | Optional. Tags of the resource. |  | |
 | `timezoneId` | string | Optional. Id of the timezone. Allowed values are timezones supported by Windows. | UTC | |
-| `vCores` | int | Optional. The number of vCores. Allowed values: 8, 16, 24, 32, 40, 64, 80. | 4 | |
+| `vCores` | int | Optional. The number of vCores. | 4 | 8, 16, 24, 32, 40, 64, 80 |
 | `vulnerabilityAssessmentsStorageAccountId` | string | Optional. A blob storage to hold the scan results. |  | |
 | `workspaceId` | string | Optional. Resource identifier of Log Analytics. |  | |
+| `managedServiceIdentity` | string | Optional. The type of identity used for the managed instance. The type "None" (default) will remove any identities from the managed instance. | None | None, SystemAssigned, UserAssigned |
+| `userAssignedIdentities` | object | Optional. Mandatory if "managedServiceIdentity" contains UserAssigned. The list of user identities associated with the managed instance. | {} | |
 
 ### Parameter Usage: `azureAdAdmin`
 
