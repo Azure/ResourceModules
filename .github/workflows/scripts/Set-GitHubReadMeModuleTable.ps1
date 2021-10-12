@@ -25,6 +25,15 @@ Mandatory. The name of the organization the modules are in (required to generate
 Mandatory. The set of columns to add to the table in the order you expect them in the table.
 Available are 'Name', 'ProviderNamespace', 'ResourceType', 'TemplateType', 'Deploy' & 'Status'
 
+.PARAMETER PAT
+Optional. The PAT to push with to the target repository
+
+.PARAMETER gitUserName
+Optional. The username to push with to the target repository
+
+.PARAMETER gitEmail
+Optional. The email address to push with to the target repository
+
 .EXAMPLE
 Set-GitHubReadMeModuleTable -filePath 'C:\readme.md' -modulesPath 'C:\arm' -repositoryName 'ResourceModules' -organization 'Azure' -columnsInOrder @('Name','Status')
 
