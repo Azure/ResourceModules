@@ -3,22 +3,21 @@
     "contentVersion": "1.0.0.0",
     "parameters": {
         "registrationDefinitionName": {
-            "value": "Component Validation"
+            "value": "Component Validation - Subscription assignment"
         },
         "registrationDescription": {
-            "value": "Managed by CCoE"
+            "value": "Managed by Lighthouse"
         },
         "managedByTenantId": {
             "value": "195ee85d-2f10-4764-8352-a3c99aa772fb"
         },
         "authorizations": {
             "value": [
-                {
-                    "principalId": "e87a249c-b53b-4685-94fe-863af522e4ee",
-                    "principalIdDisplayName": "MSX-Sub_ABC-Reader",
-                    "roleDefinitionId": "acdd72a7-3385-48ef-bd42-f606fba81ae7"
-
-                },
+                //{
+                //    "principalId": "e87a249c-b53b-4685-94fe-863af522e4ee",
+                //    "principalIdDisplayName": "MSX-Sub_ABC-Reader",
+                //    "roleDefinitionId": "acdd72a7-3385-48ef-bd42-f606fba81ae7"
+                //},
                 {
                     "principalId": "e2f126a7-136e-443f-b39f-f73ddfd146b1",
                     "principalIdDisplayName": "MSX-Sub_ABC-Contributor",
@@ -28,6 +27,11 @@
                     "principalId": "87813317-fb25-4c76-91fe-783af429d109",
                     "principalIdDisplayName": "MSX-Sub_ABC-LHManagement",
                     "roleDefinitionId": "91c1777a-f3dc-4fae-b103-61d183457e46"
+                },
+                {
+                    "principalId": "f64585bf-815b-4ba2-9ab7-d10e610b1893",
+                    "principalIdDisplayName": "MariusStorhaug",
+                    "roleDefinitionId": "acdd72a7-3385-48ef-bd42-f606fba81ae7"
                 }
             ]
         }
