@@ -5,11 +5,11 @@
     "roleDefinitionIdOrName": {
       "value": "/providers/Microsoft.Authorization/roleDefinitions/8e3af657-a8ff-443c-a75c-2fe8c4bcb635"
     },
-    "principalId":{
+    "principalId": {
       "value": "9fa1a3c1-d53b-40ea-8617-ec99e51285a3"
     },
     "subscriptionId": {
-      "value": "20d6fbfe-b049-471c-95af-1369d14d0d45"
+      "value": "8629be3b-96bc-482d-a04b-ffff597c65a2"
     }
   }
 }
