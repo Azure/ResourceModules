@@ -78,18 +78,6 @@ param roleAssignments array = []
 @description('Optional. Customer Usage Attribution id (GUID). This GUID must be previously registered')
 param cuaId string = ''
 
-@description('Optional. ISO 8061 timeSpan idle interval after which the queue is automatically deleted. The minimum duration is 5 minutes.')
-param autoDeleteOnIdle string = ''
-
-@description('Optional. Queue/Topic name to forward the Dead Letter message')
-param forwardDeadLetteredMessagesTo string = ''
-
-@description('Optional. Queue/Topic name to forward the messages')
-param forwardTo string = ''
-
-@description('Optional. Maximum size (in KB) of the message payload that can be accepted by the queue. This property is only used in Premium today')
-param maxMessageSizeInKilobytes int = 1024
-
 var builtInRoleNames = {
   'Owner': subscriptionResourceId('Microsoft.Authorization/roleDefinitions', '8e3af657-a8ff-443c-a75c-2fe8c4bcb635')
   'Contributor': subscriptionResourceId('Microsoft.Authorization/roleDefinitions', 'b24988ac-6180-42a0-ab88-20f7382dd24c')
@@ -129,10 +117,6 @@ resource serviceBusNamespaceQueue 'Microsoft.ServiceBus/namespaces/queues@2021-0
     status: status
     enablePartitioning: enablePartitioning
     enableExpress: enableExpress
-    autoDeleteOnIdle: autoDeleteOnIdle
-    forwardDeadLetteredMessagesTo: forwardDeadLetteredMessagesTo
-    forwardTo: forwardTo
-    maxMessageSizeInKilobytes: maxMessageSizeInKilobytes
   }
 
   resource serviceBusNamespaceQueue_authorizationRules 'authorizationRules@2017-04-01' = [for authorizationRule in authorizationRules: if (length(authorizationRules) > 0) {
