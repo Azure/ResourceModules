@@ -285,7 +285,7 @@ resource serviceBusNamespaceQueue 'Microsoft.ServiceBus/namespaces/queues@2017-0
 }
 
 resource serviceBusNamespaceQueue_lock 'Microsoft.Authorization/locks@2016-09-01' = if (lockForDeletion) {
-  name: '${serviceBusNamespaceQueue.name}-doNotDelete'
+  name: '${split(serviceBusNamespaceQueue.name, '/')[1]}-doNotDelete'
   properties: {
     level: 'CanNotDelete'
   }
