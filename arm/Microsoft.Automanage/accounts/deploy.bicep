@@ -33,17 +33,9 @@ module pidName './.bicep/nested_cuaId.bicep' = if (!empty(cuaId)) {
   params: {}
 }
 
-resource autoManageAccountResourceGroup 'Microsoft.Resources/resourceGroups@2021-04-01' existing = {
-  name: autoManageAccountResourceGroupName
-}
-
-resource VMResourceGroup 'Microsoft.Resources/resourceGroups@2021-04-01' existing = {
-  name: vmResourceGroupName
-}
-
 module autoManageAccount './.bicep/nested_autoManageAccount.bicep' = {
-  name: 'autoManageAccount-${uniqueString(subscription().subscriptionId, autoManageAccountResourceGroup.name, autoManageAccountName)}'
-  scope: autoManageAccountResourceGroup
+  name: 'autoManageAccount-${uniqueString(subscription().subscriptionId, autoManageAccountResourceGroupName, autoManageAccountName)}'
+  scope: resourceGroup(autoManageAccountResourceGroupName)
   params: {
     location: location
     autoManageAccountName: autoManageAccountName
@@ -52,7 +44,7 @@ module autoManageAccount './.bicep/nested_autoManageAccount.bicep' = {
 
 //principalId: (createAutoManageAccount ? autoManageAccount.outputs.principalId : 'resource not deployed')
 resource autoManageAccount_permissions_contributor 'Microsoft.Authorization/roleAssignments@2020-04-01-preview' = {
-  name: guid(autoManageAccountResourceGroup.name, autoManageAccountName, contributor)
+  name: guid(autoManageAccountResourceGroupName, autoManageAccountName, contributor)
   properties: {
     roleDefinitionId: contributor
     principalId: autoManageAccount.outputs.principalId
@@ -61,7 +53,7 @@ resource autoManageAccount_permissions_contributor 'Microsoft.Authorization/role
 }
 
 resource autoManageAccount_permissions_resourcePolicyContributor 'Microsoft.Authorization/roleAssignments@2020-04-01-preview' = {
-  name: guid(autoManageAccountResourceGroup.name, autoManageAccountName, resourcePolicyContributor)
+  name: guid(autoManageAccountResourceGroupName, autoManageAccountName, resourcePolicyContributor)
   properties: {
     roleDefinitionId: resourcePolicyContributor
     principalId: autoManageAccount.outputs.principalId
@@ -70,8 +62,8 @@ resource autoManageAccount_permissions_resourcePolicyContributor 'Microsoft.Auth
 }
 
 module configurationProfileAssignment './.bicep/nested_configurationProfileAssignment.bicep' = {
-  name: 'configurationProfileAssignment-${uniqueString(VMResourceGroup.name, vmName)}'
-  scope: VMResourceGroup
+  name: 'configurationProfileAssignment-${uniqueString(vmResourceGroupName, vmName)}'
+  scope: resourceGroup(vmResourceGroupName)
   params: {
     vmName: vmName
     configurationProfile: configurationProfile
@@ -81,4 +73,4 @@ module configurationProfileAssignment './.bicep/nested_configurationProfileAssig
 
 output autoManageAccountResourceId string = autoManageAccount.outputs.accountResourceId
 output autoManageAccountName string = autoManageAccount.outputs.accountName
-output autoManageAccountResourceGroup string = autoManageAccountResourceGroup.name
+output autoManageAccountResourceGroup string = autoManageAccountResourceGroupName
