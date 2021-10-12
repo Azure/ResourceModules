@@ -103,12 +103,12 @@ Occurrences of days within a month.
 
 ## Outputs
 
-| Output Name                                    | Type   | Description                                                               |
-| :--------------------------------------------- | :----- | :------------------------------------------------------------------------ |
-| `automationAccountName`                        | string | The Automation Account the Software Update Configuration was deployed to. |
-| `softwareUpdateConfigurationName`              | string | The name of the Software Update Configuration.                            |
-| `softwareUpdateConfigurationResourceGroupName` | string | The Resource Group the Software Update Configuration was deployed to.     |
-| `softwareUpdateConfigurationResourceId`        | string | The Resource Id of the Software Update Configuration.                     |
+| Output Name                                | Type   | Description                                                               |
+| :----------------------------------------- | :----- | :------------------------------------------------------------------------ |
+| `automationAccountName`                    | string | The Automation Account the Software Update Configuration was deployed to. |
+| `softwareUpdateConfigurationName`          | string | The name of the Software Update Configuration.                            |
+| `softwareUpdateConfigurationResourceGroup` | string | The Resource Group the Software Update Configuration was deployed to.     |
+| `softwareUpdateConfigurationResourceId`    | string | The Resource Id of the Software Update Configuration.                     |
 
 ## Considerations
 
