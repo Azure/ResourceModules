@@ -10,7 +10,7 @@ This module deploys Service Bus Queue.
 | `Microsoft.ServiceBus/namespaces/queues/authorizationRules` | 2017-04-01 |
 | `Microsoft.ServiceBus/namespaces/queues/providers/roleAssignments` | 2018-09-01-preview |
 | `Microsoft.ServiceBus/namespaces/queues` | 2017-04-01 |
-| `providers/locks` | 2016-09-01 |
+| `Microsoft.Authorization/locks` | 2016-09-01 |
 
 - Microsoft.ServiceBus/namespaces
 
