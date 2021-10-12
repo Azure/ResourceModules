@@ -9,7 +9,7 @@ This module deploys Service Bus Queue.
 | `Microsoft.Resources/deployments` | 2020-06-01 |
 | `Microsoft.ServiceBus/namespaces/queues/authorizationRules` | 2017-04-01 |
 | `Microsoft.ServiceBus/namespaces/providers/queues/roleAssignments` | 2020-04-01-preview |
-| `Microsoft.ServiceBus/namespaces/queues` | 2017-04-01 |
+| `Microsoft.ServiceBus/namespaces/queues` | 2021-06-01-preview |
 | `Microsoft.Authorization/locks` | 2016-09-01 |
 
 - Microsoft.ServiceBus/namespaces
@@ -38,6 +38,10 @@ This module deploys Service Bus Queue.
 | `roleAssignments` | array | Optional. Array of role assignment objects that contain the 'roleDefinitionIdOrName' and 'principalId' to define RBAC role assignments on this resource. In the roleDefinitionIdOrName attribute, you can provide either the display name of the role definition, or its fully qualified ID in the following format: '/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11' | System.Object[] |  |
 | `status` | string | Optional. Enumerates the possible values for the status of a messaging entity. - Active, Disabled, Restoring, SendDisabled, ReceiveDisabled, Creating, Deleting, Renaming, Unknown | Active | System.Object[] |
 | `tags` | object | Optional. Tags of the resource. |  |  |
+| `autoDeleteOnIdle` | string | Optional. ISO 8061 timeSpan idle interval after which the queue is automatically deleted. The minimum duration is 5 minutes. |  |  |
+| `tags` | string | Optional. Queue/Topic name to forward the Dead Letter message |  |  |
+| `tags` | string | Optional. Queue/Topic name to forward the messages |  |  |
+| `tags` | int | Optional. Maximum size (in KB) of the message payload that can be accepted by the queue. This property is only used in Premium today | 1024 |  |
 
 ### Parameter Usage: `authorizationRules`
 
