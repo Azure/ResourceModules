@@ -111,7 +111,7 @@ resource deviceSecurityGroups 'Microsoft.Security/deviceSecurityGroups@2019-08-0
 
 module securityCenter_iotSecuritySolutions './.bicep/nested_iotSecuritySolutions.bicep' = if (!empty(ioTSecuritySolutionProperties)) {
   name: '${uniqueString(deployment().name)}-ASC-IotSecuritySolutions'
-  scope: resourceGroup(ioTSecuritySolutionProperties.resourceGroup)
+  scope: resourceGroup(empty(ioTSecuritySolutionProperties) ? 'dummy' : ioTSecuritySolutionProperties.resourceGroup)
   params: {
     ioTSecuritySolutionProperties: ioTSecuritySolutionProperties
   }
