@@ -257,4 +257,3 @@ resource softwareUpdateConfiguration 'Microsoft.Automation/automationAccounts/so
 output softwareUpdateConfigurationName string = softwareUpdateConfiguration.name
 output softwareUpdateConfigurationResourceId string = softwareUpdateConfiguration.id
 output softwareUpdateConfigurationResourceGroup string = resourceGroup().name
-output automationAccountName string = automationAccountName
