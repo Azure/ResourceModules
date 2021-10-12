@@ -6,6 +6,7 @@ This template enables Azure Security Center - Standard tier by default, could be
 
 | Resource Type                                 | ApiVersion         |
 | :-------------------------------------------- | :----------------- |
+| `Microsoft.Resources/deployments`             | 2019-10-01         |
 | `Microsoft.Security/autoProvisioningSettings` | 2017-08-01-preview |
 | `Microsoft.Security/deviceSecurityGroups`     | 2019-08-01         |
 | `Microsoft.Security/iotSecuritySolutions`     | 2019-08-01         |
