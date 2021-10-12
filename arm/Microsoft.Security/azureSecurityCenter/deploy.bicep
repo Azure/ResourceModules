@@ -13,6 +13,9 @@ param scope string
 ])
 param autoProvision string = 'On'
 
+@description('Optional. Indicates whether Advanced Threat Protection is enabled.')
+param enableAtp bool = false
+
 @description('Optional. Device Security group data')
 param deviceSecurityGroupProperties object = {}
 
@@ -89,8 +92,22 @@ param dnsPricingTier string = 'Free'
 ])
 param armPricingTier string = 'Free'
 
+@description('Optional. The pricing tier value for OpenSourceRelationalDatabases. Azure Security Center is provided in two pricing tiers: free and standard, with the standard tier available with a trial period. The standard tier offers advanced security capabilities, while the free tier offers basic security features. - Free or Standard')
+@allowed([
+  'Free'
+  'Standard'
+])
+param openSourceRelationalDatabasesTier string = 'Free'
+
 @description('Optional. Security contact data')
 param securityContactProperties object = {}
+
+resource symbolicname 'Microsoft.Security/advancedThreatProtectionSettings@2019-01-01' = {
+  name: 'current'
+  properties: {
+    isEnabled: enableAtp
+  }
+}
 
 resource default 'Microsoft.Security/autoProvisioningSettings@2017-08-01-preview' = {
   name: 'default'
@@ -184,6 +201,13 @@ resource Arm 'Microsoft.Security/pricings@2018-06-01' = {
   name: 'Arm'
   properties: {
     pricingTier: armPricingTier
+  }
+}
+
+resource OpenSourceRelationalDatabases 'Microsoft.Security/pricings@2018-06-01' = {
+  name: 'OpenSourceRelationalDatabases'
+  properties: {
+    pricingTier: openSourceRelationalDatabasesTier
   }
 }
 
