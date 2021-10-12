@@ -7,6 +7,5 @@ resource configurationProfileAssignment 'Microsoft.Compute/virtualMachines/provi
   properties: {
     accountId: autoManageAccountResourceId
     configurationProfile: configurationProfile
-
   }
 }
