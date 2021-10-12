@@ -109,8 +109,8 @@ resource symbolicname 'Microsoft.Security/advancedThreatProtectionSettings@2019-
   }
 }
 
-resource default 'Microsoft.Security/autoProvisioningSettings@2017-08-01-preview' = {
-  name: 'default'
+resource autoProvisioningSettings 'Microsoft.Security/autoProvisioningSettings@2017-08-01-preview' = {
+  name: 'autoProvisioningSettings'
   properties: {
     autoProvision: autoProvision
   }
@@ -126,7 +126,7 @@ resource deviceSecurityGroups 'Microsoft.Security/deviceSecurityGroups@2019-08-0
   }
 }
 
-module securityCenter_iotSecuritySolutions './.bicep/nested_iotSecuritySolutions.bicep' = if (!empty(ioTSecuritySolutionProperties)) {
+module iotSecuritySolutions './.bicep/nested_iotSecuritySolutions.bicep' = if (!empty(ioTSecuritySolutionProperties)) {
   name: '${uniqueString(deployment().name)}-ASC-IotSecuritySolutions'
   scope: resourceGroup(empty(ioTSecuritySolutionProperties) ? 'dummy' : ioTSecuritySolutionProperties.resourceGroup)
   params: {
@@ -134,85 +134,85 @@ module securityCenter_iotSecuritySolutions './.bicep/nested_iotSecuritySolutions
   }
 }
 
-resource VirtualMachines 'Microsoft.Security/pricings@2018-06-01' = {
-  name: 'VirtualMachines'
+resource VirtualMachinesPricingTier 'Microsoft.Security/pricings@2018-06-01' = {
+  name: 'VirtualMachinesPricingTier'
   properties: {
     pricingTier: virtualMachinesPricingTier
   }
 }
 
-resource SqlServers 'Microsoft.Security/pricings@2018-06-01' = {
-  name: 'SqlServers'
+resource SqlServersPricingTier 'Microsoft.Security/pricings@2018-06-01' = {
+  name: 'SqlServersPricingTier'
   properties: {
     pricingTier: sqlServersPricingTier
   }
 }
 
-resource AppServices 'Microsoft.Security/pricings@2018-06-01' = {
-  name: 'AppServices'
+resource AppServicesPricingTier 'Microsoft.Security/pricings@2018-06-01' = {
+  name: 'AppServicesPricingTier'
   properties: {
     pricingTier: appServicesPricingTier
   }
 }
 
-resource StorageAccounts 'Microsoft.Security/pricings@2018-06-01' = {
-  name: 'StorageAccounts'
+resource StorageAccountsPricingTier 'Microsoft.Security/pricings@2018-06-01' = {
+  name: 'StorageAccountsPricingTier'
   properties: {
     pricingTier: storageAccountsPricingTier
   }
 }
 
-resource SqlServerVirtualMachines 'Microsoft.Security/pricings@2018-06-01' = {
-  name: 'SqlServerVirtualMachines'
+resource SqlServerVirtualMachinesPricingTier 'Microsoft.Security/pricings@2018-06-01' = {
+  name: 'SqlServerVirtualMachinesPricingTier'
   properties: {
     pricingTier: sqlServerVirtualMachinesPricingTier
   }
 }
 
-resource KubernetesService 'Microsoft.Security/pricings@2018-06-01' = {
-  name: 'KubernetesService'
+resource KubernetesServicePricingTier 'Microsoft.Security/pricings@2018-06-01' = {
+  name: 'KubernetesServicePricingTier'
   properties: {
     pricingTier: kubernetesServicePricingTier
   }
 }
 
-resource ContainerRegistry 'Microsoft.Security/pricings@2018-06-01' = {
-  name: 'ContainerRegistry'
+resource ContainerRegistryPricingTier 'Microsoft.Security/pricings@2018-06-01' = {
+  name: 'ContainerRegistryPricingTier'
   properties: {
     pricingTier: containerRegistryPricingTier
   }
 }
 
-resource KeyVaults 'Microsoft.Security/pricings@2018-06-01' = {
-  name: 'KeyVaults'
+resource KeyVaultsPricingTier 'Microsoft.Security/pricings@2018-06-01' = {
+  name: 'KeyVaultsPricingTier'
   properties: {
     pricingTier: keyVaultsPricingTier
   }
 }
 
-resource Dns 'Microsoft.Security/pricings@2018-06-01' = {
-  name: 'Dns'
+resource DnsPricingTier 'Microsoft.Security/pricings@2018-06-01' = {
+  name: 'DnsPricingTier'
   properties: {
     pricingTier: dnsPricingTier
   }
 }
 
-resource Arm 'Microsoft.Security/pricings@2018-06-01' = {
-  name: 'Arm'
+resource ArmPricingTier 'Microsoft.Security/pricings@2018-06-01' = {
+  name: 'ArmPricingTier'
   properties: {
     pricingTier: armPricingTier
   }
 }
 
-resource OpenSourceRelationalDatabases 'Microsoft.Security/pricings@2018-06-01' = {
-  name: 'OpenSourceRelationalDatabases'
+resource OpenSourceRelationalDatabasesPricingTier 'Microsoft.Security/pricings@2018-06-01' = {
+  name: 'OpenSourceRelationalDatabasesPricingTier'
   properties: {
     pricingTier: openSourceRelationalDatabasesTier
   }
 }
 
-resource default1 'Microsoft.Security/securityContacts@2017-08-01-preview' = if (!empty(securityContactProperties)) {
-  name: 'default1'
+resource securityContacts 'Microsoft.Security/securityContacts@2017-08-01-preview' = if (!empty(securityContactProperties)) {
+  name: 'securityContacts'
   properties: {
     email: securityContactProperties.email
     phone: securityContactProperties.phone
@@ -221,14 +221,14 @@ resource default1 'Microsoft.Security/securityContacts@2017-08-01-preview' = if 
   }
 }
 
-resource Microsoft_Security_workspaceSettings_default 'Microsoft.Security/workspaceSettings@2017-08-01-preview' = {
-  name: 'default'
+resource workspaceSettings 'Microsoft.Security/workspaceSettings@2017-08-01-preview' = {
+  name: 'workspaceSettings'
   properties: {
     workspaceId: workspaceId
     scope: scope
   }
   dependsOn: [
-    default
+    autoProvisioningSettings
   ]
 }
 
