@@ -130,9 +130,9 @@ This template enables Azure Security Center - Standard tier by default, could be
 
 ## Outputs
 
-| Output Name     | Type   | Description             |
-| :-------------- | :----- | :---------------------- |
-| `workspaceName` | string | This is the workspaceid |
+| Output Name   | Type   | Description             |
+| :------------ | :----- | :---------------------- |
+| `workspaceId` | string | This is the workspaceid |
 
 ## Considerations
 

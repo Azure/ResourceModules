@@ -102,7 +102,7 @@ param openSourceRelationalDatabasesTier string = 'Free'
 @description('Optional. Security contact data')
 param securityContactProperties object = {}
 
-resource symbolicname 'Microsoft.Security/advancedThreatProtectionSettings@2019-01-01' = {
+resource advancedThreatProtectionSettings 'Microsoft.Security/advancedThreatProtectionSettings@2019-01-01' = {
   name: 'current'
   properties: {
     isEnabled: enableAtp
@@ -232,4 +232,4 @@ resource workspaceSettings 'Microsoft.Security/workspaceSettings@2017-08-01-prev
   ]
 }
 
-output workspaceName string = workspaceId
+output workspaceId string = workspaceId
