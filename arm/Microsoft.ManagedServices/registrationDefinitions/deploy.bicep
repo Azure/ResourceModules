@@ -15,10 +15,10 @@ param authorizations array
 @description('Optional. Specify the name of the Resource Group to delegate access to. If not provided, delegation will be done on the targeted subscription.')
 param resourceGroupName string = ''
 
-var registrationAssignmentId = empty(resourceGroupName) ? guid(managedByTenantId, subscription().subscriptionId) : guid(managedByTenantId, subscription().subscriptionId, resourceGroupName)
+var registrationId = empty(resourceGroupName) ? guid(managedByTenantId, subscription().tenantId, subscription().subscriptionId) : guid(managedByTenantId, subscription().tenantId, subscription().subscriptionId, resourceGroupName)
 
 resource registrationDefinition 'Microsoft.ManagedServices/registrationDefinitions@2019-09-01' = {
-  name: guid(registrationDefinitionName)
+  name: registrationId
   properties: {
     registrationDefinitionName: registrationDefinitionName
     description: registrationDescription
@@ -28,18 +28,18 @@ resource registrationDefinition 'Microsoft.ManagedServices/registrationDefinitio
 }
 
 resource registrationAssignment_sub 'Microsoft.ManagedServices/registrationAssignments@2019-09-01' = if (empty(resourceGroupName)) {
-  name: registrationAssignmentId
+  name: registrationId
   properties: {
     registrationDefinitionId: registrationDefinition.id
   }
 }
 
 module registrationAssignment_rg '.bicep/nested_registrationAssignment.bicep' = if (!empty(resourceGroupName)) {
-  name: 'rgassignment-${uniqueString(registrationAssignmentId)}'
+  name: 'assignment-${uniqueString(registrationId)}'
   scope: resourceGroup(resourceGroupName)
   params: {
     registrationDefinitionId: registrationDefinition.id
-    registrationAssignmentId: registrationAssignmentId
+    registrationAssignmentId: registrationId
   }
 }
 
