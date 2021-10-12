@@ -3,7 +3,7 @@ param builtInRoleNames object
 param location string
 param netAppAccountName string
 
-resource capacityPool 'Microsoft.NetApp/netAppAccounts/capacityPools@2019-06-01' = {
+resource capacityPool 'Microsoft.NetApp/netAppAccounts/capacityPools@2021-04-01' = {
   name: '${netAppAccountName}/${capacityPoolObj.poolName}'
   location: location
   properties: {
