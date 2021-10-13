@@ -8,9 +8,9 @@ This module deploys Service Bus Queue.
 | :-- | :-- |
 | `Microsoft.Resources/deployments` | 2020-06-01 |
 | `Microsoft.ServiceBus/namespaces/queues/authorizationRules` | 2017-04-01 |
-| `Microsoft.ServiceBus/namespaces/queues/providers/roleAssignments` | 2018-09-01-preview |
-| `Microsoft.ServiceBus/namespaces/queues` | 2017-04-01 |
-| `providers/locks` | 2016-09-01 |
+| `Microsoft.ServiceBus/namespaces/providers/queues/roleAssignments` | 2020-04-01-preview |
+| `Microsoft.ServiceBus/namespaces/queues` | 2021-06-01-preview |
+| `Microsoft.Authorization/locks` | 2016-09-01 |
 
 - Microsoft.ServiceBus/namespaces
 
@@ -138,12 +138,9 @@ Tag names and tag values can be provided as needed. A tag can be left without a 
 
 | Output Name | Type | Description |
 | :-- | :-- | :-- |
-| `authRuleResourceId` | string | The Id of the authorization rule marked by the variable with the same name. |
-| `namespaceConnectionString` | securestring | The connection string of the Service Bus Namespace |
-| `namespaceName` | string | The Name of the Service Bus Namespace. |
-| `namespaceResourceGroup` | string | The name of the Resource Group with the Service Bus Namespace. |
-| `queueResourceId` | string | The Resource Id of the Service Bus Queue. |
-| `sharedAccessPolicyPrimaryKey` | securestring | The shared access policy primary key for the Service Bus Namespace |
+| `namespaceQueueName` | string | The Name of the Service Bus Namespace. |
+| `namespaceQueueResourceGroup` | string | The name of the Resource Group with the Service Bus Namespace. |
+| `namespaceQueueResourceId` | string | The Resource Id of the Service Bus Queue. |
 
 ## Considerations
 
