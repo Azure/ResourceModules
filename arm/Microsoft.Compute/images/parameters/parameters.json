@@ -5,6 +5,9 @@
     "imageName": {
       "value": "sxx-az-img-weu-x-001"
     },
+    "location": {
+      "value": "East US"
+    },
     "osAccountType": {
       "value": "Premium_LRS"
     },
