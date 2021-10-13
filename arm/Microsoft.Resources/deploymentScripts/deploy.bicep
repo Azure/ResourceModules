@@ -89,7 +89,7 @@ resource dpeloymentScript 'Microsoft.Resources/deploymentScripts@2020-10-01' = {
       '${resourceId(userMsiResourceGroup, 'Microsoft.ManagedIdentity/userAssignedIdentities', userMsiName)}': {}
     }
   }
-  kind: kind
+  kind: 'AzurePowerShell'
   properties: {
     azPowerShellVersion: ((kind == 'AzurePowerShell') ? azPowerShellVersion : json('null'))
     azCliVersion: ((kind == 'AzureCLI') ? azCliVersion : json('null'))
