@@ -8,7 +8,7 @@ This module deploys Deployment Scripts.
 |:--|:--|
 |`Microsoft.Resources/deployments`|2018-02-01|
 |`Microsoft.Authorization/locks`|2016-09-01|
-|`Microsoft.Resources/deploymentScripts`|2019-10-01-preview|
+|`Microsoft.Resources/deploymentScripts`|2020-10-01|
 
 ## Parameters
 
