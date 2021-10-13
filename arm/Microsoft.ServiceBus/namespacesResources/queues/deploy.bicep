@@ -119,7 +119,7 @@ resource serviceBusNamespaceQueue 'Microsoft.ServiceBus/namespaces/queues@2021-0
     enableExpress: enableExpress
   }
 
-  resource serviceBusNamespaceQueue_authorizationRules 'authorizationRules@2017-04-01' = [for authorizationRule in authorizationRules: if (length(authorizationRules) > 0) {
+  resource serviceBusNamespaceQueue_authorizationRules 'authorizationRules@2017-04-01' = [for authorizationRule in authorizationRules: {
     name: authorizationRule.name
     properties: {
       rights: authorizationRule.properties.rights
