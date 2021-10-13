@@ -3,10 +3,10 @@
   "contentVersion": "1.0.0.0",
   "parameters": {
     "roleDefinitionIdOrName": {
-      "value": "/providers/Microsoft.Authorization/roleDefinitions/8e3af657-a8ff-443c-a75c-2fe8c4bcb635"
+      "value": "Reader"
     },
     "principalId": {
-      "value": "9fa1a3c1-d53b-40ea-8617-ec99e51285a3"
+      "value": "12345678-1234-1234-1234-123456780123"
     },
     "subscriptionId": {
       "value": "8629be3b-96bc-482d-a04b-ffff597c65a2"
