@@ -79,7 +79,7 @@ module pid_cuaId './.bicep/nested_cuaId.bicep' = if (!empty(cuaId)) {
   params: {}
 }
 
-resource dpeloymentScript 'Microsoft.Resources/deploymentScripts@2019-10-01-preview' = {
+resource dpeloymentScript 'Microsoft.Resources/deploymentScripts@2020-10-01' = {
   name: scriptName
   location: location
   tags: tags
