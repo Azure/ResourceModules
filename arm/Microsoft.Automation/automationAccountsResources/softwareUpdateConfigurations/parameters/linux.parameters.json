@@ -17,7 +17,8 @@
         "updateClassifications": {
             "value": [
                 "Critical",
-                "Security"
+                "Security",
+                "Other"
             ]
         },
         "includeUpdates": {

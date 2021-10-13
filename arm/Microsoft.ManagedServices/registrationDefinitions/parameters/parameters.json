@@ -3,30 +3,29 @@
     "contentVersion": "1.0.0.0",
     "parameters": {
         "registrationDefinitionName": {
-            "value": "Component Validation"
+            "value": "Component Validation - Subscription assignment"
         },
         "registrationDescription": {
-            "value": "Managed by CCoE"
+            "value": "Managed by Lighthouse"
         },
         "managedByTenantId": {
-            "value": "83747c5c-1c32-4c6f-b391-bbdbcf9dd934"
+            "value": "195ee85d-2f10-4764-8352-a3c99aa772fb"
         },
         "authorizations": {
             "value": [
                 {
-                    "principalId": "9d949eef-00d5-45d9-8586-56be91a13398",
-                    "principalIdDisplayName": "MSX-Sub_ABC-Reader",
+                    "principalId": "e87a249c-b53b-4685-94fe-863af522e4ee",
+                    "principalIdDisplayName": "ResourceModules-Reader",
                     "roleDefinitionId": "acdd72a7-3385-48ef-bd42-f606fba81ae7"
-                    
                 },
                 {
-                    "principalId": "06eb144f-1a10-4935-881b-757efd1d0b58",
-                    "principalIdDisplayName": "MSX-Sub_ABC-Contributor",
+                    "principalId": "e2f126a7-136e-443f-b39f-f73ddfd146b1",
+                    "principalIdDisplayName": "ResourceModules-Contributor",
                     "roleDefinitionId": "b24988ac-6180-42a0-ab88-20f7382dd24c"
                 },
                 {
-                    "principalId": "9cd792b0-dc7c-4551-84f8-dd87388030fb",
-                    "principalIdDisplayName": "MSX-Sub_ABC-LHManagement",
+                    "principalId": "87813317-fb25-4c76-91fe-783af429d109",
+                    "principalIdDisplayName": "ResourceModules-LHManagement",
                     "roleDefinitionId": "91c1777a-f3dc-4fae-b103-61d183457e46"
                 }
             ]

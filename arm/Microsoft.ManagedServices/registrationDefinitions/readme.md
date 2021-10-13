@@ -1,4 +1,4 @@
-# Lighthouse
+# registrationDefinitions
 
 This module deploys `registrationDefinitions` and `registrationAssignments` (often refered to as 'Lighthouse' or 'resource delegation')
 on subscription or resource group scopes. This type of delegation is very similar to role assignments but here the principal that is
@@ -6,14 +6,12 @@ assigned a role is in a remote/managing Azure Active Directory tenant. The templ
 the Azure resources you want to delegate access to are, providing 'authorizations' (aka. access delegation) to principals in a
 remote/managing tenant.
 
-![Lighthouse - Resource Group and Subscription delegation](./.attachments/LH.png)
-
 ## Resource types
 
 | Resource Type                                       | ApiVersion |
 | :-------------------------------------------------- | :--------- |
-| `Microsoft.ManagedServices/registrationDefinitions` | 2019-06-01 |
-| `Microsoft.ManagedServices/registrationAssignments` | 2019-06-01 |
+| `Microsoft.ManagedServices/registrationDefinitions` | 2019-09-01 |
+| `Microsoft.ManagedServices/registrationAssignments` | 2019-09-01 |
 | `Microsoft.Resources/deployments`                   | 2020-06-01 |
 
 ## Parameters
@@ -60,14 +58,11 @@ remote/managing tenant.
 
 ## Outputs
 
-| Output Name                  | Type   | Description                                                                            |
-| :--------------------------- | :----- | :------------------------------------------------------------------------------------- |
-| `registrationDefinitionName` | string | The name of the offer/registration.                                                    |
-| `registrationDefinitionId`   | string | The ID of the offer/registration.                                                      |
-| `assignmentId`               | string | The ID of the resource delegation.                                                     |
-| `authorizations`             | array  | The resource delegation authorizations that were created.                              |
-| `subscriptionId`             | string | The ID of the subscription to which resource delegation authorizations were created.   |
-| `resourceGroupId`            | string | The ID of the Resource Group to which resource delegation authorizations were created. |
+| Output Name                  | Type   | Description                         |
+| :--------------------------- | :----- | :---------------------------------- |
+| `registrationDefinitionName` | string | The name of the offer/registration. |
+| `registrationDefinitionId`   | string | The ID of the offer/registration.   |
+| `registrationAssignmentId`   | string | The ID of the resource delegation.  |
 
 ## Considerations
 
@@ -98,7 +93,7 @@ page of the Azure portal and delete the delegation.
 
 #### From managing tenant side
 
-Users in a managing tenant can remove access to delegated resources if they were granted the 
+Users in a managing tenant can remove access to delegated resources if they were granted the
 [`Managed Services Registration Assignment Delete Role`](https://docs.microsoft.com/en-us/azure/role-based-access-control/built-in-roles#managed-services-registration-assignment-delete-role)
 for the customer's resources. If this role was not assigned to any service provider users, the delegation can **only** be
 removed by a user in the customer's tenant.

@@ -1,33 +1,15 @@
 {
-  "$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentParameters.json#",
-  "contentVersion": "1.0.0.0",
-  "parameters": {
-    "autoManageAccountSubscriptionId": {
-      "value": ""
-    },
-    "autoManageAccountResourceGroup": {
-      "value": ""
-    },
-    "autoManageAccountName": {
-      "value": ""
-    },
-    "location": {
-      "value": ""
-    },
-    "vMResourceGroup": {
-      "value": ""
-    },
-    "vMName": {
-      "value": ""
-    },
-    "autoManageAccountDeployName": {
-      "value": ""
-    },
-    "assignmentDeployName": {
-      "value": ""
-    },
-    "createAutoManageAccount": {
-      "value": true
+    "$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentParameters.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "vmResourceGroupName": {
+            "value": "sxx-az-rg-weu-x-567"
+        },
+        "vmName": {
+            "value": "adp-vm01"
+        },
+        "autoManageAccountResourceGroupName": {
+            "value": "sxx-az-rg-weu-x-567"
+        }
     }
-  }
 }

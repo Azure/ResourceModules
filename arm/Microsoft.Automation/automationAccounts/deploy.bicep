@@ -148,7 +148,7 @@ resource automationAccount 'Microsoft.Automation/automationAccounts@2020-01-13-p
     }
   }
 
-  resource automationAccount_modules 'modules@2019-06-01' = [for (module, index) in modules: {
+  resource automationAccount_modules 'modules@2020-01-13-preview' = [for (module, index) in modules: {
     name: module.name
     location: location
     tags: tags
@@ -160,7 +160,7 @@ resource automationAccount 'Microsoft.Automation/automationAccounts@2020-01-13-p
     }
   }]
 
-  resource automationAccount_schedules 'schedules@2015-10-31' = [for (schedule, index) in schedules: {
+  resource automationAccount_schedules 'schedules@2020-01-13-preview' = [for (schedule, index) in schedules: {
     name: schedule.scheduleName
     properties: {
       startTime: (empty(schedule.startTime) ? dateTimeAdd(baseTime, 'PT10M') : schedule.startTime)
@@ -172,7 +172,7 @@ resource automationAccount 'Microsoft.Automation/automationAccounts@2020-01-13-p
     }
   }]
 
-  resource automationAccount_runbooks 'runbooks@2018-06-30' = [for (runbook, index) in runbooks: {
+  resource automationAccount_runbooks 'runbooks@2019-06-01' = [for (runbook, index) in runbooks: {
     name: runbook.runbookName
     properties: {
       runbookType: (empty(runbook.runbookType) ? json('null') : runbook.runbookType)
@@ -183,7 +183,7 @@ resource automationAccount 'Microsoft.Automation/automationAccounts@2020-01-13-p
     }
   }]
 
-  resource automationAccount_jobSchedules 'jobSchedules@2015-10-31' = [for (jobSchedule, index) in jobSchedules: {
+  resource automationAccount_jobSchedules 'jobSchedules@2020-01-13-preview' = [for (jobSchedule, index) in jobSchedules: {
     name: jobSchedule.jobScheduleName
     properties: {
       parameters: (empty(jobSchedule.parameters) ? json('null') : jobSchedule.parameters)
@@ -203,7 +203,7 @@ resource automationAccount 'Microsoft.Automation/automationAccounts@2020-01-13-p
 }
 
 resource automationAccount_lock 'Microsoft.Authorization/locks@2016-09-01' = if (lockForDeletion) {
-  name: '${automationAccountName}-automationAccountDoNotDelete'
+  name: '${automationAccount.name}-DoNotDelete'
   properties: {
     level: 'CanNotDelete'
   }
@@ -211,7 +211,7 @@ resource automationAccount_lock 'Microsoft.Authorization/locks@2016-09-01' = if 
 }
 
 resource automationAccount_diagnosticSettings 'Microsoft.Insights/diagnosticSettings@2017-05-01-preview' = if ((!empty(diagnosticStorageAccountId)) || (!empty(workspaceId)) || (!empty(eventHubAuthorizationRuleId)) || (!empty(eventHubName))) {
-  name: '${automationAccountName}-diagnosticSettings'
+  name: '${automationAccount.name}-diagnosticSettings'
   properties: {
     storageAccountId: (empty(diagnosticStorageAccountId) ? json('null') : diagnosticStorageAccountId)
     workspaceId: (empty(workspaceId) ? json('null') : workspaceId)
@@ -245,9 +245,9 @@ module automationAccount_rbac './.bicep/nested_rbac.bicep' = [for (roleAssignmen
   }
 }]
 
+output automationAccountName string = automationAccount.name
 output automationAccountResourceId string = automationAccount.id
 output automationAccountResourceGroup string = resourceGroup().name
-output automationAccountName string = automationAccountName
 output modules array = modules
 output schedules array = schedules
 output jobSchedules array = jobSchedules
