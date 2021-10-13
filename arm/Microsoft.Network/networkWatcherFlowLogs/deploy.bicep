@@ -85,4 +85,4 @@ resource flowLog 'Microsoft.Network/networkWatchers/flowLogs@2020-05-01' = {
 
 output deploymentResourceGroup string = resourceGroup().name
 output flowLogResourceId string = flowLog.id
-output flowLogName string = fullFlowLogName
+output flowLogName string = flowLog.name
