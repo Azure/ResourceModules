@@ -706,7 +706,7 @@
 						{
 							"type": "Microsoft.EventHub/namespaces/providers/roleAssignments",
 							"apiVersion": "2018-09-01-preview",
-							"name": "[concat(parameters('namespaceName'), '/Microsoft.Authorization/', guid(uniqueString(concat(parameters('namespaceName'), array(parameters('roleAssignment').principalIds)[copyIndex('innerRbacCopy')], parameters('roleAssignment').roleDefinitionIdOrName ) )))]",
+							"name": "[concat(parameters('namespaceName'), '/Microsoft.Authorization/', guid(uniqueString(concat(variables('namespaceName'), array(parameters('roleAssignment').principalIds)[copyIndex('innerRbacCopy')], parameters('roleAssignment').roleDefinitionIdOrName ) )))]",
 							"dependsOn": [
 							],
 							"copy": {
