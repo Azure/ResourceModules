@@ -40,7 +40,7 @@ module pid_cuaId '.bicep/nested_cuaId.bicep' = if (!empty(cuaId)) {
   params: {}
 }
 
-resource azureHealthBot 'Microsoft.HealthBot/healthBots@2020-12-08' = {
+resource azureHealthBot 'Microsoft.HealthBot/healthBots@2020-10-20-preview' = {
   name: azureHealthBotName
   location: location
   tags: tags
