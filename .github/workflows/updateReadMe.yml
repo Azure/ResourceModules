@@ -1,7 +1,21 @@
+# NOTE:
+# This pipeline requires a secret 'PLATFORM_REPO_UPDATE_PAT' set up in the GitHub secrets.
+# The secret's value should be a PAT token with the permissions to push to the repository's main branch.
+
 name: ".Platform: Update ReadMe Module Tables"
 
 on:
   workflow_dispatch:
+  push:
+    branches:
+      - main
+    paths:
+      - 'arm/**/deploy.bicep'
+      - 'arm/**/deploy.json'
+
+env:
+  gitUserName: 'CARMLPipelinePrincipal'
+  gitEmail: 'CARML@microsoft.com'
 
 jobs:
   job_update_readme:
@@ -12,6 +26,8 @@ jobs:
         uses: actions/checkout@v2
         with:
           fetch-depth: 0
+          token: '${{ secrets.PLATFORM_REPO_UPDATE_PAT }}' # Sets general GIT credentials up
+
       - name: "Update general ReadMe"
         shell: pwsh
         run: |
@@ -21,7 +37,7 @@ jobs:
           $functionInput = @{
             modulesPath    = Join-Path $env:GITHUB_WORKSPACE 'arm'
             filePath       = Join-Path $env:GITHUB_WORKSPACE 'README.md'
-            organization   = ($env:GITHUB_REPOSITORY).split('/')[0] 
+            organization   = ($env:GITHUB_REPOSITORY).split('/')[0]
             repositoryName = ($env:GITHUB_REPOSITORY).split('/')[1]
             columnsInOrder = @('Name', 'TemplateType', 'Status')
             sortByColumn   = 'Name'
@@ -32,8 +48,6 @@ jobs:
 
           Set-GitHubReadMeModuleTable @functionInput
 
-          # TODO: Add push
-
       - name: "Update module folder ReadMe"
         shell: pwsh
         run: |
@@ -41,9 +55,9 @@ jobs:
           . "$env:GITHUB_WORKSPACE/.github/workflows/scripts/Set-GitHubReadMeModuleTable.ps1"
 
           $functionInput = @{
-            modulesPath    = Join-Path $env:GITHUB_WORKSPACE 'arm' 
+            modulesPath    = Join-Path $env:GITHUB_WORKSPACE 'arm'
             filePath       = Join-Path $env:GITHUB_WORKSPACE 'arm/README.md'
-            organization   = ($env:GITHUB_REPOSITORY).split('/')[0] 
+            organization   = ($env:GITHUB_REPOSITORY).split('/')[0]
             repositoryName = ($env:GITHUB_REPOSITORY).split('/')[1]
             columnsInOrder = @('Name', 'ProviderNamespace','ResourceType','TemplateType')
           }
@@ -53,4 +67,13 @@ jobs:
 
           Set-GitHubReadMeModuleTable @functionInput
 
-          # TODO: Add push
+      - name: "Push changes"
+        shell: pwsh
+        run: |
+          git config --global user.email $env:gitEmail
+          git config --global user.name $env:gitUserName
+
+          git pull
+          git add .
+          git commit -m "Push updated Readme file(s)"
+          git push
