@@ -15,7 +15,7 @@ param sku string
 param associatedStorageAccountResourceId string
 
 @description('Required. The resource id of the associated Key Vault.')
-param associatedWorkspaceResourceId string
+param associatedKeyVaultResourceId string
 
 @description('Required. The resource id of the associated Application Insights.')
 param associatedApplicationInsightsResourceId string
@@ -153,7 +153,7 @@ resource workspace 'Microsoft.MachineLearningServices/workspaces@2021-04-01' = {
   properties: {
     friendlyName: workspaceName
     storageAccount: associatedStorageAccountResourceId
-    workspace: associatedWorkspaceResourceId
+    keyVault: associatedKeyVaultResourceId
     applicationInsights: associatedApplicationInsightsResourceId
     containerRegistry: ((!(associatedContainerRegistryResourceId == '')) ? associatedContainerRegistryResourceId : json('null'))
     hbiWorkspace: hbiWorkspace
