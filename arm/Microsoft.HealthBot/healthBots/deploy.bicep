@@ -70,5 +70,5 @@ module rbacrbac './.bicep/nested_rbac.bicep' = [for (roleAssignment, index) in r
 }]
 
 output azureHealthBotResourceGroup string = resourceGroup().name
-output azureHealthBotName string = azureHealthBotName
+output azureHealthBotName string = azureHealthBot.name
 output azureHealthBotResourceId string = azureHealthBot.id
