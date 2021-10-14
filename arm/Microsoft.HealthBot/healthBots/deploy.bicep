@@ -51,16 +51,13 @@ resource azureHealthBot 'Microsoft.HealthBot/healthBots@2020-12-08' = {
 }
 
 resource azureHealthBot_lock 'Microsoft.Authorization/locks@2016-09-01' = if (lockForDeletion) {
-  name: '${azureHealthBotName}-azureHealthBotDoNotDelete'
+  name: '${azureHealthBot.name}-DoNotDelete'
   properties: {
     level: 'CanNotDelete'
   }
-  dependsOn: [
-    azureHealthBot
-  ]
 }
 
-module rbacrbac './.bicep/nested_rbac.bicep' = [for (roleAssignment, index) in roleAssignments: {
+module healthBot_rbac './.bicep/nested_rbac.bicep' = [for (roleAssignment, index) in roleAssignments: {
   name: 'rbac-${deployment().name}${index}'
   params: {
     roleAssignmentObj: roleAssignment
