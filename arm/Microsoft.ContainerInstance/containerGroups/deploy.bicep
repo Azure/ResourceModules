@@ -83,7 +83,6 @@ resource containergroup 'Microsoft.ContainerInstance/containerGroups@2021-03-01'
       ports: ports
     }
   }
-  dependsOn: []
 }
 
 resource containergroup_lock 'Microsoft.Authorization/locks@2016-09-01' = if (lockForDeletion) {
