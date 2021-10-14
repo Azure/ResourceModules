@@ -10,7 +10,7 @@ The top-level resource in Azure Container Instances is the container group. A co
 | :-- | :-- |
 | `Microsoft.Resources/deployments` | 2018-02-01 |
 | `Microsoft.ContainerInstance/containerGroups` | 2021-03-01 |
-| `providers/locks` | 2016-09-01 |
+| `Microsoft.Authorization/locks` | 2016-09-01 |
 
 ### Resource dependency
 
