@@ -162,7 +162,7 @@ resource workspace 'Microsoft.MachineLearningServices/workspaces@2021-04-01' = {
 }
 
 resource workspace_lock 'Microsoft.Authorization/locks@2016-09-01' = if (lockForDeletion) {
-  name: '${workspaceName}-workspaceDoNotDelete'
+  name: '${workspace.name}-workspaceDoNotDelete'
   properties: {
     level: 'CanNotDelete'
   }
@@ -182,17 +182,14 @@ resource workspace_diagnosticSettings 'Microsoft.Insights/diagnosticsettings@201
   scope: workspace
 }
 
-module workspace_privateEndpoints './.bicep/nested_privateEndpoint.bicep' = [for (item, i) in privateEndpoints: {
-  name: '${uniqueString(deployment().name, location)}-Workspace-PrivateEndpoints-${i}'
+module workspace_privateEndpoints './.bicep/nested_privateEndpoint.bicep' = [for (privateEndpoint, index) in privateEndpoints: {
+  name: '${uniqueString(deployment().name, location)}-Workspace-PrivateEndpoints-${index}'
   params: {
     privateEndpointResourceId: workspace.id
-    privateEndpointVnetLocation: (empty(privateEndpoints) ? 'dummy' : reference(split(item.subnetResourceId, '/subnets/')[0], '2020-06-01', 'Full').location)
-    privateEndpointObj: item
+    privateEndpointVnetLocation: (empty(privateEndpoints) ? 'dummy' : reference(split(privateEndpoint.subnetResourceId, '/subnets/')[0], '2020-06-01', 'Full').location)
+    privateEndpointObj: privateEndpoint
     tags: tags
   }
-  dependsOn: [
-    workspace
-  ]
 }]
 
 module workspace_rbac './.bicep/nested_rbac.bicep' = [for (roleAssignment, index) in roleAssignments: {
