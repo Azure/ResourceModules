@@ -96,7 +96,7 @@ resource containergroup_lock 'Microsoft.Authorization/locks@2016-09-01' = if (lo
   ]
 }
 
-output containerGroupName string = containergroupname
+output containerGroupName string = containergroup.name
 output containerGroupResourceId string = containergroup.id
 output containerGroupResourceGroup string = resourceGroup().name
 output containerGroupIPv4Address string = containergroup.properties.ipAddress.ip
