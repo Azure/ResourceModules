@@ -6,17 +6,16 @@ This module deploys a Web or Function App
 
 | Resource Type | Api Version |
 | :-- | :-- |
-| `config` | 2019-08-01 |
-| `microsoft.insights/components` | 2018-05-01-preview |
+| `Microsoft.Web/sites/config` | 2019-08-01 |
+| `microsoft.Insights/components` | 2018-05-01-preview |
 | `Microsoft.Network/privateEndpoints/privateDnsZoneGroups` | 2020-05-01 |
 | `Microsoft.Network/privateEndpoints` | 2020-05-01 |
-| `Microsoft.Resources/deployments` | 2020-06-01 |
 | `Microsoft.Resources/deployments` | 2021-01-01 |
 | `Microsoft.Web/serverfarms` | 2021-02-01 |
-| `Microsoft.Web/sites/providers/diagnosticsettings` | 2017-05-01-preview |
+| `Microsoft.Insights/diagnosticSettings` | 2017-05-01-preview |
 | `Microsoft.Web/sites/providers/roleAssignments` | 2020-04-01-preview |
 | `Microsoft.Web/sites` | 2021-02-01 |
-| `providers/locks` | 2016-09-01 |
+| `Microsoft.Authorization/locks` | 2016-09-01 |
 
 ### Resource dependency
 
@@ -111,7 +110,7 @@ Tag names and tag values can be provided as needed. A tag can be left without a 
 
 | Output Name | Type | Description |
 | :-- | :-- | :-- |
-| `appName` | string | The Name of the Application Web Services |
+| `siteName` | string | The Name of the Application Web Services |
 | `siteResourceGroup` | string | The name of the Resource Group with the Application Web Services |
 | `siteResourceId` | string | The Resource Id of the Application Web Services |
 

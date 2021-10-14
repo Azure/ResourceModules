@@ -8,11 +8,11 @@ This module deploys Azure Kubernetes Cluster (AKS).
 | Resource Type | Api Version |
 | :-- | :-- |
 | `Microsoft.ContainerService/managedClusters/agentPools` | 2021-05-01 |
-| `Microsoft.ContainerService/managedClusters/providers/diagnosticsettings` | 2017-05-01-preview |
+| `Microsoft.Insights/diagnosticsettings` | 2017-05-01-preview |
+| `Microsoft.Authorization/locks` | 2016-09-01 |
 | `Microsoft.ContainerService/managedClusters/providers/roleAssignments` | 2018-09-01-preview |
-| `Microsoft.ContainerService/managedClusters` | 2021-05-01 |
+| `Microsoft.ContainerService/managedClusters` | 2021-07-01 |
 | `Microsoft.Resources/deployments` | 2020-06-01 |
-
 
 ## Parameters
 
@@ -60,7 +60,6 @@ This module deploys Azure Kubernetes Cluster (AKS).
 | `autoScalerProfileScaleDownUnreadyTime` | string | 20m |  | Optional. Specifies the scale down unready time of the auto-scaler of the AKS cluster. |
 | `autoScalerProfileUtilizationThreshold` | string | 0.5 |  | Optional. Specifies the utilization threshold of the auto-scaler of the AKS cluster. |
 | `autoScalerProfileMaxGracefulTerminationSec` | string | 600 |  | Optional. Specifies the max graceful termination time interval in seconds for the auto-scaler of the AKS cluster. |
-| `diagnosticSettingName` | string | service |  | Optional. The name of the Diagnostic setting. |
 | `diagnosticStorageAccountId` | string | "" |  | Optional. Resource identifier of the Diagnostic Storage Account. |
 | `workspaceId` | string | "" |  | Optional. Resource identifier of Log Analytics. |
 | `omsAgentEnabled` | bool | True |  | Optional. Specifies whether the OMS agent is enabled. |
@@ -144,9 +143,9 @@ For available properties check https://docs.microsoft.com/en-us/azure/templates/
       ],
       "type": "VirtualMachineScaleSets",
       "availabilityZones": [
-        "1",
-        "2",
-        "3"
+          "1",
+          "2",
+          "3"
       ],
       "maxPods": 30,
       "storageProfile": "ManagedDisks",
@@ -185,13 +184,13 @@ For available properties check https://docs.microsoft.com/en-us/azure/templates/
                 "scaleSetEvictionPolicy": "Delete",
                 "nodeLabels": {},
                 "nodeTaints": [
-                "CriticalAddonsOnly=true:NoSchedule"
+                  "CriticalAddonsOnly=true:NoSchedule"
                 ],
                 "type": "VirtualMachineScaleSets",
                 "availabilityZones": [
-                "1",
-                "2",
-                "3"
+                  "1",
+                  "2",
+                  "3"
                 ],
                 "maxPods": 30,
                 "storageProfile": "ManagedDisks",

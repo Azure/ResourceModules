@@ -570,13 +570,6 @@
       "metadata": {
         "description": "The name of the Resource Group with the Event Grid"
       }
-    },
-    "eventGridAccessKey": {
-      "type": "securestring",
-      "value": "[listKeys(variables('eventGridResourceId'), variables('eventGridApiVersion')).key1]",
-      "metadata": {
-          "description": "The Access Key for the Event Grid."
-      }
     }
   }
 }

@@ -81,7 +81,7 @@ jobs:
       - name: "Test module"
         uses: ./.github/actions/templates/validateModuleDeploy
         with:
-          templateFilePath: '${{ env.modulePath }}/deploy.json'
+          templateFilePath: '${{ env.modulePath }}/.bicep/nested_roleDefinitions_sub.bicep'
           parameterFilePath: '${{ env.modulePath }}/parameters/${{ matrix.parameterFilePaths }}'
           location: '${{ env.defaultLocation }}'
           resourceGroupName: '${{ env.resourceGroupName }}'
@@ -116,7 +116,7 @@ jobs:
         uses: ./.github/actions/templates/deployModule
         with:
           moduleName: '${{ env.moduleName }}'
-          templateFilePath: '${{ env.modulePath }}/deploy.json'
+          templateFilePath: '${{ env.modulePath }}/.bicep/nested_roleDefinitions_sub.bicep'
           parameterFilePath: '${{ env.modulePath }}/parameters/${{ matrix.parameterFilePaths }}'
           location: '${{ env.defaultLocation }}'
           resourceGroupName: '${{ env.resourceGroupName }}'
@@ -146,7 +146,7 @@ jobs:
       - name: "Publish module"
         uses: ./.github/actions/templates/publishModule
         with:
-          templateFilePath: '${{ env.modulePath }}/deploy.json'
+          templateFilePath: '${{ env.modulePath }}/deploy.bicep'
           componentTemplateSpecRGName: '${{ env.componentTemplateSpecRGName }}'
           componentTemplateSpecRGLocation: '${{ env.componentTemplateSpecRGLocation }}'
           componentTemplateSpecName: '${{ env.moduleName }}'
@@ -178,5 +178,5 @@ jobs:
         uses: ./.github/actions/templates/removeModule
         with:
           moduleName: '${{ env.moduleName }}'
-          templateFilePath: '${{ env.modulePath }}/deploy.json'
+          templateFilePath: '${{ env.modulePath }}/deploy.bicep'
           resourceGroupName: '${{ env.resourceGroupName }}'

@@ -8,7 +8,7 @@ This module deploys AVD Workspaces, with resource lock and diagnostic configurat
 
 |Resource Type|ApiVersion|
 |:--|:--|
-|`Microsoft.DesktopVirtualization/workspaces`|2019-12-10-preview|
+|`Microsoft.DesktopVirtualization/workspaces`|2021-07-12|
 |`Microsoft.DesktopVirtualization/workspaces/providers/diagnosticsettings`|2017-05-01-preview|
 |`Microsoft.Resources/deployments`|2018-02-01|
 |`providers/locks`|2016-09-01|
@@ -27,10 +27,9 @@ This module deploys AVD Workspaces, with resource lock and diagnostic configurat
 | `location` | string | Optional. Location for all resources. | [resourceGroup().location] |  |
 | `lockForDeletion` | bool | Optional. Switch to lock Resource from deletion. | False |  |
 | `roleAssignments` | array | Optional. Array of role assignment objects that contain the 'roleDefinitionIdOrName' and 'principalIds' to define RBAC role assignments on this resource. In the roleDefinitionIdOrName attribute, you can provide either the display name of the role definition, or it's fully qualified ID in the following format: '/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11' | System.Object[] |  |
-
 | `tags` | object | Optional. Tags of the resource. |  |  |
 | `workspaceDescription` | string | Optional. The description of the Workspace to be created. |  |  |
-| `workspaceFriendlyName` | string | Optional. The friendly name of the Workspace to be created. |  | |
+| `workspaceFriendlyName` | string | Optional. The friendly name of the Workspace to be created. |  |  |
 | `workspaceId` | string | Optional. Resource identifier of Log Analytics. |  |  |
 | `workSpaceName` | String | Required. The name of the workspace to be attach to new Application Group. |  |  |
 
@@ -97,3 +96,4 @@ Tag names and tag values can be provided as needed. A tag can be left without a 
 - [What is Windows Virtual Desktop?](https://docs.microsoft.com/en-us/azure/virtual-desktop/overview)
 - [Windows Virtual Desktop environment](https://docs.microsoft.com/en-us/azure/virtual-desktop/environment-setup)
 - [Use tags to organize your Azure resources](https://docs.microsoft.com/en-us/azure/azure-resource-manager/resource-group-using-tags)
+- [Reference](https://docs.microsoft.com/en-us/azure/templates/microsoft.desktopvirtualization/2021-07-12/workspaces)

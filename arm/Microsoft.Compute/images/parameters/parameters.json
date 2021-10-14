@@ -5,6 +5,9 @@
     "imageName": {
       "value": "sxx-az-img-weu-x-001"
     },
+    "location": {
+      "value": "East US"
+    },
     "osAccountType": {
       "value": "Premium_LRS"
     },
@@ -12,7 +15,7 @@
       "value": "Linux"
     },
     "osDiskBlobUri": {
-      "value": "https://rgwesteuimage.blob.core.windows.net/opensystemsimage/osix-11.82.0-100GB.vhd"
+      "value": "https://qrivi75b9q5dgo1fvqpsdd8p.blob.core.windows.net/vhds/sxx-az-imgt-weu-x-001-2021-10-13-14-26-11_20211013164357.vhd"
     },
     "osDiskCaching": {
       "value": "ReadWrite"

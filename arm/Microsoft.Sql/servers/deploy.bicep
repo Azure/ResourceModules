@@ -63,34 +63,32 @@ resource server 'Microsoft.Sql/servers@2020-02-02-preview' = {
     administratorLoginPassword: administratorLoginPassword
     version: '12.0'
   }
+
+  resource server_AllowAllWindowsAzureIps 'firewallrules@2021-02-01-preview' = if (allowAzureIps) {
+    name: 'AllowAllWindowsAzureIps'
+    properties: {
+      endIpAddress: '0.0.0.0'
+      startIpAddress: '0.0.0.0'
+    }
+  }
+
+  resource server_Default 'securityAlertPolicies@2021-02-01-preview' = if (enableADS) {
+    name: 'Default'
+    properties: {
+      state: 'Enabled'
+      disabledAlerts: []
+      emailAddresses: []
+      emailAccountAdmins: true
+    }
+  }
 }
 
 resource server_lock 'Microsoft.Authorization/locks@2016-09-01' = if (lockForDeletion) {
-  name: '${serverName}-serverDoNotDelete'
+  name: '${server.name}-doNotDelete'
   properties: {
     level: 'CanNotDelete'
   }
   scope: server
-}
-
-resource server_AllowAllWindowsAzureIps 'Microsoft.Sql/servers/firewallrules@2021-02-01-preview' = if (allowAzureIps) {
-  parent: server
-  name: 'AllowAllWindowsAzureIps'
-  properties: {
-    endIpAddress: '0.0.0.0'
-    startIpAddress: '0.0.0.0'
-  }
-}
-
-resource server_Default 'Microsoft.Sql/servers/securityAlertPolicies@2021-02-01-preview' = if (enableADS) {
-  parent: server
-  name: 'Default'
-  properties: {
-    state: 'Enabled'
-    disabledAlerts: []
-    emailAddresses: []
-    emailAccountAdmins: true
-  }
 }
 
 module server_rbac './.bicep/nested_rbac.bicep' = [for (roleAssignment, index) in roleAssignments: {

@@ -10,10 +10,10 @@ This module deploys Recovery Service Vault, with resource lock.
 |`Microsoft.RecoveryServices/vaults`|2021-08-01|
 |`Microsoft.RecoveryServices/vaults/backupstorageconfig` | 2020-02-02 |
 |`Microsoft.Resources/deployments`|2019-10-01|
-|`providers/locks`|2016-09-01|
-|`Microsoft.RecoveryServices/vaults/providers/diagnosticsettings`|2017-05-01-preview|
+|`Microsoft.Authorization/locks`|2016-09-01|
+|`Microsoft.Insights/diagnosticsettings`|2017-05-01-preview|
 |`Microsoft.RecoveryServices/vaults/backupPolicies`|2019-05-13|
-|`Microsoft.RecoveryServices/vaults/backupFabrics/protectionContainers`|2016-12-01|
+|`Microsoft.RecoveryServices/vaults/protectionContainers`|2016-12-01|
 |`Microsoft.RecoveryServices/vaults/providers/roleAssignments`|2018-09-01-preview|
 
 ## Parameters

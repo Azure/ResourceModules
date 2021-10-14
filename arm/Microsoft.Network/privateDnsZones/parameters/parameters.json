@@ -5,23 +5,5 @@
         "privateDnsZoneName": {
             "value": "test.local"
         }
-        // "vnetLinks": {
-        //     "value": [
-        //         {
-        //             "vnetResourceId": "/subscriptions/xxx-xxx-xxx-xxx-xxx/resourceGroups/xxx/providers/Microsoft.Network/virtualNetworks/testvnet",
-        //             "registrationEnabled": false
-        //         }
-        //     ]
-        // },
-        // "roleAssignments": {
-        //     "value": [
-        //         {
-        //             "roleDefinitionIdOrName": "User Access Administrator",
-        //             "principalIds": [
-        //                 "xxx-xxx-xxx-xxx-xxx"
-        //             ]
-        //         }
-        //     ]
-        // }
     }
 }

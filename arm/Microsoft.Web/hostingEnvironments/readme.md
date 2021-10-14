@@ -7,10 +7,10 @@ This module deploys App Service Environment, with resource lock.
 | Resource Type | Api Version |
 | :-- | :-- |
 | `Microsoft.Web/hostingEnvironments` | 2021-02-01 |
-| `Microsoft.Web/hostingEnvironments/providers/diagnosticsettings` | 2017-05-01-preview |
+| `Microsoft.Insights/diagnosticSettings` | 2017-05-01-preview |
 | `Microsoft.Web/hostingEnvironments/providers/roleAssignments` | 2020-04-01-preview |
 | `Microsoft.Resources/deployments` | 2020-06-01 |
-| `providers/locks` | 2016-09-01 |
+| `Microsoft.Authorization/locks` | 2016-09-01 |
 
 ## Parameters
 
@@ -40,7 +40,7 @@ This module deploys App Service Environment, with resource lock.
 | `eventHubAuthorizationRuleId` | string | "" | | Optional. Resource ID of the event hub authorization rule for the Event Hubs namespace in which the event hub should be created or streamed to.
 | `eventHubName` | string | "" | | Optional. Name of the event hub within the namespace to which logs are streamed. Without this, an event hub is created for each log category.
 | `lockForDeletion` | bool | `true` | | Optional. Switch to lock Azure Key Vault from deletion.
-| `roleAssignments` | array | [] | Complex structure, see below. | Optional. Array of role assignment objects that contain the 'roleDefinitionIdOrName' and 'principalId' to define RBAC role assignments on this resource. In the roleDefinitionIdOrName attribute, you can provide either the display name of the role definition, or it's fully qualified ID in the following format: '/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11'
+| `roleAssignments` | array | [] | Complex structure, see below. | Optional. Array of role assignment objects that contain the 'roleDefinitionIdOrName' and 'principalId' to define RBAC role assignments on this resource. In the roleDefinitionIdOrName attribute, you can provide either the display name of the role definition, or it's fully qualified ID in the following format: '/providers/Microsoft.Authorization/locks/locks/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11'
 | `tags` | object | {} | Complex structure, see below. | Optional. Tags of the Azure Key Vault resource.
 | `cuaId` | string | "" | | Optional. Customer Usage Attribution id (GUID). This GUID must be previously registered.
 
@@ -64,7 +64,7 @@ This module deploys App Service Environment, with resource lock.
             ]
         },
         {
-            "roleDefinitionIdOrName": "/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11",
+            "roleDefinitionIdOrName": "/providers/Microsoft.Authorization/locks/locks/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11",
             "principalIds": [
                 "12345678-1234-1234-1234-123456789012" // object 1
             ]

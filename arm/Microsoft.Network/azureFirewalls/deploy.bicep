@@ -192,6 +192,7 @@ resource azureFirewallPip_lock 'Microsoft.Authorization/locks@2016-09-01' = if (
   properties: {
     level: 'CanNotDelete'
   }
+  scope: azureFirewallPip
 }
 
 resource azureFirewallPip_diagnosticSettings 'Microsoft.Insights/diagnosticsettings@2017-05-01-preview' = if ((!empty(diagnosticStorageAccountId)) || (!empty(workspaceId)) || (!empty(eventHubAuthorizationRuleId)) || (!empty(eventHubName))) {
@@ -204,6 +205,7 @@ resource azureFirewallPip_diagnosticSettings 'Microsoft.Insights/diagnosticsetti
     metrics: ((empty(diagnosticStorageAccountId) && empty(workspaceId) && empty(eventHubAuthorizationRuleId) && empty(eventHubName)) ? json('null') : diagnosticsMetrics)
     logs: ((empty(diagnosticStorageAccountId) && empty(workspaceId) && empty(eventHubAuthorizationRuleId) && empty(eventHubName)) ? json('null') : diagnosticsLogsPublicIp)
   }
+  scope: azureFirewallPip
 }
 
 resource azureFirewall 'Microsoft.Network/azureFirewalls@2021-02-01' = {
@@ -244,6 +246,7 @@ resource azureFirewall_lock 'Microsoft.Authorization/locks@2016-09-01' = if (loc
   properties: {
     level: 'CanNotDelete'
   }
+  scope: azureFirewall
 }
 
 resource azureFirewall_diagnosticSettings 'Microsoft.Insights/diagnosticsettings@2017-05-01-preview' = if ((!empty(diagnosticStorageAccountId)) || (!empty(workspaceId)) || (!empty(eventHubAuthorizationRuleId)) || (!empty(eventHubName))) {
@@ -256,6 +259,7 @@ resource azureFirewall_diagnosticSettings 'Microsoft.Insights/diagnosticsettings
     metrics: ((empty(diagnosticStorageAccountId) && empty(workspaceId) && empty(eventHubAuthorizationRuleId) && empty(eventHubName)) ? json('null') : diagnosticsMetrics)
     logs: ((empty(diagnosticStorageAccountId) && empty(workspaceId) && empty(eventHubAuthorizationRuleId) && empty(eventHubName)) ? json('null') : diagnosticsLogsAzureFirewall)
   }
+  scope: azureFirewall
 }
 
 module rbac_name './.bicep/nested_rbac.bicep' = [for (roleAssignment, index) in roleAssignments: {
