@@ -87,13 +87,11 @@ resource containergroup 'Microsoft.ContainerInstance/containerGroups@2021-03-01'
 }
 
 resource containergroup_lock 'Microsoft.Authorization/locks@2016-09-01' = if (lockForDeletion) {
-  name: '${containergroupname}-containerGroupDoNotDelete'
+  name: '${containergroup.name}-DoNotDelete'
   properties: {
     level: 'CanNotDelete'
   }
-  dependsOn: [
-    containergroup
-  ]
+  scope: containergroup
 }
 
 output containerGroupName string = containergroup.name
