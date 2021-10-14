@@ -6,10 +6,10 @@ This module deploys an Azure Health Bot.
 
 | Resource Type | Api Version |
 | :-- | :-- |
-| `Microsoft.HealthBot/healthBots` | 2020-12-08 |
-| `Microsoft.Network/bastionHosts/providers/roleAssignments` | 2018-09-01-preview |
+| `Microsoft.HealthBot/healthBots` | 2020-10-20-preview|
+| `Microsoft.Authorization/roleAssignments` | 2020-04-01-preview |
 | `Microsoft.Resources/deployments` | 2020-06-01 |
-| `providers/locks` | 2016-09-01 |
+| `Microsoft.Authorization/locks` | 2016-09-01 |
 
 ## Parameters
 
@@ -45,13 +45,6 @@ Tag names and tag values can be provided as needed. A tag can be left without a 
 ```json
 "roleAssignments": {
     "value": [
-        {
-            "roleDefinitionIdOrName": "Desktop Virtualization User",
-            "principalIds": [
-                "12345678-1234-1234-1234-123456789012", // object 1
-                "78945612-1234-1234-1234-123456789012" // object 2
-            ]
-        },
         {
             "roleDefinitionIdOrName": "Reader",
             "principalIds": [
