@@ -1,4 +1,4 @@
-name: "Authorization: Roleassignments"
+name: "Authorization: policySetDefinitions"
 
 on:
   workflow_dispatch:
@@ -17,8 +17,8 @@ on:
         default: '0.0.1'
 
 env:
-  moduleName: 'roleAssignments'
-  modulePath: 'arm/Microsoft.Authorization/roleAssignments'
+  moduleName: 'policySetDefinitions'
+  modulePath: 'arm/Microsoft.Authorization/policySetDefinitions'
   AZURE_CREDENTIALS: ${{ secrets.AZURE_CREDENTIALS }}
   ARM_SUBSCRIPTION_ID: ${{ secrets.ARM_SUBSCRIPTION_ID }}
   ARM_MGMTGROUP_ID: ${{ secrets.ARM_MGMTGROUP_ID }}
@@ -81,7 +81,7 @@ jobs:
       - name: "Test module"
         uses: ./.github/actions/templates/validateModuleDeploy
         with:
-          templateFilePath: '${{ env.modulePath }}/.bicep/nested_rbac_sub.bicep'
+          templateFilePath: '${{ env.modulePath }}/.bicep/nested_policySetDefinition_sub.bicep'
           parameterFilePath: '${{ env.modulePath }}/parameters/${{ matrix.parameterFilePaths }}'
           location: '${{ env.defaultLocation }}'
           resourceGroupName: '${{ env.resourceGroupName }}'
@@ -116,7 +116,7 @@ jobs:
         uses: ./.github/actions/templates/deployModule
         with:
           moduleName: '${{ env.moduleName }}'
-          templateFilePath: '${{ env.modulePath }}/.bicep/nested_rbac_sub.bicep'
+          templateFilePath: '${{ env.modulePath }}/.bicep/nested_policySetDefinition_sub.bicep'
           parameterFilePath: '${{ env.modulePath }}/parameters/${{ matrix.parameterFilePaths }}'
           location: '${{ env.defaultLocation }}'
           resourceGroupName: '${{ env.resourceGroupName }}'

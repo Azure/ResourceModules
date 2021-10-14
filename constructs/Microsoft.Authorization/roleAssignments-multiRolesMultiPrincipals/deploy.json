@@ -3,8 +3,7 @@
     "contentVersion": "1.0.0.0",
     "parameters": {
         "roleAssignments": {
-            "defaultValue": [
-            ],
+            "defaultValue": [],
             "type": "array",
             "metadata": {
                 "description": "Optional. Array of role assignment objects that contain the 'roleDefinitionIdOrName' and 'principalIds' to define RBAC role assignments on this resource. In the roleDefinitionIdOrName attribute, you can provide either the display name of the role definition, or it's fully qualified ID in the following format: '/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11'"
@@ -221,8 +220,7 @@
                 "template": {
                     "$schema": "https://schema.management.azure.com/schemas/2018-05-01/subscriptionDeploymentTemplate.json#",
                     "contentVersion": "1.0.0.0",
-                    "resources": [
-                    ]
+                    "resources": []
                 }
             }
         },
@@ -233,8 +231,7 @@
             "apiVersion": "2021-01-01",
             "location": "[parameters('location')]",
             "condition": "[and(not(empty(parameters('roleAssignments'))), empty(parameters('resourceGroupName')))]",
-            "dependsOn": [
-            ],
+            "dependsOn": [],
             "copy": {
                 "name": "subscriptionRbacDeplCopy",
                 "count": "[length(parameters('roleAssignments'))]"
@@ -298,8 +295,7 @@
             "apiVersion": "2021-01-01",
             "resourceGroup": "[parameters('resourceGroupName')]",
             "condition": "[not(empty(parameters('resourceGroupName')))]",
-            "dependsOn": [
-            ],
+            "dependsOn": [],
             "properties": {
                 "mode": "Incremental",
                 "expressionEvaluationOptions": {
@@ -329,8 +325,7 @@
                                 "template": {
                                     "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
                                     "contentVersion": "1.0.0.0",
-                                    "resources": [
-                                    ]
+                                    "resources": []
                                 }
                             }
                         }
@@ -351,8 +346,7 @@
             "apiVersion": "2021-01-01",
             "resourceGroup": "[parameters('resourceGroupName')]",
             "condition": "[and(not(empty(parameters('roleAssignments'))), not(empty(parameters('resourceGroupName'))))]",
-            "dependsOn": [
-            ],
+            "dependsOn": [],
             "copy": {
                 "name": "resourceGroupRbacDeplCopy",
                 "count": "[length(parameters('roleAssignments'))]"
@@ -410,8 +404,7 @@
             }
         }
     ],
-    "functions": [
-    ],
+    "functions": [],
     "outputs": {
         "assignmentScope": {
             "type": "string",

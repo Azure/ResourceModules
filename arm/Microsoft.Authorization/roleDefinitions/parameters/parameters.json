@@ -5,9 +5,6 @@
     "roleName": {
       "value": "myCustomRoleAtSub"
     },
-    // "resourceGroupName": {
-    //   "value": "rbacTest"
-    // },
     "roleDescription": {
       "value": ""
     },
@@ -32,6 +29,9 @@
     },
     "notDataActions": {
       "value": []
+    },
+    "subscriptionId": {
+      "value": "8629be3b-96bc-482d-a04b-ffff597c65a2"
     }
   }
 }
