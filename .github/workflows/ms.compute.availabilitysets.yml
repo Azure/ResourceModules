@@ -1,4 +1,4 @@
-name: 'Compute: Availability Sets'
+name: 'Compute: Availabilitysets'
 
 on:
   workflow_dispatch:
