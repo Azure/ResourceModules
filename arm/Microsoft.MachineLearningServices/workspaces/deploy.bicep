@@ -75,6 +75,7 @@ var diagnosticsMetrics = [
     }
   }
 ]
+
 var diagnosticsLogs = [
   {
     category: 'AmlComputeClusterEvent'
@@ -117,6 +118,7 @@ var diagnosticsLogs = [
     }
   }
 ]
+
 var builtInRoleNames = {
   'AzureML Metrics Writer (preview)': '/subscriptions/${subscription().subscriptionId}/providers/Microsoft.Authorization/roleDefinitions/635dd51f-9968-44d3-b7fb-6d9a6bd613ae'
   'Contributor': '/subscriptions/${subscription().subscriptionId}/providers/Microsoft.Authorization/roleDefinitions/b24988ac-6180-42a0-ab88-20f7382dd24c'
