@@ -20,14 +20,14 @@ on:
       - main
     paths:
       - '.github/actions/templates/**'
-      - '.github/workflows/ms.compute.proximityplacementgroups1.yml'
+      - '.github/workflows/ms.compute.proximityplacementgroups.yml'
       - 'arm/Microsoft.Compute/proximityPlacementGroups/**'
       - '!arm/Microsoft.Compute/proximityPlacementGroups/readme.md'
 
 env:
   moduleName: 'proximityPlacementGroups'
   modulePath: 'arm/Microsoft.Compute/proximityPlacementGroups'
-  workflowPath: '.github/workflows/ms.compute.proximityplacementgroups1.yml'
+  workflowPath: '.github/workflows/ms.compute.proximityplacementgroups.yml'
   AZURE_CREDENTIALS: ${{ secrets.AZURE_CREDENTIALS }}
   ARM_SUBSCRIPTION_ID: ${{ secrets.ARM_SUBSCRIPTION_ID }}
   ARM_MGMTGROUP_ID: ${{ secrets.ARM_MGMTGROUP_ID }}
