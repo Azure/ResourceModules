@@ -55,11 +55,13 @@ resource azureHealthBot 'Microsoft.HealthBot/healthBots@2020-10-20-preview' = {
   properties: {}
 }
 
-resource azureHealthBot_lock 'Microsoft.Authorization/locks@2016-09-01' = if (lockForDeletion) {
-  name: '${azureHealthBot.name}-doNotDelete'
+resource azureHealthBot_lock 'Microsoft.Authorization/locks@2016-09-01' = if (lock != 'NotSpecified') {
+  name: '${azureHealthBot.name}-${lock}-lock'
   properties: {
-    level: 'CanNotDelete'
+    level: lock
+    notes: (lock == 'CanNotDelete') ? 'Cannot delete resource or child resources.' : 'Cannot modify the resource or child resources.'
   }
+  scope: azureHealthBot
 }
 
 module healthBot_rbac './.bicep/nested_rbac.bicep' = [for (roleAssignment, index) in roleAssignments: {

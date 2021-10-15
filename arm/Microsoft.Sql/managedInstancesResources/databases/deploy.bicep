@@ -171,10 +171,11 @@ resource managedInstanceDatabase 'Microsoft.Sql/managedInstances/databases@2020-
   }
 }
 
-resource managedInstanceDatabase_lock 'Microsoft.Authorization/locks@2016-09-01' = if (lockForDeletion) {
-  name: '${split(managedInstanceDatabase.name, '/')[1]}-doNotDelete'
+resource managedInstanceDatabase_lock 'Microsoft.Authorization/locks@2016-09-01' = if (lock != 'NotSpecified') {
+  name: '${managedInstanceDatabase.name}-${lock}-lock'
   properties: {
-    level: 'CanNotDelete'
+    level: lock
+    notes: (lock == 'CanNotDelete') ? 'Cannot delete resource or child resources.' : 'Cannot modify the resource or child resources.'
   }
   scope: managedInstanceDatabase
 }

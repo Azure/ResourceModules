@@ -58,10 +58,11 @@ resource gallery 'Microsoft.Compute/galleries@2020-09-30' = {
   }
 }
 
-resource gallery_lock 'Microsoft.Authorization/locks@2016-09-01' = if (lockForDeletion) {
-  name: '${galleryName}-doNotDelete'
+resource gallery_lock 'Microsoft.Authorization/locks@2016-09-01' = if (lock != 'NotSpecified') {
+  name: '${gallery.name}-${lock}-lock'
   properties: {
-    level: 'CanNotDelete'
+    level: lock
+    notes: (lock == 'CanNotDelete') ? 'Cannot delete resource or child resources.' : 'Cannot modify the resource or child resources.'
   }
   scope: gallery
 }

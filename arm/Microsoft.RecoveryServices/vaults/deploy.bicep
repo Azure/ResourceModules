@@ -245,10 +245,11 @@ resource rsv 'Microsoft.RecoveryServices/vaults@2021-08-01' = {
   }]
 }
 
-resource rsv_lock 'Microsoft.Authorization/locks@2016-09-01' = if (lockForDeletion) {
-  name: '${recoveryVaultName}-doNotDelete'
+resource rsv_lock 'Microsoft.Authorization/locks@2016-09-01' = if (lock != 'NotSpecified') {
+  name: '${rsv.name}-${lock}-lock'
   properties: {
-    level: 'CanNotDelete'
+    level: lock
+    notes: (lock == 'CanNotDelete') ? 'Cannot delete resource or child resources.' : 'Cannot modify the resource or child resources.'
   }
   scope: rsv
 }

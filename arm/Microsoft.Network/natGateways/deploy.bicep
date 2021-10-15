@@ -154,10 +154,11 @@ resource publicIP 'Microsoft.Network/publicIPAddresses@2021-02-01' = if (natGate
   }
 }
 
-resource publicIP_lock 'Microsoft.Authorization/locks@2016-09-01' = if (lockForDeletion && natGatewayPublicIpAddress) {
-  name: '${publicIP.name}-doNotDelete'
+resource publicIP_lock 'Microsoft.Authorization/locks@2016-09-01' = if (lock != 'NotSpecified') {
+  name: '${publicIP.name}-${lock}-lock'
   properties: {
-    level: 'CanNotDelete'
+    level: lock
+    notes: (lock == 'CanNotDelete') ? 'Cannot delete resource or child resources.' : 'Cannot modify the resource or child resources.'
   }
   scope: publicIP
 }

@@ -324,10 +324,11 @@ resource virtualGatewayPublicIP 'Microsoft.Network/publicIPAddresses@2021-02-01'
 }]
 
 @batchSize(1)
-resource virtualNetworkGatewayPublicIp_lock 'Microsoft.Authorization/locks@2016-09-01' = [for (virtualGatewayPublicIpName, index) in virtualGatewayPipName_var: if (lockForDeletion) {
-  name: '${virtualGatewayPublicIpName}-doNotDelete'
+resource virtualGatewayPublicIP_lock 'Microsoft.Authorization/locks@2016-09-01' = [for (virtualGatewayPublicIpName, index) in virtualGatewayPipName_var: if (lock != 'NotSpecified') {
+  name: '${virtualGatewayPublicIpName}-${lock}-lock'
   properties: {
-    level: 'CanNotDelete'
+    level: lock
+    notes: (lock == 'CanNotDelete') ? 'Cannot delete resource or child resources.' : 'Cannot modify the resource or child resources.'
   }
   scope: virtualGatewayPublicIP[index]
 }]
