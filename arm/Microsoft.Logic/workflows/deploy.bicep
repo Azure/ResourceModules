@@ -42,8 +42,13 @@ param eventHubAuthorizationRuleId string = ''
 @description('Optional. Name of the event hub within the namespace to which logs are streamed. Without this, an event hub is created for each log category.')
 param eventHubName string = ''
 
-@description('Optional. Flag indicating if resource is locked for deletion.')
-param lockForDeletion bool = false
+@allowed([
+  'CanNotDelete'
+  'NotSpecified'
+  'ReadOnly'
+])
+@description('Optional. Specify the type of lock.')
+param lock string = 'NotSpecified'
 
 @description('Required. The logic app workflow name.')
 param logicAppName string
