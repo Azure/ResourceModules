@@ -6,8 +6,8 @@
 |:--|:--|
 |`Microsoft.Resources/deployments`|2020-06-01|
 |`Microsoft.Databricks/workspaces`|2018-04-01|
-|`providers/locks`|2016-09-01|
-|`Microsoft.Databricks/workspaces/providers/diagnosticsettings`|2017-05-01-preview|
+|`Microsoft.Authorization/locks`|2016-09-01|
+|`Microsoft.Insights/diagnosticsettings`|2017-05-01-preview|
 |`Microsoft.Databricks/workspaces/providers/roleAssignments`|2020-04-01-preview|
 
 
@@ -20,7 +20,6 @@ The following resources are required to be able to deploy this resource.
 | Parameter Name | Type | Description | DefaultValue | Possible values |
 | :-- | :-- | :-- | :-- | :-- |
 | `cuaId` | string | Optional. Customer Usage Attribution id (GUID). This GUID must be previously registered |  |  |
-| `diagnosticSettingName` | string | Optional. The name of the Diagnostic setting. |  |  |
 | `diagnosticLogsRetentionInDays` | int | Optional. Specifies the number of days that logs will be kept for; a value of 0 will retain data indefinitely. | 365 |  |
 | `diagnosticStorageAccountId` | string | Optional. Resource identifier of the Diagnostic Storage Account. |  |  |
 | `eventHubAuthorizationRuleId` | string | Optional. Resource ID of the event hub authorization rule for the Event Hubs namespace in which the event hub should be created or streamed to. |  |  |

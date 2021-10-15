@@ -240,17 +240,14 @@ resource keyVault_keys 'Microsoft.KeyVault/vaults/keys@2019-09-01' = [for key in
   ]
 }]
 
-module keyVault_privateEndpoints './.bicep/nested_privateEndpoint.bicep' = [for (item, i) in privateEndpoints: {
-  name: '${uniqueString(deployment().name, location)}-KeyVault-PrivateEndpoints-${i}'
+module keyVault_privateEndpoints './.bicep/nested_privateEndpoint.bicep' = [for (privateEndpoint, index) in privateEndpoints: {
+  name: '${uniqueString(deployment().name, location)}-KeyVault-PrivateEndpoints-${index}'
   params: {
     privateEndpointResourceId: keyVault.id
-    privateEndpointVnetLocation: (empty(privateEndpoints) ? 'dummy' : reference(split(item.subnetResourceId, '/subnets/')[0], '2020-06-01', 'Full').location)
-    privateEndpointObj: item
+    privateEndpointVnetLocation: (empty(privateEndpoints) ? 'dummy' : reference(split(privateEndpoint.subnetResourceId, '/subnets/')[0], '2020-06-01', 'Full').location)
+    privateEndpointObj: privateEndpoint
     tags: tags
   }
-  dependsOn: [
-    keyVault
-  ]
 }]
 
 module keyVault_rbac './.bicep/nested_rbac.bicep' = [for (roleAssignment, index) in roleAssignments: {
