@@ -38,13 +38,13 @@ jobs:
   ############################
   job_set_workflow_param:
     runs-on: ubuntu-20.04
-    name: "Set input parameters to output variables"
+    name: 'Set input parameters to output variables'
     steps:
-      - name: "Checkout"
+      - name: 'Checkout'
         uses: actions/checkout@v2
         with:
           fetch-depth: 0
-      - name: "Set input parameters"
+      - name: 'Set input parameters'
         id: get-workflow-param
         uses: ./.github/actions/templates/getWorkflowInput
         with:
