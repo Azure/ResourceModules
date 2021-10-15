@@ -116,7 +116,7 @@ resource workspace 'Microsoft.DesktopVirtualization/workspaces@2021-07-12' = {
 }
 
 resource workspace_lock 'Microsoft.Authorization/locks@2016-09-01' = if (lockForDeletion) {
-  name: '${workSpaceName}-workspaceDoNotDelete'
+  name: '${workSpaceName}-doNotDelete'
   properties: {
     level: 'CanNotDelete'
   }

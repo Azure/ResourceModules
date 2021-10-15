@@ -51,7 +51,7 @@ resource azureHealthBot 'Microsoft.HealthBot/healthBots@2020-10-20-preview' = {
 }
 
 resource azureHealthBot_lock 'Microsoft.Authorization/locks@2016-09-01' = if (lockForDeletion) {
-  name: '${azureHealthBot.name}-DoNotDelete'
+  name: '${azureHealthBot.name}-doNotDelete'
   properties: {
     level: 'CanNotDelete'
   }

@@ -60,7 +60,7 @@ resource proximityPlacementGroup 'Microsoft.Compute/proximityPlacementGroups@202
 }
 
 resource proximityPlacementGroup_lock 'Microsoft.Authorization/locks@2016-09-01' = if (lockForDeletion) {
-  name: '${proximityPlacementGroup.name}-DoNotDelete'
+  name: '${proximityPlacementGroup.name}-doNotDelete'
   properties: {
     level: 'CanNotDelete'
   }

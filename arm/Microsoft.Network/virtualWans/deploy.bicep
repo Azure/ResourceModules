@@ -139,7 +139,7 @@ resource vpnSite 'Microsoft.Network/vpnSites@2021-05-01' = {
 }
 
 resource vpnSite_lock 'Microsoft.Authorization/locks@2016-09-01' = if (lockForDeletion) {
-  name: '${vpnSite.name}-vpnSiteDoNotDelete'
+  name: '${vpnSite.name}-doNotDelete'
   properties: {
     level: 'CanNotDelete'
   }
@@ -172,7 +172,7 @@ resource vpnGateway 'Microsoft.Network/vpnGateways@2021-05-01' = {
 }
 
 resource vpnGateway_lock 'Microsoft.Authorization/locks@2016-09-01' = if (lockForDeletion) {
-  name: '${vpnGateway.name}-vpnGatewayDoNotDelete'
+  name: '${vpnGateway.name}-doNotDelete'
   properties: {
     level: 'CanNotDelete'
   }

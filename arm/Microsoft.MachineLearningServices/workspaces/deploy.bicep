@@ -164,7 +164,7 @@ resource workspace 'Microsoft.MachineLearningServices/workspaces@2021-04-01' = {
 }
 
 resource workspace_lock 'Microsoft.Authorization/locks@2016-09-01' = if (lockForDeletion) {
-  name: '${workspace.name}-workspaceDoNotDelete'
+  name: '${workspace.name}-doNotDelete'
   properties: {
     level: 'CanNotDelete'
   }

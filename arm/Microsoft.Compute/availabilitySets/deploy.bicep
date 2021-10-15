@@ -72,7 +72,7 @@ resource availabilitySet 'Microsoft.Compute/availabilitySets@2021-04-01' = {
 }
 
 resource availabilitySet_lock 'Microsoft.Authorization/locks@2016-09-01' = if (lockForDeletion) {
-  name: '${availabilitySet.name}-DoNotDelete'
+  name: '${availabilitySet.name}-doNotDelete'
   properties: {
     level: 'CanNotDelete'
   }

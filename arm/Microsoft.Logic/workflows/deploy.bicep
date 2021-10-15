@@ -172,7 +172,7 @@ resource logicApp 'Microsoft.Logic/workflows@2019-05-01' = {
 }
 
 resource logicApp_lock 'Microsoft.Authorization/locks@2016-09-01' = if (lockForDeletion) {
-  name: '${logicAppName}-logicAppDoNotDelete'
+  name: '${logicAppName}-doNotDelete'
   properties: {
     level: 'CanNotDelete'
   }

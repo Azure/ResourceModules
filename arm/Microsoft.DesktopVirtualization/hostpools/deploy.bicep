@@ -204,7 +204,7 @@ resource hostPool 'Microsoft.DesktopVirtualization/hostpools@2021-07-12' = {
 }
 
 resource hostPool_lock 'Microsoft.Authorization/locks@2016-09-01' = if (lockForDeletion) {
-  name: '${hostPoolName}-hostPoolDoNotDelete'
+  name: '${hostPoolName}-doNotDelete'
   properties: {
     level: 'CanNotDelete'
   }

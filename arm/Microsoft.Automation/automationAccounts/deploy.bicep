@@ -203,7 +203,7 @@ resource automationAccount 'Microsoft.Automation/automationAccounts@2020-01-13-p
 }
 
 resource automationAccount_lock 'Microsoft.Authorization/locks@2016-09-01' = if (lockForDeletion) {
-  name: '${automationAccount.name}-DoNotDelete'
+  name: '${automationAccount.name}-doNotDelete'
   properties: {
     level: 'CanNotDelete'
   }

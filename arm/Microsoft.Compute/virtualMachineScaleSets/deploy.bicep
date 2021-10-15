@@ -507,7 +507,7 @@ resource vmss 'Microsoft.Compute/virtualMachineScaleSets@2021-04-01' = if (!empt
 }
 
 resource vmss_lock 'Microsoft.Authorization/locks@2016-09-01' = if (lockForDeletion) {
-  name: '${vmssName}-vmssDoNotDelete'
+  name: '${vmssName}-doNotDelete'
   properties: {
     level: 'CanNotDelete'
   }

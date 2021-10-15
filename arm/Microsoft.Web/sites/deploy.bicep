@@ -27,8 +27,13 @@ param enableMonitoring bool = true
 @description('Optional. Mandatory \'managedServiceIdentity\' contains UserAssigned. The identy to assign to the resource.')
 param userAssignedIdentities object = {}
 
-@description('Optional. Switch to lock Key Vault from deletion.')
-param lockForDeletion bool = false
+@allowed([
+  'CanNotDelete'
+  'NotSpecified'
+  'ReadOnly'
+])
+@description('Optional. Specify the type of lock.')
+param lock string = 'NotSpecified'
 
 @description('Optional. Configuration Details for private endpoints.')
 param privateEndpoints array = []
@@ -224,7 +229,7 @@ resource appServicePlan 'Microsoft.Web/serverfarms@2021-02-01' = if (empty(appSe
     family: appServicePlanFamily
   }
   properties: {
-    hostingEnvironmentProfile: (empty(appServiceEnvironmentId) ? json('null') : json('{ id: ${hostingEnvironment} }')  )
+    hostingEnvironmentProfile: (empty(appServiceEnvironmentId) ? json('null') : json('{ id: ${hostingEnvironment} }'))
   }
 }
 
@@ -248,7 +253,7 @@ resource app 'Microsoft.Web/sites@2020-12-01' = {
   properties: {
     serverFarmId: ((!empty(appServicePlanId)) ? appServicePlanId : resourceId('Microsoft.Web/serverfarms', appServicePlanName))
     httpsOnly: httpsOnly
-    hostingEnvironmentProfile: (empty(appServiceEnvironmentId) ? json('null') : json('{ id: ${hostingEnvironment} }')  )
+    hostingEnvironmentProfile: (empty(appServiceEnvironmentId) ? json('null') : json('{ id: ${hostingEnvironment} }'))
     clientAffinityEnabled: clientAffinityEnabled
     siteConfig: siteConfig
   }
@@ -268,7 +273,6 @@ resource app 'Microsoft.Web/sites@2020-12-01' = {
     }
   }
 }
-
 
 resource app_lock 'Microsoft.Authorization/locks@2016-09-01' = if (lockForDeletion) {
   name: '${app.name}-doNotDelete'

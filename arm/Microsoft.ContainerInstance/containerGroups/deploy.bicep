@@ -86,7 +86,7 @@ resource containergroup 'Microsoft.ContainerInstance/containerGroups@2021-03-01'
 }
 
 resource containergroup_lock 'Microsoft.Authorization/locks@2016-09-01' = if (lockForDeletion) {
-  name: '${containergroup.name}-DoNotDelete'
+  name: '${containergroup.name}-doNotDelete'
   properties: {
     level: 'CanNotDelete'
   }

@@ -54,7 +54,7 @@ resource gallery 'Microsoft.Compute/galleries@2020-09-30' = {
 }
 
 resource gallery_lock 'Microsoft.Authorization/locks@2016-09-01' = if (lockForDeletion) {
-  name: '${galleryName}-sharedImageGallerDoNotDelete'
+  name: '${galleryName}-doNotDelete'
   properties: {
     level: 'CanNotDelete'
   }
