@@ -322,6 +322,24 @@ param managedIdentityType string = ''
 @description('Optional. The list of user identities associated with the virtual machine scale set. The user identity dictionary key references will be ARM resource ids in the form: \'/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ManagedIdentity/userAssignedIdentities/{identityName}\'.')
 param managedIdentityIdentities object = {}
 
+@description('Optional. The name of metrics that will be streamed.')
+@allowed([
+  'AllMetrics'
+])
+param metricsToEnable array = [
+  'AllMetrics'
+]
+
+var diagnosticsMetrics = [for metric in metricsToEnable: {
+  category: metric
+  timeGrain: null
+  enabled: true
+  retentionPolicy: {
+    enabled: true
+    days: diagnosticLogsRetentionInDays
+  }
+}]
+
 var publicKeysFormatted = [for publicKey in publicKeys: {
   path: publicKey.path
   keyData: publicKey.keyData
@@ -341,17 +359,7 @@ var windowsConfiguration = {
   additionalUnattendContent: (empty(additionalUnattendContent) ? json('null') : additionalUnattendContent)
   winRM: (empty(winRMListeners) ? json('null') : json('{"listeners": "${winRMListeners}"}'))
 }
-var diagnosticsMetrics = [
-  {
-    category: 'AllMetrics'
-    timeGrain: null
-    enabled: true
-    retentionPolicy: {
-      enabled: true
-      days: diagnosticLogsRetentionInDays
-    }
-  }
-]
+
 var accountSasProperties = {
   signedServices: 'b'
   signedPermission: 'r'
@@ -359,7 +367,6 @@ var accountSasProperties = {
   signedResourceTypes: 'o'
   signedProtocol: 'https'
 }
-var diagnosticLogs = []
 var pidName_var = 'pid-${cuaId}'
 var builtInRoleNames = {
   'Avere Contributor': '/subscriptions/${subscription().subscriptionId}/providers/Microsoft.Authorization/roleDefinitions/4f8fab4f-1852-4a58-a46a-8eaf358af14a'
@@ -744,7 +751,6 @@ resource vmss_diagnosticSettings 'Microsoft.Insights/diagnosticSettings@2021-05-
     eventHubAuthorizationRuleId: (empty(eventHubAuthorizationRuleId) ? json('null') : eventHubAuthorizationRuleId)
     eventHubName: (empty(eventHubName) ? json('null') : eventHubName)
     metrics: ((empty(diagnosticStorageAccountId) && empty(workspaceId) && empty(eventHubAuthorizationRuleId) && empty(eventHubName)) ? json('null') : diagnosticsMetrics)
-    logs: ((empty(diagnosticStorageAccountId) && empty(workspaceId) && empty(eventHubAuthorizationRuleId) && empty(eventHubName)) ? json('null') : diagnosticLogs)
   }
   scope: vmss
 }

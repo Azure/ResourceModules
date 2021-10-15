@@ -51,131 +51,67 @@ param lockForDeletion bool = false
 @description('Optional. Tags of the Recovery Service Vault resource.')
 param tags object = {}
 
-var diagnosticsMetrics = [
-  {
-    category: 'Health'
-    timeGrain: null
-    enabled: true
-    retentionPolicy: {
-      enabled: true
-      days: diagnosticLogsRetentionInDays
-    }
-  }
+@description('Optional. The name of logs that will be streamed.')
+@allowed([
+  'AzureBackupReport'
+  'CoreAzureBackup'
+  'AddonAzureBackupJobs'
+  'AddonAzureBackupAlerts'
+  'AddonAzureBackupPolicy'
+  'AddonAzureBackupStorage'
+  'AddonAzureBackupProtectedInstance'
+  'AzureSiteRecoveryJobs'
+  'AzureSiteRecoveryEvents'
+  'AzureSiteRecoveryReplicatedItems'
+  'AzureSiteRecoveryReplicationStats'
+  'AzureSiteRecoveryRecoveryPoints'
+  'AzureSiteRecoveryReplicationDataUploadRate'
+  'AzureSiteRecoveryProtectedDiskDataChurn'
+])
+param logsToEnable array = [
+  'AzureBackupReport'
+  'CoreAzureBackup'
+  'AddonAzureBackupJobs'
+  'AddonAzureBackupAlerts'
+  'AddonAzureBackupPolicy'
+  'AddonAzureBackupStorage'
+  'AddonAzureBackupProtectedInstance'
+  'AzureSiteRecoveryJobs'
+  'AzureSiteRecoveryEvents'
+  'AzureSiteRecoveryReplicatedItems'
+  'AzureSiteRecoveryReplicationStats'
+  'AzureSiteRecoveryRecoveryPoints'
+  'AzureSiteRecoveryReplicationDataUploadRate'
+  'AzureSiteRecoveryProtectedDiskDataChurn'
 ]
-var diagnosticLogs = [
-  {
-    category: 'AzureBackupReport'
-    enabled: true
-    retentionPolicy: {
-      days: diagnosticLogsRetentionInDays
-      enabled: true
-    }
-  }
-  {
-    category: 'CoreAzureBackup'
-    enabled: true
-    retentionPolicy: {
-      days: diagnosticLogsRetentionInDays
-      enabled: true
-    }
-  }
-  {
-    category: 'AddonAzureBackupJobs'
-    enabled: true
-    retentionPolicy: {
-      days: diagnosticLogsRetentionInDays
-      enabled: true
-    }
-  }
-  {
-    category: 'AddonAzureBackupAlerts'
-    enabled: true
-    retentionPolicy: {
-      days: diagnosticLogsRetentionInDays
-      enabled: true
-    }
-  }
-  {
-    category: 'AddonAzureBackupPolicy'
-    enabled: true
-    retentionPolicy: {
-      days: diagnosticLogsRetentionInDays
-      enabled: true
-    }
-  }
-  {
-    category: 'AddonAzureBackupStorage'
-    enabled: true
-    retentionPolicy: {
-      days: diagnosticLogsRetentionInDays
-      enabled: true
-    }
-  }
-  {
-    category: 'AddonAzureBackupProtectedInstance'
-    enabled: true
-    retentionPolicy: {
-      days: diagnosticLogsRetentionInDays
-      enabled: true
-    }
-  }
-  {
-    category: 'AzureSiteRecoveryJobs'
-    enabled: true
-    retentionPolicy: {
-      days: diagnosticLogsRetentionInDays
-      enabled: true
-    }
-  }
-  {
-    category: 'AzureSiteRecoveryEvents'
-    enabled: true
-    retentionPolicy: {
-      days: diagnosticLogsRetentionInDays
-      enabled: true
-    }
-  }
-  {
-    category: 'AzureSiteRecoveryReplicatedItems'
-    enabled: true
-    retentionPolicy: {
-      days: diagnosticLogsRetentionInDays
-      enabled: true
-    }
-  }
-  {
-    category: 'AzureSiteRecoveryReplicationStats'
-    enabled: true
-    retentionPolicy: {
-      days: diagnosticLogsRetentionInDays
-      enabled: true
-    }
-  }
-  {
-    category: 'AzureSiteRecoveryRecoveryPoints'
-    enabled: true
-    retentionPolicy: {
-      days: diagnosticLogsRetentionInDays
-      enabled: true
-    }
-  }
-  {
-    category: 'AzureSiteRecoveryReplicationDataUploadRate'
-    enabled: true
-    retentionPolicy: {
-      days: diagnosticLogsRetentionInDays
-      enabled: true
-    }
-  }
-  {
-    category: 'AzureSiteRecoveryProtectedDiskDataChurn'
-    enabled: true
-    retentionPolicy: {
-      days: diagnosticLogsRetentionInDays
-      enabled: true
-    }
-  }
+
+@description('Optional. The name of metrics that will be streamed.')
+@allowed([
+  'Health'
+])
+param metricsToEnable array = [
+  'Health'
 ]
+
+var diagnosticsLogs = [for log in logsToEnable: {
+  category: log
+  enabled: true
+  retentionPolicy: {
+    enabled: true
+    days: diagnosticLogsRetentionInDays
+  }
+}]
+
+var diagnosticsMetrics = [for metric in metricsToEnable: {
+  category: metric
+  timeGrain: null
+  enabled: true
+  retentionPolicy: {
+    enabled: true
+    days: diagnosticLogsRetentionInDays
+  }
+}]
+
 var builtInRoleNames = {
   'Owner': subscriptionResourceId('Microsoft.Authorization/roleDefinitions', '8e3af657-a8ff-443c-a75c-2fe8c4bcb635')
   'Contributor': subscriptionResourceId('Microsoft.Authorization/roleDefinitions', 'b24988ac-6180-42a0-ab88-20f7382dd24c')
@@ -232,7 +168,7 @@ resource rsv 'Microsoft.RecoveryServices/vaults@2021-08-01' = {
       containerType: (empty(protectionContainer.containerType) ? json('null') : protectionContainer.containerType)
     }
   }]
-  
+
   resource rsv_backupPolicies 'backupPolicies@2019-06-15' = [for (protectionPolicy, index) in backupPolicies: {
     name: protectionPolicy.name
     location: resourceGroup().location
@@ -256,7 +192,7 @@ resource rsv_diagnosticSettings 'Microsoft.Insights/diagnosticSettings@2021-05-0
     eventHubAuthorizationRuleId: (empty(eventHubAuthorizationRuleId) ? json('null') : eventHubAuthorizationRuleId)
     eventHubName: (empty(eventHubName) ? json('null') : eventHubName)
     metrics: ((empty(diagnosticStorageAccountId) && empty(workspaceId) && empty(eventHubAuthorizationRuleId) && empty(eventHubName)) ? json('null') : diagnosticsMetrics)
-    logs: ((empty(diagnosticStorageAccountId) && empty(workspaceId) && empty(eventHubAuthorizationRuleId) && empty(eventHubName)) ? json('null') : diagnosticLogs)
+    logs: ((empty(diagnosticStorageAccountId) && empty(workspaceId) && empty(eventHubAuthorizationRuleId) && empty(eventHubName)) ? json('null') : diagnosticsLogs)
   }
   scope: rsv
 }
