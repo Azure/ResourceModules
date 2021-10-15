@@ -66,10 +66,11 @@ resource privateDnsZone 'Microsoft.Network/privateDnsZones@2018-09-01' = {
   }]
 }
 
-resource privateDnsZone_lock 'Microsoft.Authorization/locks@2016-09-01' = if (lockForDeletion) {
-  name: '${privateDnsZone.name}-doNotDelete'
+resource privateDnsZone_lock 'Microsoft.Authorization/locks@2016-09-01' = if (lock != 'NotSpecified') {
+  name: '${privateDnsZone.name}-${lock}-lock'
   properties: {
-    level: 'CanNotDelete'
+    level: lock
+    notes: (lock == 'CanNotDelete') ? 'Cannot delete resource or child resources.' : 'Cannot modify the resource or child resources.'
   }
   scope: privateDnsZone
 }

@@ -142,10 +142,11 @@ resource azureBastionPip 'Microsoft.Network/publicIPAddresses@2021-02-01' = {
   }
 }
 
-resource azureBastionPip_lock 'Microsoft.Authorization/locks@2016-09-01' = if (lockForDeletion) {
-  name: '${azureBastionPip.name}-doNotDelete'
+resource azureBastionPip_lock 'Microsoft.Authorization/locks@2016-09-01' = if (lock != 'NotSpecified') {
+  name: '${azureBastionPip.name}-${lock}-lock'
   properties: {
-    level: 'CanNotDelete'
+    level: lock
+    notes: (lock == 'CanNotDelete') ? 'Cannot delete resource or child resources.' : 'Cannot modify the resource or child resources.'
   }
   scope: azureBastionPip
 }
@@ -184,10 +185,11 @@ resource azureBastion 'Microsoft.Network/bastionHosts@2021-02-01' = {
   }
 }
 
-resource azureBastion_lock 'Microsoft.Authorization/locks@2016-09-01' = if (lockForDeletion) {
-  name: '${azureBastion.name}-doNotDelete'
+resource azureBastion_lock 'Microsoft.Authorization/locks@2016-09-01' = if (lock != 'NotSpecified') {
+  name: '${azureBastion.name}-${lock}-lock'
   properties: {
-    level: 'CanNotDelete'
+    level: lock
+    notes: (lock == 'CanNotDelete') ? 'Cannot delete resource or child resources.' : 'Cannot modify the resource or child resources.'
   }
   scope: azureBastion
 }

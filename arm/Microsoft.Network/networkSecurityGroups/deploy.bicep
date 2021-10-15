@@ -159,10 +159,11 @@ resource networkSecurityGroup 'Microsoft.Network/networkSecurityGroups@2021-02-0
   }
 }
 
-resource networkSecurityGroup_lock 'Microsoft.Authorization/locks@2016-09-01' = if (lockForDeletion) {
-  name: '${networkSecurityGroup.name}-doNotDelete'
+resource networkSecurityGroup_lock 'Microsoft.Authorization/locks@2016-09-01' = if (lock != 'NotSpecified') {
+  name: '${networkSecurityGroup.name}-${lock}-lock'
   properties: {
-    level: 'CanNotDelete'
+    level: lock
+    notes: (lock == 'CanNotDelete') ? 'Cannot delete resource or child resources.' : 'Cannot modify the resource or child resources.'
   }
   scope: networkSecurityGroup
 }

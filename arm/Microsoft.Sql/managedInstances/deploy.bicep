@@ -273,10 +273,11 @@ resource managedInstance 'Microsoft.Sql/managedInstances@2020-08-01-preview' = {
   }
 }
 
-resource managedInstance_lock 'Microsoft.Authorization/locks@2016-09-01' = if (lockForDeletion) {
-  name: '${managedInstance.name}-doNotDelete'
+resource managedInstance_lock 'Microsoft.Authorization/locks@2016-09-01' = if (lock != 'NotSpecified') {
+  name: '${managedInstance.name}-${lock}-lock'
   properties: {
-    level: 'CanNotDelete'
+    level: lock
+    notes: (lock == 'CanNotDelete') ? 'Cannot delete resource or child resources.' : 'Cannot modify the resource or child resources.'
   }
   scope: managedInstance
 }

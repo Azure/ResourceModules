@@ -76,10 +76,11 @@ resource availabilitySet 'Microsoft.Compute/availabilitySets@2021-04-01' = {
   }
 }
 
-resource availabilitySet_lock 'Microsoft.Authorization/locks@2016-09-01' = if (lockForDeletion) {
-  name: '${availabilitySet.name}-doNotDelete'
+resource availabilitySet_lock 'Microsoft.Authorization/locks@2016-09-01' = if (lock != 'NotSpecified') {
+  name: '${availabilitySet.name}-${lock}-lock'
   properties: {
-    level: 'CanNotDelete'
+    level: lock
+    notes: (lock == 'CanNotDelete') ? 'Cannot delete resource or child resources.' : 'Cannot modify the resource or child resources.'
   }
   scope: availabilitySet
 }

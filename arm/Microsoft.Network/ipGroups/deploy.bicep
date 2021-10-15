@@ -57,10 +57,11 @@ resource ipGroup 'Microsoft.Network/ipGroups@2021-02-01' = {
   }
 }
 
-resource ipGroup_lock 'Microsoft.Authorization/locks@2016-09-01' = if (lockForDeletion) {
-  name: '${ipGroup.name}-doNotDelete'
+resource ipGroup_lock 'Microsoft.Authorization/locks@2016-09-01' = if (lock != 'NotSpecified') {
+  name: '${ipGroup.name}-${lock}-lock'
   properties: {
-    level: 'CanNotDelete'
+    level: lock
+    notes: (lock == 'CanNotDelete') ? 'Cannot delete resource or child resources.' : 'Cannot modify the resource or child resources.'
   }
   scope: ipGroup
 }

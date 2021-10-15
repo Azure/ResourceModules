@@ -90,10 +90,11 @@ resource containergroup 'Microsoft.ContainerInstance/containerGroups@2021-03-01'
   }
 }
 
-resource containergroup_lock 'Microsoft.Authorization/locks@2016-09-01' = if (lockForDeletion) {
-  name: '${containergroup.name}-doNotDelete'
+resource containergroup_lock 'Microsoft.Authorization/locks@2016-09-01' = if (lock != 'NotSpecified') {
+  name: '${containergroup.name}-${lock}-lock'
   properties: {
-    level: 'CanNotDelete'
+    level: lock
+    notes: (lock == 'CanNotDelete') ? 'Cannot delete resource or child resources.' : 'Cannot modify the resource or child resources.'
   }
   scope: containergroup
 }

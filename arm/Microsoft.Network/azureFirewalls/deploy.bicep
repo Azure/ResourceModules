@@ -192,10 +192,11 @@ resource azureFirewallPip 'Microsoft.Network/publicIPAddresses@2021-02-01' = {
   }
 }
 
-resource azureFirewallPip_lock 'Microsoft.Authorization/locks@2016-09-01' = if (lockForDeletion) {
-  name: '${azureFirewallPip.name}-doNotDelete'
+resource azureFirewallPip_lock 'Microsoft.Authorization/locks@2016-09-01' = if (lock != 'NotSpecified') {
+  name: '${azureFirewallPip.name}-${lock}-lock'
   properties: {
-    level: 'CanNotDelete'
+    level: lock
+    notes: (lock == 'CanNotDelete') ? 'Cannot delete resource or child resources.' : 'Cannot modify the resource or child resources.'
   }
   scope: azureFirewallPip
 }
@@ -246,10 +247,11 @@ resource azureFirewall 'Microsoft.Network/azureFirewalls@2021-02-01' = {
   }
 }
 
-resource azureFirewall_lock 'Microsoft.Authorization/locks@2016-09-01' = if (lockForDeletion) {
-  name: '${azureFirewall.name}-doNotDelete'
+resource azureFirewall_lock 'Microsoft.Authorization/locks@2016-09-01' = if (lock != 'NotSpecified') {
+  name: '${azureFirewall.name}-${lock}-lock'
   properties: {
-    level: 'CanNotDelete'
+    level: lock
+    notes: (lock == 'CanNotDelete') ? 'Cannot delete resource or child resources.' : 'Cannot modify the resource or child resources.'
   }
   scope: azureFirewall
 }

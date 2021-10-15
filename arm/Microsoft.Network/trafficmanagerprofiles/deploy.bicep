@@ -143,10 +143,11 @@ resource trafficmanagerprofile 'Microsoft.Network/trafficmanagerprofiles@2018-08
   }
 }
 
-resource trafficmanagerprofile_lock 'Microsoft.Authorization/locks@2016-09-01' = if (lockForDeletion) {
-  name: '${trafficmanagerprofile.name}-doNotDelete'
+resource trafficmanagerprofile_lock 'Microsoft.Authorization/locks@2016-09-01' = if (lock != 'NotSpecified') {
+  name: '${trafficmanagerprofile.name}-${lock}-lock'
   properties: {
-    level: 'CanNotDelete'
+    level: lock
+    notes: (lock == 'CanNotDelete') ? 'Cannot delete resource or child resources.' : 'Cannot modify the resource or child resources.'
   }
   scope: trafficmanagerprofile
 }

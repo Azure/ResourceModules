@@ -166,10 +166,11 @@ resource expressRouteCircuits 'Microsoft.Network/expressRouteCircuits@2021-02-01
   }
 }
 
-resource expressRouteCircuits_lock 'Microsoft.Authorization/locks@2016-09-01' = if (lockForDeletion) {
-  name: '${expressRouteCircuits.name}-doNotDelete'
+resource expressRouteCircuits_lock 'Microsoft.Authorization/locks@2016-09-01' = if (lock != 'NotSpecified') {
+  name: '${expressRouteCircuits.name}-${lock}-lock'
   properties: {
-    level: 'CanNotDelete'
+    level: lock
+    notes: (lock == 'CanNotDelete') ? 'Cannot delete resource or child resources.' : 'Cannot modify the resource or child resources.'
   }
   scope: expressRouteCircuits
 }

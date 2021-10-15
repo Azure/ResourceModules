@@ -93,10 +93,11 @@ resource connection 'Microsoft.Web/connections@2016-06-01' = {
   }
 }
 
-resource connection_lock 'Microsoft.Authorization/locks@2016-09-01' = if (lockForDeletion) {
-  name: '${connection.name}-doNotDelete'
+resource connection_lock 'Microsoft.Authorization/locks@2016-09-01' = if (lock != 'NotSpecified') {
+  name: '${connection.name}-${lock}-lock'
   properties: {
-    level: 'CanNotDelete'
+    level: lock
+    notes: (lock == 'CanNotDelete') ? 'Cannot delete resource or child resources.' : 'Cannot modify the resource or child resources.'
   }
   scope: connection
 }

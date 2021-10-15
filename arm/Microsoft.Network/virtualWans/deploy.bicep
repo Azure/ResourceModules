@@ -113,10 +113,11 @@ resource virtualHub 'Microsoft.Network/virtualHubs@2021-05-01' = {
   }
 }
 
-resource virtualHub_lock 'Microsoft.Authorization/locks@2016-09-01' = if (lockForDeletion) {
-  name: '${virtualHub.name}-doNotDelete'
+resource virtualHub_lock 'Microsoft.Authorization/locks@2016-09-01' = if (lock != 'NotSpecified') {
+  name: '${virtualHub.name}-${lock}-lock'
   properties: {
-    level: 'CanNotDelete'
+    level: lock
+    notes: (lock == 'CanNotDelete') ? 'Cannot delete resource or child resources.' : 'Cannot modify the resource or child resources.'
   }
   scope: virtualHub
 }
@@ -143,10 +144,11 @@ resource vpnSite 'Microsoft.Network/vpnSites@2021-05-01' = {
   }
 }
 
-resource vpnSite_lock 'Microsoft.Authorization/locks@2016-09-01' = if (lockForDeletion) {
-  name: '${vpnSite.name}-doNotDelete'
+resource vpnSite_lock 'Microsoft.Authorization/locks@2016-09-01' = if (lock != 'NotSpecified') {
+  name: '${vpnSite.name}-${lock}-lock'
   properties: {
-    level: 'CanNotDelete'
+    level: lock
+    notes: (lock == 'CanNotDelete') ? 'Cannot delete resource or child resources.' : 'Cannot modify the resource or child resources.'
   }
   scope: vpnSite
 }
@@ -176,10 +178,11 @@ resource vpnGateway 'Microsoft.Network/vpnGateways@2021-05-01' = {
   }
 }
 
-resource vpnGateway_lock 'Microsoft.Authorization/locks@2016-09-01' = if (lockForDeletion) {
-  name: '${vpnGateway.name}-doNotDelete'
+resource vpnGateway_lock 'Microsoft.Authorization/locks@2016-09-01' = if (lock != 'NotSpecified') {
+  name: '${vpnGateway.name}-${lock}-lock'
   properties: {
-    level: 'CanNotDelete'
+    level: lock
+    notes: (lock == 'CanNotDelete') ? 'Cannot delete resource or child resources.' : 'Cannot modify the resource or child resources.'
   }
   scope: vpnGateway
 }

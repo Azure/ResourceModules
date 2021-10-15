@@ -82,10 +82,11 @@ resource localNetworkGateway 'Microsoft.Network/localNetworkGateways@2021-02-01'
   }
 }
 
-resource localNetworkGateway_lock 'Microsoft.Authorization/locks@2016-09-01' = if (lockForDeletion) {
-  name: '${localNetworkGateway.name}-doNotDelete'
+resource localNetworkGateway_lock 'Microsoft.Authorization/locks@2016-09-01' = if (lock != 'NotSpecified') {
+  name: '${localNetworkGateway.name}-${lock}-lock'
   properties: {
-    level: 'CanNotDelete'
+    level: lock
+    notes: (lock == 'CanNotDelete') ? 'Cannot delete resource or child resources.' : 'Cannot modify the resource or child resources.'
   }
   scope: localNetworkGateway
 }

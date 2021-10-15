@@ -111,10 +111,11 @@ resource dpeloymentScript 'Microsoft.Resources/deploymentScripts@2020-10-01' = {
   }
 }
 
-resource dpeloymentScript_lock 'Microsoft.Authorization/locks@2016-09-01' = if (lockForDeletion) {
-  name: '${dpeloymentScript.name}-doNotDelete'
+resource dpeloymentScript_lock 'Microsoft.Authorization/locks@2016-09-01' = if (lock != 'NotSpecified') {
+  name: '${dpeloymentScript.name}-${lock}-lock'
   properties: {
-    level: 'CanNotDelete'
+    level: lock
+    notes: (lock == 'CanNotDelete') ? 'Cannot delete resource or child resources.' : 'Cannot modify the resource or child resources.'
   }
   scope: dpeloymentScript
 }

@@ -253,10 +253,11 @@ resource apiManagementService 'Microsoft.ApiManagement/service@2020-12-01' = {
   }
 }
 
-resource apiManagementService_lock 'Microsoft.Authorization/locks@2016-09-01' = if (lockForDeletion) {
-  name: '${apiManagementService.name}-doNotDelete'
+resource apiManagementService_lock 'Microsoft.Authorization/locks@2016-09-01' = if (lock != 'NotSpecified') {
+  name: '${apiManagementService.name}-${lock}-lock'
   properties: {
-    level: 'CanNotDelete'
+    level: lock
+    notes: (lock == 'CanNotDelete') ? 'Cannot delete resource or child resources.' : 'Cannot modify the resource or child resources.'
   }
   scope: apiManagementService
 }

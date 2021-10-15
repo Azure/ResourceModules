@@ -64,10 +64,11 @@ resource proximityPlacementGroup 'Microsoft.Compute/proximityPlacementGroups@202
   }
 }
 
-resource proximityPlacementGroup_lock 'Microsoft.Authorization/locks@2016-09-01' = if (lockForDeletion) {
-  name: '${proximityPlacementGroup.name}-doNotDelete'
+resource proximityPlacementGroup_lock 'Microsoft.Authorization/locks@2016-09-01' = if (lock != 'NotSpecified') {
+  name: '${proximityPlacementGroup.name}-${lock}-lock'
   properties: {
-    level: 'CanNotDelete'
+    level: lock
+    notes: (lock == 'CanNotDelete') ? 'Cannot delete resource or child resources.' : 'Cannot modify the resource or child resources.'
   }
   scope: proximityPlacementGroup
 }
