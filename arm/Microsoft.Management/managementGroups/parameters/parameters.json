@@ -2,18 +2,15 @@
     "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
     "contentVersion": "1.0.0.0",
     "parameters": {
-        "managementGroupName":{
+        "managementGroupId":{
             "value": "testMG"
-        },
-        "parentId": {
-            "value": "/"
         },
         "roleAssignments": {
             "value": [
                 {
                     "roleDefinitionIdOrName": "Reader",
                     "principalIds": [
-                        "12345567-890a-bcde-f012-456789000000"
+                        "23ed05c3-b673-4fd5-b1a0-69d9724d111b"
                     ]
                 }
             ]
