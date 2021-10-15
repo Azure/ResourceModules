@@ -44,11 +44,6 @@ var builtInRoleNames = {
   'User Access Administrator': '/subscriptions/${subscription().subscriptionId}/providers/Microsoft.Authorization/roleDefinitions/18d7d88d-d35e-4fb5-a5c3-7773c20a72d9'
 }
 
-var lockNotes = {
-  CanNotDelete: 'Cannot delete resource or child resources.'
-  ReadOnly: 'Cannot modify the resource or child resources.'
-}
-
 module pid_cuaId './.bicep/nested_cuaId.bicep' = if (!empty(cuaId)) {
   name: 'pid-${cuaId}'
   params: {}
@@ -73,7 +68,7 @@ resource privateLinkScope_lock 'Microsoft.Authorization/locks@2016-09-01' = if (
   scope: privateLinkScope
   properties: {
     level: lock
-    notes: lockNotes[lock]
+    notes: (lock == 'CanNotDelete') ? 'Cannot delete resource or child resources.' : 'Cannot modify the resource or child resources.'
   }
 }
 

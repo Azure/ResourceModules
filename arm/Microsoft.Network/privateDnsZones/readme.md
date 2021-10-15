@@ -28,7 +28,7 @@ The following resources are required to be able to deploy this resource.
 | `roleAssignments` | array | Optional. Array of role assignment objects that contain the 'roleDefinitionIdOrName' and 'principalId' to define RBAC role assignments on this resource. In the roleDefinitionIdOrName attribute, you can provide either the display name of the role definition, or its fully qualified ID in the following format: '/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11' | System.Object[] |  |
 | `tags` | object | Optional. Tags of the resource. |  |  |
 | `vnetLinks` | array | Optional. Array of custom objects describing vNet links of the DNS zone. Each object should contain properties 'vnetResourceId' and 'registrationEnabled'. The 'vnetResourceId' is a resource Id of a vNet to link, 'registrationEnabled' (bool) enables automatic DNS registration in the zone for the linked vNet. | [] |  |
-| `lockForDeletion` | bool | Optional. Switch to lock Traffic Manager from deletion. | False |  |
+| `lock` | string | Optional. Specify the type of lock. | 'NotSpecified' | 'CanNotDelete', 'NotSpecified', 'ReadOnly' |
 
 ### Parameter Usage: `vnetLinks`
 

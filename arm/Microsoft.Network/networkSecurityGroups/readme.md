@@ -23,7 +23,7 @@ This template deploys a Network Security Groups (NSG) with optional security rul
 | `eventHubAuthorizationRuleId` | string | Optional. Resource ID of the event hub authorization rule for the Event Hubs namespace in which the event hub should be created or streamed to. |  |  |
 | `eventHubName` | string | Optional. Name of the event hub within the namespace to which logs are streamed. Without this, an event hub is created for each log category. |  |  |
 | `location` | string | Optional. Location for all resources. | [resourceGroup().location] |  |
-| `lockForDeletion` | bool | Optional. Switch to lock NSG from deletion. | False |  |
+| `lock` | string | Optional. Specify the type of lock. | 'NotSpecified' | 'CanNotDelete', 'NotSpecified', 'ReadOnly' |
 | `networkSecurityGroupName` | string | Required. Name of the Network Security Group. |  |  |
 | `networkSecurityGroupSecurityRules` | array | Optional. Array of Security Rules to deploy to the Network Security Group. When not provided, an NSG including only the built-in roles will be deployed. | System.Object[] |  |
 | `roleAssignments` | array | Optional. Array of role assignment objects that contain the 'roleDefinitionIdOrName' and 'principalId' to define RBAC role assignments on this resource. In the roleDefinitionIdOrName attribute, you can provide either the display name of the role definition, or its fully qualified ID in the following format: '/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11' | System.Object[] |  |
@@ -170,7 +170,7 @@ Tag names and tag values can be provided as needed. A tag can be left without a 
 | Output Name | Type | Description |
 | :-- | :-- | :-- |
 | `networkSecurityGroupsName` | string | The Name of the Network Security Group deployed. |
-| `networkSecurityGroupsResourceGroup` | string | The name of the Resource Group the Network Security Groups were created in. |    
+| `networkSecurityGroupsResourceGroup` | string | The name of the Resource Group the Network Security Groups were created in. |
 | `networkSecurityGroupsResourceId` | string | The Resource Ids of the Network Security Group deployed. |
 | `flowLogName` | string | The Name of the FlowLog deployed |
 | `flowLogResourceId` | string | The Resource Ids of the Network Security Group deployed. |

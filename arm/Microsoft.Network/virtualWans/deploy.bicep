@@ -54,8 +54,13 @@ param tags object = {}
 @description('Optional. Customer Usage Attribution id (GUID). This GUID must be previously registered')
 param cuaId string = ''
 
-@description('Optional. Switch to lock storage from deletion.')
-param lockForDeletion bool = false
+@allowed([
+  'CanNotDelete'
+  'NotSpecified'
+  'ReadOnly'
+])
+@description('Optional. Specify the type of lock.')
+param lock string = 'NotSpecified'
 
 var builtInRoleNames = {
   'Owner': subscriptionResourceId('Microsoft.Authorization/roleDefinitions', '8e3af657-a8ff-443c-a75c-2fe8c4bcb635')

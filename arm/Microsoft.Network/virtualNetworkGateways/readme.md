@@ -31,14 +31,14 @@ This module deploys a Virtual Network Gateway.
 | `eventHubName` | string | Optional. Name of the event hub within the namespace to which logs are streamed. Without this, an event hub is created for each log category. |  |  |
 | `gatewayPipName` | array | Optional. Specifies the name of the Public IP used by the Virtual Network Gateway. If it's not provided, a '-pip' suffix will be appended to the gateway's name. |  |  |
 | `location` | string | Optional. Location for all resources. | [resourceGroup().location] |  |
-| `lockForDeletion` | bool | Optional. Switch to lock Virtual Network Gateway from deletion. | False |  |
+| `lock` | string | Optional. Specify the type of lock. | 'NotSpecified' | 'CanNotDelete', 'NotSpecified', 'ReadOnly' |
 | `publicIPPrefixId` | string | Optional. Resource Id of the Public IP Prefix object. This is only needed if you want your Public IPs created in a PIP Prefix. |  |  |
 | `publicIpZones` | string | Optional. Specifies the zones of the Public IP address. | "1" |  |
 | `roleAssignments` | array | Optional. Array of role assignment objects that contain the 'roleDefinitionIdOrName' and 'principalId' to define RBAC role assignments on this resource. In the roleDefinitionIdOrName attribute, you can provide either the display name of the role definition, or its fully qualified ID in the following format: '/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11' | System.Object[] |  |
 | `tags` | object | Optional. Tags of the resource. |  |  |
 | `virtualNetworkGatewayName` | string | Required. Specifies the Virtual Network Gateway name. |  |  |
 | `virtualNetworkGatewaySku` | string | Required. The Sku of the Gateway. |  | System.Object[] |
-| `virtualNetworkGatewayType` | string | Required. Specifies the gateway type. E.g. VPN, ExpressRoute |  | System.Object[] | 
+| `virtualNetworkGatewayType` | string | Required. Specifies the gateway type. E.g. VPN, ExpressRoute |  | System.Object[] |
 | `vNetId` | string | Required. Virtual Network resource Id |  |  |
 | `vpnClientAddressPoolPrefix` | string | Optional. The IP address range from which VPN clients will receive an IP address when connected. Range specified must not overlap with on-premise network. |  |  |
 | `vpnType` | string | Required. Specifies the VPN type | RouteBased | System.Object[] |

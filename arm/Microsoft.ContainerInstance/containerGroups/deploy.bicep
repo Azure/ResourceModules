@@ -39,8 +39,13 @@ param environmentVariables array = []
 @description('Optional. Location for all Resources.')
 param location string = resourceGroup().location
 
-@description('Optional. Switch to lock resource from deletion.')
-param lockForDeletion bool = false
+@allowed([
+  'CanNotDelete'
+  'NotSpecified'
+  'ReadOnly'
+])
+@description('Optional. Specify the type of lock.')
+param lock string = 'NotSpecified'
 
 @description('Optional. Tags of the resource.')
 param tags object = {}

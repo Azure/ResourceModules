@@ -49,8 +49,13 @@ param customIPSecPolicy object = {
 @description('Optional. The weight added to routes learned from this BGP speaker.')
 param routingWeight string = ''
 
-@description('Optional. Switch to lock Connection from deletion.')
-param lockForDeletion bool = false
+@allowed([
+  'CanNotDelete'
+  'NotSpecified'
+  'ReadOnly'
+])
+@description('Optional. Specify the type of lock.')
+param lock string = 'NotSpecified'
 
 @description('Optional. Tags of the resource.')
 param tags object = {}

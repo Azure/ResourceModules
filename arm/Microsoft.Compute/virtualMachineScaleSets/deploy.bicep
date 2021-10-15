@@ -196,8 +196,13 @@ param eventHubAuthorizationRuleId string = ''
 @description('Optional. Name of the event hub within the namespace to which logs are streamed. Without this, an event hub is created for each log category.')
 param eventHubName string = ''
 
-@description('Optional. Switch to lock VM from deletion.')
-param lockForDeletion bool = false
+@allowed([
+  'CanNotDelete'
+  'NotSpecified'
+  'ReadOnly'
+])
+@description('Optional. Specify the type of lock.')
+param lock string = 'NotSpecified'
 
 @description('Optional. Specifies the mode of an upgrade to virtual machines in the scale set.\' Manual - You control the application of updates to virtual machines in the scale set. You do this by using the manualUpgrade action. ; Automatic - All virtual machines in the scale set are automatically updated at the same time. - Automatic, Manual, Rolling')
 @allowed([

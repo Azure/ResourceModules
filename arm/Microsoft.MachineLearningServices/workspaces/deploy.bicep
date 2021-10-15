@@ -23,8 +23,13 @@ param associatedApplicationInsightsResourceId string
 @description('Optional. The resource id of the associated Container Registry.')
 param associatedContainerRegistryResourceId string = ''
 
-@description('Optional. Switch to lock Machine Learning Service from deletion.')
-param lockForDeletion bool = false
+@allowed([
+  'CanNotDelete'
+  'NotSpecified'
+  'ReadOnly'
+])
+@description('Optional. Specify the type of lock.')
+param lock string = 'NotSpecified'
 
 @description('Optional. The flag to signal HBI data in the workspace and reduce diagnostic data collected by the service.')
 param hbiWorkspace bool = false

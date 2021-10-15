@@ -27,7 +27,7 @@ This module deploys AVD Application Groups, with resource lock and diagnostics c
 | `eventHubName` | string | Optional. Name of the event hub within the namespace to which logs are streamed. Without this, an event hub is created for each log category. |  |  |
 | `hostpoolName` | string | Required. Name of the Host Pool to be linked to this Application Group. |  |  |
 | `location` | string | Optional. Location for all resources. | [resourceGroup().location] |  |
-| `lockForDeletion` | bool | Optional. Switch to lock Resource from deletion. | False |  |
+| `lock` | string | Optional. Specify the type of lock. | 'NotSpecified' | 'CanNotDelete', 'NotSpecified', 'ReadOnly' |
 | `roleAssignments` | array | Optional. Array of role assignment objects that contain the 'roleDefinitionIdOrName' and 'principalIds' to define RBAC role assignments on this resource. In the roleDefinitionIdOrName attribute, you can provide either the display name of the role definition, or it's fully qualified ID in the following format: '/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11' | System.Object[] |  |
 | `tags` | object | Optional. Tags of the resource. |  |  |
 | `workspaceId` | string | Optional. Resource identifier of Log Analytics. |  |  |

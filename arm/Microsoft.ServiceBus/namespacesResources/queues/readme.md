@@ -28,7 +28,7 @@ This module deploys Service Bus Queue.
 | `enablePartitioning` | bool | Optional. A value that indicates whether the queue is to be partitioned across multiple message brokers. | False |  |
 | `location` | string | Optional. Location for all resources. | [resourceGroup().location] |  |
 | `lockDuration` | string | Optional. ISO 8601 timespan duration of a peek-lock; that is, the amount of time that the message is locked for other receivers. The maximum value for LockDuration is 5 minutes; the default value is 1 minute. | PT1M |  |
-| `lockForDeletion` | bool | Optional. Switch to lock Service Bus Queue from deletion. | False |  |
+| `lock` | string | Optional. Specify the type of lock. | 'NotSpecified' | 'CanNotDelete', 'NotSpecified', 'ReadOnly' |
 | `maxDeliveryCount` | int | Optional. The maximum delivery count. A message is automatically deadlettered after this number of deliveries. default value is 10. | 10 |  |
 | `maxSizeInMegabytes` | int | Optional. The maximum size of the queue in megabytes, which is the size of memory allocated for the queue. Default is 1024. | 1024 |  |
 | `namespaceName` | string | Required. Name of the parent Service Bus Namespace for the Service Bus Queue. |  |  |

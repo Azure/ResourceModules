@@ -29,8 +29,13 @@ param roleAssignments array = []
 @description('Optional. Location for all resources.')
 param location string = resourceGroup().location
 
-@description('Optional. Switch to lock all resources from deletion.')
-param lockForDeletion bool = false
+@allowed([
+  'CanNotDelete'
+  'NotSpecified'
+  'ReadOnly'
+])
+@description('Optional. Specify the type of lock.')
+param lock string = 'NotSpecified'
 
 @description('Optional. Tags for all resources.')
 param tags object = {}

@@ -106,8 +106,13 @@ param moveToArchiveAfter int = 30
 @description('Optional. Set up the amount of days after which the blobs will be deleted')
 param deleteBlobsAfter int = 1096
 
-@description('Optional. Switch to lock storage from deletion.')
-param lockForDeletion bool = false
+@allowed([
+  'CanNotDelete'
+  'NotSpecified'
+  'ReadOnly'
+])
+@description('Optional. Specify the type of lock.')
+param lock string = 'NotSpecified'
 
 @description('Optional. Tags of the resource.')
 param tags object = {}
@@ -131,7 +136,7 @@ var azureFilesIdentityBasedAuthentication_var = azureFilesIdentityBasedAuthentic
 
 var maxNameLength = 24
 var uniqueStoragenameUntrim = '${uniqueString('Storage Account${basetime}')}'
-var uniqueStoragename = length(uniqueStoragenameUntrim) > maxNameLength ? substring(uniqueStoragenameUntrim,0,maxNameLength) : uniqueStoragenameUntrim
+var uniqueStoragename = length(uniqueStoragenameUntrim) > maxNameLength ? substring(uniqueStoragenameUntrim, 0, maxNameLength) : uniqueStoragenameUntrim
 var storageAccountName_var = empty(storageAccountName) ? uniqueStoragename : storageAccountName
 
 var saBaseProperties = {

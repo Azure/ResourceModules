@@ -38,8 +38,13 @@ param roleAssignments array = []
 @description('Optional. Status of the connection.')
 param statuses array = []
 
-@description('Optional. Switch to lock Resource from deletion.')
-param lockForDeletion bool = false
+@allowed([
+  'CanNotDelete'
+  'NotSpecified'
+  'ReadOnly'
+])
+@description('Optional. Specify the type of lock.')
+param lock string = 'NotSpecified'
 
 @description('Optional. Tags of the resource.')
 param tags object = {}

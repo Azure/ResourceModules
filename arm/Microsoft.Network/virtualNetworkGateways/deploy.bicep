@@ -88,8 +88,13 @@ param eventHubName string = ''
 @description('Optional. Array of role assignment objects that contain the \'roleDefinitionIdOrName\' and \'principalId\' to define RBAC role assignments on this resource. In the roleDefinitionIdOrName attribute, you can provide either the display name of the role definition, or its fully qualified ID in the following format: \'/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11\'')
 param roleAssignments array = []
 
-@description('Optional. Switch to lock Virtual Network Gateway from deletion.')
-param lockForDeletion bool = false
+@allowed([
+  'CanNotDelete'
+  'NotSpecified'
+  'ReadOnly'
+])
+@description('Optional. Specify the type of lock.')
+param lock string = 'NotSpecified'
 
 @description('Optional. Tags of the resource.')
 param tags object = {}
@@ -319,7 +324,7 @@ resource virtualGatewayPublicIP 'Microsoft.Network/publicIPAddresses@2021-02-01'
 }]
 
 @batchSize(1)
-resource virtualNetworkGatewayPublicIp_lock 'Microsoft.Authorization/locks@2016-09-01' = [for (virtualGatewayPublicIpName,index) in virtualGatewayPipName_var: if (lockForDeletion) {
+resource virtualNetworkGatewayPublicIp_lock 'Microsoft.Authorization/locks@2016-09-01' = [for (virtualGatewayPublicIpName, index) in virtualGatewayPipName_var: if (lockForDeletion) {
   name: '${virtualGatewayPublicIpName}-doNotDelete'
   properties: {
     level: 'CanNotDelete'
