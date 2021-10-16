@@ -20,7 +20,7 @@ The following resources are required to be able to deploy this resource.
 - *None*
 
 ## Parameters
-| Parameter Name | Type | DefaultValue | Possible values | Description |
+| Parameter Name | Type | Default Value | Possible Values | Description |
 | :-- | :-- | :-- | :-- | :-- |
 | `additionalLocations` | array | `[]` |  | Optional. Additional datacenter locations of the API Management service. |
 | `apiManagementServiceName` | string |  |  | Required. The name of the of the Api Management service. |

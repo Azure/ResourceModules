@@ -7,22 +7,19 @@ the Azure resources you want to delegate access to are, providing 'authorization
 remote/managing tenant.
 
 ## Resource types
-
-| Resource Type                                       | ApiVersion |
-| :-------------------------------------------------- | :--------- |
-| `Microsoft.ManagedServices/registrationDefinitions` | 2019-09-01 |
+| Resource Type | Api Version |
+| :-- | :-- |
 | `Microsoft.ManagedServices/registrationAssignments` | 2019-09-01 |
-| `Microsoft.Resources/deployments`                   | 2020-06-01 |
+| `Microsoft.ManagedServices/registrationDefinitions` | 2019-09-01 |
 
 ## Parameters
-
-| Parameter Name               | Type   | Default Value | Possible values               | Description                                                                                                                                                                                                                                                                                                             |
-| :--------------------------- | :----- | :------------ | :---------------------------- | :---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `registrationDefinitionName` | string |               |                               | Required. Specify a unique name for your offer/registration. i.e '\<Managing Tenant\> - \<Remote Tenant\> - \<ResourceName\>'                                                                                                                                                                                           |
-| `registrationDescription`    | string |               |                               | Required. Description of the offer/registration. i.e. 'Managed by \<Managing Org Name\>'                                                                                                                                                                                                                                |
-| `managedByTenantId`          | string |               | GUID                          | Required. Specify the tenant ID of the tenant which homes the principals you are delegating permissions to.                                                                                                                                                                                                             |
-| `authorizations`             | array  |               | Complex structure, see below. | Required. Specify an array of objects, containing object of Azure Active Directory principalId, a Azure roleDefinitionId, and an optional principalIdDisplayName. The roleDefinition specified is granted to the principalId in the provider's Active Directory and the principalIdDisplayName is visible to customers. |
-| `resourceGroupName`          | string | ""            |                               | Optional. Specify the name of the Resource Group to delegate access to. If not provided, delegation will be done on the targeted subscription.                                                                                                                                                                          |
+| Parameter Name | Type | Default Value | Possible Values | Description |
+| :-- | :-- | :-- | :-- | :-- |
+| `authorizations` | array |  |  | Required. Specify an array of objects, containing object of Azure Active Directory principalId, a Azure roleDefinitionId, and an optional principalIdDisplayName. The roleDefinition specified is granted to the principalId in the provider's Active Directory and the principalIdDisplayName is visible to customers. |
+| `managedByTenantId` | string |  |  | Required. Specify the tenant ID of the tenant which homes the principals you are delegating permissions to. |
+| `registrationDefinitionName` | string |  |  | Required. Specify a unique name for your offer/registration. i.e '<Managing Tenant> - <Remote Tenant> - <ResourceName>' |
+| `registrationDescription` | string |  |  | Required. Description of the offer/registration. i.e. 'Managed by <Managing Org Name>' |
+| `resourceGroupName` | string |  |  | Optional. Specify the name of the Resource Group to delegate access to. If not provided, delegation will be done on the targeted subscription. |
 
 ### Parameter Usage: `authorizations`
 
@@ -57,68 +54,12 @@ remote/managing tenant.
 ```
 
 ## Outputs
+| Output Name | Type |
+| :-- | :-- |
+| `registrationAssignmentId` | string |
+| `registrationDefinitionId` | string |
+| `registrationDefinitionName` | string |
 
-| Output Name                  | Type   | Description                         |
-| :--------------------------- | :----- | :---------------------------------- |
-| `registrationDefinitionName` | string | The name of the offer/registration. |
-| `registrationDefinitionId`   | string | The ID of the offer/registration.   |
-| `registrationAssignmentId`   | string | The ID of the resource delegation.  |
-
-## Considerations
-
-This module can be deployed both at subscription and resource group level:
-
-- To deploy the module at resource group level, provide a valid name of an existing Resource Group in the `resourceGroupName` parameter.
-- To deploy the module at the subscription level, leave the `resourceGroupName` parameter empty.
-
-### Permissions required to create delegations
-
-This deployment must be done by a non-guest account in the customer's tenant which has a role with the `Microsoft.Authorization/roleAssignments/write` permission,
-such as [`Owner`](https://docs.microsoft.com/en-us/azure/role-based-access-control/built-in-roles#owner) for the subscription being onboarded (or which contains the resource groups that are being onboarded).
-
-If the subscription was created through the Cloud Solution Provider (CSP) program, any user who has the AdminAgent role in your service provider tenant can perform the deployment.
-
-**More info on this topic:**
-
-- [Deploy the Azure Resource Manager templates - Onboard a customer to Azure Lighthouse | Microsoft Docs](https://docs.microsoft.com/en-us/azure/lighthouse/how-to/onboard-customer#deploy-the-azure-resource-manager-templates)
-
-### Permissions required to remove delegations
-
-#### From customer side
-
-Users in the customer's tenant who have a role with the `Microsoft.Authorization/roleAssignments/write` permission, such as
-[`Owner`](https://docs.microsoft.com/en-us/azure/role-based-access-control/built-in-roles#owner) can remove service provider
-access to that subscription (or to resource groups in that subscription). To do so, the user can go to the Service providers
-page of the Azure portal and delete the delegation.
-
-#### From managing tenant side
-
-Users in a managing tenant can remove access to delegated resources if they were granted the
-[`Managed Services Registration Assignment Delete Role`](https://docs.microsoft.com/en-us/azure/role-based-access-control/built-in-roles#managed-services-registration-assignment-delete-role)
-for the customer's resources. If this role was not assigned to any service provider users, the delegation can **only** be
-removed by a user in the customer's tenant.
-
-**More info on this topic:**
-
-- [Service providers - Remove access to a delegation | Microsoft Docs](https://docs.microsoft.com/en-us/azure/lighthouse/how-to/remove-delegation#service-providers)
-
-### Limitations with Lighthouse and resource delegation
-
-There are a couple of limitations that you should be aware of with Lighthouse:
-
-- Only allows resource delegation within Azure Resource Manager. Excludes Azure Active Directory, Microsoft 365 and Dynamics 365.
-- Only supports delegation of control plane permissions. Excludes data plane access.
-- Only supports subscription and resource group scopes. Excludes tenant and management group delegations.
-- Only supports built-in roles, with the exception of `Owner`. Excludes the use of custom roles.
-
-**More info on this topic:**
-
-- [Current limitations - Cross-tenant management experiences | Microsoft Docs](https://docs.microsoft.com/en-us/azure/lighthouse/concepts/cross-tenant-management-experience#current-limitations)
-- [Troubleshooting - Onboard a customer to Azure Lighthouse | Microsoft Docs](https://docs.microsoft.com/en-us/azure/lighthouse/how-to/onboard-customer#troubleshooting)
-
-## Additional resources
-
-- [What is Azure Lighthouse? | Microsoft Docs](https://docs.microsoft.com/en-us/azure/lighthouse/overview)
-- [Azure delegated resource management | Microsoft Docs](https://docs.microsoft.com/en-us/azure/lighthouse/concepts/azure-delegated-resource-management)
-- [Cross-tenant management experiences | Microsoft Docs](https://docs.microsoft.com/en-us/azure/lighthouse/concepts/cross-tenant-management-experience)
-- [Onboard a customer to Azure Lighthouse | Microsoft Docs](https://docs.microsoft.com/en-us/azure/lighthouse/how-to/onboard-customer)
+## Template references
+- [Registrationassignments](https://docs.microsoft.com/en-us/azure/templates/Microsoft.ManagedServices/2019-09-01/registrationAssignments)
+- [Registrationdefinitions](https://docs.microsoft.com/en-us/azure/templates/Microsoft.ManagedServices/2019-09-01/registrationDefinitions)

@@ -15,7 +15,7 @@ This module deploys Recovery Service Vault, with resource lock.
 | `Microsoft.RecoveryServices/vaults/providers/roleAssignments` | 2020-04-01-preview |
 
 ## Parameters
-| Parameter Name | Type | DefaultValue | Possible values | Description |
+| Parameter Name | Type | Default Value | Possible Values | Description |
 | :-- | :-- | :-- | :-- | :-- |
 | `backupPolicies` | array | `[]` |  | Optional. List of all backup policies. |
 | `cuaId` | string |  |  | Optional. Customer Usage Attribution id (GUID). This GUID must be previously registered |
@@ -329,14 +329,6 @@ Array of backup policies. They need to be properly formatted and can be VM backu
 | `recoveryServicesVaultName` | string |
 | `recoveryServicesVaultResourceGroup` | string |
 | `recoveryServicesVaultResourceId` | string |
-
-## Considerations
-
-## Additional resources
-
-- [Recovery Services vaults overview](https://docs.microsoft.com/en-us/azure/backup/backup-azure-recovery-services-vault-overview)
-- [Microsoft.RecoveryServices vaults template reference](https://docs.microsoft.com/en-gb/azure/templates/microsoft.recoveryservices/allversions)
-- [Use tags to organize your Azure resources](https://docs.microsoft.com/en-us/azure/azure-resource-manager/resource-group-using-tags)
 
 ## Template references
 - [Locks](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2016-09-01/locks)

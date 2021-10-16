@@ -18,7 +18,7 @@ This module deploys EventHub Namespace.
 
 ## Parameters
 
-| Parameter Name | Type | Description | DefaultValue | Possible values |
+| Parameter Name | Type | Description | Default Value | Possible Values |
 | :-- | :-- | :-- | :-- | :-- |
 | `authorizationRules` | array | Optional. Authorization Rules for the Event Hub namespace | System.Object[] |  |
 | `cuaId` | string | Optional. Customer Usage Attribution id (GUID). This GUID must be previously registered |  |  |

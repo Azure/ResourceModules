@@ -239,7 +239,7 @@ function Set-ParametersSection {
 
     # Process content
     $sectionContent = [System.Collections.ArrayList]@(
-        '| Parameter Name | Type | DefaultValue | Possible values | Description |',
+        '| Parameter Name | Type | Default Value | Possible Values | Description |',
         '| :-- | :-- | :-- | :-- | :-- |'
     )
 

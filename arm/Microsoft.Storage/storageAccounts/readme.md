@@ -5,56 +5,55 @@ This module is used to deploy an Azure Storage Account, with resource lock and t
 The default parameter values are based on the needs of deploying a diagnostic storage account.
 
 ## Resource types
-
 | Resource Type | Api Version |
 | :-- | :-- |
-| `Microsoft.Network/privateEndpoints/privateDnsZoneGroups` | 2020-05-01 |
+| `Microsoft.Authorization/locks` | 2016-09-01 |
 | `Microsoft.Network/privateEndpoints` | 2020-05-01 |
-| `Microsoft.Resources/deployments` | 2020-06-01 |
-| `Microsoft.Storage/storageAccounts/blobServices/containers` | 2019-06-01 |
+| `Microsoft.Network/privateEndpoints/privateDnsZoneGroups` | 2020-05-01 |
+| `Microsoft.Storage/storageAccounts` | 2021-06-01 |
 | `Microsoft.Storage/storageAccounts/blobServices` | 2019-06-01 |
+| `Microsoft.Storage/storageAccounts/blobServices/containers` | 2019-06-01 |
+| `Microsoft.Storage/storageAccounts/blobServices/containers/immutabilityPolicies` | 2019-06-01 |
+| `Microsoft.Storage/storageAccounts/blobServices/containers/providers/roleAssignments` | 2020-04-01-preview |
+| `Microsoft.Storage/storageAccounts/fileServices/fileshares/providers/roleAssignments` | 2020-04-01-preview |
 | `Microsoft.Storage/storageAccounts/fileServices/shares` | 2019-06-01 |
 | `Microsoft.Storage/storageAccounts/managementPolicies` | 2019-06-01 |
 | `Microsoft.Storage/storageAccounts/providers/roleAssignments` | 2020-04-01-preview |
 | `Microsoft.Storage/storageAccounts/queueServices/queues` | 2019-06-01 |
+| `Microsoft.Storage/storageAccounts/queueServices/queues/providers/roleAssignments` | 2020-04-01-preview |
 | `Microsoft.Storage/storageAccounts/tableServices/tables` | 2019-06-01 |
-| `Microsoft.Storage/storageAccounts` | 2021-06-01 |
-| `Microsoft.Authorization/locks` | 2016-09-01 |
-| `Microsoft.Storage/storageAccounts/blobServices/containers/immutabilityPolicies` | 2019-06-01 |
 
 ## Parameters
-
-| Parameter Name | Type | Default Value | Possible values | Description |
+| Parameter Name | Type | Default Value | Possible Values | Description |
 | :-- | :-- | :-- | :-- | :-- |
-| `allowBlobPublicAccess` | bool | True |  | Optional. Indicates whether public access is enabled for all blobs or containers in the storage account. |
-| `automaticSnapshotPolicyEnabled` | bool | False |  | Optional. Automatic Snapshot is enabled if set to true. |
-| `azureFilesIdentityBasedAuthentication` | object |  |  | Optional. Provides the identity based authentication settings for Azure Files. |
-| `baseTime` | string | [utcNow('u')] |  | Generated. Do not provide a value! This date value is used to generate values if e.g. no `storageAccountName` was provided. |
-| `blobContainers` | array | System.Object[] |  | Optional. Blob containers to create. |
+| `allowBlobPublicAccess` | bool | `True` |  | Optional. Indicates whether public access is enabled for all blobs or containers in the storage account. |
+| `automaticSnapshotPolicyEnabled` | bool |  |  | Optional. Automatic Snapshot is enabled if set to true. |
+| `azureFilesIdentityBasedAuthentication` | object | `{object}` |  | Optional. Provides the identity based authentication settings for Azure Files. |
+| `basetime` | string | `[utcNow('u')]` |  | Generated. Do not provide a value! This date value is used to generate a SAS token to access the modules. |
+| `blobContainers` | array | `[]` |  | Optional. Blob containers to create. |
 | `cuaId` | string |  |  | Optional. Customer Usage Attribution id (GUID). This GUID must be previously registered |
-| `deleteBlobsAfter` | int | 1096 |  | Optional. Set up the amount of days after which the blobs will be deleted |
-| `deleteRetentionPolicy` | bool | True |  | Optional. Indicates whether DeleteRetentionPolicy is enabled for the Blob service. |
-| `deleteRetentionPolicyDays` | int | 7 |  | Optional. Indicates the number of days that the deleted blob should be retained. The minimum specified value can be 1 and the maximum value can be 365. |
-| `enableArchiveAndDelete` | bool | False |  | Optional. If true, enables move to archive tier and auto-delete |
-| `enableHierarchicalNamespace` | bool | False |  | Optional. If true, enables Hierarchical Namespace for the storage account |
-| `fileShares` | array | System.Object[] |  | Optional. File shares to create. |
-| `location` | string | [resourceGroup().location] |  | Optional. Location for all resources. |
-| `lockForDeletion` | bool | False |  | Optional. Switch to lock storage from deletion. |
-| `minimumTlsVersion` | string | TLS1_2 | System.Object[] | Optional. Set the minimum TLS version on request to storage. |
-| `moveToArchiveAfter` | int | 30 |  | Optional. Set up the amount of days after which the blobs will be moved to archive tier |
-| `networkAcls` | object |  |  | Optional. Networks ACLs, this value contains IPs to whitelist and/or Subnet information. |
-| `privateEndpoints` | array | System.Object[] |  | Optional. Configuration Details for private endpoints. |
-| `queues` | array | System.Object[] |  | Optional. Queues to create. |
-| `roleAssignments` | array | System.Object[] |  | Optional. Array of role assignment objects that contain the 'roleDefinitionIdOrName' and 'principalId' to define RBAC role assignments on this resource. In the roleDefinitionIdOrName attribute, you can provide either the display name of the role definition, or it's fully qualified ID in the following format: '/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11' |
-| `managedServiceIdentity` | string | None | System.Object[] | Optional. Type of managed service identity. |
-| `userAssignedIdentities` | object | | System.Object[] | Optional. Mandatory 'managedServiceIdentity' contains UserAssigned. The identy to assign to the resource. |
-| `sasTokenValidityLength` | string | PT8H |  | Optional. SAS token validity length. Usage: 'PT8H' - valid for 8 hours; 'P5D' - valid for 5 days; 'P1Y' - valid for 1 year. When not provided, the SAS token will be valid for 8 hours. |
-| `storageAccountAccessTier` | string | Hot | System.Object[] | Optional. Storage Account Access Tier. |
-| `storageAccountKind` | string | StorageV2 | System.Object[] | Optional. Type of Storage Account to create. |
-| `storageAccountName` | string |  |  | Optional. Name of the Storage Account. If no name is provided, then unique name will be created.|
-| `storageAccountSku` | string | Standard_GRS | System.Object[] | Optional. Storage Account Sku Name. |
-| `tables` | array | System.Object[] |  | Optional. Tables to create. |
-| `tags` | object |  |  | Optional. Tags of the resource. |
+| `deleteBlobsAfter` | int | `1096` |  | Optional. Set up the amount of days after which the blobs will be deleted |
+| `deleteRetentionPolicy` | bool | `True` |  | Optional. Indicates whether DeleteRetentionPolicy is enabled for the Blob service. |
+| `deleteRetentionPolicyDays` | int | `7` |  | Optional. Indicates the number of days that the deleted blob should be retained. The minimum specified value can be 1 and the maximum value can be 365. |
+| `enableArchiveAndDelete` | bool |  |  | Optional. If true, enables move to archive tier and auto-delete |
+| `enableHierarchicalNamespace` | bool |  |  | Optional. If true, enables Hierarchical Namespace for the storage account |
+| `fileShares` | array | `[]` |  | Optional. File shares to create. |
+| `location` | string | `[resourceGroup().location]` |  | Optional. Location for all resources. |
+| `lockForDeletion` | bool |  |  | Optional. Switch to lock storage from deletion. |
+| `managedServiceIdentity` | string | `None` | `[None, SystemAssigned, SystemAssigned,UserAssigned, UserAssigned]` | Optional. Type of managed service identity. |
+| `minimumTlsVersion` | string | `TLS1_2` | `[TLS1_0, TLS1_1, TLS1_2]` | Optional. Set the minimum TLS version on request to storage. |
+| `moveToArchiveAfter` | int | `30` |  | Optional. Set up the amount of days after which the blobs will be moved to archive tier |
+| `networkAcls` | object | `{object}` |  | Optional. Networks ACLs, this value contains IPs to whitelist and/or Subnet information. |
+| `privateEndpoints` | array | `[]` |  | Optional. Configuration Details for private endpoints. |
+| `queues` | array | `[]` |  | Optional. Queues to create. |
+| `roleAssignments` | array | `[]` |  | Optional. Array of role assignment objects that contain the 'roleDefinitionIdOrName' and 'principalId' to define RBAC role assignments on this resource. In the roleDefinitionIdOrName attribute, you can provide either the display name of the role definition, or it's fully qualified ID in the following format: '/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11' |
+| `storageAccountAccessTier` | string | `Hot` | `[Hot, Cool]` | Optional. Storage Account Access Tier. |
+| `storageAccountKind` | string | `StorageV2` | `[Storage, StorageV2, BlobStorage, FileStorage, BlockBlobStorage]` | Optional. Type of Storage Account to create. |
+| `storageAccountName` | string |  |  | Required. Name of the Storage Account. |
+| `storageAccountSku` | string | `Standard_GRS` | `[Standard_LRS, Standard_GRS, Standard_RAGRS, Standard_ZRS, Premium_LRS, Premium_ZRS, Standard_GZRS, Standard_RAGZRS]` | Optional. Storage Account Sku Name. |
+| `tables` | array | `[]` |  | Optional. Tables to create. |
+| `tags` | object | `{object}` |  | Optional. Tags of the resource. |
+| `userAssignedIdentities` | object | `{object}` |  | Optional. Mandatory 'managedServiceIdentity' contains UserAssigned. The identy to assign to the resource. |
 | `vNetId` | string |  |  | Optional. Virtual Network Identifier used to create a service endpoint. |
 
 ### Parameter Usage: `roleAssignments`
@@ -254,39 +253,28 @@ To use Private Endpoint the following dependencies must be deployed:
 ```
 
 ## Outputs
+| Output Name | Type |
+| :-- | :-- |
+| `assignedIdentityID` | string |
+| `blobContainers` | array |
+| `fileShares` | array |
+| `queues` | array |
+| `storageAccountName` | string |
+| `storageAccountPrimaryBlobEndpoint` | string |
+| `storageAccountRegion` | string |
+| `storageAccountResourceGroup` | string |
+| `storageAccountResourceId` | string |
+| `tables` | array |
 
-| Output Name | Type | Description |
-| :-- | :-- | :-- |
-| `blobContainers` | array | The array of the blob containers created. |
-| `fileShares` | array | The array of the file shares created. |
-| `queues` | array | The array of the queues created. |
-| `storageAccountName` | string | The Name of the Storage Account. |
-| `storageAccountPrimaryBlobEndpoint` | string | The public endpoint of the Storage Account. |
-| `storageAccountRegion` | string | The Region of the Storage Account. |
-| `storageAccountResourceGroup` | string | The name of the Resource Group the Storage Account was created in. |
-| `storageAccountResourceId` | string | The Resource Id of the Storage Account. |
-| `tables` | array | The array of the tables created. |
-| `assignedIdentityID` | string | User id of the created system assigned identity. |
-
-## Considerations
-
-This is a generic module for deploying a Storage Account. Any customization for different storage needs (such as a diagnostic or other storage account) need to be done through the Archetype.
-The hierarchical namespace of the storage account (see parameter `enableHierarchicalNamespace`), can be only set at creation time.
-
-## Additional resources
-
-- [Use tags to organize your Azure resources](https://docs.microsoft.com/en-us/azure/azure-resource-manager/resource-group-using-tags)
-- [Azure Resource Manager template reference](https://docs.microsoft.com/en-us/azure/templates/)
-- [Deployments](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Resources/2020-06-01/deployments)
-- [StorageAccountS](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Storage/2019-06-01/storageAccounts)
-- [Deployments](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Resources/2020-06-01/deployments)
-- [Deployments](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Resources/2020-06-01/deployments)
-- [StorageAccountS/blobServiceS](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Storage/2019-06-01/storageAccounts/blobServices)
-- [StorageAccountS/blobServiceS/containerS](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Storage/2019-06-01/storageAccounts/blobServices/containers)
-- [StorageAccountS/managementPolicieS](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Storage/2019-06-01/storageAccounts/managementPolicies)
-- [Deployments](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Resources/2020-06-01/deployments)
-- [StorageAccountS/fileServiceS/ShareS](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Storage/2019-06-01/storageAccounts/fileServices/shares)
-- [Deployments](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Resources/2020-06-01/deployments)
-- [StorageAccountS/queueServiceS/queueS](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Storage/2019-06-01/storageAccounts/queueServices/queues)
-- [Deployments](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Resources/2020-06-01/deployments)
-- [StorageAccountS/tableServiceS/tableS](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Storage/2019-06-01/storageAccounts/tableServices/tables)
+## Template references
+- [Locks](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2016-09-01/locks)
+- [Privateendpoints](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Network/2020-05-01/privateEndpoints)
+- [Privateendpoints/Privatednszonegroups](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Network/2020-05-01/privateEndpoints/privateDnsZoneGroups)
+- [Storageaccounts](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Storage/2021-06-01/storageAccounts)
+- [Storageaccounts/Blobservices](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Storage/2019-06-01/storageAccounts/blobServices)
+- [Storageaccounts/Blobservices/Containers](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Storage/2019-06-01/storageAccounts/blobServices/containers)
+- [Storageaccounts/Blobservices/Containers/Immutabilitypolicies](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Storage/2019-06-01/storageAccounts/blobServices/containers/immutabilityPolicies)
+- [Storageaccounts/Fileservices/Shares](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Storage/2019-06-01/storageAccounts/fileServices/shares)
+- [Storageaccounts/Managementpolicies](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Storage/2019-06-01/storageAccounts/managementPolicies)
+- [Storageaccounts/Queueservices/Queues](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Storage/2019-06-01/storageAccounts/queueServices/queues)
+- [Storageaccounts/Tableservices/Tables](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Storage/2019-06-01/storageAccounts/tableServices/tables)
