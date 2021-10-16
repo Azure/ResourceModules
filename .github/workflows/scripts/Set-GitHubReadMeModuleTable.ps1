@@ -76,11 +76,12 @@ function Set-GitHubReadMeModuleTable {
 
     $newContent = (($startContent + $tableString + $endContent) | Out-String).TrimEnd()
 
+    Write-Verbose 'New content:' -Verbose
+    Write-Verbose '============' -Verbose
+    Write-Verbose ($newContent | Out-String) -Verbose
+
     if ($PSCmdlet.ShouldProcess("File in path [$filePath]", 'Overwrite')) {
         Set-Content -Path $filePath -Value $newContent -Force -NoNewline
         Write-Verbose "File [$filePath] updated" -Verbose
-        Write-Verbose 'New content:' -Verbose
-        Write-Verbose '============' -Verbose
-        Write-Verbose ($newContent | Out-String) -Verbose
     }
 }

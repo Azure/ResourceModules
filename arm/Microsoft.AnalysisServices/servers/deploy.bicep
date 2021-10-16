@@ -130,8 +130,8 @@ resource server_lock 'Microsoft.Authorization/locks@2016-09-01' = if (lockForDel
   scope: server
 }
 
-resource server_diagnosticSettings 'Microsoft.AnalysisServices/servers/providers/diagnosticsettings@2017-05-01-preview' = if ((!empty(diagnosticStorageAccountId)) || (!empty(workspaceId)) || (!empty(eventHubAuthorizationRuleId)) || (!empty(eventHubName))) {
-  name: '${server.name}/Microsoft.Insights/service'
+resource server_diagnosticSettings 'Microsoft.Insights/diagnosticsettings@2017-05-01-preview' = if ((!empty(diagnosticStorageAccountId)) || (!empty(workspaceId)) || (!empty(eventHubAuthorizationRuleId)) || (!empty(eventHubName))) {
+  name: '${server.name}-diagnosticSettings'
   properties: {
     storageAccountId: (empty(diagnosticStorageAccountId) ? json('null') : diagnosticStorageAccountId)
     workspaceId: (empty(workspaceId) ? json('null') : workspaceId)
@@ -140,6 +140,7 @@ resource server_diagnosticSettings 'Microsoft.AnalysisServices/servers/providers
     metrics: ((empty(diagnosticStorageAccountId) && empty(workspaceId) && empty(eventHubAuthorizationRuleId) && empty(eventHubName)) ? json('null') : diagnosticsMetrics)
     logs: ((empty(diagnosticStorageAccountId) && empty(workspaceId) && empty(eventHubAuthorizationRuleId) && empty(eventHubName)) ? json('null') : diagnosticsLogs)
   }
+  scope: server
 }
 
 module server_rbac './.bicep/nested_rbac.bicep' = [for (roleAssignment, index) in roleAssignments: {
