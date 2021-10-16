@@ -1,7 +1,23 @@
 ﻿#requires -version 6.0
 
+<#
+.SYNOPSIS
+Get a list of all resources (provider + service) in the given template content
+
+.DESCRIPTION
+Get a list of all resources (provider + service) in the given template content. Crawls through any children & nested deployment templates.
+
+.PARAMETER TemplateFileContent
+Mandatory. The template file content object to crawl data from
+
+.EXAMPLE
+Get-NestedResourceList -TemplateFileContent @{ resource = @{}; ... }
+
+Returns a list of all resources in the given template object
+#>
 function Get-NestedResourceList {
 
+    [CmdletBinding()]
     param(
         [Parameter(Mandatory)]
         [hashtable] $TemplateFileContent
@@ -24,6 +40,25 @@ function Get-NestedResourceList {
     return $res
 }
 
+<#
+.SYNOPSIS
+Find the array index that represents the end of the current section
+
+.DESCRIPTION
+Find the array index that represents the end of the current section
+This index is identified by iterating through the subsequent array positions until a new chapter character (#) is found
+
+.PARAMETER ReadMeFileContent
+Mandatory. The content array to search in
+
+.PARAMETER startIndex
+Mandatory. The index to start the search from. Should usually be the current section's header index
+
+.EXAMPLE
+Get-EndIndex -ReadMeFileContent @('# Title', '', '## Section 1', ...) -startIndex = 13
+
+Start from index '13' onward for the index that concludes the current section in the given content array
+#>
 function Get-EndIndex {
 
     param(
@@ -45,6 +80,27 @@ function Get-EndIndex {
     return $endIndex
 }
 
+<#
+.SYNOPSIS
+Merge the sections prior & after the updated content with the new content into on connected content array
+
+.DESCRIPTION
+Merge the sections prior & after the updated content with the new content into on connected content array
+
+.PARAMETER oldContent
+Mandatory. The original content to update
+
+.PARAMETER newContent
+Mandatory. The new content to merge into the original
+
+.PARAMETER sectionStartIdentifier
+Mandatory. The identifier/header to search for. If not found, the new section is added at the end of the content array
+
+.EXAMPLE
+Merge-FileWithNewContent -oldContent @('# Title', '', '## Section 1', ...) -newContent @('# Title', '', '## Section 1', ...) -sectionStartIdentifier '## Resource Types'
+
+Update the original content of the '## Resource Types' section with the newly provided
+#>
 function Merge-FileWithNewContent {
 
     [CmdletBinding()]
@@ -79,6 +135,31 @@ function Merge-FileWithNewContent {
     return $newContent
 }
 
+<#
+.SYNOPSIS
+Update the 'Resource Types' section of the given readme file
+
+.DESCRIPTION
+Update the 'Resource Types' section of the given readme file
+The section is added at the end if it does not exist
+
+.PARAMETER TemplateFileContent
+Mandatory. The template file content object to crawl data from
+
+.PARAMETER ReadMeFileContent
+Mandatory. The readme file content array to update
+
+.PARAMETER sectionStartIdentifier
+Optional. The identifier of the 'outputs' section. Defaults to '## Resource Types'
+
+.PARAMETER resourceTypesToExclude
+Optional. The resource types to exclude from the list. By default excludes 'Microsoft.Resources/deployments'
+
+.EXAMPLE
+Set-ResourceTypesSection -TemplateFileContent @{ resource = @{}; ... } -ReadMeFileContent @('# Title', '', '## Section 1', ...)
+
+Update the given readme file's 'Resource Types' section based on the given template file content
+#>
 function Set-ResourceTypesSection {
 
     [CmdletBinding()]
@@ -115,6 +196,28 @@ function Set-ResourceTypesSection {
     return $updatedFileContent
 }
 
+<#
+.SYNOPSIS
+Update the 'parameters' section of the given readme file
+
+.DESCRIPTION
+Update the 'parameters' section of the given readme file
+The section is added at the end if it does not exist
+
+.PARAMETER TemplateFileContent
+Mandatory. The template file content object to crawl data from
+
+.PARAMETER ReadMeFileContent
+Mandatory. The readme file content array to update
+
+.PARAMETER sectionStartIdentifier
+Optional. The identifier of the 'outputs' section. Defaults to '## Parameters'
+
+.EXAMPLE
+Set-ParametersSection -TemplateFileContent @{ resource = @{}; ... } -ReadMeFileContent @('# Title', '', '## Section 1', ...)
+
+Update the given readme file's 'Parameters' section based on the given template file content
+#>
 function Set-ParametersSection {
 
     [CmdletBinding()]
@@ -149,6 +252,28 @@ function Set-ParametersSection {
     return $updatedFileContent
 }
 
+<#
+.SYNOPSIS
+Update the 'outputs' section of the given readme file
+
+.DESCRIPTION
+Update the 'outputs' section of the given readme file
+The section is added at the end if it does not exist
+
+.PARAMETER TemplateFileContent
+Mandatory. The template file content object to crawl data from
+
+.PARAMETER ReadMeFileContent
+Mandatory. The readme file content array to update
+
+.PARAMETER sectionStartIdentifier
+Optional. The identifier of the 'outputs' section. Defaults to '## Outputs'
+
+.EXAMPLE
+Set-OutputsSection -TemplateFileContent @{ resource = @{}; ... } -ReadMeFileContent @('# Title', '', '## Section 1', ...)
+
+Update the given readme file's 'Outputs' section based on the given template file content
+#>
 function Set-OutputsSection {
 
     [CmdletBinding()]
@@ -179,6 +304,31 @@ function Set-OutputsSection {
     return $updatedFileContent
 }
 
+<#
+.SYNOPSIS
+Update the 'Template references' section of the given readme file
+
+.DESCRIPTION
+Update the 'Template references' section of the given readme file
+The section is added at the end if it does not exist
+
+.PARAMETER TemplateFileContent
+Mandatory. The template file content object to crawl data from
+
+.PARAMETER ReadMeFileContent
+Mandatory. The readme file content array to update
+
+.PARAMETER sectionStartIdentifier
+Optional. The identifier of the 'outputs' section. Defaults to '## Template references'
+
+.PARAMETER resourceTypesToExclude
+Optional. The resource types to exclude from the list. By default excludes 'Microsoft.Resources/deployments'
+
+.EXAMPLE
+Set-ResourceTypesSection -TemplateFileContent @{ resource = @{}; ... } -ReadMeFileContent @('# Title', '', '## Section 1', ...)
+
+Update the given readme file's 'Template references' section based on the given template file content
+#>
 function Set-TemplateReferencesSection {
 
     [CmdletBinding()]
@@ -214,6 +364,29 @@ function Set-TemplateReferencesSection {
     return $updatedFileContent
 }
 
+<#
+.SYNOPSIS
+Update/add the readme that matches the given template file
+
+.DESCRIPTION
+Update/add the readme that matches the given template file
+Supports both ARM & bicep templates.
+
+.PARAMETER TemplateFilePath
+Mandatory. The path to the template to update
+
+.PARAMETER ReadMeFilePath
+Optional. The path to the readme to update. If not provided assumes a 'readme.md' file in the same folder as the template
+
+.PARAMETER sectionsToRefresh
+Optional. The sections to update. By default it refreshes all that are supported.
+Currently supports: 'Resource Types', 'Parameters', 'Outputs', 'Template references'
+
+.EXAMPLE
+Set-ModuleReadMe -TemplateFilePath 'C:\deploy.bicep'
+
+Update the readme in path 'C:\readme.md' based on the bicep template in path 'C:\deploy.bicep'
+#>
 function Set-ModuleReadMe {
 
     [CmdletBinding(SupportsShouldProcess = $true)]
