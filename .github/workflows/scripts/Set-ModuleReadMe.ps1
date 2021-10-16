@@ -508,5 +508,3 @@ function Set-ModuleReadMe {
         Write-Verbose "File [$ReadMeFilePath] updated" -Verbose
     }
 }
-
-Set-ModuleReadMe -TemplateFilePath 'C:\dev\ip\Azure-ResourceModules\ResourceModules\arm\Microsoft.ApiManagement\service\deploy.bicep'
