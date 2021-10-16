@@ -32,9 +32,8 @@ Product API's name list.
 ```json
 "keyVault": {
     "value":{
-         "secretIdentifier":"Key vault secret identifier for fetching secret.",
-          "identityClientId":"SystemAssignedIdentity or UserAssignedIdentity Client Id which will be used to access key vault secret."
-        }
+        "secretIdentifier":"Key vault secret identifier for fetching secret.",
+        "identityClientId":"SystemAssignedIdentity or UserAssignedIdentity Client Id which will be used to access key vault secret."
     }
 }
 ```
