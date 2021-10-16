@@ -1,5 +1,6 @@
 ﻿#requires -version 6.0
 
+#region Helper functions
 <#
 .SYNOPSIS
 Get a list of all resources (provider + service) in the given template content
@@ -124,10 +125,14 @@ function Merge-FileWithNewContent {
     if ($startIndex -eq $ReadMeFileContent.Count - 1) {
         # Not found section until end of file. Assuming it does not exist
         $endContent = @()
-        $newContent = @('', $sectionStartIdentifier) + $newContent
+        if ($ReadMeFileContent[$startIndex] -notcontains $sectionStartIdentifier) {
+            $newContent = @('', $sectionStartIdentifier) + $newContent
+        }
     } else {
         $endIndex = Get-EndIndex -ReadMeFileContent $oldContent -startIndex $startIndex
-        $endContent = $oldContent[$endIndex..$oldContent.Count]
+        if ($endIndex -ne $oldContent.Count - 1) {
+            $endContent = $oldContent[$endIndex..($oldContent.Count - 1)]
+        }
     }
 
     # Build result
@@ -363,6 +368,7 @@ function Set-TemplateReferencesSection {
     $updatedFileContent = Merge-FileWithNewContent -oldContent $ReadMeFileContent -newContent $sectionContent -sectionStartIdentifier $sectionStartIdentifier
     return $updatedFileContent
 }
+#endregion
 
 <#
 .SYNOPSIS
@@ -502,3 +508,5 @@ function Set-ModuleReadMe {
         Write-Verbose "File [$ReadMeFilePath] updated" -Verbose
     }
 }
+
+Set-ModuleReadMe -TemplateFilePath 'C:\dev\ip\Azure-ResourceModules\ResourceModules\arm\Microsoft.ApiManagement\service\deploy.bicep'
