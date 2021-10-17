@@ -40,7 +40,7 @@ function Get-NestedResourceList {
     return $res
 }
 
-# Note: If declared here, this function will be available inside of 'It' test blocks, but not outside.
+# NOTE: If declared here, this function will be available inside of 'It' test blocks, but not outside.
 BeforeAll {
     function Get-NestedResourceList {
 
