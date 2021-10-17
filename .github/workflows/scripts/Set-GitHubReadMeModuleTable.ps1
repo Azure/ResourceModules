@@ -56,16 +56,16 @@ function Merge-FileWithNewContent {
         # Not found section until end of file. Assuming it does not exist
         $endContent = @()
         if ($ReadMeFileContent[$startIndex] -notcontains $sectionStartIdentifier) {
-            $newContent = @('', $sectionStartIdentifier) + $newContent
+            $newContent = @('', $sectionStartIdentifier) + $newContent + @('')
         }
     } else {
-        if ($tableEndIndex -ne $oldContent.Count - 1) {
+        if ($tableEndIndex -le $oldContent.Count - 1) {
             $endContent = $oldContent[$tableEndIndex..($oldContent.Count - 1)]
         }
     }
 
     # Build result
-    $newContent = (($startContent + $newContent + @('') + $endContent) | Out-String).TrimEnd().Replace("`r", '').Split("`n")
+    $newContent = (($startContent + $newContent + $endContent) | Out-String).TrimEnd().Replace("`r", '').Split("`n")
     return $newContent
 }
 #endregion
