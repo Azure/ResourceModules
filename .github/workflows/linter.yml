@@ -22,6 +22,7 @@ jobs:
           VALIDATE_ARM: false
           VALIDATE_JSON: false
           VALIDATE_YAML: false
+          VALIDATE_GITHUB_ACTIONS: false
           if: ${{ github.event_name == 'pull_request' }}
           DEFAULT_BRANCH: ${{ github.base_ref }}
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
