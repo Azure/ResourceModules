@@ -33,9 +33,9 @@ function Get-NestedResourceList {
         $res += $resource
 
         if ($resource.type -eq 'Microsoft.Resources/deployments') {
-            $res += Get-NestedResource -TemplateFileContent $resource.properties.template
+            $res += Get-NestedResourceList -TemplateFileContent $resource.properties.template
         } else {
-            $res += Get-NestedResource -TemplateFileContent $resource
+            $res += Get-NestedResourceList -TemplateFileContent $resource
         }
     }
     return $res

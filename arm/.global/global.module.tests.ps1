@@ -130,6 +130,35 @@ Describe 'File/folder tests' -Tag Modules {
 }
 
 Describe 'Readme tests' -Tag Readme {
+
+
+    BeforeAll {
+        function Get-NestedResourceList {
+
+            [CmdletBinding()]
+            param(
+                [Parameter(Mandatory)]
+                [hashtable] $TemplateFileContent
+            )
+
+            $res = @()
+            $currLevelResources = @()
+            if ($TemplateFileContent.resources) {
+                $currLevelResources += $TemplateFileContent.resources
+            }
+            foreach ($resource in $currLevelResources) {
+                $res += $resource
+
+                if ($resource.type -eq 'Microsoft.Resources/deployments') {
+                    $res += Get-NestedResourceList -TemplateFileContent $resource.properties.template
+                } else {
+                    $res += Get-NestedResourceList -TemplateFileContent $resource
+                }
+            }
+            return $res
+        }
+    }
+
     Context 'Readme content tests' {
 
         $readmeFolderTestCases = [System.Collections.ArrayList] @()
@@ -185,16 +214,12 @@ Describe 'Readme tests' -Tag Readme {
                 $moduleFolderPath,
                 $fileContent
             )
-            $TemplateReadme = Get-Content ($fileContent) -ErrorAction SilentlyContinue
-            $TemplateARM = Get-Content (Join-Path -Path $moduleFolderPath \deploy.json) -Raw -ErrorAction SilentlyContinue
+            $TemplateReadme = Get-Content ($fileContent) -ErrorAction 'SilentlyContinue'
+            $TemplateARM = Get-Content (Join-Path -Path $moduleFolderPath \deploy.json) -Raw -ErrorAction 'SilentlyContinue'
             $ReadmeHTML = ($TemplateReadme | ConvertFrom-Markdown -ErrorAction SilentlyContinue).Html
-            $Template = ConvertFrom-Json -InputObject $TemplateARM -ErrorAction SilentlyContinue
+            $Template = ConvertFrom-Json -InputObject $TemplateARM -ErrorAction 'SilentlyContinue' -AsHashtable
             $ResourceTypes = @()
-            $ResourceTypes += $Template.resources.type
-            $ResourceTypesChild = $Template.resources.resources.type
-            $ResourceTypesInline = $Template.resources.properties.template.resources.type
-            $ResourceTypes += $ResourceTypesChild
-            $ResourceTypes += $ResourceTypesInline
+            $ResourceTypes = (Get-NestedResourceList -TemplateFileContent $template).type | Where-Object { $_ -notlike '*/deployments*' }
             $ResourceTypes = $ResourceTypes | Sort-Object -Unique
             $Headings = @(@())
             foreach ($H in $ReadmeHTML) {
