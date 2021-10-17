@@ -1,19 +1,20 @@
-targetScope = 'tenant'
+targetScope = 'managementGroup'
 
-@description('Optional.')
+@description('Optional. The management group display name. Defaults to managementGroupId. ')
 param managementGroupName string = ''
 
-@description('Optional.')
+@description('Required. The management group id.')
 param managementGroupId string
 
-@description('Optional.')
+@description('Optional. The management group parent id. Defaults to current scope.')
 param parentId string = ''
 
-@description('Optional. Array of role assignment objects that contain the \'roleDefinitionIdOrName\' and \'principalId\' to define RBAC role assignments on this resource. In the roleDefinitionIdOrName attribute, you can provide either the display name of the role definition, or its fully qualified ID in the following format: \'/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11\'')
+@description('Optional. Array of role assignment objects to define RBAC on this resource.')
 param roleAssignments array = []
 
 resource managementGroup 'Microsoft.Management/managementGroups@2021-04-01' = {
   name: managementGroupId
+  scope: tenant()
   properties: {
     displayName: managementGroupName
     details: !empty(parentId) ? {

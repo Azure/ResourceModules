@@ -5,6 +5,9 @@
         "managementGroupId":{
             "value": "testMG"
         },
+        "parentId": {
+            "value": "testMG2"
+        },
         "roleAssignments": {
             "value": [
                 {

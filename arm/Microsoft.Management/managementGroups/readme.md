@@ -16,12 +16,12 @@ This module has some known **limitations**:
 
 ## Parameters
 
-| Parameter Name               | Type   | Default Value | Possible values | Description                                                                                  |
-| :--------------------------- | :----- | :------------ | :-------------- | :------------------------------------------------------------------------------------------- |
-| `managementGroupDisplayName` | string |               |                 | Optional. The management group display name. Defaults to managementGroupId.                  |
-| `managementGroupId`          | string |               |                 | Required. The management group id                                                            |
-| `parentId`                   | string |               |                 | Optional. The management group parent id. Defaults to root ('/')                             |
-| `roleAssignments`            | array  |               |                 | Optional. Array of role assignment objects to define RBAC role assignments on this resource. |
+| Parameter Name               | Type   | Default Value | Possible values | Description                                                                 |
+| :--------------------------- | :----- | :------------ | :-------------- | :-------------------------------------------------------------------------- |
+| `managementGroupDisplayName` | string |               |                 | Optional. The management group display name. Defaults to managementGroupId. |
+| `managementGroupId`          | string |               |                 | Required. The management group id.                                          |
+| `parentId`                   | string |               |                 | Optional. The management group parent id. Defaults to current scope.        |
+| `roleAssignments`            | array  |               |                 | Optional. Array of role assignment objects to define RBAC on this resource. |
 
 ### Parameter Usage: `roleAssignments`
 
