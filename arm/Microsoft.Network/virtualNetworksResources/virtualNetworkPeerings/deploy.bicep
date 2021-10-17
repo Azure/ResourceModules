@@ -46,4 +46,4 @@ resource virtualNetworkPeering 'Microsoft.Network/virtualNetworks/virtualNetwork
 
 output virtualNetworkPeeringResourceGroup string = resourceGroup().name
 output virtualNetworkPeeringName string = virtualNetworkPeering.name
-output virtualNetworkPeeringResourceId string = virtualNetworkPeering.id
+output localVirtualNetworkPeeringResourceId string = virtualNetworkPeering.id
