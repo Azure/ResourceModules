@@ -1,4 +1,4 @@
-@description('Optional. The Name of Vnet Peering resource. If not provided, value will be localVnetName-remoteVnetName')
+@description('Optional. The Name of Vnet Peering resource. If not provided, default value will be localVnetName-remoteVnetName')
 param peeringName string = '${localVnetName}-${last(split(remoteVirtualNetworkId, '/'))}'
 
 @description('Required. The Name of the Virtual Network to add the peering to.')
@@ -46,4 +46,4 @@ resource virtualNetworkPeering 'Microsoft.Network/virtualNetworks/virtualNetwork
 
 output virtualNetworkPeeringResourceGroup string = resourceGroup().name
 output virtualNetworkPeeringName string = virtualNetworkPeering.name
-output localVirtualNetworkPeeringResourceId string = virtualNetworkPeering.id
+output virtualNetworkPeeringResourceId string = virtualNetworkPeering.id
