@@ -3,7 +3,6 @@ In this section you can find useful information regarding the Modules that are c
 # Available Modules
 The following table provides you with an outline of all Modules that are currently available for use. Several sub-resources may be their own Modules and are hence displayed as a child path (e.g. `service/caches`).
 
-<!-- ModuleTableStartMarker -->
 | Name | Provider namespace | Resource Type | Bicep |
 | - | - | - | - |
 | [Analysis Services](https://github.com/Azure/ResourceModules/tree/main/arm/Microsoft.AnalysisServices/servers) | `MS.AnalysisServices` | [servers](https://github.com/Azure/ResourceModules/tree/main/arm/Microsoft.AnalysisServices/servers) | :heavy_check_mark: |
@@ -103,4 +102,3 @@ The following table provides you with an outline of all Modules that are current
 | [App Service Environment](https://github.com/Azure/ResourceModules/tree/main/arm/Microsoft.Web/hostingEnvironments) |  | [hostingEnvironments](https://github.com/Azure/ResourceModules/tree/main/arm/Microsoft.Web/hostingEnvironments) | :heavy_check_mark: |
 | [AppServicePlan](https://github.com/Azure/ResourceModules/tree/main/arm/Microsoft.Web/serverfarms) |  | [serverfarms](https://github.com/Azure/ResourceModules/tree/main/arm/Microsoft.Web/serverfarms) | :heavy_check_mark: |
 | [Web/Function App](https://github.com/Azure/ResourceModules/tree/main/arm/Microsoft.Web/sites) |  | [sites](https://github.com/Azure/ResourceModules/tree/main/arm/Microsoft.Web/sites) | :heavy_check_mark: |
-<!-- ModuleTableEndMarker -->

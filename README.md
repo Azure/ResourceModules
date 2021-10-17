@@ -24,7 +24,6 @@ This repository includes a collection of advanced and curated Modules consisting
 * File an issue via [GitHub Issues](https://github.com/azure/ResourceModules/issues/new/choose)
 
 ## Available Resource Modules
-<!-- ModuleTableStartMarker -->
 | Name | Bicep | Status |
 | - | - | - |
 | [Action Group](https://github.com/Azure/ResourceModules/tree/main/arm/Microsoft.Insights/actionGroups) | :heavy_check_mark: | [![Insights: Actiongroups](https://github.com/Azure/ResourceModules/actions/workflows/ms.insights.actiongroups.yml/badge.svg)](https://github.com/Azure/ResourceModules/actions/workflows/ms.insights.actiongroups.yml) |
@@ -124,7 +123,6 @@ This repository includes a collection of advanced and curated Modules consisting
 | [VirtualNetworkGatewayConnection](https://github.com/Azure/ResourceModules/tree/main/arm/Microsoft.Network/connections) | :heavy_check_mark: | [![Network: Connections](https://github.com/Azure/ResourceModules/actions/workflows/ms.network.connections.yml/badge.svg)](https://github.com/Azure/ResourceModules/actions/workflows/ms.network.connections.yml) |
 | [VirtualNetworkPeering](https://github.com/Azure/ResourceModules/tree/main/arm/Microsoft.Network/virtualNetworksResources/virtualNetworkPeerings) | :heavy_check_mark: | [![Network: Virtualnetworks Virtualnetworkpeerings](https://github.com/Azure/ResourceModules/actions/workflows/ms.network.virtualnetworks.virtualnetworkpeerings.yml/badge.svg)](https://github.com/Azure/ResourceModules/actions/workflows/ms.network.virtualnetworks.virtualnetworkpeerings.yml) |
 | [Web/Function App](https://github.com/Azure/ResourceModules/tree/main/arm/Microsoft.Web/sites) | :heavy_check_mark: | [![Web: Sites](https://github.com/Azure/ResourceModules/actions/workflows/ms.web.sites.yml/badge.svg)](https://github.com/Azure/ResourceModules/actions/workflows/ms.web.sites.yml) |
-<!-- ModuleTableEndMarker -->
 
 <!-- ## Contributors
 
