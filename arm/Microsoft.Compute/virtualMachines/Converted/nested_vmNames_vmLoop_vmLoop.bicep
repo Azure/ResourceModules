@@ -97,6 +97,7 @@ var dnsServersValues = {
   dnsServers: ((length(nicConfigurations) == 1) ? (contains(nicConfigurations[0], 'dnsServers') ? nicConfigurations[0].dnsServers : json('[]')) : json('[]'))
 }
 
+//NIC
 module nicConfigurations_1_vmName_nicConfigurations_0_nicSuffix_nicConfigurations_0_ipConfigurations_vmNicPipConfigLoop_name_vmNicPipConfigLoop_dummyVmNicPipConfigLoop './nested_nicConfigurations_1_vmName_nicConfigurations_0_nicSuffix_nicConfigurations_0_ipConfigurations_vmNicPipConfigLoop_name_vmNicPipConfigLoop_dummyVmNicPipConfigLoop.bicep' = [for i in range(0, ((length(nicConfigurations) == 1) ? length(nicConfigurations[0].ipConfigurations) : 0)): {
   name: ((length(nicConfigurations) == 1) ? '${vmName}${nicConfigurations[0].nicSuffix}-${nicConfigurations[0].ipConfigurations[i].name}-vmNicPipConfigLoop' : 'dummyVmNicPipConfigLoop')
   params: {
@@ -190,6 +191,7 @@ module nicConfigurations_1_vmName_nicConfigurations_vmNicDeployInnerLoop_nicSuff
   dependsOn: []
 }]
 
+//VM
 resource vmName_resource 'Microsoft.Compute/virtualMachines@2020-06-01' = {
   name: vmName
   location: location
@@ -265,6 +267,7 @@ resource vmName_resource 'Microsoft.Compute/virtualMachines@2020-06-01' = {
   ]
 }
 
+//VM LOCK
 resource vmName_Microsoft_Authorization_vmDoNotDelete 'Microsoft.Compute/virtualMachines/providers/locks@2016-09-01' = if (lockForDeletion) {
   name: '${vmName}/Microsoft.Authorization/vmDoNotDelete'
   properties: {
@@ -275,6 +278,7 @@ resource vmName_Microsoft_Authorization_vmDoNotDelete 'Microsoft.Compute/virtual
   ]
 }
 
+//VM EXTENSION
 resource vmName_DomainJoin 'Microsoft.Compute/virtualMachines/extensions@2019-07-01' = if (!empty(domainName)) {
   parent: vmName_resource
   name: 'DomainJoin'
@@ -509,6 +513,7 @@ resource vmName_WindowsCustomScriptExtension 'Microsoft.Compute/virtualMachines/
   ]
 }
 
+//VM BACKUP
 module add_vmName_ToBackup './nested_add_vmName_ToBackup.bicep' = if (!empty(backupVaultName)) {
   name: 'add-${vmName}-ToBackup'
   scope: resourceGroup(backupVaultResourceGroup)
@@ -523,7 +528,7 @@ module add_vmName_ToBackup './nested_add_vmName_ToBackup.bicep' = if (!empty(bac
     vmName_NetworkWatcherAgentLinux
   ]
 }
-
+//VM RBAC
 module rbac_vmName_rbacDeplCopy './nested_rbac_vmName_rbacDeplCopy.bicep' = [for (item, i) in roleAssignments: {
   name: 'rbac-${vmName}-${i}'
   params: {

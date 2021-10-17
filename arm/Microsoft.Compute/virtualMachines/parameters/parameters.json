@@ -2,18 +2,21 @@
     "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
     "contentVersion": "1.0.0.0",
     "parameters": {
-        "vmNamePrefix": {
-            "value": "iacs"
-        },
-        "vmNumberOfInstances": {
-            "value": 2
-        },
-        "vmInitialNumber": {
-            "value": 0
-        },
+        // "vmNamePrefix": {
+        //     "value": "iacs"
+        // },
+        // "vmNumberOfInstances": {
+        //     "value": 2
+        // },
+        // "vmInitialNumber": {
+        //     "value": 0
+        // },
         // "managedServiceIdentity": {
         //     "value": "SystemAssigned"
         // },
+        "virtualMachineName": {
+            "value": "bicep-vm"
+        },
         "imageReference": {
             "value": {
                 "publisher": "MicrosoftWindowsServer",
@@ -50,8 +53,8 @@
                         {
                             "name": "ipconfig1",
                             "subnetId": "/subscriptions/8629be3b-96bc-482d-a04b-ffff597c65a2/resourceGroups/dependencies-rg/providers/Microsoft.Network/virtualNetworks/sxx-az-vnet-weu-x-002/subnets/sxx-az-subnet-weu-x-001",
-                            // "enablePublicIP": true,
-                            // "publicIpNameSuffix": "-pip-01"
+                            "enablePublicIP": true,
+                            "publicIpNameSuffix": "-pip-01"
                         }
                     ]
                 }
