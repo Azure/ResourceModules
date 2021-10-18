@@ -220,12 +220,12 @@ To use Private Endpoint the following dependencies must be deployed:
 ```
 
 ## Outputs
-| Output Name | Type |
-| :-- | :-- |
-| `keyVaultName` | string |
-| `keyVaultResourceGroup` | string |
-| `keyVaultResourceId` | string |
-| `keyVaultUrl` | string |
+| Output Name | Type | Description |
+| :-- | :-- | :-- |
+| `keyVaultName` | string | The Name of the Key Vault. |
+| `keyVaultResourceGroup` | string | The name of the Resource Group the Key Vault was created in. |
+| `keyVaultResourceId` | string | The Resource Id of the Key Vault. |
+| `keyVaultUrl` | string | The URL of the Key Vault. |
 
 ## Template references
 - [Locks](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2016-09-01/locks)

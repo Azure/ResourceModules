@@ -111,11 +111,11 @@ Tag names and tag values can be provided as needed. A tag can be left without a 
 ```
 
 ## Outputs
-| Output Name | Type |
-| :-- | :-- |
-| `eventGrid` | string |
-| `eventGridResourceGroup` | string |
-| `eventGridResourceId` | string |
+| Output Name | Type | Description |
+| :-- | :-- | :-- |
+| `eventGrid` | string | The Name of the Event Grid Topic |
+| `eventGridResourceGroup` | string | The name of the Resource Group with the Event Grid |
+| `eventGridResourceId` | string | The Resource Id of the Event Grid |
 
 ## Template references
 - [Locks](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2016-09-01/locks)

@@ -294,14 +294,25 @@ function Set-OutputsSection {
     )
 
     # Process content
-    $sectionContent = [System.Collections.ArrayList]@(
-        '| Output Name | Type |',
-        '| :-- | :-- |'
-    )
-
-    foreach ($outputName in ($templateFileContent.outputs.Keys | Sort-Object)) {
-        $output = $TemplateFileContent.outputs[$outputName]
-        $sectionContent += ("| ``{0}`` | {1} |" -f $outputName, $output.type)
+    if ($TemplateFileContent.outputs.Values.metadata) {
+        # Template has output descriptions
+        $sectionContent = [System.Collections.ArrayList]@(
+            '| Output Name | Type | Description |',
+            '| :-- | :-- | :-- |'
+        )
+        foreach ($outputName in ($templateFileContent.outputs.Keys | Sort-Object)) {
+            $output = $TemplateFileContent.outputs[$outputName]
+            $sectionContent += ("| ``{0}`` | {1} | {2} |" -f $outputName, $output.type, $output.metadata.description)
+        }
+    } else {
+        $sectionContent = [System.Collections.ArrayList]@(
+            '| Output Name | Type |',
+            '| :-- | :-- |'
+        )
+        foreach ($outputName in ($templateFileContent.outputs.Keys | Sort-Object)) {
+            $output = $TemplateFileContent.outputs[$outputName]
+            $sectionContent += ("| ``{0}`` | {1} |" -f $outputName, $output.type)
+        }
     }
 
     # Build result

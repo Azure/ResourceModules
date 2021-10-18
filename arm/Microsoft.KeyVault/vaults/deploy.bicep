@@ -274,7 +274,11 @@ module keyVault_rbac './.bicep/nested_rbac.bicep' = [for (roleAssignment, index)
   }
 }]
 
+@description('The Resource Id of the Key Vault.')
 output keyVaultResourceId string = keyVault.id
+@description('The name of the Resource Group the Key Vault was created in.')
 output keyVaultResourceGroup string = resourceGroup().name
+@description('The Name of the Key Vault.')
 output keyVaultName string = keyVault.name
+@description('The URL of the Key Vault.')
 output keyVaultUrl string = reference(keyVault.id, '2016-10-01').vaultUri
