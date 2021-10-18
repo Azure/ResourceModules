@@ -9,19 +9,20 @@ This module has some known **limitations**:
 
 ## Resource types
 
-| Resource Type                           | ApiVersion |
-| :-------------------------------------- | :--------- |
-| `Microsoft.Management/managementGroups` | 2020-05-01 |
-| `Microsoft.Resources/deployments`       | 2020-06-01 |
+| Resource Type                             | ApiVersion         |
+| :---------------------------------------- | :----------------- |
+| `Microsoft.Management/managementGroups`   | 2020-05-01         |
+| `Microsoft.Authorization/roleAssignments` | 2020-04-01-preview |
+| `Microsoft.Resources/deployments`         | 2020-06-01         |
 
 ## Parameters
 
-| Parameter Name               | Type   | Default Value | Possible values | Description                                                                 |
-| :--------------------------- | :----- | :------------ | :-------------- | :-------------------------------------------------------------------------- |
-| `managementGroupDisplayName` | string |               |                 | Optional. The management group display name. Defaults to managementGroupId. |
-| `managementGroupId`          | string |               |                 | Required. The management group id.                                          |
-| `parentId`                   | string |               |                 | Optional. The management group parent id. Defaults to current scope.        |
-| `roleAssignments`            | array  |               |                 | Optional. Array of role assignment objects to define RBAC on this resource. |
+| Parameter Name        | Type   | Default Value | Possible values | Description                                                                     |
+| :-------------------- | :----- | :------------ | :-------------- | :------------------------------------------------------------------------------ |
+| `managementGroupName` | string |               |                 | Optional. The management group display name. Defaults to the managementGroupId. |
+| `managementGroupId`   | string |               |                 | Required. The management group id.                                              |
+| `parentId`            | string |               |                 | Optional. The management group parent id. Defaults to current scope.            |
+| `roleAssignments`     | array  |               |                 | Optional. Array of role assignment objects to define RBAC on this resource.     |
 
 ### Parameter Usage: `roleAssignments`
 
