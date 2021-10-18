@@ -1,4 +1,4 @@
-# Scheduled Query Rules
+# Scheduled Query Rules `[Microsoft.Insights/scheduledQueryRules]`
 
 This module deploys an Alert based on metrics
 

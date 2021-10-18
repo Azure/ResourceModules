@@ -1,4 +1,4 @@
-# Shared Image Gallery
+# Shared Image Gallery `[Microsoft.Compute/galleries]`
 
 This module deploys Share Image Gallery, with resource lock.
 

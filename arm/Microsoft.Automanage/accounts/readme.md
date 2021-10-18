@@ -1,4 +1,4 @@
-# AutoManage
+# AutoManage `[Microsoft.Automanage/accounts]`
 
 This module deploys an AutoManage account and associates VM with it.
 

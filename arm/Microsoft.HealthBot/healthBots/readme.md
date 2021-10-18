@@ -1,4 +1,4 @@
-# Azure Health Bot
+# Azure Health Bot `[Microsoft.HealthBot/healthBots]`
 
 This module deploys an Azure Health Bot.
 

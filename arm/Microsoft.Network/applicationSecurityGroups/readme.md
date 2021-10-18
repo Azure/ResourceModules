@@ -1,4 +1,4 @@
-# ApplicationSecurityGroups
+# ApplicationSecurityGroups `[Microsoft.Network/applicationSecurityGroups]`
 
 This module deploys Application Security Groups.
 

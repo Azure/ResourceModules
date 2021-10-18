@@ -1,4 +1,4 @@
-# Image
+# Image `[Microsoft.Compute/images]`
 
 This module deploys Images.
 

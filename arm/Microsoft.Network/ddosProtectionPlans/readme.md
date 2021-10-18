@@ -1,4 +1,4 @@
-# DDoS Protection Plans
+# DDoS Protection Plans `[Microsoft.Network/ddosProtectionPlans]`
 
 This template deploys a DDoS protection plan.
 

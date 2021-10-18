@@ -1,4 +1,4 @@
-# Shared Image Definition
+# Shared Image Definition `[Microsoft.Compute/galleriesResources/images]`
 
 This module deploys an Image Definition in a Shared Image Gallery.
 

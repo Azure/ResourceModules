@@ -1,4 +1,4 @@
-# PolicyDefinition
+# PolicyDefinition `[Microsoft.Authorization/policyDefinitions]`
 
 ## Resource types
 | Resource Type | Api Version |

@@ -1,4 +1,4 @@
-# Resource Group
+# Resource Group `[Microsoft.Resources/resourceGroups]`
 
 This module deploys Resource Groups.
 

@@ -1,4 +1,4 @@
-# Azure Monitor Private Link Scope
+# Azure Monitor Private Link Scope `[Microsoft.Insights/privateLinkScopes]`
 
 This module deploys Azure Monitor Private Link Scope
 
@@ -9,7 +9,7 @@ This module deploys Azure Monitor Private Link Scope
 | `microsoft.insights/privateLinkScopes` | 2019-10-17-preview |
 | `Microsoft.Insights/privateLinkScopes/providers/roleAssignments` | 2020-04-01-preview |
 | `Microsoft.Insights/privateLinkScopes/scopedResources` | 2019-10-17-preview |
-| `Microsoft.Network/privateEndpoints` | 2020-05-01 |
+| `Microsoft.Network/privateEndpoints` | 2021-05-01 |
 | `Microsoft.Network/privateEndpoints/privateDnsZoneGroups` | 2020-05-01 |
 
 ## Parameters
@@ -133,5 +133,5 @@ Tag names and tag values can be provided as needed. A tag can be left without a 
 - [Locks](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2016-09-01/locks)
 - [Privatelinkscopes](https://docs.microsoft.com/en-us/azure/templates/microsoft.insights/2019-10-17-preview/privateLinkScopes)
 - [Privatelinkscopes/Scopedresources](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Insights/2019-10-17-preview/privateLinkScopes/scopedResources)
-- [Privateendpoints](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Network/2020-05-01/privateEndpoints)
+- [Privateendpoints](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Network/2021-05-01/privateEndpoints)
 - [Privateendpoints/Privatednszonegroups](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Network/2020-05-01/privateEndpoints/privateDnsZoneGroups)

@@ -1,4 +1,4 @@
-# LogicApp
+# LogicApp `[Microsoft.Logic/workflows]`
 
 This module deploys Logic App resource.
 

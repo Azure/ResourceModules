@@ -1,4 +1,4 @@
-# AVD Application Groups
+# AVD Application Groups `[Microsoft.DesktopVirtualization/applicationgroups]`
 
 This module deploys AVD Application Groups, with resource lock and diagnostics configuration.
 

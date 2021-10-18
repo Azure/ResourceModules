@@ -1,4 +1,4 @@
-# Api Management Service Products
+# Api Management Service Products `[Microsoft.ApiManagement/serviceResources/products]`
 
 This module deploys Api Management Service Products.
 

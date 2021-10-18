@@ -1,4 +1,4 @@
-# VirtualNetworkGatewayConnection
+# VirtualNetworkGatewayConnection `[Microsoft.Network/connections]`
 
 This template deploys Virtual Network Gateway Connection.
 

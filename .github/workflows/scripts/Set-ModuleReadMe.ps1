@@ -459,6 +459,12 @@ function Set-ModuleReadMe {
         $readMeFileContent = Get-Content -Path $ReadMeFilePath
     }
 
+    # Update title
+    $fullResourcePath = (Split-Path $TemplateFilePath -Parent).Replace('\', '/').Split('arm/')[1]
+    if ($readMeFileContent[0] -notlike "*$fullResourcePath*") {
+        $readMeFileContent[0] = '{0} `[{1}]`' -f $readMeFileContent[0], $fullResourcePath
+    }
+
     if ($sectionsToRefresh -contains 'Resource Types') {
         # Handle [Resource Types] section
         # ===============================
@@ -499,9 +505,9 @@ function Set-ModuleReadMe {
         $readMeFileContent = Set-TemplateReferencesSection @inputObject
     }
 
-    Write-Verbose 'New content:' -Verbose
-    Write-Verbose '============' -Verbose
-    Write-Verbose ($readMeFileContent | Out-String) -Verbose
+    Write-Verbose 'New content:'
+    Write-Verbose '============'
+    Write-Verbose ($readMeFileContent | Out-String)
 
     if ($PSCmdlet.ShouldProcess("File in path [$ReadMeFilePath]", 'Overwrite')) {
         Set-Content -Path $ReadMeFilePath -Value $readMeFileContent -Force

@@ -1,4 +1,4 @@
-# LogAnalytics
+# LogAnalytics `[Microsoft.OperationalInsights/workspaces]`
 
 This template deploys Log Analytics.
 

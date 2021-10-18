@@ -1,4 +1,4 @@
-# Budgets
+# Budgets `[Microsoft.Consumption/budgets]`
 
 This module deploys budgets for subscriptions.
 

@@ -1,4 +1,4 @@
-# Virtual Wan
+# Virtual Wan `[Microsoft.Network/virtualWans]`
 
 This template deploys Virtual Wan
 

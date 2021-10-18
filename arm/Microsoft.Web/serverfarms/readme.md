@@ -1,4 +1,4 @@
-# AppServicePlan
+# AppServicePlan `[Microsoft.Web/serverfarms]`
 
 This module deploys an App Service Plan.
 

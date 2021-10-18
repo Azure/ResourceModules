@@ -1,4 +1,4 @@
-# Application Insights
+# Application Insights `[Microsoft.Insights/components]`
 
 ## Resource Types
 | Resource Type | Api Version |

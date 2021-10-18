@@ -1,4 +1,4 @@
-# Virtual Network
+# Virtual Network `[Microsoft.Network/virtualNetworks]`
 
 This template deploys a Virtual Network (vNet) with 2 optional Subnets.
 

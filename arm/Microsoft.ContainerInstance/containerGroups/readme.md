@@ -1,4 +1,4 @@
-# ContainerInstances
+# ContainerInstances `[Microsoft.ContainerInstance/containerGroups]`
 
 ### Container groups in Azure Container Instances
 

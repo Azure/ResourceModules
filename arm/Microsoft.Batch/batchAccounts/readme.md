@@ -1,4 +1,4 @@
-# Batch Accounts
+# Batch Accounts `[Microsoft.Batch/batchAccounts]`
 
 ## Resource types
 | Resource Type | Api Version |

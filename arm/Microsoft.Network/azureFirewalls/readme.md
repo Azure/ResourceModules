@@ -1,4 +1,4 @@
-# AzureFirewall
+# AzureFirewall `[Microsoft.Network/azureFirewalls]`
 
 This module deploys Azure Firewall.
 

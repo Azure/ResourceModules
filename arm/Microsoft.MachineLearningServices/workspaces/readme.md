@@ -1,4 +1,4 @@
-# Machine Learning Services
+# Machine Learning Services `[Microsoft.MachineLearningServices/workspaces]`
 
 This module deploys a Machine Learning Services Workspace.
 
@@ -9,8 +9,8 @@ This module deploys a Machine Learning Services Workspace.
 | `Microsoft.Insights/diagnosticSettings` | 2017-05-01-preview |
 | `Microsoft.MachineLearningServices/workspaces` | 2021-04-01 |
 | `Microsoft.MachineLearningServices/workspaces/providers/roleAssignments` | 2020-04-01-preview |
-| `Microsoft.Network/privateEndpoints` | 2020-05-01 |
-| `Microsoft.Network/privateEndpoints/privateDnsZoneGroups` | 2020-05-01 |
+| `Microsoft.Network/privateEndpoints` | 2021-05-01 |
+| `Microsoft.Network/privateEndpoints/privateDnsZoneGroups` | 2021-02-01 |
 
 ## Parameters
 | Parameter Name | Type | Default Value | Possible Values | Description |
@@ -128,5 +128,5 @@ To use Private Endpoint the following dependencies must be deployed:
 - [Locks](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2016-09-01/locks)
 - [Diagnosticsettings](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Insights/2017-05-01-preview/diagnosticSettings)
 - [Workspaces](https://docs.microsoft.com/en-us/azure/templates/Microsoft.MachineLearningServices/2021-04-01/workspaces)
-- [Privateendpoints](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Network/2020-05-01/privateEndpoints)
-- [Privateendpoints/Privatednszonegroups](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Network/2020-05-01/privateEndpoints/privateDnsZoneGroups)
+- [Privateendpoints](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Network/2021-05-01/privateEndpoints)
+- [Privateendpoints/Privatednszonegroups](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Network/2021-02-01/privateEndpoints/privateDnsZoneGroups)

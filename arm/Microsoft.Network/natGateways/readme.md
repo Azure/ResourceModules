@@ -1,4 +1,4 @@
-# NAT Gateway
+# NAT Gateway `[Microsoft.Network/natGateways]`
 
 This module deploys a NAT Gateway.
 

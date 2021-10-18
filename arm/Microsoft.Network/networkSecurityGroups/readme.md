@@ -1,4 +1,4 @@
-# NetworkSecurityGroups
+# NetworkSecurityGroups `[Microsoft.Network/networkSecurityGroups]`
 
 This template deploys a Network Security Groups (NSG) with optional security rules.
 

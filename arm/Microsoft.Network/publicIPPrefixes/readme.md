@@ -1,4 +1,4 @@
-# Public IP Prefixes
+# Public IP Prefixes `[Microsoft.Network/publicIPPrefixes]`
 
 This template deploys Public IP Prefixes.
 

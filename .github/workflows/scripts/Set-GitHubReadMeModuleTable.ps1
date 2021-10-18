@@ -143,9 +143,9 @@ function Set-GitHubReadMeModuleTable {
 
     $newContent = Merge-FileWithNewContent -oldContent $contentArray -newContent $tableString -sectionStartIdentifier '## Available Resource Modules'
 
-    Write-Verbose 'New content:' -Verbose
-    Write-Verbose '============' -Verbose
-    Write-Verbose ($newContent | Out-String) -Verbose
+    Write-Verbose 'New content:'
+    Write-Verbose '============'
+    Write-Verbose ($newContent | Out-String)
 
     if ($PSCmdlet.ShouldProcess("File in path [$filePath]", 'Overwrite')) {
         Set-Content -Path $filePath -Value $newContent -Force

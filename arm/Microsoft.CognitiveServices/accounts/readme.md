@@ -1,4 +1,4 @@
-# CognitiveServices
+# CognitiveServices `[Microsoft.CognitiveServices/accounts]`
 
 This module deploys different kinds of Cognitive Services resources
 

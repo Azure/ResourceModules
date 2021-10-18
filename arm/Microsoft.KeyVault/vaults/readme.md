@@ -1,4 +1,4 @@
-# KeyVault
+# KeyVault `[Microsoft.KeyVault/vaults]`
 
 [![Deploy to Azure](/docs/media/deploytoazure.svg?sanitize=true)](<https://portal.azure.com/#create/Microsoft.Template/uri/https%3A%2F%2Fraw.githubusercontent.com%2FAzure%2FModules%2Fmain%2FKeyVault%2Fdeploy.json>)
 
@@ -15,8 +15,8 @@
 | `Microsoft.KeyVault/vaults/keys` | 2019-09-01 |
 | `Microsoft.KeyVault/vaults/providers/roleAssignments` | 2020-04-01-preview |
 | `Microsoft.KeyVault/vaults/secrets` | 2019-09-01 |
-| `Microsoft.Network/privateEndpoints` | 2020-05-01 |
-| `Microsoft.Network/privateEndpoints/privateDnsZoneGroups` | 2020-05-01 |
+| `Microsoft.Network/privateEndpoints` | 2021-05-01 |
+| `Microsoft.Network/privateEndpoints/privateDnsZoneGroups` | 2021-02-01 |
 
 ## Parameters
 | Parameter Name | Type | Default Value | Possible Values | Description |
@@ -233,5 +233,5 @@ To use Private Endpoint the following dependencies must be deployed:
 - [Vaults](https://docs.microsoft.com/en-us/azure/templates/Microsoft.KeyVault/2019-09-01/vaults)
 - [Vaults/Keys](https://docs.microsoft.com/en-us/azure/templates/Microsoft.KeyVault/2019-09-01/vaults/keys)
 - [Vaults/Secrets](https://docs.microsoft.com/en-us/azure/templates/Microsoft.KeyVault/2019-09-01/vaults/secrets)
-- [Privateendpoints](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Network/2020-05-01/privateEndpoints)
-- [Privateendpoints/Privatednszonegroups](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Network/2020-05-01/privateEndpoints/privateDnsZoneGroups)
+- [Privateendpoints](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Network/2021-05-01/privateEndpoints)
+- [Privateendpoints/Privatednszonegroups](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Network/2021-02-01/privateEndpoints/privateDnsZoneGroups)

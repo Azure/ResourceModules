@@ -1,4 +1,4 @@
-# ActivityLog
+# ActivityLog `[Microsoft.Insights/diagnosticSettings]`
 
 This module deploys a subscription wide export of the ActivityLog.
 

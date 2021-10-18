@@ -1,4 +1,4 @@
-# Image Templates
+# Image Templates `[Microsoft.VirtualMachineImages/imageTemplates]`
 
 This module deploys an Image Template (for Azure Image Builder service) that can be consumed by the Azure Image Builder service
 

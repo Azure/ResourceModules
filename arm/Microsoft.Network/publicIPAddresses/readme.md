@@ -1,4 +1,4 @@
-# Public IP Addresses
+# Public IP Addresses `[Microsoft.Network/publicIPAddresses]`
 
 ## Resource types
 | Resource Type | Api Version |

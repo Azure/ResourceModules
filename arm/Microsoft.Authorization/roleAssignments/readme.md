@@ -1,4 +1,4 @@
-# Role Assignments
+# Role Assignments `[Microsoft.Authorization/roleAssignments]`
 
 This module deploys Role Assignments.
 

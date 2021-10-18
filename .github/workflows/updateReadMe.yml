@@ -46,7 +46,7 @@ jobs:
           Write-Verbose "Invoke task with" -Verbose
           Write-Verbose ($functionInput | ConvertTo-Json | Out-String) -Verbose
 
-          Set-GitHubReadMeModuleTable @functionInput
+          Set-GitHubReadMeModuleTable @functionInput -Verbose
 
       - name: "Update module folder ReadMe"
         shell: pwsh
@@ -65,7 +65,7 @@ jobs:
           Write-Verbose "Invoke task with" -Verbose
           Write-Verbose ($functionInput | ConvertTo-Json | Out-String) -Verbose
 
-          Set-GitHubReadMeModuleTable @functionInput
+          Set-GitHubReadMeModuleTable @functionInput -Verbose
 
       - name: "Push changes"
         shell: pwsh

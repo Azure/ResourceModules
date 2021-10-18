@@ -1,4 +1,4 @@
-# VirtualNetworkGateway
+# VirtualNetworkGateway `[Microsoft.Network/virtualNetworkGateways]`
 
 This module deploys a Virtual Network Gateway.
 

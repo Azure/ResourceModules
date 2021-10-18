@@ -1,4 +1,4 @@
-# Software Update Configuration
+# Software Update Configuration `[Microsoft.Automation/automationAccountsResources/softwareUpdateConfigurations]`
 
 This module deploys a Software Update Configuration into an existing Automation Account.
 Also known as Patch Management, Update Management and patch deployment schedules.

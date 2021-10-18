@@ -1,4 +1,4 @@
-# AutomationAccounts
+# AutomationAccounts `[Microsoft.Automation/automationAccounts]`
 
 This module deploys an Azure Automation Account, with resource lock.
 
@@ -13,8 +13,8 @@ This module deploys an Azure Automation Account, with resource lock.
 | `Microsoft.Automation/automationAccounts/runbooks` | 2019-06-01 |
 | `Microsoft.Automation/automationAccounts/schedules` | 2020-01-13-preview |
 | `Microsoft.Insights/diagnosticSettings` | 2017-05-01-preview |
-| `Microsoft.Network/privateEndpoints` | 2020-05-01 |
-| `Microsoft.Network/privateEndpoints/privateDnsZoneGroups` | 2020-05-01 |
+| `Microsoft.Network/privateEndpoints` | 2021-05-01 |
+| `Microsoft.Network/privateEndpoints/privateDnsZoneGroups` | 2021-02-01 |
 
 ## Parameters
 | Parameter Name | Type | Default Value | Possible Values | Description |
@@ -311,5 +311,5 @@ Tag names and tag values can be provided as needed. A tag can be left without a 
 - [Automationaccounts/Runbooks](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Automation/2019-06-01/automationAccounts/runbooks)
 - [Automationaccounts/Schedules](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Automation/2020-01-13-preview/automationAccounts/schedules)
 - [Diagnosticsettings](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Insights/2017-05-01-preview/diagnosticSettings)
-- [Privateendpoints](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Network/2020-05-01/privateEndpoints)
-- [Privateendpoints/Privatednszonegroups](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Network/2020-05-01/privateEndpoints/privateDnsZoneGroups)
+- [Privateendpoints](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Network/2021-05-01/privateEndpoints)
+- [Privateendpoints/Privatednszonegroups](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Network/2021-02-01/privateEndpoints/privateDnsZoneGroups)

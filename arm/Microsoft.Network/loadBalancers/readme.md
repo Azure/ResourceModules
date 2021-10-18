@@ -1,4 +1,4 @@
-# LoadBalancer
+# LoadBalancer `[Microsoft.Network/loadBalancers]`
 
 This module deploys a Load Balancer
 

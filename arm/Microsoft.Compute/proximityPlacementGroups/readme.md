@@ -1,4 +1,4 @@
-# ProximityPlacementGroup
+# ProximityPlacementGroup `[Microsoft.Compute/proximityPlacementGroups]`
 
 This template deploys a Proximity Placement Group
 

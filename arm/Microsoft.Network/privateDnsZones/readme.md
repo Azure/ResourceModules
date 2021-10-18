@@ -1,4 +1,4 @@
-# PrivateDnsZones
+# PrivateDnsZones `[Microsoft.Network/privateDnsZones]`
 
 # Resource
 

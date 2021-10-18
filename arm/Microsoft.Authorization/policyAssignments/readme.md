@@ -1,4 +1,4 @@
-# PolicyAssignment
+# PolicyAssignment `[Microsoft.Authorization/policyAssignments]`
 
 ## Resource types
 | Resource Type | Api Version |

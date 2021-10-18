@@ -1,4 +1,4 @@
-# Role Definitions
+# Role Definitions `[Microsoft.Authorization/roleDefinitions]`
 
 This module deploys custom RBAC Role Definitions.
 

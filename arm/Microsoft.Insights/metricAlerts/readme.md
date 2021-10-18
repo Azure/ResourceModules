@@ -1,4 +1,4 @@
-# Metric Alert
+# Metric Alert `[Microsoft.Insights/metricAlerts]`
 
 This module deploys an Alert based on metrics
 

@@ -1,4 +1,4 @@
-# ApplicationGateway
+# ApplicationGateway `[Microsoft.Network/applicationGateways]`
 
 # Resource
 

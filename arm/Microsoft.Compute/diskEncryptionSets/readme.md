@@ -1,4 +1,4 @@
-# DiskEncryptionSet
+# DiskEncryptionSet `[Microsoft.Compute/diskEncryptionSets]`
 
 This template deploys a Disk Encryption Set
 

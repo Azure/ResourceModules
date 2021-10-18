@@ -1,4 +1,4 @@
-# AVD HostPools
+# AVD HostPools `[Microsoft.DesktopVirtualization/hostpools]`
 
 This module deploys AVD Host Pools, with resource lock and diagnostics configuration.
 

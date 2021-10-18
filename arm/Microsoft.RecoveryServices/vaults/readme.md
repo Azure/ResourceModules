@@ -1,4 +1,4 @@
-# RecoveryServicesVaults
+# RecoveryServicesVaults `[Microsoft.RecoveryServices/vaults]`
 
 This module deploys Recovery Service Vault, with resource lock.
 

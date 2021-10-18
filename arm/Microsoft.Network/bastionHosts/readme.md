@@ -1,4 +1,4 @@
-# AzureBastion
+# AzureBastion `[Microsoft.Network/bastionHosts]`
 
 This module deploys an Azure Bastion.
 

@@ -1,4 +1,4 @@
-# Analysis Services
+# Analysis Services `[Microsoft.AnalysisServices/servers]`
 
 ## Resource Types
 | Resource Type | Api Version |
@@ -86,7 +86,6 @@ Tag names and tag values can be provided as needed. A tag can be left without a 
 | `analysisServicesName` | string |
 | `analysisServicesResourceGroup` | string |
 | `analysisServicesResourceId` | string |
-
 
 ## Template references
 - [Servers](https://docs.microsoft.com/en-us/azure/templates/Microsoft.AnalysisServices/2017-08-01/servers)

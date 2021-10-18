@@ -1,4 +1,4 @@
-# Azure Databricks
+# Azure Databricks `[Microsoft.Databricks/workspaces]`
 
 ## Resource types
 | Resource Type | Api Version |

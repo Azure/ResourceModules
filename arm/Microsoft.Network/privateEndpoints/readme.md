@@ -1,4 +1,4 @@
-# PrivateEndpoints
+# PrivateEndpoints `[Microsoft.Network/privateEndpoints]`
 
 # Resource
 

@@ -1,4 +1,4 @@
-# ExpressRoute Circuit
+# ExpressRoute Circuit `[Microsoft.Network/expressRouteCircuits]`
 
 This template deploys a ExrepressRoute Circuit.
 

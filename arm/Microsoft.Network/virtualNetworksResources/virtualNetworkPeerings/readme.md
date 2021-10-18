@@ -1,4 +1,4 @@
-# VirtualNetworkPeering
+# VirtualNetworkPeering `[Microsoft.Network/virtualNetworksResources/virtualNetworkPeerings]`
 
 This template deploys Virtual Network Peering.
 

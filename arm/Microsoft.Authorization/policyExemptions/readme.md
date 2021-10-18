@@ -1,4 +1,4 @@
-# PolicyExemption
+# PolicyExemption `[Microsoft.Authorization/policyExemptions]`
 
 ## Resource types
 | Resource Type | Api Version |

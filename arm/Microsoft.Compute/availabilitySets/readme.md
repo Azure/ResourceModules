@@ -1,4 +1,4 @@
-# AvailabilitySet
+# AvailabilitySet `[Microsoft.Compute/availabilitySets]`
 
 This template deploys an Availability Set
 

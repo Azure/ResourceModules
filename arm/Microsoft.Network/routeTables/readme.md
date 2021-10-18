@@ -1,4 +1,4 @@
-# RouteTables
+# RouteTables `[Microsoft.Network/routeTables]`
 
 This template deploys User Defined Route Tables.
 

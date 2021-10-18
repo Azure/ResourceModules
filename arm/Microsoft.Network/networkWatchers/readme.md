@@ -1,4 +1,4 @@
-# Network Watcher
+# Network Watcher `[Microsoft.Network/networkWatchers]`
 
 This template deploys Network Watcher.
 

@@ -1,4 +1,4 @@
-# ServiceBusNamespaces
+# ServiceBusNamespaces `[Microsoft.ServiceBus/namespaces]`
 
 This module deploys Service Bus Namespace resource.
 
@@ -7,7 +7,7 @@ This module deploys Service Bus Namespace resource.
 | :-- | :-- |
 | `Microsoft.Authorization/locks` | 2016-09-01 |
 | `Microsoft.Insights/diagnosticSettings` | 2017-05-01-preview |
-| `Microsoft.Network/privateEndpoints` | 2020-05-01 |
+| `Microsoft.Network/privateEndpoints` | 2021-05-01 |
 | `Microsoft.Network/privateEndpoints/privateDnsZoneGroups` | 2020-05-01 |
 | `Microsoft.ServiceBus/namespaces` | 2018-01-01-preview |
 | `Microsoft.ServiceBus/namespaces/AuthorizationRules` | 2017-04-01 |
@@ -185,7 +185,7 @@ Tag names and tag values can be provided as needed. A tag can be left without a 
 ## Template references
 - [Locks](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2016-09-01/locks)
 - [Diagnosticsettings](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Insights/2017-05-01-preview/diagnosticSettings)
-- [Privateendpoints](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Network/2020-05-01/privateEndpoints)
+- [Privateendpoints](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Network/2021-05-01/privateEndpoints)
 - [Privateendpoints/Privatednszonegroups](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Network/2020-05-01/privateEndpoints/privateDnsZoneGroups)
 - [Namespaces](https://docs.microsoft.com/en-us/azure/templates/Microsoft.ServiceBus/2018-01-01-preview/namespaces)
 - [Namespaces/Authorizationrules](https://docs.microsoft.com/en-us/azure/templates/Microsoft.ServiceBus/2017-04-01/namespaces/AuthorizationRules)

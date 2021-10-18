@@ -1,4 +1,4 @@
-# AzureSecurityCenter
+# AzureSecurityCenter `[Microsoft.Security/azureSecurityCenter]`
 
 This template enables Azure Security Center - Standard tier by default, could be overridden.
 
