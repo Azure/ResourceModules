@@ -1,0 +1,42 @@
+{
+    "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "serviceFabricClusterName": {
+            "value": "sxx-az-sfc-weu-x-001"
+        },
+        "location": {
+            "value": "centralIndia"
+        },
+        "tags": {
+            "value": {
+                "costCenter": "1234",
+                "environment": "prod",
+                "contactinfo": "someone@company.com"
+            }
+        },
+        "lockForDeletion": {
+            "value": false
+        },
+        "addOnFeatures": {
+            "value": []
+        },
+        "maxUnusedVersionsToKeep": {
+            "value": 2 // Mandatory
+        },
+        "azureActiveDirectory": {
+            "value": {
+                "clientApplication": "",
+                "clusterApplication": "",
+                "tenantId": ""
+            }
+        },
+        "certificate": {
+            "value": {
+                "thumbprint": "", // Mandatory
+                "thumbprintSecondary": "",
+                "x509StoreName": "" // Possible values 'AddressBook', 'AuthRoot', 'CertificateAuthority', 'Disallowed', 'My', 'Root', 'TrustedPeople', 'TrustedPublisher'
+            }
+        }
+    }
+}

@@ -1,6 +1,7 @@
 // This file can only be deployed at a resource group scope.
 targetScope = 'resourceGroup'
 
+// Service Fabric cluster resource and lock params
 @description('Required. Name of the Serivce Fabric cluster.')
 param serviceFabricClusterName string = ''
 
@@ -28,33 +29,11 @@ param addOnFeatures array = []
 @description('Required. Number of unused versions per application type to keep.')
 param maxUnusedVersionsToKeep int = 3
 
-@description('Optional. Azure active directory client application id.')
-param clientApplication string = ''
+@description('Optional. Object containing Azure active directory client application id, cluster application id and tenant id.')
+param azureActiveDirectory object = {}
 
-@description('Optional. Azure active directory cluster application id.')
-param clusterApplication string = ''
-
-@description('Optional. Azure active directory tenant id.')
-param tenantId string = ''
-
-@description('Required. Thumbprint of the primary certificate.')
-param thumbprint string = ''
-
-@description('Optional. Thumbprint of the secondary certificate.')
-param thumbprintSecondary string = ''
-
-@allowed([
-  'AddressBook'
-  'AuthRoot'
-  'CertificateAuthority'
-  'Disallowed'
-  'My'
-  'Root'
-  'TrustedPeople'
-  'TrustedPublisher'
-])
-@description('Optional.The local certificate store location for cluster certificate.')
-param clusterCertificatex509StoreName string = 'Root'
+@description('Optional. Describes the certificate details like thumbprint of the primary certificate, thumbprint of the secondary certificate and the local certificate store location')
+param certificate object = {}
 
 @description('Optional. Describes a list of server certificates referenced by common name that are used to secure the cluster.')
 param certificateCommonNames object = {}
@@ -150,6 +129,18 @@ param vmssZonalUpgradeMode string = 'Hierarchical'
 param waveUpgradePaused bool = false
 
 // Var section
+var azureActiveDirectory_var = {
+  clientApplication: (!empty(azureActiveDirectory) ? azureActiveDirectory.clientApplication : json('null'))
+  clusterApplication: (!empty(azureActiveDirectory) ? azureActiveDirectory.clusterApplication : json('null'))
+  tenantId: (!empty(azureActiveDirectory) ? azureActiveDirectory.tenantId : json('null'))
+}
+
+var certificate_var = {
+  thumbprint: (!empty(certificate) ? certificate.thumbprint : json('null'))
+  thumbprintSecondary: (!empty(certificate) ? certificate.thumbprintSecondary : json('null'))
+  x509StoreName: (!empty(certificate) ? certificate.x509StoreName : json('null'))
+}
+
 var builtInRoleNames = {}
 
 module pid_cuaId './.bicep/nested_cuaId.bicep' = if (!empty(cuaId)) {
@@ -169,17 +160,8 @@ resource serviceFabricCluster 'Microsoft.ServiceFabric/clusters@2021-06-01' = {
       maxUnusedVersionsToKeep: maxUnusedVersionsToKeep
     }
 
-    azureActiveDirectory: {
-      clientApplication: clientApplication
-      clusterApplication: clusterApplication
-      tenantId: tenantId
-    }
-
-    certificate: {
-      thumbprint: thumbprint
-      thumbprintSecondary: thumbprintSecondary
-      x509StoreName: clusterCertificatex509StoreName
-    }
+    azureActiveDirectory: (!empty(azureActiveDirectory) ? azureActiveDirectory_var : json('null'))
+    certificate: (!empty(certificate) ? certificate_var : json('null'))
 
     certificateCommonNames: certificateCommonNames
     clientCertificateCommonNames: clientCertificateCommonNames
