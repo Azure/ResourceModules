@@ -21,8 +21,8 @@ on:
     paths:
       - '.github/actions/templates/**'
       - '.github/workflows/ms.logic.workflows.yml'
-      - 'arm/Microsoft.Logic/workflows/servers/**'
-      - '!arm/Microsoft.Logic/workflows/servers/readme.md'
+      - 'arm/Microsoft.Logic/workflows/**'
+      - '!arm/Microsoft.Logic/workflows/readme.md'
 
 env:
   moduleName: 'workflows'

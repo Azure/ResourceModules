@@ -20,14 +20,14 @@ on:
       - main
     paths:
       - '.github/actions/templates/**'
-      - '.github/workflows/ms.insights.scheduledQueryRules.yml'
+      - '.github/workflows/ms.insights.scheduledqueryrules.yml'
       - 'arm/Microsoft.Insights/scheduledQueryRules/**'
       - '!arm/Microsoft.Insights/scheduledQueryRules/readme.md'
 
 env:
   moduleName: 'scheduledQueryRules'
   modulePath: 'arm/Microsoft.Insights/scheduledQueryRules'
-  workflowPath: '.github/workflows/ms.insights.scheduledQueryRules.yml'
+  workflowPath: '.github/workflows/ms.insights.scheduledqueryrules.yml'
   AZURE_CREDENTIALS: ${{ secrets.AZURE_CREDENTIALS }}
   ARM_SUBSCRIPTION_ID: ${{ secrets.ARM_SUBSCRIPTION_ID }}
   ARM_MGMTGROUP_ID: ${{ secrets.ARM_MGMTGROUP_ID }}

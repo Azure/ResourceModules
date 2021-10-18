@@ -20,14 +20,14 @@ on:
       - main
     paths:
       - '.github/actions/templates/**'
-      - '.github/workflows/ms.insights.privateLinkScopes.yml'
+      - '.github/workflows/ms.insights.privatelinkscopes.yml'
       - 'arm/Microsoft.Insights/privateLinkScopes/**'
       - '!arm/Microsoft.Insights/privateLinkScopes/readme.md'
 
 env:
   moduleName: 'privateLinkScopes'
   modulePath: 'arm/Microsoft.Insights/privateLinkScopes'
-  workflowPath: '.github/workflows/ms.insights.privateLinkScopes.yml'
+  workflowPath: '.github/workflows/ms.insights.privatelinkscopes.yml'
   AZURE_CREDENTIALS: ${{ secrets.AZURE_CREDENTIALS }}
   ARM_SUBSCRIPTION_ID: ${{ secrets.ARM_SUBSCRIPTION_ID }}
   ARM_MGMTGROUP_ID: ${{ secrets.ARM_MGMTGROUP_ID }}

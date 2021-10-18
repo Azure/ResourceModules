@@ -20,14 +20,14 @@ on:
       - main
     paths:
       - '.github/actions/templates/**'
-      - '.github/workflows/ms.insights.metricAlerts.yml'
+      - '.github/workflows/ms.insights.metricalerts.yml'
       - 'arm/Microsoft.Insights/metricAlerts/**'
       - '!arm/Microsoft.Insights/metricAlerts/readme.md'
 
 env:
   moduleName: 'metricAlerts'
   modulePath: 'arm/Microsoft.Insights/metricAlerts'
-  workflowPath: '.github/workflows/ms.insights.metricAlerts.yml'
+  workflowPath: '.github/workflows/ms.insights.metricalerts.yml'
   AZURE_CREDENTIALS: ${{ secrets.AZURE_CREDENTIALS }}
   ARM_SUBSCRIPTION_ID: ${{ secrets.ARM_SUBSCRIPTION_ID }}
   ARM_MGMTGROUP_ID: ${{ secrets.ARM_MGMTGROUP_ID }}
