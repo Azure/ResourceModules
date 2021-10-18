@@ -221,8 +221,8 @@ resource eventHubNamespace_lock 'Microsoft.Authorization/locks@2016-09-01' = if 
   scope: eventHubNamespace
 }
 
-resource eventHubNamespace_diagnosticSettings 'Microsoft.EventHub/namespaces/providers/diagnosticsettings@2017-05-01-preview' = if ((!empty(diagnosticStorageAccountId)) || (!empty(workspaceId))) {
-  name: '${eventHubNamespace.name}/Microsoft.Insights/service'
+resource eventHubNamespace_diagnosticSettings 'Microsoft.Insights/diagnosticsettings@2017-05-01-preview' = if ((!empty(diagnosticStorageAccountId)) || (!empty(workspaceId))) {
+  name: '${eventHubNamespace.name}-diagnosticService'
   location: location
   properties: {
     storageAccountId: (empty(diagnosticStorageAccountId) ? json('null') : diagnosticStorageAccountId)
@@ -230,6 +230,7 @@ resource eventHubNamespace_diagnosticSettings 'Microsoft.EventHub/namespaces/pro
     metrics: ((empty(diagnosticStorageAccountId) && empty(workspaceId)) ? json('null') : diagnosticsMetrics)
     logs: ((empty(diagnosticStorageAccountId) && empty(workspaceId)) ? json('null') : diagnosticsLogs)
   }
+  scope: eventHubNamespace
 }
 
 resource eventHubNamespace_diasterRecoveryConfig 'Microsoft.EventHub/namespaces/disasterRecoveryConfigs@2017-04-01' = if (((!empty(partnerNamespaceId)) && (!empty(namespaceAlias))) ? true : false) {

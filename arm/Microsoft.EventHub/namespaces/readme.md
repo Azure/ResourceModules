@@ -8,7 +8,7 @@ This module deploys EventHub Namespace.
 |:--|:--|
 |`Microsoft.EventHub/namespaces`|2017-04-01|
 |`Microsoft.Authorization/locks`|2016-09-01|
-|`Microsoft.EventHub/namespaces/providers/diagnosticsettings`|2017-05-01-preview|
+|`Microsoft.Insights/diagnosticsettings`|2017-05-01-preview|
 |`Microsoft.EventHub/namespaces/disasterRecoveryConfigs`|2017-04-01|
 |`Microsoft.EventHub/namespaces/AuthorizationRules`|2017-04-01|
 |`Microsoft.Network/privateEndpoints`|2020-05-01|
