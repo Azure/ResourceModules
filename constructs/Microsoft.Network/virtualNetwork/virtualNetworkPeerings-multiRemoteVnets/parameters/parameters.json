@@ -1,0 +1,22 @@
+{
+    "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "localVnetName": {
+            "value": "sxx-az-vnet-weu-x-004"
+        },
+        "peeringConfigurations": {
+            "value": [
+                {
+                    "peeringName": "sxx-az-peering-weu-x-002-sxx-az-peering-weu-x-003",
+                    "remoteVirtualNetworkId": "/subscriptions/8629be3b-96bc-482d-a04b-ffff597c65a2/resourceGroups/dependencies-rg/providers/Microsoft.Network/virtualNetworks/sxx-az-vnet-weu-x-003",
+                    "useRemoteGateways": false
+                },
+                {
+                    "remoteVirtualNetworkId": "/subscriptions/8629be3b-96bc-482d-a04b-ffff597c65a2/resourceGroups/dependencies-rg/providers/Microsoft.Network/virtualNetworks/peeringNetwork",
+                    "useRemoteGateways": false
+                }
+            ]
+        }
+    }
+}
