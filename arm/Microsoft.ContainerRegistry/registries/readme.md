@@ -9,10 +9,10 @@ Azure Container Registry is a managed, private Docker registry service based on 
 | `Microsoft.Resources/deployments` | 2020-06-01 |
 | `Microsoft.ContainerRegistry/registries` | 2020-11-01-preview |
 | `Microsoft.ContainerRegistry/registries/providers/roleAssignments` | 2020-04-01-preview |
-| `Microsoft.ContainerRegistry/registries/providers/diagnosticsettings` | 2017-05-01-preview |
+| `Microsoft.Insights/diagnosticsettings` | 2017-05-01-preview |
 | `Microsoft.Network/privateEndpoints/privateDnsZoneGroups` | 2020-05-01 |
 | `Microsoft.Network/privateEndpoints` | 2020-05-01 |
-| `providers/locks` | 2016-09-01 |
+| `Microsoft.Authorization/locks` | 2016-09-01 |
 
 ## Parameters
 
