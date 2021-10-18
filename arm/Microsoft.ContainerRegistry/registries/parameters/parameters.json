@@ -7,9 +7,6 @@
     },
     "acrAdminUserEnabled": {
       "value": false
-    },
-    "lock": {
-      "value": "CanNotDelete"
     }
     // "acrSku": {
     //   "value": "Premium"
