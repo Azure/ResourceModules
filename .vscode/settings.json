@@ -25,11 +25,5 @@
     "powershell.codeFormatting.useConstantStrings": true,
     "powershell.codeFormatting.useCorrectCasing": true,
     "powershell.codeFormatting.whitespaceBetweenParameters": true,
-    "yaml.format.singleQuote": true,
-    "markdownlint.config": {
-        "MD028": false,
-        "MD025": {
-            "front_matter_title": ""
-        }
-    }
+    "yaml.format.singleQuote": true
 }
