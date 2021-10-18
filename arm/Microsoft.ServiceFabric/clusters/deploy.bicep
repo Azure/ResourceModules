@@ -141,6 +141,26 @@ var certificate_var = {
   x509StoreName: (!empty(certificate) ? certificate.x509StoreName : json('null'))
 }
 
+var certificateCommonNamesList_var = [for index in range(0, (!empty(certificateCommonNames) ? length(certificateCommonNames.commonNames) : 0)): {
+  commonNames: '${certificateCommonNames.commonNames[index]}'
+}]
+
+var certificateCommonNames_var = {
+  commonNames: (!empty(certificateCommonNames) ? certificateCommonNamesList_var : json('null'))
+  x509StoreName: (!empty(certificateCommonNames) ? certificateCommonNames.x509StoreName : json('null'))
+}
+
+var clientCertificateCommonNames_var = [for index in range(0, (!empty(clientCertificateCommonNames) ? length(clientCertificateCommonNames) : 0)): {
+  certificateCommonName: (!empty(clientCertificateCommonNames) ? '${clientCertificateCommonNames[index].certificateCommonName}' : json('null'))
+  certificateIssuerThumbprint: (!empty(clientCertificateCommonNames) ? '${clientCertificateCommonNames[index].certificateIssuerThumbprint}' : json('null'))
+  isAdmin: (!empty(clientCertificateCommonNames) ? '${clientCertificateCommonNames[index].isAdmin}' : json('null'))
+}]
+
+var clientCertificateThumbprints_var = [for index in range(0, (!empty(clientCertificateThumbprints) ? length(clientCertificateThumbprints) : 0)): {
+  certificateThumbprint: (!empty(clientCertificateThumbprints) ? '${clientCertificateThumbprints[index].certificateThumbprint}' : json('null'))
+  isAdmin: (!empty(clientCertificateThumbprints) ? '${clientCertificateThumbprints[index].isAdmin}' : json('null'))
+}]
+
 var builtInRoleNames = {}
 
 module pid_cuaId './.bicep/nested_cuaId.bicep' = if (!empty(cuaId)) {
@@ -162,11 +182,11 @@ resource serviceFabricCluster 'Microsoft.ServiceFabric/clusters@2021-06-01' = {
 
     azureActiveDirectory: (!empty(azureActiveDirectory) ? azureActiveDirectory_var : json('null'))
     certificate: (!empty(certificate) ? certificate_var : json('null'))
+    certificateCommonNames: (!empty(certificateCommonNames) ? certificateCommonNames_var : json('null'))
+    clientCertificateCommonNames: (!empty(clientCertificateCommonNames) ? clientCertificateCommonNames_var : json('null'))
+    clientCertificateThumbprints: (!empty(clientCertificateThumbprints) ? clientCertificateThumbprints_var : json('null'))
 
-    certificateCommonNames: certificateCommonNames
-    clientCertificateCommonNames: clientCertificateCommonNames
-    clientCertificateThumbprints: clientCertificateThumbprints
-    clusterCodeVersion: clusterCodeVersion
+    clusterCodeVersion: (!empty(clusterCodeVersion) ? clusterCodeVersion : json('null'))
     diagnosticsStorageAccountConfig: diagnosticsStorageAccountConfig
     eventStoreServiceEnabled: eventStoreServiceEnabled
     fabricSettings: fabricSettings
@@ -199,6 +219,10 @@ resource serviceFabricCluster_lock 'Microsoft.Authorization/locks@2016-09-01' = 
   scope: serviceFabricCluster
 }
 
+// Outputs section
+output serviceFabricClusterName string = serviceFabricCluster.name
+output serviceFabricClusterId string = serviceFabricCluster.id
+output serviceFabricClusterProperties object = serviceFabricCluster.properties
 // Outputs section
 output serviceFabricClusterName string = serviceFabricCluster.name
 output serviceFabricClusterId string = serviceFabricCluster.id

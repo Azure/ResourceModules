@@ -33,10 +33,34 @@
         },
         "certificate": {
             "value": {
-                "thumbprint": "", // Mandatory
+                "thumbprint": "", // If 'certificate' is provided then this is mandatory
                 "thumbprintSecondary": "",
-                "x509StoreName": "" // Possible values 'AddressBook', 'AuthRoot', 'CertificateAuthority', 'Disallowed', 'My', 'Root', 'TrustedPeople', 'TrustedPublisher'
+                "x509StoreName": "" // Possible values are 'AddressBook', 'AuthRoot', 'CertificateAuthority', 'Disallowed', 'My', 'Root', 'TrustedPeople', 'TrustedPublisher'
             }
+        },
+        "certificateCommonNames": {
+            "value": {
+                "commonNames": [ // The list of server certificates referenced by common name that are used to secure the cluster.
+                    {
+                        "certificateCommonName": "", // If 'certificateCommonNames' is provided then this is mandatory
+                        "certificateIssuerThumbprint": "" // If 'certificateCommonNames' is provided then this is mandatory
+                    }
+                ],
+                "x509StoreName": "" // Possible values are 'AddressBook', 'AuthRoot', 'CertificateAuthority', 'Disallowed', 'My', 'Root', 'TrustedPeople', 'TrustedPublisher'
+            }
+        },
+        "clientCertificateCommonNames": {
+            "value": [{
+                "certificateCommonName": "", // If 'clientCertificateCommonNames' is passed then this is mandatory
+                "certificateIssuerThumbprint": "", // If 'clientCertificateCommonNames' is passed then this is mandatory
+                "isAdmin": "" // Bool. If 'clientCertificateCommonNames' is passed then this is mandatory
+            }]
+        },
+        "clientCertificateThumbprints": {
+            "value": [{
+                "certificateThumbprint": "", // If 'clientCertificateThumbprints' is passed then this is mandatory
+                "isAdmin": "" // If 'clientCertificateThumbprints' is passed then this is mandatory
+            }]
         }
     }
 }
