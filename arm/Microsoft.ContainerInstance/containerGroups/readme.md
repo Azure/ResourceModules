@@ -10,7 +10,7 @@ The top-level resource in Azure Container Instances is the container group. A co
 | :-- | :-- |
 | `Microsoft.Resources/deployments` | 2018-02-01 |
 | `Microsoft.ContainerInstance/containerGroups` | 2021-03-01 |
-| `providers/locks` | 2016-09-01 |
+| `Microsoft.Authorization/locks` | 2016-09-01 |
 
 ### Resource dependency
 
@@ -22,7 +22,7 @@ The following resources are required to be able to deploy this resource.
 | :-- | :-- | :-- | :-- | :-- |
 | `containergroupname` | string | Required. Name for the container group. |  |  |
 | `containername` | string | Required. Name for the container. |  |  |
-| `cpuCores` | string | Optional. The number of CPU cores to allocate to the container. | 1.0 |  |
+| `cpuCores` | int | Optional. The number of CPU cores to allocate to the container. | 1 |  |
 | `cuaId` | string | Optional. Customer Usage Attribution id (GUID). This GUID must be previously registered |  |  |
 | `environmentVariables` | array | Optional. Envrionment variables of the container group. | System.Object[] |  |
 | `image` | string | Required. Name of the image. |  |  |
@@ -30,7 +30,7 @@ The following resources are required to be able to deploy this resource.
 | `ipAddressType` | string | Optional. Specifies if the IP is exposed to the public internet or private VNET. - Public or Private | Public |  |
 | `location` | string | Optional. Location for all Resources. | [resourceGroup().location] |  |
 | `lockForDeletion` | bool | Optional. Switch to lock resource from deletion. | False |  |
-| `memoryInGB` | string | Optional. The amount of memory to allocate to the container in gigabytes. | 1.5 |  |
+| `memoryInGB` | int | Optional. The amount of memory to allocate to the container in gigabytes. | 2 |  |
 | `osType` | string | Optional. The operating system type required by the containers in the container group. - Windows or Linux. | Linux |  |
 | `ports` | array | Optional. Port to open on the container and the public IP address. | System.Object[] |  |
 | `restartPolicy` | string | Optional. Restart policy for all containers within the container group. - Always: Always restart. OnFailure: Restart on failure. Never: Never restart. - Always, OnFailure, Never | Always |  |

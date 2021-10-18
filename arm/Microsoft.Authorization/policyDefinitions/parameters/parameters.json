@@ -1,0 +1,56 @@
+{
+  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    "policyDefinitionName": {
+      "value": "test-deny-keyvault-public-access"
+    },
+    "displayName": {
+      "value": "[Test] This policy denies creation of Key Vaults with IP Firewall exposed to all public endpoints"
+    },
+    "policyRule": {
+      "value": {
+        "if": {
+          "allOf": [
+            {
+              "equals": "Microsoft.KeyVault/vaults",
+              "field": "type"
+            },
+            {
+              "field": "Microsoft.KeyVault/vaults/networkAcls.defaultAction",
+              "notequals": "Deny"
+            }
+          ]
+        },
+        "then": {
+          "effect": "[parameters('effect')]"
+        }
+      }
+    },
+    "parameters": {
+      "value": {
+        "effect": {
+          "allowedValues": [
+            "Audit",
+            "Deny",
+            "Disabled"
+          ],
+          "defaultValue": "Deny",
+          "metadata": {
+            "description": "Enable or disable the execution of the policy",
+            "displayName": "Effect"
+          },
+          "type": "String"
+        }
+      }
+    },
+    "metadata": {
+      "value": {
+        "category": "Security"
+      }
+    },
+    "subscriptionId": {
+      "value": "8629be3b-96bc-482d-a04b-ffff597c65a2"
+    }
+  }
+}

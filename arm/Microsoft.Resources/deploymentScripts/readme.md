@@ -7,8 +7,8 @@ This module deploys Deployment Scripts.
 |Resource Type|ApiVersion|
 |:--|:--|
 |`Microsoft.Resources/deployments`|2018-02-01|
-|`providers/locks`|2016-09-01|
-|`Microsoft.Resources/deploymentScripts`|2019-10-01-preview|
+|`Microsoft.Authorization/locks`|2016-09-01|
+|`Microsoft.Resources/deploymentScripts`|2020-10-01|
 
 ## Parameters
 
