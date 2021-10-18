@@ -1,6 +1,3 @@
-// This file can only be deployed at a resource group scope.
-targetScope = 'resourceGroup'
-
 @description('Optional. The name of the EventHub namespace. If no name is provided, then unique name will be created.')
 @maxLength(50)
 param namespaceName string = ''
@@ -86,9 +83,8 @@ param cuaId string = ''
 @description('Generated. Do not provide a value! This date value is used to generate a SAS token to access the modules.')
 param baseTime string = utcNow('u')
 
-var moduleName = 'EventHub Namespace'
 var maxNameLength = 50
-var uniqueEventHubNamespaceUntrim = uniqueString('${moduleName}${baseTime}')
+var uniqueEventHubNamespaceUntrim = '${uniqueString('EventHub Namespace${baseTime}')}'
 var uniqueEventHubNamespace = ((length(uniqueEventHubNamespaceUntrim) > maxNameLength) ? substring(uniqueEventHubNamespaceUntrim, 0, maxNameLength) : uniqueEventHubNamespaceUntrim)
 var constructedNamespaceName = (empty(namespaceName) ? uniqueEventHubNamespace : namespaceName)
 var defaultAuthorizationRuleId = resourceId('Microsoft.EventHub/namespaces/AuthorizationRules', constructedNamespaceName, 'RootManageSharedAccessKey')
@@ -223,9 +219,6 @@ resource eventHubNamespace_lock 'Microsoft.Authorization/locks@2016-09-01' = if 
     level: 'CanNotDelete'
   }
   scope: eventHubNamespace
-  dependsOn: [
-    eventHubNamespace
-  ]
 }
 
 resource eventHubNamespace_diagnosticSettings 'Microsoft.EventHub/namespaces/providers/diagnosticsettings@2017-05-01-preview' = if ((!empty(diagnosticStorageAccountId)) || (!empty(workspaceId))) {
@@ -237,20 +230,14 @@ resource eventHubNamespace_diagnosticSettings 'Microsoft.EventHub/namespaces/pro
     metrics: ((empty(diagnosticStorageAccountId) && empty(workspaceId)) ? json('null') : diagnosticsMetrics)
     logs: ((empty(diagnosticStorageAccountId) && empty(workspaceId)) ? json('null') : diagnosticsLogs)
   }
-  dependsOn: [
-    eventHubNamespace
-  ]
 }
 
-resource eventHubNamespace_diasterRecoveryConfig 'Microsoft.EventHub/namespaces/disasterRecoveryConfigs@2017-04-01' = if (((!empty(partnerNamespaceId)) && (!empty(namespaceAlias))) ? bool('true') : bool('false')) {
+resource eventHubNamespace_diasterRecoveryConfig 'Microsoft.EventHub/namespaces/disasterRecoveryConfigs@2017-04-01' = if (((!empty(partnerNamespaceId)) && (!empty(namespaceAlias))) ? true : false) {
   parent: eventHubNamespace
   name: namespaceAlias_var
   properties: {
     partnerNamespace: partnerNamespaceId
   }
-  dependsOn: [
-    eventHubNamespace
-  ]
 }
 
 resource eventHubNamespace_authorizationRules 'Microsoft.EventHub/namespaces/AuthorizationRules@2017-04-01' = [for authorizationRule in authorizationRules: if (length(authorizationRules) > 0) {
@@ -258,9 +245,6 @@ resource eventHubNamespace_authorizationRules 'Microsoft.EventHub/namespaces/Aut
   properties: {
     rights: authorizationRule.properties.rights
   }
-  dependsOn: [
-    eventHubNamespace
-  ]
 }]
 
 module eventHubNamespace_privateEndpoints './.bicep/nested_privateEndpoint.bicep' = [for (endpoint, index) in privateEndpoints: {
@@ -271,9 +255,6 @@ module eventHubNamespace_privateEndpoints './.bicep/nested_privateEndpoint.bicep
     privateEndpointObj: endpoint
     tags: tags
   }
-  dependsOn: [
-    eventHubNamespace
-  ]
 }]
 
 module eventHubNamespace_rbac './.bicep/nested_rbac.bicep' = [for (roleAssignment, index) in roleAssignments: {
@@ -281,11 +262,8 @@ module eventHubNamespace_rbac './.bicep/nested_rbac.bicep' = [for (roleAssignmen
   params: {
     roleAssignmentObj: roleAssignment
     builtInRoleNames: builtInRoleNames
-    namespaceName: eventHubNamespace.name
+    resourceName: eventHubNamespace.name
   }
-  dependsOn: [
-    eventHubNamespace
-  ]
 }]
 
 output namespace string = eventHubNamespace.name
