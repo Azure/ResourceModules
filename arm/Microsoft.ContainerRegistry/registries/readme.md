@@ -31,7 +31,7 @@ Azure Container Registry is a managed, private Docker registry service based on 
 | `dataEndpointEnabled` | bool | Optional. Enable a single data endpoint per region for serving data. Not relevant in case of disabled public access. | false | true, false |
 | `publicNetworkAccess` | string | Optional. Whether or not public network access is allowed for the container registry. | Enabled | Enabled, Disabled |
 | `networkRuleBypassOptions` | string | Optional. Whether to allow trusted Azure services to access a network restricted registry. Not relevant in case of public access. | AzureServices | AzureServices, None |
-| `lockForDeletion` | bool | Optional. Switch to lock resource from deletion. | False |  |
+| `lock` | string | 'NotSpecified' | 'CanNotDelete', 'NotSpecified', 'ReadOnly' | Optional. Specify the type of lock |
 | `tags` | object | Optional. Tags of the resource. |  |  |
 | `cuaId` | string | Optional. Customer Usage Attribution id (GUID). This GUID must be previously registered |  |  |
 | `diagnosticLogsRetentionInDays` | int | Optional. Specifies the number of days that logs will be kept for; a value of 0 will retain data indefinitely. | 365 |  |
