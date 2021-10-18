@@ -185,8 +185,8 @@ resource serviceFabricCluster 'Microsoft.ServiceFabric/clusters@2021-06-01' = {
     certificateCommonNames: (!empty(certificateCommonNames) ? certificateCommonNames_var : json('null'))
     clientCertificateCommonNames: (!empty(clientCertificateCommonNames) ? clientCertificateCommonNames_var : json('null'))
     clientCertificateThumbprints: (!empty(clientCertificateThumbprints) ? clientCertificateThumbprints_var : json('null'))
-
     clusterCodeVersion: (!empty(clusterCodeVersion) ? clusterCodeVersion : json('null'))
+
     diagnosticsStorageAccountConfig: diagnosticsStorageAccountConfig
     eventStoreServiceEnabled: eventStoreServiceEnabled
     fabricSettings: fabricSettings
@@ -219,10 +219,6 @@ resource serviceFabricCluster_lock 'Microsoft.Authorization/locks@2016-09-01' = 
   scope: serviceFabricCluster
 }
 
-// Outputs section
-output serviceFabricClusterName string = serviceFabricCluster.name
-output serviceFabricClusterId string = serviceFabricCluster.id
-output serviceFabricClusterProperties object = serviceFabricCluster.properties
 // Outputs section
 output serviceFabricClusterName string = serviceFabricCluster.name
 output serviceFabricClusterId string = serviceFabricCluster.id
