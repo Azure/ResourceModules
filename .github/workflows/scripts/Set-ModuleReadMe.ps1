@@ -424,7 +424,7 @@ function Set-ModuleReadMe {
     if ((Split-Path -Path $TemplateFilePath -Extension) -eq '.bicep') {
         $templateFileContent = az bicep build --file $TemplateFilePath --stdout | ConvertFrom-Json -AsHashtable
     } else {
-        $templateFileContent = ConvertFrom-Json (Get-Content $TemplateFilePath -Raw) -ErrorAction Stop -AsHashtable
+        $templateFileContent = ConvertFrom-Json (Get-Content $TemplateFilePath -Encoding 'utf8' -Raw) -ErrorAction Stop -AsHashtable
     }
 
     # Check readme
@@ -456,7 +456,7 @@ function Set-ModuleReadMe {
         # New-Item $path $ReadMeFilePath -ItemType 'File' -Force -Value $initialContent
         $readMeFileContent = $initialContent
     } else {
-        $readMeFileContent = Get-Content -Path $ReadMeFilePath
+        $readMeFileContent = Get-Content -Path $ReadMeFilePath -Encoding 'utf8'
     }
 
     # Update title
@@ -510,7 +510,7 @@ function Set-ModuleReadMe {
     Write-Verbose ($readMeFileContent | Out-String)
 
     if ($PSCmdlet.ShouldProcess("File in path [$ReadMeFilePath]", 'Overwrite')) {
-        Set-Content -Path $ReadMeFilePath -Value $readMeFileContent -Force
+        Set-Content -Path $ReadMeFilePath -Value $readMeFileContent -Force -Encoding 'utf8'
         Write-Verbose "File [$ReadMeFilePath] updated" -Verbose
     }
 }
