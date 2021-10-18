@@ -18,24 +18,30 @@ var dnsServersValues = {
   dnsServers: (contains(nicConfiguration, 'dnsServers') ? nicConfiguration.dnsServers : json('[]'))
 }
 
-module networkInterface_publicIPConfigurations './nested_nicConfigurations_ipConfigurations.bicep' = [for (ipConfiguration, index) in nicConfiguration.ipConfigurations: {
-  name: 'networkInterfaceName-publicIPConfiguration-${index}'
-  params: {
-    publicIPAddressName: ipConfiguration.name
-    publicIPPrefixId: ipConfiguration.publicIPPrefixId
-    publicIPAllocationMethod: ipConfiguration.publicIPAllocationMethod
-    skuName: ipConfiguration.skuName
-    skuTier: ipConfiguration.skuTier
-    location: ipConfiguration.location
-    diagnosticLogsRetentionInDays: ipConfiguration.diagnosticLogsRetentionInDays
-    diagnosticStorageAccountId: ipConfiguration.diagnosticStorageAccountId
-    workspaceId: ipConfiguration.workspaceId
-    eventHubAuthorizationRuleId: ipConfiguration.eventHubAuthorizationRuleId
-    eventHubName: ipConfiguration.eventHubName
-    lockForDeletion: ipConfiguration.lockForDeletion
-    roleAssignments: ipConfiguration.roleAssignments
-    tags: tags
-  }
+// var enablePublicIPObj = [for (ipConfiguration, index) in nicConfiguration.ipConfigurations: {
+//   ipConfigName: ipConfiguration.name
+//   enablePublicIP: contains(ipConfiguration, 'enablePublicIP') ? (ipConfiguration.enablePublicIP ? 'true' : 'false ') : 'false'
+// }]
+
+module networkInterface_publicIPConfigurations './nested_networkInterface_publicIPAddress.bicep' = [for (ipConfiguration, index) in nicConfiguration.ipConfigurations: if ([contains(ipConfiguration, 'pipconfiguration') || !empty(ipConfiguration.pipconfiguration)]) {
+name: '${networkInterfaceName}-publicIPConfiguration-${index}'
+params: {
+publicIPAddressName: '${virtualMachineName}${ipConfiguration.publicIpNameSuffix}'
+// publicIPPrefixId: (contains(ipConfiguration, 'publicIPPrefixId') ? (!(empty(ipConfiguration.publicIPPrefixId)) ? ipConfiguration.publicIPPrefixId : json('null')) : json('null'))
+publicIPPrefixId: (contains(ipConfiguration, 'publicIPPrefixId') ? ipConfiguration.publicIPPrefixId : '')
+publicIPAllocationMethod: 'Static'
+skuName: 'Standard'
+// skuTier: ipConfiguration.skuTier
+location: location
+// diagnosticLogsRetentionInDays: ipConfiguration.diagnosticLogsRetentionInDays
+// diagnosticStorageAccountId: ipConfiguration.diagnosticStorageAccountId
+// workspaceId: ipConfiguration.workspaceId
+// eventHubAuthorizationRuleId: ipConfiguration.eventHubAuthorizationRuleId
+// eventHubName: ipConfiguration.eventHubName
+// lockForDeletion: ipConfiguration.lockForDeletion
+// roleAssignments: ipConfiguration.roleAssignments
+tags: tags
+}
 }]
 
 resource networkInterface 'Microsoft.Network/networkInterfaces@2020-08-01' = {
@@ -52,7 +58,7 @@ resource networkInterface 'Microsoft.Network/networkInterfaces@2020-08-01' = {
       // (contains(nicConfiguration.ipConfigurations[j], 'name') ? nicConfiguration.ipConfigurations[j].name : 'ipconfig${(j + 1)}')
       properties: {
         primary: ((index == 0) ? 'true' : 'false')
-        // privateIPAllocationMethod: (!empty(ipConfiguration.vmIPAddress) ? 'Dynamic' : 'Static')
+        privateIPAllocationMethod: (contains(ipConfiguration, 'vmIPAddress') ? (!empty(ipConfiguration.vmIPAddress) ? ipConfiguration.vmIPAddress : json('null')) : json('null'))
         publicIPAddress: (ipConfiguration.enablePublicIP ? json('{"id":"${resourceId('Microsoft.Network/publicIPAddresses', '${virtualMachineName}${ipConfiguration.publicIpNameSuffix}')}"}') : json('null'))
 
         // privateIPAllocationMethod: (contains(nicConfiguration.ipConfigurations[j], 'vmIPAddress') ? (empty(nicConfiguration.ipConfigurations[j].vmIPAddress) ? 'Dynamic' : 'Static') : 'Dynamic')

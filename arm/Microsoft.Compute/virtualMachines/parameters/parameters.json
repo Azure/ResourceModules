@@ -53,8 +53,46 @@
                         {
                             "name": "ipconfig1",
                             "subnetId": "/subscriptions/8629be3b-96bc-482d-a04b-ffff597c65a2/resourceGroups/dependencies-rg/providers/Microsoft.Network/virtualNetworks/sxx-az-vnet-weu-x-002/subnets/sxx-az-subnet-weu-x-001",
-                            "enablePublicIP": true,
-                            "publicIpNameSuffix": "-pip-01"
+                            "pipConfiguration": {
+                                // "enablePublicIP": true,
+                                "publicIpNameSuffix": "-pip-11"
+                            }
+                        },
+                        {
+                            "name": "ipconfig2",
+                            "subnetId": "/subscriptions/8629be3b-96bc-482d-a04b-ffff597c65a2/resourceGroups/dependencies-rg/providers/Microsoft.Network/virtualNetworks/sxx-az-vnet-weu-x-002/subnets/sxx-az-subnet-weu-x-001",
+                            "privateIPAllocationMethod": "Static",
+                            "pipConfiguration": {
+                                // "enablePublicIP": true,
+                                "publicIpNameSuffix": "-pip-12"
+                            }
+                        },
+                        {
+                            "name": "ipconfig3",
+                            "subnetId": "/subscriptions/8629be3b-96bc-482d-a04b-ffff597c65a2/resourceGroups/dependencies-rg/providers/Microsoft.Network/virtualNetworks/sxx-az-vnet-weu-x-002/subnets/sxx-az-subnet-weu-x-001",
+                            // "pipConfiguration": {
+                            //     // "enablePublicIP": true,
+                            //     "publicIpNameSuffix": "-pip-13"
+                            // }
+                        }
+                    ]
+                },
+                {
+                    "nicSuffix": "-nic-02",
+                    "ipConfigurations": [
+                        {
+                            "name": "ipconfig1",
+                            "subnetId": "/subscriptions/8629be3b-96bc-482d-a04b-ffff597c65a2/resourceGroups/dependencies-rg/providers/Microsoft.Network/virtualNetworks/sxx-az-vnet-weu-x-002/subnets/sxx-az-subnet-weu-x-001"
+                            // ,
+                            // "enablePublicIP": true,
+                            // "publicIpNameSuffix": "-pip-21"
+                        },
+                        {
+                            "name": "ipconfig2",
+                            "subnetId": "/subscriptions/8629be3b-96bc-482d-a04b-ffff597c65a2/resourceGroups/dependencies-rg/providers/Microsoft.Network/virtualNetworks/sxx-az-vnet-weu-x-002/subnets/sxx-az-subnet-weu-x-001",
+                            "privateIPAllocationMethod": "Static"
+                            // "enablePublicIP": true,
+                            // "publicIpNameSuffix": "-pip-22"
                         }
                     ]
                 }

@@ -323,7 +323,7 @@ module pid_cuaId './.bicep/nested_cuaId.bicep' = if (!empty(cuaId)) {
   params: {}
 }
 
-module virtualMachine_nic './.bicep/nested_nicConfigurations.bicep' = [for (nicConfiguration, index) in nicConfigurations: {
+module virtualMachine_nic './.bicep/nested_networkInterface.bicep' = [for (nicConfiguration, index) in nicConfigurations: {
   name: '${deployment().name}-nic-${index}'
   params: {
     networkInterfaceName: '${virtualMachineName}${nicConfiguration.nicSuffix}'
@@ -342,98 +342,98 @@ module virtualMachine_nic './.bicep/nested_nicConfigurations.bicep' = [for (nicC
   }
 }]
 
-resource virtualMachine 'Microsoft.Compute/virtualMachines@2020-06-01' = {
-  name: virtualMachineName
-  location: location
-  identity: identity
-  tags: tags
-  zones: (useAvailabilityZone ? array(availabilityZone) : json('null'))
-  plan: (empty(plan) ? json('null') : plan)
-  properties: {
-    hardwareProfile: {
-      vmSize: vmSize
-    }
-    storageProfile: {
-      imageReference: imageReference
-      osDisk: {
-        name: '${virtualMachineName}-disk-os-01'
-        createOption: osDisk.createOption
-        diskSizeGB: osDisk.diskSizeGB
-        managedDisk: {
-          storageAccountType: osDisk.managedDisk.storageAccountType
-        }
-      }
-      dataDisks: [for (dataDisk, index) in dataDisks: {
-        lun: index
-        name: '${virtualMachineName}-disk-data-${padLeft((index + 1), 2, '0')}'
-        diskSizeGB: dataDisk.diskSizeGB
-        createOption: dataDisk.createOption
-        caching: dataDisk.caching
-        managedDisk: {
-          storageAccountType: dataDisk.managedDisk.storageAccountType
-          diskEncryptionSet: {
-            id: (enableServerSideEncryption ? dataDisk.managedDisk.diskEncryptionSet.id : json('null'))
-          }
-        }
-      }]
-    }
-    additionalCapabilities: {
-      ultraSSDEnabled: ultraSSDEnabled
-    }
-    osProfile: {
-      computerName: vmComputerNameTransformed
-      adminUsername: adminUsername
-      adminPassword: adminPassword
-      customData: (empty(customData) ? json('null') : base64(customData))
-      windowsConfiguration: (empty(windowsConfiguration) ? json('null') : windowsConfiguration)
-      linuxConfiguration: (empty(linuxConfiguration) ? json('null') : linuxConfiguration)
-      secrets: certificatesToBeInstalled
-      allowExtensionOperations: allowExtensionOperations
-    }
-    networkProfile: {
-      networkInterfaces: [for (nicConfiguration, index) in nicConfigurations: {
-        properties: {
-          primary: ((index == 0) ? 'true' : 'false')
-        }
-        id: resourceId('Microsoft.Network/networkInterfaces', '${virtualMachineName}${nicConfiguration.nicSuffix}')
-      }]
-    }
-    diagnosticsProfile: {
-      bootDiagnostics: {
-        enabled: (!empty(bootDiagnosticStorageAccountName))
-        storageUri: (empty(bootDiagnosticStorageAccountName) ? json('null') : 'https://${bootDiagnosticStorageAccountName}${bootDiagnosticStorageAccountUri}')
-      }
-    }
-    availabilitySet: (empty(availabilitySetName) ? json('null') : json('{"id":"${resourceId('Microsoft.Compute/availabilitySets', availabilitySetName)}"}'))
-    proximityPlacementGroup: (empty(proximityPlacementGroupName) ? json('null') : json('{"id":"${resourceId('Microsoft.Compute/proximityPlacementGroups', proximityPlacementGroupName)}"}'))
-    priority: vmPriority
-    evictionPolicy: (enableEvictionPolicy ? 'Deallocate' : json('null'))
-    billingProfile: (((!empty(vmPriority)) && (!empty(maxPriceForLowPriorityVm))) ? json('{"maxPrice":"${maxPriceForLowPriorityVm}"}') : json('null'))
-    host: ((!empty(dedicatedHostId)) ? json('{"id":"${dedicatedHostId}"}') : json('null'))
-    licenseType: (empty(licenseType) ? json('null') : licenseType)
-  }
-  dependsOn: [
-    virtualMachine_nic
-  ]
-}
+// resource virtualMachine 'Microsoft.Compute/virtualMachines@2020-06-01' = {
+//   name: virtualMachineName
+//   location: location
+//   identity: identity
+//   tags: tags
+//   zones: (useAvailabilityZone ? array(availabilityZone) : json('null'))
+//   plan: (empty(plan) ? json('null') : plan)
+//   properties: {
+//     hardwareProfile: {
+//       vmSize: vmSize
+//     }
+//     storageProfile: {
+//       imageReference: imageReference
+//       osDisk: {
+//         name: '${virtualMachineName}-disk-os-01'
+//         createOption: osDisk.createOption
+//         diskSizeGB: osDisk.diskSizeGB
+//         managedDisk: {
+//           storageAccountType: osDisk.managedDisk.storageAccountType
+//         }
+//       }
+//       dataDisks: [for (dataDisk, index) in dataDisks: {
+//         lun: index
+//         name: '${virtualMachineName}-disk-data-${padLeft((index + 1), 2, '0')}'
+//         diskSizeGB: dataDisk.diskSizeGB
+//         createOption: dataDisk.createOption
+//         caching: dataDisk.caching
+//         managedDisk: {
+//           storageAccountType: dataDisk.managedDisk.storageAccountType
+//           diskEncryptionSet: {
+//             id: (enableServerSideEncryption ? dataDisk.managedDisk.diskEncryptionSet.id : json('null'))
+//           }
+//         }
+//       }]
+//     }
+//     additionalCapabilities: {
+//       ultraSSDEnabled: ultraSSDEnabled
+//     }
+//     osProfile: {
+//       computerName: vmComputerNameTransformed
+//       adminUsername: adminUsername
+//       adminPassword: adminPassword
+//       customData: (empty(customData) ? json('null') : base64(customData))
+//       windowsConfiguration: (empty(windowsConfiguration) ? json('null') : windowsConfiguration)
+//       linuxConfiguration: (empty(linuxConfiguration) ? json('null') : linuxConfiguration)
+//       secrets: certificatesToBeInstalled
+//       allowExtensionOperations: allowExtensionOperations
+//     }
+//     networkProfile: {
+//       networkInterfaces: [for (nicConfiguration, index) in nicConfigurations: {
+//         properties: {
+//           primary: ((index == 0) ? 'true' : 'false')
+//         }
+//         id: resourceId('Microsoft.Network/networkInterfaces', '${virtualMachineName}${nicConfiguration.nicSuffix}')
+//       }]
+//     }
+//     diagnosticsProfile: {
+//       bootDiagnostics: {
+//         enabled: (!empty(bootDiagnosticStorageAccountName))
+//         storageUri: (empty(bootDiagnosticStorageAccountName) ? json('null') : 'https://${bootDiagnosticStorageAccountName}${bootDiagnosticStorageAccountUri}')
+//       }
+//     }
+//     availabilitySet: (empty(availabilitySetName) ? json('null') : json('{"id":"${resourceId('Microsoft.Compute/availabilitySets', availabilitySetName)}"}'))
+//     proximityPlacementGroup: (empty(proximityPlacementGroupName) ? json('null') : json('{"id":"${resourceId('Microsoft.Compute/proximityPlacementGroups', proximityPlacementGroupName)}"}'))
+//     priority: vmPriority
+//     evictionPolicy: (enableEvictionPolicy ? 'Deallocate' : json('null'))
+//     billingProfile: (((!empty(vmPriority)) && (!empty(maxPriceForLowPriorityVm))) ? json('{"maxPrice":"${maxPriceForLowPriorityVm}"}') : json('null'))
+//     host: ((!empty(dedicatedHostId)) ? json('{"id":"${dedicatedHostId}"}') : json('null'))
+//     licenseType: (empty(licenseType) ? json('null') : licenseType)
+//   }
+//   dependsOn: [
+//     virtualMachine_nic
+//   ]
+// }
 
-resource virtualMachine_lock 'Microsoft.Authorization/locks@2016-09-01' = if (lockForDeletion) {
-  name: '${virtualMachine.name}-DoNotDelete'
-  properties: {
-    level: 'CanNotDelete'
-  }
-  scope: virtualMachine
-}
+// resource virtualMachine_lock 'Microsoft.Authorization/locks@2016-09-01' = if (lockForDeletion) {
+//   name: '${virtualMachine.name}-DoNotDelete'
+//   properties: {
+//     level: 'CanNotDelete'
+//   }
+//   scope: virtualMachine
+// }
 
-module virtualMachine_rbac './.bicep/nested_rbac.bicep' = [for (roleAssignment, index) in roleAssignments: {
-  name: 'rbac-${deployment().name}${index}'
-  params: {
-    roleAssignmentObj: roleAssignment
-    builtInRoleNames: builtInRoleNames
-    resourceName: virtualMachine.name
-  }
-}]
+// module virtualMachine_rbac './.bicep/nested_rbac.bicep' = [for (roleAssignment, index) in roleAssignments: {
+//   name: 'rbac-${deployment().name}${index}'
+//   params: {
+//     roleAssignmentObj: roleAssignment
+//     builtInRoleNames: builtInRoleNames
+//     resourceName: virtualMachine.name
+//   }
+// }]
 
-output virtualMachineName string = virtualMachine.name
-output virtualMachineResourceId string = virtualMachine.id
-output virtualMachineResourceGroup string = resourceGroup().name
+// output virtualMachineName string = virtualMachine.name
+// output virtualMachineResourceId string = virtualMachine.id
+// output virtualMachineResourceGroup string = resourceGroup().name
