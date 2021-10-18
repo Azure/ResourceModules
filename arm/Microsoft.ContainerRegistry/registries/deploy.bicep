@@ -44,17 +44,19 @@ param publicNetworkAccess string = 'Enabled'
 @description('Optional. Whether to allow trusted Azure services to access a network restricted registry. Not relevant in case of public access. - AzureServices or None')
 param networkRuleBypassOptions string = 'AzureServices'
 
-@description('Optional. Switch to lock containter registry from deletion.')
-param lockForDeletion bool = false
+@allowed([
+  'CanNotDelete'
+  'NotSpecified'
+  'ReadOnly'
+])
+@description('Optional. Specify the type of lock.')
+param lock string = 'NotSpecified'
 
 @description('Optional. Tags of the resource.')
 param tags object = {}
 
 @description('Optional. Customer Usage Attribution id (GUID). This GUID must be previously registered')
 param cuaId string = ''
-
-@description('Optional. The name of the Diagnostic setting.')
-param diagnosticSettingName string = 'service'
 
 @description('Optional. Specifies the number of days that logs will be kept for; a value of 0 will retain data indefinitely.')
 @minValue(0)
@@ -128,7 +130,7 @@ resource resgistry 'Microsoft.ContainerRegistry/registries@2020-11-01-preview' =
         status: (empty(trustPolicyStatus) ? json('null') : trustPolicyStatus)
       }
       retentionPolicy: {
-        days: (empty(retentionPolicyDays) ? json('null') : retentionPolicyDays)
+        days: (empty(retentionPolicyDays) ? json('null') : int(retentionPolicyDays))
         status: (empty(retentionPolicyStatus) ? json('null') : retentionPolicyStatus)
       }
     }
@@ -138,10 +140,11 @@ resource resgistry 'Microsoft.ContainerRegistry/registries@2020-11-01-preview' =
   }
 }
 
-resource resgistry_lock 'Microsoft.Authorization/locks@2016-09-01' = if (lockForDeletion) {
-  name: '${resgistry.name}-doNotDelete'
+resource resgistry_lock 'Microsoft.Authorization/locks@2016-09-01' = if (lock != 'NotSpecified') {
+  name: '${resgistry.name}-${lock}-lock'
   properties: {
-    level: 'CanNotDelete'
+    level: lock
+    notes: (lock == 'CanNotDelete') ? 'Cannot delete resource or child resources.' : 'Cannot modify the resource or child resources.'
   }
   scope: resgistry
 }

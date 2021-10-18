@@ -34,7 +34,6 @@ Azure Container Registry is a managed, private Docker registry service based on 
 | `lockForDeletion` | bool | Optional. Switch to lock resource from deletion. | False |  |
 | `tags` | object | Optional. Tags of the resource. |  |  |
 | `cuaId` | string | Optional. Customer Usage Attribution id (GUID). This GUID must be previously registered |  |  |
-| `diagnosticSettingName` | string | Optional. The name of the Diagnostic setting. | service |  |
 | `diagnosticLogsRetentionInDays` | int | Optional. Specifies the number of days that logs will be kept for; a value of 0 will retain data indefinitely. | 365 |  |
 | `diagnosticStorageAccountId` | string | Optional. Resource identifier of the Diagnostic Storage Account. |  |  |
 | `workspaceId` | string | Optional. Resource identifier of Log Analytics. |  |
