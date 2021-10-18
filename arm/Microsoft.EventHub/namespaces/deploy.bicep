@@ -222,7 +222,7 @@ resource eventHubNamespace_lock 'Microsoft.Authorization/locks@2016-09-01' = if 
 }
 
 resource eventHubNamespace_diagnosticSettings 'Microsoft.Insights/diagnosticsettings@2017-05-01-preview' = if ((!empty(diagnosticStorageAccountId)) || (!empty(workspaceId))) {
-  name: '${eventHubNamespace.name}-diagnosticService'
+  name: '${eventHubNamespace.name}-diagnosticSettings'
   location: location
   properties: {
     storageAccountId: (empty(diagnosticStorageAccountId) ? json('null') : diagnosticStorageAccountId)
