@@ -186,3 +186,4 @@ Any use of third-party trademarks or logos are subject to those third-party's po
 
 <!-- Docs -->
 [MicrosoftAzureDocs]: <https://docs.microsoft.com/en-us/azure/>
+[PowerShellDocs]: <https://docs.microsoft.com/en-us/powershell/>
