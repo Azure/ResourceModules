@@ -150,6 +150,11 @@ Tag names and tag values can be provided as needed. A tag can be left without a 
 | `cognitiveServicesResourceId` | string |
 | `principalId` | string |
 
+## Considerations
+
+- Not all combinations of parameters `kind` and `sku` are valid and they may vary in different Azure Regions. Please use PowerShell CmdLet `Get-AzCognitiveServicesAccountSku` or another methods to determine valid values in your region.
+- Not all kinds of Cognitive Services support virtual networks. Please visit the link below to determine supported services.
+
 ## Template references
 
 - [Locks](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2016-09-01/locks)

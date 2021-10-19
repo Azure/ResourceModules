@@ -269,6 +269,11 @@ To use Private Endpoint the following dependencies must be deployed:
 | `storageAccountResourceId` | string |
 | `tables` | array |
 
+## Considerations
+
+This is a generic module for deploying a Storage Account. Any customization for different storage needs (such as a diagnostic or other storage account) need to be done through the Archetype.
+The hierarchical namespace of the storage account (see parameter `enableHierarchicalNamespace`), can be only set at creation time.
+
 ## Template references
 
 - [Locks](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2016-09-01/locks)

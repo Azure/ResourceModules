@@ -66,6 +66,10 @@ Tag names and tag values can be provided as needed. A tag can be left without a 
 }
 ```
 
+## Considerations
+
+This module requires a User Assigned Identity (MSI, managed service identity) to exist, and this MSI has to have contributor rights on the subscription - that allows the Deployment Script to create the required Storage Account and the Azure Container Instance.
+
 ## Outputs
 
 | Output Name | Type |

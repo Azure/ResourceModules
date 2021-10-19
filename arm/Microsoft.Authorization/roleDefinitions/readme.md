@@ -67,6 +67,14 @@ To deploy resource to a Resource Group, provide the `subscriptionId` and `resour
 | `roleDefinitionName` | string |
 | `roleDefinitionScope` | string |
 
+## Considerations
+
+This module can be deployed both at subscription or resource group level:
+
+- To deploy the module at resource group level, provide a valid name of an existing Resource Group in the `resourceGroupName` parameter and an existing subscription ID in the `subscriptionId` parameter.
+- To deploy the module at the subscription level, provide an existing subscription ID in the `subscriptionId` parameter.
+- To deploy the module at the management group level, provide an existing management group ID in the `managementGroupId` parameter.
+
 ## Template references
 
 - [Roledefinitions](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2018-01-01-preview/roleDefinitions)

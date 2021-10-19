@@ -143,6 +143,12 @@ Tag names and tag values can be provided as needed. A tag can be left without a 
 }
 ```
 
+## Considerations
+
+When defining the Subnets to deploy using the `subnets` parameter, the JSON format to pass it must match the Subnet object that is normally passed in to the `subnets` property of a `virtualNetwork` within an ARM Template.
+
+The network security group and route table resources must reside in the same resource group as the virtual network.
+
 ## Outputs
 
 | Output Name | Type |

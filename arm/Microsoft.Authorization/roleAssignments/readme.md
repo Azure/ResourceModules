@@ -63,6 +63,10 @@ To deploy resource to a Resource Group, provide the `subscriptionId` and `resour
 | `roleAssignmentName` | string |
 | `roleAssignmentScope` | string |
 
+## Considerations
+
+This module can be deployed at the management group, subscription or resource group level
+
 ## Template references
 
 - [Roleassignments](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2020-04-01-preview/roleAssignments)
