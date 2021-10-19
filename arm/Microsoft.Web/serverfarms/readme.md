@@ -10,6 +10,7 @@ This module deploys an App Service Plan.
 
 
 ## Resource Types
+
 | Resource Type | Api Version |
 | :-- | :-- |
 | `Microsoft.Authorization/locks` | 2016-09-01 |
@@ -17,6 +18,7 @@ This module deploys an App Service Plan.
 | `Microsoft.Web/serverfarms/providers/roleAssignments` | 2020-04-01-preview |
 
 ## Parameters
+
 | Parameter Name | Type | Default Value | Possible Values | Description |
 | :-- | :-- | :-- | :-- | :-- |
 | `appServiceEnvironmentId` | string |  |  | Optional. The Resource Id of the App Service Environment to use for the App Service Plan. |
@@ -95,6 +97,7 @@ Tag names and tag values can be provided as needed. A tag can be left without a 
 ```
 
 ## Outputs
+
 | Output Name | Type |
 | :-- | :-- |
 | `appServicePlanName` | string |
@@ -102,5 +105,6 @@ Tag names and tag values can be provided as needed. A tag can be left without a 
 | `appServicePlanResourceId` | string |
 
 ## Template references
+
 - [Locks](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2016-09-01/locks)
 - [Serverfarms](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Web/2021-02-01/serverfarms)

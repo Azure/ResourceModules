@@ -4,6 +4,7 @@ This template deploys an SQL Managed Instance, with resource lock.
 
 
 ## Resource types
+
 | Resource Type | Api Version |
 | :-- | :-- |
 | `Microsoft.Authorization/locks` | 2016-09-01 |
@@ -20,6 +21,7 @@ This template deploys an SQL Managed Instance, with resource lock.
 SQL Managed Instance is deployed on a virtual network. This network is required to satisfy the requirements explained [here](https://docs.microsoft.com/en-us/azure/sql-database/sql-database-managed-instance-connectivity-architecture#network-requirements). In the module is a second ARM template UpdateSubnet.deploy.json, which configures a subnet to be ready for the SQL managed instance.
 
 ## Parameters
+
 | Parameter Name | Type | Default Value | Possible Values | Description |
 | :-- | :-- | :-- | :-- | :-- |
 | `administratorLogin` | string |  |  | Required. The username used to establish jumpbox VMs. |
@@ -122,6 +124,7 @@ Tag names and tag values can be provided as needed. A tag can be left without a 
 ```
 
 ## Outputs
+
 | Output Name | Type |
 | :-- | :-- |
 | `managedInstanceName` | string |
@@ -129,6 +132,7 @@ Tag names and tag values can be provided as needed. A tag can be left without a 
 | `managedInstanceResourceId` | string |
 
 ## Template references
+
 - [Locks](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2016-09-01/locks)
 - [Diagnosticsettings](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Insights/2017-05-01-preview/diagnosticSettings)
 - [Managedinstances](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Sql/2020-08-01-preview/managedInstances)

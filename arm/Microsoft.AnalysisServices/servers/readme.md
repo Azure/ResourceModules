@@ -1,6 +1,7 @@
 # Analysis Services `[Microsoft.AnalysisServices/servers]`
 
 ## Resource Types
+
 | Resource Type | Api Version |
 | :-- | :-- |
 | `Microsoft.AnalysisServices/servers` | 2017-08-01 |
@@ -15,6 +16,7 @@ The following resources are required to be able to deploy this resource.
 - Virtual Network
 
 ## Parameters
+
 | Parameter Name | Type | Default Value | Possible Values | Description |
 | :-- | :-- | :-- | :-- | :-- |
 | `analysisServicesName` | string |  |  | Required. The name of the Azure Analysis Services server to create. |
@@ -81,6 +83,7 @@ Tag names and tag values can be provided as needed. A tag can be left without a 
 ```
 
 ## Outputs
+
 | Output Name | Type |
 | :-- | :-- |
 | `analysisServicesName` | string |
@@ -88,6 +91,7 @@ Tag names and tag values can be provided as needed. A tag can be left without a 
 | `analysisServicesResourceId` | string |
 
 ## Template references
+
 - [Servers](https://docs.microsoft.com/en-us/azure/templates/Microsoft.AnalysisServices/2017-08-01/servers)
 - [Locks](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2016-09-01/locks)
 - [Diagnosticsettings](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Insights/2017-05-01-preview/diagnosticSettings)

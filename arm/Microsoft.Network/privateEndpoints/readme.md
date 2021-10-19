@@ -5,6 +5,7 @@
 This template deploys private Endpoint for a generic service.
 
 ## Resource types
+
 | Resource Type | Api Version |
 | :-- | :-- |
 | `Microsoft.Authorization/locks` | 2016-09-01 |
@@ -22,6 +23,7 @@ The following resources are required to be able to deploy this resource:
 **Important**: Destination subnet must be created with the following configuration option - `"privateEndpointNetworkPolicies": "Disabled"`.  Setting this option acknowledges that NSG rules are not applied to Private Endpoints (this capability is coming soon).
 
 ## Parameters
+
 | Parameter Name | Type | Default Value | Possible Values | Description |
 | :-- | :-- | :-- | :-- | :-- |
 | `cuaId` | string |  |  | Optional. Customer Usage Attribution id (GUID). This GUID must be previously registered |
@@ -82,6 +84,7 @@ Tag names and tag values can be provided as needed. A tag can be left without a 
 ```
 
 ## Outputs
+
 | Output Name | Type |
 | :-- | :-- |
 | `privateEndpointName` | string |
@@ -89,6 +92,7 @@ Tag names and tag values can be provided as needed. A tag can be left without a 
 | `privateEndpointResourceId` | string |
 
 ## Template references
+
 - [Locks](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2016-09-01/locks)
 - [Privateendpoints](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Network/2021-02-01/privateEndpoints)
 - [Privateendpoints/Privatednszonegroups](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Network/2021-02-01/privateEndpoints/privateDnsZoneGroups)

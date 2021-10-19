@@ -3,6 +3,7 @@
 This module deploys Service Bus Queue.
 
 ## Resource types
+
 | Resource Type | Api Version |
 | :-- | :-- |
 | `Microsoft.Authorization/locks` | 2016-09-01 |
@@ -11,6 +12,7 @@ This module deploys Service Bus Queue.
 | `Microsoft.ServiceBus/namespaces/queues/authorizationRules` | 2017-04-01 |
 
 ## Parameters
+
 | Parameter Name | Type | Default Value | Possible Values | Description |
 | :-- | :-- | :-- | :-- | :-- |
 | `authorizationRules` | array | `[System.Collections.Hashtable]` |  | Optional. Authorization Rules for the Service Bus Queue |
@@ -128,6 +130,7 @@ Tag names and tag values can be provided as needed. A tag can be left without a 
 ```
 
 ## Outputs
+
 | Output Name | Type |
 | :-- | :-- |
 | `namespaceQueueName` | string |
@@ -135,6 +138,7 @@ Tag names and tag values can be provided as needed. A tag can be left without a 
 | `namespaceQueueResourceId` | string |
 
 ## Template references
+
 - [Locks](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2016-09-01/locks)
 - [Namespaces/Queues](https://docs.microsoft.com/en-us/azure/templates/Microsoft.ServiceBus/2021-06-01-preview/namespaces/queues)
 - [Namespaces/Queues/Authorizationrules](https://docs.microsoft.com/en-us/azure/templates/Microsoft.ServiceBus/2017-04-01/namespaces/queues/authorizationRules)

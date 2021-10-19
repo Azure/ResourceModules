@@ -1,6 +1,7 @@
 # Public IP Addresses `[Microsoft.Network/publicIPAddresses]`
 
 ## Resource types
+
 | Resource Type | Api Version |
 | :-- | :-- |
 | `Microsoft.Authorization/locks` | 2016-09-01 |
@@ -14,6 +15,7 @@ The following resources are required to be able to deploy this resource.
 
 
 ## Parameters
+
 | Parameter Name | Type | Default Value | Possible Values | Description |
 | :-- | :-- | :-- | :-- | :-- |
 | `cuaId` | string |  |  | Optional. Customer Usage Attribution id (GUID). This GUID must be previously registered |
@@ -67,6 +69,7 @@ The following resources are required to be able to deploy this resource.
 }
 ```
 ## Outputs
+
 | Output Name | Type |
 | :-- | :-- |
 | `publicIPAddressName` | string |
@@ -74,6 +77,7 @@ The following resources are required to be able to deploy this resource.
 | `publicIPAddressResourceId` | string |
 
 ## Template references
+
 - [Locks](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2016-09-01/locks)
 - [Diagnosticsettings](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Insights/2017-05-01-preview/diagnosticSettings)
 - [Publicipaddresses](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Network/2021-02-01/publicIPAddresses)

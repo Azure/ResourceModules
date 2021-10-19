@@ -3,11 +3,13 @@
 This module deploys custom RBAC Role Definitions.
 
 ## Resource types
+
 | Resource Type | Api Version |
 | :-- | :-- |
 | `Microsoft.Authorization/roleDefinitions` | 2018-01-01-preview |
 
 ## Parameters
+
 | Parameter Name | Type | Default Value | Possible Values | Description |
 | :-- | :-- | :-- | :-- | :-- |
 | `actions` | array | `[]` |  | Optional. List of allowed actions. |
@@ -58,6 +60,7 @@ To deploy resource to a Resource Group, provide the `subscriptionId` and `resour
 > The `subscriptionId` is used to enable deployment to a Resource Group Scope, allowing the use of the `resourceGroup()` function from a Management Group Scope. [Additional Details](https://github.com/Azure/bicep/pull/1420).
 
 ## Outputs
+
 | Output Name | Type |
 | :-- | :-- |
 | `roleDefinitionId` | string |
@@ -65,4 +68,5 @@ To deploy resource to a Resource Group, provide the `subscriptionId` and `resour
 | `roleDefinitionScope` | string |
 
 ## Template references
+
 - [Roledefinitions](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2018-01-01-preview/roleDefinitions)

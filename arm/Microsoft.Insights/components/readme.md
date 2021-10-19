@@ -1,6 +1,7 @@
 # Application Insights `[Microsoft.Insights/components]`
 
 ## Resource Types
+
 | Resource Type | Api Version |
 | :-- | :-- |
 | `Microsoft.Insights/components` | 2020-02-02 |
@@ -11,6 +12,7 @@
 The following resources are required to be able to deploy this resource.
 
 ## Parameters
+
 | Parameter Name | Type | Default Value | Possible Values | Description |
 | :-- | :-- | :-- | :-- | :-- |
 | `appInsightsName` | string |  |  | Required. Name of the Application Insights |
@@ -65,6 +67,7 @@ Tag names and tag values can be provided as needed. A tag can be left without a 
 ```
 
 ## Outputs
+
 | Output Name | Type |
 | :-- | :-- |
 | `appInsightsAppId` | string |
@@ -74,4 +77,5 @@ Tag names and tag values can be provided as needed. A tag can be left without a 
 | `appInsightsResourceId` | string |
 
 ## Template references
+
 - [Components](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Insights/2020-02-02/components)

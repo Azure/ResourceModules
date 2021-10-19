@@ -1,12 +1,14 @@
 # PolicyAssignment `[Microsoft.Authorization/policyAssignments]`
 
 ## Resource types
+
 | Resource Type | Api Version |
 | :-- | :-- |
 | `Microsoft.Authorization/policyAssignments` | 2020-09-01 |
 | `Microsoft.Authorization/roleAssignments` | 2020-04-01-preview |
 
 ## Parameters
+
 | Parameter Name | Type | Default Value | Possible Values | Description |
 | :-- | :-- | :-- | :-- | :-- |
 | `displayName` | string |  |  | Optional. The display name of the policy assignment. If not provided, will be replaced with the Policy Assignment Name |
@@ -62,6 +64,7 @@ To deploy resource to a Resource Group, provide the `subscriptionId` and `resour
 > The `subscriptionId` is used to enable deployment to a Resource Group Scope, allowing the use of the `resourceGroup()` function from a Management Group Scope. [Additional Details](https://github.com/Azure/bicep/pull/1420).
 
 ## Outputs
+
 | Output Name | Type |
 | :-- | :-- |
 | `policyAssignmentId` | string |
@@ -69,5 +72,6 @@ To deploy resource to a Resource Group, provide the `subscriptionId` and `resour
 | `policyAssignmentPrincipalId` | string |
 
 ## Template references
+
 - [Policyassignments](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2020-09-01/policyAssignments)
 - [Roleassignments](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2020-04-01-preview/roleAssignments)

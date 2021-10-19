@@ -7,6 +7,7 @@
 [![Visualize](/docs/media/visualizebutton.svg?sanitize=true)](<http://armviz.io/#/?load=https%3A%2F%2Fraw.githubusercontent.com%2FAzure%2FModules%2Fmain%2FKeyVault%2Fdeploy.json>)
 
 ## Resource types
+
 | Resource Type | Api Version |
 | :-- | :-- |
 | `Microsoft.Authorization/locks` | 2016-09-01 |
@@ -19,6 +20,7 @@
 | `Microsoft.Network/privateEndpoints/privateDnsZoneGroups` | 2021-02-01 |
 
 ## Parameters
+
 | Parameter Name | Type | Default Value | Possible Values | Description |
 | :-- | :-- | :-- | :-- | :-- |
 | `accessPolicies` | array | `[]` |  | Optional. Array of access policies object |
@@ -220,6 +222,7 @@ To use Private Endpoint the following dependencies must be deployed:
 ```
 
 ## Outputs
+
 | Output Name | Type | Description |
 | :-- | :-- | :-- |
 | `keyVaultName` | string | The Name of the Key Vault. |
@@ -228,6 +231,7 @@ To use Private Endpoint the following dependencies must be deployed:
 | `keyVaultUrl` | string | The URL of the Key Vault. |
 
 ## Template references
+
 - [Locks](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2016-09-01/locks)
 - [Diagnosticsettings](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Insights/2017-05-01-preview/diagnosticSettings)
 - [Vaults](https://docs.microsoft.com/en-us/azure/templates/Microsoft.KeyVault/2019-09-01/vaults)

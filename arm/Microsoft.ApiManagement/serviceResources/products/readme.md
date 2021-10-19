@@ -3,6 +3,7 @@
 This module deploys Api Management Service Products.
 
 ## Resource types
+
 | Resource Type | Api Version |
 | :-- | :-- |
 | `Microsoft.ApiManagement/service/products` | 2020-06-01-preview |
@@ -16,6 +17,7 @@ The following resources are required to be able to deploy this resource.
 - `Microsoft.ApiManagement/service`
 
 ## Parameters
+
 | Parameter Name | Type | Default Value | Possible Values | Description |
 | :-- | :-- | :-- | :-- | :-- |
 | `apiManagementServiceName` | string |  |  | Required. The name of the of the Api Management service. |
@@ -53,6 +55,7 @@ Product groups list.
 }
 ```
 ## Outputs
+
 | Output Name | Type |
 | :-- | :-- |
 | `productApisResourceIds` | array |
@@ -62,6 +65,7 @@ Product groups list.
 | `productResourceName` | string |
 
 ## Template references
+
 - [Service/Products](https://docs.microsoft.com/en-us/azure/templates/Microsoft.ApiManagement/2020-06-01-preview/service/products)
 - [Service/Products/Apis](https://docs.microsoft.com/en-us/azure/templates/Microsoft.ApiManagement/2020-06-01-preview/service/products/apis)
 - [Service/Products/Groups](https://docs.microsoft.com/en-us/azure/templates/Microsoft.ApiManagement/2020-06-01-preview/service/products/groups)

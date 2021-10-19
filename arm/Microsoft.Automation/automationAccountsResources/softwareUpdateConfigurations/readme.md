@@ -4,6 +4,7 @@ This module deploys a Software Update Configuration into an existing Automation 
 Also known as Patch Management, Update Management and patch deployment schedules.
 
 ## Resource types
+
 | Resource Type | Api Version |
 | :-- | :-- |
 | `Microsoft.Automation/automationAccounts/softwareUpdateConfigurations` | 2019-06-01 |
@@ -15,6 +16,7 @@ The following resources are required to be able to deploy this resource.
 - Microsoft.Automation/automationAccounts
 
 ## Parameters
+
 | Parameter Name | Type | Default Value | Possible Values | Description |
 | :-- | :-- | :-- | :-- | :-- |
 | `automationAccountName` | string |  |  | Required. Name of the Automation Account to deploy the schedule to. |
@@ -98,6 +100,7 @@ Occurrences of days within a month.
 ```
 
 ## Outputs
+
 | Output Name | Type |
 | :-- | :-- |
 | `softwareUpdateConfigurationName` | string |
@@ -105,4 +108,5 @@ Occurrences of days within a month.
 | `softwareUpdateConfigurationResourceId` | string |
 
 ## Template references
+
 - [Automationaccounts/Softwareupdateconfigurations](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Automation/2019-06-01/automationAccounts/softwareUpdateConfigurations)

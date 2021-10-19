@@ -3,6 +3,7 @@
 This module deploys an AutoManage account and associates VM with it.
 
 ## Resource Types
+
 | Resource Type | Api Version |
 | :-- | :-- |
 | `Microsoft.Authorization/roleAssignments` | 2020-04-01-preview |
@@ -10,6 +11,7 @@ This module deploys an AutoManage account and associates VM with it.
 | `Microsoft.Compute/virtualMachines/providers/configurationProfileAssignments` | 2020-06-30-preview |
 
 ## Parameters
+
 | Parameter Name | Type | Default Value | Possible Values | Description |
 | :-- | :-- | :-- | :-- | :-- |
 | `autoManageAccountName` | string | `[format('{0}-AutoManage', replace(subscription().displayName, ' ', ''))]` |  | Optional. The name of automanage account |
@@ -21,6 +23,7 @@ This module deploys an AutoManage account and associates VM with it.
 | `vmResourceGroupName` | string |  |  | Required. The name of the VM resource group |
 
 ## Outputs
+
 | Output Name | Type |
 | :-- | :-- |
 | `autoManageAccountName` | string |
@@ -28,5 +31,6 @@ This module deploys an AutoManage account and associates VM with it.
 | `autoManageAccountResourceId` | string |
 
 ## Template references
+
 - [Roleassignments](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2020-04-01-preview/roleAssignments)
 - [Accounts](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Automanage/2020-06-30-preview/accounts)

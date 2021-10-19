@@ -3,6 +3,7 @@
 This template enables Azure Security Center - Standard tier by default, could be overridden.
 
 ## Resource types
+
 | Resource Type | Api Version |
 | :-- | :-- |
 | `Microsoft.Security/advancedThreatProtectionSettings` | 2019-01-01 |
@@ -14,6 +15,7 @@ This template enables Azure Security Center - Standard tier by default, could be
 | `Microsoft.Security/workspaceSettings` | 2017-08-01-preview |
 
 ## Parameters
+
 | Parameter Name | Type | Default Value | Possible Values | Description |
 | :-- | :-- | :-- | :-- | :-- |
 | `appServicesPricingTier` | string | `Free` | `[Free, Standard]` | Optional. The pricing tier value for AppServices. Azure Security Center is provided in two pricing tiers: free and standard, with the standard tier available with a trial period. The standard tier offers advanced security capabilities, while the free tier offers basic security features. - Free or Standard |
@@ -127,11 +129,13 @@ This template enables Azure Security Center - Standard tier by default, could be
 ```
 
 ## Outputs
+
 | Output Name | Type |
 | :-- | :-- |
 | `workspaceId` | string |
 
 ## Template references
+
 - [Advancedthreatprotectionsettings](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Security/2019-01-01/advancedThreatProtectionSettings)
 - [Autoprovisioningsettings](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Security/2017-08-01-preview/autoProvisioningSettings)
 - [Devicesecuritygroups](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Security/2019-08-01/deviceSecurityGroups)

@@ -3,6 +3,7 @@
 This template deploys a Network Security Groups (NSG) with optional security rules.
 
 ## Resource types
+
 | Resource Type | Api Version |
 | :-- | :-- |
 | `Microsoft.Authorization/locks` | 2016-09-01 |
@@ -12,6 +13,7 @@ This template deploys a Network Security Groups (NSG) with optional security rul
 | `Microsoft.Network/networkWatchers/flowLogs` | 2021-02-01 |
 
 ## Parameters
+
 | Parameter Name | Type | Default Value | Possible Values | Description |
 | :-- | :-- | :-- | :-- | :-- |
 | `cuaId` | string |  |  | Optional. Customer Usage Attribution id (GUID). This GUID must be previously registered |
@@ -165,6 +167,7 @@ Tag names and tag values can be provided as needed. A tag can be left without a 
 ```
 
 ## Outputs
+
 | Output Name | Type |
 | :-- | :-- |
 | `flowLogName` | string |
@@ -174,6 +177,7 @@ Tag names and tag values can be provided as needed. A tag can be left without a 
 | `networkSecurityGroupsResourceId` | string |
 
 ## Template references
+
 - [Locks](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2016-09-01/locks)
 - [Diagnosticsettings](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Insights/2017-05-01-preview/diagnosticSettings)
 - [Networksecuritygroups](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Network/2021-02-01/networkSecurityGroups)

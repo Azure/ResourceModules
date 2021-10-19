@@ -4,6 +4,7 @@ This template deploys a DDoS protection plan.
 
 
 ## Resource types
+
 | Resource Type | Api Version |
 | :-- | :-- |
 | `Microsoft.Authorization/locks` | 2016-09-01 |
@@ -11,6 +12,7 @@ This template deploys a DDoS protection plan.
 | `Microsoft.Network/ddosProtectionPlans/providers/roleAssignments` | 2020-04-01-preview |
 
 ## Parameters
+
 | Parameter Name | Type | Default Value | Possible Values | Description |
 | :-- | :-- | :-- | :-- | :-- |
 | `cuaId` | string |  |  | Optional. Customer Usage Attribution id (GUID). This GUID must be previously registered |
@@ -67,6 +69,7 @@ Tag names and tag values can be provided as needed. A tag can be left without a 
 ```
 
 ## Outputs
+
 | Output Name | Type |
 | :-- | :-- |
 | `ddosProtectionPlanName` | string |
@@ -74,5 +77,6 @@ Tag names and tag values can be provided as needed. A tag can be left without a 
 | `ddosProtectionPlanResourceId` | string |
 
 ## Template references
+
 - [Locks](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2016-09-01/locks)
 - [Ddosprotectionplans](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Network/2021-02-01/ddosProtectionPlans)

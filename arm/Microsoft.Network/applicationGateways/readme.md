@@ -5,6 +5,7 @@
 This template deploys Application Gateway.
 
 ## Resource types
+
 | Resource Type | Api Version |
 | :-- | :-- |
 | `Microsoft.Authorization/locks` | 2016-09-01 |
@@ -17,6 +18,7 @@ This template deploys Application Gateway.
 The following resources are required to be able to deploy this resource.
 
 ## Parameters
+
 | Parameter Name | Type | Default Value | Possible Values | Description |
 | :-- | :-- | :-- | :-- | :-- |
 | `applicationGatewayName` | string |  |  | Required. The name to be used for the Application Gateway. |
@@ -230,6 +232,7 @@ Tag names and tag values can be provided as needed. A tag can be left without a 
 ```
 
 ## Outputs
+
 | Output Name | Type |
 | :-- | :-- |
 | `applicationGatewayName` | string |
@@ -237,6 +240,7 @@ Tag names and tag values can be provided as needed. A tag can be left without a 
 | `applicationGatewayResourceId` | string |
 
 ## Template references
+
 - [Locks](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2016-09-01/locks)
 - [Diagnosticsettings](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Insights/2017-05-01-preview/diagnosticSettings)
 - [Applicationgateways](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Network/2021-02-01/applicationGateways)

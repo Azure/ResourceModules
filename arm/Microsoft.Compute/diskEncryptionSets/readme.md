@@ -4,6 +4,7 @@ This template deploys a Disk Encryption Set
 
 
 ## Resource types
+
 | Resource Type | Api Version |
 | :-- | :-- |
 | `Microsoft.Compute/diskEncryptionSets` | 2020-12-01 |
@@ -11,6 +12,7 @@ This template deploys a Disk Encryption Set
 | `Microsoft.KeyVault/vaults/accessPolicies` | 2019-09-01 |
 
 ## Parameters
+
 | Parameter Name | Type | Default Value | Possible Values | Description |
 | :-- | :-- | :-- | :-- | :-- |
 | `cuaId` | string |  |  | Optional. Customer Usage Attribution id (GUID). This GUID must be previously registered |
@@ -68,6 +70,7 @@ Tag names and tag values can be provided as needed. A tag can be left without a 
 ```
 
 ## Outputs
+
 | Output Name | Type |
 | :-- | :-- |
 | `diskEncryptionResourceGroup` | string |
@@ -76,5 +79,6 @@ Tag names and tag values can be provided as needed. A tag can be left without a 
 | `principalId` | string |
 
 ## Template references
+
 - [Diskencryptionsets](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Compute/2020-12-01/diskEncryptionSets)
 - [Vaults/Accesspolicies](https://docs.microsoft.com/en-us/azure/templates/Microsoft.KeyVault/2019-09-01/vaults/accessPolicies)

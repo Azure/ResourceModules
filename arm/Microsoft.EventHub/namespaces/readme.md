@@ -3,6 +3,7 @@
 This module deploys EventHub Namespace.
 
 ## Resource types
+
 | Resource Type | Api Version |
 | :-- | :-- |
 | `Microsoft.Authorization/locks` | 2016-09-01 |
@@ -15,6 +16,7 @@ This module deploys EventHub Namespace.
 | `Microsoft.Network/privateEndpoints/privateDnsZoneGroups` | 2020-05-01 |
 
 ## Parameters
+
 | Parameter Name | Type | Default Value | Possible Values | Description |
 | :-- | :-- | :-- | :-- | :-- |
 | `authorizationRules` | array | `[System.Collections.Hashtable]` |  | Optional. Authorization Rules for the Event Hub namespace |
@@ -171,6 +173,7 @@ To use Private Endpoint the following dependencies must be deployed:
 ```
 
 ## Outputs
+
 | Output Name | Type |
 | :-- | :-- |
 | `namespace` | string |
@@ -180,6 +183,7 @@ To use Private Endpoint the following dependencies must be deployed:
 | `sharedAccessPolicyPrimaryKey` | string |
 
 ## Template references
+
 - [Locks](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2016-09-01/locks)
 - [Namespaces](https://docs.microsoft.com/en-us/azure/templates/Microsoft.EventHub/2017-04-01/namespaces)
 - [Namespaces/Authorizationrules](https://docs.microsoft.com/en-us/azure/templates/Microsoft.EventHub/2017-04-01/namespaces/authorizationRules)

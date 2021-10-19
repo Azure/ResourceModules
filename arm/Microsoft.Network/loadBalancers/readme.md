@@ -3,6 +3,7 @@
 This module deploys a Load Balancer
 
 ## Resource types
+
 | Resource Type | Api Version |
 | :-- | :-- |
 | `Microsoft.Authorization/locks` | 2016-09-01 |
@@ -11,6 +12,7 @@ This module deploys a Load Balancer
 | `Microsoft.Network/loadBalancers/providers/roleAssignments` | 2020-04-01-preview |
 
 ## Parameters
+
 | Parameter Name | Type | Default Value | Possible Values | Description |
 | :-- | :-- | :-- | :-- | :-- |
 | `backendAddressPools` | array |  |  | Required. Collection of backend address pools used by a load balancer. |
@@ -208,6 +210,7 @@ Tag names and tag values can be provided as needed. A tag can be left without a 
 ```
 
 ## Outputs
+
 | Output Name | Type |
 | :-- | :-- |
 | `loadBalancerName` | string |
@@ -215,6 +218,7 @@ Tag names and tag values can be provided as needed. A tag can be left without a 
 | `loadBalancerResourceId` | string |
 
 ## Template references
+
 - [Locks](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2016-09-01/locks)
 - [Diagnosticsettings](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Insights/2017-05-01-preview/diagnosticSettings)
 - [Loadbalancers](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Network/2021-02-01/loadBalancers)

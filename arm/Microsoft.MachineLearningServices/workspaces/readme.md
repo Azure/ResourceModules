@@ -3,6 +3,7 @@
 This module deploys a Machine Learning Services Workspace.
 
 ## Resource types
+
 | Resource Type | Api Version |
 | :-- | :-- |
 | `Microsoft.Authorization/locks` | 2016-09-01 |
@@ -13,6 +14,7 @@ This module deploys a Machine Learning Services Workspace.
 | `Microsoft.Network/privateEndpoints/privateDnsZoneGroups` | 2021-02-01 |
 
 ## Parameters
+
 | Parameter Name | Type | Default Value | Possible Values | Description |
 | :-- | :-- | :-- | :-- | :-- |
 | `allowPublicAccessWhenBehindVnet` | bool |  |  | Optional. The flag to indicate whether to allow public access when behind VNet. |
@@ -118,6 +120,7 @@ To use Private Endpoint the following dependencies must be deployed:
 ```
 
 ## Outputs
+
 | Output Name | Type |
 | :-- | :-- |
 | `machineLearningServiceName` | string |
@@ -125,6 +128,7 @@ To use Private Endpoint the following dependencies must be deployed:
 | `machineLearningServiceResourceId` | string |
 
 ## Template references
+
 - [Locks](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2016-09-01/locks)
 - [Diagnosticsettings](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Insights/2017-05-01-preview/diagnosticSettings)
 - [Workspaces](https://docs.microsoft.com/en-us/azure/templates/Microsoft.MachineLearningServices/2021-04-01/workspaces)

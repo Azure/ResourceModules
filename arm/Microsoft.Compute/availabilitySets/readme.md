@@ -3,6 +3,7 @@
 This template deploys an Availability Set
 
 ## Resource types
+
 | Resource Type | Api Version |
 | :-- | :-- |
 | `Microsoft.Authorization/locks` | 2016-09-01 |
@@ -10,6 +11,7 @@ This template deploys an Availability Set
 | `Microsoft.Compute/availabilitySets/providers/roleAssignments` | 2020-04-01-preview |
 
 ## Parameters
+
 | Parameter Name | Type | Default Value | Possible Values | Description |
 | :-- | :-- | :-- | :-- | :-- |
 | `availabilitySetFaultDomain` | int | `2` |  | Optional. The number of fault domains to use. |
@@ -63,6 +65,7 @@ Tag names and tag values can be provided as needed. A tag can be left without a 
 ```
 
 ## Outputs
+
 | Output Name | Type |
 | :-- | :-- |
 | `availabilitySetResourceGroup` | string |
@@ -70,5 +73,6 @@ Tag names and tag values can be provided as needed. A tag can be left without a 
 | `availabilitySetResourceName` | string |
 
 ## Template references
+
 - [Locks](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2016-09-01/locks)
 - [Availabilitysets](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Compute/2021-04-01/availabilitySets)

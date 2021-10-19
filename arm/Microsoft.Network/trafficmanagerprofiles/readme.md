@@ -3,6 +3,7 @@
 This module deploys Traffic Manager, with resource lock.
 
 ## Resource types
+
 | Resource Type | Api Version |
 | :-- | :-- |
 | `Microsoft.Authorization/locks` | 2016-09-01 |
@@ -11,6 +12,7 @@ This module deploys Traffic Manager, with resource lock.
 | `Microsoft.Network/trafficmanagerprofiles/providers/roleAssignments` | 2020-04-01-preview |
 
 ## Parameters
+
 | Parameter Name | Type | Default Value | Possible Values | Description |
 | :-- | :-- | :-- | :-- | :-- |
 | `cuaId` | string |  |  | Optional. Customer Usage Attribution id (GUID). This GUID must be previously registered |
@@ -118,6 +120,7 @@ Tag names and tag values can be provided as needed. A tag can be left without a 
 }
 ```
 ## Outputs
+
 | Output Name | Type |
 | :-- | :-- |
 | `trafficManagerName` | string |
@@ -125,6 +128,7 @@ Tag names and tag values can be provided as needed. A tag can be left without a 
 | `trafficManagerResourceId` | string |
 
 ## Template references
+
 - [Locks](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2016-09-01/locks)
 - [Diagnosticsettings](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Insights/2017-05-01-preview/diagnosticSettings)
 - [Trafficmanagerprofiles](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Network/2018-08-01/trafficmanagerprofiles)

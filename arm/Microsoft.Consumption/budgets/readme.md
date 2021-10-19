@@ -3,11 +3,13 @@
 This module deploys budgets for subscriptions.
 
 ## Resource types
+
 | Resource Type | Api Version |
 | :-- | :-- |
 | `Microsoft.Consumption/budgets` | 2019-05-01 |
 
 ## Parameters
+
 | Parameter Name | Type | Default Value | Possible Values | Description |
 | :-- | :-- | :-- | :-- | :-- |
 | `actionGroups` | array | `[]` |  | Optional. List of action group resource IDs that will receive the alert. |
@@ -22,10 +24,12 @@ This module deploys budgets for subscriptions.
 | `thresholds` | array | `[50, 75, 90, 100, 110]` |  | Optional. Percent thresholds of budget for when to get a notification. Can be up to 5 thresholds, where each must be between 1 and 1000. |
 
 ## Outputs
+
 | Output Name | Type |
 | :-- | :-- |
 | `budgetName` | string |
 | `budgetResourceId` | string |
 
 ## Template references
+
 - [Budgets](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Consumption/2019-05-01/budgets)

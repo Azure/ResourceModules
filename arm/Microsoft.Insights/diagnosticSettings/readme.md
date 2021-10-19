@@ -3,11 +3,13 @@
 This module deploys a subscription wide export of the ActivityLog.
 
 ## Resource Types
+
 | Resource Type | Api Version |
 | :-- | :-- |
 | `Microsoft.Insights/diagnosticSettings` | 2017-05-01-preview |
 
 ## Parameters
+
 | Parameter Name | Type | Default Value | Possible Values | Description |
 | :-- | :-- | :-- | :-- | :-- |
 | `diagnosticLogsRetentionInDays` | int | `365` |  | Optional. Specifies the number of days that logs will be kept for; a value of 0 will retain data indefinitely. |
@@ -19,10 +21,12 @@ This module deploys a subscription wide export of the ActivityLog.
 | `workspaceId` | string |  |  | Optional. Resource identifier of Log Analytics. |
 
 ## Outputs
+
 | Output Name | Type |
 | :-- | :-- |
 | `diagnosticResourceId` | string |
 | `diagnosticsName` | string |
 
 ## Template references
+
 - [Diagnosticsettings](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Insights/2017-05-01-preview/diagnosticSettings)

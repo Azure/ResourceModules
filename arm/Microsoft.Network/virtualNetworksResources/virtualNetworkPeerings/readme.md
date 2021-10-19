@@ -3,6 +3,7 @@
 This template deploys Virtual Network Peering.
 
 ## Resource types
+
 | Resource Type | Api Version |
 | :-- | :-- |
 | `Microsoft.Network/virtualNetworks/virtualNetworkPeerings` | 2021-02-01 |
@@ -15,6 +16,7 @@ The following resources are required to be able to deploy this resource.
 - Remote Virtual Network (Identified by the `remoteVirtualNetworkId` parameter)
 
 ## Parameters
+
 | Parameter Name | Type | Default Value | Possible Values | Description |
 | :-- | :-- | :-- | :-- | :-- |
 | `allowForwardedTraffic` | bool | `True` |  | Optional. Whether the forwarded traffic from the VMs in the local virtual network will be allowed/disallowed in remote virtual network. Default is true |
@@ -28,6 +30,7 @@ The following resources are required to be able to deploy this resource.
 | `useRemoteGateways` | bool |  |  | Optional. If remote gateways can be used on this virtual network. If the flag is set to true, and allowGatewayTransit on remote peering is also true, virtual network will use gateways of remote virtual network for transit. Only one peering can have this flag set to true. This flag cannot be set if virtual network already has a gateway. Default is false |
 
 ## Outputs
+
 | Output Name | Type |
 | :-- | :-- |
 | `virtualNetworkPeeringName` | string |
@@ -35,4 +38,5 @@ The following resources are required to be able to deploy this resource.
 | `virtualNetworkPeeringResourceId` | string |
 
 ## Template references
+
 - [Virtualnetworks/Virtualnetworkpeerings](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Network/2021-02-01/virtualNetworks/virtualNetworkPeerings)

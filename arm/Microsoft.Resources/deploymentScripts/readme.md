@@ -3,12 +3,14 @@
 This module deploys Deployment Scripts.
 
 ## Resource types
+
 | Resource Type | Api Version |
 | :-- | :-- |
 | `Microsoft.Authorization/locks` | 2016-09-01 |
 | `Microsoft.Resources/deploymentScripts` | 2020-10-01 |
 
 ## Parameters
+
 | Parameter Name | Type | Default Value | Possible Values | Description |
 | :-- | :-- | :-- | :-- | :-- |
 | `arguments` | string |  |  | Optional. Command line arguments to pass to the script. Arguments are separated by spaces. |
@@ -51,6 +53,7 @@ Tag names and tag values can be provided as needed. A tag can be left without a 
 ```
 
 ## Outputs
+
 | Output Name | Type |
 | :-- | :-- |
 | `deploymentScriptName` | string |
@@ -58,5 +61,6 @@ Tag names and tag values can be provided as needed. A tag can be left without a 
 | `deploymentScriptResourceId` | string |
 
 ## Template references
+
 - [Locks](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2016-09-01/locks)
 - [Deploymentscripts](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Resources/2020-10-01/deploymentScripts)

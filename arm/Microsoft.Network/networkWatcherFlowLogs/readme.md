@@ -4,11 +4,13 @@ This module controls the Network Security Group Flow Logs and analytics settings
 **Note: this module must be run on the Resource Group where Network Watcher is deployed**
 
 ## Resource types
+
 | Resource Type | Api Version |
 | :-- | :-- |
 | `Microsoft.Network/networkWatchers/flowLogs` | 2020-05-01 |
 
 ## Parameters
+
 | Parameter Name | Type | Default Value | Possible Values | Description |
 | :-- | :-- | :-- | :-- | :-- |
 | `cuaId` | string |  |  | Optional. Customer Usage Attribution id (GUID). This GUID must be previously registered |
@@ -43,6 +45,7 @@ Tag names and tag values can be provided as needed. A tag can be left without a 
 ```
 
 ## Outputs
+
 | Output Name | Type |
 | :-- | :-- |
 | `deploymentResourceGroup` | string |
@@ -50,4 +53,5 @@ Tag names and tag values can be provided as needed. A tag can be left without a 
 | `flowLogResourceId` | string |
 
 ## Template references
+
 - [Networkwatchers/Flowlogs](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Network/2020-05-01/networkWatchers/flowLogs)

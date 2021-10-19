@@ -5,6 +5,7 @@ This module is used to deploy an Azure Storage Account, with resource lock and t
 The default parameter values are based on the needs of deploying a diagnostic storage account.
 
 ## Resource types
+
 | Resource Type | Api Version |
 | :-- | :-- |
 | `Microsoft.Authorization/locks` | 2016-09-01 |
@@ -24,6 +25,7 @@ The default parameter values are based on the needs of deploying a diagnostic st
 | `Microsoft.Storage/storageAccounts/tableServices/tables` | 2019-06-01 |
 
 ## Parameters
+
 | Parameter Name | Type | Default Value | Possible Values | Description |
 | :-- | :-- | :-- | :-- | :-- |
 | `allowBlobPublicAccess` | bool | `True` |  | Optional. Indicates whether public access is enabled for all blobs or containers in the storage account. |
@@ -253,6 +255,7 @@ To use Private Endpoint the following dependencies must be deployed:
 ```
 
 ## Outputs
+
 | Output Name | Type |
 | :-- | :-- |
 | `assignedIdentityID` | string |
@@ -267,6 +270,7 @@ To use Private Endpoint the following dependencies must be deployed:
 | `tables` | array |
 
 ## Template references
+
 - [Locks](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2016-09-01/locks)
 - [Privateendpoints](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Network/2021-05-01/privateEndpoints)
 - [Privateendpoints/Privatednszonegroups](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Network/2021-02-01/privateEndpoints/privateDnsZoneGroups)

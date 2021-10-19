@@ -3,11 +3,13 @@
 This module deploys Role Assignments.
 
 ## Resource types
+
 | Resource Type | Api Version |
 | :-- | :-- |
 | `Microsoft.Authorization/roleAssignments` | 2020-04-01-preview |
 
 ## Parameters
+
 | Parameter Name | Type | Default Value | Possible Values | Description |
 | :-- | :-- | :-- | :-- | :-- |
 | `location` | string | `[deployment().location]` |  | Optional. Location for all resources. |
@@ -54,6 +56,7 @@ To deploy resource to a Resource Group, provide the `subscriptionId` and `resour
 > The `subscriptionId` is used to enable deployment to a Resource Group Scope, allowing the use of the `resourceGroup()` function from a Management Group Scope. [Additional Details](https://github.com/Azure/bicep/pull/1420).
 
 ## Outputs
+
 | Output Name | Type |
 | :-- | :-- |
 | `roleAssignmentId` | string |
@@ -61,4 +64,5 @@ To deploy resource to a Resource Group, provide the `subscriptionId` and `resour
 | `roleAssignmentScope` | string |
 
 ## Template references
+
 - [Roleassignments](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2020-04-01-preview/roleAssignments)

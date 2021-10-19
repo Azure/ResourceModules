@@ -1,11 +1,13 @@
 # PolicyDefinition `[Microsoft.Authorization/policyDefinitions]`
 
 ## Resource types
+
 | Resource Type | Api Version |
 | :-- | :-- |
 | `Microsoft.Authorization/policyDefinitions` | 2020-09-01 |
 
 ## Parameters
+
 | Parameter Name | Type | Default Value | Possible Values | Description |
 | :-- | :-- | :-- | :-- | :-- |
 | `displayName` | string |  |  | Optional. The display name of the policy definition. |
@@ -42,6 +44,7 @@ To deploy resource to an Azure Subscription, provide the `subscriptionId` as an 
 ```
 
 ## Outputs
+
 | Output Name | Type |
 | :-- | :-- |
 | `policyDefinitionId` | string |
@@ -49,4 +52,5 @@ To deploy resource to an Azure Subscription, provide the `subscriptionId` as an 
 | `roleDefinitionIds` | array |
 
 ## Template references
+
 - [Policydefinitions](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2020-09-01/policyDefinitions)

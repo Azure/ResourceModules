@@ -4,6 +4,7 @@ This module deploys Application Security Groups.
 
 
 ## Resource Types
+
 | Resource Type | Api Version |
 | :-- | :-- |
 | `Microsoft.Authorization/locks` | 2016-09-01 |
@@ -11,6 +12,7 @@ This module deploys Application Security Groups.
 | `Microsoft.Network/applicationSecurityGroups/providers/roleAssignments` | 2020-04-01-preview |
 
 ## Parameters
+
 | Parameter Name | Type | Default Value | Possible Values | Description |
 | :-- | :-- | :-- | :-- | :-- |
 | `applicationSecurityGroupName` | string |  |  | Required. Name of the Application Security Group. |
@@ -67,6 +69,7 @@ Tag names and tag values can be provided as needed. A tag can be left without a 
 ```
 
 ## Outputs
+
 | Output Name | Type |
 | :-- | :-- |
 | `applicationSecurityGroupsName` | string |
@@ -74,5 +77,6 @@ Tag names and tag values can be provided as needed. A tag can be left without a 
 | `applicationSecurityGroupsResourceId` | string |
 
 ## Template references
+
 - [Locks](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2016-09-01/locks)
 - [Applicationsecuritygroups](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Network/2021-02-01/applicationSecurityGroups)

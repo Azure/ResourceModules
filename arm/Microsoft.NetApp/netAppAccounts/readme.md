@@ -3,6 +3,7 @@
 This template deploys Azure NetApp Files.
 
 ## Resource types
+
 | Resource Type | Api Version |
 | :-- | :-- |
 | `Microsoft.Authorization/locks` | 2016-09-01 |
@@ -14,6 +15,7 @@ This template deploys Azure NetApp Files.
 | `Microsoft.NetApp/netAppAccounts/providers/roleAssignments` | 2020-04-01-preview |
 
 ## Parameters
+
 | Parameter Name | Type | Default Value | Possible Values | Description |
 | :-- | :-- | :-- | :-- | :-- |
 | `capacityPools` | array | `[]` |  | Optional. Capacity pools to create. |
@@ -172,6 +174,7 @@ Tag names and tag values can be provided as needed. A tag can be left without a 
 ```
 
 ## Outputs
+
 | Output Name | Type |
 | :-- | :-- |
 | `netAppAccountName` | string |
@@ -179,6 +182,7 @@ Tag names and tag values can be provided as needed. A tag can be left without a 
 | `netAppAccountResourceId` | string |
 
 ## Template references
+
 - [Locks](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2016-09-01/locks)
 - [Netappaccounts](https://docs.microsoft.com/en-us/azure/templates/Microsoft.NetApp/2021-04-01/netAppAccounts)
 - [Netappaccounts/Capacitypools](https://docs.microsoft.com/en-us/azure/templates/Microsoft.NetApp/2021-04-01/netAppAccounts/capacityPools)

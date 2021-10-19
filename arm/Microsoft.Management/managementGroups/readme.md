@@ -8,12 +8,14 @@ This module has some known **limitations**:
 - It can't manage the Root (/) management group
 
 ## Resource types
+
 | Resource Type | Api Version |
 | :-- | :-- |
 | `Microsoft.Authorization/roleAssignments` | 2020-04-01-preview |
 | `Microsoft.Management/managementGroups` | 2021-04-01 |
 
 ## Parameters
+
 | Parameter Name | Type | Default Value | Possible Values | Description |
 | :-- | :-- | :-- | :-- | :-- |
 | `managementGroupId` | string |  |  | Required. The management group id. |
@@ -56,11 +58,13 @@ This module has some known **limitations**:
 | `principalIds`           | array  |               |                 | Mandatory. An array of principal IDs                                        |
 
 ## Outputs
+
 | Output Name | Type |
 | :-- | :-- |
 | `managementGroupId` | string |
 | `managementGroupName` | string |
 
 ## Template references
+
 - [Roleassignments](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2020-04-01-preview/roleAssignments)
 - [Managementgroups](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Management/2021-04-01/managementGroups)

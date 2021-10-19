@@ -3,11 +3,13 @@
 This module deploys an Azure SQL Server.
 
 ## Resource types
+
 | Resource Type | Api Version |
 | :-- | :-- |
 | `Microsoft.Sql/servers/databases` | 2021-02-01-preview |
 
 ## Parameters
+
 | Parameter Name | Type | Default Value | Possible Values | Description |
 | :-- | :-- | :-- | :-- | :-- |
 | `autoPauseDelay` | string |  |  | Optional. Time in minutes after which database is automatically paused. |
@@ -48,6 +50,7 @@ Tag names and tag values can be provided as needed. A tag can be left without a 
 ```
 
 ## Outputs
+
 | Output Name | Type |
 | :-- | :-- |
 | `databaseName` | string |
@@ -55,4 +58,5 @@ Tag names and tag values can be provided as needed. A tag can be left without a 
 | `serverName` | string |
 
 ## Template references
+
 - [Servers/Databases](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Sql/2021-02-01-preview/servers/databases)

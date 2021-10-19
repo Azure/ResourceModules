@@ -3,6 +3,7 @@
 This module deploys an Azure Bastion.
 
 ## Resource Types
+
 | Resource Type | Api Version |
 | :-- | :-- |
 | `Microsoft.Authorization/locks` | 2016-09-01 |
@@ -12,6 +13,7 @@ This module deploys an Azure Bastion.
 | `Microsoft.Network/publicIPAddresses` | 2021-02-01 |
 
 ## Parameters
+
 | Parameter Name | Type | Default Value | Possible Values | Description |
 | :-- | :-- | :-- | :-- | :-- |
 | `azureBastionName` | string |  |  | Required. Name of the Azure Bastion resource |
@@ -80,6 +82,7 @@ Tag names and tag values can be provided as needed. A tag can be left without a 
 ```
 
 ## Outputs
+
 | Output Name | Type |
 | :-- | :-- |
 | `azureBastionName` | string |
@@ -87,6 +90,7 @@ Tag names and tag values can be provided as needed. A tag can be left without a 
 | `azureBastionResourceId` | string |
 
 ## Template references
+
 - [Locks](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2016-09-01/locks)
 - [Diagnosticsettings](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Insights/2017-05-01-preview/diagnosticSettings)
 - [Bastionhosts](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Network/2021-02-01/bastionHosts)

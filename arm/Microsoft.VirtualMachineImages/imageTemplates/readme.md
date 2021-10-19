@@ -3,6 +3,7 @@
 This module deploys an Image Template (for Azure Image Builder service) that can be consumed by the Azure Image Builder service
 
 ## Resource types
+
 | Resource Type | Api Version |
 | :-- | :-- |
 | `Microsoft.Authorization/locks` | 2016-09-01 |
@@ -10,6 +11,7 @@ This module deploys an Image Template (for Azure Image Builder service) that can
 | `Microsoft.VirtualMachineImages/imageTemplates/providers/roleAssignments` | 2020-04-01-preview |
 
 ## Parameters
+
 | Parameter Name | Type | Default Value | Possible Values | Description |
 | :-- | :-- | :-- | :-- | :-- |
 | `baseTime` | string | `[utcNow('yyyy-MM-dd-HH-mm-ss')]` |  | Generated. Do not provide a value! This date value is used to generate a unique image template name. |
@@ -113,6 +115,7 @@ Tag names and tag values can be provided as needed. A tag can be left without a 
 ```
 
 ## Outputs
+
 | Output Name | Type |
 | :-- | :-- |
 | `imageTemplateName` | string |
@@ -121,5 +124,6 @@ Tag names and tag values can be provided as needed. A tag can be left without a 
 | `runThisCommand` | string |
 
 ## Template references
+
 - [Locks](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2016-09-01/locks)
 - [Imagetemplates](https://docs.microsoft.com/en-us/azure/templates/Microsoft.VirtualMachineImages/2020-02-14/imageTemplates)

@@ -3,6 +3,7 @@
 This module deploys an Azure SQL Server.
 
 ## Resource types
+
 | Resource Type | Api Version |
 | :-- | :-- |
 | `Microsoft.Authorization/locks` | 2016-09-01 |
@@ -12,6 +13,7 @@ This module deploys an Azure SQL Server.
 | `Microsoft.Sql/servers/securityAlertPolicies` | 2021-02-01-preview |
 
 ## Parameters
+
 | Parameter Name | Type | Default Value | Possible Values | Description |
 | :-- | :-- | :-- | :-- | :-- |
 | `administratorLogin` | string |  |  | Required. Administrator username for the server. |
@@ -72,6 +74,7 @@ Tag names and tag values can be provided as needed. A tag can be left without a 
 ```
 
 ## Outputs
+
 | Output Name | Type |
 | :-- | :-- |
 | `serverName` | string |
@@ -79,6 +82,7 @@ Tag names and tag values can be provided as needed. A tag can be left without a 
 | `serverResourceId` | string |
 
 ## Template references
+
 - [Locks](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2016-09-01/locks)
 - [Servers](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Sql/2020-02-02-preview/servers)
 - [Servers/Firewallrules](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Sql/2021-02-01-preview/servers/firewallRules)

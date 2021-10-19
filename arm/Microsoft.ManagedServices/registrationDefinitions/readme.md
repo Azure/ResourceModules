@@ -7,12 +7,14 @@ the Azure resources you want to delegate access to are, providing 'authorization
 remote/managing tenant.
 
 ## Resource types
+
 | Resource Type | Api Version |
 | :-- | :-- |
 | `Microsoft.ManagedServices/registrationAssignments` | 2019-09-01 |
 | `Microsoft.ManagedServices/registrationDefinitions` | 2019-09-01 |
 
 ## Parameters
+
 | Parameter Name | Type | Default Value | Possible Values | Description |
 | :-- | :-- | :-- | :-- | :-- |
 | `authorizations` | array |  |  | Required. Specify an array of objects, containing object of Azure Active Directory principalId, a Azure roleDefinitionId, and an optional principalIdDisplayName. The roleDefinition specified is granted to the principalId in the provider's Active Directory and the principalIdDisplayName is visible to customers. |
@@ -54,6 +56,7 @@ remote/managing tenant.
 ```
 
 ## Outputs
+
 | Output Name | Type |
 | :-- | :-- |
 | `registrationAssignmentId` | string |
@@ -61,5 +64,6 @@ remote/managing tenant.
 | `registrationDefinitionName` | string |
 
 ## Template references
+
 - [Registrationassignments](https://docs.microsoft.com/en-us/azure/templates/Microsoft.ManagedServices/2019-09-01/registrationAssignments)
 - [Registrationdefinitions](https://docs.microsoft.com/en-us/azure/templates/Microsoft.ManagedServices/2019-09-01/registrationDefinitions)

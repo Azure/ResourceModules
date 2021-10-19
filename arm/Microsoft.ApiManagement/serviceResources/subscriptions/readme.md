@@ -3,6 +3,7 @@
 This module deploys Api Management Subscriptions.
 
 ## Resource types
+
 | Resource Type | Api Version |
 | :-- | :-- |
 | `Microsoft.ApiManagement/service/subscriptions` | 2020-06-01-preview |
@@ -14,6 +15,7 @@ The following resources are required to be able to deploy this resource.
 - `Microsoft.ApiManagement/service`
 
 ## Parameters
+
 | Parameter Name | Type | Default Value | Possible Values | Description |
 | :-- | :-- | :-- | :-- | :-- |
 | `allowTracing` | bool | `True` |  | Optional. Determines whether tracing can be enabled. |
@@ -27,6 +29,7 @@ The following resources are required to be able to deploy this resource.
 | `subscriptionName` | string |  |  | Required. Subscription name. |
 
 ## Outputs
+
 | Output Name | Type |
 | :-- | :-- |
 | `subscriptionResourceGroup` | string |
@@ -34,4 +37,5 @@ The following resources are required to be able to deploy this resource.
 | `subscriptionResourceName` | string |
 
 ## Template references
+
 - [Service/Subscriptions](https://docs.microsoft.com/en-us/azure/templates/Microsoft.ApiManagement/2020-06-01-preview/service/subscriptions)

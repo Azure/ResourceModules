@@ -4,12 +4,14 @@ This module deploys Images.
 
 
 ## Resource types
+
 | Resource Type | Api Version |
 | :-- | :-- |
 | `Microsoft.Compute/images` | 2021-04-01 |
 | `Microsoft.Compute/images/providers/roleAssignments` | 2018-09-01-preview |
 
 ## Parameters
+
 | Parameter Name | Type | Default Value | Possible Values | Description |
 | :-- | :-- | :-- | :-- | :-- |
 | `cuaId` | string |  |  | Optional. Customer Usage Attribution id (GUID). This GUID must be previously registered |
@@ -71,6 +73,7 @@ Tag names and tag values can be provided as needed. A tag can be left without a 
 ```
 
 ## Outputs
+
 | Output Name | Type |
 | :-- | :-- |
 | `imageName` | string |
@@ -78,4 +81,5 @@ Tag names and tag values can be provided as needed. A tag can be left without a 
 | `imageResourceId` | string |
 
 ## Template references
+
 - [Images](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Compute/2021-04-01/images)

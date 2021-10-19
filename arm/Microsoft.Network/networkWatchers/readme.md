@@ -4,6 +4,7 @@ This template deploys Network Watcher.
 
 
 ## Resource types
+
 | Resource Type | Api Version |
 | :-- | :-- |
 | `Microsoft.Authorization/locks` | 2016-09-01 |
@@ -12,6 +13,7 @@ This template deploys Network Watcher.
 | `Microsoft.Network/networkWatchers/providers/roleAssignments` | 2020-04-01-preview |
 
 ## Parameters
+
 | Parameter Name | Type | Default Value | Possible Values | Description |
 | :-- | :-- | :-- | :-- | :-- |
 | `cuaId` | string |  |  | Optional. Customer Usage Attribution id (GUID). This GUID must be previously registered |
@@ -24,6 +26,7 @@ This template deploys Network Watcher.
 | `workspaceResourceId` | string |  |  | Optional. Specify the Workspace Resource ID |
 
 ## Outputs
+
 | Output Name | Type |
 | :-- | :-- |
 | `networkWatcherName` | string |
@@ -139,6 +142,7 @@ Tag names and tag values can be provided as needed. A tag can be left without a 
 ```
 
 ## Template references
+
 - [Locks](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2016-09-01/locks)
 - [Networkwatchers](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Network/2021-02-01/networkWatchers)
 - [Networkwatchers/Connectionmonitors](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Network/2021-02-01/networkWatchers/connectionMonitors)

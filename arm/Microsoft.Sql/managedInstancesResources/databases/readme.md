@@ -4,6 +4,7 @@ This template deploys an SQL Managed Instances Database.
 
 
 ## Resource types
+
 | Resource Type | Api Version |
 | :-- | :-- |
 | `Microsoft.Authorization/locks` | 2016-09-01 |
@@ -17,6 +18,7 @@ This template deploys an SQL Managed Instances Database.
 The SQL Managed Instance Database is deployed on a SQL Managed Instance.
 
 ## Parameters
+
 | Parameter Name | Type | Default Value | Possible Values | Description |
 | :-- | :-- | :-- | :-- | :-- |
 | `backupLongTermRetentionPoliciesName` | string | `default` |  | Required. The name of the Long Term Retention backup policy. |
@@ -80,6 +82,7 @@ Tag names and tag values can be provided as needed. A tag can be left without a 
 ""`
 
 ## Outputs
+
 | Output Name | Type |
 | :-- | :-- |
 | `managedInstanceDatabaseName` | string |
@@ -87,6 +90,7 @@ Tag names and tag values can be provided as needed. A tag can be left without a 
 | `managedInstanceDatabaseResourceId` | string |
 
 ## Template references
+
 - [Locks](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2016-09-01/locks)
 - [Diagnosticsettings](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Insights/2017-05-01-preview/diagnosticSettings)
 - [Managedinstances/Databases](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Sql/2020-02-02-preview/managedInstances/databases)

@@ -5,11 +5,13 @@ This module deploys AVD Applications.
 
 
 ## Resource types
+
 | Resource Type | Api Version |
 | :-- | :-- |
 | `Microsoft.DesktopVirtualization/applicationGroups/applications` | 2021-07-12 |
 
 ## Parameters
+
 | Parameter Name | Type | Default Value | Possible Values | Description |
 | :-- | :-- | :-- | :-- | :-- |
 | `appGroupName` | string |  |  | Required. Name of the Application Group to create the application(s) in. |
@@ -49,6 +51,7 @@ This module deploys AVD Applications.
 ```
 
 ## Outputs
+
 | Output Name | Type |
 | :-- | :-- |
 | `appGroupName` | string |
@@ -56,4 +59,5 @@ This module deploys AVD Applications.
 | `applicationResourceIds` | array |
 
 ## Template references
+
 - [Applicationgroups/Applications](https://docs.microsoft.com/en-us/azure/templates/Microsoft.DesktopVirtualization/2021-07-12/applicationGroups/applications)

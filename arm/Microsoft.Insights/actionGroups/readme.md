@@ -3,12 +3,14 @@
 This module deploys an Action Group
 
 ## Resource Types
+
 | Resource Type | Api Version |
 | :-- | :-- |
 | `microsoft.insights/actionGroups` | 2019-06-01 |
 | `microsoft.insights/actionGroups/providers/roleAssignments` | 2020-04-01-preview |
 
 ## Parameters
+
 | Parameter Name | Type | Default Value | Possible Values | Description |
 | :-- | :-- | :-- | :-- | :-- |
 | `actionGroupName` | string |  |  | Required. The name of the action group. |
@@ -120,6 +122,7 @@ Tag names and tag values can be provided as needed. A tag can be left without a 
 - To understand the impact of the `useCommonAlertSchema` field, see [here](https://docs.microsoft.com/en-us/azure/azure-monitor/platform/alerts-common-schema)
 
 ## Outputs
+
 | Output Name | Type |
 | :-- | :-- |
 | `actionGroupName` | string |
@@ -127,4 +130,5 @@ Tag names and tag values can be provided as needed. A tag can be left without a 
 | `deploymentResourceGroup` | string |
 
 ## Template references
+
 - [Actiongroups](https://docs.microsoft.com/en-us/azure/templates/microsoft.insights/2019-06-01/actionGroups)

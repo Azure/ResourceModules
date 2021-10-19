@@ -3,6 +3,7 @@
 This module deploys Api Management Service Apis.
 
 ## Resource types
+
 | Resource Type | Api Version |
 | :-- | :-- |
 | `Microsoft.ApiManagement/service/apis` | 2020-06-01-preview |
@@ -16,6 +17,7 @@ The following resources are required to be able to deploy this resource.
 - `Microsoft.ApiManagement/service`
 
 ## Parameters
+
 | Parameter Name | Type | Default Value | Possible Values | Description |
 | :-- | :-- | :-- | :-- | :-- |
 | `apiDescription` | string |  |  | Optional. Description of the API. May include HTML formatting tags. |
@@ -62,6 +64,7 @@ The following resources are required to be able to deploy this resource.
 ```
 
 ## Outputs
+
 | Output Name | Type |
 | :-- | :-- |
 | `apimServiceApiName` | string |
@@ -69,6 +72,7 @@ The following resources are required to be able to deploy this resource.
 | `apimServiceApiResourceId` | string |
 
 ## Template references
+
 - [Service/Apis](https://docs.microsoft.com/en-us/azure/templates/Microsoft.ApiManagement/2020-06-01-preview/service/apis)
 - [Service/Apis/Policies](https://docs.microsoft.com/en-us/azure/templates/Microsoft.ApiManagement/2020-06-01-preview/service/apis/policies)
 - [Service/Apiversionsets](https://docs.microsoft.com/en-us/azure/templates/Microsoft.ApiManagement/2020-06-01-preview/service/apiVersionSets)

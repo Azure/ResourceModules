@@ -4,6 +4,7 @@ This module deploys Azure Kubernetes Cluster (AKS).
 
 
 ## Resource types
+
 | Resource Type | Api Version |
 | :-- | :-- |
 | `Microsoft.Authorization/locks` | 2016-09-01 |
@@ -13,6 +14,7 @@ This module deploys Azure Kubernetes Cluster (AKS).
 | `Microsoft.Insights/diagnosticSettings` | 2017-05-01-preview |
 
 ## Parameters
+
 | Parameter Name | Type | Default Value | Possible Values | Description |
 | :-- | :-- | :-- | :-- | :-- |
 | `aadProfileAdminGroupObjectIDs` | array | `[]` |  | Optional. Specifies the AAD group object IDs that will have admin role of the cluster. |
@@ -213,6 +215,7 @@ For available properties check https://docs.microsoft.com/en-us/azure/templates/
 ```
 
 ## Outputs
+
 | Output Name | Type |
 | :-- | :-- |
 | `azureKubernetesServiceName` | string |
@@ -221,6 +224,7 @@ For available properties check https://docs.microsoft.com/en-us/azure/templates/
 | `controlPlaneFQDN` | string |
 
 ## Template references
+
 - [Locks](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2016-09-01/locks)
 - [Managedclusters](https://docs.microsoft.com/en-us/azure/templates/Microsoft.ContainerService/2021-07-01/managedClusters)
 - [Managedclusters/Agentpools](https://docs.microsoft.com/en-us/azure/templates/Microsoft.ContainerService/2021-05-01/managedClusters/agentPools)

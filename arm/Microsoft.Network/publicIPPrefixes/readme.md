@@ -3,6 +3,7 @@
 This template deploys Public IP Prefixes.
 
 ## Resource types
+
 | Resource Type | Api Version |
 | :-- | :-- |
 | `Microsoft.Authorization/locks` | 2016-09-01 |
@@ -10,6 +11,7 @@ This template deploys Public IP Prefixes.
 | `Microsoft.Network/publicIPPrefixes/providers/roleAssignments` | 2020-04-01-preview |
 
 ## Parameters
+
 | Parameter Name | Type | Default Value | Possible Values | Description |
 | :-- | :-- | :-- | :-- | :-- |
 | `cuaId` | string |  |  | Optional. Customer Usage Attribution id (GUID). This GUID must be previously registered |
@@ -67,6 +69,7 @@ Tag names and tag values can be provided as needed. A tag can be left without a 
 ```
 
 ## Outputs
+
 | Output Name | Type |
 | :-- | :-- |
 | `publicIpPrefixName` | string |
@@ -74,5 +77,6 @@ Tag names and tag values can be provided as needed. A tag can be left without a 
 | `publicIpPrefixResourceId` | string |
 
 ## Template references
+
 - [Locks](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2016-09-01/locks)
 - [Publicipprefixes](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Network/2021-02-01/publicIPPrefixes)

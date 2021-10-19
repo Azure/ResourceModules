@@ -3,6 +3,7 @@
 This module deploys App Service Environment, with resource lock.
 
 ## Resource types
+
 | Resource Type | Api Version |
 | :-- | :-- |
 | `Microsoft.Authorization/locks` | 2016-09-01 |
@@ -11,6 +12,7 @@ This module deploys App Service Environment, with resource lock.
 | `Microsoft.Web/hostingEnvironments/providers/roleAssignments` | 2020-04-01-preview |
 
 ## Parameters
+
 | Parameter Name | Type | Default Value | Possible Values | Description |
 | :-- | :-- | :-- | :-- | :-- |
 | `apiManagementAccountId` | string |  |  | Optional. API Management Account associated with the App Service Environment. |
@@ -137,6 +139,7 @@ workerPools can have two properties workerSize and workerCount:
 ```
 
 ## Outputs
+
 | Output Name | Type |
 | :-- | :-- |
 | `appServiceEnvironmentName` | string |
@@ -144,6 +147,7 @@ workerPools can have two properties workerSize and workerCount:
 | `appServiceEnvironmentResourceId` | string |
 
 ## Template references
+
 - [Locks](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2016-09-01/locks)
 - [Diagnosticsettings](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Insights/2017-05-01-preview/diagnosticSettings)
 - [Hostingenvironments](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Web/2021-02-01/hostingEnvironments)

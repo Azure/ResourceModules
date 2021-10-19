@@ -4,6 +4,7 @@ This template deploys Virtual Wan
 
 
 ## Resource types
+
 | Resource Type | Api Version |
 | :-- | :-- |
 | `Microsoft.Authorization/locks` | 2016-09-01 |
@@ -14,6 +15,7 @@ This template deploys Virtual Wan
 | `Microsoft.Network/vpnSites` | 2021-05-01 |
 
 ## Parameters
+
 | Parameter Name | Type | Default Value | Possible Values | Description |
 | :-- | :-- | :-- | :-- | :-- |
 | `addressPrefix` | string | `192.168.0.0/24` |  | Optional. The hub address prefix. This address prefix will be used as the address prefix for the hub vnet |
@@ -81,6 +83,7 @@ Tag names and tag values can be provided as needed. A tag can be left without a 
 ```
 
 ## Outputs
+
 | Output Name | Type |
 | :-- | :-- |
 | `virtualWanName` | string |
@@ -88,6 +91,7 @@ Tag names and tag values can be provided as needed. A tag can be left without a 
 | `virtualWanNameResourceId` | string |
 
 ## Template references
+
 - [Locks](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2016-09-01/locks)
 - [Virtualhubs](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Network/2021-05-01/virtualHubs)
 - [Virtualwans](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Network/2021-05-01/virtualWans)

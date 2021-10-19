@@ -1,11 +1,13 @@
 # PolicyExemption `[Microsoft.Authorization/policyExemptions]`
 
 ## Resource types
+
 | Resource Type | Api Version |
 | :-- | :-- |
 | `Microsoft.Authorization/policyExemptions` | 2020-07-01-preview |
 
 ## Parameters
+
 | Parameter Name | Type | Default Value | Possible Values | Description |
 | :-- | :-- | :-- | :-- | :-- |
 | `displayName` | string |  |  | Optional. The display name of the policy exemption. |
@@ -57,6 +59,7 @@ To deploy resource to a Resource Group, provide the `subscriptionId` and `resour
 > The `subscriptionId` is used to enable deployment to a Resource Group Scope, allowing the use of the `resourceGroup()` function from a Management Group Scope. [Additional Details](https://github.com/Azure/bicep/pull/1420).
 
 ## Outputs
+
 | Output Name | Type |
 | :-- | :-- |
 | `policyExemptionId` | string |
@@ -64,4 +67,5 @@ To deploy resource to a Resource Group, provide the `subscriptionId` and `resour
 | `policyExemptionScope` | string |
 
 ## Template references
+
 - [Policyexemptions](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2020-07-01-preview/policyExemptions)

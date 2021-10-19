@@ -3,12 +3,14 @@
 This module deploys an Alert based on Activity Log
 
 ## Resource Types
+
 | Resource Type | Api Version |
 | :-- | :-- |
 | `Microsoft.Insights/activityLogAlerts` | 2020-10-01 |
 | `Microsoft.Insights/activityLogAlerts/providers/roleAssignments` | 2020-04-01-preview |
 
 ## Parameters
+
 | Parameter Name | Type | Default Value | Possible Values | Description |
 | :-- | :-- | :-- | :-- | :-- |
 | `actions` | array | `[]` |  | Optional. The list of actions to take when alert triggers. |
@@ -174,6 +176,7 @@ Tag names and tag values can be provided as needed. A tag can be left without a 
 ```
 
 ## Outputs
+
 | Output Name | Type |
 | :-- | :-- |
 | `activityLogAlertName` | string |
@@ -181,4 +184,5 @@ Tag names and tag values can be provided as needed. A tag can be left without a 
 | `activityLogAlertResourceId` | string |
 
 ## Template references
+
 - [Activitylogalerts](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Insights/2020-10-01/activityLogAlerts)

@@ -3,12 +3,14 @@
 This module deploys an Image Definition in a Shared Image Gallery.
 
 ## Resource types
+
 | Resource Type | Api Version |
 | :-- | :-- |
 | `Microsoft.Compute/galleries/images` | 2020-09-30 |
 | `Microsoft.Compute/galleries/images/providers/roleAssignments` | 2020-04-01-preview |
 
 ## Parameters
+
 | Parameter Name | Type | Default Value | Possible Values | Description |
 | :-- | :-- | :-- | :-- | :-- |
 | `cuaId` | string |  |  | Optional. Customer Usage Attribution id (GUID). This GUID must be previously registered |
@@ -84,6 +86,7 @@ Tag names and tag values can be provided as needed. A tag can be left without a 
 ```
 
 ## Outputs
+
 | Output Name | Type |
 | :-- | :-- |
 | `galleryImageName` | string |
@@ -93,4 +96,5 @@ Tag names and tag values can be provided as needed. A tag can be left without a 
 | `galleryResourceId` | string |
 
 ## Template references
+
 - [Galleries/Images](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Compute/2020-09-30/galleries/images)

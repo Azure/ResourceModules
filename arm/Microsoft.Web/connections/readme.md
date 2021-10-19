@@ -3,6 +3,7 @@
 This module deploys an Azure API Connection.
 
 ## Resource types
+
 | Resource Type | Api Version |
 | :-- | :-- |
 | `Microsoft.Authorization/locks` | 2016-09-01 |
@@ -10,6 +11,7 @@ This module deploys an Azure API Connection.
 | `Microsoft.Web/connections/providers/roleAssignments` | 2020-04-01-preview |
 
 ## Parameters
+
 | Parameter Name | Type | Default Value | Possible Values | Description |
 | :-- | :-- | :-- | :-- | :-- |
 | `alternativeParameterValues` | object | `{object}` |  | Optional. Alternative parameter values. |
@@ -98,6 +100,7 @@ Tag names and tag values can be provided as needed. A tag can be left without a 
 ```
 
 ## Outputs
+
 | Output Name | Type |
 | :-- | :-- |
 | `connectionName` | string |
@@ -105,5 +108,6 @@ Tag names and tag values can be provided as needed. A tag can be left without a 
 | `connectionResourceId` | string |
 
 ## Template references
+
 - [Locks](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2016-09-01/locks)
 - [Connections](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Web/2016-06-01/connections)

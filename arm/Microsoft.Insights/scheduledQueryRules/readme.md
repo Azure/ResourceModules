@@ -3,12 +3,14 @@
 This module deploys an Alert based on metrics
 
 ## Resource types
+
 | Resource Type | Api Version |
 | :-- | :-- |
 | `Microsoft.Insights/scheduledQueryRules` | 2018-04-16 |
 | `microsoft.insights/scheduledQueryRules/providers/roleAssignments` | 2020-04-01-preview |
 
 ## Parameters
+
 | Parameter Name | Type | Default Value | Possible Values | Description |
 | :-- | :-- | :-- | :-- | :-- |
 | `actions` | array | `[]` |  | Optional. The list of actions to take when alert triggers. |
@@ -82,6 +84,7 @@ Tag names and tag values can be provided as needed. A tag can be left without a 
 ```
 
 ## Outputs
+
 | Output Name | Type |
 | :-- | :-- |
 | `deploymentResourceGroup` | string |
@@ -89,4 +92,5 @@ Tag names and tag values can be provided as needed. A tag can be left without a 
 | `queryAlertResourceId` | string |
 
 ## Template references
+
 - [Scheduledqueryrules](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Insights/2018-04-16/scheduledQueryRules)

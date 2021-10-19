@@ -3,6 +3,7 @@
 This module deploys an Azure Health Bot.
 
 ## Resource Types
+
 | Resource Type | Api Version |
 | :-- | :-- |
 | `Microsoft.Authorization/locks` | 2016-09-01 |
@@ -10,6 +11,7 @@ This module deploys an Azure Health Bot.
 | `Microsoft.HealthBot/healthBots/providers/roleAssignments` | 2020-04-01-preview |
 
 ## Parameters
+
 | Parameter Name | Type | Default Value | Possible Values | Description |
 | :-- | :-- | :-- | :-- | :-- |
 | `azureHealthBotName` | string |  |  | Required. Name of the resource |
@@ -60,6 +62,7 @@ Tag names and tag values can be provided as needed. A tag can be left without a 
 ```
 
 ## Outputs
+
 | Output Name | Type |
 | :-- | :-- |
 | `azureHealthBotName` | string |
@@ -67,5 +70,6 @@ Tag names and tag values can be provided as needed. A tag can be left without a 
 | `azureHealthBotResourceId` | string |
 
 ## Template references
+
 - [Locks](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2016-09-01/locks)
 - [Healthbots](https://docs.microsoft.com/en-us/azure/templates/Microsoft.HealthBot/2020-10-20-preview/healthBots)

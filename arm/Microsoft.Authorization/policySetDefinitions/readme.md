@@ -1,11 +1,13 @@
 # policySetDefinition `[Microsoft.Authorization/policySetDefinitions]`
 
 ## Resource types
+
 | Resource Type | Api Version |
 | :-- | :-- |
 | `Microsoft.Authorization/policySetDefinitions` | 2020-09-01 |
 
 ## Parameters
+
 | Parameter Name | Type | Default Value | Possible Values | Description |
 | :-- | :-- | :-- | :-- | :-- |
 | `displayName` | string |  |  | Optional. The display name of the Set Definition (Initiative) |
@@ -42,10 +44,12 @@ To deploy resource to an Azure Subscription, provide the `subscriptionId` as an 
 ```
 
 ## Outputs
+
 | Output Name | Type |
 | :-- | :-- |
 | `policySetDefinitionId` | string |
 | `policySetDefinitionName` | string |
 
 ## Template references
+
 - [Policysetdefinitions](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2020-09-01/policySetDefinitions)

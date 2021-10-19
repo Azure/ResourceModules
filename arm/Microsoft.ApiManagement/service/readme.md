@@ -3,6 +3,7 @@
 This module deploys an API management.
 
 ## Resource types
+
 | Resource Type | Api Version |
 | :-- | :-- |
 | `Microsoft.ApiManagement/service` | 2020-12-01 |
@@ -20,6 +21,7 @@ The following resources are required to be able to deploy this resource.
 - *None*
 
 ## Parameters
+
 | Parameter Name | Type | Default Value | Possible Values | Description |
 | :-- | :-- | :-- | :-- | :-- |
 | `additionalLocations` | array | `[]` |  | Optional. Additional datacenter locations of the API Management service. |
@@ -124,6 +126,7 @@ Tag names and tag values can be provided as needed. A tag can be left without a 
 ```
 
 ## Outputs
+
 | Output Name | Type |
 | :-- | :-- |
 | `apimServiceName` | string |
@@ -135,6 +138,7 @@ Tag names and tag values can be provided as needed. A tag can be left without a 
 - *None*
 
 ## Template references
+
 - [Service](https://docs.microsoft.com/en-us/azure/templates/Microsoft.ApiManagement/2020-12-01/service)
 - [Service/Identityproviders](https://docs.microsoft.com/en-us/azure/templates/Microsoft.ApiManagement/2020-06-01-preview/service/identityProviders)
 - [Service/Policies](https://docs.microsoft.com/en-us/azure/templates/Microsoft.ApiManagement/2020-06-01-preview/service/policies)

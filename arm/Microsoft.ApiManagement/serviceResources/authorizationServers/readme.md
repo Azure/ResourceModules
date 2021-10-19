@@ -3,6 +3,7 @@
 This module deploys Api Management Service Authorization Servers.
 
 ## Resource types
+
 | Resource Type | Api Version |
 | :-- | :-- |
 | `Microsoft.ApiManagement/service/authorizationServers` | 2020-06-01-preview |
@@ -14,6 +15,7 @@ The following resources are required to be able to deploy this resource.
 - `Microsoft.ApiManagement/service`
 
 ## Parameters
+
 | Parameter Name | Type | Default Value | Possible Values | Description |
 | :-- | :-- | :-- | :-- | :-- |
 | `apiManagementServiceAuthorizationServerName` | string |  |  | Required. Identifier of the authorization server. |
@@ -36,6 +38,7 @@ The following resources are required to be able to deploy this resource.
 | `tokenEndpoint` | string |  |  | Optional. OAuth token endpoint. Contains absolute URI to entity being referenced. |
 
 ## Outputs
+
 | Output Name | Type |
 | :-- | :-- |
 | `apimServiceAuthorizationServerResourceGroup` | string |
@@ -43,4 +46,5 @@ The following resources are required to be able to deploy this resource.
 | `apimServiceAuthorizationServerResourceName` | string |
 
 ## Template references
+
 - [Service/Authorizationservers](https://docs.microsoft.com/en-us/azure/templates/Microsoft.ApiManagement/2020-06-01-preview/service/authorizationServers)
