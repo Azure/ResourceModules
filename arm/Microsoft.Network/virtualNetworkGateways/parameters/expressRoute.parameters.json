@@ -39,9 +39,6 @@
         "eventHubName": {
             "value": "adp-sxx-az-evh-weu-x-001"
         },
-        "lockForDeletion": {
-            "value": false
-        },
         "tags": {
             "value": {
                 "Environment": "Validation",

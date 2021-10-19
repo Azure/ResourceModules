@@ -1,6 +1,6 @@
 # SQL Managed Instances
 
-This template deploys an SQL Managed Instance, with resource lock. 
+This template deploys an SQL Managed Instance, with resource lock.
 
 
 ## Resource types
@@ -42,7 +42,7 @@ SQL Managed Instance is deployed on a virtual network. This network is required 
 | `instancePoolId` | string | Optional. The Id of the instance pool this managed server belongs to. |  | |
 | `licenseType` | string | Optional. The license type. Possible values are 'LicenseIncluded' (regular price inclusive of a new SQL license) and 'BasePrice' (discounted AHB price for bringing your own SQL licenses). | LicenseIncluded | |
 | `location` | string | Optional. Location for all resources. | [resourceGroup().location] | |
-| `lockForDeletion` | bool | Optional. Switch to lock Key Vault from deletion. | False | |
+| `lock` | string | Optional. Specify the type of lock. | 'NotSpecified' | 'CanNotDelete', 'NotSpecified', 'ReadOnly' |
 | `managedInstanceCreateMode` | string | Optional. Specifies the mode of database creation. Default: Regular instance creation. Restore: Creates an instance by restoring a set of backups to specific point in time. RestorePointInTime and SourceManagedInstanceId must be specified. | Default | |
 | `managedInstanceName` | string | Required. The name of the SQL managed instance. |  | |
 | `proxyOverride` | string | Optional. Connection type used for connecting to the instance. | Proxy |

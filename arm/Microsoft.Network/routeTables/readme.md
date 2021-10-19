@@ -18,9 +18,9 @@ This template deploys User Defined Route Tables.
 | `cuaId` | string | Optional. Customer Usage Attribution id (GUID). This GUID must be previously registered |  |  |
 | `disableBgpRoutePropagation` | bool | Optional. Switch to disable BGP route propagation. | False |  |
 | `location` | string | Optional. Location for all resources. | [resourceGroup().location] |  |
-| `lockForDeletion` | bool | Optional. Switch to lock storage from deletion. | False |  |
+| `lock` | string | Optional. Specify the type of lock. | 'NotSpecified' | 'CanNotDelete', 'NotSpecified', 'ReadOnly' |
 | `roleAssignments` | array | Optional. Array of role assignment objects that contain the 'roleDefinitionIdOrName' and 'principalId' to define RBAC role assignments on this resource. In the roleDefinitionIdOrName attribute, you can provide either the display name of the role definition, or its fully qualified ID in the following format: '/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11' | System.Object[] |  |
-| `routes` | array | Optional. An Array of Routes to be established within the hub route table. | System.Object[] |  |       
+| `routes` | array | Optional. An Array of Routes to be established within the hub route table. | System.Object[] |  |
 | `routeTableName` | string | Required. Name given for the hub route table. |  |  |
 | `tags` | object | Optional. Tags of the resource. |  |  |
 

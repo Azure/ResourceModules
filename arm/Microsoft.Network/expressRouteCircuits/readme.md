@@ -25,7 +25,7 @@ This template deploys a ExrepressRoute Circuit.
 | `eventHubAuthorizationRuleId` | string | Optional. Resource ID of the event hub authorization rule for the Event Hubs namespace in which the event hub should be created or streamed to. |  |  |
 | `eventHubName` | string | Optional. Name of the event hub within the namespace to which logs are streamed. Without this, an event hub is created for each log category. |  |  |
 | `location` | string | Optional. Location for all resources. | [resourceGroup().location] |  |
-| `lockForDeletion` | bool | Optional. Switch to lock ExpressRoute Circuit from deletion. | False |  |
+| `lock` | string | Optional. Specify the type of lock. | 'NotSpecified' | 'CanNotDelete', 'NotSpecified', 'ReadOnly' |
 | `peerASN` | int | Optional. The autonomous system number of the customer/connectivity provider. | 0 |  |
 | `peering` | bool | Optional. Enabled BGP peering type for the Circuit. | False | System.Object[] |
 | `peeringLocation` | string | Required. This is the name of the peering location and not the ARM resource location. It must exactly match one of the available peering locations from List ExpressRoute Service Providers API call. |  |  |
@@ -92,7 +92,7 @@ Tag names and tag values can be provided as needed. A tag can be left without a 
 | Output Name | Type | Description |
 | :-- | :-- | :-- |
 | `expressRouteCircuitName` | string | The Name of the ExpressRoute Circuits.. |
-| `expressRouteCircuitResourceGroup` | string | The name of the Resource Group the ExpressRoute Circuits was created in. |        
+| `expressRouteCircuitResourceGroup` | string | The name of the Resource Group the ExpressRoute Circuits was created in. |
 | `expressRouteCircuitResourceId` | string | The Resource Id of the ExpressRoute Circuits. |
 | `expressRouteCircuitServiceKey` | string | The URL of the Key Vault. |
 

@@ -21,7 +21,7 @@ This module deploys one or multiple Virtual Machines.
 | `availabilitySetFaultDomain` | int | 2 |  | Optional. The number of fault domains to use. |
 | `availabilitySetName` | string |  |  | Optional. Creates an availability set with the given name and adds the VMs to it. Cannot be used in combination with availability zone nor scale set. |
 | `availabilitySetNames` | array | System.Object[] |  | Optional. Name(s) of the availability set(s). If no explicit names are provided, availability set name(s) will be generated based on the availabilitySetName, vmNumberOfInstances and maxNumberOfVmsPerAvSet parameters. |
-| `availabilitySetSku` | string | Aligned |  | Optional. Sku of the availability set. Use 'Aligned' for virtual machines with managed disks and 'Classic' for virtual machines with unmanaged disks. |    
+| `availabilitySetSku` | string | Aligned |  | Optional. Sku of the availability set. Use 'Aligned' for virtual machines with managed disks and 'Classic' for virtual machines with unmanaged disks. |
 | `availabilitySetUpdateDomain` | int | 5 |  | Optional. The number of update domains to use. |
 | `availabilityZone` | int | 0 | System.Object[] | Optional. If set to 1, 2 or 3, the availability zone for all VMs is hardcoded to that value. If zero, then the automatic algorithm will be used to give every VM in a different zone (up to three zones). Cannot be used in combination with availability set nor scale set. |
 | `backupPolicyName` | string | DefaultPolicy |  | Optional. Backup policy the VMs should be using for backup. |
@@ -72,7 +72,7 @@ This module deploys one or multiple Virtual Machines.
 | `linuxConfiguration` | object |  |  | Optional. Specifies the Linux operating system settings on the virtual machine. |
 | `location` | string | [resourceGroup().location] |  | Optional. Location for all resources. |
 | `managedServiceIdentity` | string | None | None, SystemAssigned, UserAssigned, SystemAssigned, UserAssigned, UserAssigned, SystemAssigned | Optional. The type of identity used for the virtual machine. The type 'SystemAssigned, UserAssigned' includes both an implicitly created identity and a set of user assigned identities. The type 'None' (default) will remove any identities from the virtual machine. |
-| `lockForDeletion` | bool | False |  | Optional. Switch to lock VM from deletion. |
+| `lock` | string | 'NotSpecified' | 'CanNotDelete', 'NotSpecified', 'ReadOnly' |  Optional. Specify the type of lock. |
 | `maxNumberOfVmsPerAvSet` | int | 200 |  | Optional. The maximum number of VMs allowed in an availability set. The template will create additional availability sets if the number of VMs to be deployed exceeds this quota. |
 | `maxNumberOfVmsPerDeployment` | int | 50 |  | Optional. The maximum number of VMs allowed in a single deployment. The template will create additional deployments if the number of VMs to be deployed exceeds this quota. |
 | `maxPriceForLowPriorityVm` | string |  |  | Optional. Specifies the maximum price you are willing to pay for a low priority VM/VMSS. This price is in US Dollars. |
