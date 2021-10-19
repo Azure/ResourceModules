@@ -5,9 +5,6 @@ param virtualMachineName string = take(toLower(uniqueString(resourceGroup().name
 @description('Optional. Specifies whether the computer names should be transformed. The transformation is performed on all computer names. Available transformations are \'none\' (Default), \'uppercase\' and \'lowercase\'.')
 param vmComputerNamesTransformation string = 'none'
 
-@description('Optional. Location for all resources.')
-param location string = resourceGroup().location
-
 @description('Optional. Specifies the size for the VMs')
 param vmSize string = 'Standard_D2s_v3'
 
@@ -45,27 +42,6 @@ param linuxConfiguration object = {}
 
 @description('Optional. Specifies set of certificates that should be installed onto the virtual machine.')
 param certificatesToBeInstalled array = []
-
-@description('Optional. Specifies whether extension operations should be allowed on the virtual machine. This may only be set to False when no extensions are present on the virtual machine.')
-param allowExtensionOperations bool = true
-
-@description('Optional. Resource name of a proximity placement group.')
-param proximityPlacementGroupName string = ''
-
-@description('Optional. Resource name of an availability set. Cannot be used in combination with availability zone nor scale set.')
-param availabilitySetName string = ''
-
-@description('Optional. Creates an availability zone and adds the VMs to it. Cannot be used in combination with availability set nor scale set.')
-param useAvailabilityZone bool = false
-
-@description('Optional. If set to 1, 2 or 3, the availability zone for all VMs is hardcoded to that value. If zero, then the automatic algorithm will be used to give every VM in a different zone (up to three zones). Cannot be used in combination with availability set nor scale set.')
-@allowed([
-  0
-  1
-  2
-  3
-])
-param availabilityZone int = 0
 
 @description('Optional. Specifies the priority for the virtual machine.')
 @allowed([
@@ -110,6 +86,27 @@ param bootDiagnosticStorageAccountName string = ''
 
 @description('Optional. Storage account boot diagnostic base URI.')
 param bootDiagnosticStorageAccountUri string = '.blob.core.windows.net/'
+
+@description('Optional. Specifies whether extension operations should be allowed on the virtual machine. This may only be set to False when no extensions are present on the virtual machine.')
+param allowExtensionOperations bool = true
+
+@description('Optional. Resource name of a proximity placement group.')
+param proximityPlacementGroupName string = ''
+
+@description('Optional. Resource name of an availability set. Cannot be used in combination with availability zone nor scale set.')
+param availabilitySetName string = ''
+
+@description('Optional. Creates an availability zone and adds the VMs to it. Cannot be used in combination with availability set nor scale set.')
+param useAvailabilityZone bool = false
+
+@description('Optional. If set to 1, 2 or 3, the availability zone for all VMs is hardcoded to that value. If zero, then the automatic algorithm will be used to give every VM in a different zone (up to three zones). Cannot be used in combination with availability set nor scale set.')
+@allowed([
+  0
+  1
+  2
+  3
+])
+param availabilityZone int = 0
 
 // External resources
 @description('Required. Configures NICs and PIPs.')
@@ -256,6 +253,9 @@ param domainJoinOptions int = 3
 param dscConfiguration object = {}
 
 // Shared parameters
+@description('Optional. Location for all resources.')
+param location string = resourceGroup().location
+
 @description('Optional. Specifies the number of days that logs will be kept for; a value of 0 will retain data indefinitely.')
 @minValue(0)
 @maxValue(365)
