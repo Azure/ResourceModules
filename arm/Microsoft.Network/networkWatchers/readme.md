@@ -25,18 +25,6 @@ This template deploys Network Watcher.
 | `tags` | object | `{object}` |  | Optional. Tags of the resource. |
 | `workspaceResourceId` | string |  |  | Optional. Specify the Workspace Resource ID |
 
-## Outputs
-
-| Output Name | Type |
-| :-- | :-- |
-| `networkWatcherName` | string |
-| `networkWatcherResourceGroup` | string |
-| `networkWatcherResourceId` | string |
-
-## Considerations
-
-N/A
-
 ### Parameter Usage: `monitors`
 
 Montiors specifies the Connection monitors in an array in the following structure.
@@ -140,6 +128,14 @@ Tag names and tag values can be provided as needed. A tag can be left without a 
     }
 }
 ```
+
+## Outputs
+
+| Output Name | Type |
+| :-- | :-- |
+| `networkWatcherName` | string |
+| `networkWatcherResourceGroup` | string |
+| `networkWatcherResourceId` | string |
 
 ## Template references
 
