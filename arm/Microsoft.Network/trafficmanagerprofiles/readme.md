@@ -22,7 +22,7 @@ This module deploys Traffic Manager, with resource lock.
 | `endpoints` | array | Optional. The list of endpoints in the Traffic Manager profile. | System.Object[] |  |
 | `eventHubAuthorizationRuleId` | string | Optional. Resource ID of the event hub authorization rule for the Event Hubs namespace in which the event hub should be created or streamed to. |  |  |
 | `eventHubName` | string | Optional. Name of the event hub within the namespace to which logs are streamed. Without this, an event hub is created for each log category. |  |  |
-| `lockForDeletion` | bool | Optional. Switch to lock Traffic Manager from deletion. | False |  |
+| `lock` | string | Optional. Specify the type of lock. | 'NotSpecified' | 'CanNotDelete', 'NotSpecified', 'ReadOnly' |
 | `maxReturn` | int | Optional. Maximum number of endpoints to be returned for MultiValue routing type. | 1 | |
 | `monitorConfig` | object | Optional. The endpoint monitoring settings of the Traffic Manager profile. | protocol=http; port=80; path=/ |  |
 | `profileStatus` | string | Optional. The status of the Traffic Manager profile. | Enabled | System.Object[] |
@@ -40,7 +40,7 @@ This module deploys Traffic Manager, with resource lock.
 
 ```json
 "monitorConfig": {
-    "value": 
+    "value":
         {
             "protocol": "http",
             "port": "80",
@@ -53,13 +53,13 @@ This module deploys Traffic Manager, with resource lock.
 
 ```json
 "endpoints": {
-    "value": 
+    "value":
         [
             {
                 "id": "/subscriptions/12345678-1234-1234-1234-123456789012/resourceGroups/<rgname>/providers/Microsoft.Network/trafficManagerProfiles/<tmname>/azureEndpoints/<endpointname>",
                 "name": "MyEndpoint001",
                 "type": "Microsoft.Network/trafficManagerProfiles/azureEndpoints",
-                "properties": 
+                "properties":
                 {
                     "endpointStatus": "Enabled",
                     "endpointMonitorStatus": "CheckingEndpoint",

@@ -30,7 +30,7 @@ This module deploys an Azure API Connection.
 | `statuses`                   | array        | **Optional**. Status of the connection.                                                                                                                                                                                                                                                          | System.Object[]          | Array of complex structures, see below. |
 | `tags`                       | object       | **Optional**. Tags of the resource.                                                                                                                                                                                                                                                              | System.Object            | Complex structure, see below.           |
 | `testLinks`                  | array        | **Optional**. Links to test the API connection.                                                                                                                                                                                                                                                  | System.Object[]          | Array of complex structures, see below. |
-| `lockForDeletion` | bool | Optional. Switch to lock App Service Plan from deletion. | False |  |
+| `lock` | string | Optional. Specify the type of lock. | 'NotSpecified' | 'CanNotDelete', 'NotSpecified', 'ReadOnly' |
 
 ### Parameter Usage: `connectionApi`
 
