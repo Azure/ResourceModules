@@ -43,105 +43,6 @@ function Get-NestedResourceList {
 
 <#
 .SYNOPSIS
-Find the array index that represents the end of the current section
-
-.DESCRIPTION
-Find the array index that represents the end of the current section
-This index is identified by iterating through the subsequent array positions until a new chapter character (#) is found
-
-.PARAMETER ReadMeFileContent
-Mandatory. The content array to search in
-
-.PARAMETER startIndex
-Mandatory. The index to start the search from. Should usually be the current section's header index
-
-.EXAMPLE
-Get-EndIndex -ReadMeFileContent @('# Title', '', '## Section 1', ...) -startIndex = 13
-
-Start from index '13' onward for the index that concludes the current section in the given content array
-#>
-function Get-EndIndex {
-
-    param(
-        [Parameter(Mandatory)]
-        [object[]] $ReadMeFileContent,
-
-        [Parameter(Mandatory)]
-        [int] $startIndex
-    )
-
-    # shift one further
-    $endIndex = $startIndex + 1
-
-    # Identify next section
-    while (-not $ReadMeFileContent[$endIndex].StartsWith('#') -and -not ($endIndex -ge $readMeFileContent.Count - 1)) {
-        $endIndex++
-    }
-
-    return $endIndex
-}
-
-<#
-.SYNOPSIS
-Merge the sections prior & after the updated content with the new content into on connected content array
-
-.DESCRIPTION
-Merge the sections prior & after the updated content with the new content into on connected content array
-
-.PARAMETER oldContent
-Mandatory. The original content to update
-
-.PARAMETER newContent
-Mandatory. The new content to merge into the original
-
-.PARAMETER sectionStartIdentifier
-Mandatory. The identifier/header to search for. If not found, the new section is added at the end of the content array
-
-.EXAMPLE
-Merge-FileWithNewContent -oldContent @('# Title', '', '## Section 1', ...) -newContent @('# Title', '', '## Section 1', ...) -sectionStartIdentifier '## Resource Types'
-
-Update the original content of the '## Resource Types' section with the newly provided
-#>
-function Merge-FileWithNewContent {
-
-    [CmdletBinding()]
-    param (
-        [Parameter(Mandatory)]
-        [object[]] $oldContent,
-
-        [Parameter(Mandatory)]
-        [object[]] $newContent,
-
-        [Parameter(Mandatory)]
-        [string] $sectionStartIdentifier
-    )
-
-    $startIndex = 0
-    while (-not ($oldContent[$startIndex] -like $sectionStartIdentifier) -and -not ($startIndex -ge $oldContent.Count - 1)) {
-        $startIndex++
-    }
-    $startContent = $oldContent[0..$startIndex]
-
-    if ($startIndex -eq $ReadMeFileContent.Count - 1) {
-        # Not found section until end of file. Assuming it does not exist
-        $endContent = @()
-        if ($ReadMeFileContent[$startIndex] -notcontains $sectionStartIdentifier) {
-            $newContent = @('', $sectionStartIdentifier) + $newContent
-        }
-    } else {
-        $endIndex = Get-EndIndex -ReadMeFileContent $oldContent -startIndex $startIndex
-        if ($endIndex -ne $oldContent.Count - 1) {
-            $endContent = $oldContent[$endIndex..($oldContent.Count - 1)]
-        }
-    }
-
-    # Build result
-    $newContent = (($startContent + $newContent + @('') + $endContent) | Out-String).TrimEnd().Replace("`r", '').Split("`n")
-    return $newContent
-}
-
-<#
-.SYNOPSIS
 Update the 'Resource Types' section of the given readme file
 
 .DESCRIPTION
@@ -376,7 +277,7 @@ function Set-TemplateReferencesSection {
     }
 
     # Build result
-    $updatedFileContent = Merge-FileWithNewContent -oldContent $ReadMeFileContent -newContent $sectionContent -sectionStartIdentifier $sectionStartIdentifier
+    $updatedFileContent = Merge-FileWithNewContent -oldContent $ReadMeFileContent -newContent $sectionContent -sectionStartIdentifier $sectionStartIdentifier -contentType 'list'
     return $updatedFileContent
 }
 #endregion
@@ -428,6 +329,9 @@ function Set-ModuleReadMe {
             'Template references'
         )
     )
+
+    # Load external functions
+    . (Join-Path $PSScriptRoot 'helper/Merge-FileWithNewContent.ps1')
 
     # Check template
     $null = Test-Path $TemplateFilePath -ErrorAction Stop

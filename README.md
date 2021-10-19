@@ -24,6 +24,7 @@ This repository includes a collection of advanced and curated Modules consisting
 * File an issue via [GitHub Issues](https://github.com/azure/ResourceModules/issues/new/choose)
 
 ## Available Resource Modules
+
 | Name | Bicep | Status |
 | - | - | - |
 | [Action Group](https://github.com/Azure/ResourceModules/tree/main/arm/Microsoft.Insights/actionGroups) | :heavy_check_mark: | [![Insights: Actiongroups](https://github.com/Azure/ResourceModules/actions/workflows/ms.insights.actiongroups.yml/badge.svg)](https://github.com/Azure/ResourceModules/actions/workflows/ms.insights.actiongroups.yml) |

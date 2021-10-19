@@ -42,7 +42,7 @@ function Get-PipelineStatusUrl {
     )
 
     $shortProvider = $provider.Replace('Microsoft.', 'MS.')
-    $pipelineFileName = ('{0}.{1}.yml' -f $shortProvider, $name).Replace('\','/').Replace('/', '.').ToLower()
+    $pipelineFileName = ('{0}.{1}.yml' -f $shortProvider, $name).Replace('\', '/').Replace('/', '.').ToLower()
     $pipelineFileUri = ".github/workflows/$pipelineFileName"
 
     $pipelineName = (Get-Content -Path $pipelineFileUri)[0].TrimStart('name:').Replace('"', '').Trim()
@@ -95,10 +95,10 @@ function Get-DeployToAzureUrl {
         return ''
     }
 
-    $baseUrl = "[![Deploy to Azure](/docs/media/deploytoazure.svg?sanitize=true)](<https://portal.azure.com/#create/Microsoft.Template/uri/"
-    $templateUri = "https://raw.githubusercontent.com/{0}/{1}/main/{2}/deploy.json" -f $organization, $repositoryName, ($path -split "\\$repositoryName\\")[1]
+    $baseUrl = '[![Deploy to Azure](/docs/media/deploytoazure.svg?sanitize=true)](<https://portal.azure.com/#create/Microsoft.Template/uri/'
+    $templateUri = 'https://raw.githubusercontent.com/{0}/{1}/main/{2}/deploy.json' -f $organization, $repositoryName, ($path -split "\\$repositoryName\\")[1]
 
-    return ("{0}{1}>)" -f $baseUrl, ([System.Web.HttpUtility]::UrlEncode($templateUri)))
+    return ('{0}{1}>)' -f $baseUrl, ([System.Web.HttpUtility]::UrlEncode($templateUri)))
 }
 
 <#
@@ -126,17 +126,16 @@ function Get-ResourceModuleName {
 
     if (-not (Test-Path "$path/readme.md")) {
         Write-Warning "No [readme.md] found in folder [$path]"
-        return ""
+        return ''
     }
 
     $moduleReadMeContent = Get-Content -Path "$path/readme.md"
-    $moduleName = $moduleReadMeContent[0].TrimStart('# ')
+    $moduleName = $moduleReadMeContent[0].TrimStart('# ').Split('`')[0].Trim()
 
     if (-not [String]::IsNullOrEmpty($moduleName)) {
         return $moduleName
-    }
-    else {
-        return ""
+    } else {
+        return ''
     }
 }
 
@@ -167,7 +166,7 @@ function Get-TypeColumnString {
 
     $moduleFiles = Get-ChildItem -Path $path -File
 
-    $outputString = ""
+    $outputString = ''
 
     # if ($moduleFiles.Name -contains 'deploy.json') {
     #     # ARM exists
@@ -179,10 +178,9 @@ function Get-TypeColumnString {
 
     if ($moduleFiles.Name -contains 'deploy.bicep') {
         # bicep exists
-        $outputString += ":heavy_check_mark:"
-    }
-    else {
-        $outputString += ""
+        $outputString += ':heavy_check_mark:'
+    } else {
+        $outputString += ''
     }
 
     return $outputString
@@ -215,11 +213,10 @@ function Measure-FolderHasNestedModule {
 
     # Get all folder paths that exist in the given path as long as they are not '.bicep' or 'parameters' folders
     # This works as long as the folder structure is consistent (e.g. no empty folders are created etc.)
-    $foundFolders = (Get-Childitem $path -Directory -Recurse -Exclude @('.bicep', 'parameters')).fullName
+    $foundFolders = (Get-ChildItem $path -Directory -Recurse -Exclude @('.bicep', 'parameters')).fullName
     if ($foundFolders) {
         return $true
-    }
-    else {
+    } else {
         return $false
     }
 }
@@ -284,7 +281,7 @@ function Get-ResolvedSubServiceRow {
         [string[]] $columnsInOrder,
 
         [Parameter(Mandatory)]
-        [ValidateSet("Name", "ProviderNamespace")]
+        [ValidateSet('Name', 'ProviderNamespace')]
         [string] $sortByColumn,
 
         [Parameter(Mandatory = $true)]
@@ -301,7 +298,7 @@ function Get-ResolvedSubServiceRow {
         $subFolderName = (Split-Path $subfolder -Leaf)
 
         $relativePath = Join-Path $concatedBase $subFolderName
-        $subName = $relativePath.Replace('\','/').Replace("$provider/", '').Replace('Resources/', '/')
+        $subName = $relativePath.Replace('\', '/').Replace("$provider/", '').Replace('Resources/', '/')
 
         $row = @{}
         foreach ($column in $columnsInOrder) {
@@ -311,17 +308,15 @@ function Get-ResolvedSubServiceRow {
                 }
                 'ProviderNamespace' {
                     # If we don't sort by provider, we have to add the provider to each row to ensure readability of each row
-                    if ($sortByColumn -eq "Name") {
-                        if ($provider -like "Microsoft.*") {
+                    if ($sortByColumn -eq 'Name') {
+                        if ($provider -like 'Microsoft.*') {
                             # Shorten Microsoft to save some space
-                            $shortProvider = "MS.{0}" -f ($provider.TrimStart('Microsoft.'))
+                            $shortProvider = 'MS.{0}' -f ($provider.TrimStart('Microsoft.'))
                             $row['ProviderNamespace'] += "``$shortProvider``"
-                        }
-                        else {
+                        } else {
                             $row['ProviderNamespace'] += "``$provider``"
                         }
-                    }
-                    else {
+                    } else {
                         $row['ProviderNamespace'] = ''
                     }
                 }
@@ -422,7 +417,7 @@ function Get-ModulesAsMarkdownTable {
         [string[]] $columnsInOrder = @('Name', 'ProviderNamespace', 'ResourceType', 'TemplateType', 'Deploy'),
 
         [Parameter(Mandatory = $false)]
-        [ValidateSet("Name", "ProviderNamespace")]
+        [ValidateSet('Name', 'ProviderNamespace')]
         [string] $sortByColumn = 'ProviderNamespace',
 
         [Parameter(Mandatory = $true)]
@@ -434,7 +429,7 @@ function Get-ModulesAsMarkdownTable {
 
     # Header
     # ------
-    $headerRow = "|"
+    $headerRow = '|'
     foreach ($column in $columnsInOrder) {
         switch ($column) {
             'Name' { $headerRow += ' Name |' }
@@ -449,7 +444,7 @@ function Get-ModulesAsMarkdownTable {
         }
     }
 
-    $headerSubRow = "|"
+    $headerSubRow = '|'
     for ($index = 0; $index -lt $columnsInOrder.Count; $index++) {
         $headerSubRow += ' - |'
     }
@@ -457,7 +452,7 @@ function Get-ModulesAsMarkdownTable {
     # Content
     # -------
     $output = [System.Collections.ArrayList]@()
-    if ($topLevelFolders = Get-ChildItem -Path $path -Depth 1 -Filter "Microsoft.*") {
+    if ($topLevelFolders = Get-ChildItem -Path $path -Depth 1 -Filter 'Microsoft.*') {
         $topLevelFolders = $topLevelFolders.FullName | Sort-Object
     }
 
@@ -483,8 +478,7 @@ function Get-ModulesAsMarkdownTable {
                     organization   = $organization
                 }
                 $output = Get-ResolvedSubServiceRow @recursiveSubServiceInputObject
-            }
-            else {
+            } else {
                 $row = @{}
 
                 foreach ($column in $columnsInOrder) {
@@ -494,15 +488,13 @@ function Get-ModulesAsMarkdownTable {
                         }
                         'ProviderNamespace' {
                             if ($previousProvider -eq $provider -and $sortByColumn -ne 'Name') {
-                                $row['ProviderNamespace'] += ""
-                            }
-                            else {
-                                if ($provider -like "Microsoft.*") {
+                                $row['ProviderNamespace'] += ''
+                            } else {
+                                if ($provider -like 'Microsoft.*') {
                                     # Shorten Microsoft to save some space
-                                    $shortProvider = "MS.{0}" -f ($provider.TrimStart('Microsoft.'))
+                                    $shortProvider = 'MS.{0}' -f ($provider.TrimStart('Microsoft.'))
                                     $row['ProviderNamespace'] += "``$shortProvider``"
-                                }
-                                else {
+                                } else {
                                     $row['ProviderNamespace'] += "``$provider``"
                                 }
                                 $previousProvider = $provider
@@ -542,7 +534,7 @@ function Get-ModulesAsMarkdownTable {
         $headerSubRow
     )
     foreach ($rowColumns in $output) {
-        $rowString = "|"
+        $rowString = '|'
         foreach ($column in $columnsInOrder) {
             $rowString += ' {0} |' -f $rowColumns[$column]
         }

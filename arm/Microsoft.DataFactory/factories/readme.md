@@ -1,6 +1,7 @@
 # DataFactory `[Microsoft.DataFactory/factories]`
 
 ## Resource types
+
 | Resource Type | Api Version |
 | :-- | :-- |
 | `Microsoft.DataFactory/factories` | 2018-06-01 |
@@ -22,6 +23,7 @@ If you enable git Repository the repository including branch has to exist before
 
 
 ## Parameters
+
 | Parameter Name | Type | Default Value | Possible Values | Description |
 | :-- | :-- | :-- | :-- | :-- |
 | `cuaId` | string |  |  | Optional. Customer Usage Attribution id (GUID). This GUID must be previously registered |
@@ -133,6 +135,7 @@ To use Private Endpoint the following dependencies must be deployed:
 ```
 
 ## Outputs
+
 | Output Name | Type | Description |
 | :-- | :-- | :-- |
 | `dataFactoryName` | string | The Name of the Azure Data Factory instance |
@@ -140,6 +143,7 @@ To use Private Endpoint the following dependencies must be deployed:
 | `dataFactoryResourceId` | string | The Resource Id of the Data factory |
 
 ## Template references
+
 - [Factories](https://docs.microsoft.com/en-us/azure/templates/Microsoft.DataFactory/2018-06-01/factories)
 - [Factories/Integrationruntimes](https://docs.microsoft.com/en-us/azure/templates/Microsoft.DataFactory/2018-06-01/factories/integrationRuntimes)
 - [Factories/Managedvirtualnetworks](https://docs.microsoft.com/en-us/azure/templates/Microsoft.DataFactory/2018-06-01/factories/managedVirtualNetworks)
