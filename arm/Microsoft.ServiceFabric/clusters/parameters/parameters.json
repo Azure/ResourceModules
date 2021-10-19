@@ -61,6 +61,62 @@
                 "certificateThumbprint": "", // If 'clientCertificateThumbprints' is passed then this is mandatory
                 "isAdmin": "" // If 'clientCertificateThumbprints' is passed then this is mandatory
             }]
+        },
+        "diagnosticsStorageAccountConfig": {
+            "value": {
+                "blobEndpoint": "", // If 'diagnosticsStorageAccountConfig' is passed then this is mandatory
+                "protectedAccountKeyName": "", // If 'diagnosticsStorageAccountConfig' is passed then this is mandatory
+                "protectedAccountKeyName2": "",
+                "queueEndpoint": "", // If 'diagnosticsStorageAccountConfig' is passed then this is mandatory
+                "storageAccountName": "", // If 'diagnosticsStorageAccountConfig' is passed then this is mandatory
+                "tableEndpoint": "" // If 'diagnosticsStorageAccountConfig' is passed then this is mandatory
+            }
+        },
+        "fabricSettings": {
+            "value": [{
+                "name": "", // The section name of the fabric settings.
+                "parameters": [{ // The collection of parameters in the section.
+                    "name": "",
+                    "value": ""
+                }]
+            }]
+        },
+        "managementEndpoint": {
+            "value": "" // Mandatory
+        },
+        "nodeTypes": { // The list of node types in the cluster.
+            "value": [{
+                "applicationPorts": {
+                    "endPort": "",
+                    "startPort": ""
+                },
+                "capacities": {},
+                "clientConnectionEndpointPort": "",
+                "durabilityLevel": "", // One of 'Bronze', 'Gold', 'Silver'
+                "ephemeralPorts": {
+                    "endPort": "",
+                    "startPort": ""
+                },
+                "httpGatewayEndpointPort": "",
+                "isPrimary": "",
+                "isStateless": "",
+                "multipleAvailabilityZones": "",
+                "name": "",
+                "placementProperties": {},
+                "reverseProxyEndpointPort": "",
+                "vmInstanceCount": ""
+            }]
+        },
+        "notifications": {
+            "value": [{
+                "isEnabled": "",
+                "notificationCategory": "", // 'WaveProgress'
+                "notificationLevel": "", // One of 'All', 'Critical'
+                "notificationTargets": [{
+                    "notificationChannel": "", // One of 'EmailSubscription', 'EmailUser'
+                    "receivers": ""
+                }]
+            }]
         }
     }
 }
