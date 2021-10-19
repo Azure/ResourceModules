@@ -18,7 +18,7 @@ The following resources are required to be able to deploy this resource.
 | :-- | :-- | :-- | :-- | :-- |
 | `cuaId` | string |  |  | Optional. Customer Usage Attribution id (GUID). This GUID must be previously registered |
 | `localVnetName` | string |  |  | Required. The Name of the Virtual Network to add the peering to. |
-| `peeringConfigurations` | array | `[]` |  | Optional. Optional. The list of remote networks to peering peer with, including the configuration. |
+| `peeringConfigurations` | array | `[]` |  | Optional. The list of remote networks to peering peer with, including the configuration. See below for instructions. |
 
 ### Parameter Usage: `peeringConfigurations`
 
