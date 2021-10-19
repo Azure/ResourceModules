@@ -353,7 +353,7 @@ function Get-ResolvedSubServiceRow {
 Generate a markdown table for all modules in the given path
 
 .DESCRIPTION
-Generate a markdown table for all modules in the given path. Returns an array with one row for each service provider.
+Generate a markdown table for all modules in the given path. Returns an array with one row for each service provider
 Folders should follow the structure:
 
 Microsoft.Sql
