@@ -61,8 +61,13 @@ param timeout string = 'PT1H'
 @description('Generated. Do not provide a value! This date value is used to make sure the script run every time the template is deployed.')
 param baseTime string = utcNow('yyyy-MM-dd-HH-mm-ss')
 
-@description('Optional. Switch to lock Resource from deletion.')
-param lockForDeletion bool = false
+@allowed([
+  'CanNotDelete'
+  'NotSpecified'
+  'ReadOnly'
+])
+@description('Optional. Specify the type of lock.')
+param lock string = 'NotSpecified'
 
 @description('Optional. Tags of the resource.')
 param tags object = {}
@@ -106,10 +111,11 @@ resource dpeloymentScript 'Microsoft.Resources/deploymentScripts@2020-10-01' = {
   }
 }
 
-resource dpeloymentScript_lock 'Microsoft.Authorization/locks@2016-09-01' = if (lockForDeletion) {
-  name: '${dpeloymentScript.name}-doNotDelete'
+resource dpeloymentScript_lock 'Microsoft.Authorization/locks@2016-09-01' = if (lock != 'NotSpecified') {
+  name: '${dpeloymentScript.name}-${lock}-lock'
   properties: {
-    level: 'CanNotDelete'
+    level: lock
+    notes: (lock == 'CanNotDelete') ? 'Cannot delete resource or child resources.' : 'Cannot modify the resource or child resources.'
   }
   scope: dpeloymentScript
 }

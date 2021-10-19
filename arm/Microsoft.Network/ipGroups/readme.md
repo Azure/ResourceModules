@@ -18,7 +18,7 @@ This module deploys an IP Group, with resource lock.
 | `ipGroupName` | string | | | Required. The name of the ipGroups.
 | `location` | string | `[resourceGroup().location]` | | Optional. Location for all resources.
 | `ipAddresses` | array | `[]` |  | Optional. IpAddresses/IpAddressPrefixes in the IpGroups resource.
-| `lockForDeletion` | bool | `true` | | Optional. Switch to lock Azure Key Vault from deletion.
+| `lock` | string | 'NotSpecified' | 'CanNotDelete', 'NotSpecified', 'ReadOnly' | Optional. Specify the type of lock. |
 | `roleAssignments` | array | [] | Complex structure, see below. | Optional. Array of role assignment objects that contain the 'roleDefinitionIdOrName' and 'principalId' to define RBAC role assignments on this resource. In the roleDefinitionIdOrName attribute, you can provide either the display name of the role definition, or it's fully qualified ID in the following format: '/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11'
 | `tags` | object | {} | Complex structure, see below. | Optional. Tags of the Azure Key Vault resource.
 | `cuaId` | string | "" | | Optional. Customer Usage Attribution id (GUID). This GUID must be previously registered.

@@ -30,7 +30,7 @@ This module deploys an Image Template (for Azure Image Builder service) that can
 | `sigImageDefinitionId` | string | "" | | Optional. Resource Id of Shared Image Gallery to distribute image to, e.g.: `/subscriptions/<subscriptionID>/resourceGroups/<SIG resourcegroup>/providers/Microsoft.Compute/galleries/<SIG name>/images/<image definition>`
 | `imageReplicationRegions` | string | "" | | Optional. List of the regions the image produced by this solution should be stored in the Shared Image Gallery. When left empty, the deployment's location will be taken as a default value.
 | `managedImageName` | string | "" | | Optional. Name of the managed image that will be created in the AIB resourcegroup.
-| `lockForDeletion` | bool | `true` | | Optional. Switch to lock the resource from deletion.
+| `lock` | string | 'NotSpecified' | 'CanNotDelete', 'NotSpecified', 'ReadOnly' | Optional. Specify the type of lock. |
 | `tags` | object | {} | Complex structure, see below. | Optional. Tags of the resource.
 | `baseTime` | string | `utcNow('yyyy-MM-dd-HH-mm-ss')` | | Generated. Do not provide a value! This date value is used to generate a unique image template name.
 | `cuaId` | string | "" | | Optional. Customer Usage Attribution id (GUID). This GUID must be previously registered

@@ -38,8 +38,13 @@ param roleAssignments array = []
 @description('Optional. Status of the connection.')
 param statuses array = []
 
-@description('Optional. Switch to lock Resource from deletion.')
-param lockForDeletion bool = false
+@allowed([
+  'CanNotDelete'
+  'NotSpecified'
+  'ReadOnly'
+])
+@description('Optional. Specify the type of lock.')
+param lock string = 'NotSpecified'
 
 @description('Optional. Tags of the resource.')
 param tags object = {}
@@ -88,10 +93,11 @@ resource connection 'Microsoft.Web/connections@2016-06-01' = {
   }
 }
 
-resource connection_lock 'Microsoft.Authorization/locks@2016-09-01' = if (lockForDeletion) {
-  name: '${connection.name}-doNotDelete'
+resource connection_lock 'Microsoft.Authorization/locks@2016-09-01' = if (lock != 'NotSpecified') {
+  name: '${connection.name}-${lock}-lock'
   properties: {
-    level: 'CanNotDelete'
+    level: lock
+    notes: (lock == 'CanNotDelete') ? 'Cannot delete resource or child resources.' : 'Cannot modify the resource or child resources.'
   }
   scope: connection
 }

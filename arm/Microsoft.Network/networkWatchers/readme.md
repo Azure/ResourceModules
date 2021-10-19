@@ -22,7 +22,7 @@ This template deploys Network Watcher.
 | `monitors` | array | [] | complex structure see below | Optional. Array that contains the monitors|
 | `workspaceResourceId` | string | "" | ID of Workspace Resource| Optional. Specify the Workspace Resource ID. If not specified a default workspace will be created |
 | `tags`| object | {} | Complex structure, see below. | Optional. Tags of the Virtual Network Gateway resource. |
-| `lockForDeletion` | bool | Optional. Switch to lock Traffic Manager from deletion. | False |  |
+| `lock` | string | Optional. Specify the type of lock. | 'NotSpecified' | 'CanNotDelete', 'NotSpecified', 'ReadOnly' |
 | `roleAssignments` | array | Optional. Array of role assignment objects that contain the 'roleDefinitionIdOrName' and 'principalId' to define RBAC role assignments on this resource. In the roleDefinitionIdOrName attribute, you can provide either the display name of the role definition, or its fully qualified ID in the following format: '/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11' | System.Object[] |  |
 | `cuaId` | string | {} | | Optional. Customer Usage Attribution id (GUID). This GUID must be previously registered" |
 

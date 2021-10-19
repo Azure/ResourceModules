@@ -21,10 +21,10 @@ This template deploys Virtual Network Gateway Connection.
 | `enableBgp` | bool | Optional. Value to specify if BGP is enabled or not | False |  |
 | `localVirtualNetworkGatewayName` | string | Required. Specifies the local Virtual Network Gateway name |  |  |
 | `location` | string | Optional. Location for all resources. | [resourceGroup().location] |  |
-| `lockForDeletion` | bool | Optional. Switch to lock Connection from deletion. | False |  |
+| `lock` | string | Optional. Specify the type of lock. | 'NotSpecified' | 'CanNotDelete', 'NotSpecified', 'ReadOnly' |
 | `remoteEntityName` | string | Required. Specifies the remote Virtual Network Gateway/ExpressRoute |  |  |
-| `remoteEntityResourceGroup` | string | Optional. Remote Virtual Network Gateway/ExpressRoute resource group name |  |  |   
-| `remoteEntitySubscriptionId` | string | Optional. Remote Virtual Network Gateway/ExpressRoute Subscription Id |  |  |      
+| `remoteEntityResourceGroup` | string | Optional. Remote Virtual Network Gateway/ExpressRoute resource group name |  |  |
+| `remoteEntitySubscriptionId` | string | Optional. Remote Virtual Network Gateway/ExpressRoute Subscription Id |  |  |
 | `routingWeight` | string | Optional. The weight added to routes learned from this BGP speaker. |  | |
 | `tags` | object | Optional. Tags of the resource. |  |  |
 | `usePolicyBasedTrafficSelectors` | bool | Optional. Enable policy-based traffic selectors | False | |

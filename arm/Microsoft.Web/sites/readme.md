@@ -1,6 +1,6 @@
 # Web/Function App
 
-This module deploys a Web or Function App 
+This module deploys a Web or Function App
 
 ## Resource types
 
@@ -49,7 +49,7 @@ The following resources are required to be able to deploy this resource.
 | `functionsWorkerRuntime` | string | Optional. Runtime of the function worker. |  | System.Object[] |
 | `httpsOnly` | bool | Optional. Configures a web site to accept only https requests. Issues redirect for http requests. | True |  |
 | `location` | string | Optional. Location for all Resources. | [resourceGroup().location] |  |
-| `lockForDeletion` | bool | Optional. Switch to lock Key Vault from deletion. | False |  |
+| `lock` | string | Optional. Specify the type of lock. | 'NotSpecified' | 'CanNotDelete', 'NotSpecified', 'ReadOnly' |
 | `managedServiceIdentity` | string | Optional. Type of managed service identity. | None | System.Object[] |
 | `privateEndpoints` | array | Optional. Configuration Details for private endpoints. | System.Object[] |  |
 | `roleAssignments` | array | Optional. Array of role assignment objects that contain the 'roleDefinitionIdOrName' and 'principalId' to define RBAC role assignments on this resource. In the roleDefinitionIdOrName attribute, you can provide either the display name of the role definition, or its fully qualified ID in the following format: '/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11' | System.Object[] |  |

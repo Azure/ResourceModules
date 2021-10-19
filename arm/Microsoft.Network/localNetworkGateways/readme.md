@@ -23,7 +23,7 @@ This module deploys Local Network Gateway, with resource lock.
 | `localNetworkGatewayName` | string | Required. Name of the Local Network Gateway |  |  |
 | `localPeerWeight` | string | Optional. The weight added to routes learned from this BGP speaker. This will only take effect if both the localAsn and the localBgpPeeringAddress values are provided. |  |  |
 | `location` | string | Optional. Location for all resources. | [resourceGroup().location] |  |
-| `lockForDeletion` | bool | Optional. Switch to lock Local Network Gateway from deletion. | False |  |
+| `lock` | string | Optional. Specify the type of lock. | 'NotSpecified' | 'CanNotDelete', 'NotSpecified', 'ReadOnly' |
 | `roleAssignments` | array | Optional. Array of role assignment objects that contain the 'roleDefinitionIdOrName' and 'principalId' to define RBAC role assignments on this resource. In the roleDefinitionIdOrName attribute, you can provide either the display name of the role definition, or its fully qualified ID in the following format: '/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11' | System.Object[] |  |
 | `tags` | object | Optional. Tags of the resource. |  |  |
 | `fqdn` | string | Optional. FQDN for local gateway (on-prem gateway). | | |
@@ -79,7 +79,7 @@ Tag names and tag values can be provided as needed. A tag can be left without a 
 | Output Name | Type | Description |
 | :-- | :-- | :-- |
 | `localNetworkGatewayName` | string | The Name of the Local Network Gateway. |
-| `localNetworkGatewayResourceGroup` | string | The name of the Resource Group the Local Network Gateway was created in. |        
+| `localNetworkGatewayResourceGroup` | string | The name of the Resource Group the Local Network Gateway was created in. |
 | `localNetworkGatewayResourceId` | string | The Resource Id of the Local Network Gateway. |
 
 ## Considerations
