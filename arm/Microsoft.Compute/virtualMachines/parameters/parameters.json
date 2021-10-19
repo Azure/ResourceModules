@@ -54,26 +54,39 @@
                             "name": "ipconfig1",
                             "subnetId": "/subscriptions/8629be3b-96bc-482d-a04b-ffff597c65a2/resourceGroups/dependencies-rg/providers/Microsoft.Network/virtualNetworks/sxx-az-vnet-weu-x-002/subnets/sxx-az-subnet-weu-x-001",
                             "pipConfiguration": {
-                                // "enablePublicIP": true,
-                                "publicIpNameSuffix": "-pip-11"
+                                "publicIpNameSuffix": "-pip-11",
+                                "publicIPPrefixId": "/subscriptions/8629be3b-96bc-482d-a04b-ffff597c65a2/resourcegroups/dependencies-rg/providers/microsoft.network/publicipprefixes/sxx-az-pippfx-weu-x-003"
                             }
                         },
                         {
                             "name": "ipconfig2",
                             "subnetId": "/subscriptions/8629be3b-96bc-482d-a04b-ffff597c65a2/resourceGroups/dependencies-rg/providers/Microsoft.Network/virtualNetworks/sxx-az-vnet-weu-x-002/subnets/sxx-az-subnet-weu-x-001",
                             "privateIPAllocationMethod": "Static",
+                            "vmIPAddress": "10.0.0.7",
                             "pipConfiguration": {
-                                // "enablePublicIP": true,
-                                "publicIpNameSuffix": "-pip-12"
+                                "publicIpNameSuffix": "-pip-12",
+                                "roleAssignments": [
+                                    {
+                                        "roleDefinitionIdOrName": "Reader",
+                                        "principalIds": [
+                                            "5545f7a0-51f4-46af-b3b4-baecf5176a56" // adp-sxx-az-msi-weu-x-001
+                                        ]
+                                    }
+                                ]
                             }
                         },
                         {
                             "name": "ipconfig3",
                             "subnetId": "/subscriptions/8629be3b-96bc-482d-a04b-ffff597c65a2/resourceGroups/dependencies-rg/providers/Microsoft.Network/virtualNetworks/sxx-az-vnet-weu-x-002/subnets/sxx-az-subnet-weu-x-001",
-                            // "pipConfiguration": {
-                            //     // "enablePublicIP": true,
-                            //     "publicIpNameSuffix": "-pip-13"
-                            // }
+                        }
+                    ],
+                    "nsgId": "/subscriptions/8629be3b-96bc-482d-a04b-ffff597c65a2/resourceGroups/validation-rg/providers/Microsoft.Network/networkSecurityGroups/sxx-az-nsg-weu-x-003",
+                    "roleAssignments": [
+                        {
+                            "roleDefinitionIdOrName": "Reader",
+                            "principalIds": [
+                                "5545f7a0-51f4-46af-b3b4-baecf5176a56" // adp-sxx-az-msi-weu-x-001
+                            ]
                         }
                     ]
                 },
@@ -82,22 +95,27 @@
                     "ipConfigurations": [
                         {
                             "name": "ipconfig1",
-                            "subnetId": "/subscriptions/8629be3b-96bc-482d-a04b-ffff597c65a2/resourceGroups/dependencies-rg/providers/Microsoft.Network/virtualNetworks/sxx-az-vnet-weu-x-002/subnets/sxx-az-subnet-weu-x-001"
-                            // ,
-                            // "enablePublicIP": true,
-                            // "publicIpNameSuffix": "-pip-21"
+                            "subnetId": "/subscriptions/8629be3b-96bc-482d-a04b-ffff597c65a2/resourceGroups/dependencies-rg/providers/Microsoft.Network/virtualNetworks/sxx-az-vnet-weu-x-002/subnets/sxx-az-subnet-weu-x-001",
+                            "pipConfiguration": {
+                                "publicIpNameSuffix": "-pip-22"
+                                // ,
+                                // "publicIPAllocationMethod": "Dynamic",
+                                // "skuName": "Basic"
+                            }
                         },
                         {
                             "name": "ipconfig2",
                             "subnetId": "/subscriptions/8629be3b-96bc-482d-a04b-ffff597c65a2/resourceGroups/dependencies-rg/providers/Microsoft.Network/virtualNetworks/sxx-az-vnet-weu-x-002/subnets/sxx-az-subnet-weu-x-001",
-                            "privateIPAllocationMethod": "Static"
-                            // "enablePublicIP": true,
-                            // "publicIpNameSuffix": "-pip-22"
+                            "privateIPAllocationMethod": "Static",
+                            "vmIPAddress": "10.0.0.9"
                         }
                     ]
                 }
             ]
-        }
+        },
+        // "lock": {
+        //     "value": "CanNotDelete"
+        // },
         // "diagnosticSettingName": {
         //     "value": "testsetting"
         // },
@@ -106,23 +124,23 @@
         // },
         // "diagnosticStorageAccountId": {
         //     "value": "/subscriptions/8629be3b-96bc-482d-a04b-ffff597c65a2/resourceGroups/validation-rg/providers/Microsoft.Storage/storageAccounts/adpsxxazsaweux001"
-        // },
+        // }
+        // ,
         // "enableWindowsMMAAgent": {
         //     "value": true
         // },
         // "bootDiagnosticStorageAccountName": {
         //     "value": "adpsxxazsaweux001"
         // }
-        // "roleAssignments": {
-        //     "value": [
-        //         {
-        //             "roleDefinitionIdOrName": "Desktop Virtualization User",
-        //             "principalIds": [
-        //                 "12345678-1234-1234-1234-123456789012", // object 1
-        //                 "78945612-1234-1234-1234-123456789012" // object 2
-        //             ]
-        //         }
-        //     ]
-        // }
+        "roleAssignments": {
+            "value": [
+                {
+                    "roleDefinitionIdOrName": "Reader",
+                    "principalIds": [
+                        "5545f7a0-51f4-46af-b3b4-baecf5176a56" // adp-sxx-az-msi-weu-x-001
+                    ]
+                }
+            ]
+        }
     }
 }

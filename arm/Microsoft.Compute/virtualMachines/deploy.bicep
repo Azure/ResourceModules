@@ -1,3 +1,4 @@
+// Main resource
 @description('Optional. The name of the virtual machine to be created. You should use a unique prefix to reduce name collisions in Active Directory. If no value is provided, a 10 character long unique string will be generated based on the Resource Group\'s name.')
 param virtualMachineName string = take(toLower(uniqueString(resourceGroup().name)), 10)
 
@@ -66,9 +67,6 @@ param useAvailabilityZone bool = false
 ])
 param availabilityZone int = 0
 
-@description('Required. Configures NICs and PIPs.')
-param nicConfigurations array
-
 @description('Optional. Specifies the priority for the virtual machine.')
 @allowed([
   'Regular'
@@ -94,6 +92,67 @@ param dedicatedHostId string = ''
 ])
 param licenseType string = ''
 
+@description('Optional. The type of identity used for the virtual machine. The type \'SystemAssigned, UserAssigned\' includes both an implicitly created identity and a set of user assigned identities. The type \'None\' (default) will remove any identities from the virtual machine.')
+@allowed([
+  'None'
+  'SystemAssigned'
+  'UserAssigned'
+  'SystemAssigned, UserAssigned'
+  'UserAssigned, SystemAssigned'
+])
+param managedServiceIdentity string = 'None'
+
+@description('Optional. Mandatory if \'managedServiceIdentity\' contains UserAssigned. The list of user identities associated with the Virtual Machine.')
+param userAssignedIdentities object = {}
+
+@description('Optional. Storage account used to store boot diagnostic information. Boot diagnostics will be disabled if no value is provided.')
+param bootDiagnosticStorageAccountName string = ''
+
+@description('Optional. Storage account boot diagnostic base URI.')
+param bootDiagnosticStorageAccountUri string = '.blob.core.windows.net/'
+
+// External resources
+@description('Required. Configures NICs and PIPs.')
+param nicConfigurations array
+
+@description('Optional. The name of logs that will be streamed.')
+@allowed([
+  'DDoSProtectionNotifications'
+  'DDoSMitigationFlowLogs'
+  'DDoSMitigationReports'
+])
+param pipLogsToEnable array = [
+  'DDoSProtectionNotifications'
+  'DDoSMitigationFlowLogs'
+  'DDoSMitigationReports'
+]
+
+@description('Optional. The name of metrics that will be streamed.')
+@allowed([
+  'AllMetrics'
+])
+param pipMetricsToEnable array = [
+  'AllMetrics'
+]
+
+@description('Optional. The name of metrics that will be streamed.')
+@allowed([
+  'AllMetrics'
+])
+param nicMetricsToEnable array = [
+  'AllMetrics'
+]
+
+@description('Optional. Recovery service vault name to add VMs to backup.')
+param backupVaultName string = ''
+
+@description('Optional. Resource group of the backup recovery service vault.')
+param backupVaultResourceGroup string = ''
+
+@description('Optional. Backup policy the VMs should be using for backup.')
+param backupPolicyName string = 'DefaultPolicy'
+
+// Child resources
 @description('Optional. Enables Microsoft Windows Defender AV.')
 param enableMicrosoftAntiMalware bool = false
 
@@ -126,19 +185,6 @@ param enableServerSideEncryption bool = false
 
 @description('Optional. Specifies if Linux VM disks should be encrypted. If enabled, boot diagnostics must be enabled as well.')
 param enableLinuxDiskEncryption bool = false
-
-@description('Optional. The type of identity used for the virtual machine. The type \'SystemAssigned, UserAssigned\' includes both an implicitly created identity and a set of user assigned identities. The type \'None\' (default) will remove any identities from the virtual machine.')
-@allowed([
-  'None'
-  'SystemAssigned'
-  'UserAssigned'
-  'SystemAssigned, UserAssigned'
-  'UserAssigned, SystemAssigned'
-])
-param managedServiceIdentity string = 'None'
-
-@description('Optional. Mandatory if \'managedServiceIdentity\' contains UserAssigned. The list of user identities associated with the Virtual Machine.')
-param userAssignedIdentities object = {}
 
 @description('Optional. Specifies disk key encryption algorithm.')
 @allowed([
@@ -187,15 +233,6 @@ param cseStorageAccountKey string = ''
 @description('Optional. A managed identity to use for the CSE.')
 param cseManagedIdentity object = {}
 
-@description('Optional. Recovery service vault name to add VMs to backup.')
-param backupVaultName string = ''
-
-@description('Optional. Resource group of the backup recovery service vault.')
-param backupVaultResourceGroup string = ''
-
-@description('Optional. Backup policy the VMs should be using for backup.')
-param backupPolicyName string = 'DefaultPolicy'
-
 @description('Optional. Specifies the FQDN the of the domain the VM will be joined to. Currently implemented for Windows VMs only')
 param domainName string = ''
 
@@ -218,15 +255,7 @@ param domainJoinOptions int = 3
 @description('Optional. The DSC configuration object')
 param dscConfiguration object = {}
 
-@description('Optional. Storage account used to store boot diagnostic information. Boot diagnostics will be disabled if no value is provided.')
-param bootDiagnosticStorageAccountName string = ''
-
-@description('Optional. Storage account boot diagnostic base URI.')
-param bootDiagnosticStorageAccountUri string = '.blob.core.windows.net/'
-
-@description('Optional. The name of the Diagnostic setting.')
-param diagnosticSettingName string = 'service'
-
+// Shared parameters
 @description('Optional. Specifies the number of days that logs will be kept for; a value of 0 will retain data indefinitely.')
 @minValue(0)
 @maxValue(365)
@@ -244,8 +273,13 @@ param eventHubAuthorizationRuleId string = ''
 @description('Optional. Name of the event hub within the namespace to which logs are streamed. Without this, an event hub is created for each log category.')
 param eventHubName string = ''
 
-@description('Optional. Switch to lock VM from deletion.')
-param lockForDeletion bool = false
+@allowed([
+  'CanNotDelete'
+  'NotSpecified'
+  'ReadOnly'
+])
+@description('Optional. Specify the type of lock.')
+param lock string = 'NotSpecified'
 
 @description('Optional. Array of role assignment objects that contain the \'roleDefinitionIdOrName\' and \'principalId\' to define RBAC role assignments on this resource. In the roleDefinitionIdOrName attribute, you can provide either the display name of the role definition, or its fully qualified ID in the following format: \'/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11\'')
 param roleAssignments array = []
@@ -262,17 +296,24 @@ param baseTime string = utcNow('u')
 @description('Optional. SAS token validity length to use to download files from storage accounts. Usage: \'PT8H\' - valid for 8 hours; \'P5D\' - valid for 5 days; \'P1Y\' - valid for 1 year. When not provided, the SAS token will be valid for 8 hours.')
 param sasTokenValidityLength string = 'PT8H'
 
-var diagnosticsMetrics = [
-  {
-    category: 'AllMetrics'
-    timeGrain: null
-    enabled: true
-    retentionPolicy: {
-      enabled: true
-      days: diagnosticLogsRetentionInDays
-    }
-  }
-]
+// var diagnosticsLogs = [for log in logsToEnable: {
+//   category: log
+//   enabled: true
+//   retentionPolicy: {
+//     enabled: true
+//     days: diagnosticLogsRetentionInDays
+//   }
+// }]
+
+// var diagnosticsMetrics = [for metric in metricsToEnable: {
+//   category: metric
+//   timeGrain: null
+//   enabled: true
+//   retentionPolicy: {
+//     enabled: true
+//     days: diagnosticLogsRetentionInDays
+//   }
+// }]
 
 var identity = {
   type: managedServiceIdentity
@@ -293,19 +334,14 @@ var builtInRoleNames = {
   'Owner': subscriptionResourceId('Microsoft.Authorization/roleDefinitions', '8e3af657-a8ff-443c-a75c-2fe8c4bcb635')
   'Contributor': subscriptionResourceId('Microsoft.Authorization/roleDefinitions', 'b24988ac-6180-42a0-ab88-20f7382dd24c')
   'Reader': subscriptionResourceId('Microsoft.Authorization/roleDefinitions', 'acdd72a7-3385-48ef-bd42-f606fba81ae7')
-  'Avere Cluster Create': subscriptionResourceId('Microsoft.Authorization/roleDefinitions', 'a7b1b19a-0e83-4fe5-935c-faaefbfd18c3')
-  'Avere Cluster Runtime Operator': subscriptionResourceId('Microsoft.Authorization/roleDefinitions', 'e078ab98-ef3a-4c9a-aba7-12f5172b45d0')
   'Avere Contributor': subscriptionResourceId('Microsoft.Authorization/roleDefinitions', '4f8fab4f-1852-4a58-a46a-8eaf358af14a')
   'Avere Operator': subscriptionResourceId('Microsoft.Authorization/roleDefinitions', 'c025889f-8102-4ebf-b32c-fc0c6f0c6bd9')
-  'Azure Service Deploy Release Management Contributor': subscriptionResourceId('Microsoft.Authorization/roleDefinitions', '21d96096-b162-414a-8302-d8354f9d91b2')
-  'CAL-Custom-Role': subscriptionResourceId('Microsoft.Authorization/roleDefinitions', '7b266cd7-0bba-4ae2-8423-90ede5e1e898')
   'DevTest Labs User': subscriptionResourceId('Microsoft.Authorization/roleDefinitions', '76283e04-6283-4c54-8f91-bcf1374a3c64')
   'Log Analytics Contributor': subscriptionResourceId('Microsoft.Authorization/roleDefinitions', '92aaf0da-9dab-42b6-94a3-d43ce8d16293')
   'Log Analytics Reader': subscriptionResourceId('Microsoft.Authorization/roleDefinitions', '73c42c96-874c-492b-b04d-ab87d138a893')
   'Managed Application Contributor Role': subscriptionResourceId('Microsoft.Authorization/roleDefinitions', '641177b8-a67a-45b9-a033-47bc880bb21e')
   'Managed Application Operator Role': subscriptionResourceId('Microsoft.Authorization/roleDefinitions', 'c7393b34-138c-406f-901b-d8cf2b17e6ae')
   'Managed Applications Reader': subscriptionResourceId('Microsoft.Authorization/roleDefinitions', 'b9331d33-8a36-4f8c-b097-4f54124fdb44')
-  'masterreader': subscriptionResourceId('Microsoft.Authorization/roleDefinitions', 'a48d7796-14b4-4889-afef-fbb65a93e5a2')
   'Microsoft OneAsset Reader': subscriptionResourceId('Microsoft.Authorization/roleDefinitions', 'fd1bb084-1503-4bd2-99c0-630220046786')
   'Monitoring Contributor': subscriptionResourceId('Microsoft.Authorization/roleDefinitions', '749f88d5-cbae-40b8-bcfc-e573ddc772fa')
   'Monitoring Metrics Publisher': subscriptionResourceId('Microsoft.Authorization/roleDefinitions', '3913510d-42f4-4e42-8a64-420c390055eb')
@@ -331,109 +367,111 @@ module virtualMachine_nic './.bicep/nested_networkInterface.bicep' = [for (nicCo
     location: location
     tags: tags
     nicConfiguration: nicConfiguration
-    // lockForDeletion:
-    // diagnosticSettingName:
-    // diagnosticStorageAccountId:
-    // workspaceId:
-    // eventHubAuthorizationRuleId:
-    // eventHubName:
-    // diagnosticsMetrics:
-    // diagnosticLogsRetentionInDays:
+    lock: lock
+    diagnosticStorageAccountId: diagnosticStorageAccountId
+    diagnosticLogsRetentionInDays: diagnosticLogsRetentionInDays
+    workspaceId: workspaceId
+    eventHubAuthorizationRuleId: eventHubAuthorizationRuleId
+    eventHubName: eventHubName
+    metricsToEnable: nicMetricsToEnable
+    pipMetricsToEnable: pipMetricsToEnable
+    pipLogsToEnable: pipLogsToEnable
+    builtInRoleNames: builtInRoleNames
   }
 }]
 
-// resource virtualMachine 'Microsoft.Compute/virtualMachines@2020-06-01' = {
-//   name: virtualMachineName
-//   location: location
-//   identity: identity
-//   tags: tags
-//   zones: (useAvailabilityZone ? array(availabilityZone) : json('null'))
-//   plan: (empty(plan) ? json('null') : plan)
-//   properties: {
-//     hardwareProfile: {
-//       vmSize: vmSize
-//     }
-//     storageProfile: {
-//       imageReference: imageReference
-//       osDisk: {
-//         name: '${virtualMachineName}-disk-os-01'
-//         createOption: osDisk.createOption
-//         diskSizeGB: osDisk.diskSizeGB
-//         managedDisk: {
-//           storageAccountType: osDisk.managedDisk.storageAccountType
-//         }
-//       }
-//       dataDisks: [for (dataDisk, index) in dataDisks: {
-//         lun: index
-//         name: '${virtualMachineName}-disk-data-${padLeft((index + 1), 2, '0')}'
-//         diskSizeGB: dataDisk.diskSizeGB
-//         createOption: dataDisk.createOption
-//         caching: dataDisk.caching
-//         managedDisk: {
-//           storageAccountType: dataDisk.managedDisk.storageAccountType
-//           diskEncryptionSet: {
-//             id: (enableServerSideEncryption ? dataDisk.managedDisk.diskEncryptionSet.id : json('null'))
-//           }
-//         }
-//       }]
-//     }
-//     additionalCapabilities: {
-//       ultraSSDEnabled: ultraSSDEnabled
-//     }
-//     osProfile: {
-//       computerName: vmComputerNameTransformed
-//       adminUsername: adminUsername
-//       adminPassword: adminPassword
-//       customData: (empty(customData) ? json('null') : base64(customData))
-//       windowsConfiguration: (empty(windowsConfiguration) ? json('null') : windowsConfiguration)
-//       linuxConfiguration: (empty(linuxConfiguration) ? json('null') : linuxConfiguration)
-//       secrets: certificatesToBeInstalled
-//       allowExtensionOperations: allowExtensionOperations
-//     }
-//     networkProfile: {
-//       networkInterfaces: [for (nicConfiguration, index) in nicConfigurations: {
-//         properties: {
-//           primary: ((index == 0) ? 'true' : 'false')
-//         }
-//         id: resourceId('Microsoft.Network/networkInterfaces', '${virtualMachineName}${nicConfiguration.nicSuffix}')
-//       }]
-//     }
-//     diagnosticsProfile: {
-//       bootDiagnostics: {
-//         enabled: (!empty(bootDiagnosticStorageAccountName))
-//         storageUri: (empty(bootDiagnosticStorageAccountName) ? json('null') : 'https://${bootDiagnosticStorageAccountName}${bootDiagnosticStorageAccountUri}')
-//       }
-//     }
-//     availabilitySet: (empty(availabilitySetName) ? json('null') : json('{"id":"${resourceId('Microsoft.Compute/availabilitySets', availabilitySetName)}"}'))
-//     proximityPlacementGroup: (empty(proximityPlacementGroupName) ? json('null') : json('{"id":"${resourceId('Microsoft.Compute/proximityPlacementGroups', proximityPlacementGroupName)}"}'))
-//     priority: vmPriority
-//     evictionPolicy: (enableEvictionPolicy ? 'Deallocate' : json('null'))
-//     billingProfile: (((!empty(vmPriority)) && (!empty(maxPriceForLowPriorityVm))) ? json('{"maxPrice":"${maxPriceForLowPriorityVm}"}') : json('null'))
-//     host: ((!empty(dedicatedHostId)) ? json('{"id":"${dedicatedHostId}"}') : json('null'))
-//     licenseType: (empty(licenseType) ? json('null') : licenseType)
-//   }
-//   dependsOn: [
-//     virtualMachine_nic
-//   ]
-// }
+resource virtualMachine 'Microsoft.Compute/virtualMachines@2020-06-01' = {
+  name: virtualMachineName
+  location: location
+  identity: identity
+  tags: tags
+  zones: (useAvailabilityZone ? array(availabilityZone) : json('null'))
+  plan: (empty(plan) ? json('null') : plan)
+  properties: {
+    hardwareProfile: {
+      vmSize: vmSize
+    }
+    storageProfile: {
+      imageReference: imageReference
+      osDisk: {
+        name: '${virtualMachineName}-disk-os-01'
+        createOption: osDisk.createOption
+        diskSizeGB: osDisk.diskSizeGB
+        managedDisk: {
+          storageAccountType: osDisk.managedDisk.storageAccountType
+        }
+      }
+      dataDisks: [for (dataDisk, index) in dataDisks: {
+        lun: index
+        name: '${virtualMachineName}-disk-data-${padLeft((index + 1), 2, '0')}'
+        diskSizeGB: dataDisk.diskSizeGB
+        createOption: dataDisk.createOption
+        caching: dataDisk.caching
+        managedDisk: {
+          storageAccountType: dataDisk.managedDisk.storageAccountType
+          diskEncryptionSet: {
+            id: (enableServerSideEncryption ? dataDisk.managedDisk.diskEncryptionSet.id : json('null'))
+          }
+        }
+      }]
+    }
+    additionalCapabilities: {
+      ultraSSDEnabled: ultraSSDEnabled
+    }
+    osProfile: {
+      computerName: vmComputerNameTransformed
+      adminUsername: adminUsername
+      adminPassword: adminPassword
+      customData: (empty(customData) ? json('null') : base64(customData))
+      windowsConfiguration: (empty(windowsConfiguration) ? json('null') : windowsConfiguration)
+      linuxConfiguration: (empty(linuxConfiguration) ? json('null') : linuxConfiguration)
+      secrets: certificatesToBeInstalled
+      allowExtensionOperations: allowExtensionOperations
+    }
+    networkProfile: {
+      networkInterfaces: [for (nicConfiguration, index) in nicConfigurations: {
+        properties: {
+          primary: ((index == 0) ? 'true' : 'false')
+        }
+        id: resourceId('Microsoft.Network/networkInterfaces', '${virtualMachineName}${nicConfiguration.nicSuffix}')
+      }]
+    }
+    diagnosticsProfile: {
+      bootDiagnostics: {
+        enabled: (!empty(bootDiagnosticStorageAccountName))
+        storageUri: (empty(bootDiagnosticStorageAccountName) ? json('null') : 'https://${bootDiagnosticStorageAccountName}${bootDiagnosticStorageAccountUri}')
+      }
+    }
+    availabilitySet: (empty(availabilitySetName) ? json('null') : json('{"id":"${resourceId('Microsoft.Compute/availabilitySets', availabilitySetName)}"}'))
+    proximityPlacementGroup: (empty(proximityPlacementGroupName) ? json('null') : json('{"id":"${resourceId('Microsoft.Compute/proximityPlacementGroups', proximityPlacementGroupName)}"}'))
+    priority: vmPriority
+    evictionPolicy: (enableEvictionPolicy ? 'Deallocate' : json('null'))
+    billingProfile: (((!empty(vmPriority)) && (!empty(maxPriceForLowPriorityVm))) ? json('{"maxPrice":"${maxPriceForLowPriorityVm}"}') : json('null'))
+    host: ((!empty(dedicatedHostId)) ? json('{"id":"${dedicatedHostId}"}') : json('null'))
+    licenseType: (empty(licenseType) ? json('null') : licenseType)
+  }
+  dependsOn: [
+    virtualMachine_nic
+  ]
+}
 
-// resource virtualMachine_lock 'Microsoft.Authorization/locks@2016-09-01' = if (lockForDeletion) {
-//   name: '${virtualMachine.name}-DoNotDelete'
-//   properties: {
-//     level: 'CanNotDelete'
-//   }
-//   scope: virtualMachine
-// }
+resource virtualMachine_lock 'Microsoft.Authorization/locks@2016-09-01' = if (lock != 'NotSpecified') {
+  name: '${virtualMachine.name}-${lock}-lock'
+  properties: {
+    level: lock
+    notes: (lock == 'CanNotDelete') ? 'Cannot delete resource or child resources.' : 'Cannot modify the resource or child resources.'
+  }
+  scope: virtualMachine
+}
+module virtualMachine_rbac './.bicep/nested_rbac.bicep' = [for (roleAssignment, index) in roleAssignments: {
+  name: 'rbac-${deployment().name}${index}'
+  params: {
+    roleAssignmentObj: roleAssignment
+    builtInRoleNames: builtInRoleNames
+    resourceName: virtualMachine.name
+  }
+}]
 
-// module virtualMachine_rbac './.bicep/nested_rbac.bicep' = [for (roleAssignment, index) in roleAssignments: {
-//   name: 'rbac-${deployment().name}${index}'
-//   params: {
-//     roleAssignmentObj: roleAssignment
-//     builtInRoleNames: builtInRoleNames
-//     resourceName: virtualMachine.name
-//   }
-// }]
-
-// output virtualMachineName string = virtualMachine.name
-// output virtualMachineResourceId string = virtualMachine.id
-// output virtualMachineResourceGroup string = resourceGroup().name
+output virtualMachineName string = virtualMachine.name
+output virtualMachineResourceId string = virtualMachine.id
+output virtualMachineResourceGroup string = resourceGroup().name
