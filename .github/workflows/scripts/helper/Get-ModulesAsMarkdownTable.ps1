@@ -350,7 +350,7 @@ function Get-ResolvedSubServiceRow {
 
 <#
 .SYNOPSIS
-Generate a markdown table for all modules in the given path
+Generate a markdown table for all modules in the given path.
 
 .DESCRIPTION
 Generate a markdown table for all modules in the given path. Returns an array with one row for each service provider
