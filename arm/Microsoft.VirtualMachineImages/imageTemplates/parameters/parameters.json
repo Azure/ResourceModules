@@ -54,9 +54,6 @@
         },
         "imageReplicationRegions": {
             "value": []
-        },
-        "lock": {
-            "value": "NotSpecified"
         }
     }
 }

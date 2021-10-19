@@ -71,9 +71,6 @@
                 "test1@contoso.com",
                 "test2@contoso.com"
             ]
-        },
-        "lock": {
-            "value": "NotSpecified"
         }
     }
 }

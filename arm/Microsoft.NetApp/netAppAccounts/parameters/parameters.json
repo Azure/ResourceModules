@@ -147,9 +147,6 @@
                 "ServiceName": "DeploymentValidation",
                 "Role": "DeploymentValidation"
             }
-        },
-        "lock": {
-            "value": "NotSpecified"
         }
     }
 }

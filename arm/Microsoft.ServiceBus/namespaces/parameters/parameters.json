@@ -8,9 +8,6 @@
         "skuName": {
             "value": "Basic"
         },
-        "lock": {
-            "value": "NotSpecified"
-        },
         "tags": {
             "value": {}
         }

@@ -8,9 +8,6 @@
         "diagnosticLogsRetentionInDays": {
             "value": 365
         },
-        "lock": {
-            "value": "NotSpecified"
-        },
         "backupPolicies": {
             "value": [
                 {

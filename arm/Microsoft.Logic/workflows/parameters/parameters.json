@@ -5,9 +5,6 @@
         "logicAppName": {
             "value": "sxx-az-lga-weu-x-001"
         },
-        "lock": {
-            "value": "NotSpecified"
-        },
         "tags": {
             "value": {}
         },
