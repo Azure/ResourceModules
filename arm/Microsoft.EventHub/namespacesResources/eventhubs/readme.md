@@ -1,4 +1,4 @@
-# EventHubs
+# EventHubs `[Microsoft.EventHub/namespacesResources/eventhubs]`
 
 This module deploys EventHub.
 
@@ -12,14 +12,14 @@ This module deploys EventHub.
 | `Microsoft.EventHub/namespaces/eventhubs/providers/roleAssignments` | 2018-09-01-preview |
 
 ## Parameters
-| Parameter Name | Type | DefaultValue | Possible values | Description |
+| Parameter Name | Type | Default Value | Possible Values | Description |
 | :-- | :-- | :-- | :-- | :-- |
 | `authorizationRules` | array | `[System.Collections.Hashtable]` |  | Optional. Authorization Rules for the Event Hub |
 | `cuaId` | string |  |  | Optional. Customer Usage Attribution id (GUID). This GUID must be previously registered |
 | `eventHubConfiguration` | object | `{object}` |  | Optional. Object to configure all properties of an Event Hub instance |
 | `eventHubName` | string |  |  | Required. The name of the EventHub |
 | `location` | string | `[resourceGroup().location]` |  | Optional. Location for all resources. |
-| `lock` | string | Optional. Specify the type of lock. | 'NotSpecified' | 'CanNotDelete', 'NotSpecified', 'ReadOnly' |
+| `lockForDeletion` | bool |  |  | Optional. Switch to lock Event Hub from deletion. |
 | `namespaceName` | string |  |  | Required. The name of the EventHub namespace |
 | `roleAssignments` | array | `[]` |  | Optional. Array of role assignment objects that contain the 'roleDefinitionIdOrName' and 'principalId' to define RBAC role assignments on this resource. In the roleDefinitionIdOrName attribute, you can provide either the display name of the role definition, or its fully qualified ID in the following format: '/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11' |
 | `tags` | object | `{object}` |  | Optional. Tags of the resource. |
@@ -156,14 +156,14 @@ Tag names and tag values can be provided as needed. A tag can be left without a 
 ```
 
 ## Outputs
-| Output Name | Type |
-| :-- | :-- |
-| `authRuleResourceId` | string |
-| `eventHubId` | string |
-| `namespaceConnectionString` | securestring |
-| `namespaceName` | string |
-| `namespaceResourceGroup` | string |
-| `sharedAccessPolicyPrimaryKey` | securestring |
+| Output Name | Type | Description |
+| :-- | :-- | :-- |
+| `authRuleResourceId` | string | The Id of the authorization rule marked by the variable with the same name. |
+| `eventHubId` | string | The Resource Id of the EventHub Namespace |
+| `namespaceConnectionString` | securestring | The connection string of the EventHub Namespace |
+| `namespaceName` | string | The Name of the EventHub Namespace |
+| `namespaceResourceGroup` | string | The name of the Resource Group with the EventHub Namespace |
+| `sharedAccessPolicyPrimaryKey` | securestring | The shared access policy primary key for the EventHub Namespace |
 
 ## Template references
 - [Namespaces/Eventhubs](https://docs.microsoft.com/en-us/azure/templates/Microsoft.EventHub/2017-04-01/namespaces/eventhubs)
