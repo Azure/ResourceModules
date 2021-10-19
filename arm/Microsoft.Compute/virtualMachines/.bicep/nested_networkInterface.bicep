@@ -1,3 +1,4 @@
+// param cuaId string
 param networkInterfaceName string
 param virtualMachineName string
 param location string
@@ -13,6 +14,7 @@ param pipMetricsToEnable array
 param pipLogsToEnable array
 param metricsToEnable array
 param builtInRoleNames object
+param roleAssignments array
 
 // var networkInterfaceName = '${virtualMachineName}${nicConfiguration.nicSuffix}'
 
@@ -104,3 +106,12 @@ resource networkInterface_diagnosticSettings 'Microsoft.Insights/diagnosticsetti
   }
   scope: networkInterface
 }
+
+module networkInterface_rbac './nested_networkInterface_rbac.bicep' = [for (roleAssignment, index) in roleAssignments: {
+  name: 'rbac-${deployment().name}${index}'
+  params: {
+    roleAssignmentObj: roleAssignment
+    builtInRoleNames: builtInRoleNames
+    resourceName: networkInterface.name
+  }
+}]

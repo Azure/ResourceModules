@@ -377,6 +377,7 @@ module virtualMachine_nic './.bicep/nested_networkInterface.bicep' = [for (nicCo
     pipMetricsToEnable: pipMetricsToEnable
     pipLogsToEnable: pipLogsToEnable
     builtInRoleNames: builtInRoleNames
+    roleAssignments: (contains(nicConfiguration, 'roleAssignments') ? (!(empty(nicConfiguration.roleAssignments)) ? nicConfiguration.roleAssignments : json('[]')) : json('[]'))
   }
 }]
 
