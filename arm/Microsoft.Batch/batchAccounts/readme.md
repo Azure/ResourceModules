@@ -8,10 +8,6 @@
 | `Microsoft.Batch/batchAccounts` | 2020-09-01 |
 | `Microsoft.Insights/diagnosticSettings` | 2017-05-01-preview |
 
-### Resource dependency
-
-The following resources are required to be able to deploy this resource.
-
 ## Parameters
 
 | Parameter Name | Type | Default Value | Possible Values | Description |

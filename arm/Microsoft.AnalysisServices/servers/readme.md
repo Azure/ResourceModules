@@ -13,7 +13,7 @@
 
 The following resources are required to be able to deploy this resource.
 
-- Virtual Network
+- `Microsoft.Network/VirtualNetwork`
 
 ## Parameters
 

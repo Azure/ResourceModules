@@ -13,15 +13,6 @@
 | `Microsoft.Network/privateEndpoints/privateDnsZoneGroups` | 2020-05-01 |
 | `providers/locks` | 2016-09-01 |
 
-### Resource dependency
-
-The following resources are required to be able to deploy this resource.
-
-Only V2 is currently supported, not V1.
-
-If you enable git Repository the repository including branch has to exist beforehand.
-
-
 ## Parameters
 
 | Parameter Name | Type | Default Value | Possible Values | Description |

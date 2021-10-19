@@ -13,10 +13,6 @@ This template deploys Application Gateway.
 | `Microsoft.Network/applicationGateways` | 2021-02-01 |
 | `Microsoft.Network/applicationGateways/providers/roleAssignments` | 2020-04-01-preview |
 
-### Resource dependency
-
-The following resources are required to be able to deploy this resource.
-
 ## Parameters
 
 | Parameter Name | Type | Default Value | Possible Values | Description |

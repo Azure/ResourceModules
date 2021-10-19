@@ -8,12 +8,6 @@ This template deploys Virtual Network Peering.
 | :-- | :-- |
 | `Microsoft.Network/virtualNetworks/virtualNetworkPeerings` | 2021-02-01 |
 
-### Resource dependency
-
-The following resources are required to be able to deploy this resource.
-
-- *None*
-
 ## Parameters
 
 | Parameter Name | Type | Default Value | Possible Values | Description |

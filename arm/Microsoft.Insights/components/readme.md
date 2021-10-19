@@ -7,10 +7,6 @@
 | `Microsoft.Insights/components` | 2020-02-02 |
 | `Microsoft.Insights/components/providers/roleAssignments` | 2020-04-01-preview |
 
-### Resource dependency
-
-The following resources are required to be able to deploy this resource.
-
 ## Parameters
 
 | Parameter Name | Type | Default Value | Possible Values | Description |

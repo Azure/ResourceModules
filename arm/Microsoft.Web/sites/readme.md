@@ -16,12 +16,6 @@ This module deploys a Web or Function App
 | `Microsoft.Web/sites/config` | 2019-08-01 |
 | `Microsoft.Web/sites/providers/roleAssignments` | 2020-04-01-preview |
 
-### Resource dependency
-
-The following resources are required to be able to deploy this resource.
-
-- *None*
-
 ## Parameters
 
 | Parameter Name | Type | Default Value | Possible Values | Description |

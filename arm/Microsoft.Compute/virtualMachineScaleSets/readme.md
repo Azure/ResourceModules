@@ -17,7 +17,8 @@ This module deploys a virtual machine scale set
 ### Resource dependency
 
 The following resources are required to be able to deploy this resource.
-- VirtualNetwork
+
+- `Microsoft.Network/VirtualNetwork`
 
 ## Parameters
 

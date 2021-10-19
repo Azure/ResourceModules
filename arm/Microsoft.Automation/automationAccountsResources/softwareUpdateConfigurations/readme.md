@@ -13,7 +13,7 @@ Also known as Patch Management, Update Management and patch deployment schedules
 
 The following resources are required to be able to deploy this resource.
 
-- Microsoft.Automation/automationAccounts
+- `Microsoft.Automation/automationAccounts`
 
 ## Parameters
 

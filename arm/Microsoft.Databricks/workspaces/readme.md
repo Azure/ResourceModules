@@ -9,10 +9,6 @@
 | `Microsoft.Databricks/workspaces/providers/roleAssignments` | 2020-04-01-preview |
 | `Microsoft.Insights/diagnosticSettings` | 2017-05-01-preview |
 
-### Resource dependency
-
-The following resources are required to be able to deploy this resource.
-
 ## Parameters
 
 | Parameter Name | Type | Default Value | Possible Values | Description |

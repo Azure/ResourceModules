@@ -13,10 +13,6 @@ This template deploys private DNS zone.
 | `Microsoft.Network/privateDnsZones/providers/roleAssignments` | 2020-04-01-preview |
 | `Microsoft.Network/privateDnsZones/virtualNetworkLinks` | 2018-09-01 |
 
-### Resource dependency
-
-The following resources are required to be able to deploy this resource.
-
 ## Parameters
 
 | Parameter Name | Type | Default Value | Possible Values | Description |
