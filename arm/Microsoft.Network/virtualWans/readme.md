@@ -21,7 +21,7 @@ This template deploys Virtual Wan
 | `cuaId` | string |  |  | Optional. Customer Usage Attribution id (GUID). This GUID must be previously registered |
 | `enableBgp` | string | `false` | `[true, false]` | Optional. his needs to be set to true if BGP needs to enabled on the vpn connection. |
 | `location` | string | `[resourceGroup().location]` |  | Optional. Location where all resources will be created. |
-| `lockForDeletion` | bool |  |  | Optional. Switch to lock storage from deletion. |
+| `lock` | string | `NotSpecified` | `[CanNotDelete, NotSpecified, ReadOnly]` | Optional. Specify the type of lock. |
 | `roleAssignments` | array | `[]` |  | Optional. Array of role assignment objects that contain the 'roleDefinitionIdOrName' and 'principalId' to define RBAC role assignments on this resource. In the roleDefinitionIdOrName attribute, you can provide either the display name of the role definition, or its fully qualified ID in the following format: '/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11' |
 | `tags` | object | `{object}` |  | Optional. Tags of the resource. |
 | `virtualHubName` | string | `SampleVirtualHub` |  | Optional. Name of the Virtual Hub. A virtual hub is created inside a virtual wan. |

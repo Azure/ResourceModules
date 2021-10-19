@@ -26,7 +26,7 @@ The following resources are required to be able to deploy this resource.
 | `imageRegistryCredentials` | array | `[]` |  | Optional. The image registry credentials by which the container group is created from. |
 | `ipAddressType` | string | `Public` |  | Optional. Specifies if the IP is exposed to the public internet or private VNET. - Public or Private |
 | `location` | string | `[resourceGroup().location]` |  | Optional. Location for all Resources. |
-| `lockForDeletion` | bool |  |  | Optional. Switch to lock resource from deletion. |
+| `lock` | string | `NotSpecified` | `[CanNotDelete, NotSpecified, ReadOnly]` | Optional. Specify the type of lock. |
 | `memoryInGB` | int | `2` |  | Optional. The amount of memory to allocate to the container in gigabytes. |
 | `osType` | string | `Linux` |  | Optional. The operating system type required by the containers in the container group. - Windows or Linux. |
 | `ports` | array | `[System.Collections.Hashtable]` |  | Optional. Port to open on the container and the public IP address. |

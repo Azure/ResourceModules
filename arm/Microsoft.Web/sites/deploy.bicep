@@ -27,8 +27,13 @@ param enableMonitoring bool = true
 @description('Optional. Mandatory \'managedServiceIdentity\' contains UserAssigned. The identy to assign to the resource.')
 param userAssignedIdentities object = {}
 
-@description('Optional. Switch to lock Key Vault from deletion.')
-param lockForDeletion bool = false
+@allowed([
+  'CanNotDelete'
+  'NotSpecified'
+  'ReadOnly'
+])
+@description('Optional. Specify the type of lock.')
+param lock string = 'NotSpecified'
 
 @description('Optional. Configuration Details for private endpoints.')
 param privateEndpoints array = []
@@ -219,10 +224,11 @@ resource appServicePlan 'Microsoft.Web/serverfarms@2021-02-01' = if (empty(appSe
   }
 }
 
-resource appServicePlan_lock 'Microsoft.Authorization/locks@2016-09-01' = if (lockForDeletion && empty(appServicePlanId)) {
-  name: '${appServicePlan.name}-doNotDelete'
+resource appServicePlan_lock 'Microsoft.Authorization/locks@2016-09-01' = if (lock != 'NotSpecified' && empty(appServicePlanId)) {
+  name: '${appServicePlan.name}-${lock}-lock'
   properties: {
-    level: 'CanNotDelete'
+    level: lock
+    notes: (lock == 'CanNotDelete') ? 'Cannot delete resource or child resources.' : 'Cannot modify the resource or child resources.'
   }
   scope: appServicePlan
 }
@@ -260,10 +266,11 @@ resource app 'Microsoft.Web/sites@2020-12-01' = {
   }
 }
 
-resource app_lock 'Microsoft.Authorization/locks@2016-09-01' = if (lockForDeletion) {
-  name: '${app.name}-doNotDelete'
+resource app_lock 'Microsoft.Authorization/locks@2016-09-01' = if (lock != 'NotSpecified') {
+  name: '${app.name}-${lock}-lock'
   properties: {
-    level: 'CanNotDelete'
+    level: lock
+    notes: (lock == 'CanNotDelete') ? 'Cannot delete resource or child resources.' : 'Cannot modify the resource or child resources.'
   }
   scope: app
 }

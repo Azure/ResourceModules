@@ -19,7 +19,7 @@ This module deploys Traffic Manager, with resource lock.
 | `endpoints` | array | `[]` |  | Optional. The list of endpoints in the Traffic Manager profile. |
 | `eventHubAuthorizationRuleId` | string |  |  | Optional. Resource ID of the event hub authorization rule for the Event Hubs namespace in which the event hub should be created or streamed to. |
 | `eventHubName` | string |  |  | Optional. Name of the event hub within the namespace to which logs are streamed. Without this, an event hub is created for each log category. |
-| `lockForDeletion` | bool |  |  | Optional. Switch to lock Traffic Manager from deletion. |
+| `lock` | string | `NotSpecified` | `[CanNotDelete, NotSpecified, ReadOnly]` | Optional. Specify the type of lock. |
 | `logsToEnable` | array | `[ProbeHealthStatusEvents]` | `[ProbeHealthStatusEvents]` | Optional. The name of logs that will be streamed. |
 | `maxReturn` | int | `1` |  | Optional. Maximum number of endpoints to be returned for MultiValue routing type. |
 | `metricsToEnable` | array | `[AllMetrics]` | `[AllMetrics]` | Optional. The name of metrics that will be streamed. |

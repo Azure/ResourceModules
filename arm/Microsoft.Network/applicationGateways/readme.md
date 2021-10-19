@@ -36,7 +36,7 @@ The following resources are required to be able to deploy this resource.
 | `gatewayIpConfigurationName` | string | `gatewayIpConfiguration01` |  | Optional. Application Gateway IP configuration name. |
 | `http2Enabled` | bool | `True` |  | Optional. Enables HTTP/2 support. |
 | `location` | string | `[resourceGroup().location]` |  | Optional. Location for all Resources. |
-| `lockForDeletion` | bool |  |  | Optional. Switch to lock Key Vault from deletion. |
+| `lock` | string | `NotSpecified` | `[CanNotDelete, NotSpecified, ReadOnly]` | Optional. Specify the type of lock. |
 | `logsToEnable` | array | `[ApplicationGatewayAccessLog, ApplicationGatewayPerformanceLog, ApplicationGatewayFirewallLog]` | `[ApplicationGatewayAccessLog, ApplicationGatewayPerformanceLog, ApplicationGatewayFirewallLog]` | Optional. The name of logs that will be streamed. |
 | `managedIdentityResourceId` | string |  |  | Optional. Resource Id of an User assigned managed identity which will be associated with the App Gateway. |
 | `metricsToEnable` | array | `[AllMetrics]` | `[AllMetrics]` | Optional. The name of metrics that will be streamed. |

@@ -27,7 +27,7 @@ This module deploys AVD Host Pools, with resource lock and diagnostics configura
 | `hostpoolType` | string | `Pooled` | `[Personal, Pooled]` | Optional. Set this parameter to Personal if you would like to enable Persistent Desktop experience. Defaults to Pooled. |
 | `loadBalancerType` | string | `BreadthFirst` | `[BreadthFirst, DepthFirst, Persistent]` | Optional. Type of load balancer algorithm. |
 | `location` | string | `[resourceGroup().location]` |  | Optional. Location for all resources. |
-| `lockForDeletion` | bool |  |  | Optional. Switch to lock Resource from deletion. |
+| `lock` | string | `NotSpecified` | `[CanNotDelete, NotSpecified, ReadOnly]` | Optional. Specify the type of lock. |
 | `logsToEnable` | array | `[Checkpoint, Error, Management, Connection, HostRegistration, AgentHealthStatus]` | `[Checkpoint, Error, Management, Connection, HostRegistration, AgentHealthStatus]` | Optional. The name of logs that will be streamed. |
 | `maxSessionLimit` | int | `99999` |  | Optional. Maximum number of sessions. |
 | `personalDesktopAssignmentType` | string |  | `[Automatic, Direct, ]` | Optional. Set the type of assignment for a Personal Host Pool type |

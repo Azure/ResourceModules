@@ -20,7 +20,7 @@ This module deploys an Azure API Connection.
 | `customParameterValues` | object | `{object}` |  | Optional. Customized parameter values for specific connections. |
 | `displayName` | string |  |  | Required. Display name connection. Example: 'blobconnection' when using blobs. It can change depending on the resource. |
 | `location` | string | `[resourceGroup().location]` |  | Optional. Location of the deployment. |
-| `lockForDeletion` | bool |  |  | Optional. Switch to lock Resource from deletion. |
+| `lock` | string | `NotSpecified` | `[CanNotDelete, NotSpecified, ReadOnly]` | Optional. Specify the type of lock. |
 | `nonSecretParameterValues` | object | `{object}` |  | Optional. Dictionary of nonsecret parameter values. |
 | `parameterValues` | secureObject | `{object}` |  | Optional. Connection strings or access keys for connection. Example: 'accountName' and 'accessKey' when using blobs.  It can change depending on the resource. |
 | `parameterValueType` | string |  |  | Optional. Value Type of parameter, in case alternativeParameterValues is used. |

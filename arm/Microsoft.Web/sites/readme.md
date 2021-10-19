@@ -46,7 +46,7 @@ The following resources are required to be able to deploy this resource.
 | `functionsWorkerRuntime` | string |  | `[dotnet, node, python, java, powershell, ]` | Optional. Runtime of the function worker. |
 | `httpsOnly` | bool | `True` |  | Optional. Configures a web site to accept only https requests. Issues redirect for http requests. |
 | `location` | string | `[resourceGroup().location]` |  | Optional. Location for all Resources. |
-| `lockForDeletion` | bool |  |  | Optional. Switch to lock Key Vault from deletion. |
+| `lock` | string | `NotSpecified` | `[CanNotDelete, NotSpecified, ReadOnly]` | Optional. Specify the type of lock. |
 | `logsToEnable` | array | `[AppServiceHTTPLogs, AppServiceConsoleLogs, AppServiceAppLogs, AppServiceFileAuditLogs, AppServiceAuditLogs]` | `[AppServiceHTTPLogs, AppServiceConsoleLogs, AppServiceAppLogs, AppServiceFileAuditLogs, AppServiceAuditLogs]` | Optional. The name of logs that will be streamed. |
 | `managedServiceIdentity` | string | `None` | `[None, SystemAssigned, SystemAssigned, UserAssigned, UserAssigned]` | Optional. Type of managed service identity. |
 | `metricsToEnable` | array | `[AllMetrics]` | `[AllMetrics]` | Optional. The name of metrics that will be streamed. |

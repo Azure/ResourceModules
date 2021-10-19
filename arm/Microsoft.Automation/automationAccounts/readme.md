@@ -28,7 +28,7 @@ This module deploys an Azure Automation Account, with resource lock.
 | `eventHubName` | string |  |  | Optional. Name of the event hub within the namespace to which logs are streamed. Without this, an event hub is created for each log category. |
 | `jobSchedules` | array | `[]` |  | Optional. List of jobSchedules to be created in the automation account |
 | `location` | string | `[resourceGroup().location]` |  | Optional. Location for all resources. |
-| `lockForDeletion` | bool |  |  | Optional. Switch to lock Automation Account from deletion. |
+| `lock` | string | `NotSpecified` | `[CanNotDelete, NotSpecified, ReadOnly]` | Optional. Specify the type of lock. |
 | `logsToEnable` | array | `[JobLogs, JobStreams, DscNodeStatus]` | `[JobLogs, JobStreams, DscNodeStatus]` | Optional. The name of logs that will be streamed. |
 | `metricsToEnable` | array | `[AllMetrics]` | `[AllMetrics]` | Optional. The name of metrics that will be streamed. |
 | `modules` | array | `[]` |  | Optional. List of modules to be created in the automation account |
@@ -40,36 +40,6 @@ This module deploys an Azure Automation Account, with resource lock.
 | `skuName` | string | `Basic` | `[Free, Basic]` | Optional. SKU name of the account |
 | `tags` | object | `{object}` |  | Optional. Tags of the Automation Account resource. |
 | `workspaceId` | string |  |  | Optional. Resource identifier of Log Analytics. |
-
-### Parameter Usage: `automationAccountName`
-
-Name of the Azure Automation Account
-
-```json
-"automationAccountName": {
-    "value": "avd-scaling-autoaccount"
-}
-```
-
-### Parameter Usage: `location`
-
-Location for all resources.
-
-```json
-"location": {
-    "value": "westeurope"
-}
-```
-
-### Parameter Usage: `skuName`
-
-Specifies the SKU for the Automation Account
-
-```json
-"skuName": {
-    "value": "Basic"
-}
-```
 
 ### Parameter Usage: `modules`
 
@@ -183,66 +153,6 @@ To use Private Endpoint the following dependencies must be deployed:
             "service": "file"
         }
     ]
-}
-```
-
-### Parameter Usage: `diagnosticLogsRetentionInDays`
-
-Specifies the number of days that logs will be kept for; a value of 0 will retain data indefinitely.
-
-```json
-"diagnosticLogsRetentionInDays": {
-    "value": 30
-}
-```
-
-### Parameter Usage: `diagnosticStorageAccountId`
-
-Resource identifier of the Diagnostic Storage Account.
-
-```json
-"diagnosticStorageAccountId": {
-    "value": "/subscriptions/396826c76-d304-46d8-a0f6-718dbded536c/resourceGroups/Base-RG/providers/Microsoft.Storage/storageAccounts/sharedSA"
-}
-```
-
-### Parameter Usage: `workspaceId`
-
-Resource identifier of Log Analytics.
-
-```json
-"workspaceId": {
-    "value": "/subscriptions/396826c76-d304-46d8-a0f6-718dbded536c/resourceGroups/Base-RG/providers/microsoft.operationalinsights/workspaces/my-sbx-eu-la"
-}
-```
-
-### Parameter Usage: `eventHubAuthorizationRuleId`
-
-Resource ID of the event hub authorization rule for the Event Hubs namespace in which the event hub should be created or streamed to.
-
-```json
-"eventHubAuthorizationRuleId": {
-    "value": "/subscriptions/396826c76-d304-46d8-a0f6-718dbded536c/resourceGroups/Base-RG/providers/Microsoft.EventHub/namespaces/my-sbx-02-eh/authorizationRules/myRule"
-}
-```
-
-### Parameter Usage: `eventHubName`
-
-Name of the event hub within the namespace to which logs are streamed. Without this, an event hub is created for each log category.
-
-```json
-"eventHubName": {
-    "value": "myEventHub"
-}
-```
-
-### Parameter Usage: `lockForDeletion`
-
-Switch to lock Logic App from deletion.
-
-```json
-"lockForDeletion": {
-    "value": true
 }
 ```
 

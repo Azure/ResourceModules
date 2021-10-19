@@ -23,7 +23,7 @@ This module deploys Event Grid
 | `eventHubName` | string |  |  | Optional. Name of the event hub within the namespace to which logs are streamed. Without this, an event hub is created for each log category. |
 | `inboundIpRules` | array | `[]` |  | Optional. Array of IPs to whitelist. |
 | `location` | string | `[resourceGroup().location]` |  | Optional. Location for all Resources. |
-| `lockForDeletion` | bool |  |  | Optional. Switch to lock Event Grid from deletion. |
+| `lock` | string | `NotSpecified` | `[CanNotDelete, NotSpecified, ReadOnly]` | Optional. Specify the type of lock. |
 | `logsToEnable` | array | `[DeliveryFailures, PublishFailures]` | `[DeliveryFailures, PublishFailures]` | Optional. The name of logs that will be streamed. |
 | `metricsToEnable` | array | `[AllMetrics]` | `[AllMetrics]` | Optional. The name of metrics that will be streamed. |
 | `privateEndpoints` | array | `[]` |  | Optional. Configuration Details for private endpoints. |

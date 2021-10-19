@@ -25,7 +25,7 @@ This template deploys a Network Security Groups (NSG) with optional security rul
 | `flowLogName` | string |  |  | Optional. Name of the NSG flow log. If empty, no flow log will be deployed. |
 | `flowLogworkspaceId` | string |  |  | Optional. Resource identifier of Log Analytics for the flow logs. |
 | `location` | string | `[resourceGroup().location]` |  | Optional. Location for all resources. |
-| `lockForDeletion` | bool |  |  | Optional. Switch to lock NSG from deletion. |
+| `lock` | string | `NotSpecified` | `[CanNotDelete, NotSpecified, ReadOnly]` | Optional. Specify the type of lock. |
 | `logFormatVersion` | int | `2` | `[1, 2]` | Optional. The flow log format version |
 | `logsToEnable` | array | `[NetworkSecurityGroupEvent, NetworkSecurityGroupRuleCounter]` | `[NetworkSecurityGroupEvent, NetworkSecurityGroupRuleCounter]` | Optional. The name of logs that will be streamed. |
 | `metricsToEnable` | array | `[AllMetrics]` | `[AllMetrics]` | Optional. The name of metrics that will be streamed. |

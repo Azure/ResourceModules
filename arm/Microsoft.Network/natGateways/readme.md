@@ -25,7 +25,7 @@ The following resources are required to be able to deploy this resource.
 | `eventHubName` | string |  |  | Optional. Name of the event hub within the namespace to which logs are streamed. Without this, an event hub is created for each log category. |
 | `idleTimeoutInMinutes` | int | `5` |  | Optional. The idle timeout of the nat gateway. |
 | `location` | string | `[resourceGroup().location]` |  | Optional. Location for all resources. |
-| `lockForDeletion` | bool |  |  | Optional. Switch to lock resource from deletion. |
+| `lock` | string | `NotSpecified` | `[CanNotDelete, NotSpecified, ReadOnly]` | Optional. Specify the type of lock. |
 | `logsToEnable` | array | `[DDoSProtectionNotifications, DDoSMitigationFlowLogs, DDoSMitigationReports]` | `[DDoSProtectionNotifications, DDoSMitigationFlowLogs, DDoSMitigationReports]` | Optional. The name of logs that will be streamed. |
 | `metricsToEnable` | array | `[AllMetrics]` | `[AllMetrics]` | Optional. The name of metrics that will be streamed. |
 | `natGatewayDomainNameLabel` | string |  |  | Optional. DNS name of the Public IP resource. A region specific suffix will be appended to it, e.g.: your-DNS-name.westeurope.cloudapp.azure.com |

@@ -18,7 +18,7 @@ This template deploys Virtual Network Gateway Connection.
 | `enableBgp` | bool |  |  | Optional. Value to specify if BGP is enabled or not |
 | `localVirtualNetworkGatewayName` | string |  |  | Required. Specifies the local Virtual Network Gateway name |
 | `location` | string | `[resourceGroup().location]` |  | Optional. Location for all resources. |
-| `lockForDeletion` | bool |  |  | Optional. Switch to lock Connection from deletion. |
+| `lock` | string | `NotSpecified` | `[CanNotDelete, NotSpecified, ReadOnly]` | Optional. Specify the type of lock. |
 | `remoteEntityName` | string |  |  | Required. Specifies the remote Virtual Network Gateway/ExpressRoute |
 | `remoteEntityResourceGroup` | string |  |  | Optional. Remote Virtual Network Gateway/ExpressRoute resource group name |
 | `remoteEntitySubscriptionId` | string |  |  | Optional. Remote Virtual Network Gateway/ExpressRoute Subscription Id |

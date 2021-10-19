@@ -47,7 +47,7 @@ The following resources are required to be able to deploy this resource.
 | `identityProviderSignUpPolicyName` | string |  |  | Optional. Signup Policy Name. Only applies to AAD B2C Identity Provider. |
 | `identityProviderType` | string | `aad` | `[aad, aadB2C, facebook, google, microsoft, twitter]` | Optional. Identity Provider Type identifier. |
 | `location` | string | `[resourceGroup().location]` |  | Optional. Location for all Resources. |
-| `lockForDeletion` | bool |  |  | Optional. Switch to lock Key Vault from deletion. |
+| `lock` | string | `NotSpecified` | `[CanNotDelete, NotSpecified, ReadOnly]` | Optional. Specify the type of lock. |
 | `logsToEnable` | array | `[GatewayLogs]` | `[GatewayLogs]` | Optional. The name of logs that will be streamed. |
 | `metricsToEnable` | array | `[AllMetrics]` | `[AllMetrics]` | Optional. The name of metrics that will be streamed. |
 | `minApiVersion` | string |  |  | Optional. Limit control plane API calls to API Management service with version equal to or newer than this value. |

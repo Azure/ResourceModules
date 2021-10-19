@@ -21,7 +21,7 @@ The following resources are required to be able to deploy this resource.
 | `eventHubAuthorizationRuleId` | string |  |  | Optional. Resource ID of the event hub authorization rule for the Event Hubs namespace in which the event hub should be created or streamed to. |
 | `eventHubName` | string |  |  | Optional. Name of the event hub within the namespace to which logs are streamed. Without this, an event hub is created for each log category. |
 | `location` | string | `[resourceGroup().location]` |  | Optional. Location for all Resources. |
-| `lockForDeletion` | bool |  |  | Optional. Switch to lock Key Vault from deletion. |
+| `lock` | string | `NotSpecified` | `[CanNotDelete, NotSpecified, ReadOnly]` | Optional. Specify the type of lock. |
 | `logsToEnable` | array | `[dbfs, clusters, accounts, jobs, notebook, ssh, workspace, secrets, sqlPermissions, instancePools]` | `[dbfs, clusters, accounts, jobs, notebook, ssh, workspace, secrets, sqlPermissions, instancePools]` | Optional. The name of logs that will be streamed. |
 | `managedResourceGroupId` | string |  |  | Optional. The managed resource group Id |
 | `pricingTier` | string | `premium` | `[trial, standard, premium]` | Optional. The pricing tier of workspace |

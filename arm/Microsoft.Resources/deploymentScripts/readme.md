@@ -21,7 +21,7 @@ This module deploys Deployment Scripts.
 | `environmentVariables` | array | `[]` |  | Optional. The environment variables to pass over to the script. Must have a 'name' and a 'value' or a 'secretValue' property. |
 | `kind` | string | `AzurePowerShell` | `[AzurePowerShell, AzureCLI]` | Optional. Type of the script. AzurePowerShell, AzureCLI. |
 | `location` | string | `[resourceGroup().location]` |  | Optional. Location for all resources. |
-| `lockForDeletion` | bool |  |  | Optional. Switch to lock Resource from deletion. |
+| `lock` | string | `NotSpecified` | `[CanNotDelete, NotSpecified, ReadOnly]` | Optional. Specify the type of lock. |
 | `primaryScriptUri` | string |  |  | Optional. Uri for the external script. This is the entry point for the external script. To run an internal script, use the scriptContent instead. |
 | `retentionInterval` | string | `P1D` |  | Optional. Interval for which the service retains the script resource after it reaches a terminal state. Resource will be deleted when this duration expires. Duration is based on ISO 8601 pattern (for example P7D means one week). |
 | `runOnce` | bool |  |  | Optional. When set to false, script will run every time the template is deployed. When set to true, the script will only run once. |

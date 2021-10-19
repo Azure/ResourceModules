@@ -20,7 +20,7 @@ This module deploys an Image Template (for Azure Image Builder service) that can
 | `imageSource` | object |  |  | Required. Image source definition in object format. |
 | `imageTemplateName` | string |  |  | Required. Name of the Image Template to be built by the Azure Image Builder service. |
 | `location` | string | `[resourceGroup().location]` |  | Optional. Location for all resources. |
-| `lockForDeletion` | bool |  |  | Optional. Switch to lock Resource from deletion. |
+| `lock` | string | `NotSpecified` | `[CanNotDelete, NotSpecified, ReadOnly]` | Optional. Specify the type of lock. |
 | `managedImageName` | string |  |  | Optional. Name of the managed image that will be created in the AIB resourcegroup. |
 | `osDiskSizeGB` | int | `128` |  | Optional. Specifies the size of OS disk. |
 | `roleAssignments` | array | `[]` |  | Optional. Array of role assignment objects that contain the 'roleDefinitionIdOrName' and 'principalId' to define RBAC role assignments on this resource. In the roleDefinitionIdOrName attribute, you can provide either the display name of the role definition, or its fully qualified ID in the following format: '/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11' |

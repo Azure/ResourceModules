@@ -39,7 +39,7 @@
 | `keysObject` | secureObject | `{object}` |  | Optional. All keys [{"keyName":"","keyType":"","keyOps":"","keySize":"","curvename":""} wrapped in a secure object] |
 | `keyVaultName` | string |  |  | Optional. Name of the Key Vault. If no name is provided, then unique name will be created. |
 | `location` | string | `[resourceGroup().location]` |  | Optional. Location for all resources. |
-| `lockForDeletion` | bool |  |  | Optional. Switch to lock Key Vault from deletion. |
+| `lock` | string | `NotSpecified` | `[CanNotDelete, NotSpecified, ReadOnly]` | Optional. Specify the type of lock. |
 | `logsToEnable` | array | `[AuditEvent]` | `[AuditEvent]` | Optional. The name of logs that will be streamed. |
 | `metricsToEnable` | array | `[AllMetrics]` | `[AllMetrics]` | Optional. The name of metrics that will be streamed. |
 | `networkAcls` | object | `{object}` |  | Optional. Service endpoint object information |

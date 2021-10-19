@@ -59,7 +59,7 @@ This module deploys Azure Kubernetes Cluster (AKS).
 | `identity` | object | `{object}` |  | Optional. The identity of the managed cluster. |
 | `kubeDashboardEnabled` | bool |  |  | Optional. Specifies whether the kubeDashboard add-on is enabled or not. |
 | `location` | string | `[resourceGroup().location]` |  | Optional. Specifies the location of AKS cluster. It picks up Resource Group's location by default. |
-| `lockForDeletion` | bool |  |  | Optional. Switch to lock Key Vault from deletion. |
+| `lock` | string | `NotSpecified` | `[CanNotDelete, NotSpecified, ReadOnly]` | Optional. Specify the type of lock. |
 | `logsToEnable` | array | `[kube-apiserver, kube-audit, kube-controller-manager, kube-scheduler, cluster-autoscaler]` | `[kube-apiserver, kube-audit, kube-controller-manager, kube-scheduler, cluster-autoscaler]` | Optional. The name of logs that will be streamed. |
 | `managedOutboundIPCount` | int |  |  | Optional. Outbound IP Count for the Load balancer. |
 | `metricsToEnable` | array | `[AllMetrics]` | `[AllMetrics]` | Optional. The name of metrics that will be streamed. |
@@ -211,7 +211,6 @@ For available properties check https://docs.microsoft.com/en-us/azure/templates/
       ]
     }
 ```
-
 
 ## Outputs
 | Output Name | Type |

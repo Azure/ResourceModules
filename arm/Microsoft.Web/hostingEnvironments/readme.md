@@ -29,7 +29,7 @@ This module deploys App Service Environment, with resource lock.
 | `ipsslAddressCount` | int | `2` |  | Optional. Number of IP SSL addresses reserved for the App Service Environment. |
 | `kind` | string | `ASEV2` |  | Optional. Kind of resource. |
 | `location` | string | `[resourceGroup().location]` |  | Optional. Location for all resources. |
-| `lockForDeletion` | bool |  |  | Optional. Switch to lock Key Vault from deletion. |
+| `lock` | string | `NotSpecified` | `[CanNotDelete, NotSpecified, ReadOnly]` | Optional. Specify the type of lock. |
 | `logsToEnable` | array | `[AppServiceEnvironmentPlatformLogs]` | `[AppServiceEnvironmentPlatformLogs]` | Optional. The name of logs that will be streamed. |
 | `multiRoleCount` | int | `2` |  | Optional. Number of front-end instances. |
 | `multiSize` | string | `Standard_D1_V2` | `[Medium, Large, ExtraLarge, Standard_D2, Standard_D3, Standard_D4, Standard_D1_V2, Standard_D2_V2, Standard_D3_V2, Standard_D4_V2]` | Optional. Front-end VM size, e.g. Medium, Large |

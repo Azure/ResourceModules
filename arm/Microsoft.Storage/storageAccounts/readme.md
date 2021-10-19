@@ -39,7 +39,7 @@ The default parameter values are based on the needs of deploying a diagnostic st
 | `enableHierarchicalNamespace` | bool |  |  | Optional. If true, enables Hierarchical Namespace for the storage account |
 | `fileShares` | array | `[]` |  | Optional. File shares to create. |
 | `location` | string | `[resourceGroup().location]` |  | Optional. Location for all resources. |
-| `lockForDeletion` | bool |  |  | Optional. Switch to lock storage from deletion. |
+| `lock` | string | `NotSpecified` | `[CanNotDelete, NotSpecified, ReadOnly]` | Optional. Specify the type of lock. |
 | `managedServiceIdentity` | string | `None` | `[None, SystemAssigned, SystemAssigned,UserAssigned, UserAssigned]` | Optional. Type of managed service identity. |
 | `minimumTlsVersion` | string | `TLS1_2` | `[TLS1_0, TLS1_1, TLS1_2]` | Optional. Set the minimum TLS version on request to storage. |
 | `moveToArchiveAfter` | int | `30` |  | Optional. Set up the amount of days after which the blobs will be moved to archive tier |

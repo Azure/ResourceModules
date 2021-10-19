@@ -26,7 +26,7 @@ This module deploys Logic App resource.
 | `integrationAccount` | object | `{object}` |  | Optional. The integration account. |
 | `integrationServiceEnvironment` | object | `{object}` |  | Optional. The integration service environment. |
 | `location` | string | `[resourceGroup().location]` |  | Optional. Location for all resources. |
-| `lockForDeletion` | bool |  |  | Optional. Flag indicating if resource is locked for deletion. |
+| `lock` | string | `NotSpecified` | `[CanNotDelete, NotSpecified, ReadOnly]` | Optional. Specify the type of lock. |
 | `logicAppName` | string |  |  | Required. The logic app workflow name. |
 | `logsToEnable` | array | `[WorkflowRuntime]` | `[WorkflowRuntime]` | Optional. The name of logs that will be streamed. |
 | `metricsToEnable` | array | `[AllMetrics]` | `[AllMetrics]` | Optional. The name of metrics that will be streamed. |

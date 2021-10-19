@@ -25,7 +25,7 @@ This template deploys Log Analytics.
 | `diagnosticStorageAccountId` | string |  |  | Optional. Log Analytics workspace resource identifier |
 | `gallerySolutions` | array | `[]` |  | Optional. LAW gallerySolutions from the gallery. |
 | `location` | string | `[resourceGroup().location]` |  | Optional. Location for all resources. |
-| `lockForDeletion` | bool |  |  | Optional. Switch to lock storage from deletion. |
+| `lock` | string | `NotSpecified` | `[CanNotDelete, NotSpecified, ReadOnly]` | Optional. Specify the type of lock. |
 | `logAnalyticsWorkspaceName` | string |  |  | Required. Name of the Log Analytics workspace |
 | `publicNetworkAccessForIngestion` | string | `Enabled` | `[Enabled, Disabled]` | Optional. The network access type for accessing Log Analytics ingestion. |
 | `publicNetworkAccessForQuery` | string | `Enabled` | `[Enabled, Disabled]` | Optional. The network access type for accessing Log Analytics query. |

@@ -39,7 +39,7 @@ If you enable git Repository the repository including branch has to exist before
 | `gitRepoType` | string | `FactoryVSTSConfiguration` |  | Optional. Repo type - can be 'FactoryVSTSConfiguration' or 'FactoryGitHubConfiguration'. Default is 'FactoryVSTSConfiguration'. |
 | `gitRootFolder` | string | `/` |  | Optional. The root folder path name. Default is '/'. |
 | `location` | string | `[resourceGroup().location]` |  | Optional. Location for all Resources. |
-| `lockForDeletion` | bool |  |  | Optional. Switch to lock resource from deletion. |
+| `lock` | string | 'NotSpecified' | 'CanNotDelete', 'NotSpecified', 'ReadOnly' | Optional. Specify the type of lock. |
 | `privateEndpoints` | array | `[]` |  | Optional. Configuration Details for private endpoints. |
 | `publicNetworkAccess` | bool | `True` |  | Optional. Enable or disable public network access. |
 | `roleAssignments` | array | `[]` |  | Optional. Array of role assignment objects that contain the 'roleDefinitionIdOrName' and 'principalId' to define RBAC role assignments on this resource. In the roleDefinitionIdOrName attribute, you can provide either the display name of the role definition, or it's fully qualified ID in the following format: '/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11'. |
@@ -131,7 +131,6 @@ To use Private Endpoint the following dependencies must be deployed:
     ]
 }
 ```
-
 
 ## Outputs
 | Output Name | Type |
