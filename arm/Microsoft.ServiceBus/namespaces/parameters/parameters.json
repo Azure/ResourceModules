@@ -8,8 +8,8 @@
         "skuName": {
             "value": "Basic"
         },
-        "lockForDeletion": {
-            "value": false
+        "lock": {
+            "value": "NotSpecified"
         },
         "tags": {
             "value": {}

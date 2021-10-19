@@ -5,8 +5,8 @@
         "logicAppName": {
             "value": "sxx-az-lga-weu-x-001"
         },
-        "lockForDeletion": {
-            "value": false
+        "lock": {
+            "value": "NotSpecified"
         },
         "tags": {
             "value": {}

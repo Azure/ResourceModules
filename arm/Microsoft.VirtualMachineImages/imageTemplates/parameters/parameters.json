@@ -55,8 +55,8 @@
         "imageReplicationRegions": {
             "value": []
         },
-        "lockForDeletion": {
-            "value": false
+        "lock": {
+            "value": "NotSpecified"
         }
     }
 }
