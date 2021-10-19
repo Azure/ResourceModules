@@ -1,4 +1,4 @@
-#region Helper functions
+﻿#region Helper functions
 
 <#
 .SYNOPSIS

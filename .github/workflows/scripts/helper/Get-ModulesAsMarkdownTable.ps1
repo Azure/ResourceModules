@@ -1,4 +1,4 @@
-#region Helper functions
+﻿#region Helper functions
 <#
 .SYNOPSIS
 Generate the status Url for GitHub module action workflows
@@ -79,6 +79,7 @@ function Get-DeployToAzureUrl {
 
 
     [CmdletBinding()]
+    [OutputType('System.String')]
     param (
         [Parameter(Mandatory)]
         [string] $Path,
@@ -119,6 +120,7 @@ Get the resource name defined in the KeyVault-Module's readme. E.g. 'Key Vault'
 function Get-ResourceModuleName {
 
     [CmdletBinding()]
+    [OutputType('System.String')]
     param (
         [Parameter(Mandatory)]
         [string] $Path
@@ -159,6 +161,7 @@ May return a string like ':heavy_check_mark: | :heavy_check_mark: |' if both ARM
 function Get-TypeColumnString {
 
     [CmdletBinding()]
+    [OutputType('System.String')]
     param (
         [Parameter(Mandatory)]
         [string] $Path
@@ -206,6 +209,7 @@ Check if the path 'C:\dev\ApiManagement' contains any number of nested modules
 function Measure-FolderHasNestedModule {
 
     [CmdletBinding()]
+    [OutputType('System.Boolean')]
     param (
         [Parameter(Mandatory)]
         [string] $Path

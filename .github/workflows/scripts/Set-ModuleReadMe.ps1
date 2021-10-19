@@ -68,7 +68,8 @@ Update the given readme file's 'Resource Types' section based on the given templ
 #>
 function Set-ResourceTypesSection {
 
-    [CmdletBinding()]
+    [CmdletBinding(SupportsShouldProcess)]
+    [Diagnostics.CodeAnalysis.SuppressMessageAttribute('PSReviewUnusedParameter', 'ResourceTypesToExclude', Justification = 'Variable used inside Where-Object block.')]
     param (
         [Parameter(Mandatory)]
         [hashtable] $TemplateFileContent,
@@ -98,7 +99,9 @@ function Set-ResourceTypesSection {
     }
 
     # Build result
-    $updatedFileContent = Merge-FileWithNewContent -oldContent $ReadMeFileContent -newContent $sectionContent -SectionStartIdentifier $SectionStartIdentifier
+    if ($PSCmdlet.ShouldProcess('Original file with new resource type content', 'Merge')) {
+        $updatedFileContent = Merge-FileWithNewContent -oldContent $ReadMeFileContent -newContent $sectionContent -SectionStartIdentifier $SectionStartIdentifier
+    }
     return $updatedFileContent
 }
 
@@ -126,7 +129,7 @@ Update the given readme file's 'Parameters' section based on the given template 
 #>
 function Set-ParametersSection {
 
-    [CmdletBinding()]
+    [CmdletBinding(SupportsShouldProcess)]
     param (
         [Parameter(Mandatory)]
         [hashtable] $TemplateFileContent,
@@ -154,7 +157,9 @@ function Set-ParametersSection {
     }
 
     # Build result
-    $updatedFileContent = Merge-FileWithNewContent -oldContent $ReadMeFileContent -newContent $sectionContent -SectionStartIdentifier $SectionStartIdentifier
+    if ($PSCmdlet.ShouldProcess('Original file with new parameters content', 'Merge')) {
+        $updatedFileContent = Merge-FileWithNewContent -oldContent $ReadMeFileContent -newContent $sectionContent -SectionStartIdentifier $SectionStartIdentifier
+    }
     return $updatedFileContent
 }
 
@@ -182,7 +187,7 @@ Update the given readme file's 'Outputs' section based on the given template fil
 #>
 function Set-OutputsSection {
 
-    [CmdletBinding()]
+    [CmdletBinding(SupportsShouldProcess)]
     param (
         [Parameter(Mandatory)]
         [hashtable] $TemplateFileContent,
@@ -217,7 +222,9 @@ function Set-OutputsSection {
     }
 
     # Build result
-    $updatedFileContent = Merge-FileWithNewContent -oldContent $ReadMeFileContent -newContent $sectionContent -SectionStartIdentifier $SectionStartIdentifier
+    if ($PSCmdlet.ShouldProcess('Original file with new output content', 'Merge')) {
+        $updatedFileContent = Merge-FileWithNewContent -oldContent $ReadMeFileContent -newContent $sectionContent -SectionStartIdentifier $SectionStartIdentifier
+    }
     return $updatedFileContent
 }
 
@@ -248,7 +255,8 @@ Update the given readme file's 'Template references' section based on the given 
 #>
 function Set-TemplateReferencesSection {
 
-    [CmdletBinding()]
+    [CmdletBinding(SupportsShouldProcess)]
+    [Diagnostics.CodeAnalysis.SuppressMessageAttribute('PSReviewUnusedParameter', 'ResourceTypesToExclude', Justification = 'Variable used inside Where-Object block.')]
     param (
         [Parameter(Mandatory)]
         [hashtable] $TemplateFileContent,
@@ -277,7 +285,9 @@ function Set-TemplateReferencesSection {
     }
 
     # Build result
-    $updatedFileContent = Merge-FileWithNewContent -oldContent $ReadMeFileContent -newContent $sectionContent -SectionStartIdentifier $SectionStartIdentifier -contentType 'list'
+    if ($PSCmdlet.ShouldProcess('Original file with new template references content', 'Merge')) {
+        $updatedFileContent = Merge-FileWithNewContent -oldContent $ReadMeFileContent -newContent $sectionContent -SectionStartIdentifier $SectionStartIdentifier -contentType 'list'
+    }
     return $updatedFileContent
 }
 #endregion
