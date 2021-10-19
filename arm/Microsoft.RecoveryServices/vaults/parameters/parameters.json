@@ -8,9 +8,6 @@
         "diagnosticLogsRetentionInDays": {
             "value": 365
         },
-        "lockForDeletion": {
-            "value": false
-        },
         "backupPolicies": {
             "value": [
                 {

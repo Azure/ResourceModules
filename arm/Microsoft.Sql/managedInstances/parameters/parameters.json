@@ -72,9 +72,6 @@
                 "test2@contoso.com"
             ]
         },
-        "lockForDeletion": {
-            "value": false
-        },
         "roleAssignments": {
             "value": [
                 {

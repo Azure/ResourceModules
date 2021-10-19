@@ -55,9 +55,6 @@
         "imageReplicationRegions": {
             "value": []
         },
-        "lockForDeletion": {
-            "value": false
-        },
         "roleAssignments": {
             "value": [
                 {
