@@ -27,7 +27,7 @@ This module deploys different kinds of Cognitive Services resources
 | `eventHubName` | string | Optional. Name of the event hub within the namespace to which logs are streamed. Without this, an event hub is created for each log category. |  |  |
 | `kind` | string | Required. Kind of the Cognitive Services. Use `Get-AzCognitiveServicesAccountSku` to determine a valid pairs of 'kind' and 'sku' for your Azure region. |  | "AnomalyDetector", "Bing.Autosuggest.v7", "Bing.CustomSearch", "Bing.EntitySearch", "Bing.Search.v7", "Bing.SpellCheck.v7", "CognitiveServices", "ComputerVision" "ContentModerator", "CustomVision.Prediction", "CustomVision.Training", "Face", "FormRecognizer", "ImmersiveReader", "Internal.AllInOne", "LUIS", "LUIS.Authoring", "Personalizer", "QnAMaker", "SpeechServices", "TextAnalytics", "TextTranslation" |
 | `location` | string | Optional. Location for all Resources. | [resourceGroup().location] |  |
-| `lockForDeletion` | bool | Optional. Switch to lock Cognitive Services from deletion. | False |  |
+| `lock` | string | Optional. Specify the type of lock. | 'NotSpecified' | 'CanNotDelete', 'NotSpecified', 'ReadOnly' |
 | `managedIdentity` | string | Optional. Type of managed service identity. | None | "None", "SystemAssigned" |
 | `networkAcls` | object | Optional. Service endpoint object information |  |  |
 | `publicNetworkAccess` | string | Optional. Subdomain name used for token-based authentication. Must be set if 'networkAcls' are set. | Enabled | "Enabled", "Disabled" |

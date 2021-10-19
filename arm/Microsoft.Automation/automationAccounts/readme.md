@@ -37,40 +37,10 @@ This module deploys an Azure Automation Account, with resource lock.
 | `privateEndpoints`              | array  | System.Object[]              |                               | Optional. Configuration Details for private endpoints.                                                                                                                                                                                                                                                                                                                                                          |
 | `eventHubAuthorizationRuleId`   | string |                              |                               | Optional. Resource ID of the event hub authorization rule for the Event Hubs namespace in which the event hub should be created or streamed to.                                                                                                                                                                                                                                                                 |
 | `eventHubName`                  | string |                              |                               | Optional. Name of the event hub within the namespace to which logs are streamed. Without this, an event hub is created for each log category.                                                                                                                                                                                                                                                                   |
-| `lockForDeletion`               | bool   | `false`                      |                               | Optional. Switch to lock Automation Account from deletion.                                                                                                                                                                                                                                                                                                                                                      |
+| `lock` | string | 'NotSpecified' | 'CanNotDelete', 'NotSpecified', 'ReadOnly' | Optional. Specify the type of lock |
 | `roleAssignments`               | array  | []                           | Complex structure, see below. | Optional. Array of role assignment objects that contain the 'roleDefinitionIdOrName' and 'principalId' to define RBAC role assignments on this resource. In the roleDefinitionIdOrName attribute, you can provide either the display name of the role definition, or it's fully qualified ID in the following format: '/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11' |
 | `tags`                          | object |                              |                               | Optional. Tags of the Automation Account resource.                                                                                                                                                                                                                                                                                                                                                              |
 | `sasTokenValidityLength`        | string | PT8H                         |                               | Optional. SAS token validity length. Usage: 'PT8H' - valid for 8 hours; 'P5D' - valid for 5 days; 'P1Y' - valid for 1 year. When not provided, the SAS token will be valid for 8 hours.                                                                                                                                                                                                                         |
-
-### Parameter Usage: `automationAccountName`
-
-Name of the Azure Automation Account
-
-```json
-"automationAccountName": {
-    "value": "avd-scaling-autoaccount"
-}
-```
-
-### Parameter Usage: `location`
-
-Location for all resources.
-
-```json
-"location": {
-    "value": "westeurope"
-}
-```
-
-### Parameter Usage: `skuName`
-
-Specifies the SKU for the Automation Account
-
-```json
-"skuName": {
-    "value": "Basic"
-}
-```
 
 ### Parameter Usage: `modules`
 
@@ -184,66 +154,6 @@ To use Private Endpoint the following dependencies must be deployed:
             "service": "file"
         }
     ]
-}
-```
-
-### Parameter Usage: `diagnosticLogsRetentionInDays`
-
-Specifies the number of days that logs will be kept for; a value of 0 will retain data indefinitely.
-
-```json
-"diagnosticLogsRetentionInDays": {
-    "value": 30
-}
-```
-
-### Parameter Usage: `diagnosticStorageAccountId`
-
-Resource identifier of the Diagnostic Storage Account.
-
-```json
-"diagnosticStorageAccountId": {
-    "value": "/subscriptions/396826c76-d304-46d8-a0f6-718dbded536c/resourceGroups/Base-RG/providers/Microsoft.Storage/storageAccounts/sharedSA"
-}
-```
-
-### Parameter Usage: `workspaceId`
-
-Resource identifier of Log Analytics.
-
-```json
-"workspaceId": {
-    "value": "/subscriptions/396826c76-d304-46d8-a0f6-718dbded536c/resourceGroups/Base-RG/providers/microsoft.operationalinsights/workspaces/my-sbx-eu-la"
-}
-```
-
-### Parameter Usage: `eventHubAuthorizationRuleId`
-
-Resource ID of the event hub authorization rule for the Event Hubs namespace in which the event hub should be created or streamed to.
-
-```json
-"eventHubAuthorizationRuleId": {
-    "value": "/subscriptions/396826c76-d304-46d8-a0f6-718dbded536c/resourceGroups/Base-RG/providers/Microsoft.EventHub/namespaces/my-sbx-02-eh/authorizationRules/myRule"
-}
-```
-
-### Parameter Usage: `eventHubName`
-
-Name of the event hub within the namespace to which logs are streamed. Without this, an event hub is created for each log category.
-
-```json
-"eventHubName": {
-    "value": "myEventHub"
-}
-```
-
-### Parameter Usage: `lockForDeletion`
-
-Switch to lock Logic App from deletion.
-
-```json
-"lockForDeletion": {
-    "value": true
 }
 ```
 
