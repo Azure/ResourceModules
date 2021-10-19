@@ -150,6 +150,10 @@ param backupVaultResourceGroup string = ''
 param backupPolicyName string = 'DefaultPolicy'
 
 // Child resources
+
+@description('Optional. Settings for vm extensions.')
+param extensionConfigurations array = []
+
 @description('Optional. Enables Microsoft Windows Defender AV.')
 param enableMicrosoftAntiMalware bool = false
 
@@ -456,6 +460,22 @@ resource virtualMachine 'Microsoft.Compute/virtualMachines@2020-06-01' = {
   ]
 }
 
+module virtualMachine_extension './.bicep/nested_extension.bicep' = [for (extension, index) in extensionConfigurations: {
+  name: '${deployment().name}-vmextension-${index}'
+  params: {
+    virtualMachineName: virtualMachine.name
+    extensionName: extension.extensionName
+    location: location
+    publisher: extension.publisher
+    type: extension.type
+    typeHandlerVersion: extension.typeHandlerVersion
+    autoUpgradeMinorVersion: extension.autoUpgradeMinorVersion
+    forceUpdateTag: (contains(extension, 'forceUpdateTag') ? (!(empty(extension.forceUpdateTag)) ? extension.forceUpdateTag : '') : '')
+    settings: (contains(extension, 'settings') ? (!(empty(extension.settings)) ? extension.settings : json('{}')) : json('{}'))
+    protectedSettings: (contains(extension, 'protectedSettings') ? (!(empty(extension.protectedSettings)) ? extension.protectedSettings : json('{}')) : json('{}'))
+  }
+}]
+
 resource virtualMachine_lock 'Microsoft.Authorization/locks@2016-09-01' = if (lock != 'NotSpecified') {
   name: '${virtualMachine.name}-${lock}-lock'
   properties: {
@@ -464,6 +484,7 @@ resource virtualMachine_lock 'Microsoft.Authorization/locks@2016-09-01' = if (lo
   }
   scope: virtualMachine
 }
+
 module virtualMachine_rbac './.bicep/nested_rbac.bicep' = [for (roleAssignment, index) in roleAssignments: {
   name: 'rbac-${deployment().name}${index}'
   params: {
