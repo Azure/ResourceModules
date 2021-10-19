@@ -55,10 +55,10 @@ Mandatory. The template file content object to crawl data from
 .PARAMETER ReadMeFileContent
 Mandatory. The readme file content array to update
 
-.PARAMETER sectionStartIdentifier
+.PARAMETER SectionStartIdentifier
 Optional. The identifier of the 'outputs' section. Defaults to '## Resource Types'
 
-.PARAMETER resourceTypesToExclude
+.PARAMETER ResourceTypesToExclude
 Optional. The resource types to exclude from the list. By default excludes 'Microsoft.Resources/deployments'
 
 .EXAMPLE
@@ -77,10 +77,10 @@ function Set-ResourceTypesSection {
         [object[]] $ReadMeFileContent,
 
         [Parameter(Mandatory = $false)]
-        [string] $sectionStartIdentifier = '## Resource Types',
+        [string] $SectionStartIdentifier = '## Resource Types',
 
         [Parameter(Mandatory = $false)]
-        [string[]] $resourceTypesToExclude = @('Microsoft.Resources/deployments')
+        [string[]] $ResourceTypesToExclude = @('Microsoft.Resources/deployments')
     )
 
     # Process content
@@ -90,7 +90,7 @@ function Set-ResourceTypesSection {
     )
 
     $relevantResourceTypes = Get-NestedResourceList $TemplateFileContent | Where-Object {
-        $_.type -notin $resourceTypesToExclude -and $_
+        $_.type -notin $ResourceTypesToExclude -and $_
     } | Select-Object 'Type', 'ApiVersion' -Unique | Sort-Object Type
 
     foreach ($resourceType in $relevantResourceTypes) {
@@ -98,7 +98,7 @@ function Set-ResourceTypesSection {
     }
 
     # Build result
-    $updatedFileContent = Merge-FileWithNewContent -oldContent $ReadMeFileContent -newContent $sectionContent -sectionStartIdentifier $sectionStartIdentifier
+    $updatedFileContent = Merge-FileWithNewContent -oldContent $ReadMeFileContent -newContent $sectionContent -SectionStartIdentifier $SectionStartIdentifier
     return $updatedFileContent
 }
 
@@ -116,7 +116,7 @@ Mandatory. The template file content object to crawl data from
 .PARAMETER ReadMeFileContent
 Mandatory. The readme file content array to update
 
-.PARAMETER sectionStartIdentifier
+.PARAMETER SectionStartIdentifier
 Optional. The identifier of the 'outputs' section. Defaults to '## Parameters'
 
 .EXAMPLE
@@ -135,7 +135,7 @@ function Set-ParametersSection {
         [object[]] $ReadMeFileContent,
 
         [Parameter(Mandatory = $false)]
-        [string] $sectionStartIdentifier = '## Parameters'
+        [string] $SectionStartIdentifier = '## Parameters'
     )
 
     # Process content
@@ -154,7 +154,7 @@ function Set-ParametersSection {
     }
 
     # Build result
-    $updatedFileContent = Merge-FileWithNewContent -oldContent $ReadMeFileContent -newContent $sectionContent -sectionStartIdentifier $sectionStartIdentifier
+    $updatedFileContent = Merge-FileWithNewContent -oldContent $ReadMeFileContent -newContent $sectionContent -SectionStartIdentifier $SectionStartIdentifier
     return $updatedFileContent
 }
 
@@ -172,7 +172,7 @@ Mandatory. The template file content object to crawl data from
 .PARAMETER ReadMeFileContent
 Mandatory. The readme file content array to update
 
-.PARAMETER sectionStartIdentifier
+.PARAMETER SectionStartIdentifier
 Optional. The identifier of the 'outputs' section. Defaults to '## Outputs'
 
 .EXAMPLE
@@ -191,7 +191,7 @@ function Set-OutputsSection {
         [object[]] $ReadMeFileContent,
 
         [Parameter(Mandatory = $false)]
-        [string] $sectionStartIdentifier = '## Outputs'
+        [string] $SectionStartIdentifier = '## Outputs'
     )
 
     # Process content
@@ -217,7 +217,7 @@ function Set-OutputsSection {
     }
 
     # Build result
-    $updatedFileContent = Merge-FileWithNewContent -oldContent $ReadMeFileContent -newContent $sectionContent -sectionStartIdentifier $sectionStartIdentifier
+    $updatedFileContent = Merge-FileWithNewContent -oldContent $ReadMeFileContent -newContent $sectionContent -SectionStartIdentifier $SectionStartIdentifier
     return $updatedFileContent
 }
 
@@ -235,10 +235,10 @@ Mandatory. The template file content object to crawl data from
 .PARAMETER ReadMeFileContent
 Mandatory. The readme file content array to update
 
-.PARAMETER sectionStartIdentifier
+.PARAMETER SectionStartIdentifier
 Optional. The identifier of the 'outputs' section. Defaults to '## Template references'
 
-.PARAMETER resourceTypesToExclude
+.PARAMETER ResourceTypesToExclude
 Optional. The resource types to exclude from the list. By default excludes 'Microsoft.Resources/deployments'
 
 .EXAMPLE
@@ -257,17 +257,17 @@ function Set-TemplateReferencesSection {
         [object[]] $ReadMeFileContent,
 
         [Parameter(Mandatory = $false)]
-        [string] $sectionStartIdentifier = '## Template references',
+        [string] $SectionStartIdentifier = '## Template references',
 
         [Parameter(Mandatory = $false)]
-        [string[]] $resourceTypesToExclude = @('Microsoft.Resources/deployments')
+        [string[]] $ResourceTypesToExclude = @('Microsoft.Resources/deployments')
     )
 
     # Process content
     $sectionContent = [System.Collections.ArrayList]@()
 
     $relevantResourceTypes = Get-NestedResourceList $TemplateFileContent | Where-Object {
-        $_.type -notin $resourceTypesToExclude -and $_ -and $_.type -notlike '*/providers/*'
+        $_.type -notin $ResourceTypesToExclude -and $_ -and $_.type -notlike '*/providers/*'
     } | Select-Object 'Type', 'ApiVersion' -Unique | Sort-Object Type
 
     $TextInfo = (Get-Culture).TextInfo
@@ -277,7 +277,7 @@ function Set-TemplateReferencesSection {
     }
 
     # Build result
-    $updatedFileContent = Merge-FileWithNewContent -oldContent $ReadMeFileContent -newContent $sectionContent -sectionStartIdentifier $sectionStartIdentifier -contentType 'list'
+    $updatedFileContent = Merge-FileWithNewContent -oldContent $ReadMeFileContent -newContent $sectionContent -SectionStartIdentifier $SectionStartIdentifier -contentType 'list'
     return $updatedFileContent
 }
 #endregion
@@ -296,7 +296,7 @@ Mandatory. The path to the template to update
 .PARAMETER ReadMeFilePath
 Optional. The path to the readme to update. If not provided assumes a 'readme.md' file in the same folder as the template
 
-.PARAMETER sectionsToRefresh
+.PARAMETER SectionsToRefresh
 Optional. The sections to update. By default it refreshes all that are supported.
 Currently supports: 'Resource Types', 'Parameters', 'Outputs', 'Template references'
 
@@ -322,7 +322,7 @@ function Set-ModuleReadMe {
             'Outputs',
             'Template references'
         )]
-        [string[]] $sectionsToRefresh = @(
+        [string[]] $SectionsToRefresh = @(
             'Resource Types',
             'Parameters',
             'Outputs',
@@ -380,7 +380,7 @@ function Set-ModuleReadMe {
         $readMeFileContent[0] = '{0} `[{1}]`' -f $readMeFileContent[0], $fullResourcePath
     }
 
-    if ($sectionsToRefresh -contains 'Resource Types') {
+    if ($SectionsToRefresh -contains 'Resource Types') {
         # Handle [Resource Types] section
         # ===============================
         $inputObject = @{
@@ -390,7 +390,7 @@ function Set-ModuleReadMe {
         $readMeFileContent = Set-ResourceTypesSection @inputObject
     }
 
-    if ($sectionsToRefresh -contains 'Parameters') {
+    if ($SectionsToRefresh -contains 'Parameters') {
         # Handle [Parameters] section
         # ===========================
         $inputObject = @{
@@ -400,7 +400,7 @@ function Set-ModuleReadMe {
         $readMeFileContent = Set-ParametersSection @inputObject
     }
 
-    if ($sectionsToRefresh -contains 'Outputs') {
+    if ($SectionsToRefresh -contains 'Outputs') {
         # Handle [Outputs] section
         # ========================
         $inputObject = @{
@@ -410,7 +410,7 @@ function Set-ModuleReadMe {
         $readMeFileContent = Set-OutputsSection @inputObject
     }
 
-    if ($sectionsToRefresh -contains 'Template references') {
+    if ($SectionsToRefresh -contains 'Template references') {
         # Handle [TemplateReferences] section
         # ===================================
         $inputObject = @{
