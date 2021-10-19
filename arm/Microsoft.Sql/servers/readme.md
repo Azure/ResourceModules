@@ -29,7 +29,7 @@ This module deploys an Azure SQL Server.
 | `roleAssignments` | array | Optional. Array of role assignment objects that contain the 'roleDefinitionIdOrName' and 'principalId' to define RBAC role assignments on this resource. In the roleDefinitionIdOrName attribute, you can provide either the display name of the role definition, or its fully qualified ID in the following format: '/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11' | System.Object[] |  |
 | `serverName` | string | Required. The name of the server. |  |  |
 | `tags` | object | Optional. Tags of the resource. |  |  |
-| `lockForDeletion` | bool | False |  | Optional. Switch to lock storage from deletion. |
+| `lock` | string | 'NotSpecified' | 'CanNotDelete', 'NotSpecified', 'ReadOnly' | Optional. Specify the type of lock. |
 
 ### Parameter Usage: `roleAssignments`
 

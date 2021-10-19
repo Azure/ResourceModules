@@ -35,7 +35,7 @@ The SQL Managed Instance Database is deployed on a SQL Managed Instance.
 | `eventHubAuthorizationRuleId` | string | Optional. Resource ID of the event hub authorization rule for the Event Hubs namespace in which the event hub should be created or streamed to. |  | |
 | `eventHubName` | string | Optional. Name of the event hub within the namespace to which logs are streamed. Without this, an event hub is created for each log category. |  | |
 | `location` | string | Optional. Location for all resources. | [resourceGroup().location] | |
-| `lockForDeletion` | bool | Optional. Switch to lock Key Vault from deletion. | False | |
+| `lock` | string | Optional. Specify the type of lock. | 'NotSpecified' | 'CanNotDelete', 'NotSpecified', 'ReadOnly' |
 | `longTermRetentionBackupResourceId` | string | Optional. Conditional. The name of the Long Term Retention backup to be used for restore of this managed database. |  | |
 | `managedInstanceName` | string | Required. The name of the SQL managed instance. |  | |
 | `monthlyRetention` | string | Required. The monthly retention policy for an LTR backup in an ISO 8601 format. | P1Y | |

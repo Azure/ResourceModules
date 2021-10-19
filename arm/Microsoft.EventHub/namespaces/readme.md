@@ -6,15 +6,14 @@ This module deploys EventHub Namespace.
 
 |Resource Type|ApiVersion|
 |:--|:--|
-|`Microsoft.Resources/deployments`|2018-02-01|
 |`Microsoft.EventHub/namespaces`|2017-04-01|
+|`Microsoft.Authorization/locks`|2016-09-01|
+|`Microsoft.Insights/diagnosticsettings`|2017-05-01-preview|
 |`Microsoft.EventHub/namespaces/disasterRecoveryConfigs`|2017-04-01|
 |`Microsoft.EventHub/namespaces/AuthorizationRules`|2017-04-01|
-|`providers/locks`|2016-09-01|
-|`Microsoft.EventHub/namespaces/providers/diagnosticsettings`|2017-05-01-preview|
-|`Microsoft.EventHub/namespaces/providers/roleAssignments`|2018-09-01-preview|
 |`Microsoft.Network/privateEndpoints`|2020-05-01|
 |`Microsoft.Network/privateEndpoints/privateDnsZoneGroups`|2020-05-01|
+|`Microsoft.EventHub/namespaces/providers/roleAssignments`|2018-09-01-preview|
 
 ## Parameters
 
@@ -26,7 +25,7 @@ This module deploys EventHub Namespace.
 | `diagnosticStorageAccountId` | string | Optional. Resource identifier of the Diagnostic Storage Account. |  |  |
 | `isAutoInflateEnabled` | bool | Optional. Switch to enable the Auto Inflate feature of Event Hub. | False |  |
 | `location` | string | Optional. Location for all resources. | [resourceGroup().location] |  |
-| `lockForDeletion` | bool | Optional. Switch to lock Key Vault from deletion. | False |  |
+| `lock` | string | 'NotSpecified' | 'CanNotDelete', 'NotSpecified', 'ReadOnly' | Optional. Specify the type of lock. |
 | `maximumThroughputUnits` | int | Optional. Upper limit of throughput units when AutoInflate is enabled, value should be within 0 to 20 throughput units. | 1 |  |
 | `namespaceAlias` | string | Optional. The Disaster Recovery configuration name |  |  |
 | `namespaceName` | string | Optional. The name of the EventHub namespace. If no name is provided, then unique name will be created.|  |  |
@@ -170,6 +169,7 @@ To use Private Endpoint the following dependencies must be deployed:
     ]
 }
 ```
+
 ## Outputs
 
 | Output Name | Type | Description |

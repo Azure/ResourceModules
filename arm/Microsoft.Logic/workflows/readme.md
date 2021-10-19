@@ -29,7 +29,7 @@ This module deploys Logic App resource.
 | `integrationAccount` | object | Optional. The integration account. |  |  |
 | `integrationServiceEnvironment` | object | Optional. The integration service environment. |  |  |
 | `location` | string | Optional. Location for all resources. | [resourceGroup().location] |  |
-| `lockForDeletion` | bool | Optional. Flag indicating if resource is locked for deletion. | False |  |
+| `lock` | string | Optional. Specify the type of lock. | 'NotSpecified' | 'CanNotDelete', 'NotSpecified', 'ReadOnly' |
 | `logicAppName` | string | Required. The logic app workflow name. |  |  |
 | `roleAssignments` | array | Optional. Array of role assignment objects that contain the 'roleDefinitionIdOrName' and 'principalId' to define RBAC role assignments on this resource. In the roleDefinitionIdOrName attribute, you can provide either the display name of the role definition, or its fully qualified ID in the following format: '/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11'. | System.Object[] |  |
 | `sku` | object | Optional. Sku of Logic App. Only to be set when integrating with ISE. |  |  |

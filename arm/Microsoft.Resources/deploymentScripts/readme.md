@@ -32,7 +32,7 @@ This module deploys Deployment Scripts.
 | `containerGroupName` | string | | | Optional. Container group name, if not specified then the name will get auto-generated. Not specifying a 'containerGroupName' indicates the system to generate a unique name which might end up flagging an Azure Policy as non-compliant. Use 'containerGroupName' when you have an Azure Policy that expects a specific naming convention or when you want to fully control the name. 'containerGroupName' property must be between 1 and 63 characters long, must contain only lowercase letters, numbers, and dashes and it cannot start or end with a dash and consecutive dashes are not allowed.
 | `timeout` | string | PT1H | | Optional. Maximum allowed script execution time specified in ISO 8601 format. Default value is PT1H - 1 hour; 'PT30M' - 30 minutes; 'P5D' - 5 days; 'P1Y' 1 year.
 | `baseTime` | string | `utcNow('yyyy-MM-dd-HH-mm-ss')` | | Generated. Do not provide a value! This date value is used to make sure the script run every time the template is deployed.
-| `lockForDeletion` | bool | `true` | | Optional. Switch to lock Virtual Network Gateway from deletion.
+| `lock` | string | 'NotSpecified' | 'CanNotDelete', 'NotSpecified', 'ReadOnly' | Optional. Specify the type of lock. |
 | `tags` | object | {} | Complex structure, see below. | Optional. Tags of the Virtual Network Gateway resource.
 | `cuaId` | string | "" | | Optional. Customer Usage Attribution id (GUID). This GUID must be previously registered
 
