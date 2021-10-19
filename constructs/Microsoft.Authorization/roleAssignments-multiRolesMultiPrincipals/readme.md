@@ -101,4 +101,5 @@ This module can be deployed both at management group, subscription or resource g
 
 
 ## Template references
+
 - [Roleassignments](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2020-04-01-preview/roleAssignments)
