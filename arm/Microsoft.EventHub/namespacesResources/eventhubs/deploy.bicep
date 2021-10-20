@@ -1,11 +1,11 @@
 @description('Required. The name of the EventHub namespace')
-param namespace string
+param namespaceName string
 
 @description('Optional. Location for all resources.')
 param location string = resourceGroup().location
 
 @description('Required. The name of the EventHub')
-param eventHub string
+param eventHubName string
 
 @description('Optional. Authorization Rules for the Event Hub')
 param authorizationRules array = [
@@ -35,8 +35,13 @@ param eventHubConfiguration object = {
   ]
 }
 
-@description('Optional. Switch to lock Event Hub from deletion.')
-param lockForDeletion bool = false
+@allowed([
+  'CanNotDelete'
+  'NotSpecified'
+  'ReadOnly'
+])
+@description('Optional. Specify the type of lock.')
+param lock string = 'NotSpecified'
 
 @description('Optional. Array of role assignment objects that contain the \'roleDefinitionIdOrName\' and \'principalId\' to define RBAC role assignments on this resource. In the roleDefinitionIdOrName attribute, you can provide either the display name of the role definition, or its fully qualified ID in the following format: \'/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11\'')
 param roleAssignments array = []
@@ -72,39 +77,34 @@ module pid_cuaId './.bicep/nested_cuaId.bicep' = if (!empty(cuaId)) {
   params: {}
 }
 
-resource eventHub_resource 'Microsoft.EventHub/namespaces/eventhubs@2017-04-01' = {
-  name: '${namespace}/${eventHub}'
+resource eventHub 'Microsoft.EventHub/namespaces/eventhubs@2017-04-01' = {
+  name: '${namespaceName}/${eventHubName}'
   location: location
   tags: tags
   properties: eventHubConfiguration.properties
   dependsOn: []
 }
 
-resource eventhub_lock 'Microsoft.Authorization/locks@2016-09-01' = if (lockForDeletion) {
-  name: '${eventHub}-evenHubDoNotDelete'
+resource keyVault_lock 'Microsoft.Authorization/locks@2016-09-01' = if (lock != 'NotSpecified') {
+  name: '${eventHubName}-${lock}-lock'
   properties: {
-    level: 'CanNotDelete'
+    level: lock
+    notes: (lock == 'CanNotDelete') ? 'Cannot delete resource or child resources.' : 'Cannot modify the resource or child resources.'
   }
-  scope: eventHub_resource
+  scope: eventHub
 }
 
-resource eventHub_resource_eventHubConfiguration_consumerGroups_name 'Microsoft.EventHub/namespaces/eventhubs/consumergroups@2017-04-01' = [for (consumerGroups, index) in eventHubConfiguration.consumerGroups: {
-  name: '${namespace}/${eventHub}/${consumerGroups.name}'
+resource eventHubConfiguration_consumerGroups_name 'Microsoft.EventHub/namespaces/eventhubs/consumergroups@2017-04-01' = [for (consumerGroups, index) in eventHubConfiguration.consumerGroups: {
+  name: '${eventHub.name}/${consumerGroups.name}'
   location: location
-  dependsOn: [
-    eventHub_resource
-  ]
 }]
 
-resource eventHub_resource_authorizationRules_name 'Microsoft.EventHub/namespaces/eventhubs/authorizationRules@2017-04-01' = [for item in authorizationRules: if (length(authorizationRules) > 0) {
-  name: '${namespace}/${eventHub}/${item.name}'
+resource eventHub_authorizationRules_name 'Microsoft.EventHub/namespaces/eventhubs/authorizationRules@2017-04-01' = [for item in authorizationRules: if (length(authorizationRules) > 0) {
+  name: '${eventHub.name}/${item.name}'
   location: location
   properties: {
     rights: item.properties.rights
   }
-  dependsOn: [
-    eventHub_resource
-  ]
 }]
 
 module eventHub_rbac './.bicep/nested_rbac.bicep' = [for (roleAssignment, index) in roleAssignments: {
@@ -112,11 +112,11 @@ module eventHub_rbac './.bicep/nested_rbac.bicep' = [for (roleAssignment, index)
   params: {
     roleAssignmentObj: roleAssignment
     builtInRoleNames: builtInRoleNames
-    resourceName: eventHub_resource.name
+    resourceName: eventHub.name
   }
 }]
 
-output namespaceName string = namespace
-output eventHubId string = eventHub_resource.id
+output namespaceName string = namespaceName
+output eventHubId string = eventHub.id
 output namespaceResourceGroup string = resourceGroup().name
-output authRuleResourceId string = resourceId('Microsoft.EventHub/namespaces/authorizationRules', namespace, defaultSASKeyName)
+output authRuleResourceId string = resourceId('Microsoft.EventHub/namespaces/authorizationRules', namespaceName, defaultSASKeyName)
