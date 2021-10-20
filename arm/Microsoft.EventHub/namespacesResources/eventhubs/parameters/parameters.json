@@ -1,45 +1,80 @@
 {
-    "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
-    "contentVersion": "1.0.0.0",
-    "parameters": {
-        "namespaceName": {
-            "value": "adp-sxx-az-evhns-weu-x-001"
-        },
-        "eventHubName": {
-            "value": "sxx-az-evh-weu-x-001"
-        },
-        "authorizationRules": {
-            "value": [
-                {
-                    "name": "RootManageSharedAccessKey",
-                    "properties": {
-                        "rights": [
-                            "Listen",
-                            "Manage",
-                            "Send"
-                        ]
-                    }
-                },
-                {
-                    "name": "SendListenAccess",
-                    "properties": {
-                        "rights": [
-                            "Listen",
-                            "Send"
-                        ]
-                    }
-                }
+  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    "namespace": {
+      "value": "adp-sxx-az-evhns-weu-x-002"
+    },
+    "eventHub": {
+      "value": "sxx-az-evh-weu-x-005"
+    },
+    "lockForDeletion": {
+      "value": true
+    },
+    "authorizationRules": {
+      "value": [
+        {
+          "name": "RootManageSharedAccessKey",
+          "properties": {
+            "rights": [
+              "Listen",
+              "Manage",
+              "Send"
             ]
+          }
         },
-        "roleAssignments": {
-            "value": [
-                {
-                    "roleDefinitionIdOrName": "Reader",
-                    "principalIds": [
-                        "5545f7a0-51f4-46af-b3b4-baecf5176a56"
-                    ]
-                }
+        {
+          "name": "SendListenAccess",
+          "properties": {
+            "rights": [
+              "Listen",
+              "Send"
             ]
+          }
         }
+      ]
+    },
+    "eventHubConfiguration": {
+      "value": {
+        "properties": {
+          "messageRetentionInDays": 1,
+          "partitionCount": 2,
+          "status": "Active",
+          "captureDescription": {
+            "enabled": false,
+            "encoding": "Avro",
+            "intervalInSeconds": 300,
+            "sizeLimitInBytes": 314572800,
+            "destination": {
+              "name": "EventHubArchive.AzureBlockBlob",
+              "properties": {
+                "storageAccountResourceId": "/subscriptions/72364944-8636-4d8f-9178-a32a4758ffc7/resourceGroups/eventhub-rg/providers/Microsoft.Storage/storageAccounts/str123est",
+                "blobContainer": "eventhub",
+                "archiveNameFormat": "{Namespace}/{EventHub}/{PartitionId}/{Year}/{Month}/{Day}/{Hour}/{Minute}/{Second}"
+              }
+            },
+            "skipEmptyArchives": true
+          }
+        },
+        "consumerGroups": [
+          {
+            "name": "$Default"
+          },
+          {
+            "name": "Defaultnew"
+          }
+        ]
+      }
+    },
+    "roleAssignments": {
+      "value": [
+        {
+          "roleDefinitionIdOrName": "Reader",
+          "principalIds": [
+            "e68f745c-b5ff-42ed-a42c-ab3e5c8b19ca"
+          ]
+        }
+      ]
     }
+  }
 }
