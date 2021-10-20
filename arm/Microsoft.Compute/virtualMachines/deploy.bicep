@@ -72,9 +72,8 @@ param licenseType string = ''
 @allowed([
   'None'
   'SystemAssigned'
-  'UserAssigned'
   'SystemAssigned, UserAssigned'
-  'UserAssigned, SystemAssigned'
+  'UserAssigned'
 ])
 param managedServiceIdentity string = 'None'
 
@@ -143,118 +142,19 @@ param nicMetricsToEnable array = [
 @description('Optional. Recovery service vault name to add VMs to backup.')
 param backupVaultName string = ''
 
-@description('Optional. Resource group of the backup recovery service vault.')
-param backupVaultResourceGroup string = ''
+@description('Optional. Resource group of the backup recovery service vault. If not provided the current resource group name is considered by default.')
+param backupVaultResourceGroup string = resourceGroup().name
 
 @description('Optional. Backup policy the VMs should be using for backup.')
 param backupPolicyName string = 'DefaultPolicy'
+
+@description('Optional. Specifies if Windows VM disks should be encrypted with Server-side encryption + Customer managed Key.')
+param enableServerSideEncryption bool = false
 
 // Child resources
 
 @description('Optional. Settings for vm extensions.')
 param extensionConfigurations array = []
-
-@description('Optional. Enables Microsoft Windows Defender AV.')
-param enableMicrosoftAntiMalware bool = false
-
-@description('Optional. Settings for Microsoft Windows Defender AV extension.')
-param microsoftAntiMalwareSettings object = {}
-
-@description('Optional. Specifies if MMA agent for Windows VM should be enabled.')
-param enableWindowsMMAAgent bool = false
-
-@description('Optional. Specifies if MMA agent for Linux VM should be enabled.')
-param enableLinuxMMAAgent bool = false
-
-@description('Optional. Specifies if Azure Dependency Agent for Windows VM should be enabled. Requires WindowsMMAAgent to be enabled.')
-param enableWindowsDependencyAgent bool = false
-
-@description('Optional. Specifies if Azure Dependency Agent for Linux VM should be enabled. Requires LinuxMMAAgent to be enabled.')
-param enableLinuxDependencyAgent bool = false
-
-@description('Optional. Specifies if Azure Network Watcher Agent for Windows VM should be enabled.')
-param enableNetworkWatcherWindows bool = false
-
-@description('Optional. Specifies if Azure Network Watcher Agent for Linux VM should be enabled.')
-param enableNetworkWatcherLinux bool = false
-
-@description('Optional. Specifies if Windows VM disks should be encrypted. If enabled, boot diagnostics must be enabled as well.')
-param enableWindowsDiskEncryption bool = false
-
-@description('Optional. Specifies if Windows VM disks should be encrypted with Server-side encryption + Customer managed Key.')
-param enableServerSideEncryption bool = false
-
-@description('Optional. Specifies if Linux VM disks should be encrypted. If enabled, boot diagnostics must be enabled as well.')
-param enableLinuxDiskEncryption bool = false
-
-@description('Optional. Specifies disk key encryption algorithm.')
-@allowed([
-  'RSA-OAEP'
-  'RSA-OAEP-256'
-  'RSA1_5'
-])
-param diskKeyEncryptionAlgorithm string = 'RSA-OAEP'
-
-@description('Optional. URL of the KeyEncryptionKey used to encrypt the volume encryption key')
-param keyEncryptionKeyURL string = ''
-
-@description('Optional. URL of the Key Vault instance where the Key Encryption Key (KEK) resides')
-param keyVaultUri string = ''
-
-@description('Optional. Resource identifier of the Key Vault instance where the Key Encryption Key (KEK) resides')
-param keyVaultId string = ''
-
-@description('Optional. Type of the volume OS or Data to perform encryption operation')
-@allowed([
-  'OS'
-  'Data'
-  'All'
-])
-param diskEncryptionVolumeType string = 'All'
-
-@description('Optional. Pass in an unique value like a GUID everytime the operation needs to be force run')
-param forceUpdateTag string = '1.0'
-
-@description('Optional. Should the OS partition be resized to occupy full OS VHD before splitting system volume')
-param resizeOSDisk bool = false
-
-@description('Optional. Array of objects that specifies URIs and the storageAccountId of the scripts that need to be downloaded and run by the Custom Script Extension on a Windows VM.')
-param windowsScriptExtensionFileData array = []
-
-@description('Optional. Specifies the command that should be run on a Windows VM.')
-@secure()
-param windowsScriptExtensionCommandToExecute string = ''
-
-@description('Optional. The name of the storage account to access for the CSE script(s).')
-param cseStorageAccountName string = ''
-
-@description('Optional. The storage key of the storage account to access for the CSE script(s).')
-param cseStorageAccountKey string = ''
-
-@description('Optional. A managed identity to use for the CSE.')
-param cseManagedIdentity object = {}
-
-@description('Optional. Specifies the FQDN the of the domain the VM will be joined to. Currently implemented for Windows VMs only')
-param domainName string = ''
-
-@description('Optional. Mandatory if domainName is specified. User used for the join to the domain. Format: username@domainFQDN')
-param domainJoinUser string = ''
-
-@description('Optional. Specifies an organizational unit (OU) for the domain account. Enter the full distinguished name of the OU in quotation marks. Example: "OU=testOU; DC=domain; DC=Domain; DC=com"')
-param domainJoinOU string = ''
-
-@description('Optional. Required if domainName is specified. Password of the user specified in domainJoinUser parameter')
-@secure()
-param domainJoinPassword string = ''
-
-@description('Optional. Controls the restart of vm after executing domain join')
-param domainJoinRestart bool = false
-
-@description('Optional. Set of bit flags that define the join options. Default value of 3 is a combination of NETSETUP_JOIN_DOMAIN (0x00000001) & NETSETUP_ACCT_CREATE (0x00000002) i.e. will join the domain and create the account on the domain. For more information see https://msdn.microsoft.com/en-us/library/aa392154(v=vs.85).aspx')
-param domainJoinOptions int = 3
-
-@description('Optional. The DSC configuration object')
-param dscConfiguration object = {}
 
 // Shared parameters
 @description('Optional. Location for all resources.')
@@ -270,6 +170,9 @@ param diagnosticStorageAccountId string = ''
 
 @description('Optional. Resource identifier of Log Analytics.')
 param workspaceId string = ''
+
+@description('Optional. Resource identifier of Log Analytics.')
+param workspaceName string = ''
 
 @description('Optional. Resource ID of the event hub authorization rule for the Event Hubs namespace in which the event hub should be created or streamed to.')
 param eventHubAuthorizationRuleId string = ''
@@ -299,25 +202,6 @@ param baseTime string = utcNow('u')
 
 @description('Optional. SAS token validity length to use to download files from storage accounts. Usage: \'PT8H\' - valid for 8 hours; \'P5D\' - valid for 5 days; \'P1Y\' - valid for 1 year. When not provided, the SAS token will be valid for 8 hours.')
 param sasTokenValidityLength string = 'PT8H'
-
-// var diagnosticsLogs = [for log in logsToEnable: {
-//   category: log
-//   enabled: true
-//   retentionPolicy: {
-//     enabled: true
-//     days: diagnosticLogsRetentionInDays
-//   }
-// }]
-
-// var diagnosticsMetrics = [for metric in metricsToEnable: {
-//   category: metric
-//   timeGrain: null
-//   enabled: true
-//   retentionPolicy: {
-//     enabled: true
-//     days: diagnosticLogsRetentionInDays
-//   }
-// }]
 
 var identity = {
   type: managedServiceIdentity
@@ -358,6 +242,10 @@ var builtInRoleNames = {
   'Virtual Machine User Login': subscriptionResourceId('Microsoft.Authorization/roleDefinitions', 'fb879df8-f326-4884-b1cf-06f3ad86be52')
 }
 
+resource workspace 'Microsoft.OperationalInsights/workspaces@2021-06-01' existing = if (!empty(workspaceName)) {
+  name: workspaceName
+}
+
 module pid_cuaId './.bicep/nested_cuaId.bicep' = if (!empty(cuaId)) {
   name: 'pid-${cuaId}'
   params: {}
@@ -370,11 +258,15 @@ module virtualMachine_nic './.bicep/nested_networkInterface.bicep' = [for (nicCo
     virtualMachineName: virtualMachineName
     location: location
     tags: tags
-    nicConfiguration: nicConfiguration
+    enableIPForwarding: (contains(nicConfiguration, 'enableIPForwarding') ? (!(empty(nicConfiguration.enableIPForwarding)) ? nicConfiguration.enableIPForwarding : false) : false)
+    enableAcceleratedNetworking: (contains(nicConfiguration, 'enableAcceleratedNetworking') ? (!(empty(nicConfiguration.enableAcceleratedNetworking)) ? nicConfiguration.enableAcceleratedNetworking : false) : false)
+    dnsServers: (contains(nicConfiguration, 'dnsServers') ? (!(empty(nicConfiguration.dnsServers)) ? nicConfiguration.dnsServers : json('[]')) : json('[]'))
+    networkSecurityGroupId: (contains(nicConfiguration, 'nsgId') ? (!(empty(nicConfiguration.nsgId)) ? nicConfiguration.nsgId : '') : '')
+    ipConfigurationArray: nicConfiguration.ipConfigurations
     lock: lock
     diagnosticStorageAccountId: diagnosticStorageAccountId
     diagnosticLogsRetentionInDays: diagnosticLogsRetentionInDays
-    workspaceId: workspaceId
+    workspaceId: workspace.id
     eventHubAuthorizationRuleId: eventHubAuthorizationRuleId
     eventHubName: eventHubName
     metricsToEnable: nicMetricsToEnable
@@ -436,7 +328,7 @@ resource virtualMachine 'Microsoft.Compute/virtualMachines@2020-06-01' = {
     networkProfile: {
       networkInterfaces: [for (nicConfiguration, index) in nicConfigurations: {
         properties: {
-          primary: ((index == 0) ? 'true' : 'false')
+          primary: ((index == 0) ? true : false)
         }
         id: resourceId('Microsoft.Network/networkInterfaces', '${virtualMachineName}${nicConfiguration.nicSuffix}')
       }]
@@ -470,11 +362,51 @@ module virtualMachine_extension './.bicep/nested_extension.bicep' = [for (extens
     type: extension.type
     typeHandlerVersion: extension.typeHandlerVersion
     autoUpgradeMinorVersion: extension.autoUpgradeMinorVersion
-    forceUpdateTag: (contains(extension, 'forceUpdateTag') ? (!(empty(extension.forceUpdateTag)) ? extension.forceUpdateTag : '') : '')
-    settings: (contains(extension, 'settings') ? (!(empty(extension.settings)) ? extension.settings : json('{}')) : json('{}'))
-    protectedSettings: (contains(extension, 'protectedSettings') ? (!(empty(extension.protectedSettings)) ? extension.protectedSettings : json('{}')) : json('{}'))
+    forceUpdateTag: contains(extension, 'forceUpdateTag') ? (!(empty(extension.forceUpdateTag)) ? extension.forceUpdateTag : '') : ''
+    settings: contains(extension, 'settings') ? (!(empty(extension.settings)) ? extension.settings : json('{}')) : json('{}')
+    protectedSettings: contains(extension, 'protectedSettings') ? (!(empty(extension.protectedSettings)) ? extension.protectedSettings : json('{}')) : json('{}')
+    // settings: (contains(extension, 'settings') ? (!(empty(extension.settings)) ? (extension.type == 'MicrosoftMonitoringAgent' ? json('{"workspaceId": "${reference(workspace.id, workspace.apiVersion).customerId}"}') : extension.settings) : json('{}')) : json('{}'))
+    // protectedSettings: (contains(extension, 'protectedSettings') ? (!(empty(extension.protectedSettings)) ? (extension.type == 'MicrosoftMonitoringAgent' ? json('{"workspaceKey": "${listKeys(workspace.id, workspace.apiVersion).primarySharedKey}"}') : extension.protectedSettings) : json('{}')) : json('{}'))
   }
 }]
+
+// resource vmName_WindowsCustomScriptExtension 'Microsoft.Compute/virtualMachines/extensions@2019-07-01' = if ((!empty(windowsScriptExtensionFileData)) && (!empty(windowsScriptExtensionCommandToExecute))) {
+//   parent: vmName_resource
+//   name: 'WindowsCustomScriptExtension'
+//   location: location
+//   properties: {
+//     publisher: 'Microsoft.Compute'
+//     type: 'CustomScriptExtension'
+//     typeHandlerVersion: '1.9'
+//     autoUpgradeMinorVersion: true
+//     settings: {
+//       fileUris: [for item in windowsScriptExtensionFileData: concat(item.uri, (contains(item, 'storageAccountId') ? '?${listAccountSas(item.storageAccountId, '2019-04-01', accountSasProperties).accountSasToken}' : ''))]
+//     }
+//     protectedSettings: {
+//       commandToExecute: windowsScriptExtensionCommandToExecute
+//       storageAccountName: ((!empty(cseStorageAccountName)) ? cseStorageAccountName : json('null'))
+//       storageAccountKey: ((!empty(cseStorageAccountKey)) ? cseStorageAccountKey : json('null'))
+//       managedIdentity: ((!empty(cseManagedIdentity)) ? cseManagedIdentity : json('null'))
+//     }
+//   }
+//   dependsOn: [
+//     vmName_windowsDsc
+//   ]
+// }
+
+module virtualMachine_backup './.bicep/nested_backup.bicep' = if (!empty(backupVaultName)) {
+  name: 'add-${virtualMachine.name}-ToBackup'
+  params: {
+    backupResourceName: '${backupVaultName}/Azure/iaasvmcontainer;iaasvmcontainerv2;${resourceGroup().name};${virtualMachine.name}/vm;iaasvmcontainerv2;${resourceGroup().name};${virtualMachine.name}'
+    protectedItemType: 'Microsoft.Compute/virtualMachines'
+    backupPolicyId: resourceId('Microsoft.RecoveryServices/vaults/backupPolicies', backupVaultName, backupPolicyName)
+    sourceResourceId: virtualMachine.id
+  }
+  scope: resourceGroup(backupVaultResourceGroup)
+  dependsOn: [
+    virtualMachine_extension
+  ]
+}
 
 resource virtualMachine_lock 'Microsoft.Authorization/locks@2016-09-01' = if (lock != 'NotSpecified') {
   name: '${virtualMachine.name}-${lock}-lock'

@@ -2,15 +2,6 @@
     "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
     "contentVersion": "1.0.0.0",
     "parameters": {
-        // "vmNamePrefix": {
-        //     "value": "iacs"
-        // },
-        // "vmNumberOfInstances": {
-        //     "value": 2
-        // },
-        // "vmInitialNumber": {
-        //     "value": 0
-        // },
         // "managedServiceIdentity": {
         //     "value": "SystemAssigned"
         // },
@@ -51,20 +42,12 @@
                     "nicSuffix": "-nic-01",
                     "ipConfigurations": [
                         {
-                            "name": "ipconfig1",
-                            "subnetId": "/subscriptions/8629be3b-96bc-482d-a04b-ffff597c65a2/resourceGroups/dependencies-rg/providers/Microsoft.Network/virtualNetworks/sxx-az-vnet-weu-x-002/subnets/sxx-az-subnet-weu-x-001",
-                            "pipConfiguration": {
-                                "publicIpNameSuffix": "-pip-11",
-                                "publicIPPrefixId": "/subscriptions/8629be3b-96bc-482d-a04b-ffff597c65a2/resourcegroups/dependencies-rg/providers/microsoft.network/publicipprefixes/sxx-az-pippfx-weu-x-003"
-                            }
-                        },
-                        {
-                            "name": "ipconfig2",
+                            "name": "ipconfig01",
                             "subnetId": "/subscriptions/8629be3b-96bc-482d-a04b-ffff597c65a2/resourceGroups/dependencies-rg/providers/Microsoft.Network/virtualNetworks/sxx-az-vnet-weu-x-002/subnets/sxx-az-subnet-weu-x-001",
                             "privateIPAllocationMethod": "Static",
                             "vmIPAddress": "10.0.0.7",
                             "pipConfiguration": {
-                                "publicIpNameSuffix": "-pip-12",
+                                "publicIpNameSuffix": "-pip-01",
                                 "roleAssignments": [
                                     {
                                         "roleDefinitionIdOrName": "Reader",
@@ -74,10 +57,6 @@
                                     }
                                 ]
                             }
-                        },
-                        {
-                            "name": "ipconfig3",
-                            "subnetId": "/subscriptions/8629be3b-96bc-482d-a04b-ffff597c65a2/resourceGroups/dependencies-rg/providers/Microsoft.Network/virtualNetworks/sxx-az-vnet-weu-x-002/subnets/sxx-az-subnet-weu-x-001",
                         }
                     ],
                     "nsgId": "/subscriptions/8629be3b-96bc-482d-a04b-ffff597c65a2/resourceGroups/validation-rg/providers/Microsoft.Network/networkSecurityGroups/sxx-az-nsg-weu-x-003",
@@ -87,27 +66,6 @@
                             "principalIds": [
                                 "5545f7a0-51f4-46af-b3b4-baecf5176a56" // adp-sxx-az-msi-weu-x-001
                             ]
-                        }
-                    ]
-                },
-                {
-                    "nicSuffix": "-nic-02",
-                    "ipConfigurations": [
-                        {
-                            "name": "ipconfig1",
-                            "subnetId": "/subscriptions/8629be3b-96bc-482d-a04b-ffff597c65a2/resourceGroups/dependencies-rg/providers/Microsoft.Network/virtualNetworks/sxx-az-vnet-weu-x-002/subnets/sxx-az-subnet-weu-x-001",
-                            "pipConfiguration": {
-                                "publicIpNameSuffix": "-pip-22"
-                                // ,
-                                // "publicIPAllocationMethod": "Dynamic",
-                                // "skuName": "Basic"
-                            }
-                        },
-                        {
-                            "name": "ipconfig2",
-                            "subnetId": "/subscriptions/8629be3b-96bc-482d-a04b-ffff597c65a2/resourceGroups/dependencies-rg/providers/Microsoft.Network/virtualNetworks/sxx-az-vnet-weu-x-002/subnets/sxx-az-subnet-weu-x-001",
-                            "privateIPAllocationMethod": "Static",
-                            "vmIPAddress": "10.0.0.9"
                         }
                     ]
                 }
@@ -164,25 +122,6 @@
                     "typeHandlerVersion": "2.77",
                     "autoUpgradeMinorVersion": true
                 }
-                // ,
-                // {
-                //     "extensionName": "WindowsCustomScriptExtension",
-                //     "publisher": "Microsoft.Compute",
-                //     "type": "CustomScriptExtension",
-                //     "typeHandlerVersion": "1.9",
-                //     "autoUpgradeMinorVersion": true
-                // }
-                // ,
-                // {
-                //     "extensionName": "WindowsMMAAgent",
-                //     "publisher": "Microsoft.EnterpriseCloud.Monitoring",
-                //     "type": "MicrosoftMonitoringAgent",
-                //     "typeHandlerVersion": "1.0",
-                //     "autoUpgradeMinorVersion": true,
-                //     "settings": {
-                //         "workspaceId": "/subscriptions/8629be3b-96bc-482d-a04b-ffff597c65a2/resourcegroups/validation-rg/providers/microsoft.operationalinsights/workspaces/adp-sxx-az-la-weu-x-001"
-                //     }
-                // }
             ]
         },
         // "lock": {
@@ -191,13 +130,22 @@
         // "workspaceId": {
         //     "value": "/subscriptions/8629be3b-96bc-482d-a04b-ffff597c65a2/resourcegroups/validation-rg/providers/microsoft.operationalinsights/workspaces/adp-sxx-az-la-weu-x-001"
         // },
+        "workspaceName": {
+            "value": "adp-sxx-az-la-weu-x-001"
+        },
+        "backupVaultName": {
+            "value": "sxx-az-rsv-weu-x-999"
+        },
+        "backupVaultResourceGroup": {
+            "value": "management-rg"
+        },
+        "backupPolicyName": {
+            "value": "VMpolicy"
+        },
         // "diagnosticStorageAccountId": {
         //     "value": "/subscriptions/8629be3b-96bc-482d-a04b-ffff597c65a2/resourceGroups/validation-rg/providers/Microsoft.Storage/storageAccounts/adpsxxazsaweux001"
         // }
         // ,
-        // "enableWindowsMMAAgent": {
-        //     "value": true
-        // },
         // "bootDiagnosticStorageAccountName": {
         //     "value": "adpsxxazsaweux001"
         // }

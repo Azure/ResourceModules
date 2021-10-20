@@ -3,7 +3,11 @@ param networkInterfaceName string
 param virtualMachineName string
 param location string
 param tags object
-param nicConfiguration object
+param enableIPForwarding bool = false
+param enableAcceleratedNetworking bool = false
+param dnsServers array = []
+param networkSecurityGroupId string = ''
+param ipConfigurationArray array
 param lock string
 param diagnosticStorageAccountId string
 param diagnosticLogsRetentionInDays int
@@ -16,8 +20,6 @@ param metricsToEnable array
 param builtInRoleNames object
 param roleAssignments array
 
-// var networkInterfaceName = '${virtualMachineName}${nicConfiguration.nicSuffix}'
-
 var diagnosticsMetrics = [for metric in metricsToEnable: {
   category: metric
   timeGrain: null
@@ -29,14 +31,14 @@ var diagnosticsMetrics = [for metric in metricsToEnable: {
 }]
 
 var dnsServersValues = {
-  dnsServers: (contains(nicConfiguration, 'dnsServers') ? nicConfiguration.dnsServers : json('[]'))
+  dnsServers: dnsServers
 }
 
 var networkSecurityGroup = {
-  id: (contains(nicConfiguration, 'nsgId') ? nicConfiguration.nsgId : '')
+  id: networkSecurityGroupId
 }
 
-module networkInterface_publicIPConfigurations './nested_networkInterface_publicIPAddress.bicep' = [for (ipConfiguration, index) in nicConfiguration.ipConfigurations: if (contains(ipConfiguration, 'pipconfiguration')) {
+module networkInterface_publicIPConfigurations './nested_networkInterface_publicIPAddress.bicep' = [for (ipConfiguration, index) in ipConfigurationArray: if (contains(ipConfiguration, 'pipconfiguration')) {
   name: '${networkInterfaceName}-publicIPConfiguration-${index}'
   params: {
     publicIPAddressName: '${virtualMachineName}${ipConfiguration.pipconfiguration.publicIpNameSuffix}'
@@ -64,14 +66,14 @@ resource networkInterface 'Microsoft.Network/networkInterfaces@2020-08-01' = {
   location: location
   tags: tags
   properties: {
-    enableIPForwarding: (contains(nicConfiguration, 'enableIPForwarding') ? nicConfiguration.enableIPForwarding : 'false')
-    enableAcceleratedNetworking: (contains(nicConfiguration, 'enableAcceleratedNetworking') ? nicConfiguration.enableAcceleratedNetworking : 'false')
-    dnsSettings: (contains(nicConfiguration, 'dnsServers') ? (!empty(nicConfiguration.dnsServers) ? dnsServersValues : json('null')) : json('null'))
-    networkSecurityGroup: (contains(nicConfiguration, 'nsgId') ? (!empty(nicConfiguration.nsgId) ? networkSecurityGroup : json('null')) : json('null'))
-    ipConfigurations: [for (ipConfiguration, index) in nicConfiguration.ipConfigurations: {
+    enableIPForwarding: enableIPForwarding
+    enableAcceleratedNetworking: enableAcceleratedNetworking
+    dnsSettings: (!empty(dnsServers) ? dnsServersValues : json('null'))
+    networkSecurityGroup: (!empty(networkSecurityGroupId) ? networkSecurityGroup : json('null'))
+    ipConfigurations: [for (ipConfiguration, index) in ipConfigurationArray: {
       name: (!empty(ipConfiguration.name) ? ipConfiguration.name : json('null'))
       properties: {
-        primary: ((index == 0) ? 'true' : 'false')
+        primary: ((index == 0) ? true : false)
         privateIPAllocationMethod: (contains(ipConfiguration, 'privateIPAllocationMethod') ? (!empty(ipConfiguration.privateIPAllocationMethod) ? ipConfiguration.privateIPAllocationMethod : json('null')) : json('null'))
         privateIPAddress: (contains(ipConfiguration, 'vmIPAddress') ? (empty(ipConfiguration.vmIPAddress) ? json('null') : ipConfiguration.vmIPAddress) : json('null'))
         publicIPAddress: ((contains(ipConfiguration, 'pipconfiguration')) ? json('{"id":"${resourceId('Microsoft.Network/publicIPAddresses', '${virtualMachineName}${ipConfiguration.pipconfiguration.publicIpNameSuffix}')}"}') : json('null'))
