@@ -34,9 +34,11 @@ jobs:
       - name: Test
         shell: pwsh
         run: |
-          Write-Host "$env:WIKI_SOURCE_REPO"
-          Write-Host "$env:WIKI_SOURCE_REPO_DIR"
-          Write-Host "$env:WIKI_TARGET_REPO"
+          Get-Childitem env:*
+
+          Write-Verbose "Source : [$env:WIKI_SOURCE_REPO]" -Verbose
+          Write-Verbose "Source-Dir: [$env:WIKI_SOURCE_REPO_DIR]" -Verbose
+          Write-Verbose "Target-Repo: [$env:WIKI_TARGET_REPO]" -Verbose
 
       # - name: Checkout Wiki Repo
       #   uses: actions/checkout@v2
