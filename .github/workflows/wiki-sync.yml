@@ -41,7 +41,7 @@ jobs:
           git config --global user.name '${{ env.pipelinePrincipalGitUserName }}'
           git config --global user.email '${{ env.pipelinePrincipalGitUserEmail }}'
 
-          rsync -avzr --delete --exclude='.git/' "$wiki_source_repo_dir/" "$wiki_target_repo"
+          rsync -avzr --delete --exclude='.git/' "$wiki_source_repo_dir" "$wiki_target_repo"
 
           git pull
           git add .
