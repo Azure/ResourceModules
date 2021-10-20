@@ -91,13 +91,14 @@ jobs:
 
       - name: Stage & Push Files Into Wiki Repo
         run: |
-          git pull
-          git add .
-          git commit -m "$github_commit_message [$GITHUB_ACTOR/${GITHUB_SHA::8}]"
-          git push
-
-          # git pull
           # git add .
           # git commit -m "$github_commit_message [$GITHUB_ACTOR/${GITHUB_SHA::8}]"
-          # git push --set-upstream https://${{secrets.PLATFORM_REPO_UPDATE_PAT}}@github.com/$wiki_target_repo.git main
+          # git push
+
+          Get-Location
+          git branch
+
+          git add .
+          git commit -m "$github_commit_message [$GITHUB_ACTOR/${GITHUB_SHA::8}]"
+          git push --set-upstream https://${{secrets.PLATFORM_REPO_UPDATE_PAT}}@github.com/$wiki_target_repo.git main
         working-directory: ${{ env.wiki_target_repo }}
