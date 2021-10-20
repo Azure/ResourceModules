@@ -46,5 +46,5 @@ resource roleAssignment 'Microsoft.Authorization/roleAssignments@2020-04-01-prev
 }]
 
 output policyAssignmentName string = policyAssignment.name
-output policyAssignmentId string = subscriptionResourceId(subscriptionId, 'Microsoft.Authorization/policySetDefinitions', policyAssignment.name)
+output policyAssignmentId string = subscriptionResourceId(subscriptionId, 'Microsoft.Authorization/policyAssignments', policyAssignment.name)
 output policyAssignmentPrincipalId string = identity == 'SystemAssigned' ? policyAssignment.identity.principalId : ''
