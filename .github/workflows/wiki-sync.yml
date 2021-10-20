@@ -1,0 +1,49 @@
+name: Docs/Wiki Sync
+
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - "docs/wiki/**"
+
+env:
+  wiki_source_repo: "Azure/ResourceModules"
+  wiki_source_repo_dir: "Azure/ResourceModules/docs/wiki"
+  wiki_target_repo: "Azure/ResourceModules.wiki"
+  github_commit_message: "Wiki Sync from docs/wiki"
+
+jobs:
+  sync-wiki:
+    name: Sync docs/wiki to Wiki
+    if: github.repository == 'Azure/ResourceModules'
+    runs-on: ubuntu-latest
+    steps:
+      - name: Set environment variables
+        uses: deep-mm/set-variables@v1.0
+        with:
+          # Name of variable file
+          variableFileName: 'variables.module' # Don't write .json here
+      - name: Checkout Source Repo
+        uses: actions/checkout@v2
+        with:
+          repository: ${{ env.wiki_source_repo }}
+          path: ${{ env.wiki_source_repo }}
+
+      - name: Checkout Wiki Repo
+        uses: actions/checkout@v2
+        with:
+          repository: ${{ env.wiki_target_repo }}
+          path: ${{ env.wiki_target_repo }}
+
+      - name: Sync wiki
+        run: |
+          git config --global user.name '${{ env.pipelinePrincipalGitUserName }}'
+          git config --global user.email '${{ env.pipelinePrincipalGitUserEmail }}'
+
+          rsync -avzr --delete --exclude='.git/' "$wiki_source_repo_dir/" "$wiki_target_repo"
+
+          git add .
+          git commit -m "$github_commit_message [$GITHUB_ACTOR/${GITHUB_SHA::8}]"
+          git push --set-upstream https://$GITHUB_TOKEN@github.com/$wiki_target_repo.git master
+        working-directory: ${{ env.GITHUB_WORKSPACE }}

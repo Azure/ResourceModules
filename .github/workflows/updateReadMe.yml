@@ -13,10 +13,6 @@ on:
       - 'arm/**/deploy.bicep'
       - 'arm/**/deploy.json'
 
-env:
-  gitUserName: 'CARMLPipelinePrincipal'
-  gitEmail: 'CARML@microsoft.com'
-
 jobs:
   job_update_readme:
     runs-on: ubuntu-20.04
@@ -27,7 +23,11 @@ jobs:
         with:
           fetch-depth: 0
           token: '${{ secrets.PLATFORM_REPO_UPDATE_PAT }}' # Sets general GIT credentials up
-
+      - name: Set environment variables
+        uses: deep-mm/set-variables@v1.0
+        with:
+          # Name of variable file
+          variableFileName: 'variables.module' # Don't write .json here
       - name: "Update general ReadMe"
         shell: pwsh
         run: |
@@ -70,8 +70,8 @@ jobs:
       - name: "Push changes"
         shell: pwsh
         run: |
-          git config --global user.email $env:gitEmail
-          git config --global user.name $env:gitUserName
+          git config --global user.email '${{ env.pipelinePrincipalGitUserEmail }}'
+          git config --global user.name '${{ env.pipelinePrincipalGitUserName }}'
 
           git pull
           git add .
