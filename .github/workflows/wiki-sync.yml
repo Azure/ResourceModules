@@ -21,11 +21,11 @@ jobs:
     # if: github.repository == 'Azure/ResourceModules'
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout Source Repo
+      - name: "Checkout"
         uses: actions/checkout@v2
         with:
-          repository: ${{ env.wiki_source_repo }}
-          path: ${{ env.wiki_source_repo }}
+          fetch-depth: 0
+          token: '${{ secrets.PLATFORM_REPO_UPDATE_PAT }}' # Sets general GIT credentials up
       - name: Set environment variables
         uses: deep-mm/set-variables@v1.0
         with:
