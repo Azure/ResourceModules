@@ -52,17 +52,45 @@ jobs:
       #     repository: ${{ env.wiki_target_repo }}
       #     path: ${{ env.wiki_target_repo }}
       #     token: '${{ secrets.PLATFORM_REPO_UPDATE_PAT }}' # Sets general GIT credentials up
-      - name: Sync wiki
-        shell: pwsh
+      # - name: Sync wiki
+      #   shell: pwsh
+      #   run: |
+      #     git config --global user.name '${{ env.pipelinePrincipalGitUserName }}'
+      #     git config --global user.email '${{ env.pipelinePrincipalGitUserEmail }}'
+
+      #     Write-Verbose "wiki_source_repo_dir: [${{ env.wiki_source_repo_dir }}]" -Verbose
+      #     Write-Verbose "wiki_target_repo: [${{ env.wiki_target_repo }}]" -Verbose
+
+      #     rsync -avzr --delete --exclude='.git/' "${{ env.wiki_source_repo_dir }}/" "${{ env.wiki_target_repo }}]"
+
+      #     git pull
+      #     git add .
+      #     git commit -m ""$github_commit_message [$GITHUB_ACTOR/${GITHUB_SHA::8}]"
+      #     git push
+
+      #     # git add .
+      #     # git commit -m "
+      #     # git push --set-upstream https://$GITHUB_TOKEN@github.com/$wiki_target_repo.git master
+      #   working-directory: ${{ env.GITHUB_WORKSPACE }}
+
+
+      - name: Configure Local Git
         run: |
           git config --global user.name '${{ env.pipelinePrincipalGitUserName }}'
           git config --global user.email '${{ env.pipelinePrincipalGitUserEmail }}'
+        working-directory: ${{ env.GITHUB_WORKSPACE }}
 
+      - name: Sync docs/wiki Into Wiki Repo
+        shell: pwsh
+        run: |
           Write-Verbose "wiki_source_repo_dir: [${{ env.wiki_source_repo_dir }}]" -Verbose
           Write-Verbose "wiki_target_repo: [${{ env.wiki_target_repo }}]" -Verbose
 
           rsync -avzr --delete --exclude='.git/' "${{ env.wiki_source_repo_dir }}/" "${{ env.wiki_target_repo }}]"
+        working-directory: ${{ env.GITHUB_WORKSPACE }}
 
+      - name: Stage & Push Files Into Wiki Repo
+        run: |
           git pull
           git add .
           git commit -m ""$github_commit_message [$GITHUB_ACTOR/${GITHUB_SHA::8}]"
@@ -71,4 +99,4 @@ jobs:
           # git add .
           # git commit -m "
           # git push --set-upstream https://$GITHUB_TOKEN@github.com/$wiki_target_repo.git master
-        working-directory: ${{ env.GITHUB_WORKSPACE }}
+        working-directory: ${{ env.wiki_target_repo }}
