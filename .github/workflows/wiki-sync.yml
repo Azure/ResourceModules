@@ -13,6 +13,8 @@ env:
   wiki_source_repo_dir: "${{ github.repository }}/docs/wiki"
   wiki_target_repo: "${{ github.repository }}.wiki"
   github_commit_message: "Wiki Sync from docs/wiki"
+  pipelinePrincipalGitUserName: "CARMLPipelinePrincipal"
+  pipelinePrincipalGitUserEmail: "CARML@microsoft.com"
 
 jobs:
   sync-wiki:
@@ -20,22 +22,36 @@ jobs:
     # if: github.repository == '${{ github.repository }}'
     runs-on: ubuntu-latest
     steps:
-      - name: "Checkout"
+      - name: Checkout Source Repo
         uses: actions/checkout@v2
         with:
-          fetch-depth: 0
+          repository: ${{ env.wiki_source_repo }}
+          path: ${{ env.wiki_source_repo }}
           token: '${{ secrets.PLATFORM_REPO_UPDATE_PAT }}' # Sets general GIT credentials up
-      - name: Set environment variables
-        uses: deep-mm/set-variables@v1.0
-        with:
-          # Name of variable file
-          variableFileName: 'variables.module' # Don't write .json here
+
       - name: Checkout Wiki Repo
         uses: actions/checkout@v2
         with:
           repository: ${{ env.wiki_target_repo }}
           path: ${{ env.wiki_target_repo }}
           token: '${{ secrets.PLATFORM_REPO_UPDATE_PAT }}' # Sets general GIT credentials up
+
+      # - name: "Checkout"
+      #   uses: actions/checkout@v2
+      #   with:
+      #     fetch-depth: 0
+      #     token: '${{ secrets.PLATFORM_REPO_UPDATE_PAT }}' # Sets general GIT credentials up
+      # - name: Set environment variables
+        # uses: deep-mm/set-variables@v1.0
+        # with:
+        #   # Name of variable file
+        #   variableFileName: 'variables.module' # Don't write .json here
+      # - name: Checkout Wiki Repo
+      #   uses: actions/checkout@v2
+      #   with:
+      #     repository: ${{ env.wiki_target_repo }}
+      #     path: ${{ env.wiki_target_repo }}
+      #     token: '${{ secrets.PLATFORM_REPO_UPDATE_PAT }}' # Sets general GIT credentials up
       - name: Sync wiki
         shell: pwsh
         run: |

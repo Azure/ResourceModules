@@ -13,6 +13,11 @@ on:
       - 'arm/**/deploy.bicep'
       - 'arm/**/deploy.json'
 
+env:
+  pipelinePrincipalGitUserName: "CARMLPipelinePrincipal"
+  pipelinePrincipalGitUserEmail: "CARML@microsoft.com"
+
+
 jobs:
   job_update_readme:
     runs-on: ubuntu-20.04
@@ -23,11 +28,6 @@ jobs:
         with:
           fetch-depth: 0
           token: '${{ secrets.PLATFORM_REPO_UPDATE_PAT }}' # Sets general GIT credentials up
-      - name: Set environment variables
-        uses: deep-mm/set-variables@v1.0
-        with:
-          # Name of variable file
-          variableFileName: 'variables.module' # Don't write .json here
       - name: "Update general ReadMe"
         shell: pwsh
         run: |
