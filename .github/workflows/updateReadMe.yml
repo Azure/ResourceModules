@@ -17,7 +17,6 @@ env:
   pipelinePrincipalGitUserName: "CARMLPipelinePrincipal"
   pipelinePrincipalGitUserEmail: "CARML@microsoft.com"
 
-
 jobs:
   job_update_readme:
     runs-on: ubuntu-20.04
