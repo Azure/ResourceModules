@@ -93,14 +93,14 @@ resource keyVault_lock 'Microsoft.Authorization/locks@2016-09-01' = if (lock != 
   scope: eventHub
 }
 
-resource eventHubConfiguration_consumerGroups_name 'Microsoft.EventHub/namespaces/eventhubs/consumergroups@2017-04-01' = [for (consumerGroups, index) in eventHubConfiguration.consumerGroups: {
+resource eventHubConfiguration_consumerGroups 'Microsoft.EventHub/namespaces/eventhubs/consumergroups@2017-04-01' = [for (consumerGroups, index) in eventHubConfiguration.consumerGroups: {
   name: '${eventHub.name}/${consumerGroups.name}'
 }]
 
-resource eventHub_authorizationRules_name 'Microsoft.EventHub/namespaces/eventhubs/authorizationRules@2017-04-01' = [for item in authorizationRules: if (length(authorizationRules) > 0) {
-  name: '${eventHub.name}/${item.name}'
+resource eventHub_authorizationRules 'Microsoft.EventHub/namespaces/eventhubs/authorizationRules@2017-04-01' = [for authorizationRule in authorizationRules: if (length(authorizationRules) > 0) {
+  name: '${eventHub.name}/${authorizationRule.name}'
   properties: {
-    rights: item.properties.rights
+    rights: authorizationRule.properties.rights
   }
 }]
 
