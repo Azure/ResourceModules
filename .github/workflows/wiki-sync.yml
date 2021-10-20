@@ -1,12 +1,11 @@
 name: Docs/Wiki Sync
 
 on:
-  workflow_dispatch:
   push:
-    # branches:
-    #   - main
-    # paths:
-    #   - "docs/wiki/**"
+    branches:
+      - main
+    paths:
+      - "docs/wiki/**"
 
 env:
   wiki_source_repo: "${{ github.repository }}"
@@ -19,7 +18,6 @@ env:
 jobs:
   sync-wiki:
     name: Sync docs/wiki to Wiki
-    # if: github.repository == '${{ github.repository }}'
     runs-on: ubuntu-latest
     steps:
       - name: Checkout Source Repo
