@@ -30,30 +30,25 @@ jobs:
         with:
           # Name of variable file
           variableFileName: 'variables.module' # Don't write .json here
-      - name: Test
-        shell: pwsh
-        run: |
-          Get-Childitem env:*
-
-          Write-Verbose "Source : [$env:wiki_source_repo]" -Verbose
-          Write-Verbose "Source-Dir: [$env:wiki_source_repo_dir]" -Verbose
-          Write-Verbose "Target-Repo: [$env:wiki_target_repo]" -Verbose
-
       - name: Checkout Wiki Repo
         uses: actions/checkout@v2
         with:
           repository: ${{ env.wiki_target_repo }}
           path: ${{ env.wiki_target_repo }}
           token: '${{ secrets.PLATFORM_REPO_UPDATE_PAT }}' # Sets general GIT credentials up
+      - name: Sync wiki
+        run: |
+          git config --global user.name '${{ env.pipelinePrincipalGitUserName }}'
+          git config --global user.email '${{ env.pipelinePrincipalGitUserEmail }}'
 
-      # - name: Sync wiki
-      #   run: |
-      #     git config --global user.name '${{ env.pipelinePrincipalGitUserName }}'
-      #     git config --global user.email '${{ env.pipelinePrincipalGitUserEmail }}'
+          rsync -avzr --delete --exclude='.git/' "$wiki_source_repo_dir/" "$wiki_target_repo"
 
-      #     rsync -avzr --delete --exclude='.git/' "$wiki_source_repo_dir/" "$wiki_target_repo"
+          git pull
+          git add .
+          git commit -m ""$github_commit_message [$GITHUB_ACTOR/${GITHUB_SHA::8}]"
+          git push
 
-      #     git add .
-      #     git commit -m "$github_commit_message [$GITHUB_ACTOR/${GITHUB_SHA::8}]"
-      #     git push --set-upstream https://$GITHUB_TOKEN@github.com/$wiki_target_repo.git master
-      #   working-directory: ${{ env.GITHUB_WORKSPACE }}
+          # git add .
+          # git commit -m "
+          # git push --set-upstream https://$GITHUB_TOKEN@github.com/$wiki_target_repo.git master
+        working-directory: ${{ env.GITHUB_WORKSPACE }}
