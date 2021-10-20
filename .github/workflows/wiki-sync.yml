@@ -9,23 +9,22 @@ on:
     #   - "docs/wiki/**"
 
 env:
-  # wiki_source_repo: "Azure/ResourceModules"
   wiki_source_repo: "${{ github.repository }}"
-  wiki_source_repo_dir: "Azure/ResourceModules/docs/wiki"
-  wiki_target_repo: "Azure/ResourceModules.wiki"
+  wiki_source_repo_dir: "${{ github.repository }}/docs/wiki"
+  wiki_target_repo: "${{ github.repository }}.wiki"
   github_commit_message: "Wiki Sync from docs/wiki"
 
 jobs:
   sync-wiki:
     name: Sync docs/wiki to Wiki
-    # if: github.repository == 'Azure/ResourceModules'
+    # if: github.repository == '${{ github.repository }}'
     runs-on: ubuntu-latest
     steps:
       - name: "Checkout"
         uses: actions/checkout@v2
         with:
           fetch-depth: 0
-         # token: '${{ secrets.PLATFORM_REPO_UPDATE_PAT }}' # Sets general GIT credentials up
+          # token: '${{ secrets.PLATFORM_REPO_UPDATE_PAT }}' # Sets general GIT credentials up
       - name: Set environment variables
         uses: deep-mm/set-variables@v1.0
         with:
@@ -40,11 +39,11 @@ jobs:
           Write-Verbose "Source-Dir: [$env:wiki_source_repo_dir]" -Verbose
           Write-Verbose "Target-Repo: [$env:wiki_target_repo]" -Verbose
 
-      # - name: Checkout Wiki Repo
-      #   uses: actions/checkout@v2
-      #   with:
-      #     repository: ${{ env.wiki_target_repo }}
-      #     path: ${{ env.wiki_target_repo }}
+      - name: Checkout Wiki Repo
+        uses: actions/checkout@v2
+        with:
+          repository: ${{ env.wiki_target_repo }}
+          path: ${{ env.wiki_target_repo }}
 
       # - name: Sync wiki
       #   run: |
