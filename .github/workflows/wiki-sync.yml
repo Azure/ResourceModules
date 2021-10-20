@@ -86,7 +86,7 @@ jobs:
           Write-Verbose "wiki_source_repo_dir: [${{ env.wiki_source_repo_dir }}]" -Verbose
           Write-Verbose "wiki_target_repo: [${{ env.wiki_target_repo }}]" -Verbose
 
-          rsync -avzr --delete --exclude='.git/' "${{ env.wiki_source_repo_dir }}/" "${{ env.wiki_target_repo }}]"
+          rsync -avzr --delete --exclude='.git/' "${{ env.wiki_source_repo_dir }}/" "${{ env.wiki_target_repo }}"
         working-directory: ${{ env.GITHUB_WORKSPACE }}
 
       - name: Stage & Push Files Into Wiki Repo
