@@ -1,4 +1,4 @@
-name: Docs/Wiki Sync
+name: .Platform: Docs/Wiki Sync
 
 on:
   push:
