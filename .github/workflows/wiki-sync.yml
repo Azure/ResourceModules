@@ -44,6 +44,7 @@ jobs:
         with:
           repository: ${{ env.wiki_target_repo }}
           path: ${{ env.wiki_target_repo }}
+          token: '${{ github.token }}'
 
       # - name: Sync wiki
       #   run: |
