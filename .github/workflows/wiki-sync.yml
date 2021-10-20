@@ -8,10 +8,10 @@ on:
     #   - "docs/wiki/**"
 
 env:
- # wiki_source_repo: "Azure/ResourceModules"
+  # wiki_source_repo: "Azure/ResourceModules"
+  wiki_source_repo: "${{ github.repository }}"
   wiki_source_repo_dir: "Azure/ResourceModules/docs/wiki"
-  # wiki_target_repo: "Azure/ResourceModules.wiki"
-  wiki_source_repo: ${{ format('{0}/{1}', split(github.repository,'/')[0], split(github.repository,'/')[1]) }}
+  wiki_target_repo: "Azure/ResourceModules.wiki"
   github_commit_message: "Wiki Sync from docs/wiki"
 
 jobs:
@@ -29,26 +29,26 @@ jobs:
         shell: pwsh
         run: |
           Write-Host "${{ env:wiki_source_repo }}"
-      - name: Checkout Source Repo
-        uses: actions/checkout@v2
-        with:
-          repository: ${{ env.wiki_source_repo }}
-          path: ${{ env.wiki_source_repo }}
+      # - name: Checkout Source Repo
+      #   uses: actions/checkout@v2
+      #   with:
+      #     repository: ${{ env.wiki_source_repo }}
+      #     path: ${{ env.wiki_source_repo }}
 
-      - name: Checkout Wiki Repo
-        uses: actions/checkout@v2
-        with:
-          repository: ${{ env.wiki_target_repo }}
-          path: ${{ env.wiki_target_repo }}
+      # - name: Checkout Wiki Repo
+      #   uses: actions/checkout@v2
+      #   with:
+      #     repository: ${{ env.wiki_target_repo }}
+      #     path: ${{ env.wiki_target_repo }}
 
-      - name: Sync wiki
-        run: |
-          git config --global user.name '${{ env.pipelinePrincipalGitUserName }}'
-          git config --global user.email '${{ env.pipelinePrincipalGitUserEmail }}'
+      # - name: Sync wiki
+      #   run: |
+      #     git config --global user.name '${{ env.pipelinePrincipalGitUserName }}'
+      #     git config --global user.email '${{ env.pipelinePrincipalGitUserEmail }}'
 
-          rsync -avzr --delete --exclude='.git/' "$wiki_source_repo_dir/" "$wiki_target_repo"
+      #     rsync -avzr --delete --exclude='.git/' "$wiki_source_repo_dir/" "$wiki_target_repo"
 
-          git add .
-          git commit -m "$github_commit_message [$GITHUB_ACTOR/${GITHUB_SHA::8}]"
-          git push --set-upstream https://$GITHUB_TOKEN@github.com/$wiki_target_repo.git master
-        working-directory: ${{ env.GITHUB_WORKSPACE }}
+      #     git add .
+      #     git commit -m "$github_commit_message [$GITHUB_ACTOR/${GITHUB_SHA::8}]"
+      #     git push --set-upstream https://$GITHUB_TOKEN@github.com/$wiki_target_repo.git master
+      #   working-directory: ${{ env.GITHUB_WORKSPACE }}
