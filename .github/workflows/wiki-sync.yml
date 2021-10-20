@@ -37,6 +37,7 @@ jobs:
           path: ${{ env.wiki_target_repo }}
           token: '${{ secrets.PLATFORM_REPO_UPDATE_PAT }}' # Sets general GIT credentials up
       - name: Sync wiki
+        shell: pwsh
         run: |
           git config --global user.name '${{ env.pipelinePrincipalGitUserName }}'
           git config --global user.email '${{ env.pipelinePrincipalGitUserEmail }}'
