@@ -24,7 +24,7 @@ jobs:
         uses: actions/checkout@v2
         with:
           fetch-depth: 0
-          # token: '${{ secrets.PLATFORM_REPO_UPDATE_PAT }}' # Sets general GIT credentials up
+          token: '${{ secrets.PLATFORM_REPO_UPDATE_PAT }}' # Sets general GIT credentials up
       - name: Set environment variables
         uses: deep-mm/set-variables@v1.0
         with:
@@ -44,7 +44,7 @@ jobs:
         with:
           repository: ${{ env.wiki_target_repo }}
           path: ${{ env.wiki_target_repo }}
-          token: '${{ github.token }}'
+          token: '${{ secrets.PLATFORM_REPO_UPDATE_PAT }}' # Sets general GIT credentials up
 
       # - name: Sync wiki
       #   run: |
