@@ -2,9 +2,9 @@
     "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
     "contentVersion": "1.0.0.0",
     "parameters": {
-        // "managedServiceIdentity": {
-        //     "value": "SystemAssigned"
-        // },
+        "managedServiceIdentity": {
+            "value": "SystemAssigned"
+        },
         "virtualMachineName": {
             "value": "bicep-vm"
         },
@@ -127,11 +127,8 @@
         // "lock": {
         //     "value": "CanNotDelete"
         // },
-        // "workspaceId": {
-        //     "value": "/subscriptions/8629be3b-96bc-482d-a04b-ffff597c65a2/resourcegroups/validation-rg/providers/microsoft.operationalinsights/workspaces/adp-sxx-az-la-weu-x-001"
-        // },
-        "workspaceName": {
-            "value": "adp-sxx-az-la-weu-x-001"
+        "workspaceId": {
+            "value": "/subscriptions/8629be3b-96bc-482d-a04b-ffff597c65a2/resourcegroups/validation-rg/providers/microsoft.operationalinsights/workspaces/adp-sxx-az-la-weu-x-001"
         },
         "backupVaultName": {
             "value": "sxx-az-rsv-weu-x-999"

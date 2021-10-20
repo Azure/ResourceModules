@@ -152,7 +152,6 @@ param backupPolicyName string = 'DefaultPolicy'
 param enableServerSideEncryption bool = false
 
 // Child resources
-
 @description('Optional. Settings for vm extensions.')
 param extensionConfigurations array = []
 
@@ -170,9 +169,6 @@ param diagnosticStorageAccountId string = ''
 
 @description('Optional. Resource identifier of Log Analytics.')
 param workspaceId string = ''
-
-@description('Optional. Resource identifier of Log Analytics.')
-param workspaceName string = ''
 
 @description('Optional. Resource ID of the event hub authorization rule for the Event Hubs namespace in which the event hub should be created or streamed to.')
 param eventHubAuthorizationRuleId string = ''
@@ -242,10 +238,6 @@ var builtInRoleNames = {
   'Virtual Machine User Login': subscriptionResourceId('Microsoft.Authorization/roleDefinitions', 'fb879df8-f326-4884-b1cf-06f3ad86be52')
 }
 
-resource workspace 'Microsoft.OperationalInsights/workspaces@2021-06-01' existing = if (!empty(workspaceName)) {
-  name: workspaceName
-}
-
 module pid_cuaId './.bicep/nested_cuaId.bicep' = if (!empty(cuaId)) {
   name: 'pid-${cuaId}'
   params: {}
@@ -266,7 +258,7 @@ module virtualMachine_nic './.bicep/nested_networkInterface.bicep' = [for (nicCo
     lock: lock
     diagnosticStorageAccountId: diagnosticStorageAccountId
     diagnosticLogsRetentionInDays: diagnosticLogsRetentionInDays
-    workspaceId: workspace.id
+    workspaceId: workspaceId
     eventHubAuthorizationRuleId: eventHubAuthorizationRuleId
     eventHubName: eventHubName
     metricsToEnable: nicMetricsToEnable
