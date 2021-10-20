@@ -101,6 +101,11 @@ Tag names and tag values can be provided as needed. A tag can be left without a 
 | `natRuleCollections` | array |
 | `networkRuleCollections` | array |
 
+## Considerations
+
+The `applicationRuleCollections` parameter accepts a JSON Array of AzureFirewallApplicationRule objects.
+The `networkRuleCollections` parameter accepts a JSON Array of AzureFirewallNetworkRuleCollection objects.
+
 ## Template references
 
 - [Locks](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2016-09-01/locks)
