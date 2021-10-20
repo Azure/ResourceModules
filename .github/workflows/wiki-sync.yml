@@ -21,6 +21,11 @@ jobs:
     # if: github.repository == 'Azure/ResourceModules'
     runs-on: ubuntu-latest
     steps:
+      - name: Checkout Source Repo
+        uses: actions/checkout@v2
+        with:
+          repository: ${{ env.wiki_source_repo }}
+          path: ${{ env.wiki_source_repo }}
       - name: Set environment variables
         uses: deep-mm/set-variables@v1.0
         with:
@@ -32,11 +37,6 @@ jobs:
           Write-Host "$env:WIKI_SOURCE_REPO"
           Write-Host "$env:WIKI_SOURCE_REPO_DIR"
           Write-Host "$env:WIKI_TARGET_REPO"
-      # - name: Checkout Source Repo
-      #   uses: actions/checkout@v2
-      #   with:
-      #     repository: ${{ env.wiki_source_repo }}
-      #     path: ${{ env.wiki_source_repo }}
 
       # - name: Checkout Wiki Repo
       #   uses: actions/checkout@v2
