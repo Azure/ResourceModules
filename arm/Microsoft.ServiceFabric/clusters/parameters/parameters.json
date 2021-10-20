@@ -166,6 +166,26 @@
                     "upgradeReplicaSetCheckTimeout": ""
                 }
             }]
+        },
+        "serviceFabricApplicationTypes": {
+            "value": {
+                "name": "",
+                "properties": {}
+            }
+        },
+        "serviceFabricApplicationTypesVersions": {
+            "value": [{
+                "name": "",
+                "properties": {
+                    "appPackageUrl": ""
+                }
+            }]
+        },
+        "serviceFabricApplicationsServices": {
+            "value": [{
+                "name": "",
+                "properties": ""
+            }]
         }
     }
 }

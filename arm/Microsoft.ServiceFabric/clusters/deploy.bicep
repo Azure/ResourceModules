@@ -1,7 +1,4 @@
-// This file can only be deployed at a resource group scope.
-targetScope = 'resourceGroup'
-
-// Service Fabric cluster resource and lock params
+// Params
 @description('Required. Name of the Serivce Fabric cluster.')
 param serviceFabricClusterName string = ''
 
@@ -134,6 +131,15 @@ param roleAssignments array = []
 @description('Optional. Array of Service Fabric cluster applications.')
 param serviceFabricClusterApplications array = []
 
+@description('Optional. Array of Service Fabric cluster applications services.')
+param serviceFabricApplicationsServices array = []
+
+@description('Optional. Array of Service Fabric cluster application types.')
+param serviceFabricApplicationTypes array = []
+
+@description('Optional. Array of Service Fabric cluster application types versions.')
+param serviceFabricApplicationTypesVersions array = []
+
 // Var section
 var azureActiveDirectory_var = {
   clientApplication: (!empty(azureActiveDirectory) ? azureActiveDirectory.clientApplication : json('null'))
@@ -159,12 +165,12 @@ var certificateCommonNames_var = {
 var clientCertificateCommonNames_var = [for index in range(0, (!empty(clientCertificateCommonNames) ? length(clientCertificateCommonNames) : 0)): {
   certificateCommonName: (!empty(clientCertificateCommonNames) ? '${clientCertificateCommonNames[index].certificateCommonName}' : json('null'))
   certificateIssuerThumbprint: (!empty(clientCertificateCommonNames) ? '${clientCertificateCommonNames[index].certificateIssuerThumbprint}' : json('null'))
-  isAdmin: (!empty(clientCertificateCommonNames) ? '${clientCertificateCommonNames[index].isAdmin}' : json('null'))
+  isAdmin: (!empty(clientCertificateCommonNames) ? clientCertificateCommonNames[index].isAdmin : null)
 }]
 
 var clientCertificateThumbprints_var = [for index in range(0, (!empty(clientCertificateThumbprints) ? length(clientCertificateThumbprints) : 0)): {
   certificateThumbprint: (!empty(clientCertificateThumbprints) ? '${clientCertificateThumbprints[index].certificateThumbprint}' : json('null'))
-  isAdmin: (!empty(clientCertificateThumbprints) ? '${clientCertificateThumbprints[index].isAdmin}' : json('null'))
+  isAdmin: (!empty(clientCertificateThumbprints) ? clientCertificateThumbprints[index].isAdmin : null)
 }]
 
 var diagnosticsStorageAccountConfig_var = {
@@ -188,7 +194,7 @@ var nodeTypes_var = [for index in range(0, (!empty(nodeTypes) ? length(nodeTypes
   }
   capacities: (!empty(nodeTypes) ? nodeTypes[index].capacities : json('null'))
   clientConnectionEndpointPort: (!empty(nodeTypes) ? nodeTypes[index].clientConnectionEndpointPort : json('null'))
-  durabilityLevel: '${(!empty(nodeTypes) ? nodeTypes[index].durabilityLevel : json('null'))}'
+  durabilityLevel: '${(!empty(nodeTypes) ? nodeTypes[index].durabilityLevel : null)}'
   ephemeralPorts: {
     endPort: (!empty(nodeTypes) ? nodeTypes[index].ephemeralPorts.endPort : json('null'))
     startPort: (!empty(nodeTypes) ? nodeTypes[index].ephemeralPorts.startPort : json('null'))
@@ -197,23 +203,23 @@ var nodeTypes_var = [for index in range(0, (!empty(nodeTypes) ? length(nodeTypes
   isPrimary: (!empty(nodeTypes) ? nodeTypes[index].isPrimary : json('null'))
   isStateless: (!empty(nodeTypes) ? nodeTypes[index].isStateless : json('null'))
   multipleAvailabilityZones: (!empty(nodeTypes) ? nodeTypes[index].multipleAvailabilityZones : json('null'))
-  name: '${(!empty(nodeTypes) ? nodeTypes[index].name : json('null'))}'
+  name: '${(!empty(nodeTypes) ? nodeTypes[index].name : null)}'
   placementProperties: (!empty(nodeTypes) ? nodeTypes[index].placementProperties : json('null'))
   reverseProxyEndpointPort: (!empty(nodeTypes) ? nodeTypes[index].reverseProxyEndpointPort : json('null'))
   vmInstanceCount: (!empty(nodeTypes) ? nodeTypes[index].vmInstanceCount : json('null'))
 }]
 
 var notifications_var = [for index in range(0, (!empty(notifications) ? length(notifications) : 0)): {
-  isEnabled: (!empty(notifications) ? notifications[index].isEnabled : json('null'))
+  isEnabled: (!empty(notifications) ? notifications[index].isEnabled : null)
   notificationCategory: (!empty(notifications) ? notifications[index].notificationCategory : json('null'))
-  notificationLevel: (!empty(notifications) ? notifications[index].notificationLevel : json('null'))
+  notificationLevel: (!empty(notifications) ? notifications[index].notificationLevel : null)
   notificationTargets: (!empty(notifications) ? notifications[index].notificationTargets : json('null'))
 }]
 
 var reverseProxyCertificate_var = {
   thumbprint: (!empty(reverseProxyCertificate) ? reverseProxyCertificate.thumbprint : json('null'))
   thumbprintSecondary: (!empty(reverseProxyCertificate) ? reverseProxyCertificate.thumbprintSecondary : json('null'))
-  x509StoreName: (!empty(reverseProxyCertificate) ? reverseProxyCertificate.x509StoreName : json('null'))
+  x509StoreName: (!empty(reverseProxyCertificate) ? reverseProxyCertificate.x509StoreName : null)
 }
 
 var reverseProxyCertificateCommonNamesList_var = [for index in range(0, (!empty(reverseProxyCertificateCommonNames) ? length(reverseProxyCertificateCommonNames.commonNames) : 0)): {
@@ -222,27 +228,27 @@ var reverseProxyCertificateCommonNamesList_var = [for index in range(0, (!empty(
 
 var reverseProxyCertificateCommonNames_var = {
   commonNames: (!empty(reverseProxyCertificateCommonNames) ? reverseProxyCertificateCommonNamesList_var : json('null'))
-  x509StoreName: (!empty(reverseProxyCertificateCommonNames) ? reverseProxyCertificateCommonNames.x509StoreName : json('null'))
+  x509StoreName: (!empty(reverseProxyCertificateCommonNames) ? reverseProxyCertificateCommonNames.x509StoreName : null)
 }
 
 var upgradeDescription_var = {
   deltaHealthPolicy: {
     applicationDeltaHealthPolicies: (!empty(upgradeDescription) ? upgradeDescription.applicationDeltaHealthPolicies : json('null'))
-    maxPercentDeltaUnhealthyApplications: (!empty(upgradeDescription) ? upgradeDescription.maxPercentDeltaUnhealthyApplications : json('null'))
-    maxPercentDeltaUnhealthyNodes: (!empty(upgradeDescription) ? upgradeDescription.maxPercentDeltaUnhealthyNodes : json('null'))
-    maxPercentUpgradeDomainDeltaUnhealthyNodes: (!empty(upgradeDescription) ? upgradeDescription.maxPercentUpgradeDomainDeltaUnhealthyNodes : json('null'))
+    maxPercentDeltaUnhealthyApplications: (!empty(upgradeDescription) ? upgradeDescription.maxPercentDeltaUnhealthyApplications : null)
+    maxPercentDeltaUnhealthyNodes: (!empty(upgradeDescription) ? upgradeDescription.maxPercentDeltaUnhealthyNodes : null)
+    maxPercentUpgradeDomainDeltaUnhealthyNodes: (!empty(upgradeDescription) ? upgradeDescription.maxPercentUpgradeDomainDeltaUnhealthyNodes : null)
   }
   forceRestart: '${(!empty(upgradeDescription) ? upgradeDescription.forceRestart : json('null'))}'
-  healthCheckRetryTimeout: '${(!empty(upgradeDescription) ? upgradeDescription.healthCheckRetryTimeout : json('null'))}'
-  healthCheckStableDuration: '${(!empty(upgradeDescription) ? upgradeDescription.healthCheckStableDuration : json('null'))}'
-  healthCheckWaitDuration: '${(!empty(upgradeDescription) ? upgradeDescription.healthCheckWaitDuration : json('null'))}'
+  healthCheckRetryTimeout: '${(!empty(upgradeDescription) ? upgradeDescription.healthCheckRetryTimeout : null)}'
+  healthCheckStableDuration: '${(!empty(upgradeDescription) ? upgradeDescription.healthCheckStableDuration : null)}'
+  healthCheckWaitDuration: '${(!empty(upgradeDescription) ? upgradeDescription.healthCheckWaitDuration : null)}'
   healthPolicy: {
     applicationHealthPolicies: (!empty(upgradeDescription) ? upgradeDescription.healthPolicy.applicationHealthPolicies : json('null'))
-    maxPercentUnhealthyApplications: (!empty(upgradeDescription) ? upgradeDescription.healthPolicy.maxPercentUnhealthyApplications : json('null'))
-    maxPercentUnhealthyNodes: (!empty(upgradeDescription) ? upgradeDescription.healthPolicy.maxPercentUnhealthyNodes : json('null'))
-    upgradeDomainTimeout: '${(!empty(upgradeDescription) ? upgradeDescription.upgradeDomainTimeout : json('null'))}'
-    upgradeReplicaSetCheckTimeout: '${(!empty(upgradeDescription) ? upgradeDescription.upgradeReplicaSetCheckTimeout : json('null'))}'
-    upgradeTimeout: '${(!empty(upgradeDescription) ? upgradeDescription.upgradeTimeout : json('null'))}'
+    maxPercentUnhealthyApplications: (!empty(upgradeDescription) ? upgradeDescription.healthPolicy.maxPercentUnhealthyApplications : null)
+    maxPercentUnhealthyNodes: (!empty(upgradeDescription) ? upgradeDescription.healthPolicy.maxPercentUnhealthyNodes : null)
+    upgradeDomainTimeout: '${(!empty(upgradeDescription) ? upgradeDescription.upgradeDomainTimeout : null)}'
+    upgradeReplicaSetCheckTimeout: '${(!empty(upgradeDescription) ? upgradeDescription.upgradeReplicaSetCheckTimeout : null)}'
+    upgradeTimeout: '${(!empty(upgradeDescription) ? upgradeDescription.upgradeTimeout : null)}'
   }
 }
 
@@ -284,12 +290,12 @@ resource serviceFabricCluster 'Microsoft.ServiceFabric/clusters@2021-06-01' = {
     certificateCommonNames: (!empty(certificateCommonNames) ? certificateCommonNames_var : json('null'))
     clientCertificateCommonNames: (!empty(clientCertificateCommonNames) ? clientCertificateCommonNames_var : json('null'))
     clientCertificateThumbprints: (!empty(clientCertificateThumbprints) ? clientCertificateThumbprints_var : json('null'))
-    clusterCodeVersion: '${(!empty(clusterCodeVersion) ? clusterCodeVersion : json('null'))}'
+    clusterCodeVersion: '${(!empty(clusterCodeVersion) ? clusterCodeVersion : null)}'
     diagnosticsStorageAccountConfig: (!empty(diagnosticsStorageAccountConfig) ? diagnosticsStorageAccountConfig_var : json('null'))
     eventStoreServiceEnabled: eventStoreServiceEnabled
     fabricSettings: (!empty(fabricSettings) ? fabricSettings_var : json('null'))
     infrastructureServiceManager: infrastructureServiceManager
-    managementEndpoint: '${(!empty(managementEndpoint) ? managementEndpoint : json('null'))}'
+    managementEndpoint: '${(!empty(managementEndpoint) ? managementEndpoint : null)}'
     nodeTypes: nodeTypes_var
     notifications: (!empty(notifications) ? notifications_var : json('null'))
     reliabilityLevel: reliabilityLevel
@@ -297,12 +303,12 @@ resource serviceFabricCluster 'Microsoft.ServiceFabric/clusters@2021-06-01' = {
     reverseProxyCertificateCommonNames: (!empty(reverseProxyCertificateCommonNames) ? reverseProxyCertificateCommonNames_var : json('null'))
     sfZonalUpgradeMode: (!empty(sfZonalUpgradeMode) ? sfZonalUpgradeMode : json('null'))
     upgradeDescription: (!empty(upgradeDescription) ? upgradeDescription_var : json('null'))
-    upgradeMode: (!empty(upgradeMode) ? upgradeMode : json('null'))
-    upgradePauseEndTimestampUtc: (!empty(upgradePauseEndTimestampUtc) ? upgradePauseEndTimestampUtc : json('null'))
-    upgradePauseStartTimestampUtc: (!empty(upgradePauseStartTimestampUtc) ? upgradePauseStartTimestampUtc : json('null'))
-    upgradeWave: (!empty(upgradeWave) ? upgradeWave : json('null'))
-    vmImage: (!empty(vmImage) ? vmImage : json('null'))
-    vmssZonalUpgradeMode: (!empty(vmssZonalUpgradeMode) ? vmssZonalUpgradeMode : json('null'))
+    upgradeMode: (!empty(upgradeMode) ? upgradeMode : null)
+    upgradePauseEndTimestampUtc: (!empty(upgradePauseEndTimestampUtc) ? upgradePauseEndTimestampUtc : null)
+    upgradePauseStartTimestampUtc: (!empty(upgradePauseStartTimestampUtc) ? upgradePauseStartTimestampUtc : null)
+    upgradeWave: (!empty(upgradeWave) ? upgradeWave : null)
+    vmImage: (!empty(vmImage) ? vmImage : null)
+    vmssZonalUpgradeMode: (!empty(vmssZonalUpgradeMode) ? vmssZonalUpgradeMode : null)
     waveUpgradePaused: waveUpgradePaused
   }
 }
@@ -328,21 +334,51 @@ module serviceFabricCluster_rbac './.bicep/nested_rbac.bicep' = [for (roleAssign
 }]
 
 // Service Fabric cluster applications
-resource serviceFabricClusterApplication 'Microsoft.ServiceFabric/clusters/applications@2021-06-01' = [for (application, index) in serviceFabricClusterApplications: if (!empty(serviceFabricClusterApplications)) {
-  name: application[index].name
+resource serviceFabricClusterApplication_resource 'Microsoft.ServiceFabric/clusters/applications@2021-06-01' = [for application in serviceFabricClusterApplications: if (!empty(serviceFabricClusterApplications)) {
+  name: application.name
   location: location
   tags: tags
-  identity: (!empty(application[index].identity) ? application[index] : json('null'))
+  identity: (!empty(application.identity) ? application.identity : json('null'))
   properties: {
-    managedIdentities: (!empty(application[index].managedIdentities) ? application[index].managedIdentities : json('null'))
-    maximumNodes: (!empty(application[index].maximumNodes) ? application[index].maximumNodes : null)
-    metrics: (!empty(application[index].metrics) ? application[index].metrics : json('null'))
-    minimumNodes: (!empty(application[index].minimumNodes) ? application[index].minimumNodes : null)
-    parameters: (!empty(application[index].parameters) ? application[index].parameters : json('null'))
-    removeApplicationCapacity: (!empty(application[index].removeApplicationCapacity) ? application[index].removeApplicationCapacity : null)
-    typeName: (!empty(application[index].typeName) ? application[index].typeName : null)
-    typeVersion: (!empty(application[index].typeVersion) ? application[index].typeVersion : null)
-    upgradePolicy: (!empty(application[index].upgradePolicy) ? application[index].upgradePolicy : json('null'))
+    managedIdentities: (!empty(application.managedIdentities) ? application.managedIdentities : json('null'))
+    maximumNodes: (!empty(application.maximumNodes) ? application.maximumNodes : null)
+    metrics: (!empty(application.metrics) ? application.metrics : json('null'))
+    minimumNodes: (!empty(application.minimumNodes) ? application.minimumNodes : null)
+    parameters: (!empty(application.parameters) ? application.parameters : json('null'))
+    removeApplicationCapacity: (!empty(application.removeApplicationCapacity) ? application.removeApplicationCapacity : null)
+    typeName: (!empty(application.typeName) ? application.typeName : null)
+    typeVersion: (!empty(application.typeVersion) ? application.typeVersion : null)
+    upgradePolicy: (!empty(application.upgradePolicy) ? application.upgradePolicy : json('null'))
+  }
+}]
+
+// Service Fabric cluster applications services
+module serviceFabricClusterApplications_services '.bicep/nested_applicationsServices.bicep' = [for (applicationsService, index) in serviceFabricApplicationsServices: {
+  name: '${uniqueString(deployment().name, location)}-ServiceFabricCluster-ApplicationsService-${index}'
+  params: {
+    name: applicationsService.name
+    location: location
+    tags: tags
+    properties: (!empty(applicationsService.properties) ? applicationsService.properties : json('null'))
+  }
+}]
+
+// Service Fabric cluster application types
+resource serviceFabricClusterApplicationTypes_resource 'Microsoft.ServiceFabric/clusters/applicationTypes@2021-06-01' = [for applicationType in serviceFabricApplicationTypes: if (!empty(serviceFabricApplicationTypes)) {
+  name: applicationType.name
+  location: location
+  tags: tags
+  properties: (!empty(applicationType.properties) ? applicationType.properties : json('null'))
+}]
+
+// Service Fabric cluster application types versions
+module serviceFabricClusterApplicationTypes_versions '.bicep/nested_applicationTypesVersions.bicep' = [for (applicationTypesVersion, index) in serviceFabricApplicationTypesVersions: if (!empty(serviceFabricApplicationTypesVersions)) {
+  name: '${uniqueString(deployment().name, location)}-ServiceFabricCluster-ApplicationTypesVersion-${index}'
+  params: {
+    name: applicationTypesVersion.name
+    location: location
+    tags: tags
+    properties: (!empty(applicationTypesVersion.properties) ? applicationTypesVersion.properties : json('null'))
   }
 }]
 
