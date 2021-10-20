@@ -28,7 +28,9 @@ jobs:
       - name: Test
         shell: pwsh
         run: |
-          Write-Host "${{ env:wiki_source_repo }}"
+          Write-Host "$env:WIKI_SOURCE_REPO"
+          Write-Host "$env:WIKI_SOURCE_REPO_DIR"
+          Write-Host "$env:WIKI_TARGET_REPO"
       # - name: Checkout Source Repo
       #   uses: actions/checkout@v2
       #   with:
