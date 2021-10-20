@@ -18,7 +18,7 @@ env:
 jobs:
   sync-wiki:
     name: Sync docs/wiki to Wiki
-    if: github.repository == 'Azure/ResourceModules'
+    # if: github.repository == 'Azure/ResourceModules'
     runs-on: ubuntu-latest
     steps:
       - name: Set environment variables
