@@ -90,6 +90,7 @@ jobs:
         working-directory: ${{ env.GITHUB_WORKSPACE }}
 
       - name: Stage & Push Files Into Wiki Repo
+        shell: pwsh
         run: |
           # git add .
           # git commit -m "$github_commit_message [$GITHUB_ACTOR/${GITHUB_SHA::8}]"
