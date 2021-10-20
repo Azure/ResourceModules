@@ -25,7 +25,7 @@ jobs:
         uses: actions/checkout@v2
         with:
           fetch-depth: 0
-          token: '${{ secrets.PLATFORM_REPO_UPDATE_PAT }}' # Sets general GIT credentials up
+          token: '${{ env.GITHUB_TOKEN }}' # Sets general GIT credentials up
       - name: Set environment variables
         uses: deep-mm/set-variables@v1.0
         with:
