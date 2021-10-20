@@ -131,6 +131,9 @@ param waveUpgradePaused bool = false
 @description('Optional. Array of role assignment objects that contain the \'roleDefinitionIdOrName\' and \'principalId\' to define RBAC role assignments on this resource. In the roleDefinitionIdOrName attribute, you can provide either the display name of the role definition, or it\'s fully qualified ID in the following format: \'/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11\'')
 param roleAssignments array = []
 
+@description('Optional. Array of Service Fabric cluster applications.')
+param serviceFabricClusterApplications array = []
+
 // Var section
 var azureActiveDirectory_var = {
   clientApplication: (!empty(azureActiveDirectory) ? azureActiveDirectory.clientApplication : json('null'))
@@ -321,6 +324,25 @@ module serviceFabricCluster_rbac './.bicep/nested_rbac.bicep' = [for (roleAssign
     roleAssignmentObj: roleAssignment
     builtInRoleNames: builtInRoleNames
     resourceName: serviceFabricCluster.name
+  }
+}]
+
+// Service Fabric cluster applications
+resource serviceFabricClusterApplication 'Microsoft.ServiceFabric/clusters/applications@2021-06-01' = [for (application, index) in serviceFabricClusterApplications: if (!empty(serviceFabricClusterApplications)) {
+  name: application[index].name
+  location: location
+  tags: tags
+  identity: (!empty(application[index].identity) ? application[index] : json('null'))
+  properties: {
+    managedIdentities: (!empty(application[index].managedIdentities) ? application[index].managedIdentities : json('null'))
+    maximumNodes: (!empty(application[index].maximumNodes) ? application[index].maximumNodes : null)
+    metrics: (!empty(application[index].metrics) ? application[index].metrics : json('null'))
+    minimumNodes: (!empty(application[index].minimumNodes) ? application[index].minimumNodes : null)
+    parameters: (!empty(application[index].parameters) ? application[index].parameters : json('null'))
+    removeApplicationCapacity: (!empty(application[index].removeApplicationCapacity) ? application[index].removeApplicationCapacity : null)
+    typeName: (!empty(application[index].typeName) ? application[index].typeName : null)
+    typeVersion: (!empty(application[index].typeVersion) ? application[index].typeVersion : null)
+    upgradePolicy: (!empty(application[index].upgradePolicy) ? application[index].upgradePolicy : json('null'))
   }
 }]
 

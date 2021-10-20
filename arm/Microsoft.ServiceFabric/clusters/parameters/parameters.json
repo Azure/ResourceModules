@@ -117,6 +117,55 @@
                     "receivers": ""
                 }]
             }]
+        },
+        "serviceFabricClusterApplications": {
+            "value": [{
+                "name": "",
+                "identity": {
+                    "type": "",
+                    "userAssignedIdentities": {}
+                },
+                "managedIdentities": [{
+                    "name": "",
+                    "principalId": ""
+                }],
+                "maximumNodes": "",
+                "metrics": [{
+                    "maximumCapacity": "",
+                    "name": "",
+                    "reservationCapacity": "",
+                    "totalApplicationCapacity": ""
+                }],
+                "minimumNodes": "",
+                "parameters": {},
+                "removeApplicationCapacity": "",
+                "typeName": "",
+                "typeVersion": "",
+                "upgradePolicy": {
+                    "applicationHealthPolicy": {
+                        "considerWarningAsError": "",
+                        "defaultServiceTypeHealthPolicy": {
+                            "maxPercentUnhealthyPartitionsPerService": "",
+                            "maxPercentUnhealthyReplicasPerPartition": "",
+                            "maxPercentUnhealthyServices": ""
+                        },
+                        "maxPercentUnhealthyDeployedApplications": "",
+                        "serviceTypeHealthPolicyMap": {}
+                    },
+                    "forceRestart": "",
+                    "recreateApplication": "",
+                    "rollingUpgradeMonitoringPolicy": {
+                        "failureAction": "",
+                        "healthCheckRetryTimeout": "",
+                        "healthCheckStableDuration": "",
+                        "healthCheckWaitDuration": "",
+                        "upgradeDomainTimeout": "",
+                        "upgradeTimeout": ""
+                    },
+                    "upgradeMode": "",
+                    "upgradeReplicaSetCheckTimeout": ""
+                }
+            }]
         }
     }
 }
