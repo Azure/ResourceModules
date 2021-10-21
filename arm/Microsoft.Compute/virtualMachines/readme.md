@@ -350,8 +350,6 @@ Tag names and tag values can be provided as needed. A tag can be left without a 
 
 ## Outputs
 
-## Template references
-
 | Output Name                   | Type   | Description                                           |
 | :---------------------------- | :----- | :---------------------------------------------------- |
 | `virtualMachineName`          | string | The name of the VM.                                   |
