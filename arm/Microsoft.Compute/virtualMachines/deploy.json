@@ -1,0 +1,2392 @@
+{
+  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+  "contentVersion": "1.0.0.0",
+  "metadata": {
+    "_generator": {
+      "name": "bicep",
+      "version": "0.4.1008.15138",
+      "templateHash": "16807711923344715846"
+    }
+  },
+  "parameters": {
+    "virtualMachineName": {
+      "type": "string",
+      "defaultValue": "[take(toLower(uniqueString(resourceGroup().name)), 10)]",
+      "metadata": {
+        "description": "Optional. The name of the virtual machine to be created. You should use a unique prefix to reduce name collisions in Active Directory. If no value is provided, a 10 character long unique string will be generated based on the Resource Group's name."
+      }
+    },
+    "vmComputerNamesTransformation": {
+      "type": "string",
+      "defaultValue": "none",
+      "metadata": {
+        "description": "Optional. Specifies whether the computer names should be transformed. The transformation is performed on all computer names. Available transformations are 'none' (Default), 'uppercase' and 'lowercase'."
+      }
+    },
+    "vmSize": {
+      "type": "string",
+      "defaultValue": "Standard_D2s_v3",
+      "metadata": {
+        "description": "Optional. Specifies the size for the VMs"
+      }
+    },
+    "imageReference": {
+      "type": "object",
+      "defaultValue": {},
+      "metadata": {
+        "description": "Optional. OS image reference. In case of marketplace images, it's the combination of the publisher, offer, sku, version attributes. In case of custom images it's the resource ID of the custom image."
+      }
+    },
+    "plan": {
+      "type": "object",
+      "defaultValue": {},
+      "metadata": {
+        "description": "Optional. Specifies information about the marketplace image used to create the virtual machine. This element is only used for marketplace images. Before you can use a marketplace image from an API, you must enable the image for programmatic use."
+      }
+    },
+    "osDisk": {
+      "type": "object",
+      "metadata": {
+        "description": "Required. Specifies the OS disk."
+      }
+    },
+    "dataDisks": {
+      "type": "array",
+      "defaultValue": [],
+      "metadata": {
+        "description": "Optional. Specifies the data disks."
+      }
+    },
+    "ultraSSDEnabled": {
+      "type": "bool",
+      "defaultValue": false,
+      "metadata": {
+        "description": "Optional. The flag that enables or disables a capability to have one or more managed data disks with UltraSSD_LRS storage account type on the VM or VMSS. Managed disks with storage account type UltraSSD_LRS can be added to a virtual machine or virtual machine scale set only if this property is enabled."
+      }
+    },
+    "adminUsername": {
+      "type": "secureString",
+      "metadata": {
+        "description": "Required. Administrator username"
+      }
+    },
+    "adminPassword": {
+      "type": "secureString",
+      "defaultValue": "",
+      "metadata": {
+        "description": "Required. When specifying a Windows Virtual Machine, this value should be passed"
+      }
+    },
+    "customData": {
+      "type": "string",
+      "defaultValue": "",
+      "metadata": {
+        "description": "Optional. Custom data associated to the VM, this value will be automatically converted into base64 to account for the expected VM format."
+      }
+    },
+    "windowsConfiguration": {
+      "type": "object",
+      "defaultValue": {},
+      "metadata": {
+        "description": "Optional. Specifies Windows operating system settings on the virtual machine."
+      }
+    },
+    "linuxConfiguration": {
+      "type": "object",
+      "defaultValue": {},
+      "metadata": {
+        "description": "Optional. Specifies the Linux operating system settings on the virtual machine."
+      }
+    },
+    "certificatesToBeInstalled": {
+      "type": "array",
+      "defaultValue": [],
+      "metadata": {
+        "description": "Optional. Specifies set of certificates that should be installed onto the virtual machine."
+      }
+    },
+    "vmPriority": {
+      "type": "string",
+      "defaultValue": "Regular",
+      "allowedValues": [
+        "Regular",
+        "Low",
+        "Spot"
+      ],
+      "metadata": {
+        "description": "Optional. Specifies the priority for the virtual machine."
+      }
+    },
+    "enableEvictionPolicy": {
+      "type": "bool",
+      "defaultValue": false,
+      "metadata": {
+        "description": "Optional. Specifies the eviction policy for the low priority virtual machine. Will result in 'Deallocate' eviction policy."
+      }
+    },
+    "maxPriceForLowPriorityVm": {
+      "type": "string",
+      "defaultValue": "",
+      "metadata": {
+        "description": "Optional. Specifies the maximum price you are willing to pay for a low priority VM/VMSS. This price is in US Dollars."
+      }
+    },
+    "dedicatedHostId": {
+      "type": "string",
+      "defaultValue": "",
+      "metadata": {
+        "description": "Optional. Specifies resource Id about the dedicated host that the virtual machine resides in."
+      }
+    },
+    "licenseType": {
+      "type": "string",
+      "defaultValue": "",
+      "allowedValues": [
+        "Windows_Client",
+        "Windows_Server",
+        ""
+      ],
+      "metadata": {
+        "description": "Optional. Specifies that the image or disk that is being used was licensed on-premises. This element is only used for images that contain the Windows Server operating system."
+      }
+    },
+    "managedServiceIdentity": {
+      "type": "string",
+      "defaultValue": "None",
+      "allowedValues": [
+        "None",
+        "SystemAssigned",
+        "SystemAssigned, UserAssigned",
+        "UserAssigned"
+      ],
+      "metadata": {
+        "description": "Optional. The type of identity used for the virtual machine. The type 'SystemAssigned, UserAssigned' includes both an implicitly created identity and a set of user assigned identities. The type 'None' (default) will remove any identities from the virtual machine."
+      }
+    },
+    "userAssignedIdentities": {
+      "type": "object",
+      "defaultValue": {},
+      "metadata": {
+        "description": "Optional. Mandatory if 'managedServiceIdentity' contains UserAssigned. The list of user identities associated with the Virtual Machine."
+      }
+    },
+    "bootDiagnosticStorageAccountName": {
+      "type": "string",
+      "defaultValue": "",
+      "metadata": {
+        "description": "Optional. Storage account used to store boot diagnostic information. Boot diagnostics will be disabled if no value is provided."
+      }
+    },
+    "bootDiagnosticStorageAccountUri": {
+      "type": "string",
+      "defaultValue": ".blob.core.windows.net/",
+      "metadata": {
+        "description": "Optional. Storage account boot diagnostic base URI."
+      }
+    },
+    "proximityPlacementGroupName": {
+      "type": "string",
+      "defaultValue": "",
+      "metadata": {
+        "description": "Optional. Resource name of a proximity placement group."
+      }
+    },
+    "availabilitySetName": {
+      "type": "string",
+      "defaultValue": "",
+      "metadata": {
+        "description": "Optional. Resource name of an availability set. Cannot be used in combination with availability zone nor scale set."
+      }
+    },
+    "useAvailabilityZone": {
+      "type": "bool",
+      "defaultValue": false,
+      "metadata": {
+        "description": "Optional. Creates an availability zone and adds the VMs to it. Cannot be used in combination with availability set nor scale set."
+      }
+    },
+    "availabilityZone": {
+      "type": "int",
+      "defaultValue": 0,
+      "allowedValues": [
+        0,
+        1,
+        2,
+        3
+      ],
+      "metadata": {
+        "description": "Optional. If set to 1, 2 or 3, the availability zone for all VMs is hardcoded to that value. If zero, then the automatic algorithm will be used to give every VM in a different zone (up to three zones). Cannot be used in combination with availability set nor scale set."
+      }
+    },
+    "nicConfigurations": {
+      "type": "array",
+      "metadata": {
+        "description": "Required. Configures NICs and PIPs."
+      }
+    },
+    "pipLogsToEnable": {
+      "type": "array",
+      "defaultValue": [
+        "DDoSProtectionNotifications",
+        "DDoSMitigationFlowLogs",
+        "DDoSMitigationReports"
+      ],
+      "allowedValues": [
+        "DDoSProtectionNotifications",
+        "DDoSMitigationFlowLogs",
+        "DDoSMitigationReports"
+      ],
+      "metadata": {
+        "description": "Optional. The name of logs that will be streamed."
+      }
+    },
+    "pipMetricsToEnable": {
+      "type": "array",
+      "defaultValue": [
+        "AllMetrics"
+      ],
+      "allowedValues": [
+        "AllMetrics"
+      ],
+      "metadata": {
+        "description": "Optional. The name of metrics that will be streamed."
+      }
+    },
+    "nicMetricsToEnable": {
+      "type": "array",
+      "defaultValue": [
+        "AllMetrics"
+      ],
+      "allowedValues": [
+        "AllMetrics"
+      ],
+      "metadata": {
+        "description": "Optional. The name of metrics that will be streamed."
+      }
+    },
+    "backupVaultName": {
+      "type": "string",
+      "defaultValue": "",
+      "metadata": {
+        "description": "Optional. Recovery service vault name to add VMs to backup."
+      }
+    },
+    "backupVaultResourceGroup": {
+      "type": "string",
+      "defaultValue": "[resourceGroup().name]",
+      "metadata": {
+        "description": "Optional. Resource group of the backup recovery service vault. If not provided the current resource group name is considered by default."
+      }
+    },
+    "backupPolicyName": {
+      "type": "string",
+      "defaultValue": "DefaultPolicy",
+      "metadata": {
+        "description": "Optional. Backup policy the VMs should be using for backup."
+      }
+    },
+    "enableServerSideEncryption": {
+      "type": "bool",
+      "defaultValue": false,
+      "metadata": {
+        "description": "Optional. Specifies if Windows VM disks should be encrypted with Server-side encryption + Customer managed Key."
+      }
+    },
+    "allowExtensionOperations": {
+      "type": "bool",
+      "defaultValue": true,
+      "metadata": {
+        "description": "Optional. Specifies whether extension operations should be allowed on the virtual machine. This may only be set to False when no extensions are present on the virtual machine."
+      }
+    },
+    "enableDomainJoinExtension": {
+      "type": "bool",
+      "defaultValue": false,
+      "metadata": {
+        "description": "Optional. Specifies if the Domain Join Extension should be enabled."
+      }
+    },
+    "domainJoinSettings": {
+      "type": "object",
+      "defaultValue": {},
+      "metadata": {
+        "domainName": "Optional. Mandatory if enableDomainJoinExtension is set to true. Specifies the FQDN the of the domain the VM will be joined to. Currently implemented for Windows VMs only",
+        "domainJoinUser": "Optional. Mandatory if enableDomainJoinExtension is set to true. User used for the join to the domain. Format: username@domainFQDN",
+        "domainJoinOU": "Optional. Specifies an organizational unit (OU) for the domain account. Enter the full distinguished name of the OU in quotation marks. Example: \"OU=testOU; DC=domain; DC=Domain; DC=com\"",
+        "domainJoinRestart": "Optional. Controls the restart of vm after executing domain join",
+        "domainJoinOptions": "Optional. Set of bit flags that define the join options. Example: 3 is a combination of NETSETUP_JOIN_DOMAIN (0x00000001) & NETSETUP_ACCT_CREATE (0x00000002) i.e. will join the domain and create the account on the domain. For more information see https://msdn.microsoft.com/en-us/library/aa392154(v=vs.85).aspx",
+        "description": "Optional. The Domain Join configuration object"
+      }
+    },
+    "domainJoinPassword": {
+      "type": "secureString",
+      "defaultValue": "",
+      "metadata": {
+        "description": "Optional. Required if domainName is specified. Password of the user specified in domainJoinUser parameter"
+      }
+    },
+    "enableMicrosoftAntiMalware": {
+      "type": "bool",
+      "defaultValue": false,
+      "metadata": {
+        "description": "Optional. Enables Microsoft Windows Defender AV."
+      }
+    },
+    "microsoftAntiMalwareSettings": {
+      "type": "object",
+      "defaultValue": {},
+      "metadata": {
+        "description": "Optional. Settings for Microsoft Windows Defender AV extension."
+      }
+    },
+    "enableWindowsMMAAgent": {
+      "type": "bool",
+      "defaultValue": false,
+      "metadata": {
+        "description": "Optional. Specifies if MMA agent for Windows VM should be enabled."
+      }
+    },
+    "enableLinuxMMAAgent": {
+      "type": "bool",
+      "defaultValue": false,
+      "metadata": {
+        "description": "Optional. Specifies if MMA agent for Linux VM should be enabled."
+      }
+    },
+    "enableWindowsDependencyAgent": {
+      "type": "bool",
+      "defaultValue": false,
+      "metadata": {
+        "description": "Optional. Specifies if Azure Dependency Agent for Windows VM should be enabled. Requires WindowsMMAAgent to be enabled."
+      }
+    },
+    "enableLinuxDependencyAgent": {
+      "type": "bool",
+      "defaultValue": false,
+      "metadata": {
+        "description": "Optional. Specifies if Azure Dependency Agent for Linux VM should be enabled. Requires LinuxMMAAgent to be enabled."
+      }
+    },
+    "enableNetworkWatcherWindows": {
+      "type": "bool",
+      "defaultValue": false,
+      "metadata": {
+        "description": "Optional. Specifies if Azure Network Watcher Agent for Windows VM should be enabled."
+      }
+    },
+    "enableNetworkWatcherLinux": {
+      "type": "bool",
+      "defaultValue": false,
+      "metadata": {
+        "description": "Optional. Specifies if Azure Network Watcher Agent for Linux VM should be enabled."
+      }
+    },
+    "enableWindowsDiskEncryption": {
+      "type": "bool",
+      "defaultValue": false,
+      "metadata": {
+        "description": "Optional. Specifies if Windows VM disks should be encrypted. If enabled, boot diagnostics must be enabled as well."
+      }
+    },
+    "enableLinuxDiskEncryption": {
+      "type": "bool",
+      "defaultValue": false,
+      "metadata": {
+        "description": "Optional. Specifies if Linux VM disks should be encrypted. If enabled, boot diagnostics must be enabled as well."
+      }
+    },
+    "diskEncryptionSettings": {
+      "type": "object",
+      "defaultValue": {},
+      "metadata": {
+        "EncryptionOperation": "Set to \"EnableEncryption\" to enable disk encryption",
+        "KeyVaultURL": "Optional. URL of the Key Vault instance where the Key Encryption Key (KEK) resides",
+        "KeyVaultResourceId": "Optional. Resource identifier of the Key Vault instance where the Key Encryption Key (KEK) resides",
+        "KeyEncryptionKeyURL": "Optional. URL of the KeyEncryptionKey used to encrypt the volume encryption key",
+        "KekVaultResourceId": "Optional. Resource identifier of the Key Vault instance where the Key Encryption Key (KEK) resides",
+        "KeyEncryptionAlgorithm": "Optional. Specifies disk key encryption algorithm. Possible values: \"RSA-OAEP\",\"RSA-OAEP-256\",\"RSA1_5\"",
+        "VolumeType": "Optional. Type of the volume OS or Data to perform encryption operation. Possible values: \"OS\",\"Data\",\"All\"",
+        "ResizeOSDisk": "Optional. Should the OS partition be resized to occupy full OS VHD before splitting system volume",
+        "description": "Optional. Settings for Azure Disk Encription extension."
+      }
+    },
+    "forceUpdateTag": {
+      "type": "string",
+      "defaultValue": "1.0",
+      "metadata": {
+        "description": "Optional. Pass in an unique value like a GUID everytime the operation needs to be force run"
+      }
+    },
+    "enableDesiredStateConfiguration": {
+      "type": "bool",
+      "defaultValue": false,
+      "metadata": {
+        "description": "Optional. Specifies if Desired State Configuration Extension should be enabled."
+      }
+    },
+    "desiredStateConfigurationSettings": {
+      "type": "object",
+      "defaultValue": {},
+      "metadata": {
+        "description": "Optional. The DSC configuration object"
+      }
+    },
+    "enableCustomScriptExtension": {
+      "type": "bool",
+      "defaultValue": false,
+      "metadata": {
+        "description": "Optional. Specifies if Custom Script Extension should be enabled."
+      }
+    },
+    "windowsScriptExtensionFileData": {
+      "type": "array",
+      "defaultValue": [],
+      "metadata": {
+        "description": "Optional. Array of objects that specifies URIs and the storageAccountId of the scripts that need to be downloaded and run by the Custom Script Extension on a Windows VM."
+      }
+    },
+    "windowsScriptExtensionCommandToExecute": {
+      "type": "secureString",
+      "defaultValue": "",
+      "metadata": {
+        "description": "Optional. Specifies the command that should be run on a Windows VM."
+      }
+    },
+    "cseStorageAccountName": {
+      "type": "string",
+      "defaultValue": "",
+      "metadata": {
+        "description": "Optional. The name of the storage account to access for the CSE script(s)."
+      }
+    },
+    "cseStorageAccountKey": {
+      "type": "string",
+      "defaultValue": "",
+      "metadata": {
+        "description": "Optional. The storage key of the storage account to access for the CSE script(s)."
+      }
+    },
+    "cseManagedIdentity": {
+      "type": "object",
+      "defaultValue": {},
+      "metadata": {
+        "description": "Optional. A managed identity to use for the CSE."
+      }
+    },
+    "location": {
+      "type": "string",
+      "defaultValue": "[resourceGroup().location]",
+      "metadata": {
+        "description": "Optional. Location for all resources."
+      }
+    },
+    "diagnosticLogsRetentionInDays": {
+      "type": "int",
+      "defaultValue": 365,
+      "maxValue": 365,
+      "minValue": 0,
+      "metadata": {
+        "description": "Optional. Specifies the number of days that logs will be kept for; a value of 0 will retain data indefinitely."
+      }
+    },
+    "diagnosticStorageAccountId": {
+      "type": "string",
+      "defaultValue": "",
+      "metadata": {
+        "description": "Optional. Resource identifier of the Diagnostic Storage Account."
+      }
+    },
+    "workspaceId": {
+      "type": "string",
+      "defaultValue": "",
+      "metadata": {
+        "description": "Optional. Resource identifier of Log Analytics."
+      }
+    },
+    "eventHubAuthorizationRuleId": {
+      "type": "string",
+      "defaultValue": "",
+      "metadata": {
+        "description": "Optional. Resource ID of the event hub authorization rule for the Event Hubs namespace in which the event hub should be created or streamed to."
+      }
+    },
+    "eventHubName": {
+      "type": "string",
+      "defaultValue": "",
+      "metadata": {
+        "description": "Optional. Name of the event hub within the namespace to which logs are streamed. Without this, an event hub is created for each log category."
+      }
+    },
+    "lock": {
+      "type": "string",
+      "defaultValue": "NotSpecified",
+      "metadata": {
+        "description": "Optional. Specify the type of lock."
+      },
+      "allowedValues": [
+        "CanNotDelete",
+        "NotSpecified",
+        "ReadOnly"
+      ]
+    },
+    "roleAssignments": {
+      "type": "array",
+      "defaultValue": [],
+      "metadata": {
+        "description": "Optional. Array of role assignment objects that contain the 'roleDefinitionIdOrName' and 'principalId' to define RBAC role assignments on this resource. In the roleDefinitionIdOrName attribute, you can provide either the display name of the role definition, or its fully qualified ID in the following format: '/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11'"
+      }
+    },
+    "tags": {
+      "type": "object",
+      "defaultValue": {},
+      "metadata": {
+        "description": "Optional. Tags of the resource."
+      }
+    },
+    "cuaId": {
+      "type": "string",
+      "defaultValue": "",
+      "metadata": {
+        "description": "Optional. Customer Usage Attribution id (GUID). This GUID must be previously registered"
+      }
+    },
+    "baseTime": {
+      "type": "string",
+      "defaultValue": "[utcNow('u')]",
+      "metadata": {
+        "description": "Generated. Do not provide a value! This date value is used to generate a registration token."
+      }
+    },
+    "sasTokenValidityLength": {
+      "type": "string",
+      "defaultValue": "PT8H",
+      "metadata": {
+        "description": "Optional. SAS token validity length to use to download files from storage accounts. Usage: 'PT8H' - valid for 8 hours; 'P5D' - valid for 5 days; 'P1Y' - valid for 1 year. When not provided, the SAS token will be valid for 8 hours."
+      }
+    }
+  },
+  "functions": [],
+  "variables": {
+    "vmComputerNameTransformed": "[if(equals(parameters('vmComputerNamesTransformation'), 'uppercase'), toUpper(parameters('virtualMachineName')), if(equals(parameters('vmComputerNamesTransformation'), 'lowercase'), toLower(parameters('virtualMachineName')), parameters('virtualMachineName')))]",
+    "identity": {
+      "type": "[parameters('managedServiceIdentity')]",
+      "userAssignedIdentities": "[if(empty(parameters('userAssignedIdentities')), json('null'), parameters('userAssignedIdentities'))]"
+    },
+    "accountSasProperties": {
+      "signedServices": "b",
+      "signedPermission": "r",
+      "signedExpiry": "[dateTimeAdd(parameters('baseTime'), parameters('sasTokenValidityLength'))]",
+      "signedResourceTypes": "o",
+      "signedProtocol": "https"
+    },
+    "domainJoinProtectedSettings": {
+      "Password": "[parameters('domainJoinPassword')]"
+    },
+    "builtInRoleNames": {
+      "Owner": "[subscriptionResourceId('Microsoft.Authorization/roleDefinitions', '8e3af657-a8ff-443c-a75c-2fe8c4bcb635')]",
+      "Contributor": "[subscriptionResourceId('Microsoft.Authorization/roleDefinitions', 'b24988ac-6180-42a0-ab88-20f7382dd24c')]",
+      "Reader": "[subscriptionResourceId('Microsoft.Authorization/roleDefinitions', 'acdd72a7-3385-48ef-bd42-f606fba81ae7')]",
+      "Avere Contributor": "[subscriptionResourceId('Microsoft.Authorization/roleDefinitions', '4f8fab4f-1852-4a58-a46a-8eaf358af14a')]",
+      "Avere Operator": "[subscriptionResourceId('Microsoft.Authorization/roleDefinitions', 'c025889f-8102-4ebf-b32c-fc0c6f0c6bd9')]",
+      "DevTest Labs User": "[subscriptionResourceId('Microsoft.Authorization/roleDefinitions', '76283e04-6283-4c54-8f91-bcf1374a3c64')]",
+      "Log Analytics Contributor": "[subscriptionResourceId('Microsoft.Authorization/roleDefinitions', '92aaf0da-9dab-42b6-94a3-d43ce8d16293')]",
+      "Log Analytics Reader": "[subscriptionResourceId('Microsoft.Authorization/roleDefinitions', '73c42c96-874c-492b-b04d-ab87d138a893')]",
+      "Managed Application Contributor Role": "[subscriptionResourceId('Microsoft.Authorization/roleDefinitions', '641177b8-a67a-45b9-a033-47bc880bb21e')]",
+      "Managed Application Operator Role": "[subscriptionResourceId('Microsoft.Authorization/roleDefinitions', 'c7393b34-138c-406f-901b-d8cf2b17e6ae')]",
+      "Managed Applications Reader": "[subscriptionResourceId('Microsoft.Authorization/roleDefinitions', 'b9331d33-8a36-4f8c-b097-4f54124fdb44')]",
+      "Microsoft OneAsset Reader": "[subscriptionResourceId('Microsoft.Authorization/roleDefinitions', 'fd1bb084-1503-4bd2-99c0-630220046786')]",
+      "Monitoring Contributor": "[subscriptionResourceId('Microsoft.Authorization/roleDefinitions', '749f88d5-cbae-40b8-bcfc-e573ddc772fa')]",
+      "Monitoring Metrics Publisher": "[subscriptionResourceId('Microsoft.Authorization/roleDefinitions', '3913510d-42f4-4e42-8a64-420c390055eb')]",
+      "Monitoring Reader": "[subscriptionResourceId('Microsoft.Authorization/roleDefinitions', '43d0d8ad-25c7-4714-9337-8ba259a9fe05')]",
+      "Reservation Purchaser": "[subscriptionResourceId('Microsoft.Authorization/roleDefinitions', 'f7b75c60-3036-4b75-91c3-6b41c27c1689')]",
+      "Resource Policy Contributor": "[subscriptionResourceId('Microsoft.Authorization/roleDefinitions', '36243c78-bf99-498c-9df9-86d9f8d28608')]",
+      "User Access Administrator": "[subscriptionResourceId('Microsoft.Authorization/roleDefinitions', '18d7d88d-d35e-4fb5-a5c3-7773c20a72d9')]",
+      "Virtual Machine Administrator Login": "[subscriptionResourceId('Microsoft.Authorization/roleDefinitions', '1c0163c0-47e6-4577-8991-ea5c82e286e4')]",
+      "Virtual Machine Contributor": "[subscriptionResourceId('Microsoft.Authorization/roleDefinitions', '9980e02c-c2be-4d73-94e8-173b1dc7cf3c')]",
+      "Virtual Machine User Login": "[subscriptionResourceId('Microsoft.Authorization/roleDefinitions', 'fb879df8-f326-4884-b1cf-06f3ad86be52')]"
+    }
+  },
+  "resources": [
+    {
+      "type": "Microsoft.Compute/virtualMachines",
+      "apiVersion": "2020-06-01",
+      "name": "[parameters('virtualMachineName')]",
+      "location": "[parameters('location')]",
+      "identity": "[variables('identity')]",
+      "tags": "[parameters('tags')]",
+      "zones": "[if(parameters('useAvailabilityZone'), array(parameters('availabilityZone')), json('null'))]",
+      "plan": "[if(empty(parameters('plan')), json('null'), parameters('plan'))]",
+      "properties": {
+        "hardwareProfile": {
+          "vmSize": "[parameters('vmSize')]"
+        },
+        "storageProfile": {
+          "copy": [
+            {
+              "name": "dataDisks",
+              "count": "[length(parameters('dataDisks'))]",
+              "input": {
+                "lun": "[copyIndex('dataDisks')]",
+                "name": "[format('{0}-disk-data-{1}', parameters('virtualMachineName'), padLeft(add(copyIndex('dataDisks'), 1), 2, '0'))]",
+                "diskSizeGB": "[parameters('dataDisks')[copyIndex('dataDisks')].diskSizeGB]",
+                "createOption": "[parameters('dataDisks')[copyIndex('dataDisks')].createOption]",
+                "caching": "[parameters('dataDisks')[copyIndex('dataDisks')].caching]",
+                "managedDisk": {
+                  "storageAccountType": "[parameters('dataDisks')[copyIndex('dataDisks')].managedDisk.storageAccountType]",
+                  "diskEncryptionSet": {
+                    "id": "[if(parameters('enableServerSideEncryption'), parameters('dataDisks')[copyIndex('dataDisks')].managedDisk.diskEncryptionSet.id, json('null'))]"
+                  }
+                }
+              }
+            }
+          ],
+          "imageReference": "[parameters('imageReference')]",
+          "osDisk": {
+            "name": "[format('{0}-disk-os-01', parameters('virtualMachineName'))]",
+            "createOption": "[parameters('osDisk').createOption]",
+            "diskSizeGB": "[parameters('osDisk').diskSizeGB]",
+            "managedDisk": {
+              "storageAccountType": "[parameters('osDisk').managedDisk.storageAccountType]"
+            }
+          }
+        },
+        "additionalCapabilities": {
+          "ultraSSDEnabled": "[parameters('ultraSSDEnabled')]"
+        },
+        "osProfile": {
+          "computerName": "[variables('vmComputerNameTransformed')]",
+          "adminUsername": "[parameters('adminUsername')]",
+          "adminPassword": "[parameters('adminPassword')]",
+          "customData": "[if(empty(parameters('customData')), json('null'), base64(parameters('customData')))]",
+          "windowsConfiguration": "[if(empty(parameters('windowsConfiguration')), json('null'), parameters('windowsConfiguration'))]",
+          "linuxConfiguration": "[if(empty(parameters('linuxConfiguration')), json('null'), parameters('linuxConfiguration'))]",
+          "secrets": "[parameters('certificatesToBeInstalled')]",
+          "allowExtensionOperations": "[parameters('allowExtensionOperations')]"
+        },
+        "networkProfile": {
+          "copy": [
+            {
+              "name": "networkInterfaces",
+              "count": "[length(parameters('nicConfigurations'))]",
+              "input": {
+                "properties": {
+                  "primary": "[if(equals(copyIndex('networkInterfaces'), 0), true(), false())]"
+                },
+                "id": "[resourceId('Microsoft.Network/networkInterfaces', format('{0}{1}', parameters('virtualMachineName'), parameters('nicConfigurations')[copyIndex('networkInterfaces')].nicSuffix))]"
+              }
+            }
+          ]
+        },
+        "diagnosticsProfile": {
+          "bootDiagnostics": {
+            "enabled": "[not(empty(parameters('bootDiagnosticStorageAccountName')))]",
+            "storageUri": "[if(empty(parameters('bootDiagnosticStorageAccountName')), json('null'), format('https://{0}{1}', parameters('bootDiagnosticStorageAccountName'), parameters('bootDiagnosticStorageAccountUri')))]"
+          }
+        },
+        "availabilitySet": "[if(empty(parameters('availabilitySetName')), json('null'), json(format('{{\"id\":\"{0}\"}}', resourceId('Microsoft.Compute/availabilitySets', parameters('availabilitySetName')))))]",
+        "proximityPlacementGroup": "[if(empty(parameters('proximityPlacementGroupName')), json('null'), json(format('{{\"id\":\"{0}\"}}', resourceId('Microsoft.Compute/proximityPlacementGroups', parameters('proximityPlacementGroupName')))))]",
+        "priority": "[parameters('vmPriority')]",
+        "evictionPolicy": "[if(parameters('enableEvictionPolicy'), 'Deallocate', json('null'))]",
+        "billingProfile": "[if(and(not(empty(parameters('vmPriority'))), not(empty(parameters('maxPriceForLowPriorityVm')))), json(format('{{\"maxPrice\":\"{0}\"}}', parameters('maxPriceForLowPriorityVm'))), json('null'))]",
+        "host": "[if(not(empty(parameters('dedicatedHostId'))), json(format('{{\"id\":\"{0}\"}}', parameters('dedicatedHostId'))), json('null'))]",
+        "licenseType": "[if(empty(parameters('licenseType')), json('null'), parameters('licenseType'))]"
+      },
+      "dependsOn": [
+        "virtualMachine_nic"
+      ]
+    },
+    {
+      "condition": "[not(equals(parameters('lock'), 'NotSpecified'))]",
+      "type": "Microsoft.Authorization/locks",
+      "apiVersion": "2016-09-01",
+      "scope": "[format('Microsoft.Compute/virtualMachines/{0}', parameters('virtualMachineName'))]",
+      "name": "[format('{0}-{1}-lock', parameters('virtualMachineName'), parameters('lock'))]",
+      "properties": {
+        "level": "[parameters('lock')]",
+        "notes": "[if(equals(parameters('lock'), 'CanNotDelete'), 'Cannot delete resource or child resources.', 'Cannot modify the resource or child resources.')]"
+      },
+      "dependsOn": [
+        "[resourceId('Microsoft.Compute/virtualMachines', parameters('virtualMachineName'))]"
+      ]
+    },
+    {
+      "condition": "[not(empty(parameters('cuaId')))]",
+      "type": "Microsoft.Resources/deployments",
+      "apiVersion": "2020-06-01",
+      "name": "[format('pid-{0}', parameters('cuaId'))]",
+      "properties": {
+        "expressionEvaluationOptions": {
+          "scope": "inner"
+        },
+        "mode": "Incremental",
+        "parameters": {},
+        "template": {
+          "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+          "contentVersion": "1.0.0.0",
+          "metadata": {
+            "_generator": {
+              "name": "bicep",
+              "version": "0.4.1008.15138",
+              "templateHash": "14669053462841078328"
+            }
+          },
+          "functions": [],
+          "resources": []
+        }
+      }
+    },
+    {
+      "copy": {
+        "name": "virtualMachine_nic",
+        "count": "[length(parameters('nicConfigurations'))]"
+      },
+      "type": "Microsoft.Resources/deployments",
+      "apiVersion": "2020-06-01",
+      "name": "[format('{0}-nic-{1}', deployment().name, copyIndex())]",
+      "properties": {
+        "expressionEvaluationOptions": {
+          "scope": "inner"
+        },
+        "mode": "Incremental",
+        "parameters": {
+          "networkInterfaceName": {
+            "value": "[format('{0}{1}', parameters('virtualMachineName'), parameters('nicConfigurations')[copyIndex()].nicSuffix)]"
+          },
+          "virtualMachineName": {
+            "value": "[parameters('virtualMachineName')]"
+          },
+          "location": {
+            "value": "[parameters('location')]"
+          },
+          "tags": {
+            "value": "[parameters('tags')]"
+          },
+          "enableIPForwarding": {
+            "value": "[if(contains(parameters('nicConfigurations')[copyIndex()], 'enableIPForwarding'), if(not(empty(parameters('nicConfigurations')[copyIndex()].enableIPForwarding)), parameters('nicConfigurations')[copyIndex()].enableIPForwarding, false()), false())]"
+          },
+          "enableAcceleratedNetworking": {
+            "value": "[if(contains(parameters('nicConfigurations')[copyIndex()], 'enableAcceleratedNetworking'), if(not(empty(parameters('nicConfigurations')[copyIndex()].enableAcceleratedNetworking)), parameters('nicConfigurations')[copyIndex()].enableAcceleratedNetworking, false()), false())]"
+          },
+          "dnsServers": {
+            "value": "[if(contains(parameters('nicConfigurations')[copyIndex()], 'dnsServers'), if(not(empty(parameters('nicConfigurations')[copyIndex()].dnsServers)), parameters('nicConfigurations')[copyIndex()].dnsServers, json('[]')), json('[]'))]"
+          },
+          "networkSecurityGroupId": {
+            "value": "[if(contains(parameters('nicConfigurations')[copyIndex()], 'nsgId'), if(not(empty(parameters('nicConfigurations')[copyIndex()].nsgId)), parameters('nicConfigurations')[copyIndex()].nsgId, ''), '')]"
+          },
+          "ipConfigurationArray": {
+            "value": "[parameters('nicConfigurations')[copyIndex()].ipConfigurations]"
+          },
+          "lock": {
+            "value": "[parameters('lock')]"
+          },
+          "diagnosticStorageAccountId": {
+            "value": "[parameters('diagnosticStorageAccountId')]"
+          },
+          "diagnosticLogsRetentionInDays": {
+            "value": "[parameters('diagnosticLogsRetentionInDays')]"
+          },
+          "workspaceId": {
+            "value": "[parameters('workspaceId')]"
+          },
+          "eventHubAuthorizationRuleId": {
+            "value": "[parameters('eventHubAuthorizationRuleId')]"
+          },
+          "eventHubName": {
+            "value": "[parameters('eventHubName')]"
+          },
+          "metricsToEnable": {
+            "value": "[parameters('nicMetricsToEnable')]"
+          },
+          "pipMetricsToEnable": {
+            "value": "[parameters('pipMetricsToEnable')]"
+          },
+          "pipLogsToEnable": {
+            "value": "[parameters('pipLogsToEnable')]"
+          },
+          "builtInRoleNames": {
+            "value": "[variables('builtInRoleNames')]"
+          },
+          "roleAssignments": {
+            "value": "[if(contains(parameters('nicConfigurations')[copyIndex()], 'roleAssignments'), if(not(empty(parameters('nicConfigurations')[copyIndex()].roleAssignments)), parameters('nicConfigurations')[copyIndex()].roleAssignments, json('[]')), json('[]'))]"
+          }
+        },
+        "template": {
+          "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+          "contentVersion": "1.0.0.0",
+          "metadata": {
+            "_generator": {
+              "name": "bicep",
+              "version": "0.4.1008.15138",
+              "templateHash": "15124346941430230693"
+            }
+          },
+          "parameters": {
+            "networkInterfaceName": {
+              "type": "string"
+            },
+            "virtualMachineName": {
+              "type": "string"
+            },
+            "location": {
+              "type": "string"
+            },
+            "tags": {
+              "type": "object"
+            },
+            "enableIPForwarding": {
+              "type": "bool",
+              "defaultValue": false
+            },
+            "enableAcceleratedNetworking": {
+              "type": "bool",
+              "defaultValue": false
+            },
+            "dnsServers": {
+              "type": "array",
+              "defaultValue": []
+            },
+            "networkSecurityGroupId": {
+              "type": "string",
+              "defaultValue": ""
+            },
+            "ipConfigurationArray": {
+              "type": "array"
+            },
+            "lock": {
+              "type": "string"
+            },
+            "diagnosticStorageAccountId": {
+              "type": "string"
+            },
+            "diagnosticLogsRetentionInDays": {
+              "type": "int"
+            },
+            "workspaceId": {
+              "type": "string"
+            },
+            "eventHubAuthorizationRuleId": {
+              "type": "string"
+            },
+            "eventHubName": {
+              "type": "string"
+            },
+            "pipMetricsToEnable": {
+              "type": "array"
+            },
+            "pipLogsToEnable": {
+              "type": "array"
+            },
+            "metricsToEnable": {
+              "type": "array"
+            },
+            "builtInRoleNames": {
+              "type": "object"
+            },
+            "roleAssignments": {
+              "type": "array"
+            }
+          },
+          "functions": [],
+          "variables": {
+            "copy": [
+              {
+                "name": "diagnosticsMetrics",
+                "count": "[length(parameters('metricsToEnable'))]",
+                "input": {
+                  "category": "[parameters('metricsToEnable')[copyIndex('diagnosticsMetrics')]]",
+                  "timeGrain": null,
+                  "enabled": true,
+                  "retentionPolicy": {
+                    "enabled": true,
+                    "days": "[parameters('diagnosticLogsRetentionInDays')]"
+                  }
+                }
+              }
+            ],
+            "dnsServersValues": {
+              "dnsServers": "[parameters('dnsServers')]"
+            },
+            "networkSecurityGroup": {
+              "id": "[parameters('networkSecurityGroupId')]"
+            }
+          },
+          "resources": [
+            {
+              "type": "Microsoft.Network/networkInterfaces",
+              "apiVersion": "2020-08-01",
+              "name": "[parameters('networkInterfaceName')]",
+              "location": "[parameters('location')]",
+              "tags": "[parameters('tags')]",
+              "properties": {
+                "copy": [
+                  {
+                    "name": "ipConfigurations",
+                    "count": "[length(parameters('ipConfigurationArray'))]",
+                    "input": {
+                      "name": "[if(not(empty(parameters('ipConfigurationArray')[copyIndex('ipConfigurations')].name)), parameters('ipConfigurationArray')[copyIndex('ipConfigurations')].name, json('null'))]",
+                      "properties": {
+                        "primary": "[if(equals(copyIndex('ipConfigurations'), 0), true(), false())]",
+                        "privateIPAllocationMethod": "[if(contains(parameters('ipConfigurationArray')[copyIndex('ipConfigurations')], 'privateIPAllocationMethod'), if(not(empty(parameters('ipConfigurationArray')[copyIndex('ipConfigurations')].privateIPAllocationMethod)), parameters('ipConfigurationArray')[copyIndex('ipConfigurations')].privateIPAllocationMethod, json('null')), json('null'))]",
+                        "privateIPAddress": "[if(contains(parameters('ipConfigurationArray')[copyIndex('ipConfigurations')], 'vmIPAddress'), if(empty(parameters('ipConfigurationArray')[copyIndex('ipConfigurations')].vmIPAddress), json('null'), parameters('ipConfigurationArray')[copyIndex('ipConfigurations')].vmIPAddress), json('null'))]",
+                        "publicIPAddress": "[if(contains(parameters('ipConfigurationArray')[copyIndex('ipConfigurations')], 'pipconfiguration'), json(format('{{\"id\":\"{0}\"}}', resourceId('Microsoft.Network/publicIPAddresses', format('{0}{1}', parameters('virtualMachineName'), parameters('ipConfigurationArray')[copyIndex('ipConfigurations')].pipconfiguration.publicIpNameSuffix)))), json('null'))]",
+                        "subnet": {
+                          "id": "[parameters('ipConfigurationArray')[copyIndex('ipConfigurations')].subnetId]"
+                        }
+                      }
+                    }
+                  }
+                ],
+                "enableIPForwarding": "[parameters('enableIPForwarding')]",
+                "enableAcceleratedNetworking": "[parameters('enableAcceleratedNetworking')]",
+                "dnsSettings": "[if(not(empty(parameters('dnsServers'))), variables('dnsServersValues'), json('null'))]",
+                "networkSecurityGroup": "[if(not(empty(parameters('networkSecurityGroupId'))), variables('networkSecurityGroup'), json('null'))]"
+              },
+              "dependsOn": [
+                "networkInterface_publicIPConfigurations"
+              ]
+            },
+            {
+              "condition": "[not(equals(parameters('lock'), 'NotSpecified'))]",
+              "type": "Microsoft.Authorization/locks",
+              "apiVersion": "2016-09-01",
+              "scope": "[format('Microsoft.Network/networkInterfaces/{0}', parameters('networkInterfaceName'))]",
+              "name": "[format('{0}-{1}-lock', parameters('networkInterfaceName'), parameters('lock'))]",
+              "properties": {
+                "level": "[parameters('lock')]",
+                "notes": "[if(equals(parameters('lock'), 'CanNotDelete'), 'Cannot delete resource or child resources.', 'Cannot modify the resource or child resources.')]"
+              },
+              "dependsOn": [
+                "[resourceId('Microsoft.Network/networkInterfaces', parameters('networkInterfaceName'))]"
+              ]
+            },
+            {
+              "condition": "[or(or(or(not(empty(parameters('diagnosticStorageAccountId'))), not(empty(parameters('workspaceId')))), not(empty(parameters('eventHubAuthorizationRuleId')))), not(empty(parameters('eventHubName'))))]",
+              "type": "Microsoft.Insights/diagnosticSettings",
+              "apiVersion": "2017-05-01-preview",
+              "scope": "[format('Microsoft.Network/networkInterfaces/{0}', parameters('networkInterfaceName'))]",
+              "name": "[format('{0}-diagnosticSettings', parameters('networkInterfaceName'))]",
+              "properties": {
+                "storageAccountId": "[if(empty(parameters('diagnosticStorageAccountId')), json('null'), parameters('diagnosticStorageAccountId'))]",
+                "workspaceId": "[if(empty(parameters('workspaceId')), json('null'), parameters('workspaceId'))]",
+                "eventHubAuthorizationRuleId": "[if(empty(parameters('eventHubAuthorizationRuleId')), json('null'), parameters('eventHubAuthorizationRuleId'))]",
+                "eventHubName": "[if(empty(parameters('eventHubName')), json('null'), parameters('eventHubName'))]",
+                "metrics": "[if(and(and(and(empty(parameters('diagnosticStorageAccountId')), empty(parameters('workspaceId'))), empty(parameters('eventHubAuthorizationRuleId'))), empty(parameters('eventHubName'))), json('null'), variables('diagnosticsMetrics'))]"
+              },
+              "dependsOn": [
+                "[resourceId('Microsoft.Network/networkInterfaces', parameters('networkInterfaceName'))]"
+              ]
+            },
+            {
+              "condition": "[contains(parameters('ipConfigurationArray')[copyIndex()], 'pipconfiguration')]",
+              "copy": {
+                "name": "networkInterface_publicIPConfigurations",
+                "count": "[length(parameters('ipConfigurationArray'))]"
+              },
+              "type": "Microsoft.Resources/deployments",
+              "apiVersion": "2020-06-01",
+              "name": "[format('{0}-pip-{1}', deployment().name, copyIndex())]",
+              "properties": {
+                "expressionEvaluationOptions": {
+                  "scope": "inner"
+                },
+                "mode": "Incremental",
+                "parameters": {
+                  "publicIPAddressName": {
+                    "value": "[format('{0}{1}', parameters('virtualMachineName'), parameters('ipConfigurationArray')[copyIndex()].pipconfiguration.publicIpNameSuffix)]"
+                  },
+                  "publicIPPrefixId": {
+                    "value": "[if(contains(parameters('ipConfigurationArray')[copyIndex()].pipconfiguration, 'publicIPPrefixId'), if(not(empty(parameters('ipConfigurationArray')[copyIndex()].pipconfiguration.publicIPPrefixId)), parameters('ipConfigurationArray')[copyIndex()].pipconfiguration.publicIPPrefixId, ''), '')]"
+                  },
+                  "publicIPAllocationMethod": {
+                    "value": "[if(contains(parameters('ipConfigurationArray')[copyIndex()].pipconfiguration, 'publicIPAllocationMethod'), if(not(empty(parameters('ipConfigurationArray')[copyIndex()].pipconfiguration.publicIPAllocationMethod)), parameters('ipConfigurationArray')[copyIndex()].pipconfiguration.publicIPAllocationMethod, 'Static'), 'Static')]"
+                  },
+                  "skuName": {
+                    "value": "[if(contains(parameters('ipConfigurationArray')[copyIndex()].pipconfiguration, 'skuName'), if(not(empty(parameters('ipConfigurationArray')[copyIndex()].pipconfiguration.skuName)), parameters('ipConfigurationArray')[copyIndex()].pipconfiguration.skuName, 'Standard'), 'Standard')]"
+                  },
+                  "skuTier": {
+                    "value": "[if(contains(parameters('ipConfigurationArray')[copyIndex()].pipconfiguration, 'skuTier'), if(not(empty(parameters('ipConfigurationArray')[copyIndex()].pipconfiguration.skuTier)), parameters('ipConfigurationArray')[copyIndex()].pipconfiguration.skuTier, 'Regional'), 'Regional')]"
+                  },
+                  "location": {
+                    "value": "[parameters('location')]"
+                  },
+                  "diagnosticStorageAccountId": {
+                    "value": "[parameters('diagnosticStorageAccountId')]"
+                  },
+                  "diagnosticLogsRetentionInDays": {
+                    "value": "[parameters('diagnosticLogsRetentionInDays')]"
+                  },
+                  "workspaceId": {
+                    "value": "[parameters('workspaceId')]"
+                  },
+                  "eventHubAuthorizationRuleId": {
+                    "value": "[parameters('eventHubAuthorizationRuleId')]"
+                  },
+                  "eventHubName": {
+                    "value": "[parameters('eventHubName')]"
+                  },
+                  "metricsToEnable": {
+                    "value": "[parameters('pipMetricsToEnable')]"
+                  },
+                  "logsToEnable": {
+                    "value": "[parameters('pipLogsToEnable')]"
+                  },
+                  "lock": {
+                    "value": "[parameters('lock')]"
+                  },
+                  "builtInRoleNames": {
+                    "value": "[parameters('builtInRoleNames')]"
+                  },
+                  "roleAssignments": {
+                    "value": "[if(contains(parameters('ipConfigurationArray')[copyIndex()].pipconfiguration, 'roleAssignments'), if(not(empty(parameters('ipConfigurationArray')[copyIndex()].pipconfiguration.roleAssignments)), parameters('ipConfigurationArray')[copyIndex()].pipconfiguration.roleAssignments, json('[]')), json('[]'))]"
+                  },
+                  "tags": {
+                    "value": "[parameters('tags')]"
+                  }
+                },
+                "template": {
+                  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+                  "contentVersion": "1.0.0.0",
+                  "metadata": {
+                    "_generator": {
+                      "name": "bicep",
+                      "version": "0.4.1008.15138",
+                      "templateHash": "1975555709454000216"
+                    }
+                  },
+                  "parameters": {
+                    "publicIPAddressName": {
+                      "type": "string"
+                    },
+                    "publicIPPrefixId": {
+                      "type": "string"
+                    },
+                    "publicIPAllocationMethod": {
+                      "type": "string"
+                    },
+                    "skuName": {
+                      "type": "string"
+                    },
+                    "skuTier": {
+                      "type": "string"
+                    },
+                    "location": {
+                      "type": "string"
+                    },
+                    "diagnosticStorageAccountId": {
+                      "type": "string"
+                    },
+                    "diagnosticLogsRetentionInDays": {
+                      "type": "int"
+                    },
+                    "workspaceId": {
+                      "type": "string"
+                    },
+                    "eventHubAuthorizationRuleId": {
+                      "type": "string"
+                    },
+                    "eventHubName": {
+                      "type": "string"
+                    },
+                    "metricsToEnable": {
+                      "type": "array"
+                    },
+                    "logsToEnable": {
+                      "type": "array"
+                    },
+                    "lock": {
+                      "type": "string"
+                    },
+                    "builtInRoleNames": {
+                      "type": "object"
+                    },
+                    "roleAssignments": {
+                      "type": "array"
+                    },
+                    "tags": {
+                      "type": "object"
+                    }
+                  },
+                  "functions": [],
+                  "variables": {
+                    "copy": [
+                      {
+                        "name": "diagnosticsLogs",
+                        "count": "[length(parameters('logsToEnable'))]",
+                        "input": {
+                          "category": "[parameters('logsToEnable')[copyIndex('diagnosticsLogs')]]",
+                          "enabled": true,
+                          "retentionPolicy": {
+                            "enabled": true,
+                            "days": "[parameters('diagnosticLogsRetentionInDays')]"
+                          }
+                        }
+                      },
+                      {
+                        "name": "diagnosticsMetrics",
+                        "count": "[length(parameters('metricsToEnable'))]",
+                        "input": {
+                          "category": "[parameters('metricsToEnable')[copyIndex('diagnosticsMetrics')]]",
+                          "timeGrain": null,
+                          "enabled": true,
+                          "retentionPolicy": {
+                            "enabled": true,
+                            "days": "[parameters('diagnosticLogsRetentionInDays')]"
+                          }
+                        }
+                      }
+                    ],
+                    "publicIPPrefix": {
+                      "id": "[parameters('publicIPPrefixId')]"
+                    }
+                  },
+                  "resources": [
+                    {
+                      "type": "Microsoft.Network/publicIPAddresses",
+                      "apiVersion": "2021-02-01",
+                      "name": "[parameters('publicIPAddressName')]",
+                      "location": "[parameters('location')]",
+                      "tags": "[parameters('tags')]",
+                      "sku": {
+                        "name": "[parameters('skuName')]",
+                        "tier": "[parameters('skuTier')]"
+                      },
+                      "properties": {
+                        "publicIPAllocationMethod": "[parameters('publicIPAllocationMethod')]",
+                        "publicIPPrefix": "[if(not(empty(parameters('publicIPPrefixId'))), variables('publicIPPrefix'), json('null'))]"
+                      }
+                    },
+                    {
+                      "condition": "[not(equals(parameters('lock'), 'NotSpecified'))]",
+                      "type": "Microsoft.Authorization/locks",
+                      "apiVersion": "2016-09-01",
+                      "scope": "[format('Microsoft.Network/publicIPAddresses/{0}', parameters('publicIPAddressName'))]",
+                      "name": "[format('{0}-{1}-lock', parameters('publicIPAddressName'), parameters('lock'))]",
+                      "properties": {
+                        "level": "[parameters('lock')]",
+                        "notes": "[if(equals(parameters('lock'), 'CanNotDelete'), 'Cannot delete resource or child resources.', 'Cannot modify the resource or child resources.')]"
+                      },
+                      "dependsOn": [
+                        "[resourceId('Microsoft.Network/publicIPAddresses', parameters('publicIPAddressName'))]"
+                      ]
+                    },
+                    {
+                      "condition": "[or(or(or(not(empty(parameters('diagnosticStorageAccountId'))), not(empty(parameters('workspaceId')))), not(empty(parameters('eventHubAuthorizationRuleId')))), not(empty(parameters('eventHubName'))))]",
+                      "type": "Microsoft.Insights/diagnosticSettings",
+                      "apiVersion": "2017-05-01-preview",
+                      "scope": "[format('Microsoft.Network/publicIPAddresses/{0}', parameters('publicIPAddressName'))]",
+                      "name": "[format('{0}-diagnosticSettings', parameters('publicIPAddressName'))]",
+                      "properties": {
+                        "storageAccountId": "[if(empty(parameters('diagnosticStorageAccountId')), json('null'), parameters('diagnosticStorageAccountId'))]",
+                        "workspaceId": "[if(empty(parameters('workspaceId')), json('null'), parameters('workspaceId'))]",
+                        "eventHubAuthorizationRuleId": "[if(empty(parameters('eventHubAuthorizationRuleId')), json('null'), parameters('eventHubAuthorizationRuleId'))]",
+                        "eventHubName": "[if(empty(parameters('eventHubName')), json('null'), parameters('eventHubName'))]",
+                        "metrics": "[if(and(and(and(empty(parameters('diagnosticStorageAccountId')), empty(parameters('workspaceId'))), empty(parameters('eventHubAuthorizationRuleId'))), empty(parameters('eventHubName'))), json('null'), variables('diagnosticsMetrics'))]",
+                        "logs": "[if(and(and(and(empty(parameters('diagnosticStorageAccountId')), empty(parameters('workspaceId'))), empty(parameters('eventHubAuthorizationRuleId'))), empty(parameters('eventHubName'))), json('null'), variables('diagnosticsLogs'))]"
+                      },
+                      "dependsOn": [
+                        "[resourceId('Microsoft.Network/publicIPAddresses', parameters('publicIPAddressName'))]"
+                      ]
+                    },
+                    {
+                      "copy": {
+                        "name": "publicIpAddress_rbac",
+                        "count": "[length(parameters('roleAssignments'))]"
+                      },
+                      "type": "Microsoft.Resources/deployments",
+                      "apiVersion": "2020-06-01",
+                      "name": "[format('{0}-rbac-{1}', deployment().name, copyIndex())]",
+                      "properties": {
+                        "expressionEvaluationOptions": {
+                          "scope": "inner"
+                        },
+                        "mode": "Incremental",
+                        "parameters": {
+                          "roleAssignmentObj": {
+                            "value": "[parameters('roleAssignments')[copyIndex()]]"
+                          },
+                          "builtInRoleNames": {
+                            "value": "[parameters('builtInRoleNames')]"
+                          },
+                          "resourceName": {
+                            "value": "[parameters('publicIPAddressName')]"
+                          }
+                        },
+                        "template": {
+                          "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+                          "contentVersion": "1.0.0.0",
+                          "metadata": {
+                            "_generator": {
+                              "name": "bicep",
+                              "version": "0.4.1008.15138",
+                              "templateHash": "15365369599990319370"
+                            }
+                          },
+                          "parameters": {
+                            "roleAssignmentObj": {
+                              "type": "object"
+                            },
+                            "builtInRoleNames": {
+                              "type": "object"
+                            },
+                            "resourceName": {
+                              "type": "string"
+                            }
+                          },
+                          "functions": [],
+                          "resources": [
+                            {
+                              "copy": {
+                                "name": "roleAssigment",
+                                "count": "[length(parameters('roleAssignmentObj').principalIds)]"
+                              },
+                              "type": "Microsoft.Network/publicIPAddresses/providers/roleAssignments",
+                              "apiVersion": "2020-04-01-preview",
+                              "name": "[format('{0}/Microsoft.Authorization/{1}', parameters('resourceName'), guid(parameters('resourceName'), parameters('roleAssignmentObj').principalIds[copyIndex()], parameters('roleAssignmentObj').roleDefinitionIdOrName))]",
+                              "properties": {
+                                "roleDefinitionId": "[if(contains(parameters('builtInRoleNames'), parameters('roleAssignmentObj').roleDefinitionIdOrName), parameters('builtInRoleNames')[parameters('roleAssignmentObj').roleDefinitionIdOrName], parameters('roleAssignmentObj').roleDefinitionIdOrName)]",
+                                "principalId": "[parameters('roleAssignmentObj').principalIds[copyIndex()]]"
+                              }
+                            }
+                          ]
+                        }
+                      },
+                      "dependsOn": [
+                        "[resourceId('Microsoft.Network/publicIPAddresses', parameters('publicIPAddressName'))]"
+                      ]
+                    }
+                  ],
+                  "outputs": {
+                    "publicIPAddressResourceGroup": {
+                      "type": "string",
+                      "value": "[resourceGroup().name]"
+                    },
+                    "publicIPAddressName": {
+                      "type": "string",
+                      "value": "[parameters('publicIPAddressName')]"
+                    },
+                    "publicIPAddressResourceId": {
+                      "type": "string",
+                      "value": "[resourceId('Microsoft.Network/publicIPAddresses', parameters('publicIPAddressName'))]"
+                    }
+                  }
+                }
+              }
+            },
+            {
+              "copy": {
+                "name": "networkInterface_rbac",
+                "count": "[length(parameters('roleAssignments'))]"
+              },
+              "type": "Microsoft.Resources/deployments",
+              "apiVersion": "2020-06-01",
+              "name": "[format('{0}-rbac-{1}', deployment().name, copyIndex())]",
+              "properties": {
+                "expressionEvaluationOptions": {
+                  "scope": "inner"
+                },
+                "mode": "Incremental",
+                "parameters": {
+                  "roleAssignmentObj": {
+                    "value": "[parameters('roleAssignments')[copyIndex()]]"
+                  },
+                  "builtInRoleNames": {
+                    "value": "[parameters('builtInRoleNames')]"
+                  },
+                  "resourceName": {
+                    "value": "[parameters('networkInterfaceName')]"
+                  }
+                },
+                "template": {
+                  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+                  "contentVersion": "1.0.0.0",
+                  "metadata": {
+                    "_generator": {
+                      "name": "bicep",
+                      "version": "0.4.1008.15138",
+                      "templateHash": "17785065297278096111"
+                    }
+                  },
+                  "parameters": {
+                    "roleAssignmentObj": {
+                      "type": "object"
+                    },
+                    "builtInRoleNames": {
+                      "type": "object"
+                    },
+                    "resourceName": {
+                      "type": "string"
+                    }
+                  },
+                  "functions": [],
+                  "resources": [
+                    {
+                      "copy": {
+                        "name": "roleAssigment",
+                        "count": "[length(parameters('roleAssignmentObj').principalIds)]"
+                      },
+                      "type": "Microsoft.Network/networkInterfaces/providers/roleAssignments",
+                      "apiVersion": "2020-04-01-preview",
+                      "name": "[format('{0}/Microsoft.Authorization/{1}', parameters('resourceName'), guid(parameters('resourceName'), parameters('roleAssignmentObj').principalIds[copyIndex()], parameters('roleAssignmentObj').roleDefinitionIdOrName))]",
+                      "properties": {
+                        "roleDefinitionId": "[if(contains(parameters('builtInRoleNames'), parameters('roleAssignmentObj').roleDefinitionIdOrName), parameters('builtInRoleNames')[parameters('roleAssignmentObj').roleDefinitionIdOrName], parameters('roleAssignmentObj').roleDefinitionIdOrName)]",
+                        "principalId": "[parameters('roleAssignmentObj').principalIds[copyIndex()]]"
+                      }
+                    }
+                  ]
+                }
+              },
+              "dependsOn": [
+                "[resourceId('Microsoft.Network/networkInterfaces', parameters('networkInterfaceName'))]"
+              ]
+            }
+          ]
+        }
+      }
+    },
+    {
+      "condition": "[parameters('enableDomainJoinExtension')]",
+      "type": "Microsoft.Resources/deployments",
+      "apiVersion": "2020-06-01",
+      "name": "[format('{0}-DomainJoin', deployment().name)]",
+      "properties": {
+        "expressionEvaluationOptions": {
+          "scope": "inner"
+        },
+        "mode": "Incremental",
+        "parameters": {
+          "virtualMachineName": {
+            "value": "[parameters('virtualMachineName')]"
+          },
+          "extensionName": {
+            "value": "DomainJoin"
+          },
+          "location": {
+            "value": "[parameters('location')]"
+          },
+          "publisher": {
+            "value": "Microsoft.Compute"
+          },
+          "type": {
+            "value": "JsonADDomainExtension"
+          },
+          "typeHandlerVersion": {
+            "value": "1.3"
+          },
+          "autoUpgradeMinorVersion": {
+            "value": true
+          },
+          "settings": {
+            "value": "[parameters('domainJoinSettings').settings]"
+          },
+          "protectedSettings": {
+            "value": "[variables('domainJoinProtectedSettings')]"
+          }
+        },
+        "template": {
+          "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+          "contentVersion": "1.0.0.0",
+          "metadata": {
+            "_generator": {
+              "name": "bicep",
+              "version": "0.4.1008.15138",
+              "templateHash": "312252844703400089"
+            }
+          },
+          "parameters": {
+            "virtualMachineName": {
+              "type": "string"
+            },
+            "extensionName": {
+              "type": "string"
+            },
+            "location": {
+              "type": "string"
+            },
+            "publisher": {
+              "type": "string"
+            },
+            "type": {
+              "type": "string"
+            },
+            "typeHandlerVersion": {
+              "type": "string"
+            },
+            "autoUpgradeMinorVersion": {
+              "type": "bool"
+            },
+            "forceUpdateTag": {
+              "type": "string",
+              "defaultValue": ""
+            },
+            "settings": {
+              "type": "object",
+              "defaultValue": {}
+            },
+            "protectedSettings": {
+              "type": "object",
+              "defaultValue": {}
+            }
+          },
+          "functions": [],
+          "resources": [
+            {
+              "type": "Microsoft.Compute/virtualMachines/extensions",
+              "apiVersion": "2019-07-01",
+              "name": "[format('{0}/{1}', parameters('virtualMachineName'), parameters('extensionName'))]",
+              "location": "[parameters('location')]",
+              "properties": {
+                "publisher": "[parameters('publisher')]",
+                "type": "[parameters('type')]",
+                "typeHandlerVersion": "[parameters('typeHandlerVersion')]",
+                "autoUpgradeMinorVersion": "[parameters('autoUpgradeMinorVersion')]",
+                "forceUpdateTag": "[if(not(empty(parameters('forceUpdateTag'))), parameters('forceUpdateTag'), json('null'))]",
+                "settings": "[if(not(empty(parameters('settings'))), parameters('settings'), json('null'))]",
+                "protectedSettings": "[if(not(empty(parameters('protectedSettings'))), parameters('protectedSettings'), json('null'))]"
+              }
+            }
+          ]
+        }
+      },
+      "dependsOn": [
+        "[resourceId('Microsoft.Compute/virtualMachines', parameters('virtualMachineName'))]"
+      ]
+    },
+    {
+      "condition": "[parameters('enableMicrosoftAntiMalware')]",
+      "type": "Microsoft.Resources/deployments",
+      "apiVersion": "2020-06-01",
+      "name": "[format('{0}-MicrosoftAntiMalware', deployment().name)]",
+      "properties": {
+        "expressionEvaluationOptions": {
+          "scope": "inner"
+        },
+        "mode": "Incremental",
+        "parameters": {
+          "virtualMachineName": {
+            "value": "[parameters('virtualMachineName')]"
+          },
+          "extensionName": {
+            "value": "MicrosoftAntiMalware"
+          },
+          "location": {
+            "value": "[parameters('location')]"
+          },
+          "publisher": {
+            "value": "Microsoft.Azure.Security"
+          },
+          "type": {
+            "value": "IaaSAntimalware"
+          },
+          "typeHandlerVersion": {
+            "value": "1.3"
+          },
+          "autoUpgradeMinorVersion": {
+            "value": true
+          },
+          "settings": {
+            "value": "[parameters('microsoftAntiMalwareSettings').settings]"
+          }
+        },
+        "template": {
+          "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+          "contentVersion": "1.0.0.0",
+          "metadata": {
+            "_generator": {
+              "name": "bicep",
+              "version": "0.4.1008.15138",
+              "templateHash": "312252844703400089"
+            }
+          },
+          "parameters": {
+            "virtualMachineName": {
+              "type": "string"
+            },
+            "extensionName": {
+              "type": "string"
+            },
+            "location": {
+              "type": "string"
+            },
+            "publisher": {
+              "type": "string"
+            },
+            "type": {
+              "type": "string"
+            },
+            "typeHandlerVersion": {
+              "type": "string"
+            },
+            "autoUpgradeMinorVersion": {
+              "type": "bool"
+            },
+            "forceUpdateTag": {
+              "type": "string",
+              "defaultValue": ""
+            },
+            "settings": {
+              "type": "object",
+              "defaultValue": {}
+            },
+            "protectedSettings": {
+              "type": "object",
+              "defaultValue": {}
+            }
+          },
+          "functions": [],
+          "resources": [
+            {
+              "type": "Microsoft.Compute/virtualMachines/extensions",
+              "apiVersion": "2019-07-01",
+              "name": "[format('{0}/{1}', parameters('virtualMachineName'), parameters('extensionName'))]",
+              "location": "[parameters('location')]",
+              "properties": {
+                "publisher": "[parameters('publisher')]",
+                "type": "[parameters('type')]",
+                "typeHandlerVersion": "[parameters('typeHandlerVersion')]",
+                "autoUpgradeMinorVersion": "[parameters('autoUpgradeMinorVersion')]",
+                "forceUpdateTag": "[if(not(empty(parameters('forceUpdateTag'))), parameters('forceUpdateTag'), json('null'))]",
+                "settings": "[if(not(empty(parameters('settings'))), parameters('settings'), json('null'))]",
+                "protectedSettings": "[if(not(empty(parameters('protectedSettings'))), parameters('protectedSettings'), json('null'))]"
+              }
+            }
+          ]
+        }
+      },
+      "dependsOn": [
+        "[resourceId('Microsoft.Compute/virtualMachines', parameters('virtualMachineName'))]"
+      ]
+    },
+    {
+      "condition": "[or(parameters('enableWindowsMMAAgent'), parameters('enableLinuxMMAAgent'))]",
+      "type": "Microsoft.Resources/deployments",
+      "apiVersion": "2020-06-01",
+      "name": "[format('{0}-MicrosoftMonitoringAgent', deployment().name)]",
+      "properties": {
+        "expressionEvaluationOptions": {
+          "scope": "inner"
+        },
+        "mode": "Incremental",
+        "parameters": {
+          "virtualMachineName": {
+            "value": "[parameters('virtualMachineName')]"
+          },
+          "extensionName": {
+            "value": "MicrosoftMonitoringAgent"
+          },
+          "location": {
+            "value": "[parameters('location')]"
+          },
+          "publisher": {
+            "value": "Microsoft.EnterpriseCloud.Monitoring"
+          },
+          "type": {
+            "value": "[if(parameters('enableWindowsMMAAgent'), 'MicrosoftMonitoringAgent', 'OmsAgentForLinux')]"
+          },
+          "typeHandlerVersion": {
+            "value": "[if(parameters('enableWindowsMMAAgent'), '1.0', '1.7')]"
+          },
+          "autoUpgradeMinorVersion": {
+            "value": true
+          },
+          "settings": {
+            "value": {
+              "workspaceId": "[reference(extensionResourceId(format('/subscriptions/{0}/resourceGroups/{1}', split(parameters('workspaceId'), '/')[2], split(parameters('workspaceId'), '/')[4]), 'Microsoft.OperationalInsights/workspaces', last(split(parameters('workspaceId'), '/'))), '2021-06-01').customerId]"
+            }
+          },
+          "protectedSettings": {
+            "value": {
+              "workspaceKey": "[listKeys(extensionResourceId(format('/subscriptions/{0}/resourceGroups/{1}', split(parameters('workspaceId'), '/')[2], split(parameters('workspaceId'), '/')[4]), 'Microsoft.OperationalInsights/workspaces', last(split(parameters('workspaceId'), '/'))), '2021-06-01').primarySharedKey]"
+            }
+          }
+        },
+        "template": {
+          "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+          "contentVersion": "1.0.0.0",
+          "metadata": {
+            "_generator": {
+              "name": "bicep",
+              "version": "0.4.1008.15138",
+              "templateHash": "312252844703400089"
+            }
+          },
+          "parameters": {
+            "virtualMachineName": {
+              "type": "string"
+            },
+            "extensionName": {
+              "type": "string"
+            },
+            "location": {
+              "type": "string"
+            },
+            "publisher": {
+              "type": "string"
+            },
+            "type": {
+              "type": "string"
+            },
+            "typeHandlerVersion": {
+              "type": "string"
+            },
+            "autoUpgradeMinorVersion": {
+              "type": "bool"
+            },
+            "forceUpdateTag": {
+              "type": "string",
+              "defaultValue": ""
+            },
+            "settings": {
+              "type": "object",
+              "defaultValue": {}
+            },
+            "protectedSettings": {
+              "type": "object",
+              "defaultValue": {}
+            }
+          },
+          "functions": [],
+          "resources": [
+            {
+              "type": "Microsoft.Compute/virtualMachines/extensions",
+              "apiVersion": "2019-07-01",
+              "name": "[format('{0}/{1}', parameters('virtualMachineName'), parameters('extensionName'))]",
+              "location": "[parameters('location')]",
+              "properties": {
+                "publisher": "[parameters('publisher')]",
+                "type": "[parameters('type')]",
+                "typeHandlerVersion": "[parameters('typeHandlerVersion')]",
+                "autoUpgradeMinorVersion": "[parameters('autoUpgradeMinorVersion')]",
+                "forceUpdateTag": "[if(not(empty(parameters('forceUpdateTag'))), parameters('forceUpdateTag'), json('null'))]",
+                "settings": "[if(not(empty(parameters('settings'))), parameters('settings'), json('null'))]",
+                "protectedSettings": "[if(not(empty(parameters('protectedSettings'))), parameters('protectedSettings'), json('null'))]"
+              }
+            }
+          ]
+        }
+      },
+      "dependsOn": [
+        "[resourceId('Microsoft.Compute/virtualMachines', parameters('virtualMachineName'))]"
+      ]
+    },
+    {
+      "condition": "[or(parameters('enableWindowsDependencyAgent'), parameters('enableLinuxDependencyAgent'))]",
+      "type": "Microsoft.Resources/deployments",
+      "apiVersion": "2020-06-01",
+      "name": "[format('{0}-DependencyAgent', deployment().name)]",
+      "properties": {
+        "expressionEvaluationOptions": {
+          "scope": "inner"
+        },
+        "mode": "Incremental",
+        "parameters": {
+          "virtualMachineName": {
+            "value": "[parameters('virtualMachineName')]"
+          },
+          "extensionName": {
+            "value": "DependencyAgent"
+          },
+          "location": {
+            "value": "[parameters('location')]"
+          },
+          "publisher": {
+            "value": "Microsoft.Azure.Monitoring.DependencyAgent"
+          },
+          "type": {
+            "value": "[if(parameters('enableWindowsDependencyAgent'), 'DependencyAgentWindows', 'DependencyAgentLinux')]"
+          },
+          "typeHandlerVersion": {
+            "value": "9.5"
+          },
+          "autoUpgradeMinorVersion": {
+            "value": true
+          }
+        },
+        "template": {
+          "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+          "contentVersion": "1.0.0.0",
+          "metadata": {
+            "_generator": {
+              "name": "bicep",
+              "version": "0.4.1008.15138",
+              "templateHash": "312252844703400089"
+            }
+          },
+          "parameters": {
+            "virtualMachineName": {
+              "type": "string"
+            },
+            "extensionName": {
+              "type": "string"
+            },
+            "location": {
+              "type": "string"
+            },
+            "publisher": {
+              "type": "string"
+            },
+            "type": {
+              "type": "string"
+            },
+            "typeHandlerVersion": {
+              "type": "string"
+            },
+            "autoUpgradeMinorVersion": {
+              "type": "bool"
+            },
+            "forceUpdateTag": {
+              "type": "string",
+              "defaultValue": ""
+            },
+            "settings": {
+              "type": "object",
+              "defaultValue": {}
+            },
+            "protectedSettings": {
+              "type": "object",
+              "defaultValue": {}
+            }
+          },
+          "functions": [],
+          "resources": [
+            {
+              "type": "Microsoft.Compute/virtualMachines/extensions",
+              "apiVersion": "2019-07-01",
+              "name": "[format('{0}/{1}', parameters('virtualMachineName'), parameters('extensionName'))]",
+              "location": "[parameters('location')]",
+              "properties": {
+                "publisher": "[parameters('publisher')]",
+                "type": "[parameters('type')]",
+                "typeHandlerVersion": "[parameters('typeHandlerVersion')]",
+                "autoUpgradeMinorVersion": "[parameters('autoUpgradeMinorVersion')]",
+                "forceUpdateTag": "[if(not(empty(parameters('forceUpdateTag'))), parameters('forceUpdateTag'), json('null'))]",
+                "settings": "[if(not(empty(parameters('settings'))), parameters('settings'), json('null'))]",
+                "protectedSettings": "[if(not(empty(parameters('protectedSettings'))), parameters('protectedSettings'), json('null'))]"
+              }
+            }
+          ]
+        }
+      },
+      "dependsOn": [
+        "[resourceId('Microsoft.Compute/virtualMachines', parameters('virtualMachineName'))]"
+      ]
+    },
+    {
+      "condition": "[or(parameters('enableNetworkWatcherWindows'), parameters('enableNetworkWatcherLinux'))]",
+      "type": "Microsoft.Resources/deployments",
+      "apiVersion": "2020-06-01",
+      "name": "[format('{0}-NetworkWatcherAgent', deployment().name)]",
+      "properties": {
+        "expressionEvaluationOptions": {
+          "scope": "inner"
+        },
+        "mode": "Incremental",
+        "parameters": {
+          "virtualMachineName": {
+            "value": "[parameters('virtualMachineName')]"
+          },
+          "extensionName": {
+            "value": "NetworkWatcherAgent"
+          },
+          "location": {
+            "value": "[parameters('location')]"
+          },
+          "publisher": {
+            "value": "Microsoft.Azure.NetworkWatcher"
+          },
+          "type": {
+            "value": "[if(parameters('enableNetworkWatcherWindows'), 'NetworkWatcherAgentWindows', 'NetworkWatcherAgentLinux')]"
+          },
+          "typeHandlerVersion": {
+            "value": "1.4"
+          },
+          "autoUpgradeMinorVersion": {
+            "value": true
+          }
+        },
+        "template": {
+          "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+          "contentVersion": "1.0.0.0",
+          "metadata": {
+            "_generator": {
+              "name": "bicep",
+              "version": "0.4.1008.15138",
+              "templateHash": "312252844703400089"
+            }
+          },
+          "parameters": {
+            "virtualMachineName": {
+              "type": "string"
+            },
+            "extensionName": {
+              "type": "string"
+            },
+            "location": {
+              "type": "string"
+            },
+            "publisher": {
+              "type": "string"
+            },
+            "type": {
+              "type": "string"
+            },
+            "typeHandlerVersion": {
+              "type": "string"
+            },
+            "autoUpgradeMinorVersion": {
+              "type": "bool"
+            },
+            "forceUpdateTag": {
+              "type": "string",
+              "defaultValue": ""
+            },
+            "settings": {
+              "type": "object",
+              "defaultValue": {}
+            },
+            "protectedSettings": {
+              "type": "object",
+              "defaultValue": {}
+            }
+          },
+          "functions": [],
+          "resources": [
+            {
+              "type": "Microsoft.Compute/virtualMachines/extensions",
+              "apiVersion": "2019-07-01",
+              "name": "[format('{0}/{1}', parameters('virtualMachineName'), parameters('extensionName'))]",
+              "location": "[parameters('location')]",
+              "properties": {
+                "publisher": "[parameters('publisher')]",
+                "type": "[parameters('type')]",
+                "typeHandlerVersion": "[parameters('typeHandlerVersion')]",
+                "autoUpgradeMinorVersion": "[parameters('autoUpgradeMinorVersion')]",
+                "forceUpdateTag": "[if(not(empty(parameters('forceUpdateTag'))), parameters('forceUpdateTag'), json('null'))]",
+                "settings": "[if(not(empty(parameters('settings'))), parameters('settings'), json('null'))]",
+                "protectedSettings": "[if(not(empty(parameters('protectedSettings'))), parameters('protectedSettings'), json('null'))]"
+              }
+            }
+          ]
+        }
+      },
+      "dependsOn": [
+        "[resourceId('Microsoft.Compute/virtualMachines', parameters('virtualMachineName'))]"
+      ]
+    },
+    {
+      "condition": "[or(parameters('enableWindowsDiskEncryption'), parameters('enableLinuxDiskEncryption'))]",
+      "type": "Microsoft.Resources/deployments",
+      "apiVersion": "2020-06-01",
+      "name": "[format('{0}-WindowsDiskEncryption', deployment().name)]",
+      "properties": {
+        "expressionEvaluationOptions": {
+          "scope": "inner"
+        },
+        "mode": "Incremental",
+        "parameters": {
+          "virtualMachineName": {
+            "value": "[parameters('virtualMachineName')]"
+          },
+          "extensionName": {
+            "value": "WindowsDiskEncryption"
+          },
+          "location": {
+            "value": "[parameters('location')]"
+          },
+          "publisher": {
+            "value": "Microsoft.Azure.Security"
+          },
+          "type": {
+            "value": "[if(parameters('enableWindowsDiskEncryption'), 'AzureDiskEncryption', 'AzureDiskEncryptionForLinux')]"
+          },
+          "typeHandlerVersion": {
+            "value": "[if(parameters('enableWindowsDiskEncryption'), '2.2', '1.1')]"
+          },
+          "autoUpgradeMinorVersion": {
+            "value": true
+          },
+          "forceUpdateTag": {
+            "value": "[parameters('forceUpdateTag')]"
+          },
+          "settings": {
+            "value": "[parameters('diskEncryptionSettings').settings]"
+          }
+        },
+        "template": {
+          "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+          "contentVersion": "1.0.0.0",
+          "metadata": {
+            "_generator": {
+              "name": "bicep",
+              "version": "0.4.1008.15138",
+              "templateHash": "312252844703400089"
+            }
+          },
+          "parameters": {
+            "virtualMachineName": {
+              "type": "string"
+            },
+            "extensionName": {
+              "type": "string"
+            },
+            "location": {
+              "type": "string"
+            },
+            "publisher": {
+              "type": "string"
+            },
+            "type": {
+              "type": "string"
+            },
+            "typeHandlerVersion": {
+              "type": "string"
+            },
+            "autoUpgradeMinorVersion": {
+              "type": "bool"
+            },
+            "forceUpdateTag": {
+              "type": "string",
+              "defaultValue": ""
+            },
+            "settings": {
+              "type": "object",
+              "defaultValue": {}
+            },
+            "protectedSettings": {
+              "type": "object",
+              "defaultValue": {}
+            }
+          },
+          "functions": [],
+          "resources": [
+            {
+              "type": "Microsoft.Compute/virtualMachines/extensions",
+              "apiVersion": "2019-07-01",
+              "name": "[format('{0}/{1}', parameters('virtualMachineName'), parameters('extensionName'))]",
+              "location": "[parameters('location')]",
+              "properties": {
+                "publisher": "[parameters('publisher')]",
+                "type": "[parameters('type')]",
+                "typeHandlerVersion": "[parameters('typeHandlerVersion')]",
+                "autoUpgradeMinorVersion": "[parameters('autoUpgradeMinorVersion')]",
+                "forceUpdateTag": "[if(not(empty(parameters('forceUpdateTag'))), parameters('forceUpdateTag'), json('null'))]",
+                "settings": "[if(not(empty(parameters('settings'))), parameters('settings'), json('null'))]",
+                "protectedSettings": "[if(not(empty(parameters('protectedSettings'))), parameters('protectedSettings'), json('null'))]"
+              }
+            }
+          ]
+        }
+      },
+      "dependsOn": [
+        "[resourceId('Microsoft.Compute/virtualMachines', parameters('virtualMachineName'))]"
+      ]
+    },
+    {
+      "condition": "[parameters('enableDesiredStateConfiguration')]",
+      "type": "Microsoft.Resources/deployments",
+      "apiVersion": "2020-06-01",
+      "name": "[format('{0}-WindowsDsc', deployment().name)]",
+      "properties": {
+        "expressionEvaluationOptions": {
+          "scope": "inner"
+        },
+        "mode": "Incremental",
+        "parameters": {
+          "virtualMachineName": {
+            "value": "[parameters('virtualMachineName')]"
+          },
+          "extensionName": {
+            "value": "WindowsDsc"
+          },
+          "location": {
+            "value": "[parameters('location')]"
+          },
+          "publisher": {
+            "value": "Microsoft.Powershell"
+          },
+          "type": {
+            "value": "DSC"
+          },
+          "typeHandlerVersion": {
+            "value": "2.77"
+          },
+          "autoUpgradeMinorVersion": {
+            "value": true
+          },
+          "settings": {
+            "value": "[parameters('desiredStateConfigurationSettings').settings]"
+          },
+          "protectedSettings": {
+            "value": "[if(contains(parameters('desiredStateConfigurationSettings'), 'protectedSettings'), parameters('desiredStateConfigurationSettings').protectedSettings, json('null'))]"
+          }
+        },
+        "template": {
+          "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+          "contentVersion": "1.0.0.0",
+          "metadata": {
+            "_generator": {
+              "name": "bicep",
+              "version": "0.4.1008.15138",
+              "templateHash": "312252844703400089"
+            }
+          },
+          "parameters": {
+            "virtualMachineName": {
+              "type": "string"
+            },
+            "extensionName": {
+              "type": "string"
+            },
+            "location": {
+              "type": "string"
+            },
+            "publisher": {
+              "type": "string"
+            },
+            "type": {
+              "type": "string"
+            },
+            "typeHandlerVersion": {
+              "type": "string"
+            },
+            "autoUpgradeMinorVersion": {
+              "type": "bool"
+            },
+            "forceUpdateTag": {
+              "type": "string",
+              "defaultValue": ""
+            },
+            "settings": {
+              "type": "object",
+              "defaultValue": {}
+            },
+            "protectedSettings": {
+              "type": "object",
+              "defaultValue": {}
+            }
+          },
+          "functions": [],
+          "resources": [
+            {
+              "type": "Microsoft.Compute/virtualMachines/extensions",
+              "apiVersion": "2019-07-01",
+              "name": "[format('{0}/{1}', parameters('virtualMachineName'), parameters('extensionName'))]",
+              "location": "[parameters('location')]",
+              "properties": {
+                "publisher": "[parameters('publisher')]",
+                "type": "[parameters('type')]",
+                "typeHandlerVersion": "[parameters('typeHandlerVersion')]",
+                "autoUpgradeMinorVersion": "[parameters('autoUpgradeMinorVersion')]",
+                "forceUpdateTag": "[if(not(empty(parameters('forceUpdateTag'))), parameters('forceUpdateTag'), json('null'))]",
+                "settings": "[if(not(empty(parameters('settings'))), parameters('settings'), json('null'))]",
+                "protectedSettings": "[if(not(empty(parameters('protectedSettings'))), parameters('protectedSettings'), json('null'))]"
+              }
+            }
+          ]
+        }
+      },
+      "dependsOn": [
+        "[resourceId('Microsoft.Compute/virtualMachines', parameters('virtualMachineName'))]"
+      ]
+    },
+    {
+      "condition": "[parameters('enableCustomScriptExtension')]",
+      "type": "Microsoft.Resources/deployments",
+      "apiVersion": "2020-06-01",
+      "name": "[format('{0}-CSE', deployment().name)]",
+      "properties": {
+        "expressionEvaluationOptions": {
+          "scope": "inner"
+        },
+        "mode": "Incremental",
+        "parameters": {
+          "virtualMachineName": {
+            "value": "[parameters('virtualMachineName')]"
+          },
+          "extensionName": {
+            "value": "CustomScriptExtension"
+          },
+          "location": {
+            "value": "[parameters('location')]"
+          },
+          "publisher": {
+            "value": "Microsoft.Compute"
+          },
+          "type": {
+            "value": "CustomScriptExtension"
+          },
+          "typeHandlerVersion": {
+            "value": "1.9"
+          },
+          "autoUpgradeMinorVersion": {
+            "value": true
+          },
+          "settings": {
+            "value": {
+              "copy": [
+                {
+                  "name": "fileUris",
+                  "count": "[length(parameters('windowsScriptExtensionFileData'))]",
+                  "input": "[if(contains(parameters('windowsScriptExtensionFileData')[copyIndex('fileUris')], 'storageAccountId'), format('{0}?{1}', parameters('windowsScriptExtensionFileData')[copyIndex('fileUris')].uri, listAccountSas(parameters('windowsScriptExtensionFileData')[copyIndex('fileUris')].storageAccountId, '2019-04-01', variables('accountSasProperties')).accountSasToken), format('{0}', parameters('windowsScriptExtensionFileData')[copyIndex('fileUris')].uri))]"
+                }
+              ]
+            }
+          },
+          "protectedSettings": {
+            "value": {
+              "commandToExecute": "[parameters('windowsScriptExtensionCommandToExecute')]",
+              "storageAccountName": "[if(not(empty(parameters('cseStorageAccountName'))), parameters('cseStorageAccountName'), json('null'))]",
+              "storageAccountKey": "[if(not(empty(parameters('cseStorageAccountKey'))), parameters('cseStorageAccountKey'), json('null'))]",
+              "managedIdentity": "[if(not(empty(parameters('cseManagedIdentity'))), parameters('cseManagedIdentity'), json('null'))]"
+            }
+          }
+        },
+        "template": {
+          "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+          "contentVersion": "1.0.0.0",
+          "metadata": {
+            "_generator": {
+              "name": "bicep",
+              "version": "0.4.1008.15138",
+              "templateHash": "312252844703400089"
+            }
+          },
+          "parameters": {
+            "virtualMachineName": {
+              "type": "string"
+            },
+            "extensionName": {
+              "type": "string"
+            },
+            "location": {
+              "type": "string"
+            },
+            "publisher": {
+              "type": "string"
+            },
+            "type": {
+              "type": "string"
+            },
+            "typeHandlerVersion": {
+              "type": "string"
+            },
+            "autoUpgradeMinorVersion": {
+              "type": "bool"
+            },
+            "forceUpdateTag": {
+              "type": "string",
+              "defaultValue": ""
+            },
+            "settings": {
+              "type": "object",
+              "defaultValue": {}
+            },
+            "protectedSettings": {
+              "type": "object",
+              "defaultValue": {}
+            }
+          },
+          "functions": [],
+          "resources": [
+            {
+              "type": "Microsoft.Compute/virtualMachines/extensions",
+              "apiVersion": "2019-07-01",
+              "name": "[format('{0}/{1}', parameters('virtualMachineName'), parameters('extensionName'))]",
+              "location": "[parameters('location')]",
+              "properties": {
+                "publisher": "[parameters('publisher')]",
+                "type": "[parameters('type')]",
+                "typeHandlerVersion": "[parameters('typeHandlerVersion')]",
+                "autoUpgradeMinorVersion": "[parameters('autoUpgradeMinorVersion')]",
+                "forceUpdateTag": "[if(not(empty(parameters('forceUpdateTag'))), parameters('forceUpdateTag'), json('null'))]",
+                "settings": "[if(not(empty(parameters('settings'))), parameters('settings'), json('null'))]",
+                "protectedSettings": "[if(not(empty(parameters('protectedSettings'))), parameters('protectedSettings'), json('null'))]"
+              }
+            }
+          ]
+        }
+      },
+      "dependsOn": [
+        "[resourceId('Microsoft.Compute/virtualMachines', parameters('virtualMachineName'))]"
+      ]
+    },
+    {
+      "condition": "[not(empty(parameters('backupVaultName')))]",
+      "type": "Microsoft.Resources/deployments",
+      "apiVersion": "2020-06-01",
+      "name": "[format('{0}-backup', deployment().name)]",
+      "resourceGroup": "[parameters('backupVaultResourceGroup')]",
+      "properties": {
+        "expressionEvaluationOptions": {
+          "scope": "inner"
+        },
+        "mode": "Incremental",
+        "parameters": {
+          "backupResourceName": {
+            "value": "[format('{0}/Azure/iaasvmcontainer;iaasvmcontainerv2;{1};{2}/vm;iaasvmcontainerv2;{3};{4}', parameters('backupVaultName'), resourceGroup().name, parameters('virtualMachineName'), resourceGroup().name, parameters('virtualMachineName'))]"
+          },
+          "protectedItemType": {
+            "value": "Microsoft.Compute/virtualMachines"
+          },
+          "backupPolicyId": {
+            "value": "[resourceId('Microsoft.RecoveryServices/vaults/backupPolicies', parameters('backupVaultName'), parameters('backupPolicyName'))]"
+          },
+          "sourceResourceId": {
+            "value": "[resourceId('Microsoft.Compute/virtualMachines', parameters('virtualMachineName'))]"
+          }
+        },
+        "template": {
+          "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+          "contentVersion": "1.0.0.0",
+          "metadata": {
+            "_generator": {
+              "name": "bicep",
+              "version": "0.4.1008.15138",
+              "templateHash": "15305516612766900891"
+            }
+          },
+          "parameters": {
+            "backupResourceName": {
+              "type": "string"
+            },
+            "protectedItemType": {
+              "type": "string",
+              "allowedValues": [
+                "AzureFileShareProtectedItem",
+                "AzureVmWorkloadSAPAseDatabase",
+                "AzureVmWorkloadSAPHanaDatabase",
+                "AzureVmWorkloadSQLDatabase",
+                "DPMProtectedItem",
+                "GenericProtectedItem",
+                "MabFileFolderProtectedItem",
+                "Microsoft.ClassicCompute/virtualMachines",
+                "Microsoft.Compute/virtualMachines",
+                "Microsoft.Sql/servers/databases"
+              ]
+            },
+            "backupPolicyId": {
+              "type": "string"
+            },
+            "sourceResourceId": {
+              "type": "string"
+            }
+          },
+          "functions": [],
+          "resources": [
+            {
+              "type": "Microsoft.RecoveryServices/vaults/backupFabrics/protectionContainers/protectedItems",
+              "apiVersion": "2021-06-01",
+              "name": "[parameters('backupResourceName')]",
+              "location": "[resourceGroup().location]",
+              "properties": {
+                "protectedItemType": "[parameters('protectedItemType')]",
+                "policyId": "[parameters('backupPolicyId')]",
+                "sourceResourceId": "[parameters('sourceResourceId')]"
+              }
+            }
+          ]
+        }
+      },
+      "dependsOn": [
+        "[resourceId('Microsoft.Compute/virtualMachines', parameters('virtualMachineName'))]",
+        "[resourceId('Microsoft.Resources/deployments', format('{0}-CSE', deployment().name))]",
+        "[resourceId('Microsoft.Resources/deployments', format('{0}-DependencyAgent', deployment().name))]",
+        "[resourceId('Microsoft.Resources/deployments', format('{0}-WindowsDiskEncryption', deployment().name))]",
+        "[resourceId('Microsoft.Resources/deployments', format('{0}-DomainJoin', deployment().name))]",
+        "[resourceId('Microsoft.Resources/deployments', format('{0}-WindowsDsc', deployment().name))]",
+        "[resourceId('Microsoft.Resources/deployments', format('{0}-MicrosoftAntiMalware', deployment().name))]",
+        "[resourceId('Microsoft.Resources/deployments', format('{0}-MicrosoftMonitoringAgent', deployment().name))]",
+        "[resourceId('Microsoft.Resources/deployments', format('{0}-NetworkWatcherAgent', deployment().name))]"
+      ]
+    },
+    {
+      "copy": {
+        "name": "virtualMachine_rbac",
+        "count": "[length(parameters('roleAssignments'))]"
+      },
+      "type": "Microsoft.Resources/deployments",
+      "apiVersion": "2020-06-01",
+      "name": "[format('{0}-rbac-{1}', deployment().name, copyIndex())]",
+      "properties": {
+        "expressionEvaluationOptions": {
+          "scope": "inner"
+        },
+        "mode": "Incremental",
+        "parameters": {
+          "roleAssignmentObj": {
+            "value": "[parameters('roleAssignments')[copyIndex()]]"
+          },
+          "builtInRoleNames": {
+            "value": "[variables('builtInRoleNames')]"
+          },
+          "resourceName": {
+            "value": "[parameters('virtualMachineName')]"
+          }
+        },
+        "template": {
+          "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+          "contentVersion": "1.0.0.0",
+          "metadata": {
+            "_generator": {
+              "name": "bicep",
+              "version": "0.4.1008.15138",
+              "templateHash": "3266020382080449756"
+            }
+          },
+          "parameters": {
+            "roleAssignmentObj": {
+              "type": "object"
+            },
+            "builtInRoleNames": {
+              "type": "object"
+            },
+            "resourceName": {
+              "type": "string"
+            }
+          },
+          "functions": [],
+          "resources": [
+            {
+              "copy": {
+                "name": "roleAssigment",
+                "count": "[length(parameters('roleAssignmentObj').principalIds)]"
+              },
+              "type": "Microsoft.Compute/virtualMachines/providers/roleAssignments",
+              "apiVersion": "2020-04-01-preview",
+              "name": "[format('{0}/Microsoft.Authorization/{1}', parameters('resourceName'), guid(parameters('resourceName'), parameters('roleAssignmentObj').principalIds[copyIndex()], parameters('roleAssignmentObj').roleDefinitionIdOrName))]",
+              "properties": {
+                "roleDefinitionId": "[if(contains(parameters('builtInRoleNames'), parameters('roleAssignmentObj').roleDefinitionIdOrName), parameters('builtInRoleNames')[parameters('roleAssignmentObj').roleDefinitionIdOrName], parameters('roleAssignmentObj').roleDefinitionIdOrName)]",
+                "principalId": "[parameters('roleAssignmentObj').principalIds[copyIndex()]]"
+              }
+            }
+          ]
+        }
+      },
+      "dependsOn": [
+        "[resourceId('Microsoft.Compute/virtualMachines', parameters('virtualMachineName'))]"
+      ]
+    }
+  ],
+  "outputs": {
+    "virtualMachineName": {
+      "type": "string",
+      "value": "[parameters('virtualMachineName')]",
+      "metadata": {
+        "description": "The name of the VM."
+      }
+    },
+    "virtualMachineResourceId": {
+      "type": "string",
+      "value": "[resourceId('Microsoft.Compute/virtualMachines', parameters('virtualMachineName'))]",
+      "metadata": {
+        "description": "The Resource Id of the VM."
+      }
+    },
+    "virtualMachineResourceGroup": {
+      "type": "string",
+      "value": "[resourceGroup().name]",
+      "metadata": {
+        "description": "The name of the Resource Group the VM was created in."
+      }
+    }
+  }
+}
