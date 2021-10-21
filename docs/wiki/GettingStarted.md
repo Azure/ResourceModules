@@ -49,18 +49,21 @@ from the command line of your choice.
 
 If you instead just want to have a copy of the repository's content you can instead download it in the `.zip` format. You can do this by navigating to the repository folder of your choice (for example root), then select the `<> Code` button on the top left and click on `Download ZIP` on the opening blade.
 
-![How to download repository](./media/cloneDownloadRepo.JPG)
  <img src="./media/cloneDownloadRepo.JPG" alt="How to download repository" height="266" width="295">
-
 
 ## Fork the repository
 
 Alternativly, if you want to have a linked clone of the source repository in your own GitHub account, you can fork the repository instead. Still is also the preferred method to contribute back to this repository.
 
-To fork the repostory you can simply click on the
+To fork the repostory you can simply click on the `Fork` button on the top right of the repository website. You can then select the Account you want to fork the repository to and are good to go.
+
+*Note*: To ensure your fork stays up to date you can select the 'Fetch upstream' button on your repository root page. This will trigger a process that fetches the latest changes from the source repository back to your fork.
 
 ## Reference the content directly
 
+Last but not least, instead of fetching your own copy of the repository you can also choose to just reference the content of the repository directly. This works as the repository is public and hence all file Urls are available without any sort of authentication.
+
+*Note*: In cases where you want to assemble your own template that references other modules you should not rely on direct links as they referencing files may receive breaking changes. Instead you should rely on published versions instead.
 
 <!-- References -->
 
