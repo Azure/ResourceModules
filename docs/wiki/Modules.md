@@ -2,8 +2,8 @@ This section and its subsections give you an overview of the principels the modu
 
 ---
 ### _Navigation_
-- [Module Design](.\ModulesDesign)
-- [Module Usage](.\ModulesUsage)
-  - [Deploy local template](.\ModulesUsage#Deploy-local-template)
-  - [Deploy remote template](.\ModulesUsage#Deploy-remote-template)
+- [Module Design](./ModulesDesign)
+- [Module Usage](./ModulesUsage)
+  - [Deploy local template](./ModulesUsage#Deploy-local-template)
+  - [Deploy remote template](./ModulesUsage#Deploy-remote-template)
 ---
