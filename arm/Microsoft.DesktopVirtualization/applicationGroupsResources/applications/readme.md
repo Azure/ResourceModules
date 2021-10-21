@@ -2,15 +2,12 @@
 
 This module deploys AVD Applications.
 
-
-
 ## Resource types
 
 |Resource Type|ApiVersion|
 |:--|:--|
 |`Microsoft.Resources/deployments`|2018-02-01|
 |`Microsoft.DesktopVirtualization/applicationGroups/applications`|2021-07-12|
-
 
 ## Parameters
 
@@ -19,7 +16,6 @@ This module deploys AVD Applications.
 | `appGroupName` | string | Required. Name of the Application Group to create the application(s) in. |  |  |
 | `applications` | array | Required. List of applications to be created in the Application Group. |  |  |
 | `cuaId` | string | Optional. Customer Usage Attribution id (GUID). This GUID must be previously registered |  |  |
-| `location` | string | Optional. Location for all resources. | [resourceGroup().location] |  |
 
 ### Parameter Usage: `applications`
 
@@ -59,7 +55,6 @@ This module deploys AVD Applications.
 | `appGroupName` | string | The Name of the Application Group to register the Application(s) in. |
 | `applicationResourceGroup` | string | The name of the Resource Group the AVD Applications were created in. |
 | `applicationResourceIds` | array | The list of the application resourceIds deployed. |
-
 
 ## Considerations
 

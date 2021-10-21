@@ -50,7 +50,6 @@ param tags object = {}
 @description('Optional. Customer Usage Attribution id (GUID). This GUID must be previously registered')
 param cuaId string = ''
 
-var eventGridApiVersion = providers('Microsoft.EventGrid', 'topics').apiVersions[0]
 var diagnosticsMetrics = [
   {
     category: 'AllMetrics'
