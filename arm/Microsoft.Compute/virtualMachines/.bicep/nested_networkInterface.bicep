@@ -109,7 +109,7 @@ resource networkInterface_diagnosticSettings 'Microsoft.Insights/diagnosticsetti
 }
 
 module networkInterface_rbac './nested_networkInterface_rbac.bicep' = [for (roleAssignment, index) in roleAssignments: {
-  name: 'rbac-${deployment().name}${index}'
+  name: '${deployment().name}-rbac-${index}'
   params: {
     roleAssignmentObj: roleAssignment
     builtInRoleNames: builtInRoleNames
