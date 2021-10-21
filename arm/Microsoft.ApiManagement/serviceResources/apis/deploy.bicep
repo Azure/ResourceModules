@@ -60,9 +60,6 @@ param format string = 'openapi'
 @description('Optional. Indicates if API revision is current api revision.')
 param isCurrent bool = true
 
-@description('Optional. Location for all Resources.')
-param location string = resourceGroup().location
-
 @description('Required. Relative URL uniquely identifying this API and all of its resource paths within the API Management service instance. It is appended to the API endpoint base URL specified during the service instance creation to form a public URL for this API.')
 param path string
 
