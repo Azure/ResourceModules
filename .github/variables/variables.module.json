@@ -23,14 +23,6 @@
         {
             "name": "publishToTemplateSpec",
             "value": "true"
-        },
-        {
-            "name": "pipelinePrincipalGitUserName",
-            "value": "CARMLPipelinePrincipal"
-        },
-        {
-            "name": "pipelinePrincipalGitUserEmail",
-            "value": "CARML@microsoft.com"
         }
     ]
 }
