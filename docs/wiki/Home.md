@@ -2,13 +2,13 @@
 
 ## Navigation
 - [GettingStarted](./GettingStarted)
-- [Modules](./modules/Modules)
-  - [Design](./modules/ModulesDesign)
-  - [Usage](./modules/ModulesUsage)
-- [Pipelines](./pipelines/Pipelines)
-  - [Design](./pipelines/PipelineDesign)
-- [Testing](./testing/Testing)
-  - [Design](./testing/testingDesign)
+- [Modules](./Modules)
+  - [Design](./ModulesDesign)
+  - [Usage](./ModulesUsage)
+- [Pipelines](./Pipelines)
+  - [Design](./PipelineDesign)
+- [Testing](./Testing)
+  - [Design](./TestingDesign)
 - [ContributionGuide](./ContributionGuide)
 - [KnownIssues](./KnownIssues)
 
