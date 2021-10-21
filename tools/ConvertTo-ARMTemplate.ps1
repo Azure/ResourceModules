@@ -1,40 +1,48 @@
-﻿Function ConvertTo-ARMTemplate {
-    [CmdletBinding(SupportsShouldProcess)]
-    param (
-        [string] $Path = 'arm',
-        [switch] $CleanUp
-    )
+﻿[CmdletBinding(SupportsShouldProcess)]
+param (
+    [string] $Path,
+    [switch] $CleanUp
+)
 
-    $RootFolderPath = $PSScriptRoot
-    $workflowFolderPath = Join-Path -Path $RootFolderPath -ChildPath '.github\workflows'
+$Path = Get-Item -Path $Path | Select-Object -ExpandProperty FullName
+$Path
+$workflowFolderPath = Join-Path -Path $Path -ChildPath '.github\workflows'
+$workflowFolderPath
+$armFolderPath = Join-Path -Path $Path -ChildPath 'arm'
+$armFolderPath
 
-    # Get all bicep files, map with workflow and json
-    $BicepFiles = Get-ChildItem -Path $Path -Filter deploy.bicep -Recurse
+# Get all bicep files, map with workflow and json
+$BicepFiles = Get-ChildItem -Path $armFolderPath -Filter deploy.bicep -Recurse
 
-    foreach ($BicepFile in $BicepFiles) {
-        $BicepFilePath = $BicepFile.FullName
-        $ModuleFolderPath = $BicepFile.Directory.FullName
-        $JSONFilePath = Join-Path -Path $ModuleFolderPath -ChildPath 'deploy.json'
-        $bicepFolderPath = Join-Path -Path $ModuleFolderPath -ChildPath '.bicep'
-        $RelativePath = $BicepFilePath.replace($RootFolderPath, '')
-        $RootFolderPath
-        $BicepFilePath
-        $RelativePath
+foreach ($BicepFile in $BicepFiles) {
+    $BicepFilePath = $BicepFile.FullName
+    $BicepFilePath
+    $ModuleFolderPath = $BicepFile.Directory.FullName
+    $JSONFilePath = Join-Path -Path $ModuleFolderPath -ChildPath 'deploy.json'
+    $bicepFolderPath = Join-Path -Path $ModuleFolderPath -ChildPath '.bicep'
 
-        # Remove existing deploy.json
-        if (Test-Path -Path $JSONFilePath) {
-            Remove-Item -Path $JSONFilePath -Force
-        }
+    # Generate workflow file name
+    $RelativePath = [IO.Path]::GetRelativePath($armFolderPath, $ModuleFolderPath)
+    $ResourceProvider = $RelativePath.ToLower().replace('microsoft', 'ms').replace([IO.Path]::DirectorySeparatorChar, '.')
+    $workflowFileName = "$ResourceProvider.yml"
+    $workflowFilePath = Join-Path -Path $workflowFolderPath -ChildPath $workflowFileName
+    if (Test-Path -Path $workflowFilePath) {
+        Write-Output $workflowFilePath
+    } else {
+        Write-Warning $workflowFilePath
+    }
 
-        # Convert bicep to json
-        az bicep build --file $BicepFilePath --outfile $JSONFilePath
+    # Remove existing deploy.json
+    if (Test-Path -Path $JSONFilePath) {
+        Remove-Item -Path $JSONFilePath -Force
+    }
 
-        # Cleanup bicep files
-        if ($CleanUp) {
-            Remove-Item -Path $BicepFilePath -Force -Verbose
-            Remove-Item -Path $bicepFolderPath -Force -Recurse -Verbose
-        }
+    # Convert bicep to json
+    #az bicep build --file $BicepFilePath --outfile $JSONFilePath
+
+    # Cleanup bicep files
+    if ($CleanUp) {
+        Remove-Item -Path $BicepFilePath -Force -Verbose
+        Remove-Item -Path $bicepFolderPath -Force -Recurse -Verbose
     }
 }
-
-ConvertTo-ARMTemplate
