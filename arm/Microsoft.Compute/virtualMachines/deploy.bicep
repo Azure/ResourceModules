@@ -434,7 +434,7 @@ resource virtualMachine 'Microsoft.Compute/virtualMachines@2020-06-01' = {
 }
 
 module virtualMachine_djExtension './.bicep/nested_extension.bicep' = if (enableDomainJoinExtension) {
-  name: '${deployment().name}-vmextension-DomainJoin'
+  name: '${deployment().name}-DomainJoin'
   params: {
     virtualMachineName: virtualMachine.name
     extensionName: 'DomainJoin'
@@ -449,7 +449,7 @@ module virtualMachine_djExtension './.bicep/nested_extension.bicep' = if (enable
 }
 
 module virtualMachine_mamExtension './.bicep/nested_extension.bicep' = if (enableMicrosoftAntiMalware) {
-  name: '${deployment().name}-vmextension-MicrosoftAntiMalware'
+  name: '${deployment().name}-MicrosoftAntiMalware'
   params: {
     virtualMachineName: virtualMachine.name
     extensionName: 'MicrosoftAntiMalware'
@@ -468,7 +468,7 @@ resource virtualMachine_workspace 'Microsoft.OperationalInsights/workspaces@2021
 }
 
 module virtualMachine_mmaExtension './.bicep/nested_extension.bicep' = if (enableWindowsMMAAgent || enableLinuxMMAAgent) {
-  name: '${deployment().name}-vmextension-MicrosoftMonitoringAgent'
+  name: '${deployment().name}-MicrosoftMonitoringAgent'
   params: {
     virtualMachineName: virtualMachine.name
     extensionName: 'MicrosoftMonitoringAgent'
@@ -487,7 +487,7 @@ module virtualMachine_mmaExtension './.bicep/nested_extension.bicep' = if (enabl
 }
 
 module virtualMachine_daExtension './.bicep/nested_extension.bicep' = if (enableWindowsDependencyAgent || enableLinuxDependencyAgent) {
-  name: '${deployment().name}-vmextension-DependencyAgent'
+  name: '${deployment().name}-DependencyAgent'
   params: {
     virtualMachineName: virtualMachine.name
     extensionName: 'DependencyAgent'
@@ -500,7 +500,7 @@ module virtualMachine_daExtension './.bicep/nested_extension.bicep' = if (enable
 }
 
 module virtualMachine_nwExtension './.bicep/nested_extension.bicep' = if (enableNetworkWatcherWindows || enableNetworkWatcherLinux) {
-  name: '${deployment().name}-vmextension-NetworkWatcherAgent'
+  name: '${deployment().name}-NetworkWatcherAgent'
   params: {
     virtualMachineName: virtualMachine.name
     extensionName: 'NetworkWatcherAgent'
@@ -513,7 +513,7 @@ module virtualMachine_nwExtension './.bicep/nested_extension.bicep' = if (enable
 }
 
 module virtualMachine_deExtension './.bicep/nested_extension.bicep' = if (enableWindowsDiskEncryption || enableLinuxDiskEncryption) {
-  name: '${deployment().name}-vmextension-WindowsDiskEncryption'
+  name: '${deployment().name}-WindowsDiskEncryption'
   params: {
     virtualMachineName: virtualMachine.name
     extensionName: 'WindowsDiskEncryption'
@@ -528,7 +528,7 @@ module virtualMachine_deExtension './.bicep/nested_extension.bicep' = if (enable
 }
 
 module virtualMachine_dscExtension './.bicep/nested_extension.bicep' = if (enableDesiredStateConfiguration) {
-  name: '${deployment().name}-vmextension-WindowsDsc'
+  name: '${deployment().name}-WindowsDsc'
   params: {
     virtualMachineName: virtualMachine.name
     extensionName: 'WindowsDsc'
@@ -543,7 +543,7 @@ module virtualMachine_dscExtension './.bicep/nested_extension.bicep' = if (enabl
 }
 
 module virtualMachine_cseExtension './.bicep/nested_extension.bicep' = if (enableCustomScriptExtension) {
-  name: '${deployment().name}-vmextension-CSE'
+  name: '${deployment().name}-CSE'
   params: {
     virtualMachineName: virtualMachine.name
     extensionName: 'CustomScriptExtension'
