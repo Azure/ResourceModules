@@ -9,8 +9,7 @@ This module deploys a virtual machine scale set
 | `Microsoft.Authorization/locks` | 2016-09-01 |
 | `Microsoft.Compute/proximityPlacementGroups` | 2021-04-01 |
 | `Microsoft.Compute/virtualMachineScaleSets` | 2021-04-01 |
-| `Microsoft.Compute/virtualMachineScaleSets/extensions` | 2020-06-01 |
-| `Microsoft.Compute/virtualMachineScaleSets/extensions` | 2019-07-01 |
+| `Microsoft.Compute/virtualMachineScaleSets/extensions` | 2021-07-01 |
 | `Microsoft.Compute/virtualMachineScaleSets/providers/roleAssignments` | 2021-04-01-preview |
 | `Microsoft.Insights/diagnosticSettings` | 2021-05-01-preview |
 
@@ -388,6 +387,5 @@ Tag names and tag values can be provided as needed. A tag can be left without a 
 - [Locks](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2016-09-01/locks)
 - [Proximityplacementgroups](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Compute/2021-04-01/proximityPlacementGroups)
 - [Virtualmachinescalesets](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Compute/2021-04-01/virtualMachineScaleSets)
-- [Virtualmachinescalesets/Extensions](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Compute/2020-06-01/virtualMachineScaleSets/extensions)
-- [Virtualmachinescalesets/Extensions](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Compute/2019-07-01/virtualMachineScaleSets/extensions)
+- [Virtualmachinescalesets/Extensions](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Compute/2021-07-01/virtualMachineScaleSets/extensions)
 - [Diagnosticsettings](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Insights/2021-05-01-preview/diagnosticSettings)

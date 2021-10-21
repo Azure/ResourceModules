@@ -76,7 +76,7 @@ Describe 'File/folder tests' -Tag Modules {
         foreach ($moduleFolderPath in $moduleFolderPaths) {
 
             $moduleFolderTestCases += @{
-                moduleFolderName = Split-Path $moduleFolderPath -Leaf
+                moduleFolderName = $moduleFolderPath.Split('\arm\')[1]
                 moduleFolderPath = $moduleFolderPath
             }
         }
@@ -104,7 +104,7 @@ Describe 'File/folder tests' -Tag Modules {
         $folderTestCases = [System.Collections.ArrayList]@()
         foreach ($moduleFolderPath in $moduleFolderPaths) {
             $folderTestCases += @{
-                moduleFolderName = Split-Path $moduleFolderPath -Leaf
+                moduleFolderName = $moduleFolderPath.Split('\arm\')[1]
                 moduleFolderPath = $moduleFolderPath
             }
         }
@@ -157,7 +157,7 @@ Describe 'Readme tests' -Tag Readme {
             }
 
             $readmeFolderTestCases += @{
-                moduleFolderName = Split-Path $moduleFolderPath -Leaf
+                moduleFolderName = $moduleFolderPath.Split('\arm\')[1]
                 moduleFolderPath = $moduleFolderPath
                 templateContent  = $templateContent
                 readMeContent    = Get-Content (Join-Path -Path $moduleFolderPath 'readme.md')
@@ -349,7 +349,8 @@ Describe 'Readme tests' -Tag Readme {
 
             # Test
             $expectedOutputsTableOrder = @('Output Name', 'Type')
-            (Compare-Object -ReferenceObject $expectedOutputsTableOrder -DifferenceObject $outputsTableHeader -SyncWindow 0) | Should -Be $null
+            $differentiatingItems = $expectedOutputsTableOrder | Where-Object { $outputsTableHeader -notcontains $_ }
+            $differentiatingItems.Count | Should -Be 0 -Because ('list of "Outputs" table columns missing in the ReadMe file [{0}] should be empty' -f ($differentiatingItems -join ','))
         }
 
         It '[<moduleFolderName>] Output section should contain all outputs defined in the deploy.json file' -TestCases $readmeFolderTestCases {
@@ -758,7 +759,7 @@ Describe 'Deployment template tests' -Tag Template {
         }
 
         # PARAMETER Tests
-        It 'All parameters in parameters files exist in template file (deploy.json)' -TestCases $deploymentFolderTestCases {
+        It '[<moduleFolderName>] All parameters in parameters files exist in template file (deploy.json)' -TestCases $deploymentFolderTestCases {
             param (
                 [hashtable[]] $parameterFileTestCases
             )
@@ -772,7 +773,7 @@ Describe 'Deployment template tests' -Tag Template {
             }
         }
 
-        It 'All required parameters in template file (deploy.json) should exist in parameters files' -TestCases $deploymentFolderTestCases {
+        It '[<moduleFolderName>] All required parameters in template file (deploy.json) should exist in parameters files' -TestCases $deploymentFolderTestCases {
             param (
                 [hashtable[]] $parameterFileTestCases
             )
@@ -794,7 +795,7 @@ Describe "Api version tests [All apiVersions in the template should be 'recent']
     $ApiVersions = Get-AzResourceProvider -ListAvailable
     foreach ($moduleFolderPath in $moduleFolderPathsFiltered) {
 
-        $moduleFolderName = Split-Path $moduleFolderPath -Leaf
+        $moduleFolderName = $moduleFolderPath.Split('\arm\')[1]
 
         if (Test-Path (Join-Path $moduleFolderPath 'deploy.bicep')) {
             $templateContent = az bicep build --file (Join-Path $moduleFolderPath 'deploy.bicep') --stdout | ConvertFrom-Json -AsHashtable
@@ -884,8 +885,9 @@ Describe "Api version tests [All apiVersions in the template should be 'recent']
         }
 
         # We allow the latest 5 including previews (in case somebody wants to use preview), or the latest 3 non-preview
-        $approvedApiVersions = $resourceTypeApiVersions | Select-Object -First 5
+        $approvedApiVersions = @()
+        $approvedApiVersions += $resourceTypeApiVersions | Select-Object -First 5
         $approvedApiVersions += $resourceTypeApiVersions | Where-Object { $_ -notlike '*-preview' } | Select-Object -First 3
-        $approvedApiVersions | Should -Contain $TargetApi
+        ($approvedApiVersions | Select-Object -Unique) | Should -Contain $TargetApi
     }
 }

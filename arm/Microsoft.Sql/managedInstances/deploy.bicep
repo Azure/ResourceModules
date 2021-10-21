@@ -258,7 +258,7 @@ resource managedInstance 'Microsoft.Sql/managedInstances@2020-08-01-preview' = {
     }
   }
 
-  resource vulnerabilityAssessments 'vulnerabilityAssessments@2018-06-01-preview' = if (enableAdvancedDataSecurity) {
+  resource vulnerabilityAssessments 'vulnerabilityAssessments@2021-02-01-preview' = if (enableAdvancedDataSecurity) {
     name: 'default'
     properties: {
       storageContainerPath: (enableAdvancedDataSecurity ? 'https://${split(vulnerabilityAssessmentsStorageAccountId, '/')[8]}.blob.core.windows.net/vulnerability-assessment/' : '')
@@ -271,7 +271,7 @@ resource managedInstance 'Microsoft.Sql/managedInstances@2020-08-01-preview' = {
     }
   }
 
-  resource administrators 'administrators@2017-03-01-preview' = if (!empty(azureAdAdmin)) {
+  resource administrators 'administrators@2021-02-01-preview' = if (!empty(azureAdAdmin)) {
     name: 'ActiveDirectory'
     properties: {
       administratorType: 'ActiveDirectory'

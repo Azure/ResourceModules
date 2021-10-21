@@ -527,7 +527,7 @@ resource vmss_lock 'Microsoft.Authorization/locks@2016-09-01' = if (lock != 'Not
   scope: vmss
 }
 
-resource vmss_DomainJoin 'Microsoft.Compute/virtualMachineScaleSets/extensions@2020-06-01' = if (!empty(domainName)) {
+resource vmss_DomainJoin 'Microsoft.Compute/virtualMachineScaleSets/extensions@2021-07-01' = if (!empty(domainName)) {
   parent: vmss
   name: 'DomainJoin'
   properties: {
@@ -548,7 +548,7 @@ resource vmss_DomainJoin 'Microsoft.Compute/virtualMachineScaleSets/extensions@2
   }
 }
 
-resource vmss_MicrosoftAntiMalware 'Microsoft.Compute/virtualMachineScaleSets/extensions@2020-06-01' = if (enableMicrosoftAntiMalware) {
+resource vmss_MicrosoftAntiMalware 'Microsoft.Compute/virtualMachineScaleSets/extensions@2021-07-01' = if (enableMicrosoftAntiMalware) {
   parent: vmss
   name: 'MicrosoftAntiMalware'
   properties: {
@@ -563,7 +563,7 @@ resource vmss_MicrosoftAntiMalware 'Microsoft.Compute/virtualMachineScaleSets/ex
   ]
 }
 
-resource vmss_WindowsMMAAgent 'Microsoft.Compute/virtualMachineScaleSets/extensions@2020-06-01' = if (enableWindowsMMAAgent) {
+resource vmss_WindowsMMAAgent 'Microsoft.Compute/virtualMachineScaleSets/extensions@2021-07-01' = if (enableWindowsMMAAgent) {
   parent: vmss
   name: 'WindowsMMAAgent'
   properties: {
@@ -583,7 +583,7 @@ resource vmss_WindowsMMAAgent 'Microsoft.Compute/virtualMachineScaleSets/extensi
   ]
 }
 
-resource vmss_LinuxMMAAgent 'Microsoft.Compute/virtualMachineScaleSets/extensions@2020-06-01' = if (enableLinuxMMAAgent) {
+resource vmss_LinuxMMAAgent 'Microsoft.Compute/virtualMachineScaleSets/extensions@2021-07-01' = if (enableLinuxMMAAgent) {
   parent: vmss
   name: 'LinuxMMAAgent'
   properties: {
@@ -603,7 +603,7 @@ resource vmss_LinuxMMAAgent 'Microsoft.Compute/virtualMachineScaleSets/extension
   ]
 }
 
-resource vmss_WindowsDiskEncryption 'Microsoft.Compute/virtualMachineScaleSets/extensions@2019-07-01' = if (enableWindowsDiskEncryption) {
+resource vmss_WindowsDiskEncryption 'Microsoft.Compute/virtualMachineScaleSets/extensions@2021-07-01' = if (enableWindowsDiskEncryption) {
   parent: vmss
   name: 'WindowsDiskEncryption'
   properties: {
@@ -628,7 +628,7 @@ resource vmss_WindowsDiskEncryption 'Microsoft.Compute/virtualMachineScaleSets/e
   ]
 }
 
-resource vmss_LinuxDiskEncryption 'Microsoft.Compute/virtualMachineScaleSets/extensions@2020-06-01' = if (enableLinuxDiskEncryption) {
+resource vmss_LinuxDiskEncryption 'Microsoft.Compute/virtualMachineScaleSets/extensions@2021-07-01' = if (enableLinuxDiskEncryption) {
   parent: vmss
   name: 'LinuxDiskEncryption'
   properties: {
@@ -652,7 +652,7 @@ resource vmss_LinuxDiskEncryption 'Microsoft.Compute/virtualMachineScaleSets/ext
   ]
 }
 
-resource vmss_DependencyAgentWindows 'Microsoft.Compute/virtualMachineScaleSets/extensions@2020-06-01' = if (enableWindowsDependencyAgent) {
+resource vmss_DependencyAgentWindows 'Microsoft.Compute/virtualMachineScaleSets/extensions@2021-07-01' = if (enableWindowsDependencyAgent) {
   parent: vmss
   name: 'DependencyAgentWindows'
   properties: {
@@ -666,7 +666,7 @@ resource vmss_DependencyAgentWindows 'Microsoft.Compute/virtualMachineScaleSets/
   ]
 }
 
-resource vmss_DependencyAgentLinux 'Microsoft.Compute/virtualMachineScaleSets/extensions@2020-06-01' = if (enableLinuxDependencyAgent) {
+resource vmss_DependencyAgentLinux 'Microsoft.Compute/virtualMachineScaleSets/extensions@2021-07-01' = if (enableLinuxDependencyAgent) {
   parent: vmss
   name: 'DependencyAgentLinux'
   properties: {
@@ -680,7 +680,7 @@ resource vmss_DependencyAgentLinux 'Microsoft.Compute/virtualMachineScaleSets/ex
   ]
 }
 
-resource vmss_NetworkWatcherAgentWindows 'Microsoft.Compute/virtualMachineScaleSets/extensions@2020-06-01' = if (enableNetworkWatcherWindows) {
+resource vmss_NetworkWatcherAgentWindows 'Microsoft.Compute/virtualMachineScaleSets/extensions@2021-07-01' = if (enableNetworkWatcherWindows) {
   parent: vmss
   name: 'NetworkWatcherAgentWindows'
   properties: {
@@ -695,7 +695,7 @@ resource vmss_NetworkWatcherAgentWindows 'Microsoft.Compute/virtualMachineScaleS
   ]
 }
 
-resource vmss_NetworkWatcherAgentLinux 'Microsoft.Compute/virtualMachineScaleSets/extensions@2020-06-01' = if (enableNetworkWatcherLinux) {
+resource vmss_NetworkWatcherAgentLinux 'Microsoft.Compute/virtualMachineScaleSets/extensions@2021-07-01' = if (enableNetworkWatcherLinux) {
   parent: vmss
   name: 'NetworkWatcherAgentLinux'
   properties: {
@@ -710,7 +710,7 @@ resource vmss_NetworkWatcherAgentLinux 'Microsoft.Compute/virtualMachineScaleSet
   ]
 }
 
-resource vmss_windowsDsc 'Microsoft.Compute/virtualMachineScaleSets/extensions@2020-06-01' = if (!empty(dscConfiguration)) {
+resource vmss_windowsDsc 'Microsoft.Compute/virtualMachineScaleSets/extensions@2021-07-01' = if (!empty(dscConfiguration)) {
   parent: vmss
   name: 'windowsDsc'
   properties: {
@@ -726,7 +726,7 @@ resource vmss_windowsDsc 'Microsoft.Compute/virtualMachineScaleSets/extensions@2
   ]
 }
 
-resource vmss_WindowsCustomScriptExtension 'Microsoft.Compute/virtualMachineScaleSets/extensions@2019-07-01' = if ((!empty(windowsScriptExtensionFileData)) && (!empty(windowsScriptExtensionCommandToExecute))) {
+resource vmss_WindowsCustomScriptExtension 'Microsoft.Compute/virtualMachineScaleSets/extensions@2021-07-01' = if ((!empty(windowsScriptExtensionFileData)) && (!empty(windowsScriptExtensionCommandToExecute))) {
   parent: vmss
   name: 'WindowsCustomScriptExtension'
   properties: {

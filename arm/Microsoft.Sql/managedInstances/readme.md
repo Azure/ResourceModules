@@ -10,12 +10,12 @@ This template deploys an SQL Managed Instance, with resource lock.
 | `Microsoft.Authorization/locks` | 2016-09-01 |
 | `Microsoft.Insights/diagnosticSettings` | 2017-05-01-preview |
 | `Microsoft.Sql/managedInstances` | 2020-08-01-preview |
-| `Microsoft.Sql/managedInstances/administrators` | 2017-03-01-preview |
+| `Microsoft.Sql/managedInstances/administrators` | 2021-02-01-preview |
 | `Microsoft.Sql/managedInstances/encryptionProtector` | 2017-10-01-preview |
 | `Microsoft.Sql/managedInstances/keys` | 2017-10-01-preview |
 | `Microsoft.Sql/managedInstances/providers/roleAssignments` | 2021-04-01-preview |
 | `Microsoft.Sql/managedInstances/securityAlertPolicies` | 2017-03-01-preview |
-| `Microsoft.Sql/managedInstances/vulnerabilityAssessments` | 2018-06-01-preview |
+| `Microsoft.Sql/managedInstances/vulnerabilityAssessments` | 2021-02-01-preview |
 
 ### Deployment prerequisites
 SQL Managed Instance is deployed on a virtual network. This network is required to satisfy the requirements explained [here](https://docs.microsoft.com/en-us/azure/sql-database/sql-database-managed-instance-connectivity-architecture#network-requirements). In the module is a second ARM template UpdateSubnet.deploy.json, which configures a subnet to be ready for the SQL managed instance.
@@ -136,8 +136,8 @@ Tag names and tag values can be provided as needed. A tag can be left without a 
 - [Locks](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2016-09-01/locks)
 - [Diagnosticsettings](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Insights/2017-05-01-preview/diagnosticSettings)
 - [Managedinstances](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Sql/2020-08-01-preview/managedInstances)
-- [Managedinstances/Administrators](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Sql/2017-03-01-preview/managedInstances/administrators)
+- [Managedinstances/Administrators](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Sql/2021-02-01-preview/managedInstances/administrators)
 - [Managedinstances/Encryptionprotector](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Sql/2017-10-01-preview/managedInstances/encryptionProtector)
 - [Managedinstances/Keys](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Sql/2017-10-01-preview/managedInstances/keys)
 - [Managedinstances/Securityalertpolicies](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Sql/2017-03-01-preview/managedInstances/securityAlertPolicies)
-- [Managedinstances/Vulnerabilityassessments](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Sql/2018-06-01-preview/managedInstances/vulnerabilityAssessments)
+- [Managedinstances/Vulnerabilityassessments](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Sql/2021-02-01-preview/managedInstances/vulnerabilityAssessments)
