@@ -49,10 +49,15 @@ from the command line of your choice.
 
 If you instead just want to have a copy of the repository's content you can instead download it in the `.zip` format. You can do this by navigating to the repository folder of your choice (for example root), then select the `<> Code` button on the top left and click on `Download ZIP` on the opening blade.
 
-![How to download repository](./media/cloneDownloadRepo.JPG | width=100)
+![How to download repository](./media/cloneDownloadRepo.JPG)
+ <img src="./media/cloneDownloadRepo.JPG" alt="How to download repository" height="266" width="295">
 
 
 ## Fork the repository
+
+Alternativly, if you want to have a linked clone of the source repository in your own GitHub account, you can fork the repository instead. Still is also the preferred method to contribute back to this repository.
+
+To fork the repostory you can simply click on the
 
 ## Reference the content directly
 
