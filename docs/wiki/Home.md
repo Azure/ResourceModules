@@ -1,8 +1,16 @@
 # Common Azure Resource Modules
 
 ## Navigation
-- [FAQ](./FAQ)
-
+- [GettingStarted](./GettingStarted)
+- [Modules](./modules/Modules)
+  - [Design](./modules/ModulesDesign)
+  - [Usage](./modules/ModulesUsage)
+- [Pipelines](./pipelines/Pipelines)
+  - [Design](./pipelines/PipelineDesign)
+- [Testing](./testing/Testing)
+  - [Design](./testing/testingDesign)
+- [ContributionGuide](./ContributionGuide)
+- [KnownIssues](./KnownIssues)
 
 
 ## Reporting Issues and Feedback
