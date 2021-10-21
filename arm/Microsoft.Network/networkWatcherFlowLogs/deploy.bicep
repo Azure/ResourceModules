@@ -48,7 +48,6 @@ param retentionInDays int = 365
 param cuaId string = ''
 
 var nsgName = split(networkSecurityGroupResourceId, '/')[8]
-var nsgResourceGroupName = split(networkSecurityGroupResourceId, '/')[4]
 var fullFlowLogName = '${networkWatcherName}/${uniqueString(nsgName)}'
 var flowAnalyticsConfig = {
   networkWatcherFlowAnalyticsConfiguration: {
