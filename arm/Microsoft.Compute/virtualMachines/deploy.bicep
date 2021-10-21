@@ -386,6 +386,21 @@ resource virtualMachine 'Microsoft.Compute/virtualMachines@2020-06-01' = {
   ]
 }
 
+// module virtualMachine_djExtension './.bicep/nested_extension.bicep' = if (enableDomainJoinExtension) {
+//   name: '${deployment().name}-vmextension-DomainJoin'
+//   params: {
+//     virtualMachineName: virtualMachine.name
+//     extensionName: 'DomainJoin'
+//     location: location
+//     publisher: 'Microsoft.Compute'
+//     type: 'JsonADDomainExtension'
+//     typeHandlerVersion: '1.3'
+//     autoUpgradeMinorVersion: true
+//     settings: domainJoinSettings.settings
+//     protectedSettings: domainJoinPassword
+//   }
+// }
+
 module virtualMachine_mamExtension './.bicep/nested_extension.bicep' = if (enableMicrosoftAntiMalware) {
   name: '${deployment().name}-vmextension-MicrosoftAntiMalware'
   params: {
@@ -479,6 +494,42 @@ module virtualMachine_dscExtension './.bicep/nested_extension.bicep' = if (enabl
   }
 }
 
+// module virtualMachine_cseExtension './.bicep/nested_extension.bicep' = if (enableCustomScriptExtension) {
+//   name: '${deployment().name}-vmextension-CSE'
+//   params: {
+//     virtualMachineName: virtualMachine.name
+//     extensionName: 'CustomScriptExtension'
+//     location: location
+//     publisher: 'Microsoft.Compute'
+//     type: 'CustomScriptExtension'
+//     typeHandlerVersion: '1.9'
+//     autoUpgradeMinorVersion: true
+//     settings: {
+//       fileUris: [for item in windowsScriptExtensionFileData: concat(item.uri, (contains(item, 'storageAccountId') ? '?${listAccountSas(item.storageAccountId, '2019-04-01', accountSasProperties).accountSasToken}' : ''))]
+//     }
+//     protectedSettings: {
+//       commandToExecute: windowsScriptExtensionCommandToExecute
+//       storageAccountName: ((!empty(cseStorageAccountName)) ? cseStorageAccountName : json('null'))
+//       storageAccountKey: ((!empty(cseStorageAccountKey)) ? cseStorageAccountKey : json('null'))
+//       managedIdentity: ((!empty(cseManagedIdentity)) ? cseManagedIdentity : json('null'))
+//     }
+// }
+
+// "windowsScriptExtensionFileData": [
+// {
+// "uri": "https://wvdtoassetsstore.blob.core.windows.net/wvd-to-hp/scriptExtensionMasterInstaller.ps1",
+// "storageAccountId": "/subscriptions/62826c76-d304-46d8-a0f6-718dbdcc536c/resourceGroups/WVD-Mgmt-TO-RG/providers/Microsoft.Storage/storageAccounts/wvdtoassetsstore"
+// },
+// {
+// "uri": "https://wvdtoassetsstore.blob.core.windows.net/wvd-to-hp/001-FSLogix.zip",
+// "storageAccountId": "/subscriptions/62826c76-d304-46d8-a0f6-718dbdcc536c/resourceGroups/WVD-Mgmt-TO-RG/providers/Microsoft.Storage/storageAccounts/wvdtoassetsstore"
+// }
+// ],
+// "windowsScriptRestartExtensionFileData":  {
+// "uri": "https://wvdtoassetsstore.blob.core.windows.net/wvd-to-hp/099-Restart.zip",
+// "storageAccountId": "/subscriptions/62826c76-d304-46d8-a0f6-718dbdcc536c/resourceGroups/WVD-Mgmt-TO-RG/providers/Microsoft.Storage/storageAccounts/wvdtoassetsstore"
+// }
+
 // resource vmName_WindowsCustomScriptExtension 'Microsoft.Compute/virtualMachines/extensions@2019-07-01' = if ((!empty(windowsScriptExtensionFileData)) && (!empty(windowsScriptExtensionCommandToExecute))) {
 //   parent: vmName_resource
 //   name: 'WindowsCustomScriptExtension'
@@ -498,9 +549,6 @@ module virtualMachine_dscExtension './.bicep/nested_extension.bicep' = if (enabl
 //       managedIdentity: ((!empty(cseManagedIdentity)) ? cseManagedIdentity : json('null'))
 //     }
 //   }
-//   dependsOn: [
-//     vmName_windowsDsc
-//   ]
 // }
 
 module virtualMachine_backup './.bicep/nested_backup.bicep' = if (!empty(backupVaultName)) {
