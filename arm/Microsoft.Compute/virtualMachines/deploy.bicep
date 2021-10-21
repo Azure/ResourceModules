@@ -86,9 +86,6 @@ param bootDiagnosticStorageAccountName string = ''
 @description('Optional. Storage account boot diagnostic base URI.')
 param bootDiagnosticStorageAccountUri string = '.blob.core.windows.net/'
 
-@description('Optional. Specifies whether extension operations should be allowed on the virtual machine. This may only be set to False when no extensions are present on the virtual machine.')
-param allowExtensionOperations bool = true
-
 @description('Optional. Resource name of a proximity placement group.')
 param proximityPlacementGroupName string = ''
 
@@ -152,6 +149,26 @@ param backupPolicyName string = 'DefaultPolicy'
 param enableServerSideEncryption bool = false
 
 // Child resources
+@description('Optional. Specifies whether extension operations should be allowed on the virtual machine. This may only be set to False when no extensions are present on the virtual machine.')
+param allowExtensionOperations bool = true
+
+@description('Optional. Specifies if the Domain Join Extension should be enabled.')
+param enableDomainJoinExtension bool = false
+
+@description('Optional. The Domain Join configuration object')
+@metadata({
+  domainName: 'Optional. Mandatory if enableDomainJoinExtension is set to true. Specifies the FQDN the of the domain the VM will be joined to. Currently implemented for Windows VMs only'
+  domainJoinUser: 'Optional. Mandatory if enableDomainJoinExtension is set to true. User used for the join to the domain. Format: username@domainFQDN'
+  domainJoinOU: 'Optional. Specifies an organizational unit (OU) for the domain account. Enter the full distinguished name of the OU in quotation marks. Example: "OU=testOU; DC=domain; DC=Domain; DC=com"'
+  domainJoinRestart: 'Optional. Controls the restart of vm after executing domain join'
+  domainJoinOptions: 'Optional. Set of bit flags that define the join options. Example: 3 is a combination of NETSETUP_JOIN_DOMAIN (0x00000001) & NETSETUP_ACCT_CREATE (0x00000002) i.e. will join the domain and create the account on the domain. For more information see https://msdn.microsoft.com/en-us/library/aa392154(v=vs.85).aspx'
+})
+param domainJoinSettings object = {}
+
+@description('Optional. Required if domainName is specified. Password of the user specified in domainJoinUser parameter')
+@secure()
+param domainJoinPassword string = ''
+
 @description('Optional. Enables Microsoft Windows Defender AV.')
 param enableMicrosoftAntiMalware bool = false
 
@@ -163,9 +180,6 @@ param enableWindowsMMAAgent bool = false
 
 @description('Optional. Specifies if MMA agent for Linux VM should be enabled.')
 param enableLinuxMMAAgent bool = false
-
-@description('Optional. Settings for Microsoft Windows Defender AV extension.')
-param mmaAgentWorkspace string = ''
 
 @description('Optional. Specifies if Azure Dependency Agent for Windows VM should be enabled. Requires WindowsMMAAgent to be enabled.')
 param enableWindowsDependencyAgent bool = false
@@ -186,16 +200,45 @@ param enableWindowsDiskEncryption bool = false
 param enableLinuxDiskEncryption bool = false
 
 @description('Optional. Settings for Azure Disk Encription extension.')
+@metadata({
+  EncryptionOperation: 'Set to "EnableEncryption" to enable disk encryption'
+  KeyVaultURL: 'Optional. URL of the Key Vault instance where the Key Encryption Key (KEK) resides'
+  KeyVaultResourceId: 'Optional. Resource identifier of the Key Vault instance where the Key Encryption Key (KEK) resides'
+  KeyEncryptionKeyURL: 'Optional. URL of the KeyEncryptionKey used to encrypt the volume encryption key'
+  KekVaultResourceId: 'Optional. Resource identifier of the Key Vault instance where the Key Encryption Key (KEK) resides'
+  KeyEncryptionAlgorithm: 'Optional. Specifies disk key encryption algorithm. Possible values: "RSA-OAEP","RSA-OAEP-256","RSA1_5"'
+  VolumeType: 'Optional. Type of the volume OS or Data to perform encryption operation. Possible values: "OS","Data","All"'
+  ResizeOSDisk: 'Optional. Should the OS partition be resized to occupy full OS VHD before splitting system volume'
+})
 param diskEncryptionSettings object = {}
 
 @description('Optional. Pass in an unique value like a GUID everytime the operation needs to be force run')
 param forceUpdateTag string = '1.0'
 
 @description('Optional. Specifies if Desired State Configuration Extension should be enabled.')
-param enableDesiredStateConfiguration bool = true
+param enableDesiredStateConfiguration bool = false
 
 @description('Optional. The DSC configuration object')
 param desiredStateConfigurationSettings object = {}
+
+@description('Optional. Specifies if Custom Script Extension should be enabled.')
+param enableCustomScriptExtension bool = false
+
+@description('Optional. Array of objects that specifies URIs and the storageAccountId of the scripts that need to be downloaded and run by the Custom Script Extension on a Windows VM.')
+param windowsScriptExtensionFileData array = []
+
+@description('Optional. Specifies the command that should be run on a Windows VM.')
+@secure()
+param windowsScriptExtensionCommandToExecute string = ''
+
+@description('Optional. The name of the storage account to access for the CSE script(s).')
+param cseStorageAccountName string = ''
+
+@description('Optional. The storage key of the storage account to access for the CSE script(s).')
+param cseStorageAccountKey string = ''
+
+@description('Optional. A managed identity to use for the CSE.')
+param cseManagedIdentity object = {}
 
 // Shared parameters
 @description('Optional. Location for all resources.')
@@ -241,6 +284,8 @@ param baseTime string = utcNow('u')
 @description('Optional. SAS token validity length to use to download files from storage accounts. Usage: \'PT8H\' - valid for 8 hours; \'P5D\' - valid for 5 days; \'P1Y\' - valid for 1 year. When not provided, the SAS token will be valid for 8 hours.')
 param sasTokenValidityLength string = 'PT8H'
 
+var vmComputerNameTransformed = ((vmComputerNamesTransformation == 'uppercase') ? toUpper(virtualMachineName) : ((vmComputerNamesTransformation == 'lowercase') ? toLower(virtualMachineName) : virtualMachineName))
+
 var identity = {
   type: managedServiceIdentity
   userAssignedIdentities: (empty(userAssignedIdentities) ? json('null') : userAssignedIdentities)
@@ -254,7 +299,9 @@ var accountSasProperties = {
   signedProtocol: 'https'
 }
 
-var vmComputerNameTransformed = ((vmComputerNamesTransformation == 'uppercase') ? toUpper(virtualMachineName) : ((vmComputerNamesTransformation == 'lowercase') ? toLower(virtualMachineName) : virtualMachineName))
+var domainJoinProtectedSettings = {
+  Password: domainJoinPassword
+}
 
 var builtInRoleNames = {
   'Owner': subscriptionResourceId('Microsoft.Authorization/roleDefinitions', '8e3af657-a8ff-443c-a75c-2fe8c4bcb635')
@@ -386,20 +433,20 @@ resource virtualMachine 'Microsoft.Compute/virtualMachines@2020-06-01' = {
   ]
 }
 
-// module virtualMachine_djExtension './.bicep/nested_extension.bicep' = if (enableDomainJoinExtension) {
-//   name: '${deployment().name}-vmextension-DomainJoin'
-//   params: {
-//     virtualMachineName: virtualMachine.name
-//     extensionName: 'DomainJoin'
-//     location: location
-//     publisher: 'Microsoft.Compute'
-//     type: 'JsonADDomainExtension'
-//     typeHandlerVersion: '1.3'
-//     autoUpgradeMinorVersion: true
-//     settings: domainJoinSettings.settings
-//     protectedSettings: domainJoinPassword
-//   }
-// }
+module virtualMachine_djExtension './.bicep/nested_extension.bicep' = if (enableDomainJoinExtension) {
+  name: '${deployment().name}-vmextension-DomainJoin'
+  params: {
+    virtualMachineName: virtualMachine.name
+    extensionName: 'DomainJoin'
+    location: location
+    publisher: 'Microsoft.Compute'
+    type: 'JsonADDomainExtension'
+    typeHandlerVersion: '1.3'
+    autoUpgradeMinorVersion: true
+    settings: domainJoinSettings.settings
+    protectedSettings: domainJoinProtectedSettings
+  }
+}
 
 module virtualMachine_mamExtension './.bicep/nested_extension.bicep' = if (enableMicrosoftAntiMalware) {
   name: '${deployment().name}-vmextension-MicrosoftAntiMalware'
@@ -415,8 +462,9 @@ module virtualMachine_mamExtension './.bicep/nested_extension.bicep' = if (enabl
   }
 }
 
-resource mmaWorkspace 'Microsoft.OperationalInsights/workspaces@2021-06-01' existing = if (!empty(mmaAgentWorkspace)) {
-  name: mmaAgentWorkspace
+resource virtualMachine_workspace 'Microsoft.OperationalInsights/workspaces@2021-06-01' existing = if (!empty(workspaceId)) {
+  name: last(split(workspaceId, '/'))
+  scope: resourceGroup(split(workspaceId, '/')[2], split(workspaceId, '/')[4])
 }
 
 module virtualMachine_mmaExtension './.bicep/nested_extension.bicep' = if (enableWindowsMMAAgent || enableLinuxMMAAgent) {
@@ -430,10 +478,10 @@ module virtualMachine_mmaExtension './.bicep/nested_extension.bicep' = if (enabl
     typeHandlerVersion: enableWindowsMMAAgent ? '1.0' : '1.7'
     autoUpgradeMinorVersion: true
     settings: {
-      workspaceId: reference(mmaWorkspace.id, mmaWorkspace.apiVersion).customerId
+      workspaceId: reference(virtualMachine_workspace.id, virtualMachine_workspace.apiVersion).customerId
     }
     protectedSettings: {
-      workspaceKey: listKeys(mmaWorkspace.id, mmaWorkspace.apiVersion).primarySharedKey
+      workspaceKey: virtualMachine_workspace.listKeys().primarySharedKey
     }
   }
 }
@@ -494,62 +542,27 @@ module virtualMachine_dscExtension './.bicep/nested_extension.bicep' = if (enabl
   }
 }
 
-// module virtualMachine_cseExtension './.bicep/nested_extension.bicep' = if (enableCustomScriptExtension) {
-//   name: '${deployment().name}-vmextension-CSE'
-//   params: {
-//     virtualMachineName: virtualMachine.name
-//     extensionName: 'CustomScriptExtension'
-//     location: location
-//     publisher: 'Microsoft.Compute'
-//     type: 'CustomScriptExtension'
-//     typeHandlerVersion: '1.9'
-//     autoUpgradeMinorVersion: true
-//     settings: {
-//       fileUris: [for item in windowsScriptExtensionFileData: concat(item.uri, (contains(item, 'storageAccountId') ? '?${listAccountSas(item.storageAccountId, '2019-04-01', accountSasProperties).accountSasToken}' : ''))]
-//     }
-//     protectedSettings: {
-//       commandToExecute: windowsScriptExtensionCommandToExecute
-//       storageAccountName: ((!empty(cseStorageAccountName)) ? cseStorageAccountName : json('null'))
-//       storageAccountKey: ((!empty(cseStorageAccountKey)) ? cseStorageAccountKey : json('null'))
-//       managedIdentity: ((!empty(cseManagedIdentity)) ? cseManagedIdentity : json('null'))
-//     }
-// }
-
-// "windowsScriptExtensionFileData": [
-// {
-// "uri": "https://wvdtoassetsstore.blob.core.windows.net/wvd-to-hp/scriptExtensionMasterInstaller.ps1",
-// "storageAccountId": "/subscriptions/62826c76-d304-46d8-a0f6-718dbdcc536c/resourceGroups/WVD-Mgmt-TO-RG/providers/Microsoft.Storage/storageAccounts/wvdtoassetsstore"
-// },
-// {
-// "uri": "https://wvdtoassetsstore.blob.core.windows.net/wvd-to-hp/001-FSLogix.zip",
-// "storageAccountId": "/subscriptions/62826c76-d304-46d8-a0f6-718dbdcc536c/resourceGroups/WVD-Mgmt-TO-RG/providers/Microsoft.Storage/storageAccounts/wvdtoassetsstore"
-// }
-// ],
-// "windowsScriptRestartExtensionFileData":  {
-// "uri": "https://wvdtoassetsstore.blob.core.windows.net/wvd-to-hp/099-Restart.zip",
-// "storageAccountId": "/subscriptions/62826c76-d304-46d8-a0f6-718dbdcc536c/resourceGroups/WVD-Mgmt-TO-RG/providers/Microsoft.Storage/storageAccounts/wvdtoassetsstore"
-// }
-
-// resource vmName_WindowsCustomScriptExtension 'Microsoft.Compute/virtualMachines/extensions@2019-07-01' = if ((!empty(windowsScriptExtensionFileData)) && (!empty(windowsScriptExtensionCommandToExecute))) {
-//   parent: vmName_resource
-//   name: 'WindowsCustomScriptExtension'
-//   location: location
-//   properties: {
-//     publisher: 'Microsoft.Compute'
-//     type: 'CustomScriptExtension'
-//     typeHandlerVersion: '1.9'
-//     autoUpgradeMinorVersion: true
-//     settings: {
-//       fileUris: [for item in windowsScriptExtensionFileData: concat(item.uri, (contains(item, 'storageAccountId') ? '?${listAccountSas(item.storageAccountId, '2019-04-01', accountSasProperties).accountSasToken}' : ''))]
-//     }
-//     protectedSettings: {
-//       commandToExecute: windowsScriptExtensionCommandToExecute
-//       storageAccountName: ((!empty(cseStorageAccountName)) ? cseStorageAccountName : json('null'))
-//       storageAccountKey: ((!empty(cseStorageAccountKey)) ? cseStorageAccountKey : json('null'))
-//       managedIdentity: ((!empty(cseManagedIdentity)) ? cseManagedIdentity : json('null'))
-//     }
-//   }
-// }
+module virtualMachine_cseExtension './.bicep/nested_extension.bicep' = if (enableCustomScriptExtension) {
+  name: '${deployment().name}-vmextension-CSE'
+  params: {
+    virtualMachineName: virtualMachine.name
+    extensionName: 'CustomScriptExtension'
+    location: location
+    publisher: 'Microsoft.Compute'
+    type: 'CustomScriptExtension'
+    typeHandlerVersion: '1.9'
+    autoUpgradeMinorVersion: true
+    settings: {
+      fileUris: [for fileData in windowsScriptExtensionFileData: contains(fileData, 'storageAccountId') ? '${fileData.uri}?${listAccountSas(fileData.storageAccountId, '2019-04-01', accountSasProperties).accountSasToken}' : '${fileData.uri}']
+    }
+    protectedSettings: {
+      commandToExecute: windowsScriptExtensionCommandToExecute
+      storageAccountName: ((!empty(cseStorageAccountName)) ? cseStorageAccountName : json('null'))
+      storageAccountKey: ((!empty(cseStorageAccountKey)) ? cseStorageAccountKey : json('null'))
+      managedIdentity: ((!empty(cseManagedIdentity)) ? cseManagedIdentity : json('null'))
+    }
+  }
+}
 
 module virtualMachine_backup './.bicep/nested_backup.bicep' = if (!empty(backupVaultName)) {
   name: 'add-${virtualMachine.name}-ToBackup'
@@ -561,12 +574,14 @@ module virtualMachine_backup './.bicep/nested_backup.bicep' = if (!empty(backupV
   }
   scope: resourceGroup(backupVaultResourceGroup)
   dependsOn: [
+    virtualMachine_djExtension
     virtualMachine_mmaExtension
     virtualMachine_mamExtension
     virtualMachine_nwExtension
     virtualMachine_daExtension
     virtualMachine_deExtension
     virtualMachine_dscExtension
+    virtualMachine_cseExtension
   ]
 }
 
@@ -588,6 +603,11 @@ module virtualMachine_rbac './.bicep/nested_rbac.bicep' = [for (roleAssignment, 
   }
 }]
 
+@description('The name of the VM.')
 output virtualMachineName string = virtualMachine.name
+
+@description('The Resource Id of the VM.')
 output virtualMachineResourceId string = virtualMachine.id
+
+@description('The name of the Resource Group the VM was created in.')
 output virtualMachineResourceGroup string = resourceGroup().name

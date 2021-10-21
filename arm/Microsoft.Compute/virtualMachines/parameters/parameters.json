@@ -82,18 +82,15 @@
         "enableWindowsMMAAgent": {
             "value": true
         },
-        "mmaAgentWorkspace": {
-            "value": "adp-sxx-az-la-weu-x-001"
-        },
         "enableWindowsDependencyAgent": {
             "value": true
         },
-        // "enableNetworkWatcherWindows ": {
-        //     "value": true
-        // },
-        // "enableWindowsDiskEncryption ": {
-        //     "value": true
-        // },
+        "enableNetworkWatcherWindows": {
+            "value": true
+        },
+        "enableWindowsDiskEncryption": {
+            "value": true
+        },
         "diskEncryptionSettings": {
             "value": {
                 "settings": {
@@ -108,9 +105,9 @@
                 }
             }
         },
-        // "enableDesiredStateConfiguration ": {
-        //     "value": true
-        // },
+        "enableDesiredStateConfiguration": {
+            "value": true
+        },
         "desiredStateConfigurationSettings": {
             "value": {
                 "settings": {},
@@ -132,6 +129,8 @@
         "diagnosticStorageAccountId": {
             "value": "/subscriptions/8629be3b-96bc-482d-a04b-ffff597c65a2/resourceGroups/validation-rg/providers/Microsoft.Storage/storageAccounts/adpsxxazsaweux001"
         },
+        // /subscriptions/8629be3b-96bc-482d-a04b-ffff597c65a2/resourcegroups/validation-rg/providers/microsoft.operationalinsights/workspaces/adp-sxx-az-la-weu-x-001"
+        // "/subscriptions/8629be3b-96bc-482d-a04b-ffff597c65a2/resourcegroups/management-rg/providers/microsoft.operationalinsights/workspaces/sxx-az-la-weu-x-999"
         // "bootDiagnosticStorageAccountName": {
         //     "value": "adpsxxazsaweux001"
         // },
