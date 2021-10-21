@@ -49,7 +49,8 @@ from the command line of your choice.
 
 If you instead just want to have a copy of the repository's content you can instead download it in the `.zip` format. You can do this by navigating to the repository folder of your choice (for example root), then select the `<> Code` button on the top left and click on `Download ZIP` on the opening blade.
 
-![HowToDownload](./media/cloneDownloadRepo.png?raw=true "How To Download")
+![How to download repository](./media/cloneDownloadRepo.JPG)
+
 
 ## Fork the repository
 
