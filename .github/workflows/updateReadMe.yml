@@ -14,8 +14,8 @@ on:
       - 'arm/**/deploy.json'
 
 env:
-  gitUserName: 'CARMLPipelinePrincipal'
-  gitEmail: 'CARML@microsoft.com'
+  pipelinePrincipalGitUserName: "CARMLPipelinePrincipal"
+  pipelinePrincipalGitUserEmail: "CARML@microsoft.com"
 
 jobs:
   job_update_readme:
@@ -27,7 +27,6 @@ jobs:
         with:
           fetch-depth: 0
           token: '${{ secrets.PLATFORM_REPO_UPDATE_PAT }}' # Sets general GIT credentials up
-
       - name: "Update general ReadMe"
         shell: pwsh
         run: |
@@ -70,8 +69,8 @@ jobs:
       - name: "Push changes"
         shell: pwsh
         run: |
-          git config --global user.email $env:gitEmail
-          git config --global user.name $env:gitUserName
+          git config --global user.email '${{ env.pipelinePrincipalGitUserEmail }}'
+          git config --global user.name '${{ env.pipelinePrincipalGitUserName }}'
 
           git pull
           git add .
