@@ -353,7 +353,7 @@ function Set-ModuleReadMe {
     }
 
     # Check readme
-    if (-not (Test-Path $ReadMeFilePath)) {
+    if (-not (Test-Path $ReadMeFilePath) -or ([String]::IsNullOrEmpty((Get-Content $ReadMeFilePath -Raw)))) {
         # Create new readme file
 
         # Build resource name

@@ -43,13 +43,13 @@ function Get-EndIndex {
     switch ($ContentType) {
         'list' {
             # Identify end of list
-            while ($ReadMeFileContent[$endIndex].StartsWith('- ') -and -not ($endIndex -ge $readMeFileContent.Count - 1)) {
+            while ($ReadMeFileContent[$endIndex].StartsWith('- ') -and -not ($endIndex -ge $readMeFileContent.Count - 1) -and -not $ReadMeFileContent[$endIndex].StartsWith('#')) {
                 $endIndex++
             }
         }
         'table' {
             # Identify end of table
-            while ($ReadMeFileContent[$endIndex].StartsWith('|') -and -not ($endIndex -ge $readMeFileContent.Count - 1)) {
+            while ($ReadMeFileContent[$endIndex].StartsWith('|') -and -not ($endIndex -ge $readMeFileContent.Count - 1) -and -not $ReadMeFileContent[$endIndex].StartsWith('#')) {
                 $endIndex++
             }
         }
@@ -59,6 +59,11 @@ function Get-EndIndex {
                 $endIndex++
             }
         }
+    }
+
+    if ($ReadMeFileContent[$endIndex].StartsWith('#')) {
+        # We're already in the next section. Hence the section was empty
+        $endIndex--
     }
 
     return $endIndex
@@ -109,50 +114,69 @@ function Merge-FileWithNewContent {
         $startIndex++
     }
 
-    switch ($ContentType) {
-        'table' {
-            $tableStartIndex = $startIndex + 1
-            while (-not ($OldContent[$tableStartIndex].StartsWith('|')) -and -not ($tableStartIndex -ge $OldContent.count)) {
-                $tableStartIndex++
-            }
-
-            $startContent = $OldContent[0..($tableStartIndex - 1)]
-
-            if ($startIndex -eq $ReadMeFileContent.Count - 1) {
-                # Not found section until end of file. Assuming it does not exist
-                $endContent = @()
-                if ($ReadMeFileContent[$startIndex] -notcontains $SectionStartIdentifier) {
-                    $NewContent = @('', $SectionStartIdentifier) + $NewContent
-                }
-            } else {
-                $endIndex = Get-EndIndex -ReadMeFileContent $OldContent -startIndex $tableStartIndex -ContentType $ContentType
-                if ($endIndex -ne $OldContent.Count - 1) {
-                    $endContent = $OldContent[$endIndex..($OldContent.Count - 1)]
-                }
-            }
+    if ($startIndex -eq $OldContent.Count - 1) {
+        # Section is not existing (end of file)
+        $startContent = $OldContent
+        if ($OldContent[$startIndex] -ne $SectionStartIdentifier ) {
+            # Add section header
+            $startContent = $startContent + @('', $SectionStartIdentifier)
         }
-        'list' {
-            $listStartIndex = $startIndex + 1
-            while (-not ($OldContent[$listStartIndex].StartsWith('- ')) -and -not ($listStartIndex -ge $OldContent.count)) {
-                $listStartIndex++
-            }
-
-            $startContent = $OldContent[0..($listStartIndex - 1)]
-
-            if ($startIndex -eq $ReadMeFileContent.Count - 1) {
-                # Not found section until end of file. Assuming it does not exist
-                $endContent = @()
-                if ($ReadMeFileContent[$startIndex] -notcontains $SectionStartIdentifier) {
-                    $NewContent = @('', $SectionStartIdentifier) + $NewContent
+        $endContent = @()
+    } else {
+        switch ($ContentType) {
+            'table' {
+                $tableStartIndex = $startIndex + 1
+                while (-not $OldContent[$tableStartIndex].StartsWith('|') -and -not ($tableStartIndex -ge $OldContent.count) -and -not ($OldContent[$tableStartIndex].StartsWith('#'))) {
+                    $tableStartIndex++
                 }
-            } else {
-                $endIndex = Get-EndIndex -ReadMeFileContent $OldContent -startIndex $listStartIndex -ContentType $ContentType
-                if ($endIndex -ne $OldContent.Count - 1) {
-                    $endContent = $OldContent[$endIndex..($OldContent.Count - 1)]
+                if ($OldContent[$tableStartIndex].StartsWith('#')) {
+                    # Seems like there is no table yet
+                    $tableStartIndex = $startIndex + 1
+                }
+
+                $startContent = $OldContent[0..($tableStartIndex - 1)]
+
+                if ($startIndex -eq $ReadMeFileContent.Count - 1) {
+                    # Not found section until end of file. Assuming it does not exist
+                    $endContent = @()
+                    if ($ReadMeFileContent[$startIndex] -notcontains $SectionStartIdentifier) {
+                        $NewContent = @('', $SectionStartIdentifier) + $NewContent
+                    }
+                } else {
+                    $endIndex = Get-EndIndex -ReadMeFileContent $OldContent -startIndex $tableStartIndex -ContentType $ContentType
+                    if ($endIndex -ne $OldContent.Count - 1) {
+                        $endContent = $OldContent[$endIndex..($OldContent.Count - 1)]
+                    }
                 }
             }
+            'list' {
+                $listStartIndex = $startIndex + 1
+                while (-not $OldContent[$listStartIndex].StartsWith('- ') -and -not ($listStartIndex -ge $OldContent.count) -and -not ($OldContent[$listStartIndex].StartsWith('# '))) {
+                    $listStartIndex++
+                }
+                if ($OldContent[$listStartIndex].StartsWith('#')) {
+                    # Seems like there is no table yet
+                    $listStartIndex = $listStartIndex + 1
+                }
+
+
+                $startContent = $OldContent[0..($listStartIndex - 1)]
+
+                if ($startIndex -eq $ReadMeFileContent.Count - 1) {
+                    # Not found section until end of file. Assuming it does not exist
+                    $endContent = @()
+                    if ($ReadMeFileContent[$startIndex] -notcontains $SectionStartIdentifier) {
+                        $NewContent = @('', $SectionStartIdentifier) + $NewContent
+                    }
+                } else {
+                    $endIndex = Get-EndIndex -ReadMeFileContent $OldContent -startIndex $listStartIndex -ContentType $ContentType
+                    if ($endIndex -ne $OldContent.Count - 1) {
+                        $endContent = $OldContent[$endIndex..($OldContent.Count - 1)]
+                    }
+                }
+            }
+            Default {}
         }
-        Default {}
     }
 
     # Add a little space

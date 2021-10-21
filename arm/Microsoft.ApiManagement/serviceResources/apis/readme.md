@@ -35,7 +35,6 @@ The following resources are required to be able to deploy this resource.
 | `displayName` | string |  |  | Required. API name. Must be 1 to 300 characters long. |
 | `format` | string | `openapi` | `[wadl-xml, wadl-link-json, swagger-json, swagger-link-json, wsdl, wsdl-link, openapi, openapi+json, openapi-link, openapi+json-link]` | Optional. Format of the Content in which the API is getting imported. |
 | `isCurrent` | bool | `True` |  | Optional. Indicates if API revision is current api revision. |
-| `location` | string | `[resourceGroup().location]` |  | Optional. Location for all Resources. |
 | `path` | string |  |  | Required. Relative URL uniquely identifying this API and all of its resource paths within the API Management service instance. It is appended to the API endpoint base URL specified during the service instance creation to form a public URL for this API. |
 | `protocols` | array | `[https]` |  | Optional. Describes on which protocols the operations in this API can be invoked. - http or https |
 | `serviceUrl` | string |  |  | Optional. Absolute URL of the backend service implementing this API. Cannot be more than 2000 characters long. |
