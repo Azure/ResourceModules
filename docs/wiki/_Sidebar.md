@@ -1,1 +1,4 @@
-asdasd
+# Wiki content
+
+- [Home](./Home)
+- [FAQ](./FAQ)
