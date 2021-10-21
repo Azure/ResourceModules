@@ -68,7 +68,7 @@ This module deploys Azure Kubernetes Cluster (AKS).
 | `diagnosticLogsRetentionInDays` | int | 365 |  | Optional. Specifies the number of days that logs will be kept for; a value of 0 will retain data indefinitely. |
 | `cuaId` | string | "" |  | Optional. Customer Usage Attribution id (GUID). This GUID must be previously registered. |
 | `roleAssignments` | array | System.Object[] |  | Optional. Array of role assignment objects that contain the 'roleDefinitionIdOrName' and 'principalId' to define RBAC role assignments on this resource. In the roleDefinitionIdOrName attribute, you can provide either the display name of the role definition, or its fully qualified ID in the following format: '/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11' |
-| `lockForDeletion` | bool | False |  | Optional. Switch to lock Key Vault from deletion. |
+| `lock` | string | 'NotSpecified' | 'CanNotDelete', 'NotSpecified', 'ReadOnly' | Optional. Specify the type of lock. |
 | `tags` | object | {} |  | Optional. Tags of the resource. |
 
 
@@ -120,7 +120,7 @@ See also https://docs.microsoft.com/en-us/azure/templates/microsoft.containerser
 
 ### Parameter Usage: `primaryAgentPoolProfile`
 
-Provide values for primary agent pool as needed. 
+Provide values for primary agent pool as needed.
 For available properties check https://docs.microsoft.com/en-us/azure/templates/microsoft.containerservice/managedclusters?tabs=json#managedclusteragentpoolprofile-object
 
 ```json
@@ -210,7 +210,7 @@ For available properties check https://docs.microsoft.com/en-us/azure/templates/
                 "..."
             }
         }
-      ]   
+      ]
     }
 ```
 

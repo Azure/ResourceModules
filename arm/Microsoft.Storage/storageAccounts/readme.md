@@ -39,7 +39,7 @@ The default parameter values are based on the needs of deploying a diagnostic st
 | `enableHierarchicalNamespace` | bool | False |  | Optional. If true, enables Hierarchical Namespace for the storage account |
 | `fileShares` | array | System.Object[] |  | Optional. File shares to create. |
 | `location` | string | [resourceGroup().location] |  | Optional. Location for all resources. |
-| `lockForDeletion` | bool | False |  | Optional. Switch to lock storage from deletion. |
+| `lock` | string | 'NotSpecified' | 'CanNotDelete', 'NotSpecified', 'ReadOnly' | Optional. Specify the type of lock. |
 | `minimumTlsVersion` | string | TLS1_2 | System.Object[] | Optional. Set the minimum TLS version on request to storage. |
 | `moveToArchiveAfter` | int | 30 |  | Optional. Set up the amount of days after which the blobs will be moved to archive tier |
 | `networkAcls` | object |  |  | Optional. Networks ACLs, this value contains IPs to whitelist and/or Subnet information. |

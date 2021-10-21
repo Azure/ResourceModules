@@ -14,11 +14,11 @@
 
 ## Template references
 
-| Output Name | Type | Description |
-| :-- | :-- | :-- |
-| `virtualMachineName` | string | The name of the VM. |
+| Output Name                   | Type   | Description                                           |
+| :---------------------------- | :----- | :---------------------------------------------------- |
+| `virtualMachineName`          | string | The name of the VM.                                   |
 | `virtualMachineResourceGroup` | string | The name of the Resource Group the VM was created in. |
-| `virtualMachineResourceId` | string | The Resource Id of the VM. |
+| `virtualMachineResourceId`    | string | The Resource Id of the VM.                            |
 
 ## Template references
 

@@ -21,20 +21,10 @@ This template deploys an Availability Set
 | `availabilitySetSku`          | string | Aligned       |                               | Optional. Sku of the availability set. Use 'Aligned' for virtual machines with managed disks and 'Classic' for virtual machines with unmanaged disks.                                                                                                                                                                                                                                                           |
 | `proximityPlacementGroupId`   | string |               |                               | Optional. Resource Id of a proximity placement group.                                                                                                                                                                                                                                                                                                                                                           |
 | `location`                    | string |               |                               | Optional. Resource location.                                                                                                                                                                                                                                                                                                                                                                                    |
-| `lockForDeletion`             | bool   | `false`       |                               | Optional. Switch to lock the availability set from deletion.                                                                                                                                                                                                                                                                                                                                                    |
+| `lock` | string | 'NotSpecified' | 'CanNotDelete', 'NotSpecified', 'ReadOnly' | Optional. Specify the type of lock. |
 | `roleAssignments`             | array  | []            | Complex structure, see below. | Optional. Array of role assignment objects that contain the 'roleDefinitionIdOrName' and 'principalId' to define RBAC role assignments on this resource. In the roleDefinitionIdOrName attribute, you can provide either the display name of the role definition, or it's fully qualified ID in the following format: '/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11' |
 | `tags`                        | object |               |                               | Optional. Tags of the availability set resource.                                                                                                                                                                                                                                                                                                                                                                |
 | `cuaId`                       | string | ""            |                               | Optional. Customer Usage Attribution id (GUID). This GUID must be previously registered.                                                                                                                                                                                                                                                                                                                        |
-
-### Parameter Usage: `lockForDeletion`
-
-Switch to lock Availability Set from deletion.
-
-```json
-"lockForDeletion": {
-    "value": true
-}
-```
 
 ### Parameter Usage: `roleAssignments`
 

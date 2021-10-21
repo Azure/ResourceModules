@@ -55,8 +55,15 @@
         "imageReplicationRegions": {
             "value": []
         },
-        "lockForDeletion": {
-            "value": false
+        "roleAssignments": {
+            "value": [
+                {
+                    "roleDefinitionIdOrName": "Reader",
+                    "principalIds": [
+                        "5545f7a0-51f4-46af-b3b4-baecf5176a56"
+                    ]
+                }
+            ]
         }
     }
 }

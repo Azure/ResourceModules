@@ -23,8 +23,13 @@ param associatedApplicationInsightsResourceId string
 @description('Optional. The resource id of the associated Container Registry.')
 param associatedContainerRegistryResourceId string = ''
 
-@description('Optional. Switch to lock Machine Learning Service from deletion.')
-param lockForDeletion bool = false
+@allowed([
+  'CanNotDelete'
+  'NotSpecified'
+  'ReadOnly'
+])
+@description('Optional. Specify the type of lock.')
+param lock string = 'NotSpecified'
 
 @description('Optional. The flag to signal HBI data in the workspace and reduce diagnostic data collected by the service.')
 param hbiWorkspace bool = false
@@ -163,10 +168,11 @@ resource workspace 'Microsoft.MachineLearningServices/workspaces@2021-04-01' = {
   }
 }
 
-resource workspace_lock 'Microsoft.Authorization/locks@2016-09-01' = if (lockForDeletion) {
-  name: '${workspace.name}-workspaceDoNotDelete'
+resource workspace_lock 'Microsoft.Authorization/locks@2016-09-01' = if (lock != 'NotSpecified') {
+  name: '${workspace.name}-${lock}-lock'
   properties: {
-    level: 'CanNotDelete'
+    level: lock
+    notes: (lock == 'CanNotDelete') ? 'Cannot delete resource or child resources.' : 'Cannot modify the resource or child resources.'
   }
   scope: workspace
 }
