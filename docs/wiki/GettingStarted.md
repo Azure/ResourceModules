@@ -2,12 +2,12 @@ This section will give on an overview on how to get started using this repositor
 
 ---
 - [What is a Resource Module?](#What-is-a-Resource-Module?)
-- [Prerequisites?](#Prerequisites)
+- [Prerequisites](#Prerequisites)
 - [Installation](#Installation)
 - [Use the repository](#Use-the-repository)
-  - [Clone / download the repository](#Clone-/-download-the-repository)
-  - [Fork the repository](#Fork-the-repository)
-  - [Reference the content directly](#Reference-the-content-directly)
+  - [Clone / download](#Clone-/-download-the-repository)
+  - [Fork](#Fork-the-repository)
+  - [Reference directly](#Reference-the-content-directly)
 - [GitHub specific prerequisites](#GitHub-specific-prerequisites)
 
 ---
