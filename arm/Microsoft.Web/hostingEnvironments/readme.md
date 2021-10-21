@@ -9,7 +9,7 @@ This module deploys App Service Environment, with resource lock.
 | `Microsoft.Authorization/locks` | 2016-09-01 |
 | `Microsoft.Insights/diagnosticSettings` | 2017-05-01-preview |
 | `Microsoft.Web/hostingEnvironments` | 2021-02-01 |
-| `Microsoft.Web/hostingEnvironments/providers/roleAssignments` | 2020-04-01-preview |
+| `Microsoft.Web/hostingEnvironments/providers/roleAssignments` | 2021-04-01-preview |
 
 ## Parameters
 

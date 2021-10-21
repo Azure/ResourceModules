@@ -8,7 +8,7 @@ This module deploys an Image Template (for Azure Image Builder service) that can
 | :-- | :-- |
 | `Microsoft.Authorization/locks` | 2016-09-01 |
 | `Microsoft.VirtualMachineImages/imageTemplates` | 2020-02-14 |
-| `Microsoft.VirtualMachineImages/imageTemplates/providers/roleAssignments` | 2020-04-01-preview |
+| `Microsoft.VirtualMachineImages/imageTemplates/providers/roleAssignments` | 2021-04-01-preview |
 
 ## Parameters
 

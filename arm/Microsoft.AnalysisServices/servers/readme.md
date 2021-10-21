@@ -5,7 +5,7 @@
 | Resource Type | Api Version |
 | :-- | :-- |
 | `Microsoft.AnalysisServices/servers` | 2017-08-01 |
-| `Microsoft.AnalysisServices/servers/providers/roleAssignments` | 2020-04-01-preview |
+| `Microsoft.AnalysisServices/servers/providers/roleAssignments` | 2021-04-01-preview |
 | `Microsoft.Authorization/locks` | 2016-09-01 |
 | `Microsoft.Insights/diagnosticSettings` | 2017-05-01-preview |
 

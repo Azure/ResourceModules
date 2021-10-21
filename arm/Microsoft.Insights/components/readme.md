@@ -5,7 +5,7 @@
 | Resource Type | Api Version |
 | :-- | :-- |
 | `Microsoft.Insights/components` | 2020-02-02 |
-| `Microsoft.Insights/components/providers/roleAssignments` | 2020-04-01-preview |
+| `Microsoft.Insights/components/providers/roleAssignments` | 2021-04-01-preview |
 
 ## Parameters
 

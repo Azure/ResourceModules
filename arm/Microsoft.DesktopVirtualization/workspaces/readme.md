@@ -8,7 +8,7 @@ This module deploys AVD Workspaces, with resource lock and diagnostic configurat
 | :-- | :-- |
 | `Microsoft.Authorization/locks` | 2016-09-01 |
 | `Microsoft.DesktopVirtualization/workspaces` | 2021-07-12 |
-| `Microsoft.DesktopVirtualization/workspaces/providers/roleAssignments` | 2020-04-01-preview |
+| `Microsoft.DesktopVirtualization/workspaces/providers/roleAssignments` | 2021-04-01-preview |
 | `Microsoft.Insights/diagnosticSettings` | 2017-05-01-preview |
 
 ## Parameters

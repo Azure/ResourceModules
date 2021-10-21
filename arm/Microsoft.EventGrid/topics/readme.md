@@ -8,7 +8,7 @@ This module deploys Event Grid
 | :-- | :-- |
 | `Microsoft.Authorization/locks` | 2016-09-01 |
 | `Microsoft.EventGrid/topics` | 2020-06-01 |
-| `Microsoft.EventGrid/topics/providers/roleAssignments` | 2020-04-01-preview |
+| `Microsoft.EventGrid/topics/providers/roleAssignments` | 2021-04-01-preview |
 | `Microsoft.Insights/diagnosticSettings` | 2017-05-01-preview |
 | `Microsoft.Network/privateEndpoints` | 2021-05-01 |
 | `Microsoft.Network/privateEndpoints/privateDnsZoneGroups` | 2021-02-01 |

@@ -172,11 +172,12 @@ Describe 'Readme tests' -Tag Readme {
             $readMeContent | Should -Not -Be $null
         }
 
-        It '[<moduleFolderName>] Readme.md file should contain the these Heading2 titles in order: Resource Types, parameters, Outputs, Template references' -TestCases $readmeFolderTestCases {
+        It '[<moduleFolderName>] Readme.md file should contain the these titles in order: Resource Types, Parameters, Outputs, Template references' -TestCases $readmeFolderTestCases {
             param(
                 $moduleFolderName,
                 $readMeContent
             )
+
             $ReadmeHTML = ($readMeContent | ConvertFrom-Markdown -ErrorAction SilentlyContinue).Html
 
             $Heading2Order = @('Resource Types', 'parameters', 'Outputs', 'Template references')
@@ -191,11 +192,6 @@ Describe 'Readme tests' -Tag Readme {
 
             $differentiatingItems = $Heading2Order | Where-Object { $Headings2List -notcontains $_ }
             $differentiatingItems.Count | Should -Be 0 -Because ('list of heading titles missing in the ReadMe file [{0}] should be empty' -f ($differentiatingItems -join ','))
-
-            $differentiatingItems = $Headings2List | Where-Object { $Heading2Order -notcontains $_ }
-            $differentiatingItems.Count | Should -Be 0 -Because ('list of excess heading titles in the ReadMe file [{0}] should be empty' -f ($differentiatingItems -join ','))
-
-            $Headings2List | Should -Be $Heading2Order -Because 'the order of items should match'
         }
 
         It '[<moduleFolderName>] Resources section should contain all resources from  the template file' -TestCases $readmeFolderTestCases {

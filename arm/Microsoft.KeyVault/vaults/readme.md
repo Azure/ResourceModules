@@ -10,7 +10,7 @@ This module deploys a key vault and it's child resources.
 | `Microsoft.Insights/diagnosticSettings` | 2017-05-01-preview |
 | `Microsoft.KeyVault/vaults` | 2019-09-01 |
 | `Microsoft.KeyVault/vaults/keys` | 2019-09-01 |
-| `Microsoft.KeyVault/vaults/providers/roleAssignments` | 2020-04-01-preview |
+| `Microsoft.KeyVault/vaults/providers/roleAssignments` | 2021-04-01-preview |
 | `Microsoft.KeyVault/vaults/secrets` | 2019-09-01 |
 | `Microsoft.Network/privateEndpoints` | 2021-05-01 |
 | `Microsoft.Network/privateEndpoints/privateDnsZoneGroups` | 2021-02-01 |

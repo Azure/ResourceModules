@@ -10,7 +10,7 @@ This module deploys an API management.
 | `Microsoft.ApiManagement/service/identityProviders` | 2020-06-01-preview |
 | `Microsoft.ApiManagement/service/policies` | 2020-06-01-preview |
 | `Microsoft.ApiManagement/service/portalsettings` | 2019-12-01 |
-| `Microsoft.ApiManagement/service/providers/roleAssignments` | 2020-04-01-preview |
+| `Microsoft.ApiManagement/service/providers/roleAssignments` | 2021-04-01-preview |
 | `Microsoft.Authorization/locks` | 2016-09-01 |
 | `Microsoft.Insights/diagnosticSettings` | 2017-05-01-preview |
 

@@ -11,7 +11,7 @@ This module deploys a virtual machine scale set
 | `Microsoft.Compute/virtualMachineScaleSets` | 2021-04-01 |
 | `Microsoft.Compute/virtualMachineScaleSets/extensions` | 2020-06-01 |
 | `Microsoft.Compute/virtualMachineScaleSets/extensions` | 2019-07-01 |
-| `Microsoft.Compute/virtualMachineScaleSets/providers/roleAssignments` | 2020-04-01-preview |
+| `Microsoft.Compute/virtualMachineScaleSets/providers/roleAssignments` | 2021-04-01-preview |
 | `Microsoft.Insights/diagnosticSettings` | 2021-05-01-preview |
 
 ### Resource dependency

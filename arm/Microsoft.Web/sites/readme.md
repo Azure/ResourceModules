@@ -14,7 +14,7 @@ This module deploys a Web or Function App
 | `Microsoft.Web/serverfarms` | 2021-02-01 |
 | `Microsoft.Web/sites` | 2020-12-01 |
 | `Microsoft.Web/sites/config` | 2019-08-01 |
-| `Microsoft.Web/sites/providers/roleAssignments` | 2020-04-01-preview |
+| `Microsoft.Web/sites/providers/roleAssignments` | 2021-04-01-preview |
 
 ## Parameters
 

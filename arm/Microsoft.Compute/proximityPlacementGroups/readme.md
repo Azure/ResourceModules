@@ -8,7 +8,7 @@ This template deploys a Proximity Placement Group
 | :-- | :-- |
 | `Microsoft.Authorization/locks` | 2016-09-01 |
 | `Microsoft.Compute/proximityPlacementGroups` | 2021-04-01 |
-| `Microsoft.Compute/proximityPlacementGroups/providers/roleAssignments` | 2020-04-01-preview |
+| `Microsoft.Compute/proximityPlacementGroups/providers/roleAssignments` | 2021-04-01-preview |
 
 ## Parameters
 

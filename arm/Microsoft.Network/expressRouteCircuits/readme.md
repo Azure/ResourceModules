@@ -10,7 +10,7 @@ This template deploys a ExrepressRoute Circuit.
 | `Microsoft.Authorization/locks` | 2016-09-01 |
 | `Microsoft.Insights/diagnosticSettings` | 2017-05-01-preview |
 | `Microsoft.Network/expressRouteCircuits` | 2021-02-01 |
-| `Microsoft.Network/expressRouteCircuits/providers/roleAssignments` | 2020-04-01-preview |
+| `Microsoft.Network/expressRouteCircuits/providers/roleAssignments` | 2021-04-01-preview |
 
 ## Parameters
 

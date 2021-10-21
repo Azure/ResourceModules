@@ -8,7 +8,7 @@ This module deploys an IP Group, with resource lock.
 | :-- | :-- |
 | `Microsoft.Authorization/locks` | 2016-09-01 |
 | `Microsoft.Network/ipGroups` | 2021-02-01 |
-| `Microsoft.Network/ipGroups/providers/roleAssignments` | 2020-04-01-preview |
+| `Microsoft.Network/ipGroups/providers/roleAssignments` | 2021-04-01-preview |
 
 ## Parameters
 

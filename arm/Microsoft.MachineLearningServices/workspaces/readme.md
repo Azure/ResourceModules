@@ -9,7 +9,7 @@ This module deploys a Machine Learning Services Workspace.
 | `Microsoft.Authorization/locks` | 2016-09-01 |
 | `Microsoft.Insights/diagnosticSettings` | 2017-05-01-preview |
 | `Microsoft.MachineLearningServices/workspaces` | 2021-04-01 |
-| `Microsoft.MachineLearningServices/workspaces/providers/roleAssignments` | 2020-04-01-preview |
+| `Microsoft.MachineLearningServices/workspaces/providers/roleAssignments` | 2021-04-01-preview |
 | `Microsoft.Network/privateEndpoints` | 2021-05-01 |
 | `Microsoft.Network/privateEndpoints/privateDnsZoneGroups` | 2021-02-01 |
 

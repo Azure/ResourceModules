@@ -8,9 +8,9 @@ This module deploys different kinds of Cognitive Services resources
 | :-- | :-- |
 | `Microsoft.Authorization/locks` | 2016-09-01 |
 | `Microsoft.CognitiveServices/accounts` | 2017-04-18 |
-| `Microsoft.CognitiveServices/accounts/providers/roleAssignments` | 2020-04-01-preview |
+| `Microsoft.CognitiveServices/accounts/providers/roleAssignments` | 2021-04-01-preview |
 | `Microsoft.Insights/diagnosticSettings` | 2017-05-01-preview |
-| `Microsoft.Network/privateEndpoints` | 2021-02-01 |
+| `Microsoft.Network/privateEndpoints` | 2021-05-01 |
 | `Microsoft.Network/privateEndpoints/privateDnsZoneGroups` | 2021-02-01 |
 
 ## Parameters
@@ -160,5 +160,5 @@ Tag names and tag values can be provided as needed. A tag can be left without a 
 - [Locks](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2016-09-01/locks)
 - [Accounts](https://docs.microsoft.com/en-us/azure/templates/Microsoft.CognitiveServices/2017-04-18/accounts)
 - [Diagnosticsettings](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Insights/2017-05-01-preview/diagnosticSettings)
-- [Privateendpoints](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Network/2021-02-01/privateEndpoints)
+- [Privateendpoints](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Network/2021-05-01/privateEndpoints)
 - [Privateendpoints/Privatednszonegroups](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Network/2021-02-01/privateEndpoints/privateDnsZoneGroups)

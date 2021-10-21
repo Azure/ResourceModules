@@ -13,7 +13,7 @@ This template deploys an SQL Managed Instance, with resource lock.
 | `Microsoft.Sql/managedInstances/administrators` | 2017-03-01-preview |
 | `Microsoft.Sql/managedInstances/encryptionProtector` | 2017-10-01-preview |
 | `Microsoft.Sql/managedInstances/keys` | 2017-10-01-preview |
-| `Microsoft.Sql/managedInstances/providers/roleAssignments` | 2020-04-01-preview |
+| `Microsoft.Sql/managedInstances/providers/roleAssignments` | 2021-04-01-preview |
 | `Microsoft.Sql/managedInstances/securityAlertPolicies` | 2017-03-01-preview |
 | `Microsoft.Sql/managedInstances/vulnerabilityAssessments` | 2018-06-01-preview |
 

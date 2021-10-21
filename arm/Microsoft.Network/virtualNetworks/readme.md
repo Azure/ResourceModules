@@ -10,7 +10,7 @@ This template deploys a Virtual Network (vNet) with 2 optional Subnets.
 | `Microsoft.Authorization/locks` | 2016-09-01 |
 | `Microsoft.Insights/diagnosticSettings` | 2017-05-01-preview |
 | `Microsoft.Network/virtualNetworks` | 2021-05-01 |
-| `Microsoft.Network/virtualNetworks/providers/roleAssignments` | 2020-04-01-preview |
+| `Microsoft.Network/virtualNetworks/providers/roleAssignments` | 2021-04-01-preview |
 
 ## Parameters
 

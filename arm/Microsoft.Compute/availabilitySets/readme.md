@@ -8,7 +8,7 @@ This template deploys an Availability Set
 | :-- | :-- |
 | `Microsoft.Authorization/locks` | 2016-09-01 |
 | `Microsoft.Compute/availabilitySets` | 2021-04-01 |
-| `Microsoft.Compute/availabilitySets/providers/roleAssignments` | 2020-04-01-preview |
+| `Microsoft.Compute/availabilitySets/providers/roleAssignments` | 2021-04-01-preview |
 
 ## Parameters
 

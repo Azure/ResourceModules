@@ -9,7 +9,7 @@ This module deploys a NAT Gateway.
 | `Microsoft.Authorization/locks` | 2016-09-01 |
 | `Microsoft.Insights/diagnosticSettings` | 2017-05-01-preview |
 | `Microsoft.Network/natGateways` | 2021-02-01 |
-| `Microsoft.Network/natGateways/providers/roleAssignments` | 2020-04-01-preview |
+| `Microsoft.Network/natGateways/providers/roleAssignments` | 2021-04-01-preview |
 | `Microsoft.Network/publicIPAddresses` | 2021-02-01 |
 
 ## Parameters

@@ -9,7 +9,7 @@ This module deploys an Azure SQL Server.
 | `Microsoft.Authorization/locks` | 2016-09-01 |
 | `Microsoft.Sql/servers` | 2020-02-02-preview |
 | `Microsoft.Sql/servers/firewallRules` | 2021-02-01-preview |
-| `Microsoft.Sql/servers/providers/roleAssignments` | 2020-04-01-preview |
+| `Microsoft.Sql/servers/providers/roleAssignments` | 2021-04-01-preview |
 | `Microsoft.Sql/servers/securityAlertPolicies` | 2021-02-01-preview |
 
 ## Parameters

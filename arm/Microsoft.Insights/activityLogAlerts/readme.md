@@ -7,7 +7,7 @@ This module deploys an Alert based on Activity Log
 | Resource Type | Api Version |
 | :-- | :-- |
 | `Microsoft.Insights/activityLogAlerts` | 2020-10-01 |
-| `Microsoft.Insights/activityLogAlerts/providers/roleAssignments` | 2020-04-01-preview |
+| `Microsoft.Insights/activityLogAlerts/providers/roleAssignments` | 2021-04-01-preview |
 
 ## Parameters
 

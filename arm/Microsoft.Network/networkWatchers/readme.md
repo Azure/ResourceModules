@@ -10,7 +10,7 @@ This template deploys Network Watcher.
 | `Microsoft.Authorization/locks` | 2016-09-01 |
 | `Microsoft.Network/networkWatchers` | 2021-02-01 |
 | `Microsoft.Network/networkWatchers/connectionMonitors` | 2021-02-01 |
-| `Microsoft.Network/networkWatchers/providers/roleAssignments` | 2020-04-01-preview |
+| `Microsoft.Network/networkWatchers/providers/roleAssignments` | 2021-04-01-preview |
 
 ## Parameters
 

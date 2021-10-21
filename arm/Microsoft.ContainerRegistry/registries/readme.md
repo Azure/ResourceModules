@@ -110,13 +110,6 @@ Tag names and tag values can be provided as needed. A tag can be left without a 
 | `acrResourceGroup` | string | The name of the Resource Group the Azure Container Registry was created in. |
 | `acrResourceId` | string | The Resource Id of the Azure Container Registry. |
 
-## Considerations
-
-## Additional resources
-
-- [Deployments](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Resources/2018-02-01/deployments)
-- [ContainerRegistry](https://docs.microsoft.com/en-us/azure/templates/microsoft.containerregistry/2019-05-01/registries)
-
 ## Template references
 - [Registries](https://docs.microsoft.com/en-us/azure/templates/Microsoft.ContainerRegistry/2020-11-01-preview/registries)
 - [Privateendpoints](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Network/2020-05-01/privateEndpoints)

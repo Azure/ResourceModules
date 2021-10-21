@@ -7,7 +7,7 @@ This module deploys an Action Group
 | Resource Type | Api Version |
 | :-- | :-- |
 | `microsoft.insights/actionGroups` | 2019-06-01 |
-| `microsoft.insights/actionGroups/providers/roleAssignments` | 2020-04-01-preview |
+| `microsoft.insights/actionGroups/providers/roleAssignments` | 2021-04-01-preview |
 
 ## Parameters
 

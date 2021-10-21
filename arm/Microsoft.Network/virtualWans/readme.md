@@ -10,7 +10,7 @@ This template deploys Virtual Wan
 | `Microsoft.Authorization/locks` | 2016-09-01 |
 | `Microsoft.Network/virtualHubs` | 2021-05-01 |
 | `Microsoft.Network/virtualWans` | 2021-05-01 |
-| `Microsoft.Network/virtualWans/providers/roleAssignments` | 2020-04-01-preview |
+| `Microsoft.Network/virtualWans/providers/roleAssignments` | 2021-04-01-preview |
 | `Microsoft.Network/vpnGateways` | 2021-05-01 |
 | `Microsoft.Network/vpnSites` | 2021-05-01 |
 

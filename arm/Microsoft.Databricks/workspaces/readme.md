@@ -6,7 +6,7 @@
 | :-- | :-- |
 | `Microsoft.Authorization/locks` | 2016-09-01 |
 | `Microsoft.Databricks/workspaces` | 2018-04-01 |
-| `Microsoft.Databricks/workspaces/providers/roleAssignments` | 2020-04-01-preview |
+| `Microsoft.Databricks/workspaces/providers/roleAssignments` | 2021-04-01-preview |
 | `Microsoft.Insights/diagnosticSettings` | 2017-05-01-preview |
 
 ## Parameters

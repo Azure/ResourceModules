@@ -8,7 +8,7 @@ This module deploys Images.
 | Resource Type | Api Version |
 | :-- | :-- |
 | `Microsoft.Compute/images` | 2021-04-01 |
-| `Microsoft.Compute/images/providers/roleAssignments` | 2018-09-01-preview |
+| `Microsoft.Compute/images/providers/roleAssignments` | 2021-04-01-preview |
 
 ## Parameters
 

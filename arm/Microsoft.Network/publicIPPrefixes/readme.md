@@ -8,7 +8,7 @@ This template deploys Public IP Prefixes.
 | :-- | :-- |
 | `Microsoft.Authorization/locks` | 2016-09-01 |
 | `Microsoft.Network/publicIPPrefixes` | 2021-02-01 |
-| `Microsoft.Network/publicIPPrefixes/providers/roleAssignments` | 2020-04-01-preview |
+| `Microsoft.Network/publicIPPrefixes/providers/roleAssignments` | 2021-04-01-preview |
 
 ## Parameters
 

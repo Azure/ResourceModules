@@ -10,7 +10,7 @@ This template deploys Log Analytics.
 | `Microsoft.OperationalInsights/workspaces` | 2020-08-01 |
 | `Microsoft.OperationalInsights/workspaces/dataSources` | 2020-03-01-preview |
 | `Microsoft.OperationalInsights/workspaces/linkedServices` | 2020-03-01-preview |
-| `Microsoft.OperationalInsights/workspaces/providers/roleAssignments` | 2020-04-01-preview |
+| `Microsoft.OperationalInsights/workspaces/providers/roleAssignments` | 2021-04-01-preview |
 | `Microsoft.OperationalInsights/workspaces/savedSearches` | 2020-03-01-preview |
 | `Microsoft.OperationalInsights/workspaces/storageInsightConfigs` | 2020-03-01-preview |
 | `Microsoft.OperationsManagement/solutions` | 2015-11-01-preview |

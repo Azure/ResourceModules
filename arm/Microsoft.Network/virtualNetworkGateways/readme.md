@@ -11,7 +11,7 @@ This module deploys a Virtual Network Gateway.
 | `Microsoft.Insights/diagnosticSettings` | 2017-05-01-preview |
 | `Microsoft.Network/publicIPAddresses` | 2021-02-01 |
 | `Microsoft.Network/virtualNetworkGateways` | 2021-02-01 |
-| `Microsoft.Network/virtualNetworkGateways/providers/roleAssignments` | 2020-04-01-preview |
+| `Microsoft.Network/virtualNetworkGateways/providers/roleAssignments` | 2021-04-01-preview |
 
 ## Parameters
 

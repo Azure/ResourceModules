@@ -8,7 +8,7 @@ This template deploys a Disk Encryption Set
 | Resource Type | Api Version |
 | :-- | :-- |
 | `Microsoft.Compute/diskEncryptionSets` | 2020-12-01 |
-| `Microsoft.Compute/diskEncryptionSets/providers/roleAssignments` | 2018-09-01-preview |
+| `Microsoft.Compute/diskEncryptionSets/providers/roleAssignments` | 2021-04-01-preview |
 | `Microsoft.KeyVault/vaults/accessPolicies` | 2019-09-01 |
 
 ## Parameters

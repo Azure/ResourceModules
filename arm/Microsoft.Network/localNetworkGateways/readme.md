@@ -8,7 +8,7 @@ This module deploys Local Network Gateway, with resource lock.
 | :-- | :-- |
 | `Microsoft.Authorization/locks` | 2016-09-01 |
 | `Microsoft.Network/localNetworkGateways` | 2021-02-01 |
-| `Microsoft.Network/localNetworkGateways/providers/roleAssignments` | 2020-04-01-preview |
+| `Microsoft.Network/localNetworkGateways/providers/roleAssignments` | 2021-04-01-preview |
 
 ## Parameters
 

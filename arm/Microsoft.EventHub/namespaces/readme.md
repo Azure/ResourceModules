@@ -10,9 +10,9 @@ This module deploys EventHub Namespace.
 | `Microsoft.EventHub/namespaces` | 2017-04-01 |
 | `Microsoft.EventHub/namespaces/authorizationRules` | 2017-04-01 |
 | `Microsoft.EventHub/namespaces/disasterRecoveryConfigs` | 2017-04-01 |
-| `Microsoft.EventHub/namespaces/providers/roleAssignments` | 2018-09-01-preview |
+| `Microsoft.EventHub/namespaces/providers/roleAssignments` | 2021-04-01-preview |
 | `Microsoft.Insights/diagnosticSettings` | 2017-05-01-preview |
-| `Microsoft.Network/privateEndpoints` | 2020-05-01 |
+| `Microsoft.Network/privateEndpoints` | 2021-05-01 |
 | `Microsoft.Network/privateEndpoints/privateDnsZoneGroups` | 2020-05-01 |
 
 ## Parameters
@@ -189,5 +189,5 @@ To use Private Endpoint the following dependencies must be deployed:
 - [Namespaces/Authorizationrules](https://docs.microsoft.com/en-us/azure/templates/Microsoft.EventHub/2017-04-01/namespaces/authorizationRules)
 - [Namespaces/Disasterrecoveryconfigs](https://docs.microsoft.com/en-us/azure/templates/Microsoft.EventHub/2017-04-01/namespaces/disasterRecoveryConfigs)
 - [Diagnosticsettings](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Insights/2017-05-01-preview/diagnosticSettings)
-- [Privateendpoints](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Network/2020-05-01/privateEndpoints)
+- [Privateendpoints](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Network/2021-05-01/privateEndpoints)
 - [Privateendpoints/Privatednszonegroups](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Network/2020-05-01/privateEndpoints/privateDnsZoneGroups)

@@ -8,7 +8,7 @@ This module deploys an App Service Plan.
 | :-- | :-- |
 | `Microsoft.Authorization/locks` | 2016-09-01 |
 | `Microsoft.Web/serverfarms` | 2021-02-01 |
-| `Microsoft.Web/serverfarms/providers/roleAssignments` | 2020-04-01-preview |
+| `Microsoft.Web/serverfarms/providers/roleAssignments` | 2021-04-01-preview |
 
 ## Parameters
 

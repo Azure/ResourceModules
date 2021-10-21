@@ -9,7 +9,7 @@ This module deploys Logic App resource.
 | `Microsoft.Authorization/locks` | 2016-09-01 |
 | `Microsoft.Insights/diagnosticSettings` | 2017-05-01-preview |
 | `Microsoft.Logic/workflows` | 2019-05-01 |
-| `Microsoft.Logic/workflows/providers/roleAssignments` | 2020-04-01-preview |
+| `Microsoft.Logic/workflows/providers/roleAssignments` | 2021-04-01-preview |
 
 ## Parameters
 

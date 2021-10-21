@@ -7,7 +7,7 @@ This module deploys an Alert based on metrics
 | Resource Type | Api Version |
 | :-- | :-- |
 | `Microsoft.Insights/metricAlerts` | 2018-03-01 |
-| `Microsoft.Insights/metricAlerts/providers/roleAssignments` | 2020-04-01-preview |
+| `Microsoft.Insights/metricAlerts/providers/roleAssignments` | 2021-04-01-preview |
 
 ## Parameters
 

@@ -15,7 +15,7 @@ This module deploys Service Bus Namespace resource.
 | `Microsoft.ServiceBus/namespaces/disasterRecoveryConfigs` | 2017-04-01 |
 | `Microsoft.ServiceBus/namespaces/ipfilterrules` | 2018-01-01-preview |
 | `Microsoft.ServiceBus/namespaces/migrationConfigurations` | 2017-04-01 |
-| `Microsoft.ServiceBus/namespaces/providers/roleAssignments` | 2020-04-01-preview |
+| `Microsoft.ServiceBus/namespaces/providers/roleAssignments` | 2021-04-01-preview |
 | `Microsoft.ServiceBus/namespaces/virtualnetworkrules` | 2018-01-01-preview |
 
 ## Parameters

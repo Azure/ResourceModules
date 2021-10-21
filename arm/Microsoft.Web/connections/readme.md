@@ -8,7 +8,7 @@ This module deploys an Azure API Connection.
 | :-- | :-- |
 | `Microsoft.Authorization/locks` | 2016-09-01 |
 | `Microsoft.Web/connections` | 2016-06-01 |
-| `Microsoft.Web/connections/providers/roleAssignments` | 2020-04-01-preview |
+| `Microsoft.Web/connections/providers/roleAssignments` | 2021-04-01-preview |
 
 ## Parameters
 

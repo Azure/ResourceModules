@@ -7,7 +7,7 @@ This module deploys an Alert based on metrics
 | Resource Type | Api Version |
 | :-- | :-- |
 | `Microsoft.Insights/scheduledQueryRules` | 2018-04-16 |
-| `microsoft.insights/scheduledQueryRules/providers/roleAssignments` | 2020-04-01-preview |
+| `microsoft.insights/scheduledQueryRules/providers/roleAssignments` | 2021-04-01-preview |
 
 ## Parameters
 
