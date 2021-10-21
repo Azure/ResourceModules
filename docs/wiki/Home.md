@@ -1,5 +1,9 @@
 # Common Azure Resource Modules
 
+The objective of this repository is to provide a template library that can be reused in Infrastructure as Code scenarios, such as landing zone, workload or individual service deployments.
+
+This wiki describes the content of this repository, the modules, pipelines, possible options on how to use them and how to contribute to this project.
+
 ## Navigation
 - [GettingStarted](./GettingStarted)
 - [Modules](./Modules)
