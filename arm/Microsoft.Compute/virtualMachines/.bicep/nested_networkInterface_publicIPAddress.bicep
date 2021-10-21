@@ -1,4 +1,3 @@
-// param cuaId string
 param publicIPAddressName string
 param publicIPPrefixId string
 param publicIPAllocationMethod string

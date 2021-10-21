@@ -1,4 +1,3 @@
-// param cuaId string
 param networkInterfaceName string
 param virtualMachineName string
 param location string
