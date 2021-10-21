@@ -5,7 +5,7 @@ param publisher string
 param type string
 param typeHandlerVersion string
 param autoUpgradeMinorVersion bool
-param forceUpdateTag string
+param forceUpdateTag string = ''
 param settings object = {}
 param protectedSettings object = {}
 

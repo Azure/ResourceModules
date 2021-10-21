@@ -152,8 +152,50 @@ param backupPolicyName string = 'DefaultPolicy'
 param enableServerSideEncryption bool = false
 
 // Child resources
-@description('Optional. Settings for vm extensions.')
-param extensionConfigurations array = []
+@description('Optional. Enables Microsoft Windows Defender AV.')
+param enableMicrosoftAntiMalware bool = false
+
+@description('Optional. Settings for Microsoft Windows Defender AV extension.')
+param microsoftAntiMalwareSettings object = {}
+
+@description('Optional. Specifies if MMA agent for Windows VM should be enabled.')
+param enableWindowsMMAAgent bool = false
+
+@description('Optional. Specifies if MMA agent for Linux VM should be enabled.')
+param enableLinuxMMAAgent bool = false
+
+@description('Optional. Settings for Microsoft Windows Defender AV extension.')
+param mmaAgentWorkspace string = ''
+
+@description('Optional. Specifies if Azure Dependency Agent for Windows VM should be enabled. Requires WindowsMMAAgent to be enabled.')
+param enableWindowsDependencyAgent bool = false
+
+@description('Optional. Specifies if Azure Dependency Agent for Linux VM should be enabled. Requires LinuxMMAAgent to be enabled.')
+param enableLinuxDependencyAgent bool = false
+
+@description('Optional. Specifies if Azure Network Watcher Agent for Windows VM should be enabled.')
+param enableNetworkWatcherWindows bool = false
+
+@description('Optional. Specifies if Azure Network Watcher Agent for Linux VM should be enabled.')
+param enableNetworkWatcherLinux bool = false
+
+@description('Optional. Specifies if Windows VM disks should be encrypted. If enabled, boot diagnostics must be enabled as well.')
+param enableWindowsDiskEncryption bool = false
+
+@description('Optional. Specifies if Linux VM disks should be encrypted. If enabled, boot diagnostics must be enabled as well.')
+param enableLinuxDiskEncryption bool = false
+
+@description('Optional. Settings for Azure Disk Encription extension.')
+param diskEncryptionSettings object = {}
+
+@description('Optional. Pass in an unique value like a GUID everytime the operation needs to be force run')
+param forceUpdateTag string = '1.0'
+
+@description('Optional. Specifies if Desired State Configuration Extension should be enabled.')
+param enableDesiredStateConfiguration bool = true
+
+@description('Optional. The DSC configuration object')
+param desiredStateConfigurationSettings object = {}
 
 // Shared parameters
 @description('Optional. Location for all resources.')
@@ -344,23 +386,98 @@ resource virtualMachine 'Microsoft.Compute/virtualMachines@2020-06-01' = {
   ]
 }
 
-module virtualMachine_extension './.bicep/nested_extension.bicep' = [for (extension, index) in extensionConfigurations: {
-  name: '${deployment().name}-vmextension-${index}'
+module virtualMachine_mamExtension './.bicep/nested_extension.bicep' = if (enableMicrosoftAntiMalware) {
+  name: '${deployment().name}-vmextension-MicrosoftAntiMalware'
   params: {
     virtualMachineName: virtualMachine.name
-    extensionName: extension.extensionName
+    extensionName: 'MicrosoftAntiMalware'
     location: location
-    publisher: extension.publisher
-    type: extension.type
-    typeHandlerVersion: extension.typeHandlerVersion
-    autoUpgradeMinorVersion: extension.autoUpgradeMinorVersion
-    forceUpdateTag: contains(extension, 'forceUpdateTag') ? (!(empty(extension.forceUpdateTag)) ? extension.forceUpdateTag : '') : ''
-    settings: contains(extension, 'settings') ? (!(empty(extension.settings)) ? extension.settings : json('{}')) : json('{}')
-    protectedSettings: contains(extension, 'protectedSettings') ? (!(empty(extension.protectedSettings)) ? extension.protectedSettings : json('{}')) : json('{}')
-    // settings: (contains(extension, 'settings') ? (!(empty(extension.settings)) ? (extension.type == 'MicrosoftMonitoringAgent' ? json('{"workspaceId": "${reference(workspace.id, workspace.apiVersion).customerId}"}') : extension.settings) : json('{}')) : json('{}'))
-    // protectedSettings: (contains(extension, 'protectedSettings') ? (!(empty(extension.protectedSettings)) ? (extension.type == 'MicrosoftMonitoringAgent' ? json('{"workspaceKey": "${listKeys(workspace.id, workspace.apiVersion).primarySharedKey}"}') : extension.protectedSettings) : json('{}')) : json('{}'))
+    publisher: 'Microsoft.Azure.Security'
+    type: 'IaaSAntimalware'
+    typeHandlerVersion: '1.3'
+    autoUpgradeMinorVersion: true
+    settings: microsoftAntiMalwareSettings.settings
   }
-}]
+}
+
+resource mmaWorkspace 'Microsoft.OperationalInsights/workspaces@2021-06-01' existing = if (!empty(mmaAgentWorkspace)) {
+  name: mmaAgentWorkspace
+}
+
+module virtualMachine_mmaExtension './.bicep/nested_extension.bicep' = if (enableWindowsMMAAgent || enableLinuxMMAAgent) {
+  name: '${deployment().name}-vmextension-MicrosoftMonitoringAgent'
+  params: {
+    virtualMachineName: virtualMachine.name
+    extensionName: 'MicrosoftMonitoringAgent'
+    location: location
+    publisher: 'Microsoft.EnterpriseCloud.Monitoring'
+    type: enableWindowsMMAAgent ? 'MicrosoftMonitoringAgent' : 'OmsAgentForLinux'
+    typeHandlerVersion: enableWindowsMMAAgent ? '1.0' : '1.7'
+    autoUpgradeMinorVersion: true
+    settings: {
+      workspaceId: reference(mmaWorkspace.id, mmaWorkspace.apiVersion).customerId
+    }
+    protectedSettings: {
+      workspaceKey: listKeys(mmaWorkspace.id, mmaWorkspace.apiVersion).primarySharedKey
+    }
+  }
+}
+
+module virtualMachine_daExtension './.bicep/nested_extension.bicep' = if (enableWindowsDependencyAgent || enableLinuxDependencyAgent) {
+  name: '${deployment().name}-vmextension-DependencyAgent'
+  params: {
+    virtualMachineName: virtualMachine.name
+    extensionName: 'DependencyAgent'
+    location: location
+    publisher: 'Microsoft.Azure.Monitoring.DependencyAgent'
+    type: enableWindowsDependencyAgent ? 'DependencyAgentWindows' : 'DependencyAgentLinux'
+    typeHandlerVersion: '9.5'
+    autoUpgradeMinorVersion: true
+  }
+}
+
+module virtualMachine_nwExtension './.bicep/nested_extension.bicep' = if (enableNetworkWatcherWindows || enableNetworkWatcherLinux) {
+  name: '${deployment().name}-vmextension-NetworkWatcherAgent'
+  params: {
+    virtualMachineName: virtualMachine.name
+    extensionName: 'NetworkWatcherAgent'
+    location: location
+    publisher: 'Microsoft.Azure.NetworkWatcher'
+    type: enableNetworkWatcherWindows ? 'NetworkWatcherAgentWindows' : 'NetworkWatcherAgentLinux'
+    typeHandlerVersion: '1.4'
+    autoUpgradeMinorVersion: true
+  }
+}
+
+module virtualMachine_deExtension './.bicep/nested_extension.bicep' = if (enableWindowsDiskEncryption || enableLinuxDiskEncryption) {
+  name: '${deployment().name}-vmextension-WindowsDiskEncryption'
+  params: {
+    virtualMachineName: virtualMachine.name
+    extensionName: 'WindowsDiskEncryption'
+    location: location
+    publisher: 'Microsoft.Azure.Security'
+    type: enableWindowsDiskEncryption ? 'AzureDiskEncryption' : 'AzureDiskEncryptionForLinux'
+    typeHandlerVersion: enableWindowsDiskEncryption ? '2.2' : '1.1'
+    autoUpgradeMinorVersion: true
+    forceUpdateTag: forceUpdateTag
+    settings: diskEncryptionSettings.settings
+  }
+}
+
+module virtualMachine_dscExtension './.bicep/nested_extension.bicep' = if (enableDesiredStateConfiguration) {
+  name: '${deployment().name}-vmextension-WindowsDsc'
+  params: {
+    virtualMachineName: virtualMachine.name
+    extensionName: 'WindowsDsc'
+    location: location
+    publisher: 'Microsoft.Powershell'
+    type: 'DSC'
+    typeHandlerVersion: '2.77'
+    autoUpgradeMinorVersion: true
+    settings: desiredStateConfigurationSettings.settings
+    protectedSettings: contains(desiredStateConfigurationSettings, 'protectedSettings') ? desiredStateConfigurationSettings.protectedSettings : json('null')
+  }
+}
 
 // resource vmName_WindowsCustomScriptExtension 'Microsoft.Compute/virtualMachines/extensions@2019-07-01' = if ((!empty(windowsScriptExtensionFileData)) && (!empty(windowsScriptExtensionCommandToExecute))) {
 //   parent: vmName_resource
@@ -396,7 +513,12 @@ module virtualMachine_backup './.bicep/nested_backup.bicep' = if (!empty(backupV
   }
   scope: resourceGroup(backupVaultResourceGroup)
   dependsOn: [
-    virtualMachine_extension
+    virtualMachine_mmaExtension
+    virtualMachine_mamExtension
+    virtualMachine_nwExtension
+    virtualMachine_daExtension
+    virtualMachine_deExtension
+    virtualMachine_dscExtension
   ]
 }
 

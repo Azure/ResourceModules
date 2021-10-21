@@ -69,59 +69,54 @@
                 }
             ]
         },
-        // "extensionConfigurations": {
-        //     "value": [
-        //         {
-        //             "extensionName": "DependencyAgentWindows",
-        //             "publisher": "Microsoft.Azure.Monitoring.DependencyAgent",
-        //             "type": "DependencyAgentWindows",
-        //             "typeHandlerVersion": "9.5",
-        //             "autoUpgradeMinorVersion": true
-        //         },
-        //         {
-        //             "extensionName": "MicrosoftAntiMalwareSettings",
-        //             "publisher": "Microsoft.Azure.Security",
-        //             "type": "IaaSAntimalware",
-        //             "typeHandlerVersion": "1.3",
-        //             "autoUpgradeMinorVersion": true,
-        //             "settings": {
-        //                 "AntimalwareEnabled": "true"
-        //             }
-        //         },
-        //         {
-        //             "extensionName": "WindowsDiskEncryption",
-        //             "publisher": "Microsoft.Azure.Security",
-        //             "type": "AzureDiskEncryption",
-        //             "typeHandlerVersion": "2.2",
-        //             "forceUpdateTag": "1.0",
-        //             "autoUpgradeMinorVersion": true,
-        //             "settings": {
-        //                 "EncryptionOperation": "EnableEncryption",
-        //                 "KeyVaultURL": "https://adp-sxx-az-kv-weu-x-001.vault.azure.net/",
-        //                 "KeyVaultResourceId": "/subscriptions/8629be3b-96bc-482d-a04b-ffff597c65a2/resourceGroups/validation-rg/providers/Microsoft.KeyVault/vaults/adp-sxx-az-kv-weu-x-001",
-        //                 "KeyEncryptionKeyURL": "https://adp-sxx-az-kv-weu-x-001.vault.azure.net/keys/keyEncryptionKey/685153483a1140e3856f004a753e1ab4",
-        //                 "KekVaultResourceId": "/subscriptions/8629be3b-96bc-482d-a04b-ffff597c65a2/resourceGroups/validation-rg/providers/Microsoft.KeyVault/vaults/adp-sxx-az-kv-weu-x-001",
-        //                 "KeyEncryptionAlgorithm": "RSA-OAEP", //'RSA-OAEP'/'RSA-OAEP-256'/'RSA1_5'
-        //                 "VolumeType": "All", //'OS'/'Data'/'All'
-        //                 "ResizeOSDisk": "false"
-        //             }
-        //         },
-        //         {
-        //             "extensionName": "NetworkWatcherAgentWindows",
-        //             "publisher": "Microsoft.Azure.NetworkWatcher",
-        //             "type": "NetworkWatcherAgentWindows",
-        //             "typeHandlerVersion": "1.4",
-        //             "autoUpgradeMinorVersion": true
-        //         },
-        //         {
-        //             "extensionName": "WindowsDsc",
-        //             "publisher": "Microsoft.Powershell",
-        //             "type": "DSC",
-        //             "typeHandlerVersion": "2.77",
-        //             "autoUpgradeMinorVersion": true
-        //         }
-        //     ]
+        "enableMicrosoftAntiMalware": {
+            "value": true
+        },
+        "microsoftAntiMalwareSettings": {
+            "value": {
+                "settings": {
+                    "AntimalwareEnabled": "true"
+                }
+            }
+        },
+        "enableWindowsMMAAgent": {
+            "value": true
+        },
+        "mmaAgentWorkspace": {
+            "value": "adp-sxx-az-la-weu-x-001"
+        },
+        "enableWindowsDependencyAgent": {
+            "value": true
+        },
+        // "enableNetworkWatcherWindows ": {
+        //     "value": true
         // },
+        // "enableWindowsDiskEncryption ": {
+        //     "value": true
+        // },
+        "diskEncryptionSettings": {
+            "value": {
+                "settings": {
+                    "EncryptionOperation": "EnableEncryption",
+                    "KeyVaultURL": "https://adp-sxx-az-kv-weu-x-001.vault.azure.net/",
+                    "KeyVaultResourceId": "/subscriptions/8629be3b-96bc-482d-a04b-ffff597c65a2/resourceGroups/validation-rg/providers/Microsoft.KeyVault/vaults/adp-sxx-az-kv-weu-x-001",
+                    "KeyEncryptionKeyURL": "https://adp-sxx-az-kv-weu-x-001.vault.azure.net/keys/keyEncryptionKey/685153483a1140e3856f004a753e1ab4",
+                    "KekVaultResourceId": "/subscriptions/8629be3b-96bc-482d-a04b-ffff597c65a2/resourceGroups/validation-rg/providers/Microsoft.KeyVault/vaults/adp-sxx-az-kv-weu-x-001",
+                    "KeyEncryptionAlgorithm": "RSA-OAEP", //'RSA-OAEP'/'RSA-OAEP-256'/'RSA1_5'
+                    "VolumeType": "All", //'OS'/'Data'/'All'
+                    "ResizeOSDisk": "false"
+                }
+            }
+        },
+        // "enableDesiredStateConfiguration ": {
+        //     "value": true
+        // },
+        "desiredStateConfigurationSettings": {
+            "value": {
+                "settings": {},
+                "protectedSettings": {}
+            }
+        },
         "backupVaultName": {
             "value": "sxx-az-rsv-weu-x-999"
         },
