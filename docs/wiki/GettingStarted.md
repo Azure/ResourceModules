@@ -33,6 +33,28 @@ iex "&amp; { $(irm https://aka.ms/install-powershell.ps1) } -UseMSI"
 Install-Module -Name Az -Scope CurrentUser -Repository PSGallery -Force
 ```
 
+# Use the repository
+
+You have several options to leverage the content of this repository:
+
+## Clone / download the repository
+To save a local copy of the repository you can either clone the repository or download it as a `.zip` file.
+A clone is a direct reference the the source repository which enables you to pull updates as they happen in the source repostory. To achive this you have to have `Git` installed and run the command
+
+```PowerShell
+    git clone 'https://github.com/Azure/ResourceModules.git'`
+```
+
+from the command line of your choice.
+
+If you instead just want to have a copy of the repository's content you can instead download it in the `.zip` format. You can do this by navigating to the repository folder of your choice (for example root), then select the `<> Code` button on the top left and click on `Download ZIP` on the opening blade.
+
+[[https://github.com/Azure/ResourceModules/blob/main/docs/wiki/media/cloneDownloadRepo.png|alt=HowToDownload]]
+
+## Fork the repository
+
+## Reference the content directly
+
 
 <!-- References -->
 
