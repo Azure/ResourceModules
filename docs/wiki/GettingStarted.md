@@ -49,7 +49,7 @@ from the command line of your choice.
 
 If you instead just want to have a copy of the repository's content you can instead download it in the `.zip` format. You can do this by navigating to the repository folder of your choice (for example root), then select the `<> Code` button on the top left and click on `Download ZIP` on the opening blade.
 
-[[https://github.com/Azure/ResourceModules/blob/main/docs/wiki/media/cloneDownloadRepo.png|alt=HowToDownload]]
+![HowToDownload](media/cloneDownloadRepo.png)
 
 ## Fork the repository
 
