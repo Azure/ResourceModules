@@ -67,11 +67,11 @@ jobs:
         uses: actions/checkout@v2
         with:
           fetch-depth: 0
-      - name: 'Test module'
-        uses: ./.github/actions/templates/validateModuleGeneral
-        with:
-          modulePath: '${{ env.modulePath }}'
-          moduleName: '${{ env.moduleName}}'
+      # - name: 'Test module'
+      #   uses: ./.github/actions/templates/validateModuleGeneral
+      #   with:
+      #     modulePath: '${{ env.modulePath }}'
+      #     moduleName: '${{ env.moduleName}}'
 
   # Global API tests
   # ----------------
