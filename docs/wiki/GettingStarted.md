@@ -1,5 +1,17 @@
 This section will give on an overview on how to get started using this repository.
 
+---
+- [What is a Resource Module?](#What-is-a-Resource-Module?)
+- [Prerequisites?](#Prerequisites)
+- [Installation](#Installation)
+- [Use the repository](#Use-the-repository)
+  - [Clone / download the repository](#Clone-/-download-the-repository)
+  - [Fork the repository](#Fork-the-repository)
+  - [Reference the content directly](#Reference-the-content-directly)
+- [GitHub specific prerequisites](#GitHub-specific-prerequisites)
+
+---
+
 # What is a Resource Module?
 A Resource Module is a reusable building block. A Module encapsulates one or more Azure resources and their respective configurations for reuse in your Azure environment.
 
@@ -57,13 +69,25 @@ Alternativly, if you want to have a linked clone of the source repository in you
 
 To fork the repostory you can simply click on the `Fork` button on the top right of the repository website. You can then select the Account you want to fork the repository to and are good to go.
 
-*Note*: To ensure your fork stays up to date you can select the 'Fetch upstream' button on your repository root page. This will trigger a process that fetches the latest changes from the source repository back to your fork.
+> *Note*: To ensure your fork stays up to date you can select the 'Fetch upstream' button on your repository root page. This will trigger a process that fetches the latest changes from the source repository back to your fork.
+> *Note*: To also re-use the pipelines you may need to account for additional requirements as described below.
 
 ## Reference the content directly
 
 Last but not least, instead of fetching your own copy of the repository you can also choose to just reference the content of the repository directly. This works as the repository is public and hence all file Urls are available without any sort of authentication.
 
 *Note*: In cases where you want to assemble your own template that references other modules you should not rely on direct links as they referencing files may receive breaking changes. Instead you should rely on published versions instead.
+
+# GitHub specific prerequisites
+In case you want to not only leverage the module templates but actually re-use the implemented pipelines & testing framework as well you need to set up a few additional secrets in your GitHub environment.
+
+| Secret Name | Example | Description |
+| - | - | - |
+| `ARM_MGMTGROUP_ID` | `de33a0e7-64d9-4a94-8fe9-b018cedf1e05` | The ID of the management group to test deploy modules of that level in. |
+| `ARM_SUBSCRIPTION_ID` | `d0312b25-9160-4550-914f-8738d9b5caf5` | The ID of the subscription to test deploy modules of that level in. |
+| `ARM_TENANT_ID` | `9734cec9-4384-445b-bbb6-767e7be6e5ec` | The ID of the tenant to test deploy modules of that level in. |
+| `AZURE_CREDENTIALS` |  `{"clientId": "4ce8ce4c-cac0-48eb-b815-65e5763e2929", "clientSecret": "<placeholder>", "subscriptionId": "d0312b25-9160-4550-914f-8738d9b5caf5", "tenantId": "9734cec9-4384-445b-bbb6-767e7be6e5ec" }` | The login credentials to use to log into the target Azure environment to test in. |
+| `PLATFORM_REPO_UPDATE_PAT` | `<placeholder>` | A PAT with enough permissions assigned to it to push into the main branch. This PAT is leveraged by pipelines that automatically generate ReadMe files to keep them up to date |
 
 <!-- References -->
 
