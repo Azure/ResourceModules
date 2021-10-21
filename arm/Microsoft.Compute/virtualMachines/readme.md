@@ -1,4 +1,4 @@
-# ComputeVirtualmachines `[Microsoft.Compute/virtualMachines]`
+# Virtual Machines `[Microsoft.Compute/virtualMachines]`
 
 This module deploys one or multiple Virtual Machines.
 
