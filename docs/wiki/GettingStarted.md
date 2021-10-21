@@ -1,6 +1,7 @@
 This section will give on an overview on how to get started using this repository.
 
 ---
+### _Navigation_
 - [What is a Resource Module?](#What-is-a-Resource-Module?)
 - [General prerequisites](#Prerequisites)
   - [Tool installation](#Installation)

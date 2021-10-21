@@ -4,7 +4,7 @@ The objective of this repository is to provide a template library that can be re
 
 This wiki describes the content of this repository, the modules, pipelines, possible options on how to use them and how to contribute to this project.
 
-## Navigation
+### _Navigation_
 - [GettingStarted](./GettingStarted)
   - [What is a Resource Module?](./GettingStarted#What-is-a-Resource-Module?)
   - [General prerequisites](./GettingStarted#Prerequisites)

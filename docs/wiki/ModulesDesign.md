@@ -1,4 +1,12 @@
-### Bicep module authoring guidelines
+This section gives you an overview of the design principals the bicep modules follow.
+
+---
+### _Navigation_
+- [Bicep module authoring guidelines](#Bicep-module-authoring-guidelines)
+---
+
+
+# Bicep module authoring guidelines
 
 Files and folders within the module folder are all in lower case.
 
@@ -29,7 +37,8 @@ Within a bicep file, follow the following conventions:
   - For modules that manage roleAssignments, update the list of roles to only be the applicable roles. One way of doing this:
     - Deploy an instance of the resource you are working on, go to IAM page and copy the list from Roles.
     - Use the following script to generate and output the applicable roles needed in the bicep/ARM module:
-``` pwsh
+
+```PowerShell
 $rawRoles = @"
 <paste the table here>
 "@

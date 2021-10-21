@@ -1,45 +1,73 @@
+This section gives you an overview of how to use the bicep modules.
 
-### Usage
+---
+### _Navigation_
+- [Deploy local template](#Deploy-local-template)
+  - [Azure CLI](#Local:-Azure-CLI)
+  - [PowerShell](#Local:-PowerShell)
+- [Deploy remote template](#Deploy-remote-template)
+  - [Azure CLI](#Remote:-Azure-CLI)
+  - [PowerShell](#Remote:-PowerShell)
+---
 
-#### Deploy local template (Azure CLI)
+# Deploy local template
 
-```bash
-az group create --name ExampleGroup --location "Central US"
-az deployment group create \
-  --name ExampleDeployment \
-  --resource-group ExampleGroup \
-  --template-file <path-to-template> \
-  --parameters storageAccountType=Standard_GRS
-```
+## Local: Azure CLI
 
-#### Deploy local template (PowerShell)
-
-```PowerShell
-New-AzResourceGroup -Name ExampleGroup -Location "Central US"
-New-AzResourceGroupDeployment `
-  -Name ExampleDeployment `
-  -ResourceGroupName ExampleGroup `
-  -TemplateFile <path-to-template>
-```
-
-#### Deploy remote template (Azure CLI)
+This example targets a resource group level template.
 
 ```bash
-az group create --name ExampleGroup --location "Central US"
-az deployment group create \
-  --name ExampleDeployment \
-  --resource-group ExampleGroup \
-  --template-uri "https://raw.githubusercontent.com/Azure/azure-quickstart-templates/master/quickstarts/microsoft.storage/storage-account-create/azuredeploy.json" \
-  --parameters storageAccountType=Standard_GRS
+az group create --name 'ExampleGroup' --location "Central US"
+$inputObject = @(
+    '--name',           'ExampleDeployment',
+    '--resource-group', 'ExampleGroup',
+    '--template-file',  "$home\Microsoft.KeyVault\vault\deploy.bicep",
+    '--parameters',     'storageAccountType=Standard_GRS',
+)
+az deployment group create @inputObject
 ```
 
-#### Deploy remote template (PowerShell)
+## Local: PowerShell
+
+This example targets a resource group level template.
 
 ```PowerShell
-New-AzResourceGroup -Name ExampleGroup -Location "Central US"
-New-AzResourceGroupDeployment `
-  -Name remoteTemplateDeployment `
-  -ResourceGroupName ExampleGroup `
-  -TemplateUri https://raw.githubusercontent.com/Azure/azure-quickstart-templates/master/quickstarts/microsoft.storage/storage-account-create/azuredeploy.json
+New-AzResourceGroup -Name 'ExampleGroup' -Location "Central US"
+
+$inputObject = @{
+ Name              = 'ExampleDeployment'
+ ResourceGroupName = 'ExampleGroup'
+ TemplateFile      = "$home\Microsoft.KeyVault\vault\deploy.bicep"
+}
+New-AzResourceGroupDeployment @inputObject
+```
+
+# Deploy remote template
+
+## Remote: Azure CLI
+
+```bash
+az group create --name 'ExampleGroup' --location "Central US"
+
+$inputObject = @(
+    '--name',           'ExampleDeployment',
+    '--resource-group', 'ExampleGroup',
+    '--template-uri',   'https://raw.githubusercontent.com/MrMCake/ResourceModules/main/arm/Microsoft.KeyVault/vaults/deploy.json',
+    '--parameters',     'storageAccountType=Standard_GRS',
+)
+az deployment group create @inputObject
+```
+
+## Remote: PowerShell
+
+```PowerShell
+New-AzResourceGroup -Name 'ExampleGroup' -Location "Central US"
+
+$inputObject = @{
+ Name              = 'ExampleDeployment'
+ ResourceGroupName = 'ExampleGroup'
+ TemplateUri       = 'https://raw.githubusercontent.com/MrMCake/ResourceModules/main/arm/Microsoft.KeyVault/vaults/deploy.json'
+}
+New-AzResourceGroupDeployment @inputObject
 ```
 
