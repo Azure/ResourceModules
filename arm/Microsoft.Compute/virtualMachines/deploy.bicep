@@ -565,7 +565,7 @@ module virtualMachine_cseExtension './.bicep/nested_extension.bicep' = if (enabl
 }
 
 module virtualMachine_backup './.bicep/nested_backup.bicep' = if (!empty(backupVaultName)) {
-  name: 'add-${virtualMachine.name}-ToBackup'
+  name: '${deployment().name}-backup'
   params: {
     backupResourceName: '${backupVaultName}/Azure/iaasvmcontainer;iaasvmcontainerv2;${resourceGroup().name};${virtualMachine.name}/vm;iaasvmcontainerv2;${resourceGroup().name};${virtualMachine.name}'
     protectedItemType: 'Microsoft.Compute/virtualMachines'

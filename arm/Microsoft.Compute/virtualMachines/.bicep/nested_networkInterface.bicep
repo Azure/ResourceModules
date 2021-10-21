@@ -38,7 +38,7 @@ var networkSecurityGroup = {
 }
 
 module networkInterface_publicIPConfigurations './nested_networkInterface_publicIPAddress.bicep' = [for (ipConfiguration, index) in ipConfigurationArray: if (contains(ipConfiguration, 'pipconfiguration')) {
-  name: '${deployment().name}-${networkInterfaceName}-pip-${index}'
+  name: '${deployment().name}-pip-${index}'
   params: {
     publicIPAddressName: '${virtualMachineName}${ipConfiguration.pipconfiguration.publicIpNameSuffix}'
     publicIPPrefixId: (contains(ipConfiguration.pipconfiguration, 'publicIPPrefixId') ? (!(empty(ipConfiguration.pipconfiguration.publicIPPrefixId)) ? ipConfiguration.pipconfiguration.publicIPPrefixId : '') : '')
