@@ -6,6 +6,9 @@ This wiki describes the content of this repository, the modules, pipelines, poss
 
 ## Navigation
 - [GettingStarted](./GettingStarted)
+  - [What is a Resource Module?](./GettingStarted#What-is-a-Resource-Module?)
+  - [General prerequisites](./GettingStarted#Prerequisites)
+  - [GitHub-specific prerequisites](./GettingStarted#GitHub-specific-prerequisites)
 - [Modules](./Modules)
   - [Design](./ModulesDesign)
   - [Usage](./ModulesUsage)
@@ -15,7 +18,6 @@ This wiki describes the content of this repository, the modules, pipelines, poss
   - [Design](./TestingDesign)
 - [ContributionGuide](./ContributionGuide)
 - [KnownIssues](./KnownIssues)
-
 
 ## Reporting Issues and Feedback
 ### Issues and Bugs
