@@ -1,4 +1,4 @@
-This section and its subsections give you an overview of the principels the modules are built upon, how they are set up, and how you can interact with them.
+This section and its sub-sections give you an overview of the principels the modules are built upon, how they are set up, and how you can interact with them.
 
 ---
 ### _Navigation_

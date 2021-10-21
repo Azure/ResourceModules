@@ -1,28 +1,13 @@
-### Testing your Bicep module
+This section gives you an overview of the design principals the testing follows.
 
-When you have done your changes and want to validate, run the following:
+---
+### _Navigation_
+- [Module Dependencies](#Module-Dependencies)
+---
 
-```pwsh
-Invoke-Pester -Configuration @{
-    Run        = @{
-        Container = New-PesterContainer -Path 'arm/.global/global.module.tests.ps1' -Data @{
-            moduleFolderPaths = "C:\dev\ip\Azure-ResourceModules\ResourceModules\arm\Microsoft.EventGrid/topics"
-        }
-    }
-    Filter     = @{
-        #ExcludeTag = 'ApiCheck'
-        #Tag = 'ApiCheck'
-    }
-    TestResult = @{
-        TestSuiteName = 'Global Module Tests'
-        Enabled       = $false
-    }
-    Output     = @{
-        Verbosity = 'Detailed'
-    }
-}
-```
 
+#  Approach
+...
 
 ## Module Dependencies
 In order to successfully deploy and test all Modules in your desired environment some Modules have to have resources deployed beforehand.
@@ -52,7 +37,7 @@ If we speak from **Modules** in this context we mean the **Services** which get 
 1. Managed Service Identity
 1. Deployment Scripts
 
-## Modules with Dependencies
+### Overview of modules dependencies
 
 - ActivityLog
   - ActionGroup
@@ -113,7 +98,7 @@ If we speak from **Modules** in this context we mean the **Services** which get 
 - WvdApplications
   - WvdAppliccationGroups
 
-## Secrets and Keys
+### Required Secrets and Keys
 
 1. KeyVault needs secrets to be created
    - administratorLogin for AzureSQLServer
@@ -125,4 +110,3 @@ If we speak from **Modules** in this context we mean the **Services** which get 
 1. SQLManagedInstance needs key pre-created (encryptionKeySqlMi)
    - administratorLogin
    - administratorLoginPassword
-

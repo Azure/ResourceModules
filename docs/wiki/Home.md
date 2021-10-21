@@ -14,8 +14,10 @@ This wiki describes the content of this repository, the modules, pipelines, poss
   - [Usage](./ModulesUsage)
 - [Pipelines](./Pipelines)
   - [Design](./PipelineDesign)
+  - [Usage](./PipelineUsage)
 - [Testing](./Testing)
   - [Design](./TestingDesign)
+  - [Usage](./TestingUsage)
 - [ContributionGuide](./ContributionGuide)
 - [KnownIssues](./KnownIssues)
 
