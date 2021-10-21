@@ -1,9 +1,6 @@
 @description('Required. The name of the EventHub namespace')
 param namespaceName string
 
-@description('Optional. Location for all resources.')
-param location string = resourceGroup().location
-
 @description('Required. The name of the EventHub')
 param eventHubName string
 
