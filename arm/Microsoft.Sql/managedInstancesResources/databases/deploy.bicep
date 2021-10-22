@@ -61,8 +61,13 @@ param eventHubAuthorizationRuleId string = ''
 @description('Optional. Name of the event hub within the namespace to which logs are streamed. Without this, an event hub is created for each log category.')
 param eventHubName string = ''
 
-@description('Optional. Switch to lock Key Vault from deletion.')
-param lockForDeletion bool = false
+@allowed([
+  'CanNotDelete'
+  'NotSpecified'
+  'ReadOnly'
+])
+@description('Optional. Specify the type of lock.')
+param lock string = 'NotSpecified'
 
 @description('Required. The name of the Long Term Retention backup policy.')
 param backupLongTermRetentionPoliciesName string = 'default'
@@ -166,10 +171,11 @@ resource managedInstanceDatabase 'Microsoft.Sql/managedInstances/databases@2020-
   }
 }
 
-resource managedInstanceDatabase_lock 'Microsoft.Authorization/locks@2016-09-01' = if (lockForDeletion) {
-  name: '${split(managedInstanceDatabase.name, '/')[1]}-doNotDelete'
+resource managedInstanceDatabase_lock 'Microsoft.Authorization/locks@2016-09-01' = if (lock != 'NotSpecified') {
+  name: '${managedInstanceDatabase.name}-${lock}-lock'
   properties: {
-    level: 'CanNotDelete'
+    level: lock
+    notes: (lock == 'CanNotDelete') ? 'Cannot delete resource or child resources.' : 'Cannot modify the resource or child resources.'
   }
   scope: managedInstanceDatabase
 }

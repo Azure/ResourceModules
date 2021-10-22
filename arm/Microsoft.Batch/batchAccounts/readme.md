@@ -24,7 +24,7 @@ The following resources are required to be able to deploy this resource.
 | `eventHubAuthorizationRuleId` | string | Optional. Resource ID of the event hub authorization rule for the Event Hubs namespace in which the event hub should be created or streamed to. |  |  |
 | `eventHubName` | string | Optional. Name of the event hub within the namespace to which logs are streamed. Without this, an event hub is created for each log category. |  |  |
 | `location` | string | Optional. Location for all Resources. | [resourceGroup().location] |  |
-| `lockForDeletion` | bool | Optional. Switch to lock Key Vault from deletion. | False |  |
+| `lock` | string | Optional. Specify the type of lock. | 'NotSpecified' | 'CanNotDelete', 'NotSpecified', 'ReadOnly' |
 | `tags` | object | Optional. Tags of the resource. |  |  |
 | `workspaceId` | string | Optional. Resource identifier of Log Analytics. |  |  |
 

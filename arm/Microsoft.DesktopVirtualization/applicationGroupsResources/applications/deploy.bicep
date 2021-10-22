@@ -2,9 +2,6 @@
 @description('Required. List of applications to be created in the Application Group.')
 param applications array
 
-@description('Optional. Location for all resources.')
-param location string = resourceGroup().location
-
 @minLength(1)
 @description('Required. Name of the Application Group to create the application(s) in.')
 param appGroupName string
