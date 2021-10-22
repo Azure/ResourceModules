@@ -193,7 +193,7 @@ resource resgistry_diagnosticSettingName 'Microsoft.Insights/diagnosticsettings@
   scope: registry
 }
 
-module cognitiveServices_rbac './.bicep/nested_rbac.bicep' = [for (roleAssignment, index) in roleAssignments: {
+module registry_rbac './.bicep/nested_rbac.bicep' = [for (roleAssignment, index) in roleAssignments: {
   name: 'rbac-${deployment().name}${index}'
   params: {
     roleAssignmentObj: roleAssignment
