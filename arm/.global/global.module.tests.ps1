@@ -14,59 +14,8 @@ $script:moduleFolderPaths = $moduleFolderPaths
 $script:moduleFolderPathsFiltered = $moduleFolderPaths | Where-Object {
     (Split-Path $_ -Leaf) -notin @( 'AzureNetappFiles', 'TrafficManager', 'PrivateDnsZones', 'ManagementGroups') }
 
-# NOTE: If declared here, this function will be available outside of 'It' test blocks, but not inside.
-function Get-NestedResourceList {
-
-    [CmdletBinding()]
-    param(
-        [Parameter(Mandatory)]
-        [hashtable] $TemplateContent
-    )
-
-    $res = @()
-    $currLevelResources = @()
-    if ($TemplateContent.resources) {
-        $currLevelResources += $TemplateContent.resources
-    }
-    foreach ($resource in $currLevelResources) {
-        $res += $resource
-
-        if ($resource.type -eq 'Microsoft.Resources/deployments') {
-            $res += Get-NestedResourceList -TemplateContent $resource.properties.template
-        } else {
-            $res += Get-NestedResourceList -TemplateContent $resource
-        }
-    }
-    return $res
-}
-
-# NOTE: If declared here, this function will be available inside of 'It' test blocks, but not outside.
-BeforeAll {
-    function Get-NestedResourceList {
-
-        [CmdletBinding()]
-        param(
-            [Parameter(Mandatory)]
-            [hashtable] $TemplateContent
-        )
-
-        $res = @()
-        $currLevelResources = @()
-        if ($TemplateContent.resources) {
-            $currLevelResources += $TemplateContent.resources
-        }
-        foreach ($resource in $currLevelResources) {
-            $res += $resource
-
-            if ($resource.type -eq 'Microsoft.Resources/deployments') {
-                $res += Get-NestedResourceList -TemplateContent $resource.properties.template
-            } else {
-                $res += Get-NestedResourceList -TemplateContent $resource
-            }
-        }
-        return $res
-    }
-}
+# Import any helper function used in this test script
+Import-Module (Join-Path $PSScriptRoot 'shared\helper.psm1')
 
 Describe 'File/folder tests' -Tag Modules {
 
@@ -522,6 +471,10 @@ Describe 'Deployment template tests' -Tag Template {
                 if ($Api.Substring(0, 2) -eq '20') {
                     $ApiVersionOutput = $true
                 } elseif ($Api.substring(1, 10) -eq 'parameters') {
+                    # An API version should not be referenced as a parameter
+                    $ApiVersionOutput = $false
+                } elseif ($Api.substring(1, 10) -eq 'variables') {
+                    # An API version should not be referenced as a variable
                     $ApiVersionOutput = $false
                 } else {
                     $ApiVersionOutput = $false
