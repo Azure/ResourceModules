@@ -1,24 +1,23 @@
-# Role Assignments
+# Role Assignments `[Microsoft.Authorization/roleAssignments]`
 
 This module deploys Role Assignments.
 
 ## Resource types
 
-|Resource Type|ApiVersion|
-|:--|:--|
-|`Microsoft.Authorization/roleAssignments`|2020-04-01-preview|
-|`Microsoft.Resources/deployments`|2019-10-01|
+| Resource Type | Api Version |
+| :-- | :-- |
+| `Microsoft.Authorization/roleAssignments` | 2020-04-01-preview |
 
 ## Parameters
 
-| Parameter Name | Type | Default Value | Possible values | Description |
-| :-             | :-   | :-            | :-              | :-          |
-| `roleDefinitionIdOrName` | string |  | Owner | Required. You can provide either the display name of the role definition, or it's fully qualified ID in the following format: '/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11'
-| `principalId` | string | | abcdefgh-1234-1234-1234-ec99e51285a3 | Required. The Principal or Object ID of the Security Principal (User, Group, Service Principal, Managed Identity)
-| `resourceGroupName` | string | "" | | Optional. Name of the Resource Group to assign the RBAC role to. If no Resource Group name is provided, and Subscription ID is provided, the module deploys at subscription level, therefore assigns the provided RBAC role to the subscription.
-| `subscriptionId` | string | "" | | Optional. ID of the Subscription to assign the RBAC role to. If no Resource Group name is provided, the module deploys at subscription level, therefore assigns the provided RBAC role to the subscription.
-| `managementGroupId` | string | "" | | Optional. ID of the Management Group to assign the RBAC role to. If no Subscription is provided, the module deploys at management group level, therefore assigns the provided RBAC role to the management group.
-| `location` | string | [deployment().location] | | Optional. Location for all resources. |
+| Parameter Name | Type | Default Value | Possible Values | Description |
+| :-- | :-- | :-- | :-- | :-- |
+| `location` | string | `[deployment().location]` |  | Optional. Location for all resources. |
+| `managementGroupId` | string |  |  | Optional. ID of the Management Group to assign the RBAC role to. If no Subscription is provided, the module deploys at management group level, therefore assigns the provided RBAC role to the management group. |
+| `principalId` | string |  |  | Required. The Principal or Object ID of the Security Principal (User, Group, Service Principal, Managed Identity) |
+| `resourceGroupName` | string |  |  | Optional. Name of the Resource Group to assign the RBAC role to. If no Resource Group name is provided, and Subscription ID is provided, the module deploys at subscription level, therefore assigns the provided RBAC role to the subscription. |
+| `roleDefinitionIdOrName` | string |  |  | Required. You can provide either the display name of the role definition, or it's fully qualified ID in the following format: '/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11' |
+| `subscriptionId` | string |  |  | Optional. ID of the Subscription to assign the RBAC role to. If no Resource Group name is provided, the module deploys at subscription level, therefore assigns the provided RBAC role to the subscription. |
 
 ### Parameter Usage: `managementGroupId`
 
@@ -30,7 +29,7 @@ To deploy resource to a Management Group, provide the `managementGroupId` as an 
 }
 ```
 
-> The name of the Management Group in the deployment does not have to match the value of the `managementGroupId` in the input parameters. 
+> The name of the Management Group in the deployment does not have to match the value of the `managementGroupId` in the input parameters.
 
 ### Parameter Usage: `subscriptionId`
 
@@ -58,18 +57,16 @@ To deploy resource to a Resource Group, provide the `subscriptionId` and `resour
 
 ## Outputs
 
-| Output Name | Type | Description |
-| :-- | :-- | :-- |
-| `roleAssignmentName` | string | The name of the role assignment |
-| `roleAssignmentScope` | string | The scope of the assignments defined in this module were created on. |
-| `roleAssignmentId` | array | Role Assignment Resource ID |
+| Output Name | Type |
+| :-- | :-- |
+| `roleAssignmentId` | string |
+| `roleAssignmentName` | string |
+| `roleAssignmentScope` | string |
 
 ## Considerations
 
 This module can be deployed at the management group, subscription or resource group level
 
-## Additional resources
+## Template references
 
-- [What is Azure role-based access control (Azure RBAC)?](https://docs.microsoft.com/en-us/azure/role-based-access-control/overview)
-- [Microsoft.Authorization roleAssignments template reference](https://docs.microsoft.com/en-us/azure/templates/microsoft.authorization/2018-09-01-preview/roleassignments)
-- [Use tags to organize your Azure resources](https://docs.microsoft.com/en-us/azure/azure-resource-manager/resource-group-using-tags)
+- [Roleassignments](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2020-04-01-preview/roleAssignments)

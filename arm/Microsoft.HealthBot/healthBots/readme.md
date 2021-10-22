@@ -1,4 +1,4 @@
-# Azure Health Bot
+# Azure Health Bot `[Microsoft.HealthBot/healthBots]`
 
 This module deploys an Azure Health Bot.
 
@@ -6,22 +6,21 @@ This module deploys an Azure Health Bot.
 
 | Resource Type | Api Version |
 | :-- | :-- |
-| `Microsoft.HealthBot/healthBots` | 2020-10-20-preview|
-| `Microsoft.Authorization/roleAssignments` | 2020-04-01-preview |
-| `Microsoft.Resources/deployments` | 2020-06-01 |
 | `Microsoft.Authorization/locks` | 2016-09-01 |
+| `Microsoft.HealthBot/healthBots` | 2020-12-08 |
+| `Microsoft.HealthBot/healthBots/providers/roleAssignments` | 2021-04-01-preview |
 
 ## Parameters
 
-| Parameter Name | Type | Description | DefaultValue | Possible values |
+| Parameter Name | Type | Default Value | Possible Values | Description |
 | :-- | :-- | :-- | :-- | :-- |
-| `azureHealthBotName` | string | Required. Name of the resource |  |  |
-| `cuaId` | string | Optional. Customer Usage Attribution id (GUID). This GUID must be previously registered |  |  |
-| `location` | string | Optional. Location for all resources. | [resourceGroup().location] |  |
-| `lock` | string | Optional. Specify the type of lock. | 'NotSpecified' | 'CanNotDelete', 'NotSpecified', 'ReadOnly' |
-| `roleAssignments` | array | Optional. Array of role assignment objects that contain the 'roleDefinitionIdOrName' and 'principalId' to define RBAC role assignments on this resource. In the roleDefinitionIdOrName attribute, you can provide either the display name of the role definition, or its fully qualified ID in the following format: '/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11' | System.Object[] |  |
-| `sku` | string | Optional. The resource model definition representing SKU. | F0 |  |
-| `tags` | object | Optional. Tags of the resource. |  |  |
+| `azureHealthBotName` | string |  |  | Required. Name of the resource |
+| `cuaId` | string |  |  | Optional. Customer Usage Attribution id (GUID). This GUID must be previously registered |
+| `location` | string | `[resourceGroup().location]` |  | Optional. Location for all resources. |
+| `lock` | string | `NotSpecified` | `[CanNotDelete, NotSpecified, ReadOnly]` | Optional. Specify the type of lock. |
+| `roleAssignments` | array | `[]` |  | Optional. Array of role assignment objects that contain the 'roleDefinitionIdOrName' and 'principalId' to define RBAC role assignments on this resource. In the roleDefinitionIdOrName attribute, you can provide either the display name of the role definition, or its fully qualified ID in the following format: '/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11' |
+| `sku` | string | `F0` |  | Optional. The resource model definition representing SKU. |
+| `tags` | object | `{object}` |  | Optional. Tags of the resource. |
 
 ### Parameter Usage: `tags`
 
@@ -64,20 +63,13 @@ Tag names and tag values can be provided as needed. A tag can be left without a 
 
 ## Outputs
 
-| Output Name | Type | Description |
-| :-- | :-- | :-- |
-| `azureHealthBotName` | string | The name of the resource. |
-| `azureHealthBotResourceGroup` | string | The Resource Group the resource was deployed. |
-| `azureHealthBotResourceId` | string | The Resource ID of the resource. |
+| Output Name | Type |
+| :-- | :-- |
+| `azureHealthBotName` | string |
+| `azureHealthBotResourceGroup` | string |
+| `azureHealthBotResourceId` | string |
 
-## Considerations
+## Template references
 
-*N/A*
-
-## Additional resources
-
-- [Use tags to organize your Azure resources](https://docs.microsoft.com/en-us/azure/azure-resource-manager/resource-group-using-tags)
-- [Azure Resource Manager template reference](https://docs.microsoft.com/en-us/azure/templates/)
-- [Deployments](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Resources/2020-06-01/deployments)
-- [HealtHBots](https://docs.microsoft.com/en-us/azure/templates/Microsoft.HealthBot/2020-12-08/healthBots)
-- [Deployments](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Resources/2020-06-01/deployments)
+- [Locks](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2016-09-01/locks)
+- [Healthbots](https://docs.microsoft.com/en-us/azure/templates/Microsoft.HealthBot/2020-12-08/healthBots)

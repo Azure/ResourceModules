@@ -1,4 +1,4 @@
-# ContainerInstances
+# ContainerInstances `[Microsoft.ContainerInstance/containerGroups]`
 
 ### Container groups in Azure Container Instances
 
@@ -8,33 +8,28 @@ The top-level resource in Azure Container Instances is the container group. A co
 
 | Resource Type | Api Version |
 | :-- | :-- |
-| `Microsoft.Resources/deployments` | 2018-02-01 |
-| `Microsoft.ContainerInstance/containerGroups` | 2021-03-01 |
 | `Microsoft.Authorization/locks` | 2016-09-01 |
-
-### Resource dependency
-
-The following resources are required to be able to deploy this resource.
+| `Microsoft.ContainerInstance/containerGroups` | 2021-03-01 |
 
 ## Parameters
 
-| Parameter Name | Type | Description | DefaultValue | Allowed Values |
+| Parameter Name | Type | Default Value | Possible Values | Description |
 | :-- | :-- | :-- | :-- | :-- |
-| `containergroupname` | string | Required. Name for the container group. |  |  |
-| `containername` | string | Required. Name for the container. |  |  |
-| `cpuCores` | int | Optional. The number of CPU cores to allocate to the container. | 1 |  |
-| `cuaId` | string | Optional. Customer Usage Attribution id (GUID). This GUID must be previously registered |  |  |
-| `environmentVariables` | array | Optional. Envrionment variables of the container group. | System.Object[] |  |
-| `image` | string | Required. Name of the image. |  |  |
-| `imageRegistryCredentials` | array | Optional. The image registry credentials by which the container group is created from. | System.Object[] |  |
-| `ipAddressType` | string | Optional. Specifies if the IP is exposed to the public internet or private VNET. - Public or Private | Public |  |
-| `location` | string | Optional. Location for all Resources. | [resourceGroup().location] |  |
-| `lock` | string | Optional. Specify the type of lock. | 'NotSpecified' | 'CanNotDelete', 'NotSpecified', 'ReadOnly' |
-| `memoryInGB` | int | Optional. The amount of memory to allocate to the container in gigabytes. | 2 |  |
-| `osType` | string | Optional. The operating system type required by the containers in the container group. - Windows or Linux. | Linux |  |
-| `ports` | array | Optional. Port to open on the container and the public IP address. | System.Object[] |  |
-| `restartPolicy` | string | Optional. Restart policy for all containers within the container group. - Always: Always restart. OnFailure: Restart on failure. Never: Never restart. - Always, OnFailure, Never | Always |  |
-| `tags` | object | Optional. Tags of the resource. |  |  |
+| `containergroupname` | string |  |  | Required. Name for the container group. |
+| `containername` | string |  |  | Required. Name for the container. |
+| `cpuCores` | int | `2` |  | Optional. The number of CPU cores to allocate to the container. |
+| `cuaId` | string |  |  | Optional. Customer Usage Attribution id (GUID). This GUID must be previously registered |
+| `environmentVariables` | array | `[]` |  | Optional. Envrionment variables of the container group. |
+| `image` | string |  |  | Required. Name of the image. |
+| `imageRegistryCredentials` | array | `[]` |  | Optional. The image registry credentials by which the container group is created from. |
+| `ipAddressType` | string | `Public` |  | Optional. Specifies if the IP is exposed to the public internet or private VNET. - Public or Private |
+| `location` | string | `[resourceGroup().location]` |  | Optional. Location for all Resources. |
+| `lock` | string | `NotSpecified` | `[CanNotDelete, NotSpecified, ReadOnly]` | Optional. Specify the type of lock. |
+| `memoryInGB` | int | `2` |  | Optional. The amount of memory to allocate to the container in gigabytes. |
+| `osType` | string | `Linux` |  | Optional. The operating system type required by the containers in the container group. - Windows or Linux. |
+| `ports` | array | `[System.Collections.Hashtable]` |  | Optional. Port to open on the container and the public IP address. |
+| `restartPolicy` | string | `Always` |  | Optional. Restart policy for all containers within the container group. - Always: Always restart. OnFailure: Restart on failure. Never: Never restart. - Always, OnFailure, Never |
+| `tags` | object | `{object}` |  | Optional. Tags of the resource. |
 
 ### Parameter Usage: `imageRegistryCredentials`
 
@@ -70,23 +65,14 @@ Tag names and tag values can be provided as needed. A tag can be left without a 
 
 ## Outputs
 
-| Output Name | Type | Description |
-| :-- | :-- | :-- |
-| `containerGroupIPv4Address` | string |  |
-| `containerGroupName` | string | The Name of the resource |
-| `containerGroupResourceGroup` | string | The name of the Resource Group the resource resides |
-| `containerGroupResourceId` | string | The Resource Id of the resource |
+| Output Name | Type |
+| :-- | :-- |
+| `containerGroupIPv4Address` | string |
+| `containerGroupName` | string |
+| `containerGroupResourceGroup` | string |
+| `containerGroupResourceId` | string |
 
-### References
+## Template references
 
-#### Template references
-
-- [Deployments](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Resources/2018-02-01/deployments)
-- [ContainerGroups](https://docs.microsoft.com/en-us/azure/templates/Microsoft.ContainerInstance/2021-03-01/containerGroups)
-
-## Considerations
-
-## Additional resources
-
-- [Deployments](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Resources/2020-06-01/deployments)
-- [ContainerGroups](https://docs.microsoft.com/en-us/azure/templates/Microsoft.ContainerInstance/2021-03-01/containerGroups)
+- [Locks](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2016-09-01/locks)
+- [Containergroups](https://docs.microsoft.com/en-us/azure/templates/Microsoft.ContainerInstance/2021-03-01/containerGroups)

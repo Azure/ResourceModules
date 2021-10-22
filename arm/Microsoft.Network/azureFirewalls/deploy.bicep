@@ -86,69 +86,67 @@ var publicIPPrefix = {
 var azureFirewallSubnetId = '${vNetId}/subnets/AzureFirewallSubnet'
 var azureFirewallPipName_var = (empty(azureFirewallPipName) ? '${azureFirewallName}-pip' : azureFirewallPipName)
 var azureFirewallPipId = azureFirewallPip.id
-var diagnosticsMetrics = [
-  {
-    category: 'AllMetrics'
-    timeGrain: null
-    enabled: true
-    retentionPolicy: {
-      enabled: true
-      days: diagnosticLogsRetentionInDays
-    }
-  }
+
+@description('Optional. The name of firewall logs that will be streamed.')
+@allowed([
+  'AzureFirewallApplicationRule'
+  'AzureFirewallNetworkRule'
+  'AzureFirewallDnsProxy'
+])
+param firewallLogsToEnable array = [
+  'AzureFirewallApplicationRule'
+  'AzureFirewallNetworkRule'
+  'AzureFirewallDnsProxy'
 ]
-var diagnosticsLogsAzureFirewall = [
-  {
-    category: 'AzureFirewallApplicationRule'
-    enabled: true
-    retentionPolicy: {
-      enabled: true
-      days: diagnosticLogsRetentionInDays
-    }
-  }
-  {
-    category: 'AzureFirewallNetworkRule'
-    enabled: true
-    retentionPolicy: {
-      enabled: true
-      days: diagnosticLogsRetentionInDays
-    }
-  }
-  {
-    category: 'AzureFirewallDnsProxy'
-    enabled: true
-    retentionPolicy: {
-      enabled: true
-      days: diagnosticLogsRetentionInDays
-    }
-  }
+
+@description('Optional. The name of public IP logs that will be streamed.')
+@allowed([
+  'DDoSProtectionNotifications'
+  'DDoSMitigationReports'
+  'DDoSMitigationFlowLogs'
+])
+param publicIPLogsToEnable array = [
+  'DDoSProtectionNotifications'
+  'DDoSMitigationReports'
+  'DDoSMitigationFlowLogs'
 ]
-var diagnosticsLogsPublicIp = [
-  {
-    category: 'DDoSProtectionNotifications'
-    enabled: true
-    retentionPolicy: {
-      enabled: true
-      days: diagnosticLogsRetentionInDays
-    }
-  }
-  {
-    category: 'DDoSMitigationFlowLogs'
-    enabled: true
-    retentionPolicy: {
-      enabled: true
-      days: diagnosticLogsRetentionInDays
-    }
-  }
-  {
-    category: 'DDoSMitigationReports'
-    enabled: true
-    retentionPolicy: {
-      enabled: true
-      days: diagnosticLogsRetentionInDays
-    }
-  }
+
+@description('Optional. The name of metrics that will be streamed.')
+@allowed([
+  'AllMetrics'
+])
+param metricsToEnable array = [
+  'AllMetrics'
 ]
+
+var diagnosticsLogsAzureFirewall = [for log in firewallLogsToEnable: {
+  category: log
+  enabled: true
+  retentionPolicy: {
+    enabled: true
+    days: diagnosticLogsRetentionInDays
+  }
+}]
+
+var diagnosticsLogsPublicIp = [for log in publicIPLogsToEnable: {
+  category: log
+  enabled: true
+  retentionPolicy: {
+    enabled: true
+    days: diagnosticLogsRetentionInDays
+  }
+}]
+
+var diagnosticsMetrics = [for metric in metricsToEnable: {
+  category: metric
+  timeGrain: null
+  enabled: true
+  retentionPolicy: {
+    enabled: true
+    days: diagnosticLogsRetentionInDays
+  }
+}]
+
 var builtInRoleNames = {
   'Owner': subscriptionResourceId('Microsoft.Authorization/roleDefinitions', '8e3af657-a8ff-443c-a75c-2fe8c4bcb635')
   'Contributor': subscriptionResourceId('Microsoft.Authorization/roleDefinitions', 'b24988ac-6180-42a0-ab88-20f7382dd24c')

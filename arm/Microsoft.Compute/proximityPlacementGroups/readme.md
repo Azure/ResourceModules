@@ -1,27 +1,26 @@
-# ProximityPlacementGroup
+# ProximityPlacementGroup `[Microsoft.Compute/proximityPlacementGroups]`
 
 This template deploys a Proximity Placement Group
 
 ## Resource types
 
-| Resource Type                                                          | ApiVersion         |
-| :--------------------------------------------------------------------- | :----------------- |
-| `Microsoft.Compute/proximityPlacementGroups`                           | 2021-04-01         |
-| `Microsoft.Authorization/locks`                                        | 2016-09-01         |
-| `Microsoft.Compute/proximityPlacementGroups/providers/roleAssignments` | 2020-04-01-preview |
-| `Microsoft.Resources/deployments`                                      | 2020-06-01         |
+| Resource Type | Api Version |
+| :-- | :-- |
+| `Microsoft.Authorization/locks` | 2016-09-01 |
+| `Microsoft.Compute/proximityPlacementGroups` | 2021-04-01 |
+| `Microsoft.Compute/proximityPlacementGroups/providers/roleAssignments` | 2021-04-01-preview |
 
 ## Parameters
 
-| Parameter Name                | Type   | Default Value | Possible values               | Description                                                                                                                                                                                                                                                                                                                                                                                                     |
-| :---------------------------- | :----- | :------------ | :---------------------------- | :-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `proximityPlacementGroupName` | string |               |                               | Required. The name of the proximity placement group that is being created.                                                                                                                                                                                                                                                                                                                                      |
-| `proximityPlacementGroupType` | string | `Standard`    | `Standard`/`Ultra`            | Optional. Specifies the type of the proximity placement group.                                                                                                                                                                                                                                                                                                                                                  |
-| `location`                    | string |               |                               | Optional. Resource location.                                                                                                                                                                                                                                                                                                                                                                                    |
-| `lock` | string | Optional. Specify the type of lock. | 'NotSpecified' | 'CanNotDelete', 'NotSpecified', 'ReadOnly' |
-| `roleAssignments`             | array  | []            | Complex structure, see below. | Optional. Array of role assignment objects that contain the 'roleDefinitionIdOrName' and 'principalId' to define RBAC role assignments on this resource. In the roleDefinitionIdOrName attribute, you can provide either the display name of the role definition, or it's fully qualified ID in the following format: '/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11' |
-| `tags`                        | object |               |                               | Optional. Tags of the proximity placement group resource.                                                                                                                                                                                                                                                                                                                                                       |
-| `cuaId`                       | string | ""            |                               | Optional. Customer Usage Attribution id (GUID). This GUID must be previously registered.                                                                                                                                                                                                                                                                                                                        |
+| Parameter Name | Type | Default Value | Possible Values | Description |
+| :-- | :-- | :-- | :-- | :-- |
+| `cuaId` | string |  |  | Optional. Customer Usage Attribution id (GUID). This GUID must be previously registered |
+| `location` | string | `[resourceGroup().location]` |  | Optional. Resource location. |
+| `lock` | string | `NotSpecified` | `[CanNotDelete, NotSpecified, ReadOnly]` | Optional. Specify the type of lock. |
+| `proximityPlacementGroupName` | string |  |  | Required. The name of the proximity placement group that is being created. |
+| `proximityPlacementGroupType` | string | `Standard` | `[Standard, Ultra]` | Optional. Specifies the type of the proximity placement group. |
+| `roleAssignments` | array | `[]` |  | Optional. Array of role assignment objects that contain the 'roleDefinitionIdOrName' and 'principalId' to define RBAC role assignments on this resource. In the roleDefinitionIdOrName attribute, you can provide either the display name of the role definition, or its fully qualified ID in the following format: '/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11' |
+| `tags` | object | `{object}` |  | Optional. Tags of the proximity placement group resource. |
 
 ### Parameter Usage: `roleAssignments`
 
@@ -64,16 +63,13 @@ Tag names and tag values can be provided as needed. A tag can be left without a 
 
 ## Outputs
 
-| Output Name                            | Type   | Description                                                       |
-| :------------------------------------- | :----- | :---------------------------------------------------------------- |
-| `proximityPlacementGroupResourceName`  | string | The Name of the Proximity Placement Group.                        |
-| `proximityPlacementGroupResourceId`    | string | The Resource Id of the Proximity Placement Group.                 |
-| `proximityPlacementGroupResourceGroup` | string | The Resource Group the Proximity Placement Group was deployed to. |
+| Output Name | Type |
+| :-- | :-- |
+| `proximityPlacementGroupResourceGroup` | string |
+| `proximityPlacementGroupResourceId` | string |
+| `proximityPlacementGroupResourceName` | string |
 
-## Considerations
+## Template references
 
-N/A
-
-## Additional resources
-
-- [Microsoft.Compute proximityPlacementGroups template reference](https://docs.microsoft.com/en-us/azure/templates/microsoft.compute/proximityPlacementGroups)
+- [Locks](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2016-09-01/locks)
+- [Proximityplacementgroups](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Compute/2021-04-01/proximityPlacementGroups)

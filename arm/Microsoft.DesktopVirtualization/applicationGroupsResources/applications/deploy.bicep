@@ -2,9 +2,6 @@
 @description('Required. List of applications to be created in the Application Group.')
 param applications array
 
-@description('Optional. Location for all resources.')
-param location string = resourceGroup().location
-
 @minLength(1)
 @description('Required. Name of the Application Group to create the application(s) in.')
 param appGroupName string
@@ -31,6 +28,9 @@ resource applications_res 'Microsoft.DesktopVirtualization/applicationGroups/app
   }
 }]
 
+@description('The list of the application resourceIds deployed.')
 output applicationResourceIds array = [for i in range(0, length(applications)): applications_res[i].id]
+@description('The name of the Resource Group the AVD Applications were created in.')
 output applicationResourceGroup string = resourceGroup().name
+@description('The Name of the Application Group to register the Application(s) in.')
 output appGroupName string = appGroupName

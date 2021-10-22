@@ -1,40 +1,41 @@
-# RecoveryServicesVaults
+# RecoveryServicesVaults `[Microsoft.RecoveryServices/vaults]`
 
 This module deploys Recovery Service Vault, with resource lock.
 
 
 ## Resource types
 
-|Resource Type|ApiVersion|
-|:--|:--|
-|`Microsoft.RecoveryServices/vaults`|2021-08-01|
-|`Microsoft.RecoveryServices/vaults/backupstorageconfig` | 2020-02-02 |
-|`Microsoft.Resources/deployments`|2019-10-01|
-|`Microsoft.Authorization/locks`|2016-09-01|
-|`Microsoft.Insights/diagnosticsettings`|2017-05-01-preview|
-|`Microsoft.RecoveryServices/vaults/backupPolicies`|2019-05-13|
-|`Microsoft.RecoveryServices/vaults/protectionContainers`|2016-12-01|
-|`Microsoft.RecoveryServices/vaults/providers/roleAssignments`|2018-09-01-preview|
+| Resource Type | Api Version |
+| :-- | :-- |
+| `Microsoft.Authorization/locks` | 2016-09-01 |
+| `Microsoft.Insights/diagnosticSettings` | 2021-05-01-preview |
+| `Microsoft.RecoveryServices/vaults` | 2021-08-01 |
+| `Microsoft.RecoveryServices/vaults/backupPolicies` | 2019-06-15 |
+| `Microsoft.RecoveryServices/vaults/backupstorageconfig` | 2020-02-02 |
+| `Microsoft.RecoveryServices/vaults/protectionContainers` | 2016-12-01 |
+| `Microsoft.RecoveryServices/vaults/providers/roleAssignments` | 2021-04-01-preview |
 
 ## Parameters
 
-| Parameter Name | Type | Description | DefaultValue | Possible values |
+| Parameter Name | Type | Default Value | Possible Values | Description |
 | :-- | :-- | :-- | :-- | :-- |
-| `backupPolicies` | array | Optional. List of all backup policies. | System.Object[] |  |
-| `diagnosticLogsRetentionInDays` | int | Optional. Specifies the number of days that logs will be kept for; a value of 0 will retain data indefinitely. | 365 |  |
-| `diagnosticStorageAccountId` | string | Optional. Resource identifier of the Diagnostic Storage Account. |  |  |
-| `eventHubAuthorizationRuleId` | string | Optional. Resource ID of the event hub authorization rule for the Event Hubs namespace in which the event hub should be created or streamed to. |  |  |
-| `eventHubName` | string | Optional. Name of the event hub within the namespace to which logs are streamed. Without this, an event hub is created for each log category. |  |  |
-| `location` | string | Optional. Location for all resources. | [resourceGroup().location] |  |
-| `lock` | string | Optional. Specify the type of lock. | 'NotSpecified' | 'CanNotDelete', 'NotSpecified', 'ReadOnly' |
-| `protectionContainers` | array | Optional. List of all protection containers. | System.Object[] |  |
-| `recoveryVaultName` | string | Required. Name of the Azure Recovery Service Vault |  |  |
-| `enableCRR` | bool | Optional. Enable CRR (Works if vault has not registered any backup instance) | True |  |
-| `vaultStorageType` | string | Optional. Change Vault Storage Type (Works if vault has not registered any backup instance) | GeoRedundant | System.Object[]  |
-| `roleAssignments` | array | Optional. Array of role assignment objects that contain the 'roleDefinitionIdOrName' and 'principalId' to define RBAC role assignments on this resource. In the roleDefinitionIdOrName attribute, you can provide either the display name of the role definition, or its fully qualified ID in the following format: '/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11' | System.Object[] |  |
-| `tags` | object | Optional. Tags of the Recovery Service Vault resource. |  |  |
-| `workspaceId` | string | Optional. Resource identifier of Log Analytics. |  |  |
-| `cuaId` | string | Optional. Customer Usage Attribution id (GUID). This GUID must be previously registered |  |  |
+| `backupPolicies` | array | `[]` |  | Optional. List of all backup policies. |
+| `cuaId` | string |  |  | Optional. Customer Usage Attribution id (GUID). This GUID must be previously registered |
+| `diagnosticLogsRetentionInDays` | int | `365` |  | Optional. Specifies the number of days that logs will be kept for; a value of 0 will retain data indefinitely. |
+| `diagnosticStorageAccountId` | string |  |  | Optional. Resource identifier of the Diagnostic Storage Account. |
+| `enableCRR` | bool | `True` |  | Optional. Enable CRR (Works if vault has not registered any backup instance) |
+| `eventHubAuthorizationRuleId` | string |  |  | Optional. Resource ID of the event hub authorization rule for the Event Hubs namespace in which the event hub should be created or streamed to. |
+| `eventHubName` | string |  |  | Optional. Name of the event hub within the namespace to which logs are streamed. Without this, an event hub is created for each log category. |
+| `location` | string | `[resourceGroup().location]` |  | Optional. Location for all resources. |
+| `lock` | string | `NotSpecified` | `[CanNotDelete, NotSpecified, ReadOnly]` | Optional. Specify the type of lock. |
+| `logsToEnable` | array | `[AzureBackupReport, CoreAzureBackup, AddonAzureBackupJobs, AddonAzureBackupAlerts, AddonAzureBackupPolicy, AddonAzureBackupStorage, AddonAzureBackupProtectedInstance, AzureSiteRecoveryJobs, AzureSiteRecoveryEvents, AzureSiteRecoveryReplicatedItems, AzureSiteRecoveryReplicationStats, AzureSiteRecoveryRecoveryPoints, AzureSiteRecoveryReplicationDataUploadRate, AzureSiteRecoveryProtectedDiskDataChurn]` | `[AzureBackupReport, CoreAzureBackup, AddonAzureBackupJobs, AddonAzureBackupAlerts, AddonAzureBackupPolicy, AddonAzureBackupStorage, AddonAzureBackupProtectedInstance, AzureSiteRecoveryJobs, AzureSiteRecoveryEvents, AzureSiteRecoveryReplicatedItems, AzureSiteRecoveryReplicationStats, AzureSiteRecoveryRecoveryPoints, AzureSiteRecoveryReplicationDataUploadRate, AzureSiteRecoveryProtectedDiskDataChurn]` | Optional. The name of logs that will be streamed. |
+| `metricsToEnable` | array | `[Health]` | `[Health]` | Optional. The name of metrics that will be streamed. |
+| `protectionContainers` | array | `[]` |  | Optional. List of all protection containers. |
+| `recoveryVaultName` | string |  |  | Required. Name of the Azure Recovery Service Vault |
+| `roleAssignments` | array | `[]` |  | Optional. Array of role assignment objects that contain the 'roleDefinitionIdOrName' and 'principalId' to define RBAC role assignments on this resource. In the roleDefinitionIdOrName attribute, you can provide either the display name of the role definition, or its fully qualified ID in the following format: '/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11' |
+| `tags` | object | `{object}` |  | Optional. Tags of the Recovery Service Vault resource. |
+| `vaultStorageType` | string | `GeoRedundant` | `[LocallyRedundant, GeoRedundant]` | Optional. Change Vault Storage Type (Works if vault has not registered any backup instance) |
+| `workspaceId` | string |  |  | Optional. Resource identifier of Log Analytics. |
 
 ### Parameter Usage: `roleAssignments`
 
@@ -326,16 +327,17 @@ Array of backup policies. They need to be properly formatted and can be VM backu
 
 ## Outputs
 
-| Output Name | Type | Description |
-| :-- | :-- | :-- |
-| `recoveryServicesVaultName` | string | The Name of the Recovery Services Vault. |
-| `recoveryServicesVaultResourceGroup` | string | The Resource Group the Recovery Services Vault was deployed to. |
-| `recoveryServicesVaultResourceId` | string | The Resource Id of the Recovery Services Vault. |
+| Output Name | Type |
+| :-- | :-- |
+| `recoveryServicesVaultName` | string |
+| `recoveryServicesVaultResourceGroup` | string |
+| `recoveryServicesVaultResourceId` | string |
 
-## Considerations
+## Template references
 
-## Additional resources
-
-- [Recovery Services vaults overview](https://docs.microsoft.com/en-us/azure/backup/backup-azure-recovery-services-vault-overview)
-- [Microsoft.RecoveryServices vaults template reference](https://docs.microsoft.com/en-gb/azure/templates/microsoft.recoveryservices/allversions)
-- [Use tags to organize your Azure resources](https://docs.microsoft.com/en-us/azure/azure-resource-manager/resource-group-using-tags)
+- [Locks](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2016-09-01/locks)
+- [Diagnosticsettings](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Insights/2021-05-01-preview/diagnosticSettings)
+- [Vaults](https://docs.microsoft.com/en-us/azure/templates/Microsoft.RecoveryServices/2021-08-01/vaults)
+- [Vaults/Backuppolicies](https://docs.microsoft.com/en-us/azure/templates/Microsoft.RecoveryServices/2019-06-15/vaults/backupPolicies)
+- [Vaults/Backupstorageconfig](https://docs.microsoft.com/en-us/azure/templates/Microsoft.RecoveryServices/2020-02-02/vaults/backupstorageconfig)
+- [Vaults/Protectioncontainers](https://docs.microsoft.com/en-us/azure/templates/Microsoft.RecoveryServices/2016-12-01/vaults/protectionContainers)

@@ -1,45 +1,47 @@
-# EventHub Namespaces
+# EventHub Namespaces `[Microsoft.EventHub/namespaces]`
 
 This module deploys EventHub Namespace.
 
 ## Resource types
 
-|Resource Type|ApiVersion|
-|:--|:--|
-|`Microsoft.EventHub/namespaces`|2017-04-01|
-|`Microsoft.Authorization/locks`|2016-09-01|
-|`Microsoft.Insights/diagnosticsettings`|2017-05-01-preview|
-|`Microsoft.EventHub/namespaces/disasterRecoveryConfigs`|2017-04-01|
-|`Microsoft.EventHub/namespaces/AuthorizationRules`|2017-04-01|
-|`Microsoft.Network/privateEndpoints`|2020-05-01|
-|`Microsoft.Network/privateEndpoints/privateDnsZoneGroups`|2020-05-01|
-|`Microsoft.EventHub/namespaces/providers/roleAssignments`|2018-09-01-preview|
+| Resource Type | Api Version |
+| :-- | :-- |
+| `Microsoft.Authorization/locks` | 2016-09-01 |
+| `Microsoft.EventHub/namespaces` | 2017-04-01 |
+| `Microsoft.EventHub/namespaces/authorizationRules` | 2017-04-01 |
+| `Microsoft.EventHub/namespaces/disasterRecoveryConfigs` | 2017-04-01 |
+| `Microsoft.EventHub/namespaces/providers/roleAssignments` | 2021-04-01-preview |
+| `Microsoft.Insights/diagnosticSettings` | 2017-05-01-preview |
+| `Microsoft.Network/privateEndpoints` | 2021-05-01 |
+| `Microsoft.Network/privateEndpoints/privateDnsZoneGroups` | 2020-05-01 |
 
 ## Parameters
 
-| Parameter Name | Type | Description | DefaultValue | Possible values |
+| Parameter Name | Type | Default Value | Possible Values | Description |
 | :-- | :-- | :-- | :-- | :-- |
-| `authorizationRules` | array | Optional. Authorization Rules for the Event Hub namespace | System.Object[] |  |
-| `cuaId` | string | Optional. Customer Usage Attribution id (GUID). This GUID must be previously registered |  |  |
-| `diagnosticLogsRetentionInDays` | int | Optional. Specifies the number of days that logs will be kept for; a value of 0 will retain data indefinitely. | 365 |  |
-| `diagnosticStorageAccountId` | string | Optional. Resource identifier of the Diagnostic Storage Account. |  |  |
-| `isAutoInflateEnabled` | bool | Optional. Switch to enable the Auto Inflate feature of Event Hub. | False |  |
-| `location` | string | Optional. Location for all resources. | [resourceGroup().location] |  |
-| `lock` | string | 'NotSpecified' | 'CanNotDelete', 'NotSpecified', 'ReadOnly' | Optional. Specify the type of lock. |
-| `maximumThroughputUnits` | int | Optional. Upper limit of throughput units when AutoInflate is enabled, value should be within 0 to 20 throughput units. | 1 |  |
-| `namespaceAlias` | string | Optional. The Disaster Recovery configuration name |  |  |
-| `namespaceName` | string | Optional. The name of the EventHub namespace. If no name is provided, then unique name will be created.|  |  |
-| `networkAcls` | object | Optional. Service endpoint object information |  |  |
-| `privateEndpoints` | array | System.Object[] |  | Optional. Configuration Details for private endpoints. |
-| `partnerNamespaceId` | string | Optional. ARM Id of the Primary/Secondary eventhub namespace name, which is part of GEO DR pairing |  |  |
-| `roleAssignments` | array | Optional. Array of role assignment objects that contain the 'roleDefinitionIdOrName' and 'principalId' to define RBAC role assignments on this resource. In the roleDefinitionIdOrName attribute, you can provide either the display name of the role definition, or its fully qualified ID in the following format: '/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11' | System.Object[] |  |
-| `skuCapacity` | int | Optional. Event Hub Plan scale-out capacity of the resource | 1 |  |
-| `skuName` | string | Optional. EventHub Plan sku name | Standard | System.Object[] |
-| `tags` | object | Optional. Tags of the resource. |  |  |
-| `vNetId` | string | Optional. Virtual Network Id to lock down the Event Hub. |  |  |
-| `workspaceId` | string | Optional. Resource identifier of Log Analytics. |  |  |
-| `zoneRedundant` | bool | Optional. Switch to make the Event Hub Namespace zone redundant. | False |  |
-| `baseTime` | string | utcNow('u') | | Generated. Do not provide a value! This date value is used to generate a SAS token toaccess the modules.
+| `authorizationRules` | array | `[System.Collections.Hashtable]` |  | Optional. Authorization Rules for the Event Hub namespace |
+| `baseTime` | string | `[utcNow('u')]` |  | Generated. Do not provide a value! This date value is used to generate a SAS token to access the modules. |
+| `cuaId` | string |  |  | Optional. Customer Usage Attribution id (GUID). This GUID must be previously registered |
+| `diagnosticLogsRetentionInDays` | int | `365` |  | Optional. Specifies the number of days that logs will be kept for; a value of 0 will retain data indefinitely. |
+| `diagnosticStorageAccountId` | string |  |  | Optional. Resource identifier of the Diagnostic Storage Account. |
+| `isAutoInflateEnabled` | bool |  |  | Optional. Switch to enable the Auto Inflate feature of Event Hub. |
+| `location` | string | `[resourceGroup().location]` |  | Optional. Location for all resources. |
+| `lock` | string | `NotSpecified` | `[CanNotDelete, NotSpecified, ReadOnly]` | Optional. Specify the type of lock. |
+| `logsToEnable` | array | `[ArchiveLogs, OperationalLogs, KafkaCoordinatorLogs, KafkaUserErrorLogs, EventHubVNetConnectionEvent, CustomerManagedKeyUserLogs, AutoScaleLogs]` | `[ArchiveLogs, OperationalLogs, KafkaCoordinatorLogs, KafkaUserErrorLogs, EventHubVNetConnectionEvent, CustomerManagedKeyUserLogs, AutoScaleLogs]` | Optional. The name of logs that will be streamed. |
+| `maximumThroughputUnits` | int | `1` |  | Optional. Upper limit of throughput units when AutoInflate is enabled, value should be within 0 to 20 throughput units. |
+| `metricsToEnable` | array | `[AllMetrics]` | `[AllMetrics]` | Optional. The name of metrics that will be streamed. |
+| `namespaceAlias` | string |  |  | Optional. The Disaster Recovery configuration name |
+| `namespaceName` | string |  |  | Optional. The name of the EventHub namespace. If no name is provided, then unique name will be created. |
+| `networkAcls` | object | `{object}` |  | Optional. Service endpoint object information |
+| `partnerNamespaceId` | string |  |  | Optional. ARM Id of the Primary/Secondary eventhub namespace name, which is part of GEO DR pairing |
+| `privateEndpoints` | array | `[]` |  | Optional. Configuration Details for private endpoints. |
+| `roleAssignments` | array | `[]` |  | Optional. Array of role assignment objects that contain the 'roleDefinitionIdOrName' and 'principalId' to define RBAC role assignments on this resource. In the roleDefinitionIdOrName attribute, you can provide either the display name of the role definition, or its fully qualified ID in the following format: '/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11' |
+| `skuCapacity` | int | `1` |  | Optional. Event Hub Plan scale-out capacity of the resource |
+| `skuName` | string | `Standard` | `[Basic, Standard]` | Optional. EventHub Plan sku name |
+| `tags` | object | `{object}` |  | Optional. Tags of the resource. |
+| `vNetId` | string |  |  | Optional. Virtual Network Id to lock down the Event Hub. |
+| `workspaceId` | string |  |  | Optional. Resource identifier of Log Analytics. |
+| `zoneRedundant` | bool |  |  | Optional. Switch to make the Event Hub Namespace zone redundant. |
 
 ### Parameter Usage: `roleAssignments`
 
@@ -172,24 +174,20 @@ To use Private Endpoint the following dependencies must be deployed:
 
 ## Outputs
 
-| Output Name | Type | Description |
-| :-- | :-- | :-- |
-| `defaultAuthorizationRuleId` | string | The Id of the authorization rule marked by the variable with the same name. |
-| `namespaceConnectionString` | securestring | The connection string of the EventHub Namespace |
-| `namespaceName` | string | The Name of the EventHub Namespace |
-| `namespaceResourceGroup` | string | The name of the Resource Group with the EventHub Namespace |
-| `namespaceResourceId` | string | The Resource Id of the EventHub Namespace |
-| `sharedAccessPolicyPrimaryKey` | securestring | The shared access policy primary key for the EventHub Namespace |
+| Output Name | Type |
+| :-- | :-- |
+| `namespace` | string |
+| `namespaceConnectionString` | string |
+| `namespaceResourceGroup` | string |
+| `namespaceResourceId` | string |
+| `sharedAccessPolicyPrimaryKey` | string |
 
-### Scripts
+## Template references
 
-- There is no Scripts for this Module
-
-## Considerations
-
-- There is no deployment considerations for this Module
-
-## Additional resources
-
-- [Microsoft EventHub template reference](https://docs.microsoft.com/en-us/azure/templates/microsoft.eventhub/allversions)
-- [Use tags to organize your Azure resources](https://docs.microsoft.com/en-us/azure/azure-resource-manager/resource-group-using-tags)
+- [Locks](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2016-09-01/locks)
+- [Namespaces](https://docs.microsoft.com/en-us/azure/templates/Microsoft.EventHub/2017-04-01/namespaces)
+- [Namespaces/Authorizationrules](https://docs.microsoft.com/en-us/azure/templates/Microsoft.EventHub/2017-04-01/namespaces/authorizationRules)
+- [Namespaces/Disasterrecoveryconfigs](https://docs.microsoft.com/en-us/azure/templates/Microsoft.EventHub/2017-04-01/namespaces/disasterRecoveryConfigs)
+- [Diagnosticsettings](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Insights/2017-05-01-preview/diagnosticSettings)
+- [Privateendpoints](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Network/2021-05-01/privateEndpoints)
+- [Privateendpoints/Privatednszonegroups](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Network/2020-05-01/privateEndpoints/privateDnsZoneGroups)

@@ -48,7 +48,6 @@ param retentionInDays int = 365
 param cuaId string = ''
 
 var nsgName = split(networkSecurityGroupResourceId, '/')[8]
-var nsgResourceGroupName = split(networkSecurityGroupResourceId, '/')[4]
 var fullFlowLogName = '${networkWatcherName}/${uniqueString(nsgName)}'
 var flowAnalyticsConfig = {
   networkWatcherFlowAnalyticsConfiguration: {
@@ -63,7 +62,7 @@ module pid_cuaId './.bicep/nested_cuaId.bicep' = if (!empty(cuaId)) {
   params: {}
 }
 
-resource flowLog 'Microsoft.Network/networkWatchers/flowLogs@2020-05-01' = {
+resource flowLog 'Microsoft.Network/networkWatchers/flowLogs@2021-05-01' = {
   name: fullFlowLogName
   location: location
   tags: tags
