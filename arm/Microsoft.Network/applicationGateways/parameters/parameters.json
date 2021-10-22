@@ -9,19 +9,19 @@
             "value": "WAF_v2"
         },
         "vNetName": {
-            "value": "sxx-az-vnet-weu-x-003"
+            "value": "adp-sxx-az-vnet-weu-x-001"
         },
         "subnetName": {
-            "value": "sxx-az-subnet-weu-x-003"
+            "value": "sxx-az-subnet-weu-x-006"
         },
         "vNetResourceGroup": {
-            "value": "dependencies-rg"
+            "value": "validation-rg"
         },
         "frontendPrivateIpAddress": {
-            "value": "10.1.2.6"
+            "value": "10.0.7.6"
         },
-        "frontendpublicIpResourceId": {
-            "value": "/subscriptions/8629be3b-96bc-482d-a04b-ffff597c65a2/resourceGroups/dependencies-rg/providers/Microsoft.Network/publicIPAddresses/sxx-az-pip-weu-x-003"
+        "frontendPublicIpResourceId": {
+            "value": "/subscriptions/8629be3b-96bc-482d-a04b-ffff597c65a2/resourceGroups/validation-rg/providers/Microsoft.Network/publicIPAddresses/adp-sxx-az-pip-weu-x-apgw"
         },
         "managedIdentityResourceId": {
             "value": "/subscriptions/8629be3b-96bc-482d-a04b-ffff597c65a2/resourceGroups/validation-rg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/adp-sxx-az-msi-weu-x-001"
