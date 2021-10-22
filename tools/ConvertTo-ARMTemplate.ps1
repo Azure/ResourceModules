@@ -1,65 +1,113 @@
-﻿# 1. Remove existing json files
-# 2.a Convert bicep to json
-# 2.b Cleanup json, remove metadate property in json
-# 3. Remove bicep files and folders
-# 4. Replace deploy.bicep with deploy.json in workflow files
+﻿<#
+.SYNOPSIS
+This script converts the module library from bicep to json based ARM templates.
 
+.DESCRIPTION
+The script finds all 'deploy.bicep' files and tries to convert them to json based ARM templates
+by using the following steps.
+1. Remove existing deploy.json files (to avoid collision)
+2.a Convert deploy.bicep to deploy.json using bicep build
+2.b Clean up the json file, i.e removing the metadata property
+3. Remove bicep files and folders
+4. Replace deploy.bicep with deploy.json in workflow files
+
+.PARAMETER Path
+Mandatory. The path to the root of the repo.
+
+.PARAMETER CleanUp
+Optional. Perform cleanup of bicep files after conversion.
+
+.EXAMPLE
+. .\tools\ConvertTo-ARMTemplate.ps1 -Path . -CleanUp
+
+Converts bicep modules to json based ARM template, cleaning up all bicep files after conversion.
+#>
 [CmdletBinding(SupportsShouldProcess)]
 param (
+    [Parameter(Mandatory,
+        HelpMessage = 'Path to the ResourceModule repo folder'
+    )]
     [string] $Path,
+
+    [Parameter()]
     [switch] $CleanUp
 )
 
-$RootPath = Get-Item -Path $Path | Select-Object -ExpandProperty FullName
-$armFolderPath = Join-Path -Path $RootPath -ChildPath 'arm'
+$rootPath = Get-Item -Path $Path | Select-Object -ExpandProperty FullName
+$armFolderPath = Join-Path -Path $rootPath -ChildPath 'arm'
 
 # Get all bicep files
-$BicepFiles = Get-ChildItem -Path $armFolderPath -Filter deploy.bicep -Recurse
-foreach ($BicepFile in $BicepFiles) {
-    $BicepFilePath = $BicepFile.FullName
-    Write-Verbose "$BicepFilePath - Processing"
-    $ModuleFolderPath = $BicepFile.Directory.FullName
-    Write-Verbose "$BicepFilePath - ModuleFolderPath - $ModuleFolderPath"
-    $JSONFilePath = Join-Path -Path $ModuleFolderPath -ChildPath 'deploy.json'
-    Write-Verbose "$BicepFilePath - JSONFilePath - $JSONFilePath"
-    $bicepFolderPath = Join-Path -Path $ModuleFolderPath -ChildPath '.bicep'
+$bicepFiles = Get-ChildItem -Path $armFolderPath -Filter deploy.bicep -Recurse
+Write-Verbose "Convert bicep to json - $($bicepFiles.count) files"
+foreach ($bicepFile in $bicepFiles) {
+    $bicepFilePath = $bicepFile.FullName
+    Write-Verbose "$bicepFilePath - Processing"
+    $moduleFolderPath = $bicepFile.Directory.FullName
+    Write-Verbose "$bicepFilePath - ModuleFolderPath - $moduleFolderPath"
+    $JSONFilePath = Join-Path -Path $moduleFolderPath -ChildPath 'deploy.json'
+    Write-Verbose "$bicepFilePath - JSONFilePath - $JSONFilePath"
+    $bicepFolderPath = Join-Path -Path $moduleFolderPath -ChildPath '.bicep'
 
-    # 1. Remove existing json files
-    Write-Verbose "$BicepFilePath - Removing deploy.json"
+    # Remove existing json files
+    Write-Verbose "$bicepFilePath - Removing deploy.json"
     if (Test-Path -Path $JSONFilePath) {
-        Remove-Item -Path $JSONFilePath -Force -Verbose
-        Write-Verbose "$BicepFilePath - Removing deploy.json - Done"
+        if ($PSCmdlet.ShouldProcess("File in path [$bicepFilePath]", 'Remove')) {
+            Remove-Item -Path $JSONFilePath -Force -Verbose
+        }
+        Write-Verbose "$bicepFilePath - Removing deploy.json - Done"
     } else {
-        Write-Verbose "$BicepFilePath - Removing deploy.json - Skipped - Nothing to delete"
+        Write-Verbose "$bicepFilePath - Removing deploy.json - Skipped - Nothing to delete"
     }
 
-    # 2.a Convert bicep to json
-    Write-Verbose "$BicepFilePath - Convert to json"
-    az bicep build --file $BicepFilePath --outfile $JSONFilePath
-    Write-Verbose "$BicepFilePath - Convert to json - Done"
+    # Convert bicep to json
+    Write-Verbose "$bicepFilePath - Convert to json"
+    if ($PSCmdlet.ShouldProcess("File in path [$bicepFilePath]", 'Convert')) {
+        az bicep build --file $bicepFilePath --outfile $JSONFilePath
+    }
+    Write-Verbose "$bicepFilePath - Convert to json - Done"
 
-    # 2.b Cleanup json, remove metadate property in json
-    $JSONFileContent = Get-Content -Path $JSONFilePath
-    $JSONObj = $JSONFileContent | ConvertFrom-Json
-    $JSONObj.metadata = $null
-    $JSONFileContent = $JSONObj | ConvertTo-Json
+    # Cleanup json, remove metadate property in json
+    Write-Verbose "$bicepFilePath - Clean up json"
+    if (Test-Path -Path $JSONFilePath) {
+        $JSONFileContent = Get-Content -Path $JSONFilePath
+        $JSONObj = $JSONFileContent | ConvertFrom-Json
+        $JSONObj.PSObject.Properties.Remove('metadata')
+        $JSONFileContent = $JSONObj | ConvertTo-Json -Depth 100
+        if ($PSCmdlet.ShouldProcess("File in path [$JSONFilePath]", 'Overwrite')) {
+            Set-Content -Value $JSONFileContent -Path $JSONFilePath
+        }
+        Write-Verbose "$bicepFilePath - Clean up json - Done"
+    } else {
+        Write-Verbose "$bicepFilePath - Clean up json - Skipped - File not found (deploy.json)"
+    }
 
-
-    # 3. Remove bicep files and folders
+    # Remove bicep files and folders
+    Write-Verbose "$bicepFilePath - Clean up bicep files"
     if ($CleanUp) {
-        Remove-Item -Path $BicepFilePath -Force -Verbose
+        if ($PSCmdlet.ShouldProcess("File in path [$bicepFilePath]", 'Remove')) {
+            Remove-Item -Path $bicepFilePath -Force
+        }
+        Write-Verbose "$bicepFilePath - Clean up bicep files - Removed deploy.bicep"
         if (Test-Path -Path $bicepFolderPath) {
-            Remove-Item -Path $bicepFolderPath -Force -Recurse -Verbose
+            if ($PSCmdlet.ShouldProcess("File in path [$bicepFolderPath]", 'Remove')) {
+                Remove-Item -Path $bicepFolderPath -Recurse -Force
+            }
+            Write-Verbose "$bicepFilePath - Clean up bicep files - Removed .bicep folder"
         }
     }
 }
 
-# 4. Replace deploy.bicep with deploy.json in workflow files
-$workflowFolderPath = Join-Path -Path $RootPath -ChildPath '.github\workflows'
+# Replace .bicep with .json in workflow files
+$workflowFolderPath = Join-Path -Path $rootPath -ChildPath '.github\workflows'
 $workflowFiles = Get-ChildItem -Path $workflowFolderPath -Filter 'ms.*.yml' -File
-$workflowFiles | ForEach-Object -ThrottleLimit 20 -Parallel {
-    $workflowFile = $_
-    $Content = Get-Content -Path $workflowFile
-    $Content = $Content.Replace('deploy.bicep', 'deploy.json')
-    Set-Content -Value $Content -Path $workflowFile
+Write-Verbose "Update workflow files - $($workflowFiles.count) files"
+foreach ($workflowFile in $workflowFiles) {
+    Write-Verbose "$workflowFile - Processing"
+    $content = Get-Content -Path $workflowFile
+    $content = $content.Replace("deploy.bicep'", "deploy.json'")
+    if ($PSCmdlet.ShouldProcess("File in path [$workflowFile]", 'Overwrite')) {
+        Set-Content -Value $content -Path $workflowFile
+    }
+    Write-Verbose "$workflowFile - Processing - Done"
 }
+Write-Verbose "Update workflow files - $($workflowFiles.count) files - Done"
