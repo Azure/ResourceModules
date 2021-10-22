@@ -291,7 +291,7 @@ module storageAccount_privateEndpoints './.bicep/nested_privateEndpoint.bicep' =
 }]
 
 // Containers
-resource storageAccount_nested_blob_services 'Microsoft.Storage/storageAccounts/blobServices@2019-06-01' = if (!empty(blobContainers)) {
+resource storageAccount_nested_blob_services 'Microsoft.Storage/storageAccounts/blobServices@2021-08-01' = if (!empty(blobContainers)) {
   name: 'default'
   parent: storageAccount
   properties: {

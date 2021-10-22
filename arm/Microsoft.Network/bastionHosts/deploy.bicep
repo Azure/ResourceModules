@@ -50,56 +50,66 @@ param tags object = {}
 @description('Optional. Customer Usage Attribution id (GUID). This GUID must be previously registered')
 param cuaId string = ''
 
+@description('Optional. The name of public IP logs that will be streamed.')
+@allowed([
+  'DDoSProtectionNotifications'
+  'DDoSMitigationFlowLogs'
+  'DDoSMitigationReports'
+])
+param publicIpLogsToEnable array = [
+  'DDoSProtectionNotifications'
+  'DDoSMitigationFlowLogs'
+  'DDoSMitigationReports'
+]
+
+@description('Optional. Optional. The name of bastion logs that will be streamed.')
+@allowed([
+  'BastionAuditLogs'
+])
+param azureBastionpLogsToEnable array = [
+  'BastionAuditLogs'
+]
+
+@description('Optional. The name of metrics that will be streamed.')
+@allowed([
+  'AllMetrics'
+])
+param metricsToEnable array = [
+  'AllMetrics'
+]
+
+var publicIpDiagnosticsLogs = [for log in publicIpLogsToEnable: {
+  category: log
+  enabled: true
+  retentionPolicy: {
+    enabled: true
+    days: diagnosticLogsRetentionInDays
+  }
+}]
+
+var azureBastionDiagnosticsLogs = [for log in azureBastionpLogsToEnable: {
+  category: log
+  enabled: true
+  retentionPolicy: {
+    enabled: true
+    days: diagnosticLogsRetentionInDays
+  }
+}]
+
+var diagnosticsMetrics = [for metric in metricsToEnable: {
+  category: metric
+  timeGrain: null
+  enabled: true
+  retentionPolicy: {
+    enabled: true
+    days: diagnosticLogsRetentionInDays
+  }
+}]
+
 var publicIPPrefix = {
   id: publicIPPrefixId
 }
-var diagnosticsMetrics = [
-  {
-    category: 'AllMetrics'
-    timeGrain: null
-    enabled: true
-    retentionPolicy: {
-      enabled: true
-      days: diagnosticLogsRetentionInDays
-    }
-  }
-]
-var publicIpDiagnosticsLogs = [
-  {
-    category: 'DDoSProtectionNotifications'
-    enabled: true
-    retentionPolicy: {
-      enabled: true
-      days: diagnosticLogsRetentionInDays
-    }
-  }
-  {
-    category: 'DDoSMitigationFlowLogs'
-    enabled: true
-    retentionPolicy: {
-      enabled: true
-      days: diagnosticLogsRetentionInDays
-    }
-  }
-  {
-    category: 'DDoSMitigationReports'
-    enabled: true
-    retentionPolicy: {
-      enabled: true
-      days: diagnosticLogsRetentionInDays
-    }
-  }
-]
-var azureBastionDiagnosticsLogs = [
-  {
-    category: 'BastionAuditLogs'
-    enabled: true
-    retentionPolicy: {
-      enabled: true
-      days: diagnosticLogsRetentionInDays
-    }
-  }
-]
+
 var builtInRoleNames = {
   'Owner': subscriptionResourceId('Microsoft.Authorization/roleDefinitions', '8e3af657-a8ff-443c-a75c-2fe8c4bcb635')
   'Contributor': subscriptionResourceId('Microsoft.Authorization/roleDefinitions', 'b24988ac-6180-42a0-ab88-20f7382dd24c')

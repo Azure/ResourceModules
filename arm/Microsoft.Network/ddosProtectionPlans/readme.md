@@ -1,27 +1,26 @@
-# DDoS Protection Plans
+# DDoS Protection Plans `[Microsoft.Network/ddosProtectionPlans]`
 
 This template deploys a DDoS protection plan.
 
 
 ## Resource types
 
-|Resource Type|Api Version|
-|:--|:--|
-|`Microsoft.Resources/deployments`|2018-02-01|
-|`Microsoft.Network/ddosProtectionPlans`|2021-02-01|
-|`Microsoft.Authorization/locks`|2016-09-01|
-|`Microsoft.Network/ddosProtectionPlans/providers/roleAssignments`|2020-04-01-preview|
+| Resource Type | Api Version |
+| :-- | :-- |
+| `Microsoft.Authorization/locks` | 2016-09-01 |
+| `Microsoft.Network/ddosProtectionPlans` | 2021-02-01 |
+| `Microsoft.Network/ddosProtectionPlans/providers/roleAssignments` | 2021-04-01-preview |
 
 ## Parameters
 
-| Parameter Name | Type | Description | DefaultValue | Possible values |
+| Parameter Name | Type | Default Value | Possible Values | Description |
 | :-- | :-- | :-- | :-- | :-- |
-| `cuaId` | string | Optional. Customer Usage Attribution id (GUID). This GUID must be previously registered |  |  |
-| `ddosProtectionPlanName` | string | Required. Name of the DDoS protection plan to assign the VNET to. |  |  |
-| `location` | string | Optional. Location for all resources. | [resourceGroup().location] |  |
-| `lock` | string | Optional. Specify the type of lock. | 'NotSpecified' | 'CanNotDelete', 'NotSpecified', 'ReadOnly' |
-| `roleAssignments` | array | Optional. Array of role assignment objects that contain the 'roleDefinitionIdOrName' and 'principalId' to define RBAC role assignments on this resource. In the roleDefinitionIdOrName attribute, you can provide either the display name of the role definition, or its fully qualified ID in the following format: '/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11' | System.Object[] |  |
-| `tags` | object | Optional. Tags of the resource. |  |  |
+| `cuaId` | string |  |  | Optional. Customer Usage Attribution id (GUID). This GUID must be previously registered |
+| `ddosProtectionPlanName` | string |  |  | Required. Name of the DDoS protection plan to assign the VNET to. |
+| `location` | string | `[resourceGroup().location]` |  | Optional. Location for all resources. |
+| `lock` | string | `NotSpecified` | `[CanNotDelete, NotSpecified, ReadOnly]` | Optional. Specify the type of lock. |
+| `roleAssignments` | array | `[]` |  | Optional. Array of role assignment objects that contain the 'roleDefinitionIdOrName' and 'principalId' to define RBAC role assignments on this resource. In the roleDefinitionIdOrName attribute, you can provide either the display name of the role definition, or its fully qualified ID in the following format: '/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11' |
+| `tags` | object | `{object}` |  | Optional. Tags of the resource. |
 
 ### Parameter Usage: `roleAssignments`
 
@@ -71,19 +70,13 @@ Tag names and tag values can be provided as needed. A tag can be left without a 
 
 ## Outputs
 
-| Output Name | Type | Description |
-| :-- | :-- | :-- |
-| `ddosProtectionPlanName` | string | The name of the DDoS Protection Plan deployed. |
-| `ddosProtectionPlanResourceGroup` | string | The name of the Resource Group the DDoS Protection Plan was created in. |
-| `ddosProtectionPlanResourceId` | string | The Resource id of the DDoS Protection Plan deployed. |
+| Output Name | Type |
+| :-- | :-- |
+| `ddosProtectionPlanName` | string |
+| `ddosProtectionPlanResourceGroup` | string |
+| `ddosProtectionPlanResourceId` | string |
 
-## Considerations
+## Template references
 
-N/A
-
-## Additional resources
-
-- [Microsoft.Network ddosProtectionPlans template reference](https://docs.microsoft.com/en-us/azure/templates/microsoft.network/2021-02-01/ddosprotectionplans)
-- [Manage Azure DDoS Protection Standard using the Azure portal](https://docs.microsoft.com/en-us/azure/virtual-network/manage-ddos-protection)
-- [Azure DDoS Protection Standard overview](https://docs.microsoft.com/en-us/azure/virtual-network/ddos-protection-overview)
-- [Use tags to organize your Azure resources](https://docs.microsoft.com/en-us/azure/azure-resource-manager/resource-group-using-tags)
+- [Locks](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2016-09-01/locks)
+- [Ddosprotectionplans](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Network/2021-02-01/ddosProtectionPlans)

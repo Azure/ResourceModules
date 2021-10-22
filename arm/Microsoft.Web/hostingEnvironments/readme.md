@@ -1,4 +1,4 @@
-# App Service Environment
+# App Service Environment `[Microsoft.Web/hostingEnvironments]`
 
 This module deploys App Service Environment, with resource lock.
 
@@ -6,43 +6,43 @@ This module deploys App Service Environment, with resource lock.
 
 | Resource Type | Api Version |
 | :-- | :-- |
-| `Microsoft.Web/hostingEnvironments` | 2021-02-01 |
-| `Microsoft.Insights/diagnosticSettings` | 2017-05-01-preview |
-| `Microsoft.Web/hostingEnvironments/providers/roleAssignments` | 2020-04-01-preview |
-| `Microsoft.Resources/deployments` | 2020-06-01 |
 | `Microsoft.Authorization/locks` | 2016-09-01 |
+| `Microsoft.Insights/diagnosticSettings` | 2017-05-01-preview |
+| `Microsoft.Web/hostingEnvironments` | 2021-02-01 |
+| `Microsoft.Web/hostingEnvironments/providers/roleAssignments` | 2021-04-01-preview |
 
 ## Parameters
 
-| Parameter Name | Type | Default Value | Possible values | Description |
-| :-             | :-   | :-            | :-              | :-          |
-| `appServiceEnvironmentName` | string | | | Required. Name of the Azure App Service Environment
-| `location` | string | `[resourceGroup().location]` | | Optional. Location for all resources.
-| `kind` | string | `ASEV2` | | Optional. Kind of resource.
-| `subnetResourceId` | string | | | Required. ResourceId for the sub net.
-| `internalLoadBalancingMode` | string | `None` | ` "None", "Web", "Publishing" ` | Optional. Specifies which endpoints to serve internally in the Virtual Network for the App Service Environment. - None, Web, Publishing, Web,Publishing
-| `multiSize` | string | `Standard_D1_V2` | `  "Medium","Large","ExtraLarge","Standard_D2","Standard_D3", "Standard_D4","Standard_D1_V2","Standard_D2_V2", "Standard_D3_V2","Standard_D4_V2"` | Optional: Front-end VM size, e.g. Medium, Large
-| `multiRoleCount` | int | `2` | | Optional. Number of front-end instances
-| `ipsslAddressCount` | int | `2` | | Optional. Number of IP SSL addresses reserved for the App Service Environment.
-| `workerPools` | array | `[]` | Complex structure, see below. | Optional. Description of worker pools with worker size IDs, VM sizes, and number of workers in each pool.
-| `dnsSuffix` | string | `""` | | Optional. DNS suffix of the App Service Environment.
-| `networkAccessControlList` | array | `[]` | | Optional. Access control list for controlling traffic to the App Service Environment.
-| `frontEndScaleFactor` | int | `15` | | Optional. Scale factor for front-ends.
-| `apiManagementAccountId` | string | `""` | | Optional. API Management Account associated with the App Service Environment.
-| `suspended` | bool | `false` | | Optional. true if the App Service Environment is suspended; otherwise, false. The environment can be suspended, e.g. when the management endpoint is no longer available (most likely because NSG blocked the incoming traffic).
-| `dynamicCacheEnabled` | bool | `false` | | Optional. True/false indicating whether the App Service Environment is suspended. The environment can be suspended e.g. when the management endpoint is no longer available(most likely because NSG blocked the incoming traffic).
-| `userWhitelistedIpRanges` | array | `[]` | | Optional. User added ip ranges to whitelist on ASE db - string.
-| `hasLinuxWorkers` | bool | `false` | | Optional. Flag that displays whether an ASE has linux workers or not
-| `clusterSettings` | array | `[]` | | Optional. Custom settings for changing the behavior of the App Service Environment.
-| `diagnosticLogsRetentionInDays` | int | `365` | | Optional. Specifies the number of days that logs will be kept for; a value of 0 will retain data indefinitely.
-| `diagnosticStorageAccountId` | string | "" | | Optional. Resource identifier of the Diagnostic Storage Account.
-| `workspaceId` | string | "" | | Optional. Resource identifier of Log Analytics.
-| `eventHubAuthorizationRuleId` | string | "" | | Optional. Resource ID of the event hub authorization rule for the Event Hubs namespace in which the event hub should be created or streamed to.
-| `eventHubName` | string | "" | | Optional. Name of the event hub within the namespace to which logs are streamed. Without this, an event hub is created for each log category.
-| `lock` | string | 'NotSpecified' | 'CanNotDelete', 'NotSpecified', 'ReadOnly' | Optional. Specify the type of lock. |
-| `roleAssignments` | array | [] | Complex structure, see below. | Optional. Array of role assignment objects that contain the 'roleDefinitionIdOrName' and 'principalId' to define RBAC role assignments on this resource. In the roleDefinitionIdOrName attribute, you can provide either the display name of the role definition, or it's fully qualified ID in the following format: '/providers/Microsoft.Authorization/locks/locks/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11'
-| `tags` | object | {} | Complex structure, see below. | Optional. Tags of the Azure Key Vault resource.
-| `cuaId` | string | "" | | Optional. Customer Usage Attribution id (GUID). This GUID must be previously registered.
+| Parameter Name | Type | Default Value | Possible Values | Description |
+| :-- | :-- | :-- | :-- | :-- |
+| `apiManagementAccountId` | string |  |  | Optional. API Management Account associated with the App Service Environment. |
+| `appServiceEnvironmentName` | string |  |  | Required. Name of the App Service Environment |
+| `clusterSettings` | array | `[]` |  | Optional. Custom settings for changing the behavior of the App Service Environment |
+| `cuaId` | string |  |  | Optional. Customer Usage Attribution id (GUID). This GUID must be previously registered |
+| `diagnosticLogsRetentionInDays` | int | `365` |  | Optional. Specifies the number of days that logs will be kept for; a value of 0 will retain data indefinitely. |
+| `diagnosticStorageAccountId` | string |  |  | Optional. Resource identifier of the Diagnostic Storage Account. |
+| `dnsSuffix` | string |  |  | Optional. DNS suffix of the App Service Environment. |
+| `dynamicCacheEnabled` | bool |  |  | Optional. True/false indicating whether the App Service Environment is suspended. The environment can be suspended e.g. when the management endpoint is no longer available(most likely because NSG blocked the incoming traffic). |
+| `eventHubAuthorizationRuleId` | string |  |  | Optional. Resource ID of the event hub authorization rule for the Event Hubs namespace in which the event hub should be created or streamed to. |
+| `eventHubName` | string |  |  | Optional. Name of the event hub within the namespace to which logs are streamed. Without this, an event hub is created for each log category. |
+| `frontEndScaleFactor` | int | `15` |  | Optional. Scale factor for front-ends. |
+| `hasLinuxWorkers` | bool |  |  | Optional. Flag that displays whether an ASE has linux workers or not |
+| `internalLoadBalancingMode` | string | `None` | `[None, Web, Publishing]` | Optional. Specifies which endpoints to serve internally in the Virtual Network for the App Service Environment. - None, Web, Publishing, Web,Publishing |
+| `ipsslAddressCount` | int | `2` |  | Optional. Number of IP SSL addresses reserved for the App Service Environment. |
+| `kind` | string | `ASEV2` |  | Optional. Kind of resource. |
+| `location` | string | `[resourceGroup().location]` |  | Optional. Location for all resources. |
+| `lock` | string | `NotSpecified` | `[CanNotDelete, NotSpecified, ReadOnly]` | Optional. Specify the type of lock. |
+| `logsToEnable` | array | `[AppServiceEnvironmentPlatformLogs]` | `[AppServiceEnvironmentPlatformLogs]` | Optional. The name of logs that will be streamed. |
+| `multiRoleCount` | int | `2` |  | Optional. Number of front-end instances. |
+| `multiSize` | string | `Standard_D1_V2` | `[Medium, Large, ExtraLarge, Standard_D2, Standard_D3, Standard_D4, Standard_D1_V2, Standard_D2_V2, Standard_D3_V2, Standard_D4_V2]` | Optional. Front-end VM size, e.g. Medium, Large |
+| `networkAccessControlList` | array | `[]` |  | Optional. Access control list for controlling traffic to the App Service Environment.. |
+| `roleAssignments` | array | `[]` |  | Optional. Array of role assignment objects that contain the 'roleDefinitionIdOrName' and 'principalId' to define RBAC role assignments on this resource. In the roleDefinitionIdOrName attribute, you can provide either the display name of the role definition, or its fully qualified ID in the following format: '/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11' |
+| `subnetResourceId` | string |  |  | Required. ResourceId for the sub net |
+| `suspended` | bool |  |  | Optional. true if the App Service Environment is suspended; otherwise, false. The environment can be suspended, e.g. when the management endpoint is no longer available (most likely because NSG blocked the incoming traffic). |
+| `tags` | object | `{object}` |  | Optional. Resource tags. |
+| `userWhitelistedIpRanges` | array | `[]` |  | Optional. User added ip ranges to whitelist on ASE db - string |
+| `workerPools` | array | `[]` |  | Optional. Description of worker pools with worker size IDs, VM sizes, and number of workers in each pool.. |
+| `workspaceId` | string |  |  | Optional. Resource identifier of Log Analytics. |
 
 ### Parameter Usage: `roleAssignments`
 
@@ -140,20 +140,14 @@ workerPools can have two properties workerSize and workerCount:
 
 ## Outputs
 
-| Output Name | Type | Description |
-| :-- | :-- | :-- |
-| `appServiceEnvironmentName` | string | The Name of the AppServiceEnvironment |
-| `appServiceEnvironmentResourceGroup` | string | The name of the Resource Group the AppServiceEnvironment was created in. |
-| `appServiceEnvironmentResourceId` | string | The Resource Id of the AppServiceEnvironment. |
+| Output Name | Type |
+| :-- | :-- |
+| `appServiceEnvironmentName` | string |
+| `appServiceEnvironmentResourceGroup` | string |
+| `appServiceEnvironmentResourceId` | string |
 
-## Considerations
+## Template references
 
-**N/A*
-
-## Additional resources
-
-- [Introduction to App Service Environment?](https://docs.microsoft.com/en-us/azure/app-service/environment/intro)
-- [Microsoft.Web hostingEnvironments template reference](https://docs.microsoft.com/en-us/azure/templates/microsoft.web/2020-06-01/hostingenvironments)
-- [Use tags to organize your Azure resources](https://docs.microsoft.com/en-us/azure/azure-resource-manager/resource-group-using-tags)
-- [Deployments](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Resources/2020-06-01/deployments)
-
+- [Locks](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2016-09-01/locks)
+- [Diagnosticsettings](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Insights/2017-05-01-preview/diagnosticSettings)
+- [Hostingenvironments](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Web/2021-02-01/hostingEnvironments)

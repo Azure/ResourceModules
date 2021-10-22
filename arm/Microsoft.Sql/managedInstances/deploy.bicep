@@ -138,37 +138,46 @@ param managedServiceIdentity string = 'SystemAssigned'
 @description('Optional. Mandatory if "managedServiceIdentity" contains UserAssigned. The list of user identities associated with the managed instance.')
 param userAssignedIdentities object = {}
 
+@description('Optional. The name of logs that will be streamed.')
+@allowed([
+  'ResourceUsageStats'
+  'SQLSecurityAuditEvents'
+])
+param logsToEnable array = [
+  'ResourceUsageStats'
+  'SQLSecurityAuditEvents'
+]
+
+@description('Optional. The name of metrics that will be streamed.')
+@allowed([
+  'AllMetrics'
+])
+param metricsToEnable array = [
+  'AllMetrics'
+]
+
+var diagnosticsLogs = [for log in logsToEnable: {
+  category: log
+  enabled: true
+  retentionPolicy: {
+    enabled: true
+    days: diagnosticLogsRetentionInDays
+  }
+}]
+
+var diagnosticsMetrics = [for metric in metricsToEnable: {
+  category: metric
+  timeGrain: null
+  enabled: true
+  retentionPolicy: {
+    enabled: true
+    days: diagnosticLogsRetentionInDays
+  }
+}]
+
 var splittedKeyUri = split(customerManagedEnryptionKeyUri, '/')
 var serverKeyName = (empty(customerManagedEnryptionKeyUri) ? 'ServiceManaged' : '${split(splittedKeyUri[2], '.')[0]}_${splittedKeyUri[4]}_${splittedKeyUri[5]}')
-var diagnosticsMetrics = [
-  {
-    category: 'AllMetrics'
-    timeGrain: null
-    enabled: true
-    retentionPolicy: {
-      enabled: true
-      days: diagnosticLogsRetentionInDays
-    }
-  }
-]
-var diagnosticsLogs = [
-  {
-    category: 'ResourceUsageStats'
-    enabled: true
-    retentionPolicy: {
-      enabled: true
-      days: diagnosticLogsRetentionInDays
-    }
-  }
-  {
-    category: 'SQLSecurityAuditEvents'
-    enabled: true
-    retentionPolicy: {
-      enabled: true
-      days: diagnosticLogsRetentionInDays
-    }
-  }
-]
+
 var builtInRoleNames = {
   'Owner': subscriptionResourceId('Microsoft.Authorization/roleDefinitions', '8e3af657-a8ff-443c-a75c-2fe8c4bcb635')
   'Contributor': subscriptionResourceId('Microsoft.Authorization/roleDefinitions', 'b24988ac-6180-42a0-ab88-20f7382dd24c')
@@ -249,7 +258,7 @@ resource managedInstance 'Microsoft.Sql/managedInstances@2020-08-01-preview' = {
     }
   }
 
-  resource vulnerabilityAssessments 'vulnerabilityAssessments@2018-06-01-preview' = if (enableAdvancedDataSecurity) {
+  resource vulnerabilityAssessments 'vulnerabilityAssessments@2021-02-01-preview' = if (enableAdvancedDataSecurity) {
     name: 'default'
     properties: {
       storageContainerPath: (enableAdvancedDataSecurity ? 'https://${split(vulnerabilityAssessmentsStorageAccountId, '/')[8]}.blob.core.windows.net/vulnerability-assessment/' : '')
@@ -262,7 +271,7 @@ resource managedInstance 'Microsoft.Sql/managedInstances@2020-08-01-preview' = {
     }
   }
 
-  resource administrators 'administrators@2017-03-01-preview' = if (!empty(azureAdAdmin)) {
+  resource administrators 'administrators@2021-02-01-preview' = if (!empty(azureAdAdmin)) {
     name: 'ActiveDirectory'
     properties: {
       administratorType: 'ActiveDirectory'

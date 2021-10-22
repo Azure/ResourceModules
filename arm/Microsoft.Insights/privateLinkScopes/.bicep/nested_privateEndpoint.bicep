@@ -14,7 +14,7 @@ var privateEndpoint_var = {
   customDnsConfigs: (contains(privateEndpointObj, 'customDnsConfigs') ? (empty(privateEndpointObj.customDnsConfigs) ? json('null') : privateEndpointObj.customDnsConfigs) : json('null'))
 }
 
-resource privateEndpoint 'Microsoft.Network/privateEndpoints@2020-05-01' = {
+resource privateEndpoint 'Microsoft.Network/privateEndpoints@2021-05-01' = {
   name: privateEndpoint_var.name
   location: privateEndpointVnetLocation
   tags: tags

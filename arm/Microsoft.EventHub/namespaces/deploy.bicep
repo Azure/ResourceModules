@@ -106,75 +106,54 @@ var networkAcls_var = {
   ipRules: (empty(networkAcls) ? json('null') : ((length(networkAcls.ipRules) == 0) ? json('null') : networkAcls.ipRules))
 }
 var namespaceAlias_var = (empty(namespaceAlias) ? 'placeholder' : namespaceAlias)
-var diagnosticsMetrics = [
-  {
-    category: 'AllMetrics'
-    timeGrain: null
-    enabled: true
-    retentionPolicy: {
-      enabled: true
-      days: diagnosticLogsRetentionInDays
-    }
-  }
+
+@description('Optional. The name of logs that will be streamed.')
+@allowed([
+  'ArchiveLogs'
+  'OperationalLogs'
+  'KafkaCoordinatorLogs'
+  'KafkaUserErrorLogs'
+  'EventHubVNetConnectionEvent'
+  'CustomerManagedKeyUserLogs'
+  'AutoScaleLogs'
+])
+param logsToEnable array = [
+  'ArchiveLogs'
+  'OperationalLogs'
+  'KafkaCoordinatorLogs'
+  'KafkaUserErrorLogs'
+  'EventHubVNetConnectionEvent'
+  'CustomerManagedKeyUserLogs'
+  'AutoScaleLogs'
 ]
-var diagnosticsLogs = [
-  {
-    category: 'ArchiveLogs'
-    enabled: true
-    retentionPolicy: {
-      days: diagnosticLogsRetentionInDays
-      enabled: true
-    }
-  }
-  {
-    category: 'OperationalLogs'
-    enabled: true
-    retentionPolicy: {
-      days: diagnosticLogsRetentionInDays
-      enabled: true
-    }
-  }
-  {
-    category: 'AutoScaleLogs'
-    enabled: true
-    retentionPolicy: {
-      days: diagnosticLogsRetentionInDays
-      enabled: true
-    }
-  }
-  {
-    category: 'KafkaCoordinatorLogs'
-    enabled: true
-    retentionPolicy: {
-      days: diagnosticLogsRetentionInDays
-      enabled: true
-    }
-  }
-  {
-    category: 'KafkaUserErrorLogs'
-    enabled: true
-    retentionPolicy: {
-      days: diagnosticLogsRetentionInDays
-      enabled: true
-    }
-  }
-  {
-    category: 'EventHubVNetConnectionEvent'
-    enabled: true
-    retentionPolicy: {
-      days: diagnosticLogsRetentionInDays
-      enabled: true
-    }
-  }
-  {
-    category: 'CustomerManagedKeyUserLogs'
-    enabled: true
-    retentionPolicy: {
-      days: diagnosticLogsRetentionInDays
-      enabled: true
-    }
-  }
+
+@description('Optional. The name of metrics that will be streamed.')
+@allowed([
+  'AllMetrics'
+])
+param metricsToEnable array = [
+  'AllMetrics'
 ]
+
+var diagnosticsLogs = [for log in logsToEnable: {
+  category: log
+  enabled: true
+  retentionPolicy: {
+    enabled: true
+    days: diagnosticLogsRetentionInDays
+  }
+}]
+
+var diagnosticsMetrics = [for metric in metricsToEnable: {
+  category: metric
+  timeGrain: null
+  enabled: true
+  retentionPolicy: {
+    enabled: true
+    days: diagnosticLogsRetentionInDays
+  }
+}]
+
 var builtInRoleNames = {
   'Owner': subscriptionResourceId('Microsoft.Authorization/roleDefinitions', '8e3af657-a8ff-443c-a75c-2fe8c4bcb635')
   'Contributor': subscriptionResourceId('Microsoft.Authorization/roleDefinitions', 'b24988ac-6180-42a0-ab88-20f7382dd24c')
@@ -229,7 +208,6 @@ resource eventHubNamespace_lock 'Microsoft.Authorization/locks@2016-09-01' = if 
 
 resource eventHubNamespace_diagnosticSettings 'Microsoft.Insights/diagnosticsettings@2017-05-01-preview' = if ((!empty(diagnosticStorageAccountId)) || (!empty(workspaceId))) {
   name: '${eventHubNamespace.name}-diagnosticSettings'
-  location: location
   properties: {
     storageAccountId: (empty(diagnosticStorageAccountId) ? json('null') : diagnosticStorageAccountId)
     workspaceId: (empty(workspaceId) ? json('null') : workspaceId)
@@ -276,6 +254,5 @@ module eventHubNamespace_rbac './.bicep/nested_rbac.bicep' = [for (roleAssignmen
 output namespace string = eventHubNamespace.name
 output namespaceResourceId string = eventHubNamespace.id
 output namespaceResourceGroup string = resourceGroup().name
-output defaultAuthorizationRuleId string = defaultAuthorizationRuleId
 output namespaceConnectionString string = listkeys(authRuleResourceId, '2017-04-01').primaryConnectionString
 output sharedAccessPolicyPrimaryKey string = listkeys(authRuleResourceId, '2017-04-01').primaryKey

@@ -69,60 +69,48 @@ param eventHubAuthorizationRuleId string = ''
 @description('Optional. Name of the event hub within the namespace to which logs are streamed. Without this, an event hub is created for each log category.')
 param eventHubName string = ''
 
-var diagnosticsMetrics = [
-  {
-    category: 'AllMetrics'
-    timeGrain: null
-    enabled: true
-    retentionPolicy: {
-      enabled: true
-      days: diagnosticLogsRetentionInDays
-    }
-  }
+@description('Optional. The name of logs that will be streamed.')
+@allowed([
+  'AmlComputeClusterEvent'
+  'AmlComputeClusterNodeEvent'
+  'AmlComputeJobEvent'
+  'AmlComputeCpuGpuUtilization'
+  'AmlRunStatusChangedEvent'
+])
+param logsToEnable array = [
+  'AmlComputeClusterEvent'
+  'AmlComputeClusterNodeEvent'
+  'AmlComputeJobEvent'
+  'AmlComputeCpuGpuUtilization'
+  'AmlRunStatusChangedEvent'
 ]
 
-var diagnosticsLogs = [
-  {
-    category: 'AmlComputeClusterEvent'
-    enabled: true
-    retentionPolicy: {
-      enabled: true
-      days: diagnosticLogsRetentionInDays
-    }
-  }
-  {
-    category: 'AmlComputeClusterNodeEvent'
-    enabled: true
-    retentionPolicy: {
-      enabled: true
-      days: diagnosticLogsRetentionInDays
-    }
-  }
-  {
-    category: 'AmlComputeJobEvent'
-    enabled: true
-    retentionPolicy: {
-      enabled: true
-      days: diagnosticLogsRetentionInDays
-    }
-  }
-  {
-    category: 'AmlComputeCpuGpuUtilization'
-    enabled: true
-    retentionPolicy: {
-      enabled: true
-      days: diagnosticLogsRetentionInDays
-    }
-  }
-  {
-    category: 'AmlRunStatusChangedEvent'
-    enabled: true
-    retentionPolicy: {
-      enabled: true
-      days: diagnosticLogsRetentionInDays
-    }
-  }
+@description('Optional. The name of metrics that will be streamed.')
+@allowed([
+  'AllMetrics'
+])
+param metricsToEnable array = [
+  'AllMetrics'
 ]
+
+var diagnosticsLogs = [for log in logsToEnable: {
+  category: log
+  enabled: true
+  retentionPolicy: {
+    enabled: true
+    days: diagnosticLogsRetentionInDays
+  }
+}]
+
+var diagnosticsMetrics = [for metric in metricsToEnable: {
+  category: metric
+  timeGrain: null
+  enabled: true
+  retentionPolicy: {
+    enabled: true
+    days: diagnosticLogsRetentionInDays
+  }
+}]
 
 var builtInRoleNames = {
   'AzureML Metrics Writer (preview)': '/subscriptions/${subscription().subscriptionId}/providers/Microsoft.Authorization/roleDefinitions/635dd51f-9968-44d3-b7fb-6d9a6bd613ae'
