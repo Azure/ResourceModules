@@ -60,7 +60,7 @@ module networkInterface_publicIPConfigurations './nested_networkInterface_public
   }
 }]
 
-resource networkInterface 'Microsoft.Network/networkInterfaces@2020-08-01' = {
+resource networkInterface 'Microsoft.Network/networkInterfaces@2021-02-01' = {
   name: networkInterfaceName
   location: location
   tags: tags

@@ -9,7 +9,7 @@ param forceUpdateTag string = ''
 param settings object = {}
 param protectedSettings object = {}
 
-resource extension 'Microsoft.Compute/virtualMachines/extensions@2019-07-01' = {
+resource extension 'Microsoft.Compute/virtualMachines/extensions@2021-04-01' = {
   name: '${virtualMachineName}/${extensionName}'
   location: location
   properties: {

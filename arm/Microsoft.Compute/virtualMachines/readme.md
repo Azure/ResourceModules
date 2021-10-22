@@ -7,11 +7,11 @@ This module deploys one Virtual Machine with one or multiple nics and optionally
 | Resource Type                                                                         | Api Version        |
 | :------------------------------------------------------------------------------------ | :----------------- |
 | `Microsoft.Authorization/locks`                                                       | 2016-09-01         |
-| `Microsoft.Compute/virtualMachines`                                                   | 2020-06-01         |
-| `Microsoft.Compute/virtualMachines/extensions`                                        | 2019-07-01         |
+| `Microsoft.Compute/virtualMachines`                                                   | 2021-04-01         |
+| `Microsoft.Compute/virtualMachines/extensions`                                        | 2021-04-01         |
 | `Microsoft.Compute/virtualMachines/providers/roleAssignments`                         | 2020-04-01-preview |
 | `Microsoft.Insights/diagnosticSettings`                                               | 2017-05-01-preview |
-| `Microsoft.Network/networkInterfaces`                                                 | 2020-08-01         |
+| `Microsoft.Network/networkInterfaces`                                                 | 2021-02-01         |
 | `Microsoft.Network/networkInterfaces/providers/roleAssignments`                       | 2020-04-01-preview |
 | `Microsoft.Network/publicIPAddresses`                                                 | 2021-02-01         |
 | `Microsoft.Network/publicIPAddresses/providers/roleAssignments`                       | 2020-04-01-preview |

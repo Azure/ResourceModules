@@ -358,7 +358,7 @@ module virtualMachine_nic './.bicep/nested_networkInterface.bicep' = [for (nicCo
   }
 }]
 
-resource virtualMachine 'Microsoft.Compute/virtualMachines@2020-06-01' = {
+resource virtualMachine 'Microsoft.Compute/virtualMachines@2021-04-01' = {
   name: virtualMachineName
   location: location
   identity: identity
