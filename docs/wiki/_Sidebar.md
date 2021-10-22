@@ -1,7 +1,7 @@
 # Wiki content
 
 - [Home](./Home)
-- [GettingStarted](./GettingStarted)
+- [Getting Started](./GettingStarted)
 - [Modules](./Modules)
   - [Design](./ModulesDesign)
   - [Usage](./ModulesUsage)
@@ -11,5 +11,5 @@
 - [Pipelines](./Pipelines)
   - [Design](./PipelineDesign)
   - [Usage](./PipelineUsage)
-- [ContributionGuide](./ContributionGuide)
-- [KnownIssues](./KnownIssues)
+- [Contribution Guide](./ContributionGuide)
+- [Known Issues](./KnownIssues)

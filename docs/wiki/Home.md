@@ -5,7 +5,7 @@ The objective of this repository is to provide a template library that can be re
 This wiki describes the content of this repository, the modules, pipelines, possible options on how to use them and how to contribute to this project.
 
 ### _Navigation_
-- [GettingStarted](./GettingStarted)
+- [Getting Started](./GettingStarted)
   - [General prerequisites](./GettingStarted#General-prerequisites)
   - [Where to start](./GettingStarted#Where-to-start)
 - [Modules](./Modules)
@@ -17,8 +17,8 @@ This wiki describes the content of this repository, the modules, pipelines, poss
 - [Pipelines](./Pipelines)
   - [Design](./PipelineDesign)
   - [Usage](./PipelineUsage)
-- [ContributionGuide](./ContributionGuide)
-- [KnownIssues](./KnownIssues)
+- [Contribution Guide](./ContributionGuide)
+- [Known Issues](./KnownIssues)
 
 ## Reporting Issues and Feedback
 ### Issues and Bugs
