@@ -87,7 +87,7 @@
         //     "value": [
         //         {
         //             "uri": "https://adpsxxazsaweux001.blob.core.windows.net/avdscripts/testscript.ps1",
-        //             "storageAccountId": "/subscriptions/<placeholder>/resourceGroups/dependencies-rg/providers/Microsoft.Storage/storageAccounts/adpsxxazsaweux001"
+        //             "storageAccountId": "/subscriptions/<placeholder>/resourceGroups/validation-rg/providers/Microsoft.Storage/storageAccounts/adpsxxazsaweux001"
         //         }
         //     ]
         // },
