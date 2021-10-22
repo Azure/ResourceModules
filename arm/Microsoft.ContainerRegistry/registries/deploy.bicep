@@ -202,7 +202,7 @@ module registry_rbac './.bicep/nested_rbac.bicep' = [for (roleAssignment, index)
   }
 }]
 
-module name_location_ContainerRegistry_PrivateEndpoints './.bicep/nested_privateEndpoints.bicep' = [for privateEndpoint in privateEndpoints: {
+module registry_privateEndpoints './.bicep/nested_privateEndpoints.bicep' = [for privateEndpoint in privateEndpoints: {
   name: '${uniqueString(deployment().name, privateEndpoint.name)}-privateEndpoint'
   params: {
     privateEndpointResourceId: registry.id
