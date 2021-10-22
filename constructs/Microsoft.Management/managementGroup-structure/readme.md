@@ -64,7 +64,7 @@ Describes the Management groups to be created. Each management group is represen
 | :-             | :-   | :-            | :-              | :-          |
 | `name` | string | | | Mandatory. The ID of the Management group |
 | `parentId` | string | | A MG name | Mandatory. The template will concatenate `/providers/Microsoft.Management/managementGroups/` to create the resource ID of the parent management group the deployed one is child of |
-| `displayName` | string | `name` | | Optional. The display name of the management group. If not specified, the id (name) will be used | 
+| `displayName` | string | `name` | | Optional. The display name of the management group. If not specified, the id (name) will be used |
 | `parentNotManagedInThisTemplate` | bool | `false` | | Optional. `true` if the parent management group is existing and defined elsewhere, `false` if the parent MG is also managed in this template. This parameter is used to define the deployment sequence |
 | `roleAssignments` | array | | | Optional. Array of role assignment objects |
 

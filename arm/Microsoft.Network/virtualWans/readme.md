@@ -1,42 +1,40 @@
-# Virtual Wan
+# Virtual Wan `[Microsoft.Network/virtualWans]`
 
 This template deploys Virtual Wan
 
 
 ## Resource types
 
-|ResourceType|ApiVersion|
-|:--|:--|
-|`Microsoft.Resources/deployments`|2018-02-01|
-|`Microsoft.Network/virtualWans`|2021-05-01|
-|`Microsoft.Network/virtualHubs`|2021-05-01|
-|`Microsoft.Network/vpnSites`|2021-05-01|
-|`Microsoft.Network/vpnGateways`|2021-05-01|
-|`Microsoft.Network/virtualWans/providers/roleAssignments`|2018-09-01-preview|
-|`Microsoft.Authorization/locks` | 2016-09-01 |
+| Resource Type | Api Version |
+| :-- | :-- |
+| `Microsoft.Authorization/locks` | 2016-09-01 |
+| `Microsoft.Network/virtualHubs` | 2021-05-01 |
+| `Microsoft.Network/virtualWans` | 2021-05-01 |
+| `Microsoft.Network/virtualWans/providers/roleAssignments` | 2021-04-01-preview |
+| `Microsoft.Network/vpnGateways` | 2021-05-01 |
+| `Microsoft.Network/vpnSites` | 2021-05-01 |
 
 ## Parameters
 
-| Parameter Name | Type | Default Value | Possible values | Description |
-| :-             | :-   | :-            | :-              | :-          |
-| `location` | string | `[resourceGroup().location]` | | Optional. Location for all resources.
-| `virtualWanSku` | string | Standard |  | Optional. Sku of the Virtual Wan.
-| `hubName` | string | SampleVirtualHub | | Optional. Name of the Virtual Hub. A virtual hub is created inside a virtual wan.
-| `vpnGatewayName` | string | SampleVpnGateway | | Optional. Name of the Vpn Gateway. A vpn gateway is created inside a virtual hub.
-| `vpnSiteName` | string | SampleVpnSite | | Optional. Name of the vpnsite. A vpnsite represents the on-premise vpn device. A public ip address is mandatory for a vpn site creation.
-| `connectionName` | string | SampleVpnsiteVpnGwConnection | | Optional. Name of the vpnconnection. A vpn connection is established between a vpnsite and a vpn gateway.
-| `virtualHubName` | string | SampleVirtualHub | | Name of the Virtual Hub. A virtual hub is created inside a virtual wan. |
-| `virtualWanName` | string |  | Required. Name of the Virtual Wan |
-| `vpnsiteAddressspaceList` | array | [] | | Optional. A list of static routes corresponding to the vpn site. These are configured on the vpn gateway.
-| `vpnsitePublicIPAddress` | string | | | Required. he public IP address of a vpn site.
-| `vpnsiteBgpAsn` | int | | | Required. The bgp asn number of a vpnsite.
-| `vpnsiteBgpPeeringAddress` | string | | | Required. The bgp peer IP address of a vpnsite.
-| `addressPrefix` | string | 192.168.0.0/24 | | Optional. The hub address prefix. This address prefix will be used as the address prefix for the hub vnet
-| `enableBgp` | string | false | | Optional. his needs to be set to true if BGP needs to enabled on the vpn connection.
-| `roleAssignments` | array | [] | Complex structure, see below. | Optional. Array of role assignment objects that contain the 'roleDefinitionIdOrName' and 'principalId' to define RBAC role assignments on this resource. In the roleDefinitionIdOrName attribute, you can provide either the display name of the role definition, or it's fully qualified ID in the following format: '/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11'
-| `tags` | object | {} | Complex structure, see below. | Optional. Tags of the Virtual Wan resource.
-| `cuaId` | string | "" | | Optional. Customer Usage Attribution id (GUID). This GUID must be previously registered.
-| `lock` | string | 'NotSpecified' | 'CanNotDelete', 'NotSpecified', 'ReadOnly' | Optional. Specify the type of lock. |
+| Parameter Name | Type | Default Value | Possible Values | Description |
+| :-- | :-- | :-- | :-- | :-- |
+| `addressPrefix` | string | `192.168.0.0/24` |  | Optional. The hub address prefix. This address prefix will be used as the address prefix for the hub vnet |
+| `connectionName` | string | `SampleVpnsiteVpnGwConnection` |  | Optional. Name of the vpnconnection. A vpn connection is established between a vpnsite and a vpn gateway. |
+| `cuaId` | string |  |  | Optional. Customer Usage Attribution id (GUID). This GUID must be previously registered |
+| `enableBgp` | string | `false` | `[true, false]` | Optional. his needs to be set to true if BGP needs to enabled on the vpn connection. |
+| `location` | string | `[resourceGroup().location]` |  | Optional. Location where all resources will be created. |
+| `lock` | string | `NotSpecified` | `[CanNotDelete, NotSpecified, ReadOnly]` | Optional. Specify the type of lock. |
+| `roleAssignments` | array | `[]` |  | Optional. Array of role assignment objects that contain the 'roleDefinitionIdOrName' and 'principalId' to define RBAC role assignments on this resource. In the roleDefinitionIdOrName attribute, you can provide either the display name of the role definition, or its fully qualified ID in the following format: '/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11' |
+| `tags` | object | `{object}` |  | Optional. Tags of the resource. |
+| `virtualHubName` | string | `SampleVirtualHub` |  | Optional. Name of the Virtual Hub. A virtual hub is created inside a virtual wan. |
+| `virtualWanName` | string |  |  | Required. Name of the Virtual Wan. |
+| `virtualWanSku` | string | `Standard` | `[Standard, Basic]` | Optional. Sku of the Virtual Wan. |
+| `vpnGatewayName` | string | `SampleVpnGateway` |  | Optional. Name of the Vpn Gateway. A vpn gateway is created inside a virtual hub. |
+| `vpnsiteAddressspaceList` | array | `[]` |  | Optional. A list of static routes corresponding to the vpn site. These are configured on the vpn gateway. |
+| `vpnsiteBgpAsn` | int |  |  | Required. The bgp asn number of a vpnsite. |
+| `vpnsiteBgpPeeringAddress` | string |  |  | Required. The bgp peer IP address of a vpnsite. |
+| `vpnSiteName` | string | `SampleVpnSite` |  | Optional. Name of the vpnsite. A vpnsite represents the on-premise vpn device. A public ip address is mandatory for a vpn site creation. |
+| `vpnsitePublicIPAddress` | string |  |  | Required. he public IP address of a vpn site. |
 
 ### Parameter Usage: `roleAssignments`
 
@@ -86,17 +84,16 @@ Tag names and tag values can be provided as needed. A tag can be left without a 
 
 ## Outputs
 
-| Output Name | Type | Description |
-| :-- | :-- | :-- |
-| `virtualWanName` | string | The name of the WAN. |
-| `virtualWanNameResourceGroup` | string | The Resource Group in which the resource is created. |
-| `virtualWanNameResourceId` | string | The Reeosurce ID of the WAN. |
+| Output Name | Type |
+| :-- | :-- |
+| `virtualWanName` | string |
+| `virtualWanNameResourceGroup` | string |
+| `virtualWanNameResourceId` | string |
 
-## Considerations
+## Template references
 
-- Please note that this module is using a customized removal step. Instead of using a global removal step (Modules\ARM\.global\PipelineTemplates\pipeline.jobs.remove.yml), the module has its own, customized removal, located in the module's 'Pipeline' folder: (Modules\ARM\VirtualWan\Pipeline\pipeline.jobs.remove.VirtualWAN.yml)
-
-## Additional resources
-
-- [Microsoft.Network virtualWans template reference](https://docs.microsoft.com/en-us/azure/templates/microsoft.network/2019-09-01/virtualwans)
-- [About Azure Virtual Wan](https://docs.microsoft.com/en-us/azure/virtual-wan/virtual-wan-about)
+- [Locks](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2016-09-01/locks)
+- [Virtualhubs](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Network/2021-05-01/virtualHubs)
+- [Virtualwans](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Network/2021-05-01/virtualWans)
+- [Vpngateways](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Network/2021-05-01/vpnGateways)
+- [Vpnsites](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Network/2021-05-01/vpnSites)

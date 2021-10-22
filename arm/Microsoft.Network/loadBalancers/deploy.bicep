@@ -116,17 +116,24 @@ var probes_var = [for probe in probes: {
   }
 }]
 
-var diagnosticsMetrics = [
-  {
-    category: 'AllMetrics'
-    timeGrain: null
-    enabled: true
-    retentionPolicy: {
-      enabled: true
-      days: diagnosticLogsRetentionInDays
-    }
-  }
+@description('Optional. The name of metrics that will be streamed.')
+@allowed([
+  'AllMetrics'
+])
+param metricsToEnable array = [
+  'AllMetrics'
 ]
+
+var diagnosticsMetrics = [for metric in metricsToEnable: {
+  category: metric
+  timeGrain: null
+  enabled: true
+  retentionPolicy: {
+    enabled: true
+    days: diagnosticLogsRetentionInDays
+  }
+}]
+
 var builtInRoleNames = {
   'Owner': subscriptionResourceId('Microsoft.Authorization/roleDefinitions', '8e3af657-a8ff-443c-a75c-2fe8c4bcb635')
   'Contributor': subscriptionResourceId('Microsoft.Authorization/roleDefinitions', 'b24988ac-6180-42a0-ab88-20f7382dd24c')

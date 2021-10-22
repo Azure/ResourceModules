@@ -154,6 +154,41 @@ param workspaceId string = ''
 @description('Optional. A list of availability zones denoting where the resource needs to come from.')
 param zones array = []
 
+@description('Optional. The name of logs that will be streamed.')
+@allowed([
+  'GatewayLogs'
+])
+param logsToEnable array = [
+  'GatewayLogs'
+]
+
+@description('Optional. The name of metrics that will be streamed.')
+@allowed([
+  'AllMetrics'
+])
+param metricsToEnable array = [
+  'AllMetrics'
+]
+
+var diagnosticsLogs = [for log in logsToEnable: {
+  category: log
+  enabled: true
+  retentionPolicy: {
+    enabled: true
+    days: diagnosticLogsRetentionInDays
+  }
+}]
+
+var diagnosticsMetrics = [for metric in metricsToEnable: {
+  category: metric
+  timeGrain: null
+  enabled: true
+  retentionPolicy: {
+    enabled: true
+    days: diagnosticLogsRetentionInDays
+  }
+}]
+
 var builtInRoleNames = {
   'Owner': subscriptionResourceId('Microsoft.Authorization/roleDefinitions', '8e3af657-a8ff-443c-a75c-2fe8c4bcb635')
   'Contributor': subscriptionResourceId('Microsoft.Authorization/roleDefinitions', 'b24988ac-6180-42a0-ab88-20f7382dd24c')
@@ -172,26 +207,7 @@ var builtInRoleNames = {
   'Resource Policy Contributor': subscriptionResourceId('Microsoft.Authorization/roleDefinitions', '36243c78-bf99-498c-9df9-86d9f8d28608')
   'User Access Administrator': subscriptionResourceId('Microsoft.Authorization/roleDefinitions', '18d7d88d-d35e-4fb5-a5c3-7773c20a72d9')
 }
-var diagnosticsMetrics = [
-  {
-    category: 'AllMetrics'
-    enabled: true
-    retentionPolicy: {
-      days: diagnosticLogsRetentionInDays
-      enabled: true
-    }
-  }
-]
-var diagnosticsLogs = [
-  {
-    category: 'GatewayLogs'
-    enabled: true
-    retentionPolicy: {
-      days: diagnosticLogsRetentionInDays
-      enabled: true
-    }
-  }
-]
+
 var isAadB2C = (identityProviderType == 'aadB2C')
 
 module pid_cuaId './.bicep/nested_cuaId.bicep' = if (!empty(cuaId)) {

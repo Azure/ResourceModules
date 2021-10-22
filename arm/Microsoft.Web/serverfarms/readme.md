@@ -1,42 +1,33 @@
-# AppServicePlan
+# AppServicePlan `[Microsoft.Web/serverfarms]`
 
 This module deploys an App Service Plan.
 
-[![Deploy to Azure](/docs/media/deploytoazure.svg?sanitize=true)](<https://portal.azure.com/#create/Microsoft.Template/uri/https%3A%2F%2Fraw.githubusercontent.com%2FAzure%2FModules%2Fmain%2FAppServicePlan%2Fdeploy.json>)
-
-[![Deploy To Azure US Gov](/docs/media/deploytoazuregov.svg?sanitize=true)](<https://portal.azure.us/#create/Microsoft.Template/uri/https%3A%2F%2Fraw.githubusercontent.com%2FAzure%2FModules%2Fmain%2FAppServicePlan%2Fdeploy.json>)
-
-[![Visualize](/docs/media/visualizebutton.svg?sanitize=true)](<http://armviz.io/#/?load=https%3A%2F%2Fraw.githubusercontent.com%2FAzure%2FModules%2Fmain%2FAppServicePlan%2Fdeploy.json>)
-
-
 ## Resource Types
 
-|Resource Type|Api Version|
-|:--|:--|
-|`Microsoft.Resources/deployments`|2018-02-01|
-|`Microsoft.Web/serverfarms`|2021-02-01|
-|`Microsoft.Authorization/locks`|2016-09-01| 
-|`Microsoft.Web/serverfarms/providers/roleAssignments`|2020-04-01-preview|
-
+| Resource Type | Api Version |
+| :-- | :-- |
+| `Microsoft.Authorization/locks` | 2016-09-01 |
+| `Microsoft.Web/serverfarms` | 2021-02-01 |
+| `Microsoft.Web/serverfarms/providers/roleAssignments` | 2021-04-01-preview |
 
 ## Parameters
 
-| Parameter Name | Type | Description | DefaultValue | Possible values |
+| Parameter Name | Type | Default Value | Possible Values | Description |
 | :-- | :-- | :-- | :-- | :-- |
-| `appServiceEnvironmentId` | string | Optional. The Resource Id of the App Service Environment to use for the App Service Plan. |  |  |
-| `appServicePlanName` | string | Required. The Name of the App Service Plan to deploy. |  |  |
-| `cuaId` | string | Optional. Customer Usage Attribution id (GUID). This GUID must be previously registered |  |  |
-| `location` | string | Optional. Location for all resources. | [resourceGroup().location] |  |
-| `lock` | string | Optional. Specify the type of lock. | 'NotSpecified' | 'CanNotDelete', 'NotSpecified', 'ReadOnly' |
-| `maximumElasticWorkerCount` | int | Optional. Maximum number of total workers allowed for this ElasticScaleEnabled App Service Plan. | 1 |  |
-| `perSiteScaling` | bool | Optional. If true, apps assigned to this App Service plan can be scaled independently. If false, apps assigned to this App Service plan will scale to all instances of the plan. | False |  |
-| `roleAssignments` | array | Optional. Array of role assignment objects that contain the 'roleDefinitionIdOrName' and 'principalId' to define RBAC role assignments on this resource. In the roleDefinitionIdOrName attribute, you can provide either the display name of the role definition, or its fully qualified ID in the following format: '/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11' | System.Object[] |  |
-| `serverOS` | string | Optional. Kind of server OS. | Windows | System.Object[] |
-| `sku` | object | Required. Defines the name, tier, size, family and capacity of the App Service Plan. |  |  |
-| `tags` | object | Optional. Tags of the resource. |  |  |
-| `targetWorkerCount` | int | Optional. Scaling worker count. | 0 |  |
-| `targetWorkerSize` | int | Optional. The instance size of the hosting plan (small, medium, or large). | 0 | System.Object[] |
-| `workerTierName` | string | Optional. Target worker tier assigned to the App Service plan. |  |  |
+| `appServiceEnvironmentId` | string |  |  | Optional. The Resource Id of the App Service Environment to use for the App Service Plan. |
+| `appServicePlanName` | string |  |  | Required. The Name of the App Service Plan to deploy. |
+| `cuaId` | string |  |  | Optional. Customer Usage Attribution id (GUID). This GUID must be previously registered |
+| `location` | string | `[resourceGroup().location]` |  | Optional. Location for all resources. |
+| `lock` | string | `NotSpecified` | `[CanNotDelete, NotSpecified, ReadOnly]` | Optional. Specify the type of lock. |
+| `maximumElasticWorkerCount` | int | `1` |  | Optional. Maximum number of total workers allowed for this ElasticScaleEnabled App Service Plan. |
+| `perSiteScaling` | bool |  |  | Optional. If true, apps assigned to this App Service plan can be scaled independently. If false, apps assigned to this App Service plan will scale to all instances of the plan. |
+| `roleAssignments` | array | `[]` |  | Optional. Array of role assignment objects that contain the 'roleDefinitionIdOrName' and 'principalId' to define RBAC role assignments on this resource. In the roleDefinitionIdOrName attribute, you can provide either the display name of the role definition, or its fully qualified ID in the following format: '/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11' |
+| `serverOS` | string | `Windows` | `[Windows, Linux]` | Optional. Kind of server OS. |
+| `sku` | object |  |  | Required. Defines the name, tier, size, family and capacity of the App Service Plan. |
+| `tags` | object | `{object}` |  | Optional. Tags of the resource. |
+| `targetWorkerCount` | int |  |  | Optional. Scaling worker count. |
+| `targetWorkerSize` | int |  | `[0, 1, 2]` | Optional. The instance size of the hosting plan (small, medium, or large). |
+| `workerTierName` | string |  |  | Optional. Target worker tier assigned to the App Service plan. |
 
 ### Parameter Usage: `sku`
 
@@ -100,18 +91,13 @@ Tag names and tag values can be provided as needed. A tag can be left without a 
 
 ## Outputs
 
-| Output Name | Type | Description |
-| :-- | :-- | :-- |
-| `appServicePlanName` | string | The Name of the App Service Plan that was deployed. |
-| `appServicePlanResourceGroup` | string | The Resource Group the App Service Plan was deployed to. |
-| `appServicePlanResourceId` | string | The Resource Id of the App Service Plan that was deployed. |
+| Output Name | Type |
+| :-- | :-- |
+| `appServicePlanName` | string |
+| `appServicePlanResourceGroup` | string |
+| `appServicePlanResourceId` | string |
 
-## Considerations
+## Template references
 
-*N/A*
-
-## Additional resources
-
-- [Azure App Service plan overview](https://docs.microsoft.com/en-us/azure/app-service/overview-hosting-plans)
-- [Microsoft.Web serverfarms template reference](https://docs.microsoft.com/en-us/azure/templates/microsoft.web/2019-08-01/serverfarms)
-- [Use tags to organize your Azure resources](https://docs.microsoft.com/en-us/azure/azure-resource-manager/resource-group-using-tags)
+- [Locks](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2016-09-01/locks)
+- [Serverfarms](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Web/2021-02-01/serverfarms)

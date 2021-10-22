@@ -50,43 +50,45 @@ param cuaId string = ''
 @description('Optional. Tags of the resource.')
 param tags object = {}
 
-var diagnosticsMetrics = [
-  {
-    category: 'AllMetrics'
-    timeGrain: null
-    enabled: true
-    retentionPolicy: {
-      enabled: true
-      days: diagnosticLogsRetentionInDays
-    }
-  }
+@description('Optional. The name of logs that will be streamed.')
+@allowed([
+  'DDoSProtectionNotifications'
+  'DDoSMitigationFlowLogs'
+  'DDoSMitigationReports'
+])
+param logsToEnable array = [
+  'DDoSProtectionNotifications'
+  'DDoSMitigationFlowLogs'
+  'DDoSMitigationReports'
 ]
-var diagnosticsLogs = [
-  {
-    category: 'DDoSProtectionNotifications'
-    enabled: true
-    retentionPolicy: {
-      enabled: true
-      days: diagnosticLogsRetentionInDays
-    }
-  }
-  {
-    category: 'DDoSMitigationFlowLogs'
-    enabled: true
-    retentionPolicy: {
-      enabled: true
-      days: diagnosticLogsRetentionInDays
-    }
-  }
-  {
-    category: 'DDoSMitigationReports'
-    enabled: true
-    retentionPolicy: {
-      enabled: true
-      days: diagnosticLogsRetentionInDays
-    }
-  }
+
+@description('Optional. The name of metrics that will be streamed.')
+@allowed([
+  'AllMetrics'
+])
+param metricsToEnable array = [
+  'AllMetrics'
 ]
+
+var diagnosticsLogs = [for log in logsToEnable: {
+  category: log
+  enabled: true
+  retentionPolicy: {
+    enabled: true
+    days: diagnosticLogsRetentionInDays
+  }
+}]
+
+var diagnosticsMetrics = [for metric in metricsToEnable: {
+  category: metric
+  timeGrain: null
+  enabled: true
+  retentionPolicy: {
+    enabled: true
+    days: diagnosticLogsRetentionInDays
+  }
+}]
+
 var publicIPPrefix = {
   id: publicIPPrefixId
 }

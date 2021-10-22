@@ -76,7 +76,43 @@ param cuaId string = ''
 @description('Required. Resource Group Name of the network watcher in whcih the NSG flow log would be created.')
 param networkwatcherResourceGroup string = 'NetworkWatcherRG'
 
-var emptyArray = []
+@description('Optional. The name of logs that will be streamed.')
+@allowed([
+  'NetworkSecurityGroupEvent'
+  'NetworkSecurityGroupRuleCounter'
+])
+param logsToEnable array = [
+  'NetworkSecurityGroupEvent'
+  'NetworkSecurityGroupRuleCounter'
+]
+
+@description('Optional. The name of metrics that will be streamed.')
+@allowed([
+  'AllMetrics'
+])
+param metricsToEnable array = [
+  'AllMetrics'
+]
+
+var diagnosticsLogs = [for log in logsToEnable: {
+  category: log
+  enabled: true
+  retentionPolicy: {
+    enabled: true
+    days: diagnosticLogsRetentionInDays
+  }
+}]
+
+var diagnosticsMetrics = [for metric in metricsToEnable: {
+  category: metric
+  timeGrain: null
+  enabled: true
+  retentionPolicy: {
+    enabled: true
+    days: diagnosticLogsRetentionInDays
+  }
+}]
+
 var nsgResourceGroup = resourceGroup().name
 var flowLogName_var = ((!empty(flowLogName)) ? '${networkWatcherName}/${flowLogName}' : 'dummy/dummy')
 var flowAnalyticsConfig = {
@@ -86,25 +122,7 @@ var flowAnalyticsConfig = {
     trafficAnalyticsInterval: flowLogIntervalInMinutes
   }
 }
-var diagnosticsMetrics = []
-var diagnosticsLogs = [
-  {
-    category: 'NetworkSecurityGroupEvent'
-    enabled: true
-    retentionPolicy: {
-      days: diagnosticLogsRetentionInDays
-      enabled: true
-    }
-  }
-  {
-    category: 'NetworkSecurityGroupRuleCounter'
-    enabled: true
-    retentionPolicy: {
-      days: diagnosticLogsRetentionInDays
-      enabled: true
-    }
-  }
-]
+
 var builtInRoleNames = {
   'Owner': subscriptionResourceId('Microsoft.Authorization/roleDefinitions', '8e3af657-a8ff-443c-a75c-2fe8c4bcb635')
   'Contributor': subscriptionResourceId('Microsoft.Authorization/roleDefinitions', 'b24988ac-6180-42a0-ab88-20f7382dd24c')
@@ -152,8 +170,8 @@ resource networkSecurityGroup 'Microsoft.Network/networkSecurityGroups@2021-02-0
         destinationPortRanges: (contains(nsgSecurityRule.properties, 'destinationPortRanges') ? nsgSecurityRule.properties.destinationPortRanges : json('null'))
         sourceAddressPrefixes: (contains(nsgSecurityRule.properties, 'sourceAddressPrefixes') ? nsgSecurityRule.properties.sourceAddressPrefixes : json('null'))
         destinationAddressPrefixes: (contains(nsgSecurityRule.properties, 'destinationAddressPrefixes') ? nsgSecurityRule.properties.destinationAddressPrefixes : json('null'))
-        sourceApplicationSecurityGroups: ((contains(nsgSecurityRule.properties, 'sourceApplicationSecurityGroupIds') && (!empty(nsgSecurityRule.properties.sourceApplicationSecurityGroupIds))) ? concat(emptyArray, array(json('{"id": "${nsgSecurityRule.properties.sourceApplicationSecurityGroupIds[0]}", "location": "${location}"}'))) : json('null'))
-        destinationApplicationSecurityGroups: ((contains(nsgSecurityRule.properties, 'destinationApplicationSecurityGroupIds') && (!empty(nsgSecurityRule.properties.destinationApplicationSecurityGroupIds))) ? concat(emptyArray, array(json('{"id": "${nsgSecurityRule.properties.destinationApplicationSecurityGroupIds[0]}", "location": "${location}"}'))) : json('null'))
+        sourceApplicationSecurityGroups: ((contains(nsgSecurityRule.properties, 'sourceApplicationSecurityGroupIds') && (!empty(nsgSecurityRule.properties.sourceApplicationSecurityGroupIds))) ? concat([], array(json('{"id": "${nsgSecurityRule.properties.sourceApplicationSecurityGroupIds[0]}", "location": "${location}"}'))) : json('null'))
+        destinationApplicationSecurityGroups: ((contains(nsgSecurityRule.properties, 'destinationApplicationSecurityGroupIds') && (!empty(nsgSecurityRule.properties.destinationApplicationSecurityGroupIds))) ? concat([], array(json('{"id": "${nsgSecurityRule.properties.destinationApplicationSecurityGroupIds[0]}", "location": "${location}"}'))) : json('null'))
       }
     }]
   }

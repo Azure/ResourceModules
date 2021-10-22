@@ -1,3 +1,5 @@
+﻿#region Helper functions
+
 <#
 .SYNOPSIS
 Update the given ReadMe file with the latest module table
@@ -9,24 +11,24 @@ Note that the ReadMe file should have the following lines right before & after t
 - '<!-- ModuleTableStartMarker -->'
 - '<!-- ModuleTableEndMarker -->'
 
-.PARAMETER filePath
+.PARAMETER FilePath
 Mandatory. The path to the ReadMe file to update
 
-.PARAMETER modulesPath
+.PARAMETER ModulesPath
 Mandatory. The path to the modules folder to process
 
-.PARAMETER repositoryName
+.PARAMETER RepositoryName
 Mandatory. The name of the repository the modules are in (required to generate the correct links)
 
-.PARAMETER organization
-Mandatory. The name of the organization the modules are in (required to generate the correct links)
+.PARAMETER Organization
+Mandatory. The name of the Organization the modules are in (required to generate the correct links)
 
-.PARAMETER columnsInOrder
+.PARAMETER ColumnsInOrder
 Mandatory. The set of columns to add to the table in the order you expect them in the table.
 Available are 'Name', 'ProviderNamespace', 'ResourceType', 'TemplateType', 'Deploy' & 'Status'
 
 .EXAMPLE
-Set-GitHubReadMeModuleTable -filePath 'C:\readme.md' -modulesPath 'C:\arm' -repositoryName 'ResourceModules' -organization 'Azure' -columnsInOrder @('Name','Status')
+Set-GitHubReadMeModuleTable -FilePath 'C:\readme.md' -ModulesPath 'C:\arm' -RepositoryName 'ResourceModules' -Organization 'Azure' -ColumnsInOrder @('Name','Status')
 
 Update the defined table section in the 'readme.md' file with a table that has the columns 'Name' & 'Status'
 #>
@@ -35,52 +37,49 @@ function Set-GitHubReadMeModuleTable {
     [CmdletBinding(SupportsShouldProcess)]
     param (
         [Parameter(Mandatory)]
-        [string] $filePath,
+        [string] $FilePath,
 
         [Parameter(Mandatory)]
-        [string] $modulesPath,
+        [string] $ModulesPath,
 
         [Parameter(Mandatory)]
-        [string] $repositoryName,
+        [string] $RepositoryName,
 
         [Parameter(Mandatory)]
-        [string] $organization,
+        [string] $Organization,
 
         [Parameter(Mandatory)]
         [ValidateSet('Name', 'ProviderNamespace', 'ResourceType', 'TemplateType', 'Deploy', 'Status')]
-        [string[]] $columnsInOrder,
+        [string[]] $ColumnsInOrder,
 
         [Parameter(Mandatory = $false)]
-        [string] $sortByColumn = 'ProviderNamespace'
+        [string] $SortByColumn = 'ProviderNamespace'
     )
 
-    # Load functions
-    . (Join-Path $PSScriptRoot 'Get-ModulesAsMarkdownTable.ps1')
+    # Load external functions
+    . (Join-Path $PSScriptRoot 'helper/Get-ModulesAsMarkdownTable.ps1')
+    . (Join-Path $PSScriptRoot 'helper/Merge-FileWithNewContent.ps1')
 
     # Logic
-    $contentArray = Get-Content -Path $filePath
-    $startIndex = [array]::IndexOf($contentArray, '<!-- ModuleTableStartMarker -->')
-    $endIndex = [array]::IndexOf($contentArray, '<!-- ModuleTableEndMarker -->')
-
-    $startContent = $contentArray[0..$startIndex]
-    $endContent = $contentArray[$endIndex..$contentArray.Count]
+    $contentArray = Get-Content -Path $FilePath
 
     $tableStringInputObject = @{
-        Path           = $modulesPath
-        RepositoryName = $repositoryName
-        Organization   = $organization
-        ColumnsInOrder = $columnsInOrder
-        sortByColumn   = $sortByColumn
+        Path           = $ModulesPath
+        RepositoryName = $RepositoryName
+        Organization   = $Organization
+        ColumnsInOrder = $ColumnsInOrder
+        SortByColumn   = $SortByColumn
     }
     $tableString = Get-ModulesAsMarkdownTable @tableStringInputObject
 
-    $newContent = (($startContent + $tableString + $endContent) | Out-String).TrimEnd()
+    $newContent = Merge-FileWithNewContent -oldContent $contentArray -newContent $tableString -sectionStartIdentifier '# Available Resource Modules'
 
-    if ($PSCmdlet.ShouldProcess("File in path [$filePath]", 'Overwrite')) {
-        Set-Content -Path $filePath -Value $newContent -Force -NoNewline
-        Write-Verbose "File [$filePath] updated" -Verbose
-        Write-Verbose 'New content:' -Verbose
-        Write-Verbose '============' -Verbose
-        Write-Verbose ($newContent | Out-String) -Verbose
+    Write-Verbose 'New content:'
+    Write-Verbose '============'
+    Write-Verbose ($newContent | Out-String)
+
+    if ($PSCmdlet.ShouldProcess("File in path [$FilePath]", 'Overwrite')) {
+        Set-Content -Path $FilePath -Value $newContent -Force
+        Write-Verbose "File [$FilePath] updated" -Verbose
     }
 }

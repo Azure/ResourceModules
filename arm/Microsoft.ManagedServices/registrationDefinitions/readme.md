@@ -1,4 +1,4 @@
-# registrationDefinitions
+# registrationDefinitions `[Microsoft.ManagedServices/registrationDefinitions]`
 
 This module deploys `registrationDefinitions` and `registrationAssignments` (often refered to as 'Lighthouse' or 'resource delegation')
 on subscription or resource group scopes. This type of delegation is very similar to role assignments but here the principal that is
@@ -8,21 +8,20 @@ remote/managing tenant.
 
 ## Resource types
 
-| Resource Type                                       | ApiVersion |
-| :-------------------------------------------------- | :--------- |
-| `Microsoft.ManagedServices/registrationDefinitions` | 2019-09-01 |
+| Resource Type | Api Version |
+| :-- | :-- |
 | `Microsoft.ManagedServices/registrationAssignments` | 2019-09-01 |
-| `Microsoft.Resources/deployments`                   | 2020-06-01 |
+| `Microsoft.ManagedServices/registrationDefinitions` | 2019-09-01 |
 
 ## Parameters
 
-| Parameter Name               | Type   | Default Value | Possible values               | Description                                                                                                                                                                                                                                                                                                             |
-| :--------------------------- | :----- | :------------ | :---------------------------- | :---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `registrationDefinitionName` | string |               |                               | Required. Specify a unique name for your offer/registration. i.e '\<Managing Tenant\> - \<Remote Tenant\> - \<ResourceName\>'                                                                                                                                                                                           |
-| `registrationDescription`    | string |               |                               | Required. Description of the offer/registration. i.e. 'Managed by \<Managing Org Name\>'                                                                                                                                                                                                                                |
-| `managedByTenantId`          | string |               | GUID                          | Required. Specify the tenant ID of the tenant which homes the principals you are delegating permissions to.                                                                                                                                                                                                             |
-| `authorizations`             | array  |               | Complex structure, see below. | Required. Specify an array of objects, containing object of Azure Active Directory principalId, a Azure roleDefinitionId, and an optional principalIdDisplayName. The roleDefinition specified is granted to the principalId in the provider's Active Directory and the principalIdDisplayName is visible to customers. |
-| `resourceGroupName`          | string | ""            |                               | Optional. Specify the name of the Resource Group to delegate access to. If not provided, delegation will be done on the targeted subscription.                                                                                                                                                                          |
+| Parameter Name | Type | Default Value | Possible Values | Description |
+| :-- | :-- | :-- | :-- | :-- |
+| `authorizations` | array |  |  | Required. Specify an array of objects, containing object of Azure Active Directory principalId, a Azure roleDefinitionId, and an optional principalIdDisplayName. The roleDefinition specified is granted to the principalId in the provider's Active Directory and the principalIdDisplayName is visible to customers. |
+| `managedByTenantId` | string |  |  | Required. Specify the tenant ID of the tenant which homes the principals you are delegating permissions to. |
+| `registrationDefinitionName` | string |  |  | Required. Specify a unique name for your offer/registration. i.e '<Managing Tenant> - <Remote Tenant> - <ResourceName>' |
+| `registrationDescription` | string |  |  | Required. Description of the offer/registration. i.e. 'Managed by <Managing Org Name>' |
+| `resourceGroupName` | string |  |  | Optional. Specify the name of the Resource Group to delegate access to. If not provided, delegation will be done on the targeted subscription. |
 
 ### Parameter Usage: `authorizations`
 
@@ -58,11 +57,12 @@ remote/managing tenant.
 
 ## Outputs
 
-| Output Name                  | Type   | Description                         |
-| :--------------------------- | :----- | :---------------------------------- |
-| `registrationDefinitionName` | string | The name of the offer/registration. |
-| `registrationDefinitionId`   | string | The ID of the offer/registration.   |
-| `registrationAssignmentId`   | string | The ID of the resource delegation.  |
+| Output Name | Type |
+| :-- | :-- |
+| `registrationAssignmentId` | string |
+| `registrationDefinitionId` | string |
+| `registrationDefinitionName` | string |
+
 
 ## Considerations
 
@@ -116,9 +116,7 @@ There are a couple of limitations that you should be aware of with Lighthouse:
 - [Current limitations - Cross-tenant management experiences | Microsoft Docs](https://docs.microsoft.com/en-us/azure/lighthouse/concepts/cross-tenant-management-experience#current-limitations)
 - [Troubleshooting - Onboard a customer to Azure Lighthouse | Microsoft Docs](https://docs.microsoft.com/en-us/azure/lighthouse/how-to/onboard-customer#troubleshooting)
 
-## Additional resources
+## Template references
 
-- [What is Azure Lighthouse? | Microsoft Docs](https://docs.microsoft.com/en-us/azure/lighthouse/overview)
-- [Azure delegated resource management | Microsoft Docs](https://docs.microsoft.com/en-us/azure/lighthouse/concepts/azure-delegated-resource-management)
-- [Cross-tenant management experiences | Microsoft Docs](https://docs.microsoft.com/en-us/azure/lighthouse/concepts/cross-tenant-management-experience)
-- [Onboard a customer to Azure Lighthouse | Microsoft Docs](https://docs.microsoft.com/en-us/azure/lighthouse/how-to/onboard-customer)
+- [Registrationassignments](https://docs.microsoft.com/en-us/azure/templates/Microsoft.ManagedServices/2019-09-01/registrationAssignments)
+- [Registrationdefinitions](https://docs.microsoft.com/en-us/azure/templates/Microsoft.ManagedServices/2019-09-01/registrationDefinitions)
