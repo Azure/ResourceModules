@@ -6,9 +6,8 @@ This wiki describes the content of this repository, the modules, pipelines, poss
 
 ### _Navigation_
 - [GettingStarted](./GettingStarted)
-  - [What is a Resource Module?](./GettingStarted#What-is-a-Resource-Module?)
-  - [General prerequisites](./GettingStarted#Prerequisites)
-  - [GitHub-specific prerequisites](./GettingStarted#GitHub-specific-prerequisites)
+  - [General prerequisites](./GettingStarted#General-prerequisites)
+  - [Where to start](./GettingStarted#Where-to-start)
 - [Modules](./Modules)
   - [Design](./ModulesDesign)
   - [Usage](./ModulesUsage)

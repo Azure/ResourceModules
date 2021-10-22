@@ -44,12 +44,13 @@ To ensure you can use all the content in this repostiroy you'd want to install
 Depending on how you want to use this repositories content you may go down different paths to get started.
 
 
-
 ## **How-to**: Use it as a basis to set up your own inner-source project
+
+The repository is set up in a way that you can essentially create your own private 1:1 copy and would be able to re-use the same concepts and functionality in your own environment like GitHub. This set up is a 2-step process. First, you have to either 'Form' the repository to you own GitHub account, or move it to your desired location manually. And second you have to configure the environment, that is, you have to update all references to the original source respository to your own and also set up several secrets to point to the Azure environment of your choice.
 
 ### Fork the repository
 
-Alternativly, if you want to have a linked clone of the source repository in your own GitHub account, you can fork the repository instead. Still is also the preferred method to contribute back to this repository.
+If you want to have a linked clone of the source repository in your own GitHub account, you can fork the repository instead. Still is also the preferred method to contribute back to this repository.
 
 To fork the repostory you can simply click on the `Fork` button on the top right of the repository website. You can then select the Account you want to fork the repository to and are good to go.
 
@@ -57,8 +58,10 @@ To fork the repostory you can simply click on the `Fork` button on the top right
 >
 > ***Note***: To also re-use the pipelines you may need to account for additional requirements as described below.
 
+Once forked, make sure you update all references to the original repository like for example any link that points to the original location.
+
 ### GitHub-specific prerequisites
-In case you want to not only leverage the module templates but actually re-use the implemented pipelines & testing framework as well you need to set up a few additional secrets in your GitHub environment.
+In case you want to not only leverage the module templates but actually re-use the implemented pipelines & testing framework as well, you need to set up a few additional secrets in your GitHub environment:
 
 | Secret Name | Example | Description |
 | - | - | - |
@@ -69,15 +72,16 @@ In case you want to not only leverage the module templates but actually re-use t
 | `PLATFORM_REPO_UPDATE_PAT` | `<placeholder>` | A PAT with enough permissions assigned to it to push into the main branch. This PAT is leveraged by pipelines that automatically generate ReadMe files to keep them up to date |
 
 
-
 ## **How-to**: Use it as a local reference to build bicep templates
+
+Instead of re-using the repository as-is you may opt to just save yourself a copy of the code. This may make sense if you want to havest the code for a larger setup that you assemble locally, or you may just want to keep it for reference. To do so, you essentially just have to download the repository like presented in the following:
 
 ### Clone / download the repository
 To save a local copy of the repository you can either clone the repository or download it as a `.zip` file.
 A clone is a direct reference the the source repository which enables you to pull updates as they happen in the source repostory. To achive this you have to have `Git` installed and run the command
 
 ```PowerShell
-    git clone 'https://github.com/Azure/ResourceModules.git'`
+  git clone 'https://github.com/Azure/ResourceModules.git'`
 ```
 
 from the command line of your choice.
@@ -87,10 +91,9 @@ If you instead just want to have a copy of the repository's content you can inst
  <img src="./media/cloneDownloadRepo.JPG" alt="How to download repository" height="266" width="295">
 
 
-
 ## **How-to**: Use it as remote reference to reference the bicep templates
 
-Last but not least, instead of fetching your own copy of the repository you can also choose to just reference the content of the repository directly. This works as the repository is public and hence all file Urls are available without any sort of authentication.
+Last but not least, instead of fetching your own copy of the repository you can also choose to reference the content of the repository directly. This works as the repository is public and hence all file urls are available without any sort of authentication.
 
 > ***Note***: In cases where you want to assemble your own template that references other modules you should not rely on direct links as they referencing files may receive breaking changes. Instead you should rely on published versions instead.
 
