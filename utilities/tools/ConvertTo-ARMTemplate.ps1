@@ -18,7 +18,7 @@ Mandatory. The path to the root of the repo.
 Optional. Perform cleanup of bicep files after conversion.
 
 .EXAMPLE
-. .\tools\ConvertTo-ARMTemplate.ps1 -Path . -CleanUp
+. .\utilities\tools\ConvertTo-ARMTemplate.ps1 -Path . -CleanUp -Verbose
 
 Converts bicep modules to json based ARM template, cleaning up all bicep files after conversion.
 #>
@@ -38,6 +38,7 @@ $armFolderPath = Join-Path -Path $rootPath -ChildPath 'arm'
 $bicepFiles = Get-ChildItem -Path $armFolderPath -Filter deploy.bicep -Recurse
 Write-Verbose "Convert bicep to json - $($bicepFiles.count) files"
 foreach ($bicepFile in $bicepFiles) {
+    $bicepFile = Get-Item 'C:\Repos\Azure\ResourceModules\arm\Microsoft.Web\hostingEnvironments\deploy.bicep'
     $bicepFilePath = $bicepFile.FullName
     Write-Verbose "$bicepFilePath - Processing"
     $moduleFolderPath = $bicepFile.Directory.FullName
