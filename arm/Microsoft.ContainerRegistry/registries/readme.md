@@ -104,12 +104,12 @@ Tag names and tag values can be provided as needed. A tag can be left without a 
 ```
 
 ## Outputs
-| Output Name | Type |
-| :-- | :-- |
-| `acrLoginServer` | string |
-| `acrName` | string |
-| `acrResourceGroup` | string |
-| `acrResourceId` | string |
+| Output Name | Type | Description
+| :-- | :-- | :-- |
+| `acrLoginServer` | string | The reference to the Azure Container Registry. |
+| `acrName` | string | The Name of the Azure Container Registry. |
+| `acrResourceGroup` | string | The Name of the Azure Container Registry. |
+| `acrResourceId` | string | The Resource Id of the Azure Container Registry. |
 
 ## Template references
 - [Locks](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2016-09-01/locks)

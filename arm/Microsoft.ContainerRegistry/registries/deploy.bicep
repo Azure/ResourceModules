@@ -143,7 +143,7 @@ module pid_cuaId './.bicep/nested_cuaId.bicep' = if (!empty(cuaId)) {
   params: {}
 }
 
-resource resgistry 'Microsoft.ContainerRegistry/registries@2020-11-01-preview' = {
+resource registry 'Microsoft.ContainerRegistry/registries@2020-11-01-preview' = {
   name: cleanAcrName_var
   location: location
   tags: tags
@@ -172,16 +172,16 @@ resource resgistry 'Microsoft.ContainerRegistry/registries@2020-11-01-preview' =
 }
 
 resource resgistry_lock 'Microsoft.Authorization/locks@2016-09-01' = if (lock != 'NotSpecified') {
-  name: '${resgistry.name}-${lock}-lock'
+  name: '${registry.name}-${lock}-lock'
   properties: {
     level: lock
     notes: (lock == 'CanNotDelete') ? 'Cannot delete resource or child resources.' : 'Cannot modify the resource or child resources.'
   }
-  scope: resgistry
+  scope: registry
 }
 
 resource resgistry_diagnosticSettingName 'Microsoft.Insights/diagnosticsettings@2017-05-01-preview' = if ((!empty(diagnosticStorageAccountId)) || (!empty(workspaceId)) || (!empty(eventHubAuthorizationRuleId)) || (!empty(eventHubName))) {
-  name: '${resgistry.name}-diagnosticSettings'
+  name: '${registry.name}-diagnosticSettings'
   properties: {
     storageAccountId: (empty(diagnosticStorageAccountId) ? json('null') : diagnosticStorageAccountId)
     workspaceId: (empty(workspaceId) ? json('null') : workspaceId)
@@ -190,7 +190,7 @@ resource resgistry_diagnosticSettingName 'Microsoft.Insights/diagnosticsettings@
     metrics: ((empty(diagnosticStorageAccountId) && empty(workspaceId) && empty(eventHubAuthorizationRuleId) && empty(eventHubName)) ? json('null') : diagnosticsMetrics)
     logs: ((empty(diagnosticStorageAccountId) && empty(workspaceId) && empty(eventHubAuthorizationRuleId) && empty(eventHubName)) ? json('null') : diagnosticsLogs)
   }
-  scope: resgistry
+  scope: registry
 }
 
 module cognitiveServices_rbac './.bicep/nested_rbac.bicep' = [for (roleAssignment, index) in roleAssignments: {
@@ -198,21 +198,25 @@ module cognitiveServices_rbac './.bicep/nested_rbac.bicep' = [for (roleAssignmen
   params: {
     roleAssignmentObj: roleAssignment
     builtInRoleNames: builtInRoleNames
-    resourceName: resgistry.name
+    resourceName: registry.name
   }
 }]
 
 module name_location_ContainerRegistry_PrivateEndpoints './.bicep/nested_privateEndpoints.bicep' = [for privateEndpoint in privateEndpoints: {
   name: '${uniqueString(deployment().name, privateEndpoint.name)}-privateEndpoint'
   params: {
-    privateEndpointResourceId: resgistry.id
+    privateEndpointResourceId: registry.id
     privateEndpointVnetLocation: (empty(privateEndpoints) ? 'dummy' : reference(split(privateEndpoint.subnetResourceId, '/subnets/')[0], '2020-06-01', 'Full').location)
-    privateEndpoint: privateEndpoint
+    privateEndpointObj: privateEndpoint
     tags: tags
   }
 }]
 
-output acrName string = resgistry.name
-output acrLoginServer string = reference(resgistry.id, '2019-05-01').loginServer
+@description('The Name of the Azure Container Registry.')
+output acrName string = registry.name
+@description('The reference to the Azure Container Registry.')
+output acrLoginServer string = reference(registry.id, '2019-05-01').loginServer
+@description('The Name of the Azure Container Registry.')
 output acrResourceGroup string = resourceGroup().name
-output acrResourceId string = resgistry.id
+@description('The Resource Id of the Azure Container Registry.')
+output acrResourceId string = registry.id
