@@ -15,8 +15,8 @@
                 "contactinfo": "someone@company.com"
             }
         },
-        "lockForDeletion": {
-            "value": false
+        "lock": {
+            "value": "CanNotDelete"
         },
         "addOnFeatures": {
             "value": []

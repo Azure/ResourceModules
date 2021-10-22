@@ -8,8 +8,13 @@ param location string = resourceGroup().location
 @description('Optional. Tags of the resource.')
 param tags object = {}
 
-@description('Optional. Switch to lock storage from deletion.')
-param lockForDeletion bool = false
+@allowed([
+  'CanNotDelete'
+  'NotSpecified'
+  'ReadOnly'
+])
+@description('Optional. Specify the type of lock.')
+param lock string = 'NotSpecified'
 
 @description('Optional. Customer Usage Attribution id (GUID). This GUID must be previously registered')
 param cuaId string = ''
@@ -280,11 +285,9 @@ resource serviceFabricCluster 'Microsoft.ServiceFabric/clusters@2021-06-01' = {
   tags: tags
   properties: {
     addOnFeatures: addOnFeatures
-
     applicationTypeVersionsCleanupPolicy: {
       maxUnusedVersionsToKeep: maxUnusedVersionsToKeep
     }
-
     azureActiveDirectory: (!empty(azureActiveDirectory) ? azureActiveDirectory_var : json('null'))
     certificate: (!empty(certificate) ? certificate_var : json('null'))
     certificateCommonNames: (!empty(certificateCommonNames) ? certificateCommonNames_var : json('null'))
@@ -314,11 +317,11 @@ resource serviceFabricCluster 'Microsoft.ServiceFabric/clusters@2021-06-01' = {
 }
 
 // Service Fabric cluster resource lock
-resource serviceFabricCluster_lock 'Microsoft.Authorization/locks@2016-09-01' = if (lockForDeletion) {
-  name: '${serviceFabricCluster.name}-doNotDelete'
+resource serviceFabricCluster_lock 'Microsoft.Authorization/locks@2016-09-01' = if (lock != 'NotSpecified') {
+  name: '${serviceFabricCluster.name}-${lock}-lock'
   properties: {
-    level: 'CanNotDelete'
-    notes: 'Do not delete!'
+    level: lock
+    notes: (lock == 'CanNotDelete') ? 'Cannot delete resource or child resources.' : 'Cannot modify the resource or child resources.'
   }
   scope: serviceFabricCluster
 }
@@ -334,7 +337,7 @@ module serviceFabricCluster_rbac './.bicep/nested_rbac.bicep' = [for (roleAssign
 }]
 
 // Service Fabric cluster applications
-resource serviceFabricClusterApplication_resource 'Microsoft.ServiceFabric/clusters/applications@2021-06-01' = [for application in serviceFabricClusterApplications: if (!empty(serviceFabricClusterApplications)) {
+resource serviceFabricCluster_applications 'Microsoft.ServiceFabric/clusters/applications@2021-06-01' = [for application in serviceFabricClusterApplications: {
   name: application.name
   location: location
   tags: tags
@@ -353,7 +356,7 @@ resource serviceFabricClusterApplication_resource 'Microsoft.ServiceFabric/clust
 }]
 
 // Service Fabric cluster applications services
-module serviceFabricClusterApplications_services '.bicep/nested_applicationsServices.bicep' = [for (applicationsService, index) in serviceFabricApplicationsServices: {
+module serviceFabricCluster_applicationServices '.bicep/nested_applicationsServices.bicep' = [for (applicationsService, index) in serviceFabricApplicationsServices: {
   name: '${uniqueString(deployment().name, location)}-ServiceFabricCluster-ApplicationsService-${index}'
   params: {
     name: applicationsService.name
@@ -364,7 +367,7 @@ module serviceFabricClusterApplications_services '.bicep/nested_applicationsServ
 }]
 
 // Service Fabric cluster application types
-resource serviceFabricClusterApplicationTypes_resource 'Microsoft.ServiceFabric/clusters/applicationTypes@2021-06-01' = [for applicationType in serviceFabricApplicationTypes: if (!empty(serviceFabricApplicationTypes)) {
+resource serviceFabricCluster_applicationTypes 'Microsoft.ServiceFabric/clusters/applicationTypes@2021-06-01' = [for applicationType in serviceFabricApplicationTypes: {
   name: applicationType.name
   location: location
   tags: tags
@@ -372,7 +375,7 @@ resource serviceFabricClusterApplicationTypes_resource 'Microsoft.ServiceFabric/
 }]
 
 // Service Fabric cluster application types versions
-module serviceFabricClusterApplicationTypes_versions '.bicep/nested_applicationTypesVersions.bicep' = [for (applicationTypesVersion, index) in serviceFabricApplicationTypesVersions: if (!empty(serviceFabricApplicationTypesVersions)) {
+module serviceFabricCluster_applicationTypeVersions '.bicep/nested_applicationTypesVersions.bicep' = [for (applicationTypesVersion, index) in serviceFabricApplicationTypesVersions: {
   name: '${uniqueString(deployment().name, location)}-ServiceFabricCluster-ApplicationTypesVersion-${index}'
   params: {
     name: applicationTypesVersion.name

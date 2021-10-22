@@ -3,7 +3,7 @@ param location string
 param tags object
 param properties object
 
-resource serviceFabricClusterApplicationsServices_resource 'Microsoft.ServiceFabric/clusters/applications/services@2021-06-01' = {
+resource service 'Microsoft.ServiceFabric/clusters/applications/services@2021-06-01' = {
   name: name
   location: location
   tags: tags
@@ -11,4 +11,4 @@ resource serviceFabricClusterApplicationsServices_resource 'Microsoft.ServiceFab
 }
 
 // Output
-output serviceFabricClusterApplicationsServicesResourceId string = serviceFabricClusterApplicationsServices_resource.id
+output serviceFabricClusterApplicationsServicesResourceId string = service.id
