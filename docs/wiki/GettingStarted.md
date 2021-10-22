@@ -4,9 +4,9 @@ This section will give on an overview on how to get started using this repositor
 ### _Navigation_
 - [General prerequisites](#General-prerequisites)
 - [Where to start](#Where-to-start)
-  - [**How-to**: Use it as a basis to set up your own inner-source project](#How-to-Use-it-as-a-basis-to-set-up-your-own-inner-source-project)
-  - [**How-to**: Use it as a local reference to build bicep templates](#How-to-Use-it-as-a-local-reference-to-build-bicep-templates)
-  - [**How-to**: Use it as remote reference to re-use the bicep templates](#How-to-Use-it-as-remote-reference-to-re-use-the-bicep-templates)
+  - [**Option 1**: Use it as a basis to set up your own inner-source project](#Option-1-Use-it-as-a-basis-to-set-up-your-own-inner-source-project)
+  - [**Option 2**: Use it as a local reference to build bicep templates](#Option-2-Use-it-as-a-local-reference-to-build-bicep-templates)
+  - [**Option 3**: Use it as remote reference to re-use the bicep templates](#Option-3-Use-it-as-remote-reference-to-re-use-the-bicep-templates)
 
 ---
 
@@ -44,7 +44,7 @@ To ensure you can use all the content in this repostiroy you'd want to install
 Depending on how you want to use this repositories content you may go down different paths to get started.
 
 
-## **How-to**: Use it as a basis to set up your own inner-source project
+## **Option 1**: Use it as a basis to set up your own inner-source project
 
 The repository is set up in a way that you can essentially create your own private 1:1 copy and would be able to re-use the same concepts and functionality in your own environment like GitHub. This set up is a 2-step process. First, you have to either 'Form' the repository to you own GitHub account, or move it to your desired location manually. And second you have to configure the environment, that is, you have to update all references to the original source respository to your own and also set up several secrets to point to the Azure environment of your choice.
 
@@ -72,7 +72,7 @@ In case you want to not only leverage the module templates but actually re-use t
 | `PLATFORM_REPO_UPDATE_PAT` | `<placeholder>` | A PAT with enough permissions assigned to it to push into the main branch. This PAT is leveraged by pipelines that automatically generate ReadMe files to keep them up to date |
 
 
-## **How-to**: Use it as a local reference to build bicep templates
+## **Option 2**: Use it as a local reference to build bicep templates
 
 Instead of re-using the repository as-is you may opt to just save yourself a copy of the code. This may make sense if you want to havest the code for a larger setup that you assemble locally, or you may just want to keep it for reference. To do so, you essentially just have to download the repository like presented in the following:
 
@@ -91,7 +91,7 @@ If you instead just want to have a copy of the repository's content you can inst
  <img src="./media/cloneDownloadRepo.JPG" alt="How to download repository" height="266" width="295">
 
 
-## **How-to**: Use it as remote reference to reference the bicep templates
+## **Option 3**: Use it as remote reference to reference the bicep templates
 
 Last but not least, instead of fetching your own copy of the repository you can also choose to reference the content of the repository directly. This works as the repository is public and hence all file urls are available without any sort of authentication.
 
