@@ -14,8 +14,8 @@ Files and folders within the module folder are all in lower case.
     Microsoft.Web
     └─ sites
        ├─ .bicep
-       |  ├─ nested_resourceName1.bicep
-       |  └─ nested_resourceName2.bicep
+       |  ├─ nested_providerResource1.bicep
+       |  └─ nested_providerResource2.bicep
        ├─parameters
        |  └─ parameters.json
        ├─ deploy.bicep
@@ -38,32 +38,32 @@ Within a bicep file, follow the following conventions:
     - Deploy an instance of the resource you are working on, go to IAM page and copy the list from Roles.
     - Use the following script to generate and output the applicable roles needed in the bicep/ARM module:
 
-```PowerShell
-$rawRoles = @"
-<paste the table here>
-"@
-$resourceRoles = @()
-$rawRolesArray = $rawRoles -split "`n"
-for ($i = 0; $i -lt $rawRolesArray.Count; $i++) {
-  if($i % 5 -eq 0) {
-    $resourceRoles += $rawRolesArray[$i].Trim()
-  }
-}
-$allRoles = az role definition list --custom-role-only false --query '[].{roleName:roleName, id:id, roleType:roleType}' | ConvertFrom-Json
-$resBicep = [System.Collections.ArrayList]@()
-$resArm = [System.Collections.ArrayList]@()
-foreach ($resourceRole in $resourceRoles) {
-  $matchingRole = $allRoles | Where-Object { $_.roleName -eq $resourceRole }
-  $resBicep += "'{0}': subscriptionResourceId('Microsoft.Authorization/roleDefinitions','{1}')" -f $resourceRole, ($matchingRole.id.split('/')[-1])
-  $resArm += "`"{0}`": `"[subscriptionResourceId('Microsoft.Authorization/roleDefinitions','{1}')]`"," -f $resourceRole, ($matchingRole.id.split('/')[-1])
-}
-Write-Host "Bicep"
-Write-Host "-----"
-$resBicep
-Write-Host "ARM"
-Write-Host "---"
-$resArm
-```
+      ```PowerShell
+      $rawRoles = @"
+      <paste the table here>
+      "@
+      $resourceRoles = @()
+      $rawRolesArray = $rawRoles -split "`n"
+      for ($i = 0; $i -lt $rawRolesArray.Count; $i++) {
+        if($i % 5 -eq 0) {
+          $resourceRoles += $rawRolesArray[$i].Trim()
+        }
+      }
+      $allRoles = az role definition list --custom-role-only false --query '[].{roleName:roleName, id:id, roleType:roleType}' | ConvertFrom-Json
+      $resBicep = [System.Collections.ArrayList]@()
+      $resArm = [System.Collections.ArrayList]@()
+      foreach ($resourceRole in $resourceRoles) {
+        $matchingRole = $allRoles | Where-Object { $_.roleName -eq $resourceRole }
+        $resBicep += "'{0}': subscriptionResourceId('Microsoft.Authorization/roleDefinitions','{1}')" -f $resourceRole, ($matchingRole.id.split('/')[-1])
+        $resArm += "`"{0}`": `"[subscriptionResourceId('Microsoft.Authorization/roleDefinitions','{1}')]`"," -f $resourceRole, ($matchingRole.id.split('/')[-1])
+      }
+      Write-Host "Bicep"
+      Write-Host "-----"
+      $resBicep
+      Write-Host "ARM"
+      Write-Host "---"
+      $resArm
+      ```
 
 - Resource:
   - camelCase, i.e `resourceGroup`
