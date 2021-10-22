@@ -43,7 +43,7 @@
                             "protocolTypes": [
                                 "NFSv3"
                             ],
-                            "subnetId": "/subscriptions/8629be3b-96bc-482d-a04b-ffff597c65a2/resourceGroups/dependencies-rg/providers/Microsoft.Network/virtualNetworks/sxx-az-vnet-weu-x-003/subnets/sxx-az-subnet-weu-x-004",
+                            "subnetId": "/subscriptions/8629be3b-96bc-482d-a04b-ffff597c65a2/resourceGroups/validation-rg/providers/Microsoft.Network/virtualNetworks/adp-sxx-az-vnet-weu-x-001/subnets/sxx-az-subnet-weu-x-004",
                             "roleAssignments": [
                                 {
                                     "roleDefinitionIdOrName": "Reader",
@@ -73,7 +73,7 @@
                                     }
                                 ]
                             },
-                            "subnetId": "/subscriptions/8629be3b-96bc-482d-a04b-ffff597c65a2/resourceGroups/dependencies-rg/providers/Microsoft.Network/virtualNetworks/sxx-az-vnet-weu-x-003/subnets/sxx-az-subnet-weu-x-004",
+                            "subnetId": "/subscriptions/8629be3b-96bc-482d-a04b-ffff597c65a2/resourceGroups/validation-rg/providers/Microsoft.Network/virtualNetworks/adp-sxx-az-vnet-weu-x-001/subnets/sxx-az-subnet-weu-x-004",
                             "roleAssignments": [
                                 {
                                     "roleDefinitionIdOrName": "Reader",
@@ -92,7 +92,7 @@
                         //   "protocolTypes": [
                         //     "CIFS"
                         //   ],
-                        //   "subnetId": "/subscriptions/8629be3b-96bc-482d-a04b-ffff597c65a2/resourceGroups/dependencies-rg/providers/Microsoft.Network/virtualNetworks/sxx-az-vnet-weu-x-003/subnets/sxx-az-subnet-weu-x-004",
+                        //   "subnetId": "/subscriptions/8629be3b-96bc-482d-a04b-ffff597c65a2/resourceGroups/validation-rg/providers/Microsoft.Network/virtualNetworks/adp-sxx-az-vnet-weu-x-001/subnets/sxx-az-subnet-weu-x-004",
                         //   "roleAssignments": [
                         // //     {
                         // //       "roleDefinitionIdOrName": "Reader",
