@@ -12,7 +12,7 @@
             "value": "adp-sxx-az-vnet-weu-x-001"
         },
         "subnetName": {
-            "value": "sxx-az-subnet-weu-x-008"
+            "value": "sxx-az-subnet-weu-x-007"
         },
         "vNetResourceGroup": {
             "value": "validation-rg"
