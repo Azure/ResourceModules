@@ -171,7 +171,7 @@ resource registry 'Microsoft.ContainerRegistry/registries@2020-11-01-preview' = 
   }
 }
 
-resource resgistry_lock 'Microsoft.Authorization/locks@2016-09-01' = if (lock != 'NotSpecified') {
+resource registry_lock 'Microsoft.Authorization/locks@2016-09-01' = if (lock != 'NotSpecified') {
   name: '${registry.name}-${lock}-lock'
   properties: {
     level: lock
@@ -180,7 +180,7 @@ resource resgistry_lock 'Microsoft.Authorization/locks@2016-09-01' = if (lock !=
   scope: registry
 }
 
-resource resgistry_diagnosticSettingName 'Microsoft.Insights/diagnosticsettings@2017-05-01-preview' = if ((!empty(diagnosticStorageAccountId)) || (!empty(workspaceId)) || (!empty(eventHubAuthorizationRuleId)) || (!empty(eventHubName))) {
+resource registry_diagnosticSettingName 'Microsoft.Insights/diagnosticsettings@2017-05-01-preview' = if ((!empty(diagnosticStorageAccountId)) || (!empty(workspaceId)) || (!empty(eventHubAuthorizationRuleId)) || (!empty(eventHubName))) {
   name: '${registry.name}-diagnosticSettings'
   properties: {
     storageAccountId: (empty(diagnosticStorageAccountId) ? json('null') : diagnosticStorageAccountId)
