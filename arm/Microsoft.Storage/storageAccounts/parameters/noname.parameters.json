@@ -36,9 +36,6 @@
                 }
             ]
         },
-        "enableArchiveAndDelete": {
-            "value": true
-        },
         "fileShares": {
             "value": [
                 {
