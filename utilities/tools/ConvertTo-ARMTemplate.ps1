@@ -31,6 +31,18 @@ param (
     [switch] $CleanUp
 )
 
+function Remove-JSONMetadata {
+    [CmdletBinding()]
+    param (
+        [Parameter()]
+        [psobject] $TemplateObject
+    )
+    $TemplateObject.PSObject.Properties.Remove('metadata')
+    $TemplateObject.resources | Where-Object type -eq 'Microsoft.Resources/deployments' | ForEach-Object {
+        Remove-JSONMetadata -TemplateObject $_.properties.template
+    }
+}
+
 $rootPath = Get-Item -Path $Path | Select-Object -ExpandProperty FullName
 $armFolderPath = Join-Path -Path $rootPath -ChildPath 'arm'
 
@@ -38,7 +50,6 @@ $armFolderPath = Join-Path -Path $rootPath -ChildPath 'arm'
 $bicepFiles = Get-ChildItem -Path $armFolderPath -Filter deploy.bicep -Recurse
 Write-Verbose "Convert bicep to json - $($bicepFiles.count) files"
 foreach ($bicepFile in $bicepFiles) {
-    $bicepFile = Get-Item 'C:\Repos\Azure\ResourceModules\arm\Microsoft.Web\hostingEnvironments\deploy.bicep'
     $bicepFilePath = $bicepFile.FullName
     Write-Verbose "$bicepFilePath - Processing"
     $moduleFolderPath = $bicepFile.Directory.FullName
@@ -70,7 +81,7 @@ foreach ($bicepFile in $bicepFiles) {
     if (Test-Path -Path $JSONFilePath) {
         $JSONFileContent = Get-Content -Path $JSONFilePath
         $JSONObj = $JSONFileContent | ConvertFrom-Json
-        $JSONObj.PSObject.Properties.Remove('metadata')
+        Remove-JSONMetadata -TemplateObject $JSONObj
         $JSONFileContent = $JSONObj | ConvertTo-Json -Depth 100
         if ($PSCmdlet.ShouldProcess("File in path [$JSONFilePath]", 'Overwrite')) {
             Set-Content -Value $JSONFileContent -Path $JSONFilePath
