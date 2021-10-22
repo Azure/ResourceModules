@@ -8,7 +8,6 @@
             "name": "resourceGroupName",
             "value": "validation-rg"
         },
-
         {
             "name": "componentTemplateSpecRGName",
             "value": "artifacts-rg"

@@ -1,34 +1,36 @@
-# AzureNetAppFiles
+# AzureNetAppFiles `[Microsoft.NetApp/netAppAccounts]`
 
 This template deploys Azure NetApp Files.
 
 ## Resource types
 
-| Resource Type | ApiVersion |
+| Resource Type | Api Version |
 | :-- | :-- |
+| `Microsoft.Authorization/locks` | 2016-09-01 |
 | `Microsoft.NetApp/netAppAccounts` | 2021-04-01 |
 | `Microsoft.NetApp/netAppAccounts/capacityPools` | 2021-04-01 |
+| `Microsoft.NetApp/netAppAccounts/capacityPools/providers/roleAssignments` | 2021-04-01-preview |
 | `Microsoft.NetApp/netAppAccounts/capacityPools/volumes` | 2021-04-01 |
-| `Microsoft.NetApp/netAppAccounts/providers/roleAssignments` | 2020-04-01-preview |
-| `Microsoft.Authorization/locks` | 2016-09-01 |
+| `Microsoft.NetApp/netAppAccounts/capacityPools/volumes/providers/roleAssignments` | 2021-04-01-preview |
+| `Microsoft.NetApp/netAppAccounts/providers/roleAssignments` | 2021-04-01-preview |
 
 ## Parameters
 
-| Parameter Name | Type | Description | DefaultValue | Possible values |
+| Parameter Name | Type | Default Value | Possible Values | Description |
 | :-- | :-- | :-- | :-- | :-- |
-| `capacityPools` | array | Optional. Capacity pools to create. | `[]` | Complex structure, see below. |
-| `cuaId` | string | Optional. Customer Usage Attribution id (GUID). This GUID must be previously registered. | `""` |  |
-| `dnsServers` | string | Optional. Required if domainName is specified. Comma separated list of DNS server IP addresses (IPv4 only) required for the Active Directory (AD) domain join and SMB authentication operations to succeed. | `""` |  |
-| `domainJoinOU` | string | Optional. Used only if domainName is specified. LDAP Path for the Organization Unit (OU) where SMB Server machine accounts will be created (i.e. `"OU=SecondLevel,OU=FirstLevel"`). | `""` |  |
-| `domainJoinPassword` | securestring | Optional. Required if domainName is specified. Password of the user specified in domainJoinUser parameter. | `""` |  |
-| `domainJoinUser` | string | Optional. Required if domainName is specified. Username of Active Directory domain administrator, with permissions to create SMB server machine account in the AD domain. | `""` |  |
-| `domainName` | string | Optional. Fully Qualified Active Directory DNS Domain Name (e.g. `"contoso.com"`). | `""` |  |
-| `location` | string | Optional. Location for all resources. | `"[resourceGroup().location]"` |  |
-| `lock` | string | Optional. Specify the type of lock. | 'NotSpecified' | 'CanNotDelete', 'NotSpecified', 'ReadOnly' |
-| `netAppAccountName` | string | Required. The name of the NetApp account. |  |  |
-| `roleAssignments` | array | Optional. Array of role assignment objects that contain the 'roleDefinitionIdOrName' and 'principalId' to define RBAC role assignments on this resource. In the roleDefinitionIdOrName attribute, you can provide either the display name of the role definition, or its fully qualified ID in the following format: '/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11'.| `[]` | Complex structure, see below. |
-| `smbServerNamePrefix` | string | Optional. Required if domainName is specified. NetBIOS name of the SMB server. A computer account with this prefix will be registered in the AD and used to mount volumes. | `""` |  |
-| `tags` | object | Optional. Tags of all resources. | `{}` | Complex structure, see below. |
+| `capacityPools` | array | `[]` |  | Optional. Capacity pools to create. |
+| `cuaId` | string |  |  | Optional. Customer Usage Attribution id (GUID). This GUID must be previously registered |
+| `dnsServers` | string |  |  | Optional. Required if domainName is specified. Comma separated list of DNS server IP addresses (IPv4 only) required for the Active Directory (AD) domain join and SMB authentication operations to succeed. |
+| `domainJoinOU` | string |  |  | Optional. Used only if domainName is specified. LDAP Path for the Organization Unit (OU) where SMB Server machine accounts will be created (i.e. 'OU=SecondLevel,OU=FirstLevel'). |
+| `domainJoinPassword` | secureString |  |  | Optional. Required if domainName is specified. Password of the user specified in domainJoinUser parameter |
+| `domainJoinUser` | string |  |  | Optional. Required if domainName is specified. Username of Active Directory domain administrator, with permissions to create SMB server machine account in the AD domain. |
+| `domainName` | string |  |  | Optional. Fully Qualified Active Directory DNS Domain Name (e.g. 'contoso.com') |
+| `location` | string | `[resourceGroup().location]` |  | Optional. Location for all resources. |
+| `lock` | string | `NotSpecified` | `[CanNotDelete, NotSpecified, ReadOnly]` | Optional. Specify the type of lock. |
+| `netAppAccountName` | string |  |  | Required. The name of the NetApp account. |
+| `roleAssignments` | array | `[]` |  | Optional. Array of role assignment objects that contain the 'roleDefinitionIdOrName' and 'principalId' to define RBAC role assignments on this resource. In the roleDefinitionIdOrName attribute, you can provide either the display name of the role definition, or it's fully qualified ID in the following format: '/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11' |
+| `smbServerNamePrefix` | string |  |  | Optional. Required if domainName is specified. NetBIOS name of the SMB server. A computer account with this prefix will be registered in the AD and used to mount volumes |
+| `tags` | object | `{object}` |  | Optional. Tags for all resources. |
 
 ### Parameter Usage: `capacityPools`
 
@@ -173,23 +175,15 @@ Tag names and tag values can be provided as needed. A tag can be left without a 
 
 ## Outputs
 
-| Output Name | Type | Description |
-| :-- | :-- | :-- |
-| `netAppAccountResourceGroup` | string | The name of the Resource Group the NetApp account was created in. |
-| `netAppAccountResourceId` | string | The Resource Id of the NetApp account deployed. |
-| `netAppAccountName` | string | The Name of the NetApp account deployed. |
+| Output Name | Type |
+| :-- | :-- |
+| `netAppAccountName` | string |
+| `netAppAccountResourceGroup` | string |
+| `netAppAccountResourceId` | string |
 
-## Considerations
+## Template references
 
-This module allows the generic deployment of SMB, NFSv3 and NFSv4.1 NetApp volumes. Please refer to the Archetype for additional scenarios, such as creating a dual-protocol (NFSv3 and SMB) volumes and configuring NFSv4.1 Kerberos encryption.
-
-## Additional resources
-
-- [Use tags to organize your Azure resources](https://docs.microsoft.com/en-us/azure/azure-resource-manager/resource-group-using-tags)
-- [Azure Resource Manager template reference](https://docs.microsoft.com/en-us/azure/templates/)
-- [Deployments](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Resources/2020-06-01/deployments)
-- [NetAppAccountS](https://docs.microsoft.com/en-us/azure/templates/microsoft.netapp/2021-04-01/netappaccounts)
-- [NetAppAccountS/capacityPoolS](https://docs.microsoft.com/en-us/azure/templates/microsoft.netapp/2021-04-01/netappaccounts/capacitypools)
-- [NetAppAccountS/capacityPoolS/volumeS](https://docs.microsoft.com/en-us/azure/templates/microsoft.netapp/2021-04-01/netappaccounts/capacitypools/volumes)
-- [Configure export policy for an NFS volume](https://docs.microsoft.com/en-us/azure/azure-netapp-files/azure-netapp-files-configure-export-policy)
-- [Troubleshoot Azure NetApp Files Resource Provider errors](https://docs.microsoft.com/en-us/azure/azure-netapp-files/azure-netapp-files-troubleshoot-resource-provider-errors)
+- [Locks](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2016-09-01/locks)
+- [Netappaccounts](https://docs.microsoft.com/en-us/azure/templates/Microsoft.NetApp/2021-04-01/netAppAccounts)
+- [Netappaccounts/Capacitypools](https://docs.microsoft.com/en-us/azure/templates/Microsoft.NetApp/2021-04-01/netAppAccounts/capacityPools)
+- [Netappaccounts/Capacitypools/Volumes](https://docs.microsoft.com/en-us/azure/templates/Microsoft.NetApp/2021-04-01/netAppAccounts/capacityPools/volumes)

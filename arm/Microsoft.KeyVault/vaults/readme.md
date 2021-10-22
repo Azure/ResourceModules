@@ -1,57 +1,54 @@
-# KeyVault
+# KeyVault `[Microsoft.KeyVault/vaults]`
 
-[![Deploy to Azure](/docs/media/deploytoazure.svg?sanitize=true)](<https://portal.azure.com/#create/Microsoft.Template/uri/https%3A%2F%2Fraw.githubusercontent.com%2FAzure%2FModules%2Fmain%2FKeyVault%2Fdeploy.json>)
-
-[![Deploy To Azure US Gov](/docs/media/deploytoazuregov.svg?sanitize=true)](<https://portal.azure.us/#create/Microsoft.Template/uri/https%3A%2F%2Fraw.githubusercontent.com%2FAzure%2FModules%2Fmain%2FKeyVault%2Fdeploy.json>)
-
-[![Visualize](/docs/media/visualizebutton.svg?sanitize=true)](<http://armviz.io/#/?load=https%3A%2F%2Fraw.githubusercontent.com%2FAzure%2FModules%2Fmain%2FKeyVault%2Fdeploy.json>)
+This module deploys a key vault and it's child resources.
 
 ## Resource types
 
 | Resource Type | Api Version |
 | :-- | :-- |
-| `Microsoft.KeyVault/vaults/keys` | 2019-09-01 |
-| `Microsoft.KeyVault/vaults/providers/diagnosticsettings` | 2017-05-01-preview |
-| `Microsoft.KeyVault/vaults/providers/roleAssignments` | 2018-09-01-preview |
-| `Microsoft.KeyVault/vaults/secrets` | 2019-09-01 |
+| `Microsoft.Authorization/locks` | 2016-09-01 |
+| `Microsoft.Insights/diagnosticSettings` | 2017-05-01-preview |
 | `Microsoft.KeyVault/vaults` | 2019-09-01 |
-| `Microsoft.Network/privateEndpoints/privateDnsZoneGroups` | 2020-05-01 |
-| `Microsoft.Network/privateEndpoints` | 2020-05-01 |
-| `Microsoft.Resources/deployments` | 2020-06-01 |
-| `providers/locks` | 2016-09-01 |
+| `Microsoft.KeyVault/vaults/keys` | 2019-09-01 |
+| `Microsoft.KeyVault/vaults/providers/roleAssignments` | 2021-04-01-preview |
+| `Microsoft.KeyVault/vaults/secrets` | 2019-09-01 |
+| `Microsoft.Network/privateEndpoints` | 2021-05-01 |
+| `Microsoft.Network/privateEndpoints/privateDnsZoneGroups` | 2021-02-01 |
 
 ## Parameters
 
-| Parameter Name | Type | Default Value | Possible values | Description |
-| :-             | :-   | :-            | :-              | :-          |
-| `keyVaultName` | string | | | Optional. Name of the Key Vault Name. If no name is provided, then unique name will be created.|
-| `location` | string | `[resourceGroup().location]` | | Optional. Location for all resources.
-| `accessPolicies` | object | `{}` | Complex structure, see below. | Optional. Access policies object
-| `secretsObject` | object | `{}` | Complex structure, see below. | Optional. All secrets {\"secretName\":\"\",\"secretValue\":\"\"} wrapped in a secure object
-| `keysObject` | object | `{}` | Complex structure, see below. | Optional. All secrets {\"secretName\":\"\",\"secretValue\":\"\"} wrapped in a secure object
-| `enableVaultForDeployment` | bool | `true` | | Optional. Specifies if the vault is enabled for deployment by script or compute
-| `enableVaultForTemplateDeployment` | bool | `true` | | Optional. Specifies if the vault is enabled for a template deployment
-| `enableVaultForDiskEncryption` | bool | `true` | | Optional. Specifies if the azure platform has access to the vault for enabling disk encryption scenarios.
-| `enableSoftDelete` | bool | `true` | | Optional. Switch to enable Key Vault's soft delete feature.
-| `softDeleteRetentionInDays` | int | 90 | | Optional. softDelete data retention days. It accepts >=7 and <=90.
-| `enableRbacAuthorization` | bool | `false` | | Optional. Property that controls how data actions are authorized. When true, the key vault will use Role Based Access Control (RBAC) for authorization of data actions, and the access policies specified in vault properties will be ignored (warning: this is a preview feature). When false, the key vault will use the access policies specified in vault properties, and any policy stored on Azure Resource Manager will be ignored. If null or not specified, the vault is created with the default value of false. Note that management actions are always authorized with RBAC.
-| `createMode` | bool | `true` | | Optional. The vault's create mode to indicate whether the vault need to be recovered or not. - recover or default.
-| `enablePurgeProtection` | bool | `false` | | Optional. Switch to enable Key Vault's purge protection feature.
-| `vaultSku` | string | `Premium` | Premium, Standard |Optional. Specifies the SKU for the vault
-| `vNetId` | string | "" | | Optional. Virtual Network Identifier used to create a service endpoint.
-| `networkAcls` | object | {} | Complex structure, see below. | Optional. Network ACLs, this value contains IPs to whitelist and/or Subnet information.
-| `diagnosticSettingName` | string | `service` | | Optional. The name of the Diagnostic setting.
-| `diagnosticLogsRetentionInDays` | int | `365` | | Optional. Specifies the number of days that logs will be kept for; a value of 0 will retain data indefinitely.
-| `diagnosticStorageAccountId` | string | "" | | Optional. Resource identifier of the Diagnostic Storage Account.
-| `workspaceId` | string | "" | | Optional. Resource identifier of Log Analytics.
-| `eventHubAuthorizationRuleId` | string | "" | | Optional. Resource ID of the event hub authorization rule for the Event Hubs namespace in which the event hub should be created or streamed to.
-| `eventHubName` | string | "" | | Optional. Name of the event hub within the namespace to which logs are streamed. Without this, an event hub is created for each log category.
-| `lock` | string | 'NotSpecified' | 'CanNotDelete', 'NotSpecified', 'ReadOnly' | Optional. Specify the type of lock. |
-| `roleAssignments` | array | [] | Complex structure, see below. | Optional. Array of role assignment objects that contain the 'roleDefinitionIdOrName' and 'principalId' to define RBAC role assignments on this resource. In the roleDefinitionIdOrName attribute, you can provide either the display name of the role definition, or it's fully qualified ID in the following format: '/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11'
-| `privateEndpoints` | array | System.Object[] |  | Optional. Configuration Details for private endpoints. |
-| `tags` | object | {} | Complex structure, see below. | Optional. Tags of the Azure Key Vault resource.
-| `cuaId` | string | "" | | Optional. Customer Usage Attribution id (GUID). This GUID must be previously registered.
-| `baseTime` | string | utcNow('u') | | Generated. Do not provide a value! This date value is used to generate a SAS token toaccess the modules.
+| Parameter Name | Type | Default Value | Possible Values | Description |
+| :-- | :-- | :-- | :-- | :-- |
+| `accessPolicies` | array | `[]` |  | Optional. Array of access policies object |
+| `baseTime` | string | `[utcNow('u')]` |  | Generated. Do not provide a value! This date value is used to generate a SAS token to access the modules. |
+| `createMode` | string | `default` |  | Optional. The vault's create mode to indicate whether the vault need to be recovered or not. - recover or default. |
+| `cuaId` | string |  |  | Optional. Customer Usage Attribution id (GUID). This GUID must be previously registered |
+| `diagnosticLogsRetentionInDays` | int | `365` |  | Optional. Specifies the number of days that logs will be kept for; a value of 0 will retain data indefinitely. |
+| `diagnosticSettingName` | string | `service` |  | Optional. The name of the Diagnostic setting. |
+| `diagnosticStorageAccountId` | string |  |  | Optional. Resource identifier of the Diagnostic Storage Account. |
+| `enablePurgeProtection` | bool |  |  | Optional. Provide 'true' to enable Key Vault's purge protection feature. |
+| `enableRbacAuthorization` | bool |  |  | Optional. Property that controls how data actions are authorized. When true, the key vault will use Role Based Access Control (RBAC) for authorization of data actions, and the access policies specified in vault properties will be ignored (warning: this is a preview feature). When false, the key vault will use the access policies specified in vault properties, and any policy stored on Azure Resource Manager will be ignored. If null or not specified, the vault is created with the default value of false. Note that management actions are always authorized with RBAC. |
+| `enableSoftDelete` | bool | `True` |  | Optional. Switch to enable/disable Key Vault's soft delete feature. |
+| `enableVaultForDeployment` | bool | `True` | `[True, False]` | Optional. Specifies if the vault is enabled for deployment by script or compute |
+| `enableVaultForDiskEncryption` | bool | `True` | `[True, False]` | Optional. Specifies if the azure platform has access to the vault for enabling disk encryption scenarios. |
+| `enableVaultForTemplateDeployment` | bool | `True` | `[True, False]` | Optional. Specifies if the vault is enabled for a template deployment |
+| `eventHubAuthorizationRuleId` | string |  |  | Optional. Resource ID of the event hub authorization rule for the Event Hubs namespace in which the event hub should be created or streamed to. |
+| `eventHubName` | string |  |  | Optional. Name of the event hub within the namespace to which logs are streamed. Without this, an event hub is created for each log category. |
+| `keysObject` | secureObject | `{object}` |  | Optional. All keys [{"keyName":"","keyType":"","keyOps":"","keySize":"","curvename":""} wrapped in a secure object] |
+| `keyVaultName` | string |  |  | Optional. Name of the Key Vault. If no name is provided, then unique name will be created. |
+| `location` | string | `[resourceGroup().location]` |  | Optional. Location for all resources. |
+| `lock` | string | `NotSpecified` | `[CanNotDelete, NotSpecified, ReadOnly]` | Optional. Specify the type of lock. |
+| `logsToEnable` | array | `[AuditEvent]` | `[AuditEvent]` | Optional. The name of logs that will be streamed. |
+| `metricsToEnable` | array | `[AllMetrics]` | `[AllMetrics]` | Optional. The name of metrics that will be streamed. |
+| `networkAcls` | object | `{object}` |  | Optional. Service endpoint object information |
+| `privateEndpoints` | array | `[]` |  | Optional. Configuration Details for private endpoints. |
+| `roleAssignments` | array | `[]` |  | Optional. Array of role assignment objects that contain the 'roleDefinitionIdOrName' and 'principalId' to define RBAC role assignments on this resource. In the roleDefinitionIdOrName attribute, you can provide either the display name of the role definition, or its fully qualified ID in the following format: '/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11' |
+| `secretsObject` | secureObject | `{object}` |  | Optional. All secrets [{"secretName":"","secretValue":""} wrapped in a secure object] |
+| `softDeleteRetentionInDays` | int | `90` |  | Optional. softDelete data retention days. It accepts >=7 and <=90. |
+| `tags` | object | `{object}` |  | Optional. Resource tags. |
+| `vaultSku` | string | `premium` | `[premium, standard]` | Optional. Specifies the SKU for the vault |
+| `vNetId` | string |  |  | Optional. Virtual Network resource identifier, if networkAcls is passed, this value must be passed as well |
+| `workspaceId` | string |  |  | Optional. Resource identifier of Log Analytics. |
 
 ### Parameter Usage: `roleAssignments`
 
@@ -229,17 +226,12 @@ To use Private Endpoint the following dependencies must be deployed:
 | `keyVaultResourceId` | string | The Resource Id of the Key Vault. |
 | `keyVaultUrl` | string | The URL of the Key Vault. |
 
-## Considerations
+## Template references
 
-**N/A*
-
-## Additional resources
-
-- [What is Azure Key Vault?](https://docs.microsoft.com/en-us/azure/key-vault/key-vault-whatis)
-- [Microsoft.KeyVault vaults template reference](https://docs.microsoft.com/en-us/azure/templates/microsoft.keyvault/2018-02-14/vaults)
-- [Use tags to organize your Azure resources](https://docs.microsoft.com/en-us/azure/azure-resource-manager/resource-group-using-tags)
-- [Deployments](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Resources/2020-06-01/deployments)
+- [Locks](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2016-09-01/locks)
+- [Diagnosticsettings](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Insights/2017-05-01-preview/diagnosticSettings)
 - [Vaults](https://docs.microsoft.com/en-us/azure/templates/Microsoft.KeyVault/2019-09-01/vaults)
-- [Vaults](https://docs.microsoft.com/en-us/azure/templates/Microsoft.KeyVault/2019-09-01/vaults/secrets)
-- [Vaults](https://docs.microsoft.com/en-us/azure/templates/Microsoft.KeyVault/2019-09-01/vaults/keys)
-- [Deployments](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Resources/2020-06-01/deployments)
+- [Vaults/Keys](https://docs.microsoft.com/en-us/azure/templates/Microsoft.KeyVault/2019-09-01/vaults/keys)
+- [Vaults/Secrets](https://docs.microsoft.com/en-us/azure/templates/Microsoft.KeyVault/2019-09-01/vaults/secrets)
+- [Privateendpoints](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Network/2021-05-01/privateEndpoints)
+- [Privateendpoints/Privatednszonegroups](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Network/2021-02-01/privateEndpoints/privateDnsZoneGroups)

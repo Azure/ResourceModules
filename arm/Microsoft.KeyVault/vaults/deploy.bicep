@@ -112,6 +112,41 @@ param cuaId string = ''
 @description('Generated. Do not provide a value! This date value is used to generate a SAS token to access the modules.')
 param baseTime string = utcNow('u')
 
+@description('Optional. The name of logs that will be streamed.')
+@allowed([
+  'AuditEvent'
+])
+param logsToEnable array = [
+  'AuditEvent'
+]
+
+@description('Optional. The name of metrics that will be streamed.')
+@allowed([
+  'AllMetrics'
+])
+param metricsToEnable array = [
+  'AllMetrics'
+]
+
+var diagnosticsLogs = [for log in logsToEnable: {
+  category: log
+  enabled: true
+  retentionPolicy: {
+    enabled: true
+    days: diagnosticLogsRetentionInDays
+  }
+}]
+
+var diagnosticsMetrics = [for metric in metricsToEnable: {
+  category: metric
+  timeGrain: null
+  enabled: true
+  retentionPolicy: {
+    enabled: true
+    days: diagnosticLogsRetentionInDays
+  }
+}]
+
 var maxNameLength = 24
 var uniqueKeyVaultNameUntrim = uniqueString('Key Vault${baseTime}')
 var uniqueKeyVaultName = ((length(uniqueKeyVaultNameUntrim) > maxNameLength) ? substring(uniqueKeyVaultNameUntrim, 0, maxNameLength) : uniqueKeyVaultNameUntrim)
@@ -125,27 +160,7 @@ var networkAcls_var = {
   virtualNetworkRules: (empty(networkAcls) ? json('null') : virtualNetworkRules)
   ipRules: (empty(networkAcls) ? json('null') : ((length(networkAcls.ipRules) == 0) ? [] : networkAcls.ipRules))
 }
-var diagnosticsMetrics = [
-  {
-    category: 'AllMetrics'
-    timeGrain: null
-    enabled: true
-    retentionPolicy: {
-      enabled: true
-      days: diagnosticLogsRetentionInDays
-    }
-  }
-]
-var diagnosticsLogs = [
-  {
-    category: 'AuditEvent'
-    enabled: true
-    retentionPolicy: {
-      enabled: true
-      days: diagnosticLogsRetentionInDays
-    }
-  }
-]
+
 var builtInRoleNames = {
   Owner: '/subscriptions/${subscription().subscriptionId}/providers/Microsoft.Authorization/roleDefinitions/8e3af657-a8ff-443c-a75c-2fe8c4bcb635'
   Contributor: '/subscriptions/${subscription().subscriptionId}/providers/Microsoft.Authorization/roleDefinitions/b24988ac-6180-42a0-ab88-20f7382dd24c'
@@ -265,7 +280,11 @@ module keyVault_rbac './.bicep/nested_rbac.bicep' = [for (roleAssignment, index)
   }
 }]
 
+@description('The Resource Id of the Key Vault.')
 output keyVaultResourceId string = keyVault.id
+@description('The name of the Resource Group the Key Vault was created in.')
 output keyVaultResourceGroup string = resourceGroup().name
+@description('The Name of the Key Vault.')
 output keyVaultName string = keyVault.name
+@description('The URL of the Key Vault.')
 output keyVaultUrl string = reference(keyVault.id, '2016-10-01').vaultUri

@@ -185,6 +185,49 @@ param lock string = 'NotSpecified'
 @description('Optional. Tags of the resource.')
 param tags object = {}
 
+@description('Optional. The name of logs that will be streamed.')
+@allowed([
+  'kube-apiserver'
+  'kube-audit'
+  'kube-controller-manager'
+  'kube-scheduler'
+  'cluster-autoscaler'
+])
+param logsToEnable array = [
+  'kube-apiserver'
+  'kube-audit'
+  'kube-controller-manager'
+  'kube-scheduler'
+  'cluster-autoscaler'
+]
+
+@description('Optional. The name of metrics that will be streamed.')
+@allowed([
+  'AllMetrics'
+])
+param metricsToEnable array = [
+  'AllMetrics'
+]
+
+var diagnosticsLogs = [for log in logsToEnable: {
+  category: log
+  enabled: true
+  retentionPolicy: {
+    enabled: true
+    days: diagnosticLogsRetentionInDays
+  }
+}]
+
+var diagnosticsMetrics = [for metric in metricsToEnable: {
+  category: metric
+  timeGrain: null
+  enabled: true
+  retentionPolicy: {
+    enabled: true
+    days: diagnosticLogsRetentionInDays
+  }
+}]
+
 var aksClusterLinuxProfile = {
   adminUsername: aksClusterAdminUsername
   ssh: {
@@ -195,59 +238,7 @@ var aksClusterLinuxProfile = {
     ]
   }
 }
-var diagnosticsMetrics = [
-  {
-    category: 'AllMetrics'
-    timeGrain: null
-    enabled: true
-    retentionPolicy: {
-      enabled: true
-      days: diagnosticLogsRetentionInDays
-    }
-  }
-]
-var diagnosticsLogs = [
-  {
-    category: 'kube-apiserver'
-    enabled: true
-    retentionPolicy: {
-      enabled: true
-      days: diagnosticLogsRetentionInDays
-    }
-  }
-  {
-    category: 'kube-audit'
-    enabled: true
-    retentionPolicy: {
-      enabled: true
-      days: diagnosticLogsRetentionInDays
-    }
-  }
-  {
-    category: 'kube-controller-manager'
-    enabled: true
-    retentionPolicy: {
-      enabled: true
-      days: diagnosticLogsRetentionInDays
-    }
-  }
-  {
-    category: 'kube-scheduler'
-    enabled: true
-    retentionPolicy: {
-      enabled: true
-      days: diagnosticLogsRetentionInDays
-    }
-  }
-  {
-    category: 'cluster-autoscaler'
-    enabled: true
-    retentionPolicy: {
-      enabled: true
-      days: diagnosticLogsRetentionInDays
-    }
-  }
-]
+
 var lbProfile = {
   managedOutboundIPs: {
     count: managedOutboundIPCount

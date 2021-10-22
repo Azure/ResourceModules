@@ -1,31 +1,30 @@
-# Azure Monitor Private Link Scope
+# Azure Monitor Private Link Scope `[Microsoft.Insights/privateLinkScopes]`
 
 This module deploys Azure Monitor Private Link Scope
 
 ## Resource types
 
-| Resource Type                                                    | Api Version        |
-| :--------------------------------------------------------------- | :----------------- |
-| `Microsoft.Insights/privateLinkScopes`                           | 2019-10-17-preview |
-| `microsoft.insights/privatelinkscopes/scopedresources`           | 2019-10-17-preview |
-| `Microsoft.Network/privateEndpoints`                             | 2020-05-01         |
-| `Microsoft.Network/privateEndpoints/privateDnsZoneGroups`        | 2020-05-01         |
-| `Microsoft.Insights/privateLinkScopes/providers/roleAssignments` | 2018-09-01-preview |
-| `Microsoft.Resources/deployments`                                | 2020-06-01         |
-| `Microsoft.Authorization/locks`                                  | 2016-09-01         |
+| Resource Type | Api Version |
+| :-- | :-- |
+| `Microsoft.Authorization/locks` | 2016-09-01 |
+| `microsoft.insights/privateLinkScopes` | 2019-10-17-preview |
+| `Microsoft.Insights/privateLinkScopes/providers/roleAssignments` | 2021-04-01-preview |
+| `Microsoft.Insights/privateLinkScopes/scopedResources` | 2019-10-17-preview |
+| `Microsoft.Network/privateEndpoints` | 2021-05-01 |
+| `Microsoft.Network/privateEndpoints/privateDnsZoneGroups` | 2020-05-01 |
 
 ## Parameters
 
-| Parameter Name         | Type   | Default Value                | Possible values                            | Description                                                                                                                                                                                                                                                                                                                                                                                                     |
-| :--------------------- | :----- | :--------------------------- | :----------------------------------------- | :-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `cuaId`                | string | ""                           |                                            | Optional. Customer Usage Attribution id (GUID). This GUID must be previously registered.                                                                                                                                                                                                                                                                                                                        |
-| `location`             | string | `[resourceGroup().location]` |                                            | Optional. Location for all resources.                                                                                                                                                                                                                                                                                                                                                                           |
-| `lock`                 | string | 'NotSpecified'               | 'CanNotDelete', 'NotSpecified', 'ReadOnly' | Optional. Specify the type of lock.                                                                                                                                                                                                                                                                                                                                                                             |
-| `privateEndpoints`     | array  | System.Object[]              | Complex structure, see below.              | Optional. Configuration Details for private endpoints.                                                                                                                                                                                                                                                                                                                                                          |
-| `privateLinkScopeName` | string |                              |                                            | Required. Name of the Private Link Scope.                                                                                                                                                                                                                                                                                                                                                                       |
-| `roleAssignments`      | array  | []                           | Complex structure, see below.              | Optional. Array of role assignment objects that contain the 'roleDefinitionIdOrName' and 'principalId' to define RBAC role assignments on this resource. In the roleDefinitionIdOrName attribute, you can provide either the display name of the role definition, or it's fully qualified ID in the following format: '/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11' |
-| `scopedResources`      | array  | []                           | Complex structure, see below.              | Optional. Configuration Details for Azure Monitor Resources.                                                                                                                                                                                                                                                                                                                                                    |
-| `tags`                 | object | {}                           | Complex structure, see below.              | Optional. Tags of the Azure Key Vault resource.                                                                                                                                                                                                                                                                                                                                                                 |
+| Parameter Name | Type | Default Value | Possible Values | Description |
+| :-- | :-- | :-- | :-- | :-- |
+| `cuaId` | string |  |  | Optional. Customer Usage Attribution id (GUID). This GUID must be previously registered |
+| `location` | string | `global` |  | Optional. The location of the Private Link Scope. Should be global. |
+| `lock` | string | `NotSpecified` | `[CanNotDelete, NotSpecified, ReadOnly]` | Optional. Specify the type of lock. |
+| `privateEndpoints` | array | `[]` |  | Optional. Configuration Details for private endpoints. |
+| `privateLinkScopeName` | string |  |  | Required. Name of the Private Link Scope. |
+| `roleAssignments` | array | `[]` |  | Optional. Array of role assignment objects that contain the 'roleDefinitionIdOrName' and 'principalId' to define RBAC role assignments on this resource. In the roleDefinitionIdOrName attribute, you can provide either the display name of the role definition, or its fully qualified ID in the following format: '/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11' |
+| `scopedResources` | array | `[]` |  | Optional. Configuration Details for Azure Monitor Resources. |
+| `tags` | object | `{object}` |  | Optional. Resource tags. |
 
 ### Parameter Usage: `roleAssignments`
 
@@ -127,22 +126,16 @@ Tag names and tag values can be provided as needed. A tag can be left without a 
 
 ## Outputs
 
-| Output Name                     | Type   | Description                                                           |
-| :------------------------------ | :----- | :-------------------------------------------------------------------- |
-| `privateLinkScopeResourceId`    | string | The Resource Id of the Private Link Scope.                            |
-| `privateLinkScopeResourceGroup` | string | The name of the Resource Group the Private Link Scope was created in. |
-| `privateLinkScopeName`          | string | The Name of the Private Link Scope.                                   |
+| Output Name | Type |
+| :-- | :-- |
+| `privateLinkScopeName` | string |
+| `privateLinkScopeResourceGroup` | string |
+| `privateLinkScopeResourceId` | string |
 
-## Considerations
+## Template references
 
-**N/A*
-
-## Additional resources
-
-- [Azure Monitor Private Link Scope Documentation](https://docs.microsoft.com/en-us/azure/azure-monitor/platform/private-link-security)
-- [Microsoft.Insights privateLinkScopes template reference](https://docs.microsoft.com/en-us/azure/templates/microsoft.insights/privatelinkscopes)
-- [Microsoft.Insights privateLinkScopes scopedResources template reference](https://docs.microsoft.com/en-us/azure/templates/microsoft.insights/privatelinkscopes/scopedresources)
-- [Microsoft.Network privateEndpoints template reference](https://docs.microsoft.com/en-us/azure/templates/microsoft.network/privateendpoints)
-- [Microsoft.Network privateEndpoints privateDnsZoneGroups template reference](https://docs.microsoft.com/en-us/azure/templates/microsoft.network/privateendpoints/privatednszonegroups)
-- [Use tags to organize your Azure resources](https://docs.microsoft.com/en-us/azure/azure-resource-manager/resource-group-using-tags)
-- [Deployments](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Resources/2020-06-01/deployments)
+- [Locks](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2016-09-01/locks)
+- [Privatelinkscopes](https://docs.microsoft.com/en-us/azure/templates/microsoft.insights/2019-10-17-preview/privateLinkScopes)
+- [Privatelinkscopes/Scopedresources](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Insights/2019-10-17-preview/privateLinkScopes/scopedResources)
+- [Privateendpoints](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Network/2021-05-01/privateEndpoints)
+- [Privateendpoints/Privatednszonegroups](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Network/2020-05-01/privateEndpoints/privateDnsZoneGroups)

@@ -102,6 +102,69 @@ param tags object = {}
 @description('Optional. Customer Usage Attribution id (GUID). This GUID must be previously registered')
 param cuaId string = ''
 
+@description('Optional. The name of logs that will be streamed.')
+@allowed([
+  'DDoSProtectionNotifications'
+  'DDoSMitigationFlowLogs'
+  'DDoSMitigationReports'
+])
+param publicIpLogsToEnable array = [
+  'DDoSProtectionNotifications'
+  'DDoSMitigationFlowLogs'
+  'DDoSMitigationReports'
+]
+
+@description('Optional. The name of logs that will be streamed.')
+@allowed([
+  'GatewayDiagnosticLog'
+  'TunnelDiagnosticLog'
+  'RouteDiagnosticLog'
+  'IKEDiagnosticLog'
+  'P2SDiagnosticLog'
+])
+param virtualNetworkGatewayLogsToEnable array = [
+  'GatewayDiagnosticLog'
+  'TunnelDiagnosticLog'
+  'RouteDiagnosticLog'
+  'IKEDiagnosticLog'
+  'P2SDiagnosticLog'
+]
+
+@description('Optional. The name of metrics that will be streamed.')
+@allowed([
+  'AllMetrics'
+])
+param metricsToEnable array = [
+  'AllMetrics'
+]
+
+var virtualNetworkGatewayDiagnosticsLogs = [for log in virtualNetworkGatewayLogsToEnable: {
+  category: log
+  enabled: true
+  retentionPolicy: {
+    enabled: true
+    days: diagnosticLogsRetentionInDays
+  }
+}]
+var publicIpDiagnosticsLogs = [for log in publicIpLogsToEnable: {
+  category: log
+  enabled: true
+  retentionPolicy: {
+    enabled: true
+    days: diagnosticLogsRetentionInDays
+  }
+}]
+
+var diagnosticsMetrics = [for metric in metricsToEnable: {
+  category: metric
+  timeGrain: null
+  enabled: true
+  retentionPolicy: {
+    enabled: true
+    days: diagnosticLogsRetentionInDays
+  }
+}]
+
 var zoneRedundantSkus = [
   'VpnGw1AZ'
   'VpnGw2AZ'
@@ -203,85 +266,7 @@ var vpnClientConfiguration = {
   vpnClientRootCertificates: (empty(clientRootCertData) ? json('null') : vpnClientRootCertificates)
   vpnClientRevokedCertificates: (empty(clientRevokedCertThumbprint) ? json('null') : vpmClientRevokedCertificates)
 }
-var diagnosticsMetrics = [
-  {
-    category: 'AllMetrics'
-    timeGrain: null
-    enabled: true
-    retentionPolicy: {
-      enabled: true
-      days: diagnosticLogsRetentionInDays
-    }
-  }
-]
-var publicIpDiagnosticsLogs = [
-  {
-    category: 'DDoSProtectionNotifications'
-    enabled: true
-    retentionPolicy: {
-      enabled: true
-      days: diagnosticLogsRetentionInDays
-    }
-  }
-  {
-    category: 'DDoSMitigationFlowLogs'
-    enabled: true
-    retentionPolicy: {
-      enabled: true
-      days: diagnosticLogsRetentionInDays
-    }
-  }
-  {
-    category: 'DDoSMitigationReports'
-    enabled: true
-    retentionPolicy: {
-      enabled: true
-      days: diagnosticLogsRetentionInDays
-    }
-  }
-]
-var virtualNetworkGatewayDiagnosticsLogs = [
-  {
-    category: 'GatewayDiagnosticLog'
-    enabled: true
-    retentionPolicy: {
-      enabled: true
-      days: diagnosticLogsRetentionInDays
-    }
-  }
-  {
-    category: 'TunnelDiagnosticLog'
-    enabled: true
-    retentionPolicy: {
-      enabled: true
-      days: diagnosticLogsRetentionInDays
-    }
-  }
-  {
-    category: 'RouteDiagnosticLog'
-    enabled: true
-    retentionPolicy: {
-      enabled: true
-      days: diagnosticLogsRetentionInDays
-    }
-  }
-  {
-    category: 'IKEDiagnosticLog'
-    enabled: true
-    retentionPolicy: {
-      enabled: true
-      days: diagnosticLogsRetentionInDays
-    }
-  }
-  {
-    category: 'P2SDiagnosticLog'
-    enabled: true
-    retentionPolicy: {
-      enabled: true
-      days: diagnosticLogsRetentionInDays
-    }
-  }
-]
+
 var builtInRoleNames = {
   'Owner': subscriptionResourceId('Microsoft.Authorization/roleDefinitions', '8e3af657-a8ff-443c-a75c-2fe8c4bcb635')
   'Contributor': subscriptionResourceId('Microsoft.Authorization/roleDefinitions', 'b24988ac-6180-42a0-ab88-20f7382dd24c')

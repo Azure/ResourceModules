@@ -1,4 +1,4 @@
-# Event Grid
+# Event Grid `[Microsoft.EventGrid/topics]`
 
 This module deploys Event Grid
 
@@ -6,33 +6,33 @@ This module deploys Event Grid
 
 | Resource Type | Api Version |
 | :-- | :-- |
-| `Microsoft.EventGrid/topics/providers/diagnosticsettings` | 2017-05-01-preview |
-| `Microsoft.EventGrid/topics/providers/roleAssignments` | 2018-09-01-preview |
-| `Microsoft.EventGrid/topics` | [variables('eventGridApiVersion')] |
-| `Microsoft.Network/privateEndpoints/privateDnsZoneGroups` | 2020-05-01 |
-| `Microsoft.Network/privateEndpoints` | 2020-05-01 |
-| `Microsoft.Resources/deployments` | 2020-06-01 |
-| `providers/locks` | 2016-09-01 |
+| `Microsoft.Authorization/locks` | 2016-09-01 |
+| `Microsoft.EventGrid/topics` | 2020-06-01 |
+| `Microsoft.EventGrid/topics/providers/roleAssignments` | 2021-04-01-preview |
+| `Microsoft.Insights/diagnosticSettings` | 2017-05-01-preview |
+| `Microsoft.Network/privateEndpoints` | 2021-05-01 |
+| `Microsoft.Network/privateEndpoints/privateDnsZoneGroups` | 2021-02-01 |
 
 ## Parameters
 
-| Parameter Name | Type | Description | DefaultValue | Possible values |
+| Parameter Name | Type | Default Value | Possible Values | Description |
 | :-- | :-- | :-- | :-- | :-- |
-| `cuaId` | string | Optional. Customer Usage Attribution id (GUID). This GUID must be previously registered |  |  |
-| `diagnosticLogsRetentionInDays` | int | Optional. Specifies the number of days that logs will be kept for; a value of 0 will retain data indefinitely. | 365 |  |
-| `diagnosticStorageAccountId` | string | Optional. Resource identifier of the Diagnostic Storage Account. |  |  |
-| `eventGridTopicName` | string | Required. The name of the Event Grid Topic |  |  |
-| `eventHubAuthorizationRuleId` | string | Optional. Resource ID of the event hub authorization rule for the Event Hubs namespace in which the event hub should be created or streamed to. |  |  |
-| `eventHubName` | string | Optional. Name of the event hub within the namespace to which logs are streamed. Without this, an event hub is created for each log category. |  |  |
-| `inboundIpRules` | array | Optional. Array of IPs to whitelist. | System.Object[] |  |
-| `location` | string | Optional. Location for all Resources. | [resourceGroup().location] |  |
-| `lock` | string | Optional. Specify the type of lock. | 'NotSpecified' | 'CanNotDelete', 'NotSpecified', 'ReadOnly' |
-| `publicNetworkAccess` | string |  | Enabled |  |
-| `privateEndpoints` | array | System.Object[] |  | Optional. Configuration Details for private endpoints. |
-| `roleAssignments` | array | Optional. Array of role assignment objects that contain the 'roleDefinitionIdOrName' and 'principalId' to define RBAC role assignments on this resource. In the roleDefinitionIdOrName attribute, you can provide either the display name of the role definition, or its fully qualified ID in the following format: '/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11' | System.Object[] |  |
-| `tags` | object | Optional. Tags of the resource. |  |  |
-| `workspaceId` | string | Optional. Resource identifier of Log Analytics. |  |  |
-
+| `cuaId` | string |  |  | Optional. Customer Usage Attribution id (GUID). This GUID must be previously registered |
+| `diagnosticLogsRetentionInDays` | int | `365` |  | Optional. Specifies the number of days that logs will be kept for; a value of 0 will retain data indefinitely. |
+| `diagnosticStorageAccountId` | string |  |  | Optional. Resource identifier of the Diagnostic Storage Account. |
+| `eventGridTopicName` | string |  |  | Required. The name of the Event Grid Topic |
+| `eventHubAuthorizationRuleId` | string |  |  | Optional. Resource ID of the event hub authorization rule for the Event Hubs namespace in which the event hub should be created or streamed to. |
+| `eventHubName` | string |  |  | Optional. Name of the event hub within the namespace to which logs are streamed. Without this, an event hub is created for each log category. |
+| `inboundIpRules` | array | `[]` |  | Optional. Array of IPs to whitelist. |
+| `location` | string | `[resourceGroup().location]` |  | Optional. Location for all Resources. |
+| `lock` | string | `NotSpecified` | `[CanNotDelete, NotSpecified, ReadOnly]` | Optional. Specify the type of lock. |
+| `logsToEnable` | array | `[DeliveryFailures, PublishFailures]` | `[DeliveryFailures, PublishFailures]` | Optional. The name of logs that will be streamed. |
+| `metricsToEnable` | array | `[AllMetrics]` | `[AllMetrics]` | Optional. The name of metrics that will be streamed. |
+| `privateEndpoints` | array | `[]` |  | Optional. Configuration Details for private endpoints. |
+| `publicNetworkAccess` | string | `Enabled` |  | Optional. Determines if traffic is allowed over public network. |
+| `roleAssignments` | array | `[]` |  | Optional. Array of role assignment objects that contain the 'roleDefinitionIdOrName' and 'principalId' to define RBAC role assignments on this resource. In the roleDefinitionIdOrName attribute, you can provide either the display name of the role definition, or its fully qualified ID in the following format: '/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11' |
+| `tags` | object | `{object}` |  | Optional. Tags of the resource. |
+| `workspaceId` | string |  |  | Optional. Resource identifier of Log Analytics. |
 
 ### Parameter Usage: `privateEndpoints`
 
@@ -120,16 +120,10 @@ Tag names and tag values can be provided as needed. A tag can be left without a 
 | `eventGridResourceGroup` | string | The name of the Resource Group with the Event Grid |
 | `eventGridResourceId` | string | The Resource Id of the Event Grid |
 
-### Scripts
+## Template references
 
-- There are no Scripts for this Module.
-
-## Considerations
-
-- There are no deployment considerations for this Module.
-
-## Additional resources
-
-- [What is Event Grid](https://docs.microsoft.com/en-us/azure/event-grid/overview)
-- [Microsoft.EventGrid/topic template reference](https://docs.microsoft.com/en-us/azure/templates/microsoft.eventgrid/topics)
-- [Use tags to organize your Azure resources](https://docs.microsoft.com/en-us/azure/azure-resource-manager/resource-group-using-tags)
+- [Locks](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2016-09-01/locks)
+- [Topics](https://docs.microsoft.com/en-us/azure/templates/Microsoft.EventGrid/2020-06-01/topics)
+- [Diagnosticsettings](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Insights/2017-05-01-preview/diagnosticSettings)
+- [Privateendpoints](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Network/2021-05-01/privateEndpoints)
+- [Privateendpoints/Privatednszonegroups](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Network/2021-02-01/privateEndpoints/privateDnsZoneGroups)

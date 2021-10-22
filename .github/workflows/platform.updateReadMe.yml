@@ -14,8 +14,8 @@ on:
       - 'arm/**/deploy.json'
 
 env:
-  gitUserName: 'CARMLPipelinePrincipal'
-  gitEmail: 'CARML@microsoft.com'
+  pipelinePrincipalGitUserName: "CARMLPipelinePrincipal"
+  pipelinePrincipalGitUserEmail: "CARML@noreply.github.com"
 
 jobs:
   job_update_readme:
@@ -27,7 +27,6 @@ jobs:
         with:
           fetch-depth: 0
           token: '${{ secrets.PLATFORM_REPO_UPDATE_PAT }}' # Sets general GIT credentials up
-
       - name: "Update general ReadMe"
         shell: pwsh
         run: |
@@ -35,18 +34,18 @@ jobs:
           . "$env:GITHUB_WORKSPACE/.github/workflows/scripts/Set-GitHubReadMeModuleTable.ps1"
 
           $functionInput = @{
-            modulesPath    = Join-Path $env:GITHUB_WORKSPACE 'arm'
-            filePath       = Join-Path $env:GITHUB_WORKSPACE 'README.md'
-            organization   = ($env:GITHUB_REPOSITORY).split('/')[0]
-            repositoryName = ($env:GITHUB_REPOSITORY).split('/')[1]
-            columnsInOrder = @('Name', 'TemplateType', 'Status')
-            sortByColumn   = 'Name'
+            ModulesPath    = Join-Path $env:GITHUB_WORKSPACE 'arm'
+            FilePath       = Join-Path $env:GITHUB_WORKSPACE 'README.md'
+            Organization   = ($env:GITHUB_REPOSITORY).split('/')[0]
+            RepositoryName = ($env:GITHUB_REPOSITORY).split('/')[1]
+            ColumnsInOrder = @('Name', 'TemplateType', 'Status')
+            SortByColumn   = 'Name'
           }
 
           Write-Verbose "Invoke task with" -Verbose
           Write-Verbose ($functionInput | ConvertTo-Json | Out-String) -Verbose
 
-          Set-GitHubReadMeModuleTable @functionInput
+          Set-GitHubReadMeModuleTable @functionInput -Verbose
 
       - name: "Update module folder ReadMe"
         shell: pwsh
@@ -55,23 +54,23 @@ jobs:
           . "$env:GITHUB_WORKSPACE/.github/workflows/scripts/Set-GitHubReadMeModuleTable.ps1"
 
           $functionInput = @{
-            modulesPath    = Join-Path $env:GITHUB_WORKSPACE 'arm'
-            filePath       = Join-Path $env:GITHUB_WORKSPACE 'arm/README.md'
-            organization   = ($env:GITHUB_REPOSITORY).split('/')[0]
-            repositoryName = ($env:GITHUB_REPOSITORY).split('/')[1]
-            columnsInOrder = @('Name', 'ProviderNamespace','ResourceType','TemplateType')
+            ModulesPath    = Join-Path $env:GITHUB_WORKSPACE 'arm'
+            FilePath       = Join-Path $env:GITHUB_WORKSPACE 'arm/README.md'
+            Organization   = ($env:GITHUB_REPOSITORY).split('/')[0]
+            RepositoryName = ($env:GITHUB_REPOSITORY).split('/')[1]
+            ColumnsInOrder = @('Name', 'ProviderNamespace','ResourceType','TemplateType')
           }
 
           Write-Verbose "Invoke task with" -Verbose
           Write-Verbose ($functionInput | ConvertTo-Json | Out-String) -Verbose
 
-          Set-GitHubReadMeModuleTable @functionInput
+          Set-GitHubReadMeModuleTable @functionInput -Verbose
 
       - name: "Push changes"
         shell: pwsh
         run: |
-          git config --global user.email $env:gitEmail
-          git config --global user.name $env:gitUserName
+          git config --global user.email '${{ env.pipelinePrincipalGitUserEmail }}'
+          git config --global user.name '${{ env.pipelinePrincipalGitUserName }}'
 
           git pull
           git add .
