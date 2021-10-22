@@ -24,9 +24,7 @@ Converts bicep modules to json based ARM template, cleaning up all bicep files a
 #>
 [CmdletBinding(SupportsShouldProcess)]
 param (
-    [Parameter(Mandatory,
-        HelpMessage = 'Path to the ResourceModule repo folder'
-    )]
+    [Parameter(Mandatory)]
     [string] $Path,
 
     [Parameter()]
