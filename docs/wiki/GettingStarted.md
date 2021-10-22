@@ -2,53 +2,75 @@ This section will give on an overview on how to get started using this repositor
 
 ---
 ### _Navigation_
-- [What is a Resource Module?](#What-is-a-Resource-Module?)
-- [General prerequisites](#Prerequisites)
-  - [Tool installation](#Installation)
-  - [Use the repository](#Use-the-repository)
-    - [Clone / download](#Clone-/-download-the-repository)
-    - [Fork](#Fork-the-repository)
-    - [Reference directly](#Reference-the-content-directly)
-- [GitHub-specific prerequisites](#GitHub-specific-prerequisites)
+- [General prerequisites](#General-prerequisites)
+- [Where to start](#Where-to-start)
+  - [**How-to**: Use it as a basis to set up your own inner-source project](#How-to-Use-it-as-a-basis-to-set-up-your-own-inner-source-project)
+  - [**How-to**: Use it as a local reference to build bicep templates](#How-to-Use-it-as-a-local-reference-to-build-bicep-templates)
+  - [**How-to**: Use it as remote reference to re-use the bicep templates](#How-to-Use-it-as-remote-reference-to-re-use-the-bicep-templates)
 
 ---
 
-# What is a Resource Module?
-A Resource Module is a reusable building block. A Module encapsulates one or more Azure resources and their respective configurations for reuse in your Azure environment.
+Let us first answer the question what a Resource Module is:
+> A Resource Module is a reusable, template-based building block to deploy Azure resources. It encapsulates one or more Azure resources and their respective configurations for use in your Azure environment.
 
 # General prerequisites
 
-To be able to deploy [ARM][AzureResourceManager] templates you should have the latest version [PowerShell 7][PowerShellDocs] + [Azure Az Module][InstallAzPs] or [Azure CLI](<https://docs.microsoft.com/en-us/cli/azure/>) as well as [Bicep][Bicep] installed.
+No matter from where you start you have to account for some general prerequisites when it comes to bicep and this repository.
+To ensure you can use all the content in this repostiroy you'd want to install
+- The latest PowerShell version [PowerShell 7][PowerShellDocs]
+  ```PowerShell
+  # One-liner
+  Install-Module -Name Az -Scope CurrentUser -Repository PSGallery -Force
+  ```
+- The [Azure Az Module][InstallAzPs] / or at least modules such as `Az.Accounts` & `Az.Resources`
+  ```PowerShell
+  # One-liner
+  Install-Module -Name Az -Scope CurrentUser -Repository PSGallery -Force
+  ```
+- The [Azure CLI][AzCLI]
+  ```PowerShell
+  # Windows one-liner
+  iwr https://aka.ms/installazurecliwindows -OutFile .\AzureCLI.msi; start msiexec.exe -Wait -ArgumentList '/I AzureCLI.msi /quiet'; rm .\AzureCLI.msi
 
-## Installation
+  # Linux one-liner
+  curl -L https://aka.ms/InstallAzureCli | bash
+  ```
+- And of course [Bicep][Bicep]
 
-One-liner to install or update Azure CLI
+> ***Note***: This only affects the machine that would deploy or interact with the bicep templates (for example your local machine or a pipeline agent).
 
-```PowerShell
-# Windows
-iwr https://aka.ms/installazurecliwindows -OutFile .\AzureCLI.msi; start msiexec.exe -Wait -ArgumentList '/I AzureCLI.msi /quiet'; rm .\AzureCLI.msi
+# Where to start
 
-# Linux
-curl -L https://aka.ms/InstallAzureCli | bash
-```
+Depending on how you want to use this repositories content you may go down different paths to get started.
 
-One-liner to install or update PowerShell 7 on Windows 10
 
-```PowerShell
-iex "&amp; { $(irm https://aka.ms/install-powershell.ps1) } -UseMSI"
-Install-Module -Name Az -Scope CurrentUser -Repository PSGallery -Force
-```
 
-Make sure to install Azure Az Module as well.
+## **How-to**: Use it as a basis to set up your own inner-source project
 
-```PowerShell
-iex "&amp; { $(irm https://aka.ms/install-powershell.ps1) } -UseMSI"
-Install-Module -Name Az -Scope CurrentUser -Repository PSGallery -Force
-```
+### Fork the repository
 
-## Use the repository
+Alternativly, if you want to have a linked clone of the source repository in your own GitHub account, you can fork the repository instead. Still is also the preferred method to contribute back to this repository.
 
-You have several options to leverage the content of this repository:
+To fork the repostory you can simply click on the `Fork` button on the top right of the repository website. You can then select the Account you want to fork the repository to and are good to go.
+
+> ***Note***: To ensure your fork stays up to date you can select the 'Fetch upstream' button on your repository root page. This will trigger a process that fetches the latest changes from the source repository back to your fork.
+>
+> ***Note***: To also re-use the pipelines you may need to account for additional requirements as described below.
+
+### GitHub-specific prerequisites
+In case you want to not only leverage the module templates but actually re-use the implemented pipelines & testing framework as well you need to set up a few additional secrets in your GitHub environment.
+
+| Secret Name | Example | Description |
+| - | - | - |
+| `ARM_MGMTGROUP_ID` | `de33a0e7-64d9-4a94-8fe9-b018cedf1e05` | The ID of the management group to test deploy modules of that level in. |
+| `ARM_SUBSCRIPTION_ID` | `d0312b25-9160-4550-914f-8738d9b5caf5` | The ID of the subscription to test deploy modules of that level in. |
+| `ARM_TENANT_ID` | `9734cec9-4384-445b-bbb6-767e7be6e5ec` | The ID of the tenant to test deploy modules of that level in. |
+| `AZURE_CREDENTIALS` |  `{"clientId": "4ce8ce4c-cac0-48eb-b815-65e5763e2929", "clientSecret": "<placeholder>", "subscriptionId": "d0312b25-9160-4550-914f-8738d9b5caf5", "tenantId": "9734cec9-4384-445b-bbb6-767e7be6e5ec" }` | The login credentials to use to log into the target Azure environment to test in. |
+| `PLATFORM_REPO_UPDATE_PAT` | `<placeholder>` | A PAT with enough permissions assigned to it to push into the main branch. This PAT is leveraged by pipelines that automatically generate ReadMe files to keep them up to date |
+
+
+
+## **How-to**: Use it as a local reference to build bicep templates
 
 ### Clone / download the repository
 To save a local copy of the repository you can either clone the repository or download it as a `.zip` file.
@@ -64,39 +86,23 @@ If you instead just want to have a copy of the repository's content you can inst
 
  <img src="./media/cloneDownloadRepo.JPG" alt="How to download repository" height="266" width="295">
 
-### Fork the repository
 
-Alternativly, if you want to have a linked clone of the source repository in your own GitHub account, you can fork the repository instead. Still is also the preferred method to contribute back to this repository.
 
-To fork the repostory you can simply click on the `Fork` button on the top right of the repository website. You can then select the Account you want to fork the repository to and are good to go.
-
-> ***Note***: To ensure your fork stays up to date you can select the 'Fetch upstream' button on your repository root page. This will trigger a process that fetches the latest changes from the source repository back to your fork.
->
-> ***Note***: To also re-use the pipelines you may need to account for additional requirements as described below.
-
-### Reference the content directly
+## **How-to**: Use it as remote reference to reference the bicep templates
 
 Last but not least, instead of fetching your own copy of the repository you can also choose to just reference the content of the repository directly. This works as the repository is public and hence all file Urls are available without any sort of authentication.
 
 > ***Note***: In cases where you want to assemble your own template that references other modules you should not rely on direct links as they referencing files may receive breaking changes. Instead you should rely on published versions instead.
 
-# GitHub-specific prerequisites
-In case you want to not only leverage the module templates but actually re-use the implemented pipelines & testing framework as well you need to set up a few additional secrets in your GitHub environment.
 
-| Secret Name | Example | Description |
-| - | - | - |
-| `ARM_MGMTGROUP_ID` | `de33a0e7-64d9-4a94-8fe9-b018cedf1e05` | The ID of the management group to test deploy modules of that level in. |
-| `ARM_SUBSCRIPTION_ID` | `d0312b25-9160-4550-914f-8738d9b5caf5` | The ID of the subscription to test deploy modules of that level in. |
-| `ARM_TENANT_ID` | `9734cec9-4384-445b-bbb6-767e7be6e5ec` | The ID of the tenant to test deploy modules of that level in. |
-| `AZURE_CREDENTIALS` |  `{"clientId": "4ce8ce4c-cac0-48eb-b815-65e5763e2929", "clientSecret": "<placeholder>", "subscriptionId": "d0312b25-9160-4550-914f-8738d9b5caf5", "tenantId": "9734cec9-4384-445b-bbb6-767e7be6e5ec" }` | The login credentials to use to log into the target Azure environment to test in. |
-| `PLATFORM_REPO_UPDATE_PAT` | `<placeholder>` | A PAT with enough permissions assigned to it to push into the main branch. This PAT is leveraged by pipelines that automatically generate ReadMe files to keep them up to date |
 
 <!-- References -->
 
 <!-- External -->
-[Bicep]: <https://github.com/Azure/bicep>
+[Bicep]: <https://github.com/Azure/bicep/blob/main/docs/installing.md>
 [Az]: <https://img.shields.io/powershellgallery/v/Az.svg?style=flat-square&label=Az>
 [AzGallery]: <https://www.powershellgallery.com/packages/Az/>
+[AzCLI]: <https://docs.microsoft.com/en-us/cli/azure/>
 [PowerShellCore]: <https://github.com/PowerShell/PowerShell/releases/latest>
 [InstallAzPs]: <https://docs.microsoft.com/en-us/powershell/azure/install-az-ps>
 [AzureResourceManager]: <https://docs.microsoft.com/en-us/azure/azure-resource-manager/management/overview>
