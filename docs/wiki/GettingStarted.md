@@ -1,3 +1,5 @@
+# Getting started
+
 This section will give on an overview on how to get started using this repository.
 
 ---
@@ -13,7 +15,7 @@ This section will give on an overview on how to get started using this repositor
 Let us first answer the question what a Resource Module is:
 > A Resource Module is a reusable, template-based building block to deploy Azure resources. It encapsulates one or more Azure resources and their respective configurations for use in your Azure environment.
 
-# General prerequisites
+## General prerequisites
 
 No matter from where you start you have to account for some general prerequisites when it comes to bicep and this repository.
 To ensure you can use all the content in this repostiroy you'd want to install
@@ -39,16 +41,18 @@ To ensure you can use all the content in this repostiroy you'd want to install
 
 > ***Note***: This only affects the machine that would deploy or interact with the bicep templates (for example your local machine or a pipeline agent).
 
-# Where to start
+## Where to start
 
 Depending on how you want to use this repositories content you may go down different paths to get started.
 
 
-## **Option 1**: Use it as a basis to set up your own inner-source project
+### **Option 1**: Use it as a basis to set up your own inner-source project
 
 The repository is set up in a way that you can essentially create your own private 1:1 copy and would be able to re-use the same concepts and functionality in your own environment like GitHub. This set up is a 2-step process. First, you have to either 'Form' the repository to you own GitHub account, or move it to your desired location manually. And second you have to configure the environment, that is, you have to update all references to the original source respository to your own and also set up several secrets to point to the Azure environment of your choice.
 
-### Fork the repository
+Depending on the pipelines you use (e.g. GitHub workflows vs. Azure DevOps pipelines) make sure you also account for the specific requirements outlined below.
+
+#### Fork the repository
 
 If you want to have a linked clone of the source repository in your own GitHub account, you can fork the repository instead. Still is also the preferred method to contribute back to this repository.
 
@@ -60,7 +64,7 @@ To fork the repostory you can simply click on the `Fork` button on the top right
 
 Once forked, make sure you update all references to the original repository like for example any link that points to the original location.
 
-### GitHub-specific prerequisites
+#### GitHub-specific prerequisites
 In case you want to not only leverage the module templates but actually re-use the implemented pipelines & testing framework as well, you need to set up a few additional secrets in your GitHub environment:
 
 | Secret Name | Example | Description |
@@ -71,12 +75,13 @@ In case you want to not only leverage the module templates but actually re-use t
 | `AZURE_CREDENTIALS` |  `{"clientId": "4ce8ce4c-cac0-48eb-b815-65e5763e2929", "clientSecret": "<placeholder>", "subscriptionId": "d0312b25-9160-4550-914f-8738d9b5caf5", "tenantId": "9734cec9-4384-445b-bbb6-767e7be6e5ec" }` | The login credentials to use to log into the target Azure environment to test in. |
 | `PLATFORM_REPO_UPDATE_PAT` | `<placeholder>` | A PAT with enough permissions assigned to it to push into the main branch. This PAT is leveraged by pipelines that automatically generate ReadMe files to keep them up to date |
 
+The permissions that the principal needs differ between modules. Required permissions are in some cases documented in the modules readme. See [Azure/login](https://github.com/Azure/login) for more info about the secret creation.
 
-## **Option 2**: Use it as a local reference to build bicep templates
+### **Option 2**: Use it as a local reference to build bicep templates
 
 Instead of re-using the repository as-is you may opt to just save yourself a copy of the code. This may make sense if you want to havest the code for a larger setup that you assemble locally, or you may just want to keep it for reference. To do so, you essentially just have to download the repository like presented in the following:
 
-### Clone / download the repository
+#### Clone / download the repository
 To save a local copy of the repository you can either clone the repository or download it as a `.zip` file.
 A clone is a direct reference the the source repository which enables you to pull updates as they happen in the source repostory. To achive this you have to have `Git` installed and run the command
 
@@ -91,7 +96,7 @@ If you instead just want to have a copy of the repository's content you can inst
  <img src="./media/cloneDownloadRepo.JPG" alt="How to download repository" height="266" width="295">
 
 
-## **Option 3**: Use it as remote reference to reference the bicep templates
+### **Option 3**: Use it as remote reference to reference the bicep templates
 
 Last but not least, instead of fetching your own copy of the repository you can also choose to reference the content of the repository directly. This works as the repository is public and hence all file urls are available without any sort of authentication.
 

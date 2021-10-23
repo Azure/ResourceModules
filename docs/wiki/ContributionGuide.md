@@ -1,21 +1,14 @@
-## Contribution
+# Contribution
+This section outlines how you can contribute to the repository.
 
-### Setting up yopur environment for contribution
+---
+### _Navigation_
+- [Set your environment up](#Set-your-environment-up)
+---
 
-1. Fork and clone the repo.
-  * Set up a upstream, to pull from the Azure/ResourceModule repo (integration check before PR).
-   ```
-     git remote add upstream https://github.com/Azure/ResourceModules
-     git fetch upstream
-   ```
+## Set your environment up
 
-2. Set up a secret in your repo for `AZURE_CREDENTIALS` for testing changes with workflows in your own environment. The permissions that the SPN needs differ between modules. Required permissions are in some cases documented in the modules readme. See [Azure/login](https://github.com/Azure/login) for more info about the secret creation.
-
-3. Create a branch in your own repo and do the changes. The PR will be between your working fork/branch and <upstream>/main. For the PR, follow the PR template.
-
-4. Follow the guidelines below for the changes you do when converting/creating a module.
-  * To convert a json template to bicep use `bicep decompile deploy.json --outfile deploy.bicep`
-  * To convert from bicep to json use `bicep build deploy.bicep --outfile deploy.json`
+The preferred method of contribution requires you to create your own fork and create pull requests into the source repository from there. To set the fork up, please follow the process described in the [Getting started section](./GettingStarted#Option-1-Use-it-as-a-basis-to-set-up-your-own-inner-source-project)
 
 ### How to contribute a module?
 
