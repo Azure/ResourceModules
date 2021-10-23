@@ -50,23 +50,11 @@ Any use of third-party trademarks or logos are subject to those third-party's po
 
 <!-- References -->
 
-<!-- Local -->
-[ProjectSetup]: <https://docs.github.com/en/communities/setting-up-your-project-for-healthy-contributions>
+<!-- Local -->setting-up-your-project-for-healthy-contributions>
 [GitHubDocs]: <https://docs.github.com/>
-[AzureDevOpsDocs]: <https://docs.microsoft.com/en-us/azure/devops/?view=azure-devops>
 [GitHubIssues]: <https://github.com/Azure/Modules/issues>
-[Contributing]: CONTRIBUTING.md
-[AzureIcon]: docs/media/MicrosoftAzure-32px.png
-[PowershellIcon]: docs/media/MicrosoftPowerShellCore-32px.png
-[BashIcon]: docs/media/Bash_Logo_black_and_white_icon_only-32px.svg.png
-
-<!-- External -->
-[Bicep]: <https://github.com/Azure/bicep>
-[Az]: <https://img.shields.io/powershellgallery/v/Az.svg?style=flat-square&label=Az>
-[AzGallery]: <https://www.powershellgallery.com/packages/Az/>
-[PowerShellCore]: <https://github.com/PowerShell/PowerShell/releases/latest>
-[InstallAzPs]: <https://docs.microsoft.com/en-us/powershell/azure/install-az-ps>
 [AzureResourceManager]: <https://docs.microsoft.com/en-us/azure/azure-resource-manager/management/overview>
+[Bicep]: <https://github.com/Azure/bicep>
 
 <!-- Docs -->
 [MicrosoftAzureDocs]: <https://docs.microsoft.com/en-us/azure/>
