@@ -1,3 +1,5 @@
+# Testing Design
+
 This section gives you an overview of the design principals the testing follows.
 
 ---
@@ -6,10 +8,10 @@ This section gives you an overview of the design principals the testing follows.
 ---
 
 
-#  Approach
+##  Approach
 ...
 
-## Module Dependencies
+### Module Dependencies
 In order to successfully deploy and test all Modules in your desired environment some Modules have to have resources deployed beforehand.
 
 Of course it is obvious and by default one should know which Azure Service needs specific resources to be deployed beforehand but here is the full list of Modules which have dependencies on other Services.
@@ -17,7 +19,7 @@ Of course it is obvious and by default one should know which Azure Service needs
 > **Note**<br>
 If we speak from **Modules** in this context we mean the **Services** which get created from these Modules.
 
-### Services (in order)
+#### Services (in order)
 1. VirtualNetwork
 1. StorageAccounts
 1. KeyVault
@@ -37,7 +39,7 @@ If we speak from **Modules** in this context we mean the **Services** which get 
 1. Managed Service Identity
 1. Deployment Scripts
 
-### Overview of modules dependencies
+#### Overview of modules dependencies
 
 - ActivityLog
   - ActionGroup
@@ -98,7 +100,7 @@ If we speak from **Modules** in this context we mean the **Services** which get 
 - WvdApplications
   - WvdAppliccationGroups
 
-### Required Secrets and Keys
+#### Required Secrets and Keys
 
 1. KeyVault needs secrets to be created
    - administratorLogin for AzureSQLServer

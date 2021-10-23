@@ -1,3 +1,5 @@
+# Modules Design
+
 This section gives you an overview of the design principals the bicep modules follow.
 
 ---
@@ -6,7 +8,7 @@ This section gives you an overview of the design principals the bicep modules fo
 ---
 
 
-# Bicep module authoring guidelines
+## Bicep module authoring guidelines
 
 Files and folders within the module folder are all in lower case.
 

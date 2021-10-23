@@ -1,3 +1,5 @@
+# Testing Usage
+
 This section gives you an overview of how to test the bicep modules.
 
 ---
@@ -5,7 +7,7 @@ This section gives you an overview of how to test the bicep modules.
 - [Tool: Testing your Bicep module](#Tool-Testing-your-Bicep-module)
 ---
 
-# Tool: Testing your Bicep module
+## Tool: Testing your Bicep module
 
 When you have done your changes and want to validate, run the following:
 
