@@ -50,7 +50,7 @@ Any use of third-party trademarks or logos are subject to those third-party's po
 
 <!-- References -->
 
-<!-- Local -->setting-up-your-project-for-healthy-contributions>
+<!-- Local -->
 [GitHubDocs]: <https://docs.github.com/>
 [GitHubIssues]: <https://github.com/Azure/Modules/issues>
 [AzureResourceManager]: <https://docs.microsoft.com/en-us/azure/azure-resource-manager/management/overview>
