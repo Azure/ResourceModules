@@ -4,13 +4,14 @@ This section outlines how you can contribute to the repository.
 ---
 ### _Navigation_
 - [Set your environment up](#Set-your-environment-up)
+- [How to contribute a module?](#How-to-contribute-a-module?)
 ---
 
 ## Set your environment up
 
 The preferred method of contribution requires you to create your own fork and create pull requests into the source repository from there. To set the fork up, please follow the process described in the [Getting started section](./GettingStarted#Option-1-Use-it-as-a-basis-to-set-up-your-own-inner-source-project)
 
-### How to contribute a module?
+## How to contribute a module?
 
 Modules in the repository are structured via the module's main resource provider (e.g. `Microsoft.Web/serverfarms`) where each section corresponds to its place in the hierarchy. However, for cases that do not fit into this schema we provide the following guidance:
 - **Sub-Resources**<p>
