@@ -177,25 +177,25 @@ Get-TimeZone -ListAvailable | Select Id
 
 ```json
 "windowsConfiguration": {
-    "provisionVMAgent": "boolean",
-    "enableAutomaticUpdates": "boolean",
-    "timeZone": "string",
-    "additionalUnattendContent": [
-        {
-        "passName": "OobeSystem",
-        "componentName": "Microsoft-Windows-Shell-Setup",
-        "settingName": "string",
-        "content": "string"
-        }
-    ],
-    "winRM": {
-        "listeners": [
-        {
-            "protocol": "string",
-            "certificateUrl": "string"
-        }
-        ]
+  "provisionVMAgent": "boolean",
+  "enableAutomaticUpdates": "boolean",
+  "timeZone": "string",
+  "additionalUnattendContent": [
+    {
+      "passName": "OobeSystem",
+      "componentName": "Microsoft-Windows-Shell-Setup",
+      "settingName": "string",
+      "content": "string"
     }
+  ],
+  "winRM": {
+    "listeners": [
+      {
+        "protocol": "string",
+        "certificateUrl": "string"
+      }
+    ]
+  }
 }
 ```
 
@@ -237,154 +237,227 @@ Get-TimeZone -ListAvailable | Select Id
 The field `nicSuffix` and `subnetId` are mandatory. If `enablePublicIP` is set to true, then `publicIpNameSuffix` is also mandatory. Each IP config needs to have the mandatory field `name`.
 
 ```json
-"value": [{
-    "nicSuffix": "-nic-01",
-    "enableIPForwarding": false,
-    "enableAcceleratedNetworking": false,
-    "dnsServers": [
-        "8.8.8.8"
-    ],
-    "ipConfigurations": [{
-            "name": "ipconfig1",
-            "vmIPAddress": "",
-            "subnetId": "/subscriptions/12345678-1234-1234-1234-123456789012/resourceGroups/rgName/providers/Microsoft.Network/virtualNetworks/vnetName/subnets/subnetName",
-            "enablePublicIP": true,
+"nicConfigurations": {
+  "value": [
+    {
+      "nicSuffix": "-nic-01",
+      "ipConfigurations": [
+        {
+          "name": "ipconfig1",
+          "subnetId": "/subscriptions/<subscriptionId>/resourceGroups/<resourceGroupName>/providers/Microsoft.Network/virtualNetworks/<vNetName>/subnets/<subnetName>",
+          "pipConfiguration": {
             "publicIpNameSuffix": "-pip-01",
-            "publicIPPrefixId": "/subscriptions/12345678-1234-1234-1234-123456789012/resourceGroups/rgName/providers/Microsoft.Network/publicIPPrefixes/pippfx-europe",
-            "loadBalancerBackendAddressPools": "",
-            "applicationSecurityGroups": ""
+            "roleAssignments": [
+              {
+                "roleDefinitionIdOrName": "Reader",
+                "principalIds": [
+                  "<principalId>"
+                ]
+              }
+            ]
+          }
         },
         {
-            "name": "ipconfig2",
-            "vmIPAddress": "",
-            "subnetId": "/subscriptions/12345678-1234-1234-1234-123456789012/resourceGroups/rgName/providers/Microsoft.Network/virtualNetworks/vnetName/subnets/subnetName",
-            "enablePublicIP": false,
-            "publicIpNameSuffix": "",
-            "loadBalancerBackendAddressPools": "",
-            "applicationSecurityGroups": ""
+          "name": "ipconfig2",
+          "subnetId": "/subscriptions/<subscriptionId>/resourceGroups/<resourceGroupName>/providers/Microsoft.Network/virtualNetworks/<vNetName>/subnets/<subnetName>",
         }
-    ]
-},
-{
-    "nicSuffix": "-nic-02",
-    "enableIPForwarding": false,
-    "enableAcceleratedNetworking": false,
-    "dnsServers": [
-        "8.8.8.8"
-    ],
-    "ipConfigurations": [{
-        "name": "ipconfig1",
-        "vmIPAddress": "",
-        "subnetId": "/subscriptions/12345678-1234-1234-1234-123456789012/resourceGroups/rgName/providers/Microsoft.Network/virtualNetworks/vnetName/subnets/subnetName",
-        "enablePublicIP": true,
-        "publicIpNameSuffix": "-pip-02",
-        "loadBalancerBackendPoolId": "",
-        "applicationSecurityGroupId": ""
-    }]
+      ],
+      "nsgId": "/subscriptions/<subscriptionId>/resourceGroups/<resourceGroupName>/providers/Microsoft.Network/networkSecurityGroups/<nsgName>",
+      "roleAssignments": [
+        {
+          "roleDefinitionIdOrName": "Reader",
+          "principalIds": [
+            "<principalId>"
+          ]
+        }
+      ]
+    },
+    {
+      "nicSuffix": "-nic-02",
+      "ipConfigurations": [
+        {
+          "name": "ipconfig1",
+          "subnetId": "/subscriptions/<subscriptionId>/resourceGroups/<resourceGroupName>/providers/Microsoft.Network/virtualNetworks/<vNetName>/subnets/<subnetName>",
+          "pipConfiguration": {
+            "publicIpNameSuffix": "-pip-02"
+          }
+        },
+        {
+          "name": "ipconfig2",
+          "subnetId": "/subscriptions/<subscriptionId>/resourceGroups/<resourceGroupName>/providers/Microsoft.Network/virtualNetworks/<vNetName>/subnets/<subnetName>",
+          "privateIPAllocationMethod": "Static",
+          "vmIPAddress": "10.0.0.9"
+        }
+      ]
+    }
+  ]
 }
-]
+```
+
+### Parameter Usage: `domainJoinSettings`
+
+```json
+"enableDomainJoinExtension": {
+  "value": true
+},
+"domainJoinSettings": {
+  "value": {
+    "settings": {
+      "domainName": "contoso.com",
+      "domainJoinUser": "domainJoinUser@contoso.com",
+      "domainJoinOU": "OU=testOU; DC=contoso; DC=com",
+      "domainJoinRestart": true,
+      "domainJoinOptions": 3
+    }
+  }
+},
+"domainJoinPassword": {
+  "keyVault": {
+    "id": "/subscriptions/62826c76-d304-46d8-a0f6-718dbdcc536c/resourceGroups/WVD-Mgmt-TO-RG/providers/Microsoft.KeyVault/vaults/wvd-to-kvlt"
+  },
+  "secretName": "domainJoinUser02-Password"
+}
+```
 
 ### Parameter Usage: `microsoftAntiMalwareSettings`
 
 ```json
+"enableMicrosoftAntiMalware": {
+  "value": true
+},
 "microsoftAntiMalwareSettings": {
-    "AntimalwareEnabled": true,
-    "Exclusions": {
+  "value": {
+    "settings": {
+      "AntimalwareEnabled": true,
+      "Exclusions": {
         "Extensions": ".log;.ldf",
         "Paths": "D:\\IISlogs;D:\\DatabaseLogs",
         "Processes": "mssence.svc"
-    },
-    "RealtimeProtectionEnabled": true,
-    "ScheduledScanSettings": {
+      },
+      "RealtimeProtectionEnabled": true,
+      "ScheduledScanSettings": {
         "isEnabled": "true",
         "scanType": "Quick",
         "day": "7",
         "time": "120"
+      }
     }
+  }
+}
+```
+
+### Parameter Usage: `diskEncryptionSettings`
+
+```json
+"enableWindowsDiskEncryption": {
+  "value": true
+},
+"diskEncryptionSettings": {
+  "value": {
+    "settings": {
+      "EncryptionOperation": "EnableEncryption",
+      "KeyVaultURL": "https://adp-sxx-az-kv-weu-x-001.vault.azure.net/",
+      "KeyVaultResourceId": "/subscriptions/8629be3b-96bc-482d-a04b-ffff597c65a2/resourceGroups/validation-rg/providers/Microsoft.KeyVault/vaults/adp-sxx-az-kv-weu-x-001",
+      "KeyEncryptionKeyURL": "https://adp-sxx-az-kv-weu-x-001.vault.azure.net/keys/keyEncryptionKey/685153483a1140e3856f004a753e1ab4",
+      "KekVaultResourceId": "/subscriptions/8629be3b-96bc-482d-a04b-ffff597c65a2/resourceGroups/validation-rg/providers/Microsoft.KeyVault/vaults/adp-sxx-az-kv-weu-x-001",
+      "KeyEncryptionAlgorithm": "RSA-OAEP", //'RSA-OAEP'/'RSA-OAEP-256'/'RSA1_5'
+      "VolumeType": "All", //'OS'/'Data'/'All'
+      "ResizeOSDisk": "false"
+    }
+  }
+}
+```
+
+### Parameter Usage: `desiredStateConfigurationSettings`
+
+```json
+"enableDesiredStateConfiguration": {
+  "value": true
+},
+"desiredStateConfigurationSettings": {
+  "value": {
+    {
+      "wmfVersion": "latest",
+      "configuration": {
+        "url": "http://validURLToConfigLocation",
+        "script": "ConfigurationScript.ps1",
+        "function": "ConfigurationFunction"
+      },
+      "configurationArguments": {
+        "argument1": "Value1",
+        "argument2": "Value2"
+      },
+      "configurationData": {
+        "url": "https://foo.psd1"
+      },
+      "privacy": {
+        "dataCollection": "enable"
+      },
+      "advancedOptions": {
+        "forcePullAndApply": false,
+        "downloadMappings": {
+          "specificDependencyKey": "https://myCustomDependencyLocation"
+        }
+      }
+    },
+    "protectedSettings": {
+      "configurationArguments": {
+        "mySecret": "MyPlaceholder"
+      },
+      "configurationUrlSasToken": "MyPlaceholder",
+      "configurationDataUrlSasToken": "MyPlaceholder"
+    }
+  }
 }
 ```
 
 ### Parameter Usage: `windowsScriptExtensionFileData`
 
 ```json
+"enableCustomScriptExtension": {
+  "value": true
+},
 "windowsScriptExtensionFileData": {
-    "value": [
-        //storage accounts with SAS token requirement
-        {
-            "uri": "https://storageAccount.blob.core.windows.net/avdscripts/File1.ps1",
-            "storageAccountId": "/subscriptions/12345678-1234-1234-1234-123456789012/resourceGroups/rgName/providers/Microsoft.Storage/storageAccounts/storageAccountName"
-        },
-        {
-            "uri": "https://storageAccount.blob.core.windows.net/avdscripts/File2.ps1",
-            "storageAccountId": "/subscriptions/12345678-1234-1234-1234-123456789012/resourceGroups/rgName/providers/Microsoft.Storage/storageAccounts/storageAccountName"
-        },
-        //storage account with public container (no SAS token is required) OR other public URL (not a storage account)
-        {
-            "uri": "https://github.com/myProject/File3.ps1",
-            "storageAccountId": ""
-        }
-    ]
+  "value": [
+    //storage accounts with SAS token requirement
+    {
+      "uri": "https://storageAccount.blob.core.windows.net/avdscripts/File1.ps1",
+      "storageAccountId": "/subscriptions/12345678-1234-1234-1234-123456789012/resourceGroups/rgName/providers/Microsoft.Storage/storageAccounts/storageAccountName"
+    },
+    {
+      "uri": "https://storageAccount.blob.core.windows.net/avdscripts/File2.ps1",
+      "storageAccountId": "/subscriptions/12345678-1234-1234-1234-123456789012/resourceGroups/rgName/providers/Microsoft.Storage/storageAccounts/storageAccountName"
+    },
+    //storage account with public container (no SAS token is required) OR other public URL (not a storage account)
+    {
+      "uri": "https://github.com/myProject/File3.ps1",
+      "storageAccountId": ""
+    }
+  ]
 }
 ```
 
 ### Parameter Usage: `windowsScriptExtensionFileData` with native storage account key support
 
 ```json
+"enableCustomScriptExtension": {
+  "value": true
+},
 "windowsScriptExtensionFileData": {
-    "value": [
-        {
-            "https://mystorageaccount.blob.core.windows.net/avdscripts/testscript.ps1"
-        }
-    ]
+  "value": [
+    {
+      "https://mystorageaccount.blob.core.windows.net/avdscripts/testscript.ps1"
+    }
+  ]
 },
 "windowsScriptExtensionCommandToExecute": {
-   "value": "powershell -ExecutionPolicy Unrestricted -File testscript.ps1"
+  "value": "powershell -ExecutionPolicy Unrestricted -File testscript.ps1"
 },
 "cseStorageAccountName": {
-   "value": "mystorageaccount"
+  "value": "mystorageaccount"
 },
 "cseStorageAccountKey": {
   "value": "MyPlaceholder"
-}
-```
-
-### Parameter Usage: `dscConfiguration`
-
-```json
-"dscConfiguration": {
-    "value": {
-        "settings": {
-            "wmfVersion": "latest",
-            "configuration": {
-                "url": "http://validURLToConfigLocation",
-                "script": "ConfigurationScript.ps1",
-                "function": "ConfigurationFunction"
-            },
-            "configurationArguments": {
-                "argument1": "Value1",
-                "argument2": "Value2"
-            },
-            "configurationData": {
-                "url": "https://foo.psd1"
-            },
-            "privacy": {
-                "dataCollection": "enable"
-            },
-            "advancedOptions": {
-                "forcePullAndApply": false,
-                "downloadMappings": {
-                    "specificDependencyKey": "https://myCustomDependencyLocation"
-                }
-            }
-        },
-        "protectedSettings": {
-            "configurationArguments": {
-                "mySecret": "MyPlaceholder"
-            },
-            "configurationUrlSasToken": "MyPlaceholder",
-            "configurationDataUrlSasToken": "MyPlaceholder"
-        }
-    }
 }
 ```
 
@@ -393,13 +466,6 @@ The field `nicSuffix` and `subnetId` are mandatory. If `enablePublicIP` is set t
 ```json
 "roleAssignments": {
     "value": [
-        {
-            "roleDefinitionIdOrName": "Desktop Virtualization User",
-            "principalIds": [
-                "12345678-1234-1234-1234-123456789012", // object 1
-                "78945612-1234-1234-1234-123456789012" // object 2
-            ]
-        },
         {
             "roleDefinitionIdOrName": "Reader",
             "principalIds": [
@@ -434,8 +500,8 @@ Tag names and tag values can be provided as needed. A tag can be left without a 
 }
 ```
 
-
 ## Outputs
+
 | Output Name                   | Type   | Description                                           |
 | :---------------------------- | :----- | :---------------------------------------------------- |
 | `virtualMachineName`          | string | The name of the VM.                                   |

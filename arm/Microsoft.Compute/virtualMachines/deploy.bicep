@@ -157,9 +157,9 @@ param enableDomainJoinExtension bool = false
 
 @description('Optional. The Domain Join configuration object')
 @metadata({
-  domainName: 'Optional. Mandatory if enableDomainJoinExtension is set to true. Specifies the FQDN the of the domain the VM will be joined to. Currently implemented for Windows VMs only'
-  domainJoinUser: 'Optional. Mandatory if enableDomainJoinExtension is set to true. User used for the join to the domain. Format: username@domainFQDN'
-  domainJoinOU: 'Optional. Specifies an organizational unit (OU) for the domain account. Enter the full distinguished name of the OU in quotation marks. Example: "OU=testOU; DC=domain; DC=Domain; DC=com"'
+  domainName: 'Optional. Mandatory if enableDomainJoinExtension is set to true. Specifies the FQDN the of the domain the VM will be joined to. Currently implemented for Windows VMs only. Example: "contoso.com"'
+  domainJoinUser: 'Optional. Mandatory if enableDomainJoinExtension is set to true. User used for the join to the domain. Example: "username@contoso.com"'
+  domainJoinOU: 'Optional. Specifies an organizational unit (OU) for the domain account. Enter the full distinguished name of the OU in quotation marks. Example: "OU=testOU; DC=domain; DC=com"'
   domainJoinRestart: 'Optional. Controls the restart of vm after executing domain join'
   domainJoinOptions: 'Optional. Set of bit flags that define the join options. Example: 3 is a combination of NETSETUP_JOIN_DOMAIN (0x00000001) & NETSETUP_ACCT_CREATE (0x00000002) i.e. will join the domain and create the account on the domain. For more information see https://msdn.microsoft.com/en-us/library/aa392154(v=vs.85).aspx'
 })
