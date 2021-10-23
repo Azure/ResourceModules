@@ -43,8 +43,8 @@ runs:
       run: |
         # Array to Process
         @(
-            @{ Replace = '_SUBSCRIPTIONID1_'; With = ${{ inputs.subscriptionId }} }
-            @{ Replace = '_MANAGEMENTGROUPID1_'; With = ${{ inputs.managementGroupId }} }
+            @{ Replace = '_SUBSCRIPTIONID1_'; With = '${{ inputs.subscriptionId }}' }
+            @{ Replace = '_MANAGEMENTGROUPID1_'; With = '${{ inputs.managementGroupId }}' }
         ) | ForEach-Object {
             $file = (Get-Content -Path ${{ inputs.parameterFilePath }}).Replace($PSItem.Replace, $PSItem.With)
             $file | Set-Content ${{ inputs.parameterFilePath }}
