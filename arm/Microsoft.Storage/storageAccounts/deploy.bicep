@@ -66,13 +66,25 @@ param networkAcls object = {}
 param blobContainers array = []
 
 @description('Optional. Indicates whether DeleteRetentionPolicy is enabled for the Blob service.')
-param deleteRetentionPolicy bool = true
+param blobServicesDeleteRetentionPolicy bool = true
 
 @description('Optional. Indicates the number of days that the deleted blob should be retained. The minimum specified value can be 1 and the maximum value can be 365.')
-param deleteRetentionPolicyDays int = 7
+param blobServicesDeleteRetentionPolicyDays int = 7
 
 @description('Optional. Automatic Snapshot is enabled if set to true.')
-param automaticSnapshotPolicyEnabled bool = false
+param blobServicesAutomaticSnapshotPolicyEnabled bool = false
+
+@description('Sets the CORS rules. You can include up to five CorsRule elements in the request.')
+param fileServicesCors object = {}
+
+@description('Protocol settings for file service')
+param fileServicesProtocolSettings object = {}
+
+@description('The service properties for soft delete.')
+param fileServicesShareDeleteRetentionPolicy object = {
+  enabled: true
+  days: 7
+}
 
 @description('Optional. Indicates whether public access is enabled for all blobs or containers in the storage account.')
 param allowBlobPublicAccess bool = true
@@ -291,39 +303,29 @@ module storageAccount_privateEndpoints './.bicep/nested_privateEndpoint.bicep' =
 }]
 
 // Containers
-resource storageAccount_nested_blob_services 'Microsoft.Storage/storageAccounts/blobServices@2021-08-01' = if (!empty(blobContainers)) {
-  name: 'default'
-  parent: storageAccount
-  properties: {
-    deleteRetentionPolicy: {
-      enabled: deleteRetentionPolicy
-      days: deleteRetentionPolicyDays
-    }
-    automaticSnapshotPolicyEnabled: automaticSnapshotPolicyEnabled
+module blobService 'blobServices/deploy.bicep' = if (!empty(blobContainers)) {
+  name: '${uniqueString(deployment().name, location)}-Storage-BlobServices'
+  params: {
+    blobContainers: blobContainers
+    storageAccountName: storageAccount.name
+    location: location
+    automaticSnapshotPolicyEnabled: blobServicesAutomaticSnapshotPolicyEnabled
+    deleteRetentionPolicy: blobServicesDeleteRetentionPolicy
+    deleteRetentionPolicyDays: blobServicesDeleteRetentionPolicyDays
   }
 }
 
-module storageAccount_nested_blob_container './.bicep/nested_container.bicep' = [for (blobContainer, index) in blobContainers: if (!empty(blobContainers)) {
-  name: '${uniqueString(deployment().name, location)}-Storage-Container-${(empty(blobContainers) ? 'dummy' : index)}'
-  params: {
-    blobContainer: blobContainer
-    builtInRoleNames: builtInRoleNames
-    storageAccountName: storageAccount.name
-  }
-  dependsOn: [
-    storageAccount_nested_blob_services
-  ]
-}]
-
 // File Shares
-module storageAccount_nested_fileShare './.bicep/nested_fileShare.bicep' = [for (fileShare, index) in fileShares: if (!empty(fileShares)) {
-  name: '${uniqueString(deployment().name, location)}-Storage-FileShare-${(empty(fileShares) ? 'dummy' : index)}'
+module storageAccount_nested_fileShare './fileServices/deploy.bicep' = if (!empty(fileShares)) {
+  name: '${uniqueString(deployment().name, location)}-Storage-FileShareServices'
   params: {
-    fileShareObj: fileShare
-    builtInRoleNames: builtInRoleNames
+    cors: fileServicesCors
+    protocolSettings: fileServicesProtocolSettings
+    shareDeleteRetentionPolicy: fileServicesShareDeleteRetentionPolicy
+    fileShares: fileShares
     storageAccountName: storageAccount.name
   }
-}]
+}
 
 // Queue
 module storageAccount_nested_queue './.bicep/nested_queue.bicep' = [for (queue, index) in queues: if (!empty(queues)) {
