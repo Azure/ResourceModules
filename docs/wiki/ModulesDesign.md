@@ -4,11 +4,18 @@ This section gives you an overview of the design principals the bicep modules fo
 
 ---
 ### _Navigation_
-- [General guidelines](#General-guidelines)
-- [File & folder structure](#File-&-folder-structure)
-  - [Naming](#Naming)
-  - [Structure](#Structure)
-- [Bicep template guidelines](#Bicep-template-guidelines)
+- [Modules Design](#modules-design)
+    - [_Navigation_](#navigation)
+  - [- Bicep template guidelines](#--bicep-template-guidelines)
+  - [General guidelines](#general-guidelines)
+  - [File & folder structure](#file--folder-structure)
+    - [Naming](#naming)
+    - [Structure](#structure)
+  - [Bicep template guidelines](#bicep-template-guidelines)
+    - [Parameters](#parameters)
+    - [Variables](#variables)
+    - [Resource](#resource)
+    - [Outputs](#outputs)
 ---
 
 Modules are written in an quite flexible way, therefore you don’t need to modify them from project to project, as the aim is to cover most of the functionality that a given resource type can provide, in a way that you can interact with any module just by sending the required parameters to it – i.e. you don’t have to know how the template of the particular module works inside, just take a look at the readme.md file of the given module to consume it.
