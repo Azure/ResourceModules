@@ -12,13 +12,13 @@
             "value": "adp-sxx-az-vnet-weu-x-001"
         },
         "subnetName": {
-            "value": "sxx-az-subnet-weu-x-006"
+            "value": "sxx-az-subnet-weu-x-007"
         },
         "vNetResourceGroup": {
             "value": "validation-rg"
         },
         "frontendPrivateIpAddress": {
-            "value": "10.0.7.6"
+            "value": "10.0.8.6"
         },
         "frontendPublicIpResourceId": {
             "value": "/subscriptions/8629be3b-96bc-482d-a04b-ffff597c65a2/resourceGroups/validation-rg/providers/Microsoft.Network/publicIPAddresses/adp-sxx-az-pip-weu-x-apgw"
