@@ -433,7 +433,7 @@ resource virtualMachine 'Microsoft.Compute/virtualMachines@2021-04-01' = {
   ]
 }
 
-module virtualMachine_djExtension './.bicep/nested_extension.bicep' = if (enableDomainJoinExtension) {
+module virtualMachine_domainJoinExtension './.bicep/nested_extension.bicep' = if (enableDomainJoinExtension) {
   name: '${deployment().name}-DomainJoin'
   params: {
     virtualMachineName: virtualMachine.name
@@ -448,7 +448,7 @@ module virtualMachine_djExtension './.bicep/nested_extension.bicep' = if (enable
   }
 }
 
-module virtualMachine_mamExtension './.bicep/nested_extension.bicep' = if (enableMicrosoftAntiMalware) {
+module virtualMachine_microsoftAntiMalwareExtension './.bicep/nested_extension.bicep' = if (enableMicrosoftAntiMalware) {
   name: '${deployment().name}-MicrosoftAntiMalware'
   params: {
     virtualMachineName: virtualMachine.name
@@ -462,12 +462,12 @@ module virtualMachine_mamExtension './.bicep/nested_extension.bicep' = if (enabl
   }
 }
 
-resource virtualMachine_workspace 'Microsoft.OperationalInsights/workspaces@2021-06-01' existing = if (!empty(workspaceId)) {
+resource virtualMachine_logAnalyticsWorkspace 'Microsoft.OperationalInsights/workspaces@2021-06-01' existing = if (!empty(workspaceId)) {
   name: last(split(workspaceId, '/'))
   scope: resourceGroup(split(workspaceId, '/')[2], split(workspaceId, '/')[4])
 }
 
-module virtualMachine_mmaExtension './.bicep/nested_extension.bicep' = if (enableWindowsMMAAgent || enableLinuxMMAAgent) {
+module virtualMachine_microsoftMonitoringAgentExtension './.bicep/nested_extension.bicep' = if (enableWindowsMMAAgent || enableLinuxMMAAgent) {
   name: '${deployment().name}-MicrosoftMonitoringAgent'
   params: {
     virtualMachineName: virtualMachine.name
@@ -486,7 +486,7 @@ module virtualMachine_mmaExtension './.bicep/nested_extension.bicep' = if (enabl
   }
 }
 
-module virtualMachine_daExtension './.bicep/nested_extension.bicep' = if (enableWindowsDependencyAgent || enableLinuxDependencyAgent) {
+module virtualMachine_dependencyAgentExtension './.bicep/nested_extension.bicep' = if (enableWindowsDependencyAgent || enableLinuxDependencyAgent) {
   name: '${deployment().name}-DependencyAgent'
   params: {
     virtualMachineName: virtualMachine.name
@@ -499,7 +499,7 @@ module virtualMachine_daExtension './.bicep/nested_extension.bicep' = if (enable
   }
 }
 
-module virtualMachine_nwExtension './.bicep/nested_extension.bicep' = if (enableNetworkWatcherWindows || enableNetworkWatcherLinux) {
+module virtualMachine_networkWatcherAgentExtension './.bicep/nested_extension.bicep' = if (enableNetworkWatcherWindows || enableNetworkWatcherLinux) {
   name: '${deployment().name}-NetworkWatcherAgent'
   params: {
     virtualMachineName: virtualMachine.name
@@ -512,11 +512,11 @@ module virtualMachine_nwExtension './.bicep/nested_extension.bicep' = if (enable
   }
 }
 
-module virtualMachine_deExtension './.bicep/nested_extension.bicep' = if (enableWindowsDiskEncryption || enableLinuxDiskEncryption) {
-  name: '${deployment().name}-WindowsDiskEncryption'
+module virtualMachine_diskEncryptionExtension './.bicep/nested_extension.bicep' = if (enableWindowsDiskEncryption || enableLinuxDiskEncryption) {
+  name: '${deployment().name}-DiskEncryption'
   params: {
     virtualMachineName: virtualMachine.name
-    extensionName: 'WindowsDiskEncryption'
+    extensionName: 'DiskEncryption'
     location: location
     publisher: 'Microsoft.Azure.Security'
     type: enableWindowsDiskEncryption ? 'AzureDiskEncryption' : 'AzureDiskEncryptionForLinux'
@@ -527,11 +527,11 @@ module virtualMachine_deExtension './.bicep/nested_extension.bicep' = if (enable
   }
 }
 
-module virtualMachine_dscExtension './.bicep/nested_extension.bicep' = if (enableDesiredStateConfiguration) {
-  name: '${deployment().name}-WindowsDsc'
+module virtualMachine_desiredStateConfigurationExtension './.bicep/nested_extension.bicep' = if (enableDesiredStateConfiguration) {
+  name: '${deployment().name}-DesiredStateConfiguration'
   params: {
     virtualMachineName: virtualMachine.name
-    extensionName: 'WindowsDsc'
+    extensionName: 'DesiredStateConfiguration'
     location: location
     publisher: 'Microsoft.Powershell'
     type: 'DSC'
@@ -542,8 +542,8 @@ module virtualMachine_dscExtension './.bicep/nested_extension.bicep' = if (enabl
   }
 }
 
-module virtualMachine_cseExtension './.bicep/nested_extension.bicep' = if (enableCustomScriptExtension) {
-  name: '${deployment().name}-CSE'
+module virtualMachine_customScriptExtension './.bicep/nested_extension.bicep' = if (enableCustomScriptExtension) {
+  name: '${deployment().name}-CustomScriptExtension'
   params: {
     virtualMachineName: virtualMachine.name
     extensionName: 'CustomScriptExtension'
@@ -574,14 +574,14 @@ module virtualMachine_backup './.bicep/nested_backup.bicep' = if (!empty(backupV
   }
   scope: resourceGroup(backupVaultResourceGroup)
   dependsOn: [
-    virtualMachine_djExtension
-    virtualMachine_mmaExtension
-    virtualMachine_mamExtension
-    virtualMachine_nwExtension
-    virtualMachine_daExtension
-    virtualMachine_deExtension
-    virtualMachine_dscExtension
-    virtualMachine_cseExtension
+    virtualMachine_domainJoinExtension
+    virtualMachine_microsoftMonitoringAgentExtension
+    virtualMachine_microsoftAntiMalwareExtension
+    virtualMachine_networkWatcherAgentExtension
+    virtualMachine_dependencyAgentExtension
+    virtualMachine_dependencyAgentExtension
+    virtualMachine_desiredStateConfigurationExtension
+    virtualMachine_customScriptExtension
   ]
 }
 
