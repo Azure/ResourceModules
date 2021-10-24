@@ -4,7 +4,8 @@ This section gives you an overview of the design principals the pipelines follow
 
 ---
 ### _Navigation_
-- [...](#...)
+- [Validation prerequisites](#Validation-prerequisites)
+- [Why do I have to validate deployments of modules?](#Why-do-I-have-to-validate-deployments-of-modules?)
 ---
 
 
@@ -23,6 +24,6 @@ Using this flow, validated modules can be consumed by other any consumer / templ
 A _"Sandbox"_ or _"Engineering"_ **validation subscription** (in Azure) has to be used to test if the modules (or other components) are deployable. This subscription must not have connectivity to any on-premises or other Azure networks.
 The module validation pipelines use an Azure Active Directory Service Principal (AAD SPN) to authenticate to the validation subscription and run the test deployments of the modules.
 
-## Why do I have to validate deployments of Modules?
+## Why do I have to validate deployments of modules?
 
 Since every customer environment might be different due to applied Azure Policies or security policies, modules might behave differently or naming conventions need to be tested and applied beforehand.
