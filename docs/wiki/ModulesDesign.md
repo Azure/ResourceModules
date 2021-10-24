@@ -71,59 +71,60 @@ Modules in the repository are structured via the module's main resource provider
      └─ functionApp [module]
   ```
 
+  > ***Note:*** The intend should always be to add new logic to the original template instead of adding artificial new modules. Hence, this solution should only be applied if no other solutions work.
 
 ## Bicep template guidelines
 
 Within a bicep file, follow the following conventions:
 
-- Parameters:
-  - camelCase, i.e `resourceGroupName`
-  - Descriptions contain type of requirement:
-    - `Optional` - Is not needed at any point. Module contains default values.
-    - `Required` - Is required to be provided. Module does not have a default value and will expect input.
-    - `Generated` - Should not be used to provide a parameter. Used to generate data used in the deployment that cannot be generated other places in the template. i.e. the `utcNow()` function.
-    - `Conditional` - Optional or required parameter depending on other inputs.
+### Parameters
+- camelCase, i.e `resourceGroupName`
+- Descriptions contain type of requirement:
+  - `Optional` - Is not needed at any point. Module contains default values.
+  - `Required` - Is required to be provided. Module does not have a default value and will expect input.
+  - `Generated` - Should not be used to provide a parameter. Used to generate data used in the deployment that cannot be generated other places in the template. i.e. the `utcNow()` function.
+  - `Conditional` - Optional or required parameter depending on other inputs.
 
-- Variables:
-  - camelCase, i.e `builtInRoleNames`
-  - For modules that manage roleAssignments, update the list of roles to only be the applicable roles. One way of doing this:
-    - Deploy an instance of the resource you are working on, go to IAM page and copy the list from Roles.
-    - Use the following script to generate and output the applicable roles needed in the bicep/ARM module:
+### Variables
+- camelCase, i.e `builtInRoleNames`
+- For modules that manage roleAssignments, update the list of roles to only be the applicable roles. One way of doing this:
+  - Deploy an instance of the resource you are working on, go to IAM page and copy the list from Roles.
+  - Use the following script to generate and output the applicable roles needed in the bicep/ARM module:
 
-      ```PowerShell
-      $rawRoles = @"
-      <paste the table here>
-      "@
-      $resourceRoles = @()
-      $rawRolesArray = $rawRoles -split "`n"
-      for ($i = 0; $i -lt $rawRolesArray.Count; $i++) {
-        if($i % 5 -eq 0) {
-          $resourceRoles += $rawRolesArray[$i].Trim()
-        }
+    ```PowerShell
+    $rawRoles = @"
+    <paste the table here>
+    "@
+    $resourceRoles = @()
+    $rawRolesArray = $rawRoles -split "`n"
+    for ($i = 0; $i -lt $rawRolesArray.Count; $i++) {
+      if($i % 5 -eq 0) {
+        $resourceRoles += $rawRolesArray[$i].Trim()
       }
-      $allRoles = az role definition list --custom-role-only false --query '[].{roleName:roleName, id:id, roleType:roleType}' | ConvertFrom-Json
-      $resBicep = [System.Collections.ArrayList]@()
-      $resArm = [System.Collections.ArrayList]@()
-      foreach ($resourceRole in $resourceRoles) {
-        $matchingRole = $allRoles | Where-Object { $_.roleName -eq $resourceRole }
-        $resBicep += "'{0}': subscriptionResourceId('Microsoft.Authorization/roleDefinitions','{1}')" -f $resourceRole, ($matchingRole.id.split('/')[-1])
-        $resArm += "`"{0}`": `"[subscriptionResourceId('Microsoft.Authorization/roleDefinitions','{1}')]`"," -f $resourceRole, ($matchingRole.id.split('/')[-1])
-      }
-      Write-Host "Bicep"
-      Write-Host "-----"
-      $resBicep
-      Write-Host "ARM"
-      Write-Host "---"
-      $resArm
-      ```
+    }
+    $allRoles = az role definition list --custom-role-only false --query '[].{roleName:roleName, id:id, roleType:roleType}' | ConvertFrom-Json
+    $resBicep = [System.Collections.ArrayList]@()
+    $resArm = [System.Collections.ArrayList]@()
+    foreach ($resourceRole in $resourceRoles) {
+      $matchingRole = $allRoles | Where-Object { $_.roleName -eq $resourceRole }
+      $resBicep += "'{0}': subscriptionResourceId('Microsoft.Authorization/roleDefinitions','{1}')" -f $resourceRole, ($matchingRole.id.split('/')[-1])
+      $resArm += "`"{0}`": `"[subscriptionResourceId('Microsoft.Authorization/roleDefinitions','{1}')]`"," -f $resourceRole, ($matchingRole.id.split('/')[-1])
+    }
+    Write-Host "Bicep"
+    Write-Host "-----"
+    $resBicep
+    Write-Host "ARM"
+    Write-Host "---"
+    $resArm
+    ```
 
-- Resource:
-  - camelCase, i.e `resourceGroup`
-  - The name used as a reference is the singular name of the resource that it deploys, i.e:
-    - `resource storageAccount 'Microsoft.Storage/storageAccounts@2019-06-01'`
-    - `resource virtualMachine 'Microsoft.Compute/virtualMachines@2020-06-01'`
-  - For child resources, use a shorthand of the resource type declaration, i.e:
-    - `resource serviceBusNamespace_authorizationRules 'AuthorizationRules@2020-06-01'`
+### Resource
+- camelCase, i.e `resourceGroup`
+- The name used as a reference is the singular name of the resource that it deploys, i.e:
+  - `resource storageAccount 'Microsoft.Storage/storageAccounts@2019-06-01'`
+  - `resource virtualMachine 'Microsoft.Compute/virtualMachines@2020-06-01'`
+- For child resources, use a shorthand of the resource type declaration, i.e:
+  - `resource serviceBusNamespace_authorizationRules 'AuthorizationRules@2020-06-01'`
 
 - Modules:
   - camel_Snake_Case, i.e `resourceGroup_rbac` ?
@@ -131,11 +132,12 @@ Within a bicep file, follow the following conventions:
   - File name for nested module is structured as follows: `nested_<resourceName>.bicep` i.e:
     - `nested_rbac.bicep`
 
-  > Post-MVP
-  - Child-resources go into a sub-folder with the name of the child (for example `databases` in case of the SQL server module).
+> Post-MVP
+- Child-resources go into a sub-folder with the name of the child (for example `databases` in case of the SQL server module).
 
-- Outputs:
-  - camelCase, i.e `resourceGroupResourceId`
-  - At a minimum, reference the following:
-    - `<resourceReference>Name`, i.e. `resourceGroupName`
-    - `<resourceReference>ResourceId`, i.e. `resourceGroupResourceId`
+### Outputs
+- camelCase, i.e `resourceGroupResourceId`
+- At a minimum, reference the following:
+  - `<resourceReference>Name`, i.e. `resourceGroupName`
+  - `<resourceReference>ResourceId`, i.e. `resourceGroupResourceId`
+- Add a `@description('...')` annotation with meaningful description to each output
