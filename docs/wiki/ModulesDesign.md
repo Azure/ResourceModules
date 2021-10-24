@@ -11,11 +11,30 @@ This section gives you an overview of the design principals the bicep modules fo
 - [Bicep template guidelines](#Bicep-template-guidelines)
 ---
 
+Modules are written in an quite flexible way, therefore you don’t need to modify them from project to project, as the aim is to cover most of the functionality that a given resource type can provide, in a way that you can interact with any module just by sending the required parameters to it – i.e. you don’t have to know how the template of the particular module works inside, just take a look at the readme.md file of the given module to consume it.
+
+The modules are multi-purpose, therefore contain a lot of dynamic expressions (functions, variables, etc.), so there’s no need to maintain multiple instances for different use cases.
+
+They can be deployed in different configurations just by changing the input parameters. They are perceived by the **user** as black boxes, where they don’t have to worry about the internal complexity of the code, as they only interact with them by their parameters.
+
 ## General guidelines
-- All modules & child-templates, excluding those in the 'constructs' folder should be designed in the way that they can deploy one single instance of the targeted resource and optionally n-amount of child-resources if available. In the example of the storage account module that means the module should be able to deploy **one** storage account but for example **n-amount** of containers, file shares and so on. However, the child-template for for example the container should again be designed to only deploy one container.
+- All modules & child-templates, excluding those in the 'constructs' folder should be designed in the way that they can deploy one instance of the targeted resource and optionally n-amount of child-resources if available. In the example of the storage account module that means the module should be able to deploy **one** storage account but for example **n-amount** of containers, file shares and so on. However, the child-template for for example the container should again be designed to only deploy one container.
 - Any logic that is build on top (for example the name generation and corresponding deployment-loop for the VM-module) should be implemented in the 'constructs' folder, referencing back to the original template.
+- Where the resource type in question supports it, the module should have support for:
+  1. **Diagnostic logs** and **metrics** (you can have them sent to any combination of storage account, log analytics and event hub)
+  1. Resource and sub-resource level **RBAC** (e.g. providing data contributor access on a storage account; granting file share/blob container level access in a storage account)
+  1. **Tags** (as objects)
+  1. **Locks**
 
 ## File & folder structure
+
+A **Module** consists of
+
+- the bicep template deployment file (`deploy.bicep`)
+- on or multiple template parameters files (`*parameters.json`) that will be used for testing – located in the `Parameters` subfolder
+- a `readme.md` file which describes the Module itself
+
+A Module usually represents a single resource or a set of closely related resources. For example, a storage account and the associated lock or virtual machine and network interfaces. Modules are located in the Modules folder.
 
 ### Naming
 
