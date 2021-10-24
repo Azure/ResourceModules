@@ -6,11 +6,11 @@ This module deploys one Virtual Machine with one or multiple nics and optionally
 
 | Resource Type                                                                         | Api Version        |
 | :------------------------------------------------------------------------------------ | :----------------- |
-| `Microsoft.Authorization/locks`                                                       | 2016-09-01         |
+| `Microsoft.Authorization/locks`                                                       | 2020-05-01         |
 | `Microsoft.Compute/virtualMachines`                                                   | 2021-04-01         |
 | `Microsoft.Compute/virtualMachines/extensions`                                        | 2021-04-01         |
 | `Microsoft.Compute/virtualMachines/providers/roleAssignments`                         | 2020-04-01-preview |
-| `Microsoft.Insights/diagnosticSettings`                                               | 2017-05-01-preview |
+| `Microsoft.Insights/diagnosticSettings`                                               | 2021-05-01-preview |
 | `Microsoft.Network/networkInterfaces`                                                 | 2021-02-01         |
 | `Microsoft.Network/networkInterfaces/providers/roleAssignments`                       | 2020-04-01-preview |
 | `Microsoft.Network/publicIPAddresses`                                                 | 2021-02-01         |
@@ -510,10 +510,10 @@ Tag names and tag values can be provided as needed. A tag can be left without a 
 
 ## Template references
 
-- [Locks](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2016-09-01/locks)
+- [Locks](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2020-05-01/locks)
 - [Virtualmachines](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Compute/2020-06-01/virtualMachines)
 - [Virtualmachines/Extensions](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Compute/2019-07-01/virtualMachines/extensions)
-- [Diagnosticsettings](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Insights/2017-05-01-preview/diagnosticSettings)
+- [Diagnosticsettings](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Insights/2021-05-01-preview/diagnosticSettings)
 - [Networkinterfaces](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Network/2020-08-01/networkInterfaces)
 - [Publicipaddresses](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Network/2021-02-01/publicIPAddresses)
 - [Vaults/Backupfabrics/Protectioncontainers/Protecteditems](https://docs.microsoft.com/en-us/azure/templates/Microsoft.RecoveryServices/2021-06-01/vaults/backupFabrics/protectionContainers/protectedItems)

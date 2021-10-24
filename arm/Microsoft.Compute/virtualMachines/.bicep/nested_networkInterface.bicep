@@ -87,7 +87,7 @@ resource networkInterface 'Microsoft.Network/networkInterfaces@2021-02-01' = {
   ]
 }
 
-resource networkInterface_lock 'Microsoft.Authorization/locks@2016-09-01' = if (lock != 'NotSpecified') {
+resource networkInterface_lock 'Microsoft.Authorization/locks@2020-05-01' = if (lock != 'NotSpecified') {
   name: '${networkInterface.name}-${lock}-lock'
   properties: {
     level: lock
@@ -96,7 +96,7 @@ resource networkInterface_lock 'Microsoft.Authorization/locks@2016-09-01' = if (
   scope: networkInterface
 }
 
-resource networkInterface_diagnosticSettings 'Microsoft.Insights/diagnosticsettings@2017-05-01-preview' = if ((!empty(diagnosticStorageAccountId)) || (!empty(workspaceId)) || (!empty(eventHubAuthorizationRuleId)) || (!empty(eventHubName))) {
+resource networkInterface_diagnosticSettings 'Microsoft.Insights/diagnosticsettings@2021-05-01-preview' = if ((!empty(diagnosticStorageAccountId)) || (!empty(workspaceId)) || (!empty(eventHubAuthorizationRuleId)) || (!empty(eventHubName))) {
   name: '${networkInterface.name}-diagnosticSettings'
   properties: {
     storageAccountId: (empty(diagnosticStorageAccountId) ? json('null') : diagnosticStorageAccountId)
