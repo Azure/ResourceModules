@@ -87,7 +87,7 @@ resource networkInterface 'Microsoft.Network/networkInterfaces@2021-02-01' = {
   ]
 }
 
-resource networkInterface_lock 'Microsoft.Authorization/locks@2020-05-01' = if (lock != 'NotSpecified') {
+resource networkInterface_lock 'Microsoft.Authorization/locks@2017-04-01' = if (lock != 'NotSpecified') {
   name: '${networkInterface.name}-${lock}-lock'
   properties: {
     level: lock

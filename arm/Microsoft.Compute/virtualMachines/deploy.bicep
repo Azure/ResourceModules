@@ -585,7 +585,7 @@ module virtualMachine_backup './.bicep/nested_backup.bicep' = if (!empty(backupV
   ]
 }
 
-resource virtualMachine_lock 'Microsoft.Authorization/locks@2020-05-01' = if (lock != 'NotSpecified') {
+resource virtualMachine_lock 'Microsoft.Authorization/locks@2017-04-01' = if (lock != 'NotSpecified') {
   name: '${virtualMachine.name}-${lock}-lock'
   properties: {
     level: lock

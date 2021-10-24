@@ -6,7 +6,7 @@ This module deploys one Virtual Machine with one or multiple nics and optionally
 
 | Resource Type                                                                         | Api Version        |
 | :------------------------------------------------------------------------------------ | :----------------- |
-| `Microsoft.Authorization/locks`                                                       | 2020-05-01         |
+| `Microsoft.Authorization/locks`                                                       | 2017-04-01         |
 | `Microsoft.Compute/virtualMachines`                                                   | 2021-04-01         |
 | `Microsoft.Compute/virtualMachines/extensions`                                        | 2021-04-01         |
 | `Microsoft.Compute/virtualMachines/providers/roleAssignments`                         | 2020-04-01-preview |
@@ -510,7 +510,7 @@ Tag names and tag values can be provided as needed. A tag can be left without a 
 
 ## Template references
 
-- [Locks](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2020-05-01/locks)
+- [Locks](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2017-04-01/locks)
 - [Virtualmachines](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Compute/2020-06-01/virtualMachines)
 - [Virtualmachines/Extensions](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Compute/2019-07-01/virtualMachines/extensions)
 - [Diagnosticsettings](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Insights/2021-05-01-preview/diagnosticSettings)
