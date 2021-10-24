@@ -83,16 +83,5 @@
                 }
             ]
         }
-        // "windowsScriptExtensionFileData": {
-        //     "value": [
-        //         {
-        //             "uri": "https://adpsxxazsaweux001.blob.core.windows.net/avdscripts/testscript.ps1",
-        //             "storageAccountId": "/subscriptions/<placeholder>/resourceGroups/validation-rg/providers/Microsoft.Storage/storageAccounts/adpsxxazsaweux001"
-        //         }
-        //     ]
-        // },
-        // "windowsScriptExtensionCommandToExecute": {
-        //     "value": "powershell -ExecutionPolicy Unrestricted -Command '& .\testscript.ps1'"
-        // }
     }
 }

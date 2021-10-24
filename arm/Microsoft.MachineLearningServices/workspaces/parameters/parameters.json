@@ -27,31 +27,5 @@
                 }
             ]
         }
-        // "associatedContainerRegistryResourceId": {
-        //   "value": "/subscriptions/xxx-xxx-xxx-xxx-xxx/resourcegroups/iacs/providers/Microsoft.ContainerRegistry/registries/acrtest2428"
-        // },
-        // "privateEndpoints": {
-        //   "value": [
-        //     {
-        //       "name": "acrtestedp",
-        //       "subnetResourceId": "/subscriptions/xxx-xxx-xxx-xxx-xxx/resourceGroups/iacs/providers/Microsoft.Network/virtualNetworks/acrtestvnet/subnets/default",
-        //       "service": "amlworkspace",
-        //       "privateDnsZoneResourceIds": [
-        //         "/subscriptions/xxx-xxx-xxx-xxx-xxx/resourcegroups/iacs/providers/Microsoft.Network/privateDnsZones/privatelink.api.azureml.ms",
-        //         "/subscriptions/xxx-xxx-xxx-xxx-xxx/resourcegroups/iacs/providers/Microsoft.Network/privateDnsZones/privatelink.notebooks.azure.net"
-        //       ]
-        //     }
-        //   ]
-        // },
-        // // Diagnostic Settings
-        // "diagnosticSettingName": {
-        //   "value": "testsetting"
-        // },
-        // "diagnosticLogsRetentionInDays": {
-        //   "value": 7
-        // },
-        // "workspaceId": {
-        //   "value": "/subscriptions/xxx-xxx-xxx-xxx-xxx/resourceGroups/iacs/providers/Microsoft.OperationalInsights/workspaces/acrtest2428"
-        // }
     }
 }
