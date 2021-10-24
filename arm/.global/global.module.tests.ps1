@@ -739,6 +739,23 @@ Describe 'Deployment template tests' -Tag Template {
                 $missingParameters.Count | Should -Be 0 -Because ('no required parameters in the template file should be missing in the parameter file. Found missing items: [{0}]' -f ($missingParameters -join ', '))
             }
         }
+
+        It '[<moduleFolderName>] Parameter files should not contain subscriptionId original value and but a token string' -TestCases $deploymentFolderTestCases {
+            param (
+                [hashtable[]] $parameterFileTestCases
+            )
+
+            foreach ($parameterFileTestCase in $parameterFileTestCases) {
+                $parameterFileContent = Get-Content -Path $parameterFileTestCase.parameterFile_Path
+                if (($parameterFileContent | Select-String -Pattern '/subscriptions/' -Quiet) -or ($parameterFileContent | Select-String -Pattern 'subscriptionId' -Quiet)) {
+                    if (!($parameterFileContent | Select-String -Pattern '_SUBSCRIPTIONID' -CaseSensitive -Quiet)) {
+                        $SubIdVisible = $true
+                    }
+                }
+
+                $SubIdVisible | Should -Be $null -Because ('Parameter file should not contain original subscription Id value, but a case sensitive token value _SUBSCRIPTIONID_')
+            }
+        }
     }
 }
 
