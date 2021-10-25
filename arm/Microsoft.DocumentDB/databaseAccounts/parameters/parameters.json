@@ -5,12 +5,15 @@
         "databaseAccountName": {
             "value": "sxx-az-cdb-weu-x-001"
         },
+        "location": {
+            "value": "East Us"
+        },
         "locations": {
             "value": [
                 {
                     "failoverPriority": 0,
                     "isZoneRedundant": true,
-                    "locationName": "West Europe"
+                    "locationName": "East US"
                 }
             ]
         },
@@ -21,6 +24,14 @@
                     "principalIds": [
                         "5545f7a0-51f4-46af-b3b4-baecf5176a56"
                     ]
+                }
+            ]
+        },
+        "sqlDatabases": {
+            "value": [
+                {
+                    "name": "testsql",
+                    "location": "East US"
                 }
             ]
         }

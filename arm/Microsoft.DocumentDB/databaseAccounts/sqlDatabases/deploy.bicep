@@ -8,10 +8,18 @@ param location string = resourceGroup().location
 param tags object = {}
 
 @description('Required. Id of the Cosmos DB database account.')
-param accountId object = {}
+param databaseAccountName string
+
+@description('Optional. Customer Usage Attribution id (GUID). This GUID must be previously registered')
+param cuaId string = ''
+
+module pid_cuaId './.bicep/nested_cuaId.bicep' = if (!empty(cuaId)) {
+  name: 'pid-${cuaId}'
+  params: {}
+}
 
 resource sqlDatabase 'Microsoft.DocumentDB/databaseAccounts/sqlDatabases@2021-06-15' = {
-  name: sqlDatabaseName
+  name: '${databaseAccountName}/${sqlDatabaseName}'
   location: location
   tags: tags
   properties: {

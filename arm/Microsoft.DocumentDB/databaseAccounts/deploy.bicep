@@ -188,6 +188,17 @@ module databaseAccount_rbac './.bicep/nested_rbac.bicep' = [for (roleAssignment,
   }
 }]
 
+module sqlDatabases_resource './sqlDatabases/deploy.bicep' = [for sqlDatabase in sqlDatabases: {
+  name: '${uniqueString(deployment().name, location)}-sqldb-${sqlDatabase.name}'
+  params: {
+    sqlDatabaseName: sqlDatabase.name
+    location: sqlDatabase.location
+    tags: tags
+    databaseAccountName: databaseAccount.name
+    cuaId: cuaId
+  }
+}]
+
 @description('The name of the database account.')
 output databaseAccountName string = databaseAccount.name
 
