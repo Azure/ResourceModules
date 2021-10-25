@@ -1,0 +1,81 @@
+name: '.Utility: Dependencies'
+
+on:
+  workflow_dispatch:
+    # inputs:
+    #   removeDeployment:
+    #     description: 'Remove deployed module'
+    #     required: false
+    #     default: 'false'
+
+  # push:
+  #   branches:
+  #     - main
+  #   paths:
+  #     - '.github/actions/templates/**'
+  #     - '.github/workflows/utility.dependencies.yml'
+  #     - 'dependencies/**'
+
+env:
+  workflowPath: '.github/workflows/utility.dependencies.yml'
+  AZURE_CREDENTIALS: ${{ secrets.AZURE_CREDENTIALS }}
+  ARM_SUBSCRIPTION_ID: ${{ secrets.ARM_SUBSCRIPTION_ID }}
+  ARM_MGMTGROUP_ID: ${{ secrets.ARM_MGMTGROUP_ID }}
+
+jobs:
+  job_deploy_rg:
+    runs-on: ubuntu-20.04
+    name: 'Deploy resource group'
+    env:
+      moduleName: resourceGroups
+      namespace: 'Microsoft.Resources\resourceGroups'
+      defaultLocation: 'WestEurope'
+      resourceGroupName: 'validation-rg'
+    # needs:
+    # - job_set_workflow_param
+    strategy:
+      fail-fast: false
+      matrix:
+        parameterFilePaths: ['parameters.json']
+    steps:
+      - name: 'Checkout'
+        uses: actions/checkout@v2
+        with:
+          fetch-depth: 0
+      - name: 'Deploy module'
+        uses: ./.github/actions/templates/deployModule
+        with:
+          moduleName: '${{ env.moduleName }}'
+          templateFilePath: 'arm/${{ env.namespace }}/deploy.bicep'
+          parameterFilePath: 'dependencies/${{ env.namespace }}/parameters/${{ matrix.parameterFilePaths }}'
+          location: '${{ env.defaultLocation }}'
+          resourceGroupName: '${{ env.resourceGroupName }}'
+          subscriptionId: '${{ secrets.ARM_SUBSCRIPTION_ID }}'
+          managementGroupId: '${{ secrets.ARM_MGMTGROUP_ID }}'
+          # removeDeployment: '${{ needs.job_set_workflow_param.outputs.removeDeployment }}'
+
+  ##############
+  #   REMOVE   #
+  ##############
+  # job_remove_module:
+  #   runs-on: ubuntu-20.04
+  #   name: 'Remove module'
+  #   if: ${{ always() && !cancelled() && needs.job_set_workflow_param.outputs.removeDeployment == 'true' && (contains(needs.*.result, 'success') || contains(needs.*.result, 'failure')) }}
+  #   needs:
+  #     - job_deploy_rg
+  #   steps:
+  #     - name: 'Checkout'
+  #       uses: actions/checkout@v2
+  #       with:
+  #         fetch-depth: 0
+  #     - name: Set environment variables
+  #       uses: deep-mm/set-variables@v1.0
+  #       with:
+  #         # Name of variable file
+  #         variableFileName: 'variables.module' # Don't write .json here
+  #     - name: 'Remove module'
+  #       uses: ./.github/actions/templates/removeModule
+  #       with:
+  #         moduleName: '${{ env.moduleName }}'
+  #         templateFilePath: '${{ env.modulePath }}/deploy.bicep'
+  #         resourceGroupName: '${{ env.resourceGroupName }}'
