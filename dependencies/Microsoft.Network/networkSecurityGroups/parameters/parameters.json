@@ -1,0 +1,39 @@
+{
+  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    "networkSecurityGroupName": {
+      "value": "adp-sxx-az-nsg-weu-x-001"
+    },
+    "networkSecurityGroupSecurityRules": {
+      "value": [
+        {
+          "name": "AllowPortsForAppGateway",
+          "properties": {
+            "protocol": "*",
+            "sourcePortRange": "*",
+            "sourceAddressPrefix": "GatewayManager",
+            "destinationPortRange": "65200-65535",
+            "destinationAddressPrefix": "*",
+            "access": "Allow",
+            "priority": 1000,
+            "direction": "Inbound"
+          }
+        },
+        {
+          "name": "AllowPortsForASE",
+          "properties": {
+            "protocol": "*",
+            "sourcePortRange": "*",
+            "sourceAddressPrefix": "AppServiceManagement",
+            "destinationPortRange": "454-455",
+            "destinationAddressPrefix": "10.0.8.0/24",
+            "access": "Allow",
+            "priority": 1010,
+            "direction": "Inbound"
+          }
+        }
+      ]
+    }
+  }
+}
