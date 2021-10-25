@@ -23,25 +23,5 @@
         }
       ]
     }
-    // "environmentVariables": {
-    //   "value": [
-    //     {
-    //       "name": "<environmentVariablesName>",
-    //       "secureValue": "<environmentVariableValue>"
-    //     },
-    //     {
-    //       "name": "<environmentVariablesName2>",
-    //       "value": "<environmentVariableValue2>"
-    //     }
-    //   ]
-    // },
-    // "imageRegistryCredentials": {
-    //   "value": [
-    //     {
-    //       "server": "sxxazacrx001.azurecr.io",
-    //       "username": "sxxazacrx001"
-    //     }
-    //   ]
-    // }
   }
 }

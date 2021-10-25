@@ -5,22 +5,22 @@
         "mgStructure": {
             "value": [
                 {
-                    "name":"root",
-                    "parentId":"284a3525-0ec7-454c-8a03-90ed7e7a68ce",
+                    "name": "root",
+                    "parentId": "284a3525-0ec7-454c-8a03-90ed7e7a68ce",
                     "parentNotManagedInThisTemplate": true
                 },
                 {
-                    "name":"child1",
-                    "displayName":"child1Description",
-                    "parentId":"root"
+                    "name": "child1",
+                    "displayName": "child1Description",
+                    "parentId": "root"
                 },
                 {
-                    "name":"child2",
-                    "parentId":"root"
+                    "name": "child2",
+                    "parentId": "root"
                 },
                 {
-                    "name":"nephew1",
-                    "parentId":"child1",
+                    "name": "nephew1",
+                    "parentId": "child1",
                     "parentNotManagedInThisTemplate": false
                 }
             ]

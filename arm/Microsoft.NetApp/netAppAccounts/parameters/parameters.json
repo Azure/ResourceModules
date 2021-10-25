@@ -11,14 +11,6 @@
         "domainJoinUser": {
             "value": ""
         },
-        // "domainJoinPassword": {
-        //   "reference": {
-        //     "keyVault": {
-        //       "id": "/subscriptions/8629be3b-96bc-482d-a04b-ffff597c65a2/resourceGroups/validation-rg/providers/Microsoft.KeyVault/vaults/adp-sxx-az-kv-weu-x-001"
-        //     },
-        //     "secretName": "adadmin-Password"
-        //   }
-        // },
         "dnsServers": {
             "value": ""
         },
@@ -83,25 +75,6 @@
                                 }
                             ]
                         }
-                        // ,
-                        // SMB VOL (Requires enabling AD connection)
-                        // {
-                        //   "poolVolumeName": "vol01-smb",
-                        //   "creationToken": "vol01-smb",
-                        //   "poolVolumeQuota": 107374182400,
-                        //   "protocolTypes": [
-                        //     "CIFS"
-                        //   ],
-                        //   "subnetId": "/subscriptions/8629be3b-96bc-482d-a04b-ffff597c65a2/resourceGroups/validation-rg/providers/Microsoft.Network/virtualNetworks/adp-sxx-az-vnet-weu-x-001/subnets/sxx-az-subnet-weu-x-004",
-                        //   "roleAssignments": [
-                        // //     {
-                        // //       "roleDefinitionIdOrName": "Reader",
-                        // //       "principalIds": [
-                        // //         "78945612-1234-1234-1234-123456789012"  // object 3
-                        // //       ]
-                        // //     }
-                        //   ]
-                        // }
                     ],
                     "roleAssignments": [
                         {
