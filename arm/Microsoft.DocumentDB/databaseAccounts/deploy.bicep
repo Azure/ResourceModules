@@ -19,6 +19,15 @@ param managedServiceIdentity string = 'None'
 @description('Optional. Mandatory if \'managedServiceIdentity\' contains UserAssigned. The list of user identities associated with the database account.')
 param userAssignedIdentities object = {}
 
+@description('Optional. The offer type for the Cosmos DB database account.')
+@allowed([
+  'Standard'
+])
+param databaseAccountOfferType string = 'Standard'
+
+@description('Required. Locations enabled for the Cosmos DB account.')
+param locations array
+
 param sqlDatabases array = []
 
 param mongodbDatabases array = []
@@ -34,13 +43,7 @@ resource databaseAccount 'Microsoft.DocumentDB/databaseAccounts@2021-06-15' = {
   tags: tags
   identity: identity
   properties: {
-    databaseAccountOfferType: 'Standard'
-    locations: [
-      {
-        failoverPriority: int
-        isZoneRedundant: bool
-        locationName: 'string'
-      }
-    ]
+    databaseAccountOfferType: databaseAccountOfferType
+    locations: locations
   }
 }
