@@ -1,7 +1,7 @@
 # EventHubs
 
 This module deploys EventHub.
-
+#
 ## Resource types
 
 |Resource Type|ApiVersion|
