@@ -146,7 +146,7 @@ module pid_cuaId './.bicep/nested_cuaId.bicep' = if (!empty(cuaId)) {
   params: {}
 }
 
-resource databaseAccount 'Microsoft.DocumentDB/databaseAccounts@2021-06-15' = {
+resource databaseAccount 'Microsoft.DocumentDB/databaseAccounts@2021-05-15' = {
   name: databaseAccountName
   location: location
   tags: tags
