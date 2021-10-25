@@ -13,7 +13,7 @@ The preferred method of contribution requires you to create your own fork and cr
 
 ## How to contribute?
 
-You can contribute to the Wiki in different ways depending on your own interests, issues you see or IP you want to add.
+You can contribute to the Wiki in different ways depending on your own interests, bugs you see or IP you want to add.
 
 For starters it is highly recommended to consult and understand the ['Modules Design'](.\ModulesDesign.md) section of the wiki.
 
