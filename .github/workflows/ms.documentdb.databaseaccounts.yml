@@ -25,7 +25,7 @@ on:
       - '!arm/Microsoft.DocumentDB/databaseAccounts/readme.md'
 
 env:
-  moduleName: 'topics'
+  moduleName: 'databaseAccounts'
   modulePath: 'arm/Microsoft.DocumentDB/databaseAccounts'
   workflowPath: '.github/workflows/ms.documentdb.databaseaccounts.yml'
   AZURE_CREDENTIALS: ${{ secrets.AZURE_CREDENTIALS }}
