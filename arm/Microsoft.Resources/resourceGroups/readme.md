@@ -1,25 +1,24 @@
-# Resource Group
+# Resource Group `[Microsoft.Resources/resourceGroups]`
 
 This module deploys Resource Groups.
 
 ## Resource types
 
-| Resource Type                             | ApiVersion         |
-| :---------------------------------------- | :----------------- |
-| `Microsoft.Resources/resourceGroups`      | 2018-05-01         |
-| `Microsoft.Resources/deployments`         | 2018-05-01         |
-| `Microsoft.Authorization/locks`           | 2016-09-01         |
-| `Microsoft.Authorization/roleAssignments` | 2018-09-01-preview |
+| Resource Type | Api Version |
+| :-- | :-- |
+| `Microsoft.Authorization/locks` | 2016-09-01 |
+| `Microsoft.Authorization/roleAssignments` | 2020-04-01-preview |
+| `Microsoft.Resources/resourceGroups` | 2019-05-01 |
 
 ## Parameters
 
-| Parameter Name      | Type   | Description                                                                                                                                                                                                                                                                                                                                                                                                    | DefaultValue            | Possible values                            |
-| :------------------ | :----- | :------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | :---------------------- | :----------------------------------------- |
-| `location`          | string | Optional. Location of the Resource Group. It uses the deployment's location when not provided.                                                                                                                                                                                                                                                                                                                 | [deployment().location] |                                            |
-| `lock`              | string | Optional. Specify the type of lock.                                                                                                                                                                                                                                                                                                                                                                            | 'NotSpecified'          | 'CanNotDelete', 'NotSpecified', 'ReadOnly' |
-| `resourceGroupName` | string | Required. The name of the Resource Group                                                                                                                                                                                                                                                                                                                                                                       |                         |                                            |
-| `roleAssignments`   | array  | Optional. Array of role assignment objects that contain the 'roleDefinitionIdOrName' and 'principalId' to define RBAC role assignments on this resource. In the roleDefinitionIdOrName attribute, you can provide either the display name of the role definition, or its fully qualified ID in the following format: '/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11' | System.Object[]         |                                            |
-| `tags`              | object | Optional. Tags of the storage account resource.                                                                                                                                                                                                                                                                                                                                                                |                         |                                            |
+| Parameter Name | Type | Default Value | Possible Values | Description |
+| :-- | :-- | :-- | :-- | :-- |
+| `location` | string | `[deployment().location]` |  | Optional. Location of the Resource Group. It uses the deployment's location when not provided. |
+| `lock` | string | `NotSpecified` | `[CanNotDelete, NotSpecified, ReadOnly]` | Optional. Specify the type of lock. |
+| `resourceGroupName` | string |  |  | Required. The name of the Resource Group |
+| `roleAssignments` | array | `[]` |  | Optional. Array of role assignment objects that contain the 'roleDefinitionIdOrName' and 'principalId' to define RBAC role assignments on this resource. In the roleDefinitionIdOrName attribute, you can provide either the display name of the role definition, or its fully qualified ID in the following format: '/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11' |
+| `tags` | object | `{object}` |  | Optional. Tags of the storage account resource. |
 
 ### Parameter Usage: `roleAssignments`
 
@@ -67,22 +66,19 @@ Tag names and tag values can be provided as needed. A tag can be left without a 
 }
 ```
 
-## Outputs
-
-| Output Name               | Type   | Description                           |
-| :------------------------ | :----- | :------------------------------------ |
-| `resourceGroupName`       | string | The name of the Resource Group        |
-| `resourceGroupResourceId` | string | The resource id of the Resource Group |
-
-### Scripts
-
-- There is no Scripts for this Module
-
 ## Considerations
 
-- There is no deployment considerations for this Module
+This module requires a User Assigned Identity (MSI, managed service identity) to exist, and this MSI has to have contributor rights on the subscription - that allows the Deployment Script to create the required Storage Account and the Azure Container Instance.
 
-## Additional resources
+## Outputs
 
-- [Microsoft Resource Group template reference](https://docs.microsoft.com/en-us/azure/templates/microsoft.resources/2019-05-01/resourcegroups)
-- [Use tags to organize your Azure resources](https://docs.microsoft.com/en-us/azure/azure-resource-manager/resource-group-using-tags)
+| Output Name | Type |
+| :-- | :-- |
+| `resourceGroupName` | string |
+| `resourceGroupResourceId` | string |
+
+## Template references
+
+- [Locks](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2016-09-01/locks)
+- [Roleassignments](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2020-04-01-preview/roleAssignments)
+- [Resourcegroups](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Resources/2019-05-01/resourceGroups)

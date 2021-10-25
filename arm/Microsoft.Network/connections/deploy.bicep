@@ -49,8 +49,13 @@ param customIPSecPolicy object = {
 @description('Optional. The weight added to routes learned from this BGP speaker.')
 param routingWeight string = ''
 
-@description('Optional. Switch to lock Connection from deletion.')
-param lockForDeletion bool = false
+@allowed([
+  'CanNotDelete'
+  'NotSpecified'
+  'ReadOnly'
+])
+@description('Optional. Specify the type of lock.')
+param lock string = 'NotSpecified'
 
 @description('Optional. Tags of the resource.')
 param tags object = {}
@@ -108,10 +113,11 @@ resource connection 'Microsoft.Network/connections@2021-02-01' = {
   }
 }
 
-resource connection_lock 'Microsoft.Authorization/locks@2016-09-01' = if (lockForDeletion) {
-  name: '${connection.name}-doNotDelete'
+resource connection_lock 'Microsoft.Authorization/locks@2016-09-01' = if (lock != 'NotSpecified') {
+  name: '${connection.name}-${lock}-lock'
   properties: {
-    level: 'CanNotDelete'
+    level: lock
+    notes: (lock == 'CanNotDelete') ? 'Cannot delete resource or child resources.' : 'Cannot modify the resource or child resources.'
   }
   scope: connection
 }

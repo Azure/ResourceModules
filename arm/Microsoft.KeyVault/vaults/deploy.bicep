@@ -89,8 +89,13 @@ param eventHubAuthorizationRuleId string = ''
 @description('Optional. Name of the event hub within the namespace to which logs are streamed. Without this, an event hub is created for each log category.')
 param eventHubName string = ''
 
-@description('Optional. Switch to lock Key Vault from deletion.')
-param lockForDeletion bool = false
+@allowed([
+  'CanNotDelete'
+  'NotSpecified'
+  'ReadOnly'
+])
+@description('Optional. Specify the type of lock.')
+param lock string = 'NotSpecified'
 
 @description('Optional. Array of role assignment objects that contain the \'roleDefinitionIdOrName\' and \'principalId\' to define RBAC role assignments on this resource. In the roleDefinitionIdOrName attribute, you can provide either the display name of the role definition, or its fully qualified ID in the following format: \'/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11\'')
 param roleAssignments array = []
@@ -107,6 +112,41 @@ param cuaId string = ''
 @description('Generated. Do not provide a value! This date value is used to generate a SAS token to access the modules.')
 param baseTime string = utcNow('u')
 
+@description('Optional. The name of logs that will be streamed.')
+@allowed([
+  'AuditEvent'
+])
+param logsToEnable array = [
+  'AuditEvent'
+]
+
+@description('Optional. The name of metrics that will be streamed.')
+@allowed([
+  'AllMetrics'
+])
+param metricsToEnable array = [
+  'AllMetrics'
+]
+
+var diagnosticsLogs = [for log in logsToEnable: {
+  category: log
+  enabled: true
+  retentionPolicy: {
+    enabled: true
+    days: diagnosticLogsRetentionInDays
+  }
+}]
+
+var diagnosticsMetrics = [for metric in metricsToEnable: {
+  category: metric
+  timeGrain: null
+  enabled: true
+  retentionPolicy: {
+    enabled: true
+    days: diagnosticLogsRetentionInDays
+  }
+}]
+
 var maxNameLength = 24
 var uniqueKeyVaultNameUntrim = uniqueString('Key Vault${baseTime}')
 var uniqueKeyVaultName = ((length(uniqueKeyVaultNameUntrim) > maxNameLength) ? substring(uniqueKeyVaultNameUntrim, 0, maxNameLength) : uniqueKeyVaultNameUntrim)
@@ -120,27 +160,7 @@ var networkAcls_var = {
   virtualNetworkRules: (empty(networkAcls) ? json('null') : virtualNetworkRules)
   ipRules: (empty(networkAcls) ? json('null') : ((length(networkAcls.ipRules) == 0) ? [] : networkAcls.ipRules))
 }
-var diagnosticsMetrics = [
-  {
-    category: 'AllMetrics'
-    timeGrain: null
-    enabled: true
-    retentionPolicy: {
-      enabled: true
-      days: diagnosticLogsRetentionInDays
-    }
-  }
-]
-var diagnosticsLogs = [
-  {
-    category: 'AuditEvent'
-    enabled: true
-    retentionPolicy: {
-      enabled: true
-      days: diagnosticLogsRetentionInDays
-    }
-  }
-]
+
 var builtInRoleNames = {
   Owner: '/subscriptions/${subscription().subscriptionId}/providers/Microsoft.Authorization/roleDefinitions/8e3af657-a8ff-443c-a75c-2fe8c4bcb635'
   Contributor: '/subscriptions/${subscription().subscriptionId}/providers/Microsoft.Authorization/roleDefinitions/b24988ac-6180-42a0-ab88-20f7382dd24c'
@@ -196,10 +216,11 @@ resource keyVault 'Microsoft.KeyVault/vaults@2019-09-01' = {
   }
 }
 
-resource keyVault_lock 'Microsoft.Authorization/locks@2016-09-01' = if (lockForDeletion) {
-  name: '${keyVaultName_var}-keyVaultDoNotDelete'
+resource keyVault_lock 'Microsoft.Authorization/locks@2016-09-01' = if (lock != 'NotSpecified') {
+  name: '${keyVault.name}-${lock}-lock'
   properties: {
-    level: 'CanNotDelete'
+    level: lock
+    notes: (lock == 'CanNotDelete') ? 'Cannot delete resource or child resources.' : 'Cannot modify the resource or child resources.'
   }
   scope: keyVault
 }
@@ -259,7 +280,11 @@ module keyVault_rbac './.bicep/nested_rbac.bicep' = [for (roleAssignment, index)
   }
 }]
 
+@description('The Resource Id of the Key Vault.')
 output keyVaultResourceId string = keyVault.id
+@description('The name of the Resource Group the Key Vault was created in.')
 output keyVaultResourceGroup string = resourceGroup().name
+@description('The Name of the Key Vault.')
 output keyVaultName string = keyVault.name
+@description('The URL of the Key Vault.')
 output keyVaultUrl string = reference(keyVault.id, '2016-10-01').vaultUri

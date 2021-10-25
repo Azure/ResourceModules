@@ -65,24 +65,23 @@
                             "name": "ipconfig1",
                             "properties": {
                                 "subnet": {
-                                    "id": "subscriptions/8629be3b-96bc-482d-a04b-ffff597c65a2/resourceGroups/dependencies-rg/providers/Microsoft.Network/virtualNetworks/sxx-az-vnet-weu-x-002/subnets/sxx-az-subnet-weu-x-002"
+                                    "id": "/subscriptions/8629be3b-96bc-482d-a04b-ffff597c65a2/resourceGroups/validation-rg/providers/Microsoft.Network/virtualNetworks/adp-sxx-az-vnet-weu-x-001/subnets/sxx-az-subnet-weu-x-002"
                                 }
                             }
                         }
                     ]
                 }
             ]
+        },
+        "roleAssignments": {
+            "value": [
+                {
+                    "roleDefinitionIdOrName": "Reader",
+                    "principalIds": [
+                        "5545f7a0-51f4-46af-b3b4-baecf5176a56"
+                    ]
+                }
+            ]
         }
-        // "windowsScriptExtensionFileData": {
-        //     "value": [
-        //         {
-        //             "uri": "https://adpsxxazsaweux001.blob.core.windows.net/avdscripts/testscript.ps1",
-        //             "storageAccountId": "/subscriptions/<placeholder>/resourceGroups/dependencies-rg/providers/Microsoft.Storage/storageAccounts/adpsxxazsaweux001"
-        //         }
-        //     ]
-        // },
-        // "windowsScriptExtensionCommandToExecute": {
-        //     "value": "powershell -ExecutionPolicy Unrestricted -Command '& .\testscript.ps1'"
-        // }
     }
 }

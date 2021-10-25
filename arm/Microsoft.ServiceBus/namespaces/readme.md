@@ -1,4 +1,4 @@
-# ServiceBusNamespaces
+# ServiceBusNamespaces `[Microsoft.ServiceBus/namespaces]`
 
 This module deploys Service Bus Namespace resource.
 
@@ -6,45 +6,46 @@ This module deploys Service Bus Namespace resource.
 
 | Resource Type | Api Version |
 | :-- | :-- |
-| `Microsoft.Resources/deployments` | 2020-06-01 |
+| `Microsoft.Authorization/locks` | 2016-09-01 |
+| `Microsoft.Insights/diagnosticSettings` | 2017-05-01-preview |
+| `Microsoft.Network/privateEndpoints` | 2021-05-01 |
 | `Microsoft.Network/privateEndpoints/privateDnsZoneGroups` | 2020-05-01 |
-| `Microsoft.Network/privateEndpoints` | 2020-05-01 |
+| `Microsoft.ServiceBus/namespaces` | 2018-01-01-preview |
 | `Microsoft.ServiceBus/namespaces/AuthorizationRules` | 2017-04-01 |
 | `Microsoft.ServiceBus/namespaces/disasterRecoveryConfigs` | 2017-04-01 |
-| `Microsoft.ServiceBus/namespaces/ipFilterRules` | 2018-01-01-preview |
+| `Microsoft.ServiceBus/namespaces/ipfilterrules` | 2018-01-01-preview |
 | `Microsoft.ServiceBus/namespaces/migrationConfigurations` | 2017-04-01 |
-| `Microsoft.ServiceBus/namespaces/virtualNetworkRules` | 2018-01-01-preview |
-| `Microsoft.Insights/diagnosticSettings` | 2017-05-01-preview |
-| `Microsoft.ServiceBus/namespaces/providers/roleAssignments` | 2018-09-01-preview |
-| `Microsoft.ServiceBus/namespaces` | 2018-01-01-preview |
-| `Microsoft.Authorization/locks` | 2016-09-01 |
+| `Microsoft.ServiceBus/namespaces/providers/roleAssignments` | 2021-04-01-preview |
+| `Microsoft.ServiceBus/namespaces/virtualnetworkrules` | 2018-01-01-preview |
 
 ## Parameters
 
-| Parameter Name                | Type         | Default Value                                       | Possible values               | Description                                                                                                        |
-| :--| :--| :-| :--| :----------------------------------------------------------------------------------------------------------------- |
-| `serviceBusNamespaceName`| string | | | Optional. Name of the Service Bus Namespace.If no name is provided, then unique name will be created.|
-| `location`| string | | | Required. The Geo-location where the resource lives. | |
-| `skuName`| string | | | Required. Name of this SKU. - Basic, Standard, Premium. | Basic, Standard, Premium |
-| `zoneRedundant`| string | | | Optional. Enabling this property creates a Premium Service Bus Namespace in regions supported availability zones. | |
-| `partnerNamespaceId` | string | Optional. ARM Id of the Primary/Secondary Service Bus namespace name, which is part of GEO DR pairing. |  |  |
-| `namespaceAlias` | string | Optional. The Disaster Recovery configuration name. |  |  |
-| `authorizationRules` | array | Optional. Authorization Rules for the Event Hub namespace. | System.Object[] |  |
-| `ipFilterRules` | array | Optional. IP Filter Rules for the Service Bus namespace (requires Premium sku). | System.Object[] |  |
-| `targetNamespace` | string | Optional. Existing premium Namespace ARM Id name which has no entities, will be used for migration. |  |  |
-| `postMigrationName` | string | Optional. Name to access Standard Namespace after migration. |  |  |
-| `virtualNetworkRuleSubnetIds` | array | Optional. vNet Rules SubnetIds for the Service Bus namespace. | System.Object[] |  |
-| `diagnosticLogsRetentionInDays` | int | Optional. Specifies the number of days that logs will be kept for; a value of 0 will retain data indefinitely. | 365 |  |
-| `diagnosticStorageAccountId` | string | Optional. Resource identifier of the Diagnostic Storage Account. |  |  |
-| `workspaceId` | string | Optional. Resource identifier of Log Analytics. |  |  |
-| `eventHubAuthorizationRuleId` | string | "" | | Optional. Resource ID of the event hub authorization rule for the Event Hubs namespace in which the event hub should be created or streamed to.
-| `eventHubName` | string | "" | | Optional. Name of the event hub within the namespace to which logs are streamed. Without this, an event hub is created for each log category.
-| `lockForDeletion`| bool | | | Optional. Flag indicating if resource is locked for deletion. | |
-| `roleAssignments` | array | Optional. Array of role assignment objects that contain the 'roleDefinitionIdOrName' and 'principalId' to define RBAC role assignments on this resource. In the roleDefinitionIdOrName attribute, you can provide either the display name of the role definition, or its fully qualified ID in the following format: '/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11' | System.Object[] |  |
-| `privateEndpoints` | array | System.Object[] |  | Optional. Configuration Details for private endpoints. |
-| `tags`| string | | | Optional. Tag names and tag values can be provided as needed (see below) | |
-| `cuaId`| string | | | Customer Usage Attribution id (GUID). This GUID must be previously registered | |
-| `baseTime` | string | utcNow('u') | | Generated. Do not provide a value! This date value is used to generate a SAS token toaccess the modules.
+| Parameter Name | Type | Default Value | Possible Values | Description |
+| :-- | :-- | :-- | :-- | :-- |
+| `authorizationRules` | array | `[System.Collections.Hashtable]` |  | Optional. Authorization Rules for the Service Bus namespace |
+| `baseTime` | string | `[utcNow('u')]` |  | Generated. Do not provide a value! This date value is used to generate a SAS token to access the modules. |
+| `cuaId` | string |  |  | Optional. Customer Usage Attribution id (GUID). This GUID must be previously registered |
+| `diagnosticLogsRetentionInDays` | int | `365` |  | Optional. Specifies the number of days that logs will be kept for; a value of 0 will retain data indefinitely. |
+| `diagnosticStorageAccountId` | string |  |  | Optional. Resource identifier of the Diagnostic Storage Account. |
+| `eventHubAuthorizationRuleId` | string |  |  | Optional. Resource ID of the event hub authorization rule for the Event Hubs namespace in which the event hub should be created or streamed to. |
+| `eventHubName` | string |  |  | Optional. Name of the event hub within the namespace to which logs are streamed. Without this, an event hub is created for each log category. |
+| `ipFilterRules` | array | `[]` |  | Optional. IP Filter Rules for the Service Bus namespace |
+| `location` | string | `[resourceGroup().location]` |  | Optional. Location for all resources. |
+| `lock` | string | `NotSpecified` | `[CanNotDelete, NotSpecified, ReadOnly]` | Optional. Specify the type of lock. |
+| `logsToEnable` | array | `[OperationalLogs]` | `[OperationalLogs]` | Optional. The name of logs that will be streamed. |
+| `metricsToEnable` | array | `[AllMetrics]` | `[AllMetrics]` | Optional. The name of metrics that will be streamed. |
+| `namespaceAlias` | string |  |  | Optional. The Disaster Recovery configuration name |
+| `partnerNamespaceId` | string |  |  | Optional. ARM Id of the Primary/Secondary Service Bus namespace name, which is part of GEO DR pairing |
+| `postMigrationName` | string |  |  | Optional. Name to access Standard Namespace after migration. |
+| `privateEndpoints` | array | `[]` |  | Optional. Configuration Details for private endpoints. |
+| `roleAssignments` | array | `[]` |  | Optional. Array of role assignment objects that contain the 'roleDefinitionIdOrName' and 'principalId' to define RBAC role assignments on this resource. In the roleDefinitionIdOrName attribute, you can provide either the display name of the role definition, or its fully qualified ID in the following format: '/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11' |
+| `serviceBusNamespaceName` | string |  |  | Optional. Name of the Service Bus Namespace. If no name is provided, then unique name will be created. |
+| `skuName` | string | `Basic` | `[Basic, Standard, Premium]` | Required. Name of this SKU. - Basic, Standard, Premium |
+| `tags` | object | `{object}` |  | Optional. Tags of the resource. |
+| `targetNamespace` | string |  |  | Optional. Existing premium Namespace ARM Id name which has no entities, will be used for migration. |
+| `virtualNetworkRuleSubnetIds` | array | `[]` |  | Optional. vNet Rules SubnetIds for the Service Bus namespace. |
+| `workspaceId` | string |  |  | Optional. Resource identifier of Log Analytics. |
+| `zoneRedundant` | bool |  |  | Optional. Enabling this property creates a Premium Service Bus Namespace in regions supported availability zones. |
 
 ### Parameter Usage: `authorizationRules`
 
@@ -176,20 +177,23 @@ Tag names and tag values can be provided as needed. A tag can be left without a 
 
 ## Outputs
 
-| Output Name | Type | Description |
-| :-- | :-- | :-- |
-| `defaultAuthorizationRuleId` | string | The Id of the authorization rule marked by the variable with the same name. |
-| `serviceBusConnectionString` | string | The Service Bus Namespace connection string. |
-| `serviceBusNamespaceName` | string | The Name of the Service Bus Namespace. |
-| `serviceBusNamespaceResourceGroup` | string | The name of the Resource Group the Service Bus Namespace was created in. |
-| `serviceBusNamespaceResourceId` | string | The Resource Id of the Service Bus Namespace. |
+| Output Name | Type |
+| :-- | :-- |
+| `defaultAuthorizationRuleId` | string |
+| `serviceBusConnectionString` | string |
+| `serviceBusNamespaceName` | string |
+| `serviceBusNamespaceResourceGroup` | string |
+| `serviceBusNamespaceResourceId` | string |
 
-## Considerations
+## Template references
 
-*N/A*
-
-## Additional resources
-
-- [Microsoft.ServiceBus Namespace template reference](https://docs.microsoft.com/en-us/azure/templates/Microsoft.ServiceBus/2018-01-01-preview/namespaces)
-- [What is Azure Service Bus?](https://docs.microsoft.com/en-us/azure/service-bus-messaging/service-bus-messaging-overview)
-- [Use tags to organize your Azure resources](https://docs.microsoft.com/en-us/azure/azure-resource-manager/resource-group-using-tags)
+- [Locks](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2016-09-01/locks)
+- [Diagnosticsettings](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Insights/2017-05-01-preview/diagnosticSettings)
+- [Privateendpoints](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Network/2021-05-01/privateEndpoints)
+- [Privateendpoints/Privatednszonegroups](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Network/2020-05-01/privateEndpoints/privateDnsZoneGroups)
+- [Namespaces](https://docs.microsoft.com/en-us/azure/templates/Microsoft.ServiceBus/2018-01-01-preview/namespaces)
+- [Namespaces/Authorizationrules](https://docs.microsoft.com/en-us/azure/templates/Microsoft.ServiceBus/2017-04-01/namespaces/AuthorizationRules)
+- [Namespaces/Disasterrecoveryconfigs](https://docs.microsoft.com/en-us/azure/templates/Microsoft.ServiceBus/2017-04-01/namespaces/disasterRecoveryConfigs)
+- [Namespaces/Ipfilterrules](https://docs.microsoft.com/en-us/azure/templates/Microsoft.ServiceBus/2018-01-01-preview/namespaces/ipfilterrules)
+- [Namespaces/Migrationconfigurations](https://docs.microsoft.com/en-us/azure/templates/Microsoft.ServiceBus/2017-04-01/namespaces/migrationConfigurations)
+- [Namespaces/Virtualnetworkrules](https://docs.microsoft.com/en-us/azure/templates/Microsoft.ServiceBus/2018-01-01-preview/namespaces/virtualnetworkrules)

@@ -88,14 +88,82 @@ param eventHubName string = ''
 @description('Optional. Array of role assignment objects that contain the \'roleDefinitionIdOrName\' and \'principalId\' to define RBAC role assignments on this resource. In the roleDefinitionIdOrName attribute, you can provide either the display name of the role definition, or its fully qualified ID in the following format: \'/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11\'')
 param roleAssignments array = []
 
-@description('Optional. Switch to lock Virtual Network Gateway from deletion.')
-param lockForDeletion bool = false
+@allowed([
+  'CanNotDelete'
+  'NotSpecified'
+  'ReadOnly'
+])
+@description('Optional. Specify the type of lock.')
+param lock string = 'NotSpecified'
 
 @description('Optional. Tags of the resource.')
 param tags object = {}
 
 @description('Optional. Customer Usage Attribution id (GUID). This GUID must be previously registered')
 param cuaId string = ''
+
+@description('Optional. The name of logs that will be streamed.')
+@allowed([
+  'DDoSProtectionNotifications'
+  'DDoSMitigationFlowLogs'
+  'DDoSMitigationReports'
+])
+param publicIpLogsToEnable array = [
+  'DDoSProtectionNotifications'
+  'DDoSMitigationFlowLogs'
+  'DDoSMitigationReports'
+]
+
+@description('Optional. The name of logs that will be streamed.')
+@allowed([
+  'GatewayDiagnosticLog'
+  'TunnelDiagnosticLog'
+  'RouteDiagnosticLog'
+  'IKEDiagnosticLog'
+  'P2SDiagnosticLog'
+])
+param virtualNetworkGatewayLogsToEnable array = [
+  'GatewayDiagnosticLog'
+  'TunnelDiagnosticLog'
+  'RouteDiagnosticLog'
+  'IKEDiagnosticLog'
+  'P2SDiagnosticLog'
+]
+
+@description('Optional. The name of metrics that will be streamed.')
+@allowed([
+  'AllMetrics'
+])
+param metricsToEnable array = [
+  'AllMetrics'
+]
+
+var virtualNetworkGatewayDiagnosticsLogs = [for log in virtualNetworkGatewayLogsToEnable: {
+  category: log
+  enabled: true
+  retentionPolicy: {
+    enabled: true
+    days: diagnosticLogsRetentionInDays
+  }
+}]
+var publicIpDiagnosticsLogs = [for log in publicIpLogsToEnable: {
+  category: log
+  enabled: true
+  retentionPolicy: {
+    enabled: true
+    days: diagnosticLogsRetentionInDays
+  }
+}]
+
+var diagnosticsMetrics = [for metric in metricsToEnable: {
+  category: metric
+  timeGrain: null
+  enabled: true
+  retentionPolicy: {
+    enabled: true
+    days: diagnosticLogsRetentionInDays
+  }
+}]
 
 var zoneRedundantSkus = [
   'VpnGw1AZ'
@@ -198,85 +266,7 @@ var vpnClientConfiguration = {
   vpnClientRootCertificates: (empty(clientRootCertData) ? json('null') : vpnClientRootCertificates)
   vpnClientRevokedCertificates: (empty(clientRevokedCertThumbprint) ? json('null') : vpmClientRevokedCertificates)
 }
-var diagnosticsMetrics = [
-  {
-    category: 'AllMetrics'
-    timeGrain: null
-    enabled: true
-    retentionPolicy: {
-      enabled: true
-      days: diagnosticLogsRetentionInDays
-    }
-  }
-]
-var publicIpDiagnosticsLogs = [
-  {
-    category: 'DDoSProtectionNotifications'
-    enabled: true
-    retentionPolicy: {
-      enabled: true
-      days: diagnosticLogsRetentionInDays
-    }
-  }
-  {
-    category: 'DDoSMitigationFlowLogs'
-    enabled: true
-    retentionPolicy: {
-      enabled: true
-      days: diagnosticLogsRetentionInDays
-    }
-  }
-  {
-    category: 'DDoSMitigationReports'
-    enabled: true
-    retentionPolicy: {
-      enabled: true
-      days: diagnosticLogsRetentionInDays
-    }
-  }
-]
-var virtualNetworkGatewayDiagnosticsLogs = [
-  {
-    category: 'GatewayDiagnosticLog'
-    enabled: true
-    retentionPolicy: {
-      enabled: true
-      days: diagnosticLogsRetentionInDays
-    }
-  }
-  {
-    category: 'TunnelDiagnosticLog'
-    enabled: true
-    retentionPolicy: {
-      enabled: true
-      days: diagnosticLogsRetentionInDays
-    }
-  }
-  {
-    category: 'RouteDiagnosticLog'
-    enabled: true
-    retentionPolicy: {
-      enabled: true
-      days: diagnosticLogsRetentionInDays
-    }
-  }
-  {
-    category: 'IKEDiagnosticLog'
-    enabled: true
-    retentionPolicy: {
-      enabled: true
-      days: diagnosticLogsRetentionInDays
-    }
-  }
-  {
-    category: 'P2SDiagnosticLog'
-    enabled: true
-    retentionPolicy: {
-      enabled: true
-      days: diagnosticLogsRetentionInDays
-    }
-  }
-]
+
 var builtInRoleNames = {
   'Owner': subscriptionResourceId('Microsoft.Authorization/roleDefinitions', '8e3af657-a8ff-443c-a75c-2fe8c4bcb635')
   'Contributor': subscriptionResourceId('Microsoft.Authorization/roleDefinitions', 'b24988ac-6180-42a0-ab88-20f7382dd24c')
@@ -319,10 +309,11 @@ resource virtualGatewayPublicIP 'Microsoft.Network/publicIPAddresses@2021-02-01'
 }]
 
 @batchSize(1)
-resource virtualNetworkGatewayPublicIp_lock 'Microsoft.Authorization/locks@2016-09-01' = [for (virtualGatewayPublicIpName,index) in virtualGatewayPipName_var: if (lockForDeletion) {
-  name: '${virtualGatewayPublicIpName}-doNotDelete'
+resource virtualGatewayPublicIP_lock 'Microsoft.Authorization/locks@2016-09-01' = [for (virtualGatewayPublicIpName, index) in virtualGatewayPipName_var: if (lock != 'NotSpecified') {
+  name: '${virtualGatewayPublicIpName}-${lock}-lock'
   properties: {
-    level: 'CanNotDelete'
+    level: lock
+    notes: (lock == 'CanNotDelete') ? 'Cannot delete resource or child resources.' : 'Cannot modify the resource or child resources.'
   }
   scope: virtualGatewayPublicIP[index]
 }]
@@ -365,10 +356,11 @@ resource virtualNetworkGateway 'Microsoft.Network/virtualNetworkGateways@2021-02
   ]
 }
 
-resource virtualNetworkGateway_lock 'Microsoft.Authorization/locks@2016-09-01' = if (lockForDeletion) {
-  name: '${virtualNetworkGateway.name}-doNotDelete'
+resource virtualNetworkGateway_lock 'Microsoft.Authorization/locks@2016-09-01' = if (lock != 'NotSpecified') {
+  name: '${virtualNetworkGateway.name}-${lock}-lock'
   properties: {
-    level: 'CanNotDelete'
+    level: lock
+    notes: (lock == 'CanNotDelete') ? 'Cannot delete resource or child resources.' : 'Cannot modify the resource or child resources.'
   }
   scope: virtualNetworkGateway
 }

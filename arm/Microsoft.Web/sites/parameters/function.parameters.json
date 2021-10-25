@@ -39,17 +39,16 @@
         },
         "enableMonitoring": {
             "value": false
+        },
+        "roleAssignments": {
+            "value": [
+                {
+                    "roleDefinitionIdOrName": "Reader",
+                    "principalIds": [
+                        "5545f7a0-51f4-46af-b3b4-baecf5176a56"
+                    ]
+                }
+            ]
         }
-        // "roleAssignments": {
-        //     "value": [
-        //         {
-        //             "roleDefinitionIdOrName": "Desktop Virtualization User",
-        //             "principalIds": [
-        //                 "12345678-1234-1234-1234-123456789012", // object 1
-        //                 "78945612-1234-1234-1234-123456789012" // object 2
-        //             ]
-        //         }
-        //     ]
-        // }
     }
 }

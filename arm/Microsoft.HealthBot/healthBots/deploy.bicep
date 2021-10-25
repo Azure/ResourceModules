@@ -7,8 +7,13 @@ param sku string = 'F0'
 @description('Optional. Location for all resources.')
 param location string = resourceGroup().location
 
-@description('Optional. Switch to lock resource from deletion.')
-param lockForDeletion bool = false
+@allowed([
+  'CanNotDelete'
+  'NotSpecified'
+  'ReadOnly'
+])
+@description('Optional. Specify the type of lock.')
+param lock string = 'NotSpecified'
 
 @description('Optional. Array of role assignment objects that contain the \'roleDefinitionIdOrName\' and \'principalId\' to define RBAC role assignments on this resource. In the roleDefinitionIdOrName attribute, you can provide either the display name of the role definition, or its fully qualified ID in the following format: \'/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11\'')
 param roleAssignments array = []
@@ -40,7 +45,7 @@ module pid_cuaId '.bicep/nested_cuaId.bicep' = if (!empty(cuaId)) {
   params: {}
 }
 
-resource azureHealthBot 'Microsoft.HealthBot/healthBots@2020-10-20-preview' = {
+resource azureHealthBot 'Microsoft.HealthBot/healthBots@2020-12-08' = {
   name: azureHealthBotName
   location: location
   tags: tags
@@ -50,11 +55,13 @@ resource azureHealthBot 'Microsoft.HealthBot/healthBots@2020-10-20-preview' = {
   properties: {}
 }
 
-resource azureHealthBot_lock 'Microsoft.Authorization/locks@2016-09-01' = if (lockForDeletion) {
-  name: '${azureHealthBot.name}-DoNotDelete'
+resource azureHealthBot_lock 'Microsoft.Authorization/locks@2016-09-01' = if (lock != 'NotSpecified') {
+  name: '${azureHealthBot.name}-${lock}-lock'
   properties: {
-    level: 'CanNotDelete'
+    level: lock
+    notes: (lock == 'CanNotDelete') ? 'Cannot delete resource or child resources.' : 'Cannot modify the resource or child resources.'
   }
+  scope: azureHealthBot
 }
 
 module healthBot_rbac './.bicep/nested_rbac.bicep' = [for (roleAssignment, index) in roleAssignments: {
