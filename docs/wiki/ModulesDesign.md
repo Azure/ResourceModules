@@ -4,9 +4,6 @@ This section gives you an overview of the design principals the bicep modules fo
 
 ---
 ### _Navigation_
-- [Modules Design](#modules-design)
-    - [_Navigation_](#navigation)
-  - [- Bicep template guidelines](#--bicep-template-guidelines)
   - [General guidelines](#general-guidelines)
   - [File & folder structure](#file--folder-structure)
     - [Naming](#naming)
