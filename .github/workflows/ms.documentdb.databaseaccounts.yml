@@ -1,4 +1,4 @@
-name: 'EventGrid: Topics'
+name: 'DocumentDB: Database Accounts'
 
 on:
   workflow_dispatch:
