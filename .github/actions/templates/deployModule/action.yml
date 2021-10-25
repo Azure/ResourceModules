@@ -48,14 +48,14 @@ runs:
     - name: "Replace Tokens [${{ inputs.parameterFilePath }}] "
       shell: pwsh
       run: |
-        # Array to Process
+        $parameterFile = Get-Content -Path '${{ inputs.parameterFilePath }}'
         @(
             @{ Replace = '_SUBSCRIPTIONID1_'; With = '${{ inputs.subscriptionId }}' }
             @{ Replace = '_MANAGEMENTGROUPID1_'; With = '${{ inputs.managementGroupId }}' }
         ) | ForEach-Object {
-            $file = (Get-Content -Path ${{ inputs.parameterFilePath }}).Replace($PSItem.Replace, $PSItem.With)
-            $file | Set-Content ${{ inputs.parameterFilePath }}
+            $parameterFile = $parameterFile -replace $PSItem.Replace, $PSItem.With
         }
+        $parameterFile | Set-Content -Path '${{ inputs.parameterFilePath }}'
 
     - name: 'Validate [${{ inputs.templateFilePath }}]'
       shell: pwsh
