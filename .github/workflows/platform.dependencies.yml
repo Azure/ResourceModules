@@ -8,7 +8,7 @@ on:
   #     - main
   #   paths:
   #     - '.github/actions/templates/**'
-  #     - '.github/workflows/utility.dependencies.yml'
+  #     - '.github/workflows/platform.dependencies.yml'
   #     - 'dependencies/**'
 
 env:
