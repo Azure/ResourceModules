@@ -9,7 +9,7 @@ This section outlines how you can contribute to the repository.
 
 ## Set your environment up
 
-The preferred method of contribution requires you to create your own fork and create pull requests into the source repository from there. To set the fork up, please follow the process described in the ['getting started'](./GettingStarted#Option-1-Use-it-as-a-basis-to-set-up-your-own-inner-source-project) section.
+The preferred method of contribution requires you to create your own fork and create pull requests into the source repository from there. To set the fork up, please follow the process described in the ['Getting Started'](./GettingStarted#Option-1-Use-it-as-a-basis-to-set-up-your-own-inner-source-project) section.
 
 ## How to contribute?
 
@@ -24,4 +24,4 @@ How you proceed from here depends on your particular situation:
 
 For any update you want to bring back to the source repository, please open a Pull-Request from your fork back to the source repository.
 
-If you contribute to the modules you can either test you changes locally, or, even better set your environment up and test the updated/added module in your fork using pipelines. In the later case please make sure to set your environment up and also consult the ['pipeline design'](.\PipelinesDesign.md) and ['pipeline usage'](.\PipelinesUsage.md) sections.
+If you contribute to the modules you can either test you changes locally, or, even better set your environment up and test the updated/added module in your fork using pipelines. In the later case please make sure to set your environment up and also consult the ['Pipeline Design'](.\PipelinesDesign.md) and ['Pipeline Usage'](.\PipelinesUsage.md) sections.
