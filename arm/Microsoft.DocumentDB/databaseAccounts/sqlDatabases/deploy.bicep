@@ -28,3 +28,12 @@ resource sqlDatabase 'Microsoft.DocumentDB/databaseAccounts/sqlDatabases@2021-06
     }
   }
 }
+
+@description('The name of the sql database.')
+output sqlDatabaseName string = sqlDatabase.name
+
+@description('The Resource Id of the sql database.')
+output sqlDatabaseResourceId string = sqlDatabase.id
+
+@description('The name of the Resource Group the sql database was created in.')
+output sqlDatabaseResourceGroup string = resourceGroup().name
