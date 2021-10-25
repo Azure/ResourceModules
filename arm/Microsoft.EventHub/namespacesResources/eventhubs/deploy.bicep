@@ -111,7 +111,7 @@ module eventHub_rbac './.bicep/nested_rbac.bicep' = [for (roleAssignment, index)
 }]
 
 @description('The Name of the Event Hub.')
-output eventhubName = eventHub.name
+output eventhubName string = eventHub.name
 
 @description('The Resource ID of the Event Hub.')
 output eventHubId string = eventHub.id
