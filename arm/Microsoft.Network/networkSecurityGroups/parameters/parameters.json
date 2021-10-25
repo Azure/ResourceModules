@@ -5,9 +5,6 @@
         "networkSecurityGroupName": {
             "value": "sxx-az-nsg-weu-x-001"
         },
-        "networkwatcherResourceGroup": {
-            "value": "NetworkWatcherRG"
-        },
         "networkSecurityGroupSecurityRules": {
             "value": [
                 {
