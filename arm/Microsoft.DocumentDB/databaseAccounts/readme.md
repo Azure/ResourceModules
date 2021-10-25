@@ -11,6 +11,7 @@ This module deploys a Documentdb database account and its child resources.
 | `Microsoft.DocumentDB/databaseAccounts/mongodbDatabases` | 2021-07-01-preview |
 | `Microsoft.DocumentDB/databaseAccounts/providers/roleAssignments` | 2021-04-01-preview |
 | `Microsoft.DocumentDB/databaseAccounts/sqlDatabases` | 2021-06-15 |
+| `Microsoft.DocumentDB/databaseAccounts/sqlDatabases/throughputSettings` | 2021-06-15 |
 | `Microsoft.Insights/diagnosticSettings` | 2017-05-01-preview |
 
 ## Parameters
@@ -64,4 +65,5 @@ This module deploys a Documentdb database account and its child resources.
 - [Databaseaccounts](https://docs.microsoft.com/en-us/azure/templates/Microsoft.DocumentDB/2021-06-15/databaseAccounts)
 - [Databaseaccounts/Mongodbdatabases](https://docs.microsoft.com/en-us/azure/templates/Microsoft.DocumentDB/2021-07-01-preview/databaseAccounts/mongodbDatabases)
 - [Databaseaccounts/Sqldatabases](https://docs.microsoft.com/en-us/azure/templates/Microsoft.DocumentDB/2021-06-15/databaseAccounts/sqlDatabases)
+- [Databaseaccounts/Sqldatabases/Throughputsettings](https://docs.microsoft.com/en-us/azure/templates/Microsoft.DocumentDB/2021-06-15/databaseAccounts/sqlDatabases/throughputSettings)
 - [Diagnosticsettings](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Insights/2017-05-01-preview/diagnosticSettings)
