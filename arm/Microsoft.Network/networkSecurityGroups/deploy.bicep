@@ -51,26 +51,8 @@ param logsToEnable array = [
   'NetworkSecurityGroupRuleCounter'
 ]
 
-@description('Optional. The name of metrics that will be streamed.')
-@allowed([
-  'AllMetrics'
-])
-param metricsToEnable array = [
-  'AllMetrics'
-]
-
 var diagnosticsLogs = [for log in logsToEnable: {
   category: log
-  enabled: true
-  retentionPolicy: {
-    enabled: true
-    days: diagnosticLogsRetentionInDays
-  }
-}]
-
-var diagnosticsMetrics = [for metric in metricsToEnable: {
-  category: metric
-  timeGrain: null
   enabled: true
   retentionPolicy: {
     enabled: true
