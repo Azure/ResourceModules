@@ -41,7 +41,7 @@ A **Module** consists of
 - one or multiple template parameters files (`*parameters.json`) that will be used for testing – located in the `parameters` sub-folder
 - a `readme.md` file which describes the module itself
 
-A Module usually represents a single resource or a set of closely related resources. For example, a storage account and the associated lock or virtual machine and network interfaces. Modules are located in the Modules folder.
+A module usually represents a single resource or a set of closely related resources. For example, a storage account and the associated lock or virtual machine and network interfaces. Modules are located in the `arm` folder.
 
 ### Naming
 
