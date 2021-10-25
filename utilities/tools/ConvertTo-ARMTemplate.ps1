@@ -31,10 +31,29 @@ param (
     [switch] $CleanUp
 )
 
+#region Helper functions
+
+<#
+.SYNOPSIS
+A function to recursively remove 'metadata' property from a provided object.
+This object is expected to be an ARM template converted to a PowerShell custom object.
+The function uses the object reference rather than recreating/copying the object.
+
+.PARAMETER TemplateObject
+Mandatory. The ARM template converted to a PowerShell custom object.
+
+.EXAMPLE
+$JSONFileContent = Get-Content -Path $JSONFilePath
+$JSONObj = $JSONFileContent | ConvertFrom-Json
+Remove-JSONMetadata -TemplateObject $JSONObj
+
+Reads content from a ARM/JSON file, converts it to a PSCustomObject and removes 'metadata' property under the template and recursively on all nested deployments.
+
+#>
 function Remove-JSONMetadata {
     [CmdletBinding()]
     param (
-        [Parameter()]
+        [Parameter(Mandatory)]
         [psobject] $TemplateObject
     )
     $TemplateObject.PSObject.Properties.Remove('metadata')
