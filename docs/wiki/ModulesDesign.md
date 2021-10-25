@@ -48,11 +48,24 @@ A module usually represents a single resource or a set of closely related resour
 Files and folders within the module folder are all in lower case.
 
 ``` txt
-Microsoft.Web
-└─ sites
+Microsoft.<provider>
+└─ <service>
     ├─ .bicep
     |  ├─ nested_providerResource1.bicep
     |  └─ nested_providerResource2.bicep
+    ├─parameters
+    |  └─ parameters.json
+    ├─ deploy.bicep
+    └─ readme.md
+```
+
+for example
+``` txt
+Microsoft.Web
+└─ sites
+    ├─ .bicep
+    |  ├─ nested_rbac.bicep
+    |  └─ nested_cuaId.bicep
     ├─parameters
     |  └─ parameters.json
     ├─ deploy.bicep
