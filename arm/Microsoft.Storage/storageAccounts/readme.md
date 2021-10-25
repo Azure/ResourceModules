@@ -123,7 +123,9 @@ Here's an example of specifying two Blob Containes. The first named "one" with p
                         "12345678-1234-1234-1234-123456789012", // object 1
                         "78945612-1234-1234-1234-123456789012" // object 2
                     ]
-                },
+                }
+            ]
+        },
         {
             "name": "two",
             "publicAccess": "None", //Container, Blob, None
@@ -133,6 +135,7 @@ Here's an example of specifying two Blob Containes. The first named "one" with p
             "allowProtectedAppendWrites": false
         }
     ]
+}
 ```
 
 ### Parameter Usage: `fileShares`
