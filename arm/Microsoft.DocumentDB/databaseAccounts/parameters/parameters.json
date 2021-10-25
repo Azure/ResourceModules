@@ -3,7 +3,7 @@
     "contentVersion": "1.0.0.0",
     "parameters": {
         "databaseAccountName": {
-            "value": "sxx-az-cdb-weu-x-001"
+            "value": "sxx-az-cdb-weu-x-002"
         },
         "locations": {
             "value": [
