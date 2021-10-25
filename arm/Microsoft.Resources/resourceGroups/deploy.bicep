@@ -196,7 +196,7 @@ var builtInRoleNames = {
   'Workbook Reader': subscriptionResourceId('Microsoft.Authorization/roleDefinitions', 'b279062a-9be3-42a0-92ae-8b3cf002ec4d')
 }
 
-resource resourceGroup 'Microsoft.Resources/resourceGroups@2019-05-01' = {
+resource resourceGroup 'Microsoft.Resources/resourceGroups@2021-04-01' = {
   location: location
   name: resourceGroupName
   tags: tags

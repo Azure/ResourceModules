@@ -8,7 +8,7 @@ This module deploys Resource Groups.
 | :-- | :-- |
 | `Microsoft.Authorization/locks` | 2016-09-01 |
 | `Microsoft.Authorization/roleAssignments` | 2020-04-01-preview |
-| `Microsoft.Resources/resourceGroups` | 2019-05-01 |
+| `Microsoft.Resources/resourceGroups` | 2021-04-01 |
 
 ## Parameters
 
