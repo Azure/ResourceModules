@@ -3,14 +3,14 @@
     "contentVersion": "1.0.0.0",
     "parameters": {
         "databaseAccountName": {
-            "value": "sxx-az-cdb-weu-x-002"
+            "value": "sxx-az-cdb-weu-x-001"
         },
         "locations": {
             "value": [
                 {
                     "failoverPriority": 0,
                     "isZoneRedundant": true,
-                    "locationName": "East US"
+                    "locationName": "West Europe"
                 }
             ]
         },
