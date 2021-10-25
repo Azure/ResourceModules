@@ -74,7 +74,7 @@ module pid_cuaId './.bicep/nested_cuaId.bicep' = if (!empty(cuaId)) {
   params: {}
 }
 
-resource eventHub 'Microsoft.EventHub/namespaces/eventhubs@2017-04-01' = {
+resource eventHub 'Microsoft.EventHub/namespaces/eventhubs@2021-06-01-preview' = {
   name: '${namespaceName}/${eventHubName}'
   tags: tags
   properties: eventHubConfiguration.properties
@@ -90,11 +90,11 @@ resource eventHub_lock 'Microsoft.Authorization/locks@2016-09-01' = if (lock != 
   scope: eventHub
 }
 
-resource eventHub_consumergroups 'Microsoft.EventHub/namespaces/eventhubs/consumergroups@2017-04-01' = [for (consumerGroups, index) in eventHubConfiguration.consumerGroups: {
+resource eventHub_consumergroups 'Microsoft.EventHub/namespaces/eventhubs/consumergroups@2021-06-01-preview' = [for (consumerGroups, index) in eventHubConfiguration.consumerGroups: {
   name: '${eventHub.name}/${consumerGroups.name}'
 }]
 
-resource eventHub_authorizationRules 'Microsoft.EventHub/namespaces/eventhubs/authorizationRules@2017-04-01' = [for authorizationRule in authorizationRules: {
+resource eventHub_authorizationRules 'Microsoft.EventHub/namespaces/eventhubs/authorizationRules@2021-06-01-preview' = [for authorizationRule in authorizationRules: {
   name: '${eventHub.name}/${authorizationRule.name}'
   properties: {
     rights: authorizationRule.properties.rights

@@ -7,9 +7,9 @@ This module deploys EventHub.
 | Resource Type | Api Version |
 | :-- | :-- |
 | `Microsoft.Authorization/locks` | 2016-09-01 |
-| `Microsoft.EventHub/namespaces/eventhubs` | 2017-04-01 |
-| `Microsoft.EventHub/namespaces/eventhubs/authorizationRules` | 2017-04-01 |
-| `Microsoft.EventHub/namespaces/eventhubs/consumergroups` | 2017-04-01 |
+| `Microsoft.EventHub/namespaces/eventhubs` | 2021-06-01-preview |
+| `Microsoft.EventHub/namespaces/eventhubs/authorizationRules` | 2021-06-01-preview |
+| `Microsoft.EventHub/namespaces/eventhubs/consumergroups` | 2021-06-01-preview |
 | `Microsoft.EventHub/namespaces/eventhubs/providers/roleAssignments` | 2020-04-01-preview |
 
 ## Parameters
