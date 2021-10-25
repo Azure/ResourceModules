@@ -62,6 +62,8 @@ function Remove-JSONMetadata {
     }
 }
 
+#endregion
+
 $rootPath = Get-Item -Path $Path | Select-Object -ExpandProperty FullName
 $armFolderPath = Join-Path -Path $rootPath -ChildPath 'arm'
 
@@ -95,7 +97,7 @@ foreach ($bicepFile in $bicepFiles) {
     }
     Write-Verbose "$bicepFilePath - Convert to json - Done"
 
-    # Cleanup json, remove metadate property in json
+    # Cleanup json, remove metadata property in json
     Write-Verbose "$bicepFilePath - Clean up json"
     if (Test-Path -Path $JSONFilePath) {
         $JSONFileContent = Get-Content -Path $JSONFilePath
