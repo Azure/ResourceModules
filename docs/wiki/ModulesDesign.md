@@ -101,13 +101,13 @@ Modules in the repository are structured via the module's main resource provider
    In this folder we'd recommed to place the child-resource-template alongside a ReadMe (that can be generated via the `.github\workflows\scripts\Set-ModuleReadMe.ps1` script) and optionally further nest additional folders for it's child-resources. The parent template should reference all it's child-templates to allow for an end to end deployment experience while allowing any user to also reference 'just' the child-resource itself. In the case of the SQL-server example the server template would reference the database module and encapsulate it it in a loop to allow for the deployment of n-amount of databases.
 
 - **Overlapping/Ambigious providers**<p>
-  There may be cases where a folder is already leveraged by a different module with the same provider (e.g. `Microsoft.Web/sites`). In these cases we recommend to add an additional layer into the hierarchy by moving the module that originally populated the conflicting folder into a sub-folder of the same using a meaningful name. The new module can then be positioned on the same level, again with a meaningful name. For example:
+  There may be cases where a folder is already leveraged by a different module with the same resource provider. In these cases we recommend to add an additional layer into the hierarchy by moving the module that originally populated the conflicting folder into a sub-folder of the same using a meaningful name. The new module can then be positioned on the same level, again with a meaningful name. For example:
   ```
-  Microsoft.Web
-  ├─ serverfarms [module]
-  └─ sites [the conflicting name - now shared as a parent folder]
-     ├─ webApp [module]
-     └─ functionApp [module]
+  Microsoft.<provider>
+  ├─ <service1> [module]
+  └─ <service2> [the conflicting name - now shared as a parent folder]
+     ├─ <service2Variant1> [module]
+     └─ <service2Variant2> [module]
   ```
 
   > ***Note:*** The intend should always be to add new logic to the original template instead of adding artificial new modules. Hence, this solution should only be applied if no other solutions work.
