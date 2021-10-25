@@ -38,7 +38,7 @@
             "value": 1
         },
         "managedIdentityType": {
-            "value": "SystemAssigned"   
+            "value": "SystemAssigned"
         },
         "enableLinuxMMAAgent": {
             "value": true
@@ -100,7 +100,7 @@
                             "name": "ipconfig1",
                             "properties": {
                                 "subnet": {
-                                    "id": "subscriptions/8629be3b-96bc-482d-a04b-ffff597c65a2/resourceGroups/dependencies-rg/providers/Microsoft.Network/virtualNetworks/sxx-az-vnet-weu-x-002/subnets/sxx-az-subnet-weu-x-002"
+                                    "id": "/subscriptions/8629be3b-96bc-482d-a04b-ffff597c65a2/resourceGroups/validation-rg/providers/Microsoft.Network/virtualNetworks/adp-sxx-az-vnet-weu-x-001/subnets/sxx-az-subnet-weu-x-002"
                                 }
                             }
                         }
@@ -111,9 +111,9 @@
         "roleAssignments": {
             "value": [
                 {
-                    "roleDefinitionIdOrName": "Contributor",
+                    "roleDefinitionIdOrName": "Reader",
                     "principalIds": [
-                        "3813e339-f61f-4746-b280-a0270b0e39af"
+                        "5545f7a0-51f4-46af-b3b4-baecf5176a56"
                     ]
                 }
             ]

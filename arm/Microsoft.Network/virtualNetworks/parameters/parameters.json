@@ -6,10 +6,13 @@
             "value": "sxx-az-vnet-weu-x-001"
         },
         "vnetAddressPrefixes": {
-            "value": ["10.0.0.0/16"]
+            "value": [
+                "10.0.0.0/16"
+            ]
         },
         "subnets": {
-            "value": [{
+            "value": [
+                {
                     "name": "GatewaySubnet",
                     "addressPrefix": "10.0.255.0/24"
                 },
@@ -18,7 +21,8 @@
                     "addressPrefix": "10.0.0.0/24",
                     "networkSecurityGroupName": "",
                     "routeTableName": "",
-                    "serviceEndpoints": [{
+                    "serviceEndpoints": [
+                        {
                             "service": "Microsoft.EventHub"
                         },
                         {
@@ -38,7 +42,8 @@
                     "addressPrefix": "10.0.1.0/24",
                     "networkSecurityGroupName": "",
                     "routeTableName": "",
-                    "serviceEndpoints": [{
+                    "serviceEndpoints": [
+                        {
                             "service": "Microsoft.EventHub"
                         },
                         {
@@ -59,12 +64,14 @@
                     "networkSecurityGroupName": "",
                     "routeTableName": "",
                     "serviceEndpoints": [],
-                    "delegations": [{
-                        "name": "sqlMiDel",
-                        "properties": {
-                            "serviceName": "Microsoft.Sql/managedInstances"
+                    "delegations": [
+                        {
+                            "name": "sqlMiDel",
+                            "properties": {
+                                "serviceName": "Microsoft.Sql/managedInstances"
+                            }
                         }
-                    }]
+                    ]
                 },
                 {
                     "name": "sxx-az-subnet-weu-x-004",
@@ -72,12 +79,14 @@
                     "networkSecurityGroupName": "",
                     "routeTableName": "",
                     "serviceEndpoints": [],
-                    "delegations": [{
-                        "name": "netappDel",
-                        "properties": {
-                            "serviceName": "Microsoft.Netapp/volumes"
+                    "delegations": [
+                        {
+                            "name": "netappDel",
+                            "properties": {
+                                "serviceName": "Microsoft.Netapp/volumes"
+                            }
                         }
-                    }]
+                    ]
                 },
                 {
                     "name": "AzureFirewallSubnet",
@@ -106,17 +115,16 @@
                     "privateLinkServiceNetworkPolicies": "Enabled"
                 }
             ]
+        },
+        "roleAssignments": {
+            "value": [
+                {
+                    "roleDefinitionIdOrName": "Reader",
+                    "principalIds": [
+                        "5545f7a0-51f4-46af-b3b4-baecf5176a56"
+                    ]
+                }
+            ]
         }
-        // "roleAssignments": {
-        //     "value": [
-        //         {
-        //             "roleDefinitionIdOrName": "Desktop Virtualization User",
-        //             "principalIds": [
-        //                 "12345678-1234-1234-1234-123456789012", // object 1
-        //                 "78945612-1234-1234-1234-123456789012" // object 2
-        //             ]
-        //         }
-        //     ]
-        // }
     }
 }

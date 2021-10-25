@@ -6,11 +6,11 @@
             "value": "sxx-az-azfw-weu-x-001"
         },
         "availabilityZones": {
-          "value": [
-            "1",
-            "2",
-            "3"
-          ]
+            "value": [
+                "1",
+                "2",
+                "3"
+            ]
         },
         "applicationRuleCollections": {
             "value": [
@@ -98,7 +98,17 @@
             ]
         },
         "vNetId": {
-            "value": "/subscriptions/8629be3b-96bc-482d-a04b-ffff597c65a2/resourceGroups/validation-rg/providers/Microsoft.Network/virtualNetworks/sxx-az-vnet-weu-x-004"
+            "value": "/subscriptions/8629be3b-96bc-482d-a04b-ffff597c65a2/resourceGroups/validation-rg/providers/Microsoft.Network/virtualNetworks/adp-sxx-az-vnet-weu-x-azfw"
+        },
+        "roleAssignments": {
+            "value": [
+                {
+                    "roleDefinitionIdOrName": "Reader",
+                    "principalIds": [
+                        "5545f7a0-51f4-46af-b3b4-baecf5176a56"
+                    ]
+                }
+            ]
         }
     }
 }

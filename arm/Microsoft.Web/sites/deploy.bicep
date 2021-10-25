@@ -27,8 +27,13 @@ param enableMonitoring bool = true
 @description('Optional. Mandatory \'managedServiceIdentity\' contains UserAssigned. The identy to assign to the resource.')
 param userAssignedIdentities object = {}
 
-@description('Optional. Switch to lock Key Vault from deletion.')
-param lockForDeletion bool = false
+@allowed([
+  'CanNotDelete'
+  'NotSpecified'
+  'ReadOnly'
+])
+@description('Optional. Specify the type of lock.')
+param lock string = 'NotSpecified'
 
 @description('Optional. Configuration Details for private endpoints.')
 param privateEndpoints array = []
@@ -133,58 +138,49 @@ param clientAffinityEnabled bool = true
 @description('Required. Configuration of the app.')
 param siteConfig object = {}
 
-var diagnosticsMetrics = [
-  {
-    category: 'AllMetrics'
-    enabled: true
-    retentionPolicy: {
-      days: diagnosticLogsRetentionInDays
-      enabled: true
-    }
-  }
+@description('Optional. The name of logs that will be streamed.')
+@allowed([
+  'AppServiceHTTPLogs'
+  'AppServiceConsoleLogs'
+  'AppServiceAppLogs'
+  'AppServiceFileAuditLogs'
+  'AppServiceAuditLogs'
+])
+param logsToEnable array = [
+  'AppServiceHTTPLogs'
+  'AppServiceConsoleLogs'
+  'AppServiceAppLogs'
+  'AppServiceFileAuditLogs'
+  'AppServiceAuditLogs'
 ]
-var diagnosticsLogs = [
-  {
-    category: 'AppServiceHTTPLogs'
-    enabled: true
-    retentionPolicy: {
-      enabled: true
-      days: diagnosticLogsRetentionInDays
-    }
-  }
-  {
-    category: 'AppServiceConsoleLogs'
-    enabled: true
-    retentionPolicy: {
-      enabled: true
-      days: diagnosticLogsRetentionInDays
-    }
-  }
-  {
-    category: 'AppServiceAppLogs'
-    enabled: true
-    retentionPolicy: {
-      enabled: true
-      days: diagnosticLogsRetentionInDays
-    }
-  }
-  {
-    category: 'AppServiceFileAuditLogs'
-    enabled: true
-    retentionPolicy: {
-      enabled: true
-      days: diagnosticLogsRetentionInDays
-    }
-  }
-  {
-    category: 'AppServiceAuditLogs'
-    enabled: true
-    retentionPolicy: {
-      enabled: true
-      days: diagnosticLogsRetentionInDays
-    }
-  }
+
+@description('Optional. The name of metrics that will be streamed.')
+@allowed([
+  'AllMetrics'
+])
+param metricsToEnable array = [
+  'AllMetrics'
 ]
+
+var diagnosticsLogs = [for log in logsToEnable: {
+  category: log
+  enabled: true
+  retentionPolicy: {
+    enabled: true
+    days: diagnosticLogsRetentionInDays
+  }
+}]
+
+var diagnosticsMetrics = [for metric in metricsToEnable: {
+  category: metric
+  timeGrain: null
+  enabled: true
+  retentionPolicy: {
+    enabled: true
+    days: diagnosticLogsRetentionInDays
+  }
+}]
+
 var builtInRoleNames = {
   'Owner': subscriptionResourceId('Microsoft.Authorization/roleDefinitions', '8e3af657-a8ff-443c-a75c-2fe8c4bcb635')
   'Contributor': subscriptionResourceId('Microsoft.Authorization/roleDefinitions', 'b24988ac-6180-42a0-ab88-20f7382dd24c')
@@ -224,14 +220,15 @@ resource appServicePlan 'Microsoft.Web/serverfarms@2021-02-01' = if (empty(appSe
     family: appServicePlanFamily
   }
   properties: {
-    hostingEnvironmentProfile: (empty(appServiceEnvironmentId) ? json('null') : json('{ id: ${hostingEnvironment} }')  )
+    hostingEnvironmentProfile: (empty(appServiceEnvironmentId) ? json('null') : json('{ id: ${hostingEnvironment} }'))
   }
 }
 
-resource appServicePlan_lock 'Microsoft.Authorization/locks@2016-09-01' = if (lockForDeletion && empty(appServicePlanId)) {
-  name: '${appServicePlan.name}-doNotDelete'
+resource appServicePlan_lock 'Microsoft.Authorization/locks@2016-09-01' = if (lock != 'NotSpecified' && empty(appServicePlanId)) {
+  name: '${appServicePlan.name}-${lock}-lock'
   properties: {
-    level: 'CanNotDelete'
+    level: lock
+    notes: (lock == 'CanNotDelete') ? 'Cannot delete resource or child resources.' : 'Cannot modify the resource or child resources.'
   }
   scope: appServicePlan
 }
@@ -248,7 +245,7 @@ resource app 'Microsoft.Web/sites@2020-12-01' = {
   properties: {
     serverFarmId: ((!empty(appServicePlanId)) ? appServicePlanId : resourceId('Microsoft.Web/serverfarms', appServicePlanName))
     httpsOnly: httpsOnly
-    hostingEnvironmentProfile: (empty(appServiceEnvironmentId) ? json('null') : json('{ id: ${hostingEnvironment} }')  )
+    hostingEnvironmentProfile: (empty(appServiceEnvironmentId) ? json('null') : json('{ id: ${hostingEnvironment} }'))
     clientAffinityEnabled: clientAffinityEnabled
     siteConfig: siteConfig
   }
@@ -269,11 +266,11 @@ resource app 'Microsoft.Web/sites@2020-12-01' = {
   }
 }
 
-
-resource app_lock 'Microsoft.Authorization/locks@2016-09-01' = if (lockForDeletion) {
-  name: '${app.name}-doNotDelete'
+resource app_lock 'Microsoft.Authorization/locks@2016-09-01' = if (lock != 'NotSpecified') {
+  name: '${app.name}-${lock}-lock'
   properties: {
-    level: 'CanNotDelete'
+    level: lock
+    notes: (lock == 'CanNotDelete') ? 'Cannot delete resource or child resources.' : 'Cannot modify the resource or child resources.'
   }
   scope: app
 }

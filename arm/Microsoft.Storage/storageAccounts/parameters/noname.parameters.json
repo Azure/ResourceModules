@@ -10,7 +10,14 @@
                 {
                     "name": "avdscripts",
                     "publicAccess": "Container",
-                    "roleAssignments": []
+                    "roleAssignments": [
+                        {
+                            "roleDefinitionIdOrName": "Reader",
+                            "principalIds": [
+                                "5545f7a0-51f4-46af-b3b4-baecf5176a56"
+                            ]
+                        }
+                    ]
                 },
                 {
                     "name": "archivecontainer",
@@ -18,24 +25,42 @@
                     "enableWORM": true,
                     "WORMRetention": 666,
                     "allowProtectedAppendWrites": false,
-                    "roleAssignments": []
+                    "roleAssignments": [
+                        {
+                            "roleDefinitionIdOrName": "Reader",
+                            "principalIds": [
+                                "5545f7a0-51f4-46af-b3b4-baecf5176a56"
+                            ]
+                        }
+                    ]
                 }
             ]
-        },
-        "enableArchiveAndDelete": {
-            "value": true
         },
         "fileShares": {
             "value": [
                 {
                     "name": "avdprofiles",
                     "shareQuota": "5120",
-                    "roleAssignments": []
+                    "roleAssignments": [
+                        {
+                            "roleDefinitionIdOrName": "Reader",
+                            "principalIds": [
+                                "5545f7a0-51f4-46af-b3b4-baecf5176a56"
+                            ]
+                        }
+                    ]
                 },
                 {
                     "name": "avdprofiles2",
                     "shareQuota": "5120",
-                    "roleAssignments": []
+                    "roleAssignments": [
+                        {
+                            "roleDefinitionIdOrName": "Reader",
+                            "principalIds": [
+                                "5545f7a0-51f4-46af-b3b4-baecf5176a56"
+                            ]
+                        }
+                    ]
                 }
             ]
         },
@@ -50,12 +75,36 @@
                 {
                     "name": "queue1",
                     "metadata": {},
-                    "roleAssignments": []
+                    "roleAssignments": [
+                        {
+                            "roleDefinitionIdOrName": "Reader",
+                            "principalIds": [
+                                "5545f7a0-51f4-46af-b3b4-baecf5176a56"
+                            ]
+                        }
+                    ]
                 },
                 {
                     "name": "queue2",
                     "metadata": {},
-                    "roleAssignments": []
+                    "roleAssignments": [
+                        {
+                            "roleDefinitionIdOrName": "Reader",
+                            "principalIds": [
+                                "5545f7a0-51f4-46af-b3b4-baecf5176a56"
+                            ]
+                        }
+                    ]
+                }
+            ]
+        },
+        "roleAssignments": {
+            "value": [
+                {
+                    "roleDefinitionIdOrName": "Reader",
+                    "principalIds": [
+                        "5545f7a0-51f4-46af-b3b4-baecf5176a56"
+                    ]
                 }
             ]
         }

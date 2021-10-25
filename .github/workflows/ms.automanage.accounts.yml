@@ -15,15 +15,45 @@ on:
         description: 'The version to enforce if [versionOption] is set to [custom]'
         required: false
         default: '0.0.1'
+  push:
+    branches:
+      - main
+    paths:
+      - '.github/actions/templates/**'
+      - '.github/workflows/ms.automanage.accounts.yml'
+      - 'arm/Microsoft.Automanage/accounts/**'
+      - '!arm/Microsoft.Automanage/accounts/readme.md'
 
 env:
   moduleName: 'accounts'
   modulePath: 'arm/Microsoft.Automanage/accounts'
+  workflowPath: '.github/workflows/ms.automanage.accounts.yml'
   AZURE_CREDENTIALS: ${{ secrets.AZURE_CREDENTIALS }}
   ARM_SUBSCRIPTION_ID: ${{ secrets.ARM_SUBSCRIPTION_ID }}
   ARM_MGMTGROUP_ID: ${{ secrets.ARM_MGMTGROUP_ID }}
 
 jobs:
+  ############################
+  #   SET INPUT PARAMETERS   #
+  ############################
+  job_set_workflow_param:
+    runs-on: ubuntu-20.04
+    name: 'Set input parameters to output variables'
+    steps:
+      - name: 'Checkout'
+        uses: actions/checkout@v2
+        with:
+          fetch-depth: 0
+      - name: 'Set input parameters'
+        id: get-workflow-param
+        uses: ./.github/actions/templates/getWorkflowInput
+        with:
+          workflowPath: '${{ env.workflowPath}}'
+    outputs:
+      removeDeployment: ${{ steps.get-workflow-param.outputs.removeDeployment }}
+      versioningOption: ${{ steps.get-workflow-param.outputs.versioningOption }}
+      customVersion: ${{ steps.get-workflow-param.outputs.customVersion }}
+
   ##################
   #   UNIT TESTS   #
   ##################
@@ -95,6 +125,7 @@ jobs:
     runs-on: ubuntu-20.04
     name: 'Deploy module'
     needs:
+      - job_set_workflow_param
       - job_tests_module_global
       - job_tests_module_global_api
       - job_tests_module_deploy_validate
@@ -122,7 +153,7 @@ jobs:
           resourceGroupName: '${{ env.resourceGroupName }}'
           subscriptionId: '${{ secrets.ARM_SUBSCRIPTION_ID }}'
           managementGroupId: '${{ secrets.ARM_MGMTGROUP_ID }}'
-          removeDeployment: '${{ github.event.inputs.removeDeployment }}'
+          removeDeployment: '${{ needs.job_set_workflow_param.outputs.removeDeployment }}'
 
   ###############
   #   PUBLISH   #
@@ -132,6 +163,7 @@ jobs:
     if: contains(fromJson('["refs/heads/main", "refs/heads/master"]'), github.ref)
     runs-on: ubuntu-20.04
     needs:
+      - job_set_workflow_param
       - job_deploy_module
     steps:
       - name: 'Checkout'
@@ -152,8 +184,8 @@ jobs:
           componentTemplateSpecName: '${{ env.moduleName }}'
           componentTemplateSpecDescription: '${{ env.componentTemplateSpecDescription }}'
           publishToTemplateSpec: '${{ env.publishToTemplateSpec }}'
-          versioningOption: '${{ github.event.inputs.versioningOption }}'
-          customVersion: '${{ github.event.inputs.customVersion }}'
+          versioningOption: '${{ needs.job_set_workflow_param.outputs.versioningOption }}'
+          customVersion: '${{ needs.job_set_workflow_param.outputs.customVersion }}'
 
   ##############
   #   REMOVE   #
@@ -161,7 +193,7 @@ jobs:
   job_remove_module:
     runs-on: ubuntu-20.04
     name: 'Remove module'
-    if: ${{ always() && !cancelled() && github.event.inputs.removeDeployment == 'true' && (contains(needs.*.result, 'success') || contains(needs.*.result, 'failure')) }}
+    if: ${{ always() && !cancelled() && needs.job_set_workflow_param.outputs.removeDeployment == 'true' && (contains(needs.*.result, 'success') || contains(needs.*.result, 'failure')) }}
     needs:
       - job_deploy_module
     steps:

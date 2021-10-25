@@ -6,10 +6,11 @@
             "value": "sxx-az-lb-x-001"
         },
         "frontendIPConfigurations": {
-            "value": [{
+            "value": [
+                {
                     "name": "publicIPConfig",
                     "properties": {
-                        "publicIPAddressId": "/subscriptions/8629be3b-96bc-482d-a04b-ffff597c65a2/resourceGroups/dependencies-rg/providers/Microsoft.Network/publicIPAddresses/sxx-az-pip-weu-x-003",
+                        "publicIPAddressId": "/subscriptions/8629be3b-96bc-482d-a04b-ffff597c65a2/resourceGroups/validation-rg/providers/Microsoft.Network/publicIPAddresses/adp-sxx-az-pip-weu-x-lb",
                         "subnetId": "",
                         "privateIPAddress": ""
                     }
@@ -17,12 +18,15 @@
             ]
         },
         "backendAddressPools": {
-            "value": [{
-                "name": "backendAddressPool"
-            }]
+            "value": [
+                {
+                    "name": "backendAddressPool"
+                }
+            ]
         },
         "loadBalancingRules": {
-            "value": [{
+            "value": [
+                {
                     "name": "publicIPLBRule",
                     "properties": {
                         "frontendIPConfigurationName": "publicIPConfig",
@@ -41,16 +45,28 @@
             ]
         },
         "probes": {
-            "value": [{
-                "name": "probe",
-                "properties": {
-                    "protocol": "TCP",
-                    "port": 80,
-                    "requestPath": "/",
-                    "intervalInSeconds": 10,
-                    "numberOfProbes": 5
+            "value": [
+                {
+                    "name": "probe",
+                    "properties": {
+                        "protocol": "TCP",
+                        "port": 80,
+                        "requestPath": "/",
+                        "intervalInSeconds": 10,
+                        "numberOfProbes": 5
+                    }
                 }
-            }]
+            ]
+        },
+        "roleAssignments": {
+            "value": [
+                {
+                    "roleDefinitionIdOrName": "Reader",
+                    "principalIds": [
+                        "5545f7a0-51f4-46af-b3b4-baecf5176a56"
+                    ]
+                }
+            ]
         }
     }
 }

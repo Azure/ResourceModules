@@ -1,4 +1,4 @@
-name: "RecoveryServices: Vaults"
+name: 'RecoveryServices: Vaults'
 
 on:
   workflow_dispatch:
@@ -15,15 +15,45 @@ on:
         description: 'The version to enforce if [versionOption] is set to [custom]'
         required: false
         default: '0.0.1'
+  push:
+    branches:
+      - main
+    paths:
+      - '.github/actions/templates/**'
+      - '.github/workflows/ms.recoveryservices.vaults.yml'
+      - 'arm/Microsoft.RecoveryServices/vaults/**'
+      - '!arm/Microsoft.RecoveryServices/vaults/readme.md'
 
 env:
   moduleName: 'vaults'
   modulePath: 'arm/Microsoft.RecoveryServices/vaults'
+  workflowPath: '.github/workflows/ms.recoveryservices.vaults.yml'
   AZURE_CREDENTIALS: ${{ secrets.AZURE_CREDENTIALS }}
   ARM_SUBSCRIPTION_ID: ${{ secrets.ARM_SUBSCRIPTION_ID }}
   ARM_MGMTGROUP_ID: ${{ secrets.ARM_MGMTGROUP_ID }}
 
 jobs:
+  ############################
+  #   SET INPUT PARAMETERS   #
+  ############################
+  job_set_workflow_param:
+    runs-on: ubuntu-20.04
+    name: 'Set input parameters to output variables'
+    steps:
+      - name: 'Checkout'
+        uses: actions/checkout@v2
+        with:
+          fetch-depth: 0
+      - name: 'Set input parameters'
+        id: get-workflow-param
+        uses: ./.github/actions/templates/getWorkflowInput
+        with:
+          workflowPath: '${{ env.workflowPath}}'
+    outputs:
+      removeDeployment: ${{ steps.get-workflow-param.outputs.removeDeployment }}
+      versioningOption: ${{ steps.get-workflow-param.outputs.versioningOption }}
+      customVersion: ${{ steps.get-workflow-param.outputs.customVersion }}
+
   ##################
   #   UNIT TESTS   #
   ##################
@@ -31,13 +61,13 @@ jobs:
   # ------------
   job_tests_module_global:
     runs-on: ubuntu-20.04
-    name: "Run global module tests"
+    name: 'Run global module tests'
     steps:
-      - name: "Checkout"
+      - name: 'Checkout'
         uses: actions/checkout@v2
         with:
           fetch-depth: 0
-      - name: "Test module"
+      - name: 'Test module'
         uses: ./.github/actions/templates/validateModuleGeneral
         with:
           modulePath: '${{ env.modulePath }}'
@@ -47,13 +77,13 @@ jobs:
   # ----------------
   job_tests_module_global_api:
     runs-on: ubuntu-20.04
-    name: "Run global API module tests"
+    name: 'Run global API module tests'
     steps:
-      - name: "Checkout"
+      - name: 'Checkout'
         uses: actions/checkout@v2
         with:
           fetch-depth: 0
-      - name: "Test module"
+      - name: 'Test module'
         uses: ./.github/actions/templates/validateModuleApis
         with:
           modulePath: '${{ env.modulePath }}'
@@ -63,13 +93,13 @@ jobs:
   # --------------------------------
   job_tests_module_deploy_validate:
     runs-on: ubuntu-20.04
-    name: "Run deployment validation module tests"
+    name: 'Run deployment validation module tests'
     strategy:
       fail-fast: false
       matrix:
         parameterFilePaths: ['parameters.json']
     steps:
-      - name: "Checkout"
+      - name: 'Checkout'
         uses: actions/checkout@v2
         with:
           fetch-depth: 0
@@ -78,7 +108,7 @@ jobs:
         with:
           # Name of variable file
           variableFileName: 'variables.module' # Don't write .json here
-      - name: "Test module"
+      - name: 'Test module'
         uses: ./.github/actions/templates/validateModuleDeploy
         with:
           templateFilePath: '${{ env.modulePath }}/deploy.bicep'
@@ -93,17 +123,18 @@ jobs:
   ####################
   job_deploy_module:
     runs-on: ubuntu-20.04
-    name: "Deploy module"
+    name: 'Deploy module'
     needs:
-    - job_tests_module_global
-    - job_tests_module_global_api
-    - job_tests_module_deploy_validate
+      - job_set_workflow_param
+      - job_tests_module_global
+      - job_tests_module_global_api
+      - job_tests_module_deploy_validate
     strategy:
       fail-fast: false
       matrix:
         parameterFilePaths: ['parameters.json']
     steps:
-      - name: "Checkout"
+      - name: 'Checkout'
         uses: actions/checkout@v2
         with:
           fetch-depth: 0
@@ -112,7 +143,7 @@ jobs:
         with:
           # Name of variable file
           variableFileName: 'variables.module' # Don't write .json here
-      - name: "Deploy module"
+      - name: 'Deploy module'
         uses: ./.github/actions/templates/deployModule
         with:
           moduleName: '${{ env.moduleName }}'
@@ -122,19 +153,20 @@ jobs:
           resourceGroupName: '${{ env.resourceGroupName }}'
           subscriptionId: '${{ secrets.ARM_SUBSCRIPTION_ID }}'
           managementGroupId: '${{ secrets.ARM_MGMTGROUP_ID }}'
-          removeDeployment: '${{ github.event.inputs.removeDeployment }}'
+          removeDeployment: '${{ needs.job_set_workflow_param.outputs.removeDeployment }}'
 
   ###############
   #   PUBLISH   #
   ###############
   job_publish_module:
-    name: "Publish module"
+    name: 'Publish module'
     if: contains(fromJson('["refs/heads/main", "refs/heads/master"]'), github.ref)
     runs-on: ubuntu-20.04
     needs:
+      - job_set_workflow_param
       - job_deploy_module
     steps:
-      - name: "Checkout"
+      - name: 'Checkout'
         uses: actions/checkout@v2
         with:
           fetch-depth: 0
@@ -143,7 +175,7 @@ jobs:
         with:
           # Name of variable file
           variableFileName: 'variables.module' # Don't write .json here
-      - name: "Publish module"
+      - name: 'Publish module'
         uses: ./.github/actions/templates/publishModule
         with:
           templateFilePath: '${{ env.modulePath }}/deploy.bicep'
@@ -152,20 +184,20 @@ jobs:
           componentTemplateSpecName: '${{ env.moduleName }}'
           componentTemplateSpecDescription: '${{ env.componentTemplateSpecDescription }}'
           publishToTemplateSpec: '${{ env.publishToTemplateSpec }}'
-          versioningOption: '${{ github.event.inputs.versioningOption }}'
-          customVersion: '${{ github.event.inputs.customVersion }}'
+          versioningOption: '${{ needs.job_set_workflow_param.outputs.versioningOption }}'
+          customVersion: '${{ needs.job_set_workflow_param.outputs.customVersion }}'
 
   ##############
   #   REMOVE   #
   ##############
   job_remove_module:
     runs-on: ubuntu-20.04
-    name: "Remove module"
-    if: ${{ always() && !cancelled() && github.event.inputs.removeDeployment == 'true' && (contains(needs.*.result, 'success') || contains(needs.*.result, 'failure')) }}
+    name: 'Remove module'
+    if: ${{ always() && !cancelled() && needs.job_set_workflow_param.outputs.removeDeployment == 'true' && (contains(needs.*.result, 'success') || contains(needs.*.result, 'failure')) }}
     needs:
       - job_deploy_module
     steps:
-      - name: "Checkout"
+      - name: 'Checkout'
         uses: actions/checkout@v2
         with:
           fetch-depth: 0
@@ -174,7 +206,7 @@ jobs:
         with:
           # Name of variable file
           variableFileName: 'variables.module' # Don't write .json here
-      - name: "Remove module"
+      - name: 'Remove module'
         uses: ./.github/actions/templates/removeModule
         with:
           moduleName: '${{ env.moduleName }}'

@@ -23,8 +23,13 @@ param associatedApplicationInsightsResourceId string
 @description('Optional. The resource id of the associated Container Registry.')
 param associatedContainerRegistryResourceId string = ''
 
-@description('Optional. Switch to lock Machine Learning Service from deletion.')
-param lockForDeletion bool = false
+@allowed([
+  'CanNotDelete'
+  'NotSpecified'
+  'ReadOnly'
+])
+@description('Optional. Specify the type of lock.')
+param lock string = 'NotSpecified'
 
 @description('Optional. The flag to signal HBI data in the workspace and reduce diagnostic data collected by the service.')
 param hbiWorkspace bool = false
@@ -64,60 +69,48 @@ param eventHubAuthorizationRuleId string = ''
 @description('Optional. Name of the event hub within the namespace to which logs are streamed. Without this, an event hub is created for each log category.')
 param eventHubName string = ''
 
-var diagnosticsMetrics = [
-  {
-    category: 'AllMetrics'
-    timeGrain: null
-    enabled: true
-    retentionPolicy: {
-      enabled: true
-      days: diagnosticLogsRetentionInDays
-    }
-  }
+@description('Optional. The name of logs that will be streamed.')
+@allowed([
+  'AmlComputeClusterEvent'
+  'AmlComputeClusterNodeEvent'
+  'AmlComputeJobEvent'
+  'AmlComputeCpuGpuUtilization'
+  'AmlRunStatusChangedEvent'
+])
+param logsToEnable array = [
+  'AmlComputeClusterEvent'
+  'AmlComputeClusterNodeEvent'
+  'AmlComputeJobEvent'
+  'AmlComputeCpuGpuUtilization'
+  'AmlRunStatusChangedEvent'
 ]
 
-var diagnosticsLogs = [
-  {
-    category: 'AmlComputeClusterEvent'
-    enabled: true
-    retentionPolicy: {
-      enabled: true
-      days: diagnosticLogsRetentionInDays
-    }
-  }
-  {
-    category: 'AmlComputeClusterNodeEvent'
-    enabled: true
-    retentionPolicy: {
-      enabled: true
-      days: diagnosticLogsRetentionInDays
-    }
-  }
-  {
-    category: 'AmlComputeJobEvent'
-    enabled: true
-    retentionPolicy: {
-      enabled: true
-      days: diagnosticLogsRetentionInDays
-    }
-  }
-  {
-    category: 'AmlComputeCpuGpuUtilization'
-    enabled: true
-    retentionPolicy: {
-      enabled: true
-      days: diagnosticLogsRetentionInDays
-    }
-  }
-  {
-    category: 'AmlRunStatusChangedEvent'
-    enabled: true
-    retentionPolicy: {
-      enabled: true
-      days: diagnosticLogsRetentionInDays
-    }
-  }
+@description('Optional. The name of metrics that will be streamed.')
+@allowed([
+  'AllMetrics'
+])
+param metricsToEnable array = [
+  'AllMetrics'
 ]
+
+var diagnosticsLogs = [for log in logsToEnable: {
+  category: log
+  enabled: true
+  retentionPolicy: {
+    enabled: true
+    days: diagnosticLogsRetentionInDays
+  }
+}]
+
+var diagnosticsMetrics = [for metric in metricsToEnable: {
+  category: metric
+  timeGrain: null
+  enabled: true
+  retentionPolicy: {
+    enabled: true
+    days: diagnosticLogsRetentionInDays
+  }
+}]
 
 var builtInRoleNames = {
   'AzureML Metrics Writer (preview)': '/subscriptions/${subscription().subscriptionId}/providers/Microsoft.Authorization/roleDefinitions/635dd51f-9968-44d3-b7fb-6d9a6bd613ae'
@@ -163,10 +156,11 @@ resource workspace 'Microsoft.MachineLearningServices/workspaces@2021-04-01' = {
   }
 }
 
-resource workspace_lock 'Microsoft.Authorization/locks@2016-09-01' = if (lockForDeletion) {
-  name: '${workspace.name}-workspaceDoNotDelete'
+resource workspace_lock 'Microsoft.Authorization/locks@2016-09-01' = if (lock != 'NotSpecified') {
+  name: '${workspace.name}-${lock}-lock'
   properties: {
-    level: 'CanNotDelete'
+    level: lock
+    notes: (lock == 'CanNotDelete') ? 'Cannot delete resource or child resources.' : 'Cannot modify the resource or child resources.'
   }
   scope: workspace
 }
