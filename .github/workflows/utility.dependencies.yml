@@ -36,7 +36,12 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        parameterFilePaths: ['*.parameters.json']
+        parameterFilePaths:
+          [
+            'artifacts.parameters.json',
+            'dependencies.parameters.json',
+            'validation.parameters.json',
+          ]
     steps:
       - name: 'Checkout'
         uses: actions/checkout@v2
