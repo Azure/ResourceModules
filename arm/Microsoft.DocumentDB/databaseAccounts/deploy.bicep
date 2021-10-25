@@ -199,6 +199,16 @@ module sqlDatabases_resource './sqlDatabases/deploy.bicep' = [for sqlDatabase in
   }
 }]
 
+module mongodbDatabases_resource './mongodbDatabases/deploy.bicep' = [for mongodbDatabase in mongodbDatabases: {
+  name: '${uniqueString(deployment().name, location)}-mongodb-${mongodbDatabase.name}'
+  params: {
+    mongodbDatabaseName: mongodbDatabase.name
+    location: mongodbDatabase.location
+    tags: tags
+    databaseAccountName: databaseAccount.name
+  }
+}]
+
 @description('The name of the database account.')
 output databaseAccountName string = databaseAccount.name
 

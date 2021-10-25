@@ -1,0 +1,39 @@
+{
+    "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "databaseAccountName": {
+            "value": "sxx-az-cdb-weu-x-002"
+        },
+        "location": {
+            "value": "West Europe"
+        },
+        "locations": {
+            "value": [
+                {
+                    "failoverPriority": 0,
+                    "isZoneRedundant": true,
+                    "locationName": "West Europe"
+                }
+            ]
+        },
+        "roleAssignments": {
+            "value": [
+                {
+                    "roleDefinitionIdOrName": "Reader",
+                    "principalIds": [
+                        "5545f7a0-51f4-46af-b3b4-baecf5176a56"
+                    ]
+                }
+            ]
+        },
+        "mongodbDatabases": {
+            "value": [
+                {
+                    "name": "testmongodb123456",
+                    "location": "West Europe"
+                }
+            ]
+        }
+    }
+}
