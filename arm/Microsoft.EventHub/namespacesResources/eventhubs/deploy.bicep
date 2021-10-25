@@ -81,7 +81,7 @@ resource eventHub 'Microsoft.EventHub/namespaces/eventhubs@2017-04-01' = {
   dependsOn: []
 }
 
-resource keyVault_lock 'Microsoft.Authorization/locks@2016-09-01' = if (lock != 'NotSpecified') {
+resource eventHub_lock 'Microsoft.Authorization/locks@2016-09-01' = if (lock != 'NotSpecified') {
   name: '${eventHub.name}-${lock}-lock'
   properties: {
     level: lock
@@ -94,7 +94,7 @@ resource eventHub_consumergroups 'Microsoft.EventHub/namespaces/eventhubs/consum
   name: '${eventHub.name}/${consumerGroups.name}'
 }]
 
-resource eventHub_authorizationRules 'Microsoft.EventHub/namespaces/eventhubs/authorizationRules@2017-04-01' = [for authorizationRule in authorizationRules: if (length(authorizationRules) > 0) {
+resource eventHub_authorizationRules 'Microsoft.EventHub/namespaces/eventhubs/authorizationRules@2017-04-01' = [for authorizationRule in authorizationRules: {
   name: '${eventHub.name}/${authorizationRule.name}'
   properties: {
     rights: authorizationRule.properties.rights
