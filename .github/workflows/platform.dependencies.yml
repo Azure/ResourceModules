@@ -1,4 +1,4 @@
-name: '.Utility: Dependencies'
+name: '.Platform: Dependencies'
 
 on:
   workflow_dispatch:
