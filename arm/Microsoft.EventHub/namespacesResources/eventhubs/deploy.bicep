@@ -82,7 +82,7 @@ resource eventHub 'Microsoft.EventHub/namespaces/eventhubs@2017-04-01' = {
 }
 
 resource keyVault_lock 'Microsoft.Authorization/locks@2016-09-01' = if (lock != 'NotSpecified') {
-  name: '${eventHubName}-${lock}-lock'
+  name: '${eventHub.name}-${lock}-lock'
   properties: {
     level: lock
     notes: (lock == 'CanNotDelete') ? 'Cannot delete resource or child resources.' : 'Cannot modify the resource or child resources.'
@@ -90,7 +90,7 @@ resource keyVault_lock 'Microsoft.Authorization/locks@2016-09-01' = if (lock != 
   scope: eventHub
 }
 
-resource eventHubConfiguration_consumerGroups 'Microsoft.EventHub/namespaces/eventhubs/consumergroups@2017-04-01' = [for (consumerGroups, index) in eventHubConfiguration.consumerGroups: {
+resource eventHub_consumergroups 'Microsoft.EventHub/namespaces/eventhubs/consumergroups@2017-04-01' = [for (consumerGroups, index) in eventHubConfiguration.consumerGroups: {
   name: '${eventHub.name}/${consumerGroups.name}'
 }]
 
@@ -110,14 +110,14 @@ module eventHub_rbac './.bicep/nested_rbac.bicep' = [for (roleAssignment, index)
   }
 }]
 
-@description('The Name of the Event Hub Namespace.')
-output namespaceName string = namespaceName
+@description('The Name of the Event Hub.')
+output eventhubName = eventHub.name
 
 @description('The Resource ID of the Event Hub.')
 output eventHubId string = eventHub.id
 
 @description('The Resource Group Name of the Event Hub.')
-output namespaceResourceGroup string = resourceGroup().name
+output eventHubResourceGroup string = resourceGroup().name
 
 @description('The AuthRuleResourceId of the Event Hub.')
 output authRuleResourceId string = resourceId('Microsoft.EventHub/namespaces/authorizationRules', namespaceName, defaultSASKeyName)
