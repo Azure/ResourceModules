@@ -494,39 +494,15 @@ Describe 'Deployment template tests' -Tag Template {
             $templateContent.keys | Should -Contain 'resources'
         }
 
-        It '[<moduleFolderName>] If delete lock is implemented, the template should have a lockForDeletion parameter with the default value of false' -TestCases $deploymentFolderTestCases {
+        It '[<moduleFolderName>] If delete lock is implemented, the template should have a lock parameter with the default value of [NotSpecified]' -TestCases $deploymentFolderTestCases {
             param(
                 $moduleFolderName,
                 $templateContent
             )
-            $LockTypeFlag = $true
-            $ChildResourceType = $templateContent.resources.resources.type
-            $ParentResourceType = $templateContent.resources.type
-            $LockForDeletion = $templateContent.parameters.lockForDeletion.defaultValue
-            if (($ChildResourceType -like '*providers/locks' -or $ParentResourceType -like '*providers/locks') -and $LockForDeletion -ne $false) {
-                $LockTypeFlag = $false
+            if ($lock = $templateContent.parameters.lock) {
+                $lock.keys | Should -Contain 'defaultValue'
+                $lock.defaultValue | Should -Be 'NotSpecified'
             }
-            $LockTypeFlag | Should -Contain $true
-        }
-
-        It "[<moduleFolderName>] If delete lock is implemented, it should have a deployment condition with the value of parameters('lockForDeletion')" -TestCases $deploymentFolderTestCases {
-            param(
-                $moduleFolderName,
-                $templateContent
-            )
-            $LockFlag = @()
-            $ChildDeletelock = $templateContent.resources.resources.type
-            $ParentDeletelock = $templateContent.resources.type
-            $ChildDeletelockCondition = $templateContent.resources.resources.condition
-            $ParentDeletelockCondition = $templateContent.resources.condition
-            if ($ChildDeletelock -like '*providers/locks' -and $ChildDeletelockCondition -notcontains "[parameters('lockForDeletion')]") {
-                $LockFlag += $false
-            } elseif ($ParentDeletelock -like '*providers/locks' -and $ParentDeletelockCondition -notcontains "[parameters('lockForDeletion')]") {
-                $LockFlag += $false
-            } else {
-                $LockFlag += $true
-            }
-            $LockFlag | Should -Not -Contain $false
         }
 
         It '[<moduleFolderName>] Parameter names should be camel-cased (no dashes or underscores and must start with lower-case letter)' -TestCases $deploymentFolderTestCases {

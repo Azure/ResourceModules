@@ -21,52 +21,5 @@
                 }
             ]
         }
-        // "gitRepoType": {
-        //   "value": "FactoryVSTSConfiguration"
-        // },
-        // "gitAccountName": {
-        //   "value": "xxx"
-        // },
-        // "gitProjectName": {
-        //   "value": "xxx"
-        // },
-        // "gitRepositoryName": {
-        //   "value": "xxx"
-        // },
-        // "gitCollaborationBranch": {
-        //   "value": "main"
-        // },
-        // "gitRootFolder": {
-        //   "value": "/"
-        // },
-        // "vNetEnabled": {
-        //   "value": true
-        // },
-        // "privateEndpoints": {
-        //   "value": [
-        //     {
-        //       "name": "sxx-az-sa-cac-y-123-pe",
-        //       "subnetResourceId": "/subscriptions/xxx-xxx-xxx-xxx-xxx/resourceGroups/iacs/providers/Microsoft.Network/virtualNetworks/str-test-vnet/subnets/default",
-        //       "service": "dataFactory",
-        //       "privateDnsZoneResourceIds": [
-        //         "/subscriptions/xxx-xxx-xxx-xxx-xxx/resourceGroups/iacs/providers/Microsoft.Network/privateDnsZones/privatelink.datafactory.azure.net"
-        //       ]
-        //     },
-        //     {
-        //       "name": "sxx-az-sa-cac-y-124-pe",
-        //       "subnetResourceId": "/subscriptions/xxx-xxx-xxx-xxx-xxx/resourceGroups/iacs/providers/Microsoft.Network/virtualNetworks/str-test-vnet/subnets/default",
-        //       "service": "portal",
-        //       "privateDnsZoneResourceIds": [
-        //         "/subscriptions/xxx-xxx-xxx-xxx-xxx/resourceGroups/iacs/providers/Microsoft.Network/privateDnsZones/privatelink.azure.com"
-        //       ]
-        //     }
-        //   ]
-        // }
-        // "diagnosticLogsRetentionInDays": {
-        //   "value": 1
-        // },
-        // "diagnosticStorageAccountId": {
-        //   "value": "/subscriptions/xxx-xxx-xxx-xxx-xxx/resourceGroups/validation-rg/providers/Microsoft.Storage/storageAccounts/adpsxxazsaweux001"
-        // }
     }
 }

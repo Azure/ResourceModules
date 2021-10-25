@@ -3,26 +3,26 @@
 This module deploys EventHub.
 
 ## Resource types
-| Resource Type | Api Version |
-| :-- | :-- |
-| `Microsoft.EventHub/namespaces/eventhubs` | 2017-04-01 |
-| `Microsoft.EventHub/namespaces/eventhubs/authorizationRules` | 2017-04-01 |
-| `Microsoft.EventHub/namespaces/eventhubs/consumergroups` | 2017-04-01 |
-| `Microsoft.EventHub/namespaces/eventhubs/providers/locks` | 2016-09-01 |
-| `Microsoft.EventHub/namespaces/eventhubs/providers/roleAssignments` | 2018-09-01-preview |
+|Resource Type|ApiVersion|
+|:--|:--|
+|`Microsoft.Resources/deployments`|2018-02-01|
+|`Microsoft.EventHub/namespaces/eventhubs`|2017-04-01|
+|`Microsoft.EventHub/namespaces/eventhubs/consumergroups`|2017-04-01|
+|`Microsoft.EventHub/namespaces/eventhubs/authorizationRules`|2017-04-01|
+|`Microsoft.EventHub/namespaces/eventhubs/providers/locks`|2016-09-01|
+|`Microsoft.EventHub/namespaces/eventhubs/providers/roleAssignments`|2020-04-01-preview|
 
 ## Parameters
 | Parameter Name | Type | Default Value | Possible Values | Description |
 | :-- | :-- | :-- | :-- | :-- |
-| `authorizationRules` | array | `[System.Collections.Hashtable]` |  | Optional. Authorization Rules for the Event Hub |
-| `cuaId` | string |  |  | Optional. Customer Usage Attribution id (GUID). This GUID must be previously registered |
-| `eventHubConfiguration` | object | `{object}` |  | Optional. Object to configure all properties of an Event Hub instance |
-| `eventHubName` | string |  |  | Required. The name of the EventHub |
-| `location` | string | `[resourceGroup().location]` |  | Optional. Location for all resources. |
-| `lockForDeletion` | bool |  |  | Optional. Switch to lock Event Hub from deletion. |
-| `namespaceName` | string |  |  | Required. The name of the EventHub namespace |
-| `roleAssignments` | array | `[]` |  | Optional. Array of role assignment objects that contain the 'roleDefinitionIdOrName' and 'principalId' to define RBAC role assignments on this resource. In the roleDefinitionIdOrName attribute, you can provide either the display name of the role definition, or its fully qualified ID in the following format: '/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11' |
-| `tags` | object | `{object}` |  | Optional. Tags of the resource. |
+| `authorizationRules` | array | Optional. Authorization Rules for the Event Hub | System.Object[] |  |
+| `cuaId` | string | Optional. Customer Usage Attribution id (GUID). This GUID must be previously registered |  |  |
+| `eventHubConfiguration` | object | Optional. Object to configure all properties of an Event Hub instance | properties=; consumerGroups=System.Object[] |  |
+| `eventHubName` | string | Required. The name of the EventHub |  |  |
+| `lock` | string | Optional. Specify the type of lock. | 'NotSpecified' | 'CanNotDelete', 'NotSpecified', 'ReadOnly' |
+| `namespaceName` | string | Required. The name of the EventHub namespace |  |  |
+| `roleAssignments` | array | Optional. Array of role assignment objects that contain the 'roleDefinitionIdOrName' and 'principalId' to define RBAC role assignments on this resource. In the roleDefinitionIdOrName attribute, you can provide either the display name of the role definition, or its fully qualified ID in the following format: '/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11' | System.Object[] |  |
+| `tags` | object | Optional. Tags of the resource. |  |  |
 
 ### Parameter Usage: `eventHubConfiguration`
 

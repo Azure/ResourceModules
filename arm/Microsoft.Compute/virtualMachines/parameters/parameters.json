@@ -2,18 +2,12 @@
     "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
     "contentVersion": "1.0.0.0",
     "parameters": {
-        "vmNamePrefix": {
-            "value": "iacs"
+        "managedServiceIdentity": {
+            "value": "SystemAssigned"
         },
-        "vmNumberOfInstances": {
-            "value": 2
+        "virtualMachineName": {
+            "value": "sxx-vm-001"
         },
-        "vmInitialNumber": {
-            "value": 0
-        },
-        // "managedServiceIdentity": {
-        //     "value": "SystemAssigned"
-        // },
         "imageReference": {
             "value": {
                 "publisher": "MicrosoftWindowsServer",
@@ -48,14 +42,91 @@
                     "nicSuffix": "-nic-01",
                     "ipConfigurations": [
                         {
-                            "name": "ipconfig1",
-                            "subnetId": "/subscriptions/8629be3b-96bc-482d-a04b-ffff597c65a2/resourceGroups/dependencies-rg/providers/Microsoft.Network/virtualNetworks/sxx-az-vnet-weu-x-002/subnets/sxx-az-subnet-weu-x-001",
-                            // "enablePublicIP": true,
-                            // "publicIpNameSuffix": "-pip-01"
+                            "name": "ipconfig01",
+                            "subnetId": "/subscriptions/8629be3b-96bc-482d-a04b-ffff597c65a2/resourceGroups/validation-rg/providers/Microsoft.Network/virtualNetworks/adp-sxx-az-vnet-weu-x-001/subnets/sxx-az-subnet-weu-x-001",
+                            "pipConfiguration": {
+                                "publicIpNameSuffix": "-pip-01",
+                                "roleAssignments": [
+                                    {
+                                        "roleDefinitionIdOrName": "Reader",
+                                        "principalIds": [
+                                            "5545f7a0-51f4-46af-b3b4-baecf5176a56"
+                                        ]
+                                    }
+                                ]
+                            }
+                        }
+                    ],
+                    "roleAssignments": [
+                        {
+                            "roleDefinitionIdOrName": "Reader",
+                            "principalIds": [
+                                "5545f7a0-51f4-46af-b3b4-baecf5176a56"
+                            ]
                         }
                     ]
                 }
             ]
+        },
+        "enableMicrosoftAntiMalware": {
+            "value": true
+        },
+        "microsoftAntiMalwareSettings": {
+            "value": {
+                "settings": {
+                    "AntimalwareEnabled": "true"
+                }
+            }
+        },
+        "enableWindowsMMAAgent": {
+            "value": true
+        },
+        "enableWindowsDependencyAgent": {
+            "value": true
+        },
+        "enableNetworkWatcherWindows": {
+            "value": true
+        },
+        "enableWindowsDiskEncryption": {
+            "value": true
+        },
+        "diskEncryptionSettings": {
+            "value": {
+                "settings": {
+                    "EncryptionOperation": "EnableEncryption",
+                    "KeyVaultURL": "https://adp-sxx-az-kv-weu-x-001.vault.azure.net/",
+                    "KeyVaultResourceId": "/subscriptions/8629be3b-96bc-482d-a04b-ffff597c65a2/resourceGroups/validation-rg/providers/Microsoft.KeyVault/vaults/adp-sxx-az-kv-weu-x-001",
+                    "KeyEncryptionKeyURL": "https://adp-sxx-az-kv-weu-x-001.vault.azure.net/keys/keyEncryptionKey/685153483a1140e3856f004a753e1ab4",
+                    "KekVaultResourceId": "/subscriptions/8629be3b-96bc-482d-a04b-ffff597c65a2/resourceGroups/validation-rg/providers/Microsoft.KeyVault/vaults/adp-sxx-az-kv-weu-x-001",
+                    "KeyEncryptionAlgorithm": "RSA-OAEP", //'RSA-OAEP'/'RSA-OAEP-256'/'RSA1_5'
+                    "VolumeType": "All", //'OS'/'Data'/'All'
+                    "ResizeOSDisk": "false"
+                }
+            }
+        },
+        "enableDesiredStateConfiguration": {
+            "value": true
+        },
+        "desiredStateConfigurationSettings": {
+            "value": {
+                "settings": {},
+                "protectedSettings": {}
+            }
+        },
+        "backupVaultName": {
+            "value": "sxx-az-rsv-weu-x-999"
+        },
+        "backupVaultResourceGroup": {
+            "value": "management-rg"
+        },
+        "backupPolicyName": {
+            "value": "VMpolicy"
+        },
+        "workspaceId": {
+            "value": "/subscriptions/8629be3b-96bc-482d-a04b-ffff597c65a2/resourcegroups/validation-rg/providers/microsoft.operationalinsights/workspaces/adp-sxx-az-la-weu-x-001"
+        },
+        "diagnosticStorageAccountId": {
+            "value": "/subscriptions/8629be3b-96bc-482d-a04b-ffff597c65a2/resourceGroups/validation-rg/providers/Microsoft.Storage/storageAccounts/adpsxxazsaweux001"
         },
         "roleAssignments": {
             "value": [
@@ -67,31 +138,5 @@
                 }
             ]
         }
-        // "diagnosticSettingName": {
-        //     "value": "testsetting"
-        // },
-        // "workspaceId": {
-        //     "value": "/subscriptions/8629be3b-96bc-482d-a04b-ffff597c65a2/resourcegroups/validation-rg/providers/microsoft.operationalinsights/workspaces/adp-sxx-az-la-weu-x-001"
-        // },
-        // "diagnosticStorageAccountId": {
-        //     "value": "/subscriptions/8629be3b-96bc-482d-a04b-ffff597c65a2/resourceGroups/validation-rg/providers/Microsoft.Storage/storageAccounts/adpsxxazsaweux001"
-        // },
-        // "enableWindowsMMAAgent": {
-        //     "value": true
-        // },
-        // "bootDiagnosticStorageAccountName": {
-        //     "value": "adpsxxazsaweux001"
-        // }
-        // "roleAssignments": {
-        //     "value": [
-        //         {
-        //             "roleDefinitionIdOrName": "Desktop Virtualization User",
-        //             "principalIds": [
-        //                 "12345678-1234-1234-1234-123456789012", // object 1
-        //                 "78945612-1234-1234-1234-123456789012" // object 2
-        //             ]
-        //         }
-        //     ]
-        // }
     }
 }

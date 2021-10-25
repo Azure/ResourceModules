@@ -5,21 +5,9 @@
         "alertName": {
             "value": "sxx-az-ma-weu-x-001"
         },
-        //"scopes": {
-        //    "value": [
-        //        "/subscriptions/8629be3b-96bc-482d-a04b-ffff597c65a2/resourceGroups/validation-rg/providers/Microsoft.Compute/virtualMachines/sxxazvmweux01"
-        //    ]
-        //},
         "windowSize": {
             "value": "PT15M"
         },
-        //"actions": {
-        //    "value": [
-        //        {
-        //            "actionGroupId": "/subscriptions/8629be3b-96bc-482d-a04b-ffff597c65a2/resourceGroups/validation-rg/providers/microsoft.insights/actiongroups/adp-sxx-az-ag-weu-x-001"
-        //        }
-        //    ]
-        //},
         "actions": {
             "value": [
                 "/subscriptions/8629be3b-96bc-482d-a04b-ffff597c65a2/resourceGroups/validation-rg/providers/microsoft.insights/actiongroups/adp-sxx-az-ag-weu-x-001"

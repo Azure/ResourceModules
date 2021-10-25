@@ -16,7 +16,7 @@
         "secretName": "vpnSharedKey"
       }
     },
-    "virtualNetworkGatewayConnectionType":{
+    "virtualNetworkGatewayConnectionType": {
       "value": "VNet2VNet"
     },
     "remoteEntityName": {
