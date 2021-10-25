@@ -16,6 +16,7 @@ To "build"/"bake" the modules, a dedicated pipeline is used for each module to v
    1. Validating the template by invoking Azure’s validation API (Test-AzResourceGroupDeployment – or the same for other scopes)
 1. **Test deployment**: we deploy each module by using a pre-defined set of parameters to a ‘sandbox’ subscription in Azure to see if it’s really working
 1. **Publish**: the proven results are copied/published to a configured location such as template specs, the bicep registry, Azure DevOps artifacts, etc.
+1. **Removal**: The test suite is cleaned up by removing all deployed test resources again
 
 Using this flow, validated modules can be consumed by other any consumer / template / orchestration to deploy an workload, solution, environment or landing zone.
 
