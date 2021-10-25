@@ -1,4 +1,4 @@
-# TrafficManager
+# TrafficManager `[Microsoft.Network/trafficmanagerprofiles]`
 
 This module deploys Traffic Manager, with resource lock.
 
@@ -6,35 +6,35 @@ This module deploys Traffic Manager, with resource lock.
 
 | Resource Type | Api Version |
 | :-- | :-- |
-| `Microsoft.Resources/deployments` | 2021-04-01 |
-| `Microsoft.Network/trafficmanagerprofiles` | 2018-08-01 |
-| `Microsoft.Network/trafficmanagerprofiles/providers/roleAssignments` | 2018-09-01-preview |
 | `Microsoft.Authorization/locks` | 2016-09-01 |
 | `Microsoft.Insights/diagnosticSettings` | 2017-05-01-preview |
+| `Microsoft.Network/trafficmanagerprofiles` | 2018-08-01 |
+| `Microsoft.Network/trafficmanagerprofiles/providers/roleAssignments` | 2021-04-01-preview |
 
 ## Parameters
 
-| Parameter Name | Type | Description | DefaultValue | Possible values |
+| Parameter Name | Type | Default Value | Possible Values | Description |
 | :-- | :-- | :-- | :-- | :-- |
-| `cuaId` | string | Optional. Customer Usage Attribution id (GUID). This GUID must be previously registered |  |  |
-| `diagnosticLogsRetentionInDays` | int | Optional. Specifies the number of days that logs will be kept for; a value of 0 will retain data indefinitely. | 365 |  |
-| `diagnosticStorageAccountId` | string | Optional. Resource identifier of the Diagnostic Storage Account. |  |  |
-| `endpoints` | array | Optional. The list of endpoints in the Traffic Manager profile. | System.Object[] |  |
-| `eventHubAuthorizationRuleId` | string | Optional. Resource ID of the event hub authorization rule for the Event Hubs namespace in which the event hub should be created or streamed to. |  |  |
-| `eventHubName` | string | Optional. Name of the event hub within the namespace to which logs are streamed. Without this, an event hub is created for each log category. |  |  |
-| `lock` | string | Optional. Specify the type of lock. | 'NotSpecified' | 'CanNotDelete', 'NotSpecified', 'ReadOnly' |
-| `maxReturn` | int | Optional. Maximum number of endpoints to be returned for MultiValue routing type. | 1 | |
-| `monitorConfig` | object | Optional. The endpoint monitoring settings of the Traffic Manager profile. | protocol=http; port=80; path=/ |  |
-| `profileStatus` | string | Optional. The status of the Traffic Manager profile. | Enabled | System.Object[] |
-| `relativeName` | string | The relative DNS name provided by this Traffic Manager profile. This value is combined with the DNS domain name used by Azure Traffic Manager to form the fully-qualified domain name (FQDN) of the profile. |  |  |
-| `roleAssignments` | array | Optional. Array of role assignment objects that contain the 'roleDefinitionIdOrName' and 'principalId' to define RBAC role assignments on this resource. In the roleDefinitionIdOrName attribute, you can provide either the display name of the role definition, or its fully qualified ID in the following format: '/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11' | System.Object[] |  |
-| `tags` | object | Optional. Resource tags. |  |  |
-| `trafficManagerName` | string | Name of the Traffic Manager |  |  |
-| `trafficRoutingMethod` | string | Optional. The traffic routing method of the Traffic Manager profile. | Performance | System.Object[] |
-| `trafficViewEnrollmentStatus` | string | Optional. Indicates whether Traffic View is 'Enabled' or 'Disabled' for the Traffic Manager profile. Null, indicates 'Disabled'. Enabling this feature will increase the cost of the Traffic Manage profile. | Disabled | System.Object[] |
-| `ttl` | int | Optional. The DNS Time-To-Live (TTL), in seconds. This informs the local DNS resolvers and DNS clients how long to cache DNS responses provided by this Traffic Manager profile. | 60 |  |
-| `workspaceId` | string | Optional. Resource identifier of Log Analytics. |  |  |
-
+| `cuaId` | string |  |  | Optional. Customer Usage Attribution id (GUID). This GUID must be previously registered |
+| `diagnosticLogsRetentionInDays` | int | `365` |  | Optional. Specifies the number of days that logs will be kept for; a value of 0 will retain data indefinitely. |
+| `diagnosticStorageAccountId` | string |  |  | Optional. Resource identifier of the Diagnostic Storage Account. |
+| `endpoints` | array | `[]` |  | Optional. The list of endpoints in the Traffic Manager profile. |
+| `eventHubAuthorizationRuleId` | string |  |  | Optional. Resource ID of the event hub authorization rule for the Event Hubs namespace in which the event hub should be created or streamed to. |
+| `eventHubName` | string |  |  | Optional. Name of the event hub within the namespace to which logs are streamed. Without this, an event hub is created for each log category. |
+| `lock` | string | `NotSpecified` | `[CanNotDelete, NotSpecified, ReadOnly]` | Optional. Specify the type of lock. |
+| `logsToEnable` | array | `[ProbeHealthStatusEvents]` | `[ProbeHealthStatusEvents]` | Optional. The name of logs that will be streamed. |
+| `maxReturn` | int | `1` |  | Optional. Maximum number of endpoints to be returned for MultiValue routing type. |
+| `metricsToEnable` | array | `[AllMetrics]` | `[AllMetrics]` | Optional. The name of metrics that will be streamed. |
+| `monitorConfig` | object | `{object}` |  | Optional. The endpoint monitoring settings of the Traffic Manager profile. |
+| `profileStatus` | string | `Enabled` | `[Enabled, Disabled]` | Optional. The status of the Traffic Manager profile. |
+| `relativeName` | string |  |  | Required. The relative DNS name provided by this Traffic Manager profile. This value is combined with the DNS domain name used by Azure Traffic Manager to form the fully-qualified domain name (FQDN) of the profile. |
+| `roleAssignments` | array | `[]` |  | Optional. Array of role assignment objects that contain the 'roleDefinitionIdOrName' and 'principalId' to define RBAC role assignments on this resource. In the roleDefinitionIdOrName attribute, you can provide either the display name of the role definition, or its fully qualified ID in the following format: '/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11' |
+| `tags` | object | `{object}` |  | Optional. Resource tags. |
+| `trafficManagerName` | string |  |  | Required. Name of the Traffic Manager |
+| `trafficRoutingMethod` | string | `Performance` | `[Performance, Priority, Weighted, Geographic, MultiValue, Subnet]` | Optional. The traffic routing method of the Traffic Manager profile. |
+| `trafficViewEnrollmentStatus` | string | `Disabled` | `[Disabled, Enabled]` | Optional. Indicates whether Traffic View is 'Enabled' or 'Disabled' for the Traffic Manager profile. Null, indicates 'Disabled'. Enabling this feature will increase the cost of the Traffic Manage profile. |
+| `ttl` | int | `60` |  | Optional. The DNS Time-To-Live (TTL), in seconds. This informs the local DNS resolvers and DNS clients how long to cache DNS responses provided by this Traffic Manager profile. |
+| `workspaceId` | string |  |  | Optional. Resource identifier of Log Analytics. |
 
 ### Parameter Usage: `monitorConfig`
 
@@ -121,18 +121,14 @@ Tag names and tag values can be provided as needed. A tag can be left without a 
 ```
 ## Outputs
 
-| Output Name | Type | Description |
-| :-          | :-          |
-| `trafficManagerResourceId` | string | The Resource Id of the Traffic Manager.
-| `trafficManagerResourceGroup` | string | The name of the Resource Group the Traffic Manager was created in.
-| `trafficManagerName` | string | The Name of the Traffic Manager.
+| Output Name | Type |
+| :-- | :-- |
+| `trafficManagerName` | string |
+| `trafficManagerResourceGroup` | string |
+| `trafficManagerResourceId` | string |
 
-## Considerations
+## Template references
 
-*N/A*
-
-## Additional resources
-
-- [What is Traffic Manager?](https://docs.microsoft.com/en-us/azure/traffic-manager/traffic-manager-overview)
-- [Microsoft.Network/trafficmanagerprofiles template reference](https://docs.microsoft.com/en-us/azure/templates/microsoft.network/2018-08-01/trafficmanagerprofiles)
-- [Use tags to organize your Azure resources](https://docs.microsoft.com/en-us/azure/azure-resource-manager/resource-group-using-tags)
+- [Locks](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2016-09-01/locks)
+- [Diagnosticsettings](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Insights/2017-05-01-preview/diagnosticSettings)
+- [Trafficmanagerprofiles](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Network/2018-08-01/trafficmanagerprofiles)

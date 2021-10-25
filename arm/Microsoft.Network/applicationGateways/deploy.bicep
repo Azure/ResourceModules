@@ -112,43 +112,45 @@ param tags object = {}
 @description('Optional. Customer Usage Attribution id (GUID). This GUID must be previously registered.')
 param cuaId string = ''
 
-var diagnosticsMetrics = [
-  {
-    category: 'AllMetrics'
-    timeGrain: null
-    enabled: true
-    retentionPolicy: {
-      enabled: true
-      days: diagnosticLogsRetentionInDays
-    }
-  }
+@description('Optional. The name of logs that will be streamed.')
+@allowed([
+  'ApplicationGatewayAccessLog'
+  'ApplicationGatewayPerformanceLog'
+  'ApplicationGatewayFirewallLog'
+])
+param logsToEnable array = [
+  'ApplicationGatewayAccessLog'
+  'ApplicationGatewayPerformanceLog'
+  'ApplicationGatewayFirewallLog'
 ]
-var diagnosticsLogs = [
-  {
-    category: 'ApplicationGatewayAccessLog'
-    enabled: true
-    retentionPolicy: {
-      enabled: true
-      days: diagnosticLogsRetentionInDays
-    }
-  }
-  {
-    category: 'ApplicationGatewayPerformanceLog'
-    enabled: true
-    retentionPolicy: {
-      enabled: true
-      days: diagnosticLogsRetentionInDays
-    }
-  }
-  {
-    category: 'ApplicationGatewayFirewallLog'
-    enabled: true
-    retentionPolicy: {
-      enabled: true
-      days: diagnosticLogsRetentionInDays
-    }
-  }
+
+@description('Optional. The name of metrics that will be streamed.')
+@allowed([
+  'AllMetrics'
+])
+param metricsToEnable array = [
+  'AllMetrics'
 ]
+
+var diagnosticsLogs = [for log in logsToEnable: {
+  category: log
+  enabled: true
+  retentionPolicy: {
+    enabled: true
+    days: diagnosticLogsRetentionInDays
+  }
+}]
+
+var diagnosticsMetrics = [for metric in metricsToEnable: {
+  category: metric
+  timeGrain: null
+  enabled: true
+  retentionPolicy: {
+    enabled: true
+    days: diagnosticLogsRetentionInDays
+  }
+}]
+
 var applicationGatewayResourceId = resourceId('Microsoft.Network/applicationGateways', applicationGatewayName)
 var subnetResourceId = resourceId(vNetSubscriptionId, vNetResourceGroup, 'Microsoft.Network/virtualNetworks/subnets', vNetName, subnetName)
 var frontendPublicIPConfigurationName = 'public'

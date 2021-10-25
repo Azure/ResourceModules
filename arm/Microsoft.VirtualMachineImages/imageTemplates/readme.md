@@ -1,40 +1,38 @@
-# Image Templates
+# Image Templates `[Microsoft.VirtualMachineImages/imageTemplates]`
 
 This module deploys an Image Template (for Azure Image Builder service) that can be consumed by the Azure Image Builder service
 
 ## Resource types
 
-|Resource Type|Api Version|
-|:--|:--|
-|`Microsoft.VirtualMachineImages/imageTemplates`|2020-02-14|
-|`Microsoft.Authorization/locks`|2016-09-01|
-|`Microsoft.Resources/deployments`|2018-02-01|
-|`Microsoft.VirtualMachineImages/imageTemplates/providers/roleAssignments` | 2020-04-01-preview |
-
+| Resource Type | Api Version |
+| :-- | :-- |
+| `Microsoft.Authorization/locks` | 2016-09-01 |
+| `Microsoft.VirtualMachineImages/imageTemplates` | 2020-02-14 |
+| `Microsoft.VirtualMachineImages/imageTemplates/providers/roleAssignments` | 2021-04-01-preview |
 
 ## Parameters
 
-| Parameter Name | Type | Default Value | Possible values | Description |
-| :-             | :-   | :-            | :-              | :-          |
-| `imageTemplateName` | string | | | Required. Name of the Image Template to be built by the Azure Image Builder service.
-| `location` | string | `[resourceGroup().location]` | | Optional. Location for all resources.
-| `userMsiName` | string | | | Required. Name of the User Assigned Identity to be used to deploy Image Templates in Azure Image Builder.
-| `userMsiResourceGroup` | string | Optional. ResourceGroup of the MSI. By default the same of the current deployment
-| `buildTimeoutInMinutes` | int | 0 | 0-960 | Optional. Image build timeout in minutes. Allowed values: 0-960. 0 means the default 240 minutes
-| `vmSize` | string | "Standard_D2s_v3" | | Optional. Specifies the size for the VM.
-| `osDiskSizeGB` | int | 127 |  | Optional. Specifies the size of OS disk.
-| `subnetId` | string | "" | | Optional. Resource Id of an already existing subnet, e.g. `/subscriptions/<subscriptionId>/resourceGroups/<resourceGroupName>/providers/Microsoft.Network/virtualNetworks/<vnetName>/subnets/<subnetName>`. If no value is provided, a new VNET will be created in the target Resource Group.
-| `imageSource` | object | | Complex structure, see below. | Required. Image source definition in object format.
-| `customizationSteps` | array | | | Required. Customization steps to be run when building the VM image.
-| `unManagedImageName` | string | "" | | Optional. Name of the unmanaged image that will be created in the AIB resourcegroup.
-| `sigImageDefinitionId` | string | "" | | Optional. Resource Id of Shared Image Gallery to distribute image to, e.g.: `/subscriptions/<subscriptionID>/resourceGroups/<SIG resourcegroup>/providers/Microsoft.Compute/galleries/<SIG name>/images/<image definition>`
-| `imageReplicationRegions` | string | "" | | Optional. List of the regions the image produced by this solution should be stored in the Shared Image Gallery. When left empty, the deployment's location will be taken as a default value.
-| `managedImageName` | string | "" | | Optional. Name of the managed image that will be created in the AIB resourcegroup.
-| `lock` | string | 'NotSpecified' | 'CanNotDelete', 'NotSpecified', 'ReadOnly' | Optional. Specify the type of lock. |
-| `tags` | object | {} | Complex structure, see below. | Optional. Tags of the resource.
-| `baseTime` | string | `utcNow('yyyy-MM-dd-HH-mm-ss')` | | Generated. Do not provide a value! This date value is used to generate a unique image template name.
-| `cuaId` | string | "" | | Optional. Customer Usage Attribution id (GUID). This GUID must be previously registered
-| `roleAssignments` | array | [] | Complex structure, see below. | Optional. Array of role assignment objects that contain the 'roleDefinitionIdOrName' and 'principalId' to define RBAC role assignments on this resource. In the roleDefinitionIdOrName attribute, you can provide either the display name of the role definition, or it's fully qualified ID in the following format: '/providers/Microsoft.Authorization/locks/locks/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11'
+| Parameter Name | Type | Default Value | Possible Values | Description |
+| :-- | :-- | :-- | :-- | :-- |
+| `baseTime` | string | `[utcNow('yyyy-MM-dd-HH-mm-ss')]` |  | Generated. Do not provide a value! This date value is used to generate a unique image template name. |
+| `buildTimeoutInMinutes` | int |  |  | Optional. Image build timeout in minutes. Allowed values: 0-960. 0 means the default 240 minutes |
+| `cuaId` | string |  |  | Optional. Customer Usage Attribution id (GUID). This GUID must be previously registered |
+| `customizationSteps` | array |  |  | Required. Customization steps to be run when building the VM image. |
+| `imageReplicationRegions` | array | `[]` |  | Optional. List of the regions the image produced by this solution should be stored in the Shared Image Gallery. When left empty, the deployment's location will be taken as a default value. |
+| `imageSource` | object |  |  | Required. Image source definition in object format. |
+| `imageTemplateName` | string |  |  | Required. Name of the Image Template to be built by the Azure Image Builder service. |
+| `location` | string | `[resourceGroup().location]` |  | Optional. Location for all resources. |
+| `lock` | string | `NotSpecified` | `[CanNotDelete, NotSpecified, ReadOnly]` | Optional. Specify the type of lock. |
+| `managedImageName` | string |  |  | Optional. Name of the managed image that will be created in the AIB resourcegroup. |
+| `osDiskSizeGB` | int | `128` |  | Optional. Specifies the size of OS disk. |
+| `roleAssignments` | array | `[]` |  | Optional. Array of role assignment objects that contain the 'roleDefinitionIdOrName' and 'principalId' to define RBAC role assignments on this resource. In the roleDefinitionIdOrName attribute, you can provide either the display name of the role definition, or its fully qualified ID in the following format: '/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11' |
+| `sigImageDefinitionId` | string |  |  | Optional. Resource Id of Shared Image Gallery to distribute image to, e.g.: /subscriptions/<subscriptionID>/resourceGroups/<SIG resourcegroup>/providers/Microsoft.Compute/galleries/<SIG name>/images/<image definition> |
+| `subnetId` | string |  |  | Optional. Resource Id of an already existing subnet, e.g. '/subscriptions/<subscriptionId>/resourceGroups/<resourceGroupName>/providers/Microsoft.Network/virtualNetworks/<vnetName>/subnets/<subnetName>'. If no value is provided, a new VNET will be created in the target Resource Group. |
+| `tags` | object | `{object}` |  | Optional. Tags of the resource. |
+| `unManagedImageName` | string |  |  | Optional. Name of the unmanaged image that will be created in the AIB resourcegroup. |
+| `userMsiName` | string |  |  | Required. Name of the User Assigned Identity to be used to deploy Image Templates in Azure Image Builder. |
+| `userMsiResourceGroup` | string | `[resourceGroup().name]` |  | Optional. Resource group of the user assigned identity. |
+| `vmSize` | string | `Standard_D2s_v3` |  | Optional. Specifies the size for the VM. |
 
 ### Parameter Usage: `imageSource`
 
@@ -118,18 +116,14 @@ Tag names and tag values can be provided as needed. A tag can be left without a 
 
 ## Outputs
 
-| Output Name | Type | Description |
-| :-- | :-- | :-- |
-| `imageTemplateName` | string | The Name of the Image Template. |
-| `imageTemplateResourceGroup` | string | The Resource Group the Image Template was deployed to. |
-| `imageTemplateResourceId` | string | The Resource Id of the Image Template. |
-| `runThisCommand` | string | Cmdlet to invoke an action on specified Azure resource |
+| Output Name | Type |
+| :-- | :-- |
+| `imageTemplateName` | string |
+| `imageTemplateResourceGroup` | string |
+| `imageTemplateResourceId` | string |
+| `runThisCommand` | string |
 
-## Considerations
+## Template references
 
-az network vnet subnet update --name aib --resource-group AVDCustomerEnvironment --vnet-name avd-vnet --disable-private-link-service-network-policies true
-
-## Additional resources
-
-- [Preview: Create an Azure Image Builder template](https://docs.microsoft.com/en-us/azure/virtual-machines/linux/image-builder-json)
-- [Use tags to organize your Azure resources](https://docs.microsoft.com/en-us/azure/azure-resource-manager/resource-group-using-tags)
+- [Locks](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2016-09-01/locks)
+- [Imagetemplates](https://docs.microsoft.com/en-us/azure/templates/Microsoft.VirtualMachineImages/2020-02-14/imageTemplates)

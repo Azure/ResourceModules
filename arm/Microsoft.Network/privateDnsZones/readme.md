@@ -1,4 +1,4 @@
-# PrivateDnsZones
+# PrivateDnsZones `[Microsoft.Network/privateDnsZones]`
 
 # Resource
 
@@ -8,27 +8,22 @@ This template deploys private DNS zone.
 
 | Resource Type | Api Version |
 | :-- | :-- |
-| `Microsoft.Resources/deployments`| 2020-06-01 |
-| `Microsoft.Network/privateDnsZones` | 2018-09-01 |
-| `Microsoft.Network/privateDnsZones/virtualNetworkLinks` | 2018-09-01 |
-| `Microsoft.Network/privateDnsZones/providers/roleAssignments` | 2020-04-01-preview |
 | `Microsoft.Authorization/locks` | 2016-09-01 |
-
-### Resource dependency
-
-The following resources are required to be able to deploy this resource.
+| `Microsoft.Network/privateDnsZones` | 2018-09-01 |
+| `Microsoft.Network/privateDnsZones/providers/roleAssignments` | 2021-04-01-preview |
+| `Microsoft.Network/privateDnsZones/virtualNetworkLinks` | 2018-09-01 |
 
 ## Parameters
 
-| Parameter Name | Type | Description | DefaultValue | Possible values |
+| Parameter Name | Type | Default Value | Possible Values | Description |
 | :-- | :-- | :-- | :-- | :-- |
-| `cuaId` | string | Optional. Customer Usage Attribution id (GUID). This GUID must be previously registered |  |  |
-| `location` | string | "Optional. The location of the PrivateDNSZone. Should be global. | `Global` | `Global` |
-| `privateDnsZoneName` | string | Required. Private DNS zone name. |  |  |
-| `roleAssignments` | array | Optional. Array of role assignment objects that contain the 'roleDefinitionIdOrName' and 'principalId' to define RBAC role assignments on this resource. In the roleDefinitionIdOrName attribute, you can provide either the display name of the role definition, or its fully qualified ID in the following format: '/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11' | System.Object[] |  |
-| `tags` | object | Optional. Tags of the resource. |  |  |
-| `vnetLinks` | array | Optional. Array of custom objects describing vNet links of the DNS zone. Each object should contain properties 'vnetResourceId' and 'registrationEnabled'. The 'vnetResourceId' is a resource Id of a vNet to link, 'registrationEnabled' (bool) enables automatic DNS registration in the zone for the linked vNet. | [] |  |
-| `lock` | string | Optional. Specify the type of lock. | 'NotSpecified' | 'CanNotDelete', 'NotSpecified', 'ReadOnly' |
+| `cuaId` | string |  |  | Optional. Customer Usage Attribution id (GUID). This GUID must be previously registered |
+| `location` | string | `global` |  | Optional. The location of the PrivateDNSZone. Should be global. |
+| `lock` | string | `NotSpecified` | `[CanNotDelete, NotSpecified, ReadOnly]` | Optional. Specify the type of lock. |
+| `privateDnsZoneName` | string |  |  | Required. Private DNS zone name. |
+| `roleAssignments` | array | `[]` |  | Optional. Array of role assignment objects that contain the 'roleDefinitionIdOrName' and 'principalId' to define RBAC role assignments on this resource. In the roleDefinitionIdOrName attribute, you can provide either the display name of the role definition, or its fully qualified ID in the following format: '/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11' |
+| `tags` | object | `{object}` |  | Optional. Tags of the resource. |
+| `vnetLinks` | array | `[]` |  | Optional. Array of custom objects describing vNet links of the DNS zone. Each object should contain properties 'vnetResourceId' and 'registrationEnabled'. The 'vnetResourceId' is a resource Id of a vNet to link, 'registrationEnabled' (bool) enables automatic DNS registration in the zone for the linked vNet. |
 
 ### Parameter Usage: `vnetLinks`
 
@@ -95,17 +90,14 @@ Tag names and tag values can be provided as needed. A tag can be left without a 
 
 ## Outputs
 
-| Output Name | Type | Description |
-| :-- | :-- | :-- |
-| `privateDnsZoneResourceGroup` | string | The name of the Resource Group the resources was deployed to. |
-| `privateDnsZoneName` | string | The name of the resource deployed. |
-| `privateDnsZoneResourceId` | string | The Resource id of the resource deployed. |
+| Output Name | Type |
+| :-- | :-- |
+| `privateDnsZoneName` | string |
+| `privateDnsZoneResourceGroup` | string |
+| `privateDnsZoneResourceId` | string |
 
-## Considerations
+## Template references
 
-*N/A*
-
-## Additional resources
-
-- [PrivateDnsZones](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Network/2018-09-01/privateDnsZones)
-- [PrivateDnsZones](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Network/2018-09-01/privateDnsZones)
+- [Locks](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2016-09-01/locks)
+- [Privatednszones](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Network/2018-09-01/privateDnsZones)
+- [Privatednszones/Virtualnetworklinks](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Network/2018-09-01/privateDnsZones/virtualNetworkLinks)

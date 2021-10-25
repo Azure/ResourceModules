@@ -1,36 +1,35 @@
-# API Connection
+# API Connection `[Microsoft.Web/connections]`
 
 This module deploys an Azure API Connection.
 
 ## Resource types
 
-| Resource Type                                        | Api Version        |
-| ---------------------------------------------------- | ------------------ |
-| `Microsoft.Resources/deployments`                    | 2020-06-01         |
-| `Microsoft.Web/connections`                          | 2016-06-01         |
-| `Microsoft.Web/connections/providers/roleAssignments` | 2020-04-01-preview |
+| Resource Type | Api Version |
+| :-- | :-- |
 | `Microsoft.Authorization/locks` | 2016-09-01 |
+| `Microsoft.Web/connections` | 2016-06-01 |
+| `Microsoft.Web/connections/providers/roleAssignments` | 2021-04-01-preview |
 
 ## Parameters
 
-| Parameter Name               | Type         | Description                                                                                                                                                                                                                                                                                      | DefaultValue             | Possible values                         |
-| ---------------------------- | ------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | ------------------------ | --------------------------------------- |
-| `alternativeParameterValues` | object       | **Optional**. Alternative parameter values.                                                                                                                                                                                                                                                      | System.Object            |                                         |
-| `connectionApi`              | object       | **Optional**. Specific values for some API connections.                                                                                                                                                                                                                                          | System.Object            | Complex structure, see below.           |
-| `connectionKind`             | string       | **Required**. Connection Kind. Example: 'V1' when using blobs.  It can change depending on the resource.                                                                                                                                                                                         |                          |                                         |
-| `connectionName`             | string       | **Required**. Connection name for connection. Example: 'azureblob' when using blobs.  It can change depending on the resource.                                                                                                                                                                   |                          |                                         |
-| `cuaId`                      | string       | **Optional**. Customer Usage Attribution id (GUID). This GUID must be previously registered.                                                                                                                                                                                                     |                          |                                         |
-| `customParameterValues`      | object       | **Optional**. Customized parameter values for specific connections                                                                                                                                                                                                                               | System.Object            | Complex structure, see below.           |
-| `displayName`                | string       | **Required**. Display name connection. Example: 'blobconnection' when using blobs. It can change depending on the resource.                                                                                                                                                                      |                          |                                         |
-| `location`                   | string       | **Optional**. Location of the deployment.                                                                                                                                                                                                                                                        | resourceGroup().location |                                         |
-| `nonSecretParameterValues`   | object       | **Optional**. Dictionary of nonsecret parameter values.                                                                                                                                                                                                                                          | System.Object            |                                         |
-| `parameterValues`            | secureobject | **Optional**. Connection strings or access keys for connection. Example: 'accountName' and 'accessKey' when using blobs.  It can change depending on the resource.                                                                                                                               | System.Object            |                                         |
-| `parameterValueType`         | string       | **Optional**. Value Type of parameter, in case alternativeParameterValues is used.                                                                                                                                                                                                               |                          | "Alternative"                           |
-| `roleAssignments`            | array        | **Optional**. Array of role assignment objects that contain the 'roleDefinitionIdOrName' and 'principalId' to define RBAC role assignments on this resource. In the roleDefinitionIdOrName attribute, you can provide either the display name of the role definition, or its fully qualified ID. | System.Object[]          | Array of complex structures, see below. |
-| `statuses`                   | array        | **Optional**. Status of the connection.                                                                                                                                                                                                                                                          | System.Object[]          | Array of complex structures, see below. |
-| `tags`                       | object       | **Optional**. Tags of the resource.                                                                                                                                                                                                                                                              | System.Object            | Complex structure, see below.           |
-| `testLinks`                  | array        | **Optional**. Links to test the API connection.                                                                                                                                                                                                                                                  | System.Object[]          | Array of complex structures, see below. |
-| `lock` | string | Optional. Specify the type of lock. | 'NotSpecified' | 'CanNotDelete', 'NotSpecified', 'ReadOnly' |
+| Parameter Name | Type | Default Value | Possible Values | Description |
+| :-- | :-- | :-- | :-- | :-- |
+| `alternativeParameterValues` | object | `{object}` |  | Optional. Alternative parameter values. |
+| `connectionApi` | object | `{object}` |  | Optional. Specific values for some API connections. |
+| `connectionKind` | string |  |  | Required. Connection Kind. Example: 'V1' when using blobs. It can change depending on the resource. |
+| `connectionName` | string |  |  | Required. Connection name for connection. Example: 'azureblob' when using blobs.  It can change depending on the resource. |
+| `cuaId` | string |  |  | Optional. Customer Usage Attribution id (GUID). This GUID must be previously registered. |
+| `customParameterValues` | object | `{object}` |  | Optional. Customized parameter values for specific connections. |
+| `displayName` | string |  |  | Required. Display name connection. Example: 'blobconnection' when using blobs. It can change depending on the resource. |
+| `location` | string | `[resourceGroup().location]` |  | Optional. Location of the deployment. |
+| `lock` | string | `NotSpecified` | `[CanNotDelete, NotSpecified, ReadOnly]` | Optional. Specify the type of lock. |
+| `nonSecretParameterValues` | object | `{object}` |  | Optional. Dictionary of nonsecret parameter values. |
+| `parameterValues` | secureObject | `{object}` |  | Optional. Connection strings or access keys for connection. Example: 'accountName' and 'accessKey' when using blobs.  It can change depending on the resource. |
+| `parameterValueType` | string |  |  | Optional. Value Type of parameter, in case alternativeParameterValues is used. |
+| `roleAssignments` | array | `[]` |  | Optional. Array of role assignment objects that contain the 'roleDefinitionIdOrName' and 'principalId' to define RBAC role assignments on this resource. In the roleDefinitionIdOrName attribute, you can provide either the display name of the role definition, or its fully qualified ID in the following format: '/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11'. |
+| `statuses` | array | `[]` |  | Optional. Status of the connection. |
+| `tags` | object | `{object}` |  | Optional. Tags of the resource. |
+| `testLinks` | array | `[]` |  | Optional. Links to test the API connection. |
 
 ### Parameter Usage: `connectionApi`
 
@@ -102,17 +101,13 @@ Tag names and tag values can be provided as needed. A tag can be left without a 
 
 ## Outputs
 
-| Output Name               | Type   | Description                                                       |
-| ------------------------- | ------ | ----------------------------------------------------------------- |
-| `connectionResourceId`    | string | The Resource Id of the API Connection.                            |
-| `connectionResourceGroup` | string | The name of the Resource Group the API Connection was created in. |
-| `connectionName`          | string | The Name of the API Connection.                                   |
+| Output Name | Type |
+| :-- | :-- |
+| `connectionName` | string |
+| `connectionResourceGroup` | string |
+| `connectionResourceId` | string |
 
-## Considerations
+## Template references
 
-- _None_
-
-## Additional resources
-
-- [Microsoft.Logic workflows template reference](https://docs.microsoft.com/en-us/azure/templates/microsoft.web/connections?tabs=json)
-- [Use tags to organize your Azure resources](https://docs.microsoft.com/en-us/azure/azure-resource-manager/resource-group-using-tags)
+- [Locks](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2016-09-01/locks)
+- [Connections](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Web/2016-06-01/connections)

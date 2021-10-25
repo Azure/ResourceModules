@@ -56,35 +56,42 @@ param tags object = {}
 @description('Optional. Customer Usage Attribution id (GUID). This GUID must be previously registered')
 param cuaId string = ''
 
-var diagnosticsMetrics = [
-  {
-    category: 'AllMetrics'
-    timeGrain: null
-    enabled: true
-    retentionPolicy: {
-      enabled: true
-      days: diagnosticLogsRetentionInDays
-    }
-  }
+@description('Optional. The name of logs that will be streamed.')
+@allowed([
+  'Engine'
+  'Service'
+])
+param logsToEnable array = [
+  'Engine'
+  'Service'
 ]
-var diagnosticsLogs = [
-  {
-    category: 'Engine'
-    enabled: true
-    retentionPolicy: {
-      enabled: true
-      days: diagnosticLogsRetentionInDays
-    }
-  }
-  {
-    category: 'Service'
-    enabled: true
-    retentionPolicy: {
-      enabled: true
-      days: diagnosticLogsRetentionInDays
-    }
-  }
+
+@description('Optional. The name of metrics that will be streamed.')
+@allowed([
+  'AllMetrics'
+])
+param metricsToEnable array = [
+  'AllMetrics'
 ]
+
+var diagnosticsLogs = [for log in logsToEnable: {
+  category: log
+  enabled: true
+  retentionPolicy: {
+    enabled: true
+    days: diagnosticLogsRetentionInDays
+  }
+}]
+
+var diagnosticsMetrics = [for metric in metricsToEnable: {
+  category: metric
+  timeGrain: null
+  enabled: true
+  retentionPolicy: {
+    enabled: true
+    days: diagnosticLogsRetentionInDays
+  }
+}]
 
 var builtInRoleNames = {
   'Owner': subscriptionResourceId('Microsoft.Authorization/roleDefinitions', '8e3af657-a8ff-443c-a75c-2fe8c4bcb635')
@@ -129,8 +136,8 @@ resource server_lock 'Microsoft.Authorization/locks@2016-09-01' = if (lock != 'N
   scope: server
 }
 
-resource server_diagnosticSettings 'Microsoft.AnalysisServices/servers/providers/diagnosticsettings@2017-05-01-preview' = if ((!empty(diagnosticStorageAccountId)) || (!empty(workspaceId)) || (!empty(eventHubAuthorizationRuleId)) || (!empty(eventHubName))) {
-  name: '${server.name}/Microsoft.Insights/service'
+resource server_diagnosticSettings 'Microsoft.Insights/diagnosticsettings@2017-05-01-preview' = if ((!empty(diagnosticStorageAccountId)) || (!empty(workspaceId)) || (!empty(eventHubAuthorizationRuleId)) || (!empty(eventHubName))) {
+  name: '${server.name}-diagnosticSettings'
   properties: {
     storageAccountId: (empty(diagnosticStorageAccountId) ? json('null') : diagnosticStorageAccountId)
     workspaceId: (empty(workspaceId) ? json('null') : workspaceId)
@@ -139,6 +146,7 @@ resource server_diagnosticSettings 'Microsoft.AnalysisServices/servers/providers
     metrics: ((empty(diagnosticStorageAccountId) && empty(workspaceId) && empty(eventHubAuthorizationRuleId) && empty(eventHubName)) ? json('null') : diagnosticsMetrics)
     logs: ((empty(diagnosticStorageAccountId) && empty(workspaceId) && empty(eventHubAuthorizationRuleId) && empty(eventHubName)) ? json('null') : diagnosticsLogs)
   }
+  scope: server
 }
 
 module server_rbac './.bicep/nested_rbac.bicep' = [for (roleAssignment, index) in roleAssignments: {

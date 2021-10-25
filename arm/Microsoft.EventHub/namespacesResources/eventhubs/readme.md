@@ -1,9 +1,8 @@
-# EventHubs
+# EventHubs `[Microsoft.EventHub/namespacesResources/eventhubs]`
 
 This module deploys EventHub.
 
 ## Resource types
-
 |Resource Type|ApiVersion|
 |:--|:--|
 |`Microsoft.Resources/deployments`|2018-02-01|
@@ -14,8 +13,7 @@ This module deploys EventHub.
 |`Microsoft.EventHub/namespaces/eventhubs/providers/roleAssignments`|2020-04-01-preview|
 
 ## Parameters
-
-| Parameter Name | Type | Description | DefaultValue | Possible values |
+| Parameter Name | Type | Default Value | Possible Values | Description |
 | :-- | :-- | :-- | :-- | :-- |
 | `authorizationRules` | array | Optional. Authorization Rules for the Event Hub | System.Object[] |  |
 | `cuaId` | string | Optional. Customer Usage Attribution id (GUID). This GUID must be previously registered |  |  |
@@ -158,7 +156,6 @@ Tag names and tag values can be provided as needed. A tag can be left without a 
 ```
 
 ## Outputs
-
 | Output Name | Type | Description |
 | :-- | :-- | :-- |
 | `authRuleResourceId` | string | The Id of the authorization rule marked by the variable with the same name. |
@@ -168,15 +165,7 @@ Tag names and tag values can be provided as needed. A tag can be left without a 
 | `namespaceResourceGroup` | string | The name of the Resource Group with the EventHub Namespace |
 | `sharedAccessPolicyPrimaryKey` | securestring | The shared access policy primary key for the EventHub Namespace |
 
-### Scripts
-
-- There is no Scripts for this Module
-
-## Considerations
-
-- There is no deployment considerations for this Module
-
-## Additional resources
-
-- [Microsoft EventHub template reference](https://docs.microsoft.com/en-us/azure/templates/microsoft.eventhub/allversions)
-- [Use tags to organize your Azure resources](https://docs.microsoft.com/en-us/azure/azure-resource-manager/resource-group-using-tags)
+## Template references
+- [Namespaces/Eventhubs](https://docs.microsoft.com/en-us/azure/templates/Microsoft.EventHub/2017-04-01/namespaces/eventhubs)
+- [Namespaces/Eventhubs/Authorizationrules](https://docs.microsoft.com/en-us/azure/templates/Microsoft.EventHub/2017-04-01/namespaces/eventhubs/authorizationRules)
+- [Namespaces/Eventhubs/Consumergroups](https://docs.microsoft.com/en-us/azure/templates/Microsoft.EventHub/2017-04-01/namespaces/eventhubs/consumergroups)

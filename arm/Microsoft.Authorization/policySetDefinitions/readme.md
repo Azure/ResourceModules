@@ -1,26 +1,25 @@
-# policySetDefinition
+# policySetDefinition `[Microsoft.Authorization/policySetDefinitions]`
 
 ## Resource types
 
-|Resource Type|ApiVersion|
-|:--|:--|
-|`Microsoft.Resources/deployments`|2019-10-01|
-|`Microsoft.Authorization/policySetDefinitions`|2020-09-01|
+| Resource Type | Api Version |
+| :-- | :-- |
+| `Microsoft.Authorization/policySetDefinitions` | 2020-09-01 |
 
 ## Parameters
 
-| Parameter Name | Type | Description | DefaultValue | Possible values |
+| Parameter Name | Type | Default Value | Possible Values | Description |
 | :-- | :-- | :-- | :-- | :-- |
-| `policySetDefinitionName` | string | Required. Required. Specifies the name of the policy Set Definition (Initiative). Space characters will be replaced by (-) and converted to lowercase |  | |
-| `displayName` | string | Optional. Optional. The display name of the Set Definition (Initiative) |  | |
-| `policySetDescription` | string | Optional. The description name of the Set Definition (Initiative) |  | |
-| `metadata` | object | Optional. Optional. The Set Definition (Initiative) metadata. Metadata is an open ended object and is typically a collection of key value pairs. |  | |
-| `policyDefinitions` | array | Required. The array of Policy definitions object to include for this policy set. Each object must include the Policy definition ID, and optionally other properties like parameters |  |  |
-| `policyDefinitionGroups` | string | Optional. The metadata describing groups of policy definition references within the Policy Set Definition (Initiative). |  | |
-| `parameters` | object | Optional. The Set Definition (Initiative) parameters that can be used in policy definition references.|  | | 
-| `subscriptionId` | string | Optional. The ID of the azure subscription where the initiative is being deployed at. Cannot use with management group id parameter. | | 
-| `managementGroupId` | string | Optional. The ID of the management group where the initiative is being deployed at. Cannot use with subscription id parameter. | | 
-| `location` | string | Optional. Location for all resources. |  | |
+| `displayName` | string |  |  | Optional. The display name of the Set Definition (Initiative) |
+| `location` | string | `[deployment().location]` |  | Optional. Location for all resources. |
+| `managementGroupId` | string |  |  | Optional. The ID of the Management Group (Scope). Cannot be used with subscriptionId and does not support tenant level deployment (i.e. '/') |
+| `metadata` | object | `{object}` |  | Optional. The Set Definition (Initiative) metadata. Metadata is an open ended object and is typically a collection of key value pairs. |
+| `parameters` | object | `{object}` |  | Optional. The Set Definition (Initiative) parameters that can be used in policy definition references. |
+| `policyDefinitionGroups` | array | `[]` |  | Optional. The metadata describing groups of policy definition references within the Policy Set Definition (Initiative). |
+| `policyDefinitions` | array |  |  | Required. The array of Policy definitions object to include for this policy set. Each object must include the Policy definition ID, and optionally other properties like parameters |
+| `policySetDefinitionName` | string |  |  | Required. Specifies the name of the policy Set Definition (Initiative). Space characters will be replaced by (-) and converted to lowercase |
+| `policySetDescription` | string |  |  | Optional. The Description name of the Set Definition (Initiative) |
+| `subscriptionId` | string |  |  | Optional. The ID of the Azure Subscription (Scope). Cannot be used with managementGroupId |
 
 ### Parameter Usage: `managementGroupId`
 
@@ -32,7 +31,7 @@ To deploy resource to a Management Group, provide the `managementGroupId` as an 
 }
 ```
 
-> The name of the Management Group in the deployment does not have to match the value of the `managementGroupId` in the input parameters. 
+> The name of the Management Group in the deployment does not have to match the value of the `managementGroupId` in the input parameters.
 
 ### Parameter Usage: `subscriptionId`
 
@@ -46,16 +45,15 @@ To deploy resource to an Azure Subscription, provide the `subscriptionId` as an 
 
 ## Outputs
 
-| Output Name | Type | Description |
-| :-- | :-- | :-- |
-| `policySetDefinitionId` | string | The ID of the Policy Set Definitions (Initiatives) |
-| `policySetDefinitionName` | string | Name of the Policy Set Definitions (Initiatives) |
+| Output Name | Type |
+| :-- | :-- |
+| `policySetDefinitionId` | string |
+| `policySetDefinitionName` | string |
 
 ## Considerations
 
 - Policy Set Definitions (Initiatives) have a dependency on Policy Assignments being applied before creating an initiative. You can use the Policy Assignment [Module](../policyDefinitions/deploy.bicep) to deploy a Policy Definition and then create an initiative for it on the required scope.
 
-## Additional resources
+## Template references
 
-- [Deployments](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Resources/2018-02-01/deployments)
-- [Policy Set Definitions (Initiatives)](https://docs.microsoft.com/en-us/azure/templates/microsoft.authorization/policysetdefinitions?tabs=bicep)
+- [Policysetdefinitions](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2020-09-01/policySetDefinitions)

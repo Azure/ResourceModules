@@ -1,32 +1,31 @@
-# Local Network Gateway
+# Local Network Gateway `[Microsoft.Network/localNetworkGateways]`
 
 This module deploys Local Network Gateway, with resource lock.
 
 ## Resource types
 
-|Resource Type|ApiVersion|
-|:--|:--|
-|`Microsoft.Resources/deployments`|2018-02-01|
-|`Microsoft.Network/localNetworkGateways`|2021-02-01|
-|`providers/locks`|2016-09-01|
-|`Microsoft.Network/localNetworkGateways/providers/roleAssignments`|2018-09-01-preview|
+| Resource Type | Api Version |
+| :-- | :-- |
+| `Microsoft.Authorization/locks` | 2016-09-01 |
+| `Microsoft.Network/localNetworkGateways` | 2021-02-01 |
+| `Microsoft.Network/localNetworkGateways/providers/roleAssignments` | 2021-04-01-preview |
 
 ## Parameters
 
-| Parameter Name | Type | Description | DefaultValue | Possible values |
+| Parameter Name | Type | Default Value | Possible Values | Description |
 | :-- | :-- | :-- | :-- | :-- |
-| `cuaId` | string | Optional. Customer Usage Attribution id (GUID). This GUID must be previously registered |  |  |
-| `localAddressPrefixes` | array | Required. List of the local (on-premises) IP address ranges |  |  |
-| `localAsn` | string | Optional. The BGP speaker's ASN. Not providing this value will automatically disable BGP on this Local Network Gateway resource. |  |  |
-| `localBgpPeeringAddress` | string | Optional. The BGP peering address and BGP identifier of this BGP speaker. Not providing this value will automatically disable BGP on this Local Network Gateway resource. |  |  |
-| `localGatewayPublicIpAddress` | string | Required. Public IP of the local gateway |  |  |
-| `localNetworkGatewayName` | string | Required. Name of the Local Network Gateway |  |  |
-| `localPeerWeight` | string | Optional. The weight added to routes learned from this BGP speaker. This will only take effect if both the localAsn and the localBgpPeeringAddress values are provided. |  |  |
-| `location` | string | Optional. Location for all resources. | [resourceGroup().location] |  |
-| `lock` | string | Optional. Specify the type of lock. | 'NotSpecified' | 'CanNotDelete', 'NotSpecified', 'ReadOnly' |
-| `roleAssignments` | array | Optional. Array of role assignment objects that contain the 'roleDefinitionIdOrName' and 'principalId' to define RBAC role assignments on this resource. In the roleDefinitionIdOrName attribute, you can provide either the display name of the role definition, or its fully qualified ID in the following format: '/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11' | System.Object[] |  |
-| `tags` | object | Optional. Tags of the resource. |  |  |
-| `fqdn` | string | Optional. FQDN for local gateway (on-prem gateway). | | |
+| `cuaId` | string |  |  | Optional. Customer Usage Attribution id (GUID). This GUID must be previously registered |
+| `fqdn` | string |  |  | Optional. FQDN of local network gateway. |
+| `localAddressPrefixes` | array |  |  | Required. List of the local (on-premises) IP address ranges |
+| `localAsn` | string |  |  | Optional. The BGP speaker's ASN. Not providing this value will automatically disable BGP on this Local Network Gateway resource. |
+| `localBgpPeeringAddress` | string |  |  | Optional. The BGP peering address and BGP identifier of this BGP speaker. Not providing this value will automatically disable BGP on this Local Network Gateway resource. |
+| `localGatewayPublicIpAddress` | string |  |  | Required. Public IP of the local gateway |
+| `localNetworkGatewayName` | string |  |  | Required. Name of the Local Network Gateway |
+| `localPeerWeight` | string |  |  | Optional. The weight added to routes learned from this BGP speaker. This will only take effect if both the localAsn and the localBgpPeeringAddress values are provided. |
+| `location` | string | `[resourceGroup().location]` |  | Optional. Location for all resources. |
+| `lock` | string | `NotSpecified` | `[CanNotDelete, NotSpecified, ReadOnly]` | Optional. Specify the type of lock. |
+| `roleAssignments` | array | `[]` |  | Optional. Array of role assignment objects that contain the 'roleDefinitionIdOrName' and 'principalId' to define RBAC role assignments on this resource. In the roleDefinitionIdOrName attribute, you can provide either the display name of the role definition, or its fully qualified ID in the following format: '/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11' |
+| `tags` | object | `{object}` |  | Optional. Tags of the resource. |
 
 ### Parameter Usage: `roleAssignments`
 
@@ -76,18 +75,13 @@ Tag names and tag values can be provided as needed. A tag can be left without a 
 
 ## Outputs
 
-| Output Name | Type | Description |
-| :-- | :-- | :-- |
-| `localNetworkGatewayName` | string | The Name of the Local Network Gateway. |
-| `localNetworkGatewayResourceGroup` | string | The name of the Resource Group the Local Network Gateway was created in. |
-| `localNetworkGatewayResourceId` | string | The Resource Id of the Local Network Gateway. |
+| Output Name | Type |
+| :-- | :-- |
+| `localNetworkGatewayName` | string |
+| `localNetworkGatewayResourceGroup` | string |
+| `localNetworkGatewayResourceId` | string |
 
-## Considerations
+## Template references
 
-*N/A*
-
-## Additional resources
-
-- [What is VPN Gateway?](https://docs.microsoft.com/en-us/azure/vpn-gateway/vpn-gateway-about-vpngateways)
-- [Use tags to organize your Azure resources](https://docs.microsoft.com/en-us/azure/azure-resource-manager/resource-group-using-tags)
-- [Microsoft.Network localnetworkgateways template reference](https://docs.microsoft.com/en-us/azure/templates/microsoft.network/2021-02-01/localnetworkgateways)
+- [Locks](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2016-09-01/locks)
+- [Localnetworkgateways](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Network/2021-02-01/localNetworkGateways)

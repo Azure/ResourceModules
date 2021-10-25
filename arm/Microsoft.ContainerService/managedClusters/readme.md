@@ -1,4 +1,4 @@
-# AzureKubernetesService
+# AzureKubernetesService `[Microsoft.ContainerService/managedClusters]`
 
 This module deploys Azure Kubernetes Cluster (AKS).
 
@@ -7,70 +7,70 @@ This module deploys Azure Kubernetes Cluster (AKS).
 
 | Resource Type | Api Version |
 | :-- | :-- |
-| `Microsoft.ContainerService/managedClusters/agentPools` | 2021-05-01 |
-| `Microsoft.Insights/diagnosticsettings` | 2017-05-01-preview |
 | `Microsoft.Authorization/locks` | 2016-09-01 |
-| `Microsoft.ContainerService/managedClusters/providers/roleAssignments` | 2018-09-01-preview |
 | `Microsoft.ContainerService/managedClusters` | 2021-07-01 |
-| `Microsoft.Resources/deployments` | 2020-06-01 |
+| `Microsoft.ContainerService/managedClusters/agentPools` | 2021-05-01 |
+| `Microsoft.ContainerService/managedClusters/providers/roleAssignments` | 2021-04-01-preview |
+| `Microsoft.Insights/diagnosticSettings` | 2017-05-01-preview |
 
 ## Parameters
 
-| Parameter Name | Type | Default Value | Possible values | Description |
+| Parameter Name | Type | Default Value | Possible Values | Description |
 | :-- | :-- | :-- | :-- | :-- |
+| `aadProfileAdminGroupObjectIDs` | array | `[]` |  | Optional. Specifies the AAD group object IDs that will have admin role of the cluster. |
+| `aadProfileClientAppID` | string |  |  | Optional. The client AAD application ID. |
+| `aadProfileEnableAzureRBAC` | bool | `True` |  | Optional. Specifies whether to enable Azure RBAC for Kubernetes authorization. |
+| `aadProfileManaged` | bool | `True` |  | Optional. Specifies whether to enable managed AAD integration. |
+| `aadProfileServerAppID` | string |  |  | Optional. The server AAD application ID. |
+| `aadProfileServerAppSecret` | string |  |  | Optional. The server AAD application secret. |
+| `aadProfileTenantId` | string | `[subscription().tenantId]` |  | Optional. Specifies the tenant id of the Azure Active Directory used by the AKS cluster for authentication. |
+| `aciConnectorLinuxEnabled` | bool |  |  | Optional. Specifies whether the aciConnectorLinux add-on is enabled or not. |
+| `additionalAgentPools` | array | `[]` |  | Optional. Define one or multiple node pools |
+| `aksClusterAdminUsername` | string | `azureuser` |  | Optional. Specifies the administrator username of Linux virtual machines. |
+| `aksClusterDnsPrefix` | string | `[parameters('aksClusterName')]` |  | Optional. Specifies the DNS prefix specified when creating the managed cluster. |
+| `aksClusterDnsServiceIP` | string |  |  | Optional. Specifies the IP address assigned to the Kubernetes DNS service. It must be within the Kubernetes service address range specified in serviceCidr. |
+| `aksClusterDockerBridgeCidr` | string |  |  | Optional. Specifies the CIDR notation IP range assigned to the Docker bridge network. It must not overlap with any Subnet IP ranges or the Kubernetes service address range. |
+| `aksClusterEnablePrivateCluster` | bool |  |  | Optional. Specifies whether to create the cluster as a private cluster or not. |
+| `aksClusterKubernetesVersion` | string |  |  | Optional. Version of Kubernetes specified when creating the managed cluster. |
+| `aksClusterLoadBalancerSku` | string | `standard` | `[basic, standard]` | Optional. Specifies the sku of the load balancer used by the virtual machine scale sets used by nodepools. |
 | `aksClusterName` | string |  |  | Required. Specifies the name of the AKS cluster. |
-| `location` | string | [resourceGroup().location] |  | Optional. Specifies the location of AKS cluster. It picks up Resource Group's location by default. |
-| `aksClusterDnsPrefix` | string | [parameters('aksClusterName')] |  | Optional. Specifies the DNS prefix specified when creating the managed cluster. |
-| `identity` | object | { "type": "SystemAssigned" } |  | Optional. The identity of the managed cluster. |
-| `aksClusterNetworkPlugin` | string | "" | "", azure, kubenet | Optional. Specifies the network plugin used for building Kubernetes network. - azure or kubenet. |
-| `aksClusterNetworkPolicy` | string | "" | "", azure, calico | Optional. Specifies the network policy used for building Kubernetes network. - calico or azure |
-| `aksClusterPodCidr` | string | "" |  | Optional. Specifies the CIDR notation IP range from which to assign pod IPs when kubenet is used. |
-| `aksClusterServiceCidr` | string | "" |  | Optional. A CIDR notation IP range from which to assign service cluster IPs. It must not overlap with any Subnet IP ranges. |
-| `aksClusterDnsServiceIP` | string | "" |  | Optional. Specifies the IP address assigned to the Kubernetes DNS service. It must be within the Kubernetes service address range specified in serviceCidr. |
-| `aksClusterDockerBridgeCidr` | string | "" |  | Optional. Specifies the CIDR notation IP range assigned to the Docker bridge network. It must not overlap with any Subnet IP ranges or the Kubernetes service address range. |
-| `aksClusterLoadBalancerSku` | string | standard | basic, standard | Optional. Specifies the sku of the load balancer used by the virtual machine scale sets used by nodepools. |
-| `managedOutboundIPCount` | int | 0 |  | Optional. Outbound IP Count for the Load balancer. |
-| `aksClusterOutboundType` | string | loadBalancer | loadBalancer, userDefinedRouting | Optional. Specifies outbound (egress) routing method. - loadBalancer or userDefinedRouting. |
-| `aksClusterSkuTier` | string | Free | Free, Paid | Optional. Tier of a managed cluster SKU. - Free or Paid |
-| `aksClusterKubernetesVersion` | string | "" |  | Optional. Version of Kubernetes specified when creating the managed cluster. |
-| `aksClusterAdminUsername` | string | azureuser |  | Optional. Specifies the administrator username of Linux virtual machines. |
+| `aksClusterNetworkPlugin` | string |  | `[, azure, kubenet]` | Optional. Specifies the network plugin used for building Kubernetes network. - azure or kubenet. |
+| `aksClusterNetworkPolicy` | string |  | `[, azure, calico]` | Optional. Specifies the network policy used for building Kubernetes network. - calico or azure |
+| `aksClusterOutboundType` | string | `loadBalancer` | `[loadBalancer, userDefinedRouting]` | Optional. Specifies outbound (egress) routing method. - loadBalancer or userDefinedRouting. |
+| `aksClusterPodCidr` | string |  |  | Optional. Specifies the CIDR notation IP range from which to assign pod IPs when kubenet is used. |
+| `aksClusterServiceCidr` | string |  |  | Optional. A CIDR notation IP range from which to assign service cluster IPs. It must not overlap with any Subnet IP ranges. |
+| `aksClusterSkuTier` | string | `Free` | `[Free, Paid]` | Optional. Tier of a managed cluster SKU. - Free or Paid |
 | `aksClusterSshPublicKey` | string |  |  | Optional. Specifies the SSH RSA public key string for the Linux nodes. |
-| `aksServicePrincipalProfile` | object | {} |  | Optional. Information about a service principal identity for the cluster to use for manipulating Azure APIs. |
-| `aadProfileClientAppID` | string | "" |  | Optional. The client AAD application ID. |
-| `aadProfileServerAppID` | string | "" |  | Optional. The server AAD application ID. |
-| `aadProfileServerAppSecret` | string | "" |  | Optional. The server AAD application secret. |
-| `aadProfileTenantId` | string | [subscription().tenantId] |  | Optional. Specifies the tenant id of the Azure Active Directory used by the AKS cluster for authentication. |
-| `aadProfileAdminGroupObjectIDs` | array | System.Object[] |  | Optional. Specifies the AAD group object IDs that will have admin role of the cluster. |
-| `aadProfileManaged` | bool | True |  | Optional. Specifies whether to enable managed AAD integration. |
-| `aadProfileEnableAzureRBAC` | bool | True |  | Optional. Specifies whether to enable Azure RBAC for Kubernetes authorization. |
-| `nodeResourceGroup` | string | concat(resourceGroup().name, '_aks_nodes') |  | Optional. Name of the resource group containing agent pool nodes. |
-| `aksClusterEnablePrivateCluster` | bool | False |  | Optional. Specifies whether to create the cluster as a private cluster or not. |
-| `primaryAgentPoolProfile` | array | |  | Required. Properties of the primary agent pool. |
-| `additionalAgentPools` | array | System.Object[] |  | Optional. Define one or multiple node pools. |
-| `httpApplicationRoutingEnabled` | bool | False |  | Optional. Specifies whether the httpApplicationRouting add-on is enabled or not. |
-| `aciConnectorLinuxEnabled` | bool | False |  | Optional. Specifies whether the aciConnectorLinux add-on is enabled or not. |
-| `azurePolicyEnabled` | bool | True |  | Optional. Specifies whether the azurepolicy add-on is enabled or not. |
-| `azurePolicyVersion` | string | v2 |  | Optional. Specifies the azure policy version to use. |
-| `kubeDashboardEnabled` | bool | False |  | Optional. Specifies whether the kubeDashboard add-on is enabled or not. |
-| `autoScalerProfileScanInterval` | string | 10s |  | Optional. Specifies the scan interval of the auto-scaler of the AKS cluster. |
-| `autoScalerProfileScaleDownDelayAfterAdd` | string | 10m |  | Optional. Specifies the scale down delay after add of the auto-scaler of the AKS cluster. |
-| `autoScalerProfileScaleDownDelayAfterDelete` | string | 20s |  | Optional. Specifies the scale down delay after delete of the auto-scaler of the AKS cluster. |
-| `autoScalerProfileScaleDownDelayAfterFailure` | string | 3m |  | Optional. Specifies scale down delay after failure of the auto-scaler of the AKS cluster. |
-| `autoScalerProfileScaleDownUnneededTime` | string | 10m |  | Optional. Specifies the scale down unneeded time of the auto-scaler of the AKS cluster. |
-| `autoScalerProfileScaleDownUnreadyTime` | string | 20m |  | Optional. Specifies the scale down unready time of the auto-scaler of the AKS cluster. |
-| `autoScalerProfileUtilizationThreshold` | string | 0.5 |  | Optional. Specifies the utilization threshold of the auto-scaler of the AKS cluster. |
-| `autoScalerProfileMaxGracefulTerminationSec` | string | 600 |  | Optional. Specifies the max graceful termination time interval in seconds for the auto-scaler of the AKS cluster. |
-| `diagnosticStorageAccountId` | string | "" |  | Optional. Resource identifier of the Diagnostic Storage Account. |
-| `workspaceId` | string | "" |  | Optional. Resource identifier of Log Analytics. |
-| `omsAgentEnabled` | bool | True |  | Optional. Specifies whether the OMS agent is enabled. |
-| `eventHubAuthorizationRuleId` | string | "" |  | Optional. Resource ID of the event hub authorization rule for the Event Hubs namespace in which the event hub should be created or streamed to. |
-| `eventHubName` | string | "" |  | Optional. Name of the event hub within the namespace to which logs are streamed. Without this, an event hub is created for each log category. |
-| `diagnosticLogsRetentionInDays` | int | 365 |  | Optional. Specifies the number of days that logs will be kept for; a value of 0 will retain data indefinitely. |
-| `cuaId` | string | "" |  | Optional. Customer Usage Attribution id (GUID). This GUID must be previously registered. |
-| `roleAssignments` | array | System.Object[] |  | Optional. Array of role assignment objects that contain the 'roleDefinitionIdOrName' and 'principalId' to define RBAC role assignments on this resource. In the roleDefinitionIdOrName attribute, you can provide either the display name of the role definition, or its fully qualified ID in the following format: '/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11' |
-| `lock` | string | 'NotSpecified' | 'CanNotDelete', 'NotSpecified', 'ReadOnly' | Optional. Specify the type of lock. |
-| `tags` | object | {} |  | Optional. Tags of the resource. |
-
+| `aksServicePrincipalProfile` | object | `{object}` |  | Optional. Information about a service principal identity for the cluster to use for manipulating Azure APIs. |
+| `autoScalerProfileMaxGracefulTerminationSec` | string | `600` |  | Optional. Specifies the max graceful termination time interval in seconds for the auto-scaler of the AKS cluster. |
+| `autoScalerProfileScaleDownDelayAfterAdd` | string | `10m` |  | Optional. Specifies the scale down delay after add of the auto-scaler of the AKS cluster. |
+| `autoScalerProfileScaleDownDelayAfterDelete` | string | `20s` |  | Optional. Specifies the scale down delay after delete of the auto-scaler of the AKS cluster. |
+| `autoScalerProfileScaleDownDelayAfterFailure` | string | `3m` |  | Optional. Specifies scale down delay after failure of the auto-scaler of the AKS cluster. |
+| `autoScalerProfileScaleDownUnneededTime` | string | `10m` |  | Optional. Specifies the scale down unneeded time of the auto-scaler of the AKS cluster. |
+| `autoScalerProfileScaleDownUnreadyTime` | string | `20m` |  | Optional. Specifies the scale down unready time of the auto-scaler of the AKS cluster. |
+| `autoScalerProfileScanInterval` | string | `10s` |  | Optional. Specifies the scan interval of the auto-scaler of the AKS cluster. |
+| `autoScalerProfileUtilizationThreshold` | string | `0.5` |  | Optional. Specifies the utilization threshold of the auto-scaler of the AKS cluster. |
+| `azurePolicyEnabled` | bool | `True` |  | Optional. Specifies whether the azurepolicy add-on is enabled or not. |
+| `azurePolicyVersion` | string | `v2` |  | Optional. Specifies the azure policy version to use. |
+| `cuaId` | string |  |  | Optional. Customer Usage Attribution id (GUID). This GUID must be previously registered |
+| `diagnosticLogsRetentionInDays` | int | `365` |  | Optional. Specifies the number of days that logs will be kept for; a value of 0 will retain data indefinitely. |
+| `diagnosticStorageAccountId` | string |  |  | Optional. Resource identifier of the Diagnostic Storage Account. |
+| `eventHubAuthorizationRuleId` | string |  |  | Optional. Resource ID of the event hub authorization rule for the Event Hubs namespace in which the event hub should be created or streamed to. |
+| `eventHubName` | string |  |  | Optional. Name of the event hub within the namespace to which logs are streamed. Without this, an event hub is created for each log category. |
+| `httpApplicationRoutingEnabled` | bool |  |  | Optional. Specifies whether the httpApplicationRouting add-on is enabled or not. |
+| `identity` | object | `{object}` |  | Optional. The identity of the managed cluster. |
+| `kubeDashboardEnabled` | bool |  |  | Optional. Specifies whether the kubeDashboard add-on is enabled or not. |
+| `location` | string | `[resourceGroup().location]` |  | Optional. Specifies the location of AKS cluster. It picks up Resource Group's location by default. |
+| `lock` | string | `NotSpecified` | `[CanNotDelete, NotSpecified, ReadOnly]` | Optional. Specify the type of lock. |
+| `logsToEnable` | array | `[kube-apiserver, kube-audit, kube-controller-manager, kube-scheduler, cluster-autoscaler]` | `[kube-apiserver, kube-audit, kube-controller-manager, kube-scheduler, cluster-autoscaler]` | Optional. The name of logs that will be streamed. |
+| `managedOutboundIPCount` | int |  |  | Optional. Outbound IP Count for the Load balancer. |
+| `metricsToEnable` | array | `[AllMetrics]` | `[AllMetrics]` | Optional. The name of metrics that will be streamed. |
+| `nodeResourceGroup` | string | `[format('{0}_aks_{1}_nodes', resourceGroup().name, parameters('aksClusterName'))]` |  | Optional. Name of the resource group containing agent pool nodes. |
+| `omsAgentEnabled` | bool | `True` |  | Optional. Specifies whether the OMS agent is enabled. |
+| `primaryAgentPoolProfile` | array |  |  | Required. Properties of the primary agent pool. |
+| `roleAssignments` | array | `[]` |  | Optional. Array of role assignment objects that contain the 'roleDefinitionIdOrName' and 'principalId' to define RBAC role assignments on this resource. In the roleDefinitionIdOrName attribute, you can provide either the display name of the role definition, or its fully qualified ID in the following format: '/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11' |
+| `tags` | object | `{object}` |  | Optional. Tags of the resource. |
+| `workspaceId` | string |  |  | Optional. Resource identifier of Log Analytics. |
 
 ### Parameter Usage: `tags`
 
@@ -214,26 +214,18 @@ For available properties check https://docs.microsoft.com/en-us/azure/templates/
     }
 ```
 
-
 ## Outputs
 
-| Output Name | Type | Description |
-| :-- | :-- | :-- |
-| `azureKubernetesServiceName` | string | The Name of the Azure Kubernetes Service. |
-| `azureKubernetesServiceResourceGroup` | string | The name of the Resource Group the Azure Kubernetes Service was created in. |
-| `azureKubernetesServiceResourceId` | string | The Resource Id of the Azure Kubernetes Service. |
-| `controlPlaneFQDN` | string | The FQDN of the Azure Kubernetes Service. |
+| Output Name | Type |
+| :-- | :-- |
+| `azureKubernetesServiceName` | string |
+| `azureKubernetesServiceResourceGroup` | string |
+| `azureKubernetesServiceResourceId` | string |
+| `controlPlaneFQDN` | string |
 
+## Template references
 
-## Considerations
-
-- *None*
-
-
-## Additional resources
-
-- [Use tags to organize your Azure resources](https://docs.microsoft.com/en-us/azure/azure-resource-manager/resource-group-using-tags)
-- [Azure Resource Manager template reference](https://docs.microsoft.com/en-us/azure/templates/)
-- [ManagedClusters](https://docs.microsoft.com/en-us/azure/templates/Microsoft.ContainerService/2020-11-01/managedClusters)
-- [ManagedClusters/providers/diagnosticsettings](https://docs.microsoft.com/en-us/azure/templates/Microsoft.ContainerService/2017-05-01-preview/managedClusters/providers/diagnosticsettings)
-- [Deployments](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Resources/2020-06-01/deployments)
+- [Locks](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2016-09-01/locks)
+- [Managedclusters](https://docs.microsoft.com/en-us/azure/templates/Microsoft.ContainerService/2021-07-01/managedClusters)
+- [Managedclusters/Agentpools](https://docs.microsoft.com/en-us/azure/templates/Microsoft.ContainerService/2021-05-01/managedClusters/agentPools)
+- [Diagnosticsettings](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Insights/2017-05-01-preview/diagnosticSettings)

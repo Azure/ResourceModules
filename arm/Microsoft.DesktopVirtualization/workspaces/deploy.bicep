@@ -47,41 +47,28 @@ param cuaId string = ''
 @description('Optional. Array of role assignment objects that contain the \'roleDefinitionIdOrName\' and \'principalIds\' to define RBAC role assignments on this resource. In the roleDefinitionIdOrName attribute, you can provide either the display name of the role definition, or it\'s fully qualified ID in the following format: \'/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11\'')
 param roleAssignments array = []
 
-var diagnosticsMetrics = []
-var diagnosticsLogs = [
-  {
-    category: 'Checkpoint'
-    enabled: true
-    retentionPolicy: {
-      enabled: true
-      days: diagnosticLogsRetentionInDays
-    }
-  }
-  {
-    category: 'Error'
-    enabled: true
-    retentionPolicy: {
-      enabled: true
-      days: diagnosticLogsRetentionInDays
-    }
-  }
-  {
-    category: 'Management'
-    enabled: true
-    retentionPolicy: {
-      enabled: true
-      days: diagnosticLogsRetentionInDays
-    }
-  }
-  {
-    category: 'Feed'
-    enabled: true
-    retentionPolicy: {
-      enabled: true
-      days: diagnosticLogsRetentionInDays
-    }
-  }
+@description('Optional. The name of logs that will be streamed.')
+@allowed([
+  'Checkpoint'
+  'Error'
+  'Management'
+  'Feed'
+])
+param logsToEnable array = [
+  'Checkpoint'
+  'Error'
+  'Management'
+  'Feed'
 ]
+
+var diagnosticsLogs = [for log in logsToEnable: {
+  category: log
+  enabled: true
+  retentionPolicy: {
+    enabled: true
+    days: diagnosticLogsRetentionInDays
+  }
+}]
 
 var builtInRoleNames = {
   'Owner': subscriptionResourceId('Microsoft.Authorization/roleDefinitions', '8e3af657-a8ff-443c-a75c-2fe8c4bcb635')
@@ -136,7 +123,6 @@ resource workspace_diagnosticSettings 'Microsoft.Insights/diagnosticsettings@201
     workspaceId: (empty(workspaceId) ? json('null') : workspaceId)
     eventHubAuthorizationRuleId: (empty(eventHubAuthorizationRuleId) ? json('null') : eventHubAuthorizationRuleId)
     eventHubName: (empty(eventHubName) ? json('null') : eventHubName)
-    metrics: ((empty(diagnosticStorageAccountId) && empty(workspaceId) && empty(eventHubAuthorizationRuleId) && empty(eventHubName)) ? json('null') : diagnosticsMetrics)
     logs: ((empty(diagnosticStorageAccountId) && empty(workspaceId) && empty(eventHubAuthorizationRuleId) && empty(eventHubName)) ? json('null') : diagnosticsLogs)
   }
   scope: workspace

@@ -1,43 +1,44 @@
-# NetworkSecurityGroups
+# NetworkSecurityGroups `[Microsoft.Network/networkSecurityGroups]`
 
 This template deploys a Network Security Groups (NSG) with optional security rules.
 
 ## Resource types
 
-|Resource Type|ApiVersion|
-|:--|:--|
-|`Microsoft.Resources/deployments`|2018-02-01|
-|`Microsoft.Network/networkSecurityGroups`|2021-02-01|
-|`Microsoft.Authorization/locks`|2016-09-01|
-|`Microsoft.Insights/diagnosticsettings`|2017-05-01-preview|
-|`Microsoft.Network/networkSecurityGroups/providers/roleAssignments`|2020-04-01-preview|
-|`Microsoft.Network/networkWatchers/flowLogs`|2021-02-01|
+| Resource Type | Api Version |
+| :-- | :-- |
+| `Microsoft.Authorization/locks` | 2016-09-01 |
+| `Microsoft.Insights/diagnosticSettings` | 2017-05-01-preview |
+| `Microsoft.Network/networkSecurityGroups` | 2021-02-01 |
+| `Microsoft.Network/networkSecurityGroups/providers/roleAssignments` | 2021-04-01-preview |
+| `Microsoft.Network/networkWatchers/flowLogs` | 2021-02-01 |
 
 ## Parameters
 
-| Parameter Name | Type | Description | DefaultValue | Possible values |
+| Parameter Name | Type | Default Value | Possible Values | Description |
 | :-- | :-- | :-- | :-- | :-- |
-| `cuaId` | string | Optional. Customer Usage Attribution id (GUID). This GUID must be previously registered |  |  |
-| `diagnosticLogsRetentionInDays` | int | Optional. Specifies the number of days that logs will be kept for; a value of 0 will retain data indefinitely. | 365 |  |
-| `diagnosticStorageAccountId` | string | Optional. Resource identifier of the Diagnostic Storage Account. |  |  |
-| `eventHubAuthorizationRuleId` | string | Optional. Resource ID of the event hub authorization rule for the Event Hubs namespace in which the event hub should be created or streamed to. |  |  |
-| `eventHubName` | string | Optional. Name of the event hub within the namespace to which logs are streamed. Without this, an event hub is created for each log category. |  |  |
-| `location` | string | Optional. Location for all resources. | [resourceGroup().location] |  |
-| `lock` | string | Optional. Specify the type of lock. | 'NotSpecified' | 'CanNotDelete', 'NotSpecified', 'ReadOnly' |
-| `networkSecurityGroupName` | string | Required. Name of the Network Security Group. |  |  |
-| `networkSecurityGroupSecurityRules` | array | Optional. Array of Security Rules to deploy to the Network Security Group. When not provided, an NSG including only the built-in roles will be deployed. | System.Object[] |  |
-| `roleAssignments` | array | Optional. Array of role assignment objects that contain the 'roleDefinitionIdOrName' and 'principalId' to define RBAC role assignments on this resource. In the roleDefinitionIdOrName attribute, you can provide either the display name of the role definition, or its fully qualified ID in the following format: '/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11' | System.Object[] |  |
-| `tags` | object | Optional. Tags of the NSG resource. |  |  |
-| `workspaceId` | string | Optional. Resource identifier of Log Analytics. |  |  |
-| `flowAnalyticsEnabled`| bool | Optional. Enables/disables flow analytics. If Flow Analytics was previously enabled, workspaceResourceID is mandatory (even when disabling it) | false |  |
-| `flowLogEnabled` | bool | Optional. If the flow log should be enabled | false |  |
-| `flowLogIntervalInMinutes` | int | Optional. The interval in minutes which would decide how frequently TA service should do flow analytics | 60 | 10,60  |
-| `flowLogName` | string | Optional. Name of the NSG flow log. If empty, no flow log will be deployed. |  |  |
-| `flowLogworkspaceId` | string | Optional. Resource identifier of Log Analytics for the flow logs. |  |  |
-| `logFormatVersion` | int | Optional. The flow log format version | 2 |  |
-| `networkWatcherName`| string | Optional. Name of the network watcher resource. Must be in the resource group where the Flow log will be created and same region as the NSG |  |  |
-| `retentionEnabled`| bool | Optional. If the flow log retention should be enabled | true |  |
-| `networkwatcherResourceGroup`| string | Required. Resource Group Name of the network watcher in whcih the NSG flow log would be created. | NetworkWatcherRG |  |
+| `cuaId` | string |  |  | Optional. Customer Usage Attribution id (GUID). This GUID must be previously registered |
+| `diagnosticLogsRetentionInDays` | int | `365` |  | Optional. Specifies the number of days that logs will be kept for; a value of 0 will retain data indefinitely. |
+| `diagnosticStorageAccountId` | string |  |  | Optional. Resource identifier of the Diagnostic Storage Account. |
+| `eventHubAuthorizationRuleId` | string |  |  | Optional. Resource ID of the event hub authorization rule for the Event Hubs namespace in which the event hub should be created or streamed to. |
+| `eventHubName` | string |  |  | Optional. Name of the event hub within the namespace to which logs are streamed. Without this, an event hub is created for each log category. |
+| `flowAnalyticsEnabled` | bool |  |  | Optional. Enables/disables flow analytics. If Flow Analytics was previously enabled, workspaceResourceID is mandatory (even when disabling it) |
+| `flowLogEnabled` | bool |  |  | Optional. If the flow log should be enabled |
+| `flowLogIntervalInMinutes` | int | `60` | `[10, 60]` | Optional. The interval in minutes which would decide how frequently TA service should do flow analytics. |
+| `flowLogName` | string |  |  | Optional. Name of the NSG flow log. If empty, no flow log will be deployed. |
+| `flowLogworkspaceId` | string |  |  | Optional. Resource identifier of Log Analytics for the flow logs. |
+| `location` | string | `[resourceGroup().location]` |  | Optional. Location for all resources. |
+| `lock` | string | `NotSpecified` | `[CanNotDelete, NotSpecified, ReadOnly]` | Optional. Specify the type of lock. |
+| `logFormatVersion` | int | `2` | `[1, 2]` | Optional. The flow log format version |
+| `logsToEnable` | array | `[NetworkSecurityGroupEvent, NetworkSecurityGroupRuleCounter]` | `[NetworkSecurityGroupEvent, NetworkSecurityGroupRuleCounter]` | Optional. The name of logs that will be streamed. |
+| `metricsToEnable` | array | `[AllMetrics]` | `[AllMetrics]` | Optional. The name of metrics that will be streamed. |
+| `networkSecurityGroupName` | string |  |  | Required. Name of the Network Security Group. |
+| `networkSecurityGroupSecurityRules` | array | `[]` |  | Optional. Array of Security Rules to deploy to the Network Security Group. When not provided, an NSG including only the built-in roles will be deployed. |
+| `networkWatcherName` | string |  |  | Optional. Name of the network watcher resource. Must be in the resource group where the Flow log will be created and same region as the NSG |
+| `networkwatcherResourceGroup` | string | `NetworkWatcherRG` |  | Required. Resource Group Name of the network watcher in whcih the NSG flow log would be created. |
+| `retentionEnabled` | bool | `True` |  | Optional. If the flow log retention should be enabled |
+| `roleAssignments` | array | `[]` |  | Optional. Array of role assignment objects that contain the 'roleDefinitionIdOrName' and 'principalId' to define RBAC role assignments on this resource. In the roleDefinitionIdOrName attribute, you can provide either the display name of the role definition, or its fully qualified ID in the following format: '/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11' |
+| `tags` | object | `{object}` |  | Optional. Tags of the NSG resource. |
+| `workspaceId` | string |  |  | Optional. Resource identifier of Log Analytics. |
 
 ### Parameter Usage: `networkSecurityGroupSecurityRules`
 
@@ -167,26 +168,17 @@ Tag names and tag values can be provided as needed. A tag can be left without a 
 
 ## Outputs
 
-| Output Name | Type | Description |
-| :-- | :-- | :-- |
-| `networkSecurityGroupsName` | string | The Name of the Network Security Group deployed. |
-| `networkSecurityGroupsResourceGroup` | string | The name of the Resource Group the Network Security Groups were created in. |
-| `networkSecurityGroupsResourceId` | string | The Resource Ids of the Network Security Group deployed. |
-| `flowLogName` | string | The Name of the FlowLog deployed |
-| `flowLogResourceId` | string | The Resource Ids of the Network Security Group deployed. |
+| Output Name | Type |
+| :-- | :-- |
+| `flowLogName` | string |
+| `flowLogResourceId` | string |
+| `networkSecurityGroupsName` | string |
+| `networkSecurityGroupsResourceGroup` | string |
+| `networkSecurityGroupsResourceId` | string |
 
-## Considerations
+## Template references
 
-When specifying the Security Rules for the Network Security Group (NSG) with the `networkSecurityGroupSecurityRules` parameter, pass in the Security Rules as a JSON Array in the same format as would be used for the `securityRules` property of the `Microsoft.Network/networkSecurityGroups` resource provider in an ARM Template.
-
-If Flow Logs traffic analytic has ever been enabled for the considered Network Security Group, even when disabling it WorkspaceResourceId must be specified targeting an existing Log Analytics workspace.<br />
-If no Log Analytics Workspace exists or you don't want it to remain stored in the Flow Log configuration, delete the Flow Log resource.
-
-## Additional resources
-
-- [Azure Network Security Groups](https://docs.microsoft.com/en-us/azure/virtual-network/security-overview)
-- [Microsoft.Network networkSecurityGroups template reference](https://docs.microsoft.com/en-us/azure/templates/microsoft.network/2021-02-01/networksecuritygroups)
-- [Microsoft.Network networkSecurityGroups/securityRules template reference](https://docs.microsoft.com/en-us/azure/templates/microsoft.network/2021-02-01/networksecuritygroups/securityrules)
-- [Azure Flow Logs](https://docs.microsoft.com/en-us/azure/network-watcher/network-watcher-nsg-flow-logging-overview)
-- [Microsoft.Network networkWatchers/flowLogs template reference](https://docs.microsoft.com/en-us/azure/templates/microsoft.network/2021-02-01/networkwatchers/flowlogs)
-- [Use tags to organize your Azure resources](https://docs.microsoft.com/en-us/azure/azure-resource-manager/resource-group-using-tags)
+- [Locks](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2016-09-01/locks)
+- [Diagnosticsettings](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Insights/2017-05-01-preview/diagnosticSettings)
+- [Networksecuritygroups](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Network/2021-02-01/networkSecurityGroups)
+- [Networkwatchers/Flowlogs](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Network/2021-02-01/networkWatchers/flowLogs)
