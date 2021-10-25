@@ -1,4 +1,4 @@
-name: '.Utility: Dependencies'
+name: '.Platform: Dependencies'
 
 on:
   workflow_dispatch:
@@ -8,7 +8,7 @@ on:
   #     - main
   #   paths:
   #     - '.github/actions/templates/**'
-  #     - '.github/workflows/utility.dependencies.yml'
+  #     - '.github/workflows/platform.dependencies.yml'
   #     - 'dependencies/**'
 
 env:
@@ -29,11 +29,7 @@ jobs:
       fail-fast: false
       matrix:
         parameterFilePaths:
-          [
-            'artifacts.parameters.json',
-            'dependencies.parameters.json',
-            'validation.parameters.json',
-          ]
+          ['artifacts.parameters.json', 'validation.parameters.json']
     steps:
       - name: 'Checkout'
         uses: actions/checkout@v2
