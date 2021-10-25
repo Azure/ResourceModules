@@ -52,7 +52,7 @@ jobs:
 
   job_deploy_msi:
     runs-on: ubuntu-20.04
-    name: 'Deploy resource group'
+    name: 'Deploy user assigned identity'
     env:
       moduleName: userAssignedIdentities
       namespace: 'Microsoft.ManagedIdentity\userAssignedIdentities'
