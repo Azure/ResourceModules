@@ -29,6 +29,7 @@ They can be deployed in different configurations just by changing the input para
   1. Resource and sub-resource level **RBAC** (e.g. providing data contributor access on a storage account; granting file share/blob container level access in a storage account)
   1. **Tags** (as objects)
   1. **Locks**
+  1. **Private Endpoints** (if supported)
 
 ## File & folder structure
 
