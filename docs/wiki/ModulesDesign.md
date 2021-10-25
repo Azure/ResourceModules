@@ -74,10 +74,9 @@ Microsoft.Web
 
 ### Structure
 
-Modules in the repository are structured via the module's main resource provider (e.g. `Microsoft.Web/serverfarms`) where each section corresponds to its place in the hierarchy. However, for cases that do not fit into this schema we provide the following guidance:
+Modules in the repository are structured via the module's main resource provider (e.g., `Microsoft.Web`) and resource type (e.g., `serverfarms`) where each section of the path corresponds to its place in the hierarchy. However, for cases that do not fit into this schema we provide the following guidance:
 
 - **Child-Resources**<p>
-  > Pre-MVP
 
   Resources like `Microsoft.Sql/servers` may have dedicated modules for child-resources such as `Microsoft.Sql/servers/databases`. In these cases we recommend to create a childfolder with the 'parent folder name and suffix `"Resources"`' on the same level as the parent (e.g. `serversResources`) and place the child-resource module inside this folder. In the given example we would have the following folder structure:
   ```
