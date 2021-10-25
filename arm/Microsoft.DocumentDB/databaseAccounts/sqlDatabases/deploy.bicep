@@ -29,6 +29,19 @@ resource sqlDatabase 'Microsoft.DocumentDB/databaseAccounts/sqlDatabases@2021-06
   }
 }
 
+resource symbolicname 'Microsoft.DocumentDB/databaseAccounts/sqlDatabases/throughputSettings@2021-06-15' = {
+  name: '${sqlDatabase.name}/default'
+  location: location
+  properties: {
+    resource: {
+      autoscaleSettings: {
+        maxThroughput: 4000
+      }
+      throughput: 400
+    }
+  }
+}
+
 @description('The name of the sql database.')
 output sqlDatabaseName string = sqlDatabase.name
 

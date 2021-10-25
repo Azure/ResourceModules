@@ -44,7 +44,6 @@ This module deploys a Documentdb database account and its child resources.
     "value": [
       {
         "failoverPriority": 1,
-        "isZoneRedundant": true,
         "locationName": "East US"
       }
     ]

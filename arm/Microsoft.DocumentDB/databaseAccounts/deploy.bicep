@@ -121,6 +121,12 @@ var identity = {
   userAssignedIdentities: (empty(userAssignedIdentities) ? json('null') : userAssignedIdentities)
 }
 
+var locations_var = [for location in locations: {
+  failoverPriority: location.failoverPriority
+  isZoneRedundant: false
+  locationName: location.locationName
+}]
+
 var builtInRoleNames = {
   'Owner': subscriptionResourceId('Microsoft.Authorization/roleDefinitions', '8e3af657-a8ff-443c-a75c-2fe8c4bcb635')
   'Contributor': subscriptionResourceId('Microsoft.Authorization/roleDefinitions', 'b24988ac-6180-42a0-ab88-20f7382dd24c')
@@ -151,9 +157,10 @@ resource databaseAccount 'Microsoft.DocumentDB/databaseAccounts@2021-06-15' = {
   location: location
   tags: tags
   identity: identity
+  kind: 'GlobalDocumentDB'
   properties: {
     databaseAccountOfferType: databaseAccountOfferType
-    locations: locations
+    locations: locations_var
   }
 }
 
