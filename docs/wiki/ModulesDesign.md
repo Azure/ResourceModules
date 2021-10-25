@@ -22,14 +22,16 @@ The modules are multi-purpose, therefore contain a lot of dynamic expressions (f
 They can be deployed in different configurations just by changing the input parameters. They are perceived by the **user** as black boxes, where they don’t have to worry about the internal complexity of the code, as they only interact with them by their parameters.
 
 ## General guidelines
-- All modules & child-templates, excluding those in the 'constructs' folder should be designed in the way that they can deploy one instance of the targeted resource and optionally n-amount of child-resources if available. In the example of the storage account module that means the module should be able to deploy **one** storage account but for example **n-amount** of containers, file shares and so on. However, the child-template for for example the container should again be designed to only deploy one container.
-- Any logic that is build on top (for example the name generation and corresponding deployment-loop for the VM-module) should be implemented in the 'constructs' folder, referencing back to the original template.
+- All resource modules in the 'arm' folder should not allow deployment loops on the top level resource but may optionally allow deployment loops on their child-resources.
+  > **Example:** The storage account module allows the deployment of a single storage account with, optionally, multiple blob containers, multiple file shares, multiple queues and/or multiple tables.
+- The 'constructs' folder contains examples of deployment logic built on top of resource modules contained in the 'arm' folder, allowing for example deployment loops on top level resources.
+  > **Example:** The VirtualNetworkPeering construct leverages the VirtualNetworkPeering module to deploy multiple virtual network peerings at once
 - Where the resource type in question supports it, the module should have support for:
   1. **Diagnostic logs** and **metrics** (you can have them sent to any combination of storage account, log analytics and event hub)
-  1. Resource and sub-resource level **RBAC** (e.g. providing data contributor access on a storage account; granting file share/blob container level access in a storage account)
-  1. **Tags** (as objects)
-  1. **Locks**
-  1. **Private Endpoints** (if supported)
+  2. Resource and sub-resource level **RBAC** (e.g. providing data contributor access on a storage account; granting file share/blob container level access in a storage account)
+  3. **Tags** (as objects)
+  4. **Locks**
+  5. **Private Endpoints** (if supported)
 
 ## File & folder structure
 
