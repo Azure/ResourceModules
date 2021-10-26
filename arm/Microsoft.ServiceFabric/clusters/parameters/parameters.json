@@ -85,7 +85,7 @@
         //     }]
         // },
         "managementEndpoint": {
-            "value": "https://sxx-az-sfc-weu-x-050.eastus.cloudapp.azure.com:19080" // Mandatory
+            "value": "https://sxx-az-sfc-weu-x-001.eastus.cloudapp.azure.com:19080" // Mandatory
         },
         "nodeTypes": { // The list of node types in the cluster.
             "value": [{
