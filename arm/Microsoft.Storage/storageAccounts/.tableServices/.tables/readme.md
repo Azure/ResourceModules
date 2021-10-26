@@ -12,8 +12,8 @@ This module deploys a storage account table
 
 | Parameter Name | Type | Default Value | Possible Values | Description |
 | :-- | :-- | :-- | :-- | :-- |
+| `name` | string |  |  | Required. Name of the table. |
 | `storageAccountName` | string |  |  | Required. Name of the Storage Account. |
-| `tableName` | string |  |  | Required. Name of the table. |
 
 ## Outputs
 
