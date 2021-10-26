@@ -112,14 +112,14 @@ module eventHub_rbac './.bicep/nested_rbac.bicep' = [for (roleAssignment, index)
   }
 }]
 
-// @description('The Name of the Event Hub.')
+@description('The Name of the Event Hub.')
 output eventhubName string = eventHub.name
 
-// @description('The Resource ID of the Event Hub.')
+@description('The Resource ID of the Event Hub.')
 output eventHubId string = eventHub.id
 
-// @description('The Resource Group Name of the Event Hub.')
+@description('The Resource Group Name of the Event Hub.')
 output eventHubResourceGroup string = resourceGroup().name
 
-// @description('The AuthRuleResourceId of the Event Hub.')
+@description('The AuthRuleResourceId of the Event Hub.')
 output authRuleResourceId string = resourceId('Microsoft.EventHub/namespaces/authorizationRules', namespaceName, defaultSASKeyName)
