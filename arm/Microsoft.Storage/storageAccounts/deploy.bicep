@@ -276,9 +276,6 @@ module storageAccount_privateEndpoints './.bicep/nested_privateEndpoint.bicep' =
     privateEndpointObj: endpoint
     tags: tags
   }
-  dependsOn: [
-    storageAccount
-  ]
 }]
 
 // Containers
@@ -286,10 +283,10 @@ module storageAccount_blobService '.blobServices/deploy.bicep' = if (!empty(blob
   name: '${uniqueString(deployment().name, location)}-Storage-BlobServices'
   params: {
     storageAccountName: storageAccount.name
-    blobContainers: contains(blobServices, 'blobContainers') ? blobServices.blobContainers : null
-    automaticSnapshotPolicyEnabled: contains(blobServices, 'automaticSnapshotPolicyEnabled') ? blobServices.automaticSnapshotPolicyEnabled : null
-    deleteRetentionPolicy: contains(blobServices, 'deleteRetentionPolicy') ? blobServices.deleteRetentionPolicy : null
-    deleteRetentionPolicyDays: contains(blobServices, 'deleteRetentionPolicyDays') ? blobServices.deleteRetentionPolicyDays : null
+    blobContainers: contains(blobServices, 'blobContainers') ? blobServices.blobContainers : []
+    automaticSnapshotPolicyEnabled: contains(blobServices, 'automaticSnapshotPolicyEnabled') ? blobServices.automaticSnapshotPolicyEnabled : false
+    deleteRetentionPolicy: contains(blobServices, 'deleteRetentionPolicy') ? blobServices.deleteRetentionPolicy : true
+    deleteRetentionPolicyDays: contains(blobServices, 'deleteRetentionPolicyDays') ? blobServices.deleteRetentionPolicyDays : 7
   }
 }
 
@@ -298,10 +295,13 @@ module storageAccount_fileServices '.fileServices/deploy.bicep' = if (!empty(fil
   name: '${uniqueString(deployment().name, location)}-Storage-FileServices'
   params: {
     storageAccountName: storageAccount.name
-    cors: contains(fileServices, 'cors') ? fileServices.cors : null
-    protocolSettings: contains(fileServices, 'protocolSettings') ? fileServices.protocolSettings : null
-    shareDeleteRetentionPolicy: contains(fileServices, 'shareDeleteRetentionPolicy') ? fileServices.shareDeleteRetentionPolicy : null
-    fileShares: contains(fileServices, 'fileShares') ? fileServices.fileShares : null
+    cors: contains(fileServices, 'cors') ? fileServices.cors : {}
+    protocolSettings: contains(fileServices, 'protocolSettings') ? fileServices.protocolSettings : {}
+    shareDeleteRetentionPolicy: contains(fileServices, 'shareDeleteRetentionPolicy') ? fileServices.shareDeleteRetentionPolicy : {
+      enabled: true
+      days: 7
+    }
+    fileShares: contains(fileServices, 'fileShares') ? fileServices.fileShares : []
   }
 }
 
@@ -310,8 +310,8 @@ module storageAccount_queueServices '.queueServices/deploy.bicep' = if (!empty(q
   name: '${uniqueString(deployment().name, location)}-Storage-QueueServices'
   params: {
     storageAccountName: storageAccount.name
-    cors: contains(queueServices, 'cors') ? queueServices.cors : null
-    queues: contains(queueServices, 'queues') ? queueServices.queues : null
+    cors: contains(queueServices, 'cors') ? queueServices.cors : {}
+    queues: contains(queueServices, 'queues') ? queueServices.queues : []
   }
 }
 
@@ -320,8 +320,8 @@ module storageAccount_tableServices '.tableServices/deploy.bicep' = if (!empty(t
   name: '${uniqueString(deployment().name, location)}-Storage-TableServices'
   params: {
     storageAccountName: storageAccount.name
-    cors: contains(tableServices, 'cors') ? tableServices.cors : null
-    tables: contains(tableServices, 'tables') ? tableServices.tables : null
+    cors: contains(tableServices, 'cors') ? tableServices.cors : {}
+    tables: contains(tableServices, 'tables') ? tableServices.tables : []
   }
 }
 

@@ -3,7 +3,7 @@
 param storageAccountName string = ''
 
 @description('The name of the storage container to deploy')
-param containerName string
+param name string
 
 @allowed([
   'Container'
@@ -26,7 +26,7 @@ param allowProtectedAppendWrites bool = true
 param roleAssignments array = []
 
 resource container 'Microsoft.Storage/storageAccounts/blobServices/containers@2019-06-01' = {
-  name: '${storageAccountName}/default/${containerName}'
+  name: '${storageAccountName}/default/${name}'
   properties: {
     publicAccess: publicAccess
   }
@@ -35,7 +35,7 @@ resource container 'Microsoft.Storage/storageAccounts/blobServices/containers@20
 module immutabilityPolicy '.immutabilityPolicies/deploy.bicep' = if (enableWORM) {
   name: 'default'
   params: {
-    containerName: containerName
+    containerName: name
     immutabilityPeriodSinceCreationInDays: immutabilityPeriodSinceCreationInDays
     allowProtectedAppendWrites: allowProtectedAppendWrites
   }

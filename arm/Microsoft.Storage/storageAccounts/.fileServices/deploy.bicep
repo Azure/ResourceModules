@@ -30,7 +30,7 @@ module fileService_fileShares '.shares/deploy.bicep' = [for (fileShare, index) i
   name: '${uniqueString(deployment().name)}-Storage-File-${(empty(fileShare) ? 'dummy' : index)}'
   params: {
     storageAccountName: storageAccountName
-    fileShareName: fileShare.fileShareName
+    name: fileShare.name
     sharedQuota: fileShare.sharedQuota
     roleAssignments: fileShare.roleAssignments
   }

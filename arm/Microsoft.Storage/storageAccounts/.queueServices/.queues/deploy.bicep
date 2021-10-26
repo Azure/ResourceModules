@@ -3,7 +3,7 @@
 param storageAccountName string = ''
 
 @description('The name of the storage queue to deploy')
-param queueName string
+param name string
 
 @description('A name-value pair that represents queue metadata.')
 param metadata object = {}
@@ -12,7 +12,7 @@ param metadata object = {}
 param roleAssignments array = []
 
 resource queue 'Microsoft.Storage/storageAccounts/queueServices/queues@2019-06-01' = {
-  name: '${storageAccountName}/default/${queueName}'
+  name: '${storageAccountName}/default/${name}'
   properties: {
     metadata: metadata
   }

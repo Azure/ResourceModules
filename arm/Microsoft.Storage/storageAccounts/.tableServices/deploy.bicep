@@ -19,7 +19,7 @@ module tableService_tables '.tables/deploy.bicep' = [for (table, index) in table
   name: '${uniqueString(deployment().name)}-Storage-File-${(empty(table) ? 'dummy' : index)}'
   params: {
     storageAccountName: storageAccountName
-    tableName: table.tableName
+    name: table.name
   }
 }]
 

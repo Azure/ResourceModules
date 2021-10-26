@@ -19,7 +19,7 @@ module queueService_queues '.queues/deploy.bicep' = [for (queue, index) in queue
   name: '${uniqueString(deployment().name)}-Storage-File-${(empty(queue) ? 'dummy' : index)}'
   params: {
     storageAccountName: storageAccountName
-    queueName: queue.queueName
+    name: queue.name
     metadata: queue.metadata
     roleAssignments: queue.roleAssignments
   }

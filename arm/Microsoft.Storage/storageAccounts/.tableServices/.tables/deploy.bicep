@@ -3,10 +3,10 @@
 param storageAccountName string = ''
 
 @description('Required. Name of the table.')
-param tableName string = ''
+param name string = ''
 
 resource table 'Microsoft.Storage/storageAccounts/tableServices/tables@2019-06-01' = {
-  name: '${storageAccountName}/default/${tableName}'
+  name: '${storageAccountName}/default/${name}'
 }
 
 @description('The name of the deployed file share service')

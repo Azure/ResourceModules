@@ -3,7 +3,7 @@
 param storageAccountName string = ''
 
 @description('The name of the file share to create')
-param fileShareName string
+param name string
 
 @description('The maximum size of the share, in gigabytes. Must be greater than 0, and less than or equal to 5TB (5120). For Large File Shares, the maximum size is 102400.')
 param sharedQuota int
@@ -12,7 +12,7 @@ param sharedQuota int
 param roleAssignments array = []
 
 resource fileShare 'Microsoft.Storage/storageAccounts/fileServices/shares@2019-06-01' = {
-  name: '${storageAccountName}/default/${fileShareName}'
+  name: '${storageAccountName}/default/${name}'
   properties: {
     shareQuota: sharedQuota
   }
