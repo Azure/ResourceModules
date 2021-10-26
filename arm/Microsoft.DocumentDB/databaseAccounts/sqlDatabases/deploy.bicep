@@ -29,7 +29,7 @@ resource sqlDatabase 'Microsoft.DocumentDB/databaseAccounts/sqlDatabases@2021-06
   }
 }
 
-resource symbolicname 'Microsoft.DocumentDB/databaseAccounts/sqlDatabases/throughputSettings@2021-06-15' = {
+resource sqlDatabase_throughputSettings 'Microsoft.DocumentDB/databaseAccounts/sqlDatabases/throughputSettings@2021-06-15' = {
   name: '${sqlDatabase.name}/default'
   location: location
   properties: {
