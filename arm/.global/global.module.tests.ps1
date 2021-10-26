@@ -729,7 +729,7 @@ Describe 'Deployment template tests' -Tag Template {
                     }
                 }
 
-                $SubIdVisible | Should -Be $null -Because ('Parameter file should not contain original subscription Id value, but a token value "`#[<subscriptionId>]`#"')
+                $SubIdVisible | Should -Be $null -Because ('Parameter file should not contain original subscription Id value, but a token value "<<subscriptionId>>"')
             }
         }
     }

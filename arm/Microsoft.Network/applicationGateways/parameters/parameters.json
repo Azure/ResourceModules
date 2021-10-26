@@ -21,10 +21,10 @@
             "value": "10.0.8.6"
         },
         "frontendPublicIpResourceId": {
-            "value": "/subscriptions/8629be3b-96bc-482d-a04b-ffff597c65a2/resourceGroups/validation-rg/providers/Microsoft.Network/publicIPAddresses/adp-sxx-az-pip-weu-x-apgw"
+            "value": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/publicIPAddresses/adp-sxx-az-pip-weu-x-apgw"
         },
         "managedIdentityResourceId": {
-            "value": "/subscriptions/8629be3b-96bc-482d-a04b-ffff597c65a2/resourceGroups/validation-rg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/adp-sxx-az-msi-weu-x-001"
+            "value": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/adp-sxx-az-msi-weu-x-001"
         },
         "sslCertificateKeyVaultSecretId": {
             "value": "https://sxx-az-kv-weu-x-004.vault.azure.net/secrets/applicationGatewaySslCertificate/b664f0004c734e838c42091705b001b6"
