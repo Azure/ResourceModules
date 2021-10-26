@@ -19,7 +19,6 @@ This module can be used to deploy a blob service into a storage account.
 | `blobContainers` | array | `[]` |  | Optional. Blob containers to create. |
 | `deleteRetentionPolicy` | bool | `True` |  | Optional. Indicates whether DeleteRetentionPolicy is enabled for the Blob service. |
 | `deleteRetentionPolicyDays` | int | `7` |  | Optional. Indicates the number of days that the deleted blob should be retained. The minimum specified value can be 1 and the maximum value can be 365. |
-| `location` | string | `[resourceGroup().location]` |  | Optional. Location for all resources. |
 | `storageAccountName` | string |  |  | Required. Name of the Storage Account. |
 
 ### Parameter Usage: `blobContainers`

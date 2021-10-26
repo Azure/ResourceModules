@@ -1,6 +1,6 @@
 @maxLength(24)
 @description('Required. Name of the Storage Account.')
-param storageAccountName string = ''
+param storageAccountName string
 
 @description('Optional. Indicates whether DeleteRetentionPolicy is enabled for the Blob service.')
 param deleteRetentionPolicy bool = true
@@ -14,9 +14,6 @@ param automaticSnapshotPolicyEnabled bool = false
 @description('Optional. Blob containers to create.')
 param blobContainers array = []
 
-@description('Optional. Location for all resources.')
-param location string = resourceGroup().location
-
 resource blobServices 'Microsoft.Storage/storageAccounts/blobServices@2021-08-01' = {
   name: '${storageAccountName}/default'
   properties: {
@@ -29,7 +26,7 @@ resource blobServices 'Microsoft.Storage/storageAccounts/blobServices@2021-08-01
 }
 
 module blobServices_container '.containers/deploy.bicep' = [for (blobContainer, index) in blobContainers: {
-  name: '${uniqueString(deployment().name, location)}-Storage-Container-${index}'
+  name: '${uniqueString(deployment().name)}-Storage-Container-${index}'
   params: {
     containerName: blobContainer.containerName
     allowProtectedAppendWrites: blobContainer.allowProtectedAppendWrites

@@ -1,6 +1,6 @@
 @maxLength(24)
 @description('Required. Name of the Storage Account.')
-param storageAccountName string = ''
+param storageAccountName string
 
 @description('Sets the CORS rules. You can include up to five CorsRule elements in the request.')
 param cors object = {}

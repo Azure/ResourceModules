@@ -1,5 +1,5 @@
 @maxLength(24)
-@description('Required. Name of the Storage Account.')
+@description('Optional. Name of the Storage Account.')
 param storageAccountName string = ''
 
 @description('Optional. Location for all resources.')
@@ -286,11 +286,10 @@ module storageAccount_blobService '.blobServices/deploy.bicep' = if (!empty(blob
   name: '${uniqueString(deployment().name, location)}-Storage-BlobServices'
   params: {
     storageAccountName: storageAccount.name
-    location: location
-    blobContainers: blobServices.blobContainers
-    automaticSnapshotPolicyEnabled: blobServices.automaticSnapshotPolicyEnabled
-    deleteRetentionPolicy: blobServices.deleteRetentionPolicy
-    deleteRetentionPolicyDays: blobServices.deleteRetentionPolicyDays
+    blobContainers: contains(blobServices, 'blobContainers') ? blobServices.blobContainers : null
+    automaticSnapshotPolicyEnabled: contains(blobServices, 'automaticSnapshotPolicyEnabled') ? blobServices.automaticSnapshotPolicyEnabled : null
+    deleteRetentionPolicy: contains(blobServices, 'deleteRetentionPolicy') ? blobServices.deleteRetentionPolicy : null
+    deleteRetentionPolicyDays: contains(blobServices, 'deleteRetentionPolicyDays') ? blobServices.deleteRetentionPolicyDays : null
   }
 }
 
@@ -299,10 +298,10 @@ module storageAccount_fileServices '.fileServices/deploy.bicep' = if (!empty(fil
   name: '${uniqueString(deployment().name, location)}-Storage-FileServices'
   params: {
     storageAccountName: storageAccount.name
-    cors: fileServices.cors
-    protocolSettings: fileServices.protocolSettings
-    shareDeleteRetentionPolicy: fileServices.shareDeleteRetentionPolicy
-    fileShares: fileServices.fileShares
+    cors: contains(fileServices, 'cors') ? fileServices.cors : null
+    protocolSettings: contains(fileServices, 'protocolSettings') ? fileServices.protocolSettings : null
+    shareDeleteRetentionPolicy: contains(fileServices, 'shareDeleteRetentionPolicy') ? fileServices.shareDeleteRetentionPolicy : null
+    fileShares: contains(fileServices, 'fileShares') ? fileServices.fileShares : null
   }
 }
 
@@ -311,18 +310,18 @@ module storageAccount_queueServices '.queueServices/deploy.bicep' = if (!empty(q
   name: '${uniqueString(deployment().name, location)}-Storage-QueueServices'
   params: {
     storageAccountName: storageAccount.name
-    cors: queueServices.cors
-    queues: queueServices.queues
+    cors: contains(queueServices, 'cors') ? queueServices.cors : null
+    queues: contains(queueServices, 'queues') ? queueServices.queues : null
   }
 }
 
 // Table
-module storageAccount_tableServices '.tableServices/deploy.bicep' = if (!empty(queueServices)) {
+module storageAccount_tableServices '.tableServices/deploy.bicep' = if (!empty(tableServices)) {
   name: '${uniqueString(deployment().name, location)}-Storage-TableServices'
   params: {
     storageAccountName: storageAccount.name
-    cors: tableServices.cors
-    tables: tableServices.queues
+    cors: contains(tableServices, 'cors') ? tableServices.cors : null
+    tables: contains(tableServices, 'tables') ? tableServices.tables : null
   }
 }
 
@@ -330,5 +329,5 @@ output storageAccountResourceId string = storageAccount.id
 output storageAccountRegion string = storageAccount.location
 output storageAccountName string = storageAccount.name
 output storageAccountResourceGroup string = resourceGroup().name
-output storageAccountPrimaryBlobEndpoint string = (!contains(storageAccount_blobService, 'blobContainers')) ? '' : reference('Microsoft.Storage/storageAccounts/${storageAccount.name}', '2019-04-01').primaryEndpoints.blob )
+output storageAccountPrimaryBlobEndpoint string = (!contains(storageAccount_blobService, 'blobContainers')) ? '' : reference('Microsoft.Storage/storageAccounts/${storageAccount.name}', '2019-04-01').primaryEndpoints.blob
 output assignedIdentityID string = (contains(managedServiceIdentity, 'SystemAssigned') ? reference(storageAccount.id, '2019-06-01', 'full').identity.principalId : '')
