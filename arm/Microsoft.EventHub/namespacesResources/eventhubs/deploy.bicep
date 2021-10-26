@@ -78,11 +78,10 @@ resource eventHub 'Microsoft.EventHub/namespaces/eventhubs@2021-06-01-preview' =
   name: '${namespaceName}/${eventHubName}'
   tags: tags
   properties: eventHubConfiguration.properties
-  dependsOn: []
 }
 
 resource eventHub_lock 'Microsoft.Authorization/locks@2016-09-01' = if (lock != 'NotSpecified') {
-  name: '${eventHub.name}-${lock}-lock'
+  name: '${last(split(eventHub.name, '/'))}-${lock}-lock'
   properties: {
     level: lock
     notes: (lock == 'CanNotDelete') ? 'Cannot delete resource or child resources.' : 'Cannot modify the resource or child resources.'
