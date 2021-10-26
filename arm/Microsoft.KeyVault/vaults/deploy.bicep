@@ -151,8 +151,8 @@ var maxNameLength = 24
 var uniqueKeyVaultNameUntrim = uniqueString('Key Vault${baseTime}')
 var uniqueKeyVaultName = ((length(uniqueKeyVaultNameUntrim) > maxNameLength) ? substring(uniqueKeyVaultNameUntrim, 0, maxNameLength) : uniqueKeyVaultNameUntrim)
 var keyVaultName_var = (empty(keyVaultName) ? uniqueKeyVaultName : keyVaultName)
-var virtualNetworkRules = [for index in range(0, (empty(networkAcls) ? 0 : length(networkAcls.virtualNetworkRules))): {
-  id: '${vNetId}/subnets/${networkAcls.virtualNetworkRules[index].subnet}'
+var virtualNetworkRules = [for networkrule in ((contains(networkAcls, 'virtualNetworkRules')) ? networkAcls.virtualNetworkRules : []): {
+  id: '${vNetId}/subnets/${networkrule.subnet}'
 }]
 var networkAcls_var = {
   bypass: (empty(networkAcls) ? json('null') : networkAcls.bypass)
@@ -280,11 +280,11 @@ module keyVault_rbac './.bicep/nested_rbac.bicep' = [for (roleAssignment, index)
   }
 }]
 
-//@description('The Resource Id of the Key Vault.')
+@description('The Resource Id of the Key Vault.')
 output keyVaultResourceId string = keyVault.id
-//@description('The name of the Resource Group the Key Vault was created in.')
+@description('The name of the Resource Group the Key Vault was created in.')
 output keyVaultResourceGroup string = resourceGroup().name
-//@description('The Name of the Key Vault.')
+@description('The Name of the Key Vault.')
 output keyVaultName string = keyVault.name
-//@description('The URL of the Key Vault.')
+@description('The URL of the Key Vault.')
 output keyVaultUrl string = reference(keyVault.id, '2016-10-01').vaultUri
