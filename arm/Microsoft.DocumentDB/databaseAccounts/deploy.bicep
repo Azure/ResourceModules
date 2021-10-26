@@ -213,6 +213,7 @@ module mongodbDatabases_resource './mongodbDatabases/deploy.bicep' = [for mongod
     location: mongodbDatabase.location
     tags: tags
     databaseAccountName: databaseAccount.name
+    cuaId: cuaId
   }
 }]
 
