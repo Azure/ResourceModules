@@ -724,12 +724,12 @@ Describe 'Deployment template tests' -Tag Template {
             foreach ($parameterFileTestCase in $parameterFileTestCases) {
                 $parameterFileContent = Get-Content -Path $parameterFileTestCase.parameterFile_Path
                 if (($parameterFileContent | Select-String -Pattern '/subscriptions/' -Quiet) -or ($parameterFileContent | Select-String -Pattern '"subscriptionId"' -Quiet)) {
-                    if (!($parameterFileContent | Select-String -Pattern '[<subscriptionId>]')) {
+                    if (!($parameterFileContent | Select-String -Pattern "'`#[<subscriptionId>]`#'")) {
                         $SubIdVisible = $true
                     }
                 }
 
-                $SubIdVisible | Should -Be $null -Because ('Parameter file should not contain original subscription Id value, but a case sensitive token value [<subscriptionId>]')
+                $SubIdVisible | Should -Be $null -Because ('Parameter file should not contain original subscription Id value, but a token value "`#[<subscriptionId>]`#"')
             }
         }
     }

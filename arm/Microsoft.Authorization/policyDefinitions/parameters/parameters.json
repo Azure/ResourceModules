@@ -50,7 +50,7 @@
       }
     },
     "subscriptionId": {
-      "value": "[<subscriptionId>]"
+      "value": "'#[<subscriptionId>]#'"
     }
   }
 }
