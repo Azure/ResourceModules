@@ -1,6 +1,6 @@
 @maxLength(24)
 @description('Required. Name of the Storage Account.')
-param storageAccountName string = ''
+param storageAccountName string
 
 @description('The name of the file share to create')
 param name string
@@ -19,7 +19,7 @@ resource fileShare 'Microsoft.Storage/storageAccounts/fileServices/shares@2019-0
 }
 
 module fileShare_rbac './.bicep/nested_rbac.bicep' = [for (roleAssignment, index) in roleAssignments: {
-  name: '${deployment().name}-Rbac-${(empty(roleAssignments) ? 'dummy' : index)}'
+  name: '${deployment().name}-Rbac-${index}'
   params: {
     roleAssignmentObj: roleAssignment
     resourceName: fileShare.name

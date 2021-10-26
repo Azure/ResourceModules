@@ -1,6 +1,6 @@
 @maxLength(24)
 @description('Required. Name of the Storage Account.')
-param storageAccountName string = ''
+param storageAccountName string
 
 @description('The name of the storage queue to deploy')
 param name string
@@ -19,7 +19,7 @@ resource queue 'Microsoft.Storage/storageAccounts/queueServices/queues@2019-06-0
 }
 
 module queue_rbac './.bicep/nested_rbac.bicep' = [for (roleAssignment, index) in roleAssignments: {
-  name: '${deployment().name}-Rbac-${(empty(roleAssignments) ? 'dummy' : index)}'
+  name: '${deployment().name}-Rbac-${index}'
   params: {
     roleAssignmentObj: roleAssignment
     resourceName: queue.name

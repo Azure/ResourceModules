@@ -21,6 +21,9 @@ module tableService_tables '.tables/deploy.bicep' = [for (table, index) in table
     storageAccountName: storageAccountName
     name: table.name
   }
+  dependsOn: [
+    tableService
+  ]
 }]
 
 @description('The name of the deployed table service')

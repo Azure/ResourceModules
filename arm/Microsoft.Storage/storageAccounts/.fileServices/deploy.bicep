@@ -27,13 +27,16 @@ resource fileService 'Microsoft.Storage/storageAccounts/fileServices@2021-06-01'
 }
 
 module fileService_fileShares '.shares/deploy.bicep' = [for (fileShare, index) in fileShares: {
-  name: '${uniqueString(deployment().name)}-Storage-File-${(empty(fileShare) ? 'dummy' : index)}'
+  name: '${uniqueString(deployment().name)}-Storage-File-${index}'
   params: {
     storageAccountName: storageAccountName
     name: fileShare.name
     sharedQuota: contains(fileShare, 'sharedQuota') ? fileShare.sharedQuota : 5120
     roleAssignments: contains(fileShare, 'roleAssignments') ? fileShare.roleAssignments : []
   }
+  dependsOn: [
+    fileService
+  ]
 }]
 
 @description('The name of the deployed file share service')

@@ -25,15 +25,7 @@
                         "publicAccess": "Container",
                         "enableWORM": true,
                         "WORMRetention": 666,
-                        "allowProtectedAppendWrites": false,
-                        "roleAssignments": [
-                            {
-                                "roleDefinitionIdOrName": "Reader",
-                                "principalIds": [
-                                    "5545f7a0-51f4-46af-b3b4-baecf5176a56"
-                                ]
-                            }
-                        ]
+                        "allowProtectedAppendWrites": false
                     }
                 ]
             }
@@ -55,15 +47,7 @@
                     },
                     {
                         "name": "avdprofiles2",
-                        "shareQuota": "5120",
-                        "roleAssignments": [
-                            {
-                                "roleDefinitionIdOrName": "Reader",
-                                "principalIds": [
-                                    "5545f7a0-51f4-46af-b3b4-baecf5176a56"
-                                ]
-                            }
-                        ]
+                        "shareQuota": "5120"
                     }
                 ]
             }
@@ -93,15 +77,7 @@
                     },
                     {
                         "name": "queue2",
-                        "metadata": {},
-                        "roleAssignments": [
-                            {
-                                "roleDefinitionIdOrName": "Reader",
-                                "principalIds": [
-                                    "5545f7a0-51f4-46af-b3b4-baecf5176a56"
-                                ]
-                            }
-                        ]
+                        "metadata": {}
                     }
                 ]
             }

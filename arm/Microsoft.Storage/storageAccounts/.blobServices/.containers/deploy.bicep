@@ -30,14 +30,14 @@ module immutabilityPolicy '.immutabilityPolicies/deploy.bicep' = if (!empty(immu
   name: 'default'
   params: {
     storageAccountName: storageAccountName
-    containerName: name
+    containerName: container.name
     immutabilityPeriodSinceCreationInDays: contains(immutabilityPolicyProperties, 'immutabilityPeriodSinceCreationInDays') ? immutabilityPolicyProperties.immutabilityPeriodSinceCreationInDays : 365
     allowProtectedAppendWrites: contains(immutabilityPolicyProperties, 'allowProtectedAppendWrites') ? immutabilityPolicyProperties.allowProtectedAppendWrites : true
   }
 }
 
 module container_rbac './.bicep/nested_rbac.bicep' = [for (roleAssignment, index) in roleAssignments: {
-  name: '${deployment().name}-Rbac-${(empty(roleAssignments) ? 'dummy' : index)}'
+  name: '${deployment().name}-Rbac-${index}'
   params: {
     roleAssignmentObj: roleAssignment
     resourceName: container.name

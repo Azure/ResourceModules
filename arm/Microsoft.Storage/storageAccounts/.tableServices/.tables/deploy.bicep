@@ -1,9 +1,9 @@
 @maxLength(24)
 @description('Required. Name of the Storage Account.')
-param storageAccountName string = ''
+param storageAccountName string
 
 @description('Required. Name of the table.')
-param name string = ''
+param name string
 
 resource table 'Microsoft.Storage/storageAccounts/tableServices/tables@2019-06-01' = {
   name: '${storageAccountName}/default/${name}'

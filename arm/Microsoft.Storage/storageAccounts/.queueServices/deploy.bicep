@@ -16,13 +16,16 @@ resource queueService 'Microsoft.Storage/storageAccounts/queueServices@2021-04-0
 }
 
 module queueService_queues '.queues/deploy.bicep' = [for (queue, index) in queues: {
-  name: '${uniqueString(deployment().name)}-Storage-Queue-${(empty(queue) ? 'dummy' : index)}'
+  name: '${uniqueString(deployment().name)}-Storage-Queue-${index}'
   params: {
     storageAccountName: storageAccountName
     name: queue.name
     metadata: contains(queue, 'metadata') ? queue.metadata : {}
     roleAssignments: contains(queue, 'roleAssignments') ? queue.roleAssignments : []
   }
+  dependsOn: [
+    queueService
+  ]
 }]
 
 @description('The name of the deployed file share service')
