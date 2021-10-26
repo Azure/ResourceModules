@@ -32,7 +32,7 @@ resource container 'Microsoft.Storage/storageAccounts/blobServices/containers@20
   }
 }
 
-module immutabilityPolicy './immutabilityPolicies/deploy.bicep' = if (enableWORM) {
+module immutabilityPolicy '.immutabilityPolicies/deploy.bicep' = if (enableWORM) {
   name: 'default'
   params: {
     containerName: containerName

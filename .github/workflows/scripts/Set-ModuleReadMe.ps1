@@ -358,7 +358,7 @@ function Set-ModuleReadMe {
 
         # Build resource name
         $TextInfo = (Get-Culture).TextInfo
-        $serviceIdentifiers = (Split-Path $TemplateFilePath -Parent).Replace('\', '/').split('/arm/')[1].Replace('Microsoft.', '').Split('/') | ForEach-Object { $TextInfo.ToTitleCase($_) }
+        $serviceIdentifiers = (Split-Path $TemplateFilePath -Parent).Replace('\', '/').split('/arm/')[1].Replace('Microsoft.', '').Replace('/.', '/').Split('/') | ForEach-Object { $TextInfo.ToTitleCase($_) }
         $assumedResourceName = $serviceIdentifiers -join ''
 
         $initialContent = @(
@@ -385,7 +385,7 @@ function Set-ModuleReadMe {
     }
 
     # Update title
-    $fullResourcePath = (Split-Path $TemplateFilePath -Parent).Replace('\', '/').Split('arm/')[1]
+    $fullResourcePath = (Split-Path $TemplateFilePath -Parent).Replace('\', '/').Split('arm/')[1].Replace('/.', '/')
     if ($readMeFileContent[0] -notlike "*$fullResourcePath*") {
         $readMeFileContent[0] = '{0} `[{1}]`' -f $readMeFileContent[0], $fullResourcePath
     }

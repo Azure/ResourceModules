@@ -65,44 +65,20 @@ param networkAcls object = {}
 @description('Optional. Blob service and containers to deploy')
 param blobServices object = {}
 
-// @description('Optional. Blob containers to create.')
-// param blobContainers array = []
-
-// @description('Optional. Indicates whether DeleteRetentionPolicy is enabled for the Blob service.')
-// param blobServicesDeleteRetentionPolicy bool = true
-
-// @description('Optional. Indicates the number of days that the deleted blob should be retained. The minimum specified value can be 1 and the maximum value can be 365.')
-// param blobServicesDeleteRetentionPolicyDays int = 7
-
-// @description('Optional. Automatic Snapshot is enabled if set to true.')
-// param blobServicesAutomaticSnapshotPolicyEnabled bool = false
-
 @description('Optional. File service and shares to deploy')
 param fileServices object = {}
-
-// @description('Sets the CORS rules. You can include up to five CorsRule elements in the request.')
-// param fileServicesCors object = {}
-
-// @description('Protocol settings for file service')
-// param fileServicesProtocolSettings object = {}
-
-// @description('The service properties for soft delete.')
-// param fileServicesShareDeleteRetentionPolicy object = {
-//   enabled: true
-//   days: 7
-// }
-
-@description('Optional. Indicates whether public access is enabled for all blobs or containers in the storage account.')
-param allowBlobPublicAccess bool = true
 
 @description('Optional. File shares to create.')
 param fileShares array = []
 
-@description('Optional. Queues to create.')
-param queues array = []
+@description('Optional. Queue service and queues to create.')
+param queueServices object = {}
 
-@description('Optional. Tables to create.')
-param tables array = []
+@description('Optional. Table service and queues to create.')
+param tableServices object = {}
+
+@description('Optional. Indicates whether public access is enabled for all blobs or containers in the storage account.')
+param allowBlobPublicAccess bool = true
 
 @allowed([
   'TLS1_0'
@@ -309,7 +285,7 @@ module storageAccount_privateEndpoints './.bicep/nested_privateEndpoint.bicep' =
 }]
 
 // Containers
-module blobService 'blobServices/deploy.bicep' = if (!empty(blobServices)) {
+module storageAccount_blobService '.blobServices/deploy.bicep' = if (!empty(blobServices)) {
   name: '${uniqueString(deployment().name, location)}-Storage-BlobServices'
   params: {
     storageAccountName: storageAccount.name
@@ -322,7 +298,7 @@ module blobService 'blobServices/deploy.bicep' = if (!empty(blobServices)) {
 }
 
 // File Shares
-module storageAccount_nested_fileShare './fileServices/deploy.bicep' = if (!empty(fileServices)) {
+module storageAccount_fileServices '.fileServices/deploy.bicep' = if (!empty(fileServices)) {
   name: '${uniqueString(deployment().name, location)}-Storage-FileServices'
   params: {
     storageAccountName: storageAccount.name
@@ -334,19 +310,24 @@ module storageAccount_nested_fileShare './fileServices/deploy.bicep' = if (!empt
 }
 
 // Queue
-module storageAccount_nested_queue './.bicep/nested_queue.bicep' = [for (queue, index) in queues: if (!empty(queues)) {
-  name: '${uniqueString(deployment().name, location)}-Storage-Queue-${(empty(queues) ? 'dummy' : index)}'
+module storageAccount_queueServices '.queueServices/deploy.bicep' = if (!empty(queueServices)) {
+  name: '${uniqueString(deployment().name, location)}-Storage-QueueServices'
   params: {
-    queueObj: queue
-    builtInRoleNames: builtInRoleNames
     storageAccountName: storageAccount.name
+    cors: queueServices.cors
+    queues: queueServices.queues
   }
-}]
+}
 
 // Table
-resource storageAccount_nested_table 'Microsoft.Storage/storageAccounts/tableServices/tables@2019-06-01' = [for table in tables: if (!empty(tables)) {
-  name: (empty(tables) ? '${storageAccount.name}/default/dummy' : '${storageAccount.name}/default/${table}')
-}]
+module storageAccount_tableServices '.tableServices/deploy.bicep' = if (!empty(queueServices)) {
+  name: '${uniqueString(deployment().name, location)}-Storage-TableServices'
+  params: {
+    storageAccountName: storageAccount.name
+    cors: tableServices.cors
+    tables: tableServices.queues
+  }
+}
 
 output storageAccountResourceId string = storageAccount.id
 output storageAccountRegion string = storageAccount.location
