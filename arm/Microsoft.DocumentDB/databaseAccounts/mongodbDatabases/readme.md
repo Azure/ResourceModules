@@ -13,10 +13,13 @@
 
 | Parameter Name | Type | Default Value | Possible Values | Description |
 | :-- | :-- | :-- | :-- | :-- |
+| `cuaId` | string |  |  | Optional. Customer Usage Attribution id (GUID). This GUID must be previously registered |
 | `databaseAccountName` | string |  |  | Required. Name of the Cosmos DB database account. |
 | `location` | string | `[resourceGroup().location]` |  | Optional. Location for the resources. |
+| `maxThroughput` | int | `4000` |  | Required. Name of the mongodb database |
 | `mongodbDatabaseName` | string |  |  | Required. Name of the mongodb database |
 | `tags` | object | `{object}` |  | Optional. Tags of the resource. |
+| `throughput` | int | `400` |  | Optional. Name of the mongodb database |
 
 ## Outputs
 
