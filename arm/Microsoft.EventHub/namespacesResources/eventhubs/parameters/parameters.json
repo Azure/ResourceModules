@@ -3,10 +3,10 @@
   "contentVersion": "1.0.0.0",
   "parameters": {
     "namespaceName": {
-      "value": "adp-sxx-az-evhns-weu-x-002"
+      "value": "adp-sxx-az-evhns-weu-x-001"
     },
     "eventHubName": {
-      "value": "sxx-az-evh-weu-x-005"
+      "value": "sxx-az-evh-weu-x-001"
     },
     "authorizationRules": {
       "value": [
