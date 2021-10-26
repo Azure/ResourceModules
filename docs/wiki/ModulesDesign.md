@@ -28,7 +28,7 @@ They can be deployed in different configurations just by changing the input para
   > **Example:** The VirtualNetworkPeering construct leverages the VirtualNetworkPeering module to deploy multiple virtual network peerings at once
 - Where the resource type in question supports it, the module should have support for:
   1. **Diagnostic logs** and **metrics** (you can have them sent to any combination of storage account, log analytics and event hub)
-  2. Resource and child-resource level **RBAC** (e.g. providing data contributor access on a storage account; granting file share/blob container level access in a storage account)
+  2. Resource and child-resource level **RBAC** (for example providing data contributor access on a storage account; granting file share/blob container level access in a storage account)
   3. **Tags** (as objects)
   4. **Locks**
   5. **Private Endpoints** (if supported)
@@ -74,11 +74,11 @@ Microsoft.Web
 
 ### Structure
 
-Modules in the repository are structured via the module's main resource provider (e.g., `Microsoft.Web`) and resource type (e.g., `serverfarms`) where each section of the path corresponds to its place in the hierarchy. However, for cases that do not fit into this schema we provide the following guidance:
+Modules in the repository are structured via the module's main resource provider (for example `Microsoft.Web`) and resource type (for example `serverfarms`) where each section of the path corresponds to its place in the hierarchy. However, for cases that do not fit into this schema we provide the following guidance:
 
 - **Child-Resources**<p>
 
-  Resources like `Microsoft.Sql/servers` may have dedicated modules for child-resources such as `Microsoft.Sql/servers/databases`. In these cases we recommend to create a sub-folder with the 'parent folder name and suffix `"Resources"`' on the same level as the parent (e.g. `serversResources`) and place the child-resource module inside this folder. In the given example we would have the following folder structure:
+  Resources like `Microsoft.Sql/servers` may have dedicated modules for child-resources such as `Microsoft.Sql/servers/databases`. In these cases we recommend to create a sub-folder with the 'parent folder name and suffix `"Resources"`' on the same level as the parent (for example `serversResources`) and place the child-resource module inside this folder. In the given example we would have the following folder structure:
   ```
   Microsoft.Sql
   ├─ servers [module]
