@@ -266,6 +266,7 @@ module sqlDatabases_resource './sqlDatabases/deploy.bicep' = [for sqlDatabase in
     tags: tags
     databaseAccountName: databaseAccount.name
     cuaId: cuaId
+    containers: sqlDatabase.containers
   }
 }]
 

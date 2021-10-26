@@ -5,14 +5,8 @@
         "sqlDatabaseName": {
             "value": "sxx-az-sql-weu-x-003"
         },
-        "databaseAccountName": {
-            "value": "sxx-az-cdb-weu-x-001"
-        },
-        "containers": {
-            "value": [
-                "container-001",
-                "container-002"
-            ]
+        "containerName": {
+            "value": "container-001"
         }
     }
 }

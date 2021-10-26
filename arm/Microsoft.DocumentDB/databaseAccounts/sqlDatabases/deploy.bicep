@@ -4,7 +4,10 @@ param databaseAccountName string
 @description('Required. Name of the SQL Database ')
 param sqlDatabaseName string
 
-@description('Optional. Name of the mongodb database')
+@description('Optional. Array of containers to deploy in the SQL database.')
+param containers array = []
+
+@description('Optional. Request Units per second')
 param throughput int = 400
 
 @description('Optional. Tags of the SQL Database resource.')
@@ -25,11 +28,19 @@ resource sqlDatabase 'Microsoft.DocumentDB/databaseAccounts/sqlDatabases@2021-06
     resource: {
       id: sqlDatabaseName
     }
-    options:{
+    options: {
       throughput: throughput
     }
   }
 }
+
+module container 'containers/deploy.bicep' = [for container in containers: {
+  name: '${uniqueString(deployment().name)}-sqldb-${container.name}'
+  params: {
+    sqlDatabaseName: sqlDatabase.name
+    containerName: container
+  }
+}]
 
 @description('The name of the sql database.')
 output sqlDatabaseName string = sqlDatabase.name

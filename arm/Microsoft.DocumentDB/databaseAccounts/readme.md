@@ -11,6 +11,7 @@ This module deploys a Documentdb database account and its child resources.
 | `Microsoft.DocumentDB/databaseAccounts/mongodbDatabases` | 2021-07-01-preview |
 | `Microsoft.DocumentDB/databaseAccounts/providers/roleAssignments` | 2021-04-01-preview |
 | `Microsoft.DocumentDB/databaseAccounts/sqlDatabases` | 2021-06-15 |
+| `Microsoft.DocumentDB/databaseAccounts/sqlDatabases/containers` | 2021-07-01-preview |
 | `Microsoft.Insights/diagnosticSettings` | 2017-05-01-preview |
 
 ## Parameters
@@ -56,6 +57,26 @@ This module deploys a Documentdb database account and its child resources.
 }
 ```
 
+### Parameter Usage: `sqlDatabases`
+
+```json
+"sqlDatabases": {
+    "value": [
+        {
+            "name": "sxx-az-sql-weu-x-001",
+            "containers": [
+                "container-001",
+                "container-002"
+            ]
+        },
+        {
+            "name": "sxx-az-sql-weu-x-002",
+            "containers": []
+        }
+    ]
+}
+```
+
 ## Outputs
 
 | Output Name | Type | Description |
@@ -70,4 +91,5 @@ This module deploys a Documentdb database account and its child resources.
 - [Databaseaccounts](https://docs.microsoft.com/en-us/azure/templates/Microsoft.DocumentDB/2021-06-15/databaseAccounts)
 - [Databaseaccounts/Mongodbdatabases](https://docs.microsoft.com/en-us/azure/templates/Microsoft.DocumentDB/2021-07-01-preview/databaseAccounts/mongodbDatabases)
 - [Databaseaccounts/Sqldatabases](https://docs.microsoft.com/en-us/azure/templates/Microsoft.DocumentDB/2021-06-15/databaseAccounts/sqlDatabases)
+- [Databaseaccounts/Sqldatabases/Containers](https://docs.microsoft.com/en-us/azure/templates/Microsoft.DocumentDB/2021-07-01-preview/databaseAccounts/sqlDatabases/containers)
 - [Diagnosticsettings](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Insights/2017-05-01-preview/diagnosticSettings)
