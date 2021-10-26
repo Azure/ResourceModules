@@ -32,18 +32,11 @@ resource mongodbDatabase 'Microsoft.DocumentDB/databaseAccounts/mongodbDatabases
     resource: {
       id: mongodbDatabaseName
     }
-  }
-
-  resource mongodbDatabase_throughputSettings 'throughputSettings@2021-07-01-preview' = {
-    name: 'default'
-    location: location
-    properties: {
-      resource: {
-        autoscaleSettings: {
-          maxThroughput: maxThroughput
-        }
-        throughput: throughput
+    options: {
+      autoscaleSettings: {
+        maxThroughput: maxThroughput
       }
+      throughput: throughput
     }
   }
 }
