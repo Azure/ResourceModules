@@ -88,7 +88,7 @@ Modules in the repository are structured via the module's main resource provider
 
   > Post-MVP
 
-   Resources like `Microsoft.Sql/servers` may have dedicated templates for child-resources such as `Microsoft.Sql/servers/databases`. In these cases we recommend to create a subfolder called after the child-resource name, so that the path to the child-resource folder is consistent with its resource type. In the given example we would have a sub-folder `databases` in the parent-folder `servers`.
+   Resources like `Microsoft.Sql/servers` may have dedicated templates for child-resources such as `Microsoft.Sql/servers/databases`. In these cases we recommend to create a sub-folder called after the child-resource name, so that the path to the child-resource folder is consistent with its resource type. In the given example we would have a sub-folder `databases` in the parent-folder `servers`.
 
    ```
    Microsoft.Sql
