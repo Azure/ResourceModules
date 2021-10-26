@@ -30,8 +30,8 @@
           }
         }
       ]
-    }
-  "roleAssignments": {
+    },
+    "roleAssignments": {
       "value": [
         {
           "roleDefinitionIdOrName": "Reader",
