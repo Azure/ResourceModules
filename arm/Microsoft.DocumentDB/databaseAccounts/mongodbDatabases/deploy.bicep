@@ -19,6 +19,19 @@ resource mongodbDatabase 'Microsoft.DocumentDB/databaseAccounts/mongodbDatabases
       id: mongodbDatabaseName
     }
   }
+
+  resource mongodbDatabase_throughputSettings 'throughputSettings@2021-07-01-preview' = {
+    name: 'default'
+    location: location
+    properties: {
+      resource: {
+        autoscaleSettings: {
+          maxThroughput: 4000
+        }
+        throughput: 400
+      }
+    }
+  }
 }
 
 @description('The name of the mongodb database.')
