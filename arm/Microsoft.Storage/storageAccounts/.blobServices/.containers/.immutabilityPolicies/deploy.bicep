@@ -1,6 +1,6 @@
 @maxLength(24)
 @description('Required. Name of the Storage Account.')
-param storageAccountName string = ''
+param storageAccountName string
 
 @description('Required. Name of the container to apply the policy to')
 param containerName string

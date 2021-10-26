@@ -20,8 +20,8 @@ module queueService_queues '.queues/deploy.bicep' = [for (queue, index) in queue
   params: {
     storageAccountName: storageAccountName
     name: queue.name
-    metadata: queue.metadata
-    roleAssignments: queue.roleAssignments
+    metadata: contains(queue, 'metadata') ? queue.metadata : {}
+    roleAssignments: contains(queue, 'roleAssignments') ? queue.roleAssignments : []
   }
 }]
 

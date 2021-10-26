@@ -1,6 +1,6 @@
 @maxLength(24)
 @description('Required. Name of the Storage Account.')
-param storageAccountName string = ''
+param storageAccountName string
 
 @description('The name of the storage container to deploy')
 param name string
@@ -13,14 +13,8 @@ param name string
 @description('Specifies whether data in the container may be accessed publicly and the level of access.')
 param publicAccess string = 'None'
 
-@description('Enable immutability policy for this blob container')
-param enableWORM bool = false
-
-@description('The immutability period for the blobs in the container since the policy creation, in days.')
-param immutabilityPeriodSinceCreationInDays int = 365
-
-@description('This property can only be changed for unlocked time-based retention policies. When enabled, new blocks can be written to an append blob while maintaining immutability protection and compliance. Only new blocks can be added and any existing blocks cannot be modified or deleted. This property cannot be changed with ExtendImmutabilityPolicy API')
-param allowProtectedAppendWrites bool = true
+@description('Configure immutability policy.')
+param immutabilityPolicyProperties object = {}
 
 @description('Optional. Array of role assignment objects that contain the \'roleDefinitionIdOrName\' and \'principalId\' to define RBAC role assignments on this resource. In the roleDefinitionIdOrName attribute, you can provide either the display name of the role definition, or it\'s fully qualified ID in the following format: \'/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11\'')
 param roleAssignments array = []
@@ -32,12 +26,13 @@ resource container 'Microsoft.Storage/storageAccounts/blobServices/containers@20
   }
 }
 
-module immutabilityPolicy '.immutabilityPolicies/deploy.bicep' = if (enableWORM) {
+module immutabilityPolicy '.immutabilityPolicies/deploy.bicep' = if (!empty(immutabilityPolicyProperties)) {
   name: 'default'
   params: {
+    storageAccountName: storageAccountName
     containerName: name
-    immutabilityPeriodSinceCreationInDays: immutabilityPeriodSinceCreationInDays
-    allowProtectedAppendWrites: allowProtectedAppendWrites
+    immutabilityPeriodSinceCreationInDays: contains(immutabilityPolicyProperties, 'immutabilityPeriodSinceCreationInDays') ? immutabilityPolicyProperties.immutabilityPeriodSinceCreationInDays : 365
+    allowProtectedAppendWrites: contains(immutabilityPolicyProperties, 'allowProtectedAppendWrites') ? immutabilityPolicyProperties.allowProtectedAppendWrites : true
   }
 }
 

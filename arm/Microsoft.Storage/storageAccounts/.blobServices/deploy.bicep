@@ -28,13 +28,11 @@ resource blobServices 'Microsoft.Storage/storageAccounts/blobServices@2021-08-01
 module blobServices_container '.containers/deploy.bicep' = [for (blobContainer, index) in blobContainers: {
   name: '${uniqueString(deployment().name)}-Storage-Container-${index}'
   params: {
-    name: blobContainer.name
-    allowProtectedAppendWrites: blobContainer.allowProtectedAppendWrites
-    enableWORM: blobContainer.enableWORM
-    immutabilityPeriodSinceCreationInDays: blobContainer.immutabilityPeriodSinceCreationInDays
-    publicAccess: blobContainer.publicAccess
-    roleAssignments: blobContainer.roleAssignments
     storageAccountName: storageAccountName
+    name: blobContainer.name
+    publicAccess: contains(blobContainer, 'publicAccess') ? blobContainer.publicAccess : 'None'
+    roleAssignments: contains(blobContainer, 'roleAssignments') ? blobContainer.roleAssignments : []
+    immutabilityPolicyProperties: contains(blobContainer, 'immutabilityPolicyProperties') ? blobContainer.immutabilityPolicyProperties : {}
   }
   dependsOn: [
     blobServices

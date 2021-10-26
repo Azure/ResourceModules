@@ -31,8 +31,8 @@ module fileService_fileShares '.shares/deploy.bicep' = [for (fileShare, index) i
   params: {
     storageAccountName: storageAccountName
     name: fileShare.name
-    sharedQuota: fileShare.sharedQuota
-    roleAssignments: fileShare.roleAssignments
+    sharedQuota: contains(fileShare, 'sharedQuota') ? fileShare.sharedQuota : 5120
+    roleAssignments: contains(fileShare, 'roleAssignments') ? fileShare.roleAssignments : []
   }
 }]
 
