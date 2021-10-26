@@ -12,7 +12,6 @@
             "value": [
                 {
                     "failoverPriority": 0,
-                    "isZoneRedundant": true,
                     "locationName": "West Europe"
                 }
             ]
