@@ -68,9 +68,6 @@ param blobServices object = {}
 @description('Optional. File service and shares to deploy')
 param fileServices object = {}
 
-@description('Optional. File shares to create.')
-param fileShares array = []
-
 @description('Optional. Queue service and queues to create.')
 param queueServices object = {}
 
@@ -333,9 +330,5 @@ output storageAccountResourceId string = storageAccount.id
 output storageAccountRegion string = storageAccount.location
 output storageAccountName string = storageAccount.name
 output storageAccountResourceGroup string = resourceGroup().name
-output storageAccountPrimaryBlobEndpoint string = (empty(blobContainers) ? '' : reference('Microsoft.Storage/storageAccounts/${storageAccount.name}', '2019-04-01').primaryEndpoints.blob)
-output blobContainers array = blobContainers
-output fileShares array = fileShares
-output queues array = queues
-output tables array = tables
+output storageAccountPrimaryBlobEndpoint string = (!contains(storageAccount_blobService, 'blobContainers')) ? '' : reference('Microsoft.Storage/storageAccounts/${storageAccount.name}', '2019-04-01').primaryEndpoints.blob )
 output assignedIdentityID string = (contains(managedServiceIdentity, 'SystemAssigned') ? reference(storageAccount.id, '2019-06-01', 'full').identity.principalId : '')
