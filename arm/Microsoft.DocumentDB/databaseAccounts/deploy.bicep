@@ -147,6 +147,8 @@ var builtInRoleNames = {
   'User Access Administrator': subscriptionResourceId('Microsoft.Authorization/roleDefinitions', '18d7d88d-d35e-4fb5-a5c3-7773c20a72d9')
 }
 
+var kind = !empty(sqlDatabases) ? 'GlobalDocumentDB' : (!empty(mongodbDatabases) ? 'MongoDB' : 'Parse')
+
 module pid_cuaId './.bicep/nested_cuaId.bicep' = if (!empty(cuaId)) {
   name: 'pid-${cuaId}'
   params: {}
@@ -157,7 +159,7 @@ resource databaseAccount 'Microsoft.DocumentDB/databaseAccounts@2021-06-15' = {
   location: location
   tags: tags
   identity: identity
-  kind: 'GlobalDocumentDB'
+  kind: kind
   properties: {
     databaseAccountOfferType: databaseAccountOfferType
     locations: locations_var
@@ -225,3 +227,5 @@ output databaseAccountResourceId string = databaseAccount.id
 
 @description('The name of the Resource Group the database account was created in.')
 output databaseAccountResourceGroup string = resourceGroup().name
+
+output kind string = kind
