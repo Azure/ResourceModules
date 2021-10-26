@@ -62,29 +62,35 @@ param privateEndpoints array = []
 @description('Optional. Networks ACLs, this value contains IPs to whitelist and/or Subnet information.')
 param networkAcls object = {}
 
-@description('Optional. Blob containers to create.')
-param blobContainers array = []
+@description('Optional. Blob service and containers to deploy')
+param blobServices object = {}
 
-@description('Optional. Indicates whether DeleteRetentionPolicy is enabled for the Blob service.')
-param blobServicesDeleteRetentionPolicy bool = true
+// @description('Optional. Blob containers to create.')
+// param blobContainers array = []
 
-@description('Optional. Indicates the number of days that the deleted blob should be retained. The minimum specified value can be 1 and the maximum value can be 365.')
-param blobServicesDeleteRetentionPolicyDays int = 7
+// @description('Optional. Indicates whether DeleteRetentionPolicy is enabled for the Blob service.')
+// param blobServicesDeleteRetentionPolicy bool = true
 
-@description('Optional. Automatic Snapshot is enabled if set to true.')
-param blobServicesAutomaticSnapshotPolicyEnabled bool = false
+// @description('Optional. Indicates the number of days that the deleted blob should be retained. The minimum specified value can be 1 and the maximum value can be 365.')
+// param blobServicesDeleteRetentionPolicyDays int = 7
 
-@description('Sets the CORS rules. You can include up to five CorsRule elements in the request.')
-param fileServicesCors object = {}
+// @description('Optional. Automatic Snapshot is enabled if set to true.')
+// param blobServicesAutomaticSnapshotPolicyEnabled bool = false
 
-@description('Protocol settings for file service')
-param fileServicesProtocolSettings object = {}
+@description('Optional. File service and shares to deploy')
+param fileServices object = {}
 
-@description('The service properties for soft delete.')
-param fileServicesShareDeleteRetentionPolicy object = {
-  enabled: true
-  days: 7
-}
+// @description('Sets the CORS rules. You can include up to five CorsRule elements in the request.')
+// param fileServicesCors object = {}
+
+// @description('Protocol settings for file service')
+// param fileServicesProtocolSettings object = {}
+
+// @description('The service properties for soft delete.')
+// param fileServicesShareDeleteRetentionPolicy object = {
+//   enabled: true
+//   days: 7
+// }
 
 @description('Optional. Indicates whether public access is enabled for all blobs or containers in the storage account.')
 param allowBlobPublicAccess bool = true
@@ -303,27 +309,27 @@ module storageAccount_privateEndpoints './.bicep/nested_privateEndpoint.bicep' =
 }]
 
 // Containers
-module blobService 'blobServices/deploy.bicep' = if (!empty(blobContainers)) {
+module blobService 'blobServices/deploy.bicep' = if (!empty(blobServices)) {
   name: '${uniqueString(deployment().name, location)}-Storage-BlobServices'
   params: {
-    blobContainers: blobContainers
     storageAccountName: storageAccount.name
     location: location
-    automaticSnapshotPolicyEnabled: blobServicesAutomaticSnapshotPolicyEnabled
-    deleteRetentionPolicy: blobServicesDeleteRetentionPolicy
-    deleteRetentionPolicyDays: blobServicesDeleteRetentionPolicyDays
+    blobContainers: blobServices.blobContainers
+    automaticSnapshotPolicyEnabled: blobServices.automaticSnapshotPolicyEnabled
+    deleteRetentionPolicy: blobServices.deleteRetentionPolicy
+    deleteRetentionPolicyDays: blobServices.deleteRetentionPolicyDays
   }
 }
 
 // File Shares
-module storageAccount_nested_fileShare './fileServices/deploy.bicep' = if (!empty(fileShares)) {
-  name: '${uniqueString(deployment().name, location)}-Storage-FileShareServices'
+module storageAccount_nested_fileShare './fileServices/deploy.bicep' = if (!empty(fileServices)) {
+  name: '${uniqueString(deployment().name, location)}-Storage-FileServices'
   params: {
-    cors: fileServicesCors
-    protocolSettings: fileServicesProtocolSettings
-    shareDeleteRetentionPolicy: fileServicesShareDeleteRetentionPolicy
-    fileShares: fileShares
     storageAccountName: storageAccount.name
+    cors: fileServices.cors
+    protocolSettings: fileServices.protocolSettings
+    shareDeleteRetentionPolicy: fileServices.shareDeleteRetentionPolicy
+    fileShares: fileServices.fileShares
   }
 }
 
