@@ -81,15 +81,12 @@ resource eventHub 'Microsoft.EventHub/namespaces/eventhubs@2021-06-01-preview' =
 }
 
 resource eventHub_lock 'Microsoft.Authorization/locks@2016-09-01' = if (lock != 'NotSpecified') {
-  name: '${eventHubName}-${lock}-lock'
+  name: '${last(split(eventHub.name, '/'))}-${lock}-lock'
   properties: {
     level: lock
     notes: (lock == 'CanNotDelete') ? 'Cannot delete resource or child resources.' : 'Cannot modify the resource or child resources.'
   }
   scope: eventHub
-  dependsOn: [
-    eventHub
-  ]
 }
 
 resource eventHub_consumergroups 'Microsoft.EventHub/namespaces/eventhubs/consumergroups@2021-06-01-preview' = [for (consumerGroups, index) in eventHubConfiguration.consumerGroups: {
