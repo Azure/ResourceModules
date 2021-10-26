@@ -168,7 +168,7 @@ Within a bicep file, follow the following conventions:
 
 - Modules:
   - camel_Snake_Case, i.e `resourceGroup_rbac` ?
-  - All provider references go into a child folder on the module called `.bicep`
+  - All module references go into a child folder on the module called `.bicep`
   - File name for nested module is structured as follows: `nested_<resourceName>.bicep` i.e:
     - `nested_rbac.bicep`
 
