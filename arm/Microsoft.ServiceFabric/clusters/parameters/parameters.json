@@ -6,7 +6,7 @@
             "value": "sxx-az-sfc-weu-x-001"
         },
         "location": {
-            "value": "centralIndia"
+            "value": "eastus"
         },
         "tags": {
             "value": {
@@ -15,176 +15,224 @@
                 "contactinfo": "someone@company.com"
             }
         },
-        "lock": {
-            "value": "CanNotDelete"
+        // "lock": {
+        //     "value": "CanNotDelete"
+        // },
+        // "addOnFeatures": {
+        //     "value": []
+        // },
+        // "maxUnusedVersionsToKeep": {
+        //     "value": 2
+        // },
+        // "azureActiveDirectory": {
+        //     "value": {
+        //         "clientApplication": "",
+        //         "clusterApplication": "",
+        //         "tenantId": ""
+        //     }
+        // },
+        // "certificate": {
+        //     "value": {
+        //         "thumbprint": "", // If 'certificate' is provided then this is mandatory
+        //         "thumbprintSecondary": "",
+        //         "x509StoreName": "" // Possible values are 'AddressBook', 'AuthRoot', 'CertificateAuthority', 'Disallowed', 'My', 'Root', 'TrustedPeople', 'TrustedPublisher'
+        //     }
+        // },
+        // "certificateCommonNames": {
+        //     "value": {
+        //         "commonNames": [ // The list of server certificates referenced by common name that are used to secure the cluster.
+        //             {
+        //                 "certificateCommonName": "", // If 'certificateCommonNames' is provided then this is mandatory
+        //                 "certificateIssuerThumbprint": "" // If 'certificateCommonNames' is provided then this is mandatory
+        //             }
+        //         ],
+        //         "x509StoreName": "" // Possible values are 'AddressBook', 'AuthRoot', 'CertificateAuthority', 'Disallowed', 'My', 'Root', 'TrustedPeople', 'TrustedPublisher'
+        //     }
+        // },
+        // "clientCertificateCommonNames": {
+        //     "value": [{
+        //         "certificateCommonName": "", // If 'clientCertificateCommonNames' is passed then this is mandatory
+        //         "certificateIssuerThumbprint": "", // If 'clientCertificateCommonNames' is passed then this is mandatory
+        //         "isAdmin": "" // Bool. If 'clientCertificateCommonNames' is passed then this is mandatory
+        //     }]
+        // },
+        // "clientCertificateThumbprints": {
+        //     "value": [{
+        //         "certificateThumbprint": "", // If 'clientCertificateThumbprints' is passed then this is mandatory
+        //         "isAdmin": "" // If 'clientCertificateThumbprints' is passed then this is mandatory
+        //     }]
+        // },
+        "clusterCodeVersion": {
+            "value": "8.1.329.9590"
         },
-        "addOnFeatures": {
-            "value": []
-        },
-        "maxUnusedVersionsToKeep": {
-            "value": 2 // Mandatory
-        },
-        "azureActiveDirectory": {
-            "value": {
-                "clientApplication": "",
-                "clusterApplication": "",
-                "tenantId": ""
-            }
-        },
-        "certificate": {
-            "value": {
-                "thumbprint": "", // If 'certificate' is provided then this is mandatory
-                "thumbprintSecondary": "",
-                "x509StoreName": "" // Possible values are 'AddressBook', 'AuthRoot', 'CertificateAuthority', 'Disallowed', 'My', 'Root', 'TrustedPeople', 'TrustedPublisher'
-            }
-        },
-        "certificateCommonNames": {
-            "value": {
-                "commonNames": [ // The list of server certificates referenced by common name that are used to secure the cluster.
-                    {
-                        "certificateCommonName": "", // If 'certificateCommonNames' is provided then this is mandatory
-                        "certificateIssuerThumbprint": "" // If 'certificateCommonNames' is provided then this is mandatory
-                    }
-                ],
-                "x509StoreName": "" // Possible values are 'AddressBook', 'AuthRoot', 'CertificateAuthority', 'Disallowed', 'My', 'Root', 'TrustedPeople', 'TrustedPublisher'
-            }
-        },
-        "clientCertificateCommonNames": {
-            "value": [{
-                "certificateCommonName": "", // If 'clientCertificateCommonNames' is passed then this is mandatory
-                "certificateIssuerThumbprint": "", // If 'clientCertificateCommonNames' is passed then this is mandatory
-                "isAdmin": "" // Bool. If 'clientCertificateCommonNames' is passed then this is mandatory
-            }]
-        },
-        "clientCertificateThumbprints": {
-            "value": [{
-                "certificateThumbprint": "", // If 'clientCertificateThumbprints' is passed then this is mandatory
-                "isAdmin": "" // If 'clientCertificateThumbprints' is passed then this is mandatory
-            }]
-        },
-        "diagnosticsStorageAccountConfig": {
-            "value": {
-                "blobEndpoint": "", // If 'diagnosticsStorageAccountConfig' is passed then this is mandatory
-                "protectedAccountKeyName": "", // If 'diagnosticsStorageAccountConfig' is passed then this is mandatory
-                "protectedAccountKeyName2": "",
-                "queueEndpoint": "", // If 'diagnosticsStorageAccountConfig' is passed then this is mandatory
-                "storageAccountName": "", // If 'diagnosticsStorageAccountConfig' is passed then this is mandatory
-                "tableEndpoint": "" // If 'diagnosticsStorageAccountConfig' is passed then this is mandatory
-            }
-        },
-        "fabricSettings": {
-            "value": [{
-                "name": "", // The section name of the fabric settings.
-                "parameters": [{ // The collection of parameters in the section.
-                    "name": "",
-                    "value": ""
-                }]
-            }]
-        },
+        // "diagnosticsStorageAccountConfig": {
+        //     "value": {
+        //         "blobEndpoint": "", // If 'diagnosticsStorageAccountConfig' is passed then this is mandatory
+        //         "protectedAccountKeyName": "", // If 'diagnosticsStorageAccountConfig' is passed then this is mandatory
+        //         "protectedAccountKeyName2": "",
+        //         "queueEndpoint": "", // If 'diagnosticsStorageAccountConfig' is passed then this is mandatory
+        //         "storageAccountName": "", // If 'diagnosticsStorageAccountConfig' is passed then this is mandatory
+        //         "tableEndpoint": "" // If 'diagnosticsStorageAccountConfig' is passed then this is mandatory
+        //     }
+        // },
+        // "fabricSettings": {
+        //     "value": [{
+        //         "name": "", // The section name of the fabric settings.
+        //         "parameters": [{ // The collection of parameters in the section.
+        //             "name": "",
+        //             "value": ""
+        //         }]
+        //     }]
+        // },
         "managementEndpoint": {
-            "value": "" // Mandatory
+            "value": "https://sxx-az-sfc-weu-x-050.eastus.cloudapp.azure.com:19080" // Mandatory
         },
         "nodeTypes": { // The list of node types in the cluster.
             "value": [{
-                "applicationPorts": {
-                    "endPort": "",
-                    "startPort": ""
+                    "applicationPorts": {
+                        "endPort": 30000,
+                        "startPort": 20000
+                    },
+                    //"capacities": {},
+                    "clientConnectionEndpointPort": 19000,
+                    "durabilityLevel": "Silver", // One of 'Bronze', 'Gold', 'Silver'
+                    "ephemeralPorts": {
+                        "endPort": 65534,
+                        "startPort": 49152
+                    },
+                    "httpGatewayEndpointPort": 19080,
+                    "isPrimary": true,
+                    // "isStateless": false,
+                    // "multipleAvailabilityZones": false,
+                    "name": "Node01",
+                    // "placementProperties": {},
+                    // "reverseProxyEndpointPort": "",
+                    "vmInstanceCount": 5
                 },
-                "capacities": {},
-                "clientConnectionEndpointPort": "",
-                "durabilityLevel": "", // One of 'Bronze', 'Gold', 'Silver'
-                "ephemeralPorts": {
-                    "endPort": "",
-                    "startPort": ""
-                },
-                "httpGatewayEndpointPort": "",
-                "isPrimary": "",
-                "isStateless": "",
-                "multipleAvailabilityZones": "",
-                "name": "",
-                "placementProperties": {},
-                "reverseProxyEndpointPort": "",
-                "vmInstanceCount": ""
-            }]
+                {
+                    "applicationPorts": {
+                        "endPort": 30000,
+                        "startPort": 20000
+                    },
+                    //"capacities": {},
+                    "clientConnectionEndpointPort": 19090,
+                    "durabilityLevel": "Silver", // One of 'Bronze', 'Gold', 'Silver'
+                    // "ephemeralPorts": {
+                    //     "endPort": 65534,
+                    //     "startPort": 49152
+                    // },
+                    "httpGatewayEndpointPort": 19090,
+                    "isPrimary": false,
+                    // "isStateless": false,
+                    // "multipleAvailabilityZones": false,
+                    "name": "Node02",
+                    // "placementProperties": {},
+                    // "reverseProxyEndpointPort": "",
+                    "vmInstanceCount": 5
+                }
+            ]
         },
-        "notifications": {
+        // "notifications": {
+        //     "value": [{
+        //         "isEnabled": "",
+        //         "notificationCategory": "", // 'WaveProgress'
+        //         "notificationLevel": "", // One of 'All', 'Critical'
+        //         "notificationTargets": [{
+        //             "notificationChannel": "", // One of 'EmailSubscription', 'EmailUser'
+        //             "receivers": ""
+        //         }]
+        //     }]
+        // },
+        "reliabilityLevel": {
+            "value": "Silver"
+        },
+        "vmImage": {
+            "value": "WindowsServer 2016-Datacenter"
+        },
+        "roleAssignments": {
             "value": [{
-                "isEnabled": "",
-                "notificationCategory": "", // 'WaveProgress'
-                "notificationLevel": "", // One of 'All', 'Critical'
-                "notificationTargets": [{
-                    "notificationChannel": "", // One of 'EmailSubscription', 'EmailUser'
-                    "receivers": ""
-                }]
+                "roleDefinitionIdOrName": "Reader",
+                "principalIds": [
+                    "5545f7a0-51f4-46af-b3b4-baecf5176a56"
+                ]
             }]
         },
         "serviceFabricClusterApplications": {
             "value": [{
-                "name": "",
+                "name": "serviceFabricClusterApplication01",
                 "identity": {
-                    "type": "",
+                    "type": "None",
                     "userAssignedIdentities": {}
                 },
-                "managedIdentities": [{
-                    "name": "",
-                    "principalId": ""
-                }],
-                "maximumNodes": "",
-                "metrics": [{
-                    "maximumCapacity": "",
-                    "name": "",
-                    "reservationCapacity": "",
-                    "totalApplicationCapacity": ""
-                }],
-                "minimumNodes": "",
-                "parameters": {},
-                "removeApplicationCapacity": "",
-                "typeName": "",
-                "typeVersion": "",
-                "upgradePolicy": {
-                    "applicationHealthPolicy": {
-                        "considerWarningAsError": "",
-                        "defaultServiceTypeHealthPolicy": {
-                            "maxPercentUnhealthyPartitionsPerService": "",
-                            "maxPercentUnhealthyReplicasPerPartition": "",
-                            "maxPercentUnhealthyServices": ""
+                "properties": {
+                    "managedIdentities": [{
+                        "name": "Identity_Friendly_Name",
+                        "principalId": "5545f7a0-51f4-46af-b3b4-baecf5176a56"
+                    }],
+                    "maximumNodes": 2,
+                    "metrics": [{
+                        "maximumCapacity": null,
+                        "name": null,
+                        "reservationCapacity": null,
+                        "totalApplicationCapacity": null
+                    }],
+                    "minimumNodes": null,
+                    "parameters": {},
+                    "removeApplicationCapacity": "",
+                    "typeName": "DotNetCore",
+                    "typeVersion": "VersionOne",
+                    "upgradePolicy": {
+                        "applicationHealthPolicy": {
+                            "considerWarningAsError": "",
+                            "defaultServiceTypeHealthPolicy": {
+                                "maxPercentUnhealthyPartitionsPerService": null,
+                                "maxPercentUnhealthyReplicasPerPartition": null,
+                                "maxPercentUnhealthyServices": null
+                            },
+                            "maxPercentUnhealthyDeployedApplications": null //,
+                            //"serviceTypeHealthPolicyMap": {}
                         },
-                        "maxPercentUnhealthyDeployedApplications": "",
-                        "serviceTypeHealthPolicyMap": {}
-                    },
-                    "forceRestart": "",
-                    "recreateApplication": "",
-                    "rollingUpgradeMonitoringPolicy": {
-                        "failureAction": "",
-                        "healthCheckRetryTimeout": "",
-                        "healthCheckStableDuration": "",
-                        "healthCheckWaitDuration": "",
-                        "upgradeDomainTimeout": "",
-                        "upgradeTimeout": ""
-                    },
-                    "upgradeMode": "",
-                    "upgradeReplicaSetCheckTimeout": ""
+                        "forceRestart": "",
+                        "recreateApplication": "",
+                        "rollingUpgradeMonitoringPolicy": {
+                            "failureAction": null,
+                            "healthCheckRetryTimeout": null,
+                            "healthCheckStableDuration": null,
+                            "healthCheckWaitDuration": null,
+                            "upgradeDomainTimeout": null,
+                            "upgradeTimeout": null
+                        },
+                        "upgradeMode": "UnmonitoredAuto",
+                        "upgradeReplicaSetCheckTimeout": null
+                    }
+                },
+                "applicationsServices": {
+                    "value": [{
+                        "name": "Service01",
+                        "properties": {
+                            "provisioningState": "Default",
+                            "correlationScheme": [{
+                                "scheme": "Invalid",
+                                "serviceName": "fabric:service01"
+                            }]
+                        }
+                    }]
                 }
             }]
         },
         "serviceFabricApplicationTypes": {
-            "value": {
-                "name": "",
-                "properties": {}
-            }
-        },
-        "serviceFabricApplicationTypesVersions": {
             "value": [{
-                "name": "",
+                "name": "DotNetCore",
                 "properties": {
-                    "appPackageUrl": ""
-                }
-            }]
-        },
-        "serviceFabricApplicationsServices": {
-            "value": [{
-                "name": "",
-                "properties": ""
+                    "provisioningState": "Default"
+                },
+                "applicationTypesVersions": [{
+                    "name": "VersionOne",
+                    "properties": {
+                        "provisioningState": "Default",
+                        "appPackageUrl": "https://github.com/Azure-Samples/service-fabric-wordcount/blob/master/WordCountV1.sfpkg"
+                    }
+                }]
             }]
         }
     }

@@ -47,7 +47,7 @@ param clientCertificateCommonNames array = []
 param clientCertificateThumbprints array = []
 
 @description('Optional. The Service Fabric runtime version of the cluster. This property can only by set the user when upgradeMode is set to "Manual". To get list of available Service Fabric versions for new clusters use ClusterVersion API. To get the list of available version for existing clusters use availableClusterVersions.')
-param clusterCodeVersion string = ''
+param clusterCodeVersion string
 
 @description('Optional. The storage account information for storing Service Fabric diagnostic logs.')
 param diagnosticsStorageAccountConfig object = {}
@@ -136,14 +136,8 @@ param roleAssignments array = []
 @description('Optional. Array of Service Fabric cluster applications.')
 param serviceFabricClusterApplications array = []
 
-@description('Optional. Array of Service Fabric cluster applications services.')
-param serviceFabricApplicationsServices array = []
-
 @description('Optional. Array of Service Fabric cluster application types.')
 param serviceFabricApplicationTypes array = []
-
-@description('Optional. Array of Service Fabric cluster application types versions.')
-param serviceFabricApplicationTypesVersions array = []
 
 // Var section
 var azureActiveDirectory_var = {
@@ -192,26 +186,26 @@ var fabricSettings_var = [for index in range(0, (!empty(fabricSettings) ? length
   parameters: (!empty(fabricSettings) ? fabricSettings[index].parameters : json('null'))
 }]
 
-var nodeTypes_var = [for index in range(0, (!empty(nodeTypes) ? length(nodeTypes) : 0)): {
-  applicationPorts: {
-    endPort: (!empty(nodeTypes) ? nodeTypes[index].applicationPorts.endPort : json('null'))
-    startPort: (!empty(nodeTypes) ? nodeTypes[index].applicationPorts.startPort : json('null'))
-  }
-  capacities: (!empty(nodeTypes) ? nodeTypes[index].capacities : json('null'))
-  clientConnectionEndpointPort: (!empty(nodeTypes) ? nodeTypes[index].clientConnectionEndpointPort : json('null'))
-  durabilityLevel: '${(!empty(nodeTypes) ? nodeTypes[index].durabilityLevel : null)}'
-  ephemeralPorts: {
-    endPort: (!empty(nodeTypes) ? nodeTypes[index].ephemeralPorts.endPort : json('null'))
-    startPort: (!empty(nodeTypes) ? nodeTypes[index].ephemeralPorts.startPort : json('null'))
-  }
-  httpGatewayEndpointPort: (!empty(nodeTypes) ? nodeTypes[index].httpGatewayEndpointPort : json('null'))
-  isPrimary: (!empty(nodeTypes) ? nodeTypes[index].isPrimary : json('null'))
-  isStateless: (!empty(nodeTypes) ? nodeTypes[index].isStateless : json('null'))
-  multipleAvailabilityZones: (!empty(nodeTypes) ? nodeTypes[index].multipleAvailabilityZones : json('null'))
-  name: '${(!empty(nodeTypes) ? nodeTypes[index].name : null)}'
-  placementProperties: (!empty(nodeTypes) ? nodeTypes[index].placementProperties : json('null'))
-  reverseProxyEndpointPort: (!empty(nodeTypes) ? nodeTypes[index].reverseProxyEndpointPort : json('null'))
-  vmInstanceCount: (!empty(nodeTypes) ? nodeTypes[index].vmInstanceCount : json('null'))
+var nodeTypes_var = [for nodeType in nodeTypes: {
+  applicationPorts: contains(nodeType, 'applicationPorts') ? {
+    endPort: (contains(nodeType.applicationPorts, 'endPort') ? nodeType.applicationPorts.endPort : null)
+    startPort: (contains(nodeType.applicationPorts, 'startPort') ? nodeType.applicationPorts.startPort : null)
+  } : json('null')
+  capacities: (contains(nodeType, 'capacities') ? nodeType.capacities : json('null'))
+  clientConnectionEndpointPort: (contains(nodeType, 'clientConnectionEndpointPort') ? nodeType.clientConnectionEndpointPort : null)
+  durabilityLevel: (contains(nodeType, 'durabilityLevel') ? nodeType.durabilityLevel : null)
+  ephemeralPorts: contains(nodeType, 'ephemeralPorts') ? {
+    endPort: (contains(nodeType.ephemeralPorts, 'endPort') ? nodeType.ephemeralPorts.endPort : null)
+    startPort: (contains(nodeType.ephemeralPorts, 'startPort') ? nodeType.ephemeralPorts.startPort : null)
+  } : json('null')
+  httpGatewayEndpointPort: (contains(nodeType, 'httpGatewayEndpointPort') ? nodeType.httpGatewayEndpointPort : null)
+  isPrimary: (contains(nodeType, 'isPrimary') ? nodeType.isPrimary : null)
+  isStateless: (contains(nodeType, 'isStateless') ? nodeType.isStateless : null)
+  multipleAvailabilityZones: (contains(nodeType, 'multipleAvailabilityZones') ? nodeType.multipleAvailabilityZones : null)
+  name: '${(!empty(nodeType.name) ? nodeType.name : 'Node00')}'
+  placementProperties: (contains(nodeType, 'placementProperties') ? nodeType.placementProperties : json('null'))
+  reverseProxyEndpointPort: (contains(nodeType, 'reverseProxyEndpointPort') ? nodeType.reverseProxyEndpointPort : null)
+  vmInstanceCount: (contains(nodeType, 'vmInstanceCount') ? nodeType.vmInstanceCount : 1)
 }]
 
 var notifications_var = [for index in range(0, (!empty(notifications) ? length(notifications) : 0)): {
@@ -328,7 +322,7 @@ resource serviceFabricCluster_lock 'Microsoft.Authorization/locks@2016-09-01' = 
 
 // Service Fabric cluster RBAC assignment
 module serviceFabricCluster_rbac './.bicep/nested_rbac.bicep' = [for (roleAssignment, index) in roleAssignments: {
-  name: '${uniqueString(deployment().name, location)}-ServiceFabricCluster-Rbac-${index}'
+  name: '${serviceFabricCluster.name}-${uniqueString(deployment().name, location)}-Rbac-${index}'
   params: {
     roleAssignmentObj: roleAssignment
     builtInRoleNames: builtInRoleNames
@@ -336,53 +330,42 @@ module serviceFabricCluster_rbac './.bicep/nested_rbac.bicep' = [for (roleAssign
   }
 }]
 
-// Service Fabric cluster applications
-resource serviceFabricCluster_applications 'Microsoft.ServiceFabric/clusters/applications@2021-06-01' = [for application in serviceFabricClusterApplications: {
-  name: application.name
-  location: location
-  tags: tags
-  identity: (!empty(application.identity) ? application.identity : json('null'))
-  properties: {
-    managedIdentities: (!empty(application.managedIdentities) ? application.managedIdentities : json('null'))
-    maximumNodes: (!empty(application.maximumNodes) ? application.maximumNodes : null)
-    metrics: (!empty(application.metrics) ? application.metrics : json('null'))
-    minimumNodes: (!empty(application.minimumNodes) ? application.minimumNodes : null)
-    parameters: (!empty(application.parameters) ? application.parameters : json('null'))
-    removeApplicationCapacity: (!empty(application.removeApplicationCapacity) ? application.removeApplicationCapacity : null)
-    typeName: (!empty(application.typeName) ? application.typeName : null)
-    typeVersion: (!empty(application.typeVersion) ? application.typeVersion : null)
-    upgradePolicy: (!empty(application.upgradePolicy) ? application.upgradePolicy : json('null'))
-  }
-}]
-
-// Service Fabric cluster applications services
-module serviceFabricCluster_applicationServices '.bicep/nested_applicationsServices.bicep' = [for (applicationsService, index) in serviceFabricApplicationsServices: {
-  name: '${uniqueString(deployment().name, location)}-ServiceFabricCluster-ApplicationsService-${index}'
-  params: {
-    name: applicationsService.name
-    location: location
-    tags: tags
-    properties: (!empty(applicationsService.properties) ? applicationsService.properties : json('null'))
-  }
-}]
-
 // Service Fabric cluster application types
-resource serviceFabricCluster_applicationTypes 'Microsoft.ServiceFabric/clusters/applicationTypes@2021-06-01' = [for applicationType in serviceFabricApplicationTypes: {
-  name: applicationType.name
-  location: location
-  tags: tags
-  properties: (!empty(applicationType.properties) ? applicationType.properties : json('null'))
-}]
-
-// Service Fabric cluster application types versions
-module serviceFabricCluster_applicationTypeVersions '.bicep/nested_applicationTypesVersions.bicep' = [for (applicationTypesVersion, index) in serviceFabricApplicationTypesVersions: {
-  name: '${uniqueString(deployment().name, location)}-ServiceFabricCluster-ApplicationTypesVersion-${index}'
+module serviceFabricCluster_applicationTypes '.bicep/nested_applicationTypes.bicep' = [for applicationType in serviceFabricApplicationTypes: {
+  name: '${serviceFabricCluster.name}-${applicationType.name}'
   params: {
-    name: applicationTypesVersion.name
+    applicationType: applicationType
+    clusterName: serviceFabricCluster.name
     location: location
     tags: tags
-    properties: (!empty(applicationTypesVersion.properties) ? applicationTypesVersion.properties : json('null'))
+    properties: (!empty(applicationType.properties) ? applicationType.properties : json('null'))
   }
+}]
+
+// Service Fabric cluster applications
+module serviceFabricCluster_applications '.bicep/nested_applications.bicep' = [for application in serviceFabricClusterApplications: {
+  name: '${serviceFabricCluster.name}-${application.name}'
+  params: {
+    applicationObj: application
+    clusterName: serviceFabricCluster.name
+    location: location
+    tags: tags
+    identity: (!empty(application.identity) ? application.identity : json('null'))
+    properties: {
+      managedIdentities: (!empty(application.managedIdentities) ? application.managedIdentities : json('null'))
+      maximumNodes: (contains(application, 'maximumNodes') ? application.maximumNodes : 1)
+      metrics: (!empty(application.metrics) ? application.metrics : json('null'))
+      minimumNodes: (contains(application, 'minimumNodes') ? application.minimumNodes : 0)
+      parameters: (!empty(application.parameters) ? application.parameters : json('null'))
+      removeApplicationCapacity: (contains(application, 'removeApplicationCapacity') ? application.removeApplicationCapacity : false)
+      typeName: (!empty(application.typeName) ? application.typeName : null)
+      typeVersion: (!empty(application.typeVersion) ? application.typeVersion : null)
+      upgradePolicy: (!empty(application.upgradePolicy) ? application.upgradePolicy : json('null'))
+    }
+  }
+  dependsOn: [
+    serviceFabricCluster_applicationTypes
+  ]
 }]
 
 // Outputs section
