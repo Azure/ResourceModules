@@ -4,6 +4,12 @@ param databaseAccountName string
 @description('Required. Name of the mongodb database')
 param mongodbDatabaseName string
 
+@description('Optional. Name of the mongodb database')
+param throughput int = 400
+
+@description('Required. Name of the mongodb database')
+param maxThroughput int = 4000
+
 @description('Optional. Location for the resources.')
 param location string = resourceGroup().location
 
@@ -34,9 +40,9 @@ resource mongodbDatabase 'Microsoft.DocumentDB/databaseAccounts/mongodbDatabases
     properties: {
       resource: {
         autoscaleSettings: {
-          maxThroughput: 4000
+          maxThroughput: maxThroughput
         }
-        throughput: 400
+        throughput: throughput
       }
     }
   }
