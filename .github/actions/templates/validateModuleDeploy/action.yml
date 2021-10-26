@@ -43,7 +43,7 @@ runs:
       run: |
         $parameterFile = Get-Content -Path '${{ inputs.parameterFilePath }}'
         @(
-            @{ Replace = '[<subscriptionId>]'; With = '${{ inputs.subscriptionId }}' }
+            @{ Replace = "'#[<subscriptionId>]#'"; With = '${{ inputs.subscriptionId }}' }
         ) | ForEach-Object {
             $parameterFile = $parameterFile -replace $PSItem.Replace, $PSItem.With
         }
