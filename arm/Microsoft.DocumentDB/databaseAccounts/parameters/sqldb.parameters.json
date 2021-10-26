@@ -6,13 +6,19 @@
             "value": "sxx-az-cdb-weu-x-001"
         },
         "location": {
-            "value": "West US 2"
+            "value": "West Europe"
         },
         "locations": {
             "value": [
                 {
+                    "locationName": "West Europe",
                     "failoverPriority": 0,
-                    "locationName": "East US"
+                    "isZoneRedundant": false
+                },
+                {
+                    "locationName": "North Europe",
+                    "failoverPriority": 1,
+                    "isZoneRedundant": false
                 }
             ]
         },
@@ -29,8 +35,10 @@
         "sqlDatabases": {
             "value": [
                 {
-                    "name": "testsql",
-                    "location": "East US"
+                    "name": "sxx-az-sql-weu-x-001"
+                },
+                {
+                    "name": "sxx-az-sql-weu-x-002"
                 }
             ]
         }

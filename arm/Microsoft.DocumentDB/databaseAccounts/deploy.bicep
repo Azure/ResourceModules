@@ -28,6 +28,37 @@ param databaseAccountOfferType string = 'Standard'
 @description('Required. Locations enabled for the Cosmos DB account.')
 param locations array
 
+@allowed([
+  'Eventual'
+  'ConsistentPrefix'
+  'Session'
+  'BoundedStaleness'
+  'Strong'
+])
+@description('Optional. The default consistency level of the Cosmos DB account.')
+param defaultConsistencyLevel string = 'Session'
+
+@description('Optional. Enable automatic failover for regions')
+param automaticFailover bool = true
+
+@minValue(10)
+@maxValue(2147483647)
+@description('Optional. Max stale requests. Required for BoundedStaleness. Valid ranges, Single Region: 10 to 1000000. Multi Region: 100000 to 1000000.')
+param maxStalenessPrefix int = 100000
+
+@minValue(5)
+@maxValue(86400)
+@description('Optional. Max lag time (minutes). Required for BoundedStaleness. Valid ranges, Single Region: 5 to 84600. Multi Region: 300 to 86400.')
+param maxIntervalInSeconds int = 300
+
+@description('Optional. Specifies the MongoDB server version to use.')
+@allowed([
+  '3.2'
+  '3.6'
+  '4.0'
+])
+param serverVersion string = '4.0'
+
 @description('Optional. SQL Databases configurations')
 param sqlDatabases array = []
 
@@ -121,9 +152,29 @@ var identity = {
   userAssignedIdentities: (empty(userAssignedIdentities) ? json('null') : userAssignedIdentities)
 }
 
-var locations_var = [for location in locations: {
+var consistencyPolicy = {
+  Eventual: {
+    defaultConsistencyLevel: 'Eventual'
+  }
+  ConsistentPrefix: {
+    defaultConsistencyLevel: 'ConsistentPrefix'
+  }
+  Session: {
+    defaultConsistencyLevel: 'Session'
+  }
+  BoundedStaleness: {
+    defaultConsistencyLevel: 'BoundedStaleness'
+    maxStalenessPrefix: maxStalenessPrefix
+    maxIntervalInSeconds: maxIntervalInSeconds
+  }
+  Strong: {
+    defaultConsistencyLevel: 'Strong'
+  }
+}
+
+var databaseAccount_locations = [for location in locations: {
   failoverPriority: location.failoverPriority
-  isZoneRedundant: false
+  isZoneRedundant: location.isZoneRedundant
   locationName: location.locationName
 }]
 
@@ -149,6 +200,20 @@ var builtInRoleNames = {
 
 var kind = !empty(sqlDatabases) ? 'GlobalDocumentDB' : (!empty(mongodbDatabases) ? 'MongoDB' : 'Parse')
 
+var databaseAccount_properties = !empty(sqlDatabases) ? {
+  consistencyPolicy: consistencyPolicy[defaultConsistencyLevel]
+  locations: databaseAccount_locations
+  databaseAccountOfferType: databaseAccountOfferType
+  enableAutomaticFailover: automaticFailover
+} : {
+  consistencyPolicy: consistencyPolicy[defaultConsistencyLevel]
+  locations: databaseAccount_locations
+  databaseAccountOfferType: databaseAccountOfferType
+  apiProperties: {
+    serverVersion: serverVersion
+  }
+}
+
 module pid_cuaId './.bicep/nested_cuaId.bicep' = if (!empty(cuaId)) {
   name: 'pid-${cuaId}'
   params: {}
@@ -160,10 +225,7 @@ resource databaseAccount 'Microsoft.DocumentDB/databaseAccounts@2021-06-15' = {
   tags: tags
   identity: identity
   kind: kind
-  properties: {
-    databaseAccountOfferType: databaseAccountOfferType
-    locations: locations_var
-  }
+  properties: databaseAccount_properties
 }
 
 resource databaseAccount_lock 'Microsoft.Authorization/locks@2016-09-01' = if (lock != 'NotSpecified') {
@@ -201,7 +263,6 @@ module sqlDatabases_resource './sqlDatabases/deploy.bicep' = [for sqlDatabase in
   name: '${uniqueString(deployment().name, location)}-sqldb-${sqlDatabase.name}'
   params: {
     sqlDatabaseName: sqlDatabase.name
-    location: sqlDatabase.location
     tags: tags
     databaseAccountName: databaseAccount.name
     cuaId: cuaId
@@ -212,7 +273,6 @@ module mongodbDatabases_resource './mongodbDatabases/deploy.bicep' = [for mongod
   name: '${uniqueString(deployment().name, location)}-mongodb-${mongodbDatabase.name}'
   params: {
     mongodbDatabaseName: mongodbDatabase.name
-    location: mongodbDatabase.location
     tags: tags
     databaseAccountName: databaseAccount.name
     cuaId: cuaId
@@ -227,5 +287,3 @@ output databaseAccountResourceId string = databaseAccount.id
 
 @description('The name of the Resource Group the database account was created in.')
 output databaseAccountResourceGroup string = resourceGroup().name
-
-output kind string = kind

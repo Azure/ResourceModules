@@ -11,8 +11,14 @@
         "locations": {
             "value": [
                 {
+                    "locationName": "West Europe",
                     "failoverPriority": 0,
-                    "locationName": "West Europe"
+                    "isZoneRedundant": false
+                },
+                {
+                    "locationName": "North Europe",
+                    "failoverPriority": 1,
+                    "isZoneRedundant": false
                 }
             ]
         },
@@ -29,8 +35,10 @@
         "mongodbDatabases": {
             "value": [
                 {
-                    "name": "testmongodb123456",
-                    "location": "West Europe"
+                    "name": "sxx-az-mdb-weu-x-001"
+                },
+                {
+                    "name": "sxx-az-mdb-weu-x-002"
                 }
             ]
         }

@@ -7,12 +7,6 @@ param mongodbDatabaseName string
 @description('Optional. Name of the mongodb database')
 param throughput int = 400
 
-@description('Required. Name of the mongodb database')
-param maxThroughput int = 4000
-
-@description('Optional. Location for the resources.')
-param location string = resourceGroup().location
-
 @description('Optional. Tags of the resource.')
 param tags object = {}
 
@@ -27,15 +21,11 @@ module pid_cuaId './.bicep/nested_cuaId.bicep' = if (!empty(cuaId)) {
 resource mongodbDatabase 'Microsoft.DocumentDB/databaseAccounts/mongodbDatabases@2021-07-01-preview' = {
   name: '${databaseAccountName}/${mongodbDatabaseName}'
   tags: tags
-  location: location
   properties: {
     resource: {
       id: mongodbDatabaseName
     }
     options: {
-      autoscaleSettings: {
-        maxThroughput: maxThroughput
-      }
       throughput: throughput
     }
   }

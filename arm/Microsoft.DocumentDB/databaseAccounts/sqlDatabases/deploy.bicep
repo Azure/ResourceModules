@@ -1,14 +1,14 @@
+@description('Required. Id of the Cosmos DB database account.')
+param databaseAccountName string
+
 @description('Required. Name of the SQL Database ')
 param sqlDatabaseName string
 
-@description('Optional. Location for all resources.')
-param location string = resourceGroup().location
+@description('Optional. Name of the mongodb database')
+param throughput int = 400
 
 @description('Optional. Tags of the SQL Database resource.')
 param tags object = {}
-
-@description('Required. Id of the Cosmos DB database account.')
-param databaseAccountName string
 
 @description('Optional. Customer Usage Attribution id (GUID). This GUID must be previously registered')
 param cuaId string = ''
@@ -20,24 +20,13 @@ module pid_cuaId './.bicep/nested_cuaId.bicep' = if (!empty(cuaId)) {
 
 resource sqlDatabase 'Microsoft.DocumentDB/databaseAccounts/sqlDatabases@2021-06-15' = {
   name: '${databaseAccountName}/${sqlDatabaseName}'
-  location: location
   tags: tags
   properties: {
     resource: {
       id: sqlDatabaseName
     }
-  }
-}
-
-resource sqlDatabase_throughputSettings 'Microsoft.DocumentDB/databaseAccounts/sqlDatabases/throughputSettings@2021-06-15' = {
-  name: '${sqlDatabase.name}/default'
-  location: location
-  properties: {
-    resource: {
-      autoscaleSettings: {
-        maxThroughput: 4000
-      }
-      throughput: 400
+    options:{
+      throughput: throughput
     }
   }
 }

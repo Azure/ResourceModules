@@ -3,16 +3,19 @@
     "contentVersion": "1.0.0.0",
     "parameters": {
         "databaseAccountName": {
-            "value": "sxx-az-cdb-weu-x-002"
-        },
-        "location": {
-            "value": "West Europe"
+            "value": "sxx-az-cdb-weu-x-003"
         },
         "locations": {
             "value": [
                 {
+                    "locationName": "West Europe",
                     "failoverPriority": 0,
-                    "locationName": "West Europe"
+                    "isZoneRedundant": false
+                },
+                {
+                    "locationName": "North Europe",
+                    "failoverPriority": 1,
+                    "isZoneRedundant": false
                 }
             ]
         },
