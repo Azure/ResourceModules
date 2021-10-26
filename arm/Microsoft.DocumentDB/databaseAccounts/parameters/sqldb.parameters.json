@@ -43,10 +43,7 @@
                 },
                 {
                     "name": "sxx-az-sql-weu-x-002",
-                    "containers": [
-                        "container-001",
-                        "container-002"
-                    ]
+                    "containers": []
                 }
             ]
         }
