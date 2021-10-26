@@ -78,7 +78,7 @@ Modules in the repository are structured via the module's main resource provider
 
 - **Child-Resources**<p>
 
-  Resources like `Microsoft.Sql/servers` may have dedicated modules for child-resources such as `Microsoft.Sql/servers/databases`. In these cases we recommend to create a childfolder with the 'parent folder name and suffix `"Resources"`' on the same level as the parent (e.g. `serversResources`) and place the child-resource module inside this folder. In the given example we would have the following folder structure:
+  Resources like `Microsoft.Sql/servers` may have dedicated modules for child-resources such as `Microsoft.Sql/servers/databases`. In these cases we recommend to create a sub-folder with the 'parent folder name and suffix `"Resources"`' on the same level as the parent (e.g. `serversResources`) and place the child-resource module inside this folder. In the given example we would have the following folder structure:
   ```
   Microsoft.Sql
   ├─ servers [module]
