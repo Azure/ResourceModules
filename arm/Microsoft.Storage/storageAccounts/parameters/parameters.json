@@ -3,7 +3,7 @@
     "contentVersion": "1.0.0.0",
     "parameters": {
         "storageAccountName": {
-            "value": "sxxazsaweux001alsehrts2"
+            "value": "sxxazsaweux001alsehrts3"
         },
         "managedServiceIdentity": {
             "value": "SystemAssigned"
