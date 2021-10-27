@@ -330,5 +330,5 @@ output storageAccountResourceId string = storageAccount.id
 output storageAccountRegion string = storageAccount.location
 output storageAccountName string = storageAccount.name
 output storageAccountResourceGroup string = resourceGroup().name
-output storageAccountPrimaryBlobEndpoint string = (!contains(storageAccount_blobService, 'blobContainers')) ? '' : reference('Microsoft.Storage/storageAccounts/${storageAccount.name}', '2019-04-01').primaryEndpoints.blob
+output storageAccountPrimaryBlobEndpoint string = (!empty(blobServices) && contains(storageAccount_blobService, 'blobContainers')) ? '' : reference('Microsoft.Storage/storageAccounts/${storageAccount.name}', '2019-04-01').primaryEndpoints.blob
 output assignedIdentityID string = (contains(managedServiceIdentity, 'SystemAssigned') ? reference(storageAccount.id, '2019-06-01', 'full').identity.principalId : '')
