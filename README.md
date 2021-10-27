@@ -27,6 +27,7 @@ This repository includes a collection of advanced and curated Modules consisting
 
 | Name | Bicep | Status |
 | - | - | - |
+| [](https://github.com/Azure/ResourceModules/tree/main/arm/Microsoft.ServiceFabric/clusters) | :heavy_check_mark: | [!['Service Fabric: Clusters'](https://github.com/Azure/ResourceModules/actions/workflows/ms.servicefabric.clusters.yml/badge.svg)](https://github.com/Azure/ResourceModules/actions/workflows/ms.servicefabric.clusters.yml) |
 | [Action Group](https://github.com/Azure/ResourceModules/tree/main/arm/Microsoft.Insights/actionGroups) | :heavy_check_mark: | [!['Insights: Actiongroups'](https://github.com/Azure/ResourceModules/actions/workflows/ms.insights.actiongroups.yml/badge.svg)](https://github.com/Azure/ResourceModules/actions/workflows/ms.insights.actiongroups.yml) |
 | [Activity Log Alert](https://github.com/Azure/ResourceModules/tree/main/arm/Microsoft.Insights/activityLogAlerts) | :heavy_check_mark: | [!['Insights: Activitylogalerts'](https://github.com/Azure/ResourceModules/actions/workflows/ms.insights.activitylogalerts.yml/badge.svg)](https://github.com/Azure/ResourceModules/actions/workflows/ms.insights.activitylogalerts.yml) |
 | [ActivityLog](https://github.com/Azure/ResourceModules/tree/main/arm/Microsoft.Insights/diagnosticSettings) | :heavy_check_mark: | [!['Insights: Diagnosticsettings'](https://github.com/Azure/ResourceModules/actions/workflows/ms.insights.diagnosticsettings.yml/badge.svg)](https://github.com/Azure/ResourceModules/actions/workflows/ms.insights.diagnosticsettings.yml) |
