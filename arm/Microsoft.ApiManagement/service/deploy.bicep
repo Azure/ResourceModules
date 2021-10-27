@@ -43,6 +43,9 @@ param hostnameConfigurations array = []
 @description('Optional. Managed service identity of the Api Management service.')
 param identity object = {}
 
+@description('Optional. Used to enable the deployment of the identityProviders child resource.')
+param enableIdentityProviders bool = false
+
 @description('Optional. List of Allowed Tenants when configuring Azure Active Directory login. - string')
 param identityProviderAllowedTenants array = []
 
@@ -73,7 +76,6 @@ param identityProviderSignUpPolicyName string = ''
 
 @description('Optional. Identity Provider Type identifier.')
 @allowed([
-  ''
   'aad'
   'aadB2C'
   'facebook'
@@ -81,7 +83,7 @@ param identityProviderSignUpPolicyName string = ''
   'microsoft'
   'twitter'
 ])
-param identityProviderType string = ''
+param identityProviderType string = 'aad'
 
 @description('Optional. Location for all Resources.')
 param location string = resourceGroup().location
@@ -253,7 +255,7 @@ resource apiManagementService 'Microsoft.ApiManagement/service@2020-12-01' = {
     name: 'policy'
     properties: apiManagementServicePolicy
   }
-  resource apiManagementService_identityProvider 'identityProviders@2020-06-01-preview' = if (!empty(identityProviderType)) {
+  resource apiManagementService_identityProvider 'identityProviders@2020-06-01-preview' = if (enableIdentityProviders) {
     name: identityProviderType
     properties: {
       type: identityProviderType
