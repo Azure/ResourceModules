@@ -26,7 +26,7 @@ resource container 'Microsoft.Storage/storageAccounts/blobServices/containers@20
   }
 }
 
-module immutabilityPolicy '.immutabilityPolicies/deploy.bicep' = if (!empty(immutabilityPolicyProperties)) {
+module immutabilityPolicy 'immutabilityPolicies/deploy.bicep' = if (!empty(immutabilityPolicyProperties)) {
   name: 'default'
   params: {
     storageAccountName: storageAccountName
@@ -36,7 +36,7 @@ module immutabilityPolicy '.immutabilityPolicies/deploy.bicep' = if (!empty(immu
   }
 }
 
-module container_rbac './.bicep/nested_rbac.bicep' = [for (roleAssignment, index) in roleAssignments: {
+module container_rbac 'bicep/nested_rbac.bicep' = [for (roleAssignment, index) in roleAssignments: {
   name: '${deployment().name}-Rbac-${index}'
   params: {
     roleAssignmentObj: roleAssignment
