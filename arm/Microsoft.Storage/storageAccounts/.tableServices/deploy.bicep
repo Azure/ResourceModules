@@ -11,7 +11,9 @@ param tables array = []
 resource tableService 'Microsoft.Storage/storageAccounts/tableServices@2021-04-01' = {
   name: '${storageAccountName}/default'
   properties: {
-    cors: cors
+    cors: {
+      corsRules: []
+    }
   }
 }
 

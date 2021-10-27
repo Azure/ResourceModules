@@ -20,7 +20,9 @@ param fileShares array = []
 resource fileService 'Microsoft.Storage/storageAccounts/fileServices@2021-04-01' = {
   name: '${storageAccountName}/default'
   properties: {
-    cors: cors
+    cors: {
+      corsRules: []
+    }
     protocolSettings: protocolSettings
     shareDeleteRetentionPolicy: shareDeleteRetentionPolicy
   }

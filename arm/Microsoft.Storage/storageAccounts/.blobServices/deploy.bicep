@@ -25,7 +25,9 @@ resource blobServices 'Microsoft.Storage/storageAccounts/blobServices@2021-08-01
       days: deleteRetentionPolicyDays
     }
     automaticSnapshotPolicyEnabled: automaticSnapshotPolicyEnabled
-    cors: cors
+    cors: {
+      corsRules: []
+    }
   }
 }
 

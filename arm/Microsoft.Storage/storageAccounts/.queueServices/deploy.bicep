@@ -11,7 +11,9 @@ param queues array = []
 resource queueService 'Microsoft.Storage/storageAccounts/queueServices@2021-04-01' = {
   name: '${storageAccountName}/default'
   properties: {
-    cors: cors
+    cors: {
+      corsRules: []
+    }
   }
 }
 
