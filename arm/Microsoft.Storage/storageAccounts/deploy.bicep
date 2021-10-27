@@ -1,6 +1,6 @@
 @maxLength(24)
 @description('Optional. Name of the Storage Account.')
-param storageAccountName string = ''
+param name string = ''
 
 @description('Optional. Location for all resources.')
 param location string = resourceGroup().location
@@ -128,7 +128,7 @@ var azureFilesIdentityBasedAuthentication_var = azureFilesIdentityBasedAuthentic
 var maxNameLength = 24
 var uniqueStoragenameUntrim = '${uniqueString('Storage Account${basetime}')}'
 var uniqueStoragename = length(uniqueStoragenameUntrim) > maxNameLength ? substring(uniqueStoragenameUntrim, 0, maxNameLength) : uniqueStoragenameUntrim
-var storageAccountName_var = empty(storageAccountName) ? uniqueStoragename : storageAccountName
+var storageAccountName_var = empty(name) ? uniqueStoragename : name
 
 var saBaseProperties = {
   encryption: {
