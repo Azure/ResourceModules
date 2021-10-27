@@ -8,9 +8,10 @@ param dataActions array = []
 param notDataActions array = []
 param subscriptionId string = subscription().subscriptionId
 param resourceGroupName string = resourceGroup().name
+param location string = resourceGroup().location
 
 resource roleDefinition 'Microsoft.Authorization/roleDefinitions@2018-01-01-preview' = {
-  name: guid(roleName, subscriptionId, resourceGroupName)
+  name: guid(roleName, subscriptionId, resourceGroupName, location)
   properties: {
     roleName: roleName
     description: roleDescription

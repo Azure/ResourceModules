@@ -41,6 +41,7 @@ module roleDefinition_mg './.bicep/nested_roleDefinitions_mg.bicep' = if (!empty
     dataActions: dataActions
     notDataActions: notDataActions
     managementGroupId: managementGroupId
+    location: location
   }
 }
 
@@ -55,6 +56,7 @@ module roleDefinition_sub './.bicep/nested_roleDefinitions_sub.bicep' = if (empt
     dataActions: dataActions
     notDataActions: notDataActions
     subscriptionId: subscriptionId
+    location: location
   }
 }
 
@@ -70,6 +72,7 @@ module roleDefinition_rg './.bicep/nested_roleDefinitions_rg.bicep' = if (empty(
     notDataActions: notDataActions
     subscriptionId: subscriptionId
     resourceGroupName: resourceGroupName
+    location: location
   }
 }
 

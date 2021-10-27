@@ -7,9 +7,10 @@ param notActions array = []
 param dataActions array = []
 param notDataActions array = []
 param managementGroupId string
+param location string = deployment().location
 
 resource roleDefinition 'Microsoft.Authorization/roleDefinitions@2018-01-01-preview' = {
-  name: guid(roleName, managementGroupId)
+  name: guid(roleName, managementGroupId, location)
   properties: {
     roleName: roleName
     description: roleDescription
