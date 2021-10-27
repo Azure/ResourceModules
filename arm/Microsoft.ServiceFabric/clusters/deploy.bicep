@@ -141,15 +141,15 @@ param serviceFabricApplicationTypes array = []
 
 // Var section
 var azureActiveDirectory_var = {
-  clientApplication: (!empty(azureActiveDirectory) ? azureActiveDirectory.clientApplication : json('null'))
-  clusterApplication: (!empty(azureActiveDirectory) ? azureActiveDirectory.clusterApplication : json('null'))
-  tenantId: (!empty(azureActiveDirectory) ? azureActiveDirectory.tenantId : json('null'))
+  clientApplication: !empty(azureActiveDirectory) ? azureActiveDirectory.clientApplication : null
+  clusterApplication: !empty(azureActiveDirectory) ? azureActiveDirectory.clusterApplication : null
+  tenantId: !empty(azureActiveDirectory) ? azureActiveDirectory.tenantId : null
 }
 
 var certificate_var = {
-  thumbprint: (!empty(certificate) ? certificate.thumbprint : json('null'))
-  thumbprintSecondary: (!empty(certificate) ? certificate.thumbprintSecondary : json('null'))
-  x509StoreName: (!empty(certificate) ? certificate.x509StoreName : json('null'))
+  thumbprint: !empty(certificate) ? certificate.thumbprint : null
+  thumbprintSecondary: !empty(certificate) ? certificate.thumbprintSecondary : null
+  x509StoreName: !empty(certificate) ? certificate.x509StoreName : null
 }
 
 var certificateCommonNamesList_var = [for index in range(0, (!empty(certificateCommonNames) ? length(certificateCommonNames.commonNames) : 0)): {
@@ -157,68 +157,68 @@ var certificateCommonNamesList_var = [for index in range(0, (!empty(certificateC
 }]
 
 var certificateCommonNames_var = {
-  commonNames: (!empty(certificateCommonNames) ? certificateCommonNamesList_var : json('null'))
-  x509StoreName: (!empty(certificateCommonNames) ? certificateCommonNames.x509StoreName : json('null'))
+  commonNames: !empty(certificateCommonNames) ? certificateCommonNamesList_var : null
+  x509StoreName: !empty(certificateCommonNames) ? certificateCommonNames.x509StoreName : null
 }
 
 var clientCertificateCommonNames_var = [for index in range(0, (!empty(clientCertificateCommonNames) ? length(clientCertificateCommonNames) : 0)): {
-  certificateCommonName: (!empty(clientCertificateCommonNames) ? '${clientCertificateCommonNames[index].certificateCommonName}' : json('null'))
-  certificateIssuerThumbprint: (!empty(clientCertificateCommonNames) ? '${clientCertificateCommonNames[index].certificateIssuerThumbprint}' : json('null'))
-  isAdmin: (!empty(clientCertificateCommonNames) ? clientCertificateCommonNames[index].isAdmin : null)
+  certificateCommonName: !empty(clientCertificateCommonNames) ? '${clientCertificateCommonNames[index].certificateCommonName}' : null
+  certificateIssuerThumbprint: !empty(clientCertificateCommonNames) ? '${clientCertificateCommonNames[index].certificateIssuerThumbprint}' : null
+  isAdmin: !empty(clientCertificateCommonNames) ? clientCertificateCommonNames[index].isAdmin : null
 }]
 
 var clientCertificateThumbprints_var = [for index in range(0, (!empty(clientCertificateThumbprints) ? length(clientCertificateThumbprints) : 0)): {
-  certificateThumbprint: (!empty(clientCertificateThumbprints) ? '${clientCertificateThumbprints[index].certificateThumbprint}' : json('null'))
-  isAdmin: (!empty(clientCertificateThumbprints) ? clientCertificateThumbprints[index].isAdmin : null)
+  certificateThumbprint: !empty(clientCertificateThumbprints) ? '${clientCertificateThumbprints[index].certificateThumbprint}' : null
+  isAdmin: !empty(clientCertificateThumbprints) ? clientCertificateThumbprints[index].isAdmin : null
 }]
 
 var diagnosticsStorageAccountConfig_var = {
-  blobEndpoint: (!empty(diagnosticsStorageAccountConfig) ? diagnosticsStorageAccountConfig.blobEndpoint : json('null'))
-  protectedAccountKeyName: (!empty(diagnosticsStorageAccountConfig) ? diagnosticsStorageAccountConfig.protectedAccountKeyName : json('null'))
-  protectedAccountKeyName2: (!empty(diagnosticsStorageAccountConfig) ? diagnosticsStorageAccountConfig.protectedAccountKeyName2 : json('null'))
-  queueEndpoint: (!empty(diagnosticsStorageAccountConfig) ? diagnosticsStorageAccountConfig.queueEndpoint : json('null'))
-  storageAccountName: (!empty(diagnosticsStorageAccountConfig) ? diagnosticsStorageAccountConfig.storageAccountName : json('null'))
-  tableEndpoint: (!empty(diagnosticsStorageAccountConfig) ? diagnosticsStorageAccountConfig.tableEndpoint : json('null'))
+  blobEndpoint: !empty(diagnosticsStorageAccountConfig) ? diagnosticsStorageAccountConfig.blobEndpoint : null
+  protectedAccountKeyName: !empty(diagnosticsStorageAccountConfig) ? diagnosticsStorageAccountConfig.protectedAccountKeyName : null
+  protectedAccountKeyName2: !empty(diagnosticsStorageAccountConfig) ? diagnosticsStorageAccountConfig.protectedAccountKeyName2 : null
+  queueEndpoint: !empty(diagnosticsStorageAccountConfig) ? diagnosticsStorageAccountConfig.queueEndpoint : null
+  storageAccountName: !empty(diagnosticsStorageAccountConfig) ? diagnosticsStorageAccountConfig.storageAccountName : null
+  tableEndpoint: !empty(diagnosticsStorageAccountConfig) ? diagnosticsStorageAccountConfig.tableEndpoint : null
 }
 
 var fabricSettings_var = [for index in range(0, (!empty(fabricSettings) ? length(fabricSettings) : 0)): {
-  name: (!empty(fabricSettings) ? fabricSettings[index].name : json('null'))
-  parameters: (!empty(fabricSettings) ? fabricSettings[index].parameters : json('null'))
+  name: !empty(fabricSettings) ? fabricSettings[index].name : null
+  parameters: !empty(fabricSettings) ? fabricSettings[index].parameters : null
 }]
 
 var nodeTypes_var = [for nodeType in nodeTypes: {
   applicationPorts: contains(nodeType, 'applicationPorts') ? {
-    endPort: (contains(nodeType.applicationPorts, 'endPort') ? nodeType.applicationPorts.endPort : null)
-    startPort: (contains(nodeType.applicationPorts, 'startPort') ? nodeType.applicationPorts.startPort : null)
-  } : json('null')
-  capacities: (contains(nodeType, 'capacities') ? nodeType.capacities : json('null'))
-  clientConnectionEndpointPort: (contains(nodeType, 'clientConnectionEndpointPort') ? nodeType.clientConnectionEndpointPort : null)
-  durabilityLevel: (contains(nodeType, 'durabilityLevel') ? nodeType.durabilityLevel : null)
+    endPort: contains(nodeType.applicationPorts, 'endPort') ? nodeType.applicationPorts.endPort : null
+    startPort: contains(nodeType.applicationPorts, 'startPort') ? nodeType.applicationPorts.startPort : null
+  } : null
+  capacities: contains(nodeType, 'capacities') ? nodeType.capacities : null
+  clientConnectionEndpointPort: contains(nodeType, 'clientConnectionEndpointPort') ? nodeType.clientConnectionEndpointPort : null
+  durabilityLevel: contains(nodeType, 'durabilityLevel') ? nodeType.durabilityLevel : null
   ephemeralPorts: contains(nodeType, 'ephemeralPorts') ? {
-    endPort: (contains(nodeType.ephemeralPorts, 'endPort') ? nodeType.ephemeralPorts.endPort : null)
-    startPort: (contains(nodeType.ephemeralPorts, 'startPort') ? nodeType.ephemeralPorts.startPort : null)
-  } : json('null')
-  httpGatewayEndpointPort: (contains(nodeType, 'httpGatewayEndpointPort') ? nodeType.httpGatewayEndpointPort : null)
-  isPrimary: (contains(nodeType, 'isPrimary') ? nodeType.isPrimary : null)
-  isStateless: (contains(nodeType, 'isStateless') ? nodeType.isStateless : null)
-  multipleAvailabilityZones: (contains(nodeType, 'multipleAvailabilityZones') ? nodeType.multipleAvailabilityZones : null)
+    endPort: contains(nodeType.ephemeralPorts, 'endPort') ? nodeType.ephemeralPorts.endPort : null
+    startPort: contains(nodeType.ephemeralPorts, 'startPort') ? nodeType.ephemeralPorts.startPort : null
+  } : null
+  httpGatewayEndpointPort: contains(nodeType, 'httpGatewayEndpointPort') ? nodeType.httpGatewayEndpointPort : null
+  isPrimary: contains(nodeType, 'isPrimary') ? nodeType.isPrimary : null
+  isStateless: contains(nodeType, 'isStateless') ? nodeType.isStateless : null
+  multipleAvailabilityZones: contains(nodeType, 'multipleAvailabilityZones') ? nodeType.multipleAvailabilityZones : null
   name: '${(!empty(nodeType.name) ? nodeType.name : 'Node00')}'
-  placementProperties: (contains(nodeType, 'placementProperties') ? nodeType.placementProperties : json('null'))
-  reverseProxyEndpointPort: (contains(nodeType, 'reverseProxyEndpointPort') ? nodeType.reverseProxyEndpointPort : null)
-  vmInstanceCount: (contains(nodeType, 'vmInstanceCount') ? nodeType.vmInstanceCount : 1)
+  placementProperties: contains(nodeType, 'placementProperties') ? nodeType.placementProperties : null
+  reverseProxyEndpointPort: contains(nodeType, 'reverseProxyEndpointPort') ? nodeType.reverseProxyEndpointPort : null
+  vmInstanceCount: contains(nodeType, 'vmInstanceCount') ? nodeType.vmInstanceCount : 1
 }]
 
 var notifications_var = [for index in range(0, (!empty(notifications) ? length(notifications) : 0)): {
-  isEnabled: (!empty(notifications) ? notifications[index].isEnabled : null)
-  notificationCategory: (!empty(notifications) ? notifications[index].notificationCategory : json('null'))
-  notificationLevel: (!empty(notifications) ? notifications[index].notificationLevel : null)
-  notificationTargets: (!empty(notifications) ? notifications[index].notificationTargets : json('null'))
+  isEnabled: !empty(notifications) ? notifications[index].isEnabled : null
+  notificationCategory: !empty(notifications) ? notifications[index].notificationCategory : null
+  notificationLevel: !empty(notifications) ? notifications[index].notificationLevel : null
+  notificationTargets: !empty(notifications) ? notifications[index].notificationTargets : null
 }]
 
 var reverseProxyCertificate_var = {
-  thumbprint: (!empty(reverseProxyCertificate) ? reverseProxyCertificate.thumbprint : json('null'))
-  thumbprintSecondary: (!empty(reverseProxyCertificate) ? reverseProxyCertificate.thumbprintSecondary : json('null'))
-  x509StoreName: (!empty(reverseProxyCertificate) ? reverseProxyCertificate.x509StoreName : null)
+  thumbprint: !empty(reverseProxyCertificate) ? reverseProxyCertificate.thumbprint : null
+  thumbprintSecondary: !empty(reverseProxyCertificate) ? reverseProxyCertificate.thumbprintSecondary : null
+  x509StoreName: !empty(reverseProxyCertificate) ? reverseProxyCertificate.x509StoreName : null
 }
 
 var reverseProxyCertificateCommonNamesList_var = [for index in range(0, (!empty(reverseProxyCertificateCommonNames) ? length(reverseProxyCertificateCommonNames.commonNames) : 0)): {
@@ -226,28 +226,28 @@ var reverseProxyCertificateCommonNamesList_var = [for index in range(0, (!empty(
 }]
 
 var reverseProxyCertificateCommonNames_var = {
-  commonNames: (!empty(reverseProxyCertificateCommonNames) ? reverseProxyCertificateCommonNamesList_var : json('null'))
-  x509StoreName: (!empty(reverseProxyCertificateCommonNames) ? reverseProxyCertificateCommonNames.x509StoreName : null)
+  commonNames: !empty(reverseProxyCertificateCommonNames) ? reverseProxyCertificateCommonNamesList_var : null
+  x509StoreName: !empty(reverseProxyCertificateCommonNames) ? reverseProxyCertificateCommonNames.x509StoreName : null
 }
 
 var upgradeDescription_var = {
   deltaHealthPolicy: {
-    applicationDeltaHealthPolicies: (!empty(upgradeDescription) ? upgradeDescription.applicationDeltaHealthPolicies : json('null'))
-    maxPercentDeltaUnhealthyApplications: (!empty(upgradeDescription) ? upgradeDescription.maxPercentDeltaUnhealthyApplications : null)
-    maxPercentDeltaUnhealthyNodes: (!empty(upgradeDescription) ? upgradeDescription.maxPercentDeltaUnhealthyNodes : null)
-    maxPercentUpgradeDomainDeltaUnhealthyNodes: (!empty(upgradeDescription) ? upgradeDescription.maxPercentUpgradeDomainDeltaUnhealthyNodes : null)
+    applicationDeltaHealthPolicies: !empty(upgradeDescription) ? upgradeDescription.applicationDeltaHealthPolicies : null
+    maxPercentDeltaUnhealthyApplications: !empty(upgradeDescription) ? upgradeDescription.maxPercentDeltaUnhealthyApplications : null
+    maxPercentDeltaUnhealthyNodes: !empty(upgradeDescription) ? upgradeDescription.maxPercentDeltaUnhealthyNodes : null
+    maxPercentUpgradeDomainDeltaUnhealthyNodes: !empty(upgradeDescription) ? upgradeDescription.maxPercentUpgradeDomainDeltaUnhealthyNodes : null
   }
-  forceRestart: '${(!empty(upgradeDescription) ? upgradeDescription.forceRestart : json('null'))}'
-  healthCheckRetryTimeout: '${(!empty(upgradeDescription) ? upgradeDescription.healthCheckRetryTimeout : null)}'
-  healthCheckStableDuration: '${(!empty(upgradeDescription) ? upgradeDescription.healthCheckStableDuration : null)}'
-  healthCheckWaitDuration: '${(!empty(upgradeDescription) ? upgradeDescription.healthCheckWaitDuration : null)}'
+  forceRestart: '${!empty(upgradeDescription) ? upgradeDescription.forceRestart : null}'
+  healthCheckRetryTimeout: '${!empty(upgradeDescription) ? upgradeDescription.healthCheckRetryTimeout : null}'
+  healthCheckStableDuration: '${!empty(upgradeDescription) ? upgradeDescription.healthCheckStableDuration : null}'
+  healthCheckWaitDuration: '${!empty(upgradeDescription) ? upgradeDescription.healthCheckWaitDuration : null}'
   healthPolicy: {
-    applicationHealthPolicies: (!empty(upgradeDescription) ? upgradeDescription.healthPolicy.applicationHealthPolicies : json('null'))
-    maxPercentUnhealthyApplications: (!empty(upgradeDescription) ? upgradeDescription.healthPolicy.maxPercentUnhealthyApplications : null)
-    maxPercentUnhealthyNodes: (!empty(upgradeDescription) ? upgradeDescription.healthPolicy.maxPercentUnhealthyNodes : null)
-    upgradeDomainTimeout: '${(!empty(upgradeDescription) ? upgradeDescription.upgradeDomainTimeout : null)}'
-    upgradeReplicaSetCheckTimeout: '${(!empty(upgradeDescription) ? upgradeDescription.upgradeReplicaSetCheckTimeout : null)}'
-    upgradeTimeout: '${(!empty(upgradeDescription) ? upgradeDescription.upgradeTimeout : null)}'
+    applicationHealthPolicies: !empty(upgradeDescription) ? upgradeDescription.healthPolicy.applicationHealthPolicies : null
+    maxPercentUnhealthyApplications: !empty(upgradeDescription) ? upgradeDescription.healthPolicy.maxPercentUnhealthyApplications : null
+    maxPercentUnhealthyNodes: !empty(upgradeDescription) ? upgradeDescription.healthPolicy.maxPercentUnhealthyNodes : null
+    upgradeDomainTimeout: '${!empty(upgradeDescription) ? upgradeDescription.upgradeDomainTimeout : null}'
+    upgradeReplicaSetCheckTimeout: '${!empty(upgradeDescription) ? upgradeDescription.upgradeReplicaSetCheckTimeout : null}'
+    upgradeTimeout: '${!empty(upgradeDescription) ? upgradeDescription.upgradeTimeout : null}'
   }
 }
 
@@ -282,30 +282,30 @@ resource serviceFabricCluster 'Microsoft.ServiceFabric/clusters@2021-06-01' = {
     applicationTypeVersionsCleanupPolicy: {
       maxUnusedVersionsToKeep: maxUnusedVersionsToKeep
     }
-    azureActiveDirectory: (!empty(azureActiveDirectory) ? azureActiveDirectory_var : json('null'))
-    certificate: (!empty(certificate) ? certificate_var : json('null'))
-    certificateCommonNames: (!empty(certificateCommonNames) ? certificateCommonNames_var : json('null'))
-    clientCertificateCommonNames: (!empty(clientCertificateCommonNames) ? clientCertificateCommonNames_var : json('null'))
-    clientCertificateThumbprints: (!empty(clientCertificateThumbprints) ? clientCertificateThumbprints_var : json('null'))
-    clusterCodeVersion: '${(!empty(clusterCodeVersion) ? clusterCodeVersion : null)}'
-    diagnosticsStorageAccountConfig: (!empty(diagnosticsStorageAccountConfig) ? diagnosticsStorageAccountConfig_var : json('null'))
+    azureActiveDirectory: !empty(azureActiveDirectory) ? azureActiveDirectory_var : null
+    certificate: !empty(certificate) ? certificate_var : null
+    certificateCommonNames: !empty(certificateCommonNames) ? certificateCommonNames_var : null
+    clientCertificateCommonNames: !empty(clientCertificateCommonNames) ? clientCertificateCommonNames_var : null
+    clientCertificateThumbprints: !empty(clientCertificateThumbprints) ? clientCertificateThumbprints_var : null
+    clusterCodeVersion: !empty(clusterCodeVersion) ? clusterCodeVersion : null
+    diagnosticsStorageAccountConfig: !empty(diagnosticsStorageAccountConfig) ? diagnosticsStorageAccountConfig_var : null
     eventStoreServiceEnabled: eventStoreServiceEnabled
-    fabricSettings: (!empty(fabricSettings) ? fabricSettings_var : json('null'))
+    fabricSettings: !empty(fabricSettings) ? fabricSettings_var : null
     infrastructureServiceManager: infrastructureServiceManager
-    managementEndpoint: '${(!empty(managementEndpoint) ? managementEndpoint : null)}'
+    managementEndpoint: '${!empty(managementEndpoint) ? managementEndpoint : null}'
     nodeTypes: nodeTypes_var
-    notifications: (!empty(notifications) ? notifications_var : json('null'))
+    notifications: !empty(notifications) ? notifications_var : null
     reliabilityLevel: reliabilityLevel
-    reverseProxyCertificate: (!empty(reverseProxyCertificate) ? reverseProxyCertificate_var : json('null'))
-    reverseProxyCertificateCommonNames: (!empty(reverseProxyCertificateCommonNames) ? reverseProxyCertificateCommonNames_var : json('null'))
-    sfZonalUpgradeMode: (!empty(sfZonalUpgradeMode) ? sfZonalUpgradeMode : json('null'))
-    upgradeDescription: (!empty(upgradeDescription) ? upgradeDescription_var : json('null'))
-    upgradeMode: (!empty(upgradeMode) ? upgradeMode : null)
-    upgradePauseEndTimestampUtc: (!empty(upgradePauseEndTimestampUtc) ? upgradePauseEndTimestampUtc : null)
-    upgradePauseStartTimestampUtc: (!empty(upgradePauseStartTimestampUtc) ? upgradePauseStartTimestampUtc : null)
-    upgradeWave: (!empty(upgradeWave) ? upgradeWave : null)
-    vmImage: (!empty(vmImage) ? vmImage : null)
-    vmssZonalUpgradeMode: (!empty(vmssZonalUpgradeMode) ? vmssZonalUpgradeMode : null)
+    reverseProxyCertificate: !empty(reverseProxyCertificate) ? reverseProxyCertificate_var : null
+    reverseProxyCertificateCommonNames: !empty(reverseProxyCertificateCommonNames) ? reverseProxyCertificateCommonNames_var : null
+    sfZonalUpgradeMode: !empty(sfZonalUpgradeMode) ? sfZonalUpgradeMode : null
+    upgradeDescription: !empty(upgradeDescription) ? upgradeDescription_var : null
+    upgradeMode: !empty(upgradeMode) ? upgradeMode : null
+    upgradePauseEndTimestampUtc: !empty(upgradePauseEndTimestampUtc) ? upgradePauseEndTimestampUtc : null
+    upgradePauseStartTimestampUtc: !empty(upgradePauseStartTimestampUtc) ? upgradePauseStartTimestampUtc : null
+    upgradeWave: !empty(upgradeWave) ? upgradeWave : null
+    vmImage: !empty(vmImage) ? vmImage : null
+    vmssZonalUpgradeMode: !empty(vmssZonalUpgradeMode) ? vmssZonalUpgradeMode : null
     waveUpgradePaused: waveUpgradePaused
   }
 }
@@ -321,7 +321,7 @@ resource serviceFabricCluster_lock 'Microsoft.Authorization/locks@2016-09-01' = 
 }
 
 // Service Fabric cluster RBAC assignment
-module serviceFabricCluster_rbac './.bicep/nested_rbac.bicep' = [for (roleAssignment, index) in roleAssignments: {
+module serviceFabricCluster_rbac '.bicep/nested_rbac.bicep' = [for (roleAssignment, index) in roleAssignments: {
   name: '${serviceFabricCluster.name}-${uniqueString(deployment().name, location)}-Rbac-${index}'
   params: {
     roleAssignmentObj: roleAssignment
@@ -338,7 +338,7 @@ module serviceFabricCluster_applicationTypes '.bicep/nested_applicationTypes.bic
     clusterName: serviceFabricCluster.name
     location: location
     tags: tags
-    properties: (!empty(applicationType.properties) ? applicationType.properties : json('null'))
+    properties: !empty(applicationType.properties) ? applicationType.properties : null
   }
 }]
 
@@ -350,17 +350,17 @@ module serviceFabricCluster_applications '.bicep/nested_applications.bicep' = [f
     clusterName: serviceFabricCluster.name
     location: location
     tags: tags
-    identity: (!empty(application.identity) ? application.identity : json('null'))
+    identity: !empty(application.identity) ? application.identity : null
     properties: {
-      managedIdentities: (!empty(application.managedIdentities) ? application.managedIdentities : json('null'))
-      maximumNodes: (contains(application, 'maximumNodes') ? application.maximumNodes : 1)
-      metrics: (!empty(application.metrics) ? application.metrics : json('null'))
-      minimumNodes: (contains(application, 'minimumNodes') ? application.minimumNodes : 0)
-      parameters: (!empty(application.parameters) ? application.parameters : json('null'))
-      removeApplicationCapacity: (contains(application, 'removeApplicationCapacity') ? application.removeApplicationCapacity : false)
-      typeName: (!empty(application.typeName) ? application.typeName : null)
-      typeVersion: (!empty(application.typeVersion) ? application.typeVersion : null)
-      upgradePolicy: (!empty(application.upgradePolicy) ? application.upgradePolicy : json('null'))
+      managedIdentities: !empty(application.managedIdentities) ? application.managedIdentities : null
+      maximumNodes: contains(application, 'maximumNodes') ? application.maximumNodes : 1
+      metrics: !empty(application.metrics) ? application.metrics : null
+      minimumNodes: contains(application, 'minimumNodes') ? application.minimumNodes : 0
+      parameters: !empty(application.parameters) ? application.parameters : null
+      removeApplicationCapacity: contains(application, 'removeApplicationCapacity') ? application.removeApplicationCapacity : false
+      typeName: !empty(application.typeName) ? application.typeName : null
+      typeVersion: !empty(application.typeVersion) ? application.typeVersion : null
+      upgradePolicy: !empty(application.upgradePolicy) ? application.upgradePolicy : null
     }
   }
   dependsOn: [

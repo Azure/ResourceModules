@@ -14,7 +14,7 @@ resource applicationType 'Microsoft.ServiceFabric/clusters/applicationTypes@2021
     name: version.name
     location: location
     tags: tags
-    properties: (!empty(version.properties) ? version.properties : json('null'))
+    properties: !empty(version.properties) ? version.properties : null
   }]
 }
 

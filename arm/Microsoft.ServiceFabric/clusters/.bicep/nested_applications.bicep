@@ -16,7 +16,7 @@ resource application 'Microsoft.ServiceFabric/clusters/applications@2021-06-01' 
     name: service.name
     location: location
     tags: tags
-    properties: (!empty(service.properties) ? service.properties : json('null'))
+    properties: !empty(service.properties) ? service.properties : null
   }]
 }
 
