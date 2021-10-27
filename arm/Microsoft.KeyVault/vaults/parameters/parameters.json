@@ -3,7 +3,7 @@
     "contentVersion": "1.0.0.0",
     "parameters": {
         "keyVaultName": {
-            "value": "sxx-az-kv-weu-x-009"
+            "value": "sxx-az-kv-weu-x-001"
         },
         "enableSoftDelete": {
             "value": true
@@ -15,14 +15,12 @@
             "value": false
         },
         "roleAssignments": {
-            "value": [
-                {
-                    "roleDefinitionIdOrName": "Reader",
-                    "principalIds": [
-                        "5545f7a0-51f4-46af-b3b4-baecf5176a56"
-                    ]
-                }
-            ]
+            "value": [{
+                "roleDefinitionIdOrName": "Reader",
+                "principalIds": [
+                    "5545f7a0-51f4-46af-b3b4-baecf5176a56"
+                ]
+            }]
         }
     }
 }

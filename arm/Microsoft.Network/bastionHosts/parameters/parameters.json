@@ -6,7 +6,7 @@
             "value": "sxx-az-bas-weu-x-001"
         },
         "vNetId": {
-            "value": "/subscriptions/8629be3b-96bc-482d-a04b-ffff597c65a2/resourceGroups/validation-rg/providers/Microsoft.Network/virtualNetworks/adp-sxx-az-vnet-weu-x-001"
+            "value": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/virtualNetworks/adp-sxx-az-vnet-weu-x-001"
         },
         "azureBastionPipName": {
             "value": "sxx-az-baspip-weu-x-001-pip"

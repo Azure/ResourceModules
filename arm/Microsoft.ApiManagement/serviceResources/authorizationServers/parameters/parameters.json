@@ -17,10 +17,20 @@
       ]
     },
     "clientId": {
-      "value": "test"
+      "reference": {
+        "keyVault": {
+          "id": "/subscriptions/8629be3b-96bc-482d-a04b-ffff597c65a2/resourceGroups/validation-rg/providers/Microsoft.KeyVault/vaults/adp-sxx-az-kv-weu-x-001"
+        },
+        "secretName": "apimclientid"
+      }
     },
     "clientSecret": {
-      "value": "test"
+      "reference": {
+        "keyVault": {
+          "id": "/subscriptions/8629be3b-96bc-482d-a04b-ffff597c65a2/resourceGroups/validation-rg/providers/Microsoft.KeyVault/vaults/adp-sxx-az-kv-weu-x-001"
+        },
+        "secretName": "apimclientsecret"
+      }
     },
     "clientRegistrationEndpoint": {
       "value": "http://localhost"

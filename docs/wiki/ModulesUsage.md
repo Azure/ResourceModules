@@ -5,31 +5,16 @@ This section gives you an overview of how to use the bicep modules.
 ---
 ### _Navigation_
 - [Deploy local template](#Deploy-local-template)
-  - [Azure CLI](#Local-Azure-CLI)
   - [PowerShell](#Local-PowerShell)
+  - [Azure CLI](#Local-Azure-CLI)
 - [Deploy remote template](#Deploy-remote-template)
-  - [Azure CLI](#Remote-Azure-CLI)
   - [PowerShell](#Remote-PowerShell)
+  - [Azure CLI](#Remote-Azure-CLI)
 ---
 
 ## Deploy local template
 
-### Local: Azure CLI
-
-This example targets a resource group level template.
-
-```bash
-az group create --name 'ExampleGroup' --location "Central US"
-$inputObject = @(
-    '--name',           'ExampleDeployment',
-    '--resource-group', 'ExampleGroup',
-    '--template-file',  "$home\Microsoft.KeyVault\vault\deploy.bicep",
-    '--parameters',     'storageAccountType=Standard_GRS',
-)
-az deployment group create @inputObject
-```
-
-### Local: PowerShell
+### **Local:** PowerShell
 
 This example targets a resource group level template.
 
@@ -44,23 +29,25 @@ $inputObject = @{
 New-AzResourceGroupDeployment @inputObject
 ```
 
-## Deploy remote template
+### **Local:** Azure CLI
 
-### Remote: Azure CLI
+This example targets a resource group level template.
 
 ```bash
 az group create --name 'ExampleGroup' --location "Central US"
-
 $inputObject = @(
     '--name',           'ExampleDeployment',
     '--resource-group', 'ExampleGroup',
-    '--template-uri',   'https://raw.githubusercontent.com/MrMCake/ResourceModules/main/arm/Microsoft.KeyVault/vaults/deploy.json',
+    '--template-file',  "$home\Microsoft.KeyVault\vault\deploy.bicep",
     '--parameters',     'storageAccountType=Standard_GRS',
 )
 az deployment group create @inputObject
 ```
 
-### Remote: PowerShell
+## Deploy remote template
+
+
+### **Remote:** PowerShell
 
 ```PowerShell
 New-AzResourceGroup -Name 'ExampleGroup' -Location "Central US"
@@ -73,3 +60,18 @@ $inputObject = @{
 New-AzResourceGroupDeployment @inputObject
 ```
 
+
+
+### **Remote:** Azure CLI
+
+```bash
+az group create --name 'ExampleGroup' --location "Central US"
+
+$inputObject = @(
+    '--name',           'ExampleDeployment',
+    '--resource-group', 'ExampleGroup',
+    '--template-uri',   'https://raw.githubusercontent.com/MrMCake/ResourceModules/main/arm/Microsoft.KeyVault/vaults/deploy.json',
+    '--parameters',     'storageAccountType=Standard_GRS',
+)
+az deployment group create @inputObject
+```
