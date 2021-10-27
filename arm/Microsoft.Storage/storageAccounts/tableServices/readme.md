@@ -13,6 +13,7 @@ This module deploys a storage account table service
 
 | Parameter Name | Type | Default Value | Possible Values | Description |
 | :-- | :-- | :-- | :-- | :-- |
+| `cuaId` | string |  |  | Optional. Customer Usage Attribution id (GUID). This GUID must be previously registered |
 | `storageAccountName` | string |  |  | Required. Name of the Storage Account. |
 | `tables` | _[tables](tables/readme.md)_ array | `[]` |  | Optional. tables to create. |
 

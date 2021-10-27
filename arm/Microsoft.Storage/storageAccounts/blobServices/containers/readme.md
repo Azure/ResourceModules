@@ -14,6 +14,7 @@ This module deployes a blob container
 
 | Parameter Name | Type | Default Value | Possible Values | Description |
 | :-- | :-- | :-- | :-- | :-- |
+| `cuaId` | string |  |  | Optional. Customer Usage Attribution id (GUID). This GUID must be previously registered |
 | `immutabilityPolicyProperties` | object | `{object}` |  | Configure immutability policy. |
 | `name` | string |  |  | The name of the storage container to deploy |
 | `publicAccess` | string | `None` | `[Container, Blob, None]` | Specifies whether data in the container may be accessed publicly and the level of access. |

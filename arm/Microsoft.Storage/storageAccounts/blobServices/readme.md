@@ -17,6 +17,7 @@ This module can be used to deploy a blob service into a storage account.
 | :-- | :-- | :-- | :-- | :-- |
 | `automaticSnapshotPolicyEnabled` | bool |  |  | Optional. Automatic Snapshot is enabled if set to true. |
 | `containers` | _[containers](containers/readme.md)_ array | `[]` |  | Optional. Blob containers to create. |
+| `cuaId` | string |  |  | Optional. Customer Usage Attribution id (GUID). This GUID must be previously registered |
 | `deleteRetentionPolicy` | bool | `True` |  | Optional. Indicates whether DeleteRetentionPolicy is enabled for the Blob service. |
 | `deleteRetentionPolicyDays` | int | `7` |  | Optional. Indicates the number of days that the deleted blob should be retained. The minimum specified value can be 1 and the maximum value can be 365. |
 | `storageAccountName` | string |  |  | Required. Name of the Storage Account. |

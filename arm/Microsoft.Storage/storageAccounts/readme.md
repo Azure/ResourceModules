@@ -45,13 +45,13 @@ The default parameter values are based on the needs of deploying a diagnostic st
 | `managedServiceIdentity` | string | `None` | `[None, SystemAssigned, SystemAssigned,UserAssigned, UserAssigned]` | Optional. Type of managed service identity. |
 | `minimumTlsVersion` | string | `TLS1_2` | `[TLS1_0, TLS1_1, TLS1_2]` | Optional. Set the minimum TLS version on request to storage. |
 | `moveToArchiveAfter` | int | `30` |  | Optional. Set up the amount of days after which the blobs will be moved to archive tier |
+| `name` | string |  |  | Optional. Name of the Storage Account. |
 | `networkAcls` | object | `{object}` |  | Optional. Networks ACLs, this value contains IPs to whitelist and/or Subnet information. |
 | `privateEndpoints` | array | `[]` |  | Optional. Configuration Details for private endpoints. |
 | `queueServices` | _[queueServices](queueServices/readme.md)_ object | `{object}` |  | Optional. Queue service and queues to create. |
 | `roleAssignments` | array | `[]` |  | Optional. Array of role assignment objects that contain the 'roleDefinitionIdOrName' and 'principalId' to define RBAC role assignments on this resource. In the roleDefinitionIdOrName attribute, you can provide either the display name of the role definition, or it's fully qualified ID in the following format: '/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11' |
 | `storageAccountAccessTier` | string | `Hot` | `[Hot, Cool]` | Optional. Storage Account Access Tier. |
 | `storageAccountKind` | string | `StorageV2` | `[Storage, StorageV2, BlobStorage, FileStorage, BlockBlobStorage]` | Optional. Type of Storage Account to create. |
-| `name` | string |  |  | Optional. Name of the Storage Account. |
 | `storageAccountSku` | string | `Standard_GRS` | `[Standard_LRS, Standard_GRS, Standard_RAGRS, Standard_ZRS, Premium_LRS, Premium_ZRS, Standard_GZRS, Standard_RAGZRS]` | Optional. Storage Account Sku Name. |
 | `tableServices` | _[tableServices](tableServices/readme.md)_ object | `{object}` |  | Optional. Table service and tables to create. |
 | `tags` | object | `{object}` |  | Optional. Tags of the resource. |

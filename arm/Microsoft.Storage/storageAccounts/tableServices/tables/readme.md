@@ -12,6 +12,7 @@ This module deploys a storage account table
 
 | Parameter Name | Type | Default Value | Possible Values | Description |
 | :-- | :-- | :-- | :-- | :-- |
+| `cuaId` | string |  |  | Optional. Customer Usage Attribution id (GUID). This GUID must be previously registered |
 | `name` | string |  |  | Required. Name of the table. |
 | `storageAccountName` | string |  |  | Required. Name of the Storage Account. |
 
