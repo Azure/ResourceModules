@@ -15,11 +15,11 @@ resource tableService 'Microsoft.Storage/storageAccounts/tableServices@2021-04-0
   }
 }
 
-module tableService_tables '.tables/deploy.bicep' = [for (table, index) in tables: {
-  name: '${uniqueString(deployment().name)}-Storage-Table-${index}'
+module tableService_tables '.tables/deploy.bicep' = [for (tableName, index) in tables: {
+  name: '${deployment().name}-Storage-Table-${index}'
   params: {
     storageAccountName: storageAccountName
-    name: table.name
+    name: tableName
   }
   dependsOn: [
     tableService

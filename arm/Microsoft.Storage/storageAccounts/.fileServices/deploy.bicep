@@ -17,7 +17,7 @@ param shareDeleteRetentionPolicy object = {
 @description('Optional. File shares to create.')
 param fileShares array = []
 
-resource fileService 'Microsoft.Storage/storageAccounts/fileServices@2021-06-01' = {
+resource fileService 'Microsoft.Storage/storageAccounts/fileServices@2021-04-01' = {
   name: '${storageAccountName}/default'
   properties: {
     cors: cors
