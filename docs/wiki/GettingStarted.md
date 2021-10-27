@@ -21,8 +21,8 @@ No matter from where you start you have to account for some general prerequisite
 To ensure you can use all the content in this repostiroy you'd want to install
 - The latest PowerShell version [PowerShell 7][PowerShellDocs]
   ```PowerShell
-  # One-liner
-  Install-Module -Name Az -Scope CurrentUser -Repository PSGallery -Force
+  # One-liner (Windows)
+  winget install --name PowerShell --exact --source winget
   ```
 - The [Azure Az Module][InstallAzPs] / or at least modules such as `Az.Accounts` & `Az.Resources`
   ```PowerShell

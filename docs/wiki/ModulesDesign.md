@@ -45,7 +45,11 @@ A module usually represents a single resource or a set of closely related resour
 
 ### Naming
 
-Files and folders within the module folder are all in lower case.
+Use the following naming standard for module files and folders:
+
+- Modules name reflect the resource type
+- Files and folders within the module folder are all in lower case
+- Sub-resource modules (in .bicep sub-folder) are named `nested_<subResourceType>.bicep`
 
 ``` txt
 Microsoft.<provider>

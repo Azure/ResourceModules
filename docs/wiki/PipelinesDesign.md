@@ -8,7 +8,6 @@ This section gives you an overview of the design principals the pipelines follow
 - [Why do I have to validate deployments of modules?](#Why-do-I-have-to-validate-deployments-of-modules?)
 ---
 
-
 To "build"/"bake" the modules, a dedicated pipeline is used for each module to validate their production readiness, by:
 
 1. **Validate**:
@@ -18,7 +17,7 @@ To "build"/"bake" the modules, a dedicated pipeline is used for each module to v
 1. **Publish**: the proven results are copied/published to a configured location such as template specs, the bicep registry, Azure DevOps artifacts, etc.
 1. **Removal**: The test suite is cleaned up by removing all deployed test resources again
 
-Using this flow, validated modules can be consumed by other any consumer / template / orchestration to deploy an workload, solution, environment or landing zone.
+Using this flow, validated modules can be consumed by other any consumer / template / orchestration to deploy a workload, solution, environment or landing zone.
 
 ## Validation prerequisites
 
