@@ -205,14 +205,16 @@ var databaseAccount_properties = !empty(sqlDatabases) ? {
   locations: databaseAccount_locations
   databaseAccountOfferType: databaseAccountOfferType
   enableAutomaticFailover: automaticFailover
-} : {
+} : (!empty(mongodbDatabases) ? {
   consistencyPolicy: consistencyPolicy[defaultConsistencyLevel]
   locations: databaseAccount_locations
   databaseAccountOfferType: databaseAccountOfferType
   apiProperties: {
     serverVersion: serverVersion
   }
-}
+} : {
+  databaseAccountOfferType: databaseAccountOfferType
+})
 
 module pid_cuaId './.bicep/nested_cuaId.bicep' = if (!empty(cuaId)) {
   name: 'pid-${cuaId}'
