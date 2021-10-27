@@ -3,10 +3,18 @@
     "contentVersion": "1.0.0.0",
     "parameters": {
         "sqlDatabaseName": {
-            "value": "sxx-az-sql-weu-x-003"
+            "value": "finaltestcosmosdb/sxx-az-sql-weu-x-002"
         },
         "containerName": {
             "value": "container-001"
+        },
+        "paths": {
+            "value": [
+                "/myPartitionKey"
+            ]
+        },
+        "kind": {
+            "value": "Hash"
         }
     }
 }
