@@ -1,6 +1,6 @@
 # DocumentdbDatabaseaccountsMongodbdatabasesCollections
 
-// TODO: Replace Resource and fill in description
+This module deploys a collection within a MongoDB.
 
 ## Resource Types
 

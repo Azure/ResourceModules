@@ -1,8 +1,11 @@
+@description('Required. Name of the Database Account')
+param databaseAccountName string
+
 @description('Required. Name of the SQL Database ')
 param sqlDatabaseName string
 
 @description('Required. Name of the container.')
-param containerName string
+param name string
 
 @description('Optional. Request Units per second')
 param throughput int = 400
@@ -30,11 +33,11 @@ module pid_cuaId './.bicep/nested_cuaId.bicep' = if (!empty(cuaId)) {
 }
 
 resource container 'Microsoft.DocumentDB/databaseAccounts/sqlDatabases/containers@2021-07-01-preview' = {
-  name: '${sqlDatabaseName}/${containerName}'
+  name: '${databaseAccountName}/${sqlDatabaseName}/${name}'
   tags: tags
   properties: {
     resource: {
-      id: containerName
+      id: name
       partitionKey: {
         paths: paths
         kind: kind

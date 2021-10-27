@@ -14,7 +14,7 @@
 | `containers` | array | `[]` |  | Optional. Array of containers to deploy in the SQL database. |
 | `cuaId` | string |  |  | Optional. Customer Usage Attribution id (GUID). This GUID must be previously registered |
 | `databaseAccountName` | string |  |  | Required. Id of the Cosmos DB database account. |
-| `sqlDatabaseName` | string |  |  | Required. Name of the SQL Database  |
+| `name` | string |  |  | Required. Name of the SQL Database  |
 | `tags` | object | `{object}` |  | Optional. Tags of the SQL Database resource. |
 | `throughput` | int | `400` |  | Optional. Request Units per second |
 

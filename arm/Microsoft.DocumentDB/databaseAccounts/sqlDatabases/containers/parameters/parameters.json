@@ -2,10 +2,13 @@
     "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
     "contentVersion": "1.0.0.0",
     "parameters": {
+        "databaseAccountName": {
+            "value": "sxx-az-cdb-weu-x-001"
+        },
         "sqlDatabaseName": {
             "value": "finaltestcosmosdb/sxx-az-sql-weu-x-002"
         },
-        "containerName": {
+        "name": {
             "value": "container-001"
         },
         "paths": {

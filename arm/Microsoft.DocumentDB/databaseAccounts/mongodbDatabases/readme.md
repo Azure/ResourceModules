@@ -1,6 +1,6 @@
 # DocumentdbDatabaseaccountsMongodbdatabases
 
-// TODO: Replace Resource and fill in description
+This module deploys a MongoDB within a CosmosDB account.
 
 ## Resource Types
 

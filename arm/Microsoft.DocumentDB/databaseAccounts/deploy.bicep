@@ -264,11 +264,9 @@ module databaseAccount_rbac './.bicep/nested_rbac.bicep' = [for (roleAssignment,
 module sqlDatabases_resource './sqlDatabases/deploy.bicep' = [for sqlDatabase in sqlDatabases: {
   name: '${uniqueString(deployment().name, location)}-sqldb-${sqlDatabase.name}'
   params: {
-    sqlDatabaseName: sqlDatabase.name
-    tags: tags
     databaseAccountName: databaseAccount.name
-    cuaId: cuaId
-    containers: sqlDatabase.containers
+    name: sqlDatabase.name
+    containers: contains(sqlDatabase, 'containers') ? sqlDatabase.containers : []
   }
 }]
 
@@ -277,7 +275,7 @@ module mongodbDatabases_resource './mongodbDatabases/deploy.bicep' = [for mongod
   params: {
     databaseAccountName: databaseAccount.name
     name: mongodbDatabase.name
-    collections: mongodbDatabase.collections
+    collections: contains(mongodbDatabase, 'collections') ? mongodbDatabase.collections : []
   }
 }]
 

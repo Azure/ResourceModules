@@ -2,7 +2,7 @@
 param databaseAccountName string
 
 @description('Required. Name of the SQL Database ')
-param sqlDatabaseName string
+param name string
 
 @description('Optional. Array of containers to deploy in the SQL database.')
 param containers array = []
@@ -22,11 +22,11 @@ module pid_cuaId './.bicep/nested_cuaId.bicep' = if (!empty(cuaId)) {
 }
 
 resource sqlDatabase 'Microsoft.DocumentDB/databaseAccounts/sqlDatabases@2021-06-15' = {
-  name: '${databaseAccountName}/${sqlDatabaseName}'
+  name: '${databaseAccountName}/${name}'
   tags: tags
   properties: {
     resource: {
-      id: sqlDatabaseName
+      id: name
     }
     options: {
       throughput: throughput
@@ -37,8 +37,9 @@ resource sqlDatabase 'Microsoft.DocumentDB/databaseAccounts/sqlDatabases@2021-06
 module container 'containers/deploy.bicep' = [for container in containers: {
   name: '${uniqueString(deployment().name)}-sqldb-${container.name}'
   params: {
+    databaseAccountName: databaseAccountName
     sqlDatabaseName: sqlDatabase.name
-    containerName: container.name
+    name: container.name
     paths: container.paths
     kind: container.kind
   }
