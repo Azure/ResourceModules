@@ -73,6 +73,7 @@ param identityProviderSignUpPolicyName string = ''
 
 @description('Optional. Identity Provider Type identifier.')
 @allowed([
+  ''
   'aad'
   'aadB2C'
   'facebook'
@@ -80,7 +81,7 @@ param identityProviderSignUpPolicyName string = ''
   'microsoft'
   'twitter'
 ])
-param identityProviderType string = 'aad'
+param identityProviderType string = ''
 
 @description('Optional. Location for all Resources.')
 param location string = resourceGroup().location
@@ -248,11 +249,11 @@ resource apiManagementService 'Microsoft.ApiManagement/service@2020-12-01' = {
     name: 'signup'
     properties: portalSignUp
   }
-  resource apiManagementService_policy 'policies@2020-06-01-preview' = {
+  resource apiManagementService_policy 'policies@2020-06-01-preview' = if (!empty(apiManagementServicePolicy)) {
     name: 'policy'
     properties: apiManagementServicePolicy
   }
-  resource apiManagementService_identityProvider 'identityProviders@2020-06-01-preview' = {
+  resource apiManagementService_identityProvider 'identityProviders@2020-06-01-preview' = if (!empty(identityProviderType)) {
     name: identityProviderType
     properties: {
       type: identityProviderType
