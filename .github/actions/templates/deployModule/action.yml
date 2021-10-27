@@ -36,6 +36,7 @@ runs:
       run: |
         # Load used functions
         . ".github/actions/sharedScripts/Set-EnvironmentOnAgent.ps1"
+        . ".github/actions/sharedScripts/Convert-TokensInFiles.ps1"
         # Set agent up
         Set-EnvironmentOnAgent
 
@@ -48,13 +49,11 @@ runs:
     - name: "Replace Tokens [${{ inputs.parameterFilePath }}] "
       shell: pwsh
       run: |
-        $parameterFile = Get-Content -Path '${{ inputs.parameterFilePath }}'
-        @(
+        $TokensReplaceWithObject = @(
             @{ Replace = "<<subscriptionId>>"; With = '${{ inputs.subscriptionId }}' }
-        ) | ForEach-Object {
-            $parameterFile = $parameterFile -replace $PSItem.Replace, $PSItem.With
-        }
-        $parameterFile | Set-Content -Path '${{ inputs.parameterFilePath }}'
+        )
+        write-verbose "Invoking Convert-TokensInFiles"
+        Convert-TokensInFiles -Paths '${{ inputs.parameterFilePath }}' -TokensReplaceWith $TokensReplaceWithObject
 
     - name: 'Validate [${{ inputs.templateFilePath }}]'
       shell: pwsh
