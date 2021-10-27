@@ -7,10 +7,9 @@ param notActions array = []
 param dataActions array = []
 param notDataActions array = []
 param managementGroupId string
-param location string = deployment().location
 
 resource roleDefinition 'Microsoft.Authorization/roleDefinitions@2018-01-01-preview' = {
-  name: guid(roleName, managementGroupId, location)
+  name: guid(roleName, managementGroupId)
   properties: {
     roleName: roleName
     description: roleDescription
@@ -24,11 +23,11 @@ resource roleDefinition 'Microsoft.Authorization/roleDefinitions@2018-01-01-prev
       }
     ]
     assignableScopes: [
-      tenantResourceId('Microsoft.Management/managementGroups',managementGroupId)
+      tenantResourceId('Microsoft.Management/managementGroups', managementGroupId)
     ]
   }
 }
 
 output roleDefinitionName string = roleDefinition.name
-output roleDefinitionScope string = tenantResourceId('Microsoft.Management/managementGroups',managementGroupId)
-output roleDefinitionId string = extensionResourceId(tenantResourceId('Microsoft.Management/managementGroups',managementGroupId),'Microsoft.Authorization/roleDefinitions',roleDefinition.name)
+output roleDefinitionScope string = tenantResourceId('Microsoft.Management/managementGroups', managementGroupId)
+output roleDefinitionId string = extensionResourceId(tenantResourceId('Microsoft.Management/managementGroups', managementGroupId), 'Microsoft.Authorization/roleDefinitions', roleDefinition.name)

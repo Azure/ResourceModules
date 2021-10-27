@@ -7,10 +7,9 @@ param notActions array = []
 param dataActions array = []
 param notDataActions array = []
 param subscriptionId string = subscription().subscriptionId
-param location string = deployment().location
 
 resource roleDefinition 'Microsoft.Authorization/roleDefinitions@2018-01-01-preview' = {
-  name: guid(roleName, subscriptionId, location)
+  name: guid(roleName, subscriptionId)
   properties: {
     roleName: roleName
     description: roleDescription
@@ -31,4 +30,4 @@ resource roleDefinition 'Microsoft.Authorization/roleDefinitions@2018-01-01-prev
 
 output roleDefinitionName string = roleDefinition.name
 output roleDefinitionScope string = subscription().id
-output roleDefinitionId string = subscriptionResourceId(subscriptionId,'Microsoft.Authorization/roleDefinitions',roleDefinition.name)
+output roleDefinitionId string = subscriptionResourceId(subscriptionId, 'Microsoft.Authorization/roleDefinitions', roleDefinition.name)
