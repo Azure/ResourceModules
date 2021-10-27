@@ -77,6 +77,29 @@ This module deploys a Documentdb database account and its child resources.
 }
 ```
 
+### Parameter Usage: `mongodbDatabases`
+
+```json
+"mongodbDatabases": {
+    "value": [
+        {
+            "name": "sxx-az-mdb-weu-x-001",
+            "collections": [
+                <...>
+            ]
+        },
+        {
+            "name": "sxx-az-mdb-weu-x-002",
+            "collections": [
+                <...>
+            ]
+        }
+    ]
+}
+```
+
+Please reference the documentation for [mongodbDatabases](./mongodbDatabases/readme.md)
+
 ## Outputs
 
 | Output Name | Type | Description |

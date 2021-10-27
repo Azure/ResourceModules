@@ -274,9 +274,9 @@ module mongodbDatabases_resource './mongodbDatabases/deploy.bicep' = [for mongod
   name: '${uniqueString(deployment().name, location)}-mongodb-${mongodbDatabase.name}'
   params: {
     mongodbDatabaseName: mongodbDatabase.name
+    collections: mongodbDatabase.collections
     tags: tags
     databaseAccountName: databaseAccount.name
-    cuaId: cuaId
   }
 }]
 

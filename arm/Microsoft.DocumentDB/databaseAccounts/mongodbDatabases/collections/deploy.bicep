@@ -10,9 +10,6 @@ param collectionName string
 @description('Optional. Name of the mongodb database')
 param throughput int = 400
 
-@description('Optional. Name of the mongodb database')
-param analyticalStorageTtl int = 0
-
 @description('Required. Indexes for the collection')
 param indexes array
 
@@ -34,7 +31,6 @@ resource collection 'Microsoft.DocumentDB/databaseAccounts/mongodbDatabases/coll
       throughput: throughput
     }
     resource: {
-      analyticalStorageTtl: (analyticalStorageTtl != 0) ? analyticalStorageTtl : json('null')
       id: collectionName
       indexes: indexes
       shardKey: shardKey

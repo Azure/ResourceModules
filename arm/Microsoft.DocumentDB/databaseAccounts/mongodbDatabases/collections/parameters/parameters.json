@@ -9,7 +9,7 @@
             "value": "sxx-az-mdb-weu-x-003"
         },
         "collectionName": {
-            "value": "test123"
+            "value": "estate_collection"
         },
         "indexes": {
             "value": [
@@ -30,8 +30,8 @@
                 {
                     "key": {
                         "keys": [
-                            "company_id",
-                            "company_address"
+                            "estate_id",
+                            "estate_address"
                         ]
                     },
                     "options": {
@@ -52,7 +52,7 @@
         },
         "shardKey": {
             "value": {
-                "user_id": "Hash"
+                "estate_id": "Hash"
             }
         }
     }

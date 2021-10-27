@@ -7,6 +7,9 @@ param mongodbDatabaseName string
 @description('Optional. Name of the mongodb database')
 param throughput int = 400
 
+@description('Optional. Collections in the mongodb database')
+param collections array = []
+
 @description('Optional. Tags of the resource.')
 param tags object = {}
 
@@ -30,6 +33,17 @@ resource mongodbDatabase 'Microsoft.DocumentDB/databaseAccounts/mongodbDatabases
     }
   }
 }
+
+module mongodbDatabase_collections './collections/deploy.bicep' = [for collection in collections: {
+  name: '${uniqueString(deployment().name, mongodbDatabase.name)}-collection-${collection.collectionName}'
+  params: {
+    collectionName: collection.collectionName
+    databaseAccountName: databaseAccountName
+    indexes: collection.indexes
+    mongodbDatabaseName: mongodbDatabaseName
+    shardKey: collection.shardKey
+  }
+}]
 
 @description('The name of the mongodb database.')
 output mongodbDatabaseName string = mongodbDatabase.name
