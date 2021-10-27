@@ -4,6 +4,5 @@
   "parameters": {
     "networkSecurityGroupName": {
       "value": "adp-sxx-az-nsg-weu-x-001"
-    }
   }
 }
