@@ -12,6 +12,8 @@
 | :-- | :-- | :-- | :-- | :-- |
 | `containerName` | string |  |  | Required. Name of the container. |
 | `cuaId` | string |  |  | Optional. Customer Usage Attribution id (GUID). This GUID must be previously registered |
+| `kind` | string | `Hash` | `[Hash, MultiHash, Range]` | Optional. Indicates the kind of algorithm used for partitioning |
+| `paths` | array | `[]` |  | Optional. List of paths using which data within the container can be partitioned |
 | `sqlDatabaseName` | string |  |  | Required. Name of the SQL Database  |
 | `tags` | object | `{object}` |  | Optional. Tags of the SQL Database resource. |
 | `throughput` | int | `400` |  | Optional. Request Units per second |

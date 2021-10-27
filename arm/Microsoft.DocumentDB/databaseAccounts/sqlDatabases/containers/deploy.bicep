@@ -10,6 +10,17 @@ param throughput int = 400
 @description('Optional. Tags of the SQL Database resource.')
 param tags object = {}
 
+@description('Optional. List of paths using which data within the container can be partitioned')
+param paths array = []
+
+@description('Optional. Indicates the kind of algorithm used for partitioning')
+@allowed([
+  'Hash'
+  'MultiHash'
+  'Range'
+])
+param kind string = 'Hash'
+
 @description('Optional. Customer Usage Attribution id (GUID). This GUID must be previously registered')
 param cuaId string = ''
 
@@ -24,6 +35,10 @@ resource container 'Microsoft.DocumentDB/databaseAccounts/sqlDatabases/container
   properties: {
     resource: {
       id: containerName
+      partitionKey: {
+        paths: paths
+        kind: kind
+      }
     }
     options: {
       throughput: throughput
