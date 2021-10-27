@@ -88,9 +88,9 @@ This module deploys a service fabric cluster
 
 | Output Name | Type |
 | :-- | :-- |
-| `serviceFabricClusterId` | string |
 | `serviceFabricClusterName` | string |
-| `serviceFabricClusterProperties` | object |
+| `serviceFabricClusterResourceGroup` | string |
+| `serviceFabricClusterResourceId` | string |
 
 ## Template references
 

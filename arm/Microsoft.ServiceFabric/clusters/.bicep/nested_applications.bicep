@@ -21,4 +21,4 @@ resource application 'Microsoft.ServiceFabric/clusters/applications@2021-06-01' 
 }
 
 // Output
-output serviceFabricClusterApplicationsServicesResourceId string = application.id
+output applicationResourceId string = application.id

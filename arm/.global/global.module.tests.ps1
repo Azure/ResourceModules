@@ -649,6 +649,7 @@ Describe 'Deployment template tests' -Tag Template {
             $i = 0
             $Schemaverion = $templateContent.'$schema'
             if ((($Schemaverion.Split('/')[5]).Split('.')[0]) -eq (($RGdeployment.Split('/')[5]).Split('.')[0])) {
+                # Resource Group Level deployment
                 foreach ($Stdo in $Stdoutput) {
                     if ($Stdo -like '*Name*' -or $Stdo -like '*ResourceId*' -or $Stdo -like '*ResourceGroup*') {
                         $true | Should -Be $true
@@ -657,6 +658,7 @@ Describe 'Deployment template tests' -Tag Template {
                 }
                 $i | Should -Not -BeLessThan 3
             } ElseIf ((($schemaverion.Split('/')[5]).Split('.')[0]) -eq (($Subscriptiondeployment.Split('/')[5]).Split('.')[0])) {
+                # Subscription Level deployment
                 $Stdoutput | Should -Not -BeNullOrEmpty
             }
 

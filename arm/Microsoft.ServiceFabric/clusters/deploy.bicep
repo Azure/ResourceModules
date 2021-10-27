@@ -334,7 +334,7 @@ module serviceFabricCluster_rbac './.bicep/nested_rbac.bicep' = [for (roleAssign
 module serviceFabricCluster_applicationTypes '.bicep/nested_applicationTypes.bicep' = [for applicationType in serviceFabricApplicationTypes: {
   name: '${serviceFabricCluster.name}-${applicationType.name}'
   params: {
-    applicationType: applicationType
+    applicationTypeObj: applicationType
     clusterName: serviceFabricCluster.name
     location: location
     tags: tags
@@ -370,5 +370,5 @@ module serviceFabricCluster_applications '.bicep/nested_applications.bicep' = [f
 
 // Outputs section
 output serviceFabricClusterName string = serviceFabricCluster.name
-output serviceFabricClusterId string = serviceFabricCluster.id
-output serviceFabricClusterProperties object = serviceFabricCluster.properties
+output serviceFabricClusterResourceId string = serviceFabricCluster.id
+output serviceFabricClusterResourceGroup string = resourceGroup().name
