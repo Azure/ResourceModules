@@ -38,7 +38,9 @@ module container 'containers/deploy.bicep' = [for container in containers: {
   name: '${uniqueString(deployment().name)}-sqldb-${container}'
   params: {
     sqlDatabaseName: sqlDatabase.name
-    containerName: container
+    containerName: container.name
+    paths: container.paths
+    kind: container.kind
   }
 }]
 

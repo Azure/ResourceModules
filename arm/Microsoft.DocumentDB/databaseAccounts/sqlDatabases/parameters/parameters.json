@@ -10,8 +10,13 @@
         },
         "containers": {
             "value": [
-                "container-001",
-                "container-002"
+                {
+                    "name": "container-001",
+                    "paths": [
+                        "/myPartitionKey"
+                    ],
+                    "kind": "Hash"
+                }
             ]
         }
     }

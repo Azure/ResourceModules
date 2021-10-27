@@ -37,8 +37,13 @@
                 {
                     "name": "sxx-az-sql-weu-x-001",
                     "containers": [
-                        "container-001",
-                        "container-002"
+                        {
+                            "name": "container-001",
+                            "paths": [
+                                "/myPartitionKey"
+                            ],
+                            "kind": "Hash"
+                        }
                     ]
                 },
                 {

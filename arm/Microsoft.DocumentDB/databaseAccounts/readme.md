@@ -9,6 +9,7 @@ This module deploys a Documentdb database account and its child resources.
 | `Microsoft.Authorization/locks` | 2016-09-01 |
 | `Microsoft.DocumentDB/databaseAccounts` | 2021-06-15 |
 | `Microsoft.DocumentDB/databaseAccounts/mongodbDatabases` | 2021-07-01-preview |
+| `Microsoft.DocumentDB/databaseAccounts/mongodbDatabases/collections` | 2021-07-01-preview |
 | `Microsoft.DocumentDB/databaseAccounts/providers/roleAssignments` | 2021-04-01-preview |
 | `Microsoft.DocumentDB/databaseAccounts/sqlDatabases` | 2021-06-15 |
 | `Microsoft.DocumentDB/databaseAccounts/sqlDatabases/containers` | 2021-07-01-preview |
@@ -113,6 +114,7 @@ Please reference the documentation for [mongodbDatabases](./mongodbDatabases/rea
 - [Locks](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2016-09-01/locks)
 - [Databaseaccounts](https://docs.microsoft.com/en-us/azure/templates/Microsoft.DocumentDB/2021-06-15/databaseAccounts)
 - [Databaseaccounts/Mongodbdatabases](https://docs.microsoft.com/en-us/azure/templates/Microsoft.DocumentDB/2021-07-01-preview/databaseAccounts/mongodbDatabases)
+- [Databaseaccounts/Mongodbdatabases/Collections](https://docs.microsoft.com/en-us/azure/templates/Microsoft.DocumentDB/2021-07-01-preview/databaseAccounts/mongodbDatabases/collections)
 - [Databaseaccounts/Sqldatabases](https://docs.microsoft.com/en-us/azure/templates/Microsoft.DocumentDB/2021-06-15/databaseAccounts/sqlDatabases)
 - [Databaseaccounts/Sqldatabases/Containers](https://docs.microsoft.com/en-us/azure/templates/Microsoft.DocumentDB/2021-07-01-preview/databaseAccounts/sqlDatabases/containers)
 - [Diagnosticsettings](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Insights/2017-05-01-preview/diagnosticSettings)
