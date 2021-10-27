@@ -36,7 +36,6 @@ runs:
       run: |
         # Load used functions
         . ".github/actions/sharedScripts/Set-EnvironmentOnAgent.ps1"
-        . ".github/actions/sharedScripts/Convert-TokensInFiles.ps1"
         # Set agent up
         Set-EnvironmentOnAgent
 
@@ -49,6 +48,8 @@ runs:
     - name: "Replace Tokens [${{ inputs.parameterFilePath }}] "
       shell: pwsh
       run: |
+        # Load used funtions
+        . ".github/actions/sharedScripts/Convert-TokensInFiles.ps1"
         $TokensReplaceWithObject = @(
             @{ Replace = "<<subscriptionId>>"; With = '${{ inputs.subscriptionId }}' }
         )
