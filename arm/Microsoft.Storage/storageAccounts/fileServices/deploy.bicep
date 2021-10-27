@@ -23,7 +23,7 @@ resource fileService 'Microsoft.Storage/storageAccounts/fileServices@2021-04-01'
 }
 
 module fileService_fileShares 'shares/deploy.bicep' = [for (fileShare, index) in shares: {
-  name: '${uniqueString(deployment().name)}-Storage-File-${index}'
+  name: '${deployment().name}-Storage-File-${index}'
   params: {
     storageAccountName: storageAccountName
     name: fileShare.name

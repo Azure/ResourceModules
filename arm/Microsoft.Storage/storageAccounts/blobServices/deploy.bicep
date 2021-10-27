@@ -26,7 +26,7 @@ resource blobServices 'Microsoft.Storage/storageAccounts/blobServices@2021-08-01
 }
 
 module blobServices_container 'containers/deploy.bicep' = [for (blobContainer, index) in containers: {
-  name: '${uniqueString(deployment().name)}-Storage-Container-${index}'
+  name: '${deployment().name}-Storage-Container-${index}'
   params: {
     storageAccountName: storageAccountName
     name: blobContainer.name
