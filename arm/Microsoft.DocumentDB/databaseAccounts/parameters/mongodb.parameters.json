@@ -129,7 +129,7 @@
                     "name": "sxx-az-mdb-weu-x-002",
                     "collections": [
                         {
-                            "collectionName": "bike_collection",
+                            "name": "bike_collection",
                             "indexes": [
                                 {
                                     "key": {
@@ -172,7 +172,7 @@
                             }
                         },
                         {
-                            "collectionName": "bicycle_collection",
+                            "name": "bicycle_collection",
                             "indexes": [
                                 {
                                     "key": {
