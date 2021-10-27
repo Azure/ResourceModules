@@ -1,4 +1,4 @@
-# Collections `[Microsoft.DocumentDB/databaseAccount/mongodbDatabases/collections]` `[Microsoft.DocumentDB/databaseAccounts/mongodbDatabases/collections]`
+# Collections `[Microsoft.DocumentDB/databaseAccount/mongodbDatabases/collections]`
 
 This module deploys a collection within a MongoDB.
 

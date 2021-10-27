@@ -1,4 +1,4 @@
-# SQL Databases `[Microsoft.DocumentDB/databaseAccount/sqlDatabases]` `[Microsoft.DocumentDB/databaseAccounts/sqlDatabases]`
+# SQL Databases `[Microsoft.DocumentDB/databaseAccount/sqlDatabases]`
 
 ## Resource Types
 
