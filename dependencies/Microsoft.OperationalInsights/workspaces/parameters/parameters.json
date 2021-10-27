@@ -3,7 +3,7 @@
     "contentVersion": "1.0.0.0",
     "parameters": {
         "logAnalyticsWorkspaceName": {
-            "value": "adp-sxx-az-la-weu-x-001q"
+            "value": "adp-sxx-az-la-weu-x-001"
         }
     }
 }
