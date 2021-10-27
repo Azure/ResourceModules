@@ -1,4 +1,4 @@
-# DocumentdbDatabaseaccountsMongodbdatabases
+# MongoDB databases `[Microsoft.DocumentDB/databaseAccount/mongodbDatabases]`
 
 This module deploys a MongoDB within a CosmosDB account.
 
