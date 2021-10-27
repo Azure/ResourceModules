@@ -47,7 +47,7 @@ param clientCertificateCommonNames array = []
 param clientCertificateThumbprints array = []
 
 @description('Optional. The Service Fabric runtime version of the cluster. This property can only by set the user when upgradeMode is set to "Manual". To get list of available Service Fabric versions for new clusters use ClusterVersion API. To get the list of available version for existing clusters use availableClusterVersions.')
-param clusterCodeVersion string
+param clusterCodeVersion string = ''
 
 @description('Optional. The storage account information for storing Service Fabric diagnostic logs.')
 param diagnosticsStorageAccountConfig object = {}
