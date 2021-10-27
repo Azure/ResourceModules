@@ -71,7 +71,7 @@ param fileServices object = {}
 @description('Optional. Queue service and queues to create.')
 param queueServices object = {}
 
-@description('Optional. Table service and queues to create.')
+@description('Optional. Table service and tables to create.')
 param tableServices object = {}
 
 @description('Optional. Indicates whether public access is enabled for all blobs or containers in the storage account.')
@@ -287,6 +287,7 @@ module storageAccount_blobService '.blobServices/deploy.bicep' = if (!empty(blob
     automaticSnapshotPolicyEnabled: contains(blobServices, 'automaticSnapshotPolicyEnabled') ? blobServices.automaticSnapshotPolicyEnabled : false
     deleteRetentionPolicy: contains(blobServices, 'deleteRetentionPolicy') ? blobServices.deleteRetentionPolicy : true
     deleteRetentionPolicyDays: contains(blobServices, 'deleteRetentionPolicyDays') ? blobServices.deleteRetentionPolicyDays : 7
+    cors: contains(blobServices, 'cors') ? blobServices.cors : {}
   }
 }
 

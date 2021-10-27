@@ -16,40 +16,34 @@ This module can be used to deploy a blob service into a storage account.
 | Parameter Name | Type | Default Value | Possible Values | Description |
 | :-- | :-- | :-- | :-- | :-- |
 | `automaticSnapshotPolicyEnabled` | bool |  |  | Optional. Automatic Snapshot is enabled if set to true. |
-| `blobContainers` | array | `[]` |  | Optional. Blob containers to create. |
+| `blobContainers` | _[containers](.containers/readme.md)_ array | `[]` |  | Optional. Blob containers to create. |
 | `deleteRetentionPolicy` | bool | `True` |  | Optional. Indicates whether DeleteRetentionPolicy is enabled for the Blob service. |
+| `cors` | object | `{object}` | | Sets the CORS rules. You can include up to five CorsRule elements in the request. |
 | `deleteRetentionPolicyDays` | int | `7` |  | Optional. Indicates the number of days that the deleted blob should be retained. The minimum specified value can be 1 and the maximum value can be 365. |
 | `storageAccountName` | string |  |  | Required. Name of the Storage Account. |
 
-### Parameter Usage: `blobContainers`
+### Parameter Usage: `cors`
 
-The `blobContainer` parameter accepts a JSON Array of object with "name" and "publicAccess" properties in each to specify the name of the Blob Containers to create and level of public access (container level, blob level or none). Also RBAC can be assigned at Blob Container level
-
-Here's an example of specifying two Blob Containes. The first named "one" with public access set at container level and RBAC Reader role assigned to two principal Ids. The second named "two" with no public access level and no RBAC role assigned.
+| Parameter Name | Type | Possible Values | Description |
+| :-- | :-- | :-- | :-- |
+| `allowedHeaders` | array | | A list of headers allowed to be part of the cross-origin request. |
+| `allowedMethods` | array | `['DELETE', 'GET', 'HEAD', 'MERGE', 'OPTIONS', 'POST', 'PUT']` | A list of HTTP methods that are allowed to be executed by the origin. |
+| `allowedOrigins` | array | A list of origin domains that will be allowed via CORS, or "*" to allow all domains |
+| `exposedHeaders` | array | A list of response headers to expose to CORS clients. |
+| `maxAgeInSeconds` | int  | The number of seconds that the client/browser should cache a preflight response. |
 
 ```json
-"blobContainers": {
-    "value": [
+"cors": {
+    "corsRules": [
         {
-            "name": "one",
-            "publicAccess": "Container", //Container, Blob, None
-            "roleAssignments": [
-                {
-                    "roleDefinitionIdOrName": "Reader",
-                    "principalIds": [
-                        "12345678-1234-1234-1234-123456789012", // object 1
-                        "78945612-1234-1234-1234-123456789012" // object 2
-                    ]
-                },
-        {
-            "name": "two",
-            "publicAccess": "None", //Container, Blob, None
-            "roleAssignments": [],
-            "enableWORM": true,
-            "WORMRetention": 200,
-            "allowProtectedAppendWrites": false
+            "allowedHeaders": [ "x-ms-meta-data*","x-ms-meta-target*","x-ms-meta-abc" ],
+            "allowedMethods": [ "PUT","GET" ],
+            "allowedOrigins": [ "http://www.contoso.com", "http://www.fabrikam.com" ],
+            "exposedHeaders": [ "x-ms-meta-*" ],
+            "maxAgeInSeconds": 200
         }
     ]
+}
 ```
 
 ## Outputs

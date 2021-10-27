@@ -18,27 +18,25 @@ This module can be used to deploy a file share service into a storage account.
 | `queues` | array | `[]` |  | Optional. Queues to create. |
 | `storageAccountName` | string |  |  | Required. Name of the Storage Account. |
 
-### Parameter Usage: `queues`
+### Parameter Usage: `cors`
 
-The `queues` parameter accepts a JSON Array of object with "name" and "metadata" properties in each to specify the name of the queue to create and its metadata, as a name-value pair. Also RBAC can be assigned at queue level.
-
-Here's an example of specifying a single qeue named "queue1" with no metadata and Reader role assigned to two principal Ids.
+| Parameter Name | Type | Possible Values | Description |
+| :-- | :-- | :-- | :-- |
+| `allowedHeaders` | array | | A list of headers allowed to be part of the cross-origin request. |
+| `allowedMethods` | array | `['DELETE', 'GET', 'HEAD', 'MERGE', 'OPTIONS', 'POST', 'PUT']` | A list of HTTP methods that are allowed to be executed by the origin. |
+| `allowedOrigins` | array | A list of origin domains that will be allowed via CORS, or "*" to allow all domains |
+| `exposedHeaders` | array | A list of response headers to expose to CORS clients. |
+| `maxAgeInSeconds` | int  | The number of seconds that the client/browser should cache a preflight response. |
 
 ```json
-"queues": {
-    "value": [
+"cors": {
+    "corsRules": [
         {
-            "name": "queue1",
-            "metadata": {},
-            "roleAssignments": [
-                {
-                    "roleDefinitionIdOrName": "Reader",
-                    "principalIds": [
-                        "12345678-1234-1234-1234-123456789012", // object 1
-                        "78945612-1234-1234-1234-123456789012" // object 2
-                    ]
-                }
-            ]
+            "allowedHeaders": [ "x-ms-meta-data*","x-ms-meta-target*","x-ms-meta-abc" ],
+            "allowedMethods": [ "PUT","GET" ],
+            "allowedOrigins": [ "http://www.contoso.com", "http://www.fabrikam.com" ],
+            "exposedHeaders": [ "x-ms-meta-*" ],
+            "maxAgeInSeconds": 200
         }
     ]
 }
