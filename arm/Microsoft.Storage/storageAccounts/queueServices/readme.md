@@ -14,8 +14,7 @@ This module can be used to deploy a file share service into a storage account.
 
 | Parameter Name | Type | Default Value | Possible Values | Description |
 | :-- | :-- | :-- | :-- | :-- |
-| `cors` | object | `{object}` |  | Sets the CORS rules. You can include up to five CorsRule elements in the request. |
-| `queues` | _[queues](.queues/readme.md)_ array | `[]` |  | Optional. Queues to create. |
+| `queues` | _[queues](queues/readme.md)_ array | `[]` |  | Optional. Queues to create. |
 | `storageAccountName` | string |  |  | Required. Name of the Storage Account. |
 
 ## Outputs

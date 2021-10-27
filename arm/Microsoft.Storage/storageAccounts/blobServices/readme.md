@@ -16,9 +16,8 @@ This module can be used to deploy a blob service into a storage account.
 | Parameter Name | Type | Default Value | Possible Values | Description |
 | :-- | :-- | :-- | :-- | :-- |
 | `automaticSnapshotPolicyEnabled` | bool |  |  | Optional. Automatic Snapshot is enabled if set to true. |
-| `blobContainers` | _[containers](.containers/readme.md)_ array | `[]` |  | Optional. Blob containers to create. |
+| `containers` | _[containers](containers/readme.md)_ array | `[]` |  | Optional. Blob containers to create. |
 | `deleteRetentionPolicy` | bool | `True` |  | Optional. Indicates whether DeleteRetentionPolicy is enabled for the Blob service. |
-| `cors` | object | `{object}` | | Sets the CORS rules. You can include up to five CorsRule elements in the request. |
 | `deleteRetentionPolicyDays` | int | `7` |  | Optional. Indicates the number of days that the deleted blob should be retained. The minimum specified value can be 1 and the maximum value can be 365. |
 | `storageAccountName` | string |  |  | Required. Name of the Storage Account. |
 

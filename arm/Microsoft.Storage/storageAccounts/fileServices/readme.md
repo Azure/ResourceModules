@@ -14,10 +14,9 @@ This module can be used to deploy a file share service into a storage account.
 
 | Parameter Name | Type | Default Value | Possible Values | Description |
 | :-- | :-- | :-- | :-- | :-- |
-| `cors` | object | `{object}` |  | Sets the CORS rules. You can include up to five CorsRule elements in the request. |
-| `fileShares` | _[shares](.shares/readme.md)_ array | `[]` |  | Optional. File shares to create. |
 | `protocolSettings` | object | `{object}` |  | Protocol settings for file service |
 | `shareDeleteRetentionPolicy` | object | `{object}` |  | The service properties for soft delete. |
+| `shares` | _[shares](shares/readme.md)_ array | `[]` |  | Optional. File shares to create. |
 | `storageAccountName` | string |  |  | Required. Name of the Storage Account. |
 
 ## Parameter Usage: `Cors`

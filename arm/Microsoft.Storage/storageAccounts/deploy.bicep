@@ -283,7 +283,7 @@ module storageAccount_blobService 'blobServices/deploy.bicep' = if (!empty(blobS
   name: '${uniqueString(deployment().name, location)}-Storage-BlobServices'
   params: {
     storageAccountName: storageAccount.name
-    blobContainers: contains(blobServices, 'blobContainers') ? blobServices.blobContainers : []
+    containers: contains(blobServices, 'containers') ? blobServices.containers : []
     automaticSnapshotPolicyEnabled: contains(blobServices, 'automaticSnapshotPolicyEnabled') ? blobServices.automaticSnapshotPolicyEnabled : false
     deleteRetentionPolicy: contains(blobServices, 'deleteRetentionPolicy') ? blobServices.deleteRetentionPolicy : true
     deleteRetentionPolicyDays: contains(blobServices, 'deleteRetentionPolicyDays') ? blobServices.deleteRetentionPolicyDays : 7
@@ -300,7 +300,7 @@ module storageAccount_fileServices 'fileServices/deploy.bicep' = if (!empty(file
       enabled: true
       days: 7
     }
-    fileShares: contains(fileServices, 'fileShares') ? fileServices.fileShares : []
+    shares: contains(fileServices, 'shares') ? fileServices.shares : []
   }
 }
 

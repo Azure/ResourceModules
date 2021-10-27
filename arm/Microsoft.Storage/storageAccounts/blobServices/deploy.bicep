@@ -12,7 +12,7 @@ param deleteRetentionPolicyDays int = 7
 param automaticSnapshotPolicyEnabled bool = false
 
 @description('Optional. Blob containers to create.')
-param blobContainers array = []
+param containers array = []
 
 resource blobServices 'Microsoft.Storage/storageAccounts/blobServices@2021-08-01' = {
   name: '${storageAccountName}/default'
@@ -25,7 +25,7 @@ resource blobServices 'Microsoft.Storage/storageAccounts/blobServices@2021-08-01
   }
 }
 
-module blobServices_container 'containers/deploy.bicep' = [for (blobContainer, index) in blobContainers: {
+module blobServices_container 'containers/deploy.bicep' = [for (blobContainer, index) in containers: {
   name: '${uniqueString(deployment().name)}-Storage-Container-${index}'
   params: {
     storageAccountName: storageAccountName
