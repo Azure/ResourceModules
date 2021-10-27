@@ -5,9 +5,6 @@
         "networkSecurityGroupName": {
             "value": "sxx-az-nsg-weu-x-001"
         },
-        "networkwatcherResourceGroup": {
-            "value": "NetworkWatcherRG"
-        },
         "networkSecurityGroupSecurityRules": {
             "value": [
                 {
@@ -61,26 +58,23 @@
                         "priority": 102,
                         "direction": "Inbound",
                         "sourceApplicationSecurityGroupIds": [
-                            "/subscriptions/8629be3b-96bc-482d-a04b-ffff597c65a2/resourceGroups/validation-rg/providers/Microsoft.Network/applicationSecurityGroups/adp-sxx-az-asg-weu-x-001"
+                            "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/applicationSecurityGroups/adp-sxx-az-asg-weu-x-001"
                         ],
                         "destinationApplicationSecurityGroupIds": [
-                            "/subscriptions/8629be3b-96bc-482d-a04b-ffff597c65a2/resourceGroups/validation-rg/providers/Microsoft.Network/applicationSecurityGroups/adp-sxx-az-asg-weu-x-001"
+                            "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/applicationSecurityGroups/adp-sxx-az-asg-weu-x-001"
                         ]
                     }
                 }
             ]
         },
         "diagnosticStorageAccountId": {
-            "value": "/subscriptions/8629be3b-96bc-482d-a04b-ffff597c65a2/resourceGroups/validation-rg/providers/Microsoft.Storage/storageAccounts/adpsxxazsaweux001"
-        },
-        "retentionEnabled": {
-            "value": false
+            "value": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Storage/storageAccounts/adpsxxazsaweux001"
         },
         "diagnosticLogsRetentionInDays": {
             "value": 7
         },
         "workspaceId": {
-            "value": "/subscriptions/8629be3b-96bc-482d-a04b-ffff597c65a2/resourcegroups/validation-rg/providers/microsoft.operationalinsights/workspaces/adp-sxx-az-la-weu-x-001"
+            "value": "/subscriptions/<<subscriptionId>>/resourcegroups/validation-rg/providers/microsoft.operationalinsights/workspaces/adp-sxx-az-la-weu-x-001"
         },
         "roleAssignments": {
             "value": [
