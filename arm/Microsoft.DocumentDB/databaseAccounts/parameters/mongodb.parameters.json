@@ -35,7 +35,7 @@
         "mongodbDatabases": {
             "value": [
                 {
-                    "name": "sxx-az-mdb-weu-x-001",
+                    "mongodbDatabasesName": "sxx-az-mdb-weu-x-001",
                     "collections": [
                         {
                             "collectionName": "car_collection",

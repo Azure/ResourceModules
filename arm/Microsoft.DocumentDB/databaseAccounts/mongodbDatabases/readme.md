@@ -16,7 +16,7 @@
 | `collections` | array | `[]` |  | Optional. Collections in the mongodb database |
 | `cuaId` | string |  |  | Optional. Customer Usage Attribution id (GUID). This GUID must be previously registered |
 | `databaseAccountName` | string |  |  | Required. Name of the Cosmos DB database account. |
-| `mongodbDatabaseName` | string |  |  | Required. Name of the mongodb database |
+| `name` | string |  |  | Required. Name of the mongodb database |
 | `tags` | object | `{object}` |  | Optional. Tags of the resource. |
 | `throughput` | int | `400` |  | Optional. Name of the mongodb database |
 

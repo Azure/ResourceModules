@@ -2,7 +2,7 @@
 param databaseAccountName string
 
 @description('Required. Name of the mongodb database')
-param mongodbDatabaseName string
+param name string
 
 @description('Optional. Name of the mongodb database')
 param throughput int = 400
@@ -22,11 +22,11 @@ module pid_cuaId './.bicep/nested_cuaId.bicep' = if (!empty(cuaId)) {
 }
 
 resource mongodbDatabase 'Microsoft.DocumentDB/databaseAccounts/mongodbDatabases@2021-07-01-preview' = {
-  name: '${databaseAccountName}/${mongodbDatabaseName}'
+  name: '${databaseAccountName}/${name}'
   tags: tags
   properties: {
     resource: {
-      id: mongodbDatabaseName
+      id: name
     }
     options: {
       throughput: throughput
@@ -35,12 +35,12 @@ resource mongodbDatabase 'Microsoft.DocumentDB/databaseAccounts/mongodbDatabases
 }
 
 module mongodbDatabase_collections './collections/deploy.bicep' = [for collection in collections: {
-  name: '${uniqueString(deployment().name, mongodbDatabase.name)}-collection-${collection.collectionName}'
+  name: '${uniqueString(deployment().name, mongodbDatabase.name)}-collection-${collection.name}'
   params: {
-    collectionName: collection.collectionName
     databaseAccountName: databaseAccountName
+    mongodbDatabaseName: name
+    name: collection.name
     indexes: collection.indexes
-    mongodbDatabaseName: mongodbDatabaseName
     shardKey: collection.shardKey
   }
 }]

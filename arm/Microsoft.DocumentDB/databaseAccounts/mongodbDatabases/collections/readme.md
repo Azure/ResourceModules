@@ -12,7 +12,7 @@
 
 | Parameter Name | Type | Default Value | Possible Values | Description |
 | :-- | :-- | :-- | :-- | :-- |
-| `collectionName` | string |  |  | Required. Name of the collection |
+| `name` | string |  |  | Required. Name of the collection |
 | `cuaId` | string |  |  | Optional. Customer Usage Attribution id (GUID). This GUID must be previously registered |
 | `databaseAccountName` | string |  |  | Required. Name of the Cosmos DB database account. |
 | `indexes` | array |  |  | Required. Indexes for the collection |

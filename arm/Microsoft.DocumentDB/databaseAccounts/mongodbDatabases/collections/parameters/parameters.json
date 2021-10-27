@@ -8,7 +8,7 @@
         "mongodbDatabaseName": {
             "value": "sxx-az-mdb-weu-x-003"
         },
-        "collectionName": {
+        "name": {
             "value": "estate_collection"
         },
         "indexes": {

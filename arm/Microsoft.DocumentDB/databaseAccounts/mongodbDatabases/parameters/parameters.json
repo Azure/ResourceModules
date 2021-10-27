@@ -5,13 +5,13 @@
         "databaseAccountName": {
             "value": "sxx-az-cdb-weu-x-002"
         },
-        "mongodbDatabaseName": {
+        "name": {
             "value": "sxx-az-mdb-weu-x-003"
         },
         "collections": {
             "value": [
                 {
-                    "collectionName": "company_collection",
+                    "name": "company_collection",
                     "indexes": [
                         {
                             "key": {
@@ -54,7 +54,7 @@
                     }
                 },
                 {
-                    "collectionName": "user_collection",
+                    "name": "user_collection",
                     "indexes": [
                         {
                             "key": {

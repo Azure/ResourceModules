@@ -273,10 +273,9 @@ module sqlDatabases_resource './sqlDatabases/deploy.bicep' = [for sqlDatabase in
 module mongodbDatabases_resource './mongodbDatabases/deploy.bicep' = [for mongodbDatabase in mongodbDatabases: {
   name: '${uniqueString(deployment().name, location)}-mongodb-${mongodbDatabase.name}'
   params: {
-    mongodbDatabaseName: mongodbDatabase.name
-    collections: mongodbDatabase.collections
-    tags: tags
     databaseAccountName: databaseAccount.name
+    name: mongodbDatabase.name
+    collections: mongodbDatabase.collections
   }
 }]
 

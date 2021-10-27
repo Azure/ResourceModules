@@ -5,7 +5,7 @@ param databaseAccountName string
 param mongodbDatabaseName string
 
 @description('Required. Name of the collection')
-param collectionName string
+param name string
 
 @description('Optional. Name of the mongodb database')
 param throughput int = 400
@@ -25,13 +25,13 @@ module pid_cuaId './.bicep/nested_cuaId.bicep' = if (!empty(cuaId)) {
 }
 
 resource collection 'Microsoft.DocumentDB/databaseAccounts/mongodbDatabases/collections@2021-07-01-preview' = {
-  name: '${databaseAccountName}/${mongodbDatabaseName}/${collectionName}'
+  name: '${databaseAccountName}/${mongodbDatabaseName}/${name}'
   properties: {
     options: {
       throughput: throughput
     }
     resource: {
-      id: collectionName
+      id: name
       indexes: indexes
       shardKey: shardKey
     }
