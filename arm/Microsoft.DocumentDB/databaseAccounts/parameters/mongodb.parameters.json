@@ -38,7 +38,7 @@
                     "name": "sxx-az-mdb-weu-x-001",
                     "collections": [
                         {
-                            "collectionName": "car_collection",
+                            "name": "car_collection",
                             "indexes": [
                                 {
                                     "key": {
@@ -81,7 +81,7 @@
                             }
                         },
                         {
-                            "collectionName": "truck_collection",
+                            "name": "truck_collection",
                             "indexes": [
                                 {
                                     "key": {
