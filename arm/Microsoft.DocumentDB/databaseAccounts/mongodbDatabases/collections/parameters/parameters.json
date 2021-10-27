@@ -1,0 +1,59 @@
+{
+    "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "databaseAccountName": {
+            "value": "sxx-az-cdb-weu-x-002"
+        },
+        "mongodbDatabaseName": {
+            "value": "sxx-az-mdb-weu-x-003"
+        },
+        "collectionName": {
+            "value": "test123"
+        },
+        "indexes": {
+            "value": [
+                {
+                    "key": {
+                        "keys": [
+                            "_id"
+                        ]
+                    }
+                },
+                {
+                    "key": {
+                        "keys": [
+                            "$**"
+                        ]
+                    }
+                },
+                {
+                    "key": {
+                        "keys": [
+                            "company_id",
+                            "company_address"
+                        ]
+                    },
+                    "options": {
+                        "unique": true
+                    }
+                },
+                {
+                    "key": {
+                        "keys": [
+                            "_ts"
+                        ]
+                    },
+                    "options": {
+                        "expireAfterSeconds": 2629746
+                    }
+                }
+            ]
+        },
+        "shardKey": {
+            "value": {
+                "user_id": "Hash"
+            }
+        }
+    }
+}
