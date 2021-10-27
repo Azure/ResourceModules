@@ -6,10 +6,10 @@
             "value": "adp-sxx-az-nw-weu-x-001"
         },
         "networkSecurityGroupResourceId": {
-            "value": "/subscriptions/8629be3b-96bc-482d-a04b-ffff597c65a2/resourceGroups/validation-rg/providers/Microsoft.Network/networkSecurityGroups/adp-sxx-az-nsg-weu-x-001"
+            "value": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/networkSecurityGroups/adp-sxx-az-nsg-weu-x-001"
         },
         "diagnosticStorageAccountId": {
-            "value": "/subscriptions/8629be3b-96bc-482d-a04b-ffff597c65a2/resourceGroups/validation-rg/providers/Microsoft.Storage/storageAccounts/adpsxxazsaweux001"
+            "value": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Storage/storageAccounts/adpsxxazsaweux001"
         },
         "retentionEnabled": {
             "value": false
@@ -30,7 +30,7 @@
             "value": false
         },
         "workspaceResourceId": {
-            "value": "/subscriptions/8629be3b-96bc-482d-a04b-ffff597c65a2/resourcegroups/validation-rg/providers/microsoft.operationalinsights/workspaces/adp-sxx-az-la-weu-x-001"
+            "value": "/subscriptions/<<subscriptionId>>/resourcegroups/validation-rg/providers/microsoft.operationalinsights/workspaces/adp-sxx-az-la-weu-x-001"
         }
     }
 }

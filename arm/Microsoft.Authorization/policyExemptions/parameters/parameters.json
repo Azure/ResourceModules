@@ -9,7 +9,7 @@
       "value": "[Test] policy exempt"
     },
     "policyAssignmentId": {
-      "value": "/subscriptions/8629be3b-96bc-482d-a04b-ffff597c65a2/providers/Microsoft.Authorization/policyAssignments/Addatagtoresources"
+      "value": "/subscriptions/<<subscriptionId>>/providers/Microsoft.Authorization/policyAssignments/Addatagtoresources"
     },
     "exemptionCategory": {
       "value": "Waiver"
@@ -23,7 +23,7 @@
       "value": "2023-10-02T03:57:00.000Z"
     },
     "subscriptionId": {
-      "value": "8629be3b-96bc-482d-a04b-ffff597c65a2"
+      "value": "<<subscriptionId>>"
     }
   }
 }

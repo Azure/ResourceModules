@@ -1,4 +1,4 @@
-name: 'ApiManagement: Service'
+name: 'Service Fabric: Clusters'
 
 on:
   workflow_dispatch:
@@ -6,7 +6,7 @@ on:
       removeDeployment:
         description: 'Remove deployed module'
         required: false
-        default: 'false'
+        default: 'true'
       versioningOption:
         description: 'The mode to handle the version increments [major|minor|patch|custom]'
         required: false
@@ -20,14 +20,14 @@ on:
       - main
     paths:
       - '.github/actions/templates/**'
-      - '.github/workflows/ms.apimanagement.service.yml'
-      - 'arm/Microsoft.ApiManagement/service/**'
-      - '!arm/Microsoft.ApiManagement/service/readme.md'
+      - '.github/workflows/ms.servicefabric.clusters.yml'
+      - 'arm/Microsoft.ServiceFabric/clusters/**'
+      - '!arm/Microsoft.ServiceFabric/clusters/readme.md'
 
 env:
-  moduleName: 'service'
-  modulePath: 'arm/Microsoft.ApiManagement/service'
-  workflowPath: '.github/workflows/ms.apimanagement.service.yml'
+  moduleName: 'clusters'
+  modulePath: 'arm/Microsoft.ServiceFabric/clusters'
+  workflowPath: '.github/workflows/ms.servicefabric.clusters.yml'
   AZURE_CREDENTIALS: ${{ secrets.AZURE_CREDENTIALS }}
   ARM_SUBSCRIPTION_ID: ${{ secrets.ARM_SUBSCRIPTION_ID }}
   ARM_MGMTGROUP_ID: ${{ secrets.ARM_MGMTGROUP_ID }}
