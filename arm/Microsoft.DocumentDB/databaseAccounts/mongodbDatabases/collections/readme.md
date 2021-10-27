@@ -1,4 +1,4 @@
-# Collections `[Microsoft.DocumentDB/databaseAccount/mongodbDatabases/collections]`
+# Collections `[Microsoft.DocumentDB/databaseAccount/mongodbDatabases/collections]` `[Microsoft.DocumentDB/databaseAccounts/mongodbDatabases/collections]`
 
 This module deploys a collection within a MongoDB.
 
@@ -12,11 +12,11 @@ This module deploys a collection within a MongoDB.
 
 | Parameter Name | Type | Default Value | Possible Values | Description |
 | :-- | :-- | :-- | :-- | :-- |
-| `name` | string |  |  | Required. Name of the collection |
 | `cuaId` | string |  |  | Optional. Customer Usage Attribution id (GUID). This GUID must be previously registered |
 | `databaseAccountName` | string |  |  | Required. Name of the Cosmos DB database account. |
 | `indexes` | array |  |  | Required. Indexes for the collection |
 | `mongodbDatabaseName` | string |  |  | Required. Name of the mongodb database |
+| `name` | string |  |  | Required. Name of the collection |
 | `shardKey` | object |  |  | Required. ShardKey for the collection |
 | `throughput` | int | `400` |  | Optional. Name of the mongodb database |
 

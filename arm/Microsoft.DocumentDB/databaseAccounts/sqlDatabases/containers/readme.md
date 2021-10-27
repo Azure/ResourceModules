@@ -1,4 +1,6 @@
-# Containers `[Microsoft.DocumentDB/databaseAccount/sqlDatabases/containers]`
+# DocumentdbDatabaseaccountsSqldatabasesContainers `[Microsoft.DocumentDB/databaseAccounts/sqlDatabases/containers]`
+
+// TODO: Replace Resource and fill in description
 
 ## Resource Types
 
@@ -18,6 +20,10 @@
 | `sqlDatabaseName` | string |  |  | Required. Name of the SQL Database  |
 | `tags` | object | `{object}` |  | Optional. Tags of the SQL Database resource. |
 | `throughput` | int | `400` |  | Optional. Request Units per second |
+
+### Parameter Usage: `<ParameterPlaceholder>`
+
+// TODO: Fill in Parameter usage
 
 ## Outputs
 

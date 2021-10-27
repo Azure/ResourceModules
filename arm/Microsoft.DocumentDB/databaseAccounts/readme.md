@@ -1,4 +1,4 @@
-# Documentdb Database Accounts `[Microsoft.DocumentDB/databaseAccount]`
+# Documentdb Database Accounts `[Microsoft.DocumentDB/databaseAccount]` `[Microsoft.DocumentDB/databaseAccounts]`
 
 This module deploys a Documentdb database account and its child resources.
 
@@ -36,10 +36,10 @@ This module deploys a Documentdb database account and its child resources.
 | `maxIntervalInSeconds` | int | `300` |  | Optional. Max lag time (minutes). Required for BoundedStaleness. Valid ranges, Single Region: 5 to 84600. Multi Region: 300 to 86400. |
 | `maxStalenessPrefix` | int | `100000` |  | Optional. Max stale requests. Required for BoundedStaleness. Valid ranges, Single Region: 10 to 1000000. Multi Region: 100000 to 1000000. |
 | `metricsToEnable` | array | `[Requests]` | `[Requests]` | Optional. The name of metrics that will be streamed. |
-| `mongodbDatabases` | array | `[]` |  | Optional. MongoDB Databases configurations |
+| `mongodbDatabases` | _[mongodbDatabases](mongodbDatabases/readme.md)_ array | `[]` |  | Optional. MongoDB Databases configurations |
 | `roleAssignments` | array | `[]` |  | Optional. Array of role assignment objects that contain the 'roleDefinitionIdOrName' and 'principalIds' to define RBAC role assignments on this resource. In the roleDefinitionIdOrName attribute, you can provide either the display name of the role definition, or it's fully qualified ID in the following format: '/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11' |
 | `serverVersion` | string | `4.0` | `[3.2, 3.6, 4.0]` | Optional. Specifies the MongoDB server version to use. |
-| `sqlDatabases` | array | `[]` |  | Optional. SQL Databases configurations |
+| `sqlDatabases` | _[sqlDatabases](sqlDatabases/readme.md)_ array | `[]` |  | Optional. SQL Databases configurations |
 | `tags` | object | `{object}` |  | Optional. Tags of the Database Account resource. |
 | `userAssignedIdentities` | object | `{object}` |  | Optional. Mandatory if 'managedServiceIdentity' contains UserAssigned. The list of user identities associated with the database account. |
 | `workspaceId` | string |  |  | Optional. Resource identifier of Log Analytics. |
