@@ -2,19 +2,12 @@
 @description('Required. Name of the Storage Account.')
 param storageAccountName string
 
-@description('Sets the CORS rules. You can include up to five CorsRule elements in the request.')
-param cors object = {}
-
 @description('Optional. tables to create.')
 param tables array = []
 
 resource tableService 'Microsoft.Storage/storageAccounts/tableServices@2021-04-01' = {
   name: '${storageAccountName}/default'
-  properties: {
-    cors: {
-      corsRules: []
-    }
-  }
+  properties: {}
 }
 
 module tableService_tables '.tables/deploy.bicep' = [for (tableName, index) in tables: {

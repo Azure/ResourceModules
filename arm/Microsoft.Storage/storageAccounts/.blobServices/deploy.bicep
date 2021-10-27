@@ -11,9 +11,6 @@ param deleteRetentionPolicyDays int = 7
 @description('Optional. Automatic Snapshot is enabled if set to true.')
 param automaticSnapshotPolicyEnabled bool = false
 
-@description('Sets the CORS rules. You can include up to five CorsRule elements in the request.')
-param cors object = {}
-
 @description('Optional. Blob containers to create.')
 param blobContainers array = []
 
@@ -25,9 +22,6 @@ resource blobServices 'Microsoft.Storage/storageAccounts/blobServices@2021-08-01
       days: deleteRetentionPolicyDays
     }
     automaticSnapshotPolicyEnabled: automaticSnapshotPolicyEnabled
-    cors: {
-      corsRules: []
-    }
   }
 }
 
