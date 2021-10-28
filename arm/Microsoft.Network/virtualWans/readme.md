@@ -2,7 +2,6 @@
 
 This template deploys Virtual Wan
 
-
 ## Resource types
 
 | Resource Type | Api Version |

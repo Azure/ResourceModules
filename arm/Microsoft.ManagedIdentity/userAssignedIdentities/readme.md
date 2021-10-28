@@ -2,7 +2,6 @@
 
 This module deploys User Assigned Identities, with resource lock.
 
-
 ## Resource types
 
 | Resource Type | Api Version |

@@ -2,7 +2,6 @@
 
 This template deploys a Virtual Network (vNet) with 2 optional Subnets.
 
-
 ## Resource types
 
 | Resource Type | Api Version |
