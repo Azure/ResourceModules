@@ -24,7 +24,7 @@ In general, the current approach works for about 80-90% of the modules. That sai
 - The module does not support tags: The current test implementation heavily relies on tags to find and remove a test-deployed resource. However, as not all resources support tags (for example Role Assignments), these must be removed in a different way that is yet to be implemented.
 - The module's resources must be removed in a specific order: Some resources like Azure NetAppFiles & VirtualWan, while supporting tags, cannot be removed as is. Due to their nature they deploy several child-resources that must be removed first. However, the current implementation of the removal is not aware of these limitations.
 
-### Insufficient parameter files
+### Limited parameter file set
 We have yet to implement the full set of parameter files we need in order to test all possible scenarios. The most important first step will be a 'minimum-set' parameter file vs. a 'maximum-set' parameter file for each module, followed by parameter files for specific scenarios
 
 ## Pipeline specific
