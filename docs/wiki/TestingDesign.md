@@ -39,7 +39,7 @@ The template validation tests execute a dry-run with each parameter file provide
 ### Template Deployment Tests
 If all other tests passed, the deployment tests are the ultimate module validation. Using the available & configured parameter files for a module, each is deployed to Azure (in parallel) and verifies if the deployment works end to end.
 
-By default, any test-deployed module is removed after the test. However, you can also disable this mechanic in case you want to investigate the deployed resource yourself. For further details, please refer to the (.\PipelinesUsage.md) section.
+Most of the resources are deleted by default after their deployment, to keep costs down and to be able to retest resource modules from scratch in the next run. However, the removal step can be skipped in case further investigation on the deployed resource is needed. For further details, please refer to the (.\PipelinesUsage.md) section.
 
 ## Module Dependencies
 In order to successfully deploy and test all modules in your desired environment some modules have to have resources deployed beforehand.
