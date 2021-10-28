@@ -1,6 +1,4 @@
-# DocumentdbDatabaseaccountsSqldatabasesContainers `[Microsoft.DocumentDB/databaseAccounts/sqlDatabases/containers]`
-
-// TODO: Replace Resource and fill in description
+# DocumentDB Database Account SQL Databases Containers `[Microsoft.DocumentDB/databaseAccount/sqlDatabases/containers]`
 
 ## Resource Types
 
