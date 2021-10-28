@@ -6,7 +6,7 @@
             "value": "sxx-az-ase-weu-x-001"
         },
         "subnetResourceId": {
-            "value": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/virtualNetworks/adp-sxx-az-vnet-weu-x-001/subnets/sxx-az-subnet-weu-x-007"
+            "value": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/virtualNetworks/adp-sxx-az-vnet-weu-x-001/subnets/sxx-az-subnet-weu-x-006"
         },
         "roleAssignments": {
             "value": [
