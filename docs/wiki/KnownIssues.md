@@ -5,9 +5,9 @@ This section gives you an overview of the repositories larger known issues. We a
 
 ---
 ### _Navigation_
-- [Module specifc](#module-specific)
-- [Testing specifc](#testing-specific)
-- [Pipeline specifc](#pipeline-specific)
+- [Module specific](#module-specific)
+- [Testing specific](#testing-specific)
+- [Pipeline specific](#pipeline-specific)
 ---
 
 ## Module specific
