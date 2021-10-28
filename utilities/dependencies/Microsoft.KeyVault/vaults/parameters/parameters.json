@@ -36,22 +36,7 @@
             ],
             "certificates": []
           }
-        },
-        // {
-        //   "tenantId": "72f988bf-86f1-41af-91ab-2d7cd011db47",
-        //   "objectId": "0ecf68c1-d14d-4890-bafe-a6cab9bda1d7",
-        //   "permissions": {
-        //     "keys": [
-        //       "all"
-        //     ],
-        //     "secrets": [
-        //       "all"
-        //     ],
-        //     "certificates": [
-        //       "all"
-        //     ]
-        //   }
-        // }, // adding AAD-IaCS-Azure-Owners to view keys and secrets
+        }, // adding AAD-IaCS-Azure-Owners to view keys and secrets
         {
           "tenantId": "72f988bf-86f1-41af-91ab-2d7cd011db47",
           "objectId": "7fb2b64e-e273-4593-8811-3ced3480df6f",
