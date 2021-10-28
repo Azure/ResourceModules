@@ -3,7 +3,9 @@
 This section gives you an overview of how to use the bicep modules.
 
 ---
+
 ### _Navigation_
+
 - [Modules Usage](#modules-usage)
     - [_Navigation_](#navigation)
   - [Deploy local template](#deploy-local-template)
@@ -12,6 +14,7 @@ This section gives you an overview of how to use the bicep modules.
   - [Deploy remote template](#deploy-remote-template)
     - [**Remote:** PowerShell](#remote-powershell)
     - [**Remote:** Azure CLI](#remote-azure-cli)
+
 ---
 
 ## Deploy local template
@@ -48,7 +51,6 @@ az deployment group create @inputObject
 
 ## Deploy remote template
 
-
 ### **Remote:** PowerShell
 
 ```PowerShell
@@ -61,8 +63,6 @@ $inputObject = @{
 }
 New-AzResourceGroupDeployment @inputObject
 ```
-
-
 
 ### **Remote:** Azure CLI
 

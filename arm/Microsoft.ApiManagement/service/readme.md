@@ -91,6 +91,7 @@ This module deploys an API management.
     ]
 }
 ```
+
 ### Parameter Usage: `tags`
 
 Tag names and tag values can be provided as needed. A tag can be left without a value.
@@ -109,7 +110,6 @@ Tag names and tag values can be provided as needed. A tag can be left without a 
 ```
 
 ### Parameter Usage: `apiManagementServicePolicy`
-
 
 ```Json
 "apiManagementServicePolicy": {

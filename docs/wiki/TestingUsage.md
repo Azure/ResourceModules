@@ -3,8 +3,11 @@
 This section gives you an overview of how to test the bicep modules.
 
 ---
+
 ### _Navigation_
+
 - [Tool: Testing your Bicep module](#Tool-Testing-your-Bicep-module)
+
 ---
 
 ## Tool: Testing your Bicep module

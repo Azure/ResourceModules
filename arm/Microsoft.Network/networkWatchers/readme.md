@@ -2,7 +2,6 @@
 
 This template deploys Network Watcher.
 
-
 ## Resource types
 
 | Resource Type | Api Version |

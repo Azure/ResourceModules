@@ -212,4 +212,3 @@ jobs:
           moduleName: '${{ env.moduleName }}'
           templateFilePath: '${{ env.modulePath }}/deploy.bicep'
           resourceGroupName: '${{ env.resourceGroupName }}'
-

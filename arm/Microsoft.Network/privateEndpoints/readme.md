@@ -16,6 +16,7 @@ This template deploys private Endpoint for a generic service.
 ### Resource dependency
 
 The following resources are required to be able to deploy this resource:
+
 - `PrivateDNSZone`
 - `VirtualNetwork/subnet`
 - The service that needs to be connected through private endpoint

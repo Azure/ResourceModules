@@ -29,7 +29,7 @@ To deploy resource to a Management Group, provide the `managementGroupId` as an 
 
 ```json
 "managementGroupId": {
-	"value": "contoso-group"
+    "value": "contoso-group"
 }
 ```
 
@@ -41,21 +41,23 @@ To deploy resource to an Azure Subscription, provide the `subscriptionId` as an 
 
 ```json
 "subscriptionId": {
-	"value": "12345678-b049-471c-95af-123456789012"
+    "value": "12345678-b049-471c-95af-123456789012"
 }
 ```
+
 ### Parameter Usage: `resourceGroupName`
 
 To deploy resource to a Resource Group, provide the `subscriptionId` and `resourceGroupName` as an input parameter to the module. **Example**:
 
 ```json
 "subscriptionId": {
-	"value": "12345678-b049-471c-95af-123456789012"
+    "value": "12345678-b049-471c-95af-123456789012"
 },
 "resourceGroupName": {
-	"value": "target-resourceGroup"
+    "value": "target-resourceGroup"
 }
 ```
+
 > The `subscriptionId` is used to enable deployment to a Resource Group Scope, allowing the use of the `resourceGroup()` function from a Management Group Scope. [Additional Details](https://github.com/Azure/bicep/pull/1420).
 
 ## Outputs
