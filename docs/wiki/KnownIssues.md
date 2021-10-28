@@ -10,7 +10,6 @@ This section gives you an overview of the repositories larger known issues. We a
 - [Pipeline specifc](#pipeline-specific)
 ---
 
-
 ## Module specific
 This section outlines known issues that currently affect our modules.
 
