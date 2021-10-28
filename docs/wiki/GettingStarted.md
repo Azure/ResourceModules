@@ -45,7 +45,6 @@ To ensure you can use all the content in this repostiroy you'd want to install
 
 Depending on how you want to use this repositories content you may go down different paths to get started.
 
-
 ### **Option 1**: Use it as a basis to set up your own inner-source project
 
 The repository is set up in a way that you can essentially create your own private 1:1 copy and would be able to re-use the same concepts and functionality in your own environment like GitHub. This set up is a 2-step process. First, you have to either 'Form' the repository to you own GitHub account, or move it to your desired location manually. And second you have to configure the environment, that is, you have to update all references to the original source respository to your own and also set up several secrets to point to the Azure environment of your choice.
@@ -63,6 +62,14 @@ To fork the repostory you can simply click on the `Fork` button on the top right
 > ***Note***: To also re-use the pipelines you may need to account for additional requirements as described below.
 
 Once forked, make sure you update all references to the original repository like for example any link that points to the original location.
+
+#### Service Names
+On of the most important actions you should take from the beginning is to update the parameter files in your module. Though you may not want to use all modules that are available, even the subset you use may currently be configured with resource names that must be globally unique and are already taken. For those it is recommended that you define your own unique naming schema (for example a special prefix) and update the resource names accordingly.
+
+Please refer to [this list][AzureNames] to check which services have a global scope and must be updated.
+
+#### Dependencies
+As the modules we test often times have dependencies to other servies, we created a pipeline to deploys several standard services like VirtualNetworks and KeyVaults (alongside dummy secrets) for the modules to use. This _dependency_ pipeline should be prepared and executed before you start running any pipelines on your own. In case you need to rename any services there (for example because a certain globally unique resource name was already taken) make sure to update any references to this name in the module parameter files. You can find further details about this pipeline [here](.\TestingDesign.md#Module-Dependencies).
 
 #### GitHub-specific prerequisites
 In case you want to not only leverage the module templates but actually re-use the implemented pipelines & testing framework as well, you need to set up a few additional secrets in your GitHub environment:
@@ -117,3 +124,4 @@ Last but not least, instead of fetching your own copy of the repository you can 
 
 <!-- Docs -->
 [PowerShellDocs]: <https://docs.microsoft.com/en-us/powershell/>
+[AzureNames]: <https://docs.microsoft.com/en-us/azure/azure-resource-manager/management/resource-name-rules>
