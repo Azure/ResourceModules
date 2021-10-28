@@ -29,9 +29,9 @@ inputs:
     required: false
 
 runs:
-  using: "composite"
+  using: 'composite'
   steps:
-    - name: "Setup agent & login"
+    - name: 'Setup agent & login'
       shell: pwsh
       run: |
         # Load used functions
@@ -45,7 +45,7 @@ runs:
         creds: ${{ env.AZURE_CREDENTIALS }}
         enable-AzPSSession: true
 
-    - name: "Replace Tokens [${{ inputs.parameterFilePath }}] "
+    - name: 'Replace Tokens [${{ inputs.parameterFilePath }}] '
       shell: pwsh
       run: |
         # Load used funtions

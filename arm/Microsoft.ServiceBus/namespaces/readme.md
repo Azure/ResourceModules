@@ -126,6 +126,7 @@ Default value:
     ]
 }
 ```
+
 ### Parameter Usage: `privateEndpoints`
 
 To use Private Endpoint the following dependencies must be deployed:

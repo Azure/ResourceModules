@@ -22,7 +22,7 @@ function Get-WorkflowDefaultInput {
     )
 
     begin {
-        Write-Debug ("{0} entered" -f $MyInvocation.MyCommand)
+        Write-Debug ('{0} entered' -f $MyInvocation.MyCommand)
     }
 
     process {
@@ -30,31 +30,31 @@ function Get-WorkflowDefaultInput {
 
         # Get 'removeDeployment' default input value
         $removeDeploymentRowIndex = ((0..($content.Count - 1)) | Where-Object { $content[$_] -like '*removeDeployment:*' })[0]
-        $removeDeployment = $content[$removeDeploymentRowIndex + 3].trim().Split(':')[1].Trim().Replace("'", "").Replace('"', '')
+        $removeDeployment = $content[$removeDeploymentRowIndex + 3].trim().Split(':')[1].Trim().Replace("'", '').Replace('"', '')
         Write-Verbose "Default input value for removeDeployment: $removeDeployment"
 
         # Get 'versioningOption' default input value
-        $versioningOptionRowIndex = ((0..($content.Count - 1)) | Where-Object { $content[$_] -like "*versioningOption:*" })[0]
-        $versioningOption = $content[$versioningOptionRowIndex + 3].trim().Split(':')[1].Trim().Replace("'", "").Replace('"', '')
+        $versioningOptionRowIndex = ((0..($content.Count - 1)) | Where-Object { $content[$_] -like '*versioningOption:*' })[0]
+        $versioningOption = $content[$versioningOptionRowIndex + 3].trim().Split(':')[1].Trim().Replace("'", '').Replace('"', '')
         Write-Verbose "Default input value for versioningOption: $versioningOption"
 
         # Get 'customVersion' default input value
-        $customVersionRowIndex = ((0..($content.Count - 1)) | Where-Object { $content[$_] -like "*customVersion:*" })[0]
-        $customVersion = $content[$customVersionRowIndex + 3].trim().Split(':')[1].Trim().Replace("'", "").Replace('"', '')
+        $customVersionRowIndex = ((0..($content.Count - 1)) | Where-Object { $content[$_] -like '*customVersion:*' })[0]
+        $customVersion = $content[$customVersionRowIndex + 3].trim().Split(':')[1].Trim().Replace("'", '').Replace('"', '')
         Write-Verbose "Default input value for customVersion: $customVersion"
 
         # Define hashtable to contain workflow parameters
         $workflowParameters = @{}
-        $workflowParameters.Add("removeDeployment", $removeDeployment)
-        $workflowParameters.Add("versioningOption", $versioningOption)
-        $workflowParameters.Add("customVersion", $customVersion)
-        Write-Verbose "Get workflow default input complete"
+        $workflowParameters.Add('removeDeployment', $removeDeployment)
+        $workflowParameters.Add('versioningOption', $versioningOption)
+        $workflowParameters.Add('customVersion', $customVersion)
+        Write-Verbose 'Get workflow default input complete'
 
         # Return hashtable
         return $workflowParameters
     }
 
     end {
-        Write-Debug ("{0} exited" -f $MyInvocation.MyCommand) 
+        Write-Debug ('{0} exited' -f $MyInvocation.MyCommand)
     }
 }
