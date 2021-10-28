@@ -385,7 +385,7 @@ function Set-ModuleReadMe {
     }
 
     # Update title
-    if ($TemplateFilePath -like '*/arm/*') {
+    if ($TemplateFilePath.Replace('\', '/') -like '*/arm/*') {
         $fullResourcePath = 'Microsoft.{0}' -f (Split-Path $TemplateFilePath -Parent).Replace('\', '/').Split('/Microsoft.')[1]
 
         if ($fullResourcePath -clike '*Resources/*') {
