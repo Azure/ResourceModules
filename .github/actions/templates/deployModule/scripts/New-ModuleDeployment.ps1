@@ -19,13 +19,13 @@ Mandatory. Path to the parameter file from root. Can be a single file, multiple 
 Mandatory. Location to test in. E.g. WestEurope
 
 .PARAMETER resourceGroupName
-Optional. Name of the resource group to deploy into. Mandatory if deploying into a resource group (resource group level) 
+Optional. Name of the resource group to deploy into. Mandatory if deploying into a resource group (resource group level)
 
 .PARAMETER subscriptionId
 Optional. Id of the subscription to deploy into. Mandatory if deploying into a subscription (subscription level) using a Management groups service connection
 
 .PARAMETER managementGroupId
-Optional. Name of the management group to deploy into. Mandatory if deploying into a management group (management group level) 
+Optional. Name of the management group to deploy into. Mandatory if deploying into a management group (management group level)
 
 .PARAMETER removeDeployment
 Optional. Set to 'true' to add the tag 'removeModule = <ModuleName>' to the deployment. Is picked up by the removal stage to remove the resource again.
@@ -65,29 +65,29 @@ function New-ModuleDeployment {
         [Parameter(Mandatory = $false)]
         [string] $resourceGroupName,
 
-        [Parameter(Mandatory = $false)]       
+        [Parameter(Mandatory = $false)]
         [string] $subscriptionId,
 
-        [Parameter(Mandatory = $false)]       
+        [Parameter(Mandatory = $false)]
         [string] $managementGroupId,
 
-        [Parameter(Mandatory = $false)]       
+        [Parameter(Mandatory = $false)]
         [bool] $removeDeployment,
 
-        [Parameter(Mandatory = $false)]       
+        [Parameter(Mandatory = $false)]
         [PSCustomObject]$additionalTags,
 
-        [Parameter(Mandatory = $false)]       
+        [Parameter(Mandatory = $false)]
         [int]$retryLimit = 3
     )
-    
+
     begin {
-        Write-Debug ("{0} entered" -f $MyInvocation.MyCommand) 
+        Write-Debug ("{0} entered" -f $MyInvocation.MyCommand)
     }
-    
+
     process {
 
-        ## Assess Provided Parameter Path 
+        ## Assess Provided Parameter Path
         if ((Test-Path -Path $parameterFilePath -PathType Container) -and $parameterFilePath.Length -eq 1) {
             ## Transform Path to Files
             $parameterFilePath = Get-ChildItem $parameterFilePath -Recurse -Filter *.json | Select-Object -ExpandProperty FullName
@@ -102,7 +102,7 @@ function New-ModuleDeployment {
             [int]$retryCount = 1
 
             $DeploymentInputs = @{
-                Name                  = "$moduleName-$(-join (Get-Date -Format yyyyMMddTHHMMssffffZ)[0..63])"
+                DeploymentName        = "$moduleName-$(-join (Get-Date -Format yyyyMMddTHHMMssffffZ)[0..63])"
                 TemplateFile          = $templateFilePath
                 TemplateParameterFile = $parameterFile
                 Verbose               = $true
@@ -110,32 +110,32 @@ function New-ModuleDeployment {
             }
 
             ## Append Tags to Parameters if Resource supports them (all tags must be in one object)
-            if ($removeDeployment -or $additionalTags) { 
-                
+            if ($removeDeployment -or $additionalTags) {
+
                 # Parameter tags
-                $parameterFileTags = (ConvertFrom-Json (Get-Content -Raw -Path $parameterFile) -AsHashtable).parameters.tags.value            
+                $parameterFileTags = (ConvertFrom-Json (Get-Content -Raw -Path $parameterFile) -AsHashtable).parameters.tags.value
                 if ($parameterFileTags) { $parameterFileTags = @{} }
-                
+
                 # Pipeline tags
                 if ($additionalTags) { $parameterFileTags += $additionalTags } # If additionalTags object is provided, append tag to the resource
-                
+
                 # Removal tags
                 if ($removeDeployment) { $parameterFileTags += @{removeModule = $moduleName } } # If removeDeployment is set to true, append removeMoule tag to the resource
                 # Overwrites parameter file tags parameter
                 Write-Verbose ("removeDeployment for $moduleName= $removeDeployment `nadditionalTags:`n $($additionalTags | ConvertTo-Json)")
-                $DeploymentInputs += @{Tags = $parameterFileTags } 
+                $DeploymentInputs += @{Tags = $parameterFileTags }
             }
 
             if ((Split-Path $templateFilePath -Extension) -eq '.bicep') {
                 # Bicep
                 $bicepContent = Get-Content $templateFilePath
-                $bicepScope = $bicepContent | Where-Object { $_ -like "*targetscope =*" } 
+                $bicepScope = $bicepContent | Where-Object { $_ -like "*targetscope =*" }
                 if (-not $bicepScope) {
-                    $deploymentScope = "resourceGroup" 
+                    $deploymentScope = "resourceGroup"
                 }
                 else {
                     $deploymentScope = $bicepScope.ToLower().Replace('targetscope = ', '').Replace("'",'').Trim()
-                } 
+                }
             }
             else {
                 # ARM
@@ -202,7 +202,7 @@ function New-ModuleDeployment {
                         }
                     }
                     $Stoploop = $true
-                } 
+                }
                 catch {
                     if ($retryCount -ge $retryLimit) {
                         throw $PSitem.Exception.Message
@@ -215,16 +215,16 @@ function New-ModuleDeployment {
                         $retryCount++
                     }
                 }
-            } 
+            }
             until ($Stoploop -eq $true -or $retryCount -gt $retryLimit)
 
             Write-Verbose "Result" -Verbose
             Write-Verbose "------" -Verbose
             Write-Verbose ($res | Out-String) -Verbose
-        } 
-    } 
+        }
+    }
 
     end {
-        Write-Debug ("{0} exited" -f $MyInvocation.MyCommand)  
+        Write-Debug ("{0} exited" -f $MyInvocation.MyCommand)
     }
 }
