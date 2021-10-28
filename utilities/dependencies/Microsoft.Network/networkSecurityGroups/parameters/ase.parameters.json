@@ -14,7 +14,7 @@
             "sourcePortRange": "*",
             "sourceAddressPrefix": "AppServiceManagement",
             "destinationPortRange": "454-455",
-            "destinationAddressPrefix": "10.0.8.0/24",
+            "destinationAddressPrefix": "10.0.7.0/24",
             "access": "Allow",
             "priority": 1010,
             "direction": "Inbound"
