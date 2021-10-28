@@ -10,11 +10,11 @@ resource applicationType 'Microsoft.ServiceFabric/clusters/applicationTypes@2021
   tags: tags
   properties: properties
 
-  resource versions 'versions@2021-06-01' = [for version in applicationTypeObj.applicationTypesVersions: {
-    name: version.name
+  resource versions 'versions@2021-06-01' = [for applicationTypesVersion in applicationTypeObj.applicationTypesVersions: {
+    name: applicationTypesVersion.name
     location: location
     tags: tags
-    properties: !empty(version.properties) ? version.properties : null
+    properties: !empty(applicationTypesVersion.properties) ? applicationTypesVersion.properties : null
   }]
 }
 
