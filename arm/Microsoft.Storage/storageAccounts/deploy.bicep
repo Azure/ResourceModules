@@ -192,7 +192,7 @@ var builtInRoleNames = {
   'Virtual Machine Contributor': subscriptionResourceId('Microsoft.Authorization/roleDefinitions', '9980e02c-c2be-4d73-94e8-173b1dc7cf3c')
 }
 
-module pid_cuaId 'bicep/nested_cuaId.bicep' = if (!empty(cuaId)) {
+module pid_cuaId '.bicep/nested_cuaId.bicep' = if (!empty(cuaId)) {
   name: 'pid-${cuaId}'
   params: {}
 }
@@ -259,7 +259,7 @@ resource storageAccount_lock 'Microsoft.Authorization/locks@2016-09-01' = if (lo
   scope: storageAccount
 }
 
-module storageAccount_rbac 'bicep/nested_rbac.bicep' = [for (roleAssignment, index) in roleAssignments: {
+module storageAccount_rbac '.bicep/nested_rbac.bicep' = [for (roleAssignment, index) in roleAssignments: {
   name: '${uniqueString(deployment().name, location)}-Storage-Rbac-${index}'
   params: {
     roleAssignmentObj: roleAssignment
@@ -268,7 +268,7 @@ module storageAccount_rbac 'bicep/nested_rbac.bicep' = [for (roleAssignment, ind
   }
 }]
 
-module storageAccount_privateEndpoints 'bicep/nested_privateEndpoint.bicep' = [for (endpoint, index) in privateEndpoints: if (!empty(privateEndpoints)) {
+module storageAccount_privateEndpoints '.bicep/nested_privateEndpoint.bicep' = [for (endpoint, index) in privateEndpoints: if (!empty(privateEndpoints)) {
   name: '${uniqueString(deployment().name, location)}-Storage-PrivateEndpoints-${index}'
   params: {
     privateEndpointResourceId: storageAccount.id
