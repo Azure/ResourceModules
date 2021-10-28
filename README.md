@@ -1,4 +1,4 @@
-# ![AzureIcon] Resource Modules
+# ![AzureIcon] Common Azure Resource Modules Library
 
 ## Description
 
