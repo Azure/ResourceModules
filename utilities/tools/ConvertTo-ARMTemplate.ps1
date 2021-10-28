@@ -57,7 +57,7 @@ function Remove-JSONMetadata {
         [psobject] $TemplateObject
     )
     $TemplateObject.PSObject.Properties.Remove('metadata')
-    $TemplateObject.resources | Where-Object type -eq 'Microsoft.Resources/deployments' | ForEach-Object {
+    $TemplateObject.resources | Where-Object {$_.type -eq 'Microsoft.Resources/deployments'} | ForEach-Object {
         Remove-JSONMetadata -TemplateObject $_.properties.template
     }
 }

@@ -1,7 +1,5 @@
 # ApplicationGateway `[Microsoft.Network/applicationGateways]`
 
-# Resource
-
 This template deploys Application Gateway.
 
 ## Resource types

@@ -37,12 +37,12 @@ Optional. Provde a Key Value Pair (Object) that will be appended to the Paramete
 Optional. Maximum retry limit if the deployment fails. Default is 3.
 
 .EXAMPLE
-New-ModuleDeployment -ModuleName 'KeyVault' -templateFilePath 'C:/KeyVault/deploy.json' -parameterFilePath 'C:/KeyVault/Parameters/parameters.json' -location 'WestEurope' -resourceGroupName 'aLegendaryRg'
+New-ModuleDeployment -ModuleName 'KeyVault' -templateFilePath 'C:/KeyVault/deploy.json' -parameterFilePath 'C:/KeyVault/.parameters/parameters.json' -location 'WestEurope' -resourceGroupName 'aLegendaryRg'
 
 Deploy the deploy.json of the KeyVault module with the parameter file 'parameters.json' using the resource group 'aLegendaryRg' in location 'WestEurope'
 
 .EXAMPLE
-New-ModuleDeployment -ModuleName 'KeyVault' -templateFilePath 'C:/ResourceGroup/deploy.json' -parameterFilePath 'C:/ResourceGroup/Parameters/parameters.json' -location 'WestEurope'
+New-ModuleDeployment -ModuleName 'KeyVault' -templateFilePath 'C:/ResourceGroup/deploy.json' -parameterFilePath 'C:/ResourceGroup/.parameters/parameters.json' -location 'WestEurope'
 
 Deploy the deploy.json of the ResourceGroup module with the parameter file 'parameters.json' in location 'WestEurope'
 #>
@@ -82,7 +82,7 @@ function New-ModuleDeployment {
     )
 
     begin {
-        Write-Debug ("{0} entered" -f $MyInvocation.MyCommand)
+        Write-Debug ('{0} entered' -f $MyInvocation.MyCommand)
     }
 
     process {
@@ -129,22 +129,20 @@ function New-ModuleDeployment {
             if ((Split-Path $templateFilePath -Extension) -eq '.bicep') {
                 # Bicep
                 $bicepContent = Get-Content $templateFilePath
-                $bicepScope = $bicepContent | Where-Object { $_ -like "*targetscope =*" }
+                $bicepScope = $bicepContent | Where-Object { $_ -like '*targetscope =*' }
                 if (-not $bicepScope) {
-                    $deploymentScope = "resourceGroup"
+                    $deploymentScope = 'resourceGroup'
+                } else {
+                    $deploymentScope = $bicepScope.ToLower().Replace('targetscope = ', '').Replace("'", '').Trim()
                 }
-                else {
-                    $deploymentScope = $bicepScope.ToLower().Replace('targetscope = ', '').Replace("'",'').Trim()
-                }
-            }
-            else {
+            } else {
                 # ARM
                 $armSchema = (ConvertFrom-Json (Get-Content -Raw -Path $templateFilePath)).'$schema'
                 switch -regex ($armSchema) {
-                    '\/deploymentTemplate.json#$' { $deploymentScope = "resourceGroup" }
-                    '\/subscriptionDeploymentTemplate.json#$'  { $deploymentScope = "subscription" }
-                    '\/managementGroupDeploymentTemplate.json#$'  { $deploymentScope = "managementGroup" }
-                    '\/tenantDeploymentTemplate.json#$'  { $deploymentScope = "tenant" }
+                    '\/deploymentTemplate.json#$' { $deploymentScope = 'resourceGroup' }
+                    '\/subscriptionDeploymentTemplate.json#$' { $deploymentScope = 'subscription' }
+                    '\/managementGroupDeploymentTemplate.json#$' { $deploymentScope = 'managementGroup' }
+                    '\/tenantDeploymentTemplate.json#$' { $deploymentScope = 'tenant' }
                     Default { throw "[$armSchema] is a non-supported ARM template schema" }
                 }
             }
@@ -163,11 +161,11 @@ function New-ModuleDeployment {
                                 }
                             }
                             if (-not (Get-AzResourceGroup -Name $resourceGroupName -ErrorAction 'SilentlyContinue')) {
-                                if ($PSCmdlet.ShouldProcess("Resource group [$resourceGroupName] in location [$location]", "Create")) {
+                                if ($PSCmdlet.ShouldProcess("Resource group [$resourceGroupName] in location [$location]", 'Create')) {
                                     New-AzResourceGroup -Name $resourceGroupName -Location $location
                                 }
                             }
-                            if ($PSCmdlet.ShouldProcess("Resource group level deployment", "Create")) {
+                            if ($PSCmdlet.ShouldProcess('Resource group level deployment', 'Create')) {
                                 $res = New-AzResourceGroupDeployment @DeploymentInputs -ResourceGroupName $resourceGroupName
                             }
                             break
@@ -179,20 +177,20 @@ function New-ModuleDeployment {
                                     $Context | Set-AzContext
                                 }
                             }
-                            if ($PSCmdlet.ShouldProcess("Subscription level deployment", "Create")) {
-                                $res = New-AzSubscriptionDeployment @DeploymentInputs -location $location
+                            if ($PSCmdlet.ShouldProcess('Subscription level deployment', 'Create')) {
+                                $res = New-AzSubscriptionDeployment @DeploymentInputs -Location $location
                             }
                             break
                         }
                         'managementGroup' {
-                            if ($PSCmdlet.ShouldProcess("Management group level deployment", "Create")) {
-                                $res = New-AzManagementGroupDeployment @DeploymentInputs -location $location -managementGroupId $managementGroupId
+                            if ($PSCmdlet.ShouldProcess('Management group level deployment', 'Create')) {
+                                $res = New-AzManagementGroupDeployment @DeploymentInputs -Location $location -ManagementGroupId $managementGroupId
                             }
                             break
                         }
                         'tenant' {
-                            if ($PSCmdlet.ShouldProcess("Tenant level deployment", "Create")) {
-                                $res = New-AzTenantDeployment @DeploymentInputs -location $location
+                            if ($PSCmdlet.ShouldProcess('Tenant level deployment', 'Create')) {
+                                $res = New-AzTenantDeployment @DeploymentInputs -Location $location
                             }
                             break
                         }
@@ -202,13 +200,11 @@ function New-ModuleDeployment {
                         }
                     }
                     $Stoploop = $true
-                }
-                catch {
+                } catch {
                     if ($retryCount -ge $retryLimit) {
                         throw $PSitem.Exception.Message
                         $Stoploop = $true
-                    }
-                    else {
+                    } else {
                         Write-Verbose "Resource deployment Failed.. ($retryCount/$retryLimit) Retrying in 5 Seconds.. `n"
                         Write-Verbose ($PSitem.Exception.Message | Out-String) -Verbose
                         Start-Sleep -Seconds 5
@@ -218,13 +214,13 @@ function New-ModuleDeployment {
             }
             until ($Stoploop -eq $true -or $retryCount -gt $retryLimit)
 
-            Write-Verbose "Result" -Verbose
-            Write-Verbose "------" -Verbose
+            Write-Verbose 'Result' -Verbose
+            Write-Verbose '------' -Verbose
             Write-Verbose ($res | Out-String) -Verbose
         }
     }
 
     end {
-        Write-Debug ("{0} exited" -f $MyInvocation.MyCommand)
+        Write-Debug ('{0} exited' -f $MyInvocation.MyCommand)
     }
 }

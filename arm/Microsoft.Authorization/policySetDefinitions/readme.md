@@ -27,7 +27,7 @@ To deploy resource to a Management Group, provide the `managementGroupId` as an 
 
 ```json
 "managementGroupId": {
-	"value": "contoso-group"
+    "value": "contoso-group"
 }
 ```
 
@@ -39,7 +39,7 @@ To deploy resource to an Azure Subscription, provide the `subscriptionId` as an 
 
 ```json
 "subscriptionId": {
-	"value": "12345678-b049-471c-95af-123456789012"
+    "value": "12345678-b049-471c-95af-123456789012"
 }
 ```
 

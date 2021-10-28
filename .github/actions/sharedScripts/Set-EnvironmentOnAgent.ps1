@@ -4,7 +4,7 @@
 <#
     .SYNOPSIS
     Installes given PowerShell modules
-    
+
     .DESCRIPTION
     Installes given PowerShell modules
 
@@ -75,10 +75,10 @@ function Install-CustomModule {
 
 <#
 .SYNOPSIS
-Configure the current agent 
+Configure the current agent
 
 .DESCRIPTION
-Configure the current agent with e.g. the necessary PowerShell modules. 
+Configure the current agent with e.g. the necessary PowerShell modules.
 
 .PARAMETER Modules
 Optional. The PowerShell modules that should be installed on the agent. Installs default set if not provided.
@@ -116,10 +116,10 @@ function Set-EnvironmentOnAgent {
     Write-Verbose ("Install bicep start") -Verbose
     # Fetch the latest Bicep CLI binary
     curl -Lo bicep 'https://github.com/Azure/bicep/releases/latest/download/bicep-linux-x64'
-    
+
     # Mark it as executable
     chmod +x ./bicep
-    
+
     # Add bicep to your PATH (requires admin)
     sudo mv ./bicep /usr/local/bin/bicep
     Write-Verbose ("Install bicep end") -Verbose
