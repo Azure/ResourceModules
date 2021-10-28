@@ -22,7 +22,7 @@ All tests are executed as part of the individual module pipelines, run each time
 
 The general idea is that you should fail as early as possible to allow for minimal wasted time and a fast response time.
 
-> ***Note:*** Both the Template Validation and Template Deployment tests are only as good as there parameter files. Hence you should make sure that you test at least a minimum set of parameters and a maximum set of parameters. Furthermore it may make sense to have different parameter files for different scenarios to test each variant.
+> ***Note:*** Both the Template Validation and Template Deployment tests are only as good as their parameter files. Hence you should make sure that you test at least a minimum set of parameters and a maximum set of parameters. Furthermore it may make sense to have different parameter files for different scenarios to test each variant.
 
 ### Unit Tests
 Our Unit Tests are configured in the `global.module.tests.ps1` script and execute static tests across several different area to ensure that our modules are configured correctly, documentation is up to date, and modules don't turn stale.
