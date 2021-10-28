@@ -4,8 +4,8 @@ targetScope = 'subscription'
 param budgetName string = ''
 
 @allowed([
-    'Cost'
-    'Usage'
+  'Cost'
+  'Usage'
 ])
 @description('Optional. The category of the budget, whether the budget tracks cost or usage.')
 param category string = 'Cost'
@@ -14,12 +14,12 @@ param category string = 'Cost'
 param amount int
 
 @allowed([
-    'Monthly'
-    'Quarterly'
-    'Annually'
-    'BillingMonth'
-    'BillingQuarter'
-    'BillingAnnual'
+  'Monthly'
+  'Quarterly'
+  'Annually'
+  'BillingMonth'
+  'BillingQuarter'
+  'BillingAnnual'
 ])
 @description('Optional. The time covered by a budget. Tracking of the amount will be reset based on the time grain. BillingMonth, BillingQuarter, and BillingAnnual are only supported by WD customers.')
 param resetPeriod string = 'Monthly'
@@ -33,11 +33,11 @@ param endDate string = ''
 @maxLength(5)
 @description('Optional. Percent thresholds of budget for when to get a notification. Can be up to 5 thresholds, where each must be between 1 and 1000.')
 param thresholds array = [
-    50
-    75
-    90
-    100
-    110
+  50
+  75
+  90
+  100
+  110
 ]
 
 @description('Optional. The list of email addresses to send the budget notification to when the thresholds are exceeded.')
@@ -51,32 +51,32 @@ param actionGroups array = []
 
 var budgetNameVar = empty(budgetName) ? '${resetPeriod}-${category}-Budget' : budgetName
 var notificationsArray = [for threshold in thresholds: {
-    'Actual_GreaterThan_${threshold}_Percentage': {
-        enabled: true
-        operator: 'GreaterThan'
-        threshold: threshold
-        contactEmails: empty(contactEmails) ? json('null') : array(contactEmails)
-        contactRoles: empty(contactRoles) ? json('null') : array(contactRoles)
-        contactGroups: empty(actionGroups) ? json('null') : array(actionGroups)
-        thresholdType: 'Actual'
-    }
+  'Actual_GreaterThan_${threshold}_Percentage': {
+    enabled: true
+    operator: 'GreaterThan'
+    threshold: threshold
+    contactEmails: empty(contactEmails) ? json('null') : array(contactEmails)
+    contactRoles: empty(contactRoles) ? json('null') : array(contactRoles)
+    contactGroups: empty(actionGroups) ? json('null') : array(actionGroups)
+    thresholdType: 'Actual'
+  }
 }]
 
 var notifications = json(replace(replace(replace(string(notificationsArray), '[{', '{'), '}]', '}'), '}},{', '},'))
 
 resource budget 'Microsoft.Consumption/budgets@2019-05-01' = {
-    name: budgetNameVar
-    properties: {
-        category: category
-        amount: amount
-        timeGrain: resetPeriod
-        timePeriod: {
-            startDate: startDate
-            endDate: endDate
-        }
-        filter: {}
-        notifications: notifications
+  name: budgetNameVar
+  properties: {
+    category: category
+    amount: amount
+    timeGrain: resetPeriod
+    timePeriod: {
+      startDate: startDate
+      endDate: endDate
     }
+    filter: {}
+    notifications: notifications
+  }
 }
 
 output budgetName string = budget.name

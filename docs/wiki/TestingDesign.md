@@ -3,23 +3,66 @@
 This section gives you an overview of the design principals the testing follows.
 
 ---
+
 ### _Navigation_
-- [Module Dependencies](#Module-Dependencies)
+
+- [Testing Design](#testing-design)
+    - [_Navigation_](#navigation)
+  - [Design Overview  Approach](#design-overview--approach)
+    - [Unit Tests](#unit-tests)
+    - [Template Validation Tests](#template-validation-tests)
+    - [Template Deployment Tests](#template-deployment-tests)
+  - [Module Dependencies](#module-dependencies)
+    - [Services (in order)](#services-in-order)
+      - [Overview of modules dependencies](#overview-of-modules-dependencies)
+      - [Required Secrets and Keys](#required-secrets-and-keys)
+
 ---
 
+## Design Overview  Approach
 
-##  Approach
-...
+Our lifecycle management & testing framework runs 3 types of tests on all its modules:
 
-### Module Dependencies
-In order to successfully deploy and test all Modules in your desired environment some Modules have to have resources deployed beforehand.
+- Pester-driven Unit Tests
+- Template Validation Tests
+- Template Deployment Tests
+All tests are executed as part of the individual module pipelines, run each time any module code was altered, and ensure that only modules that pass each test successfully are published. If a test fails, it tells you in the pipeline log exactly what went wrong and in most cases gives you recommendations what to do to resolve the problem.
 
-Of course it is obvious and by default one should know which Azure Service needs specific resources to be deployed beforehand but here is the full list of Modules which have dependencies on other Services.
+The general idea is that you should fail as early as possible to allow for minimal wasted time and a fast response time.
+
+> ***Note:*** Both the Template Validation and Template Deployment tests are only as good as their parameter files. Hence you should make sure that you test at least a minimum set of parameters and a maximum set of parameters. Furthermore it makes sense to have different parameter files for different scenarios to test each variant.
+
+### Unit Tests
+
+Our Unit Tests are configured in the `global.module.tests.ps1` script and execute static tests across several different area to ensure that our modules are configured correctly, documentation is up to date, and modules don't turn stale.
+We can categorize these tests into a few different categories:
+
+- **File & folder tests:** These tests validate that the module folder structure is set up in the intended way. For example, we test that each module should contain a parameters folder with at least one parameter file in it that follows a specific naming convention.
+- **ReadMe tests:** These tests ensure that a module's readme contains all required sections, that for example the documented parameters match the ones in the template, and that a consistent format is applied.
+- **Deployment template tests:** These tests check the template's structure and elements for errors as well as consistency matters. For example, we test that names are set up in a certain way, that if specific resources are contained in the template that they are set up in the format we want them in, and for example that a minimum set of outputs are always returned.
+- **Api version tests:** These tests make sure that the API versions applied to resources are recent. For example, the test checks that an applied API version should not be older than the five latest (non-preview) versions.
+
+### Template Validation Tests
+
+The template validation tests execute a dry-run with each parameter file provided & configured for a module. For example, if you have two parameter files for a module, one with the minimum set of parameters, one with the maximum, the tests will run an `Test-AzDeployment` (_- the command may vary based on the template schema_) with each of the two parameter files to see if the template would be able to be deployed with them. This test could fail either because the template is invalid, or because any of the parameter files is configured incorrectly.
+
+### Template Deployment Tests
+
+If all other tests passed, the deployment tests are the ultimate module validation. Using the available & configured parameter files for a module, each is deployed to Azure (in parallel) and verifies if the deployment works end to end.
+
+Most of the resources are deleted by default after their deployment, to keep costs down and to be able to retest resource modules from scratch in the next run. However, the removal step can be skipped in case further investigation on the deployed resource is needed. For further details, please refer to the (.\PipelinesUsage.md) section.
+
+## Module Dependencies
+
+In order to successfully deploy and test all modules in your desired environment some modules have to have resources deployed beforehand.
+
+Of course it is obvious and by default one should know which Azure Service needs specific resources to be deployed beforehand but here is the full list of modules which have dependencies on other Services.
 
 > **Note**<br>
-If we speak from **Modules** in this context we mean the **Services** which get created from these Modules.
+If we speak from **modules** in this context we mean the **Services** which get created from these modules.
 
-#### Services (in order)
+### Services (in order)
+
 1. VirtualNetwork
 1. StorageAccounts
 1. KeyVault
@@ -34,8 +77,8 @@ If we speak from **Modules** in this context we mean the **Services** which get 
 1. SharedImageGallery
 1. ApplicationSecurityGroups
 1. NetworkSecurityGroups
-1. WvdHostPool
-1. WvdAppliccationGroups
+1. AvdHostPool
+1. AvdAppliccationGroups
 1. Managed Service Identity
 1. Deployment Scripts
 
@@ -95,10 +138,10 @@ If we speak from **Modules** in this context we mean the **Services** which get 
   - KeyVault / Secret (vpnSharedKey)
 - WebApp
   - AppServicePlan
-- WvdApplicationGroups
-  - WvdHostPool
-- WvdApplications
-  - WvdAppliccationGroups
+- AvdApplicationGroups
+  - AvdHostPool
+- AvdApplications
+  - AvdAppliccationGroups
 
 #### Required Secrets and Keys
 

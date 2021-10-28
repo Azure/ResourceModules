@@ -55,10 +55,9 @@
 ### Parameter Usage: `customPublicSubnetName` and `customPrivateSubnetName`
 
 - Require Network Security Groups attached to the subnets
-    - The rule don't have to be set, they are set through the deployment
+  - The rule don't have to be set, they are set through the deployment
 
 - The two subnets also need the delegation to service `Microsoft.Databricks/workspaces`
-
 
 ### Parameter Usage: `workspaceParameters`
 
@@ -85,7 +84,6 @@
       }
     }
 ```
-
 
 ### Parameter Usage: `tags`
 

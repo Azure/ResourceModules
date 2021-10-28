@@ -63,6 +63,7 @@
     ]
 }
 ```
+
 ## Outputs
 
 | Output Name | Type |

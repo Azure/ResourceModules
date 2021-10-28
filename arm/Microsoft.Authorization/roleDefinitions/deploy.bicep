@@ -31,7 +31,7 @@ param resourceGroupName string = ''
 param location string = deployment().location
 
 module roleDefinition_mg './.bicep/nested_roleDefinitions_mg.bicep' = if (!empty(managementGroupId) && empty(subscriptionId) && empty(resourceGroupName)) {
-  name: 'roleDefinition-mg-${guid(roleName,managementGroupId,location)}'
+  name: 'roleDefinition-mg-${guid(roleName, managementGroupId, location)}'
   scope: managementGroup(managementGroupId)
   params: {
     roleName: roleName
@@ -46,7 +46,7 @@ module roleDefinition_mg './.bicep/nested_roleDefinitions_mg.bicep' = if (!empty
 }
 
 module roleDefinition_sub './.bicep/nested_roleDefinitions_sub.bicep' = if (empty(managementGroupId) && !empty(subscriptionId) && empty(resourceGroupName)) {
-  name: 'roleDefinition-sub-${guid(roleName,subscriptionId,location)}'
+  name: 'roleDefinition-sub-${guid(roleName, subscriptionId, location)}'
   scope: subscription(subscriptionId)
   params: {
     roleName: roleName
@@ -61,8 +61,8 @@ module roleDefinition_sub './.bicep/nested_roleDefinitions_sub.bicep' = if (empt
 }
 
 module roleDefinition_rg './.bicep/nested_roleDefinitions_rg.bicep' = if (empty(managementGroupId) && !empty(resourceGroupName) && !empty(subscriptionId)) {
-  name: 'roleDefinition-rg-${guid(roleName,subscriptionId,resourceGroupName,location)}'
-  scope: resourceGroup(subscriptionId,resourceGroupName)
+  name: 'roleDefinition-rg-${guid(roleName, subscriptionId, resourceGroupName, location)}'
+  scope: resourceGroup(subscriptionId, resourceGroupName)
   params: {
     roleName: roleName
     roleDescription: roleDescription
