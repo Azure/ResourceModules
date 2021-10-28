@@ -521,7 +521,7 @@ jobs:
         uses: ./.github/actions/templates/deployModule
         with:
           moduleName: '${{ env.moduleName }}'
-          templateFilePath: 'arm/${{ env.namespace }}/deploy.bicep'
+          templateFilePath: 'arm/${{ env.namespace }}/.bicep/nested_rbac_sub.bicep'
           parameterFilePath: 'dependencies/${{ env.namespace }}/parameters/${{ matrix.parameterFilePaths }}'
           location: '${{ env.defaultLocation }}'
           resourceGroupName: '${{ env.resourceGroupName }}'
