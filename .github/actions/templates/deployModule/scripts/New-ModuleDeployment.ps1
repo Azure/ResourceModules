@@ -37,12 +37,12 @@ Optional. Provde a Key Value Pair (Object) that will be appended to the Paramete
 Optional. Maximum retry limit if the deployment fails. Default is 3.
 
 .EXAMPLE
-New-ModuleDeployment -ModuleName 'KeyVault' -templateFilePath 'C:/KeyVault/deploy.json' -parameterFilePath 'C:/KeyVault/Parameters/parameters.json' -location 'WestEurope' -resourceGroupName 'aLegendaryRg'
+New-ModuleDeployment -ModuleName 'KeyVault' -templateFilePath 'C:/KeyVault/deploy.json' -parameterFilePath 'C:/KeyVault/.parameters/parameters.json' -location 'WestEurope' -resourceGroupName 'aLegendaryRg'
 
 Deploy the deploy.json of the KeyVault module with the parameter file 'parameters.json' using the resource group 'aLegendaryRg' in location 'WestEurope'
 
 .EXAMPLE
-New-ModuleDeployment -ModuleName 'KeyVault' -templateFilePath 'C:/ResourceGroup/deploy.json' -parameterFilePath 'C:/ResourceGroup/Parameters/parameters.json' -location 'WestEurope'
+New-ModuleDeployment -ModuleName 'KeyVault' -templateFilePath 'C:/ResourceGroup/deploy.json' -parameterFilePath 'C:/ResourceGroup/.parameters/parameters.json' -location 'WestEurope'
 
 Deploy the deploy.json of the ResourceGroup module with the parameter file 'parameters.json' in location 'WestEurope'
 #>
