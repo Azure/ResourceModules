@@ -18,7 +18,7 @@ Our lifecycle management & testing framework runs 3 types of tests on all its mo
 - Pester-driven Unit Tests
 - Template Validation Tests
 - Template Deployment Tests
-All tests are executed as part of the individual module pipelines, run each time any module code was altered, and ensure that only modules that pass each test successfully are published. If a test fails, it should tell you in the pipeline log exactly what went wrong and often times also give you recommendations what to do to resolve the problem.
+All tests are executed as part of the individual module pipelines, run each time any module code was altered, and ensure that only modules that pass each test successfully are published. If a test fails, it tells you in the pipeline log exactly what went wrong and in most cases gives you recommendations what to do to resolve the problem.
 
 The general idea is that you should fail as early as possible to allow for minimal wasted time and a fast response time.
 
