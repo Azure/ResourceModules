@@ -18,7 +18,7 @@ Support for this **PROJECT** is limited to the resources listed above.
 <!-- References -->
 
 <!-- Local -->
-[ProjectSetup]: <<https://docs.github.com/en/communities/>
+[ProjectSetup]: <https://docs.github.com/en/communities/>
 [GitHubDocs]: <https://docs.github.com/>
 [AzureDevOpsDocs]: <https://docs.microsoft.com/en-us/azure/devops/?view=azure-devops>
 [GitHubIssues]: <https://github.com/Azure/Modules/issues>
