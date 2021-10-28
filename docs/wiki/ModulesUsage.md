@@ -3,18 +3,38 @@
 This section gives you an overview of how to use the bicep modules.
 
 ---
+
 ### _Navigation_
-- [Deploy local template](#Deploy-local-template)
-  - [Azure CLI](#Local-Azure-CLI)
-  - [PowerShell](#Local-PowerShell)
-- [Deploy remote template](#Deploy-remote-template)
-  - [Azure CLI](#Remote-Azure-CLI)
-  - [PowerShell](#Remote-PowerShell)
+
+- [Modules Usage](#modules-usage)
+    - [_Navigation_](#navigation)
+  - [Deploy local template](#deploy-local-template)
+    - [**Local:** PowerShell](#local-powershell)
+    - [**Local:** Azure CLI](#local-azure-cli)
+  - [Deploy remote template](#deploy-remote-template)
+    - [**Remote:** PowerShell](#remote-powershell)
+    - [**Remote:** Azure CLI](#remote-azure-cli)
+
 ---
 
 ## Deploy local template
 
-### Local: Azure CLI
+### **Local:** PowerShell
+
+This example targets a resource group level template.
+
+```PowerShell
+New-AzResourceGroup -Name 'ExampleGroup' -Location "Central US"
+
+$inputObject = @{
+ DeploymentName    = 'ExampleDeployment'
+ ResourceGroupName = 'ExampleGroup'
+ TemplateFile      = "$home\Microsoft.KeyVault\vault\deploy.bicep"
+}
+New-AzResourceGroupDeployment @inputObject
+```
+
+### **Local:** Azure CLI
 
 This example targets a resource group level template.
 
@@ -29,24 +49,22 @@ $inputObject = @(
 az deployment group create @inputObject
 ```
 
-### Local: PowerShell
+## Deploy remote template
 
-This example targets a resource group level template.
+### **Remote:** PowerShell
 
 ```PowerShell
 New-AzResourceGroup -Name 'ExampleGroup' -Location "Central US"
 
 $inputObject = @{
- Name              = 'ExampleDeployment'
+ DeploymentName    = 'ExampleDeployment'
  ResourceGroupName = 'ExampleGroup'
- TemplateFile      = "$home\Microsoft.KeyVault\vault\deploy.bicep"
+ TemplateUri       = 'https://raw.githubusercontent.com/MrMCake/ResourceModules/main/arm/Microsoft.KeyVault/vaults/deploy.json'
 }
 New-AzResourceGroupDeployment @inputObject
 ```
 
-## Deploy remote template
-
-### Remote: Azure CLI
+### **Remote:** Azure CLI
 
 ```bash
 az group create --name 'ExampleGroup' --location "Central US"
@@ -59,17 +77,3 @@ $inputObject = @(
 )
 az deployment group create @inputObject
 ```
-
-### Remote: PowerShell
-
-```PowerShell
-New-AzResourceGroup -Name 'ExampleGroup' -Location "Central US"
-
-$inputObject = @{
- Name              = 'ExampleDeployment'
- ResourceGroupName = 'ExampleGroup'
- TemplateUri       = 'https://raw.githubusercontent.com/MrMCake/ResourceModules/main/arm/Microsoft.KeyVault/vaults/deploy.json'
-}
-New-AzResourceGroupDeployment @inputObject
-```
-

@@ -1,4 +1,4 @@
-# Api Management Service Backends `[Microsoft.ApiManagement/serviceResources/backends]`
+# Api Management Service Backends  `[Microsoft.ApiManagement/service/backends]`
 
 This module deploys Api Management Service Backends.
 
@@ -40,7 +40,6 @@ The following resources are required to be able to deploy this resource.
 | `header`                             | object |  |                 | Optional. Header Parameter description.|
 | `authorization`                                | object |                            |                 | Optional. Authorization header authentication|
 
-
 ### Parameter Usage: `credentials`
 
 Product API's name list.
@@ -69,7 +68,6 @@ Product API's name list.
 | `username`                          | string |                            |                 |Username to connect to the WebProxy server|
 | `password`                             | string |  |                 | Password to connect to the WebProxy Server|
 
-
 ### Parameter Usage: `proxy`
 
 Product API's name list.
@@ -93,7 +91,6 @@ Product API's name list.
 | `managementEndpoints`                             | array |  |                 | Required (if this object is used). The cluster management endpoint. - string|
 | `serverCertificateThumbprints`                             | array |  |                 | Optional. Thumbprints of certificates cluster management service uses for tls communication - string|
 | `serverX509Names`                             | array |  |                 | Optional. Server X509 Certificate Names Collection|
-
 
 ### Parameter Usage: `serviceFabricCluster`
 

@@ -3,6 +3,7 @@
 Azure Container Registry is a managed, private Docker registry service based on the open-source Docker Registry 2.0. Create and maintain Azure container registries to store and manage your private Docker container images and related artifacts.
 
 ## Resource types
+
 | Resource Type | Api Version |
 | :-- | :-- |
 | `Microsoft.Authorization/locks` | 2016-09-01 |
@@ -13,6 +14,7 @@ Azure Container Registry is a managed, private Docker registry service based on 
 | `Microsoft.Network/privateEndpoints/privateDnsZoneGroups` | 2021-02-01 |
 
 ## Parameters
+
 | Parameter Name | Type | Default Value | Possible Values | Description |
 | :-- | :-- | :-- | :-- | :-- |
 | `acrAdminUserEnabled` | bool |  |  | Optional. Enable admin user that have push / pull permission to the registry. |
@@ -104,7 +106,8 @@ Tag names and tag values can be provided as needed. A tag can be left without a 
 ```
 
 ## Outputs
-| Output Name | Type | Description
+
+| Output Name | Type | Description |
 | :-- | :-- | :-- |
 | `acrLoginServer` | string | The reference to the Azure Container Registry. |
 | `acrName` | string | The Name of the Azure Container Registry. |
@@ -112,6 +115,7 @@ Tag names and tag values can be provided as needed. A tag can be left without a 
 | `acrResourceId` | string | The Resource Id of the Azure Container Registry. |
 
 ## Template references
+
 - [Locks](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2016-09-01/locks)
 - [Registries](https://docs.microsoft.com/en-us/azure/templates/Microsoft.ContainerRegistry/2020-11-01-preview/registries)
 - [Diagnosticsettings](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Insights/2017-05-01-preview/diagnosticSettings)

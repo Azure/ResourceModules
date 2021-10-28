@@ -82,7 +82,7 @@ resource sqlServerDatabase 'Microsoft.Sql/servers/databases@2021-02-01-preview' 
     highAvailabilityReplicaCount: numberOfReplicas
     requestedBackupStorageRedundancy: any(requestedBackupStorageRedundancy)
     isLedgerOn: enableSqlLedger
-    maintenanceConfigurationId: !empty(maintenanceConfigurationId) ? maintenanceConfigurationId : null 
+    maintenanceConfigurationId: !empty(maintenanceConfigurationId) ? maintenanceConfigurationId : null
   }
   sku: {
     name: skuName

@@ -1,4 +1,4 @@
-# Api Management Service Cache `[Microsoft.ApiManagement/serviceResources/caches]`
+# Api Management Service Cache  `[Microsoft.ApiManagement/service/caches]`
 
 This module deploys an Api Management Service Cache.
 

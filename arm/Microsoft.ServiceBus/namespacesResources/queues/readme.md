@@ -1,4 +1,4 @@
-# ServiceBusQueues `[Microsoft.ServiceBus/namespacesResources/queues]`
+# ServiceBusQueues  `[Microsoft.ServiceBus/namespaces/queues]`
 
 This module deploys Service Bus Queue.
 
@@ -7,7 +7,7 @@ This module deploys Service Bus Queue.
 | Resource Type | Api Version |
 | :-- | :-- |
 | `Microsoft.Authorization/locks` | 2016-09-01 |
-| `Microsoft.ServiceBus/namespaces/providers/queues/roleAssignments` | 2020-04-01-preview |
+| `Microsoft.ServiceBus/namespaces/queues/providers/roleAssignments` | 2020-04-01-preview |
 | `Microsoft.ServiceBus/namespaces/queues` | 2021-06-01-preview |
 | `Microsoft.ServiceBus/namespaces/queues/authorizationRules` | 2017-04-01 |
 
