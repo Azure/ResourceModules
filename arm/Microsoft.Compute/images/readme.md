@@ -2,7 +2,6 @@
 
 This module deploys Images.
 
-
 ## Resource types
 
 | Resource Type | Api Version |

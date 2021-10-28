@@ -5,6 +5,7 @@ The objective of this repository is to provide a template library that can be re
 This wiki describes the content of this repository, the modules, pipelines, possible options on how to use them and how to contribute to this project.
 
 ### _Navigation_
+
 - [Getting Started](./GettingStarted)
   - [General prerequisites](./GettingStarted#General-prerequisites)
   - [Where to start](./GettingStarted#Where-to-start)
@@ -21,6 +22,7 @@ This wiki describes the content of this repository, the modules, pipelines, poss
 - [Known Issues](./KnownIssues)
 
 ## Reporting Issues and Feedback
+
 ### Issues and Bugs
 
 If you find any bugs, please file an issue in the [GitHub Issues][GitHubIssues] page. Please fill out the provided template with the appropriate information.
@@ -32,7 +34,6 @@ If you are taking the time to mention a problem, even a seemingly minor one, it 
 
 If there is a feature you would like to see in here, please file an issue or feature request in the [GitHub Issues][GitHubIssues] page to provide direct feedback.
 
-
 ## Trademarks
 
 This project may contain trademarks or logos for projects, products, or services. Authorized use of Microsoft trademarks or logos is subject to and must follow
@@ -42,11 +43,11 @@ Any use of third-party trademarks or logos are subject to those third-party's po
 
 ## Learn More
 
-* [PowerShell Documentation][PowerShellDocs]
-* [Microsoft Azure Documentation][MicrosoftAzureDocs]
-* [Azure Resource Manager][AzureResourceManager]
-* [Bicep][Bicep]
-* [GitHubDocs][GitHubDocs]
+- [PowerShell Documentation][PowerShellDocs]
+- [Microsoft Azure Documentation][MicrosoftAzureDocs]
+- [Azure Resource Manager][AzureResourceManager]
+- [Bicep][Bicep]
+- [GitHubDocs][GitHubDocs]
 
 <!-- References -->
 
