@@ -3,10 +3,10 @@
     "contentVersion": "1.0.0.0",
     "parameters": {
         "roleName": {
-            "value": "myCustomRoleAtSub"
+            "value": "sxx-az-testRole-01"
         },
         "roleDescription": {
-            "value": ""
+            "value": "Test Custom Role Definition 1"
         },
         "actions": {
             "value": [
