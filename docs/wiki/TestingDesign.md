@@ -28,7 +28,7 @@ The general idea is that you should fail as early as possible to allow for minim
 Our Unit Tests are configured in the `global.module.tests.ps1` script and execute static tests across several different area to ensure that our modules are configured correctly, documentation is up to date, and modules don't turn stale.
 We can categorize these tests into a few different categories:
 
-- **File & folder tests:** These tests validate that the module folder structure is set up in the intended way. For example, we test that each module should contain a parameters folder with at least on parameter file in it that follows a specific naming convention.
+- **File & folder tests:** These tests validate that the module folder structure is set up in the intended way. For example, we test that each module should contain a parameters folder with at least one parameter file in it that follows a specific naming convention.
 - **ReadMe tests:** These tests ensure that a module's readme contains all required sections, that for example the documented parameters match the ones in the template, and that a consistent format is applied.
 - **Deployment template tests:** These tests check the template's structure and elements for errors as well as consistency matters. For example, we test that names are set up in a certain way, that if specific resources are contained in the template that they are set up in the format we want them in, and for example that a minimum set of outputs are always returned.
 - **Api version tests:** These tests make sure that the API versions applied to resources are somewhat recent. For example, the test may check that an applied API version should not be older than the five latest (non-preview) versions.
