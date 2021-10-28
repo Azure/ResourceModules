@@ -1,4 +1,4 @@
-# Containers `[Microsoft.DocumentDB/databaseAccount/sqlDatabases/containers]`
+# DocumentDB Database Account SQL Databases Containers `[Microsoft.DocumentDB/databaseAccount/sqlDatabases/containers]`
 
 ## Resource Types
 
