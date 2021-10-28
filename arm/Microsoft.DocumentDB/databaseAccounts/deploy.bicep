@@ -1,5 +1,5 @@
 @description('Required. Name of the Database Account')
-param databaseAccountName string
+param name string
 
 @description('Optional. Location for all resources.')
 param location string = resourceGroup().location
@@ -222,7 +222,7 @@ module pid_cuaId '.bicep/nested_cuaId.bicep' = if (!empty(cuaId)) {
 }
 
 resource databaseAccount 'Microsoft.DocumentDB/databaseAccounts@2021-06-15' = {
-  name: databaseAccountName
+  name: name
   location: location
   tags: tags
   identity: identity

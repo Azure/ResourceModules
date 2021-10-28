@@ -21,7 +21,7 @@ This module deploys a Documentdb database account and its child resources.
 | :-- | :-- | :-- | :-- | :-- |
 | `automaticFailover` | bool | `True` |  | Optional. Enable automatic failover for regions |
 | `cuaId` | string |  |  | Optional. Customer Usage Attribution id (GUID). This GUID must be previously registered |
-| `databaseAccountName` | string |  |  | Required. Name of the Database Account |
+| `name` | string |  |  | Required. Name of the Database Account |
 | `databaseAccountOfferType` | string | `Standard` | `[Standard]` | Optional. The offer type for the Cosmos DB database account. |
 | `defaultConsistencyLevel` | string | `Session` | `[Eventual, ConsistentPrefix, Session, BoundedStaleness, Strong]` | Optional. The default consistency level of the Cosmos DB account. |
 | `diagnosticLogsRetentionInDays` | int | `365` |  | Optional. Specifies the number of days that logs will be kept for; a value of 0 will retain data indefinitely. |
