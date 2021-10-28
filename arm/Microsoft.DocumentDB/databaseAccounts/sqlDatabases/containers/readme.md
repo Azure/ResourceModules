@@ -19,6 +19,10 @@
 | `tags` | object | `{object}` |  | Optional. Tags of the SQL Database resource. |
 | `throughput` | int | `400` |  | Optional. Request Units per second |
 
+### Parameter Usage: `<ParameterPlaceholder>`
+
+// TODO: Fill in Parameter usage
+
 ## Outputs
 
 | Output Name | Type | Description |

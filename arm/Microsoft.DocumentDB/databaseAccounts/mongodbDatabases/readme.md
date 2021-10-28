@@ -13,7 +13,7 @@ This module deploys a MongoDB within a CosmosDB account.
 
 | Parameter Name | Type | Default Value | Possible Values | Description |
 | :-- | :-- | :-- | :-- | :-- |
-| `collections` | array | `[]` |  | Optional. Collections in the mongodb database |
+| `collections` | _[collections](collections/readme.md)_ array | `[]` |  | Optional. Collections in the mongodb database |
 | `cuaId` | string |  |  | Optional. Customer Usage Attribution id (GUID). This GUID must be previously registered |
 | `databaseAccountName` | string |  |  | Required. Name of the Cosmos DB database account. |
 | `name` | string |  |  | Required. Name of the mongodb database |

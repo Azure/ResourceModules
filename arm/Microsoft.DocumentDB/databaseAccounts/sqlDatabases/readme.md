@@ -11,7 +11,7 @@
 
 | Parameter Name | Type | Default Value | Possible Values | Description |
 | :-- | :-- | :-- | :-- | :-- |
-| `containers` | array | `[]` |  | Optional. Array of containers to deploy in the SQL database. |
+| `containers` | _[containers](containers/readme.md)_ array | `[]` |  | Optional. Array of containers to deploy in the SQL database. |
 | `cuaId` | string |  |  | Optional. Customer Usage Attribution id (GUID). This GUID must be previously registered |
 | `databaseAccountName` | string |  |  | Required. Id of the Cosmos DB database account. |
 | `name` | string |  |  | Required. Name of the SQL Database  |

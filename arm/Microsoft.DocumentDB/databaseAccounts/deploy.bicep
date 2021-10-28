@@ -1,5 +1,5 @@
 @description('Required. Name of the Database Account')
-param databaseAccountName string
+param name string
 
 @description('Optional. Location for all resources.')
 param location string = resourceGroup().location
@@ -216,13 +216,13 @@ var databaseAccount_properties = !empty(sqlDatabases) ? {
   databaseAccountOfferType: databaseAccountOfferType
 })
 
-module pid_cuaId './.bicep/nested_cuaId.bicep' = if (!empty(cuaId)) {
+module pid_cuaId '.bicep/nested_cuaId.bicep' = if (!empty(cuaId)) {
   name: 'pid-${cuaId}'
   params: {}
 }
 
 resource databaseAccount 'Microsoft.DocumentDB/databaseAccounts@2021-06-15' = {
-  name: databaseAccountName
+  name: name
   location: location
   tags: tags
   identity: identity
@@ -252,7 +252,7 @@ resource databaseAccount_diagnosticSettings 'Microsoft.Insights/diagnosticsettin
   scope: databaseAccount
 }
 
-module databaseAccount_rbac './.bicep/nested_rbac.bicep' = [for (roleAssignment, index) in roleAssignments: {
+module databaseAccount_rbac '.bicep/nested_rbac.bicep' = [for (roleAssignment, index) in roleAssignments: {
   name: '${uniqueString(deployment().name, location)}-Rbac-${index}'
   params: {
     roleAssignmentObj: roleAssignment
@@ -261,7 +261,7 @@ module databaseAccount_rbac './.bicep/nested_rbac.bicep' = [for (roleAssignment,
   }
 }]
 
-module sqlDatabases_resource './sqlDatabases/deploy.bicep' = [for sqlDatabase in sqlDatabases: {
+module sqlDatabases_resource 'sqlDatabases/deploy.bicep' = [for sqlDatabase in sqlDatabases: {
   name: '${uniqueString(deployment().name, location)}-sqldb-${sqlDatabase.name}'
   params: {
     databaseAccountName: databaseAccount.name
@@ -270,7 +270,7 @@ module sqlDatabases_resource './sqlDatabases/deploy.bicep' = [for sqlDatabase in
   }
 }]
 
-module mongodbDatabases_resource './mongodbDatabases/deploy.bicep' = [for mongodbDatabase in mongodbDatabases: {
+module mongodbDatabases_resource 'mongodbDatabases/deploy.bicep' = [for mongodbDatabase in mongodbDatabases: {
   name: '${uniqueString(deployment().name, location)}-mongodb-${mongodbDatabase.name}'
   params: {
     databaseAccountName: databaseAccount.name
