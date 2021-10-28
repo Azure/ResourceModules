@@ -14,7 +14,7 @@ This section gives you an overview of the repositories larger known issues. We a
 This section outlines known issues that currently affect our modules.
 
 ### Consistency
-While we work hard on aligning all modules to a common standard we're still there. One of the biggest remining challenges is the consistent handling of child-resources across all modules (e.g. Container for a Storage Account). However, we already have a plan ready and are currently implementing the same.
+While we work hard on aligning all modules to a common standard, we're currently missing consistency in how we're handling child-resources across all modules (e.g. Container for a Storage Account). Ref issue #236.
 
 ## Testing specific
 This section outlines known issues that currently affect our testing.
