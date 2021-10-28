@@ -1,7 +1,5 @@
 # PrivateEndpoints `[Microsoft.Network/privateEndpoints]`
 
-# Resource
-
 This template deploys private Endpoint for a generic service.
 
 ## Resource types
