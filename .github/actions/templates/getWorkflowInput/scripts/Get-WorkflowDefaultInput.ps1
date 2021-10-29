@@ -95,7 +95,7 @@ function Get-WorkflowDefaultInput {
             $SectionStartLine = ((0..($Content.Count - 1)) | Where-Object { $Content[$_] -match "$InputName" })[0]
             $SectionStartIndentation = Get-LineIndentation -Line $Content[$SectionStartLine]
             $CurrentLineIndentation = $SectionStartIndentation
-            for ($i = $SectionStartLine + 1; $i -le $Content.Count; $i++) {
+            for ($i = $SectionStartLine + 1; $i -lt $Content.Count; $i++) {
                 $CurrentLineIndentation = Get-LineIndentation -Line $Content[$i]
                 if ($CurrentLineIndentation -le $SectionStartIndentation) {
                     # Outside of start section, jumping out
