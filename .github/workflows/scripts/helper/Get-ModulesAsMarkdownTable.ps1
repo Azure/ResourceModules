@@ -167,7 +167,7 @@ function Get-TypeColumnString {
         [string] $Path
     )
 
-    $moduleFiles = Get-ChildItem -Path $Path -File
+    $moduleFiles = Get-ChildItem -Path $Path -File -Force
 
     $outputString = ''
 
@@ -217,7 +217,7 @@ function Measure-FolderHasNestedModule {
 
     # Get all folder paths that exist in the given path as long as they are not '.bicep' or '.parameters' folders
     # This works as long as the folder structure is consistent (e.g. no empty folders are created etc.)
-    $foundFolders = (Get-ChildItem $Path -Directory -Recurse -Exclude @('.bicep', '.parameters')).fullName
+    $foundFolders = (Get-ChildItem $Path -Directory -Recurse -Exclude @('.bicep', '.parameters') -Force).fullName
     if ($foundFolders) {
         return $true
     } else {
@@ -296,9 +296,9 @@ function Get-ResolvedSubServiceRow {
         [string] $Organization
     )
 
-    $rawSubFolders = Get-ChildItem -Path $subPath -Directory -Recurse -Exclude @('.bicep', '.parameters')
+    $rawSubFolders = Get-ChildItem -Path $subPath -Directory -Recurse -Exclude @('.bicep', '.parameters') -Force
     # Only consider those folders that have their own parameters, i.e. are top-level modules and not child-resource modules
-    $subFolders = $rawSubFolders | Where-Object { (Get-ChildItem $_ -Directory -Depth 0 -Include '.parameters').count -gt 0 }
+    $subFolders = $rawSubFolders | Where-Object { (Get-ChildItem $_.FullName -Directory -Depth 0 -Include '.parameters' -Force).count -gt 0 }
 
     foreach ($subfolder in $subFolders.FullName) {
 
@@ -459,7 +459,7 @@ function Get-ModulesAsMarkdownTable {
     # Content
     # -------
     $output = [System.Collections.ArrayList]@()
-    if ($topLevelFolders = Get-ChildItem -Path $Path -Depth 1 -Filter 'Microsoft.*') {
+    if ($topLevelFolders = Get-ChildItem -Path $Path -Depth 1 -Filter 'Microsoft.*' -Force) {
         $topLevelFolders = $topLevelFolders.FullName | Sort-Object
     }
 
@@ -467,7 +467,7 @@ function Get-ModulesAsMarkdownTable {
     foreach ($topLevelFolder in $topLevelFolders) {
         $provider = Split-Path $topLevelFolder -Leaf
 
-        $containedFolders = Get-ChildItem -Path $topLevelFolder -Directory -Recurse -Exclude @('.bicep', '.parameters') -Depth 0
+        $containedFolders = Get-ChildItem -Path $topLevelFolder -Directory -Recurse -Exclude @('.bicep', '.parameters') -Depth 0 -Force
 
         foreach ($containedFolder in $containedFolders.FullName) {
             $containedFolderName = (Split-Path $containedFolder -Leaf)
