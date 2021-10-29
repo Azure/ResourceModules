@@ -6,15 +6,15 @@ This section gives you an overview of the design principals the testing follows.
 
 ## _Navigation_
 
-- [Design Overview  Approach](#approach)
+- [Approach](#approach)
 - [Static code validation](#static-code-validation)
 - [API version validation](#api-version-validation)
-- [Template Validation](#template-validation)
+- [Template validation](#template-validation)
 - [Deployment validation](#deployment-validation)
-  - [Module Dependencies](#module-dependencies)
+  - [Module dependencies](#module-dependencies)
     - [Overview of modules dependencies](#overview-of-modules-dependencies)
     - [Services (in order)](#services-in-order)
-    - [Required Secrets and Keys](#required-secrets-and-keys)
+    - [Required secrets and keys](#required-secrets-and-keys)
 
 ---
 
@@ -67,7 +67,7 @@ The following activities are run executing the `arm/.global/global.module.tests.
 
 In this phase, the workflow will verify if the module is one of the latest 5 (non-preview) api version using the `arm/.global/global.module.tests.ps1` script.
 
-## Template Validation
+## Template validation
 
 The template validation tests execute a dry-run with each parameter file provided & configured for a module. For example, if you have two parameter files for a module, one with the minimum set of parameters, one with the maximum, the tests will run an `Test-AzDeployment` (_- the command may vary based on the template schema_) with each of the two parameter files to see if the template would be able to be deployed with them. This test could fail either because the template is invalid, or because any of the parameter files is configured incorrectly.
 
@@ -82,7 +82,7 @@ This happens using the `.github/actions/templates/validateModuleDeploy/scripts/T
 > **Note**<br>
 Currently the list of the parameter file used to test the module is hardcoded in the module specific workflow, as the **parameterFilePaths** in the _job_deploy_module_ and _job_tests_module_deploy_validate_ jobs.
 
-### Module Dependencies
+### Module dependencies
 
 In order to successfully deploy and test all Modules in your desired environment some Modules have to have resources deployed beforehand.
 
@@ -175,7 +175,7 @@ Provided the dependencies listed above, the following list of services need to b
 1. Managed Service Identity
 1. Deployment Scripts
 
-#### Required Secrets and Keys
+#### Required secrets and keys
 
 The following secrets and keys needs to be created:
 

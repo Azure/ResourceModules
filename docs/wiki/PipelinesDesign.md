@@ -4,13 +4,10 @@ This section gives you an overview of the design principals the pipelines follow
 
 ---
 
-### _Navigation_
+## _Navigation_
 
-=======
-- [Pipelines Design](#pipelines-design)
-    - [_Navigation_](#navigation)
-  - [Validation prerequisites](#validation-prerequisites)
-  - [Why do I have to validate deployments of modules?](#why-do-i-have-to-validate-deployments-of-modules)
+- [Validation prerequisites](#validation-prerequisites)
+- [Why do I have to validate deployments of modules?](#why-do-i-have-to-validate-deployments-of-modules)
 
 ---
 
