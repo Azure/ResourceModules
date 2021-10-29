@@ -23,7 +23,7 @@ Describe 'File/folder tests' -Tag Modules {
 
         $moduleFolderTestCases = [System.Collections.ArrayList] @()
         foreach ($moduleFolderPath in $moduleFolderPaths) {
-
+            $moduleFolderPath # TODO remove
             $moduleFolderTestCases += @{
                 moduleFolderName = $moduleFolderPath.Replace('\', '/').Split('/arm/')[1]
                 moduleFolderPath = $moduleFolderPath
