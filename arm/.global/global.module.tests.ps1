@@ -48,7 +48,7 @@ Describe 'File/folder tests' -Tag Modules {
         }
     }
 
-    Context 'parameters folder' {
+    Context '.parameters folder' {
 
         $folderTestCases = [System.Collections.ArrayList]@()
         foreach ($moduleFolderPath in $moduleFolderPaths) {
@@ -80,7 +80,7 @@ Describe 'File/folder tests' -Tag Modules {
             }
         }
 
-        It '[<moduleFolderName>] *parameters.json files in the parameters folder should be valid json' -TestCases $parameterFolderFilesTestCases {
+        It '[<moduleFolderName>] *parameters.json files in the .parameters folder should be valid json' -TestCases $parameterFolderFilesTestCases {
             param(
                 $moduleFolderName,
                 $parameterFilePath
@@ -494,39 +494,15 @@ Describe 'Deployment template tests' -Tag Template {
             $templateContent.keys | Should -Contain 'resources'
         }
 
-        It '[<moduleFolderName>] If delete lock is implemented, the template should have a lockForDeletion parameter with the default value of false' -TestCases $deploymentFolderTestCases {
+        It '[<moduleFolderName>] If delete lock is implemented, the template should have a lock parameter with the default value of [NotSpecified]' -TestCases $deploymentFolderTestCases {
             param(
                 $moduleFolderName,
                 $templateContent
             )
-            $LockTypeFlag = $true
-            $ChildResourceType = $templateContent.resources.resources.type
-            $ParentResourceType = $templateContent.resources.type
-            $LockForDeletion = $templateContent.parameters.lockForDeletion.defaultValue
-            if (($ChildResourceType -like '*providers/locks' -or $ParentResourceType -like '*providers/locks') -and $LockForDeletion -ne $false) {
-                $LockTypeFlag = $false
+            if ($lock = $templateContent.parameters.lock) {
+                $lock.keys | Should -Contain 'defaultValue'
+                $lock.defaultValue | Should -Be 'NotSpecified'
             }
-            $LockTypeFlag | Should -Contain $true
-        }
-
-        It "[<moduleFolderName>] If delete lock is implemented, it should have a deployment condition with the value of parameters('lockForDeletion')" -TestCases $deploymentFolderTestCases {
-            param(
-                $moduleFolderName,
-                $templateContent
-            )
-            $LockFlag = @()
-            $ChildDeletelock = $templateContent.resources.resources.type
-            $ParentDeletelock = $templateContent.resources.type
-            $ChildDeletelockCondition = $templateContent.resources.resources.condition
-            $ParentDeletelockCondition = $templateContent.resources.condition
-            if ($ChildDeletelock -like '*providers/locks' -and $ChildDeletelockCondition -notcontains "[parameters('lockForDeletion')]") {
-                $LockFlag += $false
-            } elseif ($ParentDeletelock -like '*providers/locks' -and $ParentDeletelockCondition -notcontains "[parameters('lockForDeletion')]") {
-                $LockFlag += $false
-            } else {
-                $LockFlag += $true
-            }
-            $LockFlag | Should -Not -Contain $false
         }
 
         It '[<moduleFolderName>] Parameter names should be camel-cased (no dashes or underscores and must start with lower-case letter)' -TestCases $deploymentFolderTestCases {
@@ -673,6 +649,7 @@ Describe 'Deployment template tests' -Tag Template {
             $i = 0
             $Schemaverion = $templateContent.'$schema'
             if ((($Schemaverion.Split('/')[5]).Split('.')[0]) -eq (($RGdeployment.Split('/')[5]).Split('.')[0])) {
+                # Resource Group Level deployment
                 foreach ($Stdo in $Stdoutput) {
                     if ($Stdo -like '*Name*' -or $Stdo -like '*ResourceId*' -or $Stdo -like '*ResourceGroup*') {
                         $true | Should -Be $true
@@ -681,6 +658,7 @@ Describe 'Deployment template tests' -Tag Template {
                 }
                 $i | Should -Not -BeLessThan 3
             } ElseIf ((($schemaverion.Split('/')[5]).Split('.')[0]) -eq (($Subscriptiondeployment.Split('/')[5]).Split('.')[0])) {
+                # Subscription Level deployment
                 $Stdoutput | Should -Not -BeNullOrEmpty
             }
 
@@ -737,6 +715,23 @@ Describe 'Deployment template tests' -Tag Template {
 
                 $missingParameters = $templateFile_RequiredParametersNames | Where-Object { $parameterFile_AllParameterNames -notcontains $_ }
                 $missingParameters.Count | Should -Be 0 -Because ('no required parameters in the template file should be missing in the parameter file. Found missing items: [{0}]' -f ($missingParameters -join ', '))
+            }
+        }
+
+        It '[<moduleFolderName>] Parameter files should not contain subscriptionId original value and but a token string' -TestCases $deploymentFolderTestCases {
+            param (
+                [hashtable[]] $parameterFileTestCases
+            )
+
+            foreach ($parameterFileTestCase in $parameterFileTestCases) {
+                $parameterFileContent = Get-Content -Path $parameterFileTestCase.parameterFile_Path
+                if (($parameterFileContent | Select-String -Pattern '/subscriptions/' -Quiet) -or ($parameterFileContent | Select-String -Pattern '"subscriptionId"' -Quiet)) {
+                    if (!($parameterFileContent | Select-String -Pattern '<<subscriptionId>>')) {
+                        $SubIdVisible = $true
+                    }
+                }
+
+                $SubIdVisible | Should -Be $null -Because ('Parameter file should not contain original subscription Id value, but a token value "<<subscriptionId>>"')
             }
         }
     }

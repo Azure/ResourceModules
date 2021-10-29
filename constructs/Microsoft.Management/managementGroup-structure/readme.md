@@ -3,6 +3,7 @@
 This template will prepare the Management group structure based on the provided parameter.
 
 This module has some known **limitations**:
+
 - It's not possible to change the display name of the root management group (the one that has the tenant GUID as ID)
 - It can't manage the Root (/) management group
 
@@ -68,7 +69,6 @@ Describes the Management groups to be created. Each management group is represen
 | `parentNotManagedInThisTemplate` | bool | `false` | | Optional. `true` if the parent management group is existing and defined elsewhere, `false` if the parent MG is also managed in this template. This parameter is used to define the deployment sequence |
 | `roleAssignments` | array | | | Optional. Array of role assignment objects |
 
-
 ### Parameter Usage: `roleAssignments`
 
 ```json
@@ -100,7 +100,6 @@ Describes the Management groups to be created. Each management group is represen
 | :-             | :-   | :-            | :-              | :-          |
 | `roleDefinitionIdOrName` | string | | | Mandatory. The name or the ID of the role to assign to the management group |
 | `principalIds` | array | | | Mandatory. An array of principal IDs |
-
 
 ## Outputs
 

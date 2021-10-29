@@ -1,4 +1,4 @@
-# AVD Applications `[Microsoft.DesktopVirtualization/applicationGroupsResources/applications]`
+# AVD Applications  `[Microsoft.DesktopVirtualization/applicationGroups/applications]`
 
 This module deploys AVD Applications.
 

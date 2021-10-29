@@ -1,0 +1,15 @@
+{
+    "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "vmResourceGroupName": {
+            "value": "sxx-az-rg-weu-x-567"
+        },
+        "vmName": {
+            "value": "adp-vm01"
+        },
+        "autoManageAccountResourceGroupName": {
+            "value": "sxx-az-rg-weu-x-567"
+        }
+    }
+}

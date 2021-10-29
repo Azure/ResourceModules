@@ -1,4 +1,4 @@
-# Api Management Service Products `[Microsoft.ApiManagement/serviceResources/products]`
+# Api Management Service Products  `[Microsoft.ApiManagement/service/products]`
 
 This module deploys Api Management Service Products.
 
@@ -54,6 +54,7 @@ Product groups list.
     ]
 }
 ```
+
 ## Outputs
 
 | Output Name | Type |

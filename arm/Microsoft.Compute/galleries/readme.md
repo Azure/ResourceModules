@@ -2,7 +2,6 @@
 
 This module deploys Share Image Gallery, with resource lock.
 
-
 ## Resource types
 
 | Resource Type | Api Version |

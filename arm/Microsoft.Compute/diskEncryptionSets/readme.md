@@ -2,7 +2,6 @@
 
 This template deploys a Disk Encryption Set
 
-
 ## Resource types
 
 | Resource Type | Api Version |

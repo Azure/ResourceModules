@@ -7,18 +7,18 @@ inputs:
     required: true
 
 outputs:
-  removeDeployment: 
+  removeDeployment:
     description: 'Remove deployed module'
     value: ${{ steps.get-input-param-action.outputs.removeDeployment }}
-  versioningOption: 
+  versioningOption:
     description: 'The mode to handle the version increments [major|minor|patch|custom]'
     value: ${{ steps.get-input-param-action.outputs.versioningOption }}
-  customVersion: 
+  customVersion:
     description: 'The version to enforce if [versionOption] is set to [custom]'
     value: ${{ steps.get-input-param-action.outputs.customVersion }}
 
 runs:
-  using: "composite"
+  using: 'composite'
   steps:
     - name: Get workflow input parameters
       id: get-input-param-action
@@ -27,7 +27,7 @@ runs:
 
         # When running from workflow_dispatch event get input values
         if ('${{ github.event_name }}' -eq 'workflow_dispatch') {
-          
+
           $removeDeployment='${{ github.event.inputs.removeDeployment }}'
           $versioningOption='${{ github.event.inputs.versioningOption }}'
           $customVersion='${{ github.event.inputs.customVersion }}'

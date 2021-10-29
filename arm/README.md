@@ -1,6 +1,7 @@
 In this section you can find useful information regarding the Modules that are contained in this repository.
 
 # Available Resource Modules
+
 The following table provides you with an outline of all Modules that are currently available for use. Several sub-resources may be their own Modules and are hence displayed as a child path (e.g. `service/caches`).
 
 | Name | Provider namespace | Resource Type | Bicep |
@@ -31,7 +32,7 @@ The following table provides you with an outline of all Modules that are current
 | [Shared Image Definition](https://github.com/Azure/ResourceModules/tree/main/arm/Microsoft.Compute/galleriesResources/images) |  | [galleries/images](https://github.com/Azure/ResourceModules/tree/main/arm/Microsoft.Compute/galleriesResources/images) | :heavy_check_mark: |
 | [Image](https://github.com/Azure/ResourceModules/tree/main/arm/Microsoft.Compute/images) |  | [images](https://github.com/Azure/ResourceModules/tree/main/arm/Microsoft.Compute/images) | :heavy_check_mark: |
 | [ProximityPlacementGroup](https://github.com/Azure/ResourceModules/tree/main/arm/Microsoft.Compute/proximityPlacementGroups) |  | [proximityPlacementGroups](https://github.com/Azure/ResourceModules/tree/main/arm/Microsoft.Compute/proximityPlacementGroups) | :heavy_check_mark: |
-| [Virtual Machines](https://github.com/Azure/ResourceModules/tree/main/arm/Microsoft.Compute/virtualMachines) |  | [virtualMachines](https://github.com/Azure/ResourceModules/tree/main/arm/Microsoft.Compute/virtualMachines) |  |
+| [Virtual Machines](https://github.com/Azure/ResourceModules/tree/main/arm/Microsoft.Compute/virtualMachines) |  | [virtualMachines](https://github.com/Azure/ResourceModules/tree/main/arm/Microsoft.Compute/virtualMachines) | :heavy_check_mark: |
 | [Virtual Machine Scale Sets](https://github.com/Azure/ResourceModules/tree/main/arm/Microsoft.Compute/virtualMachineScaleSets) |  | [virtualMachineScaleSets](https://github.com/Azure/ResourceModules/tree/main/arm/Microsoft.Compute/virtualMachineScaleSets) | :heavy_check_mark: |
 | [Budgets](https://github.com/Azure/ResourceModules/tree/main/arm/Microsoft.Consumption/budgets) | `MS.Consumption` | [budgets](https://github.com/Azure/ResourceModules/tree/main/arm/Microsoft.Consumption/budgets) | :heavy_check_mark: |
 | [ContainerInstances](https://github.com/Azure/ResourceModules/tree/main/arm/Microsoft.ContainerInstance/containerGroups) | `MS.ContainerInstance` | [containerGroups](https://github.com/Azure/ResourceModules/tree/main/arm/Microsoft.ContainerInstance/containerGroups) | :heavy_check_mark: |
@@ -45,7 +46,7 @@ The following table provides you with an outline of all Modules that are current
 | [AVD Workspaces](https://github.com/Azure/ResourceModules/tree/main/arm/Microsoft.DesktopVirtualization/workspaces) |  | [workspaces](https://github.com/Azure/ResourceModules/tree/main/arm/Microsoft.DesktopVirtualization/workspaces) | :heavy_check_mark: |
 | [Event Grid](https://github.com/Azure/ResourceModules/tree/main/arm/Microsoft.EventGrid/topics) | `MS.EventGrid` | [topics](https://github.com/Azure/ResourceModules/tree/main/arm/Microsoft.EventGrid/topics) | :heavy_check_mark: |
 | [EventHub Namespaces](https://github.com/Azure/ResourceModules/tree/main/arm/Microsoft.EventHub/namespaces) | `MS.EventHub` | [namespaces](https://github.com/Azure/ResourceModules/tree/main/arm/Microsoft.EventHub/namespaces) | :heavy_check_mark: |
-| [EventHubs](https://github.com/Azure/ResourceModules/tree/main/arm/Microsoft.EventHub/namespacesResources/eventhubs) |  | [namespaces/eventhubs](https://github.com/Azure/ResourceModules/tree/main/arm/Microsoft.EventHub/namespacesResources/eventhubs) |  |
+| [EventHubs](https://github.com/Azure/ResourceModules/tree/main/arm/Microsoft.EventHub/namespacesResources/eventhubs) |  | [namespaces/eventhubs](https://github.com/Azure/ResourceModules/tree/main/arm/Microsoft.EventHub/namespacesResources/eventhubs) | :heavy_check_mark: |
 | [Azure Health Bot](https://github.com/Azure/ResourceModules/tree/main/arm/Microsoft.HealthBot/healthBots) | `MS.HealthBot` | [healthBots](https://github.com/Azure/ResourceModules/tree/main/arm/Microsoft.HealthBot/healthBots) | :heavy_check_mark: |
 | [Action Group](https://github.com/Azure/ResourceModules/tree/main/arm/Microsoft.Insights/actionGroups) | `MS.Insights` | [actionGroups](https://github.com/Azure/ResourceModules/tree/main/arm/Microsoft.Insights/actionGroups) | :heavy_check_mark: |
 | [Activity Log Alert](https://github.com/Azure/ResourceModules/tree/main/arm/Microsoft.Insights/activityLogAlerts) |  | [activityLogAlerts](https://github.com/Azure/ResourceModules/tree/main/arm/Microsoft.Insights/activityLogAlerts) | :heavy_check_mark: |
@@ -92,6 +93,7 @@ The following table provides you with an outline of all Modules that are current
 | [AzureSecurityCenter](https://github.com/Azure/ResourceModules/tree/main/arm/Microsoft.Security/azureSecurityCenter) | `MS.Security` | [azureSecurityCenter](https://github.com/Azure/ResourceModules/tree/main/arm/Microsoft.Security/azureSecurityCenter) | :heavy_check_mark: |
 | [ServiceBusNamespaces](https://github.com/Azure/ResourceModules/tree/main/arm/Microsoft.ServiceBus/namespaces) | `MS.ServiceBus` | [namespaces](https://github.com/Azure/ResourceModules/tree/main/arm/Microsoft.ServiceBus/namespaces) | :heavy_check_mark: |
 | [ServiceBusQueues](https://github.com/Azure/ResourceModules/tree/main/arm/Microsoft.ServiceBus/namespacesResources/queues) |  | [namespaces/queues](https://github.com/Azure/ResourceModules/tree/main/arm/Microsoft.ServiceBus/namespacesResources/queues) | :heavy_check_mark: |
+| [](https://github.com/Azure/ResourceModules/tree/main/arm/Microsoft.ServiceFabric/clusters) | `MS.ServiceFabric` | [clusters](https://github.com/Azure/ResourceModules/tree/main/arm/Microsoft.ServiceFabric/clusters) | :heavy_check_mark: |
 | [SQL Managed Instances](https://github.com/Azure/ResourceModules/tree/main/arm/Microsoft.Sql/managedInstances) | `MS.Sql` | [managedInstances](https://github.com/Azure/ResourceModules/tree/main/arm/Microsoft.Sql/managedInstances) | :heavy_check_mark: |
 | [SQL Managed Instances Database](https://github.com/Azure/ResourceModules/tree/main/arm/Microsoft.Sql/managedInstancesResources/databases) |  | [managedInstances/databases](https://github.com/Azure/ResourceModules/tree/main/arm/Microsoft.Sql/managedInstancesResources/databases) | :heavy_check_mark: |
 | [AzureSQLServer](https://github.com/Azure/ResourceModules/tree/main/arm/Microsoft.Sql/servers) |  | [servers](https://github.com/Azure/ResourceModules/tree/main/arm/Microsoft.Sql/servers) | :heavy_check_mark: |
