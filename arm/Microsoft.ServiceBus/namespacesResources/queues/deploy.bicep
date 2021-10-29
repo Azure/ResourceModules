@@ -146,7 +146,6 @@ module serviceBusNamespaceQueue_rbac './.bicep/nested_rbac.bicep' = [for (roleAs
   params: {
     roleAssignmentObj: roleAssignment
     builtInRoleNames: builtInRoleNames
-    parentResourceName: namespaceName
     resourceName: serviceBusNamespaceQueue.name
   }
 }]

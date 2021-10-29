@@ -1,22 +1,22 @@
-param applicationType object
+param applicationTypeObj object
 param clusterName string
 param location string
 param tags object
 param properties object
 
-resource applicationTypes 'Microsoft.ServiceFabric/clusters/applicationTypes@2021-06-01' = {
-  name: '${clusterName}/applicationTypes-${applicationType.name}'
+resource applicationType 'Microsoft.ServiceFabric/clusters/applicationTypes@2021-06-01' = {
+  name: '${clusterName}/applicationTypes-${applicationTypeObj.name}'
   location: location
   tags: tags
   properties: properties
 
-  resource versions 'versions@2021-06-01' = [for version in applicationType.applicationTypesVersions: {
-    name: version.name
+  resource versions 'versions@2021-06-01' = [for applicationTypesVersion in applicationTypeObj.applicationTypesVersions: {
+    name: applicationTypesVersion.name
     location: location
     tags: tags
-    properties: (!empty(version.properties) ? version.properties : json('null'))
+    properties: !empty(applicationTypesVersion.properties) ? applicationTypesVersion.properties : null
   }]
 }
 
 // Output
-output serviceFabricClusterApplcationTypesId string = applicationTypes.id
+output applicationTypeResourceId string = applicationType.id

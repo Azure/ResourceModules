@@ -63,7 +63,6 @@
 }
 ```
 
-
 ### Parameter Usage: `tags`
 
 Tag names and tag values can be provided as needed. A tag can be left without a value.
@@ -81,7 +80,6 @@ Tag names and tag values can be provided as needed. A tag can be left without a 
 }
 ```
 
-
 ### Parameter Usage: `privateEndpoints`
 
 To use Private Endpoint the following dependencies must be deployed:
@@ -91,8 +89,8 @@ To use Private Endpoint the following dependencies must be deployed:
 - Although not strictly required, it is highly recommened to first create a private DNS Zone to host Private Endpoint DNS records. See [Azure Private Endpoint DNS configuration](https://docs.microsoft.com/en-us/azure/private-link/private-endpoint-dns) for more information.
 
 - Azure Data Factory supports two different private endpoints
-    - `portal`: `privatelink.azure.com`
-    - `dataFactory`: `privatelink.datafactory.azure.net`
+  - `portal`: `privatelink.azure.com`
+  - `dataFactory`: `privatelink.datafactory.azure.net`
 
 - You can still access the Azure Data Factory portal through a public network after you create private endpoint for portal.
 

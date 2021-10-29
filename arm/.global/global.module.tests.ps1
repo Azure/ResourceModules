@@ -42,13 +42,13 @@ Describe 'File/folder tests' -Tag Modules {
             (Test-Path (Join-Path -Path $moduleFolderPath 'readme.md')) | Should -Be $true
         }
 
-        It '[<moduleFolderName>] Module should contain a [parameters] folder' -TestCases $moduleFolderTestCases {
+        It '[<moduleFolderName>] Module should contain a [.parameters] folder' -TestCases $moduleFolderTestCases {
             param( [string] $moduleFolderPath )
-            (Test-Path (Join-Path -Path $moduleFolderPath 'parameters')) | Should -Be $true
+            (Test-Path (Join-Path -Path $moduleFolderPath '.parameters')) | Should -Be $true
         }
     }
 
-    Context 'parameters folder' {
+    Context '.parameters folder' {
 
         $folderTestCases = [System.Collections.ArrayList]@()
         foreach ($moduleFolderPath in $moduleFolderPaths) {
@@ -63,13 +63,13 @@ Describe 'File/folder tests' -Tag Modules {
                 $moduleFolderName,
                 $moduleFolderPath
             )
-            $parameterFolderPath = Join-Path $moduleFolderPath 'parameters'
+            $parameterFolderPath = Join-Path $moduleFolderPath '.parameters'
             (Get-ChildItem $parameterFolderPath -Filter '*parameters.json').Count | Should -BeGreaterThan 0
         }
 
         $parameterFolderFilesTestCases = [System.Collections.ArrayList] @()
         foreach ($moduleFolderPath in $moduleFolderPaths) {
-            $parameterFolderPath = Join-Path $moduleFolderPath 'parameters'
+            $parameterFolderPath = Join-Path $moduleFolderPath '.parameters'
             if (Test-Path $parameterFolderPath) {
                 foreach ($parameterFile in (Get-ChildItem $parameterFolderPath -Filter '*parameters.json')) {
                     $parameterFolderFilesTestCases += @{
@@ -80,7 +80,7 @@ Describe 'File/folder tests' -Tag Modules {
             }
         }
 
-        It '[<moduleFolderName>] *parameters.json files in the parameters folder should be valid json' -TestCases $parameterFolderFilesTestCases {
+        It '[<moduleFolderName>] *parameters.json files in the .parameters folder should be valid json' -TestCases $parameterFolderFilesTestCases {
             param(
                 $moduleFolderName,
                 $parameterFilePath
@@ -391,7 +391,7 @@ Describe 'Deployment template tests' -Tag Template {
             $TemplateFile_AllParameterNames = $templateFile_Parameters.keys | Sort-Object
             $TemplateFile_RequiredParametersNames = ($templateFile_Parameters.keys | Where-Object { -not $templateFile_Parameters[$_].ContainsKey('defaultValue') }) | Sort-Object
 
-            $ParameterFilePaths = (Get-ChildItem (Join-Path -Path $moduleFolderPath -ChildPath 'parameters' -AdditionalChildPath '*parameters.json') -Recurse).FullName
+            $ParameterFilePaths = (Get-ChildItem (Join-Path -Path $moduleFolderPath -ChildPath '.parameters' -AdditionalChildPath '*parameters.json') -Recurse).FullName
             foreach ($ParameterFilePath in $ParameterFilePaths) {
                 $parameterFile_AllParameterNames = ((Get-Content $ParameterFilePath) | ConvertFrom-Json -AsHashtable).parameters.keys | Sort-Object
                 $parameterFileTestCases += @{
@@ -649,6 +649,7 @@ Describe 'Deployment template tests' -Tag Template {
             $i = 0
             $Schemaverion = $templateContent.'$schema'
             if ((($Schemaverion.Split('/')[5]).Split('.')[0]) -eq (($RGdeployment.Split('/')[5]).Split('.')[0])) {
+                # Resource Group Level deployment
                 foreach ($Stdo in $Stdoutput) {
                     if ($Stdo -like '*Name*' -or $Stdo -like '*ResourceId*' -or $Stdo -like '*ResourceGroup*') {
                         $true | Should -Be $true
@@ -657,6 +658,7 @@ Describe 'Deployment template tests' -Tag Template {
                 }
                 $i | Should -Not -BeLessThan 3
             } ElseIf ((($schemaverion.Split('/')[5]).Split('.')[0]) -eq (($Subscriptiondeployment.Split('/')[5]).Split('.')[0])) {
+                # Subscription Level deployment
                 $Stdoutput | Should -Not -BeNullOrEmpty
             }
 
