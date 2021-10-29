@@ -23,7 +23,6 @@ Describe 'File/folder tests' -Tag Modules {
 
         $moduleFolderTestCases = [System.Collections.ArrayList] @()
         foreach ($moduleFolderPath in $moduleFolderPaths) {
-            Write-Verbose $moduleFolderPath -Verbose # TODO remove
             $moduleFolderTestCases += @{
                 moduleFolderName = $moduleFolderPath.Replace('\', '/').Split('/arm/')[1]
                 moduleFolderPath = $moduleFolderPath
@@ -32,6 +31,11 @@ Describe 'File/folder tests' -Tag Modules {
 
         It '[<moduleFolderName>] Module should contain a [deploy.json/deploy.bicep] file' -TestCases $moduleFolderTestCases {
             param( [string] $moduleFolderPath )
+
+            foreach ($moduleFolderPath in $moduleFolderPaths) {
+                Write-Verbose $moduleFolderPath -Verbose # TODO remove
+            }
+
             $hasARM = (Test-Path (Join-Path -Path $moduleFolderPath 'deploy.json'))
             $hasBicep = (Test-Path (Join-Path -Path $moduleFolderPath 'deploy.bicep'))
             ($hasARM -or $hasBicep) | Should -Be $true
