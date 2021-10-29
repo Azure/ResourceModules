@@ -64,11 +64,11 @@ function Remove-JSONMetadata {
 
 #endregion
 
-$rootPath = Get-Item -Path $Path | Select-Object -ExpandProperty FullName
+$rootPath = Get-Item -Path $Path | Select-Object -ExpandProperty 'FullName'
 $armFolderPath = Join-Path -Path $rootPath -ChildPath 'arm'
 
 # Get all bicep files
-$bicepFiles = Get-ChildItem -Path $armFolderPath -Filter deploy.bicep -Recurse -Force
+$bicepFiles = Get-ChildItem -Path $armFolderPath -Filter 'deploy.bicep' -Recurse -Force
 Write-Verbose "Convert bicep to json - $($bicepFiles.count) files"
 foreach ($bicepFile in $bicepFiles) {
     $bicepFilePath = $bicepFile.FullName
