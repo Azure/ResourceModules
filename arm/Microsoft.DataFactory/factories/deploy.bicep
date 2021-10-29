@@ -1,4 +1,4 @@
-@description('Required. The name of the Azure Data Factory.')
+@description('Required. The name of the Azure Factory to create')
 param dataFactoryName string
 
 @description('Optional. Location for all Resources.')
@@ -63,8 +63,10 @@ param cuaId string = ''
   'TriggerRuns'
   'SSISPackageEventMessages'
   'SSISPackageExecutableStatistics'
-  'CustomerManagedKeyUserLogs'
-  'AutoScaleLogs'
+  'SSISPackageEventMessageContext'
+  'SSISPackageExecutionComponentPhases'
+  'SSISPackageExecutionDataStatistics'
+  'SSISIntegrationRuntimeLogs'
 ])
 param logsToEnable array = [
   'ActivityRuns'
@@ -72,8 +74,10 @@ param logsToEnable array = [
   'TriggerRuns'
   'SSISPackageEventMessages'
   'SSISPackageExecutableStatistics'
-  'CustomerManagedKeyUserLogs'
-  'AutoScaleLogs'
+  'SSISPackageEventMessageContext'
+  'SSISPackageExecutionComponentPhases'
+  'SSISPackageExecutionDataStatistics'
+  'SSISIntegrationRuntimeLogs'
 ]
 
 @description('Optional. The name of metrics that will be streamed.')
@@ -82,81 +86,6 @@ param logsToEnable array = [
 ])
 param metricsToEnable array = [
   'AllMetrics'
-]
-
-var diagnosticsLogs = [
-  {
-    category: 'ActivityRuns'
-    enabled: true
-    retentionPolicy: {
-      enabled: true
-      days: diagnosticLogsRetentionInDays
-    }
-  }
-  {
-    category: 'PipelineRuns'
-    enabled: true
-    retentionPolicy: {
-      enabled: true
-      days: diagnosticLogsRetentionInDays
-    }
-  }
-  {
-    category: 'TriggerRuns'
-    enabled: true
-    retentionPolicy: {
-      enabled: true
-      days: diagnosticLogsRetentionInDays
-    }
-  }
-  {
-    category: 'SSISPackageEventMessages'
-    enabled: true
-    retentionPolicy: {
-      enabled: true
-      days: diagnosticLogsRetentionInDays
-    }
-  }
-  {
-    category: 'SSISPackageExecutableStatistics'
-    enabled: true
-    retentionPolicy: {
-      enabled: true
-      days: diagnosticLogsRetentionInDays
-    }
-  }
-  {
-    category: 'SSISPackageEventMessageContext'
-    enabled: true
-    retentionPolicy: {
-      enabled: true
-      days: diagnosticLogsRetentionInDays
-    }
-  }
-  {
-    category: 'SSISPackageExecutionComponentPhases'
-    enabled: true
-    retentionPolicy: {
-      enabled: true
-      days: diagnosticLogsRetentionInDays
-    }
-  }
-  {
-    category: 'SSISPackageExecutionDataStatistics'
-    enabled: true
-    retentionPolicy: {
-      enabled: true
-      days: diagnosticLogsRetentionInDays
-    }
-  }
-  {
-    category: 'SSISIntegrationRuntimeLogs'
-    enabled: true
-    retentionPolicy: {
-      enabled: true
-      days: diagnosticLogsRetentionInDays
-    }
-  }
 ]
 
 var diagnosticsLogs = [for log in logsToEnable: {
