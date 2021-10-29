@@ -200,6 +200,11 @@ module dataFactory_rbac './.bicep/nested_rbac.bicep' = [for (roleAssignment, ind
   }
 }]
 
+@description('The Name of the Azure Data Factory instance.')
 output dataFactoryName string = dataFactory.name
+
+@description('The Resource Id of the Data factory.')
 output dataFactoryResourceId string = dataFactory.id
+
+@description('The name of the Resource Group with the Data factory.')
 output dataFactoryResourceGroup string = resourceGroup().name
