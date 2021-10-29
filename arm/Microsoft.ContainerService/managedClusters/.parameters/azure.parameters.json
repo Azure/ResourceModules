@@ -3,7 +3,7 @@
     "contentVersion": "1.0.0.0",
     "parameters": {
         "aksClusterName": {
-            "value": "sxx-az-aks-kubenet"
+            "value": "sxx-az-aks-azure"
         },
         "primaryAgentPoolProfile": {
             "value": [
