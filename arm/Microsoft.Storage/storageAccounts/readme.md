@@ -259,14 +259,13 @@ To use Private Endpoint the following dependencies must be deployed:
 
 ## Outputs
 
-| Output Name | Type |
-| :-- | :-- |
-| `assignedIdentityID` | string |
-| `storageAccountName` | string |
-| `storageAccountPrimaryBlobEndpoint` | string |
-| `storageAccountRegion` | string |
-| `storageAccountResourceGroup` | string |
-| `storageAccountResourceId` | string |
+| Output Name | Type | Description |
+| :-- | :-- | :-- |
+| `assignedIdentityID` | string | The resource id of the assigned identity, if any |
+| `storageAccountName` | string | The name of the deployed storage account |
+| `storageAccountPrimaryBlobEndpoint` | string | The primary blob endpoint reference if blob services are deployed. |
+| `storageAccountResourceGroup` | string | The resource group of the deployed storage account |
+| `storageAccountResourceId` | string | The resource Id of the deployed storage account |
 
 ## Considerations
 

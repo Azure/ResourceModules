@@ -322,9 +322,17 @@ module storageAccount_tableServices 'tableServices/deploy.bicep' = if (!empty(ta
   }
 }
 
+@description('The resource Id of the deployed storage account')
 output storageAccountResourceId string = storageAccount.id
-output storageAccountRegion string = storageAccount.location
+
+@description('The name of the deployed storage account')
 output storageAccountName string = storageAccount.name
+
+@description('The resource group of the deployed storage account')
 output storageAccountResourceGroup string = resourceGroup().name
+
+@description('The primary blob endpoint reference if blob services are deployed.')
 output storageAccountPrimaryBlobEndpoint string = (!empty(blobServices) && contains(storageAccount_blobService, 'blobContainers')) ? '' : reference('Microsoft.Storage/storageAccounts/${storageAccount.name}', '2019-04-01').primaryEndpoints.blob
+
+@description('The resource id of the assigned identity, if any')
 output assignedIdentityID string = (contains(managedServiceIdentity, 'SystemAssigned') ? reference(storageAccount.id, '2019-06-01', 'full').identity.principalId : '')
