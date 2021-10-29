@@ -8,7 +8,7 @@
         "administratorLogin": {
             "reference": {
                 "keyVault": {
-                    "id": "/subscriptions/<<subscriptionId>>/resourceGroups/dependencies-rg/providers/Microsoft.KeyVault/vaults/sxx-az-kv-weu-x-004"
+                    "id": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.KeyVault/vaults/adp-sxx-az-kv-weu-x-001"
                 },
                 "secretName": "administratorLogin"
             }
@@ -16,13 +16,13 @@
         "administratorLoginPassword": {
             "reference": {
                 "keyVault": {
-                    "id": "/subscriptions/<<subscriptionId>>/resourceGroups/dependencies-rg/providers/Microsoft.KeyVault/vaults/sxx-az-kv-weu-x-004"
+                    "id": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.KeyVault/vaults/adp-sxx-az-kv-weu-x-001"
                 },
                 "secretName": "administratorLoginPassword"
             }
         },
         "subnetId": {
-            "value": "/subscriptions/<<subscriptionId>>/resourceGroups/dependencies-sqlmi-rg/providers/Microsoft.Network/virtualNetworks/sxx-az-vnet-weu-x-005/subnets/sxx-az-subnet-weu-x-003"
+            "value": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/virtualNetworks/adp-sxx-az-vnet-weu-x-001/subnets/sxx-az-subnet-weu-x-003"
         },
         "skuName": {
             "value": "GP_Gen5"
