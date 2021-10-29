@@ -1,0 +1,44 @@
+{
+  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    "keyVaultName": {
+      "value": "adp-sxx-az-kv-weu-x-001"
+    },
+    "accessPolicies": {
+      "value": [
+        {
+          "tenantId": "72f988bf-86f1-41af-91ab-2d7cd011db47",
+          "objectId": "f40e18f0-6544-45c2-9d24-639a8bb3b41a", // Backup Management Service needs access to back up the keys and secrets, along with the associated VMs
+          "permissions": {
+            "keys": [
+              "Get",
+              "List",
+              "Backup"
+            ],
+            "secrets": [
+              "Get",
+              "List",
+              "Backup"
+            ],
+            "certificates": []
+          }
+        },
+        {
+          "tenantId": "72f988bf-86f1-41af-91ab-2d7cd011db47",
+          "objectId": "5545f7a0-51f4-46af-b3b4-baecf5176a56", // adding adp-sxx-az-msi-weu-x-001 to get secrets
+          "permissions": {
+            "keys": [],
+            "secrets": [
+              "Get"
+            ],
+            "certificates": []
+          }
+        }
+      ]
+    },
+    "enablePurgeProtection": {
+      "value": true
+    }
+  }
+}
