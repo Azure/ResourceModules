@@ -16,8 +16,8 @@ on:
         required: false
         default: '0.0.1'
   push:
-    branches:
-      - main
+    #branches:
+    #  - main
     paths:
       - '.github/actions/templates/**'
       - '.github/workflows/ms.consumption.budgets.yml'
