@@ -57,18 +57,18 @@ function Remove-JSONMetadata {
         [psobject] $TemplateObject
     )
     $TemplateObject.PSObject.Properties.Remove('metadata')
-    $TemplateObject.resources | Where-Object {$_.type -eq 'Microsoft.Resources/deployments'} | ForEach-Object {
+    $TemplateObject.resources | Where-Object { $_.type -eq 'Microsoft.Resources/deployments' } | ForEach-Object {
         Remove-JSONMetadata -TemplateObject $_.properties.template
     }
 }
 
 #endregion
 
-$rootPath = Get-Item -Path $Path | Select-Object -ExpandProperty FullName
+$rootPath = Get-Item -Path $Path | Select-Object -ExpandProperty 'FullName'
 $armFolderPath = Join-Path -Path $rootPath -ChildPath 'arm'
 
 # Get all bicep files
-$bicepFiles = Get-ChildItem -Path $armFolderPath -Filter deploy.bicep -Recurse
+$bicepFiles = Get-ChildItem -Path $armFolderPath -Filter 'deploy.bicep' -Recurse -Force
 Write-Verbose "Convert bicep to json - $($bicepFiles.count) files"
 foreach ($bicepFile in $bicepFiles) {
     $bicepFilePath = $bicepFile.FullName
@@ -130,7 +130,7 @@ foreach ($bicepFile in $bicepFiles) {
 
 # Replace .bicep with .json in workflow files
 $workflowFolderPath = Join-Path -Path $rootPath -ChildPath '.github\workflows'
-$workflowFiles = Get-ChildItem -Path $workflowFolderPath -Filter 'ms.*.yml' -File
+$workflowFiles = Get-ChildItem -Path $workflowFolderPath -Filter 'ms.*.yml' -File -Force
 Write-Verbose "Update workflow files - $($workflowFiles.count) files"
 foreach ($workflowFile in $workflowFiles) {
     Write-Verbose "$workflowFile - Processing"
