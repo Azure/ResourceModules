@@ -9,6 +9,7 @@
 | `Microsoft.DataFactory/factories/integrationRuntimes` | 2018-06-01 |
 | `Microsoft.DataFactory/factories/managedVirtualNetworks` | 2018-06-01 |
 | `Microsoft.DataFactory/factories/providers/roleAssignments` | 2021-04-01-preview |
+| `Microsoft.Insights/diagnosticSettings` | 2017-05-01-preview |
 
 ## Parameters
 
@@ -76,11 +77,11 @@ Tag names and tag values can be provided as needed. A tag can be left without a 
 
 ## Outputs
 
-| Output Name | Type |
-| :-- | :-- |
-| `dataFactoryName` | string |
-| `dataFactoryResourceGroup` | string |
-| `dataFactoryResourceId` | string |
+| Output Name | Type | Description |
+| :-- | :-- | :-- |
+| `dataFactoryName` | string | The Name of the Azure Data Factory instance. |
+| `dataFactoryResourceGroup` | string | The name of the Resource Group with the Data factory. |
+| `dataFactoryResourceId` | string | The Resource Id of the Data factory. |
 
 ## Template references
 
@@ -88,3 +89,4 @@ Tag names and tag values can be provided as needed. A tag can be left without a 
 - [Factories](https://docs.microsoft.com/en-us/azure/templates/Microsoft.DataFactory/2018-06-01/factories)
 - [Factories/Integrationruntimes](https://docs.microsoft.com/en-us/azure/templates/Microsoft.DataFactory/2018-06-01/factories/integrationRuntimes)
 - [Factories/Managedvirtualnetworks](https://docs.microsoft.com/en-us/azure/templates/Microsoft.DataFactory/2018-06-01/factories/managedVirtualNetworks)
+- [Diagnosticsettings](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Insights/2017-05-01-preview/diagnosticSettings)
