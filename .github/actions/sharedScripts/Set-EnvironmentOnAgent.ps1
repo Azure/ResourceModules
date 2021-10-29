@@ -105,6 +105,9 @@ function Set-EnvironmentOnAgent {
     ##   Install Azure CLI   ##
     ###########################
 
+    # AzCLI is pre-installed on GitHub hosted runners.
+    # https://github.com/actions/virtual-environments#available-environments
+
     az --version
     <#
     Write-Verbose ("Install azure cli start") -Verbose
@@ -115,6 +118,9 @@ function Set-EnvironmentOnAgent {
     ##############################
     ##   Install Bicep for CLI   #
     ##############################
+
+    # Bicep CLI is pre-installed on GitHub hosted runners.
+    # https://github.com/actions/virtual-environments#available-environments
 
     bicep --version
     <#
@@ -133,6 +139,9 @@ function Set-EnvironmentOnAgent {
     ###############################
     ##   Install Extensions CLI   #
     ###############################
+
+    # Azure CLI extension for DevOps is pre-installed on GitHub hosted runners.
+    # https://github.com/actions/virtual-environments#available-environments
 
     az extension list | ConvertFrom-Json | Select-Object -Property name, version, preview, experimental
 
