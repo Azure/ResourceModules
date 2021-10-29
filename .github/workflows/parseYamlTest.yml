@@ -17,11 +17,19 @@ jobs:
           # Full git history is needed to get a proper list of changed files within `super-linter`
           fetch-depth: 0
 
+      - name: 'Check environment'
+        shell: pwsh
+        run: |
+          az --version
+          bicep --version
+          az extension list | ConvertFrom-Json | Select-Object -Property name, version, preview, experimental
+          Get-Module -Name Az*
+
       - name: 'Analyze yaml'
         shell: pwsh
         run: |
           Get-PSRepository
-          Install-Module -Name powershell-yaml -Repository PSGallery -Force 
+          Install-Module -Name powershell-yaml -Repository PSGallery -Force
           Import-Module -Name powershell-yaml -verbose
           $Yaml = Get-Content -Path "$ENV:GITHUB_WORKSPACE\.github\workflows\ms.analysisservices.servers.yml" -Raw
           $Obj = ConvertFrom-Yaml -Yaml $Yaml
