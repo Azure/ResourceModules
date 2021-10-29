@@ -108,7 +108,7 @@ function Set-EnvironmentOnAgent {
     az --version
     <#
     Write-Verbose ("Install azure cli start") -Verbose
-    #curl -sL https://aka.ms/InstallAzureCLIDeb | sudo bash
+    curl -sL https://aka.ms/InstallAzureCLIDeb | sudo bash
     Write-Verbose ("Install azure cli end") -Verbose
     #>
 
