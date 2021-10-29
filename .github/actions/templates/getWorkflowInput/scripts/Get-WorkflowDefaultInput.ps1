@@ -14,11 +14,10 @@ Get-WorkflowDefaultInput -workflowPath 'path/to/workflow' -verbose
 Retrieve input parameter default values for the 'path/to/workflow' workflow.
 #>
 function Get-WorkflowDefaultInput {
-
+    [CmdletBinding()]
     param (
         [Parameter(Mandatory)]
         [string] $workflowPath
-
     )
 
     begin {
