@@ -6,17 +6,15 @@ This section gives you an overview of the design principals the testing follows.
 
 ## _Navigation_
 
-- [Testing Design](#testing-design)
-  - [_Navigation_](#navigation)
-  - [Design Overview  Approach](#approach)
-  - [Static code validation](#static-code-validation)
-  - [API validation](#api-validation)
-  - [Template Validation](#template-validation-tests)
-  - [Deployment validation](#deployment-validation)
-    - [Module Dependencies](#module-dependencies)
-      - [Overview of modules dependencies](#overview-of-modules-dependencies)
-      - [Services (in order)](#services-in-order)
-      - [Required Secrets and Keys](#required-secrets-and-keys)
+- [Design Overview  Approach](#approach)
+- [Static code validation](#static-code-validation)
+- [API version validation](#api-version-validation)
+- [Template Validation](#template-validation)
+- [Deployment validation](#deployment-validation)
+  - [Module Dependencies](#module-dependencies)
+    - [Overview of modules dependencies](#overview-of-modules-dependencies)
+    - [Services (in order)](#services-in-order)
+    - [Required Secrets and Keys](#required-secrets-and-keys)
 
 ---
 
@@ -32,21 +30,21 @@ The general idea is that you should fail as early as possible to allow for minim
 
 Tests falls into four categories:
 
-- General static code module validation
-- Module API version validation
-- Deployment validation
-- Actual deployment of the module
+- Static code validation
+- API version validation
+- Template Validation with parameter file(s)
+- Template Deployment with parameter file(s)
 
 ## Static code validation
 
-All Module Unit tests are performed with the help of Pester and are required to have consistent, clean and syntactically correct tests to ensure that our modules are configured correctly, documentation is up to date, and modules don't turn stale.
+All Module Unit tests are performed with the help of [Pester](https://github.com/pester/Pester) and are required to have consistent, clean and syntactically correct tests to ensure that our modules are configured correctly, documentation is up to date, and modules don't turn stale.
 
 The following activities are run by `.github/actions/templates/validateModuleGeneral/action.yml` executing the `arm/.global/global.module.tests.ps1` script.
 
 - **File & folder tests** validate that the module folder structure is set up in the intended way. e.g.:
   - reame.md must exists
   - template file (either deploy.json or deploy.bicep) exists
-  - compliance with files naming convention
+  - compliance with file naming convention
 - **Deployment template tests** check the template's structure and elements for errors as well as consistency matters. e.g.
   - template file (or the built bicep template) converts from JSON and has all expected properties
   - variable names are camelCase
@@ -56,7 +54,7 @@ The following activities are run by `.github/actions/templates/validateModuleGen
   - contains all the mandatory sections
   - describes all the parameters
 - **Parameter Files**. e.g.:
-  - at least one *parameters.json should exist
+  - at least one `*parameters.json` should exist
   - files should be valid JSON
 
 ### Additional resources
@@ -65,11 +63,11 @@ The following activities are run by `.github/actions/templates/validateModuleGen
 - [Pester on GitHub](https://github.com/pester/Pester)
 - [Pester Setup and Commands](https://pester.dev/docs/commands/Setup)
 
-## API validation
+## API version validation
 
-In this phase, the workflow will verify if the module is one of the latest 5 api version using `.github/actions/templates/validateModuleApis/action.yml` executing the `arm/.global/global.module.tests.ps1` script.
+In this phase, the workflow will verify if the module is one of the latest 5 (non-preview) api version using `.github/actions/templates/validateModuleApis/action.yml` executing the `arm/.global/global.module.tests.ps1` script.
 
-## Template Validation Tests
+## Template Validation
 
 The template validation tests execute a dry-run with each parameter file provided & configured for a module. For example, if you have two parameter files for a module, one with the minimum set of parameters, one with the maximum, the tests will run an `Test-AzDeployment` (_- the command may vary based on the template schema_) with each of the two parameter files to see if the template would be able to be deployed with them. This test could fail either because the template is invalid, or because any of the parameter files is configured incorrectly.
 
@@ -79,7 +77,7 @@ If all other tests passed, the deployment tests are the ultimate module validati
 
 Most of the resources are deleted by default after their deployment, to keep costs down and to be able to retest resource modules from scratch in the next run. However, the removal step can be skipped in case further investigation on the deployed resource is needed. For further details, please refer to the (.\PipelinesUsage.md) section.
 
-This happens using the `.github/actions/templates/validateModuleDeploy/action.yml` pipeline and the `.github/actions/templates/validateModuleDeploy/scripts/Test-TemplateWithParameterFile.ps1` script.
+This happens using the `.github/actions/templates/validateModuleDeploy/action.yml` composite action and the `.github/actions/templates/validateModuleDeploy/scripts/Test-TemplateWithParameterFile.ps1` script.
 
 > **Note**<br>
 Currently the list of the parameter file used to test the module is hardcoded in the module specific workflow, as the **parameterFilePaths** in the _job_deploy_module_ and _job_tests_module_deploy_validate_ jobs.
