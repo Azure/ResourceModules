@@ -26,7 +26,7 @@ All Module Unit tests are performed with the help of Pester and are required to 
 The following activities are run by `.github/actions/templates/validateModuleGeneral/action.yml` executing the `arm/.global/global.module.tests.ps1` script.
 
 - Module folder completeness. e.g.:
-  - reame.md mus exists
+  - reame.md must exists
   - template file (either deploy.json or deploy.bicep) exists
 - Template File Syntax and aligned with convention. e.g.
   - template file (or the built bicep template) converts from JSON and has all expected properties
