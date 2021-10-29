@@ -1,8 +1,8 @@
 #Requires -Version 7
 
 param (
-    [array] $moduleFolderPaths = ((Get-ChildItem (Split-Path (Get-Location) -Parent) -Recurse -Directory).FullName | Where-Object {
-        (Get-ChildItem $_ -File -Depth 0 -Include @('deploy.json', 'deploy.bicep')).Count -gt 0
+    [array] $moduleFolderPaths = ((Get-ChildItem (Split-Path (Get-Location) -Parent) -Recurse -Directory -Force).FullName | Where-Object {
+        (Get-ChildItem $_ -File -Depth 0 -Include @('deploy.json', 'deploy.bicep') -Force).Count -gt 0
         })
 )
 
@@ -64,14 +64,14 @@ Describe 'File/folder tests' -Tag Modules {
                 $moduleFolderPath
             )
             $parameterFolderPath = Join-Path $moduleFolderPath '.parameters'
-            (Get-ChildItem $parameterFolderPath -Filter '*parameters.json').Count | Should -BeGreaterThan 0
+            (Get-ChildItem $parameterFolderPath -Filter '*parameters.json' -Force).Count | Should -BeGreaterThan 0
         }
 
         $parameterFolderFilesTestCases = [System.Collections.ArrayList] @()
         foreach ($moduleFolderPath in $moduleFolderPaths) {
             $parameterFolderPath = Join-Path $moduleFolderPath '.parameters'
             if (Test-Path $parameterFolderPath) {
-                foreach ($parameterFile in (Get-ChildItem $parameterFolderPath -Filter '*parameters.json')) {
+                foreach ($parameterFile in (Get-ChildItem $parameterFolderPath -Filter '*parameters.json' -Force)) {
                     $parameterFolderFilesTestCases += @{
                         moduleFolderName  = Split-Path $moduleFolderPath -Leaf
                         parameterFilePath = $parameterFile.FullName
@@ -391,7 +391,7 @@ Describe 'Deployment template tests' -Tag Template {
             $TemplateFile_AllParameterNames = $templateFile_Parameters.keys | Sort-Object
             $TemplateFile_RequiredParametersNames = ($templateFile_Parameters.keys | Where-Object { -not $templateFile_Parameters[$_].ContainsKey('defaultValue') }) | Sort-Object
 
-            $ParameterFilePaths = (Get-ChildItem (Join-Path -Path $moduleFolderPath -ChildPath '.parameters' -AdditionalChildPath '*parameters.json') -Recurse).FullName
+            $ParameterFilePaths = (Get-ChildItem (Join-Path -Path $moduleFolderPath -ChildPath '.parameters' -AdditionalChildPath '*parameters.json') -Recurse -Force).FullName
             foreach ($ParameterFilePath in $ParameterFilePaths) {
                 $parameterFile_AllParameterNames = ((Get-Content $ParameterFilePath) | ConvertFrom-Json -AsHashtable).parameters.keys | Sort-Object
                 $parameterFileTestCases += @{
