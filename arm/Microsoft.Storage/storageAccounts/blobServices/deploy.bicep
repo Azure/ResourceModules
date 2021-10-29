@@ -33,14 +33,14 @@ resource blobServices 'Microsoft.Storage/storageAccounts/blobServices@2021-08-01
   }
 }
 
-module blobServices_container 'containers/deploy.bicep' = [for (blobContainer, index) in containers: {
+module blobServices_container 'containers/deploy.bicep' = [for (container, index) in containers: {
   name: '${deployment().name}-Storage-Container-${index}'
   params: {
     storageAccountName: storageAccountName
-    name: blobContainer.name
-    publicAccess: contains(blobContainer, 'publicAccess') ? blobContainer.publicAccess : 'None'
-    roleAssignments: contains(blobContainer, 'roleAssignments') ? blobContainer.roleAssignments : []
-    immutabilityPolicyProperties: contains(blobContainer, 'immutabilityPolicyProperties') ? blobContainer.immutabilityPolicyProperties : {}
+    name: container.name
+    publicAccess: contains(container, 'publicAccess') ? container.publicAccess : 'None'
+    roleAssignments: contains(container, 'roleAssignments') ? container.roleAssignments : []
+    immutabilityPolicyProperties: contains(container, 'immutabilityPolicyProperties') ? container.immutabilityPolicyProperties : {}
   }
   dependsOn: [
     blobServices
