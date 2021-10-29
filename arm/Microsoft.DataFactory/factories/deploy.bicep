@@ -143,13 +143,13 @@ resource dataFactory 'Microsoft.DataFactory/factories@2018-06-01' = {
   }
 }
 
-resource dataFactory_default 'Microsoft.DataFactory/factories/managedVirtualNetworks@2018-06-01' = {
+resource dataFactory_managedVirtualNetwork 'Microsoft.DataFactory/factories/managedVirtualNetworks@2018-06-01' = {
   parent: dataFactory
   name: 'default'
   properties: {}
 }
 
-resource dataFactory_AutoResolveIntegrationRuntime 'Microsoft.DataFactory/factories/integrationRuntimes@2018-06-01' = {
+resource dataFactory_integrationRuntime 'Microsoft.DataFactory/factories/integrationRuntimes@2018-06-01' = {
   parent: dataFactory
   name: 'AutoResolveIntegrationRuntime'
   properties: {
@@ -165,9 +165,22 @@ resource dataFactory_AutoResolveIntegrationRuntime 'Microsoft.DataFactory/factor
     }
   }
   dependsOn: [
-    dataFactory_default
+    dataFactory_managedVirtualNetwork
   ]
 }
+
+// resource dataFactory_diagnosticSettings 'Microsoft.Insights/diagnosticsettings@2017-05-01-preview' = if ((!empty(diagnosticStorageAccountId)) || (!empty(workspaceId)) || (!empty(eventHubAuthorizationRuleId)) || (!empty(eventHubName))) {
+//   name: '${dataFactoryName}-${diagnosticSettingName}'
+//   properties: {
+//     storageAccountId: (empty(diagnosticStorageAccountId) ? json('null') : diagnosticStorageAccountId)
+//     workspaceId: (empty(workspaceId) ? json('null') : workspaceId)
+//     eventHubAuthorizationRuleId: (empty(eventHubAuthorizationRuleId) ? json('null') : eventHubAuthorizationRuleId)
+//     eventHubName: (empty(eventHubName) ? json('null') : eventHubName)
+//     metrics: ((empty(diagnosticStorageAccountId) && empty(workspaceId) && empty(eventHubAuthorizationRuleId) && empty(eventHubName)) ? json('null') : diagnosticsMetrics)
+//     logs: ((empty(diagnosticStorageAccountId) && empty(workspaceId) && empty(eventHubAuthorizationRuleId) && empty(eventHubName)) ? json('null') : diagnosticsLogs)
+//   }
+//   scope: dataFactory
+// }
 
 resource dataFactory_lock 'Microsoft.Authorization/locks@2016-09-01' = if (lock != 'NotSpecified') {
   name: '${dataFactory.name}-${lock}-lock'
