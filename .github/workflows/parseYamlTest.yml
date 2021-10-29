@@ -23,7 +23,7 @@ jobs:
           az --version
           bicep --version
           az extension list | ConvertFrom-Json | Select-Object -Property name, version, preview, experimental
-          Get-Module -Name Az*
+          Get-Module -ListAvailable
 
       - name: 'Analyze yaml'
         shell: pwsh
