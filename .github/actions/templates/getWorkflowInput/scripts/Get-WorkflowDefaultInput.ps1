@@ -92,15 +92,17 @@ function Get-WorkflowDefaultInput {
                 [string[]] $Content
             )
             $Content = $Content.Split([Environment]::NewLine)
-            $SectionIndex = ((0..($Content.Count - 1)) | Where-Object { $Content[$_] -match "$InputName" })[0]
-            $SectionIndentation = Get-LineIndentation -Line $Content[$SectionIndex]
-            $LineIndentation = $SectionIndentation
-            for ($i = $SectionIndex + 1; $true; $i++) {
-                $LineIndentation = Get-LineIndentation -Line $Content[$i]
-                if ($LineIndentation -le $SectionIndentation) {
+            $SectionStartLine = ((0..($Content.Count - 1)) | Where-Object { $Content[$_] -match "$InputName" })[0]
+            $SectionStartIndentation = Get-LineIndentation -Line $Content[$SectionStartLine]
+            $CurrentLineIndentation = $SectionStartIndentation
+            for ($i = $SectionStartLine + 1; $i -le $Content.Count; $i++) {
+                $CurrentLineIndentation = Get-LineIndentation -Line $Content[$i]
+                if ($CurrentLineIndentation -le $SectionStartIndentation) {
+                    # Outside of start section, jumping out
                     break
                 }
-                if ($LineIndentation -gt $SectionIndentation + 2) {
+                if ($CurrentLineIndentation -gt $SectionStartIndentation + 2) {
+                    # In child section, ignoring
                     continue
                 }
                 if ($Content[$i] -match 'default:') {
@@ -133,3 +135,11 @@ function Get-WorkflowDefaultInput {
         Write-Debug ('{0} exited' -f $MyInvocation.MyCommand)
     }
 }
+
+
+$Test = @'
+One
+Two
+Three
+Four
+'@
