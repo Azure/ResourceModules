@@ -28,5 +28,14 @@
     "powershell.codeFormatting.useConstantStrings": true,
     "powershell.codeFormatting.useCorrectCasing": true,
     "powershell.codeFormatting.whitespaceBetweenParameters": true,
-    "yaml.format.singleQuote": true
+    "yaml.format.singleQuote": true,
+    "markdown.extension.tableFormatter.enabled": false,
+    "spellright.language": [
+        "en"
+    ],
+    "spellright.documentTypes": [
+        "markdown",
+        "latex",
+        "plaintext"
+    ]
 }

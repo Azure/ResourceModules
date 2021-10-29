@@ -25,7 +25,7 @@ on:
       - '!arm/Microsoft.DocumentDB/databaseAccounts/readme.md'
 
 env:
-  moduleName: 'topics'
+  moduleName: 'databaseAccounts'
   modulePath: 'arm/Microsoft.DocumentDB/databaseAccounts'
   workflowPath: '.github/workflows/ms.documentdb.databaseaccounts.yml'
   AZURE_CREDENTIALS: ${{ secrets.AZURE_CREDENTIALS }}
@@ -97,7 +97,12 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        parameterFilePaths: ['parameters.json']
+        parameterFilePaths:
+          [
+            'plain.parameters.json',
+            'mongodb.parameters.json',
+            'sqldb.parameters.json',
+          ]
     steps:
       - name: 'Checkout'
         uses: actions/checkout@v2
@@ -112,7 +117,7 @@ jobs:
         uses: ./.github/actions/templates/validateModuleDeploy
         with:
           templateFilePath: '${{ env.modulePath }}/deploy.bicep'
-          parameterFilePath: '${{ env.modulePath }}/parameters/${{ matrix.parameterFilePaths }}'
+          parameterFilePath: '${{ env.modulePath }}/.parameters/${{ matrix.parameterFilePaths }}'
           location: '${{ env.defaultLocation }}'
           resourceGroupName: '${{ env.resourceGroupName }}'
           subscriptionId: '${{ secrets.ARM_SUBSCRIPTION_ID }}'
@@ -132,7 +137,12 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        parameterFilePaths: ['parameters.json']
+        parameterFilePaths:
+          [
+            'plain.parameters.json',
+            'mongodb.parameters.json',
+            'sqldb.parameters.json',
+          ]
     steps:
       - name: 'Checkout'
         uses: actions/checkout@v2
@@ -148,7 +158,7 @@ jobs:
         with:
           moduleName: '${{ env.moduleName }}'
           templateFilePath: '${{ env.modulePath }}/deploy.bicep'
-          parameterFilePath: '${{ env.modulePath }}/parameters/${{ matrix.parameterFilePaths }}'
+          parameterFilePath: '${{ env.modulePath }}/.parameters/${{ matrix.parameterFilePaths }}'
           location: '${{ env.defaultLocation }}'
           resourceGroupName: '${{ env.resourceGroupName }}'
           subscriptionId: '${{ secrets.ARM_SUBSCRIPTION_ID }}'

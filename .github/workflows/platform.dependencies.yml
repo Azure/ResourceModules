@@ -1,0 +1,75 @@
+name: '.Platform: Dependencies'
+
+on:
+  workflow_dispatch:
+
+  # push:
+  #   branches:
+  #     - main
+  #   paths:
+  #     - '.github/actions/templates/**'
+  #     - '.github/workflows/platform.dependencies.yml'
+  #     - 'dependencies/**'
+
+env:
+  defaultLocation: 'WestEurope'
+  resourceGroupName: 'validation-rg'
+  AZURE_CREDENTIALS: ${{ secrets.AZURE_CREDENTIALS }}
+  ARM_SUBSCRIPTION_ID: ${{ secrets.ARM_SUBSCRIPTION_ID }}
+  ARM_MGMTGROUP_ID: ${{ secrets.ARM_MGMTGROUP_ID }}
+
+jobs:
+  job_deploy_rg:
+    runs-on: ubuntu-20.04
+    name: 'Deploy resource group'
+    env:
+      moduleName: resourceGroups
+      namespace: 'Microsoft.Resources\resourceGroups'
+    strategy:
+      fail-fast: false
+      matrix:
+        parameterFilePaths:
+          ['artifacts.parameters.json', 'validation.parameters.json']
+    steps:
+      - name: 'Checkout'
+        uses: actions/checkout@v2
+        with:
+          fetch-depth: 0
+      - name: 'Deploy module'
+        uses: ./.github/actions/templates/deployModule
+        with:
+          moduleName: '${{ env.moduleName }}'
+          templateFilePath: 'arm/${{ env.namespace }}/deploy.bicep'
+          parameterFilePath: 'dependencies/${{ env.namespace }}/.parameters/${{ matrix.parameterFilePaths }}'
+          location: '${{ env.defaultLocation }}'
+          resourceGroupName: '${{ env.resourceGroupName }}'
+          subscriptionId: '${{ secrets.ARM_SUBSCRIPTION_ID }}'
+          managementGroupId: '${{ secrets.ARM_MGMTGROUP_ID }}'
+
+  job_deploy_msi:
+    runs-on: ubuntu-20.04
+    name: 'Deploy user assigned identity'
+    env:
+      moduleName: userAssignedIdentities
+      namespace: 'Microsoft.ManagedIdentity\userAssignedIdentities'
+    needs:
+      - job_deploy_rg
+    strategy:
+      fail-fast: false
+      matrix:
+        parameterFilePaths: ['parameters.json']
+    steps:
+      - name: 'Checkout'
+        uses: actions/checkout@v2
+        with:
+          fetch-depth: 0
+      - name: 'Deploy module'
+        uses: ./.github/actions/templates/deployModule
+        with:
+          moduleName: '${{ env.moduleName }}'
+          templateFilePath: 'arm/${{ env.namespace }}/deploy.bicep'
+          parameterFilePath: 'dependencies/${{ env.namespace }}/.parameters/${{ matrix.parameterFilePaths }}'
+          location: '${{ env.defaultLocation }}'
+          resourceGroupName: '${{ env.resourceGroupName }}'
+          subscriptionId: '${{ secrets.ARM_SUBSCRIPTION_ID }}'
+          managementGroupId: '${{ secrets.ARM_MGMTGROUP_ID }}'

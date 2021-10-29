@@ -28,12 +28,12 @@ Optional. Id of the subscription to deploy into. Mandatory if deploying into a s
 Optional. Name of the management group to deploy into. Mandatory if deploying into a management group (management group level)
 
 .EXAMPLE
-Test-TemplateWithParameterFile templateFilePath 'ARM/KeyVault/deploy.json' -parameterFilePath 'ARM/KeyVault/Parameters/parameters.json' -location 'WestEurope' -resourceGroupName 'aLegendaryRg'
+Test-TemplateWithParameterFile templateFilePath 'ARM/KeyVault/deploy.json' -parameterFilePath 'ARM/KeyVault/.parameters/parameters.json' -location 'WestEurope' -resourceGroupName 'aLegendaryRg'
 
 Test the deploy.json of the KeyVault module with the parameter file 'parameters.json' using the resource group 'aLegendaryRg' in location 'WestEurope'
 
 .EXAMPLE
-Test-TemplateWithParameterFile templateFilePath 'ARM/ResourceGroup/deploy.json' -parameterFilePath 'ARM/ResourceGroup/Parameters/parameters.json' -location 'WestEurope'
+Test-TemplateWithParameterFile templateFilePath 'ARM/ResourceGroup/deploy.json' -parameterFilePath 'ARM/ResourceGroup/.parameters/parameters.json' -location 'WestEurope'
 
 Test the deploy.json of the ResourceGroup module with the parameter file 'parameters.json' in location 'WestEurope'
 #>
@@ -61,7 +61,7 @@ function Test-TemplateWithParameterFile {
     )
 
     begin {
-        Write-Debug ("{0} entered" -f $MyInvocation.MyCommand)
+        Write-Debug ('{0} entered' -f $MyInvocation.MyCommand)
     }
 
     process {
@@ -80,22 +80,20 @@ function Test-TemplateWithParameterFile {
         if ((Split-Path $templateFilePath -Extension) -eq '.bicep') {
             # Bicep
             $bicepContent = Get-Content $templateFilePath
-            $bicepScope = $bicepContent | Where-Object { $_ -like "*targetscope =*" } 
+            $bicepScope = $bicepContent | Where-Object { $_ -like '*targetscope =*' }
             if (-not $bicepScope) {
-                $deploymentScope = "resourceGroup" 
-            }
-            else {
+                $deploymentScope = 'resourceGroup'
+            } else {
                 $deploymentScope = $bicepScope.ToLower().Replace('targetscope = ', '').Replace("'", '').Trim()
-            } 
-        }
-        else {
+            }
+        } else {
             # ARM
             $armSchema = (ConvertFrom-Json (Get-Content -Raw -Path $templateFilePath)).'$schema'
             switch -regex ($armSchema) {
-                '\/deploymentTemplate.json#$' { $deploymentScope = "resourceGroup" }
-                '\/subscriptionDeploymentTemplate.json#$' { $deploymentScope = "subscription" }
-                '\/managementGroupDeploymentTemplate.json#$' { $deploymentScope = "managementGroup" }
-                '\/tenantDeploymentTemplate.json#$' { $deploymentScope = "tenant" }
+                '\/deploymentTemplate.json#$' { $deploymentScope = 'resourceGroup' }
+                '\/subscriptionDeploymentTemplate.json#$' { $deploymentScope = 'subscription' }
+                '\/managementGroupDeploymentTemplate.json#$' { $deploymentScope = 'managementGroup' }
+                '\/tenantDeploymentTemplate.json#$' { $deploymentScope = 'tenant' }
                 Default { throw "[$armSchema] is a non-supported ARM template schema" }
             }
         }
@@ -106,11 +104,11 @@ function Test-TemplateWithParameterFile {
         switch ($deploymentScope) {
             'resourceGroup' {
                 if (-not (Get-AzResourceGroup -Name $resourceGroupName -ErrorAction 'SilentlyContinue')) {
-                    if ($PSCmdlet.ShouldProcess("Resource group [$resourceGroupName] in location [$location]", "Create")) {
+                    if ($PSCmdlet.ShouldProcess("Resource group [$resourceGroupName] in location [$location]", 'Create')) {
                         New-AzResourceGroup -Name $resourceGroupName -Location $location
                     }
                 }
-                if ($PSCmdlet.ShouldProcess("Resource group level deployment", "Test")) {
+                if ($PSCmdlet.ShouldProcess('Resource group level deployment', 'Test')) {
                     $res = Test-AzResourceGroupDeployment @DeploymentInputs -ResourceGroupName $resourceGroupName
                 }
                 break
@@ -122,20 +120,20 @@ function Test-TemplateWithParameterFile {
                         $Context | Set-AzContext
                     }
                 }
-                if ($PSCmdlet.ShouldProcess("Subscription level deployment", "Test")) {
+                if ($PSCmdlet.ShouldProcess('Subscription level deployment', 'Test')) {
                     $res = Test-AzSubscriptionDeployment @DeploymentInputs -Location $Location
                 }
                 break
             }
             'managementGroup' {
-                if ($PSCmdlet.ShouldProcess("Management group level deployment", "Test")) {
+                if ($PSCmdlet.ShouldProcess('Management group level deployment', 'Test')) {
                     $res = Test-AzManagementGroupDeployment @DeploymentInputs -Location $Location -ManagementGroupId $ManagementGroupId
                 }
                 break
             }
             'tenant' {
                 Write-Verbose 'Handling tenant level validation'
-                if ($PSCmdlet.ShouldProcess("Tenant level deployment", "Test")) {
+                if ($PSCmdlet.ShouldProcess('Tenant level deployment', 'Test')) {
                     $res = Test-AzTenantDeployment @DeploymentInputs -Location $location
                 }
                 break
@@ -146,11 +144,11 @@ function Test-TemplateWithParameterFile {
         }
         if ($ValidationErrors) {
             Write-Warning ($res | ConvertTo-Json | Out-String)
-            Write-Error "Template is not valid."
+            Write-Error 'Template is not valid.'
         }
     }
 
     end {
-        Write-Debug ("{0} exited" -f $MyInvocation.MyCommand)
+        Write-Debug ('{0} exited' -f $MyInvocation.MyCommand)
     }
 }

@@ -2,7 +2,6 @@
 
 This module deploys Recovery Service Vault, with resource lock.
 
-
 ## Resource types
 
 | Resource Type | Api Version |
