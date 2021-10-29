@@ -24,6 +24,52 @@ function Get-WorkflowDefaultInput {
         Write-Debug ('{0} entered' -f $MyInvocation.MyCommand)
 
         #region Helper Functions
+
+        <#
+        .SYNOPSIS
+        Retrieve indentation of a line.
+
+        .PARAMETER Line
+        Mandatory. The line to analyse for indentation.
+
+        .EXAMPLE
+        $Line = '    Test'
+        Get-LineIndentation -Line $Line
+        4
+
+        Retrieve indentation of a line.
+        #>
+        function Get-LineIndentation {
+            [CmdletBinding()]
+            param (
+                [Parameter()]
+                [string] $Line
+            )
+            begin {}
+            process {
+                $indentation = 0
+                for ($i = 0; $i -lt $Line.Length; $i++) {
+                    $Char = $Line[$i]
+                    switch -regex ($Char) {
+                        '`t' {
+                            Write-Verbose "[$i] $Char is tab"
+                            $indentation += 2
+                        }
+                        ' ' {
+                            Write-Verbose "[$i] $Char is space"
+                            $indentation += 1
+                        }
+                        default {
+                            Write-Verbose "[$i] $Char is character, break"
+                            return $indentation
+                        }
+                    }
+                }
+                return $indentation
+            }
+            end {}
+        }
+
         <#
         .SYNOPSIS
         Retrieve default value for a specified input in a workflow.
@@ -33,9 +79,6 @@ function Get-WorkflowDefaultInput {
 
         .PARAMETER Content
         Mandatory. The content of the GitHub workflow file.
-
-        .PARAMETER Lines
-        Mandatory. The number of lines to check after finding the specified input.
 
         .EXAMPLE
         $content = Get-Content -Path .\workflow.yml
@@ -49,17 +92,22 @@ function Get-WorkflowDefaultInput {
                 [Parameter(Mandatory)]
                 [string] $InputName,
                 [Parameter(Mandatory)]
-                [string[]] $Content,
-                [Parameter()]
-                [int] $Lines = 3
+                [string[]] $Content
             )
             $Content = $Content.Split([Environment]::NewLine)
-            $RowIndex = ((0..($Content.Count - 1)) | Where-Object { $Content[$_] -match "$InputName" })[0]
-            Write-Verbose "Found $InputName on line: $RowIndex"
-            for ($i = $RowIndex; $i -le ($RowIndex+$Lines); $i++) {
+            $SectionIndex = ((0..($Content.Count - 1)) | Where-Object { $Content[$_] -match "$InputName" })[0]
+            $SectionIndentation = Get-LineIndentation -Line $Content[$SectionIndex]
+            Write-Verbose "Found $InputName on line: $SectionIndex - [$SectionIndentation]"
+            $LineIndentation = $SectionIndentation
+            for ($i = $SectionIndex + 1; $true; $i++) {
+                $LineIndentation = Get-LineIndentation -Line $Content[$i]
+                Write-Verbose "Processing line: $i - [$LineIndentation] - $($Content[$i])"
+                if ($LineIndentation -le $SectionIndentation) {
+                    break
+                }
                 if ($Content[$i] -match 'default:') {
                     Write-Verbose "Found 'default:' on line: $i"
-                    $defaultValue = $Content[$i].trim().Split('#')[0].Split(':')[-1].Replace("'",'').Trim()
+                    $defaultValue = $Content[$i].trim().Split('#')[0].Split(':')[-1].Replace("'", '').Trim()
                 }
             }
             Write-Verbose "Default input value for $InputName`: $defaultValue"
@@ -72,9 +120,9 @@ function Get-WorkflowDefaultInput {
         $workflowContent = Get-Content -Path $workflowPath -Raw
 
         $workflowParameters = @{
-            removeDeployment = Get-DefaultValue -InputName 'removeDeployment' -Content $workflowContent
-            versioningOption = Get-DefaultValue -InputName 'versioningOption' -Content $workflowContent
-            customVersion    = Get-DefaultValue -InputName 'customVersion' -Content $workflowContent
+            removeDeployment = Get-DefaultValue -InputName 'removeDeployment' -Content $workflowContent -Verbose
+            versioningOption = Get-DefaultValue -InputName 'versioningOption' -Content $workflowContent -Verbose
+            customVersion    = Get-DefaultValue -InputName 'customVersion' -Content $workflowContent -Verbose
         }
 
         Write-Verbose 'Get workflow default input complete'
