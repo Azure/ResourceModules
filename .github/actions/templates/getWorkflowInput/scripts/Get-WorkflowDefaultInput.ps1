@@ -72,9 +72,9 @@ function Get-WorkflowDefaultInput {
         $workflowContent = Get-Content -Path $workflowPath -Raw
 
         $workflowParameters = @{
-            removeDeployment = Get-DefaultValue -InputName 'removeDeployment' -Content $workflowContent -Verbose
-            versioningOption = Get-DefaultValue -InputName 'versioningOption' -Content $workflowContent -Verbose
-            customVersion    = Get-DefaultValue -InputName 'customVersion' -Content $workflowContent -Verbose
+            removeDeployment = Get-DefaultValue -InputName 'removeDeployment' -Content $workflowContent
+            versioningOption = Get-DefaultValue -InputName 'versioningOption' -Content $workflowContent
+            customVersion    = Get-DefaultValue -InputName 'customVersion' -Content $workflowContent
         }
 
         Write-Verbose 'Get workflow default input complete'
