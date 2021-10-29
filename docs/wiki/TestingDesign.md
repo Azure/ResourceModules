@@ -4,7 +4,7 @@ This section gives you an overview of the design principals the testing follows.
 
 ---
 
-## _Navigation_
+### _Navigation_
 
 - [Approach](#approach)
 - [Static code validation](#static-code-validation)
