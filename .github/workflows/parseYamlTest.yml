@@ -21,7 +21,7 @@ jobs:
         shell: pwsh
         run: |
           Get-PSRepository
-          Install-Module -Name powershell-yaml -Repository PSGallery -SkipPublisherCheck
+          Install-Module -Name powershell-yaml -Repository PSGallery -Force
           Import-Module -Name powershell-yaml -verbose
           $Yaml = Get-Content -Path "$ENV:GITHUB_WORKSPACE\.github\workflows\ms.analysisservices.servers.yml" -Raw
           $Obj = ConvertFrom-Yaml -Yaml $Yaml
