@@ -349,7 +349,7 @@ resource managedCluster 'Microsoft.ContainerService/managedClusters@2021-07-01' 
   }
 }
 
-resource aksClusterName_nodePoolName 'Microsoft.ContainerService/managedClusters/agentPools@2021-05-01' = [for (additionalAgentPool, index) in additionalAgentPools: {
+resource aksClusterName_nodePoolName 'Microsoft.ContainerService/managedClusters/agentPools@2021-05-01' = [for additionalAgentPool in additionalAgentPools: {
   name: additionalAgentPool.name
   properties: additionalAgentPool.properties
   parent: managedCluster
