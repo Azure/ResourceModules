@@ -3,7 +3,7 @@ name: 'ParseYamlTest'
 on:
   push:
     paths:
-      - '.github\workflows\parseYamlTest.yml'
+      - '.github/workflows/parseYamlTest.yml'
 
 
 jobs:
