@@ -3,7 +3,7 @@
     "contentVersion": "1.0.0.0",
     "parameters": {
         "dataFactoryName": {
-            "value": "sxxazdfweux044"
+            "value": "sxx-adf-001"
         },
         "publicNetworkAccess": {
             "value": true
@@ -20,6 +20,12 @@
                     ]
                 }
             ]
+        },
+        "workspaceId": {
+            "value": "/subscriptions/<<subscriptionId>>/resourcegroups/validation-rg/providers/microsoft.operationalinsights/workspaces/adp-sxx-az-la-weu-x-001"
+        },
+        "diagnosticStorageAccountId": {
+            "value": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Storage/storageAccounts/adpsxxazsaweux001"
         }
     }
 }
