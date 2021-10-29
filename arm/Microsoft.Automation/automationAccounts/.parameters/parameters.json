@@ -1,0 +1,44 @@
+{
+    "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "automationAccountName": {
+            "value": "sxx-wd-aut-weu-x-001"
+        },
+        "schedules": {
+            "value": [
+                {
+                    "scheduleName": "ScalingRunbook_Schedule",
+                    "startTime": "",
+                    "expiryTime": "9999-12-31T23:59:00+00:00",
+                    "interval": 15,
+                    "frequency": "Minute",
+                    "timeZone": "Europe/Berlin",
+                    "advancedSchedule": ""
+                }
+            ]
+        },
+        "privateEndpoints": {
+            "value": [
+                {
+                    "subnetResourceId": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/virtualNetworks/adp-sxx-az-vnet-weu-x-001/subnets/sxx-az-subnet-weu-x-005-privateEndpoints",
+                    "service": "Webhook"
+                },
+                {
+                    "subnetResourceId": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/virtualNetworks/adp-sxx-az-vnet-weu-x-001/subnets/sxx-az-subnet-weu-x-005-privateEndpoints",
+                    "service": "DSCAndHybridWorker"
+                }
+            ]
+        },
+        "roleAssignments": {
+            "value": [
+                {
+                    "roleDefinitionIdOrName": "Reader",
+                    "principalIds": [
+                        "5545f7a0-51f4-46af-b3b4-baecf5176a56"
+                    ]
+                }
+            ]
+        }
+    }
+}

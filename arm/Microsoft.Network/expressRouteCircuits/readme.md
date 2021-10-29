@@ -2,7 +2,6 @@
 
 This template deploys a ExrepressRoute Circuit.
 
-
 ## Resource types
 
 | Resource Type | Api Version |

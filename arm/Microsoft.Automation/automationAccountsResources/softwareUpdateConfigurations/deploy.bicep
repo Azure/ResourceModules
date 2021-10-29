@@ -200,7 +200,7 @@ resource softwareUpdateConfiguration 'Microsoft.Automation/automationAccounts/so
         excludedPackageNameMasks: excludeUpdates
         includedPackageNameMasks: includeUpdates
         includedPackageClassifications: updateClassifications_var
-        rebootSetting:rebootSetting
+        rebootSetting: rebootSetting
       } : json('null'))
       windows: ((operatingSystem == 'Windows') ? {
         excludedKbNumbers: excludeUpdates

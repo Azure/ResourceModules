@@ -2,7 +2,6 @@
 
 This template deploys Virtual Network Gateway Connection.
 
-
 ## Resource types
 
 | Resource Type | Api Version |

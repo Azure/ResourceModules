@@ -2,7 +2,6 @@
 
 This module deploys AVD Host Pools, with resource lock and diagnostics configuration.
 
-
 ## Resource types
 
 | Resource Type | Api Version |

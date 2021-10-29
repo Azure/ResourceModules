@@ -1,4 +1,4 @@
-# ![AzureIcon] Resource Modules
+# ![AzureIcon] Common Azure Resource Modules Library
 
 ## Description
 
@@ -27,6 +27,7 @@ This repository includes a collection of advanced and curated Modules consisting
 
 | Name | Bicep | Status |
 | - | - | - |
+| [](https://github.com/Azure/ResourceModules/tree/main/arm/Microsoft.ServiceFabric/clusters) | :heavy_check_mark: | [!['Service Fabric: Clusters'](https://github.com/Azure/ResourceModules/actions/workflows/ms.servicefabric.clusters.yml/badge.svg)](https://github.com/Azure/ResourceModules/actions/workflows/ms.servicefabric.clusters.yml) |
 | [Action Group](https://github.com/Azure/ResourceModules/tree/main/arm/Microsoft.Insights/actionGroups) | :heavy_check_mark: | [!['Insights: Actiongroups'](https://github.com/Azure/ResourceModules/actions/workflows/ms.insights.actiongroups.yml/badge.svg)](https://github.com/Azure/ResourceModules/actions/workflows/ms.insights.actiongroups.yml) |
 | [Activity Log Alert](https://github.com/Azure/ResourceModules/tree/main/arm/Microsoft.Insights/activityLogAlerts) | :heavy_check_mark: | [!['Insights: Activitylogalerts'](https://github.com/Azure/ResourceModules/actions/workflows/ms.insights.activitylogalerts.yml/badge.svg)](https://github.com/Azure/ResourceModules/actions/workflows/ms.insights.activitylogalerts.yml) |
 | [ActivityLog](https://github.com/Azure/ResourceModules/tree/main/arm/Microsoft.Insights/diagnosticSettings) | :heavy_check_mark: | [!['Insights: Diagnosticsettings'](https://github.com/Azure/ResourceModules/actions/workflows/ms.insights.diagnosticsettings.yml/badge.svg)](https://github.com/Azure/ResourceModules/actions/workflows/ms.insights.diagnosticsettings.yml) |
@@ -135,7 +136,7 @@ Contributors names and contact info
 
 ## Contributing
 
-This project welcomes contributions and suggestions.  Most contributions require you to agree to a Contributor License Agreement (CLA) declaring that you have the right to, and actually do, grant us the rights to use your contribution. For details, visit https://cla.opensource.microsoft.com.
+This project welcomes contributions and suggestions.  Most contributions require you to agree to a Contributor License Agreement (CLA) declaring that you have the right to, and actually do, grant us the rights to use your contribution. For details, visit <https://cla.opensource.microsoft.com>.
 
 When you submit a pull request, a CLA bot will automatically determine whether you need to provide a CLA and decorate the PR appropriately (e.g., status check, comment). Simply follow the instructions provided by the bot. You will only need to do this once across all repos using our CLA.
 

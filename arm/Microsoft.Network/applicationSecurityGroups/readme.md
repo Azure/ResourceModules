@@ -2,7 +2,6 @@
 
 This module deploys Application Security Groups.
 
-
 ## Resource Types
 
 | Resource Type | Api Version |

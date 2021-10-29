@@ -57,22 +57,22 @@ function Publish-ModuleToTemplateSpec {
 
         [Parameter(Mandatory = $false)]
         [string] $customVersion = '0.0.1',
-        
+
         [Parameter(Mandatory = $false)]
         [ValidateSet('Major', 'Minor', 'Patch')]
         [string] $versioningOption = 'Patch'
     )
-    
+
     begin {
-        Write-Debug ("{0} entered" -f $MyInvocation.MyCommand) 
+        Write-Debug ('{0} entered' -f $MyInvocation.MyCommand)
     }
-    
+
     process {
         #############################
         ##    EVALUATE RESOURCES   ##
         #############################
         if (-not (Get-AzResourceGroup -Name $componentTemplateSpecRGName -ErrorAction 'SilentlyContinue')) {
-            if ($PSCmdlet.ShouldProcess("Resource group [$componentTemplateSpecRGName] to location [$componentTemplateSpecRGLocation]", "Deploy")) {
+            if ($PSCmdlet.ShouldProcess("Resource group [$componentTemplateSpecRGName] to location [$componentTemplateSpecRGLocation]", 'Deploy')) {
                 New-AzResourceGroup -Name $componentTemplateSpecRGName -Location $componentTemplateSpecRGLocation
             }
         }
@@ -80,29 +80,27 @@ function Publish-ModuleToTemplateSpec {
         #################################
         ##    FIND AVAILABLE VERSION   ##
         #################################
-        if ($PSCmdlet.ShouldProcess("Latest available version in template spec [$componentTemplateSpecName]", "Fetch")) {
+        if ($PSCmdlet.ShouldProcess("Latest available version in template spec [$componentTemplateSpecName]", 'Fetch')) {
             $res = Get-AzTemplateSpec -ResourceGroupName $componentTemplateSpecRGName -Name $componentTemplateSpecName -ErrorAction 'SilentlyContinue'
         }
         if (-not $res) {
             Write-Verbose "No version detected in template spec [$componentTemplateSpecName]. Creating new."
             $latestVersion = New-Object System.Version('0.0.0')
-        }
-        else {
+        } else {
             $uniqueVersions = $res.Versions.Name | Get-Unique | Where-Object { $_ -like '*.*.*' } # remove Where-object for working example
             $latestVersion = (($uniqueVersions -as [Version[]]) | Measure-Object -Maximum).Maximum
             Write-Verbose "Published versions detected in template spec [$componentTemplateSpecName]. Fetched latest [$latestVersion]."
-        }    
+        }
 
         ############################
         ##    EVALUATE VERSION    ##
         ############################
 
         if (-not ([String]::IsNullOrEmpty($customVersion)) -and ((New-Object System.Version($customVersion)) -gt (New-Object System.Version($latestVersion)))) {
-            Write-Verbose "A custom version [$customVersion] was specified in the pipeline script and is higher than the current latest. Using it."  
+            Write-Verbose "A custom version [$customVersion] was specified in the pipeline script and is higher than the current latest. Using it."
             $newVersion = $customVersion
-        }
-        else {
-            Write-Verbose "No custom version set. Using default versioning."
+        } else {
+            Write-Verbose 'No custom version set. Using default versioning.'
 
             switch ($versioningOption) {
                 'major' {
@@ -119,7 +117,7 @@ function Publish-ModuleToTemplateSpec {
                     Write-Verbose 'Apply version update on "patch" level'
                     $newVersion = (New-Object -TypeName System.Version -ArgumentList $latestVersion.Major, $latestVersion.Minor, ($latestVersion.Build + 1)).ToString()
                     break
-                }              
+                }
                 default {
                     throw "Unsupported version option: $versioningOption."
                 }
@@ -128,27 +126,27 @@ function Publish-ModuleToTemplateSpec {
 
         $newVersionObject = New-Object System.Version($newVersion)
         if ($newVersionObject -lt $latestVersion -or $newVersionObject -eq $latestVersion) {
-            throw ("The provided custom version [{0}] must be higher than the current latest version [{1}] published in the template spec [{2}]" -f $newVersionObject.ToString(), $latestVersion.ToString(), $componentTemplateSpecName)
+            throw ('The provided custom version [{0}] must be higher than the current latest version [{1}] published in the template spec [{2}]' -f $newVersionObject.ToString(), $latestVersion.ToString(), $componentTemplateSpecName)
         }
 
         ################################
         ##    Create template spec    ##
         ################################
-        if ($PSCmdlet.ShouldProcess("Template spec [$componentTemplateSpecName] version [$newVersion]", "Publish")) {
+        if ($PSCmdlet.ShouldProcess("Template spec [$componentTemplateSpecName] version [$newVersion]", 'Publish')) {
             $templateSpecInputObject = @{
-                ResourceGroupName = $componentTemplateSpecRGName 
-                Name              = $componentTemplateSpecName 
-                Version           = $newVersion 
-                Description       = $componentTemplateSpecDescription 
-                Location          = $componentTemplateSpecRGLocation 
+                ResourceGroupName = $componentTemplateSpecRGName
+                Name              = $componentTemplateSpecName
+                Version           = $newVersion
+                Description       = $componentTemplateSpecDescription
+                Location          = $componentTemplateSpecRGLocation
                 TemplateFile      = $templateFilePath
             }
             New-AzTemplateSpec @templateSpecInputObject
         }
-        Write-Verbose "Publish complete"
+        Write-Verbose 'Publish complete'
     }
-    
+
     end {
-        Write-Debug ("{0} exited" -f $MyInvocation.MyCommand) 
+        Write-Debug ('{0} exited' -f $MyInvocation.MyCommand)
     }
 }

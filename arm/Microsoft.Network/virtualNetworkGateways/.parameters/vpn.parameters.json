@@ -1,0 +1,39 @@
+{
+    "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "virtualNetworkGatewayName": {
+            "value": "sxx-az-vnet-vpn-gw-weu-p-001"
+        },
+        "domainNameLabel": {
+            "value": [
+                "sxx-az-vnet-vpn-gw-weu-p-001-pip-99"
+            ]
+        },
+        "virtualNetworkGatewayType": {
+            "value": "Vpn"
+        },
+        "virtualNetworkGatewaySku": {
+            "value": "VpnGw1AZ"
+        },
+        "vpnType": {
+            "value": "RouteBased"
+        },
+        "activeActive": {
+            "value": false
+        },
+        "vNetId": {
+            "value": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/virtualNetworks/sxx-az-vnet-weu-x-004"
+        },
+        "roleAssignments": {
+            "value": [
+                {
+                    "roleDefinitionIdOrName": "Reader",
+                    "principalIds": [
+                        "5545f7a0-51f4-46af-b3b4-baecf5176a56"
+                    ]
+                }
+            ]
+        }
+    }
+}

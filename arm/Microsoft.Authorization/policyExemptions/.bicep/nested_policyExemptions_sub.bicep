@@ -28,5 +28,5 @@ resource policyExemption 'Microsoft.Authorization/policyExemptions@2020-07-01-pr
 }
 
 output policyExemptionName string = policyExemption.name
-output policyExemptionId string =   subscriptionResourceId(subscriptionId,'Microsoft.Authorization/policyExemptions',policyExemption.name)
+output policyExemptionId string = subscriptionResourceId(subscriptionId, 'Microsoft.Authorization/policyExemptions', policyExemption.name)
 output policyExemptionScope string = subscription().id
