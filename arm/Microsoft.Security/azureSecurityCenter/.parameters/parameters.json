@@ -10,9 +10,9 @@
         },
         "securityContactProperties": {
             "value": {
-                "email": "test@contoso.com",
+                "email": "foo@contoso.com",
                 "phone": "+12345678",
-                "alertNotifications": "On",
+                "alertNotifications": "Off",
                 "alertsToAdmins": "Off"
             }
         }
