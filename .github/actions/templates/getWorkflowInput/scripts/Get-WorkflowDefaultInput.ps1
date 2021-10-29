@@ -1,5 +1,48 @@
 <#
 .SYNOPSIS
+Retrieve default value for a specified input in a workflow.
+
+.PARAMETER InputName
+Mandatory. The name of the input to get the default value for.
+
+.PARAMETER Content
+Mandatory. The content of the GitHub workflow file.
+
+.PARAMETER Lines
+Mandatory. The number of lines to check after finding the specified input.
+
+.EXAMPLE
+$content = Get-Content -Path .\workflow.yml
+Get-DefaultValue -Text 'removeDeployment' -Content $Content
+
+Retrieve input default values for the 'removeDeployment' in the workflow.yml file.
+#>
+function Get-DefaultValue {
+    [CmdletBinding()]
+    param (
+        [Parameter(Mandatory)]
+        [string] $InputName,
+        [Parameter(Mandatory)]
+        [string[]] $Content,
+        [Parameter()]
+        [int] $Lines = 3
+    )
+    $Content = $Content.Split([Environment]::NewLine)
+    $RowIndex = ((0..($Content.Count - 1)) | Where-Object { $Content[$_] -match "$InputName" })[0]
+    Write-Verbose "Found $InputName on line: $RowIndex"
+    for ($i = $RowIndex; $i -le ($RowIndex+$Lines); $i++) {
+        if ($Content[$i] -match 'default:') {
+            Write-Verbose "Found 'default:' on line: $i"
+            $defaultValue = $Content[$i].trim().Split('#')[0].Split(':')[-1].Replace("'",'').Trim()
+        }
+    }
+    Write-Verbose "Default input value for $InputName`: $defaultValue"
+    return $defaultValue
+}
+
+
+<#
+.SYNOPSIS
 Retrieve input parameter default values for a specified workflow.
 
 .DESCRIPTION
@@ -25,31 +68,15 @@ function Get-WorkflowDefaultInput {
     }
 
     process {
-        $content = Get-Content -Path $workflowPath
+        $workflowContent = Get-Content -Path $workflowPath -Raw
 
-        # Get 'removeDeployment' default input value
-        $removeDeploymentRowIndex = ((0..($content.Count - 1)) | Where-Object { $content[$_] -like '*removeDeployment:*' })[0]
-        $removeDeployment = $content[$removeDeploymentRowIndex + 3].trim().Split('#')[0] -match 'true'
-        $removeDeployment = $obj.On.workflow_dispatch.inputs.removeDeployment.default
-        Write-Verbose "Default input value for removeDeployment: $removeDeployment"
+        $workflowParameters = @{
+            removeDeployment = Get-DefaultValue -InputName 'removeDeployment' -Content $workflowContent -Verbose
+            versioningOption = Get-DefaultValue -InputName 'versioningOption' -Content $workflowContent -Verbose
+            customVersion    = Get-DefaultValue -InputName 'customVersion' -Content $workflowContent -Verbose
+        }
+        $workflowParameters
 
-        # Get 'versioningOption' default input value
-        $versioningOptionRowIndex = ((0..($content.Count - 1)) | Where-Object { $content[$_] -like '*versioningOption:*' })[0]
-        $versioningOption = $content[$versioningOptionRowIndex + 3].trim().Split('#')[0] -match 'true'
-        $versioningOption = $obj.On.workflow_dispatch.inputs.versioningOption.default
-        Write-Verbose "Default input value for versioningOption: $versioningOption"
-
-        # Get 'customVersion' default input value
-        $versioningOptionRowIndex = ((0..($content.Count - 1)) | Where-Object { $content[$_] -like '*versioningOption:*' })[0]
-        $versioningOption = $content[$versioningOptionRowIndex + 3].trim().Split('#')[0] -match 'true'
-        $customVersion = $obj.On.workflow_dispatch.inputs.customVersion.default
-        Write-Verbose "Default input value for customVersion: $customVersion"
-
-        # Define hashtable to contain workflow parameters
-        $workflowParameters = @{}
-        $workflowParameters.Add('removeDeployment', $removeDeployment)
-        $workflowParameters.Add('versioningOption', $versioningOption)
-        $workflowParameters.Add('customVersion', $customVersion)
         Write-Verbose 'Get workflow default input complete'
 
         # Return hashtable
