@@ -1,0 +1,24 @@
+name: 'ParseYamlTest'
+
+on: [push]
+
+jobs:
+  test:
+    name: parse
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v2
+        with:
+          # Full git history is needed to get a proper list of changed files within `super-linter`
+          fetch-depth: 0
+
+      - name: 'Analyze yaml'
+        shell: pwsh
+        run: |
+          Install-Module -Name powershell-yaml #Unvetted people
+          $Yaml = Get-Content -Path "$ENV:GITHUB_WORKSPACE\.github\workflows\ms.analysisservices.servers.yml" -Raw
+          $Obj = ConvertFrom-Yaml -Yaml $Yaml
+          $Obj
+          Write-Output "Obj.On.workflow_dispatch.inputs.removeDeployment.default is: $($Obj.On.workflow_dispatch.inputs.removeDeployment.default)"
+
