@@ -100,7 +100,7 @@ function Get-WorkflowDefaultInput {
                 if ($LineIndentation -le $SectionIndentation) {
                     break
                 }
-                if ($LineIndentation -gt $SectionIndentation) {
+                if ($LineIndentation -gt $SectionIndentation + 2) {
                     continue
                 }
                 if ($Content[$i] -match 'default:') {
