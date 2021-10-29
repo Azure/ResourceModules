@@ -1,6 +1,10 @@
 name: 'ParseYamlTest'
 
-on: [push]
+on:
+  push:
+    paths:
+      - '.github\workflows\parseYamlTest.yml'
+
 
 jobs:
   test:
@@ -17,11 +21,9 @@ jobs:
         shell: pwsh
         run: |
           Get-PSRepository
-          Set-PSRepository -Name PSGallery -InstallationPolicy Trusted
           Install-Module -Name powershell-yaml -Repository PSGallery
           Import-Module -Name powershell-yaml -verbose
           $Yaml = Get-Content -Path "$ENV:GITHUB_WORKSPACE\.github\workflows\ms.analysisservices.servers.yml" -Raw
           $Obj = ConvertFrom-Yaml -Yaml $Yaml
           $Obj
           Write-Output "Obj.On.workflow_dispatch.inputs.removeDeployment.default is: $($Obj.On.workflow_dispatch.inputs.removeDeployment.default)"
-
