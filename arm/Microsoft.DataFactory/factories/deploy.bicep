@@ -28,17 +28,6 @@ param gitCollaborationBranch string = 'main'
 @description('Optional. The root folder path name. Default is \'/\'.')
 param gitRootFolder string = '/'
 
-@description('Optional. Specifies the number of days that logs will be kept for; a value of 0 will retain data indefinitely.')
-@minValue(0)
-@maxValue(365)
-param diagnosticLogsRetentionInDays int = 365
-
-@description('Optional. Resource identifier of the Diagnostic Storage Account.')
-param diagnosticStorageAccountId string = ''
-
-@description('Optional. Resource identifier of Log Analytics.')
-param workspaceId string = ''
-
 @allowed([
   'CanNotDelete'
   'NotSpecified'
@@ -55,61 +44,6 @@ param tags object = {}
 
 @description('Optional. Customer Usage Attribution id (GUID). This GUID must be previously registered')
 param cuaId string = ''
-
-@description('Optional. The name of logs that will be streamed.')
-@allowed([
-  'ActivityRuns'
-  'PipelineRuns'
-  'TriggerRuns'
-  'SandboxPipelineRuns'
-  'SandboxPipelineRuns'
-  'SSISPackageEventMessages'
-  'SSISPackageExecutableStatistics'
-  'SSISPackageEventMessageContext'
-  'SSISPackageExecutionComponentPhases'
-  'SSISPackageExecutionDataStatistics'
-  'SSISIntegrationRuntimeLogs'
-])
-param logsToEnable array = [
-  'ActivityRuns'
-  'PipelineRuns'
-  'TriggerRuns'
-  'SandboxPipelineRuns'
-  'SandboxPipelineRuns'
-  'SSISPackageEventMessages'
-  'SSISPackageExecutableStatistics'
-  'SSISPackageEventMessageContext'
-  'SSISPackageExecutionComponentPhases'
-  'SSISPackageExecutionDataStatistics'
-  'SSISIntegrationRuntimeLogs'
-]
-
-@description('Optional. The name of metrics that will be streamed.')
-@allowed([
-  'AllMetrics'
-])
-param metricsToEnable array = [
-  'AllMetrics'
-]
-
-var diagnosticsLogs = [for log in logsToEnable: {
-  category: log
-  enabled: true
-  retentionPolicy: {
-    enabled: true
-    days: diagnosticLogsRetentionInDays
-  }
-}]
-
-var diagnosticsMetrics = [for metric in metricsToEnable: {
-  category: metric
-  timeGrain: null
-  enabled: true
-  retentionPolicy: {
-    enabled: true
-    days: diagnosticLogsRetentionInDays
-  }
-}]
 
 var builtInRoleNames = {
   Contributor: '/providers/Microsoft.Authorization/roleDefinitions/b24988ac-6180-42a0-ab88-20f7382dd24c'
@@ -172,19 +106,6 @@ resource dataFactory_integrationRuntime 'Microsoft.DataFactory/factories/integra
     dataFactory_managedVirtualNetwork
   ]
 }
-
-// resource dataFactory_diagnosticSettings 'Microsoft.Insights/diagnosticsettings@2017-05-01-preview' = if ((!empty(diagnosticStorageAccountId)) || (!empty(workspaceId)) || (!empty(eventHubAuthorizationRuleId)) || (!empty(eventHubName))) {
-//   name: '${dataFactoryName}-${diagnosticSettingName}'
-//   properties: {
-//     storageAccountId: (empty(diagnosticStorageAccountId) ? json('null') : diagnosticStorageAccountId)
-//     workspaceId: (empty(workspaceId) ? json('null') : workspaceId)
-//     eventHubAuthorizationRuleId: (empty(eventHubAuthorizationRuleId) ? json('null') : eventHubAuthorizationRuleId)
-//     eventHubName: (empty(eventHubName) ? json('null') : eventHubName)
-//     metrics: ((empty(diagnosticStorageAccountId) && empty(workspaceId) && empty(eventHubAuthorizationRuleId) && empty(eventHubName)) ? json('null') : diagnosticsMetrics)
-//     logs: ((empty(diagnosticStorageAccountId) && empty(workspaceId) && empty(eventHubAuthorizationRuleId) && empty(eventHubName)) ? json('null') : diagnosticsLogs)
-//   }
-//   scope: dataFactory
-// }
 
 resource dataFactory_lock 'Microsoft.Authorization/locks@2016-09-01' = if (lock != 'NotSpecified') {
   name: '${dataFactory.name}-${lock}-lock'
