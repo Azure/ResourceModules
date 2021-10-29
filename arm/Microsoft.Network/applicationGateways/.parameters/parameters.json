@@ -3,7 +3,7 @@
     "contentVersion": "1.0.0.0",
     "parameters": {
         "applicationGatewayName": {
-            "value": "sxx-az-apgw-weu-x-002"
+            "value": "sxx-az-apgw-weu-x-001"
         },
         "sku": {
             "value": "WAF_v2"
