@@ -105,9 +105,13 @@ function Get-WorkflowDefaultInput {
                 if ($LineIndentation -le $SectionIndentation) {
                     break
                 }
+                if ($LineIndentation -gt $SectionIndentation) {
+                    continue
+                }
                 if ($Content[$i] -match 'default:') {
                     Write-Verbose "Found 'default:' on line: $i"
                     $defaultValue = $Content[$i].trim().Split('#')[0].Split(':')[-1].Replace("'", '').Trim()
+                    break
                 }
             }
             Write-Verbose "Default input value for $InputName`: $defaultValue"
