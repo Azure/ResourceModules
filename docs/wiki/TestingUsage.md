@@ -7,6 +7,7 @@ This section gives you an overview of how to test the bicep modules.
 ### _Navigation_
 
 - [Tool: Testing your Bicep module](#Tool-Testing-your-Bicep-module)
+  - [Handling Resource IDs or Parameters that require or contain Subscription IDs](#handling-resource-ids-or-parameters-that-require-or-contain-subscription-ids)
 
 ---
 

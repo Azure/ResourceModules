@@ -4,7 +4,7 @@ This section will give on an overview on how to get started using this repositor
 
 ---
 
-## _Navigation_
+### _Navigation_
 
 - [General prerequisites](#general-prerequisites)
 - [Where to start](#where-to-start)
