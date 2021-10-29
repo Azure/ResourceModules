@@ -52,15 +52,12 @@ function Get-WorkflowDefaultInput {
                     $Char = $Line[$i]
                     switch -regex ($Char) {
                         '`t' {
-                            Write-Verbose "[$i] $Char is tab"
                             $indentation += 2
                         }
                         ' ' {
-                            Write-Verbose "[$i] $Char is space"
                             $indentation += 1
                         }
                         default {
-                            Write-Verbose "[$i] $Char is character, break"
                             return $indentation
                         }
                     }
@@ -97,11 +94,9 @@ function Get-WorkflowDefaultInput {
             $Content = $Content.Split([Environment]::NewLine)
             $SectionIndex = ((0..($Content.Count - 1)) | Where-Object { $Content[$_] -match "$InputName" })[0]
             $SectionIndentation = Get-LineIndentation -Line $Content[$SectionIndex]
-            Write-Verbose "Found $InputName on line: $SectionIndex - [$SectionIndentation]"
             $LineIndentation = $SectionIndentation
             for ($i = $SectionIndex + 1; $true; $i++) {
                 $LineIndentation = Get-LineIndentation -Line $Content[$i]
-                Write-Verbose "Processing line: $i - [$LineIndentation] - $($Content[$i])"
                 if ($LineIndentation -le $SectionIndentation) {
                     break
                 }
@@ -109,7 +104,6 @@ function Get-WorkflowDefaultInput {
                     continue
                 }
                 if ($Content[$i] -match 'default:') {
-                    Write-Verbose "Found 'default:' on line: $i"
                     $defaultValue = $Content[$i].trim().Split('#')[0].Split(':')[-1].Replace("'", '').Trim()
                     break
                 }
