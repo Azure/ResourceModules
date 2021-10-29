@@ -18,10 +18,6 @@ This module deployes an Immutability Policy for a blob container
 | `immutabilityPeriodSinceCreationInDays` | int | `365` |  | The immutability period for the blobs in the container since the policy creation, in days. |
 | `storageAccountName` | string |  |  | Required. Name of the Storage Account. |
 
-### Parameter Usage: `<ParameterPlaceholder>`
-
-// TODO: Fill in Parameter usage
-
 ## Outputs
 
 | Output Name | Type | Description |
