@@ -33,7 +33,7 @@ Describe 'File/folder tests' -Tag Modules {
             param( [string] $moduleFolderPath )
 
             foreach ($moduleFolderPath in $moduleFolderPaths) {
-                Write-Verbose $moduleFolderPath -Verbose # TODO remove
+                write-Verbose $moduleFolderPath -Verbose # TODO remove
             }
 
             $hasARM = (Test-Path (Join-Path -Path $moduleFolderPath 'deploy.json'))
