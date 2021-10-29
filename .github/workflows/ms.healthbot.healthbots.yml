@@ -33,48 +33,48 @@ env:
   ARM_MGMTGROUP_ID: ${{ secrets.ARM_MGMTGROUP_ID }}
 
 jobs:
-  ############################
-  #   SET INPUT PARAMETERS   #
-  ############################
-  job_set_workflow_param:
-    runs-on: ubuntu-20.04
-    name: 'Set input parameters to output variables'
-    steps:
-      - name: 'Checkout'
-        uses: actions/checkout@v2
-        with:
-          fetch-depth: 0
-      - name: 'Set input parameters'
-        id: get-workflow-param
-        uses: ./.github/actions/templates/getWorkflowInput
-        with:
-          workflowPath: '${{ env.workflowPath}}'
-    outputs:
-      removeDeployment: ${{ steps.get-workflow-param.outputs.removeDeployment }}
-      versioningOption: ${{ steps.get-workflow-param.outputs.versioningOption }}
-      customVersion: ${{ steps.get-workflow-param.outputs.customVersion }}
-
-  ##################
-  #   UNIT TESTS   #
-  ##################
-  # Global tests
-  # ------------
-  # job_tests_module_global:
+  # ############################
+  # #   SET INPUT PARAMETERS   #
+  # ############################
+  # job_set_workflow_param:
   #   runs-on: ubuntu-20.04
-  #   name: 'Run global module tests'
+  #   name: 'Set input parameters to output variables'
   #   steps:
   #     - name: 'Checkout'
   #       uses: actions/checkout@v2
   #       with:
   #         fetch-depth: 0
-  #     - name: 'Test module'
-  #       uses: ./.github/actions/templates/validateModuleGeneral
+  #     - name: 'Set input parameters'
+  #       id: get-workflow-param
+  #       uses: ./.github/actions/templates/getWorkflowInput
   #       with:
-  #         modulePath: '${{ env.modulePath }}'
-  #         moduleName: '${{ env.moduleName}}'
+  #         workflowPath: '${{ env.workflowPath}}'
+  #   outputs:
+  #     removeDeployment: ${{ steps.get-workflow-param.outputs.removeDeployment }}
+  #     versioningOption: ${{ steps.get-workflow-param.outputs.versioningOption }}
+  #     customVersion: ${{ steps.get-workflow-param.outputs.customVersion }}
 
-  # Global API tests
-  # ----------------
+  # ##################
+  # #   UNIT TESTS   #
+  # ##################
+  # # Global tests
+  # # ------------
+  job_tests_module_global:
+    runs-on: ubuntu-20.04
+    name: 'Run global module tests'
+    steps:
+      - name: 'Checkout'
+        uses: actions/checkout@v2
+        with:
+          fetch-depth: 0
+      - name: 'Test module'
+        uses: ./.github/actions/templates/validateModuleGeneral
+        with:
+          modulePath: '${{ env.modulePath }}'
+          moduleName: '${{ env.moduleName}}'
+
+  # # Global API tests
+  # # ----------------
   # job_tests_module_global_api:
   #   runs-on: ubuntu-20.04
   #   name: 'Run global API module tests'
@@ -89,38 +89,38 @@ jobs:
   #         modulePath: '${{ env.modulePath }}'
   #         moduleName: '${{ env.moduleName}}'
 
-  # Validate deployment module tests
-  # --------------------------------
-  job_tests_module_deploy_validate:
-    runs-on: ubuntu-20.04
-    name: 'Run deployment validation module tests'
-    strategy:
-      fail-fast: false
-      matrix:
-        parameterFilePaths: ['parameters.json']
-    steps:
-      - name: 'Checkout'
-        uses: actions/checkout@v2
-        with:
-          fetch-depth: 0
-      - name: Set environment variables
-        uses: deep-mm/set-variables@v1.0
-        with:
-          # Name of variable file
-          variableFileName: 'variables.module' # Don't write .json here
-      - name: 'Test module'
-        uses: ./.github/actions/templates/validateModuleDeploy
-        with:
-          templateFilePath: '${{ env.modulePath }}/deploy.bicep'
-          parameterFilePath: '${{ env.modulePath }}/.parameters/${{ matrix.parameterFilePaths }}'
-          location: '${{ env.defaultLocation }}'
-          resourceGroupName: '${{ env.resourceGroupName }}'
-          subscriptionId: '${{ secrets.ARM_SUBSCRIPTION_ID }}'
-          managementGroupId: '${{ secrets.ARM_MGMTGROUP_ID }}'
+  # # Validate deployment module tests
+  # # --------------------------------
+  # job_tests_module_deploy_validate:
+  #   runs-on: ubuntu-20.04
+  #   name: 'Run deployment validation module tests'
+  #   strategy:
+  #     fail-fast: false
+  #     matrix:
+  #       parameterFilePaths: ['parameters.json']
+  #   steps:
+  #     - name: 'Checkout'
+  #       uses: actions/checkout@v2
+  #       with:
+  #         fetch-depth: 0
+  #     - name: Set environment variables
+  #       uses: deep-mm/set-variables@v1.0
+  #       with:
+  #         # Name of variable file
+  #         variableFileName: 'variables.module' # Don't write .json here
+  #     - name: 'Test module'
+  #       uses: ./.github/actions/templates/validateModuleDeploy
+  #       with:
+  #         templateFilePath: '${{ env.modulePath }}/deploy.bicep'
+  #         parameterFilePath: '${{ env.modulePath }}/.parameters/${{ matrix.parameterFilePaths }}'
+  #         location: '${{ env.defaultLocation }}'
+  #         resourceGroupName: '${{ env.resourceGroupName }}'
+  #         subscriptionId: '${{ secrets.ARM_SUBSCRIPTION_ID }}'
+  #         managementGroupId: '${{ secrets.ARM_MGMTGROUP_ID }}'
 
-  ####################
-  #   DEPLOY TESTS   #
-  ####################
+  # ####################
+  # #   DEPLOY TESTS   #
+  # ####################
   # job_deploy_module:
   #   runs-on: ubuntu-20.04
   #   name: 'Deploy module'
