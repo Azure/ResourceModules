@@ -1,4 +1,4 @@
-name: 'Storage Account'
+name: 'Storage: Storage Account'
 
 on:
   workflow_dispatch:
