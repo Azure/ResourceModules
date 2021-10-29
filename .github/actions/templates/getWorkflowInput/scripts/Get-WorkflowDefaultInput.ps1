@@ -76,7 +76,6 @@ function Get-WorkflowDefaultInput {
             versioningOption = Get-DefaultValue -InputName 'versioningOption' -Content $workflowContent -Verbose
             customVersion    = Get-DefaultValue -InputName 'customVersion' -Content $workflowContent -Verbose
         }
-        $workflowParameters
 
         Write-Verbose 'Get workflow default input complete'
 
