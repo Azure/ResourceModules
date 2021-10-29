@@ -1,6 +1,6 @@
 @maxLength(24)
-@description('Required. Name of the Storage Account.')
-param storageAccountName string = ''
+@description('Optional. Name of the Storage Account.')
+param name string = ''
 
 @description('Optional. Location for all resources.')
 param location string = resourceGroup().location
@@ -62,29 +62,20 @@ param privateEndpoints array = []
 @description('Optional. Networks ACLs, this value contains IPs to whitelist and/or Subnet information.')
 param networkAcls object = {}
 
-@description('Optional. Blob containers to create.')
-param blobContainers array = []
+@description('Optional. Blob service and containers to deploy')
+param blobServices object = {}
 
-@description('Optional. Indicates whether DeleteRetentionPolicy is enabled for the Blob service.')
-param deleteRetentionPolicy bool = true
+@description('Optional. File service and shares to deploy')
+param fileServices object = {}
 
-@description('Optional. Indicates the number of days that the deleted blob should be retained. The minimum specified value can be 1 and the maximum value can be 365.')
-param deleteRetentionPolicyDays int = 7
+@description('Optional. Queue service and queues to create.')
+param queueServices object = {}
 
-@description('Optional. Automatic Snapshot is enabled if set to true.')
-param automaticSnapshotPolicyEnabled bool = false
+@description('Optional. Table service and tables to create.')
+param tableServices object = {}
 
 @description('Optional. Indicates whether public access is enabled for all blobs or containers in the storage account.')
 param allowBlobPublicAccess bool = true
-
-@description('Optional. File shares to create.')
-param fileShares array = []
-
-@description('Optional. Queues to create.')
-param queues array = []
-
-@description('Optional. Tables to create.')
-param tables array = []
 
 @allowed([
   'TLS1_0'
@@ -137,7 +128,7 @@ var azureFilesIdentityBasedAuthentication_var = azureFilesIdentityBasedAuthentic
 var maxNameLength = 24
 var uniqueStoragenameUntrim = '${uniqueString('Storage Account${basetime}')}'
 var uniqueStoragename = length(uniqueStoragenameUntrim) > maxNameLength ? substring(uniqueStoragenameUntrim, 0, maxNameLength) : uniqueStoragenameUntrim
-var storageAccountName_var = empty(storageAccountName) ? uniqueStoragename : storageAccountName
+var storageAccountName_var = empty(name) ? uniqueStoragename : name
 
 var saBaseProperties = {
   encryption: {
@@ -158,50 +149,8 @@ var saOptIdBasedAuthProperties = {
   azureFilesIdentityBasedAuthentication: azureFilesIdentityBasedAuthentication_var
 }
 var saProperties = (empty(azureFilesIdentityBasedAuthentication) ? saBaseProperties : union(saBaseProperties, saOptIdBasedAuthProperties))
-var builtInRoleNames = {
-  'Owner': subscriptionResourceId('Microsoft.Authorization/roleDefinitions', '8e3af657-a8ff-443c-a75c-2fe8c4bcb635')
-  'Contributor': subscriptionResourceId('Microsoft.Authorization/roleDefinitions', 'b24988ac-6180-42a0-ab88-20f7382dd24c')
-  'Reader': subscriptionResourceId('Microsoft.Authorization/roleDefinitions', 'acdd72a7-3385-48ef-bd42-f606fba81ae7')
-  'Avere Contributor': subscriptionResourceId('Microsoft.Authorization/roleDefinitions', '4f8fab4f-1852-4a58-a46a-8eaf358af14a')
-  'Avere Operator': subscriptionResourceId('Microsoft.Authorization/roleDefinitions', 'c025889f-8102-4ebf-b32c-fc0c6f0c6bd9')
-  'Backup Contributor': subscriptionResourceId('Microsoft.Authorization/roleDefinitions', '5e467623-bb1f-42f4-a55d-6e525e11384b')
-  'Backup Operator': subscriptionResourceId('Microsoft.Authorization/roleDefinitions', '00c29273-979b-4161-815c-10b084fb9324')
-  'DevTest Labs User': subscriptionResourceId('Microsoft.Authorization/roleDefinitions', '76283e04-6283-4c54-8f91-bcf1374a3c64')
-  'Disk Snapshot Contributor': subscriptionResourceId('Microsoft.Authorization/roleDefinitions', '7efff54f-a5b4-42b5-a1c5-5411624893ce')
-  'Log Analytics Contributor': subscriptionResourceId('Microsoft.Authorization/roleDefinitions', '92aaf0da-9dab-42b6-94a3-d43ce8d16293')
-  'Log Analytics Reader': subscriptionResourceId('Microsoft.Authorization/roleDefinitions', '73c42c96-874c-492b-b04d-ab87d138a893')
-  'Logic App Contributor': subscriptionResourceId('Microsoft.Authorization/roleDefinitions', '87a39d53-fc1b-424a-814c-f7e04687dc9e')
-  'Managed Application Contributor Role': subscriptionResourceId('Microsoft.Authorization/roleDefinitions', '641177b8-a67a-45b9-a033-47bc880bb21e')
-  'Managed Application Operator Role': subscriptionResourceId('Microsoft.Authorization/roleDefinitions', 'c7393b34-138c-406f-901b-d8cf2b17e6ae')
-  'Managed Applications Reader': subscriptionResourceId('Microsoft.Authorization/roleDefinitions', 'b9331d33-8a36-4f8c-b097-4f54124fdb44')
-  'Monitoring Contributor': subscriptionResourceId('Microsoft.Authorization/roleDefinitions', '749f88d5-cbae-40b8-bcfc-e573ddc772fa')
-  'Monitoring Metrics Publisher': subscriptionResourceId('Microsoft.Authorization/roleDefinitions', '3913510d-42f4-4e42-8a64-420c390055eb')
-  'Monitoring Reader': subscriptionResourceId('Microsoft.Authorization/roleDefinitions', '43d0d8ad-25c7-4714-9337-8ba259a9fe05')
-  'Reader and Data Access': subscriptionResourceId('Microsoft.Authorization/roleDefinitions', 'c12c1c16-33a1-487b-954d-41c89c60f349')
-  'Resource Policy Contributor': subscriptionResourceId('Microsoft.Authorization/roleDefinitions', '36243c78-bf99-498c-9df9-86d9f8d28608')
-  'Site Recovery Contributor': subscriptionResourceId('Microsoft.Authorization/roleDefinitions', '6670b86e-a3f7-4917-ac9b-5d6ab1be4567')
-  'Site Recovery Operator': subscriptionResourceId('Microsoft.Authorization/roleDefinitions', '494ae006-db33-4328-bf46-533a6560a3ca')
-  'Storage Account Backup Contributor Role': subscriptionResourceId('Microsoft.Authorization/roleDefinitions', 'e5e2a7ff-d759-4cd2-bb51-3152d37e2eb1')
-  'Storage Account Contributor': subscriptionResourceId('Microsoft.Authorization/roleDefinitions', '17d1049b-9a84-46fb-8f53-869881c3d3ab')
-  'Storage Account Key Operator Service Role': subscriptionResourceId('Microsoft.Authorization/roleDefinitions', '81a9662b-bebf-436f-a333-f67b29880f12')
-  'Storage Blob Data Contributor': subscriptionResourceId('Microsoft.Authorization/roleDefinitions', 'ba92f5b4-2d11-453d-a403-e96b0029c9fe')
-  'Storage Blob Data Owner': subscriptionResourceId('Microsoft.Authorization/roleDefinitions', 'b7e6dc6d-f1e8-4753-8033-0f276bb0955b')
-  'Storage Blob Data Reader': subscriptionResourceId('Microsoft.Authorization/roleDefinitions', '2a2b9908-6ea1-4ae2-8e65-a410df84e7d1')
-  'Storage Blob Delegator': subscriptionResourceId('Microsoft.Authorization/roleDefinitions', 'db58b8e5-c6ad-4a2a-8342-4190687cbf4a')
-  'Storage File Data SMB Share Contributor': subscriptionResourceId('Microsoft.Authorization/roleDefinitions', '0c867c2a-1d8c-454a-a3db-ab2ea1bdc8bb')
-  'Storage File Data SMB Share Elevated Contributor': subscriptionResourceId('Microsoft.Authorization/roleDefinitions', 'a7264617-510b-434b-a828-9731dc254ea7')
-  'Storage File Data SMB Share Reader': subscriptionResourceId('Microsoft.Authorization/roleDefinitions', 'aba4ae5f-2193-4029-9191-0cb91df5e314')
-  'Storage Queue Data Contributor': subscriptionResourceId('Microsoft.Authorization/roleDefinitions', '974c5e8b-45b9-4653-ba55-5f855dd0fb88')
-  'Storage Queue Data Message Processor': subscriptionResourceId('Microsoft.Authorization/roleDefinitions', '8a0f0c08-91a1-4084-bc3d-661d67233fed')
-  'Storage Queue Data Message Sender': subscriptionResourceId('Microsoft.Authorization/roleDefinitions', 'c6a89b2d-59bc-44d0-9896-0f6e12d7b80a')
-  'Storage Queue Data Reader': subscriptionResourceId('Microsoft.Authorization/roleDefinitions', '19e7f393-937e-4f77-808e-94535e297925')
-  'Storage Table Data Contributor': subscriptionResourceId('Microsoft.Authorization/roleDefinitions', '0a9a7e1f-b9d0-4cc4-a60d-0319b160aaa3')
-  'Storage Table Data Reader': subscriptionResourceId('Microsoft.Authorization/roleDefinitions', '76199698-9eea-4c19-bc75-cec21354c6b6')
-  'User Access Administrator': subscriptionResourceId('Microsoft.Authorization/roleDefinitions', '18d7d88d-d35e-4fb5-a5c3-7773c20a72d9')
-  'Virtual Machine Contributor': subscriptionResourceId('Microsoft.Authorization/roleDefinitions', '9980e02c-c2be-4d73-94e8-173b1dc7cf3c')
-}
 
-module pid_cuaId './.bicep/nested_cuaId.bicep' = if (!empty(cuaId)) {
+module pid_cuaId '.bicep/nested_cuaId.bicep' = if (!empty(cuaId)) {
   name: 'pid-${cuaId}'
   params: {}
 }
@@ -268,16 +217,15 @@ resource storageAccount_lock 'Microsoft.Authorization/locks@2016-09-01' = if (lo
   scope: storageAccount
 }
 
-module storageAccount_rbac './.bicep/nested_rbac.bicep' = [for (roleAssignment, index) in roleAssignments: {
+module storageAccount_rbac '.bicep/nested_rbac.bicep' = [for (roleAssignment, index) in roleAssignments: {
   name: '${uniqueString(deployment().name, location)}-Storage-Rbac-${index}'
   params: {
     roleAssignmentObj: roleAssignment
-    builtInRoleNames: builtInRoleNames
     resourceName: storageAccount.name
   }
 }]
 
-module storageAccount_privateEndpoints './.bicep/nested_privateEndpoint.bicep' = [for (endpoint, index) in privateEndpoints: if (!empty(privateEndpoints)) {
+module storageAccount_privateEndpoints '.bicep/nested_privateEndpoint.bicep' = [for (endpoint, index) in privateEndpoints: if (!empty(privateEndpoints)) {
   name: '${uniqueString(deployment().name, location)}-Storage-PrivateEndpoints-${index}'
   params: {
     privateEndpointResourceId: storageAccount.id
@@ -285,68 +233,63 @@ module storageAccount_privateEndpoints './.bicep/nested_privateEndpoint.bicep' =
     privateEndpointObj: endpoint
     tags: tags
   }
-  dependsOn: [
-    storageAccount
-  ]
 }]
 
 // Containers
-resource storageAccount_nested_blob_services 'Microsoft.Storage/storageAccounts/blobServices@2021-08-01' = if (!empty(blobContainers)) {
-  name: 'default'
-  parent: storageAccount
-  properties: {
-    deleteRetentionPolicy: {
-      enabled: deleteRetentionPolicy
-      days: deleteRetentionPolicyDays
-    }
-    automaticSnapshotPolicyEnabled: automaticSnapshotPolicyEnabled
+module storageAccount_blobService 'blobServices/deploy.bicep' = if (!empty(blobServices)) {
+  name: '${uniqueString(deployment().name, location)}-Storage-BlobServices'
+  params: {
+    storageAccountName: storageAccount.name
+    containers: contains(blobServices, 'containers') ? blobServices.containers : []
+    automaticSnapshotPolicyEnabled: contains(blobServices, 'automaticSnapshotPolicyEnabled') ? blobServices.automaticSnapshotPolicyEnabled : false
+    deleteRetentionPolicy: contains(blobServices, 'deleteRetentionPolicy') ? blobServices.deleteRetentionPolicy : true
+    deleteRetentionPolicyDays: contains(blobServices, 'deleteRetentionPolicyDays') ? blobServices.deleteRetentionPolicyDays : 7
   }
 }
 
-module storageAccount_nested_blob_container './.bicep/nested_container.bicep' = [for (blobContainer, index) in blobContainers: if (!empty(blobContainers)) {
-  name: '${uniqueString(deployment().name, location)}-Storage-Container-${(empty(blobContainers) ? 'dummy' : index)}'
-  params: {
-    blobContainer: blobContainer
-    builtInRoleNames: builtInRoleNames
-    storageAccountName: storageAccount.name
-  }
-  dependsOn: [
-    storageAccount_nested_blob_services
-  ]
-}]
-
 // File Shares
-module storageAccount_nested_fileShare './.bicep/nested_fileShare.bicep' = [for (fileShare, index) in fileShares: if (!empty(fileShares)) {
-  name: '${uniqueString(deployment().name, location)}-Storage-FileShare-${(empty(fileShares) ? 'dummy' : index)}'
+module storageAccount_fileServices 'fileServices/deploy.bicep' = if (!empty(fileServices)) {
+  name: '${uniqueString(deployment().name, location)}-Storage-FileServices'
   params: {
-    fileShareObj: fileShare
-    builtInRoleNames: builtInRoleNames
     storageAccountName: storageAccount.name
+    protocolSettings: contains(fileServices, 'protocolSettings') ? fileServices.protocolSettings : {}
+    shareDeleteRetentionPolicy: contains(fileServices, 'shareDeleteRetentionPolicy') ? fileServices.shareDeleteRetentionPolicy : {
+      enabled: true
+      days: 7
+    }
+    shares: contains(fileServices, 'shares') ? fileServices.shares : []
   }
-}]
+}
 
 // Queue
-module storageAccount_nested_queue './.bicep/nested_queue.bicep' = [for (queue, index) in queues: if (!empty(queues)) {
-  name: '${uniqueString(deployment().name, location)}-Storage-Queue-${(empty(queues) ? 'dummy' : index)}'
+module storageAccount_queueServices 'queueServices/deploy.bicep' = if (!empty(queueServices)) {
+  name: '${uniqueString(deployment().name, location)}-Storage-QueueServices'
   params: {
-    queueObj: queue
-    builtInRoleNames: builtInRoleNames
     storageAccountName: storageAccount.name
+    queues: contains(queueServices, 'queues') ? queueServices.queues : []
   }
-}]
+}
 
 // Table
-resource storageAccount_nested_table 'Microsoft.Storage/storageAccounts/tableServices/tables@2019-06-01' = [for table in tables: if (!empty(tables)) {
-  name: (empty(tables) ? '${storageAccount.name}/default/dummy' : '${storageAccount.name}/default/${table}')
-}]
+module storageAccount_tableServices 'tableServices/deploy.bicep' = if (!empty(tableServices)) {
+  name: '${uniqueString(deployment().name, location)}-Storage-TableServices'
+  params: {
+    storageAccountName: storageAccount.name
+    tables: contains(tableServices, 'tables') ? tableServices.tables : []
+  }
+}
 
+@description('The resource Id of the deployed storage account')
 output storageAccountResourceId string = storageAccount.id
-output storageAccountRegion string = storageAccount.location
+
+@description('The name of the deployed storage account')
 output storageAccountName string = storageAccount.name
+
+@description('The resource group of the deployed storage account')
 output storageAccountResourceGroup string = resourceGroup().name
-output storageAccountPrimaryBlobEndpoint string = (empty(blobContainers) ? '' : reference('Microsoft.Storage/storageAccounts/${storageAccount.name}', '2019-04-01').primaryEndpoints.blob)
-output blobContainers array = blobContainers
-output fileShares array = fileShares
-output queues array = queues
-output tables array = tables
+
+@description('The primary blob endpoint reference if blob services are deployed.')
+output storageAccountPrimaryBlobEndpoint string = (!empty(blobServices) && contains(storageAccount_blobService, 'blobContainers')) ? '' : reference('Microsoft.Storage/storageAccounts/${storageAccount.name}', '2019-04-01').primaryEndpoints.blob
+
+@description('The resource id of the assigned identity, if any')
 output assignedIdentityID string = (contains(managedServiceIdentity, 'SystemAssigned') ? reference(storageAccount.id, '2019-06-01', 'full').identity.principalId : '')
