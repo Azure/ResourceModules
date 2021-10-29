@@ -119,6 +119,9 @@ Mandatory. The template file content object to crawl data from
 .PARAMETER ReadMeFileContent
 Mandatory. The readme file content array to update
 
+.PARAMETER currentFolderPath
+Mandatory. The current folder path
+
 .PARAMETER SectionStartIdentifier
 Optional. The identifier of the 'outputs' section. Defaults to '## Parameters'
 
@@ -137,6 +140,9 @@ function Set-ParametersSection {
         [Parameter(Mandatory)]
         [object[]] $ReadMeFileContent,
 
+        [Parameter(Mandatory)]
+        [string] $currentFolderPath,
+
         [Parameter(Mandatory = $false)]
         [string] $SectionStartIdentifier = '## Parameters'
     )
@@ -147,9 +153,21 @@ function Set-ParametersSection {
         '| :-- | :-- | :-- | :-- | :-- |'
     )
 
+    $currentLevelFolders = Get-ChildItem -Path $currentFolderPath -Directory -Depth 0
+    $folderNames = ($null -ne $currentLevelFolders) ? ($currentLevelFolders.FullName | ForEach-Object { Split-Path $_ -Leaf }) : @()
+
     foreach ($paramName in ($templateFileContent.parameters.Keys | Sort-Object)) {
         $param = $TemplateFileContent.parameters[$paramName]
-        $type = $param.type
+
+        # Check for local readme references
+        if ($folderNames -and $paramName -in $folderNames -and $param.type -in @('object', 'array')) {
+            if ($folderNames -contains $paramName) {
+                $type = '_[{0}]({0}/readme.md)_ {1}' -f $paramName, $param.type
+            }
+        } else {
+            $type = $param.type
+        }
+
         $defaultValue = ($param.defaultValue -is [array]) ? ('[{0}]' -f ($param.defaultValue -join ', ')) : (($param.defaultValue -is [hashtable]) ? '{object}' : $param.defaultValue)
         $allowed = ($param.allowedValues -is [array]) ? ('[{0}]' -f ($param.allowedValues -join ', ')) : (($param.allowedValues -is [hashtable]) ? '{object}' : $param.allowedValues)
         $description = $param.metadata.description
@@ -358,7 +376,7 @@ function Set-ModuleReadMe {
 
         # Build resource name
         $TextInfo = (Get-Culture).TextInfo
-        $serviceIdentifiers = (Split-Path $TemplateFilePath -Parent).Replace('\', '/').split('/arm/')[1].Replace('Microsoft.', '').Split('/') | ForEach-Object { $TextInfo.ToTitleCase($_) }
+        $serviceIdentifiers = (Split-Path $TemplateFilePath -Parent).Replace('\', '/').split('/arm/')[1].Replace('Microsoft.', '').Replace('/.', '/').Split('/') | ForEach-Object { $TextInfo.ToTitleCase($_) }
         $assumedResourceName = $serviceIdentifiers -join ''
 
         $initialContent = @(
@@ -418,6 +436,7 @@ function Set-ModuleReadMe {
         $inputObject = @{
             ReadMeFileContent   = $readMeFileContent
             TemplateFileContent = $templateFileContent
+            currentFolderPath   = (Split-Path $TemplateFilePath -Parent)
         }
         $readMeFileContent = Set-ParametersSection @inputObject
     }

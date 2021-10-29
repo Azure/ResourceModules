@@ -39,7 +39,7 @@ runs:
         Invoke-Pester -Configuration @{
           Run        = @{
             Container = New-PesterContainer -Path 'arm/.global/global.module.tests.ps1' -Data @{
-              moduleFolderPaths = "${{ inputs.modulePath }}"
+              moduleFolderPaths = Join-Path "$env:GITHUB_WORKSPACE" "${{ inputs.modulePath }}"
             }
           }
           Filter     = @{
