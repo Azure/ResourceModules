@@ -50,9 +50,6 @@ runs:
           $customVersion = $workflowParameters.customVersion
         }
 
-        Write-Output "Output values to be accessed by next jobs:"
-        $workflowParameters
-
         # Output values to be accessed by next jobs
         Write-Output "::set-output name=removeDeployment::$removeDeployment"
         Write-Output "::set-output name=versioningOption::$versioningOption"
