@@ -20,10 +20,6 @@ This module can be used to deploy a file share service into a storage account.
 | `shares` | _[shares](shares/readme.md)_ array | `[]` |  | Optional. File shares to create. |
 | `storageAccountName` | string |  |  | Required. Name of the Storage Account. |
 
-## Parameter Usage: `Cors`
-
-https://docs.microsoft.com/en-us/azure/templates/Microsoft.Storage/2021-04-01/storageAccounts/fileServices#corsrules
-
 ## Outputs
 
 | Output Name | Type | Description |
