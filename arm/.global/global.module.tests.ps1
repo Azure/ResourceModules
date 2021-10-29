@@ -23,15 +23,15 @@ Describe 'File/folder tests' -Tag Modules {
 
         $moduleFolderTestCases = [System.Collections.ArrayList] @()
         foreach ($moduleFolderPath in $moduleFolderPaths) {
+
             $moduleFolderTestCases += @{
-                moduleFolderName = $moduleFolderPath.Replace('\', '/').Split('/arm/')[1]
+                moduleFolderName = $moduleFolderPath.Split('\arm\')[1]
                 moduleFolderPath = $moduleFolderPath
             }
         }
 
         It '[<moduleFolderName>] Module should contain a [deploy.json/deploy.bicep] file' -TestCases $moduleFolderTestCases {
             param( [string] $moduleFolderPath )
-
             $hasARM = (Test-Path (Join-Path -Path $moduleFolderPath 'deploy.json'))
             $hasBicep = (Test-Path (Join-Path -Path $moduleFolderPath 'deploy.bicep'))
             ($hasARM -or $hasBicep) | Should -Be $true
@@ -53,7 +53,7 @@ Describe 'File/folder tests' -Tag Modules {
         $folderTestCases = [System.Collections.ArrayList]@()
         foreach ($moduleFolderPath in $moduleFolderPaths) {
             $folderTestCases += @{
-                moduleFolderName = $moduleFolderPath.Replace('\', '/').Split('/arm/')[1]
+                moduleFolderName = $moduleFolderPath.Split('\arm\')[1]
                 moduleFolderPath = $moduleFolderPath
             }
         }
@@ -73,7 +73,7 @@ Describe 'File/folder tests' -Tag Modules {
             if (Test-Path $parameterFolderPath) {
                 foreach ($parameterFile in (Get-ChildItem $parameterFolderPath -Filter '*parameters.json')) {
                     $parameterFolderFilesTestCases += @{
-                        moduleFolderName  = $moduleFolderPath.Replace('\', '/').Split('/arm/')[1]
+                        moduleFolderName  = Split-Path $moduleFolderPath -Leaf
                         parameterFilePath = $parameterFile.FullName
                     }
                 }
@@ -106,7 +106,7 @@ Describe 'Readme tests' -Tag Readme {
             }
 
             $readmeFolderTestCases += @{
-                moduleFolderName = $moduleFolderPath.Replace('\', '/').Split('/arm/')[1]
+                moduleFolderName = $moduleFolderPath.Split('\arm\')[1]
                 moduleFolderPath = $moduleFolderPath
                 templateContent  = $templateContent
                 readMeContent    = Get-Content (Join-Path -Path $moduleFolderPath 'readme.md')
@@ -405,14 +405,14 @@ Describe 'Deployment template tests' -Tag Template {
 
             # Test file setup
             $deploymentFolderTestCases += @{
-                moduleFolderName       = $moduleFolderPath.Replace('\', '/').Split('/arm/')[1]
+                moduleFolderName       = Split-Path $moduleFolderPath -Leaf
                 templateContent        = $templateContent
                 parameterFileTestCases = $parameterFileTestCases
             }
         }
         foreach ($moduleFolderPath in $moduleFolderPathsFiltered) {
             $deploymentFolderTestCasesException += @{
-                moduleFolderNameException = $moduleFolderPath.Replace('\', '/').Split('/arm/')[1]
+                moduleFolderNameException = Split-Path $moduleFolderPath -Leaf
                 templateContentException  = $templateContent
             }
         }
@@ -743,7 +743,7 @@ Describe "Api version tests [All apiVersions in the template should be 'recent']
     $ApiVersions = Get-AzResourceProvider -ListAvailable
     foreach ($moduleFolderPath in $moduleFolderPathsFiltered) {
 
-        $moduleFolderName = $moduleFolderPath.Replace('\', '/').Split('/arm/')[1]
+        $moduleFolderName = $moduleFolderPath.Split('\arm\')[1]
 
         if (Test-Path (Join-Path $moduleFolderPath 'deploy.bicep')) {
             $templateContent = az bicep build --file (Join-Path $moduleFolderPath 'deploy.bicep') --stdout | ConvertFrom-Json -AsHashtable
