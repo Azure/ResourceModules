@@ -22,7 +22,7 @@
             }
         },
         "subnetId": {
-            "value": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/virtualNetworks/sxx-az-vnet-weu-x-005/subnets/sxx-az-subnet-weu-x-003"
+            "value": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/virtualNetworks/adp-sxx-az-vnet-weu-x-001/subnets/sxx-az-subnet-weu-x-003"
         },
         "skuName": {
             "value": "GP_Gen5"
