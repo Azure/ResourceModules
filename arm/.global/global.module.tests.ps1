@@ -32,10 +32,6 @@ Describe 'File/folder tests' -Tag Modules {
         It '[<moduleFolderName>] Module should contain a [deploy.json/deploy.bicep] file' -TestCases $moduleFolderTestCases {
             param( [string] $moduleFolderPath )
 
-            foreach ($moduleFolderPath in $moduleFolderPaths) {
-                write-Verbose $moduleFolderPath -Verbose # TODO remove
-            }
-
             $hasARM = (Test-Path (Join-Path -Path $moduleFolderPath 'deploy.json'))
             $hasBicep = (Test-Path (Join-Path -Path $moduleFolderPath 'deploy.bicep'))
             ($hasARM -or $hasBicep) | Should -Be $true
