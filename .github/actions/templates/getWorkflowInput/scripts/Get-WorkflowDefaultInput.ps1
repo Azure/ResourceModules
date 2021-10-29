@@ -32,22 +32,22 @@ function Get-WorkflowDefaultInput {
 
         # Get 'removeDeployment' default input value
         $removeDeployment = $obj.On.workflow_dispatch.inputs.removeDeployment.default
-        Write-Warning "Default input value for removeDeployment: $removeDeployment"
+        Write-Verbose "Default input value for removeDeployment: $removeDeployment"
 
         # Get 'versioningOption' default input value
         $versioningOption = $obj.On.workflow_dispatch.inputs.versioningOption.default
-        Write-Warning "Default input value for versioningOption: $versioningOption"
+        Write-Verbose "Default input value for versioningOption: $versioningOption"
 
         # Get 'customVersion' default input value
         $customVersion = $obj.On.workflow_dispatch.inputs.customVersion.default
-        Write-Warning "Default input value for customVersion: $customVersion"
+        Write-Verbose "Default input value for customVersion: $customVersion"
 
         # Define hashtable to contain workflow parameters
         $workflowParameters = @{}
         $workflowParameters.Add('removeDeployment', $removeDeployment)
         $workflowParameters.Add('versioningOption', $versioningOption)
         $workflowParameters.Add('customVersion', $customVersion)
-        Write-Warning 'Get workflow default input complete'
+        Write-Verbose 'Get workflow default input complete'
 
         # Return hashtable
         return $workflowParameters
