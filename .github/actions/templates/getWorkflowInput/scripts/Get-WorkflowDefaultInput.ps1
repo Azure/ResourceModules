@@ -22,23 +22,26 @@ function Get-WorkflowDefaultInput {
 
     begin {
         Write-Debug ('{0} entered' -f $MyInvocation.MyCommand)
-        Install-Module -Name 'powershell-yaml' -Force
     }
 
     process {
-        #$content = Get-Content $workflowPath
-        $content = Get-Content -Path $workflowPath -Raw
-        $obj = ConvertFrom-Yaml -Yaml $content
+        $content = Get-Content -Path $workflowPath
 
         # Get 'removeDeployment' default input value
+        $removeDeploymentRowIndex = ((0..($content.Count - 1)) | Where-Object { $content[$_] -like '*removeDeployment:*' })[0]
+        $removeDeployment = $content[$removeDeploymentRowIndex + 3].trim().Split('#')[0] -match 'true'
         $removeDeployment = $obj.On.workflow_dispatch.inputs.removeDeployment.default
         Write-Verbose "Default input value for removeDeployment: $removeDeployment"
 
         # Get 'versioningOption' default input value
+        $versioningOptionRowIndex = ((0..($content.Count - 1)) | Where-Object { $content[$_] -like '*versioningOption:*' })[0]
+        $versioningOption = $content[$versioningOptionRowIndex + 3].trim().Split('#')[0] -match 'true'
         $versioningOption = $obj.On.workflow_dispatch.inputs.versioningOption.default
         Write-Verbose "Default input value for versioningOption: $versioningOption"
 
         # Get 'customVersion' default input value
+        $versioningOptionRowIndex = ((0..($content.Count - 1)) | Where-Object { $content[$_] -like '*versioningOption:*' })[0]
+        $versioningOption = $content[$versioningOptionRowIndex + 3].trim().Split('#')[0] -match 'true'
         $customVersion = $obj.On.workflow_dispatch.inputs.customVersion.default
         Write-Verbose "Default input value for customVersion: $customVersion"
 
