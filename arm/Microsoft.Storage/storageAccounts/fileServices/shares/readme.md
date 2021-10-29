@@ -6,8 +6,8 @@ This module deploys a storage account file share.
 
 | Resource Type | Api Version |
 | :-- | :-- |
-| `Microsoft.Storage/storageAccounts/fileServices/fileshares/providers/roleAssignments` | 2021-04-01-preview |
 | `Microsoft.Storage/storageAccounts/fileServices/shares` | 2019-06-01 |
+| `Microsoft.Storage/storageAccounts/fileServices/shares/providers/roleAssignments` | 2021-04-01-preview |
 
 ## Parameters
 

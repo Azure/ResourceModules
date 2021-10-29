@@ -17,8 +17,8 @@ The default parameter values are based on the needs of deploying a diagnostic st
 | `Microsoft.Storage/storageAccounts/blobServices/containers/immutabilityPolicies` | 2019-06-01 |
 | `Microsoft.Storage/storageAccounts/blobServices/containers/providers/roleAssignments` | 2021-04-01-preview |
 | `Microsoft.Storage/storageAccounts/fileServices` | 2021-04-01 |
-| `Microsoft.Storage/storageAccounts/fileServices/fileshares/providers/roleAssignments` | 2021-04-01-preview |
 | `Microsoft.Storage/storageAccounts/fileServices/shares` | 2019-06-01 |
+| `Microsoft.Storage/storageAccounts/fileServices/shares/providers/roleAssignments` | 2021-04-01-preview |
 | `Microsoft.Storage/storageAccounts/managementPolicies` | 2019-06-01 |
 | `Microsoft.Storage/storageAccounts/providers/roleAssignments` | 2021-04-01-preview |
 | `Microsoft.Storage/storageAccounts/queueServices` | 2021-04-01 |
@@ -104,104 +104,6 @@ The default parameter values are based on the needs of deploying a diagnostic st
 }
 ```
 
-### Parameter Usage: `blobContainers`
-
-The `blobContainer` parameter accepts a JSON Array of object with "name" and "publicAccess" properties in each to specify the name of the Blob Containers to create and level of public access (container level, blob level or none). Also RBAC can be assigned at Blob Container level
-
-Here's an example of specifying two Blob Containes. The first named "one" with public access set at container level and RBAC Reader role assigned to two principal Ids. The second named "two" with no public access level and no RBAC role assigned.
-
-```json
-"blobContainers": {
-    "value": [
-        {
-            "name": "one",
-            "publicAccess": "Container", //Container, Blob, None
-            "roleAssignments": [
-                {
-                    "roleDefinitionIdOrName": "Reader",
-                    "principalIds": [
-                        "12345678-1234-1234-1234-123456789012", // object 1
-                        "78945612-1234-1234-1234-123456789012" // object 2
-                    ]
-                }
-            ]
-        },
-        {
-            "name": "two",
-            "publicAccess": "None", //Container, Blob, None
-            "roleAssignments": [],
-            "enableWORM": true,
-            "WORMRetention": 200,
-            "allowProtectedAppendWrites": false
-        }
-    ]
-}
-```
-
-### Parameter Usage: `fileShares`
-
-The `fileShares` parameter accepts a JSON Array of object with "name" and "shareQuota" properties in each to specify the name of the File Shares to create and the maximum size of the shares, in gigabytes. Also RBAC can be assigned at File Share level.
-
-Here's an example of specifying a single File Share named "avdprofiles" with 5TB (5120GB) of shareQuota and Reader role assigned to two principal Ids.
-
-```json
-"fileShares": {
-    "value": [
-        {
-            "name": "avdprofiles",
-            "shareQuota": "5120",
-            "roleAssignments": [
-                {
-                    "roleDefinitionIdOrName": "Reader",
-                    "principalIds": [
-                        "12345678-1234-1234-1234-123456789012", // object 1
-                        "78945612-1234-1234-1234-123456789012" // object 2
-                    ]
-                }
-            ]
-        }
-    ]
-}
-```
-
-### Parameter Usage: `queues`
-
-The `queues` parameter accepts a JSON Array of object with "name" and "metadata" properties in each to specify the name of the queue to create and its metadata, as a name-value pair. Also RBAC can be assigned at queue level.
-
-Here's an example of specifying a single qeue named "queue1" with no metadata and Reader role assigned to two principal Ids.
-
-```json
-"queues": {
-    "value": [
-        {
-            "name": "queue1",
-            "metadata": {},
-            "roleAssignments": [
-                {
-                    "roleDefinitionIdOrName": "Reader",
-                    "principalIds": [
-                        "12345678-1234-1234-1234-123456789012", // object 1
-                        "78945612-1234-1234-1234-123456789012" // object 2
-                    ]
-                }
-            ]
-        }
-    ]
-}
-```
-
-### Parameter Usage: `tables`
-
-The tables to be created in the storage account
-
-```json
-"tables": {
-    "value": [
-        "table1",
-        "table2"
-    ]
-},
-```
 
 ### Parameter Usage: `tags`
 
