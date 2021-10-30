@@ -547,7 +547,8 @@ jobs:
         uses: azure/CLI@v1
         with:
           inlineScript: |
-            $password = ''
+            az account show
+            az storage -h
 
   # job_deploy_rolea:
   #   runs-on: ubuntu-20.04
