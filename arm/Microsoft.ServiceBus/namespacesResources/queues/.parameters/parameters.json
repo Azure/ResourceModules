@@ -3,10 +3,10 @@
     "contentVersion": "1.0.0.0",
     "parameters": {
         "namespaceName": {
-            "value": "sxx-az-sbn-weu-x-001"
+            "value": "sxx-az-sbn-weu-x-002"
         },
         "queueName": {
-            "value": "sxx-az-sbq-weu-x-001"
+            "value": "sxx-az-sbq-weu-x-002"
         },
         "roleAssignments": {
             "value": [
