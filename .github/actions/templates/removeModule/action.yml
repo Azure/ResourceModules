@@ -13,23 +13,23 @@ inputs:
     required: true
 
 runs:
-  using: "composite"
+  using: 'composite'
   steps:
-    - name: "Setup agent & login"
+    - name: 'Setup agent & login'
       shell: pwsh
       run: |
         # Load used functions
         . ".github/actions/sharedScripts/Set-EnvironmentOnAgent.ps1"
         # Set agent up
-        Set-EnvironmentOnAgent    
-  
+        Set-EnvironmentOnAgent
+
     - name: Azure Login
       uses: Azure/login@v1
       with:
         creds: ${{ env.AZURE_CREDENTIALS }}
         enable-AzPSSession: true
 
-    - name: "Remove module"
+    - name: 'Remove module'
       shell: pwsh
       run: |
         # Load used functions

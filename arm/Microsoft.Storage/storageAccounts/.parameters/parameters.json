@@ -1,0 +1,102 @@
+{
+    "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "name": {
+            "value": "sxxazsaweux001"
+        },
+        "managedServiceIdentity": {
+            "value": "SystemAssigned"
+        },
+        "storageAccountSku": {
+            "value": "Standard_LRS"
+        },
+        "blobServices": {
+            "value": {
+                "containers": [
+                    {
+                        "name": "avdscripts",
+                        "publicAccess": "Container",
+                        "roleAssignments": [
+                            {
+                                "roleDefinitionIdOrName": "Reader",
+                                "principalIds": [
+                                    "640ccf66-4edd-47e6-9a06-a15de35d42ad"
+                                ]
+                            }
+                        ]
+                    },
+                    {
+                        "name": "archivecontainer",
+                        "publicAccess": "Container",
+                        "enableWORM": true,
+                        "WORMRetention": 666,
+                        "allowProtectedAppendWrites": false
+                    }
+                ]
+            }
+        },
+        "fileServices": {
+            "value": {
+                "shares": [
+                    {
+                        "name": "avdprofiles",
+                        "shareQuota": "5120",
+                        "roleAssignments": [
+                            {
+                                "roleDefinitionIdOrName": "Reader",
+                                "principalIds": [
+                                    "640ccf66-4edd-47e6-9a06-a15de35d42ad"
+                                ]
+                            }
+                        ]
+                    },
+                    {
+                        "name": "avdprofiles2",
+                        "shareQuota": "5120"
+                    }
+                ]
+            }
+        },
+        "tableServices": {
+            "value": {
+                "tables": [
+                    "table1",
+                    "table2"
+                ]
+            }
+        },
+        "queueServices": {
+            "value": {
+                "queues": [
+                    {
+                        "name": "queue1",
+                        "metadata": {},
+                        "roleAssignments": [
+                            {
+                                "roleDefinitionIdOrName": "Reader",
+                                "principalIds": [
+                                    "640ccf66-4edd-47e6-9a06-a15de35d42ad"
+                                ]
+                            }
+                        ]
+                    },
+                    {
+                        "name": "queue2",
+                        "metadata": {}
+                    }
+                ]
+            }
+        },
+        "roleAssignments": {
+            "value": [
+                {
+                    "roleDefinitionIdOrName": "Reader",
+                    "principalIds": [
+                        "640ccf66-4edd-47e6-9a06-a15de35d42ad"
+                    ]
+                }
+            ]
+        }
+    }
+}

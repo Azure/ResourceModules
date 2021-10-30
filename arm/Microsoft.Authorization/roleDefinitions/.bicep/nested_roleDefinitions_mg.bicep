@@ -24,11 +24,11 @@ resource roleDefinition 'Microsoft.Authorization/roleDefinitions@2018-01-01-prev
       }
     ]
     assignableScopes: [
-      tenantResourceId('Microsoft.Management/managementGroups',managementGroupId)
+      tenantResourceId('Microsoft.Management/managementGroups', managementGroupId)
     ]
   }
 }
 
 output roleDefinitionName string = roleDefinition.name
-output roleDefinitionScope string = tenantResourceId('Microsoft.Management/managementGroups',managementGroupId)
-output roleDefinitionId string = extensionResourceId(tenantResourceId('Microsoft.Management/managementGroups',managementGroupId),'Microsoft.Authorization/roleDefinitions',roleDefinition.name)
+output roleDefinitionScope string = tenantResourceId('Microsoft.Management/managementGroups', managementGroupId)
+output roleDefinitionId string = extensionResourceId(tenantResourceId('Microsoft.Management/managementGroups', managementGroupId), 'Microsoft.Authorization/roleDefinitions', roleDefinition.name)

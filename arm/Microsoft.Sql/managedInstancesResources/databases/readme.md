@@ -2,7 +2,6 @@
 
 This template deploys an SQL Managed Instances Database.
 
-
 ## Resource types
 
 | Resource Type | Api Version |
@@ -66,6 +65,7 @@ Tag names and tag values can be provided as needed. A tag can be left without a 
     }
 }
 ""`
+
 ### Parameter Usage: `LongTermRetention`
 
 ""`json

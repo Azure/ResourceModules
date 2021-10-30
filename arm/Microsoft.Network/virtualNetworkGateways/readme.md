@@ -2,7 +2,6 @@
 
 This module deploys a Virtual Network Gateway.
 
-
 ## Resource types
 
 | Resource Type | Api Version |

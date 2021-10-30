@@ -54,6 +54,7 @@ Product groups list.
     ]
 }
 ```
+
 ## Outputs
 
 | Output Name | Type |

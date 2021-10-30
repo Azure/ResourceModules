@@ -3,8 +3,12 @@
 This section gives you an overview of how to test the bicep modules.
 
 ---
+
 ### _Navigation_
+
 - [Tool: Testing your Bicep module](#Tool-Testing-your-Bicep-module)
+  - [Handling Resource IDs or Parameters that require or contain Subscription IDs](#handling-resource-ids-or-parameters-that-require-or-contain-subscription-ids)
+
 ---
 
 ## Tool: Testing your Bicep module
@@ -34,7 +38,7 @@ Invoke-Pester -Configuration @{
 
 ### Handling Resource IDs or Parameters that require or contain Subscription IDs
 
-- Scenarios where resources have dependancies on other resources, which may require to be linked using `resourceId` references. [Example](../../arm/Microsoft.Network/virtualNetworksResources/virtualNetworkPeerings/parameters/parameters.json)
+- Scenarios where resources have dependancies on other resources, which may require to be linked using `resourceId` references. [Example](../../arm/Microsoft.Network/virtualNetworksResources/virtualNetworkPeerings/.parameters/parameters.json)
 
     ```json
     // Example
@@ -43,7 +47,7 @@ Invoke-Pester -Configuration @{
     }
     ```
 
-- Scenarios where targeting different scopes within a module deployment. [Example](../../arm/Microsoft.Authorization/policyDefinitions/parameters/parameters.json)
+- Scenarios where targeting different scopes within a module deployment. [Example](../../arm/Microsoft.Authorization/policyDefinitions/.parameters/parameters.json)
 
     ```json
     // Example

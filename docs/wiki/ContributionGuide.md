@@ -1,10 +1,14 @@
 # Contribution
+
 This section outlines how you can contribute to the repository.
 
 ---
+
 ### _Navigation_
+
 - [Set your environment up](#set-your-environment-up)
 - [How to contribute?](#how-to-contribute)
+
 ---
 
 ## Set your environment up
@@ -18,6 +22,7 @@ You can contribute to the Wiki in different ways depending on your own interests
 For starters it is highly recommended to consult and understand the ['Modules Design'](.\ModulesDesign.md) section of the wiki.
 
 How you proceed from here depends on your particular situation:
+
 - If you just want to contribute to this project, but don't know yet where and how, feel free to navigate the the 'Projects' tab on the repository, check what items are currently still in the 'to-do' swim lane and pick one that speaks to you. In this case you should assign the item to yourself / or reach out to discuss its content & priority.
 
    <img src="./media/projectsTab.jpg" alt="Projects Tab" height="178" width="414">

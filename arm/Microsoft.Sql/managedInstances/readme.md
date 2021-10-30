@@ -2,7 +2,6 @@
 
 This template deploys an SQL Managed Instance, with resource lock.
 
-
 ## Resource types
 
 | Resource Type | Api Version |
@@ -18,6 +17,7 @@ This template deploys an SQL Managed Instance, with resource lock.
 | `Microsoft.Sql/managedInstances/vulnerabilityAssessments` | 2021-02-01-preview |
 
 ### Deployment prerequisites
+
 SQL Managed Instance is deployed on a virtual network. This network is required to satisfy the requirements explained [here](https://docs.microsoft.com/en-us/azure/sql-database/sql-database-managed-instance-connectivity-architecture#network-requirements). In the module is a second ARM template UpdateSubnet.deploy.json, which configures a subnet to be ready for the SQL managed instance.
 
 ## Parameters
