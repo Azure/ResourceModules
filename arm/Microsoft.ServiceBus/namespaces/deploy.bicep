@@ -16,9 +16,6 @@ param skuName string = 'Basic'
 @description('Optional. Enabling this property creates a Premium Service Bus Namespace in regions supported availability zones.')
 param zoneRedundant bool = false
 
-@description('Optional. The Disaster Recovery configuration name')
-param namespaceAlias string = ''
-
 @description('Optional. Authorization Rules for the Service Bus namespace')
 param authorizationRules array = [
   {

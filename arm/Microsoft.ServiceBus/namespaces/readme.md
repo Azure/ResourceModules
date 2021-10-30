@@ -11,7 +11,7 @@ This module deploys Service Bus Namespace resource.
 | `Microsoft.Insights/diagnosticSettings` | 2017-05-01-preview |
 | `Microsoft.Network/privateEndpoints` | 2021-05-01 |
 | `Microsoft.Network/privateEndpoints/privateDnsZoneGroups` | 2020-05-01 |
-| `Microsoft.ServiceBus/namespaces` | 2018-01-01-preview |
+| `Microsoft.ServiceBus/namespaces` | 2021-06-01-preview |
 | `Microsoft.ServiceBus/namespaces/AuthorizationRules` | 2017-04-01 |
 | `Microsoft.ServiceBus/namespaces/disasterRecoveryConfigs` | 2017-04-01 |
 | `Microsoft.ServiceBus/namespaces/ipfilterrules` | 2018-01-01-preview |
@@ -39,7 +39,6 @@ This module deploys Service Bus Namespace resource.
 | `metricsToEnable` | array | `[AllMetrics]` | `[AllMetrics]` | Optional. The name of metrics that will be streamed. |
 | `migrationConfigurationObj` | object | `{object}` |  | Optional. The migration configuration. |
 | `name` | string |  |  | Optional. Name of the Service Bus Namespace. If no name is provided, then unique name will be created. |
-| `namespaceAlias` | string |  |  | Optional. The Disaster Recovery configuration name |
 | `privateEndpoints` | array | `[]` |  | Optional. Configuration Details for private endpoints. |
 | `queues` | _[queues](queues/readme.md)_ array | `[]` |  | The queues to create in the service bus namespace |
 | `roleAssignments` | array | `[]` |  | Optional. Array of role assignment objects that contain the 'roleDefinitionIdOrName' and 'principalId' to define RBAC role assignments on this resource. In the roleDefinitionIdOrName attribute, you can provide either the display name of the role definition, or its fully qualified ID in the following format: '/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11' |
@@ -144,7 +143,7 @@ Tag names and tag values can be provided as needed. A tag can be left without a 
 - [Diagnosticsettings](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Insights/2017-05-01-preview/diagnosticSettings)
 - [Privateendpoints](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Network/2021-05-01/privateEndpoints)
 - [Privateendpoints/Privatednszonegroups](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Network/2020-05-01/privateEndpoints/privateDnsZoneGroups)
-- [Namespaces](https://docs.microsoft.com/en-us/azure/templates/Microsoft.ServiceBus/2018-01-01-preview/namespaces)
+- [Namespaces](https://docs.microsoft.com/en-us/azure/templates/Microsoft.ServiceBus/2021-06-01-preview/namespaces)
 - [Namespaces/Authorizationrules](https://docs.microsoft.com/en-us/azure/templates/Microsoft.ServiceBus/2017-04-01/namespaces/AuthorizationRules)
 - [Namespaces/Disasterrecoveryconfigs](https://docs.microsoft.com/en-us/azure/templates/Microsoft.ServiceBus/2017-04-01/namespaces/disasterRecoveryConfigs)
 - [Namespaces/Ipfilterrules](https://docs.microsoft.com/en-us/azure/templates/Microsoft.ServiceBus/2018-01-01-preview/namespaces/ipfilterrules)

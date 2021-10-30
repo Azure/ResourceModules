@@ -11,6 +11,12 @@
         "tags": {
             "value": {}
         },
+        "workspaceId": {
+            "value": "/subscriptions/<<subscriptionId>>/resourcegroups/validation-rg/providers/microsoft.operationalinsights/workspaces/adp-sxx-az-la-weu-x-001"
+        },
+        "diagnosticStorageAccountId": {
+            "value": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Storage/storageAccounts/adpsxxazsaweux001"
+        },
         "roleAssignments": {
             "value": [
                 {
@@ -18,6 +24,55 @@
                     "principalIds": [
                         "5545f7a0-51f4-46af-b3b4-baecf5176a56"
                     ]
+                }
+            ]
+        },
+        "disasterRecoveryConfigObj": {
+            "value": {}
+        },
+        "migrationConfigurationObj": {
+            "value": {}
+        },
+        "virtualNetworkRules": {
+            "value": [
+                "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/virtualNetworks/adp-sxx-az-vnet-weu-x-001/subnets/sxx-az-subnet-weu-x-001",
+                "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/virtualNetworks/adp-sxx-az-vnet-weu-x-001/subnets/sxx-az-subnet-weu-x-002"
+            ]
+        },
+        "ipFilterRules": {
+            "value": [
+                {
+                    "filterName": "ipFilter1",
+                    "ipMask": "10.0.1.0/32",
+                    "action": "Accept"
+                },
+                {
+                    "filterName": "ipFilter2",
+                    "ipMask": "10.0.2.0/32",
+                    "action": "Deny"
+                }
+            ]
+        },
+        "authorizationRules": {
+            "value": [
+                {
+                    "name": "RootManageSharedAccessKey",
+                    "properties": {
+                        "rights": [
+                            "Listen",
+                            "Manage",
+                            "Send"
+                        ]
+                    }
+                },
+                {
+                    "name": "AnotherKey",
+                    "properties": {
+                        "rights": [
+                            "Listen",
+                            "Send"
+                        ]
+                    }
                 }
             ]
         },

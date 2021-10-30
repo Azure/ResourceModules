@@ -4,7 +4,7 @@
 param namespaceName string
 
 @description('Optional. The name of the ip filter rule')
-param name string = '${namespaceName}-ifr'
+param name string = filterName
 
 @description('Required. The IP Filter Action')
 @allowed([
