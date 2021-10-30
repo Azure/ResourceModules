@@ -1,5 +1,5 @@
 @description('Required. The name of the SQL managed instance.')
-param managedInstanceName string
+param name string
 
 @description('Optional. Location for all resources.')
 param location string = resourceGroup().location
@@ -138,6 +138,9 @@ param managedServiceIdentity string = 'SystemAssigned'
 @description('Optional. Mandatory if "managedServiceIdentity" contains UserAssigned. The list of user identities associated with the managed instance.')
 param userAssignedIdentities object = {}
 
+@description('Optional. Databases to create in this server.')
+param databases array = []
+
 @description('Optional. The name of logs that will be streamed.')
 @allowed([
   'ResourceUsageStats'
@@ -203,7 +206,7 @@ module pid_cuaId './.bicep/nested_cuaId.bicep' = if (!empty(cuaId)) {
 }
 
 resource managedInstance 'Microsoft.Sql/managedInstances@2020-08-01-preview' = {
-  name: managedInstanceName
+  name: name
   location: location
   identity: {
     type: managedServiceIdentity
@@ -311,6 +314,43 @@ module managedInstance_rbac './.bicep/nested_rbac.bicep' = [for (roleAssignment,
     builtInRoleNames: builtInRoleNames
     resourceName: managedInstance.name
   }
+}]
+
+module managedInstace_databases 'databases/deploy.bicep' = [for (database, index) in databases: {
+  name: 'database-${deployment().name}-${database.name}-${index}'
+  params: {
+    name: database.name
+    managedInstanceName: managedInstance.name
+    backupLongTermRetentionPoliciesName:
+    backupShortTermRetentionPoliciesName:
+    catalogCollation:
+    collation:
+    createMode:
+    cuaId:
+    diagnosticLogsRetentionInDays:
+    diagnosticStorageAccountId:
+    eventHubAuthorizationRuleId:
+    eventHubName:
+    location:
+    lock:
+    longTermRetentionBackupResourceId:
+    monthlyRetention:
+    recoverableDatabaseId:
+    restorableDroppedDatabaseId:
+    restorePointInTime:
+    retentionDays:
+    sourceDatabaseId:
+    storageContainerSasToken:
+    storageContainerUri:
+    tags:
+    weeklyRetention:
+    weekOfYear:
+    workspaceId:
+    yearlyRetention:
+  }
+  dependsOn: [
+    managedInstance
+  ]
 }]
 
 output managedInstanceName string = managedInstance.name

@@ -1,5 +1,5 @@
 @description('Required. The name of the SQL managed instance database.')
-param databaseName string
+param name string
 
 @description('Required. The name of the SQL managed instance.')
 param managedInstanceName string
@@ -137,7 +137,7 @@ module pid_cuaId './.bicep/nested_cuaId.bicep' = if (!empty(cuaId)) {
 }
 
 resource managedInstanceDatabase 'Microsoft.Sql/managedInstances/databases@2020-02-02-preview' = {
-  name: '${managedInstanceName}/${databaseName}'
+  name: '${managedInstanceName}/${name}'
   location: location
   tags: tags
   properties: {
