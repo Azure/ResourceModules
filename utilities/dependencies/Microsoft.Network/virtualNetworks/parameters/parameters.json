@@ -14,17 +14,12 @@
       "value": [
         {
           "name": "GatewaySubnet",
-          "addressPrefix": "10.0.255.0/24",
-          "networkSecurityGroupName": "",
-          "routeTableName": "",
-          "serviceEndpoints": [],
-          "delegations": []
+          "addressPrefix": "10.0.255.0/24"
         },
         {
           "name": "sxx-az-subnet-weu-x-001", // VM subnet
           "addressPrefix": "10.0.0.0/24",
           "networkSecurityGroupName": "adp-sxx-az-nsg-weu-x-001",
-          "routeTableName": "",
           "serviceEndpoints": [
             {
               "service": "Microsoft.EventHub"
@@ -38,14 +33,12 @@
             {
               "service": "Microsoft.KeyVault"
             }
-          ],
-          "delegations": []
+          ]
         },
         {
           "name": "sxx-az-subnet-weu-x-002", // VMSS subnet
           "addressPrefix": "10.0.1.0/24",
           "networkSecurityGroupName": "adp-sxx-az-nsg-weu-x-001",
-          "routeTableName": "",
           "serviceEndpoints": [
             {
               "service": "Microsoft.EventHub"
@@ -59,14 +52,21 @@
             {
               "service": "Microsoft.KeyVault"
             }
-          ],
-          "delegations": []
+          ]
+        },
+        {
+          "name": "sxx-az-subnet-weu-x-003", // ServiceBus subnet
+          "addressPrefix": "10.0.2.0/24",
+          "networkSecurityGroupName": "adp-sxx-az-nsg-weu-x-001",
+          "serviceEndpoints": [
+            {
+              "service": "Microsoft.ServiceBus"
+            }
+          ]
         },
         {
           "name": "sxx-az-subnet-weu-x-004", // ANF subnet
           "addressPrefix": "10.0.3.0/24",
-          "routeTableName": "",
-          "serviceEndpoints": [],
           "delegations": [
             {
               "name": "netappDel",
@@ -79,18 +79,12 @@
         {
           "name": "AzureBastionSubnet", // Bastion subnet
           "addressPrefix": "10.0.5.0/24",
-          "networkSecurityGroupName": "adp-sxx-az-nsg-weu-x-bastion",
-          "routeTableName": "",
-          "serviceEndpoints": [],
-          "delegations": []
+          "networkSecurityGroupName": "adp-sxx-az-nsg-weu-x-bastion"
         },
         {
           "name": "sxx-az-subnet-weu-x-005-privateEndpoints", // PE subnet
           "addressPrefix": "10.0.6.0/24",
           "networkSecurityGroupName": "adp-sxx-az-nsg-weu-x-001",
-          "routeTableName": "",
-          "serviceEndpoints": [],
-          "delegations": [],
           "privateEndpointNetworkPolicies": "Disabled", // This property must be set to disabled for subnets that contain private endpoints. It confirms that NSGs rules will not apply to private endpoints (currently not supported). Default Value when not specified is "Enabled".
           "privateLinkServiceNetworkPolicies": "Enabled"
         },
