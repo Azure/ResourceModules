@@ -162,7 +162,7 @@ resource serviceBusNamespace 'Microsoft.ServiceBus/namespaces@2021-06-01-preview
 }
 
 module serviceBusNamespace_disasterRecoveryConfig 'disasterRecoveryConfigs/deploy.bicep' = if (!empty(disasterRecoveryConfigObj)) {
-  name: '${uniqueString(deployment().name, location)}-ServiceBusNamespaces-DisasterRecoveryConfig'
+  name: '${uniqueString(deployment().name, location)}-DisasterRecoveryConfig'
   params: {
     namespaceName: serviceBusNamespace.name
     name: contains(disasterRecoveryConfigObj, 'name') ? disasterRecoveryConfigObj.name : 'default'
@@ -172,7 +172,7 @@ module serviceBusNamespace_disasterRecoveryConfig 'disasterRecoveryConfigs/deplo
 }
 
 module serviceBusNamespace_migrationConfigurations 'migrationConfigurations/deploy.bicep' = if (!empty(migrationConfigurationObj)) {
-  name: '${uniqueString(deployment().name, location)}-ServiceBusNamespaces-MigrationConfigurations'
+  name: '${uniqueString(deployment().name, location)}-MigrationConfigurations'
   params: {
     namespaceName: migrationConfigurationObj.namespaceName
     name: contains(migrationConfigurationObj, 'name') ? migrationConfigurationObj.name : '$default'
@@ -185,7 +185,7 @@ module serviceBusNamespace_migrationConfigurations 'migrationConfigurations/depl
 }
 
 module serviceBusNamespace_virtualNetworkRules 'virtualNetworkRules/deploy.bicep' = [for (virtualNetworkRule, index) in virtualNetworkRules: {
-  name: '${uniqueString(deployment().name, location)}-ServiceBusNamespaces-VirtualNetworkRules-${index}'
+  name: '${uniqueString(deployment().name, location)}-VirtualNetworkRules-${index}'
   params: {
     namespaceName: serviceBusNamespace.name
     name: last(split(virtualNetworkRule, '/'))
@@ -197,7 +197,7 @@ module serviceBusNamespace_virtualNetworkRules 'virtualNetworkRules/deploy.bicep
 }]
 
 module serviceBusNamespace_authorizationRules 'authorizationRules/deploy.bicep' = [for (authorizationRule, index) in authorizationRules: {
-  name: '${uniqueString(deployment().name, location)}-ServiceBusNamespaces-AuthorizationRules-${index}'
+  name: '${uniqueString(deployment().name, location)}-AuthorizationRules-${index}'
   params: {
     namespaceName: serviceBusNamespace.name
     name: authorizationRule.name
@@ -209,7 +209,7 @@ module serviceBusNamespace_authorizationRules 'authorizationRules/deploy.bicep' 
 }]
 
 module serviceBusNamespace_ipFilterRules 'ipFilterRules/deploy.bicep' = [for (ipFilterRule, index) in ipFilterRules: {
-  name: '${uniqueString(deployment().name, location)}-ServiceBusNamespaces-IpFilterRules-${index}'
+  name: '${uniqueString(deployment().name, location)}-IpFilterRules-${index}'
   params: {
     namespaceName: serviceBusNamespace.name
     name: ipFilterRule.name
@@ -223,7 +223,7 @@ module serviceBusNamespace_ipFilterRules 'ipFilterRules/deploy.bicep' = [for (ip
 }]
 
 module serviceBusNamespace_queues 'queues/deploy.bicep' = [for (queue, index) in queues: {
-  name: '${uniqueString(deployment().name, location)}-ServiceBusNamespaces-Queue-${index}'
+  name: '${uniqueString(deployment().name, location)}-Queue-${index}'
   params: {
     namespaceName: serviceBusNamespace.name
     name: queue.name
@@ -282,7 +282,7 @@ resource serviceBusNamespace_diagnosticSettings 'Microsoft.Insights/diagnosticse
 }
 
 module serviceBusNamespace_privateEndpoints './.bicep/nested_privateEndpoints.bicep' = [for (privateEndpoint, index) in privateEndpoints: {
-  name: '${uniqueString(deployment().name, location)}-ServiceBusNamespaces-PrivateEndpoint-${index}'
+  name: '${uniqueString(deployment().name, location)}-PrivateEndpoint-${index}'
   params: {
     privateEndpointResourceId: serviceBusNamespace.id
     privateEndpointVnetLocation: (empty(privateEndpoints) ? 'dummy' : reference(split(privateEndpoint.subnetResourceId, '/subnets/')[0], '2020-06-01', 'Full').location)
