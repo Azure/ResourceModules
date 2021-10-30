@@ -69,26 +69,11 @@ param eventHubName string = ''
 @description('Optional. Specify the type of lock.')
 param lock string = 'NotSpecified'
 
-@description('Required. The name of the Long Term Retention backup policy.')
-param backupLongTermRetentionPoliciesName string = 'default'
+@description('Optional. The configuration for the backup short term retention policy definition')
+param backupShortTermRetentionPolicies object = {}
 
-@description('Required. The weekly retention policy for an LTR backup in an ISO 8601 format.')
-param weeklyRetention string = 'P1M'
-
-@description('Required. The monthly retention policy for an LTR backup in an ISO 8601 format.')
-param monthlyRetention string = 'P1Y'
-
-@description('Required. The yearly retention policy for an LTR backup in an ISO 8601 format.')
-param yearlyRetention string = 'P5Y'
-
-@description('Required. The week of year to take the yearly backup in an ISO 8601 format.')
-param weekOfYear int = 5
-
-@description('Required. The name of the Short Term Retention backup policy.')
-param backupShortTermRetentionPoliciesName string = 'Default'
-
-@description('Required. The backup retention period in days. This is how many days Point-in-Time Restore will be supported.')
-param retentionDays int = 35
+@description('Optional. The configuration for the backup long term retention policy definition')
+param backupLongTermRetentionPolicies object = {}
 
 @description('Optional. Tags of the resource.')
 param tags object = {}
@@ -136,7 +121,7 @@ module pid_cuaId './.bicep/nested_cuaId.bicep' = if (!empty(cuaId)) {
   params: {}
 }
 
-resource managedInstanceDatabase 'Microsoft.Sql/managedInstances/databases@2020-02-02-preview' = {
+resource database 'Microsoft.Sql/managedInstances/databases@2020-02-02-preview' = {
   name: '${managedInstanceName}/${name}'
   location: location
   tags: tags
@@ -152,36 +137,19 @@ resource managedInstanceDatabase 'Microsoft.Sql/managedInstances/databases@2020-
     recoverableDatabaseId: (empty(recoverableDatabaseId) ? json('null') : recoverableDatabaseId)
     longTermRetentionBackupResourceId: (empty(longTermRetentionBackupResourceId) ? json('null') : longTermRetentionBackupResourceId)
   }
-
-  resource database_backupShortTermRetentionPoliciesName 'backupShortTermRetentionPolicies@2017-03-01-preview' = {
-    name: backupShortTermRetentionPoliciesName
-    properties: {
-      retentionDays: retentionDays
-    }
-  }
-
-  resource database_backupLongTermRetentionPolicies 'backupLongTermRetentionPolicies@2021-02-01-preview' = {
-    name: backupLongTermRetentionPoliciesName
-    properties: {
-      monthlyRetention: monthlyRetention
-      weeklyRetention: weeklyRetention
-      weekOfYear: weekOfYear
-      yearlyRetention: yearlyRetention
-    }
-  }
 }
 
-resource managedInstanceDatabase_lock 'Microsoft.Authorization/locks@2016-09-01' = if (lock != 'NotSpecified') {
-  name: '${split(managedInstanceDatabase.name, '/')[1]}-${lock}-lock'
+resource database_lock 'Microsoft.Authorization/locks@2016-09-01' = if (lock != 'NotSpecified') {
+  name: '${split(database.name, '/')[1]}-${lock}-lock'
   properties: {
     level: lock
     notes: (lock == 'CanNotDelete') ? 'Cannot delete resource or child resources.' : 'Cannot modify the resource or child resources.'
   }
-  scope: managedInstanceDatabase
+  scope: database
 }
 
-resource managedInstanceDatabase_diagnosticSettings 'Microsoft.Insights/diagnosticsettings@2017-05-01-preview' = if ((!empty(diagnosticStorageAccountId)) || (!empty(workspaceId)) || (!empty(eventHubAuthorizationRuleId)) || (!empty(eventHubName))) {
-  name: '${split(managedInstanceDatabase.name, '/')[1]}-diagnosticSettings'
+resource database_diagnosticSettings 'Microsoft.Insights/diagnosticsettings@2017-05-01-preview' = if ((!empty(diagnosticStorageAccountId)) || (!empty(workspaceId)) || (!empty(eventHubAuthorizationRuleId)) || (!empty(eventHubName))) {
+  name: '${split(database.name, '/')[1]}-diagnosticSettings'
   properties: {
     storageAccountId: (empty(diagnosticStorageAccountId) ? json('null') : diagnosticStorageAccountId)
     workspaceId: (empty(workspaceId) ? json('null') : workspaceId)
@@ -189,9 +157,28 @@ resource managedInstanceDatabase_diagnosticSettings 'Microsoft.Insights/diagnost
     eventHubName: (empty(eventHubName) ? json('null') : eventHubName)
     logs: ((empty(diagnosticStorageAccountId) && empty(workspaceId) && empty(eventHubAuthorizationRuleId) && empty(eventHubName)) ? json('null') : diagnosticsLogs)
   }
-  scope: managedInstanceDatabase
+  scope: database
 }
 
-output managedInstanceDatabaseName string = managedInstanceDatabase.name
-output managedInstanceDatabaseResourceId string = managedInstanceDatabase.id
-output managedInstanceDatabaseResourceGroup string = resourceGroup().name
+module database_backupShortTermRetentionPolicy 'backupShortTermRetentionPolicies/deploy.bicep' = if (!empty(backupShortTermRetentionPolicies)) {
+  name: 'backupShortTermRetentionPolicy-${deployment().name}'
+  params: {
+    name: backupShortTermRetentionPolicies.name
+    retentionDays: contains(backupShortTermRetentionPolicies, 'retentionDays') ? backupShortTermRetentionPolicies.retentionDays : 35
+  }
+}
+
+module database_backupLongTermRetentionPolicy 'backupLongTermRetentionPolicies/deploy.bicep' = if (!empty(backupLongTermRetentionPolicies)) {
+  name: 'backupLongTermRetentionPolicy-${deployment().name}'
+  params: {
+    name: backupLongTermRetentionPolicies.name
+    weekOfYear: contains(backupLongTermRetentionPolicies, 'weekOfYear') ? backupLongTermRetentionPolicies.weekOfYear : 5
+    weeklyRetention: contains(backupLongTermRetentionPolicies, 'weeklyRetention') ? backupLongTermRetentionPolicies.weeklyRetention : 'P1M'
+    monthlyRetention: contains(backupLongTermRetentionPolicies, 'monthlyRetention') ? backupLongTermRetentionPolicies.monthlyRetention : 'P1Y'
+    yearlyRetention: contains(backupLongTermRetentionPolicies, 'yearlyRetention') ? backupLongTermRetentionPolicies.yearlyRetention : 'P5Y'
+  }
+}
+
+output databaseName string = database.name
+output databaseResourceId string = database.id
+output databaseResourceGroup string = resourceGroup().name

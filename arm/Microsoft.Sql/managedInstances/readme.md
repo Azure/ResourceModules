@@ -7,12 +7,15 @@ This template deploys an SQL Managed Instance, with resource lock.
 | Resource Type | Api Version |
 | :-- | :-- |
 | `Microsoft.Authorization/locks` | 2016-09-01 |
+| `Microsoft.Authorization/roleAssignments` | 2021-04-01-preview |
 | `Microsoft.Insights/diagnosticSettings` | 2017-05-01-preview |
 | `Microsoft.Sql/managedInstances` | 2020-08-01-preview |
 | `Microsoft.Sql/managedInstances/administrators` | 2021-02-01-preview |
+| `Microsoft.Sql/managedInstances/backupShortTermRetentionPolicies` | 2017-03-01-preview |
+| `Microsoft.Sql/managedInstances/databases` | 2020-02-02-preview |
+| `Microsoft.Sql/managedInstances/databases/backupLongTermRetentionPolicies` | 2021-02-01-preview |
 | `Microsoft.Sql/managedInstances/encryptionProtector` | 2017-10-01-preview |
 | `Microsoft.Sql/managedInstances/keys` | 2017-10-01-preview |
-| `Microsoft.Sql/managedInstances/providers/roleAssignments` | 2021-04-01-preview |
 | `Microsoft.Sql/managedInstances/securityAlertPolicies` | 2017-03-01-preview |
 | `Microsoft.Sql/managedInstances/vulnerabilityAssessments` | 2021-02-01-preview |
 
@@ -30,6 +33,7 @@ SQL Managed Instance is deployed on a virtual network. This network is required 
 | `collation` | string | `SQL_Latin1_General_CP1_CI_AS` |  | Optional. Collation of the managed instance. |
 | `cuaId` | string |  |  | Optional. Customer Usage Attribution id (GUID). This GUID must be previously registered |
 | `customerManagedEnryptionKeyUri` | string |  |  | Optional. The URI of the key (in Azure Key Vault) for transparent data encryption. The key vault must have SoftDelete enabled and must reside in the same region as the SQL MI. The managed identity of the SQL managed instance needs to have the following key permissions in the key vault: Get, Unwrap Key, Wrap Key. If blank, service managed key will be used. |
+| `databases` | _[databases](databases/readme.md)_ array | `[]` |  | Optional. Databases to create in this server. |
 | `diagnosticLogsRetentionInDays` | int | `365` |  | Optional. Specifies the number of days that logs will be kept for; a value of 0 will retain data indefinitely. |
 | `diagnosticStorageAccountId` | string |  |  | Optional. Resource identifier of the Diagnostic Storage Account. |
 | `dnsZonePartner` | string |  |  | Optional. The resource id of another managed instance whose DNS zone this managed instance will share after creation. |
@@ -44,9 +48,9 @@ SQL Managed Instance is deployed on a virtual network. This network is required 
 | `lock` | string | `NotSpecified` | `[CanNotDelete, NotSpecified, ReadOnly]` | Optional. Specify the type of lock. |
 | `logsToEnable` | array | `[ResourceUsageStats, SQLSecurityAuditEvents]` | `[ResourceUsageStats, SQLSecurityAuditEvents]` | Optional. The name of logs that will be streamed. |
 | `managedInstanceCreateMode` | string | `Default` | `[Default, PointInTimeRestore]` | Optional. Specifies the mode of database creation. Default: Regular instance creation. Restore: Creates an instance by restoring a set of backups to specific point in time. RestorePointInTime and SourceManagedInstanceId must be specified. |
-| `managedInstanceName` | string |  |  | Required. The name of the SQL managed instance. |
 | `managedServiceIdentity` | string | `SystemAssigned` | `[None, SystemAssigned, UserAssigned]` | Optional. The type of identity used for the managed instance. The type "None" (default) will remove any identities from the managed instance. |
 | `metricsToEnable` | array | `[AllMetrics]` | `[AllMetrics]` | Optional. The name of metrics that will be streamed. |
+| `name` | string |  |  | Required. The name of the SQL managed instance. |
 | `proxyOverride` | string | `Proxy` | `[Proxy, Redirect, Default]` | Optional. Connection type used for connecting to the instance. |
 | `publicDataEndpointEnabled` | bool |  |  | Optional. Whether or not the public data endpoint is enabled. |
 | `restorePointInTime` | string |  |  | Optional. Specifies the point in time (ISO8601 format) of the source database that will be restored to create the new database. |
@@ -134,9 +138,13 @@ Tag names and tag values can be provided as needed. A tag can be left without a 
 ## Template references
 
 - [Locks](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2016-09-01/locks)
+- [Roleassignments](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2021-04-01-preview/roleAssignments)
 - [Diagnosticsettings](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Insights/2017-05-01-preview/diagnosticSettings)
 - [Managedinstances](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Sql/2020-08-01-preview/managedInstances)
 - [Managedinstances/Administrators](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Sql/2021-02-01-preview/managedInstances/administrators)
+- [Managedinstances/Backupshorttermretentionpolicies](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Sql/2017-03-01-preview/managedInstances/backupShortTermRetentionPolicies)
+- [Managedinstances/Databases](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Sql/2020-02-02-preview/managedInstances/databases)
+- [Managedinstances/Databases/Backuplongtermretentionpolicies](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Sql/2021-02-01-preview/managedInstances/databases/backupLongTermRetentionPolicies)
 - [Managedinstances/Encryptionprotector](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Sql/2017-10-01-preview/managedInstances/encryptionProtector)
 - [Managedinstances/Keys](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Sql/2017-10-01-preview/managedInstances/keys)
 - [Managedinstances/Securityalertpolicies](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Sql/2017-03-01-preview/managedInstances/securityAlertPolicies)

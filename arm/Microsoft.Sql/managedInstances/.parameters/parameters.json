@@ -85,7 +85,13 @@
         "databases": {
             "value": [
                 {
-                    "name": "sxx-az-sqlmidb-weu-x-001"
+                    "name": "sxx-az-sqlmidb-weu-x-001",
+                    "backupShortTermRetentionPolicies": {
+                        "name": "default"
+                    },
+                    "backupLongTermRetentionPolicies": {
+                        "name": "default"
+                    }
                 }
             ]
         }

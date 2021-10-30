@@ -321,8 +321,6 @@ module managedInstace_databases 'databases/deploy.bicep' = [for (database, index
   params: {
     name: database.name
     managedInstanceName: managedInstance.name
-    backupLongTermRetentionPoliciesName: contains(database, 'backupLongTermRetentionPoliciesName') ? database.backupLongTermRetentionPoliciesName : 'default'
-    backupShortTermRetentionPoliciesName: contains(database, 'backupShortTermRetentionPoliciesName') ? database.backupShortTermRetentionPoliciesName : 'default'
     catalogCollation: contains(database, 'catalogCollation') ? database.catalogCollation : 'SQL_Latin1_General_CP1_CI_AS'
     collation: contains(database, 'collation') ? database.collation : 'SQL_Latin1_General_CP1_CI_AS'
     createMode: contains(database, 'createMode') ? database.createMode : 'Default'
@@ -333,19 +331,16 @@ module managedInstace_databases 'databases/deploy.bicep' = [for (database, index
     location: contains(database, 'location') ? database.location : managedInstance.location
     lock: contains(database, 'lock') ? database.lock : lock
     longTermRetentionBackupResourceId: contains(database, 'longTermRetentionBackupResourceId') ? database.longTermRetentionBackupResourceId : ''
-    monthlyRetention: contains(database, 'monthlyRetention') ? database.monthlyRetention : 'P1Y'
     recoverableDatabaseId: contains(database, 'recoverableDatabaseId') ? database.recoverableDatabaseId : ''
     restorableDroppedDatabaseId: contains(database, 'restorableDroppedDatabaseId') ? database.restorableDroppedDatabaseId : ''
     restorePointInTime: contains(database, 'restorePointInTime') ? database.restorePointInTime : ''
-    retentionDays: contains(database, 'retentionDays') ? database.retentionDays : 35
     sourceDatabaseId: contains(database, 'sourceDatabaseId') ? database.sourceDatabaseId : ''
     storageContainerSasToken: contains(database, 'storageContainerSasToken') ? database.storageContainerSasToken : ''
     storageContainerUri: contains(database, 'storageContainerUri') ? database.storageContainerUri : ''
     tags: contains(database, 'tags') ? database.tags : {}
-    weeklyRetention: contains(database, 'weeklyRetention') ? database.weeklyRetention : 'P1M'
-    weekOfYear: contains(database, 'weekOfYear') ? database.weekOfYear : 5
     workspaceId: contains(database, 'workspaceId') ? database.workspaceId : ''
-    yearlyRetention: contains(database, 'yearlyRetention') ? database.yearlyRetention : 'P5Y'
+    backupShortTermRetentionPolicies: contains(database, 'backupShortTermRetentionPolicies') ? database.backupShortTermRetentionPolicies : {}
+    backupLongTermRetentionPolicies: contains(database, 'backupLongTermRetentionPolicies') ? database.backupLongTermRetentionPolicies : {}
   }
   dependsOn: [
     managedInstance
