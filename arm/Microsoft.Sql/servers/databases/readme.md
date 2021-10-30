@@ -15,7 +15,6 @@ This module deploys an Azure SQL Server.
 | `autoPauseDelay` | string |  |  | Optional. Time in minutes after which database is automatically paused. |
 | `collation` | string |  |  | Optional. The collation of the database. |
 | `cuaId` | string |  |  | Optional. Customer Usage Attribution id (GUID). This GUID must be previously registered |
-| `databaseName` | string |  |  | Required. The name of the database. |
 | `highAvailabilityReplicaCount` | int |  |  | Optional. The number of readonly secondary replicas associated with the database. |
 | `isLedgerOn` | bool |  |  | Optional. Whether or not this database is a ledger database, which means all tables in the database are ledger tables. Note: the value of this property cannot be changed after the database has been created. |
 | `licenseType` | string |  |  | Optional. The license type to apply for this database. |
@@ -23,6 +22,7 @@ This module deploys an Azure SQL Server.
 | `maintenanceConfigurationId` | string |  |  | Optional. Maintenance configuration id assigned to the database. This configuration defines the period when the maintenance updates will occur. |
 | `maxSizeBytes` | int |  |  | Optional. The max size of the database expressed in bytes. |
 | `minCapacity` | string |  |  | Optional. Minimal capacity that database will always have allocated. |
+| `name` | string |  |  | Required. The name of the database. |
 | `readScale` | string | `Disabled` | `[Enabled, Disabled]` | Optional. The state of read-only routing. |
 | `requestedBackupStorageRedundancy` | string |  | `[Geo, Local, Zone, ]` | Optional. The storage account type to be used to store backups for this database. |
 | `sampleName` | string |  |  | Optional. The name of the sample schema to apply when creating this database. |
@@ -53,6 +53,7 @@ Tag names and tag values can be provided as needed. A tag can be left without a 
 
 | Output Name | Type |
 | :-- | :-- |
+| `databaseId` | string |
 | `databaseName` | string |
 | `databaseResourceGroup` | string |
 | `serverName` | string |

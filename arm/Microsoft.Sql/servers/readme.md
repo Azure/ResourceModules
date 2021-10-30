@@ -7,10 +7,10 @@ This module deploys an Azure SQL Server.
 | Resource Type | Api Version |
 | :-- | :-- |
 | `Microsoft.Authorization/locks` | 2016-09-01 |
+| `Microsoft.Authorization/roleAssignments` | 2020-10-01-preview |
 | `Microsoft.Sql/servers` | 2020-02-02-preview |
 | `Microsoft.Sql/servers/databases` | 2021-02-01-preview |
 | `Microsoft.Sql/servers/firewallRules` | 2021-02-01-preview |
-| `Microsoft.Sql/servers/providers/roleAssignments` | 2021-04-01-preview |
 | `Microsoft.Sql/servers/securityAlertPolicies` | 2021-02-01-preview |
 
 ## Parameters
@@ -25,8 +25,8 @@ This module deploys an Azure SQL Server.
 | `enableADS` | bool |  |  | Optional. Whether or not ADS should be enabled. |
 | `location` | string | `[resourceGroup().location]` |  | Optional. Location for all resources. |
 | `lock` | string | `NotSpecified` | `[CanNotDelete, NotSpecified, ReadOnly]` | Optional. Specify the type of lock. |
+| `name` | string |  |  | Required. The name of the server. |
 | `roleAssignments` | array | `[]` |  | Optional. Array of role assignment objects that contain the 'roleDefinitionIdOrName' and 'principalId' to define RBAC role assignments on this resource. In the roleDefinitionIdOrName attribute, you can provide either the display name of the role definition, or its fully qualified ID in the following format: '/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11' |
-| `serverName` | string |  |  | Required. The name of the server. |
 | `tags` | object | `{object}` |  | Optional. Tags of the resource. |
 
 ### Parameter Usage: `roleAssignments`
@@ -86,6 +86,7 @@ Tag names and tag values can be provided as needed. A tag can be left without a 
 ## Template references
 
 - [Locks](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2016-09-01/locks)
+- [Roleassignments](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2020-10-01-preview/roleAssignments)
 - [Servers](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Sql/2020-02-02-preview/servers)
 - [Servers/Databases](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Sql/2021-02-01-preview/servers/databases)
 - [Servers/Firewallrules](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Sql/2021-02-01-preview/servers/firewallRules)
