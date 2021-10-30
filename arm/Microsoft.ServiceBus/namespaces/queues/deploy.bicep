@@ -129,7 +129,7 @@ module queue_authorizationRules 'authorizationRules/deploy.bicep' = [for (author
   name: '${deployment().name}-Queue-AuthorizationRule-${index}'
   params: {
     namespaceName: namespaceName
-    queueName: queue.name
+    queueName: last(split(queue.name, '/'))
     name: authorizationRule.name
     rights: contains(authorizationRule, 'rights') ? authorizationRule.rights : []
   }
