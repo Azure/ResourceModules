@@ -6,14 +6,12 @@ This section gives you an overview of how to use the bicep modules.
 
 ### _Navigation_
 
-- [Modules Usage](#modules-usage)
-    - [_Navigation_](#navigation)
-  - [Deploy local template](#deploy-local-template)
-    - [**Local:** PowerShell](#local-powershell)
-    - [**Local:** Azure CLI](#local-azure-cli)
-  - [Deploy remote template](#deploy-remote-template)
-    - [**Remote:** PowerShell](#remote-powershell)
-    - [**Remote:** Azure CLI](#remote-azure-cli)
+- [Deploy local template](#deploy-local-template)
+  - [**Local:** PowerShell](#local-powershell)
+  - [**Local:** Azure CLI](#local-azure-cli)
+- [Deploy remote template](#deploy-remote-template)
+  - [**Remote:** PowerShell](#remote-powershell)
+  - [**Remote:** Azure CLI](#remote-azure-cli)
 
 ---
 

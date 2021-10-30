@@ -7,7 +7,10 @@ This section and its sub-sections give you an overview of the principels the tes
 ### _Navigation_
 
 - [Testing Design](./TestingDesign)
-  - [Module Dependencies](./TestingDesign#Module-Dependencies)
+  - [Approach](./TestingDesign#approach)
+  - [API version validation](./TestingDesign#api-version-validation)
+  - [Template validation](./TestingDesign#template-validation)
+  - [Deployment validation](./TestingDesign#deployment-validation)
 - [Testing Usage](./TestingUsage)
 
 ---

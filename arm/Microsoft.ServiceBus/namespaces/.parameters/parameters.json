@@ -3,7 +3,7 @@
     "contentVersion": "1.0.0.0",
     "parameters": {
         "serviceBusNamespaceName": {
-            "value": "sxx-az-sbn-weu-x-001"
+            "value": "sxx-az-sbn-weu-x-002"
         },
         "skuName": {
             "value": "Basic"

@@ -7,7 +7,10 @@ This section gives you an overview of the repositories larger known issues. We a
 ### _Navigation_
 
 - [Module specific](#module-specific)
+  - [Consistency](#Consistency)
 - [Testing specific](#testing-specific)
+  - [Removal exceptions](#removal-exceptions)
+  - [Limited parameter file set](#limited-parameter-file-set)
 - [Pipeline specific](#pipeline-specific)
 
 ---
@@ -24,7 +27,9 @@ While we work hard on aligning all modules to a common standard, we're currently
 
 This section outlines known issues that currently affect our testing.
 
-### Not all modules are removed after their test deployment
+### Removal exceptions
+
+Not all modules are removed after their test deployment.
 
 In general, the current approach works for about 80-90% of the modules. That said, there are several different reasons why some of the modules are currently not auto-removed:
 

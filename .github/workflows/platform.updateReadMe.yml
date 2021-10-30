@@ -38,7 +38,7 @@ jobs:
             FilePath       = Join-Path $env:GITHUB_WORKSPACE 'README.md'
             Organization   = ($env:GITHUB_REPOSITORY).split('/')[0]
             RepositoryName = ($env:GITHUB_REPOSITORY).split('/')[1]
-            ColumnsInOrder = @('Name', 'TemplateType', 'Status')
+            ColumnsInOrder = @('Name', 'Status')
             SortByColumn   = 'Name'
           }
 
@@ -58,7 +58,7 @@ jobs:
             FilePath       = Join-Path $env:GITHUB_WORKSPACE 'arm/README.md'
             Organization   = ($env:GITHUB_REPOSITORY).split('/')[0]
             RepositoryName = ($env:GITHUB_REPOSITORY).split('/')[1]
-            ColumnsInOrder = @('Name', 'ProviderNamespace','ResourceType','TemplateType')
+            ColumnsInOrder = @('Name', 'ProviderNamespace','ResourceType')
           }
 
           Write-Verbose "Invoke task with" -Verbose

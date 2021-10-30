@@ -6,18 +6,16 @@ This section will give on an overview on how to get started using this repositor
 
 ### _Navigation_
 
-- [Getting started](#getting-started)
-    - [_Navigation_](#navigation)
-  - [General prerequisites](#general-prerequisites)
-  - [Where to start](#where-to-start)
-    - [**Option 1**: Use it as a basis to set up your own inner-source project](#option-1-use-it-as-a-basis-to-set-up-your-own-inner-source-project)
-      - [Fork the repository](#fork-the-repository)
-      - [Service Names](#service-names)
-      - [Dependencies](#dependencies)
-      - [GitHub-specific prerequisites](#github-specific-prerequisites)
-    - [**Option 2**: Use it as a local reference to build bicep templates](#option-2-use-it-as-a-local-reference-to-build-bicep-templates)
-      - [Clone / download the repository](#clone--download-the-repository)
-    - [**Option 3**: Use it as remote reference to reference the bicep templates](#option-3-use-it-as-remote-reference-to-reference-the-bicep-templates)
+- [General prerequisites](#general-prerequisites)
+- [Where to start](#where-to-start)
+  - [**Option 1**: Use it as a basis to set up your own inner-source project](#option-1-use-it-as-a-basis-to-set-up-your-own-inner-source-project)
+    - [Fork the repository](#fork-the-repository)
+    - [Service Names](#service-names)
+    - [Dependencies](#dependencies)
+    - [GitHub-specific prerequisites](#github-specific-prerequisites)
+  - [**Option 2**: Use it as a local reference to build bicep templates](#option-2-use-it-as-a-local-reference-to-build-bicep-templates)
+    - [Clone / download the repository](#clone--download-the-repository)
+  - [**Option 3**: Use it as remote reference to reference the bicep templates](#option-3-use-it-as-remote-reference-to-reference-the-bicep-templates)
 
 ---
 
@@ -32,9 +30,14 @@ To ensure you can use all the content in this repostiroy you'd want to install
 - The latest PowerShell version [PowerShell 7][PowerShellDocs]
 
   ```PowerShell
-  # One-liner
-  Install-Module -Name Az -Scope CurrentUser -Repository PSGallery -Force
+  # Windows one-liner
+  winget install --name PowerShell --exact --source winget
+
+  # Linux one-liner
+  wget https://aka.ms/install-powershell.sh; sudo bash install-powershell.sh; rm install-powershell.sh
   ```
+
+> Source: [Install PowerShell on Windows, Linux, and macOS][InstallPS]
 
 - The [Azure Az Module][InstallAzPs] / or at least modules such as `Az.Accounts` & `Az.Resources`
 
@@ -47,14 +50,33 @@ To ensure you can use all the content in this repostiroy you'd want to install
 
   ```PowerShell
   # Windows one-liner
-  iwr https://aka.ms/installazurecliwindows -OutFile .\AzureCLI.msi; start msiexec.exe -Wait -ArgumentList '/I AzureCLI.msi /quiet'; rm .\AzureCLI.msi
+  winget install --id Microsoft.AzureCLI --exact
 
   # Linux one-liner
   curl -L https://aka.ms/InstallAzureCli | bash
   ```
 
+> Source: [How to install the Azure CLI][InstallAzCLI]
+
 - And of course [Bicep][Bicep]
 
+```PowerShell
+# Windows one-liner
+winget install --id Microsoft.Bicep --exact
+
+# Linux
+# Fetch the latest Bicep CLI binary
+curl -Lo bicep https://github.com/Azure/bicep/releases/latest/download/bicep-linux-x64
+# Mark it as executable
+chmod +x ./bicep
+# Add bicep to your PATH (requires admin)
+sudo mv ./bicep /usr/local/bin/bicep
+# Verify you can now access the 'bicep' command
+bicep --help
+# Done!
+```
+
+> Source: [Install Bicep tools][InstallBicep]
 > ***Note***: This only affects the machine that would deploy or interact with the bicep templates (for example your local machine or a pipeline agent).
 
 ## Where to start
@@ -137,6 +159,9 @@ Last but not least, instead of fetching your own copy of the repository you can 
 [AzCLI]: <https://docs.microsoft.com/en-us/cli/azure/>
 [PowerShellCore]: <https://github.com/PowerShell/PowerShell/releases/latest>
 [InstallAzPs]: <https://docs.microsoft.com/en-us/powershell/azure/install-az-ps>
+[InstallAzCLI]: <https://docs.microsoft.com/en-us/cli/azure/install-azure-cli>
+[InstallPS]: <https://docs.microsoft.com/en-us/powershell/scripting/install/installing-powershell?view=powershell-7.1>
+[InstallBicep]: <https://docs.microsoft.com/en-us/azure/azure-resource-manager/bicep/install#install-manually>
 [AzureResourceManager]: <https://docs.microsoft.com/en-us/azure/azure-resource-manager/management/overview>
 
 <!-- Docs -->

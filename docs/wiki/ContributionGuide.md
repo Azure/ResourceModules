@@ -6,10 +6,8 @@ This section outlines how you can contribute to the repository.
 
 ### _Navigation_
 
-- [Contribution](#contribution)
-    - [_Navigation_](#navigation)
-  - [Set your environment up](#set-your-environment-up)
-  - [How to contribute?](#how-to-contribute)
+- [Set your environment up](#set-your-environment-up)
+- [How to contribute?](#how-to-contribute)
 
 ---
 
