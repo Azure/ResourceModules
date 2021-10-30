@@ -1,6 +1,6 @@
-# SqlManagedinstancesSecurityalertpolicies `[Microsoft.Sql/managedInstances/securityAlertPolicies]`
+# SQL Managed Instance Security Alert Policy `[Microsoft.Sql/managedInstances/securityAlertPolicies]`
 
-// TODO: Replace Resource and fill in description
+This module deploys a security alert policy for a SQL managed instance.
 
 ## Resource Types
 
@@ -17,10 +17,6 @@
 | `managedInstanceName` | string |  |  | Name of the resource. |
 | `name` | string |  |  | The name of the security alert policy |
 | `state` | string | `Disabled` | `[Enabled, Disabled]` | Optional. Enables advanced data security features, like recuring vulnerability assesment scans and ATP. If enabled, storage account must be provided. |
-
-### Parameter Usage: `<ParameterPlaceholder>`
-
-// TODO: Fill in Parameter usage
 
 ## Outputs
 

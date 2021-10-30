@@ -1,6 +1,6 @@
-# SqlManagedinstancesKeys `[Microsoft.Sql/managedInstances/keys]`
+# SQL Managed Instance Keys `[Microsoft.Sql/managedInstances/keys]`
 
-// TODO: Replace Resource and fill in description
+This module deploys a key for a SQL managed instance.
 
 ## Resource Types
 
@@ -17,10 +17,6 @@
 | `name` | string |  |  | The name of the key |
 | `serverKeyType` | string | `ServiceManaged` | `[AzureKeyVault, ServiceManaged]` | The encryption protector type like "ServiceManaged", "AzureKeyVault" |
 | `uri` | string |  |  | The URI of the key. If the ServerKeyType is AzureKeyVault, then the URI is required. |
-
-### Parameter Usage: `<ParameterPlaceholder>`
-
-// TODO: Fill in Parameter usage
 
 ## Outputs
 

@@ -1,6 +1,6 @@
-# SqlManagedinstancesEncryptionprotector `[Microsoft.Sql/managedInstances/encryptionProtector]`
+# SQL Managed Instance Encryption Protector `[Microsoft.Sql/managedInstances/encryptionProtector]`
 
-// TODO: Replace Resource and fill in description
+This module deploys an encryption protector for a SQL managed instance.
 
 ## Resource Types
 
@@ -18,10 +18,6 @@
 | `name` | string | `current` |  | The name of the encryptionProtector |
 | `serverKeyName` | string |  |  | The name of the managed instance key. |
 | `serverKeyType` | string | `AzureKeyVault` | `[AzureKeyVault, ServiceManaged]` | The encryption protector type like "ServiceManaged", "AzureKeyVault". |
-
-### Parameter Usage: `<ParameterPlaceholder>`
-
-// TODO: Fill in Parameter usage
 
 ## Outputs
 

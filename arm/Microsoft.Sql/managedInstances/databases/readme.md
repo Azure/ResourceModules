@@ -1,6 +1,6 @@
 # SQL Managed Instances Database  `[Microsoft.Sql/managedInstances/databases]`
 
-This template deploys an SQL Managed Instances Database.
+This template deploys a SQL Managed Instances Database.
 
 ## Resource types
 
@@ -58,21 +58,6 @@ Tag names and tag values can be provided as needed. A tag can be left without a 
         "ServiceName": "DeploymentValidation",
         "Role": "DeploymentValidation"
     }
-}
-""`
-
-### Parameter Usage: `LongTermRetention`
-
-""`json
-{
-  "name": "default",
-  "type": "Microsoft.Sql/resourceGroups/servers/databases/backupLongTermRetentionPolicies",
-  "properties": {
-    "weeklyRetention": "P1M",
-    "monthlyRetention": "P1Y",
-    "yearlyRetention": "P5Y",
-    "weekOfYear": 5
-  }
 }
 ""`
 

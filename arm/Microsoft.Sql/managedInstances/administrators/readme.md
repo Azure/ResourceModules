@@ -1,6 +1,6 @@
-# SqlManagedinstancesAdministrators `[Microsoft.Sql/managedInstances/administrators]`
+# SQL Managed Instances Administrator `[Microsoft.Sql/managedInstances/administrators]`
 
-// TODO: Replace Resource and fill in description
+This module deploys an administrator for the SQL managed instance
 
 ## Resource Types
 
@@ -17,10 +17,6 @@
 | `managedInstanceName` | string |  |  | Name of the resource. |
 | `sid` | string |  |  | Required. SID (object ID) of the managed instance administrator. |
 | `tenantId` | string |  |  | Optional. Tenant ID of the managed instance administrator. |
-
-### Parameter Usage: `<ParameterPlaceholder>`
-
-// TODO: Fill in Parameter usage
 
 ## Outputs
 
