@@ -309,6 +309,35 @@ jobs:
           managementGroupId: '${{ secrets.ARM_MGMTGROUP_ID }}'
           removeDeployment: '${{ env.removeDeployment }}'
 
+  job_deploy_udr:
+    runs-on: ubuntu-20.04
+    name: 'Deploy routeTables'
+    env:
+      moduleName: routeTables
+      namespace: 'Microsoft.Network\routeTables'
+    needs:
+      - job_deploy_rg
+    strategy:
+      fail-fast: false
+      matrix:
+        parameterFilePaths: ['parameters.json']
+    steps:
+      - name: 'Checkout'
+        uses: actions/checkout@v2
+        with:
+          fetch-depth: 0
+      - name: 'Deploy module'
+        uses: ./.github/actions/templates/deployModule
+        with:
+          moduleName: '${{ env.moduleName }}'
+          templateFilePath: 'arm/${{ env.namespace }}/deploy.bicep'
+          parameterFilePath: 'utilities/dependencies/${{ env.namespace }}/parameters/${{ matrix.parameterFilePaths }}'
+          location: '${{ env.defaultLocation }}'
+          resourceGroupName: '${{ env.resourceGroupName }}'
+          subscriptionId: '${{ secrets.ARM_SUBSCRIPTION_ID }}'
+          managementGroupId: '${{ secrets.ARM_MGMTGROUP_ID }}'
+          removeDeployment: '${{ env.removeDeployment }}'
+
   job_deploy_evh:
     runs-on: ubuntu-20.04
     name: 'Deploy eventhub'
@@ -565,6 +594,7 @@ jobs:
       moduleName: virtualNetworks
       namespace: 'Microsoft.Network\virtualNetworks'
     needs:
+      - job_deploy_udr
       - job_deploy_nsg
     strategy:
       fail-fast: false
