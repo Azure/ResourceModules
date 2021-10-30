@@ -28,9 +28,6 @@
                 }
             ]
         },
-        "location": {
-            "value": "eastus"
-        },
         "appGroupName": {
             "value": "sxx-az-avdag-weu-x-001"
         }
