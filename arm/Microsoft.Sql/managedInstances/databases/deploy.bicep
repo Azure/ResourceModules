@@ -161,7 +161,7 @@ resource database_diagnosticSettings 'Microsoft.Insights/diagnosticsettings@2017
 }
 
 module database_backupShortTermRetentionPolicy 'backupShortTermRetentionPolicies/deploy.bicep' = if (!empty(backupShortTermRetentionPoliciesObj)) {
-  name: 'backupShortTermRetentionPolicy-${deployment().name}'
+  name: '${deployment().name}-backupShortTermRetentionPolicy'
   params: {
     managedInstanceName: managedInstanceName
     name: backupShortTermRetentionPoliciesObj.name
@@ -170,7 +170,7 @@ module database_backupShortTermRetentionPolicy 'backupShortTermRetentionPolicies
 }
 
 module database_backupLongTermRetentionPolicy 'backupLongTermRetentionPolicies/deploy.bicep' = if (!empty(backupLongTermRetentionPoliciesObj)) {
-  name: 'backupLongTermRetentionPolicy-${deployment().name}'
+  name: '${deployment().name}-backupLongTermRetentionPolicy'
   params: {
     managedInstanceName: managedInstanceName
     name: backupLongTermRetentionPoliciesObj.name
