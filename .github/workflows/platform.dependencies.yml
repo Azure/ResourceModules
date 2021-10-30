@@ -535,6 +535,10 @@ jobs:
     needs:
       - job_deploy_kv
     steps:
+      - name: 'Checkout'
+        uses: actions/checkout@v2
+        with:
+          fetch-depth: 0
       - name: Azure Login
         uses: azure/login@v1
         with:
@@ -630,7 +634,6 @@ jobs:
       matrix:
         parameterFilePaths:
           [
-            'parameters.json',
             '2.vnetpeer01.parameters.json',
             '3.vnetpeer02.parameters.json',
             '4.azfw.parameters.json',
