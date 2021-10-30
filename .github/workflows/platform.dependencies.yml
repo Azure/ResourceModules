@@ -529,6 +529,36 @@ jobs:
           managementGroupId: '${{ secrets.ARM_MGMTGROUP_ID }}'
           removeDeployment: '${{ env.removeDeployment }}'
 
+  job_deploy_kv_secrets:
+    runs-on: ubuntu-20.04
+    name: 'Deploy key vault secrets and keys'
+    needs:
+      - job_deploy_kv
+    steps:
+      - name: Azure Login
+        uses: azure/login@v1
+        with:
+          creds: ${{ secrets.AZURE_CREDENTIALS }}
+      - name: Azure CLI script file
+        uses: azure/CLI@v1
+        with:
+          azcliversion: latest
+          inlineScript: |
+            $username = (-join ((65..90) + (97..122) | Get-Random -Count 9 -SetSeed 1 | % {[char]$_ + "$_"})).substring(0,19) # max length
+            $password = (New-Guid).Guid.SubString(0,19)
+            $vpnSharedKey =  (New-Guid).Guid.SubString(0,32)
+            # VirtualMachines and VMSS
+            az keyvault secret set --vault-name "adp-sxx-az-kv-weu-x-001" --name "adminUsername" --value "$username"
+            az keyvault secret set --vault-name "adp-sxx-az-kv-weu-x-001" --name "adminPassword" --value "$password"
+            # Azure SQLServer and SQLManagedInstances
+            az keyvault secret set --vault-name "adp-sxx-az-kv-weu-x-001" --name "administratorLogin" --value "$username"
+            az keyvault secret set --vault-name "adp-sxx-az-kv-weu-x-001" --name "administratorLoginPassword" --value "$password"
+            # VirtualNetworkGateway
+            az keyvault secret set --vault-name "adp-sxx-az-kv-weu-x-001" --name "vpnSharedKey" --value "$vpnSharedKey"
+            # DiskEncryptionSet, VirtualMachines and VMSS
+            az keyvault key create --vault-name "adp-sxx-az-kv-weu-x-001" --name "keyEncryptionKey"
+            az keyvault key create --vault-name "adp-sxx-az-kv-weu-x-001" --name "keyEncryptionKeySqlMi"
+
   job_deploy_rolea:
     runs-on: ubuntu-20.04
     name: 'Deploy role assignments'
