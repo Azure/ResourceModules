@@ -311,7 +311,7 @@ jobs:
 
   job_deploy_udr:
     runs-on: ubuntu-20.04
-    name: 'Deploy routeTables'
+    name: 'Deploy route tables'
     env:
       moduleName: routeTables
       namespace: 'Microsoft.Network\routeTables'
