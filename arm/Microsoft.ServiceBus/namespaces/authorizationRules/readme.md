@@ -1,6 +1,6 @@
-# ServicebusNamespacesAuthorizationrules `[Microsoft.ServiceBus/namespaces/authorizationRules]`
+# ServiceBus Namespace Authorization Rules `[Microsoft.ServiceBus/namespaces/authorizationRules]`
 
-// TODO: Replace Resource and fill in description
+This module deploys authorization rules for a service bus namespace
 
 ## Resource Types
 
@@ -17,9 +17,6 @@
 | `namespaceName` | string |  |  | Required. Name of the parent Service Bus Namespace for the Service Bus Queue. |
 | `rights` | array | `[]` | `[Listen, Manage, Send]` | Optional. The rights associated with the rule. |
 
-### Parameter Usage: `<ParameterPlaceholder>`
-
-// TODO: Fill in Parameter usage
 
 ## Outputs
 

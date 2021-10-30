@@ -1,6 +1,6 @@
-# ServicebusNamespacesVirtualnetworkrules `[Microsoft.ServiceBus/namespaces/virtualNetworkRules]`
+# ServiceBus Namespace Virtual Network Rules `[Microsoft.ServiceBus/namespaces/virtualNetworkRules]`
 
-// TODO: Replace Resource and fill in description
+This module deploys a virtual network rule for a service bus namespace.
 
 ## Resource Types
 
@@ -16,10 +16,6 @@
 | `name` | string | `[format('{0}-vnr', parameters('namespaceName'))]` |  | Optional. The name of the virtual network rule |
 | `namespaceName` | string |  |  | Required. Name of the parent Service Bus Namespace for the Service Bus Queue. |
 | `virtualNetworkSubnetId` | string |  |  | Required. Resource ID of Virtual Network Subnet |
-
-### Parameter Usage: `<ParameterPlaceholder>`
-
-// TODO: Fill in Parameter usage
 
 ## Outputs
 

@@ -1,6 +1,6 @@
-# ServicebusNamespacesIpfilterrules `[Microsoft.ServiceBus/namespaces/ipFilterRules]`
+# ServiceBus Namespace Ip-Filter Rules `[Microsoft.ServiceBus/namespaces/ipFilterRules]`
 
-// TODO: Replace Resource and fill in description
+This module deploys IP filter rules for a service bus namespace
 
 ## Resource Types
 
@@ -18,10 +18,6 @@
 | `ipMask` | string |  |  | Required. IP Mask |
 | `name` | string | `[format('{0}-ifr', parameters('namespaceName'))]` |  | Optional. The name of the ip filter rule |
 | `namespaceName` | string |  |  | Required. Name of the parent Service Bus Namespace for the Service Bus Queue. |
-
-### Parameter Usage: `<ParameterPlaceholder>`
-
-// TODO: Fill in Parameter usage
 
 ## Outputs
 

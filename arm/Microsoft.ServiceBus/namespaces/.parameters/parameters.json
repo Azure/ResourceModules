@@ -32,6 +32,27 @@
                                 "5545f7a0-51f4-46af-b3b4-baecf5176a56"
                             ]
                         }
+                    ],
+                    "authorizationRules": [
+                        {
+                            "name": "RootManageSharedAccessKey",
+                            "properties": {
+                                "rights": [
+                                    "Listen",
+                                    "Manage",
+                                    "Send"
+                                ]
+                            }
+                        },
+                        {
+                            "name": "AnotherKey",
+                            "properties": {
+                                "rights": [
+                                    "Listen",
+                                    "Send"
+                                ]
+                            }
+                        }
                     ]
                 }
             ]

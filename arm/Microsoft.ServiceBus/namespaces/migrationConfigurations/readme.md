@@ -1,6 +1,6 @@
-# ServicebusNamespacesMigrationconfigurations `[Microsoft.ServiceBus/namespaces/migrationConfigurations]`
+# ServiceBus Namespace Migration Configuration `[Microsoft.ServiceBus/namespaces/migrationConfigurations]`
 
-// TODO: Replace Resource and fill in description
+This module deploys a migration configuration for a service bus namespace
 
 ## Resource Types
 
@@ -17,10 +17,6 @@
 | `namespaceName` | string |  |  | Required. Name of the parent Service Bus Namespace for the Service Bus Queue. |
 | `postMigrationName` | string |  |  | Required. Name to access Standard Namespace after migration |
 | `targetNamespace` | string |  |  | Required. Existing premium Namespace ARM Id name which has no entities, will be used for migration |
-
-### Parameter Usage: `<ParameterPlaceholder>`
-
-// TODO: Fill in Parameter usage
 
 ## Outputs
 

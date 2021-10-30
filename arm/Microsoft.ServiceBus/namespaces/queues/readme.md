@@ -1,6 +1,6 @@
-# ServiceBusQueues  `[Microsoft.ServiceBus/namespaces/queues]`
+# ServiceBus Queue  `[Microsoft.ServiceBus/namespaces/queues]`
 
-This module deploys Service Bus Queue.
+This module deploys a queue for a service bus namespace.
 
 ## Resource types
 
@@ -33,55 +33,6 @@ This module deploys Service Bus Queue.
 | `requiresSession` | bool |  |  | Optional. A value that indicates whether the queue supports the concept of sessions. |
 | `roleAssignments` | array | `[]` |  | Optional. Array of role assignment objects that contain the 'roleDefinitionIdOrName' and 'principalId' to define RBAC role assignments on this resource. In the roleDefinitionIdOrName attribute, you can provide either the display name of the role definition, or its fully qualified ID in the following format: '/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11' |
 | `status` | string | `Active` | `[Active, Disabled, Restoring, SendDisabled, ReceiveDisabled, Creating, Deleting, Renaming, Unknown]` | Optional. Enumerates the possible values for the status of a messaging entity. - Active, Disabled, Restoring, SendDisabled, ReceiveDisabled, Creating, Deleting, Renaming, Unknown |
-
-### Parameter Usage: `authorizationRules`
-
-Default value:
-
-```json
-"authorizationRules": {
-    "value": [
-        {
-            "name": "RootManageSharedAccessKey",
-            "properties": {
-                "rights": [
-                    "Listen",
-                    "Manage",
-                    "Send"
-                ]
-            }
-        }
-    ]
-}
-```
-
-Example for 2 authorization rules:
-
-```json
-"authorizationRules": {
-    "value": [
-        {
-            "name": "RootManageSharedAccessKey",
-            "properties": {
-                "rights": [
-                    "Listen",
-                    "Manage",
-                    "Send"
-                ]
-            }
-        },
-        {
-            "name": "AnotherKey",
-            "properties": {
-                "rights": [
-                    "Listen",
-                    "Send"
-                ]
-            }
-        }
-    ]
-}
-```
 
 ### Parameter Usage: `roleAssignments`
 

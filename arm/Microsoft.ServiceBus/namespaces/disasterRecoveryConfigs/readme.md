@@ -1,6 +1,6 @@
-# ServicebusNamespacesDisasterrecoveryconfigs `[Microsoft.ServiceBus/namespaces/disasterRecoveryConfigs]`
+# Service Bus Namespace Disaster Recovery Config `[Microsoft.ServiceBus/namespaces/disasterRecoveryConfigs]`
 
-// TODO: Replace Resource and fill in description
+This module deploys a disaster recovery config for a service bus Namespace
 
 ## Resource Types
 
@@ -17,10 +17,6 @@
 | `name` | string | `default` |  | Optional. The name of the disaster recovery config |
 | `namespaceName` | string |  |  | Required. Name of the parent Service Bus Namespace for the Service Bus Queue. |
 | `partnerNamespace` | string |  |  | Optional. ARM Id of the Primary/Secondary eventhub namespace name, which is part of GEO DR pairing |
-
-### Parameter Usage: `<ParameterPlaceholder>`
-
-// TODO: Fill in Parameter usage
 
 ## Outputs
 
