@@ -36,6 +36,33 @@
                     ]
                 }
             ]
+        },
+        "databases": {
+            "value": [
+                {
+                    "databaseName": {
+                        "value": "sxx-az-sqldb-weu-x-001"
+                    },
+                    "collation": {
+                        "value": "SQL_Latin1_General_CP1_CI_AS"
+                    },
+                    "tier": {
+                        "value": "GeneralPurpose"
+                    },
+                    "skuName": {
+                        "value": "GP_Gen5_2"
+                    },
+                    "maxSizeBytes": {
+                        "value": 34359738368
+                    },
+                    "serverName": {
+                        "value": "sxx-az-sqlsrv-weu-x-001"
+                    },
+                    "licenseType": {
+                        "value": "LicenseIncluded"
+                    }
+                }
+            ]
         }
     }
 }

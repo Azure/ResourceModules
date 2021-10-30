@@ -16,14 +16,14 @@ This module deploys an Azure SQL Server.
 | `collation` | string |  |  | Optional. The collation of the database. |
 | `cuaId` | string |  |  | Optional. Customer Usage Attribution id (GUID). This GUID must be previously registered |
 | `databaseName` | string |  |  | Required. The name of the database. |
-| `enableSqlLedger` | bool |  |  | Optional. Whether or not this database is a ledger database, which means all tables in the database are ledger tables. Note: the value of this property cannot be changed after the database has been created. |
+| `highAvailabilityReplicaCount` | int |  |  | Optional. The number of readonly secondary replicas associated with the database. |
+| `isLedgerOn` | bool |  |  | Optional. Whether or not this database is a ledger database, which means all tables in the database are ledger tables. Note: the value of this property cannot be changed after the database has been created. |
 | `licenseType` | string |  |  | Optional. The license type to apply for this database. |
 | `location` | string | `[resourceGroup().location]` |  | Optional. Location for all resources. |
 | `maintenanceConfigurationId` | string |  |  | Optional. Maintenance configuration id assigned to the database. This configuration defines the period when the maintenance updates will occur. |
 | `maxSizeBytes` | int |  |  | Optional. The max size of the database expressed in bytes. |
 | `minCapacity` | string |  |  | Optional. Minimal capacity that database will always have allocated. |
-| `numberOfReplicas` | int |  |  | Optional. The number of readonly secondary replicas associated with the database. |
-| `readScaleOut` | string | `Disabled` |  | Optional. The state of read-only routing. |
+| `readScale` | string | `Disabled` | `[Enabled, Disabled]` | Optional. The state of read-only routing. |
 | `requestedBackupStorageRedundancy` | string |  | `[Geo, Local, Zone, ]` | Optional. The storage account type to be used to store backups for this database. |
 | `sampleName` | string |  |  | Optional. The name of the sample schema to apply when creating this database. |
 | `serverName` | string |  |  | Required. The Name of SQL Server |

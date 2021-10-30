@@ -26,10 +26,14 @@ param zoneRedundant bool = false
 param licenseType string = ''
 
 @description('Optional. The state of read-only routing.')
-param readScaleOut string = 'Disabled'
+@allowed([
+  'Enabled'
+  'Disabled'
+])
+param readScale string = 'Disabled'
 
 @description('Optional. The number of readonly secondary replicas associated with the database.')
-param numberOfReplicas int = 0
+param highAvailabilityReplicaCount int = 0
 
 @description('Optional. Minimal capacity that database will always have allocated.')
 param minCapacity string = ''
@@ -56,7 +60,7 @@ param cuaId string = ''
 param requestedBackupStorageRedundancy string = ''
 
 @description('Optional. Whether or not this database is a ledger database, which means all tables in the database are ledger tables. Note: the value of this property cannot be changed after the database has been created.')
-param enableSqlLedger bool = false
+param isLedgerOn bool = false
 
 @description('Optional. Maintenance configuration id assigned to the database. This configuration defines the period when the maintenance updates will occur.')
 param maintenanceConfigurationId string = ''
@@ -76,12 +80,12 @@ resource sqlServerDatabase 'Microsoft.Sql/servers/databases@2021-02-01-preview' 
     sampleName: sampleName
     zoneRedundant: zoneRedundant
     licenseType: licenseType
-    readScale: readScaleOut
+    readScale: readScale
     minCapacity: !empty(minCapacity) ? json(minCapacity) : 0
     autoPauseDelay: !empty(autoPauseDelay) ? json(autoPauseDelay) : 0
-    highAvailabilityReplicaCount: numberOfReplicas
+    highAvailabilityReplicaCount: highAvailabilityReplicaCount
     requestedBackupStorageRedundancy: any(requestedBackupStorageRedundancy)
-    isLedgerOn: enableSqlLedger
+    isLedgerOn: isLedgerOn
     maintenanceConfigurationId: !empty(maintenanceConfigurationId) ? maintenanceConfigurationId : null
   }
   sku: {

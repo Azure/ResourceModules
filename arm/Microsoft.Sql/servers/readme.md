@@ -8,6 +8,7 @@ This module deploys an Azure SQL Server.
 | :-- | :-- |
 | `Microsoft.Authorization/locks` | 2016-09-01 |
 | `Microsoft.Sql/servers` | 2020-02-02-preview |
+| `Microsoft.Sql/servers/databases` | 2021-02-01-preview |
 | `Microsoft.Sql/servers/firewallRules` | 2021-02-01-preview |
 | `Microsoft.Sql/servers/providers/roleAssignments` | 2021-04-01-preview |
 | `Microsoft.Sql/servers/securityAlertPolicies` | 2021-02-01-preview |
@@ -20,6 +21,7 @@ This module deploys an Azure SQL Server.
 | `administratorLoginPassword` | secureString |  |  | Required. The administrator login password. |
 | `allowAzureIps` | bool |  |  | Required. Whether or not Azure IP's are allowed. |
 | `cuaId` | string |  |  | Optional. Customer Usage Attribution id (GUID). This GUID must be previously registered |
+| `databases` | _[databases](databases/readme.md)_ array | `[]` |  | Optional. The databases to create in the server |
 | `enableADS` | bool |  |  | Optional. Whether or not ADS should be enabled. |
 | `location` | string | `[resourceGroup().location]` |  | Optional. Location for all resources. |
 | `lock` | string | `NotSpecified` | `[CanNotDelete, NotSpecified, ReadOnly]` | Optional. Specify the type of lock. |
@@ -85,5 +87,6 @@ Tag names and tag values can be provided as needed. A tag can be left without a 
 
 - [Locks](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2016-09-01/locks)
 - [Servers](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Sql/2020-02-02-preview/servers)
+- [Servers/Databases](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Sql/2021-02-01-preview/servers/databases)
 - [Servers/Firewallrules](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Sql/2021-02-01-preview/servers/firewallRules)
 - [Servers/Securityalertpolicies](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Sql/2021-02-01-preview/servers/securityAlertPolicies)

@@ -34,6 +34,9 @@ param tags object = {}
 @description('Optional. Customer Usage Attribution id (GUID). This GUID must be previously registered')
 param cuaId string = ''
 
+@description('Optional. The databases to create in the server')
+param databases array = []
+
 var builtInRoleNames = {
   'Owner': subscriptionResourceId('Microsoft.Authorization/roleDefinitions', '8e3af657-a8ff-443c-a75c-2fe8c4bcb635')
   'Contributor': subscriptionResourceId('Microsoft.Authorization/roleDefinitions', 'b24988ac-6180-42a0-ab88-20f7382dd24c')
@@ -97,13 +100,40 @@ resource server_lock 'Microsoft.Authorization/locks@2016-09-01' = if (lock != 'N
   scope: server
 }
 
-module server_rbac './.bicep/nested_rbac.bicep' = [for (roleAssignment, index) in roleAssignments: {
+module server_rbac '.bicep/nested_rbac.bicep' = [for (roleAssignment, index) in roleAssignments: {
   name: 'rbac-${deployment().name}${index}'
   params: {
     roleAssignmentObj: roleAssignment
     builtInRoleNames: builtInRoleNames
     resourceName: server.name
   }
+}]
+
+module server_databases 'databases/deploy.bicep' = [for (database, index) in databases: {
+  name: 'database-${deployment().name}${index}'
+  params: {
+    databaseName: database.databaseName
+    serverName: database.serverName
+    maxSizeBytes: database.maxSizeBytes
+    tier: database.tier
+    skuName: database.skuName
+    collation: database.collation
+    autoPauseDelay: contains(database, 'autoPauseDelay') ? database.autoPauseDelay : ''
+    isLedgerOn: contains(database, 'isLedgerOn') ? database.isLedgerOn : false
+    location: contains(database, 'location') ? database.location : ''
+    licenseType: contains(database, 'licenseType') ? database.licenseType : ''
+    maintenanceConfigurationId: contains(database, 'maintenanceConfigurationId') ? database.maintenanceConfigurationId : ''
+    minCapacity: contains(database, 'minCapacity') ? database.minCapacity : ''
+    highAvailabilityReplicaCount: contains(database, 'highAvailabilityReplicaCount') ? database.highAvailabilityReplicaCount : 0
+    readScale: contains(database, 'readScale') ? database.readScale : 'Disabled'
+    requestedBackupStorageRedundancy: contains(database, 'requestedBackupStorageRedundancy') ? database.requestedBackupStorageRedundancy : ''
+    sampleName: contains(database, 'sampleName') ? database.sampleName : ''
+    tags: contains(database, 'tags') ? database.tags : {}
+    zoneRedundant: contains(database, 'zoneRedundant') ? database.zoneRedundant : false
+  }
+  dependsOn: [
+    server
+  ]
 }]
 
 output serverName string = server.name
