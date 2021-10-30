@@ -120,7 +120,7 @@ module server_databases 'databases/deploy.bicep' = [for (database, index) in dat
     collation: database.collation
     autoPauseDelay: contains(database, 'autoPauseDelay') ? database.autoPauseDelay : ''
     isLedgerOn: contains(database, 'isLedgerOn') ? database.isLedgerOn : false
-    location: contains(database, 'location') ? database.location : ''
+    location: contains(database, 'location') ? database.location : server.location
     licenseType: contains(database, 'licenseType') ? database.licenseType : ''
     maintenanceConfigurationId: contains(database, 'maintenanceConfigurationId') ? database.maintenanceConfigurationId : ''
     minCapacity: contains(database, 'minCapacity') ? database.minCapacity : ''
