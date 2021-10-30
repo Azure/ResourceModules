@@ -549,6 +549,7 @@ jobs:
         with:
           inlineScript: |
             az account show
+            password = New-Guid
 
   job_deploy_rolea:
     runs-on: ubuntu-20.04

@@ -62,21 +62,6 @@
           ],
           "delegations": []
         },
-        // {
-        //   "name": "sxx-az-subnet-weu-x-003", // SQLMi subnet
-        //   "addressPrefix": "10.0.2.0/24",
-        //   "networkSecurityGroupName": "adp-sxx-az-nsg-weu-x-001",
-        //   "routeTableName": "adp-sxx-az-udr-weu-x-001",
-        //   "serviceEndpoints": [],
-        //   "delegations": [
-        //     {
-        //       "name": "sqlMiDel",
-        //       "properties": {
-        //         "serviceName": "Microsoft.Sql/managedInstances"
-        //       }
-        //     }
-        //   ]
-        // },
         {
           "name": "sxx-az-subnet-weu-x-004", // ANF subnet
           "addressPrefix": "10.0.3.0/24",
