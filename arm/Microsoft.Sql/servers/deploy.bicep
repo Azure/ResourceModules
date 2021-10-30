@@ -136,6 +136,11 @@ module server_databases 'databases/deploy.bicep' = [for (database, index) in dat
   ]
 }]
 
+@description('The name of the deployed SQL server')
 output serverName string = server.name
+
+@description('The resourceId of the deployed SQL server')
 output serverResourceId string = server.id
+
+@description('The resourceGroup of the deployed SQL server')
 output serverResourceGroup string = resourceGroup().name

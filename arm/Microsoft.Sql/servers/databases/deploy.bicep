@@ -94,7 +94,11 @@ resource database 'Microsoft.Sql/servers/databases@2021-02-01-preview' = {
   }
 }
 
+@description('The name of the deployed database')
 output databaseName string = database.name
+
+@description('The resourceId of the deployed database')
 output databaseId string = database.id
+
+@description('The resourceGroup of the deployed database')
 output databaseResourceGroup string = resourceGroup().name
-output serverName string = serverName
