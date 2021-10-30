@@ -121,19 +121,19 @@ param userAssignedIdentities object = {}
 param databases array = []
 
 @description('Optional. The vulnerability assessment configuration')
-param vulnerabilityAssessmentObj object = {}
+param vulnerabilityAssessmentsObj object = {}
 
 @description('Optional. The security alert policy configuration')
-param securityAlertPolicyObj object = {}
+param securityAlertPoliciesObj object = {}
 
 @description('Optional. The key configuration')
-param keyObj object = {}
+param keysObj object = {}
 
 @description('Optional. The encryption protection configuration')
 param encryptionProtectorObj object = {}
 
 @description('Optional. The administrator configuration')
-param administratorObj object = {}
+param administratorsObj object = {}
 
 @description('Optional. The name of logs that will be streamed.')
 @allowed([
@@ -282,36 +282,36 @@ module managedInstance_databases 'databases/deploy.bicep' = [for (database, inde
     storageContainerUri: contains(database, 'storageContainerUri') ? database.storageContainerUri : ''
     tags: contains(database, 'tags') ? database.tags : {}
     workspaceId: contains(database, 'workspaceId') ? database.workspaceId : ''
-    backupShortTermRetentionPolicies: contains(database, 'backupShortTermRetentionPolicies') ? database.backupShortTermRetentionPolicies : {}
-    backupLongTermRetentionPolicies: contains(database, 'backupLongTermRetentionPolicies') ? database.backupLongTermRetentionPolicies : {}
+    backupShortTermRetentionPoliciesObj: contains(database, 'backupShortTermRetentionPolicies') ? database.backupShortTermRetentionPolicies : {}
+    backupLongTermRetentionPoliciesObj: contains(database, 'backupLongTermRetentionPolicies') ? database.backupLongTermRetentionPolicies : {}
   }
   dependsOn: [
     managedInstance
   ]
 }]
 
-module managedInstance_vulnerabilityAssessment 'vulnerabilityAssessments/deploy.bicep' = if (!empty(vulnerabilityAssessmentObj)) {
+module managedInstance_vulnerabilityAssessment 'vulnerabilityAssessments/deploy.bicep' = if (!empty(vulnerabilityAssessmentsObj)) {
   name: '${managedInstance.name}-vulnerabilityAssessment'
   params: {
     managedInstanceName: managedInstance.name
-    name: vulnerabilityAssessmentObj.name
-    recurringScansEmails: contains(vulnerabilityAssessmentObj, 'recurringScansEmails') ? vulnerabilityAssessmentObj.recurringScansEmails : []
-    recurringScansEmailSubscriptionAdmins: contains(vulnerabilityAssessmentObj, 'recurringScansEmailSubscriptionAdmins') ? vulnerabilityAssessmentObj.recurringScansEmailSubscriptionAdmins : false
-    recurringScansIsEnabled: contains(vulnerabilityAssessmentObj, 'recurringScansIsEnabled') ? vulnerabilityAssessmentObj.recurringScansIsEnabled : false
-    vulnerabilityAssessmentsStorageAccountId: contains(vulnerabilityAssessmentObj, 'vulnerabilityAssessmentsStorageAccountId') ? vulnerabilityAssessmentObj.vulnerabilityAssessmentsStorageAccountId : ''
+    name: vulnerabilityAssessmentsObj.name
+    recurringScansEmails: contains(vulnerabilityAssessmentsObj, 'recurringScansEmails') ? vulnerabilityAssessmentsObj.recurringScansEmails : []
+    recurringScansEmailSubscriptionAdmins: contains(vulnerabilityAssessmentsObj, 'recurringScansEmailSubscriptionAdmins') ? vulnerabilityAssessmentsObj.recurringScansEmailSubscriptionAdmins : false
+    recurringScansIsEnabled: contains(vulnerabilityAssessmentsObj, 'recurringScansIsEnabled') ? vulnerabilityAssessmentsObj.recurringScansIsEnabled : false
+    vulnerabilityAssessmentsStorageAccountId: contains(vulnerabilityAssessmentsObj, 'vulnerabilityAssessmentsStorageAccountId') ? vulnerabilityAssessmentsObj.vulnerabilityAssessmentsStorageAccountId : ''
   }
   dependsOn: [
     managedInstance
   ]
 }
 
-module managedInstance_key 'keys/deploy.bicep' = if (!empty(keyObj)) {
+module managedInstance_key 'keys/deploy.bicep' = if (!empty(keysObj)) {
   name: '${managedInstance.name}-key'
   params: {
     managedInstanceName: managedInstance.name
-    name: keyObj.name
-    serverKeyType: contains(keyObj, 'serverKeyType') ? keyObj.serverKeyType : 'ServiceManaged'
-    uri: contains(keyObj, 'uri') ? keyObj.uri : ''
+    name: keysObj.name
+    serverKeyType: contains(keysObj, 'serverKeyType') ? keysObj.serverKeyType : 'ServiceManaged'
+    uri: contains(keysObj, 'uri') ? keysObj.uri : ''
   }
   dependsOn: [
     managedInstance
@@ -331,26 +331,26 @@ module managedInstance_encryptionProtector 'encryptionProtector/deploy.bicep' = 
   ]
 }
 
-module managedInstance_securityAlertPolicy 'securityAlertPolicies/deploy.bicep' = if (!empty(securityAlertPolicyObj)) {
+module managedInstance_securityAlertPolicy 'securityAlertPolicies/deploy.bicep' = if (!empty(securityAlertPoliciesObj)) {
   name: '${managedInstance.name}-securityAlertPolicy'
   params: {
     managedInstanceName: managedInstance.name
-    name: securityAlertPolicyObj.name
-    emailAccountAdmins: contains(vulnerabilityAssessmentObj, 'emailAccountAdmins') ? vulnerabilityAssessmentObj.emailAccountAdmins : false
-    state: contains(vulnerabilityAssessmentObj, 'state') ? vulnerabilityAssessmentObj.state : 'Disabled'
+    name: securityAlertPoliciesObj.name
+    emailAccountAdmins: contains(vulnerabilityAssessmentsObj, 'emailAccountAdmins') ? vulnerabilityAssessmentsObj.emailAccountAdmins : false
+    state: contains(vulnerabilityAssessmentsObj, 'state') ? vulnerabilityAssessmentsObj.state : 'Disabled'
   }
   dependsOn: [
     managedInstance
   ]
 }
 
-module managedInstance_administrator 'administrators/deploy.bicep' = if (!empty(administratorObj)) {
+module managedInstance_administrator 'administrators/deploy.bicep' = if (!empty(administratorsObj)) {
   name: '${managedInstance.name}-administrator'
   params: {
     managedInstanceName: managedInstance.name
-    login: administratorObj.name
-    sid: administratorObj.name
-    tenantId: contains(administratorObj, 'tenantId') ? administratorObj.tenantId : ''
+    login: administratorsObj.name
+    sid: administratorsObj.name
+    tenantId: contains(administratorsObj, 'tenantId') ? administratorsObj.tenantId : ''
   }
   dependsOn: [
     managedInstance

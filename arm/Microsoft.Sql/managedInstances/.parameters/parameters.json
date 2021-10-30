@@ -67,17 +67,17 @@
                 }
             ]
         },
-        // "keyObj": {
+        // "keysObj": {
         //     "value": {
         //         "uri": "..."
         //     }
         // },
-        "securityAlertPolicyObj": {
+        "securityAlertPoliciesObj": {
             "value": {
                 "name": "default"
             }
         },
-        "vulnerabilityAssessmentObj": {
+        "vulnerabilityAssessmentsObj": {
             "value": {
                 "name": "default",
                 "emailSubscriptionAdmins": true,

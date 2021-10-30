@@ -70,10 +70,10 @@ param eventHubName string = ''
 param lock string = 'NotSpecified'
 
 @description('Optional. The configuration for the backup short term retention policy definition')
-param backupShortTermRetentionPolicies object = {}
+param backupShortTermRetentionPoliciesObj object = {}
 
 @description('Optional. The configuration for the backup long term retention policy definition')
-param backupLongTermRetentionPolicies object = {}
+param backupLongTermRetentionPoliciesObj object = {}
 
 @description('Optional. Tags of the resource.')
 param tags object = {}
@@ -160,24 +160,24 @@ resource database_diagnosticSettings 'Microsoft.Insights/diagnosticsettings@2017
   scope: database
 }
 
-module database_backupShortTermRetentionPolicy 'backupShortTermRetentionPolicies/deploy.bicep' = if (!empty(backupShortTermRetentionPolicies)) {
+module database_backupShortTermRetentionPolicy 'backupShortTermRetentionPolicies/deploy.bicep' = if (!empty(backupShortTermRetentionPoliciesObj)) {
   name: 'backupShortTermRetentionPolicy-${deployment().name}'
   params: {
     managedInstanceName: managedInstanceName
-    name: backupShortTermRetentionPolicies.name
-    retentionDays: contains(backupShortTermRetentionPolicies, 'retentionDays') ? backupShortTermRetentionPolicies.retentionDays : 35
+    name: backupShortTermRetentionPoliciesObj.name
+    retentionDays: contains(backupShortTermRetentionPoliciesObj, 'retentionDays') ? backupShortTermRetentionPoliciesObj.retentionDays : 35
   }
 }
 
-module database_backupLongTermRetentionPolicy 'backupLongTermRetentionPolicies/deploy.bicep' = if (!empty(backupLongTermRetentionPolicies)) {
+module database_backupLongTermRetentionPolicy 'backupLongTermRetentionPolicies/deploy.bicep' = if (!empty(backupLongTermRetentionPoliciesObj)) {
   name: 'backupLongTermRetentionPolicy-${deployment().name}'
   params: {
     managedInstanceName: managedInstanceName
-    name: backupLongTermRetentionPolicies.name
-    weekOfYear: contains(backupLongTermRetentionPolicies, 'weekOfYear') ? backupLongTermRetentionPolicies.weekOfYear : 5
-    weeklyRetention: contains(backupLongTermRetentionPolicies, 'weeklyRetention') ? backupLongTermRetentionPolicies.weeklyRetention : 'P1M'
-    monthlyRetention: contains(backupLongTermRetentionPolicies, 'monthlyRetention') ? backupLongTermRetentionPolicies.monthlyRetention : 'P1Y'
-    yearlyRetention: contains(backupLongTermRetentionPolicies, 'yearlyRetention') ? backupLongTermRetentionPolicies.yearlyRetention : 'P5Y'
+    name: backupLongTermRetentionPoliciesObj.name
+    weekOfYear: contains(backupLongTermRetentionPoliciesObj, 'weekOfYear') ? backupLongTermRetentionPoliciesObj.weekOfYear : 5
+    weeklyRetention: contains(backupLongTermRetentionPoliciesObj, 'weeklyRetention') ? backupLongTermRetentionPoliciesObj.weeklyRetention : 'P1M'
+    monthlyRetention: contains(backupLongTermRetentionPoliciesObj, 'monthlyRetention') ? backupLongTermRetentionPoliciesObj.monthlyRetention : 'P1Y'
+    yearlyRetention: contains(backupLongTermRetentionPoliciesObj, 'yearlyRetention') ? backupLongTermRetentionPoliciesObj.yearlyRetention : 'P5Y'
   }
 }
 
