@@ -8,7 +8,7 @@
         "administratorLogin": {
             "reference": {
                 "keyVault": {
-                    "id": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.KeyVault/vaults/adp-sxx-az-kv-weu-x-001"
+                    "id": "/subscriptions/8629be3b-96bc-482d-a04b-ffff597c65a2/resourceGroups/validation-rg/providers/Microsoft.KeyVault/vaults/adp-sxx-az-kv-weu-x-001"
                 },
                 "secretName": "administratorLogin"
             }
@@ -16,7 +16,7 @@
         "administratorLoginPassword": {
             "reference": {
                 "keyVault": {
-                    "id": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.KeyVault/vaults/adp-sxx-az-kv-weu-x-001"
+                    "id": "/subscriptions/8629be3b-96bc-482d-a04b-ffff597c65a2/resourceGroups/validation-rg/providers/Microsoft.KeyVault/vaults/adp-sxx-az-kv-weu-x-001"
                 },
                 "secretName": "administratorLoginPassword"
             }
@@ -24,7 +24,7 @@
         "location": {
             "value": "westeurope"
         },
-        "serverName": {
+        "name": {
             "value": "sxx-az-sqlsrv-weu-x-001"
         },
         "roleAssignments": {
@@ -40,27 +40,12 @@
         "databases": {
             "value": [
                 {
-                    "databaseName": {
-                        "value": "sxx-az-sqldb-weu-x-001"
-                    },
-                    "collation": {
-                        "value": "SQL_Latin1_General_CP1_CI_AS"
-                    },
-                    "tier": {
-                        "value": "GeneralPurpose"
-                    },
-                    "skuName": {
-                        "value": "GP_Gen5_2"
-                    },
-                    "maxSizeBytes": {
-                        "value": 34359738368
-                    },
-                    "serverName": {
-                        "value": "sxx-az-sqlsrv-weu-x-001"
-                    },
-                    "licenseType": {
-                        "value": "LicenseIncluded"
-                    }
+                    "name": "sxx-az-sqldb-weu-x-001",
+                    "collation": "SQL_Latin1_General_CP1_CI_AS",
+                    "tier": "GeneralPurpose",
+                    "skuName": "GP_Gen5_2",
+                    "maxSizeBytes": 34359738368,
+                    "licenseType": "LicenseIncluded"
                 }
             ]
         }

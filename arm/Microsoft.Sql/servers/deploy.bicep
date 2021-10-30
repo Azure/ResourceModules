@@ -9,7 +9,7 @@ param administratorLoginPassword string
 param location string = resourceGroup().location
 
 @description('Required. The name of the server.')
-param serverName string
+param name string
 
 @description('Optional. Whether or not ADS should be enabled.')
 param enableADS bool = false
@@ -64,7 +64,7 @@ module pid_cuaId './.bicep/nested_cuaId.bicep' = if (!empty(cuaId)) {
 
 resource server 'Microsoft.Sql/servers@2020-02-02-preview' = {
   location: location
-  name: serverName
+  name: name
   tags: tags
   properties: {
     administratorLogin: administratorLogin
@@ -110,10 +110,10 @@ module server_rbac '.bicep/nested_rbac.bicep' = [for (roleAssignment, index) in 
 }]
 
 module server_databases 'databases/deploy.bicep' = [for (database, index) in databases: {
-  name: 'database-${deployment().name}${index}'
+  name: 'database-${deployment().name}-${database.name}-${index}'
   params: {
-    databaseName: database.databaseName
-    serverName: database.serverName
+    name: database.name
+    serverName: server.name
     maxSizeBytes: database.maxSizeBytes
     tier: database.tier
     skuName: database.skuName

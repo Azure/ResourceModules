@@ -2,7 +2,7 @@
 param collation string
 
 @description('Required. The name of the database.')
-param databaseName string
+param name string
 
 @description('Optional. The tier or edition of the particular SKU.')
 param tier string
@@ -70,10 +70,10 @@ module pid_cuaId './.bicep/nested_cuaId.bicep' = if (!empty(cuaId)) {
   params: {}
 }
 
-resource sqlServerDatabase 'Microsoft.Sql/servers/databases@2021-02-01-preview' = {
+resource database 'Microsoft.Sql/servers/databases@2021-02-01-preview' = {
   location: location
   tags: tags
-  name: '${serverName}/${databaseName}'
+  name: '${serverName}/${name}'
   properties: {
     collation: collation
     maxSizeBytes: maxSizeBytes
@@ -94,6 +94,7 @@ resource sqlServerDatabase 'Microsoft.Sql/servers/databases@2021-02-01-preview' 
   }
 }
 
-output databaseName string = databaseName
+output databaseName string = database.name
+output databaseId string = database.id
 output databaseResourceGroup string = resourceGroup().name
 output serverName string = serverName
