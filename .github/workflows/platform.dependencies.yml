@@ -532,7 +532,7 @@ jobs:
 
   job_deploy_kv_secrets:
     runs-on: ubuntu-20.04
-    name: 'Deploy key vault secrets and keys'
+    name: 'Set key vault secrets and keys'
     needs:
       - job_deploy_kv
     steps:
@@ -544,12 +544,18 @@ jobs:
         uses: azure/login@v1
         with:
           creds: ${{ secrets.AZURE_CREDENTIALS }}
-      - name: Azure CLI script file
-        uses: azure/CLI@v1
+      - name: Run PowerShell
+        uses: azure/powershell@v1
         with:
           inlineScript: |
-            az account show
-            $password = New-Guid
+            $username = (-join ((65..90) + (97..122) | Get-Random -Count 9 -SetSeed 1 | % {[char]$_ + "$_"})).substring(0,19) # max length
+            $password = (New-Guid).Guid.SubString(0,19)
+            $vpnSharedKey =  (New-Guid).Guid.SubString(0,32)
+            # VirtualMachines and VMSS
+            echo $username
+            # $Secret = ConvertTo-SecureString -String 'Password' -AsPlainText -Force
+            # Set-AzKeyVaultSecret -VaultName 'Contoso' -Name 'ITSecret' -SecretValue $Secret
+          azPSVersion: 'latest'
 
   job_deploy_rolea:
     runs-on: ubuntu-20.04
