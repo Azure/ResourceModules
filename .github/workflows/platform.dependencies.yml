@@ -548,7 +548,7 @@ jobs:
         with:
           inlineScript: |
             az account show
-            az storage -h
+            password = (New-Guid).Guid.SubString(0,19)
 
   # job_deploy_rolea:
   #   runs-on: ubuntu-20.04
