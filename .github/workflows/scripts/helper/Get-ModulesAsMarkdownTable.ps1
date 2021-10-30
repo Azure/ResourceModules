@@ -217,7 +217,8 @@ function Measure-FolderHasNestedModule {
 
     # Get all folder paths that exist in the given path as long as they are not '.bicep' or '.parameters' folders
     # This works as long as the folder structure is consistent (e.g. no empty folders are created etc.)
-    $foundFolders = (Get-ChildItem $Path -Directory -Recurse -Exclude @('.bicep', '.parameters') -Force).fullName
+    $rawFoundFolders = Get-ChildItem $Path -Directory -Recurse -Exclude @('.bicep', '.parameters') -Force
+    $foundFolders = $rawFoundFolders | Where-Object { (Get-ChildItem $_.FullName -Directory -Depth 0 -Include '.parameters' -Force).count -gt 0 }
     if ($foundFolders) {
         return $true
     } else {
