@@ -386,6 +386,7 @@ jobs:
             'ase.parameters.json',
             'bastion.parameters.json',
             'parameters.json',
+            'sqlmi.parameters.json',
           ]
     steps:
       - name: 'Checkout'
@@ -636,6 +637,7 @@ jobs:
             '3.vnetpeer02.parameters.json',
             '4.azfw.parameters.json',
             '5.aks.parameters.json',
+            '6.sqlmi.parameters.json',
           ]
     steps:
       - name: 'Checkout'
