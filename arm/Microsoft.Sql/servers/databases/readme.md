@@ -1,4 +1,4 @@
-# AzureSQLDatabase  `[Microsoft.Sql/servers/databases]`
+# SQL Server Database  `[Microsoft.Sql/servers/databases]`
 
 This module deploys an Azure SQL Server.
 
