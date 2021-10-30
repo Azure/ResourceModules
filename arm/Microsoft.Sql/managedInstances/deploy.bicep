@@ -317,6 +317,7 @@ module managedInstance_key 'keys/deploy.bicep' = if (!empty(keysObj)) {
     managedInstance
   ]
 }
+
 module managedInstance_encryptionProtector 'encryptionProtector/deploy.bicep' = if (!empty(encryptionProtectorObj)) {
   name: '${managedInstance.name}-encryptionProtector'
   params: {
