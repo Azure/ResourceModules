@@ -14,7 +14,7 @@ This template deploys an SQL Managed Instance, with resource lock.
 | `Microsoft.Sql/managedInstances/backupShortTermRetentionPolicies` | 2017-03-01-preview |
 | `Microsoft.Sql/managedInstances/databases` | 2020-02-02-preview |
 | `Microsoft.Sql/managedInstances/databases/backupLongTermRetentionPolicies` | 2021-02-01-preview |
-| `Microsoft.Sql/managedInstances/encryptionProtector` | 2017-10-01-preview |
+| `Microsoft.Sql/managedInstances/encryptionProtector` | 2021-05-01-preview |
 | `Microsoft.Sql/managedInstances/keys` | 2017-10-01-preview |
 | `Microsoft.Sql/managedInstances/securityAlertPolicies` | 2017-03-01-preview |
 | `Microsoft.Sql/managedInstances/vulnerabilityAssessments` | 2021-02-01-preview |
@@ -29,20 +29,19 @@ SQL Managed Instance is deployed on a virtual network. This network is required 
 | :-- | :-- | :-- | :-- | :-- |
 | `administratorLogin` | string |  |  | Required. The username used to establish jumpbox VMs. |
 | `administratorLoginPassword` | secureString |  |  | Required. The password given to the admin user. |
-| `azureAdAdmin` | object | `{object}` |  | Optional. An Azure Active Directory administrator account. |
+| `administratorObj` | object | `{object}` |  | Optional. The administrator configuration |
 | `collation` | string | `SQL_Latin1_General_CP1_CI_AS` |  | Optional. Collation of the managed instance. |
 | `cuaId` | string |  |  | Optional. Customer Usage Attribution id (GUID). This GUID must be previously registered |
-| `customerManagedEnryptionKeyUri` | string |  |  | Optional. The URI of the key (in Azure Key Vault) for transparent data encryption. The key vault must have SoftDelete enabled and must reside in the same region as the SQL MI. The managed identity of the SQL managed instance needs to have the following key permissions in the key vault: Get, Unwrap Key, Wrap Key. If blank, service managed key will be used. |
 | `databases` | _[databases](databases/readme.md)_ array | `[]` |  | Optional. Databases to create in this server. |
 | `diagnosticLogsRetentionInDays` | int | `365` |  | Optional. Specifies the number of days that logs will be kept for; a value of 0 will retain data indefinitely. |
 | `diagnosticStorageAccountId` | string |  |  | Optional. Resource identifier of the Diagnostic Storage Account. |
 | `dnsZonePartner` | string |  |  | Optional. The resource id of another managed instance whose DNS zone this managed instance will share after creation. |
-| `enableAdvancedDataSecurity` | bool |  |  | Optional. Enables advanced data security features, like recuring vulnerability assesment scans and ATP. If enabled, storage account must be provided. |
-| `enableRecuringVulnerabilityAssessmentsScans` | bool |  |  | Optional. Recurring scans state. |
+| `encryptionProtectorObj` | _[encryptionProtector](encryptionProtector/readme.md)_ object | `{object}` |  | Optional. The encryption protection configuration |
 | `eventHubAuthorizationRuleId` | string |  |  | Optional. Resource ID of the event hub authorization rule for the Event Hubs namespace in which the event hub should be created or streamed to. |
 | `eventHubName` | string |  |  | Optional. Name of the event hub within the namespace to which logs are streamed. Without this, an event hub is created for each log category. |
 | `hardwareFamily` | string | `Gen5` |  | Optional. If the service has different generations of hardware, for the same SKU, then that can be captured here. |
 | `instancePoolId` | string |  |  | Optional. The Id of the instance pool this managed server belongs to. |
+| `keyObj` | object | `{object}` |  | Optional. The key configuration |
 | `licenseType` | string | `LicenseIncluded` | `[LicenseIncluded, BasePrice]` | Optional. The license type. Possible values are 'LicenseIncluded' (regular price inclusive of a new SQL license) and 'BasePrice' (discounted AHB price for bringing your own SQL licenses). |
 | `location` | string | `[resourceGroup().location]` |  | Optional. Location for all resources. |
 | `lock` | string | `NotSpecified` | `[CanNotDelete, NotSpecified, ReadOnly]` | Optional. Specify the type of lock. |
@@ -55,8 +54,7 @@ SQL Managed Instance is deployed on a virtual network. This network is required 
 | `publicDataEndpointEnabled` | bool |  |  | Optional. Whether or not the public data endpoint is enabled. |
 | `restorePointInTime` | string |  |  | Optional. Specifies the point in time (ISO8601 format) of the source database that will be restored to create the new database. |
 | `roleAssignments` | array | `[]` |  | Optional. Array of role assignment objects that contain the 'roleDefinitionIdOrName' and 'principalId' to define RBAC role assignments on this resource. In the roleDefinitionIdOrName attribute, you can provide either the display name of the role definition, or its fully qualified ID in the following format: '/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11' |
-| `sendScanReportEmailsToSubscriptionAdmins` | bool |  |  | Optional. Specifies that the schedule scan notification will be is sent to the subscription administrators. |
-| `sendScanReportToEmailAddresses` | array | `[]` |  | Optional. Specifies an array of e-mail addresses to which the scan notification is sent. |
+| `securityAlertPolicyObj` | object | `{object}` |  | Optional. The security alert policy configuration |
 | `skuName` | string | `GP_Gen5` |  | Optional. The name of the SKU, typically, a letter + Number code, e.g. P3. |
 | `skuTier` | string | `GeneralPurpose` |  | Optional. The tier or edition of the particular SKU, e.g. Basic, Premium. |
 | `sourceManagedInstanceId` | string |  |  | Optional. The resource identifier of the source managed instance associated with create operation of this instance. |
@@ -66,7 +64,7 @@ SQL Managed Instance is deployed on a virtual network. This network is required 
 | `timezoneId` | string | `UTC` |  | Optional. Id of the timezone. Allowed values are timezones supported by Windows. |
 | `userAssignedIdentities` | object | `{object}` |  | Optional. Mandatory if "managedServiceIdentity" contains UserAssigned. The list of user identities associated with the managed instance. |
 | `vCores` | int | `4` |  | Optional. The number of vCores. Allowed values: 8, 16, 24, 32, 40, 64, 80. |
-| `vulnerabilityAssessmentsStorageAccountId` | string |  |  | Optional. A blob storage to hold the scan results. |
+| `vulnerabilityAssessmentObj` | object | `{object}` |  | Optional. The vulnerability assessment configuration |
 | `workspaceId` | string |  |  | Optional. Resource identifier of Log Analytics. |
 
 ### Parameter Usage: `azureAdAdmin`
@@ -129,11 +127,11 @@ Tag names and tag values can be provided as needed. A tag can be left without a 
 
 ## Outputs
 
-| Output Name | Type |
-| :-- | :-- |
-| `managedInstanceName` | string |
-| `managedInstanceResourceGroup` | string |
-| `managedInstanceResourceId` | string |
+| Output Name | Type | Description |
+| :-- | :-- | :-- |
+| `managedInstanceName` | string | The name of the deployed managed instance |
+| `managedInstanceResourceGroup` | string | The resource group of the deployed managed instance |
+| `managedInstanceResourceId` | string | The resourceId of the deployed managed instance |
 
 ## Template references
 
@@ -145,7 +143,7 @@ Tag names and tag values can be provided as needed. A tag can be left without a 
 - [Managedinstances/Backupshorttermretentionpolicies](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Sql/2017-03-01-preview/managedInstances/backupShortTermRetentionPolicies)
 - [Managedinstances/Databases](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Sql/2020-02-02-preview/managedInstances/databases)
 - [Managedinstances/Databases/Backuplongtermretentionpolicies](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Sql/2021-02-01-preview/managedInstances/databases/backupLongTermRetentionPolicies)
-- [Managedinstances/Encryptionprotector](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Sql/2017-10-01-preview/managedInstances/encryptionProtector)
+- [Managedinstances/Encryptionprotector](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Sql/2021-05-01-preview/managedInstances/encryptionProtector)
 - [Managedinstances/Keys](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Sql/2017-10-01-preview/managedInstances/keys)
 - [Managedinstances/Securityalertpolicies](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Sql/2017-03-01-preview/managedInstances/securityAlertPolicies)
 - [Managedinstances/Vulnerabilityassessments](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Sql/2021-02-01-preview/managedInstances/vulnerabilityAssessments)

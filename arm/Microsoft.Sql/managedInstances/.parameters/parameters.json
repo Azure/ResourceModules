@@ -57,21 +57,6 @@
         "publicDataEndpointEnabled": {
             "value": false
         },
-        "enableAdvancedDataSecurity": {
-            "value": false
-        },
-        "enableRecuringVulnerabilityAssessmentsScans": {
-            "value": false
-        },
-        "sendScanReportEmailsToSubscriptionAdmins": {
-            "value": true
-        },
-        "sendScanReportToEmailAddresses": {
-            "value": [
-                "test1@contoso.com",
-                "test2@contoso.com"
-            ]
-        },
         "roleAssignments": {
             "value": [
                 {
@@ -81,6 +66,26 @@
                     ]
                 }
             ]
+        },
+        // "keyObj": {
+        //     "value": {
+        //         "uri": "..."
+        //     }
+        // },
+        "securityAlertPolicyObj": {
+            "value": {
+                "name": "default"
+            }
+        },
+        "vulnerabilityAssessmentObj": {
+            "value": {
+                "name": "default",
+                "emailSubscriptionAdmins": true,
+                "recurringScansEmails": [
+                    "test1@contoso.com",
+                    "test2@contoso.com"
+                ]
+            }
         },
         "databases": {
             "value": [

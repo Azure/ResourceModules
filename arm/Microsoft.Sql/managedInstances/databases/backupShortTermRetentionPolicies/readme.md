@@ -13,6 +13,7 @@ This module deploys a backup short-term retention policies for SQL Managed Insta
 
 | Parameter Name | Type | Default Value | Possible Values | Description |
 | :-- | :-- | :-- | :-- | :-- |
+| `managedInstanceName` | string |  |  | Name of the resource. |
 | `name` | string |  |  | Required. The name of the Short Term Retention backup policy. For example "default". |
 | `retentionDays` | int | `35` |  | Optional. The backup retention period in days. This is how many days Point-in-Time Restore will be supported. |
 

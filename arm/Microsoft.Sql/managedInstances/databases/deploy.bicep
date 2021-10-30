@@ -163,6 +163,7 @@ resource database_diagnosticSettings 'Microsoft.Insights/diagnosticsettings@2017
 module database_backupShortTermRetentionPolicy 'backupShortTermRetentionPolicies/deploy.bicep' = if (!empty(backupShortTermRetentionPolicies)) {
   name: 'backupShortTermRetentionPolicy-${deployment().name}'
   params: {
+    managedInstanceName: managedInstanceName
     name: backupShortTermRetentionPolicies.name
     retentionDays: contains(backupShortTermRetentionPolicies, 'retentionDays') ? backupShortTermRetentionPolicies.retentionDays : 35
   }
@@ -171,6 +172,7 @@ module database_backupShortTermRetentionPolicy 'backupShortTermRetentionPolicies
 module database_backupLongTermRetentionPolicy 'backupLongTermRetentionPolicies/deploy.bicep' = if (!empty(backupLongTermRetentionPolicies)) {
   name: 'backupLongTermRetentionPolicy-${deployment().name}'
   params: {
+    managedInstanceName: managedInstanceName
     name: backupLongTermRetentionPolicies.name
     weekOfYear: contains(backupLongTermRetentionPolicies, 'weekOfYear') ? backupLongTermRetentionPolicies.weekOfYear : 5
     weeklyRetention: contains(backupLongTermRetentionPolicies, 'weeklyRetention') ? backupLongTermRetentionPolicies.weeklyRetention : 'P1M'

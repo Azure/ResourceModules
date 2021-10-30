@@ -12,6 +12,7 @@ This module deploys a backup long-term retention policies for SQL Managed Instan
 
 | Parameter Name | Type | Default Value | Possible Values | Description |
 | :-- | :-- | :-- | :-- | :-- |
+| `managedInstanceName` | string |  |  | Name of the resource. |
 | `monthlyRetention` | string | `P1Y` |  | Optional. The monthly retention policy for an LTR backup in an ISO 8601 format. |
 | `name` | string |  |  | Required. The name of the Long Term Retention backup policy. For example "default". |
 | `weeklyRetention` | string | `P1M` |  | Optional. The weekly retention policy for an LTR backup in an ISO 8601 format. |

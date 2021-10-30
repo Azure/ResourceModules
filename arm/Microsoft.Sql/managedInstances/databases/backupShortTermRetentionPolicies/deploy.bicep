@@ -1,11 +1,14 @@
 @description('Required. The name of the Short Term Retention backup policy. For example "default".')
 param name string
 
+@description('Name of the resource.')
+param managedInstanceName string
+
 @description('Optional. The backup retention period in days. This is how many days Point-in-Time Restore will be supported.')
 param retentionDays int = 35
 
 resource backupShortTermRetentionPolicy 'Microsoft.Sql/managedInstances/backupShortTermRetentionPolicies@2017-03-01-preview' = {
-  name: name
+  name: '${managedInstanceName}/${name}'
   properties: {
     retentionDays: retentionDays
   }

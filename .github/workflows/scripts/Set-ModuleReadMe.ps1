@@ -164,6 +164,10 @@ function Set-ParametersSection {
             if ($folderNames -contains $paramName) {
                 $type = '_[{0}]({0}/readme.md)_ {1}' -f $paramName, $param.type
             }
+        } elseif ($folderNames -and $paramName -like '*Obj' -and $paramName.TrimEnd('Obj') -in $folderNames -and $param.type -in @('object', 'array')) {
+            if ($folderNames -contains $paramName.TrimEnd('Obj')) {
+                $type = '_[{0}]({0}/readme.md)_ {1}' -f $paramName.TrimEnd('Obj'), $param.type
+            }
         } else {
             $type = $param.type
         }
