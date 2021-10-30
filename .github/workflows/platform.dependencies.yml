@@ -543,7 +543,6 @@ jobs:
       - name: Azure CLI script file
         uses: azure/CLI@v1
         with:
-          azcliversion: 2.0.72
           inlineScript: |
             $username = (-join ((65..90) + (97..122) | Get-Random -Count 9 -SetSeed 1 | % {[char]$_ + "$_"})).substring(0,19) # max length
             $password = (New-Guid).Guid.SubString(0,19)
