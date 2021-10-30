@@ -101,7 +101,7 @@ resource server_lock 'Microsoft.Authorization/locks@2016-09-01' = if (lock != 'N
 }
 
 module server_rbac '.bicep/nested_rbac.bicep' = [for (roleAssignment, index) in roleAssignments: {
-  name: 'rbac-${deployment().name}${index}'
+  name: '${deployment().name}-rbac-${index}'
   params: {
     roleAssignmentObj: roleAssignment
     builtInRoleNames: builtInRoleNames
@@ -110,7 +110,7 @@ module server_rbac '.bicep/nested_rbac.bicep' = [for (roleAssignment, index) in 
 }]
 
 module server_databases 'databases/deploy.bicep' = [for (database, index) in databases: {
-  name: 'database-${deployment().name}-${database.name}-${index}'
+  name: '${deployment().name}-database-${index}'
   params: {
     name: database.name
     serverName: server.name
