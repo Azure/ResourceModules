@@ -385,7 +385,6 @@ jobs:
             'apgw.parameters.json',
             'ase.parameters.json',
             'bastion.parameters.json',
-            'parameters.json',
             'sqlmi.parameters.json',
           ]
     steps:
