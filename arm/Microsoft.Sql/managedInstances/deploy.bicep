@@ -264,7 +264,7 @@ resource managedInstance 'Microsoft.Sql/managedInstances@2020-08-01-preview' = {
   resource vulnerabilityAssessments 'vulnerabilityAssessments@2021-02-01-preview' = if (enableAdvancedDataSecurity) {
     name: 'default'
     properties: {
-      storageContainerPath: (enableAdvancedDataSecurity ? 'https://${split(vulnerabilityAssessmentsStorageAccountId, '/')[8]}.blob.core.windows.net/vulnerability-assessment/' : '')
+      storageContainerPath: (enableAdvancedDataSecurity ? 'https://${split(vulnerabilityAssessmentsStorageAccountId, '/')[8]}.blob.${environment().suffixes.storage}/vulnerability-assessment/' : '')
       storageAccountAccessKey: (enableAdvancedDataSecurity ? listKeys(vulnerabilityAssessmentsStorageAccountId, '2019-06-01').keys[0].value : '')
       recurringScans: {
         isEnabled: enableRecuringVulnerabilityAssessmentsScans
