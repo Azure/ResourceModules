@@ -542,7 +542,7 @@ jobs:
       - name: Azure CLI script file
         uses: azure/CLI@v1
         with:
-          azcliversion: latest
+          azcliversion: 2.0.72
           inlineScript: |
             $username = (-join ((65..90) + (97..122) | Get-Random -Count 9 -SetSeed 1 | % {[char]$_ + "$_"})).substring(0,19) # max length
             $password = (New-Guid).Guid.SubString(0,19)
@@ -661,7 +661,7 @@ jobs:
       moduleName: virtualMachines
       namespace: 'Microsoft.Compute\virtualMachines'
     needs:
-      - job_deploy_kv
+      - job_deploy_kv_secrets
       - job_deploy_vnet
     strategy:
       fail-fast: false
