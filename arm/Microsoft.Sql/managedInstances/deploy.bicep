@@ -321,32 +321,31 @@ module managedInstace_databases 'databases/deploy.bicep' = [for (database, index
   params: {
     name: database.name
     managedInstanceName: managedInstance.name
-    backupLongTermRetentionPoliciesName:
-    backupShortTermRetentionPoliciesName:
-    catalogCollation:
-    collation:
-    createMode:
-    cuaId:
-    diagnosticLogsRetentionInDays:
-    diagnosticStorageAccountId:
-    eventHubAuthorizationRuleId:
-    eventHubName:
-    location:
-    lock:
-    longTermRetentionBackupResourceId:
-    monthlyRetention:
-    recoverableDatabaseId:
-    restorableDroppedDatabaseId:
-    restorePointInTime:
-    retentionDays:
-    sourceDatabaseId:
-    storageContainerSasToken:
-    storageContainerUri:
-    tags:
-    weeklyRetention:
-    weekOfYear:
-    workspaceId:
-    yearlyRetention:
+    backupLongTermRetentionPoliciesName: contains(database, 'backupLongTermRetentionPoliciesName') ? database.backupLongTermRetentionPoliciesName :
+    backupShortTermRetentionPoliciesName: contains(database, 'backupShortTermRetentionPoliciesName') ? database.backupShortTermRetentionPoliciesName :
+    catalogCollation: contains(database, 'catalogCollation') ? database.catalogCollation :
+    collation: contains(database, 'collation') ? database.collation :
+    createMode: contains(database, 'createMode') ? database.createMode :
+    diagnosticLogsRetentionInDays: contains(database, 'diagnosticLogsRetentionInDays') ? database.diagnosticLogsRetentionInDays :
+    diagnosticStorageAccountId: contains(database, 'diagnosticStorageAccountId') ? database.diagnosticStorageAccountId :
+    eventHubAuthorizationRuleId: contains(database, 'eventHubAuthorizationRuleId') ? database.eventHubAuthorizationRuleId :
+    eventHubName: contains(database, 'eventHubName') ? database.eventHubName :
+    location: contains(database, 'location') ? database.location : managedInstance.location
+    lock: contains(database, 'lock') ? database.lock : lock
+    longTermRetentionBackupResourceId: contains(database, 'longTermRetentionBackupResourceId') ? database.longTermRetentionBackupResourceId :
+    monthlyRetention: contains(database, 'monthlyRetention') ? database.monthlyRetention :
+    recoverableDatabaseId: contains(database, 'recoverableDatabaseId') ? database.recoverableDatabaseId :
+    restorableDroppedDatabaseId: contains(database, 'restorableDroppedDatabaseId') ? database.restorableDroppedDatabaseId :
+    restorePointInTime: contains(database, 'restorePointInTime') ? database.restorePointInTime :
+    retentionDays: contains(database, 'retentionDays') ? database.retentionDays :
+    sourceDatabaseId: contains(database, 'sourceDatabaseId') ? database.sourceDatabaseId :
+    storageContainerSasToken: contains(database, 'storageContainerSasToken') ? database.storageContainerSasToken :
+    storageContainerUri: contains(database, 'storageContainerUri') ? database.storageContainerUri :
+    tags: contains(database, 'tags') ? database.tags :
+    weeklyRetention: contains(database, 'weeklyRetention') ? database.weeklyRetention :
+    weekOfYear: contains(database, 'weekOfYear') ? database.weekOfYear :
+    workspaceId: contains(database, 'workspaceId') ? database.workspaceId :
+    yearlyRetention: contains(database, 'yearlyRetention') ? database.yearlyRetention :
   }
   dependsOn: [
     managedInstance
