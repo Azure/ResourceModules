@@ -9,7 +9,7 @@ param name string = filterName
 @description('Required. The IP Filter Action')
 @allowed([
   'Accept'
-  'Reject'
+  // 'Reject' # Reason: Only Accept IpFilterRules are accepted by API
 ])
 param action string
 
