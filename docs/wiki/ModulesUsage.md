@@ -107,11 +107,11 @@ The following example shows how you could orchestrate a deployment of multiple r
 // Input Parameters //
 // ================ //
 
-// NSG parameters
+// Network Security Group parameters
 @description('Required. The name of the vnet to deploy')
 param networkSecurityGroupName string = 'TemplateSpecDemoNsg'
 
-// VNET parameters
+// Virtual Network parameters
 @description('Required. The name of the vnet to deploy')
 param vnetName string = 'TemplateSpecDemoVnet'
 
@@ -140,7 +140,7 @@ param subnets array = [
 var templateSpecSub = '<<subscriptionId>>'
 var templateSpecRg = 'artifacts-rg'
 
-// Resource Group
+// Network Security Group
 resource nsgTemplate 'Microsoft.Resources/templateSpecs/versions@2021-05-01' existing = {
   scope: resourceGroup(templateSpecSub, templateSpecRg)
   name: 'networkSecurityGroups/1.0.21'
