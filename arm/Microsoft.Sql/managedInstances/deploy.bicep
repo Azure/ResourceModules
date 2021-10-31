@@ -290,6 +290,19 @@ module managedInstance_databases 'databases/deploy.bicep' = [for (database, inde
   ]
 }]
 
+module managedInstance_securityAlertPolicy 'securityAlertPolicies/deploy.bicep' = if (!empty(securityAlertPoliciesObj)) {
+  name: '${deployment().name}-secAlertPol'
+  params: {
+    managedInstanceName: managedInstance.name
+    name: securityAlertPoliciesObj.name
+    emailAccountAdmins: contains(vulnerabilityAssessmentsObj, 'emailAccountAdmins') ? vulnerabilityAssessmentsObj.emailAccountAdmins : false
+    state: contains(vulnerabilityAssessmentsObj, 'state') ? vulnerabilityAssessmentsObj.state : 'Disabled'
+  }
+  dependsOn: [
+    managedInstance
+  ]
+}
+
 module managedInstance_vulnerabilityAssessment 'vulnerabilityAssessments/deploy.bicep' = if (!empty(vulnerabilityAssessmentsObj)) {
   name: '${deployment().name}-vulnAssessm'
   params: {
@@ -301,6 +314,7 @@ module managedInstance_vulnerabilityAssessment 'vulnerabilityAssessments/deploy.
     vulnerabilityAssessmentsStorageAccountId: contains(vulnerabilityAssessmentsObj, 'vulnerabilityAssessmentsStorageAccountId') ? vulnerabilityAssessmentsObj.vulnerabilityAssessmentsStorageAccountId : ''
   }
   dependsOn: [
+    managedInstance_securityAlertPolicy
     managedInstance
   ]
 }
@@ -326,19 +340,6 @@ module managedInstance_encryptionProtector 'encryptionProtector/deploy.bicep' = 
     name: contains(encryptionProtectorObj, 'name') ? encryptionProtectorObj.serverKeyType : 'current'
     serverKeyType: contains(encryptionProtectorObj, 'serverKeyType') ? encryptionProtectorObj.serverKeyType : 'ServiceManaged'
     autoRotationEnabled: contains(encryptionProtectorObj, 'autoRotationEnabled') ? encryptionProtectorObj.autoRotationEnabled : true
-  }
-  dependsOn: [
-    managedInstance
-  ]
-}
-
-module managedInstance_securityAlertPolicy 'securityAlertPolicies/deploy.bicep' = if (!empty(securityAlertPoliciesObj)) {
-  name: '${deployment().name}-secAlertPol'
-  params: {
-    managedInstanceName: managedInstance.name
-    name: securityAlertPoliciesObj.name
-    emailAccountAdmins: contains(vulnerabilityAssessmentsObj, 'emailAccountAdmins') ? vulnerabilityAssessmentsObj.emailAccountAdmins : false
-    state: contains(vulnerabilityAssessmentsObj, 'state') ? vulnerabilityAssessmentsObj.state : 'Disabled'
   }
   dependsOn: [
     managedInstance

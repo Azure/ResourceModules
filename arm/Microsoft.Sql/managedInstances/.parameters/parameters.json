@@ -83,7 +83,9 @@
         },
         "securityAlertPoliciesObj": {
             "value": {
-                "name": "default"
+                "name": "default",
+                "state": "Enabled",
+                "emailAccountAdmins": true
             }
         },
         "vulnerabilityAssessmentsObj": {
