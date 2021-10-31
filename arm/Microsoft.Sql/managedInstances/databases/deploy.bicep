@@ -164,6 +164,7 @@ module database_backupShortTermRetentionPolicy 'backupShortTermRetentionPolicies
   name: '${deployment().name}-backupShortTRetenPol'
   params: {
     managedInstanceName: managedInstanceName
+    databaseName: database.name
     name: backupShortTermRetentionPoliciesObj.name
     retentionDays: contains(backupShortTermRetentionPoliciesObj, 'retentionDays') ? backupShortTermRetentionPoliciesObj.retentionDays : 35
   }
@@ -173,6 +174,7 @@ module database_backupLongTermRetentionPolicy 'backupLongTermRetentionPolicies/d
   name: '${deployment().name}-backupLongTRetenPol'
   params: {
     managedInstanceName: managedInstanceName
+    databaseName: database.name
     name: backupLongTermRetentionPoliciesObj.name
     weekOfYear: contains(backupLongTermRetentionPoliciesObj, 'weekOfYear') ? backupLongTermRetentionPoliciesObj.weekOfYear : 5
     weeklyRetention: contains(backupLongTermRetentionPoliciesObj, 'weeklyRetention') ? backupLongTermRetentionPoliciesObj.weeklyRetention : 'P1M'

@@ -1,6 +1,9 @@
 @description('Required. The name of the Long Term Retention backup policy. For example "default".')
 param name string
 
+@description('Required. The name of the managed instance database')
+param databaseName string
+
 @description('Name of the resource.')
 param managedInstanceName string
 
@@ -17,7 +20,7 @@ param monthlyRetention string = 'P1Y'
 param yearlyRetention string = 'P5Y'
 
 resource backupLongTermRetentionPolicy 'Microsoft.Sql/managedInstances/databases/backupLongTermRetentionPolicies@2021-02-01-preview' = {
-  name: '${managedInstanceName}/${name}'
+  name: '${managedInstanceName}/${databaseName}/${name}'
   properties: {
     monthlyRetention: monthlyRetention
     weeklyRetention: weeklyRetention
