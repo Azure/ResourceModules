@@ -54,6 +54,14 @@
         "proxyOverride": {
             "value": "Proxy"
         },
+        "managedServiceIdentity": {
+            "value": "UserAssigned"
+        },
+        "userAssignedIdentities": {
+            "value": {
+                "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/adp-sxx-az-msi-weu-x-001": {}
+            }
+        },
         "publicDataEndpointEnabled": {
             "value": false
         },

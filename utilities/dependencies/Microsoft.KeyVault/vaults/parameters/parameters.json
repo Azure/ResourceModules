@@ -28,7 +28,11 @@
           "tenantId": "72f988bf-86f1-41af-91ab-2d7cd011db47",
           "objectId": "5545f7a0-51f4-46af-b3b4-baecf5176a56", // adding adp-sxx-az-msi-weu-x-001 to get secrets
           "permissions": {
-            "keys": [],
+            "keys": [
+              "Get",
+              "WrapKey",
+              "UnwrapKey"
+            ],
             "secrets": [
               "Get"
             ],
