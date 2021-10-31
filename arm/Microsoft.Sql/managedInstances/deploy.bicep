@@ -295,8 +295,8 @@ module managedInstance_securityAlertPolicy 'securityAlertPolicies/deploy.bicep' 
   params: {
     managedInstanceName: managedInstance.name
     name: securityAlertPoliciesObj.name
-    emailAccountAdmins: contains(vulnerabilityAssessmentsObj, 'emailAccountAdmins') ? vulnerabilityAssessmentsObj.emailAccountAdmins : false
-    state: contains(vulnerabilityAssessmentsObj, 'state') ? vulnerabilityAssessmentsObj.state : 'Disabled'
+    emailAccountAdmins: contains(securityAlertPoliciesObj, 'emailAccountAdmins') ? securityAlertPoliciesObj.emailAccountAdmins : false
+    state: contains(securityAlertPoliciesObj, 'state') ? securityAlertPoliciesObj.state : 'Disabled'
   }
   dependsOn: [
     managedInstance
