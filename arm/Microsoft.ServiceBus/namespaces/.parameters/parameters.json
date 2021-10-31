@@ -48,7 +48,7 @@
                 {
                     "filterName": "ipFilter2",
                     "ipMask": "10.0.2.0/32",
-                    "action": "Deny"
+                    "action": "Reject"
                 }
             ]
         },
