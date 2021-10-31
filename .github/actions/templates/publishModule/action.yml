@@ -100,7 +100,7 @@ runs:
           $templateFilePath = Join-Path "$env:GITHUB_WORKSPACE" "${{ inputs.templateFilePath }}"
 
           # Extracts Microsoft.KeyVault/vaults from e.g. C:\arm\Microsoft.KeyVault\vaults\deploy.bicep
-          $moduleIdentifier = (Split-Path '${{ inputs.templateFilePath }}' -Parent).Replace('\','/').Split('/arm/')[1]
+          $moduleIdentifier = (Split-Path $templateFilePath -Parent).Replace('\','/').Split('/arm/')[1]
 
           $functionInput = @{
             moduleIdentifier             = $moduleIdentifier
