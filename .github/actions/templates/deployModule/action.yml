@@ -46,7 +46,7 @@ runs:
         enable-AzPSSession: true
 
     - name: 'Replace Tokens [${{ inputs.parameterFilePath }}] '
-      shell: pwsh'
+      shell: pwsh
       run: |
         # Load used funtions
         . ".github/actions/sharedScripts/Convert-TokensInFiles.ps1"
