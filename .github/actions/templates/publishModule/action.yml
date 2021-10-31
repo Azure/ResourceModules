@@ -32,7 +32,7 @@ inputs:
     default: 'false'
     required: false
   versioningOption:
-    description: 'The mode to handle the version increments [major|minor|patch|custom].'
+    description: 'The mode to handle the version increments [major|minor|patch].'
     default: 'patch'
     required: false
   customVersion:

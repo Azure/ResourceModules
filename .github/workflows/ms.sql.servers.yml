@@ -8,7 +8,7 @@ on:
         required: false
         default: 'true'
       versioningOption:
-        description: 'The mode to handle the version increments [major|minor|patch|custom]'
+        description: 'The mode to handle the version increments [major|minor|patch]'
         required: false
         default: 'patch'
       customVersion:
@@ -184,9 +184,9 @@ jobs:
           componentTemplateSpecName: '${{ env.moduleName }}'
           componentTemplateSpecDescription: '${{ env.componentTemplateSpecDescription }}'
           publishToTemplateSpec: '${{ env.publishToTemplateSpec }}'
-          publishToPrivateBicepRegistry: '${{ env.publishToPrivateBicepRegistry }}'
           componentBicepRegistryName: '${{ env.componentBicepRegistryName }}'
           componentBicepRegistryRGName: '${{ env.componentBicepRegistryRGName }}'
+          publishToPrivateBicepRegistry: '${{ env.publishToPrivateBicepRegistry }}'
           versioningOption: '${{ needs.job_set_workflow_param.outputs.versioningOption }}'
           customVersion: '${{ needs.job_set_workflow_param.outputs.customVersion }}'
 

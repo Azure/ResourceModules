@@ -8,7 +8,7 @@ on:
         required: false
         default: 'false' # Deployment does not support tags
       versioningOption:
-        description: 'The mode to handle the version increments [major|minor|patch|custom]'
+        description: 'The mode to handle the version increments [major|minor|patch]'
         required: false
         default: 'patch'
       customVersion:
