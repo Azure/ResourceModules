@@ -23,7 +23,7 @@ This section shows you how to deploy a bicep template.
 
 ### Deploy local template
 
-This sub-section givens you an example on how to deploy a template on your local drive.
+This sub-section gives you an example on how to deploy a template from your local drive.
 
 #### **Local:** PowerShell
 
