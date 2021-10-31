@@ -20,13 +20,11 @@ param zoneRedundant bool = false
 param authorizationRules array = [
   {
     name: 'RootManageSharedAccessKey'
-    properties: {
-      rights: [
-        'Listen'
-        'Manage'
-        'Send'
-      ]
-    }
+    rights: [
+      'Listen'
+      'Manage'
+      'Send'
+    ]
   }
 ]
 
@@ -230,13 +228,11 @@ module serviceBusNamespace_queues 'queues/deploy.bicep' = [for (queue, index) in
     authorizationRules: contains(queue, 'authorizationRules') ? queue.authorizationRules : [
       {
         name: 'RootManageSharedAccessKey'
-        properties: {
-          rights: [
-            'Listen'
-            'Manage'
-            'Send'
-          ]
-        }
+        rights: [
+          'Listen'
+          'Manage'
+          'Send'
+        ]
       }
     ]
     deadLetteringOnMessageExpiration: contains(queue, 'deadLetteringOnMessageExpiration') ? queue.deadLetteringOnMessageExpiration : true

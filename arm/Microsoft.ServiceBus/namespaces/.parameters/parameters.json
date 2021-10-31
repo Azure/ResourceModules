@@ -56,22 +56,18 @@
             "value": [
                 {
                     "name": "RootManageSharedAccessKey",
-                    "properties": {
-                        "rights": [
-                            "Listen",
-                            "Manage",
-                            "Send"
-                        ]
-                    }
+                    "rights": [
+                        "Listen",
+                        "Manage",
+                        "Send"
+                    ]
                 },
                 {
                     "name": "AnotherKey",
-                    "properties": {
-                        "rights": [
-                            "Listen",
-                            "Send"
-                        ]
-                    }
+                    "rights": [
+                        "Listen",
+                        "Send"
+                    ]
                 }
             ]
         },
@@ -90,22 +86,18 @@
                     "authorizationRules": [
                         {
                             "name": "RootManageSharedAccessKey",
-                            "properties": {
-                                "rights": [
-                                    "Listen",
-                                    "Manage",
-                                    "Send"
-                                ]
-                            }
+                            "rights": [
+                                "Listen",
+                                "Manage",
+                                "Send"
+                            ]
                         },
                         {
                             "name": "AnotherKey",
-                            "properties": {
-                                "rights": [
-                                    "Listen",
-                                    "Send"
-                                ]
-                            }
+                            "rights": [
+                                "Listen",
+                                "Send"
+                            ]
                         }
                     ]
                 }
