@@ -6,8 +6,11 @@ This section gives you an overview of how to test the bicep modules.
 
 ### _Navigation_
 
-- [Tool: Testing your Bicep module](#Tool-Testing-your-Bicep-module)
-  - [Handling Resource IDs or Parameters that require or contain Subscription IDs](#handling-resource-ids-or-parameters-that-require-or-contain-subscription-ids)
+- [Testing Usage](#testing-usage)
+    - [_Navigation_](#navigation)
+  - [Tool: Testing your Bicep module](#tool-testing-your-bicep-module)
+  - [Tool: Use The Test-ModuleLocally Script To Perform Pester Testing, Token Replacement and Deployment of the Module. See Example Below](#tool-use-the-test-modulelocally-script-to-perform-pester-testing-token-replacement-and-deployment-of-the-module-see-example-below)
+    - [Handling Resource IDs or Parameters that require or contain Subscription IDs](#handling-resource-ids-or-parameters-that-require-or-contain-subscription-ids)
 
 ---
 
@@ -15,7 +18,7 @@ This section gives you an overview of how to test the bicep modules.
 
 When you have done your changes and want to validate, run the following:
 
-```pwsh
+```powershell
 Invoke-Pester -Configuration @{
     Run        = @{
         Container = New-PesterContainer -Path 'arm/.global/global.module.tests.ps1' -Data @{
@@ -34,6 +37,33 @@ Invoke-Pester -Configuration @{
         Verbosity = 'Detailed'
     }
 }
+```
+
+## Tool: Use The Test-ModuleLocally Script To Perform Pester Testing, Token Replacement and Deployment of the Module. See Example Below
+
+```powershell
+
+# Load the PowerShell Function For Testing
+. 'C:\PathToTheResourceModulesRepository\ResourceModules\utilities\tools\Test-ModuleLocally.ps1'
+
+# REQUIRED INPUT FOR TESTING
+$TestModuleLocallyInput = @{
+    ModuleName       = 'Microsoft.Authorization\roleAssignments'
+    PesterTest       = $true
+    DeployTest       = $true
+    DeployParameters = @{
+        Location          = 'westeurope' # Name of the Azure Region to deploy the module in.
+        ResourceGroupName = 'resourceGroupName' # Name of the Resource Group to deploy the module in.
+        SubscriptionId    = '12345678-1234-1234-abcd-1369d14d0d45' #The subscription ID used to deploy the module in & Token replacements for <<subscriptionId>>
+        ManagementGroupId = 'mg-contoso' #The Management Group ID used to deploy the module in & Token replacements for <<managementGroupId>>
+        PrincipalId       = '12345678-1234-1234-abcd-1369d14d0d45' # Replace <<principalId>> token to set the Role Assignments for the module
+        TenantId          = '12345678-1234-1234-abcd-1369d14d0d45' # Replace <<tenantId>> token for parameters that use the TenantID as a field
+        RemoveDeployment  = $false # Only Set to True if the Module Supports Tags.
+    }
+}
+
+Test-ModuleLocally @TestModuleLocallyInput -verbose
+
 ```
 
 ### Handling Resource IDs or Parameters that require or contain Subscription IDs

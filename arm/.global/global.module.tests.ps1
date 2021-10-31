@@ -731,6 +731,19 @@ Describe 'Deployment template tests' -Tag Template {
             }
         }
 
+        It '[<moduleFolderName>] Parameter files should not contain the Management Group Value' -TestCases $deploymentFolderTestCases {
+            param (
+                [hashtable[]] $parameterFileTestCases
+            )
+
+            foreach ($parameterFileTestCase in $parameterFileTestCases) {
+                $ParameterFileContent = Get-Content -Path $parameterFileTestCase.parameterFile_Path
+                $ManagementGroupIdKeyCount = ($ParameterFileContent | Select-String -Pattern '"managementGroupId"', "'managementGroupId'", '/managementGroups/' -AllMatches).Matches.Count
+                $ManagementGroupValueCount = ($ParameterFileContent | Select-String -Pattern '<<managementGroupId>>' -AllMatches).Matches.Count
+                $ManagementGroupIdKeyCount | Should -Be $ManagementGroupValueCount -Because ('Parameter file should not contain the management Group ID, instead should reference a token value "<<managementGroupId>>"')
+            }
+        }
+
         It '[<moduleFolderName>] Parameter files should not contain the Principal ID guid' -TestCases $deploymentFolderTestCases {
             param (
                 [hashtable[]] $parameterFileTestCases
