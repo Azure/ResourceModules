@@ -212,7 +212,7 @@ module serviceBusNamespace_ipFilterRules 'ipFilterRules/deploy.bicep' = [for (ip
   name: '${uniqueString(deployment().name, location)}-IpFilterRules-${index}'
   params: {
     namespaceName: serviceBusNamespace.name
-    name: ipFilterRule.name
+    name: contains(ipFilterRule, 'name') ? ipFilterRule.name : ipFilterRule.filterName
     action: ipFilterRule.action
     filterName: ipFilterRule.filterName
     ipMask: ipFilterRule.ipMask
