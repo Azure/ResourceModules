@@ -110,7 +110,7 @@ module server_rbac '.bicep/nested_rbac.bicep' = [for (roleAssignment, index) in 
 }]
 
 module server_databases 'databases/deploy.bicep' = [for (database, index) in databases: {
-  name: '${deployment().name}-database-${index}'
+  name: '${deployment().name}-db-${index}'
   params: {
     name: database.name
     serverName: server.name
