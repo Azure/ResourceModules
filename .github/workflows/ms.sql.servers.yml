@@ -184,6 +184,9 @@ jobs:
           componentTemplateSpecName: '${{ env.moduleName }}'
           componentTemplateSpecDescription: '${{ env.componentTemplateSpecDescription }}'
           publishToTemplateSpec: '${{ env.publishToTemplateSpec }}'
+          publishToPrivateBicepRegistry: '${{ env.publishToPrivateBicepRegistry }}'
+          componentBicepRegistryName: '${{ env.componentBicepRegistryName }}'
+          componentBicepRegistryRGName: '${{ env.componentBicepRegistryRGName }}'
           versioningOption: '${{ needs.job_set_workflow_param.outputs.versioningOption }}'
           customVersion: '${{ needs.job_set_workflow_param.outputs.customVersion }}'
 

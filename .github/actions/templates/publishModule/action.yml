@@ -21,6 +21,16 @@ inputs:
     description: 'Flag to indicate whether or not to publish to template specs'
     default: 'false'
     required: false
+  componentBicepRegistryName:
+    description: 'Required to publish to private bicep registry. ResourceGroup of the container registry to publish to'
+    required: false
+  componentBicepRegistryRGName:
+    description: 'Required to publish to private bicep registry. Location of the container registry resource group'
+    required: false
+  publishToPrivateBicepRegistry:
+    description: 'Flag to indicate whether or not to publish to the private bicep registry'
+    default: 'false'
+    required: false
   versioningOption:
     description: 'The mode to handle the version increments [major|minor|patch|custom].'
     default: 'patch'
