@@ -755,7 +755,6 @@ Describe 'Deployment template tests' -Tag Template {
                 $TenantIdValueCount = ($ParameterFileContent | Select-String -Pattern '<<tenantId>>' -AllMatches).Matches.Count
                 $TenantIdKeyCount - $TenantIdValueCount | Should -Be $TenantIdValueCount -Because ('Parameter file should not contain the Tenant Id guid, instead should reference a token value "<<tenantId>>"')
             }
-
         }
     }
 }
