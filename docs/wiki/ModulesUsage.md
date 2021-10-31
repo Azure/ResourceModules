@@ -6,18 +6,25 @@ This section gives you an overview of how to use the bicep modules.
 
 ### _Navigation_
 
-- [Deploy local template](#deploy-local-template)
-  - [**Local:** PowerShell](#local-powershell)
-  - [**Local:** Azure CLI](#local-azure-cli)
-- [Deploy remote template](#deploy-remote-template)
-  - [**Remote:** PowerShell](#remote-powershell)
-  - [**Remote:** Azure CLI](#remote-azure-cli)
-
+- [Deploy template](#deploy-template)
+  - [Deploy local template](#deploy-local-template)
+    - [**Local:** PowerShell](#local-powershell)
+    - [**Local:** Azure CLI](#local-azure-cli)
+  - [Deploy remote template](#deploy-remote-template)
+    - [**Remote:** PowerShell](#remote-powershell)
+    - [**Remote:** Azure CLI](#remote-azure-cli)
+- [Orchestrate deployment](#orchestrate-deployment)
 ---
 
-## Deploy local template
+## Deploy template
 
-### **Local:** PowerShell
+This section shows you how to deploy a bicep template.
+
+### Deploy local template
+
+This sub-section givens you an example on how to deploy a template on your local drive.
+
+#### **Local:** PowerShell
 
 This example targets a resource group level template.
 
@@ -32,7 +39,7 @@ $inputObject = @{
 New-AzResourceGroupDeployment @inputObject
 ```
 
-### **Local:** Azure CLI
+#### **Local:** Azure CLI
 
 This example targets a resource group level template.
 
@@ -47,9 +54,11 @@ $inputObject = @(
 az deployment group create @inputObject
 ```
 
-## Deploy remote template
+### Deploy remote template
 
-### **Remote:** PowerShell
+This section gives you an example on how to deploy a template that is stored at a publicly available remote location.
+
+#### **Remote:** PowerShell
 
 ```PowerShell
 New-AzResourceGroup -Name 'ExampleGroup' -Location "Central US"
@@ -62,7 +71,7 @@ $inputObject = @{
 New-AzResourceGroupDeployment @inputObject
 ```
 
-### **Remote:** Azure CLI
+#### **Remote:** Azure CLI
 
 ```bash
 az group create --name 'ExampleGroup' --location "Central US"
