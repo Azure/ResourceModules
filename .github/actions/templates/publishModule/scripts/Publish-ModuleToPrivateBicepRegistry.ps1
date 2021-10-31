@@ -75,7 +75,7 @@ function Publish-ModuleToPrivateBicepRegistry {
         $moduleRegistryIdentifier = 'bicep/modules/{0}' -f $moduleIdentifier.Replace('\', '/').Replace('/', '.').ToLower()
         $repositories = Get-AzContainerRegistryRepository -RegistryName $componentBicepRegistryName
         if ($repositories.Contains($moduleRegistryIdentifier)) {
-            $versions = (Get-AzContainerRegistryTag -RegistryName $registryName -RepositoryName $moduleRegistryIdentifier).Tags.Name
+            $versions = (Get-AzContainerRegistryTag -RegistryName $componentBicepRegistryName -RepositoryName $moduleRegistryIdentifier).Tags.Name
             $latestVersion = (($versions -as [Version[]]) | Measure-Object -Maximum).Maximum
             Write-Verbose "Published versions detected in private bicep registry [$moduleIdentifier]. Fetched latest [$latestVersion]."
         } else {
@@ -123,10 +123,9 @@ function Publish-ModuleToPrivateBicepRegistry {
         #############################################
         ##    Publish to private bicep registry    ##
         #############################################
+        $publishingTarget = 'br:{0}.azurecr.io/{1}:{2}' -f $componentBicepRegistryName, $moduleRegistryIdentifier, $newVersion
         if ($PSCmdlet.ShouldProcess("Private bicep registry entry [$moduleRegistryIdentifier] version [$newVersion] to registry [$componentBicepRegistryName]", 'Publish')) {
-            $publishingTarget = 'br:{0}.azurecr.io/{1}:{2}' -f $componentBicepRegistryName, $moduleRegistryIdentifier, $newVersion
             bicep publish $templateFilePath --target $publishingTarget
-
         }
         Write-Verbose 'Publish complete'
     }
