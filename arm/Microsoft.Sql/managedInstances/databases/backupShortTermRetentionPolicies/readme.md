@@ -7,12 +7,13 @@ This module deploys a backup short-term retention policies for SQL Managed Insta
 
 | Resource Type | Api Version |
 | :-- | :-- |
-| `Microsoft.Sql/managedInstances/backupShortTermRetentionPolicies` | 2017-03-01-preview |
+| `Microsoft.Sql/managedInstances/databases/backupShortTermRetentionPolicies` | 2017-03-01-preview |
 
 ## Parameters
 
 | Parameter Name | Type | Default Value | Possible Values | Description |
 | :-- | :-- | :-- | :-- | :-- |
+| `databaseName` | string |  |  | Required. The name of the managed instance database |
 | `managedInstanceName` | string |  |  | Name of the resource. |
 | `name` | string |  |  | Required. The name of the Short Term Retention backup policy. For example "default". |
 | `retentionDays` | int | `35` |  | Optional. The backup retention period in days. This is how many days Point-in-Time Restore will be supported. |
@@ -27,4 +28,4 @@ This module deploys a backup short-term retention policies for SQL Managed Insta
 
 ## Template references
 
-- [Managedinstances/Backupshorttermretentionpolicies](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Sql/2017-03-01-preview/managedInstances/backupShortTermRetentionPolicies)
+- [Managedinstances/Databases/Backupshorttermretentionpolicies](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Sql/2017-03-01-preview/managedInstances/databases/backupShortTermRetentionPolicies)
