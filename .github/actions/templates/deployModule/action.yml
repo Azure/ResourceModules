@@ -51,9 +51,9 @@ runs:
         # Load used funtions
         . ".github/actions/sharedScripts/Convert-TokensInFiles.ps1"
         $TokensReplaceWithObject = @(
-            @{ Replace = "<<tenantId>>"; With = '${{ env.ARM_TENANT_ID }}' }
+            @{ Replace = "<<tenantId>>"; With = '${{ secrets.ARM_TENANT_ID }}' }
             @{ Replace = "<<subscriptionId>>"; With = '${{ inputs.subscriptionId }}' }
-            @{ Replace = "<<principalId>>"; With = '${{ env.ARM_PRINCIPAL_ID }}' }
+            @{ Replace = "<<principalId>>"; With = '${{ secrets.ARM_PRINCIPAL_ID }}' }
         )
         write-verbose "Invoking Convert-TokensInFiles"
         Convert-TokensInFiles -Paths '${{ inputs.parameterFilePath }}' -TokensReplaceWith $TokensReplaceWithObject
