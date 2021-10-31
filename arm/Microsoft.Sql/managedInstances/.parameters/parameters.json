@@ -90,6 +90,7 @@
             "value": {
                 "name": "default",
                 "emailSubscriptionAdmins": true,
+                "recurringScansIsEnabled": true,
                 "recurringScansEmails": [
                     "test1@contoso.com",
                     "test2@contoso.com"
