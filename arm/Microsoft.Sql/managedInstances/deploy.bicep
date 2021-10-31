@@ -260,7 +260,7 @@ module managedInstance_rbac './.bicep/nested_rbac.bicep' = [for (roleAssignment,
 }]
 
 module managedInstance_databases 'databases/deploy.bicep' = [for (database, index) in databases: {
-  name: '${deployment().name}-database-${index}'
+  name: '${deployment().name}-db-${index}'
   params: {
     name: database.name
     managedInstanceName: managedInstance.name
@@ -291,7 +291,7 @@ module managedInstance_databases 'databases/deploy.bicep' = [for (database, inde
 }]
 
 module managedInstance_vulnerabilityAssessment 'vulnerabilityAssessments/deploy.bicep' = if (!empty(vulnerabilityAssessmentsObj)) {
-  name: '${deployment().name}-vulnerabilityAssessment'
+  name: '${deployment().name}-vulnAssessm'
   params: {
     managedInstanceName: managedInstance.name
     name: vulnerabilityAssessmentsObj.name
@@ -319,7 +319,7 @@ module managedInstance_key 'keys/deploy.bicep' = if (!empty(keysObj)) {
 }
 
 module managedInstance_encryptionProtector 'encryptionProtector/deploy.bicep' = if (!empty(encryptionProtectorObj)) {
-  name: '${deployment().name}-encryptionProtector'
+  name: '${deployment().name}-encryProtector'
   params: {
     managedInstanceName: managedInstance.name
     serverKeyName: contains(encryptionProtectorObj, 'serverKeyName') ? encryptionProtectorObj.serverKeyName : managedInstance_key.outputs.keyName
@@ -333,7 +333,7 @@ module managedInstance_encryptionProtector 'encryptionProtector/deploy.bicep' = 
 }
 
 module managedInstance_securityAlertPolicy 'securityAlertPolicies/deploy.bicep' = if (!empty(securityAlertPoliciesObj)) {
-  name: '${deployment().name}-securityAlertPolicy'
+  name: '${deployment().name}-secAlertPol'
   params: {
     managedInstanceName: managedInstance.name
     name: securityAlertPoliciesObj.name
@@ -346,7 +346,7 @@ module managedInstance_securityAlertPolicy 'securityAlertPolicies/deploy.bicep' 
 }
 
 module managedInstance_administrator 'administrators/deploy.bicep' = if (!empty(administratorsObj)) {
-  name: '${deployment().name}-administrator'
+  name: '${deployment().name}-admin'
   params: {
     managedInstanceName: managedInstance.name
     login: administratorsObj.name
