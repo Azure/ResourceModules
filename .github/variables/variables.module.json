@@ -23,6 +23,18 @@
         {
             "name": "publishToTemplateSpec",
             "value": "true"
+        },
+        {
+            "name": "componentBicepRegistryName",
+            "value": "adpsxxazacrx001"
+        },
+        {
+            "name": "componentBicepRegistryRGName",
+            "value": "artifacts-rg"
+        },
+        {
+            "name": "publishToPrivateBicepRegistry",
+            "value": "true"
         }
     ]
 }

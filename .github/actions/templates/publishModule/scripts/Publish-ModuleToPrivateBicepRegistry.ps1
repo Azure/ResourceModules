@@ -10,6 +10,7 @@ Otherwise, one of the provided version options is chosen and applied with the de
 
 .PARAMETER moduleIdentifier
 Mandatory. The identifier of the module to publish (ProviderNamespace/ResourceType Combination). It will be the name of the private bicep registry.
+E.g. 'Microsoft.KeyVault/vaults'
 
 .PARAMETER templateFilePath
 Mandatory. Path to the module deployment file from root.
@@ -63,6 +64,11 @@ function Publish-ModuleToPrivateBicepRegistry {
         #############################
         ##    EVALUATE RESOURCES   ##
         #############################
+        if ((Split-Path $templateFilePath -Extension) -ne '.bicep') {
+            throw "The template in path [$templateFilePath] is no bicep template."
+        }
+
+        # Registry
         if (-not (Get-AzContainerRegistry -ResourceGroupName $componentBicepRegistryRGName -Name $componentBicepRegistryName -ErrorAction 'SilentlyContinue')) {
             if ($PSCmdlet.ShouldProcess("Container Registry [$componentBicepRegistryName] to resource group [$componentBicepRegistryRGName]", 'Deploy')) {
                 New-AzContainerRegistry -ResourceGroupName $componentBicepRegistryRGName -Name $componentBicepRegistryName -Sku 'Basic'

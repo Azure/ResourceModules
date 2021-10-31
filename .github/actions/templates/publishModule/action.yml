@@ -75,3 +75,34 @@ runs:
         } else {
           Write-Output "Pipeline is configured to not publish to TemplateSpecs"
         }
+
+    - name: 'Publish module to private bicep registry'
+      shell: pwsh
+      # if: ${{ inputs.publishToPrivateBicepRegistry == 'true' }}
+      run: |
+        # Workaround until composite actions support conditions
+        # Once available, remove this if and enable the step condition
+        if('${{ inputs.publishToPrivateBicepRegistry }}' -eq 'true') {
+
+          # Load used functions
+          . "$env:GITHUB_ACTION_PATH/scripts/Publish-ModuleToPrivateBicepRegistry.ps1"
+
+          # Extracts Microsoft.KeyVault/vaults from e.g. C:\arm\Microsoft.KeyVault\vaults\deploy.bicep
+          $moduleIdentifier = (Split-Path '${{ inputs.templateFilePath }}' -Parent).Replace('\','/').Split('/arm/')[1]
+
+          $functionInput = @{
+            moduleIdentifier             = $moduleIdentifier
+            templateFilePath             = '${{ inputs.templateFilePath }}'
+            componentBicepRegistryName   = '${{ inputs.componentBicepRegistryName }}'
+            componentBicepRegistryRGName = '${{ inputs.componentBicepRegistryRGName }}'
+            customVersion                = '${{ inputs.customVersion }}'
+            versioningOption             = '${{ inputs.versioningOption }}'
+          }
+
+          Write-Verbose "Invoke task with" -Verbose
+          Write-Verbose ($functionInput | ConvertTo-Json | Out-String) -Verbose
+
+          Publish-ModuleToPrivateBicepRegistry @functionInput -Verbose
+        } else {
+          Write-Output "Pipeline is configured to not publish to TemplateSpecs"
+        }
