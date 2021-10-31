@@ -35,7 +35,7 @@ New-AzResourceGroup -Name 'ExampleGroup' -Location "Central US"
 $inputObject = @{
  DeploymentName    = 'ExampleDeployment'
  ResourceGroupName = 'ExampleGroup'
- TemplateFile      = "$home\Microsoft.KeyVault\vault\deploy.bicep"
+ TemplateFile      = "$home\ResourceModules\arm\Microsoft.KeyVault\vault\deploy.bicep"
 }
 New-AzResourceGroupDeployment @inputObject
 ```
@@ -49,7 +49,7 @@ az group create --name 'ExampleGroup' --location "Central US"
 $inputObject = @(
     '--name',           'ExampleDeployment',
     '--resource-group', 'ExampleGroup',
-    '--template-file',  "$home\Microsoft.KeyVault\vault\deploy.bicep",
+    '--template-file',  "$home\ResourceModules\arm\Microsoft.KeyVault\vault\deploy.bicep",
     '--parameters',     'storageAccountType=Standard_GRS',
 )
 az deployment group create @inputObject
@@ -67,7 +67,7 @@ New-AzResourceGroup -Name 'ExampleGroup' -Location "Central US"
 $inputObject = @{
  DeploymentName    = 'ExampleDeployment'
  ResourceGroupName = 'ExampleGroup'
- TemplateUri       = 'https://raw.githubusercontent.com/MrMCake/ResourceModules/main/arm/Microsoft.KeyVault/vaults/deploy.json'
+ TemplateUri       = 'https://raw.githubusercontent.com/arm/ResourceModules/main/arm/Microsoft.KeyVault/vaults/deploy.json'
 }
 New-AzResourceGroupDeployment @inputObject
 ```
@@ -80,7 +80,7 @@ az group create --name 'ExampleGroup' --location "Central US"
 $inputObject = @(
     '--name',           'ExampleDeployment',
     '--resource-group', 'ExampleGroup',
-    '--template-uri',   'https://raw.githubusercontent.com/MrMCake/ResourceModules/main/arm/Microsoft.KeyVault/vaults/deploy.json',
+    '--template-uri',   'https://raw.githubusercontent.com/arm/ResourceModules/main/arm/Microsoft.KeyVault/vaults/deploy.json',
     '--parameters',     'storageAccountType=Standard_GRS',
 )
 az deployment group create @inputObject
