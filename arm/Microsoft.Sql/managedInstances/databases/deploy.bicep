@@ -81,40 +81,28 @@ param tags object = {}
 @description('Optional. Customer Usage Attribution id (GUID). This GUID must be previously registered')
 param cuaId string = ''
 
-var diagnosticsLogs = [
-  {
-    category: 'SQLInsights'
-    enabled: true
-    retentionPolicy: {
-      enabled: true
-      days: diagnosticLogsRetentionInDays
-    }
-  }
-  {
-    category: 'QueryStoreRuntimeStatistics'
-    enabled: true
-    retentionPolicy: {
-      enabled: true
-      days: diagnosticLogsRetentionInDays
-    }
-  }
-  {
-    category: 'QueryStoreWaitStatistics'
-    enabled: true
-    retentionPolicy: {
-      enabled: true
-      days: diagnosticLogsRetentionInDays
-    }
-  }
-  {
-    category: 'Errors'
-    enabled: true
-    retentionPolicy: {
-      enabled: true
-      days: diagnosticLogsRetentionInDays
-    }
-  }
+@description('Optional. The name of logs that will be streamed.')
+@allowed([
+  'SQLInsights'
+  'QueryStoreRuntimeStatistics'
+  'QueryStoreWaitStatistics'
+  'Errors'
+])
+param logsToEnable array = [
+  'SQLInsights'
+  'QueryStoreRuntimeStatistics'
+  'QueryStoreWaitStatistics'
+  'Errors'
 ]
+
+var diagnosticsLogs = [for log in logsToEnable: {
+  category: log
+  enabled: true
+  retentionPolicy: {
+    enabled: true
+    days: diagnosticLogsRetentionInDays
+  }
+}]
 
 module pid_cuaId './.bicep/nested_cuaId.bicep' = if (!empty(cuaId)) {
   name: 'pid-${cuaId}'
@@ -140,7 +128,7 @@ resource database 'Microsoft.Sql/managedInstances/databases@2020-02-02-preview' 
 }
 
 resource database_lock 'Microsoft.Authorization/locks@2016-09-01' = if (lock != 'NotSpecified') {
-  name: '${split(database.name, '/')[1]}-${lock}-lock'
+  name: '${last(split(database.name, '/'))}-${lock}-lock'
   properties: {
     level: lock
     notes: (lock == 'CanNotDelete') ? 'Cannot delete resource or child resources.' : 'Cannot modify the resource or child resources.'
@@ -149,7 +137,7 @@ resource database_lock 'Microsoft.Authorization/locks@2016-09-01' = if (lock != 
 }
 
 resource database_diagnosticSettings 'Microsoft.Insights/diagnosticsettings@2017-05-01-preview' = if ((!empty(diagnosticStorageAccountId)) || (!empty(workspaceId)) || (!empty(eventHubAuthorizationRuleId)) || (!empty(eventHubName))) {
-  name: '${split(database.name, '/')[1]}-diagnosticSettings'
+  name: '${last(split(database.name, '/'))}-diagnosticSettings'
   properties: {
     storageAccountId: (empty(diagnosticStorageAccountId) ? json('null') : diagnosticStorageAccountId)
     workspaceId: (empty(workspaceId) ? json('null') : workspaceId)
@@ -164,7 +152,7 @@ module database_backupShortTermRetentionPolicy 'backupShortTermRetentionPolicies
   name: '${deployment().name}-backupShortTRetenPol'
   params: {
     managedInstanceName: managedInstanceName
-    databaseName: database.name
+    databaseName: last(split(database.name, '/'))
     name: backupShortTermRetentionPoliciesObj.name
     retentionDays: contains(backupShortTermRetentionPoliciesObj, 'retentionDays') ? backupShortTermRetentionPoliciesObj.retentionDays : 35
   }
@@ -174,7 +162,7 @@ module database_backupLongTermRetentionPolicy 'backupLongTermRetentionPolicies/d
   name: '${deployment().name}-backupLongTRetenPol'
   params: {
     managedInstanceName: managedInstanceName
-    databaseName: database.name
+    databaseName: last(split(database.name, '/'))
     name: backupLongTermRetentionPoliciesObj.name
     weekOfYear: contains(backupLongTermRetentionPoliciesObj, 'weekOfYear') ? backupLongTermRetentionPoliciesObj.weekOfYear : 5
     weeklyRetention: contains(backupLongTermRetentionPoliciesObj, 'weeklyRetention') ? backupLongTermRetentionPoliciesObj.weeklyRetention : 'P1M'
@@ -183,6 +171,6 @@ module database_backupLongTermRetentionPolicy 'backupLongTermRetentionPolicies/d
   }
 }
 
-output databaseName string = database.name
+output databaseName string = last(split(database.name, '/'))
 output databaseResourceId string = database.id
 output databaseResourceGroup string = resourceGroup().name
