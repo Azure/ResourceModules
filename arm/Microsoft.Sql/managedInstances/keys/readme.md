@@ -13,10 +13,10 @@ This module deploys a key for a SQL managed instance.
 | Parameter Name | Type | Default Value | Possible Values | Description |
 | :-- | :-- | :-- | :-- | :-- |
 | `cuaId` | string |  |  | Optional. Customer Usage Attribution id (GUID). This GUID must be previously registered |
-| `managedInstanceName` | string |  |  | Name of the resource. |
-| `name` | string |  |  | The name of the key |
-| `serverKeyType` | string | `ServiceManaged` | `[AzureKeyVault, ServiceManaged]` | The encryption protector type like "ServiceManaged", "AzureKeyVault" |
-| `uri` | string |  |  | The URI of the key. If the ServerKeyType is AzureKeyVault, then the URI is required. |
+| `managedInstanceName` | string |  |  | Required. Name of the SQL managed instance. |
+| `name` | string |  |  | Optional. The name of the key |
+| `serverKeyType` | string | `ServiceManaged` | `[AzureKeyVault, ServiceManaged]` | Optional. The encryption protector type like "ServiceManaged", "AzureKeyVault" |
+| `uri` | string |  |  | Optional. The URI of the key. If the ServerKeyType is AzureKeyVault, then the URI is required. |
 
 ## Outputs
 

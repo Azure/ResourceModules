@@ -14,7 +14,7 @@ This module deploys an administrator for the SQL managed instance
 | :-- | :-- | :-- | :-- | :-- |
 | `cuaId` | string |  |  | Optional. Customer Usage Attribution id (GUID). This GUID must be previously registered |
 | `login` | string |  |  | Required. Login name of the managed instance administrator. |
-| `managedInstanceName` | string |  |  | Name of the resource. |
+| `managedInstanceName` | string |  |  | Required. Name of the SQL managed instance. |
 | `sid` | string |  |  | Required. SID (object ID) of the managed instance administrator. |
 | `tenantId` | string |  |  | Optional. Tenant ID of the managed instance administrator. |
 

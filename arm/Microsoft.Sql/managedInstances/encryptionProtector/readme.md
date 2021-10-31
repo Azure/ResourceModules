@@ -12,12 +12,12 @@ This module deploys an encryption protector for a SQL managed instance.
 
 | Parameter Name | Type | Default Value | Possible Values | Description |
 | :-- | :-- | :-- | :-- | :-- |
-| `autoRotationEnabled` | bool |  |  | Key auto rotation opt-in flag |
+| `autoRotationEnabled` | bool |  |  | Optional. Key auto rotation opt-in flag |
 | `cuaId` | string |  |  | Optional. Customer Usage Attribution id (GUID). This GUID must be previously registered |
-| `managedInstanceName` | string |  |  | Name of the resource. |
-| `name` | string | `current` |  | The name of the encryptionProtector |
-| `serverKeyName` | string |  |  | The name of the managed instance key. |
-| `serverKeyType` | string | `AzureKeyVault` | `[AzureKeyVault, ServiceManaged]` | The encryption protector type like "ServiceManaged", "AzureKeyVault". |
+| `managedInstanceName` | string |  |  | Required. Name of the SQL managed instance. |
+| `name` | string | `current` |  | Required. The name of the encryptionProtector |
+| `serverKeyName` | string |  |  | Required. The name of the SQL managed instance key. |
+| `serverKeyType` | string | `AzureKeyVault` | `[AzureKeyVault, ServiceManaged]` | Optional. The encryption protector type like "ServiceManaged", "AzureKeyVault". |
 
 ## Outputs
 

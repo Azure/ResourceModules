@@ -14,8 +14,8 @@ This module deploys a security alert policy for a SQL managed instance.
 | :-- | :-- | :-- | :-- | :-- |
 | `cuaId` | string |  |  | Optional. Customer Usage Attribution id (GUID). This GUID must be previously registered |
 | `emailAccountAdmins` | bool |  |  | Optional. Specifies that the schedule scan notification will be is sent to the subscription administrators. |
-| `managedInstanceName` | string |  |  | Name of the resource. |
-| `name` | string |  |  | The name of the security alert policy |
+| `managedInstanceName` | string |  |  | Required. Name of the SQL managed instance. |
+| `name` | string |  |  | Required. The name of the security alert policy |
 | `state` | string | `Disabled` | `[Enabled, Disabled]` | Optional. Enables advanced data security features, like recuring vulnerability assesment scans and ATP. If enabled, storage account must be provided. |
 
 ## Outputs
