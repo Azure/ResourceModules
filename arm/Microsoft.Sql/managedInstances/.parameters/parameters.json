@@ -69,7 +69,8 @@
         },
         "keysObj": {
             "value": {
-                "serverKeyType": "ServiceManaged"
+                "serverKeyType": "AzureKeyVault",
+                "uri": "https://adp-sxx-az-kv-weu-x-001.vault.azure.net/keys/keyEncryptionKeySqlMi/a2a508346c9f475eaa2f0f813713c5d1"
             }
         },
         "securityAlertPoliciesObj": {
