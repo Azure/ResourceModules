@@ -4,7 +4,7 @@ param name string
 @description('Required. The name of the managed instance database')
 param databaseName string
 
-@description('Name of the resource.')
+@description('Required. Name of the managed instance.')
 param managedInstanceName string
 
 @description('Optional. The week of year to take the yearly backup in an ISO 8601 format.')

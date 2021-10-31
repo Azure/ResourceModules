@@ -1,20 +1,20 @@
-@description('The name of the encryptionProtector')
+@description('Required. The name of the encryptionProtector')
 param name string = 'current'
 
-@description('Name of the resource.')
+@description('Required. Name of the SQL managed instance.')
 param managedInstanceName string
 
-@description('The name of the managed instance key.')
+@description('Required. The name of the SQL managed instance key.')
 param serverKeyName string
 
-@description('The encryption protector type like "ServiceManaged", "AzureKeyVault".')
+@description('Optional. The encryption protector type like "ServiceManaged", "AzureKeyVault".')
 @allowed([
   'AzureKeyVault'
   'ServiceManaged'
 ])
 param serverKeyType string = 'AzureKeyVault'
 
-@description('Key auto rotation opt-in flag')
+@description('Optional. Key auto rotation opt-in flag')
 param autoRotationEnabled bool = false
 
 @description('Optional. Customer Usage Attribution id (GUID). This GUID must be previously registered')

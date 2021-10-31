@@ -1,17 +1,17 @@
-@description('The name of the key')
+@description('Optional. The name of the key')
 param name string = ''
 
-@description('Name of the resource.')
+@description('Required. Name of the SQL managed instance.')
 param managedInstanceName string
 
-@description('The encryption protector type like "ServiceManaged", "AzureKeyVault"')
+@description('Optional. The encryption protector type like "ServiceManaged", "AzureKeyVault"')
 @allowed([
   'AzureKeyVault'
   'ServiceManaged'
 ])
 param serverKeyType string = 'ServiceManaged'
 
-@description('The URI of the key. If the ServerKeyType is AzureKeyVault, then the URI is required.')
+@description('Optional. The URI of the key. If the ServerKeyType is AzureKeyVault, then the URI is required.')
 param uri string = ''
 
 @description('Optional. Customer Usage Attribution id (GUID). This GUID must be previously registered')

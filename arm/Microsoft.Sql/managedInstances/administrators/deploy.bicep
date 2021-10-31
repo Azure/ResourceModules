@@ -1,4 +1,4 @@
-@description('Name of the resource.')
+@description('Required. Name of the SQL managed instance.')
 param managedInstanceName string
 
 @description('Required. Login name of the managed instance administrator.')

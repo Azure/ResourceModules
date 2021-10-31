@@ -1,10 +1,10 @@
 @description('Required. The name of the Short Term Retention backup policy. For example "default".')
 param name string
 
-@description('Required. The name of the managed instance database')
+@description('Required. The name of the SQL managed instance database')
 param databaseName string
 
-@description('Name of the resource.')
+@description('Required. Name of the SQL managed instance.')
 param managedInstanceName string
 
 @description('Optional. The backup retention period in days. This is how many days Point-in-Time Restore will be supported.')

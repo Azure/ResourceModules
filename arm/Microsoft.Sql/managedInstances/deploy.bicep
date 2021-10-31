@@ -309,7 +309,7 @@ module managedInstance_key 'keys/deploy.bicep' = if (!empty(keysObj)) {
   name: '${deployment().name}-key'
   params: {
     managedInstanceName: managedInstance.name
-    name: keysObj.name
+    name: contains(keysObj, 'name') ? keysObj.name : ''
     serverKeyType: contains(keysObj, 'serverKeyType') ? keysObj.serverKeyType : 'ServiceManaged'
     uri: contains(keysObj, 'uri') ? keysObj.uri : ''
   }

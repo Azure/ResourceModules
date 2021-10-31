@@ -1,7 +1,7 @@
-@description('The name of the security alert policy')
+@description('Required. The name of the security alert policy')
 param name string
 
-@description('Name of the resource.')
+@description('Required. Name of the SQL managed instance.')
 param managedInstanceName string
 
 @description('Optional. Enables advanced data security features, like recuring vulnerability assesment scans and ATP. If enabled, storage account must be provided.')
