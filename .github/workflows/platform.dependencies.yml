@@ -14,6 +14,7 @@ on:
 env:
   defaultLocation: 'WestEurope'
   resourceGroupName: 'validation-rg'
+  resourceGroupNameArtifacts: 'artifacts-rg'
   removeDeployment: 'false'
   AZURE_CREDENTIALS: ${{ secrets.AZURE_CREDENTIALS }}
   ARM_SUBSCRIPTION_ID: ${{ secrets.ARM_SUBSCRIPTION_ID }}
@@ -101,7 +102,7 @@ jobs:
           templateFilePath: 'arm/${{ env.namespace }}/deploy.bicep'
           parameterFilePath: 'utilities/dependencies/${{ env.namespace }}/parameters/${{ matrix.parameterFilePaths }}'
           location: '${{ env.defaultLocation }}'
-          resourceGroupName: '${{ env.resourceGroupName }}'
+          resourceGroupName: '${{ env.resourceGroupNameArtifacts }}'
           subscriptionId: '${{ secrets.ARM_SUBSCRIPTION_ID }}'
           managementGroupId: '${{ secrets.ARM_MGMTGROUP_ID }}'
           removeDeployment: '${{ env.removeDeployment }}'
