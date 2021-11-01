@@ -12,8 +12,7 @@ This section gives you an overview of the design principals the testing follows.
 - [Template validation](#template-validation)
 - [Deployment validation](#deployment-validation)
   - [Module dependencies](#module-dependencies)
-    - [Overview of modules dependencies](#overview-of-modules-dependencies)
-    - [Services (in order)](#services-in-order)
+    - [Resources deployed by the dependency workflow](#resources-deployed-by-the-dependency-workflow)
     - [Required secrets and keys](#required-secrets-and-keys)
 
 ---
@@ -84,108 +83,90 @@ Currently the list of the parameter file used to test the module is hardcoded in
 
 ### Module dependencies
 
-In order to successfully deploy and test all Modules in your desired environment some Modules have to have resources deployed beforehand.
+In order to successfully deploy and test all modules in your desired environment some modules have to have resources deployed beforehand.
 
 > **Note**<br>
-If we speak from **modules** in this context we mean the **Services** which get created from these modules.
+If we speak from **modules** in this context we mean the **services** which get created from these modules.
 
-Here is the full list of Modules which have dependencies on other Services.
+#### Resources deployed by the dependency workflow
 
-#### Overview of modules dependencies
+Together with the resource modules pipelines, we are providing a dependency pipeline (GitHub workflow: `.github\workflows\platform.dependencies.yml`), leveraging resource parameters from the `utilities\dependencies` subfolder.
 
-- ActivityLog
-  - ActionGroup
-- ActivityLogAlert
-  - ActionGroup
-- AzureBastion
-  - VirtualNetwork / AzureBastionSubnet
-- AzureFirewall
-  - VirtualNetwork / AzureFirewallSubnet
-- AzureNetAppFiles
-  - VirtualNetwork / NetApp enabled subnet
-- AzureSecurityCenter
-  - LogAnalyticsWorkspace
-- AzureSqlDatabase
-  - AzureSqlServer
-- DiskEncryptionSet
-  - KeyVault / Key (encryptionKey)
-- Deployment Scripts
-  - Managed Service Identity
-- EventHubs
-  - EventHubNamespaces
-- FunctionApp
-  - AppServicePlan
-- ImageTemplates
-  - SharedImageGallery
-- LoadBalancer
-  - PublicIPAddresses
-- MetricAlert
-  - ActionGroup
-  - VirtualMachines
-- NetworkSecurityGroups
-  - ApplicationSecurityGroups
-- NSGFlowLogs
-  - NetworkWatcher (needs to reside in same RG)
-  - NetworkSecurityGroups
-  - StorageAccount (Diagnostics)
-- SQLManagedInstances
-  - VirtualNetwork / Subnet
-  - KeyVault / Key
-  - StorageAccount / vulnerabilityAssessmentsStorageAccountId
-- SQLManagedInstancesDatabases
-  - SQLManagedInstances
-- VirtualMachines
-  - VirtualNetwork / Subnet
-  - KeyVault / Secrets (admiUsername, adminPassword)
-- VirtualMachineScaleSet
-  - VirtualNetwork / Subnet
-  - KeyVault / Secrets (admiUsername, adminPassword)
-- VirtualNetworkGateway
-  - PublicIPPrefix
-  - VirtualNetwork (in the same rg, like AFW)
-- VirtualNetworkGatewayConnection
-  - KeyVault / Secret (vpnSharedKey)
-- WebApp
-  - AppServicePlan
-- AvdApplicationGroups
-  - AvdHostPool
-- AvdApplications
-  - AvdAppliccationGroups
+The resources deployed by the dependency workflow need to be in place before testing all the modules. Some of them (e.g. [storage account], [key vault] and [event hub namespace]) require a globally unique resource name. Before running the dependency workflow, it is required to update those values and their corresponding references in the resource modules parameters.
 
-#### Services (in order)
+Since also dependency resources are in turn subject to dependencies with each other, resources are deployed in the following grouped order.
 
-Provided the dependencies listed above, the following list of services need to be deployed to be able to test all the modules:
+**First level resources**
 
-1. VirtualNetwork
-1. StorageAccounts
-1. KeyVault
-1. LogAnalytics
-1. PublicIPPrefix
-1. PublicIPAddresses
-1. EventHubNamespaces
-1. EventHubs (only needed if EventHubs are used for Monitoring in addition to LogAnalytics)
-1. ActionGroup
-1. AzureSqlServer
-1. AppServicePlan
-1. SharedImageGallery
-1. ApplicationSecurityGroups
-1. NetworkSecurityGroups
-1. WvdHostPool
-1. WvdAppliccationGroups
-1. Managed Service Identity
-1. Deployment Scripts
+  1. Resource Groups: Leveraged by all modules. Multiple instances are deployed:
+     - 'validation-rg': The resource group to which resources are deployed by default during the test deployment phase. This same resource group is also the one hosting the dependencies.
+     - 'artifacts-rg': The resource group to which templates are published during the publishing phase.
+
+**Second level resources**: This group of resources has a dependency only on the resource group which will host them. Resources in this group can be deployed in parallel.
+
+  1. User assigned identity: This resource is leveraged as a test identity by all resources supporting RBAC.
+  2. Log analytics workspace: This resource is leveraged by all resources supporting diagnostic settings on LAW.
+  3. Storage account: This resource is leveraged by all resources supporting diagnostic settings on a storage account.
+      >**Note**: This resource has a global scope name.
+  4. Event hub namespace: This resource is leveraged by the [event hub] resource.
+      >**Note**: This resource has a global scope name.
+  5. Route table: This resource is leveraged by the virtual network subnet dedicated to test [SQL managed instance].
+  6. Network watcher: This resource is leveraged by the [NSG flow logs] resource.
+  7. Shared image gallery: This resource is leveraged by the [shared image definition] and [image template] resources.
+  8. Action group: This resource is leveraged by [activity log alert] and [metric alert] resources.
+  9. Application security group: This resource is leveraged by the [network security group] resource.
+  10. Application service plan: This resource is leveraged by the [function app] and [web app] resources.
+
+**Third level resources**: This group of resources has a dependency on one or more resources in the group above. Resources in this group can be deployed in parallel.
+
+  1. Event hub: This resource is depending on the [event hub namespace] deployed above and leveraged by all resources supporting diagnostic settings on an event hub.
+  2. Role assignment: This resource assigns the '_Contributor_' role on the subscription to the [user assigned identity] deployed as part of the group above. This is needed by the [image template] deployment.
+  3. Shared image definition: This resource is depending on the [shared image gallery] deployed above and leveraged by the [image template] resource.
+
+**Fourth level resources**: All resources in this group support monitoring. Hence they have a dependency on the [storage account], [log analytics workspace] and [event hub] deployed in the groups above. Resources in this group can be deployed in parallel.
+
+  1. Key vault: This resource is leveraged by all resources requiring access to a key vault key, secret and/or certificate, i.e. [application gateway], [azure NetApp file], [azure SQL server], [disk encryption set], [machine learning service], [private endpoint], [SQL managed instance], [virtual machine], [virtual machine scale set], [virtual network gateway connection].
+      >**Note**: This resource has a global scope name.
+  2. Network Security Groups: This resource is leveraged by different virtual network subnets. Multiple instances are deployed:
+      - '_adp-sxx-az-nsg-weu-x-apgw_': NSG with required network security rules to be leveraged by the [application gateway] subnet.
+      - '_adp-sxx-az-nsg-weu-x-ase_': NSG with required network security rules to be leveraged by the [app service environment] subnet.
+      - '_adp-sxx-az-nsg-weu-x-bastion_': NSG with required network security rules to be leveraged by the [bastion host] subnet.
+      - '_adp-sxx-az-nsg-weu-x-sqlmi_': NSG with required network security rules to be leveraged by the [sql managed instance] subnet.
+      - '_adp-sxx-az-nsg-weu-x-001_': default NSG leveraged by all other subnets.
+  3. Public IP addresses: Multiple instances are deployed:
+      - '_adp-sxx-az-pip-weu-x-apgw_': Leveraged by the [application gateway] resource.
+      - '_adp-sxx-az-pip-weu-x-bas_': Leveraged by the [bastion host] resource.
+      - '_adp-sxx-az-pip-weu-x-lb_': Leveraged by the [load balancer] resource.
+  4. API management: This resource is leveraged by all [api management services].
+      >**Note**: This resource has a global scope name.
+  5. Application insight: This resource is leveraged by the [machine learning service] resource.
+
+**Fifth level resources**: This group of resources has a dependency on one or more resources in the groups above. Resources in this group can be deployed in parallel.
+
+  1. Virtual Networks: This resource is depending on the route table and network security groups deployed above. Multiple instances are deployed:
+      - '_adp-sxx-az-vnet-weu-x-peer01_': Leveraged by the [virtual network peering] resource.
+      - '_adp-sxx-az-vnet-weu-x-peer02_': Leveraged by the [virtual network peering] resource.
+      - '_adp-sxx-az-vnet-weu-x-azfw_': Leveraged by the [azure firewall] resource.
+      - '_adp-sxx-az-vnet-weu-x-aks_': Leveraged by the [azure kubernetes service] resource.
+      - '_adp-sxx-az-vnet-weu-x-sqlmi_': Leveraged by the [sql managed instance] resource.
+      - '_adp-sxx-az-vnet-weu-x-001_': Hosting multiple subnets to be leveraged by [virtual machine], [virtual machine scale set], [service bus], [azure NetApp files], [azure bastion], [private endpoints], [app service environment] and [application gateway] resources.
+
+**Sixth level resources**: This group of resources has a dependency on one or more resources in the groups above.
+
+  1. Virtual Machine: This resource is depending on the [virtual networks] and [key vault] deployed above. This resource is leveraged by the [automanage] resource.
 
 #### Required secrets and keys
 
-The following secrets and keys needs to be created:
+The following secrets, keys and certificates need to be created in the key vault deployed by the dependency workflow.
 
-1. KeyVault secrets
-   - administratorLogin for AzureSQLServer
-   - administratorLoginPassword for AzureSQLServer
-   - encryptionKey for DiskEncryptionSet
-   - adminUserName for VirtualMachine
-   - adminPassword for VirtualMachine
-1. DiskEncryptionSet needs key pre-created (encryptionKey)
-1. SQLManagedInstance needs key pre-created (encryptionKeySqlMi)
-   - administratorLogin
-   - administratorLoginPassword
+1. Key vault secrets:
+   - _administratorLogin_: For [azure SQL server] and [SQL managed instance].
+   - _administratorLoginPassword_: For [azure SQL server] and [SQL managed instance].
+   - _vpnSharedKey_: For [virtual network gateway connection].
+   - _adminUserName_: For [virtual machine].
+   - _adminPassword_: For [virtual machine].
+1. Key vault keys:
+   - _keyEncryptionKey_: For [disk encryption set].
+   - _keyEncryptionKeySqlMi_: For [SQL managed instance].
+1. Key vault certificate:
+   - _applicationGatewaySslCertificate_: For [application gateway].
