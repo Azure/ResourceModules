@@ -9,7 +9,7 @@ This section gives you an overview of how to test the bicep modules.
 - [Testing Usage](#testing-usage)
     - [_Navigation_](#navigation)
   - [Tool: Testing your Bicep module](#tool-testing-your-bicep-module)
-  - [Tool: Use The Test-ModuleLocally Script To Perform Pester Testing, Token Replacement and Deployment of the Module. See Example Below](#tool-use-the-test-modulelocally-script-to-perform-pester-testing-token-replacement-and-deployment-of-the-module-see-example-below)
+  - [Tool: Use The Test-ModuleLocally Script To Perform Pester Testing, Token Replacement and Deployment of the Module.](#tool-use-the-test-modulelocally-script-to-perform-pester-testing-token-replacement-and-deployment-of-the-module)
     - [Handling Resource IDs or Parameters that require or contain Subscription IDs](#handling-resource-ids-or-parameters-that-require-or-contain-subscription-ids)
 
 ---
@@ -18,7 +18,7 @@ This section gives you an overview of how to test the bicep modules.
 
 When you have done your changes and want to validate, run the following:
 
-```powershell
+```pwsh
 Invoke-Pester -Configuration @{
     Run        = @{
         Container = New-PesterContainer -Path 'arm/.global/global.module.tests.ps1' -Data @{
@@ -39,7 +39,7 @@ Invoke-Pester -Configuration @{
 }
 ```
 
-## Tool: Use The Test-ModuleLocally Script To Perform Pester Testing, Token Replacement and Deployment of the Module. See Example Below
+## Tool: Use The Test-ModuleLocally Script To Perform Pester Testing, Token Replacement and Deployment of the Module.
 
 ```powershell
 
@@ -68,7 +68,7 @@ Test-ModuleLocally @TestModuleLocallyInput -verbose
 
 ### Handling Resource IDs or Parameters that require or contain Subscription IDs
 
-- Scenarios where resources have dependancies on other resources, which may require to be linked using `resourceId` references. [Example](../../arm/Microsoft.Network/virtualNetworksResources/virtualNetworkPeerings/.parameters/parameters.json)
+- Scenarios where resources have dependencies on other resources, which may require to be linked using `resourceId` references. [Example](../../arm/Microsoft.Network/virtualNetworksResources/virtualNetworkPeerings/.parameters/parameters.json)
 
     ```json
     // Example
@@ -86,7 +86,7 @@ Test-ModuleLocally @TestModuleLocallyInput -verbose
     }
     ```
 
-For these usecases, before commiting the change and testing the module using GitHub actions, replace the subscription ID values with `<<subscriptionId>>`. This allows the pipelines to replace the string with the right subscription ID before the template is deployed to Azure.
+For these use cases, before committing the change and testing the module using GitHub actions, replace the subscription ID values with `<<subscriptionId>>`. This allows the pipelines to replace the string with the right subscription ID before the template is deployed to Azure.
 
 ---
 **Note**: Failure to replace the subscription ID value so will result in a Pester test failure that detects if you are using a hard-coded subscription ID.

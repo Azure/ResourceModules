@@ -11,13 +11,16 @@ subscription Id, Principal Id, tenant ID and other parameters that need to be to
 The name of The module to test. (i.e. 'Microsoft.Authorization/policyExemptions')
 
 .PARAMETER PesterTest
-A Switch Paramaeter that triggers a Pester Test for the Module
+A Boolean Paramaeter that triggers a Pester Test for the Module
+
+.PARAMETER ValidateOrDeployParameters
+An Object consisting of the components that are required when using the Validate Test or DeployTest Switch parameter. See example:
 
 .PARAMETER DeployTest
-A Switch Paramaeter that triggers the Deployment of the Module
+A Boolean Paramaeter that triggers the Deployment of the Module
 
-.PARAMETER DeployParameters
-An Object consisting of the components that are required when using the DeployTest Switch parameter. See example:
+.PARAMETER ValidateOnly
+A Switch Paramaeter that triggers the Validation of the Module Only without Deployment
 
 .EXAMPLE
 
@@ -25,7 +28,7 @@ $TestModuleLocallyInput = @{
     ModuleName       = 'Microsoft.Authorization\roleAssignments'
     PesterTest       = $true
     DeployTest       = $true
-    DeployParameters = @{
+    ValidateOrDeployParameters = @{
         Location          = 'azureRegionName'
         ResourceGroupName = 'resourceGroupName'
         SubscriptionId    = '12345678-1234-1234-abcd-1369d14d0d45'
@@ -39,7 +42,7 @@ $TestModuleLocallyInput = @{
 Test-ModuleLocally @TestModuleLocallyInput
 
 .NOTES
-Make sure you provide the right information in the 'DeployParameters' parameter for this function abd Ensure you have the ability to perform the deployment operations locally.
+Make sure you provide the right information in the 'ValidateOrDeployParameters' parameter for this function abd Ensure you have the ability to perform the deployment operations locally.
 #>
 function Test-ModuleLocally {
     [CmdletBinding()]
@@ -51,12 +54,21 @@ function Test-ModuleLocally {
         [switch]$PesterTest,
 
         [Parameter(ParameterSetName = 'Deploy')]
-        [parameter(Mandatory = $false)]
-        [switch]$DeployTest,
+        [parameter(Mandatory)]
+        [psobject]$ValidateOrDeployParameters,
 
         [Parameter(ParameterSetName = 'Deploy')]
-        [parameter(Mandatory)]
-        [psobject]$DeployParameters
+        [parameter(Mandatory = $false)]
+        [bool]$DeployTest,
+
+        [Parameter(ParameterSetName = 'Deploy')]
+        [parameter(Mandatory = $false)]
+        [switch]$ValidateOnly,
+
+        [Parameter(ParameterSetName = 'Deploy')]
+        [parameter(Mandatory = $false)]
+        [switch]$DeployAllParameterFiles
+
     )
 
     begin {
@@ -86,51 +98,71 @@ function Test-ModuleLocally {
             }
         }
         # Deploy Module
-        if ($DeployTest -and $DeployParameters) {
+        if (($ValidateOnly -or $DeployTest) -and $ValidateOrDeployParameters) {
             Write-Verbose '---- Deploying Module ----'
             # Find Test Parameter Files
             $ModuleParameterFiles = Get-ChildItem -Path (Join-Path $PSScriptRoot '..\..\arm' $ModuleName '.parameters') -Recurse
             # Load Tokens Converter Script
-            . (Join-Path $PSScriptRoot '..\..' '.github\actions\sharedScripts\Convert-TokensInFiles.ps1')
+            . (Join-Path $PSScriptRoot '..\..' '.github\actions\sharedScripts\Convert-TokensInFileList.ps1')
             # Replace Tokens with Values For Local Testing
             $TokensReplaceWithObject = @(
-                @{ Replace = '<<tenantId>>'; With = "$($DeployParameters.TenantId)" }
-                @{ Replace = '<<subscriptionId>>'; With = "$($DeployParameters.SubscriptionId)" }
-                @{ Replace = '<<managementGroupId>>'; With = "$($DeployParameters.ManagementGroupId)" }
-                @{ Replace = '<<principalId>>'; With = "$($DeployParameters.PrincipalId)" }
+                @{ Replace = '<<tenantId>>'; With = "$($ValidateOrDeployParameters.TenantId)" }
+                @{ Replace = '<<subscriptionId>>'; With = "$($ValidateOrDeployParameters.SubscriptionId)" }
+                @{ Replace = '<<managementGroupId>>'; With = "$($ValidateOrDeployParameters.ManagementGroupId)" }
+                @{ Replace = '<<principalId1>>'; With = "$($ValidateOrDeployParameters.PrincipalId)" }
             )
-            $ModuleParameterFiles | ForEach-Object { Convert-TokensInFiles -Paths $PSitem.FullName -TokensReplaceWith $TokensReplaceWithObject }
+            $ModuleParameterFiles | ForEach-Object { Convert-TokensInFileList -Paths $PSitem.FullName -TokensReplaceWith $TokensReplaceWithObject }
 
-            # Load Modules Deployment Script
-            . (Join-Path $PSScriptRoot '..\..' '.github\actions\templates\deployModule\scripts\New-ModuleDeployment.ps1')
-            # Build Modules Deployment Inputs
+            # Build Modules Validation and Deployment Inputs
             $functionInput = @{
-                moduleName        = "l-$($ModuleName.Split('\')[-1])"
                 templateFilePath  = (Join-Path $PSScriptRoot '..\..\arm' $ModuleName 'deploy.bicep')
-                parameterFilePath = (Join-Path $PSScriptRoot '..\..\arm' $ModuleName '.parameters')
-                location          = "$($DeployParameters.Location)"
-                resourceGroupName = "$($DeployParameters.ResourceGroupName)"
-                subscriptionId    = "$($DeployParameters.SubscriptionId)"
-                managementGroupId = "$($DeployParameters.ManagementGroupId)"
-                removeDeployment  = [System.Convert]::ToBoolean($DeployParameters.RemoveDeployment)
-                retryLimit        = 1
+                parameterFilePath = (Join-Path $PSScriptRoot '..\..\arm' $ModuleName '.parameters\parameters.json')
+                location          = "$($ValidateOrDeployParameters.Location)"
+                resourceGroupName = "$($ValidateOrDeployParameters.ResourceGroupName)"
+                subscriptionId    = "$($ValidateOrDeployParameters.SubscriptionId)"
+                managementGroupId = "$($ValidateOrDeployParameters.ManagementGroupId)"
             }
-            # Invoke deployment
-            New-ModuleDeployment @functionInput -Verbose
+
+            # Validate Template
+            if ($ValidateOnly) {
+                # Load Modules Deployment Script
+                . (Join-Path $PSScriptRoot '..\..' '.github\actions\templates\validateModuleDeploy\scripts\Test-TemplateWithParameterFile.ps1')
+                # Invoke Validation
+                Test-TemplateWithParameterFile @functionInput -Verbose
+            }
+
+            # Deploy Template
+            if ($DeployTest -and !$ValidateOnly) {
+
+                # Set the ParameterFilePath to Directory instead of the default 'parameters.json'
+                if ($DeployAllParameterFiles) {
+                    $functionInput.parameterFilePath = (Join-Path $PSScriptRoot '..\..\arm' $ModuleName '.parameters')
+                }
+                # Append to Function Input the required parameters for Deployment
+                $functionInput += @{
+                    moduleName       = "l-$($ModuleName.Split('\')[-1])"
+                    removeDeployment = [System.Convert]::ToBoolean($ValidateOrDeployParameters.RemoveDeployment)
+                    retryLimit       = 1
+                }
+                # Load Modules Deployment Script
+                . (Join-Path $PSScriptRoot '..\..' '.github\actions\templates\deployModule\scripts\New-ModuleDeployment.ps1')
+                # Invoke Deployment
+                New-ModuleDeployment @functionInput -Verbose
+            }
         }
     }
 
     end {
         # Restore Parameter Files
-        if ($DeployTest -and $DeployParameters) {
+        if (($ValidateTest -or $DeployTest) -and $ValidateOrDeployParameters) {
             # Replace Values with Tokens For Repo Updates
             $RestoreTokensObject = @(
-                @{ Replace = "$($DeployParameters.TenantId)" ; With = '<<tenantId>>' }
-                @{ Replace = "$($DeployParameters.SubscriptionId)" ; With = '<<subscriptionId>>' }
-                @{ Replace = "$($DeployParameters.ManagementGroupId)"; With = '<<managementGroupId>>' }
-                @{ Replace = "$($DeployParameters.PrincipalId)" ; With = '<<principalId>>' }
+                @{ Replace = "$($ValidateOrDeployParameters.TenantId)" ; With = '<<tenantId>>' }
+                @{ Replace = "$($ValidateOrDeployParameters.SubscriptionId)" ; With = '<<subscriptionId>>' }
+                @{ Replace = "$($ValidateOrDeployParameters.ManagementGroupId)"; With = '<<managementGroupId>>' }
+                @{ Replace = "$($ValidateOrDeployParameters.PrincipalId)" ; With = '<<principalId1>>' }
             )
-            $ModuleParameterFiles | ForEach-Object { Convert-TokensInFiles -Paths $PSitem.FullName -TokensReplaceWith $RestoreTokensObject }
+            $ModuleParameterFiles | ForEach-Object { Convert-TokensInFileList -Paths $PSitem.FullName -TokensReplaceWith $RestoreTokensObject }
         }
     }
 }

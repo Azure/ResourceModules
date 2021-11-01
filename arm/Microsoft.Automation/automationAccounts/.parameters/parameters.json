@@ -35,7 +35,7 @@
                 {
                     "roleDefinitionIdOrName": "Reader",
                     "principalIds": [
-                        "<<principalId>>"
+                        "<<principalId1>>"
                     ]
                 }
             ]
