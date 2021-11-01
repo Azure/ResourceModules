@@ -18,7 +18,7 @@
         },
         {
             "name": "templateSpecsDescription",
-            "value": "This is a module from the 'Common Azure Resource Modules Library'"
+            "value": "This is a module from the [Common Azure Resource Modules Library]"
         },
         {
             "name": "templateSpecsDoPublish",
