@@ -3,10 +3,10 @@
     "contentVersion": "1.0.0.0",
     "parameters": {
         "keyVaultName": {
-            "value": "sxx-az-kv-weu-x-001"
+            "value": "sxx-az-kv-weu-x-004"
         },
         "enableSoftDelete": {
-            "value": true
+            "value": false
         },
         "softDeleteRetentionInDays": {
             "value": 7
@@ -21,6 +21,36 @@
                     "principalIds": [
                         "5545f7a0-51f4-46af-b3b4-baecf5176a56"
                     ]
+                }
+            ]
+        },
+        "secrets": {
+            "value": [
+                {
+                    "name": {
+                        "value": "secretName"
+                    },
+                    "value": {
+                        "value": "secretValue"
+                    },
+                    "contentType": {
+                        "value": "Something"
+                    },
+                    "attributesNbf": {
+                        "value": 10000
+                    }
+                }
+            ]
+        },
+        "keys": {
+            "value": [
+                {
+                    "name": {
+                        "value": "keyName"
+                    },
+                    "attributesNbf": {
+                        "value": 10000
+                    }
                 }
             ]
         }
