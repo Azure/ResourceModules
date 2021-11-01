@@ -250,7 +250,7 @@ module keyVault_secrets 'secrets/deploy.bicep' = [for (secret, index) in secrets
 }]
 
 module keyVault_keys 'keys/deploy.bicep' = [for (key, index) in keys: {
-  name: '${uniqueString(deployment().name, location)}-Secret-${index}'
+  name: '${uniqueString(deployment().name, location)}-Key-${index}'
   params: {
     name: key.name
     vaultName: keyVault.name
