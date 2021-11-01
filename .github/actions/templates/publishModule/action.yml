@@ -72,7 +72,7 @@ runs:
 
           $functionInput = @{
             moduleIdentifier         = $moduleIdentifier
-            templateFilePath         = '${{ inputs.templateFilePath }}'
+            templateFilePath         = $templateFilePath
             templateSpecsRGName      = '${{ inputs.templateSpecsRGName }}'
             templateSpecsRGLocation  = '${{ inputs.templateSpecsRGLocation }}'
             templateSpecsDescription = '${{ inputs.templateSpecsDescription }}'
