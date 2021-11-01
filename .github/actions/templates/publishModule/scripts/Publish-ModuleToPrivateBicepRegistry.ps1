@@ -15,10 +15,10 @@ E.g. 'Microsoft.KeyVault/vaults'
 .PARAMETER templateFilePath
 Mandatory. Path to the module deployment file from root.
 
-.PARAMETER componentBicepRegistryName
+.PARAMETER bicepRegistryName
 Mandatory. Name of the private bicep registry to publish to.
 
-.PARAMETER componentBicepRegistryRGName
+.PARAMETER bicepRegistryRGName
 Mandatory. ResourceGroup of the private bicep registry to publish to.
 
 .PARAMETER customVersion
@@ -28,7 +28,7 @@ Optional. A custom version that can be provided by the UI. '-' represents an emp
 Optional. A version option that can be specified in the UI. Defaults to 'patch'
 
 .EXAMPLE
-Publish-ModuleToPrivateBicepRegistry -moduleIdentifier 'Microsoft.KeyVault/vaults' -templateFilePath 'C:/KeyVault/deploy.json' -componentBicepRegistryRGName 'artifacts-rg' -customVersion '3.0.0'
+Publish-ModuleToPrivateBicepRegistry -moduleIdentifier 'Microsoft.KeyVault/vaults' -templateFilePath 'C:/KeyVault/deploy.json' -bicepRegistryRGName 'artifacts-rg' -customVersion '3.0.0'
 
 Try to publish the KeyVault module with version 3.0.0 to a private bicep registry called KeyVault based on a value provided in the UI
 #>
@@ -43,10 +43,10 @@ function Publish-ModuleToPrivateBicepRegistry {
         [string] $templateFilePath,
 
         [Parameter(Mandatory)]
-        [string] $componentBicepRegistryRGName,
+        [string] $bicepRegistryRGName,
 
         [Parameter(Mandatory)]
-        [string] $componentBicepRegistryName,
+        [string] $bicepRegistryName,
 
         [Parameter(Mandatory = $false)]
         [string] $customVersion = '0.0.1',
@@ -69,9 +69,9 @@ function Publish-ModuleToPrivateBicepRegistry {
         }
 
         # Registry
-        if (-not (Get-AzContainerRegistry -ResourceGroupName $componentBicepRegistryRGName -Name $componentBicepRegistryName -ErrorAction 'SilentlyContinue')) {
-            if ($PSCmdlet.ShouldProcess("Container Registry [$componentBicepRegistryName] to resource group [$componentBicepRegistryRGName]", 'Deploy')) {
-                New-AzContainerRegistry -ResourceGroupName $componentBicepRegistryRGName -Name $componentBicepRegistryName -Sku 'Basic'
+        if (-not (Get-AzContainerRegistry -ResourceGroupName $bicepRegistryRGName -Name $bicepRegistryName -ErrorAction 'SilentlyContinue')) {
+            if ($PSCmdlet.ShouldProcess("Container Registry [$bicepRegistryName] to resource group [$bicepRegistryRGName]", 'Deploy')) {
+                New-AzContainerRegistry -ResourceGroupName $bicepRegistryRGName -Name $bicepRegistryName -Sku 'Basic'
             }
         }
 
@@ -79,13 +79,13 @@ function Publish-ModuleToPrivateBicepRegistry {
         ##    FIND AVAILABLE VERSION   ##
         #################################
         $moduleRegistryIdentifier = 'bicep/modules/{0}' -f $moduleIdentifier.Replace('\', '/').Replace('/', '.').ToLower()
-        $repositories = Get-AzContainerRegistryRepository -RegistryName $componentBicepRegistryName
+        $repositories = Get-AzContainerRegistryRepository -RegistryName $bicepRegistryName
         if ($repositories.Contains($moduleRegistryIdentifier)) {
-            $versions = (Get-AzContainerRegistryTag -RegistryName $componentBicepRegistryName -RepositoryName $moduleRegistryIdentifier).Tags.Name
+            $versions = (Get-AzContainerRegistryTag -RegistryName $bicepRegistryName -RepositoryName $moduleRegistryIdentifier).Tags.Name
             $latestVersion = (($versions -as [Version[]]) | Measure-Object -Maximum).Maximum
             Write-Verbose "Published versions detected in private bicep registry [$moduleIdentifier]. Fetched latest [$latestVersion]."
         } else {
-            Write-Verbose "No version for module reference [$moduleRegistryIdentifier] detected in private bicep registry [$componentBicepRegistryName]. Creating new."
+            Write-Verbose "No version for module reference [$moduleRegistryIdentifier] detected in private bicep registry [$bicepRegistryName]. Creating new."
             $latestVersion = New-Object System.Version('0.0.0')
         }
 
@@ -123,14 +123,14 @@ function Publish-ModuleToPrivateBicepRegistry {
 
         $newVersionObject = New-Object System.Version($newVersion)
         if ($newVersionObject -lt $latestVersion -or $newVersionObject -eq $latestVersion) {
-            throw ('The provided custom version [{0}] must be higher than the current latest version [{1}] published in the private bicep registry [{2}]' -f $newVersionObject.ToString(), $latestVersion.ToString(), $componentBicepRegistryName)
+            throw ('The provided custom version [{0}] must be higher than the current latest version [{1}] published in the private bicep registry [{2}]' -f $newVersionObject.ToString(), $latestVersion.ToString(), $bicepRegistryName)
         }
 
         #############################################
         ##    Publish to private bicep registry    ##
         #############################################
-        $publishingTarget = 'br:{0}.azurecr.io/{1}:{2}' -f $componentBicepRegistryName, $moduleRegistryIdentifier, $newVersion
-        if ($PSCmdlet.ShouldProcess("Private bicep registry entry [$moduleRegistryIdentifier] version [$newVersion] to registry [$componentBicepRegistryName]", 'Publish')) {
+        $publishingTarget = 'br:{0}.azurecr.io/{1}:{2}' -f $bicepRegistryName, $moduleRegistryIdentifier, $newVersion
+        if ($PSCmdlet.ShouldProcess("Private bicep registry entry [$moduleRegistryIdentifier] version [$newVersion] to registry [$bicepRegistryName]", 'Publish')) {
             bicep publish $templateFilePath --target $publishingTarget
         }
         Write-Verbose 'Publish complete'

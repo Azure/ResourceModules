@@ -5,32 +5,6 @@ inputs:
   templateFilePath:
     description: 'The path to the template file to publish'
     required: true
-  componentTemplateSpecRGName:
-    description: 'Required to publish to template spec. ResourceGroup of the template spec to publish to'
-    required: false
-  componentTemplateSpecRGLocation:
-    description: 'Required to publish to template spec. Location of the template spec resource group'
-    required: false
-  componentTemplateSpecName:
-    description: 'Required to publish to template spec. Name of the template spec to publish to'
-    required: false
-  componentTemplateSpecDescription:
-    description: 'Required to publish to template spec. Description of the template spec to publish to'
-    required: false
-  publishToTemplateSpec:
-    description: 'Flag to indicate whether or not to publish to template specs'
-    default: 'false'
-    required: false
-  componentBicepRegistryName:
-    description: 'Required to publish to private bicep registry. ResourceGroup of the container registry to publish to'
-    required: false
-  componentBicepRegistryRGName:
-    description: 'Required to publish to private bicep registry. Location of the container registry resource group'
-    required: false
-  publishToPrivateBicepRegistry:
-    description: 'Flag to indicate whether or not to publish to the private bicep registry'
-    default: 'false'
-    required: false
   versioningOption:
     description: 'The mode to handle the version increments [major|minor|patch].'
     default: 'patch'
@@ -38,6 +12,32 @@ inputs:
   customVersion:
     description: 'The version to enforce if [versioningOption] is set to [custom]'
     default: '0.0.1'
+    required: false
+  templateSpecsRGName:
+    description: 'Required to publish to template spec. ResourceGroup of the template spec to publish to'
+    required: false
+  templateSpecsRGLocation:
+    description: 'Required to publish to template spec. Location of the template spec resource group'
+    required: false
+  templateSpecsName:
+    description: 'Required to publish to template spec. Name of the template spec to publish to'
+    required: false
+  templateSpecsDescription:
+    description: 'Required to publish to template spec. Description of the template spec to publish to'
+    required: false
+  templateSpecsDoPublish:
+    description: 'Flag to indicate whether or not to publish to template specs'
+    default: 'false'
+    required: false
+  bicepRegistryName:
+    description: 'Required to publish to private bicep registry. ResourceGroup of the container registry to publish to'
+    required: false
+  bicepRegistryRGName:
+    description: 'Required to publish to private bicep registry. Location of the container registry resource group'
+    required: false
+  bicepRegistryDoPublish:
+    description: 'Flag to indicate whether or not to publish to the private bicep registry'
+    default: 'false'
     required: false
 
 runs:
@@ -59,23 +59,23 @@ runs:
 
     - name: 'Publish module to template spec'
       shell: pwsh
-      # if: ${{ inputs.publishToTemplateSpec == 'true' }}
+      # if: ${{ inputs.templateSpecsDoPublish == 'true' }}
       run: |
         # Workaround until composite actions support conditions
         # Once available, remove this if and enable the step condition
-        if('${{ inputs.publishToTemplateSpec }}' -eq 'true') {
+        if('${{ inputs.templateSpecsDoPublish }}' -eq 'true') {
 
           # Load used functions
           . "$env:GITHUB_ACTION_PATH/scripts/Publish-ModuleToTemplateSpec.ps1"
 
           $functionInput = @{
-            templateFilePath                      = '${{ inputs.templateFilePath }}'
-            componentTemplateSpecName             = '${{ inputs.componentTemplateSpecName }}'
-            componentTemplateSpecRGName           = '${{ inputs.componentTemplateSpecRGName }}'
-            componentTemplateSpecRGLocation       = '${{ inputs.componentTemplateSpecRGLocation }}'
-            componentTemplateSpecDescription      = '${{ inputs.componentTemplateSpecDescription }}'
-            customVersion                         = '${{ inputs.customVersion }}'
-            versioningOption                      = '${{ inputs.versioningOption }}'
+            templateFilePath         = '${{ inputs.templateFilePath }}'
+            templateSpecsName        = '${{ inputs.templateSpecsName }}'
+            templateSpecsRGName      = '${{ inputs.templateSpecsRGName }}'
+            templateSpecsRGLocation  = '${{ inputs.templateSpecsRGLocation }}'
+            templateSpecsDescription = '${{ inputs.templateSpecsDescription }}'
+            customVersion            = '${{ inputs.customVersion }}'
+            versioningOption         = '${{ inputs.versioningOption }}'
           }
 
           Write-Verbose "Invoke task with" -Verbose
@@ -88,11 +88,11 @@ runs:
 
     - name: 'Publish module to private bicep registry'
       shell: pwsh
-      # if: ${{ inputs.publishToPrivateBicepRegistry == 'true' }}
+      # if: ${{ inputs.bicepRegistryDoPublish == 'true' }}
       run: |
         # Workaround until composite actions support conditions
         # Once available, remove this if and enable the step condition
-        if('${{ inputs.publishToPrivateBicepRegistry }}' -eq 'true') {
+        if('${{ inputs.bicepRegistryDoPublish }}' -eq 'true') {
 
           # Load used functions
           . "$env:GITHUB_ACTION_PATH/scripts/Publish-ModuleToPrivateBicepRegistry.ps1"
@@ -103,12 +103,12 @@ runs:
           $moduleIdentifier = (Split-Path $templateFilePath -Parent).Replace('\','/').Split('/arm/')[1]
 
           $functionInput = @{
-            moduleIdentifier             = $moduleIdentifier
-            templateFilePath             = $templateFilePath
-            componentBicepRegistryName   = '${{ inputs.componentBicepRegistryName }}'
-            componentBicepRegistryRGName = '${{ inputs.componentBicepRegistryRGName }}'
-            customVersion                = '${{ inputs.customVersion }}'
-            versioningOption             = '${{ inputs.versioningOption }}'
+            moduleIdentifier    = $moduleIdentifier
+            templateFilePath    = $templateFilePath
+            bicepRegistryName   = '${{ inputs.bicepRegistryName }}'
+            bicepRegistryRGName = '${{ inputs.bicepRegistryRGName }}'
+            customVersion       = '${{ inputs.customVersion }}'
+            versioningOption    = '${{ inputs.versioningOption }}'
           }
 
           Write-Verbose "Invoke task with" -Verbose
