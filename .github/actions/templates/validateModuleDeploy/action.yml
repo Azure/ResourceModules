@@ -42,14 +42,14 @@ runs:
       shell: pwsh
       run: |
         # Load used funtions
-        . ".github/actions/sharedScripts/Convert-TokensInFiles.ps1"
+        . ".github/actions/sharedScripts/Convert-TokensInFileList.ps1"
         $TokensReplaceWithObject = @(
             @{ Replace = "<<tenantId>>"; With = '${{ env.ARM_TENANT_ID }}' }
             @{ Replace = "<<subscriptionId>>"; With = '${{ env.ARM_SUBSCRIPTION_ID }}' }
             @{ Replace = "<<managementGroupId>>"; With = '${{ env.ARM_MGMTGROUP_ID }}' }
             @{ Replace = "<<principalId1>>"; With = '${{ env.ARM_PRINCIPAL_ID_1 }}' }
         )
-        write-verbose "Invoking Convert-TokensInFiles"
+        write-verbose "Invoking Convert-TokensInFileList"
         Convert-TokensInFileList -Paths '${{ inputs.parameterFilePath }}' -TokensReplaceWith $TokensReplaceWithObject
 
       # [Test Deployment] task(s)
