@@ -27,30 +27,18 @@
         "secrets": {
             "value": [
                 {
-                    "name": {
-                        "value": "secretName"
-                    },
-                    "value": {
-                        "value": "secretValue"
-                    },
-                    "contentType": {
-                        "value": "Something"
-                    },
-                    "attributesNbf": {
-                        "value": 10000
-                    }
+                    "name": "secretName",
+                    "value": "secretValue",
+                    "contentType": "Something",
+                    "attributesNbf": 10000
                 }
             ]
         },
         "keys": {
             "value": [
                 {
-                    "name": {
-                        "value": "keyName"
-                    },
-                    "attributesNbf": {
-                        "value": 10000
-                    }
+                    "name": "keyName",
+                    "attributesNbf": 10000
                 }
             ]
         }

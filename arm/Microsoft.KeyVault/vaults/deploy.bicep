@@ -143,8 +143,8 @@ var diagnosticsMetrics = [for metric in metricsToEnable: {
 
 var maxNameLength = 24
 var uniquenameUntrim = uniqueString('Key Vault${baseTime}')
-var uniquename = ((length(uniquenameUntrim) > maxNameLength) ? substring(uniquenameUntrim, 0, maxNameLength) : uniquenameUntrim)
-var name_var = (empty(name) ? uniquename : name)
+var uniquename = (length(uniquenameUntrim) > maxNameLength ? substring(uniquenameUntrim, 0, maxNameLength) : uniquenameUntrim)
+var name_var = empty(name) ? uniquename : name
 var virtualNetworkRules = [for networkrule in ((contains(networkAcls, 'virtualNetworkRules')) ? networkAcls.virtualNetworkRules : []): {
   id: '${vNetId}/subnets/${networkrule.subnet}'
 }]
