@@ -81,7 +81,7 @@ function Publish-ModuleToTemplateSpec {
         #################################
         ##    FIND AVAILABLE VERSION   ##
         #################################
-        $moduleRegistryIdentifier = 'bicep/modules/{0}' -f $moduleIdentifier.Replace('\', '/').Replace('/', '.').ToLower()
+        $moduleRegistryIdentifier = $moduleIdentifier.Replace('\', '/').Replace('/', '.').ToLower()
 
         $res = Get-AzTemplateSpec -ResourceGroupName $templateSpecsRGName -Name $moduleRegistryIdentifier -ErrorAction 'SilentlyContinue'
         if (-not $res) {
