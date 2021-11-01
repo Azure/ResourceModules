@@ -94,7 +94,7 @@ Together with the resource modules pipelines, we are providing a dependency pipe
 
 The resources deployed by the dependency workflow need to be in place before testing all the modules. Some of them (e.g. storage account, key vault and event hub namespace) require a globally unique resource name. Before running the dependency workflow, it is required to update those values and their corresponding references in the resource modules parameters.
 
-Since also dependency resources are in turn subject to dependencies with each others, resources are deployed in the following group order.
+Since also dependency resources are in turn subject to dependencies with each other, resources are deployed in the following group order.
 
 **First level resources**
 
