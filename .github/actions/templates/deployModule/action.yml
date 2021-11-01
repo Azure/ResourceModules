@@ -55,7 +55,7 @@ runs:
             @{ Replace = "<<tenantId2>>"; With = '${{ env.ARM_TENANT_ID_2 }}' }
             @{ Replace = "<<subscriptionId>>"; With = '${{ env.ARM_SUBSCRIPTION_ID }}' }
             @{ Replace = "<<managementGroupId>>"; With = '${{ env.ARM_MGMTGROUP_ID }}' }
-            @{ Replace = "<<principalId1>>"; With = '${{ env.ARM_PRINCIPAL_ID_1 }}' }
+            @{ Replace = "<<principalId1>>"; With = '${{ env.ARM_PRINCIPAL_ID1 }}' }
         )
         write-verbose "Invoking Convert-TokensInFileList"
         Convert-TokensInFileList -Paths '${{ inputs.parameterFilePath }}' -TokensReplaceWith $TokensReplaceWithObject
