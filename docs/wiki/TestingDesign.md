@@ -100,7 +100,7 @@ Since also dependency resources are in turn subject to dependencies with each ot
 
   1. Resource Groups: Leveraged by all modules. Multiple instances are deployed:
      - 'validation-rg': The resource group to which resources are deployed by default during the test deployment phase. This same resource group is also the one hosting the dependencies.
-     - 'artifacts-rg': The resource group to which template specs are published during the publishing phase.
+     - 'artifacts-rg': The resource group to which templates are published during the publishing phase.
 
 **Second level resources**: This group of resources has a dependency only on the resource group which will host them. Resources in this group can be deployed in parallel.
 
@@ -149,7 +149,7 @@ Since also dependency resources are in turn subject to dependencies with each ot
       - '_adp-sxx-az-vnet-weu-x-azfw_': Leveraged by the azure firewall resource.
       - '_adp-sxx-az-vnet-weu-x-aks_': Leveraged by the azure kubernetes service resource.
       - '_adp-sxx-az-vnet-weu-x-sqlmi_': Leveraged by the sql managed instance resource.
-      - '_adp-sxx-az-vnet-weu-x-001_': Hosting multiple subnets to be leveraged by virtual machine, virtual machine scale set, service bus, azure netapp files, azure bastion, private endponts, app service environment and application gateway resources.
+      - '_adp-sxx-az-vnet-weu-x-001_': Hosting multiple subnets to be leveraged by virtual machine, virtual machine scale set, service bus, azure NetApp files, azure bastion, private endpoints, app service environment and application gateway resources.
 
 **Sixth level resources**: This group of resources has a dependency on one or more resources in the groups above.
 
