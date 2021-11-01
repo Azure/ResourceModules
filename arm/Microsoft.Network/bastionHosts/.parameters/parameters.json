@@ -9,7 +9,7 @@
             "value": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/virtualNetworks/adp-sxx-az-vnet-weu-x-001"
         },
         "azureBastionPipName": {
-            "value": "sxx-az-baspip-weu-x-001-pip"
+            "value": "adp-sxx-az-pip-weu-x-bas"
         },
         "roleAssignments": {
             "value": [
