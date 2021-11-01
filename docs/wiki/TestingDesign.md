@@ -104,46 +104,46 @@ Since also dependency resources are in turn subject to dependencies with each ot
 
 **Second level resources**: This group of resources has a dependency only on the resource group which will host them. Resources in this group can be deployed in parallel.
 
-  2. User assigned identity: This resource is leveraged as a test identity by all resources supporting RBAC.
-  3. Log analytics workspace: This resource is leveraged by all resources supporting diagnostic settings on LAW.
-  4. Storage account: This resource is leveraged by all resources supporting diagnostic settings on a storage account.
+  1. User assigned identity: This resource is leveraged as a test identity by all resources supporting RBAC.
+  2. Log analytics workspace: This resource is leveraged by all resources supporting diagnostic settings on LAW.
+  3. Storage account: This resource is leveraged by all resources supporting diagnostic settings on a storage account.
       >**Note**: This resource has a global scope name.
-  5. Event hub namespace: This resource is leveraged by the event hub resource.
+  4. Event hub namespace: This resource is leveraged by the event hub resource.
       >**Note**: This resource has a global scope name.
-  6. Route table: This resource is leveraged by the virtual network subnet dedicated to test SQL managed instance.
-  7. Network watcher: This resource is leveraged by the NSG flow logs resource.
-  8. Shared image gallery: This resource is leveraged by the shared image definition and image template resources.
-  9. Action group: This resource is leveraged by activity log alert and metric alert resources.
-  10. Application security group: This resource is leveraged by the network security group resource.
-  11. Application service plan: This resource is leveraged by the function app and web app resources.
+  5. Route table: This resource is leveraged by the virtual network subnet dedicated to test SQL managed instance.
+  6. Network watcher: This resource is leveraged by the NSG flow logs resource.
+  7. Shared image gallery: This resource is leveraged by the shared image definition and image template resources.
+  8. Action group: This resource is leveraged by activity log alert and metric alert resources.
+  9. Application security group: This resource is leveraged by the network security group resource.
+  10. Application service plan: This resource is leveraged by the function app and web app resources.
 
 **Third level resources**: This group of resources has a dependency on one or more resources in the group above. Resources in this group can be deployed in parallel.
 
-  12. Event hub: This resource is depending on the event hub namespace deployed above and leveraged by all resources supporting diagnostic settings on an event hub.
-  13. Role assignment: This resource assigns the '_Contributor_' role on the subscription to the user assigned identity deployed as part of the group above. This is needed by the image template deployment.
-  14. Shared image definition: This resource is depending on the shared image gallery deployed above and leveraged by the image template resource.
+  1. Event hub: This resource is depending on the event hub namespace deployed above and leveraged by all resources supporting diagnostic settings on an event hub.
+  2. Role assignment: This resource assigns the '_Contributor_' role on the subscription to the user assigned identity deployed as part of the group above. This is needed by the image template deployment.
+  3. Shared image definition: This resource is depending on the shared image gallery deployed above and leveraged by the image template resource.
 
 **Fourth level resources**: All resources in this group support monitoring. Hence they have a dependency on the storage account, log analytics workspace and event hub deployed in the groups above. Resources in this group can be deployed in parallel.
 
-  15. Key vault: This resource is leveraged by all resources requiring access to a key vault key, secret and/or certificate, i.e. application gateway, azure NetApp file, azure SQL server, disk encryption set, machine learning service, private endpoint, SQL managed instance, virtual machine, virtual machine scale set, virtual network gateway connection.
+  1. Key vault: This resource is leveraged by all resources requiring access to a key vault key, secret and/or certificate, i.e. application gateway, azure NetApp file, azure SQL server, disk encryption set, machine learning service, private endpoint, SQL managed instance, virtual machine, virtual machine scale set, virtual network gateway connection.
       >**Note**: This resource has a global scope name.
-  16. Network Security Groups: This resource is leveraged by different virtual network subnets. Multiple instances are deployed:
+  2. Network Security Groups: This resource is leveraged by different virtual network subnets. Multiple instances are deployed:
       - '_adp-sxx-az-nsg-weu-x-apgw_': NSG with required network security rules to be leveraged by the application gateway subnet.
       - '_adp-sxx-az-nsg-weu-x-ase_': NSG with required network security rules to be leveraged by the app service environment subnet.
       - '_adp-sxx-az-nsg-weu-x-bastion_': NSG with required network security rules to be leveraged by the bastion host subnet.
       - '_adp-sxx-az-nsg-weu-x-sqlmi_': NSG with required network security rules to be leveraged by the sql managed instance subnet.
       - '_adp-sxx-az-nsg-weu-x-001_': default NSG leveraged by all other subnets.
-  17. Public IP addresses: Multiple instances are deployed:
+  3. Public IP addresses: Multiple instances are deployed:
       - '_adp-sxx-az-pip-weu-x-apgw_': Leveraged by the application gateway resource.
       - '_adp-sxx-az-pip-weu-x-bas_': Leveraged by the bastion host resource.
       - '_adp-sxx-az-pip-weu-x-lb_': Leveraged by the load balancer resource.
-  18. API management: This resource is leveraged by all api management services.
+  4. API management: This resource is leveraged by all api management services.
       >**Note**: This resource has a global scope name.
-  19. Application insight: This resource is leveraged by the machine learning service resource.
+  5. Application insight: This resource is leveraged by the machine learning service resource.
 
 **Fifth level resources**: This group of resources has a dependency on one or more resources in the groups above. Resources in this group can be deployed in parallel.
 
-  20. Virtual Networks: This resource is depending on the route table and network security groups deployed above. Multiple instances are deployed:
+  1. Virtual Networks: This resource is depending on the route table and network security groups deployed above. Multiple instances are deployed:
       - '_adp-sxx-az-vnet-weu-x-peer01_': Leveraged by the virtual network peering resource.
       - '_adp-sxx-az-vnet-weu-x-peer02_': Leveraged by the virtual network peering resource.
       - '_adp-sxx-az-vnet-weu-x-azfw_': Leveraged by the azure firewall resource.
@@ -153,7 +153,7 @@ Since also dependency resources are in turn subject to dependencies with each ot
 
 **Sixth level resources**: This group of resources has a dependency on one or more resources in the groups above.
 
-  21. Virtual Machine: This resource is depending on the virtual networks and key vault deployed above. This resource is leveraged by the automanage resource.
+  1. Virtual Machine: This resource is depending on the virtual networks and key vault deployed above. This resource is leveraged by the automanage resource.
 
 #### Required secrets and keys
 
