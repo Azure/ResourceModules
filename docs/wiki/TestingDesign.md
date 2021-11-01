@@ -102,7 +102,7 @@ Since also dependency resources are in turn subject to dependencies with each ot
      - 'validation-rg': The resource group to which resources are deployed by default during the test deployment phase. This same resource group is also the one hosting the dependencies.
      - 'artifacts-rg': The resource group to which template specs are published during the publishing phase.
 
-**Second level resources**: this group of resources has a dependency only on the resource group which will host them. Resources in this group can be deployed in parallel.
+**Second level resources**: This group of resources has a dependency only on the resource group which will host them. Resources in this group can be deployed in parallel.
 
   2. User assigned identity: This resource is leveraged as a test identity by all resources supporting RBAC.
   3. Log analytics workspace: This resource is leveraged by all resources supporting diagnostic settings on LAW.
@@ -117,13 +117,13 @@ Since also dependency resources are in turn subject to dependencies with each ot
   10. Application security group: This resource is leveraged by the network security group resource.
   11. Application service plan: This resource is leveraged by the function app and web app resources.
 
-**Third level resources**: this group of resources has a dependency on one or more resources in the group above. Resources in this group can be deployed in parallel.
+**Third level resources**: This group of resources has a dependency on one or more resources in the group above. Resources in this group can be deployed in parallel.
 
   12. Event hub: This resource is depending on the event hub namespace deployed above and leveraged by all resources supporting diagnostic settings on an event hub.
   13. Role assignment: This resource assigns the '_Contributor_' role on the subscription to the user assigned identity deployed as part of the group above. This is needed by the image template deployment.
   14. Shared image definition: This resource is depending on the shared image gallery deployed above and leveraged by the image template resource.
 
-**Fourth level resources**: all resources in this group support monitoring. Hence they have a dependency on the storage account, log analytics workspace and event hub deployed in the groups above. Resources in this group can be deployed in parallel.
+**Fourth level resources**: All resources in this group support monitoring. Hence they have a dependency on the storage account, log analytics workspace and event hub deployed in the groups above. Resources in this group can be deployed in parallel.
 
   15. Key vault: This resource is leveraged by all resources requiring access to a key vault key, secret and/or certificate, i.e. application gateway, azure NetApp file, azure SQL server, disk encryption set, machine learning service, private endpoint, SQL managed instance, virtual machine, virtual machine scale set, virtual network gateway connection.
       >**Note**: This resource has a global scope name.
@@ -134,9 +134,9 @@ Since also dependency resources are in turn subject to dependencies with each ot
       - '_adp-sxx-az-nsg-weu-x-sqlmi_': NSG with required network security rules to be leveraged by the sql managed instance subnet.
       - '_adp-sxx-az-nsg-weu-x-001_': default NSG leveraged by all other subnets.
   17. Public IP addresses: Multiple instances are deployed:
-      - '_adp-sxx-az-pip-weu-x-apgw_': leveraged by the application gateway resource.
-      - '_adp-sxx-az-pip-weu-x-bas_': leveraged by the bastion host resource.
-      - '_adp-sxx-az-pip-weu-x-lb_': leveraged by the load balancer resource.
+      - '_adp-sxx-az-pip-weu-x-apgw_': Leveraged by the application gateway resource.
+      - '_adp-sxx-az-pip-weu-x-bas_': Leveraged by the bastion host resource.
+      - '_adp-sxx-az-pip-weu-x-lb_': Leveraged by the load balancer resource.
   18. API management: This resource is leveraged by all api management services.
       >**Note**: This resource has a global scope name.
   19. Application insight: This resource is leveraged by the machine learning service resource.
