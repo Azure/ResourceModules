@@ -116,6 +116,7 @@ Since also dependency resources are in turn subject to dependencies with each ot
   8. Action group: This resource is leveraged by [activity log alert] and [metric alert] resources.
   9. Application security group: This resource is leveraged by the [network security group] resource.
   10. Application service plan: This resource is leveraged by the [function app] and [web app] resources.
+  11. Azure Container Registry: This resource is leveraged as the private bicep registry to publish modules to.
 
 **Third level resources**: This group of resources has a dependency on one or more resources in the group above. Resources in this group can be deployed in parallel.
 
