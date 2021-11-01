@@ -81,14 +81,16 @@ function Publish-ModuleToTemplateSpec {
         #################################
         ##    FIND AVAILABLE VERSION   ##
         #################################
-        $res = Get-AzTemplateSpec -ResourceGroupName $templateSpecsRGName -Name $moduleIdentifier -ErrorAction 'SilentlyContinue'
+        $moduleRegistryIdentifier = 'bicep/modules/{0}' -f $moduleIdentifier.Replace('\', '/').Replace('/', '.').ToLower()
+
+        $res = Get-AzTemplateSpec -ResourceGroupName $templateSpecsRGName -Name $moduleRegistryIdentifier -ErrorAction 'SilentlyContinue'
         if (-not $res) {
-            Write-Verbose "No version detected in template spec [$moduleIdentifier]. Creating new."
+            Write-Verbose "No version detected in template spec [$moduleRegistryIdentifier]. Creating new."
             $latestVersion = New-Object System.Version('0.0.0')
         } else {
             $uniqueVersions = $res.Versions.Name | Get-Unique | Where-Object { $_ -like '*.*.*' } # remove Where-object for working example
             $latestVersion = (($uniqueVersions -as [Version[]]) | Measure-Object -Maximum).Maximum
-            Write-Verbose "Published versions detected in template spec [$moduleIdentifier]. Fetched latest [$latestVersion]."
+            Write-Verbose "Published versions detected in template spec [$moduleRegistryIdentifier]. Fetched latest [$latestVersion]."
         }
 
         ############################
@@ -131,10 +133,10 @@ function Publish-ModuleToTemplateSpec {
         ################################
         ##    Create template spec    ##
         ################################
-        if ($PSCmdlet.ShouldProcess("Template spec [$moduleIdentifier] version [$newVersion]", 'Publish')) {
+        if ($PSCmdlet.ShouldProcess("Template spec [$moduleRegistryIdentifier] version [$newVersion]", 'Publish')) {
             $templateSpecInputObject = @{
                 ResourceGroupName = $templateSpecsRGName
-                Name              = $moduleIdentifier
+                Name              = $moduleRegistryIdentifier
                 Version           = $newVersion
                 Description       = $templateSpecsDescription
                 Location          = $templateSpecsRGLocation
