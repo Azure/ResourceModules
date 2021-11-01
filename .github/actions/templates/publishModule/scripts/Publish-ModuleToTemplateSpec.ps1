@@ -10,8 +10,9 @@ Otherwise, one of the provided version options is chosen and applied with the de
 
 The template spec is set up if not already existing.
 
-.PARAMETER templateSpecsName
-Mandatory. The name of the module to publish. It will be the name of the template spec.
+.PARAMETER moduleIdentifier
+Mandatory. The identifier of the module to publish (ProviderNamespace/ResourceType Combination). It will be the name of the template spec.
+E.g. 'Microsoft.KeyVault/vaults'
 
 .PARAMETER templateFilePath
 Mandatory. Path to the module deployment file from root.
@@ -32,7 +33,7 @@ Optional. A custom version that can be provided by the UI. '-' represents an emp
 Optional. A version option that can be specified in the UI. Defaults to 'patch'
 
 .EXAMPLE
-Publish-ModuleToTemplateSpec -templateSpecsName 'KeyVault' -templateFilePath 'C:/KeyVault/deploy.json' -templateSpecsRGName 'artifacts-rg' -templateSpecsRGLocation 'West Europe' -templateSpecsDescription 'iacs key vault' -customVersion '3.0.0'
+Publish-ModuleToTemplateSpec moduleIdentifier 'Microsoft.KeyVault/vaults' -templateFilePath 'C:/KeyVault/deploy.json' -templateSpecsRGName 'artifacts-rg' -templateSpecsRGLocation 'West Europe' -templateSpecsDescription 'iacs key vault' -customVersion '3.0.0'
 
 Try to publish the KeyVault module with version 3.0.0 to a template spec called KeyVault based on a value provided in the UI
 #>
@@ -41,7 +42,7 @@ function Publish-ModuleToTemplateSpec {
     [CmdletBinding(SupportsShouldProcess)]
     param (
         [Parameter(Mandatory)]
-        [string] $templateSpecsName,
+        [string] $moduleIdentifier,
 
         [Parameter(Mandatory)]
         [string] $templateFilePath,
@@ -80,14 +81,14 @@ function Publish-ModuleToTemplateSpec {
         #################################
         ##    FIND AVAILABLE VERSION   ##
         #################################
-        $res = Get-AzTemplateSpec -ResourceGroupName $templateSpecsRGName -Name $templateSpecsName -ErrorAction 'SilentlyContinue'
+        $res = Get-AzTemplateSpec -ResourceGroupName $templateSpecsRGName -Name $moduleIdentifier -ErrorAction 'SilentlyContinue'
         if (-not $res) {
-            Write-Verbose "No version detected in template spec [$templateSpecsName]. Creating new."
+            Write-Verbose "No version detected in template spec [$moduleIdentifier]. Creating new."
             $latestVersion = New-Object System.Version('0.0.0')
         } else {
             $uniqueVersions = $res.Versions.Name | Get-Unique | Where-Object { $_ -like '*.*.*' } # remove Where-object for working example
             $latestVersion = (($uniqueVersions -as [Version[]]) | Measure-Object -Maximum).Maximum
-            Write-Verbose "Published versions detected in template spec [$templateSpecsName]. Fetched latest [$latestVersion]."
+            Write-Verbose "Published versions detected in template spec [$moduleIdentifier]. Fetched latest [$latestVersion]."
         }
 
         ############################
@@ -130,10 +131,10 @@ function Publish-ModuleToTemplateSpec {
         ################################
         ##    Create template spec    ##
         ################################
-        if ($PSCmdlet.ShouldProcess("Template spec [$templateSpecsName] version [$newVersion]", 'Publish')) {
+        if ($PSCmdlet.ShouldProcess("Template spec [$moduleIdentifier] version [$newVersion]", 'Publish')) {
             $templateSpecInputObject = @{
                 ResourceGroupName = $templateSpecsRGName
-                Name              = $templateSpecsName
+                Name              = $moduleIdentifier
                 Version           = $newVersion
                 Description       = $templateSpecsDescription
                 Location          = $templateSpecsRGLocation

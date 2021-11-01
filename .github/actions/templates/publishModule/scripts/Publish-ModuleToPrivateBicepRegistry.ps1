@@ -9,7 +9,7 @@ If the customVersion is higher than the current latest, it has the highest prior
 Otherwise, one of the provided version options is chosen and applied with the default being 'patch'
 
 .PARAMETER moduleIdentifier
-Mandatory. The identifier of the module to publish (ProviderNamespace/ResourceType Combination). It will be the name of the private bicep registry.
+Mandatory. The identifier of the module to publish (ProviderNamespace/ResourceType Combination). It will be the name of the private bicep registry repository/entry.
 E.g. 'Microsoft.KeyVault/vaults'
 
 .PARAMETER templateFilePath

@@ -19,9 +19,6 @@ inputs:
   templateSpecsRGLocation:
     description: 'Required to publish to template spec. Location of the template spec resource group'
     required: false
-  templateSpecsName:
-    description: 'Required to publish to template spec. Name of the template spec to publish to'
-    required: false
   templateSpecsDescription:
     description: 'Required to publish to template spec. Description of the template spec to publish to'
     required: false
@@ -68,9 +65,14 @@ runs:
           # Load used functions
           . "$env:GITHUB_ACTION_PATH/scripts/Publish-ModuleToTemplateSpec.ps1"
 
+          $templateFilePath = Join-Path "$env:GITHUB_WORKSPACE" "${{ inputs.templateFilePath }}"
+
+          # Extracts Microsoft.KeyVault/vaults from e.g. C:\arm\Microsoft.KeyVault\vaults\deploy.bicep
+          $moduleIdentifier = (Split-Path $templateFilePath -Parent).Replace('\','/').Split('/arm/')[1]
+
           $functionInput = @{
+            moduleIdentifier         = $moduleIdentifier
             templateFilePath         = '${{ inputs.templateFilePath }}'
-            templateSpecsName        = '${{ inputs.templateSpecsName }}'
             templateSpecsRGName      = '${{ inputs.templateSpecsRGName }}'
             templateSpecsRGLocation  = '${{ inputs.templateSpecsRGLocation }}'
             templateSpecsDescription = '${{ inputs.templateSpecsDescription }}'

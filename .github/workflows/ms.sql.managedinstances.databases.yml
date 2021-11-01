@@ -183,7 +183,6 @@ jobs:
           customVersion: '${{ needs.job_set_workflow_param.outputs.customVersion }}'
           templateSpecsRGName: '${{ env.templateSpecsRGName }}'
           templateSpecsRGLocation: '${{ env.templateSpecsRGLocation }}'
-          templateSpecsName: '${{ env.moduleName }}'
           templateSpecsDescription: '${{ env.templateSpecsDescription }}'
           templateSpecsDoPublish: '${{ env.templateSpecsDoPublish }}'
           bicepRegistryName: '${{ env.bicepRegistryName }}'
