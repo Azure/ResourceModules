@@ -65,6 +65,7 @@ function Test-ModuleLocally {
     process {
         # Test Module
         if ($PesterTest) {
+            Write-Verbose '---- Performing Pester Tests ----'
             Invoke-Pester -Configuration @{
                 Run        = @{
                     Container = New-PesterContainer -Path (Join-Path $PSScriptRoot '..\..' 'arm\.global\global.module.tests.ps1') -Data @{
@@ -85,7 +86,8 @@ function Test-ModuleLocally {
             }
         }
         # Deploy Module
-        if ($DeployTest) {
+        if ($DeployTest -and $DeployParameters) {
+            Write-Verbose '---- Deploying Module ----'
             # Find Test Parameter Files
             $ModuleParameterFiles = Get-ChildItem -Path (Join-Path $PSScriptRoot '..\..\arm' $ModuleName '.parameters') -Recurse
             # Load Tokens Converter Script
@@ -101,10 +103,11 @@ function Test-ModuleLocally {
 
             # Load Modules Deployment Script
             . (Join-Path $PSScriptRoot '..\..' '.github\actions\templates\deployModule\scripts\New-ModuleDeployment.ps1')
+            # Build Modules Deployment Inputs
             $functionInput = @{
                 moduleName        = "l-$($ModuleName.Split('\')[-1])"
                 templateFilePath  = (Join-Path $PSScriptRoot '..\..\arm' $ModuleName 'deploy.bicep')
-                parameterFilePath = "$ModuleParameterFiles"
+                parameterFilePath = (Join-Path $PSScriptRoot '..\..\arm' $ModuleName '.parameters')
                 location          = "$($DeployParameters.Location)"
                 resourceGroupName = "$($DeployParameters.ResourceGroupName)"
                 subscriptionId    = "$($DeployParameters.SubscriptionId)"
@@ -119,7 +122,7 @@ function Test-ModuleLocally {
 
     end {
         # Restore Parameter Files
-        if ($DeployTest) {
+        if ($DeployTest -and $DeployParameters) {
             # Replace Values with Tokens For Repo Updates
             $RestoreTokensObject = @(
                 @{ Replace = "$($DeployParameters.TenantId)" ; With = '<<tenantId>>' }
