@@ -1,6 +1,6 @@
 @description('Optional. Name of the Key Vault. If no name is provided, then unique name will be created.')
 @maxLength(24)
-param keyVaultName string = ''
+param name string = ''
 
 @description('Optional. Location for all resources.')
 param location string = resourceGroup().location
@@ -142,9 +142,9 @@ var diagnosticsMetrics = [for metric in metricsToEnable: {
 }]
 
 var maxNameLength = 24
-var uniqueKeyVaultNameUntrim = uniqueString('Key Vault${baseTime}')
-var uniqueKeyVaultName = ((length(uniqueKeyVaultNameUntrim) > maxNameLength) ? substring(uniqueKeyVaultNameUntrim, 0, maxNameLength) : uniqueKeyVaultNameUntrim)
-var keyVaultName_var = (empty(keyVaultName) ? uniqueKeyVaultName : keyVaultName)
+var uniquenameUntrim = uniqueString('Key Vault${baseTime}')
+var uniquename = ((length(uniquenameUntrim) > maxNameLength) ? substring(uniquenameUntrim, 0, maxNameLength) : uniquenameUntrim)
+var name_var = (empty(name) ? uniquename : name)
 var virtualNetworkRules = [for networkrule in ((contains(networkAcls, 'virtualNetworkRules')) ? networkAcls.virtualNetworkRules : []): {
   id: '${vNetId}/subnets/${networkrule.subnet}'
 }]
@@ -188,7 +188,7 @@ module pid_cuaId './.bicep/nested_cuaId.bicep' = if (!empty(cuaId)) {
 }
 
 resource keyVault 'Microsoft.KeyVault/vaults@2019-09-01' = {
-  name: keyVaultName_var
+  name: name_var
   location: location
   tags: tags
   properties: {
@@ -220,7 +220,7 @@ resource keyVault_lock 'Microsoft.Authorization/locks@2016-09-01' = if (lock != 
 }
 
 resource keyVault_diagnosticSettings 'Microsoft.Insights/diagnosticsettings@2017-05-01-preview' = if ((!empty(diagnosticStorageAccountId)) || (!empty(workspaceId)) || (!empty(eventHubAuthorizationRuleId)) || (!empty(eventHubName))) {
-  name: '${keyVaultName_var}-${diagnosticSettingName}'
+  name: '${name_var}-${diagnosticSettingName}'
   properties: {
     storageAccountId: (empty(diagnosticStorageAccountId) ? json('null') : diagnosticStorageAccountId)
     workspaceId: (empty(workspaceId) ? json('null') : workspaceId)
@@ -289,9 +289,12 @@ module keyVault_rbac './.bicep/nested_rbac.bicep' = [for (roleAssignment, index)
 
 @description('The Resource Id of the Key Vault.')
 output keyVaultResourceId string = keyVault.id
+
 @description('The name of the Resource Group the Key Vault was created in.')
 output keyVaultResourceGroup string = resourceGroup().name
+
 @description('The Name of the Key Vault.')
 output keyVaultName string = keyVault.name
+
 @description('The URL of the Key Vault.')
 output keyVaultUrl string = reference(keyVault.id, '2016-10-01').vaultUri
