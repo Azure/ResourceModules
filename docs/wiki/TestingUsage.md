@@ -49,9 +49,10 @@ Invoke-Pester -Configuration @{
 # REQUIRED INPUT FOR TESTING
 $TestModuleLocallyInput = @{
     ModuleName       = 'Microsoft.Authorization\roleAssignments'
-    PesterTest       = $true
-    DeployTest       = $true
-    DeployParameters = @{
+    PesterTest                 = $true
+    DeployTest                 = $true
+    ValidateOnly               = $false
+    ValidateOrDeployParameters = @{
         Location          = 'westeurope' # Name of the Azure Region to deploy the module in.
         ResourceGroupName = 'resourceGroupName' # Name of the Resource Group to deploy the module in.
         SubscriptionId    = '12345678-1234-1234-abcd-1369d14d0d45' #The subscription ID used to deploy the module in & Token replacements for <<subscriptionId>>
