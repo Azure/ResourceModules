@@ -5,9 +5,6 @@
         "name": {
             "value": "sxx-az-kv-weu-x-001"
         },
-        "enableSoftDelete": {
-            "value": false
-        },
         "softDeleteRetentionInDays": {
             "value": 7
         },
