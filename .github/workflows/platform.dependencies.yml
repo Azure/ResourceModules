@@ -533,8 +533,8 @@ jobs:
   job_deploy_kv_secrets:
     runs-on: ubuntu-20.04
     name: 'Set key vault secrets and keys'
-    # needs:
-    #   - job_deploy_kv
+    needs:
+      - job_deploy_kv
     steps:
       - name: 'Checkout'
         uses: actions/checkout@v2
