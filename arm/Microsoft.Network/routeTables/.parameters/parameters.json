@@ -3,7 +3,7 @@
     "contentVersion": "1.0.0.0",
     "parameters": {
         "routeTableName": {
-            "value": "sxx-az-udr-weu-x-001"
+            "value": "sxx-az-udr-x-001"
         },
         "routes": {
             "value": [

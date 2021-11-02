@@ -3,7 +3,7 @@
     "contentVersion": "1.0.0.0",
     "parameters": {
         "logicAppName": {
-            "value": "sxx-az-lga-weu-x-001"
+            "value": "sxx-az-lga-x-001"
         },
         "tags": {
             "value": {}

@@ -3,7 +3,7 @@
     "contentVersion": "1.0.0.0",
     "parameters": {
         "networkSecurityGroupName": {
-            "value": "sxx-az-nsg-weu-x-001"
+            "value": "sxx-az-nsg-x-001"
         },
         "networkSecurityGroupSecurityRules": {
             "value": [
@@ -58,10 +58,10 @@
                         "priority": 102,
                         "direction": "Inbound",
                         "sourceApplicationSecurityGroupIds": [
-                            "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/applicationSecurityGroups/adp-sxx-az-asg-weu-x-001"
+                            "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/applicationSecurityGroups/adp-sxx-az-asg-x-001"
                         ],
                         "destinationApplicationSecurityGroupIds": [
-                            "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/applicationSecurityGroups/adp-sxx-az-asg-weu-x-001"
+                            "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/applicationSecurityGroups/adp-sxx-az-asg-x-001"
                         ]
                     }
                 }
@@ -74,7 +74,7 @@
             "value": 7
         },
         "workspaceId": {
-            "value": "/subscriptions/<<subscriptionId>>/resourcegroups/validation-rg/providers/microsoft.operationalinsights/workspaces/adp-sxx-az-la-weu-x-001"
+            "value": "/subscriptions/<<subscriptionId>>/resourcegroups/validation-rg/providers/microsoft.operationalinsights/workspaces/adp-sxx-az-la-x-001"
         },
         "roleAssignments": {
             "value": [

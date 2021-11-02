@@ -3,7 +3,7 @@
     "contentVersion": "1.0.0.0",
     "parameters": {
         "publicIPAddressName": {
-            "value": "sxx-az-pip-weu-x-001"
+            "value": "sxx-az-pip-x-001"
         },
         "skuName": {
             "value": "Standard"
@@ -12,7 +12,7 @@
             "value": "Static"
         },
         "workspaceId": {
-            "value": "/subscriptions/<<subscriptionId>>/resourcegroups/validation-rg/providers/microsoft.operationalinsights/workspaces/adp-sxx-az-la-weu-x-001"
+            "value": "/subscriptions/<<subscriptionId>>/resourcegroups/validation-rg/providers/microsoft.operationalinsights/workspaces/adp-sxx-az-la-x-001"
         },
         "roleAssignments": {
             "value": [

@@ -3,14 +3,14 @@
     "contentVersion": "1.0.0.0",
     "parameters": {
         "workSpaceName": {
-            "value": "sxx-az-avdws-weu-x-001"
+            "value": "sxx-az-avdws-x-001"
         },
         "location": {
             "value": "eastus"
         },
         "appGroupResourceIds": {
             "value": [
-                "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.DesktopVirtualization/applicationgroups/sxx-az-avdag-weu-x-001"
+                "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.DesktopVirtualization/applicationgroups/sxx-az-avdag-x-001"
             ]
         },
         "workspaceFriendlyName": {

@@ -3,7 +3,7 @@
     "contentVersion": "1.0.0.0",
     "parameters": {
         "localNetworkGatewayName": {
-            "value": "sxx-az-lng-weu-x-001"
+            "value": "sxx-az-lng-x-001"
         },
         "localAddressPrefixes": {
             "value": [

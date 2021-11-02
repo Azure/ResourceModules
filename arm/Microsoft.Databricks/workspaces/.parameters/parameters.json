@@ -3,7 +3,7 @@
     "contentVersion": "1.0.0.0",
     "parameters": {
         "workspaceName": {
-            "value": "sxx-az-adb-weu-x-001"
+            "value": "sxx-az-adb-x-001"
         },
         "roleAssignments": {
             "value": [

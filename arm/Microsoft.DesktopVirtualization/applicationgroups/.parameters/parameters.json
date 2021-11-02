@@ -3,7 +3,7 @@
     "contentVersion": "1.0.0.0",
     "parameters": {
         "appGroupName": {
-            "value": "sxx-az-avdag-weu-x-001"
+            "value": "sxx-az-avdag-x-001"
         },
         "location": {
             "value": "eastus"
@@ -12,7 +12,7 @@
             "value": "RemoteApp"
         },
         "hostpoolName": {
-            "value": "sxx-az-avdhp-weu-x-001"
+            "value": "sxx-az-avdhp-x-001"
         },
         "appGroupFriendlyName": {
             "value": "Remote Applications 1"

@@ -3,7 +3,7 @@
     "contentVersion": "1.0.0.0",
     "parameters": {
         "name": {
-            "value": "sxx-az-cdb-weu-x-002"
+            "value": "sxx-az-cdb-x-002"
         },
         "location": {
             "value": "West Europe"
@@ -35,7 +35,7 @@
         "mongodbDatabases": {
             "value": [
                 {
-                    "name": "sxx-az-mdb-weu-x-001",
+                    "name": "sxx-az-mdb-x-001",
                     "collections": [
                         {
                             "name": "car_collection",
@@ -126,7 +126,7 @@
                     ]
                 },
                 {
-                    "name": "sxx-az-mdb-weu-x-002",
+                    "name": "sxx-az-mdb-x-002",
                     "collections": [
                         {
                             "name": "bike_collection",

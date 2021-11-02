@@ -3,7 +3,7 @@
     "contentVersion": "1.0.0.0",
     "parameters": {
         "appServicePlanName": {
-            "value": "sxx-az-asp-weu-x-001"
+            "value": "sxx-az-asp-x-001"
         },
         "sku": {
             "value": {

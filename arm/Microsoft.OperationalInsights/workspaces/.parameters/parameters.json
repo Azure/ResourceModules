@@ -3,7 +3,7 @@
     "contentVersion": "1.0.0.0",
     "parameters": {
         "logAnalyticsWorkspaceName": {
-            "value": "test-az-la-weu-x-001"
+            "value": "test-az-la-x-001"
         },
         "publicNetworkAccessForIngestion": {
             "value": "Disabled"

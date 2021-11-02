@@ -3,7 +3,7 @@
     "contentVersion": "1.0.0.0",
     "parameters": {
         "privateLinkScopeName": {
-            "value": "test-az-pls-weu-x-001"
+            "value": "test-az-pls-x-001"
         },
         "roleAssignments": {
             "value": [

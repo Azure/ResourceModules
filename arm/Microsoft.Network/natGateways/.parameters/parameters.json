@@ -3,7 +3,7 @@
     "contentVersion": "1.0.0.0",
     "parameters": {
         "natGatewayName": {
-            "value": "sxx-az-ngw-weu-x-001"
+            "value": "sxx-az-ngw-x-001"
         },
         "natGatewayPublicIpAddress": {
             "value": true

@@ -3,7 +3,7 @@
     "contentVersion": "1.0.0.0",
     "parameters": {
         "availabilitySetName": {
-            "value": "sxx-az-avs-weu-x-001"
+            "value": "sxx-az-avs-x-001"
         },
         "roleAssignments": {
             "value": [

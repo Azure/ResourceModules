@@ -3,7 +3,7 @@
     "contentVersion": "1.0.0.0",
     "parameters": {
         "proximityPlacementGroupName": {
-            "value": "sxx-az-ppg-weu-x-001"
+            "value": "sxx-az-ppg-x-001"
         },
         "roleAssignments": {
             "value": [

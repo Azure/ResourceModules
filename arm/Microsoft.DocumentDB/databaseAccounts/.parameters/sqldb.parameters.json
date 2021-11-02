@@ -3,7 +3,7 @@
     "contentVersion": "1.0.0.0",
     "parameters": {
         "name": {
-            "value": "sxx-az-cdb-weu-x-001"
+            "value": "sxx-az-cdb-x-001"
         },
         "location": {
             "value": "West Europe"
@@ -35,7 +35,7 @@
         "sqlDatabases": {
             "value": [
                 {
-                    "name": "sxx-az-sql-weu-x-001",
+                    "name": "sxx-az-sql-x-001",
                     "containers": [
                         {
                             "name": "container-001",
@@ -47,7 +47,7 @@
                     ]
                 },
                 {
-                    "name": "sxx-az-sql-weu-x-002",
+                    "name": "sxx-az-sql-x-002",
                     "containers": []
                 }
             ]

@@ -3,7 +3,7 @@
     "contentVersion": "1.0.0.0",
     "parameters": {
         "circuitName": {
-            "value": "sxx-az-erc-weu-x-001"
+            "value": "sxx-az-erc-x-001"
         },
         "serviceProviderName": {
             "value": "Equinix"

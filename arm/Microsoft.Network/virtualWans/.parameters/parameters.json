@@ -3,7 +3,7 @@
     "contentVersion": "1.0.0.0",
     "parameters": {
         "virtualWanName": {
-            "value": "sxx-az-vw-weu-x-001"
+            "value": "sxx-az-vw-x-001"
         },
         "vpnsiteAddressspaceList": {
             "value": []

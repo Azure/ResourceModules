@@ -3,7 +3,7 @@
     "contentVersion": "1.0.0.0",
     "parameters": {
         "netAppAccountName": {
-            "value": "sxx-az-anf-weu-x-001"
+            "value": "sxx-az-anf-x-001"
         },
         "domainName": {
             "value": ""
@@ -23,7 +23,7 @@
         "capacityPools": {
             "value": [
                 {
-                    "poolName": "sxx-az-anfcp-weu-x-001",
+                    "poolName": "sxx-az-anfcp-x-001",
                     "poolServiceLevel": "Premium",
                     "poolSize": 4398046511104,
                     "volumes": [
@@ -35,7 +35,7 @@
                             "protocolTypes": [
                                 "NFSv3"
                             ],
-                            "subnetId": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/virtualNetworks/adp-sxx-az-vnet-weu-x-001/subnets/sxx-az-subnet-weu-x-004",
+                            "subnetId": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/virtualNetworks/adp-sxx-az-vnet-x-001/subnets/sxx-az-subnet-x-004",
                             "roleAssignments": [
                                 {
                                     "roleDefinitionIdOrName": "Reader",
@@ -65,7 +65,7 @@
                                     }
                                 ]
                             },
-                            "subnetId": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/virtualNetworks/adp-sxx-az-vnet-weu-x-001/subnets/sxx-az-subnet-weu-x-004",
+                            "subnetId": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/virtualNetworks/adp-sxx-az-vnet-x-001/subnets/sxx-az-subnet-x-004",
                             "roleAssignments": [
                                 {
                                     "roleDefinitionIdOrName": "Reader",
@@ -86,7 +86,7 @@
                     ]
                 },
                 {
-                    "poolName": "sxx-az-anfcp-weu-x-002",
+                    "poolName": "sxx-az-anfcp-x-002",
                     "poolServiceLevel": "Premium",
                     "poolSize": 4398046511104,
                     "volumes": [],
