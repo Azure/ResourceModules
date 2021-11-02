@@ -8,7 +8,7 @@
         "schedules": {
             "value": [
                 {
-                    "scheduleName": "ScalingRunbook_Schedule",
+                    "name": "ScalingRunbook_Schedule",
                     "startTime": "",
                     "expiryTime": "9999-12-31T23:59:00+00:00",
                     "interval": 15,
