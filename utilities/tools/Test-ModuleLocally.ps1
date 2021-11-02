@@ -11,15 +11,15 @@ subscription Id, Principal Id, tenant ID and other parameters that need to be to
 The name of The module to test. (i.e. 'Microsoft.Authorization/policyExemptions')
 
 .PARAMETER PesterTest
-A Boolean Paramaeter that triggers a Pester Test for the Module
+A Switch Paramaeter that triggers a Pester Test for the Module
 
 .PARAMETER ValidateOrDeployParameters
-An Object consisting of the components that are required when using the Validate Test or DeployTest Switch parameter. See example:
+An Object consisting of the components that are required when using the Validate Test or DeploymentTest Switch parameter. See example:
 
-.PARAMETER DeployTest
-A Boolean Paramaeter that triggers the Deployment of the Module
+.PARAMETER DeploymentTest
+A Switch Paramaeter that triggers the Deployment of the Module
 
-.PARAMETER ValidateOnly
+.PARAMETER ValidationTest
 A Switch Paramaeter that triggers the Validation of the Module Only without Deployment
 
 .EXAMPLE
@@ -27,7 +27,8 @@ A Switch Paramaeter that triggers the Validation of the Module Only without Depl
 $TestModuleLocallyInput = @{
     ModuleName       = 'Microsoft.Authorization\roleAssignments'
     PesterTest       = $true
-    DeployTest       = $true
+    DeploymentTest       = $true
+    ValidationTest        = $false
     ValidateOrDeployParameters = @{
         Location          = 'azureRegionName'
         ResourceGroupName = 'resourceGroupName'
@@ -59,11 +60,11 @@ function Test-ModuleLocally {
 
         [Parameter(ParameterSetName = 'Deploy')]
         [parameter(Mandatory = $false)]
-        [bool]$DeployTest,
+        [switch]$DeploymentTest,
 
         [Parameter(ParameterSetName = 'Deploy')]
         [parameter(Mandatory = $false)]
-        [switch]$ValidateOnly,
+        [switch]$ValidationTest,
 
         [Parameter(ParameterSetName = 'Deploy')]
         [parameter(Mandatory = $false)]
@@ -77,7 +78,7 @@ function Test-ModuleLocally {
     process {
         # Test Module
         if ($PesterTest) {
-            Write-Verbose '---- Performing Pester Tests ----'
+            Write-Verbose "Pester Testing Module: $ModuleName"
             Invoke-Pester -Configuration @{
                 Run        = @{
                     Container = New-PesterContainer -Path (Join-Path $PSScriptRoot '..\..' 'arm\.global\global.module.tests.ps1') -Data @{
@@ -98,8 +99,7 @@ function Test-ModuleLocally {
             }
         }
         # Deploy Module
-        if (($ValidateOnly -or $DeployTest) -and $ValidateOrDeployParameters) {
-            Write-Verbose '---- Deploying Module ----'
+        if (($ValidationTest -or $DeploymentTest) -and $ValidateOrDeployParameters) {
             # Find Test Parameter Files
             $ModuleParameterFiles = Get-ChildItem -Path (Join-Path $PSScriptRoot '..\..\arm' $ModuleName '.parameters') -Recurse
             # Load Tokens Converter Script
@@ -125,7 +125,8 @@ function Test-ModuleLocally {
 
             try {
                 # Validate Template
-                if ($ValidateOnly) {
+                if ($ValidationTest) {
+                    Write-Verbose "Validating Module: $ModuleName"
                     # Load Modules Deployment Script
                     . (Join-Path $PSScriptRoot '..\..' '.github\actions\templates\validateModuleDeploy\scripts\Test-TemplateWithParameterFile.ps1')
                     # Invoke Validation
@@ -133,8 +134,8 @@ function Test-ModuleLocally {
                 }
 
                 # Deploy Template
-                if ($DeployTest -and !$ValidateOnly) {
-
+                if ($DeploymentTest) {
+                    Write-Verbose "Deploying Module: $ModuleName"
                     # Set the ParameterFilePath to Directory instead of the default 'parameters.json'
                     if ($DeployAllParameterFiles) {
                         $functionInput.parameterFilePath = (Join-Path $PSScriptRoot '..\..\arm' $ModuleName '.parameters')
@@ -167,7 +168,7 @@ function Test-ModuleLocally {
 
     end {
         # Restore Parameter Files
-        if (($ValidateTest -or $DeployTest) -and $ValidateOrDeployParameters) {
+        if (($ValidateTest -or $DeploymentTest) -and $ValidateOrDeployParameters) {
             # Replace Values with Tokens For Repo Updates
             $RestoreTokensObject = @(
                 @{ Replace = "$($ValidateOrDeployParameters.TenantId)" ; With = '<<tenantId>>' }
