@@ -1,5 +1,5 @@
 @description('Required. Name of the Automation Account')
-param name string
+param automationAccountName string
 
 @description('Optional. Location for all resources.')
 param location string = resourceGroup().location
@@ -144,7 +144,7 @@ module pid_cuaId './.bicep/nested_cuaId.bicep' = if (!empty(cuaId)) {
 }
 
 resource automationAccount 'Microsoft.Automation/automationAccounts@2020-01-13-preview' = {
-  name: name
+  name: automationAccountName
   location: location
   tags: tags
   properties: {
@@ -251,7 +251,7 @@ module automationAccount_rbac './.bicep/nested_rbac.bicep' = [for (roleAssignmen
   }
 }]
 
-output name string = automationAccount.name
+output automationAccountName string = automationAccount.name
 output automationAccountResourceId string = automationAccount.id
 output automationAccountResourceGroup string = resourceGroup().name
 output modules array = modules

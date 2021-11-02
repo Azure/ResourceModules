@@ -1,5 +1,5 @@
 @description('Required. Name of the Automation Account')
-param automationAccountName string
+param name string
 
 @description('Optional. Location for all resources.')
 param location string = resourceGroup().location
@@ -144,7 +144,7 @@ module pid_cuaId './.bicep/nested_cuaId.bicep' = if (!empty(cuaId)) {
 }
 
 resource automationAccount 'Microsoft.Automation/automationAccounts@2020-01-13-preview' = {
-  name: automationAccountName
+  name: name
   location: location
   tags: tags
   properties: {
@@ -153,17 +153,17 @@ resource automationAccount 'Microsoft.Automation/automationAccounts@2020-01-13-p
     }
   }
 
-  resource automationAccount_modules 'modules@2020-01-13-preview' = [for (module, index) in modules: {
-    name: module.name
-    location: location
-    tags: tags
-    properties: {
-      contentLink: {
-        uri: module.version == 'latest' ? '${module.uri}/${module.name}' : '${module.uri}/${module.name}/${module.version}'
-        version: module.version == 'latest' ? null : module.version
-      }
-    }
-  }]
+  // resource automationAccount_modules 'modules@2020-01-13-preview' = [for (module, index) in modules: {
+  //   name: module.name
+  //   location: location
+  //   tags: tags
+  //   properties: {
+  //     contentLink: {
+  //       uri: module.version == 'latest' ? '${module.uri}/${module.name}' : '${module.uri}/${module.name}/${module.version}'
+  //       version: module.version == 'latest' ? null : module.version
+  //     }
+  //   }
+  // }]
 
   resource automationAccount_schedules 'schedules@2020-01-13-preview' = [for (schedule, index) in schedules: {
     name: schedule.scheduleName
@@ -206,6 +206,33 @@ resource automationAccount 'Microsoft.Automation/automationAccounts@2020-01-13-p
     ]
   }]
 }
+
+module automationAccount_modules './modules/deploy.bicep' = [for (module, index) in modules: {
+  name: '${uniqueString(deployment().name, location)}-AutoAccount-Module-${index}'
+  params: {
+    name: module.name
+    version: module.version
+    uri: module.uri
+    parent: automationAccount.name
+    location: location
+    tags: tags
+  }
+}]
+
+module automationAccount_schedules './schedules/deploy.bicep' = [for (schedule, index) in schedules: {
+  name: '${uniqueString(deployment().name, location)}-AutoAccount-Schedule-${index}'
+  params: {
+    name: schedule.name
+    parent: automationAccount.name
+    advancedSchedule: schedule.advancedSchedule
+    scheduleDescription: schedule.description
+    expiryTime: schedule.expiryTime
+    frequency: schedule.frequency
+    interval: schedule.interval
+    startTime: schedule.startTime
+    timeZone: schedule.timeZone
+  }
+}]
 
 resource automationAccount_lock 'Microsoft.Authorization/locks@2016-09-01' = if (lock != 'NotSpecified') {
   name: '${automationAccount.name}-${lock}-lock'
