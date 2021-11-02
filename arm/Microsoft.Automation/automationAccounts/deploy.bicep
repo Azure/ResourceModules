@@ -225,12 +225,12 @@ module automationAccount_schedules './schedules/deploy.bicep' = [for (schedule, 
     name: schedule.name
     parent: automationAccount.name
     advancedSchedule: contains(schedule, 'advancedSchedule') ? schedule.advancedSchedule : null
-    scheduleDescription: contains(schedule, 'description') ? schedule.description : null
-    expiryTime: contains(schedule, 'expiryTime') ? schedule.expiryTime : null
-    frequency: contains(schedule, 'frequency') ? schedule.frequency : null
-    interval: contains(schedule, 'interval') ? schedule.interval : null
-    startTime: contains(schedule, 'startTime') ? schedule.startTime : null
-    timeZone: contains(schedule, 'timeZone') ? schedule.timeZone : null
+    scheduleDescription: contains(schedule, 'description') ? schedule.description : ''
+    expiryTime: contains(schedule, 'expiryTime') ? schedule.expiryTime : ''
+    frequency: contains(schedule, 'frequency') ? schedule.frequency : ''
+    interval: contains(schedule, 'interval') ? schedule.interval : 0
+    startTime: contains(schedule, 'startTime') ? schedule.startTime : ''
+    timeZone: contains(schedule, 'timeZone') ? schedule.timeZone : ''
   }
 }]
 

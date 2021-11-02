@@ -10,13 +10,13 @@ param parent string
   monthlyOccurrences: 'Occurrences of days within a month.'
   weekDays: 'Days of the week that the job should execute on.'
 })
-param advancedSchedule string
+param advancedSchedule object = {}
 
 @description('Optional. Gets or sets the description of the schedule.')
 param scheduleDescription string = ''
 
 @description('Optional. Gets or sets the end time of the schedule.')
-param expiryTime string
+param expiryTime string = ''
 
 @allowed([
   'Day'
@@ -27,7 +27,7 @@ param expiryTime string
   'Week'
 ])
 @description('Optional. Gets or sets the frequency of the schedule.')
-param frequency string
+param frequency string = 'OneTime'
 
 @description('Optional. Anything')
 param interval int = 0
