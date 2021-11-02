@@ -10,7 +10,7 @@ This section gives you an overview of how to test the bicep modules.
     - [_Navigation_](#navigation)
   - [Tool: Testing your Bicep module](#tool-testing-your-bicep-module)
   - [Tool: Use The Test-ModuleLocally Script To Perform Pester Testing, Token Replacement and Deployment of the Module.](#tool-use-the-test-modulelocally-script-to-perform-pester-testing-token-replacement-and-deployment-of-the-module)
-    - [Handling Resource IDs or Parameters that require or contain Subscription IDs](#handling-resource-ids-or-parameters-that-require-or-contain-subscription-ids)
+    - [Handling Parameters that require or contain a value that should be tokenized](#handling-parameters-that-require-or-contain-a-value-that-should-be-tokenized)
 
 ---
 
@@ -67,7 +67,9 @@ Test-ModuleLocally @TestModuleLocallyInput -verbose
 
 ```
 
-### Handling Resource IDs or Parameters that require or contain Subscription IDs
+### Handling Parameters that require or contain a value that should be tokenized
+
+The following scenarios are common to when to use a token value in the parameter file. Refer to [Pipeline Design](PipelinesDesign.md) for more details.
 
 - Scenarios where resources have dependencies on other resources, which may require to be linked using `resourceId` references. [Example](../../arm/Microsoft.Network/virtualNetworksResources/virtualNetworkPeerings/.parameters/parameters.json)
 
@@ -87,9 +89,35 @@ Test-ModuleLocally @TestModuleLocallyInput -verbose
     }
     ```
 
-For these use cases, before committing the change and testing the module using GitHub actions, replace the subscription ID values with `<<subscriptionId>>`. This allows the pipelines to replace the string with the right subscription ID before the template is deployed to Azure.
+- Scenarios where there is a Role Assignment being created for the module being deployed. [Example](../../arm/Microsoft.Compute/diskEncryptionSets/.parameters/parameters.json)
+
+    ```json
+     "roleAssignments": {
+            "value": [
+                {
+                    "roleDefinitionIdOrName": "Reader",
+                    "principalIds": [
+                        "<<principalId1>>"
+                    ]
+                }
+            ]
+        }
+    ```
+
+- Scenarios where the Azure Tenant ID is being referenced in the parameter file
+
+- Scenarios where A management Group ID is being referenced in the parameter file. [Example](../../arm/Microsoft.Management/managementGroups/.parameters/parameters.json)
+
+    ```json
+        "parentId": {
+            "value": "<<managementGroupId>."
+        }
+
+    ```
+
+For these use cases, before committing the change and testing the module using GitHub actions, replace the original value with the token value like `<<subscriptionId>>`. This allows the pipelines to replace the string with the original value before the template is deployed to Azure.
 
 ---
-**Note**: Failure to replace the subscription ID value so will result in a Pester test failure that detects if you are using a hard-coded subscription ID.
+**Note**: There are pester tests that target the use of tokens in parameter files where it detects certain keywords (i.e. /subscriptions/, 'subscriptionId', 'principalId'). Hence ensure you tokenize these values to ensure these tests are successful.
 
 ---
