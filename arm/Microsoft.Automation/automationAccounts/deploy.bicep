@@ -211,9 +211,9 @@ module automationAccount_modules './modules/deploy.bicep' = [for (module, index)
   name: '${uniqueString(deployment().name, location)}-AutoAccount-Module-${index}'
   params: {
     name: module.name
+    parent: automationAccount.name
     version: module.version
     uri: module.uri
-    parent: automationAccount.name
     location: location
     tags: tags
   }
@@ -224,13 +224,13 @@ module automationAccount_schedules './schedules/deploy.bicep' = [for (schedule, 
   params: {
     name: schedule.name
     parent: automationAccount.name
-    advancedSchedule: schedule.advancedSchedule
-    scheduleDescription: schedule.description
-    expiryTime: schedule.expiryTime
-    frequency: schedule.frequency
-    interval: schedule.interval
-    startTime: schedule.startTime
-    timeZone: schedule.timeZone
+    advancedSchedule: contains(schedule, 'advancedSchedule') ? schedule.advancedSchedule : null
+    scheduleDescription: contains(schedule, 'description') ? schedule.description : null
+    expiryTime: contains(schedule, 'expiryTime') ? schedule.expiryTime : null
+    frequency: contains(schedule, 'frequency') ? schedule.frequency : null
+    interval: contains(schedule, 'interval') ? schedule.interval : null
+    startTime: contains(schedule, 'startTime') ? schedule.startTime : null
+    timeZone: contains(schedule, 'timeZone') ? schedule.timeZone : null
   }
 }]
 
