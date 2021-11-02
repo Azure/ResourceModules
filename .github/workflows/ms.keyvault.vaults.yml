@@ -33,8 +33,6 @@ env:
   ARM_MGMTGROUP_ID: ${{ secrets.ARM_MGMTGROUP_ID }}
   ARM_PRINCIPAL_ID1: ${{ secrets.ARM_PRINCIPAL_ID1 }}
   ARM_TENANT_ID: ${{ secrets.ARM_TENANT_ID }}
-  ARM_PRINCIPAL_ID1: ${{ secrets.ARM_PRINCIPAL_ID1 }}
-  ARM_TENANT_ID: ${{ secrets.ARM_TENANT_ID }}
 
 jobs:
   ############################

@@ -123,32 +123,45 @@ function Test-ModuleLocally {
                 managementGroupId = "$($ValidateOrDeployParameters.ManagementGroupId)"
             }
 
-            # Validate Template
-            if ($ValidateOnly) {
-                # Load Modules Deployment Script
-                . (Join-Path $PSScriptRoot '..\..' '.github\actions\templates\validateModuleDeploy\scripts\Test-TemplateWithParameterFile.ps1')
-                # Invoke Validation
-                Test-TemplateWithParameterFile @functionInput -Verbose
+            try {
+                # Validate Template
+                if ($ValidateOnly) {
+                    # Load Modules Deployment Script
+                    . (Join-Path $PSScriptRoot '..\..' '.github\actions\templates\validateModuleDeploy\scripts\Test-TemplateWithParameterFile.ps1')
+                    # Invoke Validation
+                    Test-TemplateWithParameterFile @functionInput -Verbose
+                }
+
+                # Deploy Template
+                if ($DeployTest -and !$ValidateOnly) {
+
+                    # Set the ParameterFilePath to Directory instead of the default 'parameters.json'
+                    if ($DeployAllParameterFiles) {
+                        $functionInput.parameterFilePath = (Join-Path $PSScriptRoot '..\..\arm' $ModuleName '.parameters')
+                    }
+                    # Append to Function Input the required parameters for Deployment
+                    $functionInput += @{
+                        moduleName       = "l-$($ModuleName.Split('\')[-1])"
+                        removeDeployment = [System.Convert]::ToBoolean($ValidateOrDeployParameters.RemoveDeployment)
+                        retryLimit       = 1
+                    }
+                    # Load Modules Deployment Script
+                    . (Join-Path $PSScriptRoot '..\..' '.github\actions\templates\deployModule\scripts\New-ModuleDeployment.ps1')
+                    # Invoke Deployment
+                    New-ModuleDeployment @functionInput -Verbose
+                }
+            } catch {
+                Write-Error $PSItem.Exception
+                # Replace Values with Tokens For Repo Updates
+                $RestoreTokensObject = @(
+                    @{ Replace = "$($ValidateOrDeployParameters.TenantId)" ; With = '<<tenantId>>' }
+                    @{ Replace = "$($ValidateOrDeployParameters.SubscriptionId)" ; With = '<<subscriptionId>>' }
+                    @{ Replace = "$($ValidateOrDeployParameters.ManagementGroupId)"; With = '<<managementGroupId>>' }
+                    @{ Replace = "$($ValidateOrDeployParameters.PrincipalId)" ; With = '<<principalId1>>' }
+                )
+                $ModuleParameterFiles | ForEach-Object { Convert-TokensInFileList -Paths $PSitem.FullName -TokensReplaceWith $RestoreTokensObject }
             }
 
-            # Deploy Template
-            if ($DeployTest -and !$ValidateOnly) {
-
-                # Set the ParameterFilePath to Directory instead of the default 'parameters.json'
-                if ($DeployAllParameterFiles) {
-                    $functionInput.parameterFilePath = (Join-Path $PSScriptRoot '..\..\arm' $ModuleName '.parameters')
-                }
-                # Append to Function Input the required parameters for Deployment
-                $functionInput += @{
-                    moduleName       = "l-$($ModuleName.Split('\')[-1])"
-                    removeDeployment = [System.Convert]::ToBoolean($ValidateOrDeployParameters.RemoveDeployment)
-                    retryLimit       = 1
-                }
-                # Load Modules Deployment Script
-                . (Join-Path $PSScriptRoot '..\..' '.github\actions\templates\deployModule\scripts\New-ModuleDeployment.ps1')
-                # Invoke Deployment
-                New-ModuleDeployment @functionInput -Verbose
-            }
         }
     }
 
