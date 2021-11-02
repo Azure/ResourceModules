@@ -552,21 +552,21 @@ jobs:
             $usernameString = (-join ((65..90) + (97..122) | Get-Random -Count 9 -SetSeed 1 | % {[char]$_ + "$_"})).substring(0,19) # max length
             $passwordString = (New-Guid).Guid.SubString(0,19)
             $vpnSharedKeyString =  (New-Guid).Guid.SubString(0,32)
-            echo $username
+            $keyVaultName = 'adp-sxx-az-kv-weu-x-001q'
             $userName = ConvertTo-SecureString -String $usernameString -AsPlainText -Force
             $password = ConvertTo-SecureString -String $passwordString -AsPlainText -Force
             $vpnSharedKey = ConvertTo-SecureString -String $vpnSharedKeyString -AsPlainText -Force
             # VirtualMachines and VMSS
-            Set-AzKeyVaultSecret -VaultName 'adp-sxx-az-kv-weu-x-001q' -Name 'adminUsername' -SecretValue $username
-            Set-AzKeyVaultSecret -VaultName 'adp-sxx-az-kv-weu-x-001q' -Name 'adminPassword' -SecretValue $password
+            Set-AzKeyVaultSecret -VaultName $keyVaultName -Name 'adminUsername' -SecretValue $username
+            Set-AzKeyVaultSecret -VaultName $keyVaultName -Name 'adminPassword' -SecretValue $password
             # Azure SQLServer and SQLManagedInstances
-            Set-AzKeyVaultSecret -VaultName 'adp-sxx-az-kv-weu-x-001q' -Name 'administratorLogin' -SecretValue $username
-            Set-AzKeyVaultSecret -VaultName 'adp-sxx-az-kv-weu-x-001q' -Name 'administratorLoginPassword' -SecretValue $password
+            Set-AzKeyVaultSecret -VaultName $keyVaultName -Name 'administratorLogin' -SecretValue $username
+            Set-AzKeyVaultSecret -VaultName $keyVaultName -Name 'administratorLoginPassword' -SecretValue $password
             # VirtualNetworkGateway
-            Set-AzKeyVaultSecret -VaultName 'adp-sxx-az-kv-weu-x-001q' -Name 'vpnSharedKey' -SecretValue $vpnSharedKey
+            Set-AzKeyVaultSecret -VaultName $keyVaultName -Name 'vpnSharedKey' -SecretValue $vpnSharedKey
             # DiskEncryptionSet, VirtualMachines and VMSS
-            az keyvault key create --vault-name "adp-sxx-az-kv-weu-x-001q" --name "keyEncryptionKey"
-            az keyvault key create --vault-name "adp-sxx-az-kv-weu-x-001q" --name "keyEncryptionKeySqlMi"
+            az keyvault key create --vault-name $keyVaultName --name "keyEncryptionKey"
+            az keyvault key create --vault-name $keyVaultName --name "keyEncryptionKeySqlMi"
           azPSVersion: 'latest'
 
   # job_deploy_rolea:
