@@ -1,4 +1,4 @@
-name: 'Storage Account'
+name: 'Storage: Storage Account'
 
 on:
   workflow_dispatch:
@@ -97,7 +97,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        parameterFilePaths: ['noname.parameters.json', 'parameters.json']
+        parameterFilePaths: ['parameters.json', 'min.parameters.json']
     steps:
       - name: 'Checkout'
         uses: actions/checkout@v2
@@ -132,7 +132,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        parameterFilePaths: ['noname.parameters.json', 'parameters.json']
+        parameterFilePaths: ['parameters.json', 'min.parameters.json']
     steps:
       - name: 'Checkout'
         uses: actions/checkout@v2

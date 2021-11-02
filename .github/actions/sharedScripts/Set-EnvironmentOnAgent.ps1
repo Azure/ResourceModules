@@ -32,8 +32,7 @@ function Install-CustomModule {
     if (Get-Module $Module -ErrorAction SilentlyContinue) {
         try {
             Remove-Module $Module -Force
-        }
-        catch {
+        } catch {
             Write-Error ("Unable to remove module $($Module.Name)  : $($_.Exception) found, $($_.ScriptStackTrace)")
         }
     }
@@ -51,22 +50,21 @@ function Install-CustomModule {
 
         $localModuleVersions = Get-Module $foundModule.Name -ListAvailable
         if ($localModuleVersions -and $localModuleVersions.Version -contains $foundModule.Version ) {
-            Write-Verbose ("Module [{0}] already installed with latest version [{1}]" -f $foundModule.Name, $foundModule.Version) -Verbose
+            Write-Verbose ('Module [{0}] already installed with latest version [{1}]' -f $foundModule.Name, $foundModule.Version) -Verbose
             continue
         }
         if ($module.ExcludeModules -and $module.excludeModules.contains($foundModule.Name)) {
-            Write-Verbose ("Module {0} is configured to be ignored." -f $foundModule.Name) -Verbose
+            Write-Verbose ('Module {0} is configured to be ignored.' -f $foundModule.Name) -Verbose
             continue
         }
 
-        Write-Verbose ("Install module [{0}] with version [{1}]" -f $foundModule.Name, $foundModule.Version) -Verbose
-        if ($PSCmdlet.ShouldProcess("Module [{0}]" -f $foundModule.Name, "Install")) {
+        Write-Verbose ('Install module [{0}] with version [{1}]' -f $foundModule.Name, $foundModule.Version) -Verbose
+        if ($PSCmdlet.ShouldProcess('Module [{0}]' -f $foundModule.Name, 'Install')) {
             $foundModule | Install-Module -Force -SkipPublisherCheck -AllowClobber
             if ($installed = Get-Module -Name $foundModule.Name -ListAvailable) {
-                Write-Verbose ("Module [{0}] is installed with version [{1}]" -f $installed.Name, $installed.Version) -Verbose
-            }
-            else {
-                Write-Error ("Installation of module [{0}] failed" -f $foundModule.Name)
+                Write-Verbose ('Module [{0}] is installed with version [{1}]' -f $installed.Name, $installed.Version) -Verbose
+            } else {
+                Write-Error ('Installation of module [{0}] failed' -f $foundModule.Name)
             }
         }
     }
@@ -106,13 +104,26 @@ function Set-EnvironmentOnAgent {
     ###########################
     ##   Install Azure CLI   ##
     ###########################
+
+    # AzCLI is pre-installed on GitHub hosted runners.
+    # https://github.com/actions/virtual-environments#available-environments
+
+    az --version
+    <#
     Write-Verbose ("Install azure cli start") -Verbose
     curl -sL https://aka.ms/InstallAzureCLIDeb | sudo bash
     Write-Verbose ("Install azure cli end") -Verbose
+    #>
 
     ##############################
     ##   Install Bicep for CLI   #
     ##############################
+
+    # Bicep CLI is pre-installed on GitHub hosted runners.
+    # https://github.com/actions/virtual-environments#available-environments
+
+    bicep --version
+    <#
     Write-Verbose ("Install bicep start") -Verbose
     # Fetch the latest Bicep CLI binary
     curl -Lo bicep 'https://github.com/Azure/bicep/releases/latest/download/bicep-linux-x64'
@@ -123,12 +134,19 @@ function Set-EnvironmentOnAgent {
     # Add bicep to your PATH (requires admin)
     sudo mv ./bicep /usr/local/bin/bicep
     Write-Verbose ("Install bicep end") -Verbose
+    #>
 
     ###############################
     ##   Install Extensions CLI   #
     ###############################
 
-    Write-Verbose ("Install cli exentions start") -Verbose
+    # Azure CLI extension for DevOps is pre-installed on GitHub hosted runners.
+    # https://github.com/actions/virtual-environments#available-environments
+
+    az extension list | ConvertFrom-Json | Select-Object -Property name, version, preview, experimental
+
+    <#
+    Write-Verbose ('Install cli exentions start') -Verbose
     $Extensions = @(
         'azure-devops'
     )
@@ -138,28 +156,29 @@ function Set-EnvironmentOnAgent {
             az extension add --name $extension
         }
     }
-    Write-Verbose ("Install cli exentions end") -Verbose
+    Write-Verbose ('Install cli exentions end') -Verbose
+    #>
 
     ####################################
     ##   Install PowerShell Modules   ##
     ####################################
 
     $count = 1
-    Write-Verbose ("Try installing:") -Verbose
+    Write-Verbose ('Try installing:') -Verbose
     $modules | ForEach-Object {
-        Write-Verbose ("- {0}. [{1}]" -f $count, $_.Name) -Verbose
+        Write-Verbose ('- {0}. [{1}]' -f $count, $_.Name) -Verbose
         $count++
     }
 
-    Write-Verbose ("Install-CustomModule start") -Verbose
+    Write-Verbose ('Install-CustomModule start') -Verbose
     $count = 1
     Foreach ($Module in $Modules) {
-        Write-Verbose ("=====================") -Verbose
-        Write-Verbose ("HANDLING MODULE [{0}/{1}] [{2}] " -f $count, $Modules.Count, $Module.Name) -Verbose
-        Write-Verbose ("=====================") -Verbose
+        Write-Verbose ('=====================') -Verbose
+        Write-Verbose ('HANDLING MODULE [{0}/{1}] [{2}] ' -f $count, $Modules.Count, $Module.Name) -Verbose
+        Write-Verbose ('=====================') -Verbose
         # Installing New Modules and Removing Old
         $null = Install-CustomModule -Module $Module
         $count++
     }
-    Write-Verbose ("Install-CustomModule end") -Verbose
+    Write-Verbose ('Install-CustomModule end') -Verbose
 }

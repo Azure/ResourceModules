@@ -478,10 +478,10 @@ module virtualMachine_microsoftMonitoringAgentExtension './.bicep/nested_extensi
     typeHandlerVersion: enableWindowsMMAAgent ? '1.0' : '1.7'
     autoUpgradeMinorVersion: true
     settings: {
-      workspaceId: reference(virtualMachine_logAnalyticsWorkspace.id, virtualMachine_logAnalyticsWorkspace.apiVersion).customerId
+      workspaceId: (!empty(workspaceId)) ? reference(virtualMachine_logAnalyticsWorkspace.id, virtualMachine_logAnalyticsWorkspace.apiVersion).customerId: ''
     }
     protectedSettings: {
-      workspaceKey: virtualMachine_logAnalyticsWorkspace.listKeys().primarySharedKey
+      workspaceKey: (!empty(workspaceId)) ? virtualMachine_logAnalyticsWorkspace.listKeys().primarySharedKey: ''
     }
   }
 }

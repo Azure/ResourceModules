@@ -6,17 +6,15 @@ This section gives you an overview of the design principals the bicep modules fo
 
 ### _Navigation_
 
-- [Modules Design](#modules-design)
-    - [_Navigation_](#navigation)
-  - [General guidelines](#general-guidelines)
-  - [File & folder structure](#file--folder-structure)
-    - [Naming](#naming)
-    - [Structure](#structure)
-  - [Bicep template guidelines](#bicep-template-guidelines)
-    - [Parameters](#parameters)
-    - [Variables](#variables)
-    - [Resource](#resource)
-    - [Outputs](#outputs)
+- [General guidelines](#general-guidelines)
+- [File & folder structure](#file--folder-structure)
+  - [Naming](#naming)
+  - [Structure](#structure)
+- [Bicep template guidelines](#bicep-template-guidelines)
+  - [Parameters](#parameters)
+  - [Variables](#variables)
+  - [Resource](#resource)
+  - [Outputs](#outputs)
 
 ---
 
@@ -51,7 +49,11 @@ A module usually represents a single resource or a set of closely related resour
 
 ### Naming
 
-Files and folders within the module folder are all in lower case.
+Use the following naming standard for module files and folders:
+
+- Modules name reflect the resource type
+- Files and folders within the module folder are all in lower case
+- Child-resource modules (in .bicep sub-folder) are named `nested_<childResourceType>.bicep`
 
 ``` txt
 Microsoft.<provider>
