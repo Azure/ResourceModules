@@ -177,16 +177,16 @@ resource automationAccount 'Microsoft.Automation/automationAccounts@2020-01-13-p
   //   }
   // }]
 
-  resource automationAccount_runbooks 'runbooks@2019-06-01' = [for (runbook, index) in runbooks: {
-    name: runbook.runbookName
-    properties: {
-      runbookType: (empty(runbook.runbookType) ? json('null') : runbook.runbookType)
-      publishContentLink: {
-        uri: (empty(runbook.runbookScriptUri) ? json('null') : (empty(runbook.scriptStorageAccountId) ? 'runbook.runbookScriptUri' : 'runbook.runbookScriptUri${listAccountSas(runbook.scriptStorageAccountId, '2019-04-01', accountSasProperties).accountSasToken}'))
-        version: (empty(runbook.version) ? json('null') : runbook.version)
-      }
-    }
-  }]
+  // resource automationAccount_runbooks 'runbooks@2019-06-01' = [for (runbook, index) in runbooks: {
+  //   name: runbook.runbookName
+  //   properties: {
+  //     runbookType: (empty(runbook.runbookType) ? json('null') : runbook.runbookType)
+  //     publishContentLink: {
+  //       uri: (empty(runbook.runbookScriptUri) ? json('null') : (empty(runbook.scriptStorageAccountId) ? 'runbook.runbookScriptUri' : 'runbook.runbookScriptUri${listAccountSas(runbook.scriptStorageAccountId, '2019-04-01', accountSasProperties).accountSasToken}'))
+  //       version: (empty(runbook.version) ? json('null') : runbook.version)
+  //     }
+  //   }
+  // }]
 
   resource automationAccount_jobSchedules 'jobSchedules@2020-01-13-preview' = [for (jobSchedule, index) in jobSchedules: {
     name: jobSchedule.jobScheduleName
@@ -234,8 +234,21 @@ module automationAccount_schedules './schedules/deploy.bicep' = [for (schedule, 
   }
 }]
 
+module automationAccount_runbooks './runbooks/deploy.bicep' = [for (runbook, index) in runbooks: {
+  name: '${uniqueString(deployment().name, location)}-AutoAccount-Runbook-${index}'
+  params: {
+    name: runbook.name
+    parent: automationAccount.name
+    runbookType: runbook.runbookType
+    uri: runbook.uri
+    version: runbook.version
+    location: location
+    tags: tags
+  }
+}]
+
 resource automationAccount_lock 'Microsoft.Authorization/locks@2016-09-01' = if (lock != 'NotSpecified') {
-  name: '${automationAccount.name}-${lock}-lock'
+  name: '${uniqueString(deployment().name, location)}-AutoAccount-${lock}-lock'
   properties: {
     level: lock
     notes: (lock == 'CanNotDelete') ? 'Cannot delete resource or child resources.' : 'Cannot modify the resource or child resources.'
@@ -244,7 +257,7 @@ resource automationAccount_lock 'Microsoft.Authorization/locks@2016-09-01' = if 
 }
 
 resource automationAccount_diagnosticSettings 'Microsoft.Insights/diagnosticSettings@2017-05-01-preview' = if ((!empty(diagnosticStorageAccountId)) || (!empty(workspaceId)) || (!empty(eventHubAuthorizationRuleId)) || (!empty(eventHubName))) {
-  name: '${automationAccount.name}-diagnosticSettings'
+  name: '${uniqueString(deployment().name, location)}-AutoAccount-diagnosticSettings'
   properties: {
     storageAccountId: (empty(diagnosticStorageAccountId) ? json('null') : diagnosticStorageAccountId)
     workspaceId: (empty(workspaceId) ? json('null') : workspaceId)
@@ -257,7 +270,7 @@ resource automationAccount_diagnosticSettings 'Microsoft.Insights/diagnosticSett
 }
 
 module automationAccount_privateEndpoints './.bicep/nested_privateEndpoint.bicep' = [for (endpoint, index) in privateEndpoints: if (!empty(privateEndpoints)) {
-  name: '${uniqueString(deployment().name, location)}-Automation-PrivateEndpoints-${index}'
+  name: '${uniqueString(deployment().name, location)}-AutoAccount-PrivateEndpoints-${index}'
   params: {
     privateEndpointResourceId: automationAccount.id
     privateEndpointVnetLocation: (empty(privateEndpoints) ? 'dummy' : reference(split(endpoint.subnetResourceId, '/subnets/')[0], '2020-06-01', 'Full').location)
@@ -270,7 +283,7 @@ module automationAccount_privateEndpoints './.bicep/nested_privateEndpoint.bicep
 }]
 
 module automationAccount_rbac './.bicep/nested_rbac.bicep' = [for (roleAssignment, index) in roleAssignments: {
-  name: 'rbac-${deployment().name}${index}'
+  name: '${uniqueString(deployment().name, location)}-AutoAccount-Rbac-${index}'
   params: {
     roleAssignmentObj: roleAssignment
     builtInRoleNames: builtInRoleNames
