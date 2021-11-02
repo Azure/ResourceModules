@@ -60,18 +60,18 @@ resource schedule 'Microsoft.Automation/automationAccounts/schedules@2020-01-13-
     advancedSchedule: (empty(advancedSchedule) ? null : advancedSchedule)
     description: (empty(scheduleDescription) ? null : scheduleDescription)
     expiryTime: (empty(expiryTime) ? null : expiryTime)
-    frequency: (empty(frequency) ? null : frequency)
+    frequency: (empty(frequency) ? 'OneTime' : frequency)
     interval: ((0 == interval) ? null : interval)
     startTime: (empty(startTime) ? dateTimeAdd(baseTime, 'PT10M') : startTime)
     timeZone: (empty(timeZone) ? null : timeZone)
   }
 }
 
-@description('The name of the deployed schedule')
+// @description('The name of the deployed schedule')
 output scheduleName string = schedule.name
 
-@description('The id of the deployed schedule')
+// @description('The id of the deployed schedule')
 output scheduleResourceId string = schedule.id
 
-@description('The resource group of the deployed schedule')
+// @description('The resource group of the deployed schedule')
 output scheduleResourceGroup string = resourceGroup().name

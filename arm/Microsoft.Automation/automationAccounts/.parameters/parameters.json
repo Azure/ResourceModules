@@ -14,7 +14,7 @@
                     "interval": 15,
                     "frequency": "Minute",
                     "timeZone": "Europe/Berlin",
-                    "advancedSchedule": ""
+                    "advancedSchedule": {}
                 }
             ]
         },
