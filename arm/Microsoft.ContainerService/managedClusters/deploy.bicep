@@ -347,12 +347,13 @@ resource managedCluster 'Microsoft.ContainerService/managedClusters@2021-07-01' 
       enablePrivateCluster: aksClusterEnablePrivateCluster
     }
   }
-
-  resource aksClusterName_nodePoolName 'agentPools@2021-05-01' = [for (additionalAgentPool, index) in additionalAgentPools: {
-    name: additionalAgentPool.name
-    properties: additionalAgentPool.properties
-  }]
 }
+
+resource aksClusterName_nodePoolName 'Microsoft.ContainerService/managedClusters/agentPools@2021-05-01' = [for additionalAgentPool in additionalAgentPools: {
+  name: additionalAgentPool.name
+  properties: additionalAgentPool.properties
+  parent: managedCluster
+}]
 
 resource managedCluster_lock 'Microsoft.Authorization/locks@2016-09-01' = if (lock != 'NotSpecified') {
   name: '${managedCluster.name}-${lock}-lock'

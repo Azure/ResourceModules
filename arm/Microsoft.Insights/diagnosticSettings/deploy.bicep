@@ -24,33 +24,33 @@ param eventHubName string = ''
 
 @description('Optional. The name of logs that will be streamed.')
 @allowed([
-    'Administrative'
-    'Security'
-    'ServiceHealth'
-    'Alert'
-    'Recommendation'
-    'Policy'
-    'Autoscale'
-    'ResourceHealth'
+  'Administrative'
+  'Security'
+  'ServiceHealth'
+  'Alert'
+  'Recommendation'
+  'Policy'
+  'Autoscale'
+  'ResourceHealth'
 ])
 param logsToEnable array = [
-    'Administrative'
-    'Security'
-    'ServiceHealth'
-    'Alert'
-    'Recommendation'
-    'Policy'
-    'Autoscale'
-    'ResourceHealth'
+  'Administrative'
+  'Security'
+  'ServiceHealth'
+  'Alert'
+  'Recommendation'
+  'Policy'
+  'Autoscale'
+  'ResourceHealth'
 ]
 
 var diagnosticsLogs = [for log in logsToEnable: {
-    category: log
+  category: log
+  enabled: true
+  retentionPolicy: {
     enabled: true
-    retentionPolicy: {
-        enabled: true
-        days: diagnosticLogsRetentionInDays
-    }
+    days: diagnosticLogsRetentionInDays
+  }
 }]
 
 resource activityLog 'Microsoft.Insights/diagnosticSettings@2017-05-01-preview' = {

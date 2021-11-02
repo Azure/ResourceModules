@@ -2,7 +2,6 @@
 
 This module deploys Azure Kubernetes Cluster (AKS).
 
-
 ## Resource types
 
 | Resource Type | Api Version |
@@ -89,10 +88,9 @@ Tag names and tag values can be provided as needed. A tag can be left without a 
 }
 ```
 
-
 ### Parameter Usage: `identity`
 
-See also https://docs.microsoft.com/en-us/azure/templates/microsoft.containerservice/managedclusters?tabs=json#managedclusteridentity-object
+See also <https://docs.microsoft.com/en-us/azure/templates/microsoft.containerservice/managedclusters?tabs=json#managedclusteridentity-object>
 
 ```json
 "identity": {
@@ -103,10 +101,9 @@ See also https://docs.microsoft.com/en-us/azure/templates/microsoft.containerser
 }
 ```
 
-
 ### Parameter Usage: `aksServicePrincipalProfile`
 
-See also https://docs.microsoft.com/en-us/azure/templates/microsoft.containerservice/managedclusters?tabs=json#managedclusterserviceprincipalprofile-object
+See also <https://docs.microsoft.com/en-us/azure/templates/microsoft.containerservice/managedclusters?tabs=json#managedclusterserviceprincipalprofile-object>
 
 ```json
 "aksServicePrincipalProfile": {
@@ -117,11 +114,10 @@ See also https://docs.microsoft.com/en-us/azure/templates/microsoft.containerser
 }
 ```
 
-
 ### Parameter Usage: `primaryAgentPoolProfile`
 
 Provide values for primary agent pool as needed.
-For available properties check https://docs.microsoft.com/en-us/azure/templates/microsoft.containerservice/managedclusters?tabs=json#managedclusteragentpoolprofile-object
+For available properties check <https://docs.microsoft.com/en-us/azure/templates/microsoft.containerservice/managedclusters?tabs=json#managedclusteragentpoolprofile-object>
 
 ```json
 "primaryAgentPoolProfile": {
@@ -162,10 +158,9 @@ For available properties check https://docs.microsoft.com/en-us/azure/templates/
 }
 ```
 
-
 ### Parameter Usage: `additionalAgentPools`
 
-For available properties check https://docs.microsoft.com/en-us/azure/templates/microsoft.containerservice/managedclusters/agentpools?tabs=json#managedclusteragentpoolprofileproperties-object
+For available properties check <https://docs.microsoft.com/en-us/azure/templates/microsoft.containerservice/managedclusters/agentpools?tabs=json#managedclusteragentpoolprofileproperties-object>
 
 ```json
 "additionalAgentPools": {

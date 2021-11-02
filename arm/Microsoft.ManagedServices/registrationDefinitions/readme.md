@@ -63,7 +63,6 @@ remote/managing tenant.
 | `registrationDefinitionId` | string |
 | `registrationDefinitionName` | string |
 
-
 ## Considerations
 
 This module can be deployed both at subscription and resource group level:

@@ -6,7 +6,6 @@ This template enables Azure Security Center - Standard tier by default, could be
 
 | Resource Type | Api Version |
 | :-- | :-- |
-| `Microsoft.Security/advancedThreatProtectionSettings` | 2019-01-01 |
 | `Microsoft.Security/autoProvisioningSettings` | 2017-08-01-preview |
 | `Microsoft.Security/deviceSecurityGroups` | 2019-08-01 |
 | `Microsoft.Security/iotSecuritySolutions` | 2019-08-01 |
@@ -24,7 +23,6 @@ This template enables Azure Security Center - Standard tier by default, could be
 | `containerRegistryPricingTier` | string | `Free` | `[Free, Standard]` | Optional. The pricing tier value for ContainerRegistry. Azure Security Center is provided in two pricing tiers: free and standard, with the standard tier available with a trial period. The standard tier offers advanced security capabilities, while the free tier offers basic security features. - Free or Standard |
 | `deviceSecurityGroupProperties` | object | `{object}` |  | Optional. Device Security group data |
 | `dnsPricingTier` | string | `Free` | `[Free, Standard]` | Optional. The pricing tier value for DNS. Azure Security Center is provided in two pricing tiers: free and standard, with the standard tier available with a trial period. The standard tier offers advanced security capabilities, while the free tier offers basic security features. - Free or Standard |
-| `enableAtp` | bool |  |  | Optional. Indicates whether Advanced Threat Protection is enabled. |
 | `ioTSecuritySolutionProperties` | object | `{object}` |  | Optional. Security Solution data |
 | `keyVaultsPricingTier` | string | `Free` | `[Free, Standard]` | Optional. The pricing tier value for KeyVaults. Azure Security Center is provided in two pricing tiers: free and standard, with the standard tier available with a trial period. The standard tier offers advanced security capabilities, while the free tier offers basic security features. - Free or Standard |
 | `kubernetesServicePricingTier` | string | `Free` | `[Free, Standard]` | Optional. The pricing tier value for KubernetesService. Azure Security Center is provided in two pricing tiers: free and standard, with the standard tier available with a trial period. The standard tier offers advanced security capabilities, while the free tier offers basic security features. - Free or Standard |

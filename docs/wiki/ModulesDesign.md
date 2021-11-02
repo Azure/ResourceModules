@@ -3,16 +3,19 @@
 This section gives you an overview of the design principals the bicep modules follow.
 
 ---
+
 ### _Navigation_
-  - [General guidelines](#general-guidelines)
-  - [File & folder structure](#file--folder-structure)
-    - [Naming](#naming)
-    - [Structure](#structure)
-  - [Bicep template guidelines](#bicep-template-guidelines)
-    - [Parameters](#parameters)
-    - [Variables](#variables)
-    - [Resource](#resource)
-    - [Outputs](#outputs)
+
+- [General guidelines](#general-guidelines)
+- [File & folder structure](#file--folder-structure)
+  - [Naming](#naming)
+  - [Structure](#structure)
+- [Bicep template guidelines](#bicep-template-guidelines)
+  - [Parameters](#parameters)
+  - [Variables](#variables)
+  - [Resource](#resource)
+  - [Outputs](#outputs)
+
 ---
 
 Modules are written in an quite flexible way, therefore you don’t need to modify them from project to project, as the aim is to cover most of the functionality that a given resource type can provide, in a way that you can interact with any module just by sending the required parameters to it – i.e. you don’t have to know how the template of the particular module works inside, just take a look at the readme.md file of the given module to consume it.
@@ -22,6 +25,7 @@ The modules are multi-purpose, therefore contain a lot of dynamic expressions (f
 They can be deployed in different configurations just by changing the input parameters. They are perceived by the **user** as black boxes, where they don’t have to worry about the internal complexity of the code, as they only interact with them by their parameters.
 
 ## General guidelines
+
 - All resource modules in the 'arm' folder should not allow deployment loops on the top level resource but may optionally allow deployment loops on their child-resources.
   > **Example:** The storage account module allows the deployment of a single storage account with, optionally, multiple blob containers, multiple file shares, multiple queues and/or multiple tables.
 - The 'constructs' folder contains examples of deployment logic built on top of resource modules contained in the 'arm' folder, allowing for example deployment loops on top level resources.
@@ -45,7 +49,11 @@ A module usually represents a single resource or a set of closely related resour
 
 ### Naming
 
-Files and folders within the module folder are all in lower case.
+Use the following naming standard for module files and folders:
+
+- Modules name reflect the resource type
+- Files and folders within the module folder are all in lower case
+- Child-resource modules (in .bicep sub-folder) are named `nested_<childResourceType>.bicep`
 
 ``` txt
 Microsoft.<provider>
@@ -60,6 +68,7 @@ Microsoft.<provider>
 ```
 
 for example
+
 ``` txt
 Microsoft.Web
 └─ sites
@@ -79,6 +88,7 @@ Modules in the repository are structured via the module's main resource provider
 - **Child-Resources**<p>
 
   Resources like `Microsoft.Sql/servers` may have dedicated modules for child-resources such as `Microsoft.Sql/servers/databases`. In these cases we recommend to create a sub-folder with the 'parent folder name and suffix `"Resources"`' on the same level as the parent (for example `serversResources`) and place the child-resource module inside this folder. In the given example we would have the following folder structure:
+
   ```
   Microsoft.Sql
   ├─ servers [module]
@@ -95,7 +105,6 @@ Modules in the repository are structured via the module's main resource provider
    └─ servers [module]
       └─ databases [child-module/resource]
    ```
-
 
    In this folder we'd recommed to place the child-resource-template alongside a ReadMe (that can be generated via the `.github\workflows\scripts\Set-ModuleReadMe.ps1` script) and optionally further nest additional folders for it's child-resources. The parent template should reference all it's child-templates to allow for an end to end deployment experience while allowing any user to also reference 'just' the child-resource itself. In the case of the SQL-server example the server template would reference the database module and encapsulate it it in a loop to allow for the deployment of n-amount of databases.
 
@@ -118,6 +127,7 @@ Modules in the repository are structured via the module's main resource provider
 Within a bicep file, follow the following conventions:
 
 ### Parameters
+
 - camelCase, i.e `resourceGroupName`
 - Descriptions contain type of requirement:
   - `Optional` - Is not needed at any point. Module contains default values.
@@ -126,6 +136,7 @@ Within a bicep file, follow the following conventions:
   - `Conditional` - Optional or required parameter depending on other inputs.
 
 ### Variables
+
 - camelCase, i.e `builtInRoleNames`
 - For modules that manage roleAssignments, update the list of roles to only be the applicable roles. One way of doing this:
   - Deploy an instance of the resource you are working on, go to IAM page and copy the list from Roles.
@@ -159,6 +170,7 @@ Within a bicep file, follow the following conventions:
     ```
 
 ### Resource
+
 - camelCase, i.e `resourceGroup`
 - The name used as a reference is the singular name of the resource that it deploys, i.e:
   - `resource storageAccount 'Microsoft.Storage/storageAccounts@2019-06-01'`
@@ -173,9 +185,11 @@ Within a bicep file, follow the following conventions:
     - `nested_rbac.bicep`
 
 > Post-MVP
+
 - Child-resources go into a sub-folder with the name of the child (for example `databases` in case of the SQL server module).
 
 ### Outputs
+
 - camelCase, i.e `resourceGroupResourceId`
 - At a minimum, reference the following:
   - `<resourceReference>Name`, i.e. `resourceGroupName`

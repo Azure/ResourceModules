@@ -2,7 +2,7 @@
 # This pipeline requires a secret 'PLATFORM_REPO_UPDATE_PAT' set up in the GitHub secrets.
 # The secret's value should be a PAT token with the permissions to push to the repository's main branch.
 
-name: ".Platform: Update ReadMe Module Tables"
+name: '.Platform: Update ReadMe Module Tables'
 
 on:
   workflow_dispatch:
@@ -14,20 +14,20 @@ on:
       - 'arm/**/deploy.json'
 
 env:
-  pipelinePrincipalGitUserName: "CARMLPipelinePrincipal"
-  pipelinePrincipalGitUserEmail: "CARML@noreply.github.com"
+  pipelinePrincipalGitUserName: 'CARMLPipelinePrincipal'
+  pipelinePrincipalGitUserEmail: 'CARML@noreply.github.com'
 
 jobs:
   job_update_readme:
     runs-on: ubuntu-20.04
-    name: "Update module tables"
+    name: 'Update module tables'
     steps:
-      - name: "Checkout"
+      - name: 'Checkout'
         uses: actions/checkout@v2
         with:
           fetch-depth: 0
           token: '${{ secrets.PLATFORM_REPO_UPDATE_PAT }}' # Sets general GIT credentials up
-      - name: "Update general ReadMe"
+      - name: 'Update general ReadMe'
         shell: pwsh
         run: |
           # Load used functions
@@ -38,7 +38,7 @@ jobs:
             FilePath       = Join-Path $env:GITHUB_WORKSPACE 'README.md'
             Organization   = ($env:GITHUB_REPOSITORY).split('/')[0]
             RepositoryName = ($env:GITHUB_REPOSITORY).split('/')[1]
-            ColumnsInOrder = @('Name', 'TemplateType', 'Status')
+            ColumnsInOrder = @('Name', 'Status')
             SortByColumn   = 'Name'
           }
 
@@ -47,7 +47,7 @@ jobs:
 
           Set-GitHubReadMeModuleTable @functionInput -Verbose
 
-      - name: "Update module folder ReadMe"
+      - name: 'Update module folder ReadMe'
         shell: pwsh
         run: |
           # Load used functions
@@ -58,7 +58,7 @@ jobs:
             FilePath       = Join-Path $env:GITHUB_WORKSPACE 'arm/README.md'
             Organization   = ($env:GITHUB_REPOSITORY).split('/')[0]
             RepositoryName = ($env:GITHUB_REPOSITORY).split('/')[1]
-            ColumnsInOrder = @('Name', 'ProviderNamespace','ResourceType','TemplateType')
+            ColumnsInOrder = @('Name', 'ProviderNamespace','ResourceType')
           }
 
           Write-Verbose "Invoke task with" -Verbose
@@ -66,7 +66,7 @@ jobs:
 
           Set-GitHubReadMeModuleTable @functionInput -Verbose
 
-      - name: "Push changes"
+      - name: 'Push changes'
         shell: pwsh
         run: |
           git config --global user.email '${{ env.pipelinePrincipalGitUserEmail }}'
