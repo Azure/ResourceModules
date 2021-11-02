@@ -165,17 +165,17 @@ resource automationAccount 'Microsoft.Automation/automationAccounts@2020-01-13-p
   //   }
   // }]
 
-  resource automationAccount_schedules 'schedules@2020-01-13-preview' = [for (schedule, index) in schedules: {
-    name: schedule.scheduleName
-    properties: {
-      startTime: (empty(schedule.startTime) ? dateTimeAdd(baseTime, 'PT10M') : schedule.startTime)
-      frequency: (empty(schedule.frequency) ? json('null') : schedule.frequency)
-      expiryTime: (empty(schedule.expiryTime) ? json('null') : schedule.expiryTime)
-      interval: ((0 == schedule.interval) ? json('null') : schedule.interval)
-      timeZone: (empty(schedule.timeZone) ? json('null') : schedule.timeZone)
-      advancedSchedule: (empty(schedule.advancedSchedule) ? json('null') : schedule.advancedSchedule)
-    }
-  }]
+  // resource automationAccount_schedules 'schedules@2020-01-13-preview' = [for (schedule, index) in schedules: {
+  //   name: schedule.scheduleName
+  //   properties: {
+  //     startTime: (empty(schedule.startTime) ? dateTimeAdd(baseTime, 'PT10M') : schedule.startTime)
+  //     frequency: (empty(schedule.frequency) ? json('null') : schedule.frequency)
+  //     expiryTime: (empty(schedule.expiryTime) ? json('null') : schedule.expiryTime)
+  //     interval: ((0 == schedule.interval) ? json('null') : schedule.interval)
+  //     timeZone: (empty(schedule.timeZone) ? json('null') : schedule.timeZone)
+  //     advancedSchedule: (empty(schedule.advancedSchedule) ? json('null') : schedule.advancedSchedule)
+  //   }
+  // }]
 
   resource automationAccount_runbooks 'runbooks@2019-06-01' = [for (runbook, index) in runbooks: {
     name: runbook.runbookName
