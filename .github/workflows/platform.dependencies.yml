@@ -565,8 +565,8 @@ jobs:
             # VirtualNetworkGateway
             Set-AzKeyVaultSecret -VaultName 'adp-sxx-az-kv-weu-x-001q' -Name 'vpnSharedKey' -SecretValue $vpnSharedKey
             # DiskEncryptionSet, VirtualMachines and VMSS
-            # az keyvault key create --vault-name "adp-sxx-az-kv-weu-x-001q" --name "keyEncryptionKey"
-            # az keyvault key create --vault-name "adp-sxx-az-kv-weu-x-001q" --name "keyEncryptionKeySqlMi"
+            az keyvault key create --vault-name "adp-sxx-az-kv-weu-x-001q" --name "keyEncryptionKey"
+            az keyvault key create --vault-name "adp-sxx-az-kv-weu-x-001q" --name "keyEncryptionKeySqlMi"
           azPSVersion: 'latest'
 
   # job_deploy_rolea:
