@@ -302,12 +302,12 @@ var builtInRoleNames = {
   'Azure Maps Contributor': '/providers/Microsoft.Authorization/roleDefinitions/dba33070-676a-4fb0-87fa-064dc56ff7fb'
 }
 
-module pid_cuaId './.bicep/nested_cuaId.bicep' = if (!empty(cuaId)) {
+module pid_cuaId '.bicep/nested_cuaId.bicep' = if (!empty(cuaId)) {
   name: 'pid-${cuaId}'
   params: {}
 }
 
-module nested_rbac_mg './.bicep/nested_rbac.bicep' = [for (roleAssignment, index) in roleAssignments: if (!empty(managementGroupId) && empty(subscriptionId) && empty(resourceGroupName)) {
+module nested_rbac_mg '.bicep/nested_rbac.bicep' = [for (roleAssignment, index) in roleAssignments: if (!empty(managementGroupId) && empty(subscriptionId) && empty(resourceGroupName)) {
   name: 'roleAssignment-mg-${guid(roleAssignment.roleDefinitionIdOrName)}-${index}'
   params: {
     roleAssignmentObj: roleAssignment
@@ -317,7 +317,7 @@ module nested_rbac_mg './.bicep/nested_rbac.bicep' = [for (roleAssignment, index
   }
 }]
 
-module nested_rbac_sub './.bicep/nested_rbac.bicep' = [for (roleAssignment, index) in roleAssignments: if (empty(managementGroupId) && !empty(subscriptionId) && empty(resourceGroupName)) {
+module nested_rbac_sub '.bicep/nested_rbac.bicep' = [for (roleAssignment, index) in roleAssignments: if (empty(managementGroupId) && !empty(subscriptionId) && empty(resourceGroupName)) {
   name: 'roleAssignment-sub-${guid(roleAssignment.roleDefinitionIdOrName)}-${index}'
   params: {
     roleAssignmentObj: roleAssignment
@@ -327,7 +327,7 @@ module nested_rbac_sub './.bicep/nested_rbac.bicep' = [for (roleAssignment, inde
   }
 }]
 
-module nested_rbac_rg './.bicep/nested_rbac.bicep' = [for (roleAssignment, index) in roleAssignments: if (empty(managementGroupId) && !empty(resourceGroupName) && !empty(subscriptionId)) {
+module nested_rbac_rg '.bicep/nested_rbac.bicep' = [for (roleAssignment, index) in roleAssignments: if (empty(managementGroupId) && !empty(resourceGroupName) && !empty(subscriptionId)) {
   name: 'roleAssignment-rg-${guid(roleAssignment.roleDefinitionIdOrName)}-${index}'
   params: {
     roleAssignmentObj: roleAssignment

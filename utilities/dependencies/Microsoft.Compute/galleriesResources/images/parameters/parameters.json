@@ -3,7 +3,7 @@
     "contentVersion": "1.0.0.0",
     "parameters": {
         "imageDefinitionName": {
-            "value": "adp-sxx-az-imgd-weu-x-001"
+            "value": "adp-sxx-az-imgd-x-001"
         },
         "location": {
             "value": "westeurope"

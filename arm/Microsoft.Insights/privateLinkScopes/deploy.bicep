@@ -44,7 +44,7 @@ var builtInRoleNames = {
   'User Access Administrator': '/subscriptions/${subscription().subscriptionId}/providers/Microsoft.Authorization/roleDefinitions/18d7d88d-d35e-4fb5-a5c3-7773c20a72d9'
 }
 
-module pid_cuaId './.bicep/nested_cuaId.bicep' = if (!empty(cuaId)) {
+module pid_cuaId '.bicep/nested_cuaId.bicep' = if (!empty(cuaId)) {
   name: 'pid-${cuaId}'
   params: {}
 }
@@ -72,7 +72,7 @@ resource privateLinkScope_lock 'Microsoft.Authorization/locks@2016-09-01' = if (
   }
 }
 
-module privateLinkScope_privateEndpoints './.bicep/nested_privateEndpoint.bicep' = [for (endpoint, index) in privateEndpoints: if (!empty(privateEndpoints)) {
+module privateLinkScope_privateEndpoints '.bicep/nested_privateEndpoint.bicep' = [for (endpoint, index) in privateEndpoints: if (!empty(privateEndpoints)) {
   name: '${uniqueString(deployment().name, location)}-Storage-PrivateEndpoints-${index}'
   params: {
     privateEndpointResourceId: privateLinkScope.id
@@ -82,8 +82,8 @@ module privateLinkScope_privateEndpoints './.bicep/nested_privateEndpoint.bicep'
   }
 }]
 
-module privateLinkScope_rbac './.bicep/nested_rbac.bicep' = [for (roleAssignment, index) in roleAssignments: {
-  name: 'rbac-${deployment().name}${index}'
+module privateLinkScope_rbac '.bicep/nested_rbac.bicep' = [for (roleAssignment, index) in roleAssignments: {
+  name: '${deployment().name}-rbac-${index}'
   params: {
     roleAssignmentObj: roleAssignment
     builtInRoleNames: builtInRoleNames
