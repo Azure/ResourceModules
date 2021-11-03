@@ -15,7 +15,7 @@ This template deploys a ExrepressRoute Circuit.
 
 | Parameter Name | Type | Default Value | Possible Values | Description |
 | :-- | :-- | :-- | :-- | :-- |
-| `bandwidthInMbps` | int |  |  | Required. This is the bandwidth in Mbps of the circuit being created. It must exactly match one of the available bandwidth offers List ExpressRoute Service Providers API call. |
+| `bandwidthInMbps` | int |  |  | Required. This is the bandwidth in Mbps of the circuit being created. It must exactly match one of the available bandwidth offers List ExpressRoute Service Providers API call. SkuTier 'Local' has special bandwith requirements. It requires minimum 1000mbps.|
 | `circuitName` | string |  |  | Required. This is the name of the ExpressRoute circuit |
 | `cuaId` | string |  |  | Optional. Customer Usage Attribution id (GUID). This GUID must be previously registered |
 | `diagnosticLogsRetentionInDays` | int | `365` |  | Optional. Specifies the number of days that logs will be kept for; a value of 0 will retain data indefinitely. |
