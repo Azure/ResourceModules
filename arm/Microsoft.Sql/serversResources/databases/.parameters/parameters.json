@@ -6,7 +6,7 @@
             "value": "SQL_Latin1_General_CP1_CI_AS"
         },
         "databaseName": {
-            "value": "sxx-az-sqldb-weu-x-001"
+            "value": "sxx-az-sqldb-x-001"
         },
         "tier": {
             "value": "GeneralPurpose"
@@ -18,7 +18,7 @@
             "value": 34359738368
         },
         "serverName": {
-            "value": "sxx-az-sqlsrv-weu-x-001"
+            "value": "sxx-az-sqlsrv-x-001"
         },
         "zoneRedundant": {
             "value": false

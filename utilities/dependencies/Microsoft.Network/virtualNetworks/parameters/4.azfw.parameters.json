@@ -3,10 +3,12 @@
   "contentVersion": "1.0.0.0",
   "parameters": {
     "vnetName": {
-      "value": "adp-sxx-az-vnet-weu-x-azfw"
+      "value": "adp-sxx-az-vnet-x-azfw"
     },
     "vnetAddressPrefixes": {
-      "value": ["10.4.0.0/16"]
+      "value": [
+        "10.4.0.0/16"
+      ]
     },
     "subnets": {
       "value": [

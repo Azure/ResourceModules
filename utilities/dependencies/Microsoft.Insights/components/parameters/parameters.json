@@ -3,10 +3,10 @@
     "contentVersion": "1.0.0.0",
     "parameters": {
         "appInsightsName": {
-            "value": "adp-sxx-az-appi-weu-x-001"
+            "value": "adp-sxx-az-appi-x-001"
         },
         "appInsightsWorkspaceResourceId": {
-            "value": "/subscriptions/<<subscriptionId>>/resourcegroups/validation-rg/providers/microsoft.operationalinsights/workspaces/adp-sxx-az-la-weu-x-001"
+            "value": "/subscriptions/<<subscriptionId>>/resourcegroups/validation-rg/providers/microsoft.operationalinsights/workspaces/adp-sxx-az-la-x-001"
         }
     }
 }
