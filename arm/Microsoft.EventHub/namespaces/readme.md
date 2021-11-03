@@ -1,4 +1,4 @@
-# EventHub Namespaces `[Microsoft.EventHub/namespaces]`
+# EventHub Namespace `[Microsoft.EventHub/namespaces]`
 
 This module deploys EventHub Namespace.
 
@@ -7,9 +7,13 @@ This module deploys EventHub Namespace.
 | Resource Type | Api Version |
 | :-- | :-- |
 | `Microsoft.Authorization/locks` | 2016-09-01 |
+| `Microsoft.Authorization/roleAssignments` | 2020-04-01-preview |
 | `Microsoft.EventHub/namespaces` | 2017-04-01 |
 | `Microsoft.EventHub/namespaces/authorizationRules` | 2017-04-01 |
 | `Microsoft.EventHub/namespaces/disasterRecoveryConfigs` | 2017-04-01 |
+| `Microsoft.EventHub/namespaces/eventhubs` | 2021-06-01-preview |
+| `Microsoft.EventHub/namespaces/eventhubs/authorizationRules` | 2021-06-01-preview |
+| `Microsoft.EventHub/namespaces/eventhubs/consumergroups` | 2021-06-01-preview |
 | `Microsoft.EventHub/namespaces/providers/roleAssignments` | 2021-04-01-preview |
 | `Microsoft.Insights/diagnosticSettings` | 2017-05-01-preview |
 | `Microsoft.Network/privateEndpoints` | 2021-05-01 |
@@ -19,11 +23,13 @@ This module deploys EventHub Namespace.
 
 | Parameter Name | Type | Default Value | Possible Values | Description |
 | :-- | :-- | :-- | :-- | :-- |
-| `authorizationRules` | array | `[System.Collections.Hashtable]` |  | Optional. Authorization Rules for the Event Hub namespace |
+| `authorizationRules` | _[authorizationRules](authorizationRules/readme.md)_ array | `[System.Collections.Hashtable]` |  | Optional. Authorization Rules for the Event Hub namespace |
 | `baseTime` | string | `[utcNow('u')]` |  | Generated. Do not provide a value! This date value is used to generate a SAS token to access the modules. |
 | `cuaId` | string |  |  | Optional. Customer Usage Attribution id (GUID). This GUID must be previously registered |
 | `diagnosticLogsRetentionInDays` | int | `365` |  | Optional. Specifies the number of days that logs will be kept for; a value of 0 will retain data indefinitely. |
 | `diagnosticStorageAccountId` | string |  |  | Optional. Resource identifier of the Diagnostic Storage Account. |
+| `disasterRecoveryConfig` | object | `{object}` |  | Optional. The disaster recovery config for this namespace |
+| `eventHubs` | _[eventHubs](eventHubs/readme.md)_ array | `[]` |  | Optional. The event hubs to deploy into this namespace |
 | `isAutoInflateEnabled` | bool |  |  | Optional. Switch to enable the Auto Inflate feature of Event Hub. |
 | `location` | string | `[resourceGroup().location]` |  | Optional. Location for all resources. |
 | `lock` | string | `NotSpecified` | `[CanNotDelete, NotSpecified, ReadOnly]` | Optional. Specify the type of lock. |
@@ -127,14 +133,6 @@ Default value:
 }
 ```
 
-### Parameter Usage: `vNetId`
-
-```json
-"vNetId": {
-    "value": "/subscriptions/00000000/resourceGroups/resourceGroup"
-}
-```
-
 ### Parameter Usage: `privateEndpoints`
 
 To use Private Endpoint the following dependencies must be deployed:
@@ -185,9 +183,13 @@ To use Private Endpoint the following dependencies must be deployed:
 ## Template references
 
 - [Locks](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2016-09-01/locks)
+- [Roleassignments](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2020-04-01-preview/roleAssignments)
 - [Namespaces](https://docs.microsoft.com/en-us/azure/templates/Microsoft.EventHub/2017-04-01/namespaces)
 - [Namespaces/Authorizationrules](https://docs.microsoft.com/en-us/azure/templates/Microsoft.EventHub/2017-04-01/namespaces/authorizationRules)
 - [Namespaces/Disasterrecoveryconfigs](https://docs.microsoft.com/en-us/azure/templates/Microsoft.EventHub/2017-04-01/namespaces/disasterRecoveryConfigs)
+- [Namespaces/Eventhubs](https://docs.microsoft.com/en-us/azure/templates/Microsoft.EventHub/2021-06-01-preview/namespaces/eventhubs)
+- [Namespaces/Eventhubs/Authorizationrules](https://docs.microsoft.com/en-us/azure/templates/Microsoft.EventHub/2021-06-01-preview/namespaces/eventhubs/authorizationRules)
+- [Namespaces/Eventhubs/Consumergroups](https://docs.microsoft.com/en-us/azure/templates/Microsoft.EventHub/2021-06-01-preview/namespaces/eventhubs/consumergroups)
 - [Diagnosticsettings](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Insights/2017-05-01-preview/diagnosticSettings)
 - [Privateendpoints](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Network/2021-05-01/privateEndpoints)
 - [Privateendpoints/Privatednszonegroups](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Network/2020-05-01/privateEndpoints/privateDnsZoneGroups)

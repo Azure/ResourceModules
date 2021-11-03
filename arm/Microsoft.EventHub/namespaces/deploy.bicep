@@ -28,12 +28,6 @@ param isAutoInflateEnabled bool = false
 @maxValue(20)
 param maximumThroughputUnits int = 1
 
-@description('Optional. ARM Id of the Primary/Secondary eventhub namespace name, which is part of GEO DR pairing')
-param partnerNamespaceId string = ''
-
-@description('Optional. The Disaster Recovery configuration name')
-param namespaceAlias string = ''
-
 @description('Optional. Authorization Rules for the Event Hub namespace')
 param authorizationRules array = [
   {
@@ -95,7 +89,6 @@ var maxNameLength = 50
 var uniqueEventHubNamespaceUntrim = '${uniqueString('EventHub Namespace${baseTime}')}'
 var uniqueEventHubNamespace = ((length(uniqueEventHubNamespaceUntrim) > maxNameLength) ? substring(uniqueEventHubNamespaceUntrim, 0, maxNameLength) : uniqueEventHubNamespaceUntrim)
 var constructedNamespaceName = (empty(namespaceName) ? uniqueEventHubNamespace : namespaceName)
-var defaultAuthorizationRuleId = resourceId('Microsoft.EventHub/namespaces/AuthorizationRules', constructedNamespaceName, 'RootManageSharedAccessKey')
 var defaultSASKeyName = 'RootManageSharedAccessKey'
 var authRuleResourceId = resourceId('Microsoft.EventHub/namespaces/authorizationRules', constructedNamespaceName, defaultSASKeyName)
 var maximumThroughputUnits_var = ((!isAutoInflateEnabled) ? 0 : maximumThroughputUnits)
@@ -108,7 +101,9 @@ var networkAcls_var = {
   virtualNetworkRules: (empty(networkAcls) ? json('null') : virtualNetworkRules)
   ipRules: (empty(networkAcls) ? json('null') : ((length(networkAcls.ipRules) == 0) ? json('null') : networkAcls.ipRules))
 }
-var namespaceAlias_var = (empty(namespaceAlias) ? 'placeholder' : namespaceAlias)
+
+@description('Optional. The disaster recovery config for this namespace')
+param disasterRecoveryConfig object = {}
 
 @description('Optional. The name of logs that will be streamed.')
 @allowed([
@@ -255,18 +250,21 @@ module eventHubNamespace_eventHubs 'eventhubs/deploy.bicep' = [for (eventHub, in
   }
 }]
 
-resource eventHubNamespace_diasterRecoveryConfig 'Microsoft.EventHub/namespaces/disasterRecoveryConfigs@2017-04-01' = if (((!empty(partnerNamespaceId)) && (!empty(namespaceAlias))) ? true : false) {
-  parent: eventHubNamespace
-  name: namespaceAlias_var
-  properties: {
-    partnerNamespace: partnerNamespaceId
+module eventHubNamespace_diasterRecoveryConfig 'disasterRecoveryConfigs/deploy.bicep' = if (!empty(disasterRecoveryConfig)) {
+  name: '${uniqueString(deployment().name, location)}-disasterRecoveryConfig'
+  params: {
+    namespaceName: eventHubNamespace.name
+    name: disasterRecoveryConfig.name
+    partnerNamespaceId: contains(disasterRecoveryConfig, 'partnerNamespaceId') ? disasterRecoveryConfig.partnerNamespaceId : ''
   }
 }
 
-resource eventHubNamespace_authorizationRules 'Microsoft.EventHub/namespaces/AuthorizationRules@2017-04-01' = [for authorizationRule in authorizationRules: if (length(authorizationRules) > 0) {
-  name: '${eventHubNamespace.name}/${authorizationRule.name}'
-  properties: {
-    rights: authorizationRule.properties.rights
+module eventHubNamespace_authorizationRules 'authorizationRules/deploy.bicep' = [for (authorizationRule, index) in authorizationRules: {
+  name: '${uniqueString(deployment().name, location)}-authorizationRules-${index}'
+  params: {
+    namespaceName: eventHubNamespace.name
+    name: authorizationRule.name
+    rights: contains(authorizationRule, 'rights') ? authorizationRule.rights : []
   }
 }]
 

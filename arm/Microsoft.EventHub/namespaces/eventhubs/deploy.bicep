@@ -147,7 +147,7 @@ module eventHub_consumergroups 'consumergroups/deploy.bicep' = [for (consumerGro
   name: '${deployment().name}-consumergroup-${index}'
   params: {
     namespaceName: namespaceName
-    eventHubName: name
+    eventHubName: eventHub.name
     name: consumerGroup.name
     userMetadata: contains(consumerGroup, 'userMetadata') ? consumerGroup.userMetadata : ''
   }
@@ -157,7 +157,7 @@ module eventHub_authorizationRules 'authorizationRules/deploy.bicep' = [for (aut
   name: '${deployment().name}-authorizationRule-${index}'
   params: {
     namespaceName: namespaceName
-    eventHubName: name
+    eventHubName: eventHub.name
     name: authorizationRule.name
     rights: contains(authorizationRule, 'rights') ? authorizationRule.rights : ''
   }
