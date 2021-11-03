@@ -15,6 +15,7 @@ This section gives you an overview of the design principals the bicep modules fo
   - [Variables](#variables)
   - [Resource](#resource)
   - [Outputs](#outputs)
+- [ReadMe](#readme)
 
 ---
 
@@ -87,15 +88,6 @@ Modules in the repository are structured via the module's main resource provider
 
 - **Child-Resources**<p>
 
-  Resources like `Microsoft.Sql/servers` may have dedicated modules for child-resources such as `Microsoft.Sql/servers/databases`. In these cases we recommend to create a sub-folder with the 'parent folder name and suffix `"Resources"`' on the same level as the parent (for example `serversResources`) and place the child-resource module inside this folder. In the given example we would have the following folder structure:
-
-  ```
-  Microsoft.Sql
-  ├─ servers [module]
-  └─ serversResources
-     └─ databases [module]
-  ```
-
   > Post-MVP
 
    Resources like `Microsoft.Sql/servers` may have dedicated templates for child-resources such as `Microsoft.Sql/servers/databases`. In these cases we recommend to create a sub-folder called after the child-resource name, so that the path to the child-resource folder is consistent with its resource type. In the given example we would have a sub-folder `databases` in the parent-folder `servers`.
@@ -106,7 +98,7 @@ Modules in the repository are structured via the module's main resource provider
       └─ databases [child-module/resource]
    ```
 
-   In this folder we'd recommed to place the child-resource-template alongside a ReadMe (that can be generated via the `.github\workflows\scripts\Set-ModuleReadMe.ps1` script) and optionally further nest additional folders for it's child-resources. The parent template should reference all it's child-templates to allow for an end to end deployment experience while allowing any user to also reference 'just' the child-resource itself. In the case of the SQL-server example the server template would reference the database module and encapsulate it it in a loop to allow for the deployment of n-amount of databases.
+   In this folder we'd recommeded to place the child-resource-template alongside a ReadMe (that can be generated via the `.github\workflows\scripts\Set-ModuleReadMe.ps1` script) and optionally further nest additional folders for it's child-resources. The parent template should reference all it's child-templates to allow for an end to end deployment experience while allowing any user to also reference 'just' the child-resource itself. In the case of the SQL-server example the server template would reference the database module and encapsulate it it in a loop to allow for the deployment of n-amount of databases.
 
 <!--
 - **Overlapping/Ambigious providers**<p>
@@ -195,3 +187,20 @@ Within a bicep file, follow the following conventions:
   - `<resourceReference>Name`, i.e. `resourceGroupName`
   - `<resourceReference>ResourceId`, i.e. `resourceGroupResourceId`
 - Add a `@description('...')` annotation with meaningful description to each output
+
+
+## ReadMe
+
+Each module must come with a ReadMe markdown file that outlines what the module contains and 'how' it can be used.
+It primary components are
+- A title with a reference to the primary resource (for example <code>KeyVault `[Microsoft.KeyVault/vaults]`</code>)
+- A description
+- A table that outlines all resources that can be deployed as part of the module (Resource Types)
+- A table that shows all parameters, what they are used for, what values they allow, etc. (Parameters)
+- A custom 'Parameter Usage' section that show how to use special types of characters (e.g. roleAssignments)
+- A table that describes all outputs the module template returns
+- A  references table to directly jump to the resources [ARM template reference](https://docs.microsoft.com/en-us/azure/templates)
+
+Note the following recommendations
+- Use our module generation script `Set-ModuleReadMe` that will do most of the work for you. Currently you can find it at 'utilities\tools\Set-ModuleReadMe.ps1'. Just load the file and invoke the function like this `Set-ModuleReadMe -TemplateFilePath '<pathToModule>/deploy.bicep'`
+- It is not recommended to describe how to use child resources in the parent readme file (for example 'How to define a [container] entry for the [storage account]'). Instead it is recommended to reference the child resource's ReadMe instead (for example 'container/readme.md').
