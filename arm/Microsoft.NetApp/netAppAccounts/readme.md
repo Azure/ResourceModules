@@ -44,13 +44,13 @@ The `capacityPools` parameter accepts a JSON array of objects with the following
 |volumes | array | Optional. Volumes to be created. |
 |roleAssignments | array | Optional. RBAC can also be assigned at capacity pool level. |
 
-Here's an example of specifying a single capacity pool with no volumes, named "sxx-az-anfcp-weu-x-001", with Premium service level, 4TiB of size and Reader role assigned to two principal Ids.
+Here's an example of specifying a single capacity pool with no volumes, named "sxx-az-anfcp-x-001", with Premium service level, 4TiB of size and Reader role assigned to two principal Ids.
 
 ```json
 "capacityPools": {
     "value": [
         {
-            "poolName": "sxx-az-anfcp-weu-x-001",
+            "poolName": "sxx-az-anfcp-x-001",
             "poolServiceLevel": "Premium",
             "poolSize": 4398046511104,
             "volumes": [],
@@ -94,7 +94,7 @@ The NTFSv4.1 volume also specifies one export policy rule allowing Read and Writ
         "protocolTypes": [
             "NFSv3"
         ],
-        "subnetId": "/subscriptions/8629be3b-96bc-482d-a04b-ffff597c65a2/resourceGroups/dependencies-rg/providers/Microsoft.Network/virtualNetworks/sxx-az-vnet-weu-x-002/subnets/sxx-az-subnet-weu-x-004",
+        "subnetId": "/subscriptions/8629be3b-96bc-482d-a04b-ffff597c65a2/resourceGroups/dependencies-rg/providers/Microsoft.Network/virtualNetworks/sxx-az-vnet-x-002/subnets/sxx-az-subnet-x-004",
         "roleAssignments": []
     },
     // NFS41 VOL
@@ -117,7 +117,7 @@ The NTFSv4.1 volume also specifies one export policy rule allowing Read and Writ
                 }
             ]
         },
-        "subnetId": "/subscriptions/8629be3b-96bc-482d-a04b-ffff597c65a2/resourceGroups/dependencies-rg/providers/Microsoft.Network/virtualNetworks/sxx-az-vnet-weu-x-002/subnets/sxx-az-subnet-weu-x-004",
+        "subnetId": "/subscriptions/8629be3b-96bc-482d-a04b-ffff597c65a2/resourceGroups/dependencies-rg/providers/Microsoft.Network/virtualNetworks/sxx-az-vnet-x-002/subnets/sxx-az-subnet-x-004",
         "roleAssignments": []
     },
     // SMB VOL (Requires AD connection)
@@ -128,7 +128,7 @@ The NTFSv4.1 volume also specifies one export policy rule allowing Read and Writ
         "protocolTypes": [
             "CIFS"
         ],
-        "subnetId": "/subscriptions/8629be3b-96bc-482d-a04b-ffff597c65a2/resourceGroups/dependencies-rg/providers/Microsoft.Network/virtualNetworks/sxx-az-vnet-weu-x-002/subnets/sxx-az-subnet-weu-x-004",
+        "subnetId": "/subscriptions/8629be3b-96bc-482d-a04b-ffff597c65a2/resourceGroups/dependencies-rg/providers/Microsoft.Network/virtualNetworks/sxx-az-vnet-x-002/subnets/sxx-az-subnet-x-004",
         "roleAssignments": []
     }
 ]

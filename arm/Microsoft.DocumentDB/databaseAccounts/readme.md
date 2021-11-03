@@ -64,14 +64,14 @@ This module deploys a Documentdb database account and its child resources.
 "sqlDatabases": {
     "value": [
         {
-            "name": "sxx-az-sql-weu-x-001",
+            "name": "sxx-az-sql-x-001",
             "containers": [
                 "container-001",
                 "container-002"
             ]
         },
         {
-            "name": "sxx-az-sql-weu-x-002",
+            "name": "sxx-az-sql-x-002",
             "containers": []
         }
     ]
@@ -84,13 +84,13 @@ This module deploys a Documentdb database account and its child resources.
 "mongodbDatabases": {
     "value": [
         {
-            "name": "sxx-az-mdb-weu-x-001",
+            "name": "sxx-az-mdb-x-001",
             "collections": [
                 <...>
             ]
         },
         {
-            "name": "sxx-az-mdb-weu-x-002",
+            "name": "sxx-az-mdb-x-002",
             "collections": [
                 <...>
             ]

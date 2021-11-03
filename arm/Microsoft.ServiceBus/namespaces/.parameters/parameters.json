@@ -12,7 +12,7 @@
             "value": {}
         },
         "workspaceId": {
-            "value": "/subscriptions/<<subscriptionId>>/resourcegroups/validation-rg/providers/microsoft.operationalinsights/workspaces/adp-sxx-az-la-weu-x-001"
+            "value": "/subscriptions/<<subscriptionId>>/resourcegroups/validation-rg/providers/microsoft.operationalinsights/workspaces/adp-sxx-az-la-x-001"
         },
         "diagnosticStorageAccountId": {
             "value": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Storage/storageAccounts/adpsxxazsaweux001"
@@ -35,7 +35,7 @@
         },
         "virtualNetworkRules": {
             "value": [
-                "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/virtualNetworks/adp-sxx-az-vnet-weu-x-001/subnets/sxx-az-subnet-weu-x-003"
+                "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/virtualNetworks/adp-sxx-az-vnet-x-001/subnets/sxx-az-subnet-x-003"
             ]
         },
         "ipFilterRules": {
@@ -74,7 +74,7 @@
         "queues": {
             "value": [
                 {
-                    "name": "sxx-az-sbq-weu-x-002",
+                    "name": "sxx-az-sbq-x-002",
                     "roleAssignments": [
                         {
                             "roleDefinitionIdOrName": "Reader",

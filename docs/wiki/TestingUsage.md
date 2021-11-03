@@ -43,7 +43,7 @@ Invoke-Pester -Configuration @{
     ```json
     // Example
     "remoteVirtualNetworkId": {
-        "value": "/subscriptions/12345678-abcd-abcd-abcd-12345678abcd/resourceGroups/validation-rg/providers/Microsoft.Network/virtualNetworks/adp-sxx-az-vnet-weu-x-peer01"
+        "value": "/subscriptions/12345678-abcd-abcd-abcd-12345678abcd/resourceGroups/validation-rg/providers/Microsoft.Network/virtualNetworks/adp-sxx-az-vnet-x-peer01"
     }
     ```
 
