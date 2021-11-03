@@ -114,7 +114,7 @@ var builtInRoleNames = {
   'myCustomRoleAtSub': subscriptionResourceId('Microsoft.Authorization/roleDefinitions', '60cb79d9-783a-50a4-9f05-d4c579fb8ce3')
 }
 
-module pid_cuaId './.bicep/nested_cuaId.bicep' = if (!empty(cuaId)) {
+module pid_cuaId '.bicep/nested_cuaId.bicep' = if (!empty(cuaId)) {
   name: 'pid-${cuaId}'
   params: {}
 }
@@ -158,7 +158,7 @@ resource galleryImage 'Microsoft.Compute/galleries/images@2020-09-30' = {
   }
 }
 
-module galleryImage_rbac './.bicep/nested_rbac.bicep' = [for (roleAssignment, index) in roleAssignments: {
+module galleryImage_rbac '.bicep/nested_rbac.bicep' = [for (roleAssignment, index) in roleAssignments: {
   name: '${deployment().name}-rbac-${index}'
   params: {
     roleAssignmentObj: roleAssignment

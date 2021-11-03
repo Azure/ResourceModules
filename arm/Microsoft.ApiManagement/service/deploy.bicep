@@ -213,7 +213,7 @@ var builtInRoleNames = {
 
 var isAadB2C = (identityProviderType == 'aadB2C')
 
-module pid_cuaId './.bicep/nested_cuaId.bicep' = if (!empty(cuaId)) {
+module pid_cuaId '.bicep/nested_cuaId.bicep' = if (!empty(cuaId)) {
   name: 'pid-${cuaId}'
   params: {}
 }
@@ -294,7 +294,7 @@ resource apiManagementService_diagnosticSettings 'Microsoft.Insights/diagnosticS
   scope: apiManagementService
 }
 
-module apiManagementService_rbac './.bicep/nested_rbac.bicep' = [for (roleAssignment, index) in roleAssignments: {
+module apiManagementService_rbac '.bicep/nested_rbac.bicep' = [for (roleAssignment, index) in roleAssignments: {
   name: '${deployment().name}-rbac-${index}'
   params: {
     roleAssignmentObj: roleAssignment

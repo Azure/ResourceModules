@@ -203,7 +203,7 @@ resource resourceGroup 'Microsoft.Resources/resourceGroups@2019-05-01' = {
   properties: {}
 }
 
-module resourceGroup_lock './.bicep/nested_lock.bicep' = if (lock != 'NotSpecified') {
+module resourceGroup_lock '.bicep/nested_lock.bicep' = if (lock != 'NotSpecified') {
   scope: resourceGroup
   name: '${resourceGroup.name}-${lock}-lock-deployment'
   params: {
@@ -212,7 +212,7 @@ module resourceGroup_lock './.bicep/nested_lock.bicep' = if (lock != 'NotSpecifi
   }
 }
 
-module resourceGroup_rbac './.bicep/nested_rbac.bicep' = [for (roleAssignment, index) in roleAssignments: {
+module resourceGroup_rbac '.bicep/nested_rbac.bicep' = [for (roleAssignment, index) in roleAssignments: {
   name: 'rbac-${deployment().name}-${index}'
   scope: resourceGroup
   params: {

@@ -202,7 +202,7 @@ var hostingEnvironment = {
   id: appServiceEnvironmentId
 }
 
-module pid_cuaId './.bicep/nested_cuaId.bicep' = if (!empty(cuaId)) {
+module pid_cuaId '.bicep/nested_cuaId.bicep' = if (!empty(cuaId)) {
   name: 'pid-${cuaId}'
   params: {}
 }
@@ -299,7 +299,7 @@ resource app_insights 'microsoft.insights/components@2020-02-02' = if (enableMon
   }
 }
 
-module app_rbac './.bicep/nested_rbac.bicep' = [for (roleAssignment, index) in roleAssignments: {
+module app_rbac '.bicep/nested_rbac.bicep' = [for (roleAssignment, index) in roleAssignments: {
   name: '${deployment().name}-rbac-${index}'
   params: {
     roleAssignmentObj: roleAssignment
@@ -308,7 +308,7 @@ module app_rbac './.bicep/nested_rbac.bicep' = [for (roleAssignment, index) in r
   }
 }]
 
-module app_privateEndpoint './.bicep/nested_privateEndpoint.bicep' = [for (privateEndpoint, index) in privateEndpoints: {
+module app_privateEndpoint '.bicep/nested_privateEndpoint.bicep' = [for (privateEndpoint, index) in privateEndpoints: {
   name: '${uniqueString(deployment().name, location)}-AppService-PrivateEndpoints-${index}'
   params: {
     privateEndpointResourceId: app.id
