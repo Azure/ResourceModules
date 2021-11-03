@@ -1,0 +1,114 @@
+{
+    "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "azureFirewallName": {
+            "value": "sxx-az-azfw-x-001"
+        },
+        "availabilityZones": {
+            "value": [
+                "1",
+                "2",
+                "3"
+            ]
+        },
+        "applicationRuleCollections": {
+            "value": [
+                {
+                    "name": "allow-app-rules",
+                    "properties": {
+                        "priority": 100,
+                        "action": {
+                            "type": "allow"
+                        },
+                        "rules": [
+                            {
+                                "name": "allow-ase-tags",
+                                "sourceAddresses": [
+                                    "*"
+                                ],
+                                "protocols": [
+                                    {
+                                        "protocolType": "HTTP",
+                                        "port": "80"
+                                    },
+                                    {
+                                        "protocolType": "HTTPS",
+                                        "port": "443"
+                                    }
+                                ],
+                                "fqdnTags": [
+                                    "AppServiceEnvironment",
+                                    "WindowsUpdate"
+                                ]
+                            },
+                            {
+                                "name": "allow-ase-management",
+                                "sourceAddresses": [
+                                    "*"
+                                ],
+                                "protocols": [
+                                    {
+                                        "protocolType": "HTTP",
+                                        "port": "80"
+                                    },
+                                    {
+                                        "protocolType": "HTTPS",
+                                        "port": "443"
+                                    }
+                                ],
+                                "targetFqdns": [
+                                    "management.azure.com"
+                                ]
+                            }
+                        ]
+                    }
+                }
+            ]
+        },
+        "networkRuleCollections": {
+            "value": [
+                {
+                    "name": "allow-network-rules",
+                    "properties": {
+                        "priority": 100,
+                        "action": {
+                            "type": "allow"
+                        },
+                        "rules": [
+                            {
+                                "name": "allow-ntp",
+                                "sourceAddresses": [
+                                    "*"
+                                ],
+                                "destinationAddresses": [
+                                    "*"
+                                ],
+                                "destinationPorts": [
+                                    "123",
+                                    "12000"
+                                ],
+                                "protocols": [
+                                    "Any"
+                                ]
+                            }
+                        ]
+                    }
+                }
+            ]
+        },
+        "vNetId": {
+            "value": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/virtualNetworks/adp-sxx-az-vnet-x-azfw"
+        },
+        "roleAssignments": {
+            "value": [
+                {
+                    "roleDefinitionIdOrName": "Reader",
+                    "principalIds": [
+                        "cf33fea8-b30f-424f-ab73-c48d99e0b222"
+                    ]
+                }
+            ]
+        }
+    }
+}

@@ -1,0 +1,31 @@
+{
+    "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "virtualWanName": {
+            "value": "sxx-az-vw-x-001"
+        },
+        "vpnsiteAddressspaceList": {
+            "value": []
+        },
+        "vpnsitePublicIPAddress": {
+            "value": "1.2.3.4"
+        },
+        "vpnsiteBgpAsn": {
+            "value": 65010
+        },
+        "vpnsiteBgpPeeringAddress": {
+            "value": "1.1.1.1"
+        },
+        "roleAssignments": {
+            "value": [
+                {
+                    "roleDefinitionIdOrName": "Reader",
+                    "principalIds": [
+                        "cf33fea8-b30f-424f-ab73-c48d99e0b222"
+                    ]
+                }
+            ]
+        }
+    }
+}

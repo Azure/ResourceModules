@@ -1,0 +1,56 @@
+{
+    "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "name": {
+            "value": "sxx-az-cdb-x-001"
+        },
+        "location": {
+            "value": "West Europe"
+        },
+        "locations": {
+            "value": [
+                {
+                    "locationName": "West Europe",
+                    "failoverPriority": 0,
+                    "isZoneRedundant": false
+                },
+                {
+                    "locationName": "North Europe",
+                    "failoverPriority": 1,
+                    "isZoneRedundant": false
+                }
+            ]
+        },
+        "roleAssignments": {
+            "value": [
+                {
+                    "roleDefinitionIdOrName": "Reader",
+                    "principalIds": [
+                        "cf33fea8-b30f-424f-ab73-c48d99e0b222"
+                    ]
+                }
+            ]
+        },
+        "sqlDatabases": {
+            "value": [
+                {
+                    "name": "sxx-az-sql-x-001",
+                    "containers": [
+                        {
+                            "name": "container-001",
+                            "paths": [
+                                "/myPartitionKey"
+                            ],
+                            "kind": "Hash"
+                        }
+                    ]
+                },
+                {
+                    "name": "sxx-az-sql-x-002",
+                    "containers": []
+                }
+            ]
+        }
+    }
+}

@@ -43,7 +43,7 @@ function Remove-DeployedModule {
     )
 
     begin {
-        Write-Debug ("{0} entered" -f $MyInvocation.MyCommand)
+        Write-Debug ('{0} entered' -f $MyInvocation.MyCommand)
     }
 
     process {
@@ -54,22 +54,20 @@ function Remove-DeployedModule {
         if ((Split-Path $templateFilePath -Extension) -eq '.bicep') {
             # Bicep
             $bicepContent = Get-Content $templateFilePath
-            $bicepScope = $bicepContent | Where-Object { $_ -like "*targetscope =*" } 
+            $bicepScope = $bicepContent | Where-Object { $_ -like '*targetscope =*' }
             if (-not $bicepScope) {
-                $deploymentScope = "resourceGroup" 
-            }
-            else {
+                $deploymentScope = 'resourceGroup'
+            } else {
                 $deploymentScope = $bicepScope.ToLower().Replace('targetscope = ', '').Replace("'", '').Trim()
-            } 
-        }
-        else {
+            }
+        } else {
             # ARM
             $armSchema = (ConvertFrom-Json (Get-Content -Raw -Path $templateFilePath)).'$schema'
             switch -regex ($armSchema) {
-                '\/deploymentTemplate.json#$' { $deploymentScope = "resourceGroup" }
-                '\/subscriptionDeploymentTemplate.json#$' { $deploymentScope = "subscription" }
-                '\/managementGroupDeploymentTemplate.json#$' { $deploymentScope = "managementGroup" }
-                '\/tenantDeploymentTemplate.json#$' { $deploymentScope = "tenant" }
+                '\/deploymentTemplate.json#$' { $deploymentScope = 'resourceGroup' }
+                '\/subscriptionDeploymentTemplate.json#$' { $deploymentScope = 'subscription' }
+                '\/managementGroupDeploymentTemplate.json#$' { $deploymentScope = 'managementGroup' }
+                '\/tenantDeploymentTemplate.json#$' { $deploymentScope = 'tenant' }
                 Default { throw "[$armSchema] is a non-supported ARM template schema" }
             }
         }
@@ -78,40 +76,35 @@ function Remove-DeployedModule {
         ## Process Removal ##
         #####################
         if ($deploymentScope -eq 'subscription') {
-            Write-Verbose "Handle subscription level removal"
+            Write-Verbose 'Handle subscription level removal'
             $resourceGroupToRemove = Get-AzResourceGroup -Tag @{ removeModule = $moduleName }
             if ($resourceGroupToRemove) {
                 if ($resourceGroupToRemove.Count -gt 1) {
                     Write-Error "More than 1 Resource Group has been found with tag [removeModule=$moduleName]. Only 1 Resource Group is expected."
-                }
-                elseif (Get-AzResource -ResourceGroupName $resourceGroupToRemove.ResourceGroupName) {
+                } elseif (Get-AzResource -ResourceGroupName $resourceGroupToRemove.ResourceGroupName) {
                     Write-Error "Resource Group [$resourceGroupName] still has resources provisioned."
-                }
-                else {
-                    Write-Verbose ("Removing Resource Group: {0}" -f $resourceGroupToRemove.ResourceGroupName) -Verbose
+                } else {
+                    Write-Verbose ('Removing Resource Group: {0}' -f $resourceGroupToRemove.ResourceGroupName) -Verbose
                     try {
                         $removeStatus = $resourceGroupToRemove |
-                        Remove-AzResourceGroup -Force -ErrorAction Stop
+                            Remove-AzResourceGroup -Force -ErrorAction Stop
                         if ($removeStatus) {
-                            Write-Verbose ("Successfully removed Resource Group: {0}" -f $resourceGroupToRemove.ResourceGroupName) -Verbose
+                            Write-Verbose ('Successfully removed Resource Group: {0}' -f $resourceGroupToRemove.ResourceGroupName) -Verbose
                         }
-                    }
-                    catch {
-                        Write-Error ("Resource Group removal failed. Reason: [{0}]" -f $_.Exception.Message)
+                    } catch {
+                        Write-Error ('Resource Group removal failed. Reason: [{0}]' -f $_.Exception.Message)
                     }
                 }
+            } else {
+                Write-Error ('Unable to find Resource Group by tag [removeModule={0}].' -f $moduleName)
             }
-            else {
-                Write-Error ("Unable to find Resource Group by tag [removeModule={0}]." -f $moduleName)
-            }
-        }
-        else {
-            Write-Verbose "Handle resource group level removal"
+        } else {
+            Write-Verbose 'Handle resource group level removal'
             $resourcesToRemove = Get-AzResource -Tag @{ removeModule = $moduleName } -ResourceGroupName $resourceGroupName
             if ($resourcesToRemove) {
 
                 # If VMs are available, delete those first
-                if($vmsContained = $resourcesToRemove | Where-Object { $_.resourcetype -eq 'Microsoft.Compute/virtualMachines' }) {
+                if ($vmsContained = $resourcesToRemove | Where-Object { $_.resourcetype -eq 'Microsoft.Compute/virtualMachines' }) {
                     Remove-Resource -resourcesToRemove $vmsContained
                     # refresh
                     $resourcesToRemove = Get-AzResource -Tag @{ removeModule = $moduleName } -ResourceGroupName $resourceGroupName
@@ -119,30 +112,27 @@ function Remove-DeployedModule {
 
                 $currentRety = 0
                 $resourcesToRetry = @()
-                if ($PSCmdlet.ShouldProcess(("[{0}] Resource(s) with a maximum of [$maximumRemovalRetries] attempts." -f $resourcesToRemove.Count), "Remove")) {
+                if ($PSCmdlet.ShouldProcess(("[{0}] Resource(s) with a maximum of [$maximumRemovalRetries] attempts." -f $resourcesToRemove.Count), 'Remove')) {
                     while (($resourcesToRetry = Remove-Resource -resourcesToRemove $resourcesToRemove -Verbose).Count -gt 0 -and $currentRety -le $maximumRemovalRetries) {
-                        Write-Verbose ("Re-try removal of remaining [{0}] resources. Round [{1}|{2}]" -f $resourcesToRetry.Count, $currentRety, $maximumRemovalRetries)
+                        Write-Verbose ('Re-try removal of remaining [{0}] resources. Round [{1}|{2}]' -f $resourcesToRetry.Count, $currentRety, $maximumRemovalRetries)
                         $currentRety++
                     }
 
                     if ($resourcesToRetry.Count -gt 0) {
-                        throw ("The removal failed for resources [{0}]" -f ($resourcesToRetry.Name -join ', '))
+                        throw ('The removal failed for resources [{0}]' -f ($resourcesToRetry.Name -join ', '))
+                    } else {
+                        Write-Verbose 'The removal completed successfully'
                     }
-                    else {
-                        Write-Verbose "The removal completed successfully"
-                    }
-                }
-                else {
+                } else {
                     Remove-Resource -resourcesToRemove $resourcesToRemove -WhatIf
                 }
-            }
-            else {
+            } else {
                 Write-Error ("Unable to find resources by tags [removeModule=$moduleName] in resource group [$resourceGroupName].")
             }
         }
     }
     end {
-        Write-Debug ("{0} exited" -f $MyInvocation.MyCommand)
+        Write-Debug ('{0} exited' -f $MyInvocation.MyCommand)
     }
 }
 
@@ -155,19 +145,18 @@ function Remove-Resource {
     )
 
     $resourcesToRetry = @()
-    Write-Verbose "----------------------------------"
+    Write-Verbose '----------------------------------'
     foreach ($resource in $resourcesToRemove) {
         try {
-            if ($PSCmdlet.ShouldProcess(("Resource [{0}] of type [{1}] from resource group [{2}]" -f $resource.Name, $resource.ResourceType, $resource.ResourceGroupName), "Remove")) {
+            if ($PSCmdlet.ShouldProcess(('Resource [{0}] of type [{1}] from resource group [{2}]' -f $resource.Name, $resource.ResourceType, $resource.ResourceGroupName), 'Remove')) {
                 $null = Remove-AzResource -ResourceId $resource.ResourceId -Force -ErrorAction 'Stop'
-                Write-Verbose ("Removed resource [{0}] of type [{1}] from resource group [{2}]" -f  $resource.Name,  $resource.ResourceType,  $resource.ResourceGroupName)
+                Write-Verbose ('Removed resource [{0}] of type [{1}] from resource group [{2}]' -f $resource.Name, $resource.ResourceType, $resource.ResourceGroupName)
             }
-        }
-        catch {
-            Write-Warning ("Removal moved back for re-try. Reason: [{0}]" -f $_.Exception.Message)
+        } catch {
+            Write-Warning ('Removal moved back for re-try. Reason: [{0}]' -f $_.Exception.Message)
             $resourcesToRetry += $resource
         }
     }
-    Write-Verbose "----------------------------------"
+    Write-Verbose '----------------------------------'
     return $resourcesToRetry
 }

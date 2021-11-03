@@ -1,0 +1,41 @@
+{
+    "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "allowAzureIps": {
+            "value": false
+        },
+        "administratorLogin": {
+            "reference": {
+                "keyVault": {
+                    "id": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.KeyVault/vaults/adp-sxx-az-kv-x-001"
+                },
+                "secretName": "administratorLogin"
+            }
+        },
+        "administratorLoginPassword": {
+            "reference": {
+                "keyVault": {
+                    "id": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.KeyVault/vaults/adp-sxx-az-kv-x-001"
+                },
+                "secretName": "administratorLoginPassword"
+            }
+        },
+        "location": {
+            "value": "westeurope"
+        },
+        "serverName": {
+            "value": "sxx-az-sqlsrv-x-001"
+        },
+        "roleAssignments": {
+            "value": [
+                {
+                    "roleDefinitionIdOrName": "Reader",
+                    "principalIds": [
+                        "cf33fea8-b30f-424f-ab73-c48d99e0b222"
+                    ]
+                }
+            ]
+        }
+    }
+}

@@ -1,0 +1,47 @@
+{
+    "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "alertName": {
+            "value": "sxx-az-ala-x-001"
+        },
+        "scopes": {
+            "value": [
+                "/subscriptions/<<subscriptionId>>"
+            ]
+        },
+        "conditions": {
+            "value": [
+                {
+                    "field": "category",
+                    "equals": "Administrative"
+                },
+                {
+                    "field": "resourceType",
+                    "equals": "microsoft.compute/virtualmachines"
+                },
+                {
+                    "field": "operationName",
+                    "equals": "Microsoft.Compute/virtualMachines/performMaintenance/action"
+                }
+            ]
+        },
+        "actions": {
+            "value": [
+                {
+                    "actionGroupId": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/microsoft.insights/actiongroups/adp-sxx-az-ag-x-001"
+                }
+            ]
+        },
+        "roleAssignments": {
+            "value": [
+                {
+                    "roleDefinitionIdOrName": "Reader",
+                    "principalIds": [
+                        "cf33fea8-b30f-424f-ab73-c48d99e0b222"
+                    ]
+                }
+            ]
+        }
+    }
+}

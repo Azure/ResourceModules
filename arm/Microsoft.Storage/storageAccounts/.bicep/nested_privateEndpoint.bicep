@@ -34,19 +34,16 @@ resource privateEndpoint 'Microsoft.Network/privateEndpoints@2021-05-01' = {
     }
     customDnsConfigs: privateEndpoint_var.customDnsConfigs
   }
-}
 
-resource privateDnsZoneGroups 'Microsoft.Network/privateEndpoints/privateDnsZoneGroups@2021-02-01' = {
-  name: '${privateEndpoint_var.name}/default'
-  properties: {
-    privateDnsZoneConfigs: [for privateDnsZoneResourceId in privateEndpoint_var.privateDnsZoneResourceIds: {
-      name: last(split(privateDnsZoneResourceId, '/'))
-      properties: {
-        privateDnsZoneId: privateDnsZoneResourceId
-      }
-    }]
+  resource privateDnsZoneGroups 'privateDnsZoneGroups@2021-02-01' = {
+    name: 'default'
+    properties: {
+      privateDnsZoneConfigs: [for privateDnsZoneResourceId in privateEndpoint_var.privateDnsZoneResourceIds: {
+        name: last(split(privateDnsZoneResourceId, '/'))
+        properties: {
+          privateDnsZoneId: privateDnsZoneResourceId
+        }
+      }]
+    }
   }
-  dependsOn: [
-    privateEndpoint
-  ]
 }

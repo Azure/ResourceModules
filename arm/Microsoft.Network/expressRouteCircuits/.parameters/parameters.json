@@ -1,0 +1,34 @@
+{
+    "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "circuitName": {
+            "value": "sxx-az-erc-x-001"
+        },
+        "serviceProviderName": {
+            "value": "Equinix"
+        },
+        "peeringLocation": {
+            "value": "Amsterdam"
+        },
+        "bandwidthInMbps": {
+            "value": 50
+        },
+        "skuTier": {
+            "value": "Standard"
+        },
+        "skuFamily": {
+            "value": "MeteredData"
+        },
+        "roleAssignments": {
+            "value": [
+                {
+                    "roleDefinitionIdOrName": "Reader",
+                    "principalIds": [
+                        "cf33fea8-b30f-424f-ab73-c48d99e0b222"
+                    ]
+                }
+            ]
+        }
+    }
+}

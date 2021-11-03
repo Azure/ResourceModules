@@ -2,7 +2,6 @@
 
 This template deploys a DDoS protection plan.
 
-
 ## Resource types
 
 | Resource Type | Api Version |

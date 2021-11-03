@@ -6,7 +6,7 @@ on:
       removeDeployment:
         description: 'Remove deployed module'
         required: false
-        default: 'false'
+        default: 'false' # Deployment does not support tags
       versioningOption:
         description: 'The mode to handle the version increments [major|minor|patch|custom]'
         required: false
@@ -112,7 +112,7 @@ jobs:
         uses: ./.github/actions/templates/validateModuleDeploy
         with:
           templateFilePath: '${{ env.modulePath }}/deploy.bicep'
-          parameterFilePath: '${{ env.modulePath }}/parameters/${{ matrix.parameterFilePaths }}'
+          parameterFilePath: '${{ env.modulePath }}/.parameters/${{ matrix.parameterFilePaths }}'
           location: '${{ env.defaultLocation }}'
           resourceGroupName: '${{ env.resourceGroupName }}'
           subscriptionId: '${{ secrets.ARM_SUBSCRIPTION_ID }}'
@@ -148,7 +148,7 @@ jobs:
         with:
           moduleName: '${{ env.moduleName }}'
           templateFilePath: '${{ env.modulePath }}/deploy.bicep'
-          parameterFilePath: '${{ env.modulePath }}/parameters/${{ matrix.parameterFilePaths }}'
+          parameterFilePath: '${{ env.modulePath }}/.parameters/${{ matrix.parameterFilePaths }}'
           location: '${{ env.defaultLocation }}'
           resourceGroupName: '${{ env.resourceGroupName }}'
           subscriptionId: '${{ secrets.ARM_SUBSCRIPTION_ID }}'

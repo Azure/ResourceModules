@@ -2,22 +2,22 @@
 # This pipeline requires a secret 'PLATFORM_REPO_UPDATE_PAT' set up in the GitHub secrets.
 # The secret's value should be a PAT token with the permissions to push to the repository's main branch.
 
-name: ".Platform: Sync Docs/Wiki"
+name: '.Platform: Sync Docs/Wiki'
 
 on:
   push:
     branches:
       - main
     paths:
-      - "docs/wiki/**"
+      - 'docs/wiki/**'
 
 env:
-  wiki_source_repo: "${{ github.repository }}"
-  wiki_source_repo_dir: "${{ github.repository }}/docs/wiki"
-  wiki_target_repo: "${{ github.repository }}.wiki"
-  github_commit_message: "Wiki Sync from docs/wiki"
-  pipelinePrincipalGitUserName: "CARMLPipelinePrincipal"
-  pipelinePrincipalGitUserEmail: "CARML@noreply.microsoft.com"
+  wiki_source_repo: '${{ github.repository }}'
+  wiki_source_repo_dir: '${{ github.repository }}/docs/wiki'
+  wiki_target_repo: '${{ github.repository }}.wiki'
+  github_commit_message: 'Wiki Sync from docs/wiki'
+  pipelinePrincipalGitUserName: 'CARMLPipelinePrincipal'
+  pipelinePrincipalGitUserEmail: 'CARML@noreply.microsoft.com'
 
 jobs:
   sync-wiki:

@@ -13,9 +13,6 @@ param scope string
 ])
 param autoProvision string = 'On'
 
-@description('Optional. Indicates whether Advanced Threat Protection is enabled.')
-param enableAtp bool = false
-
 @description('Optional. Device Security group data')
 param deviceSecurityGroupProperties object = {}
 
@@ -102,15 +99,8 @@ param openSourceRelationalDatabasesTier string = 'Free'
 @description('Optional. Security contact data')
 param securityContactProperties object = {}
 
-resource advancedThreatProtectionSettings 'Microsoft.Security/advancedThreatProtectionSettings@2019-01-01' = {
-  name: 'current'
-  properties: {
-    isEnabled: enableAtp
-  }
-}
-
 resource autoProvisioningSettings 'Microsoft.Security/autoProvisioningSettings@2017-08-01-preview' = {
-  name: 'autoProvisioningSettings'
+  name: 'default'
   properties: {
     autoProvision: autoProvision
   }
@@ -126,7 +116,7 @@ resource deviceSecurityGroups 'Microsoft.Security/deviceSecurityGroups@2019-08-0
   }
 }
 
-module iotSecuritySolutions './.bicep/nested_iotSecuritySolutions.bicep' = if (!empty(ioTSecuritySolutionProperties)) {
+module iotSecuritySolutions '.bicep/nested_iotSecuritySolutions.bicep' = if (!empty(ioTSecuritySolutionProperties)) {
   name: '${uniqueString(deployment().name)}-ASC-IotSecuritySolutions'
   scope: resourceGroup(empty(ioTSecuritySolutionProperties) ? 'dummy' : ioTSecuritySolutionProperties.resourceGroup)
   params: {
@@ -135,77 +125,77 @@ module iotSecuritySolutions './.bicep/nested_iotSecuritySolutions.bicep' = if (!
 }
 
 resource VirtualMachinesPricingTier 'Microsoft.Security/pricings@2018-06-01' = {
-  name: 'VirtualMachinesPricingTier'
+  name: 'VirtualMachines'
   properties: {
     pricingTier: virtualMachinesPricingTier
   }
 }
 
 resource SqlServersPricingTier 'Microsoft.Security/pricings@2018-06-01' = {
-  name: 'SqlServersPricingTier'
+  name: 'SqlServers'
   properties: {
     pricingTier: sqlServersPricingTier
   }
 }
 
 resource AppServicesPricingTier 'Microsoft.Security/pricings@2018-06-01' = {
-  name: 'AppServicesPricingTier'
+  name: 'AppServices'
   properties: {
     pricingTier: appServicesPricingTier
   }
 }
 
 resource StorageAccountsPricingTier 'Microsoft.Security/pricings@2018-06-01' = {
-  name: 'StorageAccountsPricingTier'
+  name: 'StorageAccounts'
   properties: {
     pricingTier: storageAccountsPricingTier
   }
 }
 
 resource SqlServerVirtualMachinesPricingTier 'Microsoft.Security/pricings@2018-06-01' = {
-  name: 'SqlServerVirtualMachinesPricingTier'
+  name: 'SqlServerVirtualMachines'
   properties: {
     pricingTier: sqlServerVirtualMachinesPricingTier
   }
 }
 
 resource KubernetesServicePricingTier 'Microsoft.Security/pricings@2018-06-01' = {
-  name: 'KubernetesServicePricingTier'
+  name: 'KubernetesService'
   properties: {
     pricingTier: kubernetesServicePricingTier
   }
 }
 
 resource ContainerRegistryPricingTier 'Microsoft.Security/pricings@2018-06-01' = {
-  name: 'ContainerRegistryPricingTier'
+  name: 'ContainerRegistry'
   properties: {
     pricingTier: containerRegistryPricingTier
   }
 }
 
 resource KeyVaultsPricingTier 'Microsoft.Security/pricings@2018-06-01' = {
-  name: 'KeyVaultsPricingTier'
+  name: 'KeyVaults'
   properties: {
     pricingTier: keyVaultsPricingTier
   }
 }
 
 resource DnsPricingTier 'Microsoft.Security/pricings@2018-06-01' = {
-  name: 'DnsPricingTier'
+  name: 'Dns'
   properties: {
     pricingTier: dnsPricingTier
   }
 }
 
 resource ArmPricingTier 'Microsoft.Security/pricings@2018-06-01' = {
-  name: 'ArmPricingTier'
+  name: 'Arm'
   properties: {
     pricingTier: armPricingTier
   }
 }
 
 resource OpenSourceRelationalDatabasesPricingTier 'Microsoft.Security/pricings@2018-06-01' = {
-  name: 'OpenSourceRelationalDatabasesPricingTier'
+  name: 'OpenSourceRelationalDatabases'
   properties: {
     pricingTier: openSourceRelationalDatabasesTier
   }
@@ -222,7 +212,7 @@ resource securityContacts 'Microsoft.Security/securityContacts@2017-08-01-previe
 }
 
 resource workspaceSettings 'Microsoft.Security/workspaceSettings@2017-08-01-preview' = {
-  name: 'workspaceSettings'
+  name: 'default'
   properties: {
     workspaceId: workspaceId
     scope: scope

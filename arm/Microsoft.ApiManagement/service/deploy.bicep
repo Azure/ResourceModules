@@ -43,6 +43,9 @@ param hostnameConfigurations array = []
 @description('Optional. Managed service identity of the Api Management service.')
 param identity object = {}
 
+@description('Optional. Used to enable the deployment of the identityProviders child resource.')
+param enableIdentityProviders bool = false
+
 @description('Optional. List of Allowed Tenants when configuring Azure Active Directory login. - string')
 param identityProviderAllowedTenants array = []
 
@@ -210,7 +213,7 @@ var builtInRoleNames = {
 
 var isAadB2C = (identityProviderType == 'aadB2C')
 
-module pid_cuaId './.bicep/nested_cuaId.bicep' = if (!empty(cuaId)) {
+module pid_cuaId '.bicep/nested_cuaId.bicep' = if (!empty(cuaId)) {
   name: 'pid-${cuaId}'
   params: {}
 }
@@ -248,11 +251,11 @@ resource apiManagementService 'Microsoft.ApiManagement/service@2020-12-01' = {
     name: 'signup'
     properties: portalSignUp
   }
-  resource apiManagementService_policy 'policies@2020-06-01-preview' = {
+  resource apiManagementService_policy 'policies@2020-06-01-preview' = if (!empty(apiManagementServicePolicy)) {
     name: 'policy'
     properties: apiManagementServicePolicy
   }
-  resource apiManagementService_identityProvider 'identityProviders@2020-06-01-preview' = {
+  resource apiManagementService_identityProvider 'identityProviders@2020-06-01-preview' = if (enableIdentityProviders) {
     name: identityProviderType
     properties: {
       type: identityProviderType
@@ -291,8 +294,8 @@ resource apiManagementService_diagnosticSettings 'Microsoft.Insights/diagnosticS
   scope: apiManagementService
 }
 
-module apiManagementService_rbac './.bicep/nested_rbac.bicep' = [for (roleAssignment, index) in roleAssignments: {
-  name: 'rbac-${deployment().name}${index}'
+module apiManagementService_rbac '.bicep/nested_rbac.bicep' = [for (roleAssignment, index) in roleAssignments: {
+  name: '${deployment().name}-rbac-${index}'
   params: {
     roleAssignmentObj: roleAssignment
     builtInRoleNames: builtInRoleNames

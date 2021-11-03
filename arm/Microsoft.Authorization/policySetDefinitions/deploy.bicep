@@ -33,7 +33,7 @@ param location string = deployment().location
 
 var policySetDefinitionName_var = replace(policySetDefinitionName, ' ', '-')
 
-module policySetDefinition_mg './.bicep/nested_policySetDefinition_mg.bicep' = if (empty(subscriptionId) && !empty(managementGroupId)) {
+module policySetDefinition_mg '.bicep/nested_policySetDefinition_mg.bicep' = if (empty(subscriptionId) && !empty(managementGroupId)) {
   name: '${policySetDefinitionName_var}-mgDeployment'
   scope: managementGroup(managementGroupId)
   params: {
@@ -49,7 +49,7 @@ module policySetDefinition_mg './.bicep/nested_policySetDefinition_mg.bicep' = i
   }
 }
 
-module policySetDefinition_sub './.bicep/nested_policySetDefinition_sub.bicep' = if (empty(managementGroupId) && !empty(subscriptionId)) {
+module policySetDefinition_sub '.bicep/nested_policySetDefinition_sub.bicep' = if (empty(managementGroupId) && !empty(subscriptionId)) {
   name: '${policySetDefinitionName_var}-subDeployment'
   scope: subscription(subscriptionId)
   params: {

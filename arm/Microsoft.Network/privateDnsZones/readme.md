@@ -1,7 +1,5 @@
 # PrivateDnsZones `[Microsoft.Network/privateDnsZones]`
 
-# Resource
-
 This template deploys private DNS zone.
 
 ## Resource types

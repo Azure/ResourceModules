@@ -1,0 +1,34 @@
+{
+    "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "appGroupName": {
+            "value": "sxx-az-avdag-x-001"
+        },
+        "location": {
+            "value": "eastus"
+        },
+        "appGroupType": {
+            "value": "RemoteApp"
+        },
+        "hostpoolName": {
+            "value": "sxx-az-avdhp-x-001"
+        },
+        "appGroupFriendlyName": {
+            "value": "Remote Applications 1"
+        },
+        "appGroupDescription": {
+            "value": "This is my first Remote Applications bundle"
+        },
+        "roleAssignments": {
+            "value": [
+                {
+                    "roleDefinitionIdOrName": "Reader",
+                    "principalIds": [
+                        "cf33fea8-b30f-424f-ab73-c48d99e0b222"
+                    ]
+                }
+            ]
+        }
+    }
+}

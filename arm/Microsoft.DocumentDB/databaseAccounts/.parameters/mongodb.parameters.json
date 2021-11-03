@@ -1,0 +1,222 @@
+{
+    "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "name": {
+            "value": "sxx-az-cdb-x-002"
+        },
+        "location": {
+            "value": "West Europe"
+        },
+        "locations": {
+            "value": [
+                {
+                    "locationName": "West Europe",
+                    "failoverPriority": 0,
+                    "isZoneRedundant": false
+                },
+                {
+                    "locationName": "North Europe",
+                    "failoverPriority": 1,
+                    "isZoneRedundant": false
+                }
+            ]
+        },
+        "roleAssignments": {
+            "value": [
+                {
+                    "roleDefinitionIdOrName": "Reader",
+                    "principalIds": [
+                        "cf33fea8-b30f-424f-ab73-c48d99e0b222"
+                    ]
+                }
+            ]
+        },
+        "mongodbDatabases": {
+            "value": [
+                {
+                    "name": "sxx-az-mdb-x-001",
+                    "collections": [
+                        {
+                            "name": "car_collection",
+                            "indexes": [
+                                {
+                                    "key": {
+                                        "keys": [
+                                            "_id"
+                                        ]
+                                    }
+                                },
+                                {
+                                    "key": {
+                                        "keys": [
+                                            "$**"
+                                        ]
+                                    }
+                                },
+                                {
+                                    "key": {
+                                        "keys": [
+                                            "car_id",
+                                            "car_model"
+                                        ]
+                                    },
+                                    "options": {
+                                        "unique": true
+                                    }
+                                },
+                                {
+                                    "key": {
+                                        "keys": [
+                                            "_ts"
+                                        ]
+                                    },
+                                    "options": {
+                                        "expireAfterSeconds": 2629746
+                                    }
+                                }
+                            ],
+                            "shardKey": {
+                                "car_id": "Hash"
+                            }
+                        },
+                        {
+                            "name": "truck_collection",
+                            "indexes": [
+                                {
+                                    "key": {
+                                        "keys": [
+                                            "_id"
+                                        ]
+                                    }
+                                },
+                                {
+                                    "key": {
+                                        "keys": [
+                                            "$**"
+                                        ]
+                                    }
+                                },
+                                {
+                                    "key": {
+                                        "keys": [
+                                            "truck_id",
+                                            "truck_model"
+                                        ]
+                                    },
+                                    "options": {
+                                        "unique": true
+                                    }
+                                },
+                                {
+                                    "key": {
+                                        "keys": [
+                                            "_ts"
+                                        ]
+                                    },
+                                    "options": {
+                                        "expireAfterSeconds": 2629746
+                                    }
+                                }
+                            ],
+                            "shardKey": {
+                                "truck_id": "Hash"
+                            }
+                        }
+                    ]
+                },
+                {
+                    "name": "sxx-az-mdb-x-002",
+                    "collections": [
+                        {
+                            "name": "bike_collection",
+                            "indexes": [
+                                {
+                                    "key": {
+                                        "keys": [
+                                            "_id"
+                                        ]
+                                    }
+                                },
+                                {
+                                    "key": {
+                                        "keys": [
+                                            "$**"
+                                        ]
+                                    }
+                                },
+                                {
+                                    "key": {
+                                        "keys": [
+                                            "bike_id",
+                                            "bike_model"
+                                        ]
+                                    },
+                                    "options": {
+                                        "unique": true
+                                    }
+                                },
+                                {
+                                    "key": {
+                                        "keys": [
+                                            "_ts"
+                                        ]
+                                    },
+                                    "options": {
+                                        "expireAfterSeconds": 2629746
+                                    }
+                                }
+                            ],
+                            "shardKey": {
+                                "bike_id": "Hash"
+                            }
+                        },
+                        {
+                            "name": "bicycle_collection",
+                            "indexes": [
+                                {
+                                    "key": {
+                                        "keys": [
+                                            "_id"
+                                        ]
+                                    }
+                                },
+                                {
+                                    "key": {
+                                        "keys": [
+                                            "$**"
+                                        ]
+                                    }
+                                },
+                                {
+                                    "key": {
+                                        "keys": [
+                                            "bicycle_id",
+                                            "bicycle_model"
+                                        ]
+                                    },
+                                    "options": {
+                                        "unique": true
+                                    }
+                                },
+                                {
+                                    "key": {
+                                        "keys": [
+                                            "_ts"
+                                        ]
+                                    },
+                                    "options": {
+                                        "expireAfterSeconds": 2629746
+                                    }
+                                }
+                            ],
+                            "shardKey": {
+                                "bicycle_id": "Hash"
+                            }
+                        }
+                    ]
+                }
+            ]
+        }
+    }
+}

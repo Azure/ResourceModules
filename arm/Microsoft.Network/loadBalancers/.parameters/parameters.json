@@ -1,0 +1,72 @@
+{
+    "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "loadBalancerName": {
+            "value": "sxx-az-lb-x-001"
+        },
+        "frontendIPConfigurations": {
+            "value": [
+                {
+                    "name": "publicIPConfig",
+                    "properties": {
+                        "publicIPAddressId": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/publicIPAddresses/adp-sxx-az-pip-x-lb",
+                        "subnetId": "",
+                        "privateIPAddress": ""
+                    }
+                }
+            ]
+        },
+        "backendAddressPools": {
+            "value": [
+                {
+                    "name": "backendAddressPool"
+                }
+            ]
+        },
+        "loadBalancingRules": {
+            "value": [
+                {
+                    "name": "publicIPLBRule",
+                    "properties": {
+                        "frontendIPConfigurationName": "publicIPConfig",
+                        "frontendPort": 80,
+                        "backendPort": 80,
+                        "enableFloatingIP": false,
+                        "idleTimeoutInMinutes": 5,
+                        "protocol": "TCP",
+                        "enableTcpReset": false,
+                        "loadDistribution": "Default",
+                        "disableOutboundSnat": false,
+                        "probeName": "probe",
+                        "backendAddressPoolName": "backendAddressPool"
+                    }
+                }
+            ]
+        },
+        "probes": {
+            "value": [
+                {
+                    "name": "probe",
+                    "properties": {
+                        "protocol": "TCP",
+                        "port": 80,
+                        "requestPath": "/",
+                        "intervalInSeconds": 10,
+                        "numberOfProbes": 5
+                    }
+                }
+            ]
+        },
+        "roleAssignments": {
+            "value": [
+                {
+                    "roleDefinitionIdOrName": "Reader",
+                    "principalIds": [
+                        "cf33fea8-b30f-424f-ab73-c48d99e0b222"
+                    ]
+                }
+            ]
+        }
+    }
+}

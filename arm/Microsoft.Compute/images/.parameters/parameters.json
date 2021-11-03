@@ -1,0 +1,40 @@
+{
+    "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "imageName": {
+            "value": "sxx-az-img-x-001"
+        },
+        "location": {
+            "value": "East US"
+        },
+        "osAccountType": {
+            "value": "Premium_LRS"
+        },
+        "osType": {
+            "value": "Linux"
+        },
+        "osDiskBlobUri": {
+            "value": "https://qrivi75b9q5dgo1fvqpsdd8p.blob.core.windows.net/vhds/sxx-az-imgt-x-001-2021-10-13-14-26-11_20211013164357.vhd"
+        },
+        "osDiskCaching": {
+            "value": "ReadWrite"
+        },
+        "zoneResilient": {
+            "value": true
+        },
+        "hyperVGeneration": {
+            "value": "V1"
+        },
+        "roleAssignments": {
+            "value": [
+                {
+                    "roleDefinitionIdOrName": "Reader",
+                    "principalIds": [
+                        "cf33fea8-b30f-424f-ab73-c48d99e0b222"
+                    ]
+                }
+            ]
+        }
+    }
+}

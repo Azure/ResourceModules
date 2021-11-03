@@ -20,7 +20,7 @@ The following resources are required to be able to deploy this resource.
 | :-- | :-- | :-- | :-- | :-- |
 | `apiManagementServiceAuthorizationServerName` | string |  |  | Required. Identifier of the authorization server. |
 | `apiManagementServiceName` | string |  |  | Required. The name of the of the Api Management service. |
-| `authorizationEndpoint` | string |  |  | Required. OAuth authorization endpoint. See http://tools.ietf.org/html/rfc6749#section-3.2. |
+| `authorizationEndpoint` | string |  |  | Required. OAuth authorization endpoint. See <http://tools.ietf.org/html/rfc6749#section-3.2>. |
 | `authorizationMethods` | array | `[GET]` |  | Optional. HTTP verbs supported by the authorization endpoint. GET must be always present. POST is optional. - HEAD, OPTIONS, TRACE, GET, POST, PUT, PATCH, DELETE |
 | `bearerTokenSendingMethods` | array | `[authorizationHeader]` |  | Required. Specifies the mechanism by which access token is passed to the API. - authorizationHeader or query |
 | `clientAuthenticationMethod` | array | `[]` |  | Required. Method of authentication supported by the token endpoint of this authorization server. Possible values are Basic and/or Body. When Body is specified, client credentials and other parameters are passed within the request body in the application/x-www-form-urlencoded format. - Basic or Body |

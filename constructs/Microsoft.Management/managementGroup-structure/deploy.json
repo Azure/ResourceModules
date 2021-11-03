@@ -221,7 +221,7 @@
             // if the element contains 'parentNotManagedInThisTemplate' with value true --> this is a top MG managed in this template
             // Then -> The resource has no dependencies (noop used as a 'fake' dependency)
             // Else -> get dependency from the parent ID
-            "dependson":[
+            "dependson": [
                 "[
                     if(
                         and(
@@ -230,7 +230,7 @@
                                 'parentNotManagedInThisTemplate'
                             ),
                             parameters('mgStructure')[copyIndex('mgLoop')].parentNotManagedInThisTemplate
-                        ),    
+                        ),
                         'noop',
                         parameters('mgStructure')[copyIndex('mgLoop')].parentId
                     )
@@ -242,7 +242,7 @@
             "scope": "/",
             "name": "[parameters('mgStructure')[copyIndex('mgLoop')].name]",
             "properties": {
-                "displayName":"[
+                "displayName": "[
                     if(
                         contains(
                             parameters('mgStructure')[copyIndex('mgLoop')],

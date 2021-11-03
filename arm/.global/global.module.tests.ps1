@@ -1,8 +1,8 @@
 #Requires -Version 7
 
 param (
-    [array] $moduleFolderPaths = ((Get-ChildItem (Split-Path (Get-Location) -Parent) -Recurse -Directory).FullName | Where-Object {
-        (Get-ChildItem $_ -File -Depth 0 -Include @('deploy.json', 'deploy.bicep')).Count -gt 0
+    [array] $moduleFolderPaths = ((Get-ChildItem (Split-Path (Get-Location) -Parent) -Recurse -Directory -Force).FullName | Where-Object {
+        (Get-ChildItem $_ -File -Depth 0 -Include @('deploy.json', 'deploy.bicep') -Force).Count -gt 0
         })
 )
 
@@ -23,15 +23,15 @@ Describe 'File/folder tests' -Tag Modules {
 
         $moduleFolderTestCases = [System.Collections.ArrayList] @()
         foreach ($moduleFolderPath in $moduleFolderPaths) {
-
             $moduleFolderTestCases += @{
-                moduleFolderName = $moduleFolderPath.Split('\arm\')[1]
+                moduleFolderName = $moduleFolderPath.Replace('\', '/').Split('/arm/')[1]
                 moduleFolderPath = $moduleFolderPath
             }
         }
 
         It '[<moduleFolderName>] Module should contain a [deploy.json/deploy.bicep] file' -TestCases $moduleFolderTestCases {
             param( [string] $moduleFolderPath )
+
             $hasARM = (Test-Path (Join-Path -Path $moduleFolderPath 'deploy.json'))
             $hasBicep = (Test-Path (Join-Path -Path $moduleFolderPath 'deploy.bicep'))
             ($hasARM -or $hasBicep) | Should -Be $true
@@ -42,18 +42,18 @@ Describe 'File/folder tests' -Tag Modules {
             (Test-Path (Join-Path -Path $moduleFolderPath 'readme.md')) | Should -Be $true
         }
 
-        It '[<moduleFolderName>] Module should contain a [parameters] folder' -TestCases $moduleFolderTestCases {
+        It '[<moduleFolderName>] Module should contain a [.parameters] folder' -TestCases $moduleFolderTestCases {
             param( [string] $moduleFolderPath )
-            (Test-Path (Join-Path -Path $moduleFolderPath 'parameters')) | Should -Be $true
+            (Test-Path (Join-Path -Path $moduleFolderPath '.parameters')) | Should -Be $true
         }
     }
 
-    Context 'parameters folder' {
+    Context '.parameters folder' {
 
         $folderTestCases = [System.Collections.ArrayList]@()
         foreach ($moduleFolderPath in $moduleFolderPaths) {
             $folderTestCases += @{
-                moduleFolderName = $moduleFolderPath.Split('\arm\')[1]
+                moduleFolderName = $moduleFolderPath.Replace('\', '/').Split('/arm/')[1]
                 moduleFolderPath = $moduleFolderPath
             }
         }
@@ -63,24 +63,24 @@ Describe 'File/folder tests' -Tag Modules {
                 $moduleFolderName,
                 $moduleFolderPath
             )
-            $parameterFolderPath = Join-Path $moduleFolderPath 'parameters'
-            (Get-ChildItem $parameterFolderPath -Filter '*parameters.json').Count | Should -BeGreaterThan 0
+            $parameterFolderPath = Join-Path $moduleFolderPath '.parameters'
+            (Get-ChildItem $parameterFolderPath -Filter '*parameters.json' -Force).Count | Should -BeGreaterThan 0
         }
 
         $parameterFolderFilesTestCases = [System.Collections.ArrayList] @()
         foreach ($moduleFolderPath in $moduleFolderPaths) {
-            $parameterFolderPath = Join-Path $moduleFolderPath 'parameters'
+            $parameterFolderPath = Join-Path $moduleFolderPath '.parameters'
             if (Test-Path $parameterFolderPath) {
-                foreach ($parameterFile in (Get-ChildItem $parameterFolderPath -Filter '*parameters.json')) {
+                foreach ($parameterFile in (Get-ChildItem $parameterFolderPath -Filter '*parameters.json' -Force)) {
                     $parameterFolderFilesTestCases += @{
-                        moduleFolderName  = Split-Path $moduleFolderPath -Leaf
+                        moduleFolderName  = $moduleFolderPath.Replace('\', '/').Split('/arm/')[1]
                         parameterFilePath = $parameterFile.FullName
                     }
                 }
             }
         }
 
-        It '[<moduleFolderName>] *parameters.json files in the parameters folder should be valid json' -TestCases $parameterFolderFilesTestCases {
+        It '[<moduleFolderName>] *parameters.json files in the .parameters folder should be valid json' -TestCases $parameterFolderFilesTestCases {
             param(
                 $moduleFolderName,
                 $parameterFilePath
@@ -106,7 +106,7 @@ Describe 'Readme tests' -Tag Readme {
             }
 
             $readmeFolderTestCases += @{
-                moduleFolderName = $moduleFolderPath.Split('\arm\')[1]
+                moduleFolderName = $moduleFolderPath.Replace('\', '/').Split('/arm/')[1]
                 moduleFolderPath = $moduleFolderPath
                 templateContent  = $templateContent
                 readMeContent    = Get-Content (Join-Path -Path $moduleFolderPath 'readme.md')
@@ -143,7 +143,7 @@ Describe 'Readme tests' -Tag Readme {
             $differentiatingItems.Count | Should -Be 0 -Because ('list of heading titles missing in the ReadMe file [{0}] should be empty' -f ($differentiatingItems -join ','))
         }
 
-        It '[<moduleFolderName>] Resources section should contain all resources from  the template file' -TestCases $readmeFolderTestCases {
+        It '[<moduleFolderName>] Resources section should contain all resources from the template file' -TestCases $readmeFolderTestCases {
             param(
                 $moduleFolderName,
                 $templateContent,
@@ -391,7 +391,7 @@ Describe 'Deployment template tests' -Tag Template {
             $TemplateFile_AllParameterNames = $templateFile_Parameters.keys | Sort-Object
             $TemplateFile_RequiredParametersNames = ($templateFile_Parameters.keys | Where-Object { -not $templateFile_Parameters[$_].ContainsKey('defaultValue') }) | Sort-Object
 
-            $ParameterFilePaths = (Get-ChildItem (Join-Path -Path $moduleFolderPath -ChildPath 'parameters' -AdditionalChildPath '*parameters.json') -Recurse).FullName
+            $ParameterFilePaths = (Get-ChildItem (Join-Path -Path $moduleFolderPath -ChildPath '.parameters' -AdditionalChildPath '*parameters.json') -Recurse -Force).FullName
             foreach ($ParameterFilePath in $ParameterFilePaths) {
                 $parameterFile_AllParameterNames = ((Get-Content $ParameterFilePath) | ConvertFrom-Json -AsHashtable).parameters.keys | Sort-Object
                 $parameterFileTestCases += @{
@@ -405,14 +405,14 @@ Describe 'Deployment template tests' -Tag Template {
 
             # Test file setup
             $deploymentFolderTestCases += @{
-                moduleFolderName       = Split-Path $moduleFolderPath -Leaf
+                moduleFolderName       = $moduleFolderPath.Replace('\', '/').Split('/arm/')[1]
                 templateContent        = $templateContent
                 parameterFileTestCases = $parameterFileTestCases
             }
         }
         foreach ($moduleFolderPath in $moduleFolderPathsFiltered) {
             $deploymentFolderTestCasesException += @{
-                moduleFolderNameException = Split-Path $moduleFolderPath -Leaf
+                moduleFolderNameException = $moduleFolderPath.Replace('\', '/').Split('/arm/')[1]
                 templateContentException  = $templateContent
             }
         }
@@ -649,6 +649,7 @@ Describe 'Deployment template tests' -Tag Template {
             $i = 0
             $Schemaverion = $templateContent.'$schema'
             if ((($Schemaverion.Split('/')[5]).Split('.')[0]) -eq (($RGdeployment.Split('/')[5]).Split('.')[0])) {
+                # Resource Group Level deployment
                 foreach ($Stdo in $Stdoutput) {
                     if ($Stdo -like '*Name*' -or $Stdo -like '*ResourceId*' -or $Stdo -like '*ResourceGroup*') {
                         $true | Should -Be $true
@@ -657,6 +658,7 @@ Describe 'Deployment template tests' -Tag Template {
                 }
                 $i | Should -Not -BeLessThan 3
             } ElseIf ((($schemaverion.Split('/')[5]).Split('.')[0]) -eq (($Subscriptiondeployment.Split('/')[5]).Split('.')[0])) {
+                # Subscription Level deployment
                 $Stdoutput | Should -Not -BeNullOrEmpty
             }
 
@@ -715,6 +717,23 @@ Describe 'Deployment template tests' -Tag Template {
                 $missingParameters.Count | Should -Be 0 -Because ('no required parameters in the template file should be missing in the parameter file. Found missing items: [{0}]' -f ($missingParameters -join ', '))
             }
         }
+
+        It '[<moduleFolderName>] Parameter files should not contain subscriptionId original value and but a token string' -TestCases $deploymentFolderTestCases {
+            param (
+                [hashtable[]] $parameterFileTestCases
+            )
+
+            foreach ($parameterFileTestCase in $parameterFileTestCases) {
+                $parameterFileContent = Get-Content -Path $parameterFileTestCase.parameterFile_Path
+                if (($parameterFileContent | Select-String -Pattern '/subscriptions/' -Quiet) -or ($parameterFileContent | Select-String -Pattern '"subscriptionId"' -Quiet)) {
+                    if (!($parameterFileContent | Select-String -Pattern '<<subscriptionId>>')) {
+                        $SubIdVisible = $true
+                    }
+                }
+
+                $SubIdVisible | Should -Be $null -Because ('Parameter file should not contain original subscription Id value, but a token value "<<subscriptionId>>"')
+            }
+        }
     }
 }
 
@@ -724,7 +743,7 @@ Describe "Api version tests [All apiVersions in the template should be 'recent']
     $ApiVersions = Get-AzResourceProvider -ListAvailable
     foreach ($moduleFolderPath in $moduleFolderPathsFiltered) {
 
-        $moduleFolderName = $moduleFolderPath.Split('\arm\')[1]
+        $moduleFolderName = $moduleFolderPath.Replace('\', '/').Split('/arm/')[1]
 
         if (Test-Path (Join-Path $moduleFolderPath 'deploy.bicep')) {
             $templateContent = az bicep build --file (Join-Path $moduleFolderPath 'deploy.bicep') --stdout | ConvertFrom-Json -AsHashtable
