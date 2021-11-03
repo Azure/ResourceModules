@@ -24,7 +24,7 @@ This module deploys AVD Host Pools, with resource lock and diagnostics configura
 | `eventHubName` | string |  |  | Optional. Name of the event hub within the namespace to which logs are streamed. Without this, an event hub is created for each log category. |
 | `hostpoolDescription` | string |  |  | Optional. The description of the Host Pool to be created. |
 | `hostpoolFriendlyName` | string |  |  | Optional. The friendly name of the Host Pool to be created. |
-| `hostPoolName` | string |  |  | Required. Name of the Host Pool |
+| `name` | string |  |  | Required. Name of the Host Pool |
 | `hostpoolType` | string | `Pooled` | `[Personal, Pooled]` | Optional. Set this parameter to Personal if you would like to enable Persistent Desktop experience. Defaults to Pooled. |
 | `loadBalancerType` | string | `BreadthFirst` | `[BreadthFirst, DepthFirst, Persistent]` | Optional. Type of load balancer algorithm. |
 | `location` | string | `[resourceGroup().location]` |  | Optional. Location for all resources. |
