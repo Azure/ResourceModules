@@ -20,15 +20,15 @@ var builtInRoleNames = {
   'User Access Administrator': subscriptionResourceId('Microsoft.Authorization/roleDefinitions', '18d7d88d-d35e-4fb5-a5c3-7773c20a72d9')
 }
 
-resource apiManagementService 'Microsoft.ApiManagement/service@2020-12-01' existing = {
+resource service 'Microsoft.ApiManagement/service@2020-12-01' existing = {
   name: resourceName
 }
 
 resource roleAssignment 'Microsoft.Authorization/roleAssignments@2020-04-01-preview' = [for principalId in roleAssignmentObj.principalIds: {
-  name: '${guid(apiManagementService.name, principalId, roleAssignmentObj.roleDefinitionIdOrName)}'
+  name: guid(service.name, principalId, roleAssignmentObj.roleDefinitionIdOrName)
   properties: {
     roleDefinitionId: contains(builtInRoleNames, roleAssignmentObj.roleDefinitionIdOrName) ? builtInRoleNames[roleAssignmentObj.roleDefinitionIdOrName] : roleAssignmentObj.roleDefinitionIdOrName
     principalId: principalId
   }
-  scope: apiManagementService
+  scope: service
 }]
