@@ -7,8 +7,8 @@ This module deploys Event Grid
 | Resource Type | Api Version |
 | :-- | :-- |
 | `Microsoft.Authorization/locks` | 2016-09-01 |
+| `Microsoft.Authorization/roleAssignments` | 2020-04-01-preview |
 | `Microsoft.EventGrid/topics` | 2020-06-01 |
-| `Microsoft.EventGrid/topics/providers/roleAssignments` | 2021-04-01-preview |
 | `Microsoft.Insights/diagnosticSettings` | 2017-05-01-preview |
 | `Microsoft.Network/privateEndpoints` | 2021-05-01 |
 | `Microsoft.Network/privateEndpoints/privateDnsZoneGroups` | 2021-02-01 |
@@ -123,6 +123,7 @@ Tag names and tag values can be provided as needed. A tag can be left without a 
 ## Template references
 
 - [Locks](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2016-09-01/locks)
+- [Roleassignments](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2020-04-01-preview/roleAssignments)
 - [Topics](https://docs.microsoft.com/en-us/azure/templates/Microsoft.EventGrid/2020-06-01/topics)
 - [Diagnosticsettings](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Insights/2017-05-01-preview/diagnosticSettings)
 - [Privateendpoints](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Network/2021-05-01/privateEndpoints)
