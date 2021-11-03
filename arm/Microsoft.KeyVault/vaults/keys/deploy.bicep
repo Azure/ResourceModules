@@ -16,7 +16,7 @@ param attributesExp int = -1
 @description('Optional. Not before date in seconds since 1970-01-01T00:00:00Z.')
 param attributesNbf int = -1
 
-@description('The elliptic curve name.')
+@description('Optional. The elliptic curve name.')
 @allowed([
   'P-256'
   'P-256K'
@@ -40,7 +40,7 @@ param keyOps array = []
 @description('Optional. The key size in bits. For example: 2048, 3072, or 4096 for RSA.')
 param keySize int = -1
 
-@description('The type of the key.')
+@description('Optional. The type of the key.')
 @allowed([
   'EC'
   'EC-HSM'
