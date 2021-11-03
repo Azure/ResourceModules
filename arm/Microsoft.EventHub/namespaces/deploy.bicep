@@ -1,6 +1,6 @@
 @description('Optional. The name of the EventHub namespace. If no name is provided, then unique name will be created.')
 @maxLength(50)
-param namespaceName string = ''
+param name string = ''
 
 @description('Optional. Location for all resources.')
 param location string = resourceGroup().location
@@ -88,9 +88,9 @@ param eventHubs array = []
 var maxNameLength = 50
 var uniqueEventHubNamespaceUntrim = '${uniqueString('EventHub Namespace${baseTime}')}'
 var uniqueEventHubNamespace = ((length(uniqueEventHubNamespaceUntrim) > maxNameLength) ? substring(uniqueEventHubNamespaceUntrim, 0, maxNameLength) : uniqueEventHubNamespaceUntrim)
-var constructedNamespaceName = (empty(namespaceName) ? uniqueEventHubNamespace : namespaceName)
+var constructedName = (empty(name) ? uniqueEventHubNamespace : name)
 var defaultSASKeyName = 'RootManageSharedAccessKey'
-var authRuleResourceId = resourceId('Microsoft.EventHub/namespaces/authorizationRules', constructedNamespaceName, defaultSASKeyName)
+var authRuleResourceId = resourceId('Microsoft.EventHub/namespaces/authorizationRules', constructedName, defaultSASKeyName)
 var maximumThroughputUnits_var = ((!isAutoInflateEnabled) ? 0 : maximumThroughputUnits)
 var virtualNetworkRules = [for index in range(0, (empty(networkAcls) ? 0 : length(networkAcls.virtualNetworkRules))): {
   id: '${vNetId}/subnets/${networkAcls.virtualNetworkRules[index].subnet}'
@@ -179,7 +179,7 @@ module pid_cuaId '.bicep/nested_cuaId.bicep' = if (!empty(cuaId)) {
 }
 
 resource eventHubNamespace 'Microsoft.EventHub/namespaces@2017-04-01' = {
-  name: constructedNamespaceName
+  name: constructedName
   location: location
   tags: tags
   sku: {
