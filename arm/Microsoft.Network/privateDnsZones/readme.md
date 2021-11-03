@@ -7,8 +7,8 @@ This template deploys private DNS zone.
 | Resource Type | Api Version |
 | :-- | :-- |
 | `Microsoft.Authorization/locks` | 2016-09-01 |
+| `Microsoft.Authorization/roleAssignments` | 2020-04-01-preview |
 | `Microsoft.Network/privateDnsZones` | 2018-09-01 |
-| `Microsoft.Network/privateDnsZones/providers/roleAssignments` | 2021-04-01-preview |
 | `Microsoft.Network/privateDnsZones/virtualNetworkLinks` | 2018-09-01 |
 
 ## Parameters
@@ -97,5 +97,6 @@ Tag names and tag values can be provided as needed. A tag can be left without a 
 ## Template references
 
 - [Locks](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2016-09-01/locks)
+- [Roleassignments](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2020-04-01-preview/roleAssignments)
 - [Privatednszones](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Network/2018-09-01/privateDnsZones)
 - [Privatednszones/Virtualnetworklinks](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Network/2018-09-01/privateDnsZones/virtualNetworkLinks)
