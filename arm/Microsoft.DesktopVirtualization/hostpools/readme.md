@@ -24,13 +24,13 @@ This module deploys AVD Host Pools, with resource lock and diagnostics configura
 | `eventHubName` | string |  |  | Optional. Name of the event hub within the namespace to which logs are streamed. Without this, an event hub is created for each log category. |
 | `hostpoolDescription` | string |  |  | Optional. The description of the Host Pool to be created. |
 | `hostpoolFriendlyName` | string |  |  | Optional. The friendly name of the Host Pool to be created. |
-| `name` | string |  |  | Required. Name of the Host Pool |
 | `hostpoolType` | string | `Pooled` | `[Personal, Pooled]` | Optional. Set this parameter to Personal if you would like to enable Persistent Desktop experience. Defaults to Pooled. |
 | `loadBalancerType` | string | `BreadthFirst` | `[BreadthFirst, DepthFirst, Persistent]` | Optional. Type of load balancer algorithm. |
 | `location` | string | `[resourceGroup().location]` |  | Optional. Location for all resources. |
 | `lock` | string | `NotSpecified` | `[CanNotDelete, NotSpecified, ReadOnly]` | Optional. Specify the type of lock. |
 | `logsToEnable` | array | `[Checkpoint, Error, Management, Connection, HostRegistration, AgentHealthStatus]` | `[Checkpoint, Error, Management, Connection, HostRegistration, AgentHealthStatus]` | Optional. The name of logs that will be streamed. |
 | `maxSessionLimit` | int | `99999` |  | Optional. Maximum number of sessions. |
+| `name` | string |  |  | Required. Name of the Host Pool |
 | `personalDesktopAssignmentType` | string |  | `[Automatic, Direct, ]` | Optional. Set the type of assignment for a Personal Host Pool type |
 | `preferredAppGroupType` | string | `None` | `[Desktop, None, RailApplications]` | Optional. The type of preferred application group type, default to Desktop Application Group |
 | `roleAssignments` | array | `[]` |  | Optional. Array of role assignment objects that contain the 'roleDefinitionIdOrName' and 'principalIds' to define RBAC role assignments on this resource. In the roleDefinitionIdOrName attribute, you can provide either the display name of the role definition, or it's fully qualified ID in the following format: '/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11' |
