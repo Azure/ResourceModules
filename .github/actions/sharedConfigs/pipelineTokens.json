@@ -1,0 +1,24 @@
+{
+    "pipelineTokens": [
+        {
+            "Replace": "<<tenantId>>",
+            "With": "${{ env.ARM_TENANT_ID }}"
+        },
+        {
+            "Replace": "<<tenantId2>>",
+            "With": "${{ env.ARM_TENANT_ID2 }}"
+        },
+        {
+            "Replace": "<<subscriptionId>>",
+            "With": "${{ env.ARM_SUBSCRIPTION_ID }}"
+        },
+        {
+            "Replace": "<<managementGroupId>>",
+            "With": "${{ env.ARM_MGMTGROUP_ID }}"
+        },
+        {
+            "Replace": "<<principalId1>>",
+            "With": "${{ env.ARM_PRINCIPAL_ID1 }}"
+        }
+    ]
+}
