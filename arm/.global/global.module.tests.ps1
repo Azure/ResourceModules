@@ -726,8 +726,8 @@ Describe 'Deployment template tests' -Tag Template {
             foreach ($parameterFileTestCase in $parameterFileTestCases) {
                 $ParameterFileContent = Get-Content -Path $parameterFileTestCase.parameterFile_Path
                 $SubscriptionIdKeyCount = ($ParameterFileContent | Select-String -Pattern '"subscriptionId"', "'subscriptionId'", '/subscriptions/' -AllMatches).Matches.Count
-                $SubscriptionIdValueCount = ($ParameterFileContent | Select-String -Pattern '<<subscriptionId>>' -AllMatches).Matches.Count
-                $SubscriptionIdKeyCount | Should -Be $SubscriptionIdValueCount -Because ('Parameter file should not contain the subscription Id guid, instead should reference a token value "<<subscriptionId>>"')
+                $SubscriptionIdValueCount = ($ParameterFileContent | Select-String -Pattern '<<subscriptionId' -AllMatches).Matches.Count
+                $SubscriptionIdKeyCount | Should -Be $SubscriptionIdValueCount -Because ('Parameter file should not contain the subscription Id guid, instead should reference a token value "<<subscriptionId(n)>> (i.e. <<subscriptionId1>>)"')
             }
         }
 
@@ -739,8 +739,8 @@ Describe 'Deployment template tests' -Tag Template {
             foreach ($parameterFileTestCase in $parameterFileTestCases) {
                 $ParameterFileContent = Get-Content -Path $parameterFileTestCase.parameterFile_Path
                 $ManagementGroupIdKeyCount = ($ParameterFileContent | Select-String -Pattern '"managementGroupId"', "'managementGroupId'", '/managementGroups/' -AllMatches).Matches.Count
-                $ManagementGroupValueCount = ($ParameterFileContent | Select-String -Pattern '<<managementGroupId>>' -AllMatches).Matches.Count
-                $ManagementGroupIdKeyCount | Should -Be $ManagementGroupValueCount -Because ('Parameter file should not contain the management Group ID, instead should reference a token value "<<managementGroupId>>"')
+                $ManagementGroupValueCount = ($ParameterFileContent | Select-String -Pattern '<<managementGroupId' -AllMatches).Matches.Count
+                $ManagementGroupIdKeyCount | Should -Be $ManagementGroupValueCount -Because ('Parameter file should not contain the management Group ID, instead should reference a token value "<<managementGroupId(n)>> (i.e. <<managementGroupId1>>)"')
             }
         }
 
@@ -753,7 +753,7 @@ Describe 'Deployment template tests' -Tag Template {
                 $ParameterFileContent = Get-Content -Path $parameterFileTestCase.parameterFile_Path
                 $PrincipalIdKeyCount = ($ParameterFileContent | Select-String -Pattern '"principalId"', "'principalId'", 'principalId' -AllMatches).Matches.Count
                 $PrincipalIdValueCount = ($ParameterFileContent | Select-String -Pattern '<<principalId' -AllMatches).Matches.Count
-                $PrincipalIdValueCount | Should -BeGreaterOrEqual ($PrincipalIdKeyCount - $PrincipalIdValueCount) -Because ('Parameter file should not contain the Principal Id guid, instead should reference a token value "<<principalId(n)>>"')
+                $PrincipalIdValueCount | Should -BeGreaterOrEqual ($PrincipalIdKeyCount - $PrincipalIdValueCount) -Because ('Parameter file should not contain the Principal Id guid, instead should reference a token value "<<principalId(n)>> (i.e. <<principalId1>>)"')
             }
         }
 
@@ -765,8 +765,8 @@ Describe 'Deployment template tests' -Tag Template {
             foreach ($parameterFileTestCase in $parameterFileTestCases) {
                 $ParameterFileContent = Get-Content -Path $parameterFileTestCase.parameterFile_Path
                 $TenantIdKeyCount = ($ParameterFileContent | Select-String -Pattern '"tenantId"', 'tenantId' -AllMatches).Matches.Count
-                $TenantIdValueCount = ($ParameterFileContent | Select-String -Pattern '<<tenantId>>' -AllMatches).Matches.Count
-                $TenantIdKeyCount - $TenantIdValueCount | Should -Be $TenantIdValueCount -Because ('Parameter file should not contain the Tenant Id guid, instead should reference a token value "<<tenantId>>"')
+                $TenantIdValueCount = ($ParameterFileContent | Select-String -Pattern '<<tenantId' -AllMatches).Matches.Count
+                $TenantIdKeyCount - $TenantIdValueCount | Should -Be $TenantIdValueCount -Because ('Parameter file should not contain the Tenant Id guid, instead should reference a token value "<<tenantId(n)>> (i.e. <<tenantId1>>)"')
             }
         }
     }
