@@ -97,7 +97,7 @@ param wsdlSelector object = {}
 var apiVersionSetNotEmpty = (!empty(apiVersionSet))
 var apiVersionSetName = (apiVersionSetNotEmpty ? apiVersionSet.name : 'default')
 
-module pid_cuaId './.bicep/nested_cuaId.bicep' = if (!empty(cuaId)) {
+module pid_cuaId '.bicep/nested_cuaId.bicep' = if (!empty(cuaId)) {
   name: 'pid-${cuaId}'
   params: {}
 }

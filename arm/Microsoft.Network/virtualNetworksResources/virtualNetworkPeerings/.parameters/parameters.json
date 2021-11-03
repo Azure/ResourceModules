@@ -3,10 +3,10 @@
     "contentVersion": "1.0.0.0",
     "parameters": {
         "localVnetName": {
-            "value": "adp-sxx-az-vnet-weu-x-peer02"
+            "value": "adp-sxx-az-vnet-x-peer02"
         },
         "remoteVirtualNetworkId": {
-            "value": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/virtualNetworks/adp-sxx-az-vnet-weu-x-peer01"
+            "value": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/virtualNetworks/adp-sxx-az-vnet-x-peer01"
         },
         "allowForwardedTraffic": {
             "value": true

@@ -3,10 +3,10 @@
     "contentVersion": "1.0.0.0",
     "parameters": {
         "containergroupName": {
-            "value": "sxx-az-acg-weu-x-001"
+            "value": "sxx-az-acg-x-001"
         },
         "containerName": {
-            "value": "sxx-az-aci-weu-x-001"
+            "value": "sxx-az-aci-x-001"
         },
         "image": {
             "value": "microsoft/aci-helloworld"
