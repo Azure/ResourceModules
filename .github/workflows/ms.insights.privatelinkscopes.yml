@@ -12,7 +12,7 @@ on:
         required: false
         default: 'patch'
       customVersion:
-        description: 'The version to enforce if [versionOption] is set to [custom]'
+        description: 'Custom version to apply. Used only if higher than latest'
         required: false
         default: '0.0.1'
   push:

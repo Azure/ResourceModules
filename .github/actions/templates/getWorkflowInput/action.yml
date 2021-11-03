@@ -14,7 +14,7 @@ outputs:
     description: 'The mode to handle the version increments [major|minor|patch]'
     value: ${{ steps.get-input-param-action.outputs.versioningOption }}
   customVersion:
-    description: 'The version to enforce if [versionOption] is set to [custom]'
+    description: 'Custom version to apply. Used only if higher than latest'
     value: ${{ steps.get-input-param-action.outputs.customVersion }}
 
 runs:
