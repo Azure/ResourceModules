@@ -310,7 +310,7 @@ resource managementGroup 'Microsoft.Management/managementGroups@2021-04-01' = {
 }
 
 module managementGroup_rbac '.bicep/nested_rbac.bicep' = [for (roleAssignment, index) in roleAssignments: {
-  name: 'rbac-${deployment().name}-${index}'
+  name: '${deployment().name}-rbac-${index}'
   scope: az.managementGroup(managementGroup.name)
   params: {
     managementGroupName: managementGroup.name

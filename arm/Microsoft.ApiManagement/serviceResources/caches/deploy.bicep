@@ -19,7 +19,7 @@ param resourceId string = ''
 @description('Required. Location identifier to use cache from (should be either \'default\' or valid Azure region identifier)')
 param useFromLocation string = ''
 
-module pid_cuaId './.bicep/nested_cuaId.bicep' = if (!empty(cuaId)) {
+module pid_cuaId '.bicep/nested_cuaId.bicep' = if (!empty(cuaId)) {
   name: 'pid-${cuaId}'
   params: {}
 }
