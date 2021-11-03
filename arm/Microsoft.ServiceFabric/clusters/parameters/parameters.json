@@ -62,9 +62,9 @@
         //         "isAdmin": "" // If 'clientCertificateThumbprints' is passed then this is mandatory
         //     }]
         // },
-        "clusterCodeVersion": {
-            "value": "8.1.329.9590"
-        },
+        // "clusterCodeVersion": {
+        //     "value": "8.1.329.9590"
+        // },
         // "diagnosticsStorageAccountConfig": {
         //     "value": {
         //         "blobEndpoint": "", // If 'diagnosticsStorageAccountConfig' is passed then this is mandatory
@@ -88,7 +88,8 @@
             "value": "https://sxx-az-sfc-weu-x-001.eastus.cloudapp.azure.com:19080" // Mandatory
         },
         "nodeTypes": { // The list of node types in the cluster.
-            "value": [{
+            "value": [
+                {
                     "applicationPorts": {
                         "endPort": 30000,
                         "startPort": 20000
@@ -150,90 +151,106 @@
             "value": "WindowsServer 2016-Datacenter"
         },
         "roleAssignments": {
-            "value": [{
-                "roleDefinitionIdOrName": "Reader",
-                "principalIds": [
-                    "5545f7a0-51f4-46af-b3b4-baecf5176a56"
-                ]
-            }]
+            "value": [
+                {
+                    "roleDefinitionIdOrName": "Reader",
+                    "principalIds": [
+                        "5545f7a0-51f4-46af-b3b4-baecf5176a56"
+                    ]
+                }
+            ]
         },
         "serviceFabricClusterApplications": {
-            "value": [{
-                "name": "serviceFabricClusterApplication01",
-                "identity": {
-                    "type": "None",
-                    "userAssignedIdentities": {}
-                },
-                "properties": {
-                    "managedIdentities": [{
-                        "name": "Identity_Friendly_Name",
-                        "principalId": "5545f7a0-51f4-46af-b3b4-baecf5176a56"
-                    }],
-                    "maximumNodes": 2,
-                    "metrics": [{
-                        "maximumCapacity": null,
-                        "name": null,
-                        "reservationCapacity": null,
-                        "totalApplicationCapacity": null
-                    }],
-                    "minimumNodes": null,
-                    "parameters": {},
-                    "removeApplicationCapacity": "",
-                    "typeName": "DotNetCore",
-                    "typeVersion": "VersionOne",
-                    "upgradePolicy": {
-                        "applicationHealthPolicy": {
-                            "considerWarningAsError": "",
-                            "defaultServiceTypeHealthPolicy": {
-                                "maxPercentUnhealthyPartitionsPerService": null,
-                                "maxPercentUnhealthyReplicasPerPartition": null,
-                                "maxPercentUnhealthyServices": null
+            "value": [
+                {
+                    "name": "serviceFabricClusterApplication01",
+                    "identity": {
+                        "type": "None",
+                        "userAssignedIdentities": {}
+                    },
+                    "properties": {
+                        "managedIdentities": [
+                            {
+                                "name": "Identity_Friendly_Name",
+                                "principalId": "5545f7a0-51f4-46af-b3b4-baecf5176a56"
+                            }
+                        ],
+                        "maximumNodes": 2,
+                        "metrics": [
+                            {
+                                "maximumCapacity": null,
+                                "name": null,
+                                "reservationCapacity": null,
+                                "totalApplicationCapacity": null
+                            }
+                        ],
+                        "minimumNodes": null,
+                        "parameters": {},
+                        "removeApplicationCapacity": "",
+                        "typeName": "DotNetCore",
+                        "typeVersion": "VersionOne",
+                        "upgradePolicy": {
+                            "applicationHealthPolicy": {
+                                "considerWarningAsError": "",
+                                "defaultServiceTypeHealthPolicy": {
+                                    "maxPercentUnhealthyPartitionsPerService": null,
+                                    "maxPercentUnhealthyReplicasPerPartition": null,
+                                    "maxPercentUnhealthyServices": null
+                                },
+                                "maxPercentUnhealthyDeployedApplications": null //,
+                                //"serviceTypeHealthPolicyMap": {}
                             },
-                            "maxPercentUnhealthyDeployedApplications": null //,
-                            //"serviceTypeHealthPolicyMap": {}
-                        },
-                        "forceRestart": "",
-                        "recreateApplication": "",
-                        "rollingUpgradeMonitoringPolicy": {
-                            "failureAction": null,
-                            "healthCheckRetryTimeout": null,
-                            "healthCheckStableDuration": null,
-                            "healthCheckWaitDuration": null,
-                            "upgradeDomainTimeout": null,
-                            "upgradeTimeout": null
-                        },
-                        "upgradeMode": "UnmonitoredAuto",
-                        "upgradeReplicaSetCheckTimeout": null
-                    }
-                },
-                "applicationsServices": {
-                    "value": [{
-                        "name": "Service01",
-                        "properties": {
-                            "provisioningState": "Default",
-                            "correlationScheme": [{
-                                "scheme": "Invalid",
-                                "serviceName": "fabric:service01"
-                            }]
+                            "forceRestart": "",
+                            "recreateApplication": "",
+                            "rollingUpgradeMonitoringPolicy": {
+                                "failureAction": null,
+                                "healthCheckRetryTimeout": null,
+                                "healthCheckStableDuration": null,
+                                "healthCheckWaitDuration": null,
+                                "upgradeDomainTimeout": null,
+                                "upgradeTimeout": null
+                            },
+                            "upgradeMode": "UnmonitoredAuto",
+                            "upgradeReplicaSetCheckTimeout": null
                         }
-                    }]
+                    },
+                    "applicationsServices": {
+                        "value": [
+                            {
+                                "name": "Service01",
+                                "properties": {
+                                    "provisioningState": "Default",
+                                    "correlationScheme": [
+                                        {
+                                            "scheme": "Invalid",
+                                            "serviceName": "fabric:service01"
+                                        }
+                                    ]
+                                }
+                            }
+                        ]
+                    }
                 }
-            }]
+            ]
         },
         "serviceFabricApplicationTypes": {
-            "value": [{
-                "name": "DotNetCore",
-                "properties": {
-                    "provisioningState": "Default"
-                },
-                "applicationTypesVersions": [{
-                    "name": "VersionOne",
+            "value": [
+                {
+                    "name": "DotNetCore",
                     "properties": {
-                        "provisioningState": "Default",
-                        "appPackageUrl": "https://github.com/Azure-Samples/service-fabric-wordcount/blob/master/WordCountV1.sfpkg"
-                    }
-                }]
-            }]
+                        "provisioningState": "Default"
+                    },
+                    "applicationTypesVersions": [
+                        {
+                            "name": "VersionOne",
+                            "properties": {
+                                "provisioningState": "Default",
+                                "appPackageUrl": "https://github.com/Azure-Samples/service-fabric-wordcount/blob/master/WordCountV1.sfpkg"
+                            }
+                        }
+                    ]
+                }
+            ]
         }
     }
 }
