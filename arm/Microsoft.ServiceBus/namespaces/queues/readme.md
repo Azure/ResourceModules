@@ -65,11 +65,11 @@ This module deploys a queue for a service bus namespace.
 
 ## Outputs
 
-| Output Name | Type |
-| :-- | :-- |
-| `namespaceQueueName` | string |
-| `namespaceQueueResourceGroup` | string |
-| `namespaceQueueResourceId` | string |
+| Output Name | Type | Description |
+| :-- | :-- | :-- |
+| `queueName` | string | The name of the deployed queue |
+| `queueResourceGroup` | string | The resource group of the deployed queue |
+| `queueResourceId` | string | The resourceId of the deployed queue |
 
 ## Template references
 

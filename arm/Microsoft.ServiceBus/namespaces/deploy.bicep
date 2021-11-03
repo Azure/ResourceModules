@@ -296,7 +296,14 @@ module serviceBusNamespace_rbac '.bicep/nested_rbac.bicep' = [for (roleAssignmen
   }
 }]
 
+@description('The resourceId of the deployed service bus namespace')
 output serviceBusNamespaceResourceId string = serviceBusNamespace.id
+
+@description('The resource group of the deployed service bus namespace')
 output serviceBusNamespaceResourceGroup string = resourceGroup().name
+
+@description('The name of the deployed service bus namespace')
 output serviceBusNamespaceName string = serviceBusNamespace.name
+
+@description('The connection string of the deployed service bus namespace')
 output serviceBusConnectionString string = 'Endpoint=sb://${serviceBusNamespaceName_var}.servicebus.windows.net/;SharedAccessKeyName=${listkeys(resourceId('Microsoft.ServiceBus/namespaces/authorizationRules', serviceBusNamespaceName_var, 'RootManageSharedAccessKey'), '2017-04-01').primaryKey}'

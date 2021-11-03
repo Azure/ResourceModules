@@ -12,11 +12,11 @@ This module deploys IP filter rules for a service bus namespace
 
 | Parameter Name | Type | Default Value | Possible Values | Description |
 | :-- | :-- | :-- | :-- | :-- |
-| `action` | string |  | `[Accept, Reject]` | Required. The IP Filter Action |
+| `action` | string |  | `[Accept]` | Required. The IP Filter Action |
 | `cuaId` | string |  |  | Optional. Customer Usage Attribution id (GUID). This GUID must be previously registered |
 | `filterName` | string |  |  | Required. IP Filter name |
 | `ipMask` | string |  |  | Required. IP Mask |
-| `name` | string | `[format('{0}-ifr', parameters('namespaceName'))]` |  | Optional. The name of the ip filter rule |
+| `name` | string | `[parameters('filterName')]` |  | Optional. The name of the ip filter rule |
 | `namespaceName` | string |  |  | Required. Name of the parent Service Bus Namespace for the Service Bus Queue. |
 
 ## Outputs

@@ -129,12 +129,12 @@ Tag names and tag values can be provided as needed. A tag can be left without a 
 
 ## Outputs
 
-| Output Name | Type |
-| :-- | :-- |
-| `serviceBusConnectionString` | string |
-| `serviceBusNamespaceName` | string |
-| `serviceBusNamespaceResourceGroup` | string |
-| `serviceBusNamespaceResourceId` | string |
+| Output Name | Type | Description |
+| :-- | :-- | :-- |
+| `serviceBusConnectionString` | string | The connection string of the deployed service bus namespace |
+| `serviceBusNamespaceName` | string | The name of the deployed service bus namespace |
+| `serviceBusNamespaceResourceGroup` | string | The resource group of the deployed service bus namespace |
+| `serviceBusNamespaceResourceId` | string | The resourceId of the deployed service bus namespace |
 
 ## Template references
 
