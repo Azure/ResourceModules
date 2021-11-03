@@ -140,7 +140,7 @@ var builtInRoleNames = {
   'Virtual Machine Contributor': subscriptionResourceId('Microsoft.Authorization/roleDefinitions', '9980e02c-c2be-4d73-94e8-173b1dc7cf3c')
 }
 
-module pid_cuaId './.bicep/nested_cuaId.bicep' = if (!empty(cuaId)) {
+module pid_cuaId '.bicep/nested_cuaId.bicep' = if (!empty(cuaId)) {
   name: 'pid-${cuaId}'
   params: {}
 }
@@ -203,8 +203,8 @@ resource rsv_diagnosticSettings 'Microsoft.Insights/diagnosticSettings@2021-05-0
   scope: rsv
 }
 
-module rsv_rbac './.bicep/nested_rbac.bicep' = [for (roleAssignment, index) in roleAssignments: {
-  name: 'rbac-${deployment().name}${index}'
+module rsv_rbac '.bicep/nested_rbac.bicep' = [for (roleAssignment, index) in roleAssignments: {
+  name: '${deployment().name}-rbac-${index}'
   params: {
     roleAssignmentObj: roleAssignment
     builtInRoleNames: builtInRoleNames

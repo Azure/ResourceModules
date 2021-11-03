@@ -394,7 +394,7 @@ var builtInRoleNames = {
   'Virtual Machine User Login': '/subscriptions/${subscription().subscriptionId}/providers/Microsoft.Authorization/roleDefinitions/fb879df8-f326-4884-b1cf-06f3ad86be52'
 }
 
-module pid_cuaId './.bicep/nested_cuaId.bicep' = if (!empty(cuaId)) {
+module pid_cuaId '.bicep/nested_cuaId.bicep' = if (!empty(cuaId)) {
   name: pidName_var
   params: {}
 }
@@ -761,8 +761,8 @@ resource vmss_diagnosticSettings 'Microsoft.Insights/diagnosticSettings@2021-05-
   scope: vmss
 }
 
-module vmss_rbac './.bicep/nested_rbac.bicep' = [for (roleAssignment, index) in roleAssignments: {
-  name: 'rbac-${deployment().name}${index}'
+module vmss_rbac '.bicep/nested_rbac.bicep' = [for (roleAssignment, index) in roleAssignments: {
+  name: '${deployment().name}-rbac-${index}'
   params: {
     roleAssignmentObj: roleAssignment
     builtInRoleNames: builtInRoleNames

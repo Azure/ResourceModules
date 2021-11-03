@@ -6,7 +6,7 @@ resource keyVault 'Microsoft.KeyVault/vaults@2019-09-01' existing = {
   name: resourceName
 }
 
-resource roleAssigment 'Microsoft.Authorization/roleAssignments@2021-04-01-preview' = [for principalId in roleAssignmentObj.principalIds: {
+resource roleAssignment 'Microsoft.Authorization/roleAssignments@2021-04-01-preview' = [for principalId in roleAssignmentObj.principalIds: {
   name: guid(resourceName, principalId, roleAssignmentObj.roleDefinitionIdOrName)
   properties: {
     roleDefinitionId: (contains(builtInRoleNames, roleAssignmentObj.roleDefinitionIdOrName) ? builtInRoleNames[roleAssignmentObj.roleDefinitionIdOrName] : roleAssignmentObj.roleDefinitionIdOrName)

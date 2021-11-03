@@ -3,7 +3,7 @@
     "contentVersion": "1.0.0.0",
     "parameters": {
         "netAppAccountName": {
-            "value": "sxx-az-anf-weu-x-001"
+            "value": "sxx-az-anf-x-001"
         },
         "domainName": {
             "value": ""
@@ -23,7 +23,7 @@
         "capacityPools": {
             "value": [
                 {
-                    "poolName": "sxx-az-anfcp-weu-x-001",
+                    "poolName": "sxx-az-anfcp-x-001",
                     "poolServiceLevel": "Premium",
                     "poolSize": 4398046511104,
                     "volumes": [
@@ -35,12 +35,12 @@
                             "protocolTypes": [
                                 "NFSv3"
                             ],
-                            "subnetId": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/virtualNetworks/adp-sxx-az-vnet-weu-x-001/subnets/sxx-az-subnet-weu-x-004",
+                            "subnetId": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/virtualNetworks/adp-sxx-az-vnet-x-001/subnets/sxx-az-subnet-x-004",
                             "roleAssignments": [
                                 {
                                     "roleDefinitionIdOrName": "Reader",
                                     "principalIds": [
-                                        "5545f7a0-51f4-46af-b3b4-baecf5176a56"
+                                        "cf33fea8-b30f-424f-ab73-c48d99e0b222"
                                     ]
                                 }
                             ]
@@ -65,12 +65,12 @@
                                     }
                                 ]
                             },
-                            "subnetId": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/virtualNetworks/adp-sxx-az-vnet-weu-x-001/subnets/sxx-az-subnet-weu-x-004",
+                            "subnetId": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/virtualNetworks/adp-sxx-az-vnet-x-001/subnets/sxx-az-subnet-x-004",
                             "roleAssignments": [
                                 {
                                     "roleDefinitionIdOrName": "Reader",
                                     "principalIds": [
-                                        "5545f7a0-51f4-46af-b3b4-baecf5176a56"
+                                        "cf33fea8-b30f-424f-ab73-c48d99e0b222"
                                     ]
                                 }
                             ]
@@ -80,13 +80,13 @@
                         {
                             "roleDefinitionIdOrName": "Reader",
                             "principalIds": [
-                                "5545f7a0-51f4-46af-b3b4-baecf5176a56"
+                                "cf33fea8-b30f-424f-ab73-c48d99e0b222"
                             ]
                         }
                     ]
                 },
                 {
-                    "poolName": "sxx-az-anfcp-weu-x-002",
+                    "poolName": "sxx-az-anfcp-x-002",
                     "poolServiceLevel": "Premium",
                     "poolSize": 4398046511104,
                     "volumes": [],
@@ -94,7 +94,7 @@
                         {
                             "roleDefinitionIdOrName": "Reader",
                             "principalIds": [
-                                "5545f7a0-51f4-46af-b3b4-baecf5176a56"
+                                "cf33fea8-b30f-424f-ab73-c48d99e0b222"
                             ]
                         }
                     ]
@@ -106,7 +106,7 @@
                 {
                     "roleDefinitionIdOrName": "Reader",
                     "principalIds": [
-                        "5545f7a0-51f4-46af-b3b4-baecf5176a56"
+                        "cf33fea8-b30f-424f-ab73-c48d99e0b222"
                     ]
                 }
             ]

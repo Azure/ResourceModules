@@ -3,13 +3,13 @@
     "contentVersion": "1.0.0.0",
     "parameters": {
         "apiManagementServiceName": {
-            "value": "sxx-az-am-weu-x-001"
+            "value": "sxx-az-am-x-001"
         },
         "publisherEmail": {
             "value": "apimgmt-noreply@mail.windowsazure.com"
         },
         "publisherName": {
-            "value": "sxx-az-amorg-weu-x-001"
+            "value": "sxx-az-amorg-x-001"
         },
         "cuaId": {
             "value": "00000-0-000000"
@@ -39,7 +39,7 @@
                 {
                     "roleDefinitionIdOrName": "Reader",
                     "principalIds": [
-                        "5545f7a0-51f4-46af-b3b4-baecf5176a56"
+                        "cf33fea8-b30f-424f-ab73-c48d99e0b222"
                     ]
                 }
             ]

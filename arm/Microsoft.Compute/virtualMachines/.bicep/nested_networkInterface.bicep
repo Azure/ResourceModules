@@ -37,7 +37,7 @@ var networkSecurityGroup = {
   id: networkSecurityGroupId
 }
 
-module networkInterface_publicIPConfigurations './nested_networkInterface_publicIPAddress.bicep' = [for (ipConfiguration, index) in ipConfigurationArray: if (contains(ipConfiguration, 'pipconfiguration')) {
+module networkInterface_publicIPConfigurations 'nested_networkInterface_publicIPAddress.bicep' = [for (ipConfiguration, index) in ipConfigurationArray: if (contains(ipConfiguration, 'pipconfiguration')) {
   name: '${deployment().name}-pip-${index}'
   params: {
     publicIPAddressName: '${virtualMachineName}${ipConfiguration.pipconfiguration.publicIpNameSuffix}'
@@ -108,7 +108,7 @@ resource networkInterface_diagnosticSettings 'Microsoft.Insights/diagnosticsetti
   scope: networkInterface
 }
 
-module networkInterface_rbac './nested_networkInterface_rbac.bicep' = [for (roleAssignment, index) in roleAssignments: {
+module networkInterface_rbac 'nested_networkInterface_rbac.bicep' = [for (roleAssignment, index) in roleAssignments: {
   name: '${deployment().name}-rbac-${index}'
   params: {
     roleAssignmentObj: roleAssignment

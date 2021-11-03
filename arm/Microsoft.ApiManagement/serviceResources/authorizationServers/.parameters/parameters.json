@@ -3,7 +3,7 @@
     "contentVersion": "1.0.0.0",
     "parameters": {
         "apiManagementServiceName": {
-            "value": "adp-sxx-az-am-weu-x-001"
+            "value": "adp-sxx-az-am-x-001"
         },
         "apiManagementServiceAuthorizationServerName": {
             "value": "AuthServer1"
@@ -19,7 +19,7 @@
         "clientId": {
             "reference": {
                 "keyVault": {
-                    "id": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.KeyVault/vaults/adp-sxx-az-kv-weu-x-001"
+                    "id": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.KeyVault/vaults/adp-sxx-az-kv-x-001"
                 },
                 "secretName": "apimclientid"
             }
@@ -27,7 +27,7 @@
         "clientSecret": {
             "reference": {
                 "keyVault": {
-                    "id": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.KeyVault/vaults/adp-sxx-az-kv-weu-x-001"
+                    "id": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.KeyVault/vaults/adp-sxx-az-kv-x-001"
                 },
                 "secretName": "apimclientsecret"
             }
