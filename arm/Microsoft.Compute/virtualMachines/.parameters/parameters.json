@@ -117,7 +117,7 @@
             "value": "sxx-az-rsv-x-999"
         },
         "backupVaultResourceGroup": {
-            "value": "management-rg"
+            "value": "validation-rg"
         },
         "backupPolicyName": {
             "value": "VMpolicy"
