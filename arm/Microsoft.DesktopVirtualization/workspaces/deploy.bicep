@@ -1,5 +1,5 @@
 @description('Required. The name of the workspace to be attach to new Application Group.')
-param workSpaceName string
+param name string
 
 @description('Optional. Location for all resources.')
 param location string = resourceGroup().location
@@ -97,7 +97,7 @@ module pid_cuaId '.bicep/nested_cuaId.bicep' = if (!empty(cuaId)) {
 }
 
 resource workspace 'Microsoft.DesktopVirtualization/workspaces@2021-07-12' = {
-  name: workSpaceName
+  name: name
   location: location
   tags: tags
   properties: {
@@ -117,7 +117,7 @@ resource workspace_lock 'Microsoft.Authorization/locks@2016-09-01' = if (lock !=
 }
 
 resource workspace_diagnosticSettings 'Microsoft.Insights/diagnosticsettings@2017-05-01-preview' = if ((!empty(diagnosticStorageAccountId)) || (!empty(workspaceId)) || (!empty(eventHubAuthorizationRuleId)) || (!empty(eventHubName))) {
-  name: '${workSpaceName}-diagnosticsetting'
+  name: '${workspace.name}-diagnosticsetting'
   properties: {
     storageAccountId: (empty(diagnosticStorageAccountId) ? json('null') : diagnosticStorageAccountId)
     workspaceId: (empty(workspaceId) ? json('null') : workspaceId)
