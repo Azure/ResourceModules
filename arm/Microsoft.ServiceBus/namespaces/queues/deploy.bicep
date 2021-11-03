@@ -6,7 +6,7 @@ param namespaceName string
 @description('Required. Name of the Service Bus Queue.')
 @minLength(6)
 @maxLength(50)
-param queueName string
+param name string
 
 @description('Optional. ISO 8601 timespan duration of a peek-lock; that is, the amount of time that the message is locked for other receivers. The maximum value for LockDuration is 5 minutes; the default value is 1 minute.')
 param lockDuration string = 'PT1M'
@@ -107,8 +107,8 @@ module pid_cuaId '.bicep/nested_cuaId.bicep' = if (!empty(cuaId)) {
   params: {}
 }
 
-resource serviceBusNamespaceQueue 'Microsoft.ServiceBus/namespaces/queues@2021-06-01-preview' = {
-  name: '${namespaceName}/${queueName}'
+resource queue 'Microsoft.ServiceBus/namespaces/queues@2021-06-01-preview' = {
+  name: '${namespaceName}/${name}'
   properties: {
     lockDuration: lockDuration
     maxSizeInMegabytes: maxSizeInMegabytes
@@ -123,33 +123,44 @@ resource serviceBusNamespaceQueue 'Microsoft.ServiceBus/namespaces/queues@2021-0
     enablePartitioning: enablePartitioning
     enableExpress: enableExpress
   }
-
-  resource serviceBusNamespaceQueue_authorizationRules 'authorizationRules@2017-04-01' = [for authorizationRule in authorizationRules: {
-    name: authorizationRule.name
-    properties: {
-      rights: authorizationRule.properties.rights
-    }
-  }]
 }
 
-resource serviceBusNamespaceQueue_lock 'Microsoft.Authorization/locks@2016-09-01' = if (lock != 'NotSpecified') {
-  name: '${split(serviceBusNamespaceQueue.name, '/')[1]}-${lock}-lock'
+module queue_authorizationRules 'authorizationRules/deploy.bicep' = [for (authorizationRule, index) in authorizationRules: {
+  name: '${deployment().name}-AuthRule-${index}'
+  params: {
+    namespaceName: namespaceName
+    queueName: last(split(queue.name, '/'))
+    name: authorizationRule.name
+    rights: contains(authorizationRule, 'rights') ? authorizationRule.rights : []
+  }
+  dependsOn: [
+    queue
+  ]
+}]
+
+resource queue_lock 'Microsoft.Authorization/locks@2016-09-01' = if (lock != 'NotSpecified') {
+  name: '${split(queue.name, '/')[1]}-${lock}-lock'
   properties: {
     level: lock
     notes: (lock == 'CanNotDelete') ? 'Cannot delete resource or child resources.' : 'Cannot modify the resource or child resources.'
   }
-  scope: serviceBusNamespaceQueue
+  scope: queue
 }
 
-module serviceBusNamespaceQueue_rbac '.bicep/nested_rbac.bicep' = [for (roleAssignment, index) in roleAssignments: {
+module queue_rbac '.bicep/nested_rbac.bicep' = [for (roleAssignment, index) in roleAssignments: {
   name: '${deployment().name}-rbac-${index}'
   params: {
     roleAssignmentObj: roleAssignment
     builtInRoleNames: builtInRoleNames
-    resourceName: serviceBusNamespaceQueue.name
+    resourceName: queue.name
   }
 }]
 
-output namespaceQueueName string = serviceBusNamespaceQueue.name
-output namespaceQueueResourceId string = serviceBusNamespaceQueue.id
-output namespaceQueueResourceGroup string = resourceGroup().name
+@description('The name of the deployed queue')
+output queueName string = queue.name
+
+@description('The resourceId of the deployed queue')
+output queueResourceId string = queue.id
+
+@description('The resource group of the deployed queue')
+output queueResourceGroup string = resourceGroup().name
