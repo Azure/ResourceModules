@@ -9,7 +9,7 @@ param administratorLoginPassword string
 param location string = resourceGroup().location
 
 @description('Required. The name of the server.')
-param serverName string
+param name string
 
 @description('Optional. Whether or not ADS should be enabled.')
 param enableADS bool = false
@@ -33,6 +33,9 @@ param tags object = {}
 
 @description('Optional. Customer Usage Attribution id (GUID). This GUID must be previously registered')
 param cuaId string = ''
+
+@description('Optional. The databases to create in the server')
+param databases array = []
 
 var builtInRoleNames = {
   'Owner': subscriptionResourceId('Microsoft.Authorization/roleDefinitions', '8e3af657-a8ff-443c-a75c-2fe8c4bcb635')
@@ -61,7 +64,7 @@ module pid_cuaId '.bicep/nested_cuaId.bicep' = if (!empty(cuaId)) {
 
 resource server 'Microsoft.Sql/servers@2020-02-02-preview' = {
   location: location
-  name: serverName
+  name: name
   tags: tags
   properties: {
     administratorLogin: administratorLogin
@@ -106,6 +109,38 @@ module server_rbac '.bicep/nested_rbac.bicep' = [for (roleAssignment, index) in 
   }
 }]
 
+module server_databases 'databases/deploy.bicep' = [for (database, index) in databases: {
+  name: '${deployment().name}-db-${index}'
+  params: {
+    name: database.name
+    serverName: server.name
+    maxSizeBytes: database.maxSizeBytes
+    tier: database.tier
+    skuName: database.skuName
+    collation: database.collation
+    autoPauseDelay: contains(database, 'autoPauseDelay') ? database.autoPauseDelay : ''
+    isLedgerOn: contains(database, 'isLedgerOn') ? database.isLedgerOn : false
+    location: contains(database, 'location') ? database.location : server.location
+    licenseType: contains(database, 'licenseType') ? database.licenseType : ''
+    maintenanceConfigurationId: contains(database, 'maintenanceConfigurationId') ? database.maintenanceConfigurationId : ''
+    minCapacity: contains(database, 'minCapacity') ? database.minCapacity : ''
+    highAvailabilityReplicaCount: contains(database, 'highAvailabilityReplicaCount') ? database.highAvailabilityReplicaCount : 0
+    readScale: contains(database, 'readScale') ? database.readScale : 'Disabled'
+    requestedBackupStorageRedundancy: contains(database, 'requestedBackupStorageRedundancy') ? database.requestedBackupStorageRedundancy : ''
+    sampleName: contains(database, 'sampleName') ? database.sampleName : ''
+    tags: contains(database, 'tags') ? database.tags : {}
+    zoneRedundant: contains(database, 'zoneRedundant') ? database.zoneRedundant : false
+  }
+  dependsOn: [
+    server
+  ]
+}]
+
+@description('The name of the deployed SQL server')
 output serverName string = server.name
+
+@description('The resourceId of the deployed SQL server')
 output serverResourceId string = server.id
+
+@description('The resourceGroup of the deployed SQL server')
 output serverResourceGroup string = resourceGroup().name
