@@ -70,7 +70,7 @@ var builtInRoleNames = {
   'User Access Administrator': subscriptionResourceId('Microsoft.Authorization/roleDefinitions', '18d7d88d-d35e-4fb5-a5c3-7773c20a72d9')
 }
 
-module pid_cuaId './.bicep/nested_cuaId.bicep' = if (!empty(cuaId)) {
+module pid_cuaId '.bicep/nested_cuaId.bicep' = if (!empty(cuaId)) {
   name: 'pid-${cuaId}'
   params: {}
 }
@@ -93,7 +93,7 @@ resource netAppAccount_lock 'Microsoft.Authorization/locks@2016-09-01' = if (loc
   scope: netAppAccount
 }
 
-module netAppAccount_rbac './.bicep/nested_rbac.bicep' = [for (roleAssignment, index) in roleAssignments: {
+module netAppAccount_rbac '.bicep/nested_rbac.bicep' = [for (roleAssignment, index) in roleAssignments: {
   name: '${uniqueString(deployment().name, location)}-ANFAccount-Rbac-${index}'
   params: {
     roleAssignmentObj: roleAssignment
@@ -102,7 +102,7 @@ module netAppAccount_rbac './.bicep/nested_rbac.bicep' = [for (roleAssignment, i
   }
 }]
 
-module netAppAccount_capacityPools './.bicep/nested_capacityPool.bicep' = [for (capacityPool, index) in capacityPools: {
+module netAppAccount_capacityPools '.bicep/nested_capacityPool.bicep' = [for (capacityPool, index) in capacityPools: {
   name: '${uniqueString(deployment().name, location)}-ANFAccount-CapPool-${index}'
   params: {
     capacityPoolObj: capacityPool

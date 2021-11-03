@@ -185,7 +185,7 @@ var networkAcls_var = {
   ipRules: ((empty(networkAcls)) ? json('null') : ((length(networkAcls.ipRules) == 0) ? [] : networkAcls.ipRules))
 }
 
-module pid_cuaId './.bicep/nested_cuaId.bicep' = if (!empty(cuaId)) {
+module pid_cuaId '.bicep/nested_cuaId.bicep' = if (!empty(cuaId)) {
   name: 'pid-${cuaId}'
   params: {}
 }
@@ -230,7 +230,7 @@ resource cognitiveServices_diagnosticSettingName 'Microsoft.Insights/diagnostics
   scope: cognitiveServices
 }
 
-module cognitiveServices_privateEndpoints './.bicep/nested_privateEndpoints.bicep' = [for privateEndpoint in privateEndpoints: {
+module cognitiveServices_privateEndpoints '.bicep/nested_privateEndpoints.bicep' = [for privateEndpoint in privateEndpoints: {
   name: '${uniqueString(deployment().name, privateEndpoint.name)}-privateEndpoint'
   params: {
     privateEndpointResourceId: cognitiveServices.id
@@ -240,8 +240,8 @@ module cognitiveServices_privateEndpoints './.bicep/nested_privateEndpoints.bice
   }
 }]
 
-module cognitiveServices_rbac './.bicep/nested_rbac.bicep' = [for (roleAssignment, index) in roleAssignments: {
-  name: 'rbac-${deployment().name}${index}'
+module cognitiveServices_rbac '.bicep/nested_rbac.bicep' = [for (roleAssignment, index) in roleAssignments: {
+  name: '${deployment().name}-rbac-${index}'
   params: {
     roleAssignmentObj: roleAssignment
     builtInRoleNames: builtInRoleNames
