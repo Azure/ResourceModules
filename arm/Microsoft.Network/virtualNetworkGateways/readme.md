@@ -7,10 +7,10 @@ This module deploys a Virtual Network Gateway.
 | Resource Type | Api Version |
 | :-- | :-- |
 | `Microsoft.Authorization/locks` | 2016-09-01 |
+| `Microsoft.Authorization/roleAssignments` | 2020-04-01-preview |
 | `Microsoft.Insights/diagnosticSettings` | 2017-05-01-preview |
 | `Microsoft.Network/publicIPAddresses` | 2021-02-01 |
 | `Microsoft.Network/virtualNetworkGateways` | 2021-02-01 |
-| `Microsoft.Network/virtualNetworkGateways/providers/roleAssignments` | 2021-04-01-preview |
 
 ## Parameters
 
@@ -38,7 +38,7 @@ This module deploys a Virtual Network Gateway.
 | `tags` | object | `{object}` |  | Optional. Tags of the resource. |
 | `virtualNetworkGatewayLogsToEnable` | array | `[GatewayDiagnosticLog, TunnelDiagnosticLog, RouteDiagnosticLog, IKEDiagnosticLog, P2SDiagnosticLog]` | `[GatewayDiagnosticLog, TunnelDiagnosticLog, RouteDiagnosticLog, IKEDiagnosticLog, P2SDiagnosticLog]` | Optional. The name of logs that will be streamed. |
 | `virtualNetworkGatewayName` | string |  |  | Required. Specifies the Virtual Network Gateway name. |
-| `virtualNetworkGatewaySku` | string |  | `[Basic, VpnGw1, VpnGw2, VpnGw3, VpnGw1AZ, VpnGw2AZ, VpnGw3AZ, ErGw1AZ, ErGw2AZ, ErGw3AZ]` | Required. The Sku of the Gateway. |
+| `virtualNetworkGatewaySku` | string |  | `[Basic, VpnGw1, VpnGw2, VpnGw3, VpnGw1AZ, VpnGw2AZ, VpnGw3AZ, Standard, HighPerformance, UltraPerformance, ErGw1AZ, ErGw2AZ, ErGw3AZ]` | Required. The Sku of the Gateway. |
 | `virtualNetworkGatewayType` | string |  | `[Vpn, ExpressRoute]` | Required. Specifies the gateway type. E.g. VPN, ExpressRoute |
 | `vNetId` | string |  |  | Required. Virtual Network resource Id |
 | `vpnClientAddressPoolPrefix` | string |  |  | Optional. The IP address range from which VPN clients will receive an IP address when connected. Range specified must not overlap with on-premise network. |
@@ -134,6 +134,7 @@ Tag names and tag values can be provided as needed. A tag can be left without a 
 ## Template references
 
 - [Locks](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2016-09-01/locks)
+- [Roleassignments](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2020-04-01-preview/roleAssignments)
 - [Diagnosticsettings](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Insights/2017-05-01-preview/diagnosticSettings)
 - [Publicipaddresses](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Network/2021-02-01/publicIPAddresses)
 - [Virtualnetworkgateways](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Network/2021-02-01/virtualNetworkGateways)
