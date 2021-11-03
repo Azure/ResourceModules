@@ -25,7 +25,7 @@ param attributesNbf int = -1
 ])
 param curveName string = 'P-256'
 
-@description('Array of JsonWebKeyOperation')
+@description('Optional. Array of JsonWebKeyOperation')
 @allowed([
   'decrypt'
   'encrypt'
@@ -37,7 +37,7 @@ param curveName string = 'P-256'
 ])
 param keyOps array = []
 
-@description('The key size in bits. For example: 2048, 3072, or 4096 for RSA.')
+@description('Optional. The key size in bits. For example: 2048, 3072, or 4096 for RSA.')
 param keySize int = -1
 
 @description('The type of the key.')
