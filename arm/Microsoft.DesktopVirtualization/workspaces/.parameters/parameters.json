@@ -2,11 +2,11 @@
     "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
     "contentVersion": "1.0.0.0",
     "parameters": {
-        "workSpaceName": {
+        "name": {
             "value": "sxx-az-avdws-x-001"
         },
         "location": {
-            "value": "eastus"
+            "value": "westeurope"
         },
         "appGroupResourceIds": {
             "value": [
