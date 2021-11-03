@@ -6,8 +6,8 @@ This module deploys an Action Group
 
 | Resource Type | Api Version |
 | :-- | :-- |
+| `Microsoft.Authorization/roleAssignments` | 2020-04-01-preview |
 | `microsoft.insights/actionGroups` | 2019-06-01 |
-| `microsoft.insights/actionGroups/providers/roleAssignments` | 2021-04-01-preview |
 
 ## Parameters
 
@@ -131,4 +131,5 @@ Tag names and tag values can be provided as needed. A tag can be left without a 
 
 ## Template references
 
+- [Roleassignments](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2020-04-01-preview/roleAssignments)
 - [Actiongroups](https://docs.microsoft.com/en-us/azure/templates/microsoft.insights/2019-06-01/actionGroups)
