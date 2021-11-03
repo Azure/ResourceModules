@@ -272,6 +272,18 @@ module pid_cuaId './.bicep/nested_cuaId.bicep' = if (!empty(cuaId)) {
   params: {}
 }
 
+// Prereq resources for testing from
+// https://github.com/Azure/azure-quickstart-templates/blob/master/quickstarts/microsoft.servicefabric/service-fabric-secure-cluster-5-node-1-nodetype/azuredeploy.json
+
+module serviceFabricPrerequisites '.bicep/nested_prerequisites.bicep' = {
+  name: '${serviceFabricCluster.name}-${uniqueString(deployment().name, location)}-Prereqs'
+  params: {
+    serviceFabricClusterName: serviceFabricClusterName
+    location: location
+    tags: tags
+  }
+}
+
 // Service Fabric cluster resource
 resource serviceFabricCluster 'Microsoft.ServiceFabric/clusters@2021-06-01' = {
   name: serviceFabricClusterName
