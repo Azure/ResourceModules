@@ -6,7 +6,7 @@
             "value": "sxx-az-avdhp-x-001"
         },
         "location": {
-            "value": "eastus"
+            "value": "westeurope"
         },
         "hostpoolFriendlyName": {
             "value": "AVDv2"
