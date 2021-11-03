@@ -12,7 +12,7 @@
             "value": "RemoteApp"
         },
         "hostpoolName": {
-            "value": "sxx-az-avdhp-x-001"
+            "value": "adp-sxx-az-avdhp-x-001"
         },
         "appGroupFriendlyName": {
             "value": "Remote Applications 1"
