@@ -28,12 +28,12 @@ param cuaId string = ''
 var contributor = subscriptionResourceId('Microsoft.Authorization/roleDefinitions', 'b24988ac-6180-42a0-ab88-20f7382dd24c')
 var resourcePolicyContributor = subscriptionResourceId('Microsoft.Authorization/roleDefinitions', '36243c78-bf99-498c-9df9-86d9f8d28608')
 
-module pidName './.bicep/nested_cuaId.bicep' = if (!empty(cuaId)) {
+module pidName '.bicep/nested_cuaId.bicep' = if (!empty(cuaId)) {
   name: 'pid-${cuaId}'
   params: {}
 }
 
-module autoManageAccount './.bicep/nested_autoManageAccount.bicep' = {
+module autoManageAccount '.bicep/nested_autoManageAccount.bicep' = {
   name: 'autoManageAccount-${uniqueString(subscription().subscriptionId, autoManageAccountResourceGroupName, autoManageAccountName)}'
   scope: resourceGroup(autoManageAccountResourceGroupName)
   params: {
@@ -61,7 +61,7 @@ resource autoManageAccount_permissions_resourcePolicyContributor 'Microsoft.Auth
   }
 }
 
-module configurationProfileAssignment './.bicep/nested_configurationProfileAssignment.bicep' = {
+module configurationProfileAssignment '.bicep/nested_configurationProfileAssignment.bicep' = {
   name: 'configurationProfileAssignment-${uniqueString(vmResourceGroupName, vmName)}'
   scope: resourceGroup(vmResourceGroupName)
   params: {

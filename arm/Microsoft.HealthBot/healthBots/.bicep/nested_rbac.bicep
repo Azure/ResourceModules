@@ -6,7 +6,7 @@ resource healthBot 'Microsoft.HealthBot/healthBots@2021-06-10' existing = {
   name: resourceName
 }
 
-resource roleAssigment 'Microsoft.Authorization/roleAssignments@2020-04-01-preview' = [for principalId in roleAssignmentObj.principalIds: {
+resource roleAssignment 'Microsoft.Authorization/roleAssignments@2020-04-01-preview' = [for principalId in roleAssignmentObj.principalIds: {
   name: '${guid(healthBot.name, principalId, roleAssignmentObj.roleDefinitionIdOrName)}'
   scope: healthBot
   properties: {

@@ -18,7 +18,7 @@ param managementGroupId string = ''
 @description('Optional. Location for all resources.')
 param location string = deployment().location
 
-module roleAssignment_mg './.bicep/nested_rbac_mg.bicep' = if (!empty(managementGroupId) && empty(subscriptionId) && empty(resourceGroupName)) {
+module roleAssignment_mg '.bicep/nested_rbac_mg.bicep' = if (!empty(managementGroupId) && empty(subscriptionId) && empty(resourceGroupName)) {
   name: 'roleAssignment-mg-${guid(roleDefinitionIdOrName, principalId)}'
   scope: managementGroup(managementGroupId)
   params: {
@@ -29,7 +29,7 @@ module roleAssignment_mg './.bicep/nested_rbac_mg.bicep' = if (!empty(management
   }
 }
 
-module roleAssignment_sub './.bicep/nested_rbac_sub.bicep' = if (empty(managementGroupId) && !empty(subscriptionId) && empty(resourceGroupName)) {
+module roleAssignment_sub '.bicep/nested_rbac_sub.bicep' = if (empty(managementGroupId) && !empty(subscriptionId) && empty(resourceGroupName)) {
   name: 'roleAssignment-sub-${guid(roleDefinitionIdOrName, principalId)}'
   scope: subscription(subscriptionId)
   params: {
@@ -40,7 +40,7 @@ module roleAssignment_sub './.bicep/nested_rbac_sub.bicep' = if (empty(managemen
   }
 }
 
-module roleAssignment_rg './.bicep/nested_rbac_rg.bicep' = if (empty(managementGroupId) && !empty(resourceGroupName) && !empty(subscriptionId)) {
+module roleAssignment_rg '.bicep/nested_rbac_rg.bicep' = if (empty(managementGroupId) && !empty(resourceGroupName) && !empty(subscriptionId)) {
   name: 'roleAssignment-${guid(roleDefinitionIdOrName, principalId)}'
   scope: resourceGroup(subscriptionId, resourceGroupName)
   params: {

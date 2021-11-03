@@ -139,7 +139,7 @@ var builtInRoleNames = {
   'Web Plan Contributor': subscriptionResourceId('Microsoft.Authorization/roleDefinitions', '2cc479cb-7b4d-49a8-b449-8c00fd0f0a4b')
 }
 
-module pid_cuaId './.bicep/nested_cuaId.bicep' = if (!empty(cuaId)) {
+module pid_cuaId '.bicep/nested_cuaId.bicep' = if (!empty(cuaId)) {
   name: 'pid-${cuaId}'
   params: {}
 }
@@ -194,7 +194,7 @@ resource appServiceEnvironment_diagnosticSettings 'Microsoft.Insights/diagnostic
   scope: appServiceEnvironment
 }
 
-module appServiceEnvironment_rbac './.bicep/nested_rbac.bicep' = [for (roleAssignment, index) in roleAssignments: {
+module appServiceEnvironment_rbac '.bicep/nested_rbac.bicep' = [for (roleAssignment, index) in roleAssignments: {
   name: '${uniqueString(deployment().name, location)}-AppService-Rbac-${index}'
   params: {
     roleAssignmentObj: roleAssignment

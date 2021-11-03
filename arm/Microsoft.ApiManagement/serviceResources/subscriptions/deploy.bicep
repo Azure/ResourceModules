@@ -25,7 +25,7 @@ param state string = ''
 @description('Required. Subscription name.')
 param subscriptionName string
 
-module pid_cuaId './.bicep/nested_cuaId.bicep' = if (!empty(cuaId)) {
+module pid_cuaId '.bicep/nested_cuaId.bicep' = if (!empty(cuaId)) {
   name: 'pid-${cuaId}'
   params: {}
 }
