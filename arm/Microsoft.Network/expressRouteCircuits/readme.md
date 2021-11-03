@@ -36,7 +36,7 @@ This template deploys a ExrepressRoute Circuit.
 | `serviceProviderName` | string |  |  | Required. This is the name of the ExpressRoute Service Provider. It must exactly match one of the Service Providers from List ExpressRoute Service Providers API call. |
 | `sharedKey` | string |  |  | Optional. The shared key for peering configuration. Router does MD5 hash comparison to validate the packets sent by BGP connection. This parameter is optional and can be removed from peering configuration if not required. |
 | `skuFamily` | string | `MeteredData` | `[MeteredData, UnlimitedData]` | Required. Chosen SKU family of ExpressRoute circuit. Choose from MeteredData or UnlimitedData SKU families. |
-| `skuTier` | string | `Standard` | `[Standard, Premium]` | Required. Chosen SKU Tier of ExpressRoute circuit. Choose from Premium or Standard SKU tiers. |
+| `skuTier` | string | `Standard` | `[Local, Standard, Premium]` | Required. Chosen SKU Tier of ExpressRoute circuit. Choose from Local, Premium or Standard SKU tiers. |
 | `tags` | object | `{object}` |  | Optional. Tags of the resource. |
 | `vlanId` | int |  |  | Optional. Specifies the identifier that is used to identify the customer. |
 | `workspaceId` | string |  |  | Optional. Resource identifier of Log Analytics. |
