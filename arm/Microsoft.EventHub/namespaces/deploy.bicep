@@ -88,6 +88,9 @@ param cuaId string = ''
 @description('Generated. Do not provide a value! This date value is used to generate a SAS token to access the modules.')
 param baseTime string = utcNow('u')
 
+@description('')
+param eventHub array = []
+
 var maxNameLength = 50
 var uniqueEventHubNamespaceUntrim = '${uniqueString('EventHub Namespace${baseTime}')}'
 var uniqueEventHubNamespace = ((length(uniqueEventHubNamespaceUntrim) > maxNameLength) ? substring(uniqueEventHubNamespaceUntrim, 0, maxNameLength) : uniqueEventHubNamespaceUntrim)
@@ -216,6 +219,8 @@ resource eventHubNamespace_diagnosticSettings 'Microsoft.Insights/diagnosticsett
   }
   scope: eventHubNamespace
 }
+
+module eventHubs 'eventhubs/deploy.bicep' = [for (item, index) in fd: {}]
 
 resource eventHubNamespace_diasterRecoveryConfig 'Microsoft.EventHub/namespaces/disasterRecoveryConfigs@2017-04-01' = if (((!empty(partnerNamespaceId)) && (!empty(namespaceAlias))) ? true : false) {
   parent: eventHubNamespace
