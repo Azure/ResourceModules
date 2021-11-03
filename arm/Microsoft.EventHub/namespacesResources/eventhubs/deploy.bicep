@@ -101,7 +101,7 @@ resource eventHub_authorizationRules 'Microsoft.EventHub/namespaces/eventhubs/au
 }]
 
 module eventHub_rbac './.bicep/nested_rbac.bicep' = [for (roleAssignment, index) in roleAssignments: {
-  name: 'rbac-${deployment().name}${index}'
+  name: '${deployment().name}-rbac-${index}'
   params: {
     roleAssignmentObj: roleAssignment
     builtInRoleNames: builtInRoleNames
