@@ -7,7 +7,7 @@ This module deploys a key vault and it's child resources.
 | Resource Type | Api Version |
 | :-- | :-- |
 | `Microsoft.Authorization/locks` | 2016-09-01 |
-| `Microsoft.Authorization/roleAssignments` | 2021-04-01-preview |
+| `Microsoft.Authorization/roleAssignments` | 2020-04-01-preview |
 | `Microsoft.Insights/diagnosticSettings` | 2017-05-01-preview |
 | `Microsoft.KeyVault/vaults` | 2019-09-01 |
 | `Microsoft.KeyVault/vaults/keys` | 2019-09-01 |
@@ -189,7 +189,7 @@ To use Private Endpoint the following dependencies must be deployed:
 ## Template references
 
 - [Locks](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2016-09-01/locks)
-- [Roleassignments](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2021-04-01-preview/roleAssignments)
+- [Roleassignments](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2020-04-01-preview/roleAssignments)
 - [Diagnosticsettings](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Insights/2017-05-01-preview/diagnosticSettings)
 - [Vaults](https://docs.microsoft.com/en-us/azure/templates/Microsoft.KeyVault/2019-09-01/vaults)
 - [Vaults/Keys](https://docs.microsoft.com/en-us/azure/templates/Microsoft.KeyVault/2019-09-01/vaults/keys)
