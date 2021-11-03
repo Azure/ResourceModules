@@ -36,10 +36,8 @@ This module deploys EventHub Namespace.
 | `logsToEnable` | array | `[ArchiveLogs, OperationalLogs, KafkaCoordinatorLogs, KafkaUserErrorLogs, EventHubVNetConnectionEvent, CustomerManagedKeyUserLogs, AutoScaleLogs]` | `[ArchiveLogs, OperationalLogs, KafkaCoordinatorLogs, KafkaUserErrorLogs, EventHubVNetConnectionEvent, CustomerManagedKeyUserLogs, AutoScaleLogs]` | Optional. The name of logs that will be streamed. |
 | `maximumThroughputUnits` | int | `1` |  | Optional. Upper limit of throughput units when AutoInflate is enabled, value should be within 0 to 20 throughput units. |
 | `metricsToEnable` | array | `[AllMetrics]` | `[AllMetrics]` | Optional. The name of metrics that will be streamed. |
-| `namespaceAlias` | string |  |  | Optional. The Disaster Recovery configuration name |
 | `namespaceName` | string |  |  | Optional. The name of the EventHub namespace. If no name is provided, then unique name will be created. |
 | `networkAcls` | object | `{object}` |  | Optional. Service endpoint object information |
-| `partnerNamespaceId` | string |  |  | Optional. ARM Id of the Primary/Secondary eventhub namespace name, which is part of GEO DR pairing |
 | `privateEndpoints` | array | `[]` |  | Optional. Configuration Details for private endpoints. |
 | `roleAssignments` | array | `[]` |  | Optional. Array of role assignment objects that contain the 'roleDefinitionIdOrName' and 'principalId' to define RBAC role assignments on this resource. In the roleDefinitionIdOrName attribute, you can provide either the display name of the role definition, or its fully qualified ID in the following format: '/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11' |
 | `skuCapacity` | int | `1` |  | Optional. Event Hub Plan scale-out capacity of the resource |
