@@ -11,6 +11,9 @@
         "storageAccountSku": {
             "value": "Standard_LRS"
         },
+        "allowBlobPublicAccess": {
+            "value": false
+        },
         "blobServices": {
             "value": {
                 "containers": [

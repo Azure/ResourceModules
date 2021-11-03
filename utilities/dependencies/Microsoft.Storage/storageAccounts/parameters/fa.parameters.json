@@ -13,6 +13,9 @@
         },
         "storageAccountAccessTier": {
             "value": "Hot"
+        },
+        "allowBlobPublicAccess": {
+            "value": false
         }
     }
 }
