@@ -1,0 +1,55 @@
+{
+    "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "name": {
+            "value": "adp-sxx-az-avdhp-x-001"
+        },
+        "location": {
+            "value": "westeurope"
+        },
+        "hostpoolFriendlyName": {
+            "value": "AVDv2"
+        },
+        "hostpoolDescription": {
+            "value": "AVD Host Pool dependency"
+        },
+        "hostpoolType": {
+            "value": "Pooled"
+        },
+        "personalDesktopAssignmentType": {
+            "value": "Automatic"
+        },
+        "maxSessionLimit": {
+            "value": 99999
+        },
+        "loadBalancerType": {
+            "value": "BreadthFirst"
+        },
+        "customRdpProperty": {
+            "value": "audiocapturemode:i:1;audiomode:i:0;drivestoredirect:s:;redirectclipboard:i:1;redirectcomports:i:1;redirectprinters:i:1;redirectsmartcards:i:1;screen mode id:i:2;"
+        },
+        "vmTemplate": {
+            "value": {
+                "domain": "domainname.onmicrosoft.com",
+                "galleryImageOffer": "office-365",
+                "galleryImagePublisher": "microsoftwindowsdesktop",
+                "galleryImageSKU": "20h1-evd-o365pp",
+                "imageType": "Gallery",
+                "imageUri": null,
+                "customImageId": null,
+                "namePrefix": "avdv2",
+                "osDiskType": "StandardSSD_LRS",
+                "useManagedDisks": true,
+                "vmSize": {
+                    "id": "Standard_D2s_v3",
+                    "cores": 2,
+                    "ram": 8
+                }
+            }
+        },
+        "validationEnviroment": {
+            "value": false
+        }
+    }
+}
