@@ -1,8 +1,8 @@
 @description('Required. Remote connection name')
 param connectionName string
 
-@description('Required. Specifies a VPN shared key. The same value has to be specified on both Virtual Network Gateways')
-param vpnSharedKey string
+@description('Specifies a VPN shared key. The same value has to be specified on both Virtual Network Gateways')
+param vpnSharedKey string 
 
 @description('Required. Specifies the remote Virtual Network Gateway/ExpressRoute')
 param remoteEntityName string
@@ -107,7 +107,7 @@ resource connection 'Microsoft.Network/connections@2021-02-01' = {
     enableBgp: enableBgp
     connectionType: virtualNetworkGatewayConnectionType
     routingWeight: routingWeight
-    sharedKey: vpnSharedKey
+    sharedKey: ((virtualNetworkGatewayConnectionType == 'ExpressRoute') ? vpnSharedKey : json('null'))
     usePolicyBasedTrafficSelectors: usePolicyBasedTrafficSelectors
     ipsecPolicies: (empty(customIPSecPolicy.ipsecEncryption) ? customIPSecPolicy.ipsecEncryption : customIPSecPolicy_var)
   }
