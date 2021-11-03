@@ -2,7 +2,7 @@
 param collation string
 
 @description('Required. The name of the database.')
-param databaseName string
+param name string
 
 @description('Optional. The tier or edition of the particular SKU.')
 param tier string
@@ -26,10 +26,14 @@ param zoneRedundant bool = false
 param licenseType string = ''
 
 @description('Optional. The state of read-only routing.')
-param readScaleOut string = 'Disabled'
+@allowed([
+  'Enabled'
+  'Disabled'
+])
+param readScale string = 'Disabled'
 
 @description('Optional. The number of readonly secondary replicas associated with the database.')
-param numberOfReplicas int = 0
+param highAvailabilityReplicaCount int = 0
 
 @description('Optional. Minimal capacity that database will always have allocated.')
 param minCapacity string = ''
@@ -56,7 +60,7 @@ param cuaId string = ''
 param requestedBackupStorageRedundancy string = ''
 
 @description('Optional. Whether or not this database is a ledger database, which means all tables in the database are ledger tables. Note: the value of this property cannot be changed after the database has been created.')
-param enableSqlLedger bool = false
+param isLedgerOn bool = false
 
 @description('Optional. Maintenance configuration id assigned to the database. This configuration defines the period when the maintenance updates will occur.')
 param maintenanceConfigurationId string = ''
@@ -66,22 +70,22 @@ module pid_cuaId '.bicep/nested_cuaId.bicep' = if (!empty(cuaId)) {
   params: {}
 }
 
-resource sqlServerDatabase 'Microsoft.Sql/servers/databases@2021-02-01-preview' = {
+resource database 'Microsoft.Sql/servers/databases@2021-02-01-preview' = {
   location: location
   tags: tags
-  name: '${serverName}/${databaseName}'
+  name: '${serverName}/${name}'
   properties: {
     collation: collation
     maxSizeBytes: maxSizeBytes
     sampleName: sampleName
     zoneRedundant: zoneRedundant
     licenseType: licenseType
-    readScale: readScaleOut
+    readScale: readScale
     minCapacity: !empty(minCapacity) ? json(minCapacity) : 0
     autoPauseDelay: !empty(autoPauseDelay) ? json(autoPauseDelay) : 0
-    highAvailabilityReplicaCount: numberOfReplicas
+    highAvailabilityReplicaCount: highAvailabilityReplicaCount
     requestedBackupStorageRedundancy: any(requestedBackupStorageRedundancy)
-    isLedgerOn: enableSqlLedger
+    isLedgerOn: isLedgerOn
     maintenanceConfigurationId: !empty(maintenanceConfigurationId) ? maintenanceConfigurationId : null
   }
   sku: {
@@ -90,6 +94,11 @@ resource sqlServerDatabase 'Microsoft.Sql/servers/databases@2021-02-01-preview' 
   }
 }
 
-output databaseName string = databaseName
+@description('The name of the deployed database')
+output databaseName string = database.name
+
+@description('The resourceId of the deployed database')
+output databaseId string = database.id
+
+@description('The resourceGroup of the deployed database')
 output databaseResourceGroup string = resourceGroup().name
-output serverName string = serverName
