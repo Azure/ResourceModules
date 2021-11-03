@@ -23,9 +23,9 @@ resource server 'Microsoft.AnalysisServices/servers@2017-08-01' existing = {
 
 resource roleAssignment 'Microsoft.Authorization/roleAssignments@2020-04-01-preview' = [for principalId in roleAssignmentObj.principalIds: {
   name: '${guid(server.name, principalId, roleAssignmentObj.roleDefinitionIdOrName)}'
-  scope: server
   properties: {
     roleDefinitionId: contains(builtInRoleNames, roleAssignmentObj.roleDefinitionIdOrName) ? builtInRoleNames[roleAssignmentObj.roleDefinitionIdOrName] : roleAssignmentObj.roleDefinitionIdOrName
     principalId: principalId
   }
+  scope: server
 }]
