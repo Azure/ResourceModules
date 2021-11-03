@@ -3,7 +3,7 @@
     "contentVersion": "1.0.0.0",
     "parameters": {
         "vnetName": {
-            "value": "sxx-az-vnet-weu-x-001"
+            "value": "sxx-az-vnet-x-001"
         },
         "vnetAddressPrefixes": {
             "value": [
@@ -17,7 +17,7 @@
                     "addressPrefix": "10.0.255.0/24"
                 },
                 {
-                    "name": "sxx-az-subnet-weu-x-001",
+                    "name": "sxx-az-subnet-x-001",
                     "addressPrefix": "10.0.0.0/24",
                     "networkSecurityGroupName": "",
                     "routeTableName": "",
@@ -38,7 +38,7 @@
                     "delegations": []
                 },
                 {
-                    "name": "sxx-az-subnet-weu-x-002",
+                    "name": "sxx-az-subnet-x-002",
                     "addressPrefix": "10.0.1.0/24",
                     "networkSecurityGroupName": "",
                     "routeTableName": "",
@@ -59,7 +59,7 @@
                     "delegations": []
                 },
                 {
-                    "name": "sxx-az-subnet-weu-x-003",
+                    "name": "sxx-az-subnet-x-003",
                     "addressPrefix": "10.0.2.0/24",
                     "networkSecurityGroupName": "",
                     "routeTableName": "",
@@ -74,7 +74,7 @@
                     ]
                 },
                 {
-                    "name": "sxx-az-subnet-weu-x-004",
+                    "name": "sxx-az-subnet-x-004",
                     "addressPrefix": "10.0.3.0/24",
                     "networkSecurityGroupName": "",
                     "routeTableName": "",
@@ -105,7 +105,7 @@
                     "delegations": []
                 },
                 {
-                    "name": "sxx-az-subnet-weu-x-005",
+                    "name": "sxx-az-subnet-x-005",
                     "addressPrefix": "10.0.6.0/24",
                     "networkSecurityGroupName": "",
                     "routeTableName": "",
@@ -121,7 +121,7 @@
                 {
                     "roleDefinitionIdOrName": "Reader",
                     "principalIds": [
-                        "5545f7a0-51f4-46af-b3b4-baecf5176a56"
+                        "cf33fea8-b30f-424f-ab73-c48d99e0b222"
                     ]
                 }
             ]
