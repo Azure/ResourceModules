@@ -3,7 +3,7 @@
     "contentVersion": "1.0.0.0",
     "parameters": {
         "name": {
-            "value": "sxx-az-avdag-x-001"
+            "value": "adp-sxx-az-avdag-x-001"
         },
         "location": {
             "value": "westeurope"
@@ -18,17 +18,7 @@
             "value": "Remote Applications 1"
         },
         "appGroupDescription": {
-            "value": "This is my first Remote Applications bundle"
-        },
-        "roleAssignments": {
-            "value": [
-                {
-                    "roleDefinitionIdOrName": "Reader",
-                    "principalIds": [
-                        "cf33fea8-b30f-424f-ab73-c48d99e0b222"
-                    ]
-                }
-            ]
+            "value": "AVD Remote Application Group dependency"
         }
     }
 }

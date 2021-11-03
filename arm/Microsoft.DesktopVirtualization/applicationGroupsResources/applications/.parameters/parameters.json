@@ -29,7 +29,7 @@
             ]
         },
         "location": {
-            "value": "eastus"
+            "value": "westeurope"
         },
         "appGroupName": {
             "value": "sxx-az-avdag-x-001"
