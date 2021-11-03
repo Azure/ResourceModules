@@ -50,7 +50,13 @@ runs:
       run: |
         # Load used funtions
         . ".github/actions/sharedScripts/Convert-TokensInFileList.ps1"
-        $TokensReplaceWithObject = (Get-Content -Path '.github/actions/sharedConfigs/pipelineTokens.json' | ConvertFrom-Json).pipelineTokens
+        $TokensReplaceWithObject = @(
+            @{ Replace = "<<tenantId>>"; With = '${{ env.ARM_TENANT_ID }}' }
+            @{ Replace = "<<tenantId2>>"; With = '${{ env.ARM_TENANT_ID_2 }}' }
+            @{ Replace = "<<subscriptionId>>"; With = '${{ env.ARM_SUBSCRIPTION_ID }}' }
+            @{ Replace = "<<managementGroupId>>"; With = '${{ env.ARM_MGMTGROUP_ID }}' }
+            @{ Replace = "<<principalId1>>"; With = '${{ env.ARM_PRINCIPAL_ID1 }}' }
+        )
         write-verbose "Invoking Convert-TokensInFileList"
         Convert-TokensInFileList -Paths '${{ inputs.parameterFilePath }}' -TokensReplaceWith $TokensReplaceWithObject
 
