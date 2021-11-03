@@ -7,10 +7,10 @@ This module deploys an Azure Automation Account, with resource lock.
 | Resource Type | Api Version |
 | :-- | :-- |
 | `Microsoft.Authorization/locks` | 2016-09-01 |
+| `Microsoft.Authorization/roleAssignments` | 2020-04-01-preview |
 | `Microsoft.Automation/automationAccounts` | 2020-01-13-preview |
 | `Microsoft.Automation/automationAccounts/jobSchedules` | 2020-01-13-preview |
 | `Microsoft.Automation/automationAccounts/modules` | 2020-01-13-preview |
-| `Microsoft.Automation/automationAccounts/providers/roleAssignments` | 2021-04-01-preview |
 | `Microsoft.Automation/automationAccounts/runbooks` | 2019-06-01 |
 | `Microsoft.Automation/automationAccounts/schedules` | 2020-01-13-preview |
 | `Microsoft.Insights/diagnosticSettings` | 2017-05-01-preview |
@@ -219,6 +219,7 @@ Tag names and tag values can be provided as needed. A tag can be left without a 
 ## Template references
 
 - [Locks](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2016-09-01/locks)
+- [Roleassignments](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2020-04-01-preview/roleAssignments)
 - [Automationaccounts](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Automation/2020-01-13-preview/automationAccounts)
 - [Automationaccounts/Jobschedules](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Automation/2020-01-13-preview/automationAccounts/jobSchedules)
 - [Automationaccounts/Modules](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Automation/2020-01-13-preview/automationAccounts/modules)
