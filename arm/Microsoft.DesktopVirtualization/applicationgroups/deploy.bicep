@@ -1,6 +1,6 @@
 @description('Required. Name of the Application Group to create this application in.')
 @minLength(1)
-param appGroupName string
+param name string
 
 @description('Optional. Location for all resources.')
 param location string = resourceGroup().location
@@ -104,12 +104,16 @@ module pid_cuaId '.bicep/nested_cuaId.bicep' = if (!empty(cuaId)) {
   params: {}
 }
 
+resource appGroup_hostpool 'Microsoft.DesktopVirtualization/hostpools@2021-07-12' existing = {
+  name: hostpoolName
+}
+
 resource appGroup 'Microsoft.DesktopVirtualization/applicationgroups@2021-07-12' = {
-  name: appGroupName
+  name: name
   location: location
   tags: tags
   properties: {
-    hostPoolArmPath: resourceId('Microsoft.DesktopVirtualization/hostpools/', hostpoolName)
+    hostPoolArmPath: appGroup_hostpool.id
     friendlyName: appGroupFriendlyName
     description: appGroupDescription
     applicationGroupType: appGroupType
@@ -126,7 +130,7 @@ resource appGroup_lock 'Microsoft.Authorization/locks@2016-09-01' = if (lock != 
 }
 
 resource appGroup_diagnosticSettings 'Microsoft.Insights/diagnosticsettings@2017-05-01-preview' = if ((!empty(diagnosticStorageAccountId)) || (!empty(workspaceId)) || (!empty(eventHubAuthorizationRuleId)) || (!empty(eventHubName))) {
-  name: '${appGroupName}-diagnosticSettings'
+  name: '${appGroup.name}-diagnosticSettings'
   properties: {
     storageAccountId: (empty(diagnosticStorageAccountId) ? json('null') : diagnosticStorageAccountId)
     workspaceId: (empty(workspaceId) ? json('null') : workspaceId)
@@ -148,4 +152,4 @@ module appGroup_rbac '.bicep/nested_rbac.bicep' = [for (roleAssignment, index) i
 
 output appGroupResourceId string = appGroup.id
 output appGroupResourceGroup string = resourceGroup().name
-output appGroupName string = appGroupName
+output appGroupName string = appGroup.name

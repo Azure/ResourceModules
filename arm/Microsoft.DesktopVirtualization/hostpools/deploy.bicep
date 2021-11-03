@@ -1,6 +1,6 @@
 @description('Required. Name of the Host Pool')
 @minLength(1)
-param hostPoolName string
+param name string
 
 @description('Optional. Location for all resources.')
 param location string = resourceGroup().location
@@ -89,7 +89,7 @@ param cuaId string = ''
   'None'
   'RailApplications'
 ])
-param preferredAppGroupType string = 'None'
+param preferredAppGroupType string = 'Desktop'
 
 @description('Optional. Enable Start VM on connect to allow users to start the virtual machine from a deallocated state. Important: Custom RBAC role required to power manage VMs.')
 param startVMOnConnect bool = false
@@ -160,7 +160,7 @@ module pid_cuaId '.bicep/nested_cuaId.bicep' = if (!empty(cuaId)) {
 }
 
 resource hostPool 'Microsoft.DesktopVirtualization/hostpools@2021-07-12' = {
-  name: hostPoolName
+  name: name
   location: location
   tags: tags
   properties: {
@@ -194,7 +194,7 @@ resource hostPool_lock 'Microsoft.Authorization/locks@2016-09-01' = if (lock != 
 }
 
 resource hostPool_diagnosticSettings 'Microsoft.Insights/diagnosticsettings@2017-05-01-preview' = if ((!empty(diagnosticStorageAccountId)) || (!empty(workspaceId)) || (!empty(eventHubAuthorizationRuleId)) || (!empty(eventHubName))) {
-  name: '${hostPoolName}-diagnosticsetting'
+  name: '${hostPool.name}-diagnosticsetting'
   properties: {
     storageAccountId: (empty(diagnosticStorageAccountId) ? json('null') : diagnosticStorageAccountId)
     workspaceId: (empty(workspaceId) ? json('null') : workspaceId)
@@ -216,6 +216,6 @@ module hostPool_rbac '.bicep/nested_rbac.bicep' = [for (roleAssignment, index) i
 
 output hostPoolResourceId string = hostPool.id
 output hostPoolResourceGroup string = resourceGroup().name
-output hostPoolName string = hostPoolName
+output hostPoolName string = hostPool.name
 output tokenExpirationTime string = dateTimeAdd(baseTime, tokenValidityLength)
 output hostpoolToken string = '${hostPool.properties.registrationInfo.token}'

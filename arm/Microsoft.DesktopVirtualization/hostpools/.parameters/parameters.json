@@ -2,11 +2,11 @@
     "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
     "contentVersion": "1.0.0.0",
     "parameters": {
-        "hostpoolName": {
-            "value": "sxx-az-avdhp-weu-x-001"
+        "name": {
+            "value": "sxx-az-avdhp-x-001"
         },
         "location": {
-            "value": "eastus"
+            "value": "westeurope"
         },
         "hostpoolFriendlyName": {
             "value": "AVDv2"

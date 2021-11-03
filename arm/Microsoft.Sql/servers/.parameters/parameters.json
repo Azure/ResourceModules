@@ -24,8 +24,8 @@
         "location": {
             "value": "westeurope"
         },
-        "serverName": {
-            "value": "sxx-az-sqlsrv-weu-x-001"
+        "name": {
+            "value": "sxx-az-sqlsrv-x-001"
         },
         "roleAssignments": {
             "value": [
@@ -34,6 +34,18 @@
                     "principalIds": [
                         "<<principalId1>>"
                     ]
+                }
+            ]
+        },
+        "databases": {
+            "value": [
+                {
+                    "name": "sxx-az-sqldb-weu-x-001",
+                    "collation": "SQL_Latin1_General_CP1_CI_AS",
+                    "tier": "GeneralPurpose",
+                    "skuName": "GP_Gen5_2",
+                    "maxSizeBytes": 34359738368,
+                    "licenseType": "LicenseIncluded"
                 }
             ]
         }

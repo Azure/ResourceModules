@@ -28,6 +28,9 @@
                 }
             ]
         },
+        "location": {
+            "value": "westeurope"
+        },
         "appGroupName": {
             "value": "sxx-az-avdag-weu-x-001"
         }
