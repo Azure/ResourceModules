@@ -213,7 +213,7 @@ module resourceGroup_lock '.bicep/nested_lock.bicep' = if (lock != 'NotSpecified
 }
 
 module resourceGroup_rbac '.bicep/nested_rbac.bicep' = [for (roleAssignment, index) in roleAssignments: {
-  name: 'rbac-${deployment().name}-${index}'
+  name: '${deployment().name}-rbac-${index}'
   scope: resourceGroup
   params: {
     roleAssignmentObj: roleAssignment
