@@ -88,8 +88,8 @@ param cuaId string = ''
 @description('Generated. Do not provide a value! This date value is used to generate a SAS token to access the modules.')
 param baseTime string = utcNow('u')
 
-@description('')
-param eventHub array = []
+@description('Optional. The event hubs to deploy into this namespace')
+param eventHubs array = []
 
 var maxNameLength = 50
 var uniqueEventHubNamespaceUntrim = '${uniqueString('EventHub Namespace${baseTime}')}'
@@ -220,7 +220,40 @@ resource eventHubNamespace_diagnosticSettings 'Microsoft.Insights/diagnosticsett
   scope: eventHubNamespace
 }
 
-module eventHubs 'eventhubs/deploy.bicep' = [for (item, index) in fd: {}]
+module eventHubNamespace_eventHubs 'eventhubs/deploy.bicep' = [for (eventHub, index) in eventHubs: {
+  name: '${uniqueString(deployment().name, location)}-eventHub-${index}'
+  params: {
+    namespaceName: eventHubNamespace.name
+    name: eventHub.name
+    authorizationRules: contains(eventHub, 'authorizationRules') ? eventHub.authorizationRules : [
+      {
+        name: 'RootManageSharedAccessKey'
+        properties: {
+          rights: [
+            'Listen'
+            'Manage'
+            'Send'
+          ]
+        }
+      }
+    ]
+    captureDescriptionDestinationArchiveNameFormat: contains(eventHub, 'captureDescriptionDestinationArchiveNameFormat') ? eventHub.captureDescriptionDestinationArchiveNameFormat : '{Namespace}/{EventHub}/{PartitionId}/{Year}/{Month}/{Day}/{Hour}/{Minute}/{Second}'
+    captureDescriptionDestinationBlobContainer: contains(eventHub, 'captureDescriptionDestinationBlobContainer') ? eventHub.captureDescriptionDestinationBlobContainer : ''
+    captureDescriptionDestinationName: contains(eventHub, 'captureDescriptionDestinationName') ? eventHub.captureDescriptionDestinationName : 'EventHubArchive.AzureBlockBlob'
+    captureDescriptionDestinationStorageAccountResourceId: contains(eventHub, 'captureDescriptionDestinationStorageAccountResourceId') ? eventHub.captureDescriptionDestinationStorageAccountResourceId : ''
+    captureDescriptionEnabled: contains(eventHub, 'captureDescriptionEnabled') ? eventHub.captureDescriptionEnabled : false
+    captureDescriptionEncoding: contains(eventHub, 'captureDescriptionEncoding') ? eventHub.captureDescriptionEncoding : 'Avro'
+    captureDescriptionIntervalInSeconds: contains(eventHub, 'captureDescriptionIntervalInSeconds') ? eventHub.captureDescriptionIntervalInSeconds : 300
+    captureDescriptionSizeLimitInBytes: contains(eventHub, 'captureDescriptionSizeLimitInBytes') ? eventHub.captureDescriptionSizeLimitInBytes : 314572800
+    captureDescriptionSkipEmptyArchives: contains(eventHub, 'captureDescriptionSkipEmptyArchives') ? eventHub.captureDescriptionSkipEmptyArchives : false
+    consumerGroups: contains(eventHub, 'consumerGroups') ? eventHub.consumerGroups : []
+    lock: contains(eventHub, 'lock') ? eventHub.lock : 'NotSpecified'
+    messageRetentionInDays: contains(eventHub, 'messageRetentionInDays') ? eventHub.messageRetentionInDays : 1
+    partitionCount: contains(eventHub, 'partitionCount') ? eventHub.partitionCount : 2
+    roleAssignments: contains(eventHub, 'roleAssignments') ? eventHub.roleAssignments : []
+    status: contains(eventHub, 'status') ? eventHub.status : 'Active'
+  }
+}]
 
 resource eventHubNamespace_diasterRecoveryConfig 'Microsoft.EventHub/namespaces/disasterRecoveryConfigs@2017-04-01' = if (((!empty(partnerNamespaceId)) && (!empty(namespaceAlias))) ? true : false) {
   parent: eventHubNamespace
@@ -238,7 +271,7 @@ resource eventHubNamespace_authorizationRules 'Microsoft.EventHub/namespaces/Aut
 }]
 
 module eventHubNamespace_privateEndpoints '.bicep/nested_privateEndpoint.bicep' = [for (endpoint, index) in privateEndpoints: {
-  name: '${uniqueString(deployment().name, location)}-EventHubNamepace-PrivateEndpoints-${index}'
+  name: '${uniqueString(deployment().name, location)}-PrivateEndpoints-${index}'
   params: {
     privateEndpointResourceId: eventHubNamespace.id
     privateEndpointVnetLocation: (empty(privateEndpoints) ? 'dummy' : reference(split(endpoint.subnetResourceId, '/subnets/')[0], '2020-06-01', 'Full').location)
@@ -248,7 +281,7 @@ module eventHubNamespace_privateEndpoints '.bicep/nested_privateEndpoint.bicep' 
 }]
 
 module eventHubNamespace_rbac '.bicep/nested_rbac.bicep' = [for (roleAssignment, index) in roleAssignments: {
-  name: '${uniqueString(deployment().name, location)}-EventHubNamespace-Rbac-${index}'
+  name: '${uniqueString(deployment().name, location)}-Rbac-${index}'
   params: {
     roleAssignmentObj: roleAssignment
     builtInRoleNames: builtInRoleNames
