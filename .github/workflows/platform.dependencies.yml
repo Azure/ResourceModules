@@ -18,6 +18,7 @@ env:
   AZURE_CREDENTIALS: ${{ secrets.AZURE_CREDENTIALS }}
   ARM_SUBSCRIPTION_ID: ${{ secrets.ARM_SUBSCRIPTION_ID }}
   ARM_MGMTGROUP_ID: ${{ secrets.ARM_MGMTGROUP_ID }}
+  DEPLOYMENT_SP_ID: ${{ secrets.DEPLOYMENT_SP_ID }}
 
 jobs:
   job_deploy_rg:
