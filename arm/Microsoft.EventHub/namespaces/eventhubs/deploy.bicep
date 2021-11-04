@@ -145,7 +145,7 @@ module eventHub_consumergroups 'consumergroups/deploy.bicep' = [for (consumerGro
   name: '${deployment().name}-consumergroup-${index}'
   params: {
     namespaceName: namespaceName
-    eventHubName: eventHub.name
+    eventHubName: last(split(eventHub.name, '/'))
     name: consumerGroup.name
     userMetadata: contains(consumerGroup, 'userMetadata') ? consumerGroup.userMetadata : ''
   }
