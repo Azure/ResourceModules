@@ -114,7 +114,7 @@
             }
         },
         "backupVaultName": {
-            "value": "sxx-az-rsv-x-999"
+            "value": "adp-sxx-az-rsv-x-001"
         },
         "backupVaultResourceGroup": {
             "value": "validation-rg"
