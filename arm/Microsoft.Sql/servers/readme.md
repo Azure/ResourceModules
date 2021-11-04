@@ -7,7 +7,7 @@ This module deploys an Azure SQL Server.
 | Resource Type | Api Version |
 | :-- | :-- |
 | `Microsoft.Authorization/locks` | 2016-09-01 |
-| `Microsoft.Authorization/roleAssignments` | 2021-04-01-preview |
+| `Microsoft.Authorization/roleAssignments` | 2020-04-01-preview |
 | `Microsoft.Sql/servers` | 2020-02-02-preview |
 | `Microsoft.Sql/servers/databases` | 2021-02-01-preview |
 | `Microsoft.Sql/servers/firewallRules` | 2021-02-01-preview |
@@ -86,7 +86,7 @@ Tag names and tag values can be provided as needed. A tag can be left without a 
 ## Template references
 
 - [Locks](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2016-09-01/locks)
-- [Roleassignments](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2021-04-01-preview/roleAssignments)
+- [Roleassignments](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2020-04-01-preview/roleAssignments)
 - [Servers](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Sql/2020-02-02-preview/servers)
 - [Servers/Databases](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Sql/2021-02-01-preview/servers/databases)
 - [Servers/Firewallrules](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Sql/2021-02-01-preview/servers/firewallRules)
