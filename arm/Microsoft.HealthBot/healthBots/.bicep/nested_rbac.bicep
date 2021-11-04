@@ -24,7 +24,7 @@ resource healthBot 'Microsoft.HealthBot/healthBots@2021-06-10' existing = {
 resource roleAssignment 'Microsoft.Authorization/roleAssignments@2020-04-01-preview' = [for principalId in roleAssignmentObj.principalIds: {
   name: guid(healthBot.name, principalId, roleAssignmentObj.roleDefinitionIdOrName)
   properties: {
-    roleDefinitionId: (contains(builtInRoleNames, roleAssignmentObj.roleDefinitionIdOrName) ? builtInRoleNames[roleAssignmentObj.roleDefinitionIdOrName] : roleAssignmentObj.roleDefinitionIdOrName)
+    roleDefinitionId: contains(builtInRoleNames, roleAssignmentObj.roleDefinitionIdOrName) ? builtInRoleNames[roleAssignmentObj.roleDefinitionIdOrName] : roleAssignmentObj.roleDefinitionIdOrName
     principalId: principalId
   }
   scope: healthBot
