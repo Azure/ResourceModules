@@ -157,7 +157,7 @@ module eventHub_authorizationRules 'authorizationRules/deploy.bicep' = [for (aut
   name: '${deployment().name}-authorizationRule-${index}'
   params: {
     namespaceName: namespaceName
-    eventHubName: eventHub.name
+    eventHubName: last(split(eventHub.name, '/'))
     name: authorizationRule.name
     rights: contains(authorizationRule, 'rights') ? authorizationRule.rights : []
   }
