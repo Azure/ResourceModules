@@ -7,12 +7,12 @@ This template deploys an SQL Managed Instance, with resource lock.
 | Resource Type | Api Version |
 | :-- | :-- |
 | `Microsoft.Authorization/locks` | 2016-09-01 |
+| `Microsoft.Authorization/roleAssignments` | 2020-04-01-preview |
 | `Microsoft.Insights/diagnosticSettings` | 2017-05-01-preview |
 | `Microsoft.Sql/managedInstances` | 2020-08-01-preview |
 | `Microsoft.Sql/managedInstances/administrators` | 2021-02-01-preview |
 | `Microsoft.Sql/managedInstances/encryptionProtector` | 2017-10-01-preview |
 | `Microsoft.Sql/managedInstances/keys` | 2017-10-01-preview |
-| `Microsoft.Sql/managedInstances/providers/roleAssignments` | 2021-04-01-preview |
 | `Microsoft.Sql/managedInstances/securityAlertPolicies` | 2017-03-01-preview |
 | `Microsoft.Sql/managedInstances/vulnerabilityAssessments` | 2021-02-01-preview |
 
@@ -134,6 +134,7 @@ Tag names and tag values can be provided as needed. A tag can be left without a 
 ## Template references
 
 - [Locks](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2016-09-01/locks)
+- [Roleassignments](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2020-04-01-preview/roleAssignments)
 - [Diagnosticsettings](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Insights/2017-05-01-preview/diagnosticSettings)
 - [Managedinstances](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Sql/2020-08-01-preview/managedInstances)
 - [Managedinstances/Administrators](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Sql/2021-02-01-preview/managedInstances/administrators)
