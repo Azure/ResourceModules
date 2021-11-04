@@ -630,6 +630,9 @@ jobs:
             # DiskEncryptionSet, VirtualMachines and VMSS
             az keyvault key create --vault-name $keyVaultName --name 'keyEncryptionKey'
             az keyvault key create --vault-name $keyVaultName --name 'keyEncryptionKeySqlMi'
+            # ApplicationGateway
+            $apgwCertPolicy = New-AzKeyVaultCertificatePolicy -SecretContentType 'application/x-pkcs12' -SubjectName 'CN=fabrikam.com' -IssuerName 'Self' -ValidityInMonths 12 -ReuseKeyOnRenewal
+            Add-AzKeyVaultCertificate -VaultName $keyVaultName -Name 'applicationGatewaySslCertificate' -CertificatePolicy $apgwCertPolicy
           azPSVersion: 'latest'
 
   job_deploy_avdag:
