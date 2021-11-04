@@ -59,13 +59,25 @@ runs:
             @{ Replace = "<<deploymentSpId>>"; With = '${{ env.DEPLOYMENT_SP_ID }}' }
         ) | ForEach-Object { [PSCustomObject]$PSItem }
         # Get Key Vault Information (If Provided) To Initialize Default Parameter File Tokens
-        if ("${{ env.KEY_VAULT }}") {
-            $KeyVaultObj = "${{ inputs.KEY_VAULT }}" | ConvertFrom-Json -ErrorAction SilentlyContinue
-            $CustomParameterFileTokens = Get-AzKeyVaultSecret -Name $KeyVaultObj.CustomParameterFileTokensSecretName -VaultName $KeyVaultObj.keyVaultName -AsPlainText -ErrorAction SilentlyContinue | ConvertFrom-Json -ErrorAction SilentlyContinue
+        $CustomParameterFileTokens = @()
+        $TokensKeyVault = Get-AzKeyVault -Tag @{ 'resourceRole' = 'tokensKeyVault' }
+        if ($TokensKeyVault) {
+            ## Get Tokens
+            $KeyVaultTokens = Get-AzKeyVaultSecret -VaultName $TokensKeyVault.VaultName
+            if ($KeyVaultTokens) {
+                $KeyVaultTokens | ForEach-Object {
+                    $CustomParameterFileTokens += [ordered]@{ Replace = "<<$($PSItem.Name)>>"; With = (Get-AzKeyVaultSecret -SecretName $PSItem.Name -VaultName $TokensKeyVault.VaultName -AsPlainText -ErrorAction SilentlyContinue) }
+                }
+            } else {
+                Write-Verbose('No Tokens Found In Tokens Key Vault')
+            }
+        } else {
+            Write-Verbose('No Tokens Key Vault Detected')
         }
+        $AllParameterFileTokens = $DefaultParameterFileTokens + $CustomParameterFileTokens | ForEach-Object { [PSCustomObject]$PSItem }
         # Convert Tokens in Parameter Files
         Write-Verbose 'Invoking Convert-TokensInFileList'
-        Convert-TokensInFileList -Paths '${{ inputs.parameterFilePath }}' -TokensReplaceWith ($DefaultParameterFileTokens + $CustomParameterFileTokens)
+        Convert-TokensInFileList -Paths '${{ inputs.parameterFilePath }}' -TokensReplaceWith $AllParameterFileTokens
 
     - name: 'Validate [${{ inputs.templateFilePath }}]'
       shell: pwsh

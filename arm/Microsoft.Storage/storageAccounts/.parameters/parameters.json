@@ -96,7 +96,8 @@
                 {
                     "roleDefinitionIdOrName": "Reader",
                     "principalIds": [
-                        "<<deploymentSpId>>"
+                        "<<deploymentSpId>>",
+                        "<<principalId1>>"
                     ]
                 }
             ]

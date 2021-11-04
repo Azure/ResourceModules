@@ -26,6 +26,11 @@
     },
     "enablePurgeProtection": {
       "value": false
+    },
+    "tags": {
+      "value": {
+        "resourceRole": "tokensKeyVault"
+      }
     }
   }
 }
