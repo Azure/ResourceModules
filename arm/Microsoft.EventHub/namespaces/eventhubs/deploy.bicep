@@ -8,13 +8,11 @@ param name string
 param authorizationRules array = [
   {
     name: 'RootManageSharedAccessKey'
-    properties: {
-      rights: [
-        'Listen'
-        'Manage'
-        'Send'
-      ]
-    }
+    rights: [
+      'Listen'
+      'Manage'
+      'Send'
+    ]
   }
 ]
 

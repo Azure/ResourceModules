@@ -32,13 +32,11 @@ param maximumThroughputUnits int = 1
 param authorizationRules array = [
   {
     name: 'RootManageSharedAccessKey'
-    properties: {
-      rights: [
-        'Listen'
-        'Manage'
-        'Send'
-      ]
-    }
+    rights: [
+      'Listen'
+      'Manage'
+      'Send'
+    ]
   }
 ]
 
