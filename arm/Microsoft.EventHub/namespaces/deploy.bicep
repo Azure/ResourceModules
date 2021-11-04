@@ -86,20 +86,20 @@ param baseTime string = utcNow('u')
 param eventHubs array = []
 
 var maxNameLength = 50
-var uniqueEventHubNamespaceUntrim = '${uniqueString('EventHub Namespace${baseTime}')}'
-var uniqueEventHubNamespace = ((length(uniqueEventHubNamespaceUntrim) > maxNameLength) ? substring(uniqueEventHubNamespaceUntrim, 0, maxNameLength) : uniqueEventHubNamespaceUntrim)
-var constructedName = (empty(name) ? uniqueEventHubNamespace : name)
+var uniqueEventHubNamespaceUntrim = uniqueString('EventHub Namespace${baseTime}')
+var uniqueEventHubNamespace = length(uniqueEventHubNamespaceUntrim) > maxNameLength ? substring(uniqueEventHubNamespaceUntrim, 0, maxNameLength) : uniqueEventHubNamespaceUntrim
+var name_var = empty(name) ? uniqueEventHubNamespace : name
 var defaultSASKeyName = 'RootManageSharedAccessKey'
-var authRuleResourceId = resourceId('Microsoft.EventHub/namespaces/authorizationRules', constructedName, defaultSASKeyName)
-var maximumThroughputUnits_var = ((!isAutoInflateEnabled) ? 0 : maximumThroughputUnits)
+var authRuleResourceId = resourceId('Microsoft.EventHub/namespaces/authorizationRules', name_var, defaultSASKeyName)
+var maximumThroughputUnits_var = !isAutoInflateEnabled ? 0 : maximumThroughputUnits
 var virtualNetworkRules = [for index in range(0, (empty(networkAcls) ? 0 : length(networkAcls.virtualNetworkRules))): {
   id: '${vNetId}/subnets/${networkAcls.virtualNetworkRules[index].subnet}'
 }]
 var networkAcls_var = {
-  bypass: (empty(networkAcls) ? json('null') : networkAcls.bypass)
-  defaultAction: (empty(networkAcls) ? json('null') : networkAcls.defaultAction)
-  virtualNetworkRules: (empty(networkAcls) ? json('null') : virtualNetworkRules)
-  ipRules: (empty(networkAcls) ? json('null') : ((length(networkAcls.ipRules) == 0) ? json('null') : networkAcls.ipRules))
+  bypass: empty(networkAcls) ? json('null') : networkAcls.bypass
+  defaultAction: empty(networkAcls) ? json('null') : networkAcls.defaultAction
+  virtualNetworkRules: empty(networkAcls) ? json('null') : virtualNetworkRules
+  ipRules: empty(networkAcls) ? json('null') : ((length(networkAcls.ipRules) == 0) ? json('null') : networkAcls.ipRules)
 }
 
 @description('Optional. The disaster recovery config for this namespace')
@@ -158,7 +158,7 @@ module pid_cuaId '.bicep/nested_cuaId.bicep' = if (!empty(cuaId)) {
 }
 
 resource eventHubNamespace 'Microsoft.EventHub/namespaces@2017-04-01' = {
-  name: constructedName
+  name: name_var
   location: location
   tags: tags
   sku: {
