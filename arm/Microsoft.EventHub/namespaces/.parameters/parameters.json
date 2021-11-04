@@ -71,10 +71,16 @@
                     "captureDescriptionIntervalInSeconds": 300,
                     "captureDescriptionSizeLimitInBytes": 314572800,
                     "captureDescriptionDestinationName": "EventHubArchive.AzureBlockBlob",
-                    "captureDescriptionDestinationStorageAccountResourceId": "/subscriptions/a7439831-1cd9-435d-a091-4aa863c96556/resourceGroups/validation-rg/providers/Microsoft.Storage/storageAccounts/adpsxxazsaweux001",
+                    "captureDescriptionDestinationStorageAccountResourceId": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Storage/storageAccounts/adpsxxazsaweux001",
                     "captureDescriptionDestinationBlobContainer": "eventhub",
                     "captureDescriptionDestinationArchiveNameFormat": "{Namespace}/{EventHub}/{PartitionId}/{Year}/{Month}/{Day}/{Hour}/{Minute}/{Second}",
-                    "captureDescriptionSkipEmptyArchives": true
+                    "captureDescriptionSkipEmptyArchives": true,
+                    "consumerGroups": [
+                        {
+                            "name": "custom",
+                            "userMetadata": "customMetadata"
+                        }
+                    ]
                 }
             ]
         }
