@@ -7,8 +7,8 @@ This module deploys AVD Host Pools, with resource lock and diagnostics configura
 | Resource Type | Api Version |
 | :-- | :-- |
 | `Microsoft.Authorization/locks` | 2016-09-01 |
+| `Microsoft.Authorization/roleAssignments` | 2020-04-01-preview |
 | `Microsoft.DesktopVirtualization/hostPools` | 2021-07-12 |
-| `Microsoft.DesktopVirtualization/hostpools/providers/roleAssignments` | 2021-04-01-preview |
 | `Microsoft.Insights/diagnosticSettings` | 2017-05-01-preview |
 
 ## Parameters
@@ -32,7 +32,7 @@ This module deploys AVD Host Pools, with resource lock and diagnostics configura
 | `maxSessionLimit` | int | `99999` |  | Optional. Maximum number of sessions. |
 | `name` | string |  |  | Required. Name of the Host Pool |
 | `personalDesktopAssignmentType` | string |  | `[Automatic, Direct, ]` | Optional. Set the type of assignment for a Personal Host Pool type |
-| `preferredAppGroupType` | string | `None` | `[Desktop, None, RailApplications]` | Optional. The type of preferred application group type, default to Desktop Application Group |
+| `preferredAppGroupType` | string | `Desktop` | `[Desktop, None, RailApplications]` | Optional. The type of preferred application group type, default to Desktop Application Group |
 | `roleAssignments` | array | `[]` |  | Optional. Array of role assignment objects that contain the 'roleDefinitionIdOrName' and 'principalIds' to define RBAC role assignments on this resource. In the roleDefinitionIdOrName attribute, you can provide either the display name of the role definition, or it's fully qualified ID in the following format: '/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11' |
 | `startVMOnConnect` | bool |  |  | Optional. Enable Start VM on connect to allow users to start the virtual machine from a deallocated state. Important: Custom RBAC role required to power manage VMs. |
 | `tags` | object | `{object}` |  | Optional. Tags of the resource. |
@@ -135,5 +135,6 @@ Tag names and tag values can be provided as needed. A tag can be left without a 
 ## Template references
 
 - [Locks](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2016-09-01/locks)
+- [Roleassignments](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2020-04-01-preview/roleAssignments)
 - [Hostpools](https://docs.microsoft.com/en-us/azure/templates/Microsoft.DesktopVirtualization/2021-07-12/hostPools)
 - [Diagnosticsettings](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Insights/2017-05-01-preview/diagnosticSettings)
