@@ -7,9 +7,9 @@ This template deploys a ExrepressRoute Circuit.
 | Resource Type | Api Version |
 | :-- | :-- |
 | `Microsoft.Authorization/locks` | 2016-09-01 |
+| `Microsoft.Authorization/roleAssignments` | 2020-04-01-preview |
 | `Microsoft.Insights/diagnosticSettings` | 2017-05-01-preview |
 | `Microsoft.Network/expressRouteCircuits` | 2021-02-01 |
-| `Microsoft.Network/expressRouteCircuits/providers/roleAssignments` | 2021-04-01-preview |
 
 ## Parameters
 
@@ -36,7 +36,7 @@ This template deploys a ExrepressRoute Circuit.
 | `serviceProviderName` | string |  |  | Required. This is the name of the ExpressRoute Service Provider. It must exactly match one of the Service Providers from List ExpressRoute Service Providers API call. |
 | `sharedKey` | string |  |  | Optional. The shared key for peering configuration. Router does MD5 hash comparison to validate the packets sent by BGP connection. This parameter is optional and can be removed from peering configuration if not required. |
 | `skuFamily` | string | `MeteredData` | `[MeteredData, UnlimitedData]` | Required. Chosen SKU family of ExpressRoute circuit. Choose from MeteredData or UnlimitedData SKU families. |
-| `skuTier` | string | `Standard` | `[Standard, Premium]` | Required. Chosen SKU Tier of ExpressRoute circuit. Choose from Premium or Standard SKU tiers. |
+| `skuTier` | string | `Standard` | `[Local, Standard, Premium]` | Required. Chosen SKU Tier of ExpressRoute circuit. Choose from Local, Premium or Standard SKU tiers. |
 | `tags` | object | `{object}` |  | Optional. Tags of the resource. |
 | `vlanId` | int |  |  | Optional. Specifies the identifier that is used to identify the customer. |
 | `workspaceId` | string |  |  | Optional. Resource identifier of Log Analytics. |
@@ -99,5 +99,6 @@ Tag names and tag values can be provided as needed. A tag can be left without a 
 ## Template references
 
 - [Locks](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2016-09-01/locks)
+- [Roleassignments](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2020-04-01-preview/roleAssignments)
 - [Diagnosticsettings](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Insights/2017-05-01-preview/diagnosticSettings)
 - [Expressroutecircuits](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Network/2021-02-01/expressRouteCircuits)

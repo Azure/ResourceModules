@@ -4,8 +4,8 @@
 
 | Resource Type | Api Version |
 | :-- | :-- |
+| `Microsoft.Authorization/roleAssignments` | 2020-04-01-preview |
 | `Microsoft.Insights/components` | 2020-02-02 |
-| `Microsoft.Insights/components/providers/roleAssignments` | 2021-04-01-preview |
 
 ## Parameters
 
@@ -74,4 +74,5 @@ Tag names and tag values can be provided as needed. A tag can be left without a 
 
 ## Template references
 
+- [Roleassignments](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2020-04-01-preview/roleAssignments)
 - [Components](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Insights/2020-02-02/components)

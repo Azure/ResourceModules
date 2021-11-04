@@ -19,7 +19,7 @@
                 "containers": [
                     {
                         "name": "avdscripts",
-                        "publicAccess": "Container",
+                        "publicAccess": "None",
                         "roleAssignments": [
                             {
                                 "roleDefinitionIdOrName": "Reader",
@@ -31,7 +31,7 @@
                     },
                     {
                         "name": "archivecontainer",
-                        "publicAccess": "Container",
+                        "publicAccess": "None",
                         "enableWORM": true,
                         "WORMRetention": 666,
                         "allowProtectedAppendWrites": false

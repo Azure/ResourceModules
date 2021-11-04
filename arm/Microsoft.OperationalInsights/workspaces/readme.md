@@ -7,10 +7,10 @@ This template deploys Log Analytics.
 | Resource Type | Api Version |
 | :-- | :-- |
 | `Microsoft.Authorization/locks` | 2016-09-01 |
+| `Microsoft.Authorization/roleAssignments` | 2020-04-01-preview |
 | `Microsoft.OperationalInsights/workspaces` | 2020-08-01 |
 | `Microsoft.OperationalInsights/workspaces/dataSources` | 2020-03-01-preview |
 | `Microsoft.OperationalInsights/workspaces/linkedServices` | 2020-03-01-preview |
-| `Microsoft.OperationalInsights/workspaces/providers/roleAssignments` | 2021-04-01-preview |
 | `Microsoft.OperationalInsights/workspaces/savedSearches` | 2020-03-01-preview |
 | `Microsoft.OperationalInsights/workspaces/storageInsightConfigs` | 2020-03-01-preview |
 | `Microsoft.OperationsManagement/solutions` | 2015-11-01-preview |
@@ -128,6 +128,7 @@ Tag names and tag values can be provided as needed. A tag can be left without a 
 ## Template references
 
 - [Locks](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2016-09-01/locks)
+- [Roleassignments](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2020-04-01-preview/roleAssignments)
 - [Workspaces](https://docs.microsoft.com/en-us/azure/templates/Microsoft.OperationalInsights/2020-08-01/workspaces)
 - [Workspaces/Datasources](https://docs.microsoft.com/en-us/azure/templates/Microsoft.OperationalInsights/2020-03-01-preview/workspaces/dataSources)
 - [Workspaces/Linkedservices](https://docs.microsoft.com/en-us/azure/templates/Microsoft.OperationalInsights/2020-03-01-preview/workspaces/linkedServices)

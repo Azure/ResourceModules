@@ -7,8 +7,8 @@ This module deploys AVD Workspaces, with resource lock and diagnostic configurat
 | Resource Type | Api Version |
 | :-- | :-- |
 | `Microsoft.Authorization/locks` | 2016-09-01 |
+| `Microsoft.Authorization/roleAssignments` | 2020-04-01-preview |
 | `Microsoft.DesktopVirtualization/workspaces` | 2021-07-12 |
-| `Microsoft.DesktopVirtualization/workspaces/providers/roleAssignments` | 2021-04-01-preview |
 | `Microsoft.Insights/diagnosticSettings` | 2017-05-01-preview |
 
 ## Parameters
@@ -24,12 +24,13 @@ This module deploys AVD Workspaces, with resource lock and diagnostic configurat
 | `location` | string | `[resourceGroup().location]` |  | Optional. Location for all resources. |
 | `lock` | string | `NotSpecified` | `[CanNotDelete, NotSpecified, ReadOnly]` | Optional. Specify the type of lock. |
 | `logsToEnable` | array | `[Checkpoint, Error, Management, Feed]` | `[Checkpoint, Error, Management, Feed]` | Optional. The name of logs that will be streamed. |
+| `name` | string |  |  | Required. The name of the workspace to be attach to new Application Group. |
 | `roleAssignments` | array | `[]` |  | Optional. Array of role assignment objects that contain the 'roleDefinitionIdOrName' and 'principalIds' to define RBAC role assignments on this resource. In the roleDefinitionIdOrName attribute, you can provide either the display name of the role definition, or it's fully qualified ID in the following format: '/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11' |
 | `tags` | object | `{object}` |  | Optional. Tags of the resource. |
 | `workspaceDescription` | string |  |  | Optional. The description of the Workspace to be created. |
 | `workspaceFriendlyName` | string |  |  | Optional. The friendly name of the Workspace to be created. |
 | `workspaceId` | string |  |  | Optional. Resource identifier of Log Analytics. |
-| `workSpaceName` | string |  |  | Required. The name of the workspace to be attach to new Application Group. |
+
 
 ### Parameter Usage: `roleAssignments`
 
@@ -88,5 +89,6 @@ Tag names and tag values can be provided as needed. A tag can be left without a 
 ## Template references
 
 - [Locks](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2016-09-01/locks)
+- [Roleassignments](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2020-04-01-preview/roleAssignments)
 - [Workspaces](https://docs.microsoft.com/en-us/azure/templates/Microsoft.DesktopVirtualization/2021-07-12/workspaces)
 - [Diagnosticsettings](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Insights/2017-05-01-preview/diagnosticSettings)

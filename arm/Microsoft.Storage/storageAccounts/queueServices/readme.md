@@ -6,9 +6,9 @@ This module can be used to deploy a file share service into a storage account.
 
 | Resource Type | Api Version |
 | :-- | :-- |
+| `Microsoft.Authorization/roleAssignments` | 2020-04-01-preview |
 | `Microsoft.Storage/storageAccounts/queueServices` | 2021-04-01 |
 | `Microsoft.Storage/storageAccounts/queueServices/queues` | 2019-06-01 |
-| `Microsoft.Storage/storageAccounts/queueServices/queues/providers/roleAssignments` | 2021-04-01-preview |
 
 ## Parameters
 
@@ -28,5 +28,6 @@ This module can be used to deploy a file share service into a storage account.
 
 ## Template references
 
+- [Roleassignments](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2020-04-01-preview/roleAssignments)
 - [Storageaccounts/Queueservices](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Storage/2021-04-01/storageAccounts/queueServices)
 - [Storageaccounts/Queueservices/Queues](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Storage/2019-06-01/storageAccounts/queueServices/queues)

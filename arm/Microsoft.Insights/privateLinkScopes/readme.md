@@ -7,8 +7,8 @@ This module deploys Azure Monitor Private Link Scope
 | Resource Type | Api Version |
 | :-- | :-- |
 | `Microsoft.Authorization/locks` | 2016-09-01 |
+| `Microsoft.Authorization/roleAssignments` | 2020-04-01-preview |
 | `microsoft.insights/privateLinkScopes` | 2019-10-17-preview |
-| `Microsoft.Insights/privateLinkScopes/providers/roleAssignments` | 2021-04-01-preview |
 | `Microsoft.Insights/privateLinkScopes/scopedResources` | 2019-10-17-preview |
 | `Microsoft.Network/privateEndpoints` | 2021-05-01 |
 | `Microsoft.Network/privateEndpoints/privateDnsZoneGroups` | 2020-05-01 |
@@ -81,7 +81,7 @@ To use Private Endpoints the following dependencies must be deployed:
         // Example showing all available fields
         {
             "name": "sxx-az-sa-cac-y-123-pe", // Optional: Name will be automatically generated if one is not provided here
-            "subnetResourceId": "/subscriptions/8629be3b-96bc-482d-a04b-ffff597c65a2/resourceGroups/validation-rg/providers/Microsoft.Network/virtualNetworks/sxx-az-vnet-weu-x-001/subnets/sxx-az-subnet-weu-x-001",
+            "subnetResourceId": "/subscriptions/8629be3b-96bc-482d-a04b-ffff597c65a2/resourceGroups/validation-rg/providers/Microsoft.Network/virtualNetworks/sxx-az-vnet-x-001/subnets/sxx-az-subnet-x-001",
             "service": "azuremonitor",
             "privateDnsZoneResourceIds": [ // Optional: No DNS record will be created if a private DNS zone Resource ID is not specified
                 "/subscriptions/8629be3b-96bc-482d-a04b-ffff597c65a2/resourceGroups/validation-rg/providers/Microsoft.Network/privateDnsZones/privatelink.agentsvc.azure-automation.net",
@@ -100,7 +100,7 @@ To use Private Endpoints the following dependencies must be deployed:
         },
         // Example showing only mandatory fields
         {
-            "subnetResourceId": "/subscriptions/8629be3b-96bc-482d-a04b-ffff597c65a2/resourceGroups/validation-rg/providers/Microsoft.Network/virtualNetworks/sxx-az-vnet-weu-x-001/subnets/sxx-az-subnet-weu-x-001",
+            "subnetResourceId": "/subscriptions/8629be3b-96bc-482d-a04b-ffff597c65a2/resourceGroups/validation-rg/providers/Microsoft.Network/virtualNetworks/sxx-az-vnet-x-001/subnets/sxx-az-subnet-x-001",
             "service": "azuremonitor"
         }
     ]
@@ -135,6 +135,7 @@ Tag names and tag values can be provided as needed. A tag can be left without a 
 ## Template references
 
 - [Locks](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2016-09-01/locks)
+- [Roleassignments](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2020-04-01-preview/roleAssignments)
 - [Privatelinkscopes](https://docs.microsoft.com/en-us/azure/templates/microsoft.insights/2019-10-17-preview/privateLinkScopes)
 - [Privatelinkscopes/Scopedresources](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Insights/2019-10-17-preview/privateLinkScopes/scopedResources)
 - [Privateendpoints](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Network/2021-05-01/privateEndpoints)

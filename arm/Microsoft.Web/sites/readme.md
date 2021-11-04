@@ -7,6 +7,7 @@ This module deploys a Web or Function App
 | Resource Type | Api Version |
 | :-- | :-- |
 | `Microsoft.Authorization/locks` | 2016-09-01 |
+| `Microsoft.Authorization/roleAssignments` | 2020-04-01-preview |
 | `Microsoft.Insights/components` | 2020-02-02 |
 | `Microsoft.Insights/diagnosticSettings` | 2017-05-01-preview |
 | `Microsoft.Network/privateEndpoints` | 2021-05-01 |
@@ -14,7 +15,6 @@ This module deploys a Web or Function App
 | `Microsoft.Web/serverfarms` | 2021-02-01 |
 | `Microsoft.Web/sites` | 2020-12-01 |
 | `Microsoft.Web/sites/config` | 2019-08-01 |
-| `Microsoft.Web/sites/providers/roleAssignments` | 2021-04-01-preview |
 
 ## Parameters
 
@@ -112,6 +112,7 @@ Tag names and tag values can be provided as needed. A tag can be left without a 
 ## Template references
 
 - [Locks](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2016-09-01/locks)
+- [Roleassignments](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2020-04-01-preview/roleAssignments)
 - [Components](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Insights/2020-02-02/components)
 - [Diagnosticsettings](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Insights/2017-05-01-preview/diagnosticSettings)
 - [Privateendpoints](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Network/2021-05-01/privateEndpoints)
