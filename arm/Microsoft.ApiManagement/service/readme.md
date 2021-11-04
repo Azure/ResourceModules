@@ -10,8 +10,8 @@ This module deploys an API management.
 | `Microsoft.ApiManagement/service/identityProviders` | 2020-06-01-preview |
 | `Microsoft.ApiManagement/service/policies` | 2020-06-01-preview |
 | `Microsoft.ApiManagement/service/portalsettings` | 2019-12-01 |
-| `Microsoft.ApiManagement/service/providers/roleAssignments` | 2021-04-01-preview |
 | `Microsoft.Authorization/locks` | 2016-09-01 |
+| `Microsoft.Authorization/roleAssignments` | 2020-04-01-preview |
 | `Microsoft.Insights/diagnosticSettings` | 2017-05-01-preview |
 
 ## Parameters
@@ -28,7 +28,7 @@ This module deploys an API management.
 | `diagnosticStorageAccountId` | string |  |  | Optional. Resource identifier of the Diagnostic Storage Account. |
 | `disableGateway` | bool |  |  | Optional. Property only valid for an Api Management service deployed in multiple locations. This can be used to disable the gateway in master region. |
 | `enableClientCertificate` | bool |  |  | Optional. Property only meant to be used for Consumption SKU Service. This enforces a client certificate to be presented on each request to the gateway. This also enables the ability to authenticate the certificate in the policy on the gateway. |
-| `enableIdentityProviders` | bool | `false` |  | Optional. Used to enable the deployment of the identityProviders child resource. |
+| `enableIdentityProviders` | bool |  |  | Optional. Used to enable the deployment of the identityProviders child resource. |
 | `eventHubAuthorizationRuleId` | string |  |  | Optional. Resource ID of the event hub authorization rule for the Event Hubs namespace in which the event hub should be created or streamed to. |
 | `eventHubName` | string |  |  | Optional. Name of the event hub within the namespace to which logs are streamed. Without this, an event hub is created for each log category. |
 | `hostnameConfigurations` | array | `[]` |  | Optional. Custom hostname configuration of the API Management service. |
@@ -139,4 +139,5 @@ Tag names and tag values can be provided as needed. A tag can be left without a 
 - [Service/Policies](https://docs.microsoft.com/en-us/azure/templates/Microsoft.ApiManagement/2020-06-01-preview/service/policies)
 - [Service/Portalsettings](https://docs.microsoft.com/en-us/azure/templates/Microsoft.ApiManagement/2019-12-01/service/portalsettings)
 - [Locks](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2016-09-01/locks)
+- [Roleassignments](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2020-04-01-preview/roleAssignments)
 - [Diagnosticsettings](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Insights/2017-05-01-preview/diagnosticSettings)

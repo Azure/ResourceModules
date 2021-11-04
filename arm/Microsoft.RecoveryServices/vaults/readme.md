@@ -7,12 +7,12 @@ This module deploys Recovery Service Vault, with resource lock.
 | Resource Type | Api Version |
 | :-- | :-- |
 | `Microsoft.Authorization/locks` | 2016-09-01 |
+| `Microsoft.Authorization/roleAssignments` | 2020-04-01-preview |
 | `Microsoft.Insights/diagnosticSettings` | 2021-05-01-preview |
 | `Microsoft.RecoveryServices/vaults` | 2021-08-01 |
 | `Microsoft.RecoveryServices/vaults/backupPolicies` | 2019-06-15 |
 | `Microsoft.RecoveryServices/vaults/backupstorageconfig` | 2020-02-02 |
 | `Microsoft.RecoveryServices/vaults/protectionContainers` | 2016-12-01 |
-| `Microsoft.RecoveryServices/vaults/providers/roleAssignments` | 2021-04-01-preview |
 
 ## Parameters
 
@@ -335,6 +335,7 @@ Array of backup policies. They need to be properly formatted and can be VM backu
 ## Template references
 
 - [Locks](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2016-09-01/locks)
+- [Roleassignments](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2020-04-01-preview/roleAssignments)
 - [Diagnosticsettings](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Insights/2021-05-01-preview/diagnosticSettings)
 - [Vaults](https://docs.microsoft.com/en-us/azure/templates/Microsoft.RecoveryServices/2021-08-01/vaults)
 - [Vaults/Backuppolicies](https://docs.microsoft.com/en-us/azure/templates/Microsoft.RecoveryServices/2019-06-15/vaults/backupPolicies)

@@ -11,10 +11,6 @@ This module deploys EventHub Namespace.
 | `Microsoft.EventHub/namespaces` | 2017-04-01 |
 | `Microsoft.EventHub/namespaces/authorizationRules` | 2017-04-01 |
 | `Microsoft.EventHub/namespaces/disasterRecoveryConfigs` | 2017-04-01 |
-| `Microsoft.EventHub/namespaces/eventhubs` | 2021-06-01-preview |
-| `Microsoft.EventHub/namespaces/eventhubs/authorizationRules` | 2021-06-01-preview |
-| `Microsoft.EventHub/namespaces/eventhubs/consumergroups` | 2021-06-01-preview |
-| `Microsoft.EventHub/namespaces/providers/roleAssignments` | 2021-04-01-preview |
 | `Microsoft.Insights/diagnosticSettings` | 2017-05-01-preview |
 | `Microsoft.Network/privateEndpoints` | 2021-05-01 |
 | `Microsoft.Network/privateEndpoints/privateDnsZoneGroups` | 2020-05-01 |

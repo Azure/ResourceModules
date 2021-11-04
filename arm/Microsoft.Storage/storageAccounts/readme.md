@@ -9,21 +9,18 @@ The default parameter values are based on the needs of deploying a diagnostic st
 | Resource Type | Api Version |
 | :-- | :-- |
 | `Microsoft.Authorization/locks` | 2016-09-01 |
+| `Microsoft.Authorization/roleAssignments` | 2020-04-01-preview |
 | `Microsoft.Network/privateEndpoints` | 2021-05-01 |
 | `Microsoft.Network/privateEndpoints/privateDnsZoneGroups` | 2021-02-01 |
 | `Microsoft.Storage/storageAccounts` | 2021-06-01 |
 | `Microsoft.Storage/storageAccounts/blobServices` | 2021-08-01 |
 | `Microsoft.Storage/storageAccounts/blobServices/containers` | 2019-06-01 |
 | `Microsoft.Storage/storageAccounts/blobServices/containers/immutabilityPolicies` | 2019-06-01 |
-| `Microsoft.Storage/storageAccounts/blobServices/containers/providers/roleAssignments` | 2021-04-01-preview |
 | `Microsoft.Storage/storageAccounts/fileServices` | 2021-04-01 |
 | `Microsoft.Storage/storageAccounts/fileServices/shares` | 2019-06-01 |
-| `Microsoft.Storage/storageAccounts/fileServices/shares/providers/roleAssignments` | 2021-04-01-preview |
 | `Microsoft.Storage/storageAccounts/managementPolicies` | 2019-06-01 |
-| `Microsoft.Storage/storageAccounts/providers/roleAssignments` | 2021-04-01-preview |
 | `Microsoft.Storage/storageAccounts/queueServices` | 2021-04-01 |
 | `Microsoft.Storage/storageAccounts/queueServices/queues` | 2019-06-01 |
-| `Microsoft.Storage/storageAccounts/queueServices/queues/providers/roleAssignments` | 2021-04-01-preview |
 | `Microsoft.Storage/storageAccounts/tableServices` | 2021-04-01 |
 | `Microsoft.Storage/storageAccounts/tableServices/tables` | 2021-06-01 |
 
@@ -177,6 +174,7 @@ The hierarchical namespace of the storage account (see parameter `enableHierarch
 ## Template references
 
 - [Locks](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2016-09-01/locks)
+- [Roleassignments](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2020-04-01-preview/roleAssignments)
 - [Privateendpoints](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Network/2021-05-01/privateEndpoints)
 - [Privateendpoints/Privatednszonegroups](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Network/2021-02-01/privateEndpoints/privateDnsZoneGroups)
 - [Storageaccounts](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Storage/2021-06-01/storageAccounts)
