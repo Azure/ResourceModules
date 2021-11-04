@@ -98,6 +98,7 @@ function Set-EnvironmentOnAgent {
         [Hashtable[]] $Modules = @(
             @{ Name = 'Az.Accounts' },
             @{ Name = 'Az.Resources' }
+            @{ Name = 'Az.KeyVault' }
         )
     )
 

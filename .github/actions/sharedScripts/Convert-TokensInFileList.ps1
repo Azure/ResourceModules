@@ -9,16 +9,16 @@ Provide a Object of strings that need to be replaced with other strings for mult
 Mandatory. Full Path for the file that contains the strings that need to be replaced. Supports multiple files comma seperated.
 
 .PARAMETER TokensReplaceWith
-
+Mandatory. An Object that contains the Replace Key and With Key For replacing tokens in files. See Example for structure.
 .EXAMPLE
 $Object = @(
     @{ Replace = "TextA"; With = "TextB" }
     @{ Replace = "TextC"; With = "TextD" }
 )
-Convert-TokensInFiles -Paths 'C:\fileA.txt','C:\fileB.txt' -TokensReplaceWith $Object
+Convert-TokensInFileList -Paths 'C:\fileA.txt','C:\fileB.txt' -TokensReplaceWith $Object
 
 #>
-function Convert-TokensInFiles {
+function Convert-TokensInFileList {
 
     [CmdletBinding()]
     param(
@@ -26,7 +26,10 @@ function Convert-TokensInFiles {
         [string[]] $Paths,
 
         [Parameter(Mandatory)]
-        [psobject] $TokensReplaceWith
+        [psobject] $TokensReplaceWith,
+
+        [Parameter(Mandatory = $false)]
+        [string] $OutputDirectory
     )
 
     foreach ($Path in $Paths) {
@@ -35,6 +38,12 @@ function Convert-TokensInFiles {
             ForEach-Object {
                 $File = $File -replace $PSItem.Replace, $PSItem.With
             }
-        $File | Set-Content -Path $Path
+        if (!$OutputDirectory) {
+            $File | Set-Content -Path $Path
+        } else {
+            $FileName = Split-Path $Path -Leaf
+            $File | Set-Content -Path (Join-Path $OutputDirectory $FileName)
+        }
+
     }
 }

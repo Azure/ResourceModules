@@ -38,16 +38,26 @@ runs:
         creds: ${{ env.AZURE_CREDENTIALS }}
         enable-AzPSSession: true
 
-    - name: 'Replace Tokens [${{ inputs.parameterFilePath }}] '
+    - name: 'Replace Default and Custom Parameter File Tokens [${{ inputs.parameterFilePath }}] '
       shell: pwsh
       run: |
         # Load used funtions
-        . ".github/actions/sharedScripts/Convert-TokensInFiles.ps1"
-        $TokensReplaceWithObject = @(
-            @{ Replace = "<<subscriptionId>>"; With = '${{ inputs.subscriptionId }}' }
-        )
-        write-verbose "Invoking Convert-TokensInFiles"
-        Convert-TokensInFiles -Paths '${{ inputs.parameterFilePath }}' -TokensReplaceWith $TokensReplaceWithObject
+        . ".github/actions/sharedScripts/Convert-TokensInFileList.ps1"
+        # Initialize Default Parameter File Tokens
+        $DefaultParameterFileTokens = @(
+            @{ Replace = '<<subscriptionId>>'; With = '${{ inputs.subscriptionId }}' }
+            @{ Replace = '<<managementGroupId>>'; With = '${{ inputs.managementGroupId }}' }
+            @{ Replace = '<<resourceGroupName>>'; With = '${{ inputs.resourceGroupName }}' }
+            @{ Replace = '<<location>>'; With = '${{ inputs.location }}' }
+        ) | ForEach-Object { [PSCustomObject]$PSItem }
+        # Get Key Vault Information (If Provided) To Initialize Default Parameter File Tokens
+        if ("${{ env.KEY_VAULT }}") {
+            $KeyVaultObj = "${{ inputs.KEY_VAULT }}" | ConvertFrom-Json -ErrorAction SilentlyContinue
+            $CustomParameterFileTokens = Get-AzKeyVaultSecret -Name $KeyVaultObj.CustomParameterFileTokensSecretName -VaultName $KeyVaultObj.keyVaultName -AsPlainText -ErrorAction SilentlyContinue | ConvertFrom-Json -ErrorAction SilentlyContinue
+        }
+        # Convert Tokens in Parameter Files
+        Write-Verbose 'Invoking Convert-TokensInFileList'
+        Convert-TokensInFileList -Paths '${{ inputs.parameterFilePath }}' -TokensReplaceWith ($DefaultParameterFileTokens + $CustomParameterFileTokens)
 
       # [Test Deployment] task(s)
       #--------------------------
