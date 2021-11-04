@@ -2,7 +2,7 @@
 param connectionName string
 
 @description('Optional. Specifies a VPN shared key. The same value has to be specified on both Virtual Network Gateways')
-param vpnSharedKey string 
+param vpnSharedKey string
 
 @description('Required. Specifies the remote Virtual Network Gateway/ExpressRoute')
 param remoteEntityName string
