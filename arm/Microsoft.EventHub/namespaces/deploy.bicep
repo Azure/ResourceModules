@@ -222,7 +222,7 @@ module eventHubNamespace_privateEndpoints '.bicep/nested_privateEndpoint.bicep' 
 }]
 
 module eventHubNamespace_rbac '.bicep/nested_rbac.bicep' = [for (roleAssignment, index) in roleAssignments: {
-  name: '${uniqueString(deployment().name, location)}-EventHubNamespace-Rbac-${index}'
+  name: '${deployment().name}-rbac-${index}'
   params: {
     roleAssignmentObj: roleAssignment
     resourceName: eventHubNamespace.name
