@@ -56,6 +56,7 @@ runs:
             @{ Replace = '<<managementGroupId>>'; With = '${{ inputs.managementGroupId }}' }
             @{ Replace = '<<resourceGroupName>>'; With = '${{ inputs.resourceGroupName }}' }
             @{ Replace = '<<location>>'; With = '${{ inputs.location }}' }
+            @{ Replace = "<<deploymentSpId>>"; With = '${{ env.DEPLOYMENT_SP_ID }}' }
         ) | ForEach-Object { [PSCustomObject]$PSItem }
         # Get Key Vault Information (If Provided) To Initialize Default Parameter File Tokens
         if ("${{ env.KEY_VAULT }}") {
