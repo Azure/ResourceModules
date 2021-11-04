@@ -159,7 +159,7 @@ module eventHub_authorizationRules 'authorizationRules/deploy.bicep' = [for (aut
     namespaceName: namespaceName
     eventHubName: eventHub.name
     name: authorizationRule.name
-    rights: contains(authorizationRule, 'rights') ? authorizationRule.rights : ''
+    rights: contains(authorizationRule, 'rights') ? authorizationRule.rights : []
   }
 }]
 
