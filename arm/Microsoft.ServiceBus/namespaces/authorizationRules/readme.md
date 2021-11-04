@@ -17,7 +17,6 @@ This module deploys authorization rules for a service bus namespace
 | `namespaceName` | string |  |  | Required. Name of the parent Service Bus Namespace for the Service Bus Queue. |
 | `rights` | array | `[]` | `[Listen, Manage, Send]` | Optional. The rights associated with the rule. |
 
-
 ## Outputs
 
 | Output Name | Type | Description |
