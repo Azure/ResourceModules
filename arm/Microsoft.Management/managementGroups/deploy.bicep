@@ -31,7 +31,7 @@ module managementGroup_rbac '.bicep/nested_rbac.bicep' = [for (roleAssignment, i
     managementGroupName: managementGroup.name
     roleAssignmentObj: roleAssignment
   }
-  scope: az.managementGroup(managementGroup.name)
+  scope: managementGroup
 }]
 
 output managementGroupName string = managementGroup.name
