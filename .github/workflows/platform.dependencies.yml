@@ -78,6 +78,36 @@ jobs:
           managementGroupId: '${{ secrets.ARM_MGMTGROUP_ID }}'
           removeDeployment: '${{ env.removeDeployment }}'
 
+  job_deploy_kv_tokens:
+    runs-on: ubuntu-20.04
+    name: 'Deploy Tokens Key Vault'
+    env:
+      moduleName: vaults
+      namespace: 'Microsoft.KeyVault\vaults'
+    needs:
+      - job_deploy_rg
+      - job_deploy_msi
+    strategy:
+      fail-fast: false
+      matrix:
+        parameterFilePaths: ['tokensVault.parameters.json']
+    steps:
+      - name: 'Checkout'
+        uses: actions/checkout@v2
+        with:
+          fetch-depth: 0
+      - name: 'Deploy module'
+        uses: ./.github/actions/templates/deployModule
+        with:
+          moduleName: '${{ env.moduleName }}'
+          templateFilePath: 'arm/${{ env.namespace }}/deploy.bicep'
+          parameterFilePath: 'utilities/dependencies/${{ env.namespace }}/parameters/${{ matrix.parameterFilePaths }}'
+          location: '${{ env.defaultLocation }}'
+          resourceGroupName: '${{ env.resourceGroupName }}'
+          subscriptionId: '${{ secrets.ARM_SUBSCRIPTION_ID }}'
+          managementGroupId: '${{ secrets.ARM_MGMTGROUP_ID }}'
+          removeDeployment: '${{ env.removeDeployment }}'
+
   job_deploy_evhns:
     runs-on: ubuntu-20.04
     name: 'Deploy eventhub namespace'
