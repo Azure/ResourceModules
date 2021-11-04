@@ -2,14 +2,20 @@
     "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
     "contentVersion": "1.0.0.0",
     "parameters": {
-        "serviceBusNamespaceName": {
+        "name": {
             "value": "sxx-az-sbn-x-002"
         },
         "skuName": {
-            "value": "Basic"
+            "value": "Premium"
         },
         "tags": {
             "value": {}
+        },
+        "workspaceId": {
+            "value": "/subscriptions/<<subscriptionId>>/resourcegroups/validation-rg/providers/microsoft.operationalinsights/workspaces/adp-sxx-az-la-x-001"
+        },
+        "diagnosticStorageAccountId": {
+            "value": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Storage/storageAccounts/adpsxxazsaweux001"
         },
         "roleAssignments": {
             "value": [
@@ -17,6 +23,82 @@
                     "roleDefinitionIdOrName": "Reader",
                     "principalIds": [
                         "cf33fea8-b30f-424f-ab73-c48d99e0b222"
+                    ]
+                }
+            ]
+        },
+        "disasterRecoveryConfigObj": {
+            "value": {}
+        },
+        "migrationConfigurationObj": {
+            "value": {}
+        },
+        "virtualNetworkRules": {
+            "value": [
+                "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/virtualNetworks/adp-sxx-az-vnet-x-001/subnets/sxx-az-subnet-x-003"
+            ]
+        },
+        "ipFilterRules": {
+            "value": [
+                {
+                    "filterName": "ipFilter1",
+                    "ipMask": "10.0.1.0/32",
+                    "action": "Accept"
+                },
+                {
+                    "filterName": "ipFilter2",
+                    "ipMask": "10.0.2.0/32",
+                    "action": "Accept"
+                }
+            ]
+        },
+        "authorizationRules": {
+            "value": [
+                {
+                    "name": "RootManageSharedAccessKey",
+                    "rights": [
+                        "Listen",
+                        "Manage",
+                        "Send"
+                    ]
+                },
+                {
+                    "name": "AnotherKey",
+                    "rights": [
+                        "Listen",
+                        "Send"
+                    ]
+                }
+            ]
+        },
+        "queues": {
+            "value": [
+                {
+                    "name": "sxx-az-sbq-x-002",
+                    "roleAssignments": [
+                        {
+                            "roleDefinitionIdOrName": "Reader",
+                            "principalIds": [
+                                "cf33fea8-b30f-424f-ab73-c48d99e0b222"
+                            ]
+                        }
+                    ],
+                    "authorizationRules": [
+                        {
+                            "name": "RootManageSharedAccessKey",
+                            "rights": [
+                                "Listen",
+                                "Manage",
+                                "Send"
+                            ]
+                        },
+                        {
+                            "name": "AnotherKey",
+                            "rights": [
+                                "Listen",
+                                "Send"
+                            ]
+                        }
                     ]
                 }
             ]

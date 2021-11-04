@@ -356,10 +356,10 @@ The field `nicSuffix` and `subnetId` are mandatory. If `enablePublicIP` is set t
   "value": {
     "settings": {
       "EncryptionOperation": "EnableEncryption",
-      "KeyVaultURL": "https://adp-sxx-az-kv-weu-x-001.vault.azure.net/",
-      "KeyVaultResourceId": "/subscriptions/8629be3b-96bc-482d-a04b-ffff597c65a2/resourceGroups/validation-rg/providers/Microsoft.KeyVault/vaults/adp-sxx-az-kv-weu-x-001",
-      "KeyEncryptionKeyURL": "https://adp-sxx-az-kv-weu-x-001.vault.azure.net/keys/keyEncryptionKey/685153483a1140e3856f004a753e1ab4",
-      "KekVaultResourceId": "/subscriptions/8629be3b-96bc-482d-a04b-ffff597c65a2/resourceGroups/validation-rg/providers/Microsoft.KeyVault/vaults/adp-sxx-az-kv-weu-x-001",
+      "KeyVaultURL": "https://adp-sxx-az-kv-x-001.vault.azure.net/",
+      "KeyVaultResourceId": "/subscriptions/8629be3b-96bc-482d-a04b-ffff597c65a2/resourceGroups/validation-rg/providers/Microsoft.KeyVault/vaults/adp-sxx-az-kv-x-001",
+      "KeyEncryptionKeyURL": "https://adp-sxx-az-kv-x-001.vault.azure.net/keys/keyEncryptionKey/685153483a1140e3856f004a753e1ab4",
+      "KekVaultResourceId": "/subscriptions/8629be3b-96bc-482d-a04b-ffff597c65a2/resourceGroups/validation-rg/providers/Microsoft.KeyVault/vaults/adp-sxx-az-kv-x-001",
       "KeyEncryptionAlgorithm": "RSA-OAEP", //'RSA-OAEP'/'RSA-OAEP-256'/'RSA1_5'
       "VolumeType": "All", //'OS'/'Data'/'All'
       "ResizeOSDisk": "false"
