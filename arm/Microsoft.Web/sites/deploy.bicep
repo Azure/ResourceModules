@@ -191,7 +191,7 @@ module pid_cuaId '.bicep/nested_cuaId.bicep' = if (!empty(cuaId)) {
 }
 
 resource appServicePlan 'Microsoft.Web/serverfarms@2021-02-01' = if (empty(appServicePlanId)) {
-  name: ((!empty(appServicePlanName)) ? appServicePlanName : 'dummyAppServicePlanName')
+  name: !empty(appServicePlanName) ? appServicePlanName : 'dummyAppServicePlanName'
   kind: appServicePlanType
   location: location
   tags: tags
@@ -203,7 +203,7 @@ resource appServicePlan 'Microsoft.Web/serverfarms@2021-02-01' = if (empty(appSe
     family: appServicePlanFamily
   }
   properties: {
-    hostingEnvironmentProfile: (empty(appServiceEnvironmentId) ? json('null') : json('{ id: ${hostingEnvironment} }'))
+    hostingEnvironmentProfile: !empty(appServiceEnvironmentId) ? json('{ id: ${hostingEnvironment} }') : null
   }
 }
 
@@ -211,7 +211,7 @@ resource appServicePlan_lock 'Microsoft.Authorization/locks@2016-09-01' = if (lo
   name: '${appServicePlan.name}-${lock}-lock'
   properties: {
     level: lock
-    notes: (lock == 'CanNotDelete') ? 'Cannot delete resource or child resources.' : 'Cannot modify the resource or child resources.'
+    notes: lock == 'CanNotDelete' ? 'Cannot delete resource or child resources.' : 'Cannot modify the resource or child resources.'
   }
   scope: appServicePlan
 }
@@ -223,28 +223,25 @@ resource app 'Microsoft.Web/sites@2020-12-01' = {
   tags: tags
   identity: {
     type: managedServiceIdentity
-    userAssignedIdentities: (empty(userAssignedIdentities) ? json('null') : userAssignedIdentities)
+    userAssignedIdentities: !empty(userAssignedIdentities) ? userAssignedIdentities : null
   }
   properties: {
-    serverFarmId: ((!empty(appServicePlanId)) ? appServicePlanId : resourceId('Microsoft.Web/serverfarms', appServicePlanName))
+    serverFarmId: !empty(appServicePlanId) ? appServicePlanId : appServicePlan.id
     httpsOnly: httpsOnly
-    hostingEnvironmentProfile: (empty(appServiceEnvironmentId) ? json('null') : json('{ id: ${hostingEnvironment} }'))
+    hostingEnvironmentProfile: !empty(appServiceEnvironmentId) ? json('{ id: ${hostingEnvironment} }') : null
     clientAffinityEnabled: clientAffinityEnabled
     siteConfig: siteConfig
   }
-  dependsOn: [
-    appServicePlan
-  ]
 
   resource app_appsettings 'config@2019-08-01' = {
     name: 'appsettings'
     properties: {
-      AzureWebJobsStorage: ((!empty(storageAccountName)) ? 'DefaultEndpointsProtocol=https;AccountName=${storageAccountName};AccountKey=${listkeys(resourceId(subscription().subscriptionId, storageAccountResourceGroupName, 'Microsoft.Storage/storageAccounts', storageAccountName), '2019-06-01').keys[0].value};' : any(json('null')))
-      AzureWebJobsDashboard: ((!empty(storageAccountName)) ? 'DefaultEndpointsProtocol=https;AccountName=${storageAccountName};AccountKey=${listkeys(resourceId(subscription().subscriptionId, storageAccountResourceGroupName, 'Microsoft.Storage/storageAccounts', storageAccountName), '2019-06-01').keys[0].value};' : any(json('null')))
-      FUNCTIONS_EXTENSION_VERSION: (((appServicePlanType == 'functionApp') && (!empty(functionsExtensionVersion))) ? functionsExtensionVersion : any(json('null')))
-      FUNCTIONS_WORKER_RUNTIME: (((appServicePlanType == 'functionApp') && (!empty(functionsWorkerRuntime))) ? functionsWorkerRuntime : any(json('null')))
-      APPINSIGHTS_INSTRUMENTATIONKEY: (enableMonitoring ? reference('microsoft.insights/components/${appName}', '2015-05-01').InstrumentationKey : json('null'))
-      APPLICATIONINSIGHTS_CONNECTION_STRING: (enableMonitoring ? reference('microsoft.insights/components/${appName}', '2015-05-01').ConnectionString : json('null'))
+      AzureWebJobsStorage: !empty(storageAccountName) ? 'DefaultEndpointsProtocol=https;AccountName=${storageAccountName};AccountKey=${listkeys(resourceId(subscription().subscriptionId, storageAccountResourceGroupName, 'Microsoft.Storage/storageAccounts', storageAccountName), '2019-06-01').keys[0].value};' : any(null)
+      AzureWebJobsDashboard: !empty(storageAccountName) ? 'DefaultEndpointsProtocol=https;AccountName=${storageAccountName};AccountKey=${listkeys(resourceId(subscription().subscriptionId, storageAccountResourceGroupName, 'Microsoft.Storage/storageAccounts', storageAccountName), '2019-06-01').keys[0].value};' : any(null)
+      FUNCTIONS_EXTENSION_VERSION: appServicePlanType == 'functionApp' && !empty(functionsExtensionVersion) ? functionsExtensionVersion : any(null)
+      FUNCTIONS_WORKER_RUNTIME: appServicePlanType == 'functionApp' && !empty(functionsWorkerRuntime) ? functionsWorkerRuntime : any(null)
+      APPINSIGHTS_INSTRUMENTATIONKEY: enableMonitoring ? reference('microsoft.insights/components/${appName}', '2015-05-01').InstrumentationKey : null
+      APPLICATIONINSIGHTS_CONNECTION_STRING: enableMonitoring ? reference('microsoft.insights/components/${appName}', '2015-05-01').ConnectionString : null
     }
   }
 }
@@ -253,7 +250,7 @@ resource app_lock 'Microsoft.Authorization/locks@2016-09-01' = if (lock != 'NotS
   name: '${app.name}-${lock}-lock'
   properties: {
     level: lock
-    notes: (lock == 'CanNotDelete') ? 'Cannot delete resource or child resources.' : 'Cannot modify the resource or child resources.'
+    notes: lock == 'CanNotDelete' ? 'Cannot delete resource or child resources.' : 'Cannot modify the resource or child resources.'
   }
   scope: app
 }
@@ -261,12 +258,12 @@ resource app_lock 'Microsoft.Authorization/locks@2016-09-01' = if (lock != 'NotS
 resource app_diagnosticSettings 'Microsoft.Insights/diagnosticsettings@2017-05-01-preview' = if ((!empty(diagnosticStorageAccountId)) || (!empty(workspaceId)) || (!empty(eventHubAuthorizationRuleId)) || (!empty(eventHubName))) {
   name: '${app.name}-diagnosticSettings'
   properties: {
-    storageAccountId: (empty(diagnosticStorageAccountId) ? json('null') : diagnosticStorageAccountId)
-    workspaceId: (empty(workspaceId) ? json('null') : workspaceId)
-    eventHubAuthorizationRuleId: (empty(eventHubAuthorizationRuleId) ? json('null') : eventHubAuthorizationRuleId)
-    eventHubName: (empty(eventHubName) ? json('null') : eventHubName)
-    metrics: ((empty(diagnosticStorageAccountId) && empty(workspaceId) && empty(eventHubAuthorizationRuleId) && empty(eventHubName)) ? json('null') : diagnosticsMetrics)
-    logs: ((empty(diagnosticStorageAccountId) && empty(workspaceId) && empty(eventHubAuthorizationRuleId) && empty(eventHubName)) ? json('null') : diagnosticsLogs)
+    storageAccountId: empty(diagnosticStorageAccountId) ? null : diagnosticStorageAccountId
+    workspaceId: empty(workspaceId) ? null : workspaceId
+    eventHubAuthorizationRuleId: empty(eventHubAuthorizationRuleId) ? null : eventHubAuthorizationRuleId
+    eventHubName: empty(eventHubName) ? null : eventHubName
+    metrics: empty(diagnosticStorageAccountId) && empty(workspaceId) && empty(eventHubAuthorizationRuleId) && empty(eventHubName) ? null : diagnosticsMetrics
+    logs: empty(diagnosticStorageAccountId) && empty(workspaceId) && empty(eventHubAuthorizationRuleId) && empty(eventHubName) ? null : diagnosticsLogs
   }
   scope: app
 }
@@ -294,15 +291,17 @@ module app_privateEndpoint '.bicep/nested_privateEndpoint.bicep' = [for (private
   name: '${uniqueString(deployment().name, location)}-AppService-PrivateEndpoints-${index}'
   params: {
     privateEndpointResourceId: app.id
-    privateEndpointVnetLocation: (empty(privateEndpoints) ? 'dummy' : reference(split(privateEndpoint.subnetResourceId, '/subnets/')[0], '2020-06-01', 'Full').location)
+    privateEndpointVnetLocation: reference(split(privateEndpoint.subnetResourceId, '/subnets/')[0], '2020-06-01', 'Full').location
     privateEndpointObj: privateEndpoint
     tags: tags
   }
-  dependsOn: [
-    app
-  ]
 }]
 
+@description('The name of the site')
 output siteName string = app.name
+
+@description('The resourceId of the site')
 output siteResourceId string = app.id
+
+@description('The resource group the site was deployed into')
 output siteResourceGroup string = resourceGroup().name
