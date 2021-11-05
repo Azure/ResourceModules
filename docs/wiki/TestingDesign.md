@@ -6,8 +6,6 @@ This section gives you an overview of the design principals the testing follows.
 
 ### _Navigation_
 
-- [Testing Design](#testing-design)
-    - [_Navigation_](#navigation)
   - [Approach](#approach)
   - [Static code validation](#static-code-validation)
     - [Additional resources](#additional-resources)
