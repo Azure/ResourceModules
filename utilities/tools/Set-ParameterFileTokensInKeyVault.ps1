@@ -73,7 +73,7 @@ function Set-ParameterFileTokensInKeyVault {
                 try {
                     $KeyVaultTokens | ForEach-Object {
                         Write-Verbose "Creating Token: $($PSItem.Name)"
-                        Set-AzKeyVaultSecret -Name "ParameterFileToken-$PSItem.Name" -SecretValue (ConvertTo-SecureString -AsPlainText $PSItem.Value) -VaultName $TokensKeyVault.VaultName
+                        Set-AzKeyVaultSecret -Name "ParameterFileToken-$($PSItem.Name)" -SecretValue (ConvertTo-SecureString -AsPlainText $PSItem.Value) -VaultName $TokensKeyVault.VaultName
                     }
                 } catch {
                     throw $PSitem.Exception.Message

@@ -4,16 +4,6 @@
     "parameters": {
         "userMsiName": {
             "value": "adp-sxx-az-msi-x-001"
-        },
-        "tags": {
-            "value": {
-                "enableForTokens": "true",
-                "tokenName": "principalId1",
-                "tokenValue": "principalId"
-            }
-        },
-        "lock": {
-            "value": "CanNotDelete"
         }
     }
 }
