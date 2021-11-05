@@ -1,5 +1,5 @@
 @description('Required. Name of the image definition.')
-param imageDefinitionName string
+param name string
 
 @description('Optional. Customer Usage Attribution id (GUID). This GUID must be previously registered')
 param cuaId string = ''
@@ -120,7 +120,7 @@ module pid_cuaId '.bicep/nested_cuaId.bicep' = if (!empty(cuaId)) {
 }
 
 resource galleryImage 'Microsoft.Compute/galleries/images@2020-09-30' = {
-  name: '${galleryName}/${imageDefinitionName}'
+  name: '${galleryName}/${name}'
   location: location
   tags: tags
   properties: {
