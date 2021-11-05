@@ -94,10 +94,10 @@ var virtualNetworkRules = [for index in range(0, (empty(networkAcls) ? 0 : lengt
   id: '${vNetId}/subnets/${networkAcls.virtualNetworkRules[index].subnet}'
 }]
 var networkAcls_var = {
-  bypass: empty(networkAcls) ? json('null') : networkAcls.bypass
-  defaultAction: empty(networkAcls) ? json('null') : networkAcls.defaultAction
-  virtualNetworkRules: empty(networkAcls) ? json('null') : virtualNetworkRules
-  ipRules: empty(networkAcls) ? json('null') : ((length(networkAcls.ipRules) == 0) ? json('null') : networkAcls.ipRules)
+  bypass: empty(networkAcls) ? null : networkAcls.bypass
+  defaultAction: empty(networkAcls) ? null : networkAcls.defaultAction
+  virtualNetworkRules: empty(networkAcls) ? null : virtualNetworkRules
+  ipRules: empty(networkAcls) ? null : ((length(networkAcls.ipRules) == 0) ? null : networkAcls.ipRules)
 }
 
 @description('Optional. The disaster recovery config for this namespace')
@@ -168,7 +168,7 @@ resource eventHubNamespace 'Microsoft.EventHub/namespaces@2017-04-01' = {
     zoneRedundant: zoneRedundant
     isAutoInflateEnabled: isAutoInflateEnabled
     maximumThroughputUnits: maximumThroughputUnits_var
-    networkAcls: (empty(networkAcls) ? json('null') : networkAcls_var)
+    networkAcls: (empty(networkAcls) ? null : networkAcls_var)
   }
 }
 
@@ -184,10 +184,10 @@ resource eventHubNamespace_lock 'Microsoft.Authorization/locks@2016-09-01' = if 
 resource eventHubNamespace_diagnosticSettings 'Microsoft.Insights/diagnosticsettings@2017-05-01-preview' = if ((!empty(diagnosticStorageAccountId)) || (!empty(workspaceId))) {
   name: '${eventHubNamespace.name}-diagnosticSettings'
   properties: {
-    storageAccountId: (empty(diagnosticStorageAccountId) ? json('null') : diagnosticStorageAccountId)
-    workspaceId: (empty(workspaceId) ? json('null') : workspaceId)
-    metrics: ((empty(diagnosticStorageAccountId) && empty(workspaceId)) ? json('null') : diagnosticsMetrics)
-    logs: ((empty(diagnosticStorageAccountId) && empty(workspaceId)) ? json('null') : diagnosticsLogs)
+    storageAccountId: (empty(diagnosticStorageAccountId) ? null : diagnosticStorageAccountId)
+    workspaceId: (empty(workspaceId) ? null : workspaceId)
+    metrics: ((empty(diagnosticStorageAccountId) && empty(workspaceId)) ? null : diagnosticsMetrics)
+    logs: ((empty(diagnosticStorageAccountId) && empty(workspaceId)) ? null : diagnosticsLogs)
   }
   scope: eventHubNamespace
 }
