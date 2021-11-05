@@ -8,13 +8,13 @@
         "location": {
             "value": "westeurope"
         },
-        "appGroupType": {
+        "type": {
             "value": "RemoteApp"
         },
         "hostpoolName": {
             "value": "adp-sxx-az-avdhp-x-001"
         },
-        "appGroupFriendlyName": {
+        "friendlyName": {
             "value": "Remote Applications 1"
         },
         "appGroupDescription": {

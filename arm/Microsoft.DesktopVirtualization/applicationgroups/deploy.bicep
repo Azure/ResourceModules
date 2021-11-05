@@ -10,7 +10,7 @@ param location string = resourceGroup().location
   'RemoteApp'
   'Desktop'
 ])
-param appGroupType string
+param type string
 
 @description('Required. Name of the Host Pool to be linked to this Application Group.')
 param hostpoolName string
@@ -96,7 +96,7 @@ resource appGroup 'Microsoft.DesktopVirtualization/applicationgroups@2021-07-12'
     hostPoolArmPath: appGroup_hostpool.id
     friendlyName: friendlyName
     description: appGroupDescription
-    applicationGroupType: appGroupType
+    applicationGroupType: type
   }
 }
 
