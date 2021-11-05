@@ -27,10 +27,10 @@ module pid_cuaId '.bicep/nested_cuaId.bicep' = if (!empty(cuaId)) {
 resource cache 'Microsoft.ApiManagement/service/caches@2020-06-01-preview' = {
   name: '${apiManagementServiceName}/${cacheName}'
   properties: {
-    description: (empty(cacheDescription) ? json('null') : cacheDescription)
+    description: empty(cacheDescription) ? null : cacheDescription
     connectionString: connectionString
     useFromLocation: useFromLocation
-    resourceId: (empty(resourceId) ? json('null') : resourceId)
+    resourceId: empty(resourceId) ? null : resourceId
   }
 }
 

@@ -35,10 +35,10 @@ resource subscription 'Microsoft.ApiManagement/service/subscriptions@2020-06-01-
   properties: {
     scope: scope
     displayName: subscriptionName
-    ownerId: ((!empty(ownerId)) ? ownerId : json('null'))
-    primaryKey: ((!empty(primaryKey)) ? primaryKey : json('null'))
-    secondaryKey: ((!empty(secondaryKey)) ? secondaryKey : json('null'))
-    state: ((!empty(state)) ? state : json('null'))
+    ownerId: (!empty(ownerId)) ? ownerId : null
+    primaryKey: (!empty(primaryKey)) ? primaryKey : null
+    secondaryKey: (!empty(secondaryKey)) ? secondaryKey : null
+    state: (!empty(state)) ? state : null
     allowTracing: allowTracing
   }
 }

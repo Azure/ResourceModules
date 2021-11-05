@@ -208,7 +208,7 @@ resource apiManagementService 'Microsoft.ApiManagement/service@2020-12-01' = {
     capacity: skuCount
   }
   zones: zones
-  identity: ((!empty(identity)) ? identity : json('{"type": "None"}'))
+  identity: (!empty(identity)) ? identity : json('{"type": "None"}')
   properties: {
     publisherEmail: publisherEmail
     publisherName: publisherName
@@ -217,11 +217,11 @@ resource apiManagementService 'Microsoft.ApiManagement/service@2020-12-01' = {
     additionalLocations: additionalLocations
     customProperties: customProperties
     certificates: certificates
-    enableClientCertificate: (enableClientCertificate ? true : json('null'))
+    enableClientCertificate: enableClientCertificate ? true : null
     disableGateway: disableGateway
     virtualNetworkType: virtualNetworkType
-    virtualNetworkConfiguration: ((!empty(subnetResourceId)) ? json('{"subnetResourceId": "${subnetResourceId}"}') : json('null'))
-    apiVersionConstraint: ((!empty(minApiVersion)) ? json('{"minApiVersion": "${minApiVersion}"}') : json('null'))
+    virtualNetworkConfiguration: (!empty(subnetResourceId)) ? json('{"subnetResourceId": "${subnetResourceId}"}') : null
+    apiVersionConstraint: (!empty(minApiVersion)) ? json('{"minApiVersion": "${minApiVersion}"}') : null
     restore: restore
   }
   resource apiManagementService_signin 'portalsettings@2019-12-01' = if (!empty(portalSignIn)) {
@@ -243,10 +243,10 @@ resource apiManagementService 'Microsoft.ApiManagement/service@2020-12-01' = {
       signinTenant: identityProviderSignInTenant
       allowedTenants: identityProviderAllowedTenants
       authority: identityProviderAuthority
-      signupPolicyName: (isAadB2C ? identityProviderSignUpPolicyName : json('null'))
-      signinPolicyName: (isAadB2C ? identityProviderSignInPolicyName : json('null'))
-      profileEditingPolicyName: (isAadB2C ? identityProviderProfileEditingPolicyName : json('null'))
-      passwordResetPolicyName: (isAadB2C ? identityProviderPasswordResetPolicyName : json('null'))
+      signupPolicyName: isAadB2C ? identityProviderSignUpPolicyName : null
+      signinPolicyName: isAadB2C ? identityProviderSignInPolicyName : null
+      profileEditingPolicyName: isAadB2C ? identityProviderProfileEditingPolicyName : null
+      passwordResetPolicyName: isAadB2C ? identityProviderPasswordResetPolicyName : null
       clientId: identityProviderClientId
       clientSecret: identityProviderClientSecret
     }
@@ -257,20 +257,20 @@ resource apiManagementService_lock 'Microsoft.Authorization/locks@2016-09-01' = 
   name: '${apiManagementService.name}-${lock}-lock'
   properties: {
     level: lock
-    notes: (lock == 'CanNotDelete') ? 'Cannot delete resource or child resources.' : 'Cannot modify the resource or child resources.'
+    notes: lock == 'CanNotDelete' ? 'Cannot delete resource or child resources.' : 'Cannot modify the resource or child resources.'
   }
   scope: apiManagementService
 }
 
-resource apiManagementService_diagnosticSettings 'Microsoft.Insights/diagnosticSettings@2017-05-01-preview' = if ((!empty(diagnosticStorageAccountId)) || (!empty(workspaceId)) || (!empty(eventHubAuthorizationRuleId)) || (!empty(eventHubName))) {
+resource apiManagementService_diagnosticSettings 'Microsoft.Insights/diagnosticSettings@2017-05-01-preview' = if (!empty(diagnosticStorageAccountId) || !empty(workspaceId) || !empty(eventHubAuthorizationRuleId) || !empty(eventHubName)) {
   name: '${apiManagementService.name}-diagnosticSettings'
   properties: {
-    storageAccountId: (empty(diagnosticStorageAccountId) ? json('null') : diagnosticStorageAccountId)
-    workspaceId: (empty(workspaceId) ? json('null') : workspaceId)
-    eventHubAuthorizationRuleId: (empty(eventHubAuthorizationRuleId) ? json('null') : eventHubAuthorizationRuleId)
-    eventHubName: (empty(eventHubName) ? json('null') : eventHubName)
-    metrics: ((empty(diagnosticStorageAccountId) && empty(workspaceId) && empty(eventHubAuthorizationRuleId) && empty(eventHubName)) ? json('null') : diagnosticsMetrics)
-    logs: ((empty(diagnosticStorageAccountId) && empty(workspaceId) && empty(eventHubAuthorizationRuleId) && empty(eventHubName)) ? json('null') : diagnosticsLogs)
+    storageAccountId: empty(diagnosticStorageAccountId) ? null : diagnosticStorageAccountId
+    workspaceId: empty(workspaceId) ? null : workspaceId
+    eventHubAuthorizationRuleId: empty(eventHubAuthorizationRuleId) ? null : eventHubAuthorizationRuleId
+    eventHubName: empty(eventHubName) ? null : eventHubName
+    metrics: empty(diagnosticStorageAccountId) && empty(workspaceId) && empty(eventHubAuthorizationRuleId) && empty(eventHubName) ? null : diagnosticsMetrics
+    logs: empty(diagnosticStorageAccountId) && empty(workspaceId) && empty(eventHubAuthorizationRuleId) && empty(eventHubName) ? null : diagnosticsLogs
   }
   scope: apiManagementService
 }

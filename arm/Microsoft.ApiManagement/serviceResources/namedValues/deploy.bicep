@@ -32,11 +32,11 @@ module pid_cuaId '.bicep/nested_cuaId.bicep' = if (!empty(cuaId)) {
 resource namedValue 'Microsoft.ApiManagement/service/namedValues@2020-06-01-preview' = {
   name: '${apiManagementServiceName}/${namedValueName}'
   properties: {
-    tags: ((!empty(namedValueTags)) ? namedValueTags : json('null'))
+    tags: (!empty(namedValueTags)) ? namedValueTags : null
     secret: secret
     displayName: displayName
-    value: (keyVaultEmpty ? value : json('null'))
-    keyVault: ((!keyVaultEmpty) ? keyVault : json('null'))
+    value: keyVaultEmpty ? value : null
+    keyVault: (!keyVaultEmpty) ? keyVault : null
   }
 }
 

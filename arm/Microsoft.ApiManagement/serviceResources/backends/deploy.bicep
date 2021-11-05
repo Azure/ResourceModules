@@ -45,15 +45,15 @@ module pid_cuaId '.bicep/nested_cuaId.bicep' = if (!empty(cuaId)) {
 resource backend 'Microsoft.ApiManagement/service/backends@2020-06-01-preview' = {
   name: '${apiManagementServiceName}/${backendName}'
   properties: {
-    title: ((!empty(title)) ? title : json('null'))
-    description: ((!empty(backendDescription)) ? backendDescription : json('null'))
-    resourceId: ((!empty(resourceId)) ? resourceId : json('null'))
+    title: (!empty(title)) ? title : null
+    description: (!empty(backendDescription)) ? backendDescription : null
+    resourceId: (!empty(resourceId)) ? resourceId : null
     properties: {
-      serviceFabricCluster: ((!empty(serviceFabricCluster)) ? serviceFabricCluster : json('null'))
+      serviceFabricCluster: (!empty(serviceFabricCluster)) ? serviceFabricCluster : null
     }
-    credentials: ((!empty(credentials)) ? credentials : json('null'))
-    proxy: ((!empty(proxy)) ? proxy : json('null'))
-    tls: ((!empty(tls)) ? tls : json('null'))
+    credentials: (!empty(credentials)) ? credentials : null
+    proxy: (!empty(proxy)) ? proxy : null
+    tls: (!empty(tls)) ? tls : null
     url: url
     protocol: protocol
   }

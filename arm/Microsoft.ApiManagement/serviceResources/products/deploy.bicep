@@ -42,8 +42,8 @@ resource product 'Microsoft.ApiManagement/service/products@2020-06-01-preview' =
     displayName: productName
     terms: terms
     subscriptionRequired: subscriptionRequired
-    approvalRequired: (subscriptionRequired ? approvalRequired : json('null'))
-    subscriptionsLimit: (subscriptionRequired ? subscriptionsLimit : json('null'))
+    approvalRequired: subscriptionRequired ? approvalRequired : null
+    subscriptionsLimit: subscriptionRequired ? subscriptionsLimit : null
     state: state
   }
   resource groups 'groups@2020-06-01-preview' = [for productGroup in productGroups: {

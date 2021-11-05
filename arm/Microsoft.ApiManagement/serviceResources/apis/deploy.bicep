@@ -110,25 +110,25 @@ resource apiVersionSetResource 'Microsoft.ApiManagement/service/apiVersionSets@2
 resource apiManagementServiceApi 'Microsoft.ApiManagement/service/apis@2020-06-01-preview' = {
   name: '${apiManagementServiceName}/${apiManagementServiceApiName}'
   properties: {
-    apiRevision: ((!empty(apiRevision)) ? apiRevision : json('null'))
-    apiRevisionDescription: ((!empty(apiRevisionDescription)) ? apiRevisionDescription : json('null'))
-    apiType: ((!empty(apiType)) ? apiType : json('null'))
-    apiVersion: ((!empty(apiVersion)) ? apiVersion : json('null'))
-    apiVersionDescription: ((!empty(apiVersionDescription)) ? apiVersionDescription : json('null'))
-    apiVersionSetId: (apiVersionSetNotEmpty ? apiVersionSetResource.id : json('null'))
+    apiRevision: (!empty(apiRevision)) ? apiRevision : null
+    apiRevisionDescription: (!empty(apiRevisionDescription)) ? apiRevisionDescription : null
+    apiType: (!empty(apiType)) ? apiType : null
+    apiVersion: (!empty(apiVersion)) ? apiVersion : null
+    apiVersionDescription: (!empty(apiVersionDescription)) ? apiVersionDescription : null
+    apiVersionSetId: apiVersionSetNotEmpty ? apiVersionSetResource.id : null
     authenticationSettings: authenticationSettings
     description: apiDescription
     displayName: displayName
-    format: ((!empty(value)) ? format : json('null'))
+    format: (!empty(value)) ? format : null
     isCurrent: isCurrent
     path: path
     protocols: protocols
-    serviceUrl: ((!empty(serviceUrl)) ? serviceUrl : json('null'))
-    sourceApiId: ((!empty(sourceApiId)) ? sourceApiId : json('null'))
-    subscriptionKeyParameterNames: ((!empty(subscriptionKeyParameterNames)) ? subscriptionKeyParameterNames : json('null'))
+    serviceUrl: (!empty(serviceUrl)) ? serviceUrl : null
+    sourceApiId: (!empty(sourceApiId)) ? sourceApiId : null
+    subscriptionKeyParameterNames: (!empty(subscriptionKeyParameterNames)) ? subscriptionKeyParameterNames : null
     subscriptionRequired: subscriptionRequired
     type: type
-    value: ((!empty(value)) ? value : json('null'))
+    value: (!empty(value)) ? value : null
     wsdlSelector: wsdlSelector
   }
   resource apiManagementServiceApiPolicyResource 'policies@2020-06-01-preview' = if (!empty(apiManagementServiceApiPolicy)) {
