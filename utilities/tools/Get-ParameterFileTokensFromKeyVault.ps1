@@ -53,7 +53,7 @@ function Get-ParameterFileTokensFromKeyVault {
         if ($TokensKeyVault) {
             ## Get Tokens
             Write-Verbose("Tokens Key Vault Found: $($TokensKeyVault.VaultName)")
-            $KeyVaultTokens = Get-AzKeyVaultSecret -VaultName $TokensKeyVault.VaultName
+            $KeyVaultTokens = Get-AzKeyVaultSecret -VaultName $TokensKeyVault.VaultName | Where-Object -Property Name -Like 'ParameterFileToken-*'
             if ($KeyVaultTokens) {
                 Write-Verbose("Key Vault Tokens Found: $($KeyVaultTokens.count)")
                 $KeyVaultTokens | ForEach-Object {

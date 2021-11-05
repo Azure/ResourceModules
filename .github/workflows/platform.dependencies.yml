@@ -134,7 +134,7 @@ jobs:
         run: |
           # Load used functions
           . "$env:GITHUB_WORKSPACE/.github/actions/sharedScripts/Set-EnvironmentOnAgent.ps1"
-          . "$env:GITHUB_WORKSPACE/.github/utilities/tools/Set-ParameterFileTokensInKeyVault"
+          . "$env:GITHUB_WORKSPACE/utilities/tools/Set-ParameterFileTokensInKeyVault"
           # Set agent up
           Set-EnvironmentOnAgent
           # Create Tokens in Key Vault
