@@ -40,7 +40,7 @@ if ($KeyVaultTokens) {
     $TokensKeyVault = Get-AzKeyVault -Tag @{ 'resourceRole' = 'tokensKeyVault' }
     if ($TokensKeyVault) {
         $KeyVaultTokens | ForEach-Object {
-            Set-AzKeyVaultSecret -Name $PSItem.Name -SecretValue (ConvertTo-SecureString -AsPlainText $PSItem.Name) -VaultName $TokensKeyVault.VaultName
+            Set-AzKeyVaultSecret -Name $PSItem.Name -SecretValue (ConvertTo-SecureString -AsPlainText $PSItem.Value) -VaultName $TokensKeyVault.VaultName
         }
     }
 }
