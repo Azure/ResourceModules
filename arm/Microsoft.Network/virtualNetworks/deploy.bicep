@@ -106,20 +106,20 @@ resource virtualNetwork 'Microsoft.Network/virtualNetworks@2021-05-01' = {
     addressSpace: {
       addressPrefixes: vNetAddressPrefixes
     }
-    ddosProtectionPlan: ((!empty(ddosProtectionPlanId)) ? ddosProtectionPlan : json('null'))
-    dhcpOptions: (empty(dnsServers) ? json('null') : dnsServers_var)
-    enableDdosProtection: (!empty(ddosProtectionPlanId))
+    ddosProtectionPlan: !empty(ddosProtectionPlanId) ? ddosProtectionPlan : null
+    dhcpOptions: !empty(dnsServers) ? dnsServers_var : null
+    enableDdosProtection: !empty(ddosProtectionPlanId)
     subnets: [for item in subnets: {
       name: item.name
       properties: {
         addressPrefix: item.addressPrefix
-        networkSecurityGroup: (contains(item, 'networkSecurityGroupName') ? (empty(item.networkSecurityGroupName) ? json('null') : json('{"id": "${resourceId('Microsoft.Network/networkSecurityGroups', item.networkSecurityGroupName)}"}')) : json('null'))
-        routeTable: (contains(item, 'routeTableName') ? (empty(item.routeTableName) ? json('null') : json('{"id": "${resourceId('Microsoft.Network/routeTables', item.routeTableName)}"}')) : json('null'))
-        serviceEndpoints: (contains(item, 'serviceEndpoints') ? (empty(item.serviceEndpoints) ? json('null') : item.serviceEndpoints) : json('null'))
-        delegations: (contains(item, 'delegations') ? (empty(item.delegations) ? json('null') : item.delegations) : json('null'))
-        natGateway: (contains(item, 'natGatewayName') ? (empty(item.natGatewayName) ? json('null') : json('{"id": "${resourceId('Microsoft.Network/natGateways', item.natGatewayName)}"}')) : json('null'))
-        privateEndpointNetworkPolicies: (contains(item, 'privateEndpointNetworkPolicies') ? (empty(item.privateEndpointNetworkPolicies) ? json('null') : item.privateEndpointNetworkPolicies) : json('null'))
-        privateLinkServiceNetworkPolicies: (contains(item, 'privateLinkServiceNetworkPolicies') ? (empty(item.privateLinkServiceNetworkPolicies) ? json('null') : item.privateLinkServiceNetworkPolicies) : json('null'))
+        networkSecurityGroup: contains(item, 'networkSecurityGroupName') ? (empty(item.networkSecurityGroupName) ? null : json('{"id": "${resourceId('Microsoft.Network/networkSecurityGroups', item.networkSecurityGroupName)}"}')) : null
+        routeTable: contains(item, 'routeTableName') ? (empty(item.routeTableName) ? null : json('{"id": "${resourceId('Microsoft.Network/routeTables', item.routeTableName)}"}')) : null
+        serviceEndpoints: contains(item, 'serviceEndpoints') ? (empty(item.serviceEndpoints) ? null : item.serviceEndpoints) : null
+        delegations: contains(item, 'delegations') ? (empty(item.delegations) ? null : item.delegations) : null
+        natGateway: contains(item, 'natGatewayName') ? (empty(item.natGatewayName) ? null : json('{"id": "${resourceId('Microsoft.Network/natGateways', item.natGatewayName)}"}')) : null
+        privateEndpointNetworkPolicies: contains(item, 'privateEndpointNetworkPolicies') ? (empty(item.privateEndpointNetworkPolicies) ? null : item.privateEndpointNetworkPolicies) : null
+        privateLinkServiceNetworkPolicies: contains(item, 'privateLinkServiceNetworkPolicies') ? (empty(item.privateLinkServiceNetworkPolicies) ? null : item.privateLinkServiceNetworkPolicies) : null
       }
     }]
   }
@@ -129,7 +129,7 @@ resource virtualNetwork_lock 'Microsoft.Authorization/locks@2016-09-01' = if (lo
   name: '${virtualNetwork.name}-${lock}-lock'
   properties: {
     level: lock
-    notes: (lock == 'CanNotDelete') ? 'Cannot delete resource or child resources.' : 'Cannot modify the resource or child resources.'
+    notes: lock == 'CanNotDelete' ? 'Cannot delete resource or child resources.' : 'Cannot modify the resource or child resources.'
   }
   scope: virtualNetwork
 }
@@ -137,12 +137,12 @@ resource virtualNetwork_lock 'Microsoft.Authorization/locks@2016-09-01' = if (lo
 resource appServiceEnvironment_diagnosticSettings 'Microsoft.Insights/diagnosticsettings@2017-05-01-preview' = if ((!empty(diagnosticStorageAccountId)) || (!empty(workspaceId)) || (!empty(eventHubAuthorizationRuleId)) || (!empty(eventHubName))) {
   name: '${vNetName}-diagnosticSettings'
   properties: {
-    storageAccountId: (empty(diagnosticStorageAccountId) ? json('null') : diagnosticStorageAccountId)
-    workspaceId: (empty(workspaceId) ? json('null') : workspaceId)
-    eventHubAuthorizationRuleId: (empty(eventHubAuthorizationRuleId) ? json('null') : eventHubAuthorizationRuleId)
-    eventHubName: (empty(eventHubName) ? json('null') : eventHubName)
-    metrics: ((empty(diagnosticStorageAccountId) && empty(workspaceId) && empty(eventHubAuthorizationRuleId) && empty(eventHubName)) ? json('null') : diagnosticsMetrics)
-    logs: ((empty(diagnosticStorageAccountId) && empty(workspaceId) && empty(eventHubAuthorizationRuleId) && empty(eventHubName)) ? json('null') : diagnosticsLogs)
+    storageAccountId: empty(diagnosticStorageAccountId) ? null : diagnosticStorageAccountId
+    workspaceId: empty(workspaceId) ? null : workspaceId
+    eventHubAuthorizationRuleId: empty(eventHubAuthorizationRuleId) ? null : eventHubAuthorizationRuleId
+    eventHubName: empty(eventHubName) ? null : eventHubName
+    metrics: empty(diagnosticStorageAccountId) && empty(workspaceId) && empty(eventHubAuthorizationRuleId) && empty(eventHubName) ? null : diagnosticsMetrics
+    logs: empty(diagnosticStorageAccountId) && empty(workspaceId) && empty(eventHubAuthorizationRuleId) && empty(eventHubName) ? null : diagnosticsLogs
   }
   scope: virtualNetwork
 }
@@ -155,8 +155,17 @@ module virtualNetwork_rbac '.bicep/nested_rbac.bicep' = [for (roleAssignment, in
   }
 }]
 
+@description('The resource group the virtual network was deployed into')
 output virtualNetworkResourceGroup string = resourceGroup().name
+
+@description('The resourceId of the virtual network')
 output virtualNetworkResourceId string = virtualNetwork.id
+
+@description('The name of the virtual network')
 output virtualNetworkName string = virtualNetwork.name
+
+@description('The names of the deployed subnets')
 output subnetNames array = [for subnet in subnets: subnet.name]
+
+@description('The resourceIds of the deployed subnets')
 output subnetIds array = [for subnet in subnets: resourceId('Microsoft.Network/virtualNetworks/subnets', vNetName, subnet.name)]

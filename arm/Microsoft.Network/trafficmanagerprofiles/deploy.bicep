@@ -142,7 +142,7 @@ resource trafficmanagerprofile_lock 'Microsoft.Authorization/locks@2016-09-01' =
   name: '${trafficmanagerprofile.name}-${lock}-lock'
   properties: {
     level: lock
-    notes: (lock == 'CanNotDelete') ? 'Cannot delete resource or child resources.' : 'Cannot modify the resource or child resources.'
+    notes: lock == 'CanNotDelete' ? 'Cannot delete resource or child resources.' : 'Cannot modify the resource or child resources.'
   }
   scope: trafficmanagerprofile
 }
@@ -150,12 +150,12 @@ resource trafficmanagerprofile_lock 'Microsoft.Authorization/locks@2016-09-01' =
 resource trafficmanagerprofile_diagnosticSettings 'Microsoft.Insights/diagnosticsettings@2017-05-01-preview' = if ((!empty(diagnosticStorageAccountId)) || (!empty(workspaceId)) || (!empty(eventHubAuthorizationRuleId)) || (!empty(eventHubName))) {
   name: '${trafficmanagerprofile.name}-diagnosticSettings'
   properties: {
-    storageAccountId: (empty(diagnosticStorageAccountId) ? json('null') : diagnosticStorageAccountId)
-    workspaceId: (empty(workspaceId) ? json('null') : workspaceId)
-    eventHubAuthorizationRuleId: (empty(eventHubAuthorizationRuleId) ? json('null') : eventHubAuthorizationRuleId)
-    eventHubName: (empty(eventHubName) ? json('null') : eventHubName)
-    metrics: ((empty(diagnosticStorageAccountId) && empty(workspaceId) && empty(eventHubAuthorizationRuleId) && empty(eventHubName)) ? json('null') : diagnosticsMetrics)
-    logs: ((empty(diagnosticStorageAccountId) && empty(workspaceId) && empty(eventHubAuthorizationRuleId) && empty(eventHubName)) ? json('null') : diagnosticsLogs)
+    storageAccountId: empty(diagnosticStorageAccountId) ? null : diagnosticStorageAccountId
+    workspaceId: empty(workspaceId) ? null : workspaceId
+    eventHubAuthorizationRuleId: empty(eventHubAuthorizationRuleId) ? null : eventHubAuthorizationRuleId
+    eventHubName: empty(eventHubName) ? null : eventHubName
+    metrics: empty(diagnosticStorageAccountId) && empty(workspaceId) && empty(eventHubAuthorizationRuleId) && empty(eventHubName) ? null : diagnosticsMetrics
+    logs: empty(diagnosticStorageAccountId) && empty(workspaceId) && empty(eventHubAuthorizationRuleId) && empty(eventHubName) ? null : diagnosticsLogs
   }
   scope: trafficmanagerprofile
 }
@@ -168,6 +168,11 @@ module trafficmanagerprofile_rbac '.bicep/nested_rbac.bicep' = [for (roleAssignm
   }
 }]
 
+@description('The resourceId of the traffix manager')
 output trafficManagerResourceId string = trafficmanagerprofile.id
+
+@description('The resource group the traffix manager was deployed into')
 output trafficManagerResourceGroup string = resourceGroup().name
+
+@description('The name of the traffix manager was deployed into')
 output trafficManagerName string = trafficmanagerprofile.name

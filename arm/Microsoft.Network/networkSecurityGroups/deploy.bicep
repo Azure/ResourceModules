@@ -73,21 +73,21 @@ resource networkSecurityGroup 'Microsoft.Network/networkSecurityGroups@2021-02-0
     securityRules: [for nsgSecurityRule in networkSecurityGroupSecurityRules: {
       name: nsgSecurityRule.name
       properties: {
-        description: (contains(nsgSecurityRule.properties, 'description') ? nsgSecurityRule.properties.description : '')
+        description: contains(nsgSecurityRule.properties, 'description') ? nsgSecurityRule.properties.description : ''
         protocol: nsgSecurityRule.properties.protocol
-        sourcePortRange: (contains(nsgSecurityRule.properties, 'sourcePortRange') ? nsgSecurityRule.properties.sourcePortRange : '')
-        destinationPortRange: (contains(nsgSecurityRule.properties, 'destinationPortRange') ? nsgSecurityRule.properties.destinationPortRange : '')
-        sourceAddressPrefix: (contains(nsgSecurityRule.properties, 'sourceAddressPrefix') ? nsgSecurityRule.properties.sourceAddressPrefix : '')
-        destinationAddressPrefix: (contains(nsgSecurityRule.properties, 'destinationAddressPrefix') ? nsgSecurityRule.properties.destinationAddressPrefix : '')
+        sourcePortRange: contains(nsgSecurityRule.properties, 'sourcePortRange') ? nsgSecurityRule.properties.sourcePortRange : ''
+        destinationPortRange: contains(nsgSecurityRule.properties, 'destinationPortRange') ? nsgSecurityRule.properties.destinationPortRange : ''
+        sourceAddressPrefix: contains(nsgSecurityRule.properties, 'sourceAddressPrefix') ? nsgSecurityRule.properties.sourceAddressPrefix : ''
+        destinationAddressPrefix: contains(nsgSecurityRule.properties, 'destinationAddressPrefix') ? nsgSecurityRule.properties.destinationAddressPrefix : ''
         access: nsgSecurityRule.properties.access
         priority: int(nsgSecurityRule.properties.priority)
         direction: nsgSecurityRule.properties.direction
-        sourcePortRanges: (contains(nsgSecurityRule.properties, 'sourcePortRanges') ? nsgSecurityRule.properties.sourcePortRanges : json('null'))
-        destinationPortRanges: (contains(nsgSecurityRule.properties, 'destinationPortRanges') ? nsgSecurityRule.properties.destinationPortRanges : json('null'))
-        sourceAddressPrefixes: (contains(nsgSecurityRule.properties, 'sourceAddressPrefixes') ? nsgSecurityRule.properties.sourceAddressPrefixes : json('null'))
-        destinationAddressPrefixes: (contains(nsgSecurityRule.properties, 'destinationAddressPrefixes') ? nsgSecurityRule.properties.destinationAddressPrefixes : json('null'))
-        sourceApplicationSecurityGroups: ((contains(nsgSecurityRule.properties, 'sourceApplicationSecurityGroupIds') && (!empty(nsgSecurityRule.properties.sourceApplicationSecurityGroupIds))) ? concat([], array(json('{"id": "${nsgSecurityRule.properties.sourceApplicationSecurityGroupIds[0]}", "location": "${location}"}'))) : json('null'))
-        destinationApplicationSecurityGroups: ((contains(nsgSecurityRule.properties, 'destinationApplicationSecurityGroupIds') && (!empty(nsgSecurityRule.properties.destinationApplicationSecurityGroupIds))) ? concat([], array(json('{"id": "${nsgSecurityRule.properties.destinationApplicationSecurityGroupIds[0]}", "location": "${location}"}'))) : json('null'))
+        sourcePortRanges: contains(nsgSecurityRule.properties, 'sourcePortRanges') ? nsgSecurityRule.properties.sourcePortRanges : null
+        destinationPortRanges: contains(nsgSecurityRule.properties, 'destinationPortRanges') ? nsgSecurityRule.properties.destinationPortRanges : null
+        sourceAddressPrefixes: contains(nsgSecurityRule.properties, 'sourceAddressPrefixes') ? nsgSecurityRule.properties.sourceAddressPrefixes : null
+        destinationAddressPrefixes: contains(nsgSecurityRule.properties, 'destinationAddressPrefixes') ? nsgSecurityRule.properties.destinationAddressPrefixes : null
+        sourceApplicationSecurityGroups: (contains(nsgSecurityRule.properties, 'sourceApplicationSecurityGroupIds') && (!empty(nsgSecurityRule.properties.sourceApplicationSecurityGroupIds))) ? concat([], array(json('{"id": "${nsgSecurityRule.properties.sourceApplicationSecurityGroupIds[0]}", "location": "${location}"}'))) : null
+        destinationApplicationSecurityGroups: (contains(nsgSecurityRule.properties, 'destinationApplicationSecurityGroupIds') && (!empty(nsgSecurityRule.properties.destinationApplicationSecurityGroupIds))) ? concat([], array(json('{"id": "${nsgSecurityRule.properties.destinationApplicationSecurityGroupIds[0]}", "location": "${location}"}'))) : null
       }
     }]
   }
@@ -97,7 +97,7 @@ resource networkSecurityGroup_lock 'Microsoft.Authorization/locks@2016-09-01' = 
   name: '${networkSecurityGroup.name}-${lock}-lock'
   properties: {
     level: lock
-    notes: (lock == 'CanNotDelete') ? 'Cannot delete resource or child resources.' : 'Cannot modify the resource or child resources.'
+    notes: lock == 'CanNotDelete' ? 'Cannot delete resource or child resources.' : 'Cannot modify the resource or child resources.'
   }
   scope: networkSecurityGroup
 }
@@ -105,11 +105,11 @@ resource networkSecurityGroup_lock 'Microsoft.Authorization/locks@2016-09-01' = 
 resource networkSecurityGroup_diagnosticSettings 'Microsoft.Insights/diagnosticsettings@2017-05-01-preview' = if ((!empty(diagnosticStorageAccountId)) || (!empty(workspaceId)) || (!empty(eventHubAuthorizationRuleId)) || (!empty(eventHubName))) {
   name: '${networkSecurityGroup.name}-diagnosticSettings'
   properties: {
-    storageAccountId: (empty(diagnosticStorageAccountId) ? json('null') : diagnosticStorageAccountId)
-    workspaceId: (empty(workspaceId) ? json('null') : workspaceId)
-    eventHubAuthorizationRuleId: (empty(eventHubAuthorizationRuleId) ? json('null') : eventHubAuthorizationRuleId)
-    eventHubName: (empty(eventHubName) ? json('null') : eventHubName)
-    logs: ((empty(diagnosticStorageAccountId) && empty(workspaceId) && empty(eventHubAuthorizationRuleId) && empty(eventHubName)) ? json('null') : diagnosticsLogs)
+    storageAccountId: empty(diagnosticStorageAccountId) ? null : diagnosticStorageAccountId
+    workspaceId: empty(workspaceId) ? null : workspaceId
+    eventHubAuthorizationRuleId: empty(eventHubAuthorizationRuleId) ? null : eventHubAuthorizationRuleId
+    eventHubName: empty(eventHubName) ? null : eventHubName
+    logs: empty(diagnosticStorageAccountId) && empty(workspaceId) && empty(eventHubAuthorizationRuleId) && empty(eventHubName) ? null : diagnosticsLogs
   }
   scope: networkSecurityGroup
 }
@@ -122,6 +122,11 @@ module networkSecurityGroup_rbac '.bicep/nested_rbac.bicep' = [for (roleAssignme
   }
 }]
 
+@description('The resource group the network security group was deployed into')
 output networkSecurityGroupsResourceGroup string = resourceGroup().name
+
+@description('The resourceId of the network security group')
 output networkSecurityGroupsResourceId string = networkSecurityGroup.id
+
+@description('The name of the network security group')
 output networkSecurityGroupsName string = networkSecurityGroup.name

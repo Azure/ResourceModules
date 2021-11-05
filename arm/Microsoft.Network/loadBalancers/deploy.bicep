@@ -75,10 +75,10 @@ var frontendsObj = {
 var frontendIPConfigurations_var = [for (frontendIPConfiguration, index) in frontendIPConfigurations: {
   name: frontendIPConfiguration.name
   properties: {
-    subnet: (empty(frontendIPConfiguration.properties.subnetId) ? json('null') : frontendsObj.subnets[index])
-    publicIPAddress: (empty(frontendIPConfiguration.properties.publicIPAddressId) ? json('null') : frontendsObj.publicIPAddresses[index])
-    privateIPAddress: (empty(frontendIPConfiguration.properties.privateIPAddress) ? json('null') : frontendIPConfiguration.properties.privateIPAddress)
-    privateIPAllocationMethod: (empty(frontendIPConfiguration.properties.subnetId) ? json('null') : (empty(frontendIPConfiguration.properties.privateIPAddress) ? 'Dynamic' : 'Static'))
+    subnet: !empty(frontendIPConfiguration.properties.subnetId) ? frontendsObj.subnets[index] : null
+    publicIPAddress: !empty(frontendIPConfiguration.properties.publicIPAddressId) ? frontendsObj.publicIPAddresses[index] : null
+    privateIPAddress: !empty(frontendIPConfiguration.properties.privateIPAddress) ? frontendIPConfiguration.properties.privateIPAddress : null
+    privateIPAllocationMethod: !empty(frontendIPConfiguration.properties.subnetId) ? (empty(frontendIPConfiguration.properties.privateIPAddress) ? 'Dynamic' : 'Static') : null
   }
 }]
 
@@ -89,15 +89,15 @@ var loadBalancingRules_var = [for loadBalancingRule in loadBalancingRules: {
       id: resourceId('Microsoft.Network/loadBalancers/backendAddressPools', loadBalancerName, loadBalancingRule.properties.backendAddressPoolName)
     }
     backendPort: loadBalancingRule.properties.backendPort
-    disableOutboundSnat: (contains(loadBalancingRule.properties, 'disableOutboundSnat') ? loadBalancingRule.properties.disableOutboundSnat : 'false')
+    disableOutboundSnat: contains(loadBalancingRule.properties, 'disableOutboundSnat') ? loadBalancingRule.properties.disableOutboundSnat : 'false'
     enableFloatingIP: loadBalancingRule.properties.enableFloatingIP
-    enableTcpReset: (contains(loadBalancingRule.properties, 'enableTcpReset') ? loadBalancingRule.properties.enableTcpReset : 'false')
+    enableTcpReset: contains(loadBalancingRule.properties, 'enableTcpReset') ? loadBalancingRule.properties.enableTcpReset : 'false'
     frontendIPConfiguration: {
       id: resourceId('Microsoft.Network/loadBalancers/frontendIPConfigurations', loadBalancerName, loadBalancingRule.properties.frontendIPConfigurationName)
     }
     frontendPort: loadBalancingRule.properties.frontendPort
     idleTimeoutInMinutes: loadBalancingRule.properties.idleTimeoutInMinutes
-    loadDistribution: (contains(loadBalancingRule.properties, 'loadDistribution') ? loadBalancingRule.properties.loadDistribution : 'Default')
+    loadDistribution: contains(loadBalancingRule.properties, 'loadDistribution') ? loadBalancingRule.properties.loadDistribution : 'Default'
     probe: {
       id: '${resourceId('Microsoft.Network/loadBalancers', loadBalancerName)}/probes/${loadBalancingRule.properties.probeName}'
     }
@@ -109,7 +109,7 @@ var probes_var = [for probe in probes: {
   name: probe.name
   properties: {
     protocol: probe.properties.protocol
-    requestPath: ((toLower(probe.properties.protocol) == 'tcp') ? json('null') : probe.properties.requestPath)
+    requestPath: toLower(probe.properties.protocol) == 'tcp' ? null : probe.properties.requestPath
     port: probe.properties.port
     intervalInSeconds: probe.properties.intervalInSeconds
     numberOfProbes: probe.properties.numberOfProbes
@@ -158,7 +158,7 @@ resource loadBalancer_lock 'Microsoft.Authorization/locks@2016-09-01' = if (lock
   name: '${loadBalancer.name}-${lock}-lock'
   properties: {
     level: lock
-    notes: (lock == 'CanNotDelete') ? 'Cannot delete resource or child resources.' : 'Cannot modify the resource or child resources.'
+    notes: lock == 'CanNotDelete' ? 'Cannot delete resource or child resources.' : 'Cannot modify the resource or child resources.'
   }
   scope: loadBalancer
 }
@@ -166,11 +166,11 @@ resource loadBalancer_lock 'Microsoft.Authorization/locks@2016-09-01' = if (lock
 resource loadBalancer_diagnosticSettings 'Microsoft.Insights/diagnosticsettings@2017-05-01-preview' = if ((!empty(diagnosticStorageAccountId)) || (!empty(workspaceId)) || (!empty(eventHubAuthorizationRuleId)) || (!empty(eventHubName))) {
   name: '${loadBalancer.name}-diagnosticSettings'
   properties: {
-    storageAccountId: (empty(diagnosticStorageAccountId) ? json('null') : diagnosticStorageAccountId)
-    workspaceId: (empty(workspaceId) ? json('null') : workspaceId)
-    eventHubAuthorizationRuleId: (empty(eventHubAuthorizationRuleId) ? json('null') : eventHubAuthorizationRuleId)
-    eventHubName: (empty(eventHubName) ? json('null') : eventHubName)
-    metrics: ((empty(diagnosticStorageAccountId) && empty(workspaceId) && empty(eventHubAuthorizationRuleId) && empty(eventHubName)) ? json('null') : diagnosticsMetrics)
+    storageAccountId: empty(diagnosticStorageAccountId) ? null : diagnosticStorageAccountId
+    workspaceId: empty(workspaceId) ? null : workspaceId
+    eventHubAuthorizationRuleId: empty(eventHubAuthorizationRuleId) ? null : eventHubAuthorizationRuleId
+    eventHubName: empty(eventHubName) ? null : eventHubName
+    metrics: empty(diagnosticStorageAccountId) && empty(workspaceId) && empty(eventHubAuthorizationRuleId) && empty(eventHubName) ? null : diagnosticsMetrics
   }
   scope: loadBalancer
 }
@@ -183,6 +183,11 @@ module loadBalancer_rbac '.bicep/nested_rbac.bicep' = [for (roleAssignment, inde
   }
 }]
 
+@description('The name of the load balancer')
 output loadBalancerName string = loadBalancer.name
+
+@description('The resourceID of the load balancer')
 output loadBalancerResourceId string = loadBalancer.id
+
+@description('The resource group the load balancer was deployed into')
 output loadBalancerResourceGroup string = resourceGroup().name

@@ -43,7 +43,7 @@ resource ipGroup_lock 'Microsoft.Authorization/locks@2016-09-01' = if (lock != '
   name: '${ipGroup.name}-${lock}-lock'
   properties: {
     level: lock
-    notes: (lock == 'CanNotDelete') ? 'Cannot delete resource or child resources.' : 'Cannot modify the resource or child resources.'
+    notes: lock == 'CanNotDelete' ? 'Cannot delete resource or child resources.' : 'Cannot modify the resource or child resources.'
   }
   scope: ipGroup
 }
@@ -56,6 +56,11 @@ module ipGroup_rbac '.bicep/nested_rbac.bicep' = [for (roleAssignment, index) in
   }
 }]
 
+@description('The resourceId of the IP group')
 output ipGroupsResourceId string = ipGroup.id
+
+@description('The resource group of the IP group was deployed into')
 output ipGroupsResourceGroup string = resourceGroup().name
+
+@description('The name of the IP group')
 output ipGroupName string = ipGroup.name

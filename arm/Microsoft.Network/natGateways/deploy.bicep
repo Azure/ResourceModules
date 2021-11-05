@@ -134,8 +134,8 @@ resource publicIP 'Microsoft.Network/publicIPAddresses@2021-02-01' = if (natGate
   }
   properties: {
     publicIPAllocationMethod: 'Static'
-    publicIPPrefix: ((!empty(natGatewayPublicIPPrefixId)) ? natGatewayPublicIPPrefix : json('null'))
-    dnsSettings: ((!empty(natGatewayDomainNameLabel)) ? json('{"domainNameLabel": "${natGatewayDomainNameLabel}"}') : json('null'))
+    publicIPPrefix: !empty(natGatewayPublicIPPrefixId) ? natGatewayPublicIPPrefix : null
+    dnsSettings: !empty(natGatewayDomainNameLabel) ? json('{"domainNameLabel": "${natGatewayDomainNameLabel}"}') : null
   }
 }
 
@@ -143,7 +143,7 @@ resource publicIP_lock 'Microsoft.Authorization/locks@2016-09-01' = if (lock != 
   name: '${publicIP.name}-${lock}-lock'
   properties: {
     level: lock
-    notes: (lock == 'CanNotDelete') ? 'Cannot delete resource or child resources.' : 'Cannot modify the resource or child resources.'
+    notes: lock == 'CanNotDelete' ? 'Cannot delete resource or child resources.' : 'Cannot modify the resource or child resources.'
   }
   scope: publicIP
 }
@@ -151,12 +151,12 @@ resource publicIP_lock 'Microsoft.Authorization/locks@2016-09-01' = if (lock != 
 resource publicIP_diagnosticSettings 'Microsoft.Insights/diagnosticSettings@2017-05-01-preview' = if ((!empty(diagnosticStorageAccountId)) || (!empty(workspaceId)) || (!empty(eventHubAuthorizationRuleId)) || (!empty(eventHubName))) {
   name: '${publicIP.name}-diagnosticSettings'
   properties: {
-    storageAccountId: (empty(diagnosticStorageAccountId) ? json('null') : diagnosticStorageAccountId)
-    workspaceId: (empty(workspaceId) ? json('null') : workspaceId)
-    eventHubAuthorizationRuleId: (empty(eventHubAuthorizationRuleId) ? json('null') : eventHubAuthorizationRuleId)
-    eventHubName: (empty(eventHubName) ? json('null') : eventHubName)
-    metrics: ((empty(diagnosticStorageAccountId) && empty(workspaceId) && empty(eventHubAuthorizationRuleId) && empty(eventHubName)) ? json('null') : diagnosticsMetrics)
-    logs: ((empty(diagnosticStorageAccountId) && empty(workspaceId) && empty(eventHubAuthorizationRuleId) && empty(eventHubName)) ? json('null') : diagnosticsLogs)
+    storageAccountId: empty(diagnosticStorageAccountId) ? null : diagnosticStorageAccountId
+    workspaceId: empty(workspaceId) ? null : workspaceId
+    eventHubAuthorizationRuleId: empty(eventHubAuthorizationRuleId) ? null : eventHubAuthorizationRuleId
+    eventHubName: empty(eventHubName) ? null : eventHubName
+    metrics: empty(diagnosticStorageAccountId) && empty(workspaceId) && empty(eventHubAuthorizationRuleId) && empty(eventHubName) ? null : diagnosticsMetrics
+    logs: empty(diagnosticStorageAccountId) && empty(workspaceId) && empty(eventHubAuthorizationRuleId) && empty(eventHubName) ? null : diagnosticsLogs
   }
   scope: publicIP
 }
@@ -178,7 +178,7 @@ resource natGateway_lock 'Microsoft.Authorization/locks@2016-09-01' = if (lock !
   name: '${natGateway.name}-${lock}-lock'
   properties: {
     level: lock
-    notes: (lock == 'CanNotDelete') ? 'Cannot delete resource or child resources.' : 'Cannot modify the resource or child resources.'
+    notes: lock == 'CanNotDelete' ? 'Cannot delete resource or child resources.' : 'Cannot modify the resource or child resources.'
   }
   scope: natGateway
 }
@@ -191,6 +191,11 @@ module natGateway_rbac '.bicep/nested_rbac.bicep' = [for (roleAssignment, index)
   }
 }]
 
+@description('The name of the NAT Gateway')
 output natGatewayName string = natGateway.name
+
+@description('The resourceId of the NAT Gateway')
 output natGatewayResourceId string = natGateway.id
+
+@description('The resource group the NAT Gateway was deployed into')
 output natGatewayResourceGroup string = resourceGroup().name
