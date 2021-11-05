@@ -109,6 +109,11 @@ module galleries_images 'images/deploy.bicep' = [for (image, index) in images: {
   }
 }]
 
+@description('The resource id of the deployed image gallery')
 output galleryResourceId string = gallery.id
+
+@description('The resource group of the deployed image gallery')
 output galleryResourceGroup string = resourceGroup().name
+
+@description('The name of the deployed image gallery')
 output galleryName string = galleryName
