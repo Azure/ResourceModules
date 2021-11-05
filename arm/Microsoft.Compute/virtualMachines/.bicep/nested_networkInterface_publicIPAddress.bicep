@@ -12,7 +12,6 @@ param eventHubName string
 param metricsToEnable array
 param logsToEnable array
 param lock string
-param builtInRoleNames object
 param roleAssignments array
 param tags object
 
@@ -79,7 +78,6 @@ module publicIpAddress_rbac 'nested_networkInterface_publicIPAddress_rbac.bicep'
   name: '${deployment().name}-rbac-${index}'
   params: {
     roleAssignmentObj: roleAssignment
-    builtInRoleNames: builtInRoleNames
     resourceName: publicIpAddress.name
   }
 }]

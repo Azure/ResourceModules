@@ -7,10 +7,10 @@ This module deploys a virtual machine scale set
 | Resource Type | Api Version |
 | :-- | :-- |
 | `Microsoft.Authorization/locks` | 2016-09-01 |
+| `Microsoft.Authorization/roleAssignments` | 2020-04-01-preview |
 | `Microsoft.Compute/proximityPlacementGroups` | 2021-04-01 |
 | `Microsoft.Compute/virtualMachineScaleSets` | 2021-04-01 |
 | `Microsoft.Compute/virtualMachineScaleSets/extensions` | 2021-07-01 |
-| `Microsoft.Compute/virtualMachineScaleSets/providers/roleAssignments` | 2021-04-01-preview |
 | `Microsoft.Insights/diagnosticSettings` | 2021-05-01-preview |
 
 ### Resource dependency
@@ -235,7 +235,7 @@ The following resources are required to be able to deploy this resource.
                     "name": "ipconfig1",
                     "properties": {
                         "subnet": {
-                            "id": "/subscriptions/8629be3b-96bc-482d-a04b-ffff597c65a2/resourceGroups/agents-vmss-rg/providers/Microsoft.Network/virtualNetworks/sxx-az-vnet-weu-x-scaleset/subnets/sxx-az-subnet-weu-scaleset-linux"
+                            "id": "/subscriptions/8629be3b-96bc-482d-a04b-ffff597c65a2/resourceGroups/agents-vmss-rg/providers/Microsoft.Network/virtualNetworks/sxx-az-vnet-x-scaleset/subnets/sxx-az-subnet-scaleset-linux"
                         }
                     }
                 }
@@ -385,6 +385,7 @@ Tag names and tag values can be provided as needed. A tag can be left without a 
 ## Template references
 
 - [Locks](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2016-09-01/locks)
+- [Roleassignments](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2020-04-01-preview/roleAssignments)
 - [Proximityplacementgroups](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Compute/2021-04-01/proximityPlacementGroups)
 - [Virtualmachinescalesets](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Compute/2021-04-01/virtualMachineScaleSets)
 - [Virtualmachinescalesets/Extensions](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Compute/2021-07-01/virtualMachineScaleSets/extensions)

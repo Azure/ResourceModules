@@ -7,9 +7,9 @@ This template deploys Virtual Wan
 | Resource Type | Api Version |
 | :-- | :-- |
 | `Microsoft.Authorization/locks` | 2016-09-01 |
+| `Microsoft.Authorization/roleAssignments` | 2020-04-01-preview |
 | `Microsoft.Network/virtualHubs` | 2021-05-01 |
 | `Microsoft.Network/virtualWans` | 2021-05-01 |
-| `Microsoft.Network/virtualWans/providers/roleAssignments` | 2021-04-01-preview |
 | `Microsoft.Network/vpnGateways` | 2021-05-01 |
 | `Microsoft.Network/vpnSites` | 2021-05-01 |
 
@@ -92,6 +92,7 @@ Tag names and tag values can be provided as needed. A tag can be left without a 
 ## Template references
 
 - [Locks](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2016-09-01/locks)
+- [Roleassignments](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2020-04-01-preview/roleAssignments)
 - [Virtualhubs](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Network/2021-05-01/virtualHubs)
 - [Virtualwans](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Network/2021-05-01/virtualWans)
 - [Vpngateways](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Network/2021-05-01/vpnGateways)

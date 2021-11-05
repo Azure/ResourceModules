@@ -2,11 +2,8 @@
     "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
     "contentVersion": "1.0.0.0",
     "parameters": {
-        "keyVaultName": {
+        "name": {
             "value": "sxx-az-kv-x-001"
-        },
-        "enableSoftDelete": {
-            "value": true
         },
         "softDeleteRetentionInDays": {
             "value": 7
@@ -21,6 +18,24 @@
                     "principalIds": [
                         "cf33fea8-b30f-424f-ab73-c48d99e0b222"
                     ]
+                }
+            ]
+        },
+        "secrets": {
+            "value": [
+                {
+                    "name": "secretName",
+                    "value": "secretValue",
+                    "contentType": "Something",
+                    "attributesNbf": 10000
+                }
+            ]
+        },
+        "keys": {
+            "value": [
+                {
+                    "name": "keyName",
+                    "attributesNbf": 10000
                 }
             ]
         }

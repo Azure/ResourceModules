@@ -1,5 +1,4 @@
 param capacityPoolObj object
-param builtInRoleNames object
 param location string
 param netAppAccountName string
 
@@ -16,7 +15,6 @@ module capacityPool_volumes 'nested_capacityPool_volume.bicep' = [for (volume, i
   name: '${deployment().name}-Vol-${index}'
   params: {
     volumeObj: volume
-    builtInRoleNames: builtInRoleNames
     location: location
     capacityPoolName: capacityPool.name
     poolServiceLevel: capacityPool.properties.serviceLevel
@@ -27,7 +25,6 @@ module capacityPool_rbac 'nested_capacityPool_rbac.bicep' = [for (roleAssignment
   name: '${deployment().name}-Rbac-${index}'
   params: {
     roleAssignmentObj: roleAssignment
-    builtInRoleNames: builtInRoleNames
     resourceName: capacityPool.name
   }
 }]

@@ -16,7 +16,6 @@ param eventHubName string
 param pipMetricsToEnable array
 param pipLogsToEnable array
 param metricsToEnable array
-param builtInRoleNames object
 param roleAssignments array
 
 var diagnosticsMetrics = [for metric in metricsToEnable: {
@@ -54,7 +53,6 @@ module networkInterface_publicIPConfigurations 'nested_networkInterface_publicIP
     metricsToEnable: pipMetricsToEnable
     logsToEnable: pipLogsToEnable
     lock: lock
-    builtInRoleNames: builtInRoleNames
     roleAssignments: (contains(ipConfiguration.pipconfiguration, 'roleAssignments') ? (!(empty(ipConfiguration.pipconfiguration.roleAssignments)) ? ipConfiguration.pipconfiguration.roleAssignments : json('[]')) : json('[]'))
     tags: tags
   }
@@ -112,7 +110,6 @@ module networkInterface_rbac 'nested_networkInterface_rbac.bicep' = [for (roleAs
   name: '${deployment().name}-rbac-${index}'
   params: {
     roleAssignmentObj: roleAssignment
-    builtInRoleNames: builtInRoleNames
     resourceName: networkInterface.name
   }
 }]

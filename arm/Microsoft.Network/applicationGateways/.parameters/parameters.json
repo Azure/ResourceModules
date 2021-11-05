@@ -1,5 +1,5 @@
 {
-    "$schema": "http://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
+    "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
     "contentVersion": "1.0.0.0",
     "parameters": {
         "applicationGatewayName": {
@@ -27,7 +27,7 @@
             "value": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/adp-sxx-az-msi-x-001"
         },
         "sslCertificateKeyVaultSecretId": {
-            "value": "https://sxx-az-kv-x-004.vault.azure.net/secrets/applicationGatewaySslCertificate/b664f0004c734e838c42091705b001b6"
+            "value": "https://adp-sxx-az-kv-x-001.vault.azure.net/secrets/applicationGatewaySslCertificate/5b09a47d080943bb93d00f4dc45244a1"
         },
         "backendPools": {
             "value": [

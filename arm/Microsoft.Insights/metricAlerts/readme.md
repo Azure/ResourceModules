@@ -6,8 +6,8 @@ This module deploys an Alert based on metrics
 
 | Resource Type | Api Version |
 | :-- | :-- |
+| `Microsoft.Authorization/roleAssignments` | 2020-04-01-preview |
 | `Microsoft.Insights/metricAlerts` | 2018-03-01 |
-| `Microsoft.Insights/metricAlerts/providers/roleAssignments` | 2021-04-01-preview |
 
 ## Parameters
 
@@ -175,4 +175,5 @@ Tag names and tag values can be provided as needed. A tag can be left without a 
 
 ## Template references
 
+- [Roleassignments](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2020-04-01-preview/roleAssignments)
 - [Metricalerts](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Insights/2018-03-01/metricAlerts)

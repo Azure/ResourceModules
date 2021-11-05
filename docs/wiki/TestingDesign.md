@@ -8,6 +8,7 @@ This section gives you an overview of the design principals the testing follows.
 
 - [Approach](#approach)
 - [Static code validation](#static-code-validation)
+  - [Additional resources](#additional-resources)
 - [API version validation](#api-version-validation)
 - [Template validation](#template-validation)
 - [Deployment validation](#deployment-validation)
@@ -128,32 +129,36 @@ Since also dependency resources are in turn subject to dependencies with each ot
   1. Key vault: This resource is leveraged by all resources requiring access to a key vault key, secret and/or certificate, i.e. [application gateway], [azure NetApp file], [azure SQL server], [disk encryption set], [machine learning service], [private endpoint], [SQL managed instance], [virtual machine], [virtual machine scale set], [virtual network gateway connection].
       >**Note**: This resource has a global scope name.
   2. Network Security Groups: This resource is leveraged by different virtual network subnets. Multiple instances are deployed:
-      - '_adp-sxx-az-nsg-weu-x-apgw_': NSG with required network security rules to be leveraged by the [application gateway] subnet.
-      - '_adp-sxx-az-nsg-weu-x-ase_': NSG with required network security rules to be leveraged by the [app service environment] subnet.
-      - '_adp-sxx-az-nsg-weu-x-bastion_': NSG with required network security rules to be leveraged by the [bastion host] subnet.
-      - '_adp-sxx-az-nsg-weu-x-sqlmi_': NSG with required network security rules to be leveraged by the [sql managed instance] subnet.
-      - '_adp-sxx-az-nsg-weu-x-001_': default NSG leveraged by all other subnets.
+      - '_adp-sxx-az-nsg-x-apgw_': NSG with required network security rules to be leveraged by the [application gateway] subnet.
+      - '_adp-sxx-az-nsg-x-ase_': NSG with required network security rules to be leveraged by the [app service environment] subnet.
+      - '_adp-sxx-az-nsg-x-bastion_': NSG with required network security rules to be leveraged by the [bastion host] subnet.
+      - '_adp-sxx-az-nsg-x-sqlmi_': NSG with required network security rules to be leveraged by the [sql managed instance] subnet.
+      - '_adp-sxx-az-nsg-x-001_': default NSG leveraged by all other subnets.
   3. Public IP addresses: Multiple instances are deployed:
-      - '_adp-sxx-az-pip-weu-x-apgw_': Leveraged by the [application gateway] resource.
-      - '_adp-sxx-az-pip-weu-x-bas_': Leveraged by the [bastion host] resource.
-      - '_adp-sxx-az-pip-weu-x-lb_': Leveraged by the [load balancer] resource.
+      - '_adp-sxx-az-pip-x-apgw_': Leveraged by the [application gateway] resource.
+      - '_adp-sxx-az-pip-x-bas_': Leveraged by the [bastion host] resource.
+      - '_adp-sxx-az-pip-x-lb_': Leveraged by the [load balancer] resource.
   4. API management: This resource is leveraged by all [api management services].
       >**Note**: This resource has a global scope name.
   5. Application insight: This resource is leveraged by the [machine learning service] resource.
+  6. AVD host pool: This resource is leveraged by the [AVD application group] resource.
+  7. Recovery services vault: This resource is leveraged by the [virtual machine] resource when backup is enabled.
 
 **Fifth level resources**: This group of resources has a dependency on one or more resources in the groups above. Resources in this group can be deployed in parallel.
 
   1. Virtual Networks: This resource is depending on the route table and network security groups deployed above. Multiple instances are deployed:
-      - '_adp-sxx-az-vnet-weu-x-peer01_': Leveraged by the [virtual network peering] resource.
-      - '_adp-sxx-az-vnet-weu-x-peer02_': Leveraged by the [virtual network peering] resource.
-      - '_adp-sxx-az-vnet-weu-x-azfw_': Leveraged by the [azure firewall] resource.
-      - '_adp-sxx-az-vnet-weu-x-aks_': Leveraged by the [azure kubernetes service] resource.
-      - '_adp-sxx-az-vnet-weu-x-sqlmi_': Leveraged by the [sql managed instance] resource.
-      - '_adp-sxx-az-vnet-weu-x-001_': Hosting multiple subnets to be leveraged by [virtual machine], [virtual machine scale set], [service bus], [azure NetApp files], [azure bastion], [private endpoints], [app service environment] and [application gateway] resources.
+      - '_adp-sxx-az-vnet-x-peer01_': Leveraged by the [virtual network peering] resource.
+      - '_adp-sxx-az-vnet-x-peer02_': Leveraged by the [virtual network peering] resource.
+      - '_adp-sxx-az-vnet-x-azfw_': Leveraged by the [azure firewall] resource.
+      - '_adp-sxx-az-vnet-x-aks_': Leveraged by the [azure kubernetes service] resource.
+      - '_adp-sxx-az-vnet-x-sqlmi_': Leveraged by the [sql managed instance] resource.
+      - '_adp-sxx-az-vnet-x-001_': Hosting multiple subnets to be leveraged by [virtual machine], [virtual machine scale set], [service bus], [azure NetApp files], [azure bastion], [private endpoints], [app service environment] and [application gateway] resources.
+  2. AVD application group: This resource is leveraged by the [AVD workspace] resource.
 
 **Sixth level resources**: This group of resources has a dependency on one or more resources in the groups above.
 
   1. Virtual Machine: This resource is depending on the [virtual networks] and [key vault] deployed above. This resource is leveraged by the [automanage] resource.
+  2. Private DNS zone: This resource is depending on the [virtual networks] deployed above. This resource is leveraged by the [private endpoint] resource.
 
 #### Required secrets and keys
 

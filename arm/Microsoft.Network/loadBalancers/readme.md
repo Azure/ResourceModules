@@ -7,9 +7,9 @@ This module deploys a Load Balancer
 | Resource Type | Api Version |
 | :-- | :-- |
 | `Microsoft.Authorization/locks` | 2016-09-01 |
+| `Microsoft.Authorization/roleAssignments` | 2020-04-01-preview |
 | `Microsoft.Insights/diagnosticSettings` | 2017-05-01-preview |
 | `Microsoft.Network/loadBalancers` | 2021-02-01 |
-| `Microsoft.Network/loadBalancers/providers/roleAssignments` | 2021-04-01-preview |
 
 ## Parameters
 
@@ -220,5 +220,6 @@ Tag names and tag values can be provided as needed. A tag can be left without a 
 ## Template references
 
 - [Locks](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2016-09-01/locks)
+- [Roleassignments](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2020-04-01-preview/roleAssignments)
 - [Diagnosticsettings](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Insights/2017-05-01-preview/diagnosticSettings)
 - [Loadbalancers](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Network/2021-02-01/loadBalancers)
