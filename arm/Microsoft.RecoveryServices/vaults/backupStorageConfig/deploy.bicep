@@ -4,12 +4,14 @@ param recoveryVaultName string
 
 @description('Optional. Change Vault Storage Type (Works if vault has not registered any backup instance)')
 @allowed([
-  'LocallyRedundant'
   'GeoRedundant'
+  'LocallyRedundant'
+  'ReadAccessGeoZoneRedundant'
+  'ZoneRedundant'
 ])
 param vaultStorageType string = 'GeoRedundant'
 
-@description('Optional. Enable CRR (Works if vault has not registered any backup instance)')
+@description('Optional. Enable CRR (Works if vault has not registered any backup instance. Not compatible with Locally Redundant Storage (LRS))')
 param enableCRR bool = true
 
 @description('Optional. Customer Usage Attribution id (GUID). This GUID must be previously registered')
@@ -29,4 +31,4 @@ resource vaultstorageconfig 'Microsoft.RecoveryServices/vaults/backupstorageconf
 }
 
 @description('The name of the Resource Group the backup storage configuration was created in.')
-output vaultStorageConfigRgName string = resourceGroup().name
+output vaultStorageConfigResourceGroup string = resourceGroup().name
