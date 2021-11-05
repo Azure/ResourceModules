@@ -3,13 +3,13 @@
   "contentVersion": "1.0.0.0",
   "parameters": {
     "name": {
-      "value": "tokens-sxx-az-kv-x-001"
+      "value": "tokens-sxx-az-kv-x-001" //change this value when cloning
     },
     "accessPolicies": {
       "value": [
         {
-          "tenantId": "449fbe1d-9c99-4509-9014-4fd5cf25b014",
-          "objectId": "<<deploymentSpId>>", // dependency access
+          "tenantId": "449fbe1d-9c99-4509-9014-4fd5cf25b014", //to-do tokenize from GitHub
+          "objectId": "<<deploymentSpId>>",
           "permissions": {
             "keys": [
               "all"
@@ -31,6 +31,9 @@
       "value": {
         "resourceRole": "tokensKeyVault"
       }
+    },
+    "lock": {
+      "value": "CanNotDelete"
     }
   }
 }

@@ -11,6 +11,9 @@
                 "tokenName": "principalId1",
                 "tokenValue": "principalId"
             }
+        },
+        "lock": {
+            "value": "CanNotDelete"
         }
     }
 }
