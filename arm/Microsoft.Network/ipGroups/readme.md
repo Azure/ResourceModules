@@ -70,11 +70,11 @@ Tag names and tag values can be provided as needed. A tag can be left without a 
 
 ## Outputs
 
-| Output Name | Type |
-| :-- | :-- |
-| `ipGroupName` | string |
-| `ipGroupsResourceGroup` | string |
-| `ipGroupsResourceId` | string |
+| Output Name | Type | Description |
+| :-- | :-- | :-- |
+| `ipGroupName` | string | The name of the IP group |
+| `ipGroupsResourceGroup` | string | The resource group of the IP group was deployed into |
+| `ipGroupsResourceId` | string | The resourceId of the IP group |
 
 ## Template references
 

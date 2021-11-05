@@ -124,12 +124,12 @@ Tag names and tag values can be provided as needed. A tag can be left without a 
 
 ## Outputs
 
-| Output Name | Type |
-| :-- | :-- |
-| `activeActive` | bool |
-| `virtualNetworkGatewayName` | string |
-| `virtualNetworkGatewayResourceGroup` | string |
-| `virtualNetworkGatewayResourceId` | string |
+| Output Name | Type | Description |
+| :-- | :-- | :-- |
+| `activeActive` | bool | Shows if the virtual network gateway is configured in active-active mode |
+| `virtualNetworkGatewayName` | string | The name of the virtual network gateway |
+| `virtualNetworkGatewayResourceGroup` | string | The resource group the virtual network gateway was deployed |
+| `virtualNetworkGatewayResourceId` | string | The resourceId of the virtual network gateway |
 
 ## Template references
 

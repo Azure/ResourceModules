@@ -150,13 +150,13 @@ The network security group and route table resources must reside in the same res
 
 ## Outputs
 
-| Output Name | Type |
-| :-- | :-- |
-| `subnetIds` | array |
-| `subnetNames` | array |
-| `virtualNetworkName` | string |
-| `virtualNetworkResourceGroup` | string |
-| `virtualNetworkResourceId` | string |
+| Output Name | Type | Description |
+| :-- | :-- | :-- |
+| `subnetIds` | array |  |
+| `subnetNames` | array |  |
+| `virtualNetworkName` | string | The name of the virtual network |
+| `virtualNetworkResourceGroup` | string | The resource group the virtual network was deployed into |
+| `virtualNetworkResourceId` | string | The resourceId of the virtual network |
 
 ## Template references
 

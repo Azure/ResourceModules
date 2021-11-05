@@ -89,12 +89,12 @@ Tag names and tag values can be provided as needed. A tag can be left without a 
 
 ## Outputs
 
-| Output Name | Type |
-| :-- | :-- |
-| `expressRouteCircuitName` | string |
-| `expressRouteCircuitResourceGroup` | string |
-| `expressRouteCircuitResourceId` | string |
-| `expressRouteCircuitServiceKey` | string |
+| Output Name | Type | Description |
+| :-- | :-- | :-- |
+| `expressRouteCircuitName` | string | The name of express route curcuit |
+| `expressRouteCircuitResourceGroup` | string | The resource group the express route curcuit was deployed into |
+| `expressRouteCircuitResourceId` | string | The resourceId of express route curcuit |
+| `expressRouteCircuitServiceKey` | string | The service key of the express route circuit |
 
 ## Template references
 

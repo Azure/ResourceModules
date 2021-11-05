@@ -130,11 +130,11 @@ Tag names and tag values can be provided as needed. A tag can be left without a 
 
 ## Outputs
 
-| Output Name | Type |
-| :-- | :-- |
-| `networkWatcherName` | string |
-| `networkWatcherResourceGroup` | string |
-| `networkWatcherResourceId` | string |
+| Output Name | Type | Description |
+| :-- | :-- | :-- |
+| `networkWatcherName` | string | The name of the deployed network watcher |
+| `networkWatcherResourceGroup` | string | The resource group the network watcher was deployed into |
+| `networkWatcherResourceId` | string | The resourceId of the deployed network watcher |
 
 ## Template references
 
