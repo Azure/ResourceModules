@@ -6,15 +6,15 @@ This section gives you an overview of the design principals the testing follows.
 
 ### _Navigation_
 
-  - [Approach](#approach)
-  - [Static code validation](#static-code-validation)
-    - [Additional resources](#additional-resources)
-  - [API version validation](#api-version-validation)
-  - [Template validation](#template-validation)
-  - [Deployment validation](#deployment-validation)
-    - [Module dependencies](#module-dependencies)
-      - [Resources deployed by the dependency workflow](#resources-deployed-by-the-dependency-workflow)
-      - [Required secrets and keys](#required-secrets-and-keys)
+- [Approach](#approach)
+- [Static code validation](#static-code-validation)
+  - [Additional resources](#additional-resources)
+- [API version validation](#api-version-validation)
+- [Template validation](#template-validation)
+- [Deployment validation](#deployment-validation)
+  - [Module dependencies](#module-dependencies)
+    - [Resources deployed by the dependency workflow](#resources-deployed-by-the-dependency-workflow)
+    - [Required secrets and keys](#required-secrets-and-keys)
 
 ---
 
