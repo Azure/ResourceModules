@@ -127,8 +127,8 @@ jobs:
         shell: pwsh
         run: |
           # Load used functions
-          . "../actions/sharedScripts/Set-EnvironmentOnAgent.ps1"
-          . "./scripts/Set-TokenKeyVaultConfig.ps1"
+          . "$env:GITHUB_WORKSPACE/.github/actions/sharedScripts/Set-EnvironmentOnAgent.ps1"
+          . "$env:GITHUB_WORKSPACE/.github/workflows/scripts/Set-ParameterFileTokensInKeyVault"
           # Set agent up
           Set-EnvironmentOnAgent
           # Create Tokens in Key Vault
