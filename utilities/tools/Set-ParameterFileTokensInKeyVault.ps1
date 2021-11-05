@@ -12,7 +12,11 @@ Optional. The name of the Key Vault. It will be used as an alternative if the Ta
 Optional. The Tag used to find the Tokens Key Vault in an Azure Subscription. Default is @{ 'resourceRole' = 'tokensKeyVault' }
 
 .PARAMETER subscriptionId
-Optional. The Azure subscription containing the key vault.
+Mandatory. The Azure subscription containing the key vault.
+
+.PARAMETER TokenNameIdentifierPrefix
+Optional. An identifier used to Set as a Prefix for the Token Names (i.e. ParameterFileToken-)
+
 #>
 function Set-ParameterFileTokensInKeyVault {
     [CmdletBinding()]
@@ -24,8 +28,10 @@ function Set-ParameterFileTokensInKeyVault {
         [psobject]$Tag = @{ 'resourceRole' = 'tokensKeyVault' },
 
         [parameter(Mandatory)]
-        [string]$subscriptionId
+        [string]$subscriptionId,
 
+        [parameter(Mandatory = $false)]
+        [string]$TokenNameIdentifierPrefix = 'ParameterFileToken-'
     )
     begin {
         $KeyVaultTokens = @()
@@ -73,7 +79,8 @@ function Set-ParameterFileTokensInKeyVault {
                 try {
                     $KeyVaultTokens | ForEach-Object {
                         Write-Verbose "Creating Token: $($PSItem.Name)"
-                        Set-AzKeyVaultSecret -Name "ParameterFileToken-$($PSItem.Name)" -SecretValue (ConvertTo-SecureString -AsPlainText $PSItem.Value) -VaultName $TokensKeyVault.VaultName
+                        $TokenName = $TokenNameIdentifierPrefix + $PSItem.Name
+                        Set-AzKeyVaultSecret -Name $TokenName -SecretValue (ConvertTo-SecureString -AsPlainText $PSItem.Value) -VaultName $TokensKeyVault.VaultName
                     }
                 } catch {
                     throw $PSitem.Exception.Message

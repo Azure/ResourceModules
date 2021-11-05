@@ -13,19 +13,25 @@ Optional. The name of the Key Vault. It will be used as an alternative if the Ta
 Optional. The Tag used to find the Tokens Key Vault in an Azure Subscription. Default is @{ 'resourceRole' = 'tokensKeyVault' }
 
 .PARAMETER subscriptionId
-Optional. The Azure subscription containing the key vault.
+Mandatory. The Azure subscription containing the key vault.
+
+.PARAMETER TokenNameIdentifierPrefix
+Optional. An identifier used to filter for the Token Names (i.e. ParameterFileToken-)
 #>
 function Get-ParameterFileTokensFromKeyVault {
     [CmdletBinding()]
     param (
         [parameter(Mandatory = $false)]
-        [string]$TokenKeyVaultName,
+        [string]$TokenKeyVaultName = 'TokenKeyVaultName',
 
         [parameter(Mandatory = $false)]
         [psobject]$Tag = @{ 'resourceRole' = 'tokensKeyVault' },
 
         [parameter(Mandatory)]
-        [string]$subscriptionId
+        [string]$subscriptionId,
+
+        [parameter(Mandatory = $false)]
+        [string]$TokenNameIdentifierPrefix = 'ParameterFileToken-'
     )
 
     process {
@@ -40,11 +46,11 @@ function Get-ParameterFileTokensFromKeyVault {
             }
         }
         try {
-            Write-Verbose 'Finding Tokens Key Vault by Tag'
-            $TokensKeyVault = Get-AzKeyVault -Tag $Tag | Select-Object -First 1
+            Write-Verbose "Finding Tokens Key Vault by Name: $TokenKeyVaultName"
+            $TokensKeyVault = Get-AzKeyVault -VaultName $TokenKeyVaultName -ErrorAction SilentlyContinue
             if (!$TokensKeyVault) {
-                Write-Verbose "Finding Tokens Key Vault by Name: $TokenKeyVaultName"
-                $TokensKeyVault = Get-AzKeyVault -VaultName $TokenKeyVaultName
+                Write-Verbose 'Finding Tokens Key Vault by Tag'
+                $TokensKeyVault = Get-AzKeyVault -Tag $Tag | Select-Object -First 1
             }
         } catch {
             throw $PSitem.Exception.Message
@@ -53,11 +59,12 @@ function Get-ParameterFileTokensFromKeyVault {
         if ($TokensKeyVault) {
             ## Get Tokens
             Write-Verbose("Tokens Key Vault Found: $($TokensKeyVault.VaultName)")
-            $KeyVaultTokens = Get-AzKeyVaultSecret -VaultName $TokensKeyVault.VaultName | Where-Object -Property Name -Like 'ParameterFileToken-*'
+            $KeyVaultTokens = Get-AzKeyVaultSecret -VaultName $TokensKeyVault.VaultName | Where-Object -Property Name -Like "$($TokenNameIdentifierPrefix)*"
             if ($KeyVaultTokens) {
                 Write-Verbose("Key Vault Tokens Found: $($KeyVaultTokens.count)")
                 $KeyVaultTokens | ForEach-Object {
-                    $CustomParameterFileTokens += [ordered]@{ Replace = "<<$($PSItem.Name)>>"; With = (Get-AzKeyVaultSecret -SecretName $PSItem.Name -VaultName $TokensKeyVault.VaultName -AsPlainText -ErrorAction SilentlyContinue) }
+                    $TokenName = "<<$($PSItem.Name.Replace($TokenNameIdentifierPrefix,''))>>"
+                    $CustomParameterFileTokens += [ordered]@{ Replace = "$TokenName"; With = (Get-AzKeyVaultSecret -SecretName $PSItem.Name -VaultName $TokensKeyVault.VaultName -AsPlainText -ErrorAction SilentlyContinue) }
                 }
             } else {
                 Write-Verbose('No Tokens Found In Tokens Key Vault')
@@ -67,6 +74,6 @@ function Get-ParameterFileTokensFromKeyVault {
         }
     }
     end {
-        return [psobject]$CustomParameterFileTokens
+        return [psobject]$CustomParameterFileTokens | ForEach-Object { [PSCustomObject]$PSItem }
     }
 }
