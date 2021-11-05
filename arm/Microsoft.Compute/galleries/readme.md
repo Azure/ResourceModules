@@ -7,8 +7,8 @@ This module deploys Share Image Gallery, with resource lock.
 | Resource Type | Api Version |
 | :-- | :-- |
 | `Microsoft.Authorization/locks` | 2016-09-01 |
+| `Microsoft.Authorization/roleAssignments` | 2020-04-01-preview |
 | `Microsoft.Compute/galleries` | 2020-09-30 |
-| `Microsoft.Compute/galleries/providers/roleAssignments` | 2021-04-01-preview |
 
 ## Parameters
 
@@ -79,4 +79,5 @@ Tag names and tag values can be provided as needed. A tag can be left without a 
 ## Template references
 
 - [Locks](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2016-09-01/locks)
+- [Roleassignments](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2020-04-01-preview/roleAssignments)
 - [Galleries](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Compute/2020-09-30/galleries)
