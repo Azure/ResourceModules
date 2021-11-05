@@ -42,8 +42,8 @@ runs:
       shell: pwsh
       run: |
         # Load used funtions
-        . ".github/actions/sharedScripts/Convert-TokensInFileList.ps1"
-        . ".github/actions/sharedScripts/Get-ParameterFileTokensFromKeyVault.ps1"
+        . "utilities/tools/Convert-TokensInFileList.ps1"
+        . "utilities/tools/Get-ParameterFileTokensFromKeyVault.ps1"
 
         # Initialize Default Parameter File Tokens
         $DefaultParameterFileTokens = @(

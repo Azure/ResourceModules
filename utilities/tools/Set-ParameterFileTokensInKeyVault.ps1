@@ -32,8 +32,6 @@ function Set-ParameterFileTokensInKeyVault {
         ## Custom Tokens (Should not contain sensitive Information)
         $KeyVaultTokens += @(
             @{ Name = 'namePrefix'; Value = 'coca' }
-            @{ Name = 'envPrefix'; Value = 'prod' }
-            @{ Name = 'prinId2'; Value = 'prod' }
             #<#############> Add more Custom Tokens here <#############>
         )
     }
@@ -49,31 +47,7 @@ function Set-ParameterFileTokensInKeyVault {
         ## Tokens from Azure Resources (Dependancies)
         $ResoucesWithTokensTag = Get-AzResource -Tag @{ 'enableForTokens' = 'true' }
         foreach ($Resource in $resoucesWithTokensTag) {
-            # User Assigned Managed Identities
-            if ($Resource.Type -eq 'Microsoft.ManagedIdentity/userAssignedIdentities') {
-                Write-Verbose "Processing Tokens for User Assigned Managed Identity: $($Resource.Name)"
-                # Tokens Properties (principal Id)
-                if ($Resource.Tags.tokenValue -eq 'principalId') {
-                    $Name = $Resource.Tags.tokenName
-                    $Value = (Get-AzUserAssignedIdentity -Name $Resource.Name -ResourceGroupName $Resource.ResourceGroupName).PrincipalId
-                    if ($Name -and $Value) {
-                        $KeyVaultTokens += @{
-                            'Name'  = $Name
-                            'Value' = $Value
-                        }
-                    }
-                }
-            }
             #<#############> Add more Azure Resource Token types here <#############>
-        }
-        ## Tokens for Azure Tenant
-        $TenantId = (Get-AzContext -ErrorAction SilentlyContinue).Tenant.Id
-        if ($TenantId) {
-            Write-Verbose 'Processing Tokens for Azure AD Tenant ID'
-            $KeyVaultTokens += @{
-                'Name'  = 'tenantId'
-                'Value' = $TenantId
-            }
         }
 
         ## Push Tokens to Tokens Key Vault
