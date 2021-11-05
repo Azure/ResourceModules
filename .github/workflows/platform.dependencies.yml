@@ -108,6 +108,34 @@ jobs:
           managementGroupId: '${{ secrets.ARM_MGMTGROUP_ID }}'
           removeDeployment: '${{ env.removeDeployment }}'
 
+  job_deploy_kv_tokens_secrets:
+    runs-on: ubuntu-20.04
+    name: 'Set Tokens Key Vault Secrets (Tokens)'
+    needs:
+      - job_deploy_kv_tokens
+    steps:
+      - name: 'Checkout'
+        uses: actions/checkout@v2
+        with:
+          fetch-depth: 0
+      - name: Azure Login
+        uses: azure/login@v1
+        with:
+          creds: ${{ secrets.AZURE_CREDENTIALS }}
+          enable-AzPSSession: true
+      - name: Run PowerShell
+        uses: azure/powershell@v1
+        with:
+          inlineScript: |
+            # Load used functions
+            . "../actions/sharedScripts/Set-EnvironmentOnAgent.ps1"
+            . "./scripts/Set-TokenKeyVaultConfig.ps1"
+            # Set agent up
+            Set-EnvironmentOnAgent
+
+            # Create Tokens in Key Vault
+            Set-ParameterFileTokensInKeyVault -subscriptionId '${{ secrets.ARM_SUBSCRIPTION_ID }}'
+
   job_deploy_evhns:
     runs-on: ubuntu-20.04
     name: 'Deploy eventhub namespace'
