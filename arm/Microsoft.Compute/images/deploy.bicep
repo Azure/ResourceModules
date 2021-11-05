@@ -63,6 +63,11 @@ module image_rbac '.bicep/nested_rbac.bicep' = [for (roleAssignment, index) in r
   }
 }]
 
+@description('The resourceId of the image')
 output imageResourceId string = image.id
+
+@description('The resource group the image was deployed into')
 output imageResourceGroup string = resourceGroup().name
+
+@description('The name of the image')
 output imageName string = image.name

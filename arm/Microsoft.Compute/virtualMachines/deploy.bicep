@@ -284,11 +284,11 @@ param baseTime string = utcNow('u')
 @description('Optional. SAS token validity length to use to download files from storage accounts. Usage: \'PT8H\' - valid for 8 hours; \'P5D\' - valid for 5 days; \'P1Y\' - valid for 1 year. When not provided, the SAS token will be valid for 8 hours.')
 param sasTokenValidityLength string = 'PT8H'
 
-var vmComputerNameTransformed = ((vmComputerNamesTransformation == 'uppercase') ? toUpper(virtualMachineName) : ((vmComputerNamesTransformation == 'lowercase') ? toLower(virtualMachineName) : virtualMachineName))
+var vmComputerNameTransformed = vmComputerNamesTransformation == 'uppercase' ? toUpper(virtualMachineName) : (vmComputerNamesTransformation == 'lowercase' ? toLower(virtualMachineName) : virtualMachineName)
 
 var identity = {
   type: managedServiceIdentity
-  userAssignedIdentities: (empty(userAssignedIdentities) ? json('null') : userAssignedIdentities)
+  userAssignedIdentities: empty(userAssignedIdentities) ? userAssignedIdentities : null
 }
 
 var accountSasProperties = {
@@ -315,10 +315,10 @@ module virtualMachine_nic '.bicep/nested_networkInterface.bicep' = [for (nicConf
     virtualMachineName: virtualMachineName
     location: location
     tags: tags
-    enableIPForwarding: (contains(nicConfiguration, 'enableIPForwarding') ? (!(empty(nicConfiguration.enableIPForwarding)) ? nicConfiguration.enableIPForwarding : false) : false)
-    enableAcceleratedNetworking: (contains(nicConfiguration, 'enableAcceleratedNetworking') ? (!(empty(nicConfiguration.enableAcceleratedNetworking)) ? nicConfiguration.enableAcceleratedNetworking : false) : false)
-    dnsServers: (contains(nicConfiguration, 'dnsServers') ? (!(empty(nicConfiguration.dnsServers)) ? nicConfiguration.dnsServers : json('[]')) : json('[]'))
-    networkSecurityGroupId: (contains(nicConfiguration, 'nsgId') ? (!(empty(nicConfiguration.nsgId)) ? nicConfiguration.nsgId : '') : '')
+    enableIPForwarding: contains(nicConfiguration, 'enableIPForwarding') ? (!empty(nicConfiguration.enableIPForwarding) ? nicConfiguration.enableIPForwarding : false) : false
+    enableAcceleratedNetworking: contains(nicConfiguration, 'enableAcceleratedNetworking') ? (!empty(nicConfiguration.enableAcceleratedNetworking) ? nicConfiguration.enableAcceleratedNetworking : false) : false
+    dnsServers: contains(nicConfiguration, 'dnsServers') ? (!empty(nicConfiguration.dnsServers) ? nicConfiguration.dnsServers : []) : []
+    networkSecurityGroupId: contains(nicConfiguration, 'nsgId') ? (!empty(nicConfiguration.nsgId) ? nicConfiguration.nsgId : '') : ''
     ipConfigurationArray: nicConfiguration.ipConfigurations
     lock: lock
     diagnosticStorageAccountId: diagnosticStorageAccountId
@@ -329,7 +329,7 @@ module virtualMachine_nic '.bicep/nested_networkInterface.bicep' = [for (nicConf
     metricsToEnable: nicMetricsToEnable
     pipMetricsToEnable: pipMetricsToEnable
     pipLogsToEnable: pipLogsToEnable
-    roleAssignments: (contains(nicConfiguration, 'roleAssignments') ? (!(empty(nicConfiguration.roleAssignments)) ? nicConfiguration.roleAssignments : json('[]')) : json('[]'))
+    roleAssignments: contains(nicConfiguration, 'roleAssignments') ? (!empty(nicConfiguration.roleAssignments) ? nicConfiguration.roleAssignments : []) : []
   }
 }]
 
@@ -338,8 +338,8 @@ resource virtualMachine 'Microsoft.Compute/virtualMachines@2021-04-01' = {
   location: location
   identity: identity
   tags: tags
-  zones: (useAvailabilityZone ? array(availabilityZone) : json('null'))
-  plan: (empty(plan) ? json('null') : plan)
+  zones: useAvailabilityZone ? array(availabilityZone) : null
+  plan: !empty(plan) ? plan : null
   properties: {
     hardwareProfile: {
       vmSize: vmSize
@@ -363,7 +363,7 @@ resource virtualMachine 'Microsoft.Compute/virtualMachines@2021-04-01' = {
         managedDisk: {
           storageAccountType: dataDisk.managedDisk.storageAccountType
           diskEncryptionSet: {
-            id: (enableServerSideEncryption ? dataDisk.managedDisk.diskEncryptionSet.id : json('null'))
+            id: enableServerSideEncryption ? dataDisk.managedDisk.diskEncryptionSet.id : null
           }
         }
       }]
@@ -375,33 +375,33 @@ resource virtualMachine 'Microsoft.Compute/virtualMachines@2021-04-01' = {
       computerName: vmComputerNameTransformed
       adminUsername: adminUsername
       adminPassword: adminPassword
-      customData: (empty(customData) ? json('null') : base64(customData))
-      windowsConfiguration: (empty(windowsConfiguration) ? json('null') : windowsConfiguration)
-      linuxConfiguration: (empty(linuxConfiguration) ? json('null') : linuxConfiguration)
+      customData: empty(customData) ? null : base64(customData)
+      windowsConfiguration: empty(windowsConfiguration) ? null : windowsConfiguration
+      linuxConfiguration: empty(linuxConfiguration) ? null : linuxConfiguration
       secrets: certificatesToBeInstalled
       allowExtensionOperations: allowExtensionOperations
     }
     networkProfile: {
       networkInterfaces: [for (nicConfiguration, index) in nicConfigurations: {
         properties: {
-          primary: ((index == 0) ? true : false)
+          primary: (index == 0) ? true : false
         }
         id: resourceId('Microsoft.Network/networkInterfaces', '${virtualMachineName}${nicConfiguration.nicSuffix}')
       }]
     }
     diagnosticsProfile: {
       bootDiagnostics: {
-        enabled: (!empty(bootDiagnosticStorageAccountName))
-        storageUri: (empty(bootDiagnosticStorageAccountName) ? json('null') : 'https://${bootDiagnosticStorageAccountName}${bootDiagnosticStorageAccountUri}')
+        enabled: !empty(bootDiagnosticStorageAccountName)
+        storageUri: empty(bootDiagnosticStorageAccountName) ? null : 'https://${bootDiagnosticStorageAccountName}${bootDiagnosticStorageAccountUri}'
       }
     }
-    availabilitySet: (empty(availabilitySetName) ? json('null') : json('{"id":"${resourceId('Microsoft.Compute/availabilitySets', availabilitySetName)}"}'))
-    proximityPlacementGroup: (empty(proximityPlacementGroupName) ? json('null') : json('{"id":"${resourceId('Microsoft.Compute/proximityPlacementGroups', proximityPlacementGroupName)}"}'))
+    availabilitySet: !empty(availabilitySetName) ? json('{"id":"${resourceId('Microsoft.Compute/availabilitySets', availabilitySetName)}"}') : null
+    proximityPlacementGroup: !empty(proximityPlacementGroupName) ? json('{"id":"${resourceId('Microsoft.Compute/proximityPlacementGroups', proximityPlacementGroupName)}"}') : null
     priority: vmPriority
-    evictionPolicy: (enableEvictionPolicy ? 'Deallocate' : json('null'))
-    billingProfile: (((!empty(vmPriority)) && (!empty(maxPriceForLowPriorityVm))) ? json('{"maxPrice":"${maxPriceForLowPriorityVm}"}') : json('null'))
-    host: ((!empty(dedicatedHostId)) ? json('{"id":"${dedicatedHostId}"}') : json('null'))
-    licenseType: (empty(licenseType) ? json('null') : licenseType)
+    evictionPolicy: enableEvictionPolicy ? 'Deallocate' : null
+    billingProfile: !empty(vmPriority) && !empty(maxPriceForLowPriorityVm) ? json('{"maxPrice":"${maxPriceForLowPriorityVm}"}') : null
+    host: !empty(dedicatedHostId) ? json('{"id":"${dedicatedHostId}"}') : null
+    licenseType: !empty(licenseType) ? licenseType : null
   }
   dependsOn: [
     virtualMachine_nic
@@ -453,10 +453,10 @@ module virtualMachine_microsoftMonitoringAgentExtension '.bicep/nested_extension
     typeHandlerVersion: enableWindowsMMAAgent ? '1.0' : '1.7'
     autoUpgradeMinorVersion: true
     settings: {
-      workspaceId: (!empty(workspaceId)) ? reference(virtualMachine_logAnalyticsWorkspace.id, virtualMachine_logAnalyticsWorkspace.apiVersion).customerId : ''
+      workspaceId: !empty(workspaceId) ? reference(virtualMachine_logAnalyticsWorkspace.id, virtualMachine_logAnalyticsWorkspace.apiVersion).customerId : ''
     }
     protectedSettings: {
-      workspaceKey: (!empty(workspaceId)) ? virtualMachine_logAnalyticsWorkspace.listKeys().primarySharedKey : ''
+      workspaceKey: !empty(workspaceId) ? virtualMachine_logAnalyticsWorkspace.listKeys().primarySharedKey : ''
     }
   }
 }
@@ -513,7 +513,7 @@ module virtualMachine_desiredStateConfigurationExtension '.bicep/nested_extensio
     typeHandlerVersion: '2.77'
     autoUpgradeMinorVersion: true
     settings: desiredStateConfigurationSettings.settings
-    protectedSettings: contains(desiredStateConfigurationSettings, 'protectedSettings') ? desiredStateConfigurationSettings.protectedSettings : json('null')
+    protectedSettings: contains(desiredStateConfigurationSettings, 'protectedSettings') ? desiredStateConfigurationSettings.protectedSettings : null
   }
 }
 
@@ -528,13 +528,13 @@ module virtualMachine_customScriptExtension '.bicep/nested_extension.bicep' = if
     typeHandlerVersion: '1.9'
     autoUpgradeMinorVersion: true
     settings: {
-      fileUris: [for fileData in windowsScriptExtensionFileData: contains(fileData, 'storageAccountId') ? '${fileData.uri}?${listAccountSas(fileData.storageAccountId, '2019-04-01', accountSasProperties).accountSasToken}' : '${fileData.uri}']
+      fileUris: [for fileData in windowsScriptExtensionFileData: contains(fileData, 'storageAccountId') ? '${fileData.uri}?${listAccountSas(fileData.storageAccountId, '2019-04-01', accountSasProperties).accountSasToken}' : fileData.uri]
     }
     protectedSettings: {
       commandToExecute: windowsScriptExtensionCommandToExecute
-      storageAccountName: ((!empty(cseStorageAccountName)) ? cseStorageAccountName : json('null'))
-      storageAccountKey: ((!empty(cseStorageAccountKey)) ? cseStorageAccountKey : json('null'))
-      managedIdentity: ((!empty(cseManagedIdentity)) ? cseManagedIdentity : json('null'))
+      storageAccountName: !empty(cseStorageAccountName) ? cseStorageAccountName : null
+      storageAccountKey: !empty(cseStorageAccountKey) ? cseStorageAccountKey : null
+      managedIdentity: !empty(cseManagedIdentity) ? cseManagedIdentity : null
     }
   }
 }
@@ -564,7 +564,7 @@ resource virtualMachine_lock 'Microsoft.Authorization/locks@2017-04-01' = if (lo
   name: '${virtualMachine.name}-${lock}-lock'
   properties: {
     level: lock
-    notes: (lock == 'CanNotDelete') ? 'Cannot delete resource or child resources.' : 'Cannot modify the resource or child resources.'
+    notes: lock == 'CanNotDelete' ? 'Cannot delete resource or child resources.' : 'Cannot modify the resource or child resources.'
   }
   scope: virtualMachine
 }
