@@ -1,0 +1,69 @@
+{
+  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    "name": {
+      "value": "<<platformKeyVault>>"
+    },
+    "accessPolicies": {
+      "value": [
+        {
+          "tenantId": "<<tenantId>>",
+          "objectId": "<<deploymentSpId>>",
+          "permissions": {
+            "keys": [
+              "all"
+            ],
+            "secrets": [
+              "all"
+            ],
+            "certificates": [
+              "all"
+            ]
+          }
+        },
+        {
+          "tenantId": "<<tenantId>>",
+          "objectId": "d04ffe2e-7fc3-4510-9ea7-7c1f98e73c08", //CARML-Resource-A
+          "permissions": {
+            "keys": [
+              "all"
+            ],
+            "secrets": [
+              "all"
+            ],
+            "certificates": [
+              "all"
+            ]
+          }
+        },
+        {
+          "tenantId": "<<tenantId>>",
+          "objectId": "c99b4f9a-4268-4ab0-bd02-85d160b29a36", //CARML-Resource-C
+          "permissions": {
+            "keys": [
+              "all"
+            ],
+            "secrets": [
+              "all"
+            ],
+            "certificates": [
+              "all"
+            ]
+          }
+        }
+      ]
+    },
+    "enablePurgeProtection": {
+      "value": false
+    },
+    "tags": {
+      "value": {
+        "resourceRole": "tokensKeyVault"
+      }
+    },
+    "lock": {
+      "value": "CanNotDelete"
+    }
+  }
+}

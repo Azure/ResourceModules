@@ -33,6 +33,7 @@ function Set-ParameterFileTokensInKeyVault {
         $KeyVaultTokens += @(
             @{ Name = 'namePrefix'; Value = 'coca' }
             @{ Name = 'envPrefix'; Value = 'prod' }
+            @{ Name = 'prinId2'; Value = 'prod' }
             #<#############> Add more Custom Tokens here <#############>
         )
     }

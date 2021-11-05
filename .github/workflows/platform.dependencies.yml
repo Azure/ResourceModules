@@ -14,11 +14,14 @@ on:
 env:
   defaultLocation: 'WestEurope'
   resourceGroupName: 'validation-rg'
+  platform_resourceGroupName: 'platform-core-rg'
   removeDeployment: 'false'
   AZURE_CREDENTIALS: ${{ secrets.AZURE_CREDENTIALS }}
-  ARM_SUBSCRIPTION_ID: ${{ secrets.ARM_SUBSCRIPTION_ID }}
-  ARM_MGMTGROUP_ID: ${{ secrets.ARM_MGMTGROUP_ID }}
-  DEPLOYMENT_SP_ID: ${{ secrets.DEPLOYMENT_SP_ID }}
+  ARM_SUBSCRIPTION_ID: '${{ secrets.ARM_SUBSCRIPTION_ID }}'
+  ARM_MGMTGROUP_ID: '${{ secrets.ARM_MGMTGROUP_ID }}'
+  ARM_TENANT_ID: '${{ secrets.ARM_TENANT_ID }}'
+  DEPLOYMENT_SP_ID: '${{ secrets.DEPLOYMENT_SP_ID }}'
+  PLATFORM_KEYVAULT: '${{ secrets.PLATFORM_KEYVAULT }}'
 
 jobs:
   job_deploy_rg:
@@ -31,7 +34,11 @@ jobs:
       fail-fast: false
       matrix:
         parameterFilePaths:
-          ['artifacts.parameters.json', 'validation.parameters.json']
+          [
+            'artifacts.parameters.json',
+            'validation.parameters.json',
+            'platform-core.parameters.json',
+          ]
     steps:
       - name: 'Checkout'
         uses: actions/checkout@v2
@@ -78,19 +85,18 @@ jobs:
           managementGroupId: '${{ secrets.ARM_MGMTGROUP_ID }}'
           removeDeployment: '${{ env.removeDeployment }}'
 
-  job_deploy_kv_tokens:
+  job_deploy_kv_platform:
     runs-on: ubuntu-20.04
-    name: 'Deploy Tokens Key Vault'
+    name: 'Deploy Platform Key Vault'
     env:
       moduleName: vaults
       namespace: 'Microsoft.KeyVault\vaults'
     needs:
       - job_deploy_rg
-      - job_deploy_msi
     strategy:
       fail-fast: false
       matrix:
-        parameterFilePaths: ['tokensVault.parameters.json']
+        parameterFilePaths: ['platform.parameters.json']
     steps:
       - name: 'Checkout'
         uses: actions/checkout@v2
@@ -103,16 +109,16 @@ jobs:
           templateFilePath: 'arm/${{ env.namespace }}/deploy.bicep'
           parameterFilePath: 'utilities/dependencies/${{ env.namespace }}/parameters/${{ matrix.parameterFilePaths }}'
           location: '${{ env.defaultLocation }}'
-          resourceGroupName: '${{ env.resourceGroupName }}'
+          resourceGroupName: '${{ env.platform_resourceGroupName }}'
           subscriptionId: '${{ secrets.ARM_SUBSCRIPTION_ID }}'
           managementGroupId: '${{ secrets.ARM_MGMTGROUP_ID }}'
           removeDeployment: '${{ env.removeDeployment }}'
 
   job_deploy_kv_tokens_secrets:
     runs-on: ubuntu-20.04
-    name: 'Set Tokens Key Vault Secrets (Tokens)'
+    name: 'Set Parameter Files Tokens in Key Vault'
     needs:
-      - job_deploy_kv_tokens
+      - job_deploy_kv_platform
     steps:
       - name: 'Checkout'
         uses: actions/checkout@v2
@@ -128,11 +134,11 @@ jobs:
         run: |
           # Load used functions
           . "$env:GITHUB_WORKSPACE/.github/actions/sharedScripts/Set-EnvironmentOnAgent.ps1"
-          . "$env:GITHUB_WORKSPACE/.github/workflows/scripts/Set-ParameterFileTokensInKeyVault"
+          . "$env:GITHUB_WORKSPACE/.github/utilities/tools/Set-ParameterFileTokensInKeyVault"
           # Set agent up
           Set-EnvironmentOnAgent
           # Create Tokens in Key Vault
-          Set-ParameterFileTokensInKeyVault -subscriptionId '${{ secrets.ARM_SUBSCRIPTION_ID }}' -verbose
+          Set-ParameterFileTokensInKeyVault -TokenKeyVaultName '${{ secrets.PLATFORM_KEYVAULT }}' -subscriptionId '${{ secrets.ARM_SUBSCRIPTION_ID }}' -verbose
 
   job_deploy_evhns:
     runs-on: ubuntu-20.04

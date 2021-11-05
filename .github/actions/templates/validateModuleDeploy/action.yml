@@ -42,18 +42,21 @@ runs:
       shell: pwsh
       run: |
         # Load used funtions
-        . ".github/actions/sharedScripts/Convert-TokensInFileList.ps1"
-        . ".github/actions/sharedScripts/Get-ParameterFileTokensFromKeyVault"
+        . ".github/utilities/tools/Convert-TokensInFileList.ps1"
+        . ".github/utilities/tools/Get-ParameterFileTokensFromKeyVault.ps1"
 
         # Initialize Default Parameter File Tokens
         $DefaultParameterFileTokens = @(
+            @{ Replace = '<<resourceGroupName>>'; With = '${{ inputs.resourceGroupName }}' }
             @{ Replace = '<<subscriptionId>>'; With = '${{ inputs.subscriptionId }}' }
             @{ Replace = '<<managementGroupId>>'; With = '${{ inputs.managementGroupId }}' }
+            @{ Replace = "<<tenantId>>"; With = '${{ env.ARM_TENANT_ID }}' }
             @{ Replace = "<<deploymentSpId>>"; With = '${{ env.DEPLOYMENT_SP_ID }}' }
+            @{ Replace = "<<platformKeyVault>>"; With = '${{ env.PLATFORM_KEYVAULT }}' }
         ) | ForEach-Object { [PSCustomObject]$PSItem }
 
         # Get Key Vault Information (If Provided) To Initialize Default Parameter File Tokens
-        $CustomParameterFileTokens = Get-ParameterFileTokensFromKeyVault -subscriptionId '${{ inputs.subscriptionId }}' -verbose
+        $CustomParameterFileTokens = Get-ParameterFileTokensFromKeyVault -TokenKeyVaultName '${{ env.PLATFORM_KEYVAULT }}' -subscriptionId '${{ inputs.subscriptionId }}' -verbose
 
         # Combine All Parameter File Tokens
         $AllParameterFileTokens = $DefaultParameterFileTokens + $CustomParameterFileTokens | ForEach-Object { [PSCustomObject]$PSItem }
