@@ -759,6 +759,35 @@ jobs:
           managementGroupId: '${{ secrets.ARM_MGMTGROUP_ID }}'
           removeDeployment: '${{ env.removeDeployment }}'
 
+  job_deploy_dnszone:
+    runs-on: ubuntu-20.04
+    name: 'Deploy private DNS zones'
+    env:
+      moduleName: privateDnsZones
+      namespace: 'Microsoft.Network\privateDnsZones'
+    needs:
+      - job_deploy_vnet
+    strategy:
+      fail-fast: false
+      matrix:
+        parameterFilePaths: ['parameters.json']
+    steps:
+      - name: 'Checkout'
+        uses: actions/checkout@v2
+        with:
+          fetch-depth: 0
+      - name: 'Deploy module'
+        uses: ./.github/actions/templates/deployModule
+        with:
+          moduleName: '${{ env.moduleName }}'
+          templateFilePath: 'arm/${{ env.namespace }}/deploy.bicep'
+          parameterFilePath: 'utilities/dependencies/${{ env.namespace }}/parameters/${{ matrix.parameterFilePaths }}'
+          location: '${{ env.defaultLocation }}'
+          resourceGroupName: '${{ env.resourceGroupName }}'
+          subscriptionId: '${{ secrets.ARM_SUBSCRIPTION_ID }}'
+          managementGroupId: '${{ secrets.ARM_MGMTGROUP_ID }}'
+          removeDeployment: '${{ env.removeDeployment }}'
+
   job_deploy_vm:
     runs-on: ubuntu-20.04
     name: 'Deploy virtual machines'
