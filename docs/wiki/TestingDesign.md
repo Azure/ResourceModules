@@ -6,14 +6,17 @@ This section gives you an overview of the design principals the testing follows.
 
 ### _Navigation_
 
-- [Approach](#approach)
-- [Static code validation](#static-code-validation)
-- [API version validation](#api-version-validation)
-- [Template validation](#template-validation)
-- [Deployment validation](#deployment-validation)
-  - [Module dependencies](#module-dependencies)
-    - [Resources deployed by the dependency workflow](#resources-deployed-by-the-dependency-workflow)
-    - [Required secrets and keys](#required-secrets-and-keys)
+- [Testing Design](#testing-design)
+    - [_Navigation_](#navigation)
+  - [Approach](#approach)
+  - [Static code validation](#static-code-validation)
+    - [Additional resources](#additional-resources)
+  - [API version validation](#api-version-validation)
+  - [Template validation](#template-validation)
+  - [Deployment validation](#deployment-validation)
+    - [Module dependencies](#module-dependencies)
+      - [Resources deployed by the dependency workflow](#resources-deployed-by-the-dependency-workflow)
+      - [Required secrets and keys](#required-secrets-and-keys)
 
 ---
 
@@ -140,6 +143,8 @@ Since also dependency resources are in turn subject to dependencies with each ot
   4. API management: This resource is leveraged by all [api management services].
       >**Note**: This resource has a global scope name.
   5. Application insight: This resource is leveraged by the [machine learning service] resource.
+  6. AVD host pool: This resource is leveraged by the [AVD application group] resource.
+  7. Recovery services vault: This resource is leveraged by the [virtual machine] resource when backup is enabled.
 
 **Fifth level resources**: This group of resources has a dependency on one or more resources in the groups above. Resources in this group can be deployed in parallel.
 
@@ -150,10 +155,12 @@ Since also dependency resources are in turn subject to dependencies with each ot
       - '_adp-sxx-az-vnet-x-aks_': Leveraged by the [azure kubernetes service] resource.
       - '_adp-sxx-az-vnet-x-sqlmi_': Leveraged by the [sql managed instance] resource.
       - '_adp-sxx-az-vnet-x-001_': Hosting multiple subnets to be leveraged by [virtual machine], [virtual machine scale set], [service bus], [azure NetApp files], [azure bastion], [private endpoints], [app service environment] and [application gateway] resources.
+  2. AVD application group: This resource is leveraged by the [AVD workspace] resource.
 
 **Sixth level resources**: This group of resources has a dependency on one or more resources in the groups above.
 
   1. Virtual Machine: This resource is depending on the [virtual networks] and [key vault] deployed above. This resource is leveraged by the [automanage] resource.
+  2. Private DNS zone: This resource is depending on the [virtual networks] deployed above. This resource is leveraged by the [private endpoint] resource.
 
 #### Required secrets and keys
 
