@@ -27,7 +27,7 @@ This template deploys Virtual Network Gateway Connection.
 | `tags` | object | `{object}` |  | Optional. Tags of the resource. |
 | `usePolicyBasedTrafficSelectors` | bool |  |  | Optional. Enable policy-based traffic selectors |
 | `virtualNetworkGatewayConnectionType` | string | `Ipsec` | `[Ipsec, VNet2VNet, ExpressRoute, VPNClient]` | Optional. Gateway connection type. |
-| `vpnSharedKey` | string |  |  | Required. Specifies a VPN shared key. The same value has to be specified on both Virtual Network Gateways |
+| `vpnSharedKey` | string |  |  | Optional. Specifies a VPN shared key. The same value has to be specified on both Virtual Network Gateways |
 
 ### Parameter Usage: `customIPSecPolicy`
 
