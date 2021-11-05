@@ -18,7 +18,7 @@ Mandatory. Path to the module deployment file from root.
 .PARAMETER bicepRegistryName
 Mandatory. Name of the private bicep registry to publish to.
 
-.PARAMETER bicepRegistryRGName
+.PARAMETER bicepRegistryRgName
 Mandatory. ResourceGroup of the private bicep registry to publish to.
 
 .PARAMETER customVersion
@@ -28,7 +28,7 @@ Optional. A custom version that can be provided by the UI. '-' represents an emp
 Optional. A version option that can be specified in the UI. Defaults to 'patch'
 
 .EXAMPLE
-Publish-ModuleToPrivateBicepRegistry -moduleIdentifier 'Microsoft.KeyVault/vaults' -templateFilePath 'C:/KeyVault/deploy.json' -bicepRegistryRGName 'artifacts-rg' -customVersion '3.0.0'
+Publish-ModuleToPrivateBicepRegistry -moduleIdentifier 'Microsoft.KeyVault/vaults' -templateFilePath 'C:/KeyVault/deploy.json' -bicepRegistryRgName 'artifacts-rg' -customVersion '3.0.0'
 
 Try to publish the KeyVault module with version 3.0.0 to a private bicep registry called KeyVault based on a value provided in the UI
 #>
@@ -43,7 +43,7 @@ function Publish-ModuleToPrivateBicepRegistry {
         [string] $templateFilePath,
 
         [Parameter(Mandatory)]
-        [string] $bicepRegistryRGName,
+        [string] $bicepRegistryRgName,
 
         [Parameter(Mandatory)]
         [string] $bicepRegistryName,
@@ -69,9 +69,9 @@ function Publish-ModuleToPrivateBicepRegistry {
         }
 
         # Registry
-        if (-not (Get-AzContainerRegistry -ResourceGroupName $bicepRegistryRGName -Name $bicepRegistryName -ErrorAction 'SilentlyContinue')) {
-            if ($PSCmdlet.ShouldProcess("Container Registry [$bicepRegistryName] to resource group [$bicepRegistryRGName]", 'Deploy')) {
-                New-AzContainerRegistry -ResourceGroupName $bicepRegistryRGName -Name $bicepRegistryName -Sku 'Basic'
+        if (-not (Get-AzContainerRegistry -ResourceGroupName $bicepRegistryRgName -Name $bicepRegistryName -ErrorAction 'SilentlyContinue')) {
+            if ($PSCmdlet.ShouldProcess("Container Registry [$bicepRegistryName] to resource group [$bicepRegistryRgName]", 'Deploy')) {
+                New-AzContainerRegistry -ResourceGroupName $bicepRegistryRgName -Name $bicepRegistryName -Sku 'Basic'
             }
         }
 
