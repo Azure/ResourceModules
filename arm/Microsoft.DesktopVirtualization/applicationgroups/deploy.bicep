@@ -16,7 +16,7 @@ param appGroupType string
 param hostpoolName string
 
 @description('Optional. The friendly name of the Application Group to be created.')
-param appGroupFriendlyName string = ''
+param friendlyName string = ''
 
 @description('Optional. The description of the Application Group to be created.')
 param appGroupDescription string = ''
@@ -67,6 +67,9 @@ param logsToEnable array = [
   'Management'
 ]
 
+@description('Optional. List of applications to be created in the Application Group.')
+param applications array = []
+
 var diagnosticsLogs = [for log in logsToEnable: {
   category: log
   enabled: true
@@ -91,7 +94,7 @@ resource appGroup 'Microsoft.DesktopVirtualization/applicationgroups@2021-07-12'
   tags: tags
   properties: {
     hostPoolArmPath: appGroup_hostpool.id
-    friendlyName: appGroupFriendlyName
+    friendlyName: friendlyName
     description: appGroupDescription
     applicationGroupType: appGroupType
   }
@@ -117,6 +120,22 @@ resource appGroup_diagnosticSettings 'Microsoft.Insights/diagnosticsettings@2017
   }
   scope: appGroup
 }
+
+module appGroup_applications 'applications/deploy.bicep' = [for (application, index) in applications: {
+  name: '${uniqueString(deployment().name, location)}-application-${index}'
+  params: {
+    name: application.name
+    appGroupName: appGroup.name
+    appDescription: application.description
+    friendlyName: application.friendlyName
+    filePath: application.filePath
+    commandLineSetting: application.commandLineSetting
+    commandLineArguments: application.commandLineArguments
+    showInPortal: application.showInPortal
+    iconPath: application.iconPath
+    iconIndex: application.iconIndez
+  }
+}]
 
 module appGroup_rbac '.bicep/nested_rbac.bicep' = [for (roleAssignment, index) in roleAssignments: {
   name: '${deployment().name}-rbac-${index}'
