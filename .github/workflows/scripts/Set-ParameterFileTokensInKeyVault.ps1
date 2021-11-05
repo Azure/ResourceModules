@@ -80,8 +80,7 @@ function Set-ParameterFileTokensInKeyVault {
             Write-Verbose "Processing $($KeyVaultTokens.Count) Tokens"
             try {
                 Write-Verbose 'Finding Tokens Key Vault by Tag:'
-                $Tag
-                $TokensKeyVault = Get-AzKeyVault -Tag @{ 'resourceRole' = 'tokensKeyVault' } | Select-Object -First 1
+                $TokensKeyVault = Get-AzKeyVault -Tag $Tag | Select-Object -First 1
                 if (!$TokensKeyVault) {
                     Write-Verbose "Finding Tokens Key Vault by Name: $TokenKeyVaultName"
                     $TokensKeyVault = Get-AzKeyVault -VaultName $TokenKeyVaultName

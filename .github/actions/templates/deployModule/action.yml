@@ -50,33 +50,21 @@ runs:
       run: |
         # Load used funtions
         . ".github/actions/sharedScripts/Convert-TokensInFileList.ps1"
+        . ".github/actions/sharedScripts/Get-ParameterFileTokensFromKeyVault"
+
         # Initialize Default Parameter File Tokens
         $DefaultParameterFileTokens = @(
             @{ Replace = '<<subscriptionId>>'; With = '${{ inputs.subscriptionId }}' }
             @{ Replace = '<<managementGroupId>>'; With = '${{ inputs.managementGroupId }}' }
-            @{ Replace = '<<resourceGroupName>>'; With = '${{ inputs.resourceGroupName }}' }
-            @{ Replace = '<<location>>'; With = '${{ inputs.location }}' }
             @{ Replace = "<<deploymentSpId>>"; With = '${{ env.DEPLOYMENT_SP_ID }}' }
         ) | ForEach-Object { [PSCustomObject]$PSItem }
+
         # Get Key Vault Information (If Provided) To Initialize Default Parameter File Tokens
-        $CustomParameterFileTokens = @()
-        $TokensKeyVault = Get-AzKeyVault -Tag @{ 'resourceRole' = 'tokensKeyVault' }
-        if ($TokensKeyVault) {
-            ## Get Tokens
-            Write-Verbose('Tokens Key Vault Found: $($TokensKeyVault.VaultName)')
-            $KeyVaultTokens = Get-AzKeyVaultSecret -VaultName $TokensKeyVault.VaultName
-            if ($KeyVaultTokens) {
-                Write-Verbose('Key Vault Tokens Found: $($KeyVaultTokens.count)')
-                $KeyVaultTokens | ForEach-Object {
-                    $CustomParameterFileTokens += [ordered]@{ Replace = "<<$($PSItem.Name)>>"; With = (Get-AzKeyVaultSecret -SecretName $PSItem.Name -VaultName $TokensKeyVault.VaultName -AsPlainText -ErrorAction SilentlyContinue) }
-                }
-            } else {
-                Write-Verbose('No Tokens Found In Tokens Key Vault')
-            }
-        } else {
-            Write-Verbose('No Tokens Key Vault Detected')
-        }
+        $CustomParameterFileTokens = Get-ParameterFileTokensFromKeyVault -subscriptionId '${{ inputs.subscriptionId }}' -verbose
+
+        # Combine All Parameter File Tokens
         $AllParameterFileTokens = $DefaultParameterFileTokens + $CustomParameterFileTokens | ForEach-Object { [PSCustomObject]$PSItem }
+
         # Convert Tokens in Parameter Files
         Write-Verbose 'Invoking Convert-TokensInFileList'
         Convert-TokensInFileList -Paths '${{ inputs.parameterFilePath }}' -TokensReplaceWith $AllParameterFileTokens
