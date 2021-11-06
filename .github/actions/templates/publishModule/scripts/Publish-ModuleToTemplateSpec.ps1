@@ -29,7 +29,7 @@ Optional. A custom version that can be provided by the UI. '-' represents an emp
 Optional. A version option that can be specified in the UI. Defaults to 'patch'
 
 .EXAMPLE
-Publish-ModuleToTemplateSpec -templateFilePath 'C:/KeyVault/deploy.json' -componentTemplateSpecRGName 'artifacts-rg' -componentTemplateSpecRGLocation 'West Europe' -componentTemplateSpecDescription 'iacs key vault' -customVersion '3.0.0'
+Publish-ModuleToTemplateSpec -templateFilePath 'C:/KeyVault/deploy.json' -templateSpecsRgName 'artifacts-rg' -templateSpecsRgLocation 'West Europe' -templateSpecsDescription 'iacs key vault' -customVersion '3.0.0'
 
 Try to publish the KeyVault module with version 3.0.0 to a template spec called KeyVault based on a value provided in the UI
 #>
