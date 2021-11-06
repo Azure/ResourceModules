@@ -94,10 +94,10 @@ var virtualNetworkRules = [for index in range(0, (empty(networkAcls) ? 0 : lengt
   id: '${vNetId}/subnets/${networkAcls.virtualNetworkRules[index].subnet}'
 }]
 var networkAcls_var = {
-  bypass: empty(networkAcls) ? null : networkAcls.bypass
-  defaultAction: empty(networkAcls) ? null : networkAcls.defaultAction
-  virtualNetworkRules: empty(networkAcls) ? null : virtualNetworkRules
-  ipRules: empty(networkAcls) ? null : ((length(networkAcls.ipRules) == 0) ? null : networkAcls.ipRules)
+  bypass: !empty(networkAcls) ? networkAcls.bypass : null
+  defaultAction: !empty(networkAcls) ? networkAcls.defaultAction : null
+  virtualNetworkRules: !empty(networkAcls) ? virtualNetworkRules : null
+  ipRules: !empty(networkAcls) ? (length(networkAcls.ipRules) > 0 ? networkAcls.ipRules : null) : null
 }
 
 @description('Optional. The disaster recovery config for this namespace')
