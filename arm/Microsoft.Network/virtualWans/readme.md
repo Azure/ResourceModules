@@ -83,11 +83,11 @@ Tag names and tag values can be provided as needed. A tag can be left without a 
 
 ## Outputs
 
-| Output Name | Type |
-| :-- | :-- |
-| `virtualWanName` | string |
-| `virtualWanNameResourceGroup` | string |
-| `virtualWanNameResourceId` | string |
+| Output Name | Type | Description |
+| :-- | :-- | :-- |
+| `virtualWanName` | string | The name of the virtual WAN |
+| `virtualWanNameResourceGroup` | string | The resource group the virtual WAN was deployed into |
+| `virtualWanNameResourceId` | string | The resourceId of the virtual WAN |
 
 ## Template references
 

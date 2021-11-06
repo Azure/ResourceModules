@@ -37,7 +37,7 @@ resource applicationSecurityGroup_lock 'Microsoft.Authorization/locks@2016-09-01
   name: '${applicationSecurityGroup.name}-${lock}-lock'
   properties: {
     level: lock
-    notes: (lock == 'CanNotDelete') ? 'Cannot delete resource or child resources.' : 'Cannot modify the resource or child resources.'
+    notes: lock == 'CanNotDelete' ? 'Cannot delete resource or child resources.' : 'Cannot modify the resource or child resources.'
   }
   scope: applicationSecurityGroup
 }
@@ -50,6 +50,11 @@ module applicationSecurityGroup_rbac '.bicep/nested_rbac.bicep' = [for (roleAssi
   }
 }]
 
+@description('The resource group the application security group was deployed into')
 output applicationSecurityGroupsResourceGroup string = resourceGroup().name
+
+@description('The resourceId of the application security group')
 output applicationSecurityGroupsResourceId string = applicationSecurityGroup.id
+
+@description('The name of the application security group')
 output applicationSecurityGroupsName string = applicationSecurityGroup.name

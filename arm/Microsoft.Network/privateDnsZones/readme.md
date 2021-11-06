@@ -88,11 +88,11 @@ Tag names and tag values can be provided as needed. A tag can be left without a 
 
 ## Outputs
 
-| Output Name | Type |
-| :-- | :-- |
-| `privateDnsZoneName` | string |
-| `privateDnsZoneResourceGroup` | string |
-| `privateDnsZoneResourceId` | string |
+| Output Name | Type | Description |
+| :-- | :-- | :-- |
+| `privateDnsZoneName` | string | The name of the private DNS zone |
+| `privateDnsZoneResourceGroup` | string | The resource group the private DNS zone was deployed into |
+| `privateDnsZoneResourceId` | string | The resourceId of the private DNS zone |
 
 ## Template references
 
