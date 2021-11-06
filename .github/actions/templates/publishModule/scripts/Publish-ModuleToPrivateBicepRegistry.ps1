@@ -107,7 +107,7 @@ function Publish-ModuleToPrivateBicepRegistry {
                 }
                 'minor' {
                     Write-Verbose 'Apply version update on "minor" level'
-                    $newVersion = (New-Object -TypeName System.Version -ArgumentList $latestVersion.Major, ($latestVersion.Minor + 1), $latestVersion.Build).ToString()
+                    $newVersion = (New-Object -TypeName System.Version -ArgumentList $latestVersion.Major, ($latestVersion.Minor + 1), 0).ToString()
                     break
                 }
                 'patch' {
