@@ -13,7 +13,7 @@
     $retryLimit = 10
     $retryWaitInSeconds = 15
     while (-not ($resourcesToRemove = Get-AzResource -Tag @{ removeModule = $moduleName } -ResourceGroupName $resourceGroupName -ErrorAction 'SilentlyContinue') -and $retryCount -le $retryLimit) {
-        Write-Error ('Did not to find resources by tags [removeModule={0}] in resource group [{1}]. Retrying in [{2} seconds] [{3}/{4}]' -f $moduleName, $resourceGroupName, $retryWaitInSeconds, $retryCount, $retryLimit)
+        Write-Verbose ('Did not to find resources by tags [removeModule={0}] in resource group [{1}]. Retrying in [{2} seconds] [{3}/{4}]' -f $moduleName, $resourceGroupName, $retryWaitInSeconds, $retryCount, $retryLimit)
         Start-Sleep $retryWaitInSeconds
         $retryCount++
     }
