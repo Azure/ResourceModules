@@ -93,7 +93,7 @@ jobs:
       namespace: 'Microsoft.KeyVault\vaults'
     needs:
       - job_deploy_rg
-    if: env.PLATFORM_KEYVAULTx
+    if: contains(env.PLATFORM_KEYVAULT, 'SomeString')
     strategy:
       fail-fast: false
       matrix:
@@ -120,7 +120,6 @@ jobs:
     name: 'Set Parameter Files Tokens in Key Vault'
     needs:
       - job_deploy_kv_platform
-    if: job_deploy_kv_tokens_secrets.status == 'success'
     steps:
       - name: 'Checkout'
         uses: actions/checkout@v2
