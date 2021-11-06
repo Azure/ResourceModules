@@ -132,11 +132,11 @@ Product API's name list.
 
 ## Outputs
 
-| Output Name | Type |
-| :-- | :-- |
-| `backendResourceGroup` | string |
-| `backendResourceId` | string |
-| `backendResourceName` | string |
+| Output Name | Type | Description |
+| :-- | :-- | :-- |
+| `backendName` | string | The name of the API management service backend |
+| `backendResourceGroup` | string | The resource group the API management service backend was deployed into |
+| `backendResourceId` | string | The resourceId of the API management service backend |
 
 ## Template references
 
