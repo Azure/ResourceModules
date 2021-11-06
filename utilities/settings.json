@@ -5,18 +5,6 @@
             {
                 "name": "namePrefix",
                 "value": "carml"
-            },
-            {
-                "name": "tokenA",
-                "value": "test"
-            },
-            {
-                "name": "tokenB",
-                "value": "cray"
-            },
-            {
-                "name": "tokenC",
-                "value": "leen"
             }
         ]
     }
