@@ -51,9 +51,10 @@ function Remove-DeployedModule {
             $retryCount = 1
             $retryLimit = 10
             $retryWaitInSeconds = 15
-            while (-not ($resourceGroupToRemove = Get-AzResourceGroup -Tag @{ removeModule = $moduleName } -ErrorAction 'SilentlyContinue') -and $retryLimit -ge $retryCount) {
+            while (-not ($resourceGroupToRemove = Get-AzResourceGroup -Tag @{ removeModule = $moduleName } -ErrorAction 'SilentlyContinue') -and $retryCount -le $retryLimit) {
                 Write-Error ('Did not to find Resource Group by tag [removeModule={0}]. Retrying in [{1} seconds] [{2}/{3}]' -f $moduleName, $retryWaitInSeconds, $retryCount, $retryLimit)
                 Start-Sleep $retryWaitInSeconds
+                $retryCount++
             }
 
             if ($resourceGroupToRemove) {
@@ -82,9 +83,10 @@ function Remove-DeployedModule {
             $retryCount = 1
             $retryLimit = 10
             $retryWaitInSeconds = 15
-            while (-not ($resourcesToRemove = Get-AzResource -Tag @{ removeModule = $moduleName } -ResourceGroupName $resourceGroupName -ErrorAction 'SilentlyContinue') -and $retryLimit -ge $retryCount) {
+            while (-not ($resourcesToRemove = Get-AzResource -Tag @{ removeModule = $moduleName } -ResourceGroupName $resourceGroupName -ErrorAction 'SilentlyContinue') -and $retryCount -le $retryLimit) {
                 Write-Error ('Did not to find resources by tags [removeModule={0}] in resource group [{1}]. Retrying in [{2} seconds] [{3}/{4}]' -f $moduleName, $resourceGroupName, $retryWaitInSeconds, $retryCount, $retryLimit)
                 Start-Sleep $retryWaitInSeconds
+                $retryCount++
             }
 
             if ($resourcesToRemove) {
