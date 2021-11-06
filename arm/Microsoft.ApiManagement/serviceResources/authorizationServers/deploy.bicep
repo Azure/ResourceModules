@@ -4,7 +4,7 @@ param apiManagementServiceAuthorizationServerName string
 @description('Required. The name of the of the Api Management service.')
 param apiManagementServiceName string
 
-@description('Required. OAuth authorization endpoint. See http://tools.ietf.org/html/rfc6749#section-3.2.')
+@description('Required. OAuth authorization endpoint. See <http://tools.ietf.org/html/rfc6749#section-3.2>.')
 param authorizationEndpoint string = ''
 
 @description('Optional. HTTP verbs supported by the authorization endpoint. GET must be always present. POST is optional. - HEAD, OPTIONS, TRACE, GET, POST, PUT, PATCH, DELETE')
