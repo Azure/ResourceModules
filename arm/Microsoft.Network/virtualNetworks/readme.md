@@ -10,6 +10,7 @@ This template deploys a Virtual Network (vNet) with 2 optional Subnets.
 | `Microsoft.Authorization/roleAssignments` | 2020-04-01-preview |
 | `Microsoft.Insights/diagnosticSettings` | 2017-05-01-preview |
 | `Microsoft.Network/virtualNetworks` | 2021-05-01 |
+| `Microsoft.Network/virtualNetworks/virtualNetworkPeerings` | 2021-02-01 |
 
 ## Parameters
 
@@ -30,8 +31,8 @@ This template deploys a Virtual Network (vNet) with 2 optional Subnets.
 | `roleAssignments` | array | `[]` |  | Optional. Array of role assignment objects that contain the 'roleDefinitionIdOrName' and 'principalId' to define RBAC role assignments on this resource. In the roleDefinitionIdOrName attribute, you can provide either the display name of the role definition, or its fully qualified ID in the following format: '/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11' |
 | `subnets` | array |  |  | Required. An Array of subnets to deploy to the Virual Network. |
 | `tags` | object | `{object}` |  | Optional. Tags of the resource. |
+| `virtualNetworkPeerings` | _[virtualNetworkPeerings](virtualNetworkPeerings/readme.md)_ array | `[]` |  | Optional. Virtual Network Peerings configurations |
 | `vNetAddressPrefixes` | array |  |  | Required. An Array of 1 or more IP Address Prefixes for the Virtual Network. |
-| `virtualNetworkPeerings` | _[virtualNetworkPeerings](virtualNetworkPeerings/readme.md)_ array | `[]` |  | Optional. MongoDB Databases configurations |
 | `workspaceId` | string |  |  | Optional. Resource identifier of Log Analytics. |
 
 ### Parameter Usage: `vNetAddressPrefixes`
@@ -165,3 +166,4 @@ The network security group and route table resources must reside in the same res
 - [Roleassignments](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2020-04-01-preview/roleAssignments)
 - [Diagnosticsettings](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Insights/2017-05-01-preview/diagnosticSettings)
 - [Virtualnetworks](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Network/2021-05-01/virtualNetworks)
+- [Virtualnetworks/Virtualnetworkpeerings](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Network/2021-02-01/virtualNetworks/virtualNetworkPeerings)
