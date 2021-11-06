@@ -73,11 +73,11 @@ Tag names and tag values can be provided as needed. A tag can be left without a 
 
 ## Outputs
 
-| Output Name | Type |
-| :-- | :-- |
-| `imageName` | string |
-| `imageResourceGroup` | string |
-| `imageResourceId` | string |
+| Output Name | Type | Description |
+| :-- | :-- | :-- |
+| `imageName` | string | The name of the image |
+| `imageResourceGroup` | string | The resource group the image was deployed into |
+| `imageResourceId` | string | The resourceId of the image |
 
 ## Template references
 

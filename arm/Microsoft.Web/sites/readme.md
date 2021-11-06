@@ -103,11 +103,11 @@ Tag names and tag values can be provided as needed. A tag can be left without a 
 
 ## Outputs
 
-| Output Name | Type |
-| :-- | :-- |
-| `siteName` | string |
-| `siteResourceGroup` | string |
-| `siteResourceId` | string |
+| Output Name | Type | Description |
+| :-- | :-- | :-- |
+| `siteName` | string | The name of the site |
+| `siteResourceGroup` | string | The resource group the site was deployed into |
+| `siteResourceId` | string | The resourceId of the site |
 
 ## Template references
 

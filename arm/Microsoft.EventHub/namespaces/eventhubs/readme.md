@@ -1,6 +1,6 @@
-# EventHubs `[Microsoft.EventHub/namespaces/eventhubs]`
+# EventHub  `[Microsoft.EventHub/namespaces/eventhubs]`
 
-This module deploys EventHub.
+This module deploys an Event Hub.
 
 ## Resource types
 
@@ -16,99 +16,25 @@ This module deploys EventHub.
 
 | Parameter Name | Type | Default Value | Possible Values | Description |
 | :-- | :-- | :-- | :-- | :-- |
-| `authorizationRules` | array | `[System.Collections.Hashtable]` |  | Optional. Authorization Rules for the Event Hub |
+| `authorizationRules` | _[authorizationRules](authorizationRules/readme.md)_ array | `[System.Collections.Hashtable]` |  | Optional. Authorization Rules for the Event Hub |
+| `captureDescriptionDestinationArchiveNameFormat` | string | `{Namespace}/{EventHub}/{PartitionId}/{Year}/{Month}/{Day}/{Hour}/{Minute}/{Second}` |  | Optional. Blob naming convention for archive, e.g. {Namespace}/{EventHub}/{PartitionId}/{Year}/{Month}/{Day}/{Hour}/{Minute}/{Second}. Here all the parameters (Namespace,EventHub .. etc) are mandatory irrespective of order |
+| `captureDescriptionDestinationBlobContainer` | string |  |  | Optional. Blob container Name |
+| `captureDescriptionDestinationName` | string | `EventHubArchive.AzureBlockBlob` |  | Optional. Name for capture destination |
+| `captureDescriptionDestinationStorageAccountResourceId` | string |  |  | Optional. Resource id of the storage account to be used to create the blobs |
+| `captureDescriptionEnabled` | bool |  |  | Optional. A value that indicates whether capture description is enabled. |
+| `captureDescriptionEncoding` | string | `Avro` | `[Avro, AvroDeflate]` | Optional. Enumerates the possible values for the encoding format of capture description. Note: "AvroDeflate" will be deprecated in New API Version |
+| `captureDescriptionIntervalInSeconds` | int | `300` |  | Optional. The time window allows you to set the frequency with which the capture to Azure Blobs will happen |
+| `captureDescriptionSizeLimitInBytes` | int | `314572800` |  | Optional. The size window defines the amount of data built up in your Event Hub before an capture operation |
+| `captureDescriptionSkipEmptyArchives` | bool |  |  | Optional. A value that indicates whether to Skip Empty Archives |
+| `consumerGroups` | _[consumerGroups](consumerGroups/readme.md)_ array | `[System.Collections.Hashtable]` |  | Optional. The consumer groups to create in this event hub instance |
 | `cuaId` | string |  |  | Optional. Customer Usage Attribution id (GUID). This GUID must be previously registered |
-| `eventHubConfiguration` | object | `{object}` |  | Optional. Object to configure all properties of an Event Hub instance |
-| `eventHubName` | string |  |  | Required. The name of the EventHub |
 | `lock` | string | `NotSpecified` | `[CanNotDelete, NotSpecified, ReadOnly]` | Optional. Specify the type of lock. |
+| `messageRetentionInDays` | int | `1` |  | Optional. Number of days to retain the events for this Event Hub, value should be 1 to 7 days |
+| `name` | string |  |  | Required. The name of the EventHub |
 | `namespaceName` | string |  |  | Required. The name of the EventHub namespace |
+| `partitionCount` | int | `2` |  | Optional. Number of partitions created for the Event Hub, allowed values are from 1 to 32 partitions. |
 | `roleAssignments` | array | `[]` |  | Optional. Array of role assignment objects that contain the 'roleDefinitionIdOrName' and 'principalId' to define RBAC role assignments on this resource. In the roleDefinitionIdOrName attribute, you can provide either the display name of the role definition, or its fully qualified ID in the following format: '/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11' |
-| `tags` | object | `{object}` |  | Optional. Tags of the resource. |
-
-### Parameter Usage: `eventHubConfiguration`
-
-Default value:
-
-```json
-"eventHubConfiguration": {
-    "value": {
-        "properties": {
-            "messageRetentionInDays": 1,
-            "partitionCount": 2,
-            "status": "Active",
-            "captureDescription": {
-                "enabled": false,
-                "encoding": "Avro",
-                "intervalInSeconds": 300,
-                "sizeLimitInBytes": 314572800,
-                "destination": {
-                    "name": "EventHubArchive.AzureBlockBlob",
-                    "properties": {
-                        "storageAccountResourceId": "",
-                        "blobContainer": "eventhub",
-                        "archiveNameFormat": "{Namespace}/{EventHub}/{PartitionId}/{Year}/{Month}/{Day}/{Hour}/{Minute}/{Second}"
-                    }
-                },
-                "skipEmptyArchives": true
-            }
-        },
-        "consumerGroups": [
-            {
-                "name": "$Default"
-            }
-        ]
-    }
-}
-```
-
-### Parameter Usage: `authorizationRules`
-
-Default value:
-
-```json
-"authorizationRules": {
-    "value": [
-        {
-            "name": "RootManageSharedAccessKey",
-            "properties": {
-                "rights": [
-                    "Listen",
-                    "Manage",
-                    "Send"
-                ]
-            }
-        }
-    ]
-}
-```
-
-Example for 2 authorization rules:
-
-```json
-"authorizationRules": {
-    "value": [
-        {
-            "name": "RootManageSharedAccessKey",
-            "properties": {
-                "rights": [
-                    "Listen",
-                    "Manage",
-                    "Send"
-                ]
-            }
-        },
-        {
-            "name": "AnotherKey",
-            "properties": {
-                "rights": [
-                    "Listen",
-                    "Send"
-                ]
-            }
-        }
-    ]
-}
-```
+| `status` | string | `Active` | `[Active, Creating, Deleting, Disabled, ReceiveDisabled, Renaming, Restoring, SendDisabled, Unknown]` | Optional. Enumerates the possible values for the status of the Event Hub. |
 
 ### Parameter Usage: `roleAssignments`
 
@@ -136,23 +62,6 @@ Example for 2 authorization rules:
             ]
         }
     ]
-}
-```
-
-### Parameter Usage: `tags`
-
-Tag names and tag values can be provided as needed. A tag can be left without a value.
-
-```json
-"tags": {
-    "value": {
-        "Environment": "Non-Prod",
-        "Contact": "test.user@testcompany.com",
-        "PurchaseOrder": "1234",
-        "CostCenter": "7890",
-        "ServiceName": "DeploymentValidation",
-        "Role": "DeploymentValidation"
-    }
 }
 ```
 

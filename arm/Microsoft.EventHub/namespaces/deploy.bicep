@@ -1,6 +1,6 @@
 @description('Optional. The name of the EventHub namespace. If no name is provided, then unique name will be created.')
 @maxLength(50)
-param namespaceName string = ''
+param name string = ''
 
 @description('Optional. Location for all resources.')
 param location string = resourceGroup().location
@@ -28,23 +28,15 @@ param isAutoInflateEnabled bool = false
 @maxValue(20)
 param maximumThroughputUnits int = 1
 
-@description('Optional. ARM Id of the Primary/Secondary eventhub namespace name, which is part of GEO DR pairing')
-param partnerNamespaceId string = ''
-
-@description('Optional. The Disaster Recovery configuration name')
-param namespaceAlias string = ''
-
 @description('Optional. Authorization Rules for the Event Hub namespace')
 param authorizationRules array = [
   {
     name: 'RootManageSharedAccessKey'
-    properties: {
-      rights: [
-        'Listen'
-        'Manage'
-        'Send'
-      ]
-    }
+    rights: [
+      'Listen'
+      'Manage'
+      'Send'
+    ]
   }
 ]
 
@@ -88,24 +80,11 @@ param cuaId string = ''
 @description('Generated. Do not provide a value! This date value is used to generate a SAS token to access the modules.')
 param baseTime string = utcNow('u')
 
-var maxNameLength = 50
-var uniqueEventHubNamespaceUntrim = '${uniqueString('EventHub Namespace${baseTime}')}'
-var uniqueEventHubNamespace = ((length(uniqueEventHubNamespaceUntrim) > maxNameLength) ? substring(uniqueEventHubNamespaceUntrim, 0, maxNameLength) : uniqueEventHubNamespaceUntrim)
-var constructedNamespaceName = (empty(namespaceName) ? uniqueEventHubNamespace : namespaceName)
-var defaultAuthorizationRuleId = resourceId('Microsoft.EventHub/namespaces/AuthorizationRules', constructedNamespaceName, 'RootManageSharedAccessKey')
-var defaultSASKeyName = 'RootManageSharedAccessKey'
-var authRuleResourceId = resourceId('Microsoft.EventHub/namespaces/authorizationRules', constructedNamespaceName, defaultSASKeyName)
-var maximumThroughputUnits_var = ((!isAutoInflateEnabled) ? 0 : maximumThroughputUnits)
-var virtualNetworkRules = [for index in range(0, (empty(networkAcls) ? 0 : length(networkAcls.virtualNetworkRules))): {
-  id: '${vNetId}/subnets/${networkAcls.virtualNetworkRules[index].subnet}'
-}]
-var networkAcls_var = {
-  bypass: (empty(networkAcls) ? json('null') : networkAcls.bypass)
-  defaultAction: (empty(networkAcls) ? json('null') : networkAcls.defaultAction)
-  virtualNetworkRules: (empty(networkAcls) ? json('null') : virtualNetworkRules)
-  ipRules: (empty(networkAcls) ? json('null') : ((length(networkAcls.ipRules) == 0) ? json('null') : networkAcls.ipRules))
-}
-var namespaceAlias_var = (empty(namespaceAlias) ? 'placeholder' : namespaceAlias)
+@description('Optional. The event hubs to deploy into this namespace')
+param eventHubs array = []
+
+@description('Optional. The disaster recovery config for this namespace')
+param disasterRecoveryConfig object = {}
 
 @description('Optional. The name of logs that will be streamed.')
 @allowed([
@@ -135,6 +114,23 @@ param metricsToEnable array = [
   'AllMetrics'
 ]
 
+var maxNameLength = 50
+var uniqueEventHubNamespaceUntrim = uniqueString('EventHub Namespace${baseTime}')
+var uniqueEventHubNamespace = length(uniqueEventHubNamespaceUntrim) > maxNameLength ? substring(uniqueEventHubNamespaceUntrim, 0, maxNameLength) : uniqueEventHubNamespaceUntrim
+var name_var = empty(name) ? uniqueEventHubNamespace : name
+var defaultSASKeyName = 'RootManageSharedAccessKey'
+var authRuleResourceId = resourceId('Microsoft.EventHub/namespaces/authorizationRules', name_var, defaultSASKeyName)
+var maximumThroughputUnits_var = !isAutoInflateEnabled ? 0 : maximumThroughputUnits
+var virtualNetworkRules = [for index in range(0, (empty(networkAcls) ? 0 : length(networkAcls.virtualNetworkRules))): {
+  id: '${vNetId}/subnets/${networkAcls.virtualNetworkRules[index].subnet}'
+}]
+var networkAcls_var = {
+  bypass: !empty(networkAcls) ? networkAcls.bypass : null
+  defaultAction: !empty(networkAcls) ? networkAcls.defaultAction : null
+  virtualNetworkRules: !empty(networkAcls) ? virtualNetworkRules : null
+  ipRules: !empty(networkAcls) ? (length(networkAcls.ipRules) > 0 ? networkAcls.ipRules : null) : null
+}
+
 var diagnosticsLogs = [for log in logsToEnable: {
   category: log
   enabled: true
@@ -160,7 +156,7 @@ module pid_cuaId '.bicep/nested_cuaId.bicep' = if (!empty(cuaId)) {
 }
 
 resource eventHubNamespace 'Microsoft.EventHub/namespaces@2017-04-01' = {
-  name: constructedNamespaceName
+  name: name_var
   location: location
   tags: tags
   sku: {
@@ -172,7 +168,7 @@ resource eventHubNamespace 'Microsoft.EventHub/namespaces@2017-04-01' = {
     zoneRedundant: zoneRedundant
     isAutoInflateEnabled: isAutoInflateEnabled
     maximumThroughputUnits: maximumThroughputUnits_var
-    networkAcls: (empty(networkAcls) ? json('null') : networkAcls_var)
+    networkAcls: !empty(networkAcls) ? networkAcls_var : null
   }
 }
 
@@ -188,31 +184,69 @@ resource eventHubNamespace_lock 'Microsoft.Authorization/locks@2016-09-01' = if 
 resource eventHubNamespace_diagnosticSettings 'Microsoft.Insights/diagnosticsettings@2017-05-01-preview' = if ((!empty(diagnosticStorageAccountId)) || (!empty(workspaceId))) {
   name: '${eventHubNamespace.name}-diagnosticSettings'
   properties: {
-    storageAccountId: (empty(diagnosticStorageAccountId) ? json('null') : diagnosticStorageAccountId)
-    workspaceId: (empty(workspaceId) ? json('null') : workspaceId)
-    metrics: ((empty(diagnosticStorageAccountId) && empty(workspaceId)) ? json('null') : diagnosticsMetrics)
-    logs: ((empty(diagnosticStorageAccountId) && empty(workspaceId)) ? json('null') : diagnosticsLogs)
+    storageAccountId: !empty(diagnosticStorageAccountId) ? diagnosticStorageAccountId : null
+    workspaceId: !empty(workspaceId) ? workspaceId : null
+    metrics: !empty(diagnosticStorageAccountId) || !empty(workspaceId) ? diagnosticsMetrics : null
+    logs: !empty(diagnosticStorageAccountId) || !empty(workspaceId) ? diagnosticsLogs : null
   }
   scope: eventHubNamespace
 }
 
-resource eventHubNamespace_diasterRecoveryConfig 'Microsoft.EventHub/namespaces/disasterRecoveryConfigs@2017-04-01' = if (((!empty(partnerNamespaceId)) && (!empty(namespaceAlias))) ? true : false) {
-  parent: eventHubNamespace
-  name: namespaceAlias_var
-  properties: {
-    partnerNamespace: partnerNamespaceId
+module eventHubNamespace_eventHubs 'eventhubs/deploy.bicep' = [for (eventHub, index) in eventHubs: {
+  name: '${uniqueString(deployment().name, location)}-eventHub-${index}'
+  params: {
+    namespaceName: eventHubNamespace.name
+    name: eventHub.name
+    authorizationRules: contains(eventHub, 'authorizationRules') ? eventHub.authorizationRules : [
+      {
+        name: 'RootManageSharedAccessKey'
+        properties: {
+          rights: [
+            'Listen'
+            'Manage'
+            'Send'
+          ]
+        }
+      }
+    ]
+    captureDescriptionDestinationArchiveNameFormat: contains(eventHub, 'captureDescriptionDestinationArchiveNameFormat') ? eventHub.captureDescriptionDestinationArchiveNameFormat : '{Namespace}/{EventHub}/{PartitionId}/{Year}/{Month}/{Day}/{Hour}/{Minute}/{Second}'
+    captureDescriptionDestinationBlobContainer: contains(eventHub, 'captureDescriptionDestinationBlobContainer') ? eventHub.captureDescriptionDestinationBlobContainer : ''
+    captureDescriptionDestinationName: contains(eventHub, 'captureDescriptionDestinationName') ? eventHub.captureDescriptionDestinationName : 'EventHubArchive.AzureBlockBlob'
+    captureDescriptionDestinationStorageAccountResourceId: contains(eventHub, 'captureDescriptionDestinationStorageAccountResourceId') ? eventHub.captureDescriptionDestinationStorageAccountResourceId : ''
+    captureDescriptionEnabled: contains(eventHub, 'captureDescriptionEnabled') ? eventHub.captureDescriptionEnabled : false
+    captureDescriptionEncoding: contains(eventHub, 'captureDescriptionEncoding') ? eventHub.captureDescriptionEncoding : 'Avro'
+    captureDescriptionIntervalInSeconds: contains(eventHub, 'captureDescriptionIntervalInSeconds') ? eventHub.captureDescriptionIntervalInSeconds : 300
+    captureDescriptionSizeLimitInBytes: contains(eventHub, 'captureDescriptionSizeLimitInBytes') ? eventHub.captureDescriptionSizeLimitInBytes : 314572800
+    captureDescriptionSkipEmptyArchives: contains(eventHub, 'captureDescriptionSkipEmptyArchives') ? eventHub.captureDescriptionSkipEmptyArchives : false
+    consumerGroups: contains(eventHub, 'consumerGroups') ? eventHub.consumerGroups : []
+    lock: contains(eventHub, 'lock') ? eventHub.lock : 'NotSpecified'
+    messageRetentionInDays: contains(eventHub, 'messageRetentionInDays') ? eventHub.messageRetentionInDays : 1
+    partitionCount: contains(eventHub, 'partitionCount') ? eventHub.partitionCount : 2
+    roleAssignments: contains(eventHub, 'roleAssignments') ? eventHub.roleAssignments : []
+    status: contains(eventHub, 'status') ? eventHub.status : 'Active'
+  }
+}]
+
+module eventHubNamespace_diasterRecoveryConfig 'disasterRecoveryConfigs/deploy.bicep' = if (!empty(disasterRecoveryConfig)) {
+  name: '${uniqueString(deployment().name, location)}-disasterRecoveryConfig'
+  params: {
+    namespaceName: eventHubNamespace.name
+    name: disasterRecoveryConfig.name
+    partnerNamespaceId: contains(disasterRecoveryConfig, 'partnerNamespaceId') ? disasterRecoveryConfig.partnerNamespaceId : ''
   }
 }
 
-resource eventHubNamespace_authorizationRules 'Microsoft.EventHub/namespaces/AuthorizationRules@2017-04-01' = [for authorizationRule in authorizationRules: if (length(authorizationRules) > 0) {
-  name: '${eventHubNamespace.name}/${authorizationRule.name}'
-  properties: {
-    rights: authorizationRule.properties.rights
+module eventHubNamespace_authorizationRules 'authorizationRules/deploy.bicep' = [for (authorizationRule, index) in authorizationRules: {
+  name: '${uniqueString(deployment().name, location)}-authorizationRules-${index}'
+  params: {
+    namespaceName: eventHubNamespace.name
+    name: authorizationRule.name
+    rights: contains(authorizationRule, 'rights') ? authorizationRule.rights : []
   }
 }]
 
 module eventHubNamespace_privateEndpoints '.bicep/nested_privateEndpoint.bicep' = [for (endpoint, index) in privateEndpoints: {
-  name: '${uniqueString(deployment().name, location)}-EventHubNamepace-PrivateEndpoints-${index}'
+  name: '${uniqueString(deployment().name, location)}-PrivateEndpoints-${index}'
   params: {
     privateEndpointResourceId: eventHubNamespace.id
     privateEndpointVnetLocation: (empty(privateEndpoints) ? 'dummy' : reference(split(endpoint.subnetResourceId, '/subnets/')[0], '2020-06-01', 'Full').location)
