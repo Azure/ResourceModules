@@ -99,7 +99,8 @@ function Set-EnvironmentOnAgent {
             @{ Name = 'Az.Accounts' },
             @{ Name = 'Az.Resources' },
             @{ Name = 'Az.NetAppFiles' },
-            @{ Name = 'Az.Network' }
+            @{ Name = 'Az.Network' },
+            @{ Name = 'Az.ContainerRegistry' }
         )
     )
 

@@ -101,11 +101,11 @@ Tag names and tag values can be provided as needed. A tag can be left without a 
 
 ## Outputs
 
-| Output Name | Type |
-| :-- | :-- |
-| `connectionName` | string |
-| `connectionResourceGroup` | string |
-| `connectionResourceId` | string |
+| Output Name | Type | Description |
+| :-- | :-- | :-- |
+| `connectionName` | string | The name of the connection |
+| `connectionResourceGroup` | string | The resource group the connection was deployed into |
+| `connectionResourceId` | string | The resourceId of the connection |
 
 ## Template references
 

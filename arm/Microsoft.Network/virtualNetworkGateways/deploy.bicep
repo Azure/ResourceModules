@@ -10,10 +10,8 @@ param gatewayPipName array = []
 @description('Optional. Resource Id of the Public IP Prefix object. This is only needed if you want your Public IPs created in a PIP Prefix.')
 param publicIPPrefixId string = ''
 
-@description('Optional. Specifies the zones of the Public IP address.')
-param publicIpZones array = [
-  '1'
-]
+@description('Optional. Specifies the zones of the Public IP address. Basic IP SKU does not support Availability Zones.')
+param publicIpZones array = []
 
 @description('Optional. DNS name(s) of the Public IP resource(s). If you enabled active-active configuration, you need to provide 2 DNS names, if you want to use this feature. A region specific suffix will be appended to it, e.g.: your-DNS-name.westeurope.cloudapp.azure.com')
 param domainNameLabel array = []
@@ -290,7 +288,7 @@ resource virtualGatewayPublicIP 'Microsoft.Network/publicIPAddresses@2021-02-01'
     publicIPPrefix: !empty(publicIPPrefixId) ? publicIPPrefix : null
     dnsSettings: length(virtualGatewayPipName_var) == length(domainNameLabel) ? json('{"domainNameLabel": "${domainNameLabel[index]}"}') : null
   }
-  zones: publicIpZones
+  zones: contains(zoneRedundantSkus, virtualNetworkGatewaySku) ? publicIpZones : null
 }]
 
 @batchSize(1)

@@ -14,6 +14,7 @@ on:
 env:
   defaultLocation: 'WestEurope'
   resourceGroupName: 'validation-rg'
+  resourceGroupNameArtifacts: 'artifacts-rg'
   removeDeployment: 'false'
   AZURE_CREDENTIALS: ${{ secrets.AZURE_CREDENTIALS }}
   ARM_SUBSCRIPTION_ID: ${{ secrets.ARM_SUBSCRIPTION_ID }}
@@ -73,6 +74,35 @@ jobs:
           parameterFilePath: 'utilities/dependencies/${{ env.namespace }}/parameters/${{ matrix.parameterFilePaths }}'
           location: '${{ env.defaultLocation }}'
           resourceGroupName: '${{ env.resourceGroupName }}'
+          subscriptionId: '${{ secrets.ARM_SUBSCRIPTION_ID }}'
+          managementGroupId: '${{ secrets.ARM_MGMTGROUP_ID }}'
+          removeDeployment: '${{ env.removeDeployment }}'
+
+  job_deploy_privateBicepRegistry:
+    runs-on: ubuntu-20.04
+    name: 'Deploy private bicep registry'
+    env:
+      moduleName: registries
+      namespace: 'Microsoft.ContainerRegistry\registries'
+    needs:
+      - job_deploy_rg
+    strategy:
+      fail-fast: false
+      matrix:
+        parameterFilePaths: ['parameters.json']
+    steps:
+      - name: 'Checkout'
+        uses: actions/checkout@v2
+        with:
+          fetch-depth: 0
+      - name: 'Deploy module'
+        uses: ./.github/actions/templates/deployModule
+        with:
+          moduleName: '${{ env.moduleName }}'
+          templateFilePath: 'arm/${{ env.namespace }}/deploy.bicep'
+          parameterFilePath: 'utilities/dependencies/${{ env.namespace }}/parameters/${{ matrix.parameterFilePaths }}'
+          location: '${{ env.defaultLocation }}'
+          resourceGroupName: '${{ env.resourceGroupNameArtifacts }}'
           subscriptionId: '${{ secrets.ARM_SUBSCRIPTION_ID }}'
           managementGroupId: '${{ secrets.ARM_MGMTGROUP_ID }}'
           removeDeployment: '${{ env.removeDeployment }}'

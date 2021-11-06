@@ -66,11 +66,11 @@ Tag names and tag values can be provided as needed. A tag can be left without a 
 
 ## Outputs
 
-| Output Name | Type |
-| :-- | :-- |
-| `availabilitySetResourceGroup` | string |
-| `availabilitySetResourceId` | string |
-| `availabilitySetResourceName` | string |
+| Output Name | Type | Description |
+| :-- | :-- | :-- |
+| `availabilitySetResourceGroup` | string | The name of the availability set |
+| `availabilitySetResourceId` | string | The resourceId of the availability set |
+| `availabilitySetResourceName` | string | The resource group the availability set was deployed into |
 
 ## Template references
 
