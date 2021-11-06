@@ -65,8 +65,8 @@ resource networkInterface 'Microsoft.Network/networkInterfaces@2021-02-01' = {
   properties: {
     enableIPForwarding: enableIPForwarding
     enableAcceleratedNetworking: enableAcceleratedNetworking
-    dnsSettings: (!empty(dnsServers) ? dnsServersValues : null)
-    networkSecurityGroup: (!empty(networkSecurityGroupId) ? networkSecurityGroup : null)
+    dnsSettings: !empty(dnsServers) ? dnsServersValues : null
+    networkSecurityGroup: !empty(networkSecurityGroupId) ? networkSecurityGroup : null
     ipConfigurations: [for (ipConfiguration, index) in ipConfigurationArray: {
       name: (!empty(ipConfiguration.name) ? ipConfiguration.name : null)
       properties: {
