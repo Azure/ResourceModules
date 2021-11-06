@@ -140,11 +140,11 @@ workerPools can have two properties workerSize and workerCount:
 
 ## Outputs
 
-| Output Name | Type |
-| :-- | :-- |
-| `appServiceEnvironmentName` | string |
-| `appServiceEnvironmentResourceGroup` | string |
-| `appServiceEnvironmentResourceId` | string |
+| Output Name | Type | Description |
+| :-- | :-- | :-- |
+| `appServiceEnvironmentName` | string | The name of the app service environment |
+| `appServiceEnvironmentResourceGroup` | string | The resource group the app service environment was deployed into |
+| `appServiceEnvironmentResourceId` | string | The resourceID of the app service environment |
 
 ## Template references
 
