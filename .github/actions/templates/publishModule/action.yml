@@ -65,14 +65,8 @@ runs:
           # Load used functions
           . "$env:GITHUB_ACTION_PATH/scripts/Publish-ModuleToTemplateSpec.ps1"
 
-          $templateFilePath = Join-Path $env:GITHUB_WORKSPACE "${{ inputs.templateFilePath }}"
-
-          # Extracts Microsoft.KeyVault/vaults from e.g. C:\arm\Microsoft.KeyVault\vaults\deploy.bicep
-          $moduleIdentifier = (Split-Path $templateFilePath -Parent).Replace('\','/').Split('/arm/')[1]
-
           $functionInput = @{
-            moduleIdentifier         = $moduleIdentifier
-            templateFilePath         = $templateFilePath
+            templateFilePath         = Join-Path $env:GITHUB_WORKSPACE "${{ inputs.templateFilePath }}"
             templateSpecsRgName      = '${{ inputs.templateSpecsRgName }}'
             templateSpecsRgLocation  = '${{ inputs.templateSpecsRgLocation }}'
             templateSpecsDescription = '${{ inputs.templateSpecsDescription }}'
@@ -99,14 +93,8 @@ runs:
           # Load used functions
           . "$env:GITHUB_ACTION_PATH/scripts/Publish-ModuleToPrivateBicepRegistry.ps1"
 
-          $templateFilePath = Join-Path $env:GITHUB_WORKSPACE "${{ inputs.templateFilePath }}"
-
-          # Extracts Microsoft.KeyVault/vaults from e.g. C:\arm\Microsoft.KeyVault\vaults\deploy.bicep
-          $moduleIdentifier = (Split-Path $templateFilePath -Parent).Replace('\','/').Split('/arm/')[1]
-
           $functionInput = @{
-            moduleIdentifier    = $moduleIdentifier
-            templateFilePath    = $templateFilePath
+            templateFilePath    = Join-Path $env:GITHUB_WORKSPACE "${{ inputs.templateFilePath }}"
             bicepRegistryName   = '${{ inputs.bicepRegistryName }}'
             bicepRegistryRgName = '${{ inputs.bicepRegistryRgName }}'
             customVersion       = '${{ inputs.customVersion }}'
