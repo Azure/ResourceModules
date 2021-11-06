@@ -93,7 +93,7 @@ jobs:
       namespace: 'Microsoft.KeyVault\vaults'
     needs:
       - job_deploy_rg
-    if: '${{ env.PLATFORM_KEYVAULTx }}'
+    if: ${{ env.PLATFORM_KEYVAULTx }} != ''
     strategy:
       fail-fast: false
       matrix:
