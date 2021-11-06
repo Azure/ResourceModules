@@ -49,7 +49,7 @@ resource publicIpPrefix_lock 'Microsoft.Authorization/locks@2016-09-01' = if (lo
   name: '${publicIpPrefix.name}-${lock}-lock'
   properties: {
     level: lock
-    notes: (lock == 'CanNotDelete') ? 'Cannot delete resource or child resources.' : 'Cannot modify the resource or child resources.'
+    notes: lock == 'CanNotDelete' ? 'Cannot delete resource or child resources.' : 'Cannot modify the resource or child resources.'
   }
   scope: publicIpPrefix
 }
@@ -62,6 +62,11 @@ module publicIpPrefix_rbac '.bicep/nested_rbac.bicep' = [for (roleAssignment, in
   }
 }]
 
+@description('The resourceId of the public IP prefix')
 output publicIpPrefixResourceId string = publicIpPrefix.id
+
+@description('The resource group the public IP prefix was deployed into')
 output publicIpPrefixResourceGroup string = resourceGroup().name
+
+@description('The name of the public IP prefix')
 output publicIpPrefixName string = publicIpPrefix.name

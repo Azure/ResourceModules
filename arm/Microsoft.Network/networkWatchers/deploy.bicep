@@ -47,15 +47,15 @@ resource networkWatcher 'Microsoft.Network/networkWatchers@2021-02-01' = {
   name: networkWatcherName
   properties: {}
 
-  resource connectionMonitors 'connectionMonitors@2021-02-01' = [for monitor in monitors: if (!empty(monitors)) {
-    name: (empty(monitors) ? 'dummy/dummy' : '${networkWatcher.name}/${monitor.connectionMonitorName}')
+  resource connectionMonitors 'connectionMonitors@2021-02-01' = [for monitor in monitors: {
+    name: monitor.connectionMonitorName
     location: location
     tags: tags
     properties: {
-      endpoints: (empty(monitors) ? json('null') : monitor.endpoints)
-      testConfigurations: (empty(monitors) ? json('null') : monitor.testConfigurations)
-      testGroups: (empty(monitors) ? json('null') : monitor.testGroups)
-      outputs: (empty(workspaceResourceId) ? json('null') : outputs)
+      endpoints: !empty(monitors) ? monitor.endpoints : null
+      testConfigurations: !empty(monitors) ? monitor.testConfigurations : null
+      testGroups: !empty(monitors) ? monitor.testGroups : null
+      outputs: !empty(workspaceResourceId) ? outputs : null
     }
   }]
 }
@@ -64,7 +64,7 @@ resource networkWatcher_lock 'Microsoft.Authorization/locks@2016-09-01' = if (lo
   name: '${networkWatcher.name}-${lock}-lock'
   properties: {
     level: lock
-    notes: (lock == 'CanNotDelete') ? 'Cannot delete resource or child resources.' : 'Cannot modify the resource or child resources.'
+    notes: lock == 'CanNotDelete' ? 'Cannot delete resource or child resources.' : 'Cannot modify the resource or child resources.'
   }
   scope: networkWatcher
 }
@@ -77,6 +77,11 @@ module networkWatcher_rbac '.bicep/nested_rbac.bicep' = [for (roleAssignment, in
   }
 }]
 
+@description('The resource group the network watcher was deployed into')
 output networkWatcherResourceGroup string = resourceGroup().name
+
+@description('The resourceId of the deployed network watcher')
 output networkWatcherResourceId string = networkWatcher.id
+
+@description('The name of the deployed network watcher')
 output networkWatcherName string = networkWatcher.name

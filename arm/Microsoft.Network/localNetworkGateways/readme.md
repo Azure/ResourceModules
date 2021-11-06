@@ -75,11 +75,11 @@ Tag names and tag values can be provided as needed. A tag can be left without a 
 
 ## Outputs
 
-| Output Name | Type |
-| :-- | :-- |
-| `localNetworkGatewayName` | string |
-| `localNetworkGatewayResourceGroup` | string |
-| `localNetworkGatewayResourceId` | string |
+| Output Name | Type | Description |
+| :-- | :-- | :-- |
+| `localNetworkGatewayName` | string | The name of the local network gateway |
+| `localNetworkGatewayResourceGroup` | string | The resource group the local network gateway was deployed into |
+| `localNetworkGatewayResourceId` | string | The resourceId of the local network gateway |
 
 ## Template references
 

@@ -27,7 +27,7 @@ This template deploys Virtual Network Gateway Connection.
 | `tags` | object | `{object}` |  | Optional. Tags of the resource. |
 | `usePolicyBasedTrafficSelectors` | bool |  |  | Optional. Enable policy-based traffic selectors |
 | `virtualNetworkGatewayConnectionType` | string | `Ipsec` | `[Ipsec, VNet2VNet, ExpressRoute, VPNClient]` | Optional. Gateway connection type. |
-| `vpnSharedKey` | string |  |  | Required. Specifies a VPN shared key. The same value has to be specified on both Virtual Network Gateways |
+| `vpnSharedKey` | string |  |  | Optional. Specifies a VPN shared key. The same value has to be specified on both Virtual Network Gateways |
 
 ### Parameter Usage: `customIPSecPolicy`
 
@@ -84,11 +84,11 @@ Tag names and tag values can be provided as needed. A tag can be left without a 
 
 ## Outputs
 
-| Output Name | Type |
-| :-- | :-- |
-| `connectionName` | string |
-| `remoteConnectionResourceGroup` | string |
-| `remoteConnectionResourceId` | string |
+| Output Name | Type | Description |
+| :-- | :-- | :-- |
+| `connectionName` | string | The name of the remote connection |
+| `remoteConnectionResourceGroup` | string | The resource group the remote connection was deployed into |
+| `remoteConnectionResourceId` | string | The resourceId of the remote connection |
 
 ## Template references
 

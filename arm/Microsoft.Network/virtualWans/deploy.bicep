@@ -80,7 +80,7 @@ resource virtualWan_lock 'Microsoft.Authorization/locks@2016-09-01' = if (lock !
   name: '${virtualWan.name}-${lock}-lock'
   properties: {
     level: lock
-    notes: (lock == 'CanNotDelete') ? 'Cannot delete resource or child resources.' : 'Cannot modify the resource or child resources.'
+    notes: lock == 'CanNotDelete' ? 'Cannot delete resource or child resources.' : 'Cannot modify the resource or child resources.'
   }
   scope: virtualWan
 }
@@ -100,7 +100,7 @@ resource virtualHub_lock 'Microsoft.Authorization/locks@2016-09-01' = if (lock !
   name: '${virtualHub.name}-${lock}-lock'
   properties: {
     level: lock
-    notes: (lock == 'CanNotDelete') ? 'Cannot delete resource or child resources.' : 'Cannot modify the resource or child resources.'
+    notes: lock == 'CanNotDelete' ? 'Cannot delete resource or child resources.' : 'Cannot modify the resource or child resources.'
   }
   scope: virtualHub
 }
@@ -131,7 +131,7 @@ resource vpnSite_lock 'Microsoft.Authorization/locks@2016-09-01' = if (lock != '
   name: '${vpnSite.name}-${lock}-lock'
   properties: {
     level: lock
-    notes: (lock == 'CanNotDelete') ? 'Cannot delete resource or child resources.' : 'Cannot modify the resource or child resources.'
+    notes: lock == 'CanNotDelete' ? 'Cannot delete resource or child resources.' : 'Cannot modify the resource or child resources.'
   }
   scope: vpnSite
 }
@@ -165,7 +165,7 @@ resource vpnGateway_lock 'Microsoft.Authorization/locks@2016-09-01' = if (lock !
   name: '${vpnGateway.name}-${lock}-lock'
   properties: {
     level: lock
-    notes: (lock == 'CanNotDelete') ? 'Cannot delete resource or child resources.' : 'Cannot modify the resource or child resources.'
+    notes: lock == 'CanNotDelete' ? 'Cannot delete resource or child resources.' : 'Cannot modify the resource or child resources.'
   }
   scope: vpnGateway
 }
@@ -178,6 +178,11 @@ module virtualWan_rbac '.bicep/nested_rbac.bicep' = [for (roleAssignment, index)
   }
 }]
 
+@description('The name of the virtual WAN')
 output virtualWanName string = virtualWan.name
+
+@description('The resourceId of the virtual WAN')
 output virtualWanNameResourceId string = virtualWan.id
+
+@description('The resource group the virtual WAN was deployed into')
 output virtualWanNameResourceGroup string = resourceGroup().name

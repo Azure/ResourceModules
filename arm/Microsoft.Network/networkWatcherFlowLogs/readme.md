@@ -46,11 +46,11 @@ Tag names and tag values can be provided as needed. A tag can be left without a 
 
 ## Outputs
 
-| Output Name | Type |
-| :-- | :-- |
-| `deploymentResourceGroup` | string |
-| `flowLogName` | string |
-| `flowLogResourceId` | string |
+| Output Name | Type | Description |
+| :-- | :-- | :-- |
+| `flowLogName` | string | The name of the flow log |
+| `flowLogResourceGroup` | string | The resource group the flow log was deployed into |
+| `flowLogResourceId` | string | The resourceId of the flow log |
 
 ## Template references
 

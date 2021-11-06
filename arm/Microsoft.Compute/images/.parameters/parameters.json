@@ -15,7 +15,7 @@
             "value": "Linux"
         },
         "osDiskBlobUri": {
-            "value": "https://qrivi75b9q5dgo1fvqpsdd8p.blob.core.windows.net/vhds/sxx-az-imgt-x-001-2021-10-13-14-26-11_20211013164357.vhd"
+            "value": "https://r0jskwdzcal7ss9okmxiyua3.blob.core.windows.net/vhds/48f94fc5-604e-4db2-bca4-e5a09e05b212.vhd"
         },
         "osDiskCaching": {
             "value": "ReadWrite"

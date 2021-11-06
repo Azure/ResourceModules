@@ -70,11 +70,11 @@ Tag names and tag values can be provided as needed. A tag can be left without a 
 
 ## Outputs
 
-| Output Name | Type |
-| :-- | :-- |
-| `publicIpPrefixName` | string |
-| `publicIpPrefixResourceGroup` | string |
-| `publicIpPrefixResourceId` | string |
+| Output Name | Type | Description |
+| :-- | :-- | :-- |
+| `publicIpPrefixName` | string | The name of the public IP prefix |
+| `publicIpPrefixResourceGroup` | string | The resource group the public IP prefix was deployed into |
+| `publicIpPrefixResourceId` | string | The resourceId of the public IP prefix |
 
 ## Template references
 

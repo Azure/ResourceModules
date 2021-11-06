@@ -83,11 +83,11 @@ Tag names and tag values can be provided as needed. A tag can be left without a 
 
 ## Outputs
 
-| Output Name | Type |
-| :-- | :-- |
-| `azureBastionName` | string |
-| `azureBastionResourceGroup` | string |
-| `azureBastionResourceId` | string |
+| Output Name | Type | Description |
+| :-- | :-- | :-- |
+| `azureBastionName` | string | The name the Azure Bastion |
+| `azureBastionResourceGroup` | string | The resource group the Azure Bastion was deployed into |
+| `azureBastionResourceId` | string | The resourceId the Azure Bastion |
 
 ## Template references
 
