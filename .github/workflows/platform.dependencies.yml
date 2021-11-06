@@ -93,7 +93,6 @@ jobs:
       namespace: 'Microsoft.KeyVault\vaults'
     needs:
       - job_deploy_rg
-    if: contains(env.PLATFORM_KEYVAULT, 'SomeString')
     strategy:
       fail-fast: false
       matrix:
@@ -104,6 +103,7 @@ jobs:
         with:
           fetch-depth: 0
       - name: 'Deploy module'
+        if: contains(env.PLATFORM_KEYVAULT, 'SomeString')
         uses: ./.github/actions/templates/deployModule
         with:
           moduleName: '${{ env.moduleName }}'
