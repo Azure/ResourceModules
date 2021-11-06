@@ -17,8 +17,8 @@ resource extension 'Microsoft.Compute/virtualMachines/extensions@2021-04-01' = {
     type: type
     typeHandlerVersion: typeHandlerVersion
     autoUpgradeMinorVersion: autoUpgradeMinorVersion
-    forceUpdateTag: !(empty(forceUpdateTag)) ? forceUpdateTag : null
-    settings: !(empty(settings)) ? settings : null
-    protectedSettings: !(empty(protectedSettings)) ? protectedSettings : null
+    forceUpdateTag: !empty(forceUpdateTag) ? forceUpdateTag : null
+    settings: !empty(settings) ? settings : null
+    protectedSettings: !empty(protectedSettings) ? protectedSettings : null
   }
 }
