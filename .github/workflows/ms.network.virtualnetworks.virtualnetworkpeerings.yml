@@ -21,12 +21,12 @@ on:
     paths:
       - '.github/actions/templates/**'
       - '.github/workflows/ms.network.virtualnetworks.virtualnetworkpeerings.yml'
-      - 'arm/Microsoft.Network/virtualNetworkPeerings/**'
-      - '!arm/Microsoft.Network/virtualNetworkPeerings/readme.md'
+      - 'arm/Microsoft.Network/virtualNetworks/virtualNetworkPeerings/**'
+      - '!arm/Microsoft.Network/virtualNetworks/virtualNetworkPeerings/readme.md'
 
 env:
   moduleName: 'virtualNetworkPeerings'
-  modulePath: 'arm/Microsoft.Network/virtualNetworkPeerings'
+  modulePath: 'arm/Microsoft.Network/virtualNetworks/virtualNetworkPeerings'
   workflowPath: '.github/workflows/ms.network.virtualnetworks.virtualnetworkpeerings.yml'
   AZURE_CREDENTIALS: ${{ secrets.AZURE_CREDENTIALS }}
   ARM_SUBSCRIPTION_ID: ${{ secrets.ARM_SUBSCRIPTION_ID }}
