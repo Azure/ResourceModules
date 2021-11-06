@@ -8,10 +8,6 @@ The function will take evaluate which version should be published based on the p
 If the customVersion is higher than the current latest, it has the highest priority over the other options
 Otherwise, one of the provided version options is chosen and applied with the default being 'patch'
 
-.PARAMETER moduleIdentifier
-Mandatory. The identifier of the module to publish (ProviderNamespace/ResourceType Combination). It will be the name of the private bicep registry repository/entry.
-E.g. 'Microsoft.KeyVault/vaults'
-
 .PARAMETER templateFilePath
 Mandatory. Path to the module deployment file from root.
 
@@ -28,7 +24,7 @@ Optional. A custom version that can be provided by the UI. '-' represents an emp
 Optional. A version option that can be specified in the UI. Defaults to 'patch'
 
 .EXAMPLE
-Publish-ModuleToPrivateBicepRegistry -moduleIdentifier 'Microsoft.KeyVault/vaults' -templateFilePath 'C:/KeyVault/deploy.json' -bicepRegistryRgName 'artifacts-rg' -customVersion '3.0.0'
+Publish-ModuleToPrivateBicepRegistry -templateFilePath 'C:/KeyVault/deploy.json' -bicepRegistryRgName 'artifacts-rg' -customVersion '3.0.0'
 
 Try to publish the KeyVault module with version 3.0.0 to a private bicep registry called KeyVault based on a value provided in the UI
 #>
@@ -36,9 +32,6 @@ function Publish-ModuleToPrivateBicepRegistry {
 
     [CmdletBinding(SupportsShouldProcess)]
     param (
-        [Parameter(Mandatory)]
-        [string] $moduleIdentifier,
-
         [Parameter(Mandatory)]
         [string] $templateFilePath,
 
@@ -78,7 +71,10 @@ function Publish-ModuleToPrivateBicepRegistry {
         #################################
         ##    FIND AVAILABLE VERSION   ##
         #################################
+        # Extracts Microsoft.KeyVault/vaults from e.g. C:\arm\Microsoft.KeyVault\vaults\deploy.bicep
+        $moduleIdentifier = (Split-Path $templateFilePath -Parent).Replace('\', '/').Split('/arm/')[1]
         $moduleRegistryIdentifier = 'bicep/modules/{0}' -f $moduleIdentifier.Replace('\', '/').Replace('/', '.').ToLower()
+
         $repositories = Get-AzContainerRegistryRepository -RegistryName $bicepRegistryName
         if ($repositories.Contains($moduleRegistryIdentifier)) {
             $versions = (Get-AzContainerRegistryTag -RegistryName $bicepRegistryName -RepositoryName $moduleRegistryIdentifier).Tags.Name
