@@ -80,14 +80,13 @@ function Publish-ModuleToTemplateSpec {
         #################################
         ##    FIND AVAILABLE VERSION   ##
         #################################
-        if ($PSCmdlet.ShouldProcess("Latest available version in template spec [$componentTemplateSpecName]", 'Fetch')) {
-            $res = Get-AzTemplateSpec -ResourceGroupName $componentTemplateSpecRGName -Name $componentTemplateSpecName -ErrorAction 'SilentlyContinue'
-        }
-        if (-not $res) {
+        $templateSpec = Get-AzTemplateSpec -ResourceGroupName $componentTemplateSpecRGName -Name $componentTemplateSpecName -ErrorAction 'SilentlyContinue'
+
+        if (-not $templateSpec) {
             Write-Verbose "No version detected in template spec [$componentTemplateSpecName]. Creating new."
             $latestVersion = New-Object System.Version('0.0.0')
         } else {
-            $uniqueVersions = $res.Versions.Name | Get-Unique | Where-Object { $_ -like '*.*.*' } # remove Where-object for working example
+            $uniqueVersions = $templateSpec.Versions.Name | Get-Unique | Where-Object { $_ -like '*.*.*' } # remove Where-object for working example
             $latestVersion = (($uniqueVersions -as [Version[]]) | Measure-Object -Maximum).Maximum
             Write-Verbose "Published versions detected in template spec [$componentTemplateSpecName]. Fetched latest [$latestVersion]."
         }
