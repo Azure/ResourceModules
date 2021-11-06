@@ -3,7 +3,7 @@
     "contentVersion": "1.0.0.0",
     "parameters": {
         "name": {
-            "value": "<<tokenA>>aweux001"
+            "value": "<<tokenC>>aweux001"
         },
         "managedServiceIdentity": {
             "value": "SystemAssigned"

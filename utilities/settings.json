@@ -8,11 +8,15 @@
             },
             {
                 "name": "tokenA",
-                "value": "myCustomToken"
+                "value": "test"
             },
             {
-                "name": "tokenA",
+                "name": "tokenB",
                 "value": "cray"
+            },
+            {
+                "name": "tokenC",
+                "value": "leen"
             }
         ]
     }
