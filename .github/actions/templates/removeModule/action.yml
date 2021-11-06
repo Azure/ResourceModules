@@ -11,7 +11,7 @@ inputs:
   resourceGroupName:
     description: 'The resource group the module is deployed into'
     required: false
-  relativeRemovalScriptPath:
+  relativePathOfRemovalScript:
     description: 'The relative path from root to the script that removes the service'
     required: false
     default: 'utilities/resourceRemoval/Remove-DeployedModule.ps1'
@@ -37,7 +37,7 @@ runs:
       shell: pwsh
       run: |
         # Load used functions
-        $functionPath = Join-Path $env:GITHUB_WORKSPACE '${{ inputs.relativeRemovalScriptPath }}'
+        $functionPath = Join-Path $env:GITHUB_WORKSPACE '${{ inputs.relativePathOfRemovalScript }}'
         . $functionPath
 
         $functionInput = @{

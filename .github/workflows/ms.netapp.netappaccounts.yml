@@ -211,3 +211,4 @@ jobs:
         with:
           moduleName: '${{ env.moduleName }}'
           resourceGroupName: '${{ env.resourceGroupName }}'
+          relativePathOfRemovalScript: 'utilities/resourceRemoval/Remove-NetAppAccount.ps1'
