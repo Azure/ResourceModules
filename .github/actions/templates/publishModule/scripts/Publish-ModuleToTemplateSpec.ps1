@@ -17,10 +17,10 @@ Mandatory. The name of the module to publish. It will be the name of the templat
 Mandatory. Path to the module deployment file from root.
 
 .PARAMETER componentTemplateSpecRGName
-Mandatory. ResourceGroupRgf the template spec to publish to.
+Mandatory. ResourceGroup of the template spec to publish to.
 
 .PARAMETER componentTemplateSpecRGLocation
-Mandatory. Location of tRg template spec resource group.
+Mandatory. Location of the template spec resource group.
 
 .PARAMETER componentTemplateSpecDescription
 Mandatory. The description of the parent template spec.
@@ -72,7 +72,7 @@ function Publish-ModuleToTemplateSpec {
         ##    EVALUATE RESOURCES   ##
         #############################
         if (-not (Get-AzResourceGroup -Name $componentTemplateSpecRGName -ErrorAction 'SilentlyContinue')) {
-            if ($PSCmdlet.ShouldProcess("Resource group [$RgmponentTemplateSpecRGName] to location [$componentTemplateSpecRGLocation]", 'Deploy')) {
+            if ($PSCmdlet.ShouldProcess("Resource group [$componentTemplateSpecRGName] to location [$componentTemplateSpecRGLocation]", 'Deploy')) {
                 New-AzResourceGroup -Name $componentTemplateSpecRGName -Location $componentTemplateSpecRGLocation
             }
         }
@@ -105,12 +105,12 @@ function Publish-ModuleToTemplateSpec {
             switch ($versioningOption) {
                 'major' {
                     Write-Verbose 'Apply version update on "major" level'
-                    $newVersion = (New-Object -TypeName System.Version -ArgumentList ($latestVersion.Major + 1), $latestVersion.Minor, $latestVersion.Build).ToString()
+                    $newVersion = (New-Object -TypeName System.Version -ArgumentList ($latestVersion.Major + 1), 0, 0).ToString()
                     break
                 }
                 'minor' {
                     Write-Verbose 'Apply version update on "minor" level'
-                    $newVersion = (New-Object -TypeName System.Version -ArgumentList $latestVersion.Major, ($latestVersion.Minor + 1), $latestVersion.Build).ToString()
+                    $newVersion = (New-Object -TypeName System.Version -ArgumentList $latestVersion.Major, ($latestVersion.Minor + 1), 0).ToString()
                     break
                 }
                 'patch' {
@@ -135,11 +135,11 @@ function Publish-ModuleToTemplateSpec {
         if ($PSCmdlet.ShouldProcess("Template spec [$componentTemplateSpecName] version [$newVersion]", 'Publish')) {
             $templateSpecInputObject = @{
                 ResourceGroupName = $componentTemplateSpecRGName
-                Name              = $componentTempRgteSpecName
+                Name              = $componentTemplateSpecName
                 Version           = $newVersion
                 Description       = $componentTemplateSpecDescription
                 Location          = $componentTemplateSpecRGLocation
-                TemplateFile      = $templateFilePRgh
+                TemplateFile      = $templateFilePath
             }
             New-AzTemplateSpec @templateSpecInputObject
         }
