@@ -150,4 +150,3 @@ function Publish-ModuleToTemplateSpec {
         Write-Debug ('{0} exited' -f $MyInvocation.MyCommand)
     }
 }
-}
