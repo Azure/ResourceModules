@@ -392,7 +392,7 @@ resource virtualMachine 'Microsoft.Compute/virtualMachines@2021-04-01' = {
     diagnosticsProfile: {
       bootDiagnostics: {
         enabled: !empty(bootDiagnosticStorageAccountName)
-        storageUri: empty(bootDiagnosticStorageAccountName) ? null : 'https://${bootDiagnosticStorageAccountName}${bootDiagnosticStorageAccountUri}'
+        storageUri: !empty(bootDiagnosticStorageAccountName) ? 'https://${bootDiagnosticStorageAccountName}${bootDiagnosticStorageAccountUri}' : null 
       }
     }
     availabilitySet: !empty(availabilitySetName) ? json('{"id":"${resourceId('Microsoft.Compute/availabilitySets', availabilitySetName)}"}') : null
