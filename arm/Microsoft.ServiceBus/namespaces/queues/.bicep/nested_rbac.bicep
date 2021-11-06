@@ -27,7 +27,7 @@ resource queue 'Microsoft.ServiceBus/namespaces/queues@2021-06-01-preview' exist
 resource roleAssigment 'Microsoft.Authorization/roleAssignments@2020-04-01-preview' = [for principalId in roleAssignmentObj.principalIds: {
   name: guid(queue.name, principalId, roleAssignmentObj.roleDefinitionIdOrName)
   properties: {
-    roleDefinitionId: (contains(builtInRoleNames, roleAssignmentObj.roleDefinitionIdOrName) ? builtInRoleNames[roleAssignmentObj.roleDefinitionIdOrName] : roleAssignmentObj.roleDefinitionIdOrName)
+    roleDefinitionId: contains(builtInRoleNames, roleAssignmentObj.roleDefinitionIdOrName) ? builtInRoleNames[roleAssignmentObj.roleDefinitionIdOrName] : roleAssignmentObj.roleDefinitionIdOrName
     principalId: principalId
   }
   scope: queue
