@@ -208,7 +208,7 @@ resource apiManagementService 'Microsoft.ApiManagement/service@2020-12-01' = {
     capacity: skuCount
   }
   zones: zones
-  identity: (!empty(identity)) ? identity : json('{"type": "None"}')
+  identity: !empty(identity) ? identity : json('{"type": "None"}')
   properties: {
     publisherEmail: publisherEmail
     publisherName: publisherName
@@ -220,8 +220,8 @@ resource apiManagementService 'Microsoft.ApiManagement/service@2020-12-01' = {
     enableClientCertificate: enableClientCertificate ? true : null
     disableGateway: disableGateway
     virtualNetworkType: virtualNetworkType
-    virtualNetworkConfiguration: (!empty(subnetResourceId)) ? json('{"subnetResourceId": "${subnetResourceId}"}') : null
-    apiVersionConstraint: (!empty(minApiVersion)) ? json('{"minApiVersion": "${minApiVersion}"}') : null
+    virtualNetworkConfiguration: !empty(subnetResourceId) ? json('{"subnetResourceId": "${subnetResourceId}"}') : null
+    apiVersionConstraint: !empty(minApiVersion) ? json('{"minApiVersion": "${minApiVersion}"}') : null
     restore: restore
   }
   resource apiManagementService_signin 'portalsettings@2019-12-01' = if (!empty(portalSignIn)) {
@@ -283,6 +283,11 @@ module apiManagementService_rbac '.bicep/nested_rbac.bicep' = [for (roleAssignme
   }
 }]
 
-output apimServiceName string = apiManagementService.name
-output apimServiceResourceId string = apiManagementService.id
-output apimServiceResourceGroup string = resourceGroup().name
+@description('The name of the api management service')
+output serviceName string = apiManagementService.name
+
+@description('The resourceId of the api management service')
+output serviceResourceId string = apiManagementService.id
+
+@description('The resource group the api management service was deployed into')
+output serviceResourceGroup string = resourceGroup().name

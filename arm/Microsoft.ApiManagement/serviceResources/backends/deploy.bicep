@@ -45,20 +45,25 @@ module pid_cuaId '.bicep/nested_cuaId.bicep' = if (!empty(cuaId)) {
 resource backend 'Microsoft.ApiManagement/service/backends@2020-06-01-preview' = {
   name: '${apiManagementServiceName}/${backendName}'
   properties: {
-    title: (!empty(title)) ? title : null
-    description: (!empty(backendDescription)) ? backendDescription : null
-    resourceId: (!empty(resourceId)) ? resourceId : null
+    title: !empty(title) ? title : null
+    description: !empty(backendDescription) ? backendDescription : null
+    resourceId: !empty(resourceId) ? resourceId : null
     properties: {
-      serviceFabricCluster: (!empty(serviceFabricCluster)) ? serviceFabricCluster : null
+      serviceFabricCluster: !empty(serviceFabricCluster) ? serviceFabricCluster : null
     }
-    credentials: (!empty(credentials)) ? credentials : null
-    proxy: (!empty(proxy)) ? proxy : null
-    tls: (!empty(tls)) ? tls : null
+    credentials: !empty(credentials) ? credentials : null
+    proxy: !empty(proxy) ? proxy : null
+    tls: !empty(tls) ? tls : null
     url: url
     protocol: protocol
   }
 }
 
+@description('The resourceId of the API management service backend')
 output backendResourceId string = backend.id
-output backendResourceName string = backend.name
+
+@description('The name of the API management service backend')
+output backendName string = backend.name
+
+@description('The resource group the API management service backend was deployed into')
 output backendResourceGroup string = resourceGroup().name

@@ -89,6 +89,11 @@ resource authorizationServer 'Microsoft.ApiManagement/service/authorizationServe
   }
 }
 
-output apimServiceAuthorizationServerResourceName string = authorizationServer.name
-output apimServiceAuthorizationServerResourceId string = authorizationServer.id
-output apimServiceAuthorizationServerResourceGroup string = resourceGroup().name
+@description('The name of the API management service authorization server')
+output authorizationServerName string = authorizationServer.name
+
+@description('The resourceId of the API management service authorization server')
+output authorizationServerResourceId string = authorizationServer.id
+
+@description('The resource group the API management service authorization server was deployed into')
+output authorizationServerResourceGroup string = resourceGroup().name

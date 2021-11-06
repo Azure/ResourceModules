@@ -32,14 +32,19 @@ module pid_cuaId '.bicep/nested_cuaId.bicep' = if (!empty(cuaId)) {
 resource namedValue 'Microsoft.ApiManagement/service/namedValues@2020-06-01-preview' = {
   name: '${apiManagementServiceName}/${namedValueName}'
   properties: {
-    tags: (!empty(namedValueTags)) ? namedValueTags : null
+    tags: !empty(namedValueTags) ? namedValueTags : null
     secret: secret
     displayName: displayName
     value: keyVaultEmpty ? value : null
-    keyVault: (!keyVaultEmpty) ? keyVault : null
+    keyVault: !keyVaultEmpty ? keyVault : null
   }
 }
 
+@description('The resourceId of the named value')
 output namedValueResourceId string = namedValue.id
-output namedValueResourceName string = namedValue.name
+
+@description('The name of the named value')
+output namedValueName string = namedValue.name
+
+@description('The resource group the named value was deployed into')
 output namedValueResourceGroup string = resourceGroup().name
