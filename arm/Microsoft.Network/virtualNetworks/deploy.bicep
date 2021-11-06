@@ -128,8 +128,8 @@ resource virtualNetwork 'Microsoft.Network/virtualNetworks@2021-05-01' = {
   }
 }
 
-module virtualNetworkPeerings_resource 'virtualNetworkPeerings/deploy.bicep' = [for virtualNetworkPeering in virtualNetworkPeerings: {
-  name: '${uniqueString(deployment().name, location)}-virtualNetworkPeering-${contains(virtualNetworkPeering, 'name') ? virtualNetworkPeering.name : '${name}-${last(split(virtualNetworkPeering.remoteVirtualNetworkId, '/'))}'}'
+module virtualNetworkPeerings_resource 'virtualNetworkPeerings/deploy.bicep' = [for (virtualNetworkPeering, index) in virtualNetworkPeerings: {
+  name: '${uniqueString(deployment().name, location)}-virtualNetworkPeering-${index}'
   params: {
     localVnetName: name
     remoteVirtualNetworkId: virtualNetworkPeering.remoteVirtualNetworkId
