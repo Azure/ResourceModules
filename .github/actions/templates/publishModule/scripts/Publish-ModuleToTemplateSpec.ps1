@@ -63,7 +63,7 @@ function Publish-ModuleToTemplateSpec {
 
     process {
         $moduleIdentifier = (Split-Path $templateFilePath -Parent).Replace('\', '/').Split('/arm/')[1]
-        $moduleRegistryIdentifier = $moduleIdentifier.Replace('\', '/').Replace('/', '.').ToLower()
+        $templateSpecIdentifier = $moduleIdentifier.Replace('\', '/').Replace('/', '.').ToLower()
 
         #############################
         ##    EVALUATE RESOURCES   ##
@@ -77,12 +77,12 @@ function Publish-ModuleToTemplateSpec {
         #################################
         ##    FIND AVAILABLE VERSION   ##
         #################################
-        if ($templateSpec = Get-AzTemplateSpec -ResourceGroupName $templateSpecsRgName -Name $moduleRegistryIdentifier -ErrorAction 'SilentlyContinue') {
+        if ($templateSpec = Get-AzTemplateSpec -ResourceGroupName $templateSpecsRgName -Name $templateSpecIdentifier -ErrorAction 'SilentlyContinue') {
             $uniqueVersions = $templateSpec.Versions.Name | Get-Unique | Where-Object { $_ -like '*.*.*' } # remove Where-object for working example
             $latestVersion = (($uniqueVersions -as [Version[]]) | Measure-Object -Maximum).Maximum
-            Write-Verbose "Published versions detected in template spec [$moduleRegistryIdentifier]. Fetched latest [$latestVersion]."
+            Write-Verbose "Published versions detected in template spec [$templateSpecIdentifier]. Fetched latest [$latestVersion]."
         } else {
-            Write-Verbose "No version detected in template spec [$moduleRegistryIdentifier]. Creating new."
+            Write-Verbose "No version detected in template spec [$templateSpecIdentifier]. Creating new."
             $latestVersion = New-Object System.Version('0.0.0')
         }
 
@@ -120,16 +120,16 @@ function Publish-ModuleToTemplateSpec {
 
         $newVersionObject = New-Object System.Version($newVersion)
         if ($newVersionObject -lt $latestVersion -or $newVersionObject -eq $latestVersion) {
-            throw ('The provided custom version [{0}] must be higher than the current latest version [{1}] published in the template spec [{2}]' -f $newVersionObject.ToString(), $latestVersion.ToString(), $moduleRegistryIdentifier)
+            throw ('The provided custom version [{0}] must be higher than the current latest version [{1}] published in the template spec [{2}]' -f $newVersionObject.ToString(), $latestVersion.ToString(), $templateSpecIdentifier)
         }
 
         ################################
         ##    Create template spec    ##
         ################################
-        if ($PSCmdlet.ShouldProcess("Template spec [$moduleRegistryIdentifier] version [$newVersion]", 'Publish')) {
+        if ($PSCmdlet.ShouldProcess("Template spec [$templateSpecIdentifier] version [$newVersion]", 'Publish')) {
             $templateSpecInputObject = @{
                 ResourceGroupName = $templateSpecsRgName
-                Name              = $moduleRegistryIdentifier
+                Name              = $templateSpecIdentifier
                 Version           = $newVersion
                 Description       = $templateSpecsDescription
                 Location          = $templateSpecsRgLocation
