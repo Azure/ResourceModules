@@ -48,6 +48,8 @@ runs:
     - name: 'Replace Default and Custom Parameter File Tokens [${{ inputs.parameterFilePath }}] '
       shell: pwsh
       run: |
+        # Load Settings File
+        $Settings = Get-Content -Path "utilities/settings.json" | ConvertFrom-Json
         # Load used funtions
         . "utilities/tools/Convert-TokensInFileList.ps1"
         . "utilities/tools/Get-ParameterFileTokensFromKeyVault.ps1"
@@ -62,8 +64,12 @@ runs:
             @{ Replace = "<<platformKeyVault>>"; With = '${{ env.PLATFORM_KEYVAULT }}' }
         ) | ForEach-Object { [PSCustomObject]$PSItem }
 
-        # Get Key Vault Information (If Provided) To Initialize Default Parameter File Tokens
-        $CustomParameterFileTokens = Get-ParameterFileTokensFromKeyVault -TokenKeyVaultName '${{ env.PLATFORM_KEYVAULT }}' -subscriptionId '${{ inputs.subscriptionId }}' -verbose
+        # Get Key Vault Information (If Available) for Parameter File Tokens
+        $CustomParameterFileTokens = Get-ParameterFileTokensFromKeyVault -TokenKeyVaultName '${{ env.PLATFORM_KEYVAULT }}' `
+                                          -SubscriptionId '${{ inputs.subscriptionId }}' `
+                                          -LocalCustomParameterFileTokens $Settings.localCustomParameterFileTokens.tokens `
+                                          -TokenKeyVaultSecretNamePrefix $Settings.remoteCustomParameterFileTokens.keyVaultSecretNamePrefix `
+                                          -Verbose
 
         # Combine All Parameter File Tokens
         $AllParameterFileTokens = $DefaultParameterFileTokens + $CustomParameterFileTokens | ForEach-Object { [PSCustomObject]$PSItem }

@@ -22,7 +22,6 @@ env:
   ARM_TENANT_ID: '${{ secrets.ARM_TENANT_ID }}'
   DEPLOYMENT_SP_ID: '${{ secrets.DEPLOYMENT_SP_ID }}'
   PLATFORM_KEYVAULT: '${{ secrets.PLATFORM_KEYVAULT }}'
-  PLATFORM_KEYVAULTx: '${{ secrets.PLATFORM_KEYVAULTx }}'
 
 jobs:
   job_deploy_rg:
@@ -100,12 +99,12 @@ jobs:
         parameterFilePaths: ['platform.parameters.json']
     steps:
       - name: 'Checkout'
-        if: '${{ env.PLATFORM_KEYVAULTx }}'
+        if: '${{ env.PLATFORM_KEYVAULT }}'
         uses: actions/checkout@v2
         with:
           fetch-depth: 0
       - name: 'Deploy module'
-        if: '${{ env.PLATFORM_KEYVAULTx }}'
+        if: '${{ env.PLATFORM_KEYVAULT }}'
         uses: ./.github/actions/templates/deployModule
         with:
           moduleName: '${{ env.moduleName }}'
@@ -124,20 +123,22 @@ jobs:
       - job_deploy_kv_platform
     steps:
       - name: 'Checkout'
-        if: '${{ env.PLATFORM_KEYVAULTx }}'
+        if: '${{ env.PLATFORM_KEYVAULT }}'
         uses: actions/checkout@v2
         with:
           fetch-depth: 0
       - name: Azure Login
-        if: '${{ env.PLATFORM_KEYVAULTx }}'
+        if: '${{ env.PLATFORM_KEYVAULT }}'
         uses: azure/login@v1
         with:
           creds: ${{ secrets.AZURE_CREDENTIALS }}
           enable-AzPSSession: true
       - name: 'Create Token Secrets in Key Vault'
-        if: '${{ env.PLATFORM_KEYVAULTx }}'
+        if: '${{ env.PLATFORM_KEYVAULT }}'
         shell: pwsh
         run: |
+          # Load Settings File
+          $Settings = Get-Content -Path "$env:GITHUB_WORKSPACE/utilities/settings.json" | ConvertFrom-Json
           # Load used functions
           . "$env:GITHUB_WORKSPACE/.github/actions/sharedScripts/Set-EnvironmentOnAgent.ps1"
           . "$env:GITHUB_WORKSPACE/utilities/tools/Set-ParameterFileTokensInKeyVault.ps1"
@@ -145,8 +146,9 @@ jobs:
           Set-EnvironmentOnAgent
           # Create Tokens in Key Vault
           Set-ParameterFileTokensInKeyVault -TokenKeyVaultName '${{ env.PLATFORM_KEYVAULT }}' `
-                                            -subscriptionId '${{ secrets.ARM_SUBSCRIPTION_ID }}' `
-                                            -customTokensConfigPath "$env:GITHUB_WORKSPACE/utilities/settings.json" `
+                                            -SubscriptionId '${{ secrets.ARM_SUBSCRIPTION_ID }}' `
+                                            -LocalCustomParameterFileTokens $Settings.localCustomParameterFileTokens.tokens `
+                                            -TokenKeyVaultSecretNamePrefix $Settings.remoteCustomParameterFileTokens.keyVaultSecretNamePrefix `
                                             -verbose
 
   job_deploy_evhns:
