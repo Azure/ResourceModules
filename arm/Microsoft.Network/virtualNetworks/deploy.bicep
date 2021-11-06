@@ -1,5 +1,5 @@
 @description('Required. The Virtual Network (vNet) Name.')
-param vNetName string
+param name string
 
 @description('Optional. Location for all resources.')
 param location string = resourceGroup().location
@@ -16,6 +16,9 @@ param dnsServers array = []
 
 @description('Optional. Resource Id of the DDoS protection plan to assign the VNET to. If it\'s left blank, DDoS protection will not be configured. If it\'s provided, the VNET created by this template will be attached to the referenced DDoS protection plan. The DDoS protection plan can exist in the same or in a different subscription.')
 param ddosProtectionPlanId string = ''
+
+@description('Optional. Virtual Network Peerings configurations')
+param virtualNetworkPeerings array = []
 
 @description('Optional. Specifies the number of days that logs will be kept for; a value of 0 will retain data indefinitely.')
 @minValue(0)
@@ -99,7 +102,7 @@ module pid_cuaId '.bicep/nested_cuaId.bicep' = if (!empty(cuaId)) {
 }
 
 resource virtualNetwork 'Microsoft.Network/virtualNetworks@2021-05-01' = {
-  name: vNetName
+  name: name
   location: location
   tags: tags
   properties: {
@@ -125,6 +128,20 @@ resource virtualNetwork 'Microsoft.Network/virtualNetworks@2021-05-01' = {
   }
 }
 
+module virtualNetworkPeerings_resource 'virtualNetworkPeerings/deploy.bicep' = [for virtualNetworkPeering in virtualNetworkPeerings: {
+  name: '${uniqueString(deployment().name, location)}-virtualNetworkPeering-${virtualNetworkPeering.name}'
+  params: {
+    localVnetName: name
+    remoteVirtualNetworkId: virtualNetworkPeering.remoteVirtualNetworkId
+    name: contains(virtualNetworkPeering, 'name') ? virtualNetworkPeering.name : ''
+    allowForwardedTraffic: contains(virtualNetworkPeering, 'allowForwardedTraffic') ? virtualNetworkPeering.allowForwardedTraffic : true
+    allowGatewayTransit: contains(virtualNetworkPeering, 'allowGatewayTransit') ? virtualNetworkPeering.allowGatewayTransit : false
+    allowVirtualNetworkAccess: contains(virtualNetworkPeering, 'allowVirtualNetworkAccess') ? virtualNetworkPeering.allowVirtualNetworkAccess : true
+    doNotVerifyRemoteGateways: contains(virtualNetworkPeering, 'doNotVerifyRemoteGateways') ? virtualNetworkPeering.doNotVerifyRemoteGateways : true
+    useRemoteGateways: contains(virtualNetworkPeering, 'useRemoteGateways') ? virtualNetworkPeering.useRemoteGateways : false
+  }
+}]
+
 resource virtualNetwork_lock 'Microsoft.Authorization/locks@2016-09-01' = if (lock != 'NotSpecified') {
   name: '${virtualNetwork.name}-${lock}-lock'
   properties: {
@@ -135,7 +152,7 @@ resource virtualNetwork_lock 'Microsoft.Authorization/locks@2016-09-01' = if (lo
 }
 
 resource appServiceEnvironment_diagnosticSettings 'Microsoft.Insights/diagnosticSettings@2017-05-01-preview' = if (!empty(diagnosticStorageAccountId) || !empty(workspaceId) || !empty(eventHubAuthorizationRuleId) || !empty(eventHubName)) {
-  name: '${vNetName}-diagnosticSettings'
+  name: '${name}-diagnosticSettings'
   properties: {
     storageAccountId: empty(diagnosticStorageAccountId) ? null : diagnosticStorageAccountId
     workspaceId: empty(workspaceId) ? null : workspaceId
@@ -168,4 +185,4 @@ output virtualNetworkName string = virtualNetwork.name
 output subnetNames array = [for subnet in subnets: subnet.name]
 
 @description('The resourceIds of the deployed subnets')
-output subnetIds array = [for subnet in subnets: resourceId('Microsoft.Network/virtualNetworks/subnets', vNetName, subnet.name)]
+output subnetIds array = [for subnet in subnets: resourceId('Microsoft.Network/virtualNetworks/subnets', name, subnet.name)]
