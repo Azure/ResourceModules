@@ -37,7 +37,8 @@ runs:
       shell: pwsh
       run: |
         # Load used functions
-        . (Join-Path $env:GITHUB_ACTION_PATH '${{ inputs.relativeRemovalScriptPath }}')
+        $functionPath = Join-Path $env:GITHUB_ACTION_PATH '${{ inputs.relativeRemovalScriptPath }}'
+        . $functionPath
 
         $functionInput = @{
             moduleName        = '${{ inputs.moduleName }}'
@@ -47,4 +48,4 @@ runs:
         Write-Verbose 'Invoke task with' -Verbose
         Write-Verbose ($functionInput | ConvertTo-Json | Out-String) -Verbose
 
-        Invoke-Expression ('{0} @functionInput' -f (Split-Path $path -LeafBase))
+        Invoke-Expression ('{0} @functionInput' -f (Split-Path $functionPath -LeafBase))
