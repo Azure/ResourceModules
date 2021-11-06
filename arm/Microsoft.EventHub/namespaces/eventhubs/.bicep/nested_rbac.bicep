@@ -30,4 +30,5 @@ resource roleAssignment 'Microsoft.Authorization/roleAssignments@2020-04-01-prev
     roleDefinitionId: contains(builtInRoleNames, roleAssignmentObj.roleDefinitionIdOrName) ? builtInRoleNames[roleAssignmentObj.roleDefinitionIdOrName] : roleAssignmentObj.roleDefinitionIdOrName
     principalId: principalId
   }
+  scope: eventHub
 }]
