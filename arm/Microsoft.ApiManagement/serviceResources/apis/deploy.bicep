@@ -94,15 +94,14 @@ param value string = ''
 @description('Optional. Criteria to limit import of WSDL to a subset of the document.')
 param wsdlSelector object = {}
 
-var apiVersionSetNotEmpty = !empty(apiVersionSet)
-var apiVersionSetName = apiVersionSetNotEmpty ? apiVersionSet.name : 'default'
+var apiVersionSetName = !empty(apiVersionSet) ? apiVersionSet.name : 'default'
 
 module pid_cuaId '.bicep/nested_cuaId.bicep' = if (!empty(cuaId)) {
   name: 'pid-${cuaId}'
   params: {}
 }
 
-resource apiVersionSetResource 'Microsoft.ApiManagement/service/apiVersionSets@2020-06-01-preview' = if (apiVersionSetNotEmpty) {
+resource apiVersionSetResource 'Microsoft.ApiManagement/service/apiVersionSets@2020-06-01-preview' = if (!empty(apiVersionSet)) {
   name: '${apiManagementServiceName}/${apiVersionSetName}'
   properties: apiVersionSet.properties
 }
@@ -115,7 +114,7 @@ resource apis 'Microsoft.ApiManagement/service/apis@2020-06-01-preview' = {
     apiType: !empty(apiType) ? apiType : null
     apiVersion: !empty(apiVersion) ? apiVersion : null
     apiVersionDescription: !empty(apiVersionDescription) ? apiVersionDescription : null
-    apiVersionSetId: apiVersionSetNotEmpty ? apiVersionSetResource.id : null
+    apiVersionSetId: !empty(apiVersionSet) ? apiVersionSetResource.id : null
     authenticationSettings: authenticationSettings
     description: apiDescription
     displayName: displayName
