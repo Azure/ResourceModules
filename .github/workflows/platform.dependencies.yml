@@ -99,11 +99,12 @@ jobs:
         parameterFilePaths: ['platform.parameters.json']
     steps:
       - name: 'Checkout'
+        if: '${{ env.PLATFORM_KEYVAULTx }}'
         uses: actions/checkout@v2
         with:
           fetch-depth: 0
       - name: 'Deploy module'
-        if: contains(env.PLATFORM_KEYVAULT, 'SomeString')
+        if: '${{ env.PLATFORM_KEYVAULTx }}'
         uses: ./.github/actions/templates/deployModule
         with:
           moduleName: '${{ env.moduleName }}'
