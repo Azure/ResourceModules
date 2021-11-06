@@ -129,11 +129,11 @@ resource virtualNetwork 'Microsoft.Network/virtualNetworks@2021-05-01' = {
 }
 
 module virtualNetworkPeerings_resource 'virtualNetworkPeerings/deploy.bicep' = [for virtualNetworkPeering in virtualNetworkPeerings: {
-  name: '${uniqueString(deployment().name, location)}-virtualNetworkPeering-${virtualNetworkPeering.name}'
+  name: '${uniqueString(deployment().name, location)}-virtualNetworkPeering-${contains(virtualNetworkPeering, 'name') ? virtualNetworkPeering.name : '${name}-${last(split(virtualNetworkPeering.remoteVirtualNetworkId, '/'))}'}'
   params: {
     localVnetName: name
     remoteVirtualNetworkId: virtualNetworkPeering.remoteVirtualNetworkId
-    name: contains(virtualNetworkPeering, 'name') ? virtualNetworkPeering.name : ''
+    name: contains(virtualNetworkPeering, 'name') ? virtualNetworkPeering.name : '${name}-${last(split(virtualNetworkPeering.remoteVirtualNetworkId, '/'))}'
     allowForwardedTraffic: contains(virtualNetworkPeering, 'allowForwardedTraffic') ? virtualNetworkPeering.allowForwardedTraffic : true
     allowGatewayTransit: contains(virtualNetworkPeering, 'allowGatewayTransit') ? virtualNetworkPeering.allowGatewayTransit : false
     allowVirtualNetworkAccess: contains(virtualNetworkPeering, 'allowVirtualNetworkAccess') ? virtualNetworkPeering.allowVirtualNetworkAccess : true
