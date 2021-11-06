@@ -168,7 +168,7 @@ resource eventHubNamespace 'Microsoft.EventHub/namespaces@2017-04-01' = {
     zoneRedundant: zoneRedundant
     isAutoInflateEnabled: isAutoInflateEnabled
     maximumThroughputUnits: maximumThroughputUnits_var
-    networkAcls: (empty(networkAcls) ? null : networkAcls_var)
+    networkAcls: !empty(networkAcls) ? networkAcls_var : null
   }
 }
 
