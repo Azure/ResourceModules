@@ -288,7 +288,7 @@ resource virtualGatewayPublicIP 'Microsoft.Network/publicIPAddresses@2021-02-01'
     publicIPPrefix: !empty(publicIPPrefixId) ? publicIPPrefix : null
     dnsSettings: length(virtualGatewayPipName_var) == length(domainNameLabel) ? json('{"domainNameLabel": "${domainNameLabel[index]}"}') : null
   }
-  zones: (contains(zoneRedundantSkus, virtualNetworkGatewaySku) ? publicIpZones : null)
+  zones: contains(zoneRedundantSkus, virtualNetworkGatewaySku) ? publicIpZones : null
 }]
 
 @batchSize(1)
