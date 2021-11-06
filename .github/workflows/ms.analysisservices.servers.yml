@@ -46,7 +46,7 @@ jobs:
           fetch-depth: 0
       - name: 'Set input parameters'
         id: get-workflow-param
-        uses: ./.github/actions/templates/getWorkflowInput
+        uses: .github/actions/templates/getWorkflowInput
         with:
           workflowPath: '${{ env.workflowPath}}'
     outputs:
@@ -68,7 +68,7 @@ jobs:
         with:
           fetch-depth: 0
       - name: 'Test module'
-        uses: ./.github/actions/templates/validateModuleGeneral
+        uses: .github/actions/templates/validateModuleGeneral
         with:
           modulePath: '${{ env.modulePath }}'
           moduleName: '${{ env.moduleName}}'
@@ -84,7 +84,7 @@ jobs:
         with:
           fetch-depth: 0
       - name: 'Test module'
-        uses: ./.github/actions/templates/validateModuleApis
+        uses: .github/actions/templates/validateModuleApis
         with:
           modulePath: '${{ env.modulePath }}'
           moduleName: '${{ env.moduleName}}'
@@ -109,7 +109,7 @@ jobs:
           # Name of variable file
           variableFileName: 'variables.module' # Don't write .json here
       - name: 'Test module'
-        uses: ./.github/actions/templates/validateModuleDeploy
+        uses: .github/actions/templates/validateModuleDeploy
         with:
           templateFilePath: '${{ env.modulePath }}/deploy.bicep'
           parameterFilePath: '${{ env.modulePath }}/.parameters/${{ matrix.parameterFilePaths }}'
@@ -144,7 +144,7 @@ jobs:
           # Name of variable file
           variableFileName: 'variables.module' # Don't write .json here
       - name: 'Deploy module'
-        uses: ./.github/actions/templates/deployModule
+        uses: .github/actions/templates/deployModule
         with:
           moduleName: '${{ env.moduleName }}'
           templateFilePath: '${{ env.modulePath }}/deploy.bicep'
@@ -176,7 +176,7 @@ jobs:
           # Name of variable file
           variableFileName: 'variables.module' # Don't write .json here
       - name: 'Publish module'
-        uses: ./.github/actions/templates/publishModule
+        uses: .github/actions/templates/publishModule
         with:
           templateFilePath: '${{ env.modulePath }}/deploy.bicep'
           versioningOption: '${{ needs.job_set_workflow_param.outputs.versioningOption }}'
@@ -209,7 +209,7 @@ jobs:
           # Name of variable file
           variableFileName: 'variables.module' # Don't write .json here
       - name: 'Remove module'
-        uses: ./.github/actions/templates/removeModule
+        uses: .github/actions/templates/removeModule
         with:
           moduleName: '${{ env.moduleName }}'
           templateFilePath: '${{ env.modulePath }}/deploy.bicep'
