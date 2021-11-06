@@ -9,6 +9,10 @@
             {
                 "name": "tokenA",
                 "value": "myCustomToken"
+            },
+            {
+                "name": "tokenA",
+                "value": "cray"
             }
         ]
     }
