@@ -384,7 +384,7 @@ resource virtualMachine 'Microsoft.Compute/virtualMachines@2021-04-01' = {
     networkProfile: {
       networkInterfaces: [for (nicConfiguration, index) in nicConfigurations: {
         properties: {
-          primary: (index == 0) ? true : false
+          primary: index == 0 ? true : false
         }
         id: resourceId('Microsoft.Network/networkInterfaces', '${virtualMachineName}${nicConfiguration.nicSuffix}')
       }]
