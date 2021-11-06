@@ -73,7 +73,7 @@ resource appServicePlan 'Microsoft.Web/serverfarms@2021-02-01' = {
   sku: sku
   properties: {
     workerTierName: workerTierName
-    hostingEnvironmentProfile: empty(appServiceEnvironmentId) ? null : hostingEnvironmentProfile
+    hostingEnvironmentProfile: !empty(appServiceEnvironmentId) ? hostingEnvironmentProfile : null
     perSiteScaling: perSiteScaling
     maximumElasticWorkerCount: maximumElasticWorkerCount
     reserved: serverOS == 'Linux'
