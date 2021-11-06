@@ -28,11 +28,11 @@ The following resources are required to be able to deploy this resource.
 
 ## Outputs
 
-| Output Name | Type |
-| :-- | :-- |
-| `cacheResourceGroup` | string |
-| `cacheResourceId` | string |
-| `cacheResourceName` | string |
+| Output Name | Type | Description |
+| :-- | :-- | :-- |
+| `cacheResourceGroup` | string | The resource group the API management service cache was deployed into |
+| `cacheResourceId` | string | The resourceId of the API management service cache |
+| `cacheResourceName` | string | The name of the API management service cache |
 
 ## Template references
 
