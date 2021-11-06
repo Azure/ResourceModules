@@ -45,7 +45,7 @@ runs:
         $Settings = Get-Content -Path "utilities/settings.json" | ConvertFrom-Json
         # Load used funtions
         . "utilities/tools/Convert-TokensInFileList.ps1"
-        . "utilities/tools/Get-ParameterFileTokensFromKeyVault.ps1"
+        . "utilities/tools/Get-ParameterFileTokens.ps1"
 
         # Initialize Default Parameter File Tokens
         $DefaultParameterFileTokens = @(
@@ -58,7 +58,7 @@ runs:
         ) | ForEach-Object { [PSCustomObject]$PSItem }
 
         # Get Key Vault Information (If Available) for Parameter File Tokens
-        $CustomParameterFileTokens = Get-ParameterFileTokensFromKeyVault -TokenKeyVaultName '${{ env.PLATFORM_KEYVAULT }}' `
+        $CustomParameterFileTokens = Get-ParameterFileTokens -TokenKeyVaultName '${{ env.PLATFORM_KEYVAULT }}' `
                                           -SubscriptionId '${{ inputs.subscriptionId }}' `
                                           -LocalCustomParameterFileTokens $Settings.localCustomParameterFileTokens.tokens `
                                           -TokenKeyVaultSecretNamePrefix $Settings.remoteCustomParameterFileTokens.keyVaultSecretNamePrefix `
