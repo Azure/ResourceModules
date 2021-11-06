@@ -65,7 +65,7 @@ runs:
           # Load used functions
           . "$env:GITHUB_ACTION_PATH/scripts/Publish-ModuleToTemplateSpec.ps1"
 
-          $templateFilePath = Join-Path "$env:GITHUB_WORKSPACE" "${{ inputs.templateFilePath }}"
+          $templateFilePath = Join-Path $env:GITHUB_WORKSPACE "${{ inputs.templateFilePath }}"
 
           # Extracts Microsoft.KeyVault/vaults from e.g. C:\arm\Microsoft.KeyVault\vaults\deploy.bicep
           $moduleIdentifier = (Split-Path $templateFilePath -Parent).Replace('\','/').Split('/arm/')[1]
@@ -99,7 +99,7 @@ runs:
           # Load used functions
           . "$env:GITHUB_ACTION_PATH/scripts/Publish-ModuleToPrivateBicepRegistry.ps1"
 
-          $templateFilePath = Join-Path "$env:GITHUB_WORKSPACE" "${{ inputs.templateFilePath }}"
+          $templateFilePath = Join-Path $env:GITHUB_WORKSPACE "${{ inputs.templateFilePath }}"
 
           # Extracts Microsoft.KeyVault/vaults from e.g. C:\arm\Microsoft.KeyVault\vaults\deploy.bicep
           $moduleIdentifier = (Split-Path $templateFilePath -Parent).Replace('\','/').Split('/arm/')[1]
