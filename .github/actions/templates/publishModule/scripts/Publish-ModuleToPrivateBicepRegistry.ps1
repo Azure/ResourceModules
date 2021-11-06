@@ -75,7 +75,11 @@ function Publish-ModuleToPrivateBicepRegistry {
         $moduleIdentifier = (Split-Path $templateFilePath -Parent).Replace('\', '/').Split('/arm/')[1]
         $moduleRegistryIdentifier = 'bicep/modules/{0}' -f $moduleIdentifier.Replace('\', '/').Replace('/', '.').ToLower()
 
-        $repositories = Get-AzContainerRegistryRepository -RegistryName $bicepRegistryName
+        if (-not ($repositories = Get-AzContainerRegistryRepository -RegistryName $bicepRegistryName -ErrorAction 'SilentlyContinue')) {
+            # No repositories yet
+            $repositories = @()
+        }
+
         if ($repositories.Contains($moduleRegistryIdentifier)) {
             $versions = (Get-AzContainerRegistryTag -RegistryName $bicepRegistryName -RepositoryName $moduleRegistryIdentifier).Tags.Name
             $latestVersion = (($versions -as [Version[]]) | Measure-Object -Maximum).Maximum
