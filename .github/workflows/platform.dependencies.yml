@@ -140,7 +140,7 @@ jobs:
           # Create Tokens in Key Vault
           Set-ParameterFileTokensInKeyVault -TokenKeyVaultName '${{ secrets.PLATFORM_KEYVAULT }}' `
                                             -subscriptionId '${{ secrets.ARM_SUBSCRIPTION_ID }}' `
-                                            -customTokensConfigPath "$env:GITHUB_WORKSPACE/utilities/settings.json" ``
+                                            -customTokensConfigPath "$env:GITHUB_WORKSPACE/utilities/settings.json" `
                                             -verbose
 
   job_deploy_evhns:
