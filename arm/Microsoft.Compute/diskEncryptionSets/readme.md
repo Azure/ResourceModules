@@ -70,12 +70,13 @@ Tag names and tag values can be provided as needed. A tag can be left without a 
 
 ## Outputs
 
-| Output Name | Type |
-| :-- | :-- |
-| `diskEncryptionResourceGroup` | string |
-| `diskEncryptionSetResourceId` | string |
-| `keyVaultName` | string |
-| `principalId` | string |
+| Output Name | Type | Description |
+| :-- | :-- | :-- |
+| `diskEncryptionResourceGroup` | string | The resource group the disk encryption set was deployed into |
+| `diskEncryptionSetName` | string | The name of the disk encryption set |
+| `diskEncryptionSetResourceId` | string | The resourceId of the disk encryption set |
+| `keyVaultName` | string | The name of the key vault with the disk encryption key |
+| `principalId` | string | The principal Id of the disk encryption set |
 
 ## Template references
 

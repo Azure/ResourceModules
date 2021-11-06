@@ -63,11 +63,11 @@ Tag names and tag values can be provided as needed. A tag can be left without a 
 
 ## Outputs
 
-| Output Name | Type |
-| :-- | :-- |
-| `proximityPlacementGroupResourceGroup` | string |
-| `proximityPlacementGroupResourceId` | string |
-| `proximityPlacementGroupResourceName` | string |
+| Output Name | Type | Description |
+| :-- | :-- | :-- |
+| `proximityPlacementGroupName` | string | The name of the proximity placement group |
+| `proximityPlacementGroupResourceGroup` | string | The resource group the proximity placement group was deployed into |
+| `proximityPlacementGroupResourceId` | string | The resourceId the proximity placement group |
 
 ## Template references
 
