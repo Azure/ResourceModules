@@ -375,9 +375,9 @@ resource virtualMachine 'Microsoft.Compute/virtualMachines@2021-04-01' = {
       computerName: vmComputerNameTransformed
       adminUsername: adminUsername
       adminPassword: adminPassword
-      customData: empty(customData) ? null : base64(customData)
-      windowsConfiguration: empty(windowsConfiguration) ? null : windowsConfiguration
-      linuxConfiguration: empty(linuxConfiguration) ? null : linuxConfiguration
+      customData: !empty(customData) ? base64(customData) : null 
+      windowsConfiguration: !empty(windowsConfiguration) ? windowsConfiguration : null
+      linuxConfiguration: !empty(linuxConfiguration) ? linuxConfiguration : null
       secrets: certificatesToBeInstalled
       allowExtensionOperations: allowExtensionOperations
     }
