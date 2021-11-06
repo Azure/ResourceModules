@@ -164,7 +164,7 @@ jobs:
     runs-on: ubuntu-20.04
     needs:
       - job_set_workflow_param
-    #  - job_deploy_module
+      - job_deploy_module
     steps:
       - name: 'Checkout'
         uses: actions/checkout@v2
