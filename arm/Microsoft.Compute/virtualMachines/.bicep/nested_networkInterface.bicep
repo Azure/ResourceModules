@@ -71,9 +71,9 @@ resource networkInterface 'Microsoft.Network/networkInterfaces@2021-02-01' = {
       name: !empty(ipConfiguration.name) ? ipConfiguration.name : null
       properties: {
         primary: ((index == 0) ? true : false)
-        privateIPAllocationMethod: (contains(ipConfiguration, 'privateIPAllocationMethod') ? (!empty(ipConfiguration.privateIPAllocationMethod) ? ipConfiguration.privateIPAllocationMethod : null) : null)
-        privateIPAddress: (contains(ipConfiguration, 'vmIPAddress') ? (empty(ipConfiguration.vmIPAddress) ? null : ipConfiguration.vmIPAddress) : null)
-        publicIPAddress: ((contains(ipConfiguration, 'pipconfiguration')) ? json('{"id":"${resourceId('Microsoft.Network/publicIPAddresses', '${virtualMachineName}${ipConfiguration.pipconfiguration.publicIpNameSuffix}')}"}') : null)
+        privateIPAllocationMethod: contains(ipConfiguration, 'privateIPAllocationMethod') ? (!empty(ipConfiguration.privateIPAllocationMethod) ? ipConfiguration.privateIPAllocationMethod : null) : null
+        privateIPAddress: contains(ipConfiguration, 'vmIPAddress') ? (!empty(ipConfiguration.vmIPAddress) ? ipConfiguration.vmIPAddress : null) : null
+        publicIPAddress: contains(ipConfiguration, 'pipconfiguration') ? json('{"id":"${resourceId('Microsoft.Network/publicIPAddresses', '${virtualMachineName}${ipConfiguration.pipconfiguration.publicIpNameSuffix}')}"}') : null
         subnet: {
           id: ipConfiguration.subnetId
         }
