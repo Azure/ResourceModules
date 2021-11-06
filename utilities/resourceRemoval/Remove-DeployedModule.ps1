@@ -17,11 +17,8 @@ Optional. As the removal fetches all resources with the removal tag, and then tr
 If the removal fails, the resource in question is moved back in the removal queue and another attempt is made after processing each other resource found.
 This parameter controls, how often we want to push resources back in the queue and retry a removal.
 
-.PARAMETER templateFilePath
-Mandatory. Path to the module template from root.
-
 .EXAMPLE
-Remove-DeployedModule -moduleName 'KeyVault' -resourceGroupName 'validation-rg' -modulePath 'C:/KeyVault/deploy.json'
+Remove-DeployedModule -moduleName 'KeyVault' -resourceGroupName 'validation-rg'
 
 Remove any resource in the resource group 'validation-rg' with tag 'removeModule = KeyVault'
 #>
@@ -32,11 +29,8 @@ function Remove-DeployedModule {
         [Parameter(Mandatory)]
         [string] $moduleName,
 
-        [Parameter(Mandatory)]
+        [Parameter(Mandatory = $false)]
         [string] $resourceGroupName,
-
-        [Parameter(Mandatory)]
-        [string] $templateFilePath,
 
         [Parameter(Mandatory = $false)]
         [int] $maximumRemovalRetries = 3
@@ -48,41 +42,17 @@ function Remove-DeployedModule {
 
     process {
 
-        ################################
-        ## Determine deployment scope ##
-        ################################
-        if ((Split-Path $templateFilePath -Extension) -eq '.bicep') {
-            # Bicep
-            $bicepContent = Get-Content $templateFilePath
-            $bicepScope = $bicepContent | Where-Object { $_ -like '*targetscope =*' }
-            if (-not $bicepScope) {
-                $deploymentScope = 'resourceGroup'
-            } else {
-                $deploymentScope = $bicepScope.ToLower().Replace('targetscope = ', '').Replace("'", '').Trim()
-            }
-        } else {
-            # ARM
-            $armSchema = (ConvertFrom-Json (Get-Content -Raw -Path $templateFilePath)).'$schema'
-            switch -regex ($armSchema) {
-                '\/deploymentTemplate.json#$' { $deploymentScope = 'resourceGroup' }
-                '\/subscriptionDeploymentTemplate.json#$' { $deploymentScope = 'subscription' }
-                '\/managementGroupDeploymentTemplate.json#$' { $deploymentScope = 'managementGroup' }
-                '\/tenantDeploymentTemplate.json#$' { $deploymentScope = 'tenant' }
-                Default { throw "[$armSchema] is a non-supported ARM template schema" }
-            }
-        }
-
         #####################
         ## Process Removal ##
         #####################
-        if ($deploymentScope -eq 'subscription') {
+        if ([String]::IsNullOrEmpty($resourceGroupName)) {
             Write-Verbose 'Handle subscription level removal'
             $resourceGroupToRemove = Get-AzResourceGroup -Tag @{ removeModule = $moduleName }
             if ($resourceGroupToRemove) {
                 if ($resourceGroupToRemove.Count -gt 1) {
                     Write-Error "More than 1 Resource Group has been found with tag [removeModule=$moduleName]. Only 1 Resource Group is expected."
                 } elseif (Get-AzResource -ResourceGroupName $resourceGroupToRemove.ResourceGroupName) {
-                    Write-Error "Resource Group [$resourceGroupName] still has resources provisioned."
+                    Write-Error ('Resource Group [{0}] still has resources provisioned.' -f $resourceGroupToRemove.ResourceGroupName)
                 } else {
                     Write-Verbose ('Removing Resource Group: {0}' -f $resourceGroupToRemove.ResourceGroupName) -Verbose
                     try {
