@@ -69,11 +69,11 @@ Tag names and tag values can be provided as needed. A tag can be left without a 
 
 ## Outputs
 
-| Output Name | Type |
-| :-- | :-- |
-| `applicationSecurityGroupsName` | string |
-| `applicationSecurityGroupsResourceGroup` | string |
-| `applicationSecurityGroupsResourceId` | string |
+| Output Name | Type | Description |
+| :-- | :-- | :-- |
+| `applicationSecurityGroupsName` | string | The name of the application security group |
+| `applicationSecurityGroupsResourceGroup` | string | The resource group the application security group was deployed into |
+| `applicationSecurityGroupsResourceId` | string | The resourceId of the application security group |
 
 ## Template references
 

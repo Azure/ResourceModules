@@ -43,7 +43,7 @@ param fqdn string = ''
 var bgpSettings = {
   asn: localAsn
   bgpPeeringAddress: localBgpPeeringAddress
-  peerWeight: (empty(localPeerWeight) ? '0' : localPeerWeight)
+  peerWeight: !empty(localPeerWeight) ? localPeerWeight : '0'
 }
 
 module pid_cuaId '.bicep/nested_cuaId.bicep' = if (!empty(cuaId)) {
@@ -59,9 +59,9 @@ resource localNetworkGateway 'Microsoft.Network/localNetworkGateways@2021-02-01'
     localNetworkAddressSpace: {
       addressPrefixes: localAddressPrefixes
     }
-    fqdn: ((!empty(fqdn)) ? json('null') : fqdn)
+    fqdn: !empty(fqdn) ? fqdn : null
     gatewayIpAddress: localGatewayPublicIpAddress
-    bgpSettings: (((!empty(localAsn)) && (!empty(localBgpPeeringAddress))) ? bgpSettings : json('null'))
+    bgpSettings: !empty(localAsn) && !empty(localBgpPeeringAddress) ? bgpSettings : null
   }
 }
 
@@ -69,7 +69,7 @@ resource localNetworkGateway_lock 'Microsoft.Authorization/locks@2016-09-01' = i
   name: '${localNetworkGateway.name}-${lock}-lock'
   properties: {
     level: lock
-    notes: (lock == 'CanNotDelete') ? 'Cannot delete resource or child resources.' : 'Cannot modify the resource or child resources.'
+    notes: lock == 'CanNotDelete' ? 'Cannot delete resource or child resources.' : 'Cannot modify the resource or child resources.'
   }
   scope: localNetworkGateway
 }
@@ -82,6 +82,11 @@ module localNetworkGateway_rbac '.bicep/nested_rbac.bicep' = [for (roleAssignmen
   }
 }]
 
+@description('The resourceId of the local network gateway')
 output localNetworkGatewayResourceId string = localNetworkGateway.id
+
+@description('The resource group the local network gateway was deployed into')
 output localNetworkGatewayResourceGroup string = resourceGroup().name
+
+@description('The name of the local network gateway')
 output localNetworkGatewayName string = localNetworkGateway.name

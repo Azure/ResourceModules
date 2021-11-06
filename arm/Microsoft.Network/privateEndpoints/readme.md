@@ -84,11 +84,11 @@ Tag names and tag values can be provided as needed. A tag can be left without a 
 
 ## Outputs
 
-| Output Name | Type |
-| :-- | :-- |
-| `privateEndpointName` | string |
-| `privateEndpointResourceGroup` | string |
-| `privateEndpointResourceId` | string |
+| Output Name | Type | Description |
+| :-- | :-- | :-- |
+| `privateEndpointName` | string | The name of the private endpoint |
+| `privateEndpointResourceGroup` | string | The resource group the private endpoint was deployed into |
+| `privateEndpointResourceId` | string | The resourceId of the private endpoint |
 
 ## Template references
 

@@ -84,11 +84,11 @@ Tag names and tag values can be provided as needed. A tag can be left without a 
 
 ## Outputs
 
-| Output Name | Type |
-| :-- | :-- |
-| `connectionName` | string |
-| `remoteConnectionResourceGroup` | string |
-| `remoteConnectionResourceId` | string |
+| Output Name | Type | Description |
+| :-- | :-- | :-- |
+| `connectionName` | string | The name of the remote connection |
+| `remoteConnectionResourceGroup` | string | The resource group the remote connection was deployed into |
+| `remoteConnectionResourceId` | string | The resourceId of the remote connection |
 
 ## Template references
 

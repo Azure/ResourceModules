@@ -66,11 +66,11 @@
 
 ## Outputs
 
-| Output Name | Type |
-| :-- | :-- |
-| `publicIPAddressName` | string |
-| `publicIPAddressResourceGroup` | string |
-| `publicIPAddressResourceId` | string |
+| Output Name | Type | Description |
+| :-- | :-- | :-- |
+| `publicIPAddressName` | string | The name of the public IP adress |
+| `publicIPAddressResourceGroup` | string | The resource group the public IP adress was deployed into |
+| `publicIPAddressResourceId` | string | The resourceId of the public IP adress |
 
 ## Template references
 

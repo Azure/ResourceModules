@@ -131,7 +131,7 @@ module pid_cuaId '.bicep/nested_cuaId.bicep' = if (!empty(cuaId)) {
 resource serviceBusNamespace 'Microsoft.ServiceBus/namespaces@2021-06-01-preview' = {
   name: serviceBusNamespaceName_var
   location: location
-  tags: (empty(tags) ? json('null') : tags)
+  tags: empty(tags) ? null : tags
   sku: {
     name: skuName
   }
@@ -240,20 +240,20 @@ resource serviceBusNamespace_lock 'Microsoft.Authorization/locks@2016-09-01' = i
   name: '${serviceBusNamespace.name}-${lock}-lock'
   properties: {
     level: lock
-    notes: (lock == 'CanNotDelete') ? 'Cannot delete resource or child resources.' : 'Cannot modify the resource or child resources.'
+    notes: lock == 'CanNotDelete' ? 'Cannot delete resource or child resources.' : 'Cannot modify the resource or child resources.'
   }
   scope: serviceBusNamespace
 }
 
-resource serviceBusNamespace_diagnosticSettings 'Microsoft.Insights/diagnosticsettings@2017-05-01-preview' = if ((!empty(diagnosticStorageAccountId)) || (!empty(workspaceId)) || (!empty(eventHubAuthorizationRuleId)) || (!empty(eventHubName))) {
+resource serviceBusNamespace_diagnosticSettings 'Microsoft.Insights/diagnosticSettings@2017-05-01-preview' = if (!empty(diagnosticStorageAccountId) || !empty(workspaceId) || !empty(eventHubAuthorizationRuleId) || !empty(eventHubName)) {
   name: '${serviceBusNamespace.name}-diagnosticSettings'
   properties: {
-    storageAccountId: (empty(diagnosticStorageAccountId) ? json('null') : diagnosticStorageAccountId)
-    workspaceId: (empty(workspaceId) ? json('null') : workspaceId)
-    eventHubAuthorizationRuleId: (empty(eventHubAuthorizationRuleId) ? json('null') : eventHubAuthorizationRuleId)
-    eventHubName: (empty(eventHubName) ? json('null') : eventHubName)
-    metrics: ((empty(diagnosticStorageAccountId) && empty(workspaceId) && empty(eventHubAuthorizationRuleId) && empty(eventHubName)) ? json('null') : diagnosticsMetrics)
-    logs: ((empty(diagnosticStorageAccountId) && empty(workspaceId) && empty(eventHubAuthorizationRuleId) && empty(eventHubName)) ? json('null') : diagnosticsLogs)
+    storageAccountId: empty(diagnosticStorageAccountId) ? null : diagnosticStorageAccountId
+    workspaceId: empty(workspaceId) ? null : workspaceId
+    eventHubAuthorizationRuleId: empty(eventHubAuthorizationRuleId) ? null : eventHubAuthorizationRuleId
+    eventHubName: empty(eventHubName) ? null : eventHubName
+    metrics: empty(diagnosticStorageAccountId) && empty(workspaceId) && empty(eventHubAuthorizationRuleId) && empty(eventHubName) ? null : diagnosticsMetrics
+    logs: empty(diagnosticStorageAccountId) && empty(workspaceId) && empty(eventHubAuthorizationRuleId) && empty(eventHubName) ? null : diagnosticsLogs
   }
   scope: serviceBusNamespace
 }
@@ -262,7 +262,7 @@ module serviceBusNamespace_privateEndpoints '.bicep/nested_privateEndpoints.bice
   name: '${uniqueString(deployment().name, location)}-PrivateEndpoint-${index}'
   params: {
     privateEndpointResourceId: serviceBusNamespace.id
-    privateEndpointVnetLocation: (empty(privateEndpoints) ? 'dummy' : reference(split(privateEndpoint.subnetResourceId, '/subnets/')[0], '2020-06-01', 'Full').location)
+    privateEndpointVnetLocation: reference(split(privateEndpoint.subnetResourceId, '/subnets/')[0], '2020-06-01', 'Full').location
     privateEndpoint: privateEndpoint
     tags: tags
   }

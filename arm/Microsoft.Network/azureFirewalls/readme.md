@@ -90,16 +90,16 @@ Tag names and tag values can be provided as needed. A tag can be left without a 
 
 ## Outputs
 
-| Output Name | Type |
-| :-- | :-- |
-| `applicationRuleCollections` | array |
-| `azureFirewallName` | string |
-| `azureFirewallPrivateIp` | string |
-| `azureFirewallPublicIp` | string |
-| `azureFirewallResourceGroup` | string |
-| `azureFirewallResourceId` | string |
-| `natRuleCollections` | array |
-| `networkRuleCollections` | array |
+| Output Name | Type | Description |
+| :-- | :-- | :-- |
+| `applicationRuleCollections` | array | List of Application Rule Collections |
+| `azureFirewallName` | string | The name of the Azure firewall |
+| `azureFirewallPrivateIp` | string | The private IP of the Azure Firewall |
+| `azureFirewallPublicIp` | string | The public IP of the Azure Firewall |
+| `azureFirewallResourceGroup` | string | The resource group the azure firewall was deployed into |
+| `azureFirewallResourceId` | string | The resourceId of the Azure firewall |
+| `natRuleCollections` | array | Collection of NAT rule collections used by Azure Firewall |
+| `networkRuleCollections` | array | List of Network Rule Collections |
 
 ## Considerations
 
