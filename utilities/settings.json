@@ -1,0 +1,15 @@
+{
+    "customParameterFileTokens": {
+        "keyVaultTokenPrefix": "ParameterFileToken-",
+        "tokens": [
+            {
+                "name": "namePrefix",
+                "value": "carml"
+            },
+            {
+                "name": "tokenA",
+                "value": "myCustomToken"
+            }
+        ]
+    }
+}

@@ -17,9 +17,15 @@ $Object = @(
 )
 Convert-TokensInFileList -Paths 'C:\fileA.txt','C:\fileB.txt' -TokensReplaceWith $Object
 
+.EXAMPLE
+$Object = @(
+    @{ Replace = "TextA"; With = "TextB" }
+    @{ Replace = "TextC"; With = "TextD" }
+)
+Convert-TokensInFileList -Paths 'C:\fileA.txt','C:\fileB.txt' -TokensReplaceWith $Object -OutputDirectory 'C:\customDirectory'
+
 #>
 function Convert-TokensInFileList {
-
     [CmdletBinding()]
     param(
         [Parameter(Mandatory)]
@@ -31,19 +37,21 @@ function Convert-TokensInFileList {
         [Parameter(Mandatory = $false)]
         [string] $OutputDirectory
     )
-
+    Write-Verbose "$($TokensReplaceWith.Count) Tokens Found"
     foreach ($Path in $Paths) {
+        Write-Verbose "Processing Tokens for file: $Path"
         $File = Get-Content -Path $Path
         $TokensReplaceWith |
             ForEach-Object {
                 $File = $File -replace $PSItem.Replace, $PSItem.With
             }
         if (!$OutputDirectory) {
+            Write-Verbose "Writing Output (Same Path): $Path"
             $File | Set-Content -Path $Path
         } else {
             $FileName = Split-Path $Path -Leaf
+            Write-Verbose "Writing Output (New Path) to:  $OutputDirectory"
             $File | Set-Content -Path (Join-Path $OutputDirectory $FileName)
         }
-
     }
 }

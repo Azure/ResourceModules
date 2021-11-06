@@ -22,7 +22,7 @@ function Get-ParameterFileTokensFromKeyVault {
     [CmdletBinding()]
     param (
         [parameter(Mandatory = $false)]
-        [string]$TokenKeyVaultName = 'TokenKeyVaultName',
+        [string]$TokenKeyVaultName = '',
 
         [parameter(Mandatory = $false)]
         [psobject]$Tag = @{ 'resourceRole' = 'tokensKeyVault' },
@@ -46,8 +46,10 @@ function Get-ParameterFileTokensFromKeyVault {
             }
         }
         try {
-            Write-Verbose "Finding Tokens Key Vault by Name: $TokenKeyVaultName"
-            $TokensKeyVault = Get-AzKeyVault -VaultName $TokenKeyVaultName -ErrorAction SilentlyContinue
+            if ($TokenKeyVaultName) {
+                Write-Verbose "Finding Tokens Key Vault by Name: $TokenKeyVaultName"
+                $TokensKeyVault = Get-AzKeyVault -VaultName $TokenKeyVaultName -ErrorAction SilentlyContinue
+            }
             if (!$TokensKeyVault) {
                 Write-Verbose 'Finding Tokens Key Vault by Tag'
                 $TokensKeyVault = Get-AzKeyVault -Tag $Tag | Select-Object -First 1
@@ -64,6 +66,7 @@ function Get-ParameterFileTokensFromKeyVault {
                 Write-Verbose("Key Vault Tokens Found: $($KeyVaultTokens.count)")
                 $KeyVaultTokens | ForEach-Object {
                     $TokenName = "<<$($PSItem.Name.Replace($TokenNameIdentifierPrefix,''))>>"
+                    Write-Verbose "Target Parameter File Token Name: $TokenName"
                     $CustomParameterFileTokens += [ordered]@{ Replace = "$TokenName"; With = (Get-AzKeyVaultSecret -SecretName $PSItem.Name -VaultName $TokensKeyVault.VaultName -AsPlainText -ErrorAction SilentlyContinue) }
                 }
             } else {
