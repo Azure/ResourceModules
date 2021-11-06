@@ -5,9 +5,11 @@ inputs:
   modulePath:
     description: 'The path to the module folder'
     required: true
+    default: '${{ env.modulePath }}'
   moduleName:
     description: 'The name of the module to process'
     required: true
+    default: '${{ env.moduleName }}'
 
 runs:
   using: 'composite'

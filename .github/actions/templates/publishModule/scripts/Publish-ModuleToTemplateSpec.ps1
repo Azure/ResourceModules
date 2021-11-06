@@ -105,12 +105,12 @@ function Publish-ModuleToTemplateSpec {
             switch ($versioningOption) {
                 'major' {
                     Write-Verbose 'Apply version update on "major" level'
-                    $newVersion = (New-Object -TypeName System.Version -ArgumentList ($latestVersion.Major + 1), $latestVersion.Minor, $latestVersion.Build).ToString()
+                    $newVersion = (New-Object -TypeName System.Version -ArgumentList ($latestVersion.Major + 1), 0, 0).ToString()
                     break
                 }
                 'minor' {
                     Write-Verbose 'Apply version update on "minor" level'
-                    $newVersion = (New-Object -TypeName System.Version -ArgumentList $latestVersion.Major, ($latestVersion.Minor + 1), $latestVersion.Build).ToString()
+                    $newVersion = (New-Object -TypeName System.Version -ArgumentList $latestVersion.Major, ($latestVersion.Minor + 1), 0).ToString()
                     break
                 }
                 'patch' {
@@ -149,4 +149,5 @@ function Publish-ModuleToTemplateSpec {
     end {
         Write-Debug ('{0} exited' -f $MyInvocation.MyCommand)
     }
+}
 }
