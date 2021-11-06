@@ -68,7 +68,7 @@ resource networkInterface 'Microsoft.Network/networkInterfaces@2021-02-01' = {
     dnsSettings: !empty(dnsServers) ? dnsServersValues : null
     networkSecurityGroup: !empty(networkSecurityGroupId) ? networkSecurityGroup : null
     ipConfigurations: [for (ipConfiguration, index) in ipConfigurationArray: {
-      name: (!empty(ipConfiguration.name) ? ipConfiguration.name : null)
+      name: !empty(ipConfiguration.name) ? ipConfiguration.name : null
       properties: {
         primary: ((index == 0) ? true : false)
         privateIPAllocationMethod: (contains(ipConfiguration, 'privateIPAllocationMethod') ? (!empty(ipConfiguration.privateIPAllocationMethod) ? ipConfiguration.privateIPAllocationMethod : null) : null)
