@@ -83,23 +83,6 @@ param baseTime string = utcNow('u')
 @description('Optional. The event hubs to deploy into this namespace')
 param eventHubs array = []
 
-var maxNameLength = 50
-var uniqueEventHubNamespaceUntrim = uniqueString('EventHub Namespace${baseTime}')
-var uniqueEventHubNamespace = length(uniqueEventHubNamespaceUntrim) > maxNameLength ? substring(uniqueEventHubNamespaceUntrim, 0, maxNameLength) : uniqueEventHubNamespaceUntrim
-var name_var = empty(name) ? uniqueEventHubNamespace : name
-var defaultSASKeyName = 'RootManageSharedAccessKey'
-var authRuleResourceId = resourceId('Microsoft.EventHub/namespaces/authorizationRules', name_var, defaultSASKeyName)
-var maximumThroughputUnits_var = !isAutoInflateEnabled ? 0 : maximumThroughputUnits
-var virtualNetworkRules = [for index in range(0, (empty(networkAcls) ? 0 : length(networkAcls.virtualNetworkRules))): {
-  id: '${vNetId}/subnets/${networkAcls.virtualNetworkRules[index].subnet}'
-}]
-var networkAcls_var = {
-  bypass: !empty(networkAcls) ? networkAcls.bypass : null
-  defaultAction: !empty(networkAcls) ? networkAcls.defaultAction : null
-  virtualNetworkRules: !empty(networkAcls) ? virtualNetworkRules : null
-  ipRules: !empty(networkAcls) ? (length(networkAcls.ipRules) > 0 ? networkAcls.ipRules : null) : null
-}
-
 @description('Optional. The disaster recovery config for this namespace')
 param disasterRecoveryConfig object = {}
 
@@ -130,6 +113,23 @@ param logsToEnable array = [
 param metricsToEnable array = [
   'AllMetrics'
 ]
+
+var maxNameLength = 50
+var uniqueEventHubNamespaceUntrim = uniqueString('EventHub Namespace${baseTime}')
+var uniqueEventHubNamespace = length(uniqueEventHubNamespaceUntrim) > maxNameLength ? substring(uniqueEventHubNamespaceUntrim, 0, maxNameLength) : uniqueEventHubNamespaceUntrim
+var name_var = empty(name) ? uniqueEventHubNamespace : name
+var defaultSASKeyName = 'RootManageSharedAccessKey'
+var authRuleResourceId = resourceId('Microsoft.EventHub/namespaces/authorizationRules', name_var, defaultSASKeyName)
+var maximumThroughputUnits_var = !isAutoInflateEnabled ? 0 : maximumThroughputUnits
+var virtualNetworkRules = [for index in range(0, (empty(networkAcls) ? 0 : length(networkAcls.virtualNetworkRules))): {
+  id: '${vNetId}/subnets/${networkAcls.virtualNetworkRules[index].subnet}'
+}]
+var networkAcls_var = {
+  bypass: !empty(networkAcls) ? networkAcls.bypass : null
+  defaultAction: !empty(networkAcls) ? networkAcls.defaultAction : null
+  virtualNetworkRules: !empty(networkAcls) ? virtualNetworkRules : null
+  ipRules: !empty(networkAcls) ? (length(networkAcls.ipRules) > 0 ? networkAcls.ipRules : null) : null
+}
 
 var diagnosticsLogs = [for log in logsToEnable: {
   category: log
@@ -187,7 +187,7 @@ resource eventHubNamespace_diagnosticSettings 'Microsoft.Insights/diagnosticsett
     storageAccountId: !empty(diagnosticStorageAccountId) ? diagnosticStorageAccountId : null
     workspaceId: !empty(workspaceId) ? workspaceId : null
     metrics: !empty(diagnosticStorageAccountId) || !empty(workspaceId) ? diagnosticsMetrics : null
-    logs: !empty(diagnosticStorageAccountId) || !empty(workspaceId)) ? diagnosticsLogs : null
+    logs: !empty(diagnosticStorageAccountId) || !empty(workspaceId) ? diagnosticsLogs : null
   }
   scope: eventHubNamespace
 }
