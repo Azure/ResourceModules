@@ -53,7 +53,7 @@ module networkInterface_publicIPConfigurations 'nested_networkInterface_publicIP
     metricsToEnable: pipMetricsToEnable
     logsToEnable: pipLogsToEnable
     lock: lock
-    roleAssignments: (contains(ipConfiguration.pipconfiguration, 'roleAssignments') ? (!(empty(ipConfiguration.pipconfiguration.roleAssignments)) ? ipConfiguration.pipconfiguration.roleAssignments : []) : [])
+    roleAssignments: contains(ipConfiguration.pipconfiguration, 'roleAssignments') ? (!empty(ipConfiguration.pipconfiguration.roleAssignments) ? ipConfiguration.pipconfiguration.roleAssignments : []) : []
     tags: tags
   }
 }]
