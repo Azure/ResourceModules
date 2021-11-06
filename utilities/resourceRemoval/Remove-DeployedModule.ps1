@@ -47,7 +47,15 @@ function Remove-DeployedModule {
         #####################
         if ([String]::IsNullOrEmpty($resourceGroupName)) {
             Write-Verbose 'Handle subscription level removal'
-            $resourceGroupToRemove = Get-AzResourceGroup -Tag @{ removeModule = $moduleName }
+
+            $retryCount = 1
+            $retryLimit = 10
+            $retryWaitInSeconds = 15
+            while (-not ($resourceGroupToRemove = Get-AzResourceGroup -Tag @{ removeModule = $moduleName } -ErrorAction 'SilentlyContinue') -and $retryLimit -ge $retryCount) {
+                Write-Error ('Did not to find Resource Group by tag [removeModule={0}]. Retrying in [{1} seconds] [{2}/{3}]' -f $moduleName, $retryWaitInSeconds, $retryCount, $retryLimit)
+                Start-Sleep $retryWaitInSeconds
+            }
+
             if ($resourceGroupToRemove) {
                 if ($resourceGroupToRemove.Count -gt 1) {
                     Write-Error "More than 1 Resource Group has been found with tag [removeModule=$moduleName]. Only 1 Resource Group is expected."
@@ -70,7 +78,15 @@ function Remove-DeployedModule {
             }
         } else {
             Write-Verbose 'Handle resource group level removal'
-            $resourcesToRemove = Get-AzResource -Tag @{ removeModule = $moduleName } -ResourceGroupName $resourceGroupName
+
+            $retryCount = 1
+            $retryLimit = 10
+            $retryWaitInSeconds = 15
+            while (-not ($resourcesToRemove = Get-AzResource -Tag @{ removeModule = $moduleName } -ResourceGroupName $resourceGroupName -ErrorAction 'SilentlyContinue') -and $retryLimit -ge $retryCount) {
+                Write-Error ('Did not to find resources by tags [removeModule={0}] in resource group [{1}]. Retrying in [{2} seconds] [{3}/{4}]' -f $moduleName, $resourceGroupName, $retryWaitInSeconds, $retryCount, $retryLimit)
+                Start-Sleep $retryWaitInSeconds
+            }
+
             if ($resourcesToRemove) {
 
                 # If VMs are available, delete those first
