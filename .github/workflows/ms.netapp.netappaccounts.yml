@@ -126,9 +126,9 @@ jobs:
     name: 'Deploy module'
     needs:
       - job_set_workflow_param
-      - job_tests_module_global
-      - job_tests_module_global_api
-      - job_tests_module_deploy_validate
+      # - job_tests_module_global
+      # - job_tests_module_global_api
+      # - job_tests_module_deploy_validate
     strategy:
       fail-fast: false
       matrix:
