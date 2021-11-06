@@ -97,11 +97,11 @@ resource networkInterface_lock 'Microsoft.Authorization/locks@2017-04-01' = if (
 resource networkInterface_diagnosticSettings 'Microsoft.Insights/diagnosticsettings@2021-05-01-preview' = if ((!empty(diagnosticStorageAccountId)) || (!empty(workspaceId)) || (!empty(eventHubAuthorizationRuleId)) || (!empty(eventHubName))) {
   name: '${networkInterface.name}-diagnosticSettings'
   properties: {
-    storageAccountId: (empty(diagnosticStorageAccountId) ? null : diagnosticStorageAccountId)
-    workspaceId: (empty(workspaceId) ? null : workspaceId)
-    eventHubAuthorizationRuleId: (empty(eventHubAuthorizationRuleId) ? null : eventHubAuthorizationRuleId)
-    eventHubName: (empty(eventHubName) ? null : eventHubName)
-    metrics: ((empty(diagnosticStorageAccountId) && empty(workspaceId) && empty(eventHubAuthorizationRuleId) && empty(eventHubName)) ? null : diagnosticsMetrics)
+    storageAccountId: !empty(diagnosticStorageAccountId) ? diagnosticStorageAccountId : null
+    workspaceId: !empty(workspaceId) ? workspaceId : null
+    eventHubAuthorizationRuleId: !empty(eventHubAuthorizationRuleId) ? eventHubAuthorizationRuleId : null
+    eventHubName: !empty(eventHubName) ? eventHubName : null
+    metrics: !empty(diagnosticStorageAccountId) || !empty(workspaceId) || !empty(eventHubAuthorizationRuleId) || !empty(eventHubName) ? diagnosticsMetrics : null
   }
   scope: networkInterface
 }
