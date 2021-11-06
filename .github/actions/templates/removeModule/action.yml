@@ -37,7 +37,7 @@ runs:
       shell: pwsh
       run: |
         # Load used functions
-        . (Join-Path '$env:GITHUB_ACTION_PATH' '${{ inputs.relativeRemovalScriptPath }}')
+        . (Join-Path $env:GITHUB_ACTION_PATH '${{ inputs.relativeRemovalScriptPath }}')
 
         $functionInput = @{
             moduleName        = '${{ inputs.moduleName }}'
