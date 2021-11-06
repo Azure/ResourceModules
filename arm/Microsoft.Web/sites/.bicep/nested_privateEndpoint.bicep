@@ -5,7 +5,7 @@ param tags object
 
 var privateEndpointResourceName = last(split(privateEndpointResourceId, '/'))
 var privateEndpoint_var = {
-  name: contains(privateEndpointObj, 'name') ? (empty(privateEndpointObj.name) ? '${privateEndpointResourceName}-${privateEndpointObj.service}' : privateEndpointObj.name) : '${privateEndpointResourceName}-${privateEndpointObj.service}'
+  name: contains(privateEndpointObj, 'name') ? (!empty(privateEndpointObj.name) ? privateEndpointObj.name : '${privateEndpointResourceName}-${privateEndpointObj.service}') : '${privateEndpointResourceName}-${privateEndpointObj.service}'
   subnetResourceId: privateEndpointObj.subnetResourceId
   service: [
     privateEndpointObj.service
