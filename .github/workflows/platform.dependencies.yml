@@ -145,11 +145,14 @@ jobs:
           # Set agent up
           Set-EnvironmentOnAgent
           # Create Tokens in Key Vault
-          Set-ParameterFileTokensInKeyVault -TokenKeyVaultName '${{ env.PLATFORM_KEYVAULT }}' `
-                                            -SubscriptionId '${{ secrets.ARM_SUBSCRIPTION_ID }}' `
-                                            -LocalCustomParameterFileTokens $Settings.localCustomParameterFileTokens.tokens `
-                                            -TokenKeyVaultSecretNamePrefix $Settings.remoteCustomParameterFileTokens.keyVaultSecretNamePrefix `
-                                            -verbose
+          if('${{ env.PLATFORM_KEYVAULT }}'){
+            Set-ParameterFileTokensInKeyVault `
+                  -TokenKeyVaultName '${{ env.PLATFORM_KEYVAULT }}' `
+                  -SubscriptionId '${{ secrets.ARM_SUBSCRIPTION_ID }}' `
+                  -LocalCustomParameterFileTokens $Settings.localCustomParameterFileTokens.tokens `
+                  -TokenKeyVaultSecretNamePrefix $Settings.remoteCustomParameterFileTokens.keyVaultSecretNamePrefix `
+                  -verbose
+          }
 
   job_deploy_evhns:
     runs-on: ubuntu-20.04

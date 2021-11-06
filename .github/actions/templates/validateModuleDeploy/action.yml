@@ -38,7 +38,7 @@ runs:
         creds: ${{ env.AZURE_CREDENTIALS }}
         enable-AzPSSession: true
 
-    - name: 'Replace Default and Custom Parameter File Tokens [${{ inputs.parameterFilePath }}] '
+    - name: 'Replace Parameter File Tokens [${{ inputs.parameterFilePath }}] '
       shell: pwsh
       run: |
         # Load Settings File
@@ -58,11 +58,14 @@ runs:
         ) | ForEach-Object { [PSCustomObject]$PSItem }
 
         # Get Key Vault Information (If Available) for Parameter File Tokens
-        $CustomParameterFileTokens = Get-ParameterFileTokens -TokenKeyVaultName '${{ env.PLATFORM_KEYVAULT }}' `
-                                          -SubscriptionId '${{ inputs.subscriptionId }}' `
-                                          -LocalCustomParameterFileTokens $Settings.localCustomParameterFileTokens.tokens `
-                                          -TokenKeyVaultSecretNamePrefix $Settings.remoteCustomParameterFileTokens.keyVaultSecretNamePrefix `
-                                          -Verbose
+        if('${{ env.PLATFORM_KEYVAULT }}'){
+          $CustomParameterFileTokens = Get-ParameterFileTokens `
+              -TokenKeyVaultName '${{ env.PLATFORM_KEYVAULT }}' `
+              -SubscriptionId '${{ inputs.subscriptionId }}' `
+              -LocalCustomParameterFileTokens $Settings.localCustomParameterFileTokens.tokens `
+              -TokenKeyVaultSecretNamePrefix $Settings.remoteCustomParameterFileTokens.keyVaultSecretNamePrefix `
+              -Verbose
+        }
 
         # Combine All Parameter File Tokens
         $AllParameterFileTokens = $DefaultParameterFileTokens + $CustomParameterFileTokens | ForEach-Object { [PSCustomObject]$PSItem }

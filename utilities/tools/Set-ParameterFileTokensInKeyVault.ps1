@@ -5,30 +5,23 @@ This script creates the tokens <<token>> that exist in a parameter file in an Az
 .DESCRIPTION
 This script creates the tokens <<token>> that exist in a parameter file in an Azure Key Vault so that it can be swapped at runtime
 
-.PARAMETER TokenKeyVaultName
-Optional. The name of the Key Vault. It will be used as an alternative if the Tag is not provided.
-
-.PARAMETER TokenKeyVaultTag
-Optional. The Tag used to find the Tokens Key Vault in an Azure Subscription. Default is @{ 'resourceRole' = 'tokensKeyVault' }
-
 .PARAMETER SubscriptionId
 Mandatory. The Azure subscription containing the key vault.
+
+.PARAMETER TokenKeyVaultName
+Mandatory. The name of the Key Vault. It will be used as an alternative if the Tag is not provided.
 
 .PARAMETER TokenKeyVaultSecretNamePrefix
 Optional. An identifier used to filter for the Token Names (Secret Name) in Key Vault (i.e. ParameterFileToken-)
 
 .PARAMETER LocalCustomParameterFileTokens
 Optional. Object containing Name/Values for Local Custom Parameter File Tokens to push to Key Vault
-
 #>
 function Set-ParameterFileTokensInKeyVault {
     [CmdletBinding()]
     param (
-        [parameter(Mandatory = $false)]
+        [parameter(Mandatory)]
         [string]$TokenKeyVaultName,
-
-        [parameter(Mandatory = $false)]
-        [psobject]$TokenKeyVaultTag = @{ 'resourceRole' = 'tokensKeyVault' },
 
         [parameter(Mandatory)]
         [string]$SubscriptionId,
@@ -67,15 +60,6 @@ function Set-ParameterFileTokensInKeyVault {
                     Write-Verbose "Finding Tokens Key Vault by Name: $TokenKeyVaultName"
                     $TokensKeyVault = Get-AzKeyVault -VaultName $TokenKeyVaultName
                 }
-                if (!$TokensKeyVault) {
-                    Write-Verbose 'Finding Tokens Key Vault by Tag:'
-                    $TokensKeyVault = Get-AzKeyVault -Tag $TokenKeyVaultTag | Select-Object -First 1
-                    if (!($TokensKeyVault.Tags -match $TokenKeyVaultTag)) {
-                        #Set Key Vault Tags for future updates
-                        Write-Verbose "Key Vault Tags Not Found. Setting Tags on Key Vault $TokenKeyVaultName"
-                        New-AzTag -Tag $TokenKeyVaultTag -ResourceId $TokensKeyVault.ResourceId -ErrorAction SilentlyContinue
-                    }
-                }
                 ## IF Token Key Vault Exists
                 if ($TokensKeyVault) {
                     Write-Verbose "Creating Tokens in Key Vault: $($TokensKeyVault.VaultName)"
@@ -94,7 +78,6 @@ function Set-ParameterFileTokensInKeyVault {
             } catch {
                 throw $PSitem.Exception.Message
             }
-
         }
     }
 }

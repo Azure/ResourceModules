@@ -5,30 +5,23 @@ This script Gets the tokens <<token>> that exist in a parameter file from an Azu
 .DESCRIPTION
 This script gets the tokens <<token>> that exist in a parameter file from an Azure Key Vault so that it can be swapped at runtime
 
-.PARAMETER TokenKeyVaultName
-Optional. The name of the Key Vault. It will be used as an alternative if the Tag is not provided.
-
-.PARAMETER TokenKeyVaultTag
-Optional. The Tag used to find the Tokens Key Vault in an Azure Subscription. Default is @{ 'resourceRole' = 'tokensKeyVault' }
-
 .PARAMETER SubscriptionId
 Mandatory. The Azure subscription containing the key vault.
+
+.PARAMETER TokenKeyVaultName
+Optional. The name of the Key Vault. It will be used as an alternative if the Tag is not provided.
 
 .PARAMETER TokenKeyVaultSecretNamePrefix
 Optional. An identifier used to filter for the Token Names (Secret Name) in Key Vault (i.e. ParameterFileToken-)
 
 .PARAMETER LocalCustomParameterFileTokens
 Optional. Object containing Name/Values for Local Custom Parameter File Tokens
-
 #>
 function Get-ParameterFileTokens {
     [CmdletBinding()]
     param (
-        [parameter(Mandatory = $false)]
-        [string]$TokenKeyVaultName = '',
-
-        [parameter(Mandatory = $false)]
-        [psobject]$TokenKeyVaultTag = @{ 'resourceRole' = 'tokensKeyVault' },
+        [parameter(Mandatory)]
+        [string]$TokenKeyVaultName,
 
         [parameter(Mandatory)]
         [string]$SubscriptionId,
@@ -57,22 +50,15 @@ function Get-ParameterFileTokens {
 
         ## Remote Custom Parameter File Tokens (Can Contain sensitive Information)
         ## Set Azure Context
-        if ($TokenKeyVaultName -or $TokenKeyVaultTag) {
+        if ($TokenKeyVaultName) {
+            Write-Verbose "Finding Tokens Key Vault by Name: $TokenKeyVaultName"
             $Context = Get-AzContext -ListAvailable | Where-Object Subscription -Match $SubscriptionId
             if ($Context) {
                 Write-Verbose 'Setting Azure Context'
                 $Context | Set-AzContext
             }
             ## Find Token Key Vault by Name
-            if ($TokenKeyVaultName) {
-                Write-Verbose "Finding Tokens Key Vault by Name: $TokenKeyVaultName"
-                $TokensKeyVault = Get-AzKeyVault -VaultName $TokenKeyVaultName -ErrorAction SilentlyContinue
-            }
-            ## Find Token Key Vault by Tag (Uses Default Tag if not provided)
-            if (!$TokensKeyVault) {
-                Write-Verbose 'Finding Tokens Key Vault by Tag'
-                $TokensKeyVault = Get-AzKeyVault -Tag $TokenKeyVaultTag -ErrorAction SilentlyContinue | Select-Object -First 1 -ErrorAction SilentlyContinue
-            }
+            $TokensKeyVault = Get-AzKeyVault -VaultName $TokenKeyVaultName -ErrorAction SilentlyContinue
             ## If Key Vault has been found, Get the Tokens
             if ($TokensKeyVault) {
                 ## Get Tokens
