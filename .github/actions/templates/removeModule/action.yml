@@ -43,6 +43,7 @@ runs:
         $functionInput = @{
             moduleName        = '${{ inputs.moduleName }}'
             resourceGroupName = '${{ inputs.resourceGroupName }}'
+            verbose           = $true
         }
 
         Write-Verbose 'Invoke task with' -Verbose
