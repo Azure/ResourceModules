@@ -17,6 +17,12 @@ Optional. As the removal fetches all resources with the removal tag, and then tr
 If the removal fails, the resource in question is moved back in the removal queue and another attempt is made after processing each other resource found.
 This parameter controls, how often we want to push resources back in the queue and retry a removal.
 
+.PARAMETER tagSearchRetryLimit
+Optional. The maximum times to retry the search for resources via their removal tag
+
+.PARAMETER tagSearchRetryInterval
+Optional. The time to wait in between the search for resources via their remove tags
+
 .EXAMPLE
 Remove-DeployedModule -moduleName 'KeyVault' -resourceGroupName 'validation-rg'
 
@@ -33,11 +39,20 @@ function Remove-DeployedModule {
         [string] $resourceGroupName,
 
         [Parameter(Mandatory = $false)]
-        [int] $maximumRemovalRetries = 3
+        [int] $maximumRemovalRetries = 3,
+
+        [Parameter(Mandatory = $false)]
+        [int] $tagSearchRetryLimit = 40,
+
+        [Parameter(Mandatory = $false)]
+        [int] $tagSearchRetryInterval = 15
     )
 
     begin {
         Write-Debug ('{0} entered' -f $MyInvocation.MyCommand)
+
+        # Load helper
+        . (Join-Path $PSScriptRoot 'helper/Remove-Resource.ps1')
     }
 
     process {
@@ -48,13 +63,12 @@ function Remove-DeployedModule {
         if ([String]::IsNullOrEmpty($resourceGroupName)) {
             Write-Verbose 'Handle subscription level removal'
 
-            $retryCount = 1
-            $retryLimit = 40
-            $retryWaitInSeconds = 15
-            while (-not ($resourceGroupToRemove = Get-AzResourceGroup -Tag @{ removeModule = $moduleName } -ErrorAction 'SilentlyContinue') -and $retryCount -le $retryLimit) {
-                Write-Verbose ('Did not to find Resource Group by tag [removeModule={0}]. Retrying in [{1} seconds] [{2}/{3}]' -f $moduleName, $retryWaitInSeconds, $retryCount, $retryLimit)
-                Start-Sleep $retryWaitInSeconds
-                $retryCount++
+            # Identifying resources
+            $tagSearchRetryCount = 1
+            while (-not ($resourceGroupToRemove = Get-AzResourceGroup -Tag @{ removeModule = $moduleName } -ErrorAction 'SilentlyContinue') -and $tagSearchRetryCount -le $tagSearchRetryLimit) {
+                Write-Verbose ('Did not to find Resource Group by tag [removeModule={0}]. Retrying in [{1} seconds] [{2}/{3}]' -f $moduleName, $tagSearchRetryInterval, $tagSearchRetryCount, $tagSearchRetryLimit)
+                Start-Sleep $tagSearchRetryInterval
+                $tagSearchRetryCount++
             }
 
             if ($resourceGroupToRemove) {
@@ -80,13 +94,12 @@ function Remove-DeployedModule {
         } else {
             Write-Verbose 'Handle resource group level removal'
 
-            $retryCount = 1
-            $retryLimit = 40
-            $retryWaitInSeconds = 15
-            while (-not ($resourcesToRemove = Get-AzResource -Tag @{ removeModule = $moduleName } -ResourceGroupName $resourceGroupName -ErrorAction 'SilentlyContinue') -and $retryCount -le $retryLimit) {
-                Write-Verbose ('Did not to find resources by tags [removeModule={0}] in resource group [{1}]. Retrying in [{2} seconds] [{3}/{4}]' -f $moduleName, $resourceGroupName, $retryWaitInSeconds, $retryCount, $retryLimit)
-                Start-Sleep $retryWaitInSeconds
-                $retryCount++
+            # Identifying resources
+            $tagSearchRetryCount = 1
+            while (-not ($resourcesToRemove = Get-AzResource -Tag @{ removeModule = $moduleName } -ResourceGroupName $resourceGroupName -ErrorAction 'SilentlyContinue') -and $tagSearchRetryCount -le $tagSearchRetryLimit) {
+                Write-Verbose ('Did not to find resources by tags [removeModule={0}] in resource group [{1}]. Retrying in [{2} seconds] [{3}/{4}]' -f $moduleName, $resourceGroupName, $tagSearchRetryInterval, $tagSearchRetryCount, $tagSearchRetryLimit)
+                Start-Sleep $tagSearchRetryInterval
+                $tagSearchRetryCount++
             }
 
             if ($resourcesToRemove) {
@@ -122,29 +135,4 @@ function Remove-DeployedModule {
     end {
         Write-Debug ('{0} exited' -f $MyInvocation.MyCommand)
     }
-}
-
-function Remove-Resource {
-
-    [CmdletBinding(SupportsShouldProcess)]
-    param(
-        [Parameter(Mandatory)]
-        [object[]] $resourcesToRemove
-    )
-
-    $resourcesToRetry = @()
-    Write-Verbose '----------------------------------'
-    foreach ($resource in $resourcesToRemove) {
-        try {
-            if ($PSCmdlet.ShouldProcess(('Resource [{0}] of type [{1}] from resource group [{2}]' -f $resource.Name, $resource.ResourceType, $resource.ResourceGroupName), 'Remove')) {
-                $null = Remove-AzResource -ResourceId $resource.ResourceId -Force -ErrorAction 'Stop'
-                Write-Verbose ('Removed resource [{0}] of type [{1}] from resource group [{2}]' -f $resource.Name, $resource.ResourceType, $resource.ResourceGroupName)
-            }
-        } catch {
-            Write-Warning ('Removal moved back for re-try. Reason: [{0}]' -f $_.Exception.Message)
-            $resourcesToRetry += $resource
-        }
-    }
-    Write-Verbose '----------------------------------'
-    return $resourcesToRetry
 }
