@@ -63,23 +63,23 @@ module networkWatcher_connectionMonitors 'connectionMonitors/deploy.bicep' = [fo
     destinationAddress: connectionMonitor.destinationAddress
     destinationPort: contains(connectionMonitor, 'destinationPort') ? connectionMonitor.destinationPort : 80
     destinationResourceId: contains(connectionMonitor, 'destinationResourceId') ? connectionMonitor.destinationResourceId : ''
-    endpoints: contains(connectionMonitor, 'endpoints') ? connectionMonitor.endpoints : null
-    monitoringInterval: contains(connectionMonitor, 'monitoringInterval') ? connectionMonitor.monitoringInterval : null
+    endpoints: contains(connectionMonitor, 'endpoints') ? connectionMonitor.endpoints : []
+    monitoringInterval: contains(connectionMonitor, 'monitoringInterval') ? connectionMonitor.monitoringInterval : 30
     name: connectionMonitor.name
     networkWatcherName: networkWatcher.name
-    notes: contains(connectionMonitor, 'notes') ? connectionMonitor.notes : null
-    sourcePort: contains(connectionMonitor, 'sourcePort') ? connectionMonitor.sourcePort : null
+    notes: contains(connectionMonitor, 'notes') ? connectionMonitor.notes : ''
+    sourcePort: contains(connectionMonitor, 'sourcePort') ? connectionMonitor.sourcePort : 80
     sourceResourceId: connectionMonitor.sourceResourceId
-    testConfigurations: contains(connectionMonitor, 'testConfigurations') ? connectionMonitor.testConfigurations : null
-    testGroups: contains(connectionMonitor, 'testGroups') ? connectionMonitor.testGroups : null
-    workspaceResourceId: contains(connectionMonitor, 'workspaceResourceId') ? connectionMonitor.workspaceResourceId : null
+    testConfigurations: contains(connectionMonitor, 'testConfigurations') ? connectionMonitor.testConfigurations : []
+    testGroups: contains(connectionMonitor, 'testGroups') ? connectionMonitor.testGroups : []
+    workspaceResourceId: contains(connectionMonitor, 'workspaceResourceId') ? connectionMonitor.workspaceResourceId : ''
   }
 }]
 
 module networkWatcher_flowLogs 'flowLogs/deploy.bicep' = [for (flowLog, index) in flowLogs: {
   name: '${deployment().name}-flowLog-${index}'
   params: {
-    enabled: contains(flowLog, 'enabled') ? flowLog.enabled : json('null')
+    enabled: contains(flowLog, 'enabled') ? flowLog.enabled : true
     formatVersion: contains(flowLog, 'formatVersion') ? flowLog.formatVersion : 2
     name: contains(flowLog, 'name') ? flowLog.name : '${last(split(flowLog.targetResourceId, '/'))}-${split(flowLog.targetResourceId, '/')[4]}-flowlog'
     networkWatcherName: networkWatcher.name
