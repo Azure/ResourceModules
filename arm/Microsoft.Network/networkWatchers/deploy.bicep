@@ -61,8 +61,8 @@ module networkWatcher_connectionMonitors 'connectionMonitors/deploy.bicep' = [fo
   name: connectionMonitor.name
   params: {
     destinationAddress: connectionMonitor.destinationAddress
-    destinationPort: contains(connectionMonitor, 'destinationPort') ? connectionMonitor.destinationPort : null
-    destinationResourceId: contains(connectionMonitor, 'destinationResourceId') ? connectionMonitor.destinationResourceId : null
+    destinationPort: contains(connectionMonitor, 'destinationPort') ? connectionMonitor.destinationPort : 80
+    destinationResourceId: contains(connectionMonitor, 'destinationResourceId') ? connectionMonitor.destinationResourceId : ''
     endpoints: contains(connectionMonitor, 'endpoints') ? connectionMonitor.endpoints : null
     monitoringInterval: contains(connectionMonitor, 'monitoringInterval') ? connectionMonitor.monitoringInterval : null
     name: connectionMonitor.name
@@ -79,15 +79,15 @@ module networkWatcher_connectionMonitors 'connectionMonitors/deploy.bicep' = [fo
 module networkWatcher_flowLogs 'flowLogs/deploy.bicep' = [for (flowLog, index) in flowLogs: {
   name: '${deployment().name}-flowLog-${index}'
   params: {
-    enabled: contains(flowLog, 'enabled') ? flowLog.enabled : null
-    formatVersion: contains(flowLog, 'formatVersion') ? flowLog.formatVersion : null
-    name: contains(flowLog, 'name') ? flowLog.name : null
+    enabled: contains(flowLog, 'enabled') ? flowLog.enabled : json('null')
+    formatVersion: contains(flowLog, 'formatVersion') ? flowLog.formatVersion : 2
+    name: contains(flowLog, 'name') ? flowLog.name : '${last(split(flowLog.targetResourceId, '/'))}-${split(flowLog.targetResourceId, '/')[4]}-flowlog'
     networkWatcherName: networkWatcher.name
-    retentionInDays: contains(flowLog, 'retentionInDays') ? flowLog.retentionInDays : null
+    retentionInDays: contains(flowLog, 'retentionInDays') ? flowLog.retentionInDays : 365
     storageId: flowLog.storageId
     targetResourceId: flowLog.targetResourceId
-    trafficAnalyticsInterval: contains(flowLog, 'trafficAnalyticsInterval') ? flowLog.trafficAnalyticsInterval : null
-    workspaceResourceId: contains(flowLog, 'workspaceResourceId') ? flowLog.workspaceResourceId : null
+    trafficAnalyticsInterval: contains(flowLog, 'trafficAnalyticsInterval') ? flowLog.trafficAnalyticsInterval : 60
+    workspaceResourceId: contains(flowLog, 'workspaceResourceId') ? flowLog.workspaceResourceId : ''
   }
 }]
 
