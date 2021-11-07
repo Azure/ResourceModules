@@ -22,7 +22,7 @@ A Switch Paramaeter that triggers the Deployment of the Module
 .PARAMETER ValidationTest
 A Switch Paramaeter that triggers the Validation of the Module Only without Deployment
 
-.PARAMETER CustomParameterFileTokens
+.PARAMETER OtherParameterFileTokens
 A Hashtable Paramaeter that contains custom tokens to be replaced in the paramter files for deployment
 
 .EXAMPLE
@@ -39,7 +39,7 @@ $TestModuleLocallyInput = @{
         ManagementGroupId = 'mg-contoso'
         RemoveDeployment  = $false
     }
-    CustomParameterFileTokens  = @(
+    OtherParameterFileTokens  = @(
         @{ Replace = '<<principalId1>>'; With = 'abcdefg8-1234-1234-1234567890' }
         @{ Replace = '<<tenantId1>>'; With = 'abcdefg8-1234-1234-1234567890' }
     )
@@ -59,25 +59,26 @@ function Test-ModuleLocally {
         [parameter(Mandatory = $false)]
         [switch]$PesterTest,
 
-        [Parameter(ParameterSetName = 'Deploy')]
         [parameter(Mandatory)]
         [psobject]$ValidateOrDeployParameters,
 
-        [Parameter(ParameterSetName = 'Deploy')]
         [parameter(Mandatory = $false)]
         [switch]$DeploymentTest,
 
-        [Parameter(ParameterSetName = 'Deploy')]
         [parameter(Mandatory = $false)]
         [switch]$ValidationTest,
 
-        [Parameter(ParameterSetName = 'Deploy')]
         [parameter(Mandatory = $false)]
-        [switch]$DeployAllParameterFiles,
+        [switch]$DeployAllModuleParameterFiles,
 
-        [Parameter(ParameterSetName = 'Deploy')]
         [parameter(Mandatory = $false)]
-        [psobject]$CustomParameterFileTokens
+        [switch]$GetParameterFileTokens,
+
+        [parameter(Mandatory = $false)]
+        [string]$TokenKeyVaultName,
+
+        [parameter(Mandatory = $false)]
+        [psobject]$OtherParameterFileTokens
     )
 
     begin {
@@ -111,16 +112,41 @@ function Test-ModuleLocally {
             # Find Test Parameter Files
             $ModuleParameterFiles = Get-ChildItem -Path (Join-Path $PSScriptRoot '..\..\arm' $ModuleName '.parameters') -Recurse
             # Load Tokens Converter Script
-            . (Join-Path $PSScriptRoot '..\..' '.github\actions\sharedScripts\Convert-TokensInFileList.ps1')
+            . (Join-Path $PSScriptRoot '..\..' 'utilities\tools\Convert-TokensInFileList.ps1')
             # Replace Tokens with Values For Local Testing
             $DefaultParameterFileTokens = @(
                 @{ Replace = '<<subscriptionId>>'; With = "$($ValidateOrDeployParameters.SubscriptionId)" }
                 @{ Replace = '<<managementGroupId>>'; With = "$($ValidateOrDeployParameters.ManagementGroupId)" }
-                @{ Replace = '<<resourceGroupName>>'; With = "$($ValidateOrDeployParameters.resourceGroupName)" }
-                @{ Replace = '<<location>>'; With = "$($ValidateOrDeployParameters.location)" }
+                #@{ Replace = '<<resourceGroupName>>'; With = "$($ValidateOrDeployParameters.resourceGroupName)" }
+                #@{ Replace = '<<location>>'; With = "$($ValidateOrDeployParameters.location)" }
             ) | ForEach-Object { [PSCustomObject]$PSItem }
 
-            $ModuleParameterFiles | ForEach-Object { Convert-TokensInFileList -Paths $PSitem.FullName -TokensReplaceWith ($DefaultParameterFileTokens + $CustomParameterFileTokens) }
+            # Look for Local Custom Parameter File Tokens (Source Control)
+            if ($GetParameterFileTokens) {
+                # Get Settings JSON File
+                $Settings = Get-Content -Path (Join-Path $PSScriptRoot '..\..' 'utilities\settings.json') | ConvertFrom-Json
+
+                # Load Get Parameter File Tokens Script
+                . (Join-Path $PSScriptRoot '..\..' 'utilities\tools\Get-ParameterFileTokens.ps1')
+
+                # Get Custom Parameter File Tokens (Local and Remote-If Key Vault Provided)
+                $ConvertTokensFunctionsInput = @{
+                    SubscriptionId                 = "$($ValidateOrDeployParameters.SubscriptionId)"
+                    LocalCustomParameterFileTokens = $Settings.localCustomParameterFileTokens.tokens
+                    TokenKeyVaultSecretNamePrefix  = $Settings.remoteCustomParameterFileTokens.keyVaultSecretNamePrefix
+                }
+                if ($TokenKeyVaultName) {
+                    $ConvertTokensFunctionsInput += @{ TokenKeyVaultName = $TokenKeyVaultName }
+                }
+                $CustomParameterFileTokens = Get-ParameterFileTokens @ConvertTokensFunctionsInput -Verbose
+
+            }
+            # Combine All Parameter File Tokens
+            $AllParameterFileTokens = $DefaultParameterFileTokens + $OtherParameterFileTokens + $CustomParameterFileTokens | ForEach-Object { [PSCustomObject]$PSItem }
+
+            # Convert Tokens in Parameter Files
+            Write-Verbose 'Invoking Convert-TokensInFileList'
+            $ModuleParameterFiles | ForEach-Object { Convert-TokensInFileList -Paths $PSitem.FullName -TokensReplaceWith $AllParameterFileTokens }
 
             # Build Modules Validation and Deployment Inputs
             $functionInput = @{
@@ -146,7 +172,7 @@ function Test-ModuleLocally {
                 if ($DeploymentTest) {
                     Write-Verbose "Deploying Module: $ModuleName"
                     # Set the ParameterFilePath to Directory instead of the default 'parameters.json'
-                    if ($DeployAllParameterFiles) {
+                    if ($DeployAllModuleParameterFiles) {
                         $functionInput.parameterFilePath = (Join-Path $PSScriptRoot '..\..\arm' $ModuleName '.parameters')
                     }
                     # Append to Function Input the required parameters for Deployment
@@ -163,11 +189,11 @@ function Test-ModuleLocally {
             } catch {
                 Write-Error $PSItem.Exception
                 # Replace Values with Tokens For Repo Updates
-                ($DefaultParameterFileTokens + $CustomParameterFileTokens) | ForEach-Object {
+                $AllParameterFileTokens | ForEach-Object {
                     $Replace = $PSitem.With; $With = $PSItem.Replace
                     $PSitem.Replace = $Replace; $PSitem.With = $With
                 }
-                $ModuleParameterFiles | ForEach-Object { Convert-TokensInFileList -Paths $PSitem.FullName -TokensReplaceWith ($DefaultParameterFileTokens + $CustomParameterFileTokens) }
+                $ModuleParameterFiles | ForEach-Object { Convert-TokensInFileList -Paths $PSitem.FullName -TokensReplaceWith $AllParameterFileTokens }
             }
         }
     }
@@ -176,11 +202,11 @@ function Test-ModuleLocally {
         # Restore Parameter Files
         if (($ValidateTest -or $DeploymentTest) -and $ValidateOrDeployParameters) {
             # Replace Values with Tokens For Repo Updates
-            ($DefaultParameterFileTokens + $CustomParameterFileTokens) | ForEach-Object {
+            $AllParameterFileTokens | ForEach-Object {
                 $Replace = $PSitem.With; $With = $PSItem.Replace
                 $PSitem.Replace = $Replace; $PSitem.With = $With
             }
-            $ModuleParameterFiles | ForEach-Object { Convert-TokensInFileList -Paths $PSitem.FullName -TokensReplaceWith ($DefaultParameterFileTokens + $CustomParameterFileTokens) }
+            $ModuleParameterFiles | ForEach-Object { Convert-TokensInFileList -Paths $PSitem.FullName -TokensReplaceWith $AllParameterFileTokens }
         }
     }
 }
