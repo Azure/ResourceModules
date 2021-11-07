@@ -5,62 +5,21 @@
     "name": {
       "value": "<<platformKeyVault>>"
     },
-    "accessPolicies": {
+    "enableRbacAuthorization": {
+      "value": true
+    },
+    "roleAssignments": {
       "value": [
         {
-          "tenantId": "<<tenantId>>",
-          "objectId": "<<deploymentSpId>>",
-          "permissions": {
-            "keys": [
-              "all"
-            ],
-            "secrets": [
-              "all"
-            ],
-            "certificates": [
-              "all"
-            ]
-          }
-        },
-        {
-          "tenantId": "<<tenantId>>",
-          "objectId": "d04ffe2e-7fc3-4510-9ea7-7c1f98e73c08", //CARML-Resource-A
-          "permissions": {
-            "keys": [
-              "all"
-            ],
-            "secrets": [
-              "all"
-            ],
-            "certificates": [
-              "all"
-            ]
-          }
-        },
-        {
-          "tenantId": "<<tenantId>>",
-          "objectId": "c99b4f9a-4268-4ab0-bd02-85d160b29a36", //CARML-Resource-C
-          "permissions": {
-            "keys": [
-              "all"
-            ],
-            "secrets": [
-              "all"
-            ],
-            "certificates": [
-              "all"
-            ]
-          }
+          "roleDefinitionIdOrName": "00482a5a-887f-4fb3-b363-3b7fe8e74483", // Key Vault Administrator
+          "principalIds": [
+            "<<deploymentSpId>>"
+          ]
         }
       ]
     },
     "enablePurgeProtection": {
       "value": false
-    },
-    "tags": {
-      "value": {
-        "resourceRole": "tokensKeyVault"
-      }
     },
     "lock": {
       "value": "CanNotDelete"

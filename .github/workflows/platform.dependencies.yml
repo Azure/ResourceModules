@@ -93,6 +93,7 @@ jobs:
       namespace: 'Microsoft.KeyVault\vaults'
     needs:
       - job_deploy_rg
+      - job_deploy_rolea
     strategy:
       fail-fast: false
       matrix:
@@ -751,7 +752,8 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        parameterFilePaths: ['parameters.json']
+        parameterFilePaths:
+          ['parameters.json', 'main.parameters.json', 'cont.parameters.json']
     steps:
       - name: 'Checkout'
         uses: actions/checkout@v2
