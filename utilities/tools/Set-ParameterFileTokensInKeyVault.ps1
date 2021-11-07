@@ -27,7 +27,7 @@ function Set-ParameterFileTokensInKeyVault {
         [string]$SubscriptionId,
 
         [parameter(Mandatory = $false)]
-        [string]$TokenKeyVaultSecretNamePrefix = 'ParameterFileToken-',
+        [string]$TokenKeyVaultSecretNamePrefix,
 
         [parameter(Mandatory = $false)]
         [psobject]$LocalCustomParameterFileTokens
@@ -65,9 +65,9 @@ function Set-ParameterFileTokensInKeyVault {
                     Write-Verbose "Creating Tokens in Key Vault: $($TokensKeyVault.VaultName)"
                     try {
                         $AllCustomParameterFileTokens | ForEach-Object {
-                            Write-Verbose "Creating Token: $($PSItem.Name)"
-                            $TokenName = $TokenKeyVaultSecretNamePrefix + $PSItem.Name
-                            Set-AzKeyVaultSecret -Name $TokenName -SecretValue (ConvertTo-SecureString -AsPlainText $PSItem.Value) -VaultName $TokensKeyVault.VaultName | Out-Null
+                            $TokenName = -join ($TokenKeyVaultSecretNamePrefix, $PSItem.Name)
+                            Write-Verbose "Creating Token: $TokenName"
+                            Set-AzKeyVaultSecret -Name $TokenName -SecretValue (ConvertTo-SecureString -AsPlainText $PSItem.Value) -VaultName $TokensKeyVault.VaultName -ContentType 'ParameterFileToken' | Out-Null
                         }
                     } catch {
                         throw $PSitem.Exception.Message

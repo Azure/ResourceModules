@@ -27,7 +27,7 @@ function Get-ParameterFileTokens {
         [string]$SubscriptionId,
 
         [parameter(Mandatory = $false)]
-        [string]$TokenKeyVaultSecretNamePrefix = 'ParameterFileToken-',
+        [string]$TokenKeyVaultSecretNamePrefix,
 
         [parameter(Mandatory = $false)]
         [psobject]$LocalCustomParameterFileTokens
@@ -36,19 +36,19 @@ function Get-ParameterFileTokens {
         $AllCustomParameterFileTokens = @()
     }
     process {
-        ## Local Custom Parameter File Tokens (Should not contain sensitive Information)
+        ## Local Custom Parameter File Tokens (Should not Contain Sensitive Information)
         if ($LocalCustomParameterFileTokens) {
             Write-Verbose "Found $($LocalCustomParameterFileTokens.Count) Local Custom Tokens in Settings File"
             $LocalCustomParameterFileTokens | ForEach-Object {
                 $TokenName = "<<$($PSItem.Name)>>"
-                Write-Verbose "Adding Parameter File Local Token Name: $TokenName"
+                Write-Verbose "Adding Parameter File 'Local Token' : $TokenName"
                 $AllCustomParameterFileTokens += [ordered]@{ Replace = "$TokenName"; With = "$($PSItem.Value)" }
             }
         } else {
             Write-Verbose 'No Local Custom Parameter File Tokens Detected'
         }
 
-        ## Remote Custom Parameter File Tokens (Can Contain sensitive Information)
+        ## Remote Custom Parameter File Tokens (Should Not Contain Sensitive Information)
         ## Set Azure Context
         if ($TokenKeyVaultName) {
             Write-Verbose "Finding Tokens Key Vault by Name: $TokenKeyVaultName"
@@ -63,12 +63,18 @@ function Get-ParameterFileTokens {
             if ($TokensKeyVault) {
                 ## Get Tokens
                 Write-Verbose("Tokens Key Vault Found: $($TokensKeyVault.VaultName)")
-                $KeyVaultTokens = Get-AzKeyVaultSecret -VaultName $TokensKeyVault.VaultName -ErrorAction SilentlyContinue | Where-Object -Property Name -Like "$($TokenKeyVaultSecretNamePrefix)*"
+                $KeyVaultTokens = Get-AzKeyVaultSecret -VaultName $TokensKeyVault.VaultName -ErrorAction SilentlyContinue | Where-Object -Property ContentType -EQ 'ParameterFileToken' | Where-Object -Property Name -Like "$($TokenKeyVaultSecretNamePrefix)*"
                 if ($KeyVaultTokens) {
                     Write-Verbose("Key Vault Tokens Found: $($KeyVaultTokens.count)")
                     $KeyVaultTokens | ForEach-Object {
-                        $TokenName = "<<$($PSItem.Name.Replace($TokenKeyVaultSecretNamePrefix,''))>>"
-                        Write-Verbose "Adding Parameter File Remote Token Name: $TokenName"
+                        $TokenName = $PSItem.Name
+                        ## Remove Prefix if Provided to Find the Token (Secret) in Key Vault
+                        if ($TokenKeyVaultSecretNamePrefix) {
+                            $TokenName = $TokenName.Replace($TokenKeyVaultSecretNamePrefix, '')
+                        }
+                        ## Add Parameter File Prefix and Suffix (i.e. <<token>>)
+                        $TokenName = "<<$TokenName>>"
+                        Write-Verbose "Adding Parameter File 'Remote Token' : $TokenName"
                         $AllCustomParameterFileTokens += [ordered]@{ Replace = "$TokenName"; With = (Get-AzKeyVaultSecret -SecretName $PSItem.Name -VaultName $TokensKeyVault.VaultName -AsPlainText -ErrorAction SilentlyContinue) }
                     }
                 } else {
