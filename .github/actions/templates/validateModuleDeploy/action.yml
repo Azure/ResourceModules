@@ -38,16 +38,41 @@ runs:
         creds: ${{ env.AZURE_CREDENTIALS }}
         enable-AzPSSession: true
 
-    - name: 'Replace Tokens [${{ inputs.parameterFilePath }}] '
+    - name: 'Replace Parameter File Tokens [${{ inputs.parameterFilePath }}] '
       shell: pwsh
       run: |
+        # Load Settings File
+        $Settings = Get-Content -Path "utilities/settings.json" | ConvertFrom-Json
         # Load used funtions
-        . ".github/actions/sharedScripts/Convert-TokensInFiles.ps1"
-        $TokensReplaceWithObject = @(
-            @{ Replace = "<<subscriptionId>>"; With = '${{ inputs.subscriptionId }}' }
-        )
-        write-verbose "Invoking Convert-TokensInFiles"
-        Convert-TokensInFiles -Paths '${{ inputs.parameterFilePath }}' -TokensReplaceWith $TokensReplaceWithObject
+        . "utilities/tools/Convert-TokensInFileList.ps1"
+        . "utilities/tools/Get-ParameterFileTokens.ps1"
+
+        # Initialize Default Parameter File Tokens
+        $DefaultParameterFileTokens = @(
+            @{ Replace = '<<resourceGroupName>>'; With = '${{ inputs.resourceGroupName }}' }
+            @{ Replace = '<<subscriptionId>>'; With = '${{ inputs.subscriptionId }}' }
+            @{ Replace = '<<managementGroupId>>'; With = '${{ inputs.managementGroupId }}' }
+            @{ Replace = "<<tenantId>>"; With = '${{ env.ARM_TENANT_ID }}' }
+            @{ Replace = "<<deploymentSpId>>"; With = '${{ env.DEPLOYMENT_SP_ID }}' }
+            @{ Replace = "<<platformKeyVault>>"; With = '${{ env.PLATFORM_KEYVAULT }}' }
+        ) | ForEach-Object { [PSCustomObject]$PSItem }
+
+        # Get Key Vault Information (If Available) for Parameter File Tokens
+        if('${{ env.PLATFORM_KEYVAULT }}'){
+          $CustomParameterFileTokens = Get-ParameterFileTokens `
+              -TokenKeyVaultName '${{ env.PLATFORM_KEYVAULT }}' `
+              -SubscriptionId '${{ inputs.subscriptionId }}' `
+              -LocalCustomParameterFileTokens $Settings.localCustomParameterFileTokens.tokens `
+              -TokenKeyVaultSecretNamePrefix $Settings.remoteCustomParameterFileTokens.keyVaultSecretNamePrefix `
+              -Verbose
+        }
+
+        # Combine All Parameter File Tokens
+        $AllParameterFileTokens = $DefaultParameterFileTokens + $CustomParameterFileTokens | ForEach-Object { [PSCustomObject]$PSItem }
+
+        # Convert Tokens in Parameter Files
+        Write-Verbose 'Invoking Convert-TokensInFileList'
+        Convert-TokensInFileList -Paths '${{ inputs.parameterFilePath }}' -TokensReplaceWith $AllParameterFileTokens
 
       # [Test Deployment] task(s)
       #--------------------------
