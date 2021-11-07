@@ -22,7 +22,7 @@ on:
       - '.github/actions/templates/**'
       - '.github/workflows/ms.network.networkwatchers.yml'
       - 'arm/Microsoft.Network/networkWatchers/**'
-      - '!arm/Microsoft.Network/networkWatchers/readme.md'
+    #  - '!arm/Microsoft.Network/networkWatchers/readme.md'
 
 env:
   moduleName: 'networkWatchers'
