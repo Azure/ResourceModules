@@ -54,7 +54,7 @@ function Get-ParameterFileTokens {
             Write-Verbose "Finding Tokens Key Vault by Name: $TokenKeyVaultName"
             $Context = Get-AzContext -ListAvailable | Where-Object Subscription -Match $SubscriptionId
             if ($Context) {
-                Write-Verbose 'Setting Azure Context'
+                Write-Verbose('Setting Azure Context')
                 $Context | Set-AzContext
             }
             ## Find Token Key Vault by Name
@@ -63,7 +63,7 @@ function Get-ParameterFileTokens {
             if ($TokensKeyVault) {
                 ## Get Tokens
                 Write-Verbose("Tokens Key Vault Found: $($TokensKeyVault.VaultName)")
-                $KeyVaultTokens = Get-AzKeyVaultSecret -VaultName $TokensKeyVault.VaultName | Where-Object -Property Name -Like "$($TokenKeyVaultSecretNamePrefix)*"
+                $KeyVaultTokens = Get-AzKeyVaultSecret -VaultName $TokensKeyVault.VaultName -ErrorAction SilentlyContinue | Where-Object -Property Name -Like "$($TokenKeyVaultSecretNamePrefix)*"
                 if ($KeyVaultTokens) {
                     Write-Verbose("Key Vault Tokens Found: $($KeyVaultTokens.count)")
                     $KeyVaultTokens | ForEach-Object {
@@ -72,10 +72,10 @@ function Get-ParameterFileTokens {
                         $AllCustomParameterFileTokens += [ordered]@{ Replace = "$TokenName"; With = (Get-AzKeyVaultSecret -SecretName $PSItem.Name -VaultName $TokensKeyVault.VaultName -AsPlainText -ErrorAction SilentlyContinue) }
                     }
                 } else {
-                    Write-Verbose('No Tokens Found In Tokens Key Vault')
+                    Write-Verbose("No Tokens Found using TokenKeyVaultSecretNamePrefix '$TokenKeyVaultSecretNamePrefix' In Tokens Key Vault or Service Principal does not have permissions to Token Key Vault")
                 }
             } else {
-                Write-Verbose('No Tokens Key Vault Detected')
+                Write-Verbose('No Tokens Key Vault Detected in the current Subscription Context')
             }
         }
     }
