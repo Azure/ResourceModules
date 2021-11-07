@@ -31,11 +31,11 @@ The following resources are required to be able to deploy this resource.
 
 ## Outputs
 
-| Output Name | Type |
-| :-- | :-- |
-| `virtualNetworkPeeringName` | string |
-| `virtualNetworkPeeringResourceGroup` | string |
-| `virtualNetworkPeeringResourceId` | string |
+| Output Name | Type | Description |
+| :-- | :-- | :-- |
+| `virtualNetworkPeeringName` | string | The name of the virtual network peering |
+| `virtualNetworkPeeringResourceGroup` | string | The resource group the virtual network peering was deployed into |
+| `virtualNetworkPeeringResourceId` | string | The resourceId of the virtual network peering |
 
 ## Template references
 

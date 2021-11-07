@@ -44,6 +44,9 @@ resource virtualNetworkPeering 'Microsoft.Network/virtualNetworks/virtualNetwork
   }
 }
 
+@description('The resource group the virtual network peering was deployed into')
 output virtualNetworkPeeringResourceGroup string = resourceGroup().name
+@description('The name of the virtual network peering')
 output virtualNetworkPeeringName string = virtualNetworkPeering.name
+@description('The resourceId of the virtual network peering')
 output virtualNetworkPeeringResourceId string = virtualNetworkPeering.id
