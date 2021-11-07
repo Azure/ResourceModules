@@ -55,7 +55,7 @@ function Get-ParameterFileTokens {
             $Context = Get-AzContext -ListAvailable | Where-Object Subscription -Match $SubscriptionId
             if ($Context) {
                 Write-Verbose('Setting Azure Context')
-                $Context | Set-AzContext
+                $Context | Set-AzContext | Out-Null
             }
             ## Find Token Key Vault by Name
             $TokensKeyVault = Get-AzKeyVault -VaultName $TokenKeyVaultName -ErrorAction SilentlyContinue
@@ -80,6 +80,6 @@ function Get-ParameterFileTokens {
         }
     }
     end {
-        return [psobject]$AllCustomParameterFileTokens | ForEach-Object { [PSCustomObject]$PSItem }
+        return [psobject]$AllCustomParameterFileTokens | ForEach-Object { [PSCustomObject]$PSItem } | Sort-Object -Property Replace -Unique
     }
 }
