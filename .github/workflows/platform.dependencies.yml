@@ -85,76 +85,6 @@ jobs:
           managementGroupId: '${{ secrets.ARM_MGMTGROUP_ID }}'
           removeDeployment: '${{ env.removeDeployment }}'
 
-  job_deploy_kv_platform:
-    runs-on: ubuntu-20.04
-    name: 'Deploy Platform Key Vault'
-    env:
-      moduleName: vaults
-      namespace: 'Microsoft.KeyVault\vaults'
-    needs:
-      - job_deploy_rg
-      - job_deploy_rolea
-    strategy:
-      fail-fast: false
-      matrix:
-        parameterFilePaths: ['platform.parameters.json']
-    steps:
-      - name: 'Checkout'
-        if: '${{ env.PLATFORM_KEYVAULT }}'
-        uses: actions/checkout@v2
-        with:
-          fetch-depth: 0
-      - name: 'Deploy module'
-        if: '${{ env.PLATFORM_KEYVAULT }}'
-        uses: ./.github/actions/templates/deployModule
-        with:
-          moduleName: '${{ env.moduleName }}'
-          templateFilePath: 'arm/${{ env.namespace }}/deploy.bicep'
-          parameterFilePath: 'utilities/dependencies/${{ env.namespace }}/parameters/${{ matrix.parameterFilePaths }}'
-          location: '${{ env.defaultLocation }}'
-          resourceGroupName: '${{ env.platform_resourceGroupName }}'
-          subscriptionId: '${{ secrets.ARM_SUBSCRIPTION_ID }}'
-          managementGroupId: '${{ secrets.ARM_MGMTGROUP_ID }}'
-          removeDeployment: '${{ env.removeDeployment }}'
-
-  job_deploy_kv_tokens_secrets:
-    runs-on: ubuntu-20.04
-    name: 'Set Parameter Files Tokens in Key Vault'
-    needs:
-      - job_deploy_kv_platform
-    steps:
-      - name: 'Checkout'
-        if: '${{ env.PLATFORM_KEYVAULT }}'
-        uses: actions/checkout@v2
-        with:
-          fetch-depth: 0
-      - name: Azure Login
-        if: '${{ env.PLATFORM_KEYVAULT }}'
-        uses: azure/login@v1
-        with:
-          creds: ${{ secrets.AZURE_CREDENTIALS }}
-          enable-AzPSSession: true
-      - name: 'Create Token Secrets in Key Vault'
-        if: '${{ env.PLATFORM_KEYVAULT }}'
-        shell: pwsh
-        run: |
-          # Load Settings File
-          $Settings = Get-Content -Path "$env:GITHUB_WORKSPACE/utilities/settings.json" | ConvertFrom-Json
-          # Load used functions
-          . "$env:GITHUB_WORKSPACE/.github/actions/sharedScripts/Set-EnvironmentOnAgent.ps1"
-          . "$env:GITHUB_WORKSPACE/utilities/tools/Set-ParameterFileTokensInKeyVault.ps1"
-          # Set agent up
-          Set-EnvironmentOnAgent
-          # Create Tokens in Key Vault
-          if('${{ env.PLATFORM_KEYVAULT }}'){
-            Set-ParameterFileTokensInKeyVault `
-                  -TokenKeyVaultName '${{ env.PLATFORM_KEYVAULT }}' `
-                  -SubscriptionId '${{ secrets.ARM_SUBSCRIPTION_ID }}' `
-                  -LocalCustomParameterFileTokens $Settings.localCustomParameterFileTokens.tokens `
-                  -TokenKeyVaultSecretNamePrefix $Settings.remoteCustomParameterFileTokens.keyVaultSecretNamePrefix `
-                  -verbose
-          }
-
   job_deploy_evhns:
     runs-on: ubuntu-20.04
     name: 'Deploy eventhub namespace'
@@ -752,8 +682,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        parameterFilePaths:
-          ['parameters.json', 'main.parameters.json', 'cont.parameters.json']
+        parameterFilePaths: ['parameters.json']
     steps:
       - name: 'Checkout'
         uses: actions/checkout@v2
@@ -897,3 +826,72 @@ jobs:
           subscriptionId: '${{ secrets.ARM_SUBSCRIPTION_ID }}'
           managementGroupId: '${{ secrets.ARM_MGMTGROUP_ID }}'
           removeDeployment: '${{ env.removeDeployment }}'
+
+  job_deploy_kv_platform:
+    runs-on: ubuntu-20.04
+    name: 'Deploy Platform Key Vault'
+    env:
+      moduleName: vaults
+      namespace: 'Microsoft.KeyVault\vaults'
+    needs:
+      - job_deploy_rg
+    strategy:
+      fail-fast: false
+      matrix:
+        parameterFilePaths: ['platform.parameters.json']
+    steps:
+      - name: 'Checkout'
+        if: '${{ env.PLATFORM_KEYVAULT }}'
+        uses: actions/checkout@v2
+        with:
+          fetch-depth: 0
+      - name: 'Deploy module'
+        if: '${{ env.PLATFORM_KEYVAULT }}'
+        uses: ./.github/actions/templates/deployModule
+        with:
+          moduleName: '${{ env.moduleName }}'
+          templateFilePath: 'arm/${{ env.namespace }}/deploy.bicep'
+          parameterFilePath: 'utilities/dependencies/${{ env.namespace }}/parameters/${{ matrix.parameterFilePaths }}'
+          location: '${{ env.defaultLocation }}'
+          resourceGroupName: '${{ env.platform_resourceGroupName }}'
+          subscriptionId: '${{ secrets.ARM_SUBSCRIPTION_ID }}'
+          managementGroupId: '${{ secrets.ARM_MGMTGROUP_ID }}'
+          removeDeployment: '${{ env.removeDeployment }}'
+
+  job_deploy_kv_tokens_secrets:
+    runs-on: ubuntu-20.04
+    name: 'Set Parameter Files Tokens in Key Vault'
+    needs:
+      - job_deploy_kv_platform
+    steps:
+      - name: 'Checkout'
+        if: '${{ env.PLATFORM_KEYVAULT }}'
+        uses: actions/checkout@v2
+        with:
+          fetch-depth: 0
+      - name: Azure Login
+        if: '${{ env.PLATFORM_KEYVAULT }}'
+        uses: azure/login@v1
+        with:
+          creds: ${{ secrets.AZURE_CREDENTIALS }}
+          enable-AzPSSession: true
+      - name: 'Create Token Secrets in Key Vault'
+        if: '${{ env.PLATFORM_KEYVAULT }}'
+        shell: pwsh
+        run: |
+          # Load Settings File
+          $Settings = Get-Content -Path "$env:GITHUB_WORKSPACE/utilities/settings.json" | ConvertFrom-Json
+          # Load used functions
+          . "$env:GITHUB_WORKSPACE/.github/actions/sharedScripts/Set-EnvironmentOnAgent.ps1"
+          . "$env:GITHUB_WORKSPACE/utilities/tools/Set-ParameterFileTokensInKeyVault.ps1"
+          # Set agent up
+          Set-EnvironmentOnAgent
+          # Create Tokens in Key Vault
+          if('${{ env.PLATFORM_KEYVAULT }}'){
+            Set-ParameterFileTokensInKeyVault `
+                  -TokenKeyVaultName '${{ env.PLATFORM_KEYVAULT }}' `
+                  -SubscriptionId '${{ secrets.ARM_SUBSCRIPTION_ID }}' `
+                  -LocalCustomParameterFileTokens $Settings.localCustomParameterFileTokens.tokens `
+                  -TokenKeyVaultSecretNamePrefix $Settings.remoteCustomParameterFileTokens.keyVaultSecretNamePrefix `
+                  -verbose
+          }
