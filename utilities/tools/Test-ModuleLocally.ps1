@@ -8,47 +8,62 @@ This Function Helps with Testing A Module Locally. Use this Function To perform 
 subscription Id, Principal Id, tenant ID and other parameters that need to be tokenized.
 
 .PARAMETER ModuleName
-The name of The module to test. (i.e. 'Microsoft.Authorization/policyExemptions')
+Mandatory. A String for the name of The module to test. (i.e. 'Microsoft.Authorization/policyExemptions')
 
 .PARAMETER PesterTest
-A Switch Paramaeter that triggers a Pester Test for the Module
+Optional. A Switch Parameter that triggers a Pester Test for the Module
 
 .PARAMETER ValidateOrDeployParameters
 An Object consisting of the components that are required when using the Validate Test or DeploymentTest Switch parameter. See example:
 
 .PARAMETER DeploymentTest
-A Switch Paramaeter that triggers the Deployment of the Module
+Optional. A Switch Parameter that triggers the Deployment of the Module
 
 .PARAMETER ValidationTest
-A Switch Paramaeter that triggers the Validation of the Module Only without Deployment
+Optional. A Switch Parameter that triggers the Validation of the Module Only without Deployment
+
+.PARAMETER DeployAllModuleParameterFiles
+Optional. A Switch Parameter that triggers that enables directory based search for parameter files and deploys all of them. If not provided, it will only deploy the 'parameters.json' file
+
+.PARAMETER GetParameterFileTokens
+Optional. A Switch Parameter that triggers that enables the search for both local custom parameter file tokens (source control) and remote custom parameter file tokens (key vault -if TokenKeyVaultName parameter is provided)
+
+.PARAMETER TokenKeyVaultName
+Optional. String Parameter that points to the Key Vault Name where remote custom parameter file tokens are created. If not provided then GetParameterFileTokens will only search for local custom parameter file tokens.
 
 .PARAMETER OtherParameterFileTokens
-A Hashtable Paramaeter that contains custom tokens to be replaced in the paramter files for deployment
+Optional. A Hashtable Parameter that contains custom tokens to be replaced in the paramter files for deployment
 
 .EXAMPLE
 
 $TestModuleLocallyInput = @{
-    ModuleName                 = 'Microsoft.Network\applicationSecurityGroups'
-    PesterTest                 = $true
-    DeploymentTest             = $true
-    ValidationTest             = $true
-    ValidateOrDeployParameters = @{
+    ModuleName                    = 'Microsoft.Network\applicationSecurityGroups'
+    PesterTest                    = $true
+    DeploymentTest                = $true
+    ValidationTest                = $false
+    ValidateOrDeployParameters    = @{
         Location          = 'australiaeast'
         ResourceGroupName = 'validation-rg'
-        SubscriptionId    = 'abcdefg8-1234-1234-1234567890'
+        SubscriptionId    = '12345678-1234-1234-1234-123456789123'
         ManagementGroupId = 'mg-contoso'
         RemoveDeployment  = $false
     }
-    OtherParameterFileTokens  = @(
-        @{ Replace = '<<principalId1>>'; With = 'abcdefg8-1234-1234-1234567890' }
-        @{ Replace = '<<tenantId1>>'; With = 'abcdefg8-1234-1234-1234567890' }
+    DeployAllModuleParameterFiles = $false
+    GetParameterFileTokens        = $true
+    #TokenKeyVaultName             = 'contoso-platform-kv'
+    OtherParameterFileTokens      = @(
+        @{ Replace = '<<deploymentSpId>>'; With = '12345678-1234-1234-1234-123456789123' }
+        @{ Replace = '<<tenantId>>'; With = '12345678-1234-1234-1234-123456789123' }
     )
 }
 
 Test-ModuleLocally @TestModuleLocallyInput -Verbose
 
 .NOTES
-Make sure you provide the right information in the 'ValidateOrDeployParameters' parameter for this function abd Ensure you have the ability to perform the deployment operations locally.
+- Make sure you provide the right information in the 'ValidateOrDeployParameters' parameter for this function to work.
+- Ensure you have the ability to perform the deployment operations using your account
+- If providing TokenKeyVaultName parameter, ensure you have read access to secrets in the key vault to be able to retrieve the tokens.
+
 #>
 function Test-ModuleLocally {
     [CmdletBinding()]
