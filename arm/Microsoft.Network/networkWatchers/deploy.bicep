@@ -1,15 +1,15 @@
 @description('Required. Name of the Network Watcher resource (hidden)')
 @minLength(1)
-param networkWatcherName string = ''
+param networkWatcherName string = 'NetworkWatcher_${location}'
 
 @description('Optional. Location for all resources.')
 param location string = resourceGroup().location
 
-@description('Optional. Array that contains the monitors')
-param monitors array = []
+@description('Optional. Array that contains the Connection Monitors')
+param connectionMonitors array = []
 
-@description('Optional. Specify the Workspace Resource ID')
-param workspaceResourceId string = ''
+@description('Optional. Array that contains the Flow Logs')
+param flowLogs array = []
 
 @allowed([
   'CanNotDelete'
@@ -28,36 +28,16 @@ param tags object = {}
 @description('Optional. Customer Usage Attribution id (GUID). This GUID must be previously registered')
 param cuaId string = ''
 
-var outputs = [
-  {
-    type: 'Workspace'
-    workspaceSettings: {
-      workspaceResourceId: workspaceResourceId
-    }
-  }
-]
-
 module pid_cuaId '.bicep/nested_cuaId.bicep' = if (!empty(cuaId)) {
   name: 'pid-${cuaId}'
   params: {}
 }
 
 resource networkWatcher 'Microsoft.Network/networkWatchers@2021-02-01' = {
-  location: location
   name: networkWatcherName
+  location: location
+  tags: tags
   properties: {}
-
-  resource connectionMonitors 'connectionMonitors@2021-02-01' = [for monitor in monitors: {
-    name: monitor.connectionMonitorName
-    location: location
-    tags: tags
-    properties: {
-      endpoints: !empty(monitors) ? monitor.endpoints : null
-      testConfigurations: !empty(monitors) ? monitor.testConfigurations : null
-      testGroups: !empty(monitors) ? monitor.testGroups : null
-      outputs: !empty(workspaceResourceId) ? outputs : null
-    }
-  }]
 }
 
 resource networkWatcher_lock 'Microsoft.Authorization/locks@2016-09-01' = if (lock != 'NotSpecified') {
@@ -77,11 +57,38 @@ module networkWatcher_rbac '.bicep/nested_rbac.bicep' = [for (roleAssignment, in
   }
 }]
 
-@description('The resource group the network watcher was deployed into')
-output networkWatcherResourceGroup string = resourceGroup().name
+module networkWatcher_connectionMonitors 'connectionMonitors/deploy.bicep' = [for connectionMonitor in connectionMonitors: {
+  name: connectionMonitor.name
+  params: {
+    networkWatcherName: networkWatcher.name
+    name: connectionMonitor.name
+    endpoints: contains(connectionMonitor, 'endpoints') ? connectionMonitor.endpoints : null
+    testConfigurations: contains(connectionMonitor, 'testConfigurations') ? connectionMonitor.testConfigurations : null
+    testGroups: contains(connectionMonitor, 'testGroups') ? connectionMonitor.testGroups : null
+    workspaceResourceId: contains(connectionMonitor, 'workspaceResourceId') ? connectionMonitor.workspaceResourceId : null
+  }
+}]
+
+module networkWatcher_flowLogs 'flowLogs/deploy.bicep' = [for (flowLog, index) in flowLogs: {
+  name: '${deployment().name}-flowLog-${index}'
+  params: {
+    networkWatcherName: networkWatcher.name
+    name: contains(flowLog, 'name') ? flowLog.name : null
+    storageId: flowLog.storageId
+    targetResourceId: flowLog.targetResourceId
+    formatVersion: contains(flowLog, 'formatVersion') ? flowLog.formatVersion : null
+    enabled: contains(flowLog, 'enabled') ? flowLog.enabled : null
+    retentionInDays: contains(flowLog, 'retentionInDays') ? flowLog.retentionInDays : null
+    trafficAnalyticsInterval: contains(flowLog, 'trafficAnalyticsInterval') ? flowLog.trafficAnalyticsInterval : null
+    workspaceResourceId: contains(flowLog, 'workspaceResourceId') ? flowLog.workspaceResourceId : null
+  }
+}]
+
+@description('The name of the deployed network watcher')
+output networkWatcherName string = networkWatcher.name
 
 @description('The resourceId of the deployed network watcher')
 output networkWatcherResourceId string = networkWatcher.id
 
-@description('The name of the deployed network watcher')
-output networkWatcherName string = networkWatcher.name
+@description('The resource group the network watcher was deployed into')
+output networkWatcherResourceGroup string = resourceGroup().name

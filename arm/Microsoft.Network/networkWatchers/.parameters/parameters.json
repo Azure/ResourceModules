@@ -2,8 +2,26 @@
     "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
     "contentVersion": "1.0.0.0",
     "parameters": {
-        "networkWatcherName": {
+        "name": {
             "value": "adp-sxx-az-nw-x-001"
+        },
+        "flowLogs": {
+            "value": [
+                {
+                    "targetResourceId": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/networkSecurityGroups/adp-sxx-az-nsg-x-001",
+                    "storageId": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Storage/storageAccounts/adpsxxazsaweux001"
+                },
+                {
+                    "name": "adp-sxx-az-nsg-x-apgw-flowlog",
+                    "targetResourceId": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/networkSecurityGroups/adp-sxx-az-nsg-x-apgw",
+                    "storageId": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Storage/storageAccounts/adpsxxazsaweux001",
+                    "workspaceResourceId": "/subscriptions/<<subscriptionId>>/resourcegroups/validation-rg/providers/microsoft.operationalinsights/workspaces/adp-sxx-az-la-x-001",
+                    "enabled": false,
+                    "formatVersion": 1,
+                    "trafficAnalyticsInterval": 10,
+                    "retentionInDays": 8
+                }
+            ]
         },
         "roleAssignments": {
             "value": [

@@ -1,35 +1,29 @@
-@description('Optional. Location for all resources.')
-param location string = resourceGroup().location
+@description('Optional. Name of the network watcher resource. Must be in the resource group where the Flow log will be created and same region as the NSG')
+param networkWatcherName string = 'NetworkWatcher_${resourceGroup().location}'
+
+@description('Optional. Name of the resource.')
+param name string = '${last(split(targetResourceId, '/'))}-${split(targetResourceId, '/')[4]}-flowlog'
 
 @description('Optional. Tags of the resource.')
 param tags object = {}
 
-@description('Required. Name of the network watcher resource. Must be in the resource group where the Flow log will be created and same region as the NSG')
-param networkWatcherName string
-
 @description('Required. Resource ID of the NSG that must be enabled for Flow Logs.')
-param networkSecurityGroupResourceId string
+param targetResourceId string
 
 @description('Required. Resource identifier of the Diagnostic Storage Account.')
-param diagnosticStorageAccountId string
-
-@description('Optional. If the flow log retention should be enabled')
-param retentionEnabled bool = true
+param storageId string
 
 @description('Optional. If the flow log should be enabled')
-param flowLogEnabled bool = true
+param enabled bool = true
 
 @description('Optional. The flow log format version')
 @allowed([
   1
   2
 ])
-param logFormatVersion int = 2
+param formatVersion int = 2
 
-@description('Optional. Enables/disables flow analytics. If Flow Analytics was previously enabled, workspaceResourceID is mandatory (even when disabling it)')
-param flowAnalyticsEnabled bool = false
-
-@description('Optional. Resource identifier of Log Analytics.')
+@description('Optional. Specify the Log Analytics Workspace Resource ID')
 param workspaceResourceId string = ''
 
 @description('Optional. The interval in minutes which would decide how frequently TA service should do flow analytics.')
@@ -37,7 +31,7 @@ param workspaceResourceId string = ''
   10
   60
 ])
-param flowLogIntervalInMinutes int = 60
+param trafficAnalyticsInterval int = 60
 
 @description('Optional. Specifies the number of days that logs will be kept for; a value of 0 will retain data indefinitely.')
 @minValue(0)
@@ -47,13 +41,15 @@ param retentionInDays int = 365
 @description('Optional. Customer Usage Attribution id (GUID). This GUID must be previously registered')
 param cuaId string = ''
 
-var nsgName = split(networkSecurityGroupResourceId, '/')[8]
-var fullFlowLogName = '${networkWatcherName}/${uniqueString(nsgName)}'
-var flowAnalyticsConfig = {
+var flowAnalyticsConfiguration = !empty(workspaceResourceId) ? {
   networkWatcherFlowAnalyticsConfiguration: {
-    enabled: flowAnalyticsEnabled
+    enabled: true
     workspaceResourceId: workspaceResourceId
-    trafficAnalyticsInterval: flowLogIntervalInMinutes
+    trafficAnalyticsInterval: trafficAnalyticsInterval
+  }
+} : {
+  networkWatcherFlowAnalyticsConfiguration: {
+    enabled: false
   }
 }
 
@@ -62,31 +58,29 @@ module pid_cuaId '.bicep/nested_cuaId.bicep' = if (!empty(cuaId)) {
   params: {}
 }
 
-resource flowLog 'Microsoft.Network/networkWatchers/flowLogs@2021-05-01' = {
-  name: fullFlowLogName
-  location: location
+resource flowLog 'Microsoft.Network/networkWatchers/flowLogs@2021-03-01' = {
+  name: '${networkWatcherName}/${name}'
   tags: tags
   properties: {
-    targetResourceId: networkSecurityGroupResourceId
-    storageId: diagnosticStorageAccountId
-    enabled: flowLogEnabled
+    targetResourceId: targetResourceId
+    storageId: storageId
+    enabled: enabled
     retentionPolicy: {
       days: retentionInDays
-      enabled: retentionEnabled
+      enabled: retentionInDays == 0 ? false : true
     }
     format: {
       type: 'JSON'
-      version: logFormatVersion
+      version: formatVersion
     }
-    flowAnalyticsConfiguration: empty(workspaceResourceId) ? null : flowAnalyticsConfig
+    flowAnalyticsConfiguration: flowAnalyticsConfiguration
   }
 }
-
-@description('The resource group the flow log was deployed into')
-output flowLogResourceGroup string = resourceGroup().name
+@description('The name of the flow log')
+output flowLogName string = flowLog.name
 
 @description('The resourceId of the flow log')
 output flowLogResourceId string = flowLog.id
 
-@description('The name of the flow log')
-output flowLogName string = flowLog.name
+@description('The resource group the flow log was deployed into')
+output flowLogResourceGroup string = resourceGroup().name
