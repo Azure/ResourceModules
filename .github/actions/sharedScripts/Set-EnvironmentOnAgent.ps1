@@ -99,27 +99,32 @@ function Set-EnvironmentOnAgent {
             @{ Name = 'Az.Accounts' },
             @{ Name = 'Az.Resources' },
             @{ Name = 'Az.ContainerRegistry' }
-            @{ Name = 'Az.KeyVault' }
+        )
+    )
 
-            # AzCLI is pre-installed on GitHub hosted runners.
-            # https://github.com/actions/virtual-environments#available-environments
+    ###########################
+    ##   Install Azure CLI   ##
+    ###########################
 
-            az --version
-            <#
+    # AzCLI is pre-installed on GitHub hosted runners.
+    # https://github.com/actions/virtual-environments#available-environments
+
+    az --version
+    <#
     Write-Verbose ("Install azure cli start") -Verbose
     curl -sL https://aka.ms/InstallAzureCLIDeb | sudo bash
     Write-Verbose ("Install azure cli end") -Verbose
     #>
 
-            ##############################
-            ##   Install Bicep for CLI   #
-            ##############################
+    ##############################
+    ##   Install Bicep for CLI   #
+    ##############################
 
-            # Bicep CLI is pre-installed on GitHub hosted runners.
-            # https://github.com/actions/virtual-environments#available-environments
+    # Bicep CLI is pre-installed on GitHub hosted runners.
+    # https://github.com/actions/virtual-environments#available-environments
 
-            bicep --version
-            <#
+    bicep --version
+    <#
     Write-Verbose ("Install bicep start") -Verbose
     # Fetch the latest Bicep CLI binary
     curl -Lo bicep 'https://github.com/Azure/bicep/releases/latest/download/bicep-linux-x64'
@@ -132,16 +137,16 @@ function Set-EnvironmentOnAgent {
     Write-Verbose ("Install bicep end") -Verbose
     #>
 
-            ###############################
-            ##   Install Extensions CLI   #
-            ###############################
+    ###############################
+    ##   Install Extensions CLI   #
+    ###############################
 
-            # Azure CLI extension for DevOps is pre-installed on GitHub hosted runners.
-            # https://github.com/actions/virtual-environments#available-environments
+    # Azure CLI extension for DevOps is pre-installed on GitHub hosted runners.
+    # https://github.com/actions/virtual-environments#available-environments
 
-            az extension list | ConvertFrom-Json | Select-Object -Property name, version, preview, experimental
+    az extension list | ConvertFrom-Json | Select-Object -Property name, version, preview, experimental
 
-            <#
+    <#
     Write-Verbose ('Install cli exentions start') -Verbose
     $Extensions = @(
         'azure-devops'
@@ -155,32 +160,26 @@ function Set-EnvironmentOnAgent {
     Write-Verbose ('Install cli exentions end') -Verbose
     #>
 
-            ####################################
-            ##   Install PowerShell Modules   ##
-            ####################################
+    ####################################
+    ##   Install PowerShell Modules   ##
+    ####################################
 
-            $count = 1
-            Write-Verbose ('Try installing:') -Verbose
-            $modules | ForEach-Object {
-                Write-Verbose ('- {0}. [{1}]' -f $count, $_.Name) -Verbose
-                $count++
-            }
-
-            Write-Verbose ('Install-CustomModule start') -Verbose
-            $count = 1
-            Foreach ($Module in $Modules) {
-                Write-Verbose ('=====================') -Verbose
-                Write-Verbose ('HANDLING MODULE [{0}/{1}] [{2}] ' -f $count, $Modules.Count, $Module.Name) -Verbose
-                Write-Verbose ('=====================') -Verbose
-                # Installing New Modules and Removing Old
-                $null = Install-CustomModule -Module $Module
-                $count++
-            }
-            Write-Verbose ('Install-CustomModule end') -Verbose
-        }
+    $count = 1
+    Write-Verbose ('Try installing:') -Verbose
+    $modules | ForEach-Object {
+        Write-Verbose ('- {0}. [{1}]' -f $count, $_.Name) -Verbose
+        $count++
     }
-    Write-Verbose ('Install-CustomModule end') -Verbose
-}
+
+    Write-Verbose ('Install-CustomModule start') -Verbose
+    $count = 1
+    Foreach ($Module in $Modules) {
+        Write-Verbose ('=====================') -Verbose
+        Write-Verbose ('HANDLING MODULE [{0}/{1}] [{2}] ' -f $count, $Modules.Count, $Module.Name) -Verbose
+        Write-Verbose ('=====================') -Verbose
+        # Installing New Modules and Removing Old
+        $null = Install-CustomModule -Module $Module
+        $count++
     }
     Write-Verbose ('Install-CustomModule end') -Verbose
 }
