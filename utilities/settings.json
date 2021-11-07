@@ -3,16 +3,12 @@
         "tokens": [
             {
                 "name": "namePrefix",
-                "value": "carml"
-            },
-            {
-                "name": "envPrefix",
-                "value": "prod"
+                "value": "dbla"
             }
         ]
     },
     "remoteCustomParameterFileTokens": {
         "keyVaultSecretNamePrefix": "ParameterFileToken-",
-        "syncLocalCustomParameterFileTokens": true
+        "syncLocalCustomParameterFileTokens": false
     }
 }
