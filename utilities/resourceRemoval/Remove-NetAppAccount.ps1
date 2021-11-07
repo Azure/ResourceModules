@@ -23,8 +23,6 @@ Remove-vWan
 
 Remove a virtual WAN with tag { 'removeModule' = 'netAppAccounts' } from resource group 'validation-rg'
 #>
-
-# TODO: Check if Remove-AzResource can be used to. Then we just need to bring the resources in order and can use a central function to remove them
 function Remove-NetAppAccount {
 
     [Cmdletbinding(SupportsShouldProcess)]
@@ -50,60 +48,65 @@ function Remove-NetAppAccount {
     }
 
     process {
-        # Identifying resources
+        # Identify resources
+        # ------------------
         $tagSearchRetryCount = 1
-        while (-not ($resourcesToRemove = Get-AzResource -Tag @{ removeModule = $moduleName } -ResourceGroupName $resourceGroupName -ErrorAction 'SilentlyContinue') -and $tagSearchRetryCount -le $tagSearchRetryLimit) {
+        while (-not ($netAppFilesAccount = Get-AzResource -Tag @{ removeModule = $moduleName } -ResourceGroupName $resourceGroupName -ErrorAction 'SilentlyContinue') -and $tagSearchRetryCount -le $tagSearchRetryLimit) {
             Write-Verbose ('Did not to find resources by tags [removeModule={0}] in resource group [{1}]. Retrying in [{2} seconds] [{3}/{4}]' -f $moduleName, $resourceGroupName, $tagSearchRetryInterval, $tagSearchRetryCount, $tagSearchRetryLimit)
             Start-Sleep $tagSearchRetryInterval
             $tagSearchRetryCount++
         }
 
-        if (-not $resourcesToRemove) {
+        $resourcesToRemove = @()
+        if (-not $netAppFilesAccount) {
             Write-Error "No NetApp resouce with Tag { RemoveModule = $moduleName } found in resource group [$resourceGroupName]"
             return
         } else {
-            $accounts = Get-AzNetAppFilesAccount -ResourceGroupName $resourceGroupName
-            Write-Verbose ("Found [{0}] NetAppFilesAccount in [$resourceGroupName]" -f $accounts.Count)
+            $resourcesToRemove += $netAppFilesAccount
+            Write-Verbose ("Found [{0}] account(s) in [$resourceGroupName]" -f (, $netAppFilesAccount).Count)
         }
-        foreach ($account in $accounts) {
+
+        foreach ($account in $netAppFilesAccount) {
             $netAppInputObject = @{
                 AccountName       = $account.Name
                 ResourceGroupName = $ResourceGroupName
             }
             $pools = Get-AzNetAppFilesPool @netAppInputObject -ErrorAction 'SilentlyContinue'
-            Write-Verbose ('Found [{0}] pools' -f $pools.Count)
+            $resourcesToRemove += $pools
+            Write-Verbose ('Found [{0}] pool(s) in account [{1}]' -f $pools.Count, $account.name)
             foreach ($pool in $pools) {
 
                 $volumes = Get-AzNetAppFilesVolume @netAppInputObject -PoolName $pool.Name.Split('/')[1] -ErrorAction 'SilentlyContinue'
-                Write-Verbose ('Found [{0}] volumes' -f $volumes.Count)
-                foreach ($volumne in $volumes) {
-                    if ($PSCmdlet.ShouldProcess(('Azure NetApp account volume [{0}]' -f $volumne.Name.Split('/')[2]), 'Remove')) {
-                        $retries = 0
-                        $maxRetries = 10
-                        do {
-                            $retries++
-                            $null = Remove-AzNetAppFilesVolume @netAppInputObject -PoolName $pool.Name.Split('/')[1] -Name $volumne.Name.Split('/')[2]
-                            Write-Verbose ('Waiting 15 seconds for volumne removal [{0}/{1}]' -f $retries, $maxRetries)
-                            Start-Sleep 15
-                        }
-                        while ((Get-AzNetAppFilesVolume @netAppInputObject -PoolName $pool.Name.Split('/')[1] -Name $volumne.Name.Split('/')[2] -ErrorAction 'SilentlyContinue') -and $retries -le $maxRetries)
-
-                        if ($retries -gt $maxRetries) {
-                            Write-Error 'Failed to remove volumne [{0}] from NetApp account [{1}]' -f $AccountName, $volumne.Name.Split('/')[2]
-                        }
-                    }
-                }
-                if ($PSCmdlet.ShouldProcess(('Azure NetApp account pool [{0}]' -f $pool.Name.Split('/')[1]), 'Remove')) {
-                    Remove-AzNetAppFilesPool @netAppInputObject -PoolName $pool.Name.Split('/')[1]
-                }
-            }
-            if ($PSCmdlet.ShouldProcess(('Azure NetApp account [{0}]' -f $account.Name), 'Remove')) {
-                Remove-AzNetAppFilesAccount @netAppInputObject
+                $resourcesToRemove += $volumes
+                Write-Verbose ('Found [{0}] volume(s) in pool [{1}]' -f $volumes.Count, $pool.name)
             }
         }
-    }
 
-    end {
-        Write-Debug ('{0} exited' -f $MyInvocation.MyCommand)
+        # Prepare resources
+        # -----------------
+        # Flip array to remove low-level resources first
+        $invertedArray = @()
+        for ($i = ($resourcesToRemove.count - 1); $i -ge 0; $i--) {
+            $invertedArray += $resourcesToRemove[$i]
+        }
+        $resourcesToRemove = $invertedArray
+
+        # Remove resources
+        # ----------------
+        if ($resourcesToRemove) {
+            $currentRety = 0
+            $resourcesToRetry = @()
+            Write-Verbose ('Init removal of [{0}] resources' -f $resourcesToRemove.Count) -Verbose
+            if ($PSCmdlet.ShouldProcess(('[{0}] resources' -f $resourceGroupToRemove.Count), 'Remove')) {
+                while (($resourcesToRetry = Remove-Resource -resourcesToRemove $resourcesToRemove).Count -gt 0 -and $currentRety -le $maximumRetries) {
+                    Write-Verbose ('Re-try removal of remaining [{0}] resources. Round [{1}|{2}]' -f $resourcesToRetry.Count, $currentRety, $maximumRetries) -Verbose
+                    $currentRety++
+                }
+            }
+
+            if ($resourcesToRetry.Count -gt 0) {
+                throw ('The removal failed for resources [{0}]' -f ($resourcesToRetry.Name -join ', '))
+            }
+        }
     }
 }

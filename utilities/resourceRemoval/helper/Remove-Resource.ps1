@@ -25,12 +25,23 @@ function Remove-Resource {
     $resourcesToRetry = @()
     Write-Verbose '----------------------------------' -Verbose
     foreach ($resource in $resourcesToRemove) {
-        Write-Verbose ('Trying to remove resource [{0}] of type [{1}]' -f $resource.Name, $resource.ResourceType) -Verbose
-        try {
-            if ($PSCmdlet.ShouldProcess(('Resource [{0}]' -f $resource.ResourceId), 'Remove')) {
 
+
+        if (-not ($id = $resource.ResourceId)) {
+            $id = $resource.Id
+        }
+        if (-not ($type = $resource.ResourceType)) {
+            $type = $resource.Type
+        }
+        if (-not ($name = $resource.name)) {
+            $name = $resource.ResourceName
+        }
+
+        Write-Verbose ('Trying to remove resource [{0}] of type [{1}]' -f $name, $type) -Verbose
+        try {
+            if ($PSCmdlet.ShouldProcess(('Resource [{0}]' -f $id), 'Remove')) {
+                $null = Remove-AzResource -ResourceId $id -Force -ErrorAction 'Stop'
             }
-            $null = Remove-AzResource -ResourceId $resource.ResourceId -Force -ErrorAction 'Stop'
         } catch {
             Write-Warning ('Removal moved back for re-try. Reason: [{0}]' -f $_.Exception.Message)
             $resourcesToRetry += $resource

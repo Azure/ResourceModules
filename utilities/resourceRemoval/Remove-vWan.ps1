@@ -56,7 +56,8 @@ function Remove-vWan {
 
     process {
 
-        # Identifying resources
+        # Identify resources
+        # ------------------
         $tagSearchRetryCount = 1
         while (-not ($virtualWAN = Get-AzResource -Tag @{ removeModule = $moduleName } -ResourceGroupName $resourceGroupName -ErrorAction 'SilentlyContinue') -and $tagSearchRetryCount -le $tagSearchRetryLimit) {
             Write-Verbose ('Did not to find resources by tags [removeModule={0}] in resource group [{1}]. Retrying in [{2} seconds] [{3}/{4}]' -f $moduleName, $resourceGroupName, $tagSearchRetryInterval, $tagSearchRetryCount, $tagSearchRetryLimit)
@@ -90,6 +91,8 @@ function Remove-vWan {
         if ($vpnSiteResourceId) { $resourcesToRemove += Get-AzResource -ResourceId $vpnSiteResourceId }
         if ($vWANResourceId) { $resourcesToRemove += Get-AzResource -ResourceId $vWANResourceId }
 
+        # Remove resources
+        # ----------------
         if ($resourcesToRemove) {
             $currentRety = 0
             $resourcesToRetry = @()
