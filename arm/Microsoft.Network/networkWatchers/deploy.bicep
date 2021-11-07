@@ -1,6 +1,6 @@
 @description('Required. Name of the Network Watcher resource (hidden)')
 @minLength(1)
-param networkWatcherName string = 'NetworkWatcher_${location}'
+param name string = 'NetworkWatcher_${location}'
 
 @description('Optional. Location for all resources.')
 param location string = resourceGroup().location
@@ -34,7 +34,7 @@ module pid_cuaId '.bicep/nested_cuaId.bicep' = if (!empty(cuaId)) {
 }
 
 resource networkWatcher 'Microsoft.Network/networkWatchers@2021-02-01' = {
-  name: networkWatcherName
+  name: name
   location: location
   tags: tags
   properties: {}
