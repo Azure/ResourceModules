@@ -887,7 +887,8 @@ jobs:
           # Set agent up
           Set-EnvironmentOnAgent
           # Create Tokens in Key Vault
-          if('${{ env.PLATFORM_KEYVAULT }}'){
+          if('${{ env.PLATFORM_KEYVAULT }}' -and $Settings.remoteCustomParameterFileTokens.syncLocalCustomParameterFileTokens){
+            write-verbose "Syncing Local Parameter File Tokens to Key Vault"
             Set-ParameterFileTokensInKeyVault `
                   -TokenKeyVaultName '${{ env.PLATFORM_KEYVAULT }}' `
                   -SubscriptionId '${{ secrets.ARM_SUBSCRIPTION_ID }}' `
