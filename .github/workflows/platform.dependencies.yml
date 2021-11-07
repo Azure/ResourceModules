@@ -14,6 +14,7 @@ on:
 env:
   defaultLocation: 'WestEurope'
   resourceGroupName: 'validation-rg'
+  resourceGroupNameArtifacts: 'artifacts-rg'
   platform_resourceGroupName: 'platform-core-rg'
   removeDeployment: 'false'
   AZURE_CREDENTIALS: ${{ secrets.AZURE_CREDENTIALS }}
