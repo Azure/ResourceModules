@@ -57,15 +57,16 @@ runs:
             @{ Replace = "<<platformKeyVault>>"; With = '${{ env.PLATFORM_KEYVAULT }}' }
         ) | ForEach-Object { [PSCustomObject]$PSItem }
 
-        # Get Key Vault Information (If Available) for Parameter File Tokens
-        if('${{ env.PLATFORM_KEYVAULT }}'){
-          $CustomParameterFileTokens = Get-ParameterFileTokens `
-              -TokenKeyVaultName '${{ env.PLATFORM_KEYVAULT }}' `
-              -SubscriptionId '${{ inputs.subscriptionId }}' `
-              -LocalCustomParameterFileTokens $Settings.localCustomParameterFileTokens.tokens `
-              -TokenKeyVaultSecretNamePrefix $Settings.remoteCustomParameterFileTokens.keyVaultSecretNamePrefix `
-              -Verbose
+        # Get Custom Parameter File Tokens (Local and Remote-If Key Vault Provided)
+        $ConvertTokensFunctionsInput = @{
+            SubscriptionId                 = '${{ inputs.subscriptionId }}'
+            LocalCustomParameterFileTokens = $Settings.localCustomParameterFileTokens.tokens
+            TokenKeyVaultSecretNamePrefix  = $Settings.remoteCustomParameterFileTokens.keyVaultSecretNamePrefix
         }
+        if ('${{ env.PLATFORM_KEYVAULT }}') {
+            $ConvertTokensFunctionsInput += @{ TokenKeyVaultName = '${{ env.PLATFORM_KEYVAULT }}' }
+        }
+        $CustomParameterFileTokens = Get-ParameterFileTokens @ConvertTokensFunctionsInput -Verbose
 
         # Combine All Parameter File Tokens
         $AllParameterFileTokens = $DefaultParameterFileTokens + $CustomParameterFileTokens | ForEach-Object { [PSCustomObject]$PSItem }

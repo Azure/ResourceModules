@@ -9,7 +9,7 @@ This script gets the tokens <<token>> that exist in a parameter file from an Azu
 Mandatory. The Azure subscription containing the key vault.
 
 .PARAMETER TokenKeyVaultName
-Optional. The name of the Key Vault. It will be used as an alternative if the Tag is not provided.
+Optional. The name of the Key Vault. It will be used to find a Key Vault that contains Custom Parameter File Tokens.
 
 .PARAMETER TokenKeyVaultSecretNamePrefix
 Optional. An identifier used to filter for the Token Names (Secret Name) in Key Vault (i.e. ParameterFileToken-)
@@ -20,7 +20,7 @@ Optional. Object containing Name/Values for Local Custom Parameter File Tokens
 function Get-ParameterFileTokens {
     [CmdletBinding()]
     param (
-        [parameter(Mandatory)]
+        [parameter(Mandatory = $false)]
         [string]$TokenKeyVaultName,
 
         [parameter(Mandatory)]
