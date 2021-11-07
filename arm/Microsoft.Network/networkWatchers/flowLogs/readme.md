@@ -16,6 +16,7 @@ This module controls the Network Security Group Flow Logs and analytics settings
 | `cuaId` | string |  |  | Optional. Customer Usage Attribution id (GUID). This GUID must be previously registered |
 | `enabled` | bool | `True` |  | Optional. If the flow log should be enabled |
 | `formatVersion` | int | `2` | `[1, 2]` | Optional. The flow log format version |
+| `location` | string | `[resourceGroup().location]` |  | Optional. Location for all resources. |
 | `name` | string | `[format('{0}-{1}-flowlog', last(split(parameters('targetResourceId'), '/')), split(parameters('targetResourceId'), '/')[4])]` |  | Optional. Name of the resource. |
 | `networkWatcherName` | string | `[format('NetworkWatcher_{0}', resourceGroup().location)]` |  | Optional. Name of the network watcher resource. Must be in the resource group where the Flow log will be created and same region as the NSG |
 | `retentionInDays` | int | `365` |  | Optional. Specifies the number of days that logs will be kept for; a value of 0 will retain data indefinitely. |

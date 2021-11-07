@@ -7,6 +7,9 @@ param name string = '${last(split(targetResourceId, '/'))}-${split(targetResourc
 @description('Optional. Tags of the resource.')
 param tags object = {}
 
+@description('Optional. Location for all resources.')
+param location string = resourceGroup().location
+
 @description('Required. Resource ID of the NSG that must be enabled for Flow Logs.')
 param targetResourceId string
 
@@ -61,6 +64,7 @@ module pid_cuaId '.bicep/nested_cuaId.bicep' = if (!empty(cuaId)) {
 resource flowLog 'Microsoft.Network/networkWatchers/flowLogs@2021-03-01' = {
   name: '${networkWatcherName}/${name}'
   tags: tags
+  location: location
   properties: {
     targetResourceId: targetResourceId
     storageId: storageId

@@ -81,6 +81,7 @@ module networkWatcher_flowLogs 'flowLogs/deploy.bicep' = [for (flowLog, index) i
   params: {
     enabled: contains(flowLog, 'enabled') ? flowLog.enabled : true
     formatVersion: contains(flowLog, 'formatVersion') ? flowLog.formatVersion : 2
+    location: contains(flowLog, 'location') ? flowLog.location : location
     name: contains(flowLog, 'name') ? flowLog.name : '${last(split(flowLog.targetResourceId, '/'))}-${split(flowLog.targetResourceId, '/')[4]}-flowlog'
     networkWatcherName: networkWatcher.name
     retentionInDays: contains(flowLog, 'retentionInDays') ? flowLog.retentionInDays : 365
