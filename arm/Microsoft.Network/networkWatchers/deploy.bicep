@@ -60,9 +60,16 @@ module networkWatcher_rbac '.bicep/nested_rbac.bicep' = [for (roleAssignment, in
 module networkWatcher_connectionMonitors 'connectionMonitors/deploy.bicep' = [for connectionMonitor in connectionMonitors: {
   name: connectionMonitor.name
   params: {
-    networkWatcherName: networkWatcher.name
-    name: connectionMonitor.name
+    destinationAddress: connectionMonitor.destinationAddress
+    destinationPort: contains(connectionMonitor, 'destinationPort') ? connectionMonitor.destinationPort : null
+    destinationResourceId: contains(connectionMonitor, 'destinationResourceId') ? connectionMonitor.destinationResourceId : null
     endpoints: contains(connectionMonitor, 'endpoints') ? connectionMonitor.endpoints : null
+    monitoringInterval: contains(connectionMonitor, 'monitoringInterval') ? connectionMonitor.monitoringInterval : null
+    name: connectionMonitor.name
+    networkWatcherName: networkWatcher.name
+    notes: contains(connectionMonitor, 'notes') ? connectionMonitor.notes : null
+    sourcePort: contains(connectionMonitor, 'sourcePort') ? connectionMonitor.sourcePort : null
+    sourceResourceId: connectionMonitor.sourceResourceId
     testConfigurations: contains(connectionMonitor, 'testConfigurations') ? connectionMonitor.testConfigurations : null
     testGroups: contains(connectionMonitor, 'testGroups') ? connectionMonitor.testGroups : null
     workspaceResourceId: contains(connectionMonitor, 'workspaceResourceId') ? connectionMonitor.workspaceResourceId : null
@@ -72,13 +79,13 @@ module networkWatcher_connectionMonitors 'connectionMonitors/deploy.bicep' = [fo
 module networkWatcher_flowLogs 'flowLogs/deploy.bicep' = [for (flowLog, index) in flowLogs: {
   name: '${deployment().name}-flowLog-${index}'
   params: {
-    networkWatcherName: networkWatcher.name
+    enabled: contains(flowLog, 'enabled') ? flowLog.enabled : null
+    formatVersion: contains(flowLog, 'formatVersion') ? flowLog.formatVersion : null
     name: contains(flowLog, 'name') ? flowLog.name : null
+    networkWatcherName: networkWatcher.name
+    retentionInDays: contains(flowLog, 'retentionInDays') ? flowLog.retentionInDays : null
     storageId: flowLog.storageId
     targetResourceId: flowLog.targetResourceId
-    formatVersion: contains(flowLog, 'formatVersion') ? flowLog.formatVersion : null
-    enabled: contains(flowLog, 'enabled') ? flowLog.enabled : null
-    retentionInDays: contains(flowLog, 'retentionInDays') ? flowLog.retentionInDays : null
     trafficAnalyticsInterval: contains(flowLog, 'trafficAnalyticsInterval') ? flowLog.trafficAnalyticsInterval : null
     workspaceResourceId: contains(flowLog, 'workspaceResourceId') ? flowLog.workspaceResourceId : null
   }
