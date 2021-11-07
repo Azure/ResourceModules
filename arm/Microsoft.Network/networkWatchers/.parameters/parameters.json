@@ -5,6 +5,9 @@
         "name": {
             "value": "adp-sxx-az-nw-x-001"
         },
+        "location": {
+            "value": "westeurope"
+        },
         "flowLogs": {
             "value": [
                 {
