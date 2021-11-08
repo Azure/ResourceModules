@@ -12,27 +12,10 @@ function Remove-ResourceInner {
     Write-Verbose '----------------------------------' -Verbose
     foreach ($resource in $resourceToRemove) {
 
-        if ($resource.GetType().Name -eq 'PSResourceGroup') {
-            # Special resource group handling
-            $name = $resource.ResourceGroupName
-            $type = 'Microsoft.Resources/Resources'
-            $id = $resource.ResourceId
-        } else {
-            if (-not ($id = $resource.ResourceId)) {
-                $id = $resource.Id
-            }
-            if (-not ($type = $resource.ResourceType)) {
-                $type = $resource.Type
-            }
-            if (-not ($name = $resource.name)) {
-                $name = $resource.ResourceName
-            }
-        }
-
-        Write-Verbose ('Trying to remove resource [{0}] of type [{1}]' -f $name, $type) -Verbose
+        Write-Verbose ('Trying to remove resource [{0}] of type [{1}]' -f $resource.name, $resource.type) -Verbose
         try {
-            if ($PSCmdlet.ShouldProcess(('Resource [{0}]' -f $id), 'Remove')) {
-                $null = Remove-AzResource -ResourceId $id -Force -ErrorAction 'Stop'
+            if ($PSCmdlet.ShouldProcess(('Resource [{0}]' -f $resource.resourceId), 'Remove')) {
+                $null = Remove-AzResource -ResourceId $resource.resourceId -Force -ErrorAction 'Stop'
             }
         } catch {
             Write-Warning ('Removal moved back for re-try. Reason: [{0}]' -f $_.Exception.Message)

@@ -65,51 +65,67 @@ function Remove-vWan {
             $tagSearchRetryCount++
         }
 
-        if ($virtualWAN) {
-            $vWANResourceId = $virtualWAN.ResourceId
+        if (-not $virtualWAN) {
+            Write-Error "No virtual WAN resouce with Tag { RemoveModule = $moduleName } found in resource group [$resourceGroupName]"
+            return
+        }
+        Write-Verbose ("Found [{0}] vWAN(s) in [$resourceGroupName]" -f (, $virtualWAN).Count)
 
-            $virtualHub = Get-AzVirtualHub -ResourceGroupName validation-rg | Where-Object { $_.VirtualWan.Id -eq $vWANResourceId }
-            if ($virtualHub) {
-                $virtualHubResourceId = $virtualHub.Id
+        $resourcesToRemove = @()
+        foreach ($virtualWANInstance in (, $virtualWAN)) {
 
-                $vpnGateway = Get-AzVpnGateway -ResourceGroupName validation-rg | Where-Object { $_.VirtualHub.Id -eq $virtualHubResourceId }
-                if ($vpnGateway) {
-                    $vpnGatewayResourceId = $vpnGateway.Id
+            $resourcesToRemove += @{
+                $resourceId = $virtualWANInstance.ResourceId
+                $name       = $virtualWANInstance.Name
+                $type       = $virtualWANInstance.Type
+            }
+
+            $vpnSite = Get-AzVpnSite -ResourceGroupName $ResourceGroupName | Where-Object { $_.VirtualWan.Id -eq $virtualWANInstance.ResourceId }
+            Write-Verbose ('Found [{0}] vpnSite(s) in virtual WAN [{1}]' -f $vpnSite.Count, $virtualWANInstance.name)
+
+            foreach ($vpnSiteInstance in (, $vpnSite)) {
+                $resourcesToRemove += @{
+                    $resourceId = $vpnSiteInstance.Id
+                    $name       = $vpnSiteInstance.Name
+                    $type       = $vpnSiteInstance.Type
                 }
             }
 
-            $vpnSite = Get-AzVpnSite -ResourceGroupName validation-rg | Where-Object { $_.VirtualWan.Id -eq $vWANResourceId }
-            if ($vpnSite) {
-                $vpnSiteResourceId = $vpnSite.Id
+            $virtualHub = Get-AzVirtualHub -ResourceGroupName $ResourceGroupName | Where-Object { $_.VirtualWan.Id -eq $virtualWANInstance.ResourceId }
+            Write-Verbose ('Found [{0}] virtual Hub(s) in virtual WAN [{1}]' -f $virtualHub.Count, $virtualWANInstance.name)
+
+            foreach ($virtualHubInstance in (, $virtualHub)) {
+                $resourcesToRemove += @{
+                    $resourceId = $virtualHub.Id
+                    $name       = $virtualHub.Name
+                    $type       = $virtualHub.Type
+                }
+
+                $vpnGateway = Get-AzVpnGateway -ResourceGroupName $ResourceGroupName | Where-Object { $_.VirtualHub.Id -eq $virtualHubInstance.Id }
+                Write-Verbose ('Found [{0}] vpnGateway(s) in virtual virtual Hub [{1}]' -f $vpnGateway.Count, $virtualHubInstance.name)
+
+                foreach ($vpnGatewayInstance in $vpnGateway) {
+                    $resourcesToRemove += @{
+                        $resourceId = $vpnGatewayInstance.Id
+                        $name       = $vpnGatewayInstance.Name
+                        $type       = $vpnGatewayInstance.Type
+                    }
+                }
             }
         }
 
-        #Building array of resources to remove (in the required order)
-        $resourcesToRemove = @()
-        if ($vpnGatewayResourceId) { $resourcesToRemove += Get-AzResource -ResourceId $vpnGatewayResourceId }
-        if ($virtualHubResourceId) { $resourcesToRemove += Get-AzResource -ResourceId $virtualHubResourceId }
-        if ($vpnSiteResourceId) { $resourcesToRemove += Get-AzResource -ResourceId $vpnSiteResourceId }
-        if ($vWANResourceId) { $resourcesToRemove += Get-AzResource -ResourceId $vWANResourceId }
+        # Prepare resources
+        # -----------------
+        # Flip array to remove low-level resources first
+        $invertedArray = @()
+        for ($i = ($resourcesToRemove.count - 1); $i -ge 0; $i--) {
+            $invertedArray += $resourcesToRemove[$i]
+        }
+        $resourcesToRemove = $invertedArray
 
-        Remove-Resource -resourceToRemove $resourcesToRemove
-
-        # # Remove resources
-        # # ----------------
-        # if ($resourcesToRemove) {
-        #     $currentRetry = 0
-        #     $resourcesToRetry = @()
-        #     Write-Verbose ('Init removal of [{0}] resources' -f $resourcesToRemove.Count) -Verbose
-        #     if ($PSCmdlet.ShouldProcess(('[{0}] resources' -f $resourceGroupToRemove.Count), 'Remove')) {
-        #         while (($resourcesToRetry = Remove-Resource -resourceToRemove $resourcesToRemove).Count -gt 0 -and $currentRetry -le $maximumRetries) {
-        #             Write-Verbose ('Re-try removal of remaining [{0}] resources. Round [{1}|{2}]' -f $resourcesToRetry.Count, $currentRetry, $maximumRetries) -Verbose
-        #             $currentRetry++
-        #         }
-        #     }
-
-        #     if ($resourcesToRetry.Count -gt 0) {
-        #         throw ('The removal failed for resources [{0}]' -f ($resourcesToRetry.Name -join ', '))
-        #     }
-        # }
+        if ($resourcesToRemove) {
+            Remove-Resource -resourceToRemove $resourcesToRemove
+        }
     }
 
     end {

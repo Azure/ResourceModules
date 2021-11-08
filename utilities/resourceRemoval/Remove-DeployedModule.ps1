@@ -67,34 +67,33 @@ function Remove-DeployedModule {
             # ------------------
             $tagSearchRetryCount = 1
             while (-not ($resourceGroupToRemove = Get-AzResourceGroup -Tag @{ removeModule = $moduleName } -ErrorAction 'SilentlyContinue') -and $tagSearchRetryCount -le $tagSearchRetryLimit) {
-                Write-Verbose ('Did not to find Resource Group by tag [removeModule={0}]. Retrying in [{1} seconds] [{2}/{3}]' -f $moduleName, $tagSearchRetryInterval, $tagSearchRetryCount, $tagSearchRetryLimit)
+                Write-Verbose ('Did not to find Resource Group by tag [removeModule={0}]. Retrying in [{1}] seconds [{2}/{3}]' -f $moduleName, $tagSearchRetryInterval, $tagSearchRetryCount, $tagSearchRetryLimit)
                 Start-Sleep $tagSearchRetryInterval
                 $tagSearchRetryCount++
             }
 
+
+            $resourcesToRemove = @()
+            if (-not $resourceGroupToRemove) {
+                Write-Error "No resource Group with Tag { RemoveModule = $moduleName } found"
+                return
+            }
+
+
             # Remove resources
             # ----------------
-            if ($resourceGroupToRemove) {
-                Remove-Resource -resourceToRemove $resourceGroupToRemove
+            foreach ($resourceGroupInstance in $resourceGroupToRemove) {
+                $resourcesToRemove += @{
+                    $resourceId = $resourceGroupInstance.ResourceId
+                    $name       = $resourceGroupInstance.ResourceGroupName
+                    $type       = 'Microsoft.Resources/Resources'
+                }
+            }
 
-                # if ($resourceGroupToRemove.Count -gt 1) {
-                #     Write-Error "More than 1 Resource Group has been found with tag [removeModule=$moduleName]. Only 1 Resource Group is expected."
-                # } elseif (Get-AzResource -ResourceGroupName $resourceGroupToRemove.ResourceGroupName) {
-                #     Write-Error ('Resource Group [{0}] still has resources provisioned.' -f $resourceGroupToRemove.ResourceGroupName)
-                # } else {
-                #     Write-Verbose ('Removing Resource Group: {0}' -f $resourceGroupToRemove.ResourceGroupName) -Verbose
-                #     try {
-                #         $removeStatus = $resourceGroupToRemove |
-                #             Remove-AzResourceGroup -Force -ErrorAction Stop
-                #         if ($removeStatus) {
-                #             Write-Verbose ('Successfully removed Resource Group: {0}' -f $resourceGroupToRemove.ResourceGroupName) -Verbose
-                #         }
-                #     } catch {
-                #         Write-Error ('Resource Group removal failed. Reason: [{0}]' -f $_.Exception.Message)
-                #     }
-                # }
-            } else {
-                Write-Error ('Unable to find Resource Group by tag [removeModule={0}].' -f $moduleName)
+            # Remove resources
+            # ----------------
+            if ($resourcesToRemove) {
+                Remove-Resource -resourceToRemove $resourcesToRemove
             }
         } else {
             Write-Verbose 'Handle resource group level removal'
@@ -102,46 +101,48 @@ function Remove-DeployedModule {
             # Identify resources
             # ------------------
             $tagSearchRetryCount = 1
-            while (-not ($resourcesToRemove = Get-AzResource -Tag @{ removeModule = $moduleName } -ResourceGroupName $resourceGroupName -ErrorAction 'SilentlyContinue') -and $tagSearchRetryCount -le $tagSearchRetryLimit) {
-                Write-Verbose ('Did not to find resources by tags [removeModule={0}] in resource group [{1}]. Retrying in [{2} seconds] [{3}/{4}]' -f $moduleName, $resourceGroupName, $tagSearchRetryInterval, $tagSearchRetryCount, $tagSearchRetryLimit)
+            while (-not ($rawResourcesToRemove = Get-AzResource -Tag @{ removeModule = $moduleName } -ResourceGroupName $resourceGroupName -ErrorAction 'SilentlyContinue') -and $tagSearchRetryCount -le $tagSearchRetryLimit) {
+                Write-Verbose ('Did not to find resources by tags [removeModule={0}] in resource group [{1}]. Retrying in [{2}] seconds [{3}/{4}]' -f $moduleName, $resourceGroupName, $tagSearchRetryInterval, $tagSearchRetryCount, $tagSearchRetryLimit)
                 Start-Sleep $tagSearchRetryInterval
                 $tagSearchRetryCount++
             }
 
+            # If VMs are available, delete those first
+            if ($vmsContained = $rawResourcesToRemove | Where-Object { $_.resourcetype -eq 'Microsoft.Compute/virtualMachines' }) {
+
+                $intermediateResources = @()
+                foreach ($vmInstance in $vmsContained) {
+                    $intermediateResources += @{
+                        $resourceId = $vmInstance.ResourceId
+                        $name       = $vmInstance.Name
+                        $type       = $vmInstance.Type
+                    }
+                }
+                Remove-Resource -resourceToRemove $intermediateResources
+                # refresh
+                $rawResourcesToRemove = Get-AzResource -Tag @{ removeModule = $moduleName } -ResourceGroupName $resourceGroupName
+            }
+
+            if (-not $rawResourcesToRemove) {
+                Write-Error "No resource with Tag { RemoveModule = $moduleName } found in resource group [$resourceGroupName]"
+                return
+            }
+
+            $resourcesToRemove = @()
+            foreach ($resource in $rawResourcesToRemove) {
+                $resourcesToRemove += @{
+                    $resourceId = $vmInstance.ResourceId
+                    $name       = $vmInstance.Name
+                    $type       = $vmInstance.Type
+                }
+            }
+
             # Remove resources
             # ----------------
-            if ($resourcesToRemove) {
-
-                # If VMs are available, delete those first
-                if ($vmsContained = $resourcesToRemove | Where-Object { $_.resourcetype -eq 'Microsoft.Compute/virtualMachines' }) {
-                    Remove-Resource -resourceToRemove $vmsContained
-                    # refresh
-                    $resourcesToRemove = Get-AzResource -Tag @{ removeModule = $moduleName } -ResourceGroupName $resourceGroupName
-                }
-
-                Remove-Resource -resourceToRemove $resourcesToRemove
-
-                # $currentRetry = 0
-                # $resourcesToRetry = @()
-                # if ($PSCmdlet.ShouldProcess(("[{0}] Resource(s) with a maximum of [$maximumRemovalRetries] attempts." -f $resourcesToRemove.Count), 'Remove')) {
-                #     while (($resourcesToRetry = Remove-Resource -resourceToRemove $resourcesToRemove -Verbose).Count -gt 0 -and $currentRetry -le $maximumRemovalRetries) {
-                #         Write-Verbose ('Re-try removal of remaining [{0}] resources. Round [{1}|{2}]' -f $resourcesToRetry.Count, $currentRetry, $maximumRemovalRetries)
-                #         $currentRetry++
-                #     }
-
-                #     if ($resourcesToRetry.Count -gt 0) {
-                #         throw ('The removal failed for resources [{0}]' -f ($resourcesToRetry.Name -join ', '))
-                #     } else {
-                #         Write-Verbose 'The removal completed successfully'
-                #     }
-                # } else {
-                #     Remove-Resource -resourceToRemove $resourcesToRemove -WhatIf
-                # }
-            } else {
-                Write-Error ("Unable to find resources by tags [removeModule=$moduleName] in resource group [$resourceGroupName].")
-            }
+            Remove-Resource -resourceToRemove $resourcesToRemove
         }
     }
+
     end {
         Write-Debug ('{0} exited' -f $MyInvocation.MyCommand)
     }
