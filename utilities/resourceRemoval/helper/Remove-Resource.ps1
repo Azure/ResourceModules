@@ -16,6 +16,7 @@ function Remove-ResourceInner {
             # Special resource group handling
             $name = $resource.ResourceGroupName
             $type = 'Microsoft.Resources/Resources'
+            $id = $resource.ResourceId
         } else {
             if (-not ($id = $resource.ResourceId)) {
                 $id = $resource.Id
@@ -73,7 +74,7 @@ function Remove-Resource {
         [int] $removalRetryInterval = 15
     )
 
-    $currentRetry = 0
+    $currentRetry = 1
     $resourcesToRetry = $resourceToRemove
     if ($PSCmdlet.ShouldProcess(("[{0}] Resource(s) with a maximum of [$removalRetryLimit] attempts." -f $resourcesToRetry.Count), 'Remove')) {
         while (($resourcesToRetry = Remove-ResourceInner -resourceToRemove $resourcesToRetry -Verbose).Count -gt 0 -and $currentRetry -le $removalRetryLimit) {
