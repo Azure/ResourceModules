@@ -58,20 +58,6 @@ resource privateEndpoint 'Microsoft.Network/privateEndpoints@2021-05-01' = {
     }
     customDnsConfigs: []
   }
-
-  resource privateDnsZoneGroup 'privateDnsZoneGroups@2021-02-01' = if (!empty(privateDNSId)) {
-    name: 'default'
-    properties: {
-      privateDnsZoneConfigs: [
-        {
-          name: privateEndpoint.name
-          properties: {
-            privateDnsZoneId: privateDNSId
-          }
-        }
-      ]
-    }
-  }
 }
 
 resource privateEndpoint_lock 'Microsoft.Authorization/locks@2016-09-01' = if (lock != 'NotSpecified') {
@@ -90,6 +76,10 @@ module privateEndpoint_rbac '.bicep/nested_rbac.bicep' = [for (roleAssignment, i
     resourceName: privateEndpoint.name
   }
 }]
+
+module privateEndpoint_privateDnsZoneGroups 'privateDnsZoneGroups/deploy.bicep' = {
+  name: '${privateEndpoint.name}-privateDnsZoneGroups'
+}
 
 @description('The resource group the private endpoint was deployed into')
 output privateEndpointResourceGroup string = resourceGroup().name
