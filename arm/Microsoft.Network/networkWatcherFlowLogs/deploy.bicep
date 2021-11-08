@@ -57,7 +57,7 @@ var flowAnalyticsConfig = {
   }
 }
 
-module pid_cuaId './.bicep/nested_cuaId.bicep' = if (!empty(cuaId)) {
+module pid_cuaId '.bicep/nested_cuaId.bicep' = if (!empty(cuaId)) {
   name: 'pid-${cuaId}'
   params: {}
 }
@@ -78,10 +78,15 @@ resource flowLog 'Microsoft.Network/networkWatchers/flowLogs@2021-05-01' = {
       type: 'JSON'
       version: logFormatVersion
     }
-    flowAnalyticsConfiguration: (empty(workspaceResourceId) ? json('null') : flowAnalyticsConfig)
+    flowAnalyticsConfiguration: empty(workspaceResourceId) ? null : flowAnalyticsConfig
   }
 }
 
-output deploymentResourceGroup string = resourceGroup().name
+@description('The resource group the flow log was deployed into')
+output flowLogResourceGroup string = resourceGroup().name
+
+@description('The resourceId of the flow log')
 output flowLogResourceId string = flowLog.id
+
+@description('The name of the flow log')
 output flowLogName string = flowLog.name

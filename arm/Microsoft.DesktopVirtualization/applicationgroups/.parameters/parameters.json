@@ -2,17 +2,17 @@
     "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
     "contentVersion": "1.0.0.0",
     "parameters": {
-        "appGroupName": {
-            "value": "sxx-az-avdag-weu-x-001"
+        "name": {
+            "value": "sxx-az-avdag-x-001"
         },
         "location": {
-            "value": "eastus"
+            "value": "westeurope"
         },
         "appGroupType": {
             "value": "RemoteApp"
         },
         "hostpoolName": {
-            "value": "sxx-az-avdhp-weu-x-001"
+            "value": "adp-sxx-az-avdhp-x-001"
         },
         "appGroupFriendlyName": {
             "value": "Remote Applications 1"
@@ -25,7 +25,7 @@
                 {
                     "roleDefinitionIdOrName": "Reader",
                     "principalIds": [
-                        "5545f7a0-51f4-46af-b3b4-baecf5176a56"
+                        "cf33fea8-b30f-424f-ab73-c48d99e0b222"
                     ]
                 }
             ]

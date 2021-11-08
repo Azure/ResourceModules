@@ -7,10 +7,10 @@ This module deploys a key vault and it's child resources.
 | Resource Type | Api Version |
 | :-- | :-- |
 | `Microsoft.Authorization/locks` | 2016-09-01 |
+| `Microsoft.Authorization/roleAssignments` | 2020-04-01-preview |
 | `Microsoft.Insights/diagnosticSettings` | 2017-05-01-preview |
 | `Microsoft.KeyVault/vaults` | 2019-09-01 |
 | `Microsoft.KeyVault/vaults/keys` | 2019-09-01 |
-| `Microsoft.KeyVault/vaults/providers/roleAssignments` | 2021-04-01-preview |
 | `Microsoft.KeyVault/vaults/secrets` | 2019-09-01 |
 | `Microsoft.Network/privateEndpoints` | 2021-05-01 |
 | `Microsoft.Network/privateEndpoints/privateDnsZoneGroups` | 2021-02-01 |
@@ -34,16 +34,16 @@ This module deploys a key vault and it's child resources.
 | `enableVaultForTemplateDeployment` | bool | `True` | `[True, False]` | Optional. Specifies if the vault is enabled for a template deployment |
 | `eventHubAuthorizationRuleId` | string |  |  | Optional. Resource ID of the event hub authorization rule for the Event Hubs namespace in which the event hub should be created or streamed to. |
 | `eventHubName` | string |  |  | Optional. Name of the event hub within the namespace to which logs are streamed. Without this, an event hub is created for each log category. |
-| `keysObject` | secureObject | `{object}` |  | Optional. All keys [{"keyName":"","keyType":"","keyOps":"","keySize":"","curvename":""} wrapped in a secure object] |
-| `keyVaultName` | string |  |  | Optional. Name of the Key Vault. If no name is provided, then unique name will be created. |
+| `keys` | _[keys](keys/readme.md)_ array | `[]` |  | Optional. All keys to create |
 | `location` | string | `[resourceGroup().location]` |  | Optional. Location for all resources. |
 | `lock` | string | `NotSpecified` | `[CanNotDelete, NotSpecified, ReadOnly]` | Optional. Specify the type of lock. |
 | `logsToEnable` | array | `[AuditEvent]` | `[AuditEvent]` | Optional. The name of logs that will be streamed. |
 | `metricsToEnable` | array | `[AllMetrics]` | `[AllMetrics]` | Optional. The name of metrics that will be streamed. |
+| `name` | string |  |  | Optional. Name of the Key Vault. If no name is provided, then unique name will be created. |
 | `networkAcls` | object | `{object}` |  | Optional. Service endpoint object information |
 | `privateEndpoints` | array | `[]` |  | Optional. Configuration Details for private endpoints. |
 | `roleAssignments` | array | `[]` |  | Optional. Array of role assignment objects that contain the 'roleDefinitionIdOrName' and 'principalId' to define RBAC role assignments on this resource. In the roleDefinitionIdOrName attribute, you can provide either the display name of the role definition, or its fully qualified ID in the following format: '/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11' |
-| `secretsObject` | secureObject | `{object}` |  | Optional. All secrets [{"secretName":"","secretValue":""} wrapped in a secure object] |
+| `secrets` | _[secrets](secrets/readme.md)_ array | `[]` |  | Optional. All secrets to create |
 | `softDeleteRetentionInDays` | int | `90` |  | Optional. softDelete data retention days. It accepts >=7 and <=90. |
 | `tags` | object | `{object}` |  | Optional. Resource tags. |
 | `vaultSku` | string | `premium` | `[premium, standard]` | Optional. Specifies the SKU for the vault |
@@ -145,53 +145,13 @@ Tag names and tag values can be provided as needed. A tag can be left without a 
 }
 ```
 
-### Parameter Usage: `secretsObject`
-
-```json
-"secretsObject": {
-    "value": {
-        "secrets": [
-            {
-                "secretName": "Secret--AzureAd--Domain",
-                "secretValue": "Some value"
-            }
-        ]
-    }
-}
-```
-
-### Parameter Usage: `keysObject`
-
-```json
-"keysObject": {
-    "value": {
-    "keys": [
-        {
-        "keyName": "keyRSA", // The name of the key to be created
-        "keyType": "RSA", // The JsonWebKeyType of the key to be created
-        "keyOps": [ //The permitted JSON web key operations of the key to be created
-            "encrypt",
-            "decrypt",
-            "sign",
-            "verify",
-            "wrapKey",
-            "unwrapKey"
-        ],
-        "keySize": "2048", //The size in bits of the key to be created
-        "curveName": "" // The JsonWebKeyCurveName of the key to be created
-        }
-    ]
-    }
-}
-```
-
 ### Parameter Usage: `privateEndpoints`
 
 To use Private Endpoint the following dependencies must be deployed:
 
 - Destination subnet must be created with the following configuration option - `"privateEndpointNetworkPolicies": "Disabled"`.  Setting this option acknowledges that NSG rules are not applied to Private Endpoints (this capability is coming soon). A full example is available in the Virtual Network Module.
 
-- Although not strictly required, it is highly recommened to first create a private DNS Zone to host Private Endpoint DNS records. See [Azure Private Endpoint DNS configuration](https://docs.microsoft.com/en-us/azure/private-link/private-endpoint-dns) for more information.
+- Although not strictly required, it is highly recommended to first create a private DNS Zone to host Private Endpoint DNS records. See [Azure Private Endpoint DNS configuration](https://docs.microsoft.com/en-us/azure/private-link/private-endpoint-dns) for more information.
 
 ```json
 "privateEndpoints": {
@@ -199,7 +159,7 @@ To use Private Endpoint the following dependencies must be deployed:
         // Example showing all available fields
         {
             "name": "sxx-az-sa-cac-y-123-pe", // Optional: Name will be automatically generated if one is not provided here
-            "subnetResourceId": "/subscriptions/xxxxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxxx/resourceGroups/validation-rg/providers/Microsoft.Network/virtualNetworks/sxx-az-vnet-weu-x-001/subnets/sxx-az-subnet-weu-x-001",
+            "subnetResourceId": "/subscriptions/xxxxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxxx/resourceGroups/validation-rg/providers/Microsoft.Network/virtualNetworks/sxx-az-vnet-x-001/subnets/sxx-az-subnet-x-001",
             "service": "vault",
             "privateDnsZoneResourceIds": [ // Optional: No DNS record will be created if a private DNS zone Resource ID is not specified
                 "/subscriptions/xxxxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxxx/resourceGroups/validation-rg/providers/Microsoft.Network/privateDnsZones/privatelink.vaultcore.azure.net"
@@ -229,6 +189,7 @@ To use Private Endpoint the following dependencies must be deployed:
 ## Template references
 
 - [Locks](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2016-09-01/locks)
+- [Roleassignments](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2020-04-01-preview/roleAssignments)
 - [Diagnosticsettings](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Insights/2017-05-01-preview/diagnosticSettings)
 - [Vaults](https://docs.microsoft.com/en-us/azure/templates/Microsoft.KeyVault/2019-09-01/vaults)
 - [Vaults/Keys](https://docs.microsoft.com/en-us/azure/templates/Microsoft.KeyVault/2019-09-01/vaults/keys)

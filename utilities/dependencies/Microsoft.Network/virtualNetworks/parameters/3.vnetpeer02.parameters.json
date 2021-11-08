@@ -3,7 +3,7 @@
   "contentVersion": "1.0.0.0",
   "parameters": {
     "vnetName": {
-      "value": "adp-sxx-az-vnet-weu-x-peer02"
+      "value": "adp-sxx-az-vnet-x-peer02"
     },
     "vnetAddressPrefixes": {
       "value": [
@@ -13,9 +13,9 @@
     "subnets": {
       "value": [
         {
-          "name": "sxx-az-subnet-weu-x-001",
+          "name": "sxx-az-subnet-x-001",
           "addressPrefix": "10.3.0.0/24",
-          "networkSecurityGroupName": "adp-sxx-az-nsg-weu-x-001"
+          "networkSecurityGroupName": "adp-sxx-az-nsg-x-001"
         }
       ]
     }

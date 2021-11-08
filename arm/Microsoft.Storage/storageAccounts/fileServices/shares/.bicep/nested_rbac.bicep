@@ -44,10 +44,15 @@ var builtInRoleNames = {
   'Virtual Machine Contributor': subscriptionResourceId('Microsoft.Authorization/roleDefinitions', '9980e02c-c2be-4d73-94e8-173b1dc7cf3c')
 }
 
-resource roleAssignment 'Microsoft.Storage/storageAccounts/fileServices/shares/providers/roleAssignments@2021-04-01-preview' = [for principalId in roleAssignmentObj.principalIds: {
-  name: '${resourceName}/Microsoft.Authorization/${(empty(roleAssignmentObj) ? guid(resourceName) : guid(resourceName, principalId, roleAssignmentObj.roleDefinitionIdOrName))}'
+resource fileShare 'Microsoft.Storage/storageAccounts/fileServices/shares@2019-06-01' existing = {
+  name: resourceName
+}
+
+resource roleAssignment 'Microsoft.Authorization/roleAssignments@2020-04-01-preview' = [for principalId in roleAssignmentObj.principalIds: {
+  name: guid(fileShare.name, principalId, roleAssignmentObj.roleDefinitionIdOrName)
   properties: {
-    roleDefinitionId: (contains(builtInRoleNames, roleAssignmentObj.roleDefinitionIdOrName) ? builtInRoleNames[roleAssignmentObj.roleDefinitionIdOrName] : roleAssignmentObj.roleDefinitionIdOrName)
+    roleDefinitionId: contains(builtInRoleNames, roleAssignmentObj.roleDefinitionIdOrName) ? builtInRoleNames[roleAssignmentObj.roleDefinitionIdOrName] : roleAssignmentObj.roleDefinitionIdOrName
     principalId: principalId
   }
+  scope: fileShare
 }]

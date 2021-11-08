@@ -9,7 +9,7 @@ param administratorLoginPassword string
 param location string = resourceGroup().location
 
 @description('Required. The name of the server.')
-param serverName string
+param name string
 
 @description('Optional. Whether or not ADS should be enabled.')
 param enableADS bool = false
@@ -34,34 +34,17 @@ param tags object = {}
 @description('Optional. Customer Usage Attribution id (GUID). This GUID must be previously registered')
 param cuaId string = ''
 
-var builtInRoleNames = {
-  'Owner': subscriptionResourceId('Microsoft.Authorization/roleDefinitions', '8e3af657-a8ff-443c-a75c-2fe8c4bcb635')
-  'Contributor': subscriptionResourceId('Microsoft.Authorization/roleDefinitions', 'b24988ac-6180-42a0-ab88-20f7382dd24c')
-  'Reader': subscriptionResourceId('Microsoft.Authorization/roleDefinitions', 'acdd72a7-3385-48ef-bd42-f606fba81ae7')
-  'Log Analytics Contributor': subscriptionResourceId('Microsoft.Authorization/roleDefinitions', '92aaf0da-9dab-42b6-94a3-d43ce8d16293')
-  'Log Analytics Reader': subscriptionResourceId('Microsoft.Authorization/roleDefinitions', '73c42c96-874c-492b-b04d-ab87d138a893')
-  'Managed Application Contributor Role': subscriptionResourceId('Microsoft.Authorization/roleDefinitions', '641177b8-a67a-45b9-a033-47bc880bb21e')
-  'Managed Application Operator Role': subscriptionResourceId('Microsoft.Authorization/roleDefinitions', 'c7393b34-138c-406f-901b-d8cf2b17e6ae')
-  'Managed Applications Reader': subscriptionResourceId('Microsoft.Authorization/roleDefinitions', 'b9331d33-8a36-4f8c-b097-4f54124fdb44')
-  'Monitoring Contributor': subscriptionResourceId('Microsoft.Authorization/roleDefinitions', '749f88d5-cbae-40b8-bcfc-e573ddc772fa')
-  'Monitoring Metrics Publisher': subscriptionResourceId('Microsoft.Authorization/roleDefinitions', '3913510d-42f4-4e42-8a64-420c390055eb')
-  'Monitoring Reader': subscriptionResourceId('Microsoft.Authorization/roleDefinitions', '43d0d8ad-25c7-4714-9337-8ba259a9fe05')
-  'Reservation Purchaser': subscriptionResourceId('Microsoft.Authorization/roleDefinitions', 'f7b75c60-3036-4b75-91c3-6b41c27c1689')
-  'Resource Policy Contributor': subscriptionResourceId('Microsoft.Authorization/roleDefinitions', '36243c78-bf99-498c-9df9-86d9f8d28608')
-  'SQL DB Contributor': subscriptionResourceId('Microsoft.Authorization/roleDefinitions', '9b7fa17d-e63e-47b0-bb0a-15c516ac86ec')
-  'SQL Security Manager': subscriptionResourceId('Microsoft.Authorization/roleDefinitions', '056cd41c-7e88-42e1-933e-88ba6a50c9c3')
-  'SQL Server Contributor': subscriptionResourceId('Microsoft.Authorization/roleDefinitions', '6d8ee4ec-f05a-4a1d-8b00-a9b17e38b437')
-  'User Access Administrator': subscriptionResourceId('Microsoft.Authorization/roleDefinitions', '18d7d88d-d35e-4fb5-a5c3-7773c20a72d9')
-}
+@description('Optional. The databases to create in the server')
+param databases array = []
 
-module pid_cuaId './.bicep/nested_cuaId.bicep' = if (!empty(cuaId)) {
+module pid_cuaId '.bicep/nested_cuaId.bicep' = if (!empty(cuaId)) {
   name: 'pid-${cuaId}'
   params: {}
 }
 
 resource server 'Microsoft.Sql/servers@2020-02-02-preview' = {
   location: location
-  name: serverName
+  name: name
   tags: tags
   properties: {
     administratorLogin: administratorLogin
@@ -97,15 +80,43 @@ resource server_lock 'Microsoft.Authorization/locks@2016-09-01' = if (lock != 'N
   scope: server
 }
 
-module server_rbac './.bicep/nested_rbac.bicep' = [for (roleAssignment, index) in roleAssignments: {
-  name: 'rbac-${deployment().name}${index}'
+module server_rbac '.bicep/nested_rbac.bicep' = [for (roleAssignment, index) in roleAssignments: {
+  name: '${deployment().name}-rbac-${index}'
   params: {
     roleAssignmentObj: roleAssignment
-    builtInRoleNames: builtInRoleNames
     resourceName: server.name
   }
 }]
 
+module server_databases 'databases/deploy.bicep' = [for (database, index) in databases: {
+  name: '${deployment().name}-db-${index}'
+  params: {
+    name: database.name
+    serverName: server.name
+    maxSizeBytes: database.maxSizeBytes
+    tier: database.tier
+    skuName: database.skuName
+    collation: database.collation
+    autoPauseDelay: contains(database, 'autoPauseDelay') ? database.autoPauseDelay : ''
+    isLedgerOn: contains(database, 'isLedgerOn') ? database.isLedgerOn : false
+    location: contains(database, 'location') ? database.location : server.location
+    licenseType: contains(database, 'licenseType') ? database.licenseType : ''
+    maintenanceConfigurationId: contains(database, 'maintenanceConfigurationId') ? database.maintenanceConfigurationId : ''
+    minCapacity: contains(database, 'minCapacity') ? database.minCapacity : ''
+    highAvailabilityReplicaCount: contains(database, 'highAvailabilityReplicaCount') ? database.highAvailabilityReplicaCount : 0
+    readScale: contains(database, 'readScale') ? database.readScale : 'Disabled'
+    requestedBackupStorageRedundancy: contains(database, 'requestedBackupStorageRedundancy') ? database.requestedBackupStorageRedundancy : ''
+    sampleName: contains(database, 'sampleName') ? database.sampleName : ''
+    tags: contains(database, 'tags') ? database.tags : {}
+    zoneRedundant: contains(database, 'zoneRedundant') ? database.zoneRedundant : false
+  }
+}]
+
+@description('The name of the deployed SQL server')
 output serverName string = server.name
+
+@description('The resourceId of the deployed SQL server')
 output serverResourceId string = server.id
+
+@description('The resourceGroup of the deployed SQL server')
 output serverResourceGroup string = resourceGroup().name
