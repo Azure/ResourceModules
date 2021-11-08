@@ -17,7 +17,7 @@
         "friendlyName": {
             "value": "Remote Applications 1"
         },
-        "appGroupDescription": {
+        "description": {
             "value": "This is my first Remote Applications bundle"
         },
         "applications": {
