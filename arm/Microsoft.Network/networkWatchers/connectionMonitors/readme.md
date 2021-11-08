@@ -1,6 +1,6 @@
-# NetworkNetworkwatchersConnectionmonitors `[Microsoft.Network/networkWatchers/connectionMonitors]`
+# Network Watchers Connection Monitors `[Microsoft.Network/networkWatchers/connectionMonitors]`
 
-// TODO: Replace Resource and fill in description
+This template deploys Connection Monitors.
 
 ## Resource Types
 
@@ -21,10 +21,6 @@
 | `testConfigurations` | array | `[]` |  | Optional. List of connection monitor test configurations. |
 | `testGroups` | array | `[]` |  | Optional.	List of connection monitor test groups. |
 | `workspaceResourceId` | string |  |  | Optional. Specify the Log Analytics Workspace Resource ID |
-
-### Parameter Usage: `<ParameterPlaceholder>`
-
-// TODO: Fill in Parameter usage
 
 ## Outputs
 
