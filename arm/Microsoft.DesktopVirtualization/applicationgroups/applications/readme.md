@@ -19,8 +19,8 @@ This module deploys AVD Applications.
 | `cuaId` | string |  |  | Optional. Customer Usage Attribution id (GUID). This GUID must be previously registered |
 | `filePath` | string |  |  | Required. Specifies a path for the executable file for the application. |
 | `friendlyName` | string |  |  | Optional. Friendly name of Application.. |
-| `iconIndex` | int |  |  | Required. Index of the icon. |
-| `iconPath` | string |  |  | Required. Path to icon. |
+| `iconIndex` | int |  |  | Optional. Index of the icon. |
+| `iconPath` | string |  |  | Optional. Path to icon. |
 | `name` | string |  |  | Required. Name of the Application to be created in the Application Group. |
 | `showInPortal` | bool |  |  | Optional. Specifies whether to show the RemoteApp program in the RD Web Access server. |
 

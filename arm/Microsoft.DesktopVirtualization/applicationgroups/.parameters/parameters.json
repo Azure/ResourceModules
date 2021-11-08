@@ -34,7 +34,8 @@
                     "iconIndex": 0
                 },
                 {
-                    "name": "wordpad"
+                    "name": "wordpad",
+                    "filePath": "C:\\Program Files\\Windows NT\\Accessories\\wordpad.exe"
                 }
             ]
         },

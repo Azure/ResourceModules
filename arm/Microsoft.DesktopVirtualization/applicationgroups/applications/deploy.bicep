@@ -27,11 +27,11 @@ param commandLineArguments string = ''
 @description('Optional. Specifies whether to show the RemoteApp program in the RD Web Access server.')
 param showInPortal bool = false
 
-@description('Required. Path to icon.')
-param iconPath string
+@description('Optional. Path to icon.')
+param iconPath string = ''
 
-@description('Required. Index of the icon.')
-param iconIndex int
+@description('Optional. Index of the icon.')
+param iconIndex int = 0
 
 @description('Optional. Customer Usage Attribution id (GUID). This GUID must be previously registered')
 param cuaId string = ''
