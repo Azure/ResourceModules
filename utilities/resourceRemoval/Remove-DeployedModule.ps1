@@ -79,21 +79,12 @@ function Remove-DeployedModule {
                 return
             }
 
-
-            # Remove resources
-            # ----------------
             foreach ($resourceGroupInstance in $resourceGroupToRemove) {
                 $resourcesToRemove += @{
                     $resourceId = $resourceGroupInstance.ResourceId
                     $name       = $resourceGroupInstance.ResourceGroupName
                     $type       = 'Microsoft.Resources/Resources'
                 }
-            }
-
-            # Remove resources
-            # ----------------
-            if ($resourcesToRemove) {
-                Remove-Resource -resourceToRemove $resourcesToRemove
             }
         } else {
             Write-Verbose 'Handle resource group level removal'
@@ -136,11 +127,11 @@ function Remove-DeployedModule {
                     $type       = $vmInstance.Type
                 }
             }
-
-            # Remove resources
-            # ----------------
-            Remove-Resource -resourceToRemove $resourcesToRemove
         }
+
+        # Remove resources
+        # ----------------
+        Remove-Resource -resourceToRemove $resourcesToRemove
     }
 
     end {
