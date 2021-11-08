@@ -3,7 +3,7 @@
     "contentVersion": "1.0.0.0",
     "parameters": {
         "name": {
-            "value": "sxx-az-avdag-x-002"
+            "value": "sxx-az-avdag-x-001"
         },
         "location": {
             "value": "westeurope"
