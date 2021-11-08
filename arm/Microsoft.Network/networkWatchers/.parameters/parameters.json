@@ -23,6 +23,18 @@
                 }
             ]
         },
+        "connectionMonitors": {
+            "value": [
+                {
+                    "name": "adp-sxx-az-conn-mon-x-001",
+                    "monitoringInterval": 10,
+                    "destinationAddress": "www.bing.com",
+                    "destinationPort": 80,
+                    "sourceResourceId": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/networkInterfaces/adp-sxx-az-nic-x-001",
+                    "workspaceResourceId": "/subscriptions/<<subscriptionId>>/resourcegroups/validation-rg/providers/microsoft.operationalinsights/workspaces/adp-sxx-az-la-x-001"
+                }
+            ]
+        },
         "roleAssignments": {
             "value": [
                 {
