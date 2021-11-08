@@ -49,7 +49,7 @@ runs:
       shell: pwsh
       run: |
         # Load Settings File
-        $Settings = Get-Content -Path "utilities/settings.json" | ConvertFrom-Json
+        $Settings = Get-Content -Path "settings.json" | ConvertFrom-Json
         # Load used funtions
         . "utilities/tools/Convert-TokensInFileList.ps1"
         . "utilities/tools/Get-ParameterFileTokens.ps1"
@@ -67,8 +67,8 @@ runs:
         # Get Custom Parameter File Tokens (Local and Remote-If Key Vault Provided)
         $ConvertTokensFunctionsInput = @{
             SubscriptionId                 = '${{ inputs.subscriptionId }}'
-            LocalCustomParameterFileTokens = $Settings.localCustomParameterFileTokens.tokens
-            TokenKeyVaultSecretNamePrefix  = $Settings.remoteCustomParameterFileTokens.keyVaultSecretNamePrefix
+            LocalCustomParameterFileTokens = $Settings.parameterFileTokens.localCustomParameterFileTokens.tokens
+            TokenKeyVaultSecretNamePrefix  = $Settings.parameterFileTokens.remoteCustomParameterFileTokens.keyVaultSecretNamePrefix
         }
         if ('${{ env.PLATFORM_KEYVAULT }}') {
             $ConvertTokensFunctionsInput += @{ TokenKeyVaultName = '${{ env.PLATFORM_KEYVAULT }}' }

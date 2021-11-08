@@ -48,7 +48,7 @@ function Get-ParameterFileTokens {
             Write-Verbose 'No Local Custom Parameter File Tokens Detected'
         }
 
-        ## Remote Custom Parameter File Tokens (Should Not Contain Sensitive Information)
+        ## Remote Custom Parameter File Tokens (Should Not Contain Sensitive Information if being passed to regular strings)
         ## Set Azure Context
         if ($TokenKeyVaultName) {
             Write-Verbose "Finding Tokens Key Vault by Name: $TokenKeyVaultName"

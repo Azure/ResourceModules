@@ -105,8 +105,8 @@ function Test-ModuleLocally {
             Write-Verbose "Pester Testing Module: $ModuleName"
             Invoke-Pester -Configuration @{
                 Run        = @{
-                    Container = New-PesterContainer -Path (Join-Path $PSScriptRoot '..\..' 'arm\.global\global.module.tests.ps1') -Data @{
-                        moduleFolderPaths = (Join-Path $PSScriptRoot '..\..\arm' $ModuleName)
+                    Container = New-PesterContainer -Path (Join-Path $PSScriptRoot '../..' 'arm/.global/global.module.tests.ps1') -Data @{
+                        moduleFolderPaths = (Join-Path $PSScriptRoot '../../arm' $ModuleName)
                     }
                 }
                 Filter     = @{
@@ -125,9 +125,9 @@ function Test-ModuleLocally {
         # Deploy Module
         if (($ValidationTest -or $DeploymentTest) -and $ValidateOrDeployParameters) {
             # Find Test Parameter Files
-            $ModuleParameterFiles = Get-ChildItem -Path (Join-Path $PSScriptRoot '..\..\arm' $ModuleName '.parameters') -Recurse
+            $ModuleParameterFiles = Get-ChildItem -Path (Join-Path $PSScriptRoot '../../arm' $ModuleName '.parameters') -Recurse
             # Load Tokens Converter Script
-            . (Join-Path $PSScriptRoot '..\..' 'utilities\tools\Convert-TokensInFileList.ps1')
+            . (Join-Path $PSScriptRoot '../..' 'utilities/tools/Convert-TokensInFileList.ps1')
             # Replace Tokens with Values For Local Testing
             $DefaultParameterFileTokens = @(
                 @{ Replace = '<<subscriptionId>>'; With = "$($ValidateOrDeployParameters.SubscriptionId)" }
@@ -139,16 +139,16 @@ function Test-ModuleLocally {
             # Look for Local Custom Parameter File Tokens (Source Control)
             if ($GetParameterFileTokens) {
                 # Get Settings JSON File
-                $Settings = Get-Content -Path (Join-Path $PSScriptRoot '..\..' 'utilities\settings.json') | ConvertFrom-Json
+                $Settings = Get-Content -Path (Join-Path $PSScriptRoot '../..' 'settings.json') | ConvertFrom-Json
 
                 # Load Get Parameter File Tokens Script
-                . (Join-Path $PSScriptRoot '..\..' 'utilities\tools\Get-ParameterFileTokens.ps1')
+                . (Join-Path $PSScriptRoot '../..' 'utilities/tools/Get-ParameterFileTokens.ps1')
 
                 # Get Custom Parameter File Tokens (Local and Remote-If Key Vault Provided)
                 $ConvertTokensFunctionsInput = @{
                     SubscriptionId                 = "$($ValidateOrDeployParameters.SubscriptionId)"
-                    LocalCustomParameterFileTokens = $Settings.localCustomParameterFileTokens.tokens
-                    TokenKeyVaultSecretNamePrefix  = $Settings.remoteCustomParameterFileTokens.keyVaultSecretNamePrefix
+                    LocalCustomParameterFileTokens = $Settings.parameterFileTokens.localCustomParameterFileTokens.tokens
+                    TokenKeyVaultSecretNamePrefix  = $Settings.parameterFileTokens.remoteCustomParameterFileTokens.keyVaultSecretNamePrefix
                 }
                 if ($TokenKeyVaultName) {
                     $ConvertTokensFunctionsInput += @{ TokenKeyVaultName = $TokenKeyVaultName }
@@ -165,8 +165,8 @@ function Test-ModuleLocally {
 
             # Build Modules Validation and Deployment Inputs
             $functionInput = @{
-                templateFilePath  = (Join-Path $PSScriptRoot '..\..\arm' $ModuleName 'deploy.bicep')
-                parameterFilePath = (Join-Path $PSScriptRoot '..\..\arm' $ModuleName '.parameters\parameters.json')
+                templateFilePath  = (Join-Path $PSScriptRoot '../../arm' $ModuleName 'deploy.bicep')
+                parameterFilePath = (Join-Path $PSScriptRoot '../../arm' $ModuleName '.parameters/parameters.json')
                 location          = "$($ValidateOrDeployParameters.Location)"
                 resourceGroupName = "$($ValidateOrDeployParameters.ResourceGroupName)"
                 subscriptionId    = "$($ValidateOrDeployParameters.SubscriptionId)"
@@ -178,7 +178,7 @@ function Test-ModuleLocally {
                 if ($ValidationTest) {
                     Write-Verbose "Validating Module: $ModuleName"
                     # Load Modules Deployment Script
-                    . (Join-Path $PSScriptRoot '..\..' '.github\actions\templates\validateModuleDeploy\scripts\Test-TemplateWithParameterFile.ps1')
+                    . (Join-Path $PSScriptRoot '../..' '.github/actions/templates/validateModuleDeploy/scripts/Test-TemplateWithParameterFile.ps1')
                     # Invoke Validation
                     Test-TemplateWithParameterFile @functionInput -Verbose
                 }
@@ -188,7 +188,7 @@ function Test-ModuleLocally {
                     Write-Verbose "Deploying Module: $ModuleName"
                     # Set the ParameterFilePath to Directory instead of the default 'parameters.json'
                     if ($DeployAllModuleParameterFiles) {
-                        $functionInput.parameterFilePath = (Join-Path $PSScriptRoot '..\..\arm' $ModuleName '.parameters')
+                        $functionInput.parameterFilePath = (Join-Path $PSScriptRoot '../../arm' $ModuleName '.parameters')
                     }
                     # Append to Function Input the required parameters for Deployment
                     $functionInput += @{
@@ -197,31 +197,21 @@ function Test-ModuleLocally {
                         retryLimit       = 1
                     }
                     # Load Modules Deployment Script
-                    . (Join-Path $PSScriptRoot '..\..' '.github\actions\templates\deployModule\scripts\New-ModuleDeployment.ps1')
+                    . (Join-Path $PSScriptRoot '../..' '.github/actions/templates/deployModule/scripts/New-ModuleDeployment.ps1')
                     # Invoke Deployment
                     New-ModuleDeployment @functionInput -Verbose
                 }
             } catch {
                 Write-Error $PSItem.Exception
-                # Replace Values with Tokens For Repo Updates
-                $AllParameterFileTokens | ForEach-Object {
-                    $Replace = $PSitem.With; $With = $PSItem.Replace
-                    $PSitem.Replace = $Replace; $PSitem.With = $With
-                }
-                $ModuleParameterFiles | ForEach-Object { Convert-TokensInFileList -Paths $PSitem.FullName -TokensReplaceWith $AllParameterFileTokens }
             }
         }
     }
 
     end {
         # Restore Parameter Files
-        if (($ValidateTest -or $DeploymentTest) -and $ValidateOrDeployParameters) {
+        if (($ValidationTest -or $DeploymentTest) -and $ValidateOrDeployParameters) {
             # Replace Values with Tokens For Repo Updates
-            $AllParameterFileTokens | ForEach-Object {
-                $Replace = $PSitem.With; $With = $PSItem.Replace
-                $PSitem.Replace = $Replace; $PSitem.With = $With
-            }
-            $ModuleParameterFiles | ForEach-Object { Convert-TokensInFileList -Paths $PSitem.FullName -TokensReplaceWith $AllParameterFileTokens }
+            $ModuleParameterFiles | ForEach-Object { Convert-TokensInFileList -Paths $PSitem.FullName -TokensReplaceWith $AllParameterFileTokens -RestoreTokens }
         }
     }
 }

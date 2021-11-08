@@ -910,19 +910,19 @@ jobs:
         shell: pwsh
         run: |
           # Load Settings File
-          $Settings = Get-Content -Path "$env:GITHUB_WORKSPACE/utilities/settings.json" | ConvertFrom-Json
+          $Settings = Get-Content -Path "$env:GITHUB_WORKSPACE/settings.json" | ConvertFrom-Json
           # Load used functions
           . "$env:GITHUB_WORKSPACE/.github/actions/sharedScripts/Set-EnvironmentOnAgent.ps1"
           . "$env:GITHUB_WORKSPACE/utilities/tools/Set-ParameterFileTokensInKeyVault.ps1"
           # Set agent up
           Set-EnvironmentOnAgent
           # Create Tokens in Key Vault
-          if('${{ env.PLATFORM_KEYVAULT }}' -and $Settings.remoteCustomParameterFileTokens.syncLocalCustomParameterFileTokens){
+          if('${{ env.PLATFORM_KEYVAULT }}' -and $Settings.parameterFileTokens.remoteCustomParameterFileTokens.syncLocalCustomParameterFileTokens){
             write-verbose "Syncing Local Parameter File Tokens to Key Vault"
             Set-ParameterFileTokensInKeyVault `
                   -TokenKeyVaultName '${{ env.PLATFORM_KEYVAULT }}' `
                   -SubscriptionId '${{ secrets.ARM_SUBSCRIPTION_ID }}' `
-                  -LocalCustomParameterFileTokens $Settings.localCustomParameterFileTokens.tokens `
-                  -TokenKeyVaultSecretNamePrefix $Settings.remoteCustomParameterFileTokens.keyVaultSecretNamePrefix `
+                  -LocalCustomParameterFileTokens $Settings.parameterFileTokens.localCustomParameterFileTokens.tokens `
+                  -TokenKeyVaultSecretNamePrefix $Settings.parameterFileTokens.remoteCustomParameterFileTokens.keyVaultSecretNamePrefix `
                   -verbose
           }

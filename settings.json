@@ -1,0 +1,18 @@
+{
+    "parameterFileTokens": {
+        "tokenPrefix": "<<",
+        "tokenSuffix": ">>",
+        "localCustomParameterFileTokens": {
+            "tokens": [
+                {
+                    "name": "namePrefix",
+                    "value": "carml"
+                }
+            ]
+        },
+        "remoteCustomParameterFileTokens": {
+            "keyVaultSecretNamePrefix": "ParameterFileToken-",
+            "syncLocalCustomParameterFileTokens": true
+        }
+    }
+}

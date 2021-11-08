@@ -35,21 +35,32 @@ function Convert-TokensInFileList {
         [psobject] $TokensReplaceWith,
 
         [Parameter(Mandatory = $false)]
-        [string] $OutputDirectory
+        [string] $OutputDirectory,
+
+        [Parameter(Mandatory = $false)]
+        [switch] $RestoreTokens
     )
+    # Restore Tokens (Swap Replace with Value)
+    if ($RestoreTokens) {
+        Write-Verbose 'Restoring Tokens'
+        $TokensReplaceWith | ForEach-Object {
+            $Replace = $PSitem.With; $With = $PSItem.Replace
+            $PSitem.Replace = $Replace; $PSitem.With = $With
+        }
+    }
     Write-Verbose "$($TokensReplaceWith.Count) Tokens Found"
+    # Process Path for Token Replacement
     foreach ($Path in $Paths) {
-        Write-Verbose "Processing Tokens for file: $Path"
         $File = Get-Content -Path $Path
+        $FileName = Split-Path $Path -Leaf
+        Write-Verbose "Processing Tokens for file: $FileName"
         $TokensReplaceWith |
             ForEach-Object {
                 $File = $File -replace $PSItem.Replace, $PSItem.With
             }
         if (!$OutputDirectory) {
-            Write-Verbose "Writing Output (Same Path): $Path"
             $File | Set-Content -Path $Path
         } else {
-            $FileName = Split-Path $Path -Leaf
             Write-Verbose "Writing Output (New Path) to:  $OutputDirectory"
             $File | Set-Content -Path (Join-Path $OutputDirectory $FileName)
         }
