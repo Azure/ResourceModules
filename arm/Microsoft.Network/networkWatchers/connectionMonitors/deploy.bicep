@@ -4,6 +4,12 @@ param networkWatcherName string = 'NetworkWatcher_${resourceGroup().location}'
 @description('Optional. Name of the resource.')
 param name string
 
+@description('Optional. Tags of the resource.')
+param tags object = {}
+
+@description('Optional. Location for all resources.')
+param location string = resourceGroup().location
+
 @description('Optional. List of connection monitor endpoints.')
 param endpoints array = []
 
@@ -12,30 +18,6 @@ param testConfigurations array = []
 
 @description('Optional.	List of connection monitor test groups.')
 param testGroups array = []
-
-@description('Optional.	Monitoring interval in seconds.')
-param monitoringInterval int = 30
-
-@description('Optional.	Address of the connection monitor destination (IP or domain name).')
-param destinationAddress string = ''
-
-@description('Optional.	The destination port used by connection monitor.')
-param destinationPort int = 80
-
-@description('Optional. The ID of the resource used as the destination by connection monitor.')
-param destinationResourceId string = ''
-
-@description('Required.	The ID of the resource used as the source by connection monitor.')
-param sourceResourceId string
-
-@description('Optional.	The source port used by connection monitor.')
-param sourcePort int = 80
-
-@description('Optional.	The ID of the resource used as the source by connection monitor.')
-param notes string = ''
-
-@description('Optional. Tags of the resource.')
-param tags object = {}
 
 @description('Optional. Specify the Log Analytics Workspace Resource ID')
 param workspaceResourceId string = ''
@@ -60,22 +42,11 @@ module pid_cuaId '.bicep/nested_cuaId.bicep' = if (!empty(cuaId)) {
 resource connectionMonitor 'Microsoft.Network/networkWatchers/connectionMonitors@2021-03-01' = {
   name: '${networkWatcherName}/${name}'
   tags: tags
+  location: location
   properties: {
-    autoStart: false
-    destination: {
-      address: !empty(destinationAddress) ? destinationAddress : null
-      port: destinationPort
-      resourceId: !empty(destinationResourceId) ? destinationResourceId : null
-    }
-    monitoringIntervalInSeconds: monitoringInterval
-    notes: notes
-    source: {
-      resourceId: sourceResourceId
-      port: sourcePort
-    }
-    endpoints: !empty(endpoints) ? endpoints : null
-    testConfigurations: !empty(testConfigurations) ? testConfigurations : null
-    testGroups: !empty(testGroups) ? testGroups : null
+    endpoints: endpoints
+    testConfigurations: testConfigurations
+    testGroups: testGroups
     outputs: outputs
   }
 }

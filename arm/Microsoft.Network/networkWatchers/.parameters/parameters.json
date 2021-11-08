@@ -27,10 +27,53 @@
             "value": [
                 {
                     "name": "adp-sxx-az-conn-mon-x-001",
-                    "monitoringInterval": 10,
-                    "destinationAddress": "www.bing.com",
-                    "destinationPort": 80,
-                    "sourceResourceId": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Compute/virtualMachines/adp-vm-001",
+                    "endpoints": [
+                        {
+                            "name": "sxx-az-subnet-x-001(validation-rg)",
+                            "type": "AzureSubnet",
+                            "resourceId": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/virtualNetworks/adp-sxx-az-nw-x-001/subnets/sxx-az-subnet-x-001"
+                        },
+                        {
+                            "name": "Office Portal",
+                            "type": "ExternalAddress",
+                            "address": "www.office.com"
+                        }
+                    ],
+                    "testConfigurations": [
+                        {
+                            "name": "HTTP Test",
+                            "testFrequencySec": 30,
+                            "protocol": "Http",
+                            "httpConfiguration": {
+                                "port": 80,
+                                "method": "Get",
+                                "requestHeaders": [],
+                                "validStatusCodeRanges": [
+                                    "200"
+                                ],
+                                "preferHTTPS": false
+                            },
+                            "successThreshold": {
+                                "checksFailedPercent": 5,
+                                "roundTripTimeMs": 100
+                            }
+                        }
+                    ],
+                    "testGroups": [
+                        {
+                            "name": "TestHTTPBing",
+                            "disable": false,
+                            "testConfigurations": [
+                                "HTTP Test"
+                            ],
+                            "sources": [
+                                "sxx-az-subnet-x-001(validation-rg)"
+                            ],
+                            "destinations": [
+                                "Office Portal"
+                            ]
+                        }
+                    ],
                     "workspaceResourceId": "/subscriptions/<<subscriptionId>>/resourcegroups/validation-rg/providers/microsoft.operationalinsights/workspaces/adp-sxx-az-la-x-001"
                 }
             ]
