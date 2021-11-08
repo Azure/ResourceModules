@@ -12,15 +12,20 @@ function Remove-ResourceInner {
     Write-Verbose '----------------------------------' -Verbose
     foreach ($resource in $resourceToRemove) {
 
-
-        if (-not ($id = $resource.ResourceId)) {
-            $id = $resource.Id
-        }
-        if (-not ($type = $resource.ResourceType)) {
-            $type = $resource.Type
-        }
-        if (-not ($name = $resource.name)) {
-            $name = $resource.ResourceName
+        if ($resource.GetType().Name -eq 'PSResourceGroup') {
+            # Special resource group handling
+            $name = $resource.ResourceGroupName
+            $type = 'Microsoft.Resources/Resources'
+        } else {
+            if (-not ($id = $resource.ResourceId)) {
+                $id = $resource.Id
+            }
+            if (-not ($type = $resource.ResourceType)) {
+                $type = $resource.Type
+            }
+            if (-not ($name = $resource.name)) {
+                $name = $resource.ResourceName
+            }
         }
 
         Write-Verbose ('Trying to remove resource [{0}] of type [{1}]' -f $name, $type) -Verbose

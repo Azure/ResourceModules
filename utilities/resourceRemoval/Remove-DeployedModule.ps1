@@ -75,22 +75,24 @@ function Remove-DeployedModule {
             # Remove resources
             # ----------------
             if ($resourceGroupToRemove) {
-                if ($resourceGroupToRemove.Count -gt 1) {
-                    Write-Error "More than 1 Resource Group has been found with tag [removeModule=$moduleName]. Only 1 Resource Group is expected."
-                } elseif (Get-AzResource -ResourceGroupName $resourceGroupToRemove.ResourceGroupName) {
-                    Write-Error ('Resource Group [{0}] still has resources provisioned.' -f $resourceGroupToRemove.ResourceGroupName)
-                } else {
-                    Write-Verbose ('Removing Resource Group: {0}' -f $resourceGroupToRemove.ResourceGroupName) -Verbose
-                    try {
-                        $removeStatus = $resourceGroupToRemove |
-                            Remove-AzResourceGroup -Force -ErrorAction Stop
-                        if ($removeStatus) {
-                            Write-Verbose ('Successfully removed Resource Group: {0}' -f $resourceGroupToRemove.ResourceGroupName) -Verbose
-                        }
-                    } catch {
-                        Write-Error ('Resource Group removal failed. Reason: [{0}]' -f $_.Exception.Message)
-                    }
-                }
+                Remove-Resource -resourceToRemove $resourceGroupToRemove
+
+                # if ($resourceGroupToRemove.Count -gt 1) {
+                #     Write-Error "More than 1 Resource Group has been found with tag [removeModule=$moduleName]. Only 1 Resource Group is expected."
+                # } elseif (Get-AzResource -ResourceGroupName $resourceGroupToRemove.ResourceGroupName) {
+                #     Write-Error ('Resource Group [{0}] still has resources provisioned.' -f $resourceGroupToRemove.ResourceGroupName)
+                # } else {
+                #     Write-Verbose ('Removing Resource Group: {0}' -f $resourceGroupToRemove.ResourceGroupName) -Verbose
+                #     try {
+                #         $removeStatus = $resourceGroupToRemove |
+                #             Remove-AzResourceGroup -Force -ErrorAction Stop
+                #         if ($removeStatus) {
+                #             Write-Verbose ('Successfully removed Resource Group: {0}' -f $resourceGroupToRemove.ResourceGroupName) -Verbose
+                #         }
+                #     } catch {
+                #         Write-Error ('Resource Group removal failed. Reason: [{0}]' -f $_.Exception.Message)
+                #     }
+                # }
             } else {
                 Write-Error ('Unable to find Resource Group by tag [removeModule={0}].' -f $moduleName)
             }
