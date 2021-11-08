@@ -16,9 +16,9 @@ This module deploys AVD Application Groups, with resource lock and diagnostics c
 
 | Parameter Name | Type | Default Value | Possible Values | Description |
 | :-- | :-- | :-- | :-- | :-- |
-| `appGroupDescription` | string |  |  | Optional. The description of the Application Group to be created. |
 | `applications` | _[applications](applications/readme.md)_ array | `[]` |  | Optional. List of applications to be created in the Application Group. |
 | `cuaId` | string |  |  | Optional. Customer Usage Attribution id (GUID). This GUID must be previously registered |
+| `description` | string |  |  | Optional. The description of the Application Group to be created. |
 | `diagnosticLogsRetentionInDays` | int | `365` |  | Optional. Specifies the number of days that logs will be kept for; a value of 0 will retain data indefinitely. |
 | `diagnosticStorageAccountId` | string |  |  | Optional. Resource identifier of the Diagnostic Storage Account. |
 | `eventHubAuthorizationRuleId` | string |  |  | Optional. Resource ID of the event hub authorization rule for the Event Hubs namespace in which the event hub should be created or streamed to. |

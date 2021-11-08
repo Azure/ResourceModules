@@ -12,11 +12,11 @@ This module deploys AVD Applications.
 
 | Parameter Name | Type | Default Value | Possible Values | Description |
 | :-- | :-- | :-- | :-- | :-- |
-| `appDescription` | string |  |  | Optional. Description of Application.. |
 | `appGroupName` | string |  |  | Required. Name of the Application Group to create the application(s) in. |
 | `commandLineArguments` | string |  |  | Optional. Command Line Arguments for Application. |
 | `commandLineSetting` | string | `DoNotAllow` | `[Allow, DoNotAllow, Require]` | Optional. Specifies whether this published application can be launched with command line arguments provided by the client, command line arguments specified at publish time, or no command line arguments at all. |
 | `cuaId` | string |  |  | Optional. Customer Usage Attribution id (GUID). This GUID must be previously registered |
+| `description` | string |  |  | Optional. Description of Application.. |
 | `filePath` | string |  |  | Required. Specifies a path for the executable file for the application. |
 | `friendlyName` | string |  |  | Optional. Friendly name of Application.. |
 | `iconIndex` | int |  |  | Optional. Index of the icon. |
