@@ -9,7 +9,7 @@
             "value": "[Test] policy exempt"
         },
         "policyAssignmentId": {
-            "value": "/subscriptions/<<subscriptionId>>/providers/Microsoft.Authorization/policyAssignments/Addatagtoresources"
+            "value": "/subscriptions/<<subscriptionId>>/providers/Microsoft.Authorization/policyAssignments/Add-a-tag-to-resources"
         },
         "exemptionCategory": {
             "value": "Waiver"
@@ -20,7 +20,7 @@
             }
         },
         "expiresOn": {
-            "value": "2023-10-02T03:57:00.000Z"
+            "value": "2025-10-02T03:57:00.000Z"
         },
         "subscriptionId": {
             "value": "<<subscriptionId>>"
