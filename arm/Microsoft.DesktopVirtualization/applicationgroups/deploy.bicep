@@ -133,7 +133,7 @@ module appGroup_applications 'applications/deploy.bicep' = [for (application, in
     commandLineArguments: contains(application, 'commandLineArguments') ? application.commandLineArguments : ''
     showInPortal: contains(application, 'showInPortal') ? application.showInPortal : false
     iconPath: contains(application, 'iconPath') ? application.iconPath : ''
-    iconIndex: contains(application, 'iconIndex') ? application.iconIndex : ''
+    iconIndex: contains(application, 'iconIndex') ? application.iconIndex : 0
   }
 }]
 
