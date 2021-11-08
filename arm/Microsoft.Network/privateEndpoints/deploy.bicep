@@ -11,7 +11,7 @@ param serviceResourceId string
 param groupId array
 
 @description('Optional. Resource id of the private DNS zone.')
-param privateDNSId string = ''
+param privateDnsZoneGroups array = []
 
 @description('Optional. Location for all Resources.')
 param location string = resourceGroup().location
@@ -38,7 +38,7 @@ module pid_cuaId '.bicep/nested_pid.bicep' = if (!empty(cuaId)) {
   params: {}
 }
 
-resource privateEndpoint 'Microsoft.Network/privateEndpoints@2021-05-01' = {
+resource privateEndpoint 'Microsoft.Network/privateEndpoints@2021-03-01' = {
   name: privateEndpointName
   location: location
   tags: tags
@@ -77,9 +77,13 @@ module privateEndpoint_rbac '.bicep/nested_rbac.bicep' = [for (roleAssignment, i
   }
 }]
 
-module privateEndpoint_privateDnsZoneGroups 'privateDnsZoneGroups/deploy.bicep' = {
-  name: '${privateEndpoint.name}-privateDnsZoneGroups'
-}
+module privateEndpoint_privateDnsZoneGroups 'privateDnsZoneGroups/deploy.bicep' = [for (privateDnsZoneGroup, index) in privateDnsZoneGroups: {
+  name: '${deployment().name}-privateDnsZoneGroup-${index}'
+  params: {
+    privateDNSIds: privateDnsZoneGroup.privateDNSIds
+    privateEndpointName: privateEndpoint.name
+  }
+}]
 
 @description('The resource group the private endpoint was deployed into')
 output privateEndpointResourceGroup string = resourceGroup().name

@@ -16,13 +16,13 @@ on:
         required: false
         default: '0.0.1'
   push:
-    branches:
-      - main
+    #branches:
+    #  - main
     paths:
       - '.github/actions/templates/**'
       - '.github/workflows/ms.network.privateendpoints.yml'
       - 'arm/Microsoft.Network/privateEndpoints/**'
-      - '!arm/Microsoft.Network/privateEndpoints/readme.md'
+    #  - '!arm/Microsoft.Network/privateEndpoints/readme.md'
 
 env:
   moduleName: 'privateEndpoints'
