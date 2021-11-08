@@ -128,7 +128,7 @@ module appGroup_applications 'applications/deploy.bicep' = [for (application, in
     appGroupName: appGroup.name
     appDescription: contains(application, 'description') ? application.description : ''
     friendlyName: contains(application, 'friendlyName') ? application.friendlyName : ''
-    filePath: application.filePath
+    filePath: contains(application, 'filePath') ? application.filePath : ''
     commandLineSetting: contains(application, 'commandLineSetting') ? application.commandLineSetting : 'DoNotAllow'
     commandLineArguments: contains(application, 'commandLineArguments') ? application.commandLineArguments : ''
     showInPortal: contains(application, 'showInPortal') ? application.showInPortal : false
