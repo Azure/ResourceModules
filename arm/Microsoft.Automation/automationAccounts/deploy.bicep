@@ -180,10 +180,10 @@ resource automationAccount 'Microsoft.Automation/automationAccounts@2020-01-13-p
         name: jobSchedule.scheduleName
       }
     }
-    dependsOn: [
-      automationAccount_schedules
-      automationAccount_runbooks
-    ]
+    // dependsOn: [
+    //   automationAccount_schedules
+    //   automationAccount_runbooks
+    // ]
   }]
 }
 

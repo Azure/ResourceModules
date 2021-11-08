@@ -17,6 +17,15 @@
                     "advancedSchedule": {}
                 }
             ]
+        },
+        "modules": {
+            "value": [
+                {
+                    "name": "PSWindowsUpdate",
+                    "version": "latest",
+                    "uri": "https://www.powershellgallery.com/api/v2/package"
+                }
+            ]
         }
         // ,
         // "privateEndpoints": {
