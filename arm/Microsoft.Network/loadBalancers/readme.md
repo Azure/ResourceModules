@@ -211,11 +211,11 @@ Tag names and tag values can be provided as needed. A tag can be left without a 
 
 ## Outputs
 
-| Output Name | Type |
-| :-- | :-- |
-| `loadBalancerName` | string |
-| `loadBalancerResourceGroup` | string |
-| `loadBalancerResourceId` | string |
+| Output Name | Type | Description |
+| :-- | :-- | :-- |
+| `loadBalancerName` | string | The name of the load balancer |
+| `loadBalancerResourceGroup` | string | The resource group the load balancer was deployed into |
+| `loadBalancerResourceId` | string | The resourceID of the load balancer |
 
 ## Template references
 

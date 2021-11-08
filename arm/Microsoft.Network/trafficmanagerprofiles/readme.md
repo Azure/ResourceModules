@@ -122,11 +122,11 @@ Tag names and tag values can be provided as needed. A tag can be left without a 
 
 ## Outputs
 
-| Output Name | Type |
-| :-- | :-- |
-| `trafficManagerName` | string |
-| `trafficManagerResourceGroup` | string |
-| `trafficManagerResourceId` | string |
+| Output Name | Type | Description |
+| :-- | :-- | :-- |
+| `trafficManagerName` | string | The name of the traffix manager was deployed into |
+| `trafficManagerResourceGroup` | string | The resource group the traffix manager was deployed into |
+| `trafficManagerResourceId` | string | The resourceId of the traffix manager |
 
 ## Template references
 

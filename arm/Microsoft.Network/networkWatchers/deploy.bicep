@@ -1,15 +1,15 @@
 @description('Required. Name of the Network Watcher resource (hidden)')
 @minLength(1)
-param networkWatcherName string = ''
+param name string = 'NetworkWatcher_${location}'
 
 @description('Optional. Location for all resources.')
 param location string = resourceGroup().location
 
-@description('Optional. Array that contains the monitors')
-param monitors array = []
+@description('Optional. Array that contains the Connection Monitors')
+param connectionMonitors array = []
 
-@description('Optional. Specify the Workspace Resource ID')
-param workspaceResourceId string = ''
+@description('Optional. Array that contains the Flow Logs')
+param flowLogs array = []
 
 @allowed([
   'CanNotDelete'
@@ -28,43 +28,23 @@ param tags object = {}
 @description('Optional. Customer Usage Attribution id (GUID). This GUID must be previously registered')
 param cuaId string = ''
 
-var outputs = [
-  {
-    type: 'Workspace'
-    workspaceSettings: {
-      workspaceResourceId: workspaceResourceId
-    }
-  }
-]
-
 module pid_cuaId '.bicep/nested_cuaId.bicep' = if (!empty(cuaId)) {
   name: 'pid-${cuaId}'
   params: {}
 }
 
 resource networkWatcher 'Microsoft.Network/networkWatchers@2021-02-01' = {
+  name: name
   location: location
-  name: networkWatcherName
+  tags: tags
   properties: {}
-
-  resource connectionMonitors 'connectionMonitors@2021-02-01' = [for monitor in monitors: if (!empty(monitors)) {
-    name: (empty(monitors) ? 'dummy/dummy' : '${networkWatcher.name}/${monitor.connectionMonitorName}')
-    location: location
-    tags: tags
-    properties: {
-      endpoints: (empty(monitors) ? json('null') : monitor.endpoints)
-      testConfigurations: (empty(monitors) ? json('null') : monitor.testConfigurations)
-      testGroups: (empty(monitors) ? json('null') : monitor.testGroups)
-      outputs: (empty(workspaceResourceId) ? json('null') : outputs)
-    }
-  }]
 }
 
 resource networkWatcher_lock 'Microsoft.Authorization/locks@2016-09-01' = if (lock != 'NotSpecified') {
   name: '${networkWatcher.name}-${lock}-lock'
   properties: {
     level: lock
-    notes: (lock == 'CanNotDelete') ? 'Cannot delete resource or child resources.' : 'Cannot modify the resource or child resources.'
+    notes: lock == 'CanNotDelete' ? 'Cannot delete resource or child resources.' : 'Cannot modify the resource or child resources.'
   }
   scope: networkWatcher
 }
@@ -77,6 +57,39 @@ module networkWatcher_rbac '.bicep/nested_rbac.bicep' = [for (roleAssignment, in
   }
 }]
 
-output networkWatcherResourceGroup string = resourceGroup().name
-output networkWatcherResourceId string = networkWatcher.id
+module networkWatcher_connectionMonitors 'connectionMonitors/deploy.bicep' = [for connectionMonitor in connectionMonitors: {
+  name: connectionMonitor.name
+  params: {
+    endpoints: contains(connectionMonitor, 'endpoints') ? connectionMonitor.endpoints : []
+    name: connectionMonitor.name
+    networkWatcherName: networkWatcher.name
+    testConfigurations: contains(connectionMonitor, 'testConfigurations') ? connectionMonitor.testConfigurations : []
+    testGroups: contains(connectionMonitor, 'testGroups') ? connectionMonitor.testGroups : []
+    workspaceResourceId: contains(connectionMonitor, 'workspaceResourceId') ? connectionMonitor.workspaceResourceId : ''
+  }
+}]
+
+module networkWatcher_flowLogs 'flowLogs/deploy.bicep' = [for (flowLog, index) in flowLogs: {
+  name: '${deployment().name}-flowLog-${index}'
+  params: {
+    enabled: contains(flowLog, 'enabled') ? flowLog.enabled : true
+    formatVersion: contains(flowLog, 'formatVersion') ? flowLog.formatVersion : 2
+    location: contains(flowLog, 'location') ? flowLog.location : location
+    name: contains(flowLog, 'name') ? flowLog.name : '${last(split(flowLog.targetResourceId, '/'))}-${split(flowLog.targetResourceId, '/')[4]}-flowlog'
+    networkWatcherName: networkWatcher.name
+    retentionInDays: contains(flowLog, 'retentionInDays') ? flowLog.retentionInDays : 365
+    storageId: flowLog.storageId
+    targetResourceId: flowLog.targetResourceId
+    trafficAnalyticsInterval: contains(flowLog, 'trafficAnalyticsInterval') ? flowLog.trafficAnalyticsInterval : 60
+    workspaceResourceId: contains(flowLog, 'workspaceResourceId') ? flowLog.workspaceResourceId : ''
+  }
+}]
+
+@description('The name of the deployed network watcher')
 output networkWatcherName string = networkWatcher.name
+
+@description('The resourceId of the deployed network watcher')
+output networkWatcherResourceId string = networkWatcher.id
+
+@description('The resource group the network watcher was deployed into')
+output networkWatcherResourceGroup string = resourceGroup().name

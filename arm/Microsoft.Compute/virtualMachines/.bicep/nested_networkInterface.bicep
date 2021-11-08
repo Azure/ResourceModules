@@ -16,7 +16,6 @@ param eventHubName string
 param pipMetricsToEnable array
 param pipLogsToEnable array
 param metricsToEnable array
-param builtInRoleNames object
 param roleAssignments array
 
 var diagnosticsMetrics = [for metric in metricsToEnable: {
@@ -54,8 +53,7 @@ module networkInterface_publicIPConfigurations 'nested_networkInterface_publicIP
     metricsToEnable: pipMetricsToEnable
     logsToEnable: pipLogsToEnable
     lock: lock
-    builtInRoleNames: builtInRoleNames
-    roleAssignments: (contains(ipConfiguration.pipconfiguration, 'roleAssignments') ? (!(empty(ipConfiguration.pipconfiguration.roleAssignments)) ? ipConfiguration.pipconfiguration.roleAssignments : json('[]')) : json('[]'))
+    roleAssignments: contains(ipConfiguration.pipconfiguration, 'roleAssignments') ? (!empty(ipConfiguration.pipconfiguration.roleAssignments) ? ipConfiguration.pipconfiguration.roleAssignments : []) : []
     tags: tags
   }
 }]
@@ -67,15 +65,15 @@ resource networkInterface 'Microsoft.Network/networkInterfaces@2021-02-01' = {
   properties: {
     enableIPForwarding: enableIPForwarding
     enableAcceleratedNetworking: enableAcceleratedNetworking
-    dnsSettings: (!empty(dnsServers) ? dnsServersValues : json('null'))
-    networkSecurityGroup: (!empty(networkSecurityGroupId) ? networkSecurityGroup : json('null'))
+    dnsSettings: !empty(dnsServers) ? dnsServersValues : null
+    networkSecurityGroup: !empty(networkSecurityGroupId) ? networkSecurityGroup : null
     ipConfigurations: [for (ipConfiguration, index) in ipConfigurationArray: {
-      name: (!empty(ipConfiguration.name) ? ipConfiguration.name : json('null'))
+      name: !empty(ipConfiguration.name) ? ipConfiguration.name : null
       properties: {
         primary: ((index == 0) ? true : false)
-        privateIPAllocationMethod: (contains(ipConfiguration, 'privateIPAllocationMethod') ? (!empty(ipConfiguration.privateIPAllocationMethod) ? ipConfiguration.privateIPAllocationMethod : json('null')) : json('null'))
-        privateIPAddress: (contains(ipConfiguration, 'vmIPAddress') ? (empty(ipConfiguration.vmIPAddress) ? json('null') : ipConfiguration.vmIPAddress) : json('null'))
-        publicIPAddress: ((contains(ipConfiguration, 'pipconfiguration')) ? json('{"id":"${resourceId('Microsoft.Network/publicIPAddresses', '${virtualMachineName}${ipConfiguration.pipconfiguration.publicIpNameSuffix}')}"}') : json('null'))
+        privateIPAllocationMethod: contains(ipConfiguration, 'privateIPAllocationMethod') ? (!empty(ipConfiguration.privateIPAllocationMethod) ? ipConfiguration.privateIPAllocationMethod : null) : null
+        privateIPAddress: contains(ipConfiguration, 'vmIPAddress') ? (!empty(ipConfiguration.vmIPAddress) ? ipConfiguration.vmIPAddress : null) : null
+        publicIPAddress: contains(ipConfiguration, 'pipconfiguration') ? json('{"id":"${resourceId('Microsoft.Network/publicIPAddresses', '${virtualMachineName}${ipConfiguration.pipconfiguration.publicIpNameSuffix}')}"}') : null
         subnet: {
           id: ipConfiguration.subnetId
         }
@@ -91,7 +89,7 @@ resource networkInterface_lock 'Microsoft.Authorization/locks@2017-04-01' = if (
   name: '${networkInterface.name}-${lock}-lock'
   properties: {
     level: lock
-    notes: (lock == 'CanNotDelete') ? 'Cannot delete resource or child resources.' : 'Cannot modify the resource or child resources.'
+    notes: lock == 'CanNotDelete' ? 'Cannot delete resource or child resources.' : 'Cannot modify the resource or child resources.'
   }
   scope: networkInterface
 }
@@ -99,11 +97,11 @@ resource networkInterface_lock 'Microsoft.Authorization/locks@2017-04-01' = if (
 resource networkInterface_diagnosticSettings 'Microsoft.Insights/diagnosticsettings@2021-05-01-preview' = if ((!empty(diagnosticStorageAccountId)) || (!empty(workspaceId)) || (!empty(eventHubAuthorizationRuleId)) || (!empty(eventHubName))) {
   name: '${networkInterface.name}-diagnosticSettings'
   properties: {
-    storageAccountId: (empty(diagnosticStorageAccountId) ? json('null') : diagnosticStorageAccountId)
-    workspaceId: (empty(workspaceId) ? json('null') : workspaceId)
-    eventHubAuthorizationRuleId: (empty(eventHubAuthorizationRuleId) ? json('null') : eventHubAuthorizationRuleId)
-    eventHubName: (empty(eventHubName) ? json('null') : eventHubName)
-    metrics: ((empty(diagnosticStorageAccountId) && empty(workspaceId) && empty(eventHubAuthorizationRuleId) && empty(eventHubName)) ? json('null') : diagnosticsMetrics)
+    storageAccountId: !empty(diagnosticStorageAccountId) ? diagnosticStorageAccountId : null
+    workspaceId: !empty(workspaceId) ? workspaceId : null
+    eventHubAuthorizationRuleId: !empty(eventHubAuthorizationRuleId) ? eventHubAuthorizationRuleId : null
+    eventHubName: !empty(eventHubName) ? eventHubName : null
+    metrics: !empty(diagnosticStorageAccountId) || !empty(workspaceId) || !empty(eventHubAuthorizationRuleId) || !empty(eventHubName) ? diagnosticsMetrics : null
   }
   scope: networkInterface
 }
@@ -112,7 +110,6 @@ module networkInterface_rbac 'nested_networkInterface_rbac.bicep' = [for (roleAs
   name: '${deployment().name}-rbac-${index}'
   params: {
     roleAssignmentObj: roleAssignment
-    builtInRoleNames: builtInRoleNames
     resourceName: networkInterface.name
   }
 }]

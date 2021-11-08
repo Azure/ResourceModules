@@ -96,7 +96,7 @@
                     "EncryptionOperation": "EnableEncryption",
                     "KeyVaultURL": "https://adp-sxx-az-kv-x-001.vault.azure.net/",
                     "KeyVaultResourceId": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.KeyVault/vaults/adp-sxx-az-kv-x-001",
-                    "KeyEncryptionKeyURL": "https://adp-sxx-az-kv-x-001.vault.azure.net/keys/keyEncryptionKey/685153483a1140e3856f004a753e1ab4",
+                    "KeyEncryptionKeyURL": "https://adp-sxx-az-kv-x-001.vault.azure.net/keys/keyEncryptionKey/c263cf982a8442f69c3a0ece5e345b6c",
                     "KekVaultResourceId": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.KeyVault/vaults/adp-sxx-az-kv-x-001",
                     "KeyEncryptionAlgorithm": "RSA-OAEP", //'RSA-OAEP'/'RSA-OAEP-256'/'RSA1_5'
                     "VolumeType": "All", //'OS'/'Data'/'All'
@@ -114,10 +114,10 @@
             }
         },
         "backupVaultName": {
-            "value": "sxx-az-rsv-x-999"
+            "value": "adp-sxx-az-rsv-x-001"
         },
         "backupVaultResourceGroup": {
-            "value": "management-rg"
+            "value": "validation-rg"
         },
         "backupPolicyName": {
             "value": "VMpolicy"

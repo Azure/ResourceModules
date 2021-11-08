@@ -203,7 +203,7 @@ var backendAddressPools = [for backendPool in backendPools: {
   name: backendPool.backendPoolName
   type: 'Microsoft.Network/applicationGateways/backendAddressPools'
   properties: {
-    backendAddresses: (contains(backendPool, 'BackendAddresses') ? backendPool.BackendAddresses : [])
+    backendAddresses: contains(backendPool, 'BackendAddresses') ? backendPool.BackendAddresses : []
   }
 }]
 var probes_var = [for probe in probes: {
@@ -213,12 +213,12 @@ var probes_var = [for probe in probes: {
     protocol: probe.protocol
     host: probe.host
     path: probe.path
-    interval: (contains(probe, 'interval') ? probe.interval : 30)
-    timeout: (contains(probe, 'timeout') ? probe.timeout : 30)
-    unhealthyThreshold: (contains(probe, 'timeout') ? probe.unhealthyThreshold : 3)
-    minServers: (contains(probe, 'timeout') ? probe.minServers : 0)
+    interval: contains(probe, 'interval') ? probe.interval : 30
+    timeout: contains(probe, 'timeout') ? probe.timeout : 30
+    unhealthyThreshold: contains(probe, 'timeout') ? probe.unhealthyThreshold : 3
+    minServers: contains(probe, 'timeout') ? probe.minServers : 0
     match: {
-      body: (contains(probe, 'timeout') ? probe.body : '')
+      body: contains(probe, 'timeout') ? probe.body : ''
       statusCodes: probe.statusCodes
     }
   }
@@ -231,7 +231,7 @@ var backendHttpConfigurations_var = [for backendHttpConfiguration in backendHttp
     cookieBasedAffinity: backendHttpConfiguration.cookieBasedAffinity
     pickHostNameFromBackendAddress: backendHttpConfiguration.pickHostNameFromBackendAddress
     probeEnabled: backendHttpConfiguration.probeEnabled
-    probe: (bool(backendHttpConfiguration.probeEnabled) ? json('{"id": "${applicationGatewayResourceId}/probes/${backendHttpConfiguration.backendHttpConfigurationName}Probe"}') : json('null'))
+    probe: bool(backendHttpConfiguration.probeEnabled) ? json('{"id": "${applicationGatewayResourceId}/probes/${backendHttpConfiguration.backendHttpConfigurationName}Probe"}') : null
   }
 }]
 var frontendHttpsPorts = [for frontendHttpsListener in frontendHttpsListeners: {
@@ -343,12 +343,12 @@ module pid_cuaId '.bicep/nested_cuaId.bicep' = if (!empty(cuaId)) {
 resource applicationGateway 'Microsoft.Network/applicationGateways@2021-02-01' = {
   name: applicationGatewayName
   location: location
-  identity: (empty(managedIdentityResourceId) ? json('null') : identity)
+  identity: empty(managedIdentityResourceId) ? null : identity
   tags: tags
   properties: {
     sku: {
       name: sku
-      tier: (endsWith(sku, 'v2') ? sku : substring(sku, 0, indexOf(sku, '_')))
+      tier: endsWith(sku, 'v2') ? sku : substring(sku, 0, indexOf(sku, '_'))
       capacity: capacity
     }
     gatewayIPConfigurations: [
@@ -365,7 +365,7 @@ resource applicationGateway 'Microsoft.Network/applicationGateways@2021-02-01' =
       {
         name: frontendPrivateIPConfigurationName
         type: 'Microsoft.Network/applicationGateways/frontendIPConfigurations'
-        properties: (empty(frontendPrivateIpAddress) ? frontendPrivateIPDynamicConfiguration : frontendPrivateIPStaticConfiguration)
+        properties: empty(frontendPrivateIpAddress) ? frontendPrivateIPDynamicConfiguration : frontendPrivateIPStaticConfiguration
       }
       {
         name: frontendPublicIPConfigurationName
@@ -376,7 +376,7 @@ resource applicationGateway 'Microsoft.Network/applicationGateways@2021-02-01' =
         }
       }
     ]
-    sslCertificates: (empty(sslCertificateKeyVaultSecretId) ? json('null') : sslCertificates)
+    sslCertificates: empty(sslCertificateKeyVaultSecretId) ? null : sslCertificates
     backendAddressPools: backendAddressPools
     probes: probes_var
     backendHttpSettingsCollection: backendHttpConfigurations_var
@@ -385,7 +385,7 @@ resource applicationGateway 'Microsoft.Network/applicationGateways@2021-02-01' =
     redirectConfigurations: redirectConfigurations
     requestRoutingRules: requestRoutingRules
     enableHttp2: http2Enabled
-    webApplicationFirewallConfiguration: (startsWith(sku, 'WAF') ? wafConfiguration : json('null'))
+    webApplicationFirewallConfiguration: startsWith(sku, 'WAF') ? wafConfiguration : null
   }
   dependsOn: []
 }
@@ -394,20 +394,20 @@ resource applicationGateway_lock 'Microsoft.Authorization/locks@2016-09-01' = if
   name: '${applicationGateway.name}-${lock}-lock'
   properties: {
     level: lock
-    notes: (lock == 'CanNotDelete') ? 'Cannot delete resource or child resources.' : 'Cannot modify the resource or child resources.'
+    notes: lock == 'CanNotDelete' ? 'Cannot delete resource or child resources.' : 'Cannot modify the resource or child resources.'
   }
   scope: applicationGateway
 }
 
-resource applicationGateway_diagnosticSettingName 'Microsoft.Insights/diagnosticsettings@2017-05-01-preview' = if ((!empty(diagnosticStorageAccountId)) || (!empty(workspaceId)) || (!empty(eventHubAuthorizationRuleId)) || (!empty(eventHubName))) {
+resource applicationGateway_diagnosticSettingName 'Microsoft.Insights/diagnosticSettings@2017-05-01-preview' = if (!empty(diagnosticStorageAccountId) || !empty(workspaceId) || !empty(eventHubAuthorizationRuleId) || !empty(eventHubName)) {
   name: '${applicationGateway.name}-diagnosticSettings'
   properties: {
-    storageAccountId: (empty(diagnosticStorageAccountId) ? json('null') : diagnosticStorageAccountId)
-    workspaceId: (empty(workspaceId) ? json('null') : workspaceId)
-    eventHubAuthorizationRuleId: (empty(eventHubAuthorizationRuleId) ? json('null') : eventHubAuthorizationRuleId)
-    eventHubName: (empty(eventHubName) ? json('null') : eventHubName)
-    metrics: ((empty(diagnosticStorageAccountId) && empty(workspaceId) && empty(eventHubAuthorizationRuleId) && empty(eventHubName)) ? json('null') : diagnosticsMetrics)
-    logs: ((empty(diagnosticStorageAccountId) && empty(workspaceId) && empty(eventHubAuthorizationRuleId) && empty(eventHubName)) ? json('null') : diagnosticsLogs)
+    storageAccountId: empty(diagnosticStorageAccountId) ? null : diagnosticStorageAccountId
+    workspaceId: empty(workspaceId) ? null : workspaceId
+    eventHubAuthorizationRuleId: empty(eventHubAuthorizationRuleId) ? null : eventHubAuthorizationRuleId
+    eventHubName: empty(eventHubName) ? null : eventHubName
+    metrics: empty(diagnosticStorageAccountId) && empty(workspaceId) && empty(eventHubAuthorizationRuleId) && empty(eventHubName) ? null : diagnosticsMetrics
+    logs: empty(diagnosticStorageAccountId) && empty(workspaceId) && empty(eventHubAuthorizationRuleId) && empty(eventHubName) ? null : diagnosticsLogs
   }
   scope: applicationGateway
 }
@@ -420,6 +420,11 @@ module applicationGateway_rbac '.bicep/nested_rbac.bicep' = [for (roleAssignment
   }
 }]
 
+@description('The name of the application gateway')
 output applicationGatewayName string = applicationGateway.name
+
+@description('The resource Id of the application gateway')
 output applicationGatewayResourceId string = applicationGateway.id
+
+@description('The resource group the application gateway was deployed into')
 output applicationGatewayResourceGroup string = resourceGroup().name

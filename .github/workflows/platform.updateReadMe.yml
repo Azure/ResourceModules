@@ -31,7 +31,7 @@ jobs:
         shell: pwsh
         run: |
           # Load used functions
-          . "$env:GITHUB_WORKSPACE/.github/workflows/scripts/Set-GitHubReadMeModuleTable.ps1"
+          . "$env:GITHUB_WORKSPACE/utilities/tools/Set-GitHubReadMeModuleTable.ps1"
 
           $functionInput = @{
             ModulesPath    = Join-Path $env:GITHUB_WORKSPACE 'arm'
@@ -51,7 +51,7 @@ jobs:
         shell: pwsh
         run: |
           # Load used functions
-          . "$env:GITHUB_WORKSPACE/.github/workflows/scripts/Set-GitHubReadMeModuleTable.ps1"
+          . "$env:GITHUB_WORKSPACE/utilities/tools/Set-GitHubReadMeModuleTable.ps1"
 
           $functionInput = @{
             ModulesPath    = Join-Path $env:GITHUB_WORKSPACE 'arm'
