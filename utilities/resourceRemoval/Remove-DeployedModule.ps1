@@ -81,9 +81,9 @@ function Remove-DeployedModule {
 
             foreach ($resourceGroupInstance in $resourceGroupToRemove) {
                 $resourcesToRemove += @{
-                    $resourceId = $resourceGroupInstance.ResourceId
-                    $name       = $resourceGroupInstance.ResourceGroupName
-                    $type       = 'Microsoft.Resources/Resources'
+                    resourceId = $resourceGroupInstance.ResourceId
+                    name       = $resourceGroupInstance.ResourceGroupName
+                    type       = 'Microsoft.Resources/Resources'
                 }
             }
         } else {
@@ -104,9 +104,9 @@ function Remove-DeployedModule {
                 $intermediateResources = @()
                 foreach ($vmInstance in $vmsContained) {
                     $intermediateResources += @{
-                        $resourceId = $vmInstance.ResourceId
-                        $name       = $vmInstance.Name
-                        $type       = $vmInstance.Type
+                        resourceId = $vmInstance.ResourceId
+                        name       = $vmInstance.Name
+                        type       = $vmInstance.Type
                     }
                 }
                 Remove-Resource -resourceToRemove $intermediateResources
@@ -122,16 +122,18 @@ function Remove-DeployedModule {
             $resourcesToRemove = @()
             foreach ($resource in $rawResourcesToRemove) {
                 $resourcesToRemove += @{
-                    $resourceId = $vmInstance.ResourceId
-                    $name       = $vmInstance.Name
-                    $type       = $vmInstance.Type
+                    resourceId = $vmInstance.ResourceId
+                    name       = $vmInstance.Name
+                    type       = $vmInstance.Type
                 }
             }
         }
 
         # Remove resources
         # ----------------
-        Remove-Resource -resourceToRemove $resourcesToRemove
+        if ($PSCmdlet.ShouldProcess(('[{0}] resources' -f $resourcesToRemove.Count), 'Remove')) {
+            Remove-Resource -resourceToRemove $resourcesToRemove
+        }
     }
 
     end {

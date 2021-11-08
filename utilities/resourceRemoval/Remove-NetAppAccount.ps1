@@ -67,9 +67,9 @@ function Remove-NetAppAccount {
         $resourcesToRemove = @()
         foreach ($account in (, $netAppFilesAccount)) {
             $resourcesToRemove += @{
-                $resourceId = $account.Id
-                $name       = $account.Name
-                $type       = $account.Type
+                resourceId = $account.Id
+                name       = $account.Name
+                type       = $account.Type
             }
 
             $netAppInputObject = @{
@@ -81,9 +81,9 @@ function Remove-NetAppAccount {
 
             foreach ($poolInstance in (, $pool)) {
                 $resourcesToRemove += @{
-                    $resourceId = $poolInstance.Id
-                    $name       = $poolInstance.Name
-                    $type       = $poolInstance.Type
+                    resourceId = $poolInstance.Id
+                    name       = $poolInstance.Name
+                    type       = $poolInstance.Type
                 }
 
                 $volume = Get-AzNetAppFilesVolume @netAppInputObject -PoolName $poolInstance.Name.Split('/')[1] -ErrorAction 'SilentlyContinue'
@@ -91,9 +91,9 @@ function Remove-NetAppAccount {
 
                 foreach ($volumeInstance in (, $volume)) {
                     $resourcesToRemove += @{
-                        $resourceId = $volumeInstance.Id
-                        $name       = $volumeInstance.Name
-                        $type       = $volumeInstance.Type
+                        resourceId = $volumeInstance.Id
+                        name       = $volumeInstance.Name
+                        type       = $volumeInstance.Type
                     }
                 }
             }
@@ -110,7 +110,7 @@ function Remove-NetAppAccount {
 
         # Remove resources
         # ----------------
-        if ($resourcesToRemove) {
+        if ($PSCmdlet.ShouldProcess(('[{0}] resources' -f $resourcesToRemove.Count), 'Remove')) {
             Remove-Resource -resourceToRemove $resourcesToRemove
         }
     }

@@ -75,9 +75,9 @@ function Remove-vWan {
         foreach ($virtualWANInstance in (, $virtualWAN)) {
 
             $resourcesToRemove += @{
-                $resourceId = $virtualWANInstance.ResourceId
-                $name       = $virtualWANInstance.Name
-                $type       = $virtualWANInstance.Type
+                resourceId = $virtualWANInstance.ResourceId
+                name       = $virtualWANInstance.Name
+                type       = $virtualWANInstance.Type
             }
 
             $vpnSite = Get-AzVpnSite -ResourceGroupName $ResourceGroupName | Where-Object { $_.VirtualWan.Id -eq $virtualWANInstance.ResourceId }
@@ -85,9 +85,9 @@ function Remove-vWan {
 
             foreach ($vpnSiteInstance in (, $vpnSite)) {
                 $resourcesToRemove += @{
-                    $resourceId = $vpnSiteInstance.Id
-                    $name       = $vpnSiteInstance.Name
-                    $type       = $vpnSiteInstance.Type
+                    resourceId = $vpnSiteInstance.Id
+                    name       = $vpnSiteInstance.Name
+                    type       = $vpnSiteInstance.Type
                 }
             }
 
@@ -96,9 +96,9 @@ function Remove-vWan {
 
             foreach ($virtualHubInstance in (, $virtualHub)) {
                 $resourcesToRemove += @{
-                    $resourceId = $virtualHub.Id
-                    $name       = $virtualHub.Name
-                    $type       = $virtualHub.Type
+                    resourceId = $virtualHub.Id
+                    name       = $virtualHub.Name
+                    type       = $virtualHub.Type
                 }
 
                 $vpnGateway = Get-AzVpnGateway -ResourceGroupName $ResourceGroupName | Where-Object { $_.VirtualHub.Id -eq $virtualHubInstance.Id }
@@ -106,9 +106,9 @@ function Remove-vWan {
 
                 foreach ($vpnGatewayInstance in $vpnGateway) {
                     $resourcesToRemove += @{
-                        $resourceId = $vpnGatewayInstance.Id
-                        $name       = $vpnGatewayInstance.Name
-                        $type       = $vpnGatewayInstance.Type
+                        resourceId = $vpnGatewayInstance.Id
+                        name       = $vpnGatewayInstance.Name
+                        type       = $vpnGatewayInstance.Type
                     }
                 }
             }
@@ -123,7 +123,9 @@ function Remove-vWan {
         }
         $resourcesToRemove = $invertedArray
 
-        if ($resourcesToRemove) {
+        # Remove resources
+        # ----------------
+        if ($PSCmdlet.ShouldProcess(('[{0}] resources' -f $resourcesToRemove.Count), 'Remove')) {
             Remove-Resource -resourceToRemove $resourcesToRemove
         }
     }
