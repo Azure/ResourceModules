@@ -30,7 +30,7 @@
                     "endpoints": [
                         {
                             "name": "sxx-az-subnet-x-001(validation-rg)",
-                            "type": "AzureSubnet",
+                            "type": "AzureVM",
                             "resourceId": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Compute/virtualMachines/adp-vm-001"
                         },
                         {
