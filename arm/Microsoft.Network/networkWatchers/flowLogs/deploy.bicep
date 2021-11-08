@@ -44,7 +44,7 @@ param retentionInDays int = 365
 @description('Optional. Customer Usage Attribution id (GUID). This GUID must be previously registered')
 param cuaId string = ''
 
-var flowAnalyticsConfiguration = !empty(workspaceResourceId) ? {
+var flowAnalyticsConfiguration = !empty(workspaceResourceId) && enabled == true ? {
   networkWatcherFlowAnalyticsConfiguration: {
     enabled: true
     workspaceResourceId: workspaceResourceId
