@@ -149,8 +149,21 @@ function Remove-Resource {
     foreach ($resource in $resourcesToRemove) {
         try {
             if ($PSCmdlet.ShouldProcess(('Resource [{0}] of type [{1}] from resource group [{2}]' -f $resource.Name, $resource.ResourceType, $resource.ResourceGroupName), 'Remove')) {
-                $null = Remove-AzResource -ResourceId $resource.ResourceId -Force -ErrorAction 'Stop'
-                Write-Verbose ('Removed resource [{0}] of type [{1}] from resource group [{2}]' -f $resource.Name, $resource.ResourceType, $resource.ResourceGroupName)
+                $allResources = Get-AzResource -ResourceGroupName $resource.ResourceGroupName
+                $childResources = $allResources.ResourceId | Where-Object { $_.startswith("$($resource.ResourceId)/") } | Sort-Object -Descending -Property { $_.Split('/').Count }
+                if ($null -eq $childResources) {
+                    # No child resources
+                    $null = Remove-AzResource -ResourceId $resource.ResourceId -Force -ErrorAction 'Stop'
+                    Write-Verbose ('Removed resource [{0}] of type [{1}] from resource group [{2}]' -f $resource.Name, $resource.ResourceType, $resource.ResourceGroupName)
+                } else {
+                    foreach ($childResorceID in $childResources) {
+                        $resourceIDTokens = $childResorceID.Split('/')
+                        if ($PSCmdlet.ShouldProcess(('Resource [{0}] of type [{1}] from parent resource [{2}]' -f $resourceIDTokens[-1], $resourceIDTokens[-2], $resourceIDTokens[-3]), 'Remove')) {
+                            $null = Remove-AzResource -ResourceId $childResorceID -Force -ErrorAction 'Stop'
+                            Write-Verbose ('Removed child resource [{0}] of type [{1}] from parent resource [{2}]' -f $resourceIDTokens[-1], $resourceIDTokens[-2], $resourceIDTokens[-3])
+                        }
+                    }
+                }
             }
         } catch {
             Write-Warning ('Removal moved back for re-try. Reason: [{0}]' -f $_.Exception.Message)
