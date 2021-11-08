@@ -3,6 +3,7 @@
 This module deploys AVD Application Groups, with resource lock and diagnostics configuration.
 
 ## Resource types
+
 | Resource Type | Api Version |
 | :-- | :-- |
 | `Microsoft.Authorization/locks` | 2016-09-01 |
@@ -12,10 +13,11 @@ This module deploys AVD Application Groups, with resource lock and diagnostics c
 | `Microsoft.Insights/diagnosticSettings` | 2017-05-01-preview |
 
 ## Parameters
+
 | Parameter Name | Type | Default Value | Possible Values | Description |
 | :-- | :-- | :-- | :-- | :-- |
 | `appGroupDescription` | string |  |  | Optional. The description of the Application Group to be created. |
-| `applications` | array | `[]` |  | Optional. List of applications to be created in the Application Group. |
+| `applications` | _[applications](applications/readme.md)_ array | `[]` |  | Optional. List of applications to be created in the Application Group. |
 | `cuaId` | string |  |  | Optional. Customer Usage Attribution id (GUID). This GUID must be previously registered |
 | `diagnosticLogsRetentionInDays` | int | `365` |  | Optional. Specifies the number of days that logs will be kept for; a value of 0 will retain data indefinitely. |
 | `diagnosticStorageAccountId` | string |  |  | Optional. Resource identifier of the Diagnostic Storage Account. |
@@ -32,36 +34,6 @@ This module deploys AVD Application Groups, with resource lock and diagnostics c
 | `type` | string |  | `[RemoteApp, Desktop]` | Required. The type of the Application Group to be created. Allowed values: RemoteApp or Desktop |
 | `workspaceId` | string |  |  | Optional. Resource identifier of Log Analytics. |
 
-### Parameter Usage: `applications`
-
-```json
-"applications": {
-    "value": [
-        {
-            "name": "notepad",
-            "description": "Notepad by ARM template",
-            "friendlyName": "Notepad",
-            "filePath": "C:\\Windows\\System32\\notepad.exe",
-            "commandLineSetting": "DoNotAllow",
-            "commandLineArguments": "",
-            "showInPortal": true,
-            "iconPath": "C:\\Windows\\System32\\notepad.exe",
-            "iconIndex": 0
-        },
-        {
-            "name": "wordpad",
-            "description": "WordPad by ARM template 2",
-            "friendlyName": "WordPad",
-            "filePath": "C:\\Program Files\\Windows NT\\Accessories\\wordpad.exe",
-            "commandLineSetting": "DoNotAllow",
-            "commandLineArguments": "",
-            "showInPortal": true,
-            "iconPath": "C:\\Program Files\\Windows NT\\Accessories\\wordpad.exe",
-            "iconIndex": 0
-        }
-    ]
-}
-```
 ### Parameter Usage: `roleAssignments`
 
 ```json
@@ -109,13 +81,15 @@ Tag names and tag values can be provided as needed. A tag can be left without a 
 ```
 
 ## Outputs
-| Output Name | Type | Description
-| :-- | :-- | :-- |
-| `appGroupName` | string |  |
-| `appGroupResourceGroup` | string |  |
-| `appGroupResourceId` | string |  |
+
+| Output Name | Type |
+| :-- | :-- |
+| `appGroupName` | string |
+| `appGroupResourceGroup` | string |
+| `appGroupResourceId` | string |
 
 ## Template references
+
 - [Locks](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2016-09-01/locks)
 - [Roleassignments](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2020-04-01-preview/roleAssignments)
 - [Applicationgroups](https://docs.microsoft.com/en-us/azure/templates/Microsoft.DesktopVirtualization/2021-07-12/applicationGroups)
