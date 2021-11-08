@@ -17,7 +17,7 @@ param testGroups array = []
 param monitoringInterval int = 30
 
 @description('Optional.	Address of the connection monitor destination (IP or domain name).')
-param destinationAddress string
+param destinationAddress string = ''
 
 @description('Optional.	The destination port used by connection monitor.')
 param destinationPort int = 80
@@ -63,9 +63,9 @@ resource connectionMonitor 'Microsoft.Network/networkWatchers/connectionMonitors
   properties: {
     autoStart: false
     destination: {
-      address: destinationAddress
+      address: !empty(destinationAddress) ? destinationAddress : null
       port: destinationPort
-      resourceId: destinationResourceId
+      resourceId: !empty(destinationResourceId) ? destinationResourceId : null
     }
     monitoringIntervalInSeconds: monitoringInterval
     notes: notes
