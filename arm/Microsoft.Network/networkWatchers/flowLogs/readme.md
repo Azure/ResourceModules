@@ -1,4 +1,4 @@
-# NSG Flow Logs  `[Microsoft.Network/networkWatchers/flowLogs]`
+# NSG Flow Logs `[Microsoft.Network/networkWatchers/flowLogs]`
 
 This module controls the Network Security Group Flow Logs and analytics settings
 **Note: this module must be run on the Resource Group where Network Watcher is deployed**
