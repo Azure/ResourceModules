@@ -19,15 +19,13 @@ param tags object = {}
 @description('Optional. Customer Usage Attribution id (GUID). This GUID must be previously registered')
 param cuaId string = ''
 
-var keyVaultName = last(split(keyVaultId, '/'))
-
 module pid_cuaId '.bicep/nested_cuaId.bicep' = if (!empty(cuaId)) {
   name: 'pid-${cuaId}'
   params: {}
 }
 
 resource keyVaultAccessPolicies 'Microsoft.KeyVault/vaults/accessPolicies@2019-09-01' = {
-  name: '${keyVaultName}/add'
+  name: '${last(split(keyVaultId, '/'))}/add'
   properties: {
     accessPolicies: [
       {
@@ -72,7 +70,17 @@ module diskEncryptionSet_rbac '.bicep/nested_rbac.bicep' = [for (roleAssignment,
   }
 }]
 
+@description('The resourceId of the disk encryption set')
 output diskEncryptionSetResourceId string = diskEncryptionSet.id
+
+@description('The name of the disk encryption set')
+output diskEncryptionSetName string = diskEncryptionSet.name
+
+@description('The principal Id of the disk encryption set')
 output principalId string = reference('Microsoft.Compute/diskEncryptionSets/${diskEncryptionSetName}', '2020-12-01', 'Full').identity.principalId
-output keyVaultName string = keyVaultName
+
+@description('The name of the key vault with the disk encryption key')
+output keyVaultName string = last(split(keyVaultId, '/'))
+
+@description('The resource group the disk encryption set was deployed into')
 output diskEncryptionResourceGroup string = resourceGroup().name

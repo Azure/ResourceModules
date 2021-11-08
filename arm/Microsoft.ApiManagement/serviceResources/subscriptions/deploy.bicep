@@ -35,14 +35,19 @@ resource subscription 'Microsoft.ApiManagement/service/subscriptions@2020-06-01-
   properties: {
     scope: scope
     displayName: subscriptionName
-    ownerId: ((!empty(ownerId)) ? ownerId : json('null'))
-    primaryKey: ((!empty(primaryKey)) ? primaryKey : json('null'))
-    secondaryKey: ((!empty(secondaryKey)) ? secondaryKey : json('null'))
-    state: ((!empty(state)) ? state : json('null'))
+    ownerId: !empty(ownerId) ? ownerId : null
+    primaryKey: !empty(primaryKey) ? primaryKey : null
+    secondaryKey: !empty(secondaryKey) ? secondaryKey : null
+    state: !empty(state) ? state : null
     allowTracing: allowTracing
   }
 }
 
+@description('The resourceId of the API management service subscription')
 output subscriptionResourceId string = subscription.id
-output subscriptionResourceName string = subscription.name
+
+@description('The name of the API management service subscription')
+output subscriptionName string = subscription.name
+
+@description('The resource group the API management service subscription was deployed into')
 output subscriptionResourceGroup string = resourceGroup().name

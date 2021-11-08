@@ -98,7 +98,68 @@ With this approach, modules need to be stored in an available location, where Az
 
 In an enterprise environment, the recommended approach is to store these templates in a private environment, only accessible by enterprise resources. Thus, only trusted authorities can have access to these files.
 
-#### Example with template-specs
+#### ***Example with a private bicep registry***
+
+The following example shows how you could orchestrate a deployment of multiple resources using modules from a private bicep registry. In this example we will deploy a NSG and use the same in a subsequent VNET deployment.
+
+```bicep
+// ================ //
+// Input Parameters //
+// ================ //
+
+// NSG parameters
+@description('Required. The name of the vnet to deploy')
+param networkSecurityGroupName string = 'BicepRegistryDemoNsg'
+
+// VNET parameters
+@description('Required. The name of the vnet to deploy')
+param vnetName string = 'BicepRegistryDemoVnet'
+
+@description('Required. An Array of 1 or more IP Address Prefixes for the Virtual Network.')
+param vNetAddressPrefixes array = [
+  '10.0.0.0/16'
+]
+
+@description('Required. An Array of subnets to deploy to the Virual Network.')
+param subnets array = [
+  {
+    name: 'PrimrarySubnet'
+    addressPrefix: '10.0.0.0/24'
+    networkSecurityGroupName: networkSecurityGroupName
+  }
+  {
+    name: 'SecondarySubnet'
+    addressPrefix: '10.0.1.0/24'
+    networkSecurityGroupName: networkSecurityGroupName
+  }
+]
+
+// =========== //
+// Deployments //
+// =========== //
+
+// Network Security Group
+module nsg 'br:adpsxxazacrx001.azurecr.io/bicep/modules/microsoft.network.networksecuritygroups:1.0.1' = {
+  name: 'registry-nsg'
+  params: {
+    networkSecurityGroupName: networkSecurityGroupName
+  }
+}
+// Virtual Network
+module vnet 'br:adpsxxazacrx001.azurecr.io/bicep/modules/microsoft.network.virtualnetworks:1.0.0' = {
+  name: 'registry-vnet'
+  params: {
+    vNetName: vnetName
+    vNetAddressPrefixes: vNetAddressPrefixes
+    subnets: subnets
+  }
+  dependsOn: [
+    nsg
+  ]
+}
+```
+
+#### ***Example with template-specs***
 
 The following example shows how you could orchestrate a deployment of multiple resources using template specs. In this example we will deploy a NSG and use the same in a subsequent VNET deployment.
 

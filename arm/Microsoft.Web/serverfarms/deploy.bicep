@@ -67,16 +67,16 @@ module pid_cuaId '.bicep/nested_cuaId.bicep' = if (!empty(cuaId)) {
 
 resource appServicePlan 'Microsoft.Web/serverfarms@2021-02-01' = {
   name: appServicePlanName
-  kind: ((serverOS == 'Windows') ? '' : 'linux')
+  kind: serverOS == 'Windows' ? '' : 'linux'
   location: location
   tags: tags
   sku: sku
   properties: {
     workerTierName: workerTierName
-    hostingEnvironmentProfile: (empty(appServiceEnvironmentId) ? json('null') : hostingEnvironmentProfile)
+    hostingEnvironmentProfile: !empty(appServiceEnvironmentId) ? hostingEnvironmentProfile : null
     perSiteScaling: perSiteScaling
     maximumElasticWorkerCount: maximumElasticWorkerCount
-    reserved: (serverOS == 'Linux')
+    reserved: serverOS == 'Linux'
     targetWorkerCount: targetWorkerCount
     targetWorkerSizeId: targetWorkerSize
   }
@@ -86,7 +86,7 @@ resource appServicePlan_lock 'Microsoft.Authorization/locks@2016-09-01' = if (lo
   name: '${appServicePlan.name}-${lock}-lock'
   properties: {
     level: lock
-    notes: (lock == 'CanNotDelete') ? 'Cannot delete resource or child resources.' : 'Cannot modify the resource or child resources.'
+    notes: lock == 'CanNotDelete' ? 'Cannot delete resource or child resources.' : 'Cannot modify the resource or child resources.'
   }
   scope: appServicePlan
 }
@@ -99,6 +99,11 @@ module appServicePlan_rbac '.bicep/nested_rbac.bicep' = [for (roleAssignment, in
   }
 }]
 
+@description('The resource group the app service plan was deployed into')
 output appServicePlanResourceGroup string = resourceGroup().name
+
+@description('The name of the app service plan')
 output appServicePlanName string = appServicePlan.name
+
+@description('The resourceId of the app service plan')
 output appServicePlanResourceId string = appServicePlan.id

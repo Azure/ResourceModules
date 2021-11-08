@@ -113,11 +113,11 @@ Tag names and tag values can be provided as needed. A tag can be left without a 
 
 ## Outputs
 
-| Output Name | Type |
-| :-- | :-- |
-| `routeTablesName` | string |
-| `routeTablesResourceGroup` | string |
-| `routeTablesResourceId` | string |
+| Output Name | Type | Description |
+| :-- | :-- | :-- |
+| `routeTablesName` | string | The name of the route table |
+| `routeTablesResourceGroup` | string | The resource group the route table was deployed into |
+| `routeTablesResourceId` | string | The resourceId of the route table |
 
 ## Template references
 

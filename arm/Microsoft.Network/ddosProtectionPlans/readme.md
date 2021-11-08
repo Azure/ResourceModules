@@ -69,11 +69,11 @@ Tag names and tag values can be provided as needed. A tag can be left without a 
 
 ## Outputs
 
-| Output Name | Type |
-| :-- | :-- |
-| `ddosProtectionPlanName` | string |
-| `ddosProtectionPlanResourceGroup` | string |
-| `ddosProtectionPlanResourceId` | string |
+| Output Name | Type | Description |
+| :-- | :-- | :-- |
+| `ddosProtectionPlanName` | string | The name of the DDOS protection plan |
+| `ddosProtectionPlanResourceGroup` | string | The resource group the DDOS protection plan was deployed into |
+| `ddosProtectionPlanResourceId` | string | The resourceId of the DDOS protection plan |
 
 ## Template references
 
