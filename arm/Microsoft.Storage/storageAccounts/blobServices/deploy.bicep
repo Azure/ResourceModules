@@ -47,11 +47,10 @@ module blobServices_container 'containers/deploy.bicep' = [for (container, index
   ]
 }]
 
-@description('The name of the deployed blob service')
 output blobServiceName string = blobServices.name
 
-@description('The id of the deployed blob service')
+
 output blobServiceResourceId string = blobServices.id
 
-@description('The name of the deployed blob service')
+
 output blobServiceResourceGroup string = resourceGroup().name

@@ -43,11 +43,11 @@ module fileService_shares 'shares/deploy.bicep' = [for (share, index) in shares:
   ]
 }]
 
-@description('The name of the deployed file share service')
+
 output fileServiceName string = fileService.name
 
-@description('The id of the deployed file share service')
+
 output fileServiceResourceId string = fileService.id
 
-@description('The resource group of the deployed file share service')
+
 output fileServiceResourceGroup string = resourceGroup().name

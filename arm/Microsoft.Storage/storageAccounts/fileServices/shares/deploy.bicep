@@ -34,11 +34,11 @@ module fileShare_rbac '.bicep/nested_rbac.bicep' = [for (roleAssignment, index) 
   }
 }]
 
-@description('The name of the deployed file share')
+
 output fileShareName string = fileShare.name
 
-@description('The id of the deployed file share')
+
 output fileShareResourceId string = fileShare.id
 
-@description('The resource group of the deployed file share')
+
 output fileShareResourceGroup string = resourceGroup().name

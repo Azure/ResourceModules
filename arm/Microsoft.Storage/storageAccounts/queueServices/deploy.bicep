@@ -31,11 +31,11 @@ module queueService_queues 'queues/deploy.bicep' = [for (queue, index) in queues
   ]
 }]
 
-@description('The name of the deployed file share service')
+
 output queueServiceName string = queueService.name
 
-@description('The id of the deployed file share service')
+
 output queueServiceResourceId string = queueService.id
 
-@description('The resource group of the deployed file share service')
+
 output queueServiceResourceGroup string = resourceGroup().name

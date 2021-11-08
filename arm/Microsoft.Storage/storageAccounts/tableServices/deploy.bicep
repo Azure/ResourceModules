@@ -29,11 +29,10 @@ module tableService_tables 'tables/deploy.bicep' = [for (tableName, index) in ta
   ]
 }]
 
-@description('The name of the deployed table service')
+
 output tableServiceName string = tableService.name
 
-@description('The id of the deployed table service')
+
 output tableServiceResourceId string = tableService.id
 
-@description('The resource group of the deployed table service')
 output tableServiceResourceGroup string = resourceGroup().name
