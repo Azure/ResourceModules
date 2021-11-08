@@ -94,13 +94,13 @@ function Remove-NetAppAccount {
         # Remove resources
         # ----------------
         if ($resourcesToRemove) {
-            $currentRety = 0
+            $currentRetry = 0
             $resourcesToRetry = @()
             Write-Verbose ('Init removal of [{0}] resources' -f $resourcesToRemove.Count) -Verbose
             if ($PSCmdlet.ShouldProcess(('[{0}] resources' -f $resourceGroupToRemove.Count), 'Remove')) {
-                while (($resourcesToRetry = Remove-Resource -resourcesToRemove $resourcesToRemove).Count -gt 0 -and $currentRety -le $maximumRetries) {
-                    Write-Verbose ('Re-try removal of remaining [{0}] resources. Round [{1}|{2}]' -f $resourcesToRetry.Count, $currentRety, $maximumRetries) -Verbose
-                    $currentRety++
+                while (($resourcesToRetry = Remove-Resource -resourcesToRemove $resourcesToRemove).Count -gt 0 -and $currentRetry -le $maximumRetries) {
+                    Write-Verbose ('Re-try removal of remaining [{0}] resources. Round [{1}|{2}]' -f $resourcesToRetry.Count, $currentRetry, $maximumRetries) -Verbose
+                    $currentRetry++
                 }
             }
 

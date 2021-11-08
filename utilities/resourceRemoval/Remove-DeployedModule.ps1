@@ -117,12 +117,12 @@ function Remove-DeployedModule {
                     $resourcesToRemove = Get-AzResource -Tag @{ removeModule = $moduleName } -ResourceGroupName $resourceGroupName
                 }
 
-                $currentRety = 0
+                $currentRetry = 0
                 $resourcesToRetry = @()
                 if ($PSCmdlet.ShouldProcess(("[{0}] Resource(s) with a maximum of [$maximumRemovalRetries] attempts." -f $resourcesToRemove.Count), 'Remove')) {
-                    while (($resourcesToRetry = Remove-Resource -resourcesToRemove $resourcesToRemove -Verbose).Count -gt 0 -and $currentRety -le $maximumRemovalRetries) {
-                        Write-Verbose ('Re-try removal of remaining [{0}] resources. Round [{1}|{2}]' -f $resourcesToRetry.Count, $currentRety, $maximumRemovalRetries)
-                        $currentRety++
+                    while (($resourcesToRetry = Remove-Resource -resourcesToRemove $resourcesToRemove -Verbose).Count -gt 0 -and $currentRetry -le $maximumRemovalRetries) {
+                        Write-Verbose ('Re-try removal of remaining [{0}] resources. Round [{1}|{2}]' -f $resourcesToRetry.Count, $currentRetry, $maximumRemovalRetries)
+                        $currentRetry++
                     }
 
                     if ($resourcesToRetry.Count -gt 0) {
