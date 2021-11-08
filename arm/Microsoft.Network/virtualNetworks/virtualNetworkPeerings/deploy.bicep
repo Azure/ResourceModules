@@ -1,5 +1,5 @@
 @description('Optional. The Name of Vnet Peering resource. If not provided, default value will be localVnetName-remoteVnetName')
-param peeringName string = '${localVnetName}-${last(split(remoteVirtualNetworkId, '/'))}'
+param name string = '${localVnetName}-${last(split(remoteVirtualNetworkId, '/'))}'
 
 @description('Required. The Name of the Virtual Network to add the peering to.')
 param localVnetName string
@@ -31,7 +31,7 @@ module pid_cuaId '.bicep/nested_cuaId.bicep' = if (!empty(cuaId)) {
 }
 
 resource virtualNetworkPeering 'Microsoft.Network/virtualNetworks/virtualNetworkPeerings@2021-02-01' = {
-  name: '${localVnetName}/${peeringName}'
+  name: '${localVnetName}/${name}'
   properties: {
     allowForwardedTraffic: allowForwardedTraffic
     allowGatewayTransit: allowGatewayTransit
@@ -44,6 +44,9 @@ resource virtualNetworkPeering 'Microsoft.Network/virtualNetworks/virtualNetwork
   }
 }
 
+@description('The resource group the virtual network peering was deployed into')
 output virtualNetworkPeeringResourceGroup string = resourceGroup().name
+@description('The name of the virtual network peering')
 output virtualNetworkPeeringName string = virtualNetworkPeering.name
+@description('The resourceId of the virtual network peering')
 output virtualNetworkPeeringResourceId string = virtualNetworkPeering.id

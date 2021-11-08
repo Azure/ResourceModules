@@ -116,6 +116,17 @@
                 }
             ]
         },
+        "virtualNetworkPeerings": {
+            "value": [
+                {
+                    "remoteVirtualNetworkId": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/virtualNetworks/adp-sxx-az-vnet-x-peer01",
+                    "allowForwardedTraffic": true,
+                    "allowGatewayTransit": false,
+                    "allowVirtualNetworkAccess": true,
+                    "useRemoteGateways": false
+                }
+            ]
+        },
         "roleAssignments": {
             "value": [
                 {
