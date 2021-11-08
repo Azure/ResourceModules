@@ -60,16 +60,9 @@ module networkWatcher_rbac '.bicep/nested_rbac.bicep' = [for (roleAssignment, in
 module networkWatcher_connectionMonitors 'connectionMonitors/deploy.bicep' = [for connectionMonitor in connectionMonitors: {
   name: connectionMonitor.name
   params: {
-    destinationAddress: connectionMonitor.destinationAddress
-    destinationPort: contains(connectionMonitor, 'destinationPort') ? connectionMonitor.destinationPort : 80
-    destinationResourceId: contains(connectionMonitor, 'destinationResourceId') ? connectionMonitor.destinationResourceId : ''
     endpoints: contains(connectionMonitor, 'endpoints') ? connectionMonitor.endpoints : []
-    monitoringInterval: contains(connectionMonitor, 'monitoringInterval') ? connectionMonitor.monitoringInterval : 30
     name: connectionMonitor.name
     networkWatcherName: networkWatcher.name
-    notes: contains(connectionMonitor, 'notes') ? connectionMonitor.notes : ''
-    sourcePort: contains(connectionMonitor, 'sourcePort') ? connectionMonitor.sourcePort : 80
-    sourceResourceId: connectionMonitor.sourceResourceId
     testConfigurations: contains(connectionMonitor, 'testConfigurations') ? connectionMonitor.testConfigurations : []
     testGroups: contains(connectionMonitor, 'testGroups') ? connectionMonitor.testGroups : []
     workspaceResourceId: contains(connectionMonitor, 'workspaceResourceId') ? connectionMonitor.workspaceResourceId : ''
