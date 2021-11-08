@@ -42,11 +42,11 @@ Product API's name list.
 
 ## Outputs
 
-| Output Name | Type |
-| :-- | :-- |
-| `namedValueResourceGroup` | string |
-| `namedValueResourceId` | string |
-| `namedValueResourceName` | string |
+| Output Name | Type | Description |
+| :-- | :-- | :-- |
+| `namedValueName` | string | The name of the named value |
+| `namedValueResourceGroup` | string | The resource group the named value was deployed into |
+| `namedValueResourceId` | string | The resourceId of the named value |
 
 ## Template references
 

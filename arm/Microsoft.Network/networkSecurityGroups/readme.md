@@ -150,11 +150,11 @@ Tag names and tag values can be provided as needed. A tag can be left without a 
 
 ## Outputs
 
-| Output Name | Type |
-| :-- | :-- |
-| `networkSecurityGroupsName` | string |
-| `networkSecurityGroupsResourceGroup` | string |
-| `networkSecurityGroupsResourceId` | string |
+| Output Name | Type | Description |
+| :-- | :-- | :-- |
+| `networkSecurityGroupsName` | string | The name of the network security group |
+| `networkSecurityGroupsResourceGroup` | string | The resource group the network security group was deployed into |
+| `networkSecurityGroupsResourceId` | string | The resourceId of the network security group |
 
 ## Template references
 

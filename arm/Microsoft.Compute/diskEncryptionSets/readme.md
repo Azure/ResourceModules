@@ -6,8 +6,8 @@ This template deploys a Disk Encryption Set
 
 | Resource Type | Api Version |
 | :-- | :-- |
+| `Microsoft.Authorization/roleAssignments` | 2020-04-01-preview |
 | `Microsoft.Compute/diskEncryptionSets` | 2020-12-01 |
-| `Microsoft.Compute/diskEncryptionSets/providers/roleAssignments` | 2021-04-01-preview |
 | `Microsoft.KeyVault/vaults/accessPolicies` | 2019-09-01 |
 
 ## Parameters
@@ -70,14 +70,16 @@ Tag names and tag values can be provided as needed. A tag can be left without a 
 
 ## Outputs
 
-| Output Name | Type |
-| :-- | :-- |
-| `diskEncryptionResourceGroup` | string |
-| `diskEncryptionSetResourceId` | string |
-| `keyVaultName` | string |
-| `principalId` | string |
+| Output Name | Type | Description |
+| :-- | :-- | :-- |
+| `diskEncryptionResourceGroup` | string | The resource group the disk encryption set was deployed into |
+| `diskEncryptionSetName` | string | The name of the disk encryption set |
+| `diskEncryptionSetResourceId` | string | The resourceId of the disk encryption set |
+| `keyVaultName` | string | The name of the key vault with the disk encryption key |
+| `principalId` | string | The principal Id of the disk encryption set |
 
 ## Template references
 
+- [Roleassignments](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2020-04-01-preview/roleAssignments)
 - [Diskencryptionsets](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Compute/2020-12-01/diskEncryptionSets)
 - [Vaults/Accesspolicies](https://docs.microsoft.com/en-us/azure/templates/Microsoft.KeyVault/2019-09-01/vaults/accessPolicies)

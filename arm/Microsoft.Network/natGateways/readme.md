@@ -86,11 +86,11 @@ Tag names and tag values can be provided as needed. A tag can be left without a 
 
 ## Outputs
 
-| Output Name | Type |
-| :-- | :-- |
-| `natGatewayName` | string |
-| `natGatewayResourceGroup` | string |
-| `natGatewayResourceId` | string |
+| Output Name | Type | Description |
+| :-- | :-- | :-- |
+| `natGatewayName` | string | The name of the NAT Gateway |
+| `natGatewayResourceGroup` | string | The resource group the NAT Gateway was deployed into |
+| `natGatewayResourceId` | string | The resourceId of the NAT Gateway |
 
 ## Template references
 

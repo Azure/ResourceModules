@@ -46,7 +46,7 @@ resource routeTable_lock 'Microsoft.Authorization/locks@2016-09-01' = if (lock !
   name: '${routeTable.name}-${lock}-lock'
   properties: {
     level: lock
-    notes: (lock == 'CanNotDelete') ? 'Cannot delete resource or child resources.' : 'Cannot modify the resource or child resources.'
+    notes: lock == 'CanNotDelete' ? 'Cannot delete resource or child resources.' : 'Cannot modify the resource or child resources.'
   }
   scope: routeTable
 }
@@ -59,6 +59,11 @@ module routeTable_rbac '.bicep/nested_rbac.bicep' = [for (roleAssignment, index)
   }
 }]
 
+@description('The resource group the route table was deployed into')
 output routeTablesResourceGroup string = resourceGroup().name
+
+@description('The name of the route table')
 output routeTablesName string = routeTable.name
+
+@description('The resourceId of the route table')
 output routeTablesResourceId string = routeTable.id

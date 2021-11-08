@@ -1,8 +1,8 @@
 @description('Required. Remote connection name')
 param connectionName string
 
-@description('Required. Specifies a VPN shared key. The same value has to be specified on both Virtual Network Gateways')
-param vpnSharedKey string
+@description('Optional. Specifies a VPN shared key. The same value has to be specified on both Virtual Network Gateways')
+param vpnSharedKey string = ''
 
 @description('Required. Specifies the remote Virtual Network Gateway/ExpressRoute')
 param remoteEntityName string
@@ -101,15 +101,15 @@ resource connection 'Microsoft.Network/connections@2021-02-01' = {
     virtualNetworkGateway1: {
       id: localVirtualNetworkGatewayId
     }
-    virtualNetworkGateway2: ((virtualNetworkGatewayConnectionType == 'VNet2VNet') ? virtualNetworkGateway2Id : json('null'))
-    localNetworkGateway2: ((virtualNetworkGatewayConnectionType == 'Ipsec') ? localNetworkGateway2Id : json('null'))
-    peer: ((virtualNetworkGatewayConnectionType == 'ExpressRoute') ? peer : json('null'))
+    virtualNetworkGateway2: virtualNetworkGatewayConnectionType == 'VNet2VNet' ? virtualNetworkGateway2Id : null
+    localNetworkGateway2: virtualNetworkGatewayConnectionType == 'Ipsec' ? localNetworkGateway2Id : null
+    peer: virtualNetworkGatewayConnectionType == 'ExpressRoute' ? peer : null
     enableBgp: enableBgp
     connectionType: virtualNetworkGatewayConnectionType
     routingWeight: routingWeight
-    sharedKey: vpnSharedKey
+    sharedKey: virtualNetworkGatewayConnectionType == 'ExpressRoute' ? vpnSharedKey : null
     usePolicyBasedTrafficSelectors: usePolicyBasedTrafficSelectors
-    ipsecPolicies: (empty(customIPSecPolicy.ipsecEncryption) ? customIPSecPolicy.ipsecEncryption : customIPSecPolicy_var)
+    ipsecPolicies: empty(customIPSecPolicy.ipsecEncryption) ? customIPSecPolicy.ipsecEncryption : customIPSecPolicy_var
   }
 }
 
@@ -117,11 +117,16 @@ resource connection_lock 'Microsoft.Authorization/locks@2016-09-01' = if (lock !
   name: '${connection.name}-${lock}-lock'
   properties: {
     level: lock
-    notes: (lock == 'CanNotDelete') ? 'Cannot delete resource or child resources.' : 'Cannot modify the resource or child resources.'
+    notes: lock == 'CanNotDelete' ? 'Cannot delete resource or child resources.' : 'Cannot modify the resource or child resources.'
   }
   scope: connection
 }
 
+@description('The resource group the remote connection was deployed into')
 output remoteConnectionResourceGroup string = resourceGroup().name
+
+@description('The name of the remote connection')
 output connectionName string = connection.name
+
+@description('The resourceId of the remote connection')
 output remoteConnectionResourceId string = connection.id

@@ -33,7 +33,7 @@ This module deploys a Virtual Network Gateway.
 | `metricsToEnable` | array | `[AllMetrics]` | `[AllMetrics]` | Optional. The name of metrics that will be streamed. |
 | `publicIpLogsToEnable` | array | `[DDoSProtectionNotifications, DDoSMitigationFlowLogs, DDoSMitigationReports]` | `[DDoSProtectionNotifications, DDoSMitigationFlowLogs, DDoSMitigationReports]` | Optional. The name of logs that will be streamed. |
 | `publicIPPrefixId` | string |  |  | Optional. Resource Id of the Public IP Prefix object. This is only needed if you want your Public IPs created in a PIP Prefix. |
-| `publicIpZones` | array | `[1]` |  | Optional. Specifies the zones of the Public IP address. |
+| `publicIpZones` | array | `[]` |  | Optional. Specifies the zones of the Public IP address. Basic IP SKU does not support Availability Zones. |
 | `roleAssignments` | array | `[]` |  | Optional. Array of role assignment objects that contain the 'roleDefinitionIdOrName' and 'principalId' to define RBAC role assignments on this resource. In the roleDefinitionIdOrName attribute, you can provide either the display name of the role definition, or its fully qualified ID in the following format: '/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11' |
 | `tags` | object | `{object}` |  | Optional. Tags of the resource. |
 | `virtualNetworkGatewayLogsToEnable` | array | `[GatewayDiagnosticLog, TunnelDiagnosticLog, RouteDiagnosticLog, IKEDiagnosticLog, P2SDiagnosticLog]` | `[GatewayDiagnosticLog, TunnelDiagnosticLog, RouteDiagnosticLog, IKEDiagnosticLog, P2SDiagnosticLog]` | Optional. The name of logs that will be streamed. |
@@ -124,12 +124,12 @@ Tag names and tag values can be provided as needed. A tag can be left without a 
 
 ## Outputs
 
-| Output Name | Type |
-| :-- | :-- |
-| `activeActive` | bool |
-| `virtualNetworkGatewayName` | string |
-| `virtualNetworkGatewayResourceGroup` | string |
-| `virtualNetworkGatewayResourceId` | string |
+| Output Name | Type | Description |
+| :-- | :-- | :-- |
+| `activeActive` | bool | Shows if the virtual network gateway is configured in active-active mode |
+| `virtualNetworkGatewayName` | string | The name of the virtual network gateway |
+| `virtualNetworkGatewayResourceGroup` | string | The resource group the virtual network gateway was deployed |
+| `virtualNetworkGatewayResourceId` | string | The resourceId of the virtual network gateway |
 
 ## Template references
 

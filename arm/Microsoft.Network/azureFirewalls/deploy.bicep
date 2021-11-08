@@ -163,7 +163,7 @@ resource azureFirewallPip 'Microsoft.Network/publicIPAddresses@2021-02-01' = {
   properties: {
     publicIPAllocationMethod: 'Static'
     publicIPAddressVersion: 'IPv4'
-    publicIPPrefix: ((!empty(publicIPPrefixId)) ? publicIPPrefix : json('null'))
+    publicIPPrefix: !empty(publicIPPrefixId) ? publicIPPrefix : null
   }
 }
 
@@ -171,20 +171,20 @@ resource azureFirewallPip_lock 'Microsoft.Authorization/locks@2016-09-01' = if (
   name: '${azureFirewallPip.name}-${lock}-lock'
   properties: {
     level: lock
-    notes: (lock == 'CanNotDelete') ? 'Cannot delete resource or child resources.' : 'Cannot modify the resource or child resources.'
+    notes: lock == 'CanNotDelete' ? 'Cannot delete resource or child resources.' : 'Cannot modify the resource or child resources.'
   }
   scope: azureFirewallPip
 }
 
-resource azureFirewallPip_diagnosticSettings 'Microsoft.Insights/diagnosticsettings@2017-05-01-preview' = if ((!empty(diagnosticStorageAccountId)) || (!empty(workspaceId)) || (!empty(eventHubAuthorizationRuleId)) || (!empty(eventHubName))) {
+resource azureFirewallPip_diagnosticSettings 'Microsoft.Insights/diagnosticSettings@2017-05-01-preview' = if (!empty(diagnosticStorageAccountId) || !empty(workspaceId) || !empty(eventHubAuthorizationRuleId) || !empty(eventHubName)) {
   name: '${azureFirewallPip.name}-diagnosticSettings'
   properties: {
-    storageAccountId: (empty(diagnosticStorageAccountId) ? json('null') : diagnosticStorageAccountId)
-    workspaceId: (empty(workspaceId) ? json('null') : workspaceId)
-    eventHubAuthorizationRuleId: (empty(eventHubAuthorizationRuleId) ? json('null') : eventHubAuthorizationRuleId)
-    eventHubName: (empty(eventHubName) ? json('null') : eventHubName)
-    metrics: ((empty(diagnosticStorageAccountId) && empty(workspaceId) && empty(eventHubAuthorizationRuleId) && empty(eventHubName)) ? json('null') : diagnosticsMetrics)
-    logs: ((empty(diagnosticStorageAccountId) && empty(workspaceId) && empty(eventHubAuthorizationRuleId) && empty(eventHubName)) ? json('null') : diagnosticsLogsPublicIp)
+    storageAccountId: empty(diagnosticStorageAccountId) ? null : diagnosticStorageAccountId
+    workspaceId: empty(workspaceId) ? null : workspaceId
+    eventHubAuthorizationRuleId: empty(eventHubAuthorizationRuleId) ? null : eventHubAuthorizationRuleId
+    eventHubName: empty(eventHubName) ? null : eventHubName
+    metrics: empty(diagnosticStorageAccountId) && empty(workspaceId) && empty(eventHubAuthorizationRuleId) && empty(eventHubName) ? null : diagnosticsMetrics
+    logs: empty(diagnosticStorageAccountId) && empty(workspaceId) && empty(eventHubAuthorizationRuleId) && empty(eventHubName) ? null : diagnosticsLogsPublicIp
   }
   scope: azureFirewallPip
 }
@@ -192,7 +192,7 @@ resource azureFirewallPip_diagnosticSettings 'Microsoft.Insights/diagnosticsetti
 resource azureFirewall 'Microsoft.Network/azureFirewalls@2021-02-01' = {
   name: azureFirewallName
   location: location
-  zones: ((length(availabilityZones) == 0) ? json('null') : availabilityZones)
+  zones: length(availabilityZones) == 0 ? null : availabilityZones
   tags: tags
   properties: {
     threatIntelMode: 'Deny'
@@ -226,20 +226,20 @@ resource azureFirewall_lock 'Microsoft.Authorization/locks@2016-09-01' = if (loc
   name: '${azureFirewall.name}-${lock}-lock'
   properties: {
     level: lock
-    notes: (lock == 'CanNotDelete') ? 'Cannot delete resource or child resources.' : 'Cannot modify the resource or child resources.'
+    notes: lock == 'CanNotDelete' ? 'Cannot delete resource or child resources.' : 'Cannot modify the resource or child resources.'
   }
   scope: azureFirewall
 }
 
-resource azureFirewall_diagnosticSettings 'Microsoft.Insights/diagnosticsettings@2017-05-01-preview' = if ((!empty(diagnosticStorageAccountId)) || (!empty(workspaceId)) || (!empty(eventHubAuthorizationRuleId)) || (!empty(eventHubName))) {
+resource azureFirewall_diagnosticSettings 'Microsoft.Insights/diagnosticSettings@2017-05-01-preview' = if (!empty(diagnosticStorageAccountId) || !empty(workspaceId) || !empty(eventHubAuthorizationRuleId) || !empty(eventHubName)) {
   name: '${azureFirewall.name}-diagnosticSettings'
   properties: {
-    storageAccountId: (empty(diagnosticStorageAccountId) ? json('null') : diagnosticStorageAccountId)
-    workspaceId: (empty(workspaceId) ? json('null') : workspaceId)
-    eventHubAuthorizationRuleId: (empty(eventHubAuthorizationRuleId) ? json('null') : eventHubAuthorizationRuleId)
-    eventHubName: (empty(eventHubName) ? json('null') : eventHubName)
-    metrics: ((empty(diagnosticStorageAccountId) && empty(workspaceId) && empty(eventHubAuthorizationRuleId) && empty(eventHubName)) ? json('null') : diagnosticsMetrics)
-    logs: ((empty(diagnosticStorageAccountId) && empty(workspaceId) && empty(eventHubAuthorizationRuleId) && empty(eventHubName)) ? json('null') : diagnosticsLogsAzureFirewall)
+    storageAccountId: empty(diagnosticStorageAccountId) ? null : diagnosticStorageAccountId
+    workspaceId: empty(workspaceId) ? null : workspaceId
+    eventHubAuthorizationRuleId: empty(eventHubAuthorizationRuleId) ? null : eventHubAuthorizationRuleId
+    eventHubName: empty(eventHubName) ? null : eventHubName
+    metrics: empty(diagnosticStorageAccountId) && empty(workspaceId) && empty(eventHubAuthorizationRuleId) && empty(eventHubName) ? null : diagnosticsMetrics
+    logs: empty(diagnosticStorageAccountId) && empty(workspaceId) && empty(eventHubAuthorizationRuleId) && empty(eventHubName) ? null : diagnosticsLogsAzureFirewall
   }
   scope: azureFirewall
 }
@@ -252,11 +252,26 @@ module azureFirewall_rbac '.bicep/nested_rbac.bicep' = [for (roleAssignment, ind
   }
 }]
 
+@description('The resourceId of the Azure firewall')
 output azureFirewallResourceId string = azureFirewall.id
+
+@description('The name of the Azure firewall')
 output azureFirewallName string = azureFirewall.name
+
+@description('The resource group the azure firewall was deployed into')
 output azureFirewallResourceGroup string = resourceGroup().name
+
+@description('The private IP of the Azure Firewall')
 output azureFirewallPrivateIp string = azureFirewall.properties.ipConfigurations[0].properties.privateIPAddress
+
+@description('The public IP of the Azure Firewall')
 output azureFirewallPublicIp string = azureFirewallPip.properties.ipAddress
+
+@description('List of Application Rule Collections')
 output applicationRuleCollections array = applicationRuleCollections
+
+@description('List of Network Rule Collections')
 output networkRuleCollections array = networkRuleCollections
+
+@description('Collection of NAT rule collections used by Azure Firewall')
 output natRuleCollections array = natRuleCollections

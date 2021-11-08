@@ -5,9 +5,11 @@ inputs:
   modulePath:
     description: 'The path to the module folder'
     required: true
+    default: ''
   moduleName:
     description: 'The name of the module to process'
     required: true
+    default: ''
 
 runs:
   using: 'composite'
@@ -39,7 +41,7 @@ runs:
         Invoke-Pester -Configuration @{
           Run        = @{
             Container = New-PesterContainer -Path 'arm/.global/global.module.tests.ps1' -Data @{
-              moduleFolderPaths = Join-Path "$env:GITHUB_WORKSPACE" "${{ inputs.modulePath }}"
+              moduleFolderPaths = Join-Path $env:GITHUB_WORKSPACE "${{ inputs.modulePath }}"
             }
           }
           Filter     = @{

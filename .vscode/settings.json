@@ -20,6 +20,11 @@
     "editor.insertSpaces": true,
     "files.insertFinalNewline": true,
     "files.trimTrailingWhitespace": true,
+    "markdown.extension.orderedList.marker": "one",
+    "markdown.extension.tableFormatter.enabled": false,
+    "markdownlint.config": {
+        "MD034": true
+    },
     "powershell.codeFormatting.autoCorrectAliases": true,
     "powershell.codeFormatting.newLineAfterCloseBrace": false,
     "powershell.codeFormatting.pipelineIndentationStyle": "IncreaseIndentationForFirstPipeline",
@@ -28,14 +33,13 @@
     "powershell.codeFormatting.useConstantStrings": true,
     "powershell.codeFormatting.useCorrectCasing": true,
     "powershell.codeFormatting.whitespaceBetweenParameters": true,
-    "yaml.format.singleQuote": true,
-    "markdown.extension.tableFormatter.enabled": false,
-    "spellright.language": [
-        "en"
-    ],
     "spellright.documentTypes": [
         "markdown",
         "latex",
         "plaintext"
-    ]
+    ],
+    "spellright.language": [
+        "en"
+    ],
+    "yaml.format.singleQuote": true
 }

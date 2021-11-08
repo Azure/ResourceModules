@@ -360,9 +360,9 @@ var linuxConfiguration = {
 var windowsConfiguration = {
   provisionVMAgent: provisionVMAgent
   enableAutomaticUpdates: enableAutomaticUpdates
-  timeZone: (empty(timeZone) ? json('null') : timeZone)
-  additionalUnattendContent: (empty(additionalUnattendContent) ? json('null') : additionalUnattendContent)
-  winRM: (empty(winRMListeners) ? json('null') : json('{"listeners": "${winRMListeners}"}'))
+  timeZone: empty(timeZone) ? null : timeZone
+  additionalUnattendContent: empty(additionalUnattendContent) ? null : additionalUnattendContent
+  winRM: empty(winRMListeners) ? null : json('{"listeners": "${winRMListeners}"}')
 }
 
 var accountSasProperties = {
@@ -372,35 +372,14 @@ var accountSasProperties = {
   signedResourceTypes: 'o'
   signedProtocol: 'https'
 }
-var pidName_var = 'pid-${cuaId}'
-var builtInRoleNames = {
-  'Avere Contributor': '/subscriptions/${subscription().subscriptionId}/providers/Microsoft.Authorization/roleDefinitions/4f8fab4f-1852-4a58-a46a-8eaf358af14a'
-  Contributor: '/subscriptions/${subscription().subscriptionId}/providers/Microsoft.Authorization/roleDefinitions/b24988ac-6180-42a0-ab88-20f7382dd24c'
-  'DevTest Labs User': '/subscriptions/${subscription().subscriptionId}/providers/Microsoft.Authorization/roleDefinitions/76283e04-6283-4c54-8f91-bcf1374a3c64'
-  'Log Analytics Contributor': '/subscriptions/${subscription().subscriptionId}/providers/Microsoft.Authorization/roleDefinitions/92aaf0da-9dab-42b6-94a3-d43ce8d16293'
-  'Log Analytics Reader': '/subscriptions/${subscription().subscriptionId}/providers/Microsoft.Authorization/roleDefinitions/73c42c96-874c-492b-b04d-ab87d138a893'
-  'Managed Application Contributor Role': '/subscriptions/${subscription().subscriptionId}/providers/Microsoft.Authorization/roleDefinitions/641177b8-a67a-45b9-a033-47bc880bb21e'
-  'Managed Application Operator Role': '/subscriptions/${subscription().subscriptionId}/providers/Microsoft.Authorization/roleDefinitions/c7393b34-138c-406f-901b-d8cf2b17e6ae'
-  'Managed Applications Reader': '/subscriptions/${subscription().subscriptionId}/providers/Microsoft.Authorization/roleDefinitions/b9331d33-8a36-4f8c-b097-4f54124fdb44'
-  'Monitoring Contributor': '/subscriptions/${subscription().subscriptionId}/providers/Microsoft.Authorization/roleDefinitions/749f88d5-cbae-40b8-bcfc-e573ddc772fa'
-  'Monitoring Metrics Publisher': '/subscriptions/${subscription().subscriptionId}/providers/Microsoft.Authorization/roleDefinitions/3913510d-42f4-4e42-8a64-420c390055eb'
-  'Monitoring Reader': '/subscriptions/${subscription().subscriptionId}/providers/Microsoft.Authorization/roleDefinitions/43d0d8ad-25c7-4714-9337-8ba259a9fe05'
-  Owner: '/subscriptions/${subscription().subscriptionId}/providers/Microsoft.Authorization/roleDefinitions/8e3af657-a8ff-443c-a75c-2fe8c4bcb635'
-  Reader: '/subscriptions/${subscription().subscriptionId}/providers/Microsoft.Authorization/roleDefinitions/acdd72a7-3385-48ef-bd42-f606fba81ae7'
-  'Resource Policy Contributor': '/subscriptions/${subscription().subscriptionId}/providers/Microsoft.Authorization/roleDefinitions/36243c78-bf99-498c-9df9-86d9f8d28608'
-  'User Access Administrator': '/subscriptions/${subscription().subscriptionId}/providers/Microsoft.Authorization/roleDefinitions/18d7d88d-d35e-4fb5-a5c3-7773c20a72d9'
-  'Virtual Machine Administrator Login': '/subscriptions/${subscription().subscriptionId}/providers/Microsoft.Authorization/roleDefinitions/1c0163c0-47e6-4577-8991-ea5c82e286e4'
-  'Virtual Machine Contributor': '/subscriptions/${subscription().subscriptionId}/providers/Microsoft.Authorization/roleDefinitions/9980e02c-c2be-4d73-94e8-173b1dc7cf3c'
-  'Virtual Machine User Login': '/subscriptions/${subscription().subscriptionId}/providers/Microsoft.Authorization/roleDefinitions/fb879df8-f326-4884-b1cf-06f3ad86be52'
-}
 
 module pid_cuaId '.bicep/nested_cuaId.bicep' = if (!empty(cuaId)) {
-  name: pidName_var
+  name: 'pid-${cuaId}'
   params: {}
 }
 
 resource proximityPlacementGroup 'Microsoft.Compute/proximityPlacementGroups@2021-04-01' = if (!empty(proximityPlacementGroupName)) {
-  name: ((!empty(proximityPlacementGroupName)) ? proximityPlacementGroupName : 'dummyProximityGroup')
+  name: !empty(proximityPlacementGroupName) ? proximityPlacementGroupName : 'dummyProximityGroup'
   location: location
   tags: tags
   properties: {
@@ -412,10 +391,10 @@ resource vmss 'Microsoft.Compute/virtualMachineScaleSets@2021-04-01' = if (!empt
   name: vmssName
   location: location
   tags: tags
-  identity: (empty(managedIdentityType) ? json('null') : json('{"type":"${managedIdentityType}${((!empty(managedIdentityIdentities)) ? ',"userAssignedIdentities":"${managedIdentityIdentities}' : '')}"}'))
+  identity: !empty(managedIdentityType) ? json('{"type":"${managedIdentityType}${((!empty(managedIdentityIdentities)) ? ',"userAssignedIdentities":"${managedIdentityIdentities}' : '')}"}') : null
   zones: availabilityZones
   properties: {
-    proximityPlacementGroup: (empty(proximityPlacementGroupName) ? json('null') : json('{"id":"${resourceId('Microsoft.Compute/proximityPlacementGroups', proximityPlacementGroupName)}"}'))
+    proximityPlacementGroup: !empty(proximityPlacementGroupName) ? json('{"id":"${resourceId('Microsoft.Compute/proximityPlacementGroups', proximityPlacementGroup.name)}"}') : null
     upgradePolicy: {
       mode: upgradePolicyMode
       rollingUpgradePolicy: {
@@ -437,10 +416,10 @@ resource vmss 'Microsoft.Compute/virtualMachineScaleSets@2021-04-01' = if (!empt
       osProfile: {
         computerNamePrefix: vmNamePrefix
         adminUsername: adminUsername
-        adminPassword: (empty(adminPassword) ? json('null') : adminPassword)
-        customData: (empty(customData) ? json('null') : base64(customData))
-        windowsConfiguration: ((osType == 'Windows') ? windowsConfiguration : json('null'))
-        linuxConfiguration: ((osType == 'Linux') ? linuxConfiguration : json('null'))
+        adminPassword: !empty(adminPassword) ? adminPassword : null
+        customData: !empty(customData) ? base64(customData) : null
+        windowsConfiguration: osType == 'Windows' ? windowsConfiguration : null
+        linuxConfiguration: osType == 'Linux' ? linuxConfiguration : null
         secrets: secrets
       }
       storageProfile: {
@@ -448,15 +427,15 @@ resource vmss 'Microsoft.Compute/virtualMachineScaleSets@2021-04-01' = if (!empt
         osDisk: {
           createOption: osDisk.createOption
           diskSizeGB: osDisk.diskSizeGB
-          caching: (contains(osDisk, 'caching') ? osDisk.caching : json('null'))
-          writeAcceleratorEnabled: (contains(osDisk, 'writeAcceleratorEnabled') ? osDisk.writeAcceleratorEnabled : json('null'))
-          diffDiskSettings: (contains(osDisk, 'diffDiskSettings') ? osDisk.diffDiskSettings : json('null'))
-          osType: (contains(osDisk, 'osType') ? osDisk.osType : json('null'))
-          image: (contains(osDisk, 'image') ? osDisk.image : json('null'))
-          vhdContainers: (contains(osDisk, 'vhdContainers') ? osDisk.vhdContainers : json('null'))
+          caching: contains(osDisk, 'caching') ? osDisk.caching : null
+          writeAcceleratorEnabled: contains(osDisk, 'writeAcceleratorEnabled') ? osDisk.writeAcceleratorEnabled : null
+          diffDiskSettings: contains(osDisk, 'diffDiskSettings') ? osDisk.diffDiskSettings : null
+          osType: contains(osDisk, 'osType') ? osDisk.osType : null
+          image: contains(osDisk, 'image') ? osDisk.image : null
+          vhdContainers: contains(osDisk, 'vhdContainers') ? osDisk.vhdContainers : null
           managedDisk: {
             storageAccountType: osDisk.managedDisk.storageAccountType
-            diskEncryptionSet: (contains(osDisk, 'diskEncryptionSet') ? osDisk.diskEncryptionSet : json('null'))
+            diskEncryptionSet: contains(osDisk, 'diskEncryptionSet') ? osDisk.diskEncryptionSet : null
           }
         }
         dataDisks: [for (item, j) in dataDisks: {
@@ -464,43 +443,43 @@ resource vmss 'Microsoft.Compute/virtualMachineScaleSets@2021-04-01' = if (!empt
           diskSizeGB: item.diskSizeGB
           createOption: item.createOption
           caching: item.caching
-          writeAcceleratorEnabled: (contains(osDisk, 'writeAcceleratorEnabled') ? osDisk.writeAcceleratorEnabled : json('null'))
+          writeAcceleratorEnabled: contains(osDisk, 'writeAcceleratorEnabled') ? osDisk.writeAcceleratorEnabled : null
           managedDisk: {
             storageAccountType: item.managedDisk.storageAccountType
             diskEncryptionSet: {
-              id: (enableServerSideEncryption ? item.managedDisk.diskEncryptionSet.id : json('null'))
+              id: enableServerSideEncryption ? item.managedDisk.diskEncryptionSet.id : null
             }
           }
-          diskIOPSReadWrite: (contains(osDisk, 'diskIOPSReadWrite') ? item.diskIOPSReadWrite : json('null'))
-          diskMBpsReadWrite: (contains(osDisk, 'diskMBpsReadWrite') ? item.diskMBpsReadWrite : json('null'))
+          diskIOPSReadWrite: contains(osDisk, 'diskIOPSReadWrite') ? item.diskIOPSReadWrite : null
+          diskMBpsReadWrite: contains(osDisk, 'diskMBpsReadWrite') ? item.diskMBpsReadWrite : null
         }]
       }
       networkProfile: {
         networkInterfaceConfigurations: [for (item, j) in nicConfigurations: {
           name: '${vmssName}${item.nicSuffix}configuration-${j}'
           properties: {
-            primary: ((j == 0) ? true : any(null))
-            enableAcceleratedNetworking: (contains(nicConfigurations, 'enableAcceleratedNetworking') ? item.enableAcceleratedNetworking : json('null'))
-            networkSecurityGroup: (contains(nicConfigurations, 'nsgId') ? json('{"id": "${item.nsgId}"}') : json('null'))
+            primary: (j == 0) ? true : any(null)
+            enableAcceleratedNetworking: contains(nicConfigurations, 'enableAcceleratedNetworking') ? item.enableAcceleratedNetworking : null
+            networkSecurityGroup: contains(nicConfigurations, 'nsgId') ? json('{"id": "${item.nsgId}"}') : null
             ipConfigurations: item.ipConfigurations
           }
         }]
       }
       diagnosticsProfile: {
         bootDiagnostics: {
-          enabled: (!empty(bootDiagnosticStorageAccountName))
-          storageUri: (empty(bootDiagnosticStorageAccountName) ? json('null') : 'https://${bootDiagnosticStorageAccountName}${bootDiagnosticStorageAccountUri}')
+          enabled: !empty(bootDiagnosticStorageAccountName)
+          storageUri: !empty(bootDiagnosticStorageAccountName) ? 'https://${bootDiagnosticStorageAccountName}${bootDiagnosticStorageAccountUri}' : null
         }
       }
-      licenseType: (empty(licenseType) ? json('null') : licenseType)
+      licenseType: empty(licenseType) ? null : licenseType
       priority: vmPriority
-      evictionPolicy: (enableEvictionPolicy ? 'Deallocate' : json('null'))
-      billingProfile: (((!empty(vmPriority)) && (!empty(maxPriceForLowPriorityVm))) ? json('{"maxPrice":"${maxPriceForLowPriorityVm}"}') : json('null'))
+      evictionPolicy: enableEvictionPolicy ? 'Deallocate' : null
+      billingProfile: !empty(vmPriority) && !empty(maxPriceForLowPriorityVm) ? json('{"maxPrice":"${maxPriceForLowPriorityVm}"}') : null
       scheduledEventsProfile: scheduledEventsProfile
     }
     overprovision: overprovision
     doNotRunExtensionsOnOverprovisionedVMs: doNotRunExtensionsOnOverprovisionedVMs
-    zoneBalance: ((zoneBalance == 'true') ? zoneBalance : json('null'))
+    zoneBalance: zoneBalance == 'true' ? zoneBalance : null
     platformFaultDomainCount: scaleSetFaultDomain
     singlePlacementGroup: singlePlacementGroup
     additionalCapabilities: {
@@ -512,17 +491,14 @@ resource vmss 'Microsoft.Compute/virtualMachineScaleSets@2021-04-01' = if (!empt
     name: instanceSize
     capacity: instanceCount
   }
-  plan: (empty(plan) ? json('null') : plan)
-  dependsOn: [
-    proximityPlacementGroup
-  ]
+  plan: !empty(plan) ? plan : null
 }
 
 resource vmss_lock 'Microsoft.Authorization/locks@2016-09-01' = if (lock != 'NotSpecified') {
   name: '${vmss.name}-${lock}-lock'
   properties: {
     level: lock
-    notes: (lock == 'CanNotDelete') ? 'Cannot delete resource or child resources.' : 'Cannot modify the resource or child resources.'
+    notes: lock == 'CanNotDelete' ? 'Cannot delete resource or child resources.' : 'Cannot modify the resource or child resources.'
   }
   scope: vmss
 }
@@ -572,10 +548,10 @@ resource vmss_WindowsMMAAgent 'Microsoft.Compute/virtualMachineScaleSets/extensi
     typeHandlerVersion: '1.0'
     autoUpgradeMinorVersion: true
     settings: {
-      workspaceId: (empty(workspaceId) ? 'dummy' : reference(workspaceId, '2015-11-01-preview').customerId)
+      workspaceId: empty(workspaceId) ? 'dummy' : reference(workspaceId, '2015-11-01-preview').customerId
     }
     protectedSettings: {
-      workspaceKey: (empty(workspaceId) ? 'dummy' : listKeys(workspaceId, '2015-11-01-preview').primarySharedKey)
+      workspaceKey: empty(workspaceId) ? 'dummy' : listKeys(workspaceId, '2015-11-01-preview').primarySharedKey
     }
   }
   dependsOn: [
@@ -592,10 +568,10 @@ resource vmss_LinuxMMAAgent 'Microsoft.Compute/virtualMachineScaleSets/extension
     typeHandlerVersion: '1.7'
     autoUpgradeMinorVersion: true
     settings: {
-      workspaceId: (empty(workspaceId) ? 'dummy' : reference(workspaceId, '2015-11-01-preview').customerId)
+      workspaceId: empty(workspaceId) ? 'dummy' : reference(workspaceId, '2015-11-01-preview').customerId
     }
     protectedSettings: {
-      workspaceKey: (empty(workspaceId) ? 'dummy' : listKeys(workspaceId, '2015-11-01-preview').primarySharedKey)
+      workspaceKey: empty(workspaceId) ? 'dummy' : listKeys(workspaceId, '2015-11-01-preview').primarySharedKey
     }
   }
   dependsOn: [
@@ -719,7 +695,7 @@ resource vmss_windowsDsc 'Microsoft.Compute/virtualMachineScaleSets/extensions@2
     typeHandlerVersion: '2.77'
     autoUpgradeMinorVersion: true
     settings: dscConfiguration.settings
-    protectedSettings: (contains(dscConfiguration, 'protectedSettings') ? dscConfiguration.protectedSettings : json('null'))
+    protectedSettings: contains(dscConfiguration, 'protectedSettings') ? dscConfiguration.protectedSettings : null
   }
   dependsOn: [
     vmss_NetworkWatcherAgentLinux
@@ -739,9 +715,9 @@ resource vmss_WindowsCustomScriptExtension 'Microsoft.Compute/virtualMachineScal
     }
     protectedSettings: {
       commandToExecute: windowsScriptExtensionCommandToExecute
-      storageAccountName: ((!empty(cseStorageAccountName)) ? cseStorageAccountName : json('null'))
-      storageAccountKey: ((!empty(cseStorageAccountKey)) ? cseStorageAccountKey : json('null'))
-      managedIdentity: ((!empty(cseManagedIdentity)) ? cseManagedIdentity : json('null'))
+      storageAccountName: !empty(cseStorageAccountName) ? cseStorageAccountName : null
+      storageAccountKey: !empty(cseStorageAccountKey) ? cseStorageAccountKey : null
+      managedIdentity: !empty(cseManagedIdentity) ? cseManagedIdentity : null
     }
   }
   dependsOn: [
@@ -752,11 +728,11 @@ resource vmss_WindowsCustomScriptExtension 'Microsoft.Compute/virtualMachineScal
 resource vmss_diagnosticSettings 'Microsoft.Insights/diagnosticSettings@2021-05-01-preview' = if ((!empty(diagnosticStorageAccountId)) || (!empty(workspaceId)) || (!empty(eventHubAuthorizationRuleId)) || (!empty(eventHubName))) {
   name: '${vmssName}-diagnosticSettings'
   properties: {
-    storageAccountId: (empty(diagnosticStorageAccountId) ? json('null') : diagnosticStorageAccountId)
-    workspaceId: (empty(workspaceId) ? json('null') : workspaceId)
-    eventHubAuthorizationRuleId: (empty(eventHubAuthorizationRuleId) ? json('null') : eventHubAuthorizationRuleId)
-    eventHubName: (empty(eventHubName) ? json('null') : eventHubName)
-    metrics: ((empty(diagnosticStorageAccountId) && empty(workspaceId) && empty(eventHubAuthorizationRuleId) && empty(eventHubName)) ? json('null') : diagnosticsMetrics)
+    storageAccountId: empty(diagnosticStorageAccountId) ? null : diagnosticStorageAccountId
+    workspaceId: empty(workspaceId) ? null : workspaceId
+    eventHubAuthorizationRuleId: empty(eventHubAuthorizationRuleId) ? null : eventHubAuthorizationRuleId
+    eventHubName: empty(eventHubName) ? null : eventHubName
+    metrics: empty(diagnosticStorageAccountId) && empty(workspaceId) && empty(eventHubAuthorizationRuleId) && empty(eventHubName) ? null : diagnosticsMetrics
   }
   scope: vmss
 }
@@ -765,11 +741,15 @@ module vmss_rbac '.bicep/nested_rbac.bicep' = [for (roleAssignment, index) in ro
   name: '${deployment().name}-rbac-${index}'
   params: {
     roleAssignmentObj: roleAssignment
-    builtInRoleNames: builtInRoleNames
     resourceName: vmss.name
   }
 }]
 
+@description('The resourceID of the virtual machine scale set')
 output vmssResourceIds string = vmss.id
+
+@description('The resource group of the virtual machine scale set')
 output vmssResourceGroup string = resourceGroup().name
+
+@description('The name of the virtual machine scale set')
 output vmssName string = vmssName
