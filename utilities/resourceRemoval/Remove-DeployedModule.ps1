@@ -112,27 +112,29 @@ function Remove-DeployedModule {
 
                 # If VMs are available, delete those first
                 if ($vmsContained = $resourcesToRemove | Where-Object { $_.resourcetype -eq 'Microsoft.Compute/virtualMachines' }) {
-                    Remove-Resource -resourcesToRemove $vmsContained
+                    Remove-Resource -resourceToRemove $vmsContained
                     # refresh
                     $resourcesToRemove = Get-AzResource -Tag @{ removeModule = $moduleName } -ResourceGroupName $resourceGroupName
                 }
 
-                $currentRetry = 0
-                $resourcesToRetry = @()
-                if ($PSCmdlet.ShouldProcess(("[{0}] Resource(s) with a maximum of [$maximumRemovalRetries] attempts." -f $resourcesToRemove.Count), 'Remove')) {
-                    while (($resourcesToRetry = Remove-Resource -resourcesToRemove $resourcesToRemove -Verbose).Count -gt 0 -and $currentRetry -le $maximumRemovalRetries) {
-                        Write-Verbose ('Re-try removal of remaining [{0}] resources. Round [{1}|{2}]' -f $resourcesToRetry.Count, $currentRetry, $maximumRemovalRetries)
-                        $currentRetry++
-                    }
+                Remove-Resource -resourceToRemove $resourcesToRemove
 
-                    if ($resourcesToRetry.Count -gt 0) {
-                        throw ('The removal failed for resources [{0}]' -f ($resourcesToRetry.Name -join ', '))
-                    } else {
-                        Write-Verbose 'The removal completed successfully'
-                    }
-                } else {
-                    Remove-Resource -resourcesToRemove $resourcesToRemove -WhatIf
-                }
+                # $currentRetry = 0
+                # $resourcesToRetry = @()
+                # if ($PSCmdlet.ShouldProcess(("[{0}] Resource(s) with a maximum of [$maximumRemovalRetries] attempts." -f $resourcesToRemove.Count), 'Remove')) {
+                #     while (($resourcesToRetry = Remove-Resource -resourceToRemove $resourcesToRemove -Verbose).Count -gt 0 -and $currentRetry -le $maximumRemovalRetries) {
+                #         Write-Verbose ('Re-try removal of remaining [{0}] resources. Round [{1}|{2}]' -f $resourcesToRetry.Count, $currentRetry, $maximumRemovalRetries)
+                #         $currentRetry++
+                #     }
+
+                #     if ($resourcesToRetry.Count -gt 0) {
+                #         throw ('The removal failed for resources [{0}]' -f ($resourcesToRetry.Name -join ', '))
+                #     } else {
+                #         Write-Verbose 'The removal completed successfully'
+                #     }
+                # } else {
+                #     Remove-Resource -resourceToRemove $resourcesToRemove -WhatIf
+                # }
             } else {
                 Write-Error ("Unable to find resources by tags [removeModule=$moduleName] in resource group [$resourceGroupName].")
             }

@@ -91,23 +91,25 @@ function Remove-vWan {
         if ($vpnSiteResourceId) { $resourcesToRemove += Get-AzResource -ResourceId $vpnSiteResourceId }
         if ($vWANResourceId) { $resourcesToRemove += Get-AzResource -ResourceId $vWANResourceId }
 
-        # Remove resources
-        # ----------------
-        if ($resourcesToRemove) {
-            $currentRetry = 0
-            $resourcesToRetry = @()
-            Write-Verbose ('Init removal of [{0}] resources' -f $resourcesToRemove.Count) -Verbose
-            if ($PSCmdlet.ShouldProcess(('[{0}] resources' -f $resourceGroupToRemove.Count), 'Remove')) {
-                while (($resourcesToRetry = Remove-Resource -resourcesToRemove $resourcesToRemove).Count -gt 0 -and $currentRetry -le $maximumRetries) {
-                    Write-Verbose ('Re-try removal of remaining [{0}] resources. Round [{1}|{2}]' -f $resourcesToRetry.Count, $currentRetry, $maximumRetries) -Verbose
-                    $currentRetry++
-                }
-            }
+        Remove-Resource -resourceToRemove $resourcesToRemove
 
-            if ($resourcesToRetry.Count -gt 0) {
-                throw ('The removal failed for resources [{0}]' -f ($resourcesToRetry.Name -join ', '))
-            }
-        }
+        # # Remove resources
+        # # ----------------
+        # if ($resourcesToRemove) {
+        #     $currentRetry = 0
+        #     $resourcesToRetry = @()
+        #     Write-Verbose ('Init removal of [{0}] resources' -f $resourcesToRemove.Count) -Verbose
+        #     if ($PSCmdlet.ShouldProcess(('[{0}] resources' -f $resourceGroupToRemove.Count), 'Remove')) {
+        #         while (($resourcesToRetry = Remove-Resource -resourceToRemove $resourcesToRemove).Count -gt 0 -and $currentRetry -le $maximumRetries) {
+        #             Write-Verbose ('Re-try removal of remaining [{0}] resources. Round [{1}|{2}]' -f $resourcesToRetry.Count, $currentRetry, $maximumRetries) -Verbose
+        #             $currentRetry++
+        #         }
+        #     }
+
+        #     if ($resourcesToRetry.Count -gt 0) {
+        #         throw ('The removal failed for resources [{0}]' -f ($resourcesToRetry.Name -join ', '))
+        #     }
+        # }
     }
 
     end {
