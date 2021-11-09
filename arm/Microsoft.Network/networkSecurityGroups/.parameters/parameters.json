@@ -58,10 +58,10 @@
                         "priority": 102,
                         "direction": "Inbound",
                         "sourceApplicationSecurityGroupIds": [
-                            "/subscriptions/<<subscriptionId>>/resourceGroups/<<resourceGroupName>>/providers/Microsoft.Network/applicationSecurityGroups/<<namePrefix>>-az-asg-x-001"
+                            "/subscriptions/<<subscriptionId>>/resourceGroups/<<resourceGroupName>>/providers/Microsoft.Network/applicationSecurityGroups/adp-sxx-az-asg-x-001"
                         ],
                         "destinationApplicationSecurityGroupIds": [
-                            "/subscriptions/<<subscriptionId>>/resourceGroups/<<resourceGroupName>>/providers/Microsoft.Network/applicationSecurityGroups/<<namePrefix>>-az-asg-x-001"
+                            "/subscriptions/<<subscriptionId>>/resourceGroups/<<resourceGroupName>>/providers/Microsoft.Network/applicationSecurityGroups/adp-sxx-az-asg-x-001"
                         ]
                     }
                 }
