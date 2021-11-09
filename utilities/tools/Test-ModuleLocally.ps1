@@ -133,6 +133,7 @@ function Test-ModuleLocally {
             $DefaultParameterFileTokens = @(
                 @{ Name = 'subscriptionId'; Value = "$($ValidateOrDeployParameters.SubscriptionId)" }
                 @{ Name = 'managementGroupId'; Value = "$($ValidateOrDeployParameters.ManagementGroupId)" }
+                @{ Name = 'resourceGroupName'; Value = "$($ValidateOrDeployParameters.resourceGroupName)" }
             ) | ForEach-Object { [PSCustomObject]$PSItem }
 
             # Look for Local Custom Parameter File Tokens (Source Control)
