@@ -45,7 +45,7 @@ resource availabilitySet 'Microsoft.Compute/availabilitySets@2021-04-01' = {
   properties: {
     platformFaultDomainCount: availabilitySetFaultDomain
     platformUpdateDomainCount: availabilitySetUpdateDomain
-    proximityPlacementGroup: (empty(proximityPlacementGroupId) ? json('null') : proximityPlacementGroupId)
+    proximityPlacementGroup: !empty(proximityPlacementGroupId) ? proximityPlacementGroupId : null
   }
   sku: {
     name: availabilitySetSku
@@ -56,7 +56,7 @@ resource availabilitySet_lock 'Microsoft.Authorization/locks@2016-09-01' = if (l
   name: '${availabilitySet.name}-${lock}-lock'
   properties: {
     level: lock
-    notes: (lock == 'CanNotDelete') ? 'Cannot delete resource or child resources.' : 'Cannot modify the resource or child resources.'
+    notes: lock == 'CanNotDelete' ? 'Cannot delete resource or child resources.' : 'Cannot modify the resource or child resources.'
   }
   scope: availabilitySet
 }
@@ -69,6 +69,10 @@ module availabilitySet_rbac '.bicep/nested_rbac.bicep' = [for (roleAssignment, i
   }
 }]
 
+@description('The resource group the availability set was deployed into')
 output availabilitySetResourceName string = availabilitySet.name
+
+@description('The resourceId of the availability set')
 output availabilitySetResourceId string = availabilitySet.id
+@description('The name of the availability set')
 output availabilitySetResourceGroup string = resourceGroup().name

@@ -376,11 +376,11 @@ Tag names and tag values can be provided as needed. A tag can be left without a 
 
 ## Outputs
 
-| Output Name | Type |
-| :-- | :-- |
-| `vmssName` | string |
-| `vmssResourceGroup` | string |
-| `vmssResourceIds` | string |
+| Output Name | Type | Description |
+| :-- | :-- | :-- |
+| `vmssName` | string | The name of the virtual machine scale set |
+| `vmssResourceGroup` | string | The resource group of the virtual machine scale set |
+| `vmssResourceIds` | string | The resourceID of the virtual machine scale set |
 
 ## Template references
 

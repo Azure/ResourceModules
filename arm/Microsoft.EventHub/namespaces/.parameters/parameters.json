@@ -2,26 +2,25 @@
     "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
     "contentVersion": "1.0.0.0",
     "parameters": {
+        "name": {
+            "value": "sxx-az-evnsp-x-001"
+        },
         "authorizationRules": {
             "value": [
                 {
                     "name": "RootManageSharedAccessKey",
-                    "properties": {
-                        "rights": [
-                            "Listen",
-                            "Manage",
-                            "Send"
-                        ]
-                    }
+                    "rights": [
+                        "Listen",
+                        "Manage",
+                        "Send"
+                    ]
                 },
                 {
                     "name": "SendListenAccess",
-                    "properties": {
-                        "rights": [
-                            "Listen",
-                            "Send"
-                        ]
-                    }
+                    "rights": [
+                        "Listen",
+                        "Send"
+                    ]
                 }
             ]
         },
@@ -30,7 +29,57 @@
                 {
                     "roleDefinitionIdOrName": "Reader",
                     "principalIds": [
-                        "cf33fea8-b30f-424f-ab73-c48d99e0b222"
+                        "e58511af-4da2-449c-a5cd-6a10271cfb83"
+                    ]
+                }
+            ]
+        },
+        "eventHubs": {
+            "value": [
+                {
+                    "name": "sxx-az-evh-x-001",
+                    "authorizationRules": [
+                        {
+                            "name": "RootManageSharedAccessKey",
+                            "rights": [
+                                "Listen",
+                                "Manage",
+                                "Send"
+                            ]
+                        },
+                        {
+                            "name": "SendListenAccess",
+                            "rights": [
+                                "Listen",
+                                "Send"
+                            ]
+                        }
+                    ],
+                    "roleAssignments": [
+                        {
+                            "roleDefinitionIdOrName": "Reader",
+                            "principalIds": [
+                                "e58511af-4da2-449c-a5cd-6a10271cfb83"
+                            ]
+                        }
+                    ],
+                    "messageRetentionInDays": 1,
+                    "partitionCount": 2,
+                    "status": "Active",
+                    "captureDescriptionEnabled": true,
+                    "captureDescriptionEncoding": "Avro",
+                    "captureDescriptionIntervalInSeconds": 300,
+                    "captureDescriptionSizeLimitInBytes": 314572800,
+                    "captureDescriptionDestinationName": "EventHubArchive.AzureBlockBlob",
+                    "captureDescriptionDestinationStorageAccountResourceId": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Storage/storageAccounts/adpsxxazsaweux001",
+                    "captureDescriptionDestinationBlobContainer": "eventhub",
+                    "captureDescriptionDestinationArchiveNameFormat": "{Namespace}/{EventHub}/{PartitionId}/{Year}/{Month}/{Day}/{Hour}/{Minute}/{Second}",
+                    "captureDescriptionSkipEmptyArchives": true,
+                    "consumerGroups": [
+                        {
+                            "name": "custom",
+                            "userMetadata": "customMetadata"
+                        }
                     ]
                 }
             ]

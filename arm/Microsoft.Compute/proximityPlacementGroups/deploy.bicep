@@ -46,7 +46,7 @@ resource proximityPlacementGroup_lock 'Microsoft.Authorization/locks@2016-09-01'
   name: '${proximityPlacementGroup.name}-${lock}-lock'
   properties: {
     level: lock
-    notes: (lock == 'CanNotDelete') ? 'Cannot delete resource or child resources.' : 'Cannot modify the resource or child resources.'
+    notes: lock == 'CanNotDelete' ? 'Cannot delete resource or child resources.' : 'Cannot modify the resource or child resources.'
   }
   scope: proximityPlacementGroup
 }
@@ -59,6 +59,11 @@ module proximityPlacementGroup_rbac '.bicep/nested_rbac.bicep' = [for (roleAssig
   }
 }]
 
-output proximityPlacementGroupResourceName string = proximityPlacementGroup.name
+@description('The name of the proximity placement group')
+output proximityPlacementGroupName string = proximityPlacementGroup.name
+
+@description('The resourceId the proximity placement group')
 output proximityPlacementGroupResourceId string = proximityPlacementGroup.id
+
+@description('The resource group the proximity placement group was deployed into')
 output proximityPlacementGroupResourceGroup string = resourceGroup().name

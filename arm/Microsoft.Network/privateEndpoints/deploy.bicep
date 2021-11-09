@@ -78,7 +78,7 @@ resource privateEndpoint_lock 'Microsoft.Authorization/locks@2016-09-01' = if (l
   name: '${privateEndpoint.name}-${lock}-lock'
   properties: {
     level: lock
-    notes: (lock == 'CanNotDelete') ? 'Cannot delete resource or child resources.' : 'Cannot modify the resource or child resources.'
+    notes: lock == 'CanNotDelete' ? 'Cannot delete resource or child resources.' : 'Cannot modify the resource or child resources.'
   }
   scope: privateEndpoint
 }
@@ -91,6 +91,11 @@ module privateEndpoint_rbac '.bicep/nested_rbac.bicep' = [for (roleAssignment, i
   }
 }]
 
+@description('The resource group the private endpoint was deployed into')
 output privateEndpointResourceGroup string = resourceGroup().name
+
+@description('The resourceId of the private endpoint')
 output privateEndpointResourceId string = privateEndpoint.id
+
+@description('The name of the private endpoint')
 output privateEndpointName string = privateEndpoint.name

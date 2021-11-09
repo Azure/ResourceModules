@@ -9,19 +9,31 @@
             "value": "validation-rg"
         },
         {
-            "name": "componentTemplateSpecRGName",
+            "name": "templateSpecsRGName",
             "value": "artifacts-rg"
         },
         {
-            "name": "componentTemplateSpecRGLocation",
+            "name": "templateSpecsRGLocation",
             "value": "WestEurope"
         },
         {
-            "name": "componentTemplateSpecDescription",
-            "value": "components"
+            "name": "templateSpecsDescription",
+            "value": "This is a module from the [Common Azure Resource Modules Library]"
         },
         {
-            "name": "publishToTemplateSpec",
+            "name": "templateSpecsDoPublish",
+            "value": "true"
+        },
+        {
+            "name": "bicepRegistryName",
+            "value": "adpsxxazacrx001"
+        },
+        {
+            "name": "bicepRegistryRGName",
+            "value": "artifacts-rg"
+        },
+        {
+            "name": "bicepRegistryDoPublish",
             "value": "true"
         }
     ]

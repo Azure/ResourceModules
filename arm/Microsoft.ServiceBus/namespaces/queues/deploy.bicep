@@ -123,7 +123,7 @@ resource queue_lock 'Microsoft.Authorization/locks@2016-09-01' = if (lock != 'No
   name: '${split(queue.name, '/')[1]}-${lock}-lock'
   properties: {
     level: lock
-    notes: (lock == 'CanNotDelete') ? 'Cannot delete resource or child resources.' : 'Cannot modify the resource or child resources.'
+    notes: lock == 'CanNotDelete' ? 'Cannot delete resource or child resources.' : 'Cannot modify the resource or child resources.'
   }
   scope: queue
 }

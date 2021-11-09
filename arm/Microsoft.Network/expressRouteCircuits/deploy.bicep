@@ -152,7 +152,7 @@ resource expressRouteCircuits 'Microsoft.Network/expressRouteCircuits@2021-02-01
   sku: {
     name: '${skuTier}_${skuFamily}'
     tier: skuTier
-    family: (skuTier == 'Local' ? 'UnlimitedData' : skuFamily)
+    family: skuTier == 'Local' ? 'UnlimitedData' : skuFamily
   }
   properties: {
     serviceProviderProperties: {
@@ -160,7 +160,7 @@ resource expressRouteCircuits 'Microsoft.Network/expressRouteCircuits@2021-02-01
       peeringLocation: peeringLocation
       bandwidthInMbps: bandwidthInMbps
     }
-    peerings: (peering ? peeringConfiguration : json('null'))
+    peerings: peering ? peeringConfiguration : null
   }
 }
 
@@ -168,20 +168,20 @@ resource expressRouteCircuits_lock 'Microsoft.Authorization/locks@2016-09-01' = 
   name: '${expressRouteCircuits.name}-${lock}-lock'
   properties: {
     level: lock
-    notes: (lock == 'CanNotDelete') ? 'Cannot delete resource or child resources.' : 'Cannot modify the resource or child resources.'
+    notes: lock == 'CanNotDelete' ? 'Cannot delete resource or child resources.' : 'Cannot modify the resource or child resources.'
   }
   scope: expressRouteCircuits
 }
 
-resource expressRouteCircuits_diagnosticSettings 'Microsoft.Insights/diagnosticsettings@2017-05-01-preview' = if ((!empty(diagnosticStorageAccountId)) || (!empty(workspaceId)) || (!empty(eventHubAuthorizationRuleId)) || (!empty(eventHubName))) {
+resource expressRouteCircuits_diagnosticSettings 'Microsoft.Insights/diagnosticSettings@2017-05-01-preview' = if (!empty(diagnosticStorageAccountId) || !empty(workspaceId) || !empty(eventHubAuthorizationRuleId) || !empty(eventHubName)) {
   name: '${expressRouteCircuits.name}-diagnosticSettings'
   properties: {
-    storageAccountId: (empty(diagnosticStorageAccountId) ? json('null') : diagnosticStorageAccountId)
-    workspaceId: (empty(workspaceId) ? json('null') : workspaceId)
-    eventHubAuthorizationRuleId: (empty(eventHubAuthorizationRuleId) ? json('null') : eventHubAuthorizationRuleId)
-    eventHubName: (empty(eventHubName) ? json('null') : eventHubName)
-    metrics: ((empty(diagnosticStorageAccountId) && empty(workspaceId) && empty(eventHubAuthorizationRuleId) && empty(eventHubName)) ? json('null') : diagnosticsMetrics)
-    logs: ((empty(diagnosticStorageAccountId) && empty(workspaceId) && empty(eventHubAuthorizationRuleId) && empty(eventHubName)) ? json('null') : diagnosticsLogs)
+    storageAccountId: empty(diagnosticStorageAccountId) ? null : diagnosticStorageAccountId
+    workspaceId: empty(workspaceId) ? null : workspaceId
+    eventHubAuthorizationRuleId: empty(eventHubAuthorizationRuleId) ? null : eventHubAuthorizationRuleId
+    eventHubName: empty(eventHubName) ? null : eventHubName
+    metrics: empty(diagnosticStorageAccountId) && empty(workspaceId) && empty(eventHubAuthorizationRuleId) && empty(eventHubName) ? null : diagnosticsMetrics
+    logs: empty(diagnosticStorageAccountId) && empty(workspaceId) && empty(eventHubAuthorizationRuleId) && empty(eventHubName) ? null : diagnosticsLogs
   }
   scope: expressRouteCircuits
 }
@@ -194,7 +194,14 @@ module expressRouteCircuits_rbac '.bicep/nested_rbac.bicep' = [for (roleAssignme
   }
 }]
 
+@description('The resourceId of express route curcuit')
 output expressRouteCircuitResourceId string = expressRouteCircuits.id
+
+@description('The resource group the express route curcuit was deployed into')
 output expressRouteCircuitResourceGroup string = resourceGroup().name
+
+@description('The name of express route curcuit')
 output expressRouteCircuitName string = expressRouteCircuits.name
+
+@description('The service key of the express route circuit')
 output expressRouteCircuitServiceKey string = reference(expressRouteCircuits.id, '2020-05-01').serviceKey

@@ -34,8 +34,8 @@ resource privateDnsZone 'Microsoft.Network/privateDnsZones@2018-09-01' = {
   location: location
   tags: tags
 
-  resource virtualNetworkLinks 'virtualNetworkLinks@2018-09-01' = [for vnetLink in vnetLinks: if (!empty(vnetLinks)) {
-    name: '${(empty(vnetLinks) ? 'dummy' : last(split(vnetLink.vnetResourceId, '/')))}'
+  resource virtualNetworkLinks 'virtualNetworkLinks@2018-09-01' = [for vnetLink in vnetLinks: {
+    name: last(split(vnetLink.vnetResourceId, '/'))
     location: location
     tags: tags
     properties: {
@@ -51,7 +51,7 @@ resource privateDnsZone_lock 'Microsoft.Authorization/locks@2016-09-01' = if (lo
   name: '${privateDnsZone.name}-${lock}-lock'
   properties: {
     level: lock
-    notes: (lock == 'CanNotDelete') ? 'Cannot delete resource or child resources.' : 'Cannot modify the resource or child resources.'
+    notes: lock == 'CanNotDelete' ? 'Cannot delete resource or child resources.' : 'Cannot modify the resource or child resources.'
   }
   scope: privateDnsZone
 }
@@ -64,6 +64,11 @@ module privateDnsZone_rbac '.bicep/nested_rbac.bicep' = [for (roleAssignment, in
   }
 }]
 
+@description('The resource group the private DNS zone was deployed into')
 output privateDnsZoneResourceGroup string = resourceGroup().name
+
+@description('The name of the private DNS zone')
 output privateDnsZoneName string = privateDnsZone.name
+
+@description('The resourceId of the private DNS zone')
 output privateDnsZoneResourceId string = privateDnsZone.id

@@ -227,11 +227,11 @@ Tag names and tag values can be provided as needed. A tag can be left without a 
 
 ## Outputs
 
-| Output Name | Type |
-| :-- | :-- |
-| `applicationGatewayName` | string |
-| `applicationGatewayResourceGroup` | string |
-| `applicationGatewayResourceId` | string |
+| Output Name | Type | Description |
+| :-- | :-- | :-- |
+| `applicationGatewayName` | string | The name of the application gateway |
+| `applicationGatewayResourceGroup` | string | The resource group the application gateway was deployed into |
+| `applicationGatewayResourceId` | string | The resource Id of the application gateway |
 
 ## Template references
 

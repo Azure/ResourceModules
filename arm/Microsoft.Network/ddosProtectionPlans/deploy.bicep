@@ -38,7 +38,7 @@ resource ddosProtectionPlan_lock 'Microsoft.Authorization/locks@2016-09-01' = if
   name: '${ddosProtectionPlan.name}-${lock}-lock'
   properties: {
     level: lock
-    notes: (lock == 'CanNotDelete') ? 'Cannot delete resource or child resources.' : 'Cannot modify the resource or child resources.'
+    notes: lock == 'CanNotDelete' ? 'Cannot delete resource or child resources.' : 'Cannot modify the resource or child resources.'
   }
   scope: ddosProtectionPlan
 }
@@ -51,6 +51,11 @@ module ddosProtectionPlan_rbac '.bicep/nested_rbac.bicep' = [for (roleAssignment
   }
 }]
 
+@description('The resource group the DDOS protection plan was deployed into')
 output ddosProtectionPlanResourceGroup string = resourceGroup().name
+
+@description('The resourceId of the DDOS protection plan')
 output ddosProtectionPlanResourceId string = ddosProtectionPlan.id
+
+@description('The name of the DDOS protection plan')
 output ddosProtectionPlanName string = ddosProtectionPlan.name

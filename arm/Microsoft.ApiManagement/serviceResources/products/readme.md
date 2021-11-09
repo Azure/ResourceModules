@@ -57,13 +57,13 @@ Product groups list.
 
 ## Outputs
 
-| Output Name | Type |
-| :-- | :-- |
-| `productApisResourceIds` | array |
-| `productGroupsResourceIds` | array |
-| `productResourceGroup` | string |
-| `productResourceId` | string |
-| `productResourceName` | string |
+| Output Name | Type | Description |
+| :-- | :-- | :-- |
+| `productApisResourceIds` | array | The Resources Ids of the API management service product apis |
+| `productGroupsResourceIds` | array | The Resources Ids of the API management service product groups |
+| `productName` | string | The name of the API management service product |
+| `productResourceGroup` | string | The resource group the API management service product was deployed into |
+| `productResourceId` | string | The resource Id of the API management service product |
 
 ## Template references
 
