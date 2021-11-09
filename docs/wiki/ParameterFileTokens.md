@@ -1,6 +1,6 @@
 # Parameter File Token
 
-This section provides details on the Tokens Replacement Functionaliy that enables the use of tokens inside template Parameter Files instead of plain text.
+This section provides details on the Tokens Replacement Functionality that enables the use of tokens inside template Parameter Files instead of plain text.
 
 ---
 
@@ -87,11 +87,13 @@ The Key Vault here is enabled by adding a Secret to GitHub called `PLATFORM_KEYV
 
 ---
 
-The Token Replacement Functionality comes with the ability to store Parameter File Tokens in Azure Key Vault. This is performed by creating a Secret in GitHub Actions called `PLATFORM_KEYVAULT`, which then automtically flows as an Environment Variable in Workflows.The below diagram shows the flow in more detail:
+The Token Replacement Functionality comes with the ability to store Parameter File Tokens in Azure Key Vault. This is performed by creating a Secret in GitHub Actions called `PLATFORM_KEYVAULT`, which then automatically flows as an Environment Variable in Workflows.The below diagram shows the flow in more detail:
 
 ![paramFileTokenSetKeyVault](../media/paramFileTokenSetKeyVault.jpg)
 
 1- The user can create the Secret called `PLATFORM_KEYVAULT`. This must be a unique Key Vault name across Azure.
+
+  > The parameter files can now be tokenized as per required value. Then token must be in the format of `<<tokenName>>`. Either locally or remotely on the Key Vault.
 
 2- The user then triggers the [Dependency Workflow](../../.github/workflows/platform.dependencies.yml) to instantiate the Platform Token Key Vault.
 
@@ -118,6 +120,7 @@ The below diagram illustrates the Token Replacement Functionality via the [Valid
 ![paramFileTokenGetKeyVault](../media/paramFileTokenGetTokens.jpg)
 
 1- The user creates Local Custom Parameter File Tokens in the [Settings.json](../../settings.json) under the `localTokens` - `tokens` property.
+
 2- The user can also create Remote Custom Parameter File Tokens in the Key Vault with the right naming standards inside [Settings.json](../../settings.json) under `remoteTokens`, using the `keyVaultSecretNamePrefix` Prefix for the Secret Name. Here is an example on how to perform that using PowerShell:
 
   ```powershell
@@ -155,13 +158,15 @@ The below diagram illustrates the Token Replacement Functionality via the [Valid
   }
   ```
 
-3- The user runs the modules workflow/pipeline, either from their remote branch or main branch so that it triggers the regular module deployment process.
+3- The parameter files can now be tokenized as per required value. Then token must be in the format of `<<tokenName>>`.
 
-4- The tokens will be retrieved at runtime and replaced with the original values before handed over to the validation or deployment task/step.
+4- The user runs the modules workflow/pipeline, either from their remote branch or main branch so that it triggers the regular module deployment process.
+
+5- The tokens will be retrieved at runtime and replaced with the original values before handed over to the validation or deployment task/step.
 
 ---
 **Note**: The pipeline will not fail if you are not using a Key Vault for your custom tokens. However it will fail if you are tokenizing these values and the tokens will not been replaced due to missing token values. Where it will fail is at the validation / deployment task as the tokens are not valid names used in Azure resources deployments (i.e. resource name, resource ID) . The same applies to Local Custom Tokens in Source Control.
 
 ---
 
-5- The Validate/Deploy task will consume the modified parameter files with the required values in order to validate/deploy the Azure resource.
+6- The Validate/Deploy task will consume the modified parameter files with the required values in order to validate/deploy the Azure resource.
