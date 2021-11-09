@@ -1,4 +1,4 @@
-# Api Management Service Backends  `[Microsoft.ApiManagement/service/backends]`
+# Api Management Service Backends   `[Microsoft.ApiManagement/backends]`
 
 This module deploys Api Management Service Backends.
 
@@ -20,9 +20,9 @@ The following resources are required to be able to deploy this resource.
 | :-- | :-- | :-- | :-- | :-- |
 | `apiManagementServiceName` | string |  |  | Required. The name of the of the Api Management service. |
 | `backendDescription` | string |  |  | Optional. Backend Description. |
-| `backendName` | string |  |  | Required. Backend Name. |
 | `credentials` | object | `{object}` |  | Optional. Backend Credentials Contract Properties. |
 | `cuaId` | string |  |  | Optional. Customer Usage Attribution id (GUID). This GUID must be previously registered |
+| `name` | string |  |  | Required. Backend Name. |
 | `protocol` | string | `http` |  | Required. Backend communication protocol. - http or soap |
 | `proxy` | object | `{object}` |  | Optional. Backend Proxy Contract Properties |
 | `resourceId` | string |  |  | Optional. Management Uri of the Resource in External System. This url can be the Arm Resource Id of Logic Apps, Function Apps or Api Apps. |

@@ -1,4 +1,4 @@
-# Api Management Service Authorization Servers  `[Microsoft.ApiManagement/service/authorizationServers]`
+# Api Management Service Authorization Servers   `[Microsoft.ApiManagement/authorizationServers]`
 
 This module deploys Api Management Service Authorization Servers.
 
@@ -18,7 +18,6 @@ The following resources are required to be able to deploy this resource.
 
 | Parameter Name | Type | Default Value | Possible Values | Description |
 | :-- | :-- | :-- | :-- | :-- |
-| `name` | string |  |  | Required. Identifier of the authorization server. |
 | `apiManagementServiceName` | string |  |  | Required. The name of the of the Api Management service. |
 | `authorizationEndpoint` | string |  |  | Required. OAuth authorization endpoint. See <http://tools.ietf.org/html/rfc6749#section-3.2>. |
 | `authorizationMethods` | array | `[GET]` |  | Optional. HTTP verbs supported by the authorization endpoint. GET must be always present. POST is optional. - HEAD, OPTIONS, TRACE, GET, POST, PUT, PATCH, DELETE |
@@ -30,6 +29,7 @@ The following resources are required to be able to deploy this resource.
 | `cuaId` | string |  |  | Optional. Customer Usage Attribution id (GUID). This GUID must be previously registered |
 | `defaultScope` | string |  |  | Optional. Access token scope that is going to be requested by default. Can be overridden at the API level. Should be provided in the form of a string containing space-delimited values. |
 | `grantTypes` | array | `[]` |  | Required. Form of an authorization grant, which the client uses to request the access token. - authorizationCode, implicit, resourceOwnerPassword, clientCredentials |
+| `name` | string |  |  | Required. Identifier of the authorization server. |
 | `resourceOwnerPassword` | string |  |  | Optional. Can be optionally specified when resource owner password grant type is supported by this authorization server. Default resource owner password. |
 | `resourceOwnerUsername` | string |  |  | Optional. Can be optionally specified when resource owner password grant type is supported by this authorization server. Default resource owner username. |
 | `serverDescription` | string |  |  | Optional. Description of the authorization server. Can contain HTML formatting tags. |

@@ -1,4 +1,4 @@
-# Api Management Service Apis  `[Microsoft.ApiManagement/service/apis]`
+# Api Management Service Apis   `[Microsoft.ApiManagement/apis]`
 
 This module deploys Api Management Service Apis.
 
@@ -21,7 +21,6 @@ The following resources are required to be able to deploy this resource.
 | Parameter Name | Type | Default Value | Possible Values | Description |
 | :-- | :-- | :-- | :-- | :-- |
 | `apiDescription` | string |  |  | Optional. Description of the API. May include HTML formatting tags. |
-| `name` | string |  |  | Required. API revision identifier. Must be unique in the current API Management service instance. Non-current revision has ;rev=n as a suffix where n is the revision number. |
 | `apiManagementServiceApiPolicy` | object | `{object}` |  | Optional. Policies to apply to the Service Api. |
 | `apiManagementServiceName` | string |  |  | Required. The name of the of the Api Management service. |
 | `apiRevision` | string |  |  | Optional. Describes the Revision of the Api. If no value is provided, default revision 1 is created |
@@ -35,6 +34,7 @@ The following resources are required to be able to deploy this resource.
 | `displayName` | string |  |  | Required. API name. Must be 1 to 300 characters long. |
 | `format` | string | `openapi` | `[wadl-xml, wadl-link-json, swagger-json, swagger-link-json, wsdl, wsdl-link, openapi, openapi+json, openapi-link, openapi+json-link]` | Optional. Format of the Content in which the API is getting imported. |
 | `isCurrent` | bool | `True` |  | Optional. Indicates if API revision is current api revision. |
+| `name` | string |  |  | Required. API revision identifier. Must be unique in the current API Management service instance. Non-current revision has ;rev=n as a suffix where n is the revision number. |
 | `path` | string |  |  | Required. Relative URL uniquely identifying this API and all of its resource paths within the API Management service instance. It is appended to the API endpoint base URL specified during the service instance creation to form a public URL for this API. |
 | `protocols` | array | `[https]` |  | Optional. Describes on which protocols the operations in this API can be invoked. - http or https |
 | `serviceUrl` | string |  |  | Optional. Absolute URL of the backend service implementing this API. Cannot be more than 2000 characters long. |

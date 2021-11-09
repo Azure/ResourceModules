@@ -1,4 +1,4 @@
-# Api Management Service Cache  `[Microsoft.ApiManagement/service/caches]`
+# Api Management Service Cache   `[Microsoft.ApiManagement/caches]`
 
 This module deploys an Api Management Service Cache.
 
@@ -20,9 +20,9 @@ The following resources are required to be able to deploy this resource.
 | :-- | :-- | :-- | :-- | :-- |
 | `apiManagementServiceName` | string |  |  | Required. The name of the of the Api Management service. |
 | `cacheDescription` | string |  |  | Optional. Cache description |
-| `name` | string |  |  | Required. Identifier of the Cache entity. Cache identifier (should be either 'default' or valid Azure region identifier). |
 | `connectionString` | string |  |  | Required. Runtime connection string to cache. Can be referenced by a named value like so, {{<named-value>}} |
 | `cuaId` | string |  |  | Optional. Customer Usage Attribution id (GUID). This GUID must be previously registered |
+| `name` | string |  |  | Required. Identifier of the Cache entity. Cache identifier (should be either 'default' or valid Azure region identifier). |
 | `resourceId` | string |  |  | Optional. Original uri of entity in external system cache points to. |
 | `useFromLocation` | string |  |  | Required. Location identifier to use cache from (should be either 'default' or valid Azure region identifier) |
 
