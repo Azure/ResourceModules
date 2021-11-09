@@ -243,6 +243,12 @@
                 }
             ]
         },
+        "backupStorageConfig":{
+            "value": {
+                "vaultStorageType": "GeoRedundant",
+                "enableCRR": true
+            }
+        },
         "roleAssignments": {
             "value": [
                 {
