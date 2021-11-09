@@ -138,7 +138,7 @@ module rsv_backupStorageConfig 'backupStorageConfig/deploy.bicep' = {
   ]
 }
 
-module rsv_protectionContainers 'backupFabrics/protectionContainers/deploy.bicep' = [for (protectionContainer, index) in protectionContainers: {
+module rsv_protectionContainers 'protectionContainers/deploy.bicep' = [for (protectionContainer, index) in protectionContainers: {
   name: '${uniqueString(deployment().name, location)}-ProtectionContainers-${index}'
   params: {
     recoveryVaultName: rsv.name
