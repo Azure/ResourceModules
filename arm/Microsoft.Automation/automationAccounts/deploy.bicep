@@ -168,23 +168,23 @@ resource automationAccount 'Microsoft.Automation/automationAccounts@2020-01-13-p
   //   }
   // }]
 
-  resource automationAccount_jobSchedules 'jobSchedules@2020-01-13-preview' = [for (jobSchedule, index) in jobSchedules: {
-    name: jobSchedule.jobScheduleName
-    properties: {
-      parameters: (empty(jobSchedule.parameters) ? json('null') : jobSchedule.parameters)
-      runbook: {
-        name: jobSchedule.runbookName
-      }
-      runOn: (empty(jobSchedule.runOn) ? json('null') : jobSchedule.runOn)
-      schedule: {
-        name: jobSchedule.scheduleName
-      }
-    }
+  // resource automationAccount_jobSchedules 'jobSchedules@2020-01-13-preview' = [for (jobSchedule, index) in jobSchedules: {
+  //   name: jobSchedule.jobScheduleName
+  //   properties: {
+  //     parameters: (empty(jobSchedule.parameters) ? json('null') : jobSchedule.parameters)
+  //     runbook: {
+  //       name: jobSchedule.runbookName
+  //     }
+  //     runOn: (empty(jobSchedule.runOn) ? json('null') : jobSchedule.runOn)
+  //     schedule: {
+  //       name: jobSchedule.scheduleName
+  //     }
+  //   }
     // dependsOn: [
     //   automationAccount_schedules
     //   automationAccount_runbooks
     // ]
-  }]
+  // }]
 }
 
 module automationAccount_modules './modules/deploy.bicep' = [for (module, index) in modules: {
@@ -226,6 +226,22 @@ module automationAccount_runbooks './runbooks/deploy.bicep' = [for (runbook, ind
     location: location
     tags: tags
   }
+}]
+
+module automationAccount_jobSchedules './jobSchedules/deploy.bicep' = [for (jobSchedule, index) in jobSchedules: {
+  name: '${uniqueString(deployment().name, location)}-AutoAccount-JobSchedule-${index}'
+  params: {
+    name: jobSchedule.name
+    parent: automationAccount.name
+    parameters: (empty(jobSchedule.parameters) ? null : jobSchedule.parameters)
+    runbookName: jobSchedule.runbookName
+    runOn: (empty(jobSchedule.runOn) ? null : jobSchedule.runOn)
+    scheduleName: jobSchedule.scheduleName
+  }
+  dependsOn: [
+      automationAccount_schedules
+      automationAccount_runbooks
+    ]
 }]
 
 resource automationAccount_lock 'Microsoft.Authorization/locks@2016-09-01' = if (lock != 'NotSpecified') {

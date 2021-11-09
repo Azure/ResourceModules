@@ -8,7 +8,7 @@
         "schedules": {
             "value": [
                 {
-                    "name": "ScalingRunbook_Schedule",
+                    "name": "Test_Schedule",
                     "startTime": "",
                     "expiryTime": "9999-12-31T23:59:00+00:00",
                     "interval": 15,
@@ -37,7 +37,20 @@
                     "description": "Test runbook"
                 }
             ]
+        },
+        "jobSchedules": {
+            "value": [
+                {
+                    "name": "Test_JobSchedule", // jobSchedule used to generate unique id
+                    "scheduleName": "Test_Schedule", // Gets or sets the schedule
+                    "runbookName": "Test_Runbook" // Gets or sets the runbook
+                }
+            ]
         }
+        // "parameters": { // Gets or sets a list of job properties.
+        //     "param1": "value1"
+        // },
+        // "runOn": "" // Gets or sets the hybrid worker group that the scheduled job should run on.
         // ,
         // "privateEndpoints": {
         //     "value": [
