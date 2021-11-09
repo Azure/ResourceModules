@@ -98,7 +98,7 @@ function Convert-TokensInParameterFile {
         Write-Verbose ("All Parameter File Tokens Count: '$($AllCustomParameterFileTokens.Count)'")
         # Apply Prefix and Suffix to Tokens and Prepare Object for Conversion
         if ($AllCustomParameterFileTokens) {
-            Write-Verbose ("Appling Token Prefix '$TokenPrefix' and Token Suffix '$TokenSuffix' To All Parameter File Tokens")
+            Write-Verbose ("Applying Token Prefix '$TokenPrefix' and Token Suffix '$TokenSuffix' To All Parameter File Tokens")
             foreach ($ParameterFileToken in $AllCustomParameterFileTokens) {
                 $ParameterFileToken.Name = -join ($TokenPrefix, $ParameterFileToken.Name, $TokenSuffix)
             }
