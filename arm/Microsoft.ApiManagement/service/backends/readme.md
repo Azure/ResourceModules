@@ -1,4 +1,4 @@
-# Api Management Service Backends   `[Microsoft.ApiManagement/backends]`
+# Api Management Service Backends   `[Microsoft.ApiManagement/service/backends]`
 
 This module deploys Api Management Service Backends.
 
