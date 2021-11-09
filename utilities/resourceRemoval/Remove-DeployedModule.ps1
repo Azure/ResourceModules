@@ -122,9 +122,9 @@ function Remove-DeployedModule {
             $resourcesToRemove = @()
             foreach ($resource in $rawResourcesToRemove) {
                 $resourcesToRemove += @{
-                    resourceId = $vmInstance.ResourceId
-                    name       = $vmInstance.Name
-                    type       = $vmInstance.Type
+                    resourceId = $resource.ResourceId
+                    name       = $resource.Name
+                    type       = $resource.Type
                 }
             }
         }
