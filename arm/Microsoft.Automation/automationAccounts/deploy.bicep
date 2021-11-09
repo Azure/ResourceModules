@@ -233,10 +233,11 @@ module automationAccount_jobSchedules './jobSchedules/deploy.bicep' = [for (jobS
   params: {
     name: jobSchedule.name
     parent: automationAccount.name
-    parameters: (empty(jobSchedule.parameters) ? null : jobSchedule.parameters)
     runbookName: jobSchedule.runbookName
-    runOn: (empty(jobSchedule.runOn) ? null : jobSchedule.runOn)
     scheduleName: jobSchedule.scheduleName
+    parameters: contains(jobSchedule, 'parameters') ? (!empty(jobSchedule.parameters) ? jobSchedule.parameters : {}) : {}
+    runOn: contains(jobSchedule, 'runOn') ? (!empty(jobSchedule.runOn) ? jobSchedule.runOn : '') : ''
+
   }
   dependsOn: [
       automationAccount_schedules
