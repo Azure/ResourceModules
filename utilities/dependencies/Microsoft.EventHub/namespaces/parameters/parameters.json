@@ -9,29 +9,23 @@
       "value": [
         {
           "name": "adp-sxx-az-evh-x-001",
-          "authorizationRules": {
-            "value": [
-              {
-                "name": "RootManageSharedAccessKey",
-                "properties": {
-                  "rights": [
-                    "Listen",
-                    "Manage",
-                    "Send"
-                  ]
-                }
-              },
-              {
-                "name": "SendListenAccess",
-                "properties": {
-                  "rights": [
-                    "Listen",
-                    "Send"
-                  ]
-                }
-              }
-            ]
-          }
+          "authorizationRules": [
+            {
+              "name": "RootManageSharedAccessKey",
+              "rights": [
+                "Listen",
+                "Manage",
+                "Send"
+              ]
+            },
+            {
+              "name": "SendListenAccess",
+              "rights": [
+                "Listen",
+                "Send"
+              ]
+            }
+          ]
         }
       ]
     }
