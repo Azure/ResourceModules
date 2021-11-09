@@ -99,6 +99,7 @@ function Set-EnvironmentOnAgent {
             @{ Name = 'Az.Accounts' },
             @{ Name = 'Az.Resources' },
             @{ Name = 'Az.ContainerRegistry' }
+            @{ Name = 'Az.KeyVault' }
         )
     )
 
