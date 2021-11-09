@@ -1,4 +1,17 @@
 ﻿#region helperScripts
+<#
+.SYNOPSIS
+Remove the given resource(s)
+
+.DESCRIPTION
+Remove the given resource(s). Resources that the script fails to removed are returned in an array.
+
+.PARAMETER resourceToRemove
+Mandatory. The resource(s) to remove. Each resource must have a name (optional), type (optional) & resourceId property.
+
+.EXAMPLE
+Remove-ResourceInner -resourceToRemove @( @{ 'Name' = 'resourceName'; Type = 'Microsoft.Storage/storageAccounts'; ResourceId = 'subscriptions/.../storageAccounts/resourceName' } )
+#>
 function Remove-ResourceInner {
 
 
@@ -32,14 +45,13 @@ function Remove-ResourceInner {
 Remove all resources in the provided array from Azure
 
 .DESCRIPTION
-Remove all resources in the provided array from Azure.
-All resources for which the removal failed are returned in an array.
+Remove all resources in the provided array from Azure. Resources are removed with a retry mechanism.
 
 .PARAMETER resourceToRemove
 Optional. The array of resources to remove. Has to contain objects with at least a 'resourceId' property
 
 .EXAMPLE
-Remove-Resource @( @{ 'Name' = 'resourceName'; ResourceType = 'Microsoft.Storage/storageAccounts'; ResourceId = 'subscriptions/.../storageAccounts/resourceName' } )
+Remove-Resource @( @{ 'Name' = 'resourceName'; Type = 'Microsoft.Storage/storageAccounts'; ResourceId = 'subscriptions/.../storageAccounts/resourceName' } )
 
 Remove resource with id 'subscriptions/.../storageAccounts/resourceName'.
 #>

@@ -44,7 +44,7 @@ function Remove-vWan {
         [int] $tagSearchRetryLimit = 40,
 
         [Parameter(Mandatory = $false)]
-        [int] $tagSearchRetryInterval = 15
+        [int] $tagSearchRetryInterval = 30
     )
 
     begin {
