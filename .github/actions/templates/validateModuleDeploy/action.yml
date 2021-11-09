@@ -72,8 +72,8 @@ runs:
                 TokensKeyVaultName                 = '${{ env.PLATFORM_KEYVAULT }}'
                 TokensKeyVaultSubscriptionId       = '${{ inputs.subscriptionId }}'
             }
-            if ($Setting.parameterFileTokens.remoteCustomParameterFileTokens.keyVaultSecretNamePrefix) {
-                $ConvertTokensInputs += @{ TokensKeyVaultSecretNamePrefix = $Setting.parameterFileTokens.remoteCustomParameterFileTokens.keyVaultSecretNamePrefix
+            if ($Settings.parameterFileTokens.remoteCustomParameterFileTokens.keyVaultSecretNamePrefix) {
+                $ConvertTokensInputs += @{ TokensKeyVaultSecretNamePrefix = $Settings.parameterFileTokens.remoteCustomParameterFileTokens.keyVaultSecretNamePrefix
                 }
             }
         }

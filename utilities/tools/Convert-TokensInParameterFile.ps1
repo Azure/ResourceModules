@@ -90,7 +90,6 @@ function Convert-TokensInParameterFile {
                 $ParameterFileToken.Name = -join ($TokenPrefix, $ParameterFileToken.Name, $TokenSuffix)
             }
 
-            Write-Verbose ($AllCustomParameterFileTokens | ConvertTo-Json | Out-String) -Verbose
             # Convert Tokens in Parameter Files
             Write-Verbose 'Invoking Convert-TokensInFileList'
             try {
