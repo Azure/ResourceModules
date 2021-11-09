@@ -12,11 +12,6 @@ Mandatory. The name of the module to remove
 .PARAMETER resourceGroupName
 Mandatory. The resource group of the resource to remove
 
-.PARAMETER maximumRemovalRetries
-Optional. As the removal fetches all resources with the removal tag, and then tries to remove them one by one it can happen that the function tries to removed that as an active dependency on it (e.g. a VM disk of a VM deployment).
-If the removal fails, the resource in question is moved back in the removal queue and another attempt is made after processing each other resource found.
-This parameter controls, how often we want to push resources back in the queue and retry a removal.
-
 .PARAMETER tagSearchRetryLimit
 Optional. The maximum times to retry the search for resources via their removal tag
 
@@ -37,9 +32,6 @@ function Remove-DeployedModule {
 
         [Parameter(Mandatory = $false)]
         [string] $resourceGroupName,
-
-        [Parameter(Mandatory = $false)]
-        [int] $maximumRemovalRetries = 3,
 
         [Parameter(Mandatory = $false)]
         [int] $tagSearchRetryLimit = 40,
