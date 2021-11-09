@@ -11,7 +11,7 @@ param displayName string = ''
 param keyVault object = {}
 
 @description('Required. Named value Name.')
-param namedValueName string = ''
+param name string = ''
 
 @description('Optional. Tags that when provided can be used to filter the NamedValue list. - string')
 param namedValueTags array = []
@@ -30,7 +30,7 @@ module pid_cuaId '.bicep/nested_cuaId.bicep' = if (!empty(cuaId)) {
 }
 
 resource namedValue 'Microsoft.ApiManagement/service/namedValues@2020-06-01-preview' = {
-  name: '${apiManagementServiceName}/${namedValueName}'
+  name: '${apiManagementServiceName}/${name}'
   properties: {
     tags: !empty(namedValueTags) ? namedValueTags : null
     secret: secret

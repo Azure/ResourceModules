@@ -21,7 +21,7 @@ The following resources are required to be able to deploy this resource.
 | Parameter Name | Type | Default Value | Possible Values | Description |
 | :-- | :-- | :-- | :-- | :-- |
 | `apiDescription` | string |  |  | Optional. Description of the API. May include HTML formatting tags. |
-| `apiManagementServiceApiName` | string |  |  | Required. API revision identifier. Must be unique in the current API Management service instance. Non-current revision has ;rev=n as a suffix where n is the revision number. |
+| `name` | string |  |  | Required. API revision identifier. Must be unique in the current API Management service instance. Non-current revision has ;rev=n as a suffix where n is the revision number. |
 | `apiManagementServiceApiPolicy` | object | `{object}` |  | Optional. Policies to apply to the Service Api. |
 | `apiManagementServiceName` | string |  |  | Required. The name of the of the Api Management service. |
 | `apiRevision` | string |  |  | Optional. Describes the Revision of the Api. If no value is provided, default revision 1 is created |

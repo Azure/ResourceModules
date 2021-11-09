@@ -26,7 +26,7 @@ The following resources are required to be able to deploy this resource.
 | `productApis` | array | `[]` |  | Optional. Product API's name list. |
 | `productDescription` | string |  |  | Optional. Product description. May include HTML formatting tags. |
 | `productGroups` | array | `[]` |  | Optional. Product's Group name list. |
-| `productName` | string |  |  | Required. Product Name. |
+| `name` | string |  |  | Required. Product Name. |
 | `state` | string | `published` |  | Optional. whether product is published or not. Published products are discoverable by users of developer portal. Non published products are visible only to administrators. Default state of Product is notPublished. - notPublished or published |
 | `subscriptionRequired` | bool |  |  | Optional. Whether a product subscription is required for accessing APIs included in this product. If true, the product is referred to as "protected" and a valid subscription key is required for a request to an API included in the product to succeed. If false, the product is referred to as "open" and requests to an API included in the product can be made without a subscription key. If property is omitted when creating a new product it's value is assumed to be true. |
 | `subscriptionsLimit` | int | `1` |  | Optional. Whether the number of subscriptions a user can have to this product at the same time. Set to null or omit to allow unlimited per user subscriptions. Can be present only if subscriptionRequired property is present and has a value of false. |

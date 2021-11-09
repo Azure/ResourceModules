@@ -23,7 +23,7 @@ param secondaryKey string = ''
 param state string = ''
 
 @description('Required. Subscription name.')
-param subscriptionName string
+param name string
 
 module pid_cuaId '.bicep/nested_cuaId.bicep' = if (!empty(cuaId)) {
   name: 'pid-${cuaId}'
@@ -31,10 +31,10 @@ module pid_cuaId '.bicep/nested_cuaId.bicep' = if (!empty(cuaId)) {
 }
 
 resource subscription 'Microsoft.ApiManagement/service/subscriptions@2020-06-01-preview' = {
-  name: '${apiManagementServiceName}/${subscriptionName}'
+  name: '${apiManagementServiceName}/${name}'
   properties: {
     scope: scope
-    displayName: subscriptionName
+    displayName: name
     ownerId: !empty(ownerId) ? ownerId : null
     primaryKey: !empty(primaryKey) ? primaryKey : null
     secondaryKey: !empty(secondaryKey) ? secondaryKey : null

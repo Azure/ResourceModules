@@ -17,7 +17,7 @@ param productApis array = []
 param productGroups array = []
 
 @description('Required. Product Name.')
-param productName string = ''
+param name string = ''
 
 @description('Optional. whether product is published or not. Published products are discoverable by users of developer portal. Non published products are visible only to administrators. Default state of Product is notPublished. - notPublished or published')
 param state string = 'published'
@@ -36,10 +36,10 @@ module pid_cuaId '.bicep/nested_cuaId.bicep' = if (!empty(cuaId)) {
   params: {}
 }
 resource product 'Microsoft.ApiManagement/service/products@2020-06-01-preview' = {
-  name: '${apiManagementServiceName}/${productName}'
+  name: '${apiManagementServiceName}/${name}'
   properties: {
     description: productDescription
-    displayName: productName
+    displayName: name
     terms: terms
     subscriptionRequired: subscriptionRequired
     approvalRequired: subscriptionRequired ? approvalRequired : null
@@ -64,7 +64,7 @@ output productName string = product.name
 output productResourceGroup string = resourceGroup().name
 
 @description('The Resources Ids of the API management service product apis')
-output productApisResourceIds array = [for item in productApis: resourceId('Microsoft.ApiManagement/service/products/apis', apiManagementServiceName, productName, item)]
+output productApisResourceIds array = [for item in productApis: resourceId('Microsoft.ApiManagement/service/products/apis', apiManagementServiceName, name, item)]
 
 @description('The Resources Ids of the API management service product groups')
-output productGroupsResourceIds array = [for item in productGroups: resourceId('Microsoft.ApiManagement/service/products/groups', apiManagementServiceName, productName, item)]
+output productGroupsResourceIds array = [for item in productGroups: resourceId('Microsoft.ApiManagement/service/products/groups', apiManagementServiceName, name, item)]

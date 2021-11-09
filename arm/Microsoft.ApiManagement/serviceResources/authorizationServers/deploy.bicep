@@ -1,5 +1,5 @@
 @description('Required. Identifier of the authorization server.')
-param apiManagementServiceAuthorizationServerName string
+param name string
 
 @description('Required. The name of the of the Api Management service.')
 param apiManagementServiceName string
@@ -68,7 +68,7 @@ module pid_cuaId '.bicep/nested_cuaId.bicep' = if (!empty(cuaId)) {
 }
 
 resource authorizationServer 'Microsoft.ApiManagement/service/authorizationServers@2020-06-01-preview' = {
-  name: '${apiManagementServiceName}/${apiManagementServiceAuthorizationServerName}'
+  name: '${apiManagementServiceName}/${name}'
   properties: {
     description: serverDescription
     authorizationMethods: setAuthorizationMethods
@@ -80,7 +80,7 @@ resource authorizationServer 'Microsoft.ApiManagement/service/authorizationServe
     bearerTokenSendingMethods: bearerTokenSendingMethods
     resourceOwnerUsername: resourceOwnerUsername
     resourceOwnerPassword: resourceOwnerPassword
-    displayName: apiManagementServiceAuthorizationServerName
+    displayName: name
     clientRegistrationEndpoint: clientRegistrationEndpoint
     authorizationEndpoint: authorizationEndpoint
     grantTypes: grantTypes

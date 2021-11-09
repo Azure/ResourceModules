@@ -1,5 +1,5 @@
 @description('Required. API revision identifier. Must be unique in the current API Management service instance. Non-current revision has ;rev=n as a suffix where n is the revision number.')
-param apiManagementServiceApiName string
+param name string
 
 @description('Optional. Policies to apply to the Service Api.')
 param apiManagementServiceApiPolicy object = {}
@@ -107,7 +107,7 @@ resource apiVersionSetResource 'Microsoft.ApiManagement/service/apiVersionSets@2
 }
 
 resource apis 'Microsoft.ApiManagement/service/apis@2020-06-01-preview' = {
-  name: '${apiManagementServiceName}/${apiManagementServiceApiName}'
+  name: '${apiManagementServiceName}/${name}'
   properties: {
     apiRevision: !empty(apiRevision) ? apiRevision : null
     apiRevisionDescription: !empty(apiRevisionDescription) ? apiRevisionDescription : null

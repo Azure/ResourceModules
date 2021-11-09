@@ -18,7 +18,7 @@ The following resources are required to be able to deploy this resource.
 
 | Parameter Name | Type | Default Value | Possible Values | Description |
 | :-- | :-- | :-- | :-- | :-- |
-| `apiManagementServiceAuthorizationServerName` | string |  |  | Required. Identifier of the authorization server. |
+| `name` | string |  |  | Required. Identifier of the authorization server. |
 | `apiManagementServiceName` | string |  |  | Required. The name of the of the Api Management service. |
 | `authorizationEndpoint` | string |  |  | Required. OAuth authorization endpoint. See <http://tools.ietf.org/html/rfc6749#section-3.2>. |
 | `authorizationMethods` | array | `[GET]` |  | Optional. HTTP verbs supported by the authorization endpoint. GET must be always present. POST is optional. - HEAD, OPTIONS, TRACE, GET, POST, PUT, PATCH, DELETE |

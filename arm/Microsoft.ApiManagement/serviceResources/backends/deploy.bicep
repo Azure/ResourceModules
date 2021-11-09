@@ -2,7 +2,7 @@
 param apiManagementServiceName string
 
 @description('Required. Backend Name.')
-param backendName string = ''
+param name string = ''
 
 @description('Optional. Backend Credentials Contract Properties.')
 param credentials object = {}
@@ -43,7 +43,7 @@ module pid_cuaId '.bicep/nested_cuaId.bicep' = if (!empty(cuaId)) {
 }
 
 resource backend 'Microsoft.ApiManagement/service/backends@2020-06-01-preview' = {
-  name: '${apiManagementServiceName}/${backendName}'
+  name: '${apiManagementServiceName}/${name}'
   properties: {
     title: !empty(title) ? title : null
     description: !empty(backendDescription) ? backendDescription : null
