@@ -890,7 +890,7 @@ jobs:
 
   job_deploy_kv_tokens_secrets:
     runs-on: ubuntu-20.04
-    name: 'Set Parameter Files Tokens in Key Vault'
+    name: 'Set Local Tokens in Key Vault'
     needs:
       - job_deploy_kv_platform
     steps:

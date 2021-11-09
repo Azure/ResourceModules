@@ -41,44 +41,51 @@ Invoke-Pester -Configuration @{
 
 ## Tool: Use The Test-ModuleLocally Script To Perform Pester Testing, Token Replacement and Deployment of the Module.
 
-```powershell
+The below example can be used on your local environment to load the 'Test-ModuleLocally.ps1' script and modify the required parameters as below to enable you to perform the tests locally before pushing to source control.
 
-# Load the PowerShell Function For Testing
-. 'C:\PathToTheResourceModulesRepository\ResourceModules\utilities\tools\Test-ModuleLocally.ps1'
+```powershell
+#########[ Function Test-ModulesLocally.ps1 ]#############
+
+. 'C:\Users\ahmadabdalla\github\ahmadabdalla\ResourceModules\utilities\tools\Test-ModuleLocally.ps1'
+
+#########[ Function Test-ModulesLocally.ps1 ]#############
+
+. 'C:\Users\ahmadabdalla\github\ahmadabdalla\ResourceModules\utilities\tools\Test-ModuleLocally.ps1'
 
 # REQUIRED INPUT FOR TESTING
 $TestModuleLocallyInput = @{
-    ModuleName       = 'Microsoft.Authorization\roleAssignments'
-    PesterTest                 = $true
-    DeploymentTest             = $true
-    ValidationTest             = $true
-    ValidateOrDeployParameters = @{
-        Location          = 'westeurope' # Name of the Azure Region to deploy the module in.
-        ResourceGroupName = 'resourceGroupName' # Name of the Resource Group to deploy the module in.
-        SubscriptionId    = '12345678-1234-1234-abcd-1369d14d0d45' #The subscription ID used to deploy the module in & Token replacements for <<subscriptionId>>
-        ManagementGroupId = 'mg-contoso' #The Management Group ID used to deploy the module in & Token replacements for <<managementGroupId>>
-        RemoveDeployment  = $false # Only Set to True if the Module Supports Tags.
+    ModuleName                    = 'Microsoft.Network\applicationSecurityGroups'
+    PesterTest                    = $true
+    DeploymentTest                = $true
+    ValidationTest                = $false
+    ValidateOrDeployParameters    = @{
+        Location          = 'australiaeast'
+        ResourceGroupName = 'validation-rg'
+        SubscriptionId    = '12345678-1234-1234-1234-123456789123'
+        ManagementGroupId = 'mg-contoso'
+        RemoveDeployment  = $false
     }
-    CustomParameterFileTokens  = @(
-        @{ Replace = '<<principalId1>>'; With = 'aae2fc3c-805f-4b65-9cbb-a053881cf033' } # Replace <<principalId>> token to set the Role Assignments for the module
-        @{ Replace = '<<tenantId1>>'; With = 'efab98e8-ef90-4604-97b1-3756ad1b3380' } # Replace <<tenantId>> token for parameters that use the TenantID as a field
+    DeployAllModuleParameterFiles = $false
+    GetParameterFileTokens        = $true
+    #TokenKeyVaultName             = 'contoso-platform-kv'
+    OtherCustomParameterFileTokens      = @(
+        @{ Name = 'deploymentSpId'; Value = '12345678-1234-1234-1234-123456789123' }
+        @{ Name = 'tenantId'; Value = '12345678-1234-1234-1234-123456789123' }
     )
 }
-
-Test-ModuleLocally @TestModuleLocallyInput -verbose
 
 ```
 
 ### Handling Parameters that require or contain a value that should be tokenized
 
-The following scenarios are common to when to use a token value in the parameter file. Refer to [Pipeline Design](PipelinesDesign.md) for more details.
+The following scenarios are common to when to use a token value in the parameter file. Refer to [Pipeline Design](./ParameterFileTokens.md) for more details.
 
 - Scenarios where resources have dependencies on other resources, which may require to be linked using `resourceId` references. [Example](../../arm/Microsoft.Network/virtualNetworksResources/virtualNetworkPeerings/.parameters/parameters.json)
 
     ```json
     // Example
     "remoteVirtualNetworkId": {
-        "value": "/subscriptions/12345678-abcd-abcd-abcd-12345678abcd/resourceGroups/validation-rg/providers/Microsoft.Network/virtualNetworks/adp-sxx-az-vnet-x-peer01"
+        "value": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/virtualNetworks/adp-sxx-az-vnet-x-peer01"
     }
     ```
 
@@ -87,7 +94,7 @@ The following scenarios are common to when to use a token value in the parameter
     ```json
     // Example
     "subscriptionId": {
-      "value": "12345678-abcd-abcd-abcd-12345678abcd"
+      "value": "<<subscriptionId>>"
     }
     ```
 
@@ -99,14 +106,12 @@ The following scenarios are common to when to use a token value in the parameter
                 {
                     "roleDefinitionIdOrName": "Reader",
                     "principalIds": [
-                        "<<principalId1>>"
+                        "<<deploymentSpId>>"
                     ]
                 }
             ]
         }
     ```
-
-- Scenarios where the Azure Tenant ID is being referenced in the parameter file
 
 - Scenarios where A management Group ID is being referenced in the parameter file. [Example](../../arm/Microsoft.Management/managementGroups/.parameters/parameters.json)
 

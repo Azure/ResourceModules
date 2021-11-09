@@ -43,21 +43,36 @@ The [validation composite action (pipeline)](../../.github/actions/templates/val
 
 Dynamic parameters that do not need to be hardcoded in the parameter file, and the ability to reuse the repository as a fork, where users define the same tokens in their own "repository secrets", which are then available automatically to their parameter files.
 
-For example, some modules require referencing Azure resources with the Resource ID. This ID typically contains the `subscriptionId` in the format of `/subscriptions/<<subscriptionId>>/...`. This task substitutes the `<<subscriptionId>>` with the correct value, which is available to the task via environment variables that are defined in the original module workflow. See example below:
+For example, some modules require referencing Azure resources with the Resource ID. This ID typically contains the `subscriptionId` in the format of `/subscriptions/<<subscriptionId>>/...`. This task substitutes the `<<subscriptionId>>` with the correct value, which is available to the task via environment variables that are defined in the original module workflow. This is known as 'Default Tokens' replacement. See example below:
 
 ```yaml
 env:
    ARM_SUBSCRIPTION_ID: ${{ secrets.ARM_SUBSCRIPTION_ID }}
 ```
 
-Here are the main tokens used in parameter files:
+Here are the Default Tokens used in parameter files:
 
 - **subscriptionId**: Defined as `<<subscriptionId>>` in the parameter file and references the _sandbox_ Azure subscription.
 - **managementGroupId**: Defined as `<<managementGroupId>>` in the parameter file and references an **existing** Management Group used for Management Group Deployment Scopes.
 - **tenantId**: Defined as `<<tenantId>>` in the parameter file and references the Azure Active Directory Tenant that is trusted by the _sandbox_ subscription.
-- **principalId1**: Defined as `<<principalId1>>` in the parameter file and references an **existing** Security Principal (i.e. Application Service Principal, Managed Identity), which is used for Role Assignments for a specific module.
+- **deploymentSpId**: Defined as `<<deploymentSpId>>` in the parameter file and references the Service Principal for the Repository deployments. It is used to assign role permissions when modules are being deployed.
 
 ---
 **Note**: Pester Tests evaluate the use of tokens during the workflow run to look for keywords that require the use of tokens.
 
 ---
+
+Please review the Parameter File Tokens [Design](./ParameterFileTokens.md) for more details on the different token types and how you can use them to remove hardcoded values from your parameter files.
+
+Below is an example of a tokenized parameter file that references an Azure Key Vault for a Virtual Machine Password:
+
+  ```json
+  "adminPassword": {
+    "reference": {
+        "keyVault": {
+            "id": "/subscriptions/<<subscriptionId>>/resourceGroups/platform-core-rg/providers/Microsoft.KeyVault/vaults/<<platformKeyVault>>" // Default Tokens
+        },
+        "secretName": "<<adminPasswordToken>>" // Custom Token
+    }
+  }
+  ```

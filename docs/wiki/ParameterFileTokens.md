@@ -97,9 +97,14 @@ The Token Replacement Functionality comes with the ability to store Parameter Fi
 
   > To customize the Key Vault Configuration, you can modify the [Platform Key Vault Parameter File](../../utilities/dependencies/Microsoft.KeyVault/vaults/parameters/platform.parameters.json).
 
-3- Once the Key Vault is deployed, the 'Set Parameter File Tokens in Key Vault' task optionally runs to sync Local Custom Parameter File Tokens stored in the [Settings.json](../../settings.json)
+3- The Platform Key Vault is then deployed using the Key Vault Module and the dependency [parameter file]((../../utilities/dependencies/Microsoft.KeyVault/vaults/parameters/platform.parameters.json).).This Key Vault uses [Azure AD RBAC](https://docs.microsoft.com/en-us/azure/key-vault/general/rbac-guide?tabs=azure-cli) for the permissions instead of [access policies](https://docs.microsoft.com/en-us/azure/key-vault/general/assign-access-policy?tabs=azure-portal). It will automatically provide the Deployment Service Principal with the [Key Vault Administrator](https://docs.microsoft.com/en-us/azure/role-based-access-control/built-in-roles#key-vault-administrator) Role so that it can read and set secrets.
 
-  > You can disable the sync process from Local Tokens (in Source Control) to Remote Tokens (in Key Vault) by modifying the `keyVaultSecretNamePrefix` property in the [Settings.json](../../settings.json) file and setting it to `false`.
+  > You need to have permissions to read and create secrets in the provisioned Key Vault so that you can upload custom tokens. The [Key Vault Secrets Officer](https://docs.microsoft.com/en-us/azure/role-based-access-control/built-in-roles#key-vault-secrets-officer) role is an example that allows you to perform data plane operations on the Key Vault.
+
+4- Once the Key Vault is deployed, the 'Set Local Tokens in Key Vault' task optionally runs to sync Local Custom Parameter File Tokens stored in the [Settings.json](../../settings.json)
+
+  > You can disable the sync process from Local Tokens (in Source Control) to Remote Tokens (in Key Vault) by modifying the `keyVaultSecretNamePrefix` property in the [Settings.json](../../settings.json) file and setting it to `false`.</br>
+  > This step/task is optional and can be used to share tokens across different repositories.
 
 ### Get Parameter File Tokens
 
@@ -112,7 +117,7 @@ The below diagram illustrates the Token Replacement Functionality via the [Valid
 
 ![paramFileTokenGetKeyVault](../media/paramFileTokenGetTokens.jpg)
 
-1- The user creates Local Custom Parameter File Tokens in the [Settings.json](../../settings.json) under the `localCustomParameterFileTokens` - `tokens` property.
+1- The user creates Local Custom Parameter File Tokens in the [Settings.json](../../settings.json) under the `localTokens` - `tokens` property.
 2- The user can also create Remote Custom Parameter File Tokens in the Key Vault with the right naming standards inside [Settings.json](../../settings.json) under `remoteTokens`, using the `keyVaultSecretNamePrefix` Prefix for the Secret Name. Here is an example on how to perform that using PowerShell:
 
   ```powershell
@@ -150,10 +155,13 @@ The below diagram illustrates the Token Replacement Functionality via the [Valid
   }
   ```
 
-3- When the user deploys the Module, these tokens will be retrieved at runtime and replaced with the original values before handed over to the validation or deployment task/step.
+3- The user runs the modules workflow/pipeline, either from their remote branch or main branch so that it triggers the regular module deployment process.
+
+4- The tokens will be retrieved at runtime and replaced with the original values before handed over to the validation or deployment task/step.
 
 ---
-**Note**: The pipeline will not fail if you are not using a Key Vault for your custom tokens. However it will fail at the validation / deployment task given the tokens are not valid names used in Azure resources deployments (i.e. resource name, resource ID) if you are tokenizing these values but the tokens have not been replaced due to missing token stores. The same applies to Local Custom Tokens in Source Control.
+**Note**: The pipeline will not fail if you are not using a Key Vault for your custom tokens. However it will fail if you are tokenizing these values and the tokens will not been replaced due to missing token values. Where it will fail is at the validation / deployment task as the tokens are not valid names used in Azure resources deployments (i.e. resource name, resource ID) . The same applies to Local Custom Tokens in Source Control.
 
 ---
 
+5- The Validate/Deploy task will consume the modified parameter files with the required values in order to validate/deploy the Azure resource.

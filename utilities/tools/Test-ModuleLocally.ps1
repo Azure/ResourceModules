@@ -52,8 +52,8 @@ $TestModuleLocallyInput = @{
     GetParameterFileTokens        = $true
     #TokenKeyVaultName             = 'contoso-platform-kv'
     OtherCustomParameterFileTokens      = @(
-        @{ Replace = '<<deploymentSpId>>'; With = '12345678-1234-1234-1234-123456789123' }
-        @{ Replace = '<<tenantId>>'; With = '12345678-1234-1234-1234-123456789123' }
+        @{ Name = 'deploymentSpId'; Value = '12345678-1234-1234-1234-123456789123' }
+        @{ Name = 'tenantId'; Value = '12345678-1234-1234-1234-123456789123' }
     )
 }
 
