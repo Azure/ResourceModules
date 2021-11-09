@@ -23,5 +23,6 @@ output privateDnsZoneGroupName string = privateDnsZoneGroup.name
 
 @description('The resourceId of the private endpoint DNS zone group')
 output privateDnsZoneGroupResourceId string = privateDnsZoneGroup.id
+
 @description('The resource group the private endpoint DNS zone group was deployed into')
 output privateDnsZoneGroupResourceGroup string = resourceGroup().name

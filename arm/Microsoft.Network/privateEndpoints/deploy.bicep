@@ -10,7 +10,7 @@ param serviceResourceId string
 @description('Required. Subtype(s) of the connection to be created. The allowed values depend on the type serviceResourceId refers to.')
 param groupId array
 
-@description('Optional. Resource id of the private DNS zone.')
+@description('Optional. Array of Private DNS zone groups configuration on the private endpoint.')
 param privateDnsZoneGroups array = []
 
 @description('Optional. Location for all Resources.')
@@ -60,6 +60,14 @@ resource privateEndpoint 'Microsoft.Network/privateEndpoints@2021-03-01' = {
   }
 }
 
+module privateEndpoint_privateDnsZoneGroups 'privateDnsZoneGroups/deploy.bicep' = [for (privateDnsZoneGroup, index) in privateDnsZoneGroups: {
+  name: '${deployment().name}-privateDnsZoneGroup-${index}'
+  params: {
+    privateDNSIds: privateDnsZoneGroup.privateDNSIds
+    privateEndpointName: privateEndpoint.name
+  }
+}]
+
 resource privateEndpoint_lock 'Microsoft.Authorization/locks@2016-09-01' = if (lock != 'NotSpecified') {
   name: '${privateEndpoint.name}-${lock}-lock'
   properties: {
@@ -74,14 +82,6 @@ module privateEndpoint_rbac '.bicep/nested_rbac.bicep' = [for (roleAssignment, i
   params: {
     roleAssignmentObj: roleAssignment
     resourceName: privateEndpoint.name
-  }
-}]
-
-module privateEndpoint_privateDnsZoneGroups 'privateDnsZoneGroups/deploy.bicep' = [for (privateDnsZoneGroup, index) in privateDnsZoneGroups: {
-  name: '${deployment().name}-privateDnsZoneGroup-${index}'
-  params: {
-    privateDNSIds: privateDnsZoneGroup.privateDNSIds
-    privateEndpointName: privateEndpoint.name
   }
 }]
 
