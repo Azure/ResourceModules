@@ -49,7 +49,7 @@ These are tokens constructed from Environment Variables, which are defined in th
 These are tokens defined in the Git Repository inside a [Settings.json](../../settings.json) file. This allows creating tokens that are local and updatable via Source Control mechanisms. Here is an example on where these tokens are stored. You can add key value pairs as required:
 
 ```json
-"localCustomParameterFileTokens": {
+"localTokens": {
     "tokens": [
         {
             "name": "namePrefix",
@@ -77,7 +77,7 @@ The Key Vault here is enabled by adding a Secret to GitHub called `PLATFORM_KEYV
 
 ---
 
-> You can also sync Local Custom Parameter File Tokens by setting the `syncLocalCustomParameterFileTokens` property to `true` in the [Settings.json](../../settings.json) file. </br>
+> You can also sync Local Custom Parameter File Tokens by setting the `syncLocalTokens` property to `true` in the [Settings.json](../../settings.json) file. </br>
 > You can also specify a custom prefix for the Secret Name in Azure Key Vault. This is done by modifying the `keyVaultSecretNamePrefix` property in the [Settings.json](../../settings.json) file.
 
 ### Set / Create Azure Key Vault Token Logic
@@ -113,19 +113,47 @@ The below diagram illustrates the Token Replacement Functionality via the [Valid
 ![paramFileTokenGetKeyVault](../media/paramFileTokenGetTokens.jpg)
 
 1- The user creates Local Custom Parameter File Tokens in the [Settings.json](../../settings.json) under the `localCustomParameterFileTokens` - `tokens` property.
-2- The user can also create Remote Custom Parameter File Tokens in the Key Vault with the right naming standards inside [Settings.json](../../settings.json) under `remoteCustomParameterFileTokens`, using the `keyVaultSecretNamePrefix` Prefix for the Secret Name. Here is an example on how to perform that using PowerShell:
+2- The user can also create Remote Custom Parameter File Tokens in the Key Vault with the right naming standards inside [Settings.json](../../settings.json) under `remoteTokens`, using the `keyVaultSecretNamePrefix` Prefix for the Secret Name. Here is an example on how to perform that using PowerShell:
 
-```powershell
-### Remote Tokens
-$Settings = Get-Content './settings.json' | ConvertFrom-Json
-$KeyVaultSecretNamePrefix = $Settings.parameterFileTokens.remoteCustomParameterFileTokens.keyVaultSecretNamePrefix
-Add-AzAccount -SubscriptionId '12345678-1234-1234-1234-123456789012'
-$TokensKeyVault = Get-AzKeyVault
-@(
-    @{ Name = 'myCustomTokenName'; Value = 'myCustomTokenNameValue' }
-) | ForEach-Object {
-    $TokenName = -join ($KeyVaultSecretNamePrefix, $PSItem.Name)
-    Set-AzKeyVaultSecret -Name $TokenName -SecretValue (ConvertTo-SecureString -AsPlainText $PSItem.Name) -VaultName $TokensKeyVault.VaultName -ContentType 'ParameterFileToken'
-}
-```
+  ```powershell
+
+  ### Remote Tokens
+  ## Change Directory to Repository Root
+  $KeyVaultName = 'contoso-keyVault' # Specify the Key Vault Name that was used in the 'PLATFORM_KEYVAULT' Secret. Make sure you can read/write secrets to this Vault
+  $Settings = Get-Content './settings.json' | ConvertFrom-Json # Get the Settings File from the Repository that contains Remote Tokens Information
+  $KeyVaultSecretNamePrefix = $Settings.parameterFileTokens.remoteTokens.keyVaultSecretNamePrefix # Specifies Prefix for Secret Name in Key Vault
+  Add-AzAccount -SubscriptionId '12345678-1234-1234-1234-123456789012' # Login To Azure
+  $ContentType = 'ParameterFileToken' # or 'SecureParameterFileToken' for Secure String Parameters
+  $TokensKeyVault = Get-AzKeyVault -VaultName $KeyVaultName
+  @(
+      @{ Name = 'myCustomTokenName'; Value = 'myCustomTokenNameValue' } # Specify the Name/Value for the Token (Secret) In Key Vault, you can add multiple
+      #@{ Name = 'myCustomTokenName2'; Value = 'myCustomTokenNameValue2' } # Example of another Entry
+  ) | ForEach-Object {
+      $TokenName = -join ($KeyVaultSecretNamePrefix, $PSItem.Name)
+      Set-AzKeyVaultSecret -Name $TokenName -SecretValue (ConvertTo-SecureString -AsPlainText $PSItem.Name) -VaultName $TokensKeyVault.VaultName -ContentType $ContentType
+  }
+
+  ```
+
+  > Ensure you only use Secure Parameter File Tokens for a Parameter that is of type `secureString` or `secureObject`. See [ARM Template Secure Data Types](https://docs.microsoft.com/en-us/azure/azure-resource-manager/templates/data-types#secure-strings-and-objects) for more details. </br>
+  > Use the ContentType `SecureParameterFileToken` when uploading remote tokens similar to the example above as these tokens are masked until they're replaced on the Parameter File at deploy time, and would not be visible in the deployment history if they are passed to a secure parameter. </br>
+  > A more secure [method](https://docs.microsoft.com/en-us/azure/azure-resource-manager/templates/template-tutorial-use-key-vault#edit-the-parameters-file) is available for handling secrets in a parameter file. You can use the default token `<<subscriptionId>>` and `<<platformKeyVault>>` in the parameter file to point to a secret (which can also be tokenized). Example:
+
+  ```json
+  "adminPassword": {
+    "reference": {
+        "keyVault": {
+            "id": "/subscriptions/<<subscriptionId>>/resourceGroups/platform-core-rg/providers/Microsoft.KeyVault/vaults/<<platformKeyVault>>" // Default Tokens
+        },
+        "secretName": "<<adminPasswordToken>>" // Custom Token
+    }
+  }
+  ```
+
+3- When the user deploys the Module, these tokens will be retrieved at runtime and replaced with the original values before handed over to the validation or deployment task/step.
+
+---
+**Note**: The pipeline will not fail if you are not using a Key Vault for your custom tokens. However it will fail at the validation / deployment task given the tokens are not valid names used in Azure resources deployments (i.e. resource name, resource ID) if you are tokenizing these values but the tokens have not been replaced due to missing token stores. The same applies to Local Custom Tokens in Source Control.
+
+---
 

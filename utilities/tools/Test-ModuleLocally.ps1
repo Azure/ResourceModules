@@ -143,7 +143,7 @@ function Test-ModuleLocally {
                 $ConvertTokensInputs = @{
                     DefaultParameterFileTokens        = $DefaultParameterFileTokens
                     GetLocalCustomParameterFileTokens = $true
-                    LocalCustomParameterFileTokens    = $Settings.parameterFileTokens.localCustomParameterFileTokens.tokens
+                    LocalCustomParameterFileTokens    = $Settings.parameterFileTokens.localTokens.tokens
                     TokenPrefix                       = $Settings.parameterFileTokens.tokenPrefix
                     TokenSuffix                       = $Settings.parameterFileTokens.tokenSuffix
                 }
@@ -154,8 +154,8 @@ function Test-ModuleLocally {
                         TokensKeyVaultName                 = $TokenKeyVaultName
                         TokensKeyVaultSubscriptionId       = "$($ValidateOrDeployParameters.SubscriptionId)"
                     }
-                    if ($Settings.parameterFileTokens.remoteCustomParameterFileTokens.keyVaultSecretNamePrefix) {
-                        $ConvertTokensInputs += @{ TokensKeyVaultSecretNamePrefix = $Settings.parameterFileTokens.remoteCustomParameterFileTokens.keyVaultSecretNamePrefix
+                    if ($Settings.parameterFileTokens.remoteTokens.keyVaultSecretNamePrefix) {
+                        $ConvertTokensInputs += @{ TokensKeyVaultSecretNamePrefix = $Settings.parameterFileTokens.remoteTokens.keyVaultSecretNamePrefix
                         }
                     }
                 }

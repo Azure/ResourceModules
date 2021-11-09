@@ -2,7 +2,7 @@
     "parameterFileTokens": {
         "tokenPrefix": "<<",
         "tokenSuffix": ">>",
-        "localCustomParameterFileTokens": {
+        "localTokens": {
             "tokens": [
                 {
                     "name": "namePrefix",
@@ -10,9 +10,9 @@
                 }
             ]
         },
-        "remoteCustomParameterFileTokens": {
+        "remoteTokens": {
             "keyVaultSecretNamePrefix": "ParameterFileToken-",
-            "syncLocalCustomParameterFileTokens": true
+            "syncLocalTokens": true
         }
     }
 }
