@@ -36,8 +36,8 @@ function Convert-TokensInParameterFile {
 
     begin {
         # Load used funtions
-        . (Join-Path $PSScriptRoot '../..' 'utilities/tools/Convert-TokensInFileList.ps1')
-        . (Join-Path $PSScriptRoot '../..' 'utilities/tools/Get-RemoteCustomParameterFileTokens.ps1')
+        . (Join-Path $PSScriptRoot 'Convert-TokensInFileList.ps1')
+        . (Join-Path $PSScriptRoot 'Get-RemoteCustomParameterFileTokens.ps1')
         $AllCustomParameterFileTokens = @()
     }
 

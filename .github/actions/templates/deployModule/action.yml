@@ -36,7 +36,6 @@ runs:
       run: |
         # Load used functions
         . ".github/actions/sharedScripts/Set-EnvironmentOnAgent.ps1"
-        . ".github/actions/sharedScripts/Convert-TokensInParameterFile.ps1"
         # Set agent up
         Set-EnvironmentOnAgent
 
@@ -51,6 +50,9 @@ runs:
       run: |
         # Load Settings File
         $Settings = Get-Content -Path "settings.json" | ConvertFrom-Json
+
+        # Load used functions
+        . 'utilities/tools/Convert-TokensInParameterFile.ps1'
 
         # Initialize Default Parameter File Tokens
         $DefaultParameterFileTokens = @(
