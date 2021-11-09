@@ -62,10 +62,10 @@ function Remove-NetAppAccount {
             return
         }
 
-        Write-Verbose ("Found [{0}] account(s) in [$resourceGroupName]" -f (, $netAppFilesAccount).Count)
+        Write-Verbose ("Found [{0}] account(s) in [$resourceGroupName]" -f $netAppFilesAccount.Count)
 
         $resourcesToRemove = @()
-        foreach ($account in (, $netAppFilesAccount)) {
+        foreach ($account in $netAppFilesAccount) {
             $resourcesToRemove += @{
                 resourceId = $account.Id
                 name       = $account.Name
@@ -79,7 +79,7 @@ function Remove-NetAppAccount {
             $pool = Get-AzNetAppFilesPool @netAppInputObject -ErrorAction 'SilentlyContinue'
             Write-Verbose ('Found [{0}] pool(s) in account [{1}]' -f $pool.Count, $account.name)
 
-            foreach ($poolInstance in (, $pool)) {
+            foreach ($poolInstance in $pool) {
                 $resourcesToRemove += @{
                     resourceId = $poolInstance.Id
                     name       = $poolInstance.Name
@@ -89,7 +89,7 @@ function Remove-NetAppAccount {
                 $volume = Get-AzNetAppFilesVolume @netAppInputObject -PoolName $poolInstance.Name.Split('/')[1] -ErrorAction 'SilentlyContinue'
                 Write-Verbose ('Found [{0}] volume(s) in pool [{1}]' -f $volume.Count, $poolInstance.name)
 
-                foreach ($volumeInstance in (, $volume)) {
+                foreach ($volumeInstance in $volume) {
                     $resourcesToRemove += @{
                         resourceId = $volumeInstance.Id
                         name       = $volumeInstance.Name

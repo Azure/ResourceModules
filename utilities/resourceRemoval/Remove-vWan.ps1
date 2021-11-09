@@ -69,10 +69,10 @@ function Remove-vWan {
             Write-Error "No virtual WAN resouce with Tag { RemoveModule = $moduleName } found in resource group [$resourceGroupName]"
             return
         }
-        Write-Verbose ("Found [{0}] vWAN(s) in [$resourceGroupName]" -f (, $virtualWAN).Count)
+        Write-Verbose ("Found [{0}] vWAN(s) in [$resourceGroupName]" -f $virtualWAN.Count)
 
         $resourcesToRemove = @()
-        foreach ($virtualWANInstance in (, $virtualWAN)) {
+        foreach ($virtualWANInstance in $virtualWAN) {
 
             $resourcesToRemove += @{
                 resourceId = $virtualWANInstance.ResourceId
@@ -83,7 +83,7 @@ function Remove-vWan {
             $vpnSite = Get-AzVpnSite -ResourceGroupName $ResourceGroupName | Where-Object { $_.VirtualWan.Id -eq $virtualWANInstance.ResourceId }
             Write-Verbose ('Found [{0}] vpnSite(s) in virtual WAN [{1}]' -f $vpnSite.Count, $virtualWANInstance.name)
 
-            foreach ($vpnSiteInstance in (, $vpnSite)) {
+            foreach ($vpnSiteInstance in $vpnSite) {
                 $resourcesToRemove += @{
                     resourceId = $vpnSiteInstance.Id
                     name       = $vpnSiteInstance.Name
@@ -94,7 +94,7 @@ function Remove-vWan {
             $virtualHub = Get-AzVirtualHub -ResourceGroupName $ResourceGroupName | Where-Object { $_.VirtualWan.Id -eq $virtualWANInstance.ResourceId }
             Write-Verbose ('Found [{0}] virtual Hub(s) in virtual WAN [{1}]' -f $virtualHub.Count, $virtualWANInstance.name)
 
-            foreach ($virtualHubInstance in (, $virtualHub)) {
+            foreach ($virtualHubInstance in $virtualHub) {
                 $resourcesToRemove += @{
                     resourceId = $virtualHub.Id
                     name       = $virtualHub.Name
