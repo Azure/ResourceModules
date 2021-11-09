@@ -46,11 +46,11 @@ The below example can be used on your local environment to load the 'Test-Module
 ```powershell
 #########[ Function Test-ModulesLocally.ps1 ]#############
 
-. 'C:\Users\ahmadabdalla\github\ahmadabdalla\ResourceModules\utilities\tools\Test-ModuleLocally.ps1'
+. 'C:\Users\user\github\user\ResourceModules\utilities\tools\Test-ModuleLocally.ps1'
 
 #########[ Function Test-ModulesLocally.ps1 ]#############
 
-. 'C:\Users\ahmadabdalla\github\ahmadabdalla\ResourceModules\utilities\tools\Test-ModuleLocally.ps1'
+. 'C:\Users\user\github\user\ResourceModules\utilities\tools\Test-ModuleLocally.ps1'
 
 # REQUIRED INPUT FOR TESTING
 $TestModuleLocallyInput = @{
@@ -117,7 +117,7 @@ The following scenarios are common to when to use a token value in the parameter
 
     ```json
         "parentId": {
-            "value": "<<managementGroupId>."
+            "value": "<<managementGroupId>>"
         }
 
     ```

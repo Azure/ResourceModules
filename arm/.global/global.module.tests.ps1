@@ -748,11 +748,11 @@ Describe 'Deployment template tests' -Tag Template {
         #    param (
         #        [hashtable[]] $parameterFileTestCases
         #    )
-#
+        #
         #    foreach ($parameterFileTestCase in $parameterFileTestCases) {
         #        $ParameterFileContent = Get-Content -Path $parameterFileTestCase.parameterFile_Path
         #        $PrincipalIdKeyCount = ($ParameterFileContent | Select-String -Pattern '"principalId"', "'principalId'", 'principalId' -AllMatches).Matches.Count
-        #        $PrincipalIdValueCount = ($ParameterFileContent | Select-String -Pattern '<<principalId' -AllMatches).Matches.Count
+        #        $PrincipalIdValueCount = ($ParameterFileContent | Select-String -Pattern '<<deploymentSpId>>' -AllMatches).Matches.Count
         #        $PrincipalIdValueCount | Should -BeGreaterOrEqual ($PrincipalIdKeyCount - $PrincipalIdValueCount) -Because ('Parameter file should not contain the Principal Id guid, instead should reference a token value "<<principalId(n)>> (i.e. <<principalId1>>)"')
         #    }
         #}
