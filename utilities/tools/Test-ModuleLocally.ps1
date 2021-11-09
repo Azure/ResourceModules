@@ -31,7 +31,7 @@ Optional. A Switch Parameter that triggers that enables the search for both loca
 .PARAMETER TokenKeyVaultName
 Optional. String Parameter that points to the Key Vault Name where remote custom parameter file tokens are created. If not provided then GetParameterFileTokens will only search for local custom parameter file tokens.
 
-.PARAMETER OtherParameterFileTokens
+.PARAMETER OtherCustomParameterFileTokens
 Optional. A Hashtable Parameter that contains custom tokens to be replaced in the paramter files for deployment
 
 .EXAMPLE
@@ -51,7 +51,7 @@ $TestModuleLocallyInput = @{
     DeployAllModuleParameterFiles = $false
     GetParameterFileTokens        = $true
     #TokenKeyVaultName             = 'contoso-platform-kv'
-    OtherParameterFileTokens      = @(
+    OtherCustomParameterFileTokens      = @(
         @{ Replace = '<<deploymentSpId>>'; With = '12345678-1234-1234-1234-123456789123' }
         @{ Replace = '<<tenantId>>'; With = '12345678-1234-1234-1234-123456789123' }
     )
@@ -93,11 +93,14 @@ function Test-ModuleLocally {
         [string]$TokenKeyVaultName,
 
         [parameter(Mandatory = $false)]
-        [psobject]$OtherParameterFileTokens
+        [psobject]$OtherCustomParameterFileTokens
     )
 
     begin {
         Write-Verbose "Running Local Tests for $($ModuleName.Split('\')[-1])"
+        # Load Tokens Converter Script
+        . (Join-Path $PSScriptRoot 'Convert-TokensInParameterFile.ps1')
+        . (Join-Path $PSScriptRoot 'Convert-TokensInFileList.ps1')
     }
     process {
         # Test Module
@@ -126,42 +129,46 @@ function Test-ModuleLocally {
         if (($ValidationTest -or $DeploymentTest) -and $ValidateOrDeployParameters) {
             # Find Test Parameter Files
             $ModuleParameterFiles = Get-ChildItem -Path (Join-Path $PSScriptRoot '../../arm' $ModuleName '.parameters') -Recurse
-            # Load Tokens Converter Script
-            . (Join-Path $PSScriptRoot '../..' 'utilities/tools/Convert-TokensInFileList.ps1')
             # Replace Tokens with Values For Local Testing
             $DefaultParameterFileTokens = @(
-                @{ Replace = '<<subscriptionId>>'; With = "$($ValidateOrDeployParameters.SubscriptionId)" }
-                @{ Replace = '<<managementGroupId>>'; With = "$($ValidateOrDeployParameters.ManagementGroupId)" }
-                #@{ Replace = '<<resourceGroupName>>'; With = "$($ValidateOrDeployParameters.resourceGroupName)" }
-                #@{ Replace = '<<location>>'; With = "$($ValidateOrDeployParameters.location)" }
+                @{ Name = 'subscriptionId'; Value = "$($ValidateOrDeployParameters.SubscriptionId)" }
+                @{ Name = 'managementGroupId'; Value = "$($ValidateOrDeployParameters.ManagementGroupId)" }
             ) | ForEach-Object { [PSCustomObject]$PSItem }
 
             # Look for Local Custom Parameter File Tokens (Source Control)
             if ($GetParameterFileTokens) {
                 # Get Settings JSON File
                 $Settings = Get-Content -Path (Join-Path $PSScriptRoot '../..' 'settings.json') | ConvertFrom-Json
-
-                # Load Get Parameter File Tokens Script
-                . (Join-Path $PSScriptRoot '../..' 'utilities/tools/Get-ParameterFileTokens.ps1')
-
                 # Get Custom Parameter File Tokens (Local and Remote-If Key Vault Provided)
-                $ConvertTokensFunctionsInput = @{
-                    SubscriptionId                 = "$($ValidateOrDeployParameters.SubscriptionId)"
-                    LocalCustomParameterFileTokens = $Settings.parameterFileTokens.localCustomParameterFileTokens.tokens
-                    TokenKeyVaultSecretNamePrefix  = $Settings.parameterFileTokens.remoteCustomParameterFileTokens.keyVaultSecretNamePrefix
+                $ConvertTokensInputs = @{
+                    DefaultParameterFileTokens        = $DefaultParameterFileTokens
+                    GetLocalCustomParameterFileTokens = $true
+                    LocalCustomParameterFileTokens    = $Settings.parameterFileTokens.localCustomParameterFileTokens.tokens
+                    TokenPrefix                       = $Settings.parameterFileTokens.tokenPrefix
+                    TokenSuffix                       = $Settings.parameterFileTokens.tokenSuffix
                 }
-                if ($TokenKeyVaultName) {
-                    $ConvertTokensFunctionsInput += @{ TokenKeyVaultName = $TokenKeyVaultName }
+                # Query Key Vault for Remote Tokens
+                if ($TokenKeyVaultName -and "$($ValidateOrDeployParameters.SubscriptionId)") {
+                    $ConvertTokensInputs += @{
+                        GetRemoteCustomParameterFileTokens = $true
+                        TokensKeyVaultName                 = $TokenKeyVaultName
+                        TokensKeyVaultSubscriptionId       = "$($ValidateOrDeployParameters.SubscriptionId)"
+                    }
+                    if ($Settings.parameterFileTokens.remoteCustomParameterFileTokens.keyVaultSecretNamePrefix) {
+                        $ConvertTokensInputs += @{ TokensKeyVaultSecretNamePrefix = $Settings.parameterFileTokens.remoteCustomParameterFileTokens.keyVaultSecretNamePrefix
+                        }
+                    }
                 }
-                $CustomParameterFileTokens = Get-ParameterFileTokens @ConvertTokensFunctionsInput -Verbose
 
+                #Add Other Parameter File Tokens (For Testing)
+                if ($OtherCustomParameterFileTokens) {
+                    $ConvertTokensInputs += @{ OtherCustomParameterFileTokens = $OtherCustomParameterFileTokens
+                    }
+                }
             }
-            # Combine All Parameter File Tokens
-            $AllParameterFileTokens = $DefaultParameterFileTokens + $OtherParameterFileTokens + $CustomParameterFileTokens | ForEach-Object { [PSCustomObject]$PSItem }
-
-            # Convert Tokens in Parameter Files
+            # Invoke Token Replacement Functionality and Convert Tokens in Parameter Files
             Write-Verbose 'Invoking Convert-TokensInFileList'
-            $ModuleParameterFiles | ForEach-Object { Convert-TokensInFileList -Paths $PSitem.FullName -TokensReplaceWith $AllParameterFileTokens }
+            $ModuleParameterFiles | ForEach-Object { Convert-TokensInParameterFile @ConvertTokensInputs -ParameterFilePath $PSItem.FullName -Verbose }
 
             # Build Modules Validation and Deployment Inputs
             $functionInput = @{
@@ -211,7 +218,8 @@ function Test-ModuleLocally {
         # Restore Parameter Files
         if (($ValidationTest -or $DeploymentTest) -and $ValidateOrDeployParameters) {
             # Replace Values with Tokens For Repo Updates
-            $ModuleParameterFiles | ForEach-Object { Convert-TokensInFileList -Paths $PSitem.FullName -TokensReplaceWith $AllParameterFileTokens -RestoreTokens }
+            Write-Verbose 'Restoring Tokens'
+            $ModuleParameterFiles | ForEach-Object { Convert-TokensInParameterFile @ConvertTokensInputs -ParameterFilePath $PSItem.FullName -RestoreTokens -Verbose }
         }
     }
 }

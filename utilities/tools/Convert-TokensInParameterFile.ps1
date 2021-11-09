@@ -31,7 +31,16 @@ function Convert-TokensInParameterFile {
         [string]$TokenPrefix,
 
         [parameter(Mandatory = $true)]
-        [string]$TokenSuffix
+        [string]$TokenSuffix,
+
+        [parameter(Mandatory = $false)]
+        [psobject]$OtherCustomParameterFileTokens,
+
+        [parameter(Mandatory = $false)]
+        [switch]$RestoreTokens,
+
+        [parameter(Mandatory = $false)]
+        [string]$OutputDirectory
     )
 
     begin {
@@ -82,6 +91,10 @@ function Convert-TokensInParameterFile {
             Sort-Object Name -Unique |
             Select-Object -Property Name, Value
 
+        # Other Custom Parameter File Tokens (Can be used for testing)
+        if ($OtherCustomParameterFileTokens) {
+            $AllCustomParameterFileTokens += $OtherCustomParameterFileTokens
+        }
         Write-Verbose ("All Parameter File Tokens Count: '$($AllCustomParameterFileTokens.Count)'")
         # Apply Prefix and Suffix to Tokens and Prepare Object for Conversion
         if ($AllCustomParameterFileTokens) {
@@ -89,17 +102,26 @@ function Convert-TokensInParameterFile {
             foreach ($ParameterFileToken in $AllCustomParameterFileTokens) {
                 $ParameterFileToken.Name = -join ($TokenPrefix, $ParameterFileToken.Name, $TokenSuffix)
             }
-
             # Convert Tokens in Parameter Files
             Write-Verbose 'Invoking Convert-TokensInFileList'
             try {
-                Convert-TokensInFileList -Paths $ParameterFilePath -TokensReplaceWith $AllCustomParameterFileTokens
+                # Prepare Input to Token Converter Function
+                $ConvertTokenListFunctionInput = @{
+                    Paths             = $ParameterFilePath
+                    TokensReplaceWith = $AllCustomParameterFileTokens
+                }
+                if ($RestoreTokens) {
+                    $ConvertTokenListFunctionInput += @{RestoreTokens = $true }
+                }
+                if ($OutputDirectory) {
+                    $ConvertTokenListFunctionInput += @{OutputDirectory = $OutputDirectory }
+                }
+                Convert-TokensInFileList @ConvertTokenListFunctionInput
                 $ConversionStatus = $true
             } catch {
                 $ConversionStatus = $false
             }
         }
-
     }
     end {
         return [bool]$ConversionStatus
