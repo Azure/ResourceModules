@@ -731,18 +731,18 @@ Describe 'Deployment template tests' -Tag Template {
             }
         }
 
-        It '[<moduleFolderName>] Parameter files should not contain the Management Group Value' -TestCases $deploymentFolderTestCases {
-            param (
-                [hashtable[]] $parameterFileTestCases
-            )
-
-            foreach ($parameterFileTestCase in $parameterFileTestCases) {
-                $ParameterFileContent = Get-Content -Path $parameterFileTestCase.parameterFile_Path
-                $ManagementGroupIdKeyCount = ($ParameterFileContent | Select-String -Pattern '"managementGroupId"', "'managementGroupId'", '/managementGroups/' -AllMatches).Matches.Count
-                $ManagementGroupValueCount = ($ParameterFileContent | Select-String -Pattern '<<managementGroupId' -AllMatches).Matches.Count
-                $ManagementGroupIdKeyCount | Should -Be $ManagementGroupValueCount -Because ('Parameter file should not contain the management Group ID, instead should reference a token value "<<managementGroupId(n)>> (i.e. <<managementGroupId1>>)"')
-            }
-        }
+        #It '[<moduleFolderName>] Parameter files should not contain the Management Group Value' -TestCases $deploymentFolderTestCases {
+        #    param (
+        #        [hashtable[]] $parameterFileTestCases
+        #    )
+        #
+        #    foreach ($parameterFileTestCase in $parameterFileTestCases) {
+        #        $ParameterFileContent = Get-Content -Path $parameterFileTestCase.parameterFile_Path
+        #        $ManagementGroupIdKeyCount = ($ParameterFileContent | Select-String -Pattern '"managementGroupId"', "'managementGroupId'", '/managementGroups/' -AllMatches).Matches.Count
+        #        $ManagementGroupValueCount = ($ParameterFileContent | Select-String -Pattern '<<managementGroupId' -AllMatches).Matches.Count
+        #        $ManagementGroupIdKeyCount | Should -Be $ManagementGroupValueCount -Because ('Parameter file should not contain the management Group ID, instead should reference a token value "<<managementGroupId(n)>> (i.e. <<managementGroupId1>>)"')
+        #    }
+        #}
 
         #It '[<moduleFolderName>] Parameter files should not contain the Principal ID guid' -TestCases $deploymentFolderTestCases {
         #    param (
@@ -757,18 +757,18 @@ Describe 'Deployment template tests' -Tag Template {
         #    }
         #}
 
-        It '[<moduleFolderName>] Parameter files should not contain Tenant ID guid' -TestCases $deploymentFolderTestCases {
-            param (
-                [hashtable[]] $parameterFileTestCases
-            )
-
-            foreach ($parameterFileTestCase in $parameterFileTestCases) {
-                $ParameterFileContent = Get-Content -Path $parameterFileTestCase.parameterFile_Path
-                $TenantIdKeyCount = ($ParameterFileContent | Select-String -Pattern '"tenantId"', 'tenantId' -AllMatches).Matches.Count
-                $TenantIdValueCount = ($ParameterFileContent | Select-String -Pattern '<<tenantId' -AllMatches).Matches.Count
-                $TenantIdKeyCount - $TenantIdValueCount | Should -Be $TenantIdValueCount -Because ('Parameter file should not contain the Tenant Id guid, instead should reference a token value "<<tenantId(n)>> (i.e. <<tenantId1>>)"')
-            }
-        }
+        #It '[<moduleFolderName>] Parameter files should not contain Tenant ID guid' -TestCases $deploymentFolderTestCases {
+        #    param (
+        #        [hashtable[]] $parameterFileTestCases
+        #    )
+        #
+        #    foreach ($parameterFileTestCase in $parameterFileTestCases) {
+        #        $ParameterFileContent = Get-Content -Path $parameterFileTestCase.parameterFile_Path
+        #        $TenantIdKeyCount = ($ParameterFileContent | Select-String -Pattern '"tenantId"', 'tenantId' -AllMatches).Matches.Count
+        #        $TenantIdValueCount = ($ParameterFileContent | Select-String -Pattern '<<tenantId' -AllMatches).Matches.Count
+        #        $TenantIdKeyCount - $TenantIdValueCount | Should -Be $TenantIdValueCount -Because ('Parameter file should not contain the Tenant Id guid, instead should reference a token value "<<tenantId(n)>> (i.e. <<tenantId1>>)"')
+        #    }
+        #}
     }
 }
 
