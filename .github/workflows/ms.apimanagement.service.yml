@@ -21,12 +21,12 @@ on:
     paths:
       - '.github/actions/templates/**'
       - '.github/workflows/ms.apimanagement.service.yml'
-      - 'arm/Microsoft.ApiManagement/service/**'
-      - '!arm/Microsoft.ApiManagement/service/readme.md'
+      - 'arm/Microsoft.ApiManagement/**'
+      - '!arm/Microsoft.ApiManagement/readme.md'
 
 env:
   moduleName: 'service'
-  modulePath: 'arm/Microsoft.ApiManagement/service'
+  modulePath: 'arm/Microsoft.ApiManagement'
   workflowPath: '.github/workflows/ms.apimanagement.service.yml'
   AZURE_CREDENTIALS: ${{ secrets.AZURE_CREDENTIALS }}
   ARM_SUBSCRIPTION_ID: ${{ secrets.ARM_SUBSCRIPTION_ID }}
