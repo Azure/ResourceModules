@@ -220,8 +220,9 @@ module automationAccount_runbooks './runbooks/deploy.bicep' = [for (runbook, ind
     name: runbook.name
     parent: automationAccount.name
     runbookType: runbook.runbookType
-    uri: runbook.uri
-    version: runbook.version
+    runbookDescription: contains(runbook, 'description') ? runbook.description : ''
+    uri: contains(runbook, 'uri') ? runbook.uri : ''
+    version: contains(runbook, 'version') ? runbook.version : ''
     location: location
     tags: tags
   }
