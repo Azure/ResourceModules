@@ -12,7 +12,7 @@ This module deploys Recovery Service Vault, with resource lock.
 | `Microsoft.RecoveryServices/vaults` | 2021-08-01 |
 | `Microsoft.RecoveryServices/vaults/backupPolicies` | 2021-08-01 |
 | `Microsoft.RecoveryServices/vaults/backupstorageconfig` | 2021-08-01 |
-| `Microsoft.RecoveryServices/vaults/protectionContainers` | 2021-08-01 |
+| `Microsoft.RecoveryServices/vaults/backupFabrics/protectionContainers` | 2021-08-01 |
 
 ## Parameters
 
