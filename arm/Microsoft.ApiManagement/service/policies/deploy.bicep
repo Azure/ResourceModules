@@ -4,10 +4,10 @@ param apiManagementServiceName string
 @description('Optional. Customer Usage Attribution id (GUID). This GUID must be previously registered')
 param cuaId string = ''
 
-@description('Required. Portal setting name')
+@description('Required. Policy name')
 param name string = ''
 
-@description('Optional. Portal settings properties.')
+@description('Optional. Policy properties.')
 param properties object = {}
 
 module pid_cuaId '.bicep/nested_cuaId.bicep' = if (!empty(cuaId)) {
@@ -15,16 +15,16 @@ module pid_cuaId '.bicep/nested_cuaId.bicep' = if (!empty(cuaId)) {
   params: {}
 }
 
-resource portalSettings 'Microsoft.ApiManagement/service/portalsettings@2019-12-01' = if (!empty(properties)) {
+resource policy 'Microsoft.ApiManagement/service/policies@2020-06-01-preview' = if (!empty(properties)) {
   name: '${apiManagementServiceName}/${name}'
   properties: properties
 }
 
-@description('The resourceId of the API management service portal settings')
-output portalSettingsResourceId string = portalSettings.id
+@description('The resourceId of the API management service policy')
+output policyResourceId string = policy.id
 
-@description('The name of the API management service portal settings')
-output portalSettingsName string = portalSettings.name
+@description('The name of the API management service policy')
+output policyName string = policy.name
 
-@description('The resource group the API management service portal settings was deployed into')
-output portalSettingsResourceGroup string = resourceGroup().name
+@description('The resource group the API management service policy was deployed into')
+output policyResourceGroup string = resourceGroup().name

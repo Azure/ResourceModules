@@ -15,7 +15,7 @@
 | `apiManagementServiceName` | string |  |  | Required. The name of the of the Api Management service. |
 | `cuaId` | string |  |  | Optional. Customer Usage Attribution id (GUID). This GUID must be previously registered |
 | `name` | string |  |  | Required. Portal setting name |
-| `properties` | object | `{object}` |  | Optional. Portal settings properties. |
+| `properties` | object | `{object}` |  | Optional. Portal setting properties. |
 
 ### Parameter Usage: `<ParameterPlaceholder>`
 
@@ -25,9 +25,9 @@
 
 | Output Name | Type | Description |
 | :-- | :-- | :-- |
-| `portalSettingsName` | string | The name of the API management service portal settings |
-| `portalSettingsResourceGroup` | string | The resource group the API management service portal settings was deployed into |
-| `portalSettingsResourceId` | string | The resourceId of the API management service portal settings |
+| `portalSettingsName` | string | The name of the API management service portal setting |
+| `portalSettingsResourceGroup` | string | The resource group the API management service portal setting was deployed into |
+| `portalSettingsResourceId` | string | The resourceId of the API management service portal setting |
 
 ## Template references
 
