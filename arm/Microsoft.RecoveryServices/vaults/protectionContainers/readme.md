@@ -6,7 +6,7 @@ This module deploys a Protection Container for a Recovery Services Vault
 
 | Resource Type | Api Version |
 | :-- | :-- |
-| `Microsoft.RecoveryServices/vaults/protectionContainers` | 2021-08-01 |
+| `Microsoft.RecoveryServices/vaults/backupFabrics/protectionContainers` | 2021-08-01 |
 
 ## Parameters
 
