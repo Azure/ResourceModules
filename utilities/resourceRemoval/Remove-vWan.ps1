@@ -126,7 +126,7 @@ function Remove-vWan {
         # Remove resources
         # ----------------
         if ($PSCmdlet.ShouldProcess(('[{0}] resources' -f $resourcesToRemove.Count), 'Remove')) {
-            Remove-Resource -resourceToRemove $resourcesToRemove
+            Remove-Resource -resourceToRemove $resourcesToRemove -Verbose
         }
     }
 

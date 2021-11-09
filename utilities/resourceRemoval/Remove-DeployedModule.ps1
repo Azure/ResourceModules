@@ -109,7 +109,7 @@ function Remove-DeployedModule {
                         type       = $vmInstance.Type
                     }
                 }
-                Remove-Resource -resourceToRemove $intermediateResources
+                Remove-Resource -resourceToRemove $intermediateResources -Verbose
                 # refresh
                 $rawResourcesToRemove = Get-AzResource -Tag @{ removeModule = $moduleName } -ResourceGroupName $resourceGroupName
             }
@@ -132,7 +132,7 @@ function Remove-DeployedModule {
         # Remove resources
         # ----------------
         if ($PSCmdlet.ShouldProcess(('[{0}] resources' -f $resourcesToRemove.Count), 'Remove')) {
-            Remove-Resource -resourceToRemove $resourcesToRemove
+            Remove-Resource -resourceToRemove $resourcesToRemove -Verbose
         }
     }
 
