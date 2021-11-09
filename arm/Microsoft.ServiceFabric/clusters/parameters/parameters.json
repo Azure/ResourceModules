@@ -3,24 +3,23 @@
     "contentVersion": "1.0.0.0",
     "parameters": {
         "serviceFabricClusterName": {
-            "value": "sxx-az-sfc-weu-x-001"
+            "value": "sxx-az-sfc-weu-x-666"
         },
         "location": {
-            "value": "eastus"
+            "value": "centralIndia"
         },
         "tags": {
             "value": {
-                "costCenter": "1234",
-                "environment": "prod",
-                "contactinfo": "someone@company.com"
+                "resourceType": "Service Fabric",
+                "clusterName": "sxx-az-sfc-weu-x-666"
             }
         },
         // "lock": {
         //     "value": "CanNotDelete"
         // },
-        // "addOnFeatures": {
-        //     "value": []
-        // },
+        "addOnFeatures": {
+            "value": ["DnsService", "RepairManager"]
+        },
         // "maxUnusedVersionsToKeep": {
         //     "value": 2
         // },
@@ -31,13 +30,13 @@
         //         "tenantId": ""
         //     }
         // },
-        // "certificate": {
-        //     "value": {
-        //         "thumbprint": "", // If 'certificate' is provided then this is mandatory
-        //         "thumbprintSecondary": "",
-        //         "x509StoreName": "" // Possible values are 'AddressBook', 'AuthRoot', 'CertificateAuthority', 'Disallowed', 'My', 'Root', 'TrustedPeople', 'TrustedPublisher'
-        //     }
-        // },
+        "certificate": {
+            "value": {
+                "thumbprint": "154813CEE741AE4FC28CAE17FC16FB30888FACF3", // If 'certificate' is provided then this is mandatory
+                //"thumbprintSecondary": "",
+                "x509StoreName": "My" // Possible values are 'AddressBook', 'AuthRoot', 'CertificateAuthority', 'Disallowed', 'My', 'Root', 'TrustedPeople', 'TrustedPublisher'
+            }
+        },
         // "certificateCommonNames": {
         //     "value": {
         //         "commonNames": [ // The list of server certificates referenced by common name that are used to secure the cluster.
@@ -75,17 +74,21 @@
         //         "tableEndpoint": "" // If 'diagnosticsStorageAccountConfig' is passed then this is mandatory
         //     }
         // },
-        // "fabricSettings": {
-        //     "value": [{
-        //         "name": "", // The section name of the fabric settings.
-        //         "parameters": [{ // The collection of parameters in the section.
-        //             "name": "",
-        //             "value": ""
-        //         }]
-        //     }]
-        // },
+        "fabricSettings": {
+            "value": [
+                {
+                    "name": "Security", // The section name of the fabric settings.
+                    "parameters": [
+                        { // The collection of parameters in the section.
+                            "name": "ClusterProtectionLevel",
+                            "value": "EncryptAndSign"
+                        }
+                    ]
+                }
+            ]
+        },
         "managementEndpoint": {
-            "value": "https://sxx-az-sfc-weu-x-001.eastus.cloudapp.azure.com:19080" // Mandatory
+            "value": "https://sxx-az-sfc-weu-x-666.centralindia.cloudapp.azure.com:19080" // Mandatory
         },
         "nodeTypes": { // The list of node types in the cluster.
             "value": [
@@ -105,28 +108,7 @@
                     "isPrimary": true,
                     // "isStateless": false,
                     // "multipleAvailabilityZones": false,
-                    "name": "Node01",
-                    // "placementProperties": {},
-                    // "reverseProxyEndpointPort": "",
-                    "vmInstanceCount": 5
-                },
-                {
-                    "applicationPorts": {
-                        "endPort": 30000,
-                        "startPort": 20000
-                    },
-                    //"capacities": {},
-                    "clientConnectionEndpointPort": 19090,
-                    "durabilityLevel": "Silver", // One of 'Bronze', 'Gold', 'Silver'
-                    // "ephemeralPorts": {
-                    //     "endPort": 65534,
-                    //     "startPort": 49152
-                    // },
-                    "httpGatewayEndpointPort": 19090,
-                    "isPrimary": false,
-                    // "isStateless": false,
-                    // "multipleAvailabilityZones": false,
-                    "name": "Node02",
+                    "name": "666Node01",
                     // "placementProperties": {},
                     // "reverseProxyEndpointPort": "",
                     "vmInstanceCount": 5
@@ -148,18 +130,18 @@
             "value": "Silver"
         },
         "vmImage": {
-            "value": "WindowsServer 2016-Datacenter"
+            "value": "Linux"
         },
-        "roleAssignments": {
-            "value": [
-                {
-                    "roleDefinitionIdOrName": "Reader",
-                    "principalIds": [
-                        "5545f7a0-51f4-46af-b3b4-baecf5176a56"
-                    ]
-                }
-            ]
-        },
+        // "roleAssignments": {
+        //     "value": [
+        //         {
+        //             "roleDefinitionIdOrName": "Reader",
+        //             "principalIds": [
+        //                 "6bffd5f5-80d9-435c-903e-78354538a902"
+        //             ]
+        //         }
+        //     ]
+        // },
         "serviceFabricClusterApplications": {
             "value": [
                 {
@@ -172,18 +154,18 @@
                         "managedIdentities": [
                             {
                                 "name": "Identity_Friendly_Name",
-                                "principalId": "5545f7a0-51f4-46af-b3b4-baecf5176a56"
+                                "principalId": "6bffd5f5-80d9-435c-903e-78354538a902"
                             }
                         ],
                         "maximumNodes": 2,
-                        "metrics": [
-                            {
-                                "maximumCapacity": null,
-                                "name": null,
-                                "reservationCapacity": null,
-                                "totalApplicationCapacity": null
-                            }
-                        ],
+                            "metrics": [
+                                {
+                                    "maximumCapacity": null,
+                                    "name": null,
+                                    "reservationCapacity": null,
+                                    "totalApplicationCapacity": null
+                                }
+                            ],
                         "minimumNodes": null,
                         "parameters": {},
                         "removeApplicationCapacity": "",
