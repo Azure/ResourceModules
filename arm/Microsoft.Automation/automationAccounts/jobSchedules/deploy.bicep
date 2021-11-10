@@ -32,7 +32,7 @@ resource jobSchedule 'Microsoft.Automation/automationAccounts/jobSchedules@2020-
   name: name
   parent: jobSchedule_automationAccount
   properties: {
-    parameters: (empty(parameters) ? null : parameters)
+    parameters: parameters
     runbook: {
       name: runbookName
     }

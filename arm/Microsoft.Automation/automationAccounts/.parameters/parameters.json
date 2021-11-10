@@ -8,7 +8,7 @@
         "schedules": {
             "value": [
                 {
-                    "name": "Test_Schedule",
+                    "name": "TestSchedule",
                     "startTime": "",
                     "expiryTime": "9999-12-31T23:59:00+00:00",
                     "interval": 15,
@@ -30,27 +30,27 @@
         "runbooks": {
             "value": [
                 {
-                    "name": "Test_Runbook",
+                    "name": "TestRunbook",
                     "runbookType": "PowerShell",
-                    "description": "Test runbook"
-                    // "uri": "https://raw.githubusercontent.com/Azure/azure-quickstart-templates/master/quickstarts/microsoft.automation/101-automation/scripts/AzureAutomationTutorial.ps1",
-                    // "version": "1.0.0.0"
+                    "description": "Test runbook",
+                    "uri": "https://raw.githubusercontent.com/Azure/azure-quickstart-templates/master/quickstarts/microsoft.automation/101-automation/scripts/AzureAutomationTutorial.ps1",
+                    "version": "1.0.0.0"
                 }
             ]
         },
         "jobSchedules": {
             "value": [
                 {
-                    "name": "Test_JobSchedule", // jobSchedule used to generate unique id
-                    "scheduleName": "Test_Schedule", // Gets or sets the schedule
-                    "runbookName": "Test_Runbook" // Gets or sets the runbook
+                    "name": "2763f40e-f874-4dda-b43a-60c5a7cb8783", // jobSchedule used to generate unique id
+                    "scheduleName": "TestSchedule", // Gets or sets the schedule
+                    "runbookName": "TestRunbook" // Gets or sets the runbook
                 }
             ]
         }
         // "parameters": { // Gets or sets a list of job properties.
         //     "param1": "value1"
         // },
-        // "runOn": "" // Gets or sets the hybrid worker group that the scheduled job should run on.
+        // "runOn": "hybridWorkerGroup" // Gets or sets the hybrid worker group that the scheduled job should run on.
         // ,
         // "privateEndpoints": {
         //     "value": [
