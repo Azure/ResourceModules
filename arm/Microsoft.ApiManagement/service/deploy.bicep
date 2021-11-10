@@ -121,12 +121,27 @@ param logsToEnable array = [
 param metricsToEnable array = [
   'AllMetrics'
 ]
-@description('Optional. Portal settings.')
-param portalSettings array = []
-@description('Optional. Policies.')
-param policies array = []
+
+@description('Optional. APIs.')
+param apis array = []
+@description('Optional. Authorization servers.')
+param authorizationServers array = []
+@description('Optional. Backends.')
+param backends array = []
+@description('Optional. Caches.')
+param caches array = []
 @description('Optional. Identity providers.')
 param identityProviders array = []
+@description('Optional. Named values.')
+param namedValues array = []
+@description('Optional. Policies.')
+param policies array = []
+@description('Optional. Portal settings.')
+param portalSettings array = []
+@description('Optional. Products.')
+param products array = []
+@description('Optional. Subscriptions.')
+param subscriptions array = []
 
 var diagnosticsLogs = [for log in logsToEnable: {
   category: log
@@ -179,24 +194,6 @@ resource apiManagementService 'Microsoft.ApiManagement/service@2020-12-01' = {
   }
 }
 
-module portalSettings_resource 'portalsettings/deploy.bicep' = [for (portalSetting, index) in portalSettings: {
-  name: '${uniqueString(deployment().name, location)}-portalSetting-${index}'
-  params: {
-    apiManagementServiceName: name
-    name: portalSetting.name
-    properties: contains(portalSetting, 'properties') ? portalSetting.properties : {}
-  }
-}]
-
-module policy_resource 'policies/deploy.bicep' = [for (policy, index) in policies: {
-  name: '${uniqueString(deployment().name, location)}-policy-${index}'
-  params: {
-    apiManagementServiceName: name
-    name: policy.name
-    properties: contains(policy, 'properties') ? policy.properties : {}
-  }
-}]
-
 module identityProvider_resource 'identityProviders/deploy.bicep' = [for (identityProvider, index) in identityProviders: {
   name: '${uniqueString(deployment().name, location)}-identityProvider-${index}'
   params: {
@@ -213,6 +210,24 @@ module identityProvider_resource 'identityProviders/deploy.bicep' = [for (identi
     identityProviderSignInTenant: contains(identityProvider, 'identityProviderSignInTenant') ? identityProvider.identityProviderSignInTenant : ''
     identityProviderSignUpPolicyName: contains(identityProvider, 'identityProviderSignUpPolicyName') ? identityProvider.identityProviderSignUpPolicyName : ''
     identityProviderType: contains(identityProvider, 'identityProviderType') ? identityProvider.identityProviderType : 'aad'
+  }
+}]
+
+module portalSettings_resource 'portalsettings/deploy.bicep' = [for (portalSetting, index) in portalSettings: {
+  name: '${uniqueString(deployment().name, location)}-portalSetting-${index}'
+  params: {
+    apiManagementServiceName: name
+    name: portalSetting.name
+    properties: contains(portalSetting, 'properties') ? portalSetting.properties : {}
+  }
+}]
+
+module policy_resource 'policies/deploy.bicep' = [for (policy, index) in policies: {
+  name: '${uniqueString(deployment().name, location)}-policy-${index}'
+  params: {
+    apiManagementServiceName: name
+    name: policy.name
+    properties: contains(policy, 'properties') ? policy.properties : {}
   }
 }]
 
