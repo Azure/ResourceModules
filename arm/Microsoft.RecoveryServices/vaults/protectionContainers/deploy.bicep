@@ -3,7 +3,7 @@
 param recoveryVaultName string
 
 @description('Required. Name of the Azure Recovery Service Vault Protection Container')
-param protectionContainerName string
+param name string
 
 @description('Optional. Backup management type to execute the current Protection Container job.')
 @allowed([
@@ -49,13 +49,13 @@ module pid_cuaId './.bicep/nested_cuaId.bicep' = if (!empty(cuaId)) {
   params: {}
 }
 
-resource vaultProtectionContainer 'Microsoft.RecoveryServices/vaults/backupFabrics/protectionContainers@2021-08-01' = {
-  name: '${recoveryVaultName}/Azure/${protectionContainerName}'
+resource protectionContainer 'Microsoft.RecoveryServices/vaults/backupFabrics/protectionContainers@2021-08-01' = {
+  name: '${recoveryVaultName}/Azure/${name}'
   properties: {
-    sourceResourceId: (empty(sourceResourceId) ? json('null') : sourceResourceId)
-    friendlyName: (empty(friendlyName) ? json('null') : friendlyName)
-    backupManagementType: (empty(backupManagementType) ? json('null') : backupManagementType)
-    containerType: (empty(containerType) ? json('null') : containerType)
+    sourceResourceId: (empty(sourceResourceId) ? null : sourceResourceId)
+    friendlyName: (empty(friendlyName) ? null : friendlyName)
+    backupManagementType: (empty(backupManagementType) ? null : backupManagementType)
+    containerType: (empty(containerType) ? null : containerType)
   }
 }
 
@@ -63,4 +63,7 @@ resource vaultProtectionContainer 'Microsoft.RecoveryServices/vaults/backupFabri
 output protectionContainerResourceGroup string = resourceGroup().name
 
 @description('The Resource Id of the Protection Container.')
-output protectionContainerId string = vaultProtectionContainer.id
+output protectionContainerId string = protectionContainer.id
+
+@description('The Name of the Protection Container.')
+output protectionContainer string = protectionContainer.name

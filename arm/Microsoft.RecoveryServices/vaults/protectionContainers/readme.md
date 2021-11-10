@@ -13,7 +13,7 @@ This module deploys a Protection Container for a Recovery Services Vault
 | Parameter Name | Type | Default Value | Possible Values | Description |
 | :-- | :-- | :-- | :-- | :-- |
 | `recoveryVaultName` | string | `` |  | Required. Name of the Azure Recovery Service Vault |
-| `protectionContainerName` | string | `` |  | Required. Name of the Azure Recovery Service Vault Protection Container |
+| `name` | string | `` |  | Required. Name of the Azure Recovery Service Vault Protection Container |
 | `backupManagementType` | string | `Invalid` | `[AzureBackupServer,AzureIaasVM,AzureSql,AzureStorage,AzureWorkload,DPM,DefaultBackup,Invalid,MAB]` |  Optional. Backup management type to execute the current Protection Container job. |
 | `sourceResourceId` | string | `` |  | Optional. Resource Id of the target resource for the Protection Container |
 | `friendlyName` | string | `` |  | Optional. Friendly name of the Protection Container |
@@ -26,6 +26,7 @@ This module deploys a Protection Container for a Recovery Services Vault
 | :-- | :-- |
 | `protectionContainerResourceGroup` | string |
 | `protectionContainerId` | string |
+| `protectionContainerName` | string |
 
 ## Template references
 

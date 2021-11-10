@@ -1,6 +1,6 @@
 @description('Required. Name of the Azure Recovery Service Vault')
 @minLength(1)
-param recoveryVaultName string
+param name string
 
 @description('Optional. The storage configuration for the Azure Recovery Service Vault')
 param backupStorageConfig object = {}
@@ -116,7 +116,7 @@ module pid_cuaId '.bicep/nested_cuaId.bicep' = if (!empty(cuaId)) {
 }
 
 resource rsv 'Microsoft.RecoveryServices/vaults@2021-08-01' = {
-  name: recoveryVaultName
+  name: name
   location: location
   tags: tags
   sku: {
@@ -126,43 +126,34 @@ resource rsv 'Microsoft.RecoveryServices/vaults@2021-08-01' = {
   properties: {}
 }
 
-module rsv_backupStorageConfig 'backupStorageConfig/deploy.bicep' = {
+module backupStorageConfiguration 'backupStorageConfig/deploy.bicep' = {
   name: '${uniqueString(deployment().name, location)}-BackupStorageConfig'
   params: {
     recoveryVaultName: rsv.name
-    vaultStorageType: backupStorageConfig.vaultStorageType
-    enableCRR: backupStorageConfig.enableCRR
+    storageModelType: backupStorageConfig.storageModelType
+    crossRegionRestoreFlag: backupStorageConfig.crossRegionRestoreFlag
   }
-  dependsOn: [
-    rsv
-  ]
 }
 
-module rsv_protectionContainers 'protectionContainers/deploy.bicep' = [for (protectionContainer, index) in protectionContainers: {
+module protectionContainer 'protectionContainers/deploy.bicep' = [for (protectionContainer, index) in protectionContainers: {
   name: '${uniqueString(deployment().name, location)}-ProtectionContainers-${index}'
   params: {
     recoveryVaultName: rsv.name
-    protectionContainerName: protectionContainer.protectionContainerName
+    name: protectionContainer.name
     sourceResourceId: protectionContainer.sourceResourceId
     friendlyName: protectionContainer.friendlyName
     backupManagementType: protectionContainer.backupManagementType
     containerType: protectionContainer.containerType
   }
-  dependsOn: [
-    rsv
-  ]
 }]
 
-module rsv_backupPolicies 'backupPolicies/deploy.bicep' = [for (backupPolicy, index) in backupPolicies: {
+module backupPolicy 'backupPolicies/deploy.bicep' = [for (backupPolicy, index) in backupPolicies: {
   name: '${uniqueString(deployment().name, location)}-BackupPolicy-${index}'
   params: {
     recoveryVaultName: rsv.name
-    policyName: backupPolicy.name
+    name: backupPolicy.name
     backupPolicyProperties: backupPolicy.properties
   }
-  dependsOn: [
-    rsv
-  ]
 }]
 
 resource rsv_lock 'Microsoft.Authorization/locks@2016-09-01' = if (lock != 'NotSpecified') {

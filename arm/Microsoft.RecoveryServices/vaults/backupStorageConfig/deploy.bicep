@@ -9,10 +9,10 @@ param recoveryVaultName string
   'ReadAccessGeoZoneRedundant'
   'ZoneRedundant'
 ])
-param vaultStorageType string = 'GeoRedundant'
+param storageModelType string = 'GeoRedundant'
 
-@description('Optional. Enable CRR (Works if vault has not registered any backup instance. Not compatible with Locally Redundant Storage (LRS))')
-param enableCRR bool = true
+@description('Optional. Opt in details of Cross Region Restore feature')
+param crossRegionRestoreFlag bool = true
 
 @description('Optional. Customer Usage Attribution id (GUID). This GUID must be previously registered')
 param cuaId string = ''
@@ -22,13 +22,13 @@ module pid_cuaId './.bicep/nested_cuaId.bicep' = if (!empty(cuaId)) {
   params: {}
 }
 
-resource vaultstorageconfig 'Microsoft.RecoveryServices/vaults/backupstorageconfig@2021-08-01' = {
+resource backupStorageConfig 'Microsoft.RecoveryServices/vaults/backupstorageconfig@2021-08-01' = {
   name: '${recoveryVaultName}/vaultstorageconfig'
   properties: {
-    storageModelType: vaultStorageType
-    crossRegionRestoreFlag: enableCRR
+    storageModelType: storageModelType
+    crossRegionRestoreFlag: crossRegionRestoreFlag
   }
 }
 
 @description('The name of the Resource Group the backup storage configuration was created in.')
-output vaultStorageConfigResourceGroup string = resourceGroup().name
+output backupStorageConfigResourceGroup string = resourceGroup().name
