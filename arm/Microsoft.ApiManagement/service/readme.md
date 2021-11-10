@@ -19,7 +19,7 @@ This module deploys an API management.
 | Parameter Name | Type | Default Value | Possible Values | Description |
 | :-- | :-- | :-- | :-- | :-- |
 | `additionalLocations` | array | `[]` |  | Optional. Additional datacenter locations of the API Management service. |
-| `apiManagementServiceName` | string |  |  | Required. The name of the of the Api Management service. |
+| `name` | string |  |  | Required. The name of the of the Api Management service. |
 | `apiManagementServicePolicy` | object | `{object}` |  | Optional. Policy content for the Api Management Service. Format: Format of the policyContent. - xml, xml-link, rawxml, rawxml-link. Value: Contents of the Policy as defined by the format. |
 | `certificates` | array | `[]` |  | Optional. List of Certificates that need to be installed in the API Management service. Max supported certificates that can be installed is 10. |
 | `cuaId` | string |  |  | Optional. Customer Usage Attribution id (GUID). This GUID must be previously registered |
