@@ -107,9 +107,9 @@ jobs:
           managementGroupId: '${{ secrets.ARM_MGMTGROUP_ID }}'
           removeDeployment: '${{ env.removeDeployment }}'
 
-  job_deploy_evhns:
+  job_deploy_evh:
     runs-on: ubuntu-20.04
-    name: 'Deploy eventhub namespace'
+    name: 'Deploy eventhub'
     env:
       moduleName: namespaces
       namespace: 'Microsoft.EventHub\namespaces'
@@ -200,35 +200,6 @@ jobs:
     env:
       moduleName: galleries
       namespace: 'Microsoft.Compute\galleries'
-    needs:
-      - job_deploy_rg
-    strategy:
-      fail-fast: false
-      matrix:
-        parameterFilePaths: ['parameters.json']
-    steps:
-      - name: 'Checkout'
-        uses: actions/checkout@v2
-        with:
-          fetch-depth: 0
-      - name: 'Deploy module'
-        uses: ./.github/actions/templates/deployModule
-        with:
-          moduleName: '${{ env.moduleName }}'
-          templateFilePath: 'arm/${{ env.namespace }}/deploy.bicep'
-          parameterFilePath: 'utilities/dependencies/${{ env.namespace }}/parameters/${{ matrix.parameterFilePaths }}'
-          location: '${{ env.defaultLocation }}'
-          resourceGroupName: '${{ env.resourceGroupName }}'
-          subscriptionId: '${{ secrets.ARM_SUBSCRIPTION_ID }}'
-          managementGroupId: '${{ secrets.ARM_MGMTGROUP_ID }}'
-          removeDeployment: '${{ env.removeDeployment }}'
-
-  job_deploy_nw:
-    runs-on: ubuntu-20.04
-    name: 'Deploy network watchers'
-    env:
-      moduleName: networkWatchers
-      namespace: 'Microsoft.Network\networkWatchers'
     needs:
       - job_deploy_rg
     strategy:
@@ -347,35 +318,6 @@ jobs:
       namespace: 'Microsoft.Network\routeTables'
     needs:
       - job_deploy_rg
-    strategy:
-      fail-fast: false
-      matrix:
-        parameterFilePaths: ['parameters.json']
-    steps:
-      - name: 'Checkout'
-        uses: actions/checkout@v2
-        with:
-          fetch-depth: 0
-      - name: 'Deploy module'
-        uses: ./.github/actions/templates/deployModule
-        with:
-          moduleName: '${{ env.moduleName }}'
-          templateFilePath: 'arm/${{ env.namespace }}/deploy.bicep'
-          parameterFilePath: 'utilities/dependencies/${{ env.namespace }}/parameters/${{ matrix.parameterFilePaths }}'
-          location: '${{ env.defaultLocation }}'
-          resourceGroupName: '${{ env.resourceGroupName }}'
-          subscriptionId: '${{ secrets.ARM_SUBSCRIPTION_ID }}'
-          managementGroupId: '${{ secrets.ARM_MGMTGROUP_ID }}'
-          removeDeployment: '${{ env.removeDeployment }}'
-
-  job_deploy_evh:
-    runs-on: ubuntu-20.04
-    name: 'Deploy eventhub'
-    env:
-      moduleName: eventhubs
-      namespace: 'Microsoft.EventHub\namespacesResources\eventhubs'
-    needs:
-      - job_deploy_evhns
     strategy:
       fail-fast: false
       matrix:

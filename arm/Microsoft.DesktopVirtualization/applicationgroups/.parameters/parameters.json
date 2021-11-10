@@ -8,17 +8,37 @@
         "location": {
             "value": "westeurope"
         },
-        "appGroupType": {
+        "type": {
             "value": "RemoteApp"
         },
         "hostpoolName": {
             "value": "adp-sxx-az-avdhp-x-001"
         },
-        "appGroupFriendlyName": {
+        "friendlyName": {
             "value": "Remote Applications 1"
         },
-        "appGroupDescription": {
+        "description": {
             "value": "This is my first Remote Applications bundle"
+        },
+        "applications": {
+            "value": [
+                {
+                    "name": "notepad",
+                    "description": "Notepad by ARM template",
+                    "friendlyName": "Notepad",
+                    "filePath": "C:\\Windows\\System32\\notepad.exe",
+                    "commandLineSetting": "DoNotAllow",
+                    "commandLineArguments": "",
+                    "showInPortal": true,
+                    "iconPath": "C:\\Windows\\System32\\notepad.exe",
+                    "iconIndex": 0
+                },
+                {
+                    "name": "wordpad",
+                    "filePath": "C:\\Program Files\\Windows NT\\Accessories\\wordpad.exe",
+                    "friendlyName": "Wordpad"
+                }
+            ]
         },
         "roleAssignments": {
             "value": [
