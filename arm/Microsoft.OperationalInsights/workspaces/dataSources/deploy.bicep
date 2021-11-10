@@ -18,7 +18,7 @@ param name string
 param kind string = 'AzureActivityLog'
 
 @description('Optional. The ETag of the data source.')
-param etag string = ''
+param etag string = '*'
 
 @description('Optional. Tags to configure in the resource.')
 param tags object = {}

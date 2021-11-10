@@ -18,7 +18,7 @@
             "value": [
                 {
                     "name": "zwmqrvlchzw5i",
-                    "storageAccountId": "/subscriptions/a7439831-1cd9-435d-a091-4aa863c96556/resourceGroups/validation-rg/providers/Microsoft.Storage/storageAccounts/zwmqrvlchzw5i",
+                    "storageAccountId": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Storage/storageAccounts/zwmqrvlchzw5i",
                     "tables": [
                         "WADWindowsEventLogsTable",
                         "WADETWEventTable",
@@ -32,7 +32,7 @@
             "value": [
                 {
                     "name": "Automation",
-                    "resourceId": "/subscriptions/a7439831-1cd9-435d-a091-4aa863c96556/resourceGroups/validation-rg/providers/Microsoft.Automation/automationAccounts/Automanage-Automate-20211106185123"
+                    "resourceId": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Automation/automationAccounts/Automanage-Automate-20211106185123"
                 }
             ]
         },

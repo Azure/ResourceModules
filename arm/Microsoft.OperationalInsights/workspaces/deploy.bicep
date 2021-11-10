@@ -104,8 +104,8 @@ module storageInsightsConfigs_mod 'storageInsightConfigs/deploy.bicep' = [for (s
   params: {
     logAnalyticsWorkspaceName: logAnalyticsWorkspace.name
     name: storageInsightsConfig.name
-    containers: contains(storageInsightsConfig, 'containers') ? storageInsightsConfig.containers : null
-    tables: contains(storageInsightsConfig, 'tables') ? storageInsightsConfig.tables : null
+    containers: contains(storageInsightsConfig, 'containers') ? storageInsightsConfig.containers : []
+    tables: contains(storageInsightsConfig, 'tables') ? storageInsightsConfig.tables : []
     storageAccountId: storageInsightsConfig.storageAccountId
   }
 }]
@@ -116,8 +116,8 @@ module linkedServices_mod 'linkedServices/deploy.bicep' = [for (linkedService, i
     logAnalyticsWorkspaceName: logAnalyticsWorkspace.name
     name: linkedService.name
     resourceId: linkedService.resourceId
-    provisioningState: contains(linkedService, 'provisioningState') ? linkedService.provisioningState : null
-    writeAccessResourceId: contains(linkedService, 'writeAccessResourceId') ? linkedService.writeAccessResourceId : null
+    provisioningState: contains(linkedService, 'provisioningState') ? linkedService.provisioningState : 'Succeeded'
+    writeAccessResourceId: contains(linkedService, 'writeAccessResourceId') ? linkedService.writeAccessResourceId : ''
   }
 }]
 
@@ -126,13 +126,13 @@ module savedSearches_mod 'savedSearches/deploy.bicep' = [for (savedSearch, index
   params: {
     logAnalyticsWorkspaceName: logAnalyticsWorkspace.name
     name: savedSearch.name
-    etag: contains(savedSearch, 'etag') ? savedSearch.etag : null
+    etag: contains(savedSearch, 'etag') ? savedSearch.etag : '*'
     displayName: savedSearch.displayName
     category: savedSearch.category
     query: savedSearch.query
-    functionAlias: contains(savedSearch, 'functionAlias') ? savedSearch.functionAlias : null
-    functionParameters: contains(savedSearch, 'functionParameters') ? savedSearch.functionParameters : null
-    version: contains(savedSearch, 'version') ? savedSearch.version : null
+    functionAlias: contains(savedSearch, 'functionAlias') ? savedSearch.functionAlias : ''
+    functionParameters: contains(savedSearch, 'functionParameters') ? savedSearch.functionParameters : ''
+    version: contains(savedSearch, 'version') ? savedSearch.version : 2
   }
 }]
 
@@ -142,18 +142,18 @@ module dataSources_mod 'dataSources/deploy.bicep' = [for (dataSource, index) in 
     logAnalyticsWorkspaceName: logAnalyticsWorkspace.name
     name: dataSource.name
     kind: dataSource.kind
-    etag: contains(dataSource, 'etag') ? dataSource.etag : null
-    linkedResourceId: contains(dataSource, 'linkedResourceId') ? dataSource.linkedResourceId : null
-    eventLogName: contains(dataSource, 'eventLogName') ? dataSource.eventLogName : null
-    eventTypes: contains(dataSource, 'eventTypes') ? dataSource.eventTypes : null
-    objectName: contains(dataSource, 'objectName') ? dataSource.objectName : null
-    instanceName: contains(dataSource, 'instanceName') ? dataSource.instanceName : null
-    intervalSeconds: contains(dataSource, 'intervalSeconds') ? dataSource.intervalSeconds : null
-    counterName: contains(dataSource, 'counterName') ? dataSource.counterName : null
-    state: contains(dataSource, 'state') ? dataSource.state : null
-    syslogName: contains(dataSource, 'syslogName') ? dataSource.syslogName : null
-    syslogSeverities: contains(dataSource, 'syslogSeverities') ? dataSource.syslogSeverities : null
-    performanceCounters: contains(dataSource, 'performanceCounters') ? dataSource.performanceCounters : null
+    etag: contains(dataSource, 'etag') ? dataSource.etag : '*'
+    linkedResourceId: contains(dataSource, 'linkedResourceId') ? dataSource.linkedResourceId : ''
+    eventLogName: contains(dataSource, 'eventLogName') ? dataSource.eventLogName : ''
+    eventTypes: contains(dataSource, 'eventTypes') ? dataSource.eventTypes : []
+    objectName: contains(dataSource, 'objectName') ? dataSource.objectName : ''
+    instanceName: contains(dataSource, 'instanceName') ? dataSource.instanceName : ''
+    intervalSeconds: contains(dataSource, 'intervalSeconds') ? dataSource.intervalSeconds : 60
+    counterName: contains(dataSource, 'counterName') ? dataSource.counterName : ''
+    state: contains(dataSource, 'state') ? dataSource.state : ''
+    syslogName: contains(dataSource, 'syslogName') ? dataSource.syslogName : ''
+    syslogSeverities: contains(dataSource, 'syslogSeverities') ? dataSource.syslogSeverities : []
+    performanceCounters: contains(dataSource, 'performanceCounters') ? dataSource.performanceCounters : []
   }
 }]
 
