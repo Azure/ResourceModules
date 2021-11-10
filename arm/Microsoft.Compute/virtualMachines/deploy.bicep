@@ -288,7 +288,7 @@ var vmComputerNameTransformed = vmComputerNamesTransformation == 'uppercase' ? t
 
 var identity = {
   type: managedServiceIdentity
-  userAssignedIdentities: empty(userAssignedIdentities) ? userAssignedIdentities : null
+  userAssignedIdentities: !empty(userAssignedIdentities) ? userAssignedIdentities : null
 }
 
 var accountSasProperties = {
@@ -375,7 +375,7 @@ resource virtualMachine 'Microsoft.Compute/virtualMachines@2021-04-01' = {
       computerName: vmComputerNameTransformed
       adminUsername: adminUsername
       adminPassword: adminPassword
-      customData: !empty(customData) ? base64(customData) : null 
+      customData: !empty(customData) ? base64(customData) : null
       windowsConfiguration: !empty(windowsConfiguration) ? windowsConfiguration : null
       linuxConfiguration: !empty(linuxConfiguration) ? linuxConfiguration : null
       secrets: certificatesToBeInstalled
@@ -392,7 +392,7 @@ resource virtualMachine 'Microsoft.Compute/virtualMachines@2021-04-01' = {
     diagnosticsProfile: {
       bootDiagnostics: {
         enabled: !empty(bootDiagnosticStorageAccountName)
-        storageUri: !empty(bootDiagnosticStorageAccountName) ? 'https://${bootDiagnosticStorageAccountName}${bootDiagnosticStorageAccountUri}' : null 
+        storageUri: !empty(bootDiagnosticStorageAccountName) ? 'https://${bootDiagnosticStorageAccountName}${bootDiagnosticStorageAccountUri}' : null
       }
     }
     availabilitySet: !empty(availabilitySetName) ? json('{"id":"${resourceId('Microsoft.Compute/availabilitySets', availabilitySetName)}"}') : null
