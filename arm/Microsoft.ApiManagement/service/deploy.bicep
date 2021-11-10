@@ -194,6 +194,87 @@ resource apiManagementService 'Microsoft.ApiManagement/service@2020-12-01' = {
   }
 }
 
+module apis_resource 'apis/deploy.bicep' = [for (api, index) in apis: {
+  name: '${uniqueString(deployment().name, location)}-api-${index}'
+  params: {
+    apiManagementServiceName: name
+    displayName:
+    name:
+    path:
+    apiDescription:
+    apiManagementServiceApiPolicy:
+    apiRevision:
+    apiRevisionDescription:
+    apiType:
+    apiVersion:
+    apiVersionDescription:
+    apiVersionSet:
+    authenticationSettings:
+    format:
+    isCurrent:
+    protocols:
+    serviceUrl:
+    sourceApiId:
+    subscriptionKeyParameterNames:
+    subscriptionRequired:
+    type:
+    value:
+    wsdlSelector:
+  }
+}]
+
+module authorizationServers_resource 'authorizationServers/deploy.bicep' = [for (authorizationServer, index) in authorizationServers: {
+  name: '${uniqueString(deployment().name, location)}-authorizationServer-${index}'
+  params: {
+    apiManagementServiceName: name
+    name:
+    authorizationEndpoint:
+    authorizationMethods:
+    bearerTokenSendingMethods:
+    clientAuthenticationMethod:
+    clientId:
+    clientRegistrationEndpoint:
+    clientSecret:
+    defaultScope:
+    grantTypes:
+    resourceOwnerPassword:
+    resourceOwnerUsername:
+    serverDescription:
+    supportState:
+    tokenBodyParameters:
+    tokenEndpoint:
+  }
+}]
+
+module backends_resource 'backends/deploy.bicep' = [for (backend, index) in backends: {
+  name: '${uniqueString(deployment().name, location)}-backend-${index}'
+  params: {
+    apiManagementServiceName: name
+    url:
+    backendDescription:
+    credentials:
+    name:
+    protocol:
+    proxy:
+    resourceId:
+    serviceFabricCluster:
+    title:
+    tls:
+  }
+}]
+
+module caches_resource 'caches/deploy.bicep' = [for (cache, index) in caches: {
+  name: '${uniqueString(deployment().name, location)}-cache-${index}'
+  params: {
+    apiManagementServiceName: name
+    cacheDescription:
+    connectionString:
+    name:
+    resourceId:
+    useFromLocation:
+  }
+}]
+
 module identityProvider_resource 'identityProviders/deploy.bicep' = [for (identityProvider, index) in identityProviders: {
   name: '${uniqueString(deployment().name, location)}-identityProvider-${index}'
   params: {
@@ -213,6 +294,19 @@ module identityProvider_resource 'identityProviders/deploy.bicep' = [for (identi
   }
 }]
 
+module namedValues_resource 'namedValues/deploy.bicep' = [for (namedValue, index) in namedValues: {
+  name: '${uniqueString(deployment().name, location)}-namedValue-${index}'
+  params: {
+    apiManagementServiceName: name
+    displayName:
+    keyVault:
+    name:
+    namedValueTags:
+    secret:
+    value:
+  }
+}]
+
 module portalSettings_resource 'portalsettings/deploy.bicep' = [for (portalSetting, index) in portalSettings: {
   name: '${uniqueString(deployment().name, location)}-portalSetting-${index}'
   params: {
@@ -228,6 +322,36 @@ module policy_resource 'policies/deploy.bicep' = [for (policy, index) in policie
     apiManagementServiceName: name
     name: policy.name
     properties: contains(policy, 'properties') ? policy.properties : {}
+  }
+}]
+
+module products_resource 'products/deploy.bicep' = [for (product, index) in products: {
+  name: '${uniqueString(deployment().name, location)}-product-${index}'
+  params: {
+    apiManagementServiceName: name
+    approvalRequired:
+    name:
+    productApis:
+    productDescription:
+    productGroups:
+    state:
+    subscriptionRequired:
+    subscriptionsLimit:
+    terms:
+  }
+}]
+
+module subscriptions_resource 'subscriptions/deploy.bicep' = [for (subscription, index) in subscriptions: {
+  name: '${uniqueString(deployment().name, location)}-subscription-${index}'
+  params: {
+    apiManagementServiceName: name
+    name:
+    allowTracing:
+    ownerId:
+    primaryKey:
+    scope:
+    secondaryKey:
+    state:
   }
 }]
 
