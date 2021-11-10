@@ -126,7 +126,6 @@ module savedSearches_mod 'savedSearches/deploy.bicep' = [for (savedSearch, index
   params: {
     logAnalyticsWorkspaceName: logAnalyticsWorkspace.name
     name: savedSearch.name
-    etag: contains(savedSearch, 'etag') ? savedSearch.etag : '*'
     displayName: savedSearch.displayName
     category: savedSearch.category
     query: savedSearch.query
@@ -142,7 +141,6 @@ module dataSources_mod 'dataSources/deploy.bicep' = [for (dataSource, index) in 
     logAnalyticsWorkspaceName: logAnalyticsWorkspace.name
     name: dataSource.name
     kind: dataSource.kind
-    etag: contains(dataSource, 'etag') ? dataSource.etag : '*'
     linkedResourceId: contains(dataSource, 'linkedResourceId') ? dataSource.linkedResourceId : ''
     eventLogName: contains(dataSource, 'eventLogName') ? dataSource.eventLogName : ''
     eventTypes: contains(dataSource, 'eventTypes') ? dataSource.eventTypes : []
