@@ -17,9 +17,6 @@ param name string
 ])
 param kind string = 'AzureActivityLog'
 
-@description('Optional. The ETag of the data source.')
-param etag string = '*'
-
 @description('Optional. Tags to configure in the resource.')
 param tags object = {}
 
@@ -66,20 +63,19 @@ module pid_cuaId '.bicep/nested_cuaId.bicep' = if (!empty(cuaId)) {
 
 resource symbolicname 'Microsoft.OperationalInsights/workspaces/dataSources@2020-08-01' = {
   name: '${logAnalyticsWorkspaceName}/${name}'
-  etag: etag
   kind: kind
   tags: tags
   properties: {
     linkedResourceId: (!empty(kind) && kind == 'AzureActivityLog') ? linkedResourceId : null
     eventLogName: (!empty(kind) && kind == 'WindowsEvent') ? eventLogName : null
     eventTypes: (!empty(kind) && kind == 'WindowsEvent') ? eventTypes : null
-    objectName: (!empty(kind) && (kind == 'WindowsPerformanceCounter' || kind == 'LinuxSyslogCollection')) ? objectName : null
-    instanceName: (!empty(kind) && (kind == 'WindowsPerformanceCounter' || kind == 'LinuxSyslogCollection')) ? instanceName : null
-    intervalSeconds: (!empty(kind) && (kind == 'WindowsPerformanceCounter' || kind == 'LinuxSyslogCollection')) ? intervalSeconds : null
+    objectName: (!empty(kind) && (kind == 'WindowsPerformanceCounter' || kind == 'LinuxPerformanceObject')) ? objectName : null
+    instanceName: (!empty(kind) && (kind == 'WindowsPerformanceCounter' || kind == 'LinuxPerformanceObject')) ? instanceName : null
+    intervalSeconds: (!empty(kind) && (kind == 'WindowsPerformanceCounter' || kind == 'LinuxPerformanceObject')) ? intervalSeconds : null
     counterName: (!empty(kind) && kind == 'WindowsPerformanceCounter') ? counterName : null
     state: (!empty(kind) && (kind == 'IISLogs' || kind == 'LinuxSyslogCollection' || kind == 'LinuxPerformanceCollection')) ? state : null
     syslogName: (!empty(kind) && kind == 'LinuxSyslog') ? syslogName : null
-    syslogSeverities: (!empty(kind) && kind == 'LinuxSyslog') ? syslogSeverities : null
+    syslogSeverities: (!empty(kind) && (kind == 'LinuxSyslog' || kind == 'LinuxPerformanceObject')) ? syslogSeverities : null
     performanceCounters: (!empty(kind) && kind == 'LinuxPerformanceObject') ? performanceCounters : null
   }
 }

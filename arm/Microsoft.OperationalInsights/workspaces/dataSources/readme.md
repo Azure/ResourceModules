@@ -14,7 +14,6 @@
 | :-- | :-- | :-- | :-- | :-- |
 | `counterName` | string |  |  | Optional. Counter name to configure when kind is WindowsPerformanceCounter. |
 | `cuaId` | string |  |  | Optional. Customer Usage Attribution id (GUID). This GUID must be previously registered |
-| `etag` | string | `*` |  | Optional. The ETag of the data source. |
 | `eventLogName` | string |  |  | Optional. Windows event log name to configure when kind is WindowsEvent. |
 | `eventTypes` | array | `[]` |  | Optional. Windows event types to configure when kind is WindowsEvent. |
 | `instanceName` | string | `*` |  | Optional. Name of the instance to configure when kind is WindowsPerformanceCounter or LinuxPerformanceObject. |

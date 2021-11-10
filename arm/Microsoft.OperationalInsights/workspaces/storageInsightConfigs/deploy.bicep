@@ -13,9 +13,6 @@ param containers array = []
 @description('Optional. The names of the Azure tables that the workspace should read.')
 param tables array = []
 
-@description('Optional. The ETag of the data source.')
-param etag string = '*'
-
 @description('Optional. Tags to configure in the resource.')
 param tags object = {}
 
@@ -30,7 +27,6 @@ module pid_cuaId '.bicep/nested_cuaId.bicep' = if (!empty(cuaId)) {
 resource storageinsightconfig 'Microsoft.OperationalInsights/workspaces/storageInsightConfigs@2020-08-01' = {
   name: '${logAnalyticsWorkspaceName}/${name}'
   tags: tags
-  eTag: etag
   properties: {
     containers: containers
     tables: tables

@@ -13,9 +13,6 @@ param category string
 @description('Required. Kusto Query to be stored.')
 param query string
 
-@description('Optional. The ETag of the data source.')
-param etag string = '*'
-
 @description('Optional. Tags to configure in the resource.')
 param tags array = []
 
@@ -38,7 +35,6 @@ module pid_cuaId '.bicep/nested_cuaId.bicep' = if (!empty(cuaId)) {
 
 resource savedSearch 'Microsoft.OperationalInsights/workspaces/savedSearches@2020-08-01' = {
   name: '${logAnalyticsWorkspaceName}/${name}'
-  etag: etag
   properties: {
     tags: tags
     displayName: displayName

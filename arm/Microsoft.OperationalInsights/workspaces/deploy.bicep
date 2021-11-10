@@ -117,7 +117,7 @@ module linkedServices_mod 'linkedServices/deploy.bicep' = [for (linkedService, i
     name: linkedService.name
     resourceId: linkedService.resourceId
     provisioningState: contains(linkedService, 'provisioningState') ? linkedService.provisioningState : 'Succeeded'
-    writeAccessResourceId: contains(linkedService, 'writeAccessResourceId') ? linkedService.writeAccessResourceId : linkedService.resourceId
+    writeAccessResourceId: contains(linkedService, 'writeAccessResourceId') ? linkedService.writeAccessResourceId : ''
   }
 }]
 

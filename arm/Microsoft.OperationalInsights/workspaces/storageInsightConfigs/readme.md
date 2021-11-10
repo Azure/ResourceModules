@@ -14,7 +14,6 @@
 | :-- | :-- | :-- | :-- | :-- |
 | `containers` | array | `[]` |  | Optional. The names of the blob containers that the workspace should read. |
 | `cuaId` | string |  |  | Optional. Customer Usage Attribution id (GUID). This GUID must be previously registered |
-| `etag` | string | `*` |  | Optional. The ETag of the data source. |
 | `logAnalyticsWorkspaceName` | string |  |  | Required. Name of the Log Analytics workspace. |
 | `name` | string |  |  | Required. Name of the saved search. |
 | `storageAccountId` | string |  |  | Required. The Azure Resource Manager ID of the storage account resource. |
