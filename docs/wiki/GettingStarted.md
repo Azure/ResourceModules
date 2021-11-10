@@ -6,16 +6,19 @@ This section will give on an overview on how to get started using this repositor
 
 ### _Navigation_
 
-- [General prerequisites](#general-prerequisites)
-- [Where to start](#where-to-start)
-  - [**Option 1**: Use it as a basis to set up your own inner-source project](#option-1-use-it-as-a-basis-to-set-up-your-own-inner-source-project)
-    - [Fork the repository](#fork-the-repository)
-    - [Service Names](#service-names)
-    - [Dependencies](#dependencies)
-    - [GitHub-specific prerequisites](#github-specific-prerequisites)
-  - [**Option 2**: Use it as a local reference to build bicep templates](#option-2-use-it-as-a-local-reference-to-build-bicep-templates)
-    - [Clone / download the repository](#clone--download-the-repository)
-  - [**Option 3**: Use it as remote reference to reference the bicep templates](#option-3-use-it-as-remote-reference-to-reference-the-bicep-templates)
+- [Getting started](#getting-started)
+    - [_Navigation_](#navigation)
+  - [General prerequisites](#general-prerequisites)
+  - [Where to start](#where-to-start)
+    - [**Option 1**: Use it as a basis to set up your own inner-source project](#option-1-use-it-as-a-basis-to-set-up-your-own-inner-source-project)
+      - [Fork the repository](#fork-the-repository)
+      - [Service Names](#service-names)
+      - [Dependencies](#dependencies)
+      - [GitHub-specific prerequisites](#github-specific-prerequisites)
+    - [**Option 2**: Use it as a local reference to build bicep templates](#option-2-use-it-as-a-local-reference-to-build-bicep-templates)
+      - [Clone / download the repository](#clone--download-the-repository)
+    - [**Option 3**: Use it as remote reference to reference the bicep templates](#option-3-use-it-as-remote-reference-to-reference-the-bicep-templates)
+    - [Parameter File Tokens](#parameter-file-tokens)
 
 ---
 
@@ -25,7 +28,7 @@ Let us first answer the question what a Resource Module is:
 ## General prerequisites
 
 No matter from where you start you have to account for some general prerequisites when it comes to bicep and this repository.
-To ensure you can use all the content in this repostiroy you'd want to install
+To ensure you can use all the content in this repository you'd want to install
 
 - The latest PowerShell version [PowerShell 7][PowerShellDocs]
 
@@ -85,7 +88,7 @@ Depending on how you want to use this repositories content you may go down diffe
 
 ### **Option 1**: Use it as a basis to set up your own inner-source project
 
-The repository is set up in a way that you can essentially create your own private 1:1 copy and would be able to re-use the same concepts and functionality in your own environment like GitHub. This set up is a 2-step process. First, you have to either 'Form' the repository to you own GitHub account, or move it to your desired location manually. And second you have to configure the environment, that is, you have to update all references to the original source respository to your own and also set up several secrets to point to the Azure environment of your choice.
+The repository is set up in a way that you can essentially create your own private 1:1 copy and would be able to re-use the same concepts and functionality in your own environment like GitHub. This set up is a 2-step process. First, you have to either 'Form' the repository to you own GitHub account, or move it to your desired location manually. And second you have to configure the environment, that is, you have to update all references to the original source repository to your own and also set up several secrets to point to the Azure environment of your choice.
 
 Depending on the pipelines you use (e.g. GitHub workflows vs. Azure DevOps pipelines) make sure you also account for the specific requirements outlined below.
 
@@ -93,7 +96,7 @@ Depending on the pipelines you use (e.g. GitHub workflows vs. Azure DevOps pipel
 
 If you want to have a linked clone of the source repository in your own GitHub account, you can fork the repository instead. Still is also the preferred method to contribute back to this repository.
 
-To fork the repostory you can simply click on the `Fork` button on the top right of the repository website. You can then select the Account you want to fork the repository to and are good to go.
+To fork the repository you can simply click on the `Fork` button on the top right of the repository website. You can then select the Account you want to fork the repository to and are good to go.
 
 > ***Note***: To ensure your fork stays up to date you can select the 'Fetch upstream' button on your repository root page. This will trigger a process that fetches the latest changes from the source repository back to your fork.
 >
@@ -109,7 +112,7 @@ Please refer to [this list][AzureNames] to check which services have a global sc
 
 #### Dependencies
 
-As the modules we test often times have dependencies to other servies, we created a pipeline to deploys several standard services like VirtualNetworks and KeyVaults (alongside dummy secrets) for the modules to use. This _dependency_ pipeline should be prepared and executed before you start running any pipelines on your own. In case you need to rename any services there (for example because a certain globally unique resource name was already taken) make sure to update any references to this name in the module parameter files. You can find further details about this pipeline [here](.\TestingDesign.md#Module-Dependencies).
+As the modules we test often times have dependencies to other services, we created a pipeline to deploys several standard services like VirtualNetworks and KeyVaults (alongside dummy secrets) for the modules to use. This _dependency_ pipeline should be prepared and executed before you start running any pipelines on your own. In case you need to rename any services there (for example because a certain globally unique resource name was already taken) make sure to update any references to this name in the module parameter files. You can find further details about this pipeline [here](.\TestingDesign.md#Module-Dependencies).
 
 #### GitHub-specific prerequisites
 
@@ -122,17 +125,19 @@ In case you want to not only leverage the module templates but actually re-use t
 | `ARM_TENANT_ID` | `9734cec9-4384-445b-bbb6-767e7be6e5ec` | The ID of the tenant to test deploy modules of that level in. |
 | `AZURE_CREDENTIALS` |  `{"clientId": "4ce8ce4c-cac0-48eb-b815-65e5763e2929", "clientSecret": "<placeholder>", "subscriptionId": "d0312b25-9160-4550-914f-8738d9b5caf5", "tenantId": "9734cec9-4384-445b-bbb6-767e7be6e5ec" }` | The login credentials to use to log into the target Azure environment to test in. |
 | `PLATFORM_REPO_UPDATE_PAT` | `<placeholder>` | A PAT with enough permissions assigned to it to push into the main branch. This PAT is leveraged by pipelines that automatically generate ReadMe files to keep them up to date |
+| `DEPLOYMENT_SP_ID` | `de33a0e7-64d9-4a94-8fe9-b018cedf1e05` | This is the Principal (Object ID) for the Service Principal used as the `AZURE_CREDENTIALS`. It is used for Default Role Assignments when Modules are being deployed into Azure |
+| `PLATFORM_KEYVAULT` | `contoso-keyVault` | This is **OPTIONAL**. This allows the 'Dependency Workflow' to create an Azure Key Vault, that is used to store Remote  Parameter File Tokens and Sync Local Parameter File Tokens. See [Parameter File Tokens](./ParameterFileTokens.md) for details. Key Vault Name must be unique across Azure |
 
 The permissions that the principal needs differ between modules. Required permissions are in some cases documented in the modules readme. See [Azure/login](https://github.com/Azure/login) for more info about the secret creation.
 
 ### **Option 2**: Use it as a local reference to build bicep templates
 
-Instead of re-using the repository as-is you may opt to just save yourself a copy of the code. This may make sense if you want to havest the code for a larger setup that you assemble locally, or you may just want to keep it for reference. To do so, you essentially just have to download the repository like presented in the following:
+Instead of re-using the repository as-is you may opt to just save yourself a copy of the code. This may make sense if you want to have the code for a larger setup that you assemble locally, or you may just want to keep it for reference. To do so, you essentially just have to download the repository like presented in the following:
 
 #### Clone / download the repository
 
 To save a local copy of the repository you can either clone the repository or download it as a `.zip` file.
-A clone is a direct reference the the source repository which enables you to pull updates as they happen in the source repostory. To achive this you have to have `Git` installed and run the command
+A clone is a direct reference the the source repository which enables you to pull updates as they happen in the source repository. To achieve this you have to have `Git` installed and run the command
 
 ```PowerShell
   git clone 'https://github.com/Azure/ResourceModules.git'`
@@ -167,3 +172,44 @@ Last but not least, instead of fetching your own copy of the repository you can 
 <!-- Docs -->
 [PowerShellDocs]: <https://docs.microsoft.com/en-us/powershell/>
 [AzureNames]: <https://docs.microsoft.com/en-us/azure/azure-resource-manager/management/resource-name-rules>
+
+### Parameter File Tokens
+
+If you are forking or cloning the repository. Start by leveraging tokens in your parameter files. Tokens allow you to test in isolation, while also leveraging your own naming conventions when deploying resources, or other customizations to your own resources. Details are in the [Parameter File Tokens Documentation](./ParameterFileTokens.md).
+
+The repository contains a [Settings JSON](../../settings.json) that has a default token called `namePrefix`. You can use a custom value here and then start adding the tokens in your parameter files. The tokens default format is `<<tokenName>>` (i.e. `<<namePrefix>>`). Here is an example token:
+
+```json
+"localTokens": {
+    "tokens": [
+        {
+            "name": "namePrefix",
+            "value": "carml"
+        }
+    ]
+},
+```
+
+Here is how the token would look like in the Parameter File JSON:
+
+```json
+"parameters": {
+    "name": {
+        "value": "<<namePrefix>>storage"
+    }
+}
+```
+
+---
+Note: There are default tokens that can be enabled on any resource that leverages the [GitHub specific prerequisites](GettingStarted.md##github-specific-prerequisites) secrets.
+
+- `<<subscriptionId>>`: Will point to the Azure subscription.
+- `<<managementGroupId>>`: Will point to the Azure an Azure Management Group.
+- `<<tenantId>>`: Will point to the Azure Tenant ID.
+- `<<deploymentSpId>>`: Will point to the Service Principal ID used for deployments.
+- `<<platformKeyVault>>`: Will point to the Platform Azure Key Vault (Optional if enabled as per guidelines)
+- `<<resourceGroupName>>`: Will point to the Azure Resource Group where the resources are being deployed to. (This isn't defined in the secrets section but is injected at runtime)
+
+Review [Parameter File Tokens Documentation](./ParameterFileTokens.md) for more details.
+
+---
