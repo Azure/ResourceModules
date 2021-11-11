@@ -4,14 +4,14 @@ param name string
 @description('Required. Name of the parent Automation Account')
 param parent string
 
-@description('Optional. Location for all resources.')
-param location string = resourceGroup().location
+@description('Required. Module package uri, e.g. https://www.powershellgallery.com/api/v2/package')
+param uri string
 
 @description('Optional. Module version or specify latest to get the latest version')
 param version string = 'latest'
 
-@description('Required. Module package uri, e.g. https://www.powershellgallery.com/api/v2/package')
-param uri string
+@description('Optional. Location for all resources.')
+param location string = resourceGroup().location
 
 @description('Optional. Tags of the Automation Account resource.')
 param tags object = {}

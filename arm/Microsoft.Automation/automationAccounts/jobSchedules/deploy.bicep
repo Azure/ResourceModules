@@ -4,17 +4,17 @@ param name string
 @description('Required. Name of the parent Automation Account')
 param parent string
 
-@description('Optional. ')
-param parameters object = {}
-
-@description('Required. ')
+@description('Required. The runbook property associated with the entity.')
 param runbookName string
 
-@description('Optional. ')
-param runOn string = ''
-
-@description('Required. ')
+@description('Required. The schedule property associated with the entity.')
 param scheduleName string
+
+@description('Optional. List of job properties.')
+param parameters object = {}
+
+@description('Optional. The hybrid worker group that the scheduled job should run on.')
+param runOn string = ''
 
 @description('Optional. Customer Usage Attribution id (GUID). This GUID must be previously registered')
 param cuaId string = ''

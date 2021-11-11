@@ -22,14 +22,14 @@ param modules array = []
 @description('Optional. List of runbooks to be created in the automation account')
 param runbooks array = []
 
-@description('Optional. SAS token validity length. Usage: \'PT8H\' - valid for 8 hours; \'P5D\' - valid for 5 days; \'P1Y\' - valid for 1 year. When not provided, the SAS token will be valid for 8 hours.')
-param sasTokenValidityLength string = 'PT8H'
-
 @description('Optional. List of schedules to be created in the automation account')
 param schedules array = []
 
 @description('Optional. List of jobSchedules to be created in the automation account')
 param jobSchedules array = []
+
+@description('Optional. List of softwareUpdateConfigurations to be created in the automation account')
+param softwareUpdateConfigurations array = []
 
 @description('Optional. Configuration Details for private endpoints.')
 param privateEndpoints array = []
@@ -65,19 +65,8 @@ param roleAssignments array = []
 @description('Optional. Tags of the Automation Account resource.')
 param tags object = {}
 
-@description('Optional. Time used as a basis for e.g. the schedule start date')
-param baseTime string = utcNow('u')
-
 @description('Optional. Customer Usage Attribution id (GUID). This GUID must be previously registered')
 param cuaId string = ''
-
-var accountSasProperties = {
-  signedServices: 'b'
-  signedPermission: 'r'
-  signedExpiry: dateTimeAdd(baseTime, sasTokenValidityLength)
-  signedResourceTypes: 'o'
-  signedProtocol: 'https'
-}
 
 @description('Optional. The name of logs that will be streamed.')
 @allowed([
@@ -132,59 +121,6 @@ resource automationAccount 'Microsoft.Automation/automationAccounts@2020-01-13-p
       name: skuName
     }
   }
-
-  // resource automationAccount_modules 'modules@2020-01-13-preview' = [for (module, index) in modules: {
-  //   name: module.name
-  //   location: location
-  //   tags: tags
-  //   properties: {
-  //     contentLink: {
-  //       uri: module.version == 'latest' ? '${module.uri}/${module.name}' : '${module.uri}/${module.name}/${module.version}'
-  //       version: module.version == 'latest' ? null : module.version
-  //     }
-  //   }
-  // }]
-
-  // resource automationAccount_schedules 'schedules@2020-01-13-preview' = [for (schedule, index) in schedules: {
-  //   name: schedule.scheduleName
-  //   properties: {
-  //     startTime: (empty(schedule.startTime) ? dateTimeAdd(baseTime, 'PT10M') : schedule.startTime)
-  //     frequency: (empty(schedule.frequency) ? json('null') : schedule.frequency)
-  //     expiryTime: (empty(schedule.expiryTime) ? json('null') : schedule.expiryTime)
-  //     interval: ((0 == schedule.interval) ? json('null') : schedule.interval)
-  //     timeZone: (empty(schedule.timeZone) ? json('null') : schedule.timeZone)
-  //     advancedSchedule: (empty(schedule.advancedSchedule) ? json('null') : schedule.advancedSchedule)
-  //   }
-  // }]
-
-  // resource automationAccount_runbooks 'runbooks@2019-06-01' = [for (runbook, index) in runbooks: {
-  //   name: runbook.runbookName
-  //   properties: {
-  //     runbookType: (empty(runbook.runbookType) ? json('null') : runbook.runbookType)
-  //     publishContentLink: {
-  //       uri: (empty(runbook.runbookScriptUri) ? json('null') : (empty(runbook.scriptStorageAccountId) ? 'runbook.runbookScriptUri' : 'runbook.runbookScriptUri${listAccountSas(runbook.scriptStorageAccountId, '2019-04-01', accountSasProperties).accountSasToken}'))
-  //       version: (empty(runbook.version) ? json('null') : runbook.version)
-  //     }
-  //   }
-  // }]
-
-  // resource automationAccount_jobSchedules 'jobSchedules@2020-01-13-preview' = [for (jobSchedule, index) in jobSchedules: {
-  //   name: jobSchedule.jobScheduleName
-  //   properties: {
-  //     parameters: (empty(jobSchedule.parameters) ? json('null') : jobSchedule.parameters)
-  //     runbook: {
-  //       name: jobSchedule.runbookName
-  //     }
-  //     runOn: (empty(jobSchedule.runOn) ? json('null') : jobSchedule.runOn)
-  //     schedule: {
-  //       name: jobSchedule.scheduleName
-  //     }
-  //   }
-    // dependsOn: [
-    //   automationAccount_schedules
-    //   automationAccount_runbooks
-    // ]
-  // }]
 }
 
 module automationAccount_modules './modules/deploy.bicep' = [for (module, index) in modules: {
@@ -245,6 +181,18 @@ module automationAccount_jobSchedules './jobSchedules/deploy.bicep' = [for (jobS
     ]
 }]
 
+module automationAccount_softwareUpdateConfigurations './softwareUpdateConfigurations/deploy.bicep' = [for (softwareUpdateConfiguration, index) in softwareUpdateConfigurations: {
+  name: '${uniqueString(deployment().name, location)}-AutoAccount-JobSchedule-${index}'
+  params: {
+    name: softwareUpdateConfiguration.name
+    parent: automationAccount.name
+    frequency: softwareUpdateConfiguration.frequency
+    operatingSystem: softwareUpdateConfiguration.operatingSystem
+    rebootSetting: softwareUpdateConfiguration.rebootSetting
+
+  }
+}]
+
 resource automationAccount_lock 'Microsoft.Authorization/locks@2016-09-01' = if (lock != 'NotSpecified') {
   name: '${uniqueString(deployment().name, location)}-AutoAccount-${lock}-lock'
   properties: {
@@ -295,3 +243,4 @@ output modules array = modules
 output schedules array = schedules
 output jobSchedules array = jobSchedules
 output runbooks array = runbooks
+output softwareUpdateConfiguration array = softwareUpdateConfigurations

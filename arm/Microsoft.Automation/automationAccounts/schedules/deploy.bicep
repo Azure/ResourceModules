@@ -12,10 +12,10 @@ param parent string
 })
 param advancedSchedule object = {}
 
-@description('Optional. Gets or sets the description of the schedule.')
+@description('Optional. The description of the schedule.')
 param scheduleDescription string = ''
 
-@description('Optional. Gets or sets the end time of the schedule.')
+@description('Optional. The end time of the schedule.')
 param expiryTime string = ''
 
 @allowed([
@@ -26,16 +26,16 @@ param expiryTime string = ''
   'OneTime'
   'Week'
 ])
-@description('Optional. Gets or sets the frequency of the schedule.')
+@description('Optional. The frequency of the schedule.')
 param frequency string = 'OneTime'
 
 @description('Optional. Anything')
 param interval int = 0
 
-@description('Optional. Gets or sets the start time of the schedule.')
+@description('Optional. The start time of the schedule.')
 param startTime string = ''
 
-@description('Optional. Gets or sets the time zone of the schedule.')
+@description('Optional. The time zone of the schedule.')
 param timeZone string = ''
 
 @description('Optional. Time used as a basis for e.g. the schedule start date')
