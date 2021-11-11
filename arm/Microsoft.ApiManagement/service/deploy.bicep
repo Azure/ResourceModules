@@ -198,28 +198,28 @@ module apis_resource 'apis/deploy.bicep' = [for (api, index) in apis: {
   name: '${uniqueString(deployment().name, location)}-api-${index}'
   params: {
     apiManagementServiceName: name
-    displayName:
-    name:
-    path:
-    apiDescription:
-    apiManagementServiceApiPolicy:
-    apiRevision:
-    apiRevisionDescription:
-    apiType:
-    apiVersion:
-    apiVersionDescription:
-    apiVersionSet:
-    authenticationSettings:
-    format:
-    isCurrent:
-    protocols:
-    serviceUrl:
-    sourceApiId:
-    subscriptionKeyParameterNames:
-    subscriptionRequired:
-    type:
-    value:
-    wsdlSelector:
+    displayName: contains(api, 'displayName') ? api.displayName : ''
+    name: contains(api, 'name') ? api.name : ''
+    path: contains(api, 'path') ? api.path : ''
+    apiDescription: contains(api, 'apiDescription') ? api.apiDescription : ''
+    apiManagementServiceApiPolicy: contains(api, 'apiManagementServiceApiPolicy') ? api.apiManagementServiceApiPolicy : ''
+    apiRevision: contains(api, 'apiRevision') ? api.apiRevision : ''
+    apiRevisionDescription: contains(api, 'apiRevisionDescription') ? api.apiRevisionDescription : ''
+    apiType: contains(api, 'apiType') ? api.apiType : ''
+    apiVersion: contains(api, 'apiVersion') ? api.apiVersion : ''
+    apiVersionDescription: contains(api, 'apiVersionDescription') ? api.apiVersionDescription : ''
+    apiVersionSet: contains(api, 'apiVersionSet') ? api.apiVersionSet : ''
+    authenticationSettings: contains(api, 'authenticationSettings') ? api.authenticationSettings : ''
+    format: contains(api, 'format') ? api.format : ''
+    isCurrent: contains(api, 'isCurrent') ? api.isCurrent : ''
+    protocols: contains(api, 'protocols') ? api.protocols : ''
+    serviceUrl: contains(api, 'serviceUrl') ? api.serviceUrl : ''
+    sourceApiId: contains(api, 'sourceApiId') ? api.sourceApiId : ''
+    subscriptionKeyParameterNames: contains(api, 'subscriptionKeyParameterNames') ? api.subscriptionKeyParameterNames : ''
+    subscriptionRequired: contains(api, 'subscriptionRequired') ? api.subscriptionRequired : ''
+    type: contains(api, 'type') ? api.type : ''
+    value: contains(api, 'value') ? api.value : ''
+    wsdlSelector: contains(api, 'wsdlSelector') ? api.wsdlSelector : ''
   }
 }]
 
@@ -227,22 +227,22 @@ module authorizationServers_resource 'authorizationServers/deploy.bicep' = [for 
   name: '${uniqueString(deployment().name, location)}-authorizationServer-${index}'
   params: {
     apiManagementServiceName: name
-    name:
-    authorizationEndpoint:
-    authorizationMethods:
-    bearerTokenSendingMethods:
-    clientAuthenticationMethod:
-    clientId:
-    clientRegistrationEndpoint:
-    clientSecret:
-    defaultScope:
-    grantTypes:
-    resourceOwnerPassword:
-    resourceOwnerUsername:
-    serverDescription:
-    supportState:
-    tokenBodyParameters:
-    tokenEndpoint:
+    name: contains(authorizationServer, 'name') ? authorizationServer.name : ''
+    authorizationEndpoint: contains(authorizationServer, 'authorizationEndpoint') ? authorizationServer.authorizationEndpoint : ''
+    authorizationMethods: contains(authorizationServer, 'authorizationMethods') ? authorizationServer.authorizationMethods : ''
+    bearerTokenSendingMethods: contains(authorizationServer, 'bearerTokenSendingMethods') ? authorizationServer.bearerTokenSendingMethods : ''
+    clientAuthenticationMethod: contains(authorizationServer, 'clientAuthenticationMethod') ? authorizationServer.clientAuthenticationMethod : ''
+    clientId: contains(authorizationServer, 'clientId') ? authorizationServer.clientId : ''
+    clientRegistrationEndpoint: contains(authorizationServer, 'clientRegistrationEndpoint') ? authorizationServer.clientRegistrationEndpoint : ''
+    clientSecret: contains(authorizationServer, 'clientSecret') ? authorizationServer.clientSecret : ''
+    defaultScope: contains(authorizationServer, 'defaultScope') ? authorizationServer.defaultScope : ''
+    grantTypes: contains(authorizationServer, 'grantTypes') ? authorizationServer.grantTypes : ''
+    resourceOwnerPassword: contains(authorizationServer, 'resourceOwnerPassword') ? authorizationServer.resourceOwnerPassword : ''
+    resourceOwnerUsername: contains(authorizationServer, 'resourceOwnerUsername') ? authorizationServer.resourceOwnerUsername : ''
+    serverDescription: contains(authorizationServer, 'serverDescription') ? authorizationServer.serverDescription : ''
+    supportState: contains(authorizationServer, 'supportState') ? authorizationServer.supportState : ''
+    tokenBodyParameters: contains(authorizationServer, 'tokenBodyParameters') ? authorizationServer.tokenBodyParameters : ''
+    tokenEndpoint: contains(authorizationServer, 'tokenEndpoint') ? authorizationServer.tokenEndpoint : ''
   }
 }]
 
@@ -250,16 +250,16 @@ module backends_resource 'backends/deploy.bicep' = [for (backend, index) in back
   name: '${uniqueString(deployment().name, location)}-backend-${index}'
   params: {
     apiManagementServiceName: name
-    url:
-    backendDescription:
-    credentials:
-    name:
-    protocol:
-    proxy:
-    resourceId:
-    serviceFabricCluster:
-    title:
-    tls:
+    url: contains(backend, 'url') ? backend.url : ''
+    backendDescription: contains(backend, 'backendDescription') ? backend.backendDescription : ''
+    credentials: contains(backend, 'credentials') ? backend.credentials : ''
+    name: contains(backend, 'name') ? backend.name : ''
+    protocol: contains(backend, 'protocol') ? backend.protocol : ''
+    proxy: contains(backend, 'proxy') ? backend.proxy : ''
+    resourceId: contains(backend, 'resourceId') ? backend.resourceId : ''
+    serviceFabricCluster: contains(backend, 'serviceFabricCluster') ? backend.serviceFabricCluster : ''
+    title: contains(backend, 'title') ? backend.title : ''
+    tls: contains(backend, 'tls') ? backend.tls : ''
   }
 }]
 
@@ -267,11 +267,11 @@ module caches_resource 'caches/deploy.bicep' = [for (cache, index) in caches: {
   name: '${uniqueString(deployment().name, location)}-cache-${index}'
   params: {
     apiManagementServiceName: name
-    cacheDescription:
-    connectionString:
-    name:
-    resourceId:
-    useFromLocation:
+    cacheDescription: contains(cache, 'cacheDescription') ? cache.cacheDescription : ''
+    connectionString: contains(cache, 'connectionString') ? cache.connectionString : ''
+    name: contains(cache, 'name') ? cache.name : ''
+    resourceId: contains(cache, 'resourceId') ? cache.resourceId : ''
+    useFromLocation: contains(cache, 'useFromLocation') ? cache.useFromLocation : ''
   }
 }]
 
@@ -298,12 +298,12 @@ module namedValues_resource 'namedValues/deploy.bicep' = [for (namedValue, index
   name: '${uniqueString(deployment().name, location)}-namedValue-${index}'
   params: {
     apiManagementServiceName: name
-    displayName:
-    keyVault:
-    name:
-    namedValueTags:
-    secret:
-    value:
+    displayName: contains(namedValue, 'displayName') ? namedValue.displayName : ''
+    keyVault: contains(namedValue, 'keyVault') ? namedValue.keyVault : ''
+    name: contains(namedValue, 'name') ? namedValue.name : ''
+    namedValueTags: contains(namedValue, 'namedValueTags') ? namedValue.namedValueTags : ''
+    secret: contains(namedValue, 'secret') ? namedValue.secret : ''
+    value: contains(namedValue, 'value') ? namedValue.value : ''
   }
 }]
 
@@ -329,15 +329,15 @@ module products_resource 'products/deploy.bicep' = [for (product, index) in prod
   name: '${uniqueString(deployment().name, location)}-product-${index}'
   params: {
     apiManagementServiceName: name
-    approvalRequired:
-    name:
-    productApis:
-    productDescription:
-    productGroups:
-    state:
-    subscriptionRequired:
-    subscriptionsLimit:
-    terms:
+    approvalRequired: contains(product, 'approvalRequired') ? product.approvalRequired : ''
+    name: contains(product, 'name') ? product.name : ''
+    productApis: contains(product, 'productApis') ? product.productApis : ''
+    productDescription: contains(product, 'productDescription') ? product.productDescription : ''
+    productGroups: contains(product, 'productGroups') ? product.productGroups : ''
+    state: contains(product, 'state') ? product.state : ''
+    subscriptionRequired: contains(product, 'subscriptionRequired') ? product.subscriptionRequired : ''
+    subscriptionsLimit: contains(product, 'subscriptionsLimit') ? product.subscriptionsLimit : ''
+    terms: contains(product, 'terms') ? product.terms : ''
   }
 }]
 
@@ -345,13 +345,13 @@ module subscriptions_resource 'subscriptions/deploy.bicep' = [for (subscription,
   name: '${uniqueString(deployment().name, location)}-subscription-${index}'
   params: {
     apiManagementServiceName: name
-    name:
-    allowTracing:
-    ownerId:
-    primaryKey:
-    scope:
-    secondaryKey:
-    state:
+    name: contains(subscription, 'name') ? subscription.name : ''
+    allowTracing: contains(subscription, 'allowTracing') ? subscription.allowTracing : ''
+    ownerId: contains(subscription, 'ownerId') ? subscription.ownerId : ''
+    primaryKey: contains(subscription, 'primaryKey') ? subscription.primaryKey : ''
+    scope: contains(subscription, 'scope') ? subscription.scope : ''
+    secondaryKey: contains(subscription, 'secondaryKey') ? subscription.secondaryKey : ''
+    state: contains(subscription, 'state') ? subscription.state : ''
   }
 }]
 
