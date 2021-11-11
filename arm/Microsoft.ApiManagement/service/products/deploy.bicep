@@ -17,7 +17,7 @@ param productApis array = []
 param productGroups array = []
 
 @description('Required. Product Name.')
-param name string = ''
+param name string
 
 @description('Optional. whether product is published or not. Published products are discoverable by users of developer portal. Non published products are visible only to administrators. Default state of Product is notPublished. - notPublished or published')
 param state string = 'published'

@@ -47,7 +47,7 @@ param identityProviderSignUpPolicyName string = ''
 param identityProviderType string = 'aad'
 
 @description('Required. Identity provider name')
-param name string = ''
+param name string
 
 var isAadB2C = (identityProviderType == 'aadB2C')
 

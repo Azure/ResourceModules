@@ -5,7 +5,7 @@ param apiManagementServiceName string
 param cuaId string = ''
 
 @description('Required. Policy name')
-param name string = ''
+param name string
 
 @description('Optional. Policy properties.')
 param properties object = {}

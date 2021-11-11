@@ -2,7 +2,7 @@
 param apiManagementServiceName string
 
 @description('Required. Backend Name.')
-param name string = ''
+param name string
 
 @description('Optional. Backend Credentials Contract Properties.')
 param credentials object = {}

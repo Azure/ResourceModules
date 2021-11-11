@@ -332,14 +332,14 @@ module products_resource 'products/deploy.bicep' = [for (product, index) in prod
   name: '${uniqueString(deployment().name, location)}-product-${index}'
   params: {
     apiManagementServiceName: name
-    approvalRequired: contains(product, 'approvalRequired') ? product.approvalRequired : ''
-    name: contains(product, 'name') ? product.name : ''
-    productApis: contains(product, 'productApis') ? product.productApis : ''
+    approvalRequired: contains(product, 'approvalRequired') ? product.approvalRequired : false
+    name: product.name
+    productApis: contains(product, 'productApis') ? product.productApis : []
     productDescription: contains(product, 'productDescription') ? product.productDescription : ''
-    productGroups: contains(product, 'productGroups') ? product.productGroups : ''
-    state: contains(product, 'state') ? product.state : ''
-    subscriptionRequired: contains(product, 'subscriptionRequired') ? product.subscriptionRequired : ''
-    subscriptionsLimit: contains(product, 'subscriptionsLimit') ? product.subscriptionsLimit : ''
+    productGroups: contains(product, 'productGroups') ? product.productGroups : []
+    state: contains(product, 'state') ? product.state : 'published'
+    subscriptionRequired: contains(product, 'subscriptionRequired') ? product.subscriptionRequired : false
+    subscriptionsLimit: contains(product, 'subscriptionsLimit') ? product.subscriptionsLimit : 1
     terms: contains(product, 'terms') ? product.terms : ''
   }
 }]
@@ -349,10 +349,10 @@ module subscriptions_resource 'subscriptions/deploy.bicep' = [for (subscription,
   params: {
     apiManagementServiceName: name
     name: contains(subscription, 'name') ? subscription.name : ''
-    allowTracing: contains(subscription, 'allowTracing') ? subscription.allowTracing : ''
+    allowTracing: contains(subscription, 'allowTracing') ? subscription.allowTracing : false
     ownerId: contains(subscription, 'ownerId') ? subscription.ownerId : ''
     primaryKey: contains(subscription, 'primaryKey') ? subscription.primaryKey : ''
-    scope: contains(subscription, 'scope') ? subscription.scope : ''
+    scope: contains(subscription, 'scope') ? subscription.scope : '/apis'
     secondaryKey: contains(subscription, 'secondaryKey') ? subscription.secondaryKey : ''
     state: contains(subscription, 'state') ? subscription.state : ''
   }

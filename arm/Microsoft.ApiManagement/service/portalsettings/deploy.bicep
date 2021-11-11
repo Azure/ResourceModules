@@ -5,7 +5,7 @@ param apiManagementServiceName string
 param cuaId string = ''
 
 @description('Required. Portal setting name')
-param name string = ''
+param name string
 
 @description('Optional. Portal setting properties.')
 param properties object = {}
