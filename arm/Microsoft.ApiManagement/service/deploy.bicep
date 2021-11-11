@@ -198,28 +198,28 @@ module apis_resource 'apis/deploy.bicep' = [for (api, index) in apis: {
   name: '${uniqueString(deployment().name, location)}-api-${index}'
   params: {
     apiManagementServiceName: name
-    displayName: contains(api, 'displayName') ? api.displayName : ''
-    name: contains(api, 'name') ? api.name : ''
-    path: contains(api, 'path') ? api.path : ''
+    displayName: api.displayName
+    name: api.name
+    path: api.path
     apiDescription: contains(api, 'apiDescription') ? api.apiDescription : ''
-    apiManagementServiceApiPolicy: contains(api, 'apiManagementServiceApiPolicy') ? api.apiManagementServiceApiPolicy : ''
+    apiManagementServiceApiPolicy: contains(api, 'apiManagementServiceApiPolicy') ? api.apiManagementServiceApiPolicy : {}
     apiRevision: contains(api, 'apiRevision') ? api.apiRevision : ''
     apiRevisionDescription: contains(api, 'apiRevisionDescription') ? api.apiRevisionDescription : ''
-    apiType: contains(api, 'apiType') ? api.apiType : ''
+    apiType: contains(api, 'apiType') ? api.apiType : 'http'
     apiVersion: contains(api, 'apiVersion') ? api.apiVersion : ''
     apiVersionDescription: contains(api, 'apiVersionDescription') ? api.apiVersionDescription : ''
-    apiVersionSet: contains(api, 'apiVersionSet') ? api.apiVersionSet : ''
-    authenticationSettings: contains(api, 'authenticationSettings') ? api.authenticationSettings : ''
-    format: contains(api, 'format') ? api.format : ''
-    isCurrent: contains(api, 'isCurrent') ? api.isCurrent : ''
-    protocols: contains(api, 'protocols') ? api.protocols : ''
+    apiVersionSet: contains(api, 'apiVersionSet') ? api.apiVersionSet : {}
+    authenticationSettings: contains(api, 'authenticationSettings') ? api.authenticationSettings : {}
+    format: contains(api, 'format') ? api.format : 'openapi'
+    isCurrent: contains(api, 'isCurrent') ? api.isCurrent : true
+    protocols: contains(api, 'protocols') ? api.protocols : ['https']
     serviceUrl: contains(api, 'serviceUrl') ? api.serviceUrl : ''
     sourceApiId: contains(api, 'sourceApiId') ? api.sourceApiId : ''
-    subscriptionKeyParameterNames: contains(api, 'subscriptionKeyParameterNames') ? api.subscriptionKeyParameterNames : ''
-    subscriptionRequired: contains(api, 'subscriptionRequired') ? api.subscriptionRequired : ''
-    type: contains(api, 'type') ? api.type : ''
+    subscriptionKeyParameterNames: contains(api, 'subscriptionKeyParameterNames') ? api.subscriptionKeyParameterNames : {}
+    subscriptionRequired: contains(api, 'subscriptionRequired') ? api.subscriptionRequired : false
+    type: contains(api, 'type') ? api.type : 'http'
     value: contains(api, 'value') ? api.value : ''
-    wsdlSelector: contains(api, 'wsdlSelector') ? api.wsdlSelector : ''
+    wsdlSelector: contains(api, 'wsdlSelector') ? api.wsdlSelector : {}
   }
 }]
 
@@ -227,21 +227,21 @@ module authorizationServers_resource 'authorizationServers/deploy.bicep' = [for 
   name: '${uniqueString(deployment().name, location)}-authorizationServer-${index}'
   params: {
     apiManagementServiceName: name
-    name: contains(authorizationServer, 'name') ? authorizationServer.name : ''
-    authorizationEndpoint: contains(authorizationServer, 'authorizationEndpoint') ? authorizationServer.authorizationEndpoint : ''
-    authorizationMethods: contains(authorizationServer, 'authorizationMethods') ? authorizationServer.authorizationMethods : ''
-    bearerTokenSendingMethods: contains(authorizationServer, 'bearerTokenSendingMethods') ? authorizationServer.bearerTokenSendingMethods : ''
-    clientAuthenticationMethod: contains(authorizationServer, 'clientAuthenticationMethod') ? authorizationServer.clientAuthenticationMethod : ''
-    clientId: contains(authorizationServer, 'clientId') ? authorizationServer.clientId : ''
+    name: authorizationServer.name
+    authorizationEndpoint: authorizationServer.authorizationEndpoint
+    authorizationMethods: contains(authorizationServer, 'authorizationMethods') ? authorizationServer.authorizationMethods : ['GET']
+    bearerTokenSendingMethods: contains(authorizationServer, 'bearerTokenSendingMethods') ? authorizationServer.bearerTokenSendingMethods : ['authorizationHeader']
+    clientAuthenticationMethod: contains(authorizationServer, 'clientAuthenticationMethod') ? authorizationServer.clientAuthenticationMethod : ['Basic']
+    clientId: authorizationServer.clientId
     clientRegistrationEndpoint: contains(authorizationServer, 'clientRegistrationEndpoint') ? authorizationServer.clientRegistrationEndpoint : ''
-    clientSecret: contains(authorizationServer, 'clientSecret') ? authorizationServer.clientSecret : ''
+    clientSecret: authorizationServer.clientSecret
     defaultScope: contains(authorizationServer, 'defaultScope') ? authorizationServer.defaultScope : ''
-    grantTypes: contains(authorizationServer, 'grantTypes') ? authorizationServer.grantTypes : ''
+    grantTypes: authorizationServer.grantTypes
     resourceOwnerPassword: contains(authorizationServer, 'resourceOwnerPassword') ? authorizationServer.resourceOwnerPassword : ''
     resourceOwnerUsername: contains(authorizationServer, 'resourceOwnerUsername') ? authorizationServer.resourceOwnerUsername : ''
     serverDescription: contains(authorizationServer, 'serverDescription') ? authorizationServer.serverDescription : ''
-    supportState: contains(authorizationServer, 'supportState') ? authorizationServer.supportState : ''
-    tokenBodyParameters: contains(authorizationServer, 'tokenBodyParameters') ? authorizationServer.tokenBodyParameters : ''
+    supportState: contains(authorizationServer, 'supportState') ? authorizationServer.supportState : false
+    tokenBodyParameters: contains(authorizationServer, 'tokenBodyParameters') ? authorizationServer.tokenBodyParameters : []
     tokenEndpoint: contains(authorizationServer, 'tokenEndpoint') ? authorizationServer.tokenEndpoint : ''
   }
 }]

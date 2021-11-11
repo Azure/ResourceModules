@@ -5,30 +5,32 @@ param name string
 param apiManagementServiceName string
 
 @description('Required. OAuth authorization endpoint. See <http://tools.ietf.org/html/rfc6749#section-3.2>.')
-param authorizationEndpoint string = ''
+param authorizationEndpoint string
 
 @description('Optional. HTTP verbs supported by the authorization endpoint. GET must be always present. POST is optional. - HEAD, OPTIONS, TRACE, GET, POST, PUT, PATCH, DELETE')
 param authorizationMethods array = [
   'GET'
 ]
 
-@description('Required. Specifies the mechanism by which access token is passed to the API. - authorizationHeader or query')
+@description('Optional. Specifies the mechanism by which access token is passed to the API. - authorizationHeader or query')
 param bearerTokenSendingMethods array = [
   'authorizationHeader'
 ]
 
-@description('Required. Method of authentication supported by the token endpoint of this authorization server. Possible values are Basic and/or Body. When Body is specified, client credentials and other parameters are passed within the request body in the application/x-www-form-urlencoded format. - Basic or Body')
-param clientAuthenticationMethod array = []
+@description('Optional. Method of authentication supported by the token endpoint of this authorization server. Possible values are Basic and/or Body. When Body is specified, client credentials and other parameters are passed within the request body in the application/x-www-form-urlencoded format. - Basic or Body')
+param clientAuthenticationMethod array = [
+  'Basic'
+]
 
 @description('Required. Client or app id registered with this authorization server.')
-param clientId string = ''
+param clientId string
 
-@description('Required. Optional reference to a page where client or app registration for this authorization server is performed. Contains absolute URL to entity being referenced.')
+@description('Optional. Optional reference to a page where client or app registration for this authorization server is performed. Contains absolute URL to entity being referenced.')
 param clientRegistrationEndpoint string = ''
 
 @description('Required. Client or app secret registered with this authorization server. This property will not be filled on \'GET\' operations! Use \'/listSecrets\' POST request to get the value.')
 @secure()
-param clientSecret string = ''
+param clientSecret string
 
 @description('Optional. Customer Usage Attribution id (GUID). This GUID must be previously registered')
 param cuaId string = ''
@@ -40,7 +42,7 @@ param defaultScope string = ''
 param serverDescription string = ''
 
 @description('Required. Form of an authorization grant, which the client uses to request the access token. - authorizationCode, implicit, resourceOwnerPassword, clientCredentials')
-param grantTypes array = []
+param grantTypes array
 
 @description('Optional. Can be optionally specified when resource owner password grant type is supported by this authorization server. Default resource owner password.')
 param resourceOwnerPassword string = ''
