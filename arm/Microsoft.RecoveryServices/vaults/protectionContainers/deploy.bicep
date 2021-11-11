@@ -66,4 +66,4 @@ output protectionContainerResourceGroup string = resourceGroup().name
 output protectionContainerId string = protectionContainer.id
 
 @description('The Name of the Protection Container.')
-output protectionContainer string = protectionContainer.name
+output protectionContainerName string = protectionContainer.name

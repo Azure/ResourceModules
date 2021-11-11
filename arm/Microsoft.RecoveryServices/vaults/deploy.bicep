@@ -126,7 +126,7 @@ resource rsv 'Microsoft.RecoveryServices/vaults@2021-08-01' = {
   properties: {}
 }
 
-module backupStorageConfiguration 'backupStorageConfig/deploy.bicep' = {
+module rsv_backupStorageConfiguration 'backupStorageConfig/deploy.bicep' = {
   name: '${uniqueString(deployment().name, location)}-BackupStorageConfig'
   params: {
     recoveryVaultName: rsv.name
@@ -135,7 +135,7 @@ module backupStorageConfiguration 'backupStorageConfig/deploy.bicep' = {
   }
 }
 
-module protectionContainer 'protectionContainers/deploy.bicep' = [for (protectionContainer, index) in protectionContainers: {
+module rsv_protectionContainer 'protectionContainers/deploy.bicep' = [for (protectionContainer, index) in protectionContainers: {
   name: '${uniqueString(deployment().name, location)}-ProtectionContainers-${index}'
   params: {
     recoveryVaultName: rsv.name
@@ -147,7 +147,7 @@ module protectionContainer 'protectionContainers/deploy.bicep' = [for (protectio
   }
 }]
 
-module backupPolicy 'backupPolicies/deploy.bicep' = [for (backupPolicy, index) in backupPolicies: {
+module rsv_backupPolicy 'backupPolicies/deploy.bicep' = [for (backupPolicy, index) in backupPolicies: {
   name: '${uniqueString(deployment().name, location)}-BackupPolicy-${index}'
   params: {
     recoveryVaultName: rsv.name
