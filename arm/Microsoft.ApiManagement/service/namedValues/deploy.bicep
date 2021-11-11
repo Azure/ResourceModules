@@ -5,13 +5,13 @@ param apiManagementServiceName string = ''
 param cuaId string = ''
 
 @description('Required. Unique name of NamedValue. It may contain only letters, digits, period, dash, and underscore characters.')
-param displayName string = ''
+param displayName string
 
 @description('Optional. KeyVault location details of the namedValue. ')
 param keyVault object = {}
 
 @description('Required. Named value Name.')
-param name string = ''
+param name string
 
 @description('Optional. Tags that when provided can be used to filter the NamedValue list. - string')
 param namedValueTags array = []

@@ -301,12 +301,12 @@ module namedValues_resource 'namedValues/deploy.bicep' = [for (namedValue, index
   name: '${uniqueString(deployment().name, location)}-namedValue-${index}'
   params: {
     apiManagementServiceName: name
-    displayName: contains(namedValue, 'displayName') ? namedValue.displayName : ''
-    keyVault: contains(namedValue, 'keyVault') ? namedValue.keyVault : ''
-    name: contains(namedValue, 'name') ? namedValue.name : ''
-    namedValueTags: contains(namedValue, 'namedValueTags') ? namedValue.namedValueTags : ''
-    secret: contains(namedValue, 'secret') ? namedValue.secret : ''
-    value: contains(namedValue, 'value') ? namedValue.value : ''
+    displayName: namedValue.displayName
+    keyVault: contains(namedValue, 'keyVault') ? namedValue.keyVault : {}
+    name: namedValue.name
+    namedValueTags: contains(namedValue, 'namedValueTags') ? namedValue.namedValueTags : []
+    secret: contains(namedValue, 'secret') ? namedValue.secret : false
+    value: contains(namedValue, 'value') ? namedValue.value : newGuid()
   }
 }]
 
