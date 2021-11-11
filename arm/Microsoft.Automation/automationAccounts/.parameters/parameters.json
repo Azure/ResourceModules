@@ -41,9 +41,52 @@
         "jobSchedules": {
             "value": [
                 {
-                    "name": "2763f40e-f874-4dda-b43a-60c5a7cb8783", // jobSchedule used to generate unique id
-                    "scheduleName": "TestSchedule", // Gets or sets the schedule
-                    "runbookName": "TestRunbook" // Gets or sets the runbook
+                    "name": "2763f40e-f874-4dda-b43a-60c5a7cb8784",
+                    "scheduleName": "TestSchedule",
+                    "runbookName": "TestRunbook"
+                }
+            ]
+        },
+        "linkedWorkspaceId": {
+            "value": "/subscriptions/8629be3b-96bc-482d-a04b-ffff597c65a2/resourcegroups/validation-rg/providers/microsoft.operationalinsights/workspaces/testlaw"
+        },
+        "softwareUpdateConfigurations": {
+            "value": [
+                {
+                    "name": "Windows_ZeroDay",
+                    "frequency": "Month",
+                    "operatingSystem": "Windows",
+                    "rebootSetting": "IfRequired",
+                    "scopeByTags": {
+                        "Update": [
+                            "Automatic-Wave1"
+                        ]
+                    },
+                    "maintenanceWindow": "PT4H",
+                    "updateClassifications": [
+                        "Critical",
+                        "Security",
+                        "UpdateRollup",
+                        "FeaturePack",
+                        "ServicePack",
+                        "Definition",
+                        "Tools",
+                        "Updates"
+                    ],
+                    "includeUpdates": [
+                        "654321"
+                    ],
+                    "excludeUpdates": [
+                        "123456"
+                    ],
+                    "interval": 1,
+                    "monthlyOccurrences": [
+                        {
+                            "occurrence": 3,
+                            "day": "Friday"
+                        }
+                    ],
+                    "startTime": "22:00"
                 }
             ]
         }

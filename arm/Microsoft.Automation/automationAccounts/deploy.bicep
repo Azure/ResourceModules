@@ -28,6 +28,9 @@ param schedules array = []
 @description('Optional. List of jobSchedules to be created in the automation account')
 param jobSchedules array = []
 
+@description('Optional. Id of the linked log analytics workspace')
+param linkedWorkspaceId string = ''
+
 @description('Optional. List of softwareUpdateConfigurations to be created in the automation account')
 param softwareUpdateConfigurations array = []
 
@@ -181,8 +184,20 @@ module automationAccount_jobSchedules './jobSchedules/deploy.bicep' = [for (jobS
     ]
 }]
 
+resource automationAccount_LogAnalyticsWorkspace 'Microsoft.OperationalInsights/workspaces@2021-06-01' existing = if (!empty(linkedWorkspaceId)) {
+  name: last(split(linkedWorkspaceId, '/'))
+}
+
+resource automationAccount_LogAnalyticsWorkspaceLink 'microsoft.operationalinsights/workspaces/linkedservice@2020-08-01' = if (!empty(linkedWorkspaceId)) {
+  name: 'automation'
+  parent: automationAccount_LogAnalyticsWorkspace
+  properties: {
+    resourceId: automationAccount.id
+  }
+}
+
 module automationAccount_softwareUpdateConfigurations './softwareUpdateConfigurations/deploy.bicep' = [for (softwareUpdateConfiguration, index) in softwareUpdateConfigurations: {
-  name: '${uniqueString(deployment().name, location)}-AutoAccount-JobSchedule-${index}'
+  name: '${uniqueString(deployment().name, location)}-AutoAccount-SwUpdateConfig-${index}'
   params: {
     name: softwareUpdateConfiguration.name
     parent: automationAccount.name
@@ -191,6 +206,9 @@ module automationAccount_softwareUpdateConfigurations './softwareUpdateConfigura
     rebootSetting: softwareUpdateConfiguration.rebootSetting
 
   }
+  dependsOn: [
+    automationAccount_LogAnalyticsWorkspaceLink
+  ]
 }]
 
 resource automationAccount_lock 'Microsoft.Authorization/locks@2016-09-01' = if (lock != 'NotSpecified') {

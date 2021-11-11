@@ -88,7 +88,7 @@ param postTaskSource string = ''
 
 @description('Optional. The interval of the frequency for the deployment schedule. 1 Hour is every hour, 2 Day is every second day, etc.')
 @maxValue(100)
-param interval int = 0
+param interval int = 1
 
 @description('Optional. Enables the deployment schedule.')
 param isEnabled bool = true
@@ -182,11 +182,11 @@ param cuaId string = ''
 
 var updateClassifications_var = '${replace(replace(replace(replace(string(updateClassifications), ',', ', '), '[', ''), ']', ''), '"', '')}'
 
-var timeLimit = dateTimeAdd(baseTime, 'PT5M', 'u')
+// var timeLimit = dateTimeAdd(baseTime, 'PT5M', 'u')
 
-var providedStartTime = dateTimeAdd(startTime, 'PT0S', 'u')
+// var providedStartTime = dateTimeAdd(startTime, 'PT0S', 'u')
 
-var startTime_var = providedStartTime > timeLimit ? providedStartTime : dateTimeAdd(providedStartTime, 'P1D', 'u')
+// var startTime_var = providedStartTime > timeLimit ? providedStartTime : dateTimeAdd(providedStartTime, 'P1D', 'u')
 
 module pid_cuaId '.bicep/nested_cuaId.bicep' = if (!empty(cuaId)) {
   name: 'pid-${cuaId}'
@@ -228,6 +228,7 @@ resource softwareUpdateConfiguration 'Microsoft.Automation/automationAccounts/so
           }
         ]
         nonAzureQueries: nonAzureQueries
+        // nonAzureQueries: empty(nonAzureQueries) ? null : nonAzureQueries
       }
       azureVirtualMachines: azureVirtualMachines
       nonAzureComputerNames: nonAzureComputerNames
@@ -252,7 +253,8 @@ resource softwareUpdateConfiguration 'Microsoft.Automation/automationAccounts/so
         monthDays: (empty(monthDays) ? null : monthDays)
         monthlyOccurrences: (empty(monthlyOccurrences) ? null : monthlyOccurrences)
       }
-      startTime: startTime_var
+      // startTime: startTime_var
+      startTime: (empty(startTime) ? dateTimeAdd(baseTime, 'PT10M') : startTime)
       expiryTime: expiryTime
       expiryTimeOffsetMinutes: expiryTimeOffsetMinutes
       nextRun: nextRun
