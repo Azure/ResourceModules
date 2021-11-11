@@ -8,7 +8,7 @@
         "location": {
             "value": "westeurope"
         },
-        "type": {
+        "applicationGroupType": {
             "value": "RemoteApp"
         },
         "hostpoolName": {
