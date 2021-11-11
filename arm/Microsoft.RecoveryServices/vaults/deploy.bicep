@@ -144,10 +144,10 @@ resource rsv 'Microsoft.RecoveryServices/vaults@2021-08-01' = {
     name: protectionContainer.Name
     location: resourceGroup().location
     properties: {
-      sourceResourceId: (empty(protectionContainer.sourceResourceId) ? json('null') : protectionContainer.sourceResourceId)
-      friendlyName: (empty(protectionContainer.friendlyName) ? json('null') : protectionContainer.friendlyName)
-      backupManagementType: (empty(protectionContainer.backupManagementType) ? json('null') : protectionContainer.backupManagementType)
-      containerType: (empty(protectionContainer.containerType) ? json('null') : protectionContainer.containerType)
+      sourceResourceId: (empty(protectionContainer.sourceResourceId) ? null : protectionContainer.sourceResourceId)
+      friendlyName: (empty(protectionContainer.friendlyName) ? null : protectionContainer.friendlyName)
+      backupManagementType: (empty(protectionContainer.backupManagementType) ? null : protectionContainer.backupManagementType)
+      containerType: (empty(protectionContainer.containerType) ? null : protectionContainer.containerType)
     }
   }]
 
@@ -170,12 +170,12 @@ resource rsv_lock 'Microsoft.Authorization/locks@2016-09-01' = if (lock != 'NotS
 resource rsv_diagnosticSettings 'Microsoft.Insights/diagnosticSettings@2021-05-01-preview' = if ((!empty(diagnosticStorageAccountId)) || (!empty(workspaceId)) || (!empty(eventHubAuthorizationRuleId)) || (!empty(eventHubName))) {
   name: '${rsv.name}-diagnosticSettings'
   properties: {
-    storageAccountId: (empty(diagnosticStorageAccountId) ? json('null') : diagnosticStorageAccountId)
-    workspaceId: (empty(workspaceId) ? json('null') : workspaceId)
-    eventHubAuthorizationRuleId: (empty(eventHubAuthorizationRuleId) ? json('null') : eventHubAuthorizationRuleId)
-    eventHubName: (empty(eventHubName) ? json('null') : eventHubName)
-    metrics: ((empty(diagnosticStorageAccountId) && empty(workspaceId) && empty(eventHubAuthorizationRuleId) && empty(eventHubName)) ? json('null') : diagnosticsMetrics)
-    logs: ((empty(diagnosticStorageAccountId) && empty(workspaceId) && empty(eventHubAuthorizationRuleId) && empty(eventHubName)) ? json('null') : diagnosticsLogs)
+    storageAccountId: (empty(diagnosticStorageAccountId) ? null : diagnosticStorageAccountId)
+    workspaceId: (empty(workspaceId) ? null : workspaceId)
+    eventHubAuthorizationRuleId: (empty(eventHubAuthorizationRuleId) ? null : eventHubAuthorizationRuleId)
+    eventHubName: (empty(eventHubName) ? null : eventHubName)
+    metrics: ((empty(diagnosticStorageAccountId) && empty(workspaceId) && empty(eventHubAuthorizationRuleId) && empty(eventHubName)) ? null : diagnosticsMetrics)
+    logs: ((empty(diagnosticStorageAccountId) && empty(workspaceId) && empty(eventHubAuthorizationRuleId) && empty(eventHubName)) ? null : diagnosticsLogs)
   }
   scope: rsv
 }

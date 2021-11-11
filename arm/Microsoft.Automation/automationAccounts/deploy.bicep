@@ -149,21 +149,21 @@ resource automationAccount 'Microsoft.Automation/automationAccounts@2020-01-13-p
     name: schedule.scheduleName
     properties: {
       startTime: (empty(schedule.startTime) ? dateTimeAdd(baseTime, 'PT10M') : schedule.startTime)
-      frequency: (empty(schedule.frequency) ? json('null') : schedule.frequency)
-      expiryTime: (empty(schedule.expiryTime) ? json('null') : schedule.expiryTime)
-      interval: ((0 == schedule.interval) ? json('null') : schedule.interval)
-      timeZone: (empty(schedule.timeZone) ? json('null') : schedule.timeZone)
-      advancedSchedule: (empty(schedule.advancedSchedule) ? json('null') : schedule.advancedSchedule)
+      frequency: (empty(schedule.frequency) ? null : schedule.frequency)
+      expiryTime: (empty(schedule.expiryTime) ? null : schedule.expiryTime)
+      interval: ((0 == schedule.interval) ? null : schedule.interval)
+      timeZone: (empty(schedule.timeZone) ? null : schedule.timeZone)
+      advancedSchedule: (empty(schedule.advancedSchedule) ? null : schedule.advancedSchedule)
     }
   }]
 
   resource automationAccount_runbooks 'runbooks@2019-06-01' = [for (runbook, index) in runbooks: {
     name: runbook.runbookName
     properties: {
-      runbookType: (empty(runbook.runbookType) ? json('null') : runbook.runbookType)
+      runbookType: (empty(runbook.runbookType) ? null : runbook.runbookType)
       publishContentLink: {
-        uri: (empty(runbook.runbookScriptUri) ? json('null') : (empty(runbook.scriptStorageAccountId) ? 'runbook.runbookScriptUri' : 'runbook.runbookScriptUri${listAccountSas(runbook.scriptStorageAccountId, '2019-04-01', accountSasProperties).accountSasToken}'))
-        version: (empty(runbook.version) ? json('null') : runbook.version)
+        uri: (empty(runbook.runbookScriptUri) ? null : (empty(runbook.scriptStorageAccountId) ? 'runbook.runbookScriptUri' : 'runbook.runbookScriptUri${listAccountSas(runbook.scriptStorageAccountId, '2019-04-01', accountSasProperties).accountSasToken}'))
+        version: (empty(runbook.version) ? null : runbook.version)
       }
     }
   }]
@@ -171,11 +171,11 @@ resource automationAccount 'Microsoft.Automation/automationAccounts@2020-01-13-p
   resource automationAccount_jobSchedules 'jobSchedules@2020-01-13-preview' = [for (jobSchedule, index) in jobSchedules: {
     name: jobSchedule.jobScheduleName
     properties: {
-      parameters: (empty(jobSchedule.parameters) ? json('null') : jobSchedule.parameters)
+      parameters: (empty(jobSchedule.parameters) ? null : jobSchedule.parameters)
       runbook: {
         name: jobSchedule.runbookName
       }
-      runOn: (empty(jobSchedule.runOn) ? json('null') : jobSchedule.runOn)
+      runOn: (empty(jobSchedule.runOn) ? null : jobSchedule.runOn)
       schedule: {
         name: jobSchedule.scheduleName
       }
@@ -199,12 +199,12 @@ resource automationAccount_lock 'Microsoft.Authorization/locks@2016-09-01' = if 
 resource automationAccount_diagnosticSettings 'Microsoft.Insights/diagnosticSettings@2017-05-01-preview' = if ((!empty(diagnosticStorageAccountId)) || (!empty(workspaceId)) || (!empty(eventHubAuthorizationRuleId)) || (!empty(eventHubName))) {
   name: '${automationAccount.name}-diagnosticSettings'
   properties: {
-    storageAccountId: (empty(diagnosticStorageAccountId) ? json('null') : diagnosticStorageAccountId)
-    workspaceId: (empty(workspaceId) ? json('null') : workspaceId)
-    eventHubAuthorizationRuleId: (empty(eventHubAuthorizationRuleId) ? json('null') : eventHubAuthorizationRuleId)
-    eventHubName: (empty(eventHubName) ? json('null') : eventHubName)
-    metrics: ((empty(diagnosticStorageAccountId) && empty(workspaceId) && empty(eventHubAuthorizationRuleId) && empty(eventHubName)) ? json('null') : diagnosticsMetrics)
-    logs: ((empty(diagnosticStorageAccountId) && empty(workspaceId) && empty(eventHubAuthorizationRuleId) && empty(eventHubName)) ? json('null') : diagnosticsLogs)
+    storageAccountId: (empty(diagnosticStorageAccountId) ? null : diagnosticStorageAccountId)
+    workspaceId: (empty(workspaceId) ? null : workspaceId)
+    eventHubAuthorizationRuleId: (empty(eventHubAuthorizationRuleId) ? null : eventHubAuthorizationRuleId)
+    eventHubName: (empty(eventHubName) ? null : eventHubName)
+    metrics: ((empty(diagnosticStorageAccountId) && empty(workspaceId) && empty(eventHubAuthorizationRuleId) && empty(eventHubName)) ? null : diagnosticsMetrics)
+    logs: ((empty(diagnosticStorageAccountId) && empty(workspaceId) && empty(eventHubAuthorizationRuleId) && empty(eventHubName)) ? null : diagnosticsLogs)
   }
   scope: automationAccount
 }
