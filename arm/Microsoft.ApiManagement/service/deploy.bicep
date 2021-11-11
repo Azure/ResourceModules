@@ -271,10 +271,10 @@ module caches_resource 'caches/deploy.bicep' = [for (cache, index) in caches: {
   params: {
     apiManagementServiceName: name
     cacheDescription: contains(cache, 'cacheDescription') ? cache.cacheDescription : ''
-    connectionString: contains(cache, 'connectionString') ? cache.connectionString : ''
-    name: contains(cache, 'name') ? cache.name : ''
+    connectionString: cache.connectionString
+    name: cache.name
     resourceId: contains(cache, 'resourceId') ? cache.resourceId : ''
-    useFromLocation: contains(cache, 'useFromLocation') ? cache.useFromLocation : ''
+    useFromLocation: cache.useFromLocation
   }
 }]
 

@@ -5,7 +5,7 @@ param apiManagementServiceName string
 param name string = ''
 
 @description('Required. Runtime connection string to cache. Can be referenced by a named value like so, {{<named-value>}}')
-param connectionString string = ''
+param connectionString string
 
 @description('Optional. Customer Usage Attribution id (GUID). This GUID must be previously registered')
 param cuaId string = ''
@@ -17,7 +17,7 @@ param cacheDescription string = ''
 param resourceId string = ''
 
 @description('Required. Location identifier to use cache from (should be either \'default\' or valid Azure region identifier)')
-param useFromLocation string = ''
+param useFromLocation string
 
 module pid_cuaId '.bicep/nested_cuaId.bicep' = if (!empty(cuaId)) {
   name: 'pid-${cuaId}'
