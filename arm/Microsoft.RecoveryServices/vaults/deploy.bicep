@@ -135,7 +135,7 @@ module rsv_backupStorageConfiguration 'backupStorageConfig/deploy.bicep' = {
   }
 }
 
-module rsv_protectionContainer 'protectionContainers/deploy.bicep' = [for (protectionContainer, index) in protectionContainers: {
+module rsv_protectionContainers 'protectionContainers/deploy.bicep' = [for (protectionContainer, index) in protectionContainers: {
   name: '${uniqueString(deployment().name, location)}-ProtectionContainers-${index}'
   params: {
     recoveryVaultName: rsv.name
@@ -147,7 +147,7 @@ module rsv_protectionContainer 'protectionContainers/deploy.bicep' = [for (prote
   }
 }]
 
-module rsv_backupPolicy 'backupPolicies/deploy.bicep' = [for (backupPolicy, index) in backupPolicies: {
+module rsv_backupPolicies 'backupPolicies/deploy.bicep' = [for (backupPolicy, index) in backupPolicies: {
   name: '${uniqueString(deployment().name, location)}-BackupPolicy-${index}'
   params: {
     recoveryVaultName: rsv.name
