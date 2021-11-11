@@ -78,7 +78,7 @@ param licenseType string = ''
 param managedServiceIdentity string = 'None'
 
 @description('Optional. Mandatory if \'managedServiceIdentity\' contains UserAssigned. The list of user identities associated with the Virtual Machine.')
-param userAssignedIdentities object = {}
+param userAssignedIdentities object
 
 @description('Optional. Storage account used to store boot diagnostic information. Boot diagnostics will be disabled if no value is provided.')
 param bootDiagnosticStorageAccountName string = ''
