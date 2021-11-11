@@ -17,7 +17,7 @@ Optional. An identifier used to filter for the Token Names (Secret Name) in Key 
 .PARAMETER LocalCustomParameterFileTokens
 Optional. Object containing Name/Values for Local Custom Parameter File Tokens to push to Key Vault
 #>
-function Set-ParameterFileTokensInKeyVault {
+function Set-LocalCustomParameterFileTokensInKeyVault {
     [CmdletBinding()]
     param (
         [parameter(Mandatory)]
@@ -33,6 +33,17 @@ function Set-ParameterFileTokensInKeyVault {
         [psobject]$LocalCustomParameterFileTokens
     )
     begin {
+        ## Set Azure Context
+        try {
+            $Context = Get-AzContext -ListAvailable | Where-Object Subscription -Match $SubscriptionId
+            if ($Context) {
+                Write-Verbose('Setting Azure Context')
+                $Context | Set-AzContext | Out-Null
+            }
+        } catch {
+            throw $PSitem.Exception.Message
+            exit
+        }
         $AllCustomParameterFileTokens = @()
     }
     process {
@@ -46,12 +57,7 @@ function Set-ParameterFileTokensInKeyVault {
         } else {
             Write-Verbose 'No Local Custom Parameter File Tokens Detected'
         }
-        ## Set Azure Context
-        $Context = Get-AzContext -ListAvailable | Where-Object Subscription -Match $SubscriptionId
-        if ($Context) {
-            Write-Verbose 'Setting Azure Context'
-            $Context | Set-AzContext
-        }
+
         ## Push Tokens to Tokens Key Vault
         if ($AllCustomParameterFileTokens) {
             Write-Verbose "Processing $($AllCustomParameterFileTokens.Count) Tokens"

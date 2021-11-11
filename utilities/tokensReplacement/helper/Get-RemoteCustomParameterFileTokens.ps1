@@ -29,10 +29,15 @@ function Get-RemoteCustomParameterFileTokens {
     )
     begin {
         ## Set Azure Context
-        $Context = Get-AzContext -ListAvailable | Where-Object Subscription -Match $SubscriptionId
-        if ($Context) {
-            Write-Verbose('Setting Azure Context')
-            $Context | Set-AzContext | Out-Null
+        try {
+            $Context = Get-AzContext -ListAvailable | Where-Object Subscription -Match $SubscriptionId
+            if ($Context) {
+                Write-Verbose('Setting Azure Context')
+                $Context | Set-AzContext | Out-Null
+            }
+        } catch {
+            Write-Verbose 'Could not Find or Set Azure Context.. Exiting'
+            exit
         }
         $ReturnedKeyVaultTokens = @()
     }

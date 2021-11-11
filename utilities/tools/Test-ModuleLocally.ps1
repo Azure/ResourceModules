@@ -99,30 +99,35 @@ function Test-ModuleLocally {
     begin {
         Write-Verbose "Running Local Tests for $($ModuleName.Split('\')[-1])"
         # Load Tokens Converter Script
-        . (Join-Path $PSScriptRoot 'Convert-TokensInParameterFile.ps1')
-        . (Join-Path $PSScriptRoot 'Convert-TokensInFileList.ps1')
+        . (Join-Path $PSScriptRoot '../tokensReplacement/Convert-TokensInParameterFile.ps1')
+        . (Join-Path $PSScriptRoot '../tokensReplacement/helper/Convert-TokensInFileList.ps1')
     }
     process {
         # Test Module
         if ($PesterTest) {
             Write-Verbose "Pester Testing Module: $ModuleName"
-            Invoke-Pester -Configuration @{
-                Run        = @{
-                    Container = New-PesterContainer -Path (Join-Path $PSScriptRoot '../..' 'arm/.global/global.module.tests.ps1') -Data @{
-                        moduleFolderPaths = (Join-Path $PSScriptRoot '../../arm' $ModuleName)
+            try {
+                Import-Module Pester
+                Invoke-Pester -Configuration @{
+                    Run        = @{
+                        Container = New-PesterContainer -Path (Join-Path $PSScriptRoot '../..' 'arm/.global/global.module.tests.ps1') -Data @{
+                            moduleFolderPaths = (Join-Path $PSScriptRoot '../../arm' $ModuleName)
+                        }
+                    }
+                    Filter     = @{
+                        #ExcludeTag = 'ApiCheck'
+                        #Tag = 'ApiCheck'
+                    }
+                    TestResult = @{
+                        TestSuiteName = 'Global Module Tests'
+                        Enabled       = $false
+                    }
+                    Output     = @{
+                        Verbosity = 'Detailed'
                     }
                 }
-                Filter     = @{
-                    #ExcludeTag = 'ApiCheck'
-                    #Tag = 'ApiCheck'
-                }
-                TestResult = @{
-                    TestSuiteName = 'Global Module Tests'
-                    Enabled       = $false
-                }
-                Output     = @{
-                    Verbosity = 'Detailed'
-                }
+            } catch {
+                $PSItem.Exception.Message
             }
         }
         # Deploy Module
