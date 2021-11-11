@@ -13,7 +13,7 @@ param cuaId string = ''
 @description('Optional. Backend Description.')
 param backendDescription string = ''
 
-@description('Required. Backend communication protocol. - http or soap')
+@description('Optional. Backend communication protocol. - http or soap')
 param protocol string = 'http'
 
 @description('Optional. Backend Proxy Contract Properties')

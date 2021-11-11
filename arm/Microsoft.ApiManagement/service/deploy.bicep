@@ -252,14 +252,17 @@ module backends_resource 'backends/deploy.bicep' = [for (backend, index) in back
     apiManagementServiceName: name
     url: contains(backend, 'url') ? backend.url : ''
     backendDescription: contains(backend, 'backendDescription') ? backend.backendDescription : ''
-    credentials: contains(backend, 'credentials') ? backend.credentials : ''
-    name: contains(backend, 'name') ? backend.name : ''
-    protocol: contains(backend, 'protocol') ? backend.protocol : ''
-    proxy: contains(backend, 'proxy') ? backend.proxy : ''
+    credentials: contains(backend, 'credentials') ? backend.credentials : {}
+    name: backend.name
+    protocol: contains(backend, 'protocol') ? backend.protocol : 'http'
+    proxy: contains(backend, 'proxy') ? backend.proxy : {}
     resourceId: contains(backend, 'resourceId') ? backend.resourceId : ''
-    serviceFabricCluster: contains(backend, 'serviceFabricCluster') ? backend.serviceFabricCluster : ''
+    serviceFabricCluster: contains(backend, 'serviceFabricCluster') ? backend.serviceFabricCluster : {}
     title: contains(backend, 'title') ? backend.title : ''
-    tls: contains(backend, 'tls') ? backend.tls : ''
+    tls: contains(backend, 'tls') ? backend.tls : {
+                                                    validateCertificateChain: false
+                                                    validateCertificateName: false
+                                                  }
   }
 }]
 

@@ -23,7 +23,7 @@ The following resources are required to be able to deploy this resource.
 | `credentials` | object | `{object}` |  | Optional. Backend Credentials Contract Properties. |
 | `cuaId` | string |  |  | Optional. Customer Usage Attribution id (GUID). This GUID must be previously registered |
 | `name` | string |  |  | Required. Backend Name. |
-| `protocol` | string | `http` |  | Required. Backend communication protocol. - http or soap |
+| `protocol` | string | `http` |  | Optional. Backend communication protocol. - http or soap |
 | `proxy` | object | `{object}` |  | Optional. Backend Proxy Contract Properties |
 | `resourceId` | string |  |  | Optional. Management Uri of the Resource in External System. This url can be the Arm Resource Id of Logic Apps, Function Apps or Api Apps. |
 | `serviceFabricCluster` | object | `{object}` |  | Optional. Backend Service Fabric Cluster Properties. |
