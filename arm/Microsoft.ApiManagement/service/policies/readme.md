@@ -15,7 +15,6 @@
 | `apiManagementServiceName` | string |  |  | Required. The name of the of the Api Management service. |
 | `cuaId` | string |  |  | Optional. Customer Usage Attribution id (GUID). This GUID must be previously registered |
 | `format` | string | `xml` | `[rawxml, rawxml-link, xml, xml-link]` | Optional. Format of the policyContent. |
-| `name` | string |  |  | Required. Policy name. |
 | `value` | string |  |  | Required. Contents of the Policy as defined by the format. |
 
 ### Parameter Usage: `<ParameterPlaceholder>`

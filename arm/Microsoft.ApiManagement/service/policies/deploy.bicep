@@ -4,9 +4,6 @@ param apiManagementServiceName string
 @description('Optional. Customer Usage Attribution id (GUID). This GUID must be previously registered')
 param cuaId string = ''
 
-@description('Required. Policy name.')
-param name string
-
 @description('Optional. Format of the policyContent.')
 @allowed([
   'rawxml'
@@ -25,7 +22,7 @@ module pid_cuaId '.bicep/nested_cuaId.bicep' = if (!empty(cuaId)) {
 }
 
 resource policy 'Microsoft.ApiManagement/service/policies@2020-06-01-preview' = {
-  name: '${apiManagementServiceName}/${name}'
+  name: '${apiManagementServiceName}/policy'
   properties: {
     format: format
     value: value

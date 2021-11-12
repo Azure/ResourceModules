@@ -333,7 +333,6 @@ module policy_resource 'policies/deploy.bicep' = [for (policy, index) in policie
   name: '${uniqueString(deployment().name, location)}-policy-${index}'
   params: {
     apiManagementServiceName: name
-    name: policy.name
     value: policy.value
     format: contains(policy, 'format') ? policy.format : 'xml'
   }
