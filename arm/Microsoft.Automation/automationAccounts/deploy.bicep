@@ -1,4 +1,4 @@
-@description('Required. Name of the Automation Account')
+@description('Required. Name of the Automation Account.')
 param name string
 
 @description('Optional. Location for all resources.')
@@ -8,31 +8,20 @@ param location string = resourceGroup().location
   'Free'
   'Basic'
 ])
-@description('Optional. SKU name of the account')
+@description('Optional. SKU name of the account.')
 param skuName string = 'Basic'
 
-@description('Optional. List of modules to be created in the automation account')
-@metadata({
-  name: 'Module name'
-  version: 'Module version or specify latest to get the latest version'
-  uri: 'Module package uri, e.g. https://www.powershellgallery.com/api/v2/package'
-})
+@description('Optional. List of modules to be created in the automation account.')
 param modules array = []
 
-@description('Optional. List of runbooks to be created in the automation account')
+@description('Optional. List of runbooks to be created in the automation account.')
 param runbooks array = []
 
-@description('Optional. List of schedules to be created in the automation account')
+@description('Optional. List of schedules to be created in the automation account.')
 param schedules array = []
 
-@description('Optional. List of jobSchedules to be created in the automation account')
+@description('Optional. List of jobSchedules to be created in the automation account.')
 param jobSchedules array = []
-
-@description('Optional. Id of the linked log analytics workspace')
-param linkedWorkspaceId string = ''
-
-@description('Optional. List of softwareUpdateConfigurations to be created in the automation account')
-param softwareUpdateConfigurations array = []
 
 @description('Optional. Configuration Details for private endpoints.')
 param privateEndpoints array = []
@@ -62,13 +51,13 @@ param eventHubName string = ''
 @description('Optional. Specify the type of lock.')
 param lock string = 'NotSpecified'
 
-@description('Optional. Array of role assignment objects that contain the \'roleDefinitionIdOrName\' and \'principalId\' to define RBAC role assignments on this resource. In the roleDefinitionIdOrName attribute, you can provide either the display name of the role definition, or its fully qualified ID in the following format: \'/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11\'')
+@description('Optional. Array of role assignment objects that contain the \'roleDefinitionIdOrName\' and \'principalId\' to define RBAC role assignments on this resource. In the roleDefinitionIdOrName attribute, you can provide either the display name of the role definition, or its fully qualified ID in the following format: \'/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11\'.')
 param roleAssignments array = []
 
 @description('Optional. Tags of the Automation Account resource.')
 param tags object = {}
 
-@description('Optional. Customer Usage Attribution id (GUID). This GUID must be previously registered')
+@description('Optional. Customer Usage Attribution id (GUID). This GUID must be previously registered.')
 param cuaId string = ''
 
 @description('Optional. The name of logs that will be streamed.')
@@ -226,11 +215,11 @@ module automationAccount_rbac './.bicep/nested_rbac.bicep' = [for (roleAssignmen
   }
 }]
 
+@description('The name of the deployed automation account')
 output automationAccountName string = automationAccount.name
+
+@description('The id of the deployed automation account')
 output automationAccountResourceId string = automationAccount.id
+
+@description('The resource group of the deployed automation account')
 output automationAccountResourceGroup string = resourceGroup().name
-output modules array = modules
-output schedules array = schedules
-output jobSchedules array = jobSchedules
-output runbooks array = runbooks
-output softwareUpdateConfiguration array = softwareUpdateConfigurations

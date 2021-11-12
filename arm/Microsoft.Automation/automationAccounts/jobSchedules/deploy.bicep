@@ -1,7 +1,7 @@
-@description('Optional. Name of the Automation Account job schedule')
+@description('Optional. Name of the Automation Account job schedule. Must be a GUID. If not provided, a GUID is generated leveraging runbookName and scheduleName.')
 param name string = ''
 
-@description('Required. Name of the parent Automation Account')
+@description('Required. Name of the parent Automation Account.')
 param parent string
 
 @description('Required. The runbook property associated with the entity.')
@@ -16,7 +16,7 @@ param parameters object = {}
 @description('Optional. The hybrid worker group that the scheduled job should run on.')
 param runOn string = ''
 
-@description('Optional. Customer Usage Attribution id (GUID). This GUID must be previously registered')
+@description('Optional. Customer Usage Attribution id (GUID). This GUID must be previously registered.')
 param cuaId string = ''
 
 module pid_cuaId './.bicep/nested_cuaId.bicep' = if (!empty(cuaId)) {
@@ -43,11 +43,11 @@ resource jobSchedule 'Microsoft.Automation/automationAccounts/jobSchedules@2020-
   }
 }
 
-// @description('The name of the deployed jobSchedule')
+@description('The name of the deployed jobSchedule')
 output jobScheduleName string = jobSchedule.name
 
-// @description('The id of the deployed jobSchedule')
+@description('The id of the deployed jobSchedule')
 output jobScheduleResourceId string = jobSchedule.id
 
-// @description('The resource group of the deployed jobSchedule')
+@description('The resource group of the deployed jobSchedule')
 output jobScheduleResourceGroup string = resourceGroup().name
