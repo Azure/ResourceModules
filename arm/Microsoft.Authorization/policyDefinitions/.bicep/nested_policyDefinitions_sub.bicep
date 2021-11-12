@@ -17,10 +17,10 @@ resource policyDefinition 'Microsoft.Authorization/policyDefinitions@2020-09-01'
   properties: {
     policyType: 'Custom'
     mode: mode
-    displayName: (empty(displayName) ? json('null') : displayName)
-    description: (empty(policyDescription) ? json('null') : policyDescription)
-    metadata: (empty(metadata) ? json('null') : metadata)
-    parameters: (empty(parameters) ? json('null') : parameters)
+    displayName: (empty(displayName) ? null : displayName)
+    description: (empty(policyDescription) ? null : policyDescription)
+    metadata: (empty(metadata) ? null : metadata)
+    parameters: (empty(parameters) ? null : parameters)
     policyRule: policyRule
   }
 }

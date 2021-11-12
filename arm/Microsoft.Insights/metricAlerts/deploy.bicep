@@ -82,7 +82,7 @@ param cuaId string = ''
 
 var actionGroups = [for action in actions: {
   actionGroupId: contains(action, 'actionGroupId') ? action.actionGroupId : action
-  webHookProperties: contains(action, 'webHookProperties') ? action.webHookProperties : json('null')
+  webHookProperties: contains(action, 'webHookProperties') ? action.webHookProperties : null
 }]
 
 module pid_cuaId '.bicep/nested_cuaId.bicep' = if (!empty(cuaId)) {
