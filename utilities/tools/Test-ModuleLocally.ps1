@@ -147,18 +147,16 @@ function Test-ModuleLocally {
                 $Settings = Get-Content -Path (Join-Path $PSScriptRoot '../..' 'settings.json') | ConvertFrom-Json
                 # Get Custom Parameter File Tokens (Local and Remote-If Key Vault Provided)
                 $ConvertTokensInputs = @{
-                    DefaultParameterFileTokens        = $DefaultParameterFileTokens
-                    GetLocalCustomParameterFileTokens = $true
-                    LocalCustomParameterFileTokens    = $Settings.parameterFileTokens.localTokens.tokens
-                    TokenPrefix                       = $Settings.parameterFileTokens.tokenPrefix
-                    TokenSuffix                       = $Settings.parameterFileTokens.tokenSuffix
+                    DefaultParameterFileTokens     = $DefaultParameterFileTokens
+                    LocalCustomParameterFileTokens = $Settings.parameterFileTokens.localTokens.tokens
+                    TokenPrefix                    = $Settings.parameterFileTokens.tokenPrefix
+                    TokenSuffix                    = $Settings.parameterFileTokens.tokenSuffix
                 }
                 # Query Key Vault for Remote Tokens
                 if ($TokenKeyVaultName -and "$($ValidateOrDeployParameters.SubscriptionId)") {
                     $ConvertTokensInputs += @{
-                        GetRemoteCustomParameterFileTokens = $true
-                        TokensKeyVaultName                 = $TokenKeyVaultName
-                        TokensKeyVaultSubscriptionId       = "$($ValidateOrDeployParameters.SubscriptionId)"
+                        TokensKeyVaultName           = $TokenKeyVaultName
+                        TokensKeyVaultSubscriptionId = "$($ValidateOrDeployParameters.SubscriptionId)"
                     }
                     if ($Settings.parameterFileTokens.remoteTokens.keyVaultSecretNamePrefix) {
                         $ConvertTokensInputs += @{ TokensKeyVaultSecretNamePrefix = $Settings.parameterFileTokens.remoteTokens.keyVaultSecretNamePrefix
@@ -225,7 +223,7 @@ function Test-ModuleLocally {
         if (($ValidationTest -or $DeploymentTest) -and $ValidateOrDeployParameters) {
             # Replace Values with Tokens For Repo Updates
             Write-Verbose 'Restoring Tokens'
-            $ModuleParameterFiles | ForEach-Object { Convert-TokensInParameterFile @ConvertTokensInputs -ParameterFilePath $PSItem.FullName -RestoreTokens -Verbose }
+            $ModuleParameterFiles | ForEach-Object { Convert-TokensInParameterFile @ConvertTokensInputs -ParameterFilePath $PSItem.FullName -RestoreTokens $true -Verbose }
         }
     }
 }

@@ -12,7 +12,7 @@ Mandatory. Full Path for the file that contains the strings that need to be repl
 Mandatory. An Object that contains the Replace Key and With Key For replacing tokens in files. See Example for structure.
 
 .PARAMETER RestoreTokens
-Optional. A Switch That swaps the tokens in the TokensReplaceWith Object.
+Optional. A Boolean That swaps the tokens in the TokensReplaceWith Object. Default is False
 
 .EXAMPLE
 $Object = @(
@@ -33,7 +33,7 @@ $Object = @(
     @{ Replace = "TextA"; With = "TextB" }
     @{ Replace = "TextC"; With = "TextD" }
 )
-Convert-TokensInFileList -Paths 'C:\fileA.txt','C:\fileB.txt' -TokensReplaceWith $Object -RestoreTokens
+Convert-TokensInFileList -Paths 'C:\fileA.txt','C:\fileB.txt' -TokensReplaceWith $Object -RestoreTokens $true
 #>
 function Convert-TokensInFileList {
     [CmdletBinding()]
@@ -41,14 +41,14 @@ function Convert-TokensInFileList {
         [Parameter(Mandatory)]
         [string[]] $Paths,
 
-        [Parameter(Mandatory)]
+        [Parameter(Mandatory, ValueFromPipeline = $true)]
         [psobject] $TokensReplaceWith,
 
         [Parameter(Mandatory = $false)]
         [string] $OutputDirectory,
 
         [Parameter(Mandatory = $false)]
-        [switch] $RestoreTokens
+        [bool] $RestoreTokens = $false
     )
     # Restore Tokens (Swap Replace with Value)
     if ($RestoreTokens) {
@@ -64,25 +64,30 @@ function Convert-TokensInFileList {
     # Process Path for Token Replacement
     foreach ($Path in $Paths) {
         # Extract Required Content From the Input
-        $File = Get-Content -Path $Path
-        $FileName = Split-Path $Path -Leaf
+        try {
+            $File = Get-Content -Path $Path
+            $FileName = Split-Path $Path -Leaf
+        } catch {
+            throw $PSItem.Exception.Message
+            exit
+        }
         Write-Verbose "Processing Tokens for file: $FileName"
         # Perform the Replace of Tokens in the File
         $TokensReplaceWith |
             ForEach-Object {
+                # If type is secure string
                 if (($PSItem.Value | Get-Member -MemberType Property | Select-Object -ExpandProperty 'TypeName') -eq 'System.Security.SecureString') {
                     $PSItem.Value = $PSItem.Value | ConvertFrom-SecureString -AsPlainText
                 }
                 $File = $File -replace $PSItem.Name, $PSItem.Value
             }
         # Set Content
-        if (!$OutputDirectory) {
-            # Set Content to the Same Path
-            $File | Set-Content -Path $Path
-        } else {
-            # Set Content to a Custom Output Directory instead of the Same Path
-            Write-Verbose "Writing Output (New Path) to:  $OutputDirectory"
-            $File | Set-Content -Path (Join-Path $OutputDirectory $FileName)
+        if ($OutputDirectory -and (Test-Path -Path $OutputDirectory -PathType Container)) {
+            # If Specific Output Directory Provided
+            $Path = (Join-Path $OutputDirectory $FileName)
         }
+        # Set Content to the Same Path
+        Write-Verbose "Writing Output for: $FileName"
+        $File | Set-Content -Path $Path
     }
 }

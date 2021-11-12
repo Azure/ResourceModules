@@ -5,6 +5,9 @@ This script creates the tokens <<token>> that exist in a parameter file in an Az
 .DESCRIPTION
 This script creates the tokens <<token>> that exist in a parameter file in an Azure Key Vault so that it can be swapped at runtime
 
+.PARAMETER LocalCustomParameterFileTokens
+Mandatory. Object containing Name/Values for Local Custom Parameter File Tokens to push to Key Vault
+
 .PARAMETER SubscriptionId
 Mandatory. The Azure subscription containing the key vault.
 
@@ -14,12 +17,23 @@ Mandatory. The name of the Key Vault. It will be used as an alternative if the T
 .PARAMETER TokenKeyVaultSecretNamePrefix
 Optional. An identifier used to filter for the Token Names (Secret Name) in Key Vault (i.e. ParameterFileToken-)
 
-.PARAMETER LocalCustomParameterFileTokens
-Optional. Object containing Name/Values for Local Custom Parameter File Tokens to push to Key Vault
+.PARAMETER TokenKeyVaultSecretContentType
+Optional. An identifier used to filter for the Token (Secret Content Type) in Key Vault (i.e. ParameterFileToken or SecureParameterFileToken)
+
+.EXAMPLE
+Set-LocalCustomParameterFileTokensInKeyVault -LocalCustomParameterFileTokens @{name = 'tokenA'; value = 'tokenAvalue'} -TokensKeyVaultName 'contoso-kv' -SubscriptionId '1234-1234'12345678-1234-123456789101'
+
+.EXAMPLE
+Set-LocalCustomParameterFileTokensInKeyVault -LocalCustomParameterFileTokens @{name = 'tokenA'; value = 'tokenAvalue'} -TokensKeyVaultName 'contoso-kv' -SubscriptionId '1234-1234'12345678-1234-123456789101' -TokenKeyVaultSecretNamePrefix 'myPrefix-'
+
 #>
+
 function Set-LocalCustomParameterFileTokensInKeyVault {
     [CmdletBinding()]
     param (
+        [parameter(Mandatory)]
+        [psobject]$LocalCustomParameterFileTokens,
+
         [parameter(Mandatory)]
         [string]$TokenKeyVaultName,
 
@@ -30,7 +44,7 @@ function Set-LocalCustomParameterFileTokensInKeyVault {
         [string]$TokenKeyVaultSecretNamePrefix,
 
         [parameter(Mandatory = $false)]
-        [psobject]$LocalCustomParameterFileTokens
+        [string]$TokenKeyVaultSecretContentType = 'ParameterFileToken'
     )
     begin {
         ## Set Azure Context
@@ -44,46 +58,31 @@ function Set-LocalCustomParameterFileTokensInKeyVault {
             throw $PSitem.Exception.Message
             exit
         }
-        $AllCustomParameterFileTokens = @()
     }
     process {
-        ## Local Custom Parameter File Tokens (Should not contain sensitive Information)
-        if ($LocalCustomParameterFileTokens) {
-            Write-Verbose "Found $($LocalCustomParameterFileTokens.Count) Local Custom Tokens in Settings File"
-            $LocalCustomParameterFileTokens | ForEach-Object {
-                Write-Verbose "Adding Parameter File Local Token Name: $($PSitem.Name)"
-                $AllCustomParameterFileTokens += $PSitem
-            }
-        } else {
+        if ($LocalCustomParameterFileTokens.Count -eq 0) {
             Write-Verbose 'No Local Custom Parameter File Tokens Detected'
+            exit
         }
-
-        ## Push Tokens to Tokens Key Vault
-        if ($AllCustomParameterFileTokens) {
-            Write-Verbose "Processing $($AllCustomParameterFileTokens.Count) Tokens"
-            try {
-                if ($TokenKeyVaultName) {
-                    Write-Verbose "Finding Tokens Key Vault by Name: $TokenKeyVaultName"
-                    $TokensKeyVault = Get-AzKeyVault -VaultName $TokenKeyVaultName
-                }
-                ## IF Token Key Vault Exists
-                if ($TokensKeyVault) {
-                    Write-Verbose "Creating Tokens in Key Vault: $($TokensKeyVault.VaultName)"
-                    try {
-                        $AllCustomParameterFileTokens | ForEach-Object {
-                            $TokenName = -join ($TokenKeyVaultSecretNamePrefix, $PSItem.Name)
-                            Write-Verbose "Creating Token: $TokenName"
-                            Set-AzKeyVaultSecret -Name $TokenName -SecretValue (ConvertTo-SecureString -AsPlainText $PSItem.Value) -VaultName $TokensKeyVault.VaultName -ContentType 'ParameterFileToken' | Out-Null
-                        }
-                    } catch {
-                        throw $PSitem.Exception.Message
-                    }
-                } else {
-                    Write-Verbose 'No Token Key Vaults Found'
-                }
-            } catch {
-                throw $PSitem.Exception.Message
+        ## Local Custom Parameter File Tokens (Should not contain sensitive Information)
+        Write-Verbose "Processing $($LocalCustomParameterFileTokens.Count) Local Custom Tokens in Settings File"
+        try {
+            Write-Verbose "Finding Tokens Key Vault by Name: $TokenKeyVaultName"
+            $TokensKeyVault = Get-AzKeyVault -VaultName $TokenKeyVaultName
+            ## IF Token Key Vault Exists
+            if (!$TokensKeyVault) {
+                Write-Verbose "No Token Key Vault Found with the Name: $TokenKeyVaultName in current subscription context"
+                exit
             }
+            Write-Verbose "Creating Tokens in Key Vault: $TokenKeyVaultName"
+            ## Create / Update Tokens (Secrets) on Azure Key Vault
+            $LocalCustomParameterFileTokens | ForEach-Object {
+                $TokenName = -join ($TokenKeyVaultSecretNamePrefix, $PSItem.Name)
+                Write-Verbose "Creating Token: $TokenName"
+                Set-AzKeyVaultSecret -Name $TokenName -SecretValue (ConvertTo-SecureString -AsPlainText $PSItem.Value) -VaultName $TokenKeyVaultName -ContentType $TokenKeyVaultSecretContentType | Out-Null
+            }
+        } catch {
+            throw $PSitem.Exception.Message
         }
     }
 }

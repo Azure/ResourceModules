@@ -48,12 +48,10 @@ runs:
     - name: 'Replace Parameter File Tokens [${{ inputs.parameterFilePath }}] '
       shell: pwsh
       run: |
+        # Load used functions
+        . "utilities/tokensReplacement/Convert-TokensInParameterFile.ps1"
         # Load Settings File
         $Settings = Get-Content -Path "settings.json" | ConvertFrom-Json
-
-        # Load used functions
-        . 'utilities/tokensReplacement/Convert-TokensInParameterFile.ps1'
-
         # Initialize Default Parameter File Tokens
         $DefaultParameterFileTokens = @(
             @{ Name = 'resourceGroupName'; Value = '${{ inputs.resourceGroupName }}' }
@@ -64,32 +62,26 @@ runs:
             @{ Name = "platformKeyVault"; Value = '${{ env.PLATFORM_KEYVAULT }}' }
         ) | ForEach-Object { [PSCustomObject]$PSItem }
 
+        # Construct Token Function Input
         $ConvertTokensInputs = @{
             ParameterFilePath                 = '${{ inputs.parameterFilePath }}'
             DefaultParameterFileTokens        = $DefaultParameterFileTokens
-            GetLocalCustomParameterFileTokens = $true
             LocalCustomParameterFileTokens    = $Settings.parameterFileTokens.localTokens.tokens
             TokenPrefix                       = $Settings.parameterFileTokens.tokenPrefix
             TokenSuffix                       = $Settings.parameterFileTokens.tokenSuffix
         }
-
+        # Add Remote Custom Parameter File Tokens
         if ('${{ env.PLATFORM_KEYVAULT }}' -and '${{ inputs.subscriptionId }}') {
             $ConvertTokensInputs += @{
-                GetRemoteCustomParameterFileTokens = $true
                 TokensKeyVaultName                 = '${{ env.PLATFORM_KEYVAULT }}'
                 TokensKeyVaultSubscriptionId       = '${{ inputs.subscriptionId }}'
-            }
-            if ($Settings.parameterFileTokens.remoteTokens.keyVaultSecretNamePrefix) {
-                $ConvertTokensInputs += @{ TokensKeyVaultSecretNamePrefix = $Settings.parameterFileTokens.remoteTokens.keyVaultSecretNamePrefix
-                }
+                TokensKeyVaultSecretNamePrefix     = $Settings.parameterFileTokens.remoteTokens.keyVaultSecretNamePrefix
             }
         }
-
         # Invoke Token Replacement Functionality
-        $ConvertTokensStatus = Convert-TokensInParameterFile @ConvertTokensInputs -Verbose
-        Write-Verbose "Token Replacement Status: $ConvertTokensStatus"
+        Convert-TokensInParameterFile @ConvertTokensInputs -Verbose
 
-    - name: 'Validate [${{ inputs.templateFilePath }}]'
+    - name: 'Deploy [${{ inputs.templateFilePath }}]'
       shell: pwsh
       run: |
         # Load used functions

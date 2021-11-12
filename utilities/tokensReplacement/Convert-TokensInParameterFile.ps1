@@ -1,4 +1,3 @@
-
 <#
 .SYNOPSIS
 This Function Helps with Testing A Module Locally
@@ -13,14 +12,8 @@ Mandatory. The Path to the Parameter File that contains tokens to be replaced.
 .PARAMETER DefaultParameterFileTokens
 Optional. An object containing the default parameter file tokens that are always available.
 
-.PARAMETER GetLocalCustomParameterFileTokens
-Optional. Switch that enables the search for local parameter file tokens
-
 .PARAMETER LocalCustomParameterFileTokens
 Optional. An object containing the local parameter file tokens to be injected for replacement
-
-.PARAMETER GetRemoteCustomParameterFileTokens
-Optional. A Switch that enables the search for remote parameter file tokens.
 
 .PARAMETER TokensKeyVaultName
 Optional. A string for the Key Vault Name that contains the remote tokens
@@ -41,7 +34,7 @@ Required. The suffix used to identify a token in the parameter file (i.e. >>)
 Optional. An object containing other optional tokens that are to be replaced in the parameter file (used for testing)
 
 .PARAMETER RestoreTokens
-Optional. A switch that enables the search for the original value and replaces it with a token. Used to revert configuration.
+Optional. A boolean that enables the search for the original value and replaces it with a token. Used to revert configuration. Default is false
 
 .PARAMETER OutputDirectory
 Optional. A string for a custom output directory of the modified parameter file
@@ -66,13 +59,7 @@ function Convert-TokensInParameterFile {
         [psobject]$DefaultParameterFileTokens,
 
         [parameter(Mandatory = $false)]
-        [switch]$GetLocalCustomParameterFileTokens,
-
-        [parameter(Mandatory = $false)]
         [psobject]$LocalCustomParameterFileTokens,
-
-        [parameter(Mandatory = $false, ParameterSetName = 'RemoteTokens')]
-        [switch]$GetRemoteCustomParameterFileTokens,
 
         [parameter(Mandatory = $false, ParameterSetName = 'RemoteTokens')]
         [string]$TokensKeyVaultName,
@@ -81,7 +68,7 @@ function Convert-TokensInParameterFile {
         [string]$TokensKeyVaultSubscriptionId,
 
         [parameter(Mandatory = $false, ParameterSetName = 'RemoteTokens')]
-        [string]$TokensKeyVaultSecretNamePrefix,
+        [string]$TokensKeyVaultSecretNamePrefix = '*',
 
         [parameter(Mandatory = $true)]
         [string]$TokenPrefix,
@@ -93,7 +80,7 @@ function Convert-TokensInParameterFile {
         [psobject]$OtherCustomParameterFileTokens,
 
         [parameter(Mandatory = $false)]
-        [switch]$RestoreTokens,
+        [bool]$RestoreTokens = $false,
 
         [parameter(Mandatory = $false)]
         [string]$OutputDirectory
@@ -107,37 +94,29 @@ function Convert-TokensInParameterFile {
     }
 
     process {
-
         ## Get Local Custom Parameter File Tokens (Should not Contain Sensitive Information)
-        if ($GetLocalCustomParameterFileTokens) {
+        if ($LocalCustomParameterFileTokens.Count -eq 0) {
+            Write-Verbose 'No Local Custom Parameter File Tokens Detected'
+            exit
+        } else {
             Write-Verbose "Found $($LocalCustomParameterFileTokens.Count) Local Custom Tokens in Settings File"
-            if ($LocalCustomParameterFileTokens) {
-                $AllCustomParameterFileTokens += $LocalCustomParameterFileTokens
-            } else {
-                Write-Verbose 'No Local Custom Parameter File Tokens Detected'
-            }
+            $AllCustomParameterFileTokens += $LocalCustomParameterFileTokens
         }
-
         ## Get Remote Custom Parameter File Tokens (Should Not Contain Sensitive Information if being passed to regular strings)
-        if ($GetRemoteCustomParameterFileTokens) {
-            if ($TokensKeyVaultName -and $TokensKeyVaultSubscriptionId) {
-                ## Prepare Input for Remote Tokens
-                $RemoteTokensInput = @{
-                    TokensKeyVaultName = $TokensKeyVaultName
-                    SubscriptionId     = $TokensKeyVaultSubscriptionId
-                }
-                ## If KeyVault Secret Prefix is used
-                if ($TokensKeyVaultSecretNamePrefix) {
-                    $RemoteTokensInput += @{ TokensKeyVaultSecretNamePrefix = $TokensKeyVaultSecretNamePrefix }
-                }
-                $RemoteCustomParameterFileTokens = Get-RemoteCustomParameterFileTokens @RemoteTokensInput -ErrorAction SilentlyContinue
-                ## Add Tokens to All Custom Parameter File Tokens
-                if ($RemoteCustomParameterFileTokens) {
-                    Write-Verbose "Found $($RemoteCustomParameterFileTokens.Count) Remote Custom Tokens in Key Vault"
-                    $AllCustomParameterFileTokens += $RemoteCustomParameterFileTokens
-                } else {
-                    Write-Verbose 'No Remote Custom Parameter File Tokens Detected'
-                }
+        if ($TokensKeyVaultName -and $TokensKeyVaultSubscriptionId) {
+            ## Prepare Input for Remote Tokens
+            $RemoteTokensInput = @{
+                TokensKeyVaultName             = $TokensKeyVaultName
+                SubscriptionId                 = $TokensKeyVaultSubscriptionId
+                TokensKeyVaultSecretNamePrefix = $TokensKeyVaultSecretNamePrefix
+            }
+            $RemoteCustomParameterFileTokens = Get-RemoteCustomParameterFileTokens @RemoteTokensInput -ErrorAction SilentlyContinue
+            ## Add Tokens to All Custom Parameter File Tokens
+            if (!$RemoteCustomParameterFileTokens) {
+                Write-Verbose 'No Remote Custom Parameter File Tokens Detected'
+            } else {
+                Write-Verbose "Found $($RemoteCustomParameterFileTokens.Count) Remote Custom Tokens in Key Vault"
+                $AllCustomParameterFileTokens += $RemoteCustomParameterFileTokens
             }
         }
         # Combine All Input Token Types, Remove Duplicates and Only Select Name, Value if they contain other unrequired properties
@@ -146,38 +125,33 @@ function Convert-TokensInParameterFile {
             ForEach-Object { [PSCustomObject]$PSItem } |
             Sort-Object Name -Unique |
             Select-Object -Property Name, Value
-
         # Other Custom Parameter File Tokens (Can be used for testing)
         if ($OtherCustomParameterFileTokens) {
-            $AllCustomParameterFileTokens += $OtherCustomParameterFileTokens
-            $AllCustomParameterFileTokens = $AllCustomParameterFileTokens | ForEach-Object { [PSCustomObject]$PSItem }
+            $AllCustomParameterFileTokens += $OtherCustomParameterFileTokens | ForEach-Object { [PSCustomObject]$PSItem }
         }
         Write-Verbose ("All Parameter File Tokens Count: '$($AllCustomParameterFileTokens.Count)'")
         # Apply Prefix and Suffix to Tokens and Prepare Object for Conversion
-        if ($AllCustomParameterFileTokens) {
-            Write-Verbose ("Applying Token Prefix '$TokenPrefix' and Token Suffix '$TokenSuffix' To All Parameter File Tokens")
-            foreach ($ParameterFileToken in $AllCustomParameterFileTokens) {
-                $ParameterFileToken.Name = -join ($TokenPrefix, $ParameterFileToken.Name, $TokenSuffix)
+        Write-Verbose ("Applying Token Prefix '$TokenPrefix' and Token Suffix '$TokenSuffix' To All Parameter File Tokens")
+        foreach ($ParameterFileToken in $AllCustomParameterFileTokens) {
+            $ParameterFileToken.Name = -join ($TokenPrefix, $ParameterFileToken.Name, $TokenSuffix)
+        }
+        # Convert Tokens in Parameter Files
+        Write-Verbose 'Invoking Convert-TokensInFileList'
+        try {
+            # Prepare Input to Token Converter Function
+            $ConvertTokenListFunctionInput = @{
+                Paths             = $ParameterFilePath
+                TokensReplaceWith = $AllCustomParameterFileTokens
+                RestoreTokens     = $RestoreTokens
             }
-            # Convert Tokens in Parameter Files
-            Write-Verbose 'Invoking Convert-TokensInFileList'
-            try {
-                # Prepare Input to Token Converter Function
-                $ConvertTokenListFunctionInput = @{
-                    Paths             = $ParameterFilePath
-                    TokensReplaceWith = $AllCustomParameterFileTokens
-                }
-                if ($RestoreTokens) {
-                    $ConvertTokenListFunctionInput += @{RestoreTokens = $true }
-                }
-                if ($OutputDirectory) {
-                    $ConvertTokenListFunctionInput += @{OutputDirectory = $OutputDirectory }
-                }
-                Convert-TokensInFileList @ConvertTokenListFunctionInput
-                $ConversionStatus = $true
-            } catch {
-                $ConversionStatus = $false
+            if ($OutputDirectory) {
+                $ConvertTokenListFunctionInput += @{OutputDirectory = $OutputDirectory }
             }
+            # Convert Tokens in the File
+            Convert-TokensInFileList @ConvertTokenListFunctionInput
+            $ConversionStatus = $true
+        } catch {
+            $ConversionStatus = $false
         }
     }
     end {
