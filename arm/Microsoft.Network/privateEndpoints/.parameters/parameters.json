@@ -8,15 +8,21 @@
         "targetSubnetId": {
             "value": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/virtualNetworks/adp-sxx-az-vnet-x-001/subnets/sxx-az-subnet-x-005-privateEndpoints"
         },
-        "privateDNSId": {
-            "value": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/privateDnsZones/privatelink.vaultcore.azure.net"
-        },
         "serviceResourceId": {
             "value": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.KeyVault/vaults/adp-sxx-az-kv-x-001"
         },
         "groupId": {
             "value": [
                 "vault"
+            ]
+        },
+        "privateDnsZoneGroups": {
+            "value": [
+                {
+                    "privateDNSIds": [
+                        "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/privateDnsZones/privatelink.vaultcore.azure.net"
+                    ]
+                }
             ]
         },
         "roleAssignments": {

@@ -73,12 +73,12 @@ var managedImage = {
   runOutputName: '${managedImageName_var}-ManagedImage'
   artifactTags: {
     sourceType: imageSource.type
-    sourcePublisher: (contains(imageSource, 'publisher') ? imageSource.publisher : json('null'))
-    sourceOffer: (contains(imageSource, 'offer') ? imageSource.offer : json('null'))
-    sourceSku: (contains(imageSource, 'sku') ? imageSource.sku : json('null'))
-    sourceVersion: (contains(imageSource, 'version') ? imageSource.version : json('null'))
-    sourceImageId: (contains(imageSource, 'imageId') ? imageSource.imageId : json('null'))
-    sourceImageVersionID: (contains(imageSource, 'imageVersionID') ? imageSource.imageVersionID : json('null'))
+    sourcePublisher: (contains(imageSource, 'publisher') ? imageSource.publisher : null)
+    sourceOffer: (contains(imageSource, 'offer') ? imageSource.offer : null)
+    sourceSku: (contains(imageSource, 'sku') ? imageSource.sku : null)
+    sourceVersion: (contains(imageSource, 'version') ? imageSource.version : null)
+    sourceImageId: (contains(imageSource, 'imageId') ? imageSource.imageId : null)
+    sourceImageVersionID: (contains(imageSource, 'imageVersionID') ? imageSource.imageVersionID : null)
     creationTime: baseTime
   }
 }
@@ -89,12 +89,12 @@ var sharedImage = {
   runOutputName: ((!empty(sigImageDefinitionId)) ? '${split(sigImageDefinitionId, '/')[10]}-SharedImage' : 'SharedImage')
   artifactTags: {
     sourceType: imageSource.type
-    sourcePublisher: (contains(imageSource, 'publisher') ? imageSource.publisher : json('null'))
-    sourceOffer: (contains(imageSource, 'offer') ? imageSource.offer : json('null'))
-    sourceSku: (contains(imageSource, 'sku') ? imageSource.sku : json('null'))
-    sourceVersion: (contains(imageSource, 'version') ? imageSource.version : json('null'))
-    sourceImageId: (contains(imageSource, 'imageId') ? imageSource.imageId : json('null'))
-    sourceImageVersionID: (contains(imageSource, 'imageVersionID') ? imageSource.imageVersionID : json('null'))
+    sourcePublisher: (contains(imageSource, 'publisher') ? imageSource.publisher : null)
+    sourceOffer: (contains(imageSource, 'offer') ? imageSource.offer : null)
+    sourceSku: (contains(imageSource, 'sku') ? imageSource.sku : null)
+    sourceVersion: (contains(imageSource, 'version') ? imageSource.version : null)
+    sourceImageId: (contains(imageSource, 'imageId') ? imageSource.imageId : null)
+    sourceImageVersionID: (contains(imageSource, 'imageVersionID') ? imageSource.imageVersionID : null)
     creationTime: baseTime
   }
   replicationRegions: imageReplicationRegions_var
@@ -105,12 +105,12 @@ var unManagedImage = {
   runOutputName: '${unManagedImageName}-VHD'
   artifactTags: {
     sourceType: imageSource.type
-    sourcePublisher: (contains(imageSource, 'publisher') ? imageSource.publisher : json('null'))
-    sourceOffer: (contains(imageSource, 'offer') ? imageSource.offer : json('null'))
-    sourceSku: (contains(imageSource, 'sku') ? imageSource.sku : json('null'))
-    sourceVersion: (contains(imageSource, 'version') ? imageSource.version : json('null'))
-    sourceImageId: (contains(imageSource, 'imageId') ? imageSource.imageId : json('null'))
-    sourceImageVersionID: (contains(imageSource, 'imageVersionID') ? imageSource.imageVersionID : json('null'))
+    sourcePublisher: (contains(imageSource, 'publisher') ? imageSource.publisher : null)
+    sourceOffer: (contains(imageSource, 'offer') ? imageSource.offer : null)
+    sourceSku: (contains(imageSource, 'sku') ? imageSource.sku : null)
+    sourceVersion: (contains(imageSource, 'version') ? imageSource.version : null)
+    sourceImageId: (contains(imageSource, 'imageId') ? imageSource.imageId : null)
+    sourceImageVersionID: (contains(imageSource, 'imageVersionID') ? imageSource.imageVersionID : null)
     creationTime: baseTime
   }
 }
@@ -140,7 +140,7 @@ resource imageTemplate 'Microsoft.VirtualMachineImages/imageTemplates@2020-02-14
     vmProfile: {
       vmSize: vmSize
       osDiskSizeGB: osDiskSizeGB
-      vnetConfig: (empty(subnetId) ? json('null') : vnetConfig)
+      vnetConfig: (empty(subnetId) ? null : vnetConfig)
     }
     source: imageSource
     customize: customizationSteps

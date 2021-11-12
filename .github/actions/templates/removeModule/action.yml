@@ -10,7 +10,11 @@ inputs:
     required: true
   resourceGroupName:
     description: 'The resource group the module is deployed into'
-    required: true
+    required: false
+  relativePathOfRemovalScript:
+    description: 'The relative path from root to the script that removes the service'
+    required: false
+    default: 'utilities/resourceRemoval/Remove-DeployedModule.ps1'
 
 runs:
   using: 'composite'
@@ -33,15 +37,16 @@ runs:
       shell: pwsh
       run: |
         # Load used functions
-        . "$env:GITHUB_ACTION_PATH/scripts/Remove-DeployedModule.ps1"
+        $functionPath = Join-Path $env:GITHUB_WORKSPACE '${{ inputs.relativePathOfRemovalScript }}'
+        . $functionPath
 
         $functionInput = @{
-          moduleName        = '${{ inputs.moduleName }}'
-          resourceGroupName = '${{ inputs.resourceGroupName }}'
-          templateFilePath  = '${{ inputs.templateFilePath }}'
+            moduleName        = '${{ inputs.moduleName }}'
+            resourceGroupName = '${{ inputs.resourceGroupName }}'
+            verbose           = $true
         }
 
-        Write-Verbose "Invoke task with" -Verbose
+        Write-Verbose 'Invoke task with' -Verbose
         Write-Verbose ($functionInput | ConvertTo-Json | Out-String) -Verbose
 
-        Remove-DeployedModule @functionInput -Verbose
+        Invoke-Expression ('{0} @functionInput' -f (Split-Path $functionPath -LeafBase))

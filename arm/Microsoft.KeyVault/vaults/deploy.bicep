@@ -149,10 +149,10 @@ var virtualNetworkRules = [for networkrule in ((contains(networkAcls, 'virtualNe
   id: '${vNetId}/subnets/${networkrule.subnet}'
 }]
 var networkAcls_var = {
-  bypass: (empty(networkAcls) ? json('null') : networkAcls.bypass)
-  defaultAction: (empty(networkAcls) ? json('null') : networkAcls.defaultAction)
-  virtualNetworkRules: (empty(networkAcls) ? json('null') : virtualNetworkRules)
-  ipRules: (empty(networkAcls) ? json('null') : ((length(networkAcls.ipRules) == 0) ? [] : networkAcls.ipRules))
+  bypass: (empty(networkAcls) ? null : networkAcls.bypass)
+  defaultAction: (empty(networkAcls) ? null : networkAcls.defaultAction)
+  virtualNetworkRules: (empty(networkAcls) ? null : virtualNetworkRules)
+  ipRules: (empty(networkAcls) ? null : ((length(networkAcls.ipRules) == 0) ? [] : networkAcls.ipRules))
 }
 
 module pid_cuaId '.bicep/nested_cuaId.bicep' = if (!empty(cuaId)) {
@@ -172,14 +172,14 @@ resource keyVault 'Microsoft.KeyVault/vaults@2019-09-01' = {
     softDeleteRetentionInDays: softDeleteRetentionInDays
     enableRbacAuthorization: enableRbacAuthorization
     createMode: createMode
-    enablePurgeProtection: ((!enablePurgeProtection) ? json('null') : enablePurgeProtection)
+    enablePurgeProtection: ((!enablePurgeProtection) ? null : enablePurgeProtection)
     tenantId: subscription().tenantId
     accessPolicies: accessPolicies
     sku: {
       name: vaultSku
       family: 'A'
     }
-    networkAcls: (empty(networkAcls) ? json('null') : networkAcls_var)
+    networkAcls: (empty(networkAcls) ? null : networkAcls_var)
   }
 }
 
@@ -195,12 +195,12 @@ resource keyVault_lock 'Microsoft.Authorization/locks@2016-09-01' = if (lock != 
 resource keyVault_diagnosticSettings 'Microsoft.Insights/diagnosticsettings@2017-05-01-preview' = if ((!empty(diagnosticStorageAccountId)) || (!empty(workspaceId)) || (!empty(eventHubAuthorizationRuleId)) || (!empty(eventHubName))) {
   name: '${name_var}-${diagnosticSettingName}'
   properties: {
-    storageAccountId: (empty(diagnosticStorageAccountId) ? json('null') : diagnosticStorageAccountId)
-    workspaceId: (empty(workspaceId) ? json('null') : workspaceId)
-    eventHubAuthorizationRuleId: (empty(eventHubAuthorizationRuleId) ? json('null') : eventHubAuthorizationRuleId)
-    eventHubName: (empty(eventHubName) ? json('null') : eventHubName)
-    metrics: ((empty(diagnosticStorageAccountId) && empty(workspaceId) && empty(eventHubAuthorizationRuleId) && empty(eventHubName)) ? json('null') : diagnosticsMetrics)
-    logs: ((empty(diagnosticStorageAccountId) && empty(workspaceId) && empty(eventHubAuthorizationRuleId) && empty(eventHubName)) ? json('null') : diagnosticsLogs)
+    storageAccountId: (empty(diagnosticStorageAccountId) ? null : diagnosticStorageAccountId)
+    workspaceId: (empty(workspaceId) ? null : workspaceId)
+    eventHubAuthorizationRuleId: (empty(eventHubAuthorizationRuleId) ? null : eventHubAuthorizationRuleId)
+    eventHubName: (empty(eventHubName) ? null : eventHubName)
+    metrics: ((empty(diagnosticStorageAccountId) && empty(workspaceId) && empty(eventHubAuthorizationRuleId) && empty(eventHubName)) ? null : diagnosticsMetrics)
+    logs: ((empty(diagnosticStorageAccountId) && empty(workspaceId) && empty(eventHubAuthorizationRuleId) && empty(eventHubName)) ? null : diagnosticsLogs)
   }
   scope: keyVault
 }

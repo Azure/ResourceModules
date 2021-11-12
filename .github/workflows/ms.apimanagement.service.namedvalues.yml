@@ -1,4 +1,4 @@
-name: 'DesktopVirtualization: Applicationgroups Applications'
+name: 'ApiManagement: Service Namedvalues'
 
 on:
   workflow_dispatch:
@@ -6,7 +6,7 @@ on:
       removeDeployment:
         description: 'Remove deployed module'
         required: false
-        default: 'false'
+        default: 'false' # Deployment does not support tags
       versioningOption:
         description: 'The mode to handle the version increments [major|minor|patch]'
         required: false
@@ -20,14 +20,14 @@ on:
       - main
     paths:
       - '.github/actions/templates/**'
-      - '.github/workflows/ms.desktopvirtualization.applicationgroups.applications.yml'
-      - 'arm/Microsoft.DesktopVirtualization/applicationGroupsResources/applications/**'
-      - '!arm/Microsoft.DesktopVirtualization/applicationGroupsResources/applications/readme.md'
+      - '.github/workflows/ms.apimanagement.service.namedvalues.yml'
+      - 'arm/Microsoft.ApiManagement/serviceResources/namedValues/**'
+      - '!arm/Microsoft.ApiManagement/serviceResources/namedValues/readme.md'
 
 env:
-  moduleName: 'applications'
-  modulePath: 'arm/Microsoft.DesktopVirtualization/applicationGroupsResources/applications'
-  workflowPath: '.github/workflows/ms.desktopvirtualization.applicationgroups.applications.yml'
+  moduleName: 'namedValues'
+  modulePath: 'arm/Microsoft.ApiManagement/serviceResources/namedValues'
+  workflowPath: '.github/workflows/ms.apimanagement.service.namedvalues.yml'
   AZURE_CREDENTIALS: ${{ secrets.AZURE_CREDENTIALS }}
   ARM_SUBSCRIPTION_ID: ${{ secrets.ARM_SUBSCRIPTION_ID }}
   ARM_MGMTGROUP_ID: ${{ secrets.ARM_MGMTGROUP_ID }}
@@ -212,5 +212,4 @@ jobs:
         uses: ./.github/actions/templates/removeModule
         with:
           moduleName: '${{ env.moduleName }}'
-          templateFilePath: '${{ env.modulePath }}/deploy.bicep'
           resourceGroupName: '${{ env.resourceGroupName }}'
