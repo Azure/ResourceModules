@@ -23,7 +23,7 @@ The following resources are required to be able to deploy this resource.
 | `authorizationMethods` | array | `[GET]` |  | Optional. HTTP verbs supported by the authorization endpoint. GET must be always present. POST is optional. - HEAD, OPTIONS, TRACE, GET, POST, PUT, PATCH, DELETE |
 | `bearerTokenSendingMethods` | array | `[authorizationHeader]` |  | Optional. Specifies the mechanism by which access token is passed to the API. - authorizationHeader or query |
 | `clientAuthenticationMethod` | array | `[Basic]` |  | Optional. Method of authentication supported by the token endpoint of this authorization server. Possible values are Basic and/or Body. When Body is specified, client credentials and other parameters are passed within the request body in the application/x-www-form-urlencoded format. - Basic or Body |
-| `clientId` | string |  |  | Required. Client or app id registered with this authorization server. |
+| `clientId` | secureString |  |  | Required. Client or app id registered with this authorization server. |
 | `clientRegistrationEndpoint` | string |  |  | Required. Optional reference to a page where client or app registration for this authorization server is performed. Contains absolute URL to entity being referenced. |
 | `clientSecret` | secureString |  |  | Required. Client or app secret registered with this authorization server. This property will not be filled on 'GET' operations! Use '/listSecrets' POST request to get the value. |
 | `cuaId` | string |  |  | Optional. Customer Usage Attribution id (GUID). This GUID must be previously registered |

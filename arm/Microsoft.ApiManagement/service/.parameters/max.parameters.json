@@ -18,49 +18,36 @@
             "value": [
                 {
                     "name": "sxx-az-am-x-002",
-                    "displayName": "Echo API 1",
-                    "path": "echo1",
-                    "serviceUrl": "http://echoapi1.cloudapp.net/api",
+                    "displayName": "Echo API",
+                    "path": "echo",
+                    "serviceUrl": "http://echoapi.cloudapp.net/api",
                     "apiVersionSet": {
-                        "name": "echo-version-set1",
+                        "name": "echo-version-set",
                         "properties": {
-                            "description": "echo-version-set1",
-                            "displayName": "echo-version-set1",
+                            "description": "echo-version-set",
+                            "displayName": "echo-version-set",
                             "versioningScheme": "Segment"
                         }
                     }
                 }
             ]
         },
-        // "authorizationServers": {
-        //     "value": [
-        //         {
-        //             "name": "AuthServer1",
-        //             "authorizationEndpoint": "https://login.microsoftonline.com/651b43ce-ccb8-4301-b551-b04dd872d401/oauth2/v2.0/authorize",
-        //             "grantTypes": [
-        //                 "authorizationCode"
-        //             ],
-        //             "clientId": {
-        //                 "reference": {
-        //                     "keyVault": {
-        //                         "id": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.KeyVault/vaults/adp-sxx-az-kv-x-001"
-        //                     },
-        //                     "secretName": "apimclientid"
-        //                 }
-        //             },
-        //             "clientSecret": {
-        //                 "reference": {
-        //                     "keyVault": {
-        //                         "id": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.KeyVault/vaults/adp-sxx-az-kv-x-001"
-        //                     },
-        //                     "secretName": "apimclientsecret"
-        //                 }
-        //             },
-        //             "clientRegistrationEndpoint": "http://localhost",
-        //             "tokenEndpoint": "https://login.microsoftonline.com/651b43ce-ccb8-4301-b551-b04dd872d401/oauth2/v2.0/token"
-        //         }
-        //     ]
-        // },
+        "authorizationServers": {
+            "value": [
+                {
+                    "name": "AuthServer1",
+                    "authorizationEndpoint": "https://login.microsoftonline.com/651b43ce-ccb8-4301-b551-b04dd872d401/oauth2/v2.0/authorize",
+                    "grantTypes": [
+                        "authorizationCode"
+                    ],
+                    "clientCredentialsKeyVaultName": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.KeyVault/vaults/adp-sxx-az-kv-x-001",
+                    "clientIdSecretName": "apimclientid",
+                    "clientSecretSecretName": "apimclientsecret",
+                    "clientRegistrationEndpoint": "http://localhost",
+                    "tokenEndpoint": "https://login.microsoftonline.com/651b43ce-ccb8-4301-b551-b04dd872d401/oauth2/v2.0/token"
+                }
+            ]
+        },
         "backends": {
             "value": [
                 {

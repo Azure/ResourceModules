@@ -22,16 +22,17 @@ param clientAuthenticationMethod array = [
   'Basic'
 ]
 
-@description('Required. Client or app id registered with this authorization server.')
-@secure()
-param clientId string
-
 @description('Optional. Optional reference to a page where client or app registration for this authorization server is performed. Contains absolute URL to entity being referenced.')
 param clientRegistrationEndpoint string = ''
 
-@description('Required. Client or app secret registered with this authorization server. This property will not be filled on \'GET\' operations! Use \'/listSecrets\' POST request to get the value.')
-@secure()
-param clientSecret string
+@description('Required. Name of the key vault that stores clientId and clientSecret for this authorization server.')
+param clientCredentialsKeyVaultName string
+
+@description('Required. Name of the secret that stores the Client or app id registered with this authorization server.')
+param clientIdSecretName string
+
+@description('Required. Name of the secret that stores the Client or app secret registered with this authorization server. This property will not be filled on \'GET\' operations! Use \'/listSecrets\' POST request to get the value.')
+param clientSecretSecretName string
 
 @description('Optional. Customer Usage Attribution id (GUID). This GUID must be previously registered')
 param cuaId string = ''
@@ -70,10 +71,15 @@ module pid_cuaId '.bicep/nested_cuaId.bicep' = if (!empty(cuaId)) {
   params: {}
 }
 
-resource authorizationServer 'Microsoft.ApiManagement/service/authorizationServers@2020-06-01-preview' = {
+resource keyVault 'Microsoft.KeyVault/vaults@2019-09-01' existing = {
+  name: clientCredentialsKeyVaultName
+}
+
+module authorizationServer 'deploy.bicep' = {
   name: '${apiManagementServiceName}/${name}'
-  properties: {
-    description: serverDescription
+  params: {
+    apiManagementServiceName: apiManagementServiceName
+    serverDescription: serverDescription
     authorizationMethods: setAuthorizationMethods
     clientAuthenticationMethod: clientAuthenticationMethod
     tokenBodyParameters: tokenBodyParameters
@@ -83,20 +89,20 @@ resource authorizationServer 'Microsoft.ApiManagement/service/authorizationServe
     bearerTokenSendingMethods: bearerTokenSendingMethods
     resourceOwnerUsername: resourceOwnerUsername
     resourceOwnerPassword: resourceOwnerPassword
-    displayName: name
+    name: name
     clientRegistrationEndpoint: clientRegistrationEndpoint
     authorizationEndpoint: authorizationEndpoint
     grantTypes: grantTypes
-    clientId: clientId
-    clientSecret: clientSecret
+    clientId: keyVault.getSecret(clientIdSecretName)
+    clientSecret: keyVault.getSecret(clientSecretSecretName)
   }
 }
 
 @description('The name of the API management service authorization server')
-output authorizationServerName string = authorizationServer.name
+output authorizationServerName string = authorizationServer.outputs.authorizationServerName
 
 @description('The resourceId of the API management service authorization server')
-output authorizationServerResourceId string = authorizationServer.id
+output authorizationServerResourceId string = authorizationServer.outputs.authorizationServerResourceId
 
 @description('The resource group the API management service authorization server was deployed into')
-output authorizationServerResourceGroup string = resourceGroup().name
+output authorizationServerResourceGroup string = authorizationServer.outputs.authorizationServerResourceGroup
