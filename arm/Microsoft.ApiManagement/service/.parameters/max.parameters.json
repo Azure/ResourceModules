@@ -17,15 +17,15 @@
         "apis": {
             "value": [
                 {
-                    "name": "adp-sxx-az-am-x-001",
-                    "displayName": "Echo API",
-                    "path": "echo",
-                    "serviceUrl": "http://echoapi.cloudapp.net/api",
+                    "name": "adp-sxx-az-am-x-002",
+                    "displayName": "Echo API 1",
+                    "path": "echo1",
+                    "serviceUrl": "http://echoapi1.cloudapp.net/api",
                     "apiVersionSet": {
-                        "name": "echo-version-set",
+                        "name": "echo-version-set1",
                         "properties": {
-                            "description": "echo-version-set",
-                            "displayName": "echo-version-set",
+                            "description": "echo-version-set1",
+                            "displayName": "echo-version-set1",
                             "versioningScheme": "Segment"
                         }
                     }
@@ -101,6 +101,7 @@
         "policies": {
             "value": [
                 {
+                    "name": "testpolicy",
                     "value": "<policies> <inbound> <rate-limit-by-key calls='250' renewal-period='60' counter-key='@(context.Request.IpAddress)' /> </inbound> <backend> <forward-request /> </backend> <outbound> </outbound> </policies>",
                     "format": "xml"
                 }
