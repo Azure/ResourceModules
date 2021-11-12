@@ -201,13 +201,13 @@ resource softwareUpdateConfiguration 'Microsoft.Automation/automationAccounts/so
         includedPackageNameMasks: includeUpdates
         includedPackageClassifications: updateClassifications_var
         rebootSetting: rebootSetting
-      } : json('null'))
+      } : null)
       windows: ((operatingSystem == 'Windows') ? {
         excludedKbNumbers: excludeUpdates
         includedKbNumbers: includeUpdates
         includedUpdateClassifications: updateClassifications_var
         rebootSetting: rebootSetting
-      } : json('null'))
+      } : null)
       targets: {
         azureQueries: [
           {
@@ -226,12 +226,12 @@ resource softwareUpdateConfiguration 'Microsoft.Automation/automationAccounts/so
     }
     tasks: {
       preTask: {
-        parameters: (empty(preTaskParameters) ? json('null') : preTaskParameters)
-        source: (empty(preTaskSource) ? json('null') : preTaskSource)
+        parameters: (empty(preTaskParameters) ? null : preTaskParameters)
+        source: (empty(preTaskSource) ? null : preTaskSource)
       }
       postTask: {
-        parameters: (empty(postTaskParameters) ? json('null') : postTaskParameters)
-        source: (empty(postTaskSource) ? json('null') : postTaskSource)
+        parameters: (empty(postTaskParameters) ? null : postTaskParameters)
+        source: (empty(postTaskSource) ? null : postTaskSource)
       }
     }
     scheduleInfo: {
@@ -240,9 +240,9 @@ resource softwareUpdateConfiguration 'Microsoft.Automation/automationAccounts/so
       isEnabled: isEnabled
       timeZone: timeZone
       advancedSchedule: {
-        weekDays: (empty(weekDays) ? json('null') : weekDays)
-        monthDays: (empty(monthDays) ? json('null') : monthDays)
-        monthlyOccurrences: (empty(monthlyOccurrences) ? json('null') : monthlyOccurrences)
+        weekDays: (empty(weekDays) ? null : weekDays)
+        monthDays: (empty(monthDays) ? null : monthDays)
+        monthlyOccurrences: (empty(monthlyOccurrences) ? null : monthlyOccurrences)
       }
       startTime: startTime_var
       expiryTime: expiryTime

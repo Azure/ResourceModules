@@ -254,18 +254,18 @@ module pid_cuaId '.bicep/nested_cuaId.bicep' = if (!empty(cuaId)) {
 resource managedCluster 'Microsoft.ContainerService/managedClusters@2021-07-01' = {
   name: aksClusterName
   location: location
-  tags: (empty(tags) ? json('null') : tags)
+  tags: (empty(tags) ? null : tags)
   identity: identity
   properties: {
-    kubernetesVersion: (empty(aksClusterKubernetesVersion) ? json('null') : aksClusterKubernetesVersion)
+    kubernetesVersion: (empty(aksClusterKubernetesVersion) ? null : aksClusterKubernetesVersion)
     dnsPrefix: aksClusterDnsPrefix
     agentPoolProfiles: primaryAgentPoolProfile
     sku: {
       name: 'Basic'
       tier: aksClusterSkuTier
     }
-    linuxProfile: (empty(aksClusterSshPublicKey) ? json('null') : aksClusterLinuxProfile)
-    servicePrincipalProfile: (empty(aksServicePrincipalProfile) ? json('null') : aksServicePrincipalProfile)
+    linuxProfile: (empty(aksClusterSshPublicKey) ? null : aksClusterLinuxProfile)
+    servicePrincipalProfile: (empty(aksServicePrincipalProfile) ? null : aksServicePrincipalProfile)
     addonProfiles: {
       httpApplicationRouting: {
         enabled: httpApplicationRoutingEnabled
@@ -273,7 +273,7 @@ resource managedCluster 'Microsoft.ContainerService/managedClusters@2021-07-01' 
       omsagent: {
         enabled: (omsAgentEnabled && (!empty(workspaceId)))
         config: {
-          logAnalyticsWorkspaceResourceID: ((!empty(workspaceId)) ? workspaceId : json('null'))
+          logAnalyticsWorkspaceResourceID: ((!empty(workspaceId)) ? workspaceId : null)
         }
       }
       aciConnectorLinux: {
@@ -292,15 +292,15 @@ resource managedCluster 'Microsoft.ContainerService/managedClusters@2021-07-01' 
     enableRBAC: aadProfileEnableAzureRBAC
     nodeResourceGroup: nodeResourceGroup
     networkProfile: {
-      networkPlugin: (empty(aksClusterNetworkPlugin) ? json('null') : aksClusterNetworkPlugin)
-      networkPolicy: (empty(aksClusterNetworkPolicy) ? json('null') : aksClusterNetworkPolicy)
-      podCidr: (empty(aksClusterPodCidr) ? json('null') : aksClusterPodCidr)
-      serviceCidr: (empty(aksClusterServiceCidr) ? json('null') : aksClusterServiceCidr)
-      dnsServiceIP: (empty(aksClusterDnsServiceIP) ? json('null') : aksClusterDnsServiceIP)
-      dockerBridgeCidr: (empty(aksClusterDockerBridgeCidr) ? json('null') : aksClusterDockerBridgeCidr)
+      networkPlugin: (empty(aksClusterNetworkPlugin) ? null : aksClusterNetworkPlugin)
+      networkPolicy: (empty(aksClusterNetworkPolicy) ? null : aksClusterNetworkPolicy)
+      podCidr: (empty(aksClusterPodCidr) ? null : aksClusterPodCidr)
+      serviceCidr: (empty(aksClusterServiceCidr) ? null : aksClusterServiceCidr)
+      dnsServiceIP: (empty(aksClusterDnsServiceIP) ? null : aksClusterDnsServiceIP)
+      dockerBridgeCidr: (empty(aksClusterDockerBridgeCidr) ? null : aksClusterDockerBridgeCidr)
       outboundType: aksClusterOutboundType
       loadBalancerSku: aksClusterLoadBalancerSku
-      loadBalancerProfile: ((managedOutboundIPCount == 0) ? json('null') : lbProfile)
+      loadBalancerProfile: ((managedOutboundIPCount == 0) ? null : lbProfile)
     }
     aadProfile: {
       clientAppID: aadProfileClientAppID
@@ -345,12 +345,12 @@ resource managedCluster_lock 'Microsoft.Authorization/locks@2016-09-01' = if (lo
 resource managedCluster_diagnosticSettings 'Microsoft.Insights/diagnosticsettings@2017-05-01-preview' = if ((!empty(diagnosticStorageAccountId)) || (!empty(workspaceId)) || (!empty(eventHubAuthorizationRuleId)) || (!empty(eventHubName))) {
   name: '${managedCluster.name}-diagnosticSettings'
   properties: {
-    storageAccountId: (empty(diagnosticStorageAccountId) ? json('null') : diagnosticStorageAccountId)
-    workspaceId: (empty(workspaceId) ? json('null') : workspaceId)
-    eventHubAuthorizationRuleId: (empty(eventHubAuthorizationRuleId) ? json('null') : eventHubAuthorizationRuleId)
-    eventHubName: (empty(eventHubName) ? json('null') : eventHubName)
-    metrics: ((empty(diagnosticStorageAccountId) && empty(workspaceId) && empty(eventHubAuthorizationRuleId) && empty(eventHubName)) ? json('null') : diagnosticsMetrics)
-    logs: ((empty(diagnosticStorageAccountId) && empty(workspaceId) && empty(eventHubAuthorizationRuleId) && empty(eventHubName)) ? json('null') : diagnosticsLogs)
+    storageAccountId: (empty(diagnosticStorageAccountId) ? null : diagnosticStorageAccountId)
+    workspaceId: (empty(workspaceId) ? null : workspaceId)
+    eventHubAuthorizationRuleId: (empty(eventHubAuthorizationRuleId) ? null : eventHubAuthorizationRuleId)
+    eventHubName: (empty(eventHubName) ? null : eventHubName)
+    metrics: ((empty(diagnosticStorageAccountId) && empty(workspaceId) && empty(eventHubAuthorizationRuleId) && empty(eventHubName)) ? null : diagnosticsMetrics)
+    logs: ((empty(diagnosticStorageAccountId) && empty(workspaceId) && empty(eventHubAuthorizationRuleId) && empty(eventHubName)) ? null : diagnosticsLogs)
   }
   scope: managedCluster
 }
