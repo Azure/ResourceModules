@@ -35,7 +35,6 @@ resource linkedService 'Microsoft.OperationalInsights/workspaces/linkedServices@
   tags: tags
   properties: {
     resourceId: resourceId
-    provisioningState: provisioningState
     writeAccessResourceId: writeAccessResourceId == '' ? null : writeAccessResourceId
   }
 }
