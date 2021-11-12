@@ -1,5 +1,5 @@
-@description('Required. Name of the Automation Account job schedule')
-param name string
+@description('Optional. Name of the Automation Account job schedule')
+param name string = ''
 
 @description('Required. Name of the parent Automation Account')
 param parent string
@@ -29,7 +29,7 @@ resource jobSchedule_automationAccount 'Microsoft.Automation/automationAccounts@
 }
 
 resource jobSchedule 'Microsoft.Automation/automationAccounts/jobSchedules@2020-01-13-preview' = {
-  name: name
+  name: empty(name) ? guid(runbookName, scheduleName) : name
   parent: jobSchedule_automationAccount
   properties: {
     parameters: parameters

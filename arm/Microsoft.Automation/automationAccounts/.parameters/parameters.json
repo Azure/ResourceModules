@@ -41,7 +41,6 @@
         "jobSchedules": {
             "value": [
                 {
-                    "name": "TestJobSchedule",
                     "scheduleName": "TestSchedule",
                     "runbookName": "TestRunbook"
                 }

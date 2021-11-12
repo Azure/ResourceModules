@@ -170,7 +170,6 @@ module automationAccount_runbooks './runbooks/deploy.bicep' = [for (runbook, ind
 module automationAccount_jobSchedules './jobSchedules/deploy.bicep' = [for (jobSchedule, index) in jobSchedules: {
   name: '${uniqueString(deployment().name, location)}-AutoAccount-JobSchedule-${index}'
   params: {
-    name: jobSchedule.name
     parent: automationAccount.name
     runbookName: jobSchedule.runbookName
     scheduleName: jobSchedule.scheduleName
