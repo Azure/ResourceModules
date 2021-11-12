@@ -158,9 +158,11 @@ module dataSources_mod 'dataSources/deploy.bicep' = [for (dataSource, index) in 
 module solution '.bicep/nested_solutions.bicep' = [for (gallerySolution, index) in gallerySolutions: if (!empty(gallerySolutions)) {
   name: '${deployment().name}-solution-${index}'
   params: {
-    gallerySolution: gallerySolution
+    gallerySolution: gallerySolution.name
     location: location
     logAnalyticsWorkspaceName: logAnalyticsWorkspace.name
+    product: gallerySolution.product
+    publisher: gallerySolution.publisher
   }
 }]
 

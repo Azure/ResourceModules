@@ -140,7 +140,11 @@
         },
         "gallerySolutions": {
             "value": [
-                "AzureAutomation"
+                {
+                    "name": "AzureAutomation",
+                    "product": "OMSGallery",
+                    "publisher": "Microsoft"
+                }
             ]
         },
         "useResourcePermissions": {
