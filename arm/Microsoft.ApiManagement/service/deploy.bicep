@@ -121,6 +121,8 @@ param logsToEnable array = [
 param metricsToEnable array = [
   'AllMetrics'
 ]
+@description('Optional. Necessary to create a new guid.')
+param newGuidValue string = newGuid()
 
 @description('Optional. APIs.')
 param apis array = []
@@ -314,7 +316,7 @@ module namedValues_resource 'namedValues/deploy.bicep' = [for (namedValue, index
     name: namedValue.name
     namedValueTags: contains(namedValue, 'namedValueTags') ? namedValue.namedValueTags : []
     secret: contains(namedValue, 'secret') ? namedValue.secret : false
-    value: contains(namedValue, 'value') ? namedValue.value : newGuid()
+    value: contains(namedValue, 'value') ? namedValue.value : newGuidValue
   }
 }]
 
