@@ -24,10 +24,6 @@ This module deploys an Azure Automation Account Schedule.
 | `startTime` | string |  |  | Optional. The start time of the schedule. |
 | `timeZone` | string |  |  | Optional. The time zone of the schedule. |
 
-### Parameter Usage: `<ParameterPlaceholder>`
-
-// TODO: Fill in Parameter usage
-
 ## Outputs
 
 | Output Name | Type | Description |

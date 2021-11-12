@@ -25,10 +25,6 @@ This module deploys an Azure Automation Account Runbook.
 | `uri` | string |  |  | Optional. The uri of the runbook content. |
 | `version` | string |  |  | Optional. The version of the runbook content. |
 
-### Parameter Usage: `<ParameterPlaceholder>`
-
-// TODO: Fill in Parameter usage
-
 ## Outputs
 
 | Output Name | Type | Description |

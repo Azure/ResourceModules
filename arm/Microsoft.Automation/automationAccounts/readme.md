@@ -41,121 +41,6 @@ This module deploys an Azure Automation Account.
 | `tags` | object | `{object}` |  | Optional. Tags of the Automation Account resource. |
 | `workspaceId` | string |  |  | Optional. Resource identifier of Log Analytics. |
 
-### Parameter Usage: `modules`
-
-List of modules to be created in the automation account
-
-```json
-"modules": {
-    "value": [
-    {
-        "name": "OMSIngestionAPI",                                    // The module name.
-        "version": "latest",                                          // The module version or specify latest to get the latest version
-        "uri": "https://www.powershellgallery.com/api/v2/package"     // The module package uri, e.g. https://www.powershellgallery.com/api/v2/package
-    },
-    {
-        "name": "PackageManagement",
-        "version": "1.4.5",
-        "uri": "https://www.powershellgallery.com/api/v2/package"
-    }
-    ]
-}
-```
-
-### Parameter Usage: `runbooks`
-
-List of runbooks to be created in the automation account
-
-```json
-"runbooks": {
-    "value": [
-        {
-            "runbookName": "ScalingRunbook", // Name for a runbook if you intent to deploy one
-            "runbookType": "PowerShell", // Type of script
-            "runbookScriptUri": "https://raw.githubusercontent.com/Azure/basicScale.ps1", // The uri where the runbook script is located
-            "scriptStorageAccountId": "/subscriptions/62826c76-d304-46d8-a0f6-718dbdcc536c/resourceGroups/AVD-Mgmt-PO-RG/providers/Microsoft.Storage/storageAccounts/avdassetsstore",
-            "version": "1.0.0.0" // version of api
-        }
-    ]
-}
-```
-
-### Parameter Usage: `schedules`
-
-List of schedules to be created in the automation account
-
-```json
-"schedules": {
-    "value": [
-        {
-            "scheduleName": "ScalingRunbook_Schedule", // The schedule name.
-            "startTime": "", // Gets or sets the start time of the schedule.
-            "expiryTime": "9999-12-31T23:59:00+00:00", // Gets or sets the end time of the schedule.
-            "interval": 15, // Gets or sets the interval of the schedule.
-            "frequency": "Minute", // Gets or sets the frequency of the schedule. - OneTime, Day, Hour, Week, Month, Minute
-            "timeZone": "Europe/Berlin", // Gets or sets the time zone of the schedule.
-            "advancedSchedule": "" // Gets or sets the AdvancedSchedule
-        }
-    ]
-}
-```
-
-### Parameter Usage: `jobSchedules`
-
-List of jobSchedules to be created in the automation account
-
-```json
-"jobSchedules": {
-    "value": [
-        {
-            "jobScheduleName": "ScalingRunbook_JobSchedule", // jobSchedule used to generate unique id
-            "scheduleName": "ScalingRunbook_Schedule", // Gets or sets the schedule
-            "runbookName": "ScalingRunbook", // Gets or sets the runbook
-            "parameters": { // Gets or sets a list of job properties.
-                "param1": "value1"
-            },
-            "runOn": "" // Gets or sets the hybrid worker group that the scheduled job should run on.
-        }
-    ]
-}
-```
-
-### Parameter Usage: `privateEndpoints`
-
-To use Private Endpoint the following dependencies must be deployed:
-
-- Destination subnet must be created with the following configuration option - `"privateEndpointNetworkPolicies": "Disabled"`.  Setting this option acknowledges that NSG rules are not applied to Private Endpoints (this capability is coming soon). A full example is available in the Virtual Network Module.
-- Although not strictly required, it is highly recommended to first create a private DNS Zone to host Private Endpoint DNS records. See [Azure Private Endpoint DNS configuration](https://docs.microsoft.com/en-us/azure/private-link/private-endpoint-dns) for more information.
-
-```json
-"privateEndpoints": {
-    "value": [
-        // Example showing all available fields
-        {
-            "name": "sxx-az-sa-cac-y-123-pe", // Optional: Name will be automatically generated if one is not provided here
-            "subnetResourceId": "/subscriptions/8629be3b-96bc-482d-a04b-ffff597c65a2/resourceGroups/validation-rg/providers/Microsoft.Network/virtualNetworks/sxx-az-vnet-x-001/subnets/sxx-az-subnet-x-001",
-            "service": "blob",
-            "privateDnsZoneResourceIds": [ // Optional: No DNS record will be created if a private DNS zone Resource ID is not specified
-                "/subscriptions/8629be3b-96bc-482d-a04b-ffff597c65a2/resourceGroups/validation-rg/providers/Microsoft.Network/privateDnsZones/privatelink.blob.core.windows.net"
-            ],
-            "customDnsConfigs": [ // Optional
-                {
-                    "fqdn": "customname.test.local",
-                    "ipAddresses": [
-                        "10.10.10.10"
-                    ]
-                }
-            ]
-        },
-        // Example showing only mandatory fields
-        {
-            "subnetResourceId": "/subscriptions/8629be3b-96bc-482d-a04b-ffff597c65a2/resourceGroups/validation-rg/providers/Microsoft.Network/virtualNetworks/sxx-az-vnet-x-001/subnets/sxx-az-subnet-x-001",
-            "service": "file"
-        }
-    ]
-}
-```
-
 ### Parameter Usage: `roleAssignments`
 
 ```json
@@ -201,6 +86,44 @@ Tag names and tag values can be provided as needed. A tag can be left without a 
     }
 }
 ```
+
+### Parameter Usage: `privateEndpoints`
+
+To use Private Endpoint the following dependencies must be deployed:
+
+- Destination subnet must be created with the following configuration option - `"privateEndpointNetworkPolicies": "Disabled"`.  Setting this option acknowledges that NSG rules are not applied to Private Endpoints (this capability is coming soon). A full example is available in the Virtual Network Module.
+- Although not strictly required, it is highly recommended to first create a private DNS Zone to host Private Endpoint DNS records. See [Azure Private Endpoint DNS configuration](https://docs.microsoft.com/en-us/azure/private-link/private-endpoint-dns) for more information.
+
+```json
+"privateEndpoints": {
+    "value": [
+        // Example showing all available fields
+        {
+            "name": "sxx-az-sa-cac-y-123-pe", // Optional: Name will be automatically generated if one is not provided here
+            "subnetResourceId": "/subscriptions/8629be3b-96bc-482d-a04b-ffff597c65a2/resourceGroups/validation-rg/providers/Microsoft.Network/virtualNetworks/sxx-az-vnet-x-001/subnets/sxx-az-subnet-x-001",
+            "service": "blob",
+            "privateDnsZoneResourceIds": [ // Optional: No DNS record will be created if a private DNS zone Resource ID is not specified
+                "/subscriptions/8629be3b-96bc-482d-a04b-ffff597c65a2/resourceGroups/validation-rg/providers/Microsoft.Network/privateDnsZones/privatelink.blob.core.windows.net"
+            ],
+            "customDnsConfigs": [ // Optional
+                {
+                    "fqdn": "customname.test.local",
+                    "ipAddresses": [
+                        "10.10.10.10"
+                    ]
+                }
+            ]
+        },
+        // Example showing only mandatory fields
+        {
+            "subnetResourceId": "/subscriptions/8629be3b-96bc-482d-a04b-ffff597c65a2/resourceGroups/validation-rg/providers/Microsoft.Network/virtualNetworks/sxx-az-vnet-x-001/subnets/sxx-az-subnet-x-001",
+            "service": "file"
+        }
+    ]
+}
+```
+
+
 
 ## Outputs
 

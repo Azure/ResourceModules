@@ -20,10 +20,6 @@ This module deploys an Azure Automation Account Module.
 | `uri` | string |  |  | Required. Module package uri, e.g. https://www.powershellgallery.com/api/v2/package. |
 | `version` | string | `latest` |  | Optional. Module version or specify latest to get the latest version. |
 
-### Parameter Usage: `<ParameterPlaceholder>`
-
-// TODO: Fill in Parameter usage
-
 ## Outputs
 
 | Output Name | Type | Description |

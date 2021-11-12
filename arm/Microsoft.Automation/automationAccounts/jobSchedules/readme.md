@@ -20,10 +20,6 @@ This module deploys an Azure Automation Account Job Schedule.
 | `runOn` | string |  |  | Optional. The hybrid worker group that the scheduled job should run on. |
 | `scheduleName` | string |  |  | Required. The schedule property associated with the entity. |
 
-### Parameter Usage: `<ParameterPlaceholder>`
-
-// TODO: Fill in Parameter usage
-
 ## Outputs
 
 | Output Name | Type | Description |
