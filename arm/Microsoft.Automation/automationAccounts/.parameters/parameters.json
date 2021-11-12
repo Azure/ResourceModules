@@ -3,7 +3,7 @@
     "contentVersion": "1.0.0.0",
     "parameters": {
         "name": {
-            "value": "sxx-wd-aut-weu-x-001"
+            "value": "sxx-wd-aut-x-001"
         },
         "schedules": {
             "value": [
@@ -41,59 +41,12 @@
         "jobSchedules": {
             "value": [
                 {
-                    "name": "2763f40e-f874-4dda-b43a-60c5a7cb8784",
+                    "name": "TestJobSchedule",
                     "scheduleName": "TestSchedule",
                     "runbookName": "TestRunbook"
                 }
             ]
-        },
-        "linkedWorkspaceId": {
-            "value": "/subscriptions/8629be3b-96bc-482d-a04b-ffff597c65a2/resourcegroups/validation-rg/providers/microsoft.operationalinsights/workspaces/testlaw"
-        },
-        "softwareUpdateConfigurations": {
-            "value": [
-                {
-                    "name": "Windows_ZeroDay",
-                    "frequency": "Month",
-                    "operatingSystem": "Windows",
-                    "rebootSetting": "IfRequired",
-                    "scopeByTags": {
-                        "Update": [
-                            "Automatic-Wave1"
-                        ]
-                    },
-                    "maintenanceWindow": "PT4H",
-                    "updateClassifications": [
-                        "Critical",
-                        "Security",
-                        "UpdateRollup",
-                        "FeaturePack",
-                        "ServicePack",
-                        "Definition",
-                        "Tools",
-                        "Updates"
-                    ],
-                    "includeUpdates": [
-                        "654321"
-                    ],
-                    "excludeUpdates": [
-                        "123456"
-                    ],
-                    "interval": 1,
-                    "monthlyOccurrences": [
-                        {
-                            "occurrence": 3,
-                            "day": "Friday"
-                        }
-                    ],
-                    "startTime": "22:00"
-                }
-            ]
         }
-        // "parameters": { // Gets or sets a list of job properties.
-        //     "param1": "value1"
-        // },
-        // "runOn": "hybridWorkerGroup" // Gets or sets the hybrid worker group that the scheduled job should run on.
         // ,
         // "privateEndpoints": {
         //     "value": [
