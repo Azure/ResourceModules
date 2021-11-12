@@ -1,6 +1,6 @@
-# OperationalinsightsWorkspacesLinkedservices `[Microsoft.OperationalInsights/workspaces/linkedServices]`
+# Operationalinsights Workspaces Linked Services `[Microsoft.OperationalInsights/workspaces/linkedServices]`
 
-// TODO: Replace Resource and fill in description
+This template deploys a linked service for a Log Analytics workspace.
 
 ## Resource Types
 

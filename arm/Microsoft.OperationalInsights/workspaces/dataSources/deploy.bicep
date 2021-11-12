@@ -61,7 +61,7 @@ module pid_cuaId '.bicep/nested_cuaId.bicep' = if (!empty(cuaId)) {
   params: {}
 }
 
-resource symbolicname 'Microsoft.OperationalInsights/workspaces/dataSources@2020-08-01' = {
+resource dataSource 'Microsoft.OperationalInsights/workspaces/dataSources@2020-08-01' = {
   name: '${logAnalyticsWorkspaceName}/${name}'
   kind: kind
   tags: tags

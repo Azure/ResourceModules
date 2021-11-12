@@ -1,6 +1,6 @@
-# OperationalinsightsWorkspacesDatasources `[Microsoft.OperationalInsights/workspaces/dataSources]`
+# Operationalinsights Workspaces Datasources `[Microsoft.OperationalInsights/workspaces/dataSources]`
 
-// TODO: Replace Resource and fill in description
+This template deploys a data source for a Log Analytics workspace.
 
 ## Resource Types
 

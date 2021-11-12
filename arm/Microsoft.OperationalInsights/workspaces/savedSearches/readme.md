@@ -1,6 +1,6 @@
-# OperationalinsightsWorkspacesSavedsearches `[Microsoft.OperationalInsights/workspaces/savedSearches]`
+# Operationalinsights Workspaces Saved Searches `[Microsoft.OperationalInsights/workspaces/savedSearches]`
 
-// TODO: Replace Resource and fill in description
+This template deploys a saved search for a Log Analytics workspace.
 
 ## Resource Types
 

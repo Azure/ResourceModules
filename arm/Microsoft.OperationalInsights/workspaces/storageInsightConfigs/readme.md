@@ -1,6 +1,6 @@
-# OperationalinsightsWorkspacesStorageinsightconfigs `[Microsoft.OperationalInsights/workspaces/storageInsightConfigs]`
+# Operationalinsights Workspaces Storage Insight Configs `[Microsoft.OperationalInsights/workspaces/storageInsightConfigs]`
 
-// TODO: Replace Resource and fill in description
+This template deploys a storage insights configuration for a Log Analytics workspace.
 
 ## Resource Types
 
