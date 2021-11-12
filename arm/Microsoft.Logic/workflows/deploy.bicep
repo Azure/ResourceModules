@@ -140,7 +140,7 @@ module pid_cuaId '.bicep/nested_cuaId.bicep' = if (!empty(cuaId)) {
 resource logicApp 'Microsoft.Logic/workflows@2019-05-01' = {
   name: logicAppName
   location: location
-  tags: (empty(tags) ? json('null') : tags)
+  tags: (empty(tags) ? null : tags)
   identity: ((!empty(identity)) ? identity : any(null))
   properties: {
     state: state
@@ -148,15 +148,15 @@ resource logicApp 'Microsoft.Logic/workflows@2019-05-01' = {
       workflow: workflowEndpointsConfiguration
       connector: connectorEndpointsConfiguration
     }
-    sku: ((!empty(sku)) ? sku : json('null'))
+    sku: ((!empty(sku)) ? sku : null)
     accessControl: {
-      triggers: ((!empty(triggersAccessControlConfiguration)) ? triggersAccessControlConfiguration : json('null'))
-      contents: ((!empty(contentsAccessControlConfiguration)) ? contentsAccessControlConfiguration : json('null'))
-      actions: ((!empty(actionsAccessControlConfiguration)) ? actionsAccessControlConfiguration : json('null'))
-      workflowManagement: ((!empty(workflowManagementAccessControlConfiguration)) ? workflowManagementAccessControlConfiguration : json('null'))
+      triggers: ((!empty(triggersAccessControlConfiguration)) ? triggersAccessControlConfiguration : null)
+      contents: ((!empty(contentsAccessControlConfiguration)) ? contentsAccessControlConfiguration : null)
+      actions: ((!empty(actionsAccessControlConfiguration)) ? actionsAccessControlConfiguration : null)
+      workflowManagement: ((!empty(workflowManagementAccessControlConfiguration)) ? workflowManagementAccessControlConfiguration : null)
     }
-    integrationAccount: ((!empty(integrationAccount)) ? integrationAccount : json('null'))
-    integrationServiceEnvironment: ((!empty(integrationServiceEnvironment)) ? integrationServiceEnvironment : json('null'))
+    integrationAccount: ((!empty(integrationAccount)) ? integrationAccount : null)
+    integrationServiceEnvironment: ((!empty(integrationServiceEnvironment)) ? integrationServiceEnvironment : null)
     definition: {
       '$schema': 'https://schema.management.azure.com/providers/Microsoft.Logic/schemas/2016-06-01/workflowdefinition.json#'
       actions: workflowActions
@@ -182,12 +182,12 @@ resource logicApp_lock 'Microsoft.Authorization/locks@2016-09-01' = if (lock != 
 resource logicApp_diagnosticSettings 'Microsoft.Insights/diagnosticsettings@2017-05-01-preview' = if ((!empty(diagnosticStorageAccountId)) || (!empty(workspaceId)) || (!empty(eventHubAuthorizationRuleId)) || (!empty(eventHubName))) {
   name: '${logicAppName}-diagnosticsetting'
   properties: {
-    storageAccountId: (empty(diagnosticStorageAccountId) ? json('null') : diagnosticStorageAccountId)
-    workspaceId: (empty(workspaceId) ? json('null') : workspaceId)
-    eventHubAuthorizationRuleId: (empty(eventHubAuthorizationRuleId) ? json('null') : eventHubAuthorizationRuleId)
-    eventHubName: (empty(eventHubName) ? json('null') : eventHubName)
-    metrics: ((empty(diagnosticStorageAccountId) && empty(workspaceId) && empty(eventHubAuthorizationRuleId) && empty(eventHubName)) ? json('null') : diagnosticsMetrics)
-    logs: ((empty(diagnosticStorageAccountId) && empty(workspaceId) && empty(eventHubAuthorizationRuleId) && empty(eventHubName)) ? json('null') : diagnosticsLogs)
+    storageAccountId: (empty(diagnosticStorageAccountId) ? null : diagnosticStorageAccountId)
+    workspaceId: (empty(workspaceId) ? null : workspaceId)
+    eventHubAuthorizationRuleId: (empty(eventHubAuthorizationRuleId) ? null : eventHubAuthorizationRuleId)
+    eventHubName: (empty(eventHubName) ? null : eventHubName)
+    metrics: ((empty(diagnosticStorageAccountId) && empty(workspaceId) && empty(eventHubAuthorizationRuleId) && empty(eventHubName)) ? null : diagnosticsMetrics)
+    logs: ((empty(diagnosticStorageAccountId) && empty(workspaceId) && empty(eventHubAuthorizationRuleId) && empty(eventHubName)) ? null : diagnosticsLogs)
   }
   scope: logicApp
 }

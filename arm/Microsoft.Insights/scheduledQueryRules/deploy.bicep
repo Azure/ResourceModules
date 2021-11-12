@@ -167,7 +167,7 @@ resource queryAlert 'microsoft.insights/scheduledQueryRules@2018-04-16' = {
       trigger: {
         thresholdOperator: metricResultCountThresholdOperator
         threshold: metricResultCountThreshold
-        metricTrigger: (empty(metricColumn) ? json('null') : metricTrigger)
+        metricTrigger: (empty(metricColumn) ? null : metricTrigger)
       }
       criteria: criterias
       'odata.type': 'Microsoft.WindowsAzure.Management.Monitoring.Alerts.Models.Microsoft.AppInsights.Nexus.DataContracts.Resources.ScheduledQueryRules.${odataType}'

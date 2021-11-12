@@ -118,10 +118,10 @@ var virtualNetworkRules = [for index in range(0, (empty(networkAcls) ? 0 : lengt
   id: '${vNetId}/subnets/${networkAcls.virtualNetworkRules[index].subnet}'
 }]
 var networkAcls_var = {
-  bypass: (empty(networkAcls) ? json('null') : networkAcls.bypass)
-  defaultAction: (empty(networkAcls) ? json('null') : networkAcls.defaultAction)
-  virtualNetworkRules: (empty(networkAcls) ? json('null') : virtualNetworkRules)
-  ipRules: (empty(networkAcls) ? json('null') : ((length(networkAcls.ipRules) == 0) ? json('null') : networkAcls.ipRules))
+  bypass: (empty(networkAcls) ? null : networkAcls.bypass)
+  defaultAction: (empty(networkAcls) ? null : networkAcls.defaultAction)
+  virtualNetworkRules: (empty(networkAcls) ? null : virtualNetworkRules)
+  ipRules: (empty(networkAcls) ? null : ((length(networkAcls.ipRules) == 0) ? null : networkAcls.ipRules))
 }
 var azureFilesIdentityBasedAuthentication_var = azureFilesIdentityBasedAuthentication
 
@@ -134,15 +134,15 @@ var saBaseProperties = {
   encryption: {
     keySource: 'Microsoft.Storage'
     services: {
-      blob: (((storageAccountKind == 'BlockBlobStorage') || (storageAccountKind == 'BlobStorage') || (storageAccountKind == 'StorageV2') || (storageAccountKind == 'Storage')) ? json('{"enabled": true}') : json('null'))
-      file: (((storageAccountKind == 'FileStorage') || (storageAccountKind == 'StorageV2') || (storageAccountKind == 'Storage')) ? json('{"enabled": true}') : json('null'))
+      blob: (((storageAccountKind == 'BlockBlobStorage') || (storageAccountKind == 'BlobStorage') || (storageAccountKind == 'StorageV2') || (storageAccountKind == 'Storage')) ? json('{"enabled": true}') : null)
+      file: (((storageAccountKind == 'FileStorage') || (storageAccountKind == 'StorageV2') || (storageAccountKind == 'Storage')) ? json('{"enabled": true}') : null)
     }
   }
   accessTier: storageAccountAccessTier
   supportsHttpsTrafficOnly: true
-  isHnsEnabled: ((!enableHierarchicalNamespace) ? json('null') : enableHierarchicalNamespace)
+  isHnsEnabled: ((!enableHierarchicalNamespace) ? null : enableHierarchicalNamespace)
   minimumTlsVersion: minimumTlsVersion
-  networkAcls: (empty(networkAcls) ? json('null') : networkAcls_var)
+  networkAcls: (empty(networkAcls) ? null : networkAcls_var)
   allowBlobPublicAccess: allowBlobPublicAccess
 }
 var saOptIdBasedAuthProperties = {
@@ -164,7 +164,7 @@ resource storageAccount 'Microsoft.Storage/storageAccounts@2021-06-01' = {
   }
   identity: {
     type: managedServiceIdentity
-    userAssignedIdentities: (empty(userAssignedIdentities) ? json('null') : userAssignedIdentities)
+    userAssignedIdentities: (empty(userAssignedIdentities) ? null : userAssignedIdentities)
   }
   tags: tags
   properties: saProperties

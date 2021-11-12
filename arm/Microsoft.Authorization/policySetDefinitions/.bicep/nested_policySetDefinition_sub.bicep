@@ -16,10 +16,10 @@ resource policySetDefinition 'Microsoft.Authorization/policySetDefinitions@2020-
   location: location
   properties: {
     policyType: 'Custom'
-    displayName: (empty(displayName) ? json('null') : displayName)
-    description: (empty(policySetDescription) ? json('null') : policySetDescription)
-    metadata: (empty(metadata) ? json('null') : metadata)
-    parameters: (empty(parameters) ? json('null') : parameters)
+    displayName: (empty(displayName) ? null : displayName)
+    description: (empty(policySetDescription) ? null : policySetDescription)
+    metadata: (empty(metadata) ? null : metadata)
+    parameters: (empty(parameters) ? null : parameters)
     policyDefinitions: policyDefinitions
     policyDefinitionGroups: (empty(policyDefinitionGroups) ? [] : policyDefinitionGroups)
   }

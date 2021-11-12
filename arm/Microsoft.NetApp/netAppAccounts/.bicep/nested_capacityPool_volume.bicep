@@ -12,7 +12,7 @@ resource volume 'Microsoft.NetApp/netAppAccounts/capacityPools/volumes@2021-04-0
     usageThreshold: volumeObj.poolVolumeQuota
     protocolTypes: volumeObj.protocolTypes
     subnetId: volumeObj.subnetId
-    exportPolicy: (contains(volumeObj, 'exportPolicy') ? volumeObj.exportPolicy : json('null'))
+    exportPolicy: (contains(volumeObj, 'exportPolicy') ? volumeObj.exportPolicy : null)
   }
 }
 

@@ -25,9 +25,9 @@ resource policyAssignment 'Microsoft.Authorization/policyAssignments@2020-09-01'
   name: policyAssignmentName_var
   location: location
   properties: {
-    displayName: (empty(displayName) ? json('null') : displayName)
-    metadata: (empty(metadata) ? json('null') : metadata)
-    description: (empty(policyAssignmentDescription) ? json('null') : policyAssignmentDescription)
+    displayName: (empty(displayName) ? null : displayName)
+    metadata: (empty(metadata) ? null : metadata)
+    description: (empty(policyAssignmentDescription) ? null : policyAssignmentDescription)
     policyDefinitionId: policyDefinitionID
     parameters: parameters
     nonComplianceMessages: (empty(nonComplianceMessage) ? [] : array(nonComplianceMessage_var))
