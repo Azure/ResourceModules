@@ -130,13 +130,13 @@ resource apis 'Microsoft.ApiManagement/service/apis@2020-06-01-preview' = {
     value: !empty(value) ? value : null
     wsdlSelector: wsdlSelector
   }
-  resource apiManagementServiceApiPolicyResource 'policies@2020-06-01-preview' = if (!empty(apiManagementServiceApiPolicy)) {
-    name: 'policy'
-    properties: {
-      value: apiManagementServiceApiPolicy.value
-      format: apiManagementServiceApiPolicy.format
-    }
-  }
+  // resource apiManagementServiceApiPolicyResource 'policies@2020-06-01-preview' = if (!empty(apiManagementServiceApiPolicy)) {
+  //   name: 'policy'
+  //   properties: {
+  //     value: apiManagementServiceApiPolicy.value
+  //     format: apiManagementServiceApiPolicy.format
+  //   }
+  // }
 }
 
 @description('The name of the API management service api')
