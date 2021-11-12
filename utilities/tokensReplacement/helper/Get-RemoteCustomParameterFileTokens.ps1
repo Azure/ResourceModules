@@ -42,7 +42,6 @@ function Get-RemoteCustomParameterFileTokens {
                 $Context | Set-AzContext | Out-Null
             }
         } catch {
-            # Supress Error instead of throwing
             throw $PSitem.Exception.Message
             exit
         }
