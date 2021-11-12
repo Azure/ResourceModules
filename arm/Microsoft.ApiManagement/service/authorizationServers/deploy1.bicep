@@ -76,7 +76,7 @@ resource keyVault 'Microsoft.KeyVault/vaults@2019-09-01' existing = {
 }
 
 module authorizationServer 'deploy.bicep' = {
-  name: '${apiManagementServiceName}/${name}'
+  name: '${apiManagementServiceName}-authorizationServer-${name}'
   params: {
     apiManagementServiceName: apiManagementServiceName
     serverDescription: serverDescription
