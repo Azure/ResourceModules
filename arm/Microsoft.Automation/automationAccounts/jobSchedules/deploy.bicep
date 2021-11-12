@@ -29,7 +29,7 @@ resource jobSchedule_automationAccount 'Microsoft.Automation/automationAccounts@
 }
 
 resource jobSchedule 'Microsoft.Automation/automationAccounts/jobSchedules@2020-01-13-preview' = {
-  name: empty(name) ? guid(runbookName, scheduleName) : name
+  name: empty(name) ? guid(runbookName, scheduleName, jobSchedule_automationAccount.id) : name
   parent: jobSchedule_automationAccount
   properties: {
     parameters: parameters
