@@ -48,10 +48,6 @@ The below example can be used on your local environment to load the 'Test-Module
 
 . 'C:\Users\user\github\user\ResourceModules\utilities\tools\Test-ModuleLocally.ps1'
 
-#########[ Function Test-ModulesLocally.ps1 ]#############
-
-. 'C:\Users\user\github\user\ResourceModules\utilities\tools\Test-ModuleLocally.ps1'
-
 # REQUIRED INPUT FOR TESTING
 $TestModuleLocallyInput = @{
     ModuleName                    = 'Microsoft.Network\applicationSecurityGroups'
@@ -78,9 +74,9 @@ $TestModuleLocallyInput = @{
 
 ### Handling Parameters that require or contain a value that should be tokenized
 
-The following scenarios are common to when to use a token value in the parameter file. Refer to [Pipeline Design](./ParameterFileTokens.md) for more details.
+The following scenarios are common to when to use a token value in the parameter file. Refer to [Pipeline Design](https://github.com/Azure/ResourceModules/wiki/PipelinesDesign) for more details.
 
-- Scenarios where resources have dependencies on other resources, which may require to be linked using `resourceId` references. [Example](../../arm/Microsoft.Network/virtualNetworksResources/virtualNetworkPeerings/.parameters/parameters.json)
+- Scenarios where resources have dependencies on other resources, which may require to be linked using `resourceId` references.
 
     ```json
     // Example
@@ -89,7 +85,7 @@ The following scenarios are common to when to use a token value in the parameter
     }
     ```
 
-- Scenarios where targeting different scopes within a module deployment. [Example](../../arm/Microsoft.Authorization/policyDefinitions/.parameters/parameters.json)
+- Scenarios where targeting different scopes within a module deployment.
 
     ```json
     // Example
@@ -98,7 +94,7 @@ The following scenarios are common to when to use a token value in the parameter
     }
     ```
 
-- Scenarios where there is a Role Assignment being created for the module being deployed. [Example](../../arm/Microsoft.Compute/diskEncryptionSets/.parameters/parameters.json)
+- Scenarios where there is a Role Assignment being created for the module being deployed.
 
     ```json
      "roleAssignments": {
@@ -113,7 +109,7 @@ The following scenarios are common to when to use a token value in the parameter
         }
     ```
 
-- Scenarios where A management Group ID is being referenced in the parameter file. [Example](../../arm/Microsoft.Management/managementGroups/.parameters/parameters.json)
+- Scenarios where A management Group ID is being referenced in the parameter file.
 
     ```json
         "parentId": {

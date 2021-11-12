@@ -35,7 +35,7 @@ There are (3) Token types that can be applied on a Parameter File:
 
 #### 1. Default Tokens (Environment Variables) [Default]
 
-These are tokens constructed from Environment Variables, which are defined in the Workflow (Pipeline). Review [Getting Started - GitHub specific prerequisites](./GettingStarted.md##github-specific-prerequisites) for more information on these Environment Variables.
+These are tokens constructed from Environment Variables, which are defined in the Workflow (Pipeline). Review [Getting Started - GitHub specific prerequisites](https://github.com/Azure/ResourceModules/blob/main/docs/wiki/GettingStarted.md#github-specific-prerequisites) for more information on these Environment Variables.
 
 ---
 **Note**: Avoid updating tokens as Environment Variables as they do require changes to Workflows in order to add them to the Agent at runtime.
@@ -46,7 +46,7 @@ These are tokens constructed from Environment Variables, which are defined in th
 
 #### 2. Local Custom Tokens (Source Control) [Optional]
 
-These are tokens defined in the Git Repository inside a [Settings.json](../../settings.json) file. This allows creating tokens that are local and updatable via Source Control mechanisms. Here is an example on where these tokens are stored. You can add key value pairs as required:
+These are tokens defined in the Git Repository inside a [Settings.json](https://github.com/Azure/ResourceModules/blob/main/settings.json) file. This allows creating tokens that are local and updatable via Source Control mechanisms. Here is an example on where these tokens are stored. You can add key value pairs as required:
 
 ```json
 "localTokens": {
@@ -77,8 +77,8 @@ The Key Vault here is enabled by adding a Secret to GitHub called `PLATFORM_KEYV
 
 ---
 
-> You can also sync Local Custom Parameter File Tokens by setting the `syncLocalTokens` property to `true` in the [Settings.json](../../settings.json) file. </br>
-> You can also specify a custom prefix for the Secret Name in Azure Key Vault. This is done by modifying the `keyVaultSecretNamePrefix` property in the [Settings.json](../../settings.json) file.
+> You can also sync Local Custom Parameter File Tokens by setting the `syncLocalTokens` property to `true` in the [Settings.json](https://github.com/Azure/ResourceModules/blob/main/settings.json) file. </br>
+> You can also specify a custom prefix for the Secret Name in Azure Key Vault. This is done by modifying the `keyVaultSecretNamePrefix` property in the [Settings.json](https://github.com/Azure/ResourceModules/blob/main/settings.json) file.
 
 ### Set / Create Azure Key Vault Token Logic
 
@@ -89,23 +89,23 @@ The Key Vault here is enabled by adding a Secret to GitHub called `PLATFORM_KEYV
 
 The Token Replacement Functionality comes with the ability to store Parameter File Tokens in Azure Key Vault. This is performed by creating a Secret in GitHub Actions called `PLATFORM_KEYVAULT`, which then automatically flows as an Environment Variable in Workflows.The below diagram shows the flow in more detail:
 
-![paramFileTokenSetKeyVault](../media/paramFileTokenSetKeyVault.jpg)
+<img src="./media/paramFileTokenSetKeyVault.jpg" alt="paramFileTokenSetKeyVault">
 
 1- The user can create the Secret called `PLATFORM_KEYVAULT`. This must be a unique Key Vault name across Azure.
 
   > The parameter files can now be tokenized as per required value. Then token must be in the format of `<<tokenName>>`. Either locally or remotely on the Key Vault.
 
-2- The user then triggers the [Dependency Workflow](../../.github/workflows/platform.dependencies.yml) to instantiate the Platform Token Key Vault.
+2- The user then triggers the [Dependency Workflow](https://github.com/Azure/ResourceModules/blob/main/.github/workflows/platform.dependencies.yml) to instantiate the Platform Token Key Vault.
 
-  > To customize the Key Vault Configuration, you can modify the [Platform Key Vault Parameter File](../../utilities/dependencies/Microsoft.KeyVault/vaults/parameters/platform.parameters.json).
+  > To customize the Key Vault Configuration, you can modify the [Platform Key Vault Parameter File](https://github.com/Azure/ResourceModules/blob/main/utilities/dependencies/Microsoft.RecoveryServices/vaults/parameters/platform.parameters.json).
 
-3- The Platform Key Vault is then deployed using the Key Vault Module and the dependency [parameter file]((../../utilities/dependencies/Microsoft.KeyVault/vaults/parameters/platform.parameters.json).).This Key Vault uses [Azure AD RBAC](https://docs.microsoft.com/en-us/azure/key-vault/general/rbac-guide?tabs=azure-cli) for the permissions instead of [access policies](https://docs.microsoft.com/en-us/azure/key-vault/general/assign-access-policy?tabs=azure-portal). It will automatically provide the Deployment Service Principal with the [Key Vault Administrator](https://docs.microsoft.com/en-us/azure/role-based-access-control/built-in-roles#key-vault-administrator) Role so that it can read and set secrets.
+3- The Platform Key Vault is then deployed using the Key Vault Module and the dependency [Platform Key Vault Parameter File](https://github.com/Azure/ResourceModules/blob/main/utilities/dependencies/Microsoft.RecoveryServices/vaults/parameters/platform.parameters.json)..This Key Vault uses [Azure AD RBAC](https://docs.microsoft.com/en-us/azure/key-vault/general/rbac-guide?tabs=azure-cli) for the permissions instead of [access policies](https://docs.microsoft.com/en-us/azure/key-vault/general/assign-access-policy?tabs=azure-portal). It will automatically provide the Deployment Service Principal with the [Key Vault Administrator](https://docs.microsoft.com/en-us/azure/role-based-access-control/built-in-roles#key-vault-administrator) Role so that it can read and set secrets.
 
   > You need to have permissions to read and create secrets in the provisioned Key Vault so that you can upload custom tokens. The [Key Vault Secrets Officer](https://docs.microsoft.com/en-us/azure/role-based-access-control/built-in-roles#key-vault-secrets-officer) role is an example that allows you to perform data plane operations on the Key Vault.
 
-4- Once the Key Vault is deployed, the 'Set Local Tokens in Key Vault' task optionally runs to sync Local Custom Parameter File Tokens stored in the [Settings.json](../../settings.json)
+4- Once the Key Vault is deployed, the 'Set Local Tokens in Key Vault' task optionally runs to sync Local Custom Parameter File Tokens stored in the [Settings.json](https://github.com/Azure/ResourceModules/blob/main/settings.json)
 
-  > You can disable the sync process from Local Tokens (in Source Control) to Remote Tokens (in Key Vault) by modifying the `keyVaultSecretNamePrefix` property in the [Settings.json](../../settings.json) file and setting it to `false`.</br>
+  > You can disable the sync process from Local Tokens (in Source Control) to Remote Tokens (in Key Vault) by modifying the `keyVaultSecretNamePrefix` property in the [Settings.json](https://github.com/Azure/ResourceModules/blob/main/settings.json) file and setting it to `false`.</br>
   > This step/task is optional and can be used to share tokens across different repositories.
 
 ### Get Parameter File Tokens
@@ -115,13 +115,13 @@ The Token Replacement Functionality comes with the ability to store Parameter Fi
 
 ---
 
-The below diagram illustrates the Token Replacement Functionality via the [Validate](../../.github/actions/templates/validateModuleDeploy/action.yml) and [Deploy](../../actions/../.github/actions/templates/deployModule/action.yml) Actions/Templates.
+The below diagram illustrates the Token Replacement Functionality via the [Validate](https://github.com/Azure/ResourceModules/blob/main/.github/actions/templates/validateModuleDeploy/action.yml)) and [Deploy](https://github.com/Azure/ResourceModules/blob/main/.github/actions/templates/deployModule/action.yml) Actions/Templates.
 
-![paramFileTokenGetKeyVault](../media/paramFileTokenGetTokens.jpg)
+<img src="./media/paramFileTokenGetTokens.jpg" alt="paramFileTokenGetKeyVault">
 
-1- The user creates Local Custom Parameter File Tokens in the [Settings.json](../../settings.json) under the `localTokens` - `tokens` property.
+1- The user creates Local Custom Parameter File Tokens in the [Settings.json](https://github.com/Azure/ResourceModules/blob/main/settings.json) under the `localTokens` - `tokens` property.
 
-2- The user can also create Remote Custom Parameter File Tokens in the Key Vault with the right naming standards inside [Settings.json](../../settings.json) under `remoteTokens`, using the `keyVaultSecretNamePrefix` Prefix for the Secret Name. Here is an example on how to perform that using PowerShell:
+2- The user can also create Remote Custom Parameter File Tokens in the Key Vault with the right naming standards inside [Settings.json](https://github.com/Azure/ResourceModules/blob/main/settings.json) under `remoteTokens`, using the `keyVaultSecretNamePrefix` Prefix for the Secret Name. Here is an example on how to perform that using PowerShell:
 
   ```powershell
 
