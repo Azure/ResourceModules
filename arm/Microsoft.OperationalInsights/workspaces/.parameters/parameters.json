@@ -39,7 +39,7 @@
         "savedSearches": {
             "value": [
                 {
-                    "name": "VMSSQueries2",
+                    "name": "VMSSQueries3",
                     "displayName": "VMSS Instance Count2",
                     "category": "VDC Saved Searches",
                     "query": "Event | where Source == 'ServiceFabricNodeBootstrapAgent' | summarize AggregatedValue = count() by Computer"

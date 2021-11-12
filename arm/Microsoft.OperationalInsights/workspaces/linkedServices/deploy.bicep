@@ -7,15 +7,6 @@ param name string
 @description('Required. The resource id of the resource that will be linked to the workspace. This should be used for linking resources which require read access.')
 param resourceId string = ''
 
-@allowed([
-  'Deleting'
-  'ProvisioningAccount'
-  'Succeeded'
-  'Updating'
-])
-@description('Optional. The provisioning state of the linked service.')
-param provisioningState string = 'Succeeded'
-
 @description('Optional. The resource id of the resource that will be linked to the workspace. This should be used for linking resources which require write access. ')
 param writeAccessResourceId string = ''
 
