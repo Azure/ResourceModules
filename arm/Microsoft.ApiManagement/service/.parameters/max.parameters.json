@@ -32,72 +32,72 @@
                 }
             ]
         },
-        "authorizationServers": {
+        // "authorizationServers": {
+        //     "value": [
+        //         {
+        //             "name": "AuthServer1",
+        //             "authorizationEndpoint": "https://login.microsoftonline.com/651b43ce-ccb8-4301-b551-b04dd872d401/oauth2/v2.0/authorize",
+        //             "grantTypes": [
+        //                 "authorizationCode"
+        //             ],
+        //             "clientId": {
+        //                 "reference": {
+        //                     "keyVault": {
+        //                         "id": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.KeyVault/vaults/adp-sxx-az-kv-x-001"
+        //                     },
+        //                     "secretName": "apimclientid"
+        //                 }
+        //             },
+        //             "clientSecret": {
+        //                 "reference": {
+        //                     "keyVault": {
+        //                         "id": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.KeyVault/vaults/adp-sxx-az-kv-x-001"
+        //                     },
+        //                     "secretName": "apimclientsecret"
+        //                 }
+        //             },
+        //             "clientRegistrationEndpoint": "http://localhost",
+        //             "tokenEndpoint": "https://login.microsoftonline.com/651b43ce-ccb8-4301-b551-b04dd872d401/oauth2/v2.0/token"
+        //         }
+        //     ]
+        // },
+        "backends": {
             "value": [
                 {
-                    "name": "AuthServer1",
-                    "authorizationEndpoint": "https://login.microsoftonline.com/651b43ce-ccb8-4301-b551-b04dd872d401/oauth2/v2.0/authorize",
-                    "grantTypes": [
-                        "authorizationCode"
-                    ],
-                    "clientId": {
-                        "reference": {
-                            "keyVault": {
-                                "id": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.KeyVault/vaults/adp-sxx-az-kv-x-001"
-                            },
-                            "secretName": "apimclientid"
-                        }
-                    },
-                    "clientSecret": {
-                        "reference": {
-                            "keyVault": {
-                                "id": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.KeyVault/vaults/adp-sxx-az-kv-x-001"
-                            },
-                            "secretName": "apimclientsecret"
-                        }
-                    },
-                    "clientRegistrationEndpoint": "http://localhost",
-                    "tokenEndpoint": "https://login.microsoftonline.com/651b43ce-ccb8-4301-b551-b04dd872d401/oauth2/v2.0/token"
+                    "name": "backend",
+                    "url": "http://echoapi.cloudapp.net/api",
+                    "tls": {
+                        "validateCertificateChain": false,
+                        "validateCertificateName": false
+                    }
                 }
             ]
         },
-        // "backends": {
-        //     "value": [
-        //         {
-        //             "name": "backend",
-        //             "url": "http://echoapi.cloudapp.net/api",
-        //             "tls": {
-        //                 "validateCertificateChain": false,
-        //                 "validateCertificateName": false
-        //             }
-        //         }
-        //     ]
-        // },
-        // "caches": {
-        //     "value": [
-        //         {
-        //             "name": "westeurope",
-        //             "connectionString": "connectionstringtest",
-        //             "useFromLocation": "westeurope"
-        //         }
-        //     ]
-        // },
-        // "identityProviders": {
-        //     "value": [
-        //         {
-        //             "name": "aadProvider"
-        //         }
-        //     ]
-        // },
-        // "namedValues": {
-        //     "value": [
-        //         {
-        //             "name": "apimkey",
-        //             "displayName": "apimkey",
-        //             "secret": true
-        //         }
-        //     ]
-        // },
+        "caches": {
+            "value": [
+                {
+                    "name": "westeurope",
+                    "connectionString": "connectionstringtest",
+                    "useFromLocation": "westeurope"
+                }
+            ]
+        },
+        "identityProviders": {
+            "value": [
+                {
+                    "name": "aadProvider"
+                }
+            ]
+        },
+        "namedValues": {
+            "value": [
+                {
+                    "name": "apimkey",
+                    "displayName": "apimkey",
+                    "secret": true
+                }
+            ]
+        },
         "policies": {
             "value": [
                 {
@@ -126,29 +126,29 @@
                 }
             ]
         },
-        // "products": {
-        //     "value": [
-        //         {
-        //             "name": "Starter",
-        //             "subscriptionRequired": false,
-        //             "approvalRequired": false,
-        //             "productApis": [
-        //                 "echo-api"
-        //             ],
-        //             "productGroups": [
-        //                 "developers"
-        //             ]
-        //         }
-        //     ]
-        // },
-        // "subscriptions": {
-        //     "value": [
-        //         {
-        //             "scope": "/apis",
-        //             "name": "testArmSubscriptionAllApis"
-        //         }
-        //     ]
-        // },
+        "products": {
+            "value": [
+                {
+                    "name": "Starter",
+                    "subscriptionRequired": false,
+                    "approvalRequired": false,
+                    "productApis": [
+                        "echo-api"
+                    ],
+                    "productGroups": [
+                        "developers"
+                    ]
+                }
+            ]
+        },
+        "subscriptions": {
+            "value": [
+                {
+                    "scope": "/apis",
+                    "name": "testArmSubscriptionAllApis"
+                }
+            ]
+        },
         "roleAssignments": {
             "value": [
                 {
