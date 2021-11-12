@@ -212,7 +212,9 @@ module apis_resource 'apis/deploy.bicep' = [for (api, index) in apis: {
     authenticationSettings: contains(api, 'authenticationSettings') ? api.authenticationSettings : {}
     format: contains(api, 'format') ? api.format : 'openapi'
     isCurrent: contains(api, 'isCurrent') ? api.isCurrent : true
-    protocols: contains(api, 'protocols') ? api.protocols : ['https']
+    protocols: contains(api, 'protocols') ? api.protocols : [
+      'https'
+    ]
     serviceUrl: contains(api, 'serviceUrl') ? api.serviceUrl : ''
     sourceApiId: contains(api, 'sourceApiId') ? api.sourceApiId : ''
     subscriptionKeyParameterNames: contains(api, 'subscriptionKeyParameterNames') ? api.subscriptionKeyParameterNames : {}
@@ -229,9 +231,15 @@ module authorizationServers_resource 'authorizationServers/deploy.bicep' = [for 
     apiManagementServiceName: name
     name: authorizationServer.name
     authorizationEndpoint: authorizationServer.authorizationEndpoint
-    authorizationMethods: contains(authorizationServer, 'authorizationMethods') ? authorizationServer.authorizationMethods : ['GET']
-    bearerTokenSendingMethods: contains(authorizationServer, 'bearerTokenSendingMethods') ? authorizationServer.bearerTokenSendingMethods : ['authorizationHeader']
-    clientAuthenticationMethod: contains(authorizationServer, 'clientAuthenticationMethod') ? authorizationServer.clientAuthenticationMethod : ['Basic']
+    authorizationMethods: contains(authorizationServer, 'authorizationMethods') ? authorizationServer.authorizationMethods : [
+      'GET'
+    ]
+    bearerTokenSendingMethods: contains(authorizationServer, 'bearerTokenSendingMethods') ? authorizationServer.bearerTokenSendingMethods : [
+      'authorizationHeader'
+    ]
+    clientAuthenticationMethod: contains(authorizationServer, 'clientAuthenticationMethod') ? authorizationServer.clientAuthenticationMethod : [
+      'Basic'
+    ]
     clientId: authorizationServer.clientId
     clientRegistrationEndpoint: contains(authorizationServer, 'clientRegistrationEndpoint') ? authorizationServer.clientRegistrationEndpoint : ''
     clientSecret: authorizationServer.clientSecret
@@ -260,9 +268,9 @@ module backends_resource 'backends/deploy.bicep' = [for (backend, index) in back
     serviceFabricCluster: contains(backend, 'serviceFabricCluster') ? backend.serviceFabricCluster : {}
     title: contains(backend, 'title') ? backend.title : ''
     tls: contains(backend, 'tls') ? backend.tls : {
-                                                    validateCertificateChain: false
-                                                    validateCertificateName: false
-                                                  }
+      validateCertificateChain: false
+      validateCertificateName: false
+    }
   }
 }]
 
