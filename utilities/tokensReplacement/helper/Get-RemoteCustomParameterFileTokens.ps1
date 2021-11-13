@@ -45,7 +45,7 @@ function Get-RemoteCustomParameterFileTokens {
             throw $PSitem.Exception.Message
             exit
         }
-        $ReturnedKeyVaultTokens = @()
+        $ReturnedTokens = @()
     }
     process {
         ## Remote Custom Parameter File Tokens (Should Not Contain Sensitive Information if being passed to regular strings)
@@ -58,22 +58,22 @@ function Get-RemoteCustomParameterFileTokens {
             exit
         }
         ## Get Tokens
-        Write-Verbose("Tokens Key Vault Found: $($TokensKeyVault.VaultName)")
-        $KeyVaultTokens = Get-AzKeyVaultSecret -VaultName $TokensKeyVault.VaultName -ErrorAction SilentlyContinue |
+        Write-Verbose("Tokens Key Vault Found: $TokensKeyVaultName")
+        $Tokens = Get-AzKeyVaultSecret -VaultName $TokensKeyVaultName -ErrorAction SilentlyContinue |
             Where-Object -Property ContentType -Like '*ParameterFileToken' |
             Where-Object -Property Name -Like "$($TokensKeyVaultSecretNamePrefix)*"
         ## If no Tokens exist. Exit
-        if (!$TokensKeyVault) {
-            Write-Verbose("No Tokens Found using TokensKeyVaultSecretNamePrefix '$TokensKeyVaultSecretNamePrefix' In Tokens Key Vault or Service Principal does not have permissions to Token Key Vault")
+        if (!$Tokens) {
+            Write-Verbose("No Tokens Found using Secret Name Prefix '$TokensKeyVaultSecretNamePrefix' In Key Vault ($TokensKeyVaultName) or Principal does not have permissions to read it")
             exit
         }
         ## Get Token Values and Add to the Returned Object
-        Write-Verbose("Key Vault Tokens Found: $($KeyVaultTokens.count)")
-        $KeyVaultTokens | ForEach-Object {
+        Write-Verbose("Key Vault Tokens Found: $($Tokens.count)")
+        $Tokens | ForEach-Object {
             $TokenName = $PSItem.Name
             $GetTokenInput = @{
                 SecretName = $TokenName
-                VaultName  = $TokensKeyVault.VaultName
+                VaultName  = $TokensKeyVaultName
             }
             ## Check if Token Type is 'SecureParameterFileToken'
             if (($PSItem.ContentType -eq 'SecureParameterFileToken')) {
@@ -87,10 +87,10 @@ function Get-RemoteCustomParameterFileTokens {
                 $TokenName = $TokenName.Replace($TokensKeyVaultSecretNamePrefix, '')
             }
             ## Add Token to Return Object
-            $ReturnedKeyVaultTokens += [ordered]@{ Name = $TokenName; Value = $TokenValue }
+            $ReturnedTokens += [ordered]@{ Name = $TokenName; Value = $TokenValue }
         }
     }
     end {
-        return [psobject]$ReturnedKeyVaultTokens | ForEach-Object { [PSCustomObject]$PSItem }
+        return [psobject]$ReturnedTokens | ForEach-Object { [PSCustomObject]$PSItem }
     }
 }
