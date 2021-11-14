@@ -40,37 +40,33 @@ Set the feed Release-Modules as a nuget and repo source with the specified crede
 
     Write-Verbose "Register sources with feed-url [$feedurl]"
 
-    Write-Verbose "Check registerd nuget sources"
+    Write-Verbose 'Check registerd nuget sources'
     if ($isLinux) {
         # Assume linux with dotnet installation
         $nugetSources = dotnet nuget list source
-    }
-    else {
+    } else {
         # Assume windows with nuget installation
         $nugetSources = nuget sources
     }
-    
+
     if (-not ("$nugetSources" -Match $feedName)) {
-        if ($PSCmdlet.ShouldProcess("Nuget source definition [$feedname]", "Add")) {
+        if ($PSCmdlet.ShouldProcess("Nuget source definition [$feedname]", 'Add')) {
             if ($isLinux) {
                 # Assume linux with dotnet installation
                 dotnet nuget add source $feedurl -n $feedName -u $queueById -p $systemAccessToken --store-password-in-clear-text
-            }
-            else {
+            } else {
                 # Assume windows with nuget installation
                 nuget sources add -name $feedname -Source $feedurl -Username $queueById -Password $systemAccessToken
             }
         }
-    }
-    else {
+    } else {
         Write-Verbose "NuGet source $feedname already registered"
     }
 
     if ($isLinux) {
         # Assume linux with dotnet installation
         dotnet nuget list source # Print registered
-    }
-    else {
+    } else {
         # Assume windows with nuget installation
         nuget sources # Print registered
     }
@@ -80,25 +76,24 @@ Set the feed Release-Modules as a nuget and repo source with the specified crede
     Import-Module 'PowerShellGet' -Verbose:$false # Explicit import to suppress verbose
     $regRepos = (Get-PSRepository).Name
     if ($regRepos -notcontains $feedName) {
-        if ($PSCmdlet.ShouldProcess("PSRepository", "Register new")) {
+        if ($PSCmdlet.ShouldProcess('PSRepository', 'Register new')) {
             Write-Verbose 'Registering script folder as Nuget repo'
             $registrationInputObject = @{
-                Name                      = $feedname 
-                SourceLocation            = $feedurl 
-                PublishLocation           = $feedurl 
-                Credential                = $credential 
+                Name                      = $feedname
+                SourceLocation            = $feedurl
+                PublishLocation           = $feedurl
+                Credential                = $credential
                 InstallationPolicy        = 'Trusted'
                 PackageManagementProvider = 'Nuget'
             }
             Register-PSRepository @registrationInputObject
             Write-Verbose "Repository $feedname registered"
         }
-    }
-    else {
+    } else {
         Write-Verbose "Repository $feedname already registered"
     }
 
-    Write-Verbose ("Available PS repositories:")
+    Write-Verbose ('Available PS repositories:')
     (Get-PSRepository) | Select-Object Name, SourceLocation | Format-Table
 }
 
@@ -135,11 +130,11 @@ Check if the selected version "1.0.0" is valid with regards to the current versi
 
     # Check CustomVersion if set
     if ([string]::IsNullOrEmpty($customVersion) -or ($customVersion -eq '-')) {
-        Write-Verbose "Custom Version not set. Skip check"
+        Write-Verbose 'Custom Version not set. Skip check'
         return;
     }
 
-    Write-Verbose "### Get custom version"
+    Write-Verbose '### Get custom version'
     Write-Verbose "Specified version is $customVersion"
     $singleValues = $customVersion.Split('.')
     $customBuild = $singleValues[2]
@@ -150,28 +145,23 @@ Check if the selected version "1.0.0" is valid with regards to the current versi
     $oldMinor = $currentFeedVersion.Minor
     $oldMajor = $currentFeedVersion.Major
 
-    Write-Verbose "Compare Versions"
+    Write-Verbose 'Compare Versions'
     if ($customMajor -gt $oldMajor) {
-        Write-Verbose "Specified version is valid"
+        Write-Verbose 'Specified version is valid'
         return $true
-    }
-    elseif ($customMajor -lt $oldMajor) {
+    } elseif ($customMajor -lt $oldMajor) {
         throw "Specified major version must not be older than than the existing version: Specified $customVersion > Current $currentFeedVersion"
-    }
-    else {
+    } else {
         if ($customMinor -gt $oldMinor) {
-            Write-Verbose "Specified version is valid"
+            Write-Verbose 'Specified version is valid'
             return $true
-        }
-        elseif ($customMinor -lt $oldMinor) {
+        } elseif ($customMinor -lt $oldMinor) {
             throw "Specified minor version must not be older than than the existing version: Specified $customVersion > Current $currentFeedVersion"
-        }
-        else {
+        } else {
             if ($customBuild -gt $oldBuild) {
-                Write-Verbose "Specified version is valid"
+                Write-Verbose 'Specified version is valid'
                 return $true
-            }
-            else {
+            } else {
                 throw "Specified build version must be newer than than the existing version: Specified $customVersion > Current $currentFeedVersion"
             }
         }
@@ -214,13 +204,11 @@ Search for module AKS in the feed moduleFeed to receive its version
     try {
         $module = Find-Module -Name $moduleName -Repository $feedname -Credential $credential
         return $module.Version
-    }
-    catch {
-        if ($_.Exception.Message -like "*No match was found*") {
+    } catch {
+        if ($_.Exception.Message -like '*No match was found*') {
             Write-Verbose "Module $moduleName not found. Assuming first deployment"
-            return New-Object System.Version("0.0.0")
-        }
-        else {
+            return New-Object System.Version('0.0.0')
+        } else {
             throw $_
         }
     }
@@ -281,37 +269,33 @@ Get the new version 0.0.6
         [Parameter(Mandatory = $true)]
         [string] $moduleName
     )
-    
+
     $localVersion = (Import-LocalizedData -BaseDirectory "$moduleBase" -FileName "$moduleName.psd1").ModuleVersion
 
     if ((-not ([string]::IsNullOrEmpty($customVersion))) -and (-not ($customVersion -eq '-'))) {
         Write-Verbose "Apply custom version $customVersion"
         $newVersion = New-Object System.Version($customVersion)
-    }
-    elseif ($localVersion -gt $currentFeedVersion.ToString()) {
+    } elseif ($localVersion -gt $currentFeedVersion.ToString()) {
         Write-Verbose "Apply local manifest version $localVersion"
         $newVersion = $localVersion
-    }
-    else {
+    } else {
         Write-Verbose "Versioning option is set to [$versioningOption]. Applying."
         $build = $currentFeedVersion.Build
         $minor = $currentFeedVersion.Minor
         $major = $currentFeedVersion.Major
 
-        if ($versioningOption -eq 'patch') { 
-            $build++ 
-        }
-        elseif ($versioningOption -eq 'minor') {
+        if ($versioningOption -eq 'patch') {
+            $build++
+        } elseif ($versioningOption -eq 'minor') {
             $minor++
             $build = 0
-        }
-        else {
+        } else {
             $major++
             $minor = 0
             $build = 0
         }
 
-        $newVersion = New-Object System.Version("{0}.{1}.{2}" -f $major, $minor, $build)
+        $newVersion = New-Object System.Version('{0}.{1}.{2}' -f $major, $minor, $build)
     }
     return $newVersion
 }
@@ -350,11 +334,10 @@ Push the module AKS to the feed 'Release-Modules'
     try {
         Write-Verbose "Try pushing module [$moduleName] from base [$moduleBase] to feed [$feedname]"
         Publish-Module -Path "$moduleBase" -NuGetApiKey 'VSTS' -Repository $feedname -Credential $credential -Force
-        Write-Verbose "Published module"
-    }
-    catch {
-        Write-Verbose ("Unable to  upload module {0}" -f (Split-Path $PSScriptRoot -Leaf))
-        $_.Exception | format-list -force
+        Write-Verbose 'Published module'
+    } catch {
+        Write-Verbose ('Unable to  upload module {0}' -f (Split-Path $PSScriptRoot -Leaf))
+        $_.Exception | Format-List -Force
     }
 }
 function Set-LocalVersion {
@@ -392,7 +375,7 @@ Set the provided moduleVersion to the manifest of module aks in the folder 'c:\m
     )
 
     $modulefile = "$moduleBase/$moduleName.psd1"
-    if ($PSCmdlet.ShouldProcess("Module manifest", "Update")) {
+    if ($PSCmdlet.ShouldProcess('Module manifest', 'Update')) {
         Update-ModuleManifest -Path $modulefile -ModuleVersion $newVersion -Verbose
     }
 }
@@ -428,7 +411,7 @@ Add all public functions of module AKS to its manifest
     $publicFunctions = (Get-ChildItem -Path "$moduleBase\Public" -Filter '*.ps1').BaseName
 
     $modulefile = "$moduleBase\$moduleName.psd1"
-    if ($PSCmdlet.ShouldProcess("Module manifest", "Update")) {
+    if ($PSCmdlet.ShouldProcess('Module manifest', 'Update')) {
         Write-Verbose "Update Manifest $moduleFile"
         Update-ModuleManifest -Path $modulefile -FunctionsToExport $publicFunctions -Verbose | Out-Null
     }
@@ -474,10 +457,10 @@ An optional parameter used by tests to only run code that is required for testin
 Root folder of the modbule to publish
 
 .PARAMETER moduleName
-Name of the module to publish   
+Name of the module to publish
 #>
 
-    [Diagnostics.CodeAnalysis.SuppressMessageAttribute("PSAvoidUsingConvertToSecureStringWithPlainText", "", Justification = "Is provided by the pipeline as an encoded string")]
+    [Diagnostics.CodeAnalysis.SuppressMessageAttribute('PSAvoidUsingConvertToSecureStringWithPlainText', '', Justification = 'Is provided by the pipeline as an encoded string')]
     [CmdletBinding()]
     param (
         [Parameter(Mandatory = $true)]
@@ -507,7 +490,7 @@ Name of the module to publish
     )
 
     $oldPreferences = $VerbosePreference
-    $VerbosePreference = "Continue"
+    $VerbosePreference = 'Continue'
 
     try {
         $feedurl = $feedurl -f $feedName
@@ -516,7 +499,7 @@ Name of the module to publish
         $password = ConvertTo-SecureString $systemAccessToken -AsPlainText -Force
         $credential = New-Object System.Management.Automation.PSCredential ($queueById, $password)
 
-        Write-Verbose "Register feed"
+        Write-Verbose 'Register feed'
         Set-DefinedPSRepository -feedname $feedName -feedurl $feedurl -systemAccessToken $systemAccessToken -Credential $credential -queueById $queueById
 
         $currentFeedVersion = Get-CurrentVersion -feedname $feedName -moduleName $moduleName -credential $credential
@@ -535,8 +518,7 @@ Name of the module to publish
         Test-ModuleManifest -Path "$moduleBase\$moduleName.psd1" | Format-List
 
         Publish-NuGetModule -feedname $feedname -credential $credential -moduleName $moduleName -moduleBase $moduleBase
-    }
-    finally {
+    } finally {
         $VerbosePreference = $oldPreferences
     }
 }
