@@ -163,7 +163,7 @@ jobs:
           . (Join-Path '$(System.DefaultWorkingDirectory)' '$(pipelineFunctionsPath)' 'resourcePublish' 'Initialize-UniversalArtifactPublish.ps1')
 
           $functionInput = @{
-            moduleName       = '${{ parameters.moduleName }}'
+            templateFilePath = Join-Path '$(ENVMODULEPATH)' 'deploy.bicep'
             vstsOrganization = '${{ parameters.vstsOrganization }}'
             vstsProject      = '${{ parameters.vstsProject }}'
             vstsFeedName     = '${{ parameters.vstsFeedName }}'
@@ -203,7 +203,7 @@ jobs:
             vstsFeedPublish: '${{ parameters.vstsFeedName }}'
           ${{ if ne(parameters.vstsProject, '') }}:
             vstsFeedPublish: '${{ parameters.vstsProject }}/${{ parameters.vstsFeedName }}'
-          vstsFeedPackagePublish: '$(lowerModuleName)' # Published via [Initialize-UniversalArtifactPublish] invocation
+          vstsFeedPackagePublish: '$(universalPackageModuleName)' # Published via [Initialize-UniversalArtifactPublish] invocation
           versionOption: '$(publishingMode)' # Published via [Initialize-UniversalArtifactPublish] invocation
           versionPublish: '$(newVersionObject)' # Published via [Initialize-UniversalArtifactPublish] invocation
           packagePublishDescription: '${{ parameters.moduleName }} Module'
