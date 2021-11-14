@@ -60,7 +60,7 @@ variables:
 
   # Set to true, if you would like to publish modules as build artifacts
   buildArtifactsDoPublish: true
-  artifactName: $(moduleName)
+  artifactName: '$(moduleName)'
 
   ######################################
   # Private Bicep Registry
