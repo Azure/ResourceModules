@@ -46,7 +46,7 @@ These are tokens constructed from Environment Variables, which are defined in th
 
 #### 2. Local Custom Tokens (Source Control) [Optional]
 
-These are tokens defined in the Git Repository inside a [Settings.json](https://github.com/Azure/ResourceModules/blob/main/settings.json) file. This allows creating tokens that are local and updatable via Source Control mechanisms. Here is an example on where these tokens are stored. You can add key value pairs as required:
+These are tokens defined in the Git Repository inside a [Settings.json](https://github.com/Azure/ResourceModules/blob/main/settings.json) file. This allows creating tokens that are local and updatable via Source Control mechanisms. Here is an example on where these tokens are stored. You can add key-value pairs as required:
 
 ```json
 "localTokens": {

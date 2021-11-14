@@ -143,7 +143,7 @@ A clone is a direct reference the the source repository which enables you to pul
   git clone 'https://github.com/Azure/ResourceModules.git'`
 ```
 
-from the command line of your choice.
+from the command-line of your choice.
 
 If you instead just want to have a copy of the repository's content you can instead download it in the `.zip` format. You can do this by navigating to the repository folder of your choice (for example root), then select the `<> Code` button on the top left and click on `Download ZIP` on the opening blade.
 
@@ -177,7 +177,7 @@ Last but not least, instead of fetching your own copy of the repository you can 
 
 If you are forking or cloning the repository. Start by leveraging tokens in your parameter files. Tokens allow you to test in isolation, while also leveraging your own naming conventions when deploying resources, or other customizations to your own resources. Details are in the [Parameter File Tokens Documentation](./ParameterFileTokens.md).
 
-The repository contains a [Settings JSON](../../settings.json) that has a default token called `namePrefix`. You can use a custom value here and then start adding the tokens in your parameter files. The tokens default format is `<<tokenName>>` (i.e. `<<namePrefix>>`). Here is an example token:
+The repository contains a [Settings.json](https://github.com/Azure/ResourceModules/blob/main/settings.json) that has a default token called `namePrefix`. You can use a custom value here and then start adding the tokens in your parameter files. The tokens default format is `<<tokenName>>` (i.e. `<<namePrefix>>`). Here is an example token:
 
 ```json
 "localTokens": {
