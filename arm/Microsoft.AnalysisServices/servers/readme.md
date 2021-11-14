@@ -34,7 +34,7 @@ The following resources are required to be able to deploy this resource.
 | `skuCapacity` | int | `1` |  | Optional. The total number of query replica scale-out instances. |
 | `skuName` | string | `S0` |  | Optional. The sku name of the Azure Analysis Services server to create. |
 | `tags` | object | `{object}` |  | Optional. Tags of the resource. |
-| `workspaceId` | string |  |  |  Optional. Resource identifier of Log Analytics. |
+| `workspaceId` | string |  |  | Optional. Resource identifier of Log Analytics. |
 
 ### Parameter Usage: `tags`
 
