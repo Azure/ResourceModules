@@ -29,7 +29,7 @@ trigger:
       - /.azuredevops/pipelineTemplates/module.*.yml
       - /arm/Microsoft.AnalysisServices/servers/*
     exclude:
-      - /*.md
+      - /**/*.md
 
 variables:
   - template: '/.azuredevops/pipelineVariables/global.variables.yml'
