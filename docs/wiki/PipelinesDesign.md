@@ -43,7 +43,7 @@ The validation or deploy actions/templates includes a step that replaces certain
 
 Dynamic parameters that do not need to be hardcoded in the parameter file, and the ability to reuse the repository as a fork, where users define the same tokens in their own "repository secrets", which are then available automatically to their parameter files.
 
-> See [Parameter File Tokens](https://github.com/Azure/ResourceModules/wiki/ParameterFileTokens) for more details.
+> See [Parameter File Tokens](./ParameterFileTokens) for more details.
 
 For example, some modules require referencing Azure resources with the Resource ID. This ID typically contains the `subscriptionId` in the format of `/subscriptions/<<subscriptionId>>/...`. This task substitutes the `<<subscriptionId>>` with the correct value, which is available to the task via environment variables that are defined in the original module workflow. This is known as 'Default Tokens' replacement. See example below:
 
@@ -64,7 +64,7 @@ Here are the Default Tokens used in parameter files:
 
 ---
 
-Please review the Parameter File Tokens [Design](https://github.com/Azure/ResourceModules/wiki/ParameterFileTokens) for more details on the different token types and how you can use them to remove hardcoded values from your parameter files.
+Please review the Parameter File Tokens [Design](./ParameterFileTokens) for more details on the different token types and how you can use them to remove hardcoded values from your parameter files.
 
 Below is an example of a tokenized parameter file that references an Azure Key Vault for a Virtual Machine Password:
 

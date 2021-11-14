@@ -74,7 +74,7 @@ $TestModuleLocallyInput = @{
 
 ### Handling Parameters that require or contain a value that should be tokenized
 
-The following scenarios are common to when to use a token value in the parameter file. Refer to [Pipeline Design](https://github.com/Azure/ResourceModules/wiki/PipelinesDesign) for more details.
+The following scenarios are common to when to use a token value in the parameter file. Refer to [Pipeline Design](./PipelinesDesign) for more details.
 
 - Scenarios where resources have dependencies on other resources, which may require to be linked using `resourceId` references.
 
