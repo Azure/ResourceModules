@@ -90,30 +90,50 @@ function Remove-DeployedModule {
                 $tagSearchRetryCount++
             }
 
+
             # start update
             # TODO: Adjust to new structure
             # TODO: Make recursive/oder childresourceId split by longest path (childiest child)
-            if ($PSCmdlet.ShouldProcess(('Resource [{0}] of type [{1}] from resource group [{2}]' -f $resource.Name, $resource.ResourceType, $resource.ResourceGroupName), 'Remove')) {
-                $allResources = Get-AzResource -ResourceGroupName $resource.ResourceGroupName
-                $childResources = $allResources.ResourceId | Where-Object { $_.startswith("$($resource.ResourceId)/") } | Sort-Object -Descending -Property { $_.Split('/').Count }
-                if ($null -eq $childResources) {
-                    # No child resources
-                    $null = Remove-AzResource -ResourceId $resource.ResourceId -Force -ErrorAction 'Stop'
-                    Write-Verbose ('Removed resource [{0}] of type [{1}] from resource group [{2}]' -f $resource.Name, $resource.ResourceType, $resource.ResourceGroupName)
-                } else {
-                    foreach ($childResorceID in $childResources) {
-                        $resourceIDTokens = $childResorceID.Split('/')
-                        if ($PSCmdlet.ShouldProcess(('Resource [{0}] of type [{1}] from parent resource [{2}]' -f $resourceIDTokens[-1], $resourceIDTokens[-2], $resourceIDTokens[-3]), 'Remove')) {
-                            $null = Remove-AzResource -ResourceId $childResorceID -Force -ErrorAction 'Stop'
-                            Write-Verbose ('Removed child resource [{0}] of type [{1}] from parent resource [{2}]' -f $resourceIDTokens[-1], $resourceIDTokens[-2], $resourceIDTokens[-3])
-                        }
-                    }
-                }
-            }
+            # if ($PSCmdlet.ShouldProcess(('Resource [{0}] of type [{1}] from resource group [{2}]' -f $resource.Name, $resource.ResourceType, $resource.ResourceGroupName), 'Remove')) {
+            #     $allResources = Get-AzResource -ResourceGroupName $resource.ResourceGroupName
+            #     $childResources = $allResources.ResourceId | Where-Object { $_.startswith("$($resource.ResourceId)/") } | Sort-Object -Descending -Property { $_.Split('/').Count }
+            #     if ($null -eq $childResources) {
+            #         # No child resources
+            #         $null = Remove-AzResource -ResourceId $resource.ResourceId -Force -ErrorAction 'Stop'
+            #         Write-Verbose ('Removed resource [{0}] of type [{1}] from resource group [{2}]' -f $resource.Name, $resource.ResourceType, $resource.ResourceGroupName)
+            #     } else {
+            #         foreach ($childResorceID in $childResources) {
+            #             $resourceIDTokens = $childResorceID.Split('/')
+            #             if ($PSCmdlet.ShouldProcess(('Resource [{0}] of type [{1}] from parent resource [{2}]' -f $resourceIDTokens[-1], $resourceIDTokens[-2], $resourceIDTokens[-3]), 'Remove')) {
+            #                 $null = Remove-AzResource -ResourceId $childResorceID -Force -ErrorAction 'Stop'
+            #                 Write-Verbose ('Removed child resource [{0}] of type [{1}] from parent resource [{2}]' -f $resourceIDTokens[-1], $resourceIDTokens[-2], $resourceIDTokens[-3])
+            #             }
+            #         }
+            #     }
+            # }
             ## end update
 
+
+            $rawResourcesToRemoveExpaned = [System.Collections.ArrayList]@()
+            $allResources = Get-AzResource -ResourceGroupName $resource.ResourceGroupName
+            foreach ($topLevelResource in $rawResourcesToRemove) {
+                if ($childResources = $allResources | Where-Object { $_.ResourceId.startswith('{0}/' -f $topLevelResource.ResourceId) } | Sort-Object -Descending -Property { $_.Split('/').Count }) {
+                    foreach ($childResorce in $childResources) {
+                        $resourcesToRemove += @{
+                            resourceId = $childResorce.ResourceId
+                            name       = $childResorce.Name
+                            type       = $childResorce.Type
+                        }
+                    }
+                } else {
+                    $rawResourcesToRemoveExpaned += $topLevelResource
+                }
+            }
+
+
+
             # If VMs are available, delete those first
-            if ($vmsContained = $rawResourcesToRemove | Where-Object { $_.resourcetype -eq 'Microsoft.Compute/virtualMachines' }) {
+            if ($vmsContained = $rawResourcesToRemoveExpaned | Where-Object { $_.resourcetype -eq 'Microsoft.Compute/virtualMachines' }) {
 
                 $intermediateResources = @()
                 foreach ($vmInstance in $vmsContained) {
@@ -125,16 +145,16 @@ function Remove-DeployedModule {
                 }
                 Remove-Resource -resourceToRemove $intermediateResources -Verbose
                 # refresh
-                $rawResourcesToRemove = Get-AzResource -Tag @{ removeModule = $moduleName } -ResourceGroupName $resourceGroupName
+                $rawResourcesToRemoveExpaned = $rawResourcesToRemoveExpaned | Where-Object { $_.ResourceId -notin $intermediateResources.resourceId }
             }
 
-            if (-not $rawResourcesToRemove) {
+            if (-not $rawResourcesToRemoveExpaned) {
                 Write-Error "No resource with Tag { RemoveModule = $moduleName } found in resource group [$resourceGroupName]"
                 return
             }
 
             $resourcesToRemove = @()
-            foreach ($resource in $rawResourcesToRemove) {
+            foreach ($resource in $rawResourcesToRemoveExpaned) {
                 $resourcesToRemove += @{
                     resourceId = $resource.ResourceId
                     name       = $resource.Name
