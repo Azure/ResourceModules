@@ -11,14 +11,11 @@ variables:
   # Source
   ######################################
 
-  vstsOrganization: servicescode
+  vstsOrganization: alsehr
   vstsProject: '$(System.TeamProject)'
-  modulesRepository: ModulesRepository # The repository hosting the deployment code (i.e. 'Components'). MUST be provided as a variable with every pipeline
+  modulesRepository: ResourceModules # The repository hosting the deployment code (i.e. 'Components'). MUST be provided as a variable with every pipeline
   modulePath: arm/$(moduleName) # only use in module pielines
   pipelineFunctionsPath: 'utilities/pipelines'
-
-  # For GitHub Repo
-  modulesRepoPath: Azure/ResourceModules
 
   ######################################
   # Validation deployment settings
