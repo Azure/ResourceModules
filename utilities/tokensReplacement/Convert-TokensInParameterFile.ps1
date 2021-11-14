@@ -95,14 +95,8 @@ function Convert-TokensInParameterFile {
 
     process {
         ## Get Local Custom Parameter File Tokens (Should not Contain Sensitive Information)
-        if ($LocalCustomParameterFileTokens.Count -eq 0) {
-            Write-Verbose 'No Local Custom Parameter File Tokens Detected'
-            exit
-        }
-        
         Write-Verbose "Found $($LocalCustomParameterFileTokens.Count) Local Custom Tokens in Settings File"
-        $AllCustomParameterFileTokens += $LocalCustomParameterFileTokens
-        
+        $AllCustomParameterFileTokens += ($LocalCustomParameterFileTokens | Select-Object -Property Name, Value)
         ## Get Remote Custom Parameter File Tokens (Should Not Contain Sensitive Information if being passed to regular strings)
         if ($TokensKeyVaultName -and $TokensKeyVaultSubscriptionId) {
             ## Prepare Input for Remote Tokens
@@ -125,7 +119,9 @@ function Convert-TokensInParameterFile {
         $AllCustomParameterFileTokens = $DefaultParameterFileTokens + $LocalCustomParameterFileTokens + $RemoteCustomParameterFileTokens |
             ForEach-Object { [PSCustomObject]$PSItem } |
             Sort-Object Name -Unique |
-            Select-Object -Property Name, Value
+            Select-Object -Property Name, Value |
+            Where-Object { $null -ne $PSitem.Name -and $null -ne $PSitem.Value }
+
         # Other Custom Parameter File Tokens (Can be used for testing)
         if ($OtherCustomParameterFileTokens) {
             $AllCustomParameterFileTokens += $OtherCustomParameterFileTokens | ForEach-Object { [PSCustomObject]$PSItem }
