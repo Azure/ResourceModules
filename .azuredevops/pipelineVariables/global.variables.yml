@@ -55,14 +55,6 @@ variables:
   vstNugetFeedUrl: 'https://pkgs.dev.azure.com/$(vstsOrganization)/$(vstsProject)/_packaging/Nuget-Modules/nuget/v2'
 
   ######################################
-  # Build Artifact
-  ######################################
-
-  # Set to true, if you would like to publish modules as build artifacts
-  buildArtifactsDoPublish: true
-  artifactName: '$(moduleName)'
-
-  ######################################
   # Private Bicep Registry
   ######################################
 
