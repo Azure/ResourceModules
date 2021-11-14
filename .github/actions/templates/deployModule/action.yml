@@ -31,11 +31,12 @@ inputs:
 runs:
   using: 'composite'
   steps:
-    - name: 'Setup agent & login'
+    - name: 'Setup agent'
       shell: pwsh
       run: |
         # Load used functions
-        . ".github/actions/sharedScripts/Set-EnvironmentOnAgent.ps1"
+        . (Join-Path $env:GITHUB_WORKSPACE 'utilities/pipelines/sharedScripts/Set-EnvironmentOnAgent.ps1')
+
         # Set agent up
         Set-EnvironmentOnAgent
 
@@ -45,11 +46,12 @@ runs:
         creds: ${{ env.AZURE_CREDENTIALS }}
         enable-AzPSSession: true
 
-    - name: 'Replace Tokens [${{ inputs.parameterFilePath }}] '
+    - name: 'Replace Tokens [${{ inputs.parameterFilePath }}]'
       shell: pwsh
       run: |
         # Load used funtions
-        . ".github/actions/sharedScripts/Convert-TokensInFiles.ps1"
+        . (Join-Path $env:GITHUB_WORKSPACE 'utilities/pipelines/sharedScripts/Convert-TokensInFiles.ps1')
+
         $TokensReplaceWithObject = @(
             @{ Replace = "<<subscriptionId>>"; With = '${{ inputs.subscriptionId }}' }
         )
@@ -60,7 +62,7 @@ runs:
       shell: pwsh
       run: |
         # Load used functions
-        . "$env:GITHUB_ACTION_PATH/scripts/New-ModuleDeployment.ps1"
+        . (Join-Path $env:GITHUB_WORKSPACE 'utilities/pipelines/resourceDeployment/New-ModuleDeployment.ps1')
 
         $functionInput = @{
           moduleName         = '${{ inputs.moduleName }}'
@@ -70,7 +72,7 @@ runs:
           resourceGroupName  = '${{ inputs.resourceGroupName }}'
           subscriptionId     = '${{ inputs.subscriptionId }}'
           managementGroupId  = '${{ inputs.managementGroupId }}'
-          removeDeployment  = [System.Convert]::ToBoolean('${{ inputs.removeDeployment }}')
+          removeDeployment   = [System.Convert]::ToBoolean('${{ inputs.removeDeployment }}')
         }
 
         Write-Verbose "Invoke task with" -Verbose
