@@ -29,3 +29,7 @@ resource linkedService 'Microsoft.OperationalInsights/workspaces/linkedServices@
     writeAccessResourceId: empty(writeAccessResourceId) ? null : writeAccessResourceId
   }
 }
+
+output linkedServiceResourceId string = linkedService.id
+output linkedServiceResourceGroup string = resourceGroup().name
+output linkedServiceName string = linkedService.name

@@ -79,3 +79,7 @@ resource dataSource 'Microsoft.OperationalInsights/workspaces/dataSources@2020-0
     performanceCounters: (!empty(kind) && kind == 'LinuxPerformanceObject') ? performanceCounters : null
   }
 }
+
+output dataSourceResourceId string = dataSource.id
+output dataSourceResourceGroup string = resourceGroup().name
+output dataSourceName string = dataSource.name

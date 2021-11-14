@@ -42,3 +42,7 @@ resource storageinsightconfig 'Microsoft.OperationalInsights/workspaces/storageI
     }
   }
 }
+
+output storageinsightconfigResourceId string = storageinsightconfig.id
+output storageinsightconfigResourceGroup string = resourceGroup().name
+output storageinsightconfigName string = storageinsightconfig.name

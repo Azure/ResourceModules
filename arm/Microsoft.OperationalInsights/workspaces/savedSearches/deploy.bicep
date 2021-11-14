@@ -45,3 +45,7 @@ resource savedSearch 'Microsoft.OperationalInsights/workspaces/savedSearches@202
     version: version
   }
 }
+
+output savedSearchResourceId string = savedSearch.id
+output savedSearchResourceGroup string = resourceGroup().name
+output savedSearchName string = savedSearch.name
