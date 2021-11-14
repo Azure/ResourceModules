@@ -94,15 +94,8 @@ function Remove-DeployedModule {
             $resourcesToRemove = [System.Collections.ArrayList]@()
             $allResources = Get-AzResource -ResourceGroupName $resourceGroupName
             foreach ($topLevelResource in $rawResourcesToRemove) {
-                if ($childResources = $allResources | Where-Object { $_.ResourceId.startswith($topLevelResource.ResourceId) } | Sort-Object -Descending -Property { $_.ResourceId.Split('/').Count }) {
-                    foreach ($childResorce in $childResources) {
-                        $resourcesToRemove += @{
-                            resourceId = $childResorce.ResourceId
-                            name       = $childResorce.Name
-                            type       = $childResorce.Type
-                        }
-                    }
-                } else {
+                $expandedResources = $allResources | Where-Object { $_.ResourceId.startswith($topLevelResource.ResourceId) } | Sort-Object -Descending -Property { $_.ResourceId.Split('/').Count }
+                foreach ($resource in $expandedResources) {
                     $resourcesToRemove += @{
                         resourceId = $resource.ResourceId
                         name       = $resource.Name
