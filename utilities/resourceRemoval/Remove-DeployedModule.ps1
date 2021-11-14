@@ -119,7 +119,7 @@ function Remove-DeployedModule {
             foreach ($topLevelResource in $rawResourcesToRemove) {
                 if ($childResources = $allResources | Where-Object { $_.ResourceId.startswith('{0}/' -f $topLevelResource.ResourceId) } | Sort-Object -Descending -Property { $_.Split('/').Count }) {
                     foreach ($childResorce in $childResources) {
-                        $resourcesToRemove += @{
+                        $rawResourcesToRemoveExpaned += @{
                             resourceId = $childResorce.ResourceId
                             name       = $childResorce.Name
                             type       = $childResorce.Type
@@ -129,8 +129,6 @@ function Remove-DeployedModule {
                     $rawResourcesToRemoveExpaned += $topLevelResource
                 }
             }
-
-
 
             # If VMs are available, delete those first
             if ($vmsContained = $rawResourcesToRemoveExpaned | Where-Object { $_.resourcetype -eq 'Microsoft.Compute/virtualMachines' }) {
