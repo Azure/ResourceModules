@@ -25,7 +25,7 @@
 ##   | vmImage                         | '$(vmImage)'                         | You can provide either a [poolname] or [vmImage] to run the job on                                        | 'ubuntu20.04'                     |
 ##   | defaultJobTimeoutInMinutes      | 120                                  | The timeout for the job in this pipeline                                                                  | 120                               |
 ##   | moduleName                      | '$(moduleName)'                      | The name of the module to remove                                                                          | 'KeyVault'                        |
-##   | resourceGroupName               | '$(resourceGroupName)'               | The resourcegroup to remove the resource from                                                             | 'validation-rg'                   |
+##   | resourceGroupName               | '$(defaultResourceGroupName)'        | The resourcegroup to remove the resource from                                                             | 'validation-rg'                   |
 ##   | modulePath                      | '$(modulePath)'                      | The path to the module to deploy. E.g. [c:/$(moduleName)]                                                 | 'c:/$(moduleName)'                |
 ##   | azurePowerShellVersion          | '$(azurePowerShellVersion)'          | Used for configuring the Azure PowerShellModules Version, one of the example values.                      | 'latestVersion' or 'OtherVersion' |
 ##   | preferredAzurePowerShellVersion | '$(preferredAzurePowerShellVersion)' | Used for configuring the Azure PowerShellModules Version, either an empty string or the specific version. | '4.4.0'                           |
@@ -43,7 +43,7 @@ parameters:
   # Logic-related parameters
   moduleName: '$(moduleName)'
   modulePath: '$(modulePath)'
-  resourceGroupName: '$(resourceGroupName)'
+  resourceGroupName: '$(defaultResourceGroupName)'
   relativePathOfRemovalScript: 'utilities/pipelines/resourceRemoval/Remove-DeployedModule.ps1'
   # Azure PowerShell Version parameter
   azurePowerShellVersion: '$(azurePowerShellVersion)'
