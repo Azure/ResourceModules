@@ -1,16 +1,9 @@
 @description('Required. Name of the Azure Recovery Service Vault')
 @minLength(1)
-param recoveryVaultName string
+param name string
 
-@description('Optional. Enable CRR (Works if vault has not registered any backup instance)')
-param enableCRR bool = true
-
-@description('Optional. Change Vault Storage Type (Works if vault has not registered any backup instance)')
-@allowed([
-  'LocallyRedundant'
-  'GeoRedundant'
-])
-param vaultStorageType string = 'GeoRedundant'
+@description('Optional. The storage configuration for the Azure Recovery Service Vault')
+param backupStorageConfig object = {}
 
 @description('Optional. Customer Usage Attribution id (GUID). This GUID must be previously registered')
 param cuaId string = ''
@@ -123,7 +116,7 @@ module pid_cuaId '.bicep/nested_cuaId.bicep' = if (!empty(cuaId)) {
 }
 
 resource rsv 'Microsoft.RecoveryServices/vaults@2021-08-01' = {
-  name: recoveryVaultName
+  name: name
   location: location
   tags: tags
   sku: {
@@ -131,32 +124,37 @@ resource rsv 'Microsoft.RecoveryServices/vaults@2021-08-01' = {
     tier: 'Standard'
   }
   properties: {}
-
-  resource rsv_vaultstorageconfig 'backupstorageconfig@2020-02-02' = {
-    name: 'vaultstorageconfig'
-    properties: {
-      StorageModelType: vaultStorageType
-      CrossRegionRestoreFlag: enableCRR
-    }
-  }
-
-  resource rsv_protectionContainers 'protectionContainers@2016-12-01' = [for (protectionContainer, index) in protectionContainers: {
-    name: protectionContainer.Name
-    location: resourceGroup().location
-    properties: {
-      sourceResourceId: (empty(protectionContainer.sourceResourceId) ? json('null') : protectionContainer.sourceResourceId)
-      friendlyName: (empty(protectionContainer.friendlyName) ? json('null') : protectionContainer.friendlyName)
-      backupManagementType: (empty(protectionContainer.backupManagementType) ? json('null') : protectionContainer.backupManagementType)
-      containerType: (empty(protectionContainer.containerType) ? json('null') : protectionContainer.containerType)
-    }
-  }]
-
-  resource rsv_backupPolicies 'backupPolicies@2019-06-15' = [for (protectionPolicy, index) in backupPolicies: {
-    name: protectionPolicy.name
-    location: resourceGroup().location
-    properties: protectionPolicy.Properties
-  }]
 }
+
+module rsv_backupStorageConfiguration 'backupStorageConfig/deploy.bicep' = {
+  name: '${uniqueString(deployment().name, location)}-BackupStorageConfig'
+  params: {
+    recoveryVaultName: rsv.name
+    storageModelType: backupStorageConfig.storageModelType
+    crossRegionRestoreFlag: backupStorageConfig.crossRegionRestoreFlag
+  }
+}
+
+module rsv_protectionContainers 'protectionContainers/deploy.bicep' = [for (protectionContainer, index) in protectionContainers: {
+  name: '${uniqueString(deployment().name, location)}-ProtectionContainers-${index}'
+  params: {
+    recoveryVaultName: rsv.name
+    name: protectionContainer.name
+    sourceResourceId: protectionContainer.sourceResourceId
+    friendlyName: protectionContainer.friendlyName
+    backupManagementType: protectionContainer.backupManagementType
+    containerType: protectionContainer.containerType
+  }
+}]
+
+module rsv_backupPolicies 'backupPolicies/deploy.bicep' = [for (backupPolicy, index) in backupPolicies: {
+  name: '${uniqueString(deployment().name, location)}-BackupPolicy-${index}'
+  params: {
+    recoveryVaultName: rsv.name
+    name: backupPolicy.name
+    backupPolicyProperties: backupPolicy.properties
+  }
+}]
 
 resource rsv_lock 'Microsoft.Authorization/locks@2016-09-01' = if (lock != 'NotSpecified') {
   name: '${rsv.name}-${lock}-lock'
@@ -170,12 +168,12 @@ resource rsv_lock 'Microsoft.Authorization/locks@2016-09-01' = if (lock != 'NotS
 resource rsv_diagnosticSettings 'Microsoft.Insights/diagnosticSettings@2021-05-01-preview' = if ((!empty(diagnosticStorageAccountId)) || (!empty(workspaceId)) || (!empty(eventHubAuthorizationRuleId)) || (!empty(eventHubName))) {
   name: '${rsv.name}-diagnosticSettings'
   properties: {
-    storageAccountId: (empty(diagnosticStorageAccountId) ? json('null') : diagnosticStorageAccountId)
-    workspaceId: (empty(workspaceId) ? json('null') : workspaceId)
-    eventHubAuthorizationRuleId: (empty(eventHubAuthorizationRuleId) ? json('null') : eventHubAuthorizationRuleId)
-    eventHubName: (empty(eventHubName) ? json('null') : eventHubName)
-    metrics: ((empty(diagnosticStorageAccountId) && empty(workspaceId) && empty(eventHubAuthorizationRuleId) && empty(eventHubName)) ? json('null') : diagnosticsMetrics)
-    logs: ((empty(diagnosticStorageAccountId) && empty(workspaceId) && empty(eventHubAuthorizationRuleId) && empty(eventHubName)) ? json('null') : diagnosticsLogs)
+    storageAccountId: (empty(diagnosticStorageAccountId) ? null : diagnosticStorageAccountId)
+    workspaceId: (empty(workspaceId) ? null : workspaceId)
+    eventHubAuthorizationRuleId: (empty(eventHubAuthorizationRuleId) ? null : eventHubAuthorizationRuleId)
+    eventHubName: (empty(eventHubName) ? null : eventHubName)
+    metrics: ((empty(diagnosticStorageAccountId) && empty(workspaceId) && empty(eventHubAuthorizationRuleId) && empty(eventHubName)) ? null : diagnosticsMetrics)
+    logs: ((empty(diagnosticStorageAccountId) && empty(workspaceId) && empty(eventHubAuthorizationRuleId) && empty(eventHubName)) ? null : diagnosticsLogs)
   }
   scope: rsv
 }
@@ -188,6 +186,11 @@ module rsv_rbac '.bicep/nested_rbac.bicep' = [for (roleAssignment, index) in rol
   }
 }]
 
+@description('The ResourceId of the Recovery Services Vault')
 output recoveryServicesVaultResourceId string = rsv.id
+
+@description('The name of the Resource Group the Recovery Services Vault was created in')
 output recoveryServicesVaultResourceGroup string = resourceGroup().name
+
+@description('The Name of the Recovery Services Vault')
 output recoveryServicesVaultName string = rsv.name

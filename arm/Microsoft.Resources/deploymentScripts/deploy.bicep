@@ -96,14 +96,14 @@ resource dpeloymentScript 'Microsoft.Resources/deploymentScripts@2020-10-01' = {
   }
   kind: 'AzurePowerShell'
   properties: {
-    azPowerShellVersion: ((kind == 'AzurePowerShell') ? azPowerShellVersion : json('null'))
-    azCliVersion: ((kind == 'AzureCLI') ? azCliVersion : json('null'))
-    containerSettings: (empty(containerGroupName) ? json('null') : containerSettings)
+    azPowerShellVersion: ((kind == 'AzurePowerShell') ? azPowerShellVersion : null)
+    azCliVersion: ((kind == 'AzureCLI') ? azCliVersion : null)
+    containerSettings: (empty(containerGroupName) ? null : containerSettings)
     arguments: arguments
-    environmentVariables: (empty(environmentVariables) ? json('null') : environmentVariables)
-    scriptContent: (empty(scriptContent) ? json('null') : scriptContent)
-    primaryScriptUri: (empty(primaryScriptUri) ? json('null') : primaryScriptUri)
-    supportingScriptUris: (empty(supportingScriptUris) ? json('null') : supportingScriptUris)
+    environmentVariables: (empty(environmentVariables) ? null : environmentVariables)
+    scriptContent: (empty(scriptContent) ? null : scriptContent)
+    primaryScriptUri: (empty(primaryScriptUri) ? null : primaryScriptUri)
+    supportingScriptUris: (empty(supportingScriptUris) ? null : supportingScriptUris)
     cleanupPreference: cleanupPreference
     forceUpdateTag: (runOnce ? resourceGroup().name : baseTime)
     retentionInterval: retentionInterval
