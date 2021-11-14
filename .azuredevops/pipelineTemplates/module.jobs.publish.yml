@@ -154,163 +154,163 @@ jobs:
           ArtifactName: '${{ parameters.artifactName}}'
           publishLocation: 'Container'
 
-      # [Universal Artifact-feed publish] task(s)
-      #------------------------------------------
-      - powershell: |
-          # Load used functions
-          . (Join-Path '$(System.DefaultWorkingDirectory)' '$(pipelineFunctionsPath)' 'resourcePublish' 'Initialize-UniversalArtifactPublish.ps1')
+      # # [Universal Artifact-feed publish] task(s)
+      # #------------------------------------------
+      # - powershell: |
+      #     # Load used functions
+      #     . (Join-Path '$(System.DefaultWorkingDirectory)' '$(pipelineFunctionsPath)' 'resourcePublish' 'Initialize-UniversalArtifactPublish.ps1')
 
-          $functionInput = @{
-            templateFilePath = Join-Path '$(ENVMODULEPATH)' 'deploy.bicep'
-            vstsOrganization = '${{ parameters.vstsOrganization }}'
-            vstsProject      = '${{ parameters.vstsProject }}'
-            vstsFeedName     = '${{ parameters.vstsFeedName }}'
-            customVersion    = '${{ parameters.customVersion }}'
-            versioningOption = '${{ parameters.versioningOption }}'
-          }
+      #     $functionInput = @{
+      #       templateFilePath = Join-Path '$(ENVMODULEPATH)' 'deploy.bicep'
+      #       vstsOrganization = '${{ parameters.vstsOrganization }}'
+      #       vstsProject      = '${{ parameters.vstsProject }}'
+      #       vstsFeedName     = '${{ parameters.vstsFeedName }}'
+      #       customVersion    = '${{ parameters.customVersion }}'
+      #       versioningOption = '${{ parameters.versioningOption }}'
+      #     }
 
-          Write-Verbose "Invoke task with" -Verbose
-          Write-Verbose ($functionInput | ConvertTo-Json | Out-String) -Verbose
+      #     Write-Verbose "Invoke task with" -Verbose
+      #     Write-Verbose ($functionInput | ConvertTo-Json | Out-String) -Verbose
 
-          $output = Initialize-UniversalArtifactPublish @functionInput -Verbose
+      #     $output = Initialize-UniversalArtifactPublish @functionInput -Verbose
 
-          # Write output value(s) into pipeline environment
-          $output.Keys | ForEach-Object {
-            Write-Host ("Publishing variable [{0}] with value [{1}] to pipeline environment" -f $_, $output[$_])
-            Write-Host ("##vso[task.setVariable variable={0}]{1}" -f $_, $output[$_])
-          }
-        displayName: 'Prepare publish to artifacts feed'
-        condition: and(
-          eq(variables['artifactsFeedDoPublish'], true),
-          succeeded()
-          )
-        enabled: true
-        env:
-          TOKEN: $(system.accesstoken)
+      #     # Write output value(s) into pipeline environment
+      #     $output.Keys | ForEach-Object {
+      #       Write-Host ("Publishing variable [{0}] with value [{1}] to pipeline environment" -f $_, $output[$_])
+      #       Write-Host ("##vso[task.setVariable variable={0}]{1}" -f $_, $output[$_])
+      #     }
+      #   displayName: 'Prepare publish to artifacts feed'
+      #   condition: and(
+      #     eq(variables['artifactsFeedDoPublish'], true),
+      #     succeeded()
+      #     )
+      #   enabled: true
+      #   env:
+      #     TOKEN: $(system.accesstoken)
 
-      - task: UniversalPackages@0
-        condition: and(
-          eq(variables['artifactsFeedDoPublish'], true),
-          succeeded()
-          )
-        displayName: Publish Universal Package ${{ parameters.moduleName }}
-        inputs:
-          command: publish
-          publishDirectory: '$(ENVMODULEPATH)'
-          ${{ if eq(parameters.vstsProject, '') }}:
-            vstsFeedPublish: '${{ parameters.vstsFeedName }}'
-          ${{ if ne(parameters.vstsProject, '') }}:
-            vstsFeedPublish: '${{ parameters.vstsProject }}/${{ parameters.vstsFeedName }}'
-          vstsFeedPackagePublish: '$(universalPackageModuleName)' # Published via [Initialize-UniversalArtifactPublish] invocation
-          versionOption: '$(publishingMode)' # Published via [Initialize-UniversalArtifactPublish] invocation
-          versionPublish: '$(newVersionObject)' # Published via [Initialize-UniversalArtifactPublish] invocation
-          packagePublishDescription: '${{ parameters.moduleName }} Module'
-          verbosity: 'error'
-        enabled: true
+      # - task: UniversalPackages@0
+      #   condition: and(
+      #     eq(variables['artifactsFeedDoPublish'], true),
+      #     succeeded()
+      #     )
+      #   displayName: Publish Universal Package ${{ parameters.moduleName }}
+      #   inputs:
+      #     command: publish
+      #     publishDirectory: '$(ENVMODULEPATH)'
+      #     ${{ if eq(parameters.vstsProject, '') }}:
+      #       vstsFeedPublish: '${{ parameters.vstsFeedName }}'
+      #     ${{ if ne(parameters.vstsProject, '') }}:
+      #       vstsFeedPublish: '${{ parameters.vstsProject }}/${{ parameters.vstsFeedName }}'
+      #     vstsFeedPackagePublish: '$(universalPackageModuleName)' # Published via [Initialize-UniversalArtifactPublish] invocation
+      #     versionOption: '$(publishingMode)' # Published via [Initialize-UniversalArtifactPublish] invocation
+      #     versionPublish: '$(newVersionObject)' # Published via [Initialize-UniversalArtifactPublish] invocation
+      #     packagePublishDescription: '${{ parameters.moduleName }} Module'
+      #     verbosity: 'error'
+      #   enabled: true
 
-      # [Nuget Artifact-feed publish] task(s)
-      #--------------------------------------
-      - task: NuGetToolInstaller@0
-        displayName: 'Use NuGet 4.x'
-        inputs:
-          versionSpec: 4.x
-        enabled: true
-      - task: AzurePowerShell@5
-        displayName: Publish module to nuget artifacts feed
-        condition: and(
-          eq(variables['nugetArtifactsFeedDoPublish'], true),
-          succeeded()
-          )
-        enabled: true
-        inputs:
-          azureSubscription: '${{ parameters.serviceConnection }}'
-          azurePowerShellVersion: ${{ parameters.azurePowerShellVersion }}
-          preferredAzurePowerShellVersion: ${{ parameters.preferredAzurePowerShellVersion }}
-          pwsh: true
-          ScriptType: InlineScript
-          inline: |
-            # Load used functions
-            . (Join-Path '$(System.DefaultWorkingDirectory)' '$(pipelineFunctionsPath)' 'resourcePublish' 'Publish-ModuleToNuget.ps1')
+      # # [Nuget Artifact-feed publish] task(s)
+      # #--------------------------------------
+      # - task: NuGetToolInstaller@0
+      #   displayName: 'Use NuGet 4.x'
+      #   inputs:
+      #     versionSpec: 4.x
+      #   enabled: true
+      # - task: AzurePowerShell@5
+      #   displayName: Publish module to nuget artifacts feed
+      #   condition: and(
+      #     eq(variables['nugetArtifactsFeedDoPublish'], true),
+      #     succeeded()
+      #     )
+      #   enabled: true
+      #   inputs:
+      #     azureSubscription: '${{ parameters.serviceConnection }}'
+      #     azurePowerShellVersion: ${{ parameters.azurePowerShellVersion }}
+      #     preferredAzurePowerShellVersion: ${{ parameters.preferredAzurePowerShellVersion }}
+      #     pwsh: true
+      #     ScriptType: InlineScript
+      #     inline: |
+      #       # Load used functions
+      #       . (Join-Path '$(System.DefaultWorkingDirectory)' '$(pipelineFunctionsPath)' 'resourcePublish' 'Publish-ModuleToNuget.ps1')
 
-            $functionInput = @{
-              feedName          = "$(vstsNugetFeedName)"
-              feedurl           = "$(vstNugetFeedUrl)"
-              queueById         = "$(Build.QueuedById)"
-              customVersion     = '${{ parameters.customVersion }}'
-              versioningOption  = '${{ parameters.versioningOption }}'
-              moduleBase        = '$(ENVMODULEPATH)'
-              moduleName        = '${{ parameters.moduleName }}'
-            }
+      #       $functionInput = @{
+      #         feedName          = "$(vstsNugetFeedName)"
+      #         feedurl           = "$(vstNugetFeedUrl)"
+      #         queueById         = "$(Build.QueuedById)"
+      #         customVersion     = '${{ parameters.customVersion }}'
+      #         versioningOption  = '${{ parameters.versioningOption }}'
+      #         moduleBase        = '$(ENVMODULEPATH)'
+      #         moduleName        = '${{ parameters.moduleName }}'
+      #       }
 
-            Write-Verbose "Invoke task with" -Verbose
-            Write-Verbose ($functionInput | ConvertTo-Json | Out-String) -Verbose
+      #       Write-Verbose "Invoke task with" -Verbose
+      #       Write-Verbose ($functionInput | ConvertTo-Json | Out-String) -Verbose
 
-            # Separate population to avoid printing secret by accident
-            $functionInput['systemAccessToken'] = "$(system.accesstoken)"
+      #       # Separate population to avoid printing secret by accident
+      #       $functionInput['systemAccessToken'] = "$(system.accesstoken)"
 
-            Publish-ModuleToNuget @functionInput -Verbose
+      #       Publish-ModuleToNuget @functionInput -Verbose
 
-      # [template-spec publish] task(s)
-      #--------------------------------
-      - task: AzurePowerShell@5
-        displayName: 'Publish module to template specs'
-        condition: and(
-          eq(variables['templateSpecsDoPublish'], true),
-          succeeded()
-          )
-        enabled: true
-        inputs:
-          azureSubscription: '${{ parameters.serviceConnection }}'
-          azurePowerShellVersion: ${{ parameters.azurePowerShellVersion }}
-          preferredAzurePowerShellVersion: ${{ parameters.preferredAzurePowerShellVersion }}
-          pwsh: true
-          ScriptType: InlineScript
-          inline: |
-            # Load used functions
-            . (Join-Path '$(System.DefaultWorkingDirectory)' '$(pipelineFunctionsPath)' 'resourcePublish' 'Publish-ModuleToTemplateSpec.ps1')
+      # # [template-spec publish] task(s)
+      # #--------------------------------
+      # - task: AzurePowerShell@5
+      #   displayName: 'Publish module to template specs'
+      #   condition: and(
+      #     eq(variables['templateSpecsDoPublish'], true),
+      #     succeeded()
+      #     )
+      #   enabled: true
+      #   inputs:
+      #     azureSubscription: '${{ parameters.serviceConnection }}'
+      #     azurePowerShellVersion: ${{ parameters.azurePowerShellVersion }}
+      #     preferredAzurePowerShellVersion: ${{ parameters.preferredAzurePowerShellVersion }}
+      #     pwsh: true
+      #     ScriptType: InlineScript
+      #     inline: |
+      #       # Load used functions
+      #       . (Join-Path '$(System.DefaultWorkingDirectory)' '$(pipelineFunctionsPath)' 'resourcePublish' 'Publish-ModuleToTemplateSpec.ps1')
 
-            $functionInput = @{
-              templateFilePath         = Join-Path '$(ENVMODULEPATH)' 'deploy.bicep'
-              templateSpecsRgName      = '${{ parameters.templateSpecsRgName }}'
-              templateSpecsRgLocation  = '${{ parameters.templateSpecsRgLocation }}'
-              templateSpecsDescription = '${{ parameters.templateSpecsDescription }}'
-              customVersion            = '${{ parameters.customVersion }}'
-              versioningOption         = '${{ parameters.versioningOption }}'
-            }
+      #       $functionInput = @{
+      #         templateFilePath         = Join-Path '$(ENVMODULEPATH)' 'deploy.bicep'
+      #         templateSpecsRgName      = '${{ parameters.templateSpecsRgName }}'
+      #         templateSpecsRgLocation  = '${{ parameters.templateSpecsRgLocation }}'
+      #         templateSpecsDescription = '${{ parameters.templateSpecsDescription }}'
+      #         customVersion            = '${{ parameters.customVersion }}'
+      #         versioningOption         = '${{ parameters.versioningOption }}'
+      #       }
 
-            Write-Verbose "Invoke task with" -Verbose
-            Write-Verbose ($functionInput | ConvertTo-Json | Out-String) -Verbose
+      #       Write-Verbose "Invoke task with" -Verbose
+      #       Write-Verbose ($functionInput | ConvertTo-Json | Out-String) -Verbose
 
-            Publish-ModuleToTemplateSpec @functionInput -Verbose
+      #       Publish-ModuleToTemplateSpec @functionInput -Verbose
 
-      # [private bicep registry publish] task(s)
-      #-------------------------------------------
-      - task: AzurePowerShell@5
-        displayName: 'Publish module to private bicep registry'
-        condition: and(
-          eq(variables['bicepRegistryDoPublish'], true),
-          succeeded()
-          )
-        enabled: true
-        inputs:
-          azureSubscription: '${{ parameters.serviceConnection }}'
-          azurePowerShellVersion: ${{ parameters.azurePowerShellVersion }}
-          preferredAzurePowerShellVersion: ${{ parameters.preferredAzurePowerShellVersion }}
-          pwsh: true
-          ScriptType: InlineScript
-          inline: |
-            # Load used functions
-            . (Join-Path '$(System.DefaultWorkingDirectory)' '$(pipelineFunctionsPath)' 'resourcePublish' 'Publish-ModuleToPrivateBicepRegistry.ps1')
+      # # [private bicep registry publish] task(s)
+      # #-------------------------------------------
+      # - task: AzurePowerShell@5
+      #   displayName: 'Publish module to private bicep registry'
+      #   condition: and(
+      #     eq(variables['bicepRegistryDoPublish'], true),
+      #     succeeded()
+      #     )
+      #   enabled: true
+      #   inputs:
+      #     azureSubscription: '${{ parameters.serviceConnection }}'
+      #     azurePowerShellVersion: ${{ parameters.azurePowerShellVersion }}
+      #     preferredAzurePowerShellVersion: ${{ parameters.preferredAzurePowerShellVersion }}
+      #     pwsh: true
+      #     ScriptType: InlineScript
+      #     inline: |
+      #       # Load used functions
+      #       . (Join-Path '$(System.DefaultWorkingDirectory)' '$(pipelineFunctionsPath)' 'resourcePublish' 'Publish-ModuleToPrivateBicepRegistry.ps1')
 
-            $functionInput = @{
-              templateFilePath    = Join-Path '$(ENVMODULEPATH)' 'deploy.bicep'
-              bicepRegistryName   = '${{ parameters.bicepRegistryName }}'
-              bicepRegistryRgName = '${{ parameters.bicepRegistryRgName }}'
-              customVersion       = '${{ parameters.customVersion }}'
-              versioningOption    = '${{ parameters.versioningOption }}'
-            }
+      #       $functionInput = @{
+      #         templateFilePath    = Join-Path '$(ENVMODULEPATH)' 'deploy.bicep'
+      #         bicepRegistryName   = '${{ parameters.bicepRegistryName }}'
+      #         bicepRegistryRgName = '${{ parameters.bicepRegistryRgName }}'
+      #         customVersion       = '${{ parameters.customVersion }}'
+      #         versioningOption    = '${{ parameters.versioningOption }}'
+      #       }
 
-            Write-Verbose "Invoke task with" -Verbose
-            Write-Verbose ($functionInput | ConvertTo-Json | Out-String) -Verbose
+      #       Write-Verbose "Invoke task with" -Verbose
+      #       Write-Verbose ($functionInput | ConvertTo-Json | Out-String) -Verbose
 
-            Publish-ModuleToPrivateBicepRegistry @functionInput -Verbose
+      #       Publish-ModuleToPrivateBicepRegistry @functionInput -Verbose
