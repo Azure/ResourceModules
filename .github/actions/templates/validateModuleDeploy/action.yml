@@ -24,11 +24,12 @@ inputs:
 runs:
   using: 'composite'
   steps:
-    - name: 'Setup agent & login'
+    - name: 'Setup agent'
       shell: pwsh
       run: |
         # Load used functions
-        . ".github/actions/sharedScripts/Set-EnvironmentOnAgent.ps1"
+        . (Join-Path $env:GITHUB_WORKSPACE 'utilities/pipelines/sharedScripts/Set-EnvironmentOnAgent.ps1')
+
         # Set agent up
         Set-EnvironmentOnAgent
 
@@ -38,11 +39,12 @@ runs:
         creds: ${{ env.AZURE_CREDENTIALS }}
         enable-AzPSSession: true
 
-    - name: 'Replace Tokens [${{ inputs.parameterFilePath }}] '
+    - name: 'Replace Tokens [${{ inputs.parameterFilePath }}]'
       shell: pwsh
       run: |
         # Load used funtions
-        . ".github/actions/sharedScripts/Convert-TokensInFiles.ps1"
+        . (Join-Path $env:GITHUB_WORKSPACE 'utilities/pipelines/sharedScripts/Convert-TokensInFiles.ps1')
+
         $TokensReplaceWithObject = @(
             @{ Replace = "<<subscriptionId>>"; With = '${{ inputs.subscriptionId }}' }
         )
@@ -55,7 +57,7 @@ runs:
       shell: pwsh
       run: |
         # Load used functions
-        . "$env:GITHUB_ACTION_PATH/scripts/Test-TemplateWithParameterFile.ps1"
+        . (Join-Path $env:GITHUB_WORKSPACE 'utilities/pipelines/resourceValidation/Test-TemplateWithParameterFile.ps1')
 
         # ----------- #
         # INVOKE TEST #

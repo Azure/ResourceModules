@@ -1,0 +1,194 @@
+#########################################################
+## DEPLOYMENT PIPELINE                                 ##
+#########################################################
+##
+## This pipeline template contains the logic to deploy a given module's ARM template using the provided parameter file(s)
+##
+## Enabled levels of deployment
+## - Resource-Group-Level
+## - Subscription-Level
+## - Management-Group-Level
+## - Tenant-Level
+##
+#########################################################
+##
+##---------------------------------------------##
+## TEMPLATE PARAMETERS                         ##
+##---------------------------------------------##
+##
+## By default it uses the variables specified in the below [parameters] section. However, you can overwrite these variables in the
+##    referencing pipeline by providing the parameter explicitly.
+##
+## NOTE: If you don't need to overwrite a shared value, you can IGNORE this section
+##
+##   |=================================================================================================================================================================================================================================|
+##   | Parameter                       | Default Value                        | Description                                                                                               | Example                                    |
+##   |---------------------------------|--------------------------------------|-----------------------------------------------------------------------------------------------------------|--------------------------------------------|
+##   | serviceConnection               | '$(serviceConnection)'               | The service connection that connects to Azure                                                             | 'demo-internal'                            |
+##   | removeDeployment                | '$(removeDeployment)'                | Set to [true] to flag resource for removal. If not provided, defaults to false.                           | 'true'                                     |
+##   | poolName                        | '$(poolName)'                        | You can provide either a [poolname] or [vmImage] to run the job on                                        | 'Custom Deployment Pool'                   |
+##   | vmImage                         | '$(vmImage)'                         | You can provide either a [poolname] or [vmImage] to run the job on                                        | 'ubuntu20.04'                              |
+##   | defaultJobTimeoutInMinutes      | 120                                  | The timeout for the job in this pipeline                                                                  | 120                                        |
+##   | checkoutRepositories            | ''                                   | An optional list of repositories to check out at the beginning of this job in addition to the source      | 'Components'                               |
+##   | moduleName                      | '$(moduleName)'                      | The name of the module to deploy                                                                          | 'KeyVault'                                 |
+##   | modulePath                      | '$(modulePath)'                      | The path to the module to deploy. E.g. [c:/$(moduleName)]                                                 | 'c:/$(moduleName)'                         |
+##   | deploymentBlocks                |                                      | The parameter file(s) to deploy with. Must be provided                                                    | path: 'C:/parameters.json'                 |
+##   | location                        | '$(defaultLocation)'                 | The location to deploy with                                                                               | 'EastUs2'                                  |
+##   | resourceGroupName               | '$(defaultResourceGroupName)'        | The resourcegroup to deploy into. Required only for Resource-Group-Level deployments                      | 'validation-rg'                            |
+##   | subscriptionId                  | '$(ARM_SUBSCRIPTION_ID)'             | The id of the subscription to deploy into when using a Management group service connection                | 'aed7c000-6387-412e-bed0-24dfddf4bbc6'     |
+##   | managementGroupId               | '$(ARM_MGMTGROUP_ID)'                | The id of the management group to deploy into. Required only for Management-Group-Level deployments       | '6ycc9620-cb01-454f-9ebc-fc6b1df48d64'     |
+##   | parametersRepository            | '$(Build.Repository.Name)'           | The respository with the parameter files. Defaults to the triggering repository                           | 'Solutions'                                |
+##   | modulesRepository               | '$(modulesRepository)'               | The respository with the modules.                                                                         | 'Components'                               |
+##   | azurePowerShellVersion          | '$(azurePowerShellVersion)'          | Used for configuring the Azure PowerShellModules Version, one of the example values.                      | 'latestVersion' or 'OtherVersion'          |
+##   | preferredAzurePowerShellVersion | '$(preferredAzurePowerShellVersion)' | Used for configuring the Azure PowerShellModules Version, either an empty string or the specific version. | '4.4.0'                                    |
+##   |=================================================================================================================================================================================================================================|
+##
+##---------------------------------------------##
+
+parameters:
+  # Pipeline-related parameters
+  serviceConnection: '$(serviceConnection)'
+  poolName: '$(poolName)'
+  vmImage: '$(vmImage)'
+  defaultJobTimeoutInMinutes: 120
+  checkoutRepositories: ''
+  dependsOn: []
+  # Logic-related parameters
+  removeDeployment: false
+  moduleName: '$(moduleName)'
+  modulePath: '$(modulePath)'
+  deploymentBlocks: ''
+  location: '$(defaultLocation)'
+  resourceGroupName: '$(defaultResourceGroupName)'
+  subscriptionId: '$(ARM_SUBSCRIPTION_ID)'
+  managementGroupId: '$(ARM_MGMTGROUP_ID)'
+  parametersRepository: '$(Build.Repository.Name)'
+  modulesRepository: '$(modulesRepository)'
+  # Azure PowerShell Version parameters
+  azurePowerShellVersion: '$(azurePowerShellVersion)'
+  preferredAzurePowerShellVersion: '$(preferredAzurePowerShellVersion)'
+
+##---------------------------------------------##
+## TEMPLATE LOGIC                              ##
+##---------------------------------------------##
+
+jobs:
+  - ${{ each deploymentBlock in parameters.deploymentBlocks }}:
+      - job: ${{ deploymentBlock.jobName }}
+
+        ${{ if ne( deploymentBlock.displayName, '') }}:
+          displayName: ${{ deploymentBlock.displayName }}
+        ${{ if eq( deploymentBlock.displayName, '') }}:
+          displayName: Deploy with [${{ replace( deploymentBlock.path, '$(modulePath)', '') }}]
+        timeoutInMinutes: ${{ parameters.defaultJobTimeoutInMinutes }}
+        ${{ if ne( parameters.dependsOn, '') }}:
+          dependsOn: ${{ parameters.dependsOn }}
+        pool:
+          ${{ if ne(parameters.vmImage, '') }}:
+            vmImage: ${{ parameters.vmImage }}
+          ${{ if ne(parameters.poolName, '') }}:
+            name: ${{ parameters.poolName }}
+
+        steps:
+          # [Checkout Repositories] task(s)
+          #--------------------------------
+          - checkout: self
+          - ${{ if ne(parameters.checkoutRepositories, '') }}:
+              - ? ${{ each checkoutRepository in parameters.checkoutRepositories }}
+                : - checkout: ${{ checkoutRepository }}
+                    fetchDepth: 1 # the depth of commits to ask Git to fetch; if not set defaults to no limit
+                    path: 's/${{ checkoutRepository }}'
+
+          # [Agent] Prepare environment
+          #----------------------------
+          - task: PowerShell@2
+            displayName: 'Setup agent'
+            inputs:
+              targetType: inline
+              pwsh: true
+              script: |
+                # Load used functions
+                . (Join-Path '$(System.DefaultWorkingDirectory)' 'utilities' 'pipelines' 'sharedScripts' 'Set-EnvironmentOnAgent.ps1')
+
+                # Set agent up
+                Set-EnvironmentOnAgent
+
+          # [Multi Repo] Support task
+          #--------------------------
+          - task: PowerShell@2
+            displayName: Handle Multi-Repo Invocation
+            inputs:
+              targetType: inline
+              pwsh: true
+              script: |
+                # Handle multiple-repositories
+                if( "${{ join(';',parameters.checkoutRepositories) }}".length -gt 0) {
+                  Write-Verbose "Multi-Repo Checkout" -Verbose
+                  $moduleRepoRoot = Join-Path '$(System.DefaultWorkingDirectory)' '$(modulesRepository)'
+                  $parametersRepoRoot = Join-Path '$(System.DefaultWorkingDirectory)' '${{ parameters.parametersRepository }}'
+                } else {
+                  Write-Verbose "No Multi-Repo Checkout" -Verbose
+                  $moduleRepoRoot = '$(System.DefaultWorkingDirectory)'
+                  $parametersRepoRoot = '$(System.DefaultWorkingDirectory)'
+                }
+                Write-Host "##vso[task.setvariable variable=ModuleRepoRoot]$moduleRepoRoot"
+                Write-Host "##vso[task.setvariable variable=parametersRepoRoot]$parametersRepoRoot"
+
+          # [Agent] Replace tokens
+          #-----------------------
+          - task: PowerShell@2
+            displayName: 'Replace Tokens [${{ deploymentBlock.path }}]'
+            inputs:
+              targetType: inline
+              pwsh: true
+              script: |
+                # Load used funtions
+                . (Join-Path '$(System.DefaultWorkingDirectory)' 'utilities' 'pipelines' 'sharedScripts' 'Convert-TokensInFiles.ps1')
+
+                $functionInput = @{
+                  TokensReplaceWith = @(
+                      @{ Replace = "<<subscriptionId>>"; With = '${{ parameters.subscriptionId }}' }
+                  )
+                  paths                   = Join-Path '$(parametersRepoRoot)' '${{ deploymentBlock.path }}'
+                  verbose                 = $true
+                }
+
+                Write-Verbose "Invoke task with" -Verbose
+                Write-Verbose ($functionInput | ConvertTo-Json | Out-String) -Verbose
+
+                write-verbose "Invoking Convert-TokensInFiles"
+                Convert-TokensInFiles @functionInput
+
+          # [Deployment] task(s)
+          #---------------------
+          - task: AzurePowerShell@5
+            displayName: 'Deploy [${{ parameters.moduleName }}] via connection [${{ parameters.serviceConnection }}]'
+            inputs:
+              azureSubscription: ${{ parameters.serviceConnection }}
+              azurePowerShellVersion: ${{ parameters.azurePowerShellVersion }}
+              preferredAzurePowerShellVersion: ${{ parameters.preferredAzurePowerShellVersion }}
+              pwsh: true
+              ScriptType: InlineScript
+              inline: |
+                # Load used functions
+                . (Join-Path '$(System.DefaultWorkingDirectory)' '$(pipelineFunctionsPath)' 'resourceDeployment' 'New-ModuleDeployment.ps1')
+
+                # ----------------- #
+                # INVOKE DEPLOYMENT #
+                # ----------------- #
+                $functionInput = @{
+                  moduleName         = '${{ parameters.moduleName }}'
+                  templateFilePath   = Join-Path '$(ModuleRepoRoot)' '$(modulePath)' 'deploy.bicep'
+                  parameterFilePath  = Join-Path '$(parametersRepoRoot)' '${{ deploymentBlock.path }}'
+                  location           = '${{ parameters.location }}'
+                  resourceGroupName  = '${{ parameters.resourceGroupName }}'
+                  subscriptionId     = '${{ parameters.subscriptionId }}'
+                  managementGroupId  = '${{ parameters.managementGroupId }}'
+                  # Note: if parameter is like "`$(removeDeployment*" it was not set as the variable was not resolved
+                  removeDeployment   = ('${{ parameters.removeDeployment }}' -like "`$(removeDeployment*") ? $false : [System.Convert]::ToBoolean('${{ parameters.removeDeployment }}')
+                }
+
+                Write-Verbose "Invoke task with" -Verbose
+                Write-Verbose ($functionInput | ConvertTo-Json | Out-String) -Verbose
+
+                New-ModuleDeployment @functionInput -Verbose
