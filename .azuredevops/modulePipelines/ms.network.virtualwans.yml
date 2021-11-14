@@ -27,17 +27,17 @@ trigger:
     include:
       - '/.azuredevops/modulePipelines/ms.network.virtualwans.yml'
       - '/.azuredevops/pipelineTemplates/module.*.yml'
-      - '/arm/Microsoft.network/virtualwans/*'
+      - '/arm/Microsoft.Network/virtualwans/*'
     exclude:
-      - '/arm/Microsoft.network/virtualwans/*readme.md'
+      - '/arm/Microsoft.Network/virtualwans/*readme.md'
 
 variables:
   - template: '/.azuredevops/pipelineVariables/global.variables.yml'
   - group: 'Platform-Tokens'
   - name: moduleName
-    value: virtualwans
+    value: virtualWans
   - name: modulePath
-    value: '/arm/Microsoft.network/virtualwans'
+    value: '/arm/Microsoft.Network/virtualWans'
 
 stages:
   - stage: Validation
@@ -46,7 +46,6 @@ stages:
         parameters:
           deploymentBlocks:
             - path: $(modulePath)/.parameters/parameters.json
-            - path: $(modulePath)/.parameters/min.parameters.json
 
   - stage: Deployment
     jobs:
@@ -55,7 +54,6 @@ stages:
           removeDeployment: '${{ parameters.removeDeployment }}'
           deploymentBlocks:
             - path: $(modulePath)/.parameters/parameters.json
-            - path: $(modulePath)/.parameters/min.parameters.json
 
   - stage: Publishing
     condition: and(succeeded(), eq(variables['Build.SourceBranch'], 'refs/heads/main'))
