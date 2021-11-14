@@ -44,7 +44,7 @@ variables:
   # Set to true, if you would like to publish modules as Universal Packages (in ADO Artifacts)
   # If you provide a name below, you have to create an Artifact Feed in ADO with the same name before using this feed.
   artifactsFeedDoPublish: true
-  vstsFeedName: 'Modules'
+  vstsFeedName: 'ResourceModules'
   vstsFeedProject: '$(System.TeamProject)'
 
   ######################################
