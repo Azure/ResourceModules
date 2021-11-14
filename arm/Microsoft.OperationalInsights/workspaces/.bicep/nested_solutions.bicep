@@ -21,3 +21,7 @@ resource solution 'Microsoft.OperationsManagement/solutions@2015-11-01-preview' 
     publisher: publisher
   }
 }
+
+output solutionResourceId string = solution.id
+output solutionResourceGroup string = resourceGroup().name
+output solutionName string = solution.name
