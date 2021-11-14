@@ -99,7 +99,7 @@ resource logAnalyticsWorkspace 'Microsoft.OperationalInsights/workspaces@2020-08
   }
 }
 
-module storageInsightsConfigs_mod 'storageInsightConfigs/deploy.bicep' = [for (storageInsightsConfig, index) in storageInsightsConfigs: {
+module logAnalyticsWorkspace_storageInsightConfigs 'storageInsightConfigs/deploy.bicep' = [for (storageInsightsConfig, index) in storageInsightsConfigs: {
   name: '${deployment().name}-storageInsightsConfig-${index}'
   params: {
     logAnalyticsWorkspaceName: logAnalyticsWorkspace.name
@@ -110,7 +110,7 @@ module storageInsightsConfigs_mod 'storageInsightConfigs/deploy.bicep' = [for (s
   }
 }]
 
-module linkedServices_mod 'linkedServices/deploy.bicep' = [for (linkedService, index) in linkedServices: {
+module logAnalyticsWorkspace_linkedServices 'linkedServices/deploy.bicep' = [for (linkedService, index) in linkedServices: {
   name: '${deployment().name}-linkedService-${index}'
   params: {
     logAnalyticsWorkspaceName: logAnalyticsWorkspace.name
@@ -120,7 +120,7 @@ module linkedServices_mod 'linkedServices/deploy.bicep' = [for (linkedService, i
   }
 }]
 
-module savedSearches_mod 'savedSearches/deploy.bicep' = [for (savedSearch, index) in savedSearches: {
+module logAnalyticsWorkspace_savedSearches 'savedSearches/deploy.bicep' = [for (savedSearch, index) in savedSearches: {
   name: '${deployment().name}-savedSearch-${index}'
   params: {
     logAnalyticsWorkspaceName: logAnalyticsWorkspace.name
@@ -134,7 +134,7 @@ module savedSearches_mod 'savedSearches/deploy.bicep' = [for (savedSearch, index
   }
 }]
 
-module dataSources_mod 'dataSources/deploy.bicep' = [for (dataSource, index) in dataSources: {
+module logAnalyticsWorkspace_dataSources 'dataSources/deploy.bicep' = [for (dataSource, index) in dataSources: {
   name: '${deployment().name}-datasource-${index}'
   params: {
     logAnalyticsWorkspaceName: logAnalyticsWorkspace.name
@@ -155,7 +155,7 @@ module dataSources_mod 'dataSources/deploy.bicep' = [for (dataSource, index) in 
 }]
 
 @batchSize(1) // Serial loop deployment
-module solution '.bicep/nested_solutions.bicep' = [for (gallerySolution, index) in gallerySolutions: if (!empty(gallerySolutions)) {
+module logAnalyticsWorkspace_solutions '.bicep/nested_solutions.bicep' = [for (gallerySolution, index) in gallerySolutions: if (!empty(gallerySolutions)) {
   name: '${deployment().name}-solution-${index}'
   params: {
     gallerySolution: gallerySolution.name

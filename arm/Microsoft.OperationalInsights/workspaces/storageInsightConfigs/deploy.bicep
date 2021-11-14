@@ -24,6 +24,12 @@ module pid_cuaId '.bicep/nested_cuaId.bicep' = if (!empty(cuaId)) {
   params: {}
 }
 
+var storageAccountName = last(split(storageAccountId, '/'))
+
+resource storageAccount 'Microsoft.Storage/storageAccounts@2021-06-01' existing = {
+  name: storageAccountName
+}
+
 resource storageinsightconfig 'Microsoft.OperationalInsights/workspaces/storageInsightConfigs@2020-08-01' = {
   name: '${logAnalyticsWorkspaceName}/${name}'
   tags: tags
@@ -32,7 +38,7 @@ resource storageinsightconfig 'Microsoft.OperationalInsights/workspaces/storageI
     tables: tables
     storageAccount: {
       id: storageAccountId
-      key: listKeys(storageAccountId, '2016-12-01').keys[0].value
+      key: storageAccount.listKeys().keys[0].value
     }
   }
 }
