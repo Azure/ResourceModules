@@ -98,10 +98,11 @@ function Convert-TokensInParameterFile {
         if ($LocalCustomParameterFileTokens.Count -eq 0) {
             Write-Verbose 'No Local Custom Parameter File Tokens Detected'
             exit
-        } else {
-            Write-Verbose "Found $($LocalCustomParameterFileTokens.Count) Local Custom Tokens in Settings File"
-            $AllCustomParameterFileTokens += $LocalCustomParameterFileTokens
         }
+        
+        Write-Verbose "Found $($LocalCustomParameterFileTokens.Count) Local Custom Tokens in Settings File"
+        $AllCustomParameterFileTokens += $LocalCustomParameterFileTokens
+        
         ## Get Remote Custom Parameter File Tokens (Should Not Contain Sensitive Information if being passed to regular strings)
         if ($TokensKeyVaultName -and $TokensKeyVaultSubscriptionId) {
             ## Prepare Input for Remote Tokens
@@ -155,7 +156,7 @@ function Convert-TokensInParameterFile {
         }
     }
     end {
-        return [bool]$ConversionStatus
         Write-Verbose "Token Replacement Status: $ConversionStatus"
+        return [bool]$ConversionStatus
     }
 }
