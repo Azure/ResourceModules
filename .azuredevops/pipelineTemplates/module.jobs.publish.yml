@@ -140,9 +140,7 @@ jobs:
         displayName: Filter folders
         inputs:
           Contents: |
-            "$(ENVMODULEPATH)/Scripts/*"
-            "$(ENVMODULEPATH)/Parameters/*"
-            "$(ENVMODULEPATH)/deploy.json"
+            "$(ENVMODULEPATH)/*"
           targetFolder: '$(Build.ArtifactStagingDirectory)'
 
       - task: PublishBuildArtifacts@1
