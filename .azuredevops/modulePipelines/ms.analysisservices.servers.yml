@@ -40,22 +40,22 @@ variables:
     value: '/arm/Microsoft.AnalysisServices/servers'
 
 stages:
-  # - stage: Validation
-  #   jobs:
-  #     - template: /.azuredevops/pipelineTemplates/module.jobs.validate.yml
-  #       parameters:
-  #         deploymentBlocks:
-  #           - path: $(modulePath)/.parameters/parameters.json
-  #           - path: $(modulePath)/.parameters/min.parameters.json
+  - stage: Validation
+    jobs:
+      - template: /.azuredevops/pipelineTemplates/module.jobs.validate.yml
+        parameters:
+          deploymentBlocks:
+            - path: $(modulePath)/.parameters/parameters.json
+            - path: $(modulePath)/.parameters/min.parameters.json
 
-  # - stage: Deployment
-  #   jobs:
-  #     - template: /.azuredevops/pipelineTemplates/module.jobs.deploy.yml
-  #       parameters:
-  #         removeDeployment: '${{ parameters.removeDeployment }}'
-  #         deploymentBlocks:
-  #           - path: $(modulePath)/.parameters/parameters.json
-  #           - path: $(modulePath)/.parameters/min.parameters.json
+  - stage: Deployment
+    jobs:
+      - template: /.azuredevops/pipelineTemplates/module.jobs.deploy.yml
+        parameters:
+          removeDeployment: '${{ parameters.removeDeployment }}'
+          deploymentBlocks:
+            - path: $(modulePath)/.parameters/parameters.json
+            - path: $(modulePath)/.parameters/min.parameters.json
 
   - stage: Publishing
     condition: and(succeeded(), eq(variables['Build.SourceBranch'], 'refs/heads/main'))
@@ -65,8 +65,8 @@ stages:
           versioningOption: '${{ parameters.versioningOption }}'
           customVersion: '${{ parameters.customVersion }}'
 
-  # - stage: Removal
-  #   dependsOn: Deployment
-  #   condition: and(in(dependencies.Deployment.result, 'Succeeded', 'Failed'),  eq( '${{ parameters.removeDeployment }}', 'true'))
-  #   jobs:
-  #     - template: /.azuredevops/pipelineTemplates/module.jobs.remove.yml
+  - stage: Removal
+    dependsOn: Deployment
+    condition: and(in(dependencies.Deployment.result, 'Succeeded', 'Failed'),  eq( '${{ parameters.removeDeployment }}', 'true'))
+    jobs:
+      - template: /.azuredevops/pipelineTemplates/module.jobs.remove.yml
