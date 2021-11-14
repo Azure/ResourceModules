@@ -114,24 +114,28 @@ function Remove-DeployedModule {
             ## end update
 
 
-            $rawResourcesToRemoveExpaned = [System.Collections.ArrayList]@()
+            $resourcesToRemove = [System.Collections.ArrayList]@()
             $allResources = Get-AzResource -ResourceGroupName $resource.ResourceGroupName
             foreach ($topLevelResource in $rawResourcesToRemove) {
                 if ($childResources = $allResources | Where-Object { $_.ResourceId.startswith('{0}/' -f $topLevelResource.ResourceId) } | Sort-Object -Descending -Property { $_.Split('/').Count }) {
                     foreach ($childResorce in $childResources) {
-                        $rawResourcesToRemoveExpaned += @{
+                        $resourcesToRemove += @{
                             resourceId = $childResorce.ResourceId
                             name       = $childResorce.Name
                             type       = $childResorce.Type
                         }
                     }
                 } else {
-                    $rawResourcesToRemoveExpaned += $topLevelResource
+                    $resourcesToRemove += @{
+                        resourceId = $resource.ResourceId
+                        name       = $resource.Name
+                        type       = $resource.Type
+                    }
                 }
             }
 
             # If VMs are available, delete those first
-            if ($vmsContained = $rawResourcesToRemoveExpaned | Where-Object { $_.resourcetype -eq 'Microsoft.Compute/virtualMachines' }) {
+            if ($vmsContained = $resourcesToRemove | Where-Object { $_.resourcetype -eq 'Microsoft.Compute/virtualMachines' }) {
 
                 $intermediateResources = @()
                 foreach ($vmInstance in $vmsContained) {
@@ -143,22 +147,22 @@ function Remove-DeployedModule {
                 }
                 Remove-Resource -resourceToRemove $intermediateResources -Verbose
                 # refresh
-                $rawResourcesToRemoveExpaned = $rawResourcesToRemoveExpaned | Where-Object { $_.ResourceId -notin $intermediateResources.resourceId }
+                $resourcesToRemove = $resourcesToRemove | Where-Object { $_.ResourceId -notin $intermediateResources.resourceId }
             }
 
-            if (-not $rawResourcesToRemoveExpaned) {
+            if (-not $resourcesToRemove) {
                 Write-Error "No resource with Tag { RemoveModule = $moduleName } found in resource group [$resourceGroupName]"
                 return
             }
 
-            $resourcesToRemove = @()
-            foreach ($resource in $rawResourcesToRemoveExpaned) {
-                $resourcesToRemove += @{
-                    resourceId = $resource.ResourceId
-                    name       = $resource.Name
-                    type       = $resource.Type
-                }
-            }
+            # $resourcesToRemove = @()
+            # foreach ($resource in $rawResourcesToRemoveExpaned) {
+            #     $resourcesToRemove += @{
+            #         resourceId = $resource.ResourceId
+            #         name       = $resource.Name
+            #         type       = $resource.Type
+            #     }
+            # }
         }
 
         # Remove resources
