@@ -26,7 +26,7 @@ The following resources are required to be able to deploy this resource.
 | `apiManagementServiceName` | string |  |  | Required. The name of the of the Api Management service. |
 | `apiRevision` | string |  |  | Optional. Describes the Revision of the Api. If no value is provided, default revision 1 is created |
 | `apiRevisionDescription` | string |  |  | Optional. Description of the Api Revision. |
-| `apiType` | string | `http` | `[http, soap]` | Optional. Type of Api to create. *http creates a SOAP to REST API* soap creates a SOAP pass-through API. |
+| `apiType` | string | `http` | `[http, soap]` | Optional. Type of Api to create. * http creates a SOAP to REST API * soap creates a SOAP pass-through API. |
 | `apiVersion` | string |  |  | Optional. Indicates the Version identifier of the API if the API is versioned |
 | `apiVersionDescription` | string |  |  | Optional. Description of the Api Version. |
 | `apiVersionSet` | object | `{object}` |  | Optional. Version set details |
@@ -64,11 +64,11 @@ The following resources are required to be able to deploy this resource.
 
 ## Outputs
 
-| Output Name | Type |
-| :-- | :-- |
-| `apimServiceApiName` | string |
-| `apimServiceApiResourceGroup` | string |
-| `apimServiceApiResourceId` | string |
+| Output Name | Type | Description |
+| :-- | :-- | :-- |
+| `apisName` | string | The name of the API management service api |
+| `apisResourceGroup` | string | The resource group the API management service api was deployed to |
+| `apisResourceId` | string | The resourceId of the API management service api |
 
 ## Template references
 

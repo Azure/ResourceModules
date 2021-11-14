@@ -7,8 +7,8 @@ This module deploys an IP Group, with resource lock.
 | Resource Type | Api Version |
 | :-- | :-- |
 | `Microsoft.Authorization/locks` | 2016-09-01 |
+| `Microsoft.Authorization/roleAssignments` | 2020-04-01-preview |
 | `Microsoft.Network/ipGroups` | 2021-02-01 |
-| `Microsoft.Network/ipGroups/providers/roleAssignments` | 2021-04-01-preview |
 
 ## Parameters
 
@@ -70,13 +70,14 @@ Tag names and tag values can be provided as needed. A tag can be left without a 
 
 ## Outputs
 
-| Output Name | Type |
-| :-- | :-- |
-| `ipGroupName` | string |
-| `ipGroupsResourceGroup` | string |
-| `ipGroupsResourceId` | string |
+| Output Name | Type | Description |
+| :-- | :-- | :-- |
+| `ipGroupName` | string | The name of the IP group |
+| `ipGroupsResourceGroup` | string | The resource group of the IP group was deployed into |
+| `ipGroupsResourceId` | string | The resourceId of the IP group |
 
 ## Template references
 
 - [Locks](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2016-09-01/locks)
+- [Roleassignments](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2020-04-01-preview/roleAssignments)
 - [Ipgroups](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Network/2021-02-01/ipGroups)

@@ -4,7 +4,7 @@ param apiManagementServiceAuthorizationServerName string
 @description('Required. The name of the of the Api Management service.')
 param apiManagementServiceName string
 
-@description('Required. OAuth authorization endpoint. See http://tools.ietf.org/html/rfc6749#section-3.2.')
+@description('Required. OAuth authorization endpoint. See <http://tools.ietf.org/html/rfc6749#section-3.2>.')
 param authorizationEndpoint string = ''
 
 @description('Optional. HTTP verbs supported by the authorization endpoint. GET must be always present. POST is optional. - HEAD, OPTIONS, TRACE, GET, POST, PUT, PATCH, DELETE')
@@ -62,7 +62,7 @@ var defaultAuthorizationMethods = [
 ]
 var setAuthorizationMethods = union(authorizationMethods, defaultAuthorizationMethods)
 
-module pid_cuaId './.bicep/nested_cuaId.bicep' = if (!empty(cuaId)) {
+module pid_cuaId '.bicep/nested_cuaId.bicep' = if (!empty(cuaId)) {
   name: 'pid-${cuaId}'
   params: {}
 }
@@ -89,6 +89,11 @@ resource authorizationServer 'Microsoft.ApiManagement/service/authorizationServe
   }
 }
 
-output apimServiceAuthorizationServerResourceName string = authorizationServer.name
-output apimServiceAuthorizationServerResourceId string = authorizationServer.id
-output apimServiceAuthorizationServerResourceGroup string = resourceGroup().name
+@description('The name of the API management service authorization server')
+output authorizationServerName string = authorizationServer.name
+
+@description('The resourceId of the API management service authorization server')
+output authorizationServerResourceId string = authorizationServer.id
+
+@description('The resource group the API management service authorization server was deployed into')
+output authorizationServerResourceGroup string = resourceGroup().name

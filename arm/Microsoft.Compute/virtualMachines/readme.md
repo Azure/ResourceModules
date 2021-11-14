@@ -5,16 +5,14 @@ This module deploys one Virtual Machine with one or multiple nics and optionally
 ## Resource Types
 
 | Resource Type | Api Version |
-| :- | :- |
+| :-- | :-- |
 | `Microsoft.Authorization/locks` | 2017-04-01 |
+| `Microsoft.Authorization/roleAssignments` | 2020-04-01-preview |
 | `Microsoft.Compute/virtualMachines` | 2021-04-01 |
 | `Microsoft.Compute/virtualMachines/extensions` | 2021-04-01 |
-| `Microsoft.Compute/virtualMachines/providers/roleAssignments` | 2020-04-01-preview |
 | `Microsoft.Insights/diagnosticSettings` | 2021-05-01-preview |
 | `Microsoft.Network/networkInterfaces` | 2021-02-01 |
-| `Microsoft.Network/networkInterfaces/providers/roleAssignments` | 2020-04-01-preview |
 | `Microsoft.Network/publicIPAddresses` | 2021-02-01 |
-| `Microsoft.Network/publicIPAddresses/providers/roleAssignments` | 2020-04-01-preview |
 | `Microsoft.RecoveryServices/vaults/backupFabrics/protectionContainers/protectedItems` | 2021-06-01 |
 
 ## Parameters
@@ -356,10 +354,10 @@ The field `nicSuffix` and `subnetId` are mandatory. If `enablePublicIP` is set t
   "value": {
     "settings": {
       "EncryptionOperation": "EnableEncryption",
-      "KeyVaultURL": "https://adp-sxx-az-kv-weu-x-001.vault.azure.net/",
-      "KeyVaultResourceId": "/subscriptions/8629be3b-96bc-482d-a04b-ffff597c65a2/resourceGroups/validation-rg/providers/Microsoft.KeyVault/vaults/adp-sxx-az-kv-weu-x-001",
-      "KeyEncryptionKeyURL": "https://adp-sxx-az-kv-weu-x-001.vault.azure.net/keys/keyEncryptionKey/685153483a1140e3856f004a753e1ab4",
-      "KekVaultResourceId": "/subscriptions/8629be3b-96bc-482d-a04b-ffff597c65a2/resourceGroups/validation-rg/providers/Microsoft.KeyVault/vaults/adp-sxx-az-kv-weu-x-001",
+      "KeyVaultURL": "https://adp-sxx-az-kv-x-001.vault.azure.net/",
+      "KeyVaultResourceId": "/subscriptions/8629be3b-96bc-482d-a04b-ffff597c65a2/resourceGroups/validation-rg/providers/Microsoft.KeyVault/vaults/adp-sxx-az-kv-x-001",
+      "KeyEncryptionKeyURL": "https://adp-sxx-az-kv-x-001.vault.azure.net/keys/keyEncryptionKey/685153483a1140e3856f004a753e1ab4",
+      "KekVaultResourceId": "/subscriptions/8629be3b-96bc-482d-a04b-ffff597c65a2/resourceGroups/validation-rg/providers/Microsoft.KeyVault/vaults/adp-sxx-az-kv-x-001",
       "KeyEncryptionAlgorithm": "RSA-OAEP", //'RSA-OAEP'/'RSA-OAEP-256'/'RSA1_5'
       "VolumeType": "All", //'OS'/'Data'/'All'
       "ResizeOSDisk": "false"
@@ -503,7 +501,7 @@ Tag names and tag values can be provided as needed. A tag can be left without a 
 ## Outputs
 
 | Output Name | Type | Description |
-| :- | :- | :- |
+| :-- | :-- | :-- |
 | `virtualMachineName` | string | The name of the VM. |
 | `virtualMachineResourceGroup` | string | The name of the Resource Group the VM was created in. |
 | `virtualMachineResourceId` | string | The Resource Id of the VM. |
@@ -511,9 +509,10 @@ Tag names and tag values can be provided as needed. A tag can be left without a 
 ## Template references
 
 - [Locks](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2017-04-01/locks)
-- [Virtualmachines](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Compute/2020-06-01/virtualMachines)
-- [Virtualmachines/Extensions](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Compute/2019-07-01/virtualMachines/extensions)
+- [Roleassignments](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2020-04-01-preview/roleAssignments)
+- [Virtualmachines](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Compute/2021-04-01/virtualMachines)
+- [Virtualmachines/Extensions](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Compute/2021-04-01/virtualMachines/extensions)
 - [Diagnosticsettings](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Insights/2021-05-01-preview/diagnosticSettings)
-- [Networkinterfaces](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Network/2020-08-01/networkInterfaces)
+- [Networkinterfaces](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Network/2021-02-01/networkInterfaces)
 - [Publicipaddresses](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Network/2021-02-01/publicIPAddresses)
 - [Vaults/Backupfabrics/Protectioncontainers/Protecteditems](https://docs.microsoft.com/en-us/azure/templates/Microsoft.RecoveryServices/2021-06-01/vaults/backupFabrics/protectionContainers/protectedItems)

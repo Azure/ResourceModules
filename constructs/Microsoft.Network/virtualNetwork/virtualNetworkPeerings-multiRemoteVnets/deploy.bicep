@@ -7,15 +7,15 @@ param peeringConfigurations array = []
 @description('Optional. Customer Usage Attribution id (GUID). This GUID must be previously registered')
 param cuaId string = ''
 
-module pid_cuaId './.bicep/nested_cuaId.bicep' = if (!empty(cuaId)) {
+module pid_cuaId '.bicep/nested_cuaId.bicep' = if (!empty(cuaId)) {
   name: 'pid-${cuaId}'
   params: {}
 }
 
-module virtualNetworkPeering '../../../../arm/Microsoft.Network/virtualNetworksResources/virtualNetworkPeerings/deploy.bicep' = [for peeringConfiguration in peeringConfigurations: {
+module virtualNetworkPeering '../../../../arm/Microsoft.Network/virtualNetworks/virtualNetworkPeerings/deploy.bicep' = [for peeringConfiguration in peeringConfigurations: {
   name: 'virtualNetworkPeering-${last(split(peeringConfiguration.remoteVirtualNetworkId, '/'))}'
   params: {
-    peeringName: contains(peeringConfiguration, 'peeringName') ? '${peeringConfiguration.peeringName}' : '${localVnetName}-${last(split(peeringConfiguration.remoteVirtualNetworkId, '/'))}'
+    name: contains(peeringConfiguration, 'peeringName') ? '${peeringConfiguration.peeringName}' : '${localVnetName}-${last(split(peeringConfiguration.remoteVirtualNetworkId, '/'))}'
     localVnetName: localVnetName
     remoteVirtualNetworkId: peeringConfiguration.remoteVirtualNetworkId
     allowForwardedTraffic: contains(peeringConfiguration, 'allowForwardedTraffic') ? peeringConfiguration.allowForwardedTraffic : true

@@ -19,7 +19,7 @@ param resourceId string = ''
 @description('Required. Location identifier to use cache from (should be either \'default\' or valid Azure region identifier)')
 param useFromLocation string = ''
 
-module pid_cuaId './.bicep/nested_cuaId.bicep' = if (!empty(cuaId)) {
+module pid_cuaId '.bicep/nested_cuaId.bicep' = if (!empty(cuaId)) {
   name: 'pid-${cuaId}'
   params: {}
 }
@@ -27,13 +27,18 @@ module pid_cuaId './.bicep/nested_cuaId.bicep' = if (!empty(cuaId)) {
 resource cache 'Microsoft.ApiManagement/service/caches@2020-06-01-preview' = {
   name: '${apiManagementServiceName}/${cacheName}'
   properties: {
-    description: (empty(cacheDescription) ? json('null') : cacheDescription)
+    description: !empty(cacheDescription) ? cacheDescription : null
     connectionString: connectionString
     useFromLocation: useFromLocation
-    resourceId: (empty(resourceId) ? json('null') : resourceId)
+    resourceId: !empty(resourceId) ? resourceId : null
   }
 }
 
+@description('The resourceId of the API management service cache')
 output cacheResourceId string = cache.id
+
+@description('The name of the API management service cache')
 output cacheResourceName string = cache.name
+
+@description('The resource group the API management service cache was deployed into')
 output cacheResourceGroup string = resourceGroup().name

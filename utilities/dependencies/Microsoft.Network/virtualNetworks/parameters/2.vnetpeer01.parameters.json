@@ -2,8 +2,8 @@
   "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
   "contentVersion": "1.0.0.0",
   "parameters": {
-    "vnetName": {
-      "value": "adp-sxx-az-vnet-weu-x-peer01"
+    "name": {
+      "value": "adp-sxx-az-vnet-x-peer01"
     },
     "vnetAddressPrefixes": {
       "value": [
@@ -13,9 +13,9 @@
     "subnets": {
       "value": [
         {
-          "name": "sxx-az-subnet-weu-x-001",
+          "name": "sxx-az-subnet-x-001",
           "addressPrefix": "10.2.0.0/24",
-          "networkSecurityGroupName": "adp-sxx-az-nsg-weu-x-001"
+          "networkSecurityGroupName": "adp-sxx-az-nsg-x-001"
         }
       ]
     }

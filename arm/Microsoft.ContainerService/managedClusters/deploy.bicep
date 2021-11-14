@@ -245,30 +245,8 @@ var lbProfile = {
   }
   effectiveOutboundIPs: []
 }
-var builtInRoleNames = {
-  'Owner': subscriptionResourceId('Microsoft.Authorization/roleDefinitions', '8e3af657-a8ff-443c-a75c-2fe8c4bcb635')
-  'Contributor': subscriptionResourceId('Microsoft.Authorization/roleDefinitions', 'b24988ac-6180-42a0-ab88-20f7382dd24c')
-  'Reader': subscriptionResourceId('Microsoft.Authorization/roleDefinitions', 'acdd72a7-3385-48ef-bd42-f606fba81ae7')
-  'Azure Kubernetes Service Cluster Admin Role': subscriptionResourceId('Microsoft.Authorization/roleDefinitions', '0ab0b1a8-8aac-4efd-b8c2-3ee1fb270be8')
-  'Azure Kubernetes Service Cluster User Role': subscriptionResourceId('Microsoft.Authorization/roleDefinitions', '4abbcc35-e782-43d8-92c5-2d3f1bd2253f')
-  'Azure Kubernetes Service Contributor Role': subscriptionResourceId('Microsoft.Authorization/roleDefinitions', 'ed7f3fbd-7b88-4dd4-9017-9adb7ce333f8')
-  'Azure Kubernetes Service RBAC Admin': subscriptionResourceId('Microsoft.Authorization/roleDefinitions', '3498e952-d568-435e-9b2c-8d77e338d7f7')
-  'Azure Kubernetes Service RBAC Cluster Admin': subscriptionResourceId('Microsoft.Authorization/roleDefinitions', 'b1ff04bb-8a4e-4dc4-8eb5-8693973ce19b')
-  'Azure Kubernetes Service RBAC Reader': subscriptionResourceId('Microsoft.Authorization/roleDefinitions', '7f6c6a51-bcf8-42ba-9220-52d62157d7db')
-  'Azure Kubernetes Service RBAC Writer': subscriptionResourceId('Microsoft.Authorization/roleDefinitions', 'a7ffa36f-339b-4b5c-8bdf-e2c188b2c0eb')
-  'Log Analytics Contributor': subscriptionResourceId('Microsoft.Authorization/roleDefinitions', '92aaf0da-9dab-42b6-94a3-d43ce8d16293')
-  'Log Analytics Reader': subscriptionResourceId('Microsoft.Authorization/roleDefinitions', '73c42c96-874c-492b-b04d-ab87d138a893')
-  'Managed Application Contributor Role': subscriptionResourceId('Microsoft.Authorization/roleDefinitions', '641177b8-a67a-45b9-a033-47bc880bb21e')
-  'Managed Application Operator Role': subscriptionResourceId('Microsoft.Authorization/roleDefinitions', 'c7393b34-138c-406f-901b-d8cf2b17e6ae')
-  'Managed Applications Reader': subscriptionResourceId('Microsoft.Authorization/roleDefinitions', 'b9331d33-8a36-4f8c-b097-4f54124fdb44')
-  'Monitoring Contributor': subscriptionResourceId('Microsoft.Authorization/roleDefinitions', '749f88d5-cbae-40b8-bcfc-e573ddc772fa')
-  'Monitoring Metrics Publisher': subscriptionResourceId('Microsoft.Authorization/roleDefinitions', '3913510d-42f4-4e42-8a64-420c390055eb')
-  'Monitoring Reader': subscriptionResourceId('Microsoft.Authorization/roleDefinitions', '43d0d8ad-25c7-4714-9337-8ba259a9fe05')
-  'Resource Policy Contributor': subscriptionResourceId('Microsoft.Authorization/roleDefinitions', '36243c78-bf99-498c-9df9-86d9f8d28608')
-  'User Access Administrator': subscriptionResourceId('Microsoft.Authorization/roleDefinitions', '18d7d88d-d35e-4fb5-a5c3-7773c20a72d9')
-}
 
-module pid_cuaId './.bicep/nested_cuaId.bicep' = if (!empty(cuaId)) {
+module pid_cuaId '.bicep/nested_cuaId.bicep' = if (!empty(cuaId)) {
   name: 'pid-${cuaId}'
   params: {}
 }
@@ -276,18 +254,18 @@ module pid_cuaId './.bicep/nested_cuaId.bicep' = if (!empty(cuaId)) {
 resource managedCluster 'Microsoft.ContainerService/managedClusters@2021-07-01' = {
   name: aksClusterName
   location: location
-  tags: (empty(tags) ? json('null') : tags)
+  tags: (empty(tags) ? null : tags)
   identity: identity
   properties: {
-    kubernetesVersion: (empty(aksClusterKubernetesVersion) ? json('null') : aksClusterKubernetesVersion)
+    kubernetesVersion: (empty(aksClusterKubernetesVersion) ? null : aksClusterKubernetesVersion)
     dnsPrefix: aksClusterDnsPrefix
     agentPoolProfiles: primaryAgentPoolProfile
     sku: {
       name: 'Basic'
       tier: aksClusterSkuTier
     }
-    linuxProfile: (empty(aksClusterSshPublicKey) ? json('null') : aksClusterLinuxProfile)
-    servicePrincipalProfile: (empty(aksServicePrincipalProfile) ? json('null') : aksServicePrincipalProfile)
+    linuxProfile: (empty(aksClusterSshPublicKey) ? null : aksClusterLinuxProfile)
+    servicePrincipalProfile: (empty(aksServicePrincipalProfile) ? null : aksServicePrincipalProfile)
     addonProfiles: {
       httpApplicationRouting: {
         enabled: httpApplicationRoutingEnabled
@@ -295,7 +273,7 @@ resource managedCluster 'Microsoft.ContainerService/managedClusters@2021-07-01' 
       omsagent: {
         enabled: (omsAgentEnabled && (!empty(workspaceId)))
         config: {
-          logAnalyticsWorkspaceResourceID: ((!empty(workspaceId)) ? workspaceId : json('null'))
+          logAnalyticsWorkspaceResourceID: ((!empty(workspaceId)) ? workspaceId : null)
         }
       }
       aciConnectorLinux: {
@@ -314,15 +292,15 @@ resource managedCluster 'Microsoft.ContainerService/managedClusters@2021-07-01' 
     enableRBAC: aadProfileEnableAzureRBAC
     nodeResourceGroup: nodeResourceGroup
     networkProfile: {
-      networkPlugin: (empty(aksClusterNetworkPlugin) ? json('null') : aksClusterNetworkPlugin)
-      networkPolicy: (empty(aksClusterNetworkPolicy) ? json('null') : aksClusterNetworkPolicy)
-      podCidr: (empty(aksClusterPodCidr) ? json('null') : aksClusterPodCidr)
-      serviceCidr: (empty(aksClusterServiceCidr) ? json('null') : aksClusterServiceCidr)
-      dnsServiceIP: (empty(aksClusterDnsServiceIP) ? json('null') : aksClusterDnsServiceIP)
-      dockerBridgeCidr: (empty(aksClusterDockerBridgeCidr) ? json('null') : aksClusterDockerBridgeCidr)
+      networkPlugin: (empty(aksClusterNetworkPlugin) ? null : aksClusterNetworkPlugin)
+      networkPolicy: (empty(aksClusterNetworkPolicy) ? null : aksClusterNetworkPolicy)
+      podCidr: (empty(aksClusterPodCidr) ? null : aksClusterPodCidr)
+      serviceCidr: (empty(aksClusterServiceCidr) ? null : aksClusterServiceCidr)
+      dnsServiceIP: (empty(aksClusterDnsServiceIP) ? null : aksClusterDnsServiceIP)
+      dockerBridgeCidr: (empty(aksClusterDockerBridgeCidr) ? null : aksClusterDockerBridgeCidr)
       outboundType: aksClusterOutboundType
       loadBalancerSku: aksClusterLoadBalancerSku
-      loadBalancerProfile: ((managedOutboundIPCount == 0) ? json('null') : lbProfile)
+      loadBalancerProfile: ((managedOutboundIPCount == 0) ? null : lbProfile)
     }
     aadProfile: {
       clientAppID: aadProfileClientAppID
@@ -367,21 +345,20 @@ resource managedCluster_lock 'Microsoft.Authorization/locks@2016-09-01' = if (lo
 resource managedCluster_diagnosticSettings 'Microsoft.Insights/diagnosticsettings@2017-05-01-preview' = if ((!empty(diagnosticStorageAccountId)) || (!empty(workspaceId)) || (!empty(eventHubAuthorizationRuleId)) || (!empty(eventHubName))) {
   name: '${managedCluster.name}-diagnosticSettings'
   properties: {
-    storageAccountId: (empty(diagnosticStorageAccountId) ? json('null') : diagnosticStorageAccountId)
-    workspaceId: (empty(workspaceId) ? json('null') : workspaceId)
-    eventHubAuthorizationRuleId: (empty(eventHubAuthorizationRuleId) ? json('null') : eventHubAuthorizationRuleId)
-    eventHubName: (empty(eventHubName) ? json('null') : eventHubName)
-    metrics: ((empty(diagnosticStorageAccountId) && empty(workspaceId) && empty(eventHubAuthorizationRuleId) && empty(eventHubName)) ? json('null') : diagnosticsMetrics)
-    logs: ((empty(diagnosticStorageAccountId) && empty(workspaceId) && empty(eventHubAuthorizationRuleId) && empty(eventHubName)) ? json('null') : diagnosticsLogs)
+    storageAccountId: (empty(diagnosticStorageAccountId) ? null : diagnosticStorageAccountId)
+    workspaceId: (empty(workspaceId) ? null : workspaceId)
+    eventHubAuthorizationRuleId: (empty(eventHubAuthorizationRuleId) ? null : eventHubAuthorizationRuleId)
+    eventHubName: (empty(eventHubName) ? null : eventHubName)
+    metrics: ((empty(diagnosticStorageAccountId) && empty(workspaceId) && empty(eventHubAuthorizationRuleId) && empty(eventHubName)) ? null : diagnosticsMetrics)
+    logs: ((empty(diagnosticStorageAccountId) && empty(workspaceId) && empty(eventHubAuthorizationRuleId) && empty(eventHubName)) ? null : diagnosticsLogs)
   }
   scope: managedCluster
 }
 
-module managedCluster_rbac './.bicep/nested_rbac.bicep' = [for (roleAssignment, index) in roleAssignments: {
-  name: 'rbac-${deployment().name}${index}'
+module managedCluster_rbac '.bicep/nested_rbac.bicep' = [for (roleAssignment, index) in roleAssignments: {
+  name: '${deployment().name}-rbac-${index}'
   params: {
     roleAssignmentObj: roleAssignment
-    builtInRoleNames: builtInRoleNames
     resourceName: managedCluster.name
   }
 }]
