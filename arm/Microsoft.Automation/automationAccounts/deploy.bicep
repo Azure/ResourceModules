@@ -183,8 +183,8 @@ resource automationAccount_logAnalyticsWorkspace 'Microsoft.OperationalInsights/
 }
 
 resource automationAccount_logAnalyticsWorkspaceLink 'Microsoft.OperationalInsights/workspaces/linkedservice@2020-08-01' = if (!empty(linkedWorkspaceId)) {
-  name: 'automation'
-  parent: automationAccount_logAnalyticsWorkspace
+  name: '${last(split(linkedWorkspaceId, '/'))}/automation'
+  // parent: automationAccount_logAnalyticsWorkspace
   properties: {
     resourceId: automationAccount.id
   }
