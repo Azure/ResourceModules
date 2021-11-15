@@ -99,8 +99,8 @@ function Test-ModuleLocally {
     begin {
         Write-Verbose "Running Local Tests for $($ModuleName.Split('\')[-1])"
         # Load Tokens Converter Script
-        . (Join-Path $PSScriptRoot '../tokensReplacement/Convert-TokensInParameterFile.ps1')
-        . (Join-Path $PSScriptRoot '../tokensReplacement/helper/Convert-TokensInFileList.ps1')
+        . (Join-Path $PSScriptRoot '../pipelines/tokensReplacement/Convert-TokensInParameterFile.ps1')
+        . (Join-Path $PSScriptRoot '../pipelines/tokensReplacement/helper/Convert-TokensInFileList.ps1')
     }
     process {
         # Test Module

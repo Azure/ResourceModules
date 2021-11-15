@@ -135,7 +135,7 @@ function Publish-ModuleToTemplateSpec {
                 Location          = $templateSpecsRgLocation
                 TemplateFile      = $templateFilePath
             }
-            New-AzTemplateSpec @templateSpecInputObject
+            New-AzTemplateSpec @templateSpecInputObject -Force
         }
         Write-Verbose 'Publish complete'
     }
