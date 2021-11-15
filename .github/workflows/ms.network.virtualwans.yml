@@ -213,4 +213,4 @@ jobs:
         with:
           moduleName: '${{ env.moduleName }}'
           resourceGroupName: '${{ env.resourceGroupName }}'
-          relativePathOfRemovalScript: 'utilities/resourceRemoval/Remove-vWan.ps1'
+          # relativePathOfRemovalScript: 'utilities/resourceRemoval/Remove-vWan.ps1'
