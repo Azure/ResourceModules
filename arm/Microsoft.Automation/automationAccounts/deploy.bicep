@@ -23,6 +23,12 @@ param schedules array = []
 @description('Optional. List of jobSchedules to be created in the automation account.')
 param jobSchedules array = []
 
+@description('Optional. Id of the linked log analytics workspace')
+param linkedWorkspaceId string = ''
+
+@description('Optional. List of softwareUpdateConfigurations to be created in the automation account')
+param softwareUpdateConfigurations array = []
+
 @description('Optional. Configuration Details for private endpoints.')
 param privateEndpoints array = []
 
