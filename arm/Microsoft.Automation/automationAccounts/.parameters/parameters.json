@@ -46,6 +46,49 @@
                 }
             ]
         },
+        "linkedWorkspaceId": {
+            "value": "/subscriptions/<<subscriptionId>>/resourcegroups/validation-rg/providers/microsoft.operationalinsights/workspaces/adp-sxx-az-la-x-001"
+        },
+        "softwareUpdateConfigurations": {
+            "value": [
+                {
+                    "name": "Windows_ZeroDay",
+                    "frequency": "Month",
+                    "operatingSystem": "Windows",
+                    "rebootSetting": "IfRequired",
+                    "scopeByTags": {
+                        "Update": [
+                            "Automatic-Wave1"
+                        ]
+                    },
+                    "maintenanceWindow": "PT4H",
+                    "updateClassifications": [
+                        "Critical",
+                        "Security",
+                        "UpdateRollup",
+                        "FeaturePack",
+                        "ServicePack",
+                        "Definition",
+                        "Tools",
+                        "Updates"
+                    ],
+                    "includeUpdates": [
+                        "654321"
+                    ],
+                    "excludeUpdates": [
+                        "123456"
+                    ],
+                    "interval": 1,
+                    "monthlyOccurrences": [
+                        {
+                            "occurrence": 3,
+                            "day": "Friday"
+                        }
+                    ],
+                    "startTime": "22:00"
+                }
+            ]
+        },
         "privateEndpoints": {
             "value": [
                 {
