@@ -65,7 +65,7 @@ The following activities are run executing the `arm/.global/global.module.tests.
 
 ## API version validation
 
-In this phase, the workflow will verify if the module is one of the latest 5 (non-preview) api version using the `arm/.global/global.module.tests.ps1` script.
+In this phase, the workflow will verify if the module is one of the latest 5 (non-preview) API version using the `arm/.global/global.module.tests.ps1` script.
 
 ## Template validation
 
@@ -139,7 +139,7 @@ Since also dependency resources are in turn subject to dependencies with each ot
       - '_adp-sxx-az-pip-x-apgw_': Leveraged by the [application gateway] resource.
       - '_adp-sxx-az-pip-x-bas_': Leveraged by the [bastion host] resource.
       - '_adp-sxx-az-pip-x-lb_': Leveraged by the [load balancer] resource.
-  4. API management: This resource is leveraged by all [api management services].
+  4. API management: This resource is leveraged by all [API management services].
       >**Note**: This resource has a global scope name.
   5. Application insight: This resource is leveraged by the [machine learning service] resource.
   6. AVD host pool: This resource is leveraged by the [AVD application group] resource.
