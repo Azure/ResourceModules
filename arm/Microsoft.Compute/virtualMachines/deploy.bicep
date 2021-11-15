@@ -418,7 +418,7 @@ module virtualMachine_domainJoinExtension './extensions/deploy.bicep' = if (enab
     type: 'JsonADDomainExtension'
     typeHandlerVersion: '1.3'
     autoUpgradeMinorVersion: true
-    enableAutomaticUpgrade: true
+    enableAutomaticUpgrade: false
     settings: domainJoinSettings.settings
     protectedSettings: domainJoinProtectedSettings
   }
@@ -434,7 +434,7 @@ module virtualMachine_microsoftAntiMalwareExtension './extensions/deploy.bicep' 
     type: 'IaaSAntimalware'
     typeHandlerVersion: '1.3'
     autoUpgradeMinorVersion: true
-    enableAutomaticUpgrade: true
+    enableAutomaticUpgrade: false
     settings: microsoftAntiMalwareSettings.settings
   }
 }
@@ -454,7 +454,7 @@ module virtualMachine_microsoftMonitoringAgentExtension './extensions/deploy.bic
     type: enableWindowsMMAAgent ? 'MicrosoftMonitoringAgent' : 'OmsAgentForLinux'
     typeHandlerVersion: enableWindowsMMAAgent ? '1.0' : '1.7'
     autoUpgradeMinorVersion: true
-    enableAutomaticUpgrade: true
+    enableAutomaticUpgrade: false
     settings: {
       workspaceId: !empty(workspaceId) ? reference(virtualMachine_logAnalyticsWorkspace.id, virtualMachine_logAnalyticsWorkspace.apiVersion).customerId : ''
     }
@@ -474,7 +474,7 @@ module virtualMachine_dependencyAgentExtension './extensions/deploy.bicep' = if 
     type: enableWindowsDependencyAgent ? 'DependencyAgentWindows' : 'DependencyAgentLinux'
     typeHandlerVersion: '9.5'
     autoUpgradeMinorVersion: true
-    enableAutomaticUpgrade: true
+    enableAutomaticUpgrade: false
   }
 }
 
@@ -488,7 +488,7 @@ module virtualMachine_networkWatcherAgentExtension './extensions/deploy.bicep' =
     type: enableNetworkWatcherWindows ? 'NetworkWatcherAgentWindows' : 'NetworkWatcherAgentLinux'
     typeHandlerVersion: '1.4'
     autoUpgradeMinorVersion: true
-    enableAutomaticUpgrade: true
+    enableAutomaticUpgrade: false
   }
 }
 
@@ -502,7 +502,7 @@ module virtualMachine_diskEncryptionExtension './extensions/deploy.bicep' = if (
     type: enableWindowsDiskEncryption ? 'AzureDiskEncryption' : 'AzureDiskEncryptionForLinux'
     typeHandlerVersion: enableWindowsDiskEncryption ? '2.2' : '1.1'
     autoUpgradeMinorVersion: true
-    enableAutomaticUpgrade: true
+    enableAutomaticUpgrade: false
     forceUpdateTag: forceUpdateTag
     settings: diskEncryptionSettings.settings
   }
@@ -518,7 +518,7 @@ module virtualMachine_desiredStateConfigurationExtension './extensions/deploy.bi
     type: 'DSC'
     typeHandlerVersion: '2.77'
     autoUpgradeMinorVersion: true
-    enableAutomaticUpgrade: true
+    enableAutomaticUpgrade: false
     settings: desiredStateConfigurationSettings.settings
     protectedSettings: contains(desiredStateConfigurationSettings, 'protectedSettings') ? desiredStateConfigurationSettings.protectedSettings : null
   }
@@ -534,7 +534,7 @@ module virtualMachine_customScriptExtension './extensions/deploy.bicep' = if (en
     type: 'CustomScriptExtension'
     typeHandlerVersion: '1.9'
     autoUpgradeMinorVersion: true
-    enableAutomaticUpgrade: true
+    enableAutomaticUpgrade: false
     settings: {
       fileUris: [for fileData in windowsScriptExtensionFileData: contains(fileData, 'storageAccountId') ? '${fileData.uri}?${listAccountSas(fileData.storageAccountId, '2019-04-01', accountSasProperties).accountSasToken}' : fileData.uri]
     }
