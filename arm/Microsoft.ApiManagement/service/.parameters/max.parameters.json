@@ -17,7 +17,7 @@
         "apis": {
             "value": [
                 {
-                    "name": "sxx-az-am-x-002",
+                    "name": "echo-api",
                     "displayName": "Echo API",
                     "path": "echo",
                     "serviceUrl": "http://echoapi.cloudapp.net/api",
