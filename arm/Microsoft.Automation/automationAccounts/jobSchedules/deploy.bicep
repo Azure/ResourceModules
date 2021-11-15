@@ -24,13 +24,13 @@ module pid_cuaId './.bicep/nested_cuaId.bicep' = if (!empty(cuaId)) {
   params: {}
 }
 
-resource jobSchedule_automationAccount 'Microsoft.Automation/automationAccounts@2020-01-13-preview' existing = {
+resource automationAccount 'Microsoft.Automation/automationAccounts@2020-01-13-preview' existing = {
   name: automationAccountName
 }
 
 resource jobSchedule 'Microsoft.Automation/automationAccounts/jobSchedules@2020-01-13-preview' = {
-  name: empty(name) ? guid(runbookName, scheduleName, jobSchedule_automationAccount.id) : name
-  parent: jobSchedule_automationAccount
+  name: empty(name) ? guid(runbookName, scheduleName, automationAccount.id) : name
+  parent: automationAccount
   properties: {
     parameters: parameters
     runbook: {

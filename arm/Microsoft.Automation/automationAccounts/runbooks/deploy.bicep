@@ -54,23 +54,23 @@ module pid_cuaId './.bicep/nested_cuaId.bicep' = if (!empty(cuaId)) {
   params: {}
 }
 
-resource runbook_automationAccount 'Microsoft.Automation/automationAccounts@2020-01-13-preview' existing = {
+resource automationAccount 'Microsoft.Automation/automationAccounts@2020-01-13-preview' existing = {
   name: automationAccountName
 }
 
-resource runbook_scriptStorage 'Microsoft.Storage/storageAccounts@2021-06-01' existing = if (!empty(scriptStorageAccountId)){
+resource storageAccount 'Microsoft.Storage/storageAccounts@2021-06-01' existing = if (!empty(scriptStorageAccountId)){
   name: last(split(scriptStorageAccountId, '/'))
   scope: resourceGroup(split(scriptStorageAccountId, '/')[2], split(scriptStorageAccountId, '/')[4])
 }
 
 var publishContentLink = empty(uri) ? null : {
-  uri: (empty(uri) ? null : (empty(scriptStorageAccountId) ? '${uri}' : '${uri}${runbook_scriptStorage.listAccountSas('2021-04-01', accountSasProperties).accountSasToken}'))
+  uri: (empty(uri) ? null : (empty(scriptStorageAccountId) ? '${uri}' : '${uri}${storageAccount.listAccountSas('2021-04-01', accountSasProperties).accountSasToken}'))
   version: (empty(version) ? null : version)
 }
 
 resource runbook 'Microsoft.Automation/automationAccounts/runbooks@2019-06-01' = {
   name: name
-  parent: runbook_automationAccount
+  parent: automationAccount
   location: location
   tags: tags
   properties: {

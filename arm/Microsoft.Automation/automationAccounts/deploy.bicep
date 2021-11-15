@@ -119,7 +119,7 @@ module automationAccount_modules './modules/deploy.bicep' = [for (module, index)
   name: '${uniqueString(deployment().name, location)}-AutoAccount-Module-${index}'
   params: {
     name: module.name
-    parent: automationAccount.name
+    automationAccountName: automationAccount.name
     version: module.version
     uri: module.uri
     location: location
@@ -131,7 +131,7 @@ module automationAccount_schedules './schedules/deploy.bicep' = [for (schedule, 
   name: '${uniqueString(deployment().name, location)}-AutoAccount-Schedule-${index}'
   params: {
     name: schedule.name
-    parent: automationAccount.name
+    automationAccountName: automationAccount.name
     advancedSchedule: contains(schedule, 'advancedSchedule') ? schedule.advancedSchedule : null
     scheduleDescription: contains(schedule, 'description') ? schedule.description : ''
     expiryTime: contains(schedule, 'expiryTime') ? schedule.expiryTime : ''
@@ -146,7 +146,7 @@ module automationAccount_runbooks './runbooks/deploy.bicep' = [for (runbook, ind
   name: '${uniqueString(deployment().name, location)}-AutoAccount-Runbook-${index}'
   params: {
     name: runbook.name
-    parent: automationAccount.name
+    automationAccountName: automationAccount.name
     runbookType: runbook.runbookType
     runbookDescription: contains(runbook, 'description') ? runbook.description : ''
     uri: contains(runbook, 'uri') ? runbook.uri : ''
@@ -159,7 +159,7 @@ module automationAccount_runbooks './runbooks/deploy.bicep' = [for (runbook, ind
 module automationAccount_jobSchedules './jobSchedules/deploy.bicep' = [for (jobSchedule, index) in jobSchedules: {
   name: '${uniqueString(deployment().name, location)}-AutoAccount-JobSchedule-${index}'
   params: {
-    parent: automationAccount.name
+    automationAccountName: automationAccount.name
     runbookName: jobSchedule.runbookName
     scheduleName: jobSchedule.scheduleName
     parameters: contains(jobSchedule, 'parameters') ? (!empty(jobSchedule.parameters) ? jobSchedule.parameters : {}) : {}

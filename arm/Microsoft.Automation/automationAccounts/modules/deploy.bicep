@@ -24,13 +24,13 @@ module pid_cuaId './.bicep/nested_cuaId.bicep' = if (!empty(cuaId)) {
   params: {}
 }
 
-resource module_automationAccount 'Microsoft.Automation/automationAccounts@2020-01-13-preview' existing = {
+resource automationAccount 'Microsoft.Automation/automationAccounts@2020-01-13-preview' existing = {
   name: automationAccountName
 }
 
 resource module 'Microsoft.Automation/automationAccounts/modules@2020-01-13-preview' = {
   name: name
-  parent: module_automationAccount
+  parent: automationAccount
   location: location
   tags: tags
   properties: {
