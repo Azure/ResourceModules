@@ -24,6 +24,9 @@ This template deploys a storage insights configuration for a Log Analytics works
 
 | Output Name | Type |
 | :-- | :-- |
+| `storageinsightconfigName` | string |
+| `storageinsightconfigResourceGroup` | string |
+| `storageinsightconfigResourceId` | string |
 
 ## Template references
 

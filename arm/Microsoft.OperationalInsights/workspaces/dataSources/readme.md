@@ -33,6 +33,9 @@ This template deploys a data source for a Log Analytics workspace.
 
 | Output Name | Type |
 | :-- | :-- |
+| `dataSourceName` | string |
+| `dataSourceResourceGroup` | string |
+| `dataSourceResourceId` | string |
 
 ## Template references
 
