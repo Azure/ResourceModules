@@ -123,7 +123,7 @@ module logAnalyticsWorkspace_savedSearches 'savedSearches/deploy.bicep' = [for (
   name: '${deployment().name}-savedSearch-${index}'
   params: {
     logAnalyticsWorkspaceName: logAnalyticsWorkspace.name
-    name: savedSearch.name
+    name: '${savedSearch.name}${uniqueString(deployment().name)}'
     displayName: savedSearch.displayName
     category: savedSearch.category
     query: savedSearch.query
