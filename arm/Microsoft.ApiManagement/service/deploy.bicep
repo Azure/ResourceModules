@@ -227,7 +227,7 @@ module apis_resource 'apis/deploy.bicep' = [for (api, index) in apis: {
   }
 }]
 
-module authorizationServers_resource 'authorizationServers/deploy1.bicep' = [for (authorizationServer, index) in authorizationServers: {
+module authorizationServers_resource '.bicep/nested_authorizationServers.bicep' = [for (authorizationServer, index) in authorizationServers: {
   name: '${uniqueString(deployment().name, location)}-authorizationServer-${index}'
   params: {
     apiManagementServiceName: name
@@ -242,7 +242,7 @@ module authorizationServers_resource 'authorizationServers/deploy1.bicep' = [for
     clientAuthenticationMethod: contains(authorizationServer, 'clientAuthenticationMethod') ? authorizationServer.clientAuthenticationMethod : [
       'Basic'
     ]
-    clientCredentialsKeyVaultName: authorizationServer.clientCredentialsKeyVaultName
+    clientCredentialsKeyVaultId: authorizationServer.clientCredentialsKeyVaultId
     clientIdSecretName: authorizationServer.clientIdSecretName
     clientSecretSecretName: authorizationServer.clientSecretSecretName
     clientRegistrationEndpoint: contains(authorizationServer, 'clientRegistrationEndpoint') ? authorizationServer.clientRegistrationEndpoint : ''

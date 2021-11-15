@@ -26,7 +26,7 @@ param clientAuthenticationMethod array = [
 param clientRegistrationEndpoint string = ''
 
 @description('Required. Name of the key vault that stores clientId and clientSecret for this authorization server.')
-param clientCredentialsKeyVaultName string
+param clientCredentialsKeyVaultId string
 
 @description('Required. Name of the secret that stores the Client or app id registered with this authorization server.')
 param clientIdSecretName string
@@ -66,16 +66,17 @@ var defaultAuthorizationMethods = [
 ]
 var setAuthorizationMethods = union(authorizationMethods, defaultAuthorizationMethods)
 
-module pid_cuaId '.bicep/nested_cuaId.bicep' = if (!empty(cuaId)) {
+module pid_cuaId '../authorizationServers/.bicep/nested_cuaId.bicep' = if (!empty(cuaId)) {
   name: 'pid-${cuaId}'
   params: {}
 }
 
 resource keyVault 'Microsoft.KeyVault/vaults@2019-09-01' existing = {
-  name: clientCredentialsKeyVaultName
+  name: last(split(clientCredentialsKeyVaultId, '/'))
+  scope: resourceGroup(split(clientCredentialsKeyVaultId, '/')[2], split(clientCredentialsKeyVaultId, '/')[4])
 }
 
-module authorizationServer 'deploy.bicep' = {
+module authorizationServer '../authorizationServers/deploy.bicep' = {
   name: '${apiManagementServiceName}-authorizationServer-${name}'
   params: {
     apiManagementServiceName: apiManagementServiceName
