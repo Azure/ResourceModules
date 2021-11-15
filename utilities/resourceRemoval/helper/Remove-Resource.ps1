@@ -21,9 +21,9 @@ function Remove-ResourceInner {
         [PSObject[]] $resourceToRemove = @()
     )
 
+    $resourceToRemove | ForEach-Object { Write-Verbose ('- Remove [{0}]' -f $_.resourceId) -Verbose }
     $resourcesToRetry = @()
     Write-Verbose '----------------------------------' -Verbose
-    $resourceToRemove | ForEach-Object { Write-Verbose ('- [{0}]' -f $_.resourceId) -Verbose }
 
     foreach ($resource in $resourceToRemove) {
 
