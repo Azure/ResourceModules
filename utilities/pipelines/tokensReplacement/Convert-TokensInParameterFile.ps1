@@ -149,6 +149,7 @@ function Convert-TokensInParameterFile {
             $ConversionStatus = $true
         } catch {
             $ConversionStatus = $false
+            Write-Verbose $_.Exception.Message -Verbose
         }
     }
     end {
