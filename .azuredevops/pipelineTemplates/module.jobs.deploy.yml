@@ -153,9 +153,9 @@ jobs:
                     @{ Name = 'resourceGroupName'; Value = '${{ parameters.resourceGroupName }}' }
                     @{ Name = 'subscriptionId';    Value = '${{ parameters.subscriptionId }}' }
                     @{ Name = 'managementGroupId'; Value = '${{ parameters.managementGroupId }}' }
-                    @{ Name = "tenantId";          Value = '${{ variables.ARM_TENANT_ID }}' }
-                    @{ Name = "deploymentSpId";    Value = '${{ variables.DEPLOYMENT_SP_ID }}' }
-                    @{ Name = "platformKeyVault";  Value = '${{ variables.PLATFORM_KEYVAULT }}' }
+                    @{ Name = "tenantId";          Value = '$(ARM_TENANT_ID)' }
+                    @{ Name = "deploymentSpId";    Value = '$(DEPLOYMENT_SP_ID)' }
+                    @{ Name = "platformKeyVault";  Value = '$(PLATFORM_KEYVAULT)' }
                 ) | ForEach-Object { [PSCustomObject]$PSItem }
 
                 # Construct Token Function Input
@@ -168,9 +168,9 @@ jobs:
                     verbose                        = $true
                 }
                 # Add Remote Custom Parameter File Tokens
-                if ('${{ variables.PLATFORM_KEYVAULT }}' -and '${{ parameters.subscriptionId }}') {
+                if ('$(PLATFORM_KEYVAULT)' -and '${{ parameters.subscriptionId }}') {
                     $ConvertTokensInputs += @{
-                        TokensKeyVaultName                 = '${{ variables.PLATFORM_KEYVAULT }}'
+                        TokensKeyVaultName                 = '$(PLATFORM_KEYVAULT)'
                         TokensKeyVaultSubscriptionId       = '${{ parameters.subscriptionId }}'
                         TokensKeyVaultSecretNamePrefix     = $Settings.parameterFileTokens.remoteTokens.keyVaultSecretNamePrefix
                     }
