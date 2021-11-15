@@ -6,11 +6,9 @@ This section gives you an overview of how to test the bicep modules.
 
 ### _Navigation_
 
-- [Testing Usage](#testing-usage)
-    - [_Navigation_](#navigation)
-  - [Tool: Testing your Bicep module](#tool-testing-your-bicep-module)
-  - [Tool: Use The Test-ModuleLocally Script To Perform Pester Testing, Token Replacement and Deployment of the Module.](#tool-use-the-test-modulelocally-script-to-perform-pester-testing-token-replacement-and-deployment-of-the-module)
-    - [Handling Parameters that require or contain a value that should be tokenized](#handling-parameters-that-require-or-contain-a-value-that-should-be-tokenized)
+- [Tool: Testing your Bicep module](#tool-testing-your-bicep-module)
+- [Tool: Use The Test-ModuleLocally Script To Perform Pester Testing, Token Replacement and Deployment of the Module.](#tool-use-the-test-modulelocally-script-to-perform-pester-testing-token-replacement-and-deployment-of-the-module)
+- [Handling Parameters that require or contain a value that should be tokenized](#handling-parameters-that-require-or-contain-a-value-that-should-be-tokenized)
 
 ---
 
@@ -45,8 +43,8 @@ The below example can be used on your local environment to load the 'Test-Module
 
 ```powershell
 #########[ Function Test-ModulesLocally.ps1 ]#############
-
-. 'C:\Users\user\github\user\ResourceModules\utilities\tools\Test-ModuleLocally.ps1'
+cd path/to/clonedRepo
+. .\utilities\tools\Test-ModuleLocally.ps1
 
 # REQUIRED INPUT FOR TESTING
 $TestModuleLocallyInput = @{
@@ -81,7 +79,7 @@ The following scenarios are common to when to use a token value in the parameter
     ```json
     // Example
     "remoteVirtualNetworkId": {
-        "value": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/virtualNetworks/adp-sxx-az-vnet-x-peer01"
+        "value": "/subscriptions/<<subscriptionId>>/resourceGroups/<<resourceGroupName>>/providers/Microsoft.Network/virtualNetworks/adp-sxx-az-vnet-x-peer01"
     }
     ```
 

@@ -7,7 +7,6 @@ This section provides details on the Tokens Replacement Functionality that enabl
 ### _Navigation_
 
 - [Parameter File Token](#parameter-file-token)
-    - [_Navigation_](#navigation)
   - [Description](#description)
   - [How it works](#how-it-works)
     - [Token Types](#token-types)

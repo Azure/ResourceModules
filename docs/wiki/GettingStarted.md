@@ -175,7 +175,7 @@ Last but not least, instead of fetching your own copy of the repository you can 
 
 ### Parameter File Tokens
 
-If you are forking or cloning the repository. Start by leveraging tokens in your parameter files. Tokens allow you to test in isolation, while also leveraging your own naming conventions when deploying resources, or other customizations to your own resources. Details are in the [Parameter File Tokens Documentation](./ParameterFileTokens.md).
+If you are forking or cloning the repository, you can use 'tokens' inside your parameter files. Tokens allow you to test deploying modules in your own environment (i.e. using tokens for your naming conventions), or apply other customizations to your resources (i.e. using your own subscription ID inside a Resource ID string). See details in the [Parameter File Tokens Documentation](./ParameterFileTokens.md).
 
 The repository contains a [Settings.json](https://github.com/Azure/ResourceModules/blob/main/settings.json) that has a default token called `namePrefix`. You can use a custom value here and then start adding the tokens in your parameter files. The tokens default format is `<<tokenName>>` (i.e. `<<namePrefix>>`). Here is an example token:
 
