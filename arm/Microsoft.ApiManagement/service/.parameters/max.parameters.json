@@ -40,7 +40,7 @@
                     "grantTypes": [
                         "authorizationCode"
                     ],
-                    "clientCredentialsKeyVaultName": "adp-sxx-az-kv-x-001",
+                    "clientCredentialsKeyVaultName": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.KeyVault/vaults/adp-sxx-az-kv-x-001",
                     "clientIdSecretName": "apimclientid",
                     "clientSecretSecretName": "apimclientsecret",
                     "clientRegistrationEndpoint": "http://localhost",
