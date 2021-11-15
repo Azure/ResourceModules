@@ -13,16 +13,6 @@
         },
         "allowBlobPublicAccess": {
             "value": false
-        },
-        "tableServices": {
-            "value": {
-                "tables": [
-                    "WADWindowsEventLogsTable",
-                    "WADETWEventTable",
-                    "WADServiceFabric*EventTable",
-                    "LinuxsyslogVer2v0"
-                ]
-            }
         }
     }
 }
