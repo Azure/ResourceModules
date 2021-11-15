@@ -17,8 +17,8 @@
         "storageInsightsConfigs": {
             "value": [
                 {
-                    "name": "zwmqrvlchzw5i",
-                    "storageAccountId": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Storage/storageAccounts/zwmqrvlchzw5i",
+                    "name": "adpsxxazsaweux003",
+                    "storageAccountId": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Storage/storageAccounts/adpsxxazsaweux003",
                     "tables": [
                         "WADWindowsEventLogsTable",
                         "WADETWEventTable",
@@ -32,14 +32,14 @@
             "value": [
                 {
                     "name": "Automation",
-                    "resourceId": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Automation/automationAccounts/sxx-wd-aut-x-001"
+                    "resourceId": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Automation/automationAccounts/adp-sxx-wd-aut-x-001"
                 }
             ]
         },
         "savedSearches": {
             "value": [
                 {
-                    "name": "VMSSQueries3",
+                    "name": "VMSSQueries4",
                     "displayName": "VMSS Instance Count2",
                     "category": "VDC Saved Searches",
                     "query": "Event | where Source == 'ServiceFabricNodeBootstrapAgent' | summarize AggregatedValue = count() by Computer"
