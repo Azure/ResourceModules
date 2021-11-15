@@ -309,7 +309,7 @@ module pid_cuaId '.bicep/nested_cuaId.bicep' = if (!empty(cuaId)) {
 }
 
 module virtualMachine_nic '.bicep/nested_networkInterface.bicep' = [for (nicConfiguration, index) in nicConfigurations: {
-  name: '${deployment().name}-nic-${index}'
+  name: '${uniqueString(deployment().name, location)}-nic-${index}'
   params: {
     networkInterfaceName: '${virtualMachineName}${nicConfiguration.nicSuffix}'
     virtualMachineName: virtualMachineName
@@ -333,7 +333,7 @@ module virtualMachine_nic '.bicep/nested_networkInterface.bicep' = [for (nicConf
   }
 }]
 
-resource virtualMachine 'Microsoft.Compute/virtualMachines@2021-04-01' = {
+resource virtualMachine 'Microsoft.Compute/virtualMachines@2021-07-01' = {
   name: virtualMachineName
   location: location
   identity: identity
@@ -408,31 +408,33 @@ resource virtualMachine 'Microsoft.Compute/virtualMachines@2021-04-01' = {
   ]
 }
 
-module virtualMachine_domainJoinExtension '.bicep/nested_extension.bicep' = if (enableDomainJoinExtension) {
-  name: '${deployment().name}-DomainJoin'
+module virtualMachine_domainJoinExtension './extensions/deploy.bicep' = if (enableDomainJoinExtension) {
+  name: '${uniqueString(deployment().name, location)}-DomainJoin'
   params: {
     virtualMachineName: virtualMachine.name
-    extensionName: 'DomainJoin'
+    name: 'DomainJoin'
     location: location
     publisher: 'Microsoft.Compute'
     type: 'JsonADDomainExtension'
     typeHandlerVersion: '1.3'
     autoUpgradeMinorVersion: true
+    enableAutomaticUpgrade: true
     settings: domainJoinSettings.settings
     protectedSettings: domainJoinProtectedSettings
   }
 }
 
-module virtualMachine_microsoftAntiMalwareExtension '.bicep/nested_extension.bicep' = if (enableMicrosoftAntiMalware) {
-  name: '${deployment().name}-MicrosoftAntiMalware'
+module virtualMachine_microsoftAntiMalwareExtension './extensions/deploy.bicep' = if (enableMicrosoftAntiMalware) {
+  name: '${uniqueString(deployment().name, location)}-MicrosoftAntiMalware'
   params: {
     virtualMachineName: virtualMachine.name
-    extensionName: 'MicrosoftAntiMalware'
+    name: 'MicrosoftAntiMalware'
     location: location
     publisher: 'Microsoft.Azure.Security'
     type: 'IaaSAntimalware'
     typeHandlerVersion: '1.3'
     autoUpgradeMinorVersion: true
+    enableAutomaticUpgrade: true
     settings: microsoftAntiMalwareSettings.settings
   }
 }
@@ -442,16 +444,17 @@ resource virtualMachine_logAnalyticsWorkspace 'Microsoft.OperationalInsights/wor
   scope: resourceGroup(split(workspaceId, '/')[2], split(workspaceId, '/')[4])
 }
 
-module virtualMachine_microsoftMonitoringAgentExtension '.bicep/nested_extension.bicep' = if (enableWindowsMMAAgent || enableLinuxMMAAgent) {
-  name: '${deployment().name}-MicrosoftMonitoringAgent'
+module virtualMachine_microsoftMonitoringAgentExtension './extensions/deploy.bicep' = if (enableWindowsMMAAgent || enableLinuxMMAAgent) {
+  name: '${uniqueString(deployment().name, location)}-MicrosoftMonitoringAgent'
   params: {
     virtualMachineName: virtualMachine.name
-    extensionName: 'MicrosoftMonitoringAgent'
+    name: 'MicrosoftMonitoringAgent'
     location: location
     publisher: 'Microsoft.EnterpriseCloud.Monitoring'
     type: enableWindowsMMAAgent ? 'MicrosoftMonitoringAgent' : 'OmsAgentForLinux'
     typeHandlerVersion: enableWindowsMMAAgent ? '1.0' : '1.7'
     autoUpgradeMinorVersion: true
+    enableAutomaticUpgrade: true
     settings: {
       workspaceId: !empty(workspaceId) ? reference(virtualMachine_logAnalyticsWorkspace.id, virtualMachine_logAnalyticsWorkspace.apiVersion).customerId : ''
     }
@@ -461,72 +464,77 @@ module virtualMachine_microsoftMonitoringAgentExtension '.bicep/nested_extension
   }
 }
 
-module virtualMachine_dependencyAgentExtension '.bicep/nested_extension.bicep' = if (enableWindowsDependencyAgent || enableLinuxDependencyAgent) {
-  name: '${deployment().name}-DependencyAgent'
+module virtualMachine_dependencyAgentExtension './extensions/deploy.bicep' = if (enableWindowsDependencyAgent || enableLinuxDependencyAgent) {
+  name: '${uniqueString(deployment().name, location)}-DependencyAgent'
   params: {
     virtualMachineName: virtualMachine.name
-    extensionName: 'DependencyAgent'
+    name: 'DependencyAgent'
     location: location
     publisher: 'Microsoft.Azure.Monitoring.DependencyAgent'
     type: enableWindowsDependencyAgent ? 'DependencyAgentWindows' : 'DependencyAgentLinux'
     typeHandlerVersion: '9.5'
     autoUpgradeMinorVersion: true
+    enableAutomaticUpgrade: true
   }
 }
 
-module virtualMachine_networkWatcherAgentExtension '.bicep/nested_extension.bicep' = if (enableNetworkWatcherWindows || enableNetworkWatcherLinux) {
-  name: '${deployment().name}-NetworkWatcherAgent'
+module virtualMachine_networkWatcherAgentExtension './extensions/deploy.bicep' = if (enableNetworkWatcherWindows || enableNetworkWatcherLinux) {
+  name: '${uniqueString(deployment().name, location)}-NetworkWatcherAgent'
   params: {
     virtualMachineName: virtualMachine.name
-    extensionName: 'NetworkWatcherAgent'
+    name: 'NetworkWatcherAgent'
     location: location
     publisher: 'Microsoft.Azure.NetworkWatcher'
     type: enableNetworkWatcherWindows ? 'NetworkWatcherAgentWindows' : 'NetworkWatcherAgentLinux'
     typeHandlerVersion: '1.4'
     autoUpgradeMinorVersion: true
+    enableAutomaticUpgrade: true
   }
 }
 
-module virtualMachine_diskEncryptionExtension '.bicep/nested_extension.bicep' = if (enableWindowsDiskEncryption || enableLinuxDiskEncryption) {
-  name: '${deployment().name}-DiskEncryption'
+module virtualMachine_diskEncryptionExtension './extensions/deploy.bicep' = if (enableWindowsDiskEncryption || enableLinuxDiskEncryption) {
+  name: '${uniqueString(deployment().name, location)}-DiskEncryption'
   params: {
     virtualMachineName: virtualMachine.name
-    extensionName: 'DiskEncryption'
+    name: 'DiskEncryption'
     location: location
     publisher: 'Microsoft.Azure.Security'
     type: enableWindowsDiskEncryption ? 'AzureDiskEncryption' : 'AzureDiskEncryptionForLinux'
     typeHandlerVersion: enableWindowsDiskEncryption ? '2.2' : '1.1'
     autoUpgradeMinorVersion: true
+    enableAutomaticUpgrade: true
     forceUpdateTag: forceUpdateTag
     settings: diskEncryptionSettings.settings
   }
 }
 
-module virtualMachine_desiredStateConfigurationExtension '.bicep/nested_extension.bicep' = if (enableDesiredStateConfiguration) {
-  name: '${deployment().name}-DesiredStateConfiguration'
+module virtualMachine_desiredStateConfigurationExtension './extensions/deploy.bicep' = if (enableDesiredStateConfiguration) {
+  name: '${uniqueString(deployment().name, location)}-DesiredStateConfiguration'
   params: {
     virtualMachineName: virtualMachine.name
-    extensionName: 'DesiredStateConfiguration'
+    name: 'DesiredStateConfiguration'
     location: location
     publisher: 'Microsoft.Powershell'
     type: 'DSC'
     typeHandlerVersion: '2.77'
     autoUpgradeMinorVersion: true
+    enableAutomaticUpgrade: true
     settings: desiredStateConfigurationSettings.settings
     protectedSettings: contains(desiredStateConfigurationSettings, 'protectedSettings') ? desiredStateConfigurationSettings.protectedSettings : null
   }
 }
 
-module virtualMachine_customScriptExtension '.bicep/nested_extension.bicep' = if (enableCustomScriptExtension) {
-  name: '${deployment().name}-CustomScriptExtension'
+module virtualMachine_customScriptExtension './extensions/deploy.bicep' = if (enableCustomScriptExtension) {
+  name: '${uniqueString(deployment().name, location)}-CustomScriptExtension'
   params: {
     virtualMachineName: virtualMachine.name
-    extensionName: 'CustomScriptExtension'
+    name: 'CustomScriptExtension'
     location: location
     publisher: 'Microsoft.Compute'
     type: 'CustomScriptExtension'
     typeHandlerVersion: '1.9'
     autoUpgradeMinorVersion: true
+    enableAutomaticUpgrade: true
     settings: {
       fileUris: [for fileData in windowsScriptExtensionFileData: contains(fileData, 'storageAccountId') ? '${fileData.uri}?${listAccountSas(fileData.storageAccountId, '2019-04-01', accountSasProperties).accountSasToken}' : fileData.uri]
     }
@@ -540,7 +548,7 @@ module virtualMachine_customScriptExtension '.bicep/nested_extension.bicep' = if
 }
 
 module virtualMachine_backup '.bicep/nested_backup.bicep' = if (!empty(backupVaultName)) {
-  name: '${deployment().name}-backup'
+  name: '${uniqueString(deployment().name, location)}-backup'
   params: {
     backupResourceName: '${backupVaultName}/Azure/iaasvmcontainer;iaasvmcontainerv2;${resourceGroup().name};${virtualMachine.name}/vm;iaasvmcontainerv2;${resourceGroup().name};${virtualMachine.name}'
     protectedItemType: 'Microsoft.Compute/virtualMachines'
@@ -570,7 +578,7 @@ resource virtualMachine_lock 'Microsoft.Authorization/locks@2017-04-01' = if (lo
 }
 
 module virtualMachine_rbac '.bicep/nested_rbac.bicep' = [for (roleAssignment, index) in roleAssignments: {
-  name: '${deployment().name}-rbac-${index}'
+  name: '${uniqueString(deployment().name, location)}-rbac-${index}'
   params: {
     roleAssignmentObj: roleAssignment
     resourceName: virtualMachine.name

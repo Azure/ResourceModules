@@ -38,7 +38,7 @@ var publicIPPrefix = {
   id: publicIPPrefixId
 }
 
-resource publicIpAddress 'Microsoft.Network/publicIPAddresses@2021-02-01' = {
+resource publicIpAddress 'Microsoft.Network/publicIPAddresses@2021-03-01' = {
   name: publicIPAddressName
   location: location
   tags: tags
