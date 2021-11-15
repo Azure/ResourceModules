@@ -32,22 +32,22 @@
                 }
             ]
         },
-        "authorizationServers": {
-            "value": [
-                {
-                    "name": "AuthServer1",
-                    "authorizationEndpoint": "https://login.microsoftonline.com/651b43ce-ccb8-4301-b551-b04dd872d401/oauth2/v2.0/authorize",
-                    "grantTypes": [
-                        "authorizationCode"
-                    ],
-                    "clientCredentialsKeyVaultId": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.KeyVault/vaults/adp-sxx-az-kv-x-001",
-                    "clientIdSecretName": "apimclientid",
-                    "clientSecretSecretName": "apimclientsecret",
-                    "clientRegistrationEndpoint": "http://localhost",
-                    "tokenEndpoint": "https://login.microsoftonline.com/651b43ce-ccb8-4301-b551-b04dd872d401/oauth2/v2.0/token"
-                }
-            ]
-        },
+        // "authorizationServers": {
+        //     "value": [
+        //         {
+        //             "name": "AuthServer1",
+        //             "authorizationEndpoint": "https://login.microsoftonline.com/651b43ce-ccb8-4301-b551-b04dd872d401/oauth2/v2.0/authorize",
+        //             "grantTypes": [
+        //                 "authorizationCode"
+        //             ],
+        //             "clientCredentialsKeyVaultId": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.KeyVault/vaults/adp-sxx-az-kv-x-001",
+        //             "clientIdSecretName": "apimclientid",
+        //             "clientSecretSecretName": "apimclientsecret",
+        //             "clientRegistrationEndpoint": "http://localhost",
+        //             "tokenEndpoint": "https://login.microsoftonline.com/651b43ce-ccb8-4301-b551-b04dd872d401/oauth2/v2.0/token"
+        //         }
+        //     ]
+        // },
         "backends": {
             "value": [
                 {
