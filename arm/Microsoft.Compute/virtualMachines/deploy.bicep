@@ -418,7 +418,7 @@ module virtualMachine_domainJoinExtension './extensions/deploy.bicep' = if (enab
     type: 'JsonADDomainExtension'
     typeHandlerVersion: '1.3'
     autoUpgradeMinorVersion: true
-    enableAutomaticUpgrade: false
+    enableAutomaticUpgrade: true
     settings: domainJoinSettings.settings
     protectedSettings: domainJoinProtectedSettings
   }
@@ -434,7 +434,7 @@ module virtualMachine_microsoftAntiMalwareExtension './extensions/deploy.bicep' 
     type: 'IaaSAntimalware'
     typeHandlerVersion: '1.3'
     autoUpgradeMinorVersion: true
-    enableAutomaticUpgrade: false
+    enableAutomaticUpgrade: true
     settings: microsoftAntiMalwareSettings.settings
   }
 }
@@ -474,7 +474,7 @@ module virtualMachine_dependencyAgentExtension './extensions/deploy.bicep' = if 
     type: enableWindowsDependencyAgent ? 'DependencyAgentWindows' : 'DependencyAgentLinux'
     typeHandlerVersion: '9.5'
     autoUpgradeMinorVersion: true
-    enableAutomaticUpgrade: false
+    enableAutomaticUpgrade: true
   }
 }
 
@@ -534,7 +534,7 @@ module virtualMachine_customScriptExtension './extensions/deploy.bicep' = if (en
     type: 'CustomScriptExtension'
     typeHandlerVersion: '1.9'
     autoUpgradeMinorVersion: true
-    enableAutomaticUpgrade: false
+    enableAutomaticUpgrade: true
     settings: {
       fileUris: [for fileData in windowsScriptExtensionFileData: contains(fileData, 'storageAccountId') ? '${fileData.uri}?${listAccountSas(fileData.storageAccountId, '2019-04-01', accountSasProperties).accountSasToken}' : fileData.uri]
     }
