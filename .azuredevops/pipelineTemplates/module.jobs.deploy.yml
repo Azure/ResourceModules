@@ -168,7 +168,7 @@ jobs:
                     verbose                        = $true
                 }
                 # Add Remote Custom Parameter File Tokens
-                if ('${{ env.PLATFORM_KEYVAULT }}' -and '${{ parameters.subscriptionId }}') {
+                if ('${{ variables.PLATFORM_KEYVAULT }}' -and '${{ parameters.subscriptionId }}') {
                     $ConvertTokensInputs += @{
                         TokensKeyVaultName                 = '${{ variables.PLATFORM_KEYVAULT }}'
                         TokensKeyVaultSubscriptionId       = '${{ parameters.subscriptionId }}'
