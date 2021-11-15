@@ -178,17 +178,26 @@ module automationAccount_jobSchedules './jobSchedules/deploy.bicep' = [for (jobS
     ]
 }]
 
-resource automationAccount_logAnalyticsWorkspace 'Microsoft.OperationalInsights/workspaces@2021-06-01' existing = if (!empty(linkedWorkspaceId)) {
+resource automationAccount_logAnalyticsWorkspace 'Microsoft.OperationalInsights/workspaces@2021-06-01' = if (!empty(linkedWorkspaceId)) {
   name: last(split(linkedWorkspaceId, '/'))
-}
-
-resource automationAccount_logAnalyticsWorkspaceLink 'Microsoft.OperationalInsights/workspaces/linkedservice@2020-08-01' = if (!empty(linkedWorkspaceId)) {
-  name: empty(linkedWorkspaceId) ? 'dummy/automation' : '${last(split(linkedWorkspaceId, '/'))}/automation'
-  // parent: automationAccount_logAnalyticsWorkspace
-  properties: {
+  location: location
+  resource automationAccount_logAnalyticsWorkspaceLink 'linkedservice@2020-08-01' = {
+    name: 'automation'
+    tags: tags
+    properties: {
     resourceId: automationAccount.id
   }
+  }
 }
+
+// resource automationAccount_logAnalyticsWorkspaceLink 'Microsoft.OperationalInsights/workspaces/linkedservice@2020-08-01' = if (!empty(linkedWorkspaceId)) {
+//   name: empty(linkedWorkspaceId) ? 'dummy/automation' : '${last(split(linkedWorkspaceId, '/'))}/automation'
+//   // parent: automationAccount_logAnalyticsWorkspace
+//   tags: tags
+//   properties: {
+//     resourceId: automationAccount.id
+//   }
+// }
 
 module automationAccount_softwareUpdateConfigurations './softwareUpdateConfigurations/deploy.bicep' = [for (softwareUpdateConfiguration, index) in softwareUpdateConfigurations: {
   name: '${uniqueString(deployment().name, location)}-AutoAccount-SwUpdateConfig-${index}'
@@ -199,6 +208,9 @@ module automationAccount_softwareUpdateConfigurations './softwareUpdateConfigura
     operatingSystem: softwareUpdateConfiguration.operatingSystem
     rebootSetting: softwareUpdateConfiguration.rebootSetting
   }
+  dependsOn: [
+    automationAccount_logAnalyticsWorkspace
+  ]
 }]
 
 resource automationAccount_lock 'Microsoft.Authorization/locks@2016-09-01' = if (lock != 'NotSpecified') {
