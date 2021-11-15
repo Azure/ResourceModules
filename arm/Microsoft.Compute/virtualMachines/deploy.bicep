@@ -418,7 +418,7 @@ module virtualMachine_domainJoinExtension './extensions/deploy.bicep' = if (enab
     type: 'JsonADDomainExtension'
     typeHandlerVersion: '1.3'
     autoUpgradeMinorVersion: true
-    enableAutomaticUpgrade: true
+    enableAutomaticUpgrade: false
     settings: domainJoinSettings.settings
     protectedSettings: domainJoinProtectedSettings
   }
@@ -434,7 +434,7 @@ module virtualMachine_microsoftAntiMalwareExtension './extensions/deploy.bicep' 
     type: 'IaaSAntimalware'
     typeHandlerVersion: '1.3'
     autoUpgradeMinorVersion: true
-    enableAutomaticUpgrade: true
+    enableAutomaticUpgrade: false
     settings: microsoftAntiMalwareSettings.settings
   }
 }
