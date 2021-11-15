@@ -1,0 +1,18 @@
+{
+    "parameterFileTokens": {
+        "tokenPrefix": "<<",
+        "tokenSuffix": ">>",
+        "localTokens": {
+            "tokens": [
+                {
+                    "name": "namePrefix",
+                    "value": "sxx"
+                }
+            ]
+        },
+        "remoteTokens": {
+            "keyVaultSecretNamePrefix": "ParameterFileToken-",
+            "syncLocalTokens": true
+        }
+    }
+}
