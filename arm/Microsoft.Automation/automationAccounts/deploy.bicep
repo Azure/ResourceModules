@@ -180,6 +180,7 @@ module automationAccount_jobSchedules './jobSchedules/deploy.bicep' = [for (jobS
 
 resource automationAccount_logAnalyticsWorkspace 'Microsoft.OperationalInsights/workspaces@2021-06-01' existing = if (!empty(linkedWorkspaceId)) {
   name: last(split(linkedWorkspaceId, '/'))
+  scope: resourceGroup(split(workspaceId, '/')[2], split(workspaceId, '/')[4])
 }
 
 resource automationAccount_LogAnalyticsWorkspaceLink 'microsoft.operationalinsights/workspaces/linkedservice@2020-08-01' = if (!empty(linkedWorkspaceId)) {
