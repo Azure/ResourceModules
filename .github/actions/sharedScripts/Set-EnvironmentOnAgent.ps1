@@ -101,6 +101,7 @@ function Set-EnvironmentOnAgent {
             @{ Name = 'Az.NetAppFiles' },
             @{ Name = 'Az.Network' },
             @{ Name = 'Az.ContainerRegistry' }
+            @{ Name = 'Az.KeyVault' }
         )
     )
 

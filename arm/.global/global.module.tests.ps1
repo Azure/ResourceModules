@@ -718,20 +718,16 @@ Describe 'Deployment template tests' -Tag Template {
             }
         }
 
-        It '[<moduleFolderName>] Parameter files should not contain subscriptionId original value and but a token string' -TestCases $deploymentFolderTestCases {
+        It '[<moduleFolderName>] Parameter files should not contain the subscriptionId guid' -TestCases $deploymentFolderTestCases {
             param (
                 [hashtable[]] $parameterFileTestCases
             )
 
             foreach ($parameterFileTestCase in $parameterFileTestCases) {
-                $parameterFileContent = Get-Content -Path $parameterFileTestCase.parameterFile_Path
-                if (($parameterFileContent | Select-String -Pattern '/subscriptions/' -Quiet) -or ($parameterFileContent | Select-String -Pattern '"subscriptionId"' -Quiet)) {
-                    if (!($parameterFileContent | Select-String -Pattern '<<subscriptionId>>')) {
-                        $SubIdVisible = $true
-                    }
-                }
-
-                $SubIdVisible | Should -Be $null -Because ('Parameter file should not contain original subscription Id value, but a token value "<<subscriptionId>>"')
+                $ParameterFileContent = Get-Content -Path $parameterFileTestCase.parameterFile_Path
+                $SubscriptionIdKeyCount = ($ParameterFileContent | Select-String -Pattern '"subscriptionId"', "'subscriptionId'", '/subscriptions/' -AllMatches).Matches.Count
+                $SubscriptionIdValueCount = ($ParameterFileContent | Select-String -Pattern '<<subscriptionId' -AllMatches).Matches.Count
+                $SubscriptionIdKeyCount | Should -Be $SubscriptionIdValueCount -Because ('Parameter file should not contain the subscription Id guid, instead should reference a token value "<<subscriptionId(n)>> (i.e. <<subscriptionId1>>)"')
             }
         }
     }
