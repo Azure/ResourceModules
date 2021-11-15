@@ -12,11 +12,11 @@ This module deploys an Azure Automation Account Runbook.
 
 | Parameter Name | Type | Default Value | Possible Values | Description |
 | :-- | :-- | :-- | :-- | :-- |
+| `automationAccountName` | string |  |  | Required. Name of the parent Automation Account. |
 | `baseTime` | string | `[utcNow('u')]` |  | Optional. Time used as a basis for e.g. the schedule start date. |
 | `cuaId` | string |  |  | Optional. Customer Usage Attribution id (GUID). This GUID must be previously registered. |
 | `location` | string | `[resourceGroup().location]` |  | Optional. Location for all resources. |
 | `name` | string |  |  | Required. Name of the Automation Account runbook. |
-| `parent` | string |  |  | Required. Name of the parent Automation Account. |
 | `runbookDescription` | string |  |  | Optional. The description of the runbook. |
 | `runbookType` | string |  | `[Graph, GraphPowerShell, GraphPowerShellWorkflow, PowerShell, PowerShellWorkflow]` | Required. The type of the runbook. |
 | `sasTokenValidityLength` | string | `PT8H` |  | Optional. SAS token validity length. Usage: 'PT8H' - valid for 8 hours; 'P5D' - valid for 5 days; 'P1Y' - valid for 1 year. When not provided, the SAS token will be valid for 8 hours. |

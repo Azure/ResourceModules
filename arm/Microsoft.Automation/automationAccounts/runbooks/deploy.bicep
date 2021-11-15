@@ -2,7 +2,7 @@
 param name string
 
 @description('Required. Name of the parent Automation Account.')
-param parent string
+param automationAccountName string
 
 @allowed([
   'Graph'
@@ -55,7 +55,7 @@ module pid_cuaId './.bicep/nested_cuaId.bicep' = if (!empty(cuaId)) {
 }
 
 resource runbook_automationAccount 'Microsoft.Automation/automationAccounts@2020-01-13-preview' existing = {
-  name: parent
+  name: automationAccountName
 }
 
 resource runbook_scriptStorage 'Microsoft.Storage/storageAccounts@2021-06-01' existing = if (!empty(scriptStorageAccountId)){

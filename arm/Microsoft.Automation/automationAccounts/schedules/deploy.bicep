@@ -2,7 +2,7 @@
 param name string
 
 @description('Required. Name of the parent Automation Account.')
-param parent string
+param automationAccountName string
 
 @description('Optional. The properties of the create Advanced Schedule.')
 @metadata({
@@ -50,7 +50,7 @@ module pid_cuaId './.bicep/nested_cuaId.bicep' = if (!empty(cuaId)) {
 }
 
 resource schedule_automationAccount 'Microsoft.Automation/automationAccounts@2020-01-13-preview' existing = {
-  name: parent
+  name: automationAccountName
 }
 
 resource schedule 'Microsoft.Automation/automationAccounts/schedules@2020-01-13-preview' = {

@@ -2,7 +2,7 @@
 param name string = ''
 
 @description('Required. Name of the parent Automation Account.')
-param parent string
+param automationAccountName string
 
 @description('Required. The runbook property associated with the entity.')
 param runbookName string
@@ -25,7 +25,7 @@ module pid_cuaId './.bicep/nested_cuaId.bicep' = if (!empty(cuaId)) {
 }
 
 resource jobSchedule_automationAccount 'Microsoft.Automation/automationAccounts@2020-01-13-preview' existing = {
-  name: parent
+  name: automationAccountName
 }
 
 resource jobSchedule 'Microsoft.Automation/automationAccounts/jobSchedules@2020-01-13-preview' = {

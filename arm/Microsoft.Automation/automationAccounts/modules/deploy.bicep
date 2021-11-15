@@ -2,7 +2,7 @@
 param name string
 
 @description('Required. Name of the parent Automation Account.')
-param parent string
+param automationAccountName string
 
 @description('Required. Module package uri, e.g. https://www.powershellgallery.com/api/v2/package.')
 param uri string
@@ -25,7 +25,7 @@ module pid_cuaId './.bicep/nested_cuaId.bicep' = if (!empty(cuaId)) {
 }
 
 resource module_automationAccount 'Microsoft.Automation/automationAccounts@2020-01-13-preview' existing = {
-  name: parent
+  name: automationAccountName
 }
 
 resource module 'Microsoft.Automation/automationAccounts/modules@2020-01-13-preview' = {

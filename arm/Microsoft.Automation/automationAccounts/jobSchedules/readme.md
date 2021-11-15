@@ -12,10 +12,10 @@ This module deploys an Azure Automation Account Job Schedule.
 
 | Parameter Name | Type | Default Value | Possible Values | Description |
 | :-- | :-- | :-- | :-- | :-- |
+| `automationAccountName` | string |  |  | Required. Name of the parent Automation Account. |
 | `cuaId` | string |  |  | Optional. Customer Usage Attribution id (GUID). This GUID must be previously registered. |
 | `name` | string |  |  | Optional. Name of the Automation Account job schedule. Must be a GUID. If not provided, a GUID is generated leveraging runbookName and scheduleName. |
 | `parameters` | object | `{object}` |  | Optional. List of job properties. |
-| `parent` | string |  |  | Required. Name of the parent Automation Account. |
 | `runbookName` | string |  |  | Required. The runbook property associated with the entity. |
 | `runOn` | string |  |  | Optional. The hybrid worker group that the scheduled job should run on. |
 | `scheduleName` | string |  |  | Required. The schedule property associated with the entity. |
