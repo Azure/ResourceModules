@@ -2,7 +2,7 @@
 param name string
 
 @description('Required. Name of the parent Automation Account')
-param parent string
+param automationAccountName string
 
 @description('Required. The operating system to be configured by the deployment schedule.')
 @allowed([
@@ -194,8 +194,10 @@ module pid_cuaId '.bicep/nested_cuaId.bicep' = if (!empty(cuaId)) {
 }
 
 resource softwareUpdateConfiguration_automationAccount 'Microsoft.Automation/automationAccounts@2020-01-13-preview' existing = {
-  name: parent
+  name: automationAccountName
 }
+
+
 
 resource softwareUpdateConfiguration 'Microsoft.Automation/automationAccounts/softwareUpdateConfigurations@2019-06-01' = {
   name: name

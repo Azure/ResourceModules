@@ -180,12 +180,11 @@ module automationAccount_jobSchedules './jobSchedules/deploy.bicep' = [for (jobS
 
 resource automationAccount_logAnalyticsWorkspace 'Microsoft.OperationalInsights/workspaces@2021-06-01' existing = if (!empty(linkedWorkspaceId)) {
   name: last(split(linkedWorkspaceId, '/'))
-  scope: resourceGroup(split(workspaceId, '/')[2], split(workspaceId, '/')[4])
 }
 
-resource automationAccount_LogAnalyticsWorkspaceLink 'microsoft.operationalinsights/workspaces/linkedservice@2020-08-01' = if (!empty(linkedWorkspaceId)) {
+resource automationAccount_logAnalyticsWorkspaceLink 'Microsoft.OperationalInsights/workspaces/linkedservice@2020-08-01' = if (!empty(linkedWorkspaceId)) {
   name: 'automation'
-  parent: automationAccount_LogAnalyticsWorkspace
+  parent: automationAccount_logAnalyticsWorkspace
   properties: {
     resourceId: automationAccount.id
   }
@@ -195,15 +194,11 @@ module automationAccount_softwareUpdateConfigurations './softwareUpdateConfigura
   name: '${uniqueString(deployment().name, location)}-AutoAccount-SwUpdateConfig-${index}'
   params: {
     name: softwareUpdateConfiguration.name
-    parent: automationAccount.name
+    automationAccountName: automationAccount.name
     frequency: softwareUpdateConfiguration.frequency
     operatingSystem: softwareUpdateConfiguration.operatingSystem
     rebootSetting: softwareUpdateConfiguration.rebootSetting
-
   }
-  dependsOn: [
-    automationAccount_LogAnalyticsWorkspaceLink
-  ]
 }]
 
 resource automationAccount_lock 'Microsoft.Authorization/locks@2016-09-01' = if (lock != 'NotSpecified') {
