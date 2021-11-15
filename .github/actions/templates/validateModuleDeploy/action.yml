@@ -28,7 +28,7 @@ runs:
       shell: pwsh
       run: |
         # Load used functions
-        . (Join-Path $env:GITHUB_WORKSPACE 'utilities/pipelines/sharedScripts/Set-EnvironmentOnAgent.ps1')
+        . (Join-Path $env:GITHUB_WORKSPACE 'utilities' 'pipelines' 'sharedScripts' 'Set-EnvironmentOnAgent.ps1')
 
         # Set agent up
         Set-EnvironmentOnAgent
@@ -83,7 +83,7 @@ runs:
       shell: pwsh
       run: |
         # Load used functions
-        . (Join-Path $env:GITHUB_WORKSPACE 'utilities/pipelines/resourceValidation/Test-TemplateWithParameterFile.ps1')
+        . (Join-Path $env:GITHUB_WORKSPACE 'utilities' 'pipelines' 'resourceValidation' 'Test-TemplateWithParameterFile.ps1')
 
         # ----------- #
         # INVOKE TEST #
