@@ -6,15 +6,14 @@ This section provides details on the Tokens Replacement Functionality that enabl
 
 ### _Navigation_
 
-- [Parameter File Token](#parameter-file-token)
-  - [Description](#description)
-  - [How it works](#how-it-works)
-    - [Token Types](#token-types)
-      - [1. Default Tokens (Environment Variables) [Default]](#1-default-tokens-environment-variables-default)
-      - [2. Local Custom Tokens (Source Control) [Optional]](#2-local-custom-tokens-source-control-optional)
-      - [3. Remote Custom Tokens (Key Vault) [Optional]](#3-remote-custom-tokens-key-vault-optional)
-    - [Set / Create Azure Key Vault Token Logic](#set--create-azure-key-vault-token-logic)
-    - [Get Parameter File Tokens](#get-parameter-file-tokens)
+- [Description](#description)
+- [How it works](#how-it-works)
+  - [Token Types](#token-types)
+    - [1. Default Tokens (Environment Variables) [Default]](#1-default-tokens-environment-variables-default)
+    - [2. Local Custom Tokens (Source Control) [Optional]](#2-local-custom-tokens-source-control-optional)
+    - [3. Remote Custom Tokens (Key Vault) [Optional]](#3-remote-custom-tokens-key-vault-optional)
+  - [Set / Create Azure Key Vault Token Logic](#set--create-azure-key-vault-token-logic)
+  - [Get Parameter File Tokens](#get-parameter-file-tokens)
 
 ---
 

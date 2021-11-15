@@ -96,7 +96,7 @@ Depending on the pipelines you use (e.g. GitHub workflows vs. Azure DevOps pipel
 
 If you want to have a linked clone of the source repository in your own GitHub account, you can fork the repository instead. Still is also the preferred method to contribute back to this repository.
 
-To fork the repository you can simply click on the `Fork` button on the top right of the repository website. You can then select the Account you want to fork the repository to and are good to go.
+To fork the repository you can simply click on the `Fork` button on the top right of the repository site. You can then select the Account you want to fork the repository to and are good to go.
 
 > ***Note***: To ensure your fork stays up to date you can select the 'Fetch upstream' button on your repository root page. This will trigger a process that fetches the latest changes from the source repository back to your fork.
 >
@@ -151,7 +151,7 @@ If you instead just want to have a copy of the repository's content you can inst
 
 ### **Option 3**: Use it as remote reference to reference the bicep templates
 
-Last but not least, instead of fetching your own copy of the repository you can also choose to reference the content of the repository directly. This works as the repository is public and hence all file urls are available without any sort of authentication.
+Last but not least, instead of fetching your own copy of the repository you can also choose to reference the content of the repository directly. This works as the repository is public and hence all file URLs are available without any sort of authentication.
 
 > ***Note***: In cases where you want to assemble your own template that references other modules you should not rely on direct links as they referencing files may receive breaking changes. Instead you should rely on published versions instead.
 
