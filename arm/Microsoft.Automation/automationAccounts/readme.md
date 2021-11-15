@@ -13,9 +13,11 @@ This module deploys an Azure Automation Account.
 | `Microsoft.Automation/automationAccounts/modules` | 2020-01-13-preview |
 | `Microsoft.Automation/automationAccounts/runbooks` | 2019-06-01 |
 | `Microsoft.Automation/automationAccounts/schedules` | 2020-01-13-preview |
+| `Microsoft.Automation/automationAccounts/softwareUpdateConfigurations` | 2019-06-01 |
 | `Microsoft.Insights/diagnosticSettings` | 2017-05-01-preview |
 | `Microsoft.Network/privateEndpoints` | 2021-03-01 |
 | `Microsoft.Network/privateEndpoints/privateDnsZoneGroups` | 2021-03-01 |
+| `Microsoft.OperationalInsights/workspaces/linkedservice` | 2020-08-01 |
 
 ## Parameters
 
@@ -27,6 +29,7 @@ This module deploys an Azure Automation Account.
 | `eventHubAuthorizationRuleId` | string |  |  | Optional. Resource ID of the event hub authorization rule for the Event Hubs namespace in which the event hub should be created or streamed to. |
 | `eventHubName` | string |  |  | Optional. Name of the event hub within the namespace to which logs are streamed. Without this, an event hub is created for each log category. |
 | `jobSchedules` | _[jobSchedules](jobSchedules/readme.md)_ array | `[]` |  | Optional. List of jobSchedules to be created in the automation account. |
+| `linkedWorkspaceId` | string |  |  | Optional. Id of the linked log analytics workspace |
 | `location` | string | `[resourceGroup().location]` |  | Optional. Location for all resources. |
 | `lock` | string | `NotSpecified` | `[CanNotDelete, NotSpecified, ReadOnly]` | Optional. Specify the type of lock. |
 | `logsToEnable` | array | `[JobLogs, JobStreams, DscNodeStatus]` | `[JobLogs, JobStreams, DscNodeStatus]` | Optional. The name of logs that will be streamed. |
@@ -38,6 +41,7 @@ This module deploys an Azure Automation Account.
 | `runbooks` | _[runbooks](runbooks/readme.md)_ array | `[]` |  | Optional. List of runbooks to be created in the automation account. |
 | `schedules` | _[schedules](schedules/readme.md)_ array | `[]` |  | Optional. List of schedules to be created in the automation account. |
 | `skuName` | string | `Basic` | `[Free, Basic]` | Optional. SKU name of the account. |
+| `softwareUpdateConfigurations` | _[softwareUpdateConfigurations](softwareUpdateConfigurations/readme.md)_ array | `[]` |  | Optional. List of softwareUpdateConfigurations to be created in the automation account |
 | `tags` | object | `{object}` |  | Optional. Tags of the Automation Account resource. |
 | `workspaceId` | string |  |  | Optional. Resource identifier of Log Analytics. |
 
@@ -142,6 +146,8 @@ To use Private Endpoint the following dependencies must be deployed:
 - [Automationaccounts/Modules](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Automation/2020-01-13-preview/automationAccounts/modules)
 - [Automationaccounts/Runbooks](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Automation/2019-06-01/automationAccounts/runbooks)
 - [Automationaccounts/Schedules](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Automation/2020-01-13-preview/automationAccounts/schedules)
+- [Automationaccounts/Softwareupdateconfigurations](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Automation/2019-06-01/automationAccounts/softwareUpdateConfigurations)
 - [Diagnosticsettings](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Insights/2017-05-01-preview/diagnosticSettings)
 - [Privateendpoints](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Network/2021-03-01/privateEndpoints)
 - [Privateendpoints/Privatednszonegroups](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Network/2021-03-01/privateEndpoints/privateDnsZoneGroups)
+- [Workspaces/Linkedservice](https://docs.microsoft.com/en-us/azure/templates/Microsoft.OperationalInsights/2020-08-01/workspaces/linkedservice)
