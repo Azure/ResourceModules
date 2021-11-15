@@ -80,6 +80,9 @@ resource dataSource 'Microsoft.OperationalInsights/workspaces/dataSources@2020-0
   }
 }
 
+@description('The resource Id of the deployed data source')
 output dataSourceResourceId string = dataSource.id
+@description('The resource group where the data source is deployed')
 output dataSourceResourceGroup string = resourceGroup().name
+@description('The name of the deployed data source')
 output dataSourceName string = dataSource.name

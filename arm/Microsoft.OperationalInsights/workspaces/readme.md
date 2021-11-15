@@ -119,12 +119,12 @@ Tag names and tag values can be provided as needed. A tag can be left without a 
 
 ## Outputs
 
-| Output Name | Type |
-| :-- | :-- |
-| `logAnalyticsName` | string |
-| `logAnalyticsResourceGroup` | string |
-| `logAnalyticsResourceId` | string |
-| `logAnalyticsWorkspaceId` | string |
+| Output Name | Type | Description |
+| :-- | :-- | :-- |
+| `logAnalyticsName` | string | The name of the deployed log analytics workspace |
+| `logAnalyticsResourceGroup` | string | The resource group where the log analytics will be deployed |
+| `logAnalyticsResourceId` | string | The resource Id of the deployed log analytics workspace |
+| `logAnalyticsWorkspaceId` | string | The ID associated with the workspace |
 
 ## Template references
 

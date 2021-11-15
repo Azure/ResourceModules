@@ -103,7 +103,6 @@ module logAnalyticsWorkspace_storageInsightConfigs 'storageInsightConfigs/deploy
   name: '${deployment().name}-storageInsightsConfig-${index}'
   params: {
     logAnalyticsWorkspaceName: logAnalyticsWorkspace.name
-    name: storageInsightsConfig.name
     containers: contains(storageInsightsConfig, 'containers') ? storageInsightsConfig.containers : []
     tables: contains(storageInsightsConfig, 'tables') ? storageInsightsConfig.tables : []
     storageAccountId: storageInsightsConfig.storageAccountId
@@ -183,7 +182,11 @@ module logAnalyticsWorkspace_rbac '.bicep/nested_rbac.bicep' = [for (roleAssignm
   }
 }]
 
+@description('The resource Id of the deployed log analytics workspace')
 output logAnalyticsResourceId string = logAnalyticsWorkspace.id
+@description('The resource group where the log analytics will be deployed')
 output logAnalyticsResourceGroup string = resourceGroup().name
+@description('The name of the deployed log analytics workspace')
 output logAnalyticsName string = logAnalyticsWorkspace.name
+@description('The ID associated with the workspace')
 output logAnalyticsWorkspaceId string = logAnalyticsWorkspace.properties.customerId

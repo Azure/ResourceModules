@@ -46,6 +46,9 @@ resource savedSearch 'Microsoft.OperationalInsights/workspaces/savedSearches@202
   }
 }
 
+@description('The resource Id of the deployed saved search')
 output savedSearchResourceId string = savedSearch.id
+@description('The resource group where the saved search is deployed')
 output savedSearchResourceGroup string = resourceGroup().name
+@description('The name of the deployed saved search')
 output savedSearchName string = savedSearch.name

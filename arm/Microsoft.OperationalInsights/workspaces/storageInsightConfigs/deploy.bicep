@@ -1,9 +1,6 @@
 @description('Required. Name of the Log Analytics workspace.')
 param logAnalyticsWorkspaceName string
 
-@description('Required. Name of the saved search.')
-param name string
-
 @description('Required. The Azure Resource Manager ID of the storage account resource.')
 param storageAccountId string
 
@@ -31,7 +28,7 @@ resource storageAccount 'Microsoft.Storage/storageAccounts@2021-06-01' existing 
 }
 
 resource storageinsightconfig 'Microsoft.OperationalInsights/workspaces/storageInsightConfigs@2020-08-01' = {
-  name: '${logAnalyticsWorkspaceName}/${name}'
+  name: '${logAnalyticsWorkspaceName}/${storageAccountName}'
   tags: tags
   properties: {
     containers: containers
@@ -43,6 +40,9 @@ resource storageinsightconfig 'Microsoft.OperationalInsights/workspaces/storageI
   }
 }
 
+@description('The resource Id of the deployed storage insights configuration')
 output storageinsightconfigResourceId string = storageinsightconfig.id
+@description('The resource group where the storage insight configuration is deployed')
 output storageinsightconfigResourceGroup string = resourceGroup().name
+@description('The name of the storage insights configuration')
 output storageinsightconfigName string = storageinsightconfig.name

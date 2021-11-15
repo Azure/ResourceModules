@@ -21,11 +21,11 @@ This template deploys a linked service for a Log Analytics workspace.
 
 ## Outputs
 
-| Output Name | Type |
-| :-- | :-- |
-| `linkedServiceName` | string |
-| `linkedServiceResourceGroup` | string |
-| `linkedServiceResourceId` | string |
+| Output Name | Type | Description |
+| :-- | :-- | :-- |
+| `linkedServiceName` | string | The name of the deployed linked service |
+| `linkedServiceResourceGroup` | string | The resource group where the linked service is deployed |
+| `linkedServiceResourceId` | string | The resource Id of the deployed linked service |
 
 ## Template references
 
