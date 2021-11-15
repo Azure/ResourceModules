@@ -163,7 +163,7 @@ jobs:
 
                 # Construct Token Function Input
                 $ConvertTokensInputs = @{
-                    ParameterFilePath              = '${{ deploymentBlock.path }}'
+                    ParameterFilePath              = Join-Path '$(parametersRepoRoot)' '${{ deploymentBlock.path }}'
                     DefaultParameterFileTokens     = $DefaultParameterFileTokens
                     LocalCustomParameterFileTokens = $Settings.parameterFileTokens.localTokens.tokens
                     TokenPrefix                    = $Settings.parameterFileTokens.tokenPrefix
