@@ -33,7 +33,7 @@ There are (3) Token types that can be applied on a Parameter File:
 
 #### 1. Default Tokens (Environment Variables) [Default]
 
-These are tokens constructed from Environment Variables, which are defined in the Workflow (Pipeline). Review [Getting Started - GitHub specific prerequisites](./GettingStarted.md#github-specific-prerequisites) for more information on these Environment Variables.
+These are tokens constructed from Environment Variables, which are defined in the Workflow (Pipeline). Review [Getting Started - GitHub specific prerequisites](./GettingStarted.md) for more information on these Environment Variables.
 
 ---
 **Note**: Avoid updating tokens as Environment Variables as they do require changes to Workflows in order to add them to the Agent at runtime.
