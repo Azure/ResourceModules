@@ -9,7 +9,6 @@ This module deploys Azure Kubernetes Cluster (AKS).
 | `Microsoft.Authorization/locks` | 2016-09-01 |
 | `Microsoft.Authorization/roleAssignments` | 2020-04-01-preview |
 | `Microsoft.ContainerService/managedClusters` | 2021-07-01 |
-| `Microsoft.ContainerService/managedClusters/agentPools` | 2021-05-01 |
 | `Microsoft.Insights/diagnosticSettings` | 2017-05-01-preview |
 
 ## Parameters

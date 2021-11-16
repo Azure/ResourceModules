@@ -331,7 +331,7 @@ module managedCluster_agentPools 'agentPools/deploy.bicep' = [for (agentPool, in
   name: '${deployment().name}-agentPool-${index}'
   params: {
     name: agentPool.name
-    properties: agentPool.properties
+    agentPoolProperties: agentPool.properties
   }
 }]
 

@@ -2,11 +2,11 @@
 param name string
 
 @description('Required. Properties for the container service agent pool profile.')
-param properties object
+param agentPoolProperties object
 
 resource agentPool 'Microsoft.ContainerService/managedClusters/agentPools@2021-05-01' = {
   name: name
-  properties: properties
+  properties: agentPoolProperties
 }
 
 @description('The name of the Resource Group the agent pool was created in.')
