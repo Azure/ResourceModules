@@ -88,7 +88,8 @@
                     "startTime": "22:00"
                 }
             ]
-        },
+        }
+        // ,
         // "privateEndpoints": {
         //     "value": [
         //         {
@@ -101,15 +102,15 @@
         //         }
         //     ]
         // },
-        "roleAssignments": {
-            "value": [
-                {
-                    "roleDefinitionIdOrName": "Reader",
-                    "principalIds": [
-                        "<<deploymentSpId>>"
-                    ]
-                }
-            ]
-        }
+        // "roleAssignments": {
+        //     "value": [
+        //         {
+        //             "roleDefinitionIdOrName": "Reader",
+        //             "principalIds": [
+        //                 "<<deploymentSpId>>"
+        //             ]
+        //         }
+        //     ]
+        // }
     }
 }
