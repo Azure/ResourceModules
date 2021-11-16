@@ -327,10 +327,12 @@ resource managedCluster 'Microsoft.ContainerService/managedClusters@2021-07-01' 
   }
 }
 
-resource aksClusterName_nodePoolName 'Microsoft.ContainerService/managedClusters/agentPools@2021-05-01' = [for additionalAgentPool in additionalAgentPools: {
-  name: additionalAgentPool.name
-  properties: additionalAgentPool.properties
-  parent: managedCluster
+module managedCluster_agentPools 'agentPools/deploy.bicep' = [for (agentPool, index) in additionalAgentPools: {
+  name: '${deployment().name}-agentPool-${index}'
+  params: {
+    name: agentPool.name
+    properties: agentPool.properties
+  }
 }]
 
 resource managedCluster_lock 'Microsoft.Authorization/locks@2016-09-01' = if (lock != 'NotSpecified') {
