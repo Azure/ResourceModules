@@ -121,62 +121,62 @@ resource automationAccount 'Microsoft.Automation/automationAccounts@2020-01-13-p
   }
 }
 
-module automationAccount_modules './modules/deploy.bicep' = [for (module, index) in modules: {
-  name: '${uniqueString(deployment().name, location)}-AutoAccount-Module-${index}'
-  params: {
-    name: module.name
-    automationAccountName: automationAccount.name
-    version: module.version
-    uri: module.uri
-    location: location
-    tags: tags
-  }
-}]
+// module automationAccount_modules './modules/deploy.bicep' = [for (module, index) in modules: {
+//   name: '${uniqueString(deployment().name, location)}-AutoAccount-Module-${index}'
+//   params: {
+//     name: module.name
+//     automationAccountName: automationAccount.name
+//     version: module.version
+//     uri: module.uri
+//     location: location
+//     tags: tags
+//   }
+// }]
 
-module automationAccount_schedules './schedules/deploy.bicep' = [for (schedule, index) in schedules: {
-  name: '${uniqueString(deployment().name, location)}-AutoAccount-Schedule-${index}'
-  params: {
-    name: schedule.name
-    automationAccountName: automationAccount.name
-    advancedSchedule: contains(schedule, 'advancedSchedule') ? schedule.advancedSchedule : null
-    scheduleDescription: contains(schedule, 'description') ? schedule.description : ''
-    expiryTime: contains(schedule, 'expiryTime') ? schedule.expiryTime : ''
-    frequency: contains(schedule, 'frequency') ? schedule.frequency : 'OneTime'
-    interval: contains(schedule, 'interval') ? schedule.interval : 0
-    startTime: contains(schedule, 'startTime') ? schedule.startTime : ''
-    timeZone: contains(schedule, 'timeZone') ? schedule.timeZone : ''
-  }
-}]
+// module automationAccount_schedules './schedules/deploy.bicep' = [for (schedule, index) in schedules: {
+//   name: '${uniqueString(deployment().name, location)}-AutoAccount-Schedule-${index}'
+//   params: {
+//     name: schedule.name
+//     automationAccountName: automationAccount.name
+//     advancedSchedule: contains(schedule, 'advancedSchedule') ? schedule.advancedSchedule : null
+//     scheduleDescription: contains(schedule, 'description') ? schedule.description : ''
+//     expiryTime: contains(schedule, 'expiryTime') ? schedule.expiryTime : ''
+//     frequency: contains(schedule, 'frequency') ? schedule.frequency : 'OneTime'
+//     interval: contains(schedule, 'interval') ? schedule.interval : 0
+//     startTime: contains(schedule, 'startTime') ? schedule.startTime : ''
+//     timeZone: contains(schedule, 'timeZone') ? schedule.timeZone : ''
+//   }
+// }]
 
-module automationAccount_runbooks './runbooks/deploy.bicep' = [for (runbook, index) in runbooks: {
-  name: '${uniqueString(deployment().name, location)}-AutoAccount-Runbook-${index}'
-  params: {
-    name: runbook.name
-    automationAccountName: automationAccount.name
-    runbookType: runbook.runbookType
-    runbookDescription: contains(runbook, 'description') ? runbook.description : ''
-    uri: contains(runbook, 'uri') ? runbook.uri : ''
-    version: contains(runbook, 'version') ? runbook.version : ''
-    location: location
-    tags: tags
-  }
-}]
+// module automationAccount_runbooks './runbooks/deploy.bicep' = [for (runbook, index) in runbooks: {
+//   name: '${uniqueString(deployment().name, location)}-AutoAccount-Runbook-${index}'
+//   params: {
+//     name: runbook.name
+//     automationAccountName: automationAccount.name
+//     runbookType: runbook.runbookType
+//     runbookDescription: contains(runbook, 'description') ? runbook.description : ''
+//     uri: contains(runbook, 'uri') ? runbook.uri : ''
+//     version: contains(runbook, 'version') ? runbook.version : ''
+//     location: location
+//     tags: tags
+//   }
+// }]
 
-module automationAccount_jobSchedules './jobSchedules/deploy.bicep' = [for (jobSchedule, index) in jobSchedules: {
-  name: '${uniqueString(deployment().name, location)}-AutoAccount-JobSchedule-${index}'
-  params: {
-    automationAccountName: automationAccount.name
-    runbookName: jobSchedule.runbookName
-    scheduleName: jobSchedule.scheduleName
-    parameters: contains(jobSchedule, 'parameters') ? (!empty(jobSchedule.parameters) ? jobSchedule.parameters : {}) : {}
-    runOn: contains(jobSchedule, 'runOn') ? (!empty(jobSchedule.runOn) ? jobSchedule.runOn : '') : ''
+// module automationAccount_jobSchedules './jobSchedules/deploy.bicep' = [for (jobSchedule, index) in jobSchedules: {
+//   name: '${uniqueString(deployment().name, location)}-AutoAccount-JobSchedule-${index}'
+//   params: {
+//     automationAccountName: automationAccount.name
+//     runbookName: jobSchedule.runbookName
+//     scheduleName: jobSchedule.scheduleName
+//     parameters: contains(jobSchedule, 'parameters') ? (!empty(jobSchedule.parameters) ? jobSchedule.parameters : {}) : {}
+//     runOn: contains(jobSchedule, 'runOn') ? (!empty(jobSchedule.runOn) ? jobSchedule.runOn : '') : ''
 
-  }
-  dependsOn: [
-      automationAccount_schedules
-      automationAccount_runbooks
-    ]
-}]
+//   }
+//   dependsOn: [
+//       automationAccount_schedules
+//       automationAccount_runbooks
+//     ]
+// }]
 
 resource automationAccount_logAnalyticsWorkspace 'Microsoft.OperationalInsights/workspaces@2021-06-01' = {
   name: '${last(split(linkedWorkspaceId, '/'))}'
