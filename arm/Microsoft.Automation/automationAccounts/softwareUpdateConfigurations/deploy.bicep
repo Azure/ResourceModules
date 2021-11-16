@@ -197,8 +197,6 @@ resource softwareUpdateConfiguration_automationAccount 'Microsoft.Automation/aut
   name: automationAccountName
 }
 
-
-
 resource softwareUpdateConfiguration 'Microsoft.Automation/automationAccounts/softwareUpdateConfigurations@2019-06-01' = {
   name: name
   parent: softwareUpdateConfiguration_automationAccount
