@@ -148,9 +148,9 @@ var diagnosticsMetrics = [for metric in metricsToEnable: {
 }]
 
 var networkAcls_var = {
-  defaultAction: ((empty(networkAcls)) ? json('null') : networkAcls.defaultAction)
-  virtualNetworkRules: ((empty(networkAcls)) ? json('null') : ((length(networkAcls.virtualNetworkRules) == 0) ? [] : networkAcls.virtualNetworkRules))
-  ipRules: ((empty(networkAcls)) ? json('null') : ((length(networkAcls.ipRules) == 0) ? [] : networkAcls.ipRules))
+  defaultAction: ((empty(networkAcls)) ? null : networkAcls.defaultAction)
+  virtualNetworkRules: ((empty(networkAcls)) ? null : ((length(networkAcls.virtualNetworkRules) == 0) ? [] : networkAcls.virtualNetworkRules))
+  ipRules: ((empty(networkAcls)) ? null : ((length(networkAcls.ipRules) == 0) ? [] : networkAcls.ipRules))
 }
 
 module pid_cuaId '.bicep/nested_cuaId.bicep' = if (!empty(cuaId)) {
@@ -170,8 +170,8 @@ resource cognitiveServices 'Microsoft.CognitiveServices/accounts@2017-04-18' = {
     name: sku
   }
   properties: {
-    customSubDomainName: (empty(customSubDomainName) ? json('null') : customSubDomainName)
-    networkAcls: ((empty(networkAcls)) ? json('null') : networkAcls_var)
+    customSubDomainName: (empty(customSubDomainName) ? null : customSubDomainName)
+    networkAcls: ((empty(networkAcls)) ? null : networkAcls_var)
     publicNetworkAccess: publicNetworkAccess
   }
 }
@@ -188,12 +188,12 @@ resource cognitiveServices_lock 'Microsoft.Authorization/locks@2016-09-01' = if 
 resource cognitiveServices_diagnosticSettingName 'Microsoft.Insights/diagnosticsettings@2017-05-01-preview' = {
   name: '${cognitiveServices.name}-diagnosticSettings'
   properties: {
-    storageAccountId: (empty(diagnosticStorageAccountId) ? json('null') : diagnosticStorageAccountId)
-    workspaceId: (empty(workspaceId) ? json('null') : workspaceId)
-    eventHubAuthorizationRuleId: (empty(eventHubAuthorizationRuleId) ? json('null') : eventHubAuthorizationRuleId)
-    eventHubName: (empty(eventHubName) ? json('null') : eventHubName)
-    metrics: ((empty(diagnosticStorageAccountId) && empty(workspaceId) && empty(eventHubAuthorizationRuleId) && empty(eventHubName)) ? json('null') : diagnosticsMetrics)
-    logs: ((empty(diagnosticStorageAccountId) && empty(workspaceId) && empty(eventHubAuthorizationRuleId) && empty(eventHubName)) ? json('null') : diagnosticsLogs)
+    storageAccountId: (empty(diagnosticStorageAccountId) ? null : diagnosticStorageAccountId)
+    workspaceId: (empty(workspaceId) ? null : workspaceId)
+    eventHubAuthorizationRuleId: (empty(eventHubAuthorizationRuleId) ? null : eventHubAuthorizationRuleId)
+    eventHubName: (empty(eventHubName) ? null : eventHubName)
+    metrics: ((empty(diagnosticStorageAccountId) && empty(workspaceId) && empty(eventHubAuthorizationRuleId) && empty(eventHubName)) ? null : diagnosticsMetrics)
+    logs: ((empty(diagnosticStorageAccountId) && empty(workspaceId) && empty(eventHubAuthorizationRuleId) && empty(eventHubName)) ? null : diagnosticsLogs)
   }
   scope: cognitiveServices
 }

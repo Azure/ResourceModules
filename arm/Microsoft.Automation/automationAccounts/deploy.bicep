@@ -1,5 +1,5 @@
-@description('Required. Name of the Automation Account')
-param automationAccountName string
+@description('Required. Name of the Automation Account.')
+param name string
 
 @description('Optional. Location for all resources.')
 param location string = resourceGroup().location
@@ -8,27 +8,19 @@ param location string = resourceGroup().location
   'Free'
   'Basic'
 ])
-@description('Optional. SKU name of the account')
+@description('Optional. SKU name of the account.')
 param skuName string = 'Basic'
 
-@description('Optional. List of modules to be created in the automation account')
-@metadata({
-  name: 'Module name'
-  version: 'Module version or specify latest to get the latest version'
-  uri: 'Module package uri, e.g. https://www.powershellgallery.com/api/v2/package'
-})
+@description('Optional. List of modules to be created in the automation account.')
 param modules array = []
 
-@description('Optional. List of runbooks to be created in the automation account')
+@description('Optional. List of runbooks to be created in the automation account.')
 param runbooks array = []
 
-@description('Optional. SAS token validity length. Usage: \'PT8H\' - valid for 8 hours; \'P5D\' - valid for 5 days; \'P1Y\' - valid for 1 year. When not provided, the SAS token will be valid for 8 hours.')
-param sasTokenValidityLength string = 'PT8H'
-
-@description('Optional. List of schedules to be created in the automation account')
+@description('Optional. List of schedules to be created in the automation account.')
 param schedules array = []
 
-@description('Optional. List of jobSchedules to be created in the automation account')
+@description('Optional. List of jobSchedules to be created in the automation account.')
 param jobSchedules array = []
 
 @description('Optional. Configuration Details for private endpoints.')
@@ -59,25 +51,14 @@ param eventHubName string = ''
 @description('Optional. Specify the type of lock.')
 param lock string = 'NotSpecified'
 
-@description('Optional. Array of role assignment objects that contain the \'roleDefinitionIdOrName\' and \'principalId\' to define RBAC role assignments on this resource. In the roleDefinitionIdOrName attribute, you can provide either the display name of the role definition, or its fully qualified ID in the following format: \'/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11\'')
+@description('Optional. Array of role assignment objects that contain the \'roleDefinitionIdOrName\' and \'principalId\' to define RBAC role assignments on this resource. In the roleDefinitionIdOrName attribute, you can provide either the display name of the role definition, or its fully qualified ID in the following format: \'/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11\'.')
 param roleAssignments array = []
 
 @description('Optional. Tags of the Automation Account resource.')
 param tags object = {}
 
-@description('Optional. Time used as a basis for e.g. the schedule start date')
-param baseTime string = utcNow('u')
-
-@description('Optional. Customer Usage Attribution id (GUID). This GUID must be previously registered')
+@description('Optional. Customer Usage Attribution id (GUID). This GUID must be previously registered.')
 param cuaId string = ''
-
-var accountSasProperties = {
-  signedServices: 'b'
-  signedPermission: 'r'
-  signedExpiry: dateTimeAdd(baseTime, sasTokenValidityLength)
-  signedResourceTypes: 'o'
-  signedProtocol: 'https'
-}
 
 @description('Optional. The name of logs that will be streamed.')
 @allowed([
@@ -124,7 +105,7 @@ module pid_cuaId '.bicep/nested_cuaId.bicep' = if (!empty(cuaId)) {
 }
 
 resource automationAccount 'Microsoft.Automation/automationAccounts@2020-01-13-preview' = {
-  name: automationAccountName
+  name: name
   location: location
   tags: tags
   properties: {
@@ -132,63 +113,67 @@ resource automationAccount 'Microsoft.Automation/automationAccounts@2020-01-13-p
       name: skuName
     }
   }
+}
 
-  resource automationAccount_modules 'modules@2020-01-13-preview' = [for (module, index) in modules: {
+module automationAccount_modules './modules/deploy.bicep' = [for (module, index) in modules: {
+  name: '${uniqueString(deployment().name, location)}-AutoAccount-Module-${index}'
+  params: {
     name: module.name
+    automationAccountName: automationAccount.name
+    version: module.version
+    uri: module.uri
     location: location
     tags: tags
-    properties: {
-      contentLink: {
-        uri: module.version == 'latest' ? '${module.uri}/${module.name}' : '${module.uri}/${module.name}/${module.version}'
-        version: module.version == 'latest' ? null : module.version
-      }
-    }
-  }]
+  }
+}]
 
-  resource automationAccount_schedules 'schedules@2020-01-13-preview' = [for (schedule, index) in schedules: {
-    name: schedule.scheduleName
-    properties: {
-      startTime: (empty(schedule.startTime) ? dateTimeAdd(baseTime, 'PT10M') : schedule.startTime)
-      frequency: (empty(schedule.frequency) ? json('null') : schedule.frequency)
-      expiryTime: (empty(schedule.expiryTime) ? json('null') : schedule.expiryTime)
-      interval: ((0 == schedule.interval) ? json('null') : schedule.interval)
-      timeZone: (empty(schedule.timeZone) ? json('null') : schedule.timeZone)
-      advancedSchedule: (empty(schedule.advancedSchedule) ? json('null') : schedule.advancedSchedule)
-    }
-  }]
+module automationAccount_schedules './schedules/deploy.bicep' = [for (schedule, index) in schedules: {
+  name: '${uniqueString(deployment().name, location)}-AutoAccount-Schedule-${index}'
+  params: {
+    name: schedule.name
+    automationAccountName: automationAccount.name
+    advancedSchedule: contains(schedule, 'advancedSchedule') ? schedule.advancedSchedule : null
+    scheduleDescription: contains(schedule, 'description') ? schedule.description : ''
+    expiryTime: contains(schedule, 'expiryTime') ? schedule.expiryTime : ''
+    frequency: contains(schedule, 'frequency') ? schedule.frequency : 'OneTime'
+    interval: contains(schedule, 'interval') ? schedule.interval : 0
+    startTime: contains(schedule, 'startTime') ? schedule.startTime : ''
+    timeZone: contains(schedule, 'timeZone') ? schedule.timeZone : ''
+  }
+}]
 
-  resource automationAccount_runbooks 'runbooks@2019-06-01' = [for (runbook, index) in runbooks: {
-    name: runbook.runbookName
-    properties: {
-      runbookType: (empty(runbook.runbookType) ? json('null') : runbook.runbookType)
-      publishContentLink: {
-        uri: (empty(runbook.runbookScriptUri) ? json('null') : (empty(runbook.scriptStorageAccountId) ? 'runbook.runbookScriptUri' : 'runbook.runbookScriptUri${listAccountSas(runbook.scriptStorageAccountId, '2019-04-01', accountSasProperties).accountSasToken}'))
-        version: (empty(runbook.version) ? json('null') : runbook.version)
-      }
-    }
-  }]
+module automationAccount_runbooks './runbooks/deploy.bicep' = [for (runbook, index) in runbooks: {
+  name: '${uniqueString(deployment().name, location)}-AutoAccount-Runbook-${index}'
+  params: {
+    name: runbook.name
+    automationAccountName: automationAccount.name
+    runbookType: runbook.runbookType
+    runbookDescription: contains(runbook, 'description') ? runbook.description : ''
+    uri: contains(runbook, 'uri') ? runbook.uri : ''
+    version: contains(runbook, 'version') ? runbook.version : ''
+    location: location
+    tags: tags
+  }
+}]
 
-  resource automationAccount_jobSchedules 'jobSchedules@2020-01-13-preview' = [for (jobSchedule, index) in jobSchedules: {
-    name: jobSchedule.jobScheduleName
-    properties: {
-      parameters: (empty(jobSchedule.parameters) ? json('null') : jobSchedule.parameters)
-      runbook: {
-        name: jobSchedule.runbookName
-      }
-      runOn: (empty(jobSchedule.runOn) ? json('null') : jobSchedule.runOn)
-      schedule: {
-        name: jobSchedule.scheduleName
-      }
-    }
-    dependsOn: [
+module automationAccount_jobSchedules './jobSchedules/deploy.bicep' = [for (jobSchedule, index) in jobSchedules: {
+  name: '${uniqueString(deployment().name, location)}-AutoAccount-JobSchedule-${index}'
+  params: {
+    automationAccountName: automationAccount.name
+    runbookName: jobSchedule.runbookName
+    scheduleName: jobSchedule.scheduleName
+    parameters: contains(jobSchedule, 'parameters') ? (!empty(jobSchedule.parameters) ? jobSchedule.parameters : {}) : {}
+    runOn: contains(jobSchedule, 'runOn') ? (!empty(jobSchedule.runOn) ? jobSchedule.runOn : '') : ''
+
+  }
+  dependsOn: [
       automationAccount_schedules
       automationAccount_runbooks
     ]
-  }]
-}
+}]
 
 resource automationAccount_lock 'Microsoft.Authorization/locks@2016-09-01' = if (lock != 'NotSpecified') {
-  name: '${automationAccount.name}-${lock}-lock'
+  name: '${uniqueString(deployment().name, location)}-AutoAccount-${lock}-lock'
   properties: {
     level: lock
     notes: (lock == 'CanNotDelete') ? 'Cannot delete resource or child resources.' : 'Cannot modify the resource or child resources.'
@@ -197,20 +182,20 @@ resource automationAccount_lock 'Microsoft.Authorization/locks@2016-09-01' = if 
 }
 
 resource automationAccount_diagnosticSettings 'Microsoft.Insights/diagnosticSettings@2017-05-01-preview' = if ((!empty(diagnosticStorageAccountId)) || (!empty(workspaceId)) || (!empty(eventHubAuthorizationRuleId)) || (!empty(eventHubName))) {
-  name: '${automationAccount.name}-diagnosticSettings'
+  name: '${uniqueString(deployment().name, location)}-AutoAccount-diagnosticSettings'
   properties: {
-    storageAccountId: (empty(diagnosticStorageAccountId) ? json('null') : diagnosticStorageAccountId)
-    workspaceId: (empty(workspaceId) ? json('null') : workspaceId)
-    eventHubAuthorizationRuleId: (empty(eventHubAuthorizationRuleId) ? json('null') : eventHubAuthorizationRuleId)
-    eventHubName: (empty(eventHubName) ? json('null') : eventHubName)
-    metrics: ((empty(diagnosticStorageAccountId) && empty(workspaceId) && empty(eventHubAuthorizationRuleId) && empty(eventHubName)) ? json('null') : diagnosticsMetrics)
-    logs: ((empty(diagnosticStorageAccountId) && empty(workspaceId) && empty(eventHubAuthorizationRuleId) && empty(eventHubName)) ? json('null') : diagnosticsLogs)
+    storageAccountId: (empty(diagnosticStorageAccountId) ? null : diagnosticStorageAccountId)
+    workspaceId: (empty(workspaceId) ? null : workspaceId)
+    eventHubAuthorizationRuleId: (empty(eventHubAuthorizationRuleId) ? null : eventHubAuthorizationRuleId)
+    eventHubName: (empty(eventHubName) ? null : eventHubName)
+    metrics: ((empty(diagnosticStorageAccountId) && empty(workspaceId) && empty(eventHubAuthorizationRuleId) && empty(eventHubName)) ? null : diagnosticsMetrics)
+    logs: ((empty(diagnosticStorageAccountId) && empty(workspaceId) && empty(eventHubAuthorizationRuleId) && empty(eventHubName)) ? null : diagnosticsLogs)
   }
   scope: automationAccount
 }
 
-module automationAccount_privateEndpoints '.bicep/nested_privateEndpoint.bicep' = [for (endpoint, index) in privateEndpoints: if (!empty(privateEndpoints)) {
-  name: '${uniqueString(deployment().name, location)}-Automation-PrivateEndpoints-${index}'
+module automationAccount_privateEndpoints './.bicep/nested_privateEndpoint.bicep' = [for (endpoint, index) in privateEndpoints: if (!empty(privateEndpoints)) {
+  name: '${uniqueString(deployment().name, location)}-AutoAccount-PrivateEndpoints-${index}'
   params: {
     privateEndpointResourceId: automationAccount.id
     privateEndpointVnetLocation: (empty(privateEndpoints) ? 'dummy' : reference(split(endpoint.subnetResourceId, '/subnets/')[0], '2020-06-01', 'Full').location)
@@ -222,18 +207,19 @@ module automationAccount_privateEndpoints '.bicep/nested_privateEndpoint.bicep' 
   ]
 }]
 
-module automationAccount_rbac '.bicep/nested_rbac.bicep' = [for (roleAssignment, index) in roleAssignments: {
-  name: '${deployment().name}-rbac-${index}'
+module automationAccount_rbac './.bicep/nested_rbac.bicep' = [for (roleAssignment, index) in roleAssignments: {
+  name: '${uniqueString(deployment().name, location)}-AutoAccount-Rbac-${index}'
   params: {
     roleAssignmentObj: roleAssignment
     resourceName: automationAccount.name
   }
 }]
 
+@description('The name of the deployed automation account')
 output automationAccountName string = automationAccount.name
+
+@description('The id of the deployed automation account')
 output automationAccountResourceId string = automationAccount.id
+
+@description('The resource group of the deployed automation account')
 output automationAccountResourceGroup string = resourceGroup().name
-output modules array = modules
-output schedules array = schedules
-output jobSchedules array = jobSchedules
-output runbooks array = runbooks

@@ -130,15 +130,15 @@ resource registry 'Microsoft.ContainerRegistry/registries@2020-11-01-preview' = 
     adminUserEnabled: acrAdminUserEnabled
     policies: {
       quarantinePolicy: {
-        status: (empty(quarantinePolicyStatus) ? json('null') : quarantinePolicyStatus)
+        status: (empty(quarantinePolicyStatus) ? null : quarantinePolicyStatus)
       }
       trustPolicy: {
         type: 'Notary'
-        status: (empty(trustPolicyStatus) ? json('null') : trustPolicyStatus)
+        status: (empty(trustPolicyStatus) ? null : trustPolicyStatus)
       }
       retentionPolicy: {
-        days: (empty(retentionPolicyDays) ? json('null') : int(retentionPolicyDays))
-        status: (empty(retentionPolicyStatus) ? json('null') : retentionPolicyStatus)
+        days: (empty(retentionPolicyDays) ? null : int(retentionPolicyDays))
+        status: (empty(retentionPolicyStatus) ? null : retentionPolicyStatus)
       }
     }
     dataEndpointEnabled: dataEndpointEnabled
@@ -159,12 +159,12 @@ resource registry_lock 'Microsoft.Authorization/locks@2016-09-01' = if (lock != 
 resource registry_diagnosticSettingName 'Microsoft.Insights/diagnosticsettings@2017-05-01-preview' = if ((!empty(diagnosticStorageAccountId)) || (!empty(workspaceId)) || (!empty(eventHubAuthorizationRuleId)) || (!empty(eventHubName))) {
   name: '${registry.name}-diagnosticSettings'
   properties: {
-    storageAccountId: (empty(diagnosticStorageAccountId) ? json('null') : diagnosticStorageAccountId)
-    workspaceId: (empty(workspaceId) ? json('null') : workspaceId)
-    eventHubAuthorizationRuleId: (empty(eventHubAuthorizationRuleId) ? json('null') : eventHubAuthorizationRuleId)
-    eventHubName: (empty(eventHubName) ? json('null') : eventHubName)
-    metrics: ((empty(diagnosticStorageAccountId) && empty(workspaceId) && empty(eventHubAuthorizationRuleId) && empty(eventHubName)) ? json('null') : diagnosticsMetrics)
-    logs: ((empty(diagnosticStorageAccountId) && empty(workspaceId) && empty(eventHubAuthorizationRuleId) && empty(eventHubName)) ? json('null') : diagnosticsLogs)
+    storageAccountId: (empty(diagnosticStorageAccountId) ? null : diagnosticStorageAccountId)
+    workspaceId: (empty(workspaceId) ? null : workspaceId)
+    eventHubAuthorizationRuleId: (empty(eventHubAuthorizationRuleId) ? null : eventHubAuthorizationRuleId)
+    eventHubName: (empty(eventHubName) ? null : eventHubName)
+    metrics: ((empty(diagnosticStorageAccountId) && empty(workspaceId) && empty(eventHubAuthorizationRuleId) && empty(eventHubName)) ? null : diagnosticsMetrics)
+    logs: ((empty(diagnosticStorageAccountId) && empty(workspaceId) && empty(eventHubAuthorizationRuleId) && empty(eventHubName)) ? null : diagnosticsLogs)
   }
   scope: registry
 }
