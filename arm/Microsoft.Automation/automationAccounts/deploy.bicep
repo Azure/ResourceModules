@@ -205,11 +205,11 @@ module automationAccount_linkedService './.bicep/nested_linkedService.bicep' = i
   name: '${uniqueString(deployment().name, location)}-AutoAccount-LinkedService'
   params: {
     name: 'automation'
-    logAnalyticsWorkspaceName: !empty(linkedWorkspaceId) ? '${last(split(linkedWorkspaceId, '/'))}' : ''
+    logAnalyticsWorkspaceName: '${last(split(linkedWorkspaceId, '/'))}'
     resourceId: automationAccount.id
     tags: tags
   }
-  scope: resourceGroup(split(linkedWorkspaceId, '/')[2], split(linkedWorkspaceId, '/')[4])
+  scope: resourceGroup(!empty(linkedWorkspaceId) ? split(linkedWorkspaceId, '/')[2]: subscription().subscriptionId, !empty(linkedWorkspaceId) ? split(linkedWorkspaceId, '/')[4] : resourceGroup().name)
 }
 
 module automationAccount_softwareUpdateConfigurations './softwareUpdateConfigurations/deploy.bicep' = [for (softwareUpdateConfiguration, index) in softwareUpdateConfigurations: {

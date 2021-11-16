@@ -30,15 +30,6 @@ resource linkedService 'Microsoft.OperationalInsights/workspaces/linkedServices@
   }
 }
 
-// resource linkedService 'Microsoft.OperationalInsights/workspaces/linkedServices@2020-08-01' = {
-//   name: '${logAnalyticsWorkspaceName}/${name}'
-//   tags: tags
-//   properties: {
-//     resourceId: resourceId
-//     writeAccessResourceId: empty(writeAccessResourceId) ? null : writeAccessResourceId
-//   }
-// }
-
 @description('The resource Id of the deployed linked service')
 output linkedServiceResourceId string = linkedService.id
 
