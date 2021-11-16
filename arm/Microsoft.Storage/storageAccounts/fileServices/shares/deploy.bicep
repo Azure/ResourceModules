@@ -19,10 +19,18 @@ module pid_cuaId '.bicep/nested_cuaId.bicep' = if (!empty(cuaId)) {
   params: {}
 }
 
-resource fileShare 'Microsoft.Storage/storageAccounts/fileServices/shares@2019-06-01' = {
-  name: '${storageAccountName}/default/${name}'
-  properties: {
-    shareQuota: sharedQuota
+resource storageAccount 'Microsoft.Storage/storageAccounts@2021-06-01' existing = {
+  name: storageAccountName
+
+  resource fileService 'fileServices@2021-04-01' existing = {
+    name: 'default'
+
+    resource fileShare 'shares@2019-06-01' = {
+      name: name
+      properties: {
+        shareQuota: sharedQuota
+      }
+    }
   }
 }
 
@@ -30,15 +38,15 @@ module fileShare_rbac '.bicep/nested_rbac.bicep' = [for (roleAssignment, index) 
   name: '${deployment().name}-Rbac-${index}'
   params: {
     roleAssignmentObj: roleAssignment
-    resourceName: fileShare.name
+    resourceName: storageAccount::fileService::fileShare.name
   }
 }]
 
 @description('The name of the deployed file share')
-output fileShareName string = fileShare.name
+output fileShareName string = storageAccount::fileService::fileShare.name
 
 @description('The id of the deployed file share')
-output fileShareResourceId string = fileShare.id
+output fileShareResourceId string = storageAccount::fileService::fileShare.id
 
 @description('The resource group of the deployed file share')
 output fileShareResourceGroup string = resourceGroup().name

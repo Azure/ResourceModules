@@ -22,11 +22,15 @@ module pid_cuaId '.bicep/nested_cuaId.bicep' = if (!empty(cuaId)) {
   params: {}
 }
 
-resource fileService 'Microsoft.Storage/storageAccounts/fileServices@2021-04-01' = {
-  name: '${storageAccountName}/default'
-  properties: {
-    protocolSettings: protocolSettings
-    shareDeleteRetentionPolicy: shareDeleteRetentionPolicy
+resource storageAccount 'Microsoft.Storage/storageAccounts@2021-06-01' existing = {
+  name: storageAccountName
+
+  resource fileService 'fileServices@2021-04-01' = {
+    name: 'default'
+    properties: {
+      protocolSettings: protocolSettings
+      shareDeleteRetentionPolicy: shareDeleteRetentionPolicy
+    }
   }
 }
 
@@ -39,15 +43,15 @@ module fileService_shares 'shares/deploy.bicep' = [for (share, index) in shares:
     roleAssignments: contains(share, 'roleAssignments') ? share.roleAssignments : []
   }
   dependsOn: [
-    fileService
+    storageAccount::fileService
   ]
 }]
 
 @description('The name of the deployed file share service')
-output fileServiceName string = fileService.name
+output fileServiceName string = storageAccount::fileService.name
 
 @description('The id of the deployed file share service')
-output fileServiceResourceId string = fileService.id
+output fileServiceResourceId string = storageAccount::fileService.id
 
 @description('The resource group of the deployed file share service')
 output fileServiceResourceGroup string = resourceGroup().name

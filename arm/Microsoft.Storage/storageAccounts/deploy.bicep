@@ -59,6 +59,9 @@ param vNetId string = ''
 @description('Optional. Configuration Details for private endpoints.')
 param privateEndpoints array = []
 
+@description('Optional. The Storage Account ManagementPolicies Rules.')
+param managementPolicyRules array = []
+
 @description('Optional. Networks ACLs, this value contains IPs to whitelist and/or Subnet information.')
 param networkAcls object = {}
 
@@ -85,17 +88,8 @@ param allowBlobPublicAccess bool = true
 @description('Optional. Set the minimum TLS version on request to storage.')
 param minimumTlsVersion string = 'TLS1_2'
 
-@description('Optional. If true, enables move to archive tier and auto-delete')
-param enableArchiveAndDelete bool = false
-
 @description('Optional. If true, enables Hierarchical Namespace for the storage account')
 param enableHierarchicalNamespace bool = false
-
-@description('Optional. Set up the amount of days after which the blobs will be moved to archive tier')
-param moveToArchiveAfter int = 30
-
-@description('Optional. Set up the amount of days after which the blobs will be deleted')
-param deleteBlobsAfter int = 1096
 
 @allowed([
   'CanNotDelete'
@@ -168,44 +162,6 @@ resource storageAccount 'Microsoft.Storage/storageAccounts@2021-06-01' = {
   }
   tags: tags
   properties: saProperties
-
-  // lifecycle policy
-  resource storageAccount_managementPolicies 'managementPolicies@2019-06-01' = if (enableArchiveAndDelete) {
-    name: 'default'
-    properties: {
-      policy: {
-        rules: [
-          {
-            enabled: true
-            name: 'retention-policy'
-            type: 'Lifecycle'
-            definition: {
-              actions: {
-                baseBlob: {
-                  tierToArchive: {
-                    daysAfterModificationGreaterThan: moveToArchiveAfter
-                  }
-                  delete: {
-                    daysAfterModificationGreaterThan: deleteBlobsAfter
-                  }
-                }
-                snapshot: {
-                  delete: {
-                    daysAfterCreationGreaterThan: deleteBlobsAfter
-                  }
-                }
-              }
-              filters: {
-                blobTypes: [
-                  'blockBlob'
-                ]
-              }
-            }
-          }
-        ]
-      }
-    }
-  }
 }
 
 resource storageAccount_lock 'Microsoft.Authorization/locks@2016-09-01' = if (lock != 'NotSpecified') {
@@ -234,6 +190,15 @@ module storageAccount_privateEndpoints '.bicep/nested_privateEndpoint.bicep' = [
     tags: tags
   }
 }]
+
+// Lifecycle Policy
+module storageAccount_managementPolicies 'managementPolicies/deploy.bicep' = if (!empty(managementPolicyRules)) {
+  name: '${uniqueString(deployment().name, location)}-Storage-ManagementPolicies'
+  params: {
+    storageAccountName: storageAccount.name
+    rules: managementPolicyRules
+  }
+}
 
 // Containers
 module storageAccount_blobService 'blobServices/deploy.bicep' = if (!empty(blobServices)) {

@@ -22,14 +22,18 @@ module pid_cuaId '.bicep/nested_cuaId.bicep' = if (!empty(cuaId)) {
   params: {}
 }
 
-resource blobServices 'Microsoft.Storage/storageAccounts/blobServices@2021-08-01' = {
-  name: '${storageAccountName}/default'
-  properties: {
-    deleteRetentionPolicy: {
-      enabled: deleteRetentionPolicy
-      days: deleteRetentionPolicyDays
+resource storageAccount 'Microsoft.Storage/storageAccounts@2021-06-01' existing = {
+  name: storageAccountName
+
+  resource blobServices 'blobServices@2021-08-01' = {
+    name: 'default'
+    properties: {
+      deleteRetentionPolicy: {
+        enabled: deleteRetentionPolicy
+        days: deleteRetentionPolicyDays
+      }
+      automaticSnapshotPolicyEnabled: automaticSnapshotPolicyEnabled
     }
-    automaticSnapshotPolicyEnabled: automaticSnapshotPolicyEnabled
   }
 }
 
@@ -43,15 +47,15 @@ module blobServices_container 'containers/deploy.bicep' = [for (container, index
     immutabilityPolicyProperties: contains(container, 'immutabilityPolicyProperties') ? container.immutabilityPolicyProperties : {}
   }
   dependsOn: [
-    blobServices
+    storageAccount::blobServices
   ]
 }]
 
 @description('The name of the deployed blob service')
-output blobServiceName string = blobServices.name
+output blobServiceName string = storageAccount::blobServices.name
 
 @description('The id of the deployed blob service')
-output blobServiceResourceId string = blobServices.id
+output blobServiceResourceId string = storageAccount::blobServices.id
 
 @description('The name of the deployed blob service')
 output blobServiceResourceGroup string = resourceGroup().name

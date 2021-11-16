@@ -13,9 +13,13 @@ module pid_cuaId '.bicep/nested_cuaId.bicep' = if (!empty(cuaId)) {
   params: {}
 }
 
-resource tableService 'Microsoft.Storage/storageAccounts/tableServices@2021-04-01' = {
-  name: '${storageAccountName}/default'
-  properties: {}
+resource storageAccount 'Microsoft.Storage/storageAccounts@2021-06-01' existing = {
+  name: storageAccountName
+
+  resource tableService 'tableServices@2021-04-01' = {
+    name: 'default'
+    properties: {}
+  }
 }
 
 module tableService_tables 'tables/deploy.bicep' = [for (tableName, index) in tables: {
@@ -25,15 +29,15 @@ module tableService_tables 'tables/deploy.bicep' = [for (tableName, index) in ta
     name: tableName
   }
   dependsOn: [
-    tableService
+    storageAccount::tableService
   ]
 }]
 
 @description('The name of the deployed table service')
-output tableServiceName string = tableService.name
+output tableServiceName string = storageAccount::tableService.name
 
 @description('The id of the deployed table service')
-output tableServiceResourceId string = tableService.id
+output tableServiceResourceId string = storageAccount::tableService.id
 
 @description('The resource group of the deployed table service')
 output tableServiceResourceGroup string = resourceGroup().name

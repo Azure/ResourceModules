@@ -19,10 +19,18 @@ module pid_cuaId '.bicep/nested_cuaId.bicep' = if (!empty(cuaId)) {
   params: {}
 }
 
-resource queue 'Microsoft.Storage/storageAccounts/queueServices/queues@2019-06-01' = {
-  name: '${storageAccountName}/default/${name}'
-  properties: {
-    metadata: metadata
+resource storageAccount 'Microsoft.Storage/storageAccounts@2021-06-01' existing = {
+  name: storageAccountName
+
+  resource queueService 'queueServices@2021-06-01' existing = {
+    name: 'default'
+
+    resource queue 'queues@2019-06-01' = {
+      name: name
+      properties: {
+        metadata: metadata
+      }
+    }
   }
 }
 
@@ -30,15 +38,15 @@ module queue_rbac '.bicep/nested_rbac.bicep' = [for (roleAssignment, index) in r
   name: '${deployment().name}-Rbac-${index}'
   params: {
     roleAssignmentObj: roleAssignment
-    resourceName: queue.name
+    resourceName: storageAccount::queueService::queue.name
   }
 }]
 
 @description('The name of the deployed queue')
-output queueName string = queue.name
+output queueName string = storageAccount::queueService::queue.name
 
 @description('The ID of the deployed queue')
-output queueResourceId string = queue.id
+output queueResourceId string = storageAccount::queueService::queue.id
 
 @description('The resource group of the deployed queue')
 output queueResourceGroup string = resourceGroup().name

@@ -19,19 +19,31 @@ module pid_cuaId '.bicep/nested_cuaId.bicep' = if (!empty(cuaId)) {
   params: {}
 }
 
-resource immutabilityPolicy 'Microsoft.Storage/storageAccounts/blobServices/containers/immutabilityPolicies@2019-06-01' = {
-  name: '${storageAccountName}/default/${containerName}/default'
-  properties: {
-    immutabilityPeriodSinceCreationInDays: immutabilityPeriodSinceCreationInDays
-    allowProtectedAppendWrites: allowProtectedAppendWrites
+resource storageAccount 'Microsoft.Storage/storageAccounts@2021-06-01' existing = {
+  name: storageAccountName
+
+  resource blobServices 'blobServices@2021-08-01' existing = {
+    name: 'default'
+
+    resource container 'containers@2019-06-01' existing = {
+      name: containerName
+
+      resource immutabilityPolicy 'immutabilityPolicies@2019-06-01' = {
+        name: 'default'
+        properties: {
+          immutabilityPeriodSinceCreationInDays: immutabilityPeriodSinceCreationInDays
+          allowProtectedAppendWrites: allowProtectedAppendWrites
+        }
+      }
+    }
   }
 }
 
 @description('The name of the deployed immutability policy.')
-output immutabilityPolicyName string = immutabilityPolicy.name
+output immutabilityPolicyName string = storageAccount::blobServices::container::immutabilityPolicy.name
 
 @description('The id of the deployed immutability policy.')
-output immutabilityPolicyResourceId string = immutabilityPolicy.id
+output immutabilityPolicyResourceId string = storageAccount::blobServices::container::immutabilityPolicy.id
 
 @description('The resource group of the deployed immutability policy.')
 output immutabilityPolicyResourceGroup string = resourceGroup().name

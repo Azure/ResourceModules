@@ -27,10 +27,18 @@ module pid_cuaId '.bicep/nested_cuaId.bicep' = if (!empty(cuaId)) {
   params: {}
 }
 
-resource container 'Microsoft.Storage/storageAccounts/blobServices/containers@2019-06-01' = {
-  name: '${storageAccountName}/default/${name}'
-  properties: {
-    publicAccess: publicAccess
+resource storageAccount 'Microsoft.Storage/storageAccounts@2021-06-01' existing = {
+  name: storageAccountName
+
+  resource blobServices 'blobServices@2021-08-01' existing = {
+    name: 'default'
+
+    resource container 'containers@2019-06-01' = {
+      name: name
+      properties: {
+        publicAccess: publicAccess
+      }
+    }
   }
 }
 
@@ -38,7 +46,7 @@ module immutabilityPolicy 'immutabilityPolicies/deploy.bicep' = if (!empty(immut
   name: 'default'
   params: {
     storageAccountName: storageAccountName
-    containerName: container.name
+    containerName: storageAccount::blobServices::container.name
     immutabilityPeriodSinceCreationInDays: contains(immutabilityPolicyProperties, 'immutabilityPeriodSinceCreationInDays') ? immutabilityPolicyProperties.immutabilityPeriodSinceCreationInDays : 365
     allowProtectedAppendWrites: contains(immutabilityPolicyProperties, 'allowProtectedAppendWrites') ? immutabilityPolicyProperties.allowProtectedAppendWrites : true
   }
@@ -48,15 +56,15 @@ module container_rbac '.bicep/nested_rbac.bicep' = [for (roleAssignment, index) 
   name: '${deployment().name}-Rbac-${index}'
   params: {
     roleAssignmentObj: roleAssignment
-    resourceName: container.name
+    resourceName: storageAccount::blobServices::container.name
   }
 }]
 
 @description('The name of the deployed container')
-output containerName string = container.name
+output containerName string = storageAccount::blobServices::container.name
 
 @description('The ID of the deployed container')
-output containerResourceId string = container.id
+output containerResourceId string = storageAccount::blobServices::container.id
 
 @description('The resource group of the deployed container')
 output containerResourceGroup string = resourceGroup().name
