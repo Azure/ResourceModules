@@ -45,18 +45,43 @@ runs:
         creds: ${{ env.AZURE_CREDENTIALS }}
         enable-AzPSSession: true
 
-    - name: 'Replace Tokens [${{ inputs.parameterFilePath }}] '
+    - name: 'Replace Parameter File Tokens [${{ inputs.parameterFilePath }}] '
       shell: pwsh
       run: |
-        # Load used funtions
-        . ".github/actions/sharedScripts/Convert-TokensInFiles.ps1"
-        $TokensReplaceWithObject = @(
-            @{ Replace = "<<subscriptionId>>"; With = '${{ inputs.subscriptionId }}' }
-        )
-        write-verbose "Invoking Convert-TokensInFiles"
-        Convert-TokensInFiles -Paths '${{ inputs.parameterFilePath }}' -TokensReplaceWith $TokensReplaceWithObject
+        # Load used functions
+        . "utilities/tokensReplacement/Convert-TokensInParameterFile.ps1"
+        # Load Settings File
+        $Settings = Get-Content -Path "settings.json" | ConvertFrom-Json
+        # Initialize Default Parameter File Tokens
+        $DefaultParameterFileTokens = @(
+            @{ Name = 'resourceGroupName'; Value = '${{ inputs.resourceGroupName }}' }
+            @{ Name = 'subscriptionId'; Value = '${{ inputs.subscriptionId }}' }
+            @{ Name = 'managementGroupId'; Value = '${{ inputs.managementGroupId }}' }
+            @{ Name = "tenantId"; Value = '${{ env.ARM_TENANT_ID }}' }
+            @{ Name = "deploymentSpId"; Value = '${{ env.DEPLOYMENT_SP_ID }}' }
+            @{ Name = "platformKeyVault"; Value = '${{ env.PLATFORM_KEYVAULT }}' }
+        ) | ForEach-Object { [PSCustomObject]$PSItem }
 
-    - name: 'Validate [${{ inputs.templateFilePath }}]'
+        # Construct Token Function Input
+        $ConvertTokensInputs = @{
+            ParameterFilePath                 = '${{ inputs.parameterFilePath }}'
+            DefaultParameterFileTokens        = $DefaultParameterFileTokens
+            LocalCustomParameterFileTokens    = $Settings.parameterFileTokens.localTokens.tokens
+            TokenPrefix                       = $Settings.parameterFileTokens.tokenPrefix
+            TokenSuffix                       = $Settings.parameterFileTokens.tokenSuffix
+        }
+        # Add Remote Custom Parameter File Tokens
+        if ('${{ env.PLATFORM_KEYVAULT }}' -and '${{ inputs.subscriptionId }}') {
+            $ConvertTokensInputs += @{
+                TokensKeyVaultName                 = '${{ env.PLATFORM_KEYVAULT }}'
+                TokensKeyVaultSubscriptionId       = '${{ inputs.subscriptionId }}'
+                TokensKeyVaultSecretNamePrefix     = $Settings.parameterFileTokens.remoteTokens.keyVaultSecretNamePrefix
+            }
+        }
+        # Invoke Token Replacement Functionality
+        Convert-TokensInParameterFile @ConvertTokensInputs -Verbose
+
+    - name: 'Deploy [${{ inputs.templateFilePath }}]'
       shell: pwsh
       run: |
         # Load used functions
