@@ -17,7 +17,6 @@ This module deploys an Azure Automation Account.
 | `Microsoft.Insights/diagnosticSettings` | 2017-05-01-preview |
 | `Microsoft.Network/privateEndpoints` | 2021-03-01 |
 | `Microsoft.Network/privateEndpoints/privateDnsZoneGroups` | 2021-03-01 |
-| `Microsoft.OperationalInsights/workspaces` | 2021-06-01 |
 | `Microsoft.OperationalInsights/workspaces/linkedServices` | 2020-08-01 |
 
 ## Parameters
@@ -151,5 +150,4 @@ To use Private Endpoint the following dependencies must be deployed:
 - [Diagnosticsettings](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Insights/2017-05-01-preview/diagnosticSettings)
 - [Privateendpoints](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Network/2021-03-01/privateEndpoints)
 - [Privateendpoints/Privatednszonegroups](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Network/2021-03-01/privateEndpoints/privateDnsZoneGroups)
-- [Workspaces](https://docs.microsoft.com/en-us/azure/templates/Microsoft.OperationalInsights/2021-06-01/workspaces)
 - [Workspaces/Linkedservices](https://docs.microsoft.com/en-us/azure/templates/Microsoft.OperationalInsights/2020-08-01/workspaces/linkedServices)
