@@ -1,6 +1,6 @@
-# ApimanagementServicePortalsettings `[Microsoft.ApiManagement/service/portalsettings]`
+# Api Management Service Portal Settings `[Microsoft.ApiManagement/service/portalsettings]`
 
-// TODO: Replace Resource and fill in description
+This module deploys Api Management Service Portal Setting.
 
 ## Resource Types
 
@@ -17,9 +17,6 @@
 | `name` | string |  |  | Required. Portal setting name |
 | `properties` | object | `{object}` |  | Optional. Portal setting properties. |
 
-### Parameter Usage: `<ParameterPlaceholder>`
-
-// TODO: Fill in Parameter usage
 
 ## Outputs
 

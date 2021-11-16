@@ -199,7 +199,7 @@ resource apiManagementService 'Microsoft.ApiManagement/service@2020-12-01' = {
 module apis_resource 'apis/deploy.bicep' = [for (api, index) in apis: {
   name: '${uniqueString(deployment().name, location)}-api-${index}'
   params: {
-    apiManagementServiceName: name
+    apiManagementServiceName: apiManagementService.name
     displayName: api.displayName
     name: api.name
     path: api.path
@@ -233,7 +233,7 @@ module apis_resource 'apis/deploy.bicep' = [for (api, index) in apis: {
 module authorizationServers_resource '.bicep/nested_authorizationServers.bicep' = [for (authorizationServer, index) in authorizationServers: {
   name: '${uniqueString(deployment().name, location)}-authorizationServer-${index}'
   params: {
-    apiManagementServiceName: name
+    apiManagementServiceName: apiManagementService.name
     name: authorizationServer.name
     authorizationEndpoint: authorizationServer.authorizationEndpoint
     authorizationMethods: contains(authorizationServer, 'authorizationMethods') ? authorizationServer.authorizationMethods : [
@@ -266,7 +266,7 @@ module authorizationServers_resource '.bicep/nested_authorizationServers.bicep' 
 module backends_resource 'backends/deploy.bicep' = [for (backend, index) in backends: {
   name: '${uniqueString(deployment().name, location)}-backend-${index}'
   params: {
-    apiManagementServiceName: name
+    apiManagementServiceName: apiManagementService.name
     url: contains(backend, 'url') ? backend.url : ''
     backendDescription: contains(backend, 'backendDescription') ? backend.backendDescription : ''
     credentials: contains(backend, 'credentials') ? backend.credentials : {}
@@ -289,7 +289,7 @@ module backends_resource 'backends/deploy.bicep' = [for (backend, index) in back
 module caches_resource 'caches/deploy.bicep' = [for (cache, index) in caches: {
   name: '${uniqueString(deployment().name, location)}-cache-${index}'
   params: {
-    apiManagementServiceName: name
+    apiManagementServiceName: apiManagementService.name
     cacheDescription: contains(cache, 'cacheDescription') ? cache.cacheDescription : ''
     connectionString: cache.connectionString
     name: cache.name
@@ -304,7 +304,7 @@ module caches_resource 'caches/deploy.bicep' = [for (cache, index) in caches: {
 module identityProvider_resource 'identityProviders/deploy.bicep' = [for (identityProvider, index) in identityProviders: {
   name: '${uniqueString(deployment().name, location)}-identityProvider-${index}'
   params: {
-    apiManagementServiceName: name
+    apiManagementServiceName: apiManagementService.name
     name: identityProvider.name
     enableIdentityProviders: contains(identityProvider, 'enableIdentityProviders') ? identityProvider.enableIdentityProviders : false
     identityProviderAllowedTenants: contains(identityProvider, 'identityProviderAllowedTenants') ? identityProvider.identityProviderAllowedTenants : []
@@ -326,7 +326,7 @@ module identityProvider_resource 'identityProviders/deploy.bicep' = [for (identi
 module namedValues_resource 'namedValues/deploy.bicep' = [for (namedValue, index) in namedValues: {
   name: '${uniqueString(deployment().name, location)}-namedValue-${index}'
   params: {
-    apiManagementServiceName: name
+    apiManagementServiceName: apiManagementService.name
     displayName: namedValue.displayName
     keyVault: contains(namedValue, 'keyVault') ? namedValue.keyVault : {}
     name: namedValue.name
@@ -342,7 +342,7 @@ module namedValues_resource 'namedValues/deploy.bicep' = [for (namedValue, index
 module portalSettings_resource 'portalsettings/deploy.bicep' = [for (portalSetting, index) in portalSettings: {
   name: '${uniqueString(deployment().name, location)}-portalSetting-${index}'
   params: {
-    apiManagementServiceName: name
+    apiManagementServiceName: apiManagementService.name
     name: portalSetting.name
     properties: contains(portalSetting, 'properties') ? portalSetting.properties : {}
   }
@@ -354,7 +354,7 @@ module portalSettings_resource 'portalsettings/deploy.bicep' = [for (portalSetti
 module policy_resource 'policies/deploy.bicep' = [for (policy, index) in policies: {
   name: '${uniqueString(deployment().name, location)}-policy-${index}'
   params: {
-    apiManagementServiceName: name
+    apiManagementServiceName: apiManagementService.name
     value: policy.value
     format: contains(policy, 'format') ? policy.format : 'xml'
   }
@@ -366,7 +366,7 @@ module policy_resource 'policies/deploy.bicep' = [for (policy, index) in policie
 module products_resource 'products/deploy.bicep' = [for (product, index) in products: {
   name: '${uniqueString(deployment().name, location)}-product-${index}'
   params: {
-    apiManagementServiceName: name
+    apiManagementServiceName: apiManagementService.name
     approvalRequired: contains(product, 'approvalRequired') ? product.approvalRequired : false
     name: product.name
     productApis: contains(product, 'productApis') ? product.productApis : []
@@ -386,7 +386,7 @@ module products_resource 'products/deploy.bicep' = [for (product, index) in prod
 module subscriptions_resource 'subscriptions/deploy.bicep' = [for (subscription, index) in subscriptions: {
   name: '${uniqueString(deployment().name, location)}-subscription-${index}'
   params: {
-    apiManagementServiceName: name
+    apiManagementServiceName: apiManagementService.name
     name: contains(subscription, 'name') ? subscription.name : ''
     allowTracing: contains(subscription, 'allowTracing') ? subscription.allowTracing : false
     ownerId: contains(subscription, 'ownerId') ? subscription.ownerId : ''

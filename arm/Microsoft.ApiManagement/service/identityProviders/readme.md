@@ -1,6 +1,6 @@
-# ApimanagementServiceIdentityproviders `[Microsoft.ApiManagement/service/identityProviders]`
+# Api Management Service Identity Providers `[Microsoft.ApiManagement/service/identityProviders]`
 
-// TODO: Replace Resource and fill in description
+This module deploys Api Management Service Identity Provider.
 
 ## Resource Types
 
@@ -26,10 +26,6 @@
 | `identityProviderSignUpPolicyName` | string |  |  | Optional. Signup Policy Name. Only applies to AAD B2C Identity Provider. |
 | `identityProviderType` | string | `aad` | `[aad, aadB2C, facebook, google, microsoft, twitter]` | Optional. Identity Provider Type identifier. |
 | `name` | string |  |  | Required. Identity provider name |
-
-### Parameter Usage: `<ParameterPlaceholder>`
-
-// TODO: Fill in Parameter usage
 
 ## Outputs
 

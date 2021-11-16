@@ -1,6 +1,6 @@
-# ApimanagementServicePolicies `[Microsoft.ApiManagement/service/policies]`
+# Api Management Service Policies `[Microsoft.ApiManagement/service/policies]`
 
-// TODO: Replace Resource and fill in description
+This module deploys Api Management Service Policy.
 
 ## Resource Types
 
@@ -17,9 +17,6 @@
 | `format` | string | `xml` | `[rawxml, rawxml-link, xml, xml-link]` | Optional. Format of the policyContent. |
 | `value` | string |  |  | Required. Contents of the Policy as defined by the format. |
 
-### Parameter Usage: `<ParameterPlaceholder>`
-
-// TODO: Fill in Parameter usage
 
 ## Outputs
 

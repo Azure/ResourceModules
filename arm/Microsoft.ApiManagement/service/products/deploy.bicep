@@ -1,7 +1,7 @@
 @description('Required. The name of the of the Api Management service.')
 param apiManagementServiceName string
 
-@description('Optional. Whether subscription approval is required. If false, new subscriptions will be approved automatically enabling developers to call the product’s APIs immediately after subscribing. If true, administrators must manually approve the subscription before the developer can any of the product’s APIs. Can be present only if subscriptionRequired property is present and has a value of false.')
+@description('Optional. Whether subscription approval is required. If false, new subscriptions will be approved automatically enabling developers to call the products APIs immediately after subscribing. If true, administrators must manually approve the subscription before the developer can any of the products APIs. Can be present only if subscriptionRequired property is present and has a value of false.')
 param approvalRequired bool = false
 
 @description('Optional. Customer Usage Attribution id (GUID). This GUID must be previously registered')
@@ -64,7 +64,7 @@ output productName string = product.name
 output productResourceGroup string = resourceGroup().name
 
 @description('The Resources Ids of the API management service product apis')
-output productApisResourceIds array = [for item in productApis: resourceId('Microsoft.ApiManagement/service/products/apis', apiManagementServiceName, name, item)]
+output productApisResourceIds array = [for productGroup in productApis: resourceId('Microsoft.ApiManagement/service/products/apis', apiManagementServiceName, name, productGroup)]
 
 @description('The Resources Ids of the API management service product groups')
-output productGroupsResourceIds array = [for item in productGroups: resourceId('Microsoft.ApiManagement/service/products/groups', apiManagementServiceName, name, item)]
+output productGroupsResourceIds array = [for productGroup in productGroups: resourceId('Microsoft.ApiManagement/service/products/groups', apiManagementServiceName, name, productGroup)]
