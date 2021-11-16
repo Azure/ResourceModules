@@ -205,7 +205,7 @@ module automationAccount_linkedService './.bicep/nested_linkedService.bicep' = i
   name: '${uniqueString(deployment().name, location)}-AutoAccount-LinkedService'
   params: {
     name: 'automation'
-    logAnalyticsWorkspaceName: '${last(split(linkedWorkspaceId, '/'))}'
+    logAnalyticsWorkspaceName: !empty(linkedWorkspaceId) ? '${last(split(linkedWorkspaceId, '/'))}' : ''
     resourceId: automationAccount.id
     tags: tags
   }
