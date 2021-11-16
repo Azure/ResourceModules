@@ -215,6 +215,9 @@ module automationAccount_solutions './.bicep/nested_solution.bicep' = [for (gall
     // publisher: gallerySolution.publisher
   }
   scope: resourceGroup(!empty(linkedWorkspaceId) ? split(linkedWorkspaceId, '/')[2]: subscription().subscriptionId, !empty(linkedWorkspaceId) ? split(linkedWorkspaceId, '/')[4] : resourceGroup().name)
+  dependsOn: [
+    automationAccount_linkedService
+  ]
 }]
 
 //   name: '${uniqueString(deployment().name, location)}-AutoAccount-LinkedService'
@@ -239,7 +242,7 @@ module automationAccount_softwareUpdateConfigurations './softwareUpdateConfigura
     rebootSetting: softwareUpdateConfiguration.rebootSetting
   }
   dependsOn: [
-    automationAccount_linkedService
+    automationAccount_solutions
   ]
 }]
 
