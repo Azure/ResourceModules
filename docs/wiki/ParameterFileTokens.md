@@ -117,7 +117,7 @@ The below diagram illustrates the Token Replacement Functionality via the [Valid
   $SettingsFilePath = 'repoPath/settings.json'
   ## Tokens
   $remoteTokens = @(
-      @{ Name = 'myCustomTokenName'; Value = 'myCustomTokenNameValue' } # Specify the Name/Value for the Token (Secret) In Key Vault, you can add multiple
+      @{ Name = 'myCustomTokenName'; Value = 'myCustomTokenNameValue' } # Specify Token Name and Value, you can add multiple.
   )
   ## Add tokens to Key Vault
   $Settings = Get-Content $SettingsFilePath | ConvertFrom-Json
@@ -133,7 +133,7 @@ The below diagram illustrates the Token Replacement Functionality via the [Valid
 
   > Make sure the `contentType` of a Key Vault Secret is equal to `ParameterFileToken` so that it can be utilized by the token replacement functionality.
 
-3- The parameter files can now be tokenized as per required value. Then token must be in the format of `<<tokenName>>`. Example:
+3- The parameter files can now be tokenized as per required value. And the token format can look like `<<tokenName>>`. Example:
 
   ```json
   "adminPassword": {
