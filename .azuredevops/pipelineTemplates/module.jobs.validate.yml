@@ -343,7 +343,7 @@ jobs:
                     verbose                        = $true
                 }
                 # Add Remote Custom Parameter File Tokens
-                if ('$(PLATFORM_KEYVAULT)' -and '${{ parameters.subscriptionId }}') {
+                if ('${{ parameters.subscriptionId }}' -and -not [String]::IsNullOrEmpty('$(PLATFORM_KEYVAULT)') -and '$(PLATFORM_KEYVAULT)' -notlike "`$(PLATFORM_KEYVAULT*") {
                     $ConvertTokensInputs += @{
                         TokensKeyVaultName                 = '$(PLATFORM_KEYVAULT)'
                         TokensKeyVaultSubscriptionId       = '${{ parameters.subscriptionId }}'
