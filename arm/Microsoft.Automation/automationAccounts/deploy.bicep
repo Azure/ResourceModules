@@ -178,9 +178,10 @@ module automationAccount_jobSchedules './jobSchedules/deploy.bicep' = [for (jobS
     ]
 }]
 
-resource automationAccount_logAnalyticsWorkspace 'Microsoft.OperationalInsights/workspaces@2021-06-01' = if (!empty(linkedWorkspaceId)) {
-  name: empty(linkedWorkspaceId) ? 'dummy' : '${last(split(linkedWorkspaceId, '/'))}'
+resource automationAccount_logAnalyticsWorkspace 'Microsoft.OperationalInsights/workspaces@2021-06-01' = {
+  name: '${last(split(linkedWorkspaceId, '/'))}'
   location: location
+
   resource automationAccount_logAnalyticsWorkspaceLink 'linkedservice@2020-08-01' = {
     name: 'automation'
     tags: tags
