@@ -8,7 +8,6 @@ This module deploys Api Management Service Apis.
 | :-- | :-- |
 | `Microsoft.ApiManagement/service/apis` | 2020-06-01-preview |
 | `Microsoft.ApiManagement/service/apis/policies` | 2020-06-01-preview |
-| `Microsoft.ApiManagement/service/apiVersionSets` | 2020-06-01-preview |
 
 ### Resource dependency
 
@@ -28,7 +27,7 @@ The following resources are required to be able to deploy this resource.
 | `apiType` | string | `http` | `[http, soap]` | Optional. Type of Api to create. * http creates a SOAP to REST API * soap creates a SOAP pass-through API. |
 | `apiVersion` | string |  |  | Optional. Indicates the Version identifier of the API if the API is versioned |
 | `apiVersionDescription` | string |  |  | Optional. Description of the Api Version. |
-| `apiVersionSet` | object | `{object}` |  | Optional. Version set details |
+| `apiVersionSetId` | string |  |  | Optional. Indicates the Version identifier of the API version set |
 | `authenticationSettings` | object | `{object}` |  | Optional. Collection of authentication settings included into this API. |
 | `cuaId` | string |  |  | Optional. Customer Usage Attribution id (GUID). This GUID must be previously registered |
 | `displayName` | string |  |  | Required. API name. Must be 1 to 300 characters long. |
@@ -74,4 +73,3 @@ The following resources are required to be able to deploy this resource.
 
 - [Service/Apis](https://docs.microsoft.com/en-us/azure/templates/Microsoft.ApiManagement/2020-06-01-preview/service/apis)
 - [Service/Apis/Policies](https://docs.microsoft.com/en-us/azure/templates/Microsoft.ApiManagement/2020-06-01-preview/service/apis/policies)
-- [Service/Apiversionsets](https://docs.microsoft.com/en-us/azure/templates/Microsoft.ApiManagement/2020-06-01-preview/service/apiVersionSets)

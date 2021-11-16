@@ -23,11 +23,11 @@ param apiType string = 'http'
 @description('Optional. Indicates the Version identifier of the API if the API is versioned')
 param apiVersion string = ''
 
+@description('Optional. Indicates the Version identifier of the API version set')
+param apiVersionSetId string = ''
+
 @description('Optional. Description of the Api Version.')
 param apiVersionDescription string = ''
-
-@description('Optional. Version set details')
-param apiVersionSet object = {}
 
 @description('Optional. Collection of authentication settings included into this API.')
 param authenticationSettings object = {}
@@ -94,16 +94,9 @@ param value string = ''
 @description('Optional. Criteria to limit import of WSDL to a subset of the document.')
 param wsdlSelector object = {}
 
-var apiVersionSetName = !empty(apiVersionSet) ? apiVersionSet.name : 'default'
-
 module pid_cuaId '.bicep/nested_cuaId.bicep' = if (!empty(cuaId)) {
   name: 'pid-${cuaId}'
   params: {}
-}
-
-resource apiVersionSetResource 'Microsoft.ApiManagement/service/apiVersionSets@2020-06-01-preview' = if (!empty(apiVersionSet)) {
-  name: '${apiManagementServiceName}/${apiVersionSetName}'
-  properties: apiVersionSet.properties
 }
 
 resource apis 'Microsoft.ApiManagement/service/apis@2020-06-01-preview' = {
@@ -114,7 +107,7 @@ resource apis 'Microsoft.ApiManagement/service/apis@2020-06-01-preview' = {
     apiType: !empty(apiType) ? apiType : null
     apiVersion: !empty(apiVersion) ? apiVersion : null
     apiVersionDescription: !empty(apiVersionDescription) ? apiVersionDescription : null
-    apiVersionSetId: !empty(apiVersionSet) ? apiVersionSetResource.id : null
+    apiVersionSetId: !empty(apiVersionSetId) ? apiVersionSetId : null
     authenticationSettings: authenticationSettings
     description: apiDescription
     displayName: displayName
