@@ -51,7 +51,7 @@ function Get-RemoteCustomParameterFileTokens {
         ## Remote Custom Parameter File Tokens (Should Not Contain Sensitive Information if being passed to regular strings)
         Write-Verbose "Finding Tokens Key Vault by Name: $TokensKeyVaultName"
         ## Find Token Key Vault by Name
-        $TokensKeyVault = Get-AzKeyVault -VaultName $TokensKeyVaultName -ErrorAction SilentlyContinue
+        $TokensKeyVault = Get-AzKeyVault -VaultName $TokensKeyVaultName -ErrorAction 'SilentlyContinue'
         # If no Key Vault exists. Exit
         if (!$TokensKeyVault) {
             Write-Verbose('No Tokens Key Vault Detected in the current Subscription Context')

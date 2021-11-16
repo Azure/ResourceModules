@@ -75,7 +75,7 @@ runs:
             }
         }
         # Invoke Token Replacement Functionality
-        Convert-TokensInParameterFile @ConvertTokensInputs -Verbose
+        $null = Convert-TokensInParameterFile @ConvertTokensInputs -Verbose
 
       # [Test Deployment] task(s)
       #--------------------------

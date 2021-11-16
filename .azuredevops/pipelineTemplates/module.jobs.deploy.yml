@@ -183,7 +183,7 @@ jobs:
                 Write-Verbose ($ConvertTokensInputs | ConvertTo-Json | Out-String) -Verbose
 
                 # Invoke Token Replacement Functionality
-                Convert-TokensInParameterFile @ConvertTokensInputs -Verbose
+                $null = Convert-TokensInParameterFile @ConvertTokensInputs -Verbose
 
           # [Deployment] task(s)
           #---------------------
