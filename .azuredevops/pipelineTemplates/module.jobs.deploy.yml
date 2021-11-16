@@ -146,10 +146,10 @@ jobs:
               pwsh: true
               inline: |
                 # Load used functions
-                . (Join-Path '$(System.DefaultWorkingDirectory)' 'utilities' 'pipelines' 'tokensReplacement' 'Convert-TokensInParameterFile.ps1')
+                . (Join-Path '$(moduleRepoRoot)' 'utilities' 'pipelines' 'tokensReplacement' 'Convert-TokensInParameterFile.ps1')
 
                 # Load Settings File
-                $Settings = Get-Content -Path "settings.json" | ConvertFrom-Json
+                $Settings = Get-Content -Path (Join-Path '$(moduleRepoRoot)' 'settings.json') | ConvertFrom-Json
 
                 # Initialize Default Parameter File Tokens
                 $DefaultParameterFileTokens = @(
