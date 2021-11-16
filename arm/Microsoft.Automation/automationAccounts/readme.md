@@ -18,6 +18,7 @@ This module deploys an Azure Automation Account.
 | `Microsoft.Network/privateEndpoints` | 2021-03-01 |
 | `Microsoft.Network/privateEndpoints/privateDnsZoneGroups` | 2021-03-01 |
 | `Microsoft.OperationalInsights/workspaces/linkedServices` | 2020-08-01 |
+| `Microsoft.OperationsManagement/solutions` | 2015-11-01-preview |
 
 ## Parameters
 
@@ -28,6 +29,7 @@ This module deploys an Azure Automation Account.
 | `diagnosticStorageAccountId` | string |  |  | Optional. Resource identifier of the Diagnostic Storage Account. |
 | `eventHubAuthorizationRuleId` | string |  |  | Optional. Resource ID of the event hub authorization rule for the Event Hubs namespace in which the event hub should be created or streamed to. |
 | `eventHubName` | string |  |  | Optional. Name of the event hub within the namespace to which logs are streamed. Without this, an event hub is created for each log category. |
+| `gallerySolutions` | array | `[System.Collections.Hashtable]` |  | Optional. List of gallerySolutions to be created in the linked log analytics workspace |
 | `jobSchedules` | _[jobSchedules](jobSchedules/readme.md)_ array | `[]` |  | Optional. List of jobSchedules to be created in the automation account. |
 | `linkedWorkspaceId` | string |  |  | Optional. Id of the linked log analytics workspace |
 | `location` | string | `[resourceGroup().location]` |  | Optional. Location for all resources. |
@@ -151,3 +153,4 @@ To use Private Endpoint the following dependencies must be deployed:
 - [Privateendpoints](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Network/2021-03-01/privateEndpoints)
 - [Privateendpoints/Privatednszonegroups](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Network/2021-03-01/privateEndpoints/privateDnsZoneGroups)
 - [Workspaces/Linkedservices](https://docs.microsoft.com/en-us/azure/templates/Microsoft.OperationalInsights/2020-08-01/workspaces/linkedServices)
+- [Solutions](https://docs.microsoft.com/en-us/azure/templates/Microsoft.OperationsManagement/2015-11-01-preview/solutions)

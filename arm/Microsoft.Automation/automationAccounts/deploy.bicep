@@ -26,6 +26,13 @@ param jobSchedules array = []
 @description('Optional. Id of the linked log analytics workspace')
 param linkedWorkspaceId string = ''
 
+@description('Optional. List of gallerySolutions to be created in the linked log analytics workspace')
+param gallerySolutions array = [
+  {
+    name: 'ChangeTracking'
+  }
+]
+
 @description('Optional. List of softwareUpdateConfigurations to be created in the automation account')
 param softwareUpdateConfigurations array = []
 
@@ -178,39 +185,49 @@ module automationAccount_jobSchedules './jobSchedules/deploy.bicep' = [for (jobS
     ]
 }]
 
-// resource logAnalyticsWorkspace 'Microsoft.OperationalInsights/workspaces@2021-06-01' = if (!empty(linkedWorkspaceId)) {
-//   name: '${last(split(linkedWorkspaceId, '/'))}'
-//   location: location
-// }
-
-// resource logAnalyticsWorkspace_linkedService 'Microsoft.OperationalInsights/workspaces/linkedServices@2020-08-01' = if (!empty(linkedWorkspaceId)) {
-//   name: 'automation'
-//   parent: logAnalyticsWorkspace
-//   tags: tags
-//   properties: {
-//     resourceId: automationAccount.id
-//   }
-// }
-
-// resource automationAccount_logAnalyticsWorkspaceLink 'Microsoft.OperationalInsights/workspaces/linkedservice@2020-08-01' = if (!empty(linkedWorkspaceId)) {
-//   name: empty(linkedWorkspaceId) ? 'dummy/automation' : '${last(split(linkedWorkspaceId, '/'))}/automation'
-//   // parent: automationAccount_logAnalyticsWorkspace
-//   tags: tags
-//   properties: {
-//     resourceId: automationAccount.id
-//   }
-// }
+var logAnalyticsWorkspace = {
+  name: '${last(split(linkedWorkspaceId, '/'))}'
+  resourcegroupName: split(linkedWorkspaceId, '/')[4]
+  subscriptionId: split(linkedWorkspaceId, '/')[2]
+}
 
 module automationAccount_linkedService './.bicep/nested_linkedService.bicep' = if (!empty(linkedWorkspaceId)) {
   name: '${uniqueString(deployment().name, location)}-AutoAccount-LinkedService'
   params: {
     name: 'automation'
-    logAnalyticsWorkspaceName: '${last(split(linkedWorkspaceId, '/'))}'
+    // logAnalyticsWorkspaceName: '${last(split(linkedWorkspaceId, '/'))}'
+    logAnalyticsWorkspaceName: logAnalyticsWorkspace.name
     resourceId: automationAccount.id
     tags: tags
   }
+  // This is to support linked services to law in different subscription and resource group than the automation account.
+  // The current scope is used by default if no linked service is intended to be created.
   scope: resourceGroup(!empty(linkedWorkspaceId) ? split(linkedWorkspaceId, '/')[2]: subscription().subscriptionId, !empty(linkedWorkspaceId) ? split(linkedWorkspaceId, '/')[4] : resourceGroup().name)
 }
+
+module automationAccount_solutions './.bicep/nested_solution.bicep' = [for (gallerySolution, index) in gallerySolutions: if (!empty(linkedWorkspaceId)) {
+  name: '${uniqueString(deployment().name, location)}-AutoAccount-Solution-${index}'
+  params: {
+    name: gallerySolution.name
+    location: location
+    logAnalyticsWorkspaceName: logAnalyticsWorkspace.name
+    // product: gallerySolution.product
+    // publisher: gallerySolution.publisher
+  }
+  scope: resourceGroup(!empty(linkedWorkspaceId) ? split(linkedWorkspaceId, '/')[2]: subscription().subscriptionId, !empty(linkedWorkspaceId) ? split(linkedWorkspaceId, '/')[4] : resourceGroup().name)
+}]
+
+//   name: '${uniqueString(deployment().name, location)}-AutoAccount-LinkedService'
+//   params: {
+//     name: 'automation'
+//     logAnalyticsWorkspaceName: '${last(split(linkedWorkspaceId, '/'))}'
+//     resourceId: automationAccount.id
+//     tags: tags
+//   }
+//   // This is to support linked services to law in different subscription and resource group than the automation account.
+//   // The current scope is used by default if no linked service is intended to be created.
+//   scope: resourceGroup(!empty(linkedWorkspaceId) ? split(linkedWorkspaceId, '/')[2]: subscription().subscriptionId, !empty(linkedWorkspaceId) ? split(linkedWorkspaceId, '/')[4] : resourceGroup().name)
+// }
 
 module automationAccount_softwareUpdateConfigurations './softwareUpdateConfigurations/deploy.bicep' = [for (softwareUpdateConfiguration, index) in softwareUpdateConfigurations: {
   name: '${uniqueString(deployment().name, location)}-AutoAccount-SwUpdateConfig-${index}'

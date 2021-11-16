@@ -13,11 +13,8 @@ param writeAccessResourceId string = ''
 @description('Optional. Tags to configure in the resource.')
 param tags object = {}
 
-
 resource logAnalyticsWorkspace 'Microsoft.OperationalInsights/workspaces@2021-06-01' existing = {
   name: logAnalyticsWorkspaceName
-  // name: '${last(split(logAnalyticsWorkspaceId, '/'))}'
-  // scope: resourceGroup(split(logAnalyticsWorkspaceId, '/')[2], split(logAnalyticsWorkspaceId, '/')[4])
 }
 
 resource linkedService 'Microsoft.OperationalInsights/workspaces/linkedServices@2020-08-01' = {
@@ -25,7 +22,7 @@ resource linkedService 'Microsoft.OperationalInsights/workspaces/linkedServices@
   parent: logAnalyticsWorkspace
   tags: tags
   properties: {
-    resourceId: resourceId
+    resourceId: empty(resourceId) ? null : resourceId
     writeAccessResourceId: empty(writeAccessResourceId) ? null : writeAccessResourceId
   }
 }
