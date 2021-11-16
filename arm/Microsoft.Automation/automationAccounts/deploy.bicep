@@ -178,19 +178,19 @@ module automationAccount_jobSchedules './jobSchedules/deploy.bicep' = [for (jobS
     ]
 }]
 
-resource logAnalyticsWorkspace 'Microsoft.OperationalInsights/workspaces@2021-06-01' = {
-  name: '${last(split(linkedWorkspaceId, '/'))}'
-  location: location
-}
+// resource logAnalyticsWorkspace 'Microsoft.OperationalInsights/workspaces@2021-06-01' = if (!empty(linkedWorkspaceId)) {
+//   name: '${last(split(linkedWorkspaceId, '/'))}'
+//   location: location
+// }
 
-resource logAnalyticsWorkspace_linkedService 'Microsoft.OperationalInsights/workspaces/linkedServices@2020-08-01' = {
-  name: 'automation'
-  parent: logAnalyticsWorkspace
-  tags: tags
-  properties: {
-    resourceId: automationAccount.id
-  }
-}
+// resource logAnalyticsWorkspace_linkedService 'Microsoft.OperationalInsights/workspaces/linkedServices@2020-08-01' = if (!empty(linkedWorkspaceId)) {
+//   name: 'automation'
+//   parent: logAnalyticsWorkspace
+//   tags: tags
+//   properties: {
+//     resourceId: automationAccount.id
+//   }
+// }
 
 // resource automationAccount_logAnalyticsWorkspaceLink 'Microsoft.OperationalInsights/workspaces/linkedservice@2020-08-01' = if (!empty(linkedWorkspaceId)) {
 //   name: empty(linkedWorkspaceId) ? 'dummy/automation' : '${last(split(linkedWorkspaceId, '/'))}/automation'
@@ -200,6 +200,17 @@ resource logAnalyticsWorkspace_linkedService 'Microsoft.OperationalInsights/work
 //     resourceId: automationAccount.id
 //   }
 // }
+
+module automationAccount_linkedService './.bicep/nested_linkedService.bicep' = if (!empty(linkedWorkspaceId)) {
+  name: '${uniqueString(deployment().name, location)}-AutoAccount-LinkedService'
+  params: {
+    name: 'automation'
+    logAnalyticsWorkspaceName: '${last(split(linkedWorkspaceId, '/'))}'
+    resourceId: automationAccount.id
+    tags: tags
+  }
+  scope: resourceGroup(split(linkedWorkspaceId, '/')[2], split(linkedWorkspaceId, '/')[4])
+}
 
 module automationAccount_softwareUpdateConfigurations './softwareUpdateConfigurations/deploy.bicep' = [for (softwareUpdateConfiguration, index) in softwareUpdateConfigurations: {
   name: '${uniqueString(deployment().name, location)}-AutoAccount-SwUpdateConfig-${index}'
@@ -211,7 +222,7 @@ module automationAccount_softwareUpdateConfigurations './softwareUpdateConfigura
     rebootSetting: softwareUpdateConfiguration.rebootSetting
   }
   dependsOn: [
-    logAnalyticsWorkspace_linkedService
+    automationAccount_linkedService
   ]
 }]
 
