@@ -64,7 +64,7 @@ output productName string = product.name
 output productResourceGroup string = resourceGroup().name
 
 @description('The Resources Ids of the API management service product apis')
-output productApisResourceIds array = [for productGroup in productApis: resourceId('Microsoft.ApiManagement/service/products/apis', apiManagementServiceName, name, productGroup)]
+output productApisResourceIds array = [for productApi in productApis: resourceId('Microsoft.ApiManagement/service/products/apis', apiManagementServiceName, name, productApi)]
 
 @description('The Resources Ids of the API management service product groups')
 output productGroupsResourceIds array = [for productGroup in productGroups: resourceId('Microsoft.ApiManagement/service/products/groups', apiManagementServiceName, name, productGroup)]

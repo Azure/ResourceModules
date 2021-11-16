@@ -225,9 +225,6 @@ module apis_resource 'apis/deploy.bicep' = [for (api, index) in apis: {
     value: contains(api, 'value') ? api.value : ''
     wsdlSelector: contains(api, 'wsdlSelector') ? api.wsdlSelector : {}
   }
-  dependsOn: [
-    apiManagementService
-  ]
 }]
 
 module authorizationServers_resource '.bicep/nested_authorizationServers.bicep' = [for (authorizationServer, index) in authorizationServers: {
@@ -258,9 +255,6 @@ module authorizationServers_resource '.bicep/nested_authorizationServers.bicep' 
     tokenBodyParameters: contains(authorizationServer, 'tokenBodyParameters') ? authorizationServer.tokenBodyParameters : []
     tokenEndpoint: contains(authorizationServer, 'tokenEndpoint') ? authorizationServer.tokenEndpoint : ''
   }
-  dependsOn: [
-    apiManagementService
-  ]
 }]
 
 module backends_resource 'backends/deploy.bicep' = [for (backend, index) in backends: {
@@ -281,9 +275,6 @@ module backends_resource 'backends/deploy.bicep' = [for (backend, index) in back
       validateCertificateName: false
     }
   }
-  dependsOn: [
-    apiManagementService
-  ]
 }]
 
 module caches_resource 'caches/deploy.bicep' = [for (cache, index) in caches: {
@@ -296,9 +287,6 @@ module caches_resource 'caches/deploy.bicep' = [for (cache, index) in caches: {
     resourceId: contains(cache, 'resourceId') ? cache.resourceId : ''
     useFromLocation: cache.useFromLocation
   }
-  dependsOn: [
-    apiManagementService
-  ]
 }]
 
 module identityProvider_resource 'identityProviders/deploy.bicep' = [for (identityProvider, index) in identityProviders: {
@@ -318,9 +306,6 @@ module identityProvider_resource 'identityProviders/deploy.bicep' = [for (identi
     identityProviderSignUpPolicyName: contains(identityProvider, 'identityProviderSignUpPolicyName') ? identityProvider.identityProviderSignUpPolicyName : ''
     identityProviderType: contains(identityProvider, 'identityProviderType') ? identityProvider.identityProviderType : 'aad'
   }
-  dependsOn: [
-    apiManagementService
-  ]
 }]
 
 module namedValues_resource 'namedValues/deploy.bicep' = [for (namedValue, index) in namedValues: {
@@ -334,9 +319,6 @@ module namedValues_resource 'namedValues/deploy.bicep' = [for (namedValue, index
     secret: contains(namedValue, 'secret') ? namedValue.secret : false
     value: contains(namedValue, 'value') ? namedValue.value : newGuidValue
   }
-  dependsOn: [
-    apiManagementService
-  ]
 }]
 
 module portalSettings_resource 'portalsettings/deploy.bicep' = [for (portalSetting, index) in portalSettings: {
@@ -346,9 +328,6 @@ module portalSettings_resource 'portalsettings/deploy.bicep' = [for (portalSetti
     name: portalSetting.name
     properties: contains(portalSetting, 'properties') ? portalSetting.properties : {}
   }
-  dependsOn: [
-    apiManagementService
-  ]
 }]
 
 module policy_resource 'policies/deploy.bicep' = [for (policy, index) in policies: {
@@ -358,9 +337,6 @@ module policy_resource 'policies/deploy.bicep' = [for (policy, index) in policie
     value: policy.value
     format: contains(policy, 'format') ? policy.format : 'xml'
   }
-  dependsOn: [
-    apiManagementService
-  ]
 }]
 
 module products_resource 'products/deploy.bicep' = [for (product, index) in products: {
@@ -395,9 +371,6 @@ module subscriptions_resource 'subscriptions/deploy.bicep' = [for (subscription,
     secondaryKey: contains(subscription, 'secondaryKey') ? subscription.secondaryKey : ''
     state: contains(subscription, 'state') ? subscription.state : ''
   }
-  dependsOn: [
-    apiManagementService
-  ]
 }]
 
 resource apiManagementService_lock 'Microsoft.Authorization/locks@2016-09-01' = if (lock != 'NotSpecified') {
