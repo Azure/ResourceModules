@@ -61,16 +61,16 @@ resource actionGroup 'microsoft.insights/actionGroups@2019-06-01' = {
   properties: {
     groupShortName: groupShortName
     enabled: enabled
-    emailReceivers: (empty(emailReceivers) ? json('null') : emailReceivers)
-    smsReceivers: (empty(smsReceivers) ? json('null') : smsReceivers)
-    webhookReceivers: (empty(webhookReceivers) ? json('null') : webhookReceivers)
-    itsmReceivers: (empty(itsmReceivers) ? json('null') : itsmReceivers)
-    azureAppPushReceivers: (empty(azureAppPushReceivers) ? json('null') : azureAppPushReceivers)
-    automationRunbookReceivers: (empty(automationRunbookReceivers) ? json('null') : automationRunbookReceivers)
-    voiceReceivers: (empty(voiceReceivers) ? json('null') : voiceReceivers)
-    logicAppReceivers: (empty(logicAppReceivers) ? json('null') : logicAppReceivers)
-    azureFunctionReceivers: (empty(azureFunctionReceivers) ? json('null') : azureFunctionReceivers)
-    armRoleReceivers: (empty(armRoleReceivers) ? json('null') : armRoleReceivers)
+    emailReceivers: (empty(emailReceivers) ? null : emailReceivers)
+    smsReceivers: (empty(smsReceivers) ? null : smsReceivers)
+    webhookReceivers: (empty(webhookReceivers) ? null : webhookReceivers)
+    itsmReceivers: (empty(itsmReceivers) ? null : itsmReceivers)
+    azureAppPushReceivers: (empty(azureAppPushReceivers) ? null : azureAppPushReceivers)
+    automationRunbookReceivers: (empty(automationRunbookReceivers) ? null : automationRunbookReceivers)
+    voiceReceivers: (empty(voiceReceivers) ? null : voiceReceivers)
+    logicAppReceivers: (empty(logicAppReceivers) ? null : logicAppReceivers)
+    azureFunctionReceivers: (empty(azureFunctionReceivers) ? null : azureFunctionReceivers)
+    armRoleReceivers: (empty(armRoleReceivers) ? null : armRoleReceivers)
   }
 }
 
