@@ -90,8 +90,22 @@ function Remove-DeployedModule {
                 $tagSearchRetryCount++
             }
 
+            # Order resources to be removed from child to parent
+            $resourcesToRemove = [System.Collections.ArrayList]@()
+            $allResources = Get-AzResource -ResourceGroupName $resourceGroupName -Name '*'
+            foreach ($topLevelResource in $rawResourcesToRemove) {
+                $expandedResources = $allResources | Where-Object { $_.ResourceId.startswith($topLevelResource.ResourceId) } | Sort-Object -Descending -Property { $_.ResourceId.Split('/').Count }
+                foreach ($resource in $expandedResources) {
+                    $resourcesToRemove += @{
+                        resourceId = $resource.ResourceId
+                        name       = $resource.Name
+                        type       = $resource.Type
+                    }
+                }
+            }
+
             # If VMs are available, delete those first
-            if ($vmsContained = $rawResourcesToRemove | Where-Object { $_.resourcetype -eq 'Microsoft.Compute/virtualMachines' }) {
+            if ($vmsContained = $resourcesToRemove | Where-Object { $_.resourcetype -eq 'Microsoft.Compute/virtualMachines' }) {
 
                 $intermediateResources = @()
                 foreach ($vmInstance in $vmsContained) {
@@ -103,21 +117,12 @@ function Remove-DeployedModule {
                 }
                 Remove-Resource -resourceToRemove $intermediateResources -Verbose
                 # refresh
-                $rawResourcesToRemove = Get-AzResource -Tag @{ removeModule = $moduleName } -ResourceGroupName $resourceGroupName
+                $resourcesToRemove = $resourcesToRemove | Where-Object { $_.ResourceId -notin $intermediateResources.resourceId }
             }
 
-            if (-not $rawResourcesToRemove) {
+            if (-not $resourcesToRemove) {
                 Write-Error "No resource with Tag { RemoveModule = $moduleName } found in resource group [$resourceGroupName]"
                 return
-            }
-
-            $resourcesToRemove = @()
-            foreach ($resource in $rawResourcesToRemove) {
-                $resourcesToRemove += @{
-                    resourceId = $resource.ResourceId
-                    name       = $resource.Name
-                    type       = $resource.Type
-                }
             }
         }
 
