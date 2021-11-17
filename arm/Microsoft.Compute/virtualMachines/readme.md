@@ -4,7 +4,7 @@ This module deploys one Virtual Machine with one or multiple nics and optionally
 
 ## Resource Types
 
-| Resource Type | Api Version |
+| Resource Type | API Version |
 | :-- | :-- |
 | `Microsoft.Authorization/locks` | 2017-04-01 |
 | `Microsoft.Authorization/roleAssignments` | 2020-04-01-preview |
@@ -37,10 +37,10 @@ This module deploys one Virtual Machine with one or multiple nics and optionally
 | `cseManagedIdentity` | object | `{object}` |  | Optional. A managed identity to use for the CSE. |
 | `cseStorageAccountKey` | string |  |  | Optional. The storage key of the storage account to access for the CSE script(s). |
 | `cseStorageAccountName` | string |  |  | Optional. The name of the storage account to access for the CSE script(s). |
-| `cuaId` | string |  |  | Optional. Customer Usage Attribution id (GUID). This GUID must be previously registered |
+| `cuaId` | string |  |  | Optional. Customer Usage Attribution ID (GUID). This GUID must be previously registered |
 | `customData` | string |  |  | Optional. Custom data associated to the VM, this value will be automatically converted into base64 to account for the expected VM format. |
 | `dataDisks` | array | `[]` |  | Optional. Specifies the data disks. |
-| `dedicatedHostId` | string |  |  | Optional. Specifies resource Id about the dedicated host that the virtual machine resides in. |
+| `dedicatedHostId` | string |  |  | Optional. Specifies resource ID about the dedicated host that the virtual machine resides in. |
 | `desiredStateConfigurationSettings` | object | `{object}` |  | Optional. The DSC configuration settings object |
 | `desiredStateConfigurationProtectedSettings` | object | `{secureObject}` |  | Optional. The DSC configuration protected settings object |
 | `diagnosticLogsRetentionInDays` | int | `365` |  | Optional. Specifies the number of days that logs will be kept for; a value of 0 will retain data indefinitely. |
@@ -171,7 +171,7 @@ This module deploys one Virtual Machine with one or multiple nics and optionally
 To set the time zone of a VM with the timeZone parameter inside windowsConfiguration, use the following PS command to get the correct options:
 
 ```powershell
-Get-TimeZone -ListAvailable | Select Id
+Get-TimeZone -ListAvailable | Select ID
 ```
 
 ```json
