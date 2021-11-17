@@ -206,7 +206,6 @@ module apis_resource 'apis/deploy.bicep' = [for (api, index) in apis: {
     name: api.name
     path: api.path
     apiDescription: contains(api, 'apiDescription') ? api.apiDescription : ''
-    apiManagementServiceApiPolicy: contains(api, 'apiManagementServiceApiPolicy') ? api.apiManagementServiceApiPolicy : {}
     apiRevision: contains(api, 'apiRevision') ? api.apiRevision : ''
     apiRevisionDescription: contains(api, 'apiRevisionDescription') ? api.apiRevisionDescription : ''
     apiType: contains(api, 'apiType') ? api.apiType : 'http'
@@ -219,6 +218,7 @@ module apis_resource 'apis/deploy.bicep' = [for (api, index) in apis: {
     protocols: contains(api, 'protocols') ? api.protocols : [
       'https'
     ]
+    policies: contains(api, 'policies') ? api.policies : []
     serviceUrl: contains(api, 'serviceUrl') ? api.serviceUrl : ''
     sourceApiId: contains(api, 'sourceApiId') ? api.sourceApiId : ''
     subscriptionKeyParameterNames: contains(api, 'subscriptionKeyParameterNames') ? api.subscriptionKeyParameterNames : {}
