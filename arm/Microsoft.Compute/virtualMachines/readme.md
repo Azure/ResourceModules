@@ -8,7 +8,7 @@ This module deploys one Virtual Machine with one or multiple nics and optionally
 | :-- | :-- |
 | `Microsoft.Authorization/locks` | 2017-04-01 |
 | `Microsoft.Authorization/roleAssignments` | 2020-04-01-preview |
-| `Microsoft.Compute/virtualMachines` | 2021-04-01 |
+| `Microsoft.Compute/virtualMachines` | 2021-07-01 |
 | `Microsoft.Compute/virtualMachines/extensions` | 2021-07-01 |
 | `Microsoft.Insights/diagnosticSettings` | 2021-05-01-preview |
 | `Microsoft.Network/networkInterfaces` | 2021-03-01 |
