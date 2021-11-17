@@ -185,18 +185,18 @@ module automationAccount_jobSchedules './jobSchedules/deploy.bicep' = [for (jobS
     ]
 }]
 
-var logAnalyticsWorkspace = (!empty(linkedWorkspaceId)) ? {
-  name: '${last(split(linkedWorkspaceId, '/'))}'
-  resourcegroupName: split(linkedWorkspaceId, '/')[4]
-  subscriptionId: split(linkedWorkspaceId, '/')[2]
-} : null
+// var logAnalyticsWorkspace = (!empty(linkedWorkspaceId)) ? {
+//   name: '${last(split(linkedWorkspaceId, '/'))}'
+//   resourcegroupName: split(linkedWorkspaceId, '/')[4]
+//   subscriptionId: split(linkedWorkspaceId, '/')[2]
+// } : null
 
 module automationAccount_linkedService './.bicep/nested_linkedService.bicep' = if (!empty(linkedWorkspaceId)) {
   name: '${uniqueString(deployment().name, location)}-AutoAccount-LinkedService'
   params: {
     name: 'automation'
-    // logAnalyticsWorkspaceName: '${last(split(linkedWorkspaceId, '/'))}'
-    logAnalyticsWorkspaceName: logAnalyticsWorkspace.name
+    logAnalyticsWorkspaceName: '${last(split(linkedWorkspaceId, '/'))}'
+    // logAnalyticsWorkspaceName: logAnalyticsWorkspace.name
     resourceId: automationAccount.id
     tags: tags
   }
@@ -210,9 +210,7 @@ module automationAccount_solutions './.bicep/nested_solution.bicep' = [for (gall
   params: {
     name: gallerySolution.name
     location: location
-    logAnalyticsWorkspaceName: logAnalyticsWorkspace.name
-    // product: gallerySolution.product
-    // publisher: gallerySolution.publisher
+    logAnalyticsWorkspaceName: '${last(split(linkedWorkspaceId, '/'))}'
   }
   scope: resourceGroup(!empty(linkedWorkspaceId) ? split(linkedWorkspaceId, '/')[2]: subscription().subscriptionId, !empty(linkedWorkspaceId) ? split(linkedWorkspaceId, '/')[4] : resourceGroup().name)
   dependsOn: [
