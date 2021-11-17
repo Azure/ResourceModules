@@ -12,7 +12,7 @@ This module deploys an Agent Pool for a Container Service Managed Cluster
 
 | Parameter Name | Type | Default Value | Possible Values | Description |
 | :-- | :-- | :-- | :-- | :-- |
-| `managedClusterName` | string | `` |  | Required. Name of the managed cluster |
+| `managedClusterName` | string |  | Complex structure, see below. | Required. Name of the managed cluster |
 | `name` | string | `` |  | Required. The name of the agent pool |
 | `agentPoolProperties` | object | `{}` |  | Required. Properties for the container service agent pool profile |
 
@@ -22,7 +22,7 @@ This object contains the configuration for the agent pool profile. The following
 For available properties check <https://docs.microsoft.com/en-us/azure/templates/microsoft.containerservice/managedclusters/agentpools?tabs=bicep#managedclusteragentpoolprofileproperties-object>
 
 ```json
-"properties": {
+"agentPoolProperties": {
   "value": {
             "vmSize": "Standard_DS3_v2",
             "osDiskSizeGB": 128,
