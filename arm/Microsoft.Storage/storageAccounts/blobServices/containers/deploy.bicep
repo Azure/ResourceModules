@@ -35,15 +35,16 @@ module pid_cuaId '.bicep/nested_cuaId.bicep' = if (!empty(cuaId)) {
 
 resource storageAccount 'Microsoft.Storage/storageAccounts@2021-06-01' existing = {
   name: storageAccountName
+}
 
-  resource blobServices 'blobServices@2021-06-01' existing = {
-    name: blobServicesName
-  }
+resource blobServices 'Microsoft.Storage/storageAccounts/blobServices@2021-06-01' existing = {
+  name: blobServicesName
+  parent: storageAccount
 }
 
 resource container 'Microsoft.Storage/storageAccounts/blobServices/containers@2019-06-01' = {
   name: name
-  parent: storageAccount::blobServices
+  parent: blobServices
   properties: {
     publicAccess: publicAccess
   }
