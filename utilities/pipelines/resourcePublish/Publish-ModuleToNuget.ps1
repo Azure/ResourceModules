@@ -111,11 +111,11 @@ E.g.
 .PARAMETER CustomVersion
 The selected custom version that must be higher than the given current version
 
-.PARAMETER CurrentFeedVersion
+.PARAMETER CurrentRemoteVersion
 The given current version that must be lower than the selected custom version
 
 .EXAMPLE
-Confirm-CustomVersionIfSet -CustomVersion "1.0.0" -CurrentFeedVersion "0.0.15"
+Confirm-CustomVersionIfSet -CustomVersion "1.0.0" -CurrentRemoteVersion "0.0.15"
 
 Check if the selected version "1.0.0" is valid with regards to the current version "0.0.15"
 #>
@@ -125,7 +125,7 @@ Check if the selected version "1.0.0" is valid with regards to the current versi
         [Parameter(Mandatory = $false)]
         [string] $CustomVersion,
         [Parameter(Mandatory = $true)]
-        [System.Version] $CurrentFeedVersion
+        [System.Version] $CurrentRemoteVersion
     )
 
     # Check CustomVersion if set
@@ -141,28 +141,28 @@ Check if the selected version "1.0.0" is valid with regards to the current versi
     $customMinor = $singleValues[1]
     $customMajor = $singleValues[0]
 
-    $oldBuild = $CurrentFeedVersion.Build
-    $oldMinor = $CurrentFeedVersion.Minor
-    $oldMajor = $CurrentFeedVersion.Major
+    $oldBuild = $CurrentRemoteVersion.Build
+    $oldMinor = $CurrentRemoteVersion.Minor
+    $oldMajor = $CurrentRemoteVersion.Major
 
     Write-Verbose 'Compare Versions'
     if ($customMajor -gt $oldMajor) {
         Write-Verbose 'Specified version is valid'
         return $true
     } elseif ($customMajor -lt $oldMajor) {
-        throw "Specified major version must not be older than than the existing version: Specified $CustomVersion > Current $CurrentFeedVersion"
+        throw "Specified major version must not be older than than the existing version: Specified $CustomVersion > Current $CurrentRemoteVersion"
     } else {
         if ($customMinor -gt $oldMinor) {
             Write-Verbose 'Specified version is valid'
             return $true
         } elseif ($customMinor -lt $oldMinor) {
-            throw "Specified minor version must not be older than than the existing version: Specified $CustomVersion > Current $CurrentFeedVersion"
+            throw "Specified minor version must not be older than than the existing version: Specified $CustomVersion > Current $CurrentRemoteVersion"
         } else {
             if ($customBuild -gt $oldBuild) {
                 Write-Verbose 'Specified version is valid'
                 return $true
             } else {
-                throw "Specified build version must be newer than than the existing version: Specified $CustomVersion > Current $CurrentFeedVersion"
+                throw "Specified build version must be newer than than the existing version: Specified $CustomVersion > Current $CurrentRemoteVersion"
             }
         }
     }
@@ -186,7 +186,7 @@ Name of the module to search for
 The Credentials required to access the feed
 
 .EXAMPLE
-$CurrentFeedVersion = Get-CurrentVersion -ModuleName "aks" -FeedName "moduleFeed" -Credential $Credential
+$CurrentRemoteVersion = Get-CurrentVersion -ModuleName "aks" -FeedName "moduleFeed" -Credential $Credential
 
 Search for module AKS in the feed moduleFeed to receive its version
 #>
@@ -231,7 +231,7 @@ The optionally set custom version
 .PARAMETER VersioningOption
 The version update. Patch, Minor or Major.
 
-.PARAMETER CurrentFeedVersion
+.PARAMETER CurrentRemoteVersion
 The current version of the module
 
 .PARAMETER ModuleBase
@@ -241,13 +241,13 @@ The root folder of the module
 The name of the module
 
 .EXAMPLE
-Get-NewVersion -CustomVersion '-' -CurrentFeedVersion 0.0.4 -ModuleBase "c:\modules\aks" -ModuleName "aks"
+Get-NewVersion -CustomVersion '-' -CurrentRemoteVersion 0.0.4 -ModuleBase "c:\modules\aks" -ModuleName "aks"
 
 If the current manifest version is 1.0.0 the function returns the 1.0.0 version object
 else get the new version 0.0.5
 
 .EXAMPLE
-Get-NewVersion -CustomVersion 0.0.6 -CurrentFeedVersion 0.0.4 -ModuleBase "c:\modules\aks" -ModuleName "aks"
+Get-NewVersion -CustomVersion 0.0.6 -CurrentRemoteVersion 0.0.4 -ModuleBase "c:\modules\aks" -ModuleName "aks"
 
 Get the new version 0.0.6
 #>
@@ -261,7 +261,7 @@ Get the new version 0.0.6
         [string] $VersioningOption = 'patch',
 
         [Parameter(Mandatory = $true)]
-        [version] $CurrentFeedVersion,
+        [version] $CurrentRemoteVersion,
 
         [Parameter(Mandatory = $true)]
         [string] $ModuleBase,
@@ -275,14 +275,14 @@ Get the new version 0.0.6
     if ((-not ([string]::IsNullOrEmpty($CustomVersion))) -and (-not ($CustomVersion -eq '-'))) {
         Write-Verbose "Apply custom version $CustomVersion"
         $NewVersion = New-Object System.Version($CustomVersion)
-    } elseif ($localVersion -gt $CurrentFeedVersion.ToString()) {
+    } elseif ($localVersion -gt $CurrentRemoteVersion.ToString()) {
         Write-Verbose "Apply local manifest version $localVersion"
         $NewVersion = $localVersion
     } else {
         Write-Verbose "Versioning option is set to [$VersioningOption]. Applying."
-        $build = $CurrentFeedVersion.Build
-        $minor = $CurrentFeedVersion.Minor
-        $major = $CurrentFeedVersion.Major
+        $build = $CurrentRemoteVersion.Build
+        $minor = $CurrentRemoteVersion.Minor
+        $major = $CurrentRemoteVersion.Major
 
         if ($VersioningOption -eq 'patch') {
             $build++
@@ -499,12 +499,12 @@ Name of the module to publish
         Write-Verbose 'Register feed'
         Set-DefinedPSRepository -FeedName $FeedName -Feedurl $Feedurl -SystemAccessToken $SystemAccessToken -Credential $Credential -QueueById $QueueById
 
-        $CurrentFeedVersion = Get-CurrentVersion -FeedName $FeedName -ModuleName $ModuleName -Credential $Credential
-        Write-Verbose "Current version of module '$ModuleName' in feed '$FeedName' is $CurrentFeedVersion"
+        $CurrentRemoteVersion = Get-CurrentVersion -FeedName $FeedName -ModuleName $ModuleName -Credential $Credential
+        Write-Verbose "Current version of module '$ModuleName' in feed '$FeedName' is $CurrentRemoteVersion"
 
-        Confirm-CustomVersionIfSet -CustomVersion $CustomVersion -CurrentFeedVersion $CurrentFeedVersion
+        Confirm-CustomVersionIfSet -CustomVersion $CustomVersion -CurrentRemoteVersion $CurrentRemoteVersion
 
-        $NewVersion = Get-NewVersion -CustomVersion $CustomVersion -VersioningOption $VersioningOption -CurrentFeedVersion $CurrentFeedVersion -ModuleName $ModuleName -ModuleBase $ModuleBase
+        $NewVersion = Get-NewVersion -CustomVersion $CustomVersion -VersioningOption $VersioningOption -CurrentRemoteVersion $CurrentRemoteVersion -ModuleName $ModuleName -ModuleBase $ModuleBase
         Write-Verbose "New version is $NewVersion"
 
         Set-LocalVersion -NewVersion $NewVersion -ModuleName $ModuleName -ModuleBase $ModuleBase
