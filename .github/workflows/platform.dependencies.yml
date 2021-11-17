@@ -643,6 +643,9 @@ jobs:
             # ApplicationGateway
             $apgwCertPolicy = New-AzKeyVaultCertificatePolicy -SecretContentType 'application/x-pkcs12' -SubjectName 'CN=fabrikam.com' -IssuerName 'Self' -ValidityInMonths 12 -ReuseKeyOnRenewal
             Add-AzKeyVaultCertificate -VaultName $keyVaultName -Name 'applicationGatewaySslCertificate' -CertificatePolicy $apgwCertPolicy
+            # API management
+            Set-AzKeyVaultSecret -VaultName $keyVaultName -Name 'apimclientid' -SecretValue $username
+            Set-AzKeyVaultSecret -VaultName $keyVaultName -Name 'apimclientsecret' -SecretValue $password
           azPSVersion: 'latest'
 
   job_deploy_avdag:

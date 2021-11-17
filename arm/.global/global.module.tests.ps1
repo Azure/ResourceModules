@@ -517,7 +517,7 @@ Describe 'Deployment template tests' -Tag Template {
             }
 
             $CamelCasingFlag = @()
-            $Parameter = $templateContent.parameters.keys
+            $Parameter = $templateContent.parameters.Keys
             foreach ($Param in $Parameter) {
                 if ($Param.substring(0, 1) -cnotmatch '[a-z]' -or $Param -match '-' -or $Param -match '_') {
                     $CamelCasingFlag += $false
@@ -596,7 +596,7 @@ Describe 'Deployment template tests' -Tag Template {
             $Schemaverion = $templateContent.'$schema'
             if ((($Schemaverion.Split('/')[5]).Split('.')[0]) -eq (($RGdeployment.Split('/')[5]).Split('.')[0])) {
                 $Locationparamoutputvalue = $templateContent.parameters.location.defaultValue
-                $Locationparamoutput = $templateContent.parameters.keys
+                $Locationparamoutput = $templateContent.parameters.Keys
                 if ($Locationparamoutput -contains 'Location') {
                     if ($Locationparamoutputvalue -eq '[resourceGroup().Location]' -or $Locationparamoutputvalue -eq 'global') {
                         $LocationFlag = $true
@@ -676,7 +676,7 @@ Describe 'Deployment template tests' -Tag Template {
             }
 
             $ParamDescriptionFlag = @()
-            $Paramdescoutput = $templateContent.parameters.keys
+            $Paramdescoutput = $templateContent.parameters.Keys
             foreach ($Param in $Paramdescoutput) {
                 $Data = ($templateContent.parameters.$Param.metadata).description
                 if ($Data -like 'Optional. [a-zA-Z]*' -or $Data -like 'Required. [a-zA-Z]*' -or $Data -like 'Generated. [a-zA-Z]*') {
