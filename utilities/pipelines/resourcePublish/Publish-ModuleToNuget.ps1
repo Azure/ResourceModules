@@ -457,7 +457,7 @@ If the new version should not be generated you can specify a custom version. It 
 The version update. Patch, Minor or Major.
 
 .PARAMETER SystemAccessToken
-Personal-Access-Token provieded by the pipeline or user to interact with the module feed
+Personal-Access-Token provided by the pipeline or user to interact with the module feed
 
 .PARAMETER QueueById
 Name/Email/Id of the user interacting with the module feed
