@@ -93,7 +93,7 @@ function Initialize-UniversalArtifactPublish {
         #################################
         try {
             $head = @{ Authorization = "Bearer $BearerToken" }
-            $url = "https://feeds.dev.azure.com/$VstsOrganization/$VstsProject/_apis/packaging/Feeds/$VstsFeedName/packages?packageNameQuery=$universalPackageModuleName&api-version=6.0-preview"
+            $url = "https://feeds.dev.azure.com/$VstsOrganization/{0}_apis/packaging/Feeds/$VstsFeedName/packages?packageNameQuery=$universalPackageModuleName&api-version=6.0-preview" -f ([String]::IsNullOrEmpty($VstsProject) ? '/' : "$VstsProject/")
             $packages = Invoke-RestMethod -Uri $url -Method Get -Headers $head -ContentType application/json
             if ($packages) {
                 if ($packages.value.id.count -gt 1) {
