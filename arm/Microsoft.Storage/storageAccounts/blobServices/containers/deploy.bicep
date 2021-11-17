@@ -53,6 +53,7 @@ module immutabilityPolicy 'immutabilityPolicies/deploy.bicep' = if (!empty(immut
   name: immutabilityPolicyName
   params: {
     storageAccountName: storageAccountName
+    blobServicesName: blobServicesName
     containerName: container.name
     immutabilityPeriodSinceCreationInDays: contains(immutabilityPolicyProperties, 'immutabilityPeriodSinceCreationInDays') ? immutabilityPolicyProperties.immutabilityPeriodSinceCreationInDays : 365
     allowProtectedAppendWrites: contains(immutabilityPolicyProperties, 'allowProtectedAppendWrites') ? immutabilityPolicyProperties.allowProtectedAppendWrites : true

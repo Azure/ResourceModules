@@ -201,7 +201,7 @@ module storageAccount_managementPolicies 'managementPolicies/deploy.bicep' = if 
 }
 
 // Containers
-module storageAccount_blobService 'blobServices/deploy.bicep' = if (!empty(blobServices)) {
+module storageAccount_blobServices 'blobServices/deploy.bicep' = if (!empty(blobServices)) {
   name: '${uniqueString(deployment().name, location)}-Storage-BlobServices'
   params: {
     storageAccountName: storageAccount.name
@@ -254,7 +254,7 @@ output storageAccountName string = storageAccount.name
 output storageAccountResourceGroup string = resourceGroup().name
 
 @description('The primary blob endpoint reference if blob services are deployed.')
-output storageAccountPrimaryBlobEndpoint string = (!empty(blobServices) && contains(storageAccount_blobService, 'blobContainers')) ? '' : reference('Microsoft.Storage/storageAccounts/${storageAccount.name}', '2019-04-01').primaryEndpoints.blob
+output storageAccountPrimaryBlobEndpoint string = (!empty(blobServices) && contains(storageAccount_blobServices, 'blobContainers')) ? '' : reference('Microsoft.Storage/storageAccounts/${storageAccount.name}', '2019-04-01').primaryEndpoints.blob
 
 @description('The resource id of the assigned identity, if any')
 output assignedIdentityID string = (contains(managedServiceIdentity, 'SystemAssigned') ? reference(storageAccount.id, '2019-06-01', 'full').identity.principalId : '')

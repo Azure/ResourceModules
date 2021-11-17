@@ -25,9 +25,9 @@ This module can be used to deploy a file share service into a storage account.
 
 | Output Name | Type | Description |
 | :-- | :-- | :-- |
-| `fileServiceName` | string | The name of the deployed file share service |
-| `fileServiceResourceGroup` | string | The resource group of the deployed file share service |
-| `fileServiceResourceId` | string | The id of the deployed file share service |
+| `fileServicesName` | string | The name of the deployed file share service |
+| `fileServicesResourceGroup` | string | The resource group of the deployed file share service |
+| `fileServicesResourceId` | string | The id of the deployed file share service |
 
 ## Template references
 

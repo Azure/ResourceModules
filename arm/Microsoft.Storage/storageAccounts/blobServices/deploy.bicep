@@ -28,6 +28,7 @@ module pid_cuaId '.bicep/nested_cuaId.bicep' = if (!empty(cuaId)) {
 resource storageAccount 'Microsoft.Storage/storageAccounts@2021-06-01' existing = {
   name: storageAccountName
 }
+
 resource blobServices 'Microsoft.Storage/storageAccounts/blobServices@2021-06-01' = {
   name: name
   parent: storageAccount
@@ -53,10 +54,10 @@ module blobServices_container 'containers/deploy.bicep' = [for (container, index
 }]
 
 @description('The name of the deployed blob service')
-output blobServiceName string = last(split(blobServices.name, '/'))
+output blobServicesName string = last(split(blobServices.name, '/'))
 
 @description('The id of the deployed blob service')
-output blobServiceResourceId string = blobServices.id
+output blobServicesResourceId string = blobServices.id
 
 @description('The name of the deployed blob service')
-output blobServiceResourceGroup string = resourceGroup().name
+output blobServicesResourceGroup string = resourceGroup().name

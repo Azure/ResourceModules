@@ -25,14 +25,14 @@ module pid_cuaId '.bicep/nested_cuaId.bicep' = if (!empty(cuaId)) {
 resource storageAccount 'Microsoft.Storage/storageAccounts@2021-06-01' existing = {
   name: storageAccountName
 
-  resource fileService 'fileServices@2021-04-01' existing = {
+  resource fileServices 'fileServices@2021-04-01' existing = {
     name: fileServicesName
   }
 }
 
 resource fileShare 'Microsoft.Storage/storageAccounts/fileServices/shares@2019-06-01' = {
   name: name
-  parent: storageAccount::fileService
+  parent: storageAccount::fileServices
   properties: {
     shareQuota: sharedQuota
   }

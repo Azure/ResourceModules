@@ -25,14 +25,14 @@ module pid_cuaId '.bicep/nested_cuaId.bicep' = if (!empty(cuaId)) {
 resource storageAccount 'Microsoft.Storage/storageAccounts@2021-06-01' existing = {
   name: storageAccountName
 
-  resource queueService 'queueServices@2021-06-01' existing = {
+  resource queueServices 'queueServices@2021-06-01' existing = {
     name: queueServicesName
   }
 }
 
 resource queue 'Microsoft.Storage/storageAccounts/queueServices/queues@2019-06-01' = {
   name: name
-  parent: storageAccount::queueService
+  parent: storageAccount::queueServices
   properties: {
     metadata: metadata
   }

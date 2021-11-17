@@ -28,9 +28,9 @@ This module can be used to deploy a blob service into a storage account.
 
 | Output Name | Type | Description |
 | :-- | :-- | :-- |
-| `blobServiceName` | string | The name of the deployed blob service |
-| `blobServiceResourceGroup` | string | The name of the deployed blob service |
-| `blobServiceResourceId` | string | The id of the deployed blob service |
+| `blobServicesName` | string | The name of the deployed blob service |
+| `blobServicesResourceGroup` | string | The name of the deployed blob service |
+| `blobServicesResourceId` | string | The id of the deployed blob service |
 
 ## Template references
 
