@@ -1,6 +1,6 @@
-# ApimanagementServiceApisPolicies `[Microsoft.ApiManagement/service/apis/policies]`
+# API Management Service APIs Policies `[Microsoft.ApiManagement/service/apis/policies]`
 
-// TODO: Replace Resource and fill in description
+This module deploys Api Management Service Apis policies.
 
 ## Resource Types
 
