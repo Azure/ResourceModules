@@ -1,6 +1,6 @@
 // Main resource
 @description('Optional. The name of the virtual machine to be created. You should use a unique prefix to reduce name collisions in Active Directory. If no value is provided, a 10 character long unique string will be generated based on the Resource Group\'s name.')
-param virtualMachineName string = take(toLower(uniqueString(resourceGroup().name)), 10)
+param name string = take(toLower(uniqueString(resourceGroup().name)), 10)
 
 @description('Optional. Specifies whether the computer names should be transformed. The transformation is performed on all computer names. Available transformations are \'none\' (Default), \'uppercase\' and \'lowercase\'.')
 param vmComputerNamesTransformation string = 'none'
@@ -29,7 +29,7 @@ param adminUsername string
 
 @description('Required. When specifying a Windows Virtual Machine, this value should be passed')
 @secure()
-param adminPassword string = ''
+param adminPassword string
 
 @description('Optional. Custom data associated to the VM, this value will be automatically converted into base64 to account for the expected VM format.')
 param customData string = ''
@@ -84,7 +84,7 @@ param userAssignedIdentities object = {}
 param bootDiagnosticStorageAccountName string = ''
 
 @description('Optional. Storage account boot diagnostic base URI.')
-param bootDiagnosticStorageAccountUri string = '.blob.core.windows.net/'
+param bootDiagnosticStorageAccountUri string = '.blob.${environment().suffixes.storage}/'
 
 @description('Optional. Resource name of a proximity placement group.')
 param proximityPlacementGroupName string = ''
@@ -142,7 +142,7 @@ param backupVaultName string = ''
 @description('Optional. Resource group of the backup recovery service vault. If not provided the current resource group name is considered by default.')
 param backupVaultResourceGroup string = resourceGroup().name
 
-@description('Optional. Backup policy the VMs should be using for backup.')
+@description('Optional. Backup policy the VMs should be using for backup. If not provided, it will use the DefaultPolicy from the backup recovery service vault.')
 param backupPolicyName string = 'DefaultPolicy'
 
 @description('Optional. Specifies if Windows VM disks should be encrypted with Server-side encryption + Customer managed Key.')
@@ -164,7 +164,6 @@ param enableDomainJoinExtension bool = false
   domainJoinOptions: 'Optional. Set of bit flags that define the join options. Example: 3 is a combination of NETSETUP_JOIN_DOMAIN (0x00000001) & NETSETUP_ACCT_CREATE (0x00000002) i.e. will join the domain and create the account on the domain. For more information see https://msdn.microsoft.com/en-us/library/aa392154(v=vs.85).aspx'
 })
 param domainJoinSettings object = {}
-
 @description('Optional. Required if domainName is specified. Password of the user specified in domainJoinUser parameter')
 @secure()
 param domainJoinPassword string = ''
@@ -218,8 +217,12 @@ param forceUpdateTag string = '1.0'
 @description('Optional. Specifies if Desired State Configuration Extension should be enabled.')
 param enableDesiredStateConfiguration bool = false
 
-@description('Optional. The DSC configuration object')
+@description('Optional. The DSC configuration Settings Object')
 param desiredStateConfigurationSettings object = {}
+
+@description('Optional. The DSC configuration Protected Settings Object')
+@secure()
+param desiredStateConfigurationProtectedSettings object = {}
 
 @description('Optional. Specifies if Custom Script Extension should be enabled.')
 param enableCustomScriptExtension bool = false
@@ -284,7 +287,7 @@ param baseTime string = utcNow('u')
 @description('Optional. SAS token validity length to use to download files from storage accounts. Usage: \'PT8H\' - valid for 8 hours; \'P5D\' - valid for 5 days; \'P1Y\' - valid for 1 year. When not provided, the SAS token will be valid for 8 hours.')
 param sasTokenValidityLength string = 'PT8H'
 
-var vmComputerNameTransformed = vmComputerNamesTransformation == 'uppercase' ? toUpper(virtualMachineName) : (vmComputerNamesTransformation == 'lowercase' ? toLower(virtualMachineName) : virtualMachineName)
+var vmComputerNameTransformed = vmComputerNamesTransformation == 'uppercase' ? toUpper(name) : (vmComputerNamesTransformation == 'lowercase' ? toLower(name) : name)
 
 var identity = {
   type: managedServiceIdentity
@@ -299,20 +302,16 @@ var accountSasProperties = {
   signedProtocol: 'https'
 }
 
-var domainJoinProtectedSettings = {
-  Password: domainJoinPassword
-}
-
 module pid_cuaId '.bicep/nested_cuaId.bicep' = if (!empty(cuaId)) {
   name: 'pid-${cuaId}'
   params: {}
 }
 
 module virtualMachine_nic '.bicep/nested_networkInterface.bicep' = [for (nicConfiguration, index) in nicConfigurations: {
-  name: '${deployment().name}-nic-${index}'
+  name: '${uniqueString(deployment().name, location)}-vm-nic-${index}'
   params: {
-    networkInterfaceName: '${virtualMachineName}${nicConfiguration.nicSuffix}'
-    virtualMachineName: virtualMachineName
+    networkInterfaceName: '${name}${nicConfiguration.nicSuffix}'
+    virtualMachineName: name
     location: location
     tags: tags
     enableIPForwarding: contains(nicConfiguration, 'enableIPForwarding') ? (!empty(nicConfiguration.enableIPForwarding) ? nicConfiguration.enableIPForwarding : false) : false
@@ -333,8 +332,8 @@ module virtualMachine_nic '.bicep/nested_networkInterface.bicep' = [for (nicConf
   }
 }]
 
-resource virtualMachine 'Microsoft.Compute/virtualMachines@2021-04-01' = {
-  name: virtualMachineName
+resource virtualMachine 'Microsoft.Compute/virtualMachines@2021-07-01' = {
+  name: name
   location: location
   identity: identity
   tags: tags
@@ -347,7 +346,7 @@ resource virtualMachine 'Microsoft.Compute/virtualMachines@2021-04-01' = {
     storageProfile: {
       imageReference: imageReference
       osDisk: {
-        name: '${virtualMachineName}-disk-os-01'
+        name: '${name}-disk-os-01'
         createOption: osDisk.createOption
         diskSizeGB: osDisk.diskSizeGB
         managedDisk: {
@@ -356,7 +355,7 @@ resource virtualMachine 'Microsoft.Compute/virtualMachines@2021-04-01' = {
       }
       dataDisks: [for (dataDisk, index) in dataDisks: {
         lun: index
-        name: '${virtualMachineName}-disk-data-${padLeft((index + 1), 2, '0')}'
+        name: '${name}-disk-data-${padLeft((index + 1), 2, '0')}'
         diskSizeGB: dataDisk.diskSizeGB
         createOption: dataDisk.createOption
         caching: dataDisk.caching
@@ -386,7 +385,7 @@ resource virtualMachine 'Microsoft.Compute/virtualMachines@2021-04-01' = {
         properties: {
           primary: index == 0 ? true : false
         }
-        id: resourceId('Microsoft.Network/networkInterfaces', '${virtualMachineName}${nicConfiguration.nicSuffix}')
+        id: resourceId('Microsoft.Network/networkInterfaces', '${name}${nicConfiguration.nicSuffix}')
       }]
     }
     diagnosticsProfile: {
@@ -408,32 +407,36 @@ resource virtualMachine 'Microsoft.Compute/virtualMachines@2021-04-01' = {
   ]
 }
 
-module virtualMachine_domainJoinExtension '.bicep/nested_extension.bicep' = if (enableDomainJoinExtension) {
-  name: '${deployment().name}-DomainJoin'
+module virtualMachine_domainJoinExtension './extensions/deploy.bicep' = if (enableDomainJoinExtension) {
+  name: '${uniqueString(deployment().name, location)}-vm-DomainJoin'
   params: {
     virtualMachineName: virtualMachine.name
-    extensionName: 'DomainJoin'
+    name: 'DomainJoin'
     location: location
     publisher: 'Microsoft.Compute'
     type: 'JsonADDomainExtension'
     typeHandlerVersion: '1.3'
     autoUpgradeMinorVersion: true
-    settings: domainJoinSettings.settings
-    protectedSettings: domainJoinProtectedSettings
+    enableAutomaticUpgrade: false
+    settings: domainJoinSettings
+    protectedSettings: {
+      Password: domainJoinPassword
+    }
   }
 }
 
-module virtualMachine_microsoftAntiMalwareExtension '.bicep/nested_extension.bicep' = if (enableMicrosoftAntiMalware) {
-  name: '${deployment().name}-MicrosoftAntiMalware'
+module virtualMachine_microsoftAntiMalwareExtension './extensions/deploy.bicep' = if (enableMicrosoftAntiMalware) {
+  name: '${uniqueString(deployment().name, location)}-vm-MicrosoftAntiMalware'
   params: {
     virtualMachineName: virtualMachine.name
-    extensionName: 'MicrosoftAntiMalware'
+    name: 'MicrosoftAntiMalware'
     location: location
     publisher: 'Microsoft.Azure.Security'
     type: 'IaaSAntimalware'
     typeHandlerVersion: '1.3'
     autoUpgradeMinorVersion: true
-    settings: microsoftAntiMalwareSettings.settings
+    enableAutomaticUpgrade: false
+    settings: microsoftAntiMalwareSettings
   }
 }
 
@@ -442,16 +445,17 @@ resource virtualMachine_logAnalyticsWorkspace 'Microsoft.OperationalInsights/wor
   scope: resourceGroup(split(workspaceId, '/')[2], split(workspaceId, '/')[4])
 }
 
-module virtualMachine_microsoftMonitoringAgentExtension '.bicep/nested_extension.bicep' = if (enableWindowsMMAAgent || enableLinuxMMAAgent) {
-  name: '${deployment().name}-MicrosoftMonitoringAgent'
+module virtualMachine_microsoftMonitoringAgentExtension './extensions/deploy.bicep' = if (enableWindowsMMAAgent || enableLinuxMMAAgent) {
+  name: '${uniqueString(deployment().name, location)}-vm-MicrosoftMonitoringAgent'
   params: {
     virtualMachineName: virtualMachine.name
-    extensionName: 'MicrosoftMonitoringAgent'
+    name: 'MicrosoftMonitoringAgent'
     location: location
     publisher: 'Microsoft.EnterpriseCloud.Monitoring'
     type: enableWindowsMMAAgent ? 'MicrosoftMonitoringAgent' : 'OmsAgentForLinux'
     typeHandlerVersion: enableWindowsMMAAgent ? '1.0' : '1.7'
     autoUpgradeMinorVersion: true
+    enableAutomaticUpgrade: false
     settings: {
       workspaceId: !empty(workspaceId) ? reference(virtualMachine_logAnalyticsWorkspace.id, virtualMachine_logAnalyticsWorkspace.apiVersion).customerId : ''
     }
@@ -461,72 +465,77 @@ module virtualMachine_microsoftMonitoringAgentExtension '.bicep/nested_extension
   }
 }
 
-module virtualMachine_dependencyAgentExtension '.bicep/nested_extension.bicep' = if (enableWindowsDependencyAgent || enableLinuxDependencyAgent) {
-  name: '${deployment().name}-DependencyAgent'
+module virtualMachine_dependencyAgentExtension './extensions/deploy.bicep' = if (enableWindowsDependencyAgent || enableLinuxDependencyAgent) {
+  name: '${uniqueString(deployment().name, location)}-vm-DependencyAgent'
   params: {
     virtualMachineName: virtualMachine.name
-    extensionName: 'DependencyAgent'
+    name: 'DependencyAgent'
     location: location
     publisher: 'Microsoft.Azure.Monitoring.DependencyAgent'
     type: enableWindowsDependencyAgent ? 'DependencyAgentWindows' : 'DependencyAgentLinux'
     typeHandlerVersion: '9.5'
     autoUpgradeMinorVersion: true
+    enableAutomaticUpgrade: true
   }
 }
 
-module virtualMachine_networkWatcherAgentExtension '.bicep/nested_extension.bicep' = if (enableNetworkWatcherWindows || enableNetworkWatcherLinux) {
-  name: '${deployment().name}-NetworkWatcherAgent'
+module virtualMachine_networkWatcherAgentExtension './extensions/deploy.bicep' = if (enableNetworkWatcherWindows || enableNetworkWatcherLinux) {
+  name: '${uniqueString(deployment().name, location)}-vm-NetworkWatcherAgent'
   params: {
     virtualMachineName: virtualMachine.name
-    extensionName: 'NetworkWatcherAgent'
+    name: 'NetworkWatcherAgent'
     location: location
     publisher: 'Microsoft.Azure.NetworkWatcher'
     type: enableNetworkWatcherWindows ? 'NetworkWatcherAgentWindows' : 'NetworkWatcherAgentLinux'
     typeHandlerVersion: '1.4'
     autoUpgradeMinorVersion: true
+    enableAutomaticUpgrade: false
   }
 }
 
-module virtualMachine_diskEncryptionExtension '.bicep/nested_extension.bicep' = if (enableWindowsDiskEncryption || enableLinuxDiskEncryption) {
-  name: '${deployment().name}-DiskEncryption'
+module virtualMachine_diskEncryptionExtension './extensions/deploy.bicep' = if (enableWindowsDiskEncryption || enableLinuxDiskEncryption) {
+  name: '${uniqueString(deployment().name, location)}-vm-DiskEncryption'
   params: {
     virtualMachineName: virtualMachine.name
-    extensionName: 'DiskEncryption'
+    name: 'DiskEncryption'
     location: location
     publisher: 'Microsoft.Azure.Security'
     type: enableWindowsDiskEncryption ? 'AzureDiskEncryption' : 'AzureDiskEncryptionForLinux'
     typeHandlerVersion: enableWindowsDiskEncryption ? '2.2' : '1.1'
     autoUpgradeMinorVersion: true
+    enableAutomaticUpgrade: false
     forceUpdateTag: forceUpdateTag
-    settings: diskEncryptionSettings.settings
+    settings: diskEncryptionSettings
   }
 }
 
-module virtualMachine_desiredStateConfigurationExtension '.bicep/nested_extension.bicep' = if (enableDesiredStateConfiguration) {
-  name: '${deployment().name}-DesiredStateConfiguration'
+module virtualMachine_desiredStateConfigurationExtension './extensions/deploy.bicep' = if (enableDesiredStateConfiguration) {
+  name: '${uniqueString(deployment().name, location)}-vm-DesiredStateConfiguration'
   params: {
     virtualMachineName: virtualMachine.name
-    extensionName: 'DesiredStateConfiguration'
+    name: 'DesiredStateConfiguration'
     location: location
     publisher: 'Microsoft.Powershell'
     type: 'DSC'
     typeHandlerVersion: '2.77'
     autoUpgradeMinorVersion: true
-    settings: desiredStateConfigurationSettings.settings
-    protectedSettings: contains(desiredStateConfigurationSettings, 'protectedSettings') ? desiredStateConfigurationSettings.protectedSettings : null
+    enableAutomaticUpgrade: false
+    settings: desiredStateConfigurationSettings
+    protectedSettings: desiredStateConfigurationProtectedSettings
   }
 }
 
-module virtualMachine_customScriptExtension '.bicep/nested_extension.bicep' = if (enableCustomScriptExtension) {
-  name: '${deployment().name}-CustomScriptExtension'
+module virtualMachine_customScriptExtension './extensions/deploy.bicep' = if (enableCustomScriptExtension) {
+  name: '${uniqueString(deployment().name, location)}-vm-CustomScriptExtension'
   params: {
     virtualMachineName: virtualMachine.name
-    extensionName: 'CustomScriptExtension'
+    name: 'CustomScriptExtension'
     location: location
     publisher: 'Microsoft.Compute'
     type: 'CustomScriptExtension'
     typeHandlerVersion: '1.9'
     autoUpgradeMinorVersion: true
+    enableAutomaticUpgrade: true
     settings: {
       fileUris: [for fileData in windowsScriptExtensionFileData: contains(fileData, 'storageAccountId') ? '${fileData.uri}?${listAccountSas(fileData.storageAccountId, '2019-04-01', accountSasProperties).accountSasToken}' : fileData.uri]
     }
@@ -540,7 +549,7 @@ module virtualMachine_customScriptExtension '.bicep/nested_extension.bicep' = if
 }
 
 module virtualMachine_backup '.bicep/nested_backup.bicep' = if (!empty(backupVaultName)) {
-  name: '${deployment().name}-backup'
+  name: '${uniqueString(deployment().name, location)}-vm-backup'
   params: {
     backupResourceName: '${backupVaultName}/Azure/iaasvmcontainer;iaasvmcontainerv2;${resourceGroup().name};${virtualMachine.name}/vm;iaasvmcontainerv2;${resourceGroup().name};${virtualMachine.name}'
     protectedItemType: 'Microsoft.Compute/virtualMachines'
@@ -570,7 +579,7 @@ resource virtualMachine_lock 'Microsoft.Authorization/locks@2017-04-01' = if (lo
 }
 
 module virtualMachine_rbac '.bicep/nested_rbac.bicep' = [for (roleAssignment, index) in roleAssignments: {
-  name: '${deployment().name}-rbac-${index}'
+  name: '${uniqueString(deployment().name, location)}-vm-rbac-${index}'
   params: {
     roleAssignmentObj: roleAssignment
     resourceName: virtualMachine.name
