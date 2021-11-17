@@ -91,10 +91,28 @@
                         }
                     ],
                     "startTime": "22:00"
+                },
+                {
+                    "name": "Linux_ZeroDay",
+                    "frequency": "OneTime",
+                    "operatingSystem": "Linux",
+                    "rebootSetting": "IfRequired",
+                    "maintenanceWindow": "PT4H",
+                    "updateClassifications": [
+                        "Critical",
+                        "Security",
+                        "Other"
+                    ],
+                    "includeUpdates": [
+                        "kernel"
+                    ],
+                    "excludeUpdates": [
+                        "icacls"
+                    ],
+                    "startTime": "2021-12-31T06:00"
                 }
             ]
-        }
-        // ,
+        },
         // "privateEndpoints": {
         //     "value": [
         //         {
@@ -107,15 +125,15 @@
         //         }
         //     ]
         // },
-        // "roleAssignments": {
-        //     "value": [
-        //         {
-        //             "roleDefinitionIdOrName": "Reader",
-        //             "principalIds": [
-        //                 "<<deploymentSpId>>"
-        //             ]
-        //         }
-        //     ]
-        // }
+        "roleAssignments": {
+            "value": [
+                {
+                    "roleDefinitionIdOrName": "Reader",
+                    "principalIds": [
+                        "cf33fea8-b30f-424f-ab73-c48d99e0b222"
+                    ]
+                }
+            ]
+        }
     }
 }
