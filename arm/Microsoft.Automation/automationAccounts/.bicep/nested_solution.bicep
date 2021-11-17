@@ -18,6 +18,7 @@ resource solution 'Microsoft.OperationsManagement/solutions@2015-11-01-preview' 
   }
   plan: {
     name: solutionName
+    promotionCode: ''
     product: '${product}/${name}'
     publisher: publisher
   }
