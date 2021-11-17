@@ -246,7 +246,7 @@ Describe 'Readme tests' -Tag Readme {
             ($ComparisonFlag -gt 2) | Should -Be $false
         }
 
-        It '[<moduleFolderName>] parameters section should contain all parameters from the deploy.json file' -TestCases $readmeFolderTestCases {
+        It '[<moduleFolderName>] parameters section should contain all parameters from the template file' -TestCases $readmeFolderTestCases {
             param(
                 $moduleFolderName,
                 $templateContent,
@@ -254,7 +254,7 @@ Describe 'Readme tests' -Tag Readme {
             )
 
             $ReadmeHTML = ($readMeContent | ConvertFrom-Markdown -ErrorAction SilentlyContinue).Html
-            $parameters = Get-Member -InputObject $templateContent.parameters -MemberType NoteProperty
+            $parameters = $templateContent.parameters.Keys
             $Headings = @(@())
             foreach ($H in $ReadmeHTML) {
                 if ($H.Contains('<h')) {
@@ -266,14 +266,14 @@ Describe 'Readme tests' -Tag Readme {
             ##get param from readme.md
             $HeadingIndex = $Headings | Where-Object { $_ -eq 'parameters' }
             if ($HeadingIndex -eq $null) {
-                Write-Verbose "[parameters section should contain all parameters from the deploy.json file] Error At ($moduleFolderName)" -Verbose
+                Write-Verbose "[parameters section should contain all parameters from the template file] Error At ($moduleFolderName)" -Verbose
                 $true | Should -Be $false
             }
             $parametersList = @()
             for ($j = $HeadingIndex[1] + 4; $ReadmeHTML[$j] -ne ''; $j++) {
                 $parametersList += $ReadmeHTML[$j].Replace('<p>| <code>', '').Replace('|</p>', '').Replace('</code>', '').Split('|')[0].Trim()
             }
-            $differentiatingItems = $parameters.Name | Where-Object { $parametersList -notcontains $_ }
+            $differentiatingItems = $parameters | Where-Object { $parametersList -notcontains $_ }
             $differentiatingItems.Count | Should -Be 0 -Because ('list of template parameters missing in the ReadMe file [{0}] should be empty' -f ($differentiatingItems -join ','))
         }
 
@@ -302,7 +302,7 @@ Describe 'Readme tests' -Tag Readme {
             $differentiatingItems.Count | Should -Be 0 -Because ('list of "Outputs" table columns missing in the ReadMe file [{0}] should be empty' -f ($differentiatingItems -join ','))
         }
 
-        It '[<moduleFolderName>] Output section should contain all outputs defined in the deploy.json file' -TestCases $readmeFolderTestCases {
+        It '[<moduleFolderName>] Output section should contain all outputs defined in the template file' -TestCases $readmeFolderTestCases {
             param(
                 $moduleFolderName,
                 $templateContent,
@@ -413,11 +413,11 @@ Describe 'Deployment template tests' -Tag Template {
         foreach ($moduleFolderPath in $moduleFolderPathsFiltered) {
             $deploymentFolderTestCasesException += @{
                 moduleFolderNameException = $moduleFolderPath.Replace('\', '/').Split('/arm/')[1]
-                templateContentException  = $templateContent
+                templateContent           = $templateContent
             }
         }
 
-        It '[<moduleFolderName>] The deploy.json file should not be empty' -TestCases $deploymentFolderTestCases {
+        It '[<moduleFolderName>] the template file should not be empty' -TestCases $deploymentFolderTestCases {
             param(
                 $moduleFolderName,
                 $templateContent
@@ -484,7 +484,7 @@ Describe 'Deployment template tests' -Tag Template {
             $ApiVersionArray | Should -Not -Contain $false
         }
 
-        It '[<moduleFolderName>] The deploy.json file should contain required elements: schema, contentVersion, resources' -TestCases $deploymentFolderTestCases {
+        It '[<moduleFolderName>] the template file should contain required elements: schema, contentVersion, resources' -TestCases $deploymentFolderTestCases {
             param(
                 $moduleFolderName,
                 $templateContent
@@ -517,7 +517,7 @@ Describe 'Deployment template tests' -Tag Template {
             }
 
             $CamelCasingFlag = @()
-            $Parameter = ($templateContent.parameters | Get-Member | Where-Object { $_.MemberType -eq 'NoteProperty' }).Name
+            $Parameter = $templateContent.parameters.Keys
             foreach ($Param in $Parameter) {
                 if ($Param.substring(0, 1) -cnotmatch '[a-z]' -or $Param -match '-' -or $Param -match '_') {
                     $CamelCasingFlag += $false
@@ -540,7 +540,7 @@ Describe 'Deployment template tests' -Tag Template {
             }
 
             $CamelCasingFlag = @()
-            $Variable = ($templateContent.variables | Get-Member | Where-Object { $_.MemberType -eq 'NoteProperty' }).Name
+            $Variable = $templateContent.variables.Keys
 
             foreach ($Variab in $Variable) {
                 if ($Variab.substring(0, 1) -cnotmatch '[a-z]' -or $Variab -match '-') {
@@ -558,7 +558,7 @@ Describe 'Deployment template tests' -Tag Template {
                 $templateContent
             )
             $CamelCasingFlag = @()
-            $Outputs = ($templateContent.outputs | Get-Member | Where-Object { $_.MemberType -eq 'NoteProperty' }).Name
+            $Outputs = $templateContent.outputs.Keys
 
             foreach ($Output in $Outputs) {
                 if ($Output.substring(0, 1) -cnotmatch '[a-z]' -or $Output -match '-' -or $Output -match '_') {
@@ -595,8 +595,8 @@ Describe 'Deployment template tests' -Tag Template {
             $LocationFlag = $true
             $Schemaverion = $templateContent.'$schema'
             if ((($Schemaverion.Split('/')[5]).Split('.')[0]) -eq (($RGdeployment.Split('/')[5]).Split('.')[0])) {
-                $Locationparamoutputvalue = $templateContent.parameters.Location.defaultValue
-                $Locationparamoutput = ($templateContent.parameters | Get-Member | Where-Object { $_.MemberType -eq 'NoteProperty' }).Name
+                $Locationparamoutputvalue = $templateContent.parameters.location.defaultValue
+                $Locationparamoutput = $templateContent.parameters.Keys
                 if ($Locationparamoutput -contains 'Location') {
                     if ($Locationparamoutputvalue -eq '[resourceGroup().Location]' -or $Locationparamoutputvalue -eq 'global') {
                         $LocationFlag = $true
@@ -612,24 +612,24 @@ Describe 'Deployment template tests' -Tag Template {
         It "[<moduleFolderNameException>] All resources that have a Location property should refer to the Location parameter 'parameters('Location')'" -TestCases $deploymentFolderTestCasesException {
             param(
                 $moduleFolderNameException,
-                $templateContentException
+                $templateContent
             )
             $LocationParamFlag = @()
             $Locmandoutput = $templateContent.resources
             foreach ($Locmand in $Locmandoutput) {
-                if (($Locmand | Get-Member | Where-Object { $_.MemberType -eq 'NoteProperty' }).Name -contains 'Location' -and $Locmand.Location -eq "[parameters('Location')]") {
+                if ($Locmand.Keys -contains 'Location' -and $Locmand.Location -eq "[parameters('Location')]") {
                     $LocationParamFlag += $true
-                } elseif (($Locmand | Get-Member | Where-Object { $_.MemberType -eq 'NoteProperty' }).Name -notcontains 'Location') {
+                } elseif ($Locmand.Keys -notcontains 'Location') {
                     $LocationParamFlag += $true
-                } elseif (($Locmand | Get-Member | Where-Object { $_.MemberType -eq 'NoteProperty' }).Name -notcontains 'resourceGroup') {
+                } elseif ($Locmand.Keys -notcontains 'resourceGroup') {
                     $LocationParamFlag += $true
                 } else {
                     $LocationParamFlag += $false
                 }
                 foreach ($Locm in $Locmand.resources) {
-                    if (($Locm | Get-Member | Where-Object { $_.MemberType -eq 'NoteProperty' }).Name -contains 'Location' -and $Locm.Location -eq "[parameters('Location')]") {
+                    if ($Locm.Keys -contains 'Location' -and $Locm.Location -eq "[parameters('Location')]") {
                         $LocationParamFlag += $true
-                    } elseif (($Locm | Get-Member | Where-Object { $_.MemberType -eq 'NoteProperty' }).Name -notcontains 'Location') {
+                    } elseif ($Locm.Keys -notcontains 'Location') {
                         $LocationParamFlag += $true
                     } else {
                         $LocationParamFlag += $false
@@ -676,7 +676,7 @@ Describe 'Deployment template tests' -Tag Template {
             }
 
             $ParamDescriptionFlag = @()
-            $Paramdescoutput = ($templateContent.parameters | Get-Member | Where-Object { $_.MemberType -eq 'NoteProperty' }).Name
+            $Paramdescoutput = $templateContent.parameters.Keys
             foreach ($Param in $Paramdescoutput) {
                 $Data = ($templateContent.parameters.$Param.metadata).description
                 if ($Data -like 'Optional. [a-zA-Z]*' -or $Data -like 'Required. [a-zA-Z]*' -or $Data -like 'Generated. [a-zA-Z]*') {

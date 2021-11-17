@@ -11,8 +11,7 @@
             ]
         },
         "remoteTokens": {
-            "keyVaultSecretNamePrefix": "ParameterFileToken-",
-            "syncLocalTokens": true
+            "keyVaultSecretNamePrefix": "ParameterFileToken-"
         }
     }
 }

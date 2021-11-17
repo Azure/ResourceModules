@@ -10,6 +10,7 @@
   - [Usage](./TestingUsage)
 - [Pipelines](./Pipelines)
   - [Design](./PipelinesDesign)
+    - [Parameter File Tokens](./ParameterFileTokens)
   - [Usage](./PipelinesUsage)
 - [Contribution Guide](./ContributionGuide)
 - [Known Issues](./KnownIssues)
