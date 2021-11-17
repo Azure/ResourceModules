@@ -367,10 +367,6 @@ module products_resource 'products/deploy.bicep' = [for (product, index) in prod
     subscriptionsLimit: contains(product, 'subscriptionsLimit') ? product.subscriptionsLimit : 1
     terms: contains(product, 'terms') ? product.terms : ''
   }
-  dependsOn: [
-    apiManagementService
-    apis_resource
-  ]
 }]
 
 module subscriptions_resource 'subscriptions/deploy.bicep' = [for (subscription, index) in subscriptions: {
