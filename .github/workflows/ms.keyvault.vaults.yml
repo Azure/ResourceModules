@@ -4,9 +4,13 @@ on:
   workflow_dispatch:
     inputs:
       removeDeployment:
+        type: choice
         description: 'Remove deployed module'
-        required: false
-        default: 'false' # Soft-delete prevents re-deployment
+        # required: false
+        options:
+          - true
+          - false
+        #default: 'false' # Soft-delete prevents re-deployment
       versioningOption:
         description: 'The mode to handle the version increments [major|minor|patch|custom]'
         required: false
@@ -15,6 +19,24 @@ on:
         description: 'The version to enforce if [versionOption] is set to [custom]'
         required: false
         default: '0.0.1'
+
+  # on:
+  #   workflow_dispatch:
+  #     inputs:
+  #       name:
+  #         type: choice
+  #         description: Who to greet
+  #         options:
+  #         - monalisa
+  #         - cschleiden
+  #       message:
+  #         required: true
+  #       use-emoji:
+  #         type: boolean
+  #         description: Include 🎉🤣 emojis
+  #       environment:
+  #         type: environment
+
   push:
     branches:
       - main
