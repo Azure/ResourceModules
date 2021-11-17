@@ -25,7 +25,7 @@ var builtInRoleNames = {
   'Virtual Machine User Login': subscriptionResourceId('Microsoft.Authorization/roleDefinitions', 'fb879df8-f326-4884-b1cf-06f3ad86be52')
 }
 
-resource virtualMachine 'Microsoft.Compute/virtualMachines@2021-04-01' existing = {
+resource virtualMachine 'Microsoft.Compute/virtualMachines@2021-07-01' existing = {
   name: resourceName
 }
 
