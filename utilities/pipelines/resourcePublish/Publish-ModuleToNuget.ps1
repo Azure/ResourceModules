@@ -108,14 +108,14 @@ E.g.
 - 0.0.1 > 0.0.2
 - 2.3.5 > 2.1.6
 
-.PARAMETER CurrentFeedVersion
+.PARAMETER CustomVersion
 The selected custom version that must be higher than the given current version
 
-.PARAMETER CurrentVersion
+.PARAMETER CurrentFeedVersion
 The given current version that must be lower than the selected custom version
 
 .EXAMPLE
-Confirm-CustomVersionIfSet -CustomVersion "1.0.0" -CurrentVersion "0.0.15"
+Confirm-CustomVersionIfSet -CustomVersion "1.0.0" -CurrentFeedVersion "0.0.15"
 
 Check if the selected version "1.0.0" is valid with regards to the current version "0.0.15"
 #>
