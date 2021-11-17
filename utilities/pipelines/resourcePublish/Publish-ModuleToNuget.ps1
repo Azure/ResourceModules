@@ -9,36 +9,36 @@ Add a given repository as a source for modules
 .DESCRIPTION
 Add a given repository as a source for modules
 
-.PARAMETER feedurl
+.PARAMETER Feedurl
 Url to the feed to add
 
-.PARAMETER systemAccessToken
+.PARAMETER SystemAccessToken
 Access token required to access the feed
 
-.PARAMETER queueById
+.PARAMETER QueueById
 Id/Email of the instance that wants to access the feed
 
 .EXAMPLE
-Set-DefinedPSRepository -feedname "Release-Modules" -feedurl $feedurl -systemAccessToken $systemAccessToken -queueById $queueById
+Set-DefinedPSRepository -FeedName "Release-Modules" -Feedurl $Feedurl -SystemAccessToken $SystemAccessToken -QueueById $QueueById
 
-Set the feed Release-Modules as a nuget and repo source with the specified credentials
+Set the feed Release-Modules as a nuget and repo source with the specified Credentials
 #>
 
     [CmdletBinding(SupportsShouldProcess = $true)]
     param (
         [Parameter(Mandatory = $true)]
-        [string] $feedname,
+        [string] $FeedName,
         [Parameter(Mandatory = $true)]
-        [string] $feedurl,
+        [string] $Feedurl,
         [Parameter(Mandatory = $true)]
-        [string] $systemAccessToken,
+        [string] $SystemAccessToken,
         [Parameter(Mandatory = $true)]
-        [PSCredential] $credential,
+        [PSCredential] $Credential,
         [Parameter(Mandatory = $true)]
-        [string] $queueById
+        [string] $QueueById
     )
 
-    Write-Verbose "Register sources with feed-url [$feedurl]"
+    Write-Verbose "Register sources with feed-url [$Feedurl]"
 
     Write-Verbose 'Check registerd nuget sources'
     if ($isLinux) {
@@ -49,18 +49,18 @@ Set the feed Release-Modules as a nuget and repo source with the specified crede
         $nugetSources = nuget sources
     }
 
-    if (-not ("$nugetSources" -Match $feedName)) {
-        if ($PSCmdlet.ShouldProcess("Nuget source definition [$feedname]", 'Add')) {
+    if (-not ("$nugetSources" -Match $FeedName)) {
+        if ($PSCmdlet.ShouldProcess("Nuget source definition [$FeedName]", 'Add')) {
             if ($isLinux) {
                 # Assume linux with dotnet installation
-                dotnet nuget add source $feedurl -n $feedName -u $queueById -p $systemAccessToken --store-password-in-clear-text
+                dotnet nuget add source $Feedurl -n $FeedName -u $QueueById -p $SystemAccessToken --store-password-in-clear-text
             } else {
                 # Assume windows with nuget installation
-                nuget sources add -name $feedname -Source $feedurl -Username $queueById -Password $systemAccessToken
+                nuget sources add -name $FeedName -Source $Feedurl -Username $QueueById -Password $SystemAccessToken
             }
         }
     } else {
-        Write-Verbose "NuGet source $feedname already registered"
+        Write-Verbose "NuGet source $FeedName already registered"
     }
 
     if ($isLinux) {
@@ -75,22 +75,22 @@ Set the feed Release-Modules as a nuget and repo source with the specified crede
     Import-Module 'PackageManagement' -Verbose:$false # Explicit import to suppress verbose
     Import-Module 'PowerShellGet' -Verbose:$false # Explicit import to suppress verbose
     $regRepos = (Get-PSRepository).Name
-    if ($regRepos -notcontains $feedName) {
+    if ($regRepos -notcontains $FeedName) {
         if ($PSCmdlet.ShouldProcess('PSRepository', 'Register new')) {
             Write-Verbose 'Registering script folder as Nuget repo'
             $registrationInputObject = @{
-                Name                      = $feedname
-                SourceLocation            = $feedurl
-                PublishLocation           = $feedurl
-                Credential                = $credential
+                Name                      = $FeedName
+                SourceLocation            = $Feedurl
+                PublishLocation           = $Feedurl
+                Credential                = $Credential
                 InstallationPolicy        = 'Trusted'
                 PackageManagementProvider = 'Nuget'
             }
             Register-PSRepository @registrationInputObject
-            Write-Verbose "Repository $feedname registered"
+            Write-Verbose "Repository $FeedName registered"
         }
     } else {
-        Write-Verbose "Repository $feedname already registered"
+        Write-Verbose "Repository $FeedName already registered"
     }
 
     Write-Verbose ('Available PS repositories:')
@@ -108,14 +108,14 @@ E.g.
 - 0.0.1 > 0.0.2
 - 2.3.5 > 2.1.6
 
-.PARAMETER currentFeedVersion
+.PARAMETER CurrentFeedVersion
 The selected custom version that must be higher than the given current version
 
-.PARAMETER currentVersion
+.PARAMETER CurrentVersion
 The given current version that must be lower than the selected custom version
 
 .EXAMPLE
-Confirm-CustomVersionIfSet -customVersion "1.0.0" -currentVersion "0.0.15"
+Confirm-CustomVersionIfSet -CustomVersion "1.0.0" -CurrentVersion "0.0.15"
 
 Check if the selected version "1.0.0" is valid with regards to the current version "0.0.15"
 #>
@@ -123,46 +123,46 @@ Check if the selected version "1.0.0" is valid with regards to the current versi
     [OutputType([System.Boolean])]
     param (
         [Parameter(Mandatory = $false)]
-        [string] $customVersion,
+        [string] $CustomVersion,
         [Parameter(Mandatory = $true)]
-        [System.Version] $currentFeedVersion
+        [System.Version] $CurrentFeedVersion
     )
 
     # Check CustomVersion if set
-    if ([string]::IsNullOrEmpty($customVersion) -or ($customVersion -eq '-')) {
+    if ([string]::IsNullOrEmpty($CustomVersion) -or ($CustomVersion -eq '-')) {
         Write-Verbose 'Custom Version not set. Skip check'
         return;
     }
 
     Write-Verbose '### Get custom version'
-    Write-Verbose "Specified version is $customVersion"
-    $singleValues = $customVersion.Split('.')
+    Write-Verbose "Specified version is $CustomVersion"
+    $singleValues = $CustomVersion.Split('.')
     $customBuild = $singleValues[2]
     $customMinor = $singleValues[1]
     $customMajor = $singleValues[0]
 
-    $oldBuild = $currentFeedVersion.Build
-    $oldMinor = $currentFeedVersion.Minor
-    $oldMajor = $currentFeedVersion.Major
+    $oldBuild = $CurrentFeedVersion.Build
+    $oldMinor = $CurrentFeedVersion.Minor
+    $oldMajor = $CurrentFeedVersion.Major
 
     Write-Verbose 'Compare Versions'
     if ($customMajor -gt $oldMajor) {
         Write-Verbose 'Specified version is valid'
         return $true
     } elseif ($customMajor -lt $oldMajor) {
-        throw "Specified major version must not be older than than the existing version: Specified $customVersion > Current $currentFeedVersion"
+        throw "Specified major version must not be older than than the existing version: Specified $CustomVersion > Current $CurrentFeedVersion"
     } else {
         if ($customMinor -gt $oldMinor) {
             Write-Verbose 'Specified version is valid'
             return $true
         } elseif ($customMinor -lt $oldMinor) {
-            throw "Specified minor version must not be older than than the existing version: Specified $customVersion > Current $currentFeedVersion"
+            throw "Specified minor version must not be older than than the existing version: Specified $CustomVersion > Current $CurrentFeedVersion"
         } else {
             if ($customBuild -gt $oldBuild) {
                 Write-Verbose 'Specified version is valid'
                 return $true
             } else {
-                throw "Specified build version must be newer than than the existing version: Specified $customVersion > Current $currentFeedVersion"
+                throw "Specified build version must be newer than than the existing version: Specified $CustomVersion > Current $CurrentFeedVersion"
             }
         }
     }
@@ -176,37 +176,37 @@ Search for a certain module in the given feed to check it's version.
 .DESCRIPTION
 Search for a certain module in the given feed to check it's version. If no module can be found, version 0.0.0 is returned
 
-.PARAMETER feedname
+.PARAMETER FeedName
 Name of the feed to search in
 
-.PARAMETER moduleName
+.PARAMETER ModuleName
 Name of the module to search for
 
-.PARAMETER credential
-The credentials required to access the feed
+.PARAMETER Credential
+The Credentials required to access the feed
 
 .EXAMPLE
-$currentFeedVersion = Get-CurrentVersion -moduleName "aks" -feedname "moduleFeed" -credential $credential
+$CurrentFeedVersion = Get-CurrentVersion -ModuleName "aks" -FeedName "moduleFeed" -Credential $Credential
 
 Search for module AKS in the feed moduleFeed to receive its version
 #>
     [CmdletBinding()]
     param (
         [Parameter(Mandatory = $true)]
-        [string] $feedname,
+        [string] $FeedName,
         [Parameter(Mandatory = $true)]
-        [string] $moduleName,
+        [string] $ModuleName,
         [Parameter(Mandatory = $true)]
-        [PSCredential] $credential
+        [PSCredential] $Credential
     )
 
-    Write-Verbose "Search for module [$moduleName] in feed [$feedname]"
+    Write-Verbose "Search for module [$ModuleName] in feed [$FeedName]"
     try {
-        $module = Find-Module -Name $moduleName -Repository $feedname -Credential $credential
+        $module = Find-Module -Name $ModuleName -Repository $FeedName -Credential $Credential
         return $module.Version
     } catch {
         if ($_.Exception.Message -like '*No match was found*') {
-            Write-Verbose "Module $moduleName not found. Assuming first deployment"
+            Write-Verbose "Module $ModuleName not found. Assuming first deployment"
             return New-Object System.Version('0.0.0')
         } else {
             throw $_
@@ -225,68 +225,68 @@ This function handels different cases:
 - If the custom version is not set, but the local manifest version is higher than the current feed version, the local manifest version is returned
 - If the custom version is not set, and the feed has the highest available version, this version is increased and returned as a version object
 
-.PARAMETER customVersion
+.PARAMETER CustomVersion
 The optionally set custom version
 
-.PARAMETER versioningOption
+.PARAMETER VersioningOption
 The version update. Patch, Minor or Major.
 
-.PARAMETER currentFeedVersion
+.PARAMETER CurrentFeedVersion
 The current version of the module
 
-.PARAMETER moduleBase
+.PARAMETER ModuleBase
 The root folder of the module
 
-.PARAMETER moduleName
+.PARAMETER ModuleName
 The name of the module
 
 .EXAMPLE
-Get-NewVersion -customVersion '-' -currentFeedVersion 0.0.4 -moduleBase "c:\modules\aks" -moduleName "aks"
+Get-NewVersion -CustomVersion '-' -CurrentFeedVersion 0.0.4 -ModuleBase "c:\modules\aks" -ModuleName "aks"
 
 If the current manifest version is 1.0.0 the function returns the 1.0.0 version object
 else get the new version 0.0.5
 
 .EXAMPLE
-Get-NewVersion -customVersion 0.0.6 -currentFeedVersion 0.0.4 -moduleBase "c:\modules\aks" -moduleName "aks"
+Get-NewVersion -CustomVersion 0.0.6 -CurrentFeedVersion 0.0.4 -ModuleBase "c:\modules\aks" -ModuleName "aks"
 
 Get the new version 0.0.6
 #>
     [CmdletBinding()]
     param (
         [Parameter(Mandatory = $false)]
-        [string] $customVersion,
+        [string] $CustomVersion,
 
         [Parameter(Mandatory = $false)]
         [ValidateSet('patch', 'minor', 'major')]
-        [string] $versioningOption = 'patch',
+        [string] $VersioningOption = 'patch',
 
         [Parameter(Mandatory = $true)]
-        [version] $currentFeedVersion,
+        [version] $CurrentFeedVersion,
 
         [Parameter(Mandatory = $true)]
-        [string] $moduleBase,
+        [string] $ModuleBase,
 
         [Parameter(Mandatory = $true)]
-        [string] $moduleName
+        [string] $ModuleName
     )
 
-    $localVersion = (Import-LocalizedData -BaseDirectory "$moduleBase" -FileName "$moduleName.psd1").ModuleVersion
+    $localVersion = (Import-LocalizedData -BaseDirectory "$ModuleBase" -FileName "$ModuleName.psd1").ModuleVersion
 
-    if ((-not ([string]::IsNullOrEmpty($customVersion))) -and (-not ($customVersion -eq '-'))) {
-        Write-Verbose "Apply custom version $customVersion"
-        $newVersion = New-Object System.Version($customVersion)
-    } elseif ($localVersion -gt $currentFeedVersion.ToString()) {
+    if ((-not ([string]::IsNullOrEmpty($CustomVersion))) -and (-not ($CustomVersion -eq '-'))) {
+        Write-Verbose "Apply custom version $CustomVersion"
+        $NewVersion = New-Object System.Version($CustomVersion)
+    } elseif ($localVersion -gt $CurrentFeedVersion.ToString()) {
         Write-Verbose "Apply local manifest version $localVersion"
-        $newVersion = $localVersion
+        $NewVersion = $localVersion
     } else {
-        Write-Verbose "Versioning option is set to [$versioningOption]. Applying."
-        $build = $currentFeedVersion.Build
-        $minor = $currentFeedVersion.Minor
-        $major = $currentFeedVersion.Major
+        Write-Verbose "Versioning option is set to [$VersioningOption]. Applying."
+        $build = $CurrentFeedVersion.Build
+        $minor = $CurrentFeedVersion.Minor
+        $major = $CurrentFeedVersion.Major
 
-        if ($versioningOption -eq 'patch') {
+        if ($VersioningOption -eq 'patch') {
             $build++
-        } elseif ($versioningOption -eq 'minor') {
+        } elseif ($VersioningOption -eq 'minor') {
             $minor++
             $build = 0
         } else {
@@ -295,9 +295,9 @@ Get the new version 0.0.6
             $build = 0
         }
 
-        $newVersion = New-Object System.Version('{0}.{1}.{2}' -f $major, $minor, $build)
+        $NewVersion = New-Object System.Version('{0}.{1}.{2}' -f $major, $minor, $build)
     }
-    return $newVersion
+    return $NewVersion
 }
 function Publish-NuGetModule {
 
@@ -308,32 +308,32 @@ Publish a given module to specified feed
 .DESCRIPTION
 Publish a given module to specified feed
 
-.PARAMETER feedname
+.PARAMETER FeedName
 Nanm of the feed to push to
 
-.PARAMETER credential
+.PARAMETER Credential
 Credentials required by the feed
 
 .EXAMPLE
-Publish-NuGetModule -feedname "Release-Modules" -credential $credential -moduleName "Aks"
+Publish-NuGetModule -FeedName "Release-Modules" -Credential $Credential -ModuleName "Aks"
 
 Push the module AKS to the feed 'Release-Modules'
 #>
     [CmdletBinding()]
     param (
         [Parameter(Mandatory = $true)]
-        [string] $feedname,
+        [string] $FeedName,
         [Parameter(Mandatory = $true)]
-        [PSCredential] $credential,
+        [PSCredential] $Credential,
         [Parameter(Mandatory = $true)]
-        [string] $moduleBase,
+        [string] $ModuleBase,
         [Parameter(Mandatory = $true)]
-        [string] $moduleName
+        [string] $ModuleName
     )
 
     try {
-        Write-Verbose "Try pushing module [$moduleName] from base [$moduleBase] to feed [$feedname]"
-        Publish-Module -Path "$moduleBase" -NuGetApiKey 'VSTS' -Repository $feedname -Credential $credential -Force
+        Write-Verbose "Try pushing module [$ModuleName] from base [$ModuleBase] to feed [$FeedName]"
+        Publish-Module -Path "$ModuleBase" -NuGetApiKey 'VSTS' -Repository $FeedName -Credential $Credential -Force
         Write-Verbose 'Published module'
     } catch {
         Write-Verbose ('Unable to  upload module {0}' -f (Split-Path $PSScriptRoot -Leaf))
@@ -348,17 +348,17 @@ Set the specified version to the module manifest
 .DESCRIPTION
 Set the specified version to the module manifest
 
-.PARAMETER newVersion
+.PARAMETER NewVersion
 The version to set
 
-.PARAMETER moduleBase
+.PARAMETER ModuleBase
 The root folder of the module
 
-.PARAMETER moduleName
+.PARAMETER ModuleName
 The name of the module
 
 .EXAMPLE
-Set-LocalVersion -newVersion $newVersion -moduleBase "c:\modules\aks" -moduleName "aks"
+Set-LocalVersion -NewVersion $NewVersion -ModuleBase "c:\modules\aks" -ModuleName "aks"
 
 Set the provided moduleVersion to the manifest of module aks in the folder 'c:\modules\aks'
 #>
@@ -367,16 +367,16 @@ Set the provided moduleVersion to the manifest of module aks in the folder 'c:\m
     )]
     param (
         [Parameter(Mandatory = $true)]
-        [version] $newVersion,
+        [version] $NewVersion,
         [Parameter(Mandatory = $true)]
-        [string] $moduleBase,
+        [string] $ModuleBase,
         [Parameter(Mandatory = $true)]
-        [string] $moduleName
+        [string] $ModuleName
     )
 
-    $modulefile = "$moduleBase/$moduleName.psd1"
+    $modulefile = "$ModuleBase/$ModuleName.psd1"
     if ($PSCmdlet.ShouldProcess('Module manifest', 'Update')) {
-        Update-ModuleManifest -Path $modulefile -ModuleVersion $newVersion -Verbose
+        Update-ModuleManifest -Path $modulefile -ModuleVersion $NewVersion -Verbose
     }
 }
 function Update-ManifestExportedFunction {
@@ -387,14 +387,14 @@ Add the module's public functions to its manifest
 .DESCRIPTION
 Extracts all functions in the module's public folder to add them as 'FunctionsToExport' int he manifest
 
-.PARAMETER moduleBase
+.PARAMETER ModuleBase
 The root folder of the module
 
-.PARAMETER moduleName
+.PARAMETER ModuleName
 The name of the module
 
 .EXAMPLE
-Update-ManifestExportedFunction  -moduleBase "c:\modules\aks" -moduleName "aks"
+Update-ManifestExportedFunction  -ModuleBase "c:\modules\aks" -ModuleName "aks"
 
 Add all public functions of module AKS to its manifest
 #>
@@ -403,14 +403,14 @@ Add all public functions of module AKS to its manifest
     )]
     param (
         [Parameter(Mandatory = $true)]
-        [string] $moduleBase,
+        [string] $ModuleBase,
         [Parameter(Mandatory = $true)]
-        [string] $moduleName
+        [string] $ModuleName
     )
 
-    $publicFunctions = (Get-ChildItem -Path "$moduleBase\Public" -Filter '*.ps1').BaseName
+    $publicFunctions = (Get-ChildItem -Path "$ModuleBase\Public" -Filter '*.ps1').BaseName
 
-    $modulefile = "$moduleBase\$moduleName.psd1"
+    $modulefile = "$ModuleBase\$ModuleName.psd1"
     if ($PSCmdlet.ShouldProcess('Module manifest', 'Update')) {
         Write-Verbose "Update Manifest $moduleFile"
         Update-ModuleManifest -Path $modulefile -FunctionsToExport $publicFunctions -Verbose | Out-Null
@@ -431,32 +431,29 @@ This method adjusts the module's manifest in two ways:
 
 Subsequently it pushes the module as an artifact to a corresponding module feed as a nuget package where it can be downloaded from.
 
-.PARAMETER feedName
+.PARAMETER FeedName
 Name of the feed to push the module to. By default it's 'Release-Modules'
 
-.PARAMETER feedurl
-Optional feedurl to set by pipeline. Use {0} in path to specify the feedname
+.PARAMETER Feedurl
+Optional Feedurl to set by pipeline. Use {0} in path to specify the FeedName
 e.g. "https://apps-custom.pkgs.visualstudio.com/_packaging/{0}/nuget/v2"
 
-.PARAMETER customVersion
+.PARAMETER CustomVersion
 If the new version should not be generated you can specify a custom version. It must be higher than the latest version inside the module feed.
 
-.PARAMETER versioningOption
+.PARAMETER VersioningOption
 The version update. Patch, Minor or Major.
 
-.PARAMETER systemAccessToken
+.PARAMETER SystemAccessToken
 Personal-Access-Token provieded by the pipeline or user to interact with the module feed
 
-.PARAMETER queueById
+.PARAMETER QueueById
 Name/Email/Id of the user interacting with the module feed
 
-.PARAMETER test
-An optional parameter used by tests to only run code that is required for testing
-
-.PARAMETER moduleBase
+.PARAMETER ModuleBase
 Root folder of the modbule to publish
 
-.PARAMETER moduleName
+.PARAMETER ModuleName
 Name of the module to publish
 #>
 
@@ -464,60 +461,60 @@ Name of the module to publish
     [CmdletBinding()]
     param (
         [Parameter(Mandatory = $true)]
-        [string] $feedName,
+        [string] $FeedName,
 
         [Parameter(Mandatory = $true)]
-        [string] $feedurl,
+        [string] $Feedurl,
 
         [Parameter(Mandatory = $false)]
-        [string] $customVersion = '-',
+        [string] $CustomVersion = '-',
 
         [Parameter(Mandatory = $false)]
         [ValidateSet('patch', 'minor', 'major')]
-        [string] $versioningOption = 'patch',
+        [string] $VersioningOption = 'patch',
 
         [Parameter(Mandatory = $true)]
-        [string] $systemAccessToken,
+        [string] $SystemAccessToken,
 
         [Parameter(Mandatory = $true)]
-        [string] $queueById,
+        [string] $QueueById,
 
         [Parameter(Mandatory = $true)]
-        [string] $moduleBase,
+        [string] $ModuleBase,
 
         [Parameter(Mandatory = $true)]
-        [string] $moduleName
+        [string] $ModuleName
     )
 
     $oldPreferences = $VerbosePreference
     $VerbosePreference = 'Continue'
 
     try {
-        $feedurl = $feedurl -f $feedName
-        Write-Verbose "Feed-Url: $feedurl"
+        $Feedurl = $Feedurl -f $FeedName
+        Write-Verbose "Feed-Url: $Feedurl"
 
-        $password = ConvertTo-SecureString $systemAccessToken -AsPlainText -Force
-        $credential = New-Object System.Management.Automation.PSCredential ($queueById, $password)
+        $password = ConvertTo-SecureString $SystemAccessToken -AsPlainText -Force
+        $Credential = New-Object System.Management.Automation.PSCredential ($QueueById, $password)
 
         Write-Verbose 'Register feed'
-        Set-DefinedPSRepository -feedname $feedName -feedurl $feedurl -systemAccessToken $systemAccessToken -Credential $credential -queueById $queueById
+        Set-DefinedPSRepository -FeedName $FeedName -Feedurl $Feedurl -SystemAccessToken $SystemAccessToken -Credential $Credential -QueueById $QueueById
 
-        $currentFeedVersion = Get-CurrentVersion -feedname $feedName -moduleName $moduleName -credential $credential
-        Write-Verbose "Current version of module '$moduleName' in feed '$feedName' is $currentFeedVersion"
+        $CurrentFeedVersion = Get-CurrentVersion -FeedName $FeedName -ModuleName $ModuleName -Credential $Credential
+        Write-Verbose "Current version of module '$ModuleName' in feed '$FeedName' is $CurrentFeedVersion"
 
-        Confirm-CustomVersionIfSet -customVersion $customVersion -currentFeedVersion $currentFeedVersion
+        Confirm-CustomVersionIfSet -CustomVersion $CustomVersion -CurrentFeedVersion $CurrentFeedVersion
 
-        $newVersion = Get-NewVersion -customVersion $customVersion -versioningOption $versioningOption -currentFeedVersion $currentFeedVersion -moduleName $moduleName -moduleBase $moduleBase
-        Write-Verbose "New version is $newVersion"
+        $NewVersion = Get-NewVersion -CustomVersion $CustomVersion -VersioningOption $VersioningOption -CurrentFeedVersion $CurrentFeedVersion -ModuleName $ModuleName -ModuleBase $ModuleBase
+        Write-Verbose "New version is $NewVersion"
 
-        Set-LocalVersion -newVersion $newVersion -moduleName $moduleName -moduleBase $moduleBase
-        Write-Verbose "Updated local version to $newVersion"
+        Set-LocalVersion -NewVersion $NewVersion -ModuleName $ModuleName -ModuleBase $ModuleBase
+        Write-Verbose "Updated local version to $NewVersion"
 
-        Update-ManifestExportedFunction -moduleName $moduleName -moduleBase $moduleBase
+        Update-ManifestExportedFunction -ModuleName $ModuleName -ModuleBase $ModuleBase
 
-        Test-ModuleManifest -Path "$moduleBase\$moduleName.psd1" | Format-List
+        Test-ModuleManifest -Path "$ModuleBase\$ModuleName.psd1" | Format-List
 
-        Publish-NuGetModule -feedname $feedname -credential $credential -moduleName $moduleName -moduleBase $moduleBase
+        Publish-NuGetModule -FeedName $FeedName -Credential $Credential -ModuleName $ModuleName -ModuleBase $ModuleBase
     } finally {
         $VerbosePreference = $oldPreferences
     }
