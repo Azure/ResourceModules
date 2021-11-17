@@ -1,14 +1,6 @@
 param roleAssignmentObj object
 param resourceName string
 
-<<<<<<< HEAD
-resource managedInstace 'Microsoft.Sql/managedInstances@2020-08-01-preview' existing = {
-  name: resourceName
-}
-
-resource roleAssigment 'Microsoft.Authorization/roleAssignments@2021-04-01-preview' = [for principalId in roleAssignmentObj.principalIds: {
-  name: guid(managedInstace.name, principalId, roleAssignmentObj.roleDefinitionIdOrName)
-=======
 var builtInRoleNames = {
   'Owner': subscriptionResourceId('Microsoft.Authorization/roleDefinitions', '8e3af657-a8ff-443c-a75c-2fe8c4bcb635')
   'Contributor': subscriptionResourceId('Microsoft.Authorization/roleDefinitions', 'b24988ac-6180-42a0-ab88-20f7382dd24c')
@@ -34,7 +26,6 @@ resource managedInstance 'Microsoft.Sql/managedInstances@2020-08-01-preview' exi
 
 resource roleAssignment 'Microsoft.Authorization/roleAssignments@2020-04-01-preview' = [for principalId in roleAssignmentObj.principalIds: {
   name: guid(managedInstance.name, principalId, roleAssignmentObj.roleDefinitionIdOrName)
->>>>>>> main
   properties: {
     roleDefinitionId: contains(builtInRoleNames, roleAssignmentObj.roleDefinitionIdOrName) ? builtInRoleNames[roleAssignmentObj.roleDefinitionIdOrName] : roleAssignmentObj.roleDefinitionIdOrName
     principalId: principalId
