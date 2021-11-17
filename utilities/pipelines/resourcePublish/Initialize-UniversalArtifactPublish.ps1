@@ -22,6 +22,9 @@ Mandatory. Name of the organization hosting the artifacts feed.
 .PARAMETER vstsProject
 Optional. Name of the project hosting the artifacts feed. May be empty.
 
+.PARAMETER bearerToken
+Optional. The bearer token to use to authenticate the request. If not provided it MUST be existing in your environment as `$env:TOKEN`
+
 .PARAMETER vstsFeedName
 Mandatory. Name to the feed to publish to.
 
@@ -63,6 +66,9 @@ function Initialize-UniversalArtifactPublish {
         [string] $vstsFeedName,
 
         [Parameter(Mandatory = $false)]
+        [string] $bearerToken = $env:TOKEN,
+
+        [Parameter(Mandatory = $false)]
         [string] $customVersion = '0.0.1',
 
         [Parameter(Mandatory = $false)]
@@ -86,7 +92,7 @@ function Initialize-UniversalArtifactPublish {
         ##    FIND AVAILABLE VERSION   ##
         #################################
         try {
-            $head = @{ Authorization = "Bearer $env:TOKEN" }
+            $head = @{ Authorization = "Bearer $bearerToken" }
             $url = "https://feeds.dev.azure.com/$vstsOrganization/$vstsProject/_apis/packaging/Feeds/$vstsFeedName/packages?packageNameQuery=$universalPackageModuleName&api-version=6.0-preview"
             $packages = Invoke-RestMethod -Uri $url -Method Get -Headers $head -ContentType application/json
             if ($packages) {
