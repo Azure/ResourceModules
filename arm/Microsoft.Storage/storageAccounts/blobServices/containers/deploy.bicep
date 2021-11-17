@@ -27,6 +27,36 @@ module pid_cuaId '.bicep/nested_cuaId.bicep' = if (!empty(cuaId)) {
   params: {}
 }
 
+//////////////////////
+
+resource container 'Microsoft.Storage/storageAccounts/blobServices/containers@2019-06-01' = {
+  name: '${storageAccount}/default/${name}'
+  properties: {
+    publicAccess: publicAccess
+  }
+}
+
+/////////////////
+
+resource storageAccount 'Microsoft.Storage/storageAccounts@2021-06-01' existing = {
+  name: storageAccountName
+}
+
+resource blobServices 'Microsoft.Storage/storageAccounts/blobServices@2021-08-01' existing = {
+  name: 'default'
+  parent: storageAccount
+}
+
+resource container 'Microsoft.Storage/storageAccounts/blobServices/containers@2019-06-01' = {
+  name: name
+  parent: blobServices
+  properties: {
+    publicAccess: publicAccess
+  }
+}
+
+////////////////////
+
 resource storageAccount 'Microsoft.Storage/storageAccounts@2021-06-01' existing = {
   name: storageAccountName
 
@@ -41,6 +71,7 @@ resource storageAccount 'Microsoft.Storage/storageAccounts@2021-06-01' existing 
     }
   }
 }
+////////////////////////
 
 module immutabilityPolicy 'immutabilityPolicies/deploy.bicep' = if (!empty(immutabilityPolicyProperties)) {
   name: 'default'
@@ -56,7 +87,11 @@ module container_rbac '.bicep/nested_rbac.bicep' = [for (roleAssignment, index) 
   name: '${deployment().name}-Rbac-${index}'
   params: {
     roleAssignmentObj: roleAssignment
-    resourceName: storageAccount::blobServices::container.name
+
+    resourceName: container.name
+
+    // resourceName: format('{0}/{1}/{2}', storageAccount.name, storageAccount::blobServices.name, storageAccount::blobServices::container.name)
+    // resourceName: '${storageAccount.name}/${storageAccount::blobServices.name}/${storageAccount::blobServices::container.name}'
   }
 }]
 
