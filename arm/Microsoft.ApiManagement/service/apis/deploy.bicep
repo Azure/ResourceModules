@@ -1,8 +1,8 @@
 @description('Required. API revision identifier. Must be unique in the current API Management service instance. Non-current revision has ;rev=n as a suffix where n is the revision number.')
 param name string
 
-@description('Optional. Policies to apply to the Service Api.')
-param apiManagementServiceApiPolicy object = {}
+@description('Optional. Array of Policies to apply to the Service Api.')
+param policies array = []
 
 @description('Required. The name of the of the Api Management service.')
 param apiManagementServiceName string
@@ -99,7 +99,7 @@ module pid_cuaId '.bicep/nested_cuaId.bicep' = if (!empty(cuaId)) {
   params: {}
 }
 
-resource apis 'Microsoft.ApiManagement/service/apis@2020-06-01-preview' = {
+resource api 'Microsoft.ApiManagement/service/apis@2020-06-01-preview' = {
   name: '${apiManagementServiceName}/${name}'
   properties: {
     apiRevision: !empty(apiRevision) ? apiRevision : null
@@ -123,20 +123,23 @@ resource apis 'Microsoft.ApiManagement/service/apis@2020-06-01-preview' = {
     value: !empty(value) ? value : null
     wsdlSelector: wsdlSelector
   }
-  resource apiManagementServiceApiPolicyResource 'policies@2020-06-01-preview' = if (!empty(apiManagementServiceApiPolicy)) {
-    name: 'policy'
-    properties: {
-      value: apiManagementServiceApiPolicy.value
-      format: apiManagementServiceApiPolicy.format
-    }
-  }
 }
 
+module policy 'policies/deploy.bicep' = [for policy in policies: {
+  name: '${uniqueString(deployment().name, api.name)}-policy-${policy.name}'
+  params: {
+    apiManagementServiceName: apiManagementServiceName
+    apiName: api.name
+    format: contains(policy, 'format') ? policy.format : 'xml'
+    value: policy.value
+  }
+}]
+
 @description('The name of the API management service api')
-output apisName string = apis.name
+output apiName string = api.name
 
 @description('The resourceId of the API management service api')
-output apisResourceId string = apis.id
+output apiResourceId string = api.id
 
 @description('The resource group the API management service api was deployed to')
-output apisResourceGroup string = resourceGroup().name
+output apiResourceGroup string = resourceGroup().name

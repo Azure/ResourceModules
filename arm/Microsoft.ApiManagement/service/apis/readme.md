@@ -20,7 +20,6 @@ The following resources are required to be able to deploy this resource.
 | Parameter Name | Type | Default Value | Possible Values | Description |
 | :-- | :-- | :-- | :-- | :-- |
 | `apiDescription` | string |  |  | Optional. Description of the API. May include HTML formatting tags. |
-| `apiManagementServiceApiPolicy` | object | `{object}` |  | Optional. Policies to apply to the Service Api. |
 | `apiManagementServiceName` | string |  |  | Required. The name of the of the Api Management service. |
 | `apiRevision` | string |  |  | Optional. Describes the Revision of the Api. If no value is provided, default revision 1 is created |
 | `apiRevisionDescription` | string |  |  | Optional. Description of the Api Revision. |
@@ -35,6 +34,7 @@ The following resources are required to be able to deploy this resource.
 | `isCurrent` | bool | `True` |  | Optional. Indicates if API revision is current api revision. |
 | `name` | string |  |  | Required. API revision identifier. Must be unique in the current API Management service instance. Non-current revision has ;rev=n as a suffix where n is the revision number. |
 | `path` | string |  |  | Required. Relative URL uniquely identifying this API and all of its resource paths within the API Management service instance. It is appended to the API endpoint base URL specified during the service instance creation to form a public URL for this API. |
+| `policies` | _[policies](policies/readme.md)_ array | `[]` |  | Optional. Array of Policies to apply to the Service Api. |
 | `protocols` | array | `[https]` |  | Optional. Describes on which protocols the operations in this API can be invoked. - http or https |
 | `serviceUrl` | string |  |  | Optional. Absolute URL of the backend service implementing this API. Cannot be more than 2000 characters long. |
 | `sourceApiId` | string |  |  | Optional. API identifier of the source API. |
@@ -65,9 +65,9 @@ The following resources are required to be able to deploy this resource.
 
 | Output Name | Type | Description |
 | :-- | :-- | :-- |
-| `apisName` | string | The name of the API management service api |
-| `apisResourceGroup` | string | The resource group the API management service api was deployed to |
-| `apisResourceId` | string | The resourceId of the API management service api |
+| `apiName` | string | The name of the API management service api |
+| `apiResourceGroup` | string | The resource group the API management service api was deployed to |
+| `apiResourceId` | string | The resourceId of the API management service api |
 
 ## Template references
 
