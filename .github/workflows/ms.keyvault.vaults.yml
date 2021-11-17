@@ -12,9 +12,15 @@ on:
           - false
         #default: 'false' # Soft-delete prevents re-deployment
       versioningOption:
+        type: choice
         description: 'The mode to handle the version increments [major|minor|patch|custom]'
         required: false
         default: 'patch'
+        options:
+          - major
+          - minor
+          - patch
+          - custom
       customVersion:
         description: 'The version to enforce if [versionOption] is set to [custom]'
         required: false
@@ -37,14 +43,14 @@ on:
   #       environment:
   #         type: environment
 
-  push:
-    branches:
-      - main
-    paths:
-      - '.github/actions/templates/**'
-      - '.github/workflows/ms.keyvault.vaults.yml'
-      - 'arm/Microsoft.KeyVault/vaults/**'
-      - '!arm/Microsoft.KeyVault/vaults/readme.md'
+  # push:
+  #   branches:
+  #     - main
+  #   paths:
+  #     - '.github/actions/templates/**'
+  #     - '.github/workflows/ms.keyvault.vaults.yml'
+  #     - 'arm/Microsoft.KeyVault/vaults/**'
+  #     - '!arm/Microsoft.KeyVault/vaults/readme.md'
 
 env:
   moduleName: 'vaults'
