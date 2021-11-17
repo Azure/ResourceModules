@@ -220,7 +220,7 @@ function Get-NewVersion {
 Get a new version object
 
 .DESCRIPTION
-This function handels different cases:
+This function handles different cases:
 - If the custom version is set, it is returned as a version object
 - If the custom version is not set, but the local manifest version is higher than the current feed version, the local manifest version is returned
 - If the custom version is not set, and the feed has the highest available version, this version is increased and returned as a version object
