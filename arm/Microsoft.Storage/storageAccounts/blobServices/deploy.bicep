@@ -2,6 +2,9 @@
 @description('Required. Name of the Storage Account.')
 param storageAccountName string
 
+@description('Optional. The name of the blob service')
+param name string = 'default'
+
 @description('Optional. Indicates whether DeleteRetentionPolicy is enabled for the Blob service.')
 param deleteRetentionPolicy bool = true
 
@@ -24,16 +27,16 @@ module pid_cuaId '.bicep/nested_cuaId.bicep' = if (!empty(cuaId)) {
 
 resource storageAccount 'Microsoft.Storage/storageAccounts@2021-06-01' existing = {
   name: storageAccountName
-
-  resource blobServices 'blobServices@2021-08-01' = {
-    name: 'default'
-    properties: {
-      deleteRetentionPolicy: {
-        enabled: deleteRetentionPolicy
-        days: deleteRetentionPolicyDays
-      }
-      automaticSnapshotPolicyEnabled: automaticSnapshotPolicyEnabled
+}
+resource blobServices 'Microsoft.Storage/storageAccounts/blobServices@2021-06-01' = {
+  name: 'default'
+  parent: storageAccount
+  properties: {
+    deleteRetentionPolicy: {
+      enabled: deleteRetentionPolicy
+      days: deleteRetentionPolicyDays
     }
+    automaticSnapshotPolicyEnabled: automaticSnapshotPolicyEnabled
   }
 }
 
@@ -47,15 +50,15 @@ module blobServices_container 'containers/deploy.bicep' = [for (container, index
     immutabilityPolicyProperties: contains(container, 'immutabilityPolicyProperties') ? container.immutabilityPolicyProperties : {}
   }
   dependsOn: [
-    storageAccount::blobServices
+    blobServices
   ]
 }]
 
 @description('The name of the deployed blob service')
-output blobServiceName string = storageAccount::blobServices.name
+output blobServiceName string = last(split(blobServices.name, '/'))
 
 @description('The id of the deployed blob service')
-output blobServiceResourceId string = storageAccount::blobServices.id
+output blobServiceResourceId string = blobServices.id
 
 @description('The name of the deployed blob service')
 output blobServiceResourceGroup string = resourceGroup().name
