@@ -126,6 +126,8 @@ param newGuidValue string = newGuid()
 
 @description('Optional. APIs.')
 param apis array = []
+@description('Optional. API Version Sets.')
+param apiVersionSets array = []
 @description('Optional. Authorization servers.')
 param authorizationServers array = []
 @description('Optional. Backends.')
@@ -210,7 +212,7 @@ module apis_resource 'apis/deploy.bicep' = [for (api, index) in apis: {
     apiType: contains(api, 'apiType') ? api.apiType : 'http'
     apiVersion: contains(api, 'apiVersion') ? api.apiVersion : ''
     apiVersionDescription: contains(api, 'apiVersionDescription') ? api.apiVersionDescription : ''
-    apiVersionSet: contains(api, 'apiVersionSet') ? api.apiVersionSet : {}
+    apiVersionSetId: contains(api, 'apiVersionSetId') ? api.apiVersionSetId : ''
     authenticationSettings: contains(api, 'authenticationSettings') ? api.authenticationSettings : {}
     format: contains(api, 'format') ? api.format : 'openapi'
     isCurrent: contains(api, 'isCurrent') ? api.isCurrent : true
@@ -224,6 +226,18 @@ module apis_resource 'apis/deploy.bicep' = [for (api, index) in apis: {
     type: contains(api, 'type') ? api.type : 'http'
     value: contains(api, 'value') ? api.value : ''
     wsdlSelector: contains(api, 'wsdlSelector') ? api.wsdlSelector : {}
+  }
+  dependsOn: [
+    apiVersionSet_resource
+  ]
+}]
+
+module apiVersionSet_resource 'apiVersionSets/deploy.bicep' = [for (apiVersionSet, index) in apiVersionSets: {
+  name: '${uniqueString(deployment().name, location)}-apiVersionSet-${index}'
+  params: {
+    apiManagementServiceName: apiManagementService.name
+    name: apiVersionSet.name
+    properties: contains(apiVersionSet, 'properties') ? apiVersionSet.properties : {}
   }
 }]
 

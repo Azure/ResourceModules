@@ -31,6 +31,7 @@ This module deploys an API management.
 | :-- | :-- | :-- | :-- | :-- |
 | `additionalLocations` | array | `[]` |  | Optional. Additional datacenter locations of the API Management service. |
 | `apis` | _[apis](apis/readme.md)_ array | `[]` |  | Optional. APIs. |
+| `apiVersionSets` | _[apiVersionSets](apiVersionSets/readme.md)_ array | `[]` |  | Optional. API Version Sets. |
 | `authorizationServers` | _[authorizationServers](authorizationServers/readme.md)_ array | `[]` |  | Optional. Authorization servers. |
 | `backends` | _[backends](backends/readme.md)_ array | `[]` |  | Optional. Backends. |
 | `caches` | _[caches](caches/readme.md)_ array | `[]` |  | Optional. Caches. |
