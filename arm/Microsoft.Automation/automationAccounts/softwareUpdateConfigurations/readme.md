@@ -47,6 +47,51 @@ This module deploys an Azure Automation Account Software update Configuration.
 | `updateClassifications` | array | `[Critical, Security]` | `[Critical, Security, UpdateRollup, FeaturePack, ServicePack, Definition, Tools, Updates, Other]` | Optional. Update classification included in the deployment schedule. |
 | `weekDays` | array | `[]` | `[Monday, Tuesday, Wednesday, Thursday, Friday, Saturday, Sunday]` | Optional. Required when used with frequency 'Week'. Specified the day of the week to run the deployment schedule. |
 
+### Parameter Usage: `scopeByTags`
+
+Provide tag keys, with an array of values, filtering in machines that should be included in the deployment schedule.
+
+| Property name | Type  | Possible values | Description |
+| :------------ | :---- | :-------------- | :---------- |
+| \<tag key\>   | array | string          | tag values  |
+
+```json
+"scopeByTags": {
+    "value": {
+        "Update": [
+            "Automatic"
+        ],
+        "MaintenanceWindow": [
+            "1-Sat-22"
+        ]
+    }
+}
+```
+
+### Parameter Usage: `monthlyOccurrences`
+
+Occurrences of days within a month.
+
+| Property name | Type   | Possible values                                                | Description                                                                          |
+| :------------ | :----- | :------------------------------------------------------------- | :----------------------------------------------------------------------------------- |
+| `occurance`   | int    | 1-5                                                            | Occurrence of the week within the month. Must be between 1 and 5, where 5 is "last". |
+| `day`         | string | Monday, Tuesday, Wednesday, Thursday, Friday, Saturday, Sunday | Day of the occurrence.                                                               |
+
+```json
+"monthlyOccurrences": {
+    "value": [
+        {
+            "occurrence": 1,
+            "day": "Monday"
+        },
+        {
+            "occurrence": 2,
+            "day": "Friday"
+        }
+    ]
+}
+```
+
 ## Outputs
 
 | Output Name | Type | Description |
