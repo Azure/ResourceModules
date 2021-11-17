@@ -21,8 +21,10 @@ function Remove-ResourceInner {
         [PSObject[]] $resourceToRemove = @()
     )
 
+    $resourceToRemove | ForEach-Object { Write-Verbose ('- Remove [{0}]' -f $_.resourceId) -Verbose }
     $resourcesToRetry = @()
     Write-Verbose '----------------------------------' -Verbose
+
     foreach ($resource in $resourceToRemove) {
 
         Write-Verbose ('Trying to remove resource [{0}] of type [{1}]' -f $resource.name, $resource.type) -Verbose
@@ -72,6 +74,7 @@ function Remove-Resource {
     $currentRetry = 1
     $resourcesToRetry = $resourceToRemove
     if ($PSCmdlet.ShouldProcess(("[{0}] Resource(s) with a maximum of [$removalRetryLimit] attempts." -f $resourcesToRetry.Count), 'Remove')) {
+
         while ($resourcesToRetry.Count -gt 0 -and $currentRetry -le $removalRetryLimit) {
             $resourcesToRetry = Remove-ResourceInner -resourceToRemove $resourcesToRetry -Verbose
             Write-Verbose ('Re-try removal of remaining [{0}] resources. Waiting [{1}] seconds. Round [{2}|{3}]' -f $resourcesToRetry.Count, $removalRetryInterval, $currentRetry, $removalRetryLimit)

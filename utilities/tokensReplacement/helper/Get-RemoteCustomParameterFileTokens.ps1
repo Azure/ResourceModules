@@ -60,7 +60,7 @@ function Get-RemoteCustomParameterFileTokens {
         ## Get Tokens
         Write-Verbose("Tokens Key Vault Found: $TokensKeyVaultName")
         $Tokens = Get-AzKeyVaultSecret -VaultName $TokensKeyVaultName -ErrorAction SilentlyContinue |
-            Where-Object -Property ContentType -Like '*ParameterFileToken' |
+            Where-Object -Property ContentType -EQ 'ParameterFileToken' |
             Where-Object -Property Name -Like "$($TokensKeyVaultSecretNamePrefix)*"
         ## If no Tokens exist. Exit
         if (!$Tokens) {
@@ -75,14 +75,8 @@ function Get-RemoteCustomParameterFileTokens {
                 SecretName = $TokenName
                 VaultName  = $TokensKeyVaultName
             }
-            ## Check if Token Type is 'SecureParameterFileToken'
-            if (($PSItem.ContentType -eq 'SecureParameterFileToken')) {
-                $TokenValue = (Get-AzKeyVaultSecret @GetTokenInput -ErrorAction SilentlyContinue).SecretValue
-            } else {
-                $GetTokenInput += @{ AsPlainText = $true }
-                $TokenValue = Get-AzKeyVaultSecret @GetTokenInput -ErrorAction SilentlyContinue
-            }
-            ## Remove Prefix if Provided to Find the Token (Secret) in Key Vault
+            $TokenValue = (Get-AzKeyVaultSecret @GetTokenInput -ErrorAction SilentlyContinue).SecretValue
+            ## Remove Prefix if Provided
             if ($TokensKeyVaultSecretNamePrefix) {
                 $TokenName = $TokenName.Replace($TokensKeyVaultSecretNamePrefix, '')
             }

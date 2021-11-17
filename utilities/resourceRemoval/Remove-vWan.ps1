@@ -1,4 +1,4 @@
-<#
+﻿<#
 .SYNOPSIS
 Remove a vWAN resource with a tag { removeModule = $moduleName }
 
