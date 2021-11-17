@@ -9,16 +9,19 @@ This module deploys one Virtual Machine with one or multiple nics and optionally
 | `Microsoft.Authorization/locks` | 2017-04-01 |
 | `Microsoft.Authorization/roleAssignments` | 2020-04-01-preview |
 | `Microsoft.Compute/virtualMachines` | 2021-04-01 |
-| `Microsoft.Compute/virtualMachines/extensions` | 2021-04-01 |
+| `Microsoft.Compute/virtualMachines/extensions` | 2021-07-01 |
 | `Microsoft.Insights/diagnosticSettings` | 2021-05-01-preview |
-| `Microsoft.Network/networkInterfaces` | 2021-02-01 |
-| `Microsoft.Network/publicIPAddresses` | 2021-02-01 |
+| `Microsoft.Network/networkInterfaces` | 2021-03-01 |
+| `Microsoft.Network/publicIPAddresses` | 2021-03-01 |
 | `Microsoft.RecoveryServices/vaults/backupFabrics/protectionContainers/protectedItems` | 2021-06-01 |
 
 ## Parameters
 
 | Parameter Name | Type | Default Value | Possible Values | Description |
 | :-- | :-- | :-- | :-- | :-- |
+| `name` | string | `[take(toLower(uniqueString(resourceGroup().name)), 10)]` |  | Optional. The name of the virtual machine to be created. You should use a unique prefix to reduce name collisions in Active Directory. If no value is provided, a 10 character long unique string will be generated based on the Resource Group's name. |
+| `vmComputerNamesTransformation` | string | `none` |  | Optional. Specifies whether the computer names should be transformed. The transformation is performed on all computer names. Available transformations are 'none' (Default), 'uppercase' and 'lowercase'. |
+| `vmSize` | string | `Standard_D2s_v3` |  | Optional. Specifies the size for the VMs |
 | `adminPassword` | secureString |  |  | Required. When specifying a Windows Virtual Machine, this value should be passed |
 | `adminUsername` | secureString |  |  | Required. Administrator username |
 | `allowExtensionOperations` | bool | `True` |  | Optional. Specifies whether extension operations should be allowed on the virtual machine. This may only be set to False when no extensions are present on the virtual machine. |
@@ -38,7 +41,8 @@ This module deploys one Virtual Machine with one or multiple nics and optionally
 | `customData` | string |  |  | Optional. Custom data associated to the VM, this value will be automatically converted into base64 to account for the expected VM format. |
 | `dataDisks` | array | `[]` |  | Optional. Specifies the data disks. |
 | `dedicatedHostId` | string |  |  | Optional. Specifies resource Id about the dedicated host that the virtual machine resides in. |
-| `desiredStateConfigurationSettings` | object | `{object}` |  | Optional. The DSC configuration object |
+| `desiredStateConfigurationSettings` | object | `{object}` |  | Optional. The DSC configuration settings object |
+| `desiredStateConfigurationProtectedSettings` | object | `{secureObject}` |  | Optional. The DSC configuration protected settings object |
 | `diagnosticLogsRetentionInDays` | int | `365` |  | Optional. Specifies the number of days that logs will be kept for; a value of 0 will retain data indefinitely. |
 | `diagnosticStorageAccountId` | string |  |  | Optional. Resource identifier of the Diagnostic Storage Account. |
 | `diskEncryptionSettings` | object | `{object}` |  | Optional. Settings for Azure Disk Encription extension. |
@@ -82,10 +86,7 @@ This module deploys one Virtual Machine with one or multiple nics and optionally
 | `ultraSSDEnabled` | bool |  |  | Optional. The flag that enables or disables a capability to have one or more managed data disks with UltraSSD_LRS storage account type on the VM or VMSS. Managed disks with storage account type UltraSSD_LRS can be added to a virtual machine or virtual machine scale set only if this property is enabled. |
 | `useAvailabilityZone` | bool |  |  | Optional. Creates an availability zone and adds the VMs to it. Cannot be used in combination with availability set nor scale set. |
 | `userAssignedIdentities` | object | `{object}` |  | Optional. Mandatory if 'managedServiceIdentity' contains UserAssigned. The list of user identities associated with the Virtual Machine. |
-| `virtualMachineName` | string | `[take(toLower(uniqueString(resourceGroup().name)), 10)]` |  | Optional. The name of the virtual machine to be created. You should use a unique prefix to reduce name collisions in Active Directory. If no value is provided, a 10 character long unique string will be generated based on the Resource Group's name. |
-| `vmComputerNamesTransformation` | string | `none` |  | Optional. Specifies whether the computer names should be transformed. The transformation is performed on all computer names. Available transformations are 'none' (Default), 'uppercase' and 'lowercase'. |
 | `vmPriority` | string | `Regular` | `[Regular, Low, Spot]` | Optional. Specifies the priority for the virtual machine. |
-| `vmSize` | string | `Standard_D2s_v3` |  | Optional. Specifies the size for the VMs |
 | `windowsConfiguration` | object | `{object}` |  | Optional. Specifies Windows operating system settings on the virtual machine. |
 | `windowsScriptExtensionCommandToExecute` | secureString |  |  | Optional. Specifies the command that should be run on a Windows VM. |
 | `windowsScriptExtensionFileData` | array | `[]` |  | Optional. Array of objects that specifies URIs and the storageAccountId of the scripts that need to be downloaded and run by the Custom Script Extension on a Windows VM. |
@@ -300,14 +301,12 @@ The field `nicSuffix` and `subnetId` are mandatory. If `enablePublicIP` is set t
 },
 "domainJoinSettings": {
   "value": {
-    "settings": {
       "domainName": "contoso.com",
       "domainJoinUser": "domainJoinUser@contoso.com",
       "domainJoinOU": "OU=testOU; DC=contoso; DC=com",
       "domainJoinRestart": true,
       "domainJoinOptions": 3
     }
-  }
 },
 "domainJoinPassword": {
   "keyVault": {
@@ -325,20 +324,18 @@ The field `nicSuffix` and `subnetId` are mandatory. If `enablePublicIP` is set t
 },
 "microsoftAntiMalwareSettings": {
   "value": {
-    "settings": {
-      "AntimalwareEnabled": true,
-      "Exclusions": {
-        "Extensions": ".log;.ldf",
-        "Paths": "D:\\IISlogs;D:\\DatabaseLogs",
-        "Processes": "mssence.svc"
-      },
-      "RealtimeProtectionEnabled": true,
-      "ScheduledScanSettings": {
-        "isEnabled": "true",
-        "scanType": "Quick",
-        "day": "7",
-        "time": "120"
-      }
+    "AntimalwareEnabled": true,
+    "Exclusions": {
+      "Extensions": ".log;.ldf",
+      "Paths": "D:\\IISlogs;D:\\DatabaseLogs",
+      "Processes": "mssence.svc"
+    },
+    "RealtimeProtectionEnabled": true,
+    "ScheduledScanSettings": {
+      "isEnabled": "true",
+      "scanType": "Quick",
+      "day": "7",
+      "time": "120"
     }
   }
 }
@@ -352,7 +349,6 @@ The field `nicSuffix` and `subnetId` are mandatory. If `enablePublicIP` is set t
 },
 "diskEncryptionSettings": {
   "value": {
-    "settings": {
       "EncryptionOperation": "EnableEncryption",
       "KeyVaultURL": "https://adp-sxx-az-kv-x-001.vault.azure.net/",
       "KeyVaultResourceId": "/subscriptions/8629be3b-96bc-482d-a04b-ffff597c65a2/resourceGroups/validation-rg/providers/Microsoft.KeyVault/vaults/adp-sxx-az-kv-x-001",
@@ -362,7 +358,6 @@ The field `nicSuffix` and `subnetId` are mandatory. If `enablePublicIP` is set t
       "VolumeType": "All", //'OS'/'Data'/'All'
       "ResizeOSDisk": "false"
     }
-  }
 }
 ```
 
@@ -397,14 +392,16 @@ The field `nicSuffix` and `subnetId` are mandatory. If `enablePublicIP` is set t
           "specificDependencyKey": "https://myCustomDependencyLocation"
         }
       }
-    },
-    "protectedSettings": {
-      "configurationArguments": {
-        "mySecret": "MyPlaceholder"
-      },
-      "configurationUrlSasToken": "MyPlaceholder",
-      "configurationDataUrlSasToken": "MyPlaceholder"
     }
+  }
+},
+"desiredStateConfigurationProtectedSettings":{
+  "value":{
+    "configurationArguments": {
+      "mySecret": "MyPlaceholder"
+    },
+    "configurationUrlSasToken": "MyPlaceholder",
+    "configurationDataUrlSasToken": "MyPlaceholder"
   }
 }
 ```
