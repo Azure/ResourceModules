@@ -9,6 +9,9 @@ Add a given repository as a source for modules
 .DESCRIPTION
 Add a given repository as a source for modules
 
+.PARAMETER FeedName
+The name of the feed to add
+
 .PARAMETER Feedurl
 Url to the feed to add
 
@@ -17,6 +20,9 @@ Access token required to access the feed
 
 .PARAMETER QueueById
 Id/Email of the instance that wants to access the feed
+
+.PARAMETER Credential
+The Credentials required to access the feed
 
 .EXAMPLE
 Set-DefinedPSRepository -FeedName "Release-Modules" -Feedurl $Feedurl -SystemAccessToken $SystemAccessToken -QueueById $QueueById
