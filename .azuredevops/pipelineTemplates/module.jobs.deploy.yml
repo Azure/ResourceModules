@@ -198,7 +198,7 @@ jobs:
               ScriptType: InlineScript
               inline: |
                 # Load used functions
-                . (Join-Path '$(System.DefaultWorkingDirectory)' '$(pipelineFunctionsPath)' 'resourceDeployment' 'New-ModuleDeployment.ps1')
+                . (Join-Path '$(moduleRepoRoot)' '$(pipelineFunctionsPath)' 'resourceDeployment' 'New-ModuleDeployment.ps1')
 
                 # ----------------- #
                 # INVOKE DEPLOYMENT #

@@ -87,6 +87,27 @@ jobs:
                 fetchDepth: 1 # the depth of commits to ask Git to fetch; if not set defaults to no limit
                 path: 's/${{ checkoutRepository }}'
 
+      # [Multi Repo] Support task
+      #--------------------------
+      - task: PowerShell@2
+        displayName: Handle Multi-Repo Invocation
+        inputs:
+          targetType: inline
+          pwsh: true
+          script: |
+            # Handle multiple-repositories
+            if( "${{ join(';',parameters.checkoutRepositories) }}".length -gt 0) {
+              Write-Verbose "Multi-Repo Checkout" -Verbose
+              $moduleRepoRoot = Join-Path '$(System.DefaultWorkingDirectory)' '$(modulesRepository)'
+              $parametersRepoRoot = Join-Path '$(System.DefaultWorkingDirectory)' '${{ parameters.parametersRepository }}'
+            } else {
+              Write-Verbose "No Multi-Repo Checkout" -Verbose
+              $moduleRepoRoot = '$(System.DefaultWorkingDirectory)'
+              $parametersRepoRoot = '$(System.DefaultWorkingDirectory)'
+            }
+            Write-Host "##vso[task.setvariable variable=ModuleRepoRoot]$moduleRepoRoot"
+            Write-Host "##vso[task.setvariable variable=ParametersRepoRoot]$parametersRepoRoot"
+
       # [Agent] Prepare environment
       #----------------------------
       - task: PowerShell@2
@@ -96,7 +117,7 @@ jobs:
           pwsh: true
           script: |
             # Load used functions
-            . (Join-Path '$(System.DefaultWorkingDirectory)' 'utilities' 'pipelines' 'sharedScripts' 'Set-EnvironmentOnAgent.ps1')
+            . (Join-Path '$(moduleRepoRoot)' 'utilities' 'pipelines' 'sharedScripts' 'Set-EnvironmentOnAgent.ps1')
 
             # Set agent up
             Set-EnvironmentOnAgent
@@ -112,25 +133,10 @@ jobs:
           ScriptType: InlineScript
           pwsh: true
           inline: |
-            # ---------------------------- #
-            # HANDLE MULTI-REPO INVOCATION #
-            # ---------------------------- #
-            $componentsBasePath = "$(System.DefaultWorkingDirectory)"
-            # Handle multiple-repositories
-            if( "${{ join(';',parameters.checkoutRepositories) }}".length -gt 0) {
-              Write-Verbose "Multi Repo" -Verbose
-              $componentsBasePath = Join-Path $componentsBasePath '$(modulesRepository)'
-            }
-
-            # --------------------- #
-            # INVOKE PESTER TEST(S) #
-            # --------------------- #
-            Install-Module Pester -Force -ErrorAction Stop -RequiredVersion 5.1.1
-
             Invoke-Pester -Configuration @{
               Run        = @{
-                Container = New-PesterContainer -Path 'arm/.global/global.module.tests.ps1' -Data @{
-                  moduleFolderPaths = Join-Path $componentsBasePath '${{ parameters.modulePath }}'
+                Container = New-PesterContainer -Path (Join-Path $moduleRepoRoot 'arm' '.global' 'global.module.tests.ps1') -Data @{
+                  moduleFolderPaths = Join-Path $moduleRepoRoot '${{ parameters.modulePath }}'
                 }
               }
               Filter     = @{
@@ -177,6 +183,27 @@ jobs:
                 fetchDepth: 1 # the depth of commits to ask Git to fetch; if not set defaults to no limit
                 path: 's/${{ checkoutRepository }}'
 
+      # [Multi Repo] Support task
+      #--------------------------
+      - task: PowerShell@2
+        displayName: Handle Multi-Repo Invocation
+        inputs:
+          targetType: inline
+          pwsh: true
+          script: |
+            # Handle multiple-repositories
+            if( "${{ join(';',parameters.checkoutRepositories) }}".length -gt 0) {
+              Write-Verbose "Multi-Repo Checkout" -Verbose
+              $moduleRepoRoot = Join-Path '$(System.DefaultWorkingDirectory)' '$(modulesRepository)'
+              $parametersRepoRoot = Join-Path '$(System.DefaultWorkingDirectory)' '${{ parameters.parametersRepository }}'
+            } else {
+              Write-Verbose "No Multi-Repo Checkout" -Verbose
+              $moduleRepoRoot = '$(System.DefaultWorkingDirectory)'
+              $parametersRepoRoot = '$(System.DefaultWorkingDirectory)'
+            }
+            Write-Host "##vso[task.setvariable variable=ModuleRepoRoot]$moduleRepoRoot"
+            Write-Host "##vso[task.setvariable variable=ParametersRepoRoot]$parametersRepoRoot"
+
       # [Agent] Prepare environment
       #----------------------------
       - task: PowerShell@2
@@ -186,7 +213,7 @@ jobs:
           pwsh: true
           script: |
             # Load used functions
-            . (Join-Path '$(System.DefaultWorkingDirectory)' 'utilities' 'pipelines' 'sharedScripts' 'Set-EnvironmentOnAgent.ps1')
+            . (Join-Path '$(moduleRepoRoot)' 'utilities' 'pipelines' 'sharedScripts' 'Set-EnvironmentOnAgent.ps1')
 
             # Set agent up
             Set-EnvironmentOnAgent
@@ -202,25 +229,10 @@ jobs:
           ScriptType: InlineScript
           pwsh: true
           inline: |
-            # ---------------------------- #
-            # HANDLE MULTI-REPO INVOCATION #
-            # ---------------------------- #
-            $componentsBasePath = "$(System.DefaultWorkingDirectory)"
-            # Handle multiple-repositories
-            if( "${{ join(';',parameters.checkoutRepositories) }}".length -gt 0) {
-              Write-Verbose "Multi Repo" -Verbose
-              $componentsBasePath = Join-Path $componentsBasePath '$(modulesRepository)'
-            }
-
-            # --------------------- #
-            # INVOKE PESTER TEST(S) #
-            # --------------------- #
-            Install-Module Pester -Force -ErrorAction Stop -RequiredVersion 5.1.1
-
             Invoke-Pester -Configuration @{
               Run        = @{
-                Container = New-PesterContainer -Path 'arm/.global/global.module.tests.ps1' -Data @{
-                  moduleFolderPaths = Join-Path $componentsBasePath '${{ parameters.modulePath }}'
+                Container = New-PesterContainer -Path (Join-Path $moduleRepoRoot 'arm' '.global' 'global.module.tests.ps1') -Data @{
+                  moduleFolderPaths = Join-Path $moduleRepoRoot '${{ parameters.modulePath }}'
                 }
               }
               Filter     = @{
@@ -271,20 +283,6 @@ jobs:
                     fetchDepth: 1 # the depth of commits to ask Git to fetch; if not set defaults to no limit
                     path: 's/${{ checkoutRepository }}'
 
-          # [Agent] Prepare environment
-          #----------------------------
-          - task: PowerShell@2
-            displayName: 'Setup agent'
-            inputs:
-              targetType: inline
-              pwsh: true
-              script: |
-                # Load used functions
-                . (Join-Path '$(System.DefaultWorkingDirectory)' 'utilities' 'pipelines' 'sharedScripts' 'Set-EnvironmentOnAgent.ps1')
-
-                # Set agent up
-                Set-EnvironmentOnAgent
-
           # [Multi Repo] Support task
           #--------------------------
           - task: PowerShell@2
@@ -305,6 +303,20 @@ jobs:
                 }
                 Write-Host "##vso[task.setvariable variable=ModuleRepoRoot]$moduleRepoRoot"
                 Write-Host "##vso[task.setvariable variable=ParametersRepoRoot]$parametersRepoRoot"
+
+          # [Agent] Prepare environment
+          #----------------------------
+          - task: PowerShell@2
+            displayName: 'Setup agent'
+            inputs:
+              targetType: inline
+              pwsh: true
+              script: |
+                # Load used functions
+                . (Join-Path '$(moduleRepoRoot)' 'utilities' 'pipelines' 'sharedScripts' 'Set-EnvironmentOnAgent.ps1')
+
+                # Set agent up
+                Set-EnvironmentOnAgent
 
           # [Agent] Replace tokens
           #-----------------------
@@ -370,7 +382,7 @@ jobs:
               pwsh: true
               inline: |
                 # Load used functions
-                . (Join-Path '$(System.DefaultWorkingDirectory)' '$(pipelineFunctionsPath)' 'resourceValidation' 'Test-TemplateWithParameterFile.ps1')
+                . (Join-Path '$(moduleRepoRoot)' '$(pipelineFunctionsPath)' 'resourceValidation' 'Test-TemplateWithParameterFile.ps1')
 
                 # ----------- #
                 # INVOKE TEST #
