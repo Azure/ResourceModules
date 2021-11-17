@@ -26,20 +26,6 @@ on:
         required: false
         default: '0.0.1'
 
-  # workflow_dispatch:
-  #   inputs:
-  #     removeDeployment:
-  #       description: 'Remove deployed module'
-  #       required: false
-  #       default: 'true'
-  #     versioningOption:
-  #       description: 'The mode to handle the version increments [major|minor|patch]'
-  #       required: false
-  #       default: 'patch'
-  #     customVersion:
-  #       description: 'Custom version to apply. Used only if higher than latest'
-  #       required: false
-  #       default: '0.0.1'
   push:
     branches:
       - main
