@@ -29,7 +29,7 @@ param linkedWorkspaceId string = ''
 @description('Optional. List of gallerySolutions to be created in the linked log analytics workspace')
 param gallerySolutions array = [
   {
-    name: 'ChangeTracking'
+    name: 'Updates'
   }
 ]
 
