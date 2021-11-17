@@ -29,7 +29,7 @@ resource storageAccount 'Microsoft.Storage/storageAccounts@2021-06-01' existing 
   name: storageAccountName
 }
 resource blobServices 'Microsoft.Storage/storageAccounts/blobServices@2021-06-01' = {
-  name: 'default'
+  name: name
   parent: storageAccount
   properties: {
     deleteRetentionPolicy: {
@@ -44,14 +44,12 @@ module blobServices_container 'containers/deploy.bicep' = [for (container, index
   name: '${deployment().name}-Storage-Container-${index}'
   params: {
     storageAccountName: storageAccountName
+    blobServicesName: blobServices.name
     name: container.name
     publicAccess: contains(container, 'publicAccess') ? container.publicAccess : 'None'
     roleAssignments: contains(container, 'roleAssignments') ? container.roleAssignments : []
     immutabilityPolicyProperties: contains(container, 'immutabilityPolicyProperties') ? container.immutabilityPolicyProperties : {}
   }
-  dependsOn: [
-    blobServices
-  ]
 }]
 
 @description('The name of the deployed blob service')

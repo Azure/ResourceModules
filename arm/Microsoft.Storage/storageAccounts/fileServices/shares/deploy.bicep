@@ -2,6 +2,9 @@
 @description('Required. Name of the Storage Account.')
 param storageAccountName string
 
+@description('Optional. The name of the file service')
+param fileServicesName string = 'default'
+
 @description('The name of the file share to create')
 param name string
 
@@ -23,14 +26,15 @@ resource storageAccount 'Microsoft.Storage/storageAccounts@2021-06-01' existing 
   name: storageAccountName
 
   resource fileService 'fileServices@2021-04-01' existing = {
-    name: 'default'
+    name: fileServicesName
+  }
+}
 
-    resource fileShare 'shares@2019-06-01' = {
-      name: name
-      properties: {
-        shareQuota: sharedQuota
-      }
-    }
+resource fileShare 'Microsoft.Storage/storageAccounts/fileServices/shares@2019-06-01' = {
+  name: name
+  parent: storageAccount::fileService
+  properties: {
+    shareQuota: sharedQuota
   }
 }
 
@@ -38,15 +42,15 @@ module fileShare_rbac '.bicep/nested_rbac.bicep' = [for (roleAssignment, index) 
   name: '${deployment().name}-Rbac-${index}'
   params: {
     roleAssignmentObj: roleAssignment
-    resourceName: storageAccount::fileService::fileShare.name
+    resourceName: fileShare.name
   }
 }]
 
 @description('The name of the deployed file share')
-output fileShareName string = storageAccount::fileService::fileShare.name
+output fileShareName string = last(split(fileShare.name, '/'))
 
 @description('The id of the deployed file share')
-output fileShareResourceId string = storageAccount::fileService::fileShare.id
+output fileShareResourceId string = fileShare.id
 
 @description('The resource group of the deployed file share')
 output fileShareResourceGroup string = resourceGroup().name

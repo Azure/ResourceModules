@@ -15,6 +15,7 @@ This module can be used to deploy a file share service into a storage account.
 | Parameter Name | Type | Default Value | Possible Values | Description |
 | :-- | :-- | :-- | :-- | :-- |
 | `cuaId` | string |  |  | Optional. Customer Usage Attribution id (GUID). This GUID must be previously registered |
+| `name` | string | `default` |  | Optional. The name of the file service |
 | `protocolSettings` | object | `{object}` |  | Protocol settings for file service |
 | `shareDeleteRetentionPolicy` | object | `{object}` |  | The service properties for soft delete. |
 | `shares` | _[shares](shares/readme.md)_ array | `[]` |  | Optional. File shares to create. |

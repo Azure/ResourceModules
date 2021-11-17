@@ -15,6 +15,7 @@ This module can be used to deploy a file share service into a storage account.
 | Parameter Name | Type | Default Value | Possible Values | Description |
 | :-- | :-- | :-- | :-- | :-- |
 | `cuaId` | string |  |  | Optional. Customer Usage Attribution id (GUID). This GUID must be previously registered |
+| `name` | string | `default` |  | Optional. The name of the queue service |
 | `queues` | _[queues](queues/readme.md)_ array | `[]` |  | Optional. Queues to create. |
 | `storageAccountName` | string |  |  | Required. Name of the Storage Account. |
 

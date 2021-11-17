@@ -2,8 +2,14 @@
 @description('Required. Name of the Storage Account.')
 param storageAccountName string
 
+@description('Optional. Name of the blob service.')
+param blobServicesName string = 'default'
+
 @description('The name of the storage container to deploy')
 param name string
+
+@description('Optional. Name of the immutable policy.')
+param immutabilityPolicyName string = 'default'
 
 @allowed([
   'Container'
@@ -31,7 +37,7 @@ resource storageAccount 'Microsoft.Storage/storageAccounts@2021-06-01' existing 
   name: storageAccountName
 
   resource blobServices 'blobServices@2021-06-01' existing = {
-    name: 'default'
+    name: blobServicesName
   }
 }
 
@@ -44,7 +50,7 @@ resource container 'Microsoft.Storage/storageAccounts/blobServices/containers@20
 }
 
 module immutabilityPolicy 'immutabilityPolicies/deploy.bicep' = if (!empty(immutabilityPolicyProperties)) {
-  name: 'default'
+  name: immutabilityPolicyName
   params: {
     storageAccountName: storageAccountName
     containerName: container.name
