@@ -18,10 +18,6 @@ This module deploys Api Management Service Apis policies.
 | `format` | string | `xml` | `[rawxml, rawxml-link, xml, xml-link]` | Optional. Format of the policyContent. |
 | `value` | string |  |  | Required. Contents of the Policy as defined by the format. |
 
-### Parameter Usage: `<ParameterPlaceholder>`
-
-// TODO: Fill in Parameter usage
-
 ## Outputs
 
 | Output Name | Type | Description |
