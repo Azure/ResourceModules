@@ -1,10 +1,19 @@
 ﻿function Get-ChangedFiles {
-    $Diff = git diff --name-only HEAD^ HEAD
+    [CmdletBinding()]
+    param (
+        [Parameter(Position = 0)]
+        [string] $Commit = 'HEAD^',
+
+        [Parameter(Position = 1)]
+        [string] $CompareCommit = 'HEAD'
+    )
+    $Diff = git diff --name-only $Commit $CompareCommit
     $ChangedFiles = $Diff | Get-Item
     return $ChangedFiles
 }
 
 function Get-ChangedModuleFiles {
+    [CmdletBinding()]
     $ChangedModuleFiles = Get-ChangedFiles | Where-Object { $_.Name -eq 'deploy.bicep' }
     return $ChangedModuleFiles
 }
