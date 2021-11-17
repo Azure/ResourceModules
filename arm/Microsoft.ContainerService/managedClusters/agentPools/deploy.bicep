@@ -1,11 +1,15 @@
-@description('Required. The name of the agent pool')
+@description('Required. Name of the managed cluster')
+@minLength(1)
+param managedClusterName string
+
+@description('Required. Name of the agent pool')
 param name string
 
 @description('Required. Properties for the container service agent pool profile.')
 param agentPoolProperties object
 
 resource agentPool 'Microsoft.ContainerService/managedClusters/agentPools@2021-05-01' = {
-  name: name
+  name: '${managedClusterName}/${name}'
   properties: agentPoolProperties
 }
 

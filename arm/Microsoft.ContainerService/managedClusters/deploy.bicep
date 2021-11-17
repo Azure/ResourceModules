@@ -328,8 +328,9 @@ resource managedCluster 'Microsoft.ContainerService/managedClusters@2021-07-01' 
 }
 
 module managedCluster_agentPools 'agentPools/deploy.bicep' = [for (agentPool, index) in additionalAgentPools: {
-  name: '${deployment().name}-agentPool-${index}'
+  name: '${managedCluster.name}-agentPool-${index}'
   params: {
+    managedClusterName: managedCluster.name
     name: agentPool.name
     agentPoolProperties: agentPool.properties
   }
