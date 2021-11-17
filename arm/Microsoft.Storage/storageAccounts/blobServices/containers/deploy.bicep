@@ -27,49 +27,49 @@ module pid_cuaId '.bicep/nested_cuaId.bicep' = if (!empty(cuaId)) {
   params: {}
 }
 
-//////////////////////
-
 resource container 'Microsoft.Storage/storageAccounts/blobServices/containers@2019-06-01' = {
-  name: '${storageAccount}/default/${name}'
+  name: '${storageAccountName}/default/${name}'
   properties: {
     publicAccess: publicAccess
   }
 }
 
-/////////////////
-
-resource storageAccount 'Microsoft.Storage/storageAccounts@2021-06-01' existing = {
-  name: storageAccountName
-}
-
-resource blobServices 'Microsoft.Storage/storageAccounts/blobServices@2021-08-01' existing = {
+module immutabilityPolicy 'immutabilityPolicies/deploy.bicep' = if (!empty(immutabilityPolicyProperties)) {
   name: 'default'
-  parent: storageAccount
-}
-
-resource container 'Microsoft.Storage/storageAccounts/blobServices/containers@2019-06-01' = {
-  name: name
-  parent: blobServices
-  properties: {
-    publicAccess: publicAccess
+  params: {
+    storageAccountName: storageAccountName
+    containerName: container.name
+    immutabilityPeriodSinceCreationInDays: contains(immutabilityPolicyProperties, 'immutabilityPeriodSinceCreationInDays') ? immutabilityPolicyProperties.immutabilityPeriodSinceCreationInDays : 365
+    allowProtectedAppendWrites: contains(immutabilityPolicyProperties, 'allowProtectedAppendWrites') ? immutabilityPolicyProperties.allowProtectedAppendWrites : true
   }
 }
 
-////////////////////
+module container_rbac '.bicep/nested_rbac.bicep' = [for (roleAssignment, index) in roleAssignments: {
+  name: '${deployment().name}-Rbac-${index}'
+  params: {
+    roleAssignmentObj: roleAssignment
+    resourceName: container.name
+  }
+}]
 
-resource storageAccount 'Microsoft.Storage/storageAccounts@2021-06-01' existing = {
-  name: storageAccountName
+@description('The name of the deployed container')
+output containerName string = container.name
 
-  resource blobServices 'blobServices@2021-08-01' existing = {
-    name: 'default'
+@description('The ID of the deployed container')
+output containerResourceId string = container.id
 
-    resource container 'containers@2019-06-01' = {
-      name: name
-      properties: {
-        publicAccess: publicAccess
-      }
+@description('The resource group of the deployed container')
+output containerResourceGroup string = resourceGroup().name
+resource blobServices 'blobServices@2021-08-01' existing = {
+  name: 'default'
+
+  resource container 'containers@2019-06-01' = {
+    name: name
+    properties: {
+      publicAccess: publicAccess
     }
   }
+}
 }
 ////////////////////////
 
@@ -77,7 +77,7 @@ module immutabilityPolicy 'immutabilityPolicies/deploy.bicep' = if (!empty(immut
   name: 'default'
   params: {
     storageAccountName: storageAccountName
-    containerName: storageAccount::blobServices::container.name
+    //containerName: storageAccount::blobServices::container.name
     immutabilityPeriodSinceCreationInDays: contains(immutabilityPolicyProperties, 'immutabilityPeriodSinceCreationInDays') ? immutabilityPolicyProperties.immutabilityPeriodSinceCreationInDays : 365
     allowProtectedAppendWrites: contains(immutabilityPolicyProperties, 'allowProtectedAppendWrites') ? immutabilityPolicyProperties.allowProtectedAppendWrites : true
   }
