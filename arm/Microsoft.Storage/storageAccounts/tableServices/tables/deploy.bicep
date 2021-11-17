@@ -13,6 +13,7 @@ module pid_cuaId '.bicep/nested_cuaId.bicep' = if (!empty(cuaId)) {
   params: {}
 }
 
+
 resource table 'Microsoft.Storage/storageAccounts/tableServices/tables@2021-06-01' = {
   name: '${storageAccountName}/default/${name}'
 }
