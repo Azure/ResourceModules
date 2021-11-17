@@ -35,5 +35,3 @@ output linkedServiceResourceId string = linkedService.id
 
 @description('The resource group where the linked service is deployed')
 output linkedServiceResourceGroup string = resourceGroup().name
-
-

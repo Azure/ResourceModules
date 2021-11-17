@@ -25,7 +25,7 @@ var builtInRoleNames = {
   'Virtual Machine User Login': subscriptionResourceId('Microsoft.Authorization/roleDefinitions', 'fb879df8-f326-4884-b1cf-06f3ad86be52')
 }
 
-resource networkInterface 'Microsoft.Network/networkInterfaces@2021-02-01' existing = {
+resource networkInterface 'Microsoft.Network/networkInterfaces@2021-03-01' existing = {
   name: resourceName
 }
 
