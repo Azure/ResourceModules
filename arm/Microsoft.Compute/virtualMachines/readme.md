@@ -65,7 +65,7 @@ This module deploys one Virtual Machine with one or multiple nics and optionally
 | `eventHubAuthorizationRuleId` | string |  |  | Optional. Resource ID of the event hub authorization rule for the Event Hubs namespace in which the event hub should be created or streamed to. |
 | `eventHubName` | string |  |  | Optional. Name of the event hub within the namespace to which logs are streamed. Without this, an event hub is created for each log category. |
 | `forceUpdateTag` | string | `1.0` |  | Optional. Pass in an unique value like a GUID everytime the operation needs to be force run |
-| `imageReference` | object | `{object}` |  | Optional. OS image reference. In case of marketplace images, it's the combination of the publisher, offer, sku, version attributes. In case of custom images it's the resource ID of the custom image. |
+| `imageReference` | object | `{object}` |  | Required. OS image reference. In case of marketplace images, it's the combination of the publisher, offer, sku, version attributes. In case of custom images it's the resource ID of the custom image. |
 | `licenseType` | string |  | `[Windows_Client, Windows_Server, ]` | Optional. Specifies that the image or disk that is being used was licensed on-premises. This element is only used for images that contain the Windows Server operating system. |
 | `linuxConfiguration` | object | `{object}` |  | Optional. Specifies the Linux operating system settings on the virtual machine. |
 | `location` | string | `[resourceGroup().location]` |  | Optional. Location for all resources. |
