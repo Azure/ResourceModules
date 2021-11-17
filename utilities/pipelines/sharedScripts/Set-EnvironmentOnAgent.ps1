@@ -50,7 +50,7 @@ function Install-CustomModule {
 
         $localModuleVersions = Get-Module $foundModule.Name -ListAvailable
         if ($localModuleVersions -and $localModuleVersions.Version -contains $foundModule.Version ) {
-            Write-Verbose ('Module [{0}] already installed with latest version [{1}]' -f $foundModule.Name, $foundModule.Version) -Verbose
+            Write-Verbose ('Module [{0}] already installed with version [{1}]' -f $foundModule.Name, $foundModule.Version) -Verbose
             continue
         }
         if ($module.ExcludeModules -and $module.excludeModules.contains($foundModule.Name)) {
@@ -100,8 +100,9 @@ function Set-EnvironmentOnAgent {
             @{ Name = 'Az.Resources' },
             @{ Name = 'Az.NetAppFiles' },
             @{ Name = 'Az.Network' },
-            @{ Name = 'Az.ContainerRegistry' }
-            @{ Name = 'Az.KeyVault' }
+            @{ Name = 'Az.ContainerRegistry' },
+            @{ Name = 'Az.KeyVault' },
+            @{ Name = 'Pester'; Version = '5.3.0' }
         )
     )
 
