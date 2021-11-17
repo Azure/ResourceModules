@@ -24,11 +24,12 @@ inputs:
 runs:
   using: 'composite'
   steps:
-    - name: 'Setup agent & login'
+    - name: 'Setup agent'
       shell: pwsh
       run: |
         # Load used functions
-        . ".github/actions/sharedScripts/Set-EnvironmentOnAgent.ps1"
+        . (Join-Path $env:GITHUB_WORKSPACE 'utilities' 'pipelines' 'sharedScripts' 'Set-EnvironmentOnAgent.ps1')
+
         # Set agent up
         Set-EnvironmentOnAgent
 
@@ -42,9 +43,11 @@ runs:
       shell: pwsh
       run: |
         # Load used functions
-        . "utilities/tokensReplacement/Convert-TokensInParameterFile.ps1"
+        . (Join-Path $env:GITHUB_WORKSPACE 'utilities' 'pipelines' 'tokensReplacement' 'Convert-TokensInParameterFile.ps1')
+
         # Load Settings File
         $Settings = Get-Content -Path "settings.json" | ConvertFrom-Json
+
         # Initialize Default Parameter File Tokens
         $DefaultParameterFileTokens = @(
             @{ Name = 'resourceGroupName'; Value = '${{ inputs.resourceGroupName }}' }
@@ -72,7 +75,7 @@ runs:
             }
         }
         # Invoke Token Replacement Functionality
-        Convert-TokensInParameterFile @ConvertTokensInputs -Verbose
+        $null = Convert-TokensInParameterFile @ConvertTokensInputs -Verbose
 
       # [Test Deployment] task(s)
       #--------------------------
@@ -80,7 +83,7 @@ runs:
       shell: pwsh
       run: |
         # Load used functions
-        . "$env:GITHUB_ACTION_PATH/scripts/Test-TemplateWithParameterFile.ps1"
+        . (Join-Path $env:GITHUB_WORKSPACE 'utilities' 'pipelines' 'resourceValidation' 'Test-TemplateWithParameterFile.ps1')
 
         # ----------- #
         # INVOKE TEST #
