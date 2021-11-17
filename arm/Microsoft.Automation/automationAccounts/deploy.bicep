@@ -185,11 +185,11 @@ module automationAccount_jobSchedules './jobSchedules/deploy.bicep' = [for (jobS
     ]
 }]
 
-var logAnalyticsWorkspace = {
+var logAnalyticsWorkspace = (!empty(linkedWorkspaceId)) ? {
   name: '${last(split(linkedWorkspaceId, '/'))}'
   resourcegroupName: split(linkedWorkspaceId, '/')[4]
   subscriptionId: split(linkedWorkspaceId, '/')[2]
-}
+} : null
 
 module automationAccount_linkedService './.bicep/nested_linkedService.bicep' = if (!empty(linkedWorkspaceId)) {
   name: '${uniqueString(deployment().name, location)}-AutoAccount-LinkedService'
