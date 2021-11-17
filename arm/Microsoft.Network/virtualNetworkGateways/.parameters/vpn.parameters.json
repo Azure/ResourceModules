@@ -3,11 +3,11 @@
     "contentVersion": "1.0.0.0",
     "parameters": {
         "virtualNetworkGatewayName": {
-            "value": "sxx-az-vnet-vpn-gw-weu-p-001"
+            "value": "sxx-az-vnet-vpn-gw-p-001"
         },
         "domainNameLabel": {
             "value": [
-                "sxx-az-vnet-vpn-gw-weu-p-001-pip-99"
+                "sxx-az-vnet-vpn-gw-p-001-pip-99"
             ]
         },
         "virtualNetworkGatewayType": {
@@ -23,14 +23,14 @@
             "value": false
         },
         "vNetId": {
-            "value": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/virtualNetworks/sxx-az-vnet-weu-x-004"
+            "value": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/virtualNetworks/adp-sxx-az-vnet-x-001"
         },
         "roleAssignments": {
             "value": [
                 {
                     "roleDefinitionIdOrName": "Reader",
                     "principalIds": [
-                        "5545f7a0-51f4-46af-b3b4-baecf5176a56"
+                        "cf33fea8-b30f-424f-ab73-c48d99e0b222"
                     ]
                 }
             ]

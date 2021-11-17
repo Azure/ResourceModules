@@ -7,8 +7,8 @@ This template deploys a DDoS protection plan.
 | Resource Type | Api Version |
 | :-- | :-- |
 | `Microsoft.Authorization/locks` | 2016-09-01 |
+| `Microsoft.Authorization/roleAssignments` | 2020-04-01-preview |
 | `Microsoft.Network/ddosProtectionPlans` | 2021-02-01 |
-| `Microsoft.Network/ddosProtectionPlans/providers/roleAssignments` | 2021-04-01-preview |
 
 ## Parameters
 
@@ -69,13 +69,14 @@ Tag names and tag values can be provided as needed. A tag can be left without a 
 
 ## Outputs
 
-| Output Name | Type |
-| :-- | :-- |
-| `ddosProtectionPlanName` | string |
-| `ddosProtectionPlanResourceGroup` | string |
-| `ddosProtectionPlanResourceId` | string |
+| Output Name | Type | Description |
+| :-- | :-- | :-- |
+| `ddosProtectionPlanName` | string | The name of the DDOS protection plan |
+| `ddosProtectionPlanResourceGroup` | string | The resource group the DDOS protection plan was deployed into |
+| `ddosProtectionPlanResourceId` | string | The resourceId of the DDOS protection plan |
 
 ## Template references
 
 - [Locks](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2016-09-01/locks)
+- [Roleassignments](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2020-04-01-preview/roleAssignments)
 - [Ddosprotectionplans](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Network/2021-02-01/ddosProtectionPlans)

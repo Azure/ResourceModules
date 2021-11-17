@@ -104,7 +104,7 @@ var diagnosticsLogs = [for log in logsToEnable: {
   }
 }]
 
-module pid_cuaId './.bicep/nested_cuaId.bicep' = if (!empty(cuaId)) {
+module pid_cuaId '.bicep/nested_cuaId.bicep' = if (!empty(cuaId)) {
   name: 'pid-${cuaId}'
   params: {}
 }
@@ -114,16 +114,16 @@ resource database 'Microsoft.Sql/managedInstances/databases@2020-02-02-preview' 
   location: location
   tags: tags
   properties: {
-    collation: (empty(collation) ? json('null') : collation)
-    restorePointInTime: (empty(restorePointInTime) ? json('null') : restorePointInTime)
-    catalogCollation: (empty(catalogCollation) ? json('null') : catalogCollation)
-    createMode: (empty(createMode) ? json('null') : createMode)
-    storageContainerUri: (empty(storageContainerUri) ? json('null') : storageContainerUri)
-    sourceDatabaseId: (empty(sourceDatabaseId) ? json('null') : sourceDatabaseId)
-    restorableDroppedDatabaseId: (empty(restorableDroppedDatabaseId) ? json('null') : restorableDroppedDatabaseId)
-    storageContainerSasToken: (empty(storageContainerSasToken) ? json('null') : storageContainerSasToken)
-    recoverableDatabaseId: (empty(recoverableDatabaseId) ? json('null') : recoverableDatabaseId)
-    longTermRetentionBackupResourceId: (empty(longTermRetentionBackupResourceId) ? json('null') : longTermRetentionBackupResourceId)
+    collation: (empty(collation) ? null : collation)
+    restorePointInTime: (empty(restorePointInTime) ? null : restorePointInTime)
+    catalogCollation: (empty(catalogCollation) ? null : catalogCollation)
+    createMode: (empty(createMode) ? null : createMode)
+    storageContainerUri: (empty(storageContainerUri) ? null : storageContainerUri)
+    sourceDatabaseId: (empty(sourceDatabaseId) ? null : sourceDatabaseId)
+    restorableDroppedDatabaseId: (empty(restorableDroppedDatabaseId) ? null : restorableDroppedDatabaseId)
+    storageContainerSasToken: (empty(storageContainerSasToken) ? null : storageContainerSasToken)
+    recoverableDatabaseId: (empty(recoverableDatabaseId) ? null : recoverableDatabaseId)
+    longTermRetentionBackupResourceId: (empty(longTermRetentionBackupResourceId) ? null : longTermRetentionBackupResourceId)
   }
 }
 
@@ -139,11 +139,11 @@ resource database_lock 'Microsoft.Authorization/locks@2016-09-01' = if (lock != 
 resource database_diagnosticSettings 'Microsoft.Insights/diagnosticsettings@2017-05-01-preview' = if ((!empty(diagnosticStorageAccountId)) || (!empty(workspaceId)) || (!empty(eventHubAuthorizationRuleId)) || (!empty(eventHubName))) {
   name: '${last(split(database.name, '/'))}-diagnosticSettings'
   properties: {
-    storageAccountId: (empty(diagnosticStorageAccountId) ? json('null') : diagnosticStorageAccountId)
-    workspaceId: (empty(workspaceId) ? json('null') : workspaceId)
-    eventHubAuthorizationRuleId: (empty(eventHubAuthorizationRuleId) ? json('null') : eventHubAuthorizationRuleId)
-    eventHubName: (empty(eventHubName) ? json('null') : eventHubName)
-    logs: ((empty(diagnosticStorageAccountId) && empty(workspaceId) && empty(eventHubAuthorizationRuleId) && empty(eventHubName)) ? json('null') : diagnosticsLogs)
+    storageAccountId: (empty(diagnosticStorageAccountId) ? null : diagnosticStorageAccountId)
+    workspaceId: (empty(workspaceId) ? null : workspaceId)
+    eventHubAuthorizationRuleId: (empty(eventHubAuthorizationRuleId) ? null : eventHubAuthorizationRuleId)
+    eventHubName: (empty(eventHubName) ? null : eventHubName)
+    logs: ((empty(diagnosticStorageAccountId) && empty(workspaceId) && empty(eventHubAuthorizationRuleId) && empty(eventHubName)) ? null : diagnosticsLogs)
   }
   scope: database
 }

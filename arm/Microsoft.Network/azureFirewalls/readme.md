@@ -7,9 +7,9 @@ This module deploys Azure Firewall.
 | Resource Type | Api Version |
 | :-- | :-- |
 | `Microsoft.Authorization/locks` | 2016-09-01 |
+| `Microsoft.Authorization/roleAssignments` | 2020-04-01-preview |
 | `Microsoft.Insights/diagnosticSettings` | 2017-05-01-preview |
 | `Microsoft.Network/azureFirewalls` | 2021-02-01 |
-| `Microsoft.Network/azureFirewalls/providers/roleAssignments` | 2021-04-01-preview |
 | `Microsoft.Network/publicIPAddresses` | 2021-02-01 |
 
 ## Parameters
@@ -90,16 +90,16 @@ Tag names and tag values can be provided as needed. A tag can be left without a 
 
 ## Outputs
 
-| Output Name | Type |
-| :-- | :-- |
-| `applicationRuleCollections` | array |
-| `azureFirewallName` | string |
-| `azureFirewallPrivateIp` | string |
-| `azureFirewallPublicIp` | string |
-| `azureFirewallResourceGroup` | string |
-| `azureFirewallResourceId` | string |
-| `natRuleCollections` | array |
-| `networkRuleCollections` | array |
+| Output Name | Type | Description |
+| :-- | :-- | :-- |
+| `applicationRuleCollections` | array | List of Application Rule Collections |
+| `azureFirewallName` | string | The name of the Azure firewall |
+| `azureFirewallPrivateIp` | string | The private IP of the Azure Firewall |
+| `azureFirewallPublicIp` | string | The public IP of the Azure Firewall |
+| `azureFirewallResourceGroup` | string | The resource group the azure firewall was deployed into |
+| `azureFirewallResourceId` | string | The resourceId of the Azure firewall |
+| `natRuleCollections` | array | Collection of NAT rule collections used by Azure Firewall |
+| `networkRuleCollections` | array | List of Network Rule Collections |
 
 ## Considerations
 
@@ -109,6 +109,7 @@ The `networkRuleCollections` parameter accepts a JSON Array of AzureFirewallNetw
 ## Template references
 
 - [Locks](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2016-09-01/locks)
+- [Roleassignments](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2020-04-01-preview/roleAssignments)
 - [Diagnosticsettings](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Insights/2017-05-01-preview/diagnosticSettings)
 - [Azurefirewalls](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Network/2021-02-01/azureFirewalls)
 - [Publicipaddresses](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Network/2021-02-01/publicIPAddresses)

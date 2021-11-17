@@ -10,19 +10,16 @@ Otherwise, one of the provided version options is chosen and applied with the de
 
 The template spec is set up if not already existing.
 
-.PARAMETER componentTemplateSpecName
-Mandatory. The name of the module to publish. It will be the name of the template spec.
-
 .PARAMETER templateFilePath
 Mandatory. Path to the module deployment file from root.
 
-.PARAMETER componentTemplateSpecRGName
+.PARAMETER templateSpecsRgName
 Mandatory. ResourceGroup of the template spec to publish to.
 
-.PARAMETER componentTemplateSpecRGLocation
+.PARAMETER templateSpecsRgLocation
 Mandatory. Location of the template spec resource group.
 
-.PARAMETER componentTemplateSpecDescription
+.PARAMETER templateSpecsDescription
 Mandatory. The description of the parent template spec.
 
 .PARAMETER customVersion
@@ -32,7 +29,7 @@ Optional. A custom version that can be provided by the UI. '-' represents an emp
 Optional. A version option that can be specified in the UI. Defaults to 'patch'
 
 .EXAMPLE
-Publish-ModuleToTemplateSpec -componentTemplateSpecName 'KeyVault' templateFilePath 'C:/KeyVault/deploy.json' -componentTemplateSpecRGName 'artifacts-rg' -componentTemplateSpecRGLocation 'West Europe' -componentTemplateSpecDescription 'iacs key vault' -customVersion '3.0.0'
+Publish-ModuleToTemplateSpec -templateFilePath 'C:/KeyVault/deploy.json' -templateSpecsRgName 'artifacts-rg' -templateSpecsRgLocation 'West Europe' -templateSpecsDescription 'iacs key vault' -customVersion '3.0.0'
 
 Try to publish the KeyVault module with version 3.0.0 to a template spec called KeyVault based on a value provided in the UI
 #>
@@ -41,19 +38,16 @@ function Publish-ModuleToTemplateSpec {
     [CmdletBinding(SupportsShouldProcess)]
     param (
         [Parameter(Mandatory)]
-        [string] $componentTemplateSpecName,
-
-        [Parameter(Mandatory)]
         [string] $templateFilePath,
 
         [Parameter(Mandatory)]
-        [string] $componentTemplateSpecRGName,
+        [string] $templateSpecsRgName,
 
         [Parameter(Mandatory)]
-        [string] $componentTemplateSpecRGLocation,
+        [string] $templateSpecsRgLocation,
 
         [Parameter(Mandatory)]
-        [string] $componentTemplateSpecDescription,
+        [string] $templateSpecsDescription,
 
         [Parameter(Mandatory = $false)]
         [string] $customVersion = '0.0.1',
@@ -68,28 +62,28 @@ function Publish-ModuleToTemplateSpec {
     }
 
     process {
+        $moduleIdentifier = (Split-Path $templateFilePath -Parent).Replace('\', '/').Split('/arm/')[1]
+        $templateSpecIdentifier = $moduleIdentifier.Replace('\', '/').Replace('/', '.').ToLower()
+
         #############################
         ##    EVALUATE RESOURCES   ##
         #############################
-        if (-not (Get-AzResourceGroup -Name $componentTemplateSpecRGName -ErrorAction 'SilentlyContinue')) {
-            if ($PSCmdlet.ShouldProcess("Resource group [$componentTemplateSpecRGName] to location [$componentTemplateSpecRGLocation]", 'Deploy')) {
-                New-AzResourceGroup -Name $componentTemplateSpecRGName -Location $componentTemplateSpecRGLocation
+        if (-not (Get-AzResourceGroup -Name $templateSpecsRgName -ErrorAction 'SilentlyContinue')) {
+            if ($PSCmdlet.ShouldProcess("Resource group [$templateSpecsRgName] to location [$templateSpecsRgLocation]", 'Deploy')) {
+                New-AzResourceGroup -Name $templateSpecsRgName -Location $templateSpecsRgLocation
             }
         }
 
         #################################
         ##    FIND AVAILABLE VERSION   ##
         #################################
-        if ($PSCmdlet.ShouldProcess("Latest available version in template spec [$componentTemplateSpecName]", 'Fetch')) {
-            $res = Get-AzTemplateSpec -ResourceGroupName $componentTemplateSpecRGName -Name $componentTemplateSpecName -ErrorAction 'SilentlyContinue'
-        }
-        if (-not $res) {
-            Write-Verbose "No version detected in template spec [$componentTemplateSpecName]. Creating new."
-            $latestVersion = New-Object System.Version('0.0.0')
-        } else {
-            $uniqueVersions = $res.Versions.Name | Get-Unique | Where-Object { $_ -like '*.*.*' } # remove Where-object for working example
+        if ($templateSpec = Get-AzTemplateSpec -ResourceGroupName $templateSpecsRgName -Name $templateSpecIdentifier -ErrorAction 'SilentlyContinue') {
+            $uniqueVersions = $templateSpec.Versions.Name | Get-Unique | Where-Object { $_ -like '*.*.*' } # remove Where-object for working example
             $latestVersion = (($uniqueVersions -as [Version[]]) | Measure-Object -Maximum).Maximum
-            Write-Verbose "Published versions detected in template spec [$componentTemplateSpecName]. Fetched latest [$latestVersion]."
+            Write-Verbose "Published versions detected in template spec [$templateSpecIdentifier]. Fetched latest [$latestVersion]."
+        } else {
+            Write-Verbose "No version detected in template spec [$templateSpecIdentifier]. Creating new."
+            $latestVersion = New-Object System.Version('0.0.0')
         }
 
         ############################
@@ -105,12 +99,12 @@ function Publish-ModuleToTemplateSpec {
             switch ($versioningOption) {
                 'major' {
                     Write-Verbose 'Apply version update on "major" level'
-                    $newVersion = (New-Object -TypeName System.Version -ArgumentList ($latestVersion.Major + 1), $latestVersion.Minor, $latestVersion.Build).ToString()
+                    $newVersion = (New-Object -TypeName System.Version -ArgumentList ($latestVersion.Major + 1), 0, 0).ToString()
                     break
                 }
                 'minor' {
                     Write-Verbose 'Apply version update on "minor" level'
-                    $newVersion = (New-Object -TypeName System.Version -ArgumentList $latestVersion.Major, ($latestVersion.Minor + 1), $latestVersion.Build).ToString()
+                    $newVersion = (New-Object -TypeName System.Version -ArgumentList $latestVersion.Major, ($latestVersion.Minor + 1), 0).ToString()
                     break
                 }
                 'patch' {
@@ -126,19 +120,19 @@ function Publish-ModuleToTemplateSpec {
 
         $newVersionObject = New-Object System.Version($newVersion)
         if ($newVersionObject -lt $latestVersion -or $newVersionObject -eq $latestVersion) {
-            throw ('The provided custom version [{0}] must be higher than the current latest version [{1}] published in the template spec [{2}]' -f $newVersionObject.ToString(), $latestVersion.ToString(), $componentTemplateSpecName)
+            throw ('The provided custom version [{0}] must be higher than the current latest version [{1}] published in the template spec [{2}]' -f $newVersionObject.ToString(), $latestVersion.ToString(), $templateSpecIdentifier)
         }
 
         ################################
         ##    Create template spec    ##
         ################################
-        if ($PSCmdlet.ShouldProcess("Template spec [$componentTemplateSpecName] version [$newVersion]", 'Publish')) {
+        if ($PSCmdlet.ShouldProcess("Template spec [$templateSpecIdentifier] version [$newVersion]", 'Publish')) {
             $templateSpecInputObject = @{
-                ResourceGroupName = $componentTemplateSpecRGName
-                Name              = $componentTemplateSpecName
+                ResourceGroupName = $templateSpecsRgName
+                Name              = $templateSpecIdentifier
                 Version           = $newVersion
-                Description       = $componentTemplateSpecDescription
-                Location          = $componentTemplateSpecRGLocation
+                Description       = $templateSpecsDescription
+                Location          = $templateSpecsRgLocation
                 TemplateFile      = $templateFilePath
             }
             New-AzTemplateSpec @templateSpecInputObject

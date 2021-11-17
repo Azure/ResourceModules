@@ -1,4 +1,4 @@
-# DocumentDB Database Account `[Microsoft.DocumentDB/databaseAccount]`
+# DocumentDB Database Account `[Microsoft.DocumentDB/databaseAccounts]`
 
 This module deploys a Documentdb database account and its child resources.
 
@@ -7,10 +7,10 @@ This module deploys a Documentdb database account and its child resources.
 | Resource Type | Api Version |
 | :-- | :-- |
 | `Microsoft.Authorization/locks` | 2016-09-01 |
+| `Microsoft.Authorization/roleAssignments` | 2020-04-01-preview |
 | `Microsoft.DocumentDB/databaseAccounts` | 2021-06-15 |
 | `Microsoft.DocumentDB/databaseAccounts/mongodbDatabases` | 2021-07-01-preview |
 | `Microsoft.DocumentDB/databaseAccounts/mongodbDatabases/collections` | 2021-07-01-preview |
-| `Microsoft.DocumentDB/databaseAccounts/providers/roleAssignments` | 2021-04-01-preview |
 | `Microsoft.DocumentDB/databaseAccounts/sqlDatabases` | 2021-06-15 |
 | `Microsoft.DocumentDB/databaseAccounts/sqlDatabases/containers` | 2021-07-01-preview |
 | `Microsoft.Insights/diagnosticSettings` | 2017-05-01-preview |
@@ -21,7 +21,6 @@ This module deploys a Documentdb database account and its child resources.
 | :-- | :-- | :-- | :-- | :-- |
 | `automaticFailover` | bool | `True` |  | Optional. Enable automatic failover for regions |
 | `cuaId` | string |  |  | Optional. Customer Usage Attribution id (GUID). This GUID must be previously registered |
-| `name` | string |  |  | Required. Name of the Database Account |
 | `databaseAccountOfferType` | string | `Standard` | `[Standard]` | Optional. The offer type for the Cosmos DB database account. |
 | `defaultConsistencyLevel` | string | `Session` | `[Eventual, ConsistentPrefix, Session, BoundedStaleness, Strong]` | Optional. The default consistency level of the Cosmos DB account. |
 | `diagnosticLogsRetentionInDays` | int | `365` |  | Optional. Specifies the number of days that logs will be kept for; a value of 0 will retain data indefinitely. |
@@ -37,6 +36,7 @@ This module deploys a Documentdb database account and its child resources.
 | `maxStalenessPrefix` | int | `100000` |  | Optional. Max stale requests. Required for BoundedStaleness. Valid ranges, Single Region: 10 to 1000000. Multi Region: 100000 to 1000000. |
 | `metricsToEnable` | array | `[Requests]` | `[Requests]` | Optional. The name of metrics that will be streamed. |
 | `mongodbDatabases` | _[mongodbDatabases](mongodbDatabases/readme.md)_ array | `[]` |  | Optional. MongoDB Databases configurations |
+| `name` | string |  |  | Required. Name of the Database Account |
 | `roleAssignments` | array | `[]` |  | Optional. Array of role assignment objects that contain the 'roleDefinitionIdOrName' and 'principalIds' to define RBAC role assignments on this resource. In the roleDefinitionIdOrName attribute, you can provide either the display name of the role definition, or it's fully qualified ID in the following format: '/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11' |
 | `serverVersion` | string | `4.0` | `[3.2, 3.6, 4.0]` | Optional. Specifies the MongoDB server version to use. |
 | `sqlDatabases` | _[sqlDatabases](sqlDatabases/readme.md)_ array | `[]` |  | Optional. SQL Databases configurations |
@@ -64,14 +64,14 @@ This module deploys a Documentdb database account and its child resources.
 "sqlDatabases": {
     "value": [
         {
-            "name": "sxx-az-sql-weu-x-001",
+            "name": "sxx-az-sql-x-001",
             "containers": [
                 "container-001",
                 "container-002"
             ]
         },
         {
-            "name": "sxx-az-sql-weu-x-002",
+            "name": "sxx-az-sql-x-002",
             "containers": []
         }
     ]
@@ -84,13 +84,13 @@ This module deploys a Documentdb database account and its child resources.
 "mongodbDatabases": {
     "value": [
         {
-            "name": "sxx-az-mdb-weu-x-001",
+            "name": "sxx-az-mdb-x-001",
             "collections": [
                 <...>
             ]
         },
         {
-            "name": "sxx-az-mdb-weu-x-002",
+            "name": "sxx-az-mdb-x-002",
             "collections": [
                 <...>
             ]
@@ -112,6 +112,7 @@ Please reference the documentation for [mongodbDatabases](./mongodbDatabases/rea
 ## Template references
 
 - [Locks](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2016-09-01/locks)
+- [Roleassignments](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2020-04-01-preview/roleAssignments)
 - [Databaseaccounts](https://docs.microsoft.com/en-us/azure/templates/Microsoft.DocumentDB/2021-06-15/databaseAccounts)
 - [Databaseaccounts/Mongodbdatabases](https://docs.microsoft.com/en-us/azure/templates/Microsoft.DocumentDB/2021-07-01-preview/databaseAccounts/mongodbDatabases)
 - [Databaseaccounts/Mongodbdatabases/Collections](https://docs.microsoft.com/en-us/azure/templates/Microsoft.DocumentDB/2021-07-01-preview/databaseAccounts/mongodbDatabases/collections)

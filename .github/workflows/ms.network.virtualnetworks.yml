@@ -8,11 +8,11 @@ on:
         required: false
         default: 'true'
       versioningOption:
-        description: 'The mode to handle the version increments [major|minor|patch|custom]'
+        description: 'The mode to handle the version increments [major|minor|patch]'
         required: false
         default: 'patch'
       customVersion:
-        description: 'The version to enforce if [versionOption] is set to [custom]'
+        description: 'Custom version to apply. Used only if higher than latest'
         required: false
         default: '0.0.1'
   push:
@@ -97,7 +97,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        parameterFilePaths: ['parameters.json']
+        parameterFilePaths: ['parameters.json', 'vnetPeering.parameters.json']
     steps:
       - name: 'Checkout'
         uses: actions/checkout@v2
@@ -132,7 +132,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        parameterFilePaths: ['parameters.json']
+        parameterFilePaths: ['parameters.json', 'vnetPeering.parameters.json']
     steps:
       - name: 'Checkout'
         uses: actions/checkout@v2
@@ -179,13 +179,15 @@ jobs:
         uses: ./.github/actions/templates/publishModule
         with:
           templateFilePath: '${{ env.modulePath }}/deploy.bicep'
-          componentTemplateSpecRGName: '${{ env.componentTemplateSpecRGName }}'
-          componentTemplateSpecRGLocation: '${{ env.componentTemplateSpecRGLocation }}'
-          componentTemplateSpecName: '${{ env.moduleName }}'
-          componentTemplateSpecDescription: '${{ env.componentTemplateSpecDescription }}'
-          publishToTemplateSpec: '${{ env.publishToTemplateSpec }}'
           versioningOption: '${{ needs.job_set_workflow_param.outputs.versioningOption }}'
           customVersion: '${{ needs.job_set_workflow_param.outputs.customVersion }}'
+          templateSpecsRGName: '${{ env.templateSpecsRGName }}'
+          templateSpecsRGLocation: '${{ env.templateSpecsRGLocation }}'
+          templateSpecsDescription: '${{ env.templateSpecsDescription }}'
+          templateSpecsDoPublish: '${{ env.templateSpecsDoPublish }}'
+          bicepRegistryName: '${{ env.bicepRegistryName }}'
+          bicepRegistryRGName: '${{ env.bicepRegistryRGName }}'
+          bicepRegistryDoPublish: '${{ env.bicepRegistryDoPublish }}'
 
   ##############
   #   REMOVE   #
@@ -210,5 +212,4 @@ jobs:
         uses: ./.github/actions/templates/removeModule
         with:
           moduleName: '${{ env.moduleName }}'
-          templateFilePath: '${{ env.modulePath }}/deploy.bicep'
           resourceGroupName: '${{ env.resourceGroupName }}'

@@ -2,30 +2,50 @@
     "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
     "contentVersion": "1.0.0.0",
     "parameters": {
-        "appGroupName": {
-            "value": "sxx-az-avdag-weu-x-001"
+        "name": {
+            "value": "sxx-az-avdag-x-001"
         },
         "location": {
-            "value": "eastus"
+            "value": "westeurope"
         },
-        "appGroupType": {
+        "applicationGroupType": {
             "value": "RemoteApp"
         },
         "hostpoolName": {
-            "value": "sxx-az-avdhp-weu-x-001"
+            "value": "adp-sxx-az-avdhp-x-001"
         },
-        "appGroupFriendlyName": {
+        "friendlyName": {
             "value": "Remote Applications 1"
         },
-        "appGroupDescription": {
+        "description": {
             "value": "This is my first Remote Applications bundle"
+        },
+        "applications": {
+            "value": [
+                {
+                    "name": "notepad",
+                    "description": "Notepad by ARM template",
+                    "friendlyName": "Notepad",
+                    "filePath": "C:\\Windows\\System32\\notepad.exe",
+                    "commandLineSetting": "DoNotAllow",
+                    "commandLineArguments": "",
+                    "showInPortal": true,
+                    "iconPath": "C:\\Windows\\System32\\notepad.exe",
+                    "iconIndex": 0
+                },
+                {
+                    "name": "wordpad",
+                    "filePath": "C:\\Program Files\\Windows NT\\Accessories\\wordpad.exe",
+                    "friendlyName": "Wordpad"
+                }
+            ]
         },
         "roleAssignments": {
             "value": [
                 {
                     "roleDefinitionIdOrName": "Reader",
                     "principalIds": [
-                        "5545f7a0-51f4-46af-b3b4-baecf5176a56"
+                        "cf33fea8-b30f-424f-ab73-c48d99e0b222"
                     ]
                 }
             ]

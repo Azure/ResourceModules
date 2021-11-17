@@ -17,13 +17,13 @@ resource policyExemption 'Microsoft.Authorization/policyExemptions@2020-07-01-pr
   name: policyExemptionName_var
   location: location
   properties: {
-    displayName: (empty(displayName) ? json('null') : displayName)
-    description: (empty(policyExemptionDescription) ? json('null') : policyExemptionDescription)
-    metadata: (empty(metadata) ? json('null') : metadata)
+    displayName: (empty(displayName) ? null : displayName)
+    description: (empty(policyExemptionDescription) ? null : policyExemptionDescription)
+    metadata: (empty(metadata) ? null : metadata)
     exemptionCategory: exemptionCategory
     policyAssignmentId: policyAssignmentId
     policyDefinitionReferenceIds: (empty(policyDefinitionReferenceIds) ? [] : policyDefinitionReferenceIds)
-    expiresOn: (empty(expiresOn) ? json('null') : expiresOn)
+    expiresOn: (empty(expiresOn) ? null : expiresOn)
   }
 }
 

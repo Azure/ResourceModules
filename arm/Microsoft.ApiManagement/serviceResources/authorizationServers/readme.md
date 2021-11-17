@@ -39,11 +39,11 @@ The following resources are required to be able to deploy this resource.
 
 ## Outputs
 
-| Output Name | Type |
-| :-- | :-- |
-| `apimServiceAuthorizationServerResourceGroup` | string |
-| `apimServiceAuthorizationServerResourceId` | string |
-| `apimServiceAuthorizationServerResourceName` | string |
+| Output Name | Type | Description |
+| :-- | :-- | :-- |
+| `authorizationServerName` | string | The name of the API management service authorization server |
+| `authorizationServerResourceGroup` | string | The resource group the API management service authorization server was deployed into |
+| `authorizationServerResourceId` | string | The resourceId of the API management service authorization server |
 
 ## Template references
 

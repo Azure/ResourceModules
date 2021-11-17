@@ -331,7 +331,7 @@ Describe 'Readme tests' -Tag Readme {
             }
 
             # Template data
-            $expectedOutputs = $templateContent.outputs.keys
+            $expectedOutputs = $templateContent.outputs.Keys
 
             # Test
             $differentiatingItems = $expectedOutputs | Where-Object { $ReadMeoutputsList -notcontains $_ }
@@ -388,12 +388,12 @@ Describe 'Deployment template tests' -Tag Template {
             # Parameter file test cases
             $parameterFileTestCases = @()
             $templateFile_Parameters = $templateContent.parameters
-            $TemplateFile_AllParameterNames = $templateFile_Parameters.keys | Sort-Object
-            $TemplateFile_RequiredParametersNames = ($templateFile_Parameters.keys | Where-Object { -not $templateFile_Parameters[$_].ContainsKey('defaultValue') }) | Sort-Object
+            $TemplateFile_AllParameterNames = $templateFile_Parameters.Keys | Sort-Object
+            $TemplateFile_RequiredParametersNames = ($templateFile_Parameters.Keys | Where-Object { -not $templateFile_Parameters[$_].ContainsKey('defaultValue') }) | Sort-Object
 
             $ParameterFilePaths = (Get-ChildItem (Join-Path -Path $moduleFolderPath -ChildPath '.parameters' -AdditionalChildPath '*parameters.json') -Recurse -Force).FullName
             foreach ($ParameterFilePath in $ParameterFilePaths) {
-                $parameterFile_AllParameterNames = ((Get-Content $ParameterFilePath) | ConvertFrom-Json -AsHashtable).parameters.keys | Sort-Object
+                $parameterFile_AllParameterNames = ((Get-Content $ParameterFilePath) | ConvertFrom-Json -AsHashtable).parameters.Keys | Sort-Object
                 $parameterFileTestCases += @{
                     parameterFile_Path                   = $ParameterFilePath
                     parameterFile_Name                   = Split-Path $ParameterFilePath -Leaf
@@ -489,9 +489,9 @@ Describe 'Deployment template tests' -Tag Template {
                 $moduleFolderName,
                 $templateContent
             )
-            $templateContent.keys | Should -Contain '$schema'
-            $templateContent.keys | Should -Contain 'contentVersion'
-            $templateContent.keys | Should -Contain 'resources'
+            $templateContent.Keys | Should -Contain '$schema'
+            $templateContent.Keys | Should -Contain 'contentVersion'
+            $templateContent.Keys | Should -Contain 'resources'
         }
 
         It '[<moduleFolderName>] If delete lock is implemented, the template should have a lock parameter with the default value of [NotSpecified]' -TestCases $deploymentFolderTestCases {
@@ -500,7 +500,7 @@ Describe 'Deployment template tests' -Tag Template {
                 $templateContent
             )
             if ($lock = $templateContent.parameters.lock) {
-                $lock.keys | Should -Contain 'defaultValue'
+                $lock.Keys | Should -Contain 'defaultValue'
                 $lock.defaultValue | Should -Be 'NotSpecified'
             }
         }
@@ -645,7 +645,7 @@ Describe 'Deployment template tests' -Tag Template {
                 $templateContent
             )
 
-            $Stdoutput = $templateContent.outputs.keys
+            $Stdoutput = $templateContent.outputs.Keys
             $i = 0
             $Schemaverion = $templateContent.'$schema'
             if ((($Schemaverion.Split('/')[5]).Split('.')[0]) -eq (($RGdeployment.Split('/')[5]).Split('.')[0])) {
@@ -718,20 +718,16 @@ Describe 'Deployment template tests' -Tag Template {
             }
         }
 
-        It '[<moduleFolderName>] Parameter files should not contain subscriptionId original value and but a token string' -TestCases $deploymentFolderTestCases {
+        It '[<moduleFolderName>] Parameter files should not contain the subscriptionId guid' -TestCases $deploymentFolderTestCases {
             param (
                 [hashtable[]] $parameterFileTestCases
             )
 
             foreach ($parameterFileTestCase in $parameterFileTestCases) {
-                $parameterFileContent = Get-Content -Path $parameterFileTestCase.parameterFile_Path
-                if (($parameterFileContent | Select-String -Pattern '/subscriptions/' -Quiet) -or ($parameterFileContent | Select-String -Pattern '"subscriptionId"' -Quiet)) {
-                    if (!($parameterFileContent | Select-String -Pattern '<<subscriptionId>>')) {
-                        $SubIdVisible = $true
-                    }
-                }
-
-                $SubIdVisible | Should -Be $null -Because ('Parameter file should not contain original subscription Id value, but a token value "<<subscriptionId>>"')
+                $ParameterFileContent = Get-Content -Path $parameterFileTestCase.parameterFile_Path
+                $SubscriptionIdKeyCount = ($ParameterFileContent | Select-String -Pattern '"subscriptionId"', "'subscriptionId'", '/subscriptions/' -AllMatches).Matches.Count
+                $SubscriptionIdValueCount = ($ParameterFileContent | Select-String -Pattern '<<subscriptionId' -AllMatches).Matches.Count
+                $SubscriptionIdKeyCount | Should -Be $SubscriptionIdValueCount -Because ('Parameter file should not contain the subscription Id guid, instead should reference a token value "<<subscriptionId(n)>> (i.e. <<subscriptionId1>>)"')
             }
         }
     }

@@ -5,10 +5,10 @@
 | Resource Type | Api Version |
 | :-- | :-- |
 | `Microsoft.Authorization/locks` | 2016-09-01 |
+| `Microsoft.Authorization/roleAssignments` | 2020-04-01-preview |
 | `Microsoft.DataFactory/factories` | 2018-06-01 |
 | `Microsoft.DataFactory/factories/integrationRuntimes` | 2018-06-01 |
 | `Microsoft.DataFactory/factories/managedVirtualNetworks` | 2018-06-01 |
-| `Microsoft.DataFactory/factories/providers/roleAssignments` | 2021-04-01-preview |
 | `Microsoft.Insights/diagnosticSettings` | 2017-05-01-preview |
 
 ## Parameters
@@ -86,6 +86,7 @@ Tag names and tag values can be provided as needed. A tag can be left without a 
 ## Template references
 
 - [Locks](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2016-09-01/locks)
+- [Roleassignments](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2020-04-01-preview/roleAssignments)
 - [Factories](https://docs.microsoft.com/en-us/azure/templates/Microsoft.DataFactory/2018-06-01/factories)
 - [Factories/Integrationruntimes](https://docs.microsoft.com/en-us/azure/templates/Microsoft.DataFactory/2018-06-01/factories/integrationRuntimes)
 - [Factories/Managedvirtualnetworks](https://docs.microsoft.com/en-us/azure/templates/Microsoft.DataFactory/2018-06-01/factories/managedVirtualNetworks)

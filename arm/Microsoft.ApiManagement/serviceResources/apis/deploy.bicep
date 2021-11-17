@@ -94,41 +94,40 @@ param value string = ''
 @description('Optional. Criteria to limit import of WSDL to a subset of the document.')
 param wsdlSelector object = {}
 
-var apiVersionSetNotEmpty = (!empty(apiVersionSet))
-var apiVersionSetName = (apiVersionSetNotEmpty ? apiVersionSet.name : 'default')
+var apiVersionSetName = !empty(apiVersionSet) ? apiVersionSet.name : 'default'
 
-module pid_cuaId './.bicep/nested_cuaId.bicep' = if (!empty(cuaId)) {
+module pid_cuaId '.bicep/nested_cuaId.bicep' = if (!empty(cuaId)) {
   name: 'pid-${cuaId}'
   params: {}
 }
 
-resource apiVersionSetResource 'Microsoft.ApiManagement/service/apiVersionSets@2020-06-01-preview' = if (apiVersionSetNotEmpty) {
+resource apiVersionSetResource 'Microsoft.ApiManagement/service/apiVersionSets@2020-06-01-preview' = if (!empty(apiVersionSet)) {
   name: '${apiManagementServiceName}/${apiVersionSetName}'
   properties: apiVersionSet.properties
 }
 
-resource apiManagementServiceApi 'Microsoft.ApiManagement/service/apis@2020-06-01-preview' = {
+resource apis 'Microsoft.ApiManagement/service/apis@2020-06-01-preview' = {
   name: '${apiManagementServiceName}/${apiManagementServiceApiName}'
   properties: {
-    apiRevision: ((!empty(apiRevision)) ? apiRevision : json('null'))
-    apiRevisionDescription: ((!empty(apiRevisionDescription)) ? apiRevisionDescription : json('null'))
-    apiType: ((!empty(apiType)) ? apiType : json('null'))
-    apiVersion: ((!empty(apiVersion)) ? apiVersion : json('null'))
-    apiVersionDescription: ((!empty(apiVersionDescription)) ? apiVersionDescription : json('null'))
-    apiVersionSetId: (apiVersionSetNotEmpty ? apiVersionSetResource.id : json('null'))
+    apiRevision: !empty(apiRevision) ? apiRevision : null
+    apiRevisionDescription: !empty(apiRevisionDescription) ? apiRevisionDescription : null
+    apiType: !empty(apiType) ? apiType : null
+    apiVersion: !empty(apiVersion) ? apiVersion : null
+    apiVersionDescription: !empty(apiVersionDescription) ? apiVersionDescription : null
+    apiVersionSetId: !empty(apiVersionSet) ? apiVersionSetResource.id : null
     authenticationSettings: authenticationSettings
     description: apiDescription
     displayName: displayName
-    format: ((!empty(value)) ? format : json('null'))
+    format: !empty(value) ? format : null
     isCurrent: isCurrent
     path: path
     protocols: protocols
-    serviceUrl: ((!empty(serviceUrl)) ? serviceUrl : json('null'))
-    sourceApiId: ((!empty(sourceApiId)) ? sourceApiId : json('null'))
-    subscriptionKeyParameterNames: ((!empty(subscriptionKeyParameterNames)) ? subscriptionKeyParameterNames : json('null'))
+    serviceUrl: !empty(serviceUrl) ? serviceUrl : null
+    sourceApiId: !empty(sourceApiId) ? sourceApiId : null
+    subscriptionKeyParameterNames: !empty(subscriptionKeyParameterNames) ? subscriptionKeyParameterNames : null
     subscriptionRequired: subscriptionRequired
     type: type
-    value: ((!empty(value)) ? value : json('null'))
+    value: !empty(value) ? value : null
     wsdlSelector: wsdlSelector
   }
   resource apiManagementServiceApiPolicyResource 'policies@2020-06-01-preview' = if (!empty(apiManagementServiceApiPolicy)) {
@@ -140,6 +139,11 @@ resource apiManagementServiceApi 'Microsoft.ApiManagement/service/apis@2020-06-0
   }
 }
 
-output apimServiceApiName string = apiManagementServiceApi.name
-output apimServiceApiResourceId string = apiManagementServiceApi.id
-output apimServiceApiResourceGroup string = resourceGroup().name
+@description('The name of the API management service api')
+output apisName string = apis.name
+
+@description('The resourceId of the API management service api')
+output apisResourceId string = apis.id
+
+@description('The resource group the API management service api was deployed to')
+output apisResourceGroup string = resourceGroup().name

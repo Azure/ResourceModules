@@ -2,30 +2,58 @@
     "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
     "contentVersion": "1.0.0.0",
     "parameters": {
-        "automationAccountName": {
-            "value": "sxx-wd-aut-weu-x-001"
+        "name": {
+            "value": "sxx-wd-aut-x-001"
         },
         "schedules": {
             "value": [
                 {
-                    "scheduleName": "ScalingRunbook_Schedule",
+                    "name": "TestSchedule",
                     "startTime": "",
                     "expiryTime": "9999-12-31T23:59:00+00:00",
                     "interval": 15,
                     "frequency": "Minute",
                     "timeZone": "Europe/Berlin",
-                    "advancedSchedule": ""
+                    "advancedSchedule": {}
+                }
+            ]
+        },
+        "modules": {
+            "value": [
+                {
+                    "name": "PSWindowsUpdate",
+                    "version": "latest",
+                    "uri": "https://www.powershellgallery.com/api/v2/package"
+                }
+            ]
+        },
+        "runbooks": {
+            "value": [
+                {
+                    "name": "TestRunbook",
+                    "runbookType": "PowerShell",
+                    "description": "Test runbook",
+                    "uri": "https://raw.githubusercontent.com/Azure/azure-quickstart-templates/master/quickstarts/microsoft.automation/101-automation/scripts/AzureAutomationTutorial.ps1",
+                    "version": "1.0.0.0"
+                }
+            ]
+        },
+        "jobSchedules": {
+            "value": [
+                {
+                    "scheduleName": "TestSchedule",
+                    "runbookName": "TestRunbook"
                 }
             ]
         },
         "privateEndpoints": {
             "value": [
                 {
-                    "subnetResourceId": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/virtualNetworks/adp-sxx-az-vnet-weu-x-001/subnets/sxx-az-subnet-weu-x-005-privateEndpoints",
+                    "subnetResourceId": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/virtualNetworks/adp-sxx-az-vnet-x-001/subnets/sxx-az-subnet-x-005-privateEndpoints",
                     "service": "Webhook"
                 },
                 {
-                    "subnetResourceId": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/virtualNetworks/adp-sxx-az-vnet-weu-x-001/subnets/sxx-az-subnet-weu-x-005-privateEndpoints",
+                    "subnetResourceId": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/virtualNetworks/adp-sxx-az-vnet-x-001/subnets/sxx-az-subnet-x-005-privateEndpoints",
                     "service": "DSCAndHybridWorker"
                 }
             ]
@@ -35,7 +63,7 @@
                 {
                     "roleDefinitionIdOrName": "Reader",
                     "principalIds": [
-                        "5545f7a0-51f4-46af-b3b4-baecf5176a56"
+                        "cf33fea8-b30f-424f-ab73-c48d99e0b222"
                     ]
                 }
             ]

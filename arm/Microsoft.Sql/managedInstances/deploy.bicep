@@ -172,6 +172,7 @@ var diagnosticsMetrics = [for metric in metricsToEnable: {
   }
 }]
 
+<<<<<<< HEAD
 var builtInRoleNames = {
   'Owner': subscriptionResourceId('Microsoft.Authorization/roleDefinitions', '8e3af657-a8ff-443c-a75c-2fe8c4bcb635')
   'Contributor': subscriptionResourceId('Microsoft.Authorization/roleDefinitions', 'b24988ac-6180-42a0-ab88-20f7382dd24c')
@@ -192,6 +193,12 @@ var builtInRoleNames = {
 }
 
 module pid_cuaId './.bicep/nested_cuaId.bicep' = if (!empty(cuaId)) {
+=======
+var splittedKeyUri = split(customerManagedEnryptionKeyUri, '/')
+var serverKeyName = (empty(customerManagedEnryptionKeyUri) ? 'ServiceManaged' : '${split(splittedKeyUri[2], '.')[0]}_${splittedKeyUri[4]}_${splittedKeyUri[5]}')
+
+module pid_cuaId '.bicep/nested_cuaId.bicep' = if (!empty(cuaId)) {
+>>>>>>> main
   name: 'pid-${cuaId}'
   params: {}
 }
@@ -240,21 +247,24 @@ resource managedInstance_lock 'Microsoft.Authorization/locks@2016-09-01' = if (l
 resource managedInstance_diagnosticSettings 'Microsoft.Insights/diagnosticsettings@2017-05-01-preview' = if ((!empty(diagnosticStorageAccountId)) || (!empty(workspaceId)) || (!empty(eventHubAuthorizationRuleId)) || (!empty(eventHubName))) {
   name: '${managedInstance.name}-diagnosticSettings'
   properties: {
-    storageAccountId: (empty(diagnosticStorageAccountId) ? json('null') : diagnosticStorageAccountId)
-    workspaceId: (empty(workspaceId) ? json('null') : workspaceId)
-    eventHubAuthorizationRuleId: (empty(eventHubAuthorizationRuleId) ? json('null') : eventHubAuthorizationRuleId)
-    eventHubName: (empty(eventHubName) ? json('null') : eventHubName)
-    metrics: ((empty(diagnosticStorageAccountId) && empty(workspaceId) && empty(eventHubAuthorizationRuleId) && empty(eventHubName)) ? json('null') : diagnosticsMetrics)
-    logs: ((empty(diagnosticStorageAccountId) && empty(workspaceId) && empty(eventHubAuthorizationRuleId) && empty(eventHubName)) ? json('null') : diagnosticsLogs)
+    storageAccountId: (empty(diagnosticStorageAccountId) ? null : diagnosticStorageAccountId)
+    workspaceId: (empty(workspaceId) ? null : workspaceId)
+    eventHubAuthorizationRuleId: (empty(eventHubAuthorizationRuleId) ? null : eventHubAuthorizationRuleId)
+    eventHubName: (empty(eventHubName) ? null : eventHubName)
+    metrics: ((empty(diagnosticStorageAccountId) && empty(workspaceId) && empty(eventHubAuthorizationRuleId) && empty(eventHubName)) ? null : diagnosticsMetrics)
+    logs: ((empty(diagnosticStorageAccountId) && empty(workspaceId) && empty(eventHubAuthorizationRuleId) && empty(eventHubName)) ? null : diagnosticsLogs)
   }
   scope: managedInstance
 }
 
+<<<<<<< HEAD
 module managedInstance_rbac './.bicep/nested_rbac.bicep' = [for (roleAssignment, index) in roleAssignments: {
+=======
+module managedInstance_rbac '.bicep/nested_rbac.bicep' = [for (roleAssignment, index) in roleAssignments: {
+>>>>>>> main
   name: '${deployment().name}-rbac-${index}'
   params: {
     roleAssignmentObj: roleAssignment
-    builtInRoleNames: builtInRoleNames
     resourceName: managedInstance.name
   }
 }]

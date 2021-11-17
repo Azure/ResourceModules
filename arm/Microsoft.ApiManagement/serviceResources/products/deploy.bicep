@@ -31,7 +31,7 @@ param subscriptionsLimit int = 1
 @description('Optional. Product terms of use. Developers trying to subscribe to the product will be presented and required to accept these terms before they can complete the subscription process.')
 param terms string = ''
 
-module pid_cuaId './.bicep/nested_cuaId.bicep' = if (!empty(cuaId)) {
+module pid_cuaId '.bicep/nested_cuaId.bicep' = if (!empty(cuaId)) {
   name: 'pid-${cuaId}'
   params: {}
 }
@@ -42,8 +42,8 @@ resource product 'Microsoft.ApiManagement/service/products@2020-06-01-preview' =
     displayName: productName
     terms: terms
     subscriptionRequired: subscriptionRequired
-    approvalRequired: (subscriptionRequired ? approvalRequired : json('null'))
-    subscriptionsLimit: (subscriptionRequired ? subscriptionsLimit : json('null'))
+    approvalRequired: subscriptionRequired ? approvalRequired : null
+    subscriptionsLimit: subscriptionRequired ? subscriptionsLimit : null
     state: state
   }
   resource groups 'groups@2020-06-01-preview' = [for productGroup in productGroups: {
@@ -54,8 +54,17 @@ resource product 'Microsoft.ApiManagement/service/products@2020-06-01-preview' =
   }]
 }
 
+@description('The resource Id of the API management service product')
 output productResourceId string = product.id
-output productApisResourceIds array = [for item in productApis: resourceId('Microsoft.ApiManagement/service/products/apis', apiManagementServiceName, productName, item)]
-output productGroupsResourceIds array = [for item in productGroups: resourceId('Microsoft.ApiManagement/service/products/groups', apiManagementServiceName, productName, item)]
-output productResourceName string = product.name
+
+@description('The name of the API management service product')
+output productName string = product.name
+
+@description('The resource group the API management service product was deployed into')
 output productResourceGroup string = resourceGroup().name
+
+@description('The Resources Ids of the API management service product apis')
+output productApisResourceIds array = [for item in productApis: resourceId('Microsoft.ApiManagement/service/products/apis', apiManagementServiceName, productName, item)]
+
+@description('The Resources Ids of the API management service product groups')
+output productGroupsResourceIds array = [for item in productGroups: resourceId('Microsoft.ApiManagement/service/products/groups', apiManagementServiceName, productName, item)]

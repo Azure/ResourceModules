@@ -6,8 +6,8 @@ This module deploys an Alert based on metrics
 
 | Resource Type | Api Version |
 | :-- | :-- |
+| `Microsoft.Authorization/roleAssignments` | 2020-04-01-preview |
 | `Microsoft.Insights/scheduledQueryRules` | 2018-04-16 |
-| `microsoft.insights/scheduledQueryRules/providers/roleAssignments` | 2021-04-01-preview |
 
 ## Parameters
 
@@ -93,4 +93,5 @@ Tag names and tag values can be provided as needed. A tag can be left without a 
 
 ## Template references
 
+- [Roleassignments](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2020-04-01-preview/roleAssignments)
 - [Scheduledqueryrules](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Insights/2018-04-16/scheduledQueryRules)
