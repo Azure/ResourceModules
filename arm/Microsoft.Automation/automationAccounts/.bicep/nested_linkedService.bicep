@@ -27,11 +27,13 @@ resource linkedService 'Microsoft.OperationalInsights/workspaces/linkedServices@
   }
 }
 
+@description('The name of the deployed linked service')
+output linkedServiceName string = linkedService.name
+
 @description('The resource Id of the deployed linked service')
 output linkedServiceResourceId string = linkedService.id
 
 @description('The resource group where the linked service is deployed')
 output linkedServiceResourceGroup string = resourceGroup().name
 
-@description('The name of the deployed linked service')
-output linkedServiceName string = linkedService.name
+
