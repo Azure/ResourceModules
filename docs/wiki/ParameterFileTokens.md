@@ -82,9 +82,9 @@ The Key Vault here is enabled by adding a Secret to GitHub called `PLATFORM_KEYV
 
 2- The user then triggers the [Dependency Workflow](https://github.com/Azure/ResourceModules/blob/main/.github/workflows/platform.dependencies.yml) to instantiate the Platform Token Key Vault.
 
-  > To customize the Key Vault Configuration, you can modify the [Platform Key Vault Parameter File](https://github.com/Azure/ResourceModules/blob/main/utilities/dependencies/Microsoft.RecoveryServices/vaults/parameters/platform.parameters.json).
+  > To customize the Key Vault Configuration, you can modify the [Platform Key Vault Parameter File](https://github.com/Azure/ResourceModules/blob/main/utilities/pipelines/dependencies/Microsoft.RecoveryServices/vaults/parameters/platform.parameters.json).
 
-3- The Platform Key Vault is then deployed using the Key Vault Module and the dependency [Platform Key Vault Parameter File](https://github.com/Azure/ResourceModules/blob/main/utilities/dependencies/Microsoft.RecoveryServices/vaults/parameters/platform.parameters.json).
+3- The Platform Key Vault is then deployed using the Key Vault Module via the dependency pipeline.
 
 > This Key Vault uses [Azure AD RBAC](https://docs.microsoft.com/en-us/azure/key-vault/general/rbac-guide?tabs=azure-cli) for the permissions instead of [access policies](https://docs.microsoft.com/en-us/azure/key-vault/general/assign-access-policy?tabs=azure-portal). It will automatically provide the Deployment Service Principal with the [Key Vault Administrator](https://docs.microsoft.com/en-us/azure/role-based-access-control/built-in-roles#key-vault-administrator) role so that it can read and set secrets. </br>
 
