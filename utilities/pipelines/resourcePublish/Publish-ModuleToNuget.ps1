@@ -314,6 +314,12 @@ Nanm of the feed to push to
 .PARAMETER Credential
 Credentials required by the feed
 
+.PARAMETER ModuleBase
+The root folder of the module
+
+.PARAMETER ModuleName
+The name of the module
+
 .EXAMPLE
 Publish-NuGetModule -FeedName "Release-Modules" -Credential $Credential -ModuleName "Aks"
 
