@@ -59,7 +59,7 @@
         },
         "userAssignedIdentities": {
             "value": {
-                "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/adp-sxx-az-msi-weu-x-001": {}
+                "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/adp-sxx-az-msi-x-001": {}
             }
         },
         "publicDataEndpointEnabled": {
@@ -78,7 +78,7 @@
         "keysObj": {
             "value": {
                 "serverKeyType": "AzureKeyVault",
-                "uri": "https://adp-sxx-az-kv-weu-x-001.vault.azure.net/keys/keyEncryptionKeySqlMi/a2a508346c9f475eaa2f0f813713c5d1"
+                "uri": "https://adp-sxx-az-kv-x-001.vault.azure.net/keys/keyEncryptionKeySqlMi/a2a508346c9f475eaa2f0f813713c5d1"
             }
         },
         "securityAlertPoliciesObj": {
@@ -103,7 +103,7 @@
         "databases": {
             "value": [
                 {
-                    "name": "sxx-az-sqlmidb-weu-x-001",
+                    "name": "sxx-az-sqlmidb-x-001",
                     "backupShortTermRetentionPolicies": {
                         "name": "default"
                     },
