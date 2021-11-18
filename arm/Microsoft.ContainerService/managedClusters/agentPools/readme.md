@@ -6,7 +6,7 @@ This module deploys an Agent Pool for a Container Service Managed Cluster
 
 | Resource Type | Api Version |
 | :-- | :-- |
-| `Microsoft.ContainerServicemanagedClusters/agentPools` | 2021-05-01 |
+| `Microsoft.ContainerService/managedClusters/agentPools` | 2021-05-01 |
 
 ## Parameters
 
@@ -61,9 +61,9 @@ For available properties check <https://docs.microsoft.com/en-us/azure/templates
 
 | Output Name | Type |
 | :-- | :-- |
-| `agentPoolResourceGroup` | string |
 | `agentPoolName` | string |
 | `agentPoolId` | string |
+| `agentPoolResourceGroup` | string |
 
 ## Template references
 
