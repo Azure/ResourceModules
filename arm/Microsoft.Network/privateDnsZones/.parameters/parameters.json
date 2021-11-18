@@ -14,6 +14,14 @@
                     ]
                 }
             ]
+        },
+        "virtualNetworkLinks": {
+            "value": [
+                {
+                    "vnetResourceId": "/subscriptions/xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx/resourceGroups/rgName/providers/Microsoft.Network/virtualNetworks/vnetName1",
+                    "registrationEnabled": true
+                }
+            ]
         }
     }
 }
