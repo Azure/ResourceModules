@@ -181,15 +181,12 @@ module automationAccount_jobSchedules './jobSchedules/deploy.bicep' = [for (jobS
     ]
 }]
 
-
-
 module automationAccount_linkedService './.bicep/nested_linkedService.bicep' = if (!empty(linkedWorkspaceId)) {
   name: '${uniqueString(deployment().name, location)}-AutoAccount-LinkedService'
   params: {
     name: 'automation'
     logAnalyticsWorkspaceName: '${last(split(linkedWorkspaceId, '/'))}'
-    // resourceId: automationAccount.id
-    writeAccessResourceId: automationAccount.id
+    resourceId: automationAccount.id
     tags: tags
   }
   // This is to support linked services to law in different subscription and resource group than the automation account.
