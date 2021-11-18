@@ -8,7 +8,7 @@
         "schedules": {
             "value": [
                 {
-                    "name": "TestSchedule",
+                    "name": "TestSchedule2",
                     "startTime": "",
                     "expiryTime": "9999-12-31T23:59:00+00:00",
                     "interval": 15,
@@ -41,7 +41,7 @@
         "jobSchedules": {
             "value": [
                 {
-                    "scheduleName": "TestSchedule",
+                    "scheduleName": "TestSchedule2",
                     "runbookName": "TestRunbook"
                 }
             ]
