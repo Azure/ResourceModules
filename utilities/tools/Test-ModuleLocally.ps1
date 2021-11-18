@@ -189,7 +189,7 @@ function Test-ModuleLocally {
                 if ($ValidationTest) {
                     Write-Verbose "Validating Module: $ModuleName"
                     # Load Modules Deployment Script
-                    . (Join-Path $PSScriptRoot '../..' '.github/actions/templates/validateModuleDeploy/scripts/Test-TemplateWithParameterFile.ps1')
+                    . (Join-Path $PSScriptRoot '..' '/pipelines/resourceValidation/Test-TemplateWithParameterFile.ps1')
                     # Invoke Validation
                     Test-TemplateWithParameterFile @functionInput -Verbose
                 }
@@ -208,7 +208,7 @@ function Test-ModuleLocally {
                         retryLimit       = 1
                     }
                     # Load Modules Deployment Script
-                    . (Join-Path $PSScriptRoot '../..' '.github/actions/templates/deployModule/scripts/New-ModuleDeployment.ps1')
+                    . (Join-Path $PSScriptRoot '..' '/pipelines/resourceDeployment/New-ModuleDeployment.ps1')
                     # Invoke Deployment
                     New-ModuleDeployment @functionInput -Verbose
                 }
