@@ -1,4 +1,4 @@
-# ContainerServiceManagedClustersAgentPools `[Microsoft.ContainerServicemanagedClusters/agentPools]`
+# ContainerServiceManagedClustersAgentPools `[Microsoft.ContainerService/managedClusters/agentPools]`
 
 This module deploys an Agent Pool for a Container Service Managed Cluster
 
