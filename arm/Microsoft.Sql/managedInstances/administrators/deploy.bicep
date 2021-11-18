@@ -7,6 +7,9 @@ param login string
 @description('Required. SID (object ID) of the managed instance administrator.')
 param sid string
 
+@description('Optional. The name of the managed instance administrator')
+param name string = 'ActiveDirectory'
+
 @description('Optional. Tenant ID of the managed instance administrator.')
 param tenantId string = ''
 
@@ -18,14 +21,19 @@ module pid_cuaId './.bicep/nested_cuaId.bicep' = if (!empty(cuaId)) {
   params: {}
 }
 
+resource managedInstance 'Microsoft.Sql/managedInstances@2021-05-01-preview' existing = {
+  name: managedInstanceName
+}
+
 resource administrator 'Microsoft.Sql/managedInstances/administrators@2021-02-01-preview' = {
-  name: '${managedInstanceName}/ActiveDirectory'
+  name: name
   properties: {
     administratorType: 'ActiveDirectory'
     login: login
     sid: sid
     tenantId: tenantId
   }
+  parent: managedInstance
 }
 
 @description('The name of the deployed managed instance')

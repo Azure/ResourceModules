@@ -22,12 +22,17 @@ module pid_cuaId './.bicep/nested_cuaId.bicep' = if (!empty(cuaId)) {
   params: {}
 }
 
+resource managedInstance 'Microsoft.Sql/managedInstances@2021-05-01-preview' existing = {
+  name: managedInstanceName
+}
+
 resource securityAlertPolicy 'Microsoft.Sql/managedInstances/securityAlertPolicies@2017-03-01-preview' = {
-  name: '${managedInstanceName}/${name}'
+  name: name
   properties: {
     state: state
     emailAccountAdmins: emailAccountAdmins
   }
+  parent: managedInstance
 }
 
 @description('The name of the deployed security alert policy')

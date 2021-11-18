@@ -25,12 +25,17 @@ module pid_cuaId './.bicep/nested_cuaId.bicep' = if (!empty(cuaId)) {
   params: {}
 }
 
+resource managedInstance 'Microsoft.Sql/managedInstances@2021-05-01-preview' existing = {
+  name: managedInstanceName
+}
+
 resource key 'Microsoft.Sql/managedInstances/keys@2017-10-01-preview' = {
-  name: '${managedInstanceName}/${!empty(name) ? name : serverKeyName}'
+  name: !empty(name) ? name : serverKeyName
   properties: {
     serverKeyType: serverKeyType
     uri: uri
   }
+  parent: managedInstance
 }
 
 @description('The name of the deployed managed instance')

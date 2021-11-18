@@ -19,14 +19,23 @@ param monthlyRetention string = 'P1Y'
 @description('Optional. The yearly retention policy for an LTR backup in an ISO 8601 format.')
 param yearlyRetention string = 'P5Y'
 
+resource managedInstance 'Microsoft.Sql/managedInstances@2021-05-01-preview' existing = {
+  name: managedInstanceName
+
+  resource managedInstaceDatabase 'databases@2020-02-02-preview' existing = {
+    name: databaseName
+  }
+}
+
 resource backupLongTermRetentionPolicy 'Microsoft.Sql/managedInstances/databases/backupLongTermRetentionPolicies@2021-02-01-preview' = {
-  name: '${managedInstanceName}/${databaseName}/${name}'
+  name: name
   properties: {
     monthlyRetention: monthlyRetention
     weeklyRetention: weeklyRetention
     weekOfYear: weekOfYear
     yearlyRetention: yearlyRetention
   }
+  parent: managedInstance::managedInstaceDatabase
 }
 
 @description('The name of the deployed database backup long-term retention policy')

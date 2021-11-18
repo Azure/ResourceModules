@@ -25,13 +25,18 @@ module pid_cuaId './.bicep/nested_cuaId.bicep' = if (!empty(cuaId)) {
   params: {}
 }
 
+resource managedInstance 'Microsoft.Sql/managedInstances@2021-05-01-preview' existing = {
+  name: managedInstanceName
+}
+
 resource encryptionProtector 'Microsoft.Sql/managedInstances/encryptionProtector@2021-05-01-preview' = {
-  name: '${managedInstanceName}/${name}'
+  name: name
   properties: {
     autoRotationEnabled: autoRotationEnabled
     serverKeyName: serverKeyName
     serverKeyType: serverKeyType
   }
+  parent: managedInstance
 }
 
 @description('The name of the deployed managed instance')

@@ -109,8 +109,12 @@ module pid_cuaId '.bicep/nested_cuaId.bicep' = if (!empty(cuaId)) {
   params: {}
 }
 
+resource managedInstance 'Microsoft.Sql/managedInstances@2021-05-01-preview' existing = {
+  name: managedInstanceName
+}
+
 resource database 'Microsoft.Sql/managedInstances/databases@2020-02-02-preview' = {
-  name: '${managedInstanceName}/${name}'
+  name: name
   location: location
   tags: tags
   properties: {
@@ -125,6 +129,7 @@ resource database 'Microsoft.Sql/managedInstances/databases@2020-02-02-preview' 
     recoverableDatabaseId: (empty(recoverableDatabaseId) ? null : recoverableDatabaseId)
     longTermRetentionBackupResourceId: (empty(longTermRetentionBackupResourceId) ? null : longTermRetentionBackupResourceId)
   }
+  parent: managedInstance
 }
 
 resource database_lock 'Microsoft.Authorization/locks@2016-09-01' = if (lock != 'NotSpecified') {
