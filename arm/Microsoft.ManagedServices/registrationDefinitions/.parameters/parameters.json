@@ -9,7 +9,7 @@
             "value": "Managed by Lighthouse"
         },
         "managedByTenantId": {
-            "value": "195ee85d-2f10-4764-8352-a3c99aa772fb"
+            "value": "<<remoteTenantId>>"
         },
         "authorizations": {
             "value": [

@@ -72,7 +72,7 @@ SQL Managed Instance is deployed on a virtual network. This network is required 
     "value": {
         "login": "username@contoso.com",
         "sid": "111111-222222-33333-4444-5555555",
-        "tenantId": "a8f2ac6f-681f-4361-b51f-c85d86014a17"
+        "tenantId": "<<tenantId>>"
     }
 }
 ```

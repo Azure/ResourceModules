@@ -9,7 +9,7 @@
             "value": "testMG"
         },
         "parentId": {
-            "value": "3d9faf2f-6186-4865-9b12-156ee64ba23b"
+            "value": "<<managementGroupId>>"
         },
         "roleAssignments": {
             "value": [
