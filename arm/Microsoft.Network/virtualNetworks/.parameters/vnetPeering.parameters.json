@@ -119,7 +119,7 @@
         "virtualNetworkPeerings": {
             "value": [
                 {
-                    "remoteVirtualNetworkId": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/virtualNetworks/adp-sxx-az-vnet-x-peer01",
+                    "remoteVirtualNetworkId": "/subscriptions/<<subscriptionId>>/resourceGroups/<<resourceGroupName>>/providers/Microsoft.Network/virtualNetworks/adp-sxx-az-vnet-x-peer01",
                     "allowForwardedTraffic": true,
                     "allowGatewayTransit": false,
                     "allowVirtualNetworkAccess": true,

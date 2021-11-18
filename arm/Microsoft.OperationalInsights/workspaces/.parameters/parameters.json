@@ -17,7 +17,7 @@
         "storageInsightsConfigs": {
             "value": [
                 {
-                    "storageAccountId": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Storage/storageAccounts/adpsxxazsaweux003",
+                    "storageAccountId": "/subscriptions/<<subscriptionId>>/resourceGroups/<<resourceGroupName>>/providers/Microsoft.Storage/storageAccounts/adpsxxazsaweux003",
                     "tables": [
                         "WADWindowsEventLogsTable",
                         "WADETWEventTable",
@@ -31,7 +31,7 @@
             "value": [
                 {
                     "name": "Automation",
-                    "resourceId": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Automation/automationAccounts/adp-sxx-wd-aut-x-001"
+                    "resourceId": "/subscriptions/<<subscriptionId>>/resourceGroups/<<resourceGroupName>>/providers/Microsoft.Automation/automationAccounts/adp-sxx-wd-aut-x-001"
                 }
             ]
         },

@@ -15,16 +15,16 @@
             "value": "sxx-az-subnet-x-007"
         },
         "vNetResourceGroup": {
-            "value": "validation-rg"
+            "value": "<<resourceGroupName>>"
         },
         "frontendPrivateIpAddress": {
             "value": "10.0.8.6"
         },
         "frontendPublicIpResourceId": {
-            "value": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/publicIPAddresses/adp-sxx-az-pip-x-apgw"
+            "value": "/subscriptions/<<subscriptionId>>/resourceGroups/<<resourceGroupName>>/providers/Microsoft.Network/publicIPAddresses/adp-sxx-az-pip-x-apgw"
         },
         "managedIdentityResourceId": {
-            "value": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/adp-sxx-az-msi-x-001"
+            "value": "/subscriptions/<<subscriptionId>>/resourceGroups/<<resourceGroupName>>/providers/Microsoft.ManagedIdentity/userAssignedIdentities/adp-sxx-az-msi-x-001"
         },
         "sslCertificateKeyVaultSecretId": {
             "value": "https://adp-sxx-az-kv-x-001.vault.azure.net/secrets/applicationGatewaySslCertificate/5b09a47d080943bb93d00f4dc45244a1"

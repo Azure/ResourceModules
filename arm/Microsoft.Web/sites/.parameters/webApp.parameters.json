@@ -9,7 +9,7 @@
             "value": "app"
         },
         "appServicePlanId": {
-            "value": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Web/serverFarms/adp-sxx-az-asp-x-001"
+            "value": "/subscriptions/<<subscriptionId>>/resourceGroups/<<resourceGroupName>>/providers/Microsoft.Web/serverFarms/adp-sxx-az-asp-x-001"
         },
         "managedServiceIdentity": {
             "value": "SystemAssigned"

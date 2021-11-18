@@ -12,7 +12,7 @@
             "value": "adp-sxx-az-msi-x-001"
         },
         "userMsiResourceGroup": {
-            "value": "validation-rg"
+            "value": "<<resourceGroupName>>"
         },
         "buildTimeoutInMinutes": {
             "value": 0
@@ -50,7 +50,7 @@
             "value": "sxx-az-umi-x-001"
         },
         "sigImageDefinitionId": {
-            "value": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Compute/galleries/adpsxxazsigweux001/images/adp-sxx-az-imgd-x-001"
+            "value": "/subscriptions/<<subscriptionId>>/resourceGroups/<<resourceGroupName>>/providers/Microsoft.Compute/galleries/adpsxxazsigweux001/images/adp-sxx-az-imgd-x-001"
         },
         "imageReplicationRegions": {
             "value": []
