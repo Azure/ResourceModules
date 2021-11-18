@@ -12,9 +12,9 @@ This module deploys an Agent Pool for a Container Service Managed Cluster
 
 | Parameter Name | Type | Default Value | Possible Values | Description |
 | :-- | :-- | :-- | :-- | :-- |
-| `managedClusterName` | string |  | Complex structure, see below. | Required. Name of the managed cluster |
+| `managedClusterName` | string |  |  | Required. Name of the managed cluster |
 | `name` | string |  |  | Required. The name of the agent pool |
-| `agentPoolProperties` | object | `{}` |  | Required. Properties for the container service agent pool profile |
+| `agentPoolProperties` | object | `{}` | Complex structure, see below. | Required. Properties for the container service agent pool profile |
 
 ### Parameter Usage: `agentPoolProperties`
 
