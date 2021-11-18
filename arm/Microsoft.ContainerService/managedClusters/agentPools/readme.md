@@ -1,4 +1,4 @@
-# ContainerServiceManagedClustersAgentPools `[Microsoft.ContainerService/managedClusters/agentPools]`
+# Managed Cluster AgentPool `[Microsoft.ContainerService/managedClusters/agentPools]`
 
 This module deploys an Agent Pool for a Container Service Managed Cluster
 
@@ -12,9 +12,9 @@ This module deploys an Agent Pool for a Container Service Managed Cluster
 
 | Parameter Name | Type | Default Value | Possible Values | Description |
 | :-- | :-- | :-- | :-- | :-- |
+| `agentPoolProperties` | object |  |  | Required. Properties for the container service agent pool profile. |
 | `managedClusterName` | string |  |  | Required. Name of the managed cluster |
-| `name` | string |  |  | Required. The name of the agent pool |
-| `agentPoolProperties` | object | `{}` | Complex structure, see below. | Required. Properties for the container service agent pool profile |
+| `name` | string |  |  | Required. Name of the agent pool |
 
 ### Parameter Usage: `agentPoolProperties`
 
@@ -59,12 +59,12 @@ For available properties check <https://docs.microsoft.com/en-us/azure/templates
 
 ## Outputs
 
-| Output Name | Type |
-| :-- | :-- |
-| `agentPoolName` | string |
-| `agentPoolId` | string |
-| `agentPoolResourceGroup` | string |
+| Output Name | Type | Description |
+| :-- | :-- | :-- |
+| `agentPoolId` | string | The ResourceId of the agent pool |
+| `agentPoolName` | string | The name of the agent pool |
+| `agentPoolResourceGroup` | string | The name of the Resource Group the agent pool was created in. |
 
 ## Template references
 
-- [managedClusters/agentPools](https://docs.microsoft.com/en-us/azure/templates/microsoft.containerservice/2021-05-01/managedclusters/agentpools?tabs=bicep)
+- [Managedclusters/Agentpools](https://docs.microsoft.com/en-us/azure/templates/Microsoft.ContainerService/2021-05-01/managedClusters/agentPools)
