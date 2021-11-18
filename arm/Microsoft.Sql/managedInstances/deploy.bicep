@@ -239,7 +239,7 @@ resource managedInstance_diagnosticSettings 'Microsoft.Insights/diagnosticsettin
 }
 
 module managedInstance_rbac '.bicep/nested_rbac.bicep' = [for (roleAssignment, index) in roleAssignments: {
-  name: '${deployment().name}-rbac-${index}'
+  name: '${uniqueString(deployment().name, location)}-rbac-${index}'
   params: {
     roleAssignmentObj: roleAssignment
     resourceName: managedInstance.name
@@ -247,7 +247,7 @@ module managedInstance_rbac '.bicep/nested_rbac.bicep' = [for (roleAssignment, i
 }]
 
 module managedInstance_databases 'databases/deploy.bicep' = [for (database, index) in databases: {
-  name: '${deployment().name}-db-${index}'
+  name: '${uniqueString(deployment().name, location)}-db-${index}'
   params: {
     name: database.name
     managedInstanceName: managedInstance.name
@@ -278,7 +278,7 @@ module managedInstance_databases 'databases/deploy.bicep' = [for (database, inde
 }]
 
 module managedInstance_securityAlertPolicy 'securityAlertPolicies/deploy.bicep' = if (!empty(securityAlertPoliciesObj)) {
-  name: '${deployment().name}-secAlertPol'
+  name: '${uniqueString(deployment().name, location)}-secAlertPol'
   params: {
     managedInstanceName: managedInstance.name
     name: securityAlertPoliciesObj.name
@@ -291,7 +291,7 @@ module managedInstance_securityAlertPolicy 'securityAlertPolicies/deploy.bicep' 
 }
 
 module managedInstance_vulnerabilityAssessment 'vulnerabilityAssessments/deploy.bicep' = if (!empty(vulnerabilityAssessmentsObj)) {
-  name: '${deployment().name}-vulnAssessm'
+  name: '${uniqueString(deployment().name, location)}-vulnAssessm'
   params: {
     managedInstanceName: managedInstance.name
     name: vulnerabilityAssessmentsObj.name
@@ -307,7 +307,7 @@ module managedInstance_vulnerabilityAssessment 'vulnerabilityAssessments/deploy.
 }
 
 module managedInstance_key 'keys/deploy.bicep' = if (!empty(keysObj)) {
-  name: '${deployment().name}-key'
+  name: '${uniqueString(deployment().name, location)}-key'
   params: {
     managedInstanceName: managedInstance.name
     name: contains(keysObj, 'name') ? keysObj.name : ''
@@ -320,7 +320,7 @@ module managedInstance_key 'keys/deploy.bicep' = if (!empty(keysObj)) {
 }
 
 module managedInstance_encryptionProtector 'encryptionProtector/deploy.bicep' = if (!empty(encryptionProtectorObj)) {
-  name: '${deployment().name}-encryProtector'
+  name: '${uniqueString(deployment().name, location)}-encryProtector'
   params: {
     managedInstanceName: managedInstance.name
     serverKeyName: contains(encryptionProtectorObj, 'serverKeyName') ? encryptionProtectorObj.serverKeyName : managedInstance_key.outputs.keyName
@@ -334,7 +334,7 @@ module managedInstance_encryptionProtector 'encryptionProtector/deploy.bicep' = 
 }
 
 module managedInstance_administrator 'administrators/deploy.bicep' = if (!empty(administratorsObj)) {
-  name: '${deployment().name}-admin'
+  name: '${uniqueString(deployment().name, location)}-admin'
   params: {
     managedInstanceName: managedInstance.name
     login: administratorsObj.name
