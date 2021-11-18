@@ -126,7 +126,7 @@ The below diagram illustrates the Token Replacement Functionality via the [Valid
   $TokensKeyVault = Get-AzKeyVault -VaultName $KeyVaultName
   $remoteTokens | ForEach-Object {
       $TokenName = -join ($KeyVaultSecretNamePrefix, $PSItem.Name)
-      Set-AzKeyVaultSecret -Name $TokenName -SecretValue (ConvertTo-SecureString -AsPlainText $PSItem.Name) -VaultName $TokensKeyVault.VaultName -ContentType 'ParameterFileToken'
+      Set-AzKeyVaultSecret -Name $TokenName -SecretValue (ConvertTo-SecureString -AsPlainText $PSItem.Value) -VaultName $TokensKeyVault.VaultName -ContentType 'ParameterFileToken'
   }
 
   ```
