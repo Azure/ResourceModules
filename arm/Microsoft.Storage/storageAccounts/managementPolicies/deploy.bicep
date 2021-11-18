@@ -32,7 +32,7 @@ resource managementPolicy 'Microsoft.Storage/storageAccounts/managementPolicies@
 }
 
 @description('The resource Id of the deployed management policy')
-output managementPoliciesResourceId string = last(split(managementPolicy.name, '/'))
+output managementPoliciesResourceId string = managementPolicy.name
 
 @description('The name of the deployed management policy')
 output managementPoliciesName string = managementPolicy.name

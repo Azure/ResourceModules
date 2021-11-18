@@ -35,18 +35,16 @@ module pid_cuaId '.bicep/nested_cuaId.bicep' = if (!empty(cuaId)) {
 
 resource storageAccount 'Microsoft.Storage/storageAccounts@2021-06-01' existing = {
   name: storageAccountName
-}
 
-resource blobServices 'Microsoft.Storage/storageAccounts/blobServices@2021-06-01' existing = {
-  name: blobServicesName
-  parent: storageAccount
-}
+  resource blobServices 'blobServices@2021-06-01' existing = {
+    name: blobServicesName
 
-resource container 'Microsoft.Storage/storageAccounts/blobServices/containers@2019-06-01' = {
-  name: name
-  parent: blobServices
-  properties: {
-    publicAccess: publicAccess
+    resource container 'containers@2019-06-01' = {
+      name: name
+      properties: {
+        publicAccess: publicAccess
+      }
+    }
   }
 }
 
@@ -54,8 +52,8 @@ module immutabilityPolicy 'immutabilityPolicies/deploy.bicep' = if (!empty(immut
   name: immutabilityPolicyName
   params: {
     storageAccountName: storageAccountName
-    blobServicesName: blobServicesName
-    containerName: container.name
+    blobServicesName: storageAccount::blobServices.name
+    containerName: storageAccount::blobServices::container.name
     immutabilityPeriodSinceCreationInDays: contains(immutabilityPolicyProperties, 'immutabilityPeriodSinceCreationInDays') ? immutabilityPolicyProperties.immutabilityPeriodSinceCreationInDays : 365
     allowProtectedAppendWrites: contains(immutabilityPolicyProperties, 'allowProtectedAppendWrites') ? immutabilityPolicyProperties.allowProtectedAppendWrites : true
   }
@@ -64,16 +62,17 @@ module immutabilityPolicy 'immutabilityPolicies/deploy.bicep' = if (!empty(immut
 module container_rbac '.bicep/nested_rbac.bicep' = [for (roleAssignment, index) in roleAssignments: {
   name: '${deployment().name}-Rbac-${index}'
   params: {
-    roleAssignmentObj: roleAssignment
-    resourceName: container.name
+    principalIds: roleAssignment.principalIds
+    roleDefinitionIdOrName: roleAssignment.roleDefinitionIdOrName
+    resourceName: '${storageAccount.name}/${storageAccount::blobServices.name}/${storageAccount::blobServices::container.name}'
   }
 }]
 
 @description('The name of the deployed container')
-output containerName string = last(split(container.name, '/'))
+output containerName string = storageAccount::blobServices::container.name
 
 @description('The ID of the deployed container')
-output containerResourceId string = container.id
+output containerResourceId string = storageAccount::blobServices::container.id
 
 @description('The resource group of the deployed container')
 output containerResourceGroup string = resourceGroup().name

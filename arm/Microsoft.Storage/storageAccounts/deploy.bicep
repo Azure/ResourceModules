@@ -176,7 +176,8 @@ resource storageAccount_lock 'Microsoft.Authorization/locks@2016-09-01' = if (lo
 module storageAccount_rbac '.bicep/nested_rbac.bicep' = [for (roleAssignment, index) in roleAssignments: {
   name: '${uniqueString(deployment().name, location)}-Storage-Rbac-${index}'
   params: {
-    roleAssignmentObj: roleAssignment
+    principalIds: roleAssignment.principalIds
+    roleDefinitionIdOrName: roleAssignment.roleDefinitionIdOrName
     resourceName: storageAccount.name
   }
 }]
@@ -212,37 +213,37 @@ module storageAccount_blobServices 'blobServices/deploy.bicep' = if (!empty(blob
   }
 }
 
-// // File Shares
-// module storageAccount_fileServices 'fileServices/deploy.bicep' = if (!empty(fileServices)) {
-//   name: '${uniqueString(deployment().name, location)}-Storage-FileServices'
-//   params: {
-//     storageAccountName: storageAccount.name
-//     protocolSettings: contains(fileServices, 'protocolSettings') ? fileServices.protocolSettings : {}
-//     shareDeleteRetentionPolicy: contains(fileServices, 'shareDeleteRetentionPolicy') ? fileServices.shareDeleteRetentionPolicy : {
-//       enabled: true
-//       days: 7
-//     }
-//     shares: contains(fileServices, 'shares') ? fileServices.shares : []
-//   }
-// }
+// File Shares
+module storageAccount_fileServices 'fileServices/deploy.bicep' = if (!empty(fileServices)) {
+  name: '${uniqueString(deployment().name, location)}-Storage-FileServices'
+  params: {
+    storageAccountName: storageAccount.name
+    protocolSettings: contains(fileServices, 'protocolSettings') ? fileServices.protocolSettings : {}
+    shareDeleteRetentionPolicy: contains(fileServices, 'shareDeleteRetentionPolicy') ? fileServices.shareDeleteRetentionPolicy : {
+      enabled: true
+      days: 7
+    }
+    shares: contains(fileServices, 'shares') ? fileServices.shares : []
+  }
+}
 
-// // Queue
-// module storageAccount_queueServices 'queueServices/deploy.bicep' = if (!empty(queueServices)) {
-//   name: '${uniqueString(deployment().name, location)}-Storage-QueueServices'
-//   params: {
-//     storageAccountName: storageAccount.name
-//     queues: contains(queueServices, 'queues') ? queueServices.queues : []
-//   }
-// }
+// Queue
+module storageAccount_queueServices 'queueServices/deploy.bicep' = if (!empty(queueServices)) {
+  name: '${uniqueString(deployment().name, location)}-Storage-QueueServices'
+  params: {
+    storageAccountName: storageAccount.name
+    queues: contains(queueServices, 'queues') ? queueServices.queues : []
+  }
+}
 
-// // Table
-// module storageAccount_tableServices 'tableServices/deploy.bicep' = if (!empty(tableServices)) {
-//   name: '${uniqueString(deployment().name, location)}-Storage-TableServices'
-//   params: {
-//     storageAccountName: storageAccount.name
-//     tables: contains(tableServices, 'tables') ? tableServices.tables : []
-//   }
-// }
+// Table
+module storageAccount_tableServices 'tableServices/deploy.bicep' = if (!empty(tableServices)) {
+  name: '${uniqueString(deployment().name, location)}-Storage-TableServices'
+  params: {
+    storageAccountName: storageAccount.name
+    tables: contains(tableServices, 'tables') ? tableServices.tables : []
+  }
+}
 
 @description('The resource Id of the deployed storage account')
 output storageAccountResourceId string = storageAccount.id

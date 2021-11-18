@@ -27,22 +27,20 @@ module pid_cuaId '.bicep/nested_cuaId.bicep' = if (!empty(cuaId)) {
 
 resource storageAccount 'Microsoft.Storage/storageAccounts@2021-06-01' existing = {
   name: storageAccountName
-}
 
-resource fileServices 'Microsoft.Storage/storageAccounts/fileServices@2021-04-01' = {
-  name: name
-  parent: storageAccount
-  properties: {
-    protocolSettings: protocolSettings
-    shareDeleteRetentionPolicy: shareDeleteRetentionPolicy
+  resource fileServices 'fileServices@2021-04-01' = {
+    name: name
+    properties: {
+      protocolSettings: protocolSettings
+      shareDeleteRetentionPolicy: shareDeleteRetentionPolicy
+    }
   }
 }
-
 module fileServices_shares 'shares/deploy.bicep' = [for (share, index) in shares: {
   name: '${deployment().name}-Storage-File-${index}'
   params: {
-    storageAccountName: storageAccountName
-    fileServicesName: fileServices.name
+    storageAccountName: storageAccount.name
+    fileServicesName: storageAccount::fileServices.name
     name: share.name
     sharedQuota: contains(share, 'sharedQuota') ? share.sharedQuota : 5120
     roleAssignments: contains(share, 'roleAssignments') ? share.roleAssignments : []
@@ -50,10 +48,10 @@ module fileServices_shares 'shares/deploy.bicep' = [for (share, index) in shares
 }]
 
 @description('The name of the deployed file share service')
-output fileServicesName string = last(split(fileServices.name, '/'))
+output fileServicesName string = storageAccount::fileServices.name
 
 @description('The id of the deployed file share service')
-output fileServicesResourceId string = fileServices.id
+output fileServicesResourceId string = storageAccount::fileServices.id
 
 @description('The resource group of the deployed file share service')
 output fileServicesResourceGroup string = resourceGroup().name

@@ -27,25 +27,24 @@ module pid_cuaId '.bicep/nested_cuaId.bicep' = if (!empty(cuaId)) {
 
 resource storageAccount 'Microsoft.Storage/storageAccounts@2021-06-01' existing = {
   name: storageAccountName
-}
 
-resource blobServices 'Microsoft.Storage/storageAccounts/blobServices@2021-06-01' = {
-  name: name
-  parent: storageAccount
-  properties: {
-    deleteRetentionPolicy: {
-      enabled: deleteRetentionPolicy
-      days: deleteRetentionPolicyDays
+  resource blobServices 'blobServices@2021-06-01' = {
+    name: name
+    properties: {
+      deleteRetentionPolicy: {
+        enabled: deleteRetentionPolicy
+        days: deleteRetentionPolicyDays
+      }
+      automaticSnapshotPolicyEnabled: automaticSnapshotPolicyEnabled
     }
-    automaticSnapshotPolicyEnabled: automaticSnapshotPolicyEnabled
   }
 }
 
 module blobServices_container 'containers/deploy.bicep' = [for (container, index) in containers: {
   name: '${deployment().name}-Storage-Container-${index}'
   params: {
-    storageAccountName: storageAccountName
-    blobServicesName: blobServices.name
+    storageAccountName: storageAccount.name
+    blobServicesName: storageAccount::blobServices.name
     name: container.name
     publicAccess: contains(container, 'publicAccess') ? container.publicAccess : 'None'
     roleAssignments: contains(container, 'roleAssignments') ? container.roleAssignments : []
@@ -54,10 +53,10 @@ module blobServices_container 'containers/deploy.bicep' = [for (container, index
 }]
 
 @description('The name of the deployed blob service')
-output blobServicesName string = last(split(blobServices.name, '/'))
+output blobServicesName string = storageAccount::blobServices.name
 
 @description('The id of the deployed blob service')
-output blobServicesResourceId string = blobServices.id
+output blobServicesResourceId string = storageAccount::blobServices.id
 
 @description('The name of the deployed blob service')
 output blobServicesResourceGroup string = resourceGroup().name
