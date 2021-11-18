@@ -131,16 +131,14 @@ Since also dependency resources are in turn subject to dependencies with each ot
       - '_adp-sxx-az-nsg-x-sqlmi_': NSG with required network security rules to be leveraged by the [sql managed instance] subnet.
       - '_adp-sxx-az-nsg-x-001_': default NSG leveraged by all other subnets.
   4. Recovery services vault: This resource supports monitoring, hence it has a dependency on the [storage account], [log analytics workspace] and [event hub] deployed in the group above. This resource is leveraged by the [virtual machine] resource when backup is enabled.
-  5. API management: This resource supports monitoring, hence it has a dependency on the [storage account], [log analytics workspace] and [event hub] deployed in the group above. This resource is leveraged by all [API management services].
-      >**Note**: This resource has a global scope name.
-  6. Application insight: This resource supports monitoring, hence it has a dependency on the [storage account], [log analytics workspace] and [event hub] deployed in the group above. This resource is leveraged by the [machine learning service] resource.
-  7. Automation account: This resource supports monitoring, hence it has a dependency on the [storage account], [log analytics workspace] and [event hub] deployed in the group above. This resource is leveraged by the [log analytics workspace] resource.
-  8. Public IP addresses: This resource supports monitoring, hence it has a dependency on the [storage account], [log analytics workspace] and [event hub] deployed in the group above. Multiple instances are deployed:
+  5. Application insight: This resource supports monitoring, hence it has a dependency on the [storage account], [log analytics workspace] and [event hub] deployed in the group above. This resource is leveraged by the [machine learning service] resource.
+  6. Automation account: This resource supports monitoring, hence it has a dependency on the [storage account], [log analytics workspace] and [event hub] deployed in the group above. This resource is leveraged by the [log analytics workspace] resource.
+  7. Public IP addresses: This resource supports monitoring, hence it has a dependency on the [storage account], [log analytics workspace] and [event hub] deployed in the group above. Multiple instances are deployed:
       - '_adp-sxx-az-pip-x-apgw_': Leveraged by the [application gateway] resource.
       - '_adp-sxx-az-pip-x-bas_': Leveraged by the [bastion host] resource.
       - '_adp-sxx-az-pip-x-lb_': Leveraged by the [load balancer] resource.
-  9. Role assignment: This resource assigns the '_Contributor_' role on the subscription to the [user assigned identity] deployed as part of the group above. This is needed by the [image template] deployment.
-  10. Shared image definition: This resource is depending on the [shared image gallery] deployed above and leveraged by the [image template] resource.
+  8. Role assignment: This resource assigns the '_Contributor_' role on the subscription to the [user assigned identity] deployed as part of the group above. This is needed by the [image template] deployment.
+  9. Shared image definition: This resource is depending on the [shared image gallery] deployed above and leveraged by the [image template] resource.
 
 **Fourth level resources**: This group of resources has a dependency on one or more resources in the groups above. Resources in this group can be deployed in parallel.
 
