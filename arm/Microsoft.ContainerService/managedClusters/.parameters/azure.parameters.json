@@ -19,7 +19,7 @@
                     "storageProfile": "ManagedDisks",
                     "type": "VirtualMachineScaleSets",
                     "mode": "System",
-                    "vnetSubnetID": "/subscriptions/31c86c1e-ba37-47c6-b4ea-a84ab40d4445/resourceGroups/DRTestPrimary/providers/Microsoft.Network/virtualNetworks/vnetprimary/subnets/subnet01",
+                    "vnetSubnetID": "/subscriptions/<<subscriptionId>>/resourceGroups/DRTestPrimary/providers/Microsoft.Network/virtualNetworks/vnetprimary/subnets/subnet01",
                     "serviceCidr": "",
                     "maxPods": 30,
                     "availabilityZones": [
