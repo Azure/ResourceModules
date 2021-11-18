@@ -47,9 +47,10 @@ SQL Managed Instance is deployed on a virtual network. This network is required 
 | `lock` | string | `NotSpecified` | `[CanNotDelete, NotSpecified, ReadOnly]` | Optional. Specify the type of lock. |
 | `logsToEnable` | array | `[ResourceUsageStats, SQLSecurityAuditEvents]` | `[ResourceUsageStats, SQLSecurityAuditEvents]` | Optional. The name of logs that will be streamed. |
 | `managedInstanceCreateMode` | string | `Default` | `[Default, PointInTimeRestore]` | Optional. Specifies the mode of database creation. Default: Regular instance creation. Restore: Creates an instance by restoring a set of backups to specific point in time. RestorePointInTime and SourceManagedInstanceId must be specified. |
-| `managedServiceIdentity` | string | `SystemAssigned` | `[None, SystemAssigned, UserAssigned]` | Optional. The type of identity used for the managed instance. The type "None" (default) will remove any identities from the managed instance. |
+| `managedServiceIdentity` | string | `SystemAssigned` | `[None, SystemAssigned, UserAssigned, SystemAssigned,UserAssigned]` | Optional. The type of identity used for the managed instance. The type "None" (default) will remove any identities from the managed instance. |
 | `metricsToEnable` | array | `[AllMetrics]` | `[AllMetrics]` | Optional. The name of metrics that will be streamed. |
 | `name` | string |  |  | Required. The name of the SQL managed instance. |
+| `primaryUserAssignedIdentityId` | string |  |  | Optional. Mandatory if "managedServiceIdentity" contains UserAssigned. The resource id of a user assigned identity to be used by default. |
 | `proxyOverride` | string | `Proxy` | `[Proxy, Redirect, Default]` | Optional. Connection type used for connecting to the instance. |
 | `publicDataEndpointEnabled` | bool |  |  | Optional. Whether or not the public data endpoint is enabled. |
 | `restorePointInTime` | string |  |  | Optional. Specifies the point in time (ISO8601 format) of the source database that will be restored to create the new database. |
@@ -66,6 +67,16 @@ SQL Managed Instance is deployed on a virtual network. This network is required 
 | `vCores` | int | `4` |  | Optional. The number of vCores. Allowed values: 8, 16, 24, 32, 40, 64, 80. |
 | `vulnerabilityAssessmentsObj` | _[vulnerabilityAssessments](vulnerabilityAssessments/readme.md)_ object | `{object}` |  | Optional. The vulnerability assessment configuration |
 | `workspaceId` | string |  |  | Optional. Resource identifier of Log Analytics. |
+
+### Parameter Usage : `userAssignedIdentities
+```json
+"userAssignedIdentities": {
+    "value": {
+        "/subscriptions/<<subscriptionId>>/resourcegroups/validation-rg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/adp-sxx-az-msi-x-001": {},
+        "/subscriptions/<<subscriptionId>>/resourcegroups/validation-rg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/adp-sxx-az-msi-x-002": {}
+    }
+},
+```
 
 ### Parameter Usage: `roleAssignments`
 

@@ -111,11 +111,15 @@ param cuaId string = ''
   'None'
   'SystemAssigned'
   'UserAssigned'
+  'SystemAssigned,UserAssigned'
 ])
 param managedServiceIdentity string = 'SystemAssigned'
 
 @description('Optional. Mandatory if "managedServiceIdentity" contains UserAssigned. The list of user identities associated with the managed instance.')
 param userAssignedIdentities object = {}
+
+@description('Optional. Mandatory if "managedServiceIdentity" contains UserAssigned. The resource id of a user assigned identity to be used by default.')
+param primaryUserAssignedIdentityId string = ''
 
 @description('Optional. Databases to create in this server.')
 param databases array = []
@@ -182,7 +186,7 @@ resource managedInstance 'Microsoft.Sql/managedInstances@2020-08-01-preview' = {
   location: location
   identity: {
     type: managedServiceIdentity
-    userAssignedIdentities: (empty(userAssignedIdentities)) ? null : userAssignedIdentities
+    userAssignedIdentities: userAssignedIdentities
   }
   sku: {
     name: skuName
@@ -206,6 +210,7 @@ resource managedInstance 'Microsoft.Sql/managedInstances@2020-08-01-preview' = {
     proxyOverride: proxyOverride
     timezoneId: timezoneId
     instancePoolId: instancePoolId
+    primaryUserAssignedIdentityId: primaryUserAssignedIdentityId
   }
 }
 
