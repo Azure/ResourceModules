@@ -47,7 +47,7 @@
             ]
         },
         "linkedWorkspaceId": {
-            "value": "/subscriptions/<<subscriptionId>>/resourcegroups/test-rg/providers/Microsoft.OperationalInsights/workspaces/temp-test-law"
+            "value": "/subscriptions/<<subscriptionId>>/resourcegroups/test-rg/providers/Microsoft.OperationalInsights/workspaces/test-law"
         },
         "gallerySolutions": {
             "value": [
