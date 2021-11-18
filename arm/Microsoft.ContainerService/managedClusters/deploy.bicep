@@ -106,7 +106,7 @@ param aksClusterEnablePrivateCluster bool = false
 @description('Required. Properties of the primary agent pool.')
 param primaryAgentPoolProfile array
 
-@description('Optional. Define one or multiple node pools')
+@description('Optional. Define one or more secondary/additional node pools')
 param agentPools array = []
 
 @description('Optional. Specifies whether the httpApplicationRouting add-on is enabled or not.')
