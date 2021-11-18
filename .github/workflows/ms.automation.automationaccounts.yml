@@ -10,7 +10,7 @@ on:
         options:
           - true
           - false
-        default: 'true'
+        default: 'false'
       versioningOption:
         type: choice
         description: 'The mode to handle the version increments [major|minor|patch|custom]'
