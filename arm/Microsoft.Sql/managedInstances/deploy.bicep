@@ -176,18 +176,20 @@ var diagnosticsMetrics = [for metric in metricsToEnable: {
   }
 }]
 
+var identity = {
+  type: managedServiceIdentity
+  userAssignedIdentities: !empty(userAssignedIdentities) ? userAssignedIdentities : null
+}
+
 module pid_cuaId '.bicep/nested_cuaId.bicep' = if (!empty(cuaId)) {
   name: 'pid-${cuaId}'
   params: {}
 }
 
-resource managedInstance 'Microsoft.Sql/managedInstances@2020-08-01-preview' = {
+resource managedInstance 'Microsoft.Sql/managedInstances@2021-05-01-preview' = {
   name: name
   location: location
-  identity: {
-    type: managedServiceIdentity
-    userAssignedIdentities: userAssignedIdentities
-  }
+  identity: identity
   sku: {
     name: skuName
     tier: skuTier
