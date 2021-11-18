@@ -22,9 +22,6 @@ This section will give on an overview on how to get started using this repositor
 
 ---
 
-Let us first answer the question what a Resource Module is:
-> A Resource Module is a reusable, template-based building block to deploy Azure resources. It encapsulates one or more Azure resources and their respective configurations for use in your Azure environment.
-
 ## General prerequisites
 
 No matter from where you start you have to account for some general prerequisites when it comes to bicep and this repository.
