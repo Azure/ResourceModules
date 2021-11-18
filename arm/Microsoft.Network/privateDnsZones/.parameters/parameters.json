@@ -3,14 +3,14 @@
     "contentVersion": "1.0.0.0",
     "parameters": {
         "name": {
-            "value": "<<namePrefix>>.az-privdns-x-001"
+            "value": "sxx.az-privdns-x-001"
         },
         "roleAssignments": {
             "value": [
                 {
                     "roleDefinitionIdOrName": "Reader",
                     "principalIds": [
-                        "<<deploymentSpId>>"
+                        "e58511af-4da2-449c-a5cd-6a10271cfb83"
                     ]
                 }
             ]
@@ -18,7 +18,7 @@
         "virtualNetworkLinks": {
             "value": [
                 {
-                    "virtualNetworkId": "/subscriptions/<<subscriptionId>>/resourceGroups/<<resourceGroupName>>/providers/Microsoft.Network/virtualNetworks/adp-<<namePrefix>>-az-vnet-x-001",
+                    "virtualNetworkId": "/subscriptions/a7439831-1cd9-435d-a091-4aa863c96556/resourceGroups/validation-rg/providers/Microsoft.Network/virtualNetworks/adp-sxx-az-vnet-x-001",
                     "registrationEnabled": true
                 }
             ]
