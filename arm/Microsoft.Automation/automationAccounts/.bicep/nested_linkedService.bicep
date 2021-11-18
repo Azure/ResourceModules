@@ -17,7 +17,7 @@ resource logAnalyticsWorkspace 'Microsoft.OperationalInsights/workspaces@2021-06
   name: logAnalyticsWorkspaceName
 }
 
-resource linkedService 'Microsoft.OperationalInsights/workspaces/linkedServices@2020-08-01' = {
+resource linkedService 'Microsoft.OperationalInsights/workspaces/linkedServices@2020-03-01-preview' = {
   name: name
   parent: logAnalyticsWorkspace
   tags: tags

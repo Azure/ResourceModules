@@ -188,7 +188,8 @@ module automationAccount_linkedService './.bicep/nested_linkedService.bicep' = i
   params: {
     name: 'automation'
     logAnalyticsWorkspaceName: '${last(split(linkedWorkspaceId, '/'))}'
-    resourceId: automationAccount.id
+    // resourceId: automationAccount.id
+    writeAccessResourceId: automationAccount.id
     tags: tags
   }
   // This is to support linked services to law in different subscription and resource group than the automation account.
@@ -219,7 +220,6 @@ module automationAccount_softwareUpdateConfigurations './softwareUpdateConfigura
     frequency: softwareUpdateConfiguration.frequency
     operatingSystem: softwareUpdateConfiguration.operatingSystem
     rebootSetting: softwareUpdateConfiguration.rebootSetting
-
     azureVirtualMachines: empty(softwareUpdateConfiguration.azureVirtualMachines) ? [] : softwareUpdateConfiguration.azureVirtualMachines
     excludeUpdates: empty(softwareUpdateConfiguration.excludeUpdates) ? [] : softwareUpdateConfiguration.excludeUpdates
     expiryTime: empty(softwareUpdateConfiguration.expiryTime) ? '' : softwareUpdateConfiguration.expiryTime
