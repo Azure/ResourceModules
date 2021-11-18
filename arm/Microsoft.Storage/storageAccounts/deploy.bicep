@@ -164,7 +164,7 @@ resource storageAccount 'Microsoft.Storage/storageAccounts@2021-06-01' = {
   }
   identity: {
     type: managedServiceIdentity
-    userAssignedIdentities: (empty(userAssignedIdentities) ? null : userAssignedIdentities)
+    userAssignedIdentities: !empty(userAssignedIdentities) ? userAssignedIdentities : null
   }
   tags: tags
   properties: saProperties
