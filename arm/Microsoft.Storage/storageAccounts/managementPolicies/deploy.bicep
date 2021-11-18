@@ -18,24 +18,23 @@ module pid_cuaId '.bicep/nested_cuaId.bicep' = if (!empty(cuaId)) {
 
 resource storageAccount 'Microsoft.Storage/storageAccounts@2021-06-01' existing = {
   name: storageAccountName
-}
 
-// lifecycle policy
-resource managementPolicy 'Microsoft.Storage/storageAccounts/managementPolicies@2019-06-01' = if (!empty(rules)) {
-  name: name
-  parent: storageAccount
-  properties: {
-    policy: {
-      rules: rules
+  // lifecycle policy
+  resource managementPolicy 'managementPolicies@2019-06-01' = if (!empty(rules)) {
+    name: name
+    properties: {
+      policy: {
+        rules: rules
+      }
     }
   }
 }
 
 @description('The resource Id of the deployed management policy')
-output managementPoliciesResourceId string = managementPolicy.name
+output managementPoliciesResourceId string = storageAccount::managementPolicy.name
 
 @description('The name of the deployed management policy')
-output managementPoliciesName string = managementPolicy.name
+output managementPoliciesName string = storageAccount::managementPolicy.name
 
 @description('The resource group of the deployed management policy')
 output managementPoliciesResourceGroup string = resourceGroup().name
