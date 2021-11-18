@@ -9,7 +9,7 @@ on:
   #   paths:
   #     - '.github/actions/templates/**'
   #     - '.github/workflows/platform.dependencies.yml'
-  #     - 'utilities/dependencies/**'
+  #     - 'utilities/pipelines/dependencies/**'
 
 env:
   defaultLocation: 'WestEurope'
@@ -50,7 +50,7 @@ jobs:
         with:
           moduleName: '${{ env.moduleName }}'
           templateFilePath: 'arm/${{ env.namespace }}/deploy.bicep'
-          parameterFilePath: 'utilities/dependencies/${{ env.namespace }}/parameters/${{ matrix.parameterFilePaths }}'
+          parameterFilePath: 'utilities/pipelines/dependencies/${{ env.namespace }}/parameters/${{ matrix.parameterFilePaths }}'
           location: '${{ env.defaultLocation }}'
           resourceGroupName: '${{ env.resourceGroupName }}'
           subscriptionId: '${{ secrets.ARM_SUBSCRIPTION_ID }}'
@@ -81,51 +81,12 @@ jobs:
         with:
           moduleName: '${{ env.moduleName }}'
           templateFilePath: 'arm/${{ env.namespace }}/deploy.bicep'
-          parameterFilePath: 'utilities/dependencies/${{ env.namespace }}/parameters/${{ matrix.parameterFilePaths }}'
+          parameterFilePath: 'utilities/pipelines/dependencies/${{ env.namespace }}/parameters/${{ matrix.parameterFilePaths }}'
           location: '${{ env.defaultLocation }}'
           resourceGroupName: '${{ env.resourceGroupNamePlatform }}'
           subscriptionId: '${{ secrets.ARM_SUBSCRIPTION_ID }}'
           managementGroupId: '${{ secrets.ARM_MGMTGROUP_ID }}'
           removeDeployment: '${{ env.removeDeployment }}'
-
-  job_deploy_kv_tokens_secrets:
-    runs-on: ubuntu-20.04
-    name: 'Set Local Tokens in Key Vault'
-    needs:
-      - job_deploy_kv_platform
-    steps:
-      - name: 'Checkout'
-        if: '${{ env.PLATFORM_KEYVAULT }}'
-        uses: actions/checkout@v2
-        with:
-          fetch-depth: 0
-      - name: Azure Login
-        if: '${{ env.PLATFORM_KEYVAULT }}'
-        uses: azure/login@v1
-        with:
-          creds: ${{ secrets.AZURE_CREDENTIALS }}
-          enable-AzPSSession: true
-      - name: 'Create Token Secrets in Key Vault'
-        if: '${{ env.PLATFORM_KEYVAULT }}'
-        shell: pwsh
-        run: |
-          # Load Settings File
-          $Settings = Get-Content -Path "$env:GITHUB_WORKSPACE/settings.json" | ConvertFrom-Json
-          # Load used functions
-          . "$env:GITHUB_WORKSPACE/.github/actions/sharedScripts/Set-EnvironmentOnAgent.ps1"
-          . "$env:GITHUB_WORKSPACE/utilities/tokensReplacement/Set-LocalCustomParameterFileTokensInKeyVault.ps1"
-          # Set agent up
-          Set-EnvironmentOnAgent
-          # Create Tokens in Key Vault
-          if('${{ env.PLATFORM_KEYVAULT }}' -and $Settings.parameterFileTokens.remoteTokens.syncLocalTokens){
-            write-verbose "Syncing Local Parameter File Tokens to Key Vault"
-            Set-LocalCustomParameterFileTokensInKeyVault `
-                  -TokenKeyVaultName '${{ env.PLATFORM_KEYVAULT }}' `
-                  -SubscriptionId '${{ secrets.ARM_SUBSCRIPTION_ID }}' `
-                  -LocalCustomParameterFileTokens $Settings.parameterFileTokens.localTokens.tokens `
-                  -TokenKeyVaultSecretNamePrefix $Settings.parameterFileTokens.remoteTokens.keyVaultSecretNamePrefix `
-                  -verbose
-          }
 
   job_deploy_msi:
     runs-on: ubuntu-20.04
@@ -149,7 +110,7 @@ jobs:
         with:
           moduleName: '${{ env.moduleName }}'
           templateFilePath: 'arm/${{ env.namespace }}/deploy.bicep'
-          parameterFilePath: 'utilities/dependencies/${{ env.namespace }}/parameters/${{ matrix.parameterFilePaths }}'
+          parameterFilePath: 'utilities/pipelines/dependencies/${{ env.namespace }}/parameters/${{ matrix.parameterFilePaths }}'
           location: '${{ env.defaultLocation }}'
           resourceGroupName: '${{ env.resourceGroupName }}'
           subscriptionId: '${{ secrets.ARM_SUBSCRIPTION_ID }}'
@@ -178,7 +139,7 @@ jobs:
         with:
           moduleName: '${{ env.moduleName }}'
           templateFilePath: 'arm/${{ env.namespace }}/deploy.bicep'
-          parameterFilePath: 'utilities/dependencies/${{ env.namespace }}/parameters/${{ matrix.parameterFilePaths }}'
+          parameterFilePath: 'utilities/pipelines/dependencies/${{ env.namespace }}/parameters/${{ matrix.parameterFilePaths }}'
           location: '${{ env.defaultLocation }}'
           resourceGroupName: '${{ env.resourceGroupNameArtifacts }}'
           subscriptionId: '${{ secrets.ARM_SUBSCRIPTION_ID }}'
@@ -207,7 +168,7 @@ jobs:
         with:
           moduleName: '${{ env.moduleName }}'
           templateFilePath: 'arm/${{ env.namespace }}/deploy.bicep'
-          parameterFilePath: 'utilities/dependencies/${{ env.namespace }}/parameters/${{ matrix.parameterFilePaths }}'
+          parameterFilePath: 'utilities/pipelines/dependencies/${{ env.namespace }}/parameters/${{ matrix.parameterFilePaths }}'
           location: '${{ env.defaultLocation }}'
           resourceGroupName: '${{ env.resourceGroupName }}'
           subscriptionId: '${{ secrets.ARM_SUBSCRIPTION_ID }}'
@@ -236,7 +197,7 @@ jobs:
         with:
           moduleName: '${{ env.moduleName }}'
           templateFilePath: 'arm/${{ env.namespace }}/deploy.bicep'
-          parameterFilePath: 'utilities/dependencies/${{ env.namespace }}/parameters/${{ matrix.parameterFilePaths }}'
+          parameterFilePath: 'utilities/pipelines/dependencies/${{ env.namespace }}/parameters/${{ matrix.parameterFilePaths }}'
           location: '${{ env.defaultLocation }}'
           resourceGroupName: '${{ env.resourceGroupName }}'
           subscriptionId: '${{ secrets.ARM_SUBSCRIPTION_ID }}'
@@ -266,7 +227,7 @@ jobs:
         with:
           moduleName: '${{ env.moduleName }}'
           templateFilePath: 'arm/${{ env.namespace }}/deploy.bicep'
-          parameterFilePath: 'utilities/dependencies/${{ env.namespace }}/parameters/${{ matrix.parameterFilePaths }}'
+          parameterFilePath: 'utilities/pipelines/dependencies/${{ env.namespace }}/parameters/${{ matrix.parameterFilePaths }}'
           location: '${{ env.defaultLocation }}'
           resourceGroupName: '${{ env.resourceGroupName }}'
           subscriptionId: '${{ secrets.ARM_SUBSCRIPTION_ID }}'
@@ -295,7 +256,7 @@ jobs:
         with:
           moduleName: '${{ env.moduleName }}'
           templateFilePath: 'arm/${{ env.namespace }}/deploy.bicep'
-          parameterFilePath: 'utilities/dependencies/${{ env.namespace }}/parameters/${{ matrix.parameterFilePaths }}'
+          parameterFilePath: 'utilities/pipelines/dependencies/${{ env.namespace }}/parameters/${{ matrix.parameterFilePaths }}'
           location: '${{ env.defaultLocation }}'
           resourceGroupName: '${{ env.resourceGroupName }}'
           subscriptionId: '${{ secrets.ARM_SUBSCRIPTION_ID }}'
@@ -324,7 +285,7 @@ jobs:
         with:
           moduleName: '${{ env.moduleName }}'
           templateFilePath: 'arm/${{ env.namespace }}/deploy.bicep'
-          parameterFilePath: 'utilities/dependencies/${{ env.namespace }}/parameters/${{ matrix.parameterFilePaths }}'
+          parameterFilePath: 'utilities/pipelines/dependencies/${{ env.namespace }}/parameters/${{ matrix.parameterFilePaths }}'
           location: '${{ env.defaultLocation }}'
           resourceGroupName: '${{ env.resourceGroupName }}'
           subscriptionId: '${{ secrets.ARM_SUBSCRIPTION_ID }}'
@@ -353,7 +314,7 @@ jobs:
         with:
           moduleName: '${{ env.moduleName }}'
           templateFilePath: 'arm/${{ env.namespace }}/deploy.bicep'
-          parameterFilePath: 'utilities/dependencies/${{ env.namespace }}/parameters/${{ matrix.parameterFilePaths }}'
+          parameterFilePath: 'utilities/pipelines/dependencies/${{ env.namespace }}/parameters/${{ matrix.parameterFilePaths }}'
           location: '${{ env.defaultLocation }}'
           resourceGroupName: '${{ env.resourceGroupName }}'
           subscriptionId: '${{ secrets.ARM_SUBSCRIPTION_ID }}'
@@ -382,7 +343,7 @@ jobs:
         with:
           moduleName: '${{ env.moduleName }}'
           templateFilePath: 'arm/${{ env.namespace }}/deploy.bicep'
-          parameterFilePath: 'utilities/dependencies/${{ env.namespace }}/parameters/${{ matrix.parameterFilePaths }}'
+          parameterFilePath: 'utilities/pipelines/dependencies/${{ env.namespace }}/parameters/${{ matrix.parameterFilePaths }}'
           location: '${{ env.defaultLocation }}'
           resourceGroupName: '${{ env.resourceGroupName }}'
           subscriptionId: '${{ secrets.ARM_SUBSCRIPTION_ID }}'
@@ -411,7 +372,7 @@ jobs:
         with:
           moduleName: '${{ env.moduleName }}'
           templateFilePath: 'arm/${{ env.namespace }}/deploy.bicep'
-          parameterFilePath: 'utilities/dependencies/${{ env.namespace }}/parameters/${{ matrix.parameterFilePaths }}'
+          parameterFilePath: 'utilities/pipelines/dependencies/${{ env.namespace }}/parameters/${{ matrix.parameterFilePaths }}'
           location: '${{ env.defaultLocation }}'
           resourceGroupName: '${{ env.resourceGroupName }}'
           subscriptionId: '${{ secrets.ARM_SUBSCRIPTION_ID }}'
@@ -449,7 +410,7 @@ jobs:
         with:
           moduleName: '${{ env.moduleName }}'
           templateFilePath: 'arm/${{ env.namespace }}/deploy.bicep'
-          parameterFilePath: 'utilities/dependencies/${{ env.namespace }}/parameters/${{ matrix.parameterFilePaths }}'
+          parameterFilePath: 'utilities/pipelines/dependencies/${{ env.namespace }}/parameters/${{ matrix.parameterFilePaths }}'
           location: '${{ env.defaultLocation }}'
           resourceGroupName: '${{ env.resourceGroupName }}'
           subscriptionId: '${{ secrets.ARM_SUBSCRIPTION_ID }}'
@@ -481,7 +442,7 @@ jobs:
         with:
           moduleName: '${{ env.moduleName }}'
           templateFilePath: 'arm/${{ env.namespace }}/deploy.bicep'
-          parameterFilePath: 'utilities/dependencies/${{ env.namespace }}/parameters/${{ matrix.parameterFilePaths }}'
+          parameterFilePath: 'utilities/pipelines/dependencies/${{ env.namespace }}/parameters/${{ matrix.parameterFilePaths }}'
           location: '${{ env.defaultLocation }}'
           resourceGroupName: '${{ env.resourceGroupName }}'
           subscriptionId: '${{ secrets.ARM_SUBSCRIPTION_ID }}'
@@ -512,7 +473,7 @@ jobs:
         with:
           moduleName: '${{ env.moduleName }}'
           templateFilePath: 'arm/${{ env.namespace }}/deploy.bicep'
-          parameterFilePath: 'utilities/dependencies/${{ env.namespace }}/parameters/${{ matrix.parameterFilePaths }}'
+          parameterFilePath: 'utilities/pipelines/dependencies/${{ env.namespace }}/parameters/${{ matrix.parameterFilePaths }}'
           location: '${{ env.defaultLocation }}'
           resourceGroupName: '${{ env.resourceGroupName }}'
           subscriptionId: '${{ secrets.ARM_SUBSCRIPTION_ID }}'
@@ -543,7 +504,7 @@ jobs:
         with:
           moduleName: '${{ env.moduleName }}'
           templateFilePath: 'arm/${{ env.namespace }}/deploy.bicep'
-          parameterFilePath: 'utilities/dependencies/${{ env.namespace }}/parameters/${{ matrix.parameterFilePaths }}'
+          parameterFilePath: 'utilities/pipelines/dependencies/${{ env.namespace }}/parameters/${{ matrix.parameterFilePaths }}'
           location: '${{ env.defaultLocation }}'
           resourceGroupName: '${{ env.resourceGroupName }}'
           subscriptionId: '${{ secrets.ARM_SUBSCRIPTION_ID }}'
@@ -605,7 +566,7 @@ jobs:
         with:
           moduleName: '${{ env.moduleName }}'
           templateFilePath: 'arm/${{ env.namespace }}/deploy.bicep'
-          parameterFilePath: 'utilities/dependencies/${{ env.namespace }}/parameters/${{ matrix.parameterFilePaths }}'
+          parameterFilePath: 'utilities/pipelines/dependencies/${{ env.namespace }}/parameters/${{ matrix.parameterFilePaths }}'
           location: '${{ env.defaultLocation }}'
           resourceGroupName: '${{ env.resourceGroupName }}'
           subscriptionId: '${{ secrets.ARM_SUBSCRIPTION_ID }}'
@@ -636,7 +597,7 @@ jobs:
         with:
           moduleName: '${{ env.moduleName }}'
           templateFilePath: 'arm/${{ env.namespace }}/deploy.bicep'
-          parameterFilePath: 'utilities/dependencies/${{ env.namespace }}/parameters/${{ matrix.parameterFilePaths }}'
+          parameterFilePath: 'utilities/pipelines/dependencies/${{ env.namespace }}/parameters/${{ matrix.parameterFilePaths }}'
           location: '${{ env.defaultLocation }}'
           resourceGroupName: '${{ env.resourceGroupName }}'
           subscriptionId: '${{ secrets.ARM_SUBSCRIPTION_ID }}'
@@ -667,7 +628,7 @@ jobs:
         with:
           moduleName: '${{ env.moduleName }}'
           templateFilePath: 'arm/${{ env.namespace }}/deploy.bicep'
-          parameterFilePath: 'utilities/dependencies/${{ env.namespace }}/parameters/${{ matrix.parameterFilePaths }}'
+          parameterFilePath: 'utilities/pipelines/dependencies/${{ env.namespace }}/parameters/${{ matrix.parameterFilePaths }}'
           location: '${{ env.defaultLocation }}'
           resourceGroupName: '${{ env.resourceGroupName }}'
           subscriptionId: '${{ secrets.ARM_SUBSCRIPTION_ID }}'
@@ -714,6 +675,9 @@ jobs:
             # ApplicationGateway
             $apgwCertPolicy = New-AzKeyVaultCertificatePolicy -SecretContentType 'application/x-pkcs12' -SubjectName 'CN=fabrikam.com' -IssuerName 'Self' -ValidityInMonths 12 -ReuseKeyOnRenewal
             Add-AzKeyVaultCertificate -VaultName $keyVaultName -Name 'applicationGatewaySslCertificate' -CertificatePolicy $apgwCertPolicy
+            # API management
+            Set-AzKeyVaultSecret -VaultName $keyVaultName -Name 'apimclientid' -SecretValue $username
+            Set-AzKeyVaultSecret -VaultName $keyVaultName -Name 'apimclientsecret' -SecretValue $password
           azPSVersion: 'latest'
 
   job_deploy_avdag:
@@ -738,7 +702,7 @@ jobs:
         with:
           moduleName: '${{ env.moduleName }}'
           templateFilePath: 'arm/${{ env.namespace }}/deploy.bicep'
-          parameterFilePath: 'utilities/dependencies/${{ env.namespace }}/parameters/${{ matrix.parameterFilePaths }}'
+          parameterFilePath: 'utilities/pipelines/dependencies/${{ env.namespace }}/parameters/${{ matrix.parameterFilePaths }}'
           location: '${{ env.defaultLocation }}'
           resourceGroupName: '${{ env.resourceGroupName }}'
           subscriptionId: '${{ secrets.ARM_SUBSCRIPTION_ID }}'
@@ -767,7 +731,7 @@ jobs:
         with:
           moduleName: '${{ env.moduleName }}'
           templateFilePath: 'arm/${{ env.namespace }}/.bicep/nested_rbac_sub.bicep'
-          parameterFilePath: 'utilities/dependencies/${{ env.namespace }}/parameters/${{ matrix.parameterFilePaths }}'
+          parameterFilePath: 'utilities/pipelines/dependencies/${{ env.namespace }}/parameters/${{ matrix.parameterFilePaths }}'
           location: '${{ env.defaultLocation }}'
           resourceGroupName: '${{ env.resourceGroupName }}'
           subscriptionId: '${{ secrets.ARM_SUBSCRIPTION_ID }}'
@@ -796,7 +760,7 @@ jobs:
         with:
           moduleName: '${{ env.moduleName }}'
           templateFilePath: 'arm/${{ env.namespace }}/deploy.bicep'
-          parameterFilePath: 'utilities/dependencies/${{ env.namespace }}/parameters/${{ matrix.parameterFilePaths }}'
+          parameterFilePath: 'utilities/pipelines/dependencies/${{ env.namespace }}/parameters/${{ matrix.parameterFilePaths }}'
           location: '${{ env.defaultLocation }}'
           resourceGroupName: '${{ env.resourceGroupName }}'
           subscriptionId: '${{ secrets.ARM_SUBSCRIPTION_ID }}'
@@ -834,7 +798,7 @@ jobs:
         with:
           moduleName: '${{ env.moduleName }}'
           templateFilePath: 'arm/${{ env.namespace }}/deploy.bicep'
-          parameterFilePath: 'utilities/dependencies/${{ env.namespace }}/parameters/${{ matrix.parameterFilePaths }}'
+          parameterFilePath: 'utilities/pipelines/dependencies/${{ env.namespace }}/parameters/${{ matrix.parameterFilePaths }}'
           location: '${{ env.defaultLocation }}'
           resourceGroupName: '${{ env.resourceGroupName }}'
           subscriptionId: '${{ secrets.ARM_SUBSCRIPTION_ID }}'
@@ -863,7 +827,7 @@ jobs:
         with:
           moduleName: '${{ env.moduleName }}'
           templateFilePath: 'arm/${{ env.namespace }}/deploy.bicep'
-          parameterFilePath: 'utilities/dependencies/${{ env.namespace }}/parameters/${{ matrix.parameterFilePaths }}'
+          parameterFilePath: 'utilities/pipelines/dependencies/${{ env.namespace }}/parameters/${{ matrix.parameterFilePaths }}'
           location: '${{ env.defaultLocation }}'
           resourceGroupName: '${{ env.resourceGroupName }}'
           subscriptionId: '${{ secrets.ARM_SUBSCRIPTION_ID }}'
@@ -894,7 +858,7 @@ jobs:
         with:
           moduleName: '${{ env.moduleName }}'
           templateFilePath: 'arm/${{ env.namespace }}/deploy.bicep'
-          parameterFilePath: 'utilities/dependencies/${{ env.namespace }}/parameters/${{ matrix.parameterFilePaths }}'
+          parameterFilePath: 'utilities/pipelines/dependencies/${{ env.namespace }}/parameters/${{ matrix.parameterFilePaths }}'
           location: '${{ env.defaultLocation }}'
           resourceGroupName: '${{ env.resourceGroupName }}'
           subscriptionId: '${{ secrets.ARM_SUBSCRIPTION_ID }}'

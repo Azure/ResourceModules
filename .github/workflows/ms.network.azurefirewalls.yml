@@ -195,7 +195,7 @@ jobs:
   job_remove_module:
     runs-on: ubuntu-20.04
     name: 'Remove module'
-    if: ${{ always() && !cancelled() && needs.job_set_workflow_param.outputs.removeDeployment == 'true' && (contains(needs.*.result, 'success') || contains(needs.*.result, 'failure')) }}
+    if: ${{ always() && !cancelled() && needs.job_set_workflow_param.outputs.removeDeployment == 'true' && (contains(needs.job_deploy_module.result, 'success') || contains(needs.job_deploy_module.result, 'failure')) }}
     needs:
       - job_deploy_module
     steps:
