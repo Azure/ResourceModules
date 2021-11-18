@@ -219,6 +219,39 @@ module automationAccount_softwareUpdateConfigurations './softwareUpdateConfigura
     frequency: softwareUpdateConfiguration.frequency
     operatingSystem: softwareUpdateConfiguration.operatingSystem
     rebootSetting: softwareUpdateConfiguration.rebootSetting
+
+    azureVirtualMachines: empty(softwareUpdateConfiguration.azureVirtualMachines) ? [] : softwareUpdateConfiguration.azureVirtualMachines
+    excludeUpdates: empty(softwareUpdateConfiguration.excludeUpdates) ? [] : softwareUpdateConfiguration.excludeUpdates
+    expiryTime: empty(softwareUpdateConfiguration.expiryTime) ? '' : softwareUpdateConfiguration.expiryTime
+    expiryTimeOffsetMinutes: empty(softwareUpdateConfiguration.expiryTimeOffsetMinute) ? 0 : softwareUpdateConfiguration.expiryTimeOffsetMinute
+    includeUpdates: empty(softwareUpdateConfiguration.includeUpdates) ? [] : softwareUpdateConfiguration.includeUpdates
+    interval: empty(softwareUpdateConfiguration.interval) ? 1 : softwareUpdateConfiguration.interval
+    isEnabled: empty(softwareUpdateConfiguration.isEnabled) ? true : softwareUpdateConfiguration.isEnabled
+    maintenanceWindow: empty(softwareUpdateConfiguration.maintenanceWindow) ? 'PT2H' : softwareUpdateConfiguration.maintenanceWindow
+    monthDays: empty(softwareUpdateConfiguration.monthDays) ? [] : softwareUpdateConfiguration.monthDays
+    monthlyOccurrences: empty(softwareUpdateConfiguration.monthlyOccurrences) ? [] : softwareUpdateConfiguration.monthlyOccurrences
+    nextRun: empty(softwareUpdateConfiguration.nextRun) ? '' : softwareUpdateConfiguration.nextRun
+    nextRunOffsetMinutes: empty(softwareUpdateConfiguration.nextRunOffsetMinutes) ? 0 : softwareUpdateConfiguration.nextRunOffsetMinutes
+    nonAzureComputerNames: empty(softwareUpdateConfiguration.nonAzureComputerNames) ? [] : softwareUpdateConfiguration.nonAzureComputerNames
+    nonAzureQueries: empty(softwareUpdateConfiguration.nonAzureQueries) ? [] : softwareUpdateConfiguration.nonAzureQueries
+    postTaskParameters: empty(softwareUpdateConfiguration.postTaskParameters) ? {} : softwareUpdateConfiguration.postTaskParameters
+    postTaskSource: empty(softwareUpdateConfiguration.postTaskSource) ? '' : softwareUpdateConfiguration.postTaskSource
+    preTaskParameters: empty(softwareUpdateConfiguration.preTaskParameters) ? {} : softwareUpdateConfiguration.preTaskParameters
+    preTaskSource: empty(softwareUpdateConfiguration.preTaskSource) ? '' : softwareUpdateConfiguration.preTaskSource
+    scheduleDescription: empty(softwareUpdateConfiguration.scheduleDescription) ? '' : softwareUpdateConfiguration.scheduleDescription
+    scopeByLocations: empty(softwareUpdateConfiguration.scopeByLocations) ? [] : softwareUpdateConfiguration.scopeByLocations
+    scopeByResources: empty(softwareUpdateConfiguration.scopeByResources) ? [
+      subscription().id
+    ] : softwareUpdateConfiguration.scopeByResources
+    scopeByTags: empty(softwareUpdateConfiguration.scopeByTags) ? {} : softwareUpdateConfiguration.scopeByTags
+    scopeByTagsOperation: empty(softwareUpdateConfiguration.scopeByTagsOperation) ? 'All' : softwareUpdateConfiguration.scopeByTagsOperation
+    startTime: empty(softwareUpdateConfiguration.startTime) ? '' : softwareUpdateConfiguration.startTime
+    timeZone: empty(softwareUpdateConfiguration.timeZone) ? 'UTC' : softwareUpdateConfiguration.timeZone
+    updateClassifications: empty(softwareUpdateConfiguration.updateClassifications) ? [
+      'Critical'
+      'Security'
+    ] : softwareUpdateConfiguration.updateClassifications
+    weekDays: empty(softwareUpdateConfiguration.weekDays) ? [] : softwareUpdateConfiguration.weekDays
   }
   dependsOn: [
     automationAccount_solutions
