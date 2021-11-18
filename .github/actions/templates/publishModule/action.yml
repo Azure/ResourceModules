@@ -40,7 +40,7 @@ inputs:
 runs:
   using: 'composite'
   steps:
-    - name: 'Setup agent & login'
+    - name: 'Setup agent'
       shell: pwsh
       run: |
         # Load used functions
@@ -70,8 +70,6 @@ runs:
             templateSpecsRgName      = '${{ inputs.templateSpecsRgName }}'
             templateSpecsRgLocation  = '${{ inputs.templateSpecsRgLocation }}'
             templateSpecsDescription = '${{ inputs.templateSpecsDescription }}'
-            customVersion            = '${{ inputs.customVersion }}'
-            versioningOption         = '${{ inputs.versioningOption }}'
           }
 
           Write-Verbose "Invoke task with" -Verbose
@@ -97,8 +95,6 @@ runs:
             templateFilePath    = Join-Path $env:GITHUB_WORKSPACE "${{ inputs.templateFilePath }}"
             bicepRegistryName   = '${{ inputs.bicepRegistryName }}'
             bicepRegistryRgName = '${{ inputs.bicepRegistryRgName }}'
-            customVersion       = '${{ inputs.customVersion }}'
-            versioningOption    = '${{ inputs.versioningOption }}'
           }
 
           Write-Verbose "Invoke task with" -Verbose

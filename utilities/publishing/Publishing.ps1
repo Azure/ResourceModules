@@ -25,9 +25,8 @@ function Get-ModuleName {
         [string]
         $Path
     )
-    $FolderName = $Path.Replace('deploy.bicep', '')
-    $FolderName = $FolderName.Trim('\')
-    $ModuleName = $FolderName.Split('\arm\')[-1].Replace('\', '_')
+    $FolderPath = Split-Path -Path $Path -Parent
+    $ModuleName = $FolderPath.Replace('/','\').Split('\arm\')[-1].Replace('\', '.').ToLower()
     return $ModuleName
 }
 
@@ -38,12 +37,10 @@ function Get-ModuleVersion {
         [string]
         $Path
     )
-    $FolderName = $Path.Replace('deploy.bicep', '')
-    $FolderName = $FolderName.Trim('\')
-    $VersionFilePath = Join-Path $FolderName 'version.json'
+    $FolderPath = Split-Path -Path $Path -Parent
+    $VersionFilePath = Join-Path $FolderPath 'version.json'
     if (-not (Test-Path -Path $VersionFilePath)) {
-        Write-Host "No version file found at: $VersionFilePath"
-        return
+        throw "No version file found at: $VersionFilePath"
     }
     $VersionFileContent = Get-Content $VersionFilePath | ConvertFrom-Json
     $Version = $VersionFileContent.version
@@ -54,19 +51,43 @@ function Get-ParentModule {
     param (
         [Parameter(ValueFromPipeline)]
         [string]
-        $Path
+        $Path,
+
+        [Parameter()]
+        [switch] $Recurse
+
     )
 
     $File = Get-Item -Path $Path
-    $File
     $ParentDeployFilePath = Join-Path $File.Directory.Parent.FullName 'deploy.bicep'
     if (-not (Test-Path -Path $ParentDeployFilePath)) {
         Write-Verbose "No parent deploy file found at: $ParentDeployFilePath"
         return
     }
     $ParentModules = @($ParentDeployFilePath)
-    $ParentModules += (Get-ParentModule -Path $ParentDeployFilePath)
+    if ($Recurse) {
+        $ParentModules += Get-ParentModule $ParentDeployFilePath -Recurse
+    }
     return $ParentModules
+}
+
+function Update-ChangedModule {
+    [CmdletBinding(SupportsShouldProcess)]
+    param (
+        [Parameter(ValueFromPipelineByPropertyName)]
+        [string] $Path = 'C:\Repos\Azure\ResourceModules\arm\Microsoft.Storage\storageAccounts\tableServices\tables\deploy.bicep',
+    )
+
+    $ModulePath = $Path
+    $ModuleName = Get-ModuleName -Path $ModulePath
+    $ModuleVersion = Get-ModuleVersion -Path $ModulePath -ErrorAction Stop
+    $SourceReadMeFileName = Get-ModuleReadme -Path $ModulePath
+    $DestinationReadmeFileName = "$ModuleName-$ModuleVersion.md"
+    if ($PSCmdlet.ShouldProcess("$ReadmeFileName", 'Copy')) {
+        $ReadmeFileName # Export/Copy it?
+    }
+    $ParentModules = Get-ParentModule $ModulePath
+    Update-ChangedModule $ParentModules
 }
 
 # Read version file
@@ -76,8 +97,9 @@ Get-ChangedModuleFiles | ForEach-Object {
 
     Write-Output "Version file found for module: $ModuleName - $ModuleVersion"
     $ParentModules = $_.FullName | Get-ParentModule
-    # Find parents | Update parents
-    # Construct name of readme file to publish
-    # Publish module | readme file
-}
+    Update-ChangedModule $ParentModules
 
+    # Publish module and/or readme file
+
+    # Gather info on modules to publish
+}
