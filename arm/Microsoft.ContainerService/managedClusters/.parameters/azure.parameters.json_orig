@@ -3,7 +3,7 @@
     "contentVersion": "1.0.0.0",
     "parameters": {
         "aksClusterName": {
-            "value": "lbs-az-aks-azure-01"
+            "value": "sxx-az-aks-azure"
         },
         "primaryAgentPoolProfile": {
             "value": [
@@ -19,7 +19,7 @@
                     "storageProfile": "ManagedDisks",
                     "type": "VirtualMachineScaleSets",
                     "mode": "System",
-                    "vnetSubnetID": "/subscriptions/31c86c1e-ba37-47c6-b4ea-a84ab40d4445/resourceGroups/DRTestPrimary/providers/Microsoft.Network/virtualNetworks/vnetprimary/subnets/subnet01",
+                    "vnetSubnetID": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/virtualNetworks/adp-sxx-az-vnet-x-aks/subnets/Primary",
                     "serviceCidr": "",
                     "maxPods": 30,
                     "availabilityZones": [
@@ -57,7 +57,7 @@
                         "maxPods": 30,
                         "storageProfile": "ManagedDisks",
                         "mode": "User",
-                        "vnetSubnetID": "/subscriptions/31c86c1e-ba37-47c6-b4ea-a84ab40d4445/resourceGroups/DRTestPrimary/providers/Microsoft.Network/virtualNetworks/vnetprimary/subnets/subnet02"
+                        "vnetSubnetID": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/virtualNetworks/adp-sxx-az-vnet-x-aks/subnets/Secondary"
                     }
                 },
                 {
@@ -84,7 +84,7 @@
                         "maxPods": 30,
                         "storageProfile": "ManagedDisks",
                         "mode": "User",
-                        "vnetSubnetID": "/subscriptions/31c86c1e-ba37-47c6-b4ea-a84ab40d4445/resourceGroups/DRTestPrimary/providers/Microsoft.Network/virtualNetworks/vnetprimary/subnets/subnet03"
+                        "vnetSubnetID": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/virtualNetworks/adp-sxx-az-vnet-x-aks/subnets/Tertiary"
                     }
                 }
             ]
@@ -94,7 +94,7 @@
                 {
                     "roleDefinitionIdOrName": "Reader",
                     "principalIds": [
-                        "a00b0391-e760-4733-8905-36be89001b96"
+                        "cf33fea8-b30f-424f-ab73-c48d99e0b222"
                     ]
                 }
             ]
