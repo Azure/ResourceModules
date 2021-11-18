@@ -29,6 +29,7 @@ on:
   push:
     branches:
       - main
+      - users/erikag/child-aaswupdates
     paths:
       - '.github/actions/templates/**'
       - '.github/workflows/ms.automation.automationaccounts.yml'
