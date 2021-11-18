@@ -4,7 +4,7 @@ This module deploys an Agent Pool for a Container Service Managed Cluster
 
 ## Resource types
 
-| Resource Type | Api Version |
+| Resource Type | API Version |
 | :-- | :-- |
 | `Microsoft.ContainerService/managedClusters/agentPools` | 2021-05-01 |
 
