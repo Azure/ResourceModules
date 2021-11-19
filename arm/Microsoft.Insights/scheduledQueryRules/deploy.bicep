@@ -8,11 +8,25 @@ param location string = resourceGroup().location
 param alertDescription string = ''
 
 @description('Optional. Indicates whether this alert is enabled.')
+param enabled bool = true
+
+@description('Optional. Indicates the type of scheduled query rule.')
 @allowed([
-  'true'
-  'false'
+  'LogAlert'
+  'LogToMetric'
 ])
-param enabled string = 'true'
+param kind string = 'LogAlert'
+
+@description('Optional. The flag that indicates whether the alert should be automatically resolved or not. Relevant only for rules of the kind LogAlert.')
+param autoMitigate bool = true
+
+@description('Optional. If specified then overrides the query time range. Relevant only for rules of the kind LogAlert.')
+param queryTimeRange string = 'WindowSize*NumberOfEvaluationPeriods'
+
+@description('Optional. The flag which indicates whether the provided query should be validated or not. Relevant only for rules of the kind LogAlert.')
+param skipQueryValidation bool = false
+
+param targetResourceTypes array = []
 
 @description('Optional. Array of role assignment objects that contain the \'roleDefinitionIdOrName\' and \'principalId\' to define RBAC role assignments on this resource. In the roleDefinitionIdOrName attribute, you can provide either the display name of the role definition, or its fully qualified ID in the following format: \'/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11\'')
 param roleAssignments array = []
@@ -30,82 +44,11 @@ param workspaceResourceId string
 ])
 param severity int = 3
 
-@description('Optional. How often the metric alert is evaluated (in minutes).')
-@allowed([
-  5
-  10
-  15
-  30
-  45
-  60
-  120
-  180
-  240
-  300
-  360
-  1440
-])
-param evaluationFrequency int = 5
+@description('Optional. How often the scheduled query rule is evaluated represented in ISO 8601 duration format. Relevant and required only for rules of the kind LogAlert.')
+param evaluationFrequency string = ''
 
-@description('Optional. The period of time (in minutes) that is used to monitor alert activity based on the threshold.')
-@allowed([
-  5
-  10
-  15
-  30
-  45
-  60
-  120
-  180
-  240
-  300
-  360
-  1440
-  2880
-])
-param windowSize int = 60
-
-@description('Optional. The list of resource id\'s referenced in the query.')
-param authorizedResources array = []
-
-@description('Optional. The query to execute')
-param query string = ''
-
-@description('Optional. Operator of threshold breaches to trigger the alert.')
-@allowed([
-  'GreaterThan'
-  'Equal'
-  'LessThan'
-])
-param metricResultCountThresholdOperator string = 'GreaterThan'
-
-@description('Optional. Operator for metric or number of result evaluation.')
-@minValue(0)
-@maxValue(10000)
-param metricResultCountThreshold int = 0
-
-@description('Optional. Variable (column) on which the query result will be grouped and then evaluated for trigger condition. Use comma to specify more than one. Leave empty to use "Number of results" type of alert logic')
-param metricColumn string = ''
-
-@description('Optional. If `metricColumn` is specified, operator for the breaches count evaluation to trigger the alert. Not used if using result count trigger.')
-@allowed([
-  'GreaterThan'
-  'Equal'
-  'LessThan'
-])
-param breachesThresholdOperator string = 'GreaterThan'
-
-@description('Optional. Type of aggregation of threadshold violation')
-@allowed([
-  'Consecutive'
-  'Total'
-])
-param breachesTriggerType string = 'Consecutive'
-
-@description('Optional. Number of threadshold violation to trigger the alert')
-@minValue(0)
-@maxValue(10000)
-param breachesThreshold int = 3
+@description('Optional. The period of time (in ISO 8601 duration format) on which the Alert query will be executed (bin size). Relevant and required only for rules of the kind LogAlert.')
+param windowSize string = ''
 
 @description('Optional. The list of actions to take when alert triggers.')
 param actions array = []
@@ -113,15 +56,8 @@ param actions array = []
 @description('Optional. The list of action alert creterias.')
 param criterias array = []
 
-@description('Optional. Type of the alert criteria.')
-@allowed([
-  'AlertingAction'
-  'LogToMetricAction'
-])
-param odataType string = 'AlertingAction'
-
-@description('Optional. Suppress Alert for (in minutes).')
-param suppressForMinutes int = 0
+@description('Optional. Mute actions for the chosen period of time (in ISO 8601 duration format) after the alert is fired. Relevant only for rules of the kind LogAlert.')
+param suppressForMinutes string = ''
 
 @description('Optional. Tags of the resource.')
 param tags object = {}
@@ -129,51 +65,40 @@ param tags object = {}
 @description('Optional. Customer Usage Attribution id (GUID). This GUID must be previously registered')
 param cuaId string = ''
 
-var metricTrigger = {
-  metricColumn: metricColumn
-  metricTriggerType: breachesTriggerType
-  threshold: breachesThreshold
-  thresholdOperator: breachesThresholdOperator
-}
-
 module pid_cuaId '.bicep/nested_cuaId.bicep' = if (!empty(cuaId)) {
   name: 'pid-${cuaId}'
   params: {}
 }
 
-resource queryAlert 'microsoft.insights/scheduledQueryRules@2018-04-16' = {
+resource queryAlert 'Microsoft.Insights/scheduledQueryRules@2021-02-01-preview' = {
   name: alertName
   location: location
   tags: tags
+  kind: kind
   properties: {
+    actions: {
+      actionGroups: actions
+      customProperties: {}
+    }
+    autoMitigate: contains(kind, 'LogAlert') ? autoMitigate : null
+    criteria: criterias
+
     description: alertDescription
+    displayName: alertName
     enabled: enabled
-    source: {
-      query: query
-      authorizedResources: authorizedResources
-      dataSourceId: workspaceResourceId
-      queryType: 'ResultCount'
-    }
-    schedule: {
-      frequencyInMinutes: evaluationFrequency
-      timeWindowInMinutes: windowSize
-    }
-    action: {
-      severity: severity
-      aznsAction: {
-        actionGroup: actions
-      }
-      throttlingInMin: suppressForMinutes
-      trigger: {
-        thresholdOperator: metricResultCountThresholdOperator
-        threshold: metricResultCountThreshold
-        metricTrigger: (empty(metricColumn) ? null : metricTrigger)
-      }
-      criteria: criterias
-      'odata.type': 'Microsoft.WindowsAzure.Management.Monitoring.Alerts.Models.Microsoft.AppInsights.Nexus.DataContracts.Resources.ScheduledQueryRules.${odataType}'
-    }
+    evaluationFrequency: contains(kind, 'LogAlert') ? evaluationFrequency : ''
+    muteActionsDuration: contains(kind, 'LogAlert') ? suppressForMinutes : ''
+    overrideQueryTimeRange: contains(kind, 'LogAlert') ? queryTimeRange: ''
+    scopes: [
+      workspaceResourceId
+    ]
+    severity: contains(kind, 'LogAlert') ? severity : null
+    skipQueryValidation: contains(kind, 'LogAlert') ? skipQueryValidation : null
+    targetResourceTypes: contains(kind, 'LogAlert') ? targetResourceTypes : null
+    windowSize: contains(kind, 'LogAlert') ? windowSize : ''
   }
 }
+
 
 module queryAlert_rbac '.bicep/nested_rbac.bicep' = [for (roleAssignment, index) in roleAssignments: {
   name: '${deployment().name}-rbac-${index}'
