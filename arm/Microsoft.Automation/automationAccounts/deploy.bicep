@@ -220,15 +220,15 @@ module automationAccount_softwareUpdateConfigurations './softwareUpdateConfigura
     azureVirtualMachines: contains(softwareUpdateConfiguration, 'azureVirtualMachines') ? !empty(softwareUpdateConfiguration.azureVirtualMachines) ? softwareUpdateConfiguration.azureVirtualMachines : [] : []
     excludeUpdates: contains(softwareUpdateConfiguration, 'excludeUpdates') ? !empty(softwareUpdateConfiguration.excludeUpdates) ? softwareUpdateConfiguration.excludeUpdates : [] : []
     expiryTime: contains(softwareUpdateConfiguration, 'expiryTime') ? !empty(softwareUpdateConfiguration.expiryTime) ? softwareUpdateConfiguration.expiryTime : '' : ''
-    expiryTimeOffsetMinutes: contains(softwareUpdateConfiguration, 'expiryTimeOffsetMinutes') ? !empty(softwareUpdateConfiguration.expiryTimeOffsetMinute) ? softwareUpdateConfiguration.expiryTimeOffsetMinute : 0 : 0
+    expiryTimeOffsetMinutes: contains(softwareUpdateConfiguration, 'expiryTimeOffsetMinutes') ? softwareUpdateConfiguration.expiryTimeOffsetMinute : 0
     includeUpdates: contains(softwareUpdateConfiguration, 'includeUpdates') ? !empty(softwareUpdateConfiguration.includeUpdates) ? softwareUpdateConfiguration.includeUpdates : [] : []
-    interval: contains(softwareUpdateConfiguration, 'interval') ? !empty(softwareUpdateConfiguration.interval) ? softwareUpdateConfiguration.interval : 1 : 1
+    interval: contains(softwareUpdateConfiguration, 'interval') ? softwareUpdateConfiguration.interval : 1
     isEnabled: contains(softwareUpdateConfiguration, 'isEnabled') ? !empty(softwareUpdateConfiguration.isEnabled) ? softwareUpdateConfiguration.isEnabled : true : true
     maintenanceWindow: contains(softwareUpdateConfiguration, 'maintenanceWindow') ? !empty(softwareUpdateConfiguration.maintenanceWindow) ? softwareUpdateConfiguration.maintenanceWindow : 'PT2H' : 'PT2H'
     monthDays: contains(softwareUpdateConfiguration, 'monthDays') ? !empty(softwareUpdateConfiguration.monthDays) ? softwareUpdateConfiguration.monthDays : [] : []
     monthlyOccurrences: contains(softwareUpdateConfiguration, 'monthlyOccurrences') ? !empty(softwareUpdateConfiguration.monthlyOccurrences) ? softwareUpdateConfiguration.monthlyOccurrences : [] : []
     nextRun: contains(softwareUpdateConfiguration, 'nextRun') ? !empty(softwareUpdateConfiguration.nextRun) ? softwareUpdateConfiguration.nextRun : '' :  ''
-    nextRunOffsetMinutes: contains(softwareUpdateConfiguration, 'nextRunOffsetMinutes') ? !empty(softwareUpdateConfiguration.nextRunOffsetMinutes) ? softwareUpdateConfiguration.nextRunOffsetMinutes : 0 : 0
+    nextRunOffsetMinutes: contains(softwareUpdateConfiguration, 'nextRunOffsetMinutes') ? softwareUpdateConfiguration.nextRunOffsetMinutes : 0
     nonAzureComputerNames: contains(softwareUpdateConfiguration, 'nonAzureComputerNames') ? !empty(softwareUpdateConfiguration.nonAzureComputerNames) ? softwareUpdateConfiguration.nonAzureComputerNames : [] : []
     nonAzureQueries: contains(softwareUpdateConfiguration, 'nonAzureQueries') ? !empty(softwareUpdateConfiguration.nonAzureQueries) ? softwareUpdateConfiguration.nonAzureQueries : [] : []
     postTaskParameters: contains(softwareUpdateConfiguration, 'postTaskParameters') ? !empty(softwareUpdateConfiguration.postTaskParameters) ? softwareUpdateConfiguration.postTaskParameters : {} : {}
