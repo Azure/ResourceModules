@@ -357,11 +357,11 @@ module products_resource 'products/deploy.bicep' = [for (product, index) in prod
   name: '${uniqueString(deployment().name, location)}-product-${index}'
   params: {
     apiManagementServiceName: apiManagementService.name
+    apis: contains(product, 'apis') ? product.apis : []
     approvalRequired: contains(product, 'approvalRequired') ? product.approvalRequired : false
+    groups: contains(product, 'groups') ? product.groups : []
     name: product.name
-    productApis: contains(product, 'productApis') ? product.productApis : []
     productDescription: contains(product, 'productDescription') ? product.productDescription : ''
-    productGroups: contains(product, 'productGroups') ? product.productGroups : []
     state: contains(product, 'state') ? product.state : 'published'
     subscriptionRequired: contains(product, 'subscriptionRequired') ? product.subscriptionRequired : false
     subscriptionsLimit: contains(product, 'subscriptionsLimit') ? product.subscriptionsLimit : 1
