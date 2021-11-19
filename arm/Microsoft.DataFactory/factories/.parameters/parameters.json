@@ -11,6 +11,13 @@
         "gitConfigureLater": {
             "value": true
         },
+        "typeProperties": {
+            "value": {
+                "computeProperties": {
+                    "location": "AutoResolve"
+                }
+            }
+        },
         "roleAssignments": {
             "value": [
                 {

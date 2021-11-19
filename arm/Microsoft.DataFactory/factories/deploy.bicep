@@ -1,5 +1,8 @@
 @description('Required. The name of the Azure Factory to create')
-param dataFactoryName string
+param name string
+
+@description('Required. Managed integration runtime type properties.')
+param typeProperties object
 
 @description('Optional. Location for all Resources.')
 param location string = resourceGroup().location
@@ -113,7 +116,7 @@ module pid_cuaId '.bicep/nested_cuaId.bicep' = if (!empty(cuaId)) {
 }
 
 resource dataFactory 'Microsoft.DataFactory/factories@2018-06-01' = {
-  name: dataFactoryName
+  name: name
   location: location
   tags: tags
   identity: {
@@ -125,30 +128,19 @@ resource dataFactory 'Microsoft.DataFactory/factories@2018-06-01' = {
   }
 }
 
-resource dataFactory_managedVirtualNetwork 'Microsoft.DataFactory/factories/managedVirtualNetworks@2018-06-01' = {
-  parent: dataFactory
-  name: 'default'
-  properties: {}
+module dataFactory_managedVirtualNetwork 'managedVirtualNetwork/deploy.bicep' = {
+  name: '${uniqueString(deployment().name, location)}-ManagedVirtualNetwork'
+  params: {
+    dataFactoryName: dataFactory.name
+  }
 }
 
-resource dataFactory_integrationRuntime 'Microsoft.DataFactory/factories/integrationRuntimes@2018-06-01' = {
-  parent: dataFactory
-  name: 'AutoResolveIntegrationRuntime'
-  properties: {
-    type: 'Managed'
-    managedVirtualNetwork: {
-      referenceName: 'default'
-      type: 'ManagedVirtualNetworkReference'
-    }
-    typeProperties: {
-      computeProperties: {
-        location: 'AutoResolve'
-      }
-    }
+module dataFactory_integrationRuntime 'integrationRuntime/deploy.bicep' = {
+  name: '${uniqueString(deployment().name, location)}-IntegrationRuntime'
+  params: {
+    dataFactoryName: dataFactory.name
+    typeProperties: typeProperties
   }
-  dependsOn: [
-    dataFactory_managedVirtualNetwork
-  ]
 }
 
 resource dataFactory_lock 'Microsoft.Authorization/locks@2016-09-01' = if (lock != 'NotSpecified') {
