@@ -76,7 +76,7 @@ First things first, we would work towards the deployment of our environments in 
 
 <img src="media/deploymentFlow.png" alt="Deployment flow" height="150">
 
-The **Develop modules** phase is the phase where you're supposed to set up your modules and validate that they work. In case of _CARML_ this means we have a pipeline for each module that, with one or multiple test-parameter files, runs static as well as validation & deployment tests on its template. Once if all tests pass we can be certain no bugs were introduced (in case the template was altered) and all features work as intended.
+In the **Develop modules** phase you add/implement/update your modules and validate them. In case of _CARML_ this means we have a pipeline for each module that, with one or multiple test-parameter files, runs static, validation & deployment tests on its template and proof its correctness.
 
 The next phase, **Publish modules**, will take the tested and approved modules and publish them to a target location of your choice (for example _[template specs](https://docs.microsoft.com/en-us/azure/azure-resource-manager/templates/template-specs?tabs=azure-powershell)_ or the _[bicep registry](https://docs.microsoft.com/en-gb/azure/azure-resource-manager/bicep/private-module-registry)_). The publishing should publish at least the tested module template itself.
 The target location should support versioning so that you only always publish new versions.
