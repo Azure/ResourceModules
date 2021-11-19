@@ -70,7 +70,7 @@ Then we'd only need to create a parameter file for the orchestration-template an
 
 ### What is the intended deployment flow?
 
-In this section we'll take a deeper look into the fundamental flow of the platform.
+In this section we'll take a deeper look into the fundamental flow from source modules to target environments.
 
 First things first, we would work towards the deployment of our environments in 3 phases:
 
