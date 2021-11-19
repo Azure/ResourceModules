@@ -88,7 +88,7 @@ By introducing versions to you modules, the referencing templates can and should
 
 The last phase then is **Consume modules**. As mentioned previously, this is the phase where we orchestrate the deployment of for example services, workloads or entire landing zones. Up to this point, all deployments were only done for test reasons and should be deleted after a successful run. The deployments we perform now are instead 'sticky' deployments to for example a integration or production environment. By referencing and orchestrating the templates published in the previous step we can be sure that all templates work and we only need to provide them with the correctly configured parameters and orchestrate their deployment in the correct order.
 
-The following image shows a more detailed version of the end-2-end approach:
+The diagram provides a high level view on how the different phases are interconnected:
 
 <img src="media/completeFlow.png" alt="Complete deployment flow" height="500">
 
