@@ -31,7 +31,7 @@
         "aksClusterNetworkPlugin": {
             "value": "azure"
         },
-        "additionalAgentPools": {
+        "agentPools": {
             "value": [
                 {
                     "name": "userpool1",
