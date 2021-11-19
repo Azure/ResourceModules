@@ -109,7 +109,7 @@ Since also dependency resources are in turn subject to dependencies with each ot
   2. Log analytics workspace: This resource is leveraged by all resources supporting diagnostic settings on LAW.
   3. Storage account: This resource is leveraged by all resources supporting diagnostic settings on a storage account.
       >**Note**: This resource has a global scope name.
-  4. Event hub namespace: This resource is leveraged by the [event hub] resource.
+  4. Event hub namespace and Event hub: This resource is leveraged by all resources supporting diagnostic settings on an event hub.
       >**Note**: This resource has a global scope name.
   5. Route table: This resource is leveraged by the virtual network subnet dedicated to test [SQL managed instance].
   6. Network watcher: This resource is leveraged by the [NSG flow logs] resource.
@@ -121,31 +121,26 @@ Since also dependency resources are in turn subject to dependencies with each ot
 
 **Third level resources**: This group of resources has a dependency on one or more resources in the group above. Resources in this group can be deployed in parallel.
 
-  1. Event hub: This resource is depending on the [event hub namespace] deployed above and leveraged by all resources supporting diagnostic settings on an event hub.
-  2. Role assignment: This resource assigns the '_Contributor_' role on the subscription to the [user assigned identity] deployed as part of the group above. This is needed by the [image template] deployment.
-  3. Shared image definition: This resource is depending on the [shared image gallery] deployed above and leveraged by the [image template] resource.
-
-**Fourth level resources**: All resources in this group support monitoring. Hence they have a dependency on the [storage account], [log analytics workspace] and [event hub] deployed in the groups above. Resources in this group can be deployed in parallel.
-
-  1. Key vault: This resource is leveraged by all resources requiring access to a key vault key, secret and/or certificate, i.e. [application gateway], [azure NetApp file], [azure SQL server], [disk encryption set], [machine learning service], [private endpoint], [SQL managed instance], [virtual machine], [virtual machine scale set], [virtual network gateway connection].
+  1. AVD host pool: This resource supports monitoring, hence it has a dependency on the [storage account], [log analytics workspace] and [event hub] deployed in the group above. This resource is leveraged by the [AVD application group] resource.
+  2. Key vault: This resource supports monitoring, hence it has a dependency on the [storage account], [log analytics workspace] and [event hub] deployed in the group above. This resource is leveraged by all resources requiring access to a key vault key, secret and/or certificate, i.e. [application gateway], [azure NetApp file], [azure SQL server], [disk encryption set], [machine learning service], [private endpoint], [SQL managed instance], [virtual machine], [virtual machine scale set], [virtual network gateway connection].
       >**Note**: This resource has a global scope name.
-  2. Network Security Groups: This resource is leveraged by different virtual network subnets. Multiple instances are deployed:
+  3. Network Security Groups: This resource supports monitoring, hence it has a dependency on the [storage account], [log analytics workspace] and [event hub] deployed in the group above. This resource is leveraged by different virtual network subnets. Multiple instances are deployed:
       - '_adp-sxx-az-nsg-x-apgw_': NSG with required network security rules to be leveraged by the [application gateway] subnet.
       - '_adp-sxx-az-nsg-x-ase_': NSG with required network security rules to be leveraged by the [app service environment] subnet.
       - '_adp-sxx-az-nsg-x-bastion_': NSG with required network security rules to be leveraged by the [bastion host] subnet.
       - '_adp-sxx-az-nsg-x-sqlmi_': NSG with required network security rules to be leveraged by the [sql managed instance] subnet.
       - '_adp-sxx-az-nsg-x-001_': default NSG leveraged by all other subnets.
-  3. Public IP addresses: Multiple instances are deployed:
+  4. Recovery services vault: This resource supports monitoring, hence it has a dependency on the [storage account], [log analytics workspace] and [event hub] deployed in the group above. This resource is leveraged by the [virtual machine] resource when backup is enabled.
+  5. Application insight: This resource supports monitoring, hence it has a dependency on the [storage account], [log analytics workspace] and [event hub] deployed in the group above. This resource is leveraged by the [machine learning service] resource.
+  6. Automation account: This resource supports monitoring, hence it has a dependency on the [storage account], [log analytics workspace] and [event hub] deployed in the group above. This resource is leveraged by the [log analytics workspace] resource.
+  7. Public IP addresses: This resource supports monitoring, hence it has a dependency on the [storage account], [log analytics workspace] and [event hub] deployed in the group above. Multiple instances are deployed:
       - '_adp-sxx-az-pip-x-apgw_': Leveraged by the [application gateway] resource.
       - '_adp-sxx-az-pip-x-bas_': Leveraged by the [bastion host] resource.
       - '_adp-sxx-az-pip-x-lb_': Leveraged by the [load balancer] resource.
-  4. API management: This resource is leveraged by all [API management services].
-      >**Note**: This resource has a global scope name.
-  5. Application insight: This resource is leveraged by the [machine learning service] resource.
-  6. AVD host pool: This resource is leveraged by the [AVD application group] resource.
-  7. Recovery services vault: This resource is leveraged by the [virtual machine] resource when backup is enabled.
+  8. Role assignment: This resource assigns the '_Contributor_' role on the subscription to the [user assigned identity] deployed as part of the group above. This is needed by the [image template] deployment.
+  9. Shared image definition: This resource is depending on the [shared image gallery] deployed above and leveraged by the [image template] resource.
 
-**Fifth level resources**: This group of resources has a dependency on one or more resources in the groups above. Resources in this group can be deployed in parallel.
+**Fourth level resources**: This group of resources has a dependency on one or more resources in the groups above. Resources in this group can be deployed in parallel.
 
   1. Virtual Networks: This resource is depending on the route table and network security groups deployed above. Multiple instances are deployed:
       - '_adp-sxx-az-vnet-x-peer01_': Leveraged by the [virtual network peering] resource.
@@ -156,7 +151,7 @@ Since also dependency resources are in turn subject to dependencies with each ot
       - '_adp-sxx-az-vnet-x-001_': Hosting multiple subnets to be leveraged by [virtual machine], [virtual machine scale set], [service bus], [azure NetApp files], [azure bastion], [private endpoints], [app service environment] and [application gateway] resources.
   2. AVD application group: This resource is leveraged by the [AVD workspace] resource.
 
-**Sixth level resources**: This group of resources has a dependency on one or more resources in the groups above.
+**Fifth level resources**: This group of resources has a dependency on one or more resources in the groups above.
 
   1. Virtual Machine: This resource is depending on the [virtual networks] and [key vault] deployed above. This resource is leveraged by the [automanage] resource.
   2. Private DNS zone: This resource is depending on the [virtual networks] deployed above. This resource is leveraged by the [private endpoint] resource.
