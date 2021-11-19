@@ -11,6 +11,7 @@ Note, it will not elaborate every aspect of the subject but is intended to help 
   - [How do we define a module?](#how-do-we-define-a-module)
   - [What is the intended deployment model?](#what-is-the-intended-the-deployment-model)
   - [What is the intended deployment flow?](#what-is-the-intended-deployment-flow)
+  - [Why use versioned modules?](#why-use-versioned-modules)
 - [Where does this platform fit in?](#where-does-this-platform-fit-in)
 ---
 
@@ -80,8 +81,6 @@ In the **Develop modules** phase you add/implement/update your modules and valid
 
 The next phase, **Publish modules**, will take the tested and approved modules and publish them to a target location of your choice (for example _[template specs](https://docs.microsoft.com/en-us/azure/azure-resource-manager/templates/template-specs?tabs=azure-powershell)_ or the _[bicep registry](https://docs.microsoft.com/en-gb/azure/azure-resource-manager/bicep/private-module-registry)_). The publishing should publish at least the tested module template itself.
 The target location should support versioning so that you only always publish new versions.
-This may bring up the question _Why_ you should publish your templates before you use them. Afterall, you could just reference the modules in the source repository as is to deploy you environments. This however has one major drawback: If your deployments rely on what you have in your source repository then they 'by definition' always use the latest code. This means, as soon as somebody introduces a breaking change to one of these templates, all your orchestrated and referencing deployments will be blocked until you update them to the latest version too.
-By introducing versions to you modules, the referencing templates can and should specify a specific module versions they want to use and deploy their environment with those. If we now have the case that a breaking change is introduced, a new version is published, but no deployment is affected because they still reference the original. Instead they have to make the deliberate decision to upgrade the module references to newer versions.
 
 In the final phase we **Consume modules** and orchestrate them to deploy services, workloads or entire landing zones. Note that all deployments up to this phase only identified as test deployments and should be deleted after their deployment concluded. In contrast, the deployments we perform now are supposed to be 'sticky' and occur on an integration/production environment. We now reference the validated & published modules and only need to provide them with the correctly configured parameters and orchestrate their deployment in the correct order.
 
@@ -102,6 +101,10 @@ No matter the platform we can differentiate two different deployment approaches:
  - **_Template-orchestration_**: These types of deployments reference individual modules from a 'main/environment' bicep/ARM template and use its capabilities to pass parameters & orchestrate the deployments. By default, deployments are deployed in parallel by the Azure Resource Manager while accounting for all dependencies defined. Furthermore, the deploying pipeline only needs one deployment job that triggers the template's deployment.
  - **_Pipeline-orchestration_**: This approach uses the platform specific pipeline capabilities (for example pipeline jobs) to trigger the deployment of individual modules, where each job deploys one module. By defining dependencies in between jobs you can make sure your resources are deployed in order. Parallelization is achieved by using a pool of pipeline agents that execute the jobs, while accounting for all dependencies defined.
 Both the _template-orchestration_ as well as _pipeline-orchestration_ may run a validation and subsequent deployment on the bottom-right _Azure_ subscription. This subscription, in turn, should be the subscription where you want to host your environment. However, you can extend the concept and for example deploy the environment first to an integration and then a production subscription.
+
+### Why use versioned modules?
+Excellent question as after all, you could just reference the modules in the source repository as is to deploy you environments. This however has one major drawback: If your deployments rely on what you have in your source repository then they 'by definition' always use the latest code. This means, as soon as somebody introduces a breaking change to one of these templates, all your orchestrated and referencing deployments will be blocked until you update them to the latest version too.
+By introducing versions to your modules, the consuming orchestration can and should specify a each module version it wants to use and deploy its environment with them. If we now have the case that a breaking change is introduced, a new version is published, but no deployment is affected because they still reference the original. Instead they have to make the deliberate decision to upgrade the module references to newer versions.
 
 ## Where does this platform fit in?
 
