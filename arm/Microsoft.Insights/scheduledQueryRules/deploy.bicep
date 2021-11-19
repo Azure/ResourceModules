@@ -57,7 +57,7 @@ param actions array = []
 @description('Optional. The rule criteria that defines the conditions of the scheduled query rule.')
 param criterias object = {}
 
-@description('Optional. Mute actions for the chosen period of time (in ISO 8601 duration format) after the alert is fired. Relevant only for rules of the kind LogAlert.')
+@description('Optional. Mute actions for the chosen period of time (in ISO 8601 duration format) after the alert is fired. If set, autoMitigate must be disabled.Relevant only for rules of the kind LogAlert.')
 param suppressForMinutes string = ''
 
 @description('Optional. Tags of the resource.')

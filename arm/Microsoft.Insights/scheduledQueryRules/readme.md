@@ -28,7 +28,7 @@ This module deploys an Alert based on metrics
 | `scopes` | array | `[]` |  | Required. The list of resource IDs that this scheduled query rule is scoped to. |
 | `severity` | int | `3` | `[0, 1, 2, 3, 4]` | Optional. Severity of the alert. Should be an integer between [0-4]. Value of 0 is severest. Relevant and required only for rules of the kind LogAlert. |
 | `skipQueryValidation` | bool |  |  | Optional. The flag which indicates whether the provided query should be validated or not. Relevant only for rules of the kind LogAlert. |
-| `suppressForMinutes` | string |  |  | Optional. Mute actions for the chosen period of time (in ISO 8601 duration format) after the alert is fired. Relevant only for rules of the kind LogAlert. |
+| `suppressForMinutes` | string |  |  | Optional. Mute actions for the chosen period of time (in ISO 8601 duration format) after the alert is fired. If set, autoMitigate must be disabled.Relevant only for rules of the kind LogAlert. |
 | `tags` | object | `{object}` |  | Optional. Tags of the resource. |
 | `targetResourceTypes` | array | `[]` |  | Optional. List of resource type of the target resource(s) on which the alert is created/updated. For example if the scope is a resource group and targetResourceTypes is Microsoft.Compute/virtualMachines, then a different alert will be fired for each virtual machine in the resource group which meet the alert criteria. Relevant only for rules of the kind LogAlert |
 | `windowSize` | string |  |  | Optional. The period of time (in ISO 8601 duration format) on which the Alert query will be executed (bin size). Relevant and required only for rules of the kind LogAlert. |

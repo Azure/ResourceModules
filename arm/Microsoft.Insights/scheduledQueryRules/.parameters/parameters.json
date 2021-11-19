@@ -25,6 +25,9 @@
         "queryTimeRange": {
             "value": "PT5M"
         },
+        "autoMitigate": {
+            "value": false
+        },
         "criterias": {
             "value": {
                 "allOf": [
