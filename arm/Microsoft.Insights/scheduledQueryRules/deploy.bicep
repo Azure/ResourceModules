@@ -20,23 +20,7 @@ param kind string = 'LogAlert'
 @description('Optional. The flag that indicates whether the alert should be automatically resolved or not. Relevant only for rules of the kind LogAlert.')
 param autoMitigate bool = true
 
-@description('Optional. If specified then overrides the query time range. Relevant only for rules of the kind LogAlert.')
-@allowed([
-  ''
-  '5'
-  '10'
-  '15'
-  '30'
-  '45'
-  '60'
-  '120'
-  '180'
-  '240'
-  '300'
-  '360'
-  '1440'
-  '2880'
-  ])
+@description('Optional. If specified (in ISO 8601 duration format) then overrides the query time range. Relevant only for rules of the kind LogAlert.')
 param queryTimeRange string = ''
 
 @description('Optional. The flag which indicates whether the provided query should be validated or not. Relevant only for rules of the kind LogAlert.')
