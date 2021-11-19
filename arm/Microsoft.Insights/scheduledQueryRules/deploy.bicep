@@ -53,8 +53,8 @@ param windowSize string = ''
 @description('Optional. The list of actions to take when alert triggers.')
 param actions array = []
 
-@description('Optional. The list of action alert creterias.')
-param criterias array = []
+@description('Optional. The rule criteria that defines the conditions of the scheduled query rule.')
+param criterias object = {}
 
 @description('Optional. Mute actions for the chosen period of time (in ISO 8601 duration format) after the alert is fired. Relevant only for rules of the kind LogAlert.')
 param suppressForMinutes string = ''
