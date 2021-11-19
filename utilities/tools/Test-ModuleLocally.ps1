@@ -199,7 +199,7 @@ function Test-ModuleLocally {
                     }
                     # Append to Function Input the required parameters for Deployment
                     $functionInput += @{
-                        moduleName       = "l-$($ModuleName.Split('\')[-1])"
+                        moduleName       = 'l-{0}' -f $ModuleName.Replace('\', '/').Split('/')[-1]
                         removeDeployment = [System.Convert]::ToBoolean($ValidateOrDeployParameters.RemoveDeployment)
                         retryLimit       = 1
                     }
