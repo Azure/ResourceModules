@@ -107,7 +107,7 @@ Both the _template-orchestration_ as well as _pipeline-orchestration_ may run a 
 
 The _CARML_ platform hosts a collection of resource modules with the intend to cover as many Azure resources and their child-resources as possible.
 
-As such, users can re-use the modules as-is, built on-top of them to orchestrate their deployments and in turn their infrastructure (for services, workloads or landing zones).
+As such, users can use the modules as they are, alter them and or use them to deploy their environments.
 
 To ensure the modules are valid and can perform the intended deployments, the repository comes with a validation & test pipeline for each module. If successful it will also publish them in one or multiple target locations.
 
