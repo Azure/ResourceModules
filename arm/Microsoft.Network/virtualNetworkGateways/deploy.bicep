@@ -170,6 +170,8 @@ var zoneRedundantSkus = [
   'VpnGw1AZ'
   'VpnGw2AZ'
   'VpnGw3AZ'
+  'VpnGw4AZ'
+  'VpnGw5AZ'
   'ErGw1AZ'
   'ErGw2AZ'
   'ErGw3AZ'
@@ -182,6 +184,9 @@ var activeActive_var = (virtualNetworkGatewayType == 'ExpressRoute') ? bool('fal
 // Public IP variables
 var gatewayPipName1 = (length(gatewayPipName) == 0) ? '${virtualNetworkGatewayName}-pip1' : gatewayPipName[0]
 var gatewayPipName2 = activeActive_var ? ((length(gatewayPipName) == 1) ? '${virtualNetworkGatewayName}-pip2' : gatewayPipName[1]) : ''
+var varPublicIpZones = (empty(publicIpZones)) ? [
+  '1'
+] : publicIpZones
 
 var gatewayMultiPipArray = [
   gatewayPipName1
@@ -288,7 +293,7 @@ resource virtualGatewayPublicIP 'Microsoft.Network/publicIPAddresses@2021-02-01'
     publicIPPrefix: !empty(publicIPPrefixId) ? publicIPPrefix : null
     dnsSettings: length(virtualGatewayPipName_var) == length(domainNameLabel) ? json('{"domainNameLabel": "${domainNameLabel[index]}"}') : null
   }
-  zones: contains(zoneRedundantSkus, virtualNetworkGatewaySku) ? publicIpZones : null
+  zones: contains(zoneRedundantSkus, virtualNetworkGatewaySku) ? varPublicIpZones : null
 }]
 
 @batchSize(1)
