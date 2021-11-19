@@ -1,6 +1,7 @@
 # Wiki content
 
 - [Home](./Home)
+- [Vision](./Vision.md)
 - [Getting Started](./GettingStarted)
 - [Modules](./Modules)
   - [Design](./ModulesDesign)

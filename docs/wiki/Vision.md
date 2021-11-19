@@ -6,12 +6,12 @@ Note, it will not elaborate every aspect of the subject but is intended to help 
 ---
 
 ### _Navigation_
-- [Infrastructure as Code (IaC)](#...)
-  - [What is IaC?](#...)
-  - [How do we define a module?](#...)
-  - [What is the intended deployment model?](#...)
-  - [What is the intended deployment flow?](#...)
-- [Where does this platform fit in?](#...)
+- [Infrastructure as Code (IaC)](#infrastructure-as-code-iac)
+  - [What is IaC?](#what-is-iac)
+  - [How do we define a module?](#how-do-we-define-a-module)
+  - [What is the intended deployment model?](#what-is-the-intended-the-deployment-model)
+  - [What is the intended deployment flow?](#what-is-the-intended-deployment-flow)
+- [Where does this platform fit in?](#where-does-this-platform-fit-in)
 ---
 
 ## Infrastructure as Code (IaC)

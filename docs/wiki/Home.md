@@ -6,6 +6,9 @@ This wiki describes the content of this repository, the modules, pipelines, poss
 
 ### _Navigation_
 
+- [Vision](./Vision.md)
+  - [Infrastructure as Code](./Vision.md#infrastructure-as-code-iac)
+  - [Where does this platform fit in?](./Vision.md#where-does-this-platform-fit-in)
 - [Getting Started](./GettingStarted)
   - [General prerequisites](./GettingStarted#General-prerequisites)
   - [Where to start](./GettingStarted#Where-to-start)
