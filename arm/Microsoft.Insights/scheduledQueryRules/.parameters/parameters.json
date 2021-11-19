@@ -24,7 +24,7 @@
         },
         "queryTimeRange": {
             "value": "PT25M"
-        }
+        },
         "criterias": {
             "value": {
                 "allOf": [
