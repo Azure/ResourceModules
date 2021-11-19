@@ -93,7 +93,7 @@ module netAppAccount_capacityPools 'capacityPools/deploy.bicep' = [for (capacity
     location: location
     size: capacityPool.size
     serviceLevel: contains(capacityPool, 'serviceLevel') ? capacityPool.serviceLevel : 'Standard'
-    qosType: contains(capacityPool, 'serviceLevel') ? capacityPool.qosType : 'Auto'
+    qosType: contains(capacityPool, 'qosType') ? capacityPool.qosType : 'Auto'
     volumes: contains(capacityPool, 'volumes') ? capacityPool.volumes : []
     coolAccess: contains(capacityPool, 'coolAccess') ? capacityPool.coolAccess : false
     roleAssignments: contains(capacityPool, 'roleAssignments') ? capacityPool.roleAssignments : []
