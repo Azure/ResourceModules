@@ -82,7 +82,7 @@ Then we'd only need to create a parameter file for the orchestration-template an
 
 In this section we'll take a deeper look into the fundamental flow of the platform.
 
-> **Note:** This repository focuses on the component _'Modules'_ of the previous section. Likewise, while we provide examples for the other components (and the subsequently described Phase `#3`) it is not in scope and described to present the bigger picture.
+> **Note:** This repository focuses on the component _'Modules'_ of the previous section. Likewise, while we provide examples for the other components (and the subsequently described `Phase #3`) it is not in scope and described to present the bigger picture.
 
 First things first, we would work towards the deployment of our environments in 3 phases:
 
