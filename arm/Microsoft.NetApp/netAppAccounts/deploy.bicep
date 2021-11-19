@@ -85,15 +85,24 @@ module netAppAccount_rbac '.bicep/nested_rbac.bicep' = [for (roleAssignment, ind
   }
 }]
 
-module netAppAccount_capacityPools '.bicep/nested_capacityPool.bicep' = [for (capacityPool, index) in capacityPools: {
+module netAppAccount_capacityPools 'capacityPools/deploy.bicep' = [for (capacityPool, index) in capacityPools: {
   name: '${uniqueString(deployment().name, location)}-ANFAccount-CapPool-${index}'
   params: {
-    capacityPoolObj: capacityPool
-    location: location
     netAppAccountName: netAppAccount.name
+    name: capacityPool.name
+    location: location
+    size: capacityPool.size
+    serviceLevel: contains(capacityPool, 'serviceLevel') ? capacityPool.serviceLevel : 'Standard'
+    qosType: contains(capacityPool, 'serviceLevel') ? capacityPool.qosType : 'Auto'
+    volumes: contains(capacityPool, 'volumes') ? capacityPool.volumes : []
+    coolAccess: contains(capacityPool, 'coolAccess') ? capacityPool.coolAccess : false
+    roleAssignments: contains(capacityPool, 'roleAssignments') ? capacityPool.roleAssignments : []
   }
 }]
 
+@description('The name of the NetApp account.')
 output netAppAccountName string = netAppAccount.name
+@description('The Resource Id of the NetApp account.')
 output netAppAccountResourceId string = netAppAccount.id
+@description('The name of the Resource Group the NetApp account was created in.')
 output netAppAccountResourceGroup string = resourceGroup().name

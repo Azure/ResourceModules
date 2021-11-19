@@ -23,15 +23,15 @@
         "capacityPools": {
             "value": [
                 {
-                    "poolName": "sxx-az-anfcp-x-001",
-                    "poolServiceLevel": "Premium",
-                    "poolSize": 4398046511104,
+                    "name": "sxx-az-anfcp-x-001",
+                    "serviceLevel": "Premium",
+                    "size": 4398046511104,
                     "volumes": [
                         {
                             // NFS3 VOL
-                            "poolVolumeName": "vol01-nfsv3",
+                            "name": "vol01-nfsv3",
                             "creationToken": "vol01-nfsv3",
-                            "poolVolumeQuota": 107374182400,
+                            "usageThreshold": 107374182400,
                             "protocolTypes": [
                                 "NFSv3"
                             ],
@@ -49,7 +49,7 @@
                             // NFS41 VOL
                             "poolVolumeName": "vol01-nfsv41",
                             "creationToken": "vol01-nfsv41",
-                            "poolVolumeQuota": 107374182400,
+                            "usageThreshold": 107374182400,
                             "protocolTypes": [
                                 "NFSv4.1"
                             ],
@@ -86,9 +86,9 @@
                     ]
                 },
                 {
-                    "poolName": "sxx-az-anfcp-x-002",
-                    "poolServiceLevel": "Premium",
-                    "poolSize": 4398046511104,
+                    "name": "sxx-az-anfcp-x-002",
+                    "serviceLevel": "Premium",
+                    "size": 4398046511104,
                     "volumes": [],
                     "roleAssignments": [
                         {
