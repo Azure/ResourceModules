@@ -49,9 +49,16 @@ Why this is useful we will explain in the next few sections.
 ### Deployment model
 
 When working with IaC we use 3 different components
-- **Deployed target environments** that can be individual services, compositions such as workloads, or entire landing zones and the like
-- **The orchestration deploying the modules** in the form of template/pipeline orchestration using for example GitHub actions or Azure DevOps pipelines
-- **The fundamental modules** that each deploy a service, i.e. are the building blocks to deploy environments
+
+<img src="media/deploymentModel.png" alt="Deployment model components" height="200" width="300">
+
+- The deployed **environments** that can be individual services, compositions such as workloads, or entire landing zones and the like
+- The **orchestration** deploying the modules in the form of template/pipeline orchestration using for example GitHub actions or Azure DevOps pipelines
+  - No matter the platform we can differentiate two different deployment approaches:
+    - _Template Orchestration_: These types of deployments reference individual modules from a 'main/environment' bicep/ARM template and use its capabilities to pass parameters & orchestrate the deployments. By default, deployments are deployed in parallel by the Azure Resource Manager while accounting for all dependencies defined. Furthermore, the deploying pipeline only needs one deployment job that triggers the template's deployment.
+    - _Pipeline Orchestration_: This approach uses the platform specific pipeline capabilities (for example pipeline jobs) to trigger the deployment of individual modules, where each job deploys one module. By defining dependencies in between jobs you can make sure your resources are deployed in order. Parallelization is achieved by using a pool of pipeline agents that execute the jobs, while accounting for all dependencies defined.
+- The fundamental **modules** that each deploy a service, i.e. are the building blocks to deploy environments
+
 
 To elaborate a bit further, let's take a look at the following example:
 
