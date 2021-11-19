@@ -96,7 +96,7 @@ The top row represents your orchestration environment (for example GitHub), the 
 
 From left to right you will find the phases we introduced before, _Develop modules_, _Publish modules_ & _consume modules_. However, in this illustration you can see how each interacts with the Azure environment.
 
-Starting with _develop modules_, the top left box shows the test workflows we have for each module, each validating, test-deploying and (if successful) publishing the module. The subscription on the bottom is intended to be a test/sandbox subscription without any link to production. Instead resources deployed here should be considered temporary and be removed after testing.
+Starting with _develop modules_, the top left box shows the test pipelines we have for each module, each validating, test-deploying and (if successful) publishing the module. The subscription on the bottom is intended to be a test/sandbox subscription without any link to production. Instead resources deployed here should be considered temporary and be removed after testing.
 
 As described earlier, if all tests for a module succeed, the pipeline will publish the modules to a given target location. In the center box you can see examples for _[template specs](https://docs.microsoft.com/en-us/azure/azure-resource-manager/templates/template-specs?tabs=azure-powershell)_, the _[bicep registry](https://docs.microsoft.com/en-gb/azure/azure-resource-manager/bicep/private-module-registry)_ as well as _[Azure DevOps artifacts](https://docs.microsoft.com/en-us/azure/devops/artifacts/concepts/feeds?view=azure-devops)_.
 
