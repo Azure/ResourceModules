@@ -49,20 +49,20 @@ resource product 'Microsoft.ApiManagement/service/products@2020-06-01-preview' =
 }
 
 module api 'apis/deploy.bicep' = [for api in apis: {
-  name: '${uniqueString(deployment().name, product.name)}-api-${api.name}'
+  name: '${uniqueString(deployment().name, name)}-api-${api.name}'
   params: {
     apiManagementServiceName: apiManagementServiceName
     name: api.name
-    productName: product.name
+    productName: name
   }
 }]
 
 module group 'groups/deploy.bicep' = [for group in groups: {
-  name: '${uniqueString(deployment().name, product.name)}-group-${group.name}'
+  name: '${uniqueString(deployment().name, name)}-group-${group.name}'
   params: {
     apiManagementServiceName: apiManagementServiceName
     name: group.name
-    productName: product.name
+    productName: name
   }
 }]
 
