@@ -6,17 +6,19 @@ Note, it will not elaborate every aspect of the subject but is intended to help 
 ---
 
 ### _Navigation_
-
-- [What is Infrastructure as Code?](#...)
-- [How do we define a module?](#...)
-- [How does the platform fit in?](#...)
-  - [Deployment model](#...)
-  - [Deployment flow](#...)
-
+- [Infrastructure as Code (IaC)](#...)
+  - [What is IaC?](#...)
+  - [How do we define a module?](#...)
+  - [What is the intended deployment model?](#...)
+  - [What is the intended deployment flow?](#...)
+- [Where does this platform fit in?](#...)
 ---
 
+## Infrastructure as Code (IaC)
 
-## What is Infrastructure as Code?
+In this first section we describe the fundamental ideas we are following in the design of this repository and subsequently describe where it fits inside this greater picture. This is important to understand, as ***not*** all concepts described below are in scope of this platform, but are described to set it in context as a building block of the sum of the concepts.
+
+### What is IaC?
 
 _'Infrastructure as Code (IaC)'_ describes a declarative approach towards resource deployment & management. Using configuration & template files that represent the deployed infrastructure has several benefits:
 - You have a local representation of your deployed infrastructure
@@ -26,7 +28,7 @@ _'Infrastructure as Code (IaC)'_ describes a declarative approach towards resour
 
 In context of bicep or ARM templates we usually leverage a combination of flexible templates that are deployed using different parameter files for different scenarios.
 
-## How do we define a module?
+### How do we define a module?
 
 In the context of _CARML_ we define a module as a reusable, template-based building block to deploy Azure resources. As such it is the foundation to apply _Infrastructure as Code_.
 
@@ -36,17 +38,8 @@ Each module is generalized for maximum flexibility and optimized for easy usabil
 
 Furthermore, each module comes with meaningful default values for it's optional parameters, a detailed documentation for its usage and one or multiple parameter files to proof is correctness.
 
-## How does the platform fit in?
 
-The _CARML_ platform hosts a collection of resource modules with the intend to cover as many Azure resources and their child-resources as possible.
-
-As such, users can re-use the modules as-is, built on top of them to orchestrate their deployments and in turn their infrastructure (for example workloads, construction sets or landing zones).
-
-To ensure the modules are valid and can perform the intended deployments, the repository also comes with several pipelines and perform various tests on the modules, and if successful publish them in one or multiple target locations.
-
-Why this is useful we will explain in the next few sections.
-
-### Deployment model
+### What is the intended the deployment model?
 
 <img src="media/deploymentModel.png" alt="Deployment model components" height="200">
 
@@ -78,11 +71,9 @@ Furthermore we'd then create an orchestration-template the deploys the above res
 
 Then we'd only need to create a parameter file for the orchestration-template and have the workflow deploy both in combination.
 
-### Deployment flow
+### What is the intended deployment flow?
 
 In this section we'll take a deeper look into the fundamental flow of the platform.
-
-> **Note:** This repository focuses on the component _'Modules'_ of the previous section. Likewise, while we provide examples for the other components (and the subsequently described `Phase #3`) it is not in scope and described to present the bigger picture.
 
 First things first, we would work towards the deployment of our environments in 3 phases:
 
@@ -110,3 +101,15 @@ Starting with _produce components_, the top left box shows the test workflows we
 As stated before, if all tests for a module succeed, the pipeline will publish the artifact to a given target location. In the center box you can see examples for _template specs_, the _bicep registry_ as well as _Azure DevOps artifacts_.
 
 Finally, one the right you can see examples for both the template-orchestration as well as pipeline-orchestration running a validation and subsequent deployment on the bottom-right _Azure_ subscription. This subscription, in turn, should be the subscription where you want to host your environment. However, you can extend the concept and for example deploy the environment first to an integration and then a production subscription.
+
+## Where does this platform fit in?
+
+The _CARML_ platform hosts a collection of resource modules with the intend to cover as many Azure resources and their child-resources as possible.
+
+As such, users can re-use the modules as-is, built on top of them to orchestrate their deployments and in turn their infrastructure (for example workloads, construction sets or landing zones).
+
+To ensure the modules are valid and can perform the intended deployments, the repository comes with a validation & test pipeline for each module. If successful it will also publish them in one or multiple target locations.
+
+As such, _CARML_ covers the `bottom box` of the [deployment model](#what-is-the-intended-the-deployment-model) section and `Phase #1` & `Phase #2` of the [deployment flow](#what-is-the-intended-deployment-flow) section.
+
+As we want to enable any user of this repository's content to not only leverage its modules but actually also re-use the platform, the platform itself is set up so that you can plug it into your own environment with just a few basic steps described in the [Getting Started](.\GettingStarted.md) section. You may choose to add or remove modules, define your own locations you want to publish to and as such create your own open- or inner-source library.
