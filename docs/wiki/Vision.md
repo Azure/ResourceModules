@@ -79,14 +79,14 @@ First things first, we would work towards the deployment of our environments in 
 
 <img src="media/deploymentFlow.png" alt="Deployment flow" height="150">
 
-The **Produce components** phase is the phase where you're supposed to set up your modules and validate that they work. In case of _CARML_ this means we have a pipeline for each module that, with one or multiple test-parameter files, runs static as well as validation & deployment tests on its template. Once if all tests pass we can be certain no bugs were introduced (in case the template was altered) and all features work as intended.
+The **Develop modules** phase is the phase where you're supposed to set up your modules and validate that they work. In case of _CARML_ this means we have a pipeline for each module that, with one or multiple test-parameter files, runs static as well as validation & deployment tests on its template. Once if all tests pass we can be certain no bugs were introduced (in case the template was altered) and all features work as intended.
 
-The next phase, **Publish artifacts**, will take the tested and approved modules and publish them to a target location of your choice (for example _template specs_ or the _bicep registry_). The publishing should publish at least the tested module template itself.
+The next phase, **Publish modules**, will take the tested and approved modules and publish them to a target location of your choice (for example _template specs_ or the _bicep registry_). The publishing should publish at least the tested module template itself.
 The target location should support versioning so that you only always publish new versions.
 This may bring up the question _Why_ you should publish your templates before you use them. Afterall, you could just reference the modules in the source repository as is to deploy you environments. This however has one major drawback: If your deployments rely on what you have in your source repository then they 'by definition' always use the latest code. This means, as soon as somebody introduces a breaking change to one of these templates, all your orchestrated and referencing deployments will be blocked until you updated them to the latest version too.
 By introducing versions to you modules, the referencing templates can and should specify a specific module versions they want to use and deploy their environment with those. If we now have the case that a breaking change is introduced, a new version is published, but no deployment is affected because they still reference the original. Instead they have to make the deliberate decision to upgrade the module references to newer versions.
 
-The last phase then is the **artifact consumption**. As mentioned previously, this is the phase where we orchestrate the deployment of for example services, workloads or entire landing zones. Up to this point, all deployments were only done for test reasons and should be deleted after a successful run. The deployments we perform now are instead 'sticky' deployments to for example a integration or production environment. By referencing and orchestrating the templates published in the previous step we can be sure that all templates work and we only need to provide them with the correctly configured parameters and orchestrate their deployment in the correct order.
+The last phase then is **Consume modules**. As mentioned previously, this is the phase where we orchestrate the deployment of for example services, workloads or entire landing zones. Up to this point, all deployments were only done for test reasons and should be deleted after a successful run. The deployments we perform now are instead 'sticky' deployments to for example a integration or production environment. By referencing and orchestrating the templates published in the previous step we can be sure that all templates work and we only need to provide them with the correctly configured parameters and orchestrate their deployment in the correct order.
 
 The following image shows a more detailed version of the end-2-end approach:
 
@@ -94,11 +94,11 @@ The following image shows a more detailed version of the end-2-end approach:
 
 The top row represents your orchestration environment (for example GitHub), the bottom row the _Azure_ environment.
 
-From left to right you will find the phases we introduced before, _produce components_, _publish artifacts_ & _consume artifacts_. However, in this illustration you can see how each interacts with the Azure environment.
+From left to right you will find the phases we introduced before, _Develop modules_, _Publish modules_ & _consume modules_. However, in this illustration you can see how each interacts with the Azure environment.
 
 Starting with _produce components_, the top left box shows the test workflows we have for each module, each validating, test-deploying and (if successful) publishing the module. The subscription on the bottom is intended to be a test/sandbox subscription without any link to production. Instead resources deployed here should be considered temporary and be removed after testing.
 
-As stated before, if all tests for a module succeed, the pipeline will publish the artifact to a given target location. In the center box you can see examples for _template specs_, the _bicep registry_ as well as _Azure DevOps artifacts_.
+As stated before, if all tests for a module succeed, the pipeline will publish the modules to a given target location. In the center box you can see examples for _template specs_, the _bicep registry_ as well as _Azure DevOps artifacts_.
 
 Finally, one the right you can see examples for both the template-orchestration as well as pipeline-orchestration running a validation and subsequent deployment on the bottom-right _Azure_ subscription. This subscription, in turn, should be the subscription where you want to host your environment. However, you can extend the concept and for example deploy the environment first to an integration and then a production subscription.
 
