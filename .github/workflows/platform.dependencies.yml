@@ -586,8 +586,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        parameterFilePaths:
-          ['parameters.json, pe.parameters.json, sqlmi.parameters.json']
+        parameterFilePaths: ['parameters.json, pe.parameters.json']
     steps:
       - name: 'Checkout'
         uses: actions/checkout@v2
