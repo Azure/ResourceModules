@@ -105,11 +105,11 @@ Both the _template-orchestration_ as well as _pipeline-orchestration_ may run a 
 
 ## Where does this platform fit in?
 
-The _CARML_ platform hosts a collection of resource modules with the intend to cover as many Azure resources and their child-resources as possible.
+The _CARML_ platform hosts a collection of [resource modules](./Modules.md) with the intend to cover as many Azure resources and their child-resources as possible.
 
 As such, users can use the modules as they are, alter them and or use them to deploy their environments.
 
-To ensure the modules are valid and can perform the intended deployments, the repository comes with a validation & test pipeline for each module. If successful it will also publish them in one or multiple target locations.
+To ensure the modules are valid and can perform the intended deployments, the repository comes with a [validation & test](./Testing.md) [pipeline](./Pipelines.md) for each module. If successful it will also publish them in one or multiple target locations.
 
 As such, _CARML_ covers the `bottom box` of the [deployment model](#what-is-the-intended-the-deployment-model) section and `Phase #1` & `Phase #2` of the [deployment flow](#what-is-the-intended-deployment-flow) section.
 
