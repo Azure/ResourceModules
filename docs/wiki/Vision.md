@@ -99,8 +99,13 @@ As described earlier, if all tests for a module succeed, the pipeline will publi
 Finally, one the right you can see examples of the orchestration that deploys the environment using the published modules.
 No matter the platform we can differentiate two different deployment approaches:
  - **_Template-orchestration_**: These types of deployments reference individual modules from a 'main/environment' bicep/ARM template and use its capabilities to pass parameters & orchestrate the deployments. By default, deployments are deployed in parallel by the Azure Resource Manager while accounting for all dependencies defined. Furthermore, the deploying pipeline only needs one deployment job that triggers the template's deployment.
+
+   <img src="media/templateOrchestration.png" alt="Template orchestration" height="200">
+
  - **_Pipeline-orchestration_**: This approach uses the platform specific pipeline capabilities (for example pipeline jobs) to trigger the deployment of individual modules, where each job deploys one module. By defining dependencies in between jobs you can make sure your resources are deployed in order. Parallelization is achieved by using a pool of pipeline agents that execute the jobs, while accounting for all dependencies defined.
 Both the _template-orchestration_ as well as _pipeline-orchestration_ may run a validation and subsequent deployment on the bottom-right _Azure_ subscription. This subscription, in turn, should be the subscription where you want to host your environment. However, you can extend the concept and for example deploy the environment first to an integration and then a production subscription.
+
+   <img src="media/pipelineOrchestration.png" alt="Pipeline orchestration" height="300">
 
 ### Why use versioned modules?
 Excellent question as after all, you could just reference the modules in the source repository as is to deploy you environments. This however has one major drawback: If your deployments rely on what you have in your source repository then they 'by definition' always use the latest code. This means, as soon as somebody introduces a breaking change to one of these templates, all your orchestrated and referencing deployments will be blocked until you update them to the latest version too.
