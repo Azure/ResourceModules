@@ -81,7 +81,7 @@
         "keysObj": {
             "value": {
                 "serverKeyType": "AzureKeyVault",
-                "uri": "https://adp-<<namePrefix>>-az-kv-x-001.vault.azure.net/keys/keyEncryptionKeySqlMi/a2a508346c9f475eaa2f0f813713c5d1"
+                "uri": "https://adp-<<namePrefix>>-az-kv-x-sqlmi.vault.azure.net/keys/keyEncryptionKeySqlMi/f007836c1eb74ae7a5c8cf7cb1f8a5c5 "
             }
         },
         "securityAlertPoliciesObj": {
