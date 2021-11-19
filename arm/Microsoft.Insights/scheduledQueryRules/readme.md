@@ -23,7 +23,7 @@ This module deploys an Alert based on metrics
 | `evaluationFrequency` | string |  |  | Optional. How often the scheduled query rule is evaluated represented in ISO 8601 duration format. Relevant and required only for rules of the kind LogAlert. |
 | `kind` | string | `LogAlert` | `[LogAlert, LogToMetric]` | Optional. Indicates the type of scheduled query rule. |
 | `location` | string | `[resourceGroup().location]` |  | Optional. Location for all resources. |
-| `queryTimeRange` | string |  |  | Optional. If specified then overrides the query time range. Relevant only for rules of the kind LogAlert. |
+| `queryTimeRange` | string |  | `[, 5, 10, 15, 30, 45, 60, 120, 180, 240, 300, 360, 1440, 2880]` | Optional. If specified then overrides the query time range. Relevant only for rules of the kind LogAlert. |
 | `roleAssignments` | array | `[]` |  | Optional. Array of role assignment objects that contain the 'roleDefinitionIdOrName' and 'principalId' to define RBAC role assignments on this resource. In the roleDefinitionIdOrName attribute, you can provide either the display name of the role definition, or its fully qualified ID in the following format: '/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11' |
 | `scopes` | array | `[]` |  | Required. The list of resource IDs that this scheduled query rule is scoped to. |
 | `severity` | int | `3` | `[0, 1, 2, 3, 4]` | Optional. Severity of the alert. Should be an integer between [0-4]. Value of 0 is severest. Relevant and required only for rules of the kind LogAlert. |

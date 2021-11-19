@@ -21,6 +21,22 @@ param kind string = 'LogAlert'
 param autoMitigate bool = true
 
 @description('Optional. If specified then overrides the query time range. Relevant only for rules of the kind LogAlert.')
+@allowed([
+  ''
+  '5'
+  '10'
+  '15'
+  '30'
+  '45'
+  '60'
+  '120'
+  '180'
+  '240'
+  '300'
+  '360'
+  '1440'
+  '2880'
+  ])
 param queryTimeRange string = ''
 
 @description('Optional. The flag which indicates whether the provided query should be validated or not. Relevant only for rules of the kind LogAlert.')
@@ -89,7 +105,7 @@ resource queryAlert 'Microsoft.Insights/scheduledQueryRules@2021-02-01-preview' 
     enabled: enabled
     evaluationFrequency: contains(kind, 'LogAlert') ? evaluationFrequency : ''
     muteActionsDuration: contains(kind, 'LogAlert') ? suppressForMinutes : ''
-    overrideQueryTimeRange: contains(kind, 'LogAlert') ? queryTimeRange: ''
+    overrideQueryTimeRange: contains(kind, 'LogAlert') ? queryTimeRange : ''
     scopes: scopes
     severity: contains(kind, 'LogAlert') ? severity : null
     skipQueryValidation: contains(kind, 'LogAlert') ? skipQueryValidation : null
@@ -97,7 +113,6 @@ resource queryAlert 'Microsoft.Insights/scheduledQueryRules@2021-02-01-preview' 
     windowSize: contains(kind, 'LogAlert') ? windowSize : ''
   }
 }
-
 
 module queryAlert_rbac '.bicep/nested_rbac.bicep' = [for (roleAssignment, index) in roleAssignments: {
   name: '${deployment().name}-rbac-${index}'

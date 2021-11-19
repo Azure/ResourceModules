@@ -23,7 +23,7 @@
             "value": "PT5M"
         },
         "queryTimeRange": {
-            "value": "PT25M"
+            "value": "5"
         },
         "criterias": {
             "value": {
