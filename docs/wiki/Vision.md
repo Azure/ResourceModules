@@ -50,7 +50,7 @@ Why this is useful we will explain in the next few sections.
 
 <img src="media/deploymentModel.png" alt="Deployment model components" height="200" width="300">
 
-When working with IaC we use 3 different components:
+When working with IaC you use 3 different components:
 - The deployed **environments** that can be individual services, compositions such as workloads, or entire landing zones and the like
 - The **orchestration** deploying the modules in the form of template/pipeline orchestration using for example GitHub actions or Azure DevOps pipelines
   - No matter the platform we can differentiate two different deployment approaches:
@@ -82,6 +82,8 @@ Then we'd only need to create a parameter file for the orchestration-template an
 
 In this section we'll take a deeper look into the fundamental flow of the platform.
 
+> **Note:** This repository focuses on the component _'Modules'_ of the previous section. Likewise, while we provide examples for the other components (and the subsequently described Phase `#3`) it is not in scope and described to present the bigger picture.
+
 First things first, we would work towards the deployment of our environments in 3 phases:
 
 <img src="media/deploymentFlow.png" alt="Deployment flow" height="150" width="750">
@@ -97,6 +99,14 @@ The last phase then is the **artifact consumption**. As mentioned previously, th
 
 The following image shows a more detailed version of the end-2-end approach:
 
-<img src="media/completeFlow.png" alt="Complete deployment flow" height="700" width="4400">
+<img src="media/completeFlow.png" alt="Complete deployment flow" height="2348" width="4389">
 
-The top row represents your orchestration environment (for example GitHub), the bottom row the Azure environment.
+The top row represents your orchestration environment (for example GitHub), the bottom row the _Azure_ environment.
+
+From left to right you will find the phases we introduced before, _produce components_, _publish artifacts_ & _consume artifacts_. However, in this illustration you can see how each interacts with the Azure environment.
+
+Starting with _produce components_, the top left box shows the test workflows we have for each module, each validating, test-deploying and (if successful) publishing the module. The subscription on the bottom is intended to be a test/sandbox subscription without any link to production. Instead resources deployed here should be considered temporary and be removed after testing.
+
+As stated before, if all tests for a module succeed, the pipeline will publish the artifact to a given target location. In the center box you can see examples for _template specs_, the _bicep registry_ as well as _Azure DevOps artifacts_.
+
+Finally, one the right you can see examples for both the template-orchestration as well as pipeline-orchestration running a validation and subsequent deployment on the bottom-right _Azure_ subscription. This subscription, in turn, should be the subscription where you want to host your environment. However, you can extend the concept and for example deploy the environment first to an integration and then a production subscription.
