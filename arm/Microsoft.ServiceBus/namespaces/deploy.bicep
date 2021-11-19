@@ -80,7 +80,7 @@ param cuaId string = ''
 @description('Generated. Do not provide a value! This date value is used to generate a SAS token to access the modules.')
 param baseTime string = utcNow('u')
 
-@description('The queues to create in the service bus namespace')
+@description('Optional. The queues to create in the service bus namespace')
 param queues array = []
 
 @description('Optional. The name of logs that will be streamed.')
