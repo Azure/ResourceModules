@@ -1,6 +1,12 @@
 @description('Required. The name of the Azure Factory')
 param dataFactoryName string
 
+@description('Required. The name of the Integration Runtime')
+param name string
+
+@description('Required. The name of the Managed Virtual Network')
+param managedVirtualNetworkName string
+
 @description('Required. Managed integration runtime type properties.')
 param typeProperties object
 
@@ -13,11 +19,11 @@ module pid_cuaId '.bicep/nested_cuaId.bicep' = if (!empty(cuaId)) {
 }
 
 resource integrationRuntime 'Microsoft.DataFactory/factories/integrationRuntimes@2018-06-01' = {
-  name: '${dataFactoryName}/AutoResolveIntegrationRuntime'
+  name: '${dataFactoryName}/${name}'
   properties: {
     type: 'Managed'
     managedVirtualNetwork: {
-      referenceName: 'default'
+      referenceName: managedVirtualNetworkName
       type: 'ManagedVirtualNetworkReference'
     }
     typeProperties: typeProperties
@@ -26,3 +32,9 @@ resource integrationRuntime 'Microsoft.DataFactory/factories/integrationRuntimes
 
 @description('The name of the Resource Group the Integration Runtime was created in.')
 output integrationRuntimeResourceGroup string = resourceGroup().name
+
+@description('The name of the Resource Group the Integration Runtime was created in.')
+output integrationRuntimeName string = integrationRuntime.name
+
+@description('The name of the Resource Group the Integration Runtime was created in.')
+output integrationRuntimeId string = integrationRuntime.id

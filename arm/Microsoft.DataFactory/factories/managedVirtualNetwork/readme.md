@@ -11,6 +11,7 @@
 | Parameter Name | Type | Default Value | Possible Values | Description |
 | :-- | :-- | :-- | :-- | :-- |
 | `dataFactoryName` | string |  |  | Required. The name of the Azure Factory to create |
+| `name` | string |  |  | Required. The name of the Managed Virtual Network|
 | `cuaId` | string |  |  | Optional. Customer Usage Attribution id (GUID). This GUID must be previously registered |
 
 ## Outputs
@@ -18,6 +19,8 @@
 | Output Name | Type | Description |
 | :-- | :-- | :-- |
 | `managedVirtualNetworkResourceGroup` | string | The name of the Resource Group the Managed Virtual Network was created in. |
+| `managedVirtualNetworkName` | string | The name of the Managed Virtual Network.|
+| `managedVirtualNetworkId` | string | The ID of the Managed Virtual Network.|
 
 ## Template references
 

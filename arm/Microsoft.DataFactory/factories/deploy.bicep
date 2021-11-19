@@ -1,6 +1,12 @@
 @description('Required. The name of the Azure Factory to create')
 param name string
 
+@description('Required. The name of the Managed Virtual Network')
+param managedVirtualNetworkName string
+
+@description('Required. The name of the Integration Runtime')
+param integrationRuntimeName string
+
 @description('Required. Managed integration runtime type properties.')
 param typeProperties object
 
@@ -131,6 +137,7 @@ resource dataFactory 'Microsoft.DataFactory/factories@2018-06-01' = {
 module dataFactory_managedVirtualNetwork 'managedVirtualNetwork/deploy.bicep' = {
   name: '${uniqueString(deployment().name, location)}-ManagedVirtualNetwork'
   params: {
+    name: managedVirtualNetworkName
     dataFactoryName: dataFactory.name
   }
 }
@@ -138,9 +145,14 @@ module dataFactory_managedVirtualNetwork 'managedVirtualNetwork/deploy.bicep' = 
 module dataFactory_integrationRuntime 'integrationRuntime/deploy.bicep' = {
   name: '${uniqueString(deployment().name, location)}-IntegrationRuntime'
   params: {
+    name: integrationRuntimeName
     dataFactoryName: dataFactory.name
+    managedVirtualNetworkName: managedVirtualNetworkName
     typeProperties: typeProperties
   }
+  dependsOn: [
+    dataFactory_managedVirtualNetwork
+  ]
 }
 
 resource dataFactory_lock 'Microsoft.Authorization/locks@2016-09-01' = if (lock != 'NotSpecified') {

@@ -17,6 +17,8 @@
 | :-- | :-- | :-- | :-- | :-- |
 | `cuaId` | string |  |  | Optional. Customer Usage Attribution id (GUID). This GUID must be previously registered|
 | `name` | string |  |  | Required. The name of the Azure Factory to create |
+| `managedVirtualNetworkName` | string |  |  | Required. The name of the Managed Virtual Network|
+| `integrationRuntimeName` | string |  |  | Required. The name of the Integration Runtime|
 | `typeProperties` | object |  |  | Required. Managed integration runtime type properties. |
 | `diagnosticLogsRetentionInDays` | int | `365` |  | Optional. Specifies the number of days that logs will be kept for; a value of 0 will retain data indefinitely. |
 | `diagnosticStorageAccountId` | string |  |  | Optional. Resource identifier of the Diagnostic Storage Account. |
