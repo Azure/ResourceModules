@@ -1,6 +1,6 @@
-# ApimanagementServiceProductsGroups `[Microsoft.ApiManagement/service/products/groups]`
+# API Management Service Products Groups `[Microsoft.ApiManagement/service/products/groups]`
 
-// TODO: Replace Resource and fill in description
+This module deploys Api Management Service Product Groups.
 
 ## Resource Types
 
@@ -16,10 +16,6 @@
 | `cuaId` | string |  |  | Optional. Customer Usage Attribution id (GUID). This GUID must be previously registered |
 | `name` | string |  |  | Required. Name of the product group. |
 | `productName` | string |  |  | Required. The name of the of the Product. |
-
-### Parameter Usage: `<ParameterPlaceholder>`
-
-// TODO: Fill in Parameter usage
 
 ## Outputs
 

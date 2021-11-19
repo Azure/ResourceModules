@@ -1,6 +1,6 @@
-# ApimanagementServiceProductsApis `[Microsoft.ApiManagement/service/products/apis]`
+# API Management Service Products APIs `[Microsoft.ApiManagement/service/products/apis]`
 
-// TODO: Replace Resource and fill in description
+This module deploys Api Management Service Product APIs.
 
 ## Resource Types
 
@@ -16,10 +16,6 @@
 | `cuaId` | string |  |  | Optional. Customer Usage Attribution id (GUID). This GUID must be previously registered |
 | `name` | string |  |  | Required. Name of the product api. |
 | `productName` | string |  |  | Required. The name of the of the Product. |
-
-### Parameter Usage: `<ParameterPlaceholder>`
-
-// TODO: Fill in Parameter usage
 
 ## Outputs
 
