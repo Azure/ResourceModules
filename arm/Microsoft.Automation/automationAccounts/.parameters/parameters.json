@@ -8,7 +8,7 @@
         "schedules": {
             "value": [
                 {
-                    "name": "TestSchedule2",
+                    "name": "TestSchedule",
                     "startTime": "",
                     "expiryTime": "9999-12-31T23:59:00+00:00",
                     "interval": 15,
@@ -38,14 +38,14 @@
                 }
             ]
         },
-        "jobSchedules": {
-            "value": [
-                {
-                    "scheduleName": "TestSchedule2",
-                    "runbookName": "TestRunbook"
-                }
-            ]
-        },
+        // "jobSchedules": {
+        //     "value": [
+        //         {
+        //             "scheduleName": "TestSchedule",
+        //             "runbookName": "TestRunbook"
+        //         }
+        //     ]
+        // },
         "linkedWorkspaceId": {
             "value": "/subscriptions/<<subscriptionId>>/resourcegroups/test-rg/providers/Microsoft.OperationalInsights/workspaces/test-law"
         },
