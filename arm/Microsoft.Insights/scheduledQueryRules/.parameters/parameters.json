@@ -22,6 +22,9 @@
         "suppressForMinutes": {
             "value": "PT5M"
         },
+        "queryTimeRange": {
+            "value": "PT25M"
+        }
         "criterias": {
             "value": {
                 "allOf": [

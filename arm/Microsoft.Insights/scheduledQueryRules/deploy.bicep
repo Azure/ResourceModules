@@ -21,7 +21,7 @@ param kind string = 'LogAlert'
 param autoMitigate bool = true
 
 @description('Optional. If specified then overrides the query time range. Relevant only for rules of the kind LogAlert.')
-param queryTimeRange string = 'WindowSize*NumberOfEvaluationPeriods'
+param queryTimeRange string = ''
 
 @description('Optional. The flag which indicates whether the provided query should be validated or not. Relevant only for rules of the kind LogAlert.')
 param skipQueryValidation bool = false
