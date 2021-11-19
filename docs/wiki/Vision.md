@@ -46,9 +46,6 @@ Furthermore, each module comes with meaningful default values for it's optional 
 When working with IaC you use 3 different components:
 - The deployed **environments** that can be individual services, compositions such as workloads, or entire landing zones and the like
 - The **orchestration** deploying the modules in the form of template/pipeline orchestration using for example GitHub actions or Azure DevOps pipelines
-  - No matter the platform we can differentiate two different deployment approaches:
-    - **_Template Orchestration_**: These types of deployments reference individual modules from a 'main/environment' bicep/ARM template and use its capabilities to pass parameters & orchestrate the deployments. By default, deployments are deployed in parallel by the Azure Resource Manager while accounting for all dependencies defined. Furthermore, the deploying pipeline only needs one deployment job that triggers the template's deployment.
-    - **_Pipeline Orchestration_**: This approach uses the platform specific pipeline capabilities (for example pipeline jobs) to trigger the deployment of individual modules, where each job deploys one module. By defining dependencies in between jobs you can make sure your resources are deployed in order. Parallelization is achieved by using a pool of pipeline agents that execute the jobs, while accounting for all dependencies defined.
 - The fundamental **modules** that each deploy a service, i.e. are the building blocks to deploy environments
 
 To make each component a bit more tangible, let's take a look at the following example:
@@ -100,7 +97,11 @@ Starting with _develop modules_, the top left box shows the test pipelines we ha
 
 As described earlier, if all tests for a module succeed, the pipeline will publish the modules to a given target location. In the center box you can see examples for _[template specs](https://docs.microsoft.com/en-us/azure/azure-resource-manager/templates/template-specs?tabs=azure-powershell)_, the _[bicep registry](https://docs.microsoft.com/en-gb/azure/azure-resource-manager/bicep/private-module-registry)_ as well as _[Azure DevOps artifacts](https://docs.microsoft.com/en-us/azure/devops/artifacts/concepts/feeds?view=azure-devops)_.
 
-Finally, one the right you can see examples for both the template-orchestration as well as pipeline-orchestration running a validation and subsequent deployment on the bottom-right _Azure_ subscription. This subscription, in turn, should be the subscription where you want to host your environment. However, you can extend the concept and for example deploy the environment first to an integration and then a production subscription.
+Finally, one the right you can see examples of the orchestration that deploys the environment using the published modules.
+No matter the platform we can differentiate two different deployment approaches:
+ - **_Template-Orchestration_**: These types of deployments reference individual modules from a 'main/environment' bicep/ARM template and use its capabilities to pass parameters & orchestrate the deployments. By default, deployments are deployed in parallel by the Azure Resource Manager while accounting for all dependencies defined. Furthermore, the deploying pipeline only needs one deployment job that triggers the template's deployment.
+ - **_Pipeline-Orchestration_**: This approach uses the platform specific pipeline capabilities (for example pipeline jobs) to trigger the deployment of individual modules, where each job deploys one module. By defining dependencies in between jobs you can make sure your resources are deployed in order. Parallelization is achieved by using a pool of pipeline agents that execute the jobs, while accounting for all dependencies defined.
+Both the _template-orchestration_ as well as _pipeline-orchestration_ may run a validation and subsequent deployment on the bottom-right _Azure_ subscription. This subscription, in turn, should be the subscription where you want to host your environment. However, you can extend the concept and for example deploy the environment first to an integration and then a production subscription.
 
 ## Where does this platform fit in?
 
