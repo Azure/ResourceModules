@@ -48,7 +48,7 @@ Why this is useful we will explain in the next few sections.
 
 ### Deployment model
 
-<img src="media/deploymentModel.png" alt="Deployment model components" height="200" width="300">
+<img src="media/deploymentModel.png" alt="Deployment model components" height="200">
 
 When working with IaC you use 3 different components:
 - The deployed **environments** that can be individual services, compositions such as workloads, or entire landing zones and the like
@@ -86,7 +86,7 @@ In this section we'll take a deeper look into the fundamental flow of the platfo
 
 First things first, we would work towards the deployment of our environments in 3 phases:
 
-<img src="media/deploymentFlow.png" alt="Deployment flow" height="150" width="750">
+<img src="media/deploymentFlow.png" alt="Deployment flow" height="150">
 
 The **Produce components** phase is the phase where you're supposed to set up your modules and validate that they work. In case of _CARML_ this means we have a pipeline for each module that, with one or multiple test-parameter files, runs static as well as validation & deployment tests on its template. Once if all tests pass we can be certain no bugs were introduced (in case the template was altered) and all features work as intended.
 
@@ -99,7 +99,7 @@ The last phase then is the **artifact consumption**. As mentioned previously, th
 
 The following image shows a more detailed version of the end-2-end approach:
 
-<img src="media/completeFlow.png" alt="Complete deployment flow" height="2348" width="4389">
+<img src="media/completeFlow.png" alt="Complete deployment flow" height="500">
 
 The top row represents your orchestration environment (for example GitHub), the bottom row the _Azure_ environment.
 
