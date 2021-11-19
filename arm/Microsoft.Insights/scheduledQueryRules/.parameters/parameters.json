@@ -8,8 +8,10 @@
         "alertDescription": {
             "value": "My sample Alert"
         },
-        "workspaceResourceId": {
-            "value": "/subscriptions/<<subscriptionId>>/resourcegroups/validation-rg/providers/microsoft.operationalinsights/workspaces/adp-sxx-az-la-x-001"
+        "scopes": {
+            "value": [
+                "/subscriptions/<<subscriptionId>>/resourcegroups/validation-rg/providers/microsoft.operationalinsights/workspaces/adp-sxx-az-la-x-001"
+            ]
         },
         "evaluationFrequency": {
             "value": "PT5M"
