@@ -15,7 +15,7 @@ This section gives you an overview of the design principals the pipelines follow
 - [Shared concepts](#shared-concepts)
   - [Validation prerequisites](#validation-prerequisites)
   - [Tokens Replacement](#tokens-replacement)
-- [Other pipelines](#other-pipelines)
+- [Platform pipelines](#Platform-pipelines)
   - [Dependencies pipeline](#dependencies-pipeline)
   - [ReadMe pipeline](#readme-pipeline)
   - [Wiki pipeline](#wiki-pipeline)
@@ -109,7 +109,7 @@ For example, some modules require referencing Azure resources with the Resource 
 
 Please review the Parameter File Tokens [Design](./ParameterFileTokens) for more details on the different token types and how you can use them to remove hardcoded values from your parameter files.
 
-## Other pipelines
+## Platform pipelines
 
 Outside of the previously described platform pipelines we implemented several additional pipelines to help us with some additional tasks.
 
@@ -136,9 +136,11 @@ Depending on what DevOps tool you want to use to host the platform you will find
 ### GitHub Workflows
 
 GitHub actions & workflows are the CI/CD solution provided by GitHub. To get the platform going, we use the following three elements:
-- **Variable Files:**
-- **Composite Actions:**
-- **Workflows:**
+- **Variable Files:** These file(s) contain the configuration for all module pipelines in this repository.
+- **Composite Actions:** Composite actions bundle a set of actions for a specific purpose together. They are referenced by module pipelines.
+- **Workflows:** GitHub workflows make up all our pipelines and leverage the _composite actions_. We have one workflow per module, plus several platform pipelines.
+
+In the following sub-sections we will take a deeper look into each element.
 
 #### **Component:** Variable file(s)
 
