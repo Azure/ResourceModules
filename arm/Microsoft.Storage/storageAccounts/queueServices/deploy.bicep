@@ -2,6 +2,9 @@
 @description('Required. Name of the Storage Account.')
 param storageAccountName string
 
+@description('Optional. The name of the queue service')
+param name string = 'default'
+
 @description('Optional. Queues to create.')
 param queues array = []
 
@@ -13,29 +16,31 @@ module pid_cuaId '.bicep/nested_cuaId.bicep' = if (!empty(cuaId)) {
   params: {}
 }
 
-resource queueService 'Microsoft.Storage/storageAccounts/queueServices@2021-04-01' = {
-  name: '${storageAccountName}/default'
-  properties: {}
+resource storageAccount 'Microsoft.Storage/storageAccounts@2021-06-01' existing = {
+  name: storageAccountName
+
+  resource queueServices 'queueServices@2021-04-01' = {
+    name: name
+    properties: {}
+  }
 }
 
-module queueService_queues 'queues/deploy.bicep' = [for (queue, index) in queues: {
+module queueServices_queues 'queues/deploy.bicep' = [for (queue, index) in queues: {
   name: '${deployment().name}-Storage-Queue-${index}'
   params: {
-    storageAccountName: storageAccountName
+    storageAccountName: storageAccount.name
+    queueServicesName: storageAccount::queueServices.name
     name: queue.name
     metadata: contains(queue, 'metadata') ? queue.metadata : {}
     roleAssignments: contains(queue, 'roleAssignments') ? queue.roleAssignments : []
   }
-  dependsOn: [
-    queueService
-  ]
 }]
 
 @description('The name of the deployed file share service')
-output queueServiceName string = queueService.name
+output queueServicesName string = storageAccount::queueServices.name
 
 @description('The id of the deployed file share service')
-output queueServiceResourceId string = queueService.id
+output queueServicesResourceId string = storageAccount::queueServices.id
 
 @description('The resource group of the deployed file share service')
-output queueServiceResourceGroup string = resourceGroup().name
+output queueServicesResourceGroup string = resourceGroup().name
