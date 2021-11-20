@@ -2,6 +2,9 @@
 @description('Required. Name of the Storage Account.')
 param storageAccountName string
 
+@description('Optional. The name of the table service')
+param tableServicesName string = 'default'
+
 @description('Required. Name of the table.')
 param name string
 
@@ -13,15 +16,23 @@ module pid_cuaId '.bicep/nested_cuaId.bicep' = if (!empty(cuaId)) {
   params: {}
 }
 
-resource table 'Microsoft.Storage/storageAccounts/tableServices/tables@2021-06-01' = {
-  name: '${storageAccountName}/default/${name}'
+resource storageAccount 'Microsoft.Storage/storageAccounts@2021-06-01' existing = {
+  name: storageAccountName
+
+  resource tableServices 'tableServices@2021-04-01' existing = {
+    name: tableServicesName
+
+    resource table 'tables@2021-06-01' = {
+      name: name
+    }
+  }
 }
 
 @description('The name of the deployed file share service')
-output tableName string = table.name
+output tableName string = storageAccount::tableServices::table.name
 
 @description('The id of the deployed file share service')
-output tableResourceId string = table.id
+output tableResourceId string = storageAccount::tableServices::table.id
 
 @description('The resource group of the deployed file share service')
 output tableResourceGroup string = resourceGroup().name

@@ -4,7 +4,7 @@ This module deploys Azure Kubernetes Cluster (AKS).
 
 ## Resource types
 
-| Resource Type | Api Version |
+| Resource Type | API Version |
 | :-- | :-- |
 | `Microsoft.Authorization/locks` | 2016-09-01 |
 | `Microsoft.Authorization/roleAssignments` | 2020-04-01-preview |
@@ -22,9 +22,9 @@ This module deploys Azure Kubernetes Cluster (AKS).
 | `aadProfileManaged` | bool | `True` |  | Optional. Specifies whether to enable managed AAD integration. |
 | `aadProfileServerAppID` | string |  |  | Optional. The server AAD application ID. |
 | `aadProfileServerAppSecret` | string |  |  | Optional. The server AAD application secret. |
-| `aadProfileTenantId` | string | `[subscription().tenantId]` |  | Optional. Specifies the tenant id of the Azure Active Directory used by the AKS cluster for authentication. |
+| `aadProfileTenantID` | string | `[subscription().tenantId]` |  | Optional. Specifies the tenant ID of the Azure Active Directory used by the AKS cluster for authentication. |
 | `aciConnectorLinuxEnabled` | bool |  |  | Optional. Specifies whether the aciConnectorLinux add-on is enabled or not. |
-| `additionalAgentPools` | array | `[]` |  | Optional. Define one or multiple node pools |
+| `agentPools` | _[agentPools](agentPools/readme.md)_ array | `[]` |  | Optional. Define one or more secondary/additional nodepools |
 | `aksClusterAdminUsername` | string | `azureuser` |  | Optional. Specifies the administrator username of Linux virtual machines. |
 | `aksClusterDnsPrefix` | string | `[parameters('aksClusterName')]` |  | Optional. Specifies the DNS prefix specified when creating the managed cluster. |
 | `aksClusterDnsServiceIP` | string |  |  | Optional. Specifies the IP address assigned to the Kubernetes DNS service. It must be within the Kubernetes service address range specified in serviceCidr. |
@@ -51,7 +51,7 @@ This module deploys Azure Kubernetes Cluster (AKS).
 | `autoScalerProfileUtilizationThreshold` | string | `0.5` |  | Optional. Specifies the utilization threshold of the auto-scaler of the AKS cluster. |
 | `azurePolicyEnabled` | bool | `True` |  | Optional. Specifies whether the azurepolicy add-on is enabled or not. |
 | `azurePolicyVersion` | string | `v2` |  | Optional. Specifies the azure policy version to use. |
-| `cuaId` | string |  |  | Optional. Customer Usage Attribution id (GUID). This GUID must be previously registered |
+| `cuaId` | string |  |  | Optional. Customer Usage Attribution ID (GUID). This GUID must be previously registered |
 | `diagnosticLogsRetentionInDays` | int | `365` |  | Optional. Specifies the number of days that logs will be kept for; a value of 0 will retain data indefinitely. |
 | `diagnosticStorageAccountId` | string |  |  | Optional. Resource identifier of the Diagnostic Storage Account. |
 | `eventHubAuthorizationRuleId` | string |  |  | Optional. Resource ID of the event hub authorization rule for the Event Hubs namespace in which the event hub should be created or streamed to. |
@@ -158,12 +158,12 @@ For available properties check <https://docs.microsoft.com/en-us/azure/templates
 }
 ```
 
-### Parameter Usage: `additionalAgentPools`
+### Parameter Usage: `agentPools`
 
 For available properties check <https://docs.microsoft.com/en-us/azure/templates/microsoft.containerservice/managedclusters/agentpools?tabs=json#managedclusteragentpoolprofileproperties-object>
 
 ```json
-"additionalAgentPools": {
+"agentPools": {
       "value": [
           {
             "name": "pool1",

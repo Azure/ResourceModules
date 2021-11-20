@@ -254,26 +254,36 @@ Describe 'Readme tests' -Tag Readme {
                 $readMeContent
             )
 
-            $ReadmeHTML = ($readMeContent | ConvertFrom-Markdown -ErrorAction SilentlyContinue).Html
+            # Get Template data
             $parameters = $templateContent.parameters.Keys
-            $Headings = @(@())
-            foreach ($H in $ReadmeHTML) {
-                if ($H.Contains('<h')) {
-                    $StartingIndex = $H.IndexOf('>') + 1
-                    $EndIndex = $H.LastIndexof('<')
-                    $Headings += , (@($H.Substring($StartingIndex, $EndIndex - $StartingIndex), $ReadmeHTML.IndexOf($H)))
-                }
+
+            # Get ReadMe data
+            $parametersSectionStartIndex = 0
+            while ($readMeContent[$parametersSectionStartIndex] -notlike '*# Parameters' -and -not ($parametersSectionStartIndex -ge $readMeContent.count)) {
+                $parametersSectionStartIndex++
             }
-            ##get param from readme.md
-            $HeadingIndex = $Headings | Where-Object { $_ -eq 'parameters' }
-            if ($HeadingIndex -eq $null) {
-                Write-Verbose "[parameters section should contain all parameters from the template file] Error At ($moduleFolderName)" -Verbose
-                $true | Should -Be $false
+
+            $parametersTableStartIndex = $parametersSectionStartIndex + 1
+            while ($readMeContent[$parametersTableStartIndex] -notlike '*|*' -and -not ($parametersTableStartIndex -ge $readMeContent.count)) {
+                $parametersTableStartIndex++
             }
-            $parametersList = @()
-            for ($j = $HeadingIndex[1] + 4; $ReadmeHTML[$j] -ne ''; $j++) {
-                $parametersList += $ReadmeHTML[$j].Replace('<p>| <code>', '').Replace('|</p>', '').Replace('</code>', '').Split('|')[0].Trim()
+
+            if ($parametersSectionStartIndex -ge $readMeContent.count) {
+                throw 'Parameters section is missing in the Readme. Please add and re-run the tests.'
             }
+
+            $parametersTableEndIndex = $parametersTableStartIndex + 2 # Header row + table separator row
+            while ($readMeContent[$parametersTableEndIndex] -like '*|*' -and -not ($parametersTableEndIndex -ge $readMeContent.count)) {
+                $parametersTableEndIndex++
+            }
+            $parametersTableEndIndex-- # remove one index as the while loop will move one index past the last table row
+
+            $parametersList = [System.Collections.ArrayList]@()
+            for ($index = $parametersTableStartIndex + 2; $index -le $parametersTableEndIndex; $index++) {
+                $parametersList += $readMeContent[$index].Split('|')[1].Replace('`', '').Trim()
+            }
+
+            # Test
             $differentiatingItems = $parameters | Where-Object { $parametersList -notcontains $_ }
             $differentiatingItems.Count | Should -Be 0 -Because ('list of template parameters missing in the ReadMe file [{0}] should be empty' -f ($differentiatingItems -join ','))
         }
