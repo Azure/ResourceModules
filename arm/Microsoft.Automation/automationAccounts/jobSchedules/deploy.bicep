@@ -28,8 +28,14 @@ resource automationAccount 'Microsoft.Automation/automationAccounts@2020-01-13-p
   name: automationAccountName
 }
 
-resource jobSchedule 'Microsoft.Automation/automationAccounts/jobSchedules@2020-01-13-preview' = {
+resource jobScheduleExisting 'Microsoft.Automation/automationAccounts/jobSchedules@2020-01-13-preview' existing = {
   name: name
+  parent: automationAccount
+}
+
+resource jobSchedule 'Microsoft.Automation/automationAccounts/jobSchedules@2020-01-13-preview' = if(jobScheduleExisting.name == name ) {
+  // name: name
+  name: guid(runbookName, scheduleName, automationAccount.id)
   parent: automationAccount
   properties: {
     parameters: parameters

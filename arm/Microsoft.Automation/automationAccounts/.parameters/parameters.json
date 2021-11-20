@@ -38,14 +38,14 @@
                 }
             ]
         },
-        // "jobSchedules": {
-        //     "value": [
-        //         {
-        //             "scheduleName": "TestSchedule",
-        //             "runbookName": "TestRunbook"
-        //         }
-        //     ]
-        // },
+        "jobSchedules": {
+            "value": [
+                {
+                    "scheduleName": "TestSchedule",
+                    "runbookName": "TestRunbook"
+                }
+            ]
+        },
         "linkedWorkspaceId": {
             "value": "/subscriptions/<<subscriptionId>>/resourcegroups/test-rg/providers/Microsoft.OperationalInsights/workspaces/test-law"
         },
