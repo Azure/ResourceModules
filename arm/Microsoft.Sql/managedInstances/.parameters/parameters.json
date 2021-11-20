@@ -78,12 +78,14 @@
                 }
             ]
         },
-        "keysObj": {
-            "value": {
-                "name": "adp-sxx-az-kv-x-sqlmi_keyEncryptionKeySqlMi_8f68659b2fdd4293872fb8efa36ddd59",
-                "uri": "https://adp-sxx-az-kv-x-sqlmi.vault.azure.net/keys/keyEncryptionKeySqlMi/8f68659b2fdd4293872fb8efa36ddd59",
-                "serverKeyType": "AzureKeyVault"
-            }
+        "keys": {
+            "value": [
+                {
+                    "name": "adp-sxx-az-kv-x-sqlmi_keyEncryptionKeySqlMi_8f68659b2fdd4293872fb8efa36ddd59",
+                    "uri": "https://adp-sxx-az-kv-x-sqlmi.vault.azure.net/keys/keyEncryptionKeySqlMi/8f68659b2fdd4293872fb8efa36ddd59",
+                    "serverKeyType": "AzureKeyVault"
+                }
+            ]
         },
         "encryptionProtectorObj": {
             "value": {

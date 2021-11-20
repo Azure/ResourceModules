@@ -130,8 +130,8 @@ param vulnerabilityAssessmentsObj object = {}
 @description('Optional. The security alert policy configuration')
 param securityAlertPoliciesObj object = {}
 
-@description('Optional. The key configuration')
-param keysObj object = {}
+@description('Optional. The keys to configure')
+param keys array = []
 
 @description('Optional. The encryption protection configuration')
 param encryptionProtectorObj object = {}
@@ -273,9 +273,6 @@ module managedInstance_databases 'databases/deploy.bicep' = [for (database, inde
     backupShortTermRetentionPoliciesObj: contains(database, 'backupShortTermRetentionPolicies') ? database.backupShortTermRetentionPolicies : {}
     backupLongTermRetentionPoliciesObj: contains(database, 'backupLongTermRetentionPolicies') ? database.backupLongTermRetentionPolicies : {}
   }
-  dependsOn: [
-    managedInstance
-  ]
 }]
 
 module managedInstance_securityAlertPolicy 'securityAlertPolicies/deploy.bicep' = if (!empty(securityAlertPoliciesObj)) {
@@ -286,9 +283,6 @@ module managedInstance_securityAlertPolicy 'securityAlertPolicies/deploy.bicep' 
     emailAccountAdmins: contains(securityAlertPoliciesObj, 'emailAccountAdmins') ? securityAlertPoliciesObj.emailAccountAdmins : false
     state: contains(securityAlertPoliciesObj, 'state') ? securityAlertPoliciesObj.state : 'Disabled'
   }
-  dependsOn: [
-    managedInstance
-  ]
 }
 
 module managedInstance_vulnerabilityAssessment 'vulnerabilityAssessments/deploy.bicep' = if (!empty(vulnerabilityAssessmentsObj)) {
@@ -303,35 +297,28 @@ module managedInstance_vulnerabilityAssessment 'vulnerabilityAssessments/deploy.
   }
   dependsOn: [
     managedInstance_securityAlertPolicy
-    managedInstance
   ]
 }
 
-module managedInstance_key 'keys/deploy.bicep' = if (!empty(keysObj)) {
-  name: '${uniqueString(deployment().name, location)}-key'
+module managedInstance_key 'keys/deploy.bicep' = [for (key, index) in keys: {
+  name: '${uniqueString(deployment().name, location)}-key-${index}'
   params: {
     managedInstanceName: managedInstance.name
-    name: contains(keysObj, 'name') ? keysObj.name : ''
-    serverKeyType: contains(keysObj, 'serverKeyType') ? keysObj.serverKeyType : 'ServiceManaged'
-    uri: contains(keysObj, 'uri') ? keysObj.uri : ''
+    name: contains(key, 'name') ? key.name : ''
+    serverKeyType: contains(key, 'serverKeyType') ? key.serverKeyType : 'ServiceManaged'
+    uri: contains(key, 'uri') ? key.uri : ''
   }
-  dependsOn: [
-    managedInstance
-  ]
-}
+}]
 
 module managedInstance_encryptionProtector 'encryptionProtector/deploy.bicep' = if (!empty(encryptionProtectorObj)) {
   name: '${uniqueString(deployment().name, location)}-encryProtector'
   params: {
     managedInstanceName: managedInstance.name
-    serverKeyName: contains(encryptionProtectorObj, 'serverKeyName') ? encryptionProtectorObj.serverKeyName : managedInstance_key.outputs.keyName
+    serverKeyName: contains(encryptionProtectorObj, 'serverKeyName') ? encryptionProtectorObj.serverKeyName : managedInstance_key[0].outputs.keyName
     name: contains(encryptionProtectorObj, 'name') ? encryptionProtectorObj.serverKeyType : 'current'
     serverKeyType: contains(encryptionProtectorObj, 'serverKeyType') ? encryptionProtectorObj.serverKeyType : 'ServiceManaged'
     autoRotationEnabled: contains(encryptionProtectorObj, 'autoRotationEnabled') ? encryptionProtectorObj.autoRotationEnabled : true
   }
-  dependsOn: [
-    managedInstance
-  ]
 }
 
 module managedInstance_administrator 'administrators/deploy.bicep' = if (!empty(administratorsObj)) {
@@ -342,9 +329,6 @@ module managedInstance_administrator 'administrators/deploy.bicep' = if (!empty(
     sid: administratorsObj.name
     tenantId: contains(administratorsObj, 'tenantId') ? administratorsObj.tenantId : ''
   }
-  dependsOn: [
-    managedInstance
-  ]
 }
 
 @description('The name of the deployed managed instance')

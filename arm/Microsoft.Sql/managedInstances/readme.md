@@ -41,7 +41,7 @@ SQL Managed Instance is deployed on a virtual network. This network is required 
 | `eventHubName` | string |  |  | Optional. Name of the event hub within the namespace to which logs are streamed. Without this, an event hub is created for each log category. |
 | `hardwareFamily` | string | `Gen5` |  | Optional. If the service has different generations of hardware, for the same SKU, then that can be captured here. |
 | `instancePoolId` | string |  |  | Optional. The Id of the instance pool this managed server belongs to. |
-| `keysObj` | _[keys](keys/readme.md)_ object | `{object}` |  | Optional. The key configuration |
+| `keys` | _[keys](keys/readme.md)_ array | `[]` |  | Optional. The keys to configure |
 | `licenseType` | string | `LicenseIncluded` | `[LicenseIncluded, BasePrice]` | Optional. The license type. Possible values are 'LicenseIncluded' (regular price inclusive of a new SQL license) and 'BasePrice' (discounted AHB price for bringing your own SQL licenses). |
 | `location` | string | `[resourceGroup().location]` |  | Optional. Location for all resources. |
 | `lock` | string | `NotSpecified` | `[CanNotDelete, NotSpecified, ReadOnly]` | Optional. Specify the type of lock. |
