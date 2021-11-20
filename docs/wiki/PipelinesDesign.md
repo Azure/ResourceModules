@@ -183,10 +183,15 @@ We use several composite actions to perform various tasks shared by our module w
   This action perform all [static tests](#static-module-validation) for a module using Pester.
 - **validateModuleApis** <p>
   This action performs further [static tests](#static-module-validation), focused on API version tests for a module to ensure we notice if a version becomes stale. Each resource's API version is compared with those currently available on Azure. Accepted are both the latest 5 versions (including preview versions) as well as the latest 5 non-preview versions.
-- **validateModuleDeploy:**
-- **deployModule:**
-- **removeModule:**
-- **publishModule:**
-- **getWorkflowInput:**
+- **validateModuleDeploy:** <p>
+  This action performs the [simulated deployment](#simulated-deployment-validation) using a provided parameter file.
+- **deployModule:** <p>
+  This action performs an [actual deployment](#test-deploy) to Azure using a provided parameter file.
+- **removeModule:** <p>
+  This actual is responsible to [remove](#removal) a resource following it's [test deployment](#test-deploy)
+- **publishModule:** <p>
+  This action is capable of [publishing](#publish) the given template to a location specified in the pipeline [variable file](#component-variable-files).
+- **getWorkflowInput:** <p>
+  This action implements allows us to fetch workflow input values from the module's workflow file, even if the pipeline was not triggered via a `workflow_dispatch` action. Without it we would not be able to process the contained information and would need to duplicate the configuration as workflow variables.
 
 #### **Component:** Workflows
