@@ -1,0 +1,1286 @@
+{
+  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+  "contentVersion": "1.0.0.0",
+  "metadata": {
+    "_generator": {
+      "name": "bicep",
+      "version": "0.4.1008.15138",
+      "templateHash": "8506615801095477922"
+    }
+  },
+  "parameters": {
+    "name": {
+      "type": "string",
+      "defaultValue": "",
+      "metadata": {
+        "description": "Optional. Name of the Storage Account."
+      },
+      "maxLength": 24
+    },
+    "location": {
+      "type": "string",
+      "defaultValue": "[resourceGroup().location]",
+      "metadata": {
+        "description": "Optional. Location for all resources."
+      }
+    },
+    "roleAssignments": {
+      "type": "array",
+      "defaultValue": [],
+      "metadata": {
+        "description": "Optional. Array of role assignment objects that contain the 'roleDefinitionIdOrName' and 'principalId' to define RBAC role assignments on this resource. In the roleDefinitionIdOrName attribute, you can provide either the display name of the role definition, or it's fully qualified ID in the following format: '/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11'"
+      }
+    },
+    "managedServiceIdentity": {
+      "type": "string",
+      "defaultValue": "None",
+      "metadata": {
+        "description": "Optional. Type of managed service identity."
+      },
+      "allowedValues": [
+        "None",
+        "SystemAssigned",
+        "SystemAssigned,UserAssigned",
+        "UserAssigned"
+      ]
+    },
+    "userAssignedIdentities": {
+      "type": "object",
+      "defaultValue": {},
+      "metadata": {
+        "description": "Optional. Mandatory 'managedServiceIdentity' contains UserAssigned. The identy to assign to the resource."
+      }
+    },
+    "storageAccountKind": {
+      "type": "string",
+      "defaultValue": "StorageV2",
+      "metadata": {
+        "description": "Optional. Type of Storage Account to create."
+      },
+      "allowedValues": [
+        "Storage",
+        "StorageV2",
+        "BlobStorage",
+        "FileStorage",
+        "BlockBlobStorage"
+      ]
+    },
+    "storageAccountSku": {
+      "type": "string",
+      "defaultValue": "Standard_GRS",
+      "metadata": {
+        "description": "Optional. Storage Account Sku Name."
+      },
+      "allowedValues": [
+        "Standard_LRS",
+        "Standard_GRS",
+        "Standard_RAGRS",
+        "Standard_ZRS",
+        "Premium_LRS",
+        "Premium_ZRS",
+        "Standard_GZRS",
+        "Standard_RAGZRS"
+      ]
+    },
+    "storageAccountAccessTier": {
+      "type": "string",
+      "defaultValue": "Hot",
+      "metadata": {
+        "description": "Optional. Storage Account Access Tier."
+      },
+      "allowedValues": [
+        "Hot",
+        "Cool"
+      ]
+    },
+    "azureFilesIdentityBasedAuthentication": {
+      "type": "object",
+      "defaultValue": {},
+      "metadata": {
+        "description": "Optional. Provides the identity based authentication settings for Azure Files."
+      }
+    },
+    "vNetId": {
+      "type": "string",
+      "defaultValue": "",
+      "metadata": {
+        "description": "Optional. Virtual Network Identifier used to create a service endpoint."
+      }
+    },
+    "privateEndpoints": {
+      "type": "array",
+      "defaultValue": [],
+      "metadata": {
+        "description": "Optional. Configuration Details for private endpoints."
+      }
+    },
+    "managementPolicyRules": {
+      "type": "array",
+      "defaultValue": [],
+      "metadata": {
+        "description": "Optional. The Storage Account ManagementPolicies Rules."
+      }
+    },
+    "networkAcls": {
+      "type": "object",
+      "defaultValue": {},
+      "metadata": {
+        "description": "Optional. Networks ACLs, this value contains IPs to whitelist and/or Subnet information."
+      }
+    },
+    "blobServices": {
+      "type": "object",
+      "defaultValue": {},
+      "metadata": {
+        "description": "Optional. Blob service and containers to deploy"
+      }
+    },
+    "fileServices": {
+      "type": "object",
+      "defaultValue": {},
+      "metadata": {
+        "description": "Optional. File service and shares to deploy"
+      }
+    },
+    "queueServices": {
+      "type": "object",
+      "defaultValue": {},
+      "metadata": {
+        "description": "Optional. Queue service and queues to create."
+      }
+    },
+    "tableServices": {
+      "type": "object",
+      "defaultValue": {},
+      "metadata": {
+        "description": "Optional. Table service and tables to create."
+      }
+    },
+    "allowBlobPublicAccess": {
+      "type": "bool",
+      "defaultValue": true,
+      "metadata": {
+        "description": "Optional. Indicates whether public access is enabled for all blobs or containers in the storage account."
+      }
+    },
+    "minimumTlsVersion": {
+      "type": "string",
+      "defaultValue": "TLS1_2",
+      "metadata": {
+        "description": "Optional. Set the minimum TLS version on request to storage."
+      },
+      "allowedValues": [
+        "TLS1_0",
+        "TLS1_1",
+        "TLS1_2"
+      ]
+    },
+    "enableHierarchicalNamespace": {
+      "type": "bool",
+      "defaultValue": false,
+      "metadata": {
+        "description": "Optional. If true, enables Hierarchical Namespace for the storage account"
+      }
+    },
+    "lock": {
+      "type": "string",
+      "defaultValue": "NotSpecified",
+      "metadata": {
+        "description": "Optional. Specify the type of lock."
+      },
+      "allowedValues": [
+        "CanNotDelete",
+        "NotSpecified",
+        "ReadOnly"
+      ]
+    },
+    "tags": {
+      "type": "object",
+      "defaultValue": {},
+      "metadata": {
+        "description": "Optional. Tags of the resource."
+      }
+    },
+    "cuaId": {
+      "type": "string",
+      "defaultValue": "",
+      "metadata": {
+        "description": "Optional. Customer Usage Attribution id (GUID). This GUID must be previously registered"
+      }
+    },
+    "basetime": {
+      "type": "string",
+      "defaultValue": "[utcNow('u')]",
+      "metadata": {
+        "description": "Generated. Do not provide a value! This date value is used to generate a SAS token to access the modules."
+      }
+    }
+  },
+  "functions": [],
+  "variables": {
+    "copy": [
+      {
+        "name": "virtualNetworkRules",
+        "count": "[length(range(0, if(empty(parameters('networkAcls')), 0, length(parameters('networkAcls').virtualNetworkRules))))]",
+        "input": {
+          "id": "[format('{0}/subnets/{1}', parameters('vNetId'), parameters('networkAcls').virtualNetworkRules[range(0, if(empty(parameters('networkAcls')), 0, length(parameters('networkAcls').virtualNetworkRules)))[copyIndex('virtualNetworkRules')]].subnet)]"
+        }
+      }
+    ],
+    "networkAcls_var": {
+      "bypass": "[if(empty(parameters('networkAcls')), null(), parameters('networkAcls').bypass)]",
+      "defaultAction": "[if(empty(parameters('networkAcls')), null(), parameters('networkAcls').defaultAction)]",
+      "virtualNetworkRules": "[if(empty(parameters('networkAcls')), null(), variables('virtualNetworkRules'))]",
+      "ipRules": "[if(empty(parameters('networkAcls')), null(), if(equals(length(parameters('networkAcls').ipRules), 0), null(), parameters('networkAcls').ipRules))]"
+    },
+    "azureFilesIdentityBasedAuthentication_var": "[parameters('azureFilesIdentityBasedAuthentication')]",
+    "maxNameLength": 24,
+    "uniqueStoragenameUntrim": "[format('{0}', uniqueString(format('Storage Account{0}', parameters('basetime'))))]",
+    "uniqueStoragename": "[if(greater(length(variables('uniqueStoragenameUntrim')), variables('maxNameLength')), substring(variables('uniqueStoragenameUntrim'), 0, variables('maxNameLength')), variables('uniqueStoragenameUntrim'))]",
+    "storageAccountName_var": "[if(empty(parameters('name')), variables('uniqueStoragename'), parameters('name'))]",
+    "saBaseProperties": {
+      "encryption": {
+        "keySource": "Microsoft.Storage",
+        "services": {
+          "blob": "[if(or(or(or(equals(parameters('storageAccountKind'), 'BlockBlobStorage'), equals(parameters('storageAccountKind'), 'BlobStorage')), equals(parameters('storageAccountKind'), 'StorageV2')), equals(parameters('storageAccountKind'), 'Storage')), json('{\"enabled\": true}'), null())]",
+          "file": "[if(or(or(equals(parameters('storageAccountKind'), 'FileStorage'), equals(parameters('storageAccountKind'), 'StorageV2')), equals(parameters('storageAccountKind'), 'Storage')), json('{\"enabled\": true}'), null())]"
+        }
+      },
+      "accessTier": "[parameters('storageAccountAccessTier')]",
+      "supportsHttpsTrafficOnly": true,
+      "isHnsEnabled": "[if(not(parameters('enableHierarchicalNamespace')), null(), parameters('enableHierarchicalNamespace'))]",
+      "minimumTlsVersion": "[parameters('minimumTlsVersion')]",
+      "networkAcls": "[if(empty(parameters('networkAcls')), null(), variables('networkAcls_var'))]",
+      "allowBlobPublicAccess": "[parameters('allowBlobPublicAccess')]"
+    },
+    "saOptIdBasedAuthProperties": {
+      "azureFilesIdentityBasedAuthentication": "[variables('azureFilesIdentityBasedAuthentication_var')]"
+    },
+    "saProperties": "[if(empty(parameters('azureFilesIdentityBasedAuthentication')), variables('saBaseProperties'), union(variables('saBaseProperties'), variables('saOptIdBasedAuthProperties')))]"
+  },
+  "resources": [
+    {
+      "type": "Microsoft.Storage/storageAccounts",
+      "apiVersion": "2021-06-01",
+      "name": "[variables('storageAccountName_var')]",
+      "location": "[parameters('location')]",
+      "kind": "[parameters('storageAccountKind')]",
+      "sku": {
+        "name": "[parameters('storageAccountSku')]"
+      },
+      "identity": {
+        "type": "[parameters('managedServiceIdentity')]",
+        "userAssignedIdentities": "[if(empty(parameters('userAssignedIdentities')), null(), parameters('userAssignedIdentities'))]"
+      },
+      "tags": "[parameters('tags')]",
+      "properties": "[variables('saProperties')]"
+    },
+    {
+      "condition": "[not(equals(parameters('lock'), 'NotSpecified'))]",
+      "type": "Microsoft.Authorization/locks",
+      "apiVersion": "2016-09-01",
+      "scope": "[format('Microsoft.Storage/storageAccounts/{0}', variables('storageAccountName_var'))]",
+      "name": "[format('{0}-{1}-lock', variables('storageAccountName_var'), parameters('lock'))]",
+      "properties": {
+        "level": "[parameters('lock')]",
+        "notes": "[if(equals(parameters('lock'), 'CanNotDelete'), 'Cannot delete resource or child resources.', 'Cannot modify the resource or child resources.')]"
+      },
+      "dependsOn": [
+        "[resourceId('Microsoft.Storage/storageAccounts', variables('storageAccountName_var'))]"
+      ]
+    },
+    {
+      "condition": "[not(empty(parameters('cuaId')))]",
+      "type": "Microsoft.Resources/deployments",
+      "apiVersion": "2020-06-01",
+      "name": "[format('pid-{0}', parameters('cuaId'))]",
+      "properties": {
+        "expressionEvaluationOptions": {
+          "scope": "inner"
+        },
+        "mode": "Incremental",
+        "parameters": {},
+        "template": {
+          "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+          "contentVersion": "1.0.0.0",
+          "metadata": {
+            "_generator": {
+              "name": "bicep",
+              "version": "0.4.1008.15138",
+              "templateHash": "14669053462841078328"
+            }
+          },
+          "functions": [],
+          "resources": []
+        }
+      }
+    },
+    {
+      "copy": {
+        "name": "storageAccount_rbac",
+        "count": "[length(parameters('roleAssignments'))]"
+      },
+      "type": "Microsoft.Resources/deployments",
+      "apiVersion": "2020-06-01",
+      "name": "[format('{0}-Storage-Rbac-{1}', uniqueString(deployment().name, parameters('location')), copyIndex())]",
+      "properties": {
+        "expressionEvaluationOptions": {
+          "scope": "inner"
+        },
+        "mode": "Incremental",
+        "parameters": {
+          "roleAssignmentObj": {
+            "value": "[parameters('roleAssignments')[copyIndex()]]"
+          },
+          "resourceName": {
+            "value": "[variables('storageAccountName_var')]"
+          }
+        },
+        "template": {
+          "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+          "contentVersion": "1.0.0.0",
+          "metadata": {
+            "_generator": {
+              "name": "bicep",
+              "version": "0.4.1008.15138",
+              "templateHash": "17092039298041094405"
+            }
+          },
+          "parameters": {
+            "roleAssignmentObj": {
+              "type": "object"
+            },
+            "resourceName": {
+              "type": "string"
+            }
+          },
+          "functions": [],
+          "variables": {
+            "builtInRoleNames": {
+              "Owner": "[subscriptionResourceId('Microsoft.Authorization/roleDefinitions', '8e3af657-a8ff-443c-a75c-2fe8c4bcb635')]",
+              "Contributor": "[subscriptionResourceId('Microsoft.Authorization/roleDefinitions', 'b24988ac-6180-42a0-ab88-20f7382dd24c')]",
+              "Reader": "[subscriptionResourceId('Microsoft.Authorization/roleDefinitions', 'acdd72a7-3385-48ef-bd42-f606fba81ae7')]",
+              "Avere Contributor": "[subscriptionResourceId('Microsoft.Authorization/roleDefinitions', '4f8fab4f-1852-4a58-a46a-8eaf358af14a')]",
+              "Avere Operator": "[subscriptionResourceId('Microsoft.Authorization/roleDefinitions', 'c025889f-8102-4ebf-b32c-fc0c6f0c6bd9')]",
+              "Backup Contributor": "[subscriptionResourceId('Microsoft.Authorization/roleDefinitions', '5e467623-bb1f-42f4-a55d-6e525e11384b')]",
+              "Backup Operator": "[subscriptionResourceId('Microsoft.Authorization/roleDefinitions', '00c29273-979b-4161-815c-10b084fb9324')]",
+              "DevTest Labs User": "[subscriptionResourceId('Microsoft.Authorization/roleDefinitions', '76283e04-6283-4c54-8f91-bcf1374a3c64')]",
+              "Disk Snapshot Contributor": "[subscriptionResourceId('Microsoft.Authorization/roleDefinitions', '7efff54f-a5b4-42b5-a1c5-5411624893ce')]",
+              "Log Analytics Contributor": "[subscriptionResourceId('Microsoft.Authorization/roleDefinitions', '92aaf0da-9dab-42b6-94a3-d43ce8d16293')]",
+              "Log Analytics Reader": "[subscriptionResourceId('Microsoft.Authorization/roleDefinitions', '73c42c96-874c-492b-b04d-ab87d138a893')]",
+              "Logic App Contributor": "[subscriptionResourceId('Microsoft.Authorization/roleDefinitions', '87a39d53-fc1b-424a-814c-f7e04687dc9e')]",
+              "Managed Application Contributor Role": "[subscriptionResourceId('Microsoft.Authorization/roleDefinitions', '641177b8-a67a-45b9-a033-47bc880bb21e')]",
+              "Managed Application Operator Role": "[subscriptionResourceId('Microsoft.Authorization/roleDefinitions', 'c7393b34-138c-406f-901b-d8cf2b17e6ae')]",
+              "Managed Applications Reader": "[subscriptionResourceId('Microsoft.Authorization/roleDefinitions', 'b9331d33-8a36-4f8c-b097-4f54124fdb44')]",
+              "Monitoring Contributor": "[subscriptionResourceId('Microsoft.Authorization/roleDefinitions', '749f88d5-cbae-40b8-bcfc-e573ddc772fa')]",
+              "Monitoring Metrics Publisher": "[subscriptionResourceId('Microsoft.Authorization/roleDefinitions', '3913510d-42f4-4e42-8a64-420c390055eb')]",
+              "Monitoring Reader": "[subscriptionResourceId('Microsoft.Authorization/roleDefinitions', '43d0d8ad-25c7-4714-9337-8ba259a9fe05')]",
+              "Reader and Data Access": "[subscriptionResourceId('Microsoft.Authorization/roleDefinitions', 'c12c1c16-33a1-487b-954d-41c89c60f349')]",
+              "Resource Policy Contributor": "[subscriptionResourceId('Microsoft.Authorization/roleDefinitions', '36243c78-bf99-498c-9df9-86d9f8d28608')]",
+              "Site Recovery Contributor": "[subscriptionResourceId('Microsoft.Authorization/roleDefinitions', '6670b86e-a3f7-4917-ac9b-5d6ab1be4567')]",
+              "Site Recovery Operator": "[subscriptionResourceId('Microsoft.Authorization/roleDefinitions', '494ae006-db33-4328-bf46-533a6560a3ca')]",
+              "Storage Account Backup Contributor Role": "[subscriptionResourceId('Microsoft.Authorization/roleDefinitions', 'e5e2a7ff-d759-4cd2-bb51-3152d37e2eb1')]",
+              "Storage Account Contributor": "[subscriptionResourceId('Microsoft.Authorization/roleDefinitions', '17d1049b-9a84-46fb-8f53-869881c3d3ab')]",
+              "Storage Account Key Operator Service Role": "[subscriptionResourceId('Microsoft.Authorization/roleDefinitions', '81a9662b-bebf-436f-a333-f67b29880f12')]",
+              "Storage Blob Data Contributor": "[subscriptionResourceId('Microsoft.Authorization/roleDefinitions', 'ba92f5b4-2d11-453d-a403-e96b0029c9fe')]",
+              "Storage Blob Data Owner": "[subscriptionResourceId('Microsoft.Authorization/roleDefinitions', 'b7e6dc6d-f1e8-4753-8033-0f276bb0955b')]",
+              "Storage Blob Data Reader": "[subscriptionResourceId('Microsoft.Authorization/roleDefinitions', '2a2b9908-6ea1-4ae2-8e65-a410df84e7d1')]",
+              "Storage Blob Delegator": "[subscriptionResourceId('Microsoft.Authorization/roleDefinitions', 'db58b8e5-c6ad-4a2a-8342-4190687cbf4a')]",
+              "Storage File Data SMB Share Contributor": "[subscriptionResourceId('Microsoft.Authorization/roleDefinitions', '0c867c2a-1d8c-454a-a3db-ab2ea1bdc8bb')]",
+              "Storage File Data SMB Share Elevated Contributor": "[subscriptionResourceId('Microsoft.Authorization/roleDefinitions', 'a7264617-510b-434b-a828-9731dc254ea7')]",
+              "Storage File Data SMB Share Reader": "[subscriptionResourceId('Microsoft.Authorization/roleDefinitions', 'aba4ae5f-2193-4029-9191-0cb91df5e314')]",
+              "Storage Queue Data Contributor": "[subscriptionResourceId('Microsoft.Authorization/roleDefinitions', '974c5e8b-45b9-4653-ba55-5f855dd0fb88')]",
+              "Storage Queue Data Message Processor": "[subscriptionResourceId('Microsoft.Authorization/roleDefinitions', '8a0f0c08-91a1-4084-bc3d-661d67233fed')]",
+              "Storage Queue Data Message Sender": "[subscriptionResourceId('Microsoft.Authorization/roleDefinitions', 'c6a89b2d-59bc-44d0-9896-0f6e12d7b80a')]",
+              "Storage Queue Data Reader": "[subscriptionResourceId('Microsoft.Authorization/roleDefinitions', '19e7f393-937e-4f77-808e-94535e297925')]",
+              "Storage Table Data Contributor": "[subscriptionResourceId('Microsoft.Authorization/roleDefinitions', '0a9a7e1f-b9d0-4cc4-a60d-0319b160aaa3')]",
+              "Storage Table Data Reader": "[subscriptionResourceId('Microsoft.Authorization/roleDefinitions', '76199698-9eea-4c19-bc75-cec21354c6b6')]",
+              "User Access Administrator": "[subscriptionResourceId('Microsoft.Authorization/roleDefinitions', '18d7d88d-d35e-4fb5-a5c3-7773c20a72d9')]",
+              "Virtual Machine Contributor": "[subscriptionResourceId('Microsoft.Authorization/roleDefinitions', '9980e02c-c2be-4d73-94e8-173b1dc7cf3c')]"
+            }
+          },
+          "resources": [
+            {
+              "copy": {
+                "name": "roleAssignment",
+                "count": "[length(parameters('roleAssignmentObj').principalIds)]"
+              },
+              "type": "Microsoft.Authorization/roleAssignments",
+              "apiVersion": "2020-04-01-preview",
+              "scope": "[format('Microsoft.Storage/storageAccounts/{0}', parameters('resourceName'))]",
+              "name": "[guid(parameters('resourceName'), parameters('roleAssignmentObj').principalIds[copyIndex()], parameters('roleAssignmentObj').roleDefinitionIdOrName)]",
+              "properties": {
+                "roleDefinitionId": "[if(contains(variables('builtInRoleNames'), parameters('roleAssignmentObj').roleDefinitionIdOrName), variables('builtInRoleNames')[parameters('roleAssignmentObj').roleDefinitionIdOrName], parameters('roleAssignmentObj').roleDefinitionIdOrName)]",
+                "principalId": "[parameters('roleAssignmentObj').principalIds[copyIndex()]]"
+              }
+            }
+          ]
+        }
+      },
+      "dependsOn": [
+        "[resourceId('Microsoft.Storage/storageAccounts', variables('storageAccountName_var'))]"
+      ]
+    },
+    {
+      "condition": "[not(empty(parameters('privateEndpoints')))]",
+      "copy": {
+        "name": "storageAccount_privateEndpoints",
+        "count": "[length(parameters('privateEndpoints'))]"
+      },
+      "type": "Microsoft.Resources/deployments",
+      "apiVersion": "2020-06-01",
+      "name": "[format('{0}-Storage-PrivateEndpoints-{1}', uniqueString(deployment().name, parameters('location')), copyIndex())]",
+      "properties": {
+        "expressionEvaluationOptions": {
+          "scope": "inner"
+        },
+        "mode": "Incremental",
+        "parameters": {
+          "privateEndpointResourceId": {
+            "value": "[resourceId('Microsoft.Storage/storageAccounts', variables('storageAccountName_var'))]"
+          },
+          "privateEndpointVnetLocation": {
+            "value": "[if(empty(parameters('privateEndpoints')), 'dummy', reference(split(parameters('privateEndpoints')[copyIndex()].subnetResourceId, '/subnets/')[0], '2020-06-01', 'Full').location)]"
+          },
+          "privateEndpointObj": {
+            "value": "[parameters('privateEndpoints')[copyIndex()]]"
+          },
+          "tags": {
+            "value": "[parameters('tags')]"
+          }
+        },
+        "template": {
+          "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+          "contentVersion": "1.0.0.0",
+          "metadata": {
+            "_generator": {
+              "name": "bicep",
+              "version": "0.4.1008.15138",
+              "templateHash": "1286774048546143006"
+            }
+          },
+          "parameters": {
+            "privateEndpointResourceId": {
+              "type": "string"
+            },
+            "privateEndpointVnetLocation": {
+              "type": "string"
+            },
+            "privateEndpointObj": {
+              "type": "object"
+            },
+            "tags": {
+              "type": "object"
+            }
+          },
+          "functions": [],
+          "variables": {
+            "privateEndpointResourceName": "[last(split(parameters('privateEndpointResourceId'), '/'))]",
+            "privateEndpoint_var": {
+              "name": "[if(contains(parameters('privateEndpointObj'), 'name'), if(empty(parameters('privateEndpointObj').name), format('{0}-{1}', variables('privateEndpointResourceName'), parameters('privateEndpointObj').service), parameters('privateEndpointObj').name), format('{0}-{1}', variables('privateEndpointResourceName'), parameters('privateEndpointObj').service))]",
+              "subnetResourceId": "[parameters('privateEndpointObj').subnetResourceId]",
+              "service": [
+                "[parameters('privateEndpointObj').service]"
+              ],
+              "privateDnsZoneResourceIds": "[if(contains(parameters('privateEndpointObj'), 'privateDnsZoneResourceIds'), if(empty(parameters('privateEndpointObj').privateDnsZoneResourceIds), createArray(), parameters('privateEndpointObj').privateDnsZoneResourceIds), createArray())]",
+              "customDnsConfigs": "[if(contains(parameters('privateEndpointObj'), 'customDnsConfigs'), if(empty(parameters('privateEndpointObj').customDnsConfigs), null(), parameters('privateEndpointObj').customDnsConfigs), null())]"
+            }
+          },
+          "resources": [
+            {
+              "type": "Microsoft.Network/privateEndpoints/privateDnsZoneGroups",
+              "apiVersion": "2021-02-01",
+              "name": "[format('{0}/{1}', variables('privateEndpoint_var').name, 'default')]",
+              "properties": {
+                "copy": [
+                  {
+                    "name": "privateDnsZoneConfigs",
+                    "count": "[length(variables('privateEndpoint_var').privateDnsZoneResourceIds)]",
+                    "input": {
+                      "name": "[last(split(variables('privateEndpoint_var').privateDnsZoneResourceIds[copyIndex('privateDnsZoneConfigs')], '/'))]",
+                      "properties": {
+                        "privateDnsZoneId": "[variables('privateEndpoint_var').privateDnsZoneResourceIds[copyIndex('privateDnsZoneConfigs')]]"
+                      }
+                    }
+                  }
+                ]
+              },
+              "dependsOn": [
+                "[resourceId('Microsoft.Network/privateEndpoints', variables('privateEndpoint_var').name)]"
+              ]
+            },
+            {
+              "type": "Microsoft.Network/privateEndpoints",
+              "apiVersion": "2021-05-01",
+              "name": "[variables('privateEndpoint_var').name]",
+              "location": "[parameters('privateEndpointVnetLocation')]",
+              "tags": "[parameters('tags')]",
+              "properties": {
+                "privateLinkServiceConnections": [
+                  {
+                    "name": "[variables('privateEndpoint_var').name]",
+                    "properties": {
+                      "privateLinkServiceId": "[parameters('privateEndpointResourceId')]",
+                      "groupIds": "[variables('privateEndpoint_var').service]"
+                    }
+                  }
+                ],
+                "manualPrivateLinkServiceConnections": [],
+                "subnet": {
+                  "id": "[variables('privateEndpoint_var').subnetResourceId]"
+                },
+                "customDnsConfigs": "[variables('privateEndpoint_var').customDnsConfigs]"
+              }
+            }
+          ]
+        }
+      },
+      "dependsOn": [
+        "[resourceId('Microsoft.Storage/storageAccounts', variables('storageAccountName_var'))]"
+      ]
+    },
+    {
+      "condition": "[not(empty(parameters('managementPolicyRules')))]",
+      "type": "Microsoft.Resources/deployments",
+      "apiVersion": "2020-06-01",
+      "name": "[format('{0}-Storage-ManagementPolicies', uniqueString(deployment().name, parameters('location')))]",
+      "properties": {
+        "expressionEvaluationOptions": {
+          "scope": "inner"
+        },
+        "mode": "Incremental",
+        "parameters": {
+          "storageAccountName": {
+            "value": "[variables('storageAccountName_var')]"
+          },
+          "rules": {
+            "value": "[parameters('managementPolicyRules')]"
+          }
+        },
+        "template": {
+          "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+          "contentVersion": "1.0.0.0",
+          "metadata": {
+            "_generator": {
+              "name": "bicep",
+              "version": "0.4.1008.15138",
+              "templateHash": "5836826882469874709"
+            }
+          },
+          "parameters": {
+            "storageAccountName": {
+              "type": "string",
+              "metadata": {
+                "description": "Required. Name of the Storage Account."
+              },
+              "maxLength": 24
+            },
+            "name": {
+              "type": "string",
+              "defaultValue": "default",
+              "metadata": {
+                "description": "Optional. The name of the storage container to deploy"
+              }
+            },
+            "rules": {
+              "type": "array",
+              "metadata": {
+                "description": "Required. The Storage Account ManagementPolicies Rules"
+              }
+            },
+            "cuaId": {
+              "type": "string",
+              "defaultValue": "",
+              "metadata": {
+                "description": "Optional. Customer Usage Attribution id (GUID). This GUID must be previously registered"
+              }
+            }
+          },
+          "functions": [],
+          "resources": [
+            {
+              "condition": "[not(empty(parameters('rules')))]",
+              "type": "Microsoft.Storage/storageAccounts/managementPolicies",
+              "apiVersion": "2019-06-01",
+              "name": "[format('{0}/{1}', parameters('storageAccountName'), parameters('name'))]",
+              "properties": {
+                "policy": {
+                  "rules": "[parameters('rules')]"
+                }
+              }
+            },
+            {
+              "condition": "[not(empty(parameters('cuaId')))]",
+              "type": "Microsoft.Resources/deployments",
+              "apiVersion": "2020-06-01",
+              "name": "[format('pid-{0}', parameters('cuaId'))]",
+              "properties": {
+                "expressionEvaluationOptions": {
+                  "scope": "inner"
+                },
+                "mode": "Incremental",
+                "parameters": {},
+                "template": {
+                  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+                  "contentVersion": "1.0.0.0",
+                  "metadata": {
+                    "_generator": {
+                      "name": "bicep",
+                      "version": "0.4.1008.15138",
+                      "templateHash": "14669053462841078328"
+                    }
+                  },
+                  "functions": [],
+                  "resources": []
+                }
+              }
+            }
+          ],
+          "outputs": {
+            "managementPoliciesResourceId": {
+              "type": "string",
+              "value": "[last(split(parameters('name'), '/'))]",
+              "metadata": {
+                "description": "The resource Id of the deployed management policy"
+              }
+            },
+            "managementPoliciesName": {
+              "type": "string",
+              "value": "[parameters('name')]",
+              "metadata": {
+                "description": "The name of the deployed management policy"
+              }
+            },
+            "managementPoliciesResourceGroup": {
+              "type": "string",
+              "value": "[resourceGroup().name]",
+              "metadata": {
+                "description": "The resource group of the deployed management policy"
+              }
+            }
+          }
+        }
+      },
+      "dependsOn": [
+        "[resourceId('Microsoft.Storage/storageAccounts', variables('storageAccountName_var'))]"
+      ]
+    },
+    {
+      "condition": "[not(empty(parameters('blobServices')))]",
+      "type": "Microsoft.Resources/deployments",
+      "apiVersion": "2020-06-01",
+      "name": "[format('{0}-Storage-BlobServices', uniqueString(deployment().name, parameters('location')))]",
+      "properties": {
+        "expressionEvaluationOptions": {
+          "scope": "inner"
+        },
+        "mode": "Incremental",
+        "parameters": {
+          "storageAccountName": {
+            "value": "[variables('storageAccountName_var')]"
+          },
+          "containers": {
+            "value": "[if(contains(parameters('blobServices'), 'containers'), parameters('blobServices').containers, createArray())]"
+          },
+          "automaticSnapshotPolicyEnabled": {
+            "value": "[if(contains(parameters('blobServices'), 'automaticSnapshotPolicyEnabled'), parameters('blobServices').automaticSnapshotPolicyEnabled, false())]"
+          },
+          "deleteRetentionPolicy": {
+            "value": "[if(contains(parameters('blobServices'), 'deleteRetentionPolicy'), parameters('blobServices').deleteRetentionPolicy, true())]"
+          },
+          "deleteRetentionPolicyDays": {
+            "value": "[if(contains(parameters('blobServices'), 'deleteRetentionPolicyDays'), parameters('blobServices').deleteRetentionPolicyDays, 7)]"
+          }
+        },
+        "template": {
+          "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+          "contentVersion": "1.0.0.0",
+          "metadata": {
+            "_generator": {
+              "name": "bicep",
+              "version": "0.4.1008.15138",
+              "templateHash": "1610153995602474171"
+            }
+          },
+          "parameters": {
+            "storageAccountName": {
+              "type": "string",
+              "metadata": {
+                "description": "Required. Name of the Storage Account."
+              },
+              "maxLength": 24
+            },
+            "name": {
+              "type": "string",
+              "defaultValue": "default",
+              "metadata": {
+                "description": "Optional. The name of the blob service"
+              }
+            },
+            "deleteRetentionPolicy": {
+              "type": "bool",
+              "defaultValue": true,
+              "metadata": {
+                "description": "Optional. Indicates whether DeleteRetentionPolicy is enabled for the Blob service."
+              }
+            },
+            "deleteRetentionPolicyDays": {
+              "type": "int",
+              "defaultValue": 7,
+              "metadata": {
+                "description": "Optional. Indicates the number of days that the deleted blob should be retained. The minimum specified value can be 1 and the maximum value can be 365."
+              }
+            },
+            "automaticSnapshotPolicyEnabled": {
+              "type": "bool",
+              "defaultValue": false,
+              "metadata": {
+                "description": "Optional. Automatic Snapshot is enabled if set to true."
+              }
+            },
+            "containers": {
+              "type": "array",
+              "defaultValue": [],
+              "metadata": {
+                "description": "Optional. Blob containers to create."
+              }
+            },
+            "cuaId": {
+              "type": "string",
+              "defaultValue": "",
+              "metadata": {
+                "description": "Optional. Customer Usage Attribution id (GUID). This GUID must be previously registered"
+              }
+            }
+          },
+          "functions": [],
+          "resources": [
+            {
+              "type": "Microsoft.Storage/storageAccounts/blobServices",
+              "apiVersion": "2021-06-01",
+              "name": "[format('{0}/{1}', parameters('storageAccountName'), parameters('name'))]",
+              "properties": {
+                "deleteRetentionPolicy": {
+                  "enabled": "[parameters('deleteRetentionPolicy')]",
+                  "days": "[parameters('deleteRetentionPolicyDays')]"
+                },
+                "automaticSnapshotPolicyEnabled": "[parameters('automaticSnapshotPolicyEnabled')]"
+              }
+            },
+            {
+              "condition": "[not(empty(parameters('cuaId')))]",
+              "type": "Microsoft.Resources/deployments",
+              "apiVersion": "2020-06-01",
+              "name": "[format('pid-{0}', parameters('cuaId'))]",
+              "properties": {
+                "expressionEvaluationOptions": {
+                  "scope": "inner"
+                },
+                "mode": "Incremental",
+                "parameters": {},
+                "template": {
+                  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+                  "contentVersion": "1.0.0.0",
+                  "metadata": {
+                    "_generator": {
+                      "name": "bicep",
+                      "version": "0.4.1008.15138",
+                      "templateHash": "14669053462841078328"
+                    }
+                  },
+                  "functions": [],
+                  "resources": []
+                }
+              }
+            },
+            {
+              "copy": {
+                "name": "blobServices_container",
+                "count": "[length(parameters('containers'))]"
+              },
+              "type": "Microsoft.Resources/deployments",
+              "apiVersion": "2020-06-01",
+              "name": "[format('{0}-Storage-Container-{1}', deployment().name, copyIndex())]",
+              "properties": {
+                "expressionEvaluationOptions": {
+                  "scope": "inner"
+                },
+                "mode": "Incremental",
+                "parameters": {
+                  "storageAccountName": {
+                    "value": "[parameters('storageAccountName')]"
+                  },
+                  "blobServicesName": {
+                    "value": "[parameters('name')]"
+                  },
+                  "name": {
+                    "value": "[parameters('containers')[copyIndex()].name]"
+                  },
+                  "publicAccess": {
+                    "value": "[if(contains(parameters('containers')[copyIndex()], 'publicAccess'), parameters('containers')[copyIndex()].publicAccess, 'None')]"
+                  },
+                  "roleAssignments": {
+                    "value": "[if(contains(parameters('containers')[copyIndex()], 'roleAssignments'), parameters('containers')[copyIndex()].roleAssignments, createArray())]"
+                  },
+                  "immutabilityPolicyProperties": {
+                    "value": "[if(contains(parameters('containers')[copyIndex()], 'immutabilityPolicyProperties'), parameters('containers')[copyIndex()].immutabilityPolicyProperties, createObject())]"
+                  }
+                },
+                "template": {
+                  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+                  "contentVersion": "1.0.0.0",
+                  "metadata": {
+                    "_generator": {
+                      "name": "bicep",
+                      "version": "0.4.1008.15138",
+                      "templateHash": "11152785031000017327"
+                    }
+                  },
+                  "parameters": {
+                    "storageAccountName": {
+                      "type": "string",
+                      "metadata": {
+                        "description": "Required. Name of the Storage Account."
+                      },
+                      "maxLength": 24
+                    },
+                    "blobServicesName": {
+                      "type": "string",
+                      "defaultValue": "default",
+                      "metadata": {
+                        "description": "Optional. Name of the blob service."
+                      }
+                    },
+                    "name": {
+                      "type": "string",
+                      "metadata": {
+                        "description": "The name of the storage container to deploy"
+                      }
+                    },
+                    "immutabilityPolicyName": {
+                      "type": "string",
+                      "defaultValue": "default",
+                      "metadata": {
+                        "description": "Optional. Name of the immutable policy."
+                      }
+                    },
+                    "publicAccess": {
+                      "type": "string",
+                      "defaultValue": "None",
+                      "metadata": {
+                        "description": "Specifies whether data in the container may be accessed publicly and the level of access."
+                      },
+                      "allowedValues": [
+                        "Container",
+                        "Blob",
+                        "None"
+                      ]
+                    },
+                    "immutabilityPolicyProperties": {
+                      "type": "object",
+                      "defaultValue": {},
+                      "metadata": {
+                        "description": "Configure immutability policy."
+                      }
+                    },
+                    "roleAssignments": {
+                      "type": "array",
+                      "defaultValue": [],
+                      "metadata": {
+                        "description": "Optional. Array of role assignment objects that contain the 'roleDefinitionIdOrName' and 'principalId' to define RBAC role assignments on this resource. In the roleDefinitionIdOrName attribute, you can provide either the display name of the role definition, or it's fully qualified ID in the following format: '/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11'"
+                      }
+                    },
+                    "cuaId": {
+                      "type": "string",
+                      "defaultValue": "",
+                      "metadata": {
+                        "description": "Optional. Customer Usage Attribution id (GUID). This GUID must be previously registered"
+                      }
+                    }
+                  },
+                  "functions": [],
+                  "resources": [
+                    {
+                      "type": "Microsoft.Storage/storageAccounts/blobServices/containers",
+                      "apiVersion": "2019-06-01",
+                      "name": "[format('{0}/{1}/{2}', parameters('storageAccountName'), parameters('blobServicesName'), parameters('name'))]",
+                      "properties": {
+                        "publicAccess": "[parameters('publicAccess')]"
+                      }
+                    },
+                    {
+                      "condition": "[not(empty(parameters('cuaId')))]",
+                      "type": "Microsoft.Resources/deployments",
+                      "apiVersion": "2020-06-01",
+                      "name": "[format('pid-{0}', parameters('cuaId'))]",
+                      "properties": {
+                        "expressionEvaluationOptions": {
+                          "scope": "inner"
+                        },
+                        "mode": "Incremental",
+                        "parameters": {},
+                        "template": {
+                          "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+                          "contentVersion": "1.0.0.0",
+                          "metadata": {
+                            "_generator": {
+                              "name": "bicep",
+                              "version": "0.4.1008.15138",
+                              "templateHash": "14669053462841078328"
+                            }
+                          },
+                          "functions": [],
+                          "resources": []
+                        }
+                      }
+                    },
+                    {
+                      "condition": "[not(empty(parameters('immutabilityPolicyProperties')))]",
+                      "type": "Microsoft.Resources/deployments",
+                      "apiVersion": "2020-06-01",
+                      "name": "[parameters('immutabilityPolicyName')]",
+                      "properties": {
+                        "expressionEvaluationOptions": {
+                          "scope": "inner"
+                        },
+                        "mode": "Incremental",
+                        "parameters": {
+                          "storageAccountName": {
+                            "value": "[parameters('storageAccountName')]"
+                          },
+                          "blobServicesName": {
+                            "value": "[parameters('blobServicesName')]"
+                          },
+                          "containerName": {
+                            "value": "[parameters('name')]"
+                          },
+                          "immutabilityPeriodSinceCreationInDays": {
+                            "value": "[if(contains(parameters('immutabilityPolicyProperties'), 'immutabilityPeriodSinceCreationInDays'), parameters('immutabilityPolicyProperties').immutabilityPeriodSinceCreationInDays, 365)]"
+                          },
+                          "allowProtectedAppendWrites": {
+                            "value": "[if(contains(parameters('immutabilityPolicyProperties'), 'allowProtectedAppendWrites'), parameters('immutabilityPolicyProperties').allowProtectedAppendWrites, true())]"
+                          }
+                        },
+                        "template": {
+                          "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+                          "contentVersion": "1.0.0.0",
+                          "metadata": {
+                            "_generator": {
+                              "name": "bicep",
+                              "version": "0.4.1008.15138",
+                              "templateHash": "9395755514216414096"
+                            }
+                          },
+                          "parameters": {
+                            "storageAccountName": {
+                              "type": "string",
+                              "metadata": {
+                                "description": "Required. Name of the Storage Account."
+                              },
+                              "maxLength": 24
+                            },
+                            "blobServicesName": {
+                              "type": "string",
+                              "defaultValue": "default",
+                              "metadata": {
+                                "description": "Optional. Name of the blob service."
+                              }
+                            },
+                            "containerName": {
+                              "type": "string",
+                              "metadata": {
+                                "description": "Required. Name of the container to apply the policy to"
+                              }
+                            },
+                            "name": {
+                              "type": "string",
+                              "defaultValue": "default",
+                              "metadata": {
+                                "description": "Optional. Name of the immutable policy."
+                              }
+                            },
+                            "immutabilityPeriodSinceCreationInDays": {
+                              "type": "int",
+                              "defaultValue": 365,
+                              "metadata": {
+                                "description": "The immutability period for the blobs in the container since the policy creation, in days."
+                              }
+                            },
+                            "allowProtectedAppendWrites": {
+                              "type": "bool",
+                              "defaultValue": true,
+                              "metadata": {
+                                "description": "This property can only be changed for unlocked time-based retention policies. When enabled, new blocks can be written to an append blob while maintaining immutability protection and compliance. Only new blocks can be added and any existing blocks cannot be modified or deleted. This property cannot be changed with ExtendImmutabilityPolicy API"
+                              }
+                            },
+                            "cuaId": {
+                              "type": "string",
+                              "defaultValue": "",
+                              "metadata": {
+                                "description": "Optional. Customer Usage Attribution id (GUID). This GUID must be previously registered"
+                              }
+                            }
+                          },
+                          "functions": [],
+                          "resources": [
+                            {
+                              "type": "Microsoft.Storage/storageAccounts/blobServices/containers/immutabilityPolicies",
+                              "apiVersion": "2019-06-01",
+                              "name": "[format('{0}/{1}/{2}/{3}', parameters('storageAccountName'), parameters('blobServicesName'), parameters('containerName'), parameters('name'))]",
+                              "properties": {
+                                "immutabilityPeriodSinceCreationInDays": "[parameters('immutabilityPeriodSinceCreationInDays')]",
+                                "allowProtectedAppendWrites": "[parameters('allowProtectedAppendWrites')]"
+                              }
+                            },
+                            {
+                              "condition": "[not(empty(parameters('cuaId')))]",
+                              "type": "Microsoft.Resources/deployments",
+                              "apiVersion": "2020-06-01",
+                              "name": "[format('pid-{0}', parameters('cuaId'))]",
+                              "properties": {
+                                "expressionEvaluationOptions": {
+                                  "scope": "inner"
+                                },
+                                "mode": "Incremental",
+                                "parameters": {},
+                                "template": {
+                                  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+                                  "contentVersion": "1.0.0.0",
+                                  "metadata": {
+                                    "_generator": {
+                                      "name": "bicep",
+                                      "version": "0.4.1008.15138",
+                                      "templateHash": "14669053462841078328"
+                                    }
+                                  },
+                                  "functions": [],
+                                  "resources": []
+                                }
+                              }
+                            }
+                          ],
+                          "outputs": {
+                            "immutabilityPolicyName": {
+                              "type": "string",
+                              "value": "[last(split(parameters('name'), '/'))]",
+                              "metadata": {
+                                "description": "The name of the deployed immutability policy."
+                              }
+                            },
+                            "immutabilityPolicyResourceId": {
+                              "type": "string",
+                              "value": "[resourceId('Microsoft.Storage/storageAccounts/blobServices/containers/immutabilityPolicies', parameters('storageAccountName'), parameters('blobServicesName'), parameters('containerName'), parameters('name'))]",
+                              "metadata": {
+                                "description": "The id of the deployed immutability policy."
+                              }
+                            },
+                            "immutabilityPolicyResourceGroup": {
+                              "type": "string",
+                              "value": "[resourceGroup().name]",
+                              "metadata": {
+                                "description": "The resource group of the deployed immutability policy."
+                              }
+                            }
+                          }
+                        }
+                      },
+                      "dependsOn": [
+                        "[resourceId('Microsoft.Storage/storageAccounts/blobServices/containers', parameters('storageAccountName'), parameters('blobServicesName'), parameters('name'))]"
+                      ]
+                    },
+                    {
+                      "copy": {
+                        "name": "container_rbac",
+                        "count": "[length(parameters('roleAssignments'))]"
+                      },
+                      "type": "Microsoft.Resources/deployments",
+                      "apiVersion": "2020-06-01",
+                      "name": "[format('{0}-Rbac-{1}', deployment().name, copyIndex())]",
+                      "properties": {
+                        "expressionEvaluationOptions": {
+                          "scope": "inner"
+                        },
+                        "mode": "Incremental",
+                        "parameters": {
+                          "roleAssignmentObj": {
+                            "value": "[parameters('roleAssignments')[copyIndex()]]"
+                          },
+                          "resourceName": {
+                            "value": "[parameters('name')]"
+                          }
+                        },
+                        "template": {
+                          "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+                          "contentVersion": "1.0.0.0",
+                          "metadata": {
+                            "_generator": {
+                              "name": "bicep",
+                              "version": "0.4.1008.15138",
+                              "templateHash": "5079331524623336670"
+                            }
+                          },
+                          "parameters": {
+                            "roleAssignmentObj": {
+                              "type": "object"
+                            },
+                            "resourceName": {
+                              "type": "string"
+                            }
+                          },
+                          "functions": [],
+                          "variables": {
+                            "builtInRoleNames": {
+                              "Owner": "[subscriptionResourceId('Microsoft.Authorization/roleDefinitions', '8e3af657-a8ff-443c-a75c-2fe8c4bcb635')]",
+                              "Contributor": "[subscriptionResourceId('Microsoft.Authorization/roleDefinitions', 'b24988ac-6180-42a0-ab88-20f7382dd24c')]",
+                              "Reader": "[subscriptionResourceId('Microsoft.Authorization/roleDefinitions', 'acdd72a7-3385-48ef-bd42-f606fba81ae7')]",
+                              "Avere Contributor": "[subscriptionResourceId('Microsoft.Authorization/roleDefinitions', '4f8fab4f-1852-4a58-a46a-8eaf358af14a')]",
+                              "Avere Operator": "[subscriptionResourceId('Microsoft.Authorization/roleDefinitions', 'c025889f-8102-4ebf-b32c-fc0c6f0c6bd9')]",
+                              "Backup Contributor": "[subscriptionResourceId('Microsoft.Authorization/roleDefinitions', '5e467623-bb1f-42f4-a55d-6e525e11384b')]",
+                              "Backup Operator": "[subscriptionResourceId('Microsoft.Authorization/roleDefinitions', '00c29273-979b-4161-815c-10b084fb9324')]",
+                              "DevTest Labs User": "[subscriptionResourceId('Microsoft.Authorization/roleDefinitions', '76283e04-6283-4c54-8f91-bcf1374a3c64')]",
+                              "Disk Snapshot Contributor": "[subscriptionResourceId('Microsoft.Authorization/roleDefinitions', '7efff54f-a5b4-42b5-a1c5-5411624893ce')]",
+                              "Log Analytics Contributor": "[subscriptionResourceId('Microsoft.Authorization/roleDefinitions', '92aaf0da-9dab-42b6-94a3-d43ce8d16293')]",
+                              "Log Analytics Reader": "[subscriptionResourceId('Microsoft.Authorization/roleDefinitions', '73c42c96-874c-492b-b04d-ab87d138a893')]",
+                              "Logic App Contributor": "[subscriptionResourceId('Microsoft.Authorization/roleDefinitions', '87a39d53-fc1b-424a-814c-f7e04687dc9e')]",
+                              "Managed Application Contributor Role": "[subscriptionResourceId('Microsoft.Authorization/roleDefinitions', '641177b8-a67a-45b9-a033-47bc880bb21e')]",
+                              "Managed Application Operator Role": "[subscriptionResourceId('Microsoft.Authorization/roleDefinitions', 'c7393b34-138c-406f-901b-d8cf2b17e6ae')]",
+                              "Managed Applications Reader": "[subscriptionResourceId('Microsoft.Authorization/roleDefinitions', 'b9331d33-8a36-4f8c-b097-4f54124fdb44')]",
+                              "Monitoring Contributor": "[subscriptionResourceId('Microsoft.Authorization/roleDefinitions', '749f88d5-cbae-40b8-bcfc-e573ddc772fa')]",
+                              "Monitoring Metrics Publisher": "[subscriptionResourceId('Microsoft.Authorization/roleDefinitions', '3913510d-42f4-4e42-8a64-420c390055eb')]",
+                              "Monitoring Reader": "[subscriptionResourceId('Microsoft.Authorization/roleDefinitions', '43d0d8ad-25c7-4714-9337-8ba259a9fe05')]",
+                              "Reader and Data Access": "[subscriptionResourceId('Microsoft.Authorization/roleDefinitions', 'c12c1c16-33a1-487b-954d-41c89c60f349')]",
+                              "Resource Policy Contributor": "[subscriptionResourceId('Microsoft.Authorization/roleDefinitions', '36243c78-bf99-498c-9df9-86d9f8d28608')]",
+                              "Site Recovery Contributor": "[subscriptionResourceId('Microsoft.Authorization/roleDefinitions', '6670b86e-a3f7-4917-ac9b-5d6ab1be4567')]",
+                              "Site Recovery Operator": "[subscriptionResourceId('Microsoft.Authorization/roleDefinitions', '494ae006-db33-4328-bf46-533a6560a3ca')]",
+                              "Storage Account Backup Contributor Role": "[subscriptionResourceId('Microsoft.Authorization/roleDefinitions', 'e5e2a7ff-d759-4cd2-bb51-3152d37e2eb1')]",
+                              "Storage Account Contributor": "[subscriptionResourceId('Microsoft.Authorization/roleDefinitions', '17d1049b-9a84-46fb-8f53-869881c3d3ab')]",
+                              "Storage Account Key Operator Service Role": "[subscriptionResourceId('Microsoft.Authorization/roleDefinitions', '81a9662b-bebf-436f-a333-f67b29880f12')]",
+                              "Storage Blob Data Contributor": "[subscriptionResourceId('Microsoft.Authorization/roleDefinitions', 'ba92f5b4-2d11-453d-a403-e96b0029c9fe')]",
+                              "Storage Blob Data Owner": "[subscriptionResourceId('Microsoft.Authorization/roleDefinitions', 'b7e6dc6d-f1e8-4753-8033-0f276bb0955b')]",
+                              "Storage Blob Data Reader": "[subscriptionResourceId('Microsoft.Authorization/roleDefinitions', '2a2b9908-6ea1-4ae2-8e65-a410df84e7d1')]",
+                              "Storage Blob Delegator": "[subscriptionResourceId('Microsoft.Authorization/roleDefinitions', 'db58b8e5-c6ad-4a2a-8342-4190687cbf4a')]",
+                              "User Access Administrator": "[subscriptionResourceId('Microsoft.Authorization/roleDefinitions', '18d7d88d-d35e-4fb5-a5c3-7773c20a72d9')]",
+                              "Virtual Machine Contributor": "[subscriptionResourceId('Microsoft.Authorization/roleDefinitions', '9980e02c-c2be-4d73-94e8-173b1dc7cf3c')]"
+                            }
+                          },
+                          "resources": [
+                            {
+                              "copy": {
+                                "name": "roleAssignment",
+                                "count": "[length(parameters('roleAssignmentObj').principalIds)]"
+                              },
+                              "type": "Microsoft.Authorization/roleAssignments",
+                              "apiVersion": "2020-04-01-preview",
+                              "scope": "[format('Microsoft.Storage/storageAccounts/{0}/blobServices/{1}/containers/{2}', split(parameters('resourceName'), '/')[0], split(parameters('resourceName'), '/')[1], split(parameters('resourceName'), '/')[2])]",
+                              "name": "[guid(parameters('resourceName'), parameters('roleAssignmentObj').principalIds[copyIndex()], parameters('roleAssignmentObj').roleDefinitionIdOrName)]",
+                              "properties": {
+                                "roleDefinitionId": "[if(contains(variables('builtInRoleNames'), parameters('roleAssignmentObj').roleDefinitionIdOrName), variables('builtInRoleNames')[parameters('roleAssignmentObj').roleDefinitionIdOrName], parameters('roleAssignmentObj').roleDefinitionIdOrName)]",
+                                "principalId": "[parameters('roleAssignmentObj').principalIds[copyIndex()]]"
+                              }
+                            }
+                          ]
+                        }
+                      },
+                      "dependsOn": [
+                        "[resourceId('Microsoft.Storage/storageAccounts/blobServices/containers', parameters('storageAccountName'), parameters('blobServicesName'), parameters('name'))]"
+                      ]
+                    }
+                  ],
+                  "outputs": {
+                    "containerName": {
+                      "type": "string",
+                      "value": "[last(split(parameters('name'), '/'))]",
+                      "metadata": {
+                        "description": "The name of the deployed container"
+                      }
+                    },
+                    "containerResourceId": {
+                      "type": "string",
+                      "value": "[resourceId('Microsoft.Storage/storageAccounts/blobServices/containers', parameters('storageAccountName'), parameters('blobServicesName'), parameters('name'))]",
+                      "metadata": {
+                        "description": "The ID of the deployed container"
+                      }
+                    },
+                    "containerResourceGroup": {
+                      "type": "string",
+                      "value": "[resourceGroup().name]",
+                      "metadata": {
+                        "description": "The resource group of the deployed container"
+                      }
+                    }
+                  }
+                }
+              },
+              "dependsOn": [
+                "[resourceId('Microsoft.Storage/storageAccounts/blobServices', parameters('storageAccountName'), parameters('name'))]"
+              ]
+            }
+          ],
+          "outputs": {
+            "blobServicesName": {
+              "type": "string",
+              "value": "[last(split(parameters('name'), '/'))]",
+              "metadata": {
+                "description": "The name of the deployed blob service"
+              }
+            },
+            "blobServicesResourceId": {
+              "type": "string",
+              "value": "[resourceId('Microsoft.Storage/storageAccounts/blobServices', parameters('storageAccountName'), parameters('name'))]",
+              "metadata": {
+                "description": "The id of the deployed blob service"
+              }
+            },
+            "blobServicesResourceGroup": {
+              "type": "string",
+              "value": "[resourceGroup().name]",
+              "metadata": {
+                "description": "The name of the deployed blob service"
+              }
+            }
+          }
+        }
+      },
+      "dependsOn": [
+        "[resourceId('Microsoft.Storage/storageAccounts', variables('storageAccountName_var'))]"
+      ]
+    }
+  ],
+  "outputs": {
+    "storageAccountResourceId": {
+      "type": "string",
+      "value": "[resourceId('Microsoft.Storage/storageAccounts', variables('storageAccountName_var'))]",
+      "metadata": {
+        "description": "The resource Id of the deployed storage account"
+      }
+    },
+    "storageAccountName": {
+      "type": "string",
+      "value": "[variables('storageAccountName_var')]",
+      "metadata": {
+        "description": "The name of the deployed storage account"
+      }
+    },
+    "storageAccountResourceGroup": {
+      "type": "string",
+      "value": "[resourceGroup().name]",
+      "metadata": {
+        "description": "The resource group of the deployed storage account"
+      }
+    },
+    "storageAccountPrimaryBlobEndpoint": {
+      "type": "string",
+      "value": "[if(and(not(empty(parameters('blobServices'))), contains(reference(resourceId('Microsoft.Resources/deployments', format('{0}-Storage-BlobServices', uniqueString(deployment().name, parameters('location')))), '2020-06-01').outputs, 'blobContainers')), '', reference(format('Microsoft.Storage/storageAccounts/{0}', variables('storageAccountName_var')), '2019-04-01').primaryEndpoints.blob)]",
+      "metadata": {
+        "description": "The primary blob endpoint reference if blob services are deployed."
+      }
+    },
+    "assignedIdentityID": {
+      "type": "string",
+      "value": "[if(contains(parameters('managedServiceIdentity'), 'SystemAssigned'), reference(resourceId('Microsoft.Storage/storageAccounts', variables('storageAccountName_var')), '2019-06-01', 'full').identity.principalId, '')]",
+      "metadata": {
+        "description": "The resource id of the assigned identity, if any"
+      }
+    }
+  }
+}

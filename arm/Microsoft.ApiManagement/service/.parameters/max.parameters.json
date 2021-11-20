@@ -119,11 +119,15 @@
                     "name": "Starter",
                     "subscriptionRequired": false,
                     "approvalRequired": false,
-                    "productApis": [
-                        "echo-api"
+                    "apis": [
+                        {
+                            "name": "echo-api"
+                        }
                     ],
-                    "productGroups": [
-                        "developers"
+                    "groups": [
+                        {
+                            "name": "developers"
+                        }
                     ]
                 }
             ]

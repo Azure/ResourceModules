@@ -19,9 +19,6 @@
         "localBgpPeeringAddress": {
             "value": "192.168.1.5"
         },
-        "fqdn": {
-            "value": "abc"
-        },
         "roleAssignments": {
             "value": [
                 {
