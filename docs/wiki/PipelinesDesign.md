@@ -15,6 +15,8 @@ This section gives you an overview of the design principals the pipelines follow
 - [Shared concepts](#shared-concepts)
   - [Validation prerequisites](#validation-prerequisites)
   - [Tokens Replacement](#tokens-replacement)
+- [Platform-specific considerations](#platform-specific-considerations)
+  - [GitHub Workflows](#github-workflows)
 
 ---
 
@@ -32,7 +34,6 @@ To "build"/"bake" the modules, a dedicated pipeline is used for each module to v
 Using this flow, validated modules can be consumed by other any consumer / template / orchestration to deploy a service, workload, or entire environment such as a landing zone.
 
 These 'ad-hoc' test pipelines are important since every customer environment might be different due to applied Azure Policies or security policies, modules might behave differently or naming conventions need to be tested and applied beforehand.
-
 
 ### Validate
 
@@ -52,7 +53,11 @@ However, even for such a simulated deployment we have to account for certain [pr
 
 The deployment phase uses a combination of both the module's template file as well as each specified parameter file to run a parallel deployment towards a given Azure environment.
 
+The parameter files used in this stage should ideally cover as many scenarios as possible to ensure we can use the template for all use cases we may have when deploying to production eventually. Using the example of a CosmosDB module we may want to have one parameter file for the minimum amount of required parameters, one parameter file for each CosmosDB type to test individual configurations and at least one parameter file that tests the supported providers such as RBAC & diagnostic settings.
+
 ### Removal
+
+The removal phase is strongly coupled with the previous deployment phase. Fundamentally, we want to remove any test-deployed resource after the test concluded. If they are not, they result in unnecessary costs and may temper with any subsequent test.
 
 ### Publish
 
@@ -73,3 +78,7 @@ Dynamic parameters that do not need to be hardcoded in the parameter file, and t
 For example, some modules require referencing Azure resources with the Resource ID. This ID typically contains the `subscriptionId` in the format of `/subscriptions/<<subscriptionId>>/...`. This task substitutes the `<<subscriptionId>>` with the correct value, based on the different token types.
 
 Please review the Parameter File Tokens [Design](./ParameterFileTokens) for more details on the different token types and how you can use them to remove hardcoded values from your parameter files.
+
+## Platform-specific considerations
+
+### GitHub Workflows
