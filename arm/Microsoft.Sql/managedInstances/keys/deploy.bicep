@@ -32,7 +32,7 @@ module pid_cuaId './.bicep/nested_cuaId.bicep' = if (!empty(cuaId)) {
 }
 
 resource keyVault 'Microsoft.KeyVault/vaults/keys@2021-06-01-preview' existing = if (empty(uri)) {
-  name: (!empty(uri)) ? '${keyVaultName}/${keyName}' : 'dummyVault/dummyKey'
+  name: (empty(uri)) ? '${keyVaultName}/${keyName}' : 'dummyVault/dummyKey'
 }
 
 resource managedInstance 'Microsoft.Sql/managedInstances@2021-05-01-preview' existing = {
