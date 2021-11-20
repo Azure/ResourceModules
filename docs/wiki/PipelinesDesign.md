@@ -55,13 +55,37 @@ The deployment phase uses a combination of both the module's template file as we
 
 The parameter files used in this stage should ideally cover as many scenarios as possible to ensure we can use the template for all use cases we may have when deploying to production eventually. Using the example of a CosmosDB module we may want to have one parameter file for the minimum amount of required parameters, one parameter file for each CosmosDB type to test individual configurations and at least one parameter file that tests the supported providers such as RBAC & diagnostic settings.
 
+Note that, for the deployments we have to account for certain [prerequisites](#prerequisites) and also consider the [tokens replacement](#tokens-replacement) logic we leverage on this platform.
+
 ### Removal
 
 The removal phase is strongly coupled with the previous deployment phase. Fundamentally, we want to remove any test-deployed resource after its test concluded. If we would not, we would generate unnecessary costs and may temper with any subsequent test.
 
+> ***Note:*** At the time of this writing, resources to be removed are identified using Azure tags. This means, at deployment time, a specific tag is applied to the resources which is then picked up by the removal phase to remove the same. However, while this solution works for most modules, it does not for all. The main reasons why it would fail are:
+> - Lack of 'Tag' support
+> - Soft-delete
+> - Resource removal must occur in a specific order
+>
+> To account for these cases, a new approach is implemented and will succeed the current solution.
+
 ### Publish
 
+The publish phase concludes each module's pipeline. If all previous tests succeeded (i.e. no phase failed) and the pipeline was executed in the main/master branch, a new module version is published to all configured target locations. Currently we support
+- _template specs_
+- _private bicep registry_
+
+By the time of this writing, the publishing experience works as follows:
+1. A user can optionally specific a specific version in the module's pipeline file, or during runtime. If the user does not, a default version is used
+1. No matter what publishing location we enabled, the corresponding logic will
+   1. Fetch the latest version of this module in the target location (if available)
+   1. Compare it with any specified custom version the user optionally provided
+      - If the custom version is higher, it is used going forward
+      - If it is lower, the fallback mechanism will select a new version based on some default behavior (e.g. increment to the next patch version)
+   1. The identified new version is then used to publish the module to the target location in question
+
 ## Shared concepts
+
+There are several concepts that are shared among the phases. Most notably the [simulated deployment validation](#simulated-deployment-validation) and [test deployment](#test-deploy).
 
 ### Prerequisites
 
@@ -82,3 +106,7 @@ Please review the Parameter File Tokens [Design](./ParameterFileTokens) for more
 ## Platform-specific considerations
 
 ### GitHub Workflows
+
+#### **Component:** Variable file(s)
+#### **Component:** Composite Actions
+#### **Component:** Workflows
