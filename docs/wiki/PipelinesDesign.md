@@ -15,6 +15,10 @@ This section gives you an overview of the design principals the pipelines follow
 - [Shared concepts](#shared-concepts)
   - [Validation prerequisites](#validation-prerequisites)
   - [Tokens Replacement](#tokens-replacement)
+- [Other pipelines](#other-pipelines)
+  - [Dependencies pipeline](#dependencies-pipeline)
+  - [ReadMe pipeline](#readme-pipeline)
+  - [Wiki pipeline](#wiki-pipeline)
 - [DevOps-Tool-specific considerations](#devops-tool-specific-considerations)
   - [GitHub Workflows](#github-workflows)
 
@@ -63,7 +67,7 @@ Note that, for the deployments we have to account for certain [prerequisites](#p
 
 The removal phase is strongly coupled with the previous deployment phase. Fundamentally, we want to remove any test-deployed resource after its test concluded. If we would not, we would generate unnecessary costs and may temper with any subsequent test.
 
-> ***Note:*** At the time of this writing, resources to be removed are identified using Azure tags. This means, at deployment time, a specific tag is applied to the resources which is then picked up by the removal phase to remove the same. However, while this solution works for most modules, it does not for all. The main reasons why it would fail are:
+> **Note:** At the time of this writing, resources to be removed are identified using Azure tags. This means, at deployment time, a specific tag is applied to the resources which is then picked up by the removal phase to remove the same. However, while this solution works for most modules, it does not for all. The main reasons why it would fail are:
 > - Lack of 'Tag' support
 > - Soft-delete
 > - Resource removal must occur in a specific order
@@ -105,11 +109,36 @@ For example, some modules require referencing Azure resources with the Resource 
 
 Please review the Parameter File Tokens [Design](./ParameterFileTokens) for more details on the different token types and how you can use them to remove hardcoded values from your parameter files.
 
+## Other pipelines
+
+Outside of the previously described platform pipelines we implemented several additional pipelines to help us with some additional tasks.
+
+### Dependencies pipeline
+
+As the modules we test often times have dependencies to other services, we created a pipeline to deploys several standard services like VirtualNetworks and KeyVaults (alongside dummy secrets) for the modules to use. This _dependency_ pipeline should be prepared and executed before you start running any pipelines on your own. In case you need to rename any services there (for example because a certain globally unique resource name was already taken) make sure to update any references to this name in the module parameter files. You can find further details about this pipeline [here](.\TestingDesign.md#Module-Dependencies).
+
+### ReadMe pipeline
+
+We have two major ReadMe files that we want to stay in sync with the modules in the repository. The first can be found in root (`README.md`) and the second in the modules folder (`arm/README.md`). The pipeline is triggered each time changes are pushed to the `main` branch and only if a template in the `arm` folder was altered.
+
+Once triggered it will crawl through the library and update the tables in each corresponding ReadMe, creating links to the pipelines, adding/removing entries and so on.
+
+### Wiki pipeline
+
+The purpose of this pipeline is to sync any files from the `docs/wiki` folder to the GitHub wiki repository. It is triggered each time changes are pushed to the `main` branch and only if files in the `docs/wiki` folder were altered.
+
+> **Note:** any changes performed directly on the Wiki via the UI will be overwritten by this pipeline.
+
 ## DevOps-Tool-specific considerations
 
 Depending on what DevOps tool you want to use to host the platform you will find the corresponding code in different locations. This section will give you an overview of these locations and what they are used for.
 
 ### GitHub Workflows
+
+GitHub actions & workflows are the CI/CD solution provided by GitHub. To get the platform going, we use the following three elements:
+- **Variable Files:**
+- **Composite Actions:**
+- **Workflows:**
 
 #### **Component:** Variable file(s)
 
