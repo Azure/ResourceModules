@@ -1,7 +1,6 @@
 # Pipelines Design
 
 This section gives you an overview of the design principals the pipelines follow.
-
 ---
 
 ### _Navigation_
@@ -30,7 +29,10 @@ To "build"/"bake" the modules, a dedicated pipeline is used for each module to v
 1. **Removal**: The test suite is cleaned up by removing all deployed test resources again
 1. **Publish**: the proven results are copied/published to a configured location such as template specs, the bicep registry, Azure DevOps artifacts, etc.
 
-Using this flow, validated modules can be consumed by other any consumer / template / orchestration to deploy a workload, solution, environment or landing zone.
+Using this flow, validated modules can be consumed by other any consumer / template / orchestration to deploy a service, workload, or entire environment such as a landing zone.
+
+These 'ad-hoc' test pipelines are important since every customer environment might be different due to applied Azure Policies or security policies, modules might behave differently or naming conventions need to be tested and applied beforehand.
+
 
 ### Validate
 
@@ -44,10 +46,14 @@ This static validation executes the tests documented in the [testing](./Testing.
 
 This test executes validation tests such as `Test-AzResourceGroupDeployment` using both the module's template, as well as each specified parameter file. The intention of this test is to fail fast, before we even get to the later deployment test.
 
-However, even for such a simulated deployment we have to account for certain [prerequisites](#prerequisites) and also consider the [token replacement](#tokens-replacement) logic we leverage on this platform.
+However, even for such a simulated deployment we have to account for certain [prerequisites](#prerequisites) and also consider the [tokens replacement](#tokens-replacement) logic we leverage on this platform.
 
 ### Test deploy
+
+The deployment phase uses a combination of both the module's template file as well as each specified parameter file to run a parallel deployment towards a given Azure environment.
+
 ### Removal
+
 ### Publish
 
 ## Shared concepts
@@ -67,8 +73,3 @@ Dynamic parameters that do not need to be hardcoded in the parameter file, and t
 For example, some modules require referencing Azure resources with the Resource ID. This ID typically contains the `subscriptionId` in the format of `/subscriptions/<<subscriptionId>>/...`. This task substitutes the `<<subscriptionId>>` with the correct value, based on the different token types.
 
 Please review the Parameter File Tokens [Design](./ParameterFileTokens) for more details on the different token types and how you can use them to remove hardcoded values from your parameter files.
-
-
-#### Why do I have to validate deployments of modules?
-
-Since every customer environment might be different due to applied Azure Policies or security policies, modules might behave differently or naming conventions need to be tested and applied beforehand.
