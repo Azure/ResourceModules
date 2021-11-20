@@ -6,7 +6,7 @@ This module deploys a key for a SQL managed instance.
 
 | Resource Type | Api Version |
 | :-- | :-- |
-| `Microsoft.Sql/managedInstances/keys` | 2017-10-01-preview |
+| `Microsoft.Sql/managedInstances/keys` | 2021-05-01-preview |
 
 ## Parameters
 
@@ -16,7 +16,7 @@ This module deploys a key for a SQL managed instance.
 | `managedInstanceName` | string |  |  | Required. Name of the SQL managed instance. |
 | `name` | string |  |  | Optional. The name of the key |
 | `serverKeyType` | string | `ServiceManaged` | `[AzureKeyVault, ServiceManaged]` | Optional. The encryption protector type like "ServiceManaged", "AzureKeyVault" |
-| `uri` | string |  |  | Optional. The URI of the key. If the ServerKeyType is AzureKeyVault, then the URI is required. |
+| `uri` | string |  |  | Optional. The URI of the key. If the ServerKeyType is AzureKeyVault, then either the URI or the keyVaultName/keyName combination is required. |
 
 ## Outputs
 
@@ -28,4 +28,4 @@ This module deploys a key for a SQL managed instance.
 
 ## Template references
 
-- [Managedinstances/Keys](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Sql/2017-10-01-preview/managedInstances/keys)
+- [Managedinstances/Keys](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Sql/2021-05-01-preview/managedInstances/keys)

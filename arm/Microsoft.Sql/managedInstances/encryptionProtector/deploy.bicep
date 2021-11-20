@@ -12,7 +12,7 @@ param serverKeyName string
   'AzureKeyVault'
   'ServiceManaged'
 ])
-param serverKeyType string = 'AzureKeyVault'
+param serverKeyType string = 'ServiceManaged'
 
 @description('Optional. Key auto rotation opt-in flag')
 param autoRotationEnabled bool = false

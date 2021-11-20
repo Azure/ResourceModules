@@ -17,7 +17,7 @@ This module deploys an encryption protector for a SQL managed instance.
 | `managedInstanceName` | string |  |  | Required. Name of the SQL managed instance. |
 | `name` | string | `current` |  | Required. The name of the encryptionProtector |
 | `serverKeyName` | string |  |  | Required. The name of the SQL managed instance key. |
-| `serverKeyType` | string | `AzureKeyVault` | `[AzureKeyVault, ServiceManaged]` | Optional. The encryption protector type like "ServiceManaged", "AzureKeyVault". |
+| `serverKeyType` | string | `ServiceManaged` | `[AzureKeyVault, ServiceManaged]` | Optional. The encryption protector type like "ServiceManaged", "AzureKeyVault". |
 
 ## Outputs
 

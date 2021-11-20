@@ -15,7 +15,7 @@ This template deploys an SQL Managed Instance, with resource lock.
 | `Microsoft.Sql/managedInstances/databases/backupLongTermRetentionPolicies` | 2021-02-01-preview |
 | `Microsoft.Sql/managedInstances/databases/backupShortTermRetentionPolicies` | 2017-03-01-preview |
 | `Microsoft.Sql/managedInstances/encryptionProtector` | 2021-05-01-preview |
-| `Microsoft.Sql/managedInstances/keys` | 2017-10-01-preview |
+| `Microsoft.Sql/managedInstances/keys` | 2021-05-01-preview |
 | `Microsoft.Sql/managedInstances/securityAlertPolicies` | 2017-03-01-preview |
 | `Microsoft.Sql/managedInstances/vulnerabilityAssessments` | 2021-02-01-preview |
 
@@ -143,6 +143,6 @@ Tag names and tag values can be provided as needed. A tag can be left without a 
 - [Managedinstances/Databases/Backuplongtermretentionpolicies](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Sql/2021-02-01-preview/managedInstances/databases/backupLongTermRetentionPolicies)
 - [Managedinstances/Databases/Backupshorttermretentionpolicies](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Sql/2017-03-01-preview/managedInstances/databases/backupShortTermRetentionPolicies)
 - [Managedinstances/Encryptionprotector](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Sql/2021-05-01-preview/managedInstances/encryptionProtector)
-- [Managedinstances/Keys](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Sql/2017-10-01-preview/managedInstances/keys)
+- [Managedinstances/Keys](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Sql/2021-05-01-preview/managedInstances/keys)
 - [Managedinstances/Securityalertpolicies](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Sql/2017-03-01-preview/managedInstances/securityAlertPolicies)
 - [Managedinstances/Vulnerabilityassessments](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Sql/2021-02-01-preview/managedInstances/vulnerabilityAssessments)

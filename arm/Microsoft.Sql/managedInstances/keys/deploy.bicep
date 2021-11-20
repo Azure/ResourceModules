@@ -14,36 +14,29 @@ param serverKeyType string = 'ServiceManaged'
 @description('Optional. The URI of the key. If the ServerKeyType is AzureKeyVault, then either the URI or the keyVaultName/keyName combination is required.')
 param uri string = ''
 
-@description('Optional. The name of the key vault with the key. If the ServerKeyType is AzureKeyVault, then either the URI or the keyVaultName/keyName combination is required')
-param keyVaultName string = ''
-
-@description('Optional. The name of the key in the key vault. If the ServerKeyType is AzureKeyVault, then either the URI or the keyVaultName/keyName combination is required')
-param keyName string = ''
-
 @description('Optional. Customer Usage Attribution id (GUID). This GUID must be previously registered')
 param cuaId string = ''
 
 var splittedKeyUri = split(uri, '/')
-var serverKeyName = (empty(uri) ? 'ServiceManaged' : '${split(splittedKeyUri[2], '.')[0]}_${splittedKeyUri[4]}_${splittedKeyUri[5]}')
+
+// if serverManaged, use serverManaged, if uri provided use concated uri value
+// MUST match the pattern '<keyVaultName>_<keyName>_<keyVersion>'
+var serverKeyName = empty(uri) ? 'ServiceManaged' : '${split(splittedKeyUri[2], '.')[0]}_${splittedKeyUri[4]}_${splittedKeyUri[5]}'
 
 module pid_cuaId './.bicep/nested_cuaId.bicep' = if (!empty(cuaId)) {
   name: 'pid-${cuaId}'
   params: {}
 }
 
-resource keyVaultKey 'Microsoft.KeyVault/vaults/keys@2021-06-01-preview' existing = if (empty(uri)) {
-  name: (empty(uri)) ? '${keyVaultName}/${keyName}' : 'dummyVault/dummyKey'
-}
-
 resource managedInstance 'Microsoft.Sql/managedInstances@2021-05-01-preview' existing = {
   name: managedInstanceName
 }
 
-resource key 'Microsoft.Sql/managedInstances/keys@2017-10-01-preview' = {
+resource key 'Microsoft.Sql/managedInstances/keys@2021-05-01-preview' = {
   name: !empty(name) ? name : serverKeyName
   properties: {
     serverKeyType: serverKeyType
-    uri: (!empty(uri)) ? uri : keyVaultKey.properties.keyUriWithVersion
+    uri: uri
   }
   parent: managedInstance
 }

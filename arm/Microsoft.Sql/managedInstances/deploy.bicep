@@ -314,8 +314,6 @@ module managedInstance_key 'keys/deploy.bicep' = if (!empty(keysObj)) {
     name: contains(keysObj, 'name') ? keysObj.name : ''
     serverKeyType: contains(keysObj, 'serverKeyType') ? keysObj.serverKeyType : 'ServiceManaged'
     uri: contains(keysObj, 'uri') ? keysObj.uri : ''
-    keyVaultName: contains(keysObj, 'keyVaultName') ? keysObj.keyVaultName : ''
-    keyName: contains(keysObj, 'keyName') ? keysObj.keyName : ''
   }
   dependsOn: [
     managedInstance
