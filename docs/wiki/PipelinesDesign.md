@@ -196,4 +196,10 @@ We use several composite actions to perform various tasks shared by our module w
 
 #### **Component:** Workflows
 
-These are the individual end-2-end workflows we have for each module. Leveraging the [composite actions](#component-composite-actions) described before, they orchestrate the testing & publishing of for a module.
+These are the individual end-2-end workflows we have for each module. Leveraging the [composite actions](#component-composite-actions) described before, they orchestrate the testing & publishing of their module.
+
+Comparing multiple workflows you'll notice they are almost identically, yet differ in a few important areas:
+
+- The path filters of the pipeline trigger
+- The environment variables
+- (optionally) The relative path to a removal script
