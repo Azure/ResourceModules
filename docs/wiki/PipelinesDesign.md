@@ -31,6 +31,8 @@ To "build"/"bake" the modules, a dedicated pipeline is used for each module to v
    1. **Removal**: The test suite is cleaned up by removing all deployed test resources again
 1. **Publish**: the proven results are copied/published to a configured location such as template specs, the bicep registry, Azure DevOps artifacts, etc.
 
+<img src="./media/pipelinePhases.png" alt="Pipeline phases" height="150">
+
 Using this flow, validated modules can be consumed by other any consumer / template / orchestration to deploy a service, workload, or entire environment such as a landing zone.
 
 These 'ad-hoc' test pipelines are important since every customer environment might be different due to applied Azure Policies or security policies, modules might behave differently or naming conventions need to be tested and applied beforehand.

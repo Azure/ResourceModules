@@ -147,7 +147,7 @@ from the command-line of your choice.
 
 If you instead just want to have a copy of the repository's content you can instead download it in the `.zip` format. You can do this by navigating to the repository folder of your choice (for example root), then select the `<> Code` button on the top left and click on `Download ZIP` on the opening blade.
 
- <img src="./media/cloneDownloadRepo.JPG" alt="How to download repository" height="266" width="295">
+ <img src="./media/cloneDownloadRepo.JPG" alt="How to download repository" height="266">
 
 ### **Option 3**: Use it as remote reference to reference the bicep templates
 
