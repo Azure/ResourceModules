@@ -57,7 +57,7 @@ The parameter files used in this stage should ideally cover as many scenarios as
 
 ### Removal
 
-The removal phase is strongly coupled with the previous deployment phase. Fundamentally, we want to remove any test-deployed resource after the test concluded. If they are not, they result in unnecessary costs and may temper with any subsequent test.
+The removal phase is strongly coupled with the previous deployment phase. Fundamentally, we want to remove any test-deployed resource after its test concluded. If we would not, we would generate unnecessary costs and may temper with any subsequent test.
 
 ### Publish
 
