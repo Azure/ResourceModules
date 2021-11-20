@@ -201,5 +201,19 @@ These are the individual end-2-end workflows we have for each module. Leveraging
 Comparing multiple workflows you'll notice they are almost identically, yet differ in a few important areas:
 
 - The path filters of the pipeline trigger
+  - 1 for the composite actions
+  - 1 of the path filters should be the relative path to the workflow itself
+  - 1 should be the relative path to the module folder
+  - 1 should exclude the readme
+  ```yaml
+    push:
+      branches:
+        - main
+      paths:
+        - '.github/actions/templates/**'
+        - '.github/workflows/ms.network.virtualwans.yml'
+        - 'arm/Microsoft.Network/virtualWans/**'
+        - '!arm/Microsoft.Network/virtualWans/readme.md'
+  ```
 - The environment variables
 - (optionally) The relative path to a removal script
