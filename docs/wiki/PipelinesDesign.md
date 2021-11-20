@@ -15,7 +15,7 @@ This section gives you an overview of the design principals the pipelines follow
 - [Shared concepts](#shared-concepts)
   - [Validation prerequisites](#validation-prerequisites)
   - [Tokens Replacement](#tokens-replacement)
-- [Platform-specific considerations](#platform-specific-considerations)
+- [DevOps-Tool-specific considerations](#devops-tool-specific-considerations)
   - [GitHub Workflows](#github-workflows)
 
 ---
@@ -105,12 +105,14 @@ For example, some modules require referencing Azure resources with the Resource 
 
 Please review the Parameter File Tokens [Design](./ParameterFileTokens) for more details on the different token types and how you can use them to remove hardcoded values from your parameter files.
 
-## Platform-specific considerations
+## DevOps-Tool-specific considerations
 
-
+Depending on what DevOps tool you want to use to host the platform you will find the corresponding code in different locations. This section will give you an overview of these locations and what they are used for.
 
 ### GitHub Workflows
 
 #### **Component:** Variable file(s)
+
 #### **Component:** Composite Actions
+
 #### **Component:** Workflows
