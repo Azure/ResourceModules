@@ -195,3 +195,5 @@ We use several composite actions to perform various tasks shared by our module w
   This action implements allows us to fetch workflow input values from the module's workflow file, even if the pipeline was not triggered via a `workflow_dispatch` action. Without it we would not be able to process the contained information and would need to duplicate the configuration as workflow variables.
 
 #### **Component:** Workflows
+
+These are the individual end-2-end workflows we have for each module. Leveraging the [composite actions](#component-composite-actions) described before, they orchestrate the testing & publishing of for a module.
