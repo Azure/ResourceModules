@@ -13,6 +13,7 @@ This section gives you an overview of the design principals the pipelines follow
   - [Removal](#removal)
   - [Publish](#Publish)
 - [Shared concepts](#shared-concepts)
+  - [Variable file(s)](#pipeline-variables)
   - [Validation prerequisites](#validation-prerequisites)
   - [Tokens Replacement](#tokens-replacement)
 - [Platform pipelines](#Platform-pipelines)
@@ -91,7 +92,35 @@ By the time of this writing, the publishing experience works as follows:
 
 ## Shared concepts
 
-There are several concepts that are shared among the phases. Most notably the [simulated deployment validation](#simulated-deployment-validation) and [test deployment](#test-deploy).
+There are several concepts that are shared among the phases. Most notably
+- [pipeline variables](#pipeline-variables)
+- [simulated deployment validation](#simulated-deployment-validation)
+- [test deployment](#test-deploy)
+
+### Pipeline variables
+
+The primary pipeline variable file hosts the fundamental pipeline configuration. In here you will find and can configure information such as:
+
+#### ***General***
+| Variable Name | Example Value | Description |
+| - | - | - |
+| `defaultLocation` | "WestEurope" | The default location to deploy resources to. If no location is specified in the deploying parameter file, this location is used |
+| `resourceGroupName` | "validation-rg" | The resource group to deploy all resources for validation to |
+
+#### ***Template-specs specific (publishing)***
+| Variable Name | Example Value | Description |
+| - | - | - |
+| `templateSpecsRGName` | "artifacts-rg" | The resource group to host the created template-specs |
+| `templateSpecsRGLocation` | "WestEurope" | The location of the resource group to host the template-specs. Is used to create a new resource group if not yet existing |
+| `templateSpecsDescription` | "This is a module from the [Common Azure Resource Modules Library]" | A description to add to the published template specs |
+| `templateSpecsDoPublish` | "true" | A central switch to enable/disable publishing to template-specs |
+
+#### ***Private bicep registry specific (publishing)***
+| Variable Name | Example Value | Description |
+| - | - | - |
+| `bicepRegistryName` | "adpsxxazacrx001" | The container registry to publish bicep templates to |
+| `bicepRegistryRGName` | "artifacts-rg" | The resource group of the container registry to publish bicep templates to. Is used to create a new container registry if not yet existing |
+| `bicepRegistryDoPublish` | "true" | A central switch to enable/disable publishing to the private bicep registry |
 
 ### Prerequisites
 
@@ -144,6 +173,20 @@ In the following sub-sections we will take a deeper look into each element.
 
 #### **Component:** Variable file(s)
 
-#### **Component:** Composite Actions
+The [pipeline configuration file](#pipeline-variables) can be found at `.github/variables/variables.module.json`.
+
+#### **Component:** Composite Actions**
+
+We use several composite actions to perform various tasks shared by our module workflows:
+
+- **validateModuleGeneral:**
+  This action perform all [static tests](#static-module-validation) for a module using Pester.
+- **validateModuleApis:**
+  This action performs specifically API version tests for a module to ensure we notice if a version becomes stale. Each resource's API version is compared with those currently available on Azure. Accepted are both the latest 5 versions (including preview versions) as well as the latest 5 non-preview versions.
+- **validateModuleDeploy:**
+- **deployModule:**
+- **removeModule:**
+- **publishModule:**
+- **getWorkflowInput:**
 
 #### **Component:** Workflows
