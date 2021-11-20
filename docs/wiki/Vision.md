@@ -77,7 +77,7 @@ First things first, we would work towards the deployment of our environments in 
 
 <img src="media/deploymentFlow.png" alt="Deployment flow" height="150">
 
-In the **Develop modules** phase you add/implement/update your modules and validate them using one or multiple test-parameter files, run static, validation & deployment tests on the templates and ultimately proof their correctness.
+In the **Develop modules** phase you add/implement/update your modules and validate them using one or multiple test-parameter files, run static, validation & deployment tests on the templates and ultimately prove their correctness.
 
 The next phase, **Publish modules**, will take the tested and approved modules and publish them to a target location of your choice (for example _[template specs](https://docs.microsoft.com/en-us/azure/azure-resource-manager/templates/template-specs?tabs=azure-powershell)_ or the _[bicep registry](https://docs.microsoft.com/en-gb/azure/azure-resource-manager/bicep/private-module-registry)_). The publishing should publish at least the tested module template itself.
 The target location should support versioning so that you only always publish new versions.
