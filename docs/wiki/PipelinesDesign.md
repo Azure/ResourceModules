@@ -8,7 +8,7 @@ This section gives you an overview of the design principals the pipelines follow
 
 - [Validate](#validate)
   - [Static module validation](#static-module-validation)
-  - [Template validation](#template-validation)
+  - [Simulated deployment validation](#template-validation)
     - [Validation prerequisites](#validation-prerequisites)
     - [Why do I have to validate deployments of modules?](#why-do-i-have-to-validate-deployments-of-modules)
     - [Tokens Replacement](#tokens-replacement)
@@ -28,9 +28,13 @@ Using this flow, validated modules can be consumed by other any consumer / templ
 
 ## Validate
 
+The validation phase performs all test outside of a test deployment. This includes [static tests](#static-module-validation) regarding for example a proper documentation, as well as [simulated deployments](#simulated-deployment-validation). The intention of these is to fail fast, before we even get to the deployment test.
+
 ### Static module validation
 
-### Template validation
+This static validation executes the tests documented in the [testing](./Testing.md) section. Without diving into to much detail, we test aspects like a proper ReadMe documentation, a proper module folder structure, a minimum number of refresh of the leveraged of API versions and the like.
+
+### Simulated deployment validation
 
 #### Prerequisites
 
