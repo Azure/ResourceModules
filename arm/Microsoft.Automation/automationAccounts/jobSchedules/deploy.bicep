@@ -1,5 +1,6 @@
 @description('Optional. Name of the Automation Account job schedule. Must be a GUID. If not provided, a new GUID is generated.')
-param name string = newGuid()
+param name string = ''
+// param name string = newGuid()
 
 @description('Required. Name of the parent Automation Account.')
 param automationAccountName string
@@ -28,32 +29,32 @@ resource automationAccount 'Microsoft.Automation/automationAccounts@2020-01-13-p
   name: automationAccountName
 }
 
-resource jobScheduleExisting 'Microsoft.Automation/automationAccounts/jobSchedules@2020-01-13-preview' existing = {
-  name: name
-  parent: automationAccount
-}
-
-resource jobSchedule 'Microsoft.Automation/automationAccounts/jobSchedules@2020-01-13-preview' = if(jobScheduleExisting.name == name ) {
-  // name: name
+resource jobSchedule 'Microsoft.Automation/automationAccounts/jobSchedules@2020-01-13-preview' existing = {
   name: guid(runbookName, scheduleName, automationAccount.id)
   parent: automationAccount
-  properties: {
-    parameters: parameters
-    runbook: {
-      name: runbookName
-    }
-    runOn: (empty(runOn) ? null : runOn)
-    schedule: {
-      name: scheduleName
-    }
-  }
 }
 
-@description('The name of the deployed jobSchedule')
-output jobScheduleName string = jobSchedule.name
+// resource jobSchedule 'Microsoft.Automation/automationAccounts/jobSchedules@2020-01-13-preview' = if(jobScheduleExisting.name == name ) {
+//   // name: name
+//   name: guid(runbookName, scheduleName, automationAccount.id)
+//   parent: automationAccount
+//   properties: {
+//     parameters: parameters
+//     runbook: {
+//       name: runbookName
+//     }
+//     runOn: (empty(runOn) ? null : runOn)
+//     schedule: {
+//       name: scheduleName
+//     }
+//   }
+// }
 
-@description('The id of the deployed jobSchedule')
-output jobScheduleResourceId string = jobSchedule.id
+// @description('The name of the deployed jobSchedule')
+// output jobScheduleName string = jobSchedule.name
 
-@description('The resource group of the deployed jobSchedule')
-output jobScheduleResourceGroup string = resourceGroup().name
+// @description('The id of the deployed jobSchedule')
+// output jobScheduleResourceId string = jobSchedule.id
+
+// @description('The resource group of the deployed jobSchedule')
+// output jobScheduleResourceGroup string = resourceGroup().name
