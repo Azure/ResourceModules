@@ -28,7 +28,7 @@ To "build"/"bake" the modules, a dedicated pipeline is used for each module to v
    1. Running a set of static Pester tests against the template
    1. Validating the template by invoking Azure’s validation API (Test-AzResourceGroupDeployment – or the same for other scopes)
 1. **Test deploy**: we deploy each module by using a pre-defined set of parameters to a ‘sandbox’ subscription in Azure to see if it’s really working
-1. **Removal**: The test suite is cleaned up by removing all deployed test resources again
+   1. **Removal**: The test suite is cleaned up by removing all deployed test resources again
 1. **Publish**: the proven results are copied/published to a configured location such as template specs, the bicep registry, Azure DevOps artifacts, etc.
 
 Using this flow, validated modules can be consumed by other any consumer / template / orchestration to deploy a service, workload, or entire environment such as a landing zone.
@@ -104,6 +104,8 @@ For example, some modules require referencing Azure resources with the Resource 
 Please review the Parameter File Tokens [Design](./ParameterFileTokens) for more details on the different token types and how you can use them to remove hardcoded values from your parameter files.
 
 ## Platform-specific considerations
+
+
 
 ### GitHub Workflows
 
