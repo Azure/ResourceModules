@@ -20,6 +20,7 @@ var builtInRoleNames = {
 }
 
 resource dataFactory 'Microsoft.DataFactory/factories@2018-06-01' = {
+  location: resourceGroup().location
   name: resourceName
 }
 
