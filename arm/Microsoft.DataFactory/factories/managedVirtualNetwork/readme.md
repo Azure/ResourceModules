@@ -2,7 +2,7 @@
 
 ## Resource types
 
-| Resource Type | Api Version |
+| Resource Type | API Version |
 | :-- | :-- |
 | `Microsoft.DataFactory/factories/managedVirtualNetworks` | 2018-06-01 |
 
@@ -12,7 +12,7 @@
 | :-- | :-- | :-- | :-- | :-- |
 | `dataFactoryName` | string |  |  | Required. The name of the Azure Factory to create |
 | `name` | string |  |  | Required. The name of the Managed Virtual Network|
-| `cuaId` | string |  |  | Optional. Customer Usage Attribution id (GUID). This GUID must be previously registered |
+| `cuaId` | string |  |  | Optional. Customer Usage Attribution ID (GUID). This GUID must be previously registered |
 
 ## Outputs
 
