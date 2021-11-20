@@ -124,7 +124,7 @@ resource automationAccount 'Microsoft.Automation/automationAccounts@2020-01-13-p
   }
 }
 
-module automationAccount_modules './modules/deploy.bicep' = [for (module, index) in modules: {
+module automationAccount_modules 'modules/deploy.bicep' = [for (module, index) in modules: {
   name: '${uniqueString(deployment().name, location)}-AutoAccount-Module-${index}'
   params: {
     name: module.name
@@ -136,7 +136,7 @@ module automationAccount_modules './modules/deploy.bicep' = [for (module, index)
   }
 }]
 
-module automationAccount_schedules './schedules/deploy.bicep' = [for (schedule, index) in schedules: {
+module automationAccount_schedules 'schedules/deploy.bicep' = [for (schedule, index) in schedules: {
   name: '${uniqueString(deployment().name, location)}-AutoAccount-Schedule-${index}'
   params: {
     name: schedule.name
@@ -151,7 +151,7 @@ module automationAccount_schedules './schedules/deploy.bicep' = [for (schedule, 
   }
 }]
 
-module automationAccount_runbooks './runbooks/deploy.bicep' = [for (runbook, index) in runbooks: {
+module automationAccount_runbooks 'runbooks/deploy.bicep' = [for (runbook, index) in runbooks: {
   name: '${uniqueString(deployment().name, location)}-AutoAccount-Runbook-${index}'
   params: {
     name: runbook.name
@@ -165,7 +165,7 @@ module automationAccount_runbooks './runbooks/deploy.bicep' = [for (runbook, ind
   }
 }]
 
-module automationAccount_jobSchedules './jobSchedules/deploy.bicep' = [for (jobSchedule, index) in jobSchedules: {
+module automationAccount_jobSchedules 'jobSchedules/deploy.bicep' = [for (jobSchedule, index) in jobSchedules: {
   name: '${uniqueString(deployment().name, location)}-AutoAccount-JobSchedule-${index}'
   params: {
     automationAccountName: automationAccount.name
@@ -181,7 +181,7 @@ module automationAccount_jobSchedules './jobSchedules/deploy.bicep' = [for (jobS
     ]
 }]
 
-module automationAccount_linkedService './.bicep/nested_linkedService.bicep' = if (!empty(linkedWorkspaceId)) {
+module automationAccount_linkedService '.bicep/nested_linkedService.bicep' = if (!empty(linkedWorkspaceId)) {
   name: '${uniqueString(deployment().name, location)}-AutoAccount-LinkedService'
   params: {
     name: 'automation'
@@ -194,7 +194,7 @@ module automationAccount_linkedService './.bicep/nested_linkedService.bicep' = i
   scope: resourceGroup(!empty(linkedWorkspaceId) ? split(linkedWorkspaceId, '/')[2]: subscription().subscriptionId, !empty(linkedWorkspaceId) ? split(linkedWorkspaceId, '/')[4] : resourceGroup().name)
 }
 
-module automationAccount_solutions './.bicep/nested_solution.bicep' = [for (gallerySolution, index) in gallerySolutions: if (!empty(linkedWorkspaceId)) {
+module automationAccount_solutions '.bicep/nested_solution.bicep' = [for (gallerySolution, index) in gallerySolutions: if (!empty(linkedWorkspaceId)) {
   name: '${uniqueString(deployment().name, location)}-AutoAccount-Solution-${index}'
   params: {
     name: gallerySolution
@@ -209,7 +209,7 @@ module automationAccount_solutions './.bicep/nested_solution.bicep' = [for (gall
   ]
 }]
 
-module automationAccount_softwareUpdateConfigurations './softwareUpdateConfigurations/deploy.bicep' = [for (softwareUpdateConfiguration, index) in softwareUpdateConfigurations: {
+module automationAccount_softwareUpdateConfigurations 'softwareUpdateConfigurations/deploy.bicep' = [for (softwareUpdateConfiguration, index) in softwareUpdateConfigurations: {
   name: '${uniqueString(deployment().name, location)}-AutoAccount-SwUpdateConfig-${index}'
   params: {
     name: softwareUpdateConfiguration.name
@@ -282,7 +282,7 @@ resource automationAccount_diagnosticSettings 'Microsoft.Insights/diagnosticSett
   scope: automationAccount
 }
 
-module automationAccount_privateEndpoints './.bicep/nested_privateEndpoint.bicep' = [for (endpoint, index) in privateEndpoints: if (!empty(privateEndpoints)) {
+module automationAccount_privateEndpoints '.bicep/nested_privateEndpoint.bicep' = [for (endpoint, index) in privateEndpoints: if (!empty(privateEndpoints)) {
   name: '${uniqueString(deployment().name, location)}-AutoAccount-PrivateEndpoints-${index}'
   params: {
     privateEndpointResourceId: automationAccount.id
@@ -295,7 +295,7 @@ module automationAccount_privateEndpoints './.bicep/nested_privateEndpoint.bicep
   ]
 }]
 
-module automationAccount_rbac './.bicep/nested_rbac.bicep' = [for (roleAssignment, index) in roleAssignments: {
+module automationAccount_rbac '.bicep/nested_rbac.bicep' = [for (roleAssignment, index) in roleAssignments: {
   name: '${uniqueString(deployment().name, location)}-AutoAccount-Rbac-${index}'
   params: {
     roleAssignmentObj: roleAssignment

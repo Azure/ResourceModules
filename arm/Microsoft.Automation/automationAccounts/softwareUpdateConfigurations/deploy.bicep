@@ -182,12 +182,6 @@ param cuaId string = ''
 
 var updateClassifications_var = '${replace(replace(replace(replace(string(updateClassifications), ',', ', '), '[', ''), ']', ''), '"', '')}'
 
-// var timeLimit = dateTimeAdd(baseTime, 'PT5M', 'u')
-
-// var providedStartTime = dateTimeAdd(startTime, 'PT0S', 'u')
-
-// var startTime_var = providedStartTime > timeLimit ? providedStartTime : dateTimeAdd(providedStartTime, 'P1D', 'u')
-
 module pid_cuaId '.bicep/nested_cuaId.bicep' = if (!empty(cuaId)) {
   name: 'pid-${cuaId}'
   params: {}
@@ -228,7 +222,6 @@ resource softwareUpdateConfiguration 'Microsoft.Automation/automationAccounts/so
           }
         ]
         nonAzureQueries: nonAzureQueries
-        // nonAzureQueries: empty(nonAzureQueries) ? null : nonAzureQueries
       }
       azureVirtualMachines: azureVirtualMachines
       nonAzureComputerNames: nonAzureComputerNames
@@ -253,7 +246,6 @@ resource softwareUpdateConfiguration 'Microsoft.Automation/automationAccounts/so
         monthDays: (empty(monthDays) ? null : monthDays)
         monthlyOccurrences: (empty(monthlyOccurrences) ? null : monthlyOccurrences)
       }
-      // startTime: startTime_var
       startTime: (empty(startTime) ? dateTimeAdd(baseTime, 'PT10M') : startTime)
       expiryTime: expiryTime
       expiryTimeOffsetMinutes: expiryTimeOffsetMinutes
