@@ -7,9 +7,11 @@ This section gives you an overview of the design principals the pipelines follow
 ### _Navigation_
 
 - [Validate](#validate)
-  - [Validation prerequisites](#validation-prerequisites)
-  - [Why do I have to validate deployments of modules?](#why-do-i-have-to-validate-deployments-of-modules)
-  - [Tokens Replacement](#tokens-replacement)
+  - [Static module validation](#static-module-validation)
+  - [Template validation](#template-validation)
+    - [Validation prerequisites](#validation-prerequisites)
+    - [Why do I have to validate deployments of modules?](#why-do-i-have-to-validate-deployments-of-modules)
+    - [Tokens Replacement](#tokens-replacement)
 
 ---
 
@@ -26,16 +28,20 @@ Using this flow, validated modules can be consumed by other any consumer / templ
 
 ## Validate
 
-### Validation prerequisites
+### Static module validation
+
+### Template validation
+
+#### Prerequisites
 
 A _"Sandbox"_ or _"Engineering"_ **validation subscription** (in Azure) has to be used to test if the modules (or other components) are deployable. This subscription must not have connectivity to any on-premises or other Azure networks.
 The module validation pipelines use an Azure Active Directory Service Principal (AAD SPN) to authenticate to the validation subscription and run the test deployments of the modules.
 
-### Why do I have to validate deployments of modules?
+#### Why do I have to validate deployments of modules?
 
 Since every customer environment might be different due to applied Azure Policies or security policies, modules might behave differently or naming conventions need to be tested and applied beforehand.
 
-### Tokens Replacement
+#### Tokens Replacement
 
 The validation or deploy actions/templates includes a step that replaces certain strings in a parameter file with values that are provided from the module workflow. This helps achieve the following:
 
