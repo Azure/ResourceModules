@@ -31,7 +31,7 @@ module pid_cuaId './.bicep/nested_cuaId.bicep' = if (!empty(cuaId)) {
   params: {}
 }
 
-resource keyVault 'Microsoft.KeyVault/vaults/keys@2021-06-01-preview' existing = if (empty(uri)) {
+resource keyVaultKey 'Microsoft.KeyVault/vaults/keys@2021-06-01-preview' existing = if (empty(uri)) {
   name: (empty(uri)) ? '${keyVaultName}/${keyName}' : 'dummyVault/dummyKey'
 }
 
@@ -43,7 +43,7 @@ resource key 'Microsoft.Sql/managedInstances/keys@2017-10-01-preview' = {
   name: !empty(name) ? name : serverKeyName
   properties: {
     serverKeyType: serverKeyType
-    uri: (!empty(uri)) ? uri : keyVault.properties.keyUri
+    uri: (!empty(uri)) ? uri : keyVaultKey.properties.keyUriWithVersion
   }
   parent: managedInstance
 }
