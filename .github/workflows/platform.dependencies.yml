@@ -11,6 +11,11 @@ on:
           - true
           - false
         default: 'false'
+      enablesqlmi:
+        type: boolean
+        description: 'Enable SqlMi dependencies deployment bool'
+        required: false
+        default: 'false'
 
   # push:
   #   branches:
