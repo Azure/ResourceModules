@@ -53,6 +53,14 @@ If you open the pipeline's run, you should be able to investigate the logs and i
 
 ## Operate the dependency pipeline
 
+As described previously, the dependency pipeline must be triggered manually and deploys a set of resources we reference as part of our module tests (for example Virtual Networks, Log Analytics Workspace, Key Vaults, etc.).
+
+Triggering the pipeline is as easy as navigating to it in your corresponding DevOps tool and running the pipeline. No additional steps or input parameters are required.
+
+> **Note:** While operating the dependency pipeline is simple, make sure to set it up in the way it is described [here](./GettingStarted.md#Dependencies). Especially the globally unique names must be accounted for, before executing the pipeline.
+
+Depending on what you want to test in your module pipeline, you may want to add additional dependencies to your dependency pipeline. If so, make sure to add an additional parameter file for each service you require under `utilities/pipelines/dependencies`. Once done, you just need to add the deployment to the pipeline itself in the correct location in the pipeline. The different deployment waves are documented [here](./TestingDesign.md#module-dependencies). The implementation depends on the [DevOps tool](#devops-tool-specific-considerations) you're using.
+
 ---
 
 # DevOps-Tool-specific considerations
