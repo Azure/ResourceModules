@@ -5,7 +5,7 @@ This section gives you an overview of the design principals the pipelines follow
 
 ### _Navigation_
 
-- [Phases](#phases)
+- [Pipeline phases](#pipeline-phases)
   - [Validate](#validate)
     - [Static module validation](#static-module-validation)
     - [Simulated deployment validation](#template-validation)
@@ -25,7 +25,7 @@ This section gives you an overview of the design principals the pipelines follow
 
 ---
 
-## Phases
+## Pipeline phases
 
 To "build"/"bake" the modules, a dedicated pipeline is used for each module to validate their production readiness, by:
 
