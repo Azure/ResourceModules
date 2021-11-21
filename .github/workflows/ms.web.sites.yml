@@ -4,15 +4,22 @@ on:
   workflow_dispatch:
     inputs:
       removeDeployment:
+        type: boolean
         description: 'Remove deployed module'
         required: false
         default: 'true'
       versioningOption:
-        description: 'The mode to handle the version increments [major|minor|patch]'
+        type: choice
+        description: 'The mode to handle the version increments [major|minor|patch|custom]'
         required: false
         default: 'patch'
+        options:
+          - major
+          - minor
+          - patch
+          - custom
       customVersion:
-        description: 'Custom version to apply. Used only if higher than latest'
+        description: 'The version to enforce if [versionOption] is set to [custom]'
         required: false
         default: '0.0.1'
   push:
