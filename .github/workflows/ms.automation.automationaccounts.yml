@@ -4,12 +4,9 @@ on:
   workflow_dispatch:
     inputs:
       removeDeployment:
-        type: choice
+        type: boolean
         description: 'Remove deployed module'
         required: false
-        options:
-          - true
-          - false
         default: 'true'
       versioningOption:
         type: choice
