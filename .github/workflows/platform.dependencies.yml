@@ -7,7 +7,7 @@ on:
         type: boolean
         description: 'Enable SqlMi dependencies deployment'
         required: false
-        default: 'true'
+        default: 'false'
 
   # push:
   #   branches:
