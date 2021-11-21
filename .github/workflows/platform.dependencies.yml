@@ -4,18 +4,10 @@ on:
   workflow_dispatch:
     inputs:
       deploySqlMiDependencies:
-        type: choice
+        type: boolean
         description: 'Enable SqlMi dependencies deployment'
         required: false
-        options:
-          - true
-          - false
-        default: 'false'
-      enablesqlmi:
-        type: boolean
-        description: 'Enable SqlMi dependencies deployment bool'
-        required: false
-        default: 'false'
+        default: 'true'
 
   # push:
   #   branches:
