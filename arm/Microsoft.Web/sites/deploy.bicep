@@ -257,6 +257,30 @@ resource app 'Microsoft.Web/sites@2020-12-01' = {
   }
 }
 
+// resource app_insights 'microsoft.insights/components@2020-02-02' = if (enableMonitoring) {
+//   name: app.name
+//   location: location
+//   kind: 'web'
+//   tags: tags
+//   properties: {
+//     Application_Type: 'web'
+//     Request_Source: 'rest'
+//   }
+// }
+
+module app_insights '.bicep/nested_components.bicep' = if (enableMonitoring) {
+  name: '${uniqueString(deployment().name, location)}-AppService-InsightsComponent'
+  params: {
+    name: app.name
+    location: location
+    kind: 'web'
+    tags: tags
+    appInsightsWorkspaceResourceId: ''
+    appInsightsType: 'web'
+    appInsightsRequestSource: 'rest'
+  }
+}
+
 resource app_lock 'Microsoft.Authorization/locks@2016-09-01' = if (lock != 'NotSpecified') {
   name: '${app.name}-${lock}-lock'
   properties: {
@@ -279,25 +303,6 @@ resource app_diagnosticSettings 'Microsoft.Insights/diagnosticSettings@2017-05-0
   scope: app
 }
 
-resource app_insights 'microsoft.insights/components@2020-02-02' = if (enableMonitoring) {
-  name: app.name
-  location: location
-  kind: 'web'
-  tags: tags
-  properties: {
-    Application_Type: 'web'
-    Request_Source: 'rest'
-  }
-}
-
-module app_rbac '.bicep/nested_rbac.bicep' = [for (roleAssignment, index) in roleAssignments: {
-  name: '${deployment().name}-rbac-${index}'
-  params: {
-    roleAssignmentObj: roleAssignment
-    resourceName: app.name
-  }
-}]
-
 module app_privateEndpoint '.bicep/nested_privateEndpoint.bicep' = [for (privateEndpoint, index) in privateEndpoints: {
   name: '${uniqueString(deployment().name, location)}-AppService-PrivateEndpoints-${index}'
   params: {
@@ -305,6 +310,14 @@ module app_privateEndpoint '.bicep/nested_privateEndpoint.bicep' = [for (private
     privateEndpointVnetLocation: reference(split(privateEndpoint.subnetResourceId, '/subnets/')[0], '2020-06-01', 'Full').location
     privateEndpointObj: privateEndpoint
     tags: tags
+  }
+}]
+
+module app_rbac '.bicep/nested_rbac.bicep' = [for (roleAssignment, index) in roleAssignments: {
+  name: '${deployment().name}-rbac-${index}'
+  params: {
+    roleAssignmentObj: roleAssignment
+    resourceName: app.name
   }
 }]
 
