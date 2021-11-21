@@ -19,6 +19,7 @@ This section gives you an overview of the design principals the pipelines follow
     - [Tokens Replacement](#tokens-replacement)
 - [Platform pipelines](#Platform-pipelines)
   - [Dependencies pipeline](#dependencies-pipeline)
+    - [Inputs](#dependencies-pipeline-inputs)
   - [ReadMe pipeline](#readme-pipeline)
   - [Wiki pipeline](#wiki-pipeline)
 - [DevOps-Tool-specific considerations](#devops-tool-specific-considerations)
@@ -168,6 +169,12 @@ Outside of the previously described platform pipelines we implemented several ad
 ## Dependencies pipeline
 
 As the modules we test often times have dependencies to other services, we created a pipeline to deploys several standard services like VirtualNetworks and KeyVaults (alongside dummy secrets) for the modules to use. This _dependency_ pipeline should be prepared and executed before you start running any pipelines on your own. In case you need to rename any services there (for example because a certain globally unique resource name was already taken) make sure to update any references to this name in the module parameter files. You can find further details about this pipeline [here](.\TestingDesign.md#Module-Dependencies).
+
+## Dependencies pipeline inputs
+
+Note that the pipeline comes with 2 runtime parameters you can provide when you trigger it:
+- `'Branch' dropdown`: A dropdown to select the branch to run the pipeline from
+- `'Enable SQL MI dependency deployment' switch`: Can be set to 'true' or 'false' and controls whether the dependencies for the SQL-MI are deployed during execution or not
 
 ## ReadMe pipeline
 
