@@ -66,7 +66,7 @@ Note that, for the deployments we have to account for certain [prerequisites](#p
 
 ### Removal
 
-The removal phase is strongly coupled with the previous deployment phase. Fundamentally, we want to remove any test-deployed resource after its test concluded. If we would not, we would generate unnecessary costs and may temper with any subsequent test.
+The removal phase is strongly coupled with the previous deployment phase. Fundamentally, we want to remove any test-deployed resource after its test concluded. If we would not, we would generate unnecessary costs and may temper with any subsequent test. Some resources may require a dedicated logic to be removed. This logic should be stored alongside the generally utilized removal script in the `.utilities/pipelines/resourceRemoval` folder and be referenced by the corresponding module pipeline.
 
 > **Note:** At the time of this writing, resources to be removed are identified using Azure tags. This means, at deployment time, a specific tag is applied to the resources which is then picked up by the removal phase to remove the same. However, while this solution works for most modules, it does not for all. The main reasons why it would fail are:
 > - Lack of 'Tag' support
@@ -200,7 +200,7 @@ These are the individual end-2-end workflows we have for each module. Leveraging
 
 Comparing multiple workflows you'll notice they are almost identically, yet differ in a few important areas:
 
-- The path filters of the pipeline trigger
+- The ***path filters*** of the workflow trigger:
   - 1 for the composite actions
   - 1 of the path filters should be the relative path to the workflow itself
   - 1 should be the relative path to the module folder
@@ -215,5 +215,24 @@ Comparing multiple workflows you'll notice they are almost identically, yet diff
         - 'arm/Microsoft.Network/virtualWans/**'
         - '!arm/Microsoft.Network/virtualWans/readme.md'
   ```
-- The environment variables
-- (optionally) The relative path to a removal script
+- The ***environment variables***
+  The environment variables are leveraged by the workflow to fundamentally process the module. We need:
+  - 1 variable with the module name
+  - 1 variable with the relative path to the module folder
+  - 1 variable with the relative path to the workflow itself
+  ```yaml
+  env:
+    moduleName: 'virtualWans'
+    modulePath: 'arm/Microsoft.Network/virtualWans'
+    workflowPath: '.github/workflows/ms.network.virtualwans.yml'
+  ```
+- (optionally) The relative path to a ***removal script***
+  As described [previously](#removal), some scripts may require custom logic to be removed. This logic should be stored in a script and be referenced by the corresponding module's workflow. To reference this script you can use the `relativePathOfRemovalScript` parameter of the `removeModule` composite action as shown below.
+  ```yaml
+  - name: 'Remove module'
+    uses: ./.github/actions/templates/removeModule
+    with:
+      moduleName: '${{ env.moduleName }}'
+      resourceGroupName: '${{ env.resourceGroupName }}'
+      relativePathOfRemovalScript: 'utilities/pipelines/resourceRemoval/Remove-vWan.ps1'
+  ```
