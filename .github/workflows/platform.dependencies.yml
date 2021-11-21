@@ -378,17 +378,17 @@ jobs:
         uses: actions/checkout@v2
         with:
           fetch-depth: 0
-      # - name: 'Deploy module'
-      #   uses: ./.github/actions/templates/deployModule
-      #   with:
-      #     moduleName: '${{ env.moduleName }}'
-      #     templateFilePath: 'arm/${{ env.namespace }}/deploy.bicep'
-      #     parameterFilePath: '${{ env.dependencyPath }}/${{ env.namespace }}/parameters/${{ matrix.parameterFilePaths }}'
-      #     location: '${{ env.defaultLocation }}'
-      #     resourceGroupName: '${{ env.resourceGroupName }}'
-      #     subscriptionId: '${{ secrets.ARM_SUBSCRIPTION_ID }}'
-      #     managementGroupId: '${{ secrets.ARM_MGMTGROUP_ID }}'
-      #     removeDeployment: '${{ env.removeDeployment }}'
+      - name: 'Deploy module'
+        uses: ./.github/actions/templates/deployModule
+        with:
+          moduleName: '${{ env.moduleName }}'
+          templateFilePath: 'arm/${{ env.namespace }}/deploy.bicep'
+          parameterFilePath: '${{ env.dependencyPath }}/${{ env.namespace }}/parameters/${{ matrix.parameterFilePaths }}'
+          location: '${{ env.defaultLocation }}'
+          resourceGroupName: '${{ env.resourceGroupName }}'
+          subscriptionId: '${{ secrets.ARM_SUBSCRIPTION_ID }}'
+          managementGroupId: '${{ secrets.ARM_MGMTGROUP_ID }}'
+          removeDeployment: '${{ env.removeDeployment }}'
 
   job_deploy_nsg:
     runs-on: ubuntu-20.04
@@ -447,17 +447,17 @@ jobs:
         uses: actions/checkout@v2
         with:
           fetch-depth: 0
-      # - name: 'Deploy module'
-      #   uses: ./.github/actions/templates/deployModule
-      #   with:
-      #     moduleName: '${{ env.moduleName }}'
-      #     templateFilePath: 'arm/${{ env.namespace }}/deploy.bicep'
-      #     parameterFilePath: '${{ env.dependencyPath }}/${{ env.namespace }}/parameters/${{ matrix.parameterFilePaths }}'
-      #     location: '${{ env.defaultLocation }}'
-      #     resourceGroupName: '${{ env.resourceGroupName }}'
-      #     subscriptionId: '${{ secrets.ARM_SUBSCRIPTION_ID }}'
-      #     managementGroupId: '${{ secrets.ARM_MGMTGROUP_ID }}'
-      #     removeDeployment: '${{ env.removeDeployment }}'
+      - name: 'Deploy module'
+        uses: ./.github/actions/templates/deployModule
+        with:
+          moduleName: '${{ env.moduleName }}'
+          templateFilePath: 'arm/${{ env.namespace }}/deploy.bicep'
+          parameterFilePath: '${{ env.dependencyPath }}/${{ env.namespace }}/parameters/${{ matrix.parameterFilePaths }}'
+          location: '${{ env.defaultLocation }}'
+          resourceGroupName: '${{ env.resourceGroupName }}'
+          subscriptionId: '${{ secrets.ARM_SUBSCRIPTION_ID }}'
+          managementGroupId: '${{ secrets.ARM_MGMTGROUP_ID }}'
+          removeDeployment: '${{ env.removeDeployment }}'
 
   job_deploy_pip:
     runs-on: ubuntu-20.04
@@ -710,17 +710,17 @@ jobs:
         uses: actions/checkout@v2
         with:
           fetch-depth: 0
-      # - name: 'Deploy module'
-      #   uses: ./.github/actions/templates/deployModule
-      #   with:
-      #     moduleName: '${{ env.moduleName }}'
-      #     templateFilePath: 'arm/${{ env.namespace }}/deploy.bicep'
-      #     parameterFilePath: '${{ env.dependencyPath }}/${{ env.namespace }}/parameters/${{ matrix.parameterFilePaths }}'
-      #     location: '${{ env.defaultLocation }}'
-      #     resourceGroupName: '${{ env.resourceGroupName }}'
-      #     subscriptionId: '${{ secrets.ARM_SUBSCRIPTION_ID }}'
-      #     managementGroupId: '${{ secrets.ARM_MGMTGROUP_ID }}'
-      #     removeDeployment: '${{ env.removeDeployment }}'
+      - name: 'Deploy module'
+        uses: ./.github/actions/templates/deployModule
+        with:
+          moduleName: '${{ env.moduleName }}'
+          templateFilePath: 'arm/${{ env.namespace }}/deploy.bicep'
+          parameterFilePath: '${{ env.dependencyPath }}/${{ env.namespace }}/parameters/${{ matrix.parameterFilePaths }}'
+          location: '${{ env.defaultLocation }}'
+          resourceGroupName: '${{ env.resourceGroupName }}'
+          subscriptionId: '${{ secrets.ARM_SUBSCRIPTION_ID }}'
+          managementGroupId: '${{ secrets.ARM_MGMTGROUP_ID }}'
+          removeDeployment: '${{ env.removeDeployment }}'
 
   job_deploy_sqlmi_kv_secrets:
     runs-on: ubuntu-20.04
@@ -738,23 +738,23 @@ jobs:
         with:
           creds: ${{ secrets.AZURE_CREDENTIALS }}
           enable-AzPSSession: true
-      # - name: Run PowerShell
-      #   uses: azure/powershell@v1
-      #   with:
-      #     inlineScript: |
-      #       $usernameString = (-join ((65..90) + (97..122) | Get-Random -Count 9 -SetSeed 1 | % {[char]$_ + "$_"})).substring(0,19) # max length
-      #       $passwordString = (New-Guid).Guid.SubString(0,19)
-      #       $vpnSharedKeyString =  (New-Guid).Guid.SubString(0,32)
-      #       $keyVaultName = 'adp-sxx-az-kv-x-sqlmi'
-      #       $userName = ConvertTo-SecureString -String $usernameString -AsPlainText -Force
-      #       $password = ConvertTo-SecureString -String $passwordString -AsPlainText -Force
-      #       $vpnSharedKey = ConvertTo-SecureString -String $vpnSharedKeyString -AsPlainText -Force
-      #       # SQLManagedInstances secrets
-      #       Set-AzKeyVaultSecret -VaultName $keyVaultName -Name 'administratorLogin' -SecretValue $username
-      #       Set-AzKeyVaultSecret -VaultName $keyVaultName -Name 'administratorLoginPassword' -SecretValue $password
-      #       # SQLManagedInstances Keys
-      #       az keyvault key create --vault-name $keyVaultName --name 'keyEncryptionKeySqlMi'
-      #     azPSVersion: 'latest'
+      - name: Run PowerShell
+        uses: azure/powershell@v1
+        with:
+          inlineScript: |
+            $usernameString = (-join ((65..90) + (97..122) | Get-Random -Count 9 -SetSeed 1 | % {[char]$_ + "$_"})).substring(0,19) # max length
+            $passwordString = (New-Guid).Guid.SubString(0,19)
+            $vpnSharedKeyString =  (New-Guid).Guid.SubString(0,32)
+            $keyVaultName = 'adp-sxx-az-kv-x-sqlmi'
+            $userName = ConvertTo-SecureString -String $usernameString -AsPlainText -Force
+            $password = ConvertTo-SecureString -String $passwordString -AsPlainText -Force
+            $vpnSharedKey = ConvertTo-SecureString -String $vpnSharedKeyString -AsPlainText -Force
+            # SQLManagedInstances secrets
+            Set-AzKeyVaultSecret -VaultName $keyVaultName -Name 'administratorLogin' -SecretValue $username
+            Set-AzKeyVaultSecret -VaultName $keyVaultName -Name 'administratorLoginPassword' -SecretValue $password
+            # SQLManagedInstances Keys
+            az keyvault key create --vault-name $keyVaultName --name 'keyEncryptionKeySqlMi'
+          azPSVersion: 'latest'
 
   job_deploy_avdag:
     runs-on: ubuntu-20.04
@@ -898,17 +898,17 @@ jobs:
         uses: actions/checkout@v2
         with:
           fetch-depth: 0
-      # - name: 'Deploy module'
-      #   uses: ./.github/actions/templates/deployModule
-      #   with:
-      #     moduleName: '${{ env.moduleName }}'
-      #     templateFilePath: 'arm/${{ env.namespace }}/deploy.bicep'
-      #     parameterFilePath: '${{ env.dependencyPath }}/${{ env.namespace }}/parameters/${{ matrix.parameterFilePaths }}'
-      #     location: '${{ env.defaultLocation }}'
-      #     resourceGroupName: '${{ env.resourceGroupName }}'
-      #     subscriptionId: '${{ secrets.ARM_SUBSCRIPTION_ID }}'
-      #     managementGroupId: '${{ secrets.ARM_MGMTGROUP_ID }}'
-      #     removeDeployment: '${{ env.removeDeployment }}'
+      - name: 'Deploy module'
+        uses: ./.github/actions/templates/deployModule
+        with:
+          moduleName: '${{ env.moduleName }}'
+          templateFilePath: 'arm/${{ env.namespace }}/deploy.bicep'
+          parameterFilePath: '${{ env.dependencyPath }}/${{ env.namespace }}/parameters/${{ matrix.parameterFilePaths }}'
+          location: '${{ env.defaultLocation }}'
+          resourceGroupName: '${{ env.resourceGroupName }}'
+          subscriptionId: '${{ secrets.ARM_SUBSCRIPTION_ID }}'
+          managementGroupId: '${{ secrets.ARM_MGMTGROUP_ID }}'
+          removeDeployment: '${{ env.removeDeployment }}'
 
   job_deploy_dnszone:
     runs-on: ubuntu-20.04
