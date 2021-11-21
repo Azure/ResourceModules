@@ -1,19 +1,25 @@
 # Pipelines Usage
 
-This section gives you an overview of how to interact with the repository pipelines.
+This section gives you an overview of how to interact with the platform pipelines.
 
 ---
 
 ### _Navigation_
 
-- [General](#...)
-- [DevOps-Tool-specific](#devops-tool-specific)
+- [General](#general)
+- [DevOps-Tool-specific](#devops-tool-specific-considerations)
   - [GitHub Workflows](#github-workflows)
 
 ---
 
-## General
+# General
 
-## DevOps-Tool-specific
+When working with this platform's pipelines it is important to understand first which pipelines serve which purpose, when they are triggered and how you can use them to test your modules.
 
-### GitHub Workflows
+As described in the
+
+---
+
+# DevOps-Tool-specific considerations
+
+## GitHub Workflows

@@ -1,21 +1,21 @@
 # Pipelines Design
 
 This section gives you an overview of the design principals the pipelines follow.
+
 ---
 
 ### _Navigation_
 
-- [Pipeline phases](#pipeline-phases)
-  - [Validate](#validate)
-    - [Static module validation](#static-module-validation)
-    - [Simulated deployment validation](#template-validation)
-  - [Test deploy](#test-deploy)
-  - [Removal](#removal)
-  - [Publish](#Publish)
-- [Shared concepts](#shared-concepts)
-  - [Variable file(s)](#pipeline-variables)
-  - [Validation prerequisites](#validation-prerequisites)
-  - [Tokens Replacement](#tokens-replacement)
+- [Module Pipelines](#module-pipelines)
+  - [Pipeline phases](#pipeline-phases)
+    - [Validate](#validate)
+    - [Test deploy](#test-deploy)
+    - [Removal](#removal)
+    - [Publish](#Publish)
+  - [Shared concepts](#shared-concepts)
+    - [Variable file(s)](#pipeline-variables)
+    - [Validation prerequisites](#validation-prerequisites)
+    - [Tokens Replacement](#tokens-replacement)
 - [Platform pipelines](#Platform-pipelines)
   - [Dependencies pipeline](#dependencies-pipeline)
   - [ReadMe pipeline](#readme-pipeline)
@@ -24,6 +24,13 @@ This section gives you an overview of the design principals the pipelines follow
   - [GitHub Workflows](#github-workflows)
 
 ---
+
+# Module Pipelines
+
+This section will give you an overview of the different phases and shared logic the module pipelines use
+
+- [Pipeline phases](#pipeline-phases)
+- [Shared concepts](#shared-concepts)
 
 ## Pipeline phases
 
@@ -93,9 +100,9 @@ By the time of this writing, the publishing experience works as follows:
 ## Shared concepts
 
 There are several concepts that are shared among the phases. Most notably
-- [pipeline variables](#pipeline-variables)
-- [simulated deployment validation](#simulated-deployment-validation)
-- [test deployment](#test-deploy)
+- [Pipeline variables](#pipeline-variables)
+- [Prerequisites](#prerequisites)
+- [Tokens Replacement](#tokens-replacement)
 
 ### Pipeline variables
 
@@ -138,31 +145,41 @@ For example, some modules require referencing Azure resources with the Resource 
 
 Please review the Parameter File Tokens [Design](./ParameterFileTokens) for more details on the different token types and how you can use them to remove hardcoded values from your parameter files.
 
-## Platform pipelines
+---
+
+# Platform pipelines
 
 Outside of the previously described platform pipelines we implemented several additional pipelines to help us with some additional tasks.
 
-### Dependencies pipeline
+- [Dependencies pipeline](#dependencies-pipeline)
+- [ReadMe pipeline](#readme-pipeline)
+- [Wiki pipeline](#wiki-pipeline)
+
+## Dependencies pipeline
 
 As the modules we test often times have dependencies to other services, we created a pipeline to deploys several standard services like VirtualNetworks and KeyVaults (alongside dummy secrets) for the modules to use. This _dependency_ pipeline should be prepared and executed before you start running any pipelines on your own. In case you need to rename any services there (for example because a certain globally unique resource name was already taken) make sure to update any references to this name in the module parameter files. You can find further details about this pipeline [here](.\TestingDesign.md#Module-Dependencies).
 
-### ReadMe pipeline
+## ReadMe pipeline
 
 We have two major ReadMe files that we want to stay in sync with the modules in the repository. The first can be found in root (`README.md`) and the second in the modules folder (`arm/README.md`). The pipeline is triggered each time changes are pushed to the `main` branch and only if a template in the `arm` folder was altered.
 
 Once triggered it will crawl through the library and update the tables in each corresponding ReadMe, creating links to the pipelines, adding/removing entries and so on.
 
-### Wiki pipeline
+## Wiki pipeline
 
 The purpose of this pipeline is to sync any files from the `docs/wiki` folder to the GitHub wiki repository. It is triggered each time changes are pushed to the `main` branch and only if files in the `docs/wiki` folder were altered.
 
 > **Note:** any changes performed directly on the Wiki via the UI will be overwritten by this pipeline.
 
-## DevOps-Tool-specific considerations
+---
+
+# DevOps-Tool-specific considerations
 
 Depending on what DevOps tool you want to use to host the platform you will find the corresponding code in different locations. This section will give you an overview of these locations and what they are used for.
 
-### GitHub Workflows
+- [GitHub Workflows](#github-workflows)
+
+## GitHub Workflows
 
 GitHub actions & workflows are the CI/CD solution provided by GitHub. To get the platform going, we use the following three elements:
 - **Variable Files:** These file(s) contain the configuration for all module pipelines in this repository.
@@ -171,11 +188,11 @@ GitHub actions & workflows are the CI/CD solution provided by GitHub. To get the
 
 In the following sub-sections we will take a deeper look into each element.
 
-#### **Component:** Variable file(s)
+### **Component:** Variable file(s)
 
 The [pipeline configuration file](#pipeline-variables) can be found at `.github/variables/variables.module.json`.
 
-#### **Component:** Composite Actions**
+### **Component:** Composite Actions**
 
 We use several composite actions to perform various tasks shared by our module workflows:
 
@@ -194,7 +211,7 @@ We use several composite actions to perform various tasks shared by our module w
 - **getWorkflowInput:** <p>
   This action implements allows us to fetch workflow input values from the module's workflow file, even if the pipeline was not triggered via a `workflow_dispatch` action. Without it we would not be able to process the contained information and would need to duplicate the configuration as workflow variables.
 
-#### **Component:** Workflows
+### **Component:** Workflows
 
 These are the individual end-2-end workflows we have for each module. Leveraging the [composite actions](#component-composite-actions) described before, they orchestrate the testing & publishing of their module.
 

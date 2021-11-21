@@ -18,7 +18,7 @@ This section gives you an overview of the design principals the testing follows.
 
 ---
 
-## Approach
+# Approach
 
 To ensure a baseline module code quality across all the modules, modules are validated before publishing them.
 
@@ -35,7 +35,9 @@ Tests falls into four categories:
 - Template Validation with parameter file(s)
 - Template Deployment with parameter file(s)
 
-## Static code validation
+---
+
+# Static code validation
 
 All Module Unit tests are performed with the help of [Pester](https://github.com/pester/Pester) and are required to have consistent, clean and syntactically correct tests to ensure that our modules are configured correctly, documentation is up to date, and modules don't turn stale.
 
@@ -57,21 +59,27 @@ The following activities are run executing the `arm/.global/global.module.tests.
   - at least one `*parameters.json` should exist
   - files should be valid JSON
 
-### Additional resources
+## Additional resources
 
 - [Pester Wiki](https://github.com/pester/Pester/wiki)
 - [Pester on GitHub](https://github.com/pester/Pester)
 - [Pester Setup and Commands](https://pester.dev/docs/commands/Setup)
 
-## API version validation
+---
+
+# API version validation
 
 In this phase, the workflow will verify if the module is one of the latest 5 (non-preview) API version using the `arm/.global/global.module.tests.ps1` script.
 
-## Template validation
+---
+
+# Template validation
 
 The template validation tests execute a dry-run with each parameter file provided & configured for a module. For example, if you have two parameter files for a module, one with the minimum set of parameters, one with the maximum, the tests will run an `Test-AzDeployment` (_- the command may vary based on the template schema_) with each of the two parameter files to see if the template would be able to be deployed with them. This test could fail either because the template is invalid, or because any of the parameter files is configured incorrectly.
 
-## Deployment validation
+---
+
+# Deployment validation
 
 If all other tests passed, the deployment tests are the ultimate module validation. Using the available & configured parameter files for a module, each is deployed to Azure (in parallel) and verifies if the deployment works end to end.
 
@@ -82,14 +90,14 @@ This happens using the `.github/actions/templates/validateModuleDeploy/scripts/T
 > **Note**<br>
 Currently the list of the parameter file used to test the module is hardcoded in the module specific workflow, as the **parameterFilePaths** in the _job_deploy_module_ and _job_tests_module_deploy_validate_ jobs.
 
-### Module dependencies
+## Module dependencies
 
 In order to successfully deploy and test all modules in your desired environment some modules have to have resources deployed beforehand.
 
 > **Note**<br>
 If we speak from **modules** in this context we mean the **services** which get created from these modules.
 
-#### Resources deployed by the dependency workflow
+### Resources deployed by the dependency workflow
 
 Together with the resource modules pipelines, we are providing a dependency pipeline (GitHub workflow: `.github\workflows\platform.dependencies.yml`), leveraging resource parameters from the `utilities\dependencies` subfolder.
 
@@ -156,7 +164,7 @@ Since also dependency resources are in turn subject to dependencies with each ot
   1. Virtual Machine: This resource is depending on the [virtual networks] and [key vault] deployed above. This resource is leveraged by the [automanage] resource.
   2. Private DNS zone: This resource is depending on the [virtual networks] deployed above. This resource is leveraged by the [private endpoint] resource.
 
-#### Required secrets and keys
+### Required secrets and keys
 
 The following secrets, keys and certificates need to be created in the key vault deployed by the dependency workflow.
 
