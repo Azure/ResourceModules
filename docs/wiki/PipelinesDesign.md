@@ -7,6 +7,7 @@ This section gives you an overview of the design principals the pipelines follow
 ### _Navigation_
 
 - [Module Pipelines](#module-pipelines)
+  - [Inputs](#module-pipeline-inputs)
   - [Pipeline phases](#pipeline-phases)
     - [Validate](#validate)
     - [Test deploy](#test-deploy)
@@ -27,10 +28,19 @@ This section gives you an overview of the design principals the pipelines follow
 
 # Module Pipelines
 
-This section will give you an overview of the different phases and shared logic the module pipelines use
+This section will give you an overview of the different phases and shared logic the module pipelines use.
 
+- [Inputs](#inputs)
 - [Pipeline phases](#pipeline-phases)
 - [Shared concepts](#shared-concepts)
+
+## Module pipeline inputs
+
+Note that the pipeline comes with 4 runtime parameters you can provide when you trigger it:
+- `'Branch' dropdown`: A dropdown to select the branch to run the pipeline from
+- `'Remove module' switch`: Can be set to 'true' or 'false' and controls whether the test-deployed resources are removed after testing
+- `Versioning mode`: This option allows you to control the publishing behavior. Depending on the mode you select, a different part of the version is incremented (for example [major|minor|patch]), if no custom version is provided. For further information of how the input is processed see [publishing](#publish).
+- `Custom version`: Allows you to provide a custom version to publish the module with. For further information of how the input is processed see [publishing](#publish).
 
 ## Pipeline phases
 

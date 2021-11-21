@@ -10,7 +10,7 @@ This section gives you an overview of how to interact with the platform pipeline
 - [How to](#how-to)
   - [Operate the module pipelines](#operate-the-module-pipelines)
   - [Operate the dependency pipelines](#operate-the-dependency-pipeline)
-- [DevOps-Tool-specific](#devops-tool-specific-considerations)
+- [DevOps-Tool-specific](#devops-tool-specific-guidance)
   - [GitHub Workflows](#github-workflows)
 
 ---
@@ -61,8 +61,33 @@ Triggering the pipeline is as easy as navigating to it in your corresponding Dev
 
 Depending on what you want to test in your module pipeline, you may want to add additional dependencies to your dependency pipeline. If so, make sure to add an additional parameter file for each service you require under `utilities/pipelines/dependencies`. Once done, you just need to add the deployment to the pipeline itself in the correct location in the pipeline. The different deployment waves are documented [here](./TestingDesign.md#module-dependencies). The implementation depends on the [DevOps tool](#devops-tool-specific-considerations) you're using.
 
+## Add a new module pipeline
+
+To add a new module pipeline we recommend to create a copy of a currently existing module pipeline and adjust all module-specific properties documented [here](./PipelinesDesign.md#component-workflows). The registration of the pipeline will differ depending on the DevOps tool you're using. For further information, please review the [DevOps-Tool-specific guidance](#devops-tool-specific-guidance) below.
+
 ---
 
-# DevOps-Tool-specific considerations
+# DevOps-Tool-specific guidance
+
+This section will give you guidance on how to operate the pipelines on a specific DevOps platform (for example GitHub or Azure DevOps).
 
 ## GitHub Workflows
+
+This section focuses on GitHub Actions & Workflows.
+
+### Trigger a pipeline
+
+To trigger a pipeline in GitHub, first navigate to the 'Actions' tab in your repository.
+
+<img src="./media/ghActionsTab.png" alt="Actions tab" height="100">
+
+then select the pipeline of your choice from the list on the left, followed by 'Run workflow' to the right. You can then select the branch of your choice and confirm the execution by clicking on the green 'Run workflow' button.
+
+<img src="./media/gHtriggerPipeline.png" alt="Run workflow" height="350">
+
+Depending on the pipeline you selected you may have additional input parameters you can provide aside from the branch:
+- [Module pipeline](./TestingDesign.md#module-pipeline-inputs) inputs
+
+### Register a pipeline
+
+To register a pipeline in GitHub you have to create the workflow file (`.yml`) and store it inside the folder `.github/workflows`. Once merged to [main\|master], GitHub will automatically list the new workflow in the 'Actions' tab.
