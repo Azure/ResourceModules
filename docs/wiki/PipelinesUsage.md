@@ -34,9 +34,12 @@ As described in the [Pipelines Design](./PipelinesDesign.md) section we offer th
 
 This section will give you instructions on how to use our interactive pipelines - independent of the DevOps tooling.
 
-
+- [Operate the module pipelines](#operate-the-module-pipelines)
+- [Operate the dependency pipelines](#operate-the-dependency-pipeline)
 
 ## Operate the module pipelines
+
+If not executing tests locally, the module pipelines are your tool of choice to validate the templates current performance. In a scenario in which you updated the template you should upload your code to the repository and run the pipeline on your branch.
 
 ## Operate the dependency pipeline
 
