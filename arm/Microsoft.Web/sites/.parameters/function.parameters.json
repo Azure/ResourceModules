@@ -2,27 +2,30 @@
     "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
     "contentVersion": "1.0.0.0",
     "parameters": {
-        "appName": {
+        "name": {
             "value": "azfaweux01"
         },
         "appType": {
             "value": "functionapp"
         },
-        "appServicePlanName": {
-            "value": "adp-sxx-az-asp-x-001"
+        "appServicePlanId": {
+            "value": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Web/serverFarms/adp-sxx-az-asp-x-001"
         },
-        "appServicePlanSkuName": {
-            "value": "P1v2"
-        },
-        "appServicePlanTier": {
-            "value": "PremiumV2"
-        },
-        "appServicePlanSize": {
-            "value": "P1v2"
-        },
-        "appServicePlanFamily": {
-            "value": "Pv2"
-        },
+        // "appServicePlanName": {
+        //     "value": "adp-sxx-az-asp-x-001"
+        // },
+        // "appServicePlanSkuName": {
+        //     "value": "P1v2"
+        // },
+        // "appServicePlanTier": {
+        //     "value": "PremiumV2"
+        // },
+        // "appServicePlanSize": {
+        //     "value": "P1v2"
+        // },
+        // "appServicePlanFamily": {
+        //     "value": "Pv2"
+        // },
         "siteConfig": {
             "value": {
                 "alwaysOn": true

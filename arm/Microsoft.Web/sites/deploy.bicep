@@ -1,5 +1,5 @@
 @description('Required. Name of the Web Application Portal Name')
-param appName string
+param name string
 
 @description('Optional. Location for all Resources.')
 param location string = resourceGroup().location
@@ -190,34 +190,44 @@ module pid_cuaId '.bicep/nested_cuaId.bicep' = if (!empty(cuaId)) {
   params: {}
 }
 
-resource appServicePlan 'Microsoft.Web/serverfarms@2021-02-01' = if (empty(appServicePlanId)) {
-  name: !empty(appServicePlanName) ? appServicePlanName : 'dummyAppServicePlanName'
-  kind: appServicePlanType
-  location: location
-  tags: tags
-  sku: {
-    name: appServicePlanSkuName
-    capacity: appServicePlanWorkerSize
-    tier: appServicePlanTier
-    size: appServicePlanSize
-    family: appServicePlanFamily
-  }
-  properties: {
-    hostingEnvironmentProfile: !empty(appServiceEnvironmentId) ? json('{ id: ${hostingEnvironment} }') : null
-  }
+// resource appServicePlan 'Microsoft.Web/serverfarms@2021-02-01' = if (empty(appServicePlanId)) {
+//   name: !empty(appServicePlanName) ? appServicePlanName : 'dummyAppServicePlanName'
+//   kind: appServicePlanType
+//   location: location
+//   tags: tags
+//   sku: {
+//     name: appServicePlanSkuName
+//     capacity: appServicePlanWorkerSize
+//     tier: appServicePlanTier
+//     size: appServicePlanSize
+//     family: appServicePlanFamily
+//   }
+//   properties: {
+//     hostingEnvironmentProfile: !empty(appServiceEnvironmentId) ? json('{ id: ${hostingEnvironment} }') : null
+//   }
+// }
+
+// resource appServicePlan_lock 'Microsoft.Authorization/locks@2016-09-01' = if (lock != 'NotSpecified' && empty(appServicePlanId)) {
+//   name: '${appServicePlan.name}-${lock}-lock'
+//   properties: {
+//     level: lock
+//     notes: lock == 'CanNotDelete' ? 'Cannot delete resource or child resources.' : 'Cannot modify the resource or child resources.'
+//   }
+//   scope: appServicePlan
+// }
+
+resource appServicePlan 'Microsoft.Web/serverfarms@2021-02-01' existing = {
+  name: last(split(appServicePlanId, '/'))
+  scope: resourceGroup(split(appServicePlanId, '/')[2], split(appServicePlanId, '/')[4])
 }
 
-resource appServicePlan_lock 'Microsoft.Authorization/locks@2016-09-01' = if (lock != 'NotSpecified' && empty(appServicePlanId)) {
-  name: '${appServicePlan.name}-${lock}-lock'
-  properties: {
-    level: lock
-    notes: lock == 'CanNotDelete' ? 'Cannot delete resource or child resources.' : 'Cannot modify the resource or child resources.'
-  }
-  scope: appServicePlan
-}
+// resource virtualMachine_logAnalyticsWorkspace 'Microsoft.OperationalInsights/workspaces@2021-06-01' existing = if (!empty(workspaceId)) {
+//   name: last(split(workspaceId, '/'))
+//   scope: resourceGroup(split(workspaceId, '/')[2], split(workspaceId, '/')[4])
+// }
 
 resource app 'Microsoft.Web/sites@2020-12-01' = {
-  name: appName
+  name: name
   location: location
   kind: appType
   tags: tags
@@ -226,7 +236,8 @@ resource app 'Microsoft.Web/sites@2020-12-01' = {
     userAssignedIdentities: !empty(userAssignedIdentities) ? userAssignedIdentities : null
   }
   properties: {
-    serverFarmId: !empty(appServicePlanId) ? appServicePlanId : appServicePlan.id
+    // serverFarmId: !empty(appServicePlanId) ? appServicePlanId : appServicePlan.id
+    serverFarmId: appServicePlan.id
     httpsOnly: httpsOnly
     hostingEnvironmentProfile: !empty(appServiceEnvironmentId) ? json('{ id: ${hostingEnvironment} }') : null
     clientAffinityEnabled: clientAffinityEnabled
@@ -240,8 +251,8 @@ resource app 'Microsoft.Web/sites@2020-12-01' = {
       AzureWebJobsDashboard: !empty(storageAccountName) ? 'DefaultEndpointsProtocol=https;AccountName=${storageAccountName};AccountKey=${listkeys(resourceId(subscription().subscriptionId, storageAccountResourceGroupName, 'Microsoft.Storage/storageAccounts', storageAccountName), '2019-06-01').keys[0].value};' : any(null)
       FUNCTIONS_EXTENSION_VERSION: appServicePlanType == 'functionApp' && !empty(functionsExtensionVersion) ? functionsExtensionVersion : any(null)
       FUNCTIONS_WORKER_RUNTIME: appServicePlanType == 'functionApp' && !empty(functionsWorkerRuntime) ? functionsWorkerRuntime : any(null)
-      APPINSIGHTS_INSTRUMENTATIONKEY: enableMonitoring ? reference('microsoft.insights/components/${appName}', '2015-05-01').InstrumentationKey : null
-      APPLICATIONINSIGHTS_CONNECTION_STRING: enableMonitoring ? reference('microsoft.insights/components/${appName}', '2015-05-01').ConnectionString : null
+      APPINSIGHTS_INSTRUMENTATIONKEY: enableMonitoring ? reference('microsoft.insights/components/${name}', '2015-05-01').InstrumentationKey : null
+      APPLICATIONINSIGHTS_CONNECTION_STRING: enableMonitoring ? reference('microsoft.insights/components/${name}', '2015-05-01').ConnectionString : null
     }
   }
 }
