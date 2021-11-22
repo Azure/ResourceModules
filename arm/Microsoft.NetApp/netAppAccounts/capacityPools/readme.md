@@ -4,7 +4,7 @@ This template deploys capacity pools in an Azure NetApp Files.
 
 ## Resource Types
 
-| Resource Type | Api Version |
+| Resource Type | API Version |
 | :-- | :-- |
 | `Microsoft.Authorization/roleAssignments` | 2020-04-01-preview |
 | `Microsoft.NetApp/netAppAccounts/capacityPools` | 2021-06-01 |
@@ -15,7 +15,7 @@ This template deploys capacity pools in an Azure NetApp Files.
 | Parameter Name | Type | Default Value | Possible Values | Description |
 | :-- | :-- | :-- | :-- | :-- |
 | `coolAccess` | bool |  |  | Optional. If enabled (true) the pool can contain cool Access enabled volumes. |
-| `cuaId` | string |  |  | Optional. Customer Usage Attribution id (GUID). This GUID must be previously registered |
+| `cuaId` | string |  |  | Optional. Customer Usage Attribution ID (GUID). This GUID must be previously registered |
 | `location` | string | `[resourceGroup().location]` |  | Optional. Location of the pool volume. |
 | `name` | string |  |  | Required. The name of the capacity pool. |
 | `netAppAccountName` | string |  |  | Required. The name of the capacity pool. |
@@ -53,7 +53,7 @@ This template deploys capacity pools in an Azure NetApp Files.
 | :-- | :-- | :-- |
 | `capacityPoolName` | string | The name of the Capacity Pool. |
 | `capacityPoolResourceGroup` | string | The name of the Resource Group the Capacity Pool was created in. |
-| `capacityPoolResourceId` | string | The Resource Id of the Capacity Pool. |
+| `capacityPoolResourceId` | string | The Resource ID of the Capacity Pool. |
 
 ## Template references
 
