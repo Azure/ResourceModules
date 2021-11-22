@@ -8,7 +8,7 @@
         "managedVirtualNetworkName": {
             "value": "default"
         },
-        "integrationRuntimeConfig": {
+        "integrationRuntime": {
             "value": {
                 "name": "AutoResolveIntegrationRuntime",
                 "type": "Managed",
