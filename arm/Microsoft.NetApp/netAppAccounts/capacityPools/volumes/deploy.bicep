@@ -47,8 +47,10 @@ module pid_cuaId '.bicep/nested_cuaId.bicep' = if (!empty(cuaId)) {
 
 resource netAppAccount 'Microsoft.NetApp/netAppAccounts@2021-04-01' existing = {
   name: netAppAccountName
+
   resource capacityPool 'capacityPools@2021-06-01' existing = {
     name: capacityPoolName
+
     resource volume 'volumes@2021-06-01' = {
       name: name
       location: location
@@ -69,7 +71,7 @@ module volume_rbac '.bicep/nested_rbac.bicep' = [for (roleAssignment, index) in 
   params: {
     principalIds: roleAssignment.principalIds
     roleDefinitionIdOrName: roleAssignment.roleDefinitionIdOrName
-    resourceName: '${netAppAccountName}/${netAppAccount::capacityPool.name}/${netAppAccount::capacityPool::volume.name}'
+    resourceName: '${netAppAccount.name}/${netAppAccount::capacityPool.name}/${netAppAccount::capacityPool::volume.name}'
   }
 }]
 

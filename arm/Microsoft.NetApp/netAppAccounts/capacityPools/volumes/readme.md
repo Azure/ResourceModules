@@ -1,4 +1,4 @@
-# AzureNetAppFilesCapacitypoolsVolumes `[Microsoft.NetApp/netAppAccounts/capacityPools/volumes]`
+# Azure NetApp Files Capacity Pool Volumes `[Microsoft.NetApp/netAppAccounts/capacityPools/volumes]`
 
 This template deploys volumes in a capacity pool of an Azure NetApp files.
 

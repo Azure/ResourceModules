@@ -1,4 +1,4 @@
-# AzureNetAppFiles `[Microsoft.NetApp/netAppAccounts]`
+# Azure NetApp Files `[Microsoft.NetApp/netAppAccounts]`
 
 This template deploys Azure NetApp Files.
 
