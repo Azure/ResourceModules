@@ -16,7 +16,7 @@ This module deployes a Managed or Self-Hosted Integration Runtime for an Azure D
 | `dataFactoryName` | string |  |  | Required. The name of the Azure Data Factory |
 | `type` | string |  | `[Managed, Self-Hosted]`  | Required. The type of Integration Runtime |
 | `managedVirtualNetworkName` | string |  |  | Optional. The name of the Managed Virtual Network if using type "Managed". |
-| `typeProperties` | object |  |  | Required. Integration runtime type properties. |
+| `typeProperties` | object |  |  | Required. Integration Runtime type properties. |
 
 ### Parameter Usage: [`typeProperties`](https://docs.microsoft.com/en-us/azure/templates/microsoft.datafactory/factories/integrationruntimes?tabs=bicep#integrationruntime-objects)
 
