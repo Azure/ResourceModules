@@ -28,6 +28,10 @@ on:
       - '.github/actions/templates/**'
       - '.github/workflows/ms.documentdb.databaseaccounts.yml'
       - 'arm/Microsoft.DocumentDB/databaseAccounts/**'
+      - '!arm/Microsoft.DocumentDB/databaseAccounts/mongodbDatabases/collections/readme.md'
+      - '!arm/Microsoft.DocumentDB/databaseAccounts/mongodbDatabases/readme.md'
+      - '!arm/Microsoft.DocumentDB/databaseAccounts/sqlDatabases/containers/readme.md'
+      - '!arm/Microsoft.DocumentDB/databaseAccounts/sqlDatabases/readme.md'
       - '!arm/Microsoft.DocumentDB/databaseAccounts/readme.md'
 
 env:

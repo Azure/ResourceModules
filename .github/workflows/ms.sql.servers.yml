@@ -28,6 +28,7 @@ on:
       - '.github/actions/templates/**'
       - '.github/workflows/ms.sql.servers.yml'
       - 'arm/Microsoft.Sql/servers/**'
+      - '!arm/Microsoft.Sql/servers/databases/readme.md'
       - '!arm/Microsoft.Sql/servers/readme.md'
 
 env:

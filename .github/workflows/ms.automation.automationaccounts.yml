@@ -29,6 +29,11 @@ on:
       - '.github/actions/templates/**'
       - '.github/workflows/ms.automation.automationaccounts.yml'
       - 'arm/Microsoft.Automation/automationAccounts/**'
+      - '!arm/Microsoft.Automation/automationAccounts/jobSchedules/readme.md'
+      - '!arm/Microsoft.Automation/automationAccounts/modules/readme.md'
+      - '!arm/Microsoft.Automation/automationAccounts/runbooks/readme.md'
+      - '!arm/Microsoft.Automation/automationAccounts/schedules/readme.md'
+      - '!arm/Microsoft.Automation/automationAccounts/softwareUpdateConfigurations/readme.md'
       - '!arm/Microsoft.Automation/automationAccounts/readme.md'
 
 env:

@@ -28,6 +28,13 @@ on:
       - '.github/actions/templates/**'
       - '.github/workflows/ms.servicebus.namespaces.yml'
       - 'arm/Microsoft.ServiceBus/namespaces/**'
+      - '!arm/Microsoft.ServiceBus/namespaces/authorizationRules/readme.md'
+      - '!arm/Microsoft.ServiceBus/namespaces/disasterRecoveryConfigs/readme.md'
+      - '!arm/Microsoft.ServiceBus/namespaces/ipFilterRules/readme.md'
+      - '!arm/Microsoft.ServiceBus/namespaces/migrationConfigurations/readme.md'
+      - '!arm/Microsoft.ServiceBus/namespaces/queues/authorizationRules/readme.md'
+      - '!arm/Microsoft.ServiceBus/namespaces/queues/readme.md'
+      - '!arm/Microsoft.ServiceBus/namespaces/virtualNetworkRules/readme.md'
       - '!arm/Microsoft.ServiceBus/namespaces/readme.md'
 
 env:

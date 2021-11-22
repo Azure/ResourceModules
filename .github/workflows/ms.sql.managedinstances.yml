@@ -28,6 +28,14 @@ on:
       - '.github/actions/templates/**'
       - '.github/workflows/ms.sql.managedinstances.yml'
       - 'arm/Microsoft.Sql/managedInstances/**'
+      - '!arm/Microsoft.Sql/managedInstances/administrators/readme.md'
+      - '!arm/Microsoft.Sql/managedInstances/databases/backupLongTermRetentionPolicies/readme.md'
+      - '!arm/Microsoft.Sql/managedInstances/databases/backupShortTermRetentionPolicies/readme.md'
+      - '!arm/Microsoft.Sql/managedInstances/databases/readme.md'
+      - '!arm/Microsoft.Sql/managedInstances/encryptionProtector/readme.md'
+      - '!arm/Microsoft.Sql/managedInstances/keys/readme.md'
+      - '!arm/Microsoft.Sql/managedInstances/securityAlertPolicies/readme.md'
+      - '!arm/Microsoft.Sql/managedInstances/vulnerabilityAssessments/readme.md'
       - '!arm/Microsoft.Sql/managedInstances/readme.md'
 
 env:

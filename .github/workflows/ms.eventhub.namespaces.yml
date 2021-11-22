@@ -28,6 +28,11 @@ on:
       - '.github/actions/templates/**'
       - '.github/workflows/ms.eventhub.namespaces.yml'
       - 'arm/Microsoft.EventHub/namespaces/**'
+      - '!arm/Microsoft.EventHub/namespaces/authorizationRules/readme.md'
+      - '!arm/Microsoft.EventHub/namespaces/disasterRecoveryConfigs/readme.md'
+      - '!arm/Microsoft.EventHub/namespaces/eventhubs/authorizationRules/readme.md'
+      - '!arm/Microsoft.EventHub/namespaces/eventhubs/consumergroups/readme.md'
+      - '!arm/Microsoft.EventHub/namespaces/eventhubs/readme.md'
       - '!arm/Microsoft.EventHub/namespaces/readme.md'
 
 env:

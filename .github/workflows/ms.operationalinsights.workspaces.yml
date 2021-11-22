@@ -28,6 +28,10 @@ on:
       - '.github/actions/templates/**'
       - '.github/workflows/ms.operationalinsights.workspaces.yml'
       - 'arm/Microsoft.OperationalInsights/workspaces/**'
+      - '!arm/Microsoft.OperationalInsights/workspaces/dataSources/readme.md'
+      - '!arm/Microsoft.OperationalInsights/workspaces/linkedServices/readme.md'
+      - '!arm/Microsoft.OperationalInsights/workspaces/savedSearches/readme.md'
+      - '!arm/Microsoft.OperationalInsights/workspaces/storageInsightConfigs/readme.md'
       - '!arm/Microsoft.OperationalInsights/workspaces/readme.md'
 
 env:

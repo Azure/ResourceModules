@@ -28,6 +28,16 @@ on:
       - '.github/actions/templates/**'
       - '.github/workflows/ms.storage.storageaccounts.yml'
       - 'arm/Microsoft.Storage/storageAccounts/**'
+      - '!arm/Microsoft.Storage/storageAccounts/blobServices/containers/immutabilityPolicies/readme.md'
+      - '!arm/Microsoft.Storage/storageAccounts/blobServices/containers/readme.md'
+      - '!arm/Microsoft.Storage/storageAccounts/blobServices/readme.md'
+      - '!arm/Microsoft.Storage/storageAccounts/fileServices/shares/readme.md'
+      - '!arm/Microsoft.Storage/storageAccounts/fileServices/readme.md'
+      - '!arm/Microsoft.Storage/storageAccounts/managementPolicies/readme.md'
+      - '!arm/Microsoft.Storage/storageAccounts/queueServices/queues/readme.md'
+      - '!arm/Microsoft.Storage/storageAccounts/queueServices/readme.md'
+      - '!arm/Microsoft.Storage/storageAccounts/tableServices/tables/readme.md'
+      - '!arm/Microsoft.Storage/storageAccounts/tableServices/readme.md'
       - '!arm/Microsoft.Storage/storageAccounts/readme.md'
 
 env:

@@ -28,6 +28,9 @@ on:
       - '.github/actions/templates/**'
       - '.github/workflows/ms.recoveryservices.vaults.yml'
       - 'arm/Microsoft.RecoveryServices/vaults/**'
+      - '!arm/Microsoft.RecoveryServices/vaults/backupPolicies/readme.md'
+      - '!arm/Microsoft.RecoveryServices/vaults/backupStorageConfig/readme.md'
+      - '!arm/Microsoft.RecoveryServices/vaults/protectionContainers/readme.md'
       - '!arm/Microsoft.RecoveryServices/vaults/readme.md'
 
 env:

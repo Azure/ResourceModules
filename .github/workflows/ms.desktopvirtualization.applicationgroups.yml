@@ -28,6 +28,7 @@ on:
       - '.github/actions/templates/**'
       - '.github/workflows/ms.desktopvirtualization.applicationgroups.yml'
       - 'arm/Microsoft.DesktopVirtualization/applicationgroups/**'
+      - '!arm/Microsoft.DesktopVirtualization/applicationgroups/applications/readme.md'
       - '!arm/Microsoft.DesktopVirtualization/applicationgroups/readme.md'
 
 env:
