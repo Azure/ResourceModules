@@ -190,31 +190,36 @@ module pid_cuaId '.bicep/nested_cuaId.bicep' = if (!empty(cuaId)) {
   params: {}
 }
 
-resource appServicePlan 'Microsoft.Web/serverfarms@2021-02-01' = if (empty(appServicePlanId)) {
-  name: !empty(appServicePlanName) ? appServicePlanName : 'dummyAppServicePlanName'
-  kind: appServicePlanType
-  location: location
-  tags: tags
-  sku: {
-    name: appServicePlanSkuName
-    capacity: appServicePlanWorkerSize
-    tier: appServicePlanTier
-    size: appServicePlanSize
-    family: appServicePlanFamily
-  }
-  properties: {
-    hostingEnvironmentProfile: !empty(appServiceEnvironmentId) ? json('{ id: ${hostingEnvironment} }') : null
-  }
+resource appServicePlan 'Microsoft.Web/serverfarms@2021-02-01' existing = if (!empty(appServicePlanId)) {
+  name: last(split(appServicePlanId, '/'))
+  scope: resourceGroup(split(appServicePlanId, '/')[2], split(appServicePlanId, '/')[4])
 }
 
-resource appServicePlan_lock 'Microsoft.Authorization/locks@2016-09-01' = if (lock != 'NotSpecified' && empty(appServicePlanId)) {
-  name: '${appServicePlan.name}-${lock}-lock'
-  properties: {
-    level: lock
-    notes: lock == 'CanNotDelete' ? 'Cannot delete resource or child resources.' : 'Cannot modify the resource or child resources.'
-  }
-  scope: appServicePlan
-}
+// resource appServicePlan 'Microsoft.Web/serverfarms@2021-02-01' = if (empty(appServicePlanId)) {
+//   name: !empty(appServicePlanName) ? appServicePlanName : 'dummyAppServicePlanName'
+//   kind: appServicePlanType
+//   location: location
+//   tags: tags
+//   sku: {
+//     name: appServicePlanSkuName
+//     capacity: appServicePlanWorkerSize
+//     tier: appServicePlanTier
+//     size: appServicePlanSize
+//     family: appServicePlanFamily
+//   }
+//   properties: {
+//     hostingEnvironmentProfile: !empty(appServiceEnvironmentId) ? json('{ id: ${hostingEnvironment} }') : null
+//   }
+// }
+
+// resource appServicePlan_lock 'Microsoft.Authorization/locks@2016-09-01' = if (lock != 'NotSpecified' && empty(appServicePlanId)) {
+//   name: '${appServicePlan.name}-${lock}-lock'
+//   properties: {
+//     level: lock
+//     notes: lock == 'CanNotDelete' ? 'Cannot delete resource or child resources.' : 'Cannot modify the resource or child resources.'
+//   }
+//   scope: appServicePlan
+// }
 
 resource app 'Microsoft.Web/sites@2020-12-01' = {
   name: appName
