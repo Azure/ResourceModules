@@ -28,7 +28,7 @@ on:
       - '.github/actions/templates/**'
       - '.github/workflows/ms.authorization.policyexemptions.yml'
       - 'arm/Microsoft.Authorization/policyExemptions/**'
-      - '!arm/Microsoft.Authorization/policyExemptions/readme.md'
+      - '!*/**/readme.md'
 
 env:
   moduleName: 'policyExemptions'

@@ -28,7 +28,7 @@ on:
       - '.github/actions/templates/**'
       - '.github/workflows/ms.network.expressroutecircuits.yml'
       - 'arm/Microsoft.Network/expressRouteCircuits/**'
-      - '!arm/Microsoft.Network/expressRouteCircuits/readme.md'
+      - '!*/**/readme.md'
 
 env:
   moduleName: 'expressRouteCircuits'

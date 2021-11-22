@@ -28,7 +28,7 @@ on:
       - '.github/actions/templates/**'
       - '.github/workflows/ms.operationalinsights.workspaces.yml'
       - 'arm/Microsoft.OperationalInsights/workspaces/**'
-      - '!arm/Microsoft.OperationalInsights/workspaces/readme.md'
+      - '!*/**/readme.md'
 
 env:
   moduleName: 'workspaces'

@@ -28,7 +28,7 @@ on:
       - '.github/actions/templates/**'
       - '.github/workflows/ms.compute.availabilitysets.yml'
       - 'arm/Microsoft.Compute/availabilitySets/**'
-      - '!arm/Microsoft.Compute/availabilitySets/readme.md'
+      - '!*/**/readme.md'
 
 env:
   moduleName: 'availabilitySets'

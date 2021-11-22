@@ -28,7 +28,7 @@ on:
       - '.github/actions/templates/**'
       - '.github/workflows/ms.network.ipgroups.yml'
       - 'arm/Microsoft.Network/ipGroups/**'
-      - '!arm/Microsoft.Network/ipGroups/readme.md'
+      - '!*/**/readme.md'
 
 env:
   moduleName: 'ipGroups'

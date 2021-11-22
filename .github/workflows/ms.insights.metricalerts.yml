@@ -28,7 +28,7 @@ on:
       - '.github/actions/templates/**'
       - '.github/workflows/ms.insights.metricalerts.yml'
       - 'arm/Microsoft.Insights/metricAlerts/**'
-      - '!arm/Microsoft.Insights/metricAlerts/readme.md'
+      - '!*/**/readme.md'
 
 env:
   moduleName: 'metricAlerts'

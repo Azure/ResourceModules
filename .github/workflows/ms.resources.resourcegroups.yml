@@ -28,7 +28,7 @@ on:
       - '.github/actions/templates/**'
       - '.github/workflows/ms.resources.resourcegroups.yml'
       - 'arm/Microsoft.Resources/resourceGroups/**'
-      - '!arm/Microsoft.Resources/resourceGroups/readme.md'
+      - '!*/**/readme.md'
 
 env:
   moduleName: 'resourceGroups'

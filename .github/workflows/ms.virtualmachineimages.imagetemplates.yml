@@ -28,7 +28,7 @@ on:
       - '.github/actions/templates/**'
       - '.github/workflows/ms.virtualmachineimages.imagetemplates.yml'
       - 'arm/Microsoft.VirtualMachineImages/imageTemplates/**'
-      - '!arm/Microsoft.VirtualMachineImages/imageTemplates/readme.md'
+      - '!*/**/readme.md'
 
 env:
   moduleName: 'imageTemplates'

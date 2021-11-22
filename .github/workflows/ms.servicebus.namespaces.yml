@@ -28,7 +28,7 @@ on:
       - '.github/actions/templates/**'
       - '.github/workflows/ms.servicebus.namespaces.yml'
       - 'arm/Microsoft.ServiceBus/namespaces/**'
-      - '!arm/Microsoft.ServiceBus/namespaces/readme.md'
+      - '!*/**/readme.md'
 
 env:
   moduleName: 'namespaces'

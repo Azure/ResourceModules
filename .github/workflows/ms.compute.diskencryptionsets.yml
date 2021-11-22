@@ -28,7 +28,7 @@ on:
       - '.github/actions/templates/**'
       - '.github/workflows/ms.compute.diskencryptionsets.yml'
       - 'arm/Microsoft.Compute/diskEncryptionSets/**'
-      - '!arm/Microsoft.Compute/diskEncryptionSets/readme.md'
+      - '!*/**/readme.md'
 
 env:
   moduleName: 'diskEncryptionSets'

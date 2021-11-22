@@ -28,7 +28,7 @@ on:
       - '.github/actions/templates/**'
       - '.github/workflows/ms.authorization.policyassignments.yml'
       - 'arm/Microsoft.Authorization/policyAssignments/**'
-      - '!arm/Microsoft.Authorization/policyAssignments/readme.md'
+      - '!*/**/readme.md'
 
 env:
   moduleName: 'policyAssignments'

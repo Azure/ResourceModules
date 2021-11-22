@@ -28,7 +28,7 @@ on:
       - '.github/actions/templates/**'
       - '.github/workflows/ms.machinelearningservices.workspaces.yml'
       - 'arm/Microsoft.MachineLearningServices/workspaces/**'
-      - '!arm/Microsoft.MachineLearningServices/workspaces/readme.md'
+      - '!*/**/readme.md'
 
 env:
   moduleName: 'workspaces'
