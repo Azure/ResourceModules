@@ -25,17 +25,17 @@ trigger:
       - main
   paths:
     include:
-      - /.azuredevops/modulePipelines/ms.analysisservices.servers.yml
-      - /.azuredevops/pipelineTemplates/module.*.yml
-      - /arm/Microsoft.AnalysisServices/servers/*
+      - '/.azuredevops/modulePipelines/ms.analysisservices.servers.yml'
+      - '/.azuredevops/pipelineTemplates/module.*.yml'
+      - '/arm/Microsoft.AnalysisServices/servers/*'
     exclude:
-      - /**/*.md
+      - '/**/*.md'
 
 variables:
   - template: '/.azuredevops/pipelineVariables/global.variables.yml'
   - group: 'Platform-Tokens'
   - name: moduleName
-    value: AnalysisServices
+    value: 'servers'
   - name: modulePath
     value: '/arm/Microsoft.AnalysisServices/servers'
 
@@ -44,18 +44,18 @@ stages:
     jobs:
       - template: /.azuredevops/pipelineTemplates/module.jobs.validate.yml
         parameters:
-          deploymentBlocks:
-            - path: $(modulePath)/.parameters/parameters.json
+          deploymentBlocks: 
             - path: $(modulePath)/.parameters/min.parameters.json
+            - path: $(modulePath)/.parameters/parameters.json
 
   - stage: Deployment
     jobs:
       - template: /.azuredevops/pipelineTemplates/module.jobs.deploy.yml
         parameters:
           removeDeployment: '${{ parameters.removeDeployment }}'
-          deploymentBlocks:
-            - path: $(modulePath)/.parameters/parameters.json
+          deploymentBlocks: 
             - path: $(modulePath)/.parameters/min.parameters.json
+            - path: $(modulePath)/.parameters/parameters.json
 
   - stage: Publishing
     condition: and(succeeded(), eq(variables['Build.SourceBranch'], 'refs/heads/main'))

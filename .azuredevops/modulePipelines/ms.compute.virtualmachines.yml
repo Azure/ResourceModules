@@ -29,13 +29,13 @@ trigger:
       - '/.azuredevops/pipelineTemplates/module.*.yml'
       - '/arm/Microsoft.Compute/virtualMachines/*'
     exclude:
-      - '/arm/Microsoft.Compute/virtualMachines/*readme.md'
+      - '/**/*.md'
 
 variables:
   - template: '/.azuredevops/pipelineVariables/global.variables.yml'
   - group: 'Platform-Tokens'
   - name: moduleName
-    value: virtualMachines
+    value: 'virtualMachines'
   - name: modulePath
     value: '/arm/Microsoft.Compute/virtualMachines'
 
@@ -44,7 +44,8 @@ stages:
     jobs:
       - template: /.azuredevops/pipelineTemplates/module.jobs.validate.yml
         parameters:
-          deploymentBlocks:
+          deploymentBlocks: 
+            - path: $(modulePath)/.parameters/min.parameters.json
             - path: $(modulePath)/.parameters/parameters.json
 
   - stage: Deployment
@@ -52,7 +53,8 @@ stages:
       - template: /.azuredevops/pipelineTemplates/module.jobs.deploy.yml
         parameters:
           removeDeployment: '${{ parameters.removeDeployment }}'
-          deploymentBlocks:
+          deploymentBlocks: 
+            - path: $(modulePath)/.parameters/min.parameters.json
             - path: $(modulePath)/.parameters/parameters.json
 
   - stage: Publishing

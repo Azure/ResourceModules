@@ -1,10 +1,10 @@
-name: 'Network - Virtualwans'
+name: 'Authorization - Policyassignments'
 
 parameters:
   - name: removeDeployment
     displayName: Remove deployed module
     type: boolean
-    default: true
+    default: false # Deployment does not support tags
   - name: versioningOption
     displayName: The mode to handle the version increments [major|minor|patch]
     type: string
@@ -25,9 +25,9 @@ trigger:
       - main
   paths:
     include:
-      - '/.azuredevops/modulePipelines/ms.network.virtualwans.yml'
+      - '/.azuredevops/modulePipelines/ms.authorization.policyassignments.yml'
       - '/.azuredevops/pipelineTemplates/module.*.yml'
-      - '/arm/Microsoft.Network/virtualWans/*'
+      - '/arm/Microsoft.Authorization/policyAssignments/*'
     exclude:
       - '/**/*.md'
 
@@ -35,9 +35,9 @@ variables:
   - template: '/.azuredevops/pipelineVariables/global.variables.yml'
   - group: 'Platform-Tokens'
   - name: moduleName
-    value: 'virtualWans'
+    value: 'policyAssignments'
   - name: modulePath
-    value: '/arm/Microsoft.Network/virtualWans'
+    value: '/arm/Microsoft.Authorization/policyAssignments'
 
 stages:
   - stage: Validation
@@ -45,6 +45,8 @@ stages:
       - template: /.azuredevops/pipelineTemplates/module.jobs.validate.yml
         parameters:
           deploymentBlocks: 
+            - path: $(modulePath)/.parameters/allowedLocations.parameters.json
+            - path: $(modulePath)/.parameters/listOfAllowedSKUs.parameters.json
             - path: $(modulePath)/.parameters/parameters.json
 
   - stage: Deployment
@@ -53,6 +55,8 @@ stages:
         parameters:
           removeDeployment: '${{ parameters.removeDeployment }}'
           deploymentBlocks: 
+            - path: $(modulePath)/.parameters/allowedLocations.parameters.json
+            - path: $(modulePath)/.parameters/listOfAllowedSKUs.parameters.json
             - path: $(modulePath)/.parameters/parameters.json
 
   - stage: Publishing
@@ -68,5 +72,3 @@ stages:
     condition: and(in(dependencies.Deployment.result, 'Succeeded', 'Failed'),  eq( '${{ parameters.removeDeployment }}', 'true'))
     jobs:
       - template: /.azuredevops/pipelineTemplates/module.jobs.remove.yml
-        parameters:
-          relativePathOfRemovalScript: 'utilities/pipelines/resourceRemoval/Remove-vWan.ps1'

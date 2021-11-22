@@ -1,4 +1,4 @@
-name: 'Network - Virtualwans'
+name: 'Network - Virtualnetworkgateways'
 
 parameters:
   - name: removeDeployment
@@ -25,9 +25,9 @@ trigger:
       - main
   paths:
     include:
-      - '/.azuredevops/modulePipelines/ms.network.virtualwans.yml'
+      - '/.azuredevops/modulePipelines/ms.network.virtualnetworkgateways.yml'
       - '/.azuredevops/pipelineTemplates/module.*.yml'
-      - '/arm/Microsoft.Network/virtualWans/*'
+      - '/arm/Microsoft.Network/virtualNetworkGateways/*'
     exclude:
       - '/**/*.md'
 
@@ -35,9 +35,9 @@ variables:
   - template: '/.azuredevops/pipelineVariables/global.variables.yml'
   - group: 'Platform-Tokens'
   - name: moduleName
-    value: 'virtualWans'
+    value: 'virtualNetworkGateways'
   - name: modulePath
-    value: '/arm/Microsoft.Network/virtualWans'
+    value: '/arm/Microsoft.Network/virtualNetworkGateways'
 
 stages:
   - stage: Validation
@@ -45,7 +45,8 @@ stages:
       - template: /.azuredevops/pipelineTemplates/module.jobs.validate.yml
         parameters:
           deploymentBlocks: 
-            - path: $(modulePath)/.parameters/parameters.json
+            - path: $(modulePath)/.parameters/expressRoute.parameters.json
+            - path: $(modulePath)/.parameters/vpn.parameters.json
 
   - stage: Deployment
     jobs:
@@ -53,7 +54,8 @@ stages:
         parameters:
           removeDeployment: '${{ parameters.removeDeployment }}'
           deploymentBlocks: 
-            - path: $(modulePath)/.parameters/parameters.json
+            - path: $(modulePath)/.parameters/expressRoute.parameters.json
+            - path: $(modulePath)/.parameters/vpn.parameters.json
 
   - stage: Publishing
     condition: and(succeeded(), eq(variables['Build.SourceBranch'], 'refs/heads/main'))
@@ -68,5 +70,3 @@ stages:
     condition: and(in(dependencies.Deployment.result, 'Succeeded', 'Failed'),  eq( '${{ parameters.removeDeployment }}', 'true'))
     jobs:
       - template: /.azuredevops/pipelineTemplates/module.jobs.remove.yml
-        parameters:
-          relativePathOfRemovalScript: 'utilities/pipelines/resourceRemoval/Remove-vWan.ps1'

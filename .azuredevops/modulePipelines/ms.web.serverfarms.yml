@@ -1,4 +1,4 @@
-name: 'Network - Virtualwans'
+name: 'Web - Serverfarms'
 
 parameters:
   - name: removeDeployment
@@ -25,9 +25,9 @@ trigger:
       - main
   paths:
     include:
-      - '/.azuredevops/modulePipelines/ms.network.virtualwans.yml'
+      - '/.azuredevops/modulePipelines/ms.web.serverfarms.yml'
       - '/.azuredevops/pipelineTemplates/module.*.yml'
-      - '/arm/Microsoft.Network/virtualWans/*'
+      - '/arm/Microsoft.Web/serverfarms/*'
     exclude:
       - '/**/*.md'
 
@@ -35,9 +35,9 @@ variables:
   - template: '/.azuredevops/pipelineVariables/global.variables.yml'
   - group: 'Platform-Tokens'
   - name: moduleName
-    value: 'virtualWans'
+    value: 'serverfarms'
   - name: modulePath
-    value: '/arm/Microsoft.Network/virtualWans'
+    value: '/arm/Microsoft.Web/serverfarms'
 
 stages:
   - stage: Validation
@@ -68,5 +68,3 @@ stages:
     condition: and(in(dependencies.Deployment.result, 'Succeeded', 'Failed'),  eq( '${{ parameters.removeDeployment }}', 'true'))
     jobs:
       - template: /.azuredevops/pipelineTemplates/module.jobs.remove.yml
-        parameters:
-          relativePathOfRemovalScript: 'utilities/pipelines/resourceRemoval/Remove-vWan.ps1'
