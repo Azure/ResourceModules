@@ -12,7 +12,7 @@ This section gives you an overview of how to test the bicep modules.
 
 ---
 
-## Tool: Testing your Bicep module
+# Tool: Testing your Bicep module
 
 When you have done your changes and want to validate, run the following:
 
@@ -37,7 +37,9 @@ Invoke-Pester -Configuration @{
 }
 ```
 
-## Tool: Use The Test-ModuleLocally Script To Perform Pester Testing, Token Replacement and Deployment of the Module.
+---
+
+# Tool: Use The Test-ModuleLocally Script To Perform Pester Testing, Token Replacement and Deployment of the Module.
 
 The below example can be used on your local environment to load the 'Test-ModuleLocally.ps1' script and modify the required parameters as below to enable you to perform the tests locally before pushing to source control.
 
@@ -70,7 +72,9 @@ $TestModuleLocallyInput = @{
 
 ```
 
-### Handling Parameters that require or contain a value that should be tokenized
+---
+
+# Handling Parameters that require or contain a value that should be tokenized
 
 The following scenarios are common to when to use a token value in the parameter file. Refer to [Parameter File Tokens Design](./ParameterFileTokens.md) for more details.
 

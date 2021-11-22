@@ -18,7 +18,7 @@ This section gives you an overview of the design principals the testing follows.
 
 ---
 
-## Approach
+# Approach
 
 To ensure a baseline module code quality across all the modules, modules are validated before publishing them.
 
@@ -35,7 +35,9 @@ Tests falls into four categories:
 - Template Validation with parameter file(s)
 - Template Deployment with parameter file(s)
 
-## Static code validation
+---
+
+# Static code validation
 
 All Module Unit tests are performed with the help of [Pester](https://github.com/pester/Pester) and are required to have consistent, clean and syntactically correct tests to ensure that our modules are configured correctly, documentation is up to date, and modules don't turn stale.
 
@@ -57,21 +59,27 @@ The following activities are run executing the `arm/.global/global.module.tests.
   - at least one `*parameters.json` should exist
   - files should be valid JSON
 
-### Additional resources
+## Additional resources
 
 - [Pester Wiki](https://github.com/pester/Pester/wiki)
 - [Pester on GitHub](https://github.com/pester/Pester)
 - [Pester Setup and Commands](https://pester.dev/docs/commands/Setup)
 
-## API version validation
+---
+
+# API version validation
 
 In this phase, the workflow will verify if the module is one of the latest 5 (non-preview) API version using the `arm/.global/global.module.tests.ps1` script.
 
-## Template validation
+---
+
+# Template validation
 
 The template validation tests execute a dry-run with each parameter file provided & configured for a module. For example, if you have two parameter files for a module, one with the minimum set of parameters, one with the maximum, the tests will run an `Test-AzDeployment` (_- the command may vary based on the template schema_) with each of the two parameter files to see if the template would be able to be deployed with them. This test could fail either because the template is invalid, or because any of the parameter files is configured incorrectly.
 
-## Deployment validation
+---
+
+# Deployment validation
 
 If all other tests passed, the deployment tests are the ultimate module validation. Using the available & configured parameter files for a module, each is deployed to Azure (in parallel) and verifies if the deployment works end to end.
 
@@ -82,14 +90,14 @@ This happens using the `.github/actions/templates/validateModuleDeploy/scripts/T
 > **Note**<br>
 Currently the list of the parameter file used to test the module is hardcoded in the module specific workflow, as the **parameterFilePaths** in the _job_deploy_module_ and _job_tests_module_deploy_validate_ jobs.
 
-### Module dependencies
+## Module dependencies
 
 In order to successfully deploy and test all modules in your desired environment some modules have to have resources deployed beforehand.
 
 > **Note**<br>
 If we speak from **modules** in this context we mean the **services** which get created from these modules.
 
-#### Resources deployed by the dependency workflow
+### Resources deployed by the dependency workflow
 
 Together with the resource modules pipelines, we are providing a dependency pipeline (GitHub workflow: `.github\workflows\platform.dependencies.yml`), leveraging resource parameters from the `utilities\dependencies` subfolder.
 
@@ -106,45 +114,45 @@ Since also dependency resources are in turn subject to dependencies with each ot
 **Second level resources**: This group of resources has a dependency only on the resource group which will host them. Resources in this group can be deployed in parallel.
 
   1. User assigned identity: This resource is leveraged as a test identity by all resources supporting RBAC.
-  2. Log analytics workspace: This resource is leveraged by all resources supporting diagnostic settings on LAW.
-  3. Storage account: This resource is leveraged by all resources supporting diagnostic settings on a storage account.
+  1. Log analytics workspace: This resource is leveraged by all resources supporting diagnostic settings on LAW.
+  1. Storage account: This resource is leveraged by all resources supporting diagnostic settings on a storage account.
       >**Note**: This resource has a global scope name.
-  4. Event hub namespace and Event hub: This resource is leveraged by all resources supporting diagnostic settings on an event hub.
+  1. Event hub namespace and Event hub: This resource is leveraged by all resources supporting diagnostic settings on an event hub.
       >**Note**: This resource has a global scope name.
-  5. Route table: This resource is leveraged by the virtual network subnet dedicated to test [SQL managed instance].
+  1. Route table: This resource is leveraged by the virtual network subnet dedicated to test [SQL managed instance].
       >**Note**: This resource is deployed and configured only if sqlmi dependency resources are enabled.
-  6. Network watcher: This resource is leveraged by the [NSG flow logs] resource.
-  7. Shared image gallery: This resource is leveraged by the [shared image definition] and [image template] resources.
-  8. Action group: This resource is leveraged by [activity log alert] and [metric alert] resources.
-  9. Application security group: This resource is leveraged by the [network security group] resource.
-  10. Application service plan: This resource is leveraged by the [function app] and [web app] resources.
-  11. Azure Container Registry: This resource is leveraged as the private bicep registry to publish modules to.
+  1. Network watcher: This resource is leveraged by the [NSG flow logs] resource.
+  1. Shared image gallery: This resource is leveraged by the [shared image definition] and [image template] resources.
+  1. Action group: This resource is leveraged by [activity log alert] and [metric alert] resources.
+  1. Application security group: This resource is leveraged by the [network security group] resource.
+  1. Application service plan: This resource is leveraged by the [function app] and [web app] resources.
+  1. Azure Container Registry: This resource is leveraged as the private bicep registry to publish modules to.
 
 **Third level resources**: This group of resources has a dependency on one or more resources in the group above. Resources in this group can be deployed in parallel.
 
   1. AVD host pool: This resource supports monitoring, hence it has a dependency on the [storage account], [log analytics workspace] and [event hub] deployed in the group above. This resource is leveraged by the [AVD application group] resource.
-  2. Key vault: This resource supports monitoring, hence it has a dependency on the [storage account], [log analytics workspace] and [event hub] deployed in the group above. Multiple instances are deployed:
+  1. Key vault: This resource supports monitoring, hence it has a dependency on the [storage account], [log analytics workspace] and [event hub] deployed in the group above. Multiple instances are deployed:
       - '_adp-sxx-az-kv-x-001_': KV with required secrets, keys, certificates and access policies to be leveraged by all resources requiring access to a key vault key, secret and/or certificate, i.e. [application gateway], [azure NetApp file], [azure SQL server], [disk encryption set], [machine learning service], [virtual machine], [virtual machine scale set], [virtual network gateway connection].
       - '_adp-sxx-az-kv-x-pe_': KV to be leveraged by the [private endpoint] resource.
       - '_adp-sxx-az-kv-x-sqlmi_': KV with required secrets, keys and access policies to be leveraged by the [SQL managed instance] resource.
         >**Note**: This resource is deployed and configured only if sqlmi dependency resources are enabled.
       >**Note**: This resource has a global scope name.
-  3. Network Security Groups: This resource supports monitoring, hence it has a dependency on the [storage account], [log analytics workspace] and [event hub] deployed in the group above. This resource is leveraged by different virtual network subnets. Multiple instances are deployed:
+  1. Network Security Groups: This resource supports monitoring, hence it has a dependency on the [storage account], [log analytics workspace] and [event hub] deployed in the group above. This resource is leveraged by different virtual network subnets. Multiple instances are deployed:
       - '_adp-sxx-az-nsg-x-apgw_': NSG with required network security rules to be leveraged by the [application gateway] subnet.
       - '_adp-sxx-az-nsg-x-ase_': NSG with required network security rules to be leveraged by the [app service environment] subnet.
       - '_adp-sxx-az-nsg-x-bastion_': NSG with required network security rules to be leveraged by the [bastion host] subnet.
       - '_adp-sxx-az-nsg-x-sqlmi_': NSG with required network security rules to be leveraged by the [sql managed instance] subnet.
         >**Note**: This resource is deployed and configured only if sqlmi dependency resources are enabled.
       - '_adp-sxx-az-nsg-x-001_': default NSG leveraged by all other subnets.
-  4. Recovery services vault: This resource supports monitoring, hence it has a dependency on the [storage account], [log analytics workspace] and [event hub] deployed in the group above. This resource is leveraged by the [virtual machine] resource when backup is enabled.
-  5. Application insight: This resource supports monitoring, hence it has a dependency on the [storage account], [log analytics workspace] and [event hub] deployed in the group above. This resource is leveraged by the [machine learning service] resource.
-  6. Automation account: This resource supports monitoring, hence it has a dependency on the [storage account], [log analytics workspace] and [event hub] deployed in the group above. This resource is leveraged by the [log analytics workspace] resource.
-  7. Public IP addresses: This resource supports monitoring, hence it has a dependency on the [storage account], [log analytics workspace] and [event hub] deployed in the group above. Multiple instances are deployed:
+  1. Recovery services vault: This resource supports monitoring, hence it has a dependency on the [storage account], [log analytics workspace] and [event hub] deployed in the group above. This resource is leveraged by the [virtual machine] resource when backup is enabled.
+  1. Application insight: This resource supports monitoring, hence it has a dependency on the [storage account], [log analytics workspace] and [event hub] deployed in the group above. This resource is leveraged by the [machine learning service] resource.
+  1. Automation account: This resource supports monitoring, hence it has a dependency on the [storage account], [log analytics workspace] and [event hub] deployed in the group above. This resource is leveraged by the [log analytics workspace] resource.
+  1. Public IP addresses: This resource supports monitoring, hence it has a dependency on the [storage account], [log analytics workspace] and [event hub] deployed in the group above. Multiple instances are deployed:
       - '_adp-sxx-az-pip-x-apgw_': Leveraged by the [application gateway] resource.
       - '_adp-sxx-az-pip-x-bas_': Leveraged by the [bastion host] resource.
       - '_adp-sxx-az-pip-x-lb_': Leveraged by the [load balancer] resource.
-  8. Role assignment: This resource assigns the '_Contributor_' role on the subscription to the [user assigned identity] deployed as part of the group above. This is needed by the [image template] deployment.
-  9. Shared image definition: This resource is depending on the [shared image gallery] deployed above and leveraged by the [image template] resource.
+  1. Role assignment: This resource assigns the '_Contributor_' role on the subscription to the [user assigned identity] deployed as part of the group above. This is needed by the [image template] deployment.
+  1. Shared image definition: This resource is depending on the [shared image gallery] deployed above and leveraged by the [image template] resource.
 
 **Fourth level resources**: This group of resources has a dependency on one or more resources in the groups above. Resources in this group can be deployed in parallel.
 
@@ -156,14 +164,14 @@ Since also dependency resources are in turn subject to dependencies with each ot
       - '_adp-sxx-az-vnet-x-sqlmi_': Leveraged by the [sql managed instance] resource.
         >**Note**: This resource is deployed and configured only if sqlmi dependency resources are enabled.
       - '_adp-sxx-az-vnet-x-001_': Hosting multiple subnets to be leveraged by [virtual machine], [virtual machine scale set], [service bus], [azure NetApp files], [azure bastion], [private endpoints], [app service environment] and [application gateway] resources.
-  2. AVD application group: This resource is leveraged by the [AVD workspace] resource.
+  1. AVD application group: This resource is leveraged by the [AVD workspace] resource.
 
 **Fifth level resources**: This group of resources has a dependency on one or more resources in the groups above.
 
   1. Virtual Machine: This resource is depending on the [virtual networks] and [key vault] deployed above. This resource is leveraged by the [automanage] resource.
-  2. Private DNS zone: This resource is depending on the [virtual networks] deployed above. This resource is leveraged by the [private endpoint] resource.
+  1. Private DNS zone: This resource is depending on the [virtual networks] deployed above. This resource is leveraged by the [private endpoint] resource.
 
-#### Required secrets and keys
+### Required secrets and keys
 
 The following secrets, keys and certificates need to be created in the key vaults deployed by the dependency workflow.
 
