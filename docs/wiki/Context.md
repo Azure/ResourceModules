@@ -3,7 +3,7 @@
 This section will give on an overview of the idea and approach of this platform.
 Note, it will not elaborate every aspect of the subject but is intended to help you understand the design on a fundamental level.
 
-Also, while we describe an entire end-2-end setup, CARML focuses only on a **[specific area](#where-does-this-platform-fit-in)** of it.
+Also, while we describe an entire end-2-end setup, CARML focuses only on a **[specific area](#where-does-this-platform-fit-in)** of it, i.e. phases 1 & 2 of the described deployment [model](#what-is-the-intended-the-deployment-model)/[flow](#what-is-the-intended-deployment-flow).
 
 ---
 
@@ -84,6 +84,8 @@ In the **Develop modules** phase you add/implement/update your modules and valid
 The next phase, **Publish modules**, will take the tested and approved modules and publish them to a target location of your choice (for example _[template specs](https://docs.microsoft.com/en-us/azure/azure-resource-manager/templates/template-specs?tabs=azure-powershell)_ or the _[bicep registry](https://docs.microsoft.com/en-gb/azure/azure-resource-manager/bicep/private-module-registry)_). The publishing should publish at least the tested module template itself.
 The target location should support versioning so that you only always publish new versions.
 
+> Note: These first two phases are covered by the [CARML](#where-does-this-platform-fit-in) platform.
+
 In the final phase we **Consume modules** and orchestrate them to deploy services, workloads or entire landing zones. Note that all deployments up to this phase only identified as test deployments and should be deleted after their deployment concluded. In contrast, the deployments we perform now are supposed to be 'sticky' and occur on an integration/production environment. We now reference the validated & published modules and only need to provide them with the correctly configured parameters and orchestrate their deployment in the correct order.
 
 The diagram provides a high level view on how the different phases are interconnected:
@@ -96,9 +98,9 @@ From left to right you will find the phases we introduced before, _Develop modul
 
 Starting with _develop modules_, the top left box shows the test pipelines we have for each module, each validating, test-deploying and (if successful) publishing the module. The subscription on the bottom is intended to be a test/sandbox subscription without any link to production. Instead resources deployed here should be considered temporary and be removed after testing.
 
-As described earlier, if all tests for a module succeed, the pipeline will publish the modules to a given target location. In the center box you can see examples for _[template specs](https://docs.microsoft.com/en-us/azure/azure-resource-manager/templates/template-specs?tabs=azure-powershell)_, the _[bicep registry](https://docs.microsoft.com/en-gb/azure/azure-resource-manager/bicep/private-module-registry)_ as well as _[Azure DevOps artifacts](https://docs.microsoft.com/en-us/azure/devops/artifacts/concepts/feeds?view=azure-devops)_.
+As described earlier, if all tests for a module succeed, the pipeline will _publish the modules_ to a given target location. In the center box you can see examples for _[template specs](https://docs.microsoft.com/en-us/azure/azure-resource-manager/templates/template-specs?tabs=azure-powershell)_, the _[bicep registry](https://docs.microsoft.com/en-gb/azure/azure-resource-manager/bicep/private-module-registry)_ as well as _[Azure DevOps artifacts](https://docs.microsoft.com/en-us/azure/devops/artifacts/concepts/feeds?view=azure-devops)_.
 
-These first 2 phases are covered by the [CARML](#where-does-this-platform-fit-in) platform.
+> Note: These first two phases are covered by the [CARML](#where-does-this-platform-fit-in) platform.
 
 Finally, one the right you can see examples of the orchestration that deploys the environment using the published modules.
 No matter the platform we can differentiate two different deployment approaches:
