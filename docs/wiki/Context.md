@@ -3,6 +3,8 @@
 This section will give on an overview of the idea and approach of this platform.
 Note, it will not elaborate every aspect of the subject but is intended to help you understand the design on a fundamental level.
 
+Also, while we describe an entire end-2-end setup, CARML focuses only on a **[specific area](#where-does-this-platform-fit-in)** of it.
+
 ---
 
 ### _Navigation_
@@ -96,6 +98,8 @@ Starting with _develop modules_, the top left box shows the test pipelines we ha
 
 As described earlier, if all tests for a module succeed, the pipeline will publish the modules to a given target location. In the center box you can see examples for _[template specs](https://docs.microsoft.com/en-us/azure/azure-resource-manager/templates/template-specs?tabs=azure-powershell)_, the _[bicep registry](https://docs.microsoft.com/en-gb/azure/azure-resource-manager/bicep/private-module-registry)_ as well as _[Azure DevOps artifacts](https://docs.microsoft.com/en-us/azure/devops/artifacts/concepts/feeds?view=azure-devops)_.
 
+These first 2 phases are covered by the [CARML](#where-does-this-platform-fit-in) platform.
+
 Finally, one the right you can see examples of the orchestration that deploys the environment using the published modules.
 No matter the platform we can differentiate two different deployment approaches:
  - **_Template-orchestration_**: These types of deployments reference individual modules from a 'main/environment' bicep/ARM template and use its capabilities to pass parameters & orchestrate the deployments. By default, deployments are deployed in parallel by the Azure Resource Manager while accounting for all dependencies defined. Furthermore, the deploying pipeline only needs one deployment job that triggers the template's deployment.
@@ -119,5 +123,7 @@ As such, users can use the modules as they are, alter them and or use them to de
 To ensure the modules are valid and can perform the intended deployments, the repository comes with a [validation & test](./Testing.md) [pipeline](./Pipelines.md) for each module. If successful it will also publish them in one or multiple target locations.
 
 As such, _CARML_ covers the `bottom box` of the [deployment model](#what-is-the-intended-the-deployment-model) section and `Phase #1` & `Phase #2` of the [deployment flow](#what-is-the-intended-deployment-flow) section.
+
+<img src="media/completeFlowTransp.png" alt="Complete deployment flow filtered" height="500">
 
 As we want to enable any user of this repository's content to not only leverage its modules but actually also re-use the platform, the platform itself is set up so that you can plug it into your own environment with just a few basic steps described in the [Getting Started](.\GettingStarted.md) section. You may choose to add or remove modules, define your own locations you want to publish to and as such create your own open- or inner-source library.
