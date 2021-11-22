@@ -28,4 +28,4 @@ This module deploys a backup short-term retention policies for SQL Managed Insta
 
 ## Template references
 
-- [Managedinstances/Databases/Backupshorttermretentionpolicies](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Sql/2017-03-01-preview/managedInstances/databases/backupShortTermRetentionPolicies)
+- [Managedinstances/Databases/BackupShortTermRetentionPolicies](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Sql/2017-03-01-preview/managedInstances/databases/backupShortTermRetentionPolicies)
