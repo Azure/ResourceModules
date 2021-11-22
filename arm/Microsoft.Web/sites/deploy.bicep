@@ -4,48 +4,26 @@ param name string
 @description('Optional. Location for all Resources.')
 param location string = resourceGroup().location
 
-@description('Optional. Specifies the number of days that logs will be kept for; a value of 0 will retain data indefinitely.')
-@minValue(0)
-@maxValue(365)
-param diagnosticLogsRetentionInDays int = 365
-
-@description('Optional. Resource identifier of the Diagnostic Storage Account.')
-param diagnosticStorageAccountId string = ''
-
-@description('Optional. Resource identifier of Log Analytics.')
-param workspaceId string = ''
-
-@description('Optional. Resource ID of the event hub authorization rule for the Event Hubs namespace in which the event hub should be created or streamed to.')
-param eventHubAuthorizationRuleId string = ''
-
-@description('Optional. Name of the event hub within the namespace to which logs are streamed. Without this, an event hub is created for each log category.')
-param eventHubName string = ''
-
 @description('Optional. If true, ApplicationInsights will be configured for the Function App.')
 param enableMonitoring bool = true
 
-@description('Optional. Mandatory \'managedServiceIdentity\' contains UserAssigned. The identy to assign to the resource.')
-param userAssignedIdentities object = {}
-
+@description('Required. Kind of resource to deploy')
 @allowed([
-  'CanNotDelete'
-  'NotSpecified'
-  'ReadOnly'
+  'functionapp'
+  'app'
 ])
-@description('Optional. Specify the type of lock.')
-param lock string = 'NotSpecified'
+param kind string
 
-@description('Optional. Configuration Details for private endpoints.')
-param privateEndpoints array = []
+// sites specific both kinds
 
-@description('Optional. Tags of the resource.')
-param tags object = {}
+@description('Optional. The Resource Id of the App Service Plan to use for the App. If not provided, the hosting plan name is used to create a new plan.')
+param appServicePlanId string = ''
 
-@description('Optional. Customer Usage Attribution id (GUID). This GUID must be previously registered')
-param cuaId string = ''
+@description('Optional. The Resource Id of the App Service Environment to use for the Function App.')
+param appServiceEnvironmentId string = ''
 
-@description('Optional. Array of role assignment objects that contain the \'roleDefinitionIdOrName\' and \'principalId\' to define RBAC role assignments on this resource. In the roleDefinitionIdOrName attribute, you can provide either the display name of the role definition, or its fully qualified ID in the following format: \'/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11\'')
-param roleAssignments array = []
+
+// functionApp
 
 @description('Optional. The name of the storage account to managing triggers and logging function executions.')
 param storageAccountName string = ''
@@ -67,67 +45,50 @@ param functionsWorkerRuntime string = ''
 @description('Optional. Version if the function extension.')
 param functionsExtensionVersion string = '~3'
 
-@description('Optional. Required if no appServicePlanId is provided to deploy a new app service plan.')
-param appServicePlanName string = ''
 
-@description('Optional. The pricing tier for the hosting plan.')
-@allowed([
-  'F1'
-  'D1'
-  'B1'
-  'B2'
-  'B3'
-  'S1'
-  'S2'
-  'S3'
-  'P1'
-  'P1v2'
-  'P2'
-  'P3'
-  'P4'
-])
-param appServicePlanSkuName string = 'F1'
+// @description('Optional. Required if no appServicePlanId is provided to deploy a new app service plan.')
+// param appServicePlanName string = ''
 
-@description('Optional. Defines the number of workers from the worker pool that will be used by the app service plan')
-param appServicePlanWorkerSize int = 2
+// @description('Optional. The pricing tier for the hosting plan.')
+// @allowed([
+//   'F1'
+//   'D1'
+//   'B1'
+//   'B2'
+//   'B3'
+//   'S1'
+//   'S2'
+//   'S3'
+//   'P1'
+//   'P1v2'
+//   'P2'
+//   'P3'
+//   'P4'
+// ])
+// param appServicePlanSkuName string = 'F1'
 
-@description('Optional. SkuTier of app service plan deployed if no appServicePlanId was provided.')
-param appServicePlanTier string = ''
+// @description('Optional. Defines the number of workers from the worker pool that will be used by the app service plan')
+// param appServicePlanWorkerSize int = 2
 
-@description('Optional. SkuSize of app service plan deployed if no appServicePlanId was provided.')
-param appServicePlanSize string = ''
+// @description('Optional. SkuTier of app service plan deployed if no appServicePlanId was provided.')
+// param appServicePlanTier string = ''
 
-@description('Optional. SkuFamily of app service plan deployed if no appServicePlanId was provided.')
-param appServicePlanFamily string = ''
+// @description('Optional. SkuSize of app service plan deployed if no appServicePlanId was provided.')
+// param appServicePlanSize string = ''
 
-@description('Optional. SkuType of app service plan deployed if no appServicePlanId was provided.')
-@allowed([
-  'linux'
-  'windows'
-])
-param appServicePlanType string = 'linux'
+// @description('Optional. SkuFamily of app service plan deployed if no appServicePlanId was provided.')
+// param appServicePlanFamily string = ''
 
-@description('Optional. The Resource Id of the App Service Plan to use for the App. If not provided, the hosting plan name is used to create a new plan.')
-param appServicePlanId string = ''
+// @description('Optional. SkuType of app service plan deployed if no appServicePlanId was provided.')
+// @allowed([
+//   'linux'
+//   'windows'
+// ])
+// param appServicePlanType string = 'linux'
 
-@description('Optional. The Resource Id of the App Service Environment to use for the Function App.')
-param appServiceEnvironmentId string = ''
 
-@description('Required. Type of site to deploy')
-@allowed([
-  'functionapp'
-  'app'
-])
-param appType string
 
-@description('Optional. Type of managed service identity.')
-@allowed([
-  'None'
-  'SystemAssigned'
-  'SystemAssigned, UserAssigned'
-  'UserAssigned'
-])
-param managedServiceIdentity string = 'None'
+
 
 @description('Optional. Configures a web site to accept only https requests. Issues redirect for http requests.')
 param httpsOnly bool = true
@@ -162,6 +123,59 @@ param metricsToEnable array = [
   'AllMetrics'
 ]
 
+// Shared
+
+@description('Optional. Specifies the number of days that logs will be kept for; a value of 0 will retain data indefinitely.')
+@minValue(0)
+@maxValue(365)
+param diagnosticLogsRetentionInDays int = 365
+
+@description('Optional. Resource identifier of the Diagnostic Storage Account.')
+param diagnosticStorageAccountId string = ''
+
+@description('Optional. Resource identifier of Log Analytics.')
+param workspaceId string = ''
+
+@description('Optional. Resource ID of the event hub authorization rule for the Event Hubs namespace in which the event hub should be created or streamed to.')
+param eventHubAuthorizationRuleId string = ''
+
+@description('Optional. Name of the event hub within the namespace to which logs are streamed. Without this, an event hub is created for each log category.')
+param eventHubName string = ''
+
+@description('Optional. The type of identity used for the virtual machine. The type \'SystemAssigned, UserAssigned\' includes both an implicitly created identity and a set of user assigned identities. The type \'None\' (default) will remove any identities from the virtual machine.')
+@allowed([
+  'None'
+  'SystemAssigned'
+  'SystemAssigned, UserAssigned'
+  'UserAssigned'
+])
+param managedServiceIdentity string = 'None'
+
+@description('Optional. Mandatory if \'managedServiceIdentity\' contains UserAssigned. The list of user identities to assign to the resource.')
+param userAssignedIdentities object = {}
+
+@allowed([
+  'CanNotDelete'
+  'NotSpecified'
+  'ReadOnly'
+])
+@description('Optional. Specify the type of lock.')
+param lock string = 'NotSpecified'
+
+@description('Optional. Configuration Details for private endpoints.')
+param privateEndpoints array = []
+
+@description('Optional. Tags of the resource.')
+param tags object = {}
+
+@description('Optional. Customer Usage Attribution id (GUID). This GUID must be previously registered')
+param cuaId string = ''
+
+@description('Optional. Array of role assignment objects that contain the \'roleDefinitionIdOrName\' and \'principalId\' to define RBAC role assignments on this resource. In the roleDefinitionIdOrName attribute, you can provide either the display name of the role definition, or its fully qualified ID in the following format: \'/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11\'')
+param roleAssignments array = []
+
+// Vars
+
 var diagnosticsLogs = [for log in logsToEnable: {
   category: log
   enabled: true
@@ -185,6 +199,7 @@ var hostingEnvironment = {
   id: appServiceEnvironmentId
 }
 
+// resources
 module pid_cuaId '.bicep/nested_cuaId.bicep' = if (!empty(cuaId)) {
   name: 'pid-${cuaId}'
   params: {}
@@ -229,7 +244,7 @@ resource appServicePlan 'Microsoft.Web/serverfarms@2021-02-01' existing = {
 resource app 'Microsoft.Web/sites@2020-12-01' = {
   name: name
   location: location
-  kind: appType
+  kind: kind
   tags: tags
   identity: {
     type: managedServiceIdentity

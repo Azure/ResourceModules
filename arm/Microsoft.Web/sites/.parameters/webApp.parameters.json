@@ -5,7 +5,7 @@
         "name": {
             "value": "sxx-az-wa-x-001"
         },
-        "appType": {
+        "kind": {
             "value": "app"
         },
         "appServicePlanId": {

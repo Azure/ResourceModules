@@ -30,7 +30,7 @@ This module deploys a Web or Function App
 | `appServicePlanTier` | string |  |  | Optional. SkuTier of app service plan deployed if no appServicePlanId was provided. |
 | `appServicePlanType` | string | `linux` | `[linux, windows]` | Optional. SkuType of app service plan deployed if no appServicePlanId was provided. |
 | `appServicePlanWorkerSize` | int | `2` |  | Optional. Defines the number of workers from the worker pool that will be used by the app service plan |
-| `appType` | string |  | `[functionapp, app]` | Required. Type of site to deploy |
+| `kind` | string |  | `[functionapp, app]` | Required. Type of site to deploy |
 | `clientAffinityEnabled` | bool | `True` |  | Optional. If Client Affinity is enabled. |
 | `cuaId` | string |  |  | Optional. Customer Usage Attribution id (GUID). This GUID must be previously registered |
 | `diagnosticLogsRetentionInDays` | int | `365` |  | Optional. Specifies the number of days that logs will be kept for; a value of 0 will retain data indefinitely. |

@@ -13,6 +13,9 @@
                 "family": "S",
                 "capacity": "1"
             }
+        },
+        "lock": {
+            "value": "CanNotDelete"
         }
     }
 }
