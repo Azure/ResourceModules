@@ -106,8 +106,8 @@ param aksClusterEnablePrivateCluster bool = false
 @description('Required. Properties of the primary agent pool.')
 param primaryAgentPoolProfile array
 
-@description('Optional. Define one or multiple node pools')
-param additionalAgentPools array = []
+@description('Optional. Define one or more secondary/additional node pools')
+param agentPools array = []
 
 @description('Optional. Specifies whether the httpApplicationRouting add-on is enabled or not.')
 param httpApplicationRoutingEnabled bool = false
@@ -327,10 +327,13 @@ resource managedCluster 'Microsoft.ContainerService/managedClusters@2021-07-01' 
   }
 }
 
-resource aksClusterName_nodePoolName 'Microsoft.ContainerService/managedClusters/agentPools@2021-05-01' = [for additionalAgentPool in additionalAgentPools: {
-  name: additionalAgentPool.name
-  properties: additionalAgentPool.properties
-  parent: managedCluster
+module managedCluster_agentPools 'agentPools/deploy.bicep' = [for (agentPool, index) in agentPools: {
+  name: '${managedCluster.name}-agentPool-${index}'
+  params: {
+    managedClusterName: managedCluster.name
+    name: agentPool.name
+    agentPoolProperties: agentPool.properties
+  }
 }]
 
 resource managedCluster_lock 'Microsoft.Authorization/locks@2016-09-01' = if (lock != 'NotSpecified') {

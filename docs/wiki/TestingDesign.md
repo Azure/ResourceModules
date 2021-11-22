@@ -112,6 +112,7 @@ Since also dependency resources are in turn subject to dependencies with each ot
   4. Event hub namespace and Event hub: This resource is leveraged by all resources supporting diagnostic settings on an event hub.
       >**Note**: This resource has a global scope name.
   5. Route table: This resource is leveraged by the virtual network subnet dedicated to test [SQL managed instance].
+      >**Note**: This resource is deployed and configured only if sqlmi dependency resources are enabled.
   6. Network watcher: This resource is leveraged by the [NSG flow logs] resource.
   7. Shared image gallery: This resource is leveraged by the [shared image definition] and [image template] resources.
   8. Action group: This resource is leveraged by [activity log alert] and [metric alert] resources.
@@ -122,13 +123,18 @@ Since also dependency resources are in turn subject to dependencies with each ot
 **Third level resources**: This group of resources has a dependency on one or more resources in the group above. Resources in this group can be deployed in parallel.
 
   1. AVD host pool: This resource supports monitoring, hence it has a dependency on the [storage account], [log analytics workspace] and [event hub] deployed in the group above. This resource is leveraged by the [AVD application group] resource.
-  2. Key vault: This resource supports monitoring, hence it has a dependency on the [storage account], [log analytics workspace] and [event hub] deployed in the group above. This resource is leveraged by all resources requiring access to a key vault key, secret and/or certificate, i.e. [application gateway], [azure NetApp file], [azure SQL server], [disk encryption set], [machine learning service], [private endpoint], [SQL managed instance], [virtual machine], [virtual machine scale set], [virtual network gateway connection].
+  2. Key vault: This resource supports monitoring, hence it has a dependency on the [storage account], [log analytics workspace] and [event hub] deployed in the group above. Multiple instances are deployed:
+      - '_adp-sxx-az-kv-x-001_': KV with required secrets, keys, certificates and access policies to be leveraged by all resources requiring access to a key vault key, secret and/or certificate, i.e. [application gateway], [azure NetApp file], [azure SQL server], [disk encryption set], [machine learning service], [virtual machine], [virtual machine scale set], [virtual network gateway connection].
+      - '_adp-sxx-az-kv-x-pe_': KV to be leveraged by the [private endpoint] resource.
+      - '_adp-sxx-az-kv-x-sqlmi_': KV with required secrets, keys and access policies to be leveraged by the [SQL managed instance] resource.
+        >**Note**: This resource is deployed and configured only if sqlmi dependency resources are enabled.
       >**Note**: This resource has a global scope name.
   3. Network Security Groups: This resource supports monitoring, hence it has a dependency on the [storage account], [log analytics workspace] and [event hub] deployed in the group above. This resource is leveraged by different virtual network subnets. Multiple instances are deployed:
       - '_adp-sxx-az-nsg-x-apgw_': NSG with required network security rules to be leveraged by the [application gateway] subnet.
       - '_adp-sxx-az-nsg-x-ase_': NSG with required network security rules to be leveraged by the [app service environment] subnet.
       - '_adp-sxx-az-nsg-x-bastion_': NSG with required network security rules to be leveraged by the [bastion host] subnet.
       - '_adp-sxx-az-nsg-x-sqlmi_': NSG with required network security rules to be leveraged by the [sql managed instance] subnet.
+        >**Note**: This resource is deployed and configured only if sqlmi dependency resources are enabled.
       - '_adp-sxx-az-nsg-x-001_': default NSG leveraged by all other subnets.
   4. Recovery services vault: This resource supports monitoring, hence it has a dependency on the [storage account], [log analytics workspace] and [event hub] deployed in the group above. This resource is leveraged by the [virtual machine] resource when backup is enabled.
   5. Application insight: This resource supports monitoring, hence it has a dependency on the [storage account], [log analytics workspace] and [event hub] deployed in the group above. This resource is leveraged by the [machine learning service] resource.
@@ -148,6 +154,7 @@ Since also dependency resources are in turn subject to dependencies with each ot
       - '_adp-sxx-az-vnet-x-azfw_': Leveraged by the [azure firewall] resource.
       - '_adp-sxx-az-vnet-x-aks_': Leveraged by the [azure kubernetes service] resource.
       - '_adp-sxx-az-vnet-x-sqlmi_': Leveraged by the [sql managed instance] resource.
+        >**Note**: This resource is deployed and configured only if sqlmi dependency resources are enabled.
       - '_adp-sxx-az-vnet-x-001_': Hosting multiple subnets to be leveraged by [virtual machine], [virtual machine scale set], [service bus], [azure NetApp files], [azure bastion], [private endpoints], [app service environment] and [application gateway] resources.
   2. AVD application group: This resource is leveraged by the [AVD workspace] resource.
 
@@ -158,16 +165,23 @@ Since also dependency resources are in turn subject to dependencies with each ot
 
 #### Required secrets and keys
 
-The following secrets, keys and certificates need to be created in the key vault deployed by the dependency workflow.
+The following secrets, keys and certificates need to be created in the key vaults deployed by the dependency workflow.
 
-1. Key vault secrets:
-   - _administratorLogin_: For [azure SQL server] and [SQL managed instance].
-   - _administratorLoginPassword_: For [azure SQL server] and [SQL managed instance].
-   - _vpnSharedKey_: For [virtual network gateway connection].
-   - _adminUserName_: For [virtual machine].
-   - _adminPassword_: For [virtual machine].
-1. Key vault keys:
-   - _keyEncryptionKey_: For [disk encryption set].
-   - _keyEncryptionKeySqlMi_: For [SQL managed instance].
-1. Key vault certificate:
-   - _applicationGatewaySslCertificate_: For [application gateway].
+- Shared key vault '_adp-sxx-az-kv-x-001_'
+  1. Key vault secrets:
+      - _administratorLogin_: For [azure SQL server] .
+      - _administratorLoginPassword_: For [azure SQL server].
+      - _vpnSharedKey_: For [virtual network gateway connection].
+      - _adminUserName_: For [virtual machine].
+      - _adminPassword_: For [virtual machine].
+  1. Key vault keys:
+      - _keyEncryptionKey_: For [disk encryption set].
+  1. Key vault certificate:
+      - _applicationGatewaySslCertificate_: For [application gateway].
+
+- SQL Mi key vault '_adp-sxx-az-kv-x-sqlmi_'
+  1. Key vault secrets:
+      - _administratorLogin_: For [SQL managed instance].
+      - _administratorLoginPassword_: For [SQL managed instance].
+  1. Key vault keys:
+      - _keyEncryptionKeySqlMi_: For [SQL managed instance].
