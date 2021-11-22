@@ -25,7 +25,7 @@ The modules are multi-purpose, therefore contain a lot of dynamic expressions (f
 
 They can be deployed in different configurations just by changing the input parameters. They are perceived by the **user** as black boxes, where they don’t have to worry about the internal complexity of the code, as they only interact with them by their parameters.
 
-## General guidelines
+# General guidelines
 
 - All resource modules in the 'arm' folder should not allow deployment loops on the top level resource but may optionally allow deployment loops on their child-resources.
   > **Example:** The storage account module allows the deployment of a single storage account with, optionally, multiple blob containers, multiple file shares, multiple queues and/or multiple tables.
@@ -38,7 +38,9 @@ They can be deployed in different configurations just by changing the input para
   4. **Locks**
   5. **Private Endpoints** (if supported)
 
-## File & folder structure
+---
+
+# File & folder structure
 
 A **Module** consists of
 
@@ -48,7 +50,10 @@ A **Module** consists of
 
 A module usually represents a single resource or a set of closely related resources. For example, a storage account and the associated lock or virtual machine and network interfaces. Modules are located in the `arm` folder.
 
-### Naming
+- [Naming](#naming)
+- [Structure](#structure)
+
+## Naming
 
 Use the following naming standard for module files and folders:
 
@@ -82,7 +87,7 @@ Microsoft.Web
     └─ readme.md
 ```
 
-### Structure
+## Structure
 
 Modules in the repository are structured via the module's main resource provider (for example `Microsoft.Web`) and resource type (for example `serverfarms`) where each section of the path corresponds to its place in the hierarchy. However, for cases that do not fit into this schema we provide the following guidance:
 
@@ -114,11 +119,18 @@ Modules in the repository are structured via the module's main resource provider
   > ***Note:*** The intend should always be to add new logic to the original template instead of adding artificial new modules. Hence, this solution should only be applied if no other solutions work.
 -->
 
-## Bicep template guidelines
+---
+
+# Bicep template guidelines
 
 Within a bicep file, follow the following conventions:
 
-### Parameters
+- [Parameters](#parameters)
+- [Variables](#variables)
+- [Resource](#resource)
+- [Outputs](#outputs)
+
+## Parameters
 
 - camelCase, i.e `resourceGroupName`
 - Descriptions contain type of requirement:
@@ -127,7 +139,7 @@ Within a bicep file, follow the following conventions:
   - `Generated` - Should not be used to provide a parameter. Used to generate data used in the deployment that cannot be generated other places in the template. i.e. the `utcNow()` function.
   - `Conditional` - Optional or required parameter depending on other inputs.
 
-### Variables
+## Variables
 
 - camelCase, i.e `builtInRoleNames`
 - For modules that manage roleAssignments, update the list of roles to only be the applicable roles. One way of doing this:
@@ -161,7 +173,7 @@ Within a bicep file, follow the following conventions:
     $resArm
     ```
 
-### Resource
+## Resource
 
 - camelCase, i.e `resourceGroup`
 - The name used as a reference is the singular name of the resource that it deploys, i.e:
@@ -180,7 +192,7 @@ Within a bicep file, follow the following conventions:
 
 - Child-resources go into a sub-folder with the name of the child (for example `databases` in case of the SQL server module).
 
-### Outputs
+## Outputs
 
 - camelCase, i.e `resourceGroupResourceId`
 - At a minimum, reference the following:
@@ -188,8 +200,9 @@ Within a bicep file, follow the following conventions:
   - `<resourceReference>ResourceId`, i.e. `resourceGroupResourceId`
 - Add a `@description('...')` annotation with meaningful description to each output
 
+---
 
-## ReadMe
+# ReadMe
 
 Each module must come with a ReadMe markdown file that outlines what the module contains and 'how' it can be used.
 It primary components are

@@ -21,27 +21,31 @@ This wiki describes the content of this repository, the modules, pipelines, poss
 - [Contribution Guide](./ContributionGuide)
 - [Known Issues](./KnownIssues)
 
-## Reporting Issues and Feedback
+# Reporting Issues and Feedback
 
-### Issues and Bugs
+## Issues and Bugs
 
 If you find any bugs, please file an issue in the [GitHub Issues][GitHubIssues] page. Please fill out the provided template with the appropriate information.
 > Please search the existing issues before filing new issues to avoid duplicates.
 
 If you are taking the time to mention a problem, even a seemingly minor one, it is greatly appreciated, and a totally valid contribution to this project. **Thank you!**
 
-### Feedback
+## Feedback
 
 If there is a feature you would like to see in here, please file an issue or feature request in the [GitHub Issues][GitHubIssues] page to provide direct feedback.
 
-## Trademarks
+---
+
+# Trademarks
 
 This project may contain trademarks or logos for projects, products, or services. Authorized use of Microsoft trademarks or logos is subject to and must follow
 [Microsoft's Trademark & Brand Guidelines](https://www.microsoft.com/en-us/legal/intellectualproperty/trademarks/usage/general).
 Use of Microsoft trademarks or logos in modified versions of this project must not cause confusion or imply Microsoft sponsorship.
 Any use of third-party trademarks or logos are subject to those third-party's policies.
 
-## Learn More
+---
+
+# Learn More
 
 - [PowerShell Documentation][PowerShellDocs]
 - [Microsoft Azure Documentation][MicrosoftAzureDocs]
