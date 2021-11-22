@@ -71,7 +71,7 @@ module pid_cuaId '.bicep/nested_cuaId.bicep' = if (!empty(cuaId)) {
   params: {}
 }
 
-resource queryAlert 'Microsoft.Insights/scheduledQueryRules@2021-02-01-preview' = {
+resource queryRule 'Microsoft.Insights/scheduledQueryRules@2021-02-01-preview' = {
   name: alertName
   location: location
   tags: tags
@@ -98,14 +98,19 @@ resource queryAlert 'Microsoft.Insights/scheduledQueryRules@2021-02-01-preview' 
   }
 }
 
-module queryAlert_rbac '.bicep/nested_rbac.bicep' = [for (roleAssignment, index) in roleAssignments: {
+module queryRule_rbac '.bicep/nested_rbac.bicep' = [for (roleAssignment, index) in roleAssignments: {
   name: '${deployment().name}-rbac-${index}'
   params: {
     roleAssignmentObj: roleAssignment
-    resourceName: queryAlert.name
+    resourceName: queryRule.name
   }
 }]
 
-output queryAlertName string = queryAlert.name
-output queryAlertResourceId string = queryAlert.id
+@description('The Name of the created query rule.')
+output queryAlertName string = queryRule.name
+
+@description('The ID of the created query rule.')
+output queryAlertResourceId string = queryRule.id
+
+@description('The Resource Group of the created query rule.')
 output deploymentResourceGroup string = resourceGroup().name
