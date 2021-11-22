@@ -878,7 +878,7 @@ jobs:
 
   job_deploy_sqlmi_vnet:
     runs-on: ubuntu-20.04
-    name: 'Deploy virtual networks'
+    name: 'Deploy sqlmi virtual network'
     if: github.event.inputs.deploySqlMiDependencies == 'true'
     env:
       moduleName: virtualNetworks
