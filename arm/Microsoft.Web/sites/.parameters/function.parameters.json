@@ -15,16 +15,16 @@
         //     "value": "adp-sxx-az-asp-x-001"
         // },
         // "appServicePlanSkuName": {
-        //     "value": "P1v2"
+        //     "value": "P1v2" //S1
         // },
         // "appServicePlanTier": {
-        //     "value": "PremiumV2"
+        //     "value": "PremiumV2" //Standard
         // },
         // "appServicePlanSize": {
-        //     "value": "P1v2"
+        //     "value": "P1v2"  //S1
         // },
         // "appServicePlanFamily": {
-        //     "value": "Pv2"
+        //     "value": "Pv2"   //S
         // },
         "siteConfig": {
             "value": {
