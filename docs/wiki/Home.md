@@ -4,13 +4,13 @@ The objective of this repository is to provide a template library that can be re
 
 This wiki describes the content of this repository, the modules, pipelines, possible options on how to use them and how to contribute to this project.
 
-If you're unfamiliar with Infrastructure as Code, or wonder how you can use the contents of this repository in your deployments please check out the [context](./Context.md) section of this wiki.
+If you're unfamiliar with Infrastructure as Code, or wonder how you can use the contents of this repository in your deployments please check out the [context](./Context) section of this wiki.
 
 ### _Navigation_
 
-- [Context](./Context.md)
-  - [Infrastructure as Code](./Context.md#infrastructure-as-code-iac)
-  - [Where does this platform fit in?](./Context.md#where-does-this-platform-fit-in)
+- [Context](./Context)
+  - [Infrastructure as Code](./Context#infrastructure-as-code-iac)
+  - [Where does this platform fit in?](./Context#where-does-this-platform-fit-in)
 - [Getting Started](./GettingStarted)
   - [General prerequisites](./GettingStarted#General-prerequisites)
   - [Where to start](./GettingStarted#Where-to-start)
