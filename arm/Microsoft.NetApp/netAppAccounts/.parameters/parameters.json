@@ -23,7 +23,7 @@
         "capacityPools": {
             "value": [
                 {
-                    "name": "sxx-az-anfcp-x-001",
+                    "name": "sxx-az-anfcp-x-003",
                     "serviceLevel": "Premium",
                     "size": 4398046511104,
                     "volumes": [
@@ -84,7 +84,7 @@
                     ]
                 },
                 {
-                    "name": "sxx-az-anfcp-x-002",
+                    "name": "sxx-az-anfcp-x-004",
                     "serviceLevel": "Premium",
                     "size": 4398046511104,
                     "volumes": [],
