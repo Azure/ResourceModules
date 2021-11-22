@@ -46,15 +46,18 @@ module pid_cuaId '.bicep/nested_cuaId.bicep' = if (!empty(cuaId)) {
   params: {}
 }
 
-resource capacityPool 'Microsoft.NetApp/netAppAccounts/capacityPools@2021-06-01' = {
-  name: '${netAppAccountName}/${name}'
-  location: location
-  tags: tags
-  properties: {
-    serviceLevel: serviceLevel
-    size: size
-    qosType: qosType
-    coolAccess: coolAccess
+resource netAppAccount 'Microsoft.NetApp/netAppAccounts@2021-04-01' existing = {
+  name: netAppAccountName
+  resource capacityPool 'capacityPools@2021-06-01' = {
+    name: name
+    location: location
+    tags: tags
+    properties: {
+      serviceLevel: serviceLevel
+      size: size
+      qosType: qosType
+      coolAccess: coolAccess
+    }
   }
 }
 
@@ -62,7 +65,7 @@ module capacityPool_volumes './volumes/deploy.bicep' = [for (volume, index) in v
   name: '${deployment().name}-Vol-${index}'
   params: {
     netAppAccountName: netAppAccountName
-    capacityPoolName: capacityPool.name
+    capacityPoolName: netAppAccount::capacityPool.name
     name: name
     location: location
     serviceLevel: serviceLevel
@@ -79,15 +82,15 @@ module capacityPool_rbac '.bicep/nested_rbac.bicep' = [for (roleAssignment, inde
   name: '${deployment().name}-Rbac-${index}'
   params: {
     roleAssignmentObj: roleAssignment
-    resourceName: capacityPool.name
+    resourceName: netAppAccount::capacityPool.name
   }
 }]
 
 @description('The name of the Capacity Pool.')
-output capacityPoolName string = capacityPool.name
+output capacityPoolName string = netAppAccount::capacityPool.name
 
 @description('The Resource Id of the Capacity Pool.')
-output capacityPoolResourceId string = capacityPool.id
+output capacityPoolResourceId string = netAppAccount::capacityPool.id
 
 @description('The name of the Resource Group the Capacity Pool was created in.')
 output capacityPoolResourceGroup string = resourceGroup().name
