@@ -1,4 +1,4 @@
-# Vision
+# Context
 
 This section will give on an overview of the idea and approach of this platform.
 Note, it will not elaborate every aspect of the subject but is intended to help you understand the design on a fundamental level.
@@ -52,7 +52,7 @@ When working with IaC you use 3 different components:
 To make each component a bit more tangible, let's take a look at the following example:
 
 - Target Environment
-  - A virtual machine connected to a storage account
+  - A Virtual Machine connected to a Storage account
 - Orchestration
   - Template-orchestration using GitHub actions
 - Modules
@@ -63,9 +63,9 @@ To make each component a bit more tangible, let's take a look at the following e
 
 For this example we could create a GitHub workflow that signs into Azure and run's a single deployment using for example the PowerShell command `New-AzResourceGroupDeployment`.
 Furthermore we'd then create an orchestration-template the deploys the above resources in the following parallel groups (using dependencies)
-1. The resource group
-1. The virtual network & storage account
-1. The virtual Machine
+1. The Resource Group
+1. The Virtual Network & Storage Account
+1. The Virtual Machine
 
 Then we'd only need to create a parameter file for the orchestration-template and have the workflow deploy both in combination.
 
