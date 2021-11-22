@@ -8,7 +8,7 @@
     "accessPolicies": {
       "value": [
         {
-          "tenantId": "449fbe1d-9c99-4509-9014-4fd5cf25b014",
+          "tenantId": "<<tenantId>>",
           "objectId": "bab643ad-2988-4560-9f2b-c8282ba345f0", // Backup Management Service needs access to back up the keys and secrets, along with the associated VMs
           "permissions": {
             "keys": [
@@ -25,14 +25,10 @@
           }
         },
         {
-          "tenantId": "449fbe1d-9c99-4509-9014-4fd5cf25b014",
+          "tenantId": "<<tenantId>>",
           "objectId": "cf33fea8-b30f-424f-ab73-c48d99e0b222", // adding adp-sxx-az-msi-x-001 to get secrets
           "permissions": {
-            "keys": [
-              "Get",
-              "WrapKey",
-              "UnwrapKey"
-            ],
+            "keys": [],
             "secrets": [
               "Get"
             ],
@@ -40,8 +36,8 @@
           }
         },
         {
-          "tenantId": "449fbe1d-9c99-4509-9014-4fd5cf25b014",
-          "objectId": "e58511af-4da2-449c-a5cd-6a10271cfb83", // dependency access
+          "tenantId": "<<tenantId>>",
+          "objectId": "<<deploymentSpId>>", // dependency access
           "permissions": {
             "keys": [
               "all"
