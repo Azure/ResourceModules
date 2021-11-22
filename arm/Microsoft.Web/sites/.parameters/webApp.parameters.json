@@ -35,7 +35,7 @@
             "value": true
         },
         "enableMonitoring": {
-            "value": false
+            "value": true
         },
         "roleAssignments": {
             "value": [
