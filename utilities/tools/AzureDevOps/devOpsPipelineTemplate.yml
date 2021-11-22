@@ -1,0 +1,69 @@
+name: '<PipelineName>'
+
+parameters:
+  - name: removeDeployment
+    displayName: Remove deployed module
+    type: boolean
+    default: <removeFlag>
+  - name: versioningOption
+    displayName: The mode to handle the version increments [major|minor|patch]
+    type: string
+    default: patch
+    values:
+      - patch
+      - minor
+      - major
+  - name: customVersion
+    displayName: Custom version to apply. Used only if higher than latest
+    type: string
+    default: '<versionFlag>'
+
+trigger:
+  batch: true
+  branches:
+    include:
+      - main
+  paths:
+    include:
+      - '/.azuredevops/modulePipelines/<PipelineFileName>'
+      - '/.azuredevops/pipelineTemplates/module.*.yml'
+      - '/<RelativeModuleFolderPath>/*'
+    exclude:
+      - '/**/*.md'
+
+variables:
+  - template: '/.azuredevops/pipelineVariables/global.variables.yml'
+  - group: 'Platform-Tokens'
+  - name: moduleName
+    value: '<ModuleName>'
+  - name: modulePath
+    value: '/<RelativeModuleFolderPath>'
+
+stages:
+  - stage: Validation
+    jobs:
+      - template: /.azuredevops/pipelineTemplates/module.jobs.validate.yml
+        parameters:
+          deploymentBlocks: <PipelineParamterPaths>
+
+  - stage: Deployment
+    jobs:
+      - template: /.azuredevops/pipelineTemplates/module.jobs.deploy.yml
+        parameters:
+          removeDeployment: '${{ parameters.removeDeployment }}'
+          deploymentBlocks: <PipelineParamterPaths>
+
+  - stage: Publishing
+    condition: and(succeeded(), eq(variables['Build.SourceBranch'], 'refs/heads/main'))
+    jobs:
+      - template: /.azuredevops/pipelineTemplates/module.jobs.publish.yml
+        parameters:
+          versioningOption: '${{ parameters.versioningOption }}'
+          customVersion: '${{ parameters.customVersion }}'
+
+  - stage: Removal
+    dependsOn: Deployment
+    condition: and(in(dependencies.Deployment.result, 'Succeeded', 'Failed'),  eq( '${{ parameters.removeDeployment }}', 'true'))
+    jobs:
+      - template: /.azuredevops/pipelineTemplates/module.jobs.remove.yml
+        <relativePathOfRemovalScript>
