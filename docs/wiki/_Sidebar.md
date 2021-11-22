@@ -1,6 +1,7 @@
 # Wiki content
 
 - [Home](./Home)
+- [Context](./Context.md)
 - [Getting Started](./GettingStarted)
 - [Modules](./Modules)
   - [Design](./ModulesDesign)
