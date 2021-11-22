@@ -169,7 +169,7 @@ function Test-ModuleLocally {
                 }
             }
             # Invoke Token Replacement Functionality and Convert Tokens in Parameter Files
-            Write-Verbose 'Invoking Convert-TokensInFileList'
+            Write-Verbose 'Invoking Convert-TokenInFile'
             $ModuleParameterFiles | ForEach-Object { Convert-TokensInParameterFile @ConvertTokensInputs -ParameterFilePath $PSItem.FullName -Verbose }
             # Build Modules Validation and Deployment Inputs
             $functionInput = @{

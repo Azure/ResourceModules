@@ -133,7 +133,7 @@ function Convert-TokensInParameterFile {
             $ParameterFileToken.Name = -join ($TokenPrefix, $ParameterFileToken.Name, $TokenSuffix)
         }
         # Convert Tokens in Parameter Files
-        Write-Verbose 'Invoking Convert-TokensInFileList'
+        Write-Verbose 'Invoking Convert-TokenInFile'
         try {
             # Prepare Input to Token Converter Function
             $ConvertTokenListFunctionInput = @{
