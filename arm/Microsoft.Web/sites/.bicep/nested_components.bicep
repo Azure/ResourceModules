@@ -1,17 +1,3 @@
-
-
-
-// resource app_insights 'microsoft.insights/components@2020-02-02' = if (enableMonitoring) {
-//   name: app.name
-//   location: location
-//   kind: 'web'
-//   tags: tags
-//   properties: {
-//     Application_Type: 'web'
-//     Request_Source: 'rest'
-//   }
-// }
-
 @description('Required. Name of the Application Insights')
 param name string
 
