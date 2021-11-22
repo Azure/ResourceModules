@@ -122,7 +122,7 @@ Since also dependency resources are in turn subject to dependencies with each ot
   1. Route table: This resource is leveraged by the virtual network subnet dedicated to test [SQL managed instance].
       >**Note**: This resource is deployed and configured only if sqlmi dependency resources are enabled.
   1. Network watcher: This resource is leveraged by the [NSG flow logs] resource.
-  1. Shared image gallery: This resource is leveraged by the [shared image definition] and [image template] resources.
+  1. Shared image gallery and definition: These resources are leveraged by the [image template] resource.
   1. Action group: This resource is leveraged by [activity log alert] and [metric alert] resources.
   1. Application security group: This resource is leveraged by the [network security group] resource.
   1. Application service plan: This resource is leveraged by the [function app] and [web app] resources.
@@ -152,7 +152,6 @@ Since also dependency resources are in turn subject to dependencies with each ot
       - '_adp-sxx-az-pip-x-bas_': Leveraged by the [bastion host] resource.
       - '_adp-sxx-az-pip-x-lb_': Leveraged by the [load balancer] resource.
   1. Role assignment: This resource assigns the '_Contributor_' role on the subscription to the [user assigned identity] deployed as part of the group above. This is needed by the [image template] deployment.
-  1. Shared image definition: This resource is depending on the [shared image gallery] deployed above and leveraged by the [image template] resource.
 
 **Fourth level resources**: This group of resources has a dependency on one or more resources in the groups above. Resources in this group can be deployed in parallel.
 
