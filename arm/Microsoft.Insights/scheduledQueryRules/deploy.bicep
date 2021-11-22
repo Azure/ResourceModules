@@ -1,5 +1,5 @@
 @description('Required. The name of the Alert.')
-param alertName string
+param name string
 
 @description('Optional. Location for all resources.')
 param location string = resourceGroup().location
@@ -72,7 +72,7 @@ module pid_cuaId '.bicep/nested_cuaId.bicep' = if (!empty(cuaId)) {
 }
 
 resource queryRule 'Microsoft.Insights/scheduledQueryRules@2021-02-01-preview' = {
-  name: alertName
+  name: name
   location: location
   tags: tags
   kind: kind
@@ -85,7 +85,7 @@ resource queryRule 'Microsoft.Insights/scheduledQueryRules@2021-02-01-preview' =
     criteria: criterias
 
     description: alertDescription
-    displayName: alertName
+    displayName: name
     enabled: enabled
     evaluationFrequency: contains(kind, 'LogAlert') ? evaluationFrequency : null
     muteActionsDuration: contains(kind, 'LogAlert') ? suppressForMinutes : null

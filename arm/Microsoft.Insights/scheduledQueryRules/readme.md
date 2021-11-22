@@ -4,7 +4,7 @@ This module deploys an Alert based on metrics
 
 ## Resource types
 
-| Resource Type | Api Version |
+| Resource Type | API Version |
 | :-- | :-- |
 | `Microsoft.Authorization/roleAssignments` | 2020-04-01-preview |
 | `Microsoft.Insights/scheduledQueryRules` | 2021-02-01-preview |
@@ -15,7 +15,6 @@ This module deploys an Alert based on metrics
 | :-- | :-- | :-- | :-- | :-- |
 | `actions` | array | `[]` |  | Optional. Actions to invoke when the alert fires. |
 | `alertDescription` | string |  |  | Optional. The description of the scheduled query rule. |
-| `alertName` | string |  |  | Required. The name of the Alert. |
 | `autoMitigate` | bool | `True` |  | Optional. The flag that indicates whether the alert should be automatically resolved or not. Relevant only for rules of the kind LogAlert. |
 | `criterias` | object | `{object}` |  | Optional. The rule criteria that defines the conditions of the scheduled query rule. |
 | `cuaId` | string |  |  | Optional. Customer Usage Attribution ID (GUID). This GUID must be previously registered |
@@ -23,6 +22,7 @@ This module deploys an Alert based on metrics
 | `evaluationFrequency` | string |  |  | Optional. How often the scheduled query rule is evaluated represented in ISO 8601 duration format. Relevant and required only for rules of the kind LogAlert. |
 | `kind` | string | `LogAlert` | `[LogAlert, LogToMetric]` | Optional. Indicates the type of scheduled query rule. |
 | `location` | string | `[resourceGroup().location]` |  | Optional. Location for all resources. |
+| `name` | string |  |  | Required. The name of the Alert. |
 | `queryTimeRange` | string |  |  | Optional. If specified (in ISO 8601 duration format) then overrides the query time range. Relevant only for rules of the kind LogAlert. |
 | `roleAssignments` | array | `[]` |  | Optional. Array of role assignment objects that contain the 'roleDefinitionIdOrName' and 'principalId' to define RBAC role assignments on this resource. In the roleDefinitionIdOrName attribute, you can provide either the display name of the role definition, or its fully qualified ID in the following format: '/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11' |
 | `scopes` | array | `[]` |  | Required. The list of resource IDs that this scheduled query rule is scoped to. |
