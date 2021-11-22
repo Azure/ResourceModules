@@ -1,4 +1,4 @@
-@description('Required. The name of the Azure Factory')
+@description('Required. The name of the Azure Data Factory')
 param dataFactoryName string
 
 @description('Required. The name of the Managed Virtual Network')

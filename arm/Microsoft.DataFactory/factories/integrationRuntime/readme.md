@@ -1,5 +1,6 @@
-# DataFactoryIntegrationRunTimes `[Microsoft.DataFactory/factories/integrationRuntimes]`
+# Data Factory Integration RunTimes `[Microsoft.DataFactory/factories/integrationRuntimes]`
 
+This module deployes a Managed or Self-Hosted Integration Runtime for an Azure Data Factory
 ## Resource types
 
 | Resource Type | API Version |
@@ -12,11 +13,12 @@
 | :-- | :-- | :-- | :-- | :-- |
 | `cuaId` | string |  |  | Optional. Customer Usage Attribution ID (GUID). This GUID must be previously registered|
 | `name` | string |  |  | Required. The name of the Integration Runtime. |
-| `dataFactoryName` | string |  |  | Required. The name of the Azure Factory to create |
-| `managedVirtualNetworkName` | string |  |  | Required. The name of the Managed Virtual Network. |
+| `dataFactoryName` | string |  |  | Required. The name of the Azure Data Factory |
+| `type` | string |  | `[Managed, Self-Hosted]`  | Required. The type of Integration Runtime |
+| `managedVirtualNetworkName` | string |  |  | Optional. The name of the Managed Virtual Network if using type "Managed". |
 | `typeProperties` | object |  |  | Required. Managed integration runtime type properties. |
 
-### Parameter Usage: `typeProperties`
+### Parameter Usage: [`typeProperties`](https://docs.microsoft.com/en-us/azure/templates/microsoft.datafactory/factories/integrationruntimes?tabs=bicep#integrationruntime-objects)
 
 ```json
 "typeProperties": {

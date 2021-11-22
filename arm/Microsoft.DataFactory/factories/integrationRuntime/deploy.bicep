@@ -1,11 +1,18 @@
-@description('Required. The name of the Azure Factory')
+@description('Required. The name of the Azure Data Factory')
 param dataFactoryName string
 
 @description('Required. The name of the Integration Runtime')
 param name string
 
-@description('Required. The name of the Managed Virtual Network')
-param managedVirtualNetworkName string
+@allowed([
+  'Managed'
+  'Self-Hosted'
+])
+@description('Required. The type of Integration Runtime')
+param type string
+
+@description('Optional. The name of the Managed Virtual Network if using type "Managed" ')
+param managedVirtualNetworkName string = ''
 
 @description('Required. Managed integration runtime type properties.')
 param typeProperties object
@@ -18,14 +25,16 @@ module pid_cuaId '.bicep/nested_cuaId.bicep' = if (!empty(cuaId)) {
   params: {}
 }
 
+var managedVirtualNetwork_var = {
+  referenceName: (type == 'Managed' ? managedVirtualNetworkName : null)
+  type: (type == 'Managed' ? 'ManagedVirtualNetworkReference' : null)
+}
+
 resource integrationRuntime 'Microsoft.DataFactory/factories/integrationRuntimes@2018-06-01' = {
   name: '${dataFactoryName}/${name}'
   properties: {
-    type: 'Managed'
-    managedVirtualNetwork: {
-      referenceName: managedVirtualNetworkName
-      type: 'ManagedVirtualNetworkReference'
-    }
+    type: type
+    managedVirtualNetwork: (type == 'Managed' ? managedVirtualNetwork_var : null)
     typeProperties: typeProperties
   }
 }

@@ -8,21 +8,23 @@
         "managedVirtualNetworkName": {
             "value": "default"
         },
-        "integrationRuntimeName": {
-            "value": "AutoResolveIntegrationRuntime"
+        "integrationRuntimeConfig": {
+            "value": {
+                "name": "AutoResolveIntegrationRuntime",
+                "type": "Managed",
+                "managedVirtualNetworkName": "default",
+                "typeProperties": {
+                    "computeProperties": {
+                        "location": "AutoResolve"
+                    }
+                }
+            }
         },
         "publicNetworkAccess": {
             "value": true
         },
         "gitConfigureLater": {
             "value": true
-        },
-        "typeProperties": {
-            "value": {
-                "computeProperties": {
-                    "location": "AutoResolve"
-                }
-            }
         },
         "roleAssignments": {
             "value": [
