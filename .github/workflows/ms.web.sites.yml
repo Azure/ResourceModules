@@ -107,7 +107,8 @@ jobs:
       fail-fast: false
       matrix:
         parameterFilePaths:
-          ['function.parameters.json', 'webApp.parameters.json']
+          # ['function.parameters.json', 'webApp.parameters.json']
+          ['webApp.parameters.json']
     steps:
       - name: 'Checkout'
         uses: actions/checkout@v2
@@ -143,7 +144,8 @@ jobs:
       fail-fast: false
       matrix:
         parameterFilePaths:
-          ['function.parameters.json', 'webApp.parameters.json']
+          # ['function.parameters.json', 'webApp.parameters.json']
+          ['webApp.parameters.json']
     steps:
       - name: 'Checkout'
         uses: actions/checkout@v2
