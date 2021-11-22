@@ -20,9 +20,6 @@ This section will give on an overview on how to get started using this repositor
 
 ---
 
-Let us first answer the question what a Resource Module is:
-> A Resource Module is a reusable, template-based building block to deploy Azure resources. It encapsulates one or more Azure resources and their respective configurations for use in your Azure environment.
-
 # General prerequisites
 
 No matter from where you start you have to account for some general prerequisites when it comes to bicep and this repository.
@@ -119,7 +116,7 @@ Please refer to [this list][AzureNames] to check which services have a global sc
 
 ### Dependencies
 
-As the modules we test often times have dependencies to other services, we created a pipeline to deploys several standard services like VirtualNetworks and KeyVaults (alongside dummy secrets) for the modules to use. This _dependency_ pipeline should be prepared and executed before you start running any pipelines on your own. In case you need to rename any services there (for example because a certain globally unique resource name was already taken) make sure to update any references to this name in the module parameter files. You can find further details about this pipeline [here](.\TestingDesign.md#Module-Dependencies).
+As the modules we test often times have dependencies to other services, we created a pipeline to deploys several standard services like VirtualNetworks and KeyVaults (alongside dummy secrets) for the modules to use. This _dependency_ pipeline should be prepared and executed before you start running any pipelines on your own. In case you need to rename any services there (for example because a certain globally unique resource name was already taken) make sure to update any references to this name in the module parameter files. You can find further details about this pipeline [here](.\TestingDesign#Module-Dependencies).
 
 ### GitHub-specific prerequisites
 
@@ -208,7 +205,7 @@ Here is how the token would look like in the Parameter File JSON:
 ```
 
 ---
-Note: There are default tokens that can be enabled on any resource that leverages the [GitHub specific prerequisites](GettingStarted.md##github-specific-prerequisites) secrets.
+Note: There are default tokens that can be enabled on any resource that leverages the [GitHub specific prerequisites](GettingStarted#github-specific-prerequisites) secrets.
 
 - `<<subscriptionId>>`: Will point to the Azure subscription.
 - `<<managementGroupId>>`: Will point to the Azure an Azure Management Group.
