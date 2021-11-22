@@ -176,6 +176,11 @@ module database_backupLongTermRetentionPolicy 'backupLongTermRetentionPolicies/d
   }
 }
 
-output databaseName string = last(split(database.name, '/'))
+@description('The name of the deployed database')
+output databaseName string = database.name
+
+@description('The resource Id of the deployed database')
 output databaseResourceId string = database.id
+
+@description('The resource group the database was deployed into')
 output databaseResourceGroup string = resourceGroup().name

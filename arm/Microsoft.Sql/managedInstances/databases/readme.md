@@ -64,11 +64,11 @@ Tag names and tag values can be provided as needed. A tag can be left without a 
 
 ## Outputs
 
-| Output Name | Type |
-| :-- | :-- |
-| `databaseName` | string |
-| `databaseResourceGroup` | string |
-| `databaseResourceId` | string |
+| Output Name | Type | Description |
+| :-- | :-- | :-- |
+| `databaseName` | string | The name of the deployed database |
+| `databaseResourceGroup` | string | The resource group the database was deployed into |
+| `databaseResourceId` | string | The resource Id of the deployed database |
 
 ## Template references
 
