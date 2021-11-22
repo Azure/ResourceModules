@@ -81,20 +81,20 @@ resource queryRule 'Microsoft.Insights/scheduledQueryRules@2021-02-01-preview' =
       actionGroups: actions
       customProperties: {}
     }
-    autoMitigate: contains(kind, 'LogAlert') ? autoMitigate : null
+    autoMitigate: (kind == 'LogAlert') ? autoMitigate : null
     criteria: criterias
 
     description: alertDescription
     displayName: name
     enabled: enabled
-    evaluationFrequency: contains(kind, 'LogAlert') ? evaluationFrequency : null
-    muteActionsDuration: contains(kind, 'LogAlert') ? suppressForMinutes : null
-    overrideQueryTimeRange: contains(kind, 'LogAlert') ? queryTimeRange : null
+    evaluationFrequency: (kind == 'LogAlert') ? evaluationFrequency : null
+    muteActionsDuration: (kind == 'LogAlert') ? suppressForMinutes : null
+    overrideQueryTimeRange: (kind == 'LogAlert') ? queryTimeRange : null
     scopes: scopes
-    severity: contains(kind, 'LogAlert') ? severity : null
-    skipQueryValidation: contains(kind, 'LogAlert') ? skipQueryValidation : null
-    targetResourceTypes: contains(kind, 'LogAlert') ? targetResourceTypes : null
-    windowSize: contains(kind, 'LogAlert') ? windowSize : null
+    severity: (kind == 'LogAlert') ? severity : null
+    skipQueryValidation: (kind == 'LogAlert') ? skipQueryValidation : null
+    targetResourceTypes: (kind == 'LogAlert') ? targetResourceTypes : null
+    windowSize: (kind == 'LogAlert') ? windowSize : null
   }
 }
 
