@@ -62,7 +62,7 @@ module capacityPool_volumes './volumes/deploy.bicep' = [for (volume, index) in v
   name: '${deployment().name}-Vol-${index}'
   params: {
     netAppAccountName: netAppAccountName
-    capacityPoolName: location
+    capacityPoolName: capacityPool.name
     name: name
     location: location
     serviceLevel: serviceLevel

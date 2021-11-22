@@ -1,5 +1,5 @@
 @description('Required. The name of the NetApp account.')
-param netAppAccountName string
+param name string
 
 @description('Optional. Fully Qualified Active Directory DNS Domain Name (e.g. \'contoso.com\')')
 param domainName string = ''
@@ -60,7 +60,7 @@ module pid_cuaId '.bicep/nested_cuaId.bicep' = if (!empty(cuaId)) {
 }
 
 resource netAppAccount 'Microsoft.NetApp/netAppAccounts@2021-04-01' = {
-  name: netAppAccountName
+  name: name
   tags: tags
   location: location
   properties: {
