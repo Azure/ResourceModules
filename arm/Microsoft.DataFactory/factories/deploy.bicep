@@ -145,7 +145,7 @@ module dataFactory_integrationRuntime 'integrationRuntime/deploy.bicep' = if (!e
     dataFactoryName: dataFactory.name
     name: integrationRuntime.name
     type: integrationRuntime.type
-    managedVirtualNetworkName: integrationRuntime.managedVirtualNetworkName
+    managedVirtualNetworkName: (contains(integrationRuntime, 'managedVirtualNetworkName') ? integrationRuntime.managedVirtualNetworkName : '')
     typeProperties: integrationRuntime.typeProperties
   }
   dependsOn: [

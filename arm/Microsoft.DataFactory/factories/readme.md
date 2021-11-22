@@ -18,7 +18,7 @@
 | `cuaId` | string |  |  | Optional. Customer Usage Attribution ID (GUID). This GUID must be previously registered|
 | `name` | string |  |  | Required. The name of the Azure Factory to create |
 | `managedVirtualNetworkName` | string |  |  | Optional. The name of the Managed Virtual Network|
-| `integrationRuntime` | object |  |  | Optional. The object for the configuration of an Integration Runtime|
+| `integrationRuntime` | _[integrationRuntime](integrationRuntime/readme.md)_ object |  |  | Optional. The object for the configuration of an Integration Runtime|
 | `diagnosticLogsRetentionInDays` | int | `365` |  | Optional. Specifies the number of days that logs will be kept for; a value of 0 will retain data indefinitely. |
 | `diagnosticStorageAccountId` | string |  |  | Optional. Resource identifier of the Diagnostic Storage Account. |
 | `gitAccountName` | string |  |  | Optional. The account name. |
@@ -38,8 +38,7 @@
 | `workspaceId` | string |  |  | Optional. Resource identifier of Log Analytics. |
 
 
-### Parameter Usage: [`integrationRuntime`](https://docs.microsoft.com/en-us/azure/templates/microsoft.datafactory/factories/integrationruntimes?tabs=bicep)
-
+### Parameter Usage: `integrationRuntime`
 ```json
 "integrationRuntime": {
     "value": {
