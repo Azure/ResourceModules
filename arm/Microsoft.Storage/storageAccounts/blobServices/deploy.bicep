@@ -2,6 +2,9 @@
 @description('Required. Name of the Storage Account.')
 param storageAccountName string
 
+@description('Optional. The name of the blob service')
+param name string = 'default'
+
 @description('Optional. Indicates whether DeleteRetentionPolicy is enabled for the Blob service.')
 param deleteRetentionPolicy bool = true
 
@@ -22,36 +25,38 @@ module pid_cuaId '.bicep/nested_cuaId.bicep' = if (!empty(cuaId)) {
   params: {}
 }
 
-resource blobServices 'Microsoft.Storage/storageAccounts/blobServices@2021-08-01' = {
-  name: '${storageAccountName}/default'
-  properties: {
-    deleteRetentionPolicy: {
-      enabled: deleteRetentionPolicy
-      days: deleteRetentionPolicyDays
+resource storageAccount 'Microsoft.Storage/storageAccounts@2021-06-01' existing = {
+  name: storageAccountName
+
+  resource blobServices 'blobServices@2021-06-01' = {
+    name: name
+    properties: {
+      deleteRetentionPolicy: {
+        enabled: deleteRetentionPolicy
+        days: deleteRetentionPolicyDays
+      }
+      automaticSnapshotPolicyEnabled: automaticSnapshotPolicyEnabled
     }
-    automaticSnapshotPolicyEnabled: automaticSnapshotPolicyEnabled
   }
 }
 
 module blobServices_container 'containers/deploy.bicep' = [for (container, index) in containers: {
   name: '${deployment().name}-Storage-Container-${index}'
   params: {
-    storageAccountName: storageAccountName
+    storageAccountName: storageAccount.name
+    blobServicesName: storageAccount::blobServices.name
     name: container.name
     publicAccess: contains(container, 'publicAccess') ? container.publicAccess : 'None'
     roleAssignments: contains(container, 'roleAssignments') ? container.roleAssignments : []
     immutabilityPolicyProperties: contains(container, 'immutabilityPolicyProperties') ? container.immutabilityPolicyProperties : {}
   }
-  dependsOn: [
-    blobServices
-  ]
 }]
 
 @description('The name of the deployed blob service')
-output blobServiceName string = blobServices.name
+output blobServicesName string = storageAccount::blobServices.name
 
 @description('The id of the deployed blob service')
-output blobServiceResourceId string = blobServices.id
+output blobServicesResourceId string = storageAccount::blobServices.id
 
 @description('The name of the deployed blob service')
-output blobServiceResourceGroup string = resourceGroup().name
+output blobServicesResourceGroup string = resourceGroup().name

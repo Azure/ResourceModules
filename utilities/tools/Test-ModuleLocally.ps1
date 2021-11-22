@@ -98,9 +98,11 @@ function Test-ModuleLocally {
 
     begin {
         Write-Verbose "Running Local Tests for $($ModuleName.Split('\')[-1])"
-        # Load Tokens Converter Script
-        . (Join-Path $PSScriptRoot '../tokensReplacement/Convert-TokensInParameterFile.ps1')
-        . (Join-Path $PSScriptRoot '../tokensReplacement/helper/Convert-TokensInFileList.ps1')
+        # Load Tokens Converter Scripts
+        . (Join-Path $PSScriptRoot '../pipelines/tokensReplacement/Convert-TokensInParameterFile.ps1')
+        # Load Modules Validation / Deployment Scripts
+        . (Join-Path $PSScriptRoot '../pipelines/resourceDeployment/New-ModuleDeployment.ps1')
+        . (Join-Path $PSScriptRoot '../pipelines/resourceValidation/Test-TemplateWithParameterFile.ps1')
     }
     process {
         # Test Module
@@ -163,7 +165,6 @@ function Test-ModuleLocally {
                         }
                     }
                 }
-
                 #Add Other Parameter File Tokens (For Testing)
                 if ($OtherCustomParameterFileTokens) {
                     $ConvertTokensInputs += @{ OtherCustomParameterFileTokens = $OtherCustomParameterFileTokens
@@ -173,7 +174,6 @@ function Test-ModuleLocally {
             # Invoke Token Replacement Functionality and Convert Tokens in Parameter Files
             Write-Verbose 'Invoking Convert-TokensInFileList'
             $ModuleParameterFiles | ForEach-Object { Convert-TokensInParameterFile @ConvertTokensInputs -ParameterFilePath $PSItem.FullName -Verbose }
-
             # Build Modules Validation and Deployment Inputs
             $functionInput = @{
                 templateFilePath  = (Join-Path $PSScriptRoot '../../arm' $ModuleName 'deploy.bicep')
@@ -183,17 +183,13 @@ function Test-ModuleLocally {
                 subscriptionId    = "$($ValidateOrDeployParameters.SubscriptionId)"
                 managementGroupId = "$($ValidateOrDeployParameters.ManagementGroupId)"
             }
-
             try {
                 # Validate Template
                 if ($ValidationTest) {
                     Write-Verbose "Validating Module: $ModuleName"
-                    # Load Modules Deployment Script
-                    . (Join-Path $PSScriptRoot '../..' '.github/actions/templates/validateModuleDeploy/scripts/Test-TemplateWithParameterFile.ps1')
                     # Invoke Validation
                     Test-TemplateWithParameterFile @functionInput -Verbose
                 }
-
                 # Deploy Template
                 if ($DeploymentTest) {
                     Write-Verbose "Deploying Module: $ModuleName"
@@ -203,12 +199,10 @@ function Test-ModuleLocally {
                     }
                     # Append to Function Input the required parameters for Deployment
                     $functionInput += @{
-                        moduleName       = "l-$($ModuleName.Split('\')[-1])"
+                        moduleName       = 'l-{0}' -f $ModuleName.Replace('\', '/').Split('/')[-1]
                         removeDeployment = [System.Convert]::ToBoolean($ValidateOrDeployParameters.RemoveDeployment)
                         retryLimit       = 1
                     }
-                    # Load Modules Deployment Script
-                    . (Join-Path $PSScriptRoot '../..' '.github/actions/templates/deployModule/scripts/New-ModuleDeployment.ps1')
                     # Invoke Deployment
                     New-ModuleDeployment @functionInput -Verbose
                 }
@@ -217,7 +211,6 @@ function Test-ModuleLocally {
             }
         }
     }
-
     end {
         # Restore Parameter Files
         if (($ValidationTest -or $DeploymentTest) -and $ValidateOrDeployParameters) {
