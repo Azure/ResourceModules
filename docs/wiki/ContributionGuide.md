@@ -11,11 +11,11 @@ This section outlines how you can contribute to the repository.
 
 ---
 
-## Set your environment up
+# Set your environment up
 
 The preferred method of contribution requires you to create your own fork and create pull requests into the source repository from there. To set the fork up, please follow the process described in the ['Getting Started'](./GettingStarted#Option-1-Use-it-as-a-basis-to-set-up-your-own-inner-source-project) section.
 
-## How to contribute?
+# How to contribute?
 
 You can contribute to the Wiki in different ways depending on your own interests, bugs you see or IP you want to add.
 

@@ -20,12 +20,12 @@ This module deploys an Image Definition in a Shared Image Gallery.
 | `galleryName` | string |  |  | Required. Name of the Azure Shared Image Gallery |
 | `hyperVGeneration` | string | `V1` | `[V1, V2]` | Optional. The hypervisor generation of the Virtual Machine. Applicable to OS disks only. - V1 or V2 |
 | `imageDefinitionDescription` | string |  |  | Optional. The description of this gallery Image Definition resource. This property is updatable. |
-| `imageDefinitionName` | string |  |  | Required. Name of the image definition. |
 | `location` | string | `[resourceGroup().location]` |  | Optional. Location for all resources. |
 | `maxRecommendedMemory` | int | `16` |  | Optional. The maximum amount of RAM in GB recommended for this image. |
 | `maxRecommendedvCPUs` | int | `4` |  | Optional. The maximum number of the CPU cores recommended for this image. |
 | `minRecommendedMemory` | int | `4` |  | Optional. The minimum amount of RAM in GB recommended for this image. |
 | `minRecommendedvCPUs` | int | `1` |  | Optional. The minimum number of the CPU cores recommended for this image. |
+| `name` | string |  |  | Required. Name of the image definition. |
 | `offer` | string | `WindowsServer` |  | Optional. The name of the gallery Image Definition offer. |
 | `osState` | string | `Generalized` | `[Generalized, Specialized]` | Optional. This property allows the user to specify whether the virtual machines created under this image are 'Generalized' or 'Specialized'. |
 | `osType` | string | `Windows` | `[Windows, Linux]` | Optional. OS type of the image to be created. |
