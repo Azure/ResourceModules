@@ -267,19 +267,7 @@ resource app 'Microsoft.Web/sites@2020-12-01' = {
     siteConfig: siteConfig
   }
 
-  resource app_appsettings 'config@2019-08-01' = {
-    name: 'appsettings'
-    properties: {
-      // AzureWebJobsStorage: !empty(storageAccountName) ? 'DefaultEndpointsProtocol=https;AccountName=${storageAccountName};AccountKey=${listkeys(resourceId(subscription().subscriptionId, storageAccountResourceGroupName, 'Microsoft.Storage/storageAccounts', storageAccountName), '2019-06-01').keys[0].value};' : any(null)
-      // AzureWebJobsDashboard: !empty(storageAccountName) ? 'DefaultEndpointsProtocol=https;AccountName=${storageAccountName};AccountKey=${listkeys(resourceId(subscription().subscriptionId, storageAccountResourceGroupName, 'Microsoft.Storage/storageAccounts', storageAccountName), '2019-06-01').keys[0].value};' : any(null)
-      // FUNCTIONS_EXTENSION_VERSION: appServicePlanType == 'functionApp' && !empty(functionsExtensionVersion) ? functionsExtensionVersion : any(null)
-      // FUNCTIONS_WORKER_RUNTIME: appServicePlanType == 'functionApp' && !empty(functionsWorkerRuntime) ? functionsWorkerRuntime : any(null)
-      // APPINSIGHTS_INSTRUMENTATIONKEY: enableMonitoring ? reference('microsoft.insights/components/${name}', '2015-05-01').InstrumentationKey : null
-      // APPLICATIONINSIGHTS_CONNECTION_STRING: enableMonitoring ? reference('microsoft.insights/components/${name}', '2015-05-01').ConnectionString : null
-      APPINSIGHTS_INSTRUMENTATIONKEY: !empty(appInsightsId) ? appInsights.properties.InstrumentationKey : ''
-      APPLICATIONINSIGHTS_CONNECTION_STRING: !empty(appInsightsId) ? appInsights.properties.ConnectionString : ''
-    }
-  }
+
 }
 
 // resource app_insights 'microsoft.insights/components@2020-02-02' = if (enableMonitoring) {
@@ -293,20 +281,32 @@ resource app 'Microsoft.Web/sites@2020-12-01' = {
 //   }
 // }
 
-// module app_insights '.bicep/nested_components.bicep' = if (enableMonitoring) {
-//   name: '${uniqueString(deployment().name, location)}-AppService-InsightsComponent'
-//   params: {
-//     name: app.name
-//     location: location
-//     kind: 'web'
-//     tags: tags
-//     appInsightsWorkspaceResourceId: ''
-//     appInsightsType: 'web'
-//     appInsightsRequestSource: 'rest'
+module app_insights '.bicep/nested_components.bicep' = if (enableMonitoring) {
+  name: '${uniqueString(deployment().name, location)}-AppService-InsightsComponent'
+  params: {
+    name: app.name
+    location: location
+    kind: 'web'
+    tags: tags
+    appInsightsWorkspaceResourceId: workspaceId
+    appInsightsType: 'web'
+    appInsightsRequestSource: 'rest'
+  }
+}
+
+// resource app_appsettings 'config@2019-08-01' = {
+//     name: 'appsettings'
+//     properties: {
+//       // AzureWebJobsStorage: !empty(storageAccountName) ? 'DefaultEndpointsProtocol=https;AccountName=${storageAccountName};AccountKey=${listkeys(resourceId(subscription().subscriptionId, storageAccountResourceGroupName, 'Microsoft.Storage/storageAccounts', storageAccountName), '2019-06-01').keys[0].value};' : any(null)
+//       // AzureWebJobsDashboard: !empty(storageAccountName) ? 'DefaultEndpointsProtocol=https;AccountName=${storageAccountName};AccountKey=${listkeys(resourceId(subscription().subscriptionId, storageAccountResourceGroupName, 'Microsoft.Storage/storageAccounts', storageAccountName), '2019-06-01').keys[0].value};' : any(null)
+//       // FUNCTIONS_EXTENSION_VERSION: appServicePlanType == 'functionApp' && !empty(functionsExtensionVersion) ? functionsExtensionVersion : any(null)
+//       // FUNCTIONS_WORKER_RUNTIME: appServicePlanType == 'functionApp' && !empty(functionsWorkerRuntime) ? functionsWorkerRuntime : any(null)
+//       // APPINSIGHTS_INSTRUMENTATIONKEY: enableMonitoring ? reference('microsoft.insights/components/${name}', '2015-05-01').InstrumentationKey : null
+//       // APPLICATIONINSIGHTS_CONNECTION_STRING: enableMonitoring ? reference('microsoft.insights/components/${name}', '2015-05-01').ConnectionString : null
+//       APPINSIGHTS_INSTRUMENTATIONKEY: !empty(appInsightsId) ? appInsights.properties.InstrumentationKey : ''
+//       APPLICATIONINSIGHTS_CONNECTION_STRING: !empty(appInsightsId) ? appInsights.properties.ConnectionString : ''
+//     }
 //   }
-// }
-
-
 
 resource app_lock 'Microsoft.Authorization/locks@2016-09-01' = if (lock != 'NotSpecified') {
   name: '${uniqueString(deployment().name, location)}-AppService-${lock}-Lock'
