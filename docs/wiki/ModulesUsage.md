@@ -17,15 +17,18 @@ This section gives you an overview of how to use the bicep modules.
   - [Template-orchestration](#template-orchestration)
 ---
 
-## Deploy template
+# Deploy template
 
 This section shows you how to deploy a bicep template.
 
-### Deploy local template
+- [Deploy local template](#deploy-local-template)
+- [Deploy remote template](#deploy-remote-template)
+
+## Deploy local template
 
 This sub-section gives you an example on how to deploy a template from your local drive.
 
-#### **Local:** PowerShell
+### **Local:** PowerShell
 
 This example targets a resource group level template.
 
@@ -40,7 +43,7 @@ $inputObject = @{
 New-AzResourceGroupDeployment @inputObject
 ```
 
-#### **Local:** Azure CLI
+### **Local:** Azure CLI
 
 This example targets a resource group level template.
 
@@ -55,11 +58,11 @@ $inputObject = @(
 az deployment group create @inputObject
 ```
 
-### Deploy remote template
+## Deploy remote template
 
 This section gives you an example on how to deploy a template that is stored at a publicly available remote location.
 
-#### **Remote:** PowerShell
+### **Remote:** PowerShell
 
 ```PowerShell
 New-AzResourceGroup -Name 'ExampleGroup' -Location "Central US"
@@ -72,7 +75,7 @@ $inputObject = @{
 New-AzResourceGroupDeployment @inputObject
 ```
 
-#### **Remote:** Azure CLI
+### **Remote:** Azure CLI
 
 ```bash
 az group create --name 'ExampleGroup' --location "Central US"
@@ -86,11 +89,15 @@ $inputObject = @(
 az deployment group create @inputObject
 ```
 
-## Orchestrate deployment
+---
+
+# Orchestrate deployment
 
 This section shows you how you can orchestrate a deployment using multiple resource modules
 
-### Template-orchestration
+- [Template-orchestration](#template-orchestration)
+
+## Template-orchestration
 
 The _template-orchestrated_ approach means using a _main_ or so-called _master template_ for deploying resources in Azure. The _master template_ will only contain nested deployments, where the modules – instead of embedding their content into the _master template_ – will be linked from the _master template_.
 
@@ -98,7 +105,7 @@ With this approach, modules need to be stored in an available location, where Az
 
 In an enterprise environment, the recommended approach is to store these templates in a private environment, only accessible by enterprise resources. Thus, only trusted authorities can have access to these files.
 
-#### ***Example with a private bicep registry***
+### ***Example with a private bicep registry***
 
 The following example shows how you could orchestrate a deployment of multiple resources using modules from a private bicep registry. In this example we will deploy a NSG and use the same in a subsequent VNET deployment.
 
@@ -159,7 +166,7 @@ module vnet 'br:adpsxxazacrx001.azurecr.io/bicep/modules/microsoft.network.virtu
 }
 ```
 
-#### ***Example with template-specs***
+### ***Example with template-specs***
 
 The following example shows how you could orchestrate a deployment of multiple resources using template specs. In this example we will deploy a NSG and use the same in a subsequent VNET deployment.
 
