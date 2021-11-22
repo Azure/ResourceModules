@@ -81,7 +81,8 @@ module capacityPool_volumes './volumes/deploy.bicep' = [for (volume, index) in v
 module capacityPool_rbac '.bicep/nested_rbac.bicep' = [for (roleAssignment, index) in roleAssignments: {
   name: '${deployment().name}-Rbac-${index}'
   params: {
-    roleAssignmentObj: roleAssignment
+    principalIds: roleAssignment.principalIds
+    roleDefinitionIdOrName: roleAssignment.roleDefinitionIdOrName
     resourceName: '${netAppAccountName}/${netAppAccount::capacityPool.name}'
   }
 }]
