@@ -64,7 +64,7 @@ resource netAppAccount 'Microsoft.NetApp/netAppAccounts@2021-04-01' existing = {
 module capacityPool_volumes './volumes/deploy.bicep' = [for (volume, index) in volumes: {
   name: '${deployment().name}-Vol-${index}'
   params: {
-    netAppAccountName: netAppAccountName
+    netAppAccountName: netAppAccount.name
     capacityPoolName: netAppAccount::capacityPool.name
     name: name
     location: location
@@ -82,7 +82,7 @@ module capacityPool_rbac '.bicep/nested_rbac.bicep' = [for (roleAssignment, inde
   name: '${deployment().name}-Rbac-${index}'
   params: {
     roleAssignmentObj: roleAssignment
-    resourceName: netAppAccount::capacityPool.name
+    resourceName: '${netAppAccountName}/${netAppAccount::capacityPool.name}'
   }
 }]
 

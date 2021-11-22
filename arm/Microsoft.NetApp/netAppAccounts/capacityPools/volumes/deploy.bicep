@@ -68,7 +68,7 @@ module volume_rbac '.bicep/nested_rbac.bicep' = [for (roleAssignment, index) in 
   name: '${deployment().name}-Rbac-${index}'
   params: {
     roleAssignmentObj: roleAssignment
-    resourceName: netAppAccount::capacityPool::volume.name
+    resourceName: '${netAppAccountName}/${netAppAccount::capacityPool.name}/${netAppAccount::capacityPool::volume.name}'
   }
 }]
 
