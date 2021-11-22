@@ -93,8 +93,9 @@ function Convert-TokensInParameterFile {
     }
 
     process {
+        Write-Verbose "Default Tokens Count: ($($DefaultParameterFileTokens.Count)) Tokens (From Input Parameter)"
         ## Get Local Custom Parameter File Tokens (Should not Contain Sensitive Information)
-        Write-Verbose "Found ($($LocalCustomParameterFileTokens.Count)) Local Custom Tokens in Settings File"
+        Write-Verbose "Local Custom Tokens Count: ($($LocalCustomParameterFileTokens.Count)) Tokens (From Settings File)"
         $AllCustomParameterFileTokens += ($LocalCustomParameterFileTokens | Select-Object -Property Name, Value)
         ## Get Remote Custom Parameter File Tokens (Should Not Contain Sensitive Information if being passed to regular strings)
         if ($TokensKeyVaultName -and $TokensKeyVaultSubscriptionId) {
@@ -109,7 +110,7 @@ function Convert-TokensInParameterFile {
             if (!$RemoteCustomParameterFileTokens) {
                 Write-Verbose 'No Remote Custom Parameter File Tokens Detected'
             } else {
-                Write-Verbose "Found ($($RemoteCustomParameterFileTokens.Count)) Remote Custom Tokens in Key Vault"
+                Write-Verbose "Remote Custom Tokens Count: ($($RemoteCustomParameterFileTokens.Count)) Tokens (From Key Vault)"
                 $AllCustomParameterFileTokens += $RemoteCustomParameterFileTokens
             }
         }
@@ -125,7 +126,7 @@ function Convert-TokensInParameterFile {
         if ($OtherCustomParameterFileTokens) {
             $AllCustomParameterFileTokens += $OtherCustomParameterFileTokens | ForEach-Object { [PSCustomObject]$PSItem }
         }
-        Write-Verbose ("All Parameter File Tokens Count: '$($AllCustomParameterFileTokens.Count)'")
+        Write-Verbose ("All Parameter File Tokens Count: ($($AllCustomParameterFileTokens.Count))")
         # Apply Prefix and Suffix to Tokens and Prepare Object for Conversion
         Write-Verbose ("Applying Token Prefix '$TokenPrefix' and Token Suffix '$TokenSuffix' To All Parameter File Tokens")
         foreach ($ParameterFileToken in $AllCustomParameterFileTokens) {
