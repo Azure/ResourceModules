@@ -157,12 +157,9 @@ function Test-ModuleLocally {
                 # Query Key Vault for Remote Tokens
                 if ($TokenKeyVaultName -and "$($ValidateOrDeployParameters.SubscriptionId)") {
                     $ConvertTokensInputs += @{
-                        TokensKeyVaultName           = $TokenKeyVaultName
-                        TokensKeyVaultSubscriptionId = "$($ValidateOrDeployParameters.SubscriptionId)"
-                    }
-                    if ($Settings.parameterFileTokens.remoteTokens.keyVaultSecretNamePrefix) {
-                        $ConvertTokensInputs += @{ TokensKeyVaultSecretNamePrefix = $Settings.parameterFileTokens.remoteTokens.keyVaultSecretNamePrefix
-                        }
+                        TokensKeyVaultName              = $TokenKeyVaultName
+                        TokensKeyVaultSubscriptionId    = "$($ValidateOrDeployParameters.SubscriptionId)"
+                        TokensKeyVaultSecretContentType = $Settings.parameterFileTokens.remoteTokens.keyVaultSecretContentType
                     }
                 }
                 #Add Other Parameter File Tokens (For Testing)
@@ -216,7 +213,7 @@ function Test-ModuleLocally {
         if (($ValidationTest -or $DeploymentTest) -and $ValidateOrDeployParameters) {
             # Replace Values with Tokens For Repo Updates
             Write-Verbose 'Restoring Tokens'
-            $ModuleParameterFiles | ForEach-Object { Convert-TokensInParameterFile @ConvertTokensInputs -ParameterFilePath $PSItem.FullName -RestoreTokens $true -Verbose }
+            $ModuleParameterFiles | ForEach-Object { Convert-TokensInParameterFile @ConvertTokensInputs -ParameterFilePath $PSItem.FullName -SwapValueWithName $true -Verbose }
         }
     }
 }

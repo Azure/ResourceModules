@@ -5,75 +5,75 @@ Recieves an Input Object of Name/Value and Searches the Current File for the Nam
 .DESCRIPTION
 Recieves an Input Object of Name/Value and Searches the Current File for the Name and Replaces it with the Value
 
-.PARAMETER Paths
+.PARAMETER FilePath
 Mandatory. Full Path for the file that contains the strings that need to be replaced. Supports multiple files comma seperated.
 
-.PARAMETER TokensReplaceWith
-Mandatory. An Object that contains the Replace Key and With Key For replacing tokens in files. See Example for structure.
+.PARAMETER TokenNameValueObject
+Mandatory. An Object that contains the Name Key and Value Key For replacing tokens in files. See Example for structure.
 
-.PARAMETER RestoreTokens
-Optional. A Boolean That swaps the tokens in the TokensReplaceWith Object. Default is False
-
-.EXAMPLE
-$Object = @(
-    @{ Replace = "TextA"; With = "TextB" }
-    @{ Replace = "TextC"; With = "TextD" }
-)
-Convert-TokensInFileList -Paths 'C:\fileA.txt','C:\fileB.txt' -TokensReplaceWith $Object
+.PARAMETER SwapValueWithName
+Optional. A Boolean That swaps the tokens in the TokenNameValueObject Object. Used to find the Value and Swap with the Name instead. Default is False
 
 .EXAMPLE
 $Object = @(
-    @{ Replace = "TextA"; With = "TextB" }
-    @{ Replace = "TextC"; With = "TextD" }
+    @{ Name = "TextA"; Value = "TextB" }
+    @{ Name = "TextC"; Value = "TextD" }
 )
-Convert-TokensInFileList -Paths 'C:\fileA.txt','C:\fileB.txt' -TokensReplaceWith $Object -OutputDirectory 'C:\customDirectory'
+Convert-TokenInFile -FilePath 'C:\fileA.txt','C:\fileB.txt' -TokenNameValueObject $Object
 
 .EXAMPLE
 $Object = @(
-    @{ Replace = "TextA"; With = "TextB" }
-    @{ Replace = "TextC"; With = "TextD" }
+    @{ Name = "TextA"; Value = "TextB" }
+    @{ Name = "TextC"; Value = "TextD" }
 )
-Convert-TokensInFileList -Paths 'C:\fileA.txt','C:\fileB.txt' -TokensReplaceWith $Object -RestoreTokens $true
+Convert-TokenInFile -FilePath 'C:\fileA.txt','C:\fileB.txt' -TokenNameValueObject $Object -OutputDirectory 'C:\customDirectory'
+
+.EXAMPLE
+$Object = @(
+    @{ Name = "TextA"; Value = "TextB" }
+    @{ Name = "TextC"; Value = "TextD" }
+)
+Convert-TokenInFile -FilePath 'C:\fileA.txt','C:\fileB.txt' -TokenNameValueObject $Object -SwapValueWithName $true
 #>
-function Convert-TokensInFileList {
+function Convert-TokenInFile {
     [CmdletBinding()]
     param(
         [Parameter(Mandatory)]
-        [string[]] $Paths,
+        [string[]] $FilePath,
 
         [Parameter(Mandatory, ValueFromPipeline = $true)]
-        [psobject] $TokensReplaceWith,
+        [psobject] $TokenNameValueObject,
 
         [Parameter(Mandatory = $false)]
         [string] $OutputDirectory,
 
         [Parameter(Mandatory = $false)]
-        [bool] $RestoreTokens = $false
+        [bool] $SwapValueWithName = $false
     )
-    # Restore Tokens (Swap Replace with Value)
-    if ($RestoreTokens) {
-        Write-Verbose 'Restoring Tokens'
-        $TokensReplaceWith | ForEach-Object {
+    # Swap Value with Name instead
+    if ($SwapValueWithName) {
+        Write-Verbose "Swapping 'Value' with 'Name'"
+        $TokenNameValueObject | ForEach-Object {
             $Name = $PSitem.Value
             $Value = $PSItem.Name
             $PSitem.Name = $Name; $PSitem.Value = $Value
         }
     }
     # Begin the Replace Function
-    Write-Verbose "$($TokensReplaceWith.Count) Tokens Found"
+    Write-Verbose "$($TokenNameValueObject.Count) Tokens Found"
     # Process Path for Token Replacement
-    foreach ($Path in $Paths) {
+    foreach ($Path in $FilePath) {
         # Extract Required Content From the Input
         try {
             $File = Get-Content -Path $Path
-            $FileName = Split-Path $Path -Leaf
+            $FileName = Split-Path -Path $Path -Leaf
         } catch {
             throw $PSItem.Exception.Message
-            exit
+            return
         }
         Write-Verbose "Processing Tokens for file: $FileName"
         # Perform the Replace of Tokens in the File
-        $TokensReplaceWith |
+        $TokenNameValueObject |
             ForEach-Object {
                 Write-Verbose "Finding and Replacing Token: $($PSItem.Name)"
                 # If type is secure string
@@ -85,9 +85,9 @@ function Convert-TokensInFileList {
         # Set Content
         if ($OutputDirectory -and (Test-Path -Path $OutputDirectory -PathType Container)) {
             # If Specific Output Directory Provided
-            $Path = (Join-Path $OutputDirectory $FileName)
+            $Path = (Join-Path -Path $OutputDirectory -ChildPath $FileName)
         }
-        # Set Content to the Same Path
+        # Set Content
         Write-Verbose "Writing Output for: $FileName"
         $File | Set-Content -Path $Path
     }
