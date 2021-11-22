@@ -282,7 +282,7 @@ module app_insights '.bicep/nested_components.bicep' = if (enableMonitoring) {
 }
 
 resource app_lock 'Microsoft.Authorization/locks@2016-09-01' = if (lock != 'NotSpecified') {
-  name: '${uniqueString(deployment().name, location)}-AppService-${lock}-lock'
+  name: '${uniqueString(deployment().name, location)}-AppService-${lock}-Lock'
   properties: {
     level: lock
     notes: lock == 'CanNotDelete' ? 'Cannot delete resource or child resources.' : 'Cannot modify the resource or child resources.'
@@ -291,7 +291,7 @@ resource app_lock 'Microsoft.Authorization/locks@2016-09-01' = if (lock != 'NotS
 }
 
 resource app_diagnosticSettings 'Microsoft.Insights/diagnosticSettings@2017-05-01-preview' = if (!empty(diagnosticStorageAccountId) || !empty(workspaceId) || !empty(eventHubAuthorizationRuleId) || !empty(eventHubName)) {
-  name: '${uniqueString(deployment().name, location)}-AppService-diagnosticSettings'
+  name: '${uniqueString(deployment().name, location)}-AppService-DiagnosticSettings'
   properties: {
     storageAccountId: empty(diagnosticStorageAccountId) ? null : diagnosticStorageAccountId
     workspaceId: empty(workspaceId) ? null : workspaceId
@@ -314,7 +314,7 @@ module app_privateEndpoint '.bicep/nested_privateEndpoint.bicep' = [for (private
 }]
 
 module app_rbac '.bicep/nested_rbac.bicep' = [for (roleAssignment, index) in roleAssignments: {
-  name: '${uniqueString(deployment().name, location)}-AppService-rbac-${index}'
+  name: '${uniqueString(deployment().name, location)}-AppService-Rbac-${index}'
   params: {
     roleAssignmentObj: roleAssignment
     resourceName: app.name
