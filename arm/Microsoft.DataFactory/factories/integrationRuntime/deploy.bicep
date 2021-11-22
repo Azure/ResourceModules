@@ -14,7 +14,7 @@ param type string
 @description('Optional. The name of the Managed Virtual Network if using type "Managed" ')
 param managedVirtualNetworkName string = ''
 
-@description('Required. Managed integration runtime type properties.')
+@description('Required. Integration runtime type properties.')
 param typeProperties object
 
 @description('Optional. Customer Usage Attribution id (GUID). This GUID must be previously registered')
