@@ -1,7 +1,7 @@
 @description('Required. The name of the Deployment schedule.')
-param deploymentScheduleName string
+param name string
 
-@description('Required. Name of the Automation Account to deploy the schedule to.')
+@description('Required. Name of the parent Automation Account')
 param automationAccountName string
 
 @description('Required. The operating system to be configured by the deployment schedule.')
@@ -11,7 +11,26 @@ param automationAccountName string
 ])
 param operatingSystem string
 
-@description('Required. Maximum time allowed for the deployment schedule to run. Duration needs to be specified using the format PT[n]H[n]M[n]S as per ISO8601')
+@description('Required. Reboot setting for the deployment schedule.')
+@allowed([
+  'IfRequired'
+  'Never'
+  'RebootOnly'
+  'Always'
+])
+param rebootSetting string
+
+@description('Required. The frequency of the deployment schedule. When using \'Hour\', \'Day\', \'Week\' or \'Month\', an interval needs to be provided.')
+@allowed([
+  'OneTime'
+  'Hour'
+  'Day'
+  'Week'
+  'Month'
+])
+param frequency string
+
+@description('Optional. Maximum time allowed for the deployment schedule to run. Duration needs to be specified using the format PT[n]H[n]M[n]S as per ISO8601')
 param maintenanceWindow string = 'PT2H'
 
 @description('Optional. Update classification included in the deployment schedule.')
@@ -30,15 +49,6 @@ param updateClassifications array = [
   'Critical'
   'Security'
 ]
-
-@description('Required. Reboot setting for the deployment schedule.')
-@allowed([
-  'IfRequired'
-  'Never'
-  'RebootOnly'
-  'Always'
-])
-param rebootSetting string
 
 @description('Optional. KB numbers or Linux packages excluded in the deployment schedule.')
 param excludeUpdates array = []
@@ -78,17 +88,7 @@ param postTaskSource string = ''
 
 @description('Optional. The interval of the frequency for the deployment schedule. 1 Hour is every hour, 2 Day is every second day, etc.')
 @maxValue(100)
-param interval int = 0
-
-@description('Required. The frequency of the deployment schedule. When using \'Hour\', \'Day\', \'Week\' or \'Month\', an interval needs to be provided.')
-@allowed([
-  'OneTime'
-  'Hour'
-  'Day'
-  'Week'
-  'Month'
-])
-param frequency string
+param interval int = 1
 
 @description('Optional. Enables the deployment schedule.')
 param isEnabled bool = true
@@ -174,24 +174,26 @@ param nextRunOffsetMinutes int = 0
 @description('Optional. The schedules description.')
 param scheduleDescription string = ''
 
-@description('Generated. Do not touch. Is used to provide the base time for time comparrison for startTime. If startTime is specified in HH:MM format, baseTime is used to check if the provided startTime has passed, adding one day before setting the deployment schedule.')
+@description('Generated. Do not touch. Is used to provide the base time for time comparison for startTime. If startTime is specified in HH:MM format, baseTime is used to check if the provided startTime has passed, adding one day before setting the deployment schedule.')
 param baseTime string = utcNow('u')
 
 @description('Optional. Customer Usage Attribution id (GUID). This GUID must be previously registered')
 param cuaId string = ''
 
 var updateClassifications_var = '${replace(replace(replace(replace(string(updateClassifications), ',', ', '), '[', ''), ']', ''), '"', '')}'
-var timeLimit = dateTimeAdd(baseTime, 'PT5M', 'u')
-var providedStartTime = dateTimeAdd(startTime, 'PT0S', 'u')
-var startTime_var = ((providedStartTime > timeLimit) ? providedStartTime : dateTimeAdd(providedStartTime, 'P1D', 'u'))
 
 module pid_cuaId '.bicep/nested_cuaId.bicep' = if (!empty(cuaId)) {
   name: 'pid-${cuaId}'
   params: {}
 }
 
+resource softwareUpdateConfiguration_automationAccount 'Microsoft.Automation/automationAccounts@2020-01-13-preview' existing = {
+  name: automationAccountName
+}
+
 resource softwareUpdateConfiguration 'Microsoft.Automation/automationAccounts/softwareUpdateConfigurations@2019-06-01' = {
-  name: '${automationAccountName}/${deploymentScheduleName}'
+  name: name
+  parent: softwareUpdateConfiguration_automationAccount
   properties: {
     updateConfiguration: {
       operatingSystem: operatingSystem
@@ -244,7 +246,7 @@ resource softwareUpdateConfiguration 'Microsoft.Automation/automationAccounts/so
         monthDays: (empty(monthDays) ? null : monthDays)
         monthlyOccurrences: (empty(monthlyOccurrences) ? null : monthlyOccurrences)
       }
-      startTime: startTime_var
+      startTime: (empty(startTime) ? dateTimeAdd(baseTime, 'PT10M') : startTime)
       expiryTime: expiryTime
       expiryTimeOffsetMinutes: expiryTimeOffsetMinutes
       nextRun: nextRun
@@ -254,6 +256,11 @@ resource softwareUpdateConfiguration 'Microsoft.Automation/automationAccounts/so
   }
 }
 
+@description('The name of the deployed softwareUpdateConfiguration')
 output softwareUpdateConfigurationName string = softwareUpdateConfiguration.name
+
+@description('The Id of the deployed softwareUpdateConfiguration')
 output softwareUpdateConfigurationResourceId string = softwareUpdateConfiguration.id
+
+@description('The resource group of the deployed softwareUpdateConfiguration')
 output softwareUpdateConfigurationResourceGroup string = resourceGroup().name
