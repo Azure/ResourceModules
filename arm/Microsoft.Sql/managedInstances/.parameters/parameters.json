@@ -2,13 +2,13 @@
     "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
     "contentVersion": "1.0.0.0",
     "parameters": {
-        "managedInstanceName": {
-            "value": "sxx-az-sqlmi-x-002"
+        "name": {
+            "value": "<<namePrefix>>-az-sqlmi-x-002"
         },
         "administratorLogin": {
             "reference": {
                 "keyVault": {
-                    "id": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.KeyVault/vaults/adp-sxx-az-kv-x-001"
+                    "id": "/subscriptions/<<subscriptionId>>/resourceGroups/<<resourceGroupName>>/providers/Microsoft.KeyVault/vaults/adp-<<namePrefix>>-az-kv-x-001"
                 },
                 "secretName": "administratorLogin"
             }
@@ -16,13 +16,13 @@
         "administratorLoginPassword": {
             "reference": {
                 "keyVault": {
-                    "id": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.KeyVault/vaults/adp-sxx-az-kv-x-001"
+                    "id": "/subscriptions/<<subscriptionId>>/resourceGroups/<<resourceGroupName>>/providers/Microsoft.KeyVault/vaults/adp-<<namePrefix>>-az-kv-x-001"
                 },
                 "secretName": "administratorLoginPassword"
             }
         },
         "subnetId": {
-            "value": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/virtualNetworks/adp-sxx-az-vnet-x-001/subnets/sxx-az-subnet-x-003"
+            "value": "/subscriptions/<<subscriptionId>>/resourceGroups/<<resourceGroupName>>/providers/Microsoft.Network/virtualNetworks/adp-<<namePrefix>>-az-vnet-x-sqlmi/subnets/<<namePrefix>>-az-subnet-x-sqlmi"
         },
         "skuName": {
             "value": "GP_Gen5"
@@ -54,31 +54,74 @@
         "proxyOverride": {
             "value": "Proxy"
         },
+        "managedServiceIdentity": {
+            "value": "UserAssigned"
+        },
+        "userAssignedIdentities": {
+            "value": {
+                "/subscriptions/<<subscriptionId>>/resourcegroups/<<resourceGroupName>>/providers/Microsoft.ManagedIdentity/userAssignedIdentities/adp-<<namePrefix>>-az-msi-x-001": {}
+            }
+        },
+        "primaryUserAssignedIdentityId": {
+            "value": "/subscriptions/<<subscriptionId>>/resourcegroups/<<resourceGroupName>>/providers/Microsoft.ManagedIdentity/userAssignedIdentities/adp-<<namePrefix>>-az-msi-x-001"
+        },
         "publicDataEndpointEnabled": {
             "value": false
-        },
-        "enableAdvancedDataSecurity": {
-            "value": false
-        },
-        "enableRecuringVulnerabilityAssessmentsScans": {
-            "value": false
-        },
-        "sendScanReportEmailsToSubscriptionAdmins": {
-            "value": true
-        },
-        "sendScanReportToEmailAddresses": {
-            "value": [
-                "test1@contoso.com",
-                "test2@contoso.com"
-            ]
         },
         "roleAssignments": {
             "value": [
                 {
                     "roleDefinitionIdOrName": "Reader",
                     "principalIds": [
-                        "cf33fea8-b30f-424f-ab73-c48d99e0b222"
+                        "e58511af-4da2-449c-a5cd-6a10271cfb83"
                     ]
+                }
+            ]
+        },
+        "keys": {
+            "value": [
+                {
+                    "name": "adp-sxx-az-kv-x-sqlmi_keyEncryptionKeySqlMi_8f68659b2fdd4293872fb8efa36ddd59",
+                    "uri": "https://adp-sxx-az-kv-x-sqlmi.vault.azure.net/keys/keyEncryptionKeySqlMi/8f68659b2fdd4293872fb8efa36ddd59",
+                    "serverKeyType": "AzureKeyVault"
+                }
+            ]
+        },
+        "encryptionProtectorObj": {
+            "value": {
+                "serverKeyName": "adp-sxx-az-kv-x-sqlmi_keyEncryptionKeySqlMi_8f68659b2fdd4293872fb8efa36ddd59",
+                "serverKeyType": "AzureKeyVault"
+            }
+        },
+        "securityAlertPoliciesObj": {
+            "value": {
+                "name": "default",
+                "state": "Enabled",
+                "emailAccountAdmins": true
+            }
+        },
+        "vulnerabilityAssessmentsObj": {
+            "value": {
+                "name": "default",
+                "emailSubscriptionAdmins": true,
+                "recurringScansIsEnabled": true,
+                "recurringScansEmails": [
+                    "test1@contoso.com",
+                    "test2@contoso.com"
+                ],
+                "vulnerabilityAssessmentsStorageAccountId": "/subscriptions/<<subscriptionId>>/resourceGroups/<<resourceGroupName>>/providers/Microsoft.Storage/storageAccounts/adp<<namePrefix>>azsaweux001"
+            }
+        },
+        "databases": {
+            "value": [
+                {
+                    "name": "<<namePrefix>>-az-sqlmidb-x-001",
+                    "backupShortTermRetentionPolicies": {
+                        "name": "default"
+                    },
+                    "backupLongTermRetentionPolicies": {
+                        "name": "default"
+                    }
                 }
             ]
         }

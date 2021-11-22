@@ -30,7 +30,7 @@
         "aksClusterNetworkPlugin": {
             "value": "kubenet"
         },
-        "additionalAgentPools": {
+        "agentPools": {
             "value": [
                 {
                     "name": "userpool1",
