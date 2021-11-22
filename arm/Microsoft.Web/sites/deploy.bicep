@@ -231,7 +231,8 @@ resource app 'Microsoft.Web/sites@2020-12-01' = {
     userAssignedIdentities: !empty(userAssignedIdentities) ? userAssignedIdentities : null
   }
   properties: {
-    serverFarmId: !empty(appServicePlanId) ? appServicePlanId : appServicePlan.id
+    // serverFarmId: !empty(appServicePlanId) ? appServicePlanId : appServicePlan.id
+    serverFarmId: appServicePlan.id
     httpsOnly: httpsOnly
     hostingEnvironmentProfile: !empty(appServiceEnvironmentId) ? json('{ id: ${hostingEnvironment} }') : null
     clientAffinityEnabled: clientAffinityEnabled
