@@ -30,4 +30,4 @@ This module deploys a backup long-term retention policies for SQL Managed Instan
 
 ## Template references
 
-- [Managedinstances/Databases/Backuplongtermretentionpolicies](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Sql/2021-02-01-preview/managedInstances/databases/backupLongTermRetentionPolicies)
+- [Managedinstances/Databases/BackupLongTermRetentionPolicies](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Sql/2021-02-01-preview/managedInstances/databases/backupLongTermRetentionPolicies)
