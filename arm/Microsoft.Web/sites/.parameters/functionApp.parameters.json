@@ -8,24 +8,12 @@
         "kind": {
             "value": "functionapp"
         },
+        // "appInsightsId": {
+        //     "value": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Insights/components/adp-sxx-az-appi-x-001"
+        // },
         "appServicePlanId": {
             "value": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Web/serverFarms/adp-sxx-az-asp-x-001"
         },
-        // "appServicePlanName": {
-        //     "value": "adp-sxx-az-asp-x-001"
-        // },
-        // "appServicePlanSkuName": {
-        //     "value": "P1v2" //S1
-        // },
-        // "appServicePlanTier": {
-        //     "value": "PremiumV2" //Standard
-        // },
-        // "appServicePlanSize": {
-        //     "value": "P1v2"  //S1
-        // },
-        // "appServicePlanFamily": {
-        //     "value": "Pv2"   //S
-        // },
         "siteConfig": {
             "value": {
                 "alwaysOn": true

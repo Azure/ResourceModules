@@ -8,6 +8,9 @@
         "kind": {
             "value": "app"
         },
+        "appInsightsId": {
+            "value": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Insights/components/adp-sxx-az-appi-x-001"
+        },
         "appServicePlanId": {
             "value": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Web/serverFarms/adp-sxx-az-asp-x-001"
         },

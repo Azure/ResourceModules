@@ -21,6 +21,7 @@ This module deploys a Web or Function App
 | Parameter Name | Type | Default Value | Possible Values | Description |
 | :-- | :-- | :-- | :-- | :-- |
 | `name` | string |  |  | Required. Name of the Web Application Portal Name |
+| `appInsightsId` | string |  |  | Optional. Resource Id of the existing ApplicationInsights. If set, ApplicationInsights will be configured for the resource. |
 | `appServiceEnvironmentId` | string |  |  | Optional. The Resource Id of the App Service Environment to use for the Function App. |
 | `appServicePlanFamily` | string |  |  | Optional. SkuFamily of app service plan deployed if no appServicePlanId was provided. |
 | `appServicePlanId` | string |  |  | Optional. The Resource Id of the App Service Plan to use for the App. If not provided, the hosting plan name is used to create a new plan. |

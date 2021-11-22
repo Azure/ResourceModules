@@ -4,6 +4,9 @@ param name string
 @description('Optional. Location for all Resources.')
 param location string = resourceGroup().location
 
+@description('Optional. Resource Id of the existing ApplicationInsights. If set, ApplicationInsights will be configured for the resource.')
+param appInsightsId string = ''
+
 @description('Optional. If true, ApplicationInsights will be configured for the Function App.')
 param enableMonitoring bool = true
 
@@ -231,9 +234,14 @@ module pid_cuaId '.bicep/nested_cuaId.bicep' = if (!empty(cuaId)) {
 //   scope: appServicePlan
 // }
 
-resource appServicePlan 'Microsoft.Web/serverfarms@2021-02-01' existing = {
+resource appServicePlan 'Microsoft.Web/serverfarms@2021-02-01' existing = if (!empty(appServicePlanId)) {
   name: last(split(appServicePlanId, '/'))
   scope: resourceGroup(split(appServicePlanId, '/')[2], split(appServicePlanId, '/')[4])
+}
+
+resource appInsights 'Microsoft.Insights/components@2020-02-02' existing = if (!empty(appInsightsId)) {
+  name: last(split(appInsightsId, '/'))
+  scope: resourceGroup(split(appInsightsId, '/')[2], split(appInsightsId, '/')[4])
 }
 
 // resource virtualMachine_logAnalyticsWorkspace 'Microsoft.OperationalInsights/workspaces@2021-06-01' existing = if (!empty(workspaceId)) {
@@ -259,17 +267,19 @@ resource app 'Microsoft.Web/sites@2020-12-01' = {
     siteConfig: siteConfig
   }
 
-  // resource app_appsettings 'config@2019-08-01' = {
-  //   name: 'appsettings'
-  //   properties: {
-  //     AzureWebJobsStorage: !empty(storageAccountName) ? 'DefaultEndpointsProtocol=https;AccountName=${storageAccountName};AccountKey=${listkeys(resourceId(subscription().subscriptionId, storageAccountResourceGroupName, 'Microsoft.Storage/storageAccounts', storageAccountName), '2019-06-01').keys[0].value};' : any(null)
-  //     AzureWebJobsDashboard: !empty(storageAccountName) ? 'DefaultEndpointsProtocol=https;AccountName=${storageAccountName};AccountKey=${listkeys(resourceId(subscription().subscriptionId, storageAccountResourceGroupName, 'Microsoft.Storage/storageAccounts', storageAccountName), '2019-06-01').keys[0].value};' : any(null)
-  //     FUNCTIONS_EXTENSION_VERSION: appServicePlanType == 'functionApp' && !empty(functionsExtensionVersion) ? functionsExtensionVersion : any(null)
-  //     FUNCTIONS_WORKER_RUNTIME: appServicePlanType == 'functionApp' && !empty(functionsWorkerRuntime) ? functionsWorkerRuntime : any(null)
-  //     APPINSIGHTS_INSTRUMENTATIONKEY: enableMonitoring ? reference('microsoft.insights/components/${name}', '2015-05-01').InstrumentationKey : null
-  //     APPLICATIONINSIGHTS_CONNECTION_STRING: enableMonitoring ? reference('microsoft.insights/components/${name}', '2015-05-01').ConnectionString : null
-  //   }
-  // }
+  resource app_appsettings 'config@2019-08-01' = {
+    name: 'appsettings'
+    properties: {
+      // AzureWebJobsStorage: !empty(storageAccountName) ? 'DefaultEndpointsProtocol=https;AccountName=${storageAccountName};AccountKey=${listkeys(resourceId(subscription().subscriptionId, storageAccountResourceGroupName, 'Microsoft.Storage/storageAccounts', storageAccountName), '2019-06-01').keys[0].value};' : any(null)
+      // AzureWebJobsDashboard: !empty(storageAccountName) ? 'DefaultEndpointsProtocol=https;AccountName=${storageAccountName};AccountKey=${listkeys(resourceId(subscription().subscriptionId, storageAccountResourceGroupName, 'Microsoft.Storage/storageAccounts', storageAccountName), '2019-06-01').keys[0].value};' : any(null)
+      // FUNCTIONS_EXTENSION_VERSION: appServicePlanType == 'functionApp' && !empty(functionsExtensionVersion) ? functionsExtensionVersion : any(null)
+      // FUNCTIONS_WORKER_RUNTIME: appServicePlanType == 'functionApp' && !empty(functionsWorkerRuntime) ? functionsWorkerRuntime : any(null)
+      // APPINSIGHTS_INSTRUMENTATIONKEY: enableMonitoring ? reference('microsoft.insights/components/${name}', '2015-05-01').InstrumentationKey : null
+      // APPLICATIONINSIGHTS_CONNECTION_STRING: enableMonitoring ? reference('microsoft.insights/components/${name}', '2015-05-01').ConnectionString : null
+      APPINSIGHTS_INSTRUMENTATIONKEY: !empty(appInsightsId) ? appInsights.properties.InstrumentationKey : ''
+      APPLICATIONINSIGHTS_CONNECTION_STRING: !empty(appInsightsId) ? appInsights.properties.ConnectionString : ''
+    }
+  }
 }
 
 // resource app_insights 'microsoft.insights/components@2020-02-02' = if (enableMonitoring) {
