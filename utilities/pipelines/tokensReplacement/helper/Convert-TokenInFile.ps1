@@ -60,7 +60,7 @@ function Convert-TokenInFile {
         }
     }
     # Begin the Replace Function
-    Write-Verbose "$($TokenNameValueObject.Count) Tokens Found"
+    Write-Verbose "Provided Tokens Count: ($($TokenNameValueObject.Count) Tokens"
     # Process Path for Token Replacement
     foreach ($Path in $FilePath) {
         # Extract Required Content From the Input
