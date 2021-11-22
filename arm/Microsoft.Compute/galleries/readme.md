@@ -2,13 +2,16 @@
 
 This module deploys Share Image Gallery, with resource lock.
 
-## Resource types
+## Resource Types
 
 | Resource Type | Api Version |
 | :-- | :-- |
 | `Microsoft.Authorization/locks` | 2016-09-01 |
 | `Microsoft.Authorization/roleAssignments` | 2020-04-01-preview |
 | `Microsoft.Compute/galleries` | 2020-09-30 |
+| `Microsoft.Compute/galleries/images` | 2020-09-30 |
+| `Microsoft.Compute/galleries/images/providers/roleAssignments` | 2020-04-01-preview |
+| `Microsoft.Compute/galleries/providers/roleAssignments` | 2021-04-01-preview |
 
 ## Parameters
 
@@ -17,6 +20,7 @@ This module deploys Share Image Gallery, with resource lock.
 | `cuaId` | string |  |  | Optional. Customer Usage Attribution id (GUID). This GUID must be previously registered |
 | `galleryDescription` | string |  |  | Optional. Description of the Azure Shared Image Gallery |
 | `galleryName` | string |  |  | Required. Name of the Azure Shared Image Gallery |
+| `images` | _[images](images/readme.md)_ array | `[]` |  | Optional. Images to create |
 | `location` | string | `[resourceGroup().location]` |  | Optional. Location for all resources. |
 | `lock` | string | `NotSpecified` | `[CanNotDelete, NotSpecified, ReadOnly]` | Optional. Specify the type of lock. |
 | `roleAssignments` | array | `[]` |  | Optional. Array of role assignment objects that contain the 'roleDefinitionIdOrName' and 'principalId' to define RBAC role assignments on this resource. In the roleDefinitionIdOrName attribute, you can provide either the display name of the role definition, or its fully qualified ID in the following format: '/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11' |
@@ -70,14 +74,15 @@ Tag names and tag values can be provided as needed. A tag can be left without a 
 
 ## Outputs
 
-| Output Name | Type |
-| :-- | :-- |
-| `galleryName` | string |
-| `galleryResourceGroup` | string |
-| `galleryResourceId` | string |
+| Output Name | Type | Description |
+| :-- | :-- | :-- |
+| `galleryName` | string | The name of the deployed image gallery |
+| `galleryResourceGroup` | string | The resource group of the deployed image gallery |
+| `galleryResourceId` | string | The resource id of the deployed image gallery |
 
 ## Template references
 
 - [Locks](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2016-09-01/locks)
 - [Roleassignments](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2020-04-01-preview/roleAssignments)
 - [Galleries](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Compute/2020-09-30/galleries)
+- [Galleries/Images](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Compute/2020-09-30/galleries/images)
