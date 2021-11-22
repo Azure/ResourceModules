@@ -4,13 +4,19 @@ on:
   workflow_dispatch:
     inputs:
       removeDeployment:
+        type: boolean
         description: 'Remove deployed module'
         required: false
         default: 'true'
       versioningOption:
+        type: choice
         description: 'The mode to handle the version increments [major|minor|patch]'
         required: false
         default: 'patch'
+        options:
+          - major
+          - minor
+          - patch
       customVersion:
         description: 'Custom version to apply. Used only if higher than latest'
         required: false
@@ -100,7 +106,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        parameterFilePaths: ['parameters.json']
+        parameterFilePaths: ['parameters.json', 'images.parameters.json']
     steps:
       - name: 'Checkout'
         uses: actions/checkout@v2
@@ -135,7 +141,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        parameterFilePaths: ['parameters.json']
+        parameterFilePaths: ['parameters.json', 'images.parameters.json']
     steps:
       - name: 'Checkout'
         uses: actions/checkout@v2

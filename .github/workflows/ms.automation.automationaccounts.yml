@@ -4,17 +4,24 @@ on:
   workflow_dispatch:
     inputs:
       removeDeployment:
+        type: boolean
         description: 'Remove deployed module'
         required: false
         default: 'true'
       versioningOption:
+        type: choice
         description: 'The mode to handle the version increments [major|minor|patch]'
         required: false
         default: 'patch'
+        options:
+          - major
+          - minor
+          - patch
       customVersion:
         description: 'Custom version to apply. Used only if higher than latest'
         required: false
         default: '0.0.1'
+
   push:
     branches:
       - main
@@ -29,8 +36,8 @@ env:
   modulePath: 'arm/Microsoft.Automation/automationAccounts'
   workflowPath: '.github/workflows/ms.automation.automationaccounts.yml'
   AZURE_CREDENTIALS: ${{ secrets.AZURE_CREDENTIALS }}
-  ARM_SUBSCRIPTION_ID: '${{ secrets.ARM_SUBSCRIPTION_ID }}'
-  ARM_MGMTGROUP_ID: '${{ secrets.ARM_MGMTGROUP_ID }}'
+  ARM_SUBSCRIPTION_ID: ${{ secrets.ARM_SUBSCRIPTION_ID }}
+  ARM_MGMTGROUP_ID: ${{ secrets.ARM_MGMTGROUP_ID }}
   ARM_TENANT_ID: '${{ secrets.ARM_TENANT_ID }}'
   DEPLOYMENT_SP_ID: '${{ secrets.DEPLOYMENT_SP_ID }}'
   PLATFORM_KEYVAULT: '${{ secrets.PLATFORM_KEYVAULT }}'

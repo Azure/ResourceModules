@@ -43,7 +43,7 @@ The following resources are required to be able to deploy this resource.
 | `disablePasswordAuthentication` | bool |  |  | Optional. Specifies whether password authentication should be disabled. |
 | `diskEncryptionVolumeType` | string | `All` | `[OS, Data, All]` | Optional. Type of the volume OS or Data to perform encryption operation |
 | `diskKeyEncryptionAlgorithm` | string | `RSA-OAEP` | `[RSA-OAEP, RSA-OAEP-256, RSA1_5]` | Optional. Specifies disk key encryption algorithm. |
-| `domainJoinOptions` | int | `3` |  | Optional. Set of bit flags that define the join options. Default value of 3 is a combination of NETSETUP_JOIN_DOMAIN (0x00000001) & NETSETUP_ACCT_CREATE (0x00000002) i.e. will join the domain and create the account on the domain. For more information see <https://msdn.microsoft.com/en-us/library/aa392154(v=vs.85).aspx> |
+| `domainJoinOptions` | int | `3` |  | Optional. Set of bit flags that define the join options. Default value of 3 is a combination of NETSETUP_JOIN_DOMAIN (0x00000001) & NETSETUP_ACCT_CREATE (0x00000002) i.e. will join the domain and create the account on the domain. For more information see https://msdn.microsoft.com/en-us/library/aa392154(v=vs.85).aspx |
 | `domainJoinOU` | string |  |  | Optional. Specifies an organizational unit (OU) for the domain account. Enter the full distinguished name of the OU in quotation marks. Example: "OU=testOU; DC=domain; DC=Domain; DC=com" |
 | `domainJoinPassword` | secureString |  |  | Optional. Required if domainName is specified. Password of the user specified in domainJoinUser parameter |
 | `domainJoinRestart` | bool |  |  | Optional. Controls the restart of vm after executing domain join |

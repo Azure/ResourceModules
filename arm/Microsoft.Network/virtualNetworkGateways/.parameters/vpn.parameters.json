@@ -16,6 +16,11 @@
         "virtualNetworkGatewaySku": {
             "value": "VpnGw1AZ"
         },
+        "publicIpZones": {
+            "value": [
+                "1"
+            ]
+        },
         "vpnType": {
             "value": "RouteBased"
         },

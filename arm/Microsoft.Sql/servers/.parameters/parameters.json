@@ -40,7 +40,7 @@
         "databases": {
             "value": [
                 {
-                    "name": "sxx-az-sqldb-weu-x-001",
+                    "name": "sxx-az-sqldb-x-001",
                     "collation": "SQL_Latin1_General_CP1_CI_AS",
                     "tier": "GeneralPurpose",
                     "skuName": "GP_Gen5_2",

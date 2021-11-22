@@ -1,5 +1,5 @@
 @description('Required. The name of the SQL managed instance.')
-param managedInstanceName string
+param name string
 
 @description('Optional. Location for all resources.')
 param location string = resourceGroup().location
@@ -72,27 +72,6 @@ param restorePointInTime string = ''
 @description('Optional. The resource identifier of the source managed instance associated with create operation of this instance.')
 param sourceManagedInstanceId string = ''
 
-@description('Optional. The URI of the key (in Azure Key Vault) for transparent data encryption. The key vault must have SoftDelete enabled and must reside in the same region as the SQL MI. The managed identity of the SQL managed instance needs to have the following key permissions in the key vault: Get, Unwrap Key, Wrap Key. If blank, service managed key will be used.')
-param customerManagedEnryptionKeyUri string = ''
-
-@description('Optional. Enables advanced data security features, like recuring vulnerability assesment scans and ATP. If enabled, storage account must be provided.')
-param enableAdvancedDataSecurity bool = false
-
-@description('Optional. A blob storage to hold the scan results.')
-param vulnerabilityAssessmentsStorageAccountId string = ''
-
-@description('Optional. Recurring scans state.')
-param enableRecuringVulnerabilityAssessmentsScans bool = false
-
-@description('Optional. Specifies that the schedule scan notification will be is sent to the subscription administrators.')
-param sendScanReportEmailsToSubscriptionAdmins bool = false
-
-@description('Optional. Specifies an array of e-mail addresses to which the scan notification is sent.')
-param sendScanReportToEmailAddresses array = []
-
-@description('Optional. An Azure Active Directory administrator account.')
-param azureAdAdmin object = {}
-
 @description('Optional. Specifies the number of days that logs will be kept for; a value of 0 will retain data indefinitely.')
 @minValue(0)
 @maxValue(365)
@@ -132,11 +111,33 @@ param cuaId string = ''
   'None'
   'SystemAssigned'
   'UserAssigned'
+  'SystemAssigned,UserAssigned'
 ])
 param managedServiceIdentity string = 'SystemAssigned'
 
 @description('Optional. Mandatory if "managedServiceIdentity" contains UserAssigned. The list of user identities associated with the managed instance.')
 param userAssignedIdentities object = {}
+
+@description('Optional. Mandatory if "managedServiceIdentity" contains UserAssigned. The resource id of a user assigned identity to be used by default.')
+param primaryUserAssignedIdentityId string = ''
+
+@description('Optional. Databases to create in this server.')
+param databases array = []
+
+@description('Optional. The vulnerability assessment configuration')
+param vulnerabilityAssessmentsObj object = {}
+
+@description('Optional. The security alert policy configuration')
+param securityAlertPoliciesObj object = {}
+
+@description('Optional. The keys to configure')
+param keys array = []
+
+@description('Optional. The encryption protection configuration')
+param encryptionProtectorObj object = {}
+
+@description('Optional. The administrator configuration')
+param administratorsObj object = {}
 
 @description('Optional. The name of logs that will be streamed.')
 @allowed([
@@ -175,21 +176,20 @@ var diagnosticsMetrics = [for metric in metricsToEnable: {
   }
 }]
 
-var splittedKeyUri = split(customerManagedEnryptionKeyUri, '/')
-var serverKeyName = (empty(customerManagedEnryptionKeyUri) ? 'ServiceManaged' : '${split(splittedKeyUri[2], '.')[0]}_${splittedKeyUri[4]}_${splittedKeyUri[5]}')
+var identity = {
+  type: managedServiceIdentity
+  userAssignedIdentities: !empty(userAssignedIdentities) ? userAssignedIdentities : null
+}
 
 module pid_cuaId '.bicep/nested_cuaId.bicep' = if (!empty(cuaId)) {
   name: 'pid-${cuaId}'
   params: {}
 }
 
-resource managedInstance 'Microsoft.Sql/managedInstances@2020-08-01-preview' = {
-  name: managedInstanceName
+resource managedInstance 'Microsoft.Sql/managedInstances@2021-05-01-preview' = {
+  name: name
   location: location
-  identity: {
-    type: managedServiceIdentity
-    userAssignedIdentities: (empty(userAssignedIdentities)) ? null : userAssignedIdentities
-  }
+  identity: identity
   sku: {
     name: skuName
     tier: skuTier
@@ -212,54 +212,7 @@ resource managedInstance 'Microsoft.Sql/managedInstances@2020-08-01-preview' = {
     proxyOverride: proxyOverride
     timezoneId: timezoneId
     instancePoolId: instancePoolId
-  }
-
-  resource keys 'keys@2017-10-01-preview' = if (!empty(customerManagedEnryptionKeyUri)) {
-    name: serverKeyName
-    properties: {
-      serverKeyType: 'AzureKeyVault'
-      uri: customerManagedEnryptionKeyUri
-    }
-  }
-
-  resource encryptionProtector 'encryptionProtector@2017-10-01-preview' = {
-    name: 'current'
-    properties: {
-      serverKeyName: keys.name
-      serverKeyType: (empty(customerManagedEnryptionKeyUri) ? 'ServiceManaged' : 'AzureKeyVault')
-      uri: customerManagedEnryptionKeyUri
-    }
-  }
-
-  resource securityAlertPolicies 'securityAlertPolicies@2017-03-01-preview' = {
-    name: 'Default'
-    properties: {
-      state: (enableAdvancedDataSecurity ? 'Enabled' : 'Disabled')
-      emailAccountAdmins: sendScanReportEmailsToSubscriptionAdmins
-    }
-  }
-
-  resource vulnerabilityAssessments 'vulnerabilityAssessments@2021-02-01-preview' = if (enableAdvancedDataSecurity) {
-    name: 'default'
-    properties: {
-      storageContainerPath: (enableAdvancedDataSecurity ? 'https://${split(vulnerabilityAssessmentsStorageAccountId, '/')[8]}.blob.core.windows.net/vulnerability-assessment/' : '')
-      storageAccountAccessKey: (enableAdvancedDataSecurity ? listKeys(vulnerabilityAssessmentsStorageAccountId, '2019-06-01').keys[0].value : '')
-      recurringScans: {
-        isEnabled: enableRecuringVulnerabilityAssessmentsScans
-        emailSubscriptionAdmins: sendScanReportEmailsToSubscriptionAdmins
-        emails: sendScanReportToEmailAddresses
-      }
-    }
-  }
-
-  resource administrators 'administrators@2021-02-01-preview' = if (!empty(azureAdAdmin)) {
-    name: 'ActiveDirectory'
-    properties: {
-      administratorType: 'ActiveDirectory'
-      login: azureAdAdmin.login
-      sid: azureAdAdmin.sid
-      tenantId: azureAdAdmin.tenantId
-    }
+    primaryUserAssignedIdentityId: primaryUserAssignedIdentityId
   }
 }
 
@@ -286,7 +239,7 @@ resource managedInstance_diagnosticSettings 'Microsoft.Insights/diagnosticsettin
 }
 
 module managedInstance_rbac '.bicep/nested_rbac.bicep' = [for (roleAssignment, index) in roleAssignments: {
-  name: '${deployment().name}-rbac-${index}'
+  name: '${uniqueString(deployment().name, location)}-rbac-${index}'
   params: {
     principalIds: roleAssignment.principalIds
     roleDefinitionIdOrName: roleAssignment.roleDefinitionIdOrName
@@ -294,6 +247,95 @@ module managedInstance_rbac '.bicep/nested_rbac.bicep' = [for (roleAssignment, i
   }
 }]
 
+module managedInstance_databases 'databases/deploy.bicep' = [for (database, index) in databases: {
+  name: '${uniqueString(deployment().name, location)}-db-${index}'
+  params: {
+    name: database.name
+    managedInstanceName: managedInstance.name
+    catalogCollation: contains(database, 'catalogCollation') ? database.catalogCollation : 'SQL_Latin1_General_CP1_CI_AS'
+    collation: contains(database, 'collation') ? database.collation : 'SQL_Latin1_General_CP1_CI_AS'
+    createMode: contains(database, 'createMode') ? database.createMode : 'Default'
+    diagnosticLogsRetentionInDays: contains(database, 'diagnosticLogsRetentionInDays') ? database.diagnosticLogsRetentionInDays : 365
+    diagnosticStorageAccountId: contains(database, 'diagnosticStorageAccountId') ? database.diagnosticStorageAccountId : ''
+    eventHubAuthorizationRuleId: contains(database, 'eventHubAuthorizationRuleId') ? database.eventHubAuthorizationRuleId : ''
+    eventHubName: contains(database, 'eventHubName') ? database.eventHubName : ''
+    location: contains(database, 'location') ? database.location : managedInstance.location
+    lock: contains(database, 'lock') ? database.lock : lock
+    longTermRetentionBackupResourceId: contains(database, 'longTermRetentionBackupResourceId') ? database.longTermRetentionBackupResourceId : ''
+    recoverableDatabaseId: contains(database, 'recoverableDatabaseId') ? database.recoverableDatabaseId : ''
+    restorableDroppedDatabaseId: contains(database, 'restorableDroppedDatabaseId') ? database.restorableDroppedDatabaseId : ''
+    restorePointInTime: contains(database, 'restorePointInTime') ? database.restorePointInTime : ''
+    sourceDatabaseId: contains(database, 'sourceDatabaseId') ? database.sourceDatabaseId : ''
+    storageContainerSasToken: contains(database, 'storageContainerSasToken') ? database.storageContainerSasToken : ''
+    storageContainerUri: contains(database, 'storageContainerUri') ? database.storageContainerUri : ''
+    tags: contains(database, 'tags') ? database.tags : {}
+    workspaceId: contains(database, 'workspaceId') ? database.workspaceId : ''
+    backupShortTermRetentionPoliciesObj: contains(database, 'backupShortTermRetentionPolicies') ? database.backupShortTermRetentionPolicies : {}
+    backupLongTermRetentionPoliciesObj: contains(database, 'backupLongTermRetentionPolicies') ? database.backupLongTermRetentionPolicies : {}
+  }
+}]
+
+module managedInstance_securityAlertPolicy 'securityAlertPolicies/deploy.bicep' = if (!empty(securityAlertPoliciesObj)) {
+  name: '${uniqueString(deployment().name, location)}-secAlertPol'
+  params: {
+    managedInstanceName: managedInstance.name
+    name: securityAlertPoliciesObj.name
+    emailAccountAdmins: contains(securityAlertPoliciesObj, 'emailAccountAdmins') ? securityAlertPoliciesObj.emailAccountAdmins : false
+    state: contains(securityAlertPoliciesObj, 'state') ? securityAlertPoliciesObj.state : 'Disabled'
+  }
+}
+
+module managedInstance_vulnerabilityAssessment 'vulnerabilityAssessments/deploy.bicep' = if (!empty(vulnerabilityAssessmentsObj)) {
+  name: '${uniqueString(deployment().name, location)}-vulnAssessm'
+  params: {
+    managedInstanceName: managedInstance.name
+    name: vulnerabilityAssessmentsObj.name
+    recurringScansEmails: contains(vulnerabilityAssessmentsObj, 'recurringScansEmails') ? vulnerabilityAssessmentsObj.recurringScansEmails : []
+    recurringScansEmailSubscriptionAdmins: contains(vulnerabilityAssessmentsObj, 'recurringScansEmailSubscriptionAdmins') ? vulnerabilityAssessmentsObj.recurringScansEmailSubscriptionAdmins : false
+    recurringScansIsEnabled: contains(vulnerabilityAssessmentsObj, 'recurringScansIsEnabled') ? vulnerabilityAssessmentsObj.recurringScansIsEnabled : false
+    vulnerabilityAssessmentsStorageAccountId: contains(vulnerabilityAssessmentsObj, 'vulnerabilityAssessmentsStorageAccountId') ? vulnerabilityAssessmentsObj.vulnerabilityAssessmentsStorageAccountId : ''
+  }
+  dependsOn: [
+    managedInstance_securityAlertPolicy
+  ]
+}
+
+module managedInstance_key 'keys/deploy.bicep' = [for (key, index) in keys: {
+  name: '${uniqueString(deployment().name, location)}-key-${index}'
+  params: {
+    managedInstanceName: managedInstance.name
+    name: contains(key, 'name') ? key.name : ''
+    serverKeyType: contains(key, 'serverKeyType') ? key.serverKeyType : 'ServiceManaged'
+    uri: contains(key, 'uri') ? key.uri : ''
+  }
+}]
+
+module managedInstance_encryptionProtector 'encryptionProtector/deploy.bicep' = if (!empty(encryptionProtectorObj)) {
+  name: '${uniqueString(deployment().name, location)}-encryProtector'
+  params: {
+    managedInstanceName: managedInstance.name
+    serverKeyName: contains(encryptionProtectorObj, 'serverKeyName') ? encryptionProtectorObj.serverKeyName : managedInstance_key[0].outputs.keyName
+    name: contains(encryptionProtectorObj, 'name') ? encryptionProtectorObj.serverKeyType : 'current'
+    serverKeyType: contains(encryptionProtectorObj, 'serverKeyType') ? encryptionProtectorObj.serverKeyType : 'ServiceManaged'
+    autoRotationEnabled: contains(encryptionProtectorObj, 'autoRotationEnabled') ? encryptionProtectorObj.autoRotationEnabled : true
+  }
+}
+
+module managedInstance_administrator 'administrators/deploy.bicep' = if (!empty(administratorsObj)) {
+  name: '${uniqueString(deployment().name, location)}-admin'
+  params: {
+    managedInstanceName: managedInstance.name
+    login: administratorsObj.name
+    sid: administratorsObj.name
+    tenantId: contains(administratorsObj, 'tenantId') ? administratorsObj.tenantId : ''
+  }
+}
+
+@description('The name of the deployed managed instance')
 output managedInstanceName string = managedInstance.name
+
+@description('The resourceId of the deployed managed instance')
 output managedInstanceResourceId string = managedInstance.id
+
+@description('The resource group of the deployed managed instance')
 output managedInstanceResourceGroup string = resourceGroup().name
