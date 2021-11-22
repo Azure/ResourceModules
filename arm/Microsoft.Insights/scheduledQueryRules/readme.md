@@ -18,7 +18,7 @@ This module deploys an Alert based on metrics
 | `alertName` | string |  |  | Required. The name of the Alert. |
 | `autoMitigate` | bool | `True` |  | Optional. The flag that indicates whether the alert should be automatically resolved or not. Relevant only for rules of the kind LogAlert. |
 | `criterias` | object | `{object}` |  | Optional. The rule criteria that defines the conditions of the scheduled query rule. |
-| `cuaId` | string |  |  | Optional. Customer Usage Attribution id (GUID). This GUID must be previously registered |
+| `cuaId` | string |  |  | Optional. Customer Usage Attribution ID (GUID). This GUID must be previously registered |
 | `enabled` | bool | `True` |  | Optional. The flag which indicates whether this scheduled query rule is enabled. |
 | `evaluationFrequency` | string |  |  | Optional. How often the scheduled query rule is evaluated represented in ISO 8601 duration format. Relevant and required only for rules of the kind LogAlert. |
 | `kind` | string | `LogAlert` | `[LogAlert, LogToMetric]` | Optional. Indicates the type of scheduled query rule. |
