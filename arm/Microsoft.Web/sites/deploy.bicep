@@ -293,18 +293,20 @@ resource app 'Microsoft.Web/sites@2020-12-01' = {
 //   }
 // }
 
-module app_insights '.bicep/nested_components.bicep' = if (enableMonitoring) {
-  name: '${uniqueString(deployment().name, location)}-AppService-InsightsComponent'
-  params: {
-    name: app.name
-    location: location
-    kind: 'web'
-    tags: tags
-    appInsightsWorkspaceResourceId: ''
-    appInsightsType: 'web'
-    appInsightsRequestSource: 'rest'
-  }
-}
+// module app_insights '.bicep/nested_components.bicep' = if (enableMonitoring) {
+//   name: '${uniqueString(deployment().name, location)}-AppService-InsightsComponent'
+//   params: {
+//     name: app.name
+//     location: location
+//     kind: 'web'
+//     tags: tags
+//     appInsightsWorkspaceResourceId: ''
+//     appInsightsType: 'web'
+//     appInsightsRequestSource: 'rest'
+//   }
+// }
+
+
 
 resource app_lock 'Microsoft.Authorization/locks@2016-09-01' = if (lock != 'NotSpecified') {
   name: '${uniqueString(deployment().name, location)}-AppService-${lock}-Lock'
