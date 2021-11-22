@@ -86,6 +86,7 @@ module netAppAccount_rbac '.bicep/nested_rbac.bicep' = [for (roleAssignment, ind
   }
 }]
 
+@batchSize(1)
 module netAppAccount_capacityPools 'capacityPools/deploy.bicep' = [for (capacityPool, index) in capacityPools: {
   name: '${uniqueString(deployment().name, location)}-ANFAccount-CapPool-${index}'
   params: {
