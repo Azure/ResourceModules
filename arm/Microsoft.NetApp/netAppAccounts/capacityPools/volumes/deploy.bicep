@@ -1,4 +1,4 @@
-@description('Required. The name of the capacity pool.')
+@description('Required. The name of the NetApp account.')
 param netAppAccountName string
 
 @description('Required. The name of the capacity pool.')
@@ -31,7 +31,7 @@ param protocolTypes array = []
 @description('Required. The Azure Resource URI for a delegated subnet. Must have the delegation Microsoft.NetApp/volumes.')
 param subnetId string
 
-@description('Required. The Azure Resource URI for a delegated subnet. Must have the delegation Microsoft.NetApp/volumes.')
+@description('Optional. The Azure Resource URI for a delegated subnet. Must have the delegation Microsoft.NetApp/volumes.')
 param exportPolicy object = {}
 
 @description('Optional. Array of role assignment objects that contain the \'roleDefinitionIdOrName\' and \'principalId\' to define RBAC role assignments on this resource. In the roleDefinitionIdOrName attribute, you can provide either the display name of the role definition, or it\'s fully qualified ID in the following format: \'/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11\'')
@@ -68,7 +68,9 @@ module volume_rbac '.bicep/nested_rbac.bicep' = [for (roleAssignment, index) in 
 
 @description('The name of the Volume.')
 output volumeName string = volume.name
+
 @description('The Resource Id of the Volume.')
 output volumeResourceId string = volume.id
+
 @description('The name of the Resource Group the Volume was created in.')
 output volumeResourceGroup string = resourceGroup().name

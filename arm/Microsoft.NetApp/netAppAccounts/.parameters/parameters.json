@@ -28,7 +28,6 @@
                     "size": 4398046511104,
                     "volumes": [
                         {
-                            // NFS3 VOL
                             "name": "vol01-nfsv3",
                             "creationToken": "vol01-nfsv3",
                             "usageThreshold": 107374182400,
@@ -46,8 +45,7 @@
                             ]
                         },
                         {
-                            // NFS41 VOL
-                            "poolVolumeName": "vol01-nfsv41",
+                            "name": "vol01-nfsv41",
                             "creationToken": "vol01-nfsv41",
                             "usageThreshold": 107374182400,
                             "protocolTypes": [

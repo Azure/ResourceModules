@@ -1,4 +1,4 @@
-@description('Required. The name of the capacity pool.')
+@description('Required. The name of the NetApp account.')
 param netAppAccountName string
 
 @description('Required. The name of the capacity pool.')
@@ -70,7 +70,7 @@ module capacityPool_volumes './volumes/deploy.bicep' = [for (volume, index) in v
     usageThreshold: volume.usageThreshold
     protocolTypes: contains(volume, 'protocolTypes') ? volume.protocolTypes : []
     subnetId: volume.subnetId
-    exportPolicy: volume.exportPolicy
+    exportPolicy: contains(volume, 'exportPolicy') ? volume.exportPolicy : {}
     roleAssignments: contains(volume, 'roleAssignments') ? volume.roleAssignments : []
   }
 }]
@@ -85,7 +85,9 @@ module capacityPool_rbac '.bicep/nested_rbac.bicep' = [for (roleAssignment, inde
 
 @description('The name of the Capacity Pool.')
 output capacityPoolName string = capacityPool.name
+
 @description('The Resource Id of the Capacity Pool.')
 output capacityPoolResourceId string = capacityPool.id
+
 @description('The name of the Resource Group the Capacity Pool was created in.')
 output capacityPoolResourceGroup string = resourceGroup().name
