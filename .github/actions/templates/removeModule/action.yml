@@ -43,8 +43,11 @@ runs:
 
         $functionInput = @{
             moduleName        = '${{ inputs.moduleName }}'
-            resourceGroupName = '${{ inputs.resourceGroupName }}'
             verbose           = $true
+        }
+
+        if(-not [String]::IsNullOrEmpty('${{ inputs.resourceGroupName }}')) {
+          $functionInput['resourceGroupName'] = '${{ inputs.resourceGroupName }}'
         }
 
         Write-Verbose 'Invoke task with' -Verbose
