@@ -46,8 +46,8 @@ resource securityAlertPolicy 'Microsoft.Sql/servers/securityAlertPolicies@2021-0
     emailAddresses: emailAddresses
     retentionDays: retentionDays
     state: state
-    storageAccountAccessKey: storageAccountAccessKey
-    storageEndpoint: storageEndpoint
+    storageAccountAccessKey: (empty(storageAccountAccessKey) ? null : storageAccountAccessKey)
+    storageEndpoint: (empty(storageEndpoint) ? null : storageEndpoint)
   }
 }
 
