@@ -142,7 +142,7 @@ jobs:
       ##  Deploy  ##
       # ---------- #
       - name: 'Deploy module with parameter file [${{ matrix.parameterFilePaths }}]'
-        id: 'deploy_${{ matrix.parameterFilePaths }}'
+        id: step_deploy
         uses: ./.github/actions/templates/deployModule
         with:
           moduleName: '${{ env.moduleName }}'
@@ -157,7 +157,7 @@ jobs:
       ##  REMOVE  ##
       # ---------- #
       - name: 'Remove module of parameter file [${{ matrix.parameterFilePaths }}]'
-        if: ${{ (contains(steps.'deploy_${{ matrix.parameterFilePaths }}'.result, 'success') || contains(steps.'deploy_${{ matrix.parameterFilePaths }}'.result, 'failure')) && !cancelled() && needs.job_set_workflow_param.outputs.removeDeployment == 'true' }}
+        if: ${{ (contains(steps.step_deploy.result, 'success') || contains(steps.step_deploy.result, 'failure')) && !cancelled() && needs.job_set_workflow_param.outputs.removeDeployment == 'true' }}
         uses: ./.github/actions/templates/removeModule
         with:
           moduleName: '${{ env.moduleName }}'
