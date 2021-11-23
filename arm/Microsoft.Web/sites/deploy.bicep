@@ -115,7 +115,7 @@ param appServiceEnvironmentId string = ''
 
 @description('Required. Type of site to deploy')
 @allowed([
-  'functionapp'
+  'functionApp'
   'app'
 ])
 param appType string
