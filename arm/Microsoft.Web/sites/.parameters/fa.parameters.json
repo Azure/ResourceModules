@@ -6,7 +6,7 @@
             "value": "sxx-az-fa-x-001"
         },
         "appType": {
-            "value": "functionApp"
+            "value": "functionapp"
         },
         "appServicePlanName": {
             "value": "sxx-az-fa-x-001-asp"
