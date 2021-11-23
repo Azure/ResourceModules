@@ -144,6 +144,7 @@ runs:
           if(-not [String]::IsNullOrEmpty('${{ steps.deploy_step.outputs.deploymentName }}')) {
             Write-Verbose "Triggering removal with deployment name"
             $functionInput['deploymentName'] = '${{ steps.deploy_step.outputs.deploymentName }}'
+            $functionInput['templateFilePath'] = '${{ inputs.templateFilePath }}'
           }
 
           Write-Verbose 'Invoke task with' -Verbose
