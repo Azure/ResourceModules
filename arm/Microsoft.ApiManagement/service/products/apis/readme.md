@@ -14,16 +14,16 @@ This module deploys API Management Service Product APIs.
 | :-- | :-- | :-- | :-- | :-- |
 | `apiManagementServiceName` | string |  |  | Required. The name of the of the API Management service. |
 | `cuaId` | string |  |  | Optional. Customer Usage Attribution ID (GUID). This GUID must be previously registered |
-| `name` | string |  |  | Required. Name of the product api. |
+| `name` | string |  |  | Required. Name of the product API. |
 | `productName` | string |  |  | Required. The name of the of the Product. |
 
 ## Outputs
 
 | Output Name | Type | Description |
 | :-- | :-- | :-- |
-| `apiName` | string | The name of the product api |
-| `apiResourceGroup` | string | The resource group the product api was deployed into |
-| `apiResourceId` | string | The resourceId of the product api |
+| `apiName` | string | The name of the product API |
+| `apiResourceGroup` | string | The resource group the product API was deployed into |
+| `apiResourceId` | string | The resourceId of the product API |
 
 ## Template references
 

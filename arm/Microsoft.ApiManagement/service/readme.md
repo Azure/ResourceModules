@@ -133,9 +133,9 @@ Tag names and tag values can be provided as needed. A tag can be left without a 
 
 | Output Name | Type | Description |
 | :-- | :-- | :-- |
-| `serviceName` | string | The name of the api management service |
-| `serviceResourceGroup` | string | The resource group the api management service was deployed into |
-| `serviceResourceId` | string | The resourceId of the api management service |
+| `serviceName` | string | The name of the API management service |
+| `serviceResourceGroup` | string | The resource group the API management service was deployed into |
+| `serviceResourceId` | string | The resourceId of the API management service |
 
 ## Considerations
 

@@ -7,7 +7,7 @@ param productName string
 @description('Optional. Customer Usage Attribution ID (GUID). This GUID must be previously registered')
 param cuaId string = ''
 
-@description('Required. Name of the product api.')
+@description('Required. Name of the product API.')
 param name string
 
 module pid_cuaId '.bicep/nested_cuaId.bicep' = if (!empty(cuaId)) {
@@ -19,11 +19,11 @@ resource api 'Microsoft.ApiManagement/service/products/apis@2020-06-01-preview' 
   name: '${apiManagementServiceName}/${productName}/${name}'
 }
 
-@description('The resource ID of the product api')
+@description('The resource ID of the product API')
 output apiResourceId string = api.id
 
-@description('The name of the product api')
+@description('The name of the product API')
 output apiName string = api.name
 
-@description('The resource group the product api was deployed into')
+@description('The resource group the product API was deployed into')
 output apiResourceGroup string = resourceGroup().name

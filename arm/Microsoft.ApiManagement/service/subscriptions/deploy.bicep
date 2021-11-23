@@ -13,7 +13,7 @@ param ownerId string = ''
 @description('Optional. Primary subscription key. If not specified during request key will be generated automatically.')
 param primaryKey string = ''
 
-@description('Optional. Scope type to choose between a product, allApis or a specific api. Scope like /products/{productId} or /apis or /apis/{apiId}.')
+@description('Optional. Scope type to choose between a product, allAPIs or a specific API. Scope like /products/{productId} or /apis or /apis/{apiId}.')
 param scope string = '/apis'
 
 @description('Optional. Secondary subscription key. If not specified during request key will be generated automatically.')
