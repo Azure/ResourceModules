@@ -81,7 +81,7 @@ Tag names and tag values can be provided as needed. A tag can be left without a 
 | :-- | :-- | :-- |
 | `serverName` | string | The name of the deployed SQL server |
 | `serverResourceGroup` | string | The resourceGroup of the deployed SQL server |
-| `serverResourceId` | string | The resourceId of the deployed SQL server |
+| `serverResourceId` | string | The resource ID of the deployed SQL server |
 
 ## Template references
 

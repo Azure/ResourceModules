@@ -122,7 +122,7 @@ module server_securityAlertPolicies 'securityAlertPolicies/deploy.bicep' = [for 
 @description('The name of the deployed SQL server')
 output serverName string = server.name
 
-@description('The resourceId of the deployed SQL server')
+@description('The resource ID of the deployed SQL server')
 output serverResourceId string = server.id
 
 @description('The resourceGroup of the deployed SQL server')

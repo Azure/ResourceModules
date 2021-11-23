@@ -22,7 +22,7 @@ This module deploys an SQL Server Firewall rule.
 
 | Output Name | Type | Description |
 | :-- | :-- | :-- |
-| `databaseId` | string | The resourceId of the deployed firewall rule |
+| `databaseId` | string | The resource ID of the deployed firewall rule |
 | `databaseName` | string | The name of the deployed firewall rule |
 | `databaseResourceGroup` | string | The resourceGroup of the deployed firewall rule |
 
