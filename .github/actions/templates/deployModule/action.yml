@@ -89,6 +89,7 @@ runs:
 
     - name: 'Deploy [${{ inputs.templateFilePath }}] with parameters [${{ inputs.parameterFilePath }}]'
       shell: pwsh
+      id: deploy_step
       run: |
         # Load used functions
         . (Join-Path $env:GITHUB_WORKSPACE 'utilities' 'pipelines' 'resourceDeployment' 'New-ModuleDeployment.ps1')
@@ -102,13 +103,29 @@ runs:
           subscriptionId     = '${{ inputs.subscriptionId }}'
           managementGroupId  = '${{ inputs.managementGroupId }}'
           removeDeployment   = [System.Convert]::ToBoolean('${{ inputs.removeDeployment }}')
+          doNotThrow         = $true
         }
 
         Write-Verbose "Invoke task with" -Verbose
         Write-Verbose ($functionInput | ConvertTo-Json | Out-String) -Verbose
 
         # Invoke deployment
-        New-ModuleDeployment @functionInput -Verbose
+        $res = New-ModuleDeployment @functionInput -Verbose
+
+        # Get deployment name
+        if($res -is [hashtable]) {
+          $deploymentName = $res['DeploymentName']
+        } elseif($res -is [string]) {
+          $deploymentName = $res
+        } else {
+          throw ("Output-Type of New-ModuleDeployment invocation has invalid type [{0}]" -f $res.GetType())
+        }
+        Write-Output ('::set-output name=deploymentName::{0}' -f $deploymentName)
+
+        if($res -is [hashtable]) {
+          # Happens only if there is an exception
+          throw $res['Exception']
+        }
 
     - name: 'Remove [${{ inputs.templateFilePath }}] from parameters [${{ inputs.parameterFilePath }}]'
       shell: pwsh
@@ -123,6 +140,10 @@ runs:
               moduleName        = '${{ inputs.moduleName }}'
               resourceGroupName = '${{ inputs.resourceGroupName }}'
               verbose           = $true
+          }
+          if(-not [String]::IsNullOrEmpty(steps.deploy_step.outputs.deploymentName)) {
+            Write-Verbose "Triggering removal with deployment name"
+            $functionInput['deploymentName'] = steps.deploy_step.outputs.deploymentName
           }
 
           Write-Verbose 'Invoke task with' -Verbose

@@ -18,6 +18,9 @@ Optional. The maximum times to retry the search for resources via their removal 
 .PARAMETER tagSearchRetryInterval
 Optional. The time to wait in between the search for resources via their remove tags
 
+.PARAMETER deploymentName
+Optional. The deployment name to use for the removal
+
 .EXAMPLE
 Remove-DeployedModule -moduleName 'KeyVault' -resourceGroupName 'validation-rg'
 
@@ -34,6 +37,9 @@ function Remove-DeployedModule {
         [string] $resourceGroupName,
 
         [Parameter(Mandatory = $false)]
+        [string] $deploymentName,
+
+        [Parameter(Mandatory = $false)]
         [int] $tagSearchRetryLimit = 40,
 
         [Parameter(Mandatory = $false)]
@@ -48,6 +54,11 @@ function Remove-DeployedModule {
     }
 
     process {
+
+        if (-not [String]::IsNullOrEmpty($deploymentName)) {
+            Write-Verbose ('Handling resource removal with deployment name [{0}]' -f $deploymentName) -Verbose
+            return
+        }
 
         #####################
         ## Process Removal ##

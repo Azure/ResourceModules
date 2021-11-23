@@ -22,7 +22,7 @@ Mandatory. Location to test in. E.g. WestEurope
 Optional. Name of the resource group to deploy into. Mandatory if deploying into a resource group (resource group level)
 
 .PARAMETER subscriptionId
-Optional. Id of the subscription to deploy into. Mandatory if deploying into a subscription (subscription level) using a Management groups service connection
+Optional. ID of the subscription to deploy into. Mandatory if deploying into a subscription (subscription level) using a Management groups service connection
 
 .PARAMETER managementGroupId
 Optional. Name of the management group to deploy into. Mandatory if deploying into a management group (management group level)
@@ -35,6 +35,9 @@ Optional. Provde a Key Value Pair (Object) that will be appended to the Paramete
 
 .PARAMETER retryLimit
 Optional. Maximum retry limit if the deployment fails. Default is 3.
+
+.PARAMETER doNotThrow
+Optional. Do not throw an exception if it failed. Still returns the error message though
 
 .EXAMPLE
 New-ModuleDeployment -ModuleName 'KeyVault' -templateFilePath 'C:/KeyVault/deploy.json' -parameterFilePath 'C:/KeyVault/.parameters/parameters.json' -location 'WestEurope' -resourceGroupName 'aLegendaryRg'
@@ -76,6 +79,9 @@ function New-ModuleDeployment {
 
         [Parameter(Mandatory = $false)]
         [PSCustomObject]$additionalTags,
+
+        [Parameter(Mandatory = $false)]
+        [switch] $doNotThrow,
 
         [Parameter(Mandatory = $false)]
         [int]$retryLimit = 3
@@ -157,7 +163,7 @@ function New-ModuleDeployment {
                             if ($subscriptionId) {
                                 $Context = Get-AzContext -ListAvailable | Where-Object Subscription -Match $subscriptionId
                                 if ($Context) {
-                                    $Context | Set-AzContext
+                                    $null = $Context | Set-AzContext
                                 }
                             }
                             if (-not (Get-AzResourceGroup -Name $resourceGroupName -ErrorAction 'SilentlyContinue')) {
@@ -202,7 +208,14 @@ function New-ModuleDeployment {
                     $Stoploop = $true
                 } catch {
                     if ($retryCount -ge $retryLimit) {
-                        throw $PSitem.Exception.Message
+                        if ($doNotThrow) {
+                            return @{
+                                DeploymentName = $DeploymentInputs.DeploymentName
+                                Exception      = $PSitem.Exception.Message
+                            }
+                        } else {
+                            throw $PSitem.Exception.Message
+                        }
                         $Stoploop = $true
                     } else {
                         Write-Verbose "Resource deployment Failed.. ($retryCount/$retryLimit) Retrying in 5 Seconds.. `n"
@@ -217,6 +230,7 @@ function New-ModuleDeployment {
             Write-Verbose 'Result' -Verbose
             Write-Verbose '------' -Verbose
             Write-Verbose ($res | Out-String) -Verbose
+            return $DeploymentInputs.DeploymentName
         }
     }
 
