@@ -114,8 +114,6 @@ runs:
       shell: pwsh
       if: always()
       run: |
-        Write-Verbose (Get-Childitem env:* | Out-String) -Verbose
-
         if('${{ inputs.removeDeployment }}' -eq 'true') {
           # Load used functions
           $functionPath = Join-Path $env:GITHUB_WORKSPACE '${{ inputs.relativePathOfRemovalScript }}'
