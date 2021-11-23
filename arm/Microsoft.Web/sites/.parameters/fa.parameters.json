@@ -37,9 +37,6 @@
         "functionsWorkerRuntime": {
             "value": "powershell"
         },
-        "functionsExtensionVersion": {
-            "value": "~3"
-        },
         "enableMonitoring": {
             "value": false
         },

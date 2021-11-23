@@ -115,7 +115,7 @@ param appServiceEnvironmentId string = ''
 
 @description('Required. Type of site to deploy')
 @allowed([
-  'functionApp'
+  'functionapp'
   'app'
 ])
 param appType string
@@ -243,8 +243,8 @@ resource app 'Microsoft.Web/sites@2020-12-01' = {
     properties: {
       AzureWebJobsStorage: !empty(storageAccountName) ? 'DefaultEndpointsProtocol=https;AccountName=${storageAccountName};AccountKey=${listkeys(resourceId(subscription().subscriptionId, storageAccountResourceGroupName, 'Microsoft.Storage/storageAccounts', storageAccountName), '2019-06-01').keys[0].value};' : any(null)
       AzureWebJobsDashboard: !empty(storageAccountName) ? 'DefaultEndpointsProtocol=https;AccountName=${storageAccountName};AccountKey=${listkeys(resourceId(subscription().subscriptionId, storageAccountResourceGroupName, 'Microsoft.Storage/storageAccounts', storageAccountName), '2019-06-01').keys[0].value};' : any(null)
-      FUNCTIONS_EXTENSION_VERSION: appType == 'functionApp' && !empty(functionsExtensionVersion) ? functionsExtensionVersion : any(null)
-      FUNCTIONS_WORKER_RUNTIME: appType == 'functionApp' && !empty(functionsWorkerRuntime) ? functionsWorkerRuntime : any(null)
+      FUNCTIONS_EXTENSION_VERSION: appType == 'functionapp' && !empty(functionsExtensionVersion) ? functionsExtensionVersion : any(null)
+      FUNCTIONS_WORKER_RUNTIME: appType == 'functionapp' && !empty(functionsWorkerRuntime) ? functionsWorkerRuntime : any(null)
       APPINSIGHTS_INSTRUMENTATIONKEY: enableMonitoring ? reference('microsoft.insights/components/${appName}', '2015-05-01').InstrumentationKey : null
       APPLICATIONINSIGHTS_CONNECTION_STRING: enableMonitoring ? reference('microsoft.insights/components/${appName}', '2015-05-01').ConnectionString : null
     }
