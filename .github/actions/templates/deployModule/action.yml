@@ -116,8 +116,7 @@ runs:
           $deploymentSuccessful = $false
         }
 
-        Write-Output "::set-output name=deploymentAttempted::$true"
-        $env:deploymentAttempted = $true
+        Write-Output "::set-env name=deploymentAttempted::$true"
 
         if(-not $deploymentSuccessful) {
           throw $res
@@ -128,7 +127,7 @@ runs:
       run: |
         Write-Verbose (Get-Childitem env:* | Out-String) -Verbose
 
-        if('${{ inputs.removeDeployment }}' -eq 'true' -and $env:deploymentAttempted -eq $true) {
+        if('${{ inputs.removeDeployment }}' -eq 'true' -and $deploymentAttempted -eq $true) {
           # Load used functions
           $functionPath = Join-Path $env:GITHUB_WORKSPACE '${{ inputs.relativePathOfRemovalScript }}'
           . $functionPath
