@@ -7,7 +7,7 @@ on:
         type: boolean
         description: 'Remove deployed module'
         required: false
-        default: 'false' # app service plan dependency gets deleted together with the removal of these resources
+        default: 'true'
       versioningOption:
         type: choice
         description: 'The mode to handle the version increments [major|minor|patch]'
