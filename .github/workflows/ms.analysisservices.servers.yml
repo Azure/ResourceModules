@@ -117,7 +117,7 @@ jobs:
       - name: 'Get Output'
         shell: pwsh
         run: |
-          Write-Verbose ("ID: [{0}]" -f $STEP_ID) -Verbose
+          Write-Verbose ("ID: [{0}]" -f $env:STEP_ID) -Verbose
 
           Write-Verbose (Get-Childitem env:* | Out-String) -Verbose
       # - name: Set environment variables
