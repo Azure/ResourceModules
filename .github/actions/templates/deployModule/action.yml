@@ -141,9 +141,9 @@ runs:
               resourceGroupName = '${{ inputs.resourceGroupName }}'
               verbose           = $true
           }
-          if(-not [String]::IsNullOrEmpty(steps.deploy_step.outputs.deploymentName)) {
+          if(-not [String]::IsNullOrEmpty('${{ steps.deploy_step.outputs.deploymentName }}')) {
             Write-Verbose "Triggering removal with deployment name"
-            $functionInput['deploymentName'] = steps.deploy_step.outputs.deploymentName
+            $functionInput['deploymentName'] = '${{ steps.deploy_step.outputs.deploymentName }}'
           }
 
           Write-Verbose 'Invoke task with' -Verbose
