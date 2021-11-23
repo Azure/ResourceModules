@@ -117,6 +117,7 @@ runs:
         }
 
         Write-Output "::set-output name=deploymentAttempted::$true"
+        $env:deploymentAttempted = $true
 
         if(-not $deploymentSuccessful) {
           throw $res
