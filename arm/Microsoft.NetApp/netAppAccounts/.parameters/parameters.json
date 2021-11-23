@@ -3,7 +3,7 @@
     "contentVersion": "1.0.0.0",
     "parameters": {
         "name": {
-            "value": "sxx-az-anf-x-001"
+            "value": "sxx-az-anf-x-003"
         },
         "domainName": {
             "value": ""
@@ -23,7 +23,7 @@
         "capacityPools": {
             "value": [
                 {
-                    "name": "sxx-az-anfcp-x-003",
+                    "name": "sxx-az-anfcp-x-000",
                     "serviceLevel": "Premium",
                     "size": 4398046511104,
                     "volumes": [
@@ -84,7 +84,7 @@
                     ]
                 },
                 {
-                    "name": "sxx-az-anfcp-x-004",
+                    "name": "sxx-az-anfcp-x-001",
                     "serviceLevel": "Premium",
                     "size": 4398046511104,
                     "volumes": [],
