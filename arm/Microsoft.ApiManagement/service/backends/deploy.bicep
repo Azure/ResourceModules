@@ -19,7 +19,7 @@ param protocol string = 'http'
 @description('Optional. Backend Proxy Contract Properties')
 param proxy object = {}
 
-@description('Optional. Management Uri of the Resource in External System. This url can be the Arm Resource ID of Logic Apps, Function Apps or API Apps.')
+@description('Optional. Management Uri of the Resource in External System. This URL can be the Arm Resource ID of Logic Apps, Function Apps or API Apps.')
 param resourceId string = ''
 
 @description('Optional. Backend Service Fabric Cluster Properties.')

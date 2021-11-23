@@ -29,8 +29,6 @@ The following resources are required to be able to deploy this resource.
 
 ### Parameter Usage: `keyVault`
 
-Product API's name list.
-
 ```json
 "keyVault": {
     "value":{

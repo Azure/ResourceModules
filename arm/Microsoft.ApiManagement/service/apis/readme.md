@@ -31,11 +31,11 @@ The following resources are required to be able to deploy this resource.
 | `cuaId` | string |  |  | Optional. Customer Usage Attribution ID (GUID). This GUID must be previously registered |
 | `displayName` | string |  |  | Required. API name. Must be 1 to 300 characters long. |
 | `format` | string | `openapi` | `[wadl-xml, wadl-link-json, swagger-json, swagger-link-json, wsdl, wsdl-link, openapi, openapi+json, openapi-link, openapi+json-link]` | Optional. Format of the Content in which the API is getting imported. |
-| `isCurrent` | bool | `True` |  | Optional. Indicates if API revision is current api revision. |
+| `isCurrent` | bool | `True` |  | Optional. Indicates if API revision is current API revision. |
 | `name` | string |  |  | Required. API revision identifier. Must be unique in the current API Management service instance. Non-current revision has ;rev=n as a suffix where n is the revision number. |
 | `path` | string |  |  | Required. Relative URL uniquely identifying this API and all of its resource paths within the API Management service instance. It is appended to the API endpoint base URL specified during the service instance creation to form a public URL for this API. |
 | `policies` | _[policies](policies/readme.md)_ array | `[]` |  | Optional. Array of Policies to apply to the Service API. |
-| `protocols` | array | `[https]` |  | Optional. Describes on which protocols the operations in this API can be invoked. - http or https |
+| `protocols` | array | `[https]` |  | Optional. Describes on which protocols the operations in this API can be invoked. - HTTP or HTTPS |
 | `serviceUrl` | string |  |  | Optional. Absolute URL of the backend service implementing this API. Cannot be more than 2000 characters long. |
 | `sourceApiId` | string |  |  | Optional. API identifier of the source API. |
 | `subscriptionKeyParameterNames` | object | `{object}` |  | Optional. Protocols over which API is made available. |
