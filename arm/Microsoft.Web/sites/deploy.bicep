@@ -4,25 +4,105 @@ param name string
 @description('Optional. Location for all Resources.')
 param location string = resourceGroup().location
 
-@description('Optional. Specifies the number of days that logs will be kept for; a value of 0 will retain data indefinitely.')
-@minValue(0)
-@maxValue(365)
-param diagnosticLogsRetentionInDays int = 365
+@description('Required. Type of site to deploy')
+@allowed([
+  'functionapp'
+  'app'
+])
+param kind string
 
-@description('Optional. Resource identifier of the Diagnostic Storage Account.')
-param diagnosticStorageAccountId string = ''
+@description('Optional. Configures a web site to accept only https requests. Issues redirect for http requests.')
+param httpsOnly bool = true
 
-@description('Optional. Resource identifier of Log Analytics.')
-param workspaceId string = ''
+@description('Optional. If Client Affinity is enabled.')
+param clientAffinityEnabled bool = true
 
-@description('Optional. Resource ID of the event hub authorization rule for the Event Hubs namespace in which the event hub should be created or streamed to.')
-param eventHubAuthorizationRuleId string = ''
+@description('Required. Configuration of the app.')
+param siteConfig object = {}
 
-@description('Optional. Name of the event hub within the namespace to which logs are streamed. Without this, an event hub is created for each log category.')
-param eventHubName string = ''
 
 @description('Optional. If true, ApplicationInsights will be configured for the Function App.')
 param enableMonitoring bool = true
+
+@description('Optional. The name of the storage account to managing triggers and logging function executions.')
+param storageAccountName string = ''
+
+@description('Optional. Resource group of the storage account to use. Required if the storage account is in a different resource group than the function app itself.')
+param storageAccountResourceGroupName string = resourceGroup().name
+
+@description('Optional. Runtime of the function worker.')
+@allowed([
+  'dotnet'
+  'node'
+  'python'
+  'java'
+  'powershell'
+  ''
+])
+param functionsWorkerRuntime string = ''
+
+@description('Optional. Version if the function extension.')
+param functionsExtensionVersion string = '~3'
+
+@description('Optional. The Resource Id of the App Service Plan to use for the App. If not provided, the hosting plan name is used to create a new plan.')
+param appServicePlanId string = ''
+
+@description('Optional. Required if no appServicePlanId is provided to deploy a new app service plan.')
+param appServicePlanObject object = {}
+
+// @description('Optional. Required if no appServicePlanId is provided to deploy a new app service plan.')
+// param appServicePlanName string = ''
+
+// @description('Optional. The pricing tier for the hosting plan.')
+// @allowed([
+//   'F1'
+//   'D1'
+//   'B1'
+//   'B2'
+//   'B3'
+//   'S1'
+//   'S2'
+//   'S3'
+//   'P1'
+//   'P1v2'
+//   'P2'
+//   'P3'
+//   'P4'
+// ])
+// param appServicePlanSkuName string = 'F1'
+
+// @description('Optional. Defines the number of workers from the worker pool that will be used by the app service plan')
+// param appServicePlanWorkerSize int = 2
+
+// @description('Optional. SkuTier of app service plan deployed if no appServicePlanId was provided.')
+// param appServicePlanTier string = ''
+
+// @description('Optional. SkuSize of app service plan deployed if no appServicePlanId was provided.')
+// param appServicePlanSize string = ''
+
+// @description('Optional. SkuFamily of app service plan deployed if no appServicePlanId was provided.')
+// param appServicePlanFamily string = ''
+
+// @description('Optional. SkuType of app service plan deployed if no appServicePlanId was provided.')
+// @allowed([
+//   'linux'
+//   'windows'
+// ])
+// param appServicePlanType string = 'linux'
+
+@description('Optional. The Resource Id of the App Service Environment to use for the Function App.')
+param appServiceEnvironmentId string = ''
+
+
+
+@description('Optional. Type of managed service identity.')
+@allowed([
+  'None'
+  'SystemAssigned'
+  'SystemAssigned, UserAssigned'
+  'UserAssigned'
+])
+param managedServiceIdentity string = 'None'
 
 @description('Optional. Mandatory \'managedServiceIdentity\' contains UserAssigned. The identy to assign to the resource.')
 param userAssignedIdentities object = {}
@@ -47,96 +127,22 @@ param cuaId string = ''
 @description('Optional. Array of role assignment objects that contain the \'roleDefinitionIdOrName\' and \'principalId\' to define RBAC role assignments on this resource. In the roleDefinitionIdOrName attribute, you can provide either the display name of the role definition, or its fully qualified ID in the following format: \'/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11\'')
 param roleAssignments array = []
 
-@description('Optional. The name of the storage account to managing triggers and logging function executions.')
-param storageAccountName string = ''
+@description('Optional. Specifies the number of days that logs will be kept for; a value of 0 will retain data indefinitely.')
+@minValue(0)
+@maxValue(365)
+param diagnosticLogsRetentionInDays int = 365
 
-@description('Optional. Resource group of the storage account to use. Required if the storage account is in a different resource group than the function app itself.')
-param storageAccountResourceGroupName string = resourceGroup().name
+@description('Optional. Resource identifier of the Diagnostic Storage Account.')
+param diagnosticStorageAccountId string = ''
 
-@description('Optional. Runtime of the function worker.')
-@allowed([
-  'dotnet'
-  'node'
-  'python'
-  'java'
-  'powershell'
-  ''
-])
-param functionsWorkerRuntime string = ''
+@description('Optional. Resource identifier of Log Analytics.')
+param workspaceId string = ''
 
-@description('Optional. Version if the function extension.')
-param functionsExtensionVersion string = '~3'
+@description('Optional. Resource ID of the event hub authorization rule for the Event Hubs namespace in which the event hub should be created or streamed to.')
+param eventHubAuthorizationRuleId string = ''
 
-@description('Optional. Required if no appServicePlanId is provided to deploy a new app service plan.')
-param appServicePlanName string = ''
-
-@description('Optional. The pricing tier for the hosting plan.')
-@allowed([
-  'F1'
-  'D1'
-  'B1'
-  'B2'
-  'B3'
-  'S1'
-  'S2'
-  'S3'
-  'P1'
-  'P1v2'
-  'P2'
-  'P3'
-  'P4'
-])
-param appServicePlanSkuName string = 'F1'
-
-@description('Optional. Defines the number of workers from the worker pool that will be used by the app service plan')
-param appServicePlanWorkerSize int = 2
-
-@description('Optional. SkuTier of app service plan deployed if no appServicePlanId was provided.')
-param appServicePlanTier string = ''
-
-@description('Optional. SkuSize of app service plan deployed if no appServicePlanId was provided.')
-param appServicePlanSize string = ''
-
-@description('Optional. SkuFamily of app service plan deployed if no appServicePlanId was provided.')
-param appServicePlanFamily string = ''
-
-@description('Optional. SkuType of app service plan deployed if no appServicePlanId was provided.')
-@allowed([
-  'linux'
-  'windows'
-])
-param appServicePlanType string = 'linux'
-
-@description('Optional. The Resource Id of the App Service Plan to use for the App. If not provided, the hosting plan name is used to create a new plan.')
-param appServicePlanId string = ''
-
-@description('Optional. The Resource Id of the App Service Environment to use for the Function App.')
-param appServiceEnvironmentId string = ''
-
-@description('Required. Type of site to deploy')
-@allowed([
-  'functionapp'
-  'app'
-])
-param kind string
-
-@description('Optional. Type of managed service identity.')
-@allowed([
-  'None'
-  'SystemAssigned'
-  'SystemAssigned, UserAssigned'
-  'UserAssigned'
-])
-param managedServiceIdentity string = 'None'
-
-@description('Optional. Configures a web site to accept only https requests. Issues redirect for http requests.')
-param httpsOnly bool = true
-
-@description('Optional. If Client Affinity is enabled.')
-param clientAffinityEnabled bool = true
-
-@description('Required. Configuration of the app.')
-param siteConfig object = {}
+@description('Optional. Name of the event hub within the namespace to which logs are streamed. Without this, an event hub is created for each log category.')
+param eventHubName string = ''
 
 @description('Optional. The name of logs that will be streamed.')
 @allowed([
@@ -196,16 +202,16 @@ resource appServicePlanExisting 'Microsoft.Web/serverfarms@2021-02-01' existing 
 }
 
 resource appServicePlan 'Microsoft.Web/serverfarms@2021-02-01' = if (empty(appServicePlanId)) {
-  name: !empty(appServicePlanName) ? appServicePlanName : '${name}-asp'
-  kind: appServicePlanType
+  name: contains(appServicePlanObject, 'appServicePlanName') ? !empty(appServicePlanObject.appServicePlanName) ? appServicePlanObject.appServicePlanName : '${name}-asp' : '${name}-asp'
+  kind: appServicePlanObject.appServicePlanType
   location: location
   tags: tags
   sku: {
-    name: appServicePlanSkuName
-    capacity: appServicePlanWorkerSize
-    tier: appServicePlanTier
-    size: appServicePlanSize
-    family: appServicePlanFamily
+    name: appServicePlanObject.appServicePlanSkuName
+    capacity: appServicePlanObject.appServicePlanWorkerSize
+    tier: appServicePlanObject.appServicePlanTier
+    size: appServicePlanObject.appServicePlanSize
+    family: appServicePlanObject.appServicePlanFamily
   }
   properties: {
     hostingEnvironmentProfile: !empty(appServiceEnvironmentId) ? json('{ id: ${hostingEnvironment} }') : null

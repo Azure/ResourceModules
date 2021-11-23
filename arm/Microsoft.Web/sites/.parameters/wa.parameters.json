@@ -8,20 +8,15 @@
         "kind": {
             "value": "app"
         },
-        "appServicePlanName": {
-            "value": "sxx-az-wa-x-001-asp"
-        },
-        "appServicePlanSkuName": {
-            "value": "P1v2"
-        },
-        "appServicePlanTier": {
-            "value": "PremiumV2"
-        },
-        "appServicePlanSize": {
-            "value": "P1v2"
-        },
-        "appServicePlanFamily": {
-            "value": "Pv2"
+        "appServicePlanObject": {
+            "value": {
+                "appServicePlanName": "sxx-az-wa-x-001-asp",
+                "appServicePlanSkuName": "P1v2",
+                "appServicePlanWorkerSize": 2,
+                "appServicePlanTier": "PremiumV2",
+                "appServicePlanSize": "P1v2",
+                "appServicePlanFamily": "Pv2"
+            }
         },
         "workspaceId": {
             "value": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.OperationalInsights/workspaces/adp-sxx-az-la-x-001"
