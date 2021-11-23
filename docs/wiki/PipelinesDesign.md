@@ -220,9 +220,7 @@ We use several composite actions to perform various tasks shared by our module w
 - **validateModuleDeploy:** <p>
   This action performs the [simulated deployment](#simulated-deployment-validation) using a provided parameter file.
 - **deployModule:** <p>
-  This action performs an [actual deployment](#test-deploy) to Azure using a provided parameter file.
-- **removeModule:** <p>
-  This actual is responsible to [remove](#removal) a resource following it's [test deployment](#test-deploy)
+  This action performs an [actual deployment](#test-deploy) to Azure using a provided parameter file. Once a deployment ran it [removes](#removal) the resource
 - **publishModule:** <p>
   This action is capable of [publishing](#publish) the given template to a location specified in the pipeline [variable file](#component-variable-files).
 - **getWorkflowInput:** <p>

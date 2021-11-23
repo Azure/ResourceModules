@@ -60,40 +60,40 @@ jobs:
       versioningOption: ${{ steps.get-workflow-param.outputs.versioningOption }}
       customVersion: ${{ steps.get-workflow-param.outputs.customVersion }}
 
-  # ##################
-  # #   UNIT TESTS   #
-  # ##################
-  # # Global tests
-  # # ------------
-  # job_tests_module_global:
-  #   runs-on: ubuntu-20.04
-  #   name: 'Run global module tests'
-  #   steps:
-  #     - name: 'Checkout'
-  #       uses: actions/checkout@v2
-  #       with:
-  #         fetch-depth: 0
-  #     - name: 'Test module'
-  #       uses: ./.github/actions/templates/validateModuleGeneral
-  #       with:
-  #         modulePath: '${{ env.modulePath }}'
-  #         moduleName: '${{ env.moduleName}}'
+  ##################
+  #   UNIT TESTS   #
+  ##################
+  # Global tests
+  # ------------
+  job_tests_module_global:
+    runs-on: ubuntu-20.04
+    name: 'Run global module tests'
+    steps:
+      - name: 'Checkout'
+        uses: actions/checkout@v2
+        with:
+          fetch-depth: 0
+      - name: 'Test module'
+        uses: ./.github/actions/templates/validateModuleGeneral
+        with:
+          modulePath: '${{ env.modulePath }}'
+          moduleName: '${{ env.moduleName}}'
 
-  # # Global API tests
-  # # ----------------
-  # job_tests_module_global_api:
-  #   runs-on: ubuntu-20.04
-  #   name: 'Run global API module tests'
-  #   steps:
-  #     - name: 'Checkout'
-  #       uses: actions/checkout@v2
-  #       with:
-  #         fetch-depth: 0
-  #     - name: 'Test module'
-  #       uses: ./.github/actions/templates/validateModuleApis
-  #       with:
-  #         modulePath: '${{ env.modulePath }}'
-  #         moduleName: '${{ env.moduleName}}'
+  # Global API tests
+  # ----------------
+  job_tests_module_global_api:
+    runs-on: ubuntu-20.04
+    name: 'Run global API module tests'
+    steps:
+      - name: 'Checkout'
+        uses: actions/checkout@v2
+        with:
+          fetch-depth: 0
+      - name: 'Test module'
+        uses: ./.github/actions/templates/validateModuleApis
+        with:
+          modulePath: '${{ env.modulePath }}'
+          moduleName: '${{ env.moduleName}}'
 
   ###########################
   # Deployment module tests #
@@ -103,8 +103,8 @@ jobs:
     name: 'Run deployment validation module tests'
     needs:
       - job_set_workflow_param
-      #- job_tests_module_global
-      #- job_tests_module_global_api
+      - job_tests_module_global
+      - job_tests_module_global_api
     strategy:
       fail-fast: false
       matrix:
