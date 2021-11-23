@@ -10,7 +10,7 @@ This template deploys User Defined Route Tables.
 | `Microsoft.Authorization/roleAssignments` | 2020-04-01-preview |
 | `Microsoft.Network/routeTables` | 2021-02-01 |
 
-## Parameters1
+## Parameters
 
 | Parameter Name | Type | Default Value | Possible Values | Description |
 | :-- | :-- | :-- | :-- | :-- |

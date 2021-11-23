@@ -5,7 +5,7 @@ on:
     inputs:
       removeDeployment:
         type: boolean
-        description: 'Remove deployed module'
+        description: 'Remove deployed module1'
         required: false
         default: 'true'
       versioningOption:
