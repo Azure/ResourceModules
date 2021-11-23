@@ -49,45 +49,45 @@ param functionsWorkerRuntime string = ''
 param functionsExtensionVersion string = '~3'
 
 
-// @description('Optional. Required if no appServicePlanId is provided to deploy a new app service plan.')
-// param appServicePlanName string = ''
+@description('Optional. Required if no appServicePlanId is provided to deploy a new app service plan.')
+param appServicePlanName string = ''
 
-// @description('Optional. The pricing tier for the hosting plan.')
-// @allowed([
-//   'F1'
-//   'D1'
-//   'B1'
-//   'B2'
-//   'B3'
-//   'S1'
-//   'S2'
-//   'S3'
-//   'P1'
-//   'P1v2'
-//   'P2'
-//   'P3'
-//   'P4'
-// ])
-// param appServicePlanSkuName string = 'F1'
+@description('Optional. The pricing tier for the hosting plan.')
+@allowed([
+  'F1'
+  'D1'
+  'B1'
+  'B2'
+  'B3'
+  'S1'
+  'S2'
+  'S3'
+  'P1'
+  'P1v2'
+  'P2'
+  'P3'
+  'P4'
+])
+param appServicePlanSkuName string = 'F1'
 
-// @description('Optional. Defines the number of workers from the worker pool that will be used by the app service plan')
-// param appServicePlanWorkerSize int = 2
+@description('Optional. Defines the number of workers from the worker pool that will be used by the app service plan')
+param appServicePlanWorkerSize int = 2
 
-// @description('Optional. SkuTier of app service plan deployed if no appServicePlanId was provided.')
-// param appServicePlanTier string = ''
+@description('Optional. SkuTier of app service plan deployed if no appServicePlanId was provided.')
+param appServicePlanTier string = ''
 
-// @description('Optional. SkuSize of app service plan deployed if no appServicePlanId was provided.')
-// param appServicePlanSize string = ''
+@description('Optional. SkuSize of app service plan deployed if no appServicePlanId was provided.')
+param appServicePlanSize string = ''
 
-// @description('Optional. SkuFamily of app service plan deployed if no appServicePlanId was provided.')
-// param appServicePlanFamily string = ''
+@description('Optional. SkuFamily of app service plan deployed if no appServicePlanId was provided.')
+param appServicePlanFamily string = ''
 
-// @description('Optional. SkuType of app service plan deployed if no appServicePlanId was provided.')
-// @allowed([
-//   'linux'
-//   'windows'
-// ])
-// param appServicePlanType string = 'linux'
+@description('Optional. SkuType of app service plan deployed if no appServicePlanId was provided.')
+@allowed([
+  'linux'
+  'windows'
+])
+param appServicePlanType string = 'linux'
 
 
 
@@ -208,35 +208,26 @@ module pid_cuaId '.bicep/nested_cuaId.bicep' = if (!empty(cuaId)) {
   params: {}
 }
 
-// resource appServicePlan 'Microsoft.Web/serverfarms@2021-02-01' = if (empty(appServicePlanId)) {
-//   name: !empty(appServicePlanName) ? appServicePlanName : 'dummyAppServicePlanName'
-//   kind: appServicePlanType
-//   location: location
-//   tags: tags
-//   sku: {
-//     name: appServicePlanSkuName
-//     capacity: appServicePlanWorkerSize
-//     tier: appServicePlanTier
-//     size: appServicePlanSize
-//     family: appServicePlanFamily
-//   }
-//   properties: {
-//     hostingEnvironmentProfile: !empty(appServiceEnvironmentId) ? json('{ id: ${hostingEnvironment} }') : null
-//   }
-// }
-
-// resource appServicePlan_lock 'Microsoft.Authorization/locks@2016-09-01' = if (lock != 'NotSpecified' && empty(appServicePlanId)) {
-//   name: '${appServicePlan.name}-${lock}-lock'
-//   properties: {
-//     level: lock
-//     notes: lock == 'CanNotDelete' ? 'Cannot delete resource or child resources.' : 'Cannot modify the resource or child resources.'
-//   }
-//   scope: appServicePlan
-// }
-
-resource appServicePlan 'Microsoft.Web/serverfarms@2021-02-01' existing = if (!empty(appServicePlanId)) {
+resource appServicePlanExisting 'Microsoft.Web/serverfarms@2021-02-01' existing = if (!empty(appServicePlanId)) {
   name: last(split(appServicePlanId, '/'))
   scope: resourceGroup(split(appServicePlanId, '/')[2], split(appServicePlanId, '/')[4])
+}
+
+resource appServicePlan 'Microsoft.Web/serverfarms@2021-02-01' = if (empty(appServicePlanId)) {
+  name: !empty(appServicePlanName) ? appServicePlanName : '${name}-asp'
+  kind: appServicePlanType
+  location: location
+  tags: tags
+  sku: {
+    name: appServicePlanSkuName
+    capacity: appServicePlanWorkerSize
+    tier: appServicePlanTier
+    size: appServicePlanSize
+    family: appServicePlanFamily
+  }
+  properties: {
+    hostingEnvironmentProfile: !empty(appServiceEnvironmentId) ? json('{ id: ${hostingEnvironment} }') : null
+  }
 }
 
 resource appInsights 'Microsoft.Insights/components@2020-02-02' existing = if (!empty(appInsightsId)) {
@@ -259,8 +250,7 @@ resource app 'Microsoft.Web/sites@2020-12-01' = {
     userAssignedIdentities: !empty(userAssignedIdentities) ? userAssignedIdentities : null
   }
   properties: {
-    // serverFarmId: !empty(appServicePlanId) ? appServicePlanId : appServicePlan.id
-    serverFarmId: appServicePlan.id
+    serverFarmId: !empty(appServicePlanId) ? appServicePlanExisting.id : appServicePlan.id
     httpsOnly: httpsOnly
     hostingEnvironmentProfile: !empty(appServiceEnvironmentId) ? json('{ id: ${hostingEnvironment} }') : null
     clientAffinityEnabled: clientAffinityEnabled
@@ -281,18 +271,30 @@ resource app 'Microsoft.Web/sites@2020-12-01' = {
 //   }
 // }
 
-module app_insights '.bicep/nested_components.bicep' = if (enableMonitoring) {
-  name: '${uniqueString(deployment().name, location)}-AppService-InsightsComponent'
-  params: {
-    name: app.name
-    location: location
-    kind: 'web'
-    tags: tags
-    appInsightsWorkspaceResourceId: workspaceId
-    appInsightsType: 'web'
-    appInsightsRequestSource: 'rest'
-  }
-}
+// module app_insights '.bicep/nested_components.bicep' = if (enableMonitoring) {
+//   name: '${uniqueString(deployment().name, location)}-AppService-InsightsComponent'
+//   params: {
+//     name: app.name
+//     location: location
+//     kind: 'web'
+//     tags: tags
+//     appInsightsWorkspaceResourceId: workspaceId
+//     appInsightsType: 'web'
+//     appInsightsRequestSource: 'rest'
+//   }
+
+  // resource app_appsettings 'config@2019-08-01' = {
+  //   name: 'appsettings'
+  //   properties: {
+  //     AzureWebJobsStorage: !empty(storageAccountName) ? 'DefaultEndpointsProtocol=https;AccountName=${storageAccountName};AccountKey=${listkeys(resourceId(subscription().subscriptionId, storageAccountResourceGroupName, 'Microsoft.Storage/storageAccounts', storageAccountName), '2019-06-01').keys[0].value};' : any(null)
+  //     AzureWebJobsDashboard: !empty(storageAccountName) ? 'DefaultEndpointsProtocol=https;AccountName=${storageAccountName};AccountKey=${listkeys(resourceId(subscription().subscriptionId, storageAccountResourceGroupName, 'Microsoft.Storage/storageAccounts', storageAccountName), '2019-06-01').keys[0].value};' : any(null)
+  //     FUNCTIONS_EXTENSION_VERSION: kind == 'functionapp' && !empty(functionsExtensionVersion) ? functionsExtensionVersion : any(null)
+  //     FUNCTIONS_WORKER_RUNTIME: kind == 'functionapp' && !empty(functionsWorkerRuntime) ? functionsWorkerRuntime : any(null)
+  //     APPINSIGHTS_INSTRUMENTATIONKEY: enableMonitoring ? reference('microsoft.insights/components/${name}', '2015-05-01').InstrumentationKey : null
+  //     APPLICATIONINSIGHTS_CONNECTION_STRING: enableMonitoring ? reference('microsoft.insights/components/${name}', '2015-05-01').ConnectionString : null
+  //   }
+  // }
+
 
 // resource app_appsettings 'config@2019-08-01' = {
 //     name: 'appsettings'

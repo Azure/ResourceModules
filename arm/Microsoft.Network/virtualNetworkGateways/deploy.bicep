@@ -170,6 +170,8 @@ var zoneRedundantSkus = [
   'VpnGw1AZ'
   'VpnGw2AZ'
   'VpnGw3AZ'
+  'VpnGw4AZ'
+  'VpnGw5AZ'
   'ErGw1AZ'
   'ErGw2AZ'
   'ErGw3AZ'
