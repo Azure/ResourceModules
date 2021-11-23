@@ -25,7 +25,7 @@ The following resources are required to be able to deploy this resource.
 | `name` | string |  |  | Required. Backend Name. |
 | `protocol` | string | `http` |  | Optional. Backend communication protocol. - http or soap |
 | `proxy` | object | `{object}` |  | Optional. Backend Proxy Contract Properties |
-| `resourceId` | string |  |  | Optional. Management Uri of the Resource in External System. This url can be the Arm Resource ID of Logic Apps, Function Apps or API Apps. |
+| `resourceId` | string |  |  | Optional. Management Uri of the Resource in External System. This URL can be the Arm Resource ID of Logic Apps, Function Apps or API Apps. |
 | `serviceFabricCluster` | object | `{object}` |  | Optional. Backend Service Fabric Cluster Properties. |
 | `title` | string |  |  | Optional. Backend Title. |
 | `tls` | object | `{object}` |  | Optional. Backend TLS Properties |
