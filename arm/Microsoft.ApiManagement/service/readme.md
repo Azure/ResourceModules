@@ -68,7 +68,7 @@ This module deploys an API management.
 | `subnetResourceId` | string |  |  | Optional. The full resource ID of a subnet in a virtual network to deploy the API Management service in. |
 | `subscriptions` | _[subscriptions](subscriptions/readme.md)_ array | `[]` |  | Optional. Subscriptions. |
 | `tags` | object | `{object}` |  | Optional. Tags of the resource. |
-| `virtualNetworkType` | string | `None` | `[None, External, Internal]` | Optional. The type of VPN in which API Management service needs to be configured in. None (Default Value) means the API Management service is not part of any Virtual Network, External means the API Management deployment is set up inside a Virtual Network having an Internet Facing Endpoint, and Internal means that API Management deployment is setup inside a Virtual Network having an Intranet Facing Endpoint only. |
+| `virtualNetworkType` | string | `None` | `[None, External, Internal]` | Optional. The type of VPN in which API Management service needs to be configured in. None (Default Value) means the API Management service is not part of any Virtual Network, External means the API Management deployment is set up inside a Virtual Network having an internet Facing Endpoint, and Internal means that API Management deployment is setup inside a Virtual Network having an Intranet Facing Endpoint only. |
 | `workspaceId` | string |  |  | Optional. Resource identifier of Log Analytics. |
 | `zones` | array | `[]` |  | Optional. A list of availability zones denoting where the resource needs to come from. |
 

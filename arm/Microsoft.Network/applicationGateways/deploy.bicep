@@ -66,10 +66,10 @@ param probes array = []
 @description('Required. The frontend http listeners to be configured.')
 param frontendHttpListeners array = []
 
-@description('Required. The frontend https listeners to be configured.')
+@description('Required. The frontend HTTPS listeners to be configured.')
 param frontendHttpsListeners array = []
 
-@description('Optional. The http redirects to be configured. Each redirect will route http traffic to a predefined frontEnd https listener.')
+@description('Optional. The http redirects to be configured. Each redirect will route http traffic to a predefined frontEnd HTTPS listener.')
 param frontendHttpRedirects array = []
 
 @description('Required. The routing rules to be configured. These rules will be used to route requests from frontend listeners to backend pools using a backend HTTP configuration.')

@@ -25,8 +25,8 @@ This template deploys Application Gateway.
 | `eventHubAuthorizationRuleId` | string |  |  | Optional. Resource ID of the event hub authorization rule for the Event Hubs namespace in which the event hub should be created or streamed to. |
 | `eventHubName` | string |  |  | Optional. Name of the event hub within the namespace to which logs are streamed. Without this, an event hub is created for each log category. |
 | `frontendHttpListeners` | array | `[]` |  | Required. The frontend http listeners to be configured. |
-| `frontendHttpRedirects` | array | `[]` |  | Optional. The http redirects to be configured. Each redirect will route http traffic to a predefined frontEnd https listener. |
-| `frontendHttpsListeners` | array | `[]` |  | Required. The frontend https listeners to be configured. |
+| `frontendHttpRedirects` | array | `[]` |  | Optional. The http redirects to be configured. Each redirect will route http traffic to a predefined frontEnd HTTPS listener. |
+| `frontendHttpsListeners` | array | `[]` |  | Required. The frontend HTTPS listeners to be configured. |
 | `frontendPrivateIpAddress` | string |  |  | Optional. The private IP within the Application Gateway subnet to be used as frontend private address. |
 | `frontendPublicIpResourceId` | string |  |  | Required. PublicIP Resource ID used in Public Frontend. |
 | `gatewayIpConfigurationName` | string | `gatewayIpConfiguration01` |  | Optional. Application Gateway IP configuration name. |

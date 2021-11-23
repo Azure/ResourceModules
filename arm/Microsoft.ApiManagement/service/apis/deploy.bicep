@@ -135,11 +135,11 @@ module policy 'policies/deploy.bicep' = [for policy in policies: {
   }
 }]
 
-@description('The name of the API management service api')
+@description('The name of the API management service API')
 output apiName string = api.name
 
-@description('The resource ID of the API management service api')
+@description('The resource ID of the API management service API')
 output apiResourceId string = api.id
 
-@description('The resource group the API management service api was deployed to')
+@description('The resource group the API management service API was deployed to')
 output apiResourceGroup string = resourceGroup().name
