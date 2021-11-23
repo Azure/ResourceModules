@@ -137,7 +137,6 @@ runs:
           . $functionPath
 
           $functionInput = @{
-              moduleName        = '${{ inputs.moduleName }}'
               resourceGroupName = '${{ inputs.resourceGroupName }}'
               verbose           = $true
           }
@@ -145,6 +144,8 @@ runs:
             Write-Verbose "Triggering removal with deployment name"
             $functionInput['deploymentName'] = '${{ steps.deploy_step.outputs.deploymentName }}'
             $functionInput['templateFilePath'] = '${{ inputs.templateFilePath }}'
+          } else {
+            $functionInput['moduleName'] = '${{ inputs.moduleName }}'
           }
 
           Write-Verbose 'Invoke task with' -Verbose
