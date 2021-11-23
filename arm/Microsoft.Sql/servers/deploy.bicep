@@ -42,7 +42,7 @@ module pid_cuaId '.bicep/nested_cuaId.bicep' = if (!empty(cuaId)) {
   params: {}
 }
 
-resource server 'Microsoft.Sql/servers@2020-02-02-preview' = {
+resource server 'Microsoft.Sql/servers@2021-05-01-preview' = {
   location: location
   name: name
   tags: tags
