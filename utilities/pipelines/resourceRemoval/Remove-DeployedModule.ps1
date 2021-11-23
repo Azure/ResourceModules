@@ -120,7 +120,7 @@ function Remove-DeployedModule {
             }
 
             $resourcesToRemove = @()
-            $rawResourcesToRemove = $deployment.TargetResource | Where-Object { $_ }
+            $rawResourcesToRemove = $deployment.TargetResource | Where-Object { $_ -and $_ -notmatch '/deployments/' }
             # Process removal
             # ===============
             if ($deploymentScope -eq 'ResourceGroup') {
