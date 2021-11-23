@@ -28,7 +28,7 @@ on:
       - '.github/actions/templates/**'
       - '.github/workflows/ms.batch.batchaccounts.yml'
       - 'arm/Microsoft.Batch/batchAccounts/**'
-      - '!arm/Microsoft.Batch/batchAccounts/readme.md'
+      - '!*/**/readme.md'
 
 env:
   moduleName: 'batchAccounts'

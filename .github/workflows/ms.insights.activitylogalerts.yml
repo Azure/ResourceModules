@@ -28,7 +28,7 @@ on:
       - '.github/actions/templates/**'
       - '.github/workflows/ms.insights.activitylogalerts.yml'
       - 'arm/Microsoft.Insights/activityLogAlerts/**'
-      - '!arm/Microsoft.Insights/activityLogAlerts/readme.md'
+      - '!*/**/readme.md'
 
 env:
   moduleName: 'activityLogAlerts'

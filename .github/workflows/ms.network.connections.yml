@@ -28,7 +28,7 @@ on:
       - '.github/actions/templates/**'
       - '.github/workflows/ms.network.connections.yml'
       - 'arm/Microsoft.Network/connections/**'
-      - '!arm/Microsoft.Network/connections/readme.md'
+      - '!*/**/readme.md'
 
 env:
   moduleName: 'connections'

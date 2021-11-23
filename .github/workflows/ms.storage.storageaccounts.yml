@@ -28,7 +28,7 @@ on:
       - '.github/actions/templates/**'
       - '.github/workflows/ms.storage.storageaccounts.yml'
       - 'arm/Microsoft.Storage/storageAccounts/**'
-      - '!arm/Microsoft.Storage/storageAccounts/readme.md'
+      - '!*/**/readme.md'
 
 env:
   moduleName: 'storageAccounts'
