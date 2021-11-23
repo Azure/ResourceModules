@@ -108,26 +108,15 @@ runs:
         Write-Verbose ($functionInput | ConvertTo-Json | Out-String) -Verbose
 
         # Invoke deployment
-        try {
-          $res = New-ModuleDeployment @functionInput -Verbose
-          $deploymentSuccessful = $true
-        } catch {
-          $res = $_.Exception.Message
-          $deploymentSuccessful = $false
-        }
-
-        Write-Output "::set-env name=deploymentAttempted::$true"
-
-        if(-not $deploymentSuccessful) {
-          throw $res
-        }
+        New-ModuleDeployment @functionInput -Verbose
 
     - name: 'Remove [${{ inputs.templateFilePath }}] from parameters [${{ inputs.parameterFilePath }}]'
       shell: pwsh
+      if: always()
       run: |
         Write-Verbose (Get-Childitem env:* | Out-String) -Verbose
 
-        if('${{ inputs.removeDeployment }}' -eq 'true' -and $deploymentAttempted -eq $true) {
+        if('${{ inputs.removeDeployment }}' -eq 'true') {
           # Load used functions
           $functionPath = Join-Path $env:GITHUB_WORKSPACE '${{ inputs.relativePathOfRemovalScript }}'
           . $functionPath
