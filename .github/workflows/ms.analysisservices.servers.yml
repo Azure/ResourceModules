@@ -95,11 +95,16 @@ jobs:
           modulePath: '${{ env.modulePath }}'
           moduleName: '${{ env.moduleName}}'
 
-  # Validate deployment module tests
-  # --------------------------------
-  job_tests_module_deploy_validate:
+  ###########################
+  # Deployment module tests #
+  ###########################
+  job_module_deploy_validation:
     runs-on: ubuntu-20.04
     name: 'Run deployment validation module tests'
+    needs:
+      - job_set_workflow_param
+      - job_tests_module_global
+      - job_tests_module_global_api
     strategy:
       fail-fast: false
       matrix:
@@ -114,7 +119,10 @@ jobs:
         with:
           # Name of variable file
           variableFileName: 'variables.module' # Don't write .json here
-      - name: 'Test module'
+      # ----------- #
+      ##  Dry Run  ##
+      # ----------- #
+      - name: 'Test module with parameter file [${{ matrix.parameterFilePaths }}]'
         uses: ./.github/actions/templates/validateModuleDeploy
         with:
           templateFilePath: '${{ env.modulePath }}/deploy.bicep'
@@ -123,33 +131,10 @@ jobs:
           resourceGroupName: '${{ env.resourceGroupName }}'
           subscriptionId: '${{ secrets.ARM_SUBSCRIPTION_ID }}'
           managementGroupId: '${{ secrets.ARM_MGMTGROUP_ID }}'
-
-  ####################
-  #   DEPLOY TESTS   #
-  ####################
-  job_deploy_module:
-    runs-on: ubuntu-20.04
-    name: 'Deploy module'
-    needs:
-      - job_set_workflow_param
-      - job_tests_module_global
-      - job_tests_module_global_api
-      - job_tests_module_deploy_validate
-    strategy:
-      fail-fast: false
-      matrix:
-        parameterFilePaths: ['min.parameters.json', 'parameters.json']
-    steps:
-      - name: 'Checkout'
-        uses: actions/checkout@v2
-        with:
-          fetch-depth: 0
-      - name: Set environment variables
-        uses: deep-mm/set-variables@v1.0
-        with:
-          # Name of variable file
-          variableFileName: 'variables.module' # Don't write .json here
-      - name: 'Deploy module'
+      # ---------- #
+      ##  Deploy  ##
+      # ---------- #
+      - name: 'Deploy module with parameter file [${{ matrix.parameterFilePaths }}]'
         uses: ./.github/actions/templates/deployModule
         with:
           moduleName: '${{ env.moduleName }}'
@@ -160,6 +145,15 @@ jobs:
           subscriptionId: '${{ secrets.ARM_SUBSCRIPTION_ID }}'
           managementGroupId: '${{ secrets.ARM_MGMTGROUP_ID }}'
           removeDeployment: '${{ needs.job_set_workflow_param.outputs.removeDeployment }}'
+      # ---------- #
+      ##  REMOVE  ##
+      # ---------- #
+      - name: 'Remove module of parameter file [${{ matrix.parameterFilePaths }}]'
+        if: ${{ (success() || failure()) && !cancelled() && needs.job_set_workflow_param.outputs.removeDeployment == 'true' }}
+        uses: ./.github/actions/templates/removeModule
+        with:
+          moduleName: '${{ env.moduleName }}'
+          resourceGroupName: '${{ env.resourceGroupName }}'
 
   ###############
   #   PUBLISH   #
@@ -170,7 +164,7 @@ jobs:
     runs-on: ubuntu-20.04
     needs:
       - job_set_workflow_param
-      - job_deploy_module
+      - job_module_deploy_validation
     steps:
       - name: 'Checkout'
         uses: actions/checkout@v2
@@ -194,28 +188,3 @@ jobs:
           bicepRegistryName: '${{ env.bicepRegistryName }}'
           bicepRegistryRGName: '${{ env.bicepRegistryRGName }}'
           bicepRegistryDoPublish: '${{ env.bicepRegistryDoPublish }}'
-
-  ##############
-  #   REMOVE   #
-  ##############
-  job_remove_module:
-    runs-on: ubuntu-20.04
-    name: 'Remove module'
-    if: ${{ always() && !cancelled() && needs.job_set_workflow_param.outputs.removeDeployment == 'true' && (contains(needs.job_deploy_module.result, 'success') || contains(needs.job_deploy_module.result, 'failure')) }}
-    needs:
-      - job_deploy_module
-    steps:
-      - name: 'Checkout'
-        uses: actions/checkout@v2
-        with:
-          fetch-depth: 0
-      - name: Set environment variables
-        uses: deep-mm/set-variables@v1.0
-        with:
-          # Name of variable file
-          variableFileName: 'variables.module' # Don't write .json here
-      - name: 'Remove module'
-        uses: ./.github/actions/templates/removeModule
-        with:
-          moduleName: '${{ env.moduleName }}'
-          resourceGroupName: '${{ env.resourceGroupName }}'
