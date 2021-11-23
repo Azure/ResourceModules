@@ -10,7 +10,7 @@ param displayName string = ''
 @description('Optional. The description of the policy exemption.')
 param policyExemptionDescription string = ''
 
-@description('Optional. The policy exemption metadata. Metadata is an open ended object and is typically a collection of key value pairs.')
+@description('Optional. The policy exemption metadata. Metadata is an open ended object and is typically a collection of key-value pairs.')
 param metadata object = {}
 
 @description('Optional. The policy exemption category. Possible values are Waiver and Mitigated. Default is Mitigated')

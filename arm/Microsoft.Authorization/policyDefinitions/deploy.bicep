@@ -20,7 +20,7 @@ param policyDescription string = ''
 ])
 param mode string = 'All'
 
-@description('Optional. The policy Definition metadata. Metadata is an open ended object and is typically a collection of key value pairs.')
+@description('Optional. The policy Definition metadata. Metadata is an open ended object and is typically a collection of key-value pairs.')
 param metadata object = {}
 
 @description('Optional. The policy definition parameters that can be used in policy definition references.')

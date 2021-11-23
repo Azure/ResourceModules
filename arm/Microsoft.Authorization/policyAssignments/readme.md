@@ -16,7 +16,7 @@
 | `identity` | string | `SystemAssigned` | `[SystemAssigned, None]` | Optional. The managed identity associated with the policy assignment. Policy assignments must include a resource identity when assigning 'Modify' policy definitions. |
 | `location` | string | `[deployment().location]` |  | Optional. Location for all resources. |
 | `managementGroupId` | string |  |  | Optional. The Target Scope for the Policy. The name of the management group for the policy assignment |
-| `metadata` | object | `{object}` |  | Optional. The policy assignment metadata. Metadata is an open ended object and is typically a collection of key value pairs. |
+| `metadata` | object | `{object}` |  | Optional. The policy assignment metadata. Metadata is an open ended object and is typically a collection of key-value pairs. |
 | `nonComplianceMessage` | string |  |  | Optional. The messages that describe why a resource is non-compliant with the policy. If not provided will be replaced with empty |
 | `notScopes` | array | `[]` |  | Optional. The policy excluded scopes |
 | `parameters` | object | `{object}` |  | Optional. Parameters for the policy assignment if needed. |

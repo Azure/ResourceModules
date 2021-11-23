@@ -33,16 +33,14 @@ The following resources are required to be able to deploy this resource.
 
 ### Parameters - credentials
 
-| Parameter Name                         | Type   | Default Value              | Possible values | Description                                                                                                                                                                                                                                                                                                 |
-| :------------------------------------- | :----- | :------------------------- | :-------------- | :---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `certificate`             | array |                            |                 | Optional. List of Client Certificate Thumbprint. - string|
-| `query`                          | object |                            |                 | Optional. Query Parameter description.|
-| `header`                             | object |  |                 | Optional. Header Parameter description.|
-| `authorization`                                | object |                            |                 | Optional. Authorization header authentication|
+| Parameter Name | Type | Default Value | Possible values | Description |
+| :- | :- | :- | :- | :- |
+| `certificate` | array | |                 | Optional. List of Client Certificate Thumbprint. - string|
+| `query` | object | | | Optional. Query Parameter description.|
+| `header` | object | | | Optional. Header Parameter description.|
+| `authorization` | object |                            |                 | Optional. Authorization header authentication|
 
 ### Parameter Usage: `credentials`
-
-Product API's name list.
 
 ```json
 "credentials": {
@@ -70,8 +68,6 @@ Product API's name list.
 
 ### Parameter Usage: `proxy`
 
-Product API's name list.
-
 ```json
 "proxy": {
     "value":{
@@ -93,8 +89,6 @@ Product API's name list.
 | `serverX509Names`                             | array |  |                 | Optional. Server X509 Certificate Names Collection|
 
 ### Parameter Usage: `serviceFabricCluster`
-
-Product API's name list.
 
 ```json
 "serviceFabricCluster": {
@@ -118,8 +112,6 @@ Product API's name list.
 ```
 
 ### Parameter Usage: `tls`
-
-Product API's name list.
 
 ```json
 "tls": {

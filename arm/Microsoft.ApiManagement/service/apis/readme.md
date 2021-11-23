@@ -1,6 +1,6 @@
-# API Management Service Apis   `[Microsoft.ApiManagement/service/apis]`
+# API Management Service APIs   `[Microsoft.ApiManagement/service/apis]`
 
-This module deploys API Management Service Apis.
+This module deploys API Management Service APIs.
 
 ## Resource types
 
@@ -71,5 +71,5 @@ The following resources are required to be able to deploy this resource.
 
 ## Template references
 
-- [Service/Apis](https://docs.microsoft.com/en-us/azure/templates/Microsoft.ApiManagement/2020-06-01-preview/service/apis)
-- [Service/Apis/Policies](https://docs.microsoft.com/en-us/azure/templates/Microsoft.ApiManagement/2020-06-01-preview/service/apis/policies)
+- [Service/APIs](https://docs.microsoft.com/en-us/azure/templates/Microsoft.ApiManagement/2020-06-01-preview/service/apis)
+- [Service/APIs/Policies](https://docs.microsoft.com/en-us/azure/templates/Microsoft.ApiManagement/2020-06-01-preview/service/apis/policies)

@@ -16,7 +16,7 @@ param managementGroupId string = ''
 @description('Optional. The resource ID of the Azure Subscription (Scope). Cannot be used with managementGroupId')
 param subscriptionId string = ''
 
-@description('Optional. The Set Definition (Initiative) metadata. Metadata is an open ended object and is typically a collection of key value pairs.')
+@description('Optional. The Set Definition (Initiative) metadata. Metadata is an open ended object and is typically a collection of key-value pairs.')
 param metadata object = {}
 
 @description('Required. The array of Policy definitions object to include for this policy set. Each object must include the Policy definition ID, and optionally other properties like parameters')

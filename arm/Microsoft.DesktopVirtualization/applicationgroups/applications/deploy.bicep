@@ -21,7 +21,7 @@ param filePath string
 @sys.description('Optional. Specifies whether this published application can be launched with command-line arguments provided by the client, command-line arguments specified at publish time, or no command-line arguments at all.')
 param commandLineSetting string = 'DoNotAllow'
 
-@sys.description('Optional. Command Line Arguments for Application.')
+@sys.description('Optional. Command-Line Arguments for Application.')
 param commandLineArguments string = ''
 
 @sys.description('Optional. Specifies whether to show the RemoteApp program in the RD Web Access server.')

@@ -26,7 +26,7 @@ param policyAssignmentDescription string = ''
 @description('Optional. The display name of the policy assignment. If not provided, will be replaced with the Policy Assignment Name')
 param displayName string = ''
 
-@description('Optional. The policy assignment metadata. Metadata is an open ended object and is typically a collection of key value pairs.')
+@description('Optional. The policy assignment metadata. Metadata is an open ended object and is typically a collection of key-value pairs.')
 param metadata object = {}
 
 @description('Optional. The messages that describe why a resource is non-compliant with the policy. If not provided will be replaced with empty')

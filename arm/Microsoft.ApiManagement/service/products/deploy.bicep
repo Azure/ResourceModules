@@ -10,7 +10,7 @@ param cuaId string = ''
 @description('Optional. Product description. May include HTML formatting tags.')
 param productDescription string = ''
 
-@description('Optional. Array of Product Apis.')
+@description('Optional. Array of Product APIs.')
 param apis array = []
 
 @description('Optional. Array of Product Groups.')

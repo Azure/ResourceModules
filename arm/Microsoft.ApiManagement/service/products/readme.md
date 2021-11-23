@@ -21,7 +21,7 @@ The following resources are required to be able to deploy this resource.
 | Parameter Name | Type | Default Value | Possible Values | Description |
 | :-- | :-- | :-- | :-- | :-- |
 | `apiManagementServiceName` | string |  |  | Required. The name of the of the API Management service. |
-| `apis` | _[apis](apis/readme.md)_ array | `[]` |  | Optional. Array of Product Apis. |
+| `apis` | _[apis](apis/readme.md)_ array | `[]` |  | Optional. Array of Product APIs. |
 | `approvalRequired` | bool |  |  | Optional. Whether subscription approval is required. If false, new subscriptions will be approved automatically enabling developers to call the products APIs immediately after subscribing. If true, administrators must manually approve the subscription before the developer can any of the products APIs. Can be present only if subscriptionRequired property is present and has a value of false. |
 | `cuaId` | string |  |  | Optional. Customer Usage Attribution ID (GUID). This GUID must be previously registered |
 | `groups` | _[groups](groups/readme.md)_ array | `[]` |  | Optional. Array of Product Groups. |
@@ -33,9 +33,6 @@ The following resources are required to be able to deploy this resource.
 | `terms` | string |  |  | Optional. Product terms of use. Developers trying to subscribe to the product will be presented and required to accept these terms before they can complete the subscription process. |
 
 ### Parameter Usage: `productApis`
-
-Product API's name list.
-
 ```json
 "productApis": {
     "value":[
@@ -68,5 +65,5 @@ Product groups list.
 ## Template references
 
 - [Service/Products](https://docs.microsoft.com/en-us/azure/templates/Microsoft.ApiManagement/2020-06-01-preview/service/products)
-- [Service/Products/Apis](https://docs.microsoft.com/en-us/azure/templates/Microsoft.ApiManagement/2020-06-01-preview/service/products/apis)
+- [Service/Products/APIs](https://docs.microsoft.com/en-us/azure/templates/Microsoft.ApiManagement/2020-06-01-preview/service/products/apis)
 - [Service/Products/Groups](https://docs.microsoft.com/en-us/azure/templates/Microsoft.ApiManagement/2020-06-01-preview/service/products/groups)
