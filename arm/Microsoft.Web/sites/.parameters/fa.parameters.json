@@ -15,7 +15,8 @@
                 "appServicePlanWorkerSize": 2,
                 "appServicePlanTier": "PremiumV2",
                 "appServicePlanSize": "P1v2",
-                "appServicePlanFamily": "Pv2"
+                "appServicePlanFamily": "Pv2",
+                "appServicePlanType": "linux"
             }
         },
         "siteConfig": {
