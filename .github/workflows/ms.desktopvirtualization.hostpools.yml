@@ -28,7 +28,7 @@ on:
       - '.github/actions/templates/**'
       - '.github/workflows/ms.desktopvirtualization.hostpools.yml'
       - 'arm/Microsoft.DesktopVirtualization/hostpools/**'
-      - '!arm/Microsoft.DesktopVirtualization/hostpools/readme.md'
+      - '!*/**/readme.md'
 
 env:
   moduleName: 'hostpools'

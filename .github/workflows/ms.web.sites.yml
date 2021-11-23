@@ -28,7 +28,7 @@ on:
       - '.github/actions/templates/**'
       - '.github/workflows/ms.web.sites.yml'
       - 'arm/Microsoft.Web/sites/**'
-      - '!arm/Microsoft.Web/sites/readme.md'
+      - '!*/**/readme.md'
 
 env:
   moduleName: 'sites'

@@ -28,7 +28,7 @@ on:
       - '.github/actions/templates/**'
       - '.github/workflows/ms.network.routetables.yml'
       - 'arm/Microsoft.Network/routeTables/**'
-      - '!arm/Microsoft.Network/routeTables/readme.md'
+      - '!*/**/readme.md'
 
 env:
   moduleName: 'routeTables'

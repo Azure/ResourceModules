@@ -28,7 +28,7 @@ on:
       - '.github/actions/templates/**'
       - '.github/workflows/ms.network.applicationgateways.yml'
       - 'arm/Microsoft.Network/applicationGateways/**'
-      - '!arm/Microsoft.Network/applicationGateways/readme.md'
+      - '!*/**/readme.md'
 
 env:
   moduleName: 'applicationGateways'
