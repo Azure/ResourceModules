@@ -111,7 +111,7 @@ runs:
         try {
           $res = New-ModuleDeployment @functionInput -Verbose
           $deploymentSuccessful = $true
-        } else {
+        } catch {
           $res = $_.Exception.Message
           $deploymentSuccessful = $false
         }
