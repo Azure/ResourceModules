@@ -6,10 +6,10 @@
             "value": "sxx-az-fa-x-001"
         },
         "appType": {
-            "value": "functionapp"
+            "value": "functionApp"
         },
         "appServicePlanName": {
-            "value": "ASP-sxx-az-fa-x-001"
+            "value": "sxx-az-fa-x-001-asp"
         },
         "appServicePlanSkuName": {
             "value": "P1v2"
@@ -36,6 +36,9 @@
         },
         "functionsWorkerRuntime": {
             "value": "powershell"
+        },
+        "functionsExtensionVersion": {
+            "value": "~3"
         },
         "enableMonitoring": {
             "value": false

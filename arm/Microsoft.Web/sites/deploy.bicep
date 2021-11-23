@@ -196,7 +196,7 @@ resource appServicePlanExisting 'Microsoft.Web/serverfarms@2021-02-01' existing 
 }
 
 resource appServicePlan 'Microsoft.Web/serverfarms@2021-02-01' = if (empty(appServicePlanId)) {
-  name: !empty(appServicePlanName) ? appServicePlanName : 'ASP-${appName}'
+  name: !empty(appServicePlanName) ? appServicePlanName : '${appName}-asp'
   kind: appServicePlanType
   location: location
   tags: tags
