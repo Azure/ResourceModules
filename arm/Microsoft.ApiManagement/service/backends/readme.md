@@ -29,7 +29,7 @@ The following resources are required to be able to deploy this resource.
 | `serviceFabricCluster` | object | `{object}` |  | Optional. Backend Service Fabric Cluster Properties. |
 | `title` | string |  |  | Optional. Backend Title. |
 | `tls` | object | `{object}` |  | Optional. Backend TLS Properties |
-| `url` | string |  |  | Required. Runtime Url of the Backend. |
+| `url` | string |  |  | Required. Runtime URL of the Backend. |
 
 ### Parameters - credentials
 

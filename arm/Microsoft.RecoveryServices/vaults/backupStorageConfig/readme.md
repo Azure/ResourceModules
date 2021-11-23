@@ -3,7 +3,7 @@
 This module deploys the Backup Storage Configuration for the Recovery Service Vault
 ## Resource types
 
-| Resource Type | Api Version |
+| Resource Type | API Version |
 | :-- | :-- |
 | `Microsoft.RecoveryServices/vaults/backupstorageconfig` | 2021-08-01 |
 

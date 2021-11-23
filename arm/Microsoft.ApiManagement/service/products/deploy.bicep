@@ -75,8 +75,8 @@ output productName string = product.name
 @description('The resource group the API management service product was deployed into')
 output productResourceGroup string = resourceGroup().name
 
-@description('The Resources Ids of the API management service product apis')
+@description('The Resources IDs of the API management service product apis')
 output productApisResourceIds array = [for productApi in apis: resourceId('Microsoft.ApiManagement/service/products/apis', apiManagementServiceName, name, productApi.name)]
 
-@description('The Resources Ids of the API management service product groups')
+@description('The Resources IDs of the API management service product groups')
 output productGroupsResourceIds array = [for productGroup in groups: resourceId('Microsoft.ApiManagement/service/products/groups', apiManagementServiceName, name, productGroup.name)]

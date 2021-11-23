@@ -1,7 +1,7 @@
 @description('Required. The name of the private endpoint')
 param privateEndpointName string
 
-@description('Required. List of private DNS Ids')
+@description('Required. List of private DNS IDs')
 param privateDNSIds array
 
 var privateDnsZoneConfigs = [for privateDNSId in privateDNSIds: {

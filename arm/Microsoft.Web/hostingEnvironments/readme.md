@@ -25,7 +25,7 @@ This module deploys App Service Environment, with resource lock.
 | `dynamicCacheEnabled` | bool |  |  | Optional. True/false indicating whether the App Service Environment is suspended. The environment can be suspended e.g. when the management endpoint is no longer available(most likely because NSG blocked the incoming traffic). |
 | `eventHubAuthorizationRuleId` | string |  |  | Optional. Resource ID of the event hub authorization rule for the Event Hubs namespace in which the event hub should be created or streamed to. |
 | `eventHubName` | string |  |  | Optional. Name of the event hub within the namespace to which logs are streamed. Without this, an event hub is created for each log category. |
-| `frontEndScaleFactor` | int | `15` |  | Optional. Scale factor for front-ends. |
+| `frontEndScaleFactor` | int | `15` |  | Optional. Scale factor for frontends. |
 | `hasLinuxWorkers` | bool |  |  | Optional. Flag that displays whether an ASE has linux workers or not |
 | `internalLoadBalancingMode` | string | `None` | `[None, Web, Publishing]` | Optional. Specifies which endpoints to serve internally in the Virtual Network for the App Service Environment. - None, Web, Publishing, Web,Publishing |
 | `ipsslAddressCount` | int | `2` |  | Optional. Number of IP SSL addresses reserved for the App Service Environment. |
@@ -33,8 +33,8 @@ This module deploys App Service Environment, with resource lock.
 | `location` | string | `[resourceGroup().location]` |  | Optional. Location for all resources. |
 | `lock` | string | `NotSpecified` | `[CanNotDelete, NotSpecified, ReadOnly]` | Optional. Specify the type of lock. |
 | `logsToEnable` | array | `[AppServiceEnvironmentPlatformLogs]` | `[AppServiceEnvironmentPlatformLogs]` | Optional. The name of logs that will be streamed. |
-| `multiRoleCount` | int | `2` |  | Optional. Number of front-end instances. |
-| `multiSize` | string | `Standard_D1_V2` | `[Medium, Large, ExtraLarge, Standard_D2, Standard_D3, Standard_D4, Standard_D1_V2, Standard_D2_V2, Standard_D3_V2, Standard_D4_V2]` | Optional. Front-end VM size, e.g. Medium, Large |
+| `multiRoleCount` | int | `2` |  | Optional. Number of frontend instances. |
+| `multiSize` | string | `Standard_D1_V2` | `[Medium, Large, ExtraLarge, Standard_D2, Standard_D3, Standard_D4, Standard_D1_V2, Standard_D2_V2, Standard_D3_V2, Standard_D4_V2]` | Optional. Frontend VM size, e.g. Medium, Large |
 | `networkAccessControlList` | array | `[]` |  | Optional. Access control list for controlling traffic to the App Service Environment.. |
 | `roleAssignments` | array | `[]` |  | Optional. Array of role assignment objects that contain the 'roleDefinitionIdOrName' and 'principalId' to define RBAC role assignments on this resource. In the roleDefinitionIdOrName attribute, you can provide either the display name of the role definition, or its fully qualified ID in the following format: '/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11' |
 | `subnetResourceId` | string |  |  | Required. ResourceId for the sub net |

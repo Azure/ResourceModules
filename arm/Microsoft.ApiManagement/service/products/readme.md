@@ -59,8 +59,8 @@ Product groups list.
 
 | Output Name | Type | Description |
 | :-- | :-- | :-- |
-| `productApisResourceIds` | array | The Resources Ids of the API management service product apis |
-| `productGroupsResourceIds` | array | The Resources Ids of the API management service product groups |
+| `productApisResourceIds` | array | The Resources IDs of the API management service product apis |
+| `productGroupsResourceIds` | array | The Resources IDs of the API management service product groups |
 | `productName` | string | The name of the API management service product |
 | `productResourceGroup` | string | The resource group the API management service product was deployed into |
 | `productResourceId` | string | The resource ID of the API management service product |

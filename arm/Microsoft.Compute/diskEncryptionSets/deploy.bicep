@@ -7,7 +7,7 @@ param location string = resourceGroup().location
 @description('Required. Resource ID of the KeyVault containing the key or secret.')
 param keyVaultId string
 
-@description('Required. Key Url (with version) pointing to a key or secret in KeyVault.')
+@description('Required. Key URL (with version) pointing to a key or secret in KeyVault.')
 param keyUrl string
 
 @description('Optional. Array of role assignment objects that contain the \'roleDefinitionIdOrName\' and \'principalId\' to define RBAC role assignments on this resource. In the roleDefinitionIdOrName attribute, you can provide either the display name of the role definition, or its fully qualified ID in the following format: \'/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11\'')

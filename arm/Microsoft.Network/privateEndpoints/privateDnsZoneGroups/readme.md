@@ -12,7 +12,7 @@
 
 | Parameter Name | Type | Default Value | Possible Values | Description |
 | :-- | :-- | :-- | :-- | :-- |
-| `privateDNSIds` | array |  |  | Required. List of private DNS Ids |
+| `privateDNSIds` | array |  |  | Required. List of private DNS IDs |
 | `privateEndpointName` | string |  |  | Required. The name of the private endpoint |
 
 ### Parameter Usage: `<ParameterPlaceholder>`

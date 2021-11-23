@@ -42,7 +42,7 @@ The `capacityPools` parameter accepts a JSON array of objects with the following
 |volumes | array | Optional. Volumes to be created. |
 |roleAssignments | array | Optional. RBAC can also be assigned at capacity pool level. |
 
-Here's an example of specifying a single capacity pool with no volumes, named "sxx-az-anfcp-x-001", with Premium service level, 4TiB of size and Reader role assigned to two principal Ids.
+Here's an example of specifying a single capacity pool with no volumes, named "sxx-az-anfcp-x-001", with Premium service level, 4TiB of size and Reader role assigned to two principal IDs.
 
 ```json
 "capacityPools": {

@@ -324,7 +324,7 @@ param sasTokenValidityLength string = 'PT8H'
 ])
 param managedIdentityType string = ''
 
-@description('Optional. The list of user identities associated with the virtual machine scale set. The user identity dictionary key references will be ARM resource ids in the form: \'/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ManagedIdentity/userAssignedIdentities/{identityName}\'.')
+@description('Optional. The list of user identities associated with the virtual machine scale set. The user identity dictionary key references will be ARM resource IDs in the form: \'/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ManagedIdentity/userAssignedIdentities/{identityName}\'.')
 param managedIdentityIdentities object = {}
 
 @description('Optional. The name of metrics that will be streamed.')

@@ -18,7 +18,7 @@ param filePath string
   'DoNotAllow'
   'Require'
 ])
-@sys.description('Optional. Specifies whether this published application can be launched with command line arguments provided by the client, command line arguments specified at publish time, or no command line arguments at all.')
+@sys.description('Optional. Specifies whether this published application can be launched with command-line arguments provided by the client, command-line arguments specified at publish time, or no command-line arguments at all.')
 param commandLineSetting string = 'DoNotAllow'
 
 @sys.description('Optional. Command Line Arguments for Application.')

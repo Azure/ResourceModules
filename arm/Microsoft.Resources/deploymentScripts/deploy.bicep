@@ -35,7 +35,7 @@ param environmentVariables array = []
 @description('Optional. List of supporting files for the external script (defined in primaryScriptUri). Does not work with internal scripts (code defined in scriptContent).')
 param supportingScriptUris array = []
 
-@description('Optional. Command line arguments to pass to the script. Arguments are separated by spaces.')
+@description('Optional. Command-line arguments to pass to the script. Arguments are separated by spaces.')
 param arguments string = ''
 
 @description('Optional. Interval for which the service retains the script resource after it reaches a terminal state. Resource will be deleted when this duration expires. Duration is based on ISO 8601 pattern (for example P7D means one week).')

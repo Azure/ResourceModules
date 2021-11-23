@@ -19,7 +19,7 @@ param subnetResourceId string
 ])
 param internalLoadBalancingMode string = 'None'
 
-@description('Optional. Front-end VM size, e.g. Medium, Large')
+@description('Optional. Frontend VM size, e.g. Medium, Large')
 @allowed([
   'Medium'
   'Large'
@@ -34,7 +34,7 @@ param internalLoadBalancingMode string = 'None'
 ])
 param multiSize string = 'Standard_D1_V2'
 
-@description('Optional. Number of front-end instances.')
+@description('Optional. Number of frontend instances.')
 param multiRoleCount int = 2
 
 @description('Optional. Number of IP SSL addresses reserved for the App Service Environment.')
@@ -49,7 +49,7 @@ param dnsSuffix string = ''
 @description('Optional. Access control list for controlling traffic to the App Service Environment..')
 param networkAccessControlList array = []
 
-@description('Optional. Scale factor for front-ends.')
+@description('Optional. Scale factor for frontends.')
 param frontEndScaleFactor int = 15
 
 @description('Optional. API Management Account associated with the App Service Environment.')

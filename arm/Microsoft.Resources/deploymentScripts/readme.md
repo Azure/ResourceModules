@@ -13,7 +13,7 @@ This module deploys Deployment Scripts.
 
 | Parameter Name | Type | Default Value | Possible Values | Description |
 | :-- | :-- | :-- | :-- | :-- |
-| `arguments` | string |  |  | Optional. Command line arguments to pass to the script. Arguments are separated by spaces. |
+| `arguments` | string |  |  | Optional. Command-line arguments to pass to the script. Arguments are separated by spaces. |
 | `azCliVersion` | string |  |  | Optional. Azure CLI module version to be used. |
 | `azPowerShellVersion` | string | `3.0` |  | Optional. Azure PowerShell module version to be used. |
 | `baseTime` | string | `[utcNow('yyyy-MM-dd-HH-mm-ss')]` |  | Generated. Do not provide a value! This date value is used to make sure the script run every time the template is deployed. |

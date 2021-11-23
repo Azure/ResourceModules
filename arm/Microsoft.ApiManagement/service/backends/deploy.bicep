@@ -34,7 +34,7 @@ param tls object = {
   validateCertificateName: false
 }
 
-@description('Required. Runtime Url of the Backend.')
+@description('Required. Runtime URL of the Backend.')
 param url string
 
 module pid_cuaId '.bicep/nested_cuaId.bicep' = if (!empty(cuaId)) {
