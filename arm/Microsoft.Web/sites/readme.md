@@ -20,18 +20,9 @@ This module deploys a Web or Function App
 
 | Parameter Name | Type | Default Value | Possible Values | Description |
 | :-- | :-- | :-- | :-- | :-- |
-| `name` | string |  |  | Required. Name of the Web Application Portal Name |
-| `appInsightsId` | string |  |  | Optional. Resource Id of the existing ApplicationInsights. If set, ApplicationInsights will be configured for the resource. |
 | `appServiceEnvironmentId` | string |  |  | Optional. The Resource Id of the App Service Environment to use for the Function App. |
-| `appServicePlanFamily` | string |  |  | Optional. SkuFamily of app service plan deployed if no appServicePlanId was provided. |
 | `appServicePlanId` | string |  |  | Optional. The Resource Id of the App Service Plan to use for the App. If not provided, the hosting plan name is used to create a new plan. |
-| `appServicePlanName` | string |  |  | Optional. Required if no appServicePlanId is provided to deploy a new app service plan. |
-| `appServicePlanSize` | string |  |  | Optional. SkuSize of app service plan deployed if no appServicePlanId was provided. |
-| `appServicePlanSkuName` | string | `F1` | `[F1, D1, B1, B2, B3, S1, S2, S3, P1, P1v2, P2, P3, P4]` | Optional. The pricing tier for the hosting plan. |
-| `appServicePlanTier` | string |  |  | Optional. SkuTier of app service plan deployed if no appServicePlanId was provided. |
-| `appServicePlanType` | string | `linux` | `[linux, windows]` | Optional. SkuType of app service plan deployed if no appServicePlanId was provided. |
-| `appServicePlanWorkerSize` | int | `2` |  | Optional. Defines the number of workers from the worker pool that will be used by the app service plan |
-| `kind` | string |  | `[functionapp, app]` | Required. Type of site to deploy |
+| `appServicePlanObject` | object | `{object}` |  | Optional. Required if no appServicePlanId is provided to deploy a new app service plan. |
 | `clientAffinityEnabled` | bool | `True` |  | Optional. If Client Affinity is enabled. |
 | `cuaId` | string |  |  | Optional. Customer Usage Attribution id (GUID). This GUID must be previously registered |
 | `diagnosticLogsRetentionInDays` | int | `365` |  | Optional. Specifies the number of days that logs will be kept for; a value of 0 will retain data indefinitely. |
@@ -42,11 +33,13 @@ This module deploys a Web or Function App
 | `functionsExtensionVersion` | string | `~3` |  | Optional. Version if the function extension. |
 | `functionsWorkerRuntime` | string |  | `[dotnet, node, python, java, powershell, ]` | Optional. Runtime of the function worker. |
 | `httpsOnly` | bool | `True` |  | Optional. Configures a web site to accept only https requests. Issues redirect for http requests. |
+| `kind` | string |  | `[functionapp, app]` | Required. Type of site to deploy |
 | `location` | string | `[resourceGroup().location]` |  | Optional. Location for all Resources. |
 | `lock` | string | `NotSpecified` | `[CanNotDelete, NotSpecified, ReadOnly]` | Optional. Specify the type of lock. |
 | `logsToEnable` | array | `[AppServiceHTTPLogs, AppServiceConsoleLogs, AppServiceAppLogs, AppServiceFileAuditLogs, AppServiceAuditLogs]` | `[AppServiceHTTPLogs, AppServiceConsoleLogs, AppServiceAppLogs, AppServiceFileAuditLogs, AppServiceAuditLogs]` | Optional. The name of logs that will be streamed. |
 | `managedServiceIdentity` | string | `None` | `[None, SystemAssigned, SystemAssigned, UserAssigned, UserAssigned]` | Optional. Type of managed service identity. |
 | `metricsToEnable` | array | `[AllMetrics]` | `[AllMetrics]` | Optional. The name of metrics that will be streamed. |
+| `name` | string |  |  | Required. Name of the Web Application Portal Name |
 | `privateEndpoints` | array | `[]` |  | Optional. Configuration Details for private endpoints. |
 | `roleAssignments` | array | `[]` |  | Optional. Array of role assignment objects that contain the 'roleDefinitionIdOrName' and 'principalId' to define RBAC role assignments on this resource. In the roleDefinitionIdOrName attribute, you can provide either the display name of the role definition, or its fully qualified ID in the following format: '/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11' |
 | `siteConfig` | object | `{object}` |  | Required. Configuration of the app. |
