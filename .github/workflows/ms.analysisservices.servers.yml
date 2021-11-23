@@ -60,40 +60,40 @@ jobs:
       versioningOption: ${{ steps.get-workflow-param.outputs.versioningOption }}
       customVersion: ${{ steps.get-workflow-param.outputs.customVersion }}
 
-  ##################
-  #   UNIT TESTS   #
-  ##################
-  # Global tests
-  # ------------
-  job_tests_module_global:
-    runs-on: ubuntu-20.04
-    name: 'Run global module tests'
-    steps:
-      - name: 'Checkout'
-        uses: actions/checkout@v2
-        with:
-          fetch-depth: 0
-      - name: 'Test module'
-        uses: ./.github/actions/templates/validateModuleGeneral
-        with:
-          modulePath: '${{ env.modulePath }}'
-          moduleName: '${{ env.moduleName}}'
+  # ##################
+  # #   UNIT TESTS   #
+  # ##################
+  # # Global tests
+  # # ------------
+  # job_tests_module_global:
+  #   runs-on: ubuntu-20.04
+  #   name: 'Run global module tests'
+  #   steps:
+  #     - name: 'Checkout'
+  #       uses: actions/checkout@v2
+  #       with:
+  #         fetch-depth: 0
+  #     - name: 'Test module'
+  #       uses: ./.github/actions/templates/validateModuleGeneral
+  #       with:
+  #         modulePath: '${{ env.modulePath }}'
+  #         moduleName: '${{ env.moduleName}}'
 
-  # Global API tests
-  # ----------------
-  job_tests_module_global_api:
-    runs-on: ubuntu-20.04
-    name: 'Run global API module tests'
-    steps:
-      - name: 'Checkout'
-        uses: actions/checkout@v2
-        with:
-          fetch-depth: 0
-      - name: 'Test module'
-        uses: ./.github/actions/templates/validateModuleApis
-        with:
-          modulePath: '${{ env.modulePath }}'
-          moduleName: '${{ env.moduleName}}'
+  # # Global API tests
+  # # ----------------
+  # job_tests_module_global_api:
+  #   runs-on: ubuntu-20.04
+  #   name: 'Run global API module tests'
+  #   steps:
+  #     - name: 'Checkout'
+  #       uses: actions/checkout@v2
+  #       with:
+  #         fetch-depth: 0
+  #     - name: 'Test module'
+  #       uses: ./.github/actions/templates/validateModuleApis
+  #       with:
+  #         modulePath: '${{ env.modulePath }}'
+  #         moduleName: '${{ env.moduleName}}'
 
   ###########################
   # Deployment module tests #
@@ -103,8 +103,8 @@ jobs:
     name: 'Run deployment validation module tests'
     needs:
       - job_set_workflow_param
-      - job_tests_module_global
-      - job_tests_module_global_api
+      #- job_tests_module_global
+      #- job_tests_module_global_api
     strategy:
       fail-fast: false
       matrix:
@@ -114,46 +114,52 @@ jobs:
         uses: actions/checkout@v2
         with:
           fetch-depth: 0
-      - name: Set environment variables
-        uses: deep-mm/set-variables@v1.0
-        with:
-          # Name of variable file
-          variableFileName: 'variables.module' # Don't write .json here
-      # ----------- #
-      ##  Dry Run  ##
-      # ----------- #
-      - name: 'Test module with parameter file [${{ matrix.parameterFilePaths }}]'
-        uses: ./.github/actions/templates/validateModuleDeploy
-        with:
-          templateFilePath: '${{ env.modulePath }}/deploy.bicep'
-          parameterFilePath: '${{ env.modulePath }}/.parameters/${{ matrix.parameterFilePaths }}'
-          location: '${{ env.defaultLocation }}'
-          resourceGroupName: '${{ env.resourceGroupName }}'
-          subscriptionId: '${{ secrets.ARM_SUBSCRIPTION_ID }}'
-          managementGroupId: '${{ secrets.ARM_MGMTGROUP_ID }}'
-      # ---------- #
-      ##  Deploy  ##
-      # ---------- #
-      - name: 'Deploy module with parameter file [${{ matrix.parameterFilePaths }}]'
-        uses: ./.github/actions/templates/deployModule
-        with:
-          moduleName: '${{ env.moduleName }}'
-          templateFilePath: '${{ env.modulePath }}/deploy.bicep'
-          parameterFilePath: '${{ env.modulePath }}/.parameters/${{ matrix.parameterFilePaths }}'
-          location: '${{ env.defaultLocation }}'
-          resourceGroupName: '${{ env.resourceGroupName }}'
-          subscriptionId: '${{ secrets.ARM_SUBSCRIPTION_ID }}'
-          managementGroupId: '${{ secrets.ARM_MGMTGROUP_ID }}'
-          removeDeployment: '${{ needs.job_set_workflow_param.outputs.removeDeployment }}'
-      # ---------- #
-      ##  REMOVE  ##
-      # ---------- #
-      - name: 'Remove module of parameter file [${{ matrix.parameterFilePaths }}]'
-        if: ${{ (contains(steps.'Deploy module with parameter file [${{ matrix.parameterFilePaths }}]'.result, 'success') || contains(steps.'Deploy module with parameter file [${{ matrix.parameterFilePaths }}]'.result, 'failure')) && !cancelled() && needs.job_set_workflow_param.outputs.removeDeployment == 'true' }}
-        uses: ./.github/actions/templates/removeModule
-        with:
-          moduleName: '${{ env.moduleName }}'
-          resourceGroupName: '${{ env.resourceGroupName }}'
+      - name: 'Get Output'
+        shell: pwsh
+        run: |
+          Write-Verbose ("ID: [{0}]" -f $STEP_ID) -Verbose
+
+          Write-Verbose (Get-Childitem env:* | Out-String) -Verbose
+      # - name: Set environment variables
+      #   uses: deep-mm/set-variables@v1.0
+      #   with:
+      #     # Name of variable file
+      #     variableFileName: 'variables.module' # Don't write .json here
+      # # ----------- #
+      # ##  Dry Run  ##
+      # # ----------- #
+      # - name: 'Test module with parameter file [${{ matrix.parameterFilePaths }}]'
+      #   uses: ./.github/actions/templates/validateModuleDeploy
+      #   with:
+      #     templateFilePath: '${{ env.modulePath }}/deploy.bicep'
+      #     parameterFilePath: '${{ env.modulePath }}/.parameters/${{ matrix.parameterFilePaths }}'
+      #     location: '${{ env.defaultLocation }}'
+      #     resourceGroupName: '${{ env.resourceGroupName }}'
+      #     subscriptionId: '${{ secrets.ARM_SUBSCRIPTION_ID }}'
+      #     managementGroupId: '${{ secrets.ARM_MGMTGROUP_ID }}'
+      # # ---------- #
+      # ##  Deploy  ##
+      # # ---------- #
+      # - name: 'Deploy module with parameter file [${{ matrix.parameterFilePaths }}]'
+      #   uses: ./.github/actions/templates/deployModule
+      #   with:
+      #     moduleName: '${{ env.moduleName }}'
+      #     templateFilePath: '${{ env.modulePath }}/deploy.bicep'
+      #     parameterFilePath: '${{ env.modulePath }}/.parameters/${{ matrix.parameterFilePaths }}'
+      #     location: '${{ env.defaultLocation }}'
+      #     resourceGroupName: '${{ env.resourceGroupName }}'
+      #     subscriptionId: '${{ secrets.ARM_SUBSCRIPTION_ID }}'
+      #     managementGroupId: '${{ secrets.ARM_MGMTGROUP_ID }}'
+      #     removeDeployment: '${{ needs.job_set_workflow_param.outputs.removeDeployment }}'
+      # # ---------- #
+      # ##  REMOVE  ##
+      # # ---------- #
+      # - name: 'Remove module of parameter file [${{ matrix.parameterFilePaths }}]'
+      #   # if: ${{ (contains(steps.'Deploy module with parameter file [${{ matrix.parameterFilePaths }}]'.result, 'success') || contains(steps.'Deploy module with parameter file [${{ matrix.parameterFilePaths }}]'.result, 'failure')) && !cancelled() && needs.job_set_workflow_param.outputs.removeDeployment == 'true' }}
+      #   uses: ./.github/actions/templates/removeModule
+      #   with:
+      #     moduleName: '${{ env.moduleName }}'
+      #     resourceGroupName: '${{ env.resourceGroupName }}'
 
   ###############
   #   PUBLISH   #
