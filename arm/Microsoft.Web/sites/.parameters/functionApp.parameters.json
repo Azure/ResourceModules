@@ -8,8 +8,20 @@
         "appType": {
             "value": "functionapp"
         },
-        "appServicePlanId": {
-            "value": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Web/serverFarms/adp-sxx-az-asp-x-001"
+        "appServicePlanName": {
+            "value": "ASP-sxx-az-fa-x-001"
+        },
+        "appServicePlanSkuName": {
+            "value": "P1v2"
+        },
+        "appServicePlanTier": {
+            "value": "PremiumV2"
+        },
+        "appServicePlanSize": {
+            "value": "P1v2"
+        },
+        "appServicePlanFamily": {
+            "value": "Pv2"
         },
         "siteConfig": {
             "value": {
