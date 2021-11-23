@@ -37,20 +37,6 @@
 | `tags` | object | `{object}` |  | Optional. Tags of the resource. |
 | `workspaceId` | string |  |  | Optional. Resource identifier of Log Analytics. |
 
-
-### Parameter Usage: `integrationRuntime`
-```json
-"integrationRuntime": {
-    "value": {
-        "name": "AutoResolveIntegrationRuntime",
-        "type": "Managed",
-        "managedVirtualNetworkName": "default",
-        "typeProperties": {}
-    }
-}
-
-```
-
 ### Parameter Usage: `roleAssignments`
 
 ```json
