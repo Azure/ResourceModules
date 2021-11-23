@@ -27,6 +27,10 @@ inputs:
     description: 'Set "true" to set module up for removal'
     default: 'true'
     required: false
+  relativePathOfRemovalScript:
+    description: 'The relative path from root to the script that removes the service'
+    required: false
+    default: 'utilities/pipelines/resourceRemoval/Remove-DeployedModule.ps1'
 
 runs:
   using: 'composite'
@@ -83,7 +87,7 @@ runs:
         # Invoke Token Replacement Functionality
         $null = Convert-TokensInParameterFile @ConvertTokensInputs -Verbose
 
-    - name: 'Deploy [${{ inputs.templateFilePath }}]'
+    - name: 'Deploy [${{ inputs.templateFilePath }}] with parameters [${{ inputs.parameterFilePath }}]'
       shell: pwsh
       run: |
         # Load used functions
@@ -104,4 +108,38 @@ runs:
         Write-Verbose ($functionInput | ConvertTo-Json | Out-String) -Verbose
 
         # Invoke deployment
-        New-ModuleDeployment @functionInput -Verbose
+        try {
+          $res = New-ModuleDeployment @functionInput -Verbose
+          $deploymentSuccessful = $true
+        } else {
+          $res = $_.Exception.Message
+          $deploymentSuccessful = $false
+        }
+
+        Write-Output "::set-output name=deploymentAttempted::$true"
+
+        if(-not $deploymentSuccessful) {
+          throw $res
+        }
+
+    - name: 'Remove [${{ inputs.templateFilePath }}] from parameters [${{ inputs.parameterFilePath }}]'
+      shell: pwsh
+      run: |
+        Write-Verbose (Get-Childitem env:* | Out-String) -Verbose
+
+        if('${{ inputs.removeDeployment }}' -eq 'true' -and $env:deploymentAttempted -eq $true) {
+          # Load used functions
+          $functionPath = Join-Path $env:GITHUB_WORKSPACE '${{ inputs.relativePathOfRemovalScript }}'
+          . $functionPath
+
+          $functionInput = @{
+              moduleName        = '${{ inputs.moduleName }}'
+              resourceGroupName = '${{ inputs.resourceGroupName }}'
+              verbose           = $true
+          }
+
+          Write-Verbose 'Invoke task with' -Verbose
+          Write-Verbose ($functionInput | ConvertTo-Json | Out-String) -Verbose
+
+          Invoke-Expression ('{0} @functionInput' -f (Split-Path $functionPath -LeafBase))
+        }

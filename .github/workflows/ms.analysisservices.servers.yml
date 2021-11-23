@@ -114,13 +114,6 @@ jobs:
         uses: actions/checkout@v2
         with:
           fetch-depth: 0
-      - name: 'Get Output'
-        id: myStep
-        shell: pwsh
-        run: |
-          Write-Verbose ("ID: [{0}]" -f $env:STEP_ID) -Verbose
-
-          Write-Verbose (Get-Childitem env:* | Out-String) -Verbose
       - name: Set environment variables
         uses: deep-mm/set-variables@v1.0
         with:
@@ -138,9 +131,9 @@ jobs:
           resourceGroupName: '${{ env.resourceGroupName }}'
           subscriptionId: '${{ secrets.ARM_SUBSCRIPTION_ID }}'
           managementGroupId: '${{ secrets.ARM_MGMTGROUP_ID }}'
-      # ---------- #
-      ##  Deploy  ##
-      # ---------- #
+      # ------------------- #
+      ##  Deploy & Remove  ##
+      # ------------------- #
       - name: 'Deploy module with parameter file [${{ matrix.parameterFilePaths }}]'
         id: step_deploy
         uses: ./.github/actions/templates/deployModule
@@ -153,15 +146,16 @@ jobs:
           subscriptionId: '${{ secrets.ARM_SUBSCRIPTION_ID }}'
           managementGroupId: '${{ secrets.ARM_MGMTGROUP_ID }}'
           removeDeployment: '${{ needs.job_set_workflow_param.outputs.removeDeployment }}'
-      # ---------- #
-      ##  REMOVE  ##
-      # ---------- #
-      - name: 'Remove module of parameter file [${{ matrix.parameterFilePaths }}]'
-        if: ${{ (contains(steps.step_deploy.result, 'success') || contains(steps.step_deploy.result, 'failure')) && !cancelled() && needs.job_set_workflow_param.outputs.removeDeployment == 'true' }}
-        uses: ./.github/actions/templates/removeModule
-        with:
-          moduleName: '${{ env.moduleName }}'
-          resourceGroupName: '${{ env.resourceGroupName }}'
+      # # ---------- #
+      # ##  REMOVE  ##
+      # # ---------- #
+      # - name: 'Remove module of parameter file [${{ matrix.parameterFilePaths }}]'
+      #   if: ${{ (contains(steps.step_deploy.result, 'success') || contains(steps.step_deploy.result, 'failure')) && !cancelled() && needs.job_set_workflow_param.outputs.removeDeployment == 'true' }}
+      #   #if: ${{ !cancelled() && needs.job_set_workflow_param.outputs.removeDeployment == 'true' }}
+      #   uses: ./.github/actions/templates/removeModule
+      #   with:
+      #     moduleName: '${{ env.moduleName }}'
+      #     resourceGroupName: '${{ env.resourceGroupName }}'
 
   ###############
   #   PUBLISH   #
