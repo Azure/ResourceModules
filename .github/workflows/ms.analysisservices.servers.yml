@@ -108,7 +108,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        parameterFilePaths: ['min.parameters.json', 'parameters.json']
+        parameterFilePaths: ['parameters.json'] # 'min.parameters.json'
     steps:
       - name: 'Checkout'
         uses: actions/checkout@v2
@@ -149,7 +149,7 @@ jobs:
       ##  REMOVE  ##
       # ---------- #
       - name: 'Remove module of parameter file [${{ matrix.parameterFilePaths }}]'
-        if: ${{ (success() || failure()) && !cancelled() && needs.job_set_workflow_param.outputs.removeDeployment == 'true' }}
+        if: ${{ (contains(steps.'Deploy module with parameter file [${{ matrix.parameterFilePaths }}]'.result, 'success') || contains(steps.'Deploy module with parameter file [${{ matrix.parameterFilePaths }}]'.result, 'failure')) && !cancelled() && needs.job_set_workflow_param.outputs.removeDeployment == 'true' }}
         uses: ./.github/actions/templates/removeModule
         with:
           moduleName: '${{ env.moduleName }}'
