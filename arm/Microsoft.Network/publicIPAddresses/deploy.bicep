@@ -1,7 +1,7 @@
 @description('Required. The name of the Public IP Address')
 param publicIPAddressName string
 
-@description('Optional. Resource Id of the Public IP Prefix object. This is only needed if you want your Public IPs created in a PIP Prefix.')
+@description('Optional. Resource ID of the Public IP Prefix object. This is only needed if you want your Public IPs created in a PIP Prefix.')
 param publicIPPrefixId string = ''
 
 @description('Optional. The public IP address allocation method. - Static or Dynamic.')
@@ -44,7 +44,7 @@ param location string = resourceGroup().location
 @description('Optional. Array of role assignment objects that contain the \'roleDefinitionIdOrName\' and \'principalId\' to define RBAC role assignments on this resource. In the roleDefinitionIdOrName attribute, you can provide either the display name of the role definition, or its fully qualified ID in the following format: \'/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11\'')
 param roleAssignments array = []
 
-@description('Optional. Customer Usage Attribution id (GUID). This GUID must be previously registered')
+@description('Optional. Customer Usage Attribution ID (GUID). This GUID must be previously registered')
 param cuaId string = ''
 
 @description('Optional. Tags of the resource.')
@@ -151,5 +151,5 @@ output publicIPAddressResourceGroup string = resourceGroup().name
 @description('The name of the public IP adress')
 output publicIPAddressName string = publicIpAddress.name
 
-@description('The resourceId of the public IP adress')
+@description('The resource ID of the public IP adress')
 output publicIPAddressResourceId string = publicIpAddress.id

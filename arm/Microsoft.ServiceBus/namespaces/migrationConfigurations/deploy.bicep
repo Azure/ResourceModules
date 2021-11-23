@@ -9,10 +9,10 @@ param name string = '$default'
 @description('Required. Name to access Standard Namespace after migration')
 param postMigrationName string
 
-@description('Required. Existing premium Namespace ARM Id name which has no entities, will be used for migration')
+@description('Required. Existing premium Namespace ARM ID name which has no entities, will be used for migration')
 param targetNamespace string
 
-@description('Optional. Customer Usage Attribution id (GUID). This GUID must be previously registered')
+@description('Optional. Customer Usage Attribution ID (GUID). This GUID must be previously registered')
 param cuaId string = ''
 
 module pid_cuaId '.bicep/nested_cuaId.bicep' = if (!empty(cuaId)) {
@@ -31,7 +31,7 @@ resource migrationConfiguration 'Microsoft.ServiceBus/namespaces/migrationConfig
 @description('The name of the migration configuration.')
 output migrationConfigurationName string = migrationConfiguration.name
 
-@description('The Resource Id of the migration configuration')
+@description('The Resource ID of the migration configuration')
 output migrationConfigurationResourceId string = migrationConfiguration.id
 
 @description('The name of the Resource Group the migration configuration was created in.')

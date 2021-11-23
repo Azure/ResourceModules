@@ -4,7 +4,7 @@ This module deploys a Web or Function App
 
 ## Resource types
 
-| Resource Type | Api Version |
+| Resource Type | API Version |
 | :-- | :-- |
 | `Microsoft.Authorization/locks` | 2016-09-01 |
 | `Microsoft.Authorization/roleAssignments` | 2020-04-01-preview |
@@ -21,9 +21,9 @@ This module deploys a Web or Function App
 | Parameter Name | Type | Default Value | Possible Values | Description |
 | :-- | :-- | :-- | :-- | :-- |
 | `appName` | string |  |  | Required. Name of the Web Application Portal Name |
-| `appServiceEnvironmentId` | string |  |  | Optional. The Resource Id of the App Service Environment to use for the Function App. |
+| `appServiceEnvironmentId` | string |  |  | Optional. The Resource ID of the App Service Environment to use for the Function App. |
 | `appServicePlanFamily` | string |  |  | Optional. SkuFamily of app service plan deployed if no appServicePlanId was provided. |
-| `appServicePlanId` | string |  |  | Optional. The Resource Id of the App Service Plan to use for the App. If not provided, the hosting plan name is used to create a new plan. |
+| `appServicePlanId` | string |  |  | Optional. The Resource ID of the App Service Plan to use for the App. If not provided, the hosting plan name is used to create a new plan. |
 | `appServicePlanName` | string |  |  | Optional. Required if no appServicePlanId is provided to deploy a new app service plan. |
 | `appServicePlanSize` | string |  |  | Optional. SkuSize of app service plan deployed if no appServicePlanId was provided. |
 | `appServicePlanSkuName` | string | `F1` | `[F1, D1, B1, B2, B3, S1, S2, S3, P1, P1v2, P2, P3, P4]` | Optional. The pricing tier for the hosting plan. |
@@ -32,7 +32,7 @@ This module deploys a Web or Function App
 | `appServicePlanWorkerSize` | int | `2` |  | Optional. Defines the number of workers from the worker pool that will be used by the app service plan |
 | `appType` | string |  | `[functionapp, app]` | Required. Type of site to deploy |
 | `clientAffinityEnabled` | bool | `True` |  | Optional. If Client Affinity is enabled. |
-| `cuaId` | string |  |  | Optional. Customer Usage Attribution id (GUID). This GUID must be previously registered |
+| `cuaId` | string |  |  | Optional. Customer Usage Attribution ID (GUID). This GUID must be previously registered |
 | `diagnosticLogsRetentionInDays` | int | `365` |  | Optional. Specifies the number of days that logs will be kept for; a value of 0 will retain data indefinitely. |
 | `diagnosticStorageAccountId` | string |  |  | Optional. Resource identifier of the Diagnostic Storage Account. |
 | `enableMonitoring` | bool | `True` |  | Optional. If true, ApplicationInsights will be configured for the Function App. |

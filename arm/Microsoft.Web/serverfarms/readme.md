@@ -4,7 +4,7 @@ This module deploys an App Service Plan.
 
 ## Resource Types
 
-| Resource Type | Api Version |
+| Resource Type | API Version |
 | :-- | :-- |
 | `Microsoft.Authorization/locks` | 2016-09-01 |
 | `Microsoft.Authorization/roleAssignments` | 2020-04-01-preview |
@@ -14,9 +14,9 @@ This module deploys an App Service Plan.
 
 | Parameter Name | Type | Default Value | Possible Values | Description |
 | :-- | :-- | :-- | :-- | :-- |
-| `appServiceEnvironmentId` | string |  |  | Optional. The Resource Id of the App Service Environment to use for the App Service Plan. |
+| `appServiceEnvironmentId` | string |  |  | Optional. The Resource ID of the App Service Environment to use for the App Service Plan. |
 | `appServicePlanName` | string |  |  | Required. The Name of the App Service Plan to deploy. |
-| `cuaId` | string |  |  | Optional. Customer Usage Attribution id (GUID). This GUID must be previously registered |
+| `cuaId` | string |  |  | Optional. Customer Usage Attribution ID (GUID). This GUID must be previously registered |
 | `location` | string | `[resourceGroup().location]` |  | Optional. Location for all resources. |
 | `lock` | string | `NotSpecified` | `[CanNotDelete, NotSpecified, ReadOnly]` | Optional. Specify the type of lock. |
 | `maximumElasticWorkerCount` | int | `1` |  | Optional. Maximum number of total workers allowed for this ElasticScaleEnabled App Service Plan. |

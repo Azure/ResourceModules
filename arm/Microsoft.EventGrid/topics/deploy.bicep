@@ -47,7 +47,7 @@ param lock string = 'NotSpecified'
 @description('Optional. Tags of the resource.')
 param tags object = {}
 
-@description('Optional. Customer Usage Attribution id (GUID). This GUID must be previously registered')
+@description('Optional. Customer Usage Attribution ID (GUID). This GUID must be previously registered')
 param cuaId string = ''
 
 @description('Optional. The name of logs that will be streamed.')
@@ -144,7 +144,7 @@ module eventGrid_rbac '.bicep/nested_rbac.bicep' = [for (roleAssignment, index) 
 
 @description('The Name of the Event Grid Topic')
 output eventGridName string = eventGrid.name
-@description('The Resource Id of the Event Grid')
+@description('The Resource ID of the Event Grid')
 output eventGridResourceId string = eventGrid.id
 @description('The name of the Resource Group with the Event Grid')
 output eventGridResourceGroup string = resourceGroup().name

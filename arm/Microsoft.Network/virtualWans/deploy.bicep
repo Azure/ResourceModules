@@ -51,7 +51,7 @@ param roleAssignments array = []
 @description('Optional. Tags of the resource.')
 param tags object = {}
 
-@description('Optional. Customer Usage Attribution id (GUID). This GUID must be previously registered')
+@description('Optional. Customer Usage Attribution ID (GUID). This GUID must be previously registered')
 param cuaId string = ''
 
 @allowed([
@@ -181,7 +181,7 @@ module virtualWan_rbac '.bicep/nested_rbac.bicep' = [for (roleAssignment, index)
 @description('The name of the virtual WAN')
 output virtualWanName string = virtualWan.name
 
-@description('The resourceId of the virtual WAN')
+@description('The resource ID of the virtual WAN')
 output virtualWanNameResourceId string = virtualWan.id
 
 @description('The resource group the virtual WAN was deployed into')

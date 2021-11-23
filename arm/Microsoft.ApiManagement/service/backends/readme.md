@@ -1,10 +1,10 @@
-# Api Management Service Backends   `[Microsoft.ApiManagement/service/backends]`
+# API Management Service Backends   `[Microsoft.ApiManagement/service/backends]`
 
-This module deploys Api Management Service Backends.
+This module deploys API Management Service Backends.
 
 ## Resource types
 
-| Resource Type | Api Version |
+| Resource Type | API Version |
 | :-- | :-- |
 | `Microsoft.ApiManagement/service/backends` | 2020-06-01-preview |
 
@@ -18,14 +18,14 @@ The following resources are required to be able to deploy this resource.
 
 | Parameter Name | Type | Default Value | Possible Values | Description |
 | :-- | :-- | :-- | :-- | :-- |
-| `apiManagementServiceName` | string |  |  | Required. The name of the of the Api Management service. |
+| `apiManagementServiceName` | string |  |  | Required. The name of the of the API Management service. |
 | `backendDescription` | string |  |  | Optional. Backend Description. |
 | `credentials` | object | `{object}` |  | Optional. Backend Credentials Contract Properties. |
-| `cuaId` | string |  |  | Optional. Customer Usage Attribution id (GUID). This GUID must be previously registered |
+| `cuaId` | string |  |  | Optional. Customer Usage Attribution ID (GUID). This GUID must be previously registered |
 | `name` | string |  |  | Required. Backend Name. |
 | `protocol` | string | `http` |  | Optional. Backend communication protocol. - http or soap |
 | `proxy` | object | `{object}` |  | Optional. Backend Proxy Contract Properties |
-| `resourceId` | string |  |  | Optional. Management Uri of the Resource in External System. This url can be the Arm Resource Id of Logic Apps, Function Apps or Api Apps. |
+| `resourceId` | string |  |  | Optional. Management Uri of the Resource in External System. This url can be the Arm Resource ID of Logic Apps, Function Apps or API Apps. |
 | `serviceFabricCluster` | object | `{object}` |  | Optional. Backend Service Fabric Cluster Properties. |
 | `title` | string |  |  | Optional. Backend Title. |
 | `tls` | object | `{object}` |  | Optional. Backend TLS Properties |

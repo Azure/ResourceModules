@@ -4,7 +4,7 @@ This module deploys a Backup Policy for a Recovery Services Vault
 
 ## Resource types
 
-| Resource Type | Api Version |
+| Resource Type | API Version |
 | :-- | :-- |
 | `Microsoft.RecoveryServices/vaults/backupPolicies` | 2021-08-01 |
 
@@ -15,7 +15,7 @@ This module deploys a Backup Policy for a Recovery Services Vault
 | `recoveryVaultName` | string | `` |  | Required. Name of the Azure Recovery Service Vault |
 | `name` | string | `` |  | Required. Name of the Azure Recovery Service Vault Backup Policy |
 | `backupPolicyProperties` | object | `{}` |  | Required. Configuration of the Azure Recovery Service Vault Backup Policy |
-| `cuaId` | string |  |  | Optional. Customer Usage Attribution id (GUID). This GUID must be previously registered |
+| `cuaId` | string |  |  | Optional. Customer Usage Attribution ID (GUID). This GUID must be previously registered |
 
 ### Parameter Usage: `backupPolicyProperties`
 

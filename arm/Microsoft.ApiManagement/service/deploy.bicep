@@ -1,14 +1,14 @@
 @description('Optional. Additional datacenter locations of the API Management service.')
 param additionalLocations array = []
 
-@description('Required. The name of the of the Api Management service.')
+@description('Required. The name of the of the API Management service.')
 param name string
 
 @description('Optional. List of Certificates that need to be installed in the API Management service. Max supported certificates that can be installed is 10.')
 @maxLength(10)
 param certificates array = []
 
-@description('Optional. Customer Usage Attribution id (GUID). This GUID must be previously registered')
+@description('Optional. Customer Usage Attribution ID (GUID). This GUID must be previously registered')
 param cuaId string = ''
 
 @description('Optional. Custom properties of the API Management service.')
@@ -22,7 +22,7 @@ param diagnosticLogsRetentionInDays int = 365
 @description('Optional. Resource identifier of the Diagnostic Storage Account.')
 param diagnosticStorageAccountId string = ''
 
-@description('Optional. Property only valid for an Api Management service deployed in multiple locations. This can be used to disable the gateway in master region.')
+@description('Optional. Property only valid for an API Management service deployed in multiple locations. This can be used to disable the gateway in master region.')
 param disableGateway bool = false
 
 @description('Optional. Property only meant to be used for Consumption SKU Service. This enforces a client certificate to be presented on each request to the gateway. This also enables the ability to authenticate the certificate in the policy on the gateway.')
@@ -37,7 +37,7 @@ param eventHubName string = ''
 @description('Optional. Custom hostname configuration of the API Management service.')
 param hostnameConfigurations array = []
 
-@description('Optional. Managed service identity of the Api Management service.')
+@description('Optional. Managed service identity of the API Management service.')
 param identity object = {}
 
 @description('Optional. Location for all Resources.')
@@ -63,13 +63,13 @@ param publisherEmail string
 @description('Required. The name of the owner of the service.')
 param publisherName string
 
-@description('Optional. Undelete Api Management Service if it was previously soft-deleted. If this flag is specified and set to True all other properties will be ignored.')
+@description('Optional. Undelete API Management Service if it was previously soft-deleted. If this flag is specified and set to True all other properties will be ignored.')
 param restore bool = false
 
 @description('Optional. Array of role assignment objects that contain the \'roleDefinitionIdOrName\' and \'principalId\' to define RBAC role assignments on this resource. In the roleDefinitionIdOrName attribute, you can provide either the display name of the role definition, or its fully qualified ID in the following format: \'/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11\'')
 param roleAssignments array = []
 
-@description('Optional. The pricing tier of this Api Management service.')
+@description('Optional. The pricing tier of this API Management service.')
 @allowed([
   'Consumption'
   'Developer'
@@ -79,7 +79,7 @@ param roleAssignments array = []
 ])
 param sku string = 'Developer'
 
-@description('Optional. The instance size of this Api Management service.')
+@description('Optional. The instance size of this API Management service.')
 @allowed([
   1
   2
@@ -419,7 +419,7 @@ module apiManagementService_rbac '.bicep/nested_rbac.bicep' = [for (roleAssignme
 @description('The name of the api management service')
 output serviceName string = apiManagementService.name
 
-@description('The resourceId of the api management service')
+@description('The resource ID of the api management service')
 output serviceResourceId string = apiManagementService.id
 
 @description('The resource group the api management service was deployed into')

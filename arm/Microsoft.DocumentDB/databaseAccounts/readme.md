@@ -4,7 +4,7 @@ This module deploys a Documentdb database account and its child resources.
 
 ## Resource Types
 
-| Resource Type | Api Version |
+| Resource Type | API Version |
 | :-- | :-- |
 | `Microsoft.Authorization/locks` | 2016-09-01 |
 | `Microsoft.Authorization/roleAssignments` | 2020-04-01-preview |
@@ -20,7 +20,7 @@ This module deploys a Documentdb database account and its child resources.
 | Parameter Name | Type | Default Value | Possible Values | Description |
 | :-- | :-- | :-- | :-- | :-- |
 | `automaticFailover` | bool | `True` |  | Optional. Enable automatic failover for regions |
-| `cuaId` | string |  |  | Optional. Customer Usage Attribution id (GUID). This GUID must be previously registered |
+| `cuaId` | string |  |  | Optional. Customer Usage Attribution ID (GUID). This GUID must be previously registered |
 | `databaseAccountOfferType` | string | `Standard` | `[Standard]` | Optional. The offer type for the Cosmos DB database account. |
 | `defaultConsistencyLevel` | string | `Session` | `[Eventual, ConsistentPrefix, Session, BoundedStaleness, Strong]` | Optional. The default consistency level of the Cosmos DB account. |
 | `diagnosticLogsRetentionInDays` | int | `365` |  | Optional. Specifies the number of days that logs will be kept for; a value of 0 will retain data indefinitely. |
@@ -107,7 +107,7 @@ Please reference the documentation for [mongodbDatabases](./mongodbDatabases/rea
 | :-- | :-- | :-- |
 | `databaseAccountName` | string | The name of the database account. |
 | `databaseAccountResourceGroup` | string | The name of the Resource Group the database account was created in. |
-| `databaseAccountResourceId` | string | The Resource Id of the database account. |
+| `databaseAccountResourceId` | string | The Resource ID of the database account. |
 
 ## Template references
 

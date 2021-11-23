@@ -124,9 +124,9 @@ In case you want to not only leverage the module templates but actually re-use t
 
 | Secret Name | Example | Description |
 | - | - | - |
-| `ARM_MGMTGROUP_ID` | `de33a0e7-64d9-4a94-8fe9-b018cedf1e05` | The ID of the management group to test deploy modules of that level in. |
-| `ARM_SUBSCRIPTION_ID` | `d0312b25-9160-4550-914f-8738d9b5caf5` | The ID of the subscription to test deploy modules of that level in. |
-| `ARM_TENANT_ID` | `9734cec9-4384-445b-bbb6-767e7be6e5ec` | The ID of the tenant to test deploy modules of that level in. |
+| `ARM_MGMTGROUP_ID` | `de33a0e7-64d9-4a94-8fe9-b018cedf1e05` | The resource ID of the management group to test deploy modules of that level in. |
+| `ARM_SUBSCRIPTION_ID` | `d0312b25-9160-4550-914f-8738d9b5caf5` | The resource ID of the subscription to test deploy modules of that level in. |
+| `ARM_TENANT_ID` | `9734cec9-4384-445b-bbb6-767e7be6e5ec` | The resource ID of the tenant to test deploy modules of that level in. |
 | `AZURE_CREDENTIALS` |  `{"clientId": "4ce8ce4c-cac0-48eb-b815-65e5763e2929", "clientSecret": "<placeholder>", "subscriptionId": "d0312b25-9160-4550-914f-8738d9b5caf5", "tenantId": "9734cec9-4384-445b-bbb6-767e7be6e5ec" }` | The login credentials to use to log into the target Azure environment to test in. |
 | `PLATFORM_REPO_UPDATE_PAT` | `<placeholder>` | A PAT with enough permissions assigned to it to push into the main branch. This PAT is leveraged by pipelines that automatically generate ReadMe files to keep them up to date |
 | `DEPLOYMENT_SP_ID` | `de33a0e7-64d9-4a94-8fe9-b018cedf1e05` | This is the Principal (Object ID) for the Service Principal used as the `AZURE_CREDENTIALS`. It is used for Default Role Assignments when Modules are being deployed into Azure |

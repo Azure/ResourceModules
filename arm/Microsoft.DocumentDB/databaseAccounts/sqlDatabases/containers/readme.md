@@ -2,7 +2,7 @@
 
 ## Resource Types
 
-| Resource Type | Api Version |
+| Resource Type | API Version |
 | :-- | :-- |
 | `Microsoft.DocumentDB/databaseAccounts/sqlDatabases/containers` | 2021-07-01-preview |
 
@@ -10,7 +10,7 @@
 
 | Parameter Name | Type | Default Value | Possible Values | Description |
 | :-- | :-- | :-- | :-- | :-- |
-| `cuaId` | string |  |  | Optional. Customer Usage Attribution id (GUID). This GUID must be previously registered |
+| `cuaId` | string |  |  | Optional. Customer Usage Attribution ID (GUID). This GUID must be previously registered |
 | `databaseAccountName` | string |  |  | Required. Name of the Database Account |
 | `kind` | string | `Hash` | `[Hash, MultiHash, Range]` | Optional. Indicates the kind of algorithm used for partitioning |
 | `name` | string |  |  | Required. Name of the container. |
@@ -29,7 +29,7 @@
 | :-- | :-- | :-- |
 | `containerName` | string | The name of the container. |
 | `containerResourceGroup` | string | The name of the Resource Group the container was created in. |
-| `containerResourceId` | string | The Resource Id of the container. |
+| `containerResourceId` | string | The Resource ID of the container. |
 
 ## Template references
 

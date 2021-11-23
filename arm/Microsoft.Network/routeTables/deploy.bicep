@@ -24,7 +24,7 @@ param roleAssignments array = []
 @description('Optional. Tags of the resource.')
 param tags object = {}
 
-@description('Optional. Customer Usage Attribution id (GUID). This GUID must be previously registered')
+@description('Optional. Customer Usage Attribution ID (GUID). This GUID must be previously registered')
 param cuaId string = ''
 
 module pid_cuaId '.bicep/nested_cuaId.bicep' = if (!empty(cuaId)) {
@@ -65,5 +65,5 @@ output routeTablesResourceGroup string = resourceGroup().name
 @description('The name of the route table')
 output routeTablesName string = routeTable.name
 
-@description('The resourceId of the route table')
+@description('The resource ID of the route table')
 output routeTablesResourceId string = routeTable.id

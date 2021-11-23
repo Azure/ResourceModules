@@ -34,7 +34,7 @@ param roleAssignments array = []
 @description('Optional. Tags of the resource.')
 param tags object = {}
 
-@description('Optional. Customer Usage Attribution id (GUID). This GUID must be previously registered')
+@description('Optional. Customer Usage Attribution ID (GUID). This GUID must be previously registered')
 param cuaId string = ''
 
 @description('Optional. FQDN of local network gateway.')
@@ -82,7 +82,7 @@ module localNetworkGateway_rbac '.bicep/nested_rbac.bicep' = [for (roleAssignmen
   }
 }]
 
-@description('The resourceId of the local network gateway')
+@description('The resource ID of the local network gateway')
 output localNetworkGatewayResourceId string = localNetworkGateway.id
 
 @description('The resource group the local network gateway was deployed into')

@@ -10,7 +10,7 @@ param publicNetworkAccess bool = true
 @description('Optional. Boolean to define whether or not to configure git during template deployment.')
 param gitConfigureLater bool = true
 
-@description('Optional. Repo type - can be \'FactoryVSTSConfiguration\' or \'FactoryGitHubConfiguration\'. Default is \'FactoryVSTSConfiguration\'.')
+@description('Optional. Repository type - can be \'FactoryVSTSConfiguration\' or \'FactoryGitHubConfiguration\'. Default is \'FactoryVSTSConfiguration\'.')
 param gitRepoType string = 'FactoryVSTSConfiguration'
 
 @description('Optional. The account name.')
@@ -104,7 +104,7 @@ param roleAssignments array = []
 @description('Optional. Tags of the resource.')
 param tags object = {}
 
-@description('Optional. Customer Usage Attribution id (GUID). This GUID must be previously registered')
+@description('Optional. Customer Usage Attribution ID (GUID). This GUID must be previously registered')
 param cuaId string = ''
 
 module pid_cuaId '.bicep/nested_cuaId.bicep' = if (!empty(cuaId)) {
@@ -182,7 +182,7 @@ module dataFactory_rbac '.bicep/nested_rbac.bicep' = [for (roleAssignment, index
 @description('The Name of the Azure Data Factory instance.')
 output dataFactoryName string = dataFactory.name
 
-@description('The Resource Id of the Data factory.')
+@description('The Resource ID of the Data factory.')
 output dataFactoryResourceId string = dataFactory.id
 
 @description('The name of the Resource Group with the Data factory.')

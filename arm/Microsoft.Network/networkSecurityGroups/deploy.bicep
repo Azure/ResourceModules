@@ -38,7 +38,7 @@ param roleAssignments array = []
 @description('Optional. Tags of the NSG resource.')
 param tags object = {}
 
-@description('Optional. Customer Usage Attribution id (GUID). This GUID must be previously registered')
+@description('Optional. Customer Usage Attribution ID (GUID). This GUID must be previously registered')
 param cuaId string = ''
 
 @description('Optional. The name of logs that will be streamed.')
@@ -125,7 +125,7 @@ module networkSecurityGroup_rbac '.bicep/nested_rbac.bicep' = [for (roleAssignme
 @description('The resource group the network security group was deployed into')
 output networkSecurityGroupsResourceGroup string = resourceGroup().name
 
-@description('The resourceId of the network security group')
+@description('The resource ID of the network security group')
 output networkSecurityGroupsResourceId string = networkSecurityGroup.id
 
 @description('The name of the network security group')

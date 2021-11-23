@@ -1,4 +1,4 @@
-@description('Required. Id of the Cosmos DB database account.')
+@description('Required. ID of the Cosmos DB database account.')
 param databaseAccountName string
 
 @description('Required. Name of the SQL Database ')
@@ -13,7 +13,7 @@ param throughput int = 400
 @description('Optional. Tags of the SQL Database resource.')
 param tags object = {}
 
-@description('Optional. Customer Usage Attribution id (GUID). This GUID must be previously registered')
+@description('Optional. Customer Usage Attribution ID (GUID). This GUID must be previously registered')
 param cuaId string = ''
 
 module pid_cuaId '.bicep/nested_cuaId.bicep' = if (!empty(cuaId)) {
@@ -48,7 +48,7 @@ module container 'containers/deploy.bicep' = [for container in containers: {
 @description('The name of the sql database.')
 output sqlDatabaseName string = sqlDatabase.name
 
-@description('The Resource Id of the sql database.')
+@description('The Resource ID of the sql database.')
 output sqlDatabaseResourceId string = sqlDatabase.id
 
 @description('The name of the Resource Group the sql database was created in.')

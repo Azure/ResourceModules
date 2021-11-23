@@ -33,7 +33,7 @@ param iconPath string = ''
 @sys.description('Optional. Index of the icon.')
 param iconIndex int = 0
 
-@sys.description('Optional. Customer Usage Attribution id (GUID). This GUID must be previously registered')
+@sys.description('Optional. Customer Usage Attribution ID (GUID). This GUID must be previously registered')
 param cuaId string = ''
 
 module pid_cuaId '.bicep/nested_cuaId.bicep' = if (!empty(cuaId)) {
@@ -55,7 +55,7 @@ resource application 'Microsoft.DesktopVirtualization/applicationGroups/applicat
   }
 }
 
-@sys.description('The resource id of the deployed Application.')
+@sys.description('The resource ID of the deployed Application.')
 output applicationResourceIds string = application.id
 @sys.description('The name of the Resource Group the AVD Application was created in.')
 output applicationResourceGroup string = resourceGroup().name

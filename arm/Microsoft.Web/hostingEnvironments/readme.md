@@ -4,7 +4,7 @@ This module deploys App Service Environment, with resource lock.
 
 ## Resource types
 
-| Resource Type | Api Version |
+| Resource Type | API Version |
 | :-- | :-- |
 | `Microsoft.Authorization/locks` | 2016-09-01 |
 | `Microsoft.Authorization/roleAssignments` | 2020-04-01-preview |
@@ -18,7 +18,7 @@ This module deploys App Service Environment, with resource lock.
 | `apiManagementAccountId` | string |  |  | Optional. API Management Account associated with the App Service Environment. |
 | `appServiceEnvironmentName` | string |  |  | Required. Name of the App Service Environment |
 | `clusterSettings` | array | `[]` |  | Optional. Custom settings for changing the behavior of the App Service Environment |
-| `cuaId` | string |  |  | Optional. Customer Usage Attribution id (GUID). This GUID must be previously registered |
+| `cuaId` | string |  |  | Optional. Customer Usage Attribution ID (GUID). This GUID must be previously registered |
 | `diagnosticLogsRetentionInDays` | int | `365` |  | Optional. Specifies the number of days that logs will be kept for; a value of 0 will retain data indefinitely. |
 | `diagnosticStorageAccountId` | string |  |  | Optional. Resource identifier of the Diagnostic Storage Account. |
 | `dnsSuffix` | string |  |  | Optional. DNS suffix of the App Service Environment. |
@@ -144,7 +144,7 @@ workerPools can have two properties workerSize and workerCount:
 | :-- | :-- | :-- |
 | `appServiceEnvironmentName` | string | The name of the app service environment |
 | `appServiceEnvironmentResourceGroup` | string | The resource group the app service environment was deployed into |
-| `appServiceEnvironmentResourceId` | string | The resourceID of the app service environment |
+| `appServiceEnvironmentResourceId` | string | The resource ID of the app service environment |
 
 ## Template references
 

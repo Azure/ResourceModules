@@ -23,7 +23,7 @@ param schedules array = []
 @description('Optional. List of jobSchedules to be created in the automation account.')
 param jobSchedules array = []
 
-@description('Optional. Id of the log analytics workspace to be linked to the deployed automation account.')
+@description('Optional. ID of the log analytics workspace to be linked to the deployed automation account.')
 param linkedWorkspaceId string = ''
 
 @description('Optional. List of gallerySolutions to be created in the linked log analytics workspace')
@@ -66,7 +66,7 @@ param roleAssignments array = []
 @description('Optional. Tags of the Automation Account resource.')
 param tags object = {}
 
-@description('Optional. Customer Usage Attribution id (GUID). This GUID must be previously registered.')
+@description('Optional. Customer Usage Attribution ID (GUID). This GUID must be previously registered.')
 param cuaId string = ''
 
 @description('Optional. The name of logs that will be streamed.')
@@ -173,12 +173,11 @@ module automationAccount_jobSchedules 'jobSchedules/deploy.bicep' = [for (jobSch
     scheduleName: jobSchedule.scheduleName
     parameters: contains(jobSchedule, 'parameters') ? (!empty(jobSchedule.parameters) ? jobSchedule.parameters : {}) : {}
     runOn: contains(jobSchedule, 'runOn') ? (!empty(jobSchedule.runOn) ? jobSchedule.runOn : '') : ''
-
   }
   dependsOn: [
-      automationAccount_schedules
-      automationAccount_runbooks
-    ]
+    automationAccount_schedules
+    automationAccount_runbooks
+  ]
 }]
 
 module automationAccount_linkedService '.bicep/nested_linkedService.bicep' = if (!empty(linkedWorkspaceId)) {
@@ -191,7 +190,7 @@ module automationAccount_linkedService '.bicep/nested_linkedService.bicep' = if 
   }
   // This is to support linked services to law in different subscription and resource group than the automation account.
   // The current scope is used by default if no linked service is intended to be created.
-  scope: resourceGroup(!empty(linkedWorkspaceId) ? split(linkedWorkspaceId, '/')[2]: subscription().subscriptionId, !empty(linkedWorkspaceId) ? split(linkedWorkspaceId, '/')[4] : resourceGroup().name)
+  scope: resourceGroup(!empty(linkedWorkspaceId) ? split(linkedWorkspaceId, '/')[2] : subscription().subscriptionId, !empty(linkedWorkspaceId) ? split(linkedWorkspaceId, '/')[4] : resourceGroup().name)
 }
 
 module automationAccount_solutions '.bicep/nested_solution.bicep' = [for (gallerySolution, index) in gallerySolutions: if (!empty(linkedWorkspaceId)) {
@@ -203,7 +202,7 @@ module automationAccount_solutions '.bicep/nested_solution.bicep' = [for (galler
   }
   // This is to support solution to law in different subscription and resource group than the automation account.
   // The current scope is used by default if no linked service is intended to be created.
-  scope: resourceGroup(!empty(linkedWorkspaceId) ? split(linkedWorkspaceId, '/')[2]: subscription().subscriptionId, !empty(linkedWorkspaceId) ? split(linkedWorkspaceId, '/')[4] : resourceGroup().name)
+  scope: resourceGroup(!empty(linkedWorkspaceId) ? split(linkedWorkspaceId, '/')[2] : subscription().subscriptionId, !empty(linkedWorkspaceId) ? split(linkedWorkspaceId, '/')[4] : resourceGroup().name)
   dependsOn: [
     automationAccount_linkedService
   ]
@@ -227,7 +226,7 @@ module automationAccount_softwareUpdateConfigurations 'softwareUpdateConfigurati
     maintenanceWindow: contains(softwareUpdateConfiguration, 'maintenanceWindow') ? !empty(softwareUpdateConfiguration.maintenanceWindow) ? softwareUpdateConfiguration.maintenanceWindow : 'PT2H' : 'PT2H'
     monthDays: contains(softwareUpdateConfiguration, 'monthDays') ? !empty(softwareUpdateConfiguration.monthDays) ? softwareUpdateConfiguration.monthDays : [] : []
     monthlyOccurrences: contains(softwareUpdateConfiguration, 'monthlyOccurrences') ? !empty(softwareUpdateConfiguration.monthlyOccurrences) ? softwareUpdateConfiguration.monthlyOccurrences : [] : []
-    nextRun: contains(softwareUpdateConfiguration, 'nextRun') ? !empty(softwareUpdateConfiguration.nextRun) ? softwareUpdateConfiguration.nextRun : '' :  ''
+    nextRun: contains(softwareUpdateConfiguration, 'nextRun') ? !empty(softwareUpdateConfiguration.nextRun) ? softwareUpdateConfiguration.nextRun : '' : ''
     nextRunOffsetMinutes: contains(softwareUpdateConfiguration, 'nextRunOffsetMinutes') ? softwareUpdateConfiguration.nextRunOffsetMinutes : 0
     nonAzureComputerNames: contains(softwareUpdateConfiguration, 'nonAzureComputerNames') ? !empty(softwareUpdateConfiguration.nonAzureComputerNames) ? softwareUpdateConfiguration.nonAzureComputerNames : [] : []
     nonAzureQueries: contains(softwareUpdateConfiguration, 'nonAzureQueries') ? !empty(softwareUpdateConfiguration.nonAzureQueries) ? softwareUpdateConfiguration.nonAzureQueries : [] : []
@@ -245,7 +244,7 @@ module automationAccount_softwareUpdateConfigurations 'softwareUpdateConfigurati
     scopeByTags: contains(softwareUpdateConfiguration, 'scopeByTags') ? !empty(softwareUpdateConfiguration.scopeByTags) ? softwareUpdateConfiguration.scopeByTags : {} : {}
     scopeByTagsOperation: contains(softwareUpdateConfiguration, 'scopeByTagsOperation') ? !empty(softwareUpdateConfiguration.scopeByTagsOperation) ? softwareUpdateConfiguration.scopeByTagsOperation : 'All' : 'All'
     startTime: contains(softwareUpdateConfiguration, 'startTime') ? !empty(softwareUpdateConfiguration.startTime) ? softwareUpdateConfiguration.startTime : '' : ''
-    timeZone: contains(softwareUpdateConfiguration, 'timeZone') ? !empty(softwareUpdateConfiguration.timeZone) ?  softwareUpdateConfiguration.timeZone : 'UTC' : 'UTC'
+    timeZone: contains(softwareUpdateConfiguration, 'timeZone') ? !empty(softwareUpdateConfiguration.timeZone) ? softwareUpdateConfiguration.timeZone : 'UTC' : 'UTC'
     updateClassifications: contains(softwareUpdateConfiguration, 'updateClassifications') ? !empty(softwareUpdateConfiguration.updateClassifications) ? softwareUpdateConfiguration.updateClassifications : [
       'Critical'
       'Security'
@@ -306,7 +305,7 @@ module automationAccount_rbac '.bicep/nested_rbac.bicep' = [for (roleAssignment,
 @description('The name of the deployed automation account')
 output automationAccountName string = automationAccount.name
 
-@description('The id of the deployed automation account')
+@description('The resource ID of the deployed automation account')
 output automationAccountResourceId string = automationAccount.id
 
 @description('The resource group of the deployed automation account')

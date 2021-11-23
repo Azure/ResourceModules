@@ -55,7 +55,7 @@ param lock string = 'NotSpecified'
 @description('Optional. Tags of the resource.')
 param tags object = {}
 
-@description('Optional. Customer Usage Attribution id (GUID). This GUID must be previously registered')
+@description('Optional. Customer Usage Attribution ID (GUID). This GUID must be previously registered')
 param cuaId string = ''
 
 @description('Optional. The name of logs that will be streamed.')
@@ -193,5 +193,5 @@ output acrName string = registry.name
 output acrLoginServer string = reference(registry.id, '2019-05-01').loginServer
 @description('The Name of the Azure Container Registry.')
 output acrResourceGroup string = resourceGroup().name
-@description('The Resource Id of the Azure Container Registry.')
+@description('The Resource ID of the Azure Container Registry.')
 output acrResourceId string = registry.id

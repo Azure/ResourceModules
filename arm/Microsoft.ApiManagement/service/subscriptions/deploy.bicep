@@ -1,13 +1,13 @@
 @description('Optional. Determines whether tracing can be enabled.')
 param allowTracing bool = true
 
-@description('Required. The name of the of the Api Management service.')
+@description('Required. The name of the of the API Management service.')
 param apiManagementServiceName string
 
-@description('Optional. Customer Usage Attribution id (GUID). This GUID must be previously registered')
+@description('Optional. Customer Usage Attribution ID (GUID). This GUID must be previously registered')
 param cuaId string = ''
 
-@description('Optional. User (user id path) for whom subscription is being created in form /users/{userId}')
+@description('Optional. User (user ID path) for whom subscription is being created in form /users/{userId}')
 param ownerId string = ''
 
 @description('Optional. Primary subscription key. If not specified during request key will be generated automatically.')
@@ -43,7 +43,7 @@ resource subscription 'Microsoft.ApiManagement/service/subscriptions@2020-06-01-
   }
 }
 
-@description('The resourceId of the API management service subscription')
+@description('The resource ID of the API management service subscription')
 output subscriptionResourceId string = subscription.id
 
 @description('The name of the API management service subscription')

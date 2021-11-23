@@ -21,7 +21,7 @@ param capacity int = 2
 @description('Optional. Enables HTTP/2 support.')
 param http2Enabled bool = true
 
-@description('Required. PublicIP Resource Id used in Public Frontend.')
+@description('Required. PublicIP Resource ID used in Public Frontend.')
 param frontendPublicIpResourceId string
 
 @metadata({
@@ -39,10 +39,10 @@ param subnetName string
 @description('Optional. The name of the Virtual Network Resource Group where the Application Gateway will be deployed.')
 param vNetResourceGroup string = resourceGroup().name
 
-@description('Optional. The Subscription Id of the Virtual Network where the Application Gateway will be deployed.')
+@description('Optional. The Subscription ID of the Virtual Network where the Application Gateway will be deployed.')
 param vNetSubscriptionId string = subscription().subscriptionId
 
-@description('Optional. Resource Id of an User assigned managed identity which will be associated with the App Gateway.')
+@description('Optional. Resource ID of an User assigned managed identity which will be associated with the App Gateway.')
 param managedIdentityResourceId string = ''
 
 @description('Optional. Application Gateway IP configuration name.')
@@ -51,7 +51,7 @@ param gatewayIpConfigurationName string = 'gatewayIpConfiguration01'
 @description('Optional. SSL certificate reference name for a certificate stored in the Key Vault to configure the HTTPS listeners.')
 param sslCertificateName string = 'sslCertificate01'
 
-@description('Optional. Secret Id of the SSL certificate stored in the Key Vault that will be used to configure the HTTPS listeners.')
+@description('Optional. Secret ID of the SSL certificate stored in the Key Vault that will be used to configure the HTTPS listeners.')
 param sslCertificateKeyVaultSecretId string = ''
 
 @description('Required. The backend pools to be configured.')
@@ -109,7 +109,7 @@ param roleAssignments array = []
 @description('Optional. Tags of the resource.')
 param tags object = {}
 
-@description('Optional. Customer Usage Attribution id (GUID). This GUID must be previously registered.')
+@description('Optional. Customer Usage Attribution ID (GUID). This GUID must be previously registered.')
 param cuaId string = ''
 
 @description('Optional. The name of logs that will be streamed.')
@@ -244,14 +244,14 @@ var frontendHttpsListeners_var = [for frontendHttpsListener in frontendHttpsList
   name: frontendHttpsListener.frontendListenerName
   properties: {
     FrontendIPConfiguration: {
-      Id: '${applicationGatewayResourceId}/frontendIPConfigurations/${frontendHttpsListener.frontendIPType}'
+      id: '${applicationGatewayResourceId}/frontendIPConfigurations/${frontendHttpsListener.frontendIPType}'
     }
     FrontendPort: {
-      Id: '${applicationGatewayResourceId}/frontendPorts/port${frontendHttpsListener.port}'
+      id: '${applicationGatewayResourceId}/frontendPorts/port${frontendHttpsListener.port}'
     }
     Protocol: 'https'
     SslCertificate: {
-      Id: '${applicationGatewayResourceId}/sslCertificates/${sslCertificateName}'
+      id: '${applicationGatewayResourceId}/sslCertificates/${sslCertificateName}'
     }
   }
 }]
@@ -265,10 +265,10 @@ var frontendHttpListeners_var = [for frontendHttpListener in frontendHttpListene
   name: frontendHttpListener.frontendListenerName
   properties: {
     FrontendIPConfiguration: {
-      Id: '${applicationGatewayResourceId}/frontendIPConfigurations/${frontendHttpListener.frontendIPType}'
+      id: '${applicationGatewayResourceId}/frontendIPConfigurations/${frontendHttpListener.frontendIPType}'
     }
     FrontendPort: {
-      Id: '${applicationGatewayResourceId}/frontendPorts/port${frontendHttpListener.port}'
+      id: '${applicationGatewayResourceId}/frontendPorts/port${frontendHttpListener.port}'
     }
     Protocol: 'http'
   }
@@ -298,10 +298,10 @@ var frontendHttpRedirects_var = [for frontendHttpRedirect in frontendHttpRedirec
   name: '${httpListenerhttpRedirectNamePrefix}${frontendHttpRedirect.port}'
   properties: {
     FrontendIPConfiguration: {
-      Id: '${applicationGatewayResourceId}/frontendIPConfigurations/${frontendHttpRedirect.frontendIPType}'
+      id: '${applicationGatewayResourceId}/frontendIPConfigurations/${frontendHttpRedirect.frontendIPType}'
     }
     FrontendPort: {
-      Id: '${applicationGatewayResourceId}/frontendPorts/port${frontendHttpRedirect.port}'
+      id: '${applicationGatewayResourceId}/frontendPorts/port${frontendHttpRedirect.port}'
     }
     Protocol: 'http'
   }
@@ -423,7 +423,7 @@ module applicationGateway_rbac '.bicep/nested_rbac.bicep' = [for (roleAssignment
 @description('The name of the application gateway')
 output applicationGatewayName string = applicationGateway.name
 
-@description('The resource Id of the application gateway')
+@description('The resource ID of the application gateway')
 output applicationGatewayResourceId string = applicationGateway.id
 
 @description('The resource group the application gateway was deployed into')

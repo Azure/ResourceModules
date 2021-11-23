@@ -4,7 +4,7 @@ This module deploys an IP Group, with resource lock.
 
 ## Resource types
 
-| Resource Type | Api Version |
+| Resource Type | API Version |
 | :-- | :-- |
 | `Microsoft.Authorization/locks` | 2016-09-01 |
 | `Microsoft.Authorization/roleAssignments` | 2020-04-01-preview |
@@ -14,7 +14,7 @@ This module deploys an IP Group, with resource lock.
 
 | Parameter Name | Type | Default Value | Possible Values | Description |
 | :-- | :-- | :-- | :-- | :-- |
-| `cuaId` | string |  |  | Optional. Customer Usage Attribution id (GUID). This GUID must be previously registered |
+| `cuaId` | string |  |  | Optional. Customer Usage Attribution ID (GUID). This GUID must be previously registered |
 | `ipAddresses` | array | `[]` |  | Optional. IpAddresses/IpAddressPrefixes in the IpGroups resource. |
 | `ipGroupName` | string |  |  | Required. The name of the ipGroups. |
 | `location` | string | `[resourceGroup().location]` |  | Optional. Location for all resources. |

@@ -20,7 +20,7 @@ param name string
 ])
 param backupManagementType string = ''
 
-@description('Optional. Resource Id of the target resource for the Protection Container ')
+@description('Optional. Resource ID of the target resource for the Protection Container ')
 param sourceResourceId string = ''
 
 @description('Optional. Friendly name of the Protection Container')
@@ -41,7 +41,7 @@ param friendlyName string = ''
 ])
 param containerType string = ''
 
-@description('Optional. Customer Usage Attribution id (GUID). This GUID must be previously registered')
+@description('Optional. Customer Usage Attribution ID (GUID). This GUID must be previously registered')
 param cuaId string = ''
 
 module pid_cuaId './.bicep/nested_cuaId.bicep' = if (!empty(cuaId)) {
@@ -62,7 +62,7 @@ resource protectionContainer 'Microsoft.RecoveryServices/vaults/backupFabrics/pr
 @description('The name of the Resource Group the Protection Container was created in.')
 output protectionContainerResourceGroup string = resourceGroup().name
 
-@description('The Resource Id of the Protection Container.')
+@description('The Resource ID of the Protection Container.')
 output protectionContainerId string = protectionContainer.id
 
 @description('The Name of the Protection Container.')

@@ -22,7 +22,7 @@ Mandatory. Location to test in. E.g. WestEurope
 Optional. Name of the resource group to deploy into. Mandatory if deploying into a resource group (resource group level)
 
 .PARAMETER subscriptionId
-Optional. Id of the subscription to deploy into. Mandatory if deploying into a subscription (subscription level) using a Management groups service connection
+Optional. ID of the subscription to deploy into. Mandatory if deploying into a subscription (subscription level) using a Management groups service connection
 
 .PARAMETER managementGroupId
 Optional. Name of the management group to deploy into. Mandatory if deploying into a management group (management group level)

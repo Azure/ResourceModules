@@ -1,7 +1,7 @@
-@description('Required. The name of the of the Api Management service.')
+@description('Required. The name of the of the API Management service.')
 param apiManagementServiceName string
 
-@description('Optional. Customer Usage Attribution id (GUID). This GUID must be previously registered')
+@description('Optional. Customer Usage Attribution ID (GUID). This GUID must be previously registered')
 param cuaId string = ''
 
 @description('Optional. Format of the policyContent.')
@@ -29,7 +29,7 @@ resource policy 'Microsoft.ApiManagement/service/policies@2020-06-01-preview' = 
   }
 }
 
-@description('The resourceId of the API management service policy')
+@description('The resource ID of the API management service policy')
 output policyResourceId string = policy.id
 
 @description('The name of the API management service policy')

@@ -5,7 +5,7 @@ This Function Helps with Testing A Module Locally
 
 .DESCRIPTION
 This Function Helps with Testing A Module Locally. Use this Function To perform Pester Testing for a Module and then attempting to deploy it. It Also allows you to use your own
-subscription Id, Principal Id, tenant ID and other parameters that need to be tokenized.
+subscription ID, Principal ID, tenant ID and other parameters that need to be tokenized.
 
 .PARAMETER ModuleName
 Mandatory. A String for the name of The module to test. (i.e. 'Microsoft.Authorization/policyExemptions')
@@ -204,7 +204,7 @@ function Test-ModuleLocally {
             } catch {
                 Write-Error $PSItem.Exception
                 if (($ValidationTest -or $DeploymentTest) -and $ValidateOrDeployParameters) {
-                    # Replace Values with Tokens For Repo Updates
+                    # Replace Values with Tokens For Repository Updates
                     Write-Verbose 'Restoring Tokens'
                     $ModuleParameterFiles | ForEach-Object { Convert-TokensInParameterFile @ConvertTokensInputs -ParameterFilePath $PSItem.FullName -RestoreTokens $true -Verbose }
                 }
@@ -214,7 +214,7 @@ function Test-ModuleLocally {
     end {
         # Restore Parameter Files
         if (($ValidationTest -or $DeploymentTest) -and $ValidateOrDeployParameters) {
-            # Replace Values with Tokens For Repo Updates
+            # Replace Values with Tokens For Repository Updates
             Write-Verbose 'Restoring Tokens'
             $ModuleParameterFiles | ForEach-Object { Convert-TokensInParameterFile @ConvertTokensInputs -ParameterFilePath $PSItem.FullName -RestoreTokens $true -Verbose }
         }

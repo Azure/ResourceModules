@@ -13,7 +13,7 @@ param tables array = []
 @description('Optional. Tags to configure in the resource.')
 param tags object = {}
 
-@description('Optional. Customer Usage Attribution id (GUID). This GUID must be previously registered')
+@description('Optional. Customer Usage Attribution ID (GUID). This GUID must be previously registered')
 param cuaId string = ''
 
 module pid_cuaId '.bicep/nested_cuaId.bicep' = if (!empty(cuaId)) {
@@ -40,9 +40,11 @@ resource storageinsightconfig 'Microsoft.OperationalInsights/workspaces/storageI
   }
 }
 
-@description('The resource Id of the deployed storage insights configuration')
+@description('The resource ID of the deployed storage insights configuration')
 output storageinsightconfigResourceId string = storageinsightconfig.id
+
 @description('The resource group where the storage insight configuration is deployed')
 output storageinsightconfigResourceGroup string = resourceGroup().name
+
 @description('The name of the storage insights configuration')
 output storageinsightconfigName string = storageinsightconfig.name

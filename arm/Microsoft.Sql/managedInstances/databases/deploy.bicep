@@ -32,7 +32,7 @@ param storageContainerUri string = ''
 @description('Optional. Conditional. The resource identifier of the source database associated with create operation of this database.')
 param sourceDatabaseId string = ''
 
-@description('Optional. Conditional. The restorable dropped database resource id to restore when creating this database.')
+@description('Optional. Conditional. The restorable dropped database resource ID to restore when creating this database.')
 param restorableDroppedDatabaseId string = ''
 
 @description('Optional. Conditional. If createMode is RestoreExternalBackup, this value is required. Specifies the storage container sas token.')
@@ -78,7 +78,7 @@ param backupLongTermRetentionPoliciesObj object = {}
 @description('Optional. Tags of the resource.')
 param tags object = {}
 
-@description('Optional. Customer Usage Attribution id (GUID). This GUID must be previously registered')
+@description('Optional. Customer Usage Attribution ID (GUID). This GUID must be previously registered')
 param cuaId string = ''
 
 @description('Optional. The name of logs that will be streamed.')
@@ -179,7 +179,7 @@ module database_backupLongTermRetentionPolicy 'backupLongTermRetentionPolicies/d
 @description('The name of the deployed database')
 output databaseName string = database.name
 
-@description('The resource Id of the deployed database')
+@description('The resource ID of the deployed database')
 output databaseResourceId string = database.id
 
 @description('The resource group the database was deployed into')

@@ -9,7 +9,7 @@ This module has some known **limitations**:
 
 ## Resource types
 
-| Resource Type | Api Version |
+| Resource Type | API Version |
 | :-- | :-- |
 | `Microsoft.Authorization/roleAssignments` | 2020-04-01-preview |
 | `Microsoft.Management/managementGroups` | 2021-04-01 |
@@ -18,9 +18,9 @@ This module has some known **limitations**:
 
 | Parameter Name | Type | Default Value | Possible Values | Description |
 | :-- | :-- | :-- | :-- | :-- |
-| `managementGroupId` | string |  |  | Required. The management group id. |
+| `managementGroupId` | string |  |  | Required. The management group ID. |
 | `managementGroupName` | string |  |  | Optional. The management group display name. Defaults to managementGroupId.  |
-| `parentId` | string |  |  | Optional. The management group parent id. Defaults to current scope. |
+| `parentId` | string |  |  | Optional. The management group parent ID. Defaults to current scope. |
 | `roleAssignments` | array | `[]` |  | Optional. Array of role assignment objects to define RBAC on this resource. |
 
 ### Parameter Usage: `roleAssignments`
@@ -76,8 +76,8 @@ If owner access is excessive, the following rights roles will grant enough right
 Consider using the following script:
 
 ```powershell
-$PrincipalID = "<The id of the identity here>"
-$TopMGID = "<The id of the management group here>"
+$PrincipalID = "<The resource ID of the identity here>"
+$TopMGID = "<The resource ID of the management group here>"
 New-AzRoleAssignment -ObjectId $PrincipalID -Scope "/" -RoleDefinitionName "Automation Job Operator"
 New-AzRoleAssignment -ObjectId $PrincipalID -Scope "/providers/Microsoft.Management/managementGroups/$TopMGID" -RoleDefinitionName "Management Group Contributor"
 ```

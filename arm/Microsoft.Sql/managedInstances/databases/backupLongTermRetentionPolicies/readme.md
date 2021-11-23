@@ -4,7 +4,7 @@ This module deploys a backup long-term retention policies for SQL Managed Instan
 
 ## Resource Types
 
-| Resource Type | Api Version |
+| Resource Type | API Version |
 | :-- | :-- |
 | `Microsoft.Sql/managedInstances/databases/backupLongTermRetentionPolicies` | 2021-02-01-preview |
 

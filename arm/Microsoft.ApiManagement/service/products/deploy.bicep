@@ -1,10 +1,10 @@
-@description('Required. The name of the of the Api Management service.')
+@description('Required. The name of the of the API Management service.')
 param apiManagementServiceName string
 
 @description('Optional. Whether subscription approval is required. If false, new subscriptions will be approved automatically enabling developers to call the products APIs immediately after subscribing. If true, administrators must manually approve the subscription before the developer can any of the products APIs. Can be present only if subscriptionRequired property is present and has a value of false.')
 param approvalRequired bool = false
 
-@description('Optional. Customer Usage Attribution id (GUID). This GUID must be previously registered')
+@description('Optional. Customer Usage Attribution ID (GUID). This GUID must be previously registered')
 param cuaId string = ''
 
 @description('Optional. Product description. May include HTML formatting tags.')
@@ -66,7 +66,7 @@ module group 'groups/deploy.bicep' = [for group in groups: {
   }
 }]
 
-@description('The resource Id of the API management service product')
+@description('The resource ID of the API management service product')
 output productResourceId string = product.id
 
 @description('The name of the API management service product')

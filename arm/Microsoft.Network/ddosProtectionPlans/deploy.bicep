@@ -19,7 +19,7 @@ param roleAssignments array = []
 @description('Optional. Tags of the resource.')
 param tags object = {}
 
-@description('Optional. Customer Usage Attribution id (GUID). This GUID must be previously registered')
+@description('Optional. Customer Usage Attribution ID (GUID). This GUID must be previously registered')
 param cuaId string = ''
 
 module pid_cuaId '.bicep/nested_cuaId.bicep' = if (!empty(cuaId)) {
@@ -54,7 +54,7 @@ module ddosProtectionPlan_rbac '.bicep/nested_rbac.bicep' = [for (roleAssignment
 @description('The resource group the DDOS protection plan was deployed into')
 output ddosProtectionPlanResourceGroup string = resourceGroup().name
 
-@description('The resourceId of the DDOS protection plan')
+@description('The resource ID of the DDOS protection plan')
 output ddosProtectionPlanResourceId string = ddosProtectionPlan.id
 
 @description('The name of the DDOS protection plan')

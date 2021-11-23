@@ -4,7 +4,7 @@ This module deploys Role Assignments.
 
 ## Resource types
 
-| Resource Type | Api Version |
+| Resource Type | API Version |
 | :-- | :-- |
 | `Microsoft.Authorization/roleAssignments` | 2020-04-01-preview |
 

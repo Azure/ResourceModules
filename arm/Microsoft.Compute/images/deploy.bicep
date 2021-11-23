@@ -28,7 +28,7 @@ param roleAssignments array = []
 @description('Optional. Tags of the resource.')
 param tags object = {}
 
-@description('Optional. Customer Usage Attribution id (GUID). This GUID must be previously registered')
+@description('Optional. Customer Usage Attribution ID (GUID). This GUID must be previously registered')
 param cuaId string = ''
 
 module pid_cuaId '.bicep/nested_cuaId.bicep' = if (!empty(cuaId)) {
@@ -63,7 +63,7 @@ module image_rbac '.bicep/nested_rbac.bicep' = [for (roleAssignment, index) in r
   }
 }]
 
-@description('The resourceId of the image')
+@description('The resource ID of the image')
 output imageResourceId string = image.id
 
 @description('The resource group the image was deployed into')

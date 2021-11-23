@@ -1,10 +1,10 @@
-@description('Required. The name of the of the Api Management service.')
+@description('Required. The name of the of the API Management service.')
 param apiManagementServiceName string
 
 @description('Required. The name of the of the Product.')
 param productName string
 
-@description('Optional. Customer Usage Attribution id (GUID). This GUID must be previously registered')
+@description('Optional. Customer Usage Attribution ID (GUID). This GUID must be previously registered')
 param cuaId string = ''
 
 @description('Required. Name of the product api.')
@@ -19,7 +19,7 @@ resource api 'Microsoft.ApiManagement/service/products/apis@2020-06-01-preview' 
   name: '${apiManagementServiceName}/${productName}/${name}'
 }
 
-@description('The resourceId of the product api')
+@description('The resource ID of the product api')
 output apiResourceId string = api.id
 
 @description('The name of the product api')

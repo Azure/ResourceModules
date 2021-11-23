@@ -20,7 +20,7 @@ param kind string = 'AzureActivityLog'
 @description('Optional. Tags to configure in the resource.')
 param tags object = {}
 
-@description('Optional. Id of the resource to be linked.')
+@description('Optional. ID of the resource to be linked.')
 param linkedResourceId string = ''
 
 @description('Optional. Windows event log name to configure when kind is WindowsEvent.')
@@ -53,7 +53,7 @@ param syslogName string = ''
 @description('Optional. Severities to configure when kind is LinuxSyslog.')
 param syslogSeverities array = []
 
-@description('Optional. Customer Usage Attribution id (GUID). This GUID must be previously registered')
+@description('Optional. Customer Usage Attribution ID (GUID). This GUID must be previously registered')
 param cuaId string = ''
 
 module pid_cuaId '.bicep/nested_cuaId.bicep' = if (!empty(cuaId)) {
@@ -80,7 +80,7 @@ resource dataSource 'Microsoft.OperationalInsights/workspaces/dataSources@2020-0
   }
 }
 
-@description('The resource Id of the deployed data source')
+@description('The resource ID of the deployed data source')
 output dataSourceResourceId string = dataSource.id
 @description('The resource group where the data source is deployed')
 output dataSourceResourceGroup string = resourceGroup().name

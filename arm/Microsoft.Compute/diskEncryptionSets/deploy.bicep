@@ -4,7 +4,7 @@ param diskEncryptionSetName string
 @description('Optional. Resource location.')
 param location string = resourceGroup().location
 
-@description('Required. Resource id of the KeyVault containing the key or secret.')
+@description('Required. Resource ID of the KeyVault containing the key or secret.')
 param keyVaultId string
 
 @description('Required. Key Url (with version) pointing to a key or secret in KeyVault.')
@@ -16,7 +16,7 @@ param roleAssignments array = []
 @description('Optional. Tags of the Automation Account resource.')
 param tags object = {}
 
-@description('Optional. Customer Usage Attribution id (GUID). This GUID must be previously registered')
+@description('Optional. Customer Usage Attribution ID (GUID). This GUID must be previously registered')
 param cuaId string = ''
 
 module pid_cuaId '.bicep/nested_cuaId.bicep' = if (!empty(cuaId)) {
@@ -70,13 +70,13 @@ module diskEncryptionSet_rbac '.bicep/nested_rbac.bicep' = [for (roleAssignment,
   }
 }]
 
-@description('The resourceId of the disk encryption set')
+@description('The resource ID of the disk encryption set')
 output diskEncryptionSetResourceId string = diskEncryptionSet.id
 
 @description('The name of the disk encryption set')
 output diskEncryptionSetName string = diskEncryptionSet.name
 
-@description('The principal Id of the disk encryption set')
+@description('The principal ID of the disk encryption set')
 output principalId string = reference('Microsoft.Compute/diskEncryptionSets/${diskEncryptionSetName}', '2020-12-01', 'Full').identity.principalId
 
 @description('The name of the key vault with the disk encryption key')

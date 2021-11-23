@@ -1,7 +1,7 @@
-@description('Required. The name of the of the Api Management service.')
+@description('Required. The name of the of the API Management service.')
 param apiManagementServiceName string
 
-@description('Optional. Customer Usage Attribution id (GUID). This GUID must be previously registered')
+@description('Optional. Customer Usage Attribution ID (GUID). This GUID must be previously registered')
 param cuaId string = ''
 
 @description('Required. Portal setting name')
@@ -20,7 +20,7 @@ resource portalSetting 'Microsoft.ApiManagement/service/portalsettings@2019-12-0
   properties: properties
 }
 
-@description('The resourceId of the API management service portal setting')
+@description('The resource ID of the API management service portal setting')
 output portalSettingsResourceId string = portalSetting.id
 
 @description('The name of the API management service portal setting')

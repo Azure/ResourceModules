@@ -1,10 +1,10 @@
-# Api Management Service Portal Settings `[Microsoft.ApiManagement/service/portalsettings]`
+# API Management Service Portal Settings `[Microsoft.ApiManagement/service/portalsettings]`
 
-This module deploys Api Management Service Portal Setting.
+This module deploys API Management Service Portal Setting.
 
 ## Resource Types
 
-| Resource Type | Api Version |
+| Resource Type | API Version |
 | :-- | :-- |
 | `Microsoft.ApiManagement/service/portalsettings` | 2019-12-01 |
 
@@ -12,8 +12,8 @@ This module deploys Api Management Service Portal Setting.
 
 | Parameter Name | Type | Default Value | Possible Values | Description |
 | :-- | :-- | :-- | :-- | :-- |
-| `apiManagementServiceName` | string |  |  | Required. The name of the of the Api Management service. |
-| `cuaId` | string |  |  | Optional. Customer Usage Attribution id (GUID). This GUID must be previously registered |
+| `apiManagementServiceName` | string |  |  | Required. The name of the of the API Management service. |
+| `cuaId` | string |  |  | Optional. Customer Usage Attribution ID (GUID). This GUID must be previously registered |
 | `name` | string |  |  | Required. Portal setting name |
 | `properties` | object | `{object}` |  | Optional. Portal setting properties. |
 

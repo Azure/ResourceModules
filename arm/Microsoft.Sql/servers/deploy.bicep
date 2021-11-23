@@ -31,7 +31,7 @@ param roleAssignments array = []
 @description('Optional. Tags of the resource.')
 param tags object = {}
 
-@description('Optional. Customer Usage Attribution id (GUID). This GUID must be previously registered')
+@description('Optional. Customer Usage Attribution ID (GUID). This GUID must be previously registered')
 param cuaId string = ''
 
 @description('Optional. The databases to create in the server')
@@ -115,7 +115,7 @@ module server_databases 'databases/deploy.bicep' = [for (database, index) in dat
 @description('The name of the deployed SQL server')
 output serverName string = server.name
 
-@description('The resourceId of the deployed SQL server')
+@description('The resource ID of the deployed SQL server')
 output serverResourceId string = server.id
 
 @description('The resourceGroup of the deployed SQL server')

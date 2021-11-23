@@ -4,7 +4,7 @@ This module deploys Share Image Gallery, with resource lock.
 
 ## Resource Types
 
-| Resource Type | Api Version |
+| Resource Type | API Version |
 | :-- | :-- |
 | `Microsoft.Authorization/locks` | 2016-09-01 |
 | `Microsoft.Authorization/roleAssignments` | 2020-04-01-preview |
@@ -17,7 +17,7 @@ This module deploys Share Image Gallery, with resource lock.
 
 | Parameter Name | Type | Default Value | Possible Values | Description |
 | :-- | :-- | :-- | :-- | :-- |
-| `cuaId` | string |  |  | Optional. Customer Usage Attribution id (GUID). This GUID must be previously registered |
+| `cuaId` | string |  |  | Optional. Customer Usage Attribution ID (GUID). This GUID must be previously registered |
 | `galleryDescription` | string |  |  | Optional. Description of the Azure Shared Image Gallery |
 | `galleryName` | string |  |  | Required. Name of the Azure Shared Image Gallery |
 | `images` | _[images](images/readme.md)_ array | `[]` |  | Optional. Images to create |
@@ -78,7 +78,7 @@ Tag names and tag values can be provided as needed. A tag can be left without a 
 | :-- | :-- | :-- |
 | `galleryName` | string | The name of the deployed image gallery |
 | `galleryResourceGroup` | string | The resource group of the deployed image gallery |
-| `galleryResourceId` | string | The resource id of the deployed image gallery |
+| `galleryResourceId` | string | The resource ID of the deployed image gallery |
 
 ## Template references
 

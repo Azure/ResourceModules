@@ -2,7 +2,7 @@
 
 ## Resource Types
 
-| Resource Type | Api Version |
+| Resource Type | API Version |
 | :-- | :-- |
 | `Microsoft.DocumentDB/databaseAccounts/sqlDatabases` | 2021-06-15 |
 | `Microsoft.DocumentDB/databaseAccounts/sqlDatabases/containers` | 2021-07-01-preview |
@@ -12,8 +12,8 @@
 | Parameter Name | Type | Default Value | Possible Values | Description |
 | :-- | :-- | :-- | :-- | :-- |
 | `containers` | _[containers](containers/readme.md)_ array | `[]` |  | Optional. Array of containers to deploy in the SQL database. |
-| `cuaId` | string |  |  | Optional. Customer Usage Attribution id (GUID). This GUID must be previously registered |
-| `databaseAccountName` | string |  |  | Required. Id of the Cosmos DB database account. |
+| `cuaId` | string |  |  | Optional. Customer Usage Attribution ID (GUID). This GUID must be previously registered |
+| `databaseAccountName` | string |  |  | Required. ID of the Cosmos DB database account. |
 | `name` | string |  |  | Required. Name of the SQL Database  |
 | `tags` | object | `{object}` |  | Optional. Tags of the SQL Database resource. |
 | `throughput` | int | `400` |  | Optional. Request Units per second |
@@ -24,7 +24,7 @@
 | :-- | :-- | :-- |
 | `sqlDatabaseName` | string | The name of the sql database. |
 | `sqlDatabaseResourceGroup` | string | The name of the Resource Group the sql database was created in. |
-| `sqlDatabaseResourceId` | string | The Resource Id of the sql database. |
+| `sqlDatabaseResourceId` | string | The Resource ID of the sql database. |
 
 ## Template references
 

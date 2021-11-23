@@ -18,7 +18,7 @@ param roleAssignments array = []
 @description('Optional. Tags of the resource.')
 param tags object = {}
 
-@description('Optional. Customer Usage Attribution id (GUID). This GUID must be previously registered')
+@description('Optional. Customer Usage Attribution ID (GUID). This GUID must be previously registered')
 param cuaId string = ''
 
 module pid_cuaId '.bicep/nested_cuaId.bicep' = if (!empty(cuaId)) {
@@ -53,7 +53,7 @@ module applicationSecurityGroup_rbac '.bicep/nested_rbac.bicep' = [for (roleAssi
 @description('The resource group the application security group was deployed into')
 output applicationSecurityGroupsResourceGroup string = resourceGroup().name
 
-@description('The resourceId of the application security group')
+@description('The resource ID of the application security group')
 output applicationSecurityGroupsResourceId string = applicationSecurityGroup.id
 
 @description('The name of the application security group')

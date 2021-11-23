@@ -1,19 +1,19 @@
 @description('Required. API revision identifier. Must be unique in the current API Management service instance. Non-current revision has ;rev=n as a suffix where n is the revision number.')
 param name string
 
-@description('Optional. Array of Policies to apply to the Service Api.')
+@description('Optional. Array of Policies to apply to the Service API.')
 param policies array = []
 
-@description('Required. The name of the of the Api Management service.')
+@description('Required. The name of the of the API Management service.')
 param apiManagementServiceName string
 
-@description('Optional. Describes the Revision of the Api. If no value is provided, default revision 1 is created')
+@description('Optional. Describes the Revision of the API. If no value is provided, default revision 1 is created')
 param apiRevision string = ''
 
-@description('Optional. Description of the Api Revision.')
+@description('Optional. Description of the API Revision.')
 param apiRevisionDescription string = ''
 
-@description('Optional. Type of Api to create. * http creates a SOAP to REST API * soap creates a SOAP pass-through API.')
+@description('Optional. Type of API to create. * http creates a SOAP to REST API * soap creates a SOAP pass-through API.')
 @allowed([
   'http'
   'soap'
@@ -26,13 +26,13 @@ param apiVersion string = ''
 @description('Optional. Indicates the Version identifier of the API version set')
 param apiVersionSetId string = ''
 
-@description('Optional. Description of the Api Version.')
+@description('Optional. Description of the API Version.')
 param apiVersionDescription string = ''
 
 @description('Optional. Collection of authentication settings included into this API.')
 param authenticationSettings object = {}
 
-@description('Optional. Customer Usage Attribution id (GUID). This GUID must be previously registered')
+@description('Optional. Customer Usage Attribution ID (GUID). This GUID must be previously registered')
 param cuaId string = ''
 
 @description('Optional. Description of the API. May include HTML formatting tags.')
@@ -138,7 +138,7 @@ module policy 'policies/deploy.bicep' = [for policy in policies: {
 @description('The name of the API management service api')
 output apiName string = api.name
 
-@description('The resourceId of the API management service api')
+@description('The resource ID of the API management service api')
 output apiResourceId string = api.id
 
 @description('The resource group the API management service api was deployed to')

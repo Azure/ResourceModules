@@ -40,7 +40,7 @@ param lock string = 'NotSpecified'
 @description('Optional. Tags for all resources.')
 param tags object = {}
 
-@description('Optional. Customer Usage Attribution id (GUID). This GUID must be previously registered')
+@description('Optional. Customer Usage Attribution ID (GUID). This GUID must be previously registered')
 param cuaId string = ''
 
 var activeDirectoryConnectionProperties = [

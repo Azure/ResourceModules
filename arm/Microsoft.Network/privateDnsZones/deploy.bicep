@@ -1,7 +1,7 @@
 @description('Required. Private DNS zone name.')
 param privateDnsZoneName string
 
-@description('Optional. Array of custom objects describing vNet links of the DNS zone. Each object should contain properties \'vnetResourceId\' and \'registrationEnabled\'. The \'vnetResourceId\' is a resource Id of a vNet to link, \'registrationEnabled\' (bool) enables automatic DNS registration in the zone for the linked vNet.')
+@description('Optional. Array of custom objects describing vNet links of the DNS zone. Each object should contain properties \'vnetResourceId\' and \'registrationEnabled\'. The \'vnetResourceId\' is a resource ID of a vNet to link, \'registrationEnabled\' (bool) enables automatic DNS registration in the zone for the linked vNet.')
 param vnetLinks array = []
 
 @description('Optional. The location of the PrivateDNSZone. Should be global.')
@@ -21,7 +21,7 @@ param tags object = {}
 @description('Optional. Specify the type of lock.')
 param lock string = 'NotSpecified'
 
-@description('Optional. Customer Usage Attribution id (GUID). This GUID must be previously registered')
+@description('Optional. Customer Usage Attribution ID (GUID). This GUID must be previously registered')
 param cuaId string = ''
 
 module pid_cuaId '.bicep/nested_cuaId.bicep' = if (!empty(cuaId)) {
@@ -70,5 +70,5 @@ output privateDnsZoneResourceGroup string = resourceGroup().name
 @description('The name of the private DNS zone')
 output privateDnsZoneName string = privateDnsZone.name
 
-@description('The resourceId of the private DNS zone')
+@description('The resource ID of the private DNS zone')
 output privateDnsZoneResourceId string = privateDnsZone.id

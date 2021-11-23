@@ -3,10 +3,10 @@ targetScope = 'managementGroup'
 @description('Optional. The management group display name. Defaults to managementGroupId. ')
 param managementGroupName string = ''
 
-@description('Required. The management group id.')
+@description('Required. The management group ID.')
 param managementGroupId string
 
-@description('Optional. The management group parent id. Defaults to current scope.')
+@description('Optional. The management group parent ID. Defaults to current scope.')
 param parentId string = ''
 
 @description('Optional. Array of role assignment objects to define RBAC on this resource.')

@@ -68,7 +68,7 @@ param roleAssignments array = []
 @description('Optional. Tags of the resource.')
 param tags object = {}
 
-@description('Optional. Customer Usage Attribution id (GUID). This GUID must be previously registered')
+@description('Optional. Customer Usage Attribution ID (GUID). This GUID must be previously registered')
 param cuaId string = ''
 
 var logAnalyticsSearchVersion = 1
@@ -182,7 +182,7 @@ module logAnalyticsWorkspace_rbac '.bicep/nested_rbac.bicep' = [for (roleAssignm
   }
 }]
 
-@description('The resource Id of the deployed log analytics workspace')
+@description('The resource ID of the deployed log analytics workspace')
 output logAnalyticsResourceId string = logAnalyticsWorkspace.id
 @description('The resource group where the log analytics will be deployed')
 output logAnalyticsResourceGroup string = resourceGroup().name

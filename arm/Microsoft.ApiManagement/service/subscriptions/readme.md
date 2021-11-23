@@ -1,10 +1,10 @@
-# Api Management Subscriptions   `[Microsoft.ApiManagement/service/subscriptions]`
+# API Management Subscriptions   `[Microsoft.ApiManagement/service/subscriptions]`
 
-This module deploys Api Management Subscriptions.
+This module deploys API Management Subscriptions.
 
 ## Resource types
 
-| Resource Type | Api Version |
+| Resource Type | API Version |
 | :-- | :-- |
 | `Microsoft.ApiManagement/service/subscriptions` | 2020-06-01-preview |
 
@@ -19,10 +19,10 @@ The following resources are required to be able to deploy this resource.
 | Parameter Name | Type | Default Value | Possible Values | Description |
 | :-- | :-- | :-- | :-- | :-- |
 | `allowTracing` | bool | `True` |  | Optional. Determines whether tracing can be enabled. |
-| `apiManagementServiceName` | string |  |  | Required. The name of the of the Api Management service. |
-| `cuaId` | string |  |  | Optional. Customer Usage Attribution id (GUID). This GUID must be previously registered |
+| `apiManagementServiceName` | string |  |  | Required. The name of the of the API Management service. |
+| `cuaId` | string |  |  | Optional. Customer Usage Attribution ID (GUID). This GUID must be previously registered |
 | `name` | string |  |  | Required. Subscription name. |
-| `ownerId` | string |  |  | Optional. User (user id path) for whom subscription is being created in form /users/{userId} |
+| `ownerId` | string |  |  | Optional. User (user ID path) for whom subscription is being created in form /users/{userId} |
 | `primaryKey` | string |  |  | Optional. Primary subscription key. If not specified during request key will be generated automatically. |
 | `scope` | string | `/apis` |  | Optional. Scope type to choose between a product, allApis or a specific api. Scope like /products/{productId} or /apis or /apis/{apiId}. |
 | `secondaryKey` | string |  |  | Optional. Secondary subscription key. If not specified during request key will be generated automatically. |

@@ -14,7 +14,7 @@ param storageModelType string = 'GeoRedundant'
 @description('Optional. Opt in details of Cross Region Restore feature')
 param crossRegionRestoreFlag bool = true
 
-@description('Optional. Customer Usage Attribution id (GUID). This GUID must be previously registered')
+@description('Optional. Customer Usage Attribution ID (GUID). This GUID must be previously registered')
 param cuaId string = ''
 
 module pid_cuaId './.bicep/nested_cuaId.bicep' = if (!empty(cuaId)) {
@@ -29,6 +29,12 @@ resource backupStorageConfig 'Microsoft.RecoveryServices/vaults/backupstoragecon
     crossRegionRestoreFlag: crossRegionRestoreFlag
   }
 }
+
+@description('The name of the backup storage config')
+output backupStorageConfigName string = backupStorageConfig.name
+
+@description('The resource ID of the backup storage config')
+output backupStorageConfigResourceId string = backupStorageConfig.id
 
 @description('The name of the Resource Group the backup storage configuration was created in.')
 output backupStorageConfigResourceGroup string = resourceGroup().name

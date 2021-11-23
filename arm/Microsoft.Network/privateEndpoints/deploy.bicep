@@ -1,10 +1,10 @@
 @description('Required. Name of the private endpoint resource to create.')
 param privateEndpointName string
 
-@description('Required. Resource Id of the subnet where the endpoint needs to be created.')
+@description('Required. Resource ID of the subnet where the endpoint needs to be created.')
 param targetSubnetId string
 
-@description('Required. Resource Id of the resource that needs to be connected to the network.')
+@description('Required. Resource ID of the resource that needs to be connected to the network.')
 param serviceResourceId string
 
 @description('Required. Subtype(s) of the connection to be created. The allowed values depend on the type serviceResourceId refers to.')
@@ -30,7 +30,7 @@ param roleAssignments array = []
 @description('Optional. Tags to be applied on all resources/resource groups in this deployment.')
 param tags object = {}
 
-@description('Optional. Customer Usage Attribution id (GUID). This GUID must be previously registered')
+@description('Optional. Customer Usage Attribution ID (GUID). This GUID must be previously registered')
 param cuaId string = ''
 
 module pid_cuaId '.bicep/nested_pid.bicep' = if (!empty(cuaId)) {
@@ -88,7 +88,7 @@ module privateEndpoint_rbac '.bicep/nested_rbac.bicep' = [for (roleAssignment, i
 @description('The resource group the private endpoint was deployed into')
 output privateEndpointResourceGroup string = resourceGroup().name
 
-@description('The resourceId of the private endpoint')
+@description('The resource ID of the private endpoint')
 output privateEndpointResourceId string = privateEndpoint.id
 
 @description('The name of the private endpoint')

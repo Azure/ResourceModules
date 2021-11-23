@@ -1,10 +1,10 @@
-# Api Management Service Named Values   `[Microsoft.ApiManagement/service/namedValues]`
+# API Management Service Named Values   `[Microsoft.ApiManagement/service/namedValues]`
 
-This module deploys Api Management Service Named Values.
+This module deploys API Management Service Named Values.
 
 ## Resource types
 
-| Resource Type | Api Version |
+| Resource Type | API Version |
 | :-- | :-- |
 | `Microsoft.ApiManagement/service/namedValues` | 2020-06-01-preview |
 
@@ -18,8 +18,8 @@ The following resources are required to be able to deploy this resource.
 
 | Parameter Name | Type | Default Value | Possible Values | Description |
 | :-- | :-- | :-- | :-- | :-- |
-| `apiManagementServiceName` | string |  |  | Required. The name of the of the Api Management service. |
-| `cuaId` | string |  |  | Optional. Customer Usage Attribution id (GUID). This GUID must be previously registered |
+| `apiManagementServiceName` | string |  |  | Required. The name of the of the API Management service. |
+| `cuaId` | string |  |  | Optional. Customer Usage Attribution ID (GUID). This GUID must be previously registered |
 | `displayName` | string |  |  | Required. Unique name of NamedValue. It may contain only letters, digits, period, dash, and underscore characters. |
 | `keyVault` | object | `{object}` |  | Optional. KeyVault location details of the namedValue.  |
 | `name` | string |  |  | Required. Named value Name. |
@@ -35,7 +35,7 @@ Product API's name list.
 "keyVault": {
     "value":{
         "secretIdentifier":"Key vault secret identifier for fetching secret.",
-        "identityClientId":"SystemAssignedIdentity or UserAssignedIdentity Client Id which will be used to access key vault secret."
+        "identityClientId":"SystemAssignedIdentity or UserAssignedIdentity Client ID which will be used to access key vault secret."
     }
 }
 ```

@@ -4,7 +4,7 @@ This module deploys a virtual machine extension.
 
 ## Resource Types
 
-| Resource Type | Api Version |
+| Resource Type | API Version |
 | :-- | :-- |
 | `Microsoft.Compute/virtualMachines/extensions` | 2021-07-01 |
 
@@ -23,7 +23,7 @@ This module deploys a virtual machine extension.
 | `protectedSettings` | secureObject | {} |  | Optional. Any object that contains the extension specific protected settings |
 | `supressFailures` | bool | `false` |  | Optional. Indicates whether failures stemming from the extension will be suppressed (Operational failures such as not connecting to the VM will not be suppressed regardless of this value). The default is false. |
 | `enableAutomaticUpgrade` | bool |  |  | Required. Indicates whether the extension should be automatically upgraded by the platform if there is a newer version of the extension available. |
-| `cuaId` | string | '' |  | Optional. Customer Usage Attribution id (GUID). This GUID must be previously registered |
+| `cuaId` | string | '' |  | Optional. Customer Usage Attribution ID (GUID). This GUID must be previously registered |
 
 ## Outputs
 
@@ -31,7 +31,7 @@ This module deploys a virtual machine extension.
 | :-- | :-- | :-- |
 | `extensionName` | string | The Name of the extension. |
 | `extensionResourceGroup` | string | The name of the Resource Group the secret was extension in. |
-| `extensionId` | string | The Resource Id of the extension. |
+| `extensionId` | string | The Resource ID of the extension. |
 
 ## Template references
 

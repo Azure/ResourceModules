@@ -16,7 +16,7 @@ param indexes array
 @description('Required. ShardKey for the collection')
 param shardKey object
 
-@description('Optional. Customer Usage Attribution id (GUID). This GUID must be previously registered')
+@description('Optional. Customer Usage Attribution ID (GUID). This GUID must be previously registered')
 param cuaId string = ''
 
 module pid_cuaId '.bicep/nested_cuaId.bicep' = if (!empty(cuaId)) {
@@ -41,7 +41,7 @@ resource collection 'Microsoft.DocumentDB/databaseAccounts/mongodbDatabases/coll
 @description('The name of the mongodb database.')
 output collectionName string = collection.name
 
-@description('The Resource Id of the mongodb database.')
+@description('The Resource ID of the mongodb database.')
 output collectionResourceId string = collection.id
 
 @description('The name of the Resource Group the mongodb database was created in.')

@@ -4,7 +4,7 @@ Azure Container Registry is a managed, private Docker registry service based on 
 
 ## Resource types
 
-| Resource Type | Api Version |
+| Resource Type | API Version |
 | :-- | :-- |
 | `Microsoft.Authorization/locks` | 2016-09-01 |
 | `Microsoft.Authorization/roleAssignments` | 2020-04-01-preview |
@@ -20,7 +20,7 @@ Azure Container Registry is a managed, private Docker registry service based on 
 | `acrAdminUserEnabled` | bool |  |  | Optional. Enable admin user that have push / pull permission to the registry. |
 | `acrName` | string |  |  | Required. Name of your Azure Container Registry |
 | `acrSku` | string | `Basic` | `[Basic, Standard, Premium]` | Optional. Tier of your Azure Container Registry. |
-| `cuaId` | string |  |  | Optional. Customer Usage Attribution id (GUID). This GUID must be previously registered |
+| `cuaId` | string |  |  | Optional. Customer Usage Attribution ID (GUID). This GUID must be previously registered |
 | `dataEndpointEnabled` | bool |  |  | Optional. Enable a single data endpoint per region for serving data. Not relevant in case of disabled public access. |
 | `diagnosticLogsRetentionInDays` | int | `365` |  | Optional. Specifies the number of days that logs will be kept for; a value of 0 will retain data indefinitely. |
 | `diagnosticStorageAccountId` | string |  |  | Optional. Resource identifier of the Diagnostic Storage Account. |
@@ -112,7 +112,7 @@ Tag names and tag values can be provided as needed. A tag can be left without a 
 | `acrLoginServer` | string | The reference to the Azure Container Registry. |
 | `acrName` | string | The Name of the Azure Container Registry. |
 | `acrResourceGroup` | string | The Name of the Azure Container Registry. |
-| `acrResourceId` | string | The Resource Id of the Azure Container Registry. |
+| `acrResourceId` | string | The Resource ID of the Azure Container Registry. |
 
 ## Template references
 

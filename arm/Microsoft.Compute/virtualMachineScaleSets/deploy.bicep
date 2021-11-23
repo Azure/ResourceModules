@@ -247,7 +247,7 @@ param provisionVMAgent bool = true
 @description('Optional. Indicates whether Automatic Updates is enabled for the Windows virtual machine. Default value is true. For virtual machine scale sets, this property can be updated and updates will take effect on OS reprovisioning.')
 param enableAutomaticUpdates bool = true
 
-@description('Optional. Specifies the time zone of the virtual machine. e.g. \'Pacific Standard Time\'. Possible values can be TimeZoneInfo.Id value from time zones returned by TimeZoneInfo.GetSystemTimeZones.')
+@description('Optional. Specifies the time zone of the virtual machine. e.g. \'Pacific Standard Time\'. Possible values can be TimeZoneInfo.id value from time zones returned by TimeZoneInfo.GetSystemTimeZones.')
 param timeZone string = ''
 
 @description('Optional. Specifies additional base-64 encoded XML formatted information that can be included in the Unattend.xml file, which is used by Windows Setup. - AdditionalUnattendContent object')
@@ -299,7 +299,7 @@ param availabilityZones array = []
 @description('Optional. Tags of the resource.')
 param tags object = {}
 
-@description('Optional. Customer Usage Attribution id (GUID). This GUID must be previously registered')
+@description('Optional. Customer Usage Attribution ID (GUID). This GUID must be previously registered')
 param cuaId string = ''
 
 @description('Optional. The chosen OS type')
@@ -745,7 +745,7 @@ module vmss_rbac '.bicep/nested_rbac.bicep' = [for (roleAssignment, index) in ro
   }
 }]
 
-@description('The resourceID of the virtual machine scale set')
+@description('The resource ID of the virtual machine scale set')
 output vmssResourceIds string = vmss.id
 
 @description('The resource group of the virtual machine scale set')

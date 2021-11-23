@@ -2,7 +2,7 @@
 
 ## Resource types
 
-| Resource Type | Api Version |
+| Resource Type | API Version |
 | :-- | :-- |
 | `Microsoft.Authorization/policyDefinitions` | 2020-09-01 |
 
@@ -12,14 +12,14 @@
 | :-- | :-- | :-- | :-- | :-- |
 | `displayName` | string |  |  | Optional. The display name of the policy definition. |
 | `location` | string | `[deployment().location]` |  | Optional. Location for all resources. |
-| `managementGroupId` | string |  |  | Optional. The ID of the Management Group (Scope). Cannot be used with subscriptionId and does not support tenant level deployment (i.e. '/') |
+| `managementGroupId` | string |  |  | Optional. The resource ID of the Management Group (Scope). Cannot be used with subscriptionId and does not support tenant level deployment (i.e. '/') |
 | `metadata` | object | `{object}` |  | Optional. The policy Definition metadata. Metadata is an open ended object and is typically a collection of key value pairs. |
 | `mode` | string | `All` | `[All, Indexed, Microsoft.KeyVault.Data, Microsoft.ContainerService.Data, Microsoft.Kubernetes.Data]` | Optional. The policy definition mode. Default is All, Some examples are All, Indexed, Microsoft.KeyVault.Data. |
 | `parameters` | object | `{object}` |  | Optional. The policy definition parameters that can be used in policy definition references. |
 | `policyDefinitionName` | string |  |  | Required. Specifies the name of the policy definition. Space characters will be replaced by (-) and converted to lowercase |
 | `policyDescription` | string |  |  | Optional. The policy definition description. |
 | `policyRule` | object |  |  | Required. The Policy Rule details for the Policy Definition |
-| `subscriptionId` | string |  |  | Optional. The ID of the Azure Subscription (Scope). Cannot be used with managementGroupId |
+| `subscriptionId` | string |  |  | Optional. The resource ID of the Azure Subscription (Scope). Cannot be used with managementGroupId |
 
 ### Parameter Usage: `managementGroupId`
 

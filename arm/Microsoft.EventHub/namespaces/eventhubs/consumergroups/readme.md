@@ -4,7 +4,7 @@ This module deploys an EventHub Namespace EventHubs Consumer Group
 
 ## Resource Types
 
-| Resource Type | Api Version |
+| Resource Type | API Version |
 | :-- | :-- |
 | `Microsoft.EventHub/namespaces/eventhubs/consumergroups` | 2021-06-01-preview |
 
@@ -12,7 +12,7 @@ This module deploys an EventHub Namespace EventHubs Consumer Group
 
 | Parameter Name | Type | Default Value | Possible Values | Description |
 | :-- | :-- | :-- | :-- | :-- |
-| `cuaId` | string |  |  | Optional. Customer Usage Attribution id (GUID). This GUID must be previously registered |
+| `cuaId` | string |  |  | Optional. Customer Usage Attribution ID (GUID). This GUID must be previously registered |
 | `eventHubName` | string |  |  | Required. The name of the EventHub namespace eventHub |
 | `name` | string |  |  | Required. The name of the consumer group |
 | `namespaceName` | string |  |  | Required. The name of the EventHub namespace |
@@ -24,7 +24,7 @@ This module deploys an EventHub Namespace EventHubs Consumer Group
 | :-- | :-- | :-- |
 | `consumerGroupName` | string | The name of the consumer group. |
 | `consumerGroupResourceGroup` | string | The name of the Resource Group the consumer group was created in. |
-| `consumerGroupResourceId` | string | The Resource Id of the consumer group. |
+| `consumerGroupResourceId` | string | The Resource ID of the consumer group. |
 
 ## Template references
 

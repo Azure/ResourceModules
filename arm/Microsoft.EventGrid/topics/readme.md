@@ -4,7 +4,7 @@ This module deploys Event Grid
 
 ## Resource Types
 
-| Resource Type | Api Version |
+| Resource Type | API Version |
 | :-- | :-- |
 | `Microsoft.Authorization/locks` | 2016-09-01 |
 | `Microsoft.Authorization/roleAssignments` | 2020-04-01-preview |
@@ -17,7 +17,7 @@ This module deploys Event Grid
 
 | Parameter Name | Type | Default Value | Possible Values | Description |
 | :-- | :-- | :-- | :-- | :-- |
-| `cuaId` | string |  |  | Optional. Customer Usage Attribution id (GUID). This GUID must be previously registered |
+| `cuaId` | string |  |  | Optional. Customer Usage Attribution ID (GUID). This GUID must be previously registered |
 | `diagnosticLogsRetentionInDays` | int | `365` |  | Optional. Specifies the number of days that logs will be kept for; a value of 0 will retain data indefinitely. |
 | `diagnosticStorageAccountId` | string |  |  | Optional. Resource identifier of the Diagnostic Storage Account. |
 | `eventGridTopicName` | string |  |  | Required. The name of the Event Grid Topic |
@@ -118,7 +118,7 @@ Tag names and tag values can be provided as needed. A tag can be left without a 
 | :-- | :-- | :-- |
 | `eventGridName` | string | The Name of the Event Grid Topic |
 | `eventGridResourceGroup` | string | The name of the Resource Group with the Event Grid |
-| `eventGridResourceId` | string | The Resource Id of the Event Grid |
+| `eventGridResourceId` | string | The Resource ID of the Event Grid |
 
 ## Template references
 

@@ -4,7 +4,7 @@ This module deploys a virtual machine scale set
 
 ## Resource types
 
-| Resource Type | Api Version |
+| Resource Type | API Version |
 | :-- | :-- |
 | `Microsoft.Authorization/locks` | 2016-09-01 |
 | `Microsoft.Authorization/roleAssignments` | 2020-04-01-preview |
@@ -34,7 +34,7 @@ The following resources are required to be able to deploy this resource.
 | `cseManagedIdentity` | object | `{object}` |  | Optional. A managed identity to use for the CSE. |
 | `cseStorageAccountKey` | string |  |  | Optional. The storage key of the storage account to access for the CSE script(s). |
 | `cseStorageAccountName` | string |  |  | Optional. The name of the storage account to access for the CSE script(s). |
-| `cuaId` | string |  |  | Optional. Customer Usage Attribution id (GUID). This GUID must be previously registered |
+| `cuaId` | string |  |  | Optional. Customer Usage Attribution ID (GUID). This GUID must be previously registered |
 | `customData` | string |  |  | Optional. Custom data associated to the VM, this value will be automatically converted into base64 to account for the expected VM format. |
 | `dataDisks` | array | `[]` |  | Optional. Specifies the data disks. |
 | `diagnosticLogsRetentionInDays` | int | `365` |  | Optional. Specifies the number of days that logs will be kept for; a value of 0 will retain data indefinitely. |
@@ -104,7 +104,7 @@ The following resources are required to be able to deploy this resource.
 | `secrets` | array | `[]` |  | Optional. Specifies set of certificates that should be installed onto the virtual machines in the scale set. |
 | `singlePlacementGroup` | bool | `True` |  | Optional. When true this limits the scale set to a single placement group, of max size 100 virtual machines. NOTE: If singlePlacementGroup is true, it may be modified to false. However, if singlePlacementGroup is false, it may not be modified to true. |
 | `tags` | object | `{object}` |  | Optional. Tags of the resource. |
-| `timeZone` | string |  |  | Optional. Specifies the time zone of the virtual machine. e.g. 'Pacific Standard Time'. Possible values can be TimeZoneInfo.Id value from time zones returned by TimeZoneInfo.GetSystemTimeZones. |
+| `timeZone` | string |  |  | Optional. Specifies the time zone of the virtual machine. e.g. 'Pacific Standard Time'. Possible values can be TimeZoneInfo.ID value from time zones returned by TimeZoneInfo.GetSystemTimeZones. |
 | `ultraSSDEnabled` | bool |  |  | Optional. The flag that enables or disables a capability to have one or more managed data disks with UltraSSD_LRS storage account type on the VM or VMSS. Managed disks with storage account type UltraSSD_LRS can be added to a virtual machine or virtual machine scale set only if this property is enabled. |
 | `upgradePolicyMode` | string | `Manual` | `[Manual, Automatic, Rolling]` | Optional. Specifies the mode of an upgrade to virtual machines in the scale set.' Manual - You control the application of updates to virtual machines in the scale set. You do this by using the manualUpgrade action. ; Automatic - All virtual machines in the scale set are automatically updated at the same time. - Automatic, Manual, Rolling |
 | `vmNamePrefix` | string | `vmssvm` |  | Optional. Specifies the computer name prefix for all of the virtual machines in the scale set. |
@@ -134,7 +134,7 @@ The following resources are required to be able to deploy this resource.
 ```json
 "imageReference": {
     "value": {
-        "id": "/subscriptions/12345-6789-1011-1213-15161718/resourceGroups/rg-name/providers/Microsoft.Compute/images/imagename"
+        "ID": "/subscriptions/12345-6789-1011-1213-15161718/resourceGroups/rg-name/providers/Microsoft.Compute/images/imagename"
     }
 }
 ```
@@ -235,7 +235,7 @@ The following resources are required to be able to deploy this resource.
                     "name": "ipconfig1",
                     "properties": {
                         "subnet": {
-                            "id": "/subscriptions/8629be3b-96bc-482d-a04b-ffff597c65a2/resourceGroups/agents-vmss-rg/providers/Microsoft.Network/virtualNetworks/sxx-az-vnet-x-scaleset/subnets/sxx-az-subnet-scaleset-linux"
+                            "ID": "/subscriptions/8629be3b-96bc-482d-a04b-ffff597c65a2/resourceGroups/agents-vmss-rg/providers/Microsoft.Network/virtualNetworks/sxx-az-vnet-x-scaleset/subnets/sxx-az-subnet-scaleset-linux"
                         }
                     }
                 }
@@ -380,7 +380,7 @@ Tag names and tag values can be provided as needed. A tag can be left without a 
 | :-- | :-- | :-- |
 | `vmssName` | string | The name of the virtual machine scale set |
 | `vmssResourceGroup` | string | The resource group of the virtual machine scale set |
-| `vmssResourceIds` | string | The resourceID of the virtual machine scale set |
+| `vmssResourceIds` | string | The resource ID of the virtual machine scale set |
 
 ## Template references
 

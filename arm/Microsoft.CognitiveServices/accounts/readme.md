@@ -4,7 +4,7 @@ This module deploys different kinds of Cognitive Services resources
 
 ## Resource types
 
-| Resource Type | Api Version |
+| Resource Type | API Version |
 | :-- | :-- |
 | `Microsoft.Authorization/locks` | 2016-09-01 |
 | `Microsoft.Authorization/roleAssignments` | 2020-04-01-preview |
@@ -18,7 +18,7 @@ This module deploys different kinds of Cognitive Services resources
 | Parameter Name | Type | Default Value | Possible Values | Description |
 | :-- | :-- | :-- | :-- | :-- |
 | `accountName` | string |  |  | Required. The name of Cognitive Services account |
-| `cuaId` | string |  |  | Optional. Customer Usage Attribution id (GUID). This GUID must be previously registered |
+| `cuaId` | string |  |  | Optional. Customer Usage Attribution ID (GUID). This GUID must be previously registered |
 | `customSubDomainName` | string |  |  | Optional. Subdomain name used for token-based authentication. Required if 'networkAcls' are set. |
 | `diagnosticLogsRetentionInDays` | int | `365` |  | Optional. Specifies the number of days that logs will be kept for; a value of 0 will retain data indefinitely. |
 | `diagnosticStorageAccountId` | string |  |  | Optional. Resource identifier of the Diagnostic Storage Account. |
@@ -124,7 +124,7 @@ Tag names and tag values can be provided as needed. A tag can be left without a 
     "defaultAction": "Deny",
     "virtualNetworkRules": [
       {
-        "id": "/subscriptions/<subscription-id>/resourceGroups/resourceGroup/providers/Microsoft.Network/virtualNetworks/<vnet-name>/subnets/<subnet-name>",
+        "ID": "/subscriptions/<subscription-ID>/resourceGroups/resourceGroup/providers/Microsoft.Network/virtualNetworks/<vnet-name>/subnets/<subnet-name>",
         "ignoreMissingVnetServiceEndpoint": false
       }
     ],

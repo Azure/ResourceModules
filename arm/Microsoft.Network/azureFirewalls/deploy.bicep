@@ -27,13 +27,13 @@ param networkRuleCollections array = []
 @description('Optional. Collection of NAT rule collections used by Azure Firewall.')
 param natRuleCollections array = []
 
-@description('Required. Shared services Virtual Network resource Id')
+@description('Required. Shared services Virtual Network resource ID')
 param vNetId string
 
 @description('Optional. Specifies the name of the Public IP used by Azure Firewall. If it\'s not provided, a \'-pip\' suffix will be appended to the Firewall\'s name.')
 param azureFirewallPipName string = ''
 
-@description('Optional. Resource Id of the Public IP Prefix object. This is only needed if you want your Public IPs created in a PIP Prefix.')
+@description('Optional. Resource ID of the Public IP Prefix object. This is only needed if you want your Public IPs created in a PIP Prefix.')
 param publicIPPrefixId string = ''
 
 @description('Optional. Diagnostic Storage Account resource identifier')
@@ -77,7 +77,7 @@ param roleAssignments array = []
 @description('Optional. Tags of the Automation Account resource.')
 param tags object = {}
 
-@description('Optional. Customer Usage Attribution id (GUID). This GUID must be previously registered')
+@description('Optional. Customer Usage Attribution ID (GUID). This GUID must be previously registered')
 param cuaId string = ''
 
 var publicIPPrefix = {
@@ -252,7 +252,7 @@ module azureFirewall_rbac '.bicep/nested_rbac.bicep' = [for (roleAssignment, ind
   }
 }]
 
-@description('The resourceId of the Azure firewall')
+@description('The resource ID of the Azure firewall')
 output azureFirewallResourceId string = azureFirewall.id
 
 @description('The name of the Azure firewall')

@@ -2,7 +2,7 @@
 
 ## Resource types
 
-| Resource Type | Api Version |
+| Resource Type | API Version |
 | :-- | :-- |
 | `Microsoft.Authorization/locks` | 2016-09-01 |
 | `Microsoft.Authorization/roleAssignments` | 2020-04-01-preview |
@@ -15,7 +15,7 @@
 
 | Parameter Name | Type | Default Value | Possible Values | Description |
 | :-- | :-- | :-- | :-- | :-- |
-| `cuaId` | string |  |  | Optional. Customer Usage Attribution id (GUID). This GUID must be previously registered |
+| `cuaId` | string |  |  | Optional. Customer Usage Attribution ID (GUID). This GUID must be previously registered |
 | `dataFactoryName` | string |  |  | Required. The name of the Azure Factory to create |
 | `diagnosticLogsRetentionInDays` | int | `365` |  | Optional. Specifies the number of days that logs will be kept for; a value of 0 will retain data indefinitely. |
 | `diagnosticStorageAccountId` | string |  |  | Optional. Resource identifier of the Diagnostic Storage Account. |
@@ -24,7 +24,7 @@
 | `gitConfigureLater` | bool | `True` |  | Optional. Boolean to define whether or not to configure git during template deployment. |
 | `gitProjectName` | string |  |  | Optional. The project name. Only relevant for 'FactoryVSTSConfiguration'. |
 | `gitRepositoryName` | string |  |  | Optional. The repository name. |
-| `gitRepoType` | string | `FactoryVSTSConfiguration` |  | Optional. Repo type - can be 'FactoryVSTSConfiguration' or 'FactoryGitHubConfiguration'. Default is 'FactoryVSTSConfiguration'. |
+| `gitRepoType` | string | `FactoryVSTSConfiguration` |  | Optional. Repository type - can be 'FactoryVSTSConfiguration' or 'FactoryGitHubConfiguration'. Default is 'FactoryVSTSConfiguration'. |
 | `gitRootFolder` | string | `/` |  | Optional. The root folder path name. Default is '/'. |
 | `location` | string | `[resourceGroup().location]` |  | Optional. Location for all Resources. |
 | `lock` | string | `NotSpecified` | `[CanNotDelete, NotSpecified, ReadOnly]` | Optional. Specify the type of lock. |
@@ -81,7 +81,7 @@ Tag names and tag values can be provided as needed. A tag can be left without a 
 | :-- | :-- | :-- |
 | `dataFactoryName` | string | The Name of the Azure Data Factory instance. |
 | `dataFactoryResourceGroup` | string | The name of the Resource Group with the Data factory. |
-| `dataFactoryResourceId` | string | The Resource Id of the Data factory. |
+| `dataFactoryResourceId` | string | The Resource ID of the Data factory. |
 
 ## Template references
 

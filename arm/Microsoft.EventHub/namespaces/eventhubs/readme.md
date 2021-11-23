@@ -4,7 +4,7 @@ This module deploys an Event Hub.
 
 ## Resource types
 
-| Resource Type | Api Version |
+| Resource Type | API Version |
 | :-- | :-- |
 | `Microsoft.Authorization/locks` | 2016-09-01 |
 | `Microsoft.Authorization/roleAssignments` | 2020-04-01-preview |
@@ -20,14 +20,14 @@ This module deploys an Event Hub.
 | `captureDescriptionDestinationArchiveNameFormat` | string | `{Namespace}/{EventHub}/{PartitionId}/{Year}/{Month}/{Day}/{Hour}/{Minute}/{Second}` |  | Optional. Blob naming convention for archive, e.g. {Namespace}/{EventHub}/{PartitionId}/{Year}/{Month}/{Day}/{Hour}/{Minute}/{Second}. Here all the parameters (Namespace,EventHub .. etc) are mandatory irrespective of order |
 | `captureDescriptionDestinationBlobContainer` | string |  |  | Optional. Blob container Name |
 | `captureDescriptionDestinationName` | string | `EventHubArchive.AzureBlockBlob` |  | Optional. Name for capture destination |
-| `captureDescriptionDestinationStorageAccountResourceId` | string |  |  | Optional. Resource id of the storage account to be used to create the blobs |
+| `captureDescriptionDestinationStorageAccountResourceId` | string |  |  | Optional. Resource ID of the storage account to be used to create the blobs |
 | `captureDescriptionEnabled` | bool |  |  | Optional. A value that indicates whether capture description is enabled. |
 | `captureDescriptionEncoding` | string | `Avro` | `[Avro, AvroDeflate]` | Optional. Enumerates the possible values for the encoding format of capture description. Note: "AvroDeflate" will be deprecated in New API Version |
 | `captureDescriptionIntervalInSeconds` | int | `300` |  | Optional. The time window allows you to set the frequency with which the capture to Azure Blobs will happen |
 | `captureDescriptionSizeLimitInBytes` | int | `314572800` |  | Optional. The size window defines the amount of data built up in your Event Hub before an capture operation |
 | `captureDescriptionSkipEmptyArchives` | bool |  |  | Optional. A value that indicates whether to Skip Empty Archives |
 | `consumerGroups` | _[consumerGroups](consumerGroups/readme.md)_ array | `[System.Collections.Hashtable]` |  | Optional. The consumer groups to create in this event hub instance |
-| `cuaId` | string |  |  | Optional. Customer Usage Attribution id (GUID). This GUID must be previously registered |
+| `cuaId` | string |  |  | Optional. Customer Usage Attribution ID (GUID). This GUID must be previously registered |
 | `lock` | string | `NotSpecified` | `[CanNotDelete, NotSpecified, ReadOnly]` | Optional. Specify the type of lock. |
 | `messageRetentionInDays` | int | `1` |  | Optional. Number of days to retain the events for this Event Hub, value should be 1 to 7 days |
 | `name` | string |  |  | Required. The name of the EventHub |

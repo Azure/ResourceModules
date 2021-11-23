@@ -4,7 +4,7 @@ This module deploys a Load Balancer
 
 ## Resource types
 
-| Resource Type | Api Version |
+| Resource Type | API Version |
 | :-- | :-- |
 | `Microsoft.Authorization/locks` | 2016-09-01 |
 | `Microsoft.Authorization/roleAssignments` | 2020-04-01-preview |
@@ -16,7 +16,7 @@ This module deploys a Load Balancer
 | Parameter Name | Type | Default Value | Possible Values | Description |
 | :-- | :-- | :-- | :-- | :-- |
 | `backendAddressPools` | array |  |  | Required. Collection of backend address pools used by a load balancer. |
-| `cuaId` | string |  |  | Optional. Customer Usage Attribution id (GUID). This GUID must be previously registered |
+| `cuaId` | string |  |  | Optional. Customer Usage Attribution ID (GUID). This GUID must be previously registered |
 | `diagnosticLogsRetentionInDays` | int | `365` |  | Optional. Specifies the number of days that logs will be kept for; a value of 0 will retain data indefinitely. |
 | `diagnosticStorageAccountId` | string |  |  | Optional. Resource identifier of the Diagnostic Storage Account. |
 | `eventHubAuthorizationRuleId` | string |  |  | Optional. Resource ID of the event hub authorization rule for the Event Hubs namespace in which the event hub should be created or streamed to. |
@@ -63,7 +63,7 @@ This module deploys a Load Balancer
                         "name": "iacs-sh-main-pd-01-euw-rg-network_awefwa01p-nic-int-01ipconfig-internal",
                         "properties": {
                             "virtualNetwork": {
-                                "id": "[reference(variables('deploymentVNET')).outputs.vNetResourceId.value]"
+                                "ID": "[reference(variables('deploymentVNET')).outputs.vNetResourceId.value]"
                             },
                             "ipAddress": "172.22.232.5"
                         }
@@ -72,7 +72,7 @@ This module deploys a Load Balancer
                         "name": "iacs-sh-main-pd-01-euw-rg-network_awefwa01p-ha-nic-int-01ipconfig-internal",
                         "properties": {
                             "virtualNetwork": {
-                                "id": "[reference(variables('deploymentVNET')).outputs.vNetResourceId.value]"
+                                "ID": "[reference(variables('deploymentVNET')).outputs.vNetResourceId.value]"
                             },
                             "ipAddress": "172.22.232.6"
                         }
@@ -215,7 +215,7 @@ Tag names and tag values can be provided as needed. A tag can be left without a 
 | :-- | :-- | :-- |
 | `loadBalancerName` | string | The name of the load balancer |
 | `loadBalancerResourceGroup` | string | The resource group the load balancer was deployed into |
-| `loadBalancerResourceId` | string | The resourceID of the load balancer |
+| `loadBalancerResourceId` | string | The resource ID of the load balancer |
 
 ## Template references
 

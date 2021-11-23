@@ -29,10 +29,10 @@ param parameters object = {}
 @description('Required. The Policy Rule details for the Policy Definition')
 param policyRule object
 
-@description('Optional. The ID of the Management Group (Scope). Cannot be used with subscriptionId and does not support tenant level deployment (i.e. \'/\')')
+@description('Optional. The resource ID of the Management Group (Scope). Cannot be used with subscriptionId and does not support tenant level deployment (i.e. \'/\')')
 param managementGroupId string = ''
 
-@description('Optional. The ID of the Azure Subscription (Scope). Cannot be used with managementGroupId')
+@description('Optional. The resource ID of the Azure Subscription (Scope). Cannot be used with managementGroupId')
 param subscriptionId string = ''
 
 @description('Optional. Location for all resources.')

@@ -72,33 +72,33 @@ function Remove-vWan {
                 type       = $virtualWANInstance.Type
             }
 
-            $vpnSite = Get-AzVpnSite -ResourceGroupName $ResourceGroupName | Where-Object { $_.VirtualWan.Id -eq $virtualWANInstance.ResourceId }
+            $vpnSite = Get-AzVpnSite -ResourceGroupName $ResourceGroupName | Where-Object { $_.VirtualWan.ID -eq $virtualWANInstance.ResourceId }
             Write-Verbose ('Found [{0}] vpnSite(s) in virtual WAN [{1}]' -f $vpnSite.Count, $virtualWANInstance.name)
 
             foreach ($vpnSiteInstance in $vpnSite) {
                 $resourcesToRemove += @{
-                    resourceId = $vpnSiteInstance.Id
+                    resourceId = $vpnSiteInstance.ID
                     name       = $vpnSiteInstance.Name
                     type       = $vpnSiteInstance.Type
                 }
             }
 
-            $virtualHub = Get-AzVirtualHub -ResourceGroupName $ResourceGroupName | Where-Object { $_.VirtualWan.Id -eq $virtualWANInstance.ResourceId }
+            $virtualHub = Get-AzVirtualHub -ResourceGroupName $ResourceGroupName | Where-Object { $_.VirtualWan.ID -eq $virtualWANInstance.ResourceId }
             Write-Verbose ('Found [{0}] virtual Hub(s) in virtual WAN [{1}]' -f $virtualHub.Count, $virtualWANInstance.name)
 
             foreach ($virtualHubInstance in $virtualHub) {
                 $resourcesToRemove += @{
-                    resourceId = $virtualHub.Id
+                    resourceId = $virtualHub.ID
                     name       = $virtualHub.Name
                     type       = $virtualHub.Type
                 }
 
-                $vpnGateway = Get-AzVpnGateway -ResourceGroupName $ResourceGroupName | Where-Object { $_.VirtualHub.Id -eq $virtualHubInstance.Id }
+                $vpnGateway = Get-AzVpnGateway -ResourceGroupName $ResourceGroupName | Where-Object { $_.VirtualHub.ID -eq $virtualHubInstance.ID }
                 Write-Verbose ('Found [{0}] vpnGateway(s) in virtual virtual Hub [{1}]' -f $vpnGateway.Count, $virtualHubInstance.name)
 
                 foreach ($vpnGatewayInstance in $vpnGateway) {
                     $resourcesToRemove += @{
-                        resourceId = $vpnGatewayInstance.Id
+                        resourceId = $vpnGatewayInstance.ID
                         name       = $vpnGatewayInstance.Name
                         type       = $vpnGatewayInstance.Type
                     }

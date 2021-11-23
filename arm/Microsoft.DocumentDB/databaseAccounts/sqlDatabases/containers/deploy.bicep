@@ -24,7 +24,7 @@ param paths array = []
 ])
 param kind string = 'Hash'
 
-@description('Optional. Customer Usage Attribution id (GUID). This GUID must be previously registered')
+@description('Optional. Customer Usage Attribution ID (GUID). This GUID must be previously registered')
 param cuaId string = ''
 
 module pid_cuaId '.bicep/nested_cuaId.bicep' = if (!empty(cuaId)) {
@@ -52,7 +52,7 @@ resource container 'Microsoft.DocumentDB/databaseAccounts/sqlDatabases/container
 @description('The name of the container.')
 output containerName string = container.name
 
-@description('The Resource Id of the container.')
+@description('The Resource ID of the container.')
 output containerResourceId string = container.id
 
 @description('The name of the Resource Group the container was created in.')

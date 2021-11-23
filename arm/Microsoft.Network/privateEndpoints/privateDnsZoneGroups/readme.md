@@ -4,7 +4,7 @@
 
 ## Resource Types
 
-| Resource Type | Api Version |
+| Resource Type | API Version |
 | :-- | :-- |
 | `Microsoft.Network/privateEndpoints/privateDnsZoneGroups` | 2021-03-01 |
 

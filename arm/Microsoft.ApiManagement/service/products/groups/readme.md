@@ -1,10 +1,10 @@
 # API Management Service Products Groups `[Microsoft.ApiManagement/service/products/groups]`
 
-This module deploys Api Management Service Product Groups.
+This module deploys API Management Service Product Groups.
 
 ## Resource Types
 
-| Resource Type | Api Version |
+| Resource Type | API Version |
 | :-- | :-- |
 | `Microsoft.ApiManagement/service/products/groups` | 2020-06-01-preview |
 
@@ -12,8 +12,8 @@ This module deploys Api Management Service Product Groups.
 
 | Parameter Name | Type | Default Value | Possible Values | Description |
 | :-- | :-- | :-- | :-- | :-- |
-| `apiManagementServiceName` | string |  |  | Required. The name of the of the Api Management service. |
-| `cuaId` | string |  |  | Optional. Customer Usage Attribution id (GUID). This GUID must be previously registered |
+| `apiManagementServiceName` | string |  |  | Required. The name of the of the API Management service. |
+| `cuaId` | string |  |  | Optional. Customer Usage Attribution ID (GUID). This GUID must be previously registered |
 | `name` | string |  |  | Required. Name of the product group. |
 | `productName` | string |  |  | Required. The name of the of the Product. |
 

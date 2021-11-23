@@ -101,7 +101,7 @@ param roleAssignments array = []
 @description('Optional. Resource tags.')
 param tags object = {}
 
-@description('Optional. Customer Usage Attribution id (GUID). This GUID must be previously registered')
+@description('Optional. Customer Usage Attribution ID (GUID). This GUID must be previously registered')
 param cuaId string = ''
 
 @description('Optional. The name of logs that will be streamed.')
@@ -186,7 +186,7 @@ module appServiceEnvironment_rbac '.bicep/nested_rbac.bicep' = [for (roleAssignm
   }
 }]
 
-@description('The resourceID of the app service environment')
+@description('The resource ID of the app service environment')
 output appServiceEnvironmentResourceId string = appServiceEnvironment.id
 
 @description('The resource group the app service environment was deployed into')

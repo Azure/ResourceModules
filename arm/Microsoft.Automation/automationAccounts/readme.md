@@ -4,7 +4,7 @@ This module deploys an Azure Automation Account.
 
 ## Resource Types
 
-| Resource Type | Api Version |
+| Resource Type | API Version |
 | :-- | :-- |
 | `Microsoft.Authorization/locks` | 2016-09-01 |
 | `Microsoft.Authorization/roleAssignments` | 2020-04-01-preview |
@@ -24,14 +24,14 @@ This module deploys an Azure Automation Account.
 
 | Parameter Name | Type | Default Value | Possible Values | Description |
 | :-- | :-- | :-- | :-- | :-- |
-| `cuaId` | string |  |  | Optional. Customer Usage Attribution id (GUID). This GUID must be previously registered. |
+| `cuaId` | string |  |  | Optional. Customer Usage Attribution ID (GUID). This GUID must be previously registered. |
 | `diagnosticLogsRetentionInDays` | int | `365` |  | Optional. Specifies the number of days that logs will be kept for; a value of 0 will retain data indefinitely. |
 | `diagnosticStorageAccountId` | string |  |  | Optional. Resource identifier of the Diagnostic Storage Account. |
 | `eventHubAuthorizationRuleId` | string |  |  | Optional. Resource ID of the event hub authorization rule for the Event Hubs namespace in which the event hub should be created or streamed to. |
 | `eventHubName` | string |  |  | Optional. Name of the event hub within the namespace to which logs are streamed. Without this, an event hub is created for each log category. |
 | `gallerySolutions` | array | `[]` |  | Optional. List of gallerySolutions to be created in the linked log analytics workspace |
 | `jobSchedules` | _[jobSchedules](jobSchedules/readme.md)_ array | `[]` |  | Optional. List of jobSchedules to be created in the automation account. |
-| `linkedWorkspaceId` | string |  |  | Optional. Id of the log analytics workspace to be linked to the deployed automation account. |
+| `linkedWorkspaceId` | string |  |  | Optional. ID of the log analytics workspace to be linked to the deployed automation account. |
 | `location` | string | `[resourceGroup().location]` |  | Optional. Location for all resources. |
 | `lock` | string | `NotSpecified` | `[CanNotDelete, NotSpecified, ReadOnly]` | Optional. Specify the type of lock. |
 | `logsToEnable` | array | `[JobLogs, JobStreams, DscNodeStatus]` | `[JobLogs, JobStreams, DscNodeStatus]` | Optional. The name of logs that will be streamed. |
@@ -137,7 +137,7 @@ To use Private Endpoint the following dependencies must be deployed:
 | :-- | :-- | :-- |
 | `automationAccountName` | string | The name of the deployed automation account |
 | `automationAccountResourceGroup` | string | The resource group of the deployed automation account |
-| `automationAccountResourceId` | string | The id of the deployed automation account |
+| `automationAccountResourceId` | string | The resource ID of the deployed automation account |
 
 ## Template references
 

@@ -7,7 +7,7 @@ param location string = resourceGroup().location
 @description('Optional. Specifies the name of the Public IP used by the Virtual Network Gateway. If it\'s not provided, a \'-pip\' suffix will be appended to the gateway\'s name.')
 param gatewayPipName array = []
 
-@description('Optional. Resource Id of the Public IP Prefix object. This is only needed if you want your Public IPs created in a PIP Prefix.')
+@description('Optional. Resource ID of the Public IP Prefix object. This is only needed if you want your Public IPs created in a PIP Prefix.')
 param publicIPPrefixId string = ''
 
 @description('Optional. Specifies the zones of the Public IP address. Basic IP SKU does not support Availability Zones.')
@@ -48,7 +48,7 @@ param virtualNetworkGatewaySku string
 ])
 param vpnType string = 'RouteBased'
 
-@description('Required. Virtual Network resource Id')
+@description('Required. Virtual Network resource ID')
 param vNetId string
 
 @description('Optional. Value to specify if the Gateway should be deployed in active-active or active-passive configuration')
@@ -100,7 +100,7 @@ param lock string = 'NotSpecified'
 @description('Optional. Tags of the resource.')
 param tags object = {}
 
-@description('Optional. Customer Usage Attribution id (GUID). This GUID must be previously registered')
+@description('Optional. Customer Usage Attribution ID (GUID). This GUID must be previously registered')
 param cuaId string = ''
 
 @description('Optional. The name of logs that will be streamed.')
@@ -377,7 +377,7 @@ output virtualNetworkGatewayResourceGroup string = resourceGroup().name
 @description('The name of the virtual network gateway')
 output virtualNetworkGatewayName string = virtualNetworkGateway.name
 
-@description('The resourceId of the virtual network gateway')
+@description('The resource ID of the virtual network gateway')
 output virtualNetworkGatewayResourceId string = virtualNetworkGateway.id
 
 @description('Shows if the virtual network gateway is configured in active-active mode')
