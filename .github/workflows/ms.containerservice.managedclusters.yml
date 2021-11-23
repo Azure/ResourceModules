@@ -28,7 +28,7 @@ on:
       - '.github/actions/templates/**'
       - '.github/workflows/ms.containerservice.managedclusters.yml'
       - 'arm/Microsoft.ContainerService/managedClusters/**'
-      - '!arm/Microsoft.ContainerService/managedClusters/readme.md'
+      - '!*/**/readme.md'
 
 env:
   moduleName: 'managedClusters'

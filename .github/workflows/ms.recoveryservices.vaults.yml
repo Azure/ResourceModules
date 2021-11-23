@@ -28,7 +28,7 @@ on:
       - '.github/actions/templates/**'
       - '.github/workflows/ms.recoveryservices.vaults.yml'
       - 'arm/Microsoft.RecoveryServices/vaults/**'
-      - '!arm/Microsoft.RecoveryServices/vaults/readme.md'
+      - '!*/**/readme.md'
 
 env:
   moduleName: 'vaults'

@@ -28,7 +28,7 @@ on:
       - '.github/actions/templates/**'
       - '.github/workflows/ms.automanage.accounts.yml'
       - 'arm/Microsoft.Automanage/accounts/**'
-      - '!arm/Microsoft.Automanage/accounts/readme.md'
+      - '!*/**/readme.md'
 
 env:
   moduleName: 'accounts'

@@ -28,7 +28,7 @@ on:
       - '.github/actions/templates/**'
       - '.github/workflows/ms.network.ddosprotectionplans.yml'
       - 'arm/Microsoft.Network/ddosProtectionPlans/**'
-      - '!arm/Microsoft.Network/ddosProtectionPlans/readme.md'
+      - '!*/**/readme.md'
 
 env:
   moduleName: 'ddosProtectionPlans'

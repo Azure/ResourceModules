@@ -28,7 +28,7 @@ on:
       - '.github/actions/templates/**'
       - '.github/workflows/ms.insights.actiongroups.yml'
       - 'arm/Microsoft.Insights/actionGroups/**'
-      - '!arm/Microsoft.Insights/actionGroups/readme.md'
+      - '!*/**/readme.md'
 
 env:
   moduleName: 'actionGroups'

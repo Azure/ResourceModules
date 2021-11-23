@@ -28,7 +28,7 @@ on:
       - '.github/actions/templates/**'
       - '.github/workflows/ms.compute.proximityplacementgroups.yml'
       - 'arm/Microsoft.Compute/proximityPlacementGroups/**'
-      - '!arm/Microsoft.Compute/proximityPlacementGroups/readme.md'
+      - '!*/**/readme.md'
 
 env:
   moduleName: 'proximityPlacementGroups'

@@ -28,7 +28,7 @@ on:
       - '.github/actions/templates/**'
       - '.github/workflows/ms.network.publicipaddresses.yml'
       - 'arm/Microsoft.Network/publicIPAddresses/**'
-      - '!arm/Microsoft.Network/publicIPAddresses/readme.md'
+      - '!*/**/readme.md'
 
 env:
   moduleName: 'publicIPAddresses'

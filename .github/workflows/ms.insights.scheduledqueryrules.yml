@@ -28,7 +28,7 @@ on:
       - '.github/actions/templates/**'
       - '.github/workflows/ms.insights.scheduledqueryrules.yml'
       - 'arm/Microsoft.Insights/scheduledQueryRules/**'
-      - '!arm/Microsoft.Insights/scheduledQueryRules/readme.md'
+      - '!*/**/readme.md'
 
 env:
   moduleName: 'scheduledQueryRules'

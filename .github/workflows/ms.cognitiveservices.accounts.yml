@@ -28,7 +28,7 @@ on:
       - '.github/actions/templates/**'
       - '.github/workflows/ms.cognitiveservices.accounts.yml'
       - 'arm/Microsoft.CognitiveServices/accounts/**'
-      - '!arm/Microsoft.CognitiveServices/accounts/readme.md'
+      - '!*/**/readme.md'
 
 env:
   moduleName: 'accounts'

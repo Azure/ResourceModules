@@ -28,7 +28,7 @@ on:
       - '.github/actions/templates/**'
       - '.github/workflows/ms.security.azuresecuritycenter.yml'
       - 'arm/Microsoft.Security/azureSecurityCenter/**'
-      - '!arm/Microsoft.Security/azureSecurityCenter/readme.md'
+      - '!*/**/readme.md'
 
 env:
   moduleName: 'azureSecurityCenter'

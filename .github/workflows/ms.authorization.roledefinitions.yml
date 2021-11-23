@@ -28,7 +28,7 @@ on:
       - '.github/actions/templates/**'
       - '.github/workflows/ms.authorization.roledefinitions.yml'
       - 'arm/Microsoft.Authorization/roleDefinitions/**'
-      - '!arm/Microsoft.Authorization/roleDefinitions/readme.md'
+      - '!*/**/readme.md'
 
 env:
   moduleName: 'roleDefinitions'

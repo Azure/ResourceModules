@@ -28,7 +28,7 @@ on:
       - '.github/actions/templates/**'
       - '.github/workflows/ms.insights.privatelinkscopes.yml'
       - 'arm/Microsoft.Insights/privateLinkScopes/**'
-      - '!arm/Microsoft.Insights/privateLinkScopes/readme.md'
+      - '!*/**/readme.md'
 
 env:
   moduleName: 'privateLinkScopes'

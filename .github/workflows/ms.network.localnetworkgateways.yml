@@ -28,7 +28,7 @@ on:
       - '.github/actions/templates/**'
       - '.github/workflows/ms.network.localnetworkgateways.yml'
       - 'arm/Microsoft.Network/localNetworkGateways/**'
-      - '!arm/Microsoft.Network/localNetworkGateways/readme.md'
+      - '!*/**/readme.md'
 
 env:
   moduleName: 'localNetworkGateways'

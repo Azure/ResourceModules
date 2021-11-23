@@ -28,7 +28,7 @@ on:
       - '.github/actions/templates/**'
       - '.github/workflows/ms.eventgrid.topics.yml'
       - 'arm/Microsoft.EventGrid/topics/**'
-      - '!arm/Microsoft.EventGrid/topics/readme.md'
+      - '!*/**/readme.md'
 
 env:
   moduleName: 'topics'

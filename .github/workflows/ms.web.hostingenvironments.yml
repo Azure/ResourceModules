@@ -28,7 +28,7 @@ on:
       - '.github/actions/templates/**'
       - '.github/workflows/ms.web.hostingenvironments.yml'
       - 'arm/Microsoft.Web/hostingEnvironments/**'
-      - '!arm/Microsoft.Web/hostingEnvironments/readme.md'
+      - '!*/**/readme.md'
 
 env:
   moduleName: 'hostingEnvironments'

@@ -28,7 +28,7 @@ on:
       - '.github/actions/templates/**'
       - '.github/workflows/ms.network.virtualwans.yml'
       - 'arm/Microsoft.Network/virtualWans/**'
-      - '!arm/Microsoft.Network/virtualWans/readme.md'
+      - '!*/**/readme.md'
 
 env:
   moduleName: 'virtualWans'

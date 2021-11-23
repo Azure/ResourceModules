@@ -28,7 +28,7 @@ on:
       - '.github/actions/templates/**'
       - '.github/workflows/ms.apimanagement.service.yml'
       - 'arm/Microsoft.ApiManagement/service/**'
-      - '!arm/Microsoft.ApiManagement/service/readme.md'
+      - '!*/**/readme.md'
 
 env:
   moduleName: 'service'

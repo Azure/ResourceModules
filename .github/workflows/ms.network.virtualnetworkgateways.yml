@@ -28,7 +28,7 @@ on:
       - '.github/actions/templates/**'
       - '.github/workflows/ms.network.virtualnetworkgateways.yml'
       - 'arm/Microsoft.Network/virtualNetworkGateways/**'
-      - '!arm/Microsoft.Network/virtualNetworkGateways/readme.md'
+      - '!*/**/readme.md'
 
 env:
   moduleName: 'virtualNetworkGateways'

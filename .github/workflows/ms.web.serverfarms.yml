@@ -28,7 +28,7 @@ on:
       - '.github/actions/templates/**'
       - '.github/workflows/ms.web.serverfarms.yml'
       - 'arm/Microsoft.Web/serverfarms/**'
-      - '!arm/Microsoft.Web/serverfarms/readme.md'
+      - '!*/**/readme.md'
 
 env:
   moduleName: 'serverfarms'

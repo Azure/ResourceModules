@@ -28,7 +28,7 @@ on:
       - '.github/actions/templates/**'
       - '.github/workflows/ms.managedidentity.userassignedidentities.yml'
       - 'arm/Microsoft.ManagedIdentity/userAssignedIdentities/**'
-      - '!arm/Microsoft.ManagedIdentity/userAssignedIdentities/readme.md'
+      - '!*/**/readme.md'
 
 env:
   moduleName: 'userAssignedIdentities'

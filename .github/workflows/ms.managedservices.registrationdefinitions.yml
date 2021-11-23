@@ -28,7 +28,7 @@ on:
       - '.github/actions/templates/**'
       - '.github/workflows/ms.managedservices.registrationdefinitions.yml'
       - 'arm/Microsoft.ManagedServices/registrationDefinitions/**'
-      - '!arm/Microsoft.ManagedServices/registrationDefinitions/readme.md'
+      - '!*/**/readme.md'
 
 env:
   moduleName: 'registrationDefinitions'

@@ -28,7 +28,7 @@ on:
       - '.github/actions/templates/**'
       - '.github/workflows/ms.healthbot.healthbots.yml'
       - 'arm/Microsoft.HealthBot/healthBots/**'
-      - '!arm/Microsoft.HealthBot/healthBots/readme.md'
+      - '!*/**/readme.md'
 
 env:
   moduleName: 'healthBots'

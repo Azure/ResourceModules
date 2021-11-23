@@ -28,7 +28,7 @@ on:
       - '.github/actions/templates/**'
       - '.github/workflows/ms.network.bastionhosts.yml'
       - 'arm/Microsoft.Network/bastionHosts/**'
-      - '!arm/Microsoft.Network/bastionHosts/readme.md'
+      - '!*/**/readme.md'
 
 env:
   moduleName: 'bastionHosts'

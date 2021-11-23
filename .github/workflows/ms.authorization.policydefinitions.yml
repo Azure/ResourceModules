@@ -28,7 +28,7 @@ on:
       - '.github/actions/templates/**'
       - '.github/workflows/ms.authorization.policydefinitions.yml'
       - 'arm/Microsoft.Authorization/policyDefinitions/**'
-      - '!arm/Microsoft.Authorization/policyDefinitions/readme.md'
+      - '!*/**/readme.md'
 
 env:
   moduleName: 'policyDefinitions'
