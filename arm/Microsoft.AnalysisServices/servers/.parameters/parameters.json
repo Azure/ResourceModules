@@ -8,6 +8,9 @@
         "skuName": {
             "value": "D1"
         },
+        "lock": {
+            "value": "ReadOnlyNotExisting"
+        },
         "roleAssignments": {
             "value": [
                 {
