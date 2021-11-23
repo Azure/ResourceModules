@@ -48,6 +48,24 @@
                     "licenseType": "LicenseIncluded"
                 }
             ]
+        },
+        "firewallRules": {
+            "value": [
+                {
+                    "name": "AllowAllWindowsAzureIps",
+                    "endIpAddress": "0.0.0.0",
+                    "startIpAddress": "0.0.0.0"
+                }
+            ]
+        },
+        "securityAlertPolicies": {
+            "value": [
+                {
+                    "name": "Default",
+                    "state": "Enabled",
+                    "emailAccountAdmins": true
+                }
+            ]
         }
     }
 }
