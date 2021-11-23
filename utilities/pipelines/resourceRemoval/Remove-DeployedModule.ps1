@@ -253,13 +253,3 @@ function Remove-DeployedModule {
         Write-Debug ('{0} exited' -f $MyInvocation.MyCommand)
     }
 }
-
-$inputObject = @{
-    verbose           = $true
-    moduleName        = 'servers'
-    deploymentName    = 'servers-20211123T1911421080Z'
-    # deploymentName    = 'servers-20211123T1911345345ZZ'
-    templateFilePath  = 'C:\dev\ip\Azure-ResourceModules\ResourceModules\arm\Microsoft.AnalysisServices\servers\deploy.bicep'
-    resourceGroupName = 'validation-rg'
-}
-Remove-DeployedModule @inputObject
