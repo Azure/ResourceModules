@@ -1,4 +1,5 @@
-param roleAssignmentObj object
+param principalIds array
+param roleDefinitionIdOrName string
 param resourceName string
 
 var builtInRoleNames = {
@@ -27,10 +28,10 @@ resource publicIpAddress 'Microsoft.Network/publicIPAddresses@2021-02-01' existi
   name: resourceName
 }
 
-resource roleAssignment 'Microsoft.Authorization/roleAssignments@2020-04-01-preview' = [for principalId in roleAssignmentObj.principalIds: {
-  name: guid(publicIpAddress.name, principalId, roleAssignmentObj.roleDefinitionIdOrName)
+resource roleAssignment 'Microsoft.Authorization/roleAssignments@2020-04-01-preview' = [for principalId in principalIds: {
+  name: guid(publicIpAddress.name, principalId, roleDefinitionIdOrName)
   properties: {
-    roleDefinitionId: contains(builtInRoleNames, roleAssignmentObj.roleDefinitionIdOrName) ? builtInRoleNames[roleAssignmentObj.roleDefinitionIdOrName] : roleAssignmentObj.roleDefinitionIdOrName
+    roleDefinitionId: contains(builtInRoleNames, roleDefinitionIdOrName) ? builtInRoleNames[roleDefinitionIdOrName] : roleDefinitionIdOrName
     principalId: principalId
   }
   scope: publicIpAddress
