@@ -70,9 +70,10 @@ function Remove-vWan {
             $unorderedResourceIds | Where-Object { $_ -match 'Microsoft.Network/virtualWans' }
         )
         $resourcesToRemove = $orderedResourceIds | ForEach-Object {
-            @{ resourceId = $_
-                name      = $_.Split('/')[-1]
-                type      = $_.Split('/')[6..7] -join '/'
+            @{
+                resourceId = $_
+                name       = $_.Split('/')[-1]
+                type       = $_.Split('/')[6..7] -join '/'
             }
         }
 
