@@ -12,5 +12,6 @@
         [System.Security.SecureString]
         $Value
     )
-    Write-Output ("`n::add-mask::{0}" -f $Value)
+    $ValueNew = ConvertFrom-SecureString -SecureString $Value -AsPlainText
+    Write-Output ("`n::add-mask::{0}" -f $ValueNew)
 }
