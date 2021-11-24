@@ -31,6 +31,9 @@ function Remove-ResourceInner {
         try {
             if ($PSCmdlet.ShouldProcess(('Resource [{0}]' -f $resource.resourceId), 'Remove')) {
                 $null = Remove-AzResource -ResourceId $resource.resourceId -Force -ErrorAction 'Stop'
+
+                # If we removed a parent remove its children
+                $resourcesToRetry = $resourcesToRetry | Where-Object { $resource.resourceId -notin $_.ResourceId }
             }
         } catch {
             Write-Warning ('Removal moved back for re-try. Reason: [{0}]' -f $_.Exception.Message)
