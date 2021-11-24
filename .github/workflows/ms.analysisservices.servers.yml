@@ -28,7 +28,7 @@ on:
       - '.github/actions/templates/**'
       - '.github/workflows/ms.analysisservices.servers.yml'
       - 'arm/Microsoft.AnalysisServices/servers/**'
-      - '!arm/Microsoft.AnalysisServices/servers/readme.md'
+      - '!*/**/readme.md'
 
 env:
   modulePath: 'arm/Microsoft.AnalysisServices/servers'

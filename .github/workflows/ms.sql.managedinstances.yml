@@ -28,7 +28,7 @@ on:
       - '.github/actions/templates/**'
       - '.github/workflows/ms.sql.managedinstances.yml'
       - 'arm/Microsoft.Sql/managedInstances/**'
-      - '!arm/Microsoft.Sql/managedInstances/readme.md'
+      - '!*/**/readme.md'
 
 env:
   moduleName: 'managedInstances'

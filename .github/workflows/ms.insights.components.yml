@@ -28,7 +28,7 @@ on:
       - '.github/actions/templates/**'
       - '.github/workflows/ms.insights.components.yml'
       - 'arm/Microsoft.Insights/components/**'
-      - '!arm/Microsoft.Insights/components/readme.md'
+      - '!*/**/readme.md'
 
 env:
   moduleName: 'components'

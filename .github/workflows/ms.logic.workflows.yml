@@ -28,7 +28,7 @@ on:
       - '.github/actions/templates/**'
       - '.github/workflows/ms.logic.workflows.yml'
       - 'arm/Microsoft.Logic/workflows/**'
-      - '!arm/Microsoft.Logic/workflows/readme.md'
+      - '!*/**/readme.md'
 
 env:
   moduleName: 'workflows'

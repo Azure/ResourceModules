@@ -28,7 +28,7 @@ on:
       - '.github/actions/templates/**'
       - '.github/workflows/ms.netapp.netappaccounts.yml'
       - 'arm/Microsoft.NetApp/netAppAccounts/**'
-      - '!arm/Microsoft.NetApp/netAppAccounts/readme.md'
+      - '!*/**/readme.md'
 
 env:
   moduleName: 'netAppAccounts'

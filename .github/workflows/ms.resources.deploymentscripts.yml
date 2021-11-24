@@ -28,7 +28,7 @@ on:
       - '.github/actions/templates/**'
       - '.github/workflows/ms.resources.deploymentscripts.yml'
       - 'arm/Microsoft.Resources/deploymentScripts/**'
-      - '!arm/Microsoft.Resources/deploymentScripts/readme.md'
+      - '!*/**/readme.md'
 
 env:
   moduleName: 'deploymentScripts'

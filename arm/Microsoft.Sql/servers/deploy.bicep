@@ -11,12 +11,6 @@ param location string = resourceGroup().location
 @description('Required. The name of the server.')
 param name string
 
-@description('Optional. Whether or not ADS should be enabled.')
-param enableADS bool = false
-
-@description('Required. Whether or not Azure IP\'s are allowed.')
-param allowAzureIps bool = false
-
 @allowed([
   'CanNotDelete'
   'NotSpecified'
@@ -37,12 +31,18 @@ param cuaId string = ''
 @description('Optional. The databases to create in the server')
 param databases array = []
 
+@description('Optional. The firewall rules to create in the server')
+param firewallRules array = []
+
+@description('Optional. The security alert policies to create in the server')
+param securityAlertPolicies array = []
+
 module pid_cuaId '.bicep/nested_cuaId.bicep' = if (!empty(cuaId)) {
   name: 'pid-${cuaId}'
   params: {}
 }
 
-resource server 'Microsoft.Sql/servers@2020-02-02-preview' = {
+resource server 'Microsoft.Sql/servers@2021-05-01-preview' = {
   location: location
   name: name
   tags: tags
@@ -50,24 +50,6 @@ resource server 'Microsoft.Sql/servers@2020-02-02-preview' = {
     administratorLogin: administratorLogin
     administratorLoginPassword: administratorLoginPassword
     version: '12.0'
-  }
-
-  resource server_AllowAllWindowsAzureIps 'firewallrules@2021-02-01-preview' = if (allowAzureIps) {
-    name: 'AllowAllWindowsAzureIps'
-    properties: {
-      endIpAddress: '0.0.0.0'
-      startIpAddress: '0.0.0.0'
-    }
-  }
-
-  resource server_Default 'securityAlertPolicies@2021-02-01-preview' = if (enableADS) {
-    name: 'Default'
-    properties: {
-      state: 'Enabled'
-      disabledAlerts: []
-      emailAddresses: []
-      emailAccountAdmins: true
-    }
   }
 }
 
@@ -83,7 +65,8 @@ resource server_lock 'Microsoft.Authorization/locks@2016-09-01' = if (lock != 'N
 module server_rbac '.bicep/nested_rbac.bicep' = [for (roleAssignment, index) in roleAssignments: {
   name: '${deployment().name}-rbac-${index}'
   params: {
-    roleAssignmentObj: roleAssignment
+    principalIds: roleAssignment.principalIds
+    roleDefinitionIdOrName: roleAssignment.roleDefinitionIdOrName
     resourceName: server.name
   }
 }]
@@ -112,10 +95,35 @@ module server_databases 'databases/deploy.bicep' = [for (database, index) in dat
   }
 }]
 
+module server_firewallRules 'firewallRules/deploy.bicep' = [for (firewallRule, index) in firewallRules: {
+  name: '${deployment().name}-firewallRules-${index}'
+  params: {
+    name: firewallRule.name
+    serverName: server.name
+    endIpAddress: contains(firewallRule, 'endIpAddress') ? firewallRule.endIpAddress : '0.0.0.0'
+    startIpAddress: contains(firewallRule, 'startIpAddress') ? firewallRule.startIpAddress : '0.0.0.0'
+  }
+}]
+
+module server_securityAlertPolicies 'securityAlertPolicies/deploy.bicep' = [for (securityAlertPolicy, index) in securityAlertPolicies: {
+  name: '${deployment().name}-securityAlertPolicy-${index}'
+  params: {
+    name: securityAlertPolicy.name
+    serverName: server.name
+    disabledAlerts: contains(securityAlertPolicy, 'disabledAlerts') ? securityAlertPolicy.disabledAlerts : []
+    emailAccountAdmins: contains(securityAlertPolicy, 'emailAccountAdmins') ? securityAlertPolicy.emailAccountAdmins : false
+    emailAddresses: contains(securityAlertPolicy, 'emailAddresses') ? securityAlertPolicy.emailAddresses : []
+    retentionDays: contains(securityAlertPolicy, 'retentionDays') ? securityAlertPolicy.retentionDays : 0
+    state: contains(securityAlertPolicy, 'state') ? securityAlertPolicy.state : 'Disabled'
+    storageAccountAccessKey: contains(securityAlertPolicy, 'storageAccountAccessKey') ? securityAlertPolicy.storageAccountAccessKey : ''
+    storageEndpoint: contains(securityAlertPolicy, 'storageEndpoint') ? securityAlertPolicy.storageEndpoint : ''
+  }
+}]
+
 @description('The name of the deployed SQL server')
 output serverName string = server.name
 
-@description('The resourceId of the deployed SQL server')
+@description('The resource ID of the deployed SQL server')
 output serverResourceId string = server.id
 
 @description('The resourceGroup of the deployed SQL server')

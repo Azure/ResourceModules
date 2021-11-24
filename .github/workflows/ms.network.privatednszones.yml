@@ -28,7 +28,7 @@ on:
       - '.github/actions/templates/**'
       - '.github/workflows/ms.network.privatednszones.yml'
       - 'arm/Microsoft.Network/privateDnsZones/**'
-      - '!arm/Microsoft.Network/privateDnsZones/readme.md'
+      - '!*/**/readme.md'
 
 env:
   moduleName: 'privateDnsZones'
