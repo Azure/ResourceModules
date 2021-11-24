@@ -7,7 +7,7 @@ name: '.Platform: Sync Docs/Wiki'
 on:
   push:
     branches:
-      - users/alsehr/streamlinedPipePoC
+      - main
     paths:
       - 'docs/wiki/**'
 

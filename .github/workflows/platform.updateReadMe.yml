@@ -8,7 +8,7 @@ on:
   workflow_dispatch:
   push:
     branches:
-      - users/alsehr/streamlinedPipePoC
+      - main
     paths:
       - 'arm/**/deploy.bicep'
       - 'arm/**/deploy.json'

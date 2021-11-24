@@ -23,7 +23,7 @@ on:
         default: '0.0.1'
   push:
     branches:
-      - users/alsehr/streamlinedPipePoC
+      - main
     paths:
       - '.github/actions/templates/**'
       - '.github/workflows/ms.desktopvirtualization.workspaces.yml'
