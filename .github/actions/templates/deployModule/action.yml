@@ -92,7 +92,6 @@ runs:
         . (Join-Path $env:GITHUB_WORKSPACE 'utilities' 'pipelines' 'resourceDeployment' 'New-ModuleDeployment.ps1')
 
         $functionInput = @{
-          moduleName         = Split-Path '${{ inputs.templateFilePath }}' -Parent
           templateFilePath   = Join-Path $env:GITHUB_WORKSPACE '${{ inputs.templateFilePath }}'
           parameterFilePath  = Join-Path $env:GITHUB_WORKSPACE '${{ inputs.parameterFilePath }}'
           location           = '${{ inputs.location }}'
@@ -141,8 +140,6 @@ runs:
             Write-Verbose "Triggering removal with deployment name"
             $functionInput['deploymentName'] = '${{ steps.deploy_step.outputs.deploymentName }}'
             $functionInput['templateFilePath'] = Join-Path $env:GITHUB_WORKSPACE '${{ inputs.templateFilePath }}'
-          } else {
-            $functionInput['moduleName'] = Split-Path '${{ inputs.templateFilePath }}' -Parent
           }
 
           Write-Verbose 'Invoke task with' -Verbose

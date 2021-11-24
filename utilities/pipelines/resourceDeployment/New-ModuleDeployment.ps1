@@ -6,9 +6,6 @@ Run a template deployment using a given parameter file
 Run a template deployment using a given parameter file.
 Works on a resource group, subscription, managementgroup and tenant level
 
-.PARAMETER moduleName
-Mandatory. The name of the module to deploy
-
 .PARAMETER templateFilePath
 Mandatory. The path to the deployment file
 
@@ -40,12 +37,12 @@ Optional. Maximum retry limit if the deployment fails. Default is 3.
 Optional. Do not throw an exception if it failed. Still returns the error message though
 
 .EXAMPLE
-New-ModuleDeployment -ModuleName 'KeyVault' -templateFilePath 'C:/KeyVault/deploy.json' -parameterFilePath 'C:/KeyVault/.parameters/parameters.json' -location 'WestEurope' -resourceGroupName 'aLegendaryRg'
+New-ModuleDeployment -templateFilePath 'C:/KeyVault/deploy.json' -parameterFilePath 'C:/KeyVault/.parameters/parameters.json' -location 'WestEurope' -resourceGroupName 'aLegendaryRg'
 
 Deploy the deploy.json of the KeyVault module with the parameter file 'parameters.json' using the resource group 'aLegendaryRg' in location 'WestEurope'
 
 .EXAMPLE
-New-ModuleDeployment -ModuleName 'KeyVault' -templateFilePath 'C:/ResourceGroup/deploy.json' -parameterFilePath 'C:/ResourceGroup/.parameters/parameters.json' -location 'WestEurope'
+New-ModuleDeployment -templateFilePath 'C:/ResourceGroup/deploy.json' -parameterFilePath 'C:/ResourceGroup/.parameters/parameters.json' -location 'WestEurope'
 
 Deploy the deploy.json of the ResourceGroup module with the parameter file 'parameters.json' in location 'WestEurope'
 #>
@@ -53,9 +50,6 @@ function New-ModuleDeployment {
 
     [CmdletBinding(SupportsShouldProcess)]
     param (
-        [Parameter(Mandatory)]
-        [string] $moduleName,
-
         [Parameter(Mandatory)]
         [string] $templateFilePath,
 
@@ -92,6 +86,8 @@ function New-ModuleDeployment {
     }
 
     process {
+
+        $moduleName = Split-Path $templateFilePath -Parent
 
         ## Assess Provided Parameter Path
         if ((Test-Path -Path $parameterFilePath -PathType Container) -and $parameterFilePath.Length -eq 1) {

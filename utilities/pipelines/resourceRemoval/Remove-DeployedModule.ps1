@@ -33,9 +33,6 @@ function Remove-DeployedModule {
 
     [CmdletBinding(SupportsShouldProcess)]
     param (
-        [Parameter(Mandatory, ParameterSetName = 'tags')]
-        [string] $moduleName,
-
         [Parameter(Mandatory = $false)]
         [string] $resourceGroupName,
 
@@ -166,6 +163,8 @@ function Remove-DeployedModule {
                 }
             }
         } else {
+
+            $moduleName = Split-Path $templateFilePath -Parent
 
             if ([String]::IsNullOrEmpty($resourceGroupName)) {
                 Write-Verbose 'Handle subscription level removal'
