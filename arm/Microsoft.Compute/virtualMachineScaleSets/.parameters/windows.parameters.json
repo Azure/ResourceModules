@@ -84,10 +84,37 @@
             ]
         },
         "extensionDomainJoinConfig": {
-            "value": {}
+            "value": {
+                "settings": {
+                    "Name": "",
+                    "User": "",
+                    "OUPath": "",
+                    "Restart": "",
+                    "Options": ""
+                }
+            }
+        },
+        "extensionDomainJoinPassword": {
+            "value": "..."
         },
         "extensionAntiMalwareConfig": {
-            "value": {}
+            "value": {
+                "settings": {
+                    "AntimalwareEnabled": true,
+                    "Exclusions": {
+                        "Extensions": ".log;.ldf",
+                        "Paths": "D:\\IISlogs;D:\\DatabaseLogs",
+                        "Processes": "mssence.svc"
+                    },
+                    "RealtimeProtectionEnabled": true,
+                    "ScheduledScanSettings": {
+                        "isEnabled": "true",
+                        "scanType": "Quick",
+                        "day": "7",
+                        "time": "120"
+                    }
+                }
+            }
         },
         "extensionMonitoringAgentConfig": {
             "value": {}
