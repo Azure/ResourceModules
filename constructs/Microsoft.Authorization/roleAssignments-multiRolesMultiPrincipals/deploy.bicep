@@ -26,7 +26,8 @@ module pid_cuaId '.bicep/nested_cuaId.bicep' = if (!empty(cuaId)) {
 module nested_rbac_mg '.bicep/nested_rbac.bicep' = [for (roleAssignment, index) in roleAssignments: if (!empty(managementGroupId) && empty(subscriptionId) && empty(resourceGroupName)) {
   name: 'roleAssignment-mg-${guid(roleAssignment.roleDefinitionIdOrName)}-${index}'
   params: {
-    roleAssignmentObj: roleAssignment
+    principalIds: roleAssignment.principalIds
+    roleDefinitionIdOrName: roleAssignment.roleDefinitionIdOrName
     managementGroupId: managementGroupId
     location: location
   }
@@ -35,7 +36,8 @@ module nested_rbac_mg '.bicep/nested_rbac.bicep' = [for (roleAssignment, index) 
 module nested_rbac_sub '.bicep/nested_rbac.bicep' = [for (roleAssignment, index) in roleAssignments: if (empty(managementGroupId) && !empty(subscriptionId) && empty(resourceGroupName)) {
   name: 'roleAssignment-sub-${guid(roleAssignment.roleDefinitionIdOrName)}-${index}'
   params: {
-    roleAssignmentObj: roleAssignment
+    principalIds: roleAssignment.principalIds
+    roleDefinitionIdOrName: roleAssignment.roleDefinitionIdOrName
     subscriptionId: subscriptionId
     location: location
   }
@@ -44,7 +46,8 @@ module nested_rbac_sub '.bicep/nested_rbac.bicep' = [for (roleAssignment, index)
 module nested_rbac_rg '.bicep/nested_rbac.bicep' = [for (roleAssignment, index) in roleAssignments: if (empty(managementGroupId) && !empty(resourceGroupName) && !empty(subscriptionId)) {
   name: 'roleAssignment-rg-${guid(roleAssignment.roleDefinitionIdOrName)}-${index}'
   params: {
-    roleAssignmentObj: roleAssignment
+    principalIds: roleAssignment.principalIds
+    roleDefinitionIdOrName: roleAssignment.roleDefinitionIdOrName
     subscriptionId: subscriptionId
     resourceGroupName: resourceGroupName
     location: location
