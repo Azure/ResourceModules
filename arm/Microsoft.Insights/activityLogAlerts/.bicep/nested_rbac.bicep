@@ -1,4 +1,5 @@
-param roleAssignmentObj object
+param principalIds array
+param roleDefinitionIdOrName string
 param resourceName string
 
 var builtInRoleNames = {
@@ -22,10 +23,10 @@ resource activityLogAlert 'Microsoft.Insights/activityLogAlerts@2020-10-01' exis
   name: resourceName
 }
 
-resource roleAssignment 'Microsoft.Authorization/roleAssignments@2020-04-01-preview' = [for principalId in roleAssignmentObj.principalIds: {
-  name: guid(activityLogAlert.name, principalId, roleAssignmentObj.roleDefinitionIdOrName)
+resource roleAssignment 'Microsoft.Authorization/roleAssignments@2020-04-01-preview' = [for principalId in principalIds: {
+  name: guid(activityLogAlert.name, principalId, roleDefinitionIdOrName)
   properties: {
-    roleDefinitionId: contains(builtInRoleNames, roleAssignmentObj.roleDefinitionIdOrName) ? builtInRoleNames[roleAssignmentObj.roleDefinitionIdOrName] : roleAssignmentObj.roleDefinitionIdOrName
+    roleDefinitionId: contains(builtInRoleNames, roleDefinitionIdOrName) ? builtInRoleNames[roleDefinitionIdOrName] : roleDefinitionIdOrName
     principalId: principalId
   }
   scope: activityLogAlert
