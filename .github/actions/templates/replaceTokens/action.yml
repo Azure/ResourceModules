@@ -20,6 +20,9 @@ inputs:
   tokenTenantId:
     description: 'The managementGroupId to deploy to'
     required: false
+  tokenDeploymentSpId:
+    description: 'The managementGroupId to deploy to'
+    required: false
   remoteTokensKeyVaultName:
     description: 'The managementGroupId to deploy to'
     required: false
@@ -46,27 +49,62 @@ runs:
         creds: ${{ env.AZURE_CREDENTIALS }}
         enable-AzPSSession: true
 
-    - name: 'Replace Tokens in File [${{ inputs.filePath }}] '
+    - if: '${{ inputs.remoteTokensKeyVaultName && inputs.remoteTokensKeyVaultSubscriptionId }}'
+      name: 'Mask Tokens'
       shell: pwsh
       run: |
         # Load used functions
         . (Join-Path $env:GITHUB_WORKSPACE 'utilities' 'pipelines' 'tokensReplacement' 'helper' 'Add-Mask.ps1')
         . (Join-Path $env:GITHUB_WORKSPACE 'utilities' 'pipelines' 'tokensReplacement' 'helper' 'Get-TokenFromKeyVault.ps1')
-        . (Join-Path $env:GITHUB_WORKSPACE 'utilities' 'pipelines' 'tokensReplacement' 'helper' 'Convert-TokenInFile.ps1')
 
         # Load Settings File
         $Settings = Get-Content -Path "settings.json" | ConvertFrom-Json
 
-        if('${{ inputs.remoteTokensKeyVaultName }}' -and '${{ inputs.remoteTokensKeyVaultSubscriptionId }}'){
-          $RemoteTokens = Get-TokenFromKeyVault -KeyVaultName '${{ inputs.remoteTokensKeyVaultName }}' -subscriptionId '${{ inputs.remoteTokensKeyVaultSubscriptionId }}' -SecretContentType $Settings.parameterFileTokens.remoteTokens.keyVaultSecretContentType -verbose
-          foreach($token in $RemoteTokens){
+        $RemoteTokens = Get-TokenFromKeyVault -KeyVaultName '${{ inputs.remoteTokensKeyVaultName }}' -subscriptionId '${{ inputs.remoteTokensKeyVaultSubscriptionId }}' -SecretContentType $Settings.parameterFileTokens.remoteTokens.keyVaultSecretContentType -verbose
+        foreach($token in $RemoteTokens){
           $ValueA = ConvertFrom-SecureString -AsPlainText -SecureString $($token.Value)
           write-host "Token Value Before is: $ValueA"
           Add-Mask -Value $($token.Value) -GitHubActions
           $ValueB = ConvertFrom-SecureString -AsPlainText -SecureString $($token.Value)
           write-host "Token Value After is: $ValueB"
-          }
         }
 
+    - name: 'Replace Tokens in File [${{ inputs.filePath }}] '
+      shell: pwsh
+      run: |
+        # Load used functions
+        . (Join-Path $env:GITHUB_WORKSPACE 'utilities' 'pipelines' 'tokensReplacement' 'helper' 'Convert-TokenInFile.ps1')
+
+        # Load Settings File
+        $Settings = Get-Content -Path "settings.json" | ConvertFrom-Json
+
+        # Initialize Default Parameter File Tokens
+        $DefaultParameterFileTokens = @(
+            @{ Name = 'resourceGroupName'; Value = '${{ inputs.tokenResourceGroupName }}' }
+            @{ Name = 'subscriptionId'; Value = '${{ inputs.tokenSubscriptionId }}' }
+            @{ Name = 'managementGroupId'; Value = '${{ inputs.tokenManagementGroupId }}' }
+            @{ Name = "tenantId"; Value = '${{ inputs.tokenTenantId }}' }
+            @{ Name = "deploymentSpId"; Value = '${{ inputs.tokenDeploymentSpId }}' }
+            @{ Name = "platformKeyVault"; Value = '${{ inputs.remoteTokensKeyVaultName }}' }
+        ) | ForEach-Object { [PSCustomObject]$PSItem }
+
+        # Construct Token Function Input
+        $ConvertTokensInputs = @{
+            ParameterFilePath                 = '${{ inputs.filePath }}'
+            DefaultParameterFileTokens        = $DefaultParameterFileTokens
+            LocalCustomParameterFileTokens    = $Settings.parameterFileTokens.localTokens.tokens
+            TokenPrefix                       = $Settings.parameterFileTokens.tokenPrefix
+            TokenSuffix                       = $Settings.parameterFileTokens.tokenSuffix
+        }
+        # Add Remote Custom Parameter File Tokens
+        if ('${{ inputs.remoteTokensKeyVaultName }}' -and '${{ inputs.remoteTokensKeyVaultSubscriptionId }}') {
+            $ConvertTokensInputs += @{
+                TokensKeyVaultName                 = '${{ inputs.remoteTokensKeyVaultName }}'
+                TokensKeyVaultSubscriptionId       = '${{ inputs.remoteTokensKeyVaultSubscriptionId }}'
+                TokensKeyVaultSecretContentType    = $Settings.parameterFileTokens.remoteTokens.keyVaultSecretContentType
+            }
+        }
+        # Invoke Token Replacement Functionality
+        $null = Convert-TokensInParameterFile @ConvertTokensInputs -Verbose
 
         get-content -Path '${{ inputs.filePath }}'
