@@ -63,11 +63,11 @@ runs:
         foreach($token in $RemoteTokens){
           $ValueA = ConvertFrom-SecureString -AsPlainText -SecureString $($token.Value)
           write-host "Token Value Before is: $ValueA"
-          $null = Add-Mask -Value $($token.Value)
+          Add-Mask -Value $($token.Value)
           $ValueB = ConvertFrom-SecureString -AsPlainText -SecureString $($token.Value)
           write-host "Token Value After is: $ValueB"
         }
-
+        get-content -Path '${{ inputs.parameterFilePath }}'
       # [Test Deployment] task(s)
       #--------------------------
     - name: 'Validate [${{ inputs.templateFilePath }}]'
