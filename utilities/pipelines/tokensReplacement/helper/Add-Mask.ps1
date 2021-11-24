@@ -9,7 +9,7 @@
     [CmdletBinding()]
     param (
         [Parameter(Mandatory = $true)]
-        [string]
+        [System.Security.SecureString]
         $Value
     )
     $Value = ConvertFrom-SecureString -AsPlainText -SecureString $Value
