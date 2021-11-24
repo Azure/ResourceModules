@@ -170,6 +170,9 @@ param domainJoinRestart bool = false
 @description('Optional. Set of bit flags that define the join options. Default value of 3 is a combination of NETSETUP_JOIN_DOMAIN (0x00000001) & NETSETUP_ACCT_CREATE (0x00000002) i.e. will join the domain and create the account on the domain. For more information see https://msdn.microsoft.com/en-us/library/aa392154(v=vs.85).aspx')
 param domainJoinOptions int = 3
 
+param extensionDomainJoinConfig object = {}
+param extensionAntiMalwareConfig object = {}
+
 @description('Optional. The DSC configuration object')
 param dscConfiguration object = {}
 
@@ -327,9 +330,6 @@ param managedIdentityType string = ''
 @description('Optional. The list of user identities associated with the virtual machine scale set. The user identity dictionary key references will be ARM resource ids in the form: \'/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ManagedIdentity/userAssignedIdentities/{identityName}\'.')
 param managedIdentityIdentities object = {}
 
-@description('Optional. The extensions to activate')
-param extensions array = []
-
 @description('Optional. The name of metrics that will be streamed.')
 @allowed([
   'AllMetrics'
@@ -346,77 +346,6 @@ var diagnosticsMetrics = [for metric in metricsToEnable: {
     enabled: true
     days: diagnosticLogsRetentionInDays
   }
-}]
-
-var extensionsDefaults = {
-  DomainJoin: {
-    publisher: 'Microsoft.Compute'
-    type: 'JsonADDomainExtension'
-    typeHandlerVersion: '1.3'
-    autoUpgradeMinorVersion: true
-    enableAutomaticUpgrade: false
-  }
-  MicrosoftAntiMalware: {
-    publisher: 'Microsoft.Azure.Security'
-    type: 'IaaSAntimalware'
-    typeHandlerVersion: '1.3'
-    autoUpgradeMinorVersion: true
-    enableAutomaticUpgrade: false
-  }
-  MicrosoftMonitoringAgent: {
-    publisher: 'Microsoft.EnterpriseCloud.Monitoring'
-    type: osType == 'Windows' ? 'MicrosoftMonitoringAgent' : 'OmsAgentForLinux'
-    typeHandlerVersion: osType == 'Windows' ? '1.0' : '1.7'
-    autoUpgradeMinorVersion: true
-    enableAutomaticUpgrade: false
-  }
-  DependencyAgent: {
-    publisher: 'Microsoft.Azure.Monitoring.DependencyAgent'
-    type: osType == 'Windows' ? 'DependencyAgentWindows' : 'DependencyAgentLinux'
-    typeHandlerVersion: '9.5'
-    autoUpgradeMinorVersion: true
-    enableAutomaticUpgrade: true
-  }
-  NetworkWatcherAgent: {
-    publisher: 'Microsoft.Azure.NetworkWatcher'
-    type: osType == 'Windows' ? 'NetworkWatcherAgentWindows' : 'NetworkWatcherAgentLinux'
-    typeHandlerVersion: '1.4'
-    autoUpgradeMinorVersion: true
-    enableAutomaticUpgrade: false
-  }
-  DiskEncryption: {
-    publisher: 'Microsoft.Azure.Security'
-    type: osType == 'Windows' ? 'AzureDiskEncryption' : 'AzureDiskEncryptionForLinux'
-    typeHandlerVersion: osType == 'Windows' ? '2.2' : '1.1'
-    autoUpgradeMinorVersion: true
-    enableAutomaticUpgrade: false
-    forceUpdateTag: forceUpdateTag
-  }
-  DesiredStateConfiguration: {
-    publisher: 'Microsoft.Powershell'
-    type: 'DSC'
-    typeHandlerVersion: '2.77'
-    autoUpgradeMinorVersion: true
-    enableAutomaticUpgrade: false
-  }
-  CustomScriptExtension: {
-    publisher: 'Microsoft.Compute'
-    type: 'CustomScriptExtension'
-    typeHandlerVersion: '1.9'
-    autoUpgradeMinorVersion: true
-    enableAutomaticUpgrade: true
-  }
-}
-
-var extensionsVar = [for extension in extensions: {
-  name: extension.name
-  publisher: contains(extension, 'publisher') ? extension.publisher : extensionsDefaults[extension.name].publisher
-  type: contains(extension, 'type') ? extension.type : extensionsDefaults[extension.name].type
-  typeHandlerVersion: contains(extension, 'typeHandlerVersion') ? extension.typeHandlerVersion : extensionsDefaults[extension.name].typeHandlerVersion
-  autoUpgradeMinorVersion: contains(extension, 'autoUpgradeMinorVersion') ? extension.autoUpgradeMinorVersion : extensionsDefaults[extension.name].autoUpgradeMinorVersion
-  enableAutomaticUpgrade: contains(extension, 'enableAutomaticUpgrade') ? extension.enableAutomaticUpgrade : extensionsDefaults[extension.name].enableAutomaticUpgrade
-  settings: contains(extension, 'settings') ? extension.settings : {}
-  protectedSettings: contains(extension, 'protectedSettings') ? extension.protectedSettings : extensionsDefaults[extension.name].protectedSettings
 }]
 
 var publicKeysFormatted = [for publicKey in publicKeys: {
@@ -568,39 +497,24 @@ resource vmss 'Microsoft.Compute/virtualMachineScaleSets@2021-04-01' = if (!empt
   plan: !empty(plan) ? plan : null
 }
 
-module virtualMachine_extensions 'extensions/deploy.bicep' = [for extension in extensionsVar: {
-  name: '${uniqueString(deployment().name, location)}-vmss-${extension.name}'
-  params: {
-    virtualMachineScaleSetName: vmss.name
-    name: extension.name
-    publisher: extension.publisher
-    type: extension.type
-    typeHandlerVersion: extension.typeHandlerVersion
-    autoUpgradeMinorVersion: extension.autoUpgradeMinorVersion
-    enableAutomaticUpgrade: extension.enableAutomaticUpgrade
-    settings: extension.settings
-    protectedSettings: extension.protectedSettings
-  }
-}]
-
-module virtualMachine_domainJoinExtension 'extensions/deploy.bicep' = if (!empty(extensionsVar)) {
+module virtualMachine_domainJoinExtension 'extensions/deploy.bicep' = if (!empty(extensionDomainJoinConfig)) {
   name: '${uniqueString(deployment().name, location)}-vm-DomainJoin'
   params: {
     virtualMachineScaleSetName: vmss.name
-    name: 'DomainJoin'
-    publisher: 'Microsoft.Compute'
-    type: 'JsonADDomainExtension'
-    typeHandlerVersion: '1.3'
-    autoUpgradeMinorVersion: true
-    enableAutomaticUpgrade: false
-    settings: domainJoinSettings
+    name: contains(extensionDomainJoinConfig, 'name') ? extensionDomainJoinConfig.name : 'DomainJoin'
+    publisher: contains(extensionDomainJoinConfig, 'publisher') ? extensionDomainJoinConfig.publisher : 'Microsoft.Compute'
+    type: contains(extensionDomainJoinConfig, 'type') ? extensionDomainJoinConfig.type : 'JsonADDomainExtension'
+    typeHandlerVersion: contains(extensionDomainJoinConfig, 'typeHandlerVersion') ? extensionDomainJoinConfig.typeHandlerVersion : '1.3'
+    autoUpgradeMinorVersion: contains(extensionDomainJoinConfig, 'autoUpgradeMinorVersion') ? extensionDomainJoinConfig.autoUpgradeMinorVersion : true
+    enableAutomaticUpgrade: contains(extensionDomainJoinConfig, 'enableAutomaticUpgrade') ? extensionDomainJoinConfig.enableAutomaticUpgrade : false
+    settings: extensionDomainJoinConfig.settings
     protectedSettings: {
-      Password: domainJoinPassword
+      Password: extensionDomainJoinConfig.domainJoinPassword
     }
   }
 }
 
-module vmss_microsoftAntiMalwareExtension 'extensions/deploy.bicep' = if (enableMicrosoftAntiMalware) {
+module vmss_microsoftAntiMalwareExtension 'extensions/deploy.bicep' = if (!empty(extensionAntiMalwareConfig)) {
   name: '${uniqueString(deployment().name, location)}-vmss-MicrosoftAntiMalware'
   params: {
     virtualMachineScaleSetName: vmss.name
