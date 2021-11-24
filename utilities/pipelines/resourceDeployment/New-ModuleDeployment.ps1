@@ -107,8 +107,14 @@ function New-ModuleDeployment {
             [bool]$Stoploop = $false
             [int]$retryCount = 1
 
+            do {
+                $deploymentName = "$moduleName-$(-join (Get-Date -Format yyyyMMddTHHMMssffffZ)[0..63])"
+            } while ($deploymentName -notmatch '^[-\w\._\(\)]+$')
+
+            Write-Verbose "Deploying with deployment name [$deploymentName]" -Verbose
+
             $DeploymentInputs = @{
-                DeploymentName        = "$moduleName-$(-join (Get-Date -Format yyyyMMddTHHMMssffffZ)[0..63])"
+                DeploymentName        = $deploymentName
                 TemplateFile          = $templateFilePath
                 TemplateParameterFile = $parameterFile
                 Verbose               = $true
@@ -128,7 +134,7 @@ function New-ModuleDeployment {
                 # Removal tags
                 if ($removeDeployment) { $parameterFileTags += @{removeModule = $moduleName } } # If removeDeployment is set to true, append removeMoule tag to the resource
                 # Overwrites parameter file tags parameter
-                Write-Verbose ("removeDeployment for $moduleName= $removeDeployment `nadditionalTags:`n $($additionalTags | ConvertTo-Json)")
+                Write-Verbose ("removeDeployment for $moduleName= $removeDeployment `nadditionalTags:`n $(($additionalTags) ? ($additionalTags | ConvertTo-Json) : '[]')")
                 $DeploymentInputs += @{Tags = $parameterFileTags }
             }
 
@@ -210,7 +216,7 @@ function New-ModuleDeployment {
                     if ($retryCount -ge $retryLimit) {
                         if ($doNotThrow) {
                             return @{
-                                DeploymentName = $DeploymentInputs.DeploymentName
+                                DeploymentName = $deploymentName
                                 Exception      = $PSitem.Exception.Message
                             }
                         } else {
@@ -230,7 +236,7 @@ function New-ModuleDeployment {
             Write-Verbose 'Result' -Verbose
             Write-Verbose '------' -Verbose
             Write-Verbose ($res | Out-String) -Verbose
-            return $DeploymentInputs.DeploymentName
+            return $deploymentName
         }
     }
 
