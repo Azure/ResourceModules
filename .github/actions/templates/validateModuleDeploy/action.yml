@@ -47,7 +47,7 @@ runs:
         $Value = (New-Guid).Guid
         "Test Value is $Value"
         Add-Mask -Value $Value
-
+        "Test Value is $Value"
     - name: 'Replace Parameter File Tokens [${{ inputs.parameterFilePath }}] '
       shell: pwsh
       run: |
