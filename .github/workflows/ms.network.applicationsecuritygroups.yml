@@ -120,7 +120,7 @@ jobs:
       - name: 'Replace Tokens'
         uses: ./.github/actions/templates/replaceTokens
         with:
-          filePath: '${{ env.modulePath }}/.parameters/${{ matrix.parameterFilePaths }}'
+          filePath: '${{ env.modulePath }}/.parameters/${{ matrix.filePaths }}'
           tokenLocation: '${{ env.defaultLocation }}'
           tokenResourceGroupName: '${{ env.resourceGroupName }}'
           tokenSubscriptionId: '${{ secrets.ARM_SUBSCRIPTION_ID }}'
