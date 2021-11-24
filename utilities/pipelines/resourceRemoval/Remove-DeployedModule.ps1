@@ -164,7 +164,7 @@ function Remove-DeployedModule {
             }
         } else {
 
-            $moduleName = Split-Path $templateFilePath -Parent
+            $moduleName = Split-Path -Path (Split-Path $templateFilePath -Parent) -LeafBase
 
             if ([String]::IsNullOrEmpty($resourceGroupName)) {
                 Write-Verbose 'Handle subscription level removal'

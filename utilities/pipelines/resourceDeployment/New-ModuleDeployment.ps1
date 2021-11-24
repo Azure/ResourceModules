@@ -87,7 +87,7 @@ function New-ModuleDeployment {
 
     process {
 
-        $moduleName = Split-Path $templateFilePath -Parent
+        $moduleName = Split-Path -Path (Split-Path $templateFilePath -Parent) -LeafBase
 
         ## Assess Provided Parameter Path
         if ((Test-Path -Path $parameterFilePath -PathType Container) -and $parameterFilePath.Length -eq 1) {
