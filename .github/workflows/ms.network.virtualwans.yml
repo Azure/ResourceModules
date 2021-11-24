@@ -135,7 +135,6 @@ jobs:
         id: step_deploy
         uses: ./.github/actions/templates/deployModule
         with:
-          moduleName: '${{ env.moduleName }}'
           templateFilePath: '${{ env.modulePath }}/deploy.bicep'
           parameterFilePath: '${{ env.modulePath }}/.parameters/${{ matrix.parameterFilePaths }}'
           location: '${{ env.defaultLocation }}'
