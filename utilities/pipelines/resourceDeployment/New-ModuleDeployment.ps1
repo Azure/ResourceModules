@@ -24,9 +24,6 @@ Optional. ID of the subscription to deploy into. Mandatory if deploying into a s
 .PARAMETER managementGroupId
 Optional. Name of the management group to deploy into. Mandatory if deploying into a management group (management group level)
 
-.PARAMETER removeDeployment
-Optional. Set to 'true' to add the tag 'removeModule = <ModuleName>' to the deployment. Is picked up by the removal stage to remove the resource again.
-
 .PARAMETER additionalTags
 Optional. Provde a Key Value Pair (Object) that will be appended to the Parameter file tags. Example: @{myKey = 'myValue',myKey2 = 'myValue2'}.
 
@@ -67,9 +64,6 @@ function New-ModuleDeployment {
 
         [Parameter(Mandatory = $false)]
         [string] $managementGroupId,
-
-        [Parameter(Mandatory = $false)]
-        [bool] $removeDeployment,
 
         [Parameter(Mandatory = $false)]
         [PSCustomObject]$additionalTags,
@@ -118,7 +112,7 @@ function New-ModuleDeployment {
             }
 
             ## Append Tags to Parameters if Resource supports them (all tags must be in one object)
-            if ($removeDeployment -or $additionalTags) {
+            if ($additionalTags) {
 
                 # Parameter tags
                 $parameterFileTags = (ConvertFrom-Json (Get-Content -Raw -Path $parameterFile) -AsHashtable).parameters.tags.value
@@ -127,10 +121,8 @@ function New-ModuleDeployment {
                 # Pipeline tags
                 if ($additionalTags) { $parameterFileTags += $additionalTags } # If additionalTags object is provided, append tag to the resource
 
-                # Removal tags
-                if ($removeDeployment) { $parameterFileTags += @{removeModule = $moduleName } } # If removeDeployment is set to true, append removeMoule tag to the resource
                 # Overwrites parameter file tags parameter
-                Write-Verbose ("removeDeployment for $moduleName= $removeDeployment `nadditionalTags:`n $(($additionalTags) ? ($additionalTags | ConvertTo-Json) : '[]')")
+                Write-Verbose ("additionalTags:`n $(($additionalTags) ? ($additionalTags | ConvertTo-Json) : '[]')")
                 $DeploymentInputs += @{Tags = $parameterFileTags }
             }
 
