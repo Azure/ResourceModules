@@ -43,13 +43,13 @@ function Get-DeploymentByName {
 
     switch ($deploymentScope) {
         'resourceGroup' {
-            return = Get-AzResourceGroupDeploymentOperation -DeploymentName $name -resourceGroupName $resourceGroupName
+            return Get-AzResourceGroupDeploymentOperation -DeploymentName $name -ResourceGroupName $resourceGroupName
         }
         'subscription' {
             return Get-AzDeploymentOperation -DeploymentName $name
         }
         'managementGroup' {
-            return Get-AzManagementGroupDeploymentOperation -DeploymentName $name
+            return Get-AzManagementGroupDeploymentOperation` -DeploymentName $name
         }
         'tenant' {
             return Get-AzTenantDeploymentOperation -DeploymentName $name
