@@ -10,8 +10,21 @@
     param (
         [Parameter(Mandatory = $true)]
         [System.Security.SecureString]
-        $Value
+        $Value,
+
+        [Parameter(Mandatory = $false, ParameterSetName = 'GitHubActions')]
+        [Switch]
+        $GitHubActions,
+
+        [Parameter(Mandatory = $false, ParameterSetName = 'AzureDevOps')]
+        [Switch]
+        $AzureDevOps
     )
-    $ValueNew = ConvertFrom-SecureString -SecureString $Value -AsPlainText
-    Write-Output ("`n::add-mask::{0}" -f $ValueNew)
+    $ValueConverted = ConvertFrom-SecureString -SecureString $Value -AsPlainText -ErrorAction SilentlyContinue
+    if ($GitHubActions) {
+        Write-Output ("`n::add-mask::{$ValueConverted}")
+    }
+    if ($AzureDevOps) {
+        Write-Output ("`n`#`#vso[task.setvariable variable={$ValueConverted};issecret=true]")
+    }
 }
