@@ -9,7 +9,7 @@
             "value": "adp-sxx-az-msi-x-001"
         },
         "userMsiResourceGroup": {
-            "value": "<<resourceGroupName>>"
+            "value": "validation-rg"
         },
         "kind": {
             "value": "AzurePowerShell"

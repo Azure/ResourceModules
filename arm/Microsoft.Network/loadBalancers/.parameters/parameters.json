@@ -10,7 +10,7 @@
                 {
                     "name": "publicIPConfig",
                     "properties": {
-                        "publicIPAddressId": "/subscriptions/<<subscriptionId>>/resourceGroups/<<resourceGroupName>>/providers/Microsoft.Network/publicIPAddresses/adp-sxx-az-pip-x-lb",
+                        "publicIPAddressId": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/publicIPAddresses/adp-sxx-az-pip-x-lb",
                         "subnetId": "",
                         "privateIPAddress": ""
                     }

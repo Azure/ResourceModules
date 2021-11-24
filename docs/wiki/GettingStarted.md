@@ -181,7 +181,7 @@ Last but not least, instead of fetching your own copy of the repository you can 
 
 If you are forking or cloning the repository, you can use 'tokens' inside your parameter files. Tokens allow you to test deploying modules in your own environment (i.e. using tokens for your naming conventions), or apply other customizations to your resources (i.e. using your own subscription ID inside a Resource ID string). See details in the [Parameter File Tokens Design](./ParameterFileTokens.md).
 
-The repository contains a [Settings.json](https://github.com/Azure/ResourceModules/blob/main/settings.json) that has a default token called `namePrefix`. You can use a custom value here and then start adding the tokens in your parameter files. The tokens default format is `<<tokenName>>` (i.e. `<<namePrefix>>`). Here is an example token:
+The repository contains a [Settings.json](https://github.com/Azure/ResourceModules/blob/main/settings.json) that has a default token called `namePrefix`. You can use a custom value here and then start adding the tokens in your parameter files. The tokens default format is `<<tokenName>>` (i.e. `sxx`). Here is an example token:
 
 ```json
 "localTokens": {
@@ -199,7 +199,7 @@ Here is how the token would look like in the Parameter File JSON:
 ```json
 "parameters": {
     "name": {
-        "value": "<<namePrefix>>storage"
+        "value": "sxxstorage"
     }
 }
 ```
@@ -212,7 +212,7 @@ Note: There are default tokens that can be enabled on any resource that leverage
 - `<<tenantId>>`: Will point to the Azure Tenant ID.
 - `<<deploymentSpId>>`: Will point to the Service Principal ID used for deployments.
 - `<<platformKeyVault>>`: Will point to the Platform Azure Key Vault (Optional if enabled as per guidelines)
-- `<<resourceGroupName>>`: Will point to the Azure Resource Group where the resources are being deployed to. (This isn't defined in the secrets section but is injected at runtime)
+- `validation-rg`: Will point to the Azure Resource Group where the resources are being deployed to. (This isn't defined in the secrets section but is injected at runtime)
 
 Review [Parameter File Tokens Design](./ParameterFileTokens.md) for more details.
 

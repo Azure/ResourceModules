@@ -71,7 +71,7 @@
                     "captureDescriptionIntervalInSeconds": 300,
                     "captureDescriptionSizeLimitInBytes": 314572800,
                     "captureDescriptionDestinationName": "EventHubArchive.AzureBlockBlob",
-                    "captureDescriptionDestinationStorageAccountResourceId": "/subscriptions/<<subscriptionId>>/resourceGroups/<<resourceGroupName>>/providers/Microsoft.Storage/storageAccounts/adpsxxazsaweux001",
+                    "captureDescriptionDestinationStorageAccountResourceId": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Storage/storageAccounts/adpsxxazsaweux001",
                     "captureDescriptionDestinationBlobContainer": "eventhub",
                     "captureDescriptionDestinationArchiveNameFormat": "{Namespace}/{EventHub}/{PartitionId}/{Year}/{Month}/{Day}/{Hour}/{Minute}/{Second}",
                     "captureDescriptionSkipEmptyArchives": true,

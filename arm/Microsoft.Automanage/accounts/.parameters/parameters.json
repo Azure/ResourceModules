@@ -3,13 +3,13 @@
     "contentVersion": "1.0.0.0",
     "parameters": {
         "vmResourceGroupName": {
-            "value": "<<resourceGroupName>>"
+            "value": "validation-rg"
         },
         "vmName": {
             "value": "adp-vm-001"
         },
         "autoManageAccountResourceGroupName": {
-            "value": "<<resourceGroupName>>"
+            "value": "validation-rg"
         }
     }
 }
