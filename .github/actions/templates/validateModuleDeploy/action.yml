@@ -39,15 +39,6 @@ runs:
         creds: ${{ env.AZURE_CREDENTIALS }}
         enable-AzPSSession: true
 
-    - name: 'Mask Tokens'
-      shell: pwsh
-      run: |
-        # Load used functions
-        . (Join-Path $env:GITHUB_WORKSPACE 'utilities' 'pipelines' 'tokensReplacement' 'Add-Mask.ps1')
-        $Value = (New-Guid).Guid
-        "Test Value is $Value"
-        Add-Mask -Value $Value
-        "Test Value is $Value"
     - name: 'Replace Parameter File Tokens [${{ inputs.parameterFilePath }}] '
       shell: pwsh
       run: |
