@@ -143,7 +143,6 @@ jobs:
           subscriptionId: '${{ secrets.ARM_SUBSCRIPTION_ID }}'
           managementGroupId: '${{ secrets.ARM_MGMTGROUP_ID }}'
           removeDeployment: '${{ needs.job_set_workflow_param.outputs.removeDeployment }}'
-          relativePathOfRemovalScript: 'utilities/pipelines/resourceRemoval/Remove-vWan.ps1'
 
   ###############
   #   PUBLISH   #

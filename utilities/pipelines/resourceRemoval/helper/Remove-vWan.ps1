@@ -1,45 +1,39 @@
 ﻿<#
 .SYNOPSIS
-Remove a vWAN resource with a tag { removeModule = $moduleName }
+Remove a vWAN resource with a given deployment name
 
 .DESCRIPTION
-Remove a vWAN resource with a tag { removeModule = $moduleName }
+Remove a vWAN resource with a given deployment name
 
-.PARAMETER moduleName
-Optional. The name of the module to remove
+.PARAMETER deploymentName
+Mandatory. The deployment name to use and find resources to remove
 
-.PARAMETER ResourceGroupName
-Optional. The resourceGroup of the module to remove
-
-.PARAMETER tagSearchRetryLimit
+.PARAMETER deploymentSearchRetryLimit
 Optional. The maximum times to retry the search for resources via their removal tag
 
-.PARAMETER tagSearchRetryInterval
+.PARAMETER deploymentSearchRetryInterval
 Optional. The time to wait in between the search for resources via their remove tags
 
 .EXAMPLE
-Remove-vWan
+Remove-vWan -deploymentname 'keyvault-12345'
 
-Remove a virtual WAN with tag { 'removeModule' = 'virtualWans' } from resource group 'validation-rg'
+Remove a virtual WAN with deployment name 'keyvault-12345' from resource group 'validation-rg'
 #>
 function Remove-vWan {
 
     [Cmdletbinding(SupportsShouldProcess)]
     param(
-        [Parameter(Mandatory)]
+        [Parameter(Mandatory = $true)]
         [string] $deploymentName,
-
-        [Parameter(Mandatory = $false)]
-        [string] $templateFilePath = '', # Not used here
 
         [Parameter(Mandatory = $false)]
         [string] $ResourceGroupName = 'validation-rg',
 
         [Parameter(Mandatory = $false)]
-        [int] $tagSearchRetryLimit = 40,
+        [int] $deploymentSearchRetryLimit = 40,
 
         [Parameter(Mandatory = $false)]
-        [int] $tagSearchRetryInterval = 30
+        [int] $deploymentSearchRetryInterval = 60
     )
 
     begin {
@@ -53,15 +47,19 @@ function Remove-vWan {
 
         # Identify resources
         # ------------------
-        $deployment = Get-AzResourceGroupDeploymentOperation -DeploymentName $deploymentName -ResourceGroupName $resourceGroupName
+        while (-not ($deployments = Get-AzResourceGroupDeploymentOperation -DeploymentName $deploymentName -ResourceGroupName $resourceGroupName -ErrorAction 'SilentlyContinue') -and $deploymentsSearchRetryCount -le $deploymentsSearchRetryLimit) {
+            Write-Verbose ('Did not to find vWAN deployment resources by name [{0}] in scope [{1}]. Retrying in [{2}] seconds [{3}/{4}]' -f $deploymentName, $deploymentScope, $deploymentSearchRetryInterval, $deploymentSearchRetryCount, $deploymentSearchRetryLimit)
+            Start-Sleep $deploymentSearchRetryInterval
+            $deploymentSearchRetryCount++
+        }
 
-        if (-not $deployment) {
+        if (-not $deployments) {
             Write-Error "No deployment found for [$deploymentName]"
             return
         }
 
         $resourcesToRemove = @()
-        $unorderedResourceIds = $deployment.TargetResource | Where-Object { $_ -and $_ -notmatch '/deployments/' }
+        $unorderedResourceIds = $deployments.TargetResource | Where-Object { $_ -and $_ -notmatch '/deployments/' }
 
         $orderedResourceIds = @(
             $unorderedResourceIds | Where-Object { $_ -match 'Microsoft.Network/vpnGateways' }

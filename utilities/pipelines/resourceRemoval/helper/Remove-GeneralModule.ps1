@@ -1,4 +1,4 @@
-﻿#region helper
+#region helper
 
 <#
 .SYNOPSIS
@@ -83,21 +83,21 @@ Optional. The deployment name to use for the removal
 Optional. The path to the deployment file
 
 .EXAMPLE
-Remove-DeployedModule -deploymentName 'KeyVault' -resourceGroupName 'validation-rg'
+Remove-GeneralModule -deploymentName 'KeyVault' -resourceGroupName 'validation-rg'
 
 Remove a virtual WAN with deployment name 'keyvault-12345' from resource group 'validation-rg'
 #>
-function Remove-DeployedModule {
+function Remove-GeneralModule {
 
     [CmdletBinding(SupportsShouldProcess)]
     param (
         [Parameter(Mandatory = $false)]
         [string] $resourceGroupName,
 
-        [Parameter(Mandatory, ParameterSetName = 'deploymentName')]
+        [Parameter(Mandatory = $true)]
         [string] $deploymentName,
 
-        [Parameter(Mandatory, ParameterSetName = 'deploymentName')]
+        [Parameter(Mandatory = $true)]
         [string] $templateFilePath,
 
         [Parameter(Mandatory = $false)]
