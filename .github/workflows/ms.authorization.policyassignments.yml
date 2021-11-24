@@ -122,7 +122,7 @@ jobs:
       - name: 'Test module with parameter file [${{ matrix.parameterFilePaths }}]'
         uses: ./.github/actions/templates/validateModuleDeploy
         with:
-          templateFilePath: '${{ env.modulePath }}/deploy.bicep'
+          templateFilePath: '${{ env.modulePath }}/.bicep/nested_policyAssignments_sub.bicep'
           parameterFilePath: '${{ env.modulePath }}/.parameters/${{ matrix.parameterFilePaths }}'
           location: '${{ env.defaultLocation }}'
           resourceGroupName: '${{ env.resourceGroupName }}'
@@ -135,7 +135,7 @@ jobs:
         id: step_deploy
         uses: ./.github/actions/templates/deployModule
         with:
-          templateFilePath: '${{ env.modulePath }}/deploy.bicep'
+          templateFilePath: '${{ env.modulePath }}/.bicep/nested_policyAssignments_sub.bicep'
           parameterFilePath: '${{ env.modulePath }}/.parameters/${{ matrix.parameterFilePaths }}'
           location: '${{ env.defaultLocation }}'
           resourceGroupName: '${{ env.resourceGroupName }}'
