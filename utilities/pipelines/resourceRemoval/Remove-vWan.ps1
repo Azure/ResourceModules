@@ -26,8 +26,11 @@ function Remove-vWan {
 
     [Cmdletbinding(SupportsShouldProcess)]
     param(
+        [Parameter(Mandatory)]
+        [string] $deploymentName,
+
         [Parameter(Mandatory = $false)]
-        [string] $moduleName = 'virtualWans',
+        [string] $templateFilePath = '',
 
         [Parameter(Mandatory = $false)]
         [string] $ResourceGroupName = 'validation-rg',
@@ -50,21 +53,20 @@ function Remove-vWan {
 
         # Identify resources
         # ------------------
-        $tagSearchRetryCount = 1
-        while (-not ($virtualWAN = Get-AzResource -Tag @{ removeModule = $moduleName } -ResourceGroupName $resourceGroupName -ErrorAction 'SilentlyContinue') -and $tagSearchRetryCount -le $tagSearchRetryLimit) {
-            Write-Verbose ('Did not to find resources by tags [removeModule={0}] in resource group [{1}]. Retrying in [{2} seconds] [{3}/{4}]' -f $moduleName, $resourceGroupName, $tagSearchRetryInterval, $tagSearchRetryCount, $tagSearchRetryLimit)
-            Start-Sleep $tagSearchRetryInterval
-            $tagSearchRetryCount++
-        }
+        $deployment = Get-AzResourceGroupDeploymentOperation -DeploymentName $deploymentName -ResourceGroupName $resourceGroupName
 
-        if (-not $virtualWAN) {
-            Write-Error "No virtual WAN resouce with Tag { RemoveModule = $moduleName } found in resource group [$resourceGroupName]"
+        if (-not $deployment) {
+            Write-Error "No deployment found for [$deploymentName]"
             return
         }
-        Write-Verbose ("Found [{0}] vWAN(s) in [$resourceGroupName]" -f $virtualWAN.Count)
 
         $resourcesToRemove = @()
-        foreach ($virtualWANInstance in $virtualWAN) {
+        $virtualWANsToRemove = $deployment.TargetResource | Where-Object { $_ -and $_ -notmatch '/deployments/' }
+
+        $resourcesToRemove = @()
+        foreach ($vWANResourceId in $virtualWANsToRemove) {
+
+            $virtualWANInstance = Get-AzResource -ResourceId $vWANResourceId
 
             $resourcesToRemove += @{
                 resourceId = $virtualWANInstance.ResourceId

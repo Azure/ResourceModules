@@ -92,7 +92,7 @@ runs:
         . (Join-Path $env:GITHUB_WORKSPACE 'utilities' 'pipelines' 'resourceDeployment' 'New-ModuleDeployment.ps1')
 
         $functionInput = @{
-          moduleName         = Split-Path '${{ inputs.templateFilePath }}' -LeafBase
+          moduleName         = Split-Path '${{ inputs.templateFilePath }}' -Parent
           templateFilePath   = '${{ inputs.templateFilePath }}'
           parameterFilePath  = '${{ inputs.parameterFilePath }}'
           location           = '${{ inputs.location }}'
@@ -142,7 +142,7 @@ runs:
             $functionInput['deploymentName'] = '${{ steps.deploy_step.outputs.deploymentName }}'
             $functionInput['templateFilePath'] = '${{ inputs.templateFilePath }}'
           } else {
-            $functionInput['moduleName'] = Split-Path '${{ inputs.templateFilePath }}' -LeafBase
+            $functionInput['moduleName'] = Split-Path '${{ inputs.templateFilePath }}' -Parent
           }
 
           Write-Verbose 'Invoke task with' -Verbose
