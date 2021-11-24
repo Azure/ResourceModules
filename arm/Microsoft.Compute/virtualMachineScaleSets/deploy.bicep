@@ -327,6 +327,9 @@ param managedIdentityType string = ''
 @description('Optional. The list of user identities associated with the virtual machine scale set. The user identity dictionary key references will be ARM resource ids in the form: \'/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ManagedIdentity/userAssignedIdentities/{identityName}\'.')
 param managedIdentityIdentities object = {}
 
+@description('Optional. The extensions to activate')
+param extensions array = []
+
 @description('Optional. The name of metrics that will be streamed.')
 @allowed([
   'AllMetrics'
@@ -343,6 +346,77 @@ var diagnosticsMetrics = [for metric in metricsToEnable: {
     enabled: true
     days: diagnosticLogsRetentionInDays
   }
+}]
+
+var extensionsDefaults = {
+  DomainJoin: {
+    publisher: 'Microsoft.Compute'
+    type: 'JsonADDomainExtension'
+    typeHandlerVersion: '1.3'
+    autoUpgradeMinorVersion: true
+    enableAutomaticUpgrade: false
+  }
+  MicrosoftAntiMalware: {
+    publisher: 'Microsoft.Azure.Security'
+    type: 'IaaSAntimalware'
+    typeHandlerVersion: '1.3'
+    autoUpgradeMinorVersion: true
+    enableAutomaticUpgrade: false
+  }
+  MicrosoftMonitoringAgent: {
+    publisher: 'Microsoft.EnterpriseCloud.Monitoring'
+    type: osType == 'Windows' ? 'MicrosoftMonitoringAgent' : 'OmsAgentForLinux'
+    typeHandlerVersion: osType == 'Windows' ? '1.0' : '1.7'
+    autoUpgradeMinorVersion: true
+    enableAutomaticUpgrade: false
+  }
+  DependencyAgent: {
+    publisher: 'Microsoft.Azure.Monitoring.DependencyAgent'
+    type: osType == 'Windows' ? 'DependencyAgentWindows' : 'DependencyAgentLinux'
+    typeHandlerVersion: '9.5'
+    autoUpgradeMinorVersion: true
+    enableAutomaticUpgrade: true
+  }
+  NetworkWatcherAgent: {
+    publisher: 'Microsoft.Azure.NetworkWatcher'
+    type: osType == 'Windows' ? 'NetworkWatcherAgentWindows' : 'NetworkWatcherAgentLinux'
+    typeHandlerVersion: '1.4'
+    autoUpgradeMinorVersion: true
+    enableAutomaticUpgrade: false
+  }
+  DiskEncryption: {
+    publisher: 'Microsoft.Azure.Security'
+    type: osType == 'Windows' ? 'AzureDiskEncryption' : 'AzureDiskEncryptionForLinux'
+    typeHandlerVersion: osType == 'Windows' ? '2.2' : '1.1'
+    autoUpgradeMinorVersion: true
+    enableAutomaticUpgrade: false
+    forceUpdateTag: forceUpdateTag
+  }
+  DesiredStateConfiguration: {
+    publisher: 'Microsoft.Powershell'
+    type: 'DSC'
+    typeHandlerVersion: '2.77'
+    autoUpgradeMinorVersion: true
+    enableAutomaticUpgrade: false
+  }
+  CustomScriptExtension: {
+    publisher: 'Microsoft.Compute'
+    type: 'CustomScriptExtension'
+    typeHandlerVersion: '1.9'
+    autoUpgradeMinorVersion: true
+    enableAutomaticUpgrade: true
+  }
+}
+
+var extensionsVar = [for extension in extensions: {
+  name: extension.name
+  publisher: contains(extension, 'publisher') ? extension.publisher : extensionsDefaults[extension.name].publisher
+  type: contains(extension, 'type') ? extension.type : extensionsDefaults[extension.name].type
+  typeHandlerVersion: contains(extension, 'typeHandlerVersion') ? extension.typeHandlerVersion : extensionsDefaults[extension.name].typeHandlerVersion
+  autoUpgradeMinorVersion: contains(extension, 'autoUpgradeMinorVersion') ? extension.autoUpgradeMinorVersion : extensionsDefaults[extension.name].autoUpgradeMinorVersion
+  enableAutomaticUpgrade: contains(extension, 'enableAutomaticUpgrade') ? extension.enableAutomaticUpgrade : extensionsDefaults[extension.name].enableAutomaticUpgrade
+  settings: contains(extension, 'settings') ? extension.settings : {}
+  protectedSettings: contains(extension, 'protectedSettings') ? extension.protectedSettings : extensionsDefaults[extension.name].protectedSettings
 }]
 
 var publicKeysFormatted = [for publicKey in publicKeys: {
@@ -494,224 +568,150 @@ resource vmss 'Microsoft.Compute/virtualMachineScaleSets@2021-04-01' = if (!empt
   plan: !empty(plan) ? plan : null
 }
 
-resource vmss_lock 'Microsoft.Authorization/locks@2016-09-01' = if (lock != 'NotSpecified') {
-  name: '${vmss.name}-${lock}-lock'
-  properties: {
-    level: lock
-    notes: lock == 'CanNotDelete' ? 'Cannot delete resource or child resources.' : 'Cannot modify the resource or child resources.'
+module virtualMachine_extensions 'extensions/deploy.bicep' = [for extension in extensionsVar: {
+  name: '${uniqueString(deployment().name, location)}-vmss-${extension.name}'
+  params: {
+    virtualMachineScaleSetName: vmss.name
+    name: extension.name
+    publisher: extension.publisher
+    type: extension.type
+    typeHandlerVersion: extension.typeHandlerVersion
+    autoUpgradeMinorVersion: extension.autoUpgradeMinorVersion
+    enableAutomaticUpgrade: extension.enableAutomaticUpgrade
+    settings: extension.settings
+    protectedSettings: extension.protectedSettings
   }
-  scope: vmss
-}
+}]
 
-resource vmss_DomainJoin 'Microsoft.Compute/virtualMachineScaleSets/extensions@2021-07-01' = if (!empty(domainName)) {
-  parent: vmss
-  name: 'DomainJoin'
-  properties: {
+module virtualMachine_domainJoinExtension 'extensions/deploy.bicep' = if (!empty(extensionsVar)) {
+  name: '${uniqueString(deployment().name, location)}-vm-DomainJoin'
+  params: {
+    virtualMachineScaleSetName: vmss.name
+    name: 'DomainJoin'
     publisher: 'Microsoft.Compute'
     type: 'JsonADDomainExtension'
     typeHandlerVersion: '1.3'
     autoUpgradeMinorVersion: true
-    settings: {
-      Name: domainName
-      User: domainJoinUser
-      OUPath: domainJoinOU
-      Restart: domainJoinRestart
-      Options: domainJoinOptions
-    }
+    enableAutomaticUpgrade: false
+    settings: domainJoinSettings
     protectedSettings: {
       Password: domainJoinPassword
     }
   }
 }
 
-resource vmss_MicrosoftAntiMalware 'Microsoft.Compute/virtualMachineScaleSets/extensions@2021-07-01' = if (enableMicrosoftAntiMalware) {
-  parent: vmss
-  name: 'MicrosoftAntiMalware'
-  properties: {
+module vmss_microsoftAntiMalwareExtension 'extensions/deploy.bicep' = if (enableMicrosoftAntiMalware) {
+  name: '${uniqueString(deployment().name, location)}-vmss-MicrosoftAntiMalware'
+  params: {
+    virtualMachineScaleSetName: vmss.name
+    name: 'MicrosoftAntiMalware'
     publisher: 'Microsoft.Azure.Security'
     type: 'IaaSAntimalware'
     typeHandlerVersion: '1.3'
     autoUpgradeMinorVersion: true
+    enableAutomaticUpgrade: false
     settings: microsoftAntiMalwareSettings
   }
-  dependsOn: [
-    vmss_DomainJoin
-  ]
 }
 
-resource vmss_WindowsMMAAgent 'Microsoft.Compute/virtualMachineScaleSets/extensions@2021-07-01' = if (enableWindowsMMAAgent) {
-  parent: vmss
-  name: 'WindowsMMAAgent'
-  properties: {
+resource vmss_logAnalyticsWorkspace 'Microsoft.OperationalInsights/workspaces@2021-06-01' existing = if (!empty(workspaceId)) {
+  name: last(split(workspaceId, '/'))
+  scope: resourceGroup(split(workspaceId, '/')[2], split(workspaceId, '/')[4])
+}
+
+module vmss_microsoftMonitoringAgentExtension 'extensions/deploy.bicep' = if (enableWindowsMMAAgent || enableLinuxMMAAgent) {
+  name: '${uniqueString(deployment().name, location)}-vmss-MicrosoftMonitoringAgent'
+  params: {
+    virtualMachineScaleSetName: vmss.name
+    name: 'MicrosoftMonitoringAgent'
     publisher: 'Microsoft.EnterpriseCloud.Monitoring'
-    type: 'MicrosoftMonitoringAgent'
-    typeHandlerVersion: '1.0'
+    type: enableWindowsMMAAgent ? 'MicrosoftMonitoringAgent' : 'OmsAgentForLinux'
+    typeHandlerVersion: enableWindowsMMAAgent ? '1.0' : '1.7'
     autoUpgradeMinorVersion: true
+    enableAutomaticUpgrade: false
     settings: {
-      workspaceId: empty(workspaceId) ? 'dummy' : reference(workspaceId, '2015-11-01-preview').customerId
+      workspaceId: !empty(workspaceId) ? reference(vmss_logAnalyticsWorkspace.id, vmss_logAnalyticsWorkspace.apiVersion).customerId : ''
     }
     protectedSettings: {
-      workspaceKey: empty(workspaceId) ? 'dummy' : listKeys(workspaceId, '2015-11-01-preview').primarySharedKey
+      workspaceKey: !empty(workspaceId) ? vmss_logAnalyticsWorkspace.listKeys().primarySharedKey : ''
     }
   }
-  dependsOn: [
-    vmss_MicrosoftAntiMalware
-  ]
 }
 
-resource vmss_LinuxMMAAgent 'Microsoft.Compute/virtualMachineScaleSets/extensions@2021-07-01' = if (enableLinuxMMAAgent) {
-  parent: vmss
-  name: 'LinuxMMAAgent'
-  properties: {
-    publisher: 'Microsoft.EnterpriseCloud.Monitoring'
-    type: 'OmsAgentForLinux'
-    typeHandlerVersion: '1.7'
-    autoUpgradeMinorVersion: true
-    settings: {
-      workspaceId: empty(workspaceId) ? 'dummy' : reference(workspaceId, '2015-11-01-preview').customerId
-    }
-    protectedSettings: {
-      workspaceKey: empty(workspaceId) ? 'dummy' : listKeys(workspaceId, '2015-11-01-preview').primarySharedKey
-    }
-  }
-  dependsOn: [
-    vmss_WindowsMMAAgent
-  ]
-}
-
-resource vmss_WindowsDiskEncryption 'Microsoft.Compute/virtualMachineScaleSets/extensions@2021-07-01' = if (enableWindowsDiskEncryption) {
-  parent: vmss
-  name: 'WindowsDiskEncryption'
-  properties: {
-    publisher: 'Microsoft.Azure.Security'
-    type: 'AzureDiskEncryption'
-    typeHandlerVersion: '2.2'
-    autoUpgradeMinorVersion: true
-    forceUpdateTag: forceUpdateTag
-    settings: {
-      EncryptionOperation: 'EnableEncryption'
-      KeyVaultURL: keyVaultUri
-      KeyVaultResourceId: keyVaultId
-      KeyEncryptionKeyURL: keyEncryptionKeyURL
-      KekVaultResourceId: keyVaultId
-      KeyEncryptionAlgorithm: diskKeyEncryptionAlgorithm
-      VolumeType: diskEncryptionVolumeType
-      ResizeOSDisk: resizeOSDisk
-    }
-  }
-  dependsOn: [
-    vmss_LinuxMMAAgent
-  ]
-}
-
-resource vmss_LinuxDiskEncryption 'Microsoft.Compute/virtualMachineScaleSets/extensions@2021-07-01' = if (enableLinuxDiskEncryption) {
-  parent: vmss
-  name: 'LinuxDiskEncryption'
-  properties: {
-    publisher: 'Microsoft.Azure.Security'
-    type: 'AzureDiskEncryptionForLinux'
-    typeHandlerVersion: '1.1'
-    autoUpgradeMinorVersion: true
-    forceUpdateTag: forceUpdateTag
-    settings: {
-      EncryptionOperation: 'EnableEncryption'
-      KeyVaultURL: keyVaultUri
-      KeyVaultResourceId: keyVaultId
-      KeyEncryptionKeyURL: keyEncryptionKeyURL
-      KekVaultResourceId: keyVaultId
-      KeyEncryptionAlgorithm: diskKeyEncryptionAlgorithm
-      VolumeType: diskEncryptionVolumeType
-    }
-  }
-  dependsOn: [
-    vmss_WindowsDiskEncryption
-  ]
-}
-
-resource vmss_DependencyAgentWindows 'Microsoft.Compute/virtualMachineScaleSets/extensions@2021-07-01' = if (enableWindowsDependencyAgent) {
-  parent: vmss
-  name: 'DependencyAgentWindows'
-  properties: {
+module vmss_dependencyAgentExtension 'extensions/deploy.bicep' = if (enableWindowsDependencyAgent || enableLinuxDependencyAgent) {
+  name: '${uniqueString(deployment().name, location)}-vmss-DependencyAgent'
+  params: {
+    virtualMachineScaleSetName: vmss.name
+    name: 'DependencyAgent'
     publisher: 'Microsoft.Azure.Monitoring.DependencyAgent'
-    type: 'DependencyAgentWindows'
+    type: enableWindowsDependencyAgent ? 'DependencyAgentWindows' : 'DependencyAgentLinux'
     typeHandlerVersion: '9.5'
     autoUpgradeMinorVersion: true
+    enableAutomaticUpgrade: true
   }
-  dependsOn: [
-    vmss_LinuxDiskEncryption
-  ]
 }
 
-resource vmss_DependencyAgentLinux 'Microsoft.Compute/virtualMachineScaleSets/extensions@2021-07-01' = if (enableLinuxDependencyAgent) {
-  parent: vmss
-  name: 'DependencyAgentLinux'
-  properties: {
-    publisher: 'Microsoft.Azure.Monitoring.DependencyAgent'
-    type: 'DependencyAgentLinux'
-    typeHandlerVersion: '9.5'
-    autoUpgradeMinorVersion: true
-  }
-  dependsOn: [
-    vmss_DependencyAgentWindows
-  ]
-}
-
-resource vmss_NetworkWatcherAgentWindows 'Microsoft.Compute/virtualMachineScaleSets/extensions@2021-07-01' = if (enableNetworkWatcherWindows) {
-  parent: vmss
-  name: 'NetworkWatcherAgentWindows'
-  properties: {
+module vmss_networkWatcherAgentExtension 'extensions/deploy.bicep' = if (enableNetworkWatcherWindows || enableNetworkWatcherLinux) {
+  name: '${uniqueString(deployment().name, location)}-vmss-NetworkWatcherAgent'
+  params: {
+    virtualMachineScaleSetName: vmss.name
+    name: 'NetworkWatcherAgent'
     publisher: 'Microsoft.Azure.NetworkWatcher'
-    type: 'NetworkWatcherAgentWindows'
+    type: enableNetworkWatcherWindows ? 'NetworkWatcherAgentWindows' : 'NetworkWatcherAgentLinux'
     typeHandlerVersion: '1.4'
     autoUpgradeMinorVersion: true
-    settings: {}
+    enableAutomaticUpgrade: false
   }
   dependsOn: [
-    vmss_DependencyAgentLinux
+    vmss_dependencyAgentExtension
   ]
 }
 
-resource vmss_NetworkWatcherAgentLinux 'Microsoft.Compute/virtualMachineScaleSets/extensions@2021-07-01' = if (enableNetworkWatcherLinux) {
-  parent: vmss
-  name: 'NetworkWatcherAgentLinux'
-  properties: {
-    publisher: 'Microsoft.Azure.NetworkWatcher'
-    type: 'NetworkWatcherAgentLinux'
-    typeHandlerVersion: '1.4'
+module vmss_diskEncryptionExtension 'extensions/deploy.bicep' = if (enableWindowsDiskEncryption || enableLinuxDiskEncryption) {
+  name: '${uniqueString(deployment().name, location)}-vmss-DiskEncryption'
+  params: {
+    virtualMachineScaleSetName: vmss.name
+    name: 'DiskEncryption'
+    publisher: 'Microsoft.Azure.Security'
+    type: enableWindowsDiskEncryption ? 'AzureDiskEncryption' : 'AzureDiskEncryptionForLinux'
+    typeHandlerVersion: enableWindowsDiskEncryption ? '2.2' : '1.1'
     autoUpgradeMinorVersion: true
-    settings: {}
+    enableAutomaticUpgrade: false
+    forceUpdateTag: forceUpdateTag
+    settings: diskEncryptionExtensionSettings
   }
-  dependsOn: [
-    vmss_NetworkWatcherAgentWindows
-  ]
 }
 
-resource vmss_windowsDsc 'Microsoft.Compute/virtualMachineScaleSets/extensions@2021-07-01' = if (!empty(dscConfiguration)) {
-  parent: vmss
-  name: 'windowsDsc'
-  properties: {
+module vmss_desiredStateConfigurationExtension 'extensions/deploy.bicep' = if (enableDesiredStateConfiguration) {
+  name: '${uniqueString(deployment().name, location)}-vmss-DesiredStateConfiguration'
+  params: {
+    virtualMachineScaleSetName: vmss.name
+    name: 'DesiredStateConfiguration'
     publisher: 'Microsoft.Powershell'
     type: 'DSC'
     typeHandlerVersion: '2.77'
     autoUpgradeMinorVersion: true
+    enableAutomaticUpgrade: false
     settings: dscConfiguration.settings
     protectedSettings: contains(dscConfiguration, 'protectedSettings') ? dscConfiguration.protectedSettings : null
   }
   dependsOn: [
-    vmss_NetworkWatcherAgentLinux
+    vmss_networkWatcherAgentExtension
   ]
 }
 
-resource vmss_WindowsCustomScriptExtension 'Microsoft.Compute/virtualMachineScaleSets/extensions@2021-07-01' = if ((!empty(windowsScriptExtensionFileData)) && (!empty(windowsScriptExtensionCommandToExecute))) {
-  parent: vmss
-  name: 'WindowsCustomScriptExtension'
-  properties: {
+module virtualMachine_customScriptExtension 'extensions/deploy.bicep' = if (enableCustomScriptExtension) {
+  name: '${uniqueString(deployment().name, location)}-vmss-CustomScriptExtension'
+  params: {
+    virtualMachineScaleSetName: vmss.name
+    name: 'CustomScriptExtension'
     publisher: 'Microsoft.Compute'
     type: 'CustomScriptExtension'
     typeHandlerVersion: '1.9'
     autoUpgradeMinorVersion: true
+    enableAutomaticUpgrade: true
     settings: {
-      fileUris: [for item in windowsScriptExtensionFileData: '${item.uri}${(contains(item, 'storageAccountId') ? '?${listAccountSas(item.storageAccountId, '2019-04-01', accountSasProperties).accountSasToken}' : '')}']
+      fileUris: [for fileData in windowsScriptExtensionFileData: contains(fileData, 'storageAccountId') ? '${fileData.uri}?${listAccountSas(fileData.storageAccountId, '2019-04-01', accountSasProperties).accountSasToken}' : fileData.uri]
     }
     protectedSettings: {
       commandToExecute: windowsScriptExtensionCommandToExecute
@@ -721,8 +721,17 @@ resource vmss_WindowsCustomScriptExtension 'Microsoft.Compute/virtualMachineScal
     }
   }
   dependsOn: [
-    vmss_windowsDsc
+    vmss_desiredStateConfigurationExtension
   ]
+}
+
+resource vmss_lock 'Microsoft.Authorization/locks@2016-09-01' = if (lock != 'NotSpecified') {
+  name: '${vmss.name}-${lock}-lock'
+  properties: {
+    level: lock
+    notes: lock == 'CanNotDelete' ? 'Cannot delete resource or child resources.' : 'Cannot modify the resource or child resources.'
+  }
+  scope: vmss
 }
 
 resource vmss_diagnosticSettings 'Microsoft.Insights/diagnosticSettings@2021-05-01-preview' = if ((!empty(diagnosticStorageAccountId)) || (!empty(workspaceId)) || (!empty(eventHubAuthorizationRuleId)) || (!empty(eventHubName))) {

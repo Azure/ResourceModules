@@ -405,7 +405,7 @@ resource virtualMachine 'Microsoft.Compute/virtualMachines@2021-07-01' = {
   ]
 }
 
-module virtualMachine_domainJoinExtension './extensions/deploy.bicep' = if (enableDomainJoinExtension) {
+module virtualMachine_domainJoinExtension 'extensions/deploy.bicep' = if (enableDomainJoinExtension) {
   name: '${uniqueString(deployment().name, location)}-vm-DomainJoin'
   params: {
     virtualMachineName: virtualMachine.name
@@ -423,7 +423,7 @@ module virtualMachine_domainJoinExtension './extensions/deploy.bicep' = if (enab
   }
 }
 
-module virtualMachine_microsoftAntiMalwareExtension './extensions/deploy.bicep' = if (enableMicrosoftAntiMalware) {
+module virtualMachine_microsoftAntiMalwareExtension 'extensions/deploy.bicep' = if (enableMicrosoftAntiMalware) {
   name: '${uniqueString(deployment().name, location)}-vm-MicrosoftAntiMalware'
   params: {
     virtualMachineName: virtualMachine.name
@@ -443,7 +443,7 @@ resource virtualMachine_logAnalyticsWorkspace 'Microsoft.OperationalInsights/wor
   scope: resourceGroup(split(workspaceId, '/')[2], split(workspaceId, '/')[4])
 }
 
-module virtualMachine_microsoftMonitoringAgentExtension './extensions/deploy.bicep' = if (enableWindowsMMAAgent || enableLinuxMMAAgent) {
+module virtualMachine_microsoftMonitoringAgentExtension 'extensions/deploy.bicep' = if (enableWindowsMMAAgent || enableLinuxMMAAgent) {
   name: '${uniqueString(deployment().name, location)}-vm-MicrosoftMonitoringAgent'
   params: {
     virtualMachineName: virtualMachine.name
@@ -463,7 +463,7 @@ module virtualMachine_microsoftMonitoringAgentExtension './extensions/deploy.bic
   }
 }
 
-module virtualMachine_dependencyAgentExtension './extensions/deploy.bicep' = if (enableWindowsDependencyAgent || enableLinuxDependencyAgent) {
+module virtualMachine_dependencyAgentExtension 'extensions/deploy.bicep' = if (enableWindowsDependencyAgent || enableLinuxDependencyAgent) {
   name: '${uniqueString(deployment().name, location)}-vm-DependencyAgent'
   params: {
     virtualMachineName: virtualMachine.name
@@ -477,7 +477,7 @@ module virtualMachine_dependencyAgentExtension './extensions/deploy.bicep' = if 
   }
 }
 
-module virtualMachine_networkWatcherAgentExtension './extensions/deploy.bicep' = if (enableNetworkWatcherWindows || enableNetworkWatcherLinux) {
+module virtualMachine_networkWatcherAgentExtension 'extensions/deploy.bicep' = if (enableNetworkWatcherWindows || enableNetworkWatcherLinux) {
   name: '${uniqueString(deployment().name, location)}-vm-NetworkWatcherAgent'
   params: {
     virtualMachineName: virtualMachine.name
@@ -491,7 +491,7 @@ module virtualMachine_networkWatcherAgentExtension './extensions/deploy.bicep' =
   }
 }
 
-module virtualMachine_diskEncryptionExtension './extensions/deploy.bicep' = if (enableWindowsDiskEncryption || enableLinuxDiskEncryption) {
+module virtualMachine_diskEncryptionExtension 'extensions/deploy.bicep' = if (enableWindowsDiskEncryption || enableLinuxDiskEncryption) {
   name: '${uniqueString(deployment().name, location)}-vm-DiskEncryption'
   params: {
     virtualMachineName: virtualMachine.name
@@ -507,7 +507,7 @@ module virtualMachine_diskEncryptionExtension './extensions/deploy.bicep' = if (
   }
 }
 
-module virtualMachine_desiredStateConfigurationExtension './extensions/deploy.bicep' = if (enableDesiredStateConfiguration) {
+module virtualMachine_desiredStateConfigurationExtension 'extensions/deploy.bicep' = if (enableDesiredStateConfiguration) {
   name: '${uniqueString(deployment().name, location)}-vm-DesiredStateConfiguration'
   params: {
     virtualMachineName: virtualMachine.name
@@ -523,7 +523,7 @@ module virtualMachine_desiredStateConfigurationExtension './extensions/deploy.bi
   }
 }
 
-module virtualMachine_customScriptExtension './extensions/deploy.bicep' = if (enableCustomScriptExtension) {
+module virtualMachine_customScriptExtension 'extensions/deploy.bicep' = if (enableCustomScriptExtension) {
   name: '${uniqueString(deployment().name, location)}-vm-CustomScriptExtension'
   params: {
     virtualMachineName: virtualMachine.name
