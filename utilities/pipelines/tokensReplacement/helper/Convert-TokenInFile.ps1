@@ -81,7 +81,7 @@ function Convert-TokenInFile {
                 if (($PSItem.Value | Get-Member -MemberType Property | Select-Object -ExpandProperty 'TypeName') -eq 'System.Security.SecureString') {
                     $PSItem.Value = $PSItem.Value | ConvertFrom-SecureString -AsPlainText
                     Write-Verbose ("Token Value is $($PSItem.Value)")
-                    Write-Verbose ("Token Value is ::add-mask {$($PSItem.Value)}")
+                    Write-Output ("`n::add-mask::{0}" -f $($PSItem.Value))
                 }
                 $File = $File -replace $PSItem.Name, $PSItem.Value
             }
