@@ -30,7 +30,7 @@ function Remove-vWan {
         [string] $deploymentName,
 
         [Parameter(Mandatory = $false)]
-        [string] $templateFilePath = '',
+        [string] $templateFilePath = '', # Not used here
 
         [Parameter(Mandatory = $false)]
         [string] $ResourceGroupName = 'validation-rg',
