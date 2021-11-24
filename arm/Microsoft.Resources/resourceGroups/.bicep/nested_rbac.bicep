@@ -1,4 +1,5 @@
-param roleAssignmentObj object
+param principalIds array
+param roleDefinitionIdOrName string
 param resourceGroupName string
 
 var builtInRoleNames = {
