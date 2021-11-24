@@ -163,9 +163,10 @@ function Remove-GeneralModule {
 
         $resourcesToRemove = @()
         $rawResourceIdsToRemove = $deployments.TargetResource | Where-Object { $_ -and $_ -notmatch '/deployments/' }
+
         # Process removal
         # ===============
-        if ($deploymentScope -eq 'ResourceGroup') {
+        if ($deploymentScope -eq 'subscription') {
             Write-Verbose 'Handle subscription level removal'
 
             foreach ($rawResourceIdsToRemove in $rawResourceIdsToRemove) {

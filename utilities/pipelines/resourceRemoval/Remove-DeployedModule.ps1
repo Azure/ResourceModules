@@ -17,6 +17,7 @@
 
     switch ($moduleName) {
         'virtualWans' {
+            Write-Verbose 'Run vWAN removal script' -Verbose
             # Load function
             . (Join-Path $PSScriptRoot 'helper' 'Remove-vWan.ps1')
 
@@ -28,6 +29,7 @@
             Remove-vWan @inputObject -Verbose
         }
         default {
+            Write-Verbose 'Run default removal script' -Verbose
             # Load function
             . (Join-Path $PSScriptRoot 'helper' 'Remove-GeneralModule.ps1')
 
