@@ -4,17 +4,24 @@ on:
   workflow_dispatch:
     inputs:
       removeDeployment:
+        type: boolean
         description: 'Remove deployed module'
         required: false
         default: 'true'
       versioningOption:
+        type: choice
         description: 'The mode to handle the version increments [major|minor|patch]'
         required: false
         default: 'patch'
+        options:
+          - major
+          - minor
+          - patch
       customVersion:
         description: 'Custom version to apply. Used only if higher than latest'
         required: false
         default: '0.0.1'
+
   push:
     branches:
       - main
@@ -22,7 +29,7 @@ on:
       - '.github/actions/templates/**'
       - '.github/workflows/ms.automation.automationaccounts.yml'
       - 'arm/Microsoft.Automation/automationAccounts/**'
-      - '!arm/Microsoft.Automation/automationAccounts/readme.md'
+      - '!*/**/readme.md'
 
 env:
   moduleName: 'automationAccounts'
@@ -31,6 +38,9 @@ env:
   AZURE_CREDENTIALS: ${{ secrets.AZURE_CREDENTIALS }}
   ARM_SUBSCRIPTION_ID: ${{ secrets.ARM_SUBSCRIPTION_ID }}
   ARM_MGMTGROUP_ID: ${{ secrets.ARM_MGMTGROUP_ID }}
+  ARM_TENANT_ID: '${{ secrets.ARM_TENANT_ID }}'
+  DEPLOYMENT_SP_ID: '${{ secrets.DEPLOYMENT_SP_ID }}'
+  PLATFORM_KEYVAULT: '${{ secrets.PLATFORM_KEYVAULT }}'
 
 jobs:
   ############################
@@ -195,7 +205,7 @@ jobs:
   job_remove_module:
     runs-on: ubuntu-20.04
     name: 'Remove module'
-    if: ${{ always() && !cancelled() && needs.job_set_workflow_param.outputs.removeDeployment == 'true' && (contains(needs.*.result, 'success') || contains(needs.*.result, 'failure')) }}
+    if: ${{ always() && !cancelled() && needs.job_set_workflow_param.outputs.removeDeployment == 'true' && (contains(needs.job_deploy_module.result, 'success') || contains(needs.job_deploy_module.result, 'failure')) }}
     needs:
       - job_deploy_module
     steps:

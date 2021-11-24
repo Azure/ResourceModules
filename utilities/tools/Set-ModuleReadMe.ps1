@@ -21,6 +21,7 @@ function Get-NestedResourceList {
     [CmdletBinding()]
     param(
         [Parameter(Mandatory)]
+        [Alias('Path')]
         [hashtable] $TemplateFileContent
     )
 

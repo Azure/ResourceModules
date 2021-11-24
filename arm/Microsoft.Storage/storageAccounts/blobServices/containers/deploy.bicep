@@ -2,8 +2,14 @@
 @description('Required. Name of the Storage Account.')
 param storageAccountName string
 
+@description('Optional. Name of the blob service.')
+param blobServicesName string = 'default'
+
 @description('The name of the storage container to deploy')
 param name string
+
+@description('Optional. Name of the immutable policy.')
+param immutabilityPolicyName string = 'default'
 
 @allowed([
   'Container'
@@ -27,18 +33,27 @@ module pid_cuaId '.bicep/nested_cuaId.bicep' = if (!empty(cuaId)) {
   params: {}
 }
 
-resource container 'Microsoft.Storage/storageAccounts/blobServices/containers@2019-06-01' = {
-  name: '${storageAccountName}/default/${name}'
-  properties: {
-    publicAccess: publicAccess
+resource storageAccount 'Microsoft.Storage/storageAccounts@2021-06-01' existing = {
+  name: storageAccountName
+
+  resource blobServices 'blobServices@2021-06-01' existing = {
+    name: blobServicesName
+
+    resource container 'containers@2019-06-01' = {
+      name: name
+      properties: {
+        publicAccess: publicAccess
+      }
+    }
   }
 }
 
 module immutabilityPolicy 'immutabilityPolicies/deploy.bicep' = if (!empty(immutabilityPolicyProperties)) {
-  name: 'default'
+  name: immutabilityPolicyName
   params: {
     storageAccountName: storageAccountName
-    containerName: container.name
+    blobServicesName: storageAccount::blobServices.name
+    containerName: storageAccount::blobServices::container.name
     immutabilityPeriodSinceCreationInDays: contains(immutabilityPolicyProperties, 'immutabilityPeriodSinceCreationInDays') ? immutabilityPolicyProperties.immutabilityPeriodSinceCreationInDays : 365
     allowProtectedAppendWrites: contains(immutabilityPolicyProperties, 'allowProtectedAppendWrites') ? immutabilityPolicyProperties.allowProtectedAppendWrites : true
   }
@@ -47,16 +62,17 @@ module immutabilityPolicy 'immutabilityPolicies/deploy.bicep' = if (!empty(immut
 module container_rbac '.bicep/nested_rbac.bicep' = [for (roleAssignment, index) in roleAssignments: {
   name: '${deployment().name}-Rbac-${index}'
   params: {
-    roleAssignmentObj: roleAssignment
-    resourceName: container.name
+    principalIds: roleAssignment.principalIds
+    roleDefinitionIdOrName: roleAssignment.roleDefinitionIdOrName
+    resourceName: '${storageAccount.name}/${storageAccount::blobServices.name}/${storageAccount::blobServices::container.name}'
   }
 }]
 
 @description('The name of the deployed container')
-output containerName string = container.name
+output containerName string = storageAccount::blobServices::container.name
 
 @description('The ID of the deployed container')
-output containerResourceId string = container.id
+output containerResourceId string = storageAccount::blobServices::container.id
 
 @description('The resource group of the deployed container')
 output containerResourceGroup string = resourceGroup().name

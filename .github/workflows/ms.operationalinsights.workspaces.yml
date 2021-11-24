@@ -4,13 +4,19 @@ on:
   workflow_dispatch:
     inputs:
       removeDeployment:
+        type: boolean
         description: 'Remove deployed module'
         required: false
         default: 'true'
       versioningOption:
+        type: choice
         description: 'The mode to handle the version increments [major|minor|patch]'
         required: false
         default: 'patch'
+        options:
+          - major
+          - minor
+          - patch
       customVersion:
         description: 'Custom version to apply. Used only if higher than latest'
         required: false
@@ -22,7 +28,7 @@ on:
       - '.github/actions/templates/**'
       - '.github/workflows/ms.operationalinsights.workspaces.yml'
       - 'arm/Microsoft.OperationalInsights/workspaces/**'
-      - '!arm/Microsoft.OperationalInsights/workspaces/readme.md'
+      - '!*/**/readme.md'
 
 env:
   moduleName: 'workspaces'
@@ -195,7 +201,7 @@ jobs:
   job_remove_module:
     runs-on: ubuntu-20.04
     name: 'Remove module'
-    if: ${{ always() && !cancelled() && needs.job_set_workflow_param.outputs.removeDeployment == 'true' && (contains(needs.*.result, 'success') || contains(needs.*.result, 'failure')) }}
+    if: ${{ always() && !cancelled() && needs.job_set_workflow_param.outputs.removeDeployment == 'true' && (contains(needs.job_deploy_module.result, 'success') || contains(needs.job_deploy_module.result, 'failure')) }}
     needs:
       - job_deploy_module
     steps:

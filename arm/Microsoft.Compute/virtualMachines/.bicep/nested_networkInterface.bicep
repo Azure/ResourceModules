@@ -58,7 +58,7 @@ module networkInterface_publicIPConfigurations 'nested_networkInterface_publicIP
   }
 }]
 
-resource networkInterface 'Microsoft.Network/networkInterfaces@2021-02-01' = {
+resource networkInterface 'Microsoft.Network/networkInterfaces@2021-03-01' = {
   name: networkInterfaceName
   location: location
   tags: tags
