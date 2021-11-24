@@ -20,14 +20,15 @@ This module deploys a Web or Function App
 
 | Parameter Name | Type | Default Value | Possible Values | Description |
 | :-- | :-- | :-- | :-- | :-- |
-| `appServiceEnvironmentId` | string |  |  | Optional. The Resource Id of the App Service Environment to use for the Function App. |
-| `appServicePlanId` | string |  |  | Optional. The Resource Id of the App Service Plan to use for the App. If not provided, the hosting plan name is used to create a new plan. |
+| `appInsightId` | string |  |  | Optional. The Resource ID of the existing App Insight to leverage for the App. If the ID is not provided, the appInsightObject can be used to create a new app insight. |
+| `appInsightObject` | object | `{object}` |  | Optional. Used to deploy a new app service plan if no appInsightId is provided . |
+| `appServiceEnvironmentId` | string |  |  | Optional. The Resource ID of the App Service Environment to use for the Function App. |
+| `appServicePlanId` | string |  |  | Optional. The Resource ID of the App Service Plan to use for the App. If not provided, the appServicePlanObject is used to create a new plan. |
 | `appServicePlanObject` | object | `{object}` |  | Optional. Required if no appServicePlanId is provided to deploy a new app service plan. |
 | `clientAffinityEnabled` | bool | `True` |  | Optional. If Client Affinity is enabled. |
-| `cuaId` | string |  |  | Optional. Customer Usage Attribution id (GUID). This GUID must be previously registered |
+| `cuaId` | string |  |  | Optional. Customer Usage Attribution ID (GUID). This GUID must be previously registered |
 | `diagnosticLogsRetentionInDays` | int | `365` |  | Optional. Specifies the number of days that logs will be kept for; a value of 0 will retain data indefinitely. |
 | `diagnosticStorageAccountId` | string |  |  | Optional. Resource identifier of the Diagnostic Storage Account. |
-| `enableMonitoring` | bool | `True` |  | Optional. If true, ApplicationInsights will be configured for the Function App. |
 | `eventHubAuthorizationRuleId` | string |  |  | Optional. Resource ID of the event hub authorization rule for the Event Hubs namespace in which the event hub should be created or streamed to. |
 | `eventHubName` | string |  |  | Optional. Name of the event hub within the namespace to which logs are streamed. Without this, an event hub is created for each log category. |
 | `functionsExtensionVersion` | string | `~3` |  | Optional. Version if the function extension. |

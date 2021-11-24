@@ -20,8 +20,8 @@ param clientAffinityEnabled bool = true
 @description('Required. Configuration of the app.')
 param siteConfig object = {}
 
-@description('Optional. If true, ApplicationInsights will be configured for the Function App.')
-param enableMonitoring bool = true
+// @description('Optional. If true, ApplicationInsights will be configured for the Function App.')
+// param enableMonitoring bool = true
 
 @description('Optional. The name of the storage account to managing triggers and logging function executions.')
 param storageAccountName string = ''
@@ -43,16 +43,20 @@ param functionsWorkerRuntime string = ''
 @description('Optional. Version if the function extension.')
 param functionsExtensionVersion string = '~3'
 
-@description('Optional. The Resource Id of the App Service Plan to use for the App. If not provided, the hosting plan name is used to create a new plan.')
+@description('Optional. The Resource ID of the App Service Plan to use for the App. If not provided, the appServicePlanObject is used to create a new plan.')
 param appServicePlanId string = ''
 
 @description('Optional. Required if no appServicePlanId is provided to deploy a new app service plan.')
 param appServicePlanObject object = {}
 
+@description('Optional. The Resource ID of the existing App Insight to leverage for the App. If the ID is not provided, the appInsightObject can be used to create a new app insight.')
+param appInsightId string = ''
 
-@description('Optional. The Resource Id of the App Service Environment to use for the Function App.')
+@description('Optional. Used to deploy a new app service plan if no appInsightId is provided .')
+param appInsightObject object = {}
+
+@description('Optional. The Resource ID of the App Service Environment to use for the Function App.')
 param appServiceEnvironmentId string = ''
-
 
 @description('Optional. Type of managed service identity.')
 @allowed([
@@ -80,7 +84,7 @@ param privateEndpoints array = []
 @description('Optional. Tags of the resource.')
 param tags object = {}
 
-@description('Optional. Customer Usage Attribution id (GUID). This GUID must be previously registered')
+@description('Optional. Customer Usage Attribution ID (GUID). This GUID must be previously registered')
 param cuaId string = ''
 
 @description('Optional. Array of role assignment objects that contain the \'roleDefinitionIdOrName\' and \'principalId\' to define RBAC role assignments on this resource. In the roleDefinitionIdOrName attribute, you can provide either the display name of the role definition, or its fully qualified ID in the following format: \'/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11\'')
@@ -156,23 +160,6 @@ resource appServicePlanExisting 'Microsoft.Web/serverfarms@2021-02-01' existing 
   scope: resourceGroup(split(appServicePlanId, '/')[2], split(appServicePlanId, '/')[4])
 }
 
-// resource appServicePlan 'Microsoft.Web/serverfarms@2021-02-01' = if (empty(appServicePlanId)) {
-//   name: contains(appServicePlanObject, 'appServicePlanName') ? !empty(appServicePlanObject.appServicePlanName) ? appServicePlanObject.appServicePlanName : '${name}-asp' : '${name}-asp'
-//   kind: appServicePlanObject.appServicePlanType
-//   location: location
-//   tags: tags
-//   sku: {
-//     name: appServicePlanObject.appServicePlanSkuName
-//     capacity: appServicePlanObject.appServicePlanWorkerSize
-//     tier: appServicePlanObject.appServicePlanTier
-//     size: appServicePlanObject.appServicePlanSize
-//     family: appServicePlanObject.appServicePlanFamily
-//   }
-//   properties: {
-//     hostingEnvironmentProfile: !empty(appServiceEnvironmentId) ? json('{ id: ${hostingEnvironment} }') : null
-//   }
-// }
-
 module appServicePlan '.bicep/nested_serverfarms.bicep' = if (empty(appServicePlanId)) {
   name: '${deployment().name}-AppServicePlan'
   params: {
@@ -191,6 +178,32 @@ module appServicePlan '.bicep/nested_serverfarms.bicep' = if (empty(appServicePl
     lock: lock
   }
 }
+
+resource appInsightExisting 'microsoft.insights/components@2020-02-02' existing = if (!empty(appInsightId)) {
+  name: last(split(appInsightId, '/'))
+  scope: resourceGroup(split(appInsightId, '/')[2], split(appInsightId, '/')[4])
+}
+
+module appInsight '.bicep/nested_components.bicep' = if (!empty(appInsightObject)) {
+  name: '${deployment().name}-AppInsight'
+  params: {
+    name: contains(appInsightObject, 'name') ? !empty(appInsightObject.name) ? appInsightObject.name : '${name}-appi' : '${name}-appi'
+    workspaceResourceId: appInsightObject.workspaceResourceId
+    tags: tags
+    lock: lock
+  }
+}
+
+// resource app_insights 'microsoft.insights/components@2020-02-02' = if (!empty(appInsightObject)) {
+//   name: app.name
+//   location: location
+//   kind: 'web'
+//   tags: tags
+//   properties: {
+//     Application_Type: 'web'
+//     Request_Source: 'rest'
+//   }
+// }
 
 resource app 'Microsoft.Web/sites@2020-12-01' = {
   name: name
@@ -218,8 +231,10 @@ resource app 'Microsoft.Web/sites@2020-12-01' = {
       AzureWebJobsDashboard: !empty(storageAccountName) ? 'DefaultEndpointsProtocol=https;AccountName=${storageAccountName};AccountKey=${listkeys(resourceId(subscription().subscriptionId, storageAccountResourceGroupName, 'Microsoft.Storage/storageAccounts', storageAccountName), '2019-06-01').keys[0].value};' : any(null)
       FUNCTIONS_EXTENSION_VERSION: kind == 'functionapp' && !empty(functionsExtensionVersion) ? functionsExtensionVersion : any(null)
       FUNCTIONS_WORKER_RUNTIME: kind == 'functionapp' && !empty(functionsWorkerRuntime) ? functionsWorkerRuntime : any(null)
-      APPINSIGHTS_INSTRUMENTATIONKEY: enableMonitoring ? reference('microsoft.insights/components/${name}', '2015-05-01').InstrumentationKey : null
-      APPLICATIONINSIGHTS_CONNECTION_STRING: enableMonitoring ? reference('microsoft.insights/components/${name}', '2015-05-01').ConnectionString : null
+      // APPINSIGHTS_INSTRUMENTATIONKEY: enableMonitoring ? reference('microsoft.insights/components/${name}', '2015-05-01').InstrumentationKey : null
+      // APPLICATIONINSIGHTS_CONNECTION_STRING: enableMonitoring ? reference('microsoft.insights/components/${name}', '2015-05-01').ConnectionString : null
+      APPINSIGHTS_INSTRUMENTATIONKEY: !empty(appInsightId) ? appInsightExisting.properties.InstrumentationKey : ''
+      APPLICATIONINSIGHTS_CONNECTION_STRING: !empty(appInsightId) ? appInsightExisting.properties.ConnectionString : ''
     }
   }
 }
@@ -246,16 +261,7 @@ resource app_diagnosticSettings 'Microsoft.Insights/diagnosticSettings@2017-05-0
   scope: app
 }
 
-resource app_insights 'microsoft.insights/components@2020-02-02' = if (enableMonitoring) {
-  name: app.name
-  location: location
-  kind: 'web'
-  tags: tags
-  properties: {
-    Application_Type: 'web'
-    Request_Source: 'rest'
-  }
-}
+
 
 module app_rbac '.bicep/nested_rbac.bicep' = [for (roleAssignment, index) in roleAssignments: {
   name: '${deployment().name}-rbac-${index}'
