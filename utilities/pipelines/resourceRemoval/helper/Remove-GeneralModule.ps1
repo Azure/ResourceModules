@@ -76,10 +76,10 @@ Mandatory. The name of the module to remove
 .PARAMETER resourceGroupName
 Mandatory. The resource group of the resource to remove
 
-.PARAMETER deploymentsSearchRetryLimit
+.PARAMETER searchRetryLimit
 Optional. The maximum times to retry the search for resources via their removal tag
 
-.PARAMETER deploymentsSearchRetryInterval
+.PARAMETER searchRetryInterval
 Optional. The time to wait in between the search for resources via their remove tags
 
 .PARAMETER deploymentName
@@ -107,10 +107,10 @@ function Remove-GeneralModule {
         [string] $templateFilePath,
 
         [Parameter(Mandatory = $false)]
-        [int] $deploymentsSearchRetryLimit = 40,
+        [int] $searchRetryLimit = 40,
 
         [Parameter(Mandatory = $false)]
-        [int] $deploymentsSearchRetryInterval = 60
+        [int] $searchRetryInterval = 60
     )
 
     begin {
@@ -150,11 +150,11 @@ function Remove-GeneralModule {
             }
         }
 
-        $deploymentsSearchRetryCount = 1
-        while (-not ($deployments = Get-DeploymentByName -name $deploymentName -scope $deploymentScope -resourceGroupName $resourceGroupName -ErrorAction 'SilentlyContinue') -and $deploymentsSearchRetryCount -le $deploymentsSearchRetryLimit) {
-            Write-Verbose ('Did not to find deployments by name [{0}] in scope [{1}]. Retrying in [{2}] seconds [{3}/{4}]' -f $deploymentName, $deploymentScope, $deploymentsSearchRetryInterval, $deploymentsSearchRetryCount, $deploymentsSearchRetryLimit) -Verbose
-            Start-Sleep $deploymentsSearchRetryInterval
-            $deploymentsSearchRetryCount++
+        $searchRetryCount = 1
+        while (-not ($deployments = Get-DeploymentByName -name $deploymentName -scope $deploymentScope -resourceGroupName $resourceGroupName -ErrorAction 'SilentlyContinue') -and $searchRetryCount -le $searchRetryLimit) {
+            Write-Verbose ('Did not to find deployments by name [{0}] in scope [{1}]. Retrying in [{2}] seconds [{3}/{4}]' -f $deploymentName, $deploymentScope, $searchRetryInterval, $searchRetryCount, $searchRetryLimit) -Verbose
+            Start-Sleep $searchRetryInterval
+            $searchRetryCount++
         }
 
         if (-not $deployments) {
