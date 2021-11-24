@@ -20,7 +20,10 @@ inputs:
   tokenTenantId:
     description: 'The managementGroupId to deploy to'
     required: false
-  tokenPlatformKeyVault:
+  remoteTokensKeyVaultName:
+    description: 'The managementGroupId to deploy to'
+    required: false
+  remoteTokensKeyVaultSubscriptionId:
     description: 'The managementGroupId to deploy to'
     required: false
 
@@ -36,7 +39,7 @@ runs:
         # Set agent up
         Set-EnvironmentOnAgent
 
-    - if: '${{ inputs.tokenPlatformKeyVault }}'
+    - if: '${{ inputs.remoteTokensKeyVaultName && inputs.remoteTokensKeyVaultSubscriptionId }}'
       name: Azure Login
       uses: Azure/login@v1
       with:
@@ -54,8 +57,8 @@ runs:
         # Load Settings File
         $Settings = Get-Content -Path "settings.json" | ConvertFrom-Json
 
-        if('${{ inputs.tokenPlatformKeyVault }}' -and '${{ inputs.tokenSubscriptionId }}'){
-          $RemoteTokens = Get-TokenFromKeyVault -KeyVaultName '${{ inputs.tokenPlatformKeyVault }}' -subscriptionId '${{ inputs.tokenSubscriptionId }}' -SecretContentType $Settings.parameterFileTokens.remoteTokens.keyVaultSecretContentType -verbose
+        if('${{ inputs.remoteTokensKeyVaultName }}' -and '${{ inputs.remoteTokensKeyVaultSubscriptionId }}'){
+          $RemoteTokens = Get-TokenFromKeyVault -KeyVaultName '${{ inputs.remoteTokensKeyVaultName }}' -subscriptionId '${{ inputs.remoteTokensKeyVaultSubscriptionId }}' -SecretContentType $Settings.parameterFileTokens.remoteTokens.keyVaultSecretContentType -verbose
           foreach($token in $RemoteTokens){
           $ValueA = ConvertFrom-SecureString -AsPlainText -SecureString $($token.Value)
           write-host "Token Value Before is: $ValueA"

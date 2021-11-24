@@ -126,7 +126,8 @@ jobs:
           tokenSubscriptionId: '${{ secrets.ARM_SUBSCRIPTION_ID }}'
           tokenManagementGroupId: '${{ secrets.ARM_MGMTGROUP_ID }}'
           tokenTenantId: '${{ secrets.ARM_TENANT_ID }}'
-          tokenPlatformKeyVault: '${{ secrets.PLATFORM_KEYVAULsT }}'
+          remoteTokensKeyVaultName: '${{ secrets.PLATFORM_KEYVAULT }}'
+          remoteTokensKeyVaultSubscriptionId: '${{ secrets.ARM_SUBSCRIPTION_ID }}'
 
   # Validate deployment module tests
   # --------------------------------
