@@ -122,7 +122,7 @@ function New-ModuleDeployment {
                 if ($additionalTags) { $parameterFileTags += $additionalTags } # If additionalTags object is provided, append tag to the resource
 
                 # Overwrites parameter file tags parameter
-                Write-Verbose ("additionalTags:`n $(($additionalTags) ? ($additionalTags | ConvertTo-Json) : '[]')")
+                Write-Verbose ("additionalTags: $(($additionalTags) ? ($additionalTags | ConvertTo-Json) : '[]')")
                 $DeploymentInputs += @{Tags = $parameterFileTags }
             }
 
