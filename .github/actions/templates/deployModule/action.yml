@@ -94,7 +94,6 @@ runs:
           resourceGroupName  = '${{ inputs.resourceGroupName }}'
           subscriptionId     = '${{ inputs.subscriptionId }}'
           managementGroupId  = '${{ inputs.managementGroupId }}'
-          removeDeployment   = [System.Convert]::ToBoolean('${{ inputs.removeDeployment }}')
           doNotThrow         = $true
         }
 
