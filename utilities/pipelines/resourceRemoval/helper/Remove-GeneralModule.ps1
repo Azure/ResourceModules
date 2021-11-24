@@ -7,14 +7,17 @@ Get all deployments that match a given deployment name in a given scope
 .DESCRIPTION
 Get all deployments that match a given deployment name in a given scope
 
-.PARAMETER deploymentName
+.PARAMETER name
 Mandatory. The deployment name to search for
 
-.PARAMETER deploymentScope
+.PARAMETER resourceGroupName
+Optional. The name of the resource group for scope 'resourceGroup'
+
+.PARAMETER scope
 Mandatory. The scope to search in
 
 .EXAMPLE
-Get-DeploymentByName -deploymentName 'keyvault-12356' -scope 'resourceGroup'
+Get-DeploymentByName name 'keyvault-12356' -scope 'resourceGroup'
 
 Get all deployments that match name 'keyvault-12356' in scope 'resourceGroup'
 #>
@@ -23,7 +26,10 @@ function Get-DeploymentByName {
     [CmdletBinding()]
     param (
         [Parameter(Mandatory)]
-        [string] $deploymentName,
+        [string] $name,
+
+        [Parameter(Mandatory = $false)]
+        [string] $resourceGroupName,
 
         [Parameter(Mandatory)]
         [ValidateSet(
@@ -32,21 +38,21 @@ function Get-DeploymentByName {
             'managementGroup',
             'tenant'
         )]
-        [string] $deploymentScope
+        [string] $scope
     )
 
     switch ($deploymentScope) {
         'resourceGroup' {
-            return = Get-AzResourceGroupDeploymentOperation -DeploymentName $deploymentName -ResourceGroupName $resourceGroupName
+            return = Get-AzResourceGroupDeploymentOperation -DeploymentName $name -resourceGroupName $resourceGroupName
         }
         'subscription' {
-            return Get-AzDeploymentOperation -DeploymentName $deploymentName
+            return Get-AzDeploymentOperation -DeploymentName $name
         }
         'managementGroup' {
-            return Get-AzManagementGroupDeploymentOperation -DeploymentName $deploymentName
+            return Get-AzManagementGroupDeploymentOperation -DeploymentName $name
         }
         'tenant' {
-            return Get-AzTenantDeploymentOperation -DeploymentName $deploymentName
+            return Get-AzTenantDeploymentOperation -DeploymentName $name
         }
         default {
             throw "[$deploymentScope] is a non-supported template scope"
@@ -111,7 +117,7 @@ function Remove-GeneralModule {
         Write-Debug ('{0} entered' -f $MyInvocation.MyCommand)
 
         # Load helper
-        . (Join-Path $PSScriptRoot 'helper/Remove-Resource.ps1')
+        . (Join-Path $PSScriptRoot 'Remove-Resource.ps1')
     }
 
     process {
@@ -144,7 +150,8 @@ function Remove-GeneralModule {
             }
         }
 
-        while (-not ($deployments = Get-DeploymentByName -deploymentName $deploymentName -scope $deploymentScope -ErrorAction 'SilentlyContinue') -and $deploymentsSearchRetryCount -le $deploymentsSearchRetryLimit) {
+        $deploymentsSearchRetryCount = 1
+        while (-not ($deployments = Get-DeploymentByName -name $deploymentName -scope $deploymentScope -resourceGroupName $resourceGroupName -ErrorAction 'SilentlyContinue') -and $deploymentsSearchRetryCount -le $deploymentsSearchRetryLimit) {
             Write-Verbose ('Did not to find deployments by name [{0}] in scope [{1}]. Retrying in [{2}] seconds [{3}/{4}]' -f $deploymentName, $deploymentScope, $deploymentSearchRetryInterval, $deploymentSearchRetryCount, $deploymentSearchRetryLimit)
             Start-Sleep $deploymentSearchRetryInterval
             $deploymentSearchRetryCount++
