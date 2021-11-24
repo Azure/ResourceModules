@@ -1,6 +1,6 @@
-# Virtual Machine Extensions `[Microsoft.Compute/virtualMachines/extensions]`
+# virtual machine scale set Extensions `[Microsoft.Compute/virtualMachineScaleSets/extensions]`
 
-This module deploys a virtual machine extension.
+This module deploys a virtual machine scale set extension.
 
 ## Resource Types
 
@@ -12,7 +12,7 @@ This module deploys a virtual machine extension.
 
 | Parameter Name | Type | Default Value | Possible Values | Description |
 | :-- | :-- | :-- | :-- | :-- |
-| `name` | string |  |  | Required. The name of the virtual machine extension. |
+| `name` | string |  |  | Required. The name of the virtual machine scale set extension. |
 | `virtualMachineScaleSetName` | string |  |  | Required. The name of the virtual machine scale set that extension is provisioned for. |
 | `location` | string | `resourceGroup().location` |  | Optional. The location the extension is deployed to. |
 | `type` | string |  |  | Required. Specifies the type of the extension; an example is "CustomScriptExtension". |
@@ -35,5 +35,5 @@ This module deploys a virtual machine extension.
 
 ## Template references
 
-- [Azure Virtual Machine Extensions Overview](https://docs.microsoft.com/en-us/azure/virtual-machines/extensions/overview)
-- [Azure Virtual Machine Extensions Template](https://docs.microsoft.com/en-us/azure/templates/microsoft.compute/virtualmachines/extensions?tabs=bicep)
+- [Azure virtual machine scale set Extensions Overview](https://docs.microsoft.com/en-us/azure/virtual-machines/extensions/overview)
+- [Azure virtual machine scale set Extensions Template](https://docs.microsoft.com/en-us/azure/templates/microsoft.compute/virtualmachines/extensions?tabs=bicep)
