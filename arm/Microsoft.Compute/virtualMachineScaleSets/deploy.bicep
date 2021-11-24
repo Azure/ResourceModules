@@ -172,6 +172,8 @@ param domainJoinOptions int = 3
 
 param extensionDomainJoinConfig object = {}
 param extensionAntiMalwareConfig object = {}
+param extensionMonitoringAgentConfig object = {}
+param extensionDependencyAgentConfig object = {}
 
 @description('Optional. The DSC configuration object')
 param dscConfiguration object = {}
@@ -518,13 +520,13 @@ module vmss_microsoftAntiMalwareExtension 'extensions/deploy.bicep' = if (!empty
   name: '${uniqueString(deployment().name, location)}-vmss-MicrosoftAntiMalware'
   params: {
     virtualMachineScaleSetName: vmss.name
-    name: 'MicrosoftAntiMalware'
-    publisher: 'Microsoft.Azure.Security'
-    type: 'IaaSAntimalware'
-    typeHandlerVersion: '1.3'
-    autoUpgradeMinorVersion: true
-    enableAutomaticUpgrade: false
-    settings: microsoftAntiMalwareSettings
+    name: contains(extensionAntiMalwareConfig, 'name') ? extensionAntiMalwareConfig.name : 'MicrosoftAntiMalware'
+    publisher: contains(extensionAntiMalwareConfig, 'publisher') ? extensionAntiMalwareConfig.publisher : 'Microsoft.Azure.Security'
+    type: contains(extensionAntiMalwareConfig, 'type') ? extensionAntiMalwareConfig.type : 'IaaSAntimalware'
+    typeHandlerVersion: contains(extensionAntiMalwareConfig, 'typeHandlerVersion') ? extensionAntiMalwareConfig.typeHandlerVersion : '1.3'
+    autoUpgradeMinorVersion: contains(extensionAntiMalwareConfig, 'autoUpgradeMinorVersion') ? extensionAntiMalwareConfig.autoUpgradeMinorVersion : true
+    enableAutomaticUpgrade: contains(extensionAntiMalwareConfig, 'enableAutomaticUpgrade') ? extensionAntiMalwareConfig.enableAutomaticUpgrade : false
+    settings: extensionAntiMalwareConfig.settings
   }
 }
 
@@ -533,16 +535,16 @@ resource vmss_logAnalyticsWorkspace 'Microsoft.OperationalInsights/workspaces@20
   scope: resourceGroup(split(workspaceId, '/')[2], split(workspaceId, '/')[4])
 }
 
-module vmss_microsoftMonitoringAgentExtension 'extensions/deploy.bicep' = if (enableWindowsMMAAgent || enableLinuxMMAAgent) {
+module vmss_microsoftMonitoringAgentExtension 'extensions/deploy.bicep' = if (!empty(extensionMonitoringAgentConfig)) {
   name: '${uniqueString(deployment().name, location)}-vmss-MicrosoftMonitoringAgent'
   params: {
     virtualMachineScaleSetName: vmss.name
-    name: 'MicrosoftMonitoringAgent'
-    publisher: 'Microsoft.EnterpriseCloud.Monitoring'
-    type: enableWindowsMMAAgent ? 'MicrosoftMonitoringAgent' : 'OmsAgentForLinux'
-    typeHandlerVersion: enableWindowsMMAAgent ? '1.0' : '1.7'
-    autoUpgradeMinorVersion: true
-    enableAutomaticUpgrade: false
+    name: contains(extensionMonitoringAgentConfig, 'name') ? extensionMonitoringAgentConfig.name : 'MicrosoftMonitoringAgent'
+    publisher: contains(extensionMonitoringAgentConfig, 'publisher') ? extensionMonitoringAgentConfig.publisher : 'Microsoft.EnterpriseCloud.Monitoring'
+    type: contains(extensionMonitoringAgentConfig, 'type') ? extensionMonitoringAgentConfig.type : (osType == 'Windows' ? 'MicrosoftMonitoringAgent' : 'OmsAgentForLinux')
+    typeHandlerVersion: contains(extensionMonitoringAgentConfig, 'typeHandlerVersion') ? extensionMonitoringAgentConfig.typeHandlerVersion : (osType == 'Windows' ? '1.0' : '1.7')
+    autoUpgradeMinorVersion: contains(extensionMonitoringAgentConfig, 'autoUpgradeMinorVersion') ? extensionMonitoringAgentConfig.autoUpgradeMinorVersion : true
+    enableAutomaticUpgrade: contains(extensionMonitoringAgentConfig, 'enableAutomaticUpgrade') ? extensionMonitoringAgentConfig.enableAutomaticUpgrade : false
     settings: {
       workspaceId: !empty(workspaceId) ? reference(vmss_logAnalyticsWorkspace.id, vmss_logAnalyticsWorkspace.apiVersion).customerId : ''
     }
@@ -552,7 +554,7 @@ module vmss_microsoftMonitoringAgentExtension 'extensions/deploy.bicep' = if (en
   }
 }
 
-module vmss_dependencyAgentExtension 'extensions/deploy.bicep' = if (enableWindowsDependencyAgent || enableLinuxDependencyAgent) {
+module vmss_dependencyAgentExtension 'extensions/deploy.bicep' = if (!empty(extensionDependencyAgentConfig)) {
   name: '${uniqueString(deployment().name, location)}-vmss-DependencyAgent'
   params: {
     virtualMachineScaleSetName: vmss.name
