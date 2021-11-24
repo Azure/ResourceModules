@@ -2,7 +2,7 @@
 
 ## Resource Types
 
-| Resource Type | API Version |
+| Resource Type | Api Version |
 | :-- | :-- |
 | `Microsoft.AnalysisServices/servers` | 2017-08-01 |
 | `Microsoft.Authorization/locks` | 2016-09-01 |
@@ -20,7 +20,7 @@ The following resources are required to be able to deploy this resource.
 | Parameter Name | Type | Default Value | Possible Values | Description |
 | :-- | :-- | :-- | :-- | :-- |
 | `analysisServicesName` | string |  |  | Required. The name of the Azure Analysis Services server to create. |
-| `cuaId` | string |  |  | Optional. Customer Usage Attribution ID (GUID). This GUID must be previously registered |
+| `cuaId` | string |  |  | Optional. Customer Usage Attribution id (GUID). This GUID must be previously registered |
 | `diagnosticLogsRetentionInDays` | int | `365` |  | Optional. Specifies the number of days that logs will be kept for; a value of 0 will retain data indefinitely. |
 | `diagnosticStorageAccountId` | string |  |  | Optional. Resource identifier of the Diagnostic Storage Account. |
 | `eventHubAuthorizationRuleId` | string |  |  | Optional. Resource ID of the event hub authorization rule for the Event Hubs namespace in which the event hub should be created or streamed to. |
