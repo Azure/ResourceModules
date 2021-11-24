@@ -174,7 +174,7 @@ function Remove-GeneralModule {
                 $resourcesToRemove += @{
                     resourceId = $rawResourceIdsToRemove
                     name       = $rawResourceIdsToRemove.Split('/')[-1]
-                    type       = $rawResourceIdsToRemove.Split('/')[6..7] -join '/'
+                    type       = $rawResourceIdsToRemove.Split('/')[3]
                 }
             }
         } else {
