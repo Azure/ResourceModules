@@ -61,10 +61,10 @@ runs:
         $RemoteTokens = Get-TokenFromKeyVault -KeyVaultName '${{ env.PLATFORM_KEYVAULT }}' -subscriptionId '${{ inputs.subscriptionId }}' -SecretContentType $Settings.parameterFileTokens.remoteTokens.keyVaultSecretContentType -verbose
 
         foreach($token in $RemoteTokens){
-          $tokenValue = ConvertFrom-SecureString -AsPlainText -SecureString $token.Value
-          write-verbose "Token Value Before is: $tokenValue"
+          write-host "Token Value Before is: $($tokenValue.Value)"
           Add-Mask -Value $tokenValue
-          write-verbose "Token Value After is: $tokenValue"
+          $Value = ConvertFrom-SecureString -AsPlainText -SecureString $($tokenValue.Value)
+          write-host "$Value"
         }
 
       # [Test Deployment] task(s)
