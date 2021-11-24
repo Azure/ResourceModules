@@ -63,7 +63,7 @@ runs:
         foreach($token in $RemoteTokens){
           $ValueA = ConvertFrom-SecureString -AsPlainText -SecureString $($token.Value)
           write-host "Token Value Before is: $ValueA"
-          Add-Mask -Value $($token.Value) -GitHubActions -AzureDevOps
+          Add-Mask -Value $($token.Value) -GitHubActions
           $ValueB = ConvertFrom-SecureString -AsPlainText -SecureString $($token.Value)
           write-host "Token Value After is: $ValueB"
         }
