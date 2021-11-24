@@ -11,7 +11,7 @@
         "appServicePlanObject": {
             "value": {
                 "name": "sxx-az-wa-x-001-asp",
-                "serverOS": "linux",
+                "serverOS": "Linux",
                 "skuName": "P1v2",
                 "skuCapacity": 2,
                 "skuTier": "PremiumV2",
