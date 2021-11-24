@@ -195,8 +195,7 @@ function Test-ModuleLocally {
                     }
                     # Append to Function Input the required parameters for Deployment
                     $functionInput += @{
-                        removeDeployment = [System.Convert]::ToBoolean($ValidateOrDeployParameters.RemoveDeployment)
-                        retryLimit       = 1
+                        retryLimit = 1
                     }
                     # Invoke Deployment
                     New-ModuleDeployment @functionInput -Verbose
