@@ -82,6 +82,30 @@
                     ]
                 }
             ]
+        },
+        "extensionDomainJoinConfig": {
+            "value": {}
+        },
+        "extensionAntiMalwareConfig": {
+            "value": {}
+        },
+        "extensionMonitoringAgentConfig": {
+            "value": {}
+        },
+        "extensionDependencyAgentConfig": {
+            "value": {}
+        },
+        "extensionNetworkWatcherAgentConfig": {
+            "value": {}
+        },
+        "extensionDiskEncryptionConfig": {
+            "value": {}
+        },
+        "extensionDSCConfig": {
+            "value": {}
+        },
+        "extensionCustomScriptConfig": {
+            "value": {}
         }
     }
 }
