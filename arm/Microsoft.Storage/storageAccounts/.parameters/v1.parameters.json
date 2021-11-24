@@ -4,6 +4,9 @@
     "parameters": {
         "storageAccountKind": {
             "value": "Storage"
+        },
+        "allowBlobPublicAccess": {
+            "value": false
         }
     }
 }
