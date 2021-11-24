@@ -56,13 +56,14 @@ runs:
 
         if('${{ inputs.tokenPlatformKeyVault }}' -and '${{ inputs.tokenSubscriptionId }}'){
           $RemoteTokens = Get-TokenFromKeyVault -KeyVaultName '${{ inputs.tokenPlatformKeyVault }}' -subscriptionId '${{ inputs.tokenSubscriptionId }}' -SecretContentType $Settings.parameterFileTokens.remoteTokens.keyVaultSecretContentType -verbose
-        }
-
-        foreach($token in $RemoteTokens){
+          foreach($token in $RemoteTokens){
           $ValueA = ConvertFrom-SecureString -AsPlainText -SecureString $($token.Value)
           write-host "Token Value Before is: $ValueA"
           Add-Mask -Value $($token.Value) -GitHubActions
           $ValueB = ConvertFrom-SecureString -AsPlainText -SecureString $($token.Value)
           write-host "Token Value After is: $ValueB"
+          }
         }
-        get-content -Path '${{ inputs.parameterFilePath }}'
+
+
+        get-content -Path '${{ inputs.filePath }}'

@@ -126,13 +126,15 @@ jobs:
           tokenSubscriptionId: '${{ secrets.ARM_SUBSCRIPTION_ID }}'
           tokenManagementGroupId: '${{ secrets.ARM_MGMTGROUP_ID }}'
           tokenTenantId: '${{ secrets.ARM_TENANT_ID }}'
-          tokenPlatformKeyVault: '${{ secrets.PLATFORM_KEYVAULT }}'
+          tokenPlatformKeyVault: '${{ secrets.PLATFORM_KEYVAULsT }}'
 
   # Validate deployment module tests
   # --------------------------------
   job_tests_module_deploy_validate:
     runs-on: ubuntu-20.04
     name: 'Run deployment validation module tests'
+    needs:
+      - job_replace_tokens
     strategy:
       fail-fast: false
       matrix:
@@ -164,6 +166,7 @@ jobs:
     runs-on: ubuntu-20.04
     name: 'Deploy module'
     needs:
+      - job_replace_tokens
       - job_set_workflow_param
       - job_tests_module_global
       - job_tests_module_global_api
