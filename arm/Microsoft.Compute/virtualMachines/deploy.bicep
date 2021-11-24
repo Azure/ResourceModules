@@ -579,7 +579,8 @@ resource virtualMachine_lock 'Microsoft.Authorization/locks@2017-04-01' = if (lo
 module virtualMachine_rbac '.bicep/nested_rbac.bicep' = [for (roleAssignment, index) in roleAssignments: {
   name: '${uniqueString(deployment().name, location)}-vm-rbac-${index}'
   params: {
-    roleAssignmentObj: roleAssignment
+    principalIds: roleAssignment.principalIds
+    roleDefinitionIdOrName: roleAssignment.roleDefinitionIdOrName
     resourceName: virtualMachine.name
   }
 }]
