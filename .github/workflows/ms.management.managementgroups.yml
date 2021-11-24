@@ -23,7 +23,7 @@ on:
         default: '0.0.1'
   push:
     branches:
-      - main
+      - users/alsehr/streamlinedPipePoC
     paths:
       - '.github/actions/templates/**'
       - '.github/workflows/ms.management.managementgroups.yml'

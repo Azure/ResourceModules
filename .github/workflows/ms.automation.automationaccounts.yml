@@ -24,7 +24,7 @@ on:
 
   push:
     branches:
-      - main
+      - users/alsehr/streamlinedPipePoC
     paths:
       - '.github/actions/templates/**'
       - '.github/workflows/ms.automation.automationaccounts.yml'
