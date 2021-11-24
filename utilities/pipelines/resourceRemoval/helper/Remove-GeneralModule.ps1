@@ -152,9 +152,9 @@ function Remove-GeneralModule {
 
         $deploymentsSearchRetryCount = 1
         while (-not ($deployments = Get-DeploymentByName -name $deploymentName -scope $deploymentScope -resourceGroupName $resourceGroupName -ErrorAction 'SilentlyContinue') -and $deploymentsSearchRetryCount -le $deploymentsSearchRetryLimit) {
-            Write-Verbose ('Did not to find deployments by name [{0}] in scope [{1}]. Retrying in [{2}] seconds [{3}/{4}]' -f $deploymentName, $deploymentScope, $deploymentsSearchRetryInterval, $deploymentSearchRetryCount, $deploymentsSearchRetryLimit)
+            Write-Verbose ('Did not to find deployments by name [{0}] in scope [{1}]. Retrying in [{2}] seconds [{3}/{4}]' -f $deploymentName, $deploymentScope, $deploymentsSearchRetryInterval, $deploymentsSearchRetryCount, $deploymentsSearchRetryLimit)
             Start-Sleep $deploymentsSearchRetryInterval
-            $deploymentSearchRetryCount++
+            $deploymentsSearchRetryCount++
         }
 
         if (-not $deployments) {
