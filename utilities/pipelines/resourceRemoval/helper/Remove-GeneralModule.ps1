@@ -152,18 +152,17 @@ function Remove-GeneralModule {
 
         $deploymentsSearchRetryCount = 1
         while (-not ($deployments = Get-DeploymentByName -name $deploymentName -scope $deploymentScope -resourceGroupName $resourceGroupName -ErrorAction 'SilentlyContinue') -and $deploymentsSearchRetryCount -le $deploymentsSearchRetryLimit) {
-            Write-Verbose ('Did not to find deployments by name [{0}] in scope [{1}]. Retrying in [{2}] seconds [{3}/{4}]' -f $deploymentName, $deploymentScope, $deploymentsSearchRetryInterval, $deploymentsSearchRetryCount, $deploymentsSearchRetryLimit)
+            Write-Verbose ('Did not to find deployments by name [{0}] in scope [{1}]. Retrying in [{2}] seconds [{3}/{4}]' -f $deploymentName, $deploymentScope, $deploymentsSearchRetryInterval, $deploymentsSearchRetryCount, $deploymentsSearchRetryLimit) -Verbose
             Start-Sleep $deploymentsSearchRetryInterval
             $deploymentsSearchRetryCount++
         }
 
         if (-not $deployments) {
-            Write-Error "No deployment found for [$deploymentName]"
-            return
+            throw "No deployment found for [$deploymentName]"
         }
 
         $resourcesToRemove = @()
-        $rawResourceIdsToRemove = $depldeploymentsoyment.TargetResource | Where-Object { $_ -and $_ -notmatch '/deployments/' }
+        $rawResourceIdsToRemove = $deployments.TargetResource | Where-Object { $_ -and $_ -notmatch '/deployments/' }
         # Process removal
         # ===============
         if ($deploymentScope -eq 'ResourceGroup') {
