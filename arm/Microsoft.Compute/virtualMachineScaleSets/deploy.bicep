@@ -174,6 +174,10 @@ param extensionDomainJoinConfig object = {}
 param extensionAntiMalwareConfig object = {}
 param extensionMonitoringAgentConfig object = {}
 param extensionDependencyAgentConfig object = {}
+param extensionNetworkWatcherAgentConfig object = {}
+param extensionDiskEncryptionConfig object = {}
+param extensionDSCConfig object = {}
+param extensionCustomScriptConfig object = {}
 
 @description('Optional. The DSC configuration object')
 param dscConfiguration object = {}
@@ -558,25 +562,25 @@ module vmss_dependencyAgentExtension 'extensions/deploy.bicep' = if (!empty(exte
   name: '${uniqueString(deployment().name, location)}-vmss-DependencyAgent'
   params: {
     virtualMachineScaleSetName: vmss.name
-    name: 'DependencyAgent'
-    publisher: 'Microsoft.Azure.Monitoring.DependencyAgent'
-    type: enableWindowsDependencyAgent ? 'DependencyAgentWindows' : 'DependencyAgentLinux'
-    typeHandlerVersion: '9.5'
-    autoUpgradeMinorVersion: true
-    enableAutomaticUpgrade: true
+    name: contains(extensionDependencyAgentConfig, 'name') ? extensionDependencyAgentConfig.name : 'DependencyAgent'
+    publisher: contains(extensionDependencyAgentConfig, 'publisher') ? extensionDependencyAgentConfig.publisher : 'Microsoft.Azure.Monitoring.DependencyAgent'
+    type: contains(extensionDependencyAgentConfig, 'type') ? extensionDependencyAgentConfig.type : (osType == 'Windows' ? 'DependencyAgentWindows' : 'DependencyAgentLinux')
+    typeHandlerVersion: contains(extensionDependencyAgentConfig, 'typeHandlerVersion') ? extensionDependencyAgentConfig.typeHandlerVersion : '9.5'
+    autoUpgradeMinorVersion: contains(extensionDependencyAgentConfig, 'autoUpgradeMinorVersion') ? extensionDependencyAgentConfig.autoUpgradeMinorVersion : true
+    enableAutomaticUpgrade: contains(extensionDependencyAgentConfig, 'enableAutomaticUpgrade') ? extensionDependencyAgentConfig.enableAutomaticUpgrade : true
   }
 }
 
-module vmss_networkWatcherAgentExtension 'extensions/deploy.bicep' = if (enableNetworkWatcherWindows || enableNetworkWatcherLinux) {
+module vmss_networkWatcherAgentExtension 'extensions/deploy.bicep' = if (!empty(extensionNetworkWatcherAgentConfig)) {
   name: '${uniqueString(deployment().name, location)}-vmss-NetworkWatcherAgent'
   params: {
     virtualMachineScaleSetName: vmss.name
-    name: 'NetworkWatcherAgent'
-    publisher: 'Microsoft.Azure.NetworkWatcher'
-    type: enableNetworkWatcherWindows ? 'NetworkWatcherAgentWindows' : 'NetworkWatcherAgentLinux'
-    typeHandlerVersion: '1.4'
-    autoUpgradeMinorVersion: true
-    enableAutomaticUpgrade: false
+    name: contains(extensionNetworkWatcherAgentConfig, 'name') ? extensionNetworkWatcherAgentConfig.name : 'NetworkWatcherAgent'
+    publisher: contains(extensionNetworkWatcherAgentConfig, 'publisher') ? extensionNetworkWatcherAgentConfig.publisher : 'Microsoft.Azure.NetworkWatcher'
+    type: contains(extensionNetworkWatcherAgentConfig, 'type') ? extensionNetworkWatcherAgentConfig.type : (osType == 'Windows' ? 'NetworkWatcherAgentWindows' : 'NetworkWatcherAgentLinux')
+    typeHandlerVersion: contains(extensionNetworkWatcherAgentConfig, 'typeHandlerVersion') ? extensionNetworkWatcherAgentConfig.typeHandlerVersion : '1.4'
+    autoUpgradeMinorVersion: contains(extensionNetworkWatcherAgentConfig, 'autoUpgradeMinorVersion') ? extensionNetworkWatcherAgentConfig.autoUpgradeMinorVersion : true
+    enableAutomaticUpgrade: contains(extensionNetworkWatcherAgentConfig, 'enableAutomaticUpgrade') ? extensionNetworkWatcherAgentConfig.enableAutomaticUpgrade : false
   }
   dependsOn: [
     vmss_dependencyAgentExtension
@@ -587,53 +591,53 @@ module vmss_diskEncryptionExtension 'extensions/deploy.bicep' = if (enableWindow
   name: '${uniqueString(deployment().name, location)}-vmss-DiskEncryption'
   params: {
     virtualMachineScaleSetName: vmss.name
-    name: 'DiskEncryption'
-    publisher: 'Microsoft.Azure.Security'
-    type: enableWindowsDiskEncryption ? 'AzureDiskEncryption' : 'AzureDiskEncryptionForLinux'
-    typeHandlerVersion: enableWindowsDiskEncryption ? '2.2' : '1.1'
-    autoUpgradeMinorVersion: true
-    enableAutomaticUpgrade: false
-    forceUpdateTag: forceUpdateTag
-    settings: diskEncryptionExtensionSettings
+    name: contains(extensionDiskEncryptionConfig, 'name') ? extensionDiskEncryptionConfig.name : 'DiskEncryption'
+    publisher: contains(extensionDiskEncryptionConfig, 'publisher') ? extensionDiskEncryptionConfig.publisher : 'Microsoft.Azure.Security'
+    type: contains(extensionDiskEncryptionConfig, 'type') ? extensionDiskEncryptionConfig.type : (osType == 'Windows' ? 'AzureDiskEncryption' : 'AzureDiskEncryptionForLinux')
+    typeHandlerVersion: contains(extensionDiskEncryptionConfig, 'typeHandlerVersion') ? extensionDiskEncryptionConfig.typeHandlerVersion : (osType == 'Windows' ? '2.2' : '1.1')
+    autoUpgradeMinorVersion: contains(extensionDiskEncryptionConfig, 'autoUpgradeMinorVersion') ? extensionDiskEncryptionConfig.autoUpgradeMinorVersion : true
+    enableAutomaticUpgrade: contains(extensionDiskEncryptionConfig, 'enableAutomaticUpgrade') ? extensionDiskEncryptionConfig.enableAutomaticUpgrade : false
+    forceUpdateTag: contains(extensionDiskEncryptionConfig, 'forceUpdateTag') ? extensionDiskEncryptionConfig.forceUpdateTag : '1.0'
+    settings: extensionDiskEncryptionConfig.settings
   }
 }
 
-module vmss_desiredStateConfigurationExtension 'extensions/deploy.bicep' = if (enableDesiredStateConfiguration) {
+module vmss_desiredStateConfigurationExtension 'extensions/deploy.bicep' = if (!empty(extensionDSCConfig)) {
   name: '${uniqueString(deployment().name, location)}-vmss-DesiredStateConfiguration'
   params: {
     virtualMachineScaleSetName: vmss.name
-    name: 'DesiredStateConfiguration'
-    publisher: 'Microsoft.Powershell'
-    type: 'DSC'
-    typeHandlerVersion: '2.77'
-    autoUpgradeMinorVersion: true
-    enableAutomaticUpgrade: false
+    name: contains(extensionDSCConfig, 'name') ? extensionDSCConfig.name : 'DesiredStateConfiguration'
+    publisher: contains(extensionDSCConfig, 'publisher') ? extensionDSCConfig.publisher : 'Microsoft.Powershell'
+    type: contains(extensionDSCConfig, 'type') ? extensionDSCConfig.type : 'DSC'
+    typeHandlerVersion: contains(extensionDSCConfig, 'typeHandlerVersion') ? extensionDSCConfig.typeHandlerVersion : '2.77'
+    autoUpgradeMinorVersion: contains(extensionDSCConfig, 'autoUpgradeMinorVersion') ? extensionDSCConfig.autoUpgradeMinorVersion : true
+    enableAutomaticUpgrade: contains(extensionDSCConfig, 'enableAutomaticUpgrade') ? extensionDSCConfig.enableAutomaticUpgrade : false
     settings: dscConfiguration.settings
-    protectedSettings: contains(dscConfiguration, 'protectedSettings') ? dscConfiguration.protectedSettings : null
+    protectedSettings: contains(extensionDSCConfig, 'protectedSettings') ? extensionDSCConfig.protectedSettings : null
   }
   dependsOn: [
     vmss_networkWatcherAgentExtension
   ]
 }
 
-module virtualMachine_customScriptExtension 'extensions/deploy.bicep' = if (enableCustomScriptExtension) {
+module virtualMachine_customScriptExtension 'extensions/deploy.bicep' = if (!empty(extensionCustomScriptConfig)) {
   name: '${uniqueString(deployment().name, location)}-vmss-CustomScriptExtension'
   params: {
     virtualMachineScaleSetName: vmss.name
-    name: 'CustomScriptExtension'
-    publisher: 'Microsoft.Compute'
-    type: 'CustomScriptExtension'
-    typeHandlerVersion: '1.9'
-    autoUpgradeMinorVersion: true
-    enableAutomaticUpgrade: true
+    name: contains(extensionCustomScriptConfig, 'name') ? extensionCustomScriptConfig.name : 'CustomScriptExtension'
+    publisher: contains(extensionCustomScriptConfig, 'publisher') ? extensionCustomScriptConfig.publisher : 'Microsoft.Compute'
+    type: contains(extensionCustomScriptConfig, 'type') ? extensionCustomScriptConfig.type : 'CustomScriptExtension'
+    typeHandlerVersion: contains(extensionCustomScriptConfig, 'typeHandlerVersion') ? extensionCustomScriptConfig.typeHandlerVersion : '1.9'
+    autoUpgradeMinorVersion: contains(extensionCustomScriptConfig, 'autoUpgradeMinorVersion') ? extensionCustomScriptConfig.autoUpgradeMinorVersion : true
+    enableAutomaticUpgrade: contains(extensionCustomScriptConfig, 'enableAutomaticUpgrade') ? extensionCustomScriptConfig.enableAutomaticUpgrade : true
     settings: {
-      fileUris: [for fileData in windowsScriptExtensionFileData: contains(fileData, 'storageAccountId') ? '${fileData.uri}?${listAccountSas(fileData.storageAccountId, '2019-04-01', accountSasProperties).accountSasToken}' : fileData.uri]
+      fileUris: [for fileData in extensionCustomScriptConfig.fileData: contains(fileData, 'storageAccountId') ? '${fileData.uri}?${listAccountSas(fileData.storageAccountId, '2019-04-01', accountSasProperties).accountSasToken}' : fileData.uri]
     }
     protectedSettings: {
-      commandToExecute: windowsScriptExtensionCommandToExecute
-      storageAccountName: !empty(cseStorageAccountName) ? cseStorageAccountName : null
-      storageAccountKey: !empty(cseStorageAccountKey) ? cseStorageAccountKey : null
-      managedIdentity: !empty(cseManagedIdentity) ? cseManagedIdentity : null
+      commandToExecute: extensionCustomScriptConfig.commandToExecute
+      storageAccountName: contains(extensionCustomScriptConfig, 'storageAccountName') ? extensionCustomScriptConfig.storageAccountName : null
+      storageAccountKey: contains(extensionCustomScriptConfig, 'cseStorageAccountKey') ? extensionCustomScriptConfig.cseStorageAccountKey : null
+      managedIdentity: contains(extensionCustomScriptConfig, 'cseManagedIdentity') ? extensionCustomScriptConfig.cseManagedIdentity : null
     }
   }
   dependsOn: [
