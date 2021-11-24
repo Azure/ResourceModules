@@ -163,6 +163,7 @@ function Remove-GeneralModule {
 
         $resourcesToRemove = @()
         $rawResourceIdsToRemove = $deployments.TargetResource | Where-Object { $_ -and $_ -notmatch '/deployments/' }
+        $rawResourceIdsToRemove = $rawResourceIdsToRemove | Sort-Object -Descending -Unique
 
         # Process removal
         # ===============
@@ -180,7 +181,8 @@ function Remove-GeneralModule {
             $allResources = Get-AzResource -ResourceGroupName $resourceGroupName -Name '*'
             # Get all child resources and sort from child to parent
             foreach ($topLevelResource in $rawResourceIdsToRemove) {
-                $expandedResources = $allResources | Where-Object { $_.ResourceId.startswith($topLevelResource) } | Sort-Object -Descending -Property { $_.ResourceId.Split('/').Count }
+                $expandedResources = $allResources | Where-Object { $_.ResourceId.startswith($topLevelResource) }
+                $expandedResources = $expandedResources | Sort-Object -Descending -Property { $_.ResourceId.Split('/').Count }
                 foreach ($resource in $expandedResources) {
                     $resourcesToRemove += @{
                         resourceId = $resource.ResourceId
@@ -190,7 +192,7 @@ function Remove-GeneralModule {
                 }
             }
             if ($resourcesToRemove.Count -gt 1) {
-                $resourcesToRemove = $resourcesToRemove | Select-Object -Unique
+                $resourcesToRemove = $resourcesToRemove | Sort-Object -Descending -Property 'ResourceId' -Unique
             }
 
             # If VMs are available, delete those first
