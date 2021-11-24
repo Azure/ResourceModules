@@ -64,7 +64,7 @@ runs:
           write-host "Token Value Before is: $($token.Value)"
           Add-Mask -Value $($token.Value)
           $Value = ConvertFrom-SecureString -AsPlainText -SecureString $($token.Value)
-          write-host "$Value"
+          write-host "Token Value After is: $Value"
         }
 
       # [Test Deployment] task(s)
