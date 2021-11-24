@@ -2,9 +2,6 @@ name: 'Deploy module'
 description: 'Deploy module'
 
 inputs:
-  moduleName:
-    description: 'The name of the module to deploy'
-    required: true
   templateFilePath:
     description: 'The path to the template file to use for deployment'
     required: true
@@ -95,7 +92,7 @@ runs:
         . (Join-Path $env:GITHUB_WORKSPACE 'utilities' 'pipelines' 'resourceDeployment' 'New-ModuleDeployment.ps1')
 
         $functionInput = @{
-          moduleName         = '${{ inputs.moduleName }}'
+          moduleName         = Split-Path '${{ inputs.templateFilePath }}' -LeafBase
           templateFilePath   = '${{ inputs.templateFilePath }}'
           parameterFilePath  = '${{ inputs.parameterFilePath }}'
           location           = '${{ inputs.location }}'
@@ -145,7 +142,7 @@ runs:
             $functionInput['deploymentName'] = '${{ steps.deploy_step.outputs.deploymentName }}'
             $functionInput['templateFilePath'] = '${{ inputs.templateFilePath }}'
           } else {
-            $functionInput['moduleName'] = '${{ inputs.moduleName }}'
+            $functionInput['moduleName'] = Split-Path '${{ inputs.templateFilePath }}' -LeafBase
           }
 
           Write-Verbose 'Invoke task with' -Verbose
