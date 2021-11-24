@@ -55,16 +55,7 @@ runs:
         $Settings = Get-Content -Path "settings.json" | ConvertFrom-Json
 
         if('${{ inputs.tokenPlatformKeyVault }}' -and '${{ inputs.tokenSubscriptionId }}'){
-          $RemoteTokens = Get-TokenFromKeyVault -KeyVaultName '${{ env.PLATFORM_KEYVAULT }}' -subscriptionId '${{ inputs.subscriptionId }}' -SecretContentType $Settings.parameterFileTokens.remoteTokens.keyVaultSecretContentType -verbose
-        }
-
-        # Construct Token Function Input
-        $ConvertTokensInputs = @{
-            ParameterFilePath                 = '${{ inputs.parameterFilePath }}'
-            DefaultParameterFileTokens        = $DefaultParameterFileTokens
-            LocalCustomParameterFileTokens    = $Settings.parameterFileTokens.localTokens.tokens
-            TokenPrefix                       = $Settings.parameterFileTokens.tokenPrefix
-            TokenSuffix                       = $Settings.parameterFileTokens.tokenSuffix
+          $RemoteTokens = Get-TokenFromKeyVault -KeyVaultName '${{ inputs.tokenPlatformKeyVault }}' -subscriptionId '${{ inputs.tokenSubscriptionId }}' -SecretContentType $Settings.parameterFileTokens.remoteTokens.keyVaultSecretContentType -verbose
         }
 
         foreach($token in $RemoteTokens){
