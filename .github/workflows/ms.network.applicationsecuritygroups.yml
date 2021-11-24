@@ -100,6 +100,36 @@ jobs:
 
   # Validate deployment module tests
   # --------------------------------
+  job_replace_tokens:
+    runs-on: ubuntu-20.04
+    name: 'Replace Tokens'
+    strategy:
+      fail-fast: false
+      matrix:
+        filePaths: ['parameters.json']
+    steps:
+      - name: 'Checkout'
+        uses: actions/checkout@v2
+        with:
+          fetch-depth: 0
+      - name: Set environment variables
+        uses: deep-mm/set-variables@v1.0
+        with:
+          # Name of variable file
+          variableFileName: 'variables.module' # Don't write .json here
+      - name: 'Replace Tokens'
+        uses: ./.github/actions/templates/replaceTokens
+        with:
+          filePath: '${{ env.modulePath }}/.parameters/${{ matrix.parameterFilePaths }}'
+          tokenLocation: '${{ env.defaultLocation }}'
+          tokenResourceGroupName: '${{ env.resourceGroupName }}'
+          tokenSubscriptionId: '${{ secrets.ARM_SUBSCRIPTION_ID }}'
+          tokenManagementGroupId: '${{ secrets.ARM_MGMTGROUP_ID }}'
+          tokenTenantId: '${{ secrets.ARM_TENANT_ID }}'
+          tokenPlatformKeyVault: '${{ secrets.PLATFORM_KEYVAULT }}'
+
+  # Validate deployment module tests
+  # --------------------------------
   job_tests_module_deploy_validate:
     runs-on: ubuntu-20.04
     name: 'Run deployment validation module tests'

@@ -1,23 +1,26 @@
-name: 'Validate module'
-description: 'Validate module'
+name: 'Replace Tokens'
+description: 'Replace Tokens in File'
 
 inputs:
-  templateFilePath:
-    description: 'The path to the template file to use for testing & deployment'
+  filePath:
+    description: 'The path to the file that contains the tokens'
     required: true
-  parameterFilePath:
-    description: 'The path to the parameter file to use for testing & deployment'
-    required: true
-  location:
+  tokenLocation:
     description: 'The location to use for deployment'
-    required: true
-  resourceGroupName:
+    required: false
+  tokenResourceGroupName:
     description: 'The resource group to deploy to'
     required: false
-  subscriptionId:
+  tokenSubscriptionId:
     description: 'The subscriptionId to deploy to'
     required: false
-  managementGroupId:
+  tokenManagementGroupId:
+    description: 'The managementGroupId to deploy to'
+    required: false
+  tokenTenantId:
+    description: 'The managementGroupId to deploy to'
+    required: false
+  tokenPlatformKeyVault:
     description: 'The managementGroupId to deploy to'
     required: false
 
@@ -33,13 +36,14 @@ runs:
         # Set agent up
         Set-EnvironmentOnAgent
 
-    - name: Azure Login
+    - if: '${{ inputs.tokenPlatformKeyVault }}'
+      name: Azure Login
       uses: Azure/login@v1
       with:
         creds: ${{ env.AZURE_CREDENTIALS }}
         enable-AzPSSession: true
 
-    - name: 'Replace Parameter File Tokens [${{ inputs.parameterFilePath }}] '
+    - name: 'Replace Tokens in File [${{ inputs.filePath }}] '
       shell: pwsh
       run: |
         # Load used functions
@@ -50,39 +54,24 @@ runs:
         # Load Settings File
         $Settings = Get-Content -Path "settings.json" | ConvertFrom-Json
 
-        if('${{ env.PLATFORM_KEYVAULT }}' -and '${{ inputs.subscriptionId }}'){
+        if('${{ inputs.tokenPlatformKeyVault }}' -and '${{ inputs.tokenSubscriptionId }}'){
           $RemoteTokens = Get-TokenFromKeyVault -KeyVaultName '${{ env.PLATFORM_KEYVAULT }}' -subscriptionId '${{ inputs.subscriptionId }}' -SecretContentType $Settings.parameterFileTokens.remoteTokens.keyVaultSecretContentType -verbose
-          foreach($token in $RemoteTokens){
+        }
+
+        # Construct Token Function Input
+        $ConvertTokensInputs = @{
+            ParameterFilePath                 = '${{ inputs.parameterFilePath }}'
+            DefaultParameterFileTokens        = $DefaultParameterFileTokens
+            LocalCustomParameterFileTokens    = $Settings.parameterFileTokens.localTokens.tokens
+            TokenPrefix                       = $Settings.parameterFileTokens.tokenPrefix
+            TokenSuffix                       = $Settings.parameterFileTokens.tokenSuffix
+        }
+
+        foreach($token in $RemoteTokens){
           $ValueA = ConvertFrom-SecureString -AsPlainText -SecureString $($token.Value)
           write-host "Token Value Before is: $ValueA"
           Add-Mask -Value $($token.Value) -GitHubActions
           $ValueB = ConvertFrom-SecureString -AsPlainText -SecureString $($token.Value)
           write-host "Token Value After is: $ValueB"
-          }
+        }
         get-content -Path '${{ inputs.parameterFilePath }}'
-        }
-
-      # [Test Deployment] task(s)
-      #--------------------------
-    - name: 'Validate [${{ inputs.templateFilePath }}]'
-      shell: pwsh
-      run: |
-        # Load used functions
-        . (Join-Path $env:GITHUB_WORKSPACE 'utilities' 'pipelines' 'resourceValidation' 'Test-TemplateWithParameterFile.ps1')
-
-        # ----------- #
-        # INVOKE TEST #
-        # ----------- #
-        $functionInput = @{
-          templateFilePath   = '${{ inputs.templateFilePath }}'
-          parameterFilePath  = '${{ inputs.parameterFilePath }}'
-          location           = '${{ inputs.location }}'
-          resourceGroupName  = '${{ inputs.resourceGroupName }}'
-          subscriptionId     = '${{ inputs.subscriptionId }}'
-          managementGroupId  = '${{ inputs.managementGroupId }}'
-        }
-
-        Write-Verbose "Invoke task with" -Verbose
-        Write-Verbose ($functionInput | ConvertTo-Json | Out-String) -Verbose
-
-        Test-TemplateWithParameterFile @functionInput -Verbose
