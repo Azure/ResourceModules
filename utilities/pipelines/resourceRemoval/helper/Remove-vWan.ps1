@@ -40,7 +40,7 @@ function Remove-vWan {
         Write-Debug ('{0} entered' -f $MyInvocation.MyCommand)
 
         # Load helper
-        . (Join-Path $PSScriptRoot 'helper/Remove-Resource.ps1')
+        . (Join-Path $PSScriptRoot 'Remove-Resource.ps1')
     }
 
     process {
