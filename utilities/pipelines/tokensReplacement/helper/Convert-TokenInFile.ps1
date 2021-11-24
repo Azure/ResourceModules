@@ -75,13 +75,9 @@ function Convert-TokenInFile {
         # Perform the Replace of Tokens in the File
         $TokenNameValueObject |
             ForEach-Object {
-                Write-Verbose "Finding and Replacing Token: $($PSItem.Name)"
-
                 # If type is secure string
                 if (($PSItem.Value | Get-Member -MemberType Property | Select-Object -ExpandProperty 'TypeName') -eq 'System.Security.SecureString') {
                     $PSItem.Value = $PSItem.Value | ConvertFrom-SecureString -AsPlainText
-                    Write-Verbose ("Token Value is $($PSItem.Value)")
-                    Write-Output ("`n::add-mask::{0}" -f $($PSItem.Value))
                 }
                 $File = $File -replace $PSItem.Name, $PSItem.Value
             }
@@ -91,7 +87,6 @@ function Convert-TokenInFile {
             $Path = (Join-Path -Path $OutputDirectory -ChildPath $FileName)
         }
         # Set Content
-        Write-Verbose "Writing Output for: $FileName"
         $File | Set-Content -Path $Path
     }
 }
