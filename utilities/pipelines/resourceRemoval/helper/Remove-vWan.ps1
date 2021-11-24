@@ -8,10 +8,10 @@ Remove a vWAN resource with a given deployment name
 .PARAMETER deploymentName
 Mandatory. The deployment name to use and find resources to remove
 
-.PARAMETER deploymentSearchRetryLimit
+.PARAMETER deploymentsSearchRetryLimit
 Optional. The maximum times to retry the search for resources via their removal tag
 
-.PARAMETER deploymentSearchRetryInterval
+.PARAMETER deploymentsSearchRetryInterval
 Optional. The time to wait in between the search for resources via their remove tags
 
 .EXAMPLE
@@ -30,10 +30,10 @@ function Remove-vWan {
         [string] $ResourceGroupName = 'validation-rg',
 
         [Parameter(Mandatory = $false)]
-        [int] $deploymentSearchRetryLimit = 40,
+        [int] $deploymentsSearchRetryLimit = 40,
 
         [Parameter(Mandatory = $false)]
-        [int] $deploymentSearchRetryInterval = 60
+        [int] $deploymentsSearchRetryInterval = 60
     )
 
     begin {
@@ -49,8 +49,8 @@ function Remove-vWan {
         # ------------------
         $deploymentsSearchRetryCount = 1
         while (-not ($deployments = Get-AzResourceGroupDeploymentOperation -DeploymentName $deploymentName -ResourceGroupName $resourceGroupName -ErrorAction 'SilentlyContinue') -and $deploymentsSearchRetryCount -le $deploymentsSearchRetryLimit) {
-            Write-Verbose ('Did not to find vWAN deployment resources by name [{0}] in scope [{1}]. Retrying in [{2}] seconds [{3}/{4}]' -f $deploymentName, $deploymentScope, $deploymentSearchRetryInterval, $deploymentSearchRetryCount, $deploymentSearchRetryLimit)
-            Start-Sleep $deploymentSearchRetryInterval
+            Write-Verbose ('Did not to find vWAN deployment resources by name [{0}] in scope [{1}]. Retrying in [{2}] seconds [{3}/{4}]' -f $deploymentName, $deploymentScope, $deploymentsSearchRetryInterval, $deploymentSearchRetryCount, $deploymentsSearchRetryLimit)
+            Start-Sleep $deploymentsSearchRetryInterval
             $deploymentSearchRetryCount++
         }
 

@@ -76,10 +76,10 @@ Mandatory. The name of the module to remove
 .PARAMETER resourceGroupName
 Mandatory. The resource group of the resource to remove
 
-.PARAMETER deploymentSearchRetryLimit
+.PARAMETER deploymentsSearchRetryLimit
 Optional. The maximum times to retry the search for resources via their removal tag
 
-.PARAMETER deploymentSearchRetryInterval
+.PARAMETER deploymentsSearchRetryInterval
 Optional. The time to wait in between the search for resources via their remove tags
 
 .PARAMETER deploymentName
@@ -107,10 +107,10 @@ function Remove-GeneralModule {
         [string] $templateFilePath,
 
         [Parameter(Mandatory = $false)]
-        [int] $deploymentSearchRetryLimit = 40,
+        [int] $deploymentsSearchRetryLimit = 40,
 
         [Parameter(Mandatory = $false)]
-        [int] $deploymentSearchRetryInterval = 60
+        [int] $deploymentsSearchRetryInterval = 60
     )
 
     begin {
@@ -152,8 +152,8 @@ function Remove-GeneralModule {
 
         $deploymentsSearchRetryCount = 1
         while (-not ($deployments = Get-DeploymentByName -name $deploymentName -scope $deploymentScope -resourceGroupName $resourceGroupName -ErrorAction 'SilentlyContinue') -and $deploymentsSearchRetryCount -le $deploymentsSearchRetryLimit) {
-            Write-Verbose ('Did not to find deployments by name [{0}] in scope [{1}]. Retrying in [{2}] seconds [{3}/{4}]' -f $deploymentName, $deploymentScope, $deploymentSearchRetryInterval, $deploymentSearchRetryCount, $deploymentSearchRetryLimit)
-            Start-Sleep $deploymentSearchRetryInterval
+            Write-Verbose ('Did not to find deployments by name [{0}] in scope [{1}]. Retrying in [{2}] seconds [{3}/{4}]' -f $deploymentName, $deploymentScope, $deploymentsSearchRetryInterval, $deploymentSearchRetryCount, $deploymentsSearchRetryLimit)
+            Start-Sleep $deploymentsSearchRetryInterval
             $deploymentSearchRetryCount++
         }
 
