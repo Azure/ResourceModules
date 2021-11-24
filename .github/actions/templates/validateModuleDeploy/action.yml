@@ -43,20 +43,12 @@ runs:
       shell: pwsh
       run: |
         # Load used functions
-        . (Join-Path $env:GITHUB_WORKSPACE 'utilities' 'pipelines' 'tokensReplacement' 'Convert-TokensInParameterFile.ps1')
+        . (Join-Path $env:GITHUB_WORKSPACE 'utilities' 'pipelines' 'tokensReplacement' 'helper' 'Add-Mask.ps1')
+        . (Join-Path $env:GITHUB_WORKSPACE 'utilities' 'pipelines' 'tokensReplacement' 'helper' 'Get-TokenFromKeyVault.ps1')
+        . (Join-Path $env:GITHUB_WORKSPACE 'utilities' 'pipelines' 'tokensReplacement' 'helper' 'Convert-TokenInFile.ps1')
 
         # Load Settings File
         $Settings = Get-Content -Path "settings.json" | ConvertFrom-Json
-
-        # Initialize Default Parameter File Tokens
-        $DefaultParameterFileTokens = @(
-            @{ Name = 'resourceGroupName'; Value = '${{ inputs.resourceGroupName }}' }
-            @{ Name = 'subscriptionId'; Value = '${{ inputs.subscriptionId }}' }
-            @{ Name = 'managementGroupId'; Value = '${{ inputs.managementGroupId }}' }
-            @{ Name = "tenantId"; Value = '${{ env.ARM_TENANT_ID }}' }
-            @{ Name = "deploymentSpId"; Value = '${{ env.DEPLOYMENT_SP_ID }}' }
-            @{ Name = "platformKeyVault"; Value = '${{ env.PLATFORM_KEYVAULT }}' }
-        ) | ForEach-Object { [PSCustomObject]$PSItem }
 
         # Construct Token Function Input
         $ConvertTokensInputs = @{
@@ -66,16 +58,14 @@ runs:
             TokenPrefix                       = $Settings.parameterFileTokens.tokenPrefix
             TokenSuffix                       = $Settings.parameterFileTokens.tokenSuffix
         }
-        # Add Remote Custom Parameter File Tokens
-        if ('${{ env.PLATFORM_KEYVAULT }}' -and '${{ inputs.subscriptionId }}') {
-            $ConvertTokensInputs += @{
-                TokensKeyVaultName                 = '${{ env.PLATFORM_KEYVAULT }}'
-                TokensKeyVaultSubscriptionId       = '${{ inputs.subscriptionId }}'
-                TokensKeyVaultSecretContentType    = $Settings.parameterFileTokens.remoteTokens.keyVaultSecretContentType
-            }
+        $RemoteTokens = Get-TokenFromKeyVault -KeyVaultName '${{ env.PLATFORM_KEYVAULT }}' -subscriptionId '${{ inputs.subscriptionId }}' -SecretContentType $Settings.parameterFileTokens.remoteTokens.keyVaultSecretContentType -verbose
+
+        foreach($token in $RemoteTokens){
+          $tokenValue = ConvertFrom-SecureString -AsPlainText -SecureString $token.Value
+          write-verbose "Token Value Before is: $tokenValue"
+          Add-Mask -Value $tokenValue
+          write-verbose "Token Value After is: $tokenValue"
         }
-        # Invoke Token Replacement Functionality
-        $null = Convert-TokensInParameterFile @ConvertTokensInputs -Verbose
 
       # [Test Deployment] task(s)
       #--------------------------
