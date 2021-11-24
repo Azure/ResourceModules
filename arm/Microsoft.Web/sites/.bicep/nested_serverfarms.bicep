@@ -47,23 +47,8 @@ param targetWorkerSize int = 0
 @description('Optional. Specify the type of lock.')
 param lock string = 'NotSpecified'
 
-@description('Optional. Array of role assignment objects that contain the \'roleDefinitionIdOrName\' and \'principalId\' to define RBAC role assignments on this resource. In the roleDefinitionIdOrName attribute, you can provide either the display name of the role definition, or its fully qualified ID in the following format: \'/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11\'')
-param roleAssignments array = []
-
 @description('Optional. Tags of the resource.')
 param tags object = {}
-
-@description('Optional. Customer Usage Attribution id (GUID). This GUID must be previously registered')
-param cuaId string = ''
-
-var hostingEnvironmentProfile = {
-  id: appServiceEnvironmentId
-}
-
-module pid_cuaId '.bicep/nested_cuaId.bicep' = if (!empty(cuaId)) {
-  name: 'pid-${cuaId}'
-  params: {}
-}
 
 resource appServicePlan 'Microsoft.Web/serverfarms@2021-02-01' = {
   name: name
@@ -73,7 +58,9 @@ resource appServicePlan 'Microsoft.Web/serverfarms@2021-02-01' = {
   sku: sku
   properties: {
     workerTierName: workerTierName
-    hostingEnvironmentProfile: !empty(appServiceEnvironmentId) ? hostingEnvironmentProfile : null
+    hostingEnvironmentProfile: !empty(appServiceEnvironmentId) ? {
+      id: appServiceEnvironmentId
+    } : null
     perSiteScaling: perSiteScaling
     maximumElasticWorkerCount: maximumElasticWorkerCount
     reserved: serverOS == 'Linux'
@@ -90,14 +77,6 @@ resource appServicePlan_lock 'Microsoft.Authorization/locks@2016-09-01' = if (lo
   }
   scope: appServicePlan
 }
-
-module appServicePlan_rbac '.bicep/nested_rbac.bicep' = [for (roleAssignment, index) in roleAssignments: {
-  name: '${deployment().name}-rbac-${index}'
-  params: {
-    roleAssignmentObj: roleAssignment
-    resourceName: appServicePlan.name
-  }
-}]
 
 @description('The resource group the app service plan was deployed into')
 output appServicePlanResourceGroup string = resourceGroup().name

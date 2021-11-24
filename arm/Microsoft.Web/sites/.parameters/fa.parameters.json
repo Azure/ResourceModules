@@ -10,13 +10,13 @@
         },
         "appServicePlanObject": {
             "value": {
-                "appServicePlanName": "sxx-az-fa-x-001-asp",
-                "appServicePlanSkuName": "P1v2",
-                "appServicePlanWorkerSize": 2,
-                "appServicePlanTier": "PremiumV2",
-                "appServicePlanSize": "P1v2",
-                "appServicePlanFamily": "Pv2",
-                "appServicePlanType": "linux"
+                "name": "sxx-az-fa-x-001-asp",
+                "serverOS": "linux",
+                "skuName": "P1v2",
+                "skuCapacity": 2,
+                "skuTier": "PremiumV2",
+                "skuSize": "P1v2",
+                "skuFamily": "Pv2"
             }
         },
         "siteConfig": {

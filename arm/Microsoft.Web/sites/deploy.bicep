@@ -20,7 +20,6 @@ param clientAffinityEnabled bool = true
 @description('Required. Configuration of the app.')
 param siteConfig object = {}
 
-
 @description('Optional. If true, ApplicationInsights will be configured for the Function App.')
 param enableMonitoring bool = true
 
@@ -50,49 +49,9 @@ param appServicePlanId string = ''
 @description('Optional. Required if no appServicePlanId is provided to deploy a new app service plan.')
 param appServicePlanObject object = {}
 
-// @description('Optional. Required if no appServicePlanId is provided to deploy a new app service plan.')
-// param appServicePlanName string = ''
-
-// @description('Optional. The pricing tier for the hosting plan.')
-// @allowed([
-//   'F1'
-//   'D1'
-//   'B1'
-//   'B2'
-//   'B3'
-//   'S1'
-//   'S2'
-//   'S3'
-//   'P1'
-//   'P1v2'
-//   'P2'
-//   'P3'
-//   'P4'
-// ])
-// param appServicePlanSkuName string = 'F1'
-
-// @description('Optional. Defines the number of workers from the worker pool that will be used by the app service plan')
-// param appServicePlanWorkerSize int = 2
-
-// @description('Optional. SkuTier of app service plan deployed if no appServicePlanId was provided.')
-// param appServicePlanTier string = ''
-
-// @description('Optional. SkuSize of app service plan deployed if no appServicePlanId was provided.')
-// param appServicePlanSize string = ''
-
-// @description('Optional. SkuFamily of app service plan deployed if no appServicePlanId was provided.')
-// param appServicePlanFamily string = ''
-
-// @description('Optional. SkuType of app service plan deployed if no appServicePlanId was provided.')
-// @allowed([
-//   'linux'
-//   'windows'
-// ])
-// param appServicePlanType string = 'linux'
 
 @description('Optional. The Resource Id of the App Service Environment to use for the Function App.')
 param appServiceEnvironmentId string = ''
-
 
 
 @description('Optional. Type of managed service identity.')
@@ -187,10 +146,6 @@ var diagnosticsMetrics = [for metric in metricsToEnable: {
   }
 }]
 
-var hostingEnvironment = {
-  id: appServiceEnvironmentId
-}
-
 module pid_cuaId '.bicep/nested_cuaId.bicep' = if (!empty(cuaId)) {
   name: 'pid-${cuaId}'
   params: {}
@@ -201,30 +156,40 @@ resource appServicePlanExisting 'Microsoft.Web/serverfarms@2021-02-01' existing 
   scope: resourceGroup(split(appServicePlanId, '/')[2], split(appServicePlanId, '/')[4])
 }
 
-resource appServicePlan 'Microsoft.Web/serverfarms@2021-02-01' = if (empty(appServicePlanId)) {
-  name: contains(appServicePlanObject, 'appServicePlanName') ? !empty(appServicePlanObject.appServicePlanName) ? appServicePlanObject.appServicePlanName : '${name}-asp' : '${name}-asp'
-  kind: appServicePlanObject.appServicePlanType
-  location: location
-  tags: tags
-  sku: {
-    name: appServicePlanObject.appServicePlanSkuName
-    capacity: appServicePlanObject.appServicePlanWorkerSize
-    tier: appServicePlanObject.appServicePlanTier
-    size: appServicePlanObject.appServicePlanSize
-    family: appServicePlanObject.appServicePlanFamily
-  }
-  properties: {
-    hostingEnvironmentProfile: !empty(appServiceEnvironmentId) ? json('{ id: ${hostingEnvironment} }') : null
-  }
-}
+// resource appServicePlan 'Microsoft.Web/serverfarms@2021-02-01' = if (empty(appServicePlanId)) {
+//   name: contains(appServicePlanObject, 'appServicePlanName') ? !empty(appServicePlanObject.appServicePlanName) ? appServicePlanObject.appServicePlanName : '${name}-asp' : '${name}-asp'
+//   kind: appServicePlanObject.appServicePlanType
+//   location: location
+//   tags: tags
+//   sku: {
+//     name: appServicePlanObject.appServicePlanSkuName
+//     capacity: appServicePlanObject.appServicePlanWorkerSize
+//     tier: appServicePlanObject.appServicePlanTier
+//     size: appServicePlanObject.appServicePlanSize
+//     family: appServicePlanObject.appServicePlanFamily
+//   }
+//   properties: {
+//     hostingEnvironmentProfile: !empty(appServiceEnvironmentId) ? json('{ id: ${hostingEnvironment} }') : null
+//   }
+// }
 
-resource appServicePlan_lock 'Microsoft.Authorization/locks@2016-09-01' = if (lock != 'NotSpecified' && empty(appServicePlanId)) {
-  name: '${appServicePlan.name}-${lock}-lock'
-  properties: {
-    level: lock
-    notes: lock == 'CanNotDelete' ? 'Cannot delete resource or child resources.' : 'Cannot modify the resource or child resources.'
+module appServicePlan '.bicep/nested_serverfarms.bicep' = if (empty(appServicePlanId)) {
+  name: '${deployment().name}-AppServicePlan'
+  params: {
+    name: contains(appServicePlanObject, 'name') ? !empty(appServicePlanObject.name) ? appServicePlanObject.name : '${name}-asp' : '${name}-asp'
+    location: location
+    tags: tags
+    serverOS: appServicePlanObject.serverOS
+    sku: {
+      name: appServicePlanObject.skuName
+      capacity: appServicePlanObject.skuCapacity
+      tier: appServicePlanObject.skuTier
+      size: appServicePlanObject.skuSize
+      family: appServicePlanObject.skuFamily
+    }
+    appServiceEnvironmentId: appServiceEnvironmentId
+    lock: lock
   }
-  scope: appServicePlan
 }
 
 resource app 'Microsoft.Web/sites@2020-12-01' = {
@@ -237,9 +202,11 @@ resource app 'Microsoft.Web/sites@2020-12-01' = {
     userAssignedIdentities: !empty(userAssignedIdentities) ? userAssignedIdentities : null
   }
   properties: {
-    serverFarmId: !empty(appServicePlanId) ? appServicePlanExisting.id : appServicePlan.id
+    serverFarmId: !empty(appServicePlanId) ? appServicePlanExisting.id : appServicePlan.outputs.appServicePlanResourceId
     httpsOnly: httpsOnly
-    hostingEnvironmentProfile: !empty(appServiceEnvironmentId) ? json('{ id: ${hostingEnvironment} }') : null
+    hostingEnvironmentProfile: !empty(appServiceEnvironmentId) ? {
+      id: appServiceEnvironmentId
+    } : null
     clientAffinityEnabled: clientAffinityEnabled
     siteConfig: siteConfig
   }
