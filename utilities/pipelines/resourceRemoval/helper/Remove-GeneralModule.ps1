@@ -171,10 +171,19 @@ function Remove-GeneralModule {
             Write-Verbose 'Handle subscription level removal'
 
             foreach ($rawResourceIdsToRemove in $rawResourceIdsToRemove) {
-                $resourcesToRemove += @{
-                    resourceId = $rawResourceIdsToRemove
-                    name       = $rawResourceIdsToRemove.Split('/')[-1]
-                    type       = $rawResourceIdsToRemove.Split('/')[3]
+                if ($rawResourceIdsToRemove.Split('/').count -lt 7) {
+                    # resource group
+                    $resourcesToRemove += @{
+                        resourceId = $rawResourceIdsToRemove
+                        name       = $rawResourceIdsToRemove.Split('/')[-1]
+                        type       = 'Microsoft.Resources/resourceGroups'
+                    }
+                } else {
+                    $resourcesToRemove += @{
+                        resourceId = $rawResourceIdsToRemove
+                        name       = $rawResourceIdsToRemove.Split('/')[-1]
+                        type       = $rawResourceIdsToRemove.Split('/')[4, 5] -join '/'
+                    }
                 }
             }
         } else {
