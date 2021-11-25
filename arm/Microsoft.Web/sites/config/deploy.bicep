@@ -45,10 +45,6 @@ module pid_cuaId '.bicep/nested_cuaId.bicep' = if (!empty(cuaId)) {
   params: {}
 }
 
-resource app 'Microsoft.Web/sites@2020-12-01' existing = {
-  name: appName
-}
-
 resource appInsight 'microsoft.insights/components@2020-02-02' existing = if (!empty(appInsightId)) {
   name: last(split(appInsightId, '/'))
   scope: resourceGroup(split(appInsightId, '/')[2], split(appInsightId, '/')[4])
@@ -59,9 +55,12 @@ resource storageAccount 'Microsoft.Storage/storageAccounts@2021-06-01' existing 
   scope: resourceGroup(split(appInsightId, '/')[2], split(appInsightId, '/')[4])
 }
 
-resource app_appsettings 'Microsoft.Web/sites/config@2021-02-01' = {
+resource app 'Microsoft.Web/sites@2020-12-01' existing = {
+  name: appName
+
+  resource app_appsettings 'config@2021-02-01' = {
     name: 'appsettings'
-    parent: app
+    // parent: app
     properties: {
       AzureWebJobsStorage: app.kind == 'functionapp' ? 'DefaultEndpointsProtocol=https;AccountName=${storageAccount.name};AccountKey=${storageAccount.listKeys().keys[0].value};' : any(null)
       AzureWebJobsDashboard: app.kind == 'functionapp' ? 'DefaultEndpointsProtocol=https;AccountName=${storageAccount.name};AccountKey=${storageAccount.listKeys().keys[0].value};' : any(null)
@@ -71,6 +70,11 @@ resource app_appsettings 'Microsoft.Web/sites/config@2021-02-01' = {
       APPLICATIONINSIGHTS_CONNECTION_STRING: !empty(appInsightId) ? appInsight.properties.ConnectionString : any(null)
     }
   }
+}
+
+
+
+
 
 // @description('The name of the site')
 // output siteName string = app.name
