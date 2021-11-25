@@ -79,7 +79,7 @@ module localNetworkGateway_rbac '.bicep/nested_rbac.bicep' = [for (roleAssignmen
   params: {
     principalIds: roleAssignment.principalIds
     roleDefinitionIdOrName: roleAssignment.roleDefinitionIdOrName
-    resourceName: localNetworkGateway.name
+    resourceId: localNetworkGateway.id
   }
 }]
 

@@ -191,7 +191,7 @@ module expressRouteCircuits_rbac '.bicep/nested_rbac.bicep' = [for (roleAssignme
   params: {
     principalIds: roleAssignment.principalIds
     roleDefinitionIdOrName: roleAssignment.roleDefinitionIdOrName
-    resourceName: expressRouteCircuits.name
+    resourceId: expressRouteCircuits.id
   }
 }]
 

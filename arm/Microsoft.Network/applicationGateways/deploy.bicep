@@ -417,7 +417,7 @@ module applicationGateway_rbac '.bicep/nested_rbac.bicep' = [for (roleAssignment
   params: {
     principalIds: roleAssignment.principalIds
     roleDefinitionIdOrName: roleAssignment.roleDefinitionIdOrName
-    resourceName: applicationGateway.name
+    resourceId: applicationGateway.id
   }
 }]
 

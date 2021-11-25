@@ -47,7 +47,7 @@ module applicationSecurityGroup_rbac '.bicep/nested_rbac.bicep' = [for (roleAssi
   params: {
     principalIds: roleAssignment.principalIds
     roleDefinitionIdOrName: roleAssignment.roleDefinitionIdOrName
-    resourceName: applicationSecurityGroup.name
+    resourceId: applicationSecurityGroup.id
   }
 }]
 

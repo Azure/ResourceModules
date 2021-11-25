@@ -119,7 +119,7 @@ module networkSecurityGroup_rbac '.bicep/nested_rbac.bicep' = [for (roleAssignme
   params: {
     principalIds: roleAssignment.principalIds
     roleDefinitionIdOrName: roleAssignment.roleDefinitionIdOrName
-    resourceName: networkSecurityGroup.name
+    resourceId: networkSecurityGroup.id
   }
 }]
 
