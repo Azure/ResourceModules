@@ -24,7 +24,7 @@
     )
     $ValueConverted = ConvertFrom-SecureString -SecureString $Value -AsPlainText -ErrorAction SilentlyContinue
     if ($GitHubActions) {
-        Write-Output ("`n::add-mask::{0}" -f $ValueConverted)
+        Write-Host ("`n::add-mask::{0}" -f $ValueConverted)
     }
     if ($AzureDevOps) {
         Write-Host "##vso[task.setvariable variable=$Value;issecret=true]$ValueConverted"
