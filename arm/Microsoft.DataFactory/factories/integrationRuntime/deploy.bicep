@@ -6,7 +6,7 @@ param name string
 
 @allowed([
   'Managed'
-  'Self-Hosted'
+  'SelfHosted'
 ])
 @description('Required. The type of Integration Runtime')
 param type string
