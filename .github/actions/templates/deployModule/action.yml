@@ -87,7 +87,6 @@ runs:
         }
         # Invoke Token Replacement Functionality
         $null = Convert-TokensInParameterFile @ConvertTokensInputs -Verbose
-        get-content -Path '${{ inputs.parameterFilePath }}'
 
     - name: 'Deploy [${{ inputs.templateFilePath }}]'
       shell: pwsh
