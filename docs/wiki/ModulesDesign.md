@@ -486,9 +486,9 @@ Within a bicep file, follow the following conventions:
         resource blobServices 'blobServices@2021-06-01' existing = {
           name: name
 
-           resource container 'containers@2019-06-01' existing = {
+          resource container 'containers@2019-06-01' existing = {
             name: name
-           }
+          }
         }
       }
 
