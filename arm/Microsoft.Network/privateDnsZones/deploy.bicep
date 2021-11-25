@@ -59,8 +59,8 @@ resource privateDnsZone_lock 'Microsoft.Authorization/locks@2016-09-01' = if (lo
 module privateDnsZone_rbac '.bicep/nested_rbac.bicep' = [for (roleAssignment, index) in roleAssignments: {
   name: '${deployment().name}-rbac-${index}'
   params: {
-    roleDefinitionIdOrName: roleAssignment.roleDefinitionIdOrName
     principalIds: roleAssignment.principalIds
+    roleDefinitionIdOrName: roleAssignment.roleDefinitionIdOrName
     resourceName: privateDnsZone.name
   }
 }]

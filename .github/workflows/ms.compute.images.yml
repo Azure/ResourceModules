@@ -28,7 +28,7 @@ on:
       - '.github/actions/templates/**'
       - '.github/workflows/ms.compute.images.yml'
       - 'arm/Microsoft.Compute/images/**'
-      - '!arm/Microsoft.Compute/images/readme.md'
+      - '!*/**/readme.md'
 
 env:
   moduleName: 'images'

@@ -28,7 +28,7 @@ on:
       - '.github/actions/templates/**'
       - '.github/workflows/ms.network.privateendpoints.yml'
       - 'arm/Microsoft.Network/privateEndpoints/**'
-      - '!arm/Microsoft.Network/privateEndpoints/readme.md'
+      - '!*/**/readme.md'
 
 env:
   moduleName: 'privateEndpoints'

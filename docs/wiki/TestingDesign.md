@@ -125,7 +125,6 @@ Since also dependency resources are in turn subject to dependencies with each ot
   1. Shared image gallery and definition: These resources are leveraged by the [image template] resource.
   1. Action group: This resource is leveraged by [activity log alert] and [metric alert] resources.
   1. Application security group: This resource is leveraged by the [network security group] resource.
-  1. Application service plan: This resource is leveraged by the [function app] and [web app] resources.
   1. Azure Container Registry: This resource is leveraged as the private bicep registry to publish modules to.
 
 **Third level resources**: This group of resources has a dependency on one or more resources in the group above. Resources in this group can be deployed in parallel.

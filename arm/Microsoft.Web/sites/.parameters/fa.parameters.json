@@ -3,13 +3,13 @@
     "contentVersion": "1.0.0.0",
     "parameters": {
         "appName": {
-            "value": "azfaweux01"
+            "value": "sxx-az-fa-x-001"
         },
         "appType": {
             "value": "functionapp"
         },
         "appServicePlanName": {
-            "value": "adp-sxx-az-asp-x-001"
+            "value": "sxx-az-fa-x-001-asp"
         },
         "appServicePlanSkuName": {
             "value": "P1v2"

@@ -28,7 +28,7 @@ on:
       - '.github/actions/templates/**'
       - '.github/workflows/ms.insights.diagnosticsettings.yml'
       - 'arm/Microsoft.Insights/diagnosticsettings/**'
-      - '!arm/Microsoft.Insights/diagnosticsettings/readme.md'
+      - '!*/**/readme.md'
 
 env:
   moduleName: 'diagnosticSettings'

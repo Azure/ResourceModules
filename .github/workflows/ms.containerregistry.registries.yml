@@ -28,7 +28,7 @@ on:
       - '.github/actions/templates/**'
       - '.github/workflows/ms.containerregistry.registries.yml'
       - 'arm/Microsoft.ContainerRegistry/registries/**'
-      - '!arm/Microsoft.ContainerRegistry/registries/readme.md'
+      - '!*/**/readme.md'
 
 env:
   moduleName: 'registries'

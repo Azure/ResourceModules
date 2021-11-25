@@ -28,7 +28,7 @@ on:
       - '.github/actions/templates/**'
       - '.github/workflows/ms.network.loadbalancers.yml'
       - 'arm/Microsoft.Network/loadBalancers/**'
-      - '!arm/Microsoft.Network/loadBalancers/readme.md'
+      - '!*/**/readme.md'
 
 env:
   moduleName: 'loadBalancers'

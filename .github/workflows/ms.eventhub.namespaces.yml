@@ -28,7 +28,7 @@ on:
       - '.github/actions/templates/**'
       - '.github/workflows/ms.eventhub.namespaces.yml'
       - 'arm/Microsoft.EventHub/namespaces/**'
-      - '!arm/Microsoft.EventHub/namespaces/readme.md'
+      - '!*/**/readme.md'
 
 env:
   moduleName: 'namespaces'

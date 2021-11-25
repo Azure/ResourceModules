@@ -28,7 +28,7 @@ on:
       - '.github/actions/templates/**'
       - '.github/workflows/ms.compute.virtualmachinescalesets.yml'
       - 'arm/Microsoft.Compute/virtualMachineScaleSets/**'
-      - '!arm/Microsoft.Compute/virtualMachineScaleSets/readme.md'
+      - '!*/**/readme.md'
 
 env:
   moduleName: 'virtualMachineScaleSets'
