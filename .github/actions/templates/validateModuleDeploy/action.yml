@@ -39,7 +39,7 @@ runs:
         creds: ${{ env.AZURE_CREDENTIALS }}
         enable-AzPSSession: true
 
-    - if: ${{ env.PLATFORM_KEYVAULT && ${{ inputs.subscriptionId }} }}
+    - if: ${{ env.PLATFORM_KEYVAULT && inputs.subscriptionId }}
       name: Azure Key Vault Secrets
       id: azurekeyvault
       uses: Azure/get-keyvault-secrets@v1
