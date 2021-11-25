@@ -117,22 +117,83 @@
             }
         },
         "extensionMonitoringAgentConfig": {
-            "value": {}
+            "value": {
+                "name": "MicrosoftMonitoringAgent"
+            }
         },
         "extensionDependencyAgentConfig": {
-            "value": {}
+            "value": {
+                "name": "DependencyAgent"
+            }
         },
         "extensionNetworkWatcherAgentConfig": {
-            "value": {}
+            "value": {
+                "name": "NetworkWatcherAgent"
+            }
         },
         "extensionDiskEncryptionConfig": {
-            "value": {}
+            "value": {
+                "settings": {
+                    "EncryptionOperation": "EnableEncryption",
+                    "KeyVaultURL": "https://adp-sxx-az-kv-x-001.vault.azure.net/",
+                    "KeyVaultResourceId": "/subscriptions/8629be3b-96bc-482d-a04b-ffff597c65a2/resourceGroups/validation-rg/providers/Microsoft.KeyVault/vaults/adp-sxx-az-kv-x-001",
+                    "KeyEncryptionKeyURL": "https://adp-sxx-az-kv-x-001.vault.azure.net/keys/keyEncryptionKey/685153483a1140e3856f004a753e1ab4",
+                    "KekVaultResourceId": "/subscriptions/8629be3b-96bc-482d-a04b-ffff597c65a2/resourceGroups/validation-rg/providers/Microsoft.KeyVault/vaults/adp-sxx-az-kv-x-001",
+                    "KeyEncryptionAlgorithm": "RSA-OAEP",
+                    "VolumeType": "All",
+                    "ResizeOSDisk": "false"
+                }
+            }
         },
         "extensionDSCConfig": {
-            "value": {}
+            "value": {
+                "settings": {
+                    "wmfVersion": "latest",
+                    "configuration": {
+                        "url": "http://validURLToConfigLocation",
+                        "script": "ConfigurationScript.ps1",
+                        "function": "ConfigurationFunction"
+                    },
+                    "configurationArguments": {
+                        "argument1": "Value1",
+                        "argument2": "Value2"
+                    },
+                    "configurationData": {
+                        "url": "https://foo.psd1"
+                    },
+                    "privacy": {
+                        "dataCollection": "enable"
+                    },
+                    "advancedOptions": {
+                        "forcePullAndApply": false,
+                        "downloadMappings": {
+                            "specificDependencyKey": "https://myCustomDependencyLocation"
+                        }
+                    }
+                },
+                "protectedSettings": {
+                    "value": {
+                        "configurationArguments": {
+                            "mySecret": "MyPlaceholder"
+                        },
+                        "configurationUrlSasToken": "MyPlaceholder",
+                        "configurationDataUrlSasToken": "MyPlaceholder"
+                    }
+                }
+            }
         },
         "extensionCustomScriptConfig": {
-            "value": {}
+            "value": {
+                "fileData": [
+                    {
+                        "uri": "https://storageAccount.blob.core.windows.net/avdscripts/File1.ps1",
+                        "storageAccountId": "/subscriptions/12345678-1234-1234-1234-123456789012/resourceGroups/rgName/providers/Microsoft.Storage/storageAccounts/storageAccountName"
+                    }
+                ],
+                "protectedSettings": {
+                    "commandToExecute": ""
+                }
+            }
         }
     }
 }
