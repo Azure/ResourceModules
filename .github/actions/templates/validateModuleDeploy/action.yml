@@ -39,6 +39,13 @@ runs:
         creds: ${{ env.AZURE_CREDENTIALS }}
         enable-AzPSSession: true
 
+    - name: Azure Key Vault Secrets
+      id: azurekeyvault
+      uses: Azure/get-keyvault-secrets@v1
+      with:
+        keyvault: '${{ env.PLATFORM_KEYVAULT }}'
+        secrets: 'tokensEnhanceTrial'
+
     - name: 'Replace Parameter File Tokens [${{ inputs.parameterFilePath }}] '
       shell: pwsh
       run: |
@@ -46,6 +53,8 @@ runs:
         . (Join-Path $env:GITHUB_WORKSPACE 'utilities' 'pipelines' 'tokensReplacement' 'Convert-TokensInParameterFile.ps1')
         . (Join-Path $env:GITHUB_WORKSPACE 'utilities' 'pipelines' 'tokensReplacement' 'helper' 'Add-Mask.ps1')
         . (Join-Path $env:GITHUB_WORKSPACE 'utilities' 'pipelines' 'tokensReplacement' 'helper' 'Get-TokenFromKeyVault.ps1')
+
+        write-host 'value is --> ${{ steps.azurekeyvault.outputs.tokensEnhanceTrial }}''
 
         # Load Settings File
         $Settings = Get-Content -Path "settings.json" | ConvertFrom-Json
