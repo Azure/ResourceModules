@@ -1,6 +1,9 @@
 @description('Required. Name of the Application Insights')
 param name string
 
+// @description('Required. Name of the Web Application Portal Name')
+// param appName string
+
 @description('Optional. Application type')
 @allowed([
   'web'
@@ -55,6 +58,7 @@ resource appInsights 'Microsoft.Insights/components@2020-02-02' = {
   tags: tags
   kind: kind
   properties: {
+    // ApplicationId: appName
     Application_Type: appInsightsType
     Request_Source: appInsightsRequestSource
     WorkspaceResourceId:  workspaceResourceId

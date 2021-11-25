@@ -14,7 +14,7 @@ This module deploys a Web or Function App
 | `Microsoft.Network/privateEndpoints/privateDnsZoneGroups` | 2021-03-01 |
 | `Microsoft.Web/serverfarms` | 2021-02-01 |
 | `Microsoft.Web/sites` | 2020-12-01 |
-| `Microsoft.Web/sites/config` | 2019-08-01 |
+| `Microsoft.Web/sites/config` | 2021-02-01 |
 
 ## Parameters
 
@@ -44,8 +44,7 @@ This module deploys a Web or Function App
 | `privateEndpoints` | array | `[]` |  | Optional. Configuration Details for private endpoints. |
 | `roleAssignments` | array | `[]` |  | Optional. Array of role assignment objects that contain the 'roleDefinitionIdOrName' and 'principalId' to define RBAC role assignments on this resource. In the roleDefinitionIdOrName attribute, you can provide either the display name of the role definition, or its fully qualified ID in the following format: '/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11' |
 | `siteConfig` | object | `{object}` |  | Required. Configuration of the app. |
-| `storageAccountName` | string |  |  | Optional. The name of the storage account to managing triggers and logging function executions. |
-| `storageAccountResourceGroupName` | string | `[resourceGroup().name]` |  | Optional. Resource group of the storage account to use. Required if the storage account is in a different resource group than the function app itself. |
+| `storageAccountId` | string |  |  | Optional. Required if functionapp kind. The resource ID of the storage account to manage triggers and logging function executions. |
 | `tags` | object | `{object}` |  | Optional. Tags of the resource. |
 | `userAssignedIdentities` | object | `{object}` |  | Optional. Mandatory 'managedServiceIdentity' contains UserAssigned. The identy to assign to the resource. |
 | `workspaceId` | string |  |  | Optional. Resource identifier of Log Analytics. |
@@ -114,4 +113,4 @@ Tag names and tag values can be provided as needed. A tag can be left without a 
 - [Privateendpoints/Privatednszonegroups](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Network/2021-03-01/privateEndpoints/privateDnsZoneGroups)
 - [Serverfarms](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Web/2021-02-01/serverfarms)
 - [Sites](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Web/2020-12-01/sites)
-- [Sites/Config](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Web/2019-08-01/sites/config)
+- [Sites/Config](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Web/2021-02-01/sites/config)

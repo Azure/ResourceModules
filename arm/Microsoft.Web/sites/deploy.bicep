@@ -23,11 +23,8 @@ param siteConfig object = {}
 // @description('Optional. If true, ApplicationInsights will be configured for the Function App.')
 // param enableMonitoring bool = true
 
-@description('Optional. The name of the storage account to managing triggers and logging function executions.')
-param storageAccountName string = ''
-
-@description('Optional. Resource group of the storage account to use. Required if the storage account is in a different resource group than the function app itself.')
-param storageAccountResourceGroupName string = resourceGroup().name
+@description('Optional. Required if functionapp kind. The resource ID of the storage account to manage triggers and logging function executions.')
+param storageAccountId string = ''
 
 @description('Optional. Runtime of the function worker.')
 @allowed([
@@ -194,17 +191,6 @@ module appInsight '.bicep/nested_components.bicep' = if (!empty(appInsightObject
   }
 }
 
-// resource app_insights 'microsoft.insights/components@2020-02-02' = if (!empty(appInsightObject)) {
-//   name: app.name
-//   location: location
-//   kind: 'web'
-//   tags: tags
-//   properties: {
-//     Application_Type: 'web'
-//     Request_Source: 'rest'
-//   }
-// }
-
 resource app 'Microsoft.Web/sites@2020-12-01' = {
   name: name
   location: location
@@ -223,19 +209,29 @@ resource app 'Microsoft.Web/sites@2020-12-01' = {
     clientAffinityEnabled: clientAffinityEnabled
     siteConfig: siteConfig
   }
+  // resource app_appsettings 'config@2019-08-01' = {
+  //   name: 'appsettings'
+  //   properties: {
+  //     AzureWebJobsStorage: !empty(storageAccountName) ? 'DefaultEndpointsProtocol=https;AccountName=${storageAccountName};AccountKey=${listkeys(resourceId(subscription().subscriptionId, storageAccountResourceGroupName, 'Microsoft.Storage/storageAccounts', storageAccountName), '2019-06-01').keys[0].value};' : any(null)
+  //     AzureWebJobsDashboard: !empty(storageAccountName) ? 'DefaultEndpointsProtocol=https;AccountName=${storageAccountName};AccountKey=${listkeys(resourceId(subscription().subscriptionId, storageAccountResourceGroupName, 'Microsoft.Storage/storageAccounts', storageAccountName), '2019-06-01').keys[0].value};' : any(null)
+  //     FUNCTIONS_EXTENSION_VERSION: kind == 'functionapp' && !empty(functionsExtensionVersion) ? functionsExtensionVersion : any(null)
+  //     FUNCTIONS_WORKER_RUNTIME: kind == 'functionapp' && !empty(functionsWorkerRuntime) ? functionsWorkerRuntime : any(null)
+  //     // APPINSIGHTS_INSTRUMENTATIONKEY: enableMonitoring ? reference('microsoft.insights/components/${name}', '2015-05-01').InstrumentationKey : null
+  //     // APPLICATIONINSIGHTS_CONNECTION_STRING: enableMonitoring ? reference('microsoft.insights/components/${name}', '2015-05-01').ConnectionString : null
+  //     APPINSIGHTS_INSTRUMENTATIONKEY: !empty(appInsightId) ? appInsightExisting.properties.InstrumentationKey : ''
+  //     APPLICATIONINSIGHTS_CONNECTION_STRING: !empty(appInsightId) ? appInsightExisting.properties.ConnectionString : ''
+  //   }
+  // }
+}
 
-  resource app_appsettings 'config@2019-08-01' = {
+module app_appsettings 'config/deploy.bicep' = {
+  name: '${deployment().name}-config'
+  params: {
     name: 'appsettings'
-    properties: {
-      AzureWebJobsStorage: !empty(storageAccountName) ? 'DefaultEndpointsProtocol=https;AccountName=${storageAccountName};AccountKey=${listkeys(resourceId(subscription().subscriptionId, storageAccountResourceGroupName, 'Microsoft.Storage/storageAccounts', storageAccountName), '2019-06-01').keys[0].value};' : any(null)
-      AzureWebJobsDashboard: !empty(storageAccountName) ? 'DefaultEndpointsProtocol=https;AccountName=${storageAccountName};AccountKey=${listkeys(resourceId(subscription().subscriptionId, storageAccountResourceGroupName, 'Microsoft.Storage/storageAccounts', storageAccountName), '2019-06-01').keys[0].value};' : any(null)
-      FUNCTIONS_EXTENSION_VERSION: kind == 'functionapp' && !empty(functionsExtensionVersion) ? functionsExtensionVersion : any(null)
-      FUNCTIONS_WORKER_RUNTIME: kind == 'functionapp' && !empty(functionsWorkerRuntime) ? functionsWorkerRuntime : any(null)
-      // APPINSIGHTS_INSTRUMENTATIONKEY: enableMonitoring ? reference('microsoft.insights/components/${name}', '2015-05-01').InstrumentationKey : null
-      // APPLICATIONINSIGHTS_CONNECTION_STRING: enableMonitoring ? reference('microsoft.insights/components/${name}', '2015-05-01').ConnectionString : null
-      APPINSIGHTS_INSTRUMENTATIONKEY: !empty(appInsightId) ? appInsightExisting.properties.InstrumentationKey : ''
-      APPLICATIONINSIGHTS_CONNECTION_STRING: !empty(appInsightId) ? appInsightExisting.properties.ConnectionString : ''
-    }
+    appName: app.name
+    storageAccountId: !empty(storageAccountId) ? storageAccountId : any(null)
+    functionsWorkerRuntime: !empty(functionsWorkerRuntime) ? functionsWorkerRuntime : any(null)
+    functionsExtensionVersion: !empty(functionsExtensionVersion) ? functionsExtensionVersion : any(null)
   }
 }
 
@@ -260,8 +256,6 @@ resource app_diagnosticSettings 'Microsoft.Insights/diagnosticSettings@2017-05-0
   }
   scope: app
 }
-
-
 
 module app_rbac '.bicep/nested_rbac.bicep' = [for (roleAssignment, index) in roleAssignments: {
   name: '${deployment().name}-rbac-${index}'
