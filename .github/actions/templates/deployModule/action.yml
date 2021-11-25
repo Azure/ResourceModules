@@ -76,18 +76,15 @@ runs:
         }
         # Add Remote Custom Parameter File Tokens
         if ('${{ env.PLATFORM_KEYVAULT }}' -and '${{ inputs.subscriptionId }}') {
-            $SecretContentType = $Settings.parameterFileTokens.remoteTokens.keyVaultSecretContentType
-            $RemoteTokens = Get-TokenFromKeyVault -KeyVaultName '${{ env.PLATFORM_KEYVAULT }}' -subscriptionId '${{ inputs.subscriptionId }}' -SecretContentType $SecretContentType
-            $RemoteTokens | ForEach-Object { Add-Mask -Value $($PSItem.Value) -GitHubActions }
             $ConvertTokensInputs += @{
                 TokensKeyVaultName                 = '${{ env.PLATFORM_KEYVAULT }}'
                 TokensKeyVaultSubscriptionId       = '${{ inputs.subscriptionId }}'
-                TokensKeyVaultSecretContentType    = $SecretContentType
+                TokensKeyVaultSecretContentType    = $Settings.parameterFileTokens.remoteTokens.keyVaultSecretContentType
             }
         }
         # Invoke Token Replacement Functionality
         $null = Convert-TokensInParameterFile @ConvertTokensInputs -Verbose
-
+        Get-Content '${{ inputs.parameterFilePath }}'
     - name: 'Deploy [${{ inputs.templateFilePath }}]'
       shell: pwsh
       run: |

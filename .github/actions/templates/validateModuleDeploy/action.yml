@@ -39,7 +39,8 @@ runs:
         creds: ${{ env.AZURE_CREDENTIALS }}
         enable-AzPSSession: true
 
-    - name: Azure Key Vault Secrets
+    - if: ${{ env.PLATFORM_KEYVAULT && ${{ inputs.subscriptionId }} }}
+      name: Azure Key Vault Secrets
       id: azurekeyvault
       uses: Azure/get-keyvault-secrets@v1
       with:
@@ -51,8 +52,6 @@ runs:
       run: |
         # Load used functions
         . (Join-Path $env:GITHUB_WORKSPACE 'utilities' 'pipelines' 'tokensReplacement' 'Convert-TokensInParameterFile.ps1')
-        . (Join-Path $env:GITHUB_WORKSPACE 'utilities' 'pipelines' 'tokensReplacement' 'helper' 'Add-Mask.ps1')
-        . (Join-Path $env:GITHUB_WORKSPACE 'utilities' 'pipelines' 'tokensReplacement' 'helper' 'Get-TokenFromKeyVault.ps1')
 
         # Load Settings File
         $Settings = Get-Content -Path "settings.json" | ConvertFrom-Json
@@ -76,13 +75,10 @@ runs:
         }
         # Add Remote Custom Parameter File Tokens
         if ('${{ env.PLATFORM_KEYVAULT }}' -and '${{ inputs.subscriptionId }}') {
-            $SecretContentType = $Settings.parameterFileTokens.remoteTokens.keyVaultSecretContentType
-            $RemoteTokens = Get-TokenFromKeyVault -KeyVaultName '${{ env.PLATFORM_KEYVAULT }}' -subscriptionId '${{ inputs.subscriptionId }}' -SecretContentType $SecretContentType
-            #$RemoteTokens | ForEach-Object { Add-Mask -Value $($PSItem.Value) -GitHubActions }
             $ConvertTokensInputs += @{
                 TokensKeyVaultName                 = '${{ env.PLATFORM_KEYVAULT }}'
                 TokensKeyVaultSubscriptionId       = '${{ inputs.subscriptionId }}'
-                TokensKeyVaultSecretContentType    = $SecretContentType
+                TokensKeyVaultSecretContentType    = $Settings.parameterFileTokens.remoteTokens.keyVaultSecretContentType
             }
         }
         # Invoke Token Replacement Functionality
