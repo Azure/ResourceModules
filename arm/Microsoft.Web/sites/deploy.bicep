@@ -229,9 +229,9 @@ module app_appsettings 'config/deploy.bicep' = {
   params: {
     name: 'appsettings'
     appName: app.name
-    storageAccountId: !empty(storageAccountId) ? storageAccountId : any(null)
-    functionsWorkerRuntime: !empty(functionsWorkerRuntime) ? functionsWorkerRuntime : any(null)
-    functionsExtensionVersion: !empty(functionsExtensionVersion) ? functionsExtensionVersion : any(null)
+    storageAccountId: !empty(storageAccountId) ? storageAccountId : ''
+    functionsWorkerRuntime: !empty(functionsWorkerRuntime) ? functionsWorkerRuntime : ''
+    functionsExtensionVersion: !empty(functionsExtensionVersion) ? functionsExtensionVersion : '~3'
   }
 }
 
