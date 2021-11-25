@@ -468,7 +468,7 @@ Within a bicep file, follow the following conventions:
         name: storageAccountName
 
         resource blobServices 'blobServices@2021-06-01' existing = {
-          name: name
+          name: blobServicesName
         }
       }
 
@@ -484,10 +484,10 @@ Within a bicep file, follow the following conventions:
         name: storageAccountName
 
         resource blobServices 'blobServices@2021-06-01' existing = {
-          name: name
+          name: blobServicesName
 
           resource container 'containers@2019-06-01' existing = {
-            name: name
+            name: containerName
           }
         }
       }
@@ -495,10 +495,7 @@ Within a bicep file, follow the following conventions:
       resource immutabilityPolicy 'Microsoft.Storage/storageAccounts/blobServices/containers/immutabilityPolicies@2019-06-01' = {
         name: name
         parent: storageAccount::blobServices::container
-        properties: {
-          immutabilityPeriodSinceCreationInDays: immutabilityPeriodSinceCreationInDays
-          allowProtectedAppendWrites: allowProtectedAppendWrites
-        }
+        properties: {...}
       }
       ```
 - Bicep `modules`:
