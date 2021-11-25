@@ -44,7 +44,7 @@ runs:
       uses: Azure/get-keyvault-secrets@v1
       with:
         keyvault: '${{ env.PLATFORM_KEYVAULT }}'
-        secrets: 'namePrefixX'
+        secrets: '*'
 
     - name: 'Replace Parameter File Tokens [${{ inputs.parameterFilePath }}] '
       shell: pwsh
@@ -84,7 +84,7 @@ runs:
             $ConvertTokensInputs += @{
                 TokensKeyVaultName                 = '${{ env.PLATFORM_KEYVAULT }}'
                 TokensKeyVaultSubscriptionId       = '${{ inputs.subscriptionId }}'
-                TokensKeyVaultSecretContentType    = "$SecretContentType"
+                TokensKeyVaultSecretContentType    = $SecretContentType
             }
         }
         # Invoke Token Replacement Functionality
