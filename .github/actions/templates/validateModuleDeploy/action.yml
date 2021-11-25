@@ -84,7 +84,7 @@ runs:
             $ConvertTokensInputs += @{
                 TokensKeyVaultName                 = '${{ env.PLATFORM_KEYVAULT }}'
                 TokensKeyVaultSubscriptionId       = '${{ inputs.subscriptionId }}'
-                TokensKeyVaultSecretContentType    = $SecretContentType
+                TokensKeyVaultSecretContentType    = "$SecretContentType"
             }
         }
         # Invoke Token Replacement Functionality
