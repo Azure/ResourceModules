@@ -27,6 +27,6 @@
         Write-Output ("`n::add-mask::{0}" -f $ValueConverted)
     }
     if ($AzureDevOps) {
-        Write-Output ("`n`#`#vso[task.setvariable variable={0};issecret=true]" -f $ValueConverted)
+        Write-Host "##vso[task.setvariable variable=$Value;issecret=true]$ValueConverted"
     }
 }
