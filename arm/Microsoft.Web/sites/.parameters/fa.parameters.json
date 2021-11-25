@@ -24,12 +24,15 @@
                 "alwaysOn": true
             }
         },
-        "storageAccountName": {
-            "value": "adpsxxazsaweux002"
+        "storageAccountId": {
+            "value": "/subscriptions/a7439831-1cd9-435d-a091-4aa863c96556/resourceGroups/validation-rg/providers/Microsoft.Storage/storageAccounts/adpsxxazsaweux002"
         },
-        "storageAccountResourceGroupName": {
-            "value": "validation-rg"
-        },
+        // "storageAccountName": {
+        //     "value": "adpsxxazsaweux002"
+        // },
+        // "storageAccountResourceGroupName": {
+        //     "value": "validation-rg"
+        // },
         "functionsWorkerRuntime": {
             "value": "powershell"
         },
