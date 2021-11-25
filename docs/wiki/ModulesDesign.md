@@ -99,23 +99,23 @@ Microsoft.Web
 
 When creating child-resources from parent resources you will need to specify a name that, when deployed, will be used to assign the deployment name.
 
-There are some constrints that needs to be considered when naming the deployment:
+There are some constraints that needs to be considered when naming the deployment:
 
 - Deployment name length can't exceed 64 chars
 - Two deployments with the same name created in different location will fail
 - Using the same deployment name mode than once, will surface only the last one in the Azure Portal
 - If more than one deployment with the same name runs at the same time, race condition might happen
-- Human-readable names would be preferable, even if not neccessary
+- Human-readable names would be preferable, even if not necessary
 
-While exceptions might be needed, the following guidence should be followed as much as possible:
+While exceptions might be needed, the following guidance should be followed as much as possible:
 
-- For child-resources of the top-level resource (1st level child) use the following naming structure
+- For child-resources of the top-level resource use the following naming structure
 
 ```
-'${uniqueString(deployment().name, location)}-<resource_short_type>]'
+'${uniqueString(deployment().name, location)}-<resource_short_type>'
 ```
 
-- For child-resources 2nd on level, use the following naming structure
+- For child-resources, use the following naming structure
 
 ```
 '${deployment().name}-<child_type>[-${index}]'
@@ -144,7 +144,7 @@ Microsoft.Sql
 
 In this folder we recommend to place the child-resource-template alongside a ReadMe (that can be generated via the `.github\workflows\scripts\Set-ModuleReadMe.ps1` script) and optionally further nest additional folders for it's child-resources.
 
-The parent template should reference all it's child-templates to allow for an end to end deployment experience while allowing any user to also reference 'just' the child-resource itself. In the case of the SQL-server example the server template would reference the database module and encapsulate it it in a loop to allow for the deployment of n-amount of databases. For example
+The parent template should reference all it's direct child-templates to allow for an end to end deployment experience while allowing any user to also reference 'just' the child-resource itself. In the case of the SQL-server example the server template would reference the database module and encapsulate it it in a loop to allow for the deployment of n-amount of databases. For example
 
 ```Bicep
 @description('Optional. The databases to create in the server')
@@ -201,7 +201,7 @@ module <mainResource>_rbac '.bicep/nested_rbac.bicep' = [for (roleAssignment, in
   params: {
     principalIds: roleAssignment.principalIds
     roleDefinitionIdOrName: roleAssignment.roleDefinitionIdOrName
-    resourceName: <mainResource>.name
+    resourceId: <mainResource>.id
   }
 }]
 ```
@@ -210,12 +210,12 @@ module <mainResource>_rbac '.bicep/nested_rbac.bicep' = [for (roleAssignment, in
 
 Here you specify the platform roles available for the main resource. You can find further information in the [variables](#variables) section.
 
-The element requires you to provide both the `principalIds` & `roleDefinitionOrIdName` to assign to the principal IDs. Also, the `resourceName` is a concatenated resource name that allows us to reference it as an `existing` resource. For example, on the top level resource you would just provide the name of the SQL server (e.g. `sxx-sql`), but if you'd implement RBAC for the nested database, you'd need to provide the concatenated name `<serverName>/<databaseName>` (e.g. `sxx-sql/database1`)
+The element requires you to provide both the `principalIds` & `roleDefinitionOrIdName` to assign to the principal IDs. Also, the `resourceId` is target resource's resource ID that allows us to reference it as an `existing` resource. Note, the implementation of the `split` in the resource reference becomes longer the deeper you go in the child-resource hierarchy.
 
 ```bicep
 param principalIds array
 param roleDefinitionIdOrName string
-param resourceName string
+param resourceId string
 
 var builtInRoleNames = {
   'Owner': subscriptionResourceId('Microsoft.Authorization/roleDefinitions', '8e3af657-a8ff-443c-a75c-2fe8c4bcb635')
@@ -225,7 +225,12 @@ var builtInRoleNames = {
 }
 
 resource <mainResource> '<mainResourceProviderNamespace>/<resourceType>@<resourceTypeApiVersion>' existing = {
-  name: resourceName
+  // top-level RBAC
+  name: last(split(resourceId,'/')[5])
+  // 2nd level RBAC
+  // name: '${split(resourceId,'/')[5]}/${split(resourceId,'/')[7]}'
+  // 3rd level RBAC
+  // name: '${split(resourceId,'/')[5]}/${split(resourceId,'/')[7]}/${split(resourceId,'/')[9]'
 }
 
 resource roleAssignment 'Microsoft.Authorization/roleAssignments@2020-04-01-preview' = [for principalId in principalIds: {
@@ -442,11 +447,66 @@ Within a bicep file, follow the following conventions:
 - The name used as a reference is the singular name of the resource that it deploys, i.e:
   - `resource storageAccount 'Microsoft.Storage/storageAccounts@2019-06-01'`
   - `resource virtualMachine 'Microsoft.Compute/virtualMachines@2020-06-01'`
+- Parent reference
+  - If working on a child-resource, refrain from string concatenation and instead us the parent reference via the `existing` keyword.
+  - The way this is implemented differs slightly the lower you go in the hierarchy. Note the following examples:
+    - 1st level child resource (example _storageAccount/blobService_)
+      ```bicep
+      resource storageAccount 'Microsoft.Storage/storageAccounts@2021-06-01' existing = {
+        name: storageAccountName
+      }
 
+      resource blobServices 'Microsoft.Storage/storageAccounts/blobServices@2021-06-01' = {
+        name: name
+        parent: storageAccount
+        properties: {...}
+      }
+      ```
+    - 2nd level child resource (example _storageAccount/blobService/container_)
+      ```bicep
+      resource storageAccount 'Microsoft.Storage/storageAccounts@2021-06-01' existing = {
+        name: storageAccountName
+
+        resource blobServices 'blobServices@2021-06-01' existing = {
+          name: name
+        }
+      }
+
+      resource container 'Microsoft.Storage/storageAccounts/blobServices/containers@2019-06-01' = {
+        name: name
+        parent: storageAccount::blobServices
+        properties: {...}
+      }
+      ```
+    - 3rd level child resource (example _storageAccount/blobService/container/immutabilityPolicies_)
+      ```bicep
+      resource storageAccount 'Microsoft.Storage/storageAccounts@2021-06-01' existing = {
+        name: storageAccountName
+
+        resource blobServices 'blobServices@2021-06-01' existing = {
+          name: name
+
+           resource container 'containers@2019-06-01' existing = {
+            name: name
+           }
+        }
+      }
+
+      resource immutabilityPolicy 'Microsoft.Storage/storageAccounts/blobServices/containers/immutabilityPolicies@2019-06-01' = {
+        name: name
+        parent: storageAccount::blobServices::container
+        properties: {
+          immutabilityPeriodSinceCreationInDays: immutabilityPeriodSinceCreationInDays
+          allowProtectedAppendWrites: allowProtectedAppendWrites
+        }
+      }
+      ```
 - Bicep `modules`:
   - camel_Snake_Case, i.e `resourceGroup_rbac` ?
   - File name for nested module is structured as follows: `nested_<resourceName>.bicep` i.e:
     - `nested_rbac.bicep`
+
+
 
 ## Outputs
 
