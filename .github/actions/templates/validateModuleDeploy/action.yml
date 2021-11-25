@@ -39,19 +39,6 @@ runs:
         creds: ${{ env.AZURE_CREDENTIALS }}
         enable-AzPSSession: true
 
-    - name: 'Replace Parameter File Tokens'
-      uses: $env:GITHUB_WORKSPACE/.github/actions/templates/replaceTokens
-      with:
-        filePath: '${{ inputs.parameterFilePath }}'
-        tokenLocation: '${{ env.defaultLocation }}'
-        tokenResourceGroupName: '${{ env.resourceGroupName }}'
-        tokenSubscriptionId: '${{ inputs.subscriptionId }}'
-        tokenManagementGroupId: '${{ inputs.managementGroupId }}'
-        tokenTenantId: '${{ env.ARM_TENANT_ID }}'
-        tokenDeploymentSpId: '${{ env.DEPLOYMENT_SP_ID }}'
-        remoteTokensKeyVaultName: '${{ env.PLATFORM_KEYVAULT }}'
-        remoteTokensKeyVaultSubscriptionId: '${{ inputs.subscriptionId }}'
-
     - name: 'Replace Parameter File Tokens [${{ inputs.parameterFilePath }}] '
       shell: pwsh
       run: |
@@ -94,6 +81,7 @@ runs:
         # Invoke Token Replacement Functionality
         $null = Convert-TokensInParameterFile @ConvertTokensInputs -Verbose
         get-content -Path '${{ inputs.parameterFilePath }}'
+
       # [Test Deployment] task(s)
       #--------------------------
     - name: 'Validate [${{ inputs.templateFilePath }}]'
