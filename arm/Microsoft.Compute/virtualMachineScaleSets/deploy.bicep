@@ -479,7 +479,7 @@ resource vmss 'Microsoft.Compute/virtualMachineScaleSets@2021-04-01' = if (!empt
   plan: !empty(plan) ? plan : null
 }
 
-module virtualMachine_domainJoinExtension 'extensions/deploy.bicep' = if (!empty(extensionDomainJoinConfig)) {
+module vmss_domainJoinExtension 'extensions/deploy.bicep' = if (!empty(extensionDomainJoinConfig)) {
   name: '${uniqueString(deployment().name, location)}-vm-DomainJoin'
   params: {
     virtualMachineScaleSetName: vmss.name
@@ -596,7 +596,7 @@ module vmss_desiredStateConfigurationExtension 'extensions/deploy.bicep' = if (!
   ]
 }
 
-module virtualMachine_customScriptExtension 'extensions/deploy.bicep' = if (!empty(extensionCustomScriptConfig)) {
+module vmss_customScriptExtension 'extensions/deploy.bicep' = if (!empty(extensionCustomScriptConfig)) {
   name: '${uniqueString(deployment().name, location)}-vmss-CustomScriptExtension'
   params: {
     virtualMachineScaleSetName: vmss.name
