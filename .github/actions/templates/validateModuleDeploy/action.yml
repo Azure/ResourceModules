@@ -77,7 +77,6 @@ runs:
             Add-Mask -Value $($token.Value) -GitHubActions
             $ValueB = ConvertFrom-SecureString -AsPlainText -SecureString $($token.Value)
             write-host "Token Value After is: $ValueB"
-            get-content -Path '${{ inputs.parameterFilePath }}'
           }
 
           $ConvertTokensInputs += @{
@@ -88,7 +87,7 @@ runs:
         }
         # Invoke Token Replacement Functionality
         $null = Convert-TokensInParameterFile @ConvertTokensInputs -Verbose
-
+        get-content -Path '${{ inputs.parameterFilePath }}'
       # [Test Deployment] task(s)
       #--------------------------
     - name: 'Validate [${{ inputs.templateFilePath }}]'

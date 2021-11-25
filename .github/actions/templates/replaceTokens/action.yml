@@ -109,8 +109,3 @@ runs:
 
         get-content -Path '${{ inputs.filePath }}'
 
-    - name: Cache File
-      uses: actions/cache@v2
-      with:
-        path: '${{ inputs.filePath }}'
-        key: ${{ hashFiles(inputs.filePath) }}
