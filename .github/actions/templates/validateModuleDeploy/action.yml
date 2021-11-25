@@ -69,18 +69,13 @@ runs:
         }
         # Add Remote Custom Parameter File Tokens
         if ('${{ env.PLATFORM_KEYVAULT }}' -and '${{ inputs.subscriptionId }}') {
-            $RemoteTokens = Get-TokenFromKeyVault -KeyVaultName '${{ env.PLATFORM_KEYVAULT }}' -subscriptionId '${{ inputs.subscriptionId }}' -SecretContentType $Settings.parameterFileTokens.remoteTokens.keyVaultSecretContentType -verbose
-            foreach($token in $RemoteTokens){
-              $ValueA = ConvertFrom-SecureString -AsPlainText -SecureString $($token.Value)
-              write-host "Token Value Before is: $ValueA"
-              Add-Mask -Value $($token.Value) -GitHubActions
-              $ValueB = ConvertFrom-SecureString -AsPlainText -SecureString $($token.Value)
-              write-host "Token Value After is: $ValueB"
-            }
+            $SecretContentType = $Settings.parameterFileTokens.remoteTokens.keyVaultSecretContentType
+            $RemoteTokens = Get-TokenFromKeyVault -KeyVaultName '${{ env.PLATFORM_KEYVAULT }}' -subscriptionId '${{ inputs.subscriptionId }}' -SecretContentType $SecretContentType
+            $RemoteTokens | ForEach-Object { Add-Mask -Value $($PSItem.Value) -GitHubActions }
             $ConvertTokensInputs += @{
                 TokensKeyVaultName                 = '${{ env.PLATFORM_KEYVAULT }}'
                 TokensKeyVaultSubscriptionId       = '${{ inputs.subscriptionId }}'
-                TokensKeyVaultSecretContentType    = $Settings.parameterFileTokens.remoteTokens.keyVaultSecretContentType
+                TokensKeyVaultSecretContentType    = $SecretContentType
             }
         }
         # Invoke Token Replacement Functionality
