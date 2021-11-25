@@ -44,7 +44,7 @@ runs:
       uses: Azure/get-keyvault-secrets@v1
       with:
         keyvault: '${{ env.PLATFORM_KEYVAULT }}'
-        secrets: 'tokensEnhanceTrial'
+        secrets: 'namePrefixX'
 
     - name: 'Replace Parameter File Tokens [${{ inputs.parameterFilePath }}] '
       shell: pwsh
