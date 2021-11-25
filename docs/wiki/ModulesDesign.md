@@ -273,7 +273,77 @@ resource <mainResource>_diagnosticSettings 'Microsoft.Insights/diagnosticsetting
 
 ### Private Endpoints
 
+The Private Endpoint deployment has 2 elements to it. A module that contains the implementation, and a module reference in the parent resource. The first loops through the endpoints we want to create, the second processes them.
+
+***1st element in main resource***
+
 ```bicep
+@description('Optional. Configuration Details for private endpoints.')
+param privateEndpoints array = []
+
+module <mainResource>_privateEndpoints '.bicep/nested_privateEndpoint.bicep' = [for (privateEndpoint, index) in privateEndpoints: {
+  name: '${uniqueString(deployment().name, location)}-PrivateEndpoint-${index}'
+  params: {
+    privateEndpointResourceId: <mainResource>.id
+    privateEndpointVnetLocation: (empty(privateEndpoints) ? 'dummy' : reference(split(privateEndpoint.subnetResourceId, '/subnets/')[0], '2020-06-01', 'Full').location)
+    privateEndpointObj: privateEndpoint
+    tags: tags
+  }
+}]
+```
+
+***2nd Element as nested `.bicep/nested_privateEndpoint.bicep` file***
+```bicep
+param privateEndpointResourceId string
+param privateEndpointVnetLocation string
+param privateEndpointObj object
+param tags object
+
+var privateEndpointResourceName = last(split(privateEndpointResourceId, '/'))
+var privateEndpoint_var = {
+  name: contains(privateEndpointObj, 'name') ? (empty(privateEndpointObj.name) ? '${privateEndpointResourceName}-${privateEndpointObj.service}' : privateEndpointObj.name) : '${privateEndpointResourceName}-${privateEndpointObj.service}'
+  subnetResourceId: privateEndpointObj.subnetResourceId
+  service: [
+    privateEndpointObj.service
+  ]
+  privateDnsZoneResourceIds: contains(privateEndpointObj, 'privateDnsZoneResourceIds') ? (empty(privateEndpointObj.privateDnsZoneResourceIds) ? [] : privateEndpointObj.privateDnsZoneResourceIds) : []
+  customDnsConfigs: contains(privateEndpointObj, 'customDnsConfigs') ? (empty(privateEndpointObj.customDnsConfigs) ? null : privateEndpointObj.customDnsConfigs) : null
+}
+
+resource privateEndpoint 'Microsoft.Network/privateEndpoints@2021-03-01' = {
+  name: privateEndpoint_var.name
+  location: privateEndpointVnetLocation
+  tags: tags
+  properties: {
+    privateLinkServiceConnections: [
+      {
+        name: privateEndpoint_var.name
+        properties: {
+          privateLinkServiceId: privateEndpointResourceId
+          groupIds: privateEndpoint_var.service
+        }
+      }
+    ]
+    manualPrivateLinkServiceConnections: []
+    subnet: {
+      id: privateEndpoint_var.subnetResourceId
+    }
+    customDnsConfigs: privateEndpoint_var.customDnsConfigs
+  }
+}
+
+resource privateDnsZoneGroups 'Microsoft.Network/privateEndpoints/privateDnsZoneGroups@2021-03-01' = if (!empty(privateEndpoint_var.privateDnsZoneResourceIds)) {
+  name: 'default'
+  properties: {
+    privateDnsZoneConfigs: [for privateDnsZoneResourceId in privateEndpoint_var.privateDnsZoneResourceIds: {
+      name: last(split(privateDnsZoneResourceId, '/'))
+      properties: {
+        privateDnsZoneId: privateDnsZoneResourceId
+      }
+    }]
+  }
+  parent: privateEndpoint
+}
 ```
 
 ---
