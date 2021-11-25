@@ -164,6 +164,18 @@ jobs:
         with:
           # Name of variable file
           variableFileName: 'variables.module' # Don't write .json here
+      - name: 'Replace Parameter File Tokens'
+        uses: ./.github/actions/templates/replaceTokens
+        with:
+          filePath: '${{ env.modulePath }}/.parameters/${{ matrix.parameterFilePaths }}'
+          tokenLocation: '${{ env.defaultLocation }}'
+          tokenResourceGroupName: '${{ env.resourceGroupName }}'
+          tokenSubscriptionId: '${{ secrets.ARM_SUBSCRIPTION_ID }}'
+          tokenManagementGroupId: '${{ secrets.ARM_MGMTGROUP_ID }}'
+          tokenTenantId: '${{ secrets.ARM_TENANT_ID }}'
+          tokenDeploymentSpId: '${{ secrets.DEPLOYMENT_SP_ID }}'
+          remoteTokensKeyVaultName: '${{ secrets.PLATFORM_KEYVAULT }}'
+          remoteTokensKeyVaultSubscriptionId: '${{ secrets.ARM_SUBSCRIPTION_ID }}'
       - name: 'Deploy module'
         uses: ./.github/actions/templates/deployModule
         with:
