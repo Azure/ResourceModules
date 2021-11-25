@@ -3,13 +3,13 @@
     "contentVersion": "1.0.0.0",
     "parameters": {
         "appName": {
-            "value": "azfaweux01"
+            "value": "sxx-az-wa-x-001"
         },
         "appType": {
-            "value": "functionapp"
+            "value": "app"
         },
         "appServicePlanName": {
-            "value": "adp-sxx-az-asp-x-001"
+            "value": "sxx-az-wa-x-001-asp"
         },
         "appServicePlanSkuName": {
             "value": "P1v2"
@@ -23,29 +23,32 @@
         "appServicePlanFamily": {
             "value": "Pv2"
         },
+        "managedServiceIdentity": {
+            "value": "SystemAssigned"
+        },
         "siteConfig": {
             "value": {
+                "metadata": [
+                    {
+                        "name": "CURRENT_STACK",
+                        "value": "dotnetcore"
+                    }
+                ],
                 "alwaysOn": true
             }
         },
-        "storageAccountName": {
-            "value": "adpsxxazsaweux002"
-        },
-        "storageAccountResourceGroupName": {
-            "value": "validation-rg"
-        },
-        "functionsWorkerRuntime": {
-            "value": "powershell"
+        "httpsOnly": {
+            "value": true
         },
         "enableMonitoring": {
-            "value": false
+            "value": true
         },
         "roleAssignments": {
             "value": [
                 {
                     "roleDefinitionIdOrName": "Reader",
                     "principalIds": [
-                        "cf33fea8-b30f-424f-ab73-c48d99e0b222"
+                        "<<deploymentSpId>>"
                     ]
                 }
             ]

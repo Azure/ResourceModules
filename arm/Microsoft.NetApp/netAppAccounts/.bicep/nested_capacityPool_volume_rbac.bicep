@@ -1,4 +1,5 @@
-param roleAssignmentObj object
+param principalIds array
+param roleDefinitionIdOrName string
 param resourceName string
 
 var builtInRoleNames = {
@@ -21,10 +22,10 @@ resource volume 'Microsoft.NetApp/netAppAccounts/capacityPools/volumes@2021-04-0
   name: resourceName
 }
 
-resource roleAssignment 'Microsoft.Authorization/roleAssignments@2020-04-01-preview' = [for principalId in roleAssignmentObj.principalIds: {
-  name: guid(volume.name, principalId, roleAssignmentObj.roleDefinitionIdOrName)
+resource roleAssignment 'Microsoft.Authorization/roleAssignments@2020-04-01-preview' = [for principalId in principalIds: {
+  name: guid(volume.name, principalId, roleDefinitionIdOrName)
   properties: {
-    roleDefinitionId: contains(builtInRoleNames, roleAssignmentObj.roleDefinitionIdOrName) ? builtInRoleNames[roleAssignmentObj.roleDefinitionIdOrName] : roleAssignmentObj.roleDefinitionIdOrName
+    roleDefinitionId: contains(builtInRoleNames, roleDefinitionIdOrName) ? builtInRoleNames[roleDefinitionIdOrName] : roleDefinitionIdOrName
     principalId: principalId
   }
   scope: volume

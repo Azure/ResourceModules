@@ -28,15 +28,18 @@ on:
       - '.github/actions/templates/**'
       - '.github/workflows/ms.desktopvirtualization.workspaces.yml'
       - 'arm/Microsoft.DesktopVirtualization/workspaces/**'
-      - '!arm/Microsoft.DesktopVirtualization/workspaces/readme.md'
+      - '!*/**/readme.md'
 
 env:
   moduleName: 'workspaces'
   modulePath: 'arm/Microsoft.DesktopVirtualization/workspaces'
   workflowPath: '.github/workflows/ms.desktopvirtualization.workspaces.yml'
   AZURE_CREDENTIALS: ${{ secrets.AZURE_CREDENTIALS }}
-  ARM_SUBSCRIPTION_ID: ${{ secrets.ARM_SUBSCRIPTION_ID }}
-  ARM_MGMTGROUP_ID: ${{ secrets.ARM_MGMTGROUP_ID }}
+  ARM_SUBSCRIPTION_ID: '${{ secrets.ARM_SUBSCRIPTION_ID }}'
+  ARM_MGMTGROUP_ID: '${{ secrets.ARM_MGMTGROUP_ID }}'
+  ARM_TENANT_ID: '${{ secrets.ARM_TENANT_ID }}'
+  DEPLOYMENT_SP_ID: '${{ secrets.DEPLOYMENT_SP_ID }}'
+  PLATFORM_KEYVAULT: '${{ secrets.PLATFORM_KEYVAULT }}'
 
 jobs:
   ############################

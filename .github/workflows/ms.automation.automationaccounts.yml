@@ -29,7 +29,7 @@ on:
       - '.github/actions/templates/**'
       - '.github/workflows/ms.automation.automationaccounts.yml'
       - 'arm/Microsoft.Automation/automationAccounts/**'
-      - '!arm/Microsoft.Automation/automationAccounts/readme.md'
+      - '!*/**/readme.md'
 
 env:
   moduleName: 'automationAccounts'
