@@ -45,7 +45,8 @@ resource applicationSecurityGroup_lock 'Microsoft.Authorization/locks@2016-09-01
 module applicationSecurityGroup_rbac '.bicep/nested_rbac.bicep' = [for (roleAssignment, index) in roleAssignments: {
   name: '${deployment().name}-rbac-${index}'
   params: {
-    roleAssignmentObj: roleAssignment
+    principalIds: roleAssignment.principalIds
+    roleDefinitionIdOrName: roleAssignment.roleDefinitionIdOrName
     resourceName: applicationSecurityGroup.name
   }
 }]

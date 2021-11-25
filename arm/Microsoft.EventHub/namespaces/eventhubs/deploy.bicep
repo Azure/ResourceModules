@@ -164,7 +164,8 @@ module eventHub_authorizationRules 'authorizationRules/deploy.bicep' = [for (aut
 module eventHub_rbac '.bicep/nested_rbac.bicep' = [for (roleAssignment, index) in roleAssignments: {
   name: '${deployment().name}-rbac-${index}'
   params: {
-    roleAssignmentObj: roleAssignment
+    principalIds: roleAssignment.principalIds
+    roleDefinitionIdOrName: roleAssignment.roleDefinitionIdOrName
     resourceName: eventHub.name
   }
 }]

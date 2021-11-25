@@ -181,7 +181,8 @@ resource rsv_diagnosticSettings 'Microsoft.Insights/diagnosticSettings@2021-05-0
 module rsv_rbac '.bicep/nested_rbac.bicep' = [for (roleAssignment, index) in roleAssignments: {
   name: '${deployment().name}-rbac-${index}'
   params: {
-    roleAssignmentObj: roleAssignment
+    principalIds: roleAssignment.principalIds
+    roleDefinitionIdOrName: roleAssignment.roleDefinitionIdOrName
     resourceName: rsv.name
   }
 }]

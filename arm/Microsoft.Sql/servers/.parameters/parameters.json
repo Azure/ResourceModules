@@ -2,9 +2,6 @@
     "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
     "contentVersion": "1.0.0.0",
     "parameters": {
-        "allowAzureIps": {
-            "value": false
-        },
         "administratorLogin": {
             "reference": {
                 "keyVault": {
@@ -32,7 +29,7 @@
                 {
                     "roleDefinitionIdOrName": "Reader",
                     "principalIds": [
-                        "cf33fea8-b30f-424f-ab73-c48d99e0b222"
+                        "<<deploymentSpId>>"
                     ]
                 }
             ]
@@ -46,6 +43,24 @@
                     "skuName": "GP_Gen5_2",
                     "maxSizeBytes": 34359738368,
                     "licenseType": "LicenseIncluded"
+                }
+            ]
+        },
+        "firewallRules": {
+            "value": [
+                {
+                    "name": "AllowAllWindowsAzureIps",
+                    "endIpAddress": "0.0.0.0",
+                    "startIpAddress": "0.0.0.0"
+                }
+            ]
+        },
+        "securityAlertPolicies": {
+            "value": [
+                {
+                    "name": "Default",
+                    "state": "Enabled",
+                    "emailAccountAdmins": true
                 }
             ]
         }

@@ -181,7 +181,8 @@ resource appServiceEnvironment_diagnosticSettings 'Microsoft.Insights/diagnostic
 module appServiceEnvironment_rbac '.bicep/nested_rbac.bicep' = [for (roleAssignment, index) in roleAssignments: {
   name: '${uniqueString(deployment().name, location)}-AppService-Rbac-${index}'
   params: {
-    roleAssignmentObj: roleAssignment
+    principalIds: roleAssignment.principalIds
+    roleDefinitionIdOrName: roleAssignment.roleDefinitionIdOrName
     resourceName: appServiceEnvironment.name
   }
 }]

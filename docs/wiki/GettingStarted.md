@@ -181,28 +181,32 @@ Last but not least, instead of fetching your own copy of the repository you can 
 
 If you are forking or cloning the repository, you can use 'tokens' inside your parameter files. Tokens allow you to test deploying modules in your own environment (i.e. using tokens for your naming conventions), or apply other customizations to your resources (i.e. using your own subscription ID inside a Resource ID string). See details in the [Parameter File Tokens Design](./ParameterFileTokens.md).
 
-The repository contains a [Settings.json](https://github.com/Azure/ResourceModules/blob/main/settings.json) that has a default token called `namePrefix`. You can use a custom value here and then start adding the tokens in your parameter files. The tokens default format is `<<tokenName>>` (i.e. `<<namePrefix>>`). Here is an example token:
+The repository contains a [Settings.json](https://github.com/Azure/ResourceModules/blob/main/settings.json) that enables you to define local tokens and store them in source control. The token format is a `name` and `value` pair as shown in the following example:
 
 ```json
 "localTokens": {
     "tokens": [
         {
-            "name": "namePrefix",
-            "value": "carml"
+            "name": "tokenName",
+            "value": "tokenValue"
         }
     ]
 },
 ```
 
-Here is how the token would look like in the Parameter File JSON:
+Let us say you'd want to use this token inside a Key Vault parameter file, to deploy the key vault with a name that contains this token:
 
 ```json
 "parameters": {
     "name": {
-        "value": "<<namePrefix>>storage"
+        "value": "<<tokenName>>-keyVault"
     }
 }
 ```
+
+Once the Key Vault is deployed, you'll notice that the Key Vault name in Azure will be `tokenValue-keyVault`
+
+> The token prefix `<<` and suffix `>>` in the above example are also configurable in the [Settings.json](https://github.com/Azure/ResourceModules/blob/main/settings.json) file. They are however the default used in the CARML main repository.
 
 ---
 Note: There are default tokens that can be enabled on any resource that leverages the [GitHub specific prerequisites](GettingStarted#github-specific-prerequisites) secrets.

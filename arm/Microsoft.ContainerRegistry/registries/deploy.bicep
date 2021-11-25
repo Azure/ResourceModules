@@ -172,7 +172,8 @@ resource registry_diagnosticSettingName 'Microsoft.Insights/diagnosticsettings@2
 module registry_rbac '.bicep/nested_rbac.bicep' = [for (roleAssignment, index) in roleAssignments: {
   name: '${deployment().name}-rbac-${index}'
   params: {
-    roleAssignmentObj: roleAssignment
+    principalIds: roleAssignment.principalIds
+    roleDefinitionIdOrName: roleAssignment.roleDefinitionIdOrName
     resourceName: registry.name
   }
 }]

@@ -41,10 +41,11 @@ resource userMsi_lock 'Microsoft.Authorization/locks@2016-09-01' = if (lock != '
   scope: userMsi
 }
 
-module userMsi_rbac '.bicep/nested_rbac.bicep' = [for (roleassignment, index) in roleAssignments: {
+module userMsi_rbac '.bicep/nested_rbac.bicep' = [for (roleAssignment, index) in roleAssignments: {
   name: '${deployment().name}-rbac-${index}'
   params: {
-    roleAssignmentObj: roleassignment
+    principalIds: roleAssignment.principalIds
+    roleDefinitionIdOrName: roleAssignment.roleDefinitionIdOrName
     resourceName: userMsi.name
   }
 }]

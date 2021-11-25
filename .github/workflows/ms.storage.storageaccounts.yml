@@ -28,7 +28,7 @@ on:
       - '.github/actions/templates/**'
       - '.github/workflows/ms.storage.storageaccounts.yml'
       - 'arm/Microsoft.Storage/storageAccounts/**'
-      - '!arm/Microsoft.Storage/storageAccounts/readme.md'
+      - '!*/**/readme.md'
 
 env:
   moduleName: 'storageAccounts'
@@ -106,7 +106,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        parameterFilePaths: ['parameters.json', 'min.parameters.json']
+        parameterFilePaths: ['parameters.json', 'min.parameters.json', 'v1.parameters.json']
     steps:
       - name: 'Checkout'
         uses: actions/checkout@v2
@@ -141,7 +141,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        parameterFilePaths: ['parameters.json', 'min.parameters.json']
+        parameterFilePaths: ['parameters.json', 'min.parameters.json', 'v1.parameters.json']
     steps:
       - name: 'Checkout'
         uses: actions/checkout@v2

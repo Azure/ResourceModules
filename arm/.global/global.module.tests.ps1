@@ -6,6 +6,7 @@ param (
         })
 )
 
+$script:Settings = Get-Content -Path (Join-Path $PSScriptRoot '..\..\settings.json') | ConvertFrom-Json
 $script:RGdeployment = 'https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#'
 $script:Subscriptiondeployment = 'https://schema.management.azure.com/schemas/2018-05-01/subscriptionDeploymentTemplate.json#'
 $script:MGdeployment = 'https://schema.management.azure.com/schemas/2019-08-01/managementGroupDeploymentTemplate.json#'
@@ -410,6 +411,7 @@ Describe 'Deployment template tests' -Tag Template {
                     parameterFile_AllParameterNames      = $parameterFile_AllParameterNames
                     templateFile_AllParameterNames       = $TemplateFile_AllParameterNames
                     templateFile_RequiredParametersNames = $TemplateFile_RequiredParametersNames
+                    tokenSettings                        = $Settings.parameterFileTokens
                 }
             }
 
@@ -728,16 +730,29 @@ Describe 'Deployment template tests' -Tag Template {
             }
         }
 
-        It '[<moduleFolderName>] Parameter files should not contain the subscriptionId guid' -TestCases $deploymentFolderTestCases {
+        It '[<moduleFolderName>] [Tokens] Parameter files should not contain the default Subscription ID guid' -TestCases $deploymentFolderTestCases {
             param (
-                [hashtable[]] $parameterFileTestCases
+                [hashtable[]] $ParameterFileTestCases
             )
-
-            foreach ($parameterFileTestCase in $parameterFileTestCases) {
-                $ParameterFileContent = Get-Content -Path $parameterFileTestCase.parameterFile_Path
+            foreach ($ParameterFileTestCase in $ParameterFileTestCases) {
+                $ParameterFileTokenName = -join ($ParameterFileTestCase.tokenSettings.tokenPrefix, 'subscriptionId', $ParameterFileTestCase.tokenSettings.tokenSuffix)
+                $ParameterFileContent = Get-Content -Path $ParameterFileTestCase.parameterFile_Path
                 $SubscriptionIdKeyCount = ($ParameterFileContent | Select-String -Pattern '"subscriptionId"', "'subscriptionId'", '/subscriptions/' -AllMatches).Matches.Count
-                $SubscriptionIdValueCount = ($ParameterFileContent | Select-String -Pattern '<<subscriptionId' -AllMatches).Matches.Count
-                $SubscriptionIdKeyCount | Should -Be $SubscriptionIdValueCount -Because ('Parameter file should not contain the subscription ID guid, instead should reference a token value "<<subscriptionId(n)>> (i.e. <<subscriptionId1>>)"')
+                $SubscriptionIdValueCount = ($ParameterFileContent | Select-String -Pattern "$ParameterFileTokenName" -AllMatches).Matches.Count
+                $SubscriptionIdKeyCount -eq $SubscriptionIdValueCount | Should -Be $true -Because ("Parameter file should not contain the Subscription ID guid, instead should reference a token value '$ParameterFileTokenName'")
+            }
+        }
+
+        It '[<moduleFolderName>] [Tokens] Parameter files should not contain the default Tenant ID' -TestCases $deploymentFolderTestCases {
+            param (
+                [hashtable[]] $ParameterFileTestCases
+            )
+            foreach ($ParameterFileTestCase in $ParameterFileTestCases) {
+                $ParameterFileTokenName = -join ($ParameterFileTestCase.tokenSettings.tokenPrefix, 'tenantId', $ParameterFileTestCase.tokenSettings.tokenSuffix)
+                $ParameterFileContent = Get-Content -Path $ParameterFileTestCase.parameterFile_Path
+                $TenantIdKeyCount = ($ParameterFileContent | Select-String -Pattern '"tenantId"', "'tenantId'" -AllMatches).Matches.Count
+                $TenantIdValueCount = ($ParameterFileContent | Select-String -Pattern "$ParameterFileTokenName" -AllMatches).Matches.Count
+                $TenantIdKeyCount -eq $TenantIdValueCount | Should -Be $true -Because ("Parameter file should not contain the Tenant ID guid, instead should reference a token value '$ParameterFileTokenName'")
             }
         }
     }

@@ -2,8 +2,23 @@
     "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
     "contentVersion": "1.0.0.0",
     "parameters": {
-        "dataFactoryName": {
+        "name": {
             "value": "sxx-adf-001"
+        },
+        "managedVirtualNetworkName": {
+            "value": "default"
+        },
+        "integrationRuntime": {
+            "value": {
+                "name": "AutoResolveIntegrationRuntime",
+                "type": "Managed",
+                "managedVirtualNetworkName": "default",
+                "typeProperties": {
+                    "computeProperties": {
+                        "location": "AutoResolve"
+                    }
+                }
+            }
         },
         "publicNetworkAccess": {
             "value": true
@@ -16,7 +31,7 @@
                 {
                     "roleDefinitionIdOrName": "Reader",
                     "principalIds": [
-                        "cf33fea8-b30f-424f-ab73-c48d99e0b222"
+                        "<<deploymentSpId>>"
                     ]
                 }
             ]

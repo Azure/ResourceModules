@@ -1,4 +1,5 @@
-param roleAssignmentObj object
+param principalIds array
+param roleDefinitionIdOrName string
 param resourceName string
 
 var builtInRoleNames = {
@@ -30,10 +31,10 @@ resource registry 'Microsoft.ContainerRegistry/registries@2020-11-01-preview' ex
   name: resourceName
 }
 
-resource roleAssignment 'Microsoft.Authorization/roleAssignments@2020-04-01-preview' = [for principalId in roleAssignmentObj.principalIds: {
-  name: guid(registry.name, principalId, roleAssignmentObj.roleDefinitionIdOrName)
+resource roleAssignment 'Microsoft.Authorization/roleAssignments@2020-04-01-preview' = [for principalId in principalIds: {
+  name: guid(registry.name, principalId, roleDefinitionIdOrName)
   properties: {
-    roleDefinitionId: contains(builtInRoleNames, roleAssignmentObj.roleDefinitionIdOrName) ? builtInRoleNames[roleAssignmentObj.roleDefinitionIdOrName] : roleAssignmentObj.roleDefinitionIdOrName
+    roleDefinitionId: contains(builtInRoleNames, roleDefinitionIdOrName) ? builtInRoleNames[roleDefinitionIdOrName] : roleDefinitionIdOrName
     principalId: principalId
   }
   scope: registry

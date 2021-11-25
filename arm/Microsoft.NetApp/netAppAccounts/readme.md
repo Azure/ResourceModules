@@ -92,7 +92,7 @@ The NTFSv4.1 volume also specifies one export policy rule allowing Read and Writ
         "protocolTypes": [
             "NFSv3"
         ],
-        "subnetId": "/subscriptions/8629be3b-96bc-482d-a04b-ffff597c65a2/resourceGroups/dependencies-rg/providers/Microsoft.Network/virtualNetworks/sxx-az-vnet-x-002/subnets/sxx-az-subnet-x-004",
+        "subnetId": "/subscriptions/<<subscriptionId>>/resourceGroups/dependencies-rg/providers/Microsoft.Network/virtualNetworks/sxx-az-vnet-x-002/subnets/sxx-az-subnet-x-004",
         "roleAssignments": []
     },
     // NFS41 VOL
@@ -115,7 +115,7 @@ The NTFSv4.1 volume also specifies one export policy rule allowing Read and Writ
                 }
             ]
         },
-        "subnetId": "/subscriptions/8629be3b-96bc-482d-a04b-ffff597c65a2/resourceGroups/dependencies-rg/providers/Microsoft.Network/virtualNetworks/sxx-az-vnet-x-002/subnets/sxx-az-subnet-x-004",
+        "subnetId": "/subscriptions/<<subscriptionId>>/resourceGroups/dependencies-rg/providers/Microsoft.Network/virtualNetworks/sxx-az-vnet-x-002/subnets/sxx-az-subnet-x-004",
         "roleAssignments": []
     },
     // SMB VOL (Requires AD connection)
@@ -126,7 +126,7 @@ The NTFSv4.1 volume also specifies one export policy rule allowing Read and Writ
         "protocolTypes": [
             "CIFS"
         ],
-        "subnetId": "/subscriptions/8629be3b-96bc-482d-a04b-ffff597c65a2/resourceGroups/dependencies-rg/providers/Microsoft.Network/virtualNetworks/sxx-az-vnet-x-002/subnets/sxx-az-subnet-x-004",
+        "subnetId": "/subscriptions/<<subscriptionId>>/resourceGroups/dependencies-rg/providers/Microsoft.Network/virtualNetworks/sxx-az-vnet-x-002/subnets/sxx-az-subnet-x-004",
         "roleAssignments": []
     }
 ]

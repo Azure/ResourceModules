@@ -1,5 +1,11 @@
 @description('Required. The name of the Azure Factory to create')
-param dataFactoryName string
+param name string
+
+@description('Optional. The name of the Managed Virtual Network')
+param managedVirtualNetworkName string = ''
+
+@description('Optional. The object for the configuration of a Integration Runtime')
+param integrationRuntime object = {}
 
 @description('Optional. Location for all Resources.')
 param location string = resourceGroup().location
@@ -113,38 +119,34 @@ module pid_cuaId '.bicep/nested_cuaId.bicep' = if (!empty(cuaId)) {
 }
 
 resource dataFactory 'Microsoft.DataFactory/factories@2018-06-01' = {
-  name: dataFactoryName
+  name: name
   location: location
   tags: tags
   identity: {
     type: 'SystemAssigned'
   }
   properties: {
-    repoConfiguration: (bool(gitConfigureLater) ? null : json('{"type": "${gitRepoType}","accountName": "${gitAccountName}","repositoryName": "${gitRepositoryName}",${((gitRepoType == 'FactoryVSTSConfiguration') ? '"projectName": "${gitProjectName}",' : '')}"collaborationBranch": "${gitCollaborationBranch}","rootFolder": "${gitRootFolder}"}'))
-    publicNetworkAccess: (bool(publicNetworkAccess) ? 'Enabled' : 'Disabled')
+    repoConfiguration: bool(gitConfigureLater) ? null : json('{"type": "${gitRepoType}","accountName": "${gitAccountName}","repositoryName": "${gitRepositoryName}",${((gitRepoType == 'FactoryVSTSConfiguration') ? '"projectName": "${gitProjectName}",' : '')}"collaborationBranch": "${gitCollaborationBranch}","rootFolder": "${gitRootFolder}"}')
+    publicNetworkAccess: bool(publicNetworkAccess) ? 'Enabled' : 'Disabled'
   }
 }
 
-resource dataFactory_managedVirtualNetwork 'Microsoft.DataFactory/factories/managedVirtualNetworks@2018-06-01' = {
-  parent: dataFactory
-  name: 'default'
-  properties: {}
+module dataFactory_managedVirtualNetwork 'managedVirtualNetwork/deploy.bicep' = if (!empty(managedVirtualNetworkName)) {
+  name: '${uniqueString(deployment().name, location)}-ManagedVirtualNetwork'
+  params: {
+    name: managedVirtualNetworkName
+    dataFactoryName: dataFactory.name
+  }
 }
 
-resource dataFactory_integrationRuntime 'Microsoft.DataFactory/factories/integrationRuntimes@2018-06-01' = {
-  parent: dataFactory
-  name: 'AutoResolveIntegrationRuntime'
-  properties: {
-    type: 'Managed'
-    managedVirtualNetwork: {
-      referenceName: 'default'
-      type: 'ManagedVirtualNetworkReference'
-    }
-    typeProperties: {
-      computeProperties: {
-        location: 'AutoResolve'
-      }
-    }
+module dataFactory_integrationRuntime 'integrationRuntime/deploy.bicep' = if (!empty(integrationRuntime)) {
+  name: '${uniqueString(deployment().name, location)}-IntegrationRuntime'
+  params: {
+    dataFactoryName: dataFactory.name
+    name: integrationRuntime.name
+    type: integrationRuntime.type
+    managedVirtualNetworkName: contains(integrationRuntime, 'managedVirtualNetworkName') ? integrationRuntime.managedVirtualNetworkName : ''
+    typeProperties: integrationRuntime.typeProperties
   }
   dependsOn: [
     dataFactory_managedVirtualNetwork
@@ -163,10 +165,10 @@ resource dataFactory_lock 'Microsoft.Authorization/locks@2016-09-01' = if (lock 
 resource dataFactory_diagnosticSettings 'Microsoft.Insights/diagnosticsettings@2017-05-01-preview' = if ((!empty(diagnosticStorageAccountId)) || (!empty(workspaceId))) {
   name: '${dataFactory.name}-diagnosticSettings'
   properties: {
-    storageAccountId: (empty(diagnosticStorageAccountId) ? null : diagnosticStorageAccountId)
-    workspaceId: (empty(workspaceId) ? null : workspaceId)
-    metrics: ((empty(diagnosticStorageAccountId) && empty(workspaceId)) ? null : diagnosticsMetrics)
-    logs: ((empty(diagnosticStorageAccountId) && empty(workspaceId)) ? null : diagnosticsLogs)
+    storageAccountId: empty(diagnosticStorageAccountId) ? null : diagnosticStorageAccountId
+    workspaceId: empty(workspaceId) ? null : workspaceId
+    metrics: (empty(diagnosticStorageAccountId) && empty(workspaceId)) ? null : diagnosticsMetrics
+    logs: (empty(diagnosticStorageAccountId) && empty(workspaceId)) ? null : diagnosticsLogs
   }
   scope: dataFactory
 }
@@ -174,7 +176,8 @@ resource dataFactory_diagnosticSettings 'Microsoft.Insights/diagnosticsettings@2
 module dataFactory_rbac '.bicep/nested_rbac.bicep' = [for (roleAssignment, index) in roleAssignments: {
   name: '${deployment().name}-rbac-${index}'
   params: {
-    roleAssignmentObj: roleAssignment
+    principalIds: roleAssignment.principalIds
+    roleDefinitionIdOrName: roleAssignment.roleDefinitionIdOrName
     resourceName: dataFactory.name
   }
 }]

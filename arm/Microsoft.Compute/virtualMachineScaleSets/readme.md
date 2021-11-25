@@ -235,7 +235,7 @@ The following resources are required to be able to deploy this resource.
                     "name": "ipconfig1",
                     "properties": {
                         "subnet": {
-                            "ID": "/subscriptions/8629be3b-96bc-482d-a04b-ffff597c65a2/resourceGroups/agents-vmss-rg/providers/Microsoft.Network/virtualNetworks/sxx-az-vnet-x-scaleset/subnets/sxx-az-subnet-scaleset-linux"
+                            "id": "/subscriptions/<<subscriptionId>>/resourceGroups/agents-vmss-rg/providers/Microsoft.Network/virtualNetworks/sxx-az-vnet-x-scaleset/subnets/sxx-az-subnet-scaleset-linux"
                         }
                     }
                 }

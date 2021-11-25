@@ -61,7 +61,8 @@ resource appInsights 'Microsoft.Insights/components@2020-02-02' = {
 module appInsights_rbac '.bicep/nested_rbac.bicep' = [for (roleAssignment, index) in roleAssignments: {
   name: '${deployment().name}-rbac-${index}'
   params: {
-    roleAssignmentObj: roleAssignment
+    principalIds: roleAssignment.principalIds
+    roleDefinitionIdOrName: roleAssignment.roleDefinitionIdOrName
     resourceName: appInsights.name
   }
 }]

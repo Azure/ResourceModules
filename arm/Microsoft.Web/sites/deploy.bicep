@@ -190,8 +190,13 @@ module pid_cuaId '.bicep/nested_cuaId.bicep' = if (!empty(cuaId)) {
   params: {}
 }
 
+resource appServicePlanExisting 'Microsoft.Web/serverfarms@2021-02-01' existing = if (!empty(appServicePlanId)) {
+  name: last(split(appServicePlanId, '/'))
+  scope: resourceGroup(split(appServicePlanId, '/')[2], split(appServicePlanId, '/')[4])
+}
+
 resource appServicePlan 'Microsoft.Web/serverfarms@2021-02-01' = if (empty(appServicePlanId)) {
-  name: !empty(appServicePlanName) ? appServicePlanName : 'dummyAppServicePlanName'
+  name: !empty(appServicePlanName) ? appServicePlanName : '${appName}-asp'
   kind: appServicePlanType
   location: location
   tags: tags
@@ -226,7 +231,7 @@ resource app 'Microsoft.Web/sites@2020-12-01' = {
     userAssignedIdentities: !empty(userAssignedIdentities) ? userAssignedIdentities : null
   }
   properties: {
-    serverFarmId: !empty(appServicePlanId) ? appServicePlanId : appServicePlan.id
+    serverFarmId: !empty(appServicePlanId) ? appServicePlanExisting.id : appServicePlan.id
     httpsOnly: httpsOnly
     hostingEnvironmentProfile: !empty(appServiceEnvironmentId) ? json('{ id: ${hostingEnvironment} }') : null
     clientAffinityEnabled: clientAffinityEnabled
@@ -238,8 +243,8 @@ resource app 'Microsoft.Web/sites@2020-12-01' = {
     properties: {
       AzureWebJobsStorage: !empty(storageAccountName) ? 'DefaultEndpointsProtocol=https;AccountName=${storageAccountName};AccountKey=${listkeys(resourceId(subscription().subscriptionId, storageAccountResourceGroupName, 'Microsoft.Storage/storageAccounts', storageAccountName), '2019-06-01').keys[0].value};' : any(null)
       AzureWebJobsDashboard: !empty(storageAccountName) ? 'DefaultEndpointsProtocol=https;AccountName=${storageAccountName};AccountKey=${listkeys(resourceId(subscription().subscriptionId, storageAccountResourceGroupName, 'Microsoft.Storage/storageAccounts', storageAccountName), '2019-06-01').keys[0].value};' : any(null)
-      FUNCTIONS_EXTENSION_VERSION: appServicePlanType == 'functionApp' && !empty(functionsExtensionVersion) ? functionsExtensionVersion : any(null)
-      FUNCTIONS_WORKER_RUNTIME: appServicePlanType == 'functionApp' && !empty(functionsWorkerRuntime) ? functionsWorkerRuntime : any(null)
+      FUNCTIONS_EXTENSION_VERSION: appType == 'functionapp' && !empty(functionsExtensionVersion) ? functionsExtensionVersion : any(null)
+      FUNCTIONS_WORKER_RUNTIME: appType == 'functionapp' && !empty(functionsWorkerRuntime) ? functionsWorkerRuntime : any(null)
       APPINSIGHTS_INSTRUMENTATIONKEY: enableMonitoring ? reference('microsoft.insights/components/${appName}', '2015-05-01').InstrumentationKey : null
       APPLICATIONINSIGHTS_CONNECTION_STRING: enableMonitoring ? reference('microsoft.insights/components/${appName}', '2015-05-01').ConnectionString : null
     }
@@ -282,7 +287,8 @@ resource app_insights 'microsoft.insights/components@2020-02-02' = if (enableMon
 module app_rbac '.bicep/nested_rbac.bicep' = [for (roleAssignment, index) in roleAssignments: {
   name: '${deployment().name}-rbac-${index}'
   params: {
-    roleAssignmentObj: roleAssignment
+    principalIds: roleAssignment.principalIds
+    roleDefinitionIdOrName: roleAssignment.roleDefinitionIdOrName
     resourceName: app.name
   }
 }]
