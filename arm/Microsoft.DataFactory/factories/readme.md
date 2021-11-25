@@ -2,7 +2,7 @@
 
 ## Resource types
 
-| Resource Type | Api Version |
+| Resource Type | API Version |
 | :-- | :-- |
 | `Microsoft.Authorization/locks` | 2016-09-01 |
 | `Microsoft.Authorization/roleAssignments` | 2020-04-01-preview |
@@ -15,7 +15,7 @@
 
 | Parameter Name | Type | Default Value | Possible Values | Description |
 | :-- | :-- | :-- | :-- | :-- |
-| `cuaId` | string |  |  | Optional. Customer Usage Attribution id (GUID). This GUID must be previously registered |
+| `cuaId` | string |  |  | Optional. Customer Usage Attribution ID (GUID). This GUID must be previously registered |
 | `diagnosticLogsRetentionInDays` | int | `365` |  | Optional. Specifies the number of days that logs will be kept for; a value of 0 will retain data indefinitely. |
 | `diagnosticStorageAccountId` | string |  |  | Optional. Resource identifier of the Diagnostic Storage Account. |
 | `gitAccountName` | string |  |  | Optional. The account name. |
@@ -83,7 +83,7 @@ Tag names and tag values can be provided as needed. A tag can be left without a 
 | :-- | :-- | :-- |
 | `dataFactoryName` | string | The Name of the Azure Data Factory instance. |
 | `dataFactoryResourceGroup` | string | The name of the Resource Group with the Data factory. |
-| `dataFactoryResourceId` | string | The Resource Id of the Data factory. |
+| `dataFactoryResourceId` | string | The resource ID of the Data factory. |
 
 ## Template references
 

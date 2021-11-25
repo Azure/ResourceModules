@@ -22,7 +22,7 @@ This module deploys a Managed Virtual Network for an Azure Data Factory
 | :-- | :-- | :-- |
 | `managedVirtualNetworkResourceGroup` | string | The name of the Resource Group the Managed Virtual Network was created in. |
 | `managedVirtualNetworkName` | string | The name of the Managed Virtual Network.|
-| `managedVirtualNetworkId` | string | The ID of the Managed Virtual Network.|
+| `managedVirtualNetworkId` | string | The resource ID of the Managed Virtual Network.|
 
 ## Template references
 

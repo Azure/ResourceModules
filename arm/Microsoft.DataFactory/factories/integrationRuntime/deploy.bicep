@@ -17,7 +17,7 @@ param managedVirtualNetworkName string = ''
 @description('Required. Integration Runtime type properties.')
 param typeProperties object
 
-@description('Optional. Customer Usage Attribution id (GUID). This GUID must be previously registered')
+@description('Optional. Customer Usage Attribution ID (GUID). This GUID must be previously registered')
 param cuaId string = ''
 
 module pid_cuaId '.bicep/nested_cuaId.bicep' = if (!empty(cuaId)) {
@@ -26,15 +26,15 @@ module pid_cuaId '.bicep/nested_cuaId.bicep' = if (!empty(cuaId)) {
 }
 
 var managedVirtualNetwork_var = {
-  referenceName: (type == 'Managed' ? managedVirtualNetworkName : null)
-  type: (type == 'Managed' ? 'ManagedVirtualNetworkReference' : null)
+  referenceName: type == 'Managed' ? managedVirtualNetworkName : null
+  type: type == 'Managed' ? 'ManagedVirtualNetworkReference' : null
 }
 
 resource integrationRuntime 'Microsoft.DataFactory/factories/integrationRuntimes@2018-06-01' = {
   name: '${dataFactoryName}/${name}'
   properties: {
     type: type
-    managedVirtualNetwork: (type == 'Managed' ? managedVirtualNetwork_var : null)
+    managedVirtualNetwork: type == 'Managed' ? managedVirtualNetwork_var : null
     typeProperties: typeProperties
   }
 }
@@ -42,8 +42,8 @@ resource integrationRuntime 'Microsoft.DataFactory/factories/integrationRuntimes
 @description('The name of the Resource Group the Integration Runtime was created in.')
 output integrationRuntimeResourceGroup string = resourceGroup().name
 
-@description('The name of the Resource Group the Integration Runtime was created in.')
+@description('The name of the Integration Runtime.')
 output integrationRuntimeName string = integrationRuntime.name
 
-@description('The name of the Resource Group the Integration Runtime was created in.')
+@description('The resource ID of the Integration Runtime.')
 output integrationRuntimeId string = integrationRuntime.id

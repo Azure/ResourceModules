@@ -37,7 +37,7 @@ This module deployes a Managed or Self-Hosted Integration Runtime for an Azure D
 | :-- | :-- | :-- |
 | `integrationRuntimeResourceGroup` | string | The name of the Resource Group the Integration Runtime was created in. |
 | `integrationRuntimeName` | string | The name of the Integration Runtime. |
-| `integrationRuntimeId` | string | The ID of the Integration Runtime. |
+| `integrationRuntimeId` | string | The resource ID of the Integration Runtime. |
 
 ## Template references
 
