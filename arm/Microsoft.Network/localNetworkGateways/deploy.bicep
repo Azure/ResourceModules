@@ -1,6 +1,6 @@
 @description('Required. Name of the Local Network Gateway')
 @minLength(1)
-param localNetworkGatewayName string
+param name string
 
 @description('Optional. Location for all resources.')
 param location string = resourceGroup().location
@@ -52,7 +52,7 @@ module pid_cuaId '.bicep/nested_cuaId.bicep' = if (!empty(cuaId)) {
 }
 
 resource localNetworkGateway 'Microsoft.Network/localNetworkGateways@2021-02-01' = {
-  name: localNetworkGatewayName
+  name: name
   location: location
   tags: tags
   properties: {
@@ -83,7 +83,7 @@ module localNetworkGateway_rbac '.bicep/nested_rbac.bicep' = [for (roleAssignmen
   }
 }]
 
-@description('The resourceId of the local network gateway')
+@description('The resource ID of the local network gateway')
 output localNetworkGatewayResourceId string = localNetworkGateway.id
 
 @description('The resource group the local network gateway was deployed into')
