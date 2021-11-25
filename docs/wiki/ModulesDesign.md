@@ -126,6 +126,11 @@ Each module should come with a `.bicep` folder with a least the `nested_cuaId.bi
 
 This sections shows you a few common patterns among resources that are usually very similar (e.g. providers)
 
+- [Locks](#locks)
+- [RBAC](#rbac)
+- [Diagnostic Settings](#diagnostic-settings)
+- [Private Endpoints](#private-endpoints)
+
 #### Locks
 
 The locks provider can be added as a `resource` to the resource template directly.
