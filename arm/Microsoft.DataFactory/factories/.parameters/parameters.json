@@ -2,8 +2,23 @@
     "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
     "contentVersion": "1.0.0.0",
     "parameters": {
-        "dataFactoryName": {
+        "name": {
             "value": "sxx-adf-001"
+        },
+        "managedVirtualNetworkName": {
+            "value": "default"
+        },
+        "integrationRuntime": {
+            "value": {
+                "name": "AutoResolveIntegrationRuntime",
+                "type": "Managed",
+                "managedVirtualNetworkName": "default",
+                "typeProperties": {
+                    "computeProperties": {
+                        "location": "AutoResolve"
+                    }
+                }
+            }
         },
         "publicNetworkAccess": {
             "value": true
