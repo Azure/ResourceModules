@@ -5,16 +5,16 @@ param tags object
 
 var privateEndpointResourceName = last(split(privateEndpointResourceId, '/'))
 var privateEndpoint_var = {
-  name: contains(privateEndpointObj, 'name') ? (empty(privateEndpointObj.name) ? '${privateEndpointResourceName}-${privateEndpointObj.service}' : privateEndpointObj.name) : '${privateEndpointResourceName}-${privateEndpointObj.service}'
+  name: (contains(privateEndpointObj, 'name') ? (empty(privateEndpointObj.name) ? '${privateEndpointResourceName}-${privateEndpointObj.service}' : privateEndpointObj.name) : '${privateEndpointResourceName}-${privateEndpointObj.service}')
   subnetResourceId: privateEndpointObj.subnetResourceId
   service: [
     privateEndpointObj.service
   ]
-  privateDnsZoneResourceIds: contains(privateEndpointObj, 'privateDnsZoneResourceIds') ? (empty(privateEndpointObj.privateDnsZoneResourceIds) ? [] : privateEndpointObj.privateDnsZoneResourceIds) : []
-  customDnsConfigs: contains(privateEndpointObj, 'customDnsConfigs') ? (empty(privateEndpointObj.customDnsConfigs) ? null : privateEndpointObj.customDnsConfigs) : null
+  privateDnsZoneResourceIds: (contains(privateEndpointObj, 'privateDnsZoneResourceIds') ? (empty(privateEndpointObj.privateDnsZoneResourceIds) ? [] : privateEndpointObj.privateDnsZoneResourceIds) : [])
+  customDnsConfigs: (contains(privateEndpointObj, 'customDnsConfigs') ? (empty(privateEndpointObj.customDnsConfigs) ? null : privateEndpointObj.customDnsConfigs) : null)
 }
 
-resource privateEndpoint 'Microsoft.Network/privateEndpoints@2021-03-01' = {
+resource privateEndpoint 'Microsoft.Network/privateEndpoints@2021-05-01' = {
   name: privateEndpoint_var.name
   location: privateEndpointVnetLocation
   tags: tags
@@ -36,15 +36,17 @@ resource privateEndpoint 'Microsoft.Network/privateEndpoints@2021-03-01' = {
   }
 }
 
-resource privateDnsZoneGroups 'Microsoft.Network/privateEndpoints/privateDnsZoneGroups@2021-03-01' = if (!empty(privateEndpoint_var.privateDnsZoneResourceIds)) {
-  name: 'default'
+resource privateDnsZoneGroups 'Microsoft.Network/privateEndpoints/privateDnsZoneGroups@2021-02-01' = if (!empty(privateEndpoint_var.privateDnsZoneResourceIds)) {
+  name: '${privateEndpoint_var.name}/default'
   properties: {
-    privateDnsZoneConfigs: [for privateDnsZoneResourceId in privateEndpoint_var.privateDnsZoneResourceIds: {
-      name: last(split(privateDnsZoneResourceId, '/'))
+    privateDnsZoneConfigs: [for j in range(0, length(privateEndpoint_var.privateDnsZoneResourceIds)): {
+      name: last(split(privateEndpoint_var.privateDnsZoneResourceIds[j], '/'))
       properties: {
-        privateDnsZoneId: privateDnsZoneResourceId
+        privateDnsZoneId: privateEndpoint_var.privateDnsZoneResourceIds[j]
       }
     }]
   }
-  parent: privateEndpoint
+  dependsOn: [
+    privateEndpoint
+  ]
 }
