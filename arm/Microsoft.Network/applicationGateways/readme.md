@@ -15,7 +15,6 @@ This template deploys Application Gateway.
 
 | Parameter Name | Type | Default Value | Possible Values | Description |
 | :-- | :-- | :-- | :-- | :-- |
-| `applicationGatewayName` | string |  |  | Required. The name to be used for the Application Gateway. |
 | `backendHttpConfigurations` | array |  |  | Required. The backend HTTP settings to be configured. These HTTP settings will be used to rewrite the incoming HTTP requests for the backend pools. |
 | `backendPools` | array |  |  | Required. The backend pools to be configured. |
 | `capacity` | int | `2` |  | Optional. The number of Application instances to be configured. |
@@ -36,6 +35,7 @@ This template deploys Application Gateway.
 | `logsToEnable` | array | `[ApplicationGatewayAccessLog, ApplicationGatewayPerformanceLog, ApplicationGatewayFirewallLog]` | `[ApplicationGatewayAccessLog, ApplicationGatewayPerformanceLog, ApplicationGatewayFirewallLog]` | Optional. The name of logs that will be streamed. |
 | `managedIdentityResourceId` | string |  |  | Optional. Resource Id of an User assigned managed identity which will be associated with the App Gateway. |
 | `metricsToEnable` | array | `[AllMetrics]` | `[AllMetrics]` | Optional. The name of metrics that will be streamed. |
+| `name` | string |  |  | Required. The name to be used for the Application Gateway. |
 | `probes` | array | `[]` |  | Optional. The backend HTTP settings probes to be configured. |
 | `roleAssignments` | array | `[]` |  | Optional. Array of role assignment objects that contain the 'roleDefinitionIdOrName' and 'principalId' to define RBAC role assignments on this resource. In the roleDefinitionIdOrName attribute, you can provide either the display name of the role definition, or its fully qualified ID in the following format: '/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11' |
 | `routingRules` | array |  |  | Required. The routing rules to be configured. These rules will be used to route requests from frontend listeners to backend pools using a backend HTTP configuration. |
@@ -231,7 +231,7 @@ Tag names and tag values can be provided as needed. A tag can be left without a 
 | :-- | :-- | :-- |
 | `applicationGatewayName` | string | The name of the application gateway |
 | `applicationGatewayResourceGroup` | string | The resource group the application gateway was deployed into |
-| `applicationGatewayResourceId` | string | The resource Id of the application gateway |
+| `applicationGatewayResourceId` | string | The resource ID of the application gateway |
 
 ## Template references
 

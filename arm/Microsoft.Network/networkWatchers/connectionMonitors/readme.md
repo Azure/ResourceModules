@@ -19,7 +19,7 @@ This template deploys Connection Monitors.
 | `networkWatcherName` | string | `[format('NetworkWatcher_{0}', resourceGroup().location)]` |  | Optional. Name of the network watcher resource. Must be in the resource group where the Flow log will be created and same region as the NSG |
 | `tags` | object | `{object}` |  | Optional. Tags of the resource. |
 | `testConfigurations` | array | `[]` |  | Optional. List of connection monitor test configurations. |
-| `testGroups` | array | `[]` |  | Optional. List of connection monitor test groups. |
+| `testGroups` | array | `[]` |  | Optional.	List of connection monitor test groups. |
 | `workspaceResourceId` | string |  |  | Optional. Specify the Log Analytics Workspace Resource ID |
 
 ## Outputs
