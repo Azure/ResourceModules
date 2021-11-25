@@ -33,9 +33,9 @@
         "functionsWorkerRuntime": {
             "value": "powershell"
         },
-        "enableMonitoring": {
-            "value": false
-        },
+        // "enableMonitoring": {
+        //     "value": false
+        // },
         "roleAssignments": {
             "value": [
                 {
