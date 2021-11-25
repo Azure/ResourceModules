@@ -55,8 +55,8 @@ runs:
         . (Join-Path $env:GITHUB_WORKSPACE 'utilities' 'pipelines' 'tokensReplacement' 'helper' 'Add-Mask.ps1')
 
         $myTestVar =  'apple' | ConvertTo-SecureString -AsPlainText
-        Add-Mask -Value $testSecureString -AzureDevOps
-        Add-Mask -Value $testSecureString -GitHubActions
+        Add-Mask -Value $myTestVar -AzureDevOps
+        Add-Mask -Value $myTestVar -GitHubActions
         write-host 'apple'
 
         # Load Settings File
