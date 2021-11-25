@@ -45,10 +45,6 @@ module pid_cuaId '.bicep/nested_cuaId.bicep' = if (!empty(cuaId)) {
   params: {}
 }
 
-resource app 'Microsoft.Web/sites@2020-12-01' existing = {
-  name: appName
-}
-
 resource appInsight 'microsoft.insights/components@2020-02-02' existing = if (!empty(appInsightId)) {
   name: last(split(appInsightId, '/'))
   scope: resourceGroup(split(appInsightId, '/')[2], split(appInsightId, '/')[4])
@@ -59,16 +55,20 @@ resource storageAccount 'Microsoft.Storage/storageAccounts@2021-02-01' existing 
   scope: resourceGroup(split(storageAccountId, '/')[2], split(storageAccountId, '/')[4])
 }
 
-resource app_appsettings 'Microsoft.Web/sites/config@2019-08-01' = {
-  name: 'appsettings'
-  parent: app
-  properties: {
-    AzureWebJobsStorage: app.kind == 'functionapp' && !empty(storageAccountId) ? 'DefaultEndpointsProtocol=https;AccountName=${storageAccount.name};AccountKey=${storageAccount.listKeys().keys[0].value};' : ''
-    // AzureWebJobsDashboard: app.kind == 'functionapp' ? 'DefaultEndpointsProtocol=https;AccountName=${storageAccount.name};AccountKey=${storageAccount.listKeys().keys[0].value};' : ''
-    FUNCTIONS_EXTENSION_VERSION: app.kind == 'functionapp' && !empty(functionsExtensionVersion) ? functionsExtensionVersion : ''
-    FUNCTIONS_WORKER_RUNTIME: app.kind == 'functionapp' && !empty(functionsWorkerRuntime) ? functionsWorkerRuntime : ''
-    APPINSIGHTS_INSTRUMENTATIONKEY: !empty(appInsightId) ? appInsight.properties.InstrumentationKey : ''
-    APPLICATIONINSIGHTS_CONNECTION_STRING: !empty(appInsightId) ? appInsight.properties.ConnectionString : ''
+resource app 'Microsoft.Web/sites@2020-12-01' existing = {
+  name: appName
+
+  resource app_appsettings 'config@2019-08-01' = {
+    name: 'appsettings'
+    // parent: app
+    properties: {
+      AzureWebJobsStorage: app.kind == 'functionapp' && !empty(storageAccountId) ? 'DefaultEndpointsProtocol=https;AccountName=${storageAccount.name};AccountKey=${storageAccount.listKeys().keys[0].value};' : ''
+      // AzureWebJobsDashboard: app.kind == 'functionapp' ? 'DefaultEndpointsProtocol=https;AccountName=${storageAccount.name};AccountKey=${storageAccount.listKeys().keys[0].value};' : ''
+      FUNCTIONS_EXTENSION_VERSION: app.kind == 'functionapp' && !empty(functionsExtensionVersion) ? functionsExtensionVersion : ''
+      FUNCTIONS_WORKER_RUNTIME: app.kind == 'functionapp' && !empty(functionsWorkerRuntime) ? functionsWorkerRuntime : ''
+      APPINSIGHTS_INSTRUMENTATIONKEY: !empty(appInsightId) ? appInsight.properties.InstrumentationKey : ''
+      APPLICATIONINSIGHTS_CONNECTION_STRING: !empty(appInsightId) ? appInsight.properties.ConnectionString : ''
+    }
   }
 }
 
