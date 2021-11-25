@@ -10,6 +10,7 @@ This section gives you an overview of the design principals the bicep modules fo
 - [File & folder structure](#file--folder-structure)
   - [Naming](#naming)
   - [Structure](#structure)
+  - [Patterns](#patterns)
 - [Bicep template guidelines](#bicep-template-guidelines)
   - [Parameters](#parameters)
   - [Variables](#variables)
@@ -42,6 +43,10 @@ They can be deployed in different configurations just by changing the input para
 
 # File & folder structure
 
+- [Naming](#naming)
+- [Structure](#structure)
+- [Patterns](#patterns)
+
 A **Module** consists of
 
 - the bicep template deployment file (`deploy.bicep`)
@@ -50,8 +55,11 @@ A **Module** consists of
 
 A module usually represents a single resource or a set of closely related resources. For example, a storage account and the associated lock or virtual machine and network interfaces. Modules are located in the `arm` folder.
 
-- [Naming](#naming)
-- [Structure](#structure)
+Also, each module should be implemented with all capabilities it and its children support. This includes
+- `Locks`
+- `RBAC`
+- `Diagnostic Settings`
+- and ideally also `Private Endpoints`.
 
 ## Naming
 
@@ -91,33 +99,182 @@ Microsoft.Web
 
 Modules in the repository are structured via the module's main resource provider (for example `Microsoft.Web`) and resource type (for example `serverfarms`) where each section of the path corresponds to its place in the hierarchy. However, for cases that do not fit into this schema we provide the following guidance:
 
-- **Child-Resources**<p>
+### **Child-Resources**
 
-  > Post-MVP
+Resources like `Microsoft.Sql/servers` may have dedicated templates for child-resources such as `Microsoft.Sql/servers/databases`. In these cases we recommend to create a sub-folder called after the child-resource name, so that the path to the child-resource folder is consistent with its resource type. In the given example we would have a sub-folder `databases` in the parent-folder `servers`.
 
-   Resources like `Microsoft.Sql/servers` may have dedicated templates for child-resources such as `Microsoft.Sql/servers/databases`. In these cases we recommend to create a sub-folder called after the child-resource name, so that the path to the child-resource folder is consistent with its resource type. In the given example we would have a sub-folder `databases` in the parent-folder `servers`.
+```
+Microsoft.Sql
+└─ servers [module]
+  └─ databases [child-module/resource]
+```
 
-   ```
-   Microsoft.Sql
-   └─ servers [module]
-      └─ databases [child-module/resource]
-   ```
+In this folder we recommend to place the child-resource-template alongside a ReadMe (that can be generated via the `.github\workflows\scripts\Set-ModuleReadMe.ps1` script) and optionally further nest additional folders for it's child-resources.
 
-   In this folder we recommend to place the child-resource-template alongside a ReadMe (that can be generated via the `.github\workflows\scripts\Set-ModuleReadMe.ps1` script) and optionally further nest additional folders for it's child-resources. The parent template should reference all it's child-templates to allow for an end to end deployment experience while allowing any user to also reference 'just' the child-resource itself. In the case of the SQL-server example the server template would reference the database module and encapsulate it it in a loop to allow for the deployment of n-amount of databases.
+The parent template should reference all it's child-templates to allow for an end to end deployment experience while allowing any user to also reference 'just' the child-resource itself. In the case of the SQL-server example the server template would reference the database module and encapsulate it it in a loop to allow for the deployment of n-amount of databases. For example
 
-<!--
-- **Overlapping/Ambigious providers**<p>
-  There may be cases where a folder is already leveraged by a different module with the same resource provider. In these cases we recommend to add an additional layer into the hierarchy by moving the module that originally populated the conflicting folder into a sub-folder of the same using a meaningful name. The new module can then be positioned on the same level, again with a meaningful name. For example:
-  ```
-  Microsoft.<provider>
-  ├─ <service1> [module]
-  └─ <service2> [the conflicting name - now shared as a parent folder]
-     ├─ <service2Variant1> [module]
-     └─ <service2Variant2> [module]
-  ```
+```Bicep
+@description('Optional. The databases to create in the server')
+param databases array = []
 
-  > ***Note:*** The intend should always be to add new logic to the original template instead of adding artificial new modules. Hence, this solution should only be applied if no other solutions work.
--->
+module server_databases 'databases/deploy.bicep' = [for (database, index) in databases: {}]
+```
+
+Each module should come with a `.bicep` folder with a least the `nested_cuaId.bicep` file in it
+
+### Patterns
+
+This sections shows you a few common patterns among resources that are usually very similar (e.g. providers)
+
+#### Locks
+
+The locks provider can be added as a `resource` to the resource template directly.
+
+```bicep
+@allowed([
+  'CanNotDelete'
+  'NotSpecified'
+  'ReadOnly'
+])
+@description('Optional. Specify the type of lock.')
+param lock string = 'NotSpecified'
+
+resource <mainResource>_lock 'Microsoft.Authorization/locks@2016-09-01' = if (lock != 'NotSpecified') {
+  name: '${<mainResource>.name}-${lock}-lock'
+  properties: {
+    level: lock
+    notes: (lock == 'CanNotDelete') ? 'Cannot delete resource or child resources.' : 'Cannot modify the resource or child resources.'
+  }
+  scope: <mainResource>
+}
+```
+
+### RBAC
+
+The RBAC deployment has 2 elements to it. A module that contains the implementation, and a module reference in the parent resource - each with it's own loop to enable you to deploy n-amount of role assignments to n-amount of principals.
+
+***1st Element in main resource***
+```bicep
+@description('Optional. Array of role assignment objects that contain the \'roleDefinitionIdOrName\' and \'principalId\' to define RBAC role assignments on this resource. In the roleDefinitionIdOrName attribute, you can provide either the display name of the role definition, or its fully qualified ID in the following format: \'/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11\'')
+param roleAssignments array = []
+
+module <mainResource>_rbac '.bicep/nested_rbac.bicep' = [for (roleAssignment, index) in roleAssignments: {
+  name: '${deployment().name}-rbac-${index}'
+  params: {
+    principalIds: roleAssignment.principalIds
+    roleDefinitionIdOrName: roleAssignment.roleDefinitionIdOrName
+    resourceName: <mainResource>.name
+  }
+}]
+```
+
+***2nd Element as nested `.bicep/nested_rbac.bicep` file***
+
+Here you specify the platform roles available for the main resource. You can find further information in the [variables](#variables) section.
+
+The element requires you to provide both the `principalIds` & `roleDefinitionOrIdName` to assign to the principal IDs. Also, the `resourceName` is a concatenated resource name that allows us to reference it as an `existing` resource. For example, on the top level resource you would just provide the name of the SQL server (e.g. `sxx-sql`), but if you'd implement RBAC for the nested database, you'd need to provide the concatenated name `<serverName>/<databaseName>` (e.g. `sxx-sql/database1`)
+
+```bicep
+param principalIds array
+param roleDefinitionIdOrName string
+param resourceName string
+
+var builtInRoleNames = {
+  'Owner': subscriptionResourceId('Microsoft.Authorization/roleDefinitions', '8e3af657-a8ff-443c-a75c-2fe8c4bcb635')
+  'Contributor': subscriptionResourceId('Microsoft.Authorization/roleDefinitions', 'b24988ac-6180-42a0-ab88-20f7382dd24c')
+  'Reader': subscriptionResourceId('Microsoft.Authorization/roleDefinitions', 'acdd72a7-3385-48ef-bd42-f606fba81ae7')
+  ...
+}
+
+resource <mainResource> '<mainResourceProviderNamespace>/<resourceType>@<resourceTypeApiVersion>' existing = {
+  name: resourceName
+}
+
+resource roleAssignment 'Microsoft.Authorization/roleAssignments@2020-04-01-preview' = [for principalId in principalIds: {
+  name: guid(<mainResource>.name, principalId, roleDefinitionIdOrName)
+  properties: {
+    roleDefinitionId: contains(builtInRoleNames, roleDefinitionIdOrName) ? builtInRoleNames[roleDefinitionIdOrName] : roleDefinitionIdOrName
+    principalId: principalId
+  }
+  scope: <mainResource>
+}]
+```
+
+### Diagnostic settings
+
+The diagnostic settings may differ slightly depending from resource to resource. Most notably, the `<LogsIfAny>` as well as `<MetricsIfAny>` may be different and have to be added by you. However, it may just as well be the case they no metrics or no logs are existing. You can then remove the parameter and property from the resource itself.
+
+```bicep
+@description('Optional. Specifies the number of days that logs will be kept for; a value of 0 will retain data indefinitely.')
+@minValue(0)
+@maxValue(365)
+param diagnosticLogsRetentionInDays int = 365
+
+@description('Optional. Resource identifier of the Diagnostic Storage Account.')
+param diagnosticStorageAccountId string = ''
+
+@description('Optional. Resource identifier of Log Analytics.')
+param workspaceId string = ''
+
+@description('Optional. Resource ID of the event hub authorization rule for the Event Hubs namespace in which the event hub should be created or streamed to.')
+param eventHubAuthorizationRuleId string = ''
+
+@description('Optional. Name of the event hub within the namespace to which logs are streamed. Without this, an event hub is created for each log category.')
+param eventHubName string = ''
+
+@description('Optional. The name of logs that will be streamed.')
+@allowed([
+  <LogsIfAny>
+])
+param logsToEnable array = [
+  <LogsIfAny>
+]
+
+@description('Optional. The name of metrics that will be streamed.')
+@allowed([
+  <MetricsIfAny>
+])
+param metricsToEnable array = [
+  <MetricsIfAny>
+]
+
+var diagnosticsLogs = [for log in logsToEnable: {
+  category: log
+  enabled: true
+  retentionPolicy: {
+    enabled: true
+    days: diagnosticLogsRetentionInDays
+  }
+}]
+
+var diagnosticsMetrics = [for metric in metricsToEnable: {
+  category: metric
+  timeGrain: null
+  enabled: true
+  retentionPolicy: {
+    enabled: true
+    days: diagnosticLogsRetentionInDays
+  }
+}]
+
+resource <mainResource>_diagnosticSettings 'Microsoft.Insights/diagnosticsettings@2017-05-01-preview' = if (!empty(diagnosticStorageAccountId) || !empty(workspaceId) || !empty(eventHubAuthorizationRuleId) || !empty(eventHubName)) {
+  name: '${<mainResource>.name}-diagnosticSettings'
+  properties: {
+    storageAccountId: empty(diagnosticStorageAccountId) ? null : diagnosticStorageAccountId
+    workspaceId: empty(workspaceId) ? null : workspaceId
+    eventHubAuthorizationRuleId: empty(eventHubAuthorizationRuleId) ? null : eventHubAuthorizationRuleId
+    eventHubName: empty(eventHubName) ? null : eventHubName
+    metrics: diagnosticsMetrics
+    logs: diagnosticsLogs
+  }
+  scope: <mainResource>
+}
+```
+
+### Private Endpoints
+
+```bicep
+```
 
 ---
 
@@ -152,10 +309,8 @@ Within a bicep file, follow the following conventions:
     "@
     $resourceRoles = @()
     $rawRolesArray = $rawRoles -split "`n"
-    for ($i = 0; $i -lt $rawRolesArray.Count; $i++) {
-      if($i % 5 -eq 0) {
-        $resourceRoles += $rawRolesArray[$i].Trim()
-      }
+    for ($i = 0; $i -lt $rawRolesArray.Count; $i+5) {
+      $resourceRoles += $rawRolesArray[$i].Trim()
     }
     $allRoles = az role definition list --custom-role-only false --query '[].{roleName:roleName, id:id, roleType:roleType}' | ConvertFrom-Json
     $resBicep = [System.Collections.ArrayList]@()
@@ -179,18 +334,11 @@ Within a bicep file, follow the following conventions:
 - The name used as a reference is the singular name of the resource that it deploys, i.e:
   - `resource storageAccount 'Microsoft.Storage/storageAccounts@2019-06-01'`
   - `resource virtualMachine 'Microsoft.Compute/virtualMachines@2020-06-01'`
-- For child resources, use a shorthand of the resource type declaration, i.e:
-  - `resource serviceBusNamespace_authorizationRules 'AuthorizationRules@2020-06-01'`
 
-- Modules:
+- Bicep `modules`:
   - camel_Snake_Case, i.e `resourceGroup_rbac` ?
-  - All module references go into a child folder on the module called `.bicep`
   - File name for nested module is structured as follows: `nested_<resourceName>.bicep` i.e:
     - `nested_rbac.bicep`
-
-> Post-MVP
-
-- Child-resources go into a sub-folder with the name of the child (for example `databases` in case of the SQL server module).
 
 ## Outputs
 
