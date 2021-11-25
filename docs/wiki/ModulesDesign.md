@@ -95,6 +95,39 @@ Microsoft.Web
     └─ readme.md
 ```
 
+### Child resources naming
+
+When creating child-resources from parent resources you will need to specify a name that, when deployed, will be used to assign the deployment name.
+
+There are some constrints that needs to be considered when naming the deployment:
+
+- Deployment name length can't exceed 64 chars
+- Two deployments with the same name created in different location will fail
+- Using the same deployment name mode than once, will surface only the last one in the Azure Portal
+- If more than one deployment with the same name runs at the same time, race condition might happen
+- Human-readable names would be preferable, even if not neccessary
+
+While exceptions might be needed, the following guidence should be followed as much as possible:
+
+- For child-resources of the top-level resource (1st level child) use the following naming structure
+
+```
+'${uniqueString(deployment().name, location)}-<resource_short_type>]'
+```
+
+- For child-resources 2nd on level, use the following naming structure
+
+```
+'${deployment().name}-<child_type>[-${index}]'
+```
+
+Examples:
+
+```
+name: '${uniqueString(deployment().name, location)}-TableSvc'
+name: '${deployment().name}-Table-${index}'
+```
+
 ## Structure
 
 Modules in the repository are structured via the module's main resource provider (for example `Microsoft.Web`) and resource type (for example `serverfarms`) where each section of the path corresponds to its place in the hierarchy. However, for cases that do not fit into this schema we provide the following guidance:
