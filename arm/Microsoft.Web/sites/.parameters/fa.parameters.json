@@ -25,7 +25,7 @@
             }
         },
         "storageAccountId": {
-            "value": "/subscriptions/a7439831-1cd9-435d-a091-4aa863c96556/resourceGroups/validation-rg/providers/Microsoft.Storage/storageAccounts/adpsxxazsaweux002"
+            "value": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Storage/storageAccounts/adpsxxazsaweux002"
         },
         // "storageAccountName": {
         //     "value": "adpsxxazsaweux002"
