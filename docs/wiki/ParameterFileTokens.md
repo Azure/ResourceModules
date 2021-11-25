@@ -42,8 +42,8 @@ These are tokens defined in the Git Repository inside a [Settings.json](https://
 "localTokens": {
     "tokens": [
         {
-            "name": "namePrefix",
-            "value": "carml"
+            "name": "tokenName",
+            "value": "tokenValue"
         }
     ]
 }

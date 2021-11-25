@@ -5,8 +5,8 @@
         "localTokens": {
             "tokens": [
                 {
-                    "name": "namePrefix",
-                    "value": "sxx"
+                    "name": "exampleLocalTokenName",
+                    "value": "exampleLocalTokenValue"
                 }
             ]
         },
