@@ -230,6 +230,7 @@ module app_appsettings 'config/deploy.bicep' = {
     // name: 'appsettings'
     appName: app.name
     storageAccountId: !empty(storageAccountId) ? storageAccountId : ''
+    // appInsightId: !empty(appInsightId) ? appInsightId : ''
     functionsWorkerRuntime: !empty(functionsWorkerRuntime) ? functionsWorkerRuntime : ''
     functionsExtensionVersion: !empty(functionsExtensionVersion) ? functionsExtensionVersion : '~3'
   }
