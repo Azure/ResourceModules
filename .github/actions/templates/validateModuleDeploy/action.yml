@@ -40,12 +40,12 @@ runs:
         enable-AzPSSession: true
 
     - if: ${{ env.PLATFORM_KEYVAULT && inputs.subscriptionId }}
-      name: Azure Key Vault Secrets
-      id: azurekeyvault
+      name: Parameter File Tokens Azure Key Vault
+      id: tokenkeyvault
       uses: Azure/get-keyvault-secrets@v1
       with:
         keyvault: '${{ env.PLATFORM_KEYVAULT }}'
-        secrets: 'ParameterFileToken-*'
+        secrets: '*'
 
     - name: 'Replace Parameter File Tokens [${{ inputs.parameterFilePath }}] '
       shell: pwsh
