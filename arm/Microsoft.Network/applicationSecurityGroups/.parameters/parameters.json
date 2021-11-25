@@ -3,7 +3,7 @@
     "contentVersion": "1.0.0.0",
     "parameters": {
         "applicationSecurityGroupName": {
-            "value": "carml-az-asg-x-001"
+            "value": "<<namePrefixX>>-az-asg-x-001"
         },
         "roleAssignments": {
             "value": [
