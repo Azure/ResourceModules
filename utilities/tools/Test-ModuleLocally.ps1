@@ -141,7 +141,6 @@ function Test-ModuleLocally {
             $DefaultParameterFileTokens = @(
                 @{ Name = 'subscriptionId'; Value = "$($ValidateOrDeployParameters.SubscriptionId)" }
                 @{ Name = 'managementGroupId'; Value = "$($ValidateOrDeployParameters.ManagementGroupId)" }
-                @{ Name = 'resourceGroupName'; Value = "$($ValidateOrDeployParameters.resourceGroupName)" }
             ) | ForEach-Object { [PSCustomObject]$PSItem }
 
             # Look for Local Custom Parameter File Tokens (Source Control)
@@ -188,6 +187,11 @@ function Test-ModuleLocally {
                 # Validate Template
                 if ($ValidationTest) {
                     Write-Verbose "Validating Module: $ModuleName"
+                    # Invoke Validation
+                    Test-TemplateWithParameterFile @functionInput -Verbose
+                }
+                # Deploy Template
+                if ($DeploymentTest) {
                     Write-Verbose "Deploying Module: $ModuleName"
                     # Set the ParameterFilePath to Directory instead of the default 'parameters.json'
                     if ($DeployAllModuleParameterFiles) {
@@ -202,17 +206,16 @@ function Test-ModuleLocally {
                 }
             } catch {
                 Write-Error $PSItem.Exception
-                if (($ValidationTest -or $DeploymentTest) -and $ValidateOrDeployParameters) {
-                    # Replace Values with Tokens For Repo Updates
-                    Write-Verbose 'Restoring Tokens'
-                    $ModuleParameterFiles | ForEach-Object { Convert-TokensInParameterFile @ConvertTokensInputs -ParameterFilePath $PSItem.FullName -RestoreTokens $true }
-                }
+                # Replace Values with Tokens For Repo Updates and Set Restore Flag to True to Prevent Running Restore Twice
+                $RestoreAlreadyTriggered = $true
+                Write-Verbose 'Restoring Tokens'
+                $ModuleParameterFiles | ForEach-Object { Convert-TokensInParameterFile @ConvertTokensInputs -ParameterFilePath $PSItem.FullName -RestoreTokens $true }
             }
         }
     }
     end {
         # Restore Parameter Files
-        if (($ValidationTest -or $DeploymentTest) -and $ValidateOrDeployParameters) {
+        if (($ValidationTest -or $DeploymentTest) -and $ValidateOrDeployParameters -and !($RestoreAlreadyTriggered)) {
             # Replace Values with Tokens For Repo Updates
             Write-Verbose 'Restoring Tokens'
             $ModuleParameterFiles | ForEach-Object { Convert-TokensInParameterFile @ConvertTokensInputs -ParameterFilePath $PSItem.FullName -RestoreTokens $true }
