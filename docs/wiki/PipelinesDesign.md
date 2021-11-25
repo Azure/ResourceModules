@@ -66,7 +66,7 @@ The validation phase performs all test outside of a test deployment. This includ
 
 #### Static module validation
 
-This static validation executes the tests documented in the [testing](./Testing.md) section. Without diving into to much detail, we test aspects like a proper ReadMe documentation, a proper module folder structure, a minimum number of refresh of the leveraged of API versions and the like.
+This static validation executes the tests documented in the [testing](./Testing) section. Without diving into to much detail, we test aspects like a proper ReadMe documentation, a proper module folder structure, a minimum number of refresh of the leveraged of API versions and the like.
 
 #### Simulated deployment validation
 
