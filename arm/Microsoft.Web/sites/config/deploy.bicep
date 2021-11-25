@@ -63,10 +63,10 @@ resource app_appsettings 'Microsoft.Web/sites/config@2019-08-01' = {
   name: 'appsettings'
   parent: app
   properties: {
-    AzureWebJobsStorage: app.kind == 'functionapp' ? 'DefaultEndpointsProtocol=https;AccountName=${storageAccount.name};AccountKey=${storageAccount.listKeys().keys[0].value};' : any(null)
-    AzureWebJobsDashboard: app.kind == 'functionapp' ? 'DefaultEndpointsProtocol=https;AccountName=${storageAccount.name};AccountKey=${storageAccount.listKeys().keys[0].value};' : any(null)
-    FUNCTIONS_EXTENSION_VERSION: app.kind == 'functionapp' && !empty(functionsExtensionVersion) ? functionsExtensionVersion : any(null)
-    FUNCTIONS_WORKER_RUNTIME: app.kind == 'functionapp' && !empty(functionsWorkerRuntime) ? functionsWorkerRuntime : any(null)
+    // AzureWebJobsStorage: app.kind == 'functionapp' ? 'DefaultEndpointsProtocol=https;AccountName=${storageAccount.name};AccountKey=${storageAccount.listKeys().keys[0].value};' : any(null)
+    // AzureWebJobsDashboard: app.kind == 'functionapp' ? 'DefaultEndpointsProtocol=https;AccountName=${storageAccount.name};AccountKey=${storageAccount.listKeys().keys[0].value};' : any(null)
+    // FUNCTIONS_EXTENSION_VERSION: app.kind == 'functionapp' && !empty(functionsExtensionVersion) ? functionsExtensionVersion : any(null)
+    // FUNCTIONS_WORKER_RUNTIME: app.kind == 'functionapp' && !empty(functionsWorkerRuntime) ? functionsWorkerRuntime : any(null)
     APPINSIGHTS_INSTRUMENTATIONKEY: !empty(appInsightId) ? appInsight.properties.InstrumentationKey : ''
     APPLICATIONINSIGHTS_CONNECTION_STRING: !empty(appInsightId) ? appInsight.properties.ConnectionString : ''
   }
