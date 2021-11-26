@@ -1,18 +1,8 @@
-// @description('Required. Name of the Web Application Portal config name')
-// @allowed([
-//   'appsettings'
-//   'authsettings'
-//   'authsettingsV2'
-//   'azurestorageaccounts'
-//   'backup'
-//   'connectionstrings'
-//   'logs'
-//   'metadata'
-//   'pushsettings'
-//   'slotConfigNames'
-//   'web'
-// ])
-// param name string
+@description('Required. Name of the Web Application Portal config name')
+@allowed([
+  'appsettings'
+])
+param name string
 
 @description('Required. Name of the Web Application Portal Name')
 param appName string
@@ -59,20 +49,8 @@ resource app 'Microsoft.Web/sites@2020-12-01' existing = {
   name: appName
 }
 
-// var appSettingsProperties = (app.kind == 'functionapp') ? {
-//   // AzureWebJobsStorage: 'DefaultEndpointsProtocol=https;AccountName=${storageAccount.name};AccountKey=${storageAccount.listKeys().keys[0].value};'
-//   // AzureWebJobsDashboard: 'DefaultEndpointsProtocol=https;AccountName=${storageAccount.name};AccountKey=${storageAccount.listKeys().keys[0].value};'
-//   FUNCTIONS_EXTENSION_VERSION: !empty(functionsExtensionVersion) ? functionsExtensionVersion : ''
-//   FUNCTIONS_WORKER_RUNTIME: !empty(functionsWorkerRuntime) ? functionsWorkerRuntime : ''
-//   APPINSIGHTS_INSTRUMENTATIONKEY: !empty(appInsightId) ? appInsight.properties.InstrumentationKey : ''
-//   APPLICATIONINSIGHTS_CONNECTION_STRING: !empty(appInsightId) ? appInsight.properties.ConnectionString : ''
-// } : {
-//   APPINSIGHTS_INSTRUMENTATIONKEY: !empty(appInsightId) ? appInsight.properties.InstrumentationKey : ''
-//   APPLICATIONINSIGHTS_CONNECTION_STRING: !empty(appInsightId) ? appInsight.properties.ConnectionString : ''
-// }
-
 resource config 'Microsoft.Web/sites/config@2019-08-01' = {
-  name: 'appsettings'
+  name: name
   parent: app
   properties: {
       AzureWebJobsStorage: !empty(storageAccountId) ? 'DefaultEndpointsProtocol=https;AccountName=${storageAccount.name};AccountKey=${storageAccount.listKeys().keys[0].value};' : any(null)

@@ -227,7 +227,7 @@ resource app 'Microsoft.Web/sites@2020-12-01' = {
 module app_appsettings 'config/deploy.bicep' = {
   name: '${deployment().name}-config'
   params: {
-    // name: 'appsettings'
+    name: 'appsettings'
     appName: app.name
     storageAccountId: !empty(storageAccountId) ? storageAccountId : ''
     // appInsightId: !empty(appInsightId) ? appInsightId : ''
