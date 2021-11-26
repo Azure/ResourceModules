@@ -69,6 +69,10 @@ The Key Vault here is enabled by adding a Secret to GitHub called `PLATFORM_KEYV
 
 > The Tokens are created as secrets in the Key Vault with the content type defined in the [Settings.json](https://github.com/Azure/ResourceModules/blob/main/settings.json) file, under the property `keyVaultSecretContentType`.
 
+The below diagram outlines the compares the different token types that can be used for parameter file tokens:
+
+<img src="./media/tokenTypes.png" alt="tokenTypes">
+
 ### How the Token Key Vault is created
 
  ---
