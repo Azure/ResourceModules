@@ -177,7 +177,7 @@ param scheduleDescription string = ''
 @description('Generated. Do not touch. Is used to provide the base time for time comparison for startTime. If startTime is specified in HH:MM format, baseTime is used to check if the provided startTime has passed, adding one day before setting the deployment schedule.')
 param baseTime string = utcNow('u')
 
-@description('Optional. Customer Usage Attribution id (GUID). This GUID must be previously registered')
+@description('Optional. Customer Usage Attribution ID (GUID). This GUID must be previously registered')
 param cuaId string = ''
 
 var updateClassifications_var = '${replace(replace(replace(replace(string(updateClassifications), ',', ', '), '[', ''), ']', ''), '"', '')}'
@@ -259,7 +259,7 @@ resource softwareUpdateConfiguration 'Microsoft.Automation/automationAccounts/so
 @description('The name of the deployed softwareUpdateConfiguration')
 output softwareUpdateConfigurationName string = softwareUpdateConfiguration.name
 
-@description('The Id of the deployed softwareUpdateConfiguration')
+@description('The ID of the deployed softwareUpdateConfiguration')
 output softwareUpdateConfigurationResourceId string = softwareUpdateConfiguration.id
 
 @description('The resource group of the deployed softwareUpdateConfiguration')

@@ -13,7 +13,7 @@ param description string = ''
 @sys.description('Optional. If the variable should be encrypted.')
 param isEncrypted bool = false
 
-@sys.description('Optional. Customer Usage Attribution id (GUID). This GUID must be previously registered')
+@sys.description('Optional. Customer Usage Attribution ID (GUID). This GUID must be previously registered')
 param cuaId string = ''
 
 module pid_cuaId '.bicep/nested_cuaId.bicep' = if (!empty(cuaId)) {
@@ -38,7 +38,7 @@ resource variable 'Microsoft.Automation/automationAccounts/variables@2020-01-13-
 @sys.description('The name of the deployed variable')
 output variableName string = variable.name
 
-@sys.description('The Id of the deployed variable')
+@sys.description('The ID of the deployed variable')
 output variableId string = variable.id
 
 @sys.description('The resource group of the deployed variable')

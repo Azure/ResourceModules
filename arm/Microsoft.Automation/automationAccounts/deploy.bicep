@@ -26,7 +26,7 @@ param jobSchedules array = []
 @description('Optional. List of variables to be created in the automation account.')
 param variables array = []
 
-@description('Optional. Id of the log analytics workspace to be linked to the deployed automation account.')
+@description('Optional. ID of the log analytics workspace to be linked to the deployed automation account.')
 param linkedWorkspaceId string = ''
 
 @description('Optional. List of gallerySolutions to be created in the linked log analytics workspace')
@@ -75,7 +75,7 @@ param roleAssignments array = []
 @description('Optional. Tags of the Automation Account resource.')
 param tags object = {}
 
-@description('Optional. Customer Usage Attribution id (GUID). This GUID must be previously registered.')
+@description('Optional. Customer Usage Attribution ID (GUID). This GUID must be previously registered.')
 param cuaId string = ''
 
 @description('Optional. The name of logs that will be streamed.')
@@ -117,7 +117,7 @@ var diagnosticsMetrics = [for metric in metricsToEnable: {
   }
 }]
 
-var identityType = systemAssigned ? (!empty(userAssignedIdentities) ? 'SystemAssigned,UserAssigned': 'SystemAssigned') : (!empty(userAssignedIdentities) ? 'UserAssigned' : 'None')
+var identityType = systemAssigned ? (!empty(userAssignedIdentities) ? 'SystemAssigned,UserAssigned' : 'SystemAssigned') : (!empty(userAssignedIdentities) ? 'UserAssigned' : 'None')
 
 var identity = identityType != 'None' ? {
   type: identityType
@@ -334,11 +334,11 @@ module automationAccount_rbac '.bicep/nested_rbac.bicep' = [for (roleAssignment,
 @description('The name of the deployed automation account')
 output automationAccountName string = automationAccount.name
 
-@description('The id of the deployed automation account')
+@description('The ID of the deployed automation account')
 output automationAccountResourceId string = automationAccount.id
 
 @description('The resource group of the deployed automation account')
 output automationAccountResourceGroup string = resourceGroup().name
 
-@description('The resource id of the assigned identity.')
+@description('The resource ID of the assigned identity.')
 output assignedIdentityID string = systemAssigned ? automationAccount.identity.principalId : ''
