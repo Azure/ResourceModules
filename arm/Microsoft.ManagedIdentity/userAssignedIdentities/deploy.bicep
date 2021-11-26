@@ -46,7 +46,7 @@ module userMsi_rbac '.bicep/nested_rbac.bicep' = [for (roleAssignment, index) in
   params: {
     principalIds: roleAssignment.principalIds
     roleDefinitionIdOrName: roleAssignment.roleDefinitionIdOrName
-    resourceName: userMsi.name
+    resourceId: userMsi.id
   }
 }]
 

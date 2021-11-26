@@ -143,7 +143,7 @@ module galleryImage_rbac '.bicep/nested_rbac.bicep' = [for (roleAssignment, inde
   params: {
     principalIds: roleAssignment.principalIds
     roleDefinitionIdOrName: roleAssignment.roleDefinitionIdOrName
-    resourceName: galleryImage.name
+    resourceId: galleryImage.id
   }
 }]
 

@@ -260,7 +260,7 @@ module eventHubNamespace_rbac '.bicep/nested_rbac.bicep' = [for (roleAssignment,
   params: {
     principalIds: roleAssignment.principalIds
     roleDefinitionIdOrName: roleAssignment.roleDefinitionIdOrName
-    resourceName: eventHubNamespace.name
+    resourceId: eventHubNamespace.id
   }
 }]
 

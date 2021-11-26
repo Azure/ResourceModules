@@ -26,6 +26,6 @@ module capacityPool_rbac 'nested_capacityPool_rbac.bicep' = [for (roleAssignment
   params: {
     principalIds: roleAssignment.principalIds
     roleDefinitionIdOrName: roleAssignment.roleDefinitionIdOrName
-    resourceName: capacityPool.name
+    resourceId: capacityPool.id
   }
 }]
