@@ -19,9 +19,6 @@
                 "skuFamily": "Pv2"
             }
         },
-        "storageAccountId": {
-            "value": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Storage/storageAccounts/adpsxxazsaweux002"
-        },
         // "appInsightObject": {
         //     "value": {
         //         "name": "sxx-az-wa-x-001-appi",

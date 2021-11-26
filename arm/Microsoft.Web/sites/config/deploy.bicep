@@ -67,8 +67,6 @@ var appSettingsProperties = (app.kind == 'functionapp') ? {
   APPINSIGHTS_INSTRUMENTATIONKEY: !empty(appInsightId) ? appInsight.properties.InstrumentationKey : ''
   APPLICATIONINSIGHTS_CONNECTION_STRING: !empty(appInsightId) ? appInsight.properties.ConnectionString : ''
 } : {
-  FUNCTIONS_EXTENSION_VERSION: !empty(functionsExtensionVersion) ? functionsExtensionVersion : ''
-  FUNCTIONS_WORKER_RUNTIME: !empty(functionsWorkerRuntime) ? functionsWorkerRuntime : ''
   APPINSIGHTS_INSTRUMENTATIONKEY: !empty(appInsightId) ? appInsight.properties.InstrumentationKey : ''
   APPLICATIONINSIGHTS_CONNECTION_STRING: !empty(appInsightId) ? appInsight.properties.ConnectionString : ''
 }
