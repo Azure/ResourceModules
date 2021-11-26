@@ -26,7 +26,7 @@ resource eventHub 'Microsoft.EventHub/namespaces/eventhubs@2021-06-01-preview' e
 }
 
 resource roleAssignment 'Microsoft.Authorization/roleAssignments@2020-04-01-preview' = [for principalId in principalIds: {
-  name: guid(resourceName, principalId, roleDefinitionIdOrName)
+  name: guid(split(resourceName, '/')[0], split(resourceName, '/')[1], principalId, roleDefinitionIdOrName)
   properties: {
     roleDefinitionId: contains(builtInRoleNames, roleDefinitionIdOrName) ? builtInRoleNames[roleDefinitionIdOrName] : roleDefinitionIdOrName
     principalId: principalId
