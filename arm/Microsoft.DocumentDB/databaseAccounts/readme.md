@@ -31,7 +31,6 @@ This module deploys a Documentdb database account and its child resources.
 | `locations` | array |  |  | Required. Locations enabled for the Cosmos DB account. |
 | `lock` | string | `NotSpecified` | `[CanNotDelete, NotSpecified, ReadOnly]` | Optional. Specify the type of lock. |
 | `logsToEnable` | array | `[DataPlaneRequests, MongoRequests, QueryRuntimeStatistics, PartitionKeyStatistics, PartitionKeyRUConsumption, ControlPlaneRequests, CassandraRequests, GremlinRequests, TableApiRequests]` | `[DataPlaneRequests, MongoRequests, QueryRuntimeStatistics, PartitionKeyStatistics, PartitionKeyRUConsumption, ControlPlaneRequests, CassandraRequests, GremlinRequests, TableApiRequests]` | Optional. The name of logs that will be streamed. |
-| `managedServiceIdentity` | string | `None` | `[None, SystemAssigned, SystemAssigned, UserAssigned, UserAssigned]` | Optional. The type of identity used for the database account. The type 'SystemAssigned, UserAssigned' includes both an implicitly created identity and a set of user assigned identities. The type 'None' (default) will remove any identities from the database account. |
 | `maxIntervalInSeconds` | int | `300` |  | Optional. Max lag time (minutes). Required for BoundedStaleness. Valid ranges, Single Region: 5 to 84600. Multi Region: 300 to 86400. |
 | `maxStalenessPrefix` | int | `100000` |  | Optional. Max stale requests. Required for BoundedStaleness. Valid ranges, Single Region: 10 to 1000000. Multi Region: 100000 to 1000000. |
 | `metricsToEnable` | array | `[Requests]` | `[Requests]` | Optional. The name of metrics that will be streamed. |
@@ -40,8 +39,9 @@ This module deploys a Documentdb database account and its child resources.
 | `roleAssignments` | array | `[]` |  | Optional. Array of role assignment objects that contain the 'roleDefinitionIdOrName' and 'principalIds' to define RBAC role assignments on this resource. In the roleDefinitionIdOrName attribute, you can provide either the display name of the role definition, or it's fully qualified ID in the following format: '/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11' |
 | `serverVersion` | string | `4.0` | `[3.2, 3.6, 4.0]` | Optional. Specifies the MongoDB server version to use. |
 | `sqlDatabases` | _[sqlDatabases](sqlDatabases/readme.md)_ array | `[]` |  | Optional. SQL Databases configurations |
+| `systemAssignedIdentity` | bool |  |  | Optional. Enables system assigned managed identity on the resource. |
 | `tags` | object | `{object}` |  | Optional. Tags of the Database Account resource. |
-| `userAssignedIdentities` | object | `{object}` |  | Optional. Mandatory if 'managedServiceIdentity' contains UserAssigned. The list of user identities associated with the database account. |
+| `userAssignedIdentities` | object | `{object}` |  | Optional. The ID(s) to assign to the resource. |
 | `workspaceId` | string |  |  | Optional. Resource identifier of Log Analytics. |
 
 ### Parameter Usage: `locations`
@@ -105,6 +105,7 @@ Please reference the documentation for [mongodbDatabases](./mongodbDatabases/rea
 
 | Output Name | Type | Description |
 | :-- | :-- | :-- |
+| `assignedIdentityID` | string | The resource ID of the assigned identity. |
 | `databaseAccountName` | string | The name of the database account. |
 | `databaseAccountResourceGroup` | string | The name of the Resource Group the database account was created in. |
 | `databaseAccountResourceId` | string | The Resource Id of the database account. |
