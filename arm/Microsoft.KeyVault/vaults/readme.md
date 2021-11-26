@@ -183,7 +183,7 @@ To use Private Endpoint the following dependencies must be deployed:
 | :-- | :-- | :-- |
 | `keyVaultName` | string | The Name of the Key Vault. |
 | `keyVaultResourceGroup` | string | The name of the Resource Group the Key Vault was created in. |
-| `keyVaultResourceId` | string | The Resource Id of the Key Vault. |
+| `keyVaultResourceId` | string | The Resource ID of the Key Vault. |
 | `keyVaultUrl` | string | The URL of the Key Vault. |
 
 ## Template references

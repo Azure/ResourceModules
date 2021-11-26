@@ -57,8 +57,13 @@ module pid_cuaId './.bicep/nested_cuaId.bicep' = if (!empty(cuaId)) {
   params: {}
 }
 
+resource keyVault 'Microsoft.KeyVault/vaults@2021-06-01-preview' existing = {
+  name: vaultName
+}
+
 resource key 'Microsoft.KeyVault/vaults/keys@2019-09-01' = {
-  name: '${vaultName}/${name}'
+  name: name
+  parent: keyVault
   tags: tags
   properties: {
     attributes: {
@@ -76,7 +81,7 @@ resource key 'Microsoft.KeyVault/vaults/keys@2019-09-01' = {
 @description('The Name of the key.')
 output keyName string = key.name
 
-@description('The Resource Id of the key.')
+@description('The Resource ID of the key.')
 output keyResourceId string = key.id
 
 @description('The name of the Resource Group the key was created in.')

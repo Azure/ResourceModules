@@ -47,7 +47,7 @@ Tag names and tag values can be provided as needed. A tag can be left without a 
 | :-- | :-- | :-- |
 | `keyName` | string | The Name of the key. |
 | `keyResourceGroup` | string | The name of the Resource Group the key was created in. |
-| `keyResourceId` | string | The Resource Id of the key. |
+| `keyResourceId` | string | The Resource ID of the key. |
 
 ## Template references
 

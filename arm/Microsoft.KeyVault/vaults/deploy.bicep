@@ -260,7 +260,7 @@ module keyVault_rbac '.bicep/nested_rbac.bicep' = [for (roleAssignment, index) i
   }
 }]
 
-@description('The Resource Id of the Key Vault.')
+@description('The Resource ID of the Key Vault.')
 output keyVaultResourceId string = keyVault.id
 
 @description('The name of the Resource Group the Key Vault was created in.')
