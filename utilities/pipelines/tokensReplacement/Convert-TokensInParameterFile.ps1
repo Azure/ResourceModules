@@ -115,7 +115,6 @@ function Convert-TokensInParameterFile {
             }
         }
         # Combine All Input Token Types, Remove Duplicates and Only Select Name, Value if they contain other unrequired properties
-        Write-Verbose ('Combining All Parameter File Tokens and Removing Duplicates')
         $AllCustomParameterFileTokens = $DefaultParameterFileTokens + $LocalCustomParameterFileTokens + $RemoteCustomParameterFileTokens |
             ForEach-Object { [PSCustomObject]$PSItem } |
             Sort-Object Name -Unique |
@@ -128,12 +127,11 @@ function Convert-TokensInParameterFile {
         }
         Write-Verbose ("All Parameter File Tokens Count: ($($AllCustomParameterFileTokens.Count))")
         # Apply Prefix and Suffix to Tokens and Prepare Object for Conversion
-        Write-Verbose ("Applying Token Prefix '$TokenPrefix' and Token Suffix '$TokenSuffix' To All Parameter File Tokens")
+        Write-Verbose ("Applying Token Prefix '$TokenPrefix' and Token Suffix '$TokenSuffix'")
         foreach ($ParameterFileToken in $AllCustomParameterFileTokens) {
             $ParameterFileToken.Name = -join ($TokenPrefix, $ParameterFileToken.Name, $TokenSuffix)
         }
         # Convert Tokens in Parameter Files
-        Write-Verbose 'Invoking Convert-TokenInFile'
         try {
             # Prepare Input to Token Converter Function
             $ConvertTokenListFunctionInput = @{

@@ -188,8 +188,7 @@ function Test-ModuleLocally {
                 }
             }
             # Invoke Token Replacement Functionality and Convert Tokens in Parameter Files
-            Write-Verbose 'Invoking Convert-TokenInFile'
-            $ModuleParameterFiles | ForEach-Object { Convert-TokensInParameterFile @ConvertTokensInputs -ParameterFilePath $PSItem.FullName -Verbose }
+            $ModuleParameterFiles | ForEach-Object { $null = Convert-TokensInParameterFile @ConvertTokensInputs -ParameterFilePath $PSItem.FullName -Verbose }
             # Build Modules Validation and Deployment Inputs
             $functionInput = @{
                 templateFilePath  = (Join-Path $PSScriptRoot '../../arm' $ModuleName 'deploy.bicep')
@@ -226,7 +225,7 @@ function Test-ModuleLocally {
                 # Replace Values with Tokens For Repo Updates and Set Restore Flag to True to Prevent Running Restore Twice
                 $RestoreAlreadyTriggered = $true
                 Write-Verbose 'Restoring Tokens'
-                $ModuleParameterFiles | ForEach-Object { Convert-TokensInParameterFile @ConvertTokensInputs -ParameterFilePath $PSItem.FullName -SwapValueWithName $true -Verbose }
+                $ModuleParameterFiles | ForEach-Object { $null = Convert-TokensInParameterFile @ConvertTokensInputs -ParameterFilePath $PSItem.FullName -SwapValueWithName $true -Verbose }
             }
         }
     }
@@ -235,7 +234,7 @@ function Test-ModuleLocally {
         if (($ValidationTest -or $DeploymentTest) -and $ValidateOrDeployParameters -and !($RestoreAlreadyTriggered)) {
             # Replace Values with Tokens For Repo Updates
             Write-Verbose 'Restoring Tokens'
-            $ModuleParameterFiles | ForEach-Object { Convert-TokensInParameterFile @ConvertTokensInputs -ParameterFilePath $PSItem.FullName -SwapValueWithName $true -Verbose }
+            $ModuleParameterFiles | ForEach-Object { $null = Convert-TokensInParameterFile @ConvertTokensInputs -ParameterFilePath $PSItem.FullName -SwapValueWithName $true -Verbose }
         }
     }
 }
