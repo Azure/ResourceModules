@@ -58,20 +58,19 @@ function Remove-VirtualMachine {
             throw "No deployment found for [$deploymentName]"
         }
 
-        $resourcesToRemove = @()
         $unorderedResourceIds = $deployments.TargetResource | Where-Object { $_ -and $_ -notmatch '/deployments/' }
+        $vmName = ($unorderedResourceIds | Where-Object { $_ -match '/virtualMachines/' }).Split('/')[-1]
 
-        # We also need to fetch NICs & discs
-        $allResources = Get-AzResource -ResourceGroupName $resourceGroupName -Name '*'
+        # Fetch all resources that match the VM
+        $allResources = Get-AzResource -ResourceGroupName $resourceGroupName -Name "$vmName*"
 
-        $orderedResourceIds = @(
-            # TODO: Add nices & dics
-        )
+        # Sort ascending as we need to remove the VM first
+        $orderedResourceIds = $allResources | Sort-Object -Property { $_.ResourceId.Split('/').Count }
         $resourcesToRemove = $orderedResourceIds | ForEach-Object {
             @{
-                resourceId = $_
-                name       = $_.Split('/')[-1]
-                type       = $_.Split('/')[6..7] -join '/'
+                resourceId = $_.ResourceId
+                name       = $_.Name
+                type       = $_.Type
             }
         }
 

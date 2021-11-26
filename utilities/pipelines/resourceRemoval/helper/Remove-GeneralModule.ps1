@@ -215,7 +215,9 @@ function Remove-GeneralModule {
                         type       = $vmInstance.Type
                     }
                 }
-                Remove-Resource -resourceToRemove $intermediateResources -Verbose
+                if ($PSCmdlet.ShouldProcess(('[{0}] VM resources' -f $intermediateResources.Count), 'Remove')) {
+                    Remove-Resource -resourceToRemove $intermediateResources -Verbose
+                }
                 # refresh
                 $resourcesToRemove = $resourcesToRemove | Where-Object { $_.ResourceId -notin $intermediateResources.resourceId }
             }
