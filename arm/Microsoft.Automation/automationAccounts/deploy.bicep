@@ -23,6 +23,9 @@ param schedules array = []
 @description('Optional. List of jobSchedules to be created in the automation account.')
 param jobSchedules array = []
 
+@description('Optional. List of variables to be created in the automation account.')
+param variables array = []
+
 @description('Optional. Id of the log analytics workspace to be linked to the deployed automation account.')
 param linkedWorkspaceId string = ''
 
@@ -51,6 +54,13 @@ param eventHubAuthorizationRuleId string = ''
 
 @description('Optional. Name of the event hub within the namespace to which logs are streamed. Without this, an event hub is created for each log category.')
 param eventHubName string = ''
+
+@description('Optional. Type of managed service identity.')
+@allowed([
+  'None'
+  'SystemAssigned'
+])
+param managedIdentity string = 'None'
 
 @allowed([
   'CanNotDelete'
@@ -122,6 +132,9 @@ resource automationAccount 'Microsoft.Automation/automationAccounts@2020-01-13-p
       name: skuName
     }
   }
+  identity: {
+    type: managedIdentity
+  }
 }
 
 module automationAccount_modules 'modules/deploy.bicep' = [for (module, index) in modules: {
@@ -178,6 +191,17 @@ module automationAccount_jobSchedules 'jobSchedules/deploy.bicep' = [for (jobSch
     automationAccount_schedules
     automationAccount_runbooks
   ]
+}]
+
+module automationAccount_variables 'variables/deploy.bicep' = [for (variable, index) in variables: {
+  name: '${uniqueString(deployment().name, location)}-AutoAccount-variable-${index}'
+  params: {
+    automationAccountName: automationAccount.name
+    name: variable.name
+    description: contains(variable, 'description') ? variable.description : ''
+    value: contains(variable, 'value') ? variable.value : ''
+    isEncrypted: contains(variable, 'isEncrypted') ? variable.isEncrypted : false
+  }
 }]
 
 module automationAccount_linkedService '.bicep/nested_linkedService.bicep' = if (!empty(linkedWorkspaceId)) {
@@ -311,3 +335,6 @@ output automationAccountResourceId string = automationAccount.id
 
 @description('The resource group of the deployed automation account')
 output automationAccountResourceGroup string = resourceGroup().name
+
+@description('The principal id of automation accounts managed identity')
+output principalId string = managedIdentity != 'None' ? automationAccount.identity.principalId : ''

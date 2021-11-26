@@ -1,0 +1,36 @@
+# AutomationAutomationaccountsVariables `[Microsoft.Automation/automationAccounts/variables]`
+
+// TODO: Replace Resource and fill in description
+
+## Resource Types
+
+| Resource Type | Api Version |
+| :-- | :-- |
+| `Microsoft.Automation/automationAccounts/variables` | 2020-01-13-preview |
+
+## Parameters
+
+| Parameter Name | Type | Default Value | Possible Values | Description |
+| :-- | :-- | :-- | :-- | :-- |
+| `automationAccountName` | string |  |  | Required. Name of the parent Automation Account |
+| `cuaId` | string |  |  | Optional. Customer Usage Attribution id (GUID). This GUID must be previously registered |
+| `description` | string |  |  | Required. The description of the variable. |
+| `isEncrypted` | bool |  |  | Required. If the variable should be encrypted. |
+| `name` | string |  |  | Required. The name of the variable. |
+| `value` | string |  |  | Required. The value of the variable. |
+
+### Parameter Usage: `<ParameterPlaceholder>`
+
+// TODO: Fill in Parameter usage
+
+## Outputs
+
+| Output Name | Type | Description |
+| :-- | :-- | :-- |
+| `variableName` | string | The name of the deployed variable |
+| `variableResourceGroup` | string | The resource group of the deployed variable |
+| `variableValue` | string | The Id of the deployed variable |
+
+## Template references
+
+- [Automationaccounts/Variables](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Automation/2020-01-13-preview/automationAccounts/variables)
