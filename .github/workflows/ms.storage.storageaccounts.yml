@@ -39,7 +39,6 @@ env:
   ARM_MGMTGROUP_ID: '${{ secrets.ARM_MGMTGROUP_ID }}'
   ARM_TENANT_ID: '${{ secrets.ARM_TENANT_ID }}'
   DEPLOYMENT_SP_ID: '${{ secrets.DEPLOYMENT_SP_ID }}'
-  PLATFORM_KEYVAULT: '${{ secrets.PLATFORM_KEYVAULT }}'
 
 jobs:
   ############################
@@ -106,7 +105,8 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        parameterFilePaths: ['parameters.json', 'min.parameters.json', 'v1.parameters.json']
+        parameterFilePaths:
+          ['parameters.json', 'min.parameters.json', 'v1.parameters.json']
     steps:
       - name: 'Checkout'
         uses: actions/checkout@v2
@@ -141,7 +141,8 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        parameterFilePaths: ['parameters.json', 'min.parameters.json', 'v1.parameters.json']
+        parameterFilePaths:
+          ['parameters.json', 'min.parameters.json', 'v1.parameters.json']
     steps:
       - name: 'Checkout'
         uses: actions/checkout@v2

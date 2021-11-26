@@ -70,7 +70,6 @@ function Convert-TokensInParameterFile {
     begin {
         # Load used funtions
         . (Join-Path $PSScriptRoot './helper/Convert-TokenInFile.ps1')
-        . (Join-Path $PSScriptRoot './helper/Get-TokenFromKeyVault.ps1')
         $AllCustomParameterFileTokens = @()
     }
 
