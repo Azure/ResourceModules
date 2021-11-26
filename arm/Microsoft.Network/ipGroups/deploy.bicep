@@ -1,6 +1,6 @@
 @description('Required. The name of the ipGroups.')
 @minLength(1)
-param ipGroupName string
+param name string
 
 @description('Optional. Location for all resources.')
 param location string = resourceGroup().location
@@ -31,7 +31,7 @@ module pid_cuaId '.bicep/nested_cuaId.bicep' = if (!empty(cuaId)) {
 }
 
 resource ipGroup 'Microsoft.Network/ipGroups@2021-02-01' = {
-  name: ipGroupName
+  name: name
   location: location
   tags: tags
   properties: {
@@ -53,11 +53,11 @@ module ipGroup_rbac '.bicep/nested_rbac.bicep' = [for (roleAssignment, index) in
   params: {
     principalIds: roleAssignment.principalIds
     roleDefinitionIdOrName: roleAssignment.roleDefinitionIdOrName
-    resourceName: ipGroup.name
+    resourceId: ipGroup.id
   }
 }]
 
-@description('The resourceId of the IP group')
+@description('The resource ID of the IP group')
 output ipGroupsResourceId string = ipGroup.id
 
 @description('The resource group of the IP group was deployed into')

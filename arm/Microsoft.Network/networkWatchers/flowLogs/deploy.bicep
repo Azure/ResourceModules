@@ -61,8 +61,13 @@ module pid_cuaId '.bicep/nested_cuaId.bicep' = if (!empty(cuaId)) {
   params: {}
 }
 
+resource networkWatcher 'Microsoft.Network/networkWatchers@2021-03-01' existing = {
+  name: networkWatcherName
+}
+
 resource flowLog 'Microsoft.Network/networkWatchers/flowLogs@2021-03-01' = {
-  name: '${networkWatcherName}/${name}'
+  name: name
+  parent: networkWatcher
   tags: tags
   location: location
   properties: {

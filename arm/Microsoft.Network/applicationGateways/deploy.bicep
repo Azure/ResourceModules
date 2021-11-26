@@ -1,5 +1,5 @@
 @description('Required. The name to be used for the Application Gateway.')
-param applicationGatewayName string
+param name string
 
 @description('Optional. The name of the SKU for the Application Gateway.')
 @allowed([
@@ -151,7 +151,7 @@ var diagnosticsMetrics = [for metric in metricsToEnable: {
   }
 }]
 
-var applicationGatewayResourceId = resourceId('Microsoft.Network/applicationGateways', applicationGatewayName)
+var applicationGatewayResourceId = resourceId('Microsoft.Network/applicationGateways', name)
 var subnetResourceId = resourceId(vNetSubscriptionId, vNetResourceGroup, 'Microsoft.Network/virtualNetworks/subnets', vNetName, subnetName)
 var frontendPublicIPConfigurationName = 'public'
 var frontendPrivateIPConfigurationName = 'private'
@@ -341,7 +341,7 @@ module pid_cuaId '.bicep/nested_cuaId.bicep' = if (!empty(cuaId)) {
 }
 
 resource applicationGateway 'Microsoft.Network/applicationGateways@2021-02-01' = {
-  name: applicationGatewayName
+  name: name
   location: location
   identity: empty(managedIdentityResourceId) ? null : identity
   tags: tags
@@ -417,14 +417,14 @@ module applicationGateway_rbac '.bicep/nested_rbac.bicep' = [for (roleAssignment
   params: {
     principalIds: roleAssignment.principalIds
     roleDefinitionIdOrName: roleAssignment.roleDefinitionIdOrName
-    resourceName: applicationGateway.name
+    resourceId: applicationGateway.id
   }
 }]
 
 @description('The name of the application gateway')
 output applicationGatewayName string = applicationGateway.name
 
-@description('The resource Id of the application gateway')
+@description('The resource ID of the application gateway')
 output applicationGatewayResourceId string = applicationGateway.id
 
 @description('The resource group the application gateway was deployed into')

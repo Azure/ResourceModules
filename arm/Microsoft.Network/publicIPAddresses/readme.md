@@ -22,7 +22,7 @@
 | `lock` | string | `NotSpecified` | `[CanNotDelete, NotSpecified, ReadOnly]` | Optional. Specify the type of lock. |
 | `logsToEnable` | array | `[DDoSProtectionNotifications, DDoSMitigationFlowLogs, DDoSMitigationReports]` | `[DDoSProtectionNotifications, DDoSMitigationFlowLogs, DDoSMitigationReports]` | Optional. The name of logs that will be streamed. |
 | `metricsToEnable` | array | `[AllMetrics]` | `[AllMetrics]` | Optional. The name of metrics that will be streamed. |
-| `publicIPAddressName` | string |  |  | Required. The name of the Public IP Address |
+| `name` | string |  |  | Required. The name of the Public IP Address |
 | `publicIPAllocationMethod` | string | `Dynamic` |  | Optional. The public IP address allocation method. - Static or Dynamic. |
 | `publicIPPrefixId` | string |  |  | Optional. Resource Id of the Public IP Prefix object. This is only needed if you want your Public IPs created in a PIP Prefix. |
 | `roleAssignments` | array | `[]` |  | Optional. Array of role assignment objects that contain the 'roleDefinitionIdOrName' and 'principalId' to define RBAC role assignments on this resource. In the roleDefinitionIdOrName attribute, you can provide either the display name of the role definition, or its fully qualified ID in the following format: '/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11' |
@@ -70,7 +70,7 @@
 | :-- | :-- | :-- |
 | `publicIPAddressName` | string | The name of the public IP adress |
 | `publicIPAddressResourceGroup` | string | The resource group the public IP adress was deployed into |
-| `publicIPAddressResourceId` | string | The resourceId of the public IP adress |
+| `publicIPAddressResourceId` | string | The resource ID of the public IP adress |
 
 ## Template references
 
