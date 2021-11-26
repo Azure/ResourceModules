@@ -31,7 +31,7 @@ resource variable 'Microsoft.Automation/automationAccounts/variables@2020-01-13-
   properties: {
     description: description
     isEncrypted: isEncrypted
-    value: json(value)
+    value: value
   }
 }
 

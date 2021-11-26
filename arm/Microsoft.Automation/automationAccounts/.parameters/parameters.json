@@ -49,9 +49,24 @@
         "variables": {
             "value": [
                 {
-                    "name": "TestVariable",
-                    "value": "TestValue",
-                    "description": "TestDescription"
+                    "name": "TestString",
+                    "value": "\"TestString\"",
+                    "description": "TestStringDescription"
+                },
+                {
+                    "name": "TestInteger",
+                    "value": "500",
+                    "description": "TestIntegerDescription"
+                },
+                {
+                    "name": "TestBoolean",
+                    "value": "false",
+                    "description": "TestBooleanDescription"
+                },
+                {
+                    "name": "TestDateTime",
+                    "value": "\"\\/Date(1637934042656)\\/\"",
+                    "description": "TestDateTimeDescription"
                 },
                 {
                     "name": "TestEncryptedVariable",

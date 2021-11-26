@@ -19,9 +19,29 @@
 | `name` | string |  |  | Required. The name of the variable. |
 | `value` | string |  |  | Required. The value of the variable. |
 
-### Parameter Usage: `<ParameterPlaceholder>`
+### Parameter Usage: `value`
 
-// TODO: Fill in Parameter usage
+```json
+    //Boolean format
+    "value": {
+        "value": "false"
+    }
+
+    //DateTime format
+    "value": {
+        "value": "\"\\/Date(1637934042656)\\/\""
+    }
+
+    //Integer format
+    "value": {
+        "value": "500"
+    }
+
+    //String format
+    "value": {
+        "value": "\"TestString\""
+    }
+```
 
 ## Outputs
 
