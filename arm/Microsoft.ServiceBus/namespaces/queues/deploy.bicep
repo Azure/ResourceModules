@@ -125,7 +125,7 @@ module queue_authorizationRules 'authorizationRules/deploy.bicep' = [for (author
 }]
 
 resource queue_lock 'Microsoft.Authorization/locks@2016-09-01' = if (lock != 'NotSpecified') {
-  name: '${split(queue.name, '/')[1]}-${lock}-lock'
+  name: '${queue.name}-${lock}-lock'
   properties: {
     level: lock
     notes: lock == 'CanNotDelete' ? 'Cannot delete resource or child resources.' : 'Cannot modify the resource or child resources.'
