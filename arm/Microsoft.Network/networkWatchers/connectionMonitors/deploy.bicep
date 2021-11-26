@@ -16,7 +16,7 @@ param endpoints array = []
 @description('Optional. List of connection monitor test configurations.')
 param testConfigurations array = []
 
-@description('Optional.	List of connection monitor test groups.')
+@description('Optional. List of connection monitor test groups.')
 param testGroups array = []
 
 @description('Optional. Specify the Log Analytics Workspace Resource ID')
