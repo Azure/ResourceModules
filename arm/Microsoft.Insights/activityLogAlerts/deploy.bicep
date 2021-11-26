@@ -62,7 +62,7 @@ module activityLogAlert_rbac '.bicep/nested_rbac.bicep' = [for (roleAssignment, 
   params: {
     principalIds: roleAssignment.principalIds
     roleDefinitionIdOrName: roleAssignment.roleDefinitionIdOrName
-    resourceName: activityLogAlert.name
+    resourceId: activityLogAlert.id
   }
 }]
 

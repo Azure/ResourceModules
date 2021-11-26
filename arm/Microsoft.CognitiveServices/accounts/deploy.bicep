@@ -213,7 +213,7 @@ module cognitiveServices_rbac '.bicep/nested_rbac.bicep' = [for (roleAssignment,
   params: {
     principalIds: roleAssignment.principalIds
     roleDefinitionIdOrName: roleAssignment.roleDefinitionIdOrName
-    resourceName: cognitiveServices.name
+    resourceId: cognitiveServices.id
   }
 }]
 

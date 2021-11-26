@@ -27,13 +27,14 @@ resource storageAccount 'Microsoft.Storage/storageAccounts@2021-06-01' existing 
 
   resource fileService 'fileServices@2021-04-01' existing = {
     name: fileServicesName
+  }
+}
 
-    resource fileShare 'shares@2019-06-01' = {
-      name: name
-      properties: {
-        shareQuota: sharedQuota
-      }
-    }
+resource fileShare 'Microsoft.Storage/storageAccounts/fileServices/shares@2019-06-01' = {
+  name: name
+  parent: storageAccount::fileService
+  properties: {
+    shareQuota: sharedQuota
   }
 }
 
@@ -42,15 +43,15 @@ module fileShare_rbac '.bicep/nested_rbac.bicep' = [for (roleAssignment, index) 
   params: {
     principalIds: roleAssignment.principalIds
     roleDefinitionIdOrName: roleAssignment.roleDefinitionIdOrName
-    resourceName: '${storageAccount.name}/${storageAccount::fileService.name}/${storageAccount::fileService::fileShare.name}'
+    resourceId: fileShare.id
   }
 }]
 
 @description('The name of the deployed file share')
-output fileShareName string = storageAccount::fileService::fileShare.name
+output fileShareName string = fileShare.name
 
 @description('The id of the deployed file share')
-output fileShareResourceId string = storageAccount::fileService::fileShare.id
+output fileShareResourceId string = fileShare.id
 
 @description('The resource group of the deployed file share')
 output fileShareResourceGroup string = resourceGroup().name
