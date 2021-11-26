@@ -3,10 +3,10 @@
     "contentVersion": "1.0.0.0",
     "parameters": {
         "name": {
-            "value": "Test MG"
-        },
-        "managementGroupId": {
             "value": "testMG"
+        },
+        "displayName": {
+            "value": "Test MG"
         },
         "parentId": {
             "value": "<<managementGroupId>>"

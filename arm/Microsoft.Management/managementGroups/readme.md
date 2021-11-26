@@ -18,8 +18,8 @@ This module has some known **limitations**:
 
 | Parameter Name | Type | Default Value | Possible Values | Description |
 | :-- | :-- | :-- | :-- | :-- |
-| `managementGroupId` | string |  |  | Required. The management group id. |
-| `name` | string |  |  | Optional. The management group display name. Defaults to managementGroupId.  |
+| `displayName` | string |  |  | Optionsl. The friendly name of the management group. If no value is passed then this field will be set to the groupId. |
+| `name` | string |  |  | Required. The identifier of the management group |
 | `parentId` | string |  |  | Optional. The management group parent id. Defaults to current scope. |
 | `roleAssignments` | array | `[]` |  | Optional. Array of role assignment objects to define RBAC on this resource. |
 
