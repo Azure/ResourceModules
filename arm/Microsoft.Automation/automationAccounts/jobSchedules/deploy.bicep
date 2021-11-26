@@ -1,5 +1,5 @@
 @description('Optional. Name of the Automation Account job schedule. Must be a GUID. If not provided, a new GUID is generated.')
-param name string = newGuid()
+param name string = guid(runbookName,scheduleName)
 
 @description('Required. Name of the parent Automation Account.')
 param automationAccountName string
