@@ -45,7 +45,6 @@ This module deploys an API management.
 | `eventHubAuthorizationRuleId` | string |  |  | Optional. Resource ID of the event hub authorization rule for the Event Hubs namespace in which the event hub should be created or streamed to. |
 | `eventHubName` | string |  |  | Optional. Name of the event hub within the namespace to which logs are streamed. Without this, an event hub is created for each log category. |
 | `hostnameConfigurations` | array | `[]` |  | Optional. Custom hostname configuration of the API Management service. |
-| `identity` | object | `{object}` |  | Optional. Managed service identity of the Api Management service. |
 | `identityProviders` | _[identityProviders](identityProviders/readme.md)_ array | `[]` |  | Optional. Identity providers. |
 | `location` | string | `[resourceGroup().location]` |  | Optional. Location for all Resources. |
 | `lock` | string | `NotSpecified` | `[CanNotDelete, NotSpecified, ReadOnly]` | Optional. Specify the type of lock. |
@@ -67,7 +66,9 @@ This module deploys an API management.
 | `skuCount` | int | `1` | `[1, 2]` | Optional. The instance size of this Api Management service. |
 | `subnetResourceId` | string |  |  | Optional. The full resource ID of a subnet in a virtual network to deploy the API Management service in. |
 | `subscriptions` | _[subscriptions](subscriptions/readme.md)_ array | `[]` |  | Optional. Subscriptions. |
+| `systemAssignedIdentity` | bool |  |  | Optional. Enables system assigned managed identity on the resource. |
 | `tags` | object | `{object}` |  | Optional. Tags of the resource. |
+| `userAssignedIdentities` | object | `{object}` |  | Optional. The ID(s) to assign to the resource. |
 | `virtualNetworkType` | string | `None` | `[None, External, Internal]` | Optional. The type of VPN in which API Management service needs to be configured in. None (Default Value) means the API Management service is not part of any Virtual Network, External means the API Management deployment is set up inside a Virtual Network having an Internet Facing Endpoint, and Internal means that API Management deployment is setup inside a Virtual Network having an Intranet Facing Endpoint only. |
 | `workspaceId` | string |  |  | Optional. Resource identifier of Log Analytics. |
 | `zones` | array | `[]` |  | Optional. A list of availability zones denoting where the resource needs to come from. |
@@ -133,6 +134,7 @@ Tag names and tag values can be provided as needed. A tag can be left without a 
 
 | Output Name | Type | Description |
 | :-- | :-- | :-- |
+| `assignedIdentityID` | string | The resource ID of the assigned identity. |
 | `serviceName` | string | The name of the api management service |
 | `serviceResourceGroup` | string | The resource group the api management service was deployed into |
 | `serviceResourceId` | string | The resourceId of the api management service |

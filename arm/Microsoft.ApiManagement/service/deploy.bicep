@@ -37,8 +37,11 @@ param eventHubName string = ''
 @description('Optional. Custom hostname configuration of the API Management service.')
 param hostnameConfigurations array = []
 
-@description('Optional. Managed service identity of the Api Management service.')
-param identity object = {}
+@description('Optional. Enables system assigned managed identity on the resource.')
+param systemAssignedIdentity bool = false
+
+@description('Optional. The ID(s) to assign to the resource.')
+param userAssignedIdentities object = {}
 
 @description('Optional. Location for all Resources.')
 param location string = resourceGroup().location
@@ -166,6 +169,13 @@ var diagnosticsMetrics = [for metric in metricsToEnable: {
   }
 }]
 
+var identityType = systemAssignedIdentity ? (!empty(userAssignedIdentities) ? 'SystemAssigned,UserAssigned' : 'SystemAssigned') : (!empty(userAssignedIdentities) ? 'UserAssigned' : 'None')
+
+var identity = identityType != 'None' ? {
+  type: identityType
+  userAssignedIdentities: !empty(userAssignedIdentities) ? userAssignedIdentities : null
+} : null
+
 module pid_cuaId '.bicep/nested_cuaId.bicep' = if (!empty(cuaId)) {
   name: 'pid-${cuaId}'
   params: {}
@@ -180,7 +190,7 @@ resource apiManagementService 'Microsoft.ApiManagement/service@2020-12-01' = {
     capacity: skuCount
   }
   zones: zones
-  identity: !empty(identity) ? identity : json('{"type": "None"}')
+  identity: identity
   properties: {
     publisherEmail: publisherEmail
     publisherName: publisherName
@@ -425,3 +435,6 @@ output serviceResourceId string = apiManagementService.id
 
 @description('The resource group the api management service was deployed into')
 output serviceResourceGroup string = resourceGroup().name
+
+@description('The resource ID of the assigned identity.')
+output assignedIdentityID string = systemAssignedIdentity ? apiManagementService.identity.principalId : ''
