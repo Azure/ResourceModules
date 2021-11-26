@@ -2,16 +2,15 @@
 
     [CmdletBinding()]
     param (
-        [Parameter(Mandatory, ParameterSetName = 'deploymentName')]
+        [Parameter(Mandatory = $true)]
         [string] $deploymentName,
 
-        [Parameter(Mandatory, ParameterSetName = 'deploymentName')]
+        [Parameter(Mandatory = $true)]
         [string] $templateFilePath,
 
         [Parameter(Mandatory = $false)]
         [string] $ResourceGroupName = 'validation-rg'
     )
-
 
     $moduleName = Split-Path (Split-Path $templateFilePath -Parent) -LeafBase
 
