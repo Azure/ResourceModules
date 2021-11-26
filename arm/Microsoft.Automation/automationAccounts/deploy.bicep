@@ -55,16 +55,10 @@ param eventHubAuthorizationRuleId string = ''
 @description('Optional. Name of the event hub within the namespace to which logs are streamed. Without this, an event hub is created for each log category.')
 param eventHubName string = ''
 
-@allowed([
-  'None'
-  'SystemAssigned'
-  'SystemAssigned,UserAssigned'
-  'UserAssigned'
-])
-@description('Optional. Type of managed identity.')
-param managedIdentity string = 'None'
+@description('Optional. Enables system assigned managed identity on the resource.')
+param systemAssigned bool = false
 
-@description('Optional. Mandatory if \'managedIdentity\' contains \'UserAssigned\'. The identity to assign to the resource.')
+@description('Optional. The ID(s) to assign to the resource.')
 param userAssignedIdentities object = {}
 
 @allowed([
@@ -123,8 +117,10 @@ var diagnosticsMetrics = [for metric in metricsToEnable: {
   }
 }]
 
-var identity = managedIdentity != 'None' ? {
-  type: managedIdentity
+var identityType = systemAssigned ? (!empty(userAssignedIdentities) ? 'SystemAssigned,UserAssigned': 'SystemAssigned') : (!empty(userAssignedIdentities) ? 'UserAssigned' : 'None')
+
+var identity = identityType != 'None' ? {
+  type: identityType
   userAssignedIdentities: !empty(userAssignedIdentities) ? userAssignedIdentities : null
 } : null
 
