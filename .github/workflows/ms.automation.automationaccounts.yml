@@ -23,8 +23,8 @@ on:
         default: '0.0.1'
 
   push:
-    #branches: #TODO
-    #  - main
+    branches:
+      - main
     paths:
       - '.github/actions/templates/**'
       - '.github/workflows/ms.automation.automationaccounts.yml'
