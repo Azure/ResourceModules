@@ -3,7 +3,7 @@ targetScope = 'subscription'
 @description('Optional. Name of the ActivityLog diagnostic settings.')
 @minLength(1)
 @maxLength(260)
-param diagnosticsName string = '${uniqueString(subscription().id)}-ActivityLog'
+param name string = '${uniqueString(subscription().id)}-ActivityLog'
 
 @description('Optional. Specifies the number of days that logs will be kept for; a value of 0 will retain data indefinitely.')
 @minValue(0)
@@ -53,8 +53,8 @@ var diagnosticsLogs = [for log in logsToEnable: {
   }
 }]
 
-resource activityLog 'Microsoft.Insights/diagnosticSettings@2017-05-01-preview' = {
-  name: diagnosticsName
+resource diagnosticSetting 'Microsoft.Insights/diagnosticSettings@2017-05-01-preview' = {
+  name: name
   properties: {
     storageAccountId: (empty(diagnosticStorageAccountId) ? null : diagnosticStorageAccountId)
     workspaceId: (empty(workspaceId) ? null : workspaceId)
@@ -64,5 +64,11 @@ resource activityLog 'Microsoft.Insights/diagnosticSettings@2017-05-01-preview' 
   }
 }
 
-output diagnosticsName string = activityLog.name
-output diagnosticResourceId string = activityLog.id
+@description('The name of the diagnostic settings')
+output diagnosticsName string = diagnosticSetting.name
+
+@description('The resource ID of the diagnostic settings')
+output diagnosticResourceId string = diagnosticSetting.id
+
+@description('The name of the subscription to deploy into')
+output subscriptionName string = subscription().displayName

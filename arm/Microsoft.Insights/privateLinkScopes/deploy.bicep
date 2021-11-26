@@ -1,6 +1,6 @@
 @description('Required. Name of the Private Link Scope.')
 @minLength(1)
-param privateLinkScopeName string
+param name string
 
 @description('Optional. The location of the Private Link Scope. Should be global.')
 param location string = 'global'
@@ -34,7 +34,7 @@ module pid_cuaId '.bicep/nested_cuaId.bicep' = if (!empty(cuaId)) {
 }
 
 resource privateLinkScope 'Microsoft.Insights/privateLinkScopes@2019-10-17-preview' = {
-  name: privateLinkScopeName
+  name: name
   location: location
   tags: tags
   properties: {}
@@ -52,7 +52,7 @@ resource privateLinkScope_lock 'Microsoft.Authorization/locks@2016-09-01' = if (
   scope: privateLinkScope
   properties: {
     level: lock
-    notes: (lock == 'CanNotDelete') ? 'Cannot delete resource or child resources.' : 'Cannot modify the resource or child resources.'
+    notes: lock == 'CanNotDelete' ? 'Cannot delete resource or child resources.' : 'Cannot modify the resource or child resources.'
   }
 }
 
@@ -75,6 +75,11 @@ module privateLinkScope_rbac '.bicep/nested_rbac.bicep' = [for (roleAssignment, 
   }
 }]
 
+@description('The name of the private link scope')
 output privateLinkScopeName string = privateLinkScope.name
+
+@description('The resource ID of the private link scope')
 output privateLinkScopeResourceId string = privateLinkScope.id
+
+@description('The resource group the private link scope was deployed into')
 output privateLinkScopeResourceGroup string = resourceGroup().name

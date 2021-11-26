@@ -20,8 +20,8 @@ This module deploys Azure Monitor Private Link Scope
 | `cuaId` | string |  |  | Optional. Customer Usage Attribution id (GUID). This GUID must be previously registered |
 | `location` | string | `global` |  | Optional. The location of the Private Link Scope. Should be global. |
 | `lock` | string | `NotSpecified` | `[CanNotDelete, NotSpecified, ReadOnly]` | Optional. Specify the type of lock. |
+| `name` | string |  |  | Required. Name of the Private Link Scope. |
 | `privateEndpoints` | array | `[]` |  | Optional. Configuration Details for private endpoints. |
-| `privateLinkScopeName` | string |  |  | Required. Name of the Private Link Scope. |
 | `roleAssignments` | array | `[]` |  | Optional. Array of role assignment objects that contain the 'roleDefinitionIdOrName' and 'principalId' to define RBAC role assignments on this resource. In the roleDefinitionIdOrName attribute, you can provide either the display name of the role definition, or its fully qualified ID in the following format: '/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11' |
 | `scopedResources` | array | `[]` |  | Optional. Configuration Details for Azure Monitor Resources. |
 | `tags` | object | `{object}` |  | Optional. Resource tags. |
@@ -126,11 +126,11 @@ Tag names and tag values can be provided as needed. A tag can be left without a 
 
 ## Outputs
 
-| Output Name | Type |
-| :-- | :-- |
-| `privateLinkScopeName` | string |
-| `privateLinkScopeResourceGroup` | string |
-| `privateLinkScopeResourceId` | string |
+| Output Name | Type | Description |
+| :-- | :-- | :-- |
+| `privateLinkScopeName` | string | The name of the private link scope |
+| `privateLinkScopeResourceGroup` | string | The resource group the private link scope was deployed into |
+| `privateLinkScopeResourceId` | string | The resource ID of the private link scope |
 
 ## Template references
 
