@@ -132,9 +132,9 @@ resource automationAccount 'Microsoft.Automation/automationAccounts@2020-01-13-p
       name: skuName
     }
   }
-  identity: {
-    type: managedIdentity != 'None' ? managedIdentity : null
-  }
+  identity: managedIdentity != 'None' ? {
+    type: managedIdentity
+  } : null
 }
 
 module automationAccount_modules 'modules/deploy.bicep' = [for (module, index) in modules: {
