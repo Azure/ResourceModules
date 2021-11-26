@@ -203,7 +203,7 @@ module automationAccount_variables 'variables/deploy.bicep' = [for (variable, in
     automationAccountName: automationAccount.name
     name: variable.name
     description: contains(variable, 'description') ? variable.description : ''
-    value: contains(variable, 'value') ? variable.value : ''
+    value: variable.value
     isEncrypted: contains(variable, 'isEncrypted') ? variable.isEncrypted : false
   }
 }]

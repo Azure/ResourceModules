@@ -7,10 +7,10 @@ param name string
 @sys.description('Required. The value of the variable.')
 param value string
 
-@sys.description('Required. The description of the variable.')
-param description string
+@sys.description('Optional. The description of the variable.')
+param description string = ''
 
-@sys.description('Required. If the variable should be encrypted.')
+@sys.description('Optional. If the variable should be encrypted.')
 param isEncrypted bool = false
 
 @sys.description('Optional. Customer Usage Attribution id (GUID). This GUID must be previously registered')
