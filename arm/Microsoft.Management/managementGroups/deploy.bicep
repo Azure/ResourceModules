@@ -1,7 +1,7 @@
 targetScope = 'managementGroup'
 
 @description('Optional. The management group display name. Defaults to managementGroupId. ')
-param managementGroupName string = ''
+param name string = ''
 
 @description('Required. The management group id.')
 param managementGroupId string
@@ -16,7 +16,7 @@ resource managementGroup 'Microsoft.Management/managementGroups@2021-04-01' = {
   name: managementGroupId
   scope: tenant()
   properties: {
-    displayName: managementGroupName
+    displayName: name
     details: !empty(parentId) ? {
       parent: {
         id: '/providers/Microsoft.Management/managementGroups/${parentId}'
@@ -30,10 +30,13 @@ module managementGroup_rbac '.bicep/nested_rbac.bicep' = [for (roleAssignment, i
   params: {
     principalIds: roleAssignment.principalIds
     roleDefinitionIdOrName: roleAssignment.roleDefinitionIdOrName
-    managementGroupName: managementGroup.name
+    resourceName: managementGroup.name
   }
   scope: managementGroup
 }]
 
+@description('The name of the management group')
 output managementGroupName string = managementGroup.name
-output managementGroupId string = managementGroup.id
+
+@description('The resource ID of the management group')
+output managementGroupResourceId string = managementGroup.id
