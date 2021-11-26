@@ -99,7 +99,7 @@ param timeZone string = 'UTC'
 @description('Optional. Array of functions from a Log Analytics workspace, used to scope the deployment schedule.')
 param nonAzureQueries array = []
 
-@description('Optional. List of azure resource Ids for azure virtual machines in scope for the deployment schedule.')
+@description('Optional. List of azure resource IDs for azure virtual machines in scope for the deployment schedule.')
 param azureVirtualMachines array = []
 
 @description('Optional. List of names of non-azure machines in scope for the deployment schedule.')
@@ -165,10 +165,10 @@ param expiryTime string = ''
 @description('Optional. The expiry time\'s offset in minutes.')
 param expiryTimeOffsetMinutes int = 0
 
-@description('Optional. The next run time of the deployment schedule in ISO 8601 format. YYYY-MM-DDTHH:MM:SS, 2021-12-31T23:00:00')
+@description('Optional. The next time the deployment schedule runs in ISO 8601 format. YYYY-MM-DDTHH:MM:SS, 2021-12-31T23:00:00')
 param nextRun string = ''
 
-@description('Optional. The next run time\'s offset in minutes.')
+@description('Optional. The next run\'s offset in minutes.')
 param nextRunOffsetMinutes int = 0
 
 @description('Optional. The schedules description.')
