@@ -70,7 +70,7 @@
                 },
                 {
                     "name": "TestEncryptedVariable",
-                    "value": "TestEncryptedValue",
+                    "value": "\"TestEncryptedValue\"",
                     "description": "TestEncryptedDescription",
                     "isEncrypted": true
                 }
