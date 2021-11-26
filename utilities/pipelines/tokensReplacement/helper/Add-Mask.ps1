@@ -2,8 +2,21 @@
     <#
         .SYNOPSIS
             Masking a value prevents a string or variable from being printed in the log.
+
+        .PARAMETER Value
+            Mandatory. The Secret Value as a Secure String
+
+        .PARAMETER GitHubActions
+            Optional. Switch that echos the add-mask functionality in GitHub Actions
+
+        .PARAMETER AzureDevOps
+            Optional. Switch that echos the task.setvariable functionality in Azure DevOps Pipelines
+
         .EXAMPLE
-            Add-Mask -Value "Super Secret"
+            Add-Mask -Value $SecureString -AzureDevOps
+
+        .EXAMPLE
+            Add-Mask -Value $SecureString -GitHubActions
 
         .NOTES
         Credit: https://www.powershellgallery.com/packages/Endjin.GitHubActions/1.0.3
