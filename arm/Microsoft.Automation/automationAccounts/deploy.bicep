@@ -138,7 +138,7 @@ resource automationAccount 'Microsoft.Automation/automationAccounts@2020-01-13-p
     }
   }
   identity: {
-    type: managedServiceIdentity
+    type: managedServiceIdentity != 'None' ? managedServiceIdentity : null
     userAssignedIdentities: !empty(userAssignedIdentities) ? userAssignedIdentities : null
   }
 }
