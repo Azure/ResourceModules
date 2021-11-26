@@ -23,7 +23,7 @@ This module deploys a virtual network rule for a service bus namespace.
 | :-- | :-- | :-- |
 | `virtualNetworkRuleName` | string | The name of the virtual network rule. |
 | `virtualNetworkRuleResourceGroup` | string | The name of the Resource Group the virtual network rule was created in. |
-| `virtualNetworkRuleResourceId` | string | The Resource Id of the virtual network rule. |
+| `virtualNetworkRuleResourceId` | string | The Resource ID of the virtual network rule. |
 
 ## Template references
 

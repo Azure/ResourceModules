@@ -88,8 +88,13 @@ module pid_cuaId '.bicep/nested_cuaId.bicep' = if (!empty(cuaId)) {
   params: {}
 }
 
+resource namespace 'Microsoft.ServiceBus/namespaces@2021-06-01-preview' existing = {
+  name: namespaceName
+}
+
 resource queue 'Microsoft.ServiceBus/namespaces/queues@2021-06-01-preview' = {
-  name: '${namespaceName}/${name}'
+  name: name
+  parent: namespace
   properties: {
     lockDuration: lockDuration
     maxSizeInMegabytes: maxSizeInMegabytes

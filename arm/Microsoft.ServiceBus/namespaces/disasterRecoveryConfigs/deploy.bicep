@@ -20,8 +20,13 @@ module pid_cuaId '.bicep/nested_cuaId.bicep' = if (!empty(cuaId)) {
   params: {}
 }
 
+resource namespace 'Microsoft.ServiceBus/namespaces@2021-06-01-preview' existing = {
+  name: namespaceName
+}
+
 resource disasterRecoveryConfig 'Microsoft.ServiceBus/namespaces/disasterRecoveryConfigs@2017-04-01' = {
-  name: '${namespaceName}/${name}'
+  name: name
+  parent: namespace
   properties: {
     alternateName: alternateName
     partnerNamespace: partnerNamespace
@@ -31,7 +36,7 @@ resource disasterRecoveryConfig 'Microsoft.ServiceBus/namespaces/disasterRecover
 @description('The name of the disaster recovery config.')
 output disasterRecoveryConfigName string = disasterRecoveryConfig.name
 
-@description('The Resource Id of the disaster recovery config.')
+@description('The Resource ID of the disaster recovery config.')
 output disasterRecoveryConfigResourceId string = disasterRecoveryConfig.id
 
 @description('The name of the Resource Group the disaster recovery config was created in.')

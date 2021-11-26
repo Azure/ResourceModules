@@ -24,7 +24,7 @@ This module deploys a migration configuration for a service bus namespace
 | :-- | :-- | :-- |
 | `migrationConfigurationName` | string | The name of the migration configuration. |
 | `migrationConfigurationResourceGroup` | string | The name of the Resource Group the migration configuration was created in. |
-| `migrationConfigurationResourceId` | string | The Resource Id of the migration configuration |
+| `migrationConfigurationResourceId` | string | The Resource ID of the migration configuration |
 
 ## Template references
 

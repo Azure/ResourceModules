@@ -23,7 +23,7 @@ This module deploys authorization rules for a service bus namespace
 | :-- | :-- | :-- |
 | `authorizationRuleName` | string | The name of the authorization rule. |
 | `authorizationRuleResourceGroup` | string | The name of the Resource Group the authorization rule was created in. |
-| `authorizationRuleResourceId` | string | The Resource Id of the authorization rule. |
+| `authorizationRuleResourceId` | string | The Resource ID of the authorization rule. |
 
 ## Template references
 
