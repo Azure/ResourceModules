@@ -67,6 +67,8 @@ var appSettingsProperties = (app.kind == 'functionapp') ? {
   APPINSIGHTS_INSTRUMENTATIONKEY: !empty(appInsightId) ? appInsight.properties.InstrumentationKey : ''
   APPLICATIONINSIGHTS_CONNECTION_STRING: !empty(appInsightId) ? appInsight.properties.ConnectionString : ''
 } : {
+  FUNCTIONS_EXTENSION_VERSION: !empty(functionsExtensionVersion) ? functionsExtensionVersion : ''
+  FUNCTIONS_WORKER_RUNTIME: !empty(functionsWorkerRuntime) ? functionsWorkerRuntime : ''
   APPINSIGHTS_INSTRUMENTATIONKEY: !empty(appInsightId) ? appInsight.properties.InstrumentationKey : ''
   APPLICATIONINSIGHTS_CONNECTION_STRING: !empty(appInsightId) ? appInsight.properties.ConnectionString : ''
 }
@@ -75,7 +77,9 @@ resource app_appsettings 'Microsoft.Web/sites/config@2019-08-01' = {
   name: 'appsettings'
   parent: app
   properties: appSettingsProperties
-  // {
+}
+
+// {
   //   AzureWebJobsStorage: app.kind == 'functionapp' && !empty(storageAccountId) ? 'DefaultEndpointsProtocol=https;AccountName=${storageAccount.name};AccountKey=${storageAccount.listKeys().keys[0].value};' : any(null)
   //   // AzureWebJobsDashboard: app.kind == 'functionapp' ? 'DefaultEndpointsProtocol=https;AccountName=${storageAccount.name};AccountKey=${storageAccount.listKeys().keys[0].value};' : ''
   //   FUNCTIONS_EXTENSION_VERSION: app.kind == 'functionapp' && !empty(functionsExtensionVersion) ? functionsExtensionVersion : ''
@@ -83,7 +87,6 @@ resource app_appsettings 'Microsoft.Web/sites/config@2019-08-01' = {
   //   APPINSIGHTS_INSTRUMENTATIONKEY: !empty(appInsightId) ? appInsight.properties.InstrumentationKey : ''
   //   APPLICATIONINSIGHTS_CONNECTION_STRING: !empty(appInsightId) ? appInsight.properties.ConnectionString : ''
   // }
-}
 
 // @description('The name of the site')
 // output siteName string = app.name
