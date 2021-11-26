@@ -55,12 +55,17 @@ param eventHubAuthorizationRuleId string = ''
 @description('Optional. Name of the event hub within the namespace to which logs are streamed. Without this, an event hub is created for each log category.')
 param eventHubName string = ''
 
-@description('Optional. Type of managed service identity.')
 @allowed([
   'None'
   'SystemAssigned'
+  'SystemAssigned,UserAssigned'
+  'UserAssigned'
 ])
-param managedIdentity string = 'None'
+@description('Optional. Type of managed service identity.')
+param managedServiceIdentity string = 'None'
+
+@description('Optional. Mandatory \'managedServiceIdentity\' contains UserAssigned. The identy to assign to the resource.')
+param userAssignedIdentities object = {}
 
 @allowed([
   'CanNotDelete'
@@ -132,9 +137,10 @@ resource automationAccount 'Microsoft.Automation/automationAccounts@2020-01-13-p
       name: skuName
     }
   }
-  identity: managedIdentity != 'None' ? {
-    type: managedIdentity
-  } : null
+  identity: {
+    type: managedServiceIdentity
+    userAssignedIdentities: !empty(userAssignedIdentities) ? userAssignedIdentities : null
+  }
 }
 
 module automationAccount_modules 'modules/deploy.bicep' = [for (module, index) in modules: {
@@ -336,5 +342,5 @@ output automationAccountResourceId string = automationAccount.id
 @description('The resource group of the deployed automation account')
 output automationAccountResourceGroup string = resourceGroup().name
 
-@description('The principal id of automation accounts managed identity')
-output principalId string = managedIdentity != 'None' ? automationAccount.identity.principalId : ''
+@description('The resource id of the assigned identity, if any')
+output assignedIdentityID string = contains(managedServiceIdentity, 'SystemAssigned') ? automationAccount.identity.principalId : ''

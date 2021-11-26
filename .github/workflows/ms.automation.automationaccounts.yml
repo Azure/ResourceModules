@@ -7,7 +7,7 @@ on:
         type: boolean
         description: 'Remove deployed module'
         required: false
-        default: 'true'
+        default: 'false' #TODO
       versioningOption:
         type: choice
         description: 'The mode to handle the version increments [major|minor|patch]'
@@ -23,8 +23,8 @@ on:
         default: '0.0.1'
 
   push:
-    branches:
-      - main
+    #branches: #TODO
+    #  - main
     paths:
       - '.github/actions/templates/**'
       - '.github/workflows/ms.automation.automationaccounts.yml'
