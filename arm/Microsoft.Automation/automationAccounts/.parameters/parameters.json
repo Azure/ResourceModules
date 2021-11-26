@@ -140,6 +140,9 @@
         //         }
         //     ]
         // },
+        "managedIdentity": {
+            "value": "SystemAssigned"
+        },
         "roleAssignments": {
             "value": [
                 {
