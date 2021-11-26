@@ -65,7 +65,7 @@
                 },
                 {
                     "name": "TestDateTime",
-                    "value": "2021-12-31T23:00:00",
+                    "value": "\"\\/Date(1637934042656)\\/\"",
                     "description": "TestDateTimeDescription"
                 },
                 {
