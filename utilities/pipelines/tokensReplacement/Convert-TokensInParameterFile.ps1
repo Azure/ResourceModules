@@ -1,9 +1,9 @@
 <#
 .SYNOPSIS
-This Function Aggregates all the different token types (Default, Local and Remote) and then passes them to the Convert Tokens Script to replace tokens in a parameter file
+This Function Aggregates all the different token types (Default and Local) and then passes them to the Convert Tokens Script to replace tokens in a parameter file
 
 .DESCRIPTION
-This Function Aggregates all the different token types (Default, Local and Remote) and then passes them to the Convert Tokens Script to replace tokens in a parameter file
+This Function Aggregates all the different token types (Default and Local) and then passes them to the Convert Tokens Script to replace tokens in a parameter file
 
 .PARAMETER ParameterFilePath
 Mandatory. The Path to the Parameter File that contains tokens to be replaced.
@@ -13,15 +13,6 @@ Optional. An object containing the default parameter file tokens that are always
 
 .PARAMETER LocalCustomParameterFileTokens
 Optional. An object containing the local parameter file tokens to be injected for replacement
-
-.PARAMETER TokensKeyVaultName
-Optional. A string for the Key Vault Name that contains the remote tokens
-
-.PARAMETER TokensKeyVaultSubscriptionId
-Optional. A string for the subscription Id where the Key Vault exists
-
-.PARAMETER TokensKeyVaultSecretContentType
-Optional. An identifier used to filter for the Token (Secret) in Key Vault using the ContentType Property (i.e. myTokenContentType)
 
 .PARAMETER TokenPrefix
 Mandatory. The prefix used to identify a token in the parameter file (i.e. <<)
@@ -60,15 +51,6 @@ function Convert-TokensInParameterFile {
         [parameter(Mandatory = $false)]
         [psobject]$LocalCustomParameterFileTokens,
 
-        [parameter(Mandatory = $false, ParameterSetName = 'RemoteTokens')]
-        [string]$TokensKeyVaultName,
-
-        [parameter(Mandatory = $false, ParameterSetName = 'RemoteTokens')]
-        [string]$TokensKeyVaultSubscriptionId,
-
-        [parameter(Mandatory = $false, ParameterSetName = 'RemoteTokens')]
-        [string]$TokensKeyVaultSecretContentType,
-
         [parameter(Mandatory = $true)]
         [string]$TokenPrefix,
 
@@ -97,25 +79,8 @@ function Convert-TokensInParameterFile {
         ## Get Local Custom Parameter File Tokens (Should not Contain Sensitive Information)
         Write-Verbose "Local Custom Tokens Count: ($($LocalCustomParameterFileTokens.Count)) Tokens (From Settings File)"
         $AllCustomParameterFileTokens += ($LocalCustomParameterFileTokens | Select-Object -Property Name, Value)
-        ## Get Remote Custom Parameter File Tokens (Should Not Contain Sensitive Information if being passed to regular strings)
-        if ($TokensKeyVaultName -and $TokensKeyVaultSubscriptionId) {
-            ## Prepare Input for Remote Tokens
-            $RemoteTokensInput = @{
-                KeyVaultName      = $TokensKeyVaultName
-                SubscriptionId    = $TokensKeyVaultSubscriptionId
-                SecretContentType = $TokensKeyVaultSecretContentType
-            }
-            $RemoteCustomParameterFileTokens = Get-TokenFromKeyVault @RemoteTokensInput -ErrorAction SilentlyContinue
-            ## Add Tokens to All Custom Parameter File Tokens
-            if (!$RemoteCustomParameterFileTokens) {
-                Write-Verbose 'No Remote Custom Parameter File Tokens Detected'
-            } else {
-                Write-Verbose "Remote Custom Tokens Count: ($($RemoteCustomParameterFileTokens.Count)) Tokens (From Key Vault)"
-                $AllCustomParameterFileTokens += $RemoteCustomParameterFileTokens
-            }
-        }
         # Combine All Input Token Types, Remove Duplicates and Only Select Name, Value if they contain other unrequired properties
-        $AllCustomParameterFileTokens = $DefaultParameterFileTokens + $LocalCustomParameterFileTokens + $RemoteCustomParameterFileTokens |
+        $AllCustomParameterFileTokens = $DefaultParameterFileTokens + $LocalCustomParameterFileTokens |
             ForEach-Object { [PSCustomObject]$PSItem } |
             Sort-Object Name -Unique |
             Select-Object -Property Name, Value |

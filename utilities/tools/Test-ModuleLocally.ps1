@@ -26,10 +26,7 @@ Optional. A Switch Parameter that triggers the Validation of the Module Only wit
 Optional. A Boolean Parameter that enables directory based search for parameter files and deploys all of them. If not true, it will only deploy the 'parameters.json' file. Default is false.
 
 .PARAMETER GetParameterFileTokens
-Optional. A Boolean Parameter that enables the search for both local custom parameter file tokens (source control) and remote custom parameter file tokens (key vault -if TokenKeyVaultName parameter is provided). Default is true.
-
-.PARAMETER TokenKeyVaultName
-Optional. String Parameter that points to the Key Vault Name where remote custom parameter file tokens are created. If not provided then GetParameterFileTokens will only search for local custom parameter file tokens.
+Optional. A Boolean Parameter that enables the search for local custom parameter file tokens. Default is true.
 
 .PARAMETER AdditionalTokens
 Optional. A Hashtable Parameter that contains custom tokens to be replaced in the paramter files for deployment
@@ -70,7 +67,6 @@ $TestModuleLocallyInput = @{
     }
     DeployAllModuleParameterFiles = $true
     GetParameterFileTokens        = $true
-    TokenKeyVaultName             = 'contoso-platform-kv'
     AdditionalTokens      = @(
         @{ Name = 'deploymentSpId'; Value = '12345678-1234-1234-1234-123456789123' }
         @{ Name = 'tenantId'; Value = '12345678-1234-1234-1234-123456789123' }
@@ -82,7 +78,6 @@ Test-ModuleLocally @TestModuleLocallyInput -Verbose
 .NOTES
 - Make sure you provide the right information in the 'ValidateOrDeployParameters' parameter for this function to work.
 - Ensure you have the ability to perform the deployment operations using your account
-- If providing TokenKeyVaultName parameter, ensure you have read access to secrets in the key vault to be able to retrieve the tokens.
 
 #>
 function Test-ModuleLocally {
@@ -108,9 +103,6 @@ function Test-ModuleLocally {
 
         [parameter(Mandatory = $false)]
         [bool]$GetParameterFileTokens = $true,
-
-        [parameter(Mandatory = $false)]
-        [string]$TokenKeyVaultName,
 
         [parameter(Mandatory = $false)]
         [psobject]$AdditionalTokens
@@ -166,20 +158,12 @@ function Test-ModuleLocally {
             if ($GetParameterFileTokens) {
                 # Get Settings JSON File
                 $Settings = Get-Content -Path (Join-Path $PSScriptRoot '../..' 'settings.json') | ConvertFrom-Json
-                # Get Custom Parameter File Tokens (Local and Remote-If Key Vault Provided)
+                # Get Custom Parameter File Tokens (Local)
                 $ConvertTokensInputs = @{
                     DefaultParameterFileTokens     = $DefaultParameterFileTokens
                     LocalCustomParameterFileTokens = $Settings.parameterFileTokens.localTokens.tokens
                     TokenPrefix                    = $Settings.parameterFileTokens.tokenPrefix
                     TokenSuffix                    = $Settings.parameterFileTokens.tokenSuffix
-                }
-                # Query Key Vault for Remote Tokens
-                if ($TokenKeyVaultName -and "$($ValidateOrDeployParameters.SubscriptionId)") {
-                    $ConvertTokensInputs += @{
-                        TokensKeyVaultName              = $TokenKeyVaultName
-                        TokensKeyVaultSubscriptionId    = "$($ValidateOrDeployParameters.SubscriptionId)"
-                        TokensKeyVaultSecretContentType = $Settings.parameterFileTokens.remoteTokens.keyVaultSecretContentType
-                    }
                 }
                 #Add Other Parameter File Tokens (For Testing)
                 if ($AdditionalTokens) {

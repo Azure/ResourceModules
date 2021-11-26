@@ -46,21 +46,11 @@ runs:
         creds: ${{ env.AZURE_CREDENTIALS }}
         enable-AzPSSession: true
 
-    - if: ${{ env.PLATFORM_KEYVAULT && inputs.subscriptionId }}
-      name: Parameter File Tokens Azure Key Vault
-      id: tokenkeyvault
-      uses: Azure/get-keyvault-secrets@v1
-      with:
-        keyvault: '${{ env.PLATFORM_KEYVAULT }}'
-        secrets: '*'
-
     - name: 'Replace Parameter File Tokens [${{ inputs.parameterFilePath }}] '
       shell: pwsh
       run: |
         # Load used functions
         . (Join-Path $env:GITHUB_WORKSPACE 'utilities' 'pipelines' 'tokensReplacement' 'Convert-TokensInParameterFile.ps1')
-        . (Join-Path $env:GITHUB_WORKSPACE 'utilities' 'pipelines' 'tokensReplacement' 'helper' 'Add-Mask.ps1')
-        . (Join-Path $env:GITHUB_WORKSPACE 'utilities' 'pipelines' 'tokensReplacement' 'helper' 'Get-TokenFromKeyVault.ps1')
 
         # Load Settings File
         $Settings = Get-Content -Path "settings.json" | ConvertFrom-Json
@@ -71,7 +61,6 @@ runs:
             @{ Name = 'managementGroupId'; Value = '${{ inputs.managementGroupId }}' }
             @{ Name = "tenantId"; Value = '${{ env.ARM_TENANT_ID }}' }
             @{ Name = "deploymentSpId"; Value = '${{ env.DEPLOYMENT_SP_ID }}' }
-            @{ Name = "platformKeyVault"; Value = '${{ env.PLATFORM_KEYVAULT }}' }
         ) | ForEach-Object { [PSCustomObject]$PSItem }
 
         # Construct Token Function Input
@@ -82,17 +71,9 @@ runs:
             TokenPrefix                       = $Settings.parameterFileTokens.tokenPrefix
             TokenSuffix                       = $Settings.parameterFileTokens.tokenSuffix
         }
-        # Add Remote Custom Parameter File Tokens
-        if ('${{ env.PLATFORM_KEYVAULT }}' -and '${{ inputs.subscriptionId }}') {
-            $ConvertTokensInputs += @{
-                TokensKeyVaultName                 = '${{ env.PLATFORM_KEYVAULT }}'
-                TokensKeyVaultSubscriptionId       = '${{ inputs.subscriptionId }}'
-                TokensKeyVaultSecretContentType    = $Settings.parameterFileTokens.remoteTokens.keyVaultSecretContentType
-            }
-        }
         # Invoke Token Replacement Functionality
         $null = Convert-TokensInParameterFile @ConvertTokensInputs -Verbose
-        Get-Content '${{ inputs.parameterFilePath }}'
+
     - name: 'Deploy [${{ inputs.templateFilePath }}]'
       shell: pwsh
       run: |

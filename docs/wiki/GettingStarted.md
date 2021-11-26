@@ -130,7 +130,6 @@ In case you want to not only leverage the module templates but actually re-use t
 | `AZURE_CREDENTIALS` |  `{"clientId": "4ce8ce4c-cac0-48eb-b815-65e5763e2929", "clientSecret": "<placeholder>", "subscriptionId": "d0312b25-9160-4550-914f-8738d9b5caf5", "tenantId": "9734cec9-4384-445b-bbb6-767e7be6e5ec" }` | The login credentials to use to log into the target Azure environment to test in. |
 | `PLATFORM_REPO_UPDATE_PAT` | `<placeholder>` | A PAT with enough permissions assigned to it to push into the main branch. This PAT is leveraged by pipelines that automatically generate ReadMe files to keep them up to date |
 | `DEPLOYMENT_SP_ID` | `de33a0e7-64d9-4a94-8fe9-b018cedf1e05` | This is the Principal (Object ID) for the Service Principal used as the `AZURE_CREDENTIALS`. It is used for Default Role Assignments when Modules are being deployed into Azure |
-| `PLATFORM_KEYVAULT` | `contoso-keyVault` | This is **OPTIONAL**. This allows the 'Dependency Workflow' to create an Azure Key Vault, that is used to store Remote  Parameter File Tokens. See [Parameter File Tokens](./ParameterFileTokens.md) for details. Key Vault Name must be unique across Azure |
 
 The permissions that the principal needs differ between modules. Required permissions are in some cases documented in the modules readme. See [Azure/login](https://github.com/Azure/login) for more info about the secret creation.
 
@@ -215,7 +214,6 @@ Note: There are default tokens that can be enabled on any resource that leverage
 - `<<managementGroupId>>`: Will point to the Azure an Azure Management Group.
 - `<<tenantId>>`: Will point to the Azure Tenant ID.
 - `<<deploymentSpId>>`: Will point to the Service Principal ID used for deployments.
-- `<<platformKeyVault>>`: Will point to the Platform Azure Key Vault (Optional if enabled as per guidelines)
 - `<<resourceGroupName>>`: Will point to the Azure Resource Group where the resources are being deployed to. (This isn't defined in the secrets section but is injected at runtime)
 
 Review [Parameter File Tokens Design](./ParameterFileTokens.md) for more details.
