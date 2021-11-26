@@ -71,7 +71,7 @@ resource app 'Microsoft.Web/sites@2020-12-01' existing = {
 //   APPLICATIONINSIGHTS_CONNECTION_STRING: !empty(appInsightId) ? appInsight.properties.ConnectionString : ''
 // }
 
-resource app_appsettings 'Microsoft.Web/sites/config@2019-08-01' = {
+resource config 'Microsoft.Web/sites/config@2019-08-01' = {
   name: 'appsettings'
   parent: app
   properties: {
@@ -84,11 +84,11 @@ resource app_appsettings 'Microsoft.Web/sites/config@2019-08-01' = {
   }
 }
 
-// @description('The name of the site')
-// output siteName string = app.name
+@description('The name of the web sites config')
+output configName string = config.name
 
-// @description('The resourceId of the site')
-// output siteResourceId string = app.id
+@description('The resourceId of the web sites config')
+output configResourceId string = config.id
 
-// @description('The resource group the site was deployed into')
-// output siteResourceGroup string = resourceGroup().name
+@description('The resource group the web sites config was deployed into')
+output configResourceGroup string = resourceGroup().name
