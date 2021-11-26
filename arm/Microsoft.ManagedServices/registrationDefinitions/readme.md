@@ -19,7 +19,7 @@ remote/managing tenant.
 | :-- | :-- | :-- | :-- | :-- |
 | `authorizations` | array |  |  | Required. Specify an array of objects, containing object of Azure Active Directory principalId, a Azure roleDefinitionId, and an optional principalIdDisplayName. The roleDefinition specified is granted to the principalId in the provider's Active Directory and the principalIdDisplayName is visible to customers. |
 | `managedByTenantId` | string |  |  | Required. Specify the tenant ID of the tenant which homes the principals you are delegating permissions to. |
-| `registrationDefinitionName` | string |  |  | Required. Specify a unique name for your offer/registration. i.e '<Managing Tenant> - <Remote Tenant> - <ResourceName>' |
+| `name` | string |  |  | Required. Specify a unique name for your offer/registration. i.e '<Managing Tenant> - <Remote Tenant> - <ResourceName>' |
 | `registrationDescription` | string |  |  | Required. Description of the offer/registration. i.e. 'Managed by <Managing Org Name>' |
 | `resourceGroupName` | string |  |  | Optional. Specify the name of the Resource Group to delegate access to. If not provided, delegation will be done on the targeted subscription. |
 
@@ -57,11 +57,11 @@ remote/managing tenant.
 
 ## Outputs
 
-| Output Name | Type |
-| :-- | :-- |
-| `registrationAssignmentId` | string |
-| `registrationDefinitionId` | string |
-| `registrationDefinitionName` | string |
+| Output Name | Type | Description |
+| :-- | :-- | :-- |
+| `registrationAssignmentId` | string | The registration assignment resource ID |
+| `registrationDefinitionName` | string | The name of the registration definition |
+| `registrationDefinitionResourceId` | string | The resource ID of the registration definition |
 
 ## Considerations
 
