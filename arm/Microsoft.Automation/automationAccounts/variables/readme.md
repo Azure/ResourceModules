@@ -1,6 +1,6 @@
 # AutomationAutomationaccountsVariables `[Microsoft.Automation/automationAccounts/variables]`
 
-// TODO: Replace Resource and fill in description
+This module deploys variables to an Azure Automation Account.
 
 ## Resource Types
 
