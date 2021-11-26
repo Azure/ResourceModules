@@ -27,9 +27,10 @@
 
 | Output Name | Type | Description |
 | :-- | :-- | :-- |
+| `variableId` | string | The Id of the deployed variable |
 | `variableName` | string | The name of the deployed variable |
 | `variableResourceGroup` | string | The resource group of the deployed variable |
-| `variableValue` | string | The Id of the deployed variable |
+| `variableValue` | string | The value of the deployed variable |
 
 ## Template references
 

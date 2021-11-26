@@ -31,15 +31,18 @@ resource variable 'Microsoft.Automation/automationAccounts/variables@2020-01-13-
   properties: {
     description: description
     isEncrypted: isEncrypted
-    value: value
+    value: '\'${value}\''
   }
 }
 
 @sys.description('The name of the deployed variable')
 output variableName string = variable.name
 
-@sys.description('The Id of the deployed variable')
+@sys.description('The value of the deployed variable')
 output variableValue string = variable.properties.value
+
+@sys.description('The Id of the deployed variable')
+output variableId string = variable.id
 
 @sys.description('The resource group of the deployed variable')
 output variableResourceGroup string = resourceGroup().name
