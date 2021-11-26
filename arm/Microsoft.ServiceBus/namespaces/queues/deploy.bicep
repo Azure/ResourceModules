@@ -115,13 +115,10 @@ module queue_authorizationRules 'authorizationRules/deploy.bicep' = [for (author
   name: '${deployment().name}-AuthRule-${index}'
   params: {
     namespaceName: namespaceName
-    queueName: last(split(queue.name, '/'))
+    queueName: queue.name
     name: authorizationRule.name
     rights: contains(authorizationRule, 'rights') ? authorizationRule.rights : []
   }
-  dependsOn: [
-    queue
-  ]
 }]
 
 resource queue_lock 'Microsoft.Authorization/locks@2016-09-01' = if (lock != 'NotSpecified') {
