@@ -46,6 +46,21 @@
                 }
             ]
         },
+        "variables": {
+            "value": [
+                {
+                    "name": "TestVariable",
+                    "value": "TestValue",
+                    "description": "TestDescription"
+                },
+                {
+                    "name": "TestEncryptedVariable",
+                    "value": "TestEncryptedValue",
+                    "description": "TestEncryptedDescription",
+                    "isEncrypted": true
+                }
+            ]
+        },
         // "linkedWorkspaceId": {
         //     "value": "/subscriptions/<<subscriptionId>>/resourcegroups/test-rg/providers/Microsoft.OperationalInsights/workspaces/test-law"
         // },
