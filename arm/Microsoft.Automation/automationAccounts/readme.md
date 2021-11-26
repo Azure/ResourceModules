@@ -36,7 +36,6 @@ This module deploys an Azure Automation Account.
 | `location` | string | `[resourceGroup().location]` |  | Optional. Location for all resources. |
 | `lock` | string | `NotSpecified` | `[CanNotDelete, NotSpecified, ReadOnly]` | Optional. Specify the type of lock. |
 | `logsToEnable` | array | `[JobLogs, JobStreams, DscNodeStatus]` | `[JobLogs, JobStreams, DscNodeStatus]` | Optional. The name of logs that will be streamed. |
-| `managedIdentity` | string | `None` | `[None, SystemAssigned, SystemAssigned,UserAssigned, UserAssigned]` | Optional. Type of managed identity. |
 | `metricsToEnable` | array | `[AllMetrics]` | `[AllMetrics]` | Optional. The name of metrics that will be streamed. |
 | `modules` | _[modules](modules/readme.md)_ array | `[]` |  | Optional. List of modules to be created in the automation account. |
 | `name` | string |  |  | Required. Name of the Automation Account. |
@@ -46,8 +45,9 @@ This module deploys an Azure Automation Account.
 | `schedules` | _[schedules](schedules/readme.md)_ array | `[]` |  | Optional. List of schedules to be created in the automation account. |
 | `skuName` | string | `Basic` | `[Free, Basic]` | Optional. SKU name of the account. |
 | `softwareUpdateConfigurations` | _[softwareUpdateConfigurations](softwareUpdateConfigurations/readme.md)_ array | `[]` |  | Optional. List of softwareUpdateConfigurations to be created in the automation account |
+| `systemAssigned` | bool |  |  | Optional. Enables system assigned managed identity on the resource. |
 | `tags` | object | `{object}` |  | Optional. Tags of the Automation Account resource. |
-| `userAssignedIdentities` | object | `{object}` |  | Optional. Mandatory if 'managedIdentity' contains 'UserAssigned'. The identity to assign to the resource. |
+| `userAssignedIdentities` | object | `{object}` |  | Optional. The ID(s) to assign to the resource. |
 | `variables` | _[variables](variables/readme.md)_ array | `[]` |  | Optional. List of variables to be created in the automation account. |
 | `workspaceId` | string |  |  | Optional. Resource identifier of Log Analytics. |
 
