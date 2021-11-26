@@ -155,7 +155,7 @@
         //         }
         //     ]
         // },
-        "systemAssigned": {
+        "systemAssignedIdentity": {
             "value": true
         },
         "userAssignedIdentities": {

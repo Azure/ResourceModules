@@ -56,7 +56,7 @@ param eventHubAuthorizationRuleId string = ''
 param eventHubName string = ''
 
 @description('Optional. Enables system assigned managed identity on the resource.')
-param systemAssigned bool = false
+param systemAssignedIdentity bool = false
 
 @description('Optional. The ID(s) to assign to the resource.')
 param userAssignedIdentities object = {}
@@ -117,7 +117,7 @@ var diagnosticsMetrics = [for metric in metricsToEnable: {
   }
 }]
 
-var identityType = systemAssigned ? (!empty(userAssignedIdentities) ? 'SystemAssigned,UserAssigned' : 'SystemAssigned') : (!empty(userAssignedIdentities) ? 'UserAssigned' : 'None')
+var identityType = systemAssignedIdentity ? (!empty(userAssignedIdentities) ? 'SystemAssigned,UserAssigned' : 'SystemAssigned') : (!empty(userAssignedIdentities) ? 'UserAssigned' : 'None')
 
 var identity = identityType != 'None' ? {
   type: identityType
@@ -341,4 +341,4 @@ output automationAccountResourceId string = automationAccount.id
 output automationAccountResourceGroup string = resourceGroup().name
 
 @description('The resource ID of the assigned identity.')
-output assignedIdentityID string = systemAssigned ? automationAccount.identity.principalId : ''
+output assignedIdentityID string = systemAssignedIdentity ? automationAccount.identity.principalId : ''
