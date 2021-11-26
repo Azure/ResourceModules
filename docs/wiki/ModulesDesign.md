@@ -226,11 +226,11 @@ var builtInRoleNames = {
 
 resource <mainResource> '<mainResourceProviderNamespace>/<resourceType>@<resourceTypeApiVersion>' existing = {
   // top-level RBAC
-  name: last(split(resourceId,'/')[5])
+  name: last(split(resourceId,'/'))
   // 2nd level RBAC
-  // name: '${split(resourceId,'/')[5]}/${split(resourceId,'/')[7]}'
+  // name: '${split(resourceId,'/')[8]}/${split(resourceId,'/')[10]}'
   // 3rd level RBAC
-  // name: '${split(resourceId,'/')[5]}/${split(resourceId,'/')[7]}/${split(resourceId,'/')[9]'
+  // name: '${split(resourceId,'/')[8]}/${split(resourceId,'/')[10]}/${split(resourceId,'/')[12]'
 }
 
 resource roleAssignment 'Microsoft.Authorization/roleAssignments@2020-04-01-preview' = [for principalId in principalIds: {
