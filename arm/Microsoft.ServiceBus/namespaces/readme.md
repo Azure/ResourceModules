@@ -29,7 +29,7 @@ This module deploys Service Bus Namespace resource.
 | `cuaId` | string |  |  | Optional. Customer Usage Attribution id (GUID). This GUID must be previously registered |
 | `diagnosticLogsRetentionInDays` | int | `365` |  | Optional. Specifies the number of days that logs will be kept for; a value of 0 will retain data indefinitely. |
 | `diagnosticStorageAccountId` | string |  |  | Optional. Resource IDentifier of the Diagnostic Storage Account. |
-| `disasterRecoveryConfigObj` | object | `{object}` |  | Optional. The disaster recovery configuration. |
+| `disasterRecoveryConfigs` | _[disasterRecoveryConfigs](disasterRecoveryConfigs/readme.md)_ object | `{object}` |  | Optional. The disaster recovery configuration. |
 | `eventHubAuthorizationRuleId` | string |  |  | Optional. Resource ID of the event hub authorization rule for the Event Hubs namespace in which the event hub should be created or streamed to. |
 | `eventHubName` | string |  |  | Optional. Name of the event hub within the namespace to which logs are streamed. Without this, an event hub is created for each log category. |
 | `ipFilterRules` | _[ipFilterRules](ipFilterRules/readme.md)_ array | `[]` |  | Optional. IP Filter Rules for the Service Bus namespace |
@@ -37,7 +37,7 @@ This module deploys Service Bus Namespace resource.
 | `lock` | string | `NotSpecified` | `[CanNotDelete, NotSpecified, ReadOnly]` | Optional. Specify the type of lock. |
 | `logsToEnable` | array | `[OperationalLogs]` | `[OperationalLogs]` | Optional. The name of logs that will be streamed. |
 | `metricsToEnable` | array | `[AllMetrics]` | `[AllMetrics]` | Optional. The name of metrics that will be streamed. |
-| `migrationConfigurationObj` | object | `{object}` |  | Optional. The migration configuration. |
+| `migrationConfigurations` | _[migrationConfigurations](migrationConfigurations/readme.md)_ object | `{object}` |  | Optional. The migration configuration. |
 | `name` | string |  |  | Optional. Name of the Service Bus Namespace. If no name is provided, then unique name will be created. |
 | `privateEndpoints` | array | `[]` |  | Optional. Configuration Details for private endpoints. |
 | `queues` | _[queues](queues/readme.md)_ array | `[]` |  | Optional. The queues to create in the service bus namespace |
