@@ -3,7 +3,7 @@
     "contentVersion": "1.0.0.0",
     "parameters": {
         "name": {
-            "value": "<<namePrefix>>.az-privdns-x-001"
+            "value": "sxx.az-privdns-x-001"
         },
         "roleAssignments": {
             "value": [
@@ -18,7 +18,7 @@
         "virtualNetworkLinks": {
             "value": [
                 {
-                    "virtualNetworkId": "/subscriptions/<<subscriptionId>>/resourceGroups/<<resourceGroupName>>/providers/Microsoft.Network/virtualNetworks/adp-<<namePrefix>>-az-vnet-x-001",
+                    "virtualNetworkId": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/virtualNetworks/adp-sxx-az-vnet-x-001",
                     "registrationEnabled": true
                 }
             ]
