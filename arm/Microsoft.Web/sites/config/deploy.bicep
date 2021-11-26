@@ -49,7 +49,7 @@ resource app 'Microsoft.Web/sites@2020-12-01' existing = {
   name: appName
 }
 
-resource config 'Microsoft.Web/sites/config@2019-08-01' = {
+resource config 'Microsoft.Web/sites/config@2021-02-01' = {
   name: name
   parent: app
   properties: {
