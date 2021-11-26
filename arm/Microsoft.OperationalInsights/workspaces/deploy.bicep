@@ -179,7 +179,7 @@ module logAnalyticsWorkspace_rbac '.bicep/nested_rbac.bicep' = [for (roleAssignm
   params: {
     principalIds: roleAssignment.principalIds
     roleDefinitionIdOrName: roleAssignment.roleDefinitionIdOrName
-    resourceName: logAnalyticsWorkspace.name
+    resourceId: logAnalyticsWorkspace.id
   }
 }]
 

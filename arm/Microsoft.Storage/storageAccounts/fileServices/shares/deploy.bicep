@@ -42,7 +42,7 @@ module fileShare_rbac '.bicep/nested_rbac.bicep' = [for (roleAssignment, index) 
   params: {
     principalIds: roleAssignment.principalIds
     roleDefinitionIdOrName: roleAssignment.roleDefinitionIdOrName
-    resourceName: '${storageAccount.name}/${storageAccount::fileService.name}/${storageAccount::fileService::fileShare.name}'
+    resourceId: '${storageAccount::fileService::fileShare.id}'
   }
 }]
 

@@ -185,7 +185,7 @@ module hostPool_rbac '.bicep/nested_rbac.bicep' = [for (roleAssignment, index) i
   params: {
     principalIds: roleAssignment.principalIds
     roleDefinitionIdOrName: roleAssignment.roleDefinitionIdOrName
-    resourceName: hostPool.name
+    resourceId: hostPool.id
   }
 }]
 

@@ -256,7 +256,7 @@ module keyVault_rbac '.bicep/nested_rbac.bicep' = [for (roleAssignment, index) i
   params: {
     principalIds: roleAssignment.principalIds
     roleDefinitionIdOrName: roleAssignment.roleDefinitionIdOrName
-    resourceName: keyVault.name
+    resourceId: keyVault.id
   }
 }]
 

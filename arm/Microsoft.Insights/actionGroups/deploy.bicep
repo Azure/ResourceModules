@@ -79,7 +79,7 @@ module actionGroup_rbac '.bicep/nested_rbac.bicep' = [for (roleAssignment, index
   params: {
     principalIds: roleAssignment.principalIds
     roleDefinitionIdOrName: roleAssignment.roleDefinitionIdOrName
-    resourceName: actionGroup.name
+    resourceId: actionGroup.id
   }
 }]
 

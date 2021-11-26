@@ -183,7 +183,7 @@ module rsv_rbac '.bicep/nested_rbac.bicep' = [for (roleAssignment, index) in rol
   params: {
     principalIds: roleAssignment.principalIds
     roleDefinitionIdOrName: roleAssignment.roleDefinitionIdOrName
-    resourceName: rsv.name
+    resourceId: rsv.id
   }
 }]
 

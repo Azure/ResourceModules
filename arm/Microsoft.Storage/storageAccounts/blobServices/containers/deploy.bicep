@@ -64,7 +64,7 @@ module container_rbac '.bicep/nested_rbac.bicep' = [for (roleAssignment, index) 
   params: {
     principalIds: roleAssignment.principalIds
     roleDefinitionIdOrName: roleAssignment.roleDefinitionIdOrName
-    resourceName: '${storageAccount.name}/${storageAccount::blobServices.name}/${storageAccount::blobServices::container.name}'
+    resourceId: '${storageAccount::blobServices::container.id}'
   }
 }]
 
