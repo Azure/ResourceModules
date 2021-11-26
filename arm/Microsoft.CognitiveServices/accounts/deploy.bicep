@@ -83,12 +83,11 @@ param publicNetworkAccess string = 'Enabled'
 @description('Optional. Service endpoint object information')
 param networkAcls object = {}
 
-@description('Optional. Type of managed service identity.')
-@allowed([
-  'None'
-  'SystemAssigned'
-])
-param managedIdentity string = 'None'
+@description('Optional. Enables system assigned managed identity on the resource.')
+param systemAssignedIdentity bool = false
+
+@description('Optional. The ID(s) to assign to the resource.')
+param userAssignedIdentities object = {}
 
 @allowed([
   'CanNotDelete'
@@ -147,6 +146,13 @@ var diagnosticsMetrics = [for metric in metricsToEnable: {
   }
 }]
 
+var identityType = systemAssignedIdentity ? (!empty(userAssignedIdentities) ? 'SystemAssigned,UserAssigned' : 'SystemAssigned') : (!empty(userAssignedIdentities) ? 'UserAssigned' : 'None')
+
+var identity = identityType != 'None' ? {
+  type: identityType
+  userAssignedIdentities: !empty(userAssignedIdentities) ? userAssignedIdentities : null
+} : null
+
 var networkAcls_var = {
   defaultAction: ((empty(networkAcls)) ? null : networkAcls.defaultAction)
   virtualNetworkRules: ((empty(networkAcls)) ? null : ((length(networkAcls.virtualNetworkRules) == 0) ? [] : networkAcls.virtualNetworkRules))
@@ -158,12 +164,10 @@ module pid_cuaId '.bicep/nested_cuaId.bicep' = if (!empty(cuaId)) {
   params: {}
 }
 
-resource cognitiveServices 'Microsoft.CognitiveServices/accounts@2017-04-18' = {
+resource cognitiveServices 'Microsoft.CognitiveServices/accounts@2021-04-30' = {
   name: accountName
   kind: kind
-  identity: {
-    type: managedIdentity
-  }
+  identity: identity
   location: location
   tags: tags
   sku: {
@@ -221,4 +225,6 @@ output cognitiveServicesName string = cognitiveServices.name
 output cognitiveServicesResourceId string = cognitiveServices.id
 output cognitiveServicesResourceGroup string = resourceGroup().name
 output cognitiveServicesEndpoint string = cognitiveServices.properties.endpoint
-output principalId string = managedIdentity != 'None' ? cognitiveServices.identity.principalId : ''
+
+@description('The resource ID of the assigned identity.')
+output assignedIdentityID string = systemAssignedIdentity ? cognitiveServices.identity.principalId : ''
