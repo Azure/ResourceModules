@@ -37,7 +37,7 @@ var builtInRoleNames = {
 }
 
 resource container 'Microsoft.Storage/storageAccounts/blobServices/containers@2019-06-01' existing = {
-  name: last(split(resourceId, '/'))
+  name: '${split(resourceId, '/')[5]}/${split(resourceId, '/')[7]}/${split(resourceId, '/')[9]}'
 }
 
 resource roleAssignment 'Microsoft.Authorization/roleAssignments@2020-04-01-preview' = [for principalId in principalIds: {
