@@ -1,5 +1,5 @@
 @description('Required. The Proximity Placement Groups Name')
-param loadBalancerName string
+param name string
 
 @description('Optional. Location for all resources.')
 param location string = resourceGroup().location
@@ -86,20 +86,20 @@ var loadBalancingRules_var = [for loadBalancingRule in loadBalancingRules: {
   name: loadBalancingRule.name
   properties: {
     backendAddressPool: {
-      id: resourceId('Microsoft.Network/loadBalancers/backendAddressPools', loadBalancerName, loadBalancingRule.properties.backendAddressPoolName)
+      id: resourceId('Microsoft.Network/loadBalancers/backendAddressPools', name, loadBalancingRule.properties.backendAddressPoolName)
     }
     backendPort: loadBalancingRule.properties.backendPort
     disableOutboundSnat: contains(loadBalancingRule.properties, 'disableOutboundSnat') ? loadBalancingRule.properties.disableOutboundSnat : 'false'
     enableFloatingIP: loadBalancingRule.properties.enableFloatingIP
     enableTcpReset: contains(loadBalancingRule.properties, 'enableTcpReset') ? loadBalancingRule.properties.enableTcpReset : 'false'
     frontendIPConfiguration: {
-      id: resourceId('Microsoft.Network/loadBalancers/frontendIPConfigurations', loadBalancerName, loadBalancingRule.properties.frontendIPConfigurationName)
+      id: resourceId('Microsoft.Network/loadBalancers/frontendIPConfigurations', name, loadBalancingRule.properties.frontendIPConfigurationName)
     }
     frontendPort: loadBalancingRule.properties.frontendPort
     idleTimeoutInMinutes: loadBalancingRule.properties.idleTimeoutInMinutes
     loadDistribution: contains(loadBalancingRule.properties, 'loadDistribution') ? loadBalancingRule.properties.loadDistribution : 'Default'
     probe: {
-      id: '${resourceId('Microsoft.Network/loadBalancers', loadBalancerName)}/probes/${loadBalancingRule.properties.probeName}'
+      id: '${resourceId('Microsoft.Network/loadBalancers', name)}/probes/${loadBalancingRule.properties.probeName}'
     }
     protocol: loadBalancingRule.properties.protocol
   }
@@ -140,7 +140,7 @@ module pid_cuaId '.bicep/nested_cuaId.bicep' = if (!empty(cuaId)) {
 }
 
 resource loadBalancer 'Microsoft.Network/loadBalancers@2021-02-01' = {
-  name: loadBalancerName
+  name: name
   location: location
   tags: tags
   sku: {
@@ -180,14 +180,14 @@ module loadBalancer_rbac '.bicep/nested_rbac.bicep' = [for (roleAssignment, inde
   params: {
     principalIds: roleAssignment.principalIds
     roleDefinitionIdOrName: roleAssignment.roleDefinitionIdOrName
-    resourceName: loadBalancer.name
+    resourceId: loadBalancer.id
   }
 }]
 
 @description('The name of the load balancer')
 output loadBalancerName string = loadBalancer.name
 
-@description('The resourceID of the load balancer')
+@description('The resource ID of the load balancer')
 output loadBalancerResourceId string = loadBalancer.id
 
 @description('The resource group the load balancer was deployed into')

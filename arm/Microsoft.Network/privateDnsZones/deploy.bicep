@@ -61,7 +61,7 @@ module privateDnsZone_rbac '.bicep/nested_rbac.bicep' = [for (roleAssignment, in
   params: {
     principalIds: roleAssignment.principalIds
     roleDefinitionIdOrName: roleAssignment.roleDefinitionIdOrName
-    resourceName: privateDnsZone.name
+    resourceId: privateDnsZone.id
   }
 }]
 

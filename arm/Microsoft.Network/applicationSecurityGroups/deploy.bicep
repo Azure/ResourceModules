@@ -1,5 +1,5 @@
 @description('Required. Name of the Application Security Group.')
-param applicationSecurityGroupName string
+param name string
 
 @description('Optional. Location for all resources.')
 param location string = resourceGroup().location
@@ -27,7 +27,7 @@ module pid_cuaId '.bicep/nested_cuaId.bicep' = if (!empty(cuaId)) {
 }
 
 resource applicationSecurityGroup 'Microsoft.Network/applicationSecurityGroups@2021-02-01' = {
-  name: applicationSecurityGroupName
+  name: name
   location: location
   tags: tags
   properties: {}
@@ -47,15 +47,15 @@ module applicationSecurityGroup_rbac '.bicep/nested_rbac.bicep' = [for (roleAssi
   params: {
     principalIds: roleAssignment.principalIds
     roleDefinitionIdOrName: roleAssignment.roleDefinitionIdOrName
-    resourceName: applicationSecurityGroup.name
+    resourceId: applicationSecurityGroup.id
   }
 }]
 
 @description('The resource group the application security group was deployed into')
-output applicationSecurityGroupsResourceGroup string = resourceGroup().name
+output applicationSecurityGroupResourceGroup string = resourceGroup().name
 
-@description('The resourceId of the application security group')
-output applicationSecurityGroupsResourceId string = applicationSecurityGroup.id
+@description('The resource ID of the application security group')
+output applicationSecurityGroupResourceId string = applicationSecurityGroup.id
 
 @description('The name of the application security group')
-output applicationSecurityGroupsName string = applicationSecurityGroup.name
+output applicationSecurityGroupName string = applicationSecurityGroup.name

@@ -1,5 +1,5 @@
 @description('Required. Specifies the Virtual Network Gateway name.')
-param virtualNetworkGatewayName string
+param name string
 
 @description('Optional. Location for all resources.')
 param location string = resourceGroup().location
@@ -182,8 +182,8 @@ var gatewaySubnetId = '${vNetId}/subnets/GatewaySubnet'
 var activeActive_var = (virtualNetworkGatewayType == 'ExpressRoute') ? bool('false') : activeActive
 
 // Public IP variables
-var gatewayPipName1 = (length(gatewayPipName) == 0) ? '${virtualNetworkGatewayName}-pip1' : gatewayPipName[0]
-var gatewayPipName2 = activeActive_var ? ((length(gatewayPipName) == 1) ? '${virtualNetworkGatewayName}-pip2' : gatewayPipName[1]) : ''
+var gatewayPipName1 = (length(gatewayPipName) == 0) ? '${name}-pip1' : gatewayPipName[0]
+var gatewayPipName2 = activeActive_var ? ((length(gatewayPipName) == 1) ? '${name}-pip2' : gatewayPipName[1]) : ''
 
 var gatewayMultiPipArray = [
   gatewayPipName1
@@ -320,7 +320,7 @@ resource virtualNetworkGatewayPublicIp_diagnosticSettings 'Microsoft.Insights/di
 // VNET Gateway
 // ============
 resource virtualNetworkGateway 'Microsoft.Network/virtualNetworkGateways@2021-02-01' = {
-  name: virtualNetworkGatewayName
+  name: name
   location: location
   tags: tags
   properties: {
@@ -368,7 +368,7 @@ module virtualNetworkGateway_rbac '.bicep/nested_rbac.bicep' = [for (roleAssignm
   params: {
     principalIds: roleAssignment.principalIds
     roleDefinitionIdOrName: roleAssignment.roleDefinitionIdOrName
-    resourceName: virtualNetworkGateway.name
+    resourceId: virtualNetworkGateway.id
   }
 }]
 
@@ -378,7 +378,7 @@ output virtualNetworkGatewayResourceGroup string = resourceGroup().name
 @description('The name of the virtual network gateway')
 output virtualNetworkGatewayName string = virtualNetworkGateway.name
 
-@description('The resourceId of the virtual network gateway')
+@description('The resource ID of the virtual network gateway')
 output virtualNetworkGatewayResourceId string = virtualNetworkGateway.id
 
 @description('Shows if the virtual network gateway is configured in active-active mode')

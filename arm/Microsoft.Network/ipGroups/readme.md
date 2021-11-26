@@ -16,9 +16,9 @@ This module deploys an IP Group, with resource lock.
 | :-- | :-- | :-- | :-- | :-- |
 | `cuaId` | string |  |  | Optional. Customer Usage Attribution id (GUID). This GUID must be previously registered |
 | `ipAddresses` | array | `[]` |  | Optional. IpAddresses/IpAddressPrefixes in the IpGroups resource. |
-| `ipGroupName` | string |  |  | Required. The name of the ipGroups. |
 | `location` | string | `[resourceGroup().location]` |  | Optional. Location for all resources. |
 | `lock` | string | `NotSpecified` | `[CanNotDelete, NotSpecified, ReadOnly]` | Optional. Specify the type of lock. |
+| `name` | string |  |  | Required. The name of the ipGroups. |
 | `roleAssignments` | array | `[]` |  | Optional. Array of role assignment objects that contain the 'roleDefinitionIdOrName' and 'principalId' to define RBAC role assignments on this resource. In the roleDefinitionIdOrName attribute, you can provide either the display name of the role definition, or its fully qualified ID in the following format: '/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11' |
 | `tags` | object | `{object}` |  | Optional. Resource tags. |
 
@@ -74,7 +74,7 @@ Tag names and tag values can be provided as needed. A tag can be left without a 
 | :-- | :-- | :-- |
 | `ipGroupName` | string | The name of the IP group |
 | `ipGroupsResourceGroup` | string | The resource group of the IP group was deployed into |
-| `ipGroupsResourceId` | string | The resourceId of the IP group |
+| `ipGroupsResourceId` | string | The resource ID of the IP group |
 
 ## Template references
 

@@ -1,5 +1,5 @@
 @description('Required. Name of the Azure Firewall.')
-param azureFirewallName string
+param name string
 
 @description('Optional. Name of an Azure Firewall SKU.')
 @allowed([
@@ -84,7 +84,7 @@ var publicIPPrefix = {
   id: publicIPPrefixId
 }
 var azureFirewallSubnetId = '${vNetId}/subnets/AzureFirewallSubnet'
-var azureFirewallPipName_var = (empty(azureFirewallPipName) ? '${azureFirewallName}-pip' : azureFirewallPipName)
+var azureFirewallPipName_var = (empty(azureFirewallPipName) ? '${name}-pip' : azureFirewallPipName)
 var azureFirewallPipId = azureFirewallPip.id
 
 @description('Optional. The name of firewall logs that will be streamed.')
@@ -190,7 +190,7 @@ resource azureFirewallPip_diagnosticSettings 'Microsoft.Insights/diagnosticSetti
 }
 
 resource azureFirewall 'Microsoft.Network/azureFirewalls@2021-02-01' = {
-  name: azureFirewallName
+  name: name
   location: location
   zones: length(availabilityZones) == 0 ? null : availabilityZones
   tags: tags
@@ -249,11 +249,11 @@ module azureFirewall_rbac '.bicep/nested_rbac.bicep' = [for (roleAssignment, ind
   params: {
     principalIds: roleAssignment.principalIds
     roleDefinitionIdOrName: roleAssignment.roleDefinitionIdOrName
-    resourceName: azureFirewall.name
+    resourceId: azureFirewall.id
   }
 }]
 
-@description('The resourceId of the Azure firewall')
+@description('The resource ID of the Azure firewall')
 output azureFirewallResourceId string = azureFirewall.id
 
 @description('The name of the Azure firewall')

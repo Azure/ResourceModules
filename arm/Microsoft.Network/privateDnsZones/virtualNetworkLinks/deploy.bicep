@@ -30,6 +30,7 @@ resource privateDnsZone 'Microsoft.Network/privateDnsZones@2018-09-01' existing 
 
 resource virtualNetworkLink 'Microsoft.Network/privateDnsZones/virtualNetworkLinks@2018-09-01' = {
   name: name
+  parent: privateDnsZone
   location: location
   tags: tags
   properties: {
@@ -38,7 +39,6 @@ resource virtualNetworkLink 'Microsoft.Network/privateDnsZones/virtualNetworkLin
       id: virtualNetworkId
     }
   }
-  parent: privateDnsZone
 }
 
 @description('The name of the deployed virtual network link')

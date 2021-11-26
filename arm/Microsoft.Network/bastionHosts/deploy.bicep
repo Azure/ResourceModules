@@ -1,5 +1,5 @@
 @description('Required. Name of the Azure Bastion resource')
-param azureBastionName string
+param name string
 
 @description('Optional. Location for all resources.')
 param location string = resourceGroup().location
@@ -116,7 +116,7 @@ module pid_cuaId '.bicep/nested_cuaId.bicep' = if (!empty(cuaId)) {
 }
 
 resource azureBastionPip 'Microsoft.Network/publicIPAddresses@2021-02-01' = {
-  name: empty(azureBastionPipName) ? '${azureBastionName}-pip' : azureBastionPipName
+  name: empty(azureBastionPipName) ? '${name}-pip' : azureBastionPipName
   location: location
   tags: tags
   sku: {
@@ -152,7 +152,7 @@ resource azureBastionPip_diagnosticSettings 'Microsoft.Insights/diagnosticSettin
 }
 
 resource azureBastion 'Microsoft.Network/bastionHosts@2021-02-01' = {
-  name: azureBastionName
+  name: name
   location: location
   tags: tags
   properties: {
@@ -198,7 +198,7 @@ module azureBastion_rbac '.bicep/nested_rbac.bicep' = [for (roleAssignment, inde
   params: {
     principalIds: roleAssignment.principalIds
     roleDefinitionIdOrName: roleAssignment.roleDefinitionIdOrName
-    resourceName: azureBastion.name
+    resourceId: azureBastion.id
   }
 }]
 
@@ -208,5 +208,5 @@ output azureBastionResourceGroup string = resourceGroup().name
 @description('The name the Azure Bastion')
 output azureBastionName string = azureBastion.name
 
-@description('The resourceId the Azure Bastion')
+@description('The resource ID the Azure Bastion')
 output azureBastionResourceId string = azureBastion.id
