@@ -11,7 +11,7 @@
             ]
         },
         "remoteTokens": {
-            "keyVaultSecretNamePrefix": "ParameterFileToken-"
+            "keyVaultSecretContentType": "ParameterFileToken"
         }
     }
 }

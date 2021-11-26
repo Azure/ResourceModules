@@ -1,6 +1,6 @@
 # Parameter File Tokens
 
-This section provides details on the Tokens Replacement Functionality that enables the use of tokens inside template Parameter Files instead of plain text.
+This section provides details on the Tokens Replacement Functionality that enables the use of tokens inside template Parameter Files instead of plain text strings.
 
 ---
 
@@ -67,7 +67,11 @@ The Key Vault here is enabled by adding a Secret to GitHub called `PLATFORM_KEYV
 
 ---
 
-> You can specify a custom prefix for the Secret Name in Azure Key Vault. This is done by modifying the `keyVaultSecretNamePrefix` property in the [Settings.json](https://github.com/Azure/ResourceModules/blob/main/settings.json) file.
+> The Tokens are created as secrets in the Key Vault with the content type defined in the [Settings.json](https://github.com/Azure/ResourceModules/blob/main/settings.json) file, under the property `keyVaultSecretContentType`.
+
+The below diagram outlines the compares the different token types that can be used for parameter file tokens:
+
+<img src="./media/tokenTypes.png" alt="tokenTypes">
 
 ### How the Token Key Vault is created
 
@@ -82,7 +86,7 @@ The Key Vault here is enabled by adding a Secret to GitHub called `PLATFORM_KEYV
 
 2- The user then triggers the [Dependency Workflow](https://github.com/Azure/ResourceModules/blob/main/.github/workflows/platform.dependencies.yml) to instantiate the Platform Token Key Vault.
 
-  > To customize the Key Vault Configuration, you can modify the [Platform Key Vault Parameter File](https://github.com/Azure/ResourceModules/blob/main/utilities/pipelines/dependencies/Microsoft.RecoveryServices/vaults/parameters/platform.parameters.json).
+  > To customize the Key Vault Configuration, you can modify the [Platform Key Vault Parameter File](https://github.com/Azure/ResourceModules/blob/main/utilities/pipelines/dependencies/Microsoft.KeyVault/vaults/parameters/platform.parameters.json).
 
 3- The Platform Key Vault is then deployed using the Key Vault Module via the dependency pipeline.
 
@@ -105,33 +109,29 @@ The below diagram illustrates the Token Replacement Functionality via the [Valid
 
 2- The user can also create remote custom Parameter File Tokens in the Key Vault
 
-  > The [Settings.json](https://github.com/Azure/ResourceModules/blob/main/settings.json) contains properties for `remoteTokens` to customize the Secret Name Prefix.
-
   The below script is an example on how to create a remote token in a key vault:
 
   ```powershell
-
+  # **** SET PATH TO RESOURCE MODULES REPO ****
   ## Inputs:
   $KeyVaultName = 'contoso-keyVault' # Same Key Vault defined in the 'PLATFORM_KEYVAULT' GitHub Secret or ADO Pipeline Variables
   $SubscriptionId = '12345678-1234-1234-1234-123456789012'
-  $SettingsFilePath = 'repoPath/settings.json'
-  ## Tokens
+  ## Provide Tokens
   $remoteTokens = @(
-      @{ Name = 'myCustomTokenName'; Value = 'myCustomTokenNameValue' } # Specify Token Name and Value, you can add multiple.
+      @{ Name = 'myTokenName'; Value = 'myTokenValue' } # Specify Token Name and Value, you can add multiple.
   )
   ## Add tokens to Key Vault
-  $Settings = Get-Content $SettingsFilePath | ConvertFrom-Json
-  $KeyVaultSecretNamePrefix = $Settings.parameterFileTokens.remoteTokens.keyVaultSecretNamePrefix
-  Add-AzAccount -SubscriptionId $SubscriptionId
-  $TokensKeyVault = Get-AzKeyVault -VaultName $KeyVaultName
-  $remoteTokens | ForEach-Object {
-      $TokenName = -join ($KeyVaultSecretNamePrefix, $PSItem.Name)
-      Set-AzKeyVaultSecret -Name $TokenName -SecretValue (ConvertTo-SecureString -AsPlainText $PSItem.Value) -VaultName $TokensKeyVault.VaultName -ContentType 'ParameterFileToken'
+  try {
+      $KeyVaultSecretContentType = (Get-Content ./settings.jxson -ErrorAction Stop | ConvertFrom-Json).parameterFileTokens.remoteTokens.keyVaultSecretContentType
+      Add-AzAccount -SubscriptionId $SubscriptionId
+      $TokensKeyVault = Get-AzKeyVault -VaultName $KeyVaultName
+      $remoteTokens | ForEach-Object {
+          Set-AzKeyVaultSecret -Name $PSItem.Name -SecretValue (ConvertTo-SecureString -AsPlainText $PSItem.Value) -VaultName $TokensKeyVault.VaultName -ContentType $KeyVaultSecretContentType
+      }
+  } catch {
+      $PSItem.Exception.Message
   }
-
   ```
-
-  > Make sure the `contentType` of a Key Vault secret is equal to `ParameterFileToken` so that it can be utilized by the token replacement functionality.
 
 3- The parameter files can now be tokenized as per required value. And the token format can look like `<<tokenName>>`. Example:
 
