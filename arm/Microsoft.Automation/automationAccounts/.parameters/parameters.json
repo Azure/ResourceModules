@@ -155,7 +155,7 @@
         //         }
         //     ]
         // },
-        "managedServiceIdentity": {
+        "managedIdentity": {
             "value": "SystemAssigned"
         },
         "roleAssignments": {

@@ -36,7 +36,7 @@ This module deploys an Azure Automation Account.
 | `location` | string | `[resourceGroup().location]` |  | Optional. Location for all resources. |
 | `lock` | string | `NotSpecified` | `[CanNotDelete, NotSpecified, ReadOnly]` | Optional. Specify the type of lock. |
 | `logsToEnable` | array | `[JobLogs, JobStreams, DscNodeStatus]` | `[JobLogs, JobStreams, DscNodeStatus]` | Optional. The name of logs that will be streamed. |
-| `managedServiceIdentity` | string | `None` | `[None, SystemAssigned, SystemAssigned,UserAssigned, UserAssigned]` | Optional. Type of managed service identity. |
+| `managedIdentity` | string | `None` | `[None, SystemAssigned, SystemAssigned,UserAssigned, UserAssigned]` | Optional. Type of managed identity. |
 | `metricsToEnable` | array | `[AllMetrics]` | `[AllMetrics]` | Optional. The name of metrics that will be streamed. |
 | `modules` | _[modules](modules/readme.md)_ array | `[]` |  | Optional. List of modules to be created in the automation account. |
 | `name` | string |  |  | Required. Name of the Automation Account. |
@@ -47,7 +47,7 @@ This module deploys an Azure Automation Account.
 | `skuName` | string | `Basic` | `[Free, Basic]` | Optional. SKU name of the account. |
 | `softwareUpdateConfigurations` | _[softwareUpdateConfigurations](softwareUpdateConfigurations/readme.md)_ array | `[]` |  | Optional. List of softwareUpdateConfigurations to be created in the automation account |
 | `tags` | object | `{object}` |  | Optional. Tags of the Automation Account resource. |
-| `userAssignedIdentities` | object | `{object}` |  | Optional. Mandatory 'managedServiceIdentity' contains UserAssigned. The identy to assign to the resource. |
+| `userAssignedIdentities` | object | `{object}` |  | Optional. Mandatory if 'managedIdentity' contains 'UserAssigned'. The identity to assign to the resource. |
 | `variables` | _[variables](variables/readme.md)_ array | `[]` |  | Optional. List of variables to be created in the automation account. |
 | `workspaceId` | string |  |  | Optional. Resource identifier of Log Analytics. |
 
@@ -137,7 +137,7 @@ To use Private Endpoint the following dependencies must be deployed:
 
 | Output Name | Type | Description |
 | :-- | :-- | :-- |
-| `assignedIdentityID` | string | The resource id of the assigned identity, if any |
+| `assignedIdentityID` | string | The resource id of the assigned identity. |
 | `automationAccountName` | string | The name of the deployed automation account |
 | `automationAccountResourceGroup` | string | The resource group of the deployed automation account |
 | `automationAccountResourceId` | string | The id of the deployed automation account |

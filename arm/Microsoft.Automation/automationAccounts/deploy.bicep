@@ -61,10 +61,10 @@ param eventHubName string = ''
   'SystemAssigned,UserAssigned'
   'UserAssigned'
 ])
-@description('Optional. Type of managed service identity.')
-param managedServiceIdentity string = 'None'
+@description('Optional. Type of managed identity.')
+param managedIdentity string = 'None'
 
-@description('Optional. Mandatory \'managedServiceIdentity\' contains UserAssigned. The identy to assign to the resource.')
+@description('Optional. Mandatory if \'managedIdentity\' contains \'UserAssigned\'. The identity to assign to the resource.')
 param userAssignedIdentities object = {}
 
 @allowed([
@@ -123,6 +123,11 @@ var diagnosticsMetrics = [for metric in metricsToEnable: {
   }
 }]
 
+var identity = managedIdentity != 'None' ? {
+  type: managedIdentity
+  userAssignedIdentities: !empty(userAssignedIdentities) ? userAssignedIdentities : null
+} : null
+
 module pid_cuaId '.bicep/nested_cuaId.bicep' = if (!empty(cuaId)) {
   name: 'pid-${cuaId}'
   params: {}
@@ -137,10 +142,7 @@ resource automationAccount 'Microsoft.Automation/automationAccounts@2020-01-13-p
       name: skuName
     }
   }
-  identity: {
-    type: managedServiceIdentity != 'None' ? managedServiceIdentity : null
-    userAssignedIdentities: !empty(userAssignedIdentities) ? userAssignedIdentities : null
-  }
+  identity: identity
 }
 
 module automationAccount_modules 'modules/deploy.bicep' = [for (module, index) in modules: {
@@ -342,5 +344,5 @@ output automationAccountResourceId string = automationAccount.id
 @description('The resource group of the deployed automation account')
 output automationAccountResourceGroup string = resourceGroup().name
 
-@description('The resource id of the assigned identity, if any')
-output assignedIdentityID string = contains(managedServiceIdentity, 'SystemAssigned') ? automationAccount.identity.principalId : ''
+@description('The resource id of the assigned identity.')
+output assignedIdentityID string = contains(managedIdentity, 'SystemAssigned') ? automationAccount.identity.principalId : ''
