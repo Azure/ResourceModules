@@ -37,19 +37,19 @@ param functionsWorkerRuntime string = ''
 @description('Optional. Version if the function extension.')
 param functionsExtensionVersion string = '~3'
 
-@description('Optional. The Resource ID of the app service plan to use for the site. If not provided, the appServicePlanObject is used to create a new plan.')
+@description('Optional. The resource ID of the app service plan to use for the site. If not provided, the appServicePlanObject is used to create a new plan.')
 param appServicePlanId string = ''
 
 @description('Optional. Required if no appServicePlanId is provided to deploy a new app service plan.')
 param appServicePlanObject object = {}
 
-@description('Optional. The Resource ID of the existing app insight to leverage for the app. If the Resource ID is not provided, the appInsightObject can be used to create a new app insight.')
+@description('Optional. The resource ID of the existing app insight to leverage for the app. If the resource ID is not provided, the appInsightObject can be used to create a new app insight.')
 param appInsightId string = ''
 
 @description('Optional. Used to deploy a new app insight if no appInsightId is provided.')
 param appInsightObject object = {}
 
-@description('Optional. The Resource ID of the app service environment to use for this resource.')
+@description('Optional. The resource ID of the app service environment to use for this resource.')
 param appServiceEnvironmentId string = ''
 
 @description('Optional. Type of managed service identity.')

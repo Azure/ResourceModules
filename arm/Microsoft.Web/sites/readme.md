@@ -20,10 +20,10 @@ This module deploys a Web or Function App
 
 | Parameter Name | Type | Default Value | Possible Values | Description |
 | :-- | :-- | :-- | :-- | :-- |
-| `appInsightId` | string |  |  | Optional. The Resource ID of the existing app insight to leverage for the app. If the Resource ID is not provided, the appInsightObject can be used to create a new app insight. |
+| `appInsightId` | string |  |  | Optional. The resource ID of the existing app insight to leverage for the app. If the resource ID is not provided, the appInsightObject can be used to create a new app insight. |
 | `appInsightObject` | object | `{object}` |  | Optional. Used to deploy a new app insight if no appInsightId is provided. |
-| `appServiceEnvironmentId` | string |  |  | Optional. The Resource ID of the App Service Environment to use for this resource. |
-| `appServicePlanId` | string |  |  | Optional. The Resource ID of the app service plan to use for the site. If not provided, the appServicePlanObject is used to create a new plan. |
+| `appServiceEnvironmentId` | string |  |  | Optional. The resource ID of the app service environment to use for this resource. |
+| `appServicePlanId` | string |  |  | Optional. The resource ID of the app service plan to use for the site. If not provided, the appServicePlanObject is used to create a new plan. |
 | `appServicePlanObject` | object | `{object}` |  | Optional. Required if no appServicePlanId is provided to deploy a new app service plan. |
 | `clientAffinityEnabled` | bool | `True` |  | Optional. If client affinity is enabled. |
 | `cuaId` | string |  |  | Optional. Customer Usage Attribution ID (GUID). This GUID must be previously registered. |

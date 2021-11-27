@@ -16,7 +16,7 @@ param location string = resourceGroup().location
 ])
 param serverOS string = 'Windows'
 
-@description('Optional. The Resource ID of the app service environment to use for this resource.')
+@description('Optional. The resource ID of the app service environment to use for this resource.')
 param appServiceEnvironmentId string = ''
 
 @description('Optional. Target worker tier assigned to the app service plan.')
