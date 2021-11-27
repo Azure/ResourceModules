@@ -64,19 +64,19 @@ resource capacityPool 'Microsoft.NetApp/netAppAccounts/capacityPools@2021-06-01'
 }
 
 @batchSize(1)
-module capacityPool_volumes './volumes/deploy.bicep' = [for (volume, index) in volumes: {
+module capacityPool_volumes 'volumes/deploy.bicep' = [for (volume, index) in volumes: {
   name: '${deployment().name}-Vol-${index}'
   params: {
     netAppAccountName: netAppAccount.name
     capacityPoolName: capacityPool.name
-    name: name
+    name: volume.name
     location: location
     serviceLevel: serviceLevel
-    creationToken: volume.creationToken
+    creationToken: contains(volume, 'creationToken') ? volume.creationToken : volume.name
     usageThreshold: volume.usageThreshold
     protocolTypes: contains(volume, 'protocolTypes') ? volume.protocolTypes : []
     subnetId: volume.subnetId
-    exportPolicy: contains(volume, 'exportPolicy') ? volume.exportPolicy : {}
+    exportPolicyRules: contains(volume, 'exportPolicyRules') ? volume.exportPolicyRules : []
     roleAssignments: contains(volume, 'roleAssignments') ? volume.roleAssignments : []
   }
 }]
