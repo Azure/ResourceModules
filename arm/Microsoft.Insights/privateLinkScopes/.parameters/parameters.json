@@ -3,7 +3,7 @@
     "contentVersion": "1.0.0.0",
     "parameters": {
         "name": {
-            "value": "test-az-pls-x-001"
+            "value": "sxx-az-pls-x-001"
         },
         "roleAssignments": {
             "value": [
