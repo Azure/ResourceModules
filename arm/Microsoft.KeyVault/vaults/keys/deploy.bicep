@@ -78,7 +78,7 @@ resource key 'Microsoft.KeyVault/vaults/keys@2019-09-01' = {
   }
 }
 
-@description('The Name of the key.')
+@description('The name of the key.')
 output keyName string = key.name
 
 @description('The Resource ID of the key.')
