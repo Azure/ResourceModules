@@ -62,6 +62,7 @@ remote/managing tenant.
 | `registrationAssignmentId` | string | The registration assignment resource ID |
 | `registrationDefinitionName` | string | The name of the registration definition |
 | `registrationDefinitionResourceId` | string | The resource ID of the registration definition |
+| `registrationDefinitionSubscription` | string | The subscription the registration definition was deployed into |
 
 ## Considerations
 
