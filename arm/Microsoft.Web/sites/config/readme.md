@@ -1,6 +1,6 @@
-# WebSitesConfig `[Microsoft.Web/sites/config]`
+# Web Site Config `[Microsoft.Web/sites/config]`
 
-// TODO: Replace Resource and fill in description
+This module deploys a site config resource.
 
 ## Resource Types
 
@@ -19,10 +19,6 @@
 | `functionsWorkerRuntime` | string |  | `[dotnet, node, python, java, powershell, ]` | Optional. Runtime of the function worker. |
 | `name` | string |  | `[appsettings]` | Required. Name of the site config. |
 | `storageAccountId` | string |  |  | Optional. Required if app of kind functionapp. Resource ID of the storage account to manage triggers and logging function executions. |
-
-### Parameter Usage: `<ParameterPlaceholder>`
-
-// TODO: Fill in Parameter usage
 
 ## Outputs
 
