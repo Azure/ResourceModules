@@ -10,7 +10,6 @@
         },
         "appServicePlanObject": {
             "value": {
-                "name": "sxx-az-fa-x-002-asp",
                 "serverOS": "Linux",
                 "skuName": "P1v2",
                 "skuCapacity": 2,
