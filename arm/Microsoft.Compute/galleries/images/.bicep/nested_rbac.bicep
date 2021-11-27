@@ -23,7 +23,7 @@ var builtInRoleNames = {
 }
 
 resource galleryImage 'Microsoft.Compute/galleries/images@2020-09-30' existing = {
-  name: last(split(resourceId, '/'))
+  name: '${split(resourceId, '/')[8]}/${split(resourceId, '/')[10]}'
 }
 
 resource roleAssignment 'Microsoft.Authorization/roleAssignments@2020-04-01-preview' = [for principalId in principalIds: {
