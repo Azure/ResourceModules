@@ -1,5 +1,5 @@
-@description('Required. The name of the Alert.')
-param alertName string
+@description('Required. The name of the alert.')
+param name string
 
 @description('Optional. Description of the alert.')
 param alertDescription string = ''
@@ -91,7 +91,7 @@ module pid_cuaId '.bicep/nested_cuaId.bicep' = if (!empty(cuaId)) {
 }
 
 resource metricAlert 'Microsoft.Insights/metricAlerts@2018-03-01' = {
-  name: alertName
+  name: name
   location: location
   tags: tags
   properties: {
@@ -121,6 +121,11 @@ module metricAlert_rbac '.bicep/nested_rbac.bicep' = [for (roleAssignment, index
   }
 }]
 
-output deploymentResourceGroup string = resourceGroup().name
+@description('The resource group the metric alert was deployed into')
+output metricAlertResourceGroup string = resourceGroup().name
+
+@description('The name of the metric alert')
 output metricAlertName string = metricAlert.name
+
+@description('The resource ID of the metric alert')
 output metricAlertResourceId string = metricAlert.id

@@ -1,5 +1,5 @@
 @description('Required. The name of the action group.')
-param actionGroupName string
+param name string
 
 @description('Required. The short name of the action group.')
 param groupShortName string
@@ -55,7 +55,7 @@ module pid_cuaId '.bicep/nested_cuaId.bicep' = if (!empty(cuaId)) {
 }
 
 resource actionGroup 'microsoft.insights/actionGroups@2019-06-01' = {
-  name: actionGroupName
+  name: name
   location: location
   tags: tags
   properties: {
@@ -83,6 +83,11 @@ module actionGroup_rbac '.bicep/nested_rbac.bicep' = [for (roleAssignment, index
   }
 }]
 
-output deploymentResourceGroup string = resourceGroup().name
+@description('The resource group the action group was deployed into')
+output actionGroupResourceGroup string = resourceGroup().name
+
+@description('The name of the action group ')
 output actionGroupName string = actionGroup.name
+
+@description('The resource ID of the action group ')
 output actionGroupResourceId string = actionGroup.id
