@@ -11,7 +11,7 @@ resource capacityPool 'Microsoft.NetApp/netAppAccounts/capacityPools@2021-04-01'
   }
 }
 
-module capacityPool_volumes 'nested_capacityPool_volume.bicep' = [for (volume, index) in (contains(capacityPoolObj, 'volumes') ? capacityPoolObj.volumes : []): {
+module capacityPool_volumes 'nested_capacityPool_volume.bicep' = [for (volume, index) in capacityPoolObj.volumes: {
   name: '${deployment().name}-Vol-${index}'
   params: {
     volumeObj: volume
@@ -21,7 +21,7 @@ module capacityPool_volumes 'nested_capacityPool_volume.bicep' = [for (volume, i
   }
 }]
 
-module capacityPool_rbac 'nested_capacityPool_rbac.bicep' = [for (roleAssignment, index) in (contains(capacityPoolObj, 'roleAssignments') ? capacityPoolObj.roleAssignments : []): {
+module capacityPool_rbac 'nested_capacityPool_rbac.bicep' = [for (roleAssignment, index) in capacityPoolObj.roleAssignments: {
   name: '${deployment().name}-Rbac-${index}'
   params: {
     principalIds: roleAssignment.principalIds

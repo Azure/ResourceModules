@@ -19,7 +19,7 @@ var builtInRoleNames = {
 }
 
 resource volume 'Microsoft.NetApp/netAppAccounts/capacityPools/volumes@2021-04-01' existing = {
-  name: '${split(resourceId, '/')[8]}/${split(resourceId, '/')[10]}/${split(resourceId, '/')[12]}'
+  name: last(split(resourceId, '/'))
 }
 
 resource roleAssignment 'Microsoft.Authorization/roleAssignments@2020-04-01-preview' = [for principalId in principalIds: {
