@@ -1,11 +1,11 @@
-@description('Optional. The name of the EventHub namespace. If no name is provided, then unique name will be created.')
+@description('Optional. The name of the event hub namespace. If no name is provided, then unique name will be created.')
 @maxLength(50)
 param name string = ''
 
 @description('Optional. Location for all resources.')
 param location string = resourceGroup().location
 
-@description('Optional. EventHub Plan sku name')
+@description('Optional. event hub Plan sku name')
 @allowed([
   'Basic'
   'Standard'
