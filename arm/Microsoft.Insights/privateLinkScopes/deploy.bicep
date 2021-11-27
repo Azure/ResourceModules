@@ -1,8 +1,8 @@
-@description('Required. Name of the Private Link Scope.')
+@description('Required. Name of the private link scope.')
 @minLength(1)
 param name string
 
-@description('Optional. The location of the Private Link Scope. Should be global.')
+@description('Optional. The location of the private link ccope. Should be global.')
 param location string = 'global'
 
 @allowed([
