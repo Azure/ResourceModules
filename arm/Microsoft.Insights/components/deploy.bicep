@@ -76,8 +76,5 @@ output appInsightsResourceId string = appInsights.id
 @description('The resource group the application insights component was deployed into')
 output appInsightsResourceGroup string = resourceGroup().name
 
-@description('The instrumentation key of the application insights component')
-output appInsightsKey string = appInsights.properties.InstrumentationKey
-
 @description('The application ID of the application insights component')
 output appInsightsAppId string = appInsights.properties.AppId

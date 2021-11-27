@@ -67,7 +67,6 @@ Tag names and tag values can be provided as needed. A tag can be left without a 
 | Output Name | Type | Description |
 | :-- | :-- | :-- |
 | `appInsightsAppId` | string | The application ID of the application insights component |
-| `appInsightsKey` | string | The instrumentation key of the application insights component |
 | `appInsightsName` | string | The name of the application insights component |
 | `appInsightsResourceGroup` | string | The resource group the application insights component was deployed into |
 | `appInsightsResourceId` | string | The resource ID of the application insights component |
