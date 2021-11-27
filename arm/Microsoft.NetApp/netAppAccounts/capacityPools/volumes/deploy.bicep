@@ -50,19 +50,20 @@ resource netAppAccount 'Microsoft.NetApp/netAppAccounts@2021-04-01' existing = {
 
   resource capacityPool 'capacityPools@2021-06-01' existing = {
     name: capacityPoolName
+  }
+}
 
-    resource volume 'volumes@2021-06-01' = {
-      name: name
-      location: location
-      properties: {
-        serviceLevel: serviceLevel
-        creationToken: creationToken
-        usageThreshold: usageThreshold
-        protocolTypes: protocolTypes
-        subnetId: subnetId
-        exportPolicy: empty(exportPolicy) ? null : exportPolicy
-      }
-    }
+resource volume 'Microsoft.NetApp/netAppAccounts/capacityPools/volumes@2021-06-01' = {
+  name: name
+  parent: netAppAccount::capacityPool
+  location: location
+  properties: {
+    serviceLevel: serviceLevel
+    creationToken: creationToken
+    usageThreshold: usageThreshold
+    protocolTypes: protocolTypes
+    subnetId: subnetId
+    exportPolicy: empty(exportPolicy) ? null : exportPolicy
   }
 }
 
@@ -71,15 +72,15 @@ module volume_rbac '.bicep/nested_rbac.bicep' = [for (roleAssignment, index) in 
   params: {
     principalIds: roleAssignment.principalIds
     roleDefinitionIdOrName: roleAssignment.roleDefinitionIdOrName
-    resourceName: '${netAppAccount.name}/${netAppAccount::capacityPool.name}/${netAppAccount::capacityPool::volume.name}'
+    resourceId: volume.id
   }
 }]
 
 @description('The name of the Volume.')
-output volumeName string = netAppAccount::capacityPool::volume.name
+output volumeName string = volume.name
 
-@description('The Resource Id of the Volume.')
-output volumeResourceId string = netAppAccount::capacityPool::volume.id
+@description('The Resource ID of the Volume.')
+output volumeResourceId string = volume.id
 
 @description('The name of the Resource Group the Volume was created in.')
 output volumeResourceGroup string = resourceGroup().name
