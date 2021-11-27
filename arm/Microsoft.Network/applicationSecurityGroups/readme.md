@@ -14,10 +14,10 @@ This module deploys Application Security Groups.
 
 | Parameter Name | Type | Default Value | Possible Values | Description |
 | :-- | :-- | :-- | :-- | :-- |
-| `applicationSecurityGroupName` | string |  |  | Required. Name of the Application Security Group. |
 | `cuaId` | string |  |  | Optional. Customer Usage Attribution id (GUID). This GUID must be previously registered |
 | `location` | string | `[resourceGroup().location]` |  | Optional. Location for all resources. |
 | `lock` | string | `NotSpecified` | `[CanNotDelete, NotSpecified, ReadOnly]` | Optional. Specify the type of lock. |
+| `name` | string |  |  | Required. Name of the Application Security Group. |
 | `roleAssignments` | array | `[]` |  | Optional. Array of role assignment objects that contain the 'roleDefinitionIdOrName' and 'principalId' to define RBAC role assignments on this resource. In the roleDefinitionIdOrName attribute, you can provide either the display name of the role definition, or its fully qualified ID in the following format: '/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11' |
 | `tags` | object | `{object}` |  | Optional. Tags of the resource. |
 
@@ -71,9 +71,9 @@ Tag names and tag values can be provided as needed. A tag can be left without a 
 
 | Output Name | Type | Description |
 | :-- | :-- | :-- |
-| `applicationSecurityGroupsName` | string | The name of the application security group |
-| `applicationSecurityGroupsResourceGroup` | string | The resource group the application security group was deployed into |
-| `applicationSecurityGroupsResourceId` | string | The resourceId of the application security group |
+| `applicationSecurityGroupName` | string | The name of the application security group |
+| `applicationSecurityGroupResourceGroup` | string | The resource group the application security group was deployed into |
+| `applicationSecurityGroupResourceId` | string | The resource ID of the application security group |
 
 ## Template references
 

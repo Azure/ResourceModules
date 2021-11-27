@@ -110,8 +110,9 @@ resource workspace_diagnosticSettings 'Microsoft.Insights/diagnosticsettings@201
 module workspace_rbac '.bicep/nested_rbac.bicep' = [for (roleAssignment, index) in roleAssignments: {
   name: '${uniqueString(deployment().name, location)}-Rbac-${index}'
   params: {
-    roleAssignmentObj: roleAssignment
-    resourceName: workspace.name
+    principalIds: roleAssignment.principalIds
+    roleDefinitionIdOrName: roleAssignment.roleDefinitionIdOrName
+    resourceId: workspace.id
   }
 }]
 

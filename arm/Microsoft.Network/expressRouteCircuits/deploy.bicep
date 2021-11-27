@@ -1,5 +1,5 @@
 @description('Required. This is the name of the ExpressRoute circuit')
-param circuitName string
+param name string
 
 @description('Required. This is the name of the ExpressRoute Service Provider. It must exactly match one of the Service Providers from List ExpressRoute Service Providers API call.')
 param serviceProviderName string
@@ -146,7 +146,7 @@ module pid_cuaId '.bicep/nested_cuaId.bicep' = if (!empty(cuaId)) {
 }
 
 resource expressRouteCircuits 'Microsoft.Network/expressRouteCircuits@2021-02-01' = {
-  name: circuitName
+  name: name
   location: location
   tags: tags
   sku: {
@@ -189,12 +189,13 @@ resource expressRouteCircuits_diagnosticSettings 'Microsoft.Insights/diagnosticS
 module expressRouteCircuits_rbac '.bicep/nested_rbac.bicep' = [for (roleAssignment, index) in roleAssignments: {
   name: '${deployment().name}-rbac-${index}'
   params: {
-    roleAssignmentObj: roleAssignment
-    resourceName: expressRouteCircuits.name
+    principalIds: roleAssignment.principalIds
+    roleDefinitionIdOrName: roleAssignment.roleDefinitionIdOrName
+    resourceId: expressRouteCircuits.id
   }
 }]
 
-@description('The resourceId of express route curcuit')
+@description('The resource ID of express route curcuit')
 output expressRouteCircuitResourceId string = expressRouteCircuits.id
 
 @description('The resource group the express route curcuit was deployed into')

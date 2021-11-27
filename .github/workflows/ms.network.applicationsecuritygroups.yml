@@ -28,7 +28,7 @@ on:
       - '.github/actions/templates/**'
       - '.github/workflows/ms.network.applicationsecuritygroups.yml'
       - 'arm/Microsoft.Network/applicationSecurityGroups/**'
-      - '!arm/Microsoft.Network/applicationSecurityGroups/readme.md'
+      - '!*/**/readme.md'
 
 env:
   moduleName: 'applicationSecurityGroups'

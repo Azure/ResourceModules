@@ -22,12 +22,12 @@ This module deploys a Load Balancer
 | `eventHubAuthorizationRuleId` | string |  |  | Optional. Resource ID of the event hub authorization rule for the Event Hubs namespace in which the event hub should be created or streamed to. |
 | `eventHubName` | string |  |  | Optional. Name of the event hub within the namespace to which logs are streamed. Without this, an event hub is created for each log category. |
 | `frontendIPConfigurations` | array |  |  | Required. Array of objects containing all frontend IP configurations |
-| `loadBalancerName` | string |  |  | Required. The Proximity Placement Groups Name |
 | `loadBalancerSku` | string | `Standard` | `[Basic, Standard]` | Optional. Name of a load balancer SKU. |
 | `loadBalancingRules` | array |  |  | Required. Array of objects containing all load balancing rules |
 | `location` | string | `[resourceGroup().location]` |  | Optional. Location for all resources. |
 | `lock` | string | `NotSpecified` | `[CanNotDelete, NotSpecified, ReadOnly]` | Optional. Specify the type of lock. |
 | `metricsToEnable` | array | `[AllMetrics]` | `[AllMetrics]` | Optional. The name of metrics that will be streamed. |
+| `name` | string |  |  | Required. The Proximity Placement Groups Name |
 | `probes` | array |  |  | Required. Array of objects containing all probes, these are references in the load balancing rules |
 | `roleAssignments` | array | `[]` |  | Optional. Array of role assignment objects that contain the 'roleDefinitionIdOrName' and 'principalId' to define RBAC role assignments on this resource. In the roleDefinitionIdOrName attribute, you can provide either the display name of the role definition, or its fully qualified ID in the following format: '/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11' |
 | `tags` | object | `{object}` |  | Optional. Tags of the resource. |
@@ -215,7 +215,7 @@ Tag names and tag values can be provided as needed. A tag can be left without a 
 | :-- | :-- | :-- |
 | `loadBalancerName` | string | The name of the load balancer |
 | `loadBalancerResourceGroup` | string | The resource group the load balancer was deployed into |
-| `loadBalancerResourceId` | string | The resourceID of the load balancer |
+| `loadBalancerResourceId` | string | The resource ID of the load balancer |
 
 ## Template references
 

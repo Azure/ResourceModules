@@ -1,5 +1,5 @@
 @description('Required. Name of the Azure Bastion resource')
-param natGatewayName string
+param name string
 
 @description('Optional. The idle timeout of the nat gateway.')
 param idleTimeoutInMinutes int = 5
@@ -101,7 +101,7 @@ var diagnosticsMetrics = [for metric in metricsToEnable: {
   }
 }]
 
-var natGatewayPipName_var = (empty(natGatewayPipName) ? '${natGatewayName}-pip' : natGatewayPipName)
+var natGatewayPipName_var = (empty(natGatewayPipName) ? '${name}-pip' : natGatewayPipName)
 var natGatewayPublicIPPrefix = {
   id: natGatewayPublicIPPrefixId
 }
@@ -164,7 +164,7 @@ resource publicIP_diagnosticSettings 'Microsoft.Insights/diagnosticSettings@2017
 // NAT GATEWAY
 // ===========
 resource natGateway 'Microsoft.Network/natGateways@2021-02-01' = {
-  name: natGatewayName
+  name: name
   location: location
   tags: tags
   sku: {
@@ -186,15 +186,16 @@ resource natGateway_lock 'Microsoft.Authorization/locks@2016-09-01' = if (lock !
 module natGateway_rbac '.bicep/nested_rbac.bicep' = [for (roleAssignment, index) in roleAssignments: {
   name: '${deployment().name}-rbac-${index}'
   params: {
-    roleAssignmentObj: roleAssignment
-    resourceName: natGateway.name
+    principalIds: roleAssignment.principalIds
+    roleDefinitionIdOrName: roleAssignment.roleDefinitionIdOrName
+    resourceId: natGateway.id
   }
 }]
 
 @description('The name of the NAT Gateway')
 output natGatewayName string = natGateway.name
 
-@description('The resourceId of the NAT Gateway')
+@description('The resource ID of the NAT Gateway')
 output natGatewayResourceId string = natGateway.id
 
 @description('The resource group the NAT Gateway was deployed into')

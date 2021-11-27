@@ -4,7 +4,8 @@ param resourceGroupName string = ''
 param subscriptionId string = ''
 param managementGroupId string = ''
 param location string = deployment().location
-param roleAssignmentObj object
+param principalIds array
+param roleDefinitionIdOrName string
 
 var builtInRoleNames = {
   'AcrPush': '/providers/Microsoft.Authorization/roleDefinitions/8311e382-0749-4cb8-b61a-304f252e45ec'
@@ -290,34 +291,34 @@ var builtInRoleNames = {
   'Azure Maps Contributor': '/providers/Microsoft.Authorization/roleDefinitions/dba33070-676a-4fb0-87fa-064dc56ff7fb'
 }
 
-module roleAssignments_mg '../../../../arm/Microsoft.Authorization/roleAssignments/.bicep/nested_rbac_mg.bicep' = [for principalId in roleAssignmentObj.principalIds: if (!empty(managementGroupId) && empty(subscriptionId) && empty(resourceGroupName)) {
+module roleAssignments_mg '../../../../arm/Microsoft.Authorization/roleAssignments/.bicep/nested_rbac_mg.bicep' = [for principalId in principalIds: if (!empty(managementGroupId) && empty(subscriptionId) && empty(resourceGroupName)) {
   name: 'roleAssignments_mg-${guid(deployment().name, location, principalId)}'
   scope: managementGroup(managementGroupId)
   params: {
     managementGroupId: managementGroupId
-    roleDefinitionIdOrName: (contains(builtInRoleNames, roleAssignmentObj.roleDefinitionIdOrName) ? builtInRoleNames[roleAssignmentObj.roleDefinitionIdOrName] : roleAssignmentObj.roleDefinitionIdOrName)
+    roleDefinitionIdOrName: contains(builtInRoleNames, roleDefinitionIdOrName) ? builtInRoleNames[roleDefinitionIdOrName] : roleDefinitionIdOrName
     principalId: principalId
     location: location
   }
 }]
 
-module roleAssignments_sub '../../../../arm/Microsoft.Authorization/roleAssignments/.bicep/nested_rbac_sub.bicep' = [for principalId in roleAssignmentObj.principalIds: if (empty(managementGroupId) && !empty(subscriptionId) && empty(resourceGroupName)) {
+module roleAssignments_sub '../../../../arm/Microsoft.Authorization/roleAssignments/.bicep/nested_rbac_sub.bicep' = [for principalId in principalIds: if (empty(managementGroupId) && !empty(subscriptionId) && empty(resourceGroupName)) {
   name: 'roleAssignments_sub-${guid(deployment().name, location, principalId)}'
   scope: subscription(subscriptionId)
   params: {
     subscriptionId: subscriptionId
-    roleDefinitionIdOrName: (contains(builtInRoleNames, roleAssignmentObj.roleDefinitionIdOrName) ? builtInRoleNames[roleAssignmentObj.roleDefinitionIdOrName] : roleAssignmentObj.roleDefinitionIdOrName)
+    roleDefinitionIdOrName: contains(builtInRoleNames, roleDefinitionIdOrName) ? builtInRoleNames[roleDefinitionIdOrName] : roleDefinitionIdOrName
     principalId: principalId
     location: location
   }
 }]
 
-module roleAssignments_rg '../../../../arm/Microsoft.Authorization/roleAssignments/.bicep/nested_rbac_rg.bicep' = [for principalId in roleAssignmentObj.principalIds: if (empty(managementGroupId) && !empty(resourceGroupName) && !empty(subscriptionId)) {
+module roleAssignments_rg '../../../../arm/Microsoft.Authorization/roleAssignments/.bicep/nested_rbac_rg.bicep' = [for principalId in principalIds: if (empty(managementGroupId) && !empty(resourceGroupName) && !empty(subscriptionId)) {
   name: 'roleAssignments_rg-${guid(deployment().name, location, principalId)}'
   scope: resourceGroup(subscriptionId, resourceGroupName)
   params: {
     subscriptionId: subscriptionId
-    roleDefinitionIdOrName: (contains(builtInRoleNames, roleAssignmentObj.roleDefinitionIdOrName) ? builtInRoleNames[roleAssignmentObj.roleDefinitionIdOrName] : roleAssignmentObj.roleDefinitionIdOrName)
+    roleDefinitionIdOrName: contains(builtInRoleNames, roleDefinitionIdOrName) ? builtInRoleNames[roleDefinitionIdOrName] : roleDefinitionIdOrName
     principalId: principalId
     location: location
   }

@@ -289,11 +289,6 @@ param sasTokenValidityLength string = 'PT8H'
 
 var vmComputerNameTransformed = vmComputerNamesTransformation == 'uppercase' ? toUpper(name) : (vmComputerNamesTransformation == 'lowercase' ? toLower(name) : name)
 
-var identity = {
-  type: managedServiceIdentity
-  userAssignedIdentities: !empty(userAssignedIdentities) ? userAssignedIdentities : null
-}
-
 var accountSasProperties = {
   signedServices: 'b'
   signedPermission: 'r'
@@ -335,7 +330,10 @@ module virtualMachine_nic '.bicep/nested_networkInterface.bicep' = [for (nicConf
 resource virtualMachine 'Microsoft.Compute/virtualMachines@2021-07-01' = {
   name: name
   location: location
-  identity: identity
+  identity: {
+    type: managedServiceIdentity
+    userAssignedIdentities: !empty(userAssignedIdentities) ? userAssignedIdentities : null
+  }
   tags: tags
   zones: useAvailabilityZone ? array(availabilityZone) : null
   plan: !empty(plan) ? plan : null
@@ -581,8 +579,9 @@ resource virtualMachine_lock 'Microsoft.Authorization/locks@2017-04-01' = if (lo
 module virtualMachine_rbac '.bicep/nested_rbac.bicep' = [for (roleAssignment, index) in roleAssignments: {
   name: '${uniqueString(deployment().name, location)}-vm-rbac-${index}'
   params: {
-    roleAssignmentObj: roleAssignment
-    resourceName: virtualMachine.name
+    principalIds: roleAssignment.principalIds
+    roleDefinitionIdOrName: roleAssignment.roleDefinitionIdOrName
+    resourceId: virtualMachine.id
   }
 }]
 

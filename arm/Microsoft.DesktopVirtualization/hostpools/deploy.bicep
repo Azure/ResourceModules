@@ -183,8 +183,9 @@ resource hostPool_diagnosticSettings 'Microsoft.Insights/diagnosticsettings@2017
 module hostPool_rbac '.bicep/nested_rbac.bicep' = [for (roleAssignment, index) in roleAssignments: {
   name: '${uniqueString(deployment().name, location)}-Rbac-${index}'
   params: {
-    roleAssignmentObj: roleAssignment
-    resourceName: hostPool.name
+    principalIds: roleAssignment.principalIds
+    roleDefinitionIdOrName: roleAssignment.roleDefinitionIdOrName
+    resourceId: hostPool.id
   }
 }]
 

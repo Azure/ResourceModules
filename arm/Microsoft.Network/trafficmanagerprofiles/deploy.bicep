@@ -1,6 +1,6 @@
 @description('Required. Name of the Traffic Manager')
 @minLength(1)
-param trafficManagerName string
+param name string
 
 @description('Optional. The status of the Traffic Manager profile.')
 @allowed([
@@ -121,7 +121,7 @@ module pid_cuaId '.bicep/nested_cuaId.bicep' = if (!empty(cuaId)) {
 }
 
 resource trafficmanagerprofile 'Microsoft.Network/trafficmanagerprofiles@2018-08-01' = {
-  name: trafficManagerName
+  name: name
   tags: tags
   location: 'global'
   properties: {
@@ -163,12 +163,13 @@ resource trafficmanagerprofile_diagnosticSettings 'Microsoft.Insights/diagnostic
 module trafficmanagerprofile_rbac '.bicep/nested_rbac.bicep' = [for (roleAssignment, index) in roleAssignments: {
   name: '${deployment().name}-rbac-${index}'
   params: {
-    roleAssignmentObj: roleAssignment
-    resourceName: trafficmanagerprofile.name
+    principalIds: roleAssignment.principalIds
+    roleDefinitionIdOrName: roleAssignment.roleDefinitionIdOrName
+    resourceId: trafficmanagerprofile.id
   }
 }]
 
-@description('The resourceId of the traffix manager')
+@description('The resource ID of the traffix manager')
 output trafficManagerResourceId string = trafficmanagerprofile.id
 
 @description('The resource group the traffix manager was deployed into')

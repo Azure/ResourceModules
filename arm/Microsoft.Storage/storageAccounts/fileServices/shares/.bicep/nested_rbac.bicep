@@ -1,6 +1,6 @@
 param principalIds array
 param roleDefinitionIdOrName string
-param resourceName string
+param resourceId string
 
 var builtInRoleNames = {
   'Owner': subscriptionResourceId('Microsoft.Authorization/roleDefinitions', '8e3af657-a8ff-443c-a75c-2fe8c4bcb635')
@@ -46,7 +46,7 @@ var builtInRoleNames = {
 }
 
 resource fileShare 'Microsoft.Storage/storageAccounts/fileServices/shares@2019-06-01' existing = {
-  name: resourceName
+  name: '${split(resourceId, '/')[5]}/${split(resourceId, '/')[7]}/${split(resourceId, '/')[9]}'
 }
 
 resource roleAssignment 'Microsoft.Authorization/roleAssignments@2020-04-01-preview' = [for principalId in principalIds: {

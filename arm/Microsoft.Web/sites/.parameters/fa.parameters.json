@@ -1,0 +1,54 @@
+{
+    "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "appName": {
+            "value": "sxx-az-fa-x-001"
+        },
+        "appType": {
+            "value": "functionapp"
+        },
+        "appServicePlanName": {
+            "value": "sxx-az-fa-x-001-asp"
+        },
+        "appServicePlanSkuName": {
+            "value": "P1v2"
+        },
+        "appServicePlanTier": {
+            "value": "PremiumV2"
+        },
+        "appServicePlanSize": {
+            "value": "P1v2"
+        },
+        "appServicePlanFamily": {
+            "value": "Pv2"
+        },
+        "siteConfig": {
+            "value": {
+                "alwaysOn": true
+            }
+        },
+        "storageAccountName": {
+            "value": "adpsxxazsaweux002"
+        },
+        "storageAccountResourceGroupName": {
+            "value": "validation-rg"
+        },
+        "functionsWorkerRuntime": {
+            "value": "powershell"
+        },
+        "enableMonitoring": {
+            "value": false
+        },
+        "roleAssignments": {
+            "value": [
+                {
+                    "roleDefinitionIdOrName": "Reader",
+                    "principalIds": [
+                        "<<deploymentSpId>>"
+                    ]
+                }
+            ]
+        }
+    }
+}

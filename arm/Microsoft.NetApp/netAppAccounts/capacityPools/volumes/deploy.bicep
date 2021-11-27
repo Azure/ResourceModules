@@ -63,7 +63,7 @@ resource volume 'Microsoft.NetApp/netAppAccounts/capacityPools/volumes@2021-06-0
     usageThreshold: usageThreshold
     protocolTypes: protocolTypes
     subnetId: subnetId
-    exportPolicy: empty(exportPolicy) ? null : exportPolicy
+    exportPolicy: !empty(exportPolicy) ? exportPolicy : null
   }
 }
 
