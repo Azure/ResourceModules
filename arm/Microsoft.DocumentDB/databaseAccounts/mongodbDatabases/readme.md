@@ -1,4 +1,4 @@
-# DocumentDB Database Account MongoDB databases `[Microsoft.DocumentDB/databaseAccount/mongodbDatabases]`
+# DocumentDB Database Account MongoDB databases  `[Microsoft.DocumentDB/databaseAccounts/mongodbDatabases]`
 
 This module deploys a MongoDB within a CosmosDB account.
 
@@ -29,8 +29,8 @@ Please reference the documentation for [collections](./collections/readme.md)
 | Output Name | Type | Description |
 | :-- | :-- | :-- |
 | `mongodbDatabaseName` | string | The name of the mongodb database. |
-| `mongodbDatabaseResourceGroup` | string | The name of the Resource Group the mongodb database was created in. |
-| `mongodbDatabaseResourceId` | string | The Resource Id of the mongodb database. |
+| `mongodbDatabaseResourceGroup` | string | The name of the resource group the mongodb database was created in. |
+| `mongodbDatabaseResourceId` | string | The resource ID of the mongodb database. |
 
 ## Template references
 

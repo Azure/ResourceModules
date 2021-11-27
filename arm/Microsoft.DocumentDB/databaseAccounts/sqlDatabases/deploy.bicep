@@ -1,19 +1,19 @@
-@description('Required. Id of the Cosmos DB database account.')
+@description('Required. ID of the Cosmos DB database account.')
 param databaseAccountName string
 
-@description('Required. Name of the SQL Database ')
+@description('Required. Name of the SQL database ')
 param name string
 
 @description('Optional. Array of containers to deploy in the SQL database.')
 param containers array = []
 
-@description('Optional. Request Units per second')
+@description('Optional. Request units per second')
 param throughput int = 400
 
-@description('Optional. Tags of the SQL Database resource.')
+@description('Optional. Tags of the SQL database resource.')
 param tags object = {}
 
-@description('Optional. Customer Usage Attribution id (GUID). This GUID must be previously registered')
+@description('Optional. Customer Usage Attribution ID (GUID). This GUID must be previously registered')
 param cuaId string = ''
 
 module pid_cuaId '.bicep/nested_cuaId.bicep' = if (!empty(cuaId)) {
@@ -21,8 +21,13 @@ module pid_cuaId '.bicep/nested_cuaId.bicep' = if (!empty(cuaId)) {
   params: {}
 }
 
+resource databaseAccount 'Microsoft.DocumentDB/databaseAccounts@2021-07-01-preview' existing = {
+  name: databaseAccountName
+}
+
 resource sqlDatabase 'Microsoft.DocumentDB/databaseAccounts/sqlDatabases@2021-06-15' = {
-  name: '${databaseAccountName}/${name}'
+  name: name
+  parent: databaseAccount
   tags: tags
   properties: {
     resource: {
@@ -45,11 +50,11 @@ module container 'containers/deploy.bicep' = [for container in containers: {
   }
 }]
 
-@description('The name of the sql database.')
+@description('The name of the SQL database.')
 output sqlDatabaseName string = sqlDatabase.name
 
-@description('The Resource Id of the sql database.')
+@description('The resource ID of the SQL database.')
 output sqlDatabaseResourceId string = sqlDatabase.id
 
-@description('The name of the Resource Group the sql database was created in.')
+@description('The name of the resource group the SQL database was created in.')
 output sqlDatabaseResourceGroup string = resourceGroup().name

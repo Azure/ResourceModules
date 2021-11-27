@@ -106,8 +106,8 @@ Please reference the documentation for [mongodbDatabases](./mongodbDatabases/rea
 | Output Name | Type | Description |
 | :-- | :-- | :-- |
 | `databaseAccountName` | string | The name of the database account. |
-| `databaseAccountResourceGroup` | string | The name of the Resource Group the database account was created in. |
-| `databaseAccountResourceId` | string | The Resource Id of the database account. |
+| `databaseAccountResourceGroup` | string | The name of the resource group the database account was created in. |
+| `databaseAccountResourceId` | string | The resource ID of the database account. |
 
 ## Template references
 
