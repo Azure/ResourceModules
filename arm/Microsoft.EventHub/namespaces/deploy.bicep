@@ -5,14 +5,14 @@ param name string = ''
 @description('Optional. Location for all resources.')
 param location string = resourceGroup().location
 
-@description('Optional. event hub plan sku name')
+@description('Optional. event hub plan SKU name')
 @allowed([
   'Basic'
   'Standard'
 ])
 param skuName string = 'Standard'
 
-@description('Optional. Event Hub lan scale-out capacity of the resource')
+@description('Optional. Event Hub plan scale-out capacity of the resource')
 @minValue(1)
 @maxValue(20)
 param skuCapacity int = 1
