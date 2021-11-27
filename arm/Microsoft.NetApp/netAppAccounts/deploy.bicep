@@ -45,12 +45,12 @@ param cuaId string = ''
 
 var activeDirectoryConnectionProperties = [
   {
-    username: empty(domainName) ? domainJoinUser : null
-    password: empty(domainName) ? domainJoinPassword : null
-    domain: empty(domainName) ? domainName : null
-    dns: empty(domainName) ? dnsServers : null
-    smbServerName: empty(domainName) ? smbServerNamePrefix : null
-    organizationalUnit: empty(domainJoinOU) ? domainJoinOU : null
+    username: !empty(domainName) ? domainJoinUser : null
+    password: !empty(domainName) ? domainJoinPassword : null
+    domain: !empty(domainName) ? domainName : null
+    dns: !empty(domainName) ? dnsServers : null
+    smbServerName: !empty(domainName) ? smbServerNamePrefix : null
+    organizationalUnit: !empty(domainJoinOU) ? domainJoinOU : null
   }
 ]
 
@@ -64,7 +64,7 @@ resource netAppAccount 'Microsoft.NetApp/netAppAccounts@2021-04-01' = {
   tags: tags
   location: location
   properties: {
-    activeDirectories: empty(domainName) ? activeDirectoryConnectionProperties : null
+    activeDirectories: !empty(domainName) ? activeDirectoryConnectionProperties : null
   }
 }
 
