@@ -189,8 +189,14 @@ module hostPool_rbac '.bicep/nested_rbac.bicep' = [for (roleAssignment, index) i
   }
 }]
 
+@description('The resource ID of the AVD host pool')
 output hostPoolResourceId string = hostPool.id
+
+@description('The resource group the AVD host pool was deployed into')
 output hostPoolResourceGroup string = resourceGroup().name
+
+@description('The name of the AVD host pool')
 output hostPoolName string = hostPool.name
+
+@description('The expiration time for the registration token')
 output tokenExpirationTime string = dateTimeAdd(baseTime, tokenValidityLength)
-output hostpoolToken string = '${hostPool.properties.registrationInfo.token}'
