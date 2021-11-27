@@ -18,7 +18,7 @@ This module deploys Azure Monitor Private Link Scope
 | Parameter Name | Type | Default Value | Possible Values | Description |
 | :-- | :-- | :-- | :-- | :-- |
 | `cuaId` | string |  |  | Optional. Customer Usage Attribution id (GUID). This GUID must be previously registered |
-| `location` | string | `global` |  | Optional. The location of the private link ccope. Should be global. |
+| `location` | string | `global` |  | Optional. The location of the private link scope. Should be global. |
 | `lock` | string | `NotSpecified` | `[CanNotDelete, NotSpecified, ReadOnly]` | Optional. Specify the type of lock. |
 | `name` | string |  |  | Required. Name of the private link scope. |
 | `privateEndpoints` | array | `[]` |  | Optional. Configuration Details for private endpoints. |

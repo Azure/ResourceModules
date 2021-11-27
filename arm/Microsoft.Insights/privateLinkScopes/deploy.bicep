@@ -2,7 +2,7 @@
 @minLength(1)
 param name string
 
-@description('Optional. The location of the private link ccope. Should be global.')
+@description('Optional. The location of the private link scope. Should be global.')
 param location string = 'global'
 
 @allowed([
