@@ -3,22 +3,7 @@
     "contentVersion": "1.0.0.0",
     "parameters": {
         "name": {
-            "value": "sxx-az-anf-x-001"
-        },
-        "domainName": {
-            "value": ""
-        },
-        "domainJoinUser": {
-            "value": ""
-        },
-        "dnsServers": {
-            "value": ""
-        },
-        "smbServerNamePrefix": {
-            "value": ""
-        },
-        "domainJoinOU": {
-            "value": ""
+            "value": "sxx-az-anf-x-004"
         },
         "capacityPools": {
             "value": [
@@ -28,11 +13,20 @@
                     "size": 4398046511104,
                     "volumes": [
                         {
-                            "name": "vol01-nfsv3",
-                            "creationToken": "vol01-nfsv3",
+                            "name": "anf4-vol01-nfsv41",
                             "usageThreshold": 107374182400,
                             "protocolTypes": [
-                                "NFSv3"
+                                "NFSv4.1"
+                            ],
+                            "exportPolicyRules": [
+                                {
+                                    "ruleIndex": 1,
+                                    "unixReadOnly": false,
+                                    "unixReadWrite": true,
+                                    "nfsv3": false,
+                                    "nfsv41": true,
+                                    "allowedClients": "0.0.0.0/0"
+                                }
                             ],
                             "subnetId": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/virtualNetworks/adp-sxx-az-vnet-x-001/subnets/sxx-az-subnet-x-004",
                             "roleAssignments": [
@@ -43,37 +37,25 @@
                                     ]
                                 }
                             ]
+                        },
+                        {
+                            "name": "anf4-vol02-nfsv41",
+                            "usageThreshold": 107374182400,
+                            "protocolTypes": [
+                                "NFSv4.1"
+                            ],
+                            "exportPolicyRules": [
+                                {
+                                    "ruleIndex": 1,
+                                    "unixReadOnly": false,
+                                    "unixReadWrite": true,
+                                    "nfsv3": false,
+                                    "nfsv41": true,
+                                    "allowedClients": "0.0.0.0/0"
+                                }
+                            ],
+                            "subnetId": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/virtualNetworks/adp-sxx-az-vnet-x-001/subnets/sxx-az-subnet-x-004"
                         }
-                        //,
-                        // {
-                        //     "name": "vol01-nfsv41",
-                        //     "creationToken": "vol01-nfsv41",
-                        //     "usageThreshold": 107374182400,
-                        //     "protocolTypes": [
-                        //         "NFSv4.1"
-                        //     ],
-                        //     "exportPolicy": {
-                        //         "rules": [
-                        //             {
-                        //                 "ruleIndex": 1,
-                        //                 "unixReadOnly": false,
-                        //                 "unixReadWrite": true,
-                        //                 "nfsv3": false,
-                        //                 "nfsv41": true,
-                        //                 "allowedClients": "0.0.0.0/0"
-                        //             }
-                        //         ]
-                        //     },
-                        //     "subnetId": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/virtualNetworks/adp-sxx-az-vnet-x-001/subnets/sxx-az-subnet-x-004",
-                        //     "roleAssignments": [
-                        //         {
-                        //             "roleDefinitionIdOrName": "Reader",
-                        //             "principalIds": [
-                        //                 "cf33fea8-b30f-424f-ab73-c48d99e0b222"
-                        //             ]
-                        //         }
-                        //     ]
-                        // }
                     ],
                     "roleAssignments": [
                         {

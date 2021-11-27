@@ -53,7 +53,7 @@ This template deploys capacity pools in an Azure NetApp Files.
 | :-- | :-- | :-- |
 | `capacityPoolName` | string | The name of the Capacity Pool. |
 | `capacityPoolResourceGroup` | string | The name of the Resource Group the Capacity Pool was created in. |
-| `capacityPoolResourceId` | string | The Resource Id of the Capacity Pool. |
+| `capacityPoolResourceId` | string | The resource ID of the Capacity Pool. |
 
 ## Template references
 

@@ -48,34 +48,35 @@ module pid_cuaId '.bicep/nested_cuaId.bicep' = if (!empty(cuaId)) {
 
 resource netAppAccount 'Microsoft.NetApp/netAppAccounts@2021-04-01' existing = {
   name: netAppAccountName
+}
 
-  resource capacityPool 'capacityPools@2021-06-01' = {
-    name: name
-    location: location
-    tags: tags
-    properties: {
-      serviceLevel: serviceLevel
-      size: size
-      qosType: qosType
-      coolAccess: coolAccess
-    }
+resource capacityPool 'Microsoft.NetApp/netAppAccounts/capacityPools@2021-06-01' = {
+  name: name
+  parent: netAppAccount
+  location: location
+  tags: tags
+  properties: {
+    serviceLevel: serviceLevel
+    size: size
+    qosType: qosType
+    coolAccess: coolAccess
   }
 }
 
 @batchSize(1)
-module capacityPool_volumes './volumes/deploy.bicep' = [for (volume, index) in volumes: {
+module capacityPool_volumes 'volumes/deploy.bicep' = [for (volume, index) in volumes: {
   name: '${deployment().name}-Vol-${index}'
   params: {
     netAppAccountName: netAppAccount.name
-    capacityPoolName: netAppAccount::capacityPool.name
-    name: name
+    capacityPoolName: capacityPool.name
+    name: volume.name
     location: location
     serviceLevel: serviceLevel
-    creationToken: volume.creationToken
+    creationToken: contains(volume, 'creationToken') ? volume.creationToken : volume.name
     usageThreshold: volume.usageThreshold
     protocolTypes: contains(volume, 'protocolTypes') ? volume.protocolTypes : []
     subnetId: volume.subnetId
-    exportPolicy: contains(volume, 'exportPolicy') ? volume.exportPolicy : {}
+    exportPolicyRules: contains(volume, 'exportPolicyRules') ? volume.exportPolicyRules : []
     roleAssignments: contains(volume, 'roleAssignments') ? volume.roleAssignments : []
   }
 }]
@@ -85,15 +86,15 @@ module capacityPool_rbac '.bicep/nested_rbac.bicep' = [for (roleAssignment, inde
   params: {
     principalIds: roleAssignment.principalIds
     roleDefinitionIdOrName: roleAssignment.roleDefinitionIdOrName
-    resourceName: '${netAppAccount.name}/${netAppAccount::capacityPool.name}'
+    resourceId: capacityPool.id
   }
 }]
 
 @description('The name of the Capacity Pool.')
-output capacityPoolName string = netAppAccount::capacityPool.name
+output capacityPoolName string = capacityPool.name
 
-@description('The Resource Id of the Capacity Pool.')
-output capacityPoolResourceId string = netAppAccount::capacityPool.id
+@description('The resource ID of the Capacity Pool.')
+output capacityPoolResourceId string = capacityPool.id
 
 @description('The name of the Resource Group the Capacity Pool was created in.')
 output capacityPoolResourceGroup string = resourceGroup().name
