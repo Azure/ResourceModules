@@ -22,11 +22,11 @@ var builtInRoleNames = {
 }
 
 resource eventHub 'Microsoft.EventHub/namespaces/eventhubs@2021-06-01-preview' existing = {
-  name: '${split(resourceId, '/')[5]}/${split(resourceId, '/')[7]}}'
+  name: '${split(resourceId, '/')[8]}/${split(resourceId, '/')[10]}}'
 }
 
 resource roleAssignment 'Microsoft.Authorization/roleAssignments@2020-04-01-preview' = [for principalId in principalIds: {
-  name: guid(split(resourceName, '/')[0], split(resourceName, '/')[1], principalId, roleDefinitionIdOrName)
+  name: guid(split(resourceId, '/')[0], split(resourceId, '/')[1], principalId, roleDefinitionIdOrName)
   properties: {
     roleDefinitionId: contains(builtInRoleNames, roleDefinitionIdOrName) ? builtInRoleNames[roleDefinitionIdOrName] : roleDefinitionIdOrName
     principalId: principalId
