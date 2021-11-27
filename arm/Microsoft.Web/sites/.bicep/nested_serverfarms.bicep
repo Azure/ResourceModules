@@ -1,9 +1,9 @@
-@description('Required. The Name of the App Service Plan to deploy.')
+@description('Required. The Name of the app service plan to deploy.')
 @minLength(1)
 @maxLength(40)
 param name string
 
-@description('Required. Defines the name, tier, size, family and capacity of the App Service Plan.')
+@description('Required. Defines the name, tier, size, family and capacity of the app service plan.')
 param sku object
 
 @description('Optional. Location for all resources.')
@@ -16,7 +16,7 @@ param location string = resourceGroup().location
 ])
 param serverOS string = 'Windows'
 
-@description('Optional. The Resource Id of the App Service Environment to use for the App Service Plan.')
+@description('Optional. The Resource ID of the App Service Environment to use for the app service plan.')
 param appServiceEnvironmentId string = ''
 
 @description('Optional. Target worker tier assigned to the App Service plan.')
@@ -84,5 +84,5 @@ output appServicePlanResourceGroup string = resourceGroup().name
 @description('The name of the app service plan')
 output appServicePlanName string = appServicePlan.name
 
-@description('The resourceId of the app service plan')
+@description('The resource ID of the app service plan')
 output appServicePlanResourceId string = appServicePlan.id
