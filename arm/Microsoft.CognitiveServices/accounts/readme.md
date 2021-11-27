@@ -17,7 +17,6 @@ This module deploys different kinds of Cognitive Services resources
 
 | Parameter Name | Type | Default Value | Possible Values | Description |
 | :-- | :-- | :-- | :-- | :-- |
-| `accountName` | string |  |  | Required. The name of Cognitive Services account |
 | `cuaId` | string |  |  | Optional. Customer Usage Attribution id (GUID). This GUID must be previously registered |
 | `customSubDomainName` | string |  |  | Optional. Subdomain name used for token-based authentication. Required if 'networkAcls' are set. |
 | `diagnosticLogsRetentionInDays` | int | `365` |  | Optional. Specifies the number of days that logs will be kept for; a value of 0 will retain data indefinitely. |
@@ -30,6 +29,7 @@ This module deploys different kinds of Cognitive Services resources
 | `logsToEnable` | array | `[Audit, RequestResponse]` | `[Audit, RequestResponse]` | Optional. The name of logs that will be streamed. |
 | `managedIdentity` | string | `None` | `[None, SystemAssigned]` | Optional. Type of managed service identity. |
 | `metricsToEnable` | array | `[AllMetrics]` | `[AllMetrics]` | Optional. The name of metrics that will be streamed. |
+| `name` | string |  |  | Required. The name of Cognitive Services account |
 | `networkAcls` | object | `{object}` |  | Optional. Service endpoint object information |
 | `privateEndpoints` | array | `[]` |  | Optional. Configuration Details for private endpoints. |
 | `publicNetworkAccess` | string | `Enabled` | `[Enabled, Disabled]` | Optional. Subdomain name used for token-based authentication. Must be set if 'networkAcls' are set. |
@@ -142,13 +142,13 @@ Tag names and tag values can be provided as needed. A tag can be left without a 
 
 ## Outputs
 
-| Output Name | Type |
-| :-- | :-- |
-| `cognitiveServicesEndpoint` | string |
-| `cognitiveServicesName` | string |
-| `cognitiveServicesResourceGroup` | string |
-| `cognitiveServicesResourceId` | string |
-| `principalId` | string |
+| Output Name | Type | Description |
+| :-- | :-- | :-- |
+| `cognitiveServicesEndpoint` | string | The service endpoint of the cognitive services account |
+| `cognitiveServicesName` | string | The name of the cognitive services account |
+| `cognitiveServicesResourceGroup` | string | The resource group the cognitive services account was deployed into |
+| `cognitiveServicesResourceId` | string | The resource ID of the cognitive services account |
+| `principalId` | string | The prinicipal ID of the cognitive services account (if any) |
 
 ## Considerations
 
