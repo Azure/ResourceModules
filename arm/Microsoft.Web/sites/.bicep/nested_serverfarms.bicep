@@ -1,4 +1,4 @@
-@description('Required. The Name of the app service plan to deploy.')
+@description('Required. The name of the app service plan to deploy.')
 @minLength(1)
 @maxLength(40)
 param name string
