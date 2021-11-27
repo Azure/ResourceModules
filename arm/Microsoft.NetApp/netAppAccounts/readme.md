@@ -4,7 +4,7 @@ This template deploys Azure NetApp Files.
 
 ## Resource types
 
-| Resource Type | API Version |
+| Resource Type | Api Version |
 | :-- | :-- |
 | `Microsoft.Authorization/locks` | 2016-09-01 |
 | `Microsoft.Authorization/roleAssignments` | 2020-04-01-preview |
