@@ -17,8 +17,8 @@ This template deploys Public IP Prefixes.
 | `cuaId` | string |  |  | Optional. Customer Usage Attribution id (GUID). This GUID must be previously registered |
 | `location` | string | `[resourceGroup().location]` |  | Optional. Location for all resources. |
 | `lock` | string | `NotSpecified` | `[CanNotDelete, NotSpecified, ReadOnly]` | Optional. Specify the type of lock. |
+| `name` | string |  |  | Required. Name of the Public IP Prefix |
 | `prefixLength` | int |  |  | Required. Length of the Public IP Prefix |
-| `publicIpPrefixName` | string |  |  | Required. Name of the Public IP Prefix |
 | `roleAssignments` | array | `[]` |  | Optional. Array of role assignment objects that contain the 'roleDefinitionIdOrName' and 'principalId' to define RBAC role assignments on this resource. In the roleDefinitionIdOrName attribute, you can provide either the display name of the role definition, or its fully qualified ID in the following format: '/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11' |
 | `tags` | object | `{object}` |  | Optional. Tags of the resource. |
 
@@ -74,7 +74,7 @@ Tag names and tag values can be provided as needed. A tag can be left without a 
 | :-- | :-- | :-- |
 | `publicIpPrefixName` | string | The name of the public IP prefix |
 | `publicIpPrefixResourceGroup` | string | The resource group the public IP prefix was deployed into |
-| `publicIpPrefixResourceId` | string | The resourceId of the public IP prefix |
+| `publicIpPrefixResourceId` | string | The resource ID of the public IP prefix |
 
 ## Template references
 

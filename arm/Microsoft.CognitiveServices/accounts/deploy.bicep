@@ -211,8 +211,9 @@ module cognitiveServices_privateEndpoints '.bicep/nested_privateEndpoints.bicep'
 module cognitiveServices_rbac '.bicep/nested_rbac.bicep' = [for (roleAssignment, index) in roleAssignments: {
   name: '${deployment().name}-rbac-${index}'
   params: {
-    roleAssignmentObj: roleAssignment
-    resourceName: cognitiveServices.name
+    principalIds: roleAssignment.principalIds
+    roleDefinitionIdOrName: roleAssignment.roleDefinitionIdOrName
+    resourceId: cognitiveServices.id
   }
 }]
 

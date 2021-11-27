@@ -16,6 +16,7 @@ This template deploys a Virtual Network (vNet) with 2 optional Subnets.
 
 | Parameter Name | Type | Default Value | Possible Values | Description |
 | :-- | :-- | :-- | :-- | :-- |
+| `addressPrefixes` | array |  |  | Required. An Array of 1 or more IP Address Prefixes for the Virtual Network. |
 | `cuaId` | string |  |  | Optional. Customer Usage Attribution id (GUID). This GUID must be previously registered |
 | `ddosProtectionPlanId` | string |  |  | Optional. Resource Id of the DDoS protection plan to assign the VNET to. If it's left blank, DDoS protection will not be configured. If it's provided, the VNET created by this template will be attached to the referenced DDoS protection plan. The DDoS protection plan can exist in the same or in a different subscription. |
 | `diagnosticLogsRetentionInDays` | int | `365` |  | Optional. Specifies the number of days that logs will be kept for; a value of 0 will retain data indefinitely. |
@@ -32,17 +33,16 @@ This template deploys a Virtual Network (vNet) with 2 optional Subnets.
 | `subnets` | array |  |  | Required. An Array of subnets to deploy to the Virual Network. |
 | `tags` | object | `{object}` |  | Optional. Tags of the resource. |
 | `virtualNetworkPeerings` | _[virtualNetworkPeerings](virtualNetworkPeerings/readme.md)_ array | `[]` |  | Optional. Virtual Network Peerings configurations |
-| `vNetAddressPrefixes` | array |  |  | Required. An Array of 1 or more IP Address Prefixes for the Virtual Network. |
 | `workspaceId` | string |  |  | Optional. Resource identifier of Log Analytics. |
 
-### Parameter Usage: `vNetAddressPrefixes`
+### Parameter Usage: `addressPrefixes`
 
-The `vNetAddressPrefixes` parameter accepts a JSON Array of string values containing the IP Address Prefixes for the Virtual Network (vNet).
+The `addressPrefixes` parameter accepts a JSON Array of string values containing the IP Address Prefixes for the Virtual Network (vNet).
 
 Here's an example of specifying a single Address Prefix:
 
 ```json
-"vNetAddressPrefixes": {
+"addressPrefixes": {
     "value": [
         "10.1.0.0/16"
     ]

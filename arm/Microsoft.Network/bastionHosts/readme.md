@@ -16,7 +16,6 @@ This module deploys an Azure Bastion.
 
 | Parameter Name | Type | Default Value | Possible Values | Description |
 | :-- | :-- | :-- | :-- | :-- |
-| `azureBastionName` | string |  |  | Required. Name of the Azure Bastion resource |
 | `azureBastionPipName` | string |  |  | Optional. Specifies the name of the Public IP used by Azure Bastion. If it's not provided, a '-pip' suffix will be appended to the Bastion's name. |
 | `azureBastionpLogsToEnable` | array | `[BastionAuditLogs]` | `[BastionAuditLogs]` | Optional. Optional. The name of bastion logs that will be streamed. |
 | `cuaId` | string |  |  | Optional. Customer Usage Attribution id (GUID). This GUID must be previously registered |
@@ -28,6 +27,7 @@ This module deploys an Azure Bastion.
 | `location` | string | `[resourceGroup().location]` |  | Optional. Location for all resources. |
 | `lock` | string | `NotSpecified` | `[CanNotDelete, NotSpecified, ReadOnly]` | Optional. Specify the type of lock. |
 | `metricsToEnable` | array | `[AllMetrics]` | `[AllMetrics]` | Optional. The name of metrics that will be streamed. |
+| `name` | string |  |  | Required. Name of the Azure Bastion resource |
 | `publicIpLogsToEnable` | array | `[DDoSProtectionNotifications, DDoSMitigationFlowLogs, DDoSMitigationReports]` | `[DDoSProtectionNotifications, DDoSMitigationFlowLogs, DDoSMitigationReports]` | Optional. The name of public IP logs that will be streamed. |
 | `publicIPPrefixId` | string |  |  | Optional. Resource Id of the Public IP Prefix object. This is only needed if you want your Public IPs created in a PIP Prefix. |
 | `roleAssignments` | array | `[]` |  | Optional. Array of role assignment objects that contain the 'roleDefinitionIdOrName' and 'principalId' to define RBAC role assignments on this resource. In the roleDefinitionIdOrName attribute, you can provide either the display name of the role definition, or its fully qualified ID in the following format: '/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11' |
@@ -87,7 +87,7 @@ Tag names and tag values can be provided as needed. A tag can be left without a 
 | :-- | :-- | :-- |
 | `azureBastionName` | string | The name the Azure Bastion |
 | `azureBastionResourceGroup` | string | The resource group the Azure Bastion was deployed into |
-| `azureBastionResourceId` | string | The resourceId the Azure Bastion |
+| `azureBastionResourceId` | string | The resource ID the Azure Bastion |
 
 ## Template references
 

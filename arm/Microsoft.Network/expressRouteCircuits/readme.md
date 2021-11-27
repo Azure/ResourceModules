@@ -16,7 +16,6 @@ This template deploys a ExrepressRoute Circuit.
 | Parameter Name | Type | Default Value | Possible Values | Description |
 | :-- | :-- | :-- | :-- | :-- |
 | `bandwidthInMbps` | int |  |  | Required. This is the bandwidth in Mbps of the circuit being created. It must exactly match one of the available bandwidth offers List ExpressRoute Service Providers API call. |
-| `circuitName` | string |  |  | Required. This is the name of the ExpressRoute circuit |
 | `cuaId` | string |  |  | Optional. Customer Usage Attribution id (GUID). This GUID must be previously registered |
 | `diagnosticLogsRetentionInDays` | int | `365` |  | Optional. Specifies the number of days that logs will be kept for; a value of 0 will retain data indefinitely. |
 | `diagnosticStorageAccountId` | string |  |  | Optional. Resource identifier of the Diagnostic Storage Account. |
@@ -26,6 +25,7 @@ This template deploys a ExrepressRoute Circuit.
 | `lock` | string | `NotSpecified` | `[CanNotDelete, NotSpecified, ReadOnly]` | Optional. Specify the type of lock. |
 | `logsToEnable` | array | `[PeeringRouteLog]` | `[PeeringRouteLog]` | Optional. The name of logs that will be streamed. |
 | `metricsToEnable` | array | `[AllMetrics]` | `[AllMetrics]` | Optional. The name of metrics that will be streamed. |
+| `name` | string |  |  | Required. This is the name of the ExpressRoute circuit |
 | `peerASN` | int |  |  | Optional. The autonomous system number of the customer/connectivity provider. |
 | `peering` | bool |  | `[True, False]` | Optional. Enabled BGP peering type for the Circuit. |
 | `peeringLocation` | string |  |  | Required. This is the name of the peering location and not the ARM resource location. It must exactly match one of the available peering locations from List ExpressRoute Service Providers API call. |
@@ -93,7 +93,7 @@ Tag names and tag values can be provided as needed. A tag can be left without a 
 | :-- | :-- | :-- |
 | `expressRouteCircuitName` | string | The name of express route curcuit |
 | `expressRouteCircuitResourceGroup` | string | The resource group the express route curcuit was deployed into |
-| `expressRouteCircuitResourceId` | string | The resourceId of express route curcuit |
+| `expressRouteCircuitResourceId` | string | The resource ID of express route curcuit |
 | `expressRouteCircuitServiceKey` | string | The service key of the express route circuit |
 
 ## Template references

@@ -1,8 +1,8 @@
 @description('Required. Private DNS zone name.')
-param privateDnsZoneName string
+param name string
 
 @description('Optional. Array of custom objects describing vNet links of the DNS zone. Each object should contain properties \'vnetResourceId\' and \'registrationEnabled\'. The \'vnetResourceId\' is a resource Id of a vNet to link, \'registrationEnabled\' (bool) enables automatic DNS registration in the zone for the linked vNet.')
-param vnetLinks array = []
+param virtualNetworkLinks array = []
 
 @description('Optional. The location of the PrivateDNSZone. Should be global.')
 param location string = 'global'
@@ -30,22 +30,22 @@ module pid_cuaId '.bicep/nested_cuaId.bicep' = if (!empty(cuaId)) {
 }
 
 resource privateDnsZone 'Microsoft.Network/privateDnsZones@2018-09-01' = {
-  name: privateDnsZoneName
+  name: name
   location: location
   tags: tags
-
-  resource virtualNetworkLinks 'virtualNetworkLinks@2018-09-01' = [for vnetLink in vnetLinks: {
-    name: last(split(vnetLink.vnetResourceId, '/'))
-    location: location
-    tags: tags
-    properties: {
-      registrationEnabled: vnetLink.registrationEnabled
-      virtualNetwork: {
-        id: vnetLink.vnetResourceId
-      }
-    }
-  }]
 }
+
+module privateDnsZone_virtualNetworkLinks 'virtualNetworkLinks/deploy.bicep' = [for (virtualNetworkLinks, index) in virtualNetworkLinks: {
+  name: '${deployment().name}-virtualNetworkLink-${index}'
+  params: {
+    privateDnsZoneName: privateDnsZone.name
+    name: contains(virtualNetworkLinks, 'name') ? virtualNetworkLinks.name : last(split(virtualNetworkLinks.virtualNetworkId, '/'))
+    virtualNetworkId: virtualNetworkLinks.virtualNetworkId
+    location: contains(virtualNetworkLinks, 'location') ? virtualNetworkLinks.location : 'global'
+    registrationEnabled: contains(virtualNetworkLinks, 'registrationEnabled') ? virtualNetworkLinks.registrationEnabled : false
+    tags: contains(virtualNetworkLinks, 'tags') ? virtualNetworkLinks.tags : {}
+  }
+}]
 
 resource privateDnsZone_lock 'Microsoft.Authorization/locks@2016-09-01' = if (lock != 'NotSpecified') {
   name: '${privateDnsZone.name}-${lock}-lock'
@@ -59,8 +59,9 @@ resource privateDnsZone_lock 'Microsoft.Authorization/locks@2016-09-01' = if (lo
 module privateDnsZone_rbac '.bicep/nested_rbac.bicep' = [for (roleAssignment, index) in roleAssignments: {
   name: '${deployment().name}-rbac-${index}'
   params: {
-    roleAssignmentObj: roleAssignment
-    resourceName: privateDnsZone.name
+    principalIds: roleAssignment.principalIds
+    roleDefinitionIdOrName: roleAssignment.roleDefinitionIdOrName
+    resourceId: privateDnsZone.id
   }
 }]
 

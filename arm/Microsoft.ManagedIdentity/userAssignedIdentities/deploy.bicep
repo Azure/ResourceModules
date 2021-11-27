@@ -1,5 +1,5 @@
 @description('Optional. Name of the User Assigned Identity.')
-param userMsiName string = guid(resourceGroup().id)
+param name string = guid(resourceGroup().id)
 
 @description('Optional. Location for all resources.')
 param location string = resourceGroup().location
@@ -27,7 +27,7 @@ module pid_cuaId '.bicep/nested_cuaId.bicep' = if (!empty(cuaId)) {
 }
 
 resource userMsi 'Microsoft.ManagedIdentity/userAssignedIdentities@2018-11-30' = {
-  name: userMsiName
+  name: name
   location: location
   tags: tags
 }
@@ -41,15 +41,23 @@ resource userMsi_lock 'Microsoft.Authorization/locks@2016-09-01' = if (lock != '
   scope: userMsi
 }
 
-module userMsi_rbac '.bicep/nested_rbac.bicep' = [for (roleassignment, index) in roleAssignments: {
+module userMsi_rbac '.bicep/nested_rbac.bicep' = [for (roleAssignment, index) in roleAssignments: {
   name: '${deployment().name}-rbac-${index}'
   params: {
-    roleAssignmentObj: roleassignment
-    resourceName: userMsi.name
+    principalIds: roleAssignment.principalIds
+    roleDefinitionIdOrName: roleAssignment.roleDefinitionIdOrName
+    resourceId: userMsi.id
   }
 }]
 
-output msiName string = userMsiName
+@description('The name of the user assigned identity')
+output msiName string = userMsi.name
+
+@description('The resource ID of the user assigned identity')
 output msiResourceId string = userMsi.id
+
+@description('The principal ID of the user assigned identity')
 output msiPrincipalId string = userMsi.properties.principalId
+
+@description('The resource group the user assigned identity was deployed into')
 output msiResourceGroup string = resourceGroup().name

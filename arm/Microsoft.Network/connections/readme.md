@@ -13,13 +13,13 @@ This template deploys Virtual Network Gateway Connection.
 
 | Parameter Name | Type | Default Value | Possible Values | Description |
 | :-- | :-- | :-- | :-- | :-- |
-| `connectionName` | string |  |  | Required. Remote connection name |
 | `cuaId` | string |  |  | Optional. Customer Usage Attribution id (GUID). This GUID must be previously registered |
 | `customIPSecPolicy` | object | `{object}` |  | Optional. The IPSec Policies to be considered by this connection |
 | `enableBgp` | bool |  |  | Optional. Value to specify if BGP is enabled or not |
 | `localVirtualNetworkGatewayName` | string |  |  | Required. Specifies the local Virtual Network Gateway name |
 | `location` | string | `[resourceGroup().location]` |  | Optional. Location for all resources. |
 | `lock` | string | `NotSpecified` | `[CanNotDelete, NotSpecified, ReadOnly]` | Optional. Specify the type of lock. |
+| `name` | string |  |  | Required. Remote connection name |
 | `remoteEntityName` | string |  |  | Required. Specifies the remote Virtual Network Gateway/ExpressRoute |
 | `remoteEntityResourceGroup` | string |  |  | Optional. Remote Virtual Network Gateway/ExpressRoute resource group name |
 | `remoteEntitySubscriptionId` | string |  |  | Optional. Remote Virtual Network Gateway/ExpressRoute Subscription Id |
@@ -88,7 +88,7 @@ Tag names and tag values can be provided as needed. A tag can be left without a 
 | :-- | :-- | :-- |
 | `connectionName` | string | The name of the remote connection |
 | `remoteConnectionResourceGroup` | string | The resource group the remote connection was deployed into |
-| `remoteConnectionResourceId` | string | The resourceId of the remote connection |
+| `remoteConnectionResourceId` | string | The resource ID of the remote connection |
 
 ## Template references
 

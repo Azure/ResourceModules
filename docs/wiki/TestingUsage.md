@@ -82,8 +82,7 @@ The following scenarios are common to when to use a token value in the parameter
 
     ```json
     "remoteVirtualNetworkId": {
-        "value": "/subscriptions/<<subscriptionId>>/resourceGroups/<<resourceGroupName>>/providers/Microsoft.Network/virtualNetworks/adp-<<namePrefix>>-az-vnet-x-peer01"
-        //<<namePrefix>> is a Custom Local Token
+        "value": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/virtualNetworks/adp-sxx-az-vnet-x-peer01"
     }
     ```
 

@@ -155,7 +155,7 @@ module pid_cuaId '.bicep/nested_cuaId.bicep' = if (!empty(cuaId)) {
   params: {}
 }
 
-resource eventHubNamespace 'Microsoft.EventHub/namespaces@2017-04-01' = {
+resource eventHubNamespace 'Microsoft.EventHub/namespaces@2021-06-01-preview' = {
   name: name_var
   location: location
   tags: tags
@@ -258,8 +258,9 @@ module eventHubNamespace_privateEndpoints '.bicep/nested_privateEndpoint.bicep' 
 module eventHubNamespace_rbac '.bicep/nested_rbac.bicep' = [for (roleAssignment, index) in roleAssignments: {
   name: '${deployment().name}-rbac-${index}'
   params: {
-    roleAssignmentObj: roleAssignment
-    resourceName: eventHubNamespace.name
+    principalIds: roleAssignment.principalIds
+    roleDefinitionIdOrName: roleAssignment.roleDefinitionIdOrName
+    resourceId: eventHubNamespace.id
   }
 }]
 

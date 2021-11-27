@@ -13,6 +13,7 @@
 | Parameter Name | Type | Default Value | Possible Values | Description |
 | :-- | :-- | :-- | :-- | :-- |
 | `privateDNSIds` | array |  |  | Required. List of private DNS Ids |
+| `privateDnsZoneGroupName` | string | `default` |  | The name of the private DNS Zone Group |
 | `privateEndpointName` | string |  |  | Required. The name of the private endpoint |
 
 ### Parameter Usage: `<ParameterPlaceholder>`
@@ -25,7 +26,7 @@
 | :-- | :-- | :-- |
 | `privateDnsZoneGroupName` | string | The name of the private endpoint DNS zone group |
 | `privateDnsZoneGroupResourceGroup` | string | The resource group the private endpoint DNS zone group was deployed into |
-| `privateDnsZoneGroupResourceId` | string | The resourceId of the private endpoint DNS zone group |
+| `privateDnsZoneGroupResourceId` | string | The resource ID of the private endpoint DNS zone group |
 
 ## Template references
 
