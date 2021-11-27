@@ -1,4 +1,4 @@
-@description('Required. The name of the Alert.')
+@description('Required. The name of the alert.')
 param name string
 
 @description('Optional. Description of the alert.')
