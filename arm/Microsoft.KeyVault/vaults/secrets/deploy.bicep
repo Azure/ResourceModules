@@ -1,5 +1,5 @@
 @description('Required. The name of the key vault')
-param vaultName string
+param keyVaultName string
 
 @description('Required. The name of the secret')
 param name string
@@ -33,7 +33,7 @@ module pid_cuaId './.bicep/nested_cuaId.bicep' = if (!empty(cuaId)) {
 }
 
 resource keyVault 'Microsoft.KeyVault/vaults@2021-06-01-preview' existing = {
-  name: vaultName
+  name: keyVaultName
 }
 
 resource secret 'Microsoft.KeyVault/vaults/secrets@2019-09-01' = {
