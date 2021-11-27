@@ -12,10 +12,10 @@ This module deploys a Backup Policy for a Recovery Services Vault
 
 | Parameter Name | Type | Default Value | Possible Values | Description |
 | :-- | :-- | :-- | :-- | :-- |
-| `recoveryVaultName` | string | `` |  | Required. Name of the Azure Recovery Service Vault |
-| `name` | string | `` |  | Required. Name of the Azure Recovery Service Vault Backup Policy |
-| `backupPolicyProperties` | object | `{}` |  | Required. Configuration of the Azure Recovery Service Vault Backup Policy |
+| `backupPolicyProperties` | object |  |  | Required. Configuration of the Azure Recovery Service Vault Backup Policy |
 | `cuaId` | string |  |  | Optional. Customer Usage Attribution id (GUID). This GUID must be previously registered |
+| `name` | string |  |  | Required. Name of the Azure Recovery Service Vault Backup Policy |
+| `recoveryVaultName` | string |  |  | Required. Name of the Azure Recovery Service Vault |
 
 ### Parameter Usage: `backupPolicyProperties`
 
@@ -107,12 +107,12 @@ Object continaining the configuration for backup policies. It needs to be proper
 
 ## Outputs
 
-| Output Name | Type |
-| :-- | :-- |
-| `backupPolicyName` | string |
-| `backupPolicyId` | string |
-| `backupPolicyResourceGroup` | string |
+| Output Name | Type | Description |
+| :-- | :-- | :-- |
+| `backupPolicyName` | string | The name of the backup policy |
+| `backupPolicyResourceGroup` | string | The name of the Resource Group the backup policy was created in. |
+| `backupPolicyResourceId` | string | The Resource ID of the backup policy |
 
 ## Template references
 
-- [Vaults/Backuppolicies](https://docs.microsoft.com/en-us/azure/templates/Microsoft.RecoveryServices/2019-06-15/vaults/backupPolicies)
+- [Vaults/Backuppolicies](https://docs.microsoft.com/en-us/azure/templates/Microsoft.RecoveryServices/2021-08-01/vaults/backupPolicies)

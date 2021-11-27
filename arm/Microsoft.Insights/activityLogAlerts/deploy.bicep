@@ -1,5 +1,5 @@
-@description('Required. The name of the Alert.')
-param alertName string
+@description('Required. The name of the alert.')
+param name string
 
 @description('Optional. Description of the alert.')
 param alertDescription string = ''
@@ -41,7 +41,7 @@ module pid_cuaId '.bicep/nested_cuaId.bicep' = if (!empty(cuaId)) {
 }
 
 resource activityLogAlert 'Microsoft.Insights/activityLogAlerts@2020-10-01' = {
-  name: alertName
+  name: name
   location: location
   tags: tags
   properties: {
@@ -60,11 +60,17 @@ resource activityLogAlert 'Microsoft.Insights/activityLogAlerts@2020-10-01' = {
 module activityLogAlert_rbac '.bicep/nested_rbac.bicep' = [for (roleAssignment, index) in roleAssignments: {
   name: '${deployment().name}-rbac-${index}'
   params: {
-    roleAssignmentObj: roleAssignment
-    resourceName: activityLogAlert.name
+    principalIds: roleAssignment.principalIds
+    roleDefinitionIdOrName: roleAssignment.roleDefinitionIdOrName
+    resourceId: activityLogAlert.id
   }
 }]
 
+@description('The name of the activity log alert')
 output activityLogAlertName string = activityLogAlert.name
+
+@description('The resource ID of the activity log alert')
 output activityLogAlertResourceId string = activityLogAlert.id
+
+@description('The resource group the activity log alert was deployed into')
 output activityLogAlertResourceGroup string = resourceGroup().name

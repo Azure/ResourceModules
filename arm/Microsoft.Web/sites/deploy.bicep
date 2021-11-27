@@ -240,8 +240,9 @@ resource app_diagnosticSettings 'Microsoft.Insights/diagnosticSettings@2017-05-0
 module app_rbac '.bicep/nested_rbac.bicep' = [for (roleAssignment, index) in roleAssignments: {
   name: '${uniqueString(deployment().name, location)}-Rbac-${index}'
   params: {
-    roleAssignmentObj: roleAssignment
-    resourceName: app.name
+    principalIds: roleAssignment.principalIds
+    roleDefinitionIdOrName: roleAssignment.roleDefinitionIdOrName
+    resourceId: app.id
   }
 }]
 

@@ -24,7 +24,8 @@ module capacityPool_volumes 'nested_capacityPool_volume.bicep' = [for (volume, i
 module capacityPool_rbac 'nested_capacityPool_rbac.bicep' = [for (roleAssignment, index) in capacityPoolObj.roleAssignments: {
   name: '${deployment().name}-Rbac-${index}'
   params: {
-    roleAssignmentObj: roleAssignment
-    resourceName: capacityPool.name
+    principalIds: roleAssignment.principalIds
+    roleDefinitionIdOrName: roleAssignment.roleDefinitionIdOrName
+    resourceId: capacityPool.id
   }
 }]

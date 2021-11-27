@@ -30,8 +30,13 @@ module pid_cuaId '.bicep/nested_cuaId.bicep' = if (!empty(cuaId)) {
   params: {}
 }
 
+resource virtualNetwork 'Microsoft.Network/virtualNetworks@2021-03-01' existing = {
+  name: localVnetName
+}
+
 resource virtualNetworkPeering 'Microsoft.Network/virtualNetworks/virtualNetworkPeerings@2021-02-01' = {
-  name: '${localVnetName}/${name}'
+  name: name
+  parent: virtualNetwork
   properties: {
     allowForwardedTraffic: allowForwardedTraffic
     allowGatewayTransit: allowGatewayTransit
@@ -46,7 +51,9 @@ resource virtualNetworkPeering 'Microsoft.Network/virtualNetworks/virtualNetwork
 
 @description('The resource group the virtual network peering was deployed into')
 output virtualNetworkPeeringResourceGroup string = resourceGroup().name
+
 @description('The name of the virtual network peering')
 output virtualNetworkPeeringName string = virtualNetworkPeering.name
-@description('The resourceId of the virtual network peering')
+
+@description('The resource ID of the virtual network peering')
 output virtualNetworkPeeringResourceId string = virtualNetworkPeering.id

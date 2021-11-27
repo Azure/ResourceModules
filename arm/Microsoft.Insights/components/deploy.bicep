@@ -1,5 +1,5 @@
 @description('Required. Name of the Application Insights')
-param appInsightsName string
+param name string
 
 @description('Optional. Application type')
 @allowed([
@@ -46,7 +46,7 @@ module pid_cuaId '.bicep/nested_cuaId.bicep' = if (!empty(cuaId)) {
 }
 
 resource appInsights 'Microsoft.Insights/components@2020-02-02' = {
-  name: appInsightsName
+  name: name
   location: location
   tags: tags
   kind: kind
@@ -61,13 +61,20 @@ resource appInsights 'Microsoft.Insights/components@2020-02-02' = {
 module appInsights_rbac '.bicep/nested_rbac.bicep' = [for (roleAssignment, index) in roleAssignments: {
   name: '${deployment().name}-rbac-${index}'
   params: {
-    roleAssignmentObj: roleAssignment
-    resourceName: appInsights.name
+    principalIds: roleAssignment.principalIds
+    roleDefinitionIdOrName: roleAssignment.roleDefinitionIdOrName
+    resourceId: appInsights.id
   }
 }]
 
-output appInsightsName string = appInsightsName
+@description('The name of the application insights component')
+output appInsightsName string = appInsights.name
+
+@description('The resource ID of the application insights component')
 output appInsightsResourceId string = appInsights.id
+
+@description('The resource group the application insights component was deployed into')
 output appInsightsResourceGroup string = resourceGroup().name
-output appInsightsKey string = appInsights.properties.InstrumentationKey
+
+@description('The application ID of the application insights component')
 output appInsightsAppId string = appInsights.properties.AppId

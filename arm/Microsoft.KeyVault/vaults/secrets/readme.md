@@ -17,10 +17,10 @@ This module deploys a key vault secret.
 | `attributesNbf` | int | `-1` |  | Optional. Not before date in seconds since 1970-01-01T00:00:00Z. |
 | `contentType` | secureString |  |  | Optional. The content type of the secret. |
 | `cuaId` | string |  |  | Optional. Customer Usage Attribution id (GUID). This GUID must be previously registered |
+| `keyVaultName` | string |  |  | Required. The name of the key vault |
 | `name` | string |  |  | Required. The name of the secret |
 | `tags` | object | `{object}` |  | Optional. Resource tags. |
 | `value` | secureString |  |  | Required. The value of the secret. NOTE: "value" will never be returned from the service, as APIs using this model are is intended for internal use in ARM deployments. Users should use the data-plane REST service for interaction with vault secrets. |
-| `vaultName` | string |  |  | Required. The name of the key vault |
 
 ### Parameter Usage: `tags`
 
@@ -45,7 +45,7 @@ Tag names and tag values can be provided as needed. A tag can be left without a 
 | :-- | :-- | :-- |
 | `secretName` | string | The Name of the secret. |
 | `secretResourceGroup` | string | The name of the Resource Group the secret was created in. |
-| `secretResourceId` | string | The Resource Id of the secret. |
+| `secretResourceId` | string | The Resource ID of the secret. |
 
 ## Template references
 

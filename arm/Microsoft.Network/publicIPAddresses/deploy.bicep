@@ -1,5 +1,5 @@
 @description('Required. The name of the Public IP Address')
-param publicIPAddressName string
+param name string
 
 @description('Optional. Resource Id of the Public IP Prefix object. This is only needed if you want your Public IPs created in a PIP Prefix.')
 param publicIPPrefixId string = ''
@@ -99,7 +99,7 @@ module pid_cuaId '.bicep/nested_cuaId.bicep' = if (!empty(cuaId)) {
 }
 
 resource publicIpAddress 'Microsoft.Network/publicIPAddresses@2021-02-01' = {
-  name: publicIPAddressName
+  name: name
   location: location
   tags: tags
   sku: {
@@ -140,8 +140,9 @@ resource publicIpAddress_diagnosticSettings 'Microsoft.Insights/diagnosticSettin
 module publicIpAddress_rbac '.bicep/nested_rbac.bicep' = [for (roleAssignment, index) in roleAssignments: {
   name: '${deployment().name}-rbac-${index}'
   params: {
-    roleAssignmentObj: roleAssignment
-    resourceName: publicIpAddress.name
+    principalIds: roleAssignment.principalIds
+    roleDefinitionIdOrName: roleAssignment.roleDefinitionIdOrName
+    resourceId: publicIpAddress.id
   }
 }]
 
@@ -151,5 +152,5 @@ output publicIPAddressResourceGroup string = resourceGroup().name
 @description('The name of the public IP adress')
 output publicIPAddressName string = publicIpAddress.name
 
-@description('The resourceId of the public IP adress')
+@description('The resource ID of the public IP adress')
 output publicIPAddressResourceId string = publicIpAddress.id

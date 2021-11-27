@@ -101,15 +101,16 @@ resource queryRule 'Microsoft.Insights/scheduledQueryRules@2021-02-01-preview' =
 module queryRule_rbac '.bicep/nested_rbac.bicep' = [for (roleAssignment, index) in roleAssignments: {
   name: '${deployment().name}-rbac-${index}'
   params: {
-    roleAssignmentObj: roleAssignment
-    resourceName: queryRule.name
+    principalIds: roleAssignment.principalIds
+    roleDefinitionIdOrName: roleAssignment.roleDefinitionIdOrName
+    resourceId: queryRule.id
   }
 }]
 
 @description('The Name of the created query rule.')
 output queryAlertName string = queryRule.name
 
-@description('The ID of the created query rule.')
+@description('The resource ID of the created query rule.')
 output queryAlertResourceId string = queryRule.id
 
 @description('The Resource Group of the created query rule.')

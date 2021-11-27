@@ -132,7 +132,7 @@ var saBaseProperties = {
       file: (((storageAccountKind == 'FileStorage') || (storageAccountKind == 'StorageV2') || (storageAccountKind == 'Storage')) ? json('{"enabled": true}') : null)
     }
   }
-  accessTier: storageAccountAccessTier
+  accessTier: (storageAccountKind == 'Storage') ? null : storageAccountAccessTier
   supportsHttpsTrafficOnly: true
   isHnsEnabled: ((!enableHierarchicalNamespace) ? null : enableHierarchicalNamespace)
   minimumTlsVersion: minimumTlsVersion
@@ -178,7 +178,7 @@ module storageAccount_rbac '.bicep/nested_rbac.bicep' = [for (roleAssignment, in
   params: {
     principalIds: roleAssignment.principalIds
     roleDefinitionIdOrName: roleAssignment.roleDefinitionIdOrName
-    resourceName: storageAccount.name
+    resourceId: storageAccount.id
   }
 }]
 

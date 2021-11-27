@@ -18,10 +18,10 @@ This module deploys Azure Monitor Private Link Scope
 | Parameter Name | Type | Default Value | Possible Values | Description |
 | :-- | :-- | :-- | :-- | :-- |
 | `cuaId` | string |  |  | Optional. Customer Usage Attribution id (GUID). This GUID must be previously registered |
-| `location` | string | `global` |  | Optional. The location of the Private Link Scope. Should be global. |
+| `location` | string | `global` |  | Optional. The location of the private link scope. Should be global. |
 | `lock` | string | `NotSpecified` | `[CanNotDelete, NotSpecified, ReadOnly]` | Optional. Specify the type of lock. |
+| `name` | string |  |  | Required. Name of the private link scope. |
 | `privateEndpoints` | array | `[]` |  | Optional. Configuration Details for private endpoints. |
-| `privateLinkScopeName` | string |  |  | Required. Name of the Private Link Scope. |
 | `roleAssignments` | array | `[]` |  | Optional. Array of role assignment objects that contain the 'roleDefinitionIdOrName' and 'principalId' to define RBAC role assignments on this resource. In the roleDefinitionIdOrName attribute, you can provide either the display name of the role definition, or its fully qualified ID in the following format: '/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11' |
 | `scopedResources` | array | `[]` |  | Optional. Configuration Details for Azure Monitor Resources. |
 | `tags` | object | `{object}` |  | Optional. Resource tags. |
@@ -61,7 +61,7 @@ This module deploys Azure Monitor Private Link Scope
 "scopedResources": {
     "value": [
         {
-            "linkedResourceId": "/subscriptions/8629be3b-96bc-482d-a04b-ffff597c65a2/resourcegroups/prd-monitoring-rg/providers/microsoft.operationalinsights/workspaces/z1-prd-law-01"
+            "linkedResourceId": "/subscriptions/<<subscriptionId>>/resourcegroups/prd-monitoring-rg/providers/microsoft.operationalinsights/workspaces/z1-prd-law-01"
         }
     ]
 }
@@ -81,13 +81,13 @@ To use Private Endpoints the following dependencies must be deployed:
         // Example showing all available fields
         {
             "name": "sxx-az-sa-cac-y-123-pe", // Optional: Name will be automatically generated if one is not provided here
-            "subnetResourceId": "/subscriptions/8629be3b-96bc-482d-a04b-ffff597c65a2/resourceGroups/validation-rg/providers/Microsoft.Network/virtualNetworks/sxx-az-vnet-x-001/subnets/sxx-az-subnet-x-001",
+            "subnetResourceId": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/virtualNetworks/sxx-az-vnet-x-001/subnets/sxx-az-subnet-x-001",
             "service": "azuremonitor",
             "privateDnsZoneResourceIds": [ // Optional: No DNS record will be created if a private DNS zone Resource ID is not specified
-                "/subscriptions/8629be3b-96bc-482d-a04b-ffff597c65a2/resourceGroups/validation-rg/providers/Microsoft.Network/privateDnsZones/privatelink.agentsvc.azure-automation.net",
-                "/subscriptions/8629be3b-96bc-482d-a04b-ffff597c65a2/resourceGroups/validation-rg/providers/Microsoft.Network/privateDnsZones/privatelink.monitor.azure.com",
-                "/subscriptions/8629be3b-96bc-482d-a04b-ffff597c65a2/resourceGroups/validation-rg/providers/Microsoft.Network/privateDnsZones/privatelink.ods.opinsights.azure.com",
-                "/subscriptions/8629be3b-96bc-482d-a04b-ffff597c65a2/resourceGroups/validation-rg/providers/Microsoft.Network/privateDnsZones/privatelink.oms.opinsights.azure.com"
+                "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/privateDnsZones/privatelink.agentsvc.azure-automation.net",
+                "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/privateDnsZones/privatelink.monitor.azure.com",
+                "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/privateDnsZones/privatelink.ods.opinsights.azure.com",
+                "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/privateDnsZones/privatelink.oms.opinsights.azure.com"
             ],
             "customDnsConfigs": [ // Optional
                 {
@@ -100,7 +100,7 @@ To use Private Endpoints the following dependencies must be deployed:
         },
         // Example showing only mandatory fields
         {
-            "subnetResourceId": "/subscriptions/8629be3b-96bc-482d-a04b-ffff597c65a2/resourceGroups/validation-rg/providers/Microsoft.Network/virtualNetworks/sxx-az-vnet-x-001/subnets/sxx-az-subnet-x-001",
+            "subnetResourceId": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/virtualNetworks/sxx-az-vnet-x-001/subnets/sxx-az-subnet-x-001",
             "service": "azuremonitor"
         }
     ]
@@ -126,11 +126,11 @@ Tag names and tag values can be provided as needed. A tag can be left without a 
 
 ## Outputs
 
-| Output Name | Type |
-| :-- | :-- |
-| `privateLinkScopeName` | string |
-| `privateLinkScopeResourceGroup` | string |
-| `privateLinkScopeResourceId` | string |
+| Output Name | Type | Description |
+| :-- | :-- | :-- |
+| `privateLinkScopeName` | string | The name of the private link scope |
+| `privateLinkScopeResourceGroup` | string | The resource group the private link scope was deployed into |
+| `privateLinkScopeResourceId` | string | The resource ID of the private link scope |
 
 ## Template references
 
