@@ -63,7 +63,7 @@
                             "protocolTypes": [
                                 "NFSv4.1"
                             ],
-                            "subnetId": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/virtualNetworks/adp-sxx-az-vnet-x-001/subnets/sxx-az-subnet-x-004",
+                            "subnetId": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/virtualNetworks/adp-sxx-az-vnet-x-001/subnets/sxx-az-subnet-x-004"
                         }
                     ],
                     "roleAssignments": [
