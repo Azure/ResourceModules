@@ -18,6 +18,11 @@
                 "skuSize": "P1v2",
                 "skuFamily": "Pv2"
             }
+        },
+        "siteConfig": {
+            "value": {
+                "alwaysOn": true
+            }
         }
     }
 }
