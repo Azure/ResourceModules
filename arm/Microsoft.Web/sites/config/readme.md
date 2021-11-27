@@ -12,13 +12,13 @@
 
 | Parameter Name | Type | Default Value | Possible Values | Description |
 | :-- | :-- | :-- | :-- | :-- |
-| `appInsightId` | string |  |  | Optional. The Resource ID of the App Insight to leverage for the App. |
-| `appName` | string |  |  | Required. Name of the Web Application Portal Name |
-| `cuaId` | string |  |  | Optional. Customer Usage Attribution ID (GUID). This GUID must be previously registered |
+| `appInsightId` | string |  |  | Optional. Resource ID of the app insight to leverage for this resource. |
+| `appName` | string |  |  | Required. Name of the site parent resource. |
+| `cuaId` | string |  |  | Optional. Customer Usage Attribution ID (GUID). This GUID must be previously registered. |
 | `functionsExtensionVersion` | string | `~3` |  | Optional. Version of the function extension. |
 | `functionsWorkerRuntime` | string |  | `[dotnet, node, python, java, powershell, ]` | Optional. Runtime of the function worker. |
-| `name` | string |  | `[appsettings]` | Required. Name of the Web Application Portal config name |
-| `storageAccountId` | string |  |  | Optional. Required if app of kind functionapp. The resource ID of the storage account to manage triggers and logging function executions. |
+| `name` | string |  | `[appsettings]` | Required. Name of the site config. |
+| `storageAccountId` | string |  |  | Optional. Required if app of kind functionapp. Resource ID of the storage account to manage triggers and logging function executions. |
 
 ### Parameter Usage: `<ParameterPlaceholder>`
 
@@ -28,9 +28,9 @@
 
 | Output Name | Type | Description |
 | :-- | :-- | :-- |
-| `configName` | string | The name of the web sites config |
-| `configResourceGroup` | string | The resource group the web sites config was deployed into |
-| `configResourceId` | string | The resourceId of the web sites config |
+| `configName` | string | The name of the site config. |
+| `configResourceGroup` | string | The resource group the site config was deployed into. |
+| `configResourceId` | string | The resource ID of the sites config. |
 
 ## Template references
 

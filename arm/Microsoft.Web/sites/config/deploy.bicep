@@ -1,13 +1,13 @@
-@description('Required. Name of the Web Application Portal config name')
+@description('Required. Name of the site config.')
 @allowed([
   'appsettings'
 ])
 param name string
 
-@description('Required. Name of the Web Application Portal Name')
+@description('Required. Name of the site parent resource.')
 param appName string
 
-@description('Optional. Required if app of kind functionapp. The resource ID of the storage account to manage triggers and logging function executions.')
+@description('Optional. Required if app of kind functionapp. Resource ID of the storage account to manage triggers and logging function executions.')
 param storageAccountId string = ''
 
 @description('Optional. Runtime of the function worker.')
@@ -24,10 +24,10 @@ param functionsWorkerRuntime string = ''
 @description('Optional. Version of the function extension.')
 param functionsExtensionVersion string = '~3'
 
-@description('Optional. The Resource ID of the App Insight to leverage for the App.')
+@description('Optional. Resource ID of the app insight to leverage for this resource.')
 param appInsightId string = ''
 
-@description('Optional. Customer Usage Attribution ID (GUID). This GUID must be previously registered')
+@description('Optional. Customer Usage Attribution ID (GUID). This GUID must be previously registered.')
 param cuaId string = ''
 
 module pid_cuaId '.bicep/nested_cuaId.bicep' = if (!empty(cuaId)) {
@@ -62,11 +62,11 @@ resource config 'Microsoft.Web/sites/config@2021-02-01' = {
   }
 }
 
-@description('The name of the web sites config')
+@description('The name of the site config.')
 output configName string = config.name
 
-@description('The resourceId of the web sites config')
+@description('The resource ID of the sites config.')
 output configResourceId string = config.id
 
-@description('The resource group the web sites config was deployed into')
+@description('The resource group the site config was deployed into.')
 output configResourceGroup string = resourceGroup().name

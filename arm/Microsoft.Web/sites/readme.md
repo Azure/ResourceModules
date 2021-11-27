@@ -20,34 +20,34 @@ This module deploys a Web or Function App
 
 | Parameter Name | Type | Default Value | Possible Values | Description |
 | :-- | :-- | :-- | :-- | :-- |
-| `appInsightId` | string |  |  | Optional. The Resource ID of the existing App Insight to leverage for the App. If the ID is not provided, the appInsightObject can be used to create a new app insight. |
-| `appInsightObject` | object | `{object}` |  | Optional. Used to deploy a new app service plan if no appInsightId is provided . |
-| `appServiceEnvironmentId` | string |  |  | Optional. The Resource ID of the App Service Environment to use for the Function App. |
-| `appServicePlanId` | string |  |  | Optional. The Resource ID of the App Service Plan to use for the App. If not provided, the appServicePlanObject is used to create a new plan. |
+| `appInsightId` | string |  |  | Optional. The Resource ID of the existing app insight to leverage for the app. If the Resource ID is not provided, the appInsightObject can be used to create a new app insight. |
+| `appInsightObject` | object | `{object}` |  | Optional. Used to deploy a new app insight if no appInsightId is provided. |
+| `appServiceEnvironmentId` | string |  |  | Optional. The Resource ID of the App Service Environment to use for this resource. |
+| `appServicePlanId` | string |  |  | Optional. The Resource ID of the app service plan to use for the site. If not provided, the appServicePlanObject is used to create a new plan. |
 | `appServicePlanObject` | object | `{object}` |  | Optional. Required if no appServicePlanId is provided to deploy a new app service plan. |
-| `clientAffinityEnabled` | bool | `True` |  | Optional. If Client Affinity is enabled. |
-| `cuaId` | string |  |  | Optional. Customer Usage Attribution ID (GUID). This GUID must be previously registered |
+| `clientAffinityEnabled` | bool | `True` |  | Optional. If client affinity is enabled. |
+| `cuaId` | string |  |  | Optional. Customer Usage Attribution ID (GUID). This GUID must be previously registered. |
 | `diagnosticLogsRetentionInDays` | int | `365` |  | Optional. Specifies the number of days that logs will be kept for; a value of 0 will retain data indefinitely. |
-| `diagnosticStorageAccountId` | string |  |  | Optional. Resource identifier of the Diagnostic Storage Account. |
-| `eventHubAuthorizationRuleId` | string |  |  | Optional. Resource ID of the event hub authorization rule for the Event Hubs namespace in which the event hub should be created or streamed to. |
+| `diagnosticStorageAccountId` | string |  |  | Optional. Resource ID of the diagnostic storage account. |
+| `eventHubAuthorizationRuleId` | string |  |  | Optional. Resource ID of the event hub authorization rule for the event hub namespace in which the event hub should be created or streamed to. |
 | `eventHubName` | string |  |  | Optional. Name of the event hub within the namespace to which logs are streamed. Without this, an event hub is created for each log category. |
 | `functionsExtensionVersion` | string | `~3` |  | Optional. Version if the function extension. |
 | `functionsWorkerRuntime` | string |  | `[dotnet, node, python, java, powershell, ]` | Optional. Runtime of the function worker. |
 | `httpsOnly` | bool | `True` |  | Optional. Configures a web site to accept only https requests. Issues redirect for http requests. |
-| `kind` | string |  | `[functionapp, app]` | Required. Type of site to deploy |
+| `kind` | string |  | `[functionapp, app]` | Required. Type of site to deploy. |
 | `location` | string | `[resourceGroup().location]` |  | Optional. Location for all Resources. |
 | `lock` | string | `NotSpecified` | `[CanNotDelete, NotSpecified, ReadOnly]` | Optional. Specify the type of lock. |
 | `logsToEnable` | array | `[AppServiceHTTPLogs, AppServiceConsoleLogs, AppServiceAppLogs, AppServiceFileAuditLogs, AppServiceAuditLogs]` | `[AppServiceHTTPLogs, AppServiceConsoleLogs, AppServiceAppLogs, AppServiceFileAuditLogs, AppServiceAuditLogs]` | Optional. The name of logs that will be streamed. |
 | `managedServiceIdentity` | string | `None` | `[None, SystemAssigned, SystemAssigned, UserAssigned, UserAssigned]` | Optional. Type of managed service identity. |
 | `metricsToEnable` | array | `[AllMetrics]` | `[AllMetrics]` | Optional. The name of metrics that will be streamed. |
-| `name` | string |  |  | Required. Name of the Web Application Portal Name |
-| `privateEndpoints` | array | `[]` |  | Optional. Configuration Details for private endpoints. |
-| `roleAssignments` | array | `[]` |  | Optional. Array of role assignment objects that contain the 'roleDefinitionIdOrName' and 'principalId' to define RBAC role assignments on this resource. In the roleDefinitionIdOrName attribute, you can provide either the display name of the role definition, or its fully qualified ID in the following format: '/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11' |
-| `siteConfig` | object | `{object}` |  | Required. Configuration of the app. |
+| `name` | string |  |  | Required. Name of the site. |
+| `privateEndpoints` | array | `[]` |  | Optional. Configuration details for private endpoints. |
+| `roleAssignments` | array | `[]` |  | Optional. Array of role assignment objects that contain the 'roleDefinitionIdOrName' and 'principalId' to define RBAC role assignments on this resource. In the roleDefinitionIdOrName attribute, you can provide either the display name of the role definition, or its fully qualified ID in the following format: '/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11'. |
+| `siteConfig` | object | `{object}` |  | Optional. Configuration of the app. |
 | `storageAccountId` | string |  |  | Optional. Required if functionapp kind. The resource ID of the storage account to manage triggers and logging function executions. |
 | `tags` | object | `{object}` |  | Optional. Tags of the resource. |
-| `userAssignedIdentities` | object | `{object}` |  | Optional. Mandatory 'managedServiceIdentity' contains UserAssigned. The identy to assign to the resource. |
-| `workspaceId` | string |  |  | Optional. Resource identifier of Log Analytics. |
+| `userAssignedIdentities` | object | `{object}` |  | Optional. Mandatory 'managedServiceIdentity' contains UserAssigned. The identity to assign to the resource. |
+| `workspaceId` | string |  |  | Optional. Resource ID of log analytics workspace. |
 
 ### Parameter Usage: `roleAssignments`
 
@@ -99,9 +99,9 @@ Tag names and tag values can be provided as needed. A tag can be left without a 
 
 | Output Name | Type | Description |
 | :-- | :-- | :-- |
-| `siteName` | string | The name of the site |
-| `siteResourceGroup` | string | The resource group the site was deployed into |
-| `siteResourceId` | string | The resourceId of the site |
+| `siteName` | string | The name of the site. |
+| `siteResourceGroup` | string | The resource group the site was deployed into. |
+| `siteResourceId` | string | The resource ID of the site. |
 
 ## Template references
 

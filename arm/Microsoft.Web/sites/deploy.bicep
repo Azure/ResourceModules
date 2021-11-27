@@ -1,10 +1,10 @@
-@description('Required. Name of the Web Application Portal Name')
+@description('Required. Name of the site.')
 param name string
 
 @description('Optional. Location for all Resources.')
 param location string = resourceGroup().location
 
-@description('Required. Type of site to deploy')
+@description('Required. Type of site to deploy.')
 @allowed([
   'functionapp'
   'app'
@@ -14,14 +14,11 @@ param kind string
 @description('Optional. Configures a web site to accept only https requests. Issues redirect for http requests.')
 param httpsOnly bool = true
 
-@description('Optional. If Client Affinity is enabled.')
+@description('Optional. If client affinity is enabled.')
 param clientAffinityEnabled bool = true
 
-@description('Required. Configuration of the app.')
+@description('Optional. Configuration of the app.')
 param siteConfig object = {}
-
-// @description('Optional. If true, ApplicationInsights will be configured for the Function App.')
-// param enableMonitoring bool = true
 
 @description('Optional. Required if functionapp kind. The resource ID of the storage account to manage triggers and logging function executions.')
 param storageAccountId string = ''
@@ -40,19 +37,19 @@ param functionsWorkerRuntime string = ''
 @description('Optional. Version if the function extension.')
 param functionsExtensionVersion string = '~3'
 
-@description('Optional. The Resource ID of the App Service Plan to use for the App. If not provided, the appServicePlanObject is used to create a new plan.')
+@description('Optional. The Resource ID of the app service plan to use for the site. If not provided, the appServicePlanObject is used to create a new plan.')
 param appServicePlanId string = ''
 
 @description('Optional. Required if no appServicePlanId is provided to deploy a new app service plan.')
 param appServicePlanObject object = {}
 
-@description('Optional. The Resource ID of the existing App Insight to leverage for the App. If the ID is not provided, the appInsightObject can be used to create a new app insight.')
+@description('Optional. The Resource ID of the existing app insight to leverage for the app. If the Resource ID is not provided, the appInsightObject can be used to create a new app insight.')
 param appInsightId string = ''
 
-@description('Optional. Used to deploy a new app service plan if no appInsightId is provided .')
+@description('Optional. Used to deploy a new app insight if no appInsightId is provided.')
 param appInsightObject object = {}
 
-@description('Optional. The Resource ID of the App Service Environment to use for the Function App.')
+@description('Optional. The Resource ID of the App Service Environment to use for this resource.')
 param appServiceEnvironmentId string = ''
 
 @description('Optional. Type of managed service identity.')
@@ -64,7 +61,7 @@ param appServiceEnvironmentId string = ''
 ])
 param managedServiceIdentity string = 'None'
 
-@description('Optional. Mandatory \'managedServiceIdentity\' contains UserAssigned. The identy to assign to the resource.')
+@description('Optional. Mandatory \'managedServiceIdentity\' contains UserAssigned. The identity to assign to the resource.')
 param userAssignedIdentities object = {}
 
 @allowed([
@@ -75,16 +72,16 @@ param userAssignedIdentities object = {}
 @description('Optional. Specify the type of lock.')
 param lock string = 'NotSpecified'
 
-@description('Optional. Configuration Details for private endpoints.')
+@description('Optional. Configuration details for private endpoints.')
 param privateEndpoints array = []
 
 @description('Optional. Tags of the resource.')
 param tags object = {}
 
-@description('Optional. Customer Usage Attribution ID (GUID). This GUID must be previously registered')
+@description('Optional. Customer Usage Attribution ID (GUID). This GUID must be previously registered.')
 param cuaId string = ''
 
-@description('Optional. Array of role assignment objects that contain the \'roleDefinitionIdOrName\' and \'principalId\' to define RBAC role assignments on this resource. In the roleDefinitionIdOrName attribute, you can provide either the display name of the role definition, or its fully qualified ID in the following format: \'/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11\'')
+@description('Optional. Array of role assignment objects that contain the \'roleDefinitionIdOrName\' and \'principalId\' to define RBAC role assignments on this resource. In the roleDefinitionIdOrName attribute, you can provide either the display name of the role definition, or its fully qualified ID in the following format: \'/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11\'.')
 param roleAssignments array = []
 
 @description('Optional. Specifies the number of days that logs will be kept for; a value of 0 will retain data indefinitely.')
@@ -92,13 +89,13 @@ param roleAssignments array = []
 @maxValue(365)
 param diagnosticLogsRetentionInDays int = 365
 
-@description('Optional. Resource identifier of the Diagnostic Storage Account.')
+@description('Optional. Resource ID of the diagnostic storage account.')
 param diagnosticStorageAccountId string = ''
 
-@description('Optional. Resource identifier of Log Analytics.')
+@description('Optional. Resource ID of log analytics workspace.')
 param workspaceId string = ''
 
-@description('Optional. Resource ID of the event hub authorization rule for the Event Hubs namespace in which the event hub should be created or streamed to.')
+@description('Optional. Resource ID of the event hub authorization rule for the event hub namespace in which the event hub should be created or streamed to.')
 param eventHubAuthorizationRuleId string = ''
 
 @description('Optional. Name of the event hub within the namespace to which logs are streamed. Without this, an event hub is created for each log category.')
@@ -176,11 +173,6 @@ module appServicePlan '.bicep/nested_serverfarms.bicep' = if (empty(appServicePl
   }
 }
 
-resource appInsightExisting 'microsoft.insights/components@2020-02-02' existing = if (!empty(appInsightId)) {
-  name: last(split(appInsightId, '/'))
-  scope: resourceGroup(split(appInsightId, '/')[2], split(appInsightId, '/')[4])
-}
-
 module appInsight '.bicep/nested_components.bicep' = if (!empty(appInsightObject)) {
   name: '${deployment().name}-AppInsight'
   params: {
@@ -209,19 +201,6 @@ resource app 'Microsoft.Web/sites@2020-12-01' = {
     clientAffinityEnabled: clientAffinityEnabled
     siteConfig: siteConfig
   }
-  // resource app_appsettings 'config@2019-08-01' = {
-  //   name: 'appsettings'
-  //   properties: {
-  //     AzureWebJobsStorage: !empty(storageAccountName) ? 'DefaultEndpointsProtocol=https;AccountName=${storageAccountName};AccountKey=${listkeys(resourceId(subscription().subscriptionId, storageAccountResourceGroupName, 'Microsoft.Storage/storageAccounts', storageAccountName), '2019-06-01').keys[0].value};' : any(null)
-  //     AzureWebJobsDashboard: !empty(storageAccountName) ? 'DefaultEndpointsProtocol=https;AccountName=${storageAccountName};AccountKey=${listkeys(resourceId(subscription().subscriptionId, storageAccountResourceGroupName, 'Microsoft.Storage/storageAccounts', storageAccountName), '2019-06-01').keys[0].value};' : any(null)
-  //     FUNCTIONS_EXTENSION_VERSION: kind == 'functionapp' && !empty(functionsExtensionVersion) ? functionsExtensionVersion : any(null)
-  //     FUNCTIONS_WORKER_RUNTIME: kind == 'functionapp' && !empty(functionsWorkerRuntime) ? functionsWorkerRuntime : any(null)
-  //     // APPINSIGHTS_INSTRUMENTATIONKEY: enableMonitoring ? reference('microsoft.insights/components/${name}', '2015-05-01').InstrumentationKey : null
-  //     // APPLICATIONINSIGHTS_CONNECTION_STRING: enableMonitoring ? reference('microsoft.insights/components/${name}', '2015-05-01').ConnectionString : null
-  //     APPINSIGHTS_INSTRUMENTATIONKEY: !empty(appInsightId) ? appInsightExisting.properties.InstrumentationKey : ''
-  //     APPLICATIONINSIGHTS_CONNECTION_STRING: !empty(appInsightId) ? appInsightExisting.properties.ConnectionString : ''
-  //   }
-  // }
 }
 
 module app_appsettings 'config/deploy.bicep' = {
@@ -230,7 +209,7 @@ module app_appsettings 'config/deploy.bicep' = {
     name: 'appsettings'
     appName: app.name
     storageAccountId: !empty(storageAccountId) ? storageAccountId : ''
-    // appInsightId: !empty(appInsightId) ? appInsightId : ''
+    appInsightId: !empty(appInsightId) ? appInsightId : !empty(appInsightObject) ? appInsight.outputs.appInsightsResourceId : ''
     functionsWorkerRuntime: !empty(functionsWorkerRuntime) ? functionsWorkerRuntime : ''
     functionsExtensionVersion: !empty(functionsExtensionVersion) ? functionsExtensionVersion : '~3'
   }
@@ -259,7 +238,7 @@ resource app_diagnosticSettings 'Microsoft.Insights/diagnosticSettings@2017-05-0
 }
 
 module app_rbac '.bicep/nested_rbac.bicep' = [for (roleAssignment, index) in roleAssignments: {
-  name: '${deployment().name}-rbac-${index}'
+  name: '${uniqueString(deployment().name, location)}-Rbac-${index}'
   params: {
     roleAssignmentObj: roleAssignment
     resourceName: app.name
@@ -276,11 +255,11 @@ module app_privateEndpoint '.bicep/nested_privateEndpoint.bicep' = [for (private
   }
 }]
 
-@description('The name of the site')
+@description('The name of the site.')
 output siteName string = app.name
 
-@description('The resourceId of the site')
+@description('The resource ID of the site.')
 output siteResourceId string = app.id
 
-@description('The resource group the site was deployed into')
+@description('The resource group the site was deployed into.')
 output siteResourceGroup string = resourceGroup().name
