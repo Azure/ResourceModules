@@ -49,7 +49,7 @@ param appInsightId string = ''
 @description('Optional. Used to deploy a new app insight if no appInsightId is provided.')
 param appInsightObject object = {}
 
-@description('Optional. The Resource ID of the App Service Environment to use for this resource.')
+@description('Optional. The Resource ID of the app service environment to use for this resource.')
 param appServiceEnvironmentId string = ''
 
 @description('Optional. Type of managed service identity.')

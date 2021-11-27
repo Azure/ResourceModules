@@ -16,16 +16,16 @@ param location string = resourceGroup().location
 ])
 param serverOS string = 'Windows'
 
-@description('Optional. The Resource ID of the App Service Environment to use for the app service plan.')
+@description('Optional. The Resource ID of the app service environment to use for this resource.')
 param appServiceEnvironmentId string = ''
 
-@description('Optional. Target worker tier assigned to the App Service plan.')
+@description('Optional. Target worker tier assigned to the app service plan.')
 param workerTierName string = ''
 
-@description('Optional. If true, apps assigned to this App Service plan can be scaled independently. If false, apps assigned to this App Service plan will scale to all instances of the plan.')
+@description('Optional. If true, apps assigned to this app service plan can be scaled independently. If false, apps assigned to this app service plan will scale to all instances of the plan.')
 param perSiteScaling bool = false
 
-@description('Optional. Maximum number of total workers allowed for this ElasticScaleEnabled App Service Plan.')
+@description('Optional. Maximum number of total workers allowed for this ElasticScaleEnabled app service plan.')
 param maximumElasticWorkerCount int = 1
 
 @description('Optional. Scaling worker count.')
@@ -78,11 +78,11 @@ resource appServicePlan_lock 'Microsoft.Authorization/locks@2016-09-01' = if (lo
   scope: appServicePlan
 }
 
-@description('The resource group the app service plan was deployed into')
-output appServicePlanResourceGroup string = resourceGroup().name
-
-@description('The name of the app service plan')
+@description('The name of the app service plan.')
 output appServicePlanName string = appServicePlan.name
 
-@description('The resource ID of the app service plan')
+@description('The resource ID of the app service plan.')
 output appServicePlanResourceId string = appServicePlan.id
+
+@description('The resource group the app service plan was deployed into.')
+output appServicePlanResourceGroup string = resourceGroup().name
