@@ -53,7 +53,7 @@ This template deploys volumes in a capacity pool of an Azure NetApp files.
 | :-- | :-- | :-- |
 | `volumeName` | string | The name of the Volume. |
 | `volumeResourceGroup` | string | The name of the Resource Group the Volume was created in. |
-| `volumeResourceId` | string | The Resource Id of the Volume. |
+| `volumeResourceId` | string | The Resource ID of the Volume. |
 
 ## Template references
 
