@@ -49,5 +49,8 @@ output registrationDefinitionName string = registrationDefinition.name
 @description('The resource ID of the registration definition')
 output registrationDefinitionResourceId string = registrationDefinition.id
 
+@description('The subscription the registration definition was deployed into')
+output registrationDefinitionSubscription string = subscription().displayName
+
 @description('The registration assignment resource ID')
 output registrationAssignmentId string = empty(resourceGroupName) ? registrationAssignment_sub.id : registrationAssignment_rg.outputs.registrationAssignmentId
