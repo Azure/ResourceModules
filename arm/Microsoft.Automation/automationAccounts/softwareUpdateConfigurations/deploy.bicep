@@ -187,13 +187,13 @@ module pid_cuaId '.bicep/nested_cuaId.bicep' = if (!empty(cuaId)) {
   params: {}
 }
 
-resource softwareUpdateConfiguration_automationAccount 'Microsoft.Automation/automationAccounts@2020-01-13-preview' existing = {
+resource automationAccount 'Microsoft.Automation/automationAccounts@2020-01-13-preview' existing = {
   name: automationAccountName
 }
 
 resource softwareUpdateConfiguration 'Microsoft.Automation/automationAccounts/softwareUpdateConfigurations@2019-06-01' = {
   name: name
-  parent: softwareUpdateConfiguration_automationAccount
+  parent: automationAccount
   properties: {
     updateConfiguration: {
       operatingSystem: operatingSystem
@@ -259,7 +259,7 @@ resource softwareUpdateConfiguration 'Microsoft.Automation/automationAccounts/so
 @description('The name of the deployed softwareUpdateConfiguration')
 output softwareUpdateConfigurationName string = softwareUpdateConfiguration.name
 
-@description('The Id of the deployed softwareUpdateConfiguration')
+@description('The resource ID of the deployed softwareUpdateConfiguration')
 output softwareUpdateConfigurationResourceId string = softwareUpdateConfiguration.id
 
 @description('The resource group of the deployed softwareUpdateConfiguration')

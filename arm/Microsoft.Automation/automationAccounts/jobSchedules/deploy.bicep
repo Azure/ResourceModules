@@ -36,7 +36,7 @@ resource jobSchedule 'Microsoft.Automation/automationAccounts/jobSchedules@2020-
     runbook: {
       name: runbookName
     }
-    runOn: (empty(runOn) ? null : runOn)
+    runOn: !empty(runOn) ? runOn : null
     schedule: {
       name: scheduleName
     }
@@ -46,7 +46,7 @@ resource jobSchedule 'Microsoft.Automation/automationAccounts/jobSchedules@2020-
 @description('The name of the deployed jobSchedule')
 output jobScheduleName string = jobSchedule.name
 
-@description('The id of the deployed jobSchedule')
+@description('The resource ID of the deployed jobSchedule')
 output jobScheduleResourceId string = jobSchedule.id
 
 @description('The resource group of the deployed jobSchedule')

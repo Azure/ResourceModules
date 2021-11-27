@@ -31,7 +31,7 @@ This module deploys an Azure Automation Account Runbook.
 | :-- | :-- | :-- |
 | `runbookName` | string | The name of the deployed runbook |
 | `runbookResourceGroup` | string | The resource group of the deployed runbook |
-| `runbookResourceId` | string | The id of the deployed runbook |
+| `runbookResourceId` | string | The resource ID of the deployed runbook |
 
 ## Template references
 
