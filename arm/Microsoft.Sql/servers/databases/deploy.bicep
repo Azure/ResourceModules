@@ -103,7 +103,7 @@ resource database 'Microsoft.Sql/servers/databases@2021-02-01-preview' = {
 output databaseName string = database.name
 
 @description('The resource ID of the deployed database')
-output databaseId string = database.id
+output databaseResourceId string = database.id
 
 @description('The resourceGroup of the deployed database')
 output databaseResourceGroup string = resourceGroup().name
