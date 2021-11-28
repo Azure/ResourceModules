@@ -45,12 +45,12 @@ The below example can be used on your local environment to load the 'Test-Module
 
 ```powershell
 #########[ Function Test-ModulesLocally.ps1 ]#############
-cd path/to/clonedRepo
-. .\utilities\tools\Test-ModuleLocally.ps1
+$pathToRepository = '<pathToClonedRepo>'
+. "$pathToRepository\utilities\tools\Test-ModuleLocally.ps1"
 
 # REQUIRED INPUT FOR TESTING
 $TestModuleLocallyInput = @{
-    ModuleName                    = 'Microsoft.Network\applicationSecurityGroups'
+    templateFilePath              = "$pathToRepository\arm\Microsoft.Authorization\roleDefinitions\deploy.bicep"
     PesterTest                    = $true
     DeploymentTest                = $true
     ValidationTest                = $false
@@ -69,7 +69,6 @@ $TestModuleLocallyInput = @{
         @{ Name = 'tenantId'; Value = '12345678-1234-1234-1234-123456789123' }
     )
 }
-
 ```
 
 ---
