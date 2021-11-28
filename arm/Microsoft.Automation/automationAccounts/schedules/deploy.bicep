@@ -61,7 +61,7 @@ resource schedule 'Microsoft.Automation/automationAccounts/schedules@2020-01-13-
     description: !empty(scheduleDescription) ? scheduleDescription : null
     expiryTime: !empty(expiryTime) ? expiryTime : null
     frequency: !empty(frequency) ? frequency : 'OneTime'
-    interval: (0 != interval) ? interval : null
+    interval: (interval != 0) ? interval : null
     startTime: !empty(startTime) ? startTime : dateTimeAdd(baseTime, 'PT10M')
     timeZone: !empty(timeZone) ? timeZone : null
   }
