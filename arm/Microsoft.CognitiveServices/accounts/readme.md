@@ -124,7 +124,7 @@ Tag names and tag values can be provided as needed. A tag can be left without a 
     "defaultAction": "Deny",
     "virtualNetworkRules": [
       {
-        "ID": "/subscriptions/<subscription-ID>/resourceGroups/resourceGroup/providers/Microsoft.Network/virtualNetworks/<vnet-name>/subnets/<subnet-name>",
+        "id": "/subscriptions/<subscription-ID>/resourceGroups/resourceGroup/providers/Microsoft.Network/virtualNetworks/<vnet-name>/subnets/<subnet-name>",
         "ignoreMissingVnetServiceEndpoint": false
       }
     ],

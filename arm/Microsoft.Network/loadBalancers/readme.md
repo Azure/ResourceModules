@@ -63,7 +63,7 @@ This module deploys a Load Balancer
                         "name": "iacs-sh-main-pd-01-euw-rg-network_awefwa01p-nic-int-01ipconfig-internal",
                         "properties": {
                             "virtualNetwork": {
-                                "ID": "[reference(variables('deploymentVNET')).outputs.vNetResourceId.value]"
+                                "id": "[reference(variables('deploymentVNET')).outputs.vNetResourceId.value]"
                             },
                             "ipAddress": "172.22.232.5"
                         }
@@ -72,7 +72,7 @@ This module deploys a Load Balancer
                         "name": "iacs-sh-main-pd-01-euw-rg-network_awefwa01p-ha-nic-int-01ipconfig-internal",
                         "properties": {
                             "virtualNetwork": {
-                                "ID": "[reference(variables('deploymentVNET')).outputs.vNetResourceId.value]"
+                                "id": "[reference(variables('deploymentVNET')).outputs.vNetResourceId.value]"
                             },
                             "ipAddress": "172.22.232.6"
                         }

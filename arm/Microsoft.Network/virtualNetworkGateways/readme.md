@@ -59,10 +59,10 @@ Here's an example of specifying a couple Subnets to deploy:
         "properties": {
         "addressPrefix": "10.1.0.0/24",
         "networkSecurityGroup": {
-            "ID": "[resourceId('Microsoft.Network/networkSecurityGroups', 'app-nsg')]"
+            "id": "[resourceId('Microsoft.Network/networkSecurityGroups', 'app-nsg')]"
         },
         "routeTable": {
-            "ID": "[resourceId('Microsoft.Network/routeTables', 'app-udr')]"
+            "id": "[resourceId('Microsoft.Network/routeTables', 'app-udr')]"
         }
         }
     },

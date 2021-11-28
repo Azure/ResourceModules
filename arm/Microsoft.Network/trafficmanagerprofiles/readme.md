@@ -56,7 +56,7 @@ This module deploys Traffic Manager, with resource lock.
     "value":
         [
             {
-                "ID": "/subscriptions/12345678-1234-1234-1234-123456789012/resourceGroups/<rgname>/providers/Microsoft.Network/trafficManagerProfiles/<tmname>/azureEndpoints/<endpointname>",
+                "id": "/subscriptions/12345678-1234-1234-1234-123456789012/resourceGroups/<rgname>/providers/Microsoft.Network/trafficManagerProfiles/<tmname>/azureEndpoints/<endpointname>",
                 "name": "MyEndpoint001",
                 "type": "Microsoft.Network/trafficManagerProfiles/azureEndpoints",
                 "properties":

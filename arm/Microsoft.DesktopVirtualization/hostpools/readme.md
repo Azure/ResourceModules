@@ -89,7 +89,7 @@ The below parameter object is converted to an in-line string when handed over to
         "osDiskType": "StandardSSD_LRS",
         "useManagedDisks": true,
         "vmSize": {
-            "ID": "Standard_D2s_v3",
+            "id": "Standard_D2s_v3",
             "cores": 2,
             "ram": 8
         }

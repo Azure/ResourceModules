@@ -112,7 +112,7 @@ This module deploys one Virtual Machine with one or multiple nics and optionally
 ```json
 "imageReference": {
     "value": {
-        "ID": "/subscriptions/12345-6789-1011-1213-15161718/resourceGroups/rg-name/providers/Microsoft.Compute/images/imagename"
+        "id": "/subscriptions/12345-6789-1011-1213-15161718/resourceGroups/rg-name/providers/Microsoft.Compute/images/imagename"
     }
 }
 ```
@@ -216,7 +216,7 @@ Get-TimeZone -ListAvailable | Select ID
     "secrets": [
     {
         "sourceVault": {
-        "ID": "string"
+        "id": "string"
         },
         "vaultCertificates": [
         {
@@ -310,7 +310,7 @@ The field `nicSuffix` and `subnetId` are mandatory. If `enablePublicIP` is set t
 },
 "domainJoinPassword": {
   "keyVault": {
-    "ID": "/subscriptions/62826c76-d304-46d8-a0f6-718dbdcc536c/resourceGroups/WVD-Mgmt-TO-RG/providers/Microsoft.KeyVault/vaults/wvd-to-kvlt"
+    "id": "/subscriptions/62826c76-d304-46d8-a0f6-718dbdcc536c/resourceGroups/WVD-Mgmt-TO-RG/providers/Microsoft.KeyVault/vaults/wvd-to-kvlt"
   },
   "secretName": "domainJoinUser02-Password"
 }

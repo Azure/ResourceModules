@@ -36,7 +36,7 @@ This module deploys an Azure API Connection.
 ```json
 "connectionApi": {
     "value": {
-        "ID": "string",
+        "id": "string",
         "type": "string",
         "swagger": {},
         "brandColor": "string",

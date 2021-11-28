@@ -39,7 +39,7 @@ This module deploys an Azure Automation Account Software update Configuration.
 | `rebootSetting` | string |  | `[IfRequired, Never, RebootOnly, Always]` | Required. Reboot setting for the deployment schedule. |
 | `scheduleDescription` | string |  |  | Optional. The schedules description. |
 | `scopeByLocations` | array | `[]` |  | Optional. Specify locations to which to scope the deployment schedule to. |
-| `scopeByResources` | array | `[[subscription().ID]]` |  | Optional. Specify the resources to scope the deployment schedule to. |
+| `scopeByResources` | array | `[[subscription().id]]` |  | Optional. Specify the resources to scope the deployment schedule to. |
 | `scopeByTags` | object | `{object}` |  | Optional. Specify tags to which to scope the deployment schedule to. |
 | `scopeByTagsOperation` | string | `All` | `[All, Any]` | Optional. Enables the scopeByTags to require All (Tag A and Tag B) or Any (Tag A or Tag B). |
 | `startTime` | string |  |  | Optional. The start time of the deployment schedule in ISO 8601 format. To specify a specific time use YYYY-MM-DDTHH:MM:SS, 2021-12-31T23:00:00. For schedules where we want to start the deployment as soon as possible, specify the time segment only in 24 hour format, HH:MM, 22:00. |

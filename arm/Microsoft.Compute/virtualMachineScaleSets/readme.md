@@ -134,7 +134,7 @@ The following resources are required to be able to deploy this resource.
 ```json
 "imageReference": {
     "value": {
-        "ID": "/subscriptions/12345-6789-1011-1213-15161718/resourceGroups/rg-name/providers/Microsoft.Compute/images/imagename"
+        "id": "/subscriptions/12345-6789-1011-1213-15161718/resourceGroups/rg-name/providers/Microsoft.Compute/images/imagename"
     }
 }
 ```
