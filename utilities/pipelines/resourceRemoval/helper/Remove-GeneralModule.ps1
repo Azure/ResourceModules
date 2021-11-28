@@ -95,7 +95,7 @@ function Remove-GeneralModule {
     [CmdletBinding(SupportsShouldProcess)]
     param (
         [Parameter(Mandatory = $false)]
-        [string] $resourceGroupName,
+        [string] $ResourceGroupName,
 
         [Parameter(Mandatory = $true)]
         [string] $deploymentName,
