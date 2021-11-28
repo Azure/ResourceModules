@@ -74,7 +74,7 @@ param clientRevokedCertThumbprint string = ''
 @maxValue(365)
 param diagnosticLogsRetentionInDays int = 365
 
-@description('Required. Resource ID of the Diagnostic Storage Account.')
+@description('Optional. Resource ID of the diagnostic storage account.')
 param diagnosticStorageAccountId string = ''
 
 @description('Required. Resource identifier of Log Analytics.')

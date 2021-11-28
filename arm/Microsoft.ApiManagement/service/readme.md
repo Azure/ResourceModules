@@ -39,7 +39,7 @@ This module deploys an API management.
 | `cuaId` | string |  |  | Optional. Customer Usage Attribution ID (GUID). This GUID must be previously registered |
 | `customProperties` | object | `{object}` |  | Optional. Custom properties of the API Management service. |
 | `diagnosticLogsRetentionInDays` | int | `365` |  | Optional. Specifies the number of days that logs will be kept for; a value of 0 will retain data indefinitely. |
-| `diagnosticStorageAccountId` | string |  |  | Optional. Resource ID of the Diagnostic Storage Account. |
+| `diagnosticStorageAccountId` | string |  |  | Optional. Resource ID of the diagnostic storage account. |
 | `disableGateway` | bool |  |  | Optional. Property only valid for an API Management service deployed in multiple locations. This can be used to disable the gateway in master region. |
 | `enableClientCertificate` | bool |  |  | Optional. Property only meant to be used for Consumption SKU Service. This enforces a client certificate to be presented on each request to the gateway. This also enables the ability to authenticate the certificate in the policy on the gateway. |
 | `eventHubAuthorizationRuleId` | string |  |  | Optional. Resource ID of the event hub authorization rule for the Event Hubs namespace in which the event hub should be created or streamed to. |
@@ -69,7 +69,7 @@ This module deploys an API management.
 | `subscriptions` | _[subscriptions](subscriptions/readme.md)_ array | `[]` |  | Optional. Subscriptions. |
 | `tags` | object | `{object}` |  | Optional. Tags of the resource. |
 | `virtualNetworkType` | string | `None` | `[None, External, Internal]` | Optional. The type of VPN in which API Management service needs to be configured in. None (Default Value) means the API Management service is not part of any Virtual Network, External means the API Management deployment is set up inside a Virtual Network having an internet Facing Endpoint, and Internal means that API Management deployment is setup inside a Virtual Network having an Intranet Facing Endpoint only. |
-| `workspaceId` | string |  |  | Optional. Resource identifier of Log Analytics. |
+| `workspaceId` | string |  |  | Optional. Resource ID of log analytics. |
 | `zones` | array | `[]` |  | Optional. A list of availability zones denoting where the resource needs to come from. |
 
 ### Parameter Usage: `roleAssignments`

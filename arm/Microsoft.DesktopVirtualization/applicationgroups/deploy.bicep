@@ -29,7 +29,7 @@ param roleAssignments array = []
 @maxValue(365)
 param diagnosticLogsRetentionInDays int = 365
 
-@sys.description('Optional. Resource ID of the Diagnostic Storage Account.')
+@sys.description('Optional. Resource ID of the diagnostic storage account.')
 param diagnosticStorageAccountId string = ''
 
 @sys.description('Optional. Resource identifier of Log Analytics.')

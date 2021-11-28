@@ -41,7 +41,7 @@ This module deploys one Virtual Machine with one or multiple nics and optionally
 | `desiredStateConfigurationProtectedSettings` | secureObject | `{object}` |  | Optional. The DSC configuration Protected Settings Object |
 | `desiredStateConfigurationSettings` | object | `{object}` |  | Optional. The DSC configuration Settings Object |
 | `diagnosticLogsRetentionInDays` | int | `365` |  | Optional. Specifies the number of days that logs will be kept for; a value of 0 will retain data indefinitely. |
-| `diagnosticStorageAccountId` | string |  |  | Optional. Resource ID of the Diagnostic Storage Account. |
+| `diagnosticStorageAccountId` | string |  |  | Optional. Resource ID of the diagnostic storage account. |
 | `diskEncryptionSettings` | object | `{object}` |  | Optional. Settings for Azure Disk Encription extension. |
 | `domainJoinPassword` | secureString |  |  | Optional. Required if domainName is specified. Password of the user specified in domainJoinUser parameter |
 | `domainJoinSettings` | object | `{object}` |  | Optional. The Domain Join configuration object |
@@ -90,7 +90,7 @@ This module deploys one Virtual Machine with one or multiple nics and optionally
 | `windowsConfiguration` | object | `{object}` |  | Optional. Specifies Windows operating system settings on the virtual machine. |
 | `windowsScriptExtensionCommandToExecute` | secureString |  |  | Optional. Specifies the command that should be run on a Windows VM. |
 | `windowsScriptExtensionFileData` | array | `[]` |  | Optional. Array of objects that specifies URIs and the storageAccountId of the scripts that need to be downloaded and run by the Custom Script Extension on a Windows VM. |
-| `workspaceId` | string |  |  | Optional. Resource identifier of Log Analytics. |
+| `workspaceId` | string |  |  | Optional. Resource ID of log analytics. |
 
 ### Parameter Usage: `imageReference`
 

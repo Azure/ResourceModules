@@ -20,7 +20,7 @@ This module controls the Network Security Group Flow Logs and analytics settings
 | `name` | string | `[format('{0}-{1}-flowlog', last(split(parameters('targetResourceId'), '/')), split(parameters('targetResourceId'), '/')[4])]` |  | Optional. Name of the resource. |
 | `networkWatcherName` | string | `[format('NetworkWatcher_{0}', resourceGroup().location)]` |  | Optional. Name of the network watcher resource. Must be in the resource group where the Flow log will be created and same region as the NSG |
 | `retentionInDays` | int | `365` |  | Optional. Specifies the number of days that logs will be kept for; a value of 0 will retain data indefinitely. |
-| `storageId` | string |  |  | Required. Resource ID of the Diagnostic Storage Account. |
+| `storageId` | string |  |  | Required. Resource ID of the diagnostic storage account. |
 | `tags` | object | `{object}` |  | Optional. Tags of the resource. |
 | `targetResourceId` | string |  |  | Required. Resource ID of the NSG that must be enabled for Flow Logs. |
 | `trafficAnalyticsInterval` | int | `60` | `[10, 60]` | Optional. The interval in minutes which would decide how frequently TA service should do flow analytics. |
