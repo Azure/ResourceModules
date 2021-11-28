@@ -79,7 +79,7 @@ Optional. The maximum times to retry the search for resources via their removal 
 .PARAMETER SearchRetryInterval
 Optional. The time to wait in between the search for resources via their remove tags
 
-.PARAMETER deploymentName
+.PARAMETER DeploymentName
 Optional. The deployment name to use for the removal
 
 .PARAMETER templateFilePath
