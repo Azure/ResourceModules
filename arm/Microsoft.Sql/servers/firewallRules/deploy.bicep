@@ -18,8 +18,13 @@ module pid_cuaId '.bicep/nested_cuaId.bicep' = if (!empty(cuaId)) {
   params: {}
 }
 
+resource server 'Microsoft.Sql/servers@2021-05-01-preview' existing = {
+  name: serverName
+}
+
 resource firewallRule 'Microsoft.Sql/servers/firewallRules@2021-05-01-preview' = {
-  name: '${serverName}/${name}'
+  name: name
+  parent: server
   properties: {
     endIpAddress: endIpAddress
     startIpAddress: startIpAddress
