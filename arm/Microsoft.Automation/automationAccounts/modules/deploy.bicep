@@ -35,8 +35,8 @@ resource module 'Microsoft.Automation/automationAccounts/modules@2020-01-13-prev
   tags: tags
   properties: {
     contentLink: {
-      uri: version == 'latest' ? '${uri}/${name}' : '${uri}/${name}/${version}'
-      version: version == 'latest' ? null : version
+      uri: version != 'latest' ? '${uri}/${name}/${version}' : '${uri}/${name}'
+      version: version != 'latest' ? version : null
     }
   }
 }

@@ -36,7 +36,7 @@ resource jobSchedule 'Microsoft.Automation/automationAccounts/jobSchedules@2020-
     runbook: {
       name: runbookName
     }
-    runOn: (empty(runOn) ? null : runOn)
+    runOn: !empty(runOn) ? runOn : null
     schedule: {
       name: scheduleName
     }
