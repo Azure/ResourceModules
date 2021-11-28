@@ -1,6 +1,6 @@
 <#
 .SYNOPSIS
-This Function Aggregates all the different token types (Default and Local) and then passes them to the Convert Tokens Script to replace tokens in a parameter file
+This Function Helps with Testing A Module Locally
 
 .DESCRIPTION
 This Function Aggregates all the different token types (Default and Local) and then passes them to the Convert Tokens Script to replace tokens in a parameter file

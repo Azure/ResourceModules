@@ -8,7 +8,7 @@
         "virtualNetworkLinks": {
             "value": [
                 {
-                    "virtualNetworkResourceId": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/virtualNetworks/adp-sxx-az-vnet-x-001",
+                    "virtualNetworkId": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/virtualNetworks/adp-sxx-az-vnet-x-001",
                     "registrationEnabled": false
                 }
             ]
