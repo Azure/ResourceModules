@@ -411,11 +411,6 @@ function Set-ModuleReadMe {
     if ($TemplateFilePath.Replace('\', '/') -like '*/arm/*') {
         $fullResourcePath = 'Microsoft.{0}' -f (Split-Path $TemplateFilePath -Parent).Replace('\', '/').Split('/Microsoft.')[1]
 
-        if ($fullResourcePath -clike '*Resources/*') {
-            # Deal with original '*Resources' child-resource folder
-            $cutOutPath = $fullResourcePath -split '/(.*)Resources/(.*)' | Where-Object { -not [String]::IsNullOrEmpty($_) }
-            $fullResourcePath = $cutOutPath -join '/'
-        }
         if ($readMeFileContent[0] -notlike "*``[$fullResourcePath]``") {
             # Cut outdated
             $readMeFileContent[0] = $readMeFileContent[0].Split('`[')[0]
