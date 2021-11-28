@@ -42,7 +42,7 @@ param enforcementMode string = 'Default'
 @description('Optional. The Target Scope for the Policy. The name of the management group for the policy assignment')
 param managementGroupId string = ''
 
-@description('Optional. The Target Scope for the Policy. The resource ID of the subscription for the policy assignment')
+@description('Optional. The Target Scope for the Policy. The subscription ID of the subscription for the policy assignment')
 param subscriptionId string = ''
 
 @description('Optional. The Target Scope for the Policy. The name of the resource group for the policy assignment')
