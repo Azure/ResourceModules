@@ -104,7 +104,7 @@ function Remove-GeneralModule {
         [string] $deploymentName,
 
         [Parameter(Mandatory = $true)]
-        [string] $templateFilePath,
+        [string] $TemplateFilePath,
 
         [Parameter(Mandatory = $false)]
         [int] $searchRetryLimit = 40,
