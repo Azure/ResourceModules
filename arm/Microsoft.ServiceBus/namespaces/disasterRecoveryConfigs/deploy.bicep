@@ -9,8 +9,8 @@ param name string = 'default'
 @description('Optional. Primary/Secondary eventhub namespace name, which is part of GEO DR pairing')
 param alternateName string = ''
 
-@description('Optional. ARM ID of the Primary/Secondary eventhub namespace name, which is part of GEO DR pairing')
-param partnerNamespace string = ''
+@description('Optional. Resource ID of the Primary/Secondary event hub namespace name, which is part of GEO DR pairing')
+param partnerNamespaceResourceID string = ''
 
 @description('Optional. Customer Usage Attribution ID (GUID). This GUID must be previously registered')
 param cuaId string = ''
