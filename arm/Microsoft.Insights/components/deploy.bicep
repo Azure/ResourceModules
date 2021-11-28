@@ -1,5 +1,5 @@
 @description('Required. Name of the Application Insights')
-param appInsightsName string
+param name string
 
 @description('Optional. Application type')
 @allowed([
@@ -8,7 +8,7 @@ param appInsightsName string
 ])
 param appInsightsType string = 'web'
 
-@description('Required. Resource Id of the log analytics workspace which the data will be ingested to. This property is required to create an application with this API version. Applications from older versions will not have this property.')
+@description('Required. Resource ID of the log analytics workspace which the data will be ingested to. This property is required to create an application with this API version. Applications from older versions will not have this property.')
 param appInsightsWorkspaceResourceId string
 
 @description('Optional. The network access type for accessing Application Insights ingestion. - Enabled or Disabled')
@@ -37,7 +37,7 @@ param roleAssignments array = []
 @description('Optional. Tags of the resource.')
 param tags object = {}
 
-@description('Optional. Customer Usage Attribution id (GUID). This GUID must be previously registered')
+@description('Optional. Customer Usage Attribution ID (GUID). This GUID must be previously registered')
 param cuaId string = ''
 
 module pid_cuaId '.bicep/nested_cuaId.bicep' = if (!empty(cuaId)) {
@@ -46,7 +46,7 @@ module pid_cuaId '.bicep/nested_cuaId.bicep' = if (!empty(cuaId)) {
 }
 
 resource appInsights 'Microsoft.Insights/components@2020-02-02' = {
-  name: appInsightsName
+  name: name
   location: location
   tags: tags
   kind: kind
@@ -67,8 +67,14 @@ module appInsights_rbac '.bicep/nested_rbac.bicep' = [for (roleAssignment, index
   }
 }]
 
-output appInsightsName string = appInsightsName
+@description('The name of the application insights component')
+output appInsightsName string = appInsights.name
+
+@description('The resource ID of the application insights component')
 output appInsightsResourceId string = appInsights.id
+
+@description('The resource group the application insights component was deployed into')
 output appInsightsResourceGroup string = resourceGroup().name
-output appInsightsKey string = appInsights.properties.InstrumentationKey
+
+@description('The application ID of the application insights component')
 output appInsightsAppId string = appInsights.properties.AppId

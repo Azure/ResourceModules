@@ -44,12 +44,13 @@ Invoke-Pester -Configuration @{
 The below example can be used on your local environment to load the 'Test-ModuleLocally.ps1' script and modify the required parameters as below to enable you to perform the tests locally before pushing to source control.
 
 ```powershell
-cd path/to/clonedRepo
-. .\utilities\tools\Test-ModuleLocally.ps1
+#########[ Function Test-ModulesLocally.ps1 ]#############
+$pathToRepository = '<pathToClonedRepo>'
+. "$pathToRepository\utilities\tools\Test-ModuleLocally.ps1"
 
 # REQUIRED INPUT FOR TESTING
 $TestModuleLocallyInput = @{
-    ModuleName                    = 'Microsoft.Network\applicationSecurityGroups'
+    templateFilePath              = "$pathToRepository\arm\Microsoft.Authorization\roleDefinitions\deploy.bicep"
     PesterTest                    = $true
     DeploymentTest                = $true
     ValidationTest                = $false
@@ -72,7 +73,7 @@ $TestModuleLocallyInput = @{
 
 ## Handling Parameters that require or contain a value that should be tokenized
 
-The following scenarios are common to when to use a token value in the parameter file. Refer to [Parameter File Tokens Design](./ParameterFileTokens.md) for more details.
+The following scenarios are common to when to use a token value in the parameter file. Refer to [Parameter File Tokens Design](./ParameterFileTokens) for more details.
 
 - Scenarios where resources have dependencies on other resources, which may require to be linked using `resourceId` references.
 

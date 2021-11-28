@@ -479,13 +479,13 @@ Describe 'Deployment template tests' -Tag Template {
             )
             $ApiVersion = $templateContent.resources.apiVersion
             $ApiVersionArray = @()
-            foreach ($Api in $ApiVersion) {
-                if ($Api.Substring(0, 2) -eq '20') {
+            foreach ($API in $ApiVersion) {
+                if ($API.Substring(0, 2) -eq '20') {
                     $ApiVersionOutput = $true
-                } elseif ($Api.substring(1, 10) -eq 'parameters') {
+                } elseif ($API.substring(1, 10) -eq 'parameters') {
                     # An API version should not be referenced as a parameter
                     $ApiVersionOutput = $false
-                } elseif ($Api.substring(1, 10) -eq 'variables') {
+                } elseif ($API.substring(1, 10) -eq 'variables') {
                     # An API version should not be referenced as a variable
                     $ApiVersionOutput = $false
                 } else {
@@ -758,7 +758,7 @@ Describe 'Deployment template tests' -Tag Template {
     }
 }
 
-Describe "Api version tests [All apiVersions in the template should be 'recent']" -Tag ApiCheck {
+Describe "API version tests [All apiVersions in the template should be 'recent']" -Tag ApiCheck {
 
     $testCases = @()
     $ApiVersions = Get-AzResourceProvider -ListAvailable
@@ -849,7 +849,7 @@ Describe "Api version tests [All apiVersions in the template should be 'recent']
         $resourceTypeApiVersions = ($namespaceResourceTypes | Where-Object { $_.ResourceTypeName -eq $resourceType }).ApiVersions
 
         if (-not $resourceTypeApiVersions) {
-            Write-Warning ('[Api Test] We are currently unable to determine the available API versions for resource type [{0}/{1}]' -f $ProviderNamespace, $resourceType)
+            Write-Warning ('[API Test] We are currently unable to determine the available API versions for resource type [{0}/{1}]' -f $ProviderNamespace, $resourceType)
             continue
         }
 

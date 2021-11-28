@@ -16,7 +16,7 @@ param publicNetworkAccess bool = true
 @description('Optional. Boolean to define whether or not to configure git during template deployment.')
 param gitConfigureLater bool = true
 
-@description('Optional. Repo type - can be \'FactoryVSTSConfiguration\' or \'FactoryGitHubConfiguration\'. Default is \'FactoryVSTSConfiguration\'.')
+@description('Optional. Repository type - can be \'FactoryVSTSConfiguration\' or \'FactoryGitHubConfiguration\'. Default is \'FactoryVSTSConfiguration\'.')
 param gitRepoType string = 'FactoryVSTSConfiguration'
 
 @description('Optional. The account name.')
@@ -39,10 +39,10 @@ param gitRootFolder string = '/'
 @maxValue(365)
 param diagnosticLogsRetentionInDays int = 365
 
-@description('Optional. Resource identifier of the Diagnostic Storage Account.')
+@description('Optional. Resource ID of the diagnostic storage account.')
 param diagnosticStorageAccountId string = ''
 
-@description('Optional. Resource identifier of Log Analytics.')
+@description('Optional. Resource identifier of log analytics.')
 param workspaceId string = ''
 
 @allowed([

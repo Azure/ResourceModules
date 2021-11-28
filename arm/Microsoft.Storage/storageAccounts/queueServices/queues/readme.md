@@ -4,7 +4,7 @@ This module deployes a storage account queue
 
 ## Resource Types
 
-| Resource Type | Api Version |
+| Resource Type | API Version |
 | :-- | :-- |
 | `Microsoft.Authorization/roleAssignments` | 2020-04-01-preview |
 | `Microsoft.Storage/storageAccounts/queueServices/queues` | 2019-06-01 |
@@ -13,7 +13,7 @@ This module deployes a storage account queue
 
 | Parameter Name | Type | Default Value | Possible Values | Description |
 | :-- | :-- | :-- | :-- | :-- |
-| `cuaId` | string |  |  | Optional. Customer Usage Attribution id (GUID). This GUID must be previously registered |
+| `cuaId` | string |  |  | Optional. Customer Usage Attribution ID (GUID). This GUID must be previously registered |
 | `metadata` | object | `{object}` |  | A name-value pair that represents queue metadata. |
 | `name` | string |  |  | The name of the storage queue to deploy |
 | `queueServicesName` | string | `default` |  | Optional. The name of the queue service |
@@ -53,7 +53,7 @@ This module deployes a storage account queue
 | :-- | :-- | :-- |
 | `queueName` | string | The name of the deployed queue |
 | `queueResourceGroup` | string | The resource group of the deployed queue |
-| `queueResourceId` | string | The ID of the deployed queue |
+| `queueResourceId` | string | The resource ID of the deployed queue |
 
 ## Template references
 

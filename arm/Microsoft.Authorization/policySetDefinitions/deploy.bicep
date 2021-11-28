@@ -10,13 +10,13 @@ param displayName string = ''
 @description('Optional. The Description name of the Set Definition (Initiative)')
 param policySetDescription string = ''
 
-@description('Optional. The ID of the Management Group (Scope). Cannot be used with subscriptionId and does not support tenant level deployment (i.e. \'/\')')
+@description('Optional. The group ID of the Management Group (Scope). Cannot be used with subscriptionId and does not support tenant level deployment (i.e. \'/\')')
 param managementGroupId string = ''
 
-@description('Optional. The ID of the Azure Subscription (Scope). Cannot be used with managementGroupId')
+@description('Optional. The subscription ID of the subscription (Scope). Cannot be used with managementGroupId')
 param subscriptionId string = ''
 
-@description('Optional. The Set Definition (Initiative) metadata. Metadata is an open ended object and is typically a collection of key value pairs.')
+@description('Optional. The Set Definition (Initiative) metadata. Metadata is an open ended object and is typically a collection of key-value pairs.')
 param metadata object = {}
 
 @description('Required. The array of Policy definitions object to include for this policy set. Each object must include the Policy definition ID, and optionally other properties like parameters')

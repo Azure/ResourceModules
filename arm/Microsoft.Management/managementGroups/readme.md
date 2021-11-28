@@ -9,7 +9,7 @@ This module has some known **limitations**:
 
 ## Resource types
 
-| Resource Type | Api Version |
+| Resource Type | API Version |
 | :-- | :-- |
 | `Microsoft.Authorization/roleAssignments` | 2020-04-01-preview |
 | `Microsoft.Management/managementGroups` | 2021-04-01 |
@@ -18,9 +18,9 @@ This module has some known **limitations**:
 
 | Parameter Name | Type | Default Value | Possible Values | Description |
 | :-- | :-- | :-- | :-- | :-- |
-| `displayName` | string |  |  | Optionsl. The friendly name of the management group. If no value is passed then this field will be set to the groupId. |
-| `name` | string |  |  | Required. The identifier of the management group |
-| `parentId` | string |  |  | Optional. The management group parent id. Defaults to current scope. |
+| `displayName` | string |  |  | Optional. The friendly name of the management group. If no value is passed then this field will be set to the group ID. |
+| `name` | string |  |  | Required. The group ID of the Management group |
+| `parentId` | string |  |  | Optional. The management group parent ID. Defaults to current scope. |
 | `roleAssignments` | array | `[]` |  | Optional. Array of role assignment objects to define RBAC on this resource. |
 
 ### Parameter Usage: `roleAssignments`
@@ -61,8 +61,8 @@ This module has some known **limitations**:
 
 | Output Name | Type | Description |
 | :-- | :-- | :-- |
+| `managementGroupId` | string | The group ID of the management group |
 | `managementGroupName` | string | The name of the management group |
-| `managementGroupResourceId` | string | The resource ID of the management group |
 
 ## Considerations
 
@@ -76,8 +76,8 @@ If owner access is excessive, the following rights roles will grant enough right
 Consider using the following script:
 
 ```powershell
-$PrincipalID = "<The id of the identity here>"
-$TopMGID = "<The id of the management group here>"
+$PrincipalID = "<The object ID of the identity here>"
+$TopMGID = "<The group ID of the management group here>"
 New-AzRoleAssignment -ObjectId $PrincipalID -Scope "/" -RoleDefinitionName "Automation Job Operator"
 New-AzRoleAssignment -ObjectId $PrincipalID -Scope "/providers/Microsoft.Management/managementGroups/$TopMGID" -RoleDefinitionName "Management Group Contributor"
 ```

@@ -1,7 +1,7 @@
 @description('Required. Identifier of the authorization server.')
 param name string
 
-@description('Required. The name of the of the Api Management service.')
+@description('Required. The name of the of the API Management service.')
 param apiManagementServiceName string
 
 @description('Required. OAuth authorization endpoint. See <http://tools.ietf.org/html/rfc6749#section-3.2>.')
@@ -28,13 +28,13 @@ param clientRegistrationEndpoint string = ''
 @description('Required. Name of the key vault that stores clientId and clientSecret for this authorization server.')
 param clientCredentialsKeyVaultId string
 
-@description('Required. Name of the secret that stores the Client or app id registered with this authorization server.')
+@description('Required. Name of the secret that stores the Client or app ID registered with this authorization server.')
 param clientIdSecretName string
 
 @description('Required. Name of the secret that stores the Client or app secret registered with this authorization server. This property will not be filled on \'GET\' operations! Use \'/listSecrets\' POST request to get the value.')
 param clientSecretSecretName string
 
-@description('Optional. Customer Usage Attribution id (GUID). This GUID must be previously registered')
+@description('Optional. Customer Usage Attribution ID (GUID). This GUID must be previously registered')
 param cuaId string = ''
 
 @description('Optional. Access token scope that is going to be requested by default. Can be overridden at the API level. Should be provided in the form of a string containing space-delimited values.')
@@ -102,7 +102,7 @@ module authorizationServer '../authorizationServers/deploy.bicep' = {
 @description('The name of the API management service authorization server')
 output authorizationServerName string = authorizationServer.outputs.authorizationServerName
 
-@description('The resourceId of the API management service authorization server')
+@description('The resource ID of the API management service authorization server')
 output authorizationServerResourceId string = authorizationServer.outputs.authorizationServerResourceId
 
 @description('The resource group the API management service authorization server was deployed into')

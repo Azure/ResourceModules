@@ -4,7 +4,7 @@ This module deploys an SQL Server Firewall rule.
 
 ## Resource Types
 
-| Resource Type | Api Version |
+| Resource Type | API Version |
 | :-- | :-- |
 | `Microsoft.Sql/servers/firewallRules` | 2021-05-01-preview |
 
@@ -12,7 +12,7 @@ This module deploys an SQL Server Firewall rule.
 
 | Parameter Name | Type | Default Value | Possible Values | Description |
 | :-- | :-- | :-- | :-- | :-- |
-| `cuaId` | string |  |  | Optional. Customer Usage Attribution id (GUID). This GUID must be previously registered |
+| `cuaId` | string |  |  | Optional. Customer Usage Attribution ID (GUID). This GUID must be previously registered |
 | `endIpAddress` | string | `0.0.0.0` |  | Optional. The end IP address of the firewall rule. Must be IPv4 format. Must be greater than or equal to startIpAddress. Use value '0.0.0.0' for all Azure-internal IP addresses. |
 | `name` | string |  |  | Required. The name of the Server Firewall Rule. |
 | `serverName` | string |  |  | Required. The Name of SQL Server |

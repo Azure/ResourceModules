@@ -4,7 +4,7 @@ This module deploys Logic App resource.
 
 ## Resource types
 
-| Resource Type | Api Version |
+| Resource Type | API Version |
 | :-- | :-- |
 | `Microsoft.Authorization/locks` | 2016-09-01 |
 | `Microsoft.Authorization/roleAssignments` | 2020-04-01-preview |
@@ -18,10 +18,10 @@ This module deploys Logic App resource.
 | `actionsAccessControlConfiguration` | object | `{object}` |  | Optional. The access control configuration for workflow actions. |
 | `connectorEndpointsConfiguration` | object | `{object}` |  | Optional. The endpoints configuration:  Access endpoint and outgoing IP addresses for the connector. |
 | `contentsAccessControlConfiguration` | object | `{object}` |  | Optional. The access control configuration for accessing workflow run contents. |
-| `cuaId` | string |  |  | Optional. Customer Usage Attribution id (GUID). This GUID must be previously registered. |
+| `cuaId` | string |  |  | Optional. Customer Usage Attribution ID (GUID). This GUID must be previously registered. |
 | `definitionParameters` | object | `{object}` |  | Optional. Parameters for the definition template. |
 | `diagnosticLogsRetentionInDays` | int | `365` |  | Optional. Specifies the number of days that logs will be kept for; a value of 0 will retain data indefinitely. |
-| `diagnosticStorageAccountId` | string |  |  | Optional. Resource identifier of the Diagnostic Storage Account. |
+| `diagnosticStorageAccountId` | string |  |  | Optional. Resource ID of the diagnostic storage account. |
 | `eventHubAuthorizationRuleId` | string |  |  | Optional. Resource ID of the event hub authorization rule for the Event Hubs namespace in which the event hub should be created or streamed to. |
 | `eventHubName` | string |  |  | Optional. Name of the event hub within the namespace to which logs are streamed. Without this, an event hub is created for each log category. |
 | `identity` | object | `{object}` |  | Optional. Type of managed identity for resource. SystemAssigned or UserAssigned. |
@@ -44,7 +44,7 @@ This module deploys Logic App resource.
 | `workflowParameters` | object | `{object}` |  | Optional. The definitions for one or more parameters that pass the values to use at your logic app's runtime. |
 | `workflowStaticResults` | object | `{object}` |  | Optional. The definitions for one or more static results returned by actions as mock outputs when static results are enabled on those actions. In each action definition, the runtimeConfiguration.staticResult.name attribute references the corresponding definition inside staticResults. |
 | `workflowTriggers` | object | `{object}` |  | Optional. The definitions for one or more triggers that instantiate your workflow. You can define more than one trigger, but only with the Workflow Definition Language, not visually through the Logic Apps Designer. |
-| `workspaceId` | string |  |  | Optional. Resource identifier of Log Analytics. |
+| `workspaceId` | string |  |  | Optional. Resource ID of log analytics. |
 
 ### Parameter Usage: `identity`
 

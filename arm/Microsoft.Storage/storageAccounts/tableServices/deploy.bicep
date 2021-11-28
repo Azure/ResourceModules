@@ -8,7 +8,7 @@ param name string = 'default'
 @description('Optional. tables to create.')
 param tables array = []
 
-@description('Optional. Customer Usage Attribution id (GUID). This GUID must be previously registered')
+@description('Optional. Customer Usage Attribution ID (GUID). This GUID must be previously registered')
 param cuaId string = ''
 
 module pid_cuaId '.bicep/nested_cuaId.bicep' = if (!empty(cuaId)) {
@@ -37,7 +37,7 @@ module tableServices_tables 'tables/deploy.bicep' = [for (tableName, index) in t
 @description('The name of the deployed table service')
 output tableServicesName string = storageAccount::tableServices.name
 
-@description('The id of the deployed table service')
+@description('The resource ID of the deployed table service')
 output tableServicesResourceId string = storageAccount::tableServices.id
 
 @description('The resource group of the deployed table service')
