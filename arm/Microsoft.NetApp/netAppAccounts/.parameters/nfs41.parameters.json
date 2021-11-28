@@ -2,38 +2,31 @@
     "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
     "contentVersion": "1.0.0.0",
     "parameters": {
-        "netAppAccountName": {
-            "value": "sxx-az-anf-x-001"
-        },
-        "domainName": {
-            "value": ""
-        },
-        "domainJoinUser": {
-            "value": ""
-        },
-        "dnsServers": {
-            "value": ""
-        },
-        "smbServerNamePrefix": {
-            "value": ""
-        },
-        "domainJoinOU": {
-            "value": ""
+        "name": {
+            "value": "sxx-az-anf-x-004"
         },
         "capacityPools": {
             "value": [
                 {
-                    "poolName": "sxx-az-anfcp-x-001",
-                    "poolServiceLevel": "Premium",
-                    "poolSize": 4398046511104,
+                    "name": "sxx-az-anfcp-x-001",
+                    "serviceLevel": "Premium",
+                    "size": 4398046511104,
                     "volumes": [
                         {
-                            // NFS3 VOL
-                            "poolVolumeName": "vol01-nfsv3",
-                            "creationToken": "vol01-nfsv3",
-                            "poolVolumeQuota": 107374182400,
+                            "name": "anf4-vol01-nfsv41",
+                            "usageThreshold": 107374182400,
                             "protocolTypes": [
-                                "NFSv3"
+                                "NFSv4.1"
+                            ],
+                            "exportPolicyRules": [
+                                {
+                                    "ruleIndex": 1,
+                                    "unixReadOnly": false,
+                                    "unixReadWrite": true,
+                                    "nfsv3": false,
+                                    "nfsv41": true,
+                                    "allowedClients": "0.0.0.0/0"
+                                }
                             ],
                             "subnetId": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/virtualNetworks/adp-sxx-az-vnet-x-001/subnets/sxx-az-subnet-x-004",
                             "roleAssignments": [
@@ -46,34 +39,22 @@
                             ]
                         },
                         {
-                            // NFS41 VOL
-                            "poolVolumeName": "vol01-nfsv41",
-                            "creationToken": "vol01-nfsv41",
-                            "poolVolumeQuota": 107374182400,
+                            "name": "anf4-vol02-nfsv41",
+                            "usageThreshold": 107374182400,
                             "protocolTypes": [
                                 "NFSv4.1"
                             ],
-                            "exportPolicy": {
-                                "rules": [
-                                    {
-                                        "ruleIndex": 1,
-                                        "unixReadOnly": false,
-                                        "unixReadWrite": true,
-                                        "nfsv3": false,
-                                        "nfsv41": true,
-                                        "allowedClients": "0.0.0.0/0"
-                                    }
-                                ]
-                            },
-                            "subnetId": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/virtualNetworks/adp-sxx-az-vnet-x-001/subnets/sxx-az-subnet-x-004",
-                            "roleAssignments": [
+                            "exportPolicyRules": [
                                 {
-                                    "roleDefinitionIdOrName": "Reader",
-                                    "principalIds": [
-                                        "<<deploymentSpId>>"
-                                    ]
+                                    "ruleIndex": 1,
+                                    "unixReadOnly": false,
+                                    "unixReadWrite": true,
+                                    "nfsv3": false,
+                                    "nfsv41": true,
+                                    "allowedClients": "0.0.0.0/0"
                                 }
-                            ]
+                            ],
+                            "subnetId": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/virtualNetworks/adp-sxx-az-vnet-x-001/subnets/sxx-az-subnet-x-004"
                         }
                     ],
                     "roleAssignments": [
@@ -86,9 +67,9 @@
                     ]
                 },
                 {
-                    "poolName": "sxx-az-anfcp-x-002",
-                    "poolServiceLevel": "Premium",
-                    "poolSize": 4398046511104,
+                    "name": "sxx-az-anfcp-x-002",
+                    "serviceLevel": "Premium",
+                    "size": 4398046511104,
                     "volumes": [],
                     "roleAssignments": [
                         {

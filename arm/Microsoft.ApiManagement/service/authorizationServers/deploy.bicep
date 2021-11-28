@@ -1,7 +1,7 @@
 @description('Required. Identifier of the authorization server.')
 param name string
 
-@description('Required. The name of the of the Api Management service.')
+@description('Required. The name of the of the API Management service.')
 param apiManagementServiceName string
 
 @description('Required. OAuth authorization endpoint. See <http://tools.ietf.org/html/rfc6749#section-3.2>.')
@@ -70,8 +70,13 @@ module pid_cuaId '.bicep/nested_cuaId.bicep' = if (!empty(cuaId)) {
   params: {}
 }
 
+resource service 'Microsoft.ApiManagement/service@2021-04-01-preview' existing = {
+  name: apiManagementServiceName
+}
+
 resource authorizationServer 'Microsoft.ApiManagement/service/authorizationServers@2020-06-01-preview' = {
-  name: '${apiManagementServiceName}/${name}'
+  name: name
+  parent: service
   properties: {
     description: serverDescription
     authorizationMethods: setAuthorizationMethods
@@ -95,7 +100,7 @@ resource authorizationServer 'Microsoft.ApiManagement/service/authorizationServe
 @description('The name of the API management service authorization server')
 output authorizationServerName string = authorizationServer.name
 
-@description('The resourceId of the API management service authorization server')
+@description('The resource ID of the API management service authorization server')
 output authorizationServerResourceId string = authorizationServer.id
 
 @description('The resource group the API management service authorization server was deployed into')

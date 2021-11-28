@@ -20,10 +20,10 @@ resource managedInstance 'Microsoft.Sql/managedInstances@2021-05-01-preview' exi
 
 resource backupShortTermRetentionPolicy 'Microsoft.Sql/managedInstances/databases/backupShortTermRetentionPolicies@2017-03-01-preview' = {
   name: name
+  parent: managedInstance::managedInstaceDatabase
   properties: {
     retentionDays: retentionDays
   }
-  parent: managedInstance::managedInstaceDatabase
 }
 
 @description('The name of the deployed database backup short-term retention policy')

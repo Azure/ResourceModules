@@ -33,8 +33,13 @@ module pid_cuaId '.bicep/nested_cuaId.bicep' = if (!empty(cuaId)) {
   params: {}
 }
 
+resource workspace 'Microsoft.OperationalInsights/workspaces@2021-06-01' existing = {
+  name: logAnalyticsWorkspaceName
+}
+
 resource savedSearch 'Microsoft.OperationalInsights/workspaces/savedSearches@2020-08-01' = {
-  name: '${logAnalyticsWorkspaceName}/${name}'
+  name: name
+  parent: workspace
   properties: {
     tags: tags
     displayName: displayName
@@ -46,9 +51,11 @@ resource savedSearch 'Microsoft.OperationalInsights/workspaces/savedSearches@202
   }
 }
 
-@description('The resource Id of the deployed saved search')
+@description('The resource ID of the deployed saved search')
 output savedSearchResourceId string = savedSearch.id
+
 @description('The resource group where the saved search is deployed')
 output savedSearchResourceGroup string = resourceGroup().name
+
 @description('The name of the deployed saved search')
 output savedSearchName string = savedSearch.name

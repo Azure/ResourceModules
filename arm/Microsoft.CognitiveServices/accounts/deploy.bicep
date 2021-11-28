@@ -1,5 +1,5 @@
 @description('Required. The name of Cognitive Services account')
-param accountName string
+param name string
 
 @description('Required. Kind of the Cognitive Services. Use \'Get-AzCognitiveServicesAccountSku\' to determine a valid combinations of \'kind\' and \'sku\' for your Azure region.')
 @allowed([
@@ -159,7 +159,7 @@ module pid_cuaId '.bicep/nested_cuaId.bicep' = if (!empty(cuaId)) {
 }
 
 resource cognitiveServices 'Microsoft.CognitiveServices/accounts@2017-04-18' = {
-  name: accountName
+  name: name
   kind: kind
   identity: {
     type: managedIdentity
@@ -217,8 +217,17 @@ module cognitiveServices_rbac '.bicep/nested_rbac.bicep' = [for (roleAssignment,
   }
 }]
 
+@description('The name of the cognitive services account')
 output cognitiveServicesName string = cognitiveServices.name
+
+@description('The resource ID of the cognitive services account')
 output cognitiveServicesResourceId string = cognitiveServices.id
+
+@description('The resource group the cognitive services account was deployed into')
 output cognitiveServicesResourceGroup string = resourceGroup().name
+
+@description('The service endpoint of the cognitive services account')
 output cognitiveServicesEndpoint string = cognitiveServices.properties.endpoint
+
+@description('The prinicipal ID of the cognitive services account (if any)')
 output principalId string = managedIdentity != 'None' ? cognitiveServices.identity.principalId : ''

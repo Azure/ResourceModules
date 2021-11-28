@@ -1,4 +1,4 @@
-@description('Required. The name of the of the Api Management service.')
+@description('Required. The name of the of the API Management service.')
 param apiManagementServiceName string
 
 @description('Required. Backend Name.')
@@ -42,8 +42,13 @@ module pid_cuaId '.bicep/nested_cuaId.bicep' = if (!empty(cuaId)) {
   params: {}
 }
 
+resource service 'Microsoft.ApiManagement/service@2021-04-01-preview' existing = {
+  name: apiManagementServiceName
+}
+
 resource backend 'Microsoft.ApiManagement/service/backends@2020-06-01-preview' = {
-  name: '${apiManagementServiceName}/${name}'
+  name: name
+  parent: service
   properties: {
     title: !empty(title) ? title : null
     description: !empty(backendDescription) ? backendDescription : null
@@ -59,7 +64,7 @@ resource backend 'Microsoft.ApiManagement/service/backends@2020-06-01-preview' =
   }
 }
 
-@description('The resourceId of the API management service backend')
+@description('The resource ID of the API management service backend')
 output backendResourceId string = backend.id
 
 @description('The name of the API management service backend')
