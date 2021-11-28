@@ -87,7 +87,7 @@ function Set-ResourceTypesSection {
 
     # Process content
     $sectionContent = [System.Collections.ArrayList]@(
-        '| Resource Type | Api Version |',
+        '| Resource Type | API Version |',
         '| :-- | :-- |'
     )
 
