@@ -38,7 +38,7 @@ function Get-DeploymentByName {
             'managementGroup',
             'tenant'
         )]
-        [string] $scope
+        [string] $Scope
     )
 
     switch ($Scope) {
