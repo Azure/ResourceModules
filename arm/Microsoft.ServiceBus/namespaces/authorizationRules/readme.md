@@ -4,7 +4,7 @@ This module deploys authorization rules for a service bus namespace
 
 ## Resource Types
 
-| Resource Type | Api Version |
+| Resource Type | API Version |
 | :-- | :-- |
 | `Microsoft.ServiceBus/namespaces/AuthorizationRules` | 2017-04-01 |
 

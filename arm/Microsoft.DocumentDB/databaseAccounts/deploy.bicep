@@ -65,7 +65,7 @@ param sqlDatabases array = []
 @description('Optional. MongoDB Databases configurations')
 param mongodbDatabases array = []
 
-@description('Optional. Customer Usage Attribution id (GUID). This GUID must be previously registered')
+@description('Optional. Customer Usage Attribution ID (GUID). This GUID must be previously registered')
 param cuaId string = ''
 
 @allowed([
@@ -262,8 +262,8 @@ module mongodbDatabases_resource 'mongodbDatabases/deploy.bicep' = [for mongodbD
 @description('The name of the database account.')
 output databaseAccountName string = databaseAccount.name
 
-@description('The Resource Id of the database account.')
+@description('The resource ID of the database account.')
 output databaseAccountResourceId string = databaseAccount.id
 
-@description('The name of the Resource Group the database account was created in.')
+@description('The name of the resource group the database account was created in.')
 output databaseAccountResourceGroup string = resourceGroup().name

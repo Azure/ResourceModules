@@ -4,7 +4,7 @@ This module deployes a blob container
 
 ## Resource Types
 
-| Resource Type | Api Version |
+| Resource Type | API Version |
 | :-- | :-- |
 | `Microsoft.Authorization/roleAssignments` | 2020-04-01-preview |
 | `Microsoft.Storage/storageAccounts/blobServices/containers` | 2019-06-01 |
@@ -15,7 +15,7 @@ This module deployes a blob container
 | Parameter Name | Type | Default Value | Possible Values | Description |
 | :-- | :-- | :-- | :-- | :-- |
 | `blobServicesName` | string | `default` |  | Optional. Name of the blob service. |
-| `cuaId` | string |  |  | Optional. Customer Usage Attribution id (GUID). This GUID must be previously registered |
+| `cuaId` | string |  |  | Optional. Customer Usage Attribution ID (GUID). This GUID must be previously registered |
 | `immutabilityPolicyName` | string | `default` |  | Optional. Name of the immutable policy. |
 | `immutabilityPolicyProperties` | object | `{object}` |  | Configure immutability policy. |
 | `name` | string |  |  | The name of the storage container to deploy |
@@ -58,7 +58,7 @@ This module deployes a blob container
 | :-- | :-- | :-- |
 | `containerName` | string | The name of the deployed container |
 | `containerResourceGroup` | string | The resource group of the deployed container |
-| `containerResourceId` | string | The ID of the deployed container |
+| `containerResourceId` | string | The resource ID of the deployed container |
 
 ## Template references
 

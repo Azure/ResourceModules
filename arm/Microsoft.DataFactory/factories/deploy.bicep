@@ -16,7 +16,7 @@ param publicNetworkAccess bool = true
 @description('Optional. Boolean to define whether or not to configure git during template deployment.')
 param gitConfigureLater bool = true
 
-@description('Optional. Repo type - can be \'FactoryVSTSConfiguration\' or \'FactoryGitHubConfiguration\'. Default is \'FactoryVSTSConfiguration\'.')
+@description('Optional. Repository type - can be \'FactoryVSTSConfiguration\' or \'FactoryGitHubConfiguration\'. Default is \'FactoryVSTSConfiguration\'.')
 param gitRepoType string = 'FactoryVSTSConfiguration'
 
 @description('Optional. The account name.')

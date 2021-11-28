@@ -1,5 +1,5 @@
 @description('Required. Name of the Log Analytics workspace')
-param logAnalyticsWorkspaceName string
+param name string
 
 @description('Optional. Location for all resources.')
 param location string = resourceGroup().location
@@ -68,7 +68,7 @@ param roleAssignments array = []
 @description('Optional. Tags of the resource.')
 param tags object = {}
 
-@description('Optional. Customer Usage Attribution id (GUID). This GUID must be previously registered')
+@description('Optional. Customer Usage Attribution ID (GUID). This GUID must be previously registered')
 param cuaId string = ''
 
 var logAnalyticsSearchVersion = 1
@@ -80,7 +80,7 @@ module pid_cuaId '.bicep/nested_cuaId.bicep' = if (!empty(cuaId)) {
 
 resource logAnalyticsWorkspace 'Microsoft.OperationalInsights/workspaces@2020-08-01' = {
   location: location
-  name: logAnalyticsWorkspaceName
+  name: name
   tags: tags
   properties: {
     features: {
@@ -183,11 +183,14 @@ module logAnalyticsWorkspace_rbac '.bicep/nested_rbac.bicep' = [for (roleAssignm
   }
 }]
 
-@description('The resource Id of the deployed log analytics workspace')
+@description('The resource ID of the deployed log analytics workspace')
 output logAnalyticsResourceId string = logAnalyticsWorkspace.id
+
 @description('The resource group where the log analytics will be deployed')
 output logAnalyticsResourceGroup string = resourceGroup().name
+
 @description('The name of the deployed log analytics workspace')
 output logAnalyticsName string = logAnalyticsWorkspace.name
+
 @description('The ID associated with the workspace')
 output logAnalyticsWorkspaceId string = logAnalyticsWorkspace.properties.customerId

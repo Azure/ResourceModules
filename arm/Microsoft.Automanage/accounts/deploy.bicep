@@ -22,7 +22,7 @@ param vmName string
 ])
 param configurationProfile string = 'Production'
 
-@description('Optional. Customer Usage Attribution id (GUID). This GUID must be previously registered.')
+@description('Optional. Customer Usage Attribution ID (GUID). This GUID must be previously registered.')
 param cuaId string = ''
 
 var contributor = subscriptionResourceId('Microsoft.Authorization/roleDefinitions', 'b24988ac-6180-42a0-ab88-20f7382dd24c')

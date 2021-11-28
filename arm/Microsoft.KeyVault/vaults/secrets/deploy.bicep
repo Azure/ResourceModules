@@ -1,5 +1,5 @@
 @description('Required. The name of the key vault')
-param vaultName string
+param keyVaultName string
 
 @description('Required. The name of the secret')
 param name string
@@ -24,7 +24,7 @@ param contentType string = ''
 @secure()
 param value string
 
-@description('Optional. Customer Usage Attribution id (GUID). This GUID must be previously registered')
+@description('Optional. Customer Usage Attribution ID (GUID). This GUID must be previously registered')
 param cuaId string = ''
 
 module pid_cuaId './.bicep/nested_cuaId.bicep' = if (!empty(cuaId)) {
@@ -32,8 +32,13 @@ module pid_cuaId './.bicep/nested_cuaId.bicep' = if (!empty(cuaId)) {
   params: {}
 }
 
+resource keyVault 'Microsoft.KeyVault/vaults@2021-06-01-preview' existing = {
+  name: keyVaultName
+}
+
 resource secret 'Microsoft.KeyVault/vaults/secrets@2019-09-01' = {
-  name: '${vaultName}/${name}'
+  name: name
+  parent: keyVault
   tags: tags
   properties: {
     contentType: contentType
@@ -49,7 +54,7 @@ resource secret 'Microsoft.KeyVault/vaults/secrets@2019-09-01' = {
 @description('The Name of the secret.')
 output secretName string = secret.name
 
-@description('The Resource Id of the secret.')
+@description('The Resource ID of the secret.')
 output secretResourceId string = secret.id
 
 @description('The name of the Resource Group the secret was created in.')

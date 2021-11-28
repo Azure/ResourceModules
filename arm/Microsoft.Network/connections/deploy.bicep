@@ -25,7 +25,7 @@ param virtualNetworkGatewayConnectionType string = 'Ipsec'
 @description('Optional. Remote Virtual Network Gateway/ExpressRoute resource group name')
 param remoteEntityResourceGroup string = ''
 
-@description('Optional. Remote Virtual Network Gateway/ExpressRoute Subscription Id')
+@description('Optional. Remote Virtual Network Gateway/ExpressRoute Subscription ID')
 param remoteEntitySubscriptionId string = ''
 
 @description('Optional. Value to specify if BGP is enabled or not')
@@ -60,7 +60,7 @@ param lock string = 'NotSpecified'
 @description('Optional. Tags of the resource.')
 param tags object = {}
 
-@description('Optional. Customer Usage Attribution id (GUID). This GUID must be previously registered')
+@description('Optional. Customer Usage Attribution ID (GUID). This GUID must be previously registered')
 param cuaId string = ''
 
 var localVirtualNetworkGatewayId = resourceId(resourceGroup().name, 'Microsoft.Network/virtualNetworkGateways', localVirtualNetworkGatewayName)

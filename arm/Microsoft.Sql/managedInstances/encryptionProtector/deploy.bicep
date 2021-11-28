@@ -17,7 +17,7 @@ param serverKeyType string = 'ServiceManaged'
 @description('Optional. Key auto rotation opt-in flag')
 param autoRotationEnabled bool = false
 
-@description('Optional. Customer Usage Attribution id (GUID). This GUID must be previously registered')
+@description('Optional. Customer Usage Attribution ID (GUID). This GUID must be previously registered')
 param cuaId string = ''
 
 module pid_cuaId './.bicep/nested_cuaId.bicep' = if (!empty(cuaId)) {
@@ -31,18 +31,18 @@ resource managedInstance 'Microsoft.Sql/managedInstances@2021-05-01-preview' exi
 
 resource encryptionProtector 'Microsoft.Sql/managedInstances/encryptionProtector@2021-05-01-preview' = {
   name: name
+  parent: managedInstance
   properties: {
     autoRotationEnabled: autoRotationEnabled
     serverKeyName: serverKeyName
     serverKeyType: serverKeyType
   }
-  parent: managedInstance
 }
 
 @description('The name of the deployed managed instance')
 output encryptionProtectorName string = encryptionProtector.name
 
-@description('The resourceId of the deployed managed instance')
+@description('The resource ID of the deployed managed instance')
 output encryptionProtectorResourceId string = encryptionProtector.id
 
 @description('The resource group of the deployed managed instance')

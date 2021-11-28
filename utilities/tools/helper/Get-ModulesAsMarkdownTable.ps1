@@ -1,10 +1,10 @@
 ﻿#region Helper functions
 <#
 .SYNOPSIS
-Generate the status Url for GitHub module action workflows
+Generate the status URL for GitHub module action workflows
 
 .DESCRIPTION
-Generate the status Url for GitHub module action workflows
+Generate the status URL for GitHub module action workflows
 E.g.  # [![AnalysisServices: Servers](https://github.com/Azure/ResourceModules/actions/workflows/ms.analysisservices.servers.yml/badge.svg)](https://github.com/Azure/ResourceModules/actions/workflows/ms.analysisservices.servers.yml)
 
 .PARAMETER name
@@ -59,7 +59,7 @@ Get a properly formatted 'Deploy to Azure' button for the template in the given 
 
 .DESCRIPTION
 Get a properly formatted 'Deploy to Azure' button for the template in the given path
-NOTE: This function requires that the Repo lives inside the 'Azure' Organization
+NOTE: This function requires that the Repository lives inside the 'Azure' Organization
 
 .PARAMETER path
 Mandatory. The path to the module to generate the url for
@@ -262,7 +262,7 @@ Mandatory. The name of the Organization the code resides in
 .EXAMPLE
 > Get-ResolvedSubServiceRow -subPath 'C:\dev\Microsoft.ApiManagement\serviceResources' -concatedBase "Microsoft.ApiManagement\serviceResources" -output @() -provider 'Microsoft.ApiManagement' -ColumnsInOrder @('Name','ProviderNamespace') -SortByColumn 'Name'
 
-Adds a hashtable like  @{ Name = 'Api Management'; 'Provider Namespace' = `Microsoft.ApiManagement` }. As the specified column for sorting is 'Name', the 'Provider Namespace' will be added to each entry.
+Adds a hashtable like  @{ Name = 'API Management'; 'Provider Namespace' = `Microsoft.ApiManagement` }. As the specified column for sorting is 'Name', the 'Provider Namespace' will be added to each entry.
 #>
 function Get-ResolvedSubServiceRow {
 

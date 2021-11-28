@@ -46,7 +46,7 @@ var builtInRoleNames = {
 }
 
 resource fileShare 'Microsoft.Storage/storageAccounts/fileServices/shares@2019-06-01' existing = {
-  name: '${split(resourceId, '/')[5]}/${split(resourceId, '/')[7]}/${split(resourceId, '/')[9]}'
+  name: '${split(resourceId, '/')[8]}/${split(resourceId, '/')[10]}/${split(resourceId, '/')[12]}'
 }
 
 resource roleAssignment 'Microsoft.Authorization/roleAssignments@2020-04-01-preview' = [for principalId in principalIds: {

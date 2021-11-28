@@ -20,7 +20,7 @@ param policyDescription string = ''
 ])
 param mode string = 'All'
 
-@description('Optional. The policy Definition metadata. Metadata is an open ended object and is typically a collection of key value pairs.')
+@description('Optional. The policy Definition metadata. Metadata is an open ended object and is typically a collection of key-value pairs.')
 param metadata object = {}
 
 @description('Optional. The policy definition parameters that can be used in policy definition references.')
@@ -29,10 +29,10 @@ param parameters object = {}
 @description('Required. The Policy Rule details for the Policy Definition')
 param policyRule object
 
-@description('Optional. The ID of the Management Group (Scope). Cannot be used with subscriptionId and does not support tenant level deployment (i.e. \'/\')')
+@description('Optional. The group ID of the Management Group (Scope). Cannot be used with subscriptionId and does not support tenant level deployment (i.e. \'/\')')
 param managementGroupId string = ''
 
-@description('Optional. The ID of the Azure Subscription (Scope). Cannot be used with managementGroupId')
+@description('Optional. The subscription ID of the subscription (Scope). Cannot be used with managementGroupId')
 param subscriptionId string = ''
 
 @description('Optional. Location for all resources.')

@@ -74,7 +74,7 @@ param privateEndpoints array = []
 @description('Optional. Tags of the resource.')
 param tags object = {}
 
-@description('Optional. Customer Usage Attribution id (GUID). This GUID must be previously registered')
+@description('Optional. Customer Usage Attribution ID (GUID). This GUID must be previously registered')
 param cuaId string = ''
 
 @description('Generated. Do not provide a value! This date value is used to generate a SAS token to access the modules.')
@@ -262,7 +262,7 @@ module serviceBusNamespace_rbac '.bicep/nested_rbac.bicep' = [for (roleAssignmen
   }
 }]
 
-@description('The resourceId of the deployed service bus namespace')
+@description('The resource ID of the deployed service bus namespace')
 output serviceBusNamespaceResourceId string = serviceBusNamespace.id
 
 @description('The resource group of the deployed service bus namespace')
