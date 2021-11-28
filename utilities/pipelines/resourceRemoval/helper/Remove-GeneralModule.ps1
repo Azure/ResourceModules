@@ -110,7 +110,7 @@ function Remove-GeneralModule {
         [int] $SearchRetryLimit = 40,
 
         [Parameter(Mandatory = $false)]
-        [int] $searchRetryInterval = 60
+        [int] $SearchRetryInterval = 60
     )
 
     begin {
