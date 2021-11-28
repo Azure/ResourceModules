@@ -54,9 +54,6 @@ function Get-DeploymentByName {
         'tenant' {
             return Get-AzTenantDeploymentOperation -DeploymentName $name
         }
-        default {
-            throw "[$deploymentScope] is a non-supported template scope"
-        }
     }
 }
 
