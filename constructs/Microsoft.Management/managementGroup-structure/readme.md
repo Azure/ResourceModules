@@ -116,8 +116,8 @@ This template is using a **Tenant level deployment**, meaning the user/principal
 > **Management Group Contributor** at the top management group that needs to be managed
 >
 >> Consider using the following script:<br>
->> `$PrincipalID = "<The resource ID of the identity here>"`<br>
->> `$TopMGID = "<The resource ID of the management group here>"`<br>
+>> `$PrincipalID = "<The object ID of the identity here>"`<br>
+>> `$TopMGID = "<The group ID of the management group here>"`<br>
 >> `New-AzRoleAssignment -ObjectId $PrincipalID -Scope "/" -RoleDefinitionName "Automation Job Operator"`<br>
 >> `New-AzRoleAssignment -ObjectId $PrincipalID -Scope "/providers/Microsoft.Management/managementGroups/$TopMGID" -RoleDefinitionName "Management Group Contributor"`
 
