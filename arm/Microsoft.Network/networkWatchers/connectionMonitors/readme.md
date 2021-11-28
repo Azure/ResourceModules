@@ -34,7 +34,7 @@ This template deploys Connection Monitors.
     "value":
     [
         {
-            "name": "endpoint01",
+            "name": "endpoint1(my-rg-01)",
             "resourceId": "/subscriptions/111111-222222-33333-4444-5555555/resourceGroups/my-rg-01/providers/Microsoft.Compute/virtualMachines/myVm01"
         },
         {
@@ -55,7 +55,7 @@ Important note: the parameter ``name`` must include the ``resource name`` AND ``
     "value": {
         [
             {
-                "name": "myTestGroup01",
+                "name": "testGroup1(my-rg-01)",
                 "disable": false,
                 "testConfigurations": [
                     "ICMP"
