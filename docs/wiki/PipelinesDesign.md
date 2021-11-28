@@ -6,24 +6,34 @@ This section gives you an overview of the design principals the pipelines follow
 
 ### _Navigation_
 
+- [Pipelines Design](#pipelines-design)
+    - [_Navigation_](#navigation)
 - [Module Pipelines](#module-pipelines)
-  - [Inputs](#module-pipeline-inputs)
+  - [Module pipeline inputs](#module-pipeline-inputs)
   - [Pipeline phases](#pipeline-phases)
     - [Validate](#validate)
+      - [Static module validation](#static-module-validation)
+      - [Simulated deployment validation](#simulated-deployment-validation)
     - [Test deploy](#test-deploy)
     - [Removal](#removal)
-    - [Publish](#Publish)
+    - [Publish](#publish)
   - [Shared concepts](#shared-concepts)
-    - [Variable file(s)](#pipeline-variables)
-    - [Validation prerequisites](#validation-prerequisites)
+    - [Pipeline variables](#pipeline-variables)
+      - [***General***](#general)
+      - [***Template-specs specific (publishing)***](#template-specs-specific-publishing)
+      - [***Private bicep registry specific (publishing)***](#private-bicep-registry-specific-publishing)
+    - [Prerequisites](#prerequisites)
     - [Tokens Replacement](#tokens-replacement)
-- [Platform pipelines](#Platform-pipelines)
+- [Platform pipelines](#platform-pipelines)
   - [Dependencies pipeline](#dependencies-pipeline)
-    - [Inputs](#dependencies-pipeline-inputs)
+    - [Dependencies pipeline inputs](#dependencies-pipeline-inputs)
   - [ReadMe pipeline](#readme-pipeline)
   - [Wiki pipeline](#wiki-pipeline)
 - [DevOps-Tool-specific considerations](#devops-tool-specific-considerations)
   - [GitHub Workflows](#github-workflows)
+    - [**Component:** Variable file(s)](#component-variable-files)
+    - [**Component:** Composite Actions**](#component-composite-actions)
+    - [**Component:** Workflows](#component-workflows)
 
 ---
 
@@ -50,7 +60,7 @@ To "build"/"bake" the modules, a dedicated pipeline is used for each module to v
 1. **Validate**:
    1. Running a set of static Pester tests against the template
    1. Validating the template by invoking Azure’s validation API (Test-AzResourceGroupDeployment – or the same for other scopes)
-1. **Test deploy**: we deploy each module by using a pre-defined set of parameters to a ‘sandbox’ subscription in Azure to see if it’s really working
+1. **Test deploy**: we deploy each module by using a predefined set of parameters to a ‘sandbox’ subscription in Azure to see if it’s really working
    1. **Removal**: The test suite is cleaned up by removing all deployed test resources again
 1. **Publish**: the proven results are copied/published to a configured location such as template specs, the bicep registry, Azure DevOps artifacts, etc.
 
@@ -228,7 +238,7 @@ We use several composite actions to perform various tasks shared by our module w
 
 ### **Component:** Workflows
 
-These are the individual end-2-end workflows we have for each module. Leveraging the [composite actions](#component-composite-actions) described before, they orchestrate the testing & publishing of their module.
+These are the individual end-to-end workflows we have for each module. Leveraging the [composite actions](#component-composite-actions) described before, they orchestrate the testing & publishing of their module.
 
 Comparing multiple workflows you'll notice they are almost identically, yet differ in a few important areas:
 
