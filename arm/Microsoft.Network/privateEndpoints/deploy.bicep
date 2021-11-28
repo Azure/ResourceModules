@@ -2,7 +2,7 @@
 param name string
 
 @description('Required. Resource ID of the subnet where the endpoint needs to be created.')
-param targetSubnetId string
+param targetSubnetResourceId string
 
 @description('Required. Resource ID of the resource that needs to be connected to the network.')
 param serviceResourceId string

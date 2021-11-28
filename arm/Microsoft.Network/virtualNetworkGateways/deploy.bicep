@@ -8,7 +8,7 @@ param location string = resourceGroup().location
 param gatewayPipName array = []
 
 @description('Optional. Resource ID of the Public IP Prefix object. This is only needed if you want your Public IPs created in a PIP Prefix.')
-param publicIPPrefixId string = ''
+param publicIPPrefixResourceId string = ''
 
 @description('Optional. Specifies the zones of the Public IP address. Basic IP SKU does not support Availability Zones.')
 param publicIpZones array = []
@@ -49,7 +49,7 @@ param virtualNetworkGatewaySku string
 param vpnType string = 'RouteBased'
 
 @description('Required. Virtual Network resource ID')
-param vNetId string
+param vNetResourceId string
 
 @description('Optional. Value to specify if the Gateway should be deployed in active-active or active-passive configuration')
 param activeActive bool = true

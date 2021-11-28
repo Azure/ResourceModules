@@ -2,7 +2,7 @@
 param name string
 
 @description('Optional. Resource ID of the Public IP Prefix object. This is only needed if you want your Public IPs created in a PIP Prefix.')
-param publicIPPrefixId string = ''
+param publicIPPrefixResourceId string = ''
 
 @description('Optional. The public IP address allocation method. - Static or Dynamic.')
 param publicIPAllocationMethod string = 'Dynamic'
