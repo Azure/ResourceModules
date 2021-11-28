@@ -1,4 +1,4 @@
-# DocumentDB Database Account SQL Databases `[Microsoft.DocumentDB/databaseAccount/sqlDatabases]`
+# DocumentDB Database Account SQL Databases  `[Microsoft.DocumentDB/databaseAccounts/sqlDatabases]`
 
 ## Resource Types
 
@@ -12,19 +12,19 @@
 | Parameter Name | Type | Default Value | Possible Values | Description |
 | :-- | :-- | :-- | :-- | :-- |
 | `containers` | _[containers](containers/readme.md)_ array | `[]` |  | Optional. Array of containers to deploy in the SQL database. |
-| `cuaId` | string |  |  | Optional. Customer Usage Attribution id (GUID). This GUID must be previously registered |
-| `databaseAccountName` | string |  |  | Required. Id of the Cosmos DB database account. |
-| `name` | string |  |  | Required. Name of the SQL Database  |
-| `tags` | object | `{object}` |  | Optional. Tags of the SQL Database resource. |
-| `throughput` | int | `400` |  | Optional. Request Units per second |
+| `cuaId` | string |  |  | Optional. Customer Usage Attribution ID (GUID). This GUID must be previously registered |
+| `databaseAccountName` | string |  |  | Required. ID of the Cosmos DB database account. |
+| `name` | string |  |  | Required. Name of the SQL database  |
+| `tags` | object | `{object}` |  | Optional. Tags of the SQL database resource. |
+| `throughput` | int | `400` |  | Optional. Request units per second |
 
 ## Outputs
 
 | Output Name | Type | Description |
 | :-- | :-- | :-- |
-| `sqlDatabaseName` | string | The name of the sql database. |
-| `sqlDatabaseResourceGroup` | string | The name of the Resource Group the sql database was created in. |
-| `sqlDatabaseResourceId` | string | The Resource Id of the sql database. |
+| `sqlDatabaseName` | string | The name of the SQL database. |
+| `sqlDatabaseResourceGroup` | string | The name of the resource group the SQL database was created in. |
+| `sqlDatabaseResourceId` | string | The resource ID of the SQL database. |
 
 ## Template references
 

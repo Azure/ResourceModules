@@ -2,7 +2,7 @@
 
 ## Resource types
 
-| Resource Type | API Version |
+| Resource Type | Api Version |
 | :-- | :-- |
 | `Microsoft.Authorization/locks` | 2016-09-01 |
 | `Microsoft.Authorization/roleAssignments` | 2020-04-01-preview |
@@ -83,7 +83,7 @@ Tag names and tag values can be provided as needed. A tag can be left without a 
 | :-- | :-- | :-- |
 | `dataFactoryName` | string | The Name of the Azure Data Factory instance. |
 | `dataFactoryResourceGroup` | string | The name of the Resource Group with the Data factory. |
-| `dataFactoryResourceId` | string | The resource ID of the Data factory. |
+| `dataFactoryResourceId` | string | The Resource ID of the Data factory. |
 
 ## Template references
 

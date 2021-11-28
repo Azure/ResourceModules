@@ -23,7 +23,7 @@ param uri string = ''
 @description('Optional. The version of the runbook content.')
 param version string = ''
 
-@description('Optional. Id of the runbook storage account.')
+@description('Optional. ID of the runbook storage account.')
 param scriptStorageAccountId string = ''
 
 @description('Optional. Time used as a basis for e.g. the schedule start date.')
@@ -38,7 +38,7 @@ param location string = resourceGroup().location
 @description('Optional. Tags of the Automation Account resource.')
 param tags object = {}
 
-@description('Optional. Customer Usage Attribution id (GUID). This GUID must be previously registered.')
+@description('Optional. Customer Usage Attribution ID (GUID). This GUID must be previously registered.')
 param cuaId string = ''
 
 var accountSasProperties = {

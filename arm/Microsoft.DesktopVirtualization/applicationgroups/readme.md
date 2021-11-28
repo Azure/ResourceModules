@@ -82,11 +82,11 @@ Tag names and tag values can be provided as needed. A tag can be left without a 
 
 ## Outputs
 
-| Output Name | Type |
-| :-- | :-- |
-| `appGroupName` | string |
-| `appGroupResourceGroup` | string |
-| `appGroupResourceId` | string |
+| Output Name | Type | Description |
+| :-- | :-- | :-- |
+| `appGroupName` | string | The name of the AVD application group |
+| `appGroupResourceGroup` | string | The resource group the AVD application group was deployed into |
+| `appGroupResourceId` | string | The resource ID  of the AVD application group |
 
 ## Template references
 

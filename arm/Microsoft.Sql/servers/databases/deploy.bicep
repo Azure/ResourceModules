@@ -70,10 +70,15 @@ module pid_cuaId '.bicep/nested_cuaId.bicep' = if (!empty(cuaId)) {
   params: {}
 }
 
+resource server 'Microsoft.Sql/servers@2021-05-01-preview' existing = {
+  name: serverName
+}
+
 resource database 'Microsoft.Sql/servers/databases@2021-02-01-preview' = {
+  name: name
+  parent: server
   location: location
   tags: tags
-  name: '${serverName}/${name}'
   properties: {
     collation: collation
     maxSizeBytes: maxSizeBytes

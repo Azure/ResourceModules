@@ -1,6 +1,6 @@
-# Api Management Service Products   `[Microsoft.ApiManagement/service/products]`
+# API Management Service Products   `[Microsoft.ApiManagement/service/products]`
 
-This module deploys Api Management Service Products.
+This module deploys API Management Service Products.
 
 ## Resource types
 
@@ -20,8 +20,8 @@ The following resources are required to be able to deploy this resource.
 
 | Parameter Name | Type | Default Value | Possible Values | Description |
 | :-- | :-- | :-- | :-- | :-- |
-| `apiManagementServiceName` | string |  |  | Required. The name of the of the Api Management service. |
-| `apis` | _[apis](apis/readme.md)_ array | `[]` |  | Optional. Array of Product Apis. |
+| `apiManagementServiceName` | string |  |  | Required. The name of the of the API Management service. |
+| `apis` | _[apis](apis/readme.md)_ array | `[]` |  | Optional. Array of Product APIs. |
 | `approvalRequired` | bool |  |  | Optional. Whether subscription approval is required. If false, new subscriptions will be approved automatically enabling developers to call the products APIs immediately after subscribing. If true, administrators must manually approve the subscription before the developer can any of the products APIs. Can be present only if subscriptionRequired property is present and has a value of false. |
 | `cuaId` | string |  |  | Optional. Customer Usage Attribution id (GUID). This GUID must be previously registered |
 | `groups` | _[groups](groups/readme.md)_ array | `[]` |  | Optional. Array of Product Groups. |
@@ -32,38 +32,15 @@ The following resources are required to be able to deploy this resource.
 | `subscriptionsLimit` | int | `1` |  | Optional. Whether the number of subscriptions a user can have to this product at the same time. Set to null or omit to allow unlimited per user subscriptions. Can be present only if subscriptionRequired property is present and has a value of false. |
 | `terms` | string |  |  | Optional. Product terms of use. Developers trying to subscribe to the product will be presented and required to accept these terms before they can complete the subscription process. |
 
-### Parameter Usage: `productApis`
-
-Product API's name list.
-
-```json
-"productApis": {
-    "value":[
-        "api-1",
-        "api-2"
-    ]
-}
-```
-
-Product groups list.
-
-```json
-"productGroups": {
-    "value":[
-        "developers"
-    ]
-}
-```
-
 ## Outputs
 
 | Output Name | Type | Description |
 | :-- | :-- | :-- |
-| `productApisResourceIds` | array | The Resources Ids of the API management service product apis |
-| `productGroupsResourceIds` | array | The Resources Ids of the API management service product groups |
+| `productApisResourceIds` | array |  |
+| `productGroupsResourceIds` | array |  |
 | `productName` | string | The name of the API management service product |
 | `productResourceGroup` | string | The resource group the API management service product was deployed into |
-| `productResourceId` | string | The resource Id of the API management service product |
+| `productResourceId` | string | The resource ID of the API management service product |
 
 ## Template references
 

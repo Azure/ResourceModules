@@ -34,11 +34,11 @@ resource managedInstance 'Microsoft.Sql/managedInstances@2021-05-01-preview' exi
 
 resource key 'Microsoft.Sql/managedInstances/keys@2021-05-01-preview' = {
   name: !empty(name) ? name : serverKeyName
+  parent: managedInstance
   properties: {
     serverKeyType: serverKeyType
     uri: uri
   }
-  parent: managedInstance
 }
 
 @description('The name of the deployed managed instance')
