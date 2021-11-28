@@ -210,7 +210,7 @@ function Test-ModuleLocally {
                 # Replace Values with Tokens For Repo Updates and Set Restore Flag to True to Prevent Running Restore Twice
                 $RestoreAlreadyTriggered = $true
                 Write-Verbose 'Restoring Tokens'
-                $ModuleParameterFiles | ForEach-Object { Convert-TokensInParameterFile @ConvertTokensInputs -ParameterFilePath $PSItem.FullName -RestoreTokens $true -Verbose }
+                $ModuleParameterFiles | ForEach-Object { Convert-TokensInParameterFile @ConvertTokensInputs -ParameterFilePath $PSItem.FullName -RestoreTokens $true }
             }
         }
     }
@@ -219,7 +219,7 @@ function Test-ModuleLocally {
         if (($ValidationTest -or $DeploymentTest) -and $ValidateOrDeployParameters -and !($RestoreAlreadyTriggered)) {
             # Replace Values with Tokens For Repo Updates
             Write-Verbose 'Restoring Tokens'
-            $ModuleParameterFiles | ForEach-Object { Convert-TokensInParameterFile @ConvertTokensInputs -ParameterFilePath $PSItem.FullName -RestoreTokens $true -Verbose }
+            $ModuleParameterFiles | ForEach-Object { Convert-TokensInParameterFile @ConvertTokensInputs -ParameterFilePath $PSItem.FullName -RestoreTokens $true }
         }
     }
 }

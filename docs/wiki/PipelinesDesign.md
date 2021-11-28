@@ -6,24 +6,34 @@ This section gives you an overview of the design principals the pipelines follow
 
 ### _Navigation_
 
+- [Pipelines Design](#pipelines-design)
+    - [_Navigation_](#navigation)
 - [Module Pipelines](#module-pipelines)
-  - [Inputs](#module-pipeline-inputs)
+  - [Module pipeline inputs](#module-pipeline-inputs)
   - [Pipeline phases](#pipeline-phases)
     - [Validate](#validate)
+      - [Static module validation](#static-module-validation)
+      - [Simulated deployment validation](#simulated-deployment-validation)
     - [Test deploy](#test-deploy)
     - [Removal](#removal)
-    - [Publish](#Publish)
+    - [Publish](#publish)
   - [Shared concepts](#shared-concepts)
-    - [Variable file(s)](#pipeline-variables)
-    - [Validation prerequisites](#validation-prerequisites)
+    - [Pipeline variables](#pipeline-variables)
+      - [***General***](#general)
+      - [***Template-specs specific (publishing)***](#template-specs-specific-publishing)
+      - [***Private bicep registry specific (publishing)***](#private-bicep-registry-specific-publishing)
+    - [Prerequisites](#prerequisites)
     - [Tokens Replacement](#tokens-replacement)
-- [Platform pipelines](#Platform-pipelines)
+- [Platform pipelines](#platform-pipelines)
   - [Dependencies pipeline](#dependencies-pipeline)
-    - [Inputs](#dependencies-pipeline-inputs)
+    - [Dependencies pipeline inputs](#dependencies-pipeline-inputs)
   - [ReadMe pipeline](#readme-pipeline)
   - [Wiki pipeline](#wiki-pipeline)
 - [DevOps-Tool-specific considerations](#devops-tool-specific-considerations)
   - [GitHub Workflows](#github-workflows)
+    - [**Component:** Variable file(s)](#component-variable-files)
+    - [**Component:** Composite Actions**](#component-composite-actions)
+    - [**Component:** Workflows](#component-workflows)
 
 ---
 
@@ -220,9 +230,7 @@ We use several composite actions to perform various tasks shared by our module w
 - **validateModuleDeploy:** <p>
   This action performs the [simulated deployment](#simulated-deployment-validation) using a provided parameter file.
 - **deployModule:** <p>
-  This action performs an [actual deployment](#test-deploy) to Azure using a provided parameter file.
-- **removeModule:** <p>
-  This actual is responsible to [remove](#removal) a resource following it's [test deployment](#test-deploy)
+  This action performs an [actual deployment](#test-deploy) to Azure using a provided parameter file. Once a deployment ran it [removes](#removal) the resource
 - **publishModule:** <p>
   This action is capable of [publishing](#publish) the given template to a location specified in the pipeline [variable file](#component-variable-files).
 - **getWorkflowInput:** <p>
