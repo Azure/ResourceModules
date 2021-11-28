@@ -2,9 +2,6 @@ name: 'Deploy module'
 description: 'Deploy module'
 
 inputs:
-  moduleName:
-    description: 'The name of the module to deploy'
-    required: true
   templateFilePath:
     description: 'The path to the template file to use for deployment'
     required: true
@@ -83,25 +80,61 @@ runs:
         # Invoke Token Replacement Functionality
         $null = Convert-TokensInParameterFile @ConvertTokensInputs -Verbose
 
-    - name: 'Deploy [${{ inputs.templateFilePath }}]'
+    - name: 'Deploy [${{ inputs.templateFilePath }}] with parameters [${{ inputs.parameterFilePath }}]'
       shell: pwsh
+      id: deploy_step
       run: |
         # Load used functions
         . (Join-Path $env:GITHUB_WORKSPACE 'utilities' 'pipelines' 'resourceDeployment' 'New-ModuleDeployment.ps1')
 
         $functionInput = @{
-          moduleName         = '${{ inputs.moduleName }}'
-          templateFilePath   = '${{ inputs.templateFilePath }}'
-          parameterFilePath  = '${{ inputs.parameterFilePath }}'
+          templateFilePath   = Join-Path $env:GITHUB_WORKSPACE '${{ inputs.templateFilePath }}'
+          parameterFilePath  = Join-Path $env:GITHUB_WORKSPACE '${{ inputs.parameterFilePath }}'
           location           = '${{ inputs.location }}'
           resourceGroupName  = '${{ inputs.resourceGroupName }}'
           subscriptionId     = '${{ inputs.subscriptionId }}'
           managementGroupId  = '${{ inputs.managementGroupId }}'
-          removeDeployment   = [System.Convert]::ToBoolean('${{ inputs.removeDeployment }}')
+          doNotThrow         = $true
         }
 
         Write-Verbose "Invoke task with" -Verbose
         Write-Verbose ($functionInput | ConvertTo-Json | Out-String) -Verbose
 
         # Invoke deployment
-        New-ModuleDeployment @functionInput -Verbose
+        $res = New-ModuleDeployment @functionInput -Verbose
+
+        # Get deployment name
+        if($res -is [hashtable]) {
+          $deploymentName = $res['DeploymentName']
+        } elseif($res -is [string]) {
+          $deploymentName = $res
+        } else {
+          throw ("Output-Type of New-ModuleDeployment invocation has invalid type [{0}]" -f $res.GetType())
+        }
+        Write-Output ('::set-output name=deploymentName::{0}' -f $deploymentName)
+
+        if($res -is [hashtable]) {
+          # Happens only if there is an exception
+          throw $res['Exception']
+        }
+
+    - name: 'Remove [${{ inputs.templateFilePath }}] from parameters [${{ inputs.parameterFilePath }}]'
+      shell: pwsh
+      if: always()
+      run: |
+        if('${{ inputs.removeDeployment }}' -eq 'true') {
+          # Load used function
+          . (Join-Path $env:GITHUB_WORKSPACE 'utilities' 'pipelines' 'resourceRemoval' 'Remove-DeployedModule.ps1')
+
+          $functionInput = @{
+              deploymentName    = '${{ steps.deploy_step.outputs.deploymentName }}'
+              templateFilePath  = Join-Path $env:GITHUB_WORKSPACE '${{ inputs.templateFilePath }}'
+              resourceGroupName = '${{ inputs.resourceGroupName }}'
+              verbose           = $true
+          }
+
+          Write-Verbose 'Invoke task with' -Verbose
+          Write-Verbose ($functionInput | ConvertTo-Json | Out-String) -Verbose
+
+          Remove-DeployedModule @functionInput
+        }

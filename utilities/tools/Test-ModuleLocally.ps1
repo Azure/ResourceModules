@@ -69,7 +69,7 @@ function Test-ModuleLocally {
     [CmdletBinding()]
     param (
         [parameter(Mandatory)]
-        [string]$ModuleName,
+        [string]$templateFilePath,
 
         [parameter(Mandatory = $false)]
         [switch]$PesterTest,
@@ -97,7 +97,8 @@ function Test-ModuleLocally {
     )
 
     begin {
-        Write-Verbose "Running Local Tests for $($ModuleName.Split('\')[-1])"
+        $ModuleName = Split-Path (Split-Path $templateFilePath -Parent) -Leaf
+        Write-Verbose "Running Local Tests for $($ModuleName)"
         # Load Tokens Converter Scripts
         . (Join-Path $PSScriptRoot '../pipelines/tokensReplacement/Convert-TokensInParameterFile.ps1')
         # Load Modules Validation / Deployment Scripts
@@ -113,7 +114,7 @@ function Test-ModuleLocally {
                 Invoke-Pester -Configuration @{
                     Run        = @{
                         Container = New-PesterContainer -Path (Join-Path $PSScriptRoot '../..' 'arm/.global/global.module.tests.ps1') -Data @{
-                            moduleFolderPaths = (Join-Path $PSScriptRoot '../../arm' $ModuleName)
+                            moduleFolderPaths = Split-Path $templateFilePath -Parent
                         }
                     }
                     Filter     = @{
@@ -135,7 +136,7 @@ function Test-ModuleLocally {
         # Deploy Module
         if (($ValidationTest -or $DeploymentTest) -and $ValidateOrDeployParameters) {
             # Find Test Parameter Files
-            $ModuleParameterFiles = Get-ChildItem -Path (Join-Path $PSScriptRoot '../../arm' $ModuleName '.parameters') -Recurse
+            $ModuleParameterFiles = Get-ChildItem -Path (Join-Path (Split-Path $templateFilePath -Parent) '.parameters') -Recurse
             # Replace Tokens with Values For Local Testing
             $DefaultParameterFileTokens = @(
                 @{ Name = 'subscriptionId'; Value = "$($ValidateOrDeployParameters.SubscriptionId)" }
@@ -172,11 +173,11 @@ function Test-ModuleLocally {
             }
             # Invoke Token Replacement Functionality and Convert Tokens in Parameter Files
             Write-Verbose 'Invoking Convert-TokensInFileList'
-            $ModuleParameterFiles | ForEach-Object { Convert-TokensInParameterFile @ConvertTokensInputs -ParameterFilePath $PSItem.FullName -Verbose }
+            $ModuleParameterFiles | ForEach-Object { Convert-TokensInParameterFile @ConvertTokensInputs -ParameterFilePath $PSItem.FullName }
             # Build Modules Validation and Deployment Inputs
             $functionInput = @{
-                templateFilePath  = (Join-Path $PSScriptRoot '../../arm' $ModuleName 'deploy.bicep')
-                parameterFilePath = (Join-Path $PSScriptRoot '../../arm' $ModuleName '.parameters/parameters.json')
+                templateFilePath  = $templateFilePath
+                parameterFilePath = (Join-Path (Split-Path $templateFilePath -Parent) '.parameters/parameters.json')
                 location          = "$($ValidateOrDeployParameters.Location)"
                 resourceGroupName = "$($ValidateOrDeployParameters.ResourceGroupName)"
                 subscriptionId    = "$($ValidateOrDeployParameters.SubscriptionId)"
@@ -194,13 +195,11 @@ function Test-ModuleLocally {
                     Write-Verbose "Deploying Module: $ModuleName"
                     # Set the ParameterFilePath to Directory instead of the default 'parameters.json'
                     if ($DeployAllModuleParameterFiles) {
-                        $functionInput.parameterFilePath = (Join-Path $PSScriptRoot '../../arm' $ModuleName '.parameters')
+                        $functionInput.parameterFilePath = (Join-Path (Split-Path $templateFilePath -Parent) $ModuleName '.parameters')
                     }
                     # Append to Function Input the required parameters for Deployment
                     $functionInput += @{
-                        moduleName       = 'l-{0}' -f $ModuleName.Replace('\', '/').Split('/')[-1]
-                        removeDeployment = [System.Convert]::ToBoolean($ValidateOrDeployParameters.RemoveDeployment)
-                        retryLimit       = 1
+                        retryLimit = 1
                     }
                     # Invoke Deployment
                     New-ModuleDeployment @functionInput -Verbose
@@ -210,7 +209,7 @@ function Test-ModuleLocally {
                 # Replace Values with Tokens For Repo Updates and Set Restore Flag to True to Prevent Running Restore Twice
                 $RestoreAlreadyTriggered = $true
                 Write-Verbose 'Restoring Tokens'
-                $ModuleParameterFiles | ForEach-Object { Convert-TokensInParameterFile @ConvertTokensInputs -ParameterFilePath $PSItem.FullName -RestoreTokens $true -Verbose }
+                $ModuleParameterFiles | ForEach-Object { Convert-TokensInParameterFile @ConvertTokensInputs -ParameterFilePath $PSItem.FullName -RestoreTokens $true }
             }
         }
     }
@@ -219,7 +218,7 @@ function Test-ModuleLocally {
         if (($ValidationTest -or $DeploymentTest) -and $ValidateOrDeployParameters -and !($RestoreAlreadyTriggered)) {
             # Replace Values with Tokens For Repo Updates
             Write-Verbose 'Restoring Tokens'
-            $ModuleParameterFiles | ForEach-Object { Convert-TokensInParameterFile @ConvertTokensInputs -ParameterFilePath $PSItem.FullName -RestoreTokens $true -Verbose }
+            $ModuleParameterFiles | ForEach-Object { Convert-TokensInParameterFile @ConvertTokensInputs -ParameterFilePath $PSItem.FullName -RestoreTokens $true }
         }
     }
 }
