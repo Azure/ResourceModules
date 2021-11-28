@@ -4,7 +4,7 @@ This module deploys API Management Service APIs Version Set.
 
 ## Resource Types
 
-| Resource Type | Api Version |
+| Resource Type | API Version |
 | :-- | :-- |
 | `Microsoft.ApiManagement/service/apiVersionSets` | 2020-06-01-preview |
 

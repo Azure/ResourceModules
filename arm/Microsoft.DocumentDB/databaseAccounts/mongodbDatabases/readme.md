@@ -4,7 +4,7 @@ This module deploys a MongoDB within a CosmosDB account.
 
 ## Resource Types
 
-| Resource Type | Api Version |
+| Resource Type | API Version |
 | :-- | :-- |
 | `Microsoft.DocumentDB/databaseAccounts/mongodbDatabases` | 2021-07-01-preview |
 | `Microsoft.DocumentDB/databaseAccounts/mongodbDatabases/collections` | 2021-07-01-preview |
@@ -14,7 +14,7 @@ This module deploys a MongoDB within a CosmosDB account.
 | Parameter Name | Type | Default Value | Possible Values | Description |
 | :-- | :-- | :-- | :-- | :-- |
 | `collections` | _[collections](collections/readme.md)_ array | `[]` |  | Optional. Collections in the mongodb database |
-| `cuaId` | string |  |  | Optional. Customer Usage Attribution id (GUID). This GUID must be previously registered |
+| `cuaId` | string |  |  | Optional. Customer Usage Attribution ID (GUID). This GUID must be previously registered |
 | `databaseAccountName` | string |  |  | Required. Name of the Cosmos DB database account. |
 | `name` | string |  |  | Required. Name of the mongodb database |
 | `tags` | object | `{object}` |  | Optional. Tags of the resource. |

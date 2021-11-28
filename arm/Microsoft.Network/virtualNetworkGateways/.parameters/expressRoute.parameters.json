@@ -21,7 +21,7 @@
         "virtualNetworkGatewaySku": {
             "value": "ErGw1AZ"
         },
-        "vNetId": {
+        "vNetResourceId": {
             "value": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/virtualNetworks/adp-sxx-az-vnet-x-001"
         },
         "diagnosticLogsRetentionInDays": {

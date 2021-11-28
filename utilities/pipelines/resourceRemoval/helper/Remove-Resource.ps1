@@ -59,7 +59,7 @@ Optional. The array of resources to remove. Has to contain objects with at least
 .EXAMPLE
 Remove-Resource @( @{ 'Name' = 'resourceName'; Type = 'Microsoft.Storage/storageAccounts'; ResourceId = 'subscriptions/.../storageAccounts/resourceName' } )
 
-Remove resource with id 'subscriptions/.../storageAccounts/resourceName'.
+Remove resource with ID 'subscriptions/.../storageAccounts/resourceName'.
 #>
 function Remove-Resource {
 

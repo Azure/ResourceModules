@@ -4,7 +4,7 @@ This template deploys Network Watcher.
 
 ## Resource types
 
-| Resource Type | Api Version |
+| Resource Type | API Version |
 | :-- | :-- |
 | `Microsoft.Authorization/locks` | 2016-09-01 |
 | `Microsoft.Authorization/roleAssignments` | 2020-04-01-preview |
@@ -17,7 +17,7 @@ This template deploys Network Watcher.
 | Parameter Name | Type | Default Value | Possible Values | Description |
 | :-- | :-- | :-- | :-- | :-- |
 | `connectionMonitors` | _[connectionMonitors](connectionMonitors/readme.md)_ array | `[]` |  | Optional. Array that contains the Connection Monitors |
-| `cuaId` | string |  |  | Optional. Customer Usage Attribution id (GUID). This GUID must be previously registered |
+| `cuaId` | string |  |  | Optional. Customer Usage Attribution ID (GUID). This GUID must be previously registered |
 | `flowLogs` | _[flowLogs](flowLogs/readme.md)_ array | `[]` |  | Optional. Array that contains the Flow Logs |
 | `location` | string | `[resourceGroup().location]` |  | Optional. Location for all resources. |
 | `lock` | string | `NotSpecified` | `[CanNotDelete, NotSpecified, ReadOnly]` | Optional. Specify the type of lock. |
@@ -135,7 +135,7 @@ Tag names and tag values can be provided as needed. A tag can be left without a 
 | :-- | :-- | :-- |
 | `networkWatcherName` | string | The name of the deployed network watcher |
 | `networkWatcherResourceGroup` | string | The resource group the network watcher was deployed into |
-| `networkWatcherResourceId` | string | The resourceId of the deployed network watcher |
+| `networkWatcherResourceId` | string | The resource ID of the deployed network watcher |
 
 ## Template references
 

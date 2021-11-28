@@ -4,7 +4,7 @@ This module deploys budgets for subscriptions.
 
 ## Resource types
 
-| Resource Type | Api Version |
+| Resource Type | API Version |
 | :-- | :-- |
 | `Microsoft.Consumption/budgets` | 2019-05-01 |
 

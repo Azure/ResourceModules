@@ -100,7 +100,7 @@ param privateEndpoints array = []
 @description('Optional. Resource tags.')
 param tags object = {}
 
-@description('Optional. Customer Usage Attribution id (GUID). This GUID must be previously registered')
+@description('Optional. Customer Usage Attribution ID (GUID). This GUID must be previously registered')
 param cuaId string = ''
 
 @description('Generated. Do not provide a value! This date value is used to generate a SAS token to access the modules.')

@@ -13,7 +13,7 @@ param name string = 'ActiveDirectory'
 @description('Optional. Tenant ID of the managed instance administrator.')
 param tenantId string = ''
 
-@description('Optional. Customer Usage Attribution id (GUID). This GUID must be previously registered')
+@description('Optional. Customer Usage Attribution ID (GUID). This GUID must be previously registered')
 param cuaId string = ''
 
 module pid_cuaId './.bicep/nested_cuaId.bicep' = if (!empty(cuaId)) {
@@ -39,7 +39,7 @@ resource administrator 'Microsoft.Sql/managedInstances/administrators@2021-02-01
 @description('The name of the deployed managed instance')
 output administratorName string = administrator.name
 
-@description('The resourceId of the deployed managed instance')
+@description('The resource ID of the deployed managed instance')
 output administratorResourceId string = administrator.id
 
 @description('The resource group of the deployed managed instance')

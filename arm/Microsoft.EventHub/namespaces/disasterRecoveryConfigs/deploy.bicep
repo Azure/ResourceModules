@@ -4,10 +4,10 @@ param namespaceName string
 @description('Required. The name of the disaster recovery config')
 param name string
 
-@description('Optional. ARM Id of the Primary/Secondary eventhub namespace name, which is part of GEO DR pairing')
+@description('Optional. Resource ID of the Primary/Secondary event hub namespace name, which is part of GEO DR pairing')
 param partnerNamespaceId string = ''
 
-@description('Optional. Customer Usage Attribution id (GUID). This GUID must be previously registered')
+@description('Optional. Customer Usage Attribution ID (GUID). This GUID must be previously registered')
 param cuaId string = ''
 
 module pid_cuaId '.bicep/nested_cuaId.bicep' = if (!empty(cuaId)) {

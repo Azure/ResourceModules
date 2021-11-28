@@ -4,7 +4,7 @@ This module deploys a Machine Learning Services Workspace.
 
 ## Resource types
 
-| Resource Type | Api Version |
+| Resource Type | API Version |
 | :-- | :-- |
 | `Microsoft.Authorization/locks` | 2016-09-01 |
 | `Microsoft.Authorization/roleAssignments` | 2020-04-01-preview |
@@ -18,11 +18,11 @@ This module deploys a Machine Learning Services Workspace.
 | Parameter Name | Type | Default Value | Possible Values | Description |
 | :-- | :-- | :-- | :-- | :-- |
 | `allowPublicAccessWhenBehindVnet` | bool |  |  | Optional. The flag to indicate whether to allow public access when behind VNet. |
-| `associatedApplicationInsightsResourceId` | string |  |  | Required. The resource id of the associated Application Insights. |
-| `associatedContainerRegistryResourceId` | string |  |  | Optional. The resource id of the associated Container Registry. |
-| `associatedKeyVaultResourceId` | string |  |  | Required. The resource id of the associated Key Vault. |
-| `associatedStorageAccountResourceId` | string |  |  | Required. The resource id of the associated Storage Account. |
-| `cuaId` | string |  |  | Optional. Customer Usage Attribution id (GUID). This GUID must be previously registered |
+| `associatedApplicationInsightsResourceId` | string |  |  | Required. The resource ID of the associated Application Insights. |
+| `associatedContainerRegistryResourceId` | string |  |  | Optional. The resource ID of the associated Container Registry. |
+| `associatedKeyVaultResourceId` | string |  |  | Required. The resource ID of the associated Key Vault. |
+| `associatedStorageAccountResourceId` | string |  |  | Required. The resource ID of the associated Storage Account. |
+| `cuaId` | string |  |  | Optional. Customer Usage Attribution ID (GUID). This GUID must be previously registered |
 | `diagnosticLogsRetentionInDays` | int | `365` |  | Optional. Specifies the number of days that logs will be kept for; a value of 0 will retain data indefinitely. |
 | `diagnosticStorageAccountId` | string |  |  | Optional. Resource identifier of the Diagnostic Storage Account. |
 | `eventHubAuthorizationRuleId` | string |  |  | Optional. Resource ID of the event hub authorization rule for the Event Hubs namespace in which the event hub should be created or streamed to. |

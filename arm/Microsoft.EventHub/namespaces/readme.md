@@ -4,7 +4,7 @@ This module deploys an EventHub namespace
 
 ## Resource Types
 
-| Resource Type | Api Version |
+| Resource Type | API Version |
 | :-- | :-- |
 | `Microsoft.Authorization/locks` | 2016-09-01 |
 | `Microsoft.Authorization/roleAssignments` | 2020-04-01-preview |
@@ -24,7 +24,7 @@ This module deploys an EventHub namespace
 | :-- | :-- | :-- | :-- | :-- |
 | `authorizationRules` | _[authorizationRules](authorizationRules/readme.md)_ array | `[System.Collections.Hashtable]` |  | Optional. Authorization Rules for the Event Hub namespace |
 | `baseTime` | string | `[utcNow('u')]` |  | Generated. Do not provide a value! This date value is used to generate a SAS token to access the modules. |
-| `cuaId` | string |  |  | Optional. Customer Usage Attribution id (GUID). This GUID must be previously registered |
+| `cuaId` | string |  |  | Optional. Customer Usage Attribution ID (GUID). This GUID must be previously registered |
 | `diagnosticLogsRetentionInDays` | int | `365` |  | Optional. Specifies the number of days that logs will be kept for; a value of 0 will retain data indefinitely. |
 | `diagnosticStorageAccountId` | string |  |  | Optional. Resource identifier of the Diagnostic Storage Account. |
 | `disasterRecoveryConfig` | object | `{object}` |  | Optional. The disaster recovery config for this namespace |
@@ -42,7 +42,7 @@ This module deploys an EventHub namespace
 | `skuCapacity` | int | `1` |  | Optional. Event Hub plan scale-out capacity of the resource |
 | `skuName` | string | `Standard` | `[Basic, Standard]` | Optional. event hub plan SKU name |
 | `tags` | object | `{object}` |  | Optional. Tags of the resource. |
-| `vNetId` | string |  |  | Optional. Virtual Network Id to lock down the Event Hub. |
+| `vNetId` | string |  |  | Optional. Virtual Network ID to lock down the Event Hub. |
 | `workspaceId` | string |  |  | Optional. Resource identifier of Log Analytics. |
 | `zoneRedundant` | bool |  |  | Optional. Switch to make the Event Hub Namespace zone redundant. |
 

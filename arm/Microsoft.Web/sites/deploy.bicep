@@ -11,7 +11,7 @@ param location string = resourceGroup().location
 ])
 param kind string
 
-@description('Optional. Configures a web site to accept only https requests. Issues redirect for http requests.')
+@description('Optional. Configures a site to accept only HTTPS requests. Issues redirect for HTTP requests.')
 param httpsOnly bool = true
 
 @description('Optional. If client affinity is enabled.')

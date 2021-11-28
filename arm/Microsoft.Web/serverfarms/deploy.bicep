@@ -16,7 +16,7 @@ param location string = resourceGroup().location
 ])
 param serverOS string = 'Windows'
 
-@description('Optional. The Resource Id of the App Service Environment to use for the App Service Plan.')
+@description('Optional. The Resource ID of the App Service Environment to use for the App Service Plan.')
 param appServiceEnvironmentId string = ''
 
 @description('Optional. Target worker tier assigned to the App Service plan.')
@@ -53,7 +53,7 @@ param roleAssignments array = []
 @description('Optional. Tags of the resource.')
 param tags object = {}
 
-@description('Optional. Customer Usage Attribution id (GUID). This GUID must be previously registered')
+@description('Optional. Customer Usage Attribution ID (GUID). This GUID must be previously registered')
 param cuaId string = ''
 
 var hostingEnvironmentProfile = {
@@ -106,5 +106,5 @@ output appServicePlanResourceGroup string = resourceGroup().name
 @description('The name of the app service plan')
 output appServicePlanName string = appServicePlan.name
 
-@description('The resourceId of the app service plan')
+@description('The resource ID of the app service plan')
 output appServicePlanResourceId string = appServicePlan.id

@@ -11,16 +11,16 @@ param location string = resourceGroup().location
 ])
 param sku string
 
-@description('Required. The resource id of the associated Storage Account.')
+@description('Required. The resource ID of the associated Storage Account.')
 param associatedStorageAccountResourceId string
 
-@description('Required. The resource id of the associated Key Vault.')
+@description('Required. The resource ID of the associated Key Vault.')
 param associatedKeyVaultResourceId string
 
-@description('Required. The resource id of the associated Application Insights.')
+@description('Required. The resource ID of the associated Application Insights.')
 param associatedApplicationInsightsResourceId string
 
-@description('Optional. The resource id of the associated Container Registry.')
+@description('Optional. The resource ID of the associated Container Registry.')
 param associatedContainerRegistryResourceId string = ''
 
 @allowed([
@@ -46,7 +46,7 @@ param privateEndpoints array = []
 @description('Optional. Resource tags.')
 param tags object = {}
 
-@description('Optional. Customer Usage Attribution id (GUID). This GUID must be previously registered')
+@description('Optional. Customer Usage Attribution ID (GUID). This GUID must be previously registered')
 param cuaId string = ''
 
 @description('Optional. Specifies the number of days that logs will be kept for; a value of 0 will retain data indefinitely.')

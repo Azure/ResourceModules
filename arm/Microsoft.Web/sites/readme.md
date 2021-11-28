@@ -4,7 +4,7 @@ This module deploys a Web or Function App
 
 ## Resource types
 
-| Resource Type | Api Version |
+| Resource Type | API Version |
 | :-- | :-- |
 | `Microsoft.Authorization/locks` | 2016-09-01 |
 | `Microsoft.Authorization/roleAssignments` | 2020-04-01-preview |
@@ -33,7 +33,7 @@ This module deploys a Web or Function App
 | `eventHubName` | string |  |  | Optional. Name of the event hub within the namespace to which logs are streamed. Without this, an event hub is created for each log category. |
 | `functionsExtensionVersion` | string | `~3` |  | Optional. Version if the function extension. |
 | `functionsWorkerRuntime` | string |  | `[dotnet, node, python, java, powershell, ]` | Optional. Runtime of the function worker. |
-| `httpsOnly` | bool | `True` |  | Optional. Configures a web site to accept only https requests. Issues redirect for http requests. |
+| `httpsOnly` | bool | `True` |  | Optional. Configures a site to accept only HTTPS requests. Issues redirect for HTTP requests. |
 | `kind` | string |  | `[functionapp, app]` | Required. Type of site to deploy. |
 | `location` | string | `[resourceGroup().location]` |  | Optional. Location for all Resources. |
 | `lock` | string | `NotSpecified` | `[CanNotDelete, NotSpecified, ReadOnly]` | Optional. Specify the type of lock. |

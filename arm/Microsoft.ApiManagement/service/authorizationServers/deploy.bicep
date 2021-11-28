@@ -22,7 +22,7 @@ param clientAuthenticationMethod array = [
   'Basic'
 ]
 
-@description('Required. Client or app id registered with this authorization server.')
+@description('Required. Client or app ID registered with this authorization server.')
 @secure()
 param clientId string
 
@@ -33,7 +33,7 @@ param clientRegistrationEndpoint string = ''
 @secure()
 param clientSecret string
 
-@description('Optional. Customer Usage Attribution id (GUID). This GUID must be previously registered')
+@description('Optional. Customer Usage Attribution ID (GUID). This GUID must be previously registered')
 param cuaId string = ''
 
 @description('Optional. Access token scope that is going to be requested by default. Can be overridden at the API level. Should be provided in the form of a string containing space-delimited values.')

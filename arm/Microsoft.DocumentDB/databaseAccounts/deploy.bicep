@@ -65,7 +65,7 @@ param sqlDatabases array = []
 @description('Optional. MongoDB Databases configurations')
 param mongodbDatabases array = []
 
-@description('Optional. Customer Usage Attribution id (GUID). This GUID must be previously registered')
+@description('Optional. Customer Usage Attribution ID (GUID). This GUID must be previously registered')
 param cuaId string = ''
 
 @allowed([
