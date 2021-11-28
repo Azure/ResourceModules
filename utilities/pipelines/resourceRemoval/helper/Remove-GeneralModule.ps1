@@ -86,7 +86,7 @@ Optional. The deployment name to use for the removal
 Optional. The path to the deployment file
 
 .EXAMPLE
-Remove-GeneralModule -deploymentName 'KeyVault' -resourceGroupName 'validation-rg'
+Remove-GeneralModule -DeploymentName 'KeyVault' -ResourceGroupName 'validation-rg'
 
 Remove a virtual WAN with deployment name 'keyvault-12345' from resource group 'validation-rg'
 #>
