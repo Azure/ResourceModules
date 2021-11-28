@@ -82,7 +82,7 @@ Optional. The time to wait in between the search for resources via their remove 
 .PARAMETER DeploymentName
 Optional. The deployment name to use for the removal
 
-.PARAMETER templateFilePath
+.PARAMETER TemplateFilePath
 Optional. The path to the deployment file
 
 .EXAMPLE
