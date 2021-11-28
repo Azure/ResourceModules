@@ -7,7 +7,7 @@ Get all deployments that match a given deployment name in a given scope
 .DESCRIPTION
 Get all deployments that match a given deployment name in a given scope
 
-.PARAMETER name
+.PARAMETER Name
 Mandatory. The deployment name to search for
 
 .PARAMETER resourceGroupName
