@@ -19,7 +19,7 @@ param filterName string
 @description('Required. IP Mask')
 param ipMask string
 
-@description('Optional. Customer Usage Attribution id (GUID). This GUID must be previously registered')
+@description('Optional. Customer Usage Attribution ID (GUID). This GUID must be previously registered')
 param cuaId string = ''
 
 module pid_cuaId '.bicep/nested_cuaId.bicep' = if (!empty(cuaId)) {
@@ -27,8 +27,13 @@ module pid_cuaId '.bicep/nested_cuaId.bicep' = if (!empty(cuaId)) {
   params: {}
 }
 
+resource namespace 'Microsoft.ServiceBus/namespaces@2021-06-01-preview' existing = {
+  name: namespaceName
+}
+
 resource ipFilterRule 'Microsoft.ServiceBus/namespaces/ipFilterRules@2018-01-01-preview' = {
-  name: '${namespaceName}/${name}'
+  name: name
+  parent: namespace
   properties: {
     action: action
     filterName: filterName
@@ -39,7 +44,7 @@ resource ipFilterRule 'Microsoft.ServiceBus/namespaces/ipFilterRules@2018-01-01-
 @description('The name of the IP filter rule.')
 output ipFilterRuleName string = ipFilterRule.name
 
-@description('The Resource Id of the IP filter rule.')
+@description('The Resource ID of the IP filter rule.')
 output ipFilterRuleResourceId string = ipFilterRule.id
 
 @description('The name of the Resource Group the IP filter rule was created in.')

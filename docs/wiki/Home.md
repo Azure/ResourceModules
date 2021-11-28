@@ -26,6 +26,20 @@ If you're unfamiliar with Infrastructure as Code, or wonder how you can use the 
 - [Contribution Guide](./ContributionGuide)
 - [Known Issues](./KnownIssues)
 
+# Scope
+
+Following you can find an abstract overview of everything in- and out-of-scope of this repository.
+
+## In Scope
+- **Modules:** Rich library of resource modules - the foundation for workload or entire environments deployments
+- **Platform:** Pipelines to validate modules & publish to those that pass to a location of your choice. Available with GitHub Workflows.
+- **Documentation:** A rich documentation of best practices on [module](./Modules) design, the [platforms](./Context) and its [context](./Context), [testing](./Testing) and [pipelines](./Pipelines)
+
+## Out of Scope
+- **Orchestration:** Orchestrated solutions such as workloads or entire environments intended for production environments
+- **Real-time Updates:** Modules are updated on a best effort basis by a group of dedicated contributors
+- **Languages:** Other design languages like _Terraform_
+
 # Reporting Issues and Feedback
 
 ## Issues and Bugs

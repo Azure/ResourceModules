@@ -19,7 +19,7 @@ This section gives you an overview of how to interact with the platform pipeline
 
 When working with this platform's pipelines it is important to understand first which pipelines serve which purpose, when they are triggered and how you can use them to test your modules.
 
-As described in the [Pipelines Design](./PipelinesDesign.md) section we offer the following pipelines:
+As described in the [Pipelines Design](./PipelinesDesign) section we offer the following pipelines:
 
 | Pipeline | Target | Trigger | Notes |
 | - | - | - | - |

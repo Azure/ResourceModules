@@ -43,10 +43,10 @@ param privateEndpoints array = []
 @description('Optional. Specifies the number of days that logs will be kept for; a value of 0 will retain data indefinitely.')
 param diagnosticLogsRetentionInDays int = 365
 
-@description('Optional. Resource identifier of the Diagnostic Storage Account.')
+@description('Optional. Resource ID of the diagnostic storage account.')
 param diagnosticStorageAccountId string = ''
 
-@description('Optional. Resource identifier of Log Analytics.')
+@description('Optional. Resource identifier of log analytics.')
 param workspaceId string = ''
 
 @description('Optional. Resource ID of the event hub authorization rule for the Event Hubs namespace in which the event hub should be created or streamed to.')
@@ -327,18 +327,18 @@ module automationAccount_rbac '.bicep/nested_rbac.bicep' = [for (roleAssignment,
   params: {
     principalIds: roleAssignment.principalIds
     roleDefinitionIdOrName: roleAssignment.roleDefinitionIdOrName
-    resourceName: automationAccount.name
+    resourceId: automationAccount.id
   }
 }]
 
 @description('The name of the deployed automation account')
 output automationAccountName string = automationAccount.name
 
-@description('The ID of the deployed automation account')
+@description('The resource ID of the deployed automation account')
 output automationAccountResourceId string = automationAccount.id
 
 @description('The resource group of the deployed automation account')
 output automationAccountResourceGroup string = resourceGroup().name
 
-@description('The resource ID of the assigned identity.')
-output assignedIdentityID string = systemAssignedIdentity ? automationAccount.identity.principalId : ''
+@description('The principal ID of the system assigned identity.')
+output principalId string = systemAssignedIdentity ? automationAccount.identity.principalId : ''

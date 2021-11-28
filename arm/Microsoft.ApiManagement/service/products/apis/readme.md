@@ -1,10 +1,10 @@
 # API Management Service Products APIs `[Microsoft.ApiManagement/service/products/apis]`
 
-This module deploys Api Management Service Product APIs.
+This module deploys API Management Service Product APIs.
 
 ## Resource Types
 
-| Resource Type | Api Version |
+| Resource Type | API Version |
 | :-- | :-- |
 | `Microsoft.ApiManagement/service/products/apis` | 2020-06-01-preview |
 
@@ -12,18 +12,18 @@ This module deploys Api Management Service Product APIs.
 
 | Parameter Name | Type | Default Value | Possible Values | Description |
 | :-- | :-- | :-- | :-- | :-- |
-| `apiManagementServiceName` | string |  |  | Required. The name of the of the Api Management service. |
-| `cuaId` | string |  |  | Optional. Customer Usage Attribution id (GUID). This GUID must be previously registered |
-| `name` | string |  |  | Required. Name of the product api. |
+| `apiManagementServiceName` | string |  |  | Required. The name of the of the API Management service. |
+| `cuaId` | string |  |  | Optional. Customer Usage Attribution ID (GUID). This GUID must be previously registered |
+| `name` | string |  |  | Required. Name of the product API. |
 | `productName` | string |  |  | Required. The name of the of the Product. |
 
 ## Outputs
 
 | Output Name | Type | Description |
 | :-- | :-- | :-- |
-| `apiName` | string | The name of the product api |
-| `apiResourceGroup` | string | The resource group the product api was deployed into |
-| `apiResourceId` | string | The resourceId of the product api |
+| `apiName` | string | The name of the product API |
+| `apiResourceGroup` | string | The resource group the product API was deployed into |
+| `apiResourceId` | string | The resource ID of the product API |
 
 ## Template references
 

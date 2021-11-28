@@ -32,10 +32,10 @@ param authorizationRules array = [
 param ipFilterRules array = []
 
 @description('Optional. The migration configuration.')
-param migrationConfigurationObj object = {}
+param migrationConfigurations object = {}
 
 @description('Optional. The disaster recovery configuration.')
-param disasterRecoveryConfigObj object = {}
+param disasterRecoveryConfigs object = {}
 
 @description('Optional. vNet Rules SubnetIds for the Service Bus namespace.')
 param virtualNetworkRules array = []
@@ -45,10 +45,10 @@ param virtualNetworkRules array = []
 @maxValue(365)
 param diagnosticLogsRetentionInDays int = 365
 
-@description('Optional. Resource identifier of the Diagnostic Storage Account.')
+@description('Optional. Resource ID of the diagnostic storage account.')
 param diagnosticStorageAccountId string = ''
 
-@description('Optional. Resource identifier of Log Analytics.')
+@description('Optional. Resource identifier of log analytics.')
 param workspaceId string = ''
 
 @description('Optional. Resource ID of the event hub authorization rule for the Event Hubs namespace in which the event hub should be created or streamed to.')
@@ -74,7 +74,7 @@ param privateEndpoints array = []
 @description('Optional. Tags of the resource.')
 param tags object = {}
 
-@description('Optional. Customer Usage Attribution id (GUID). This GUID must be previously registered')
+@description('Optional. Customer Usage Attribution ID (GUID). This GUID must be previously registered')
 param cuaId string = ''
 
 @description('Generated. Do not provide a value! This date value is used to generate a SAS token to access the modules.')
@@ -140,27 +140,24 @@ resource serviceBusNamespace 'Microsoft.ServiceBus/namespaces@2021-06-01-preview
   }
 }
 
-module serviceBusNamespace_disasterRecoveryConfig 'disasterRecoveryConfigs/deploy.bicep' = if (!empty(disasterRecoveryConfigObj)) {
+module serviceBusNamespace_disasterRecoveryConfig 'disasterRecoveryConfigs/deploy.bicep' = if (!empty(disasterRecoveryConfigs)) {
   name: '${uniqueString(deployment().name, location)}-DisasterRecoveryConfig'
   params: {
     namespaceName: serviceBusNamespace.name
-    name: contains(disasterRecoveryConfigObj, 'name') ? disasterRecoveryConfigObj.name : 'default'
-    alternateName: contains(disasterRecoveryConfigObj, 'alternateName') ? disasterRecoveryConfigObj.alternateName : ''
-    partnerNamespace: contains(disasterRecoveryConfigObj, 'partnerNamespace') ? disasterRecoveryConfigObj.partnerNamespace : ''
+    name: contains(disasterRecoveryConfigs, 'name') ? disasterRecoveryConfigs.name : 'default'
+    alternateName: contains(disasterRecoveryConfigs, 'alternateName') ? disasterRecoveryConfigs.alternateName : ''
+    partnerNamespace: contains(disasterRecoveryConfigs, 'partnerNamespace') ? disasterRecoveryConfigs.partnerNamespace : ''
   }
 }
 
-module serviceBusNamespace_migrationConfigurations 'migrationConfigurations/deploy.bicep' = if (!empty(migrationConfigurationObj)) {
+module serviceBusNamespace_migrationConfigurations 'migrationConfigurations/deploy.bicep' = if (!empty(migrationConfigurations)) {
   name: '${uniqueString(deployment().name, location)}-MigrationConfigurations'
   params: {
-    namespaceName: migrationConfigurationObj.namespaceName
-    name: contains(migrationConfigurationObj, 'name') ? migrationConfigurationObj.name : '$default'
-    postMigrationName: migrationConfigurationObj.postMigrationName
-    targetNamespace: migrationConfigurationObj.targetNamespace
+    namespaceName: serviceBusNamespace.name
+    name: contains(migrationConfigurations, 'name') ? migrationConfigurations.name : '$default'
+    postMigrationName: migrationConfigurations.postMigrationName
+    targetNamespace: migrationConfigurations.targetNamespace
   }
-  dependsOn: [
-    serviceBusNamespace
-  ]
 }
 
 module serviceBusNamespace_virtualNetworkRules 'virtualNetworkRules/deploy.bicep' = [for (virtualNetworkRule, index) in virtualNetworkRules: {
@@ -170,9 +167,6 @@ module serviceBusNamespace_virtualNetworkRules 'virtualNetworkRules/deploy.bicep
     name: last(split(virtualNetworkRule, '/'))
     virtualNetworkSubnetId: virtualNetworkRule
   }
-  dependsOn: [
-    serviceBusNamespace
-  ]
 }]
 
 module serviceBusNamespace_authorizationRules 'authorizationRules/deploy.bicep' = [for (authorizationRule, index) in authorizationRules: {
@@ -182,9 +176,6 @@ module serviceBusNamespace_authorizationRules 'authorizationRules/deploy.bicep' 
     name: authorizationRule.name
     rights: contains(authorizationRule, 'rights') ? authorizationRule.rights : []
   }
-  dependsOn: [
-    serviceBusNamespace
-  ]
 }]
 
 module serviceBusNamespace_ipFilterRules 'ipFilterRules/deploy.bicep' = [for (ipFilterRule, index) in ipFilterRules: {
@@ -196,9 +187,6 @@ module serviceBusNamespace_ipFilterRules 'ipFilterRules/deploy.bicep' = [for (ip
     filterName: ipFilterRule.filterName
     ipMask: ipFilterRule.ipMask
   }
-  dependsOn: [
-    serviceBusNamespace
-  ]
 }]
 
 module serviceBusNamespace_queues 'queues/deploy.bicep' = [for (queue, index) in queues: {
@@ -231,9 +219,6 @@ module serviceBusNamespace_queues 'queues/deploy.bicep' = [for (queue, index) in
     roleAssignments: contains(queue, 'roleAssignments') ? queue.roleAssignments : []
     status: contains(queue, 'status') ? queue.status : 'Active'
   }
-  dependsOn: [
-    serviceBusNamespace
-  ]
 }]
 
 resource serviceBusNamespace_lock 'Microsoft.Authorization/locks@2016-09-01' = if (lock != 'NotSpecified') {
@@ -273,11 +258,11 @@ module serviceBusNamespace_rbac '.bicep/nested_rbac.bicep' = [for (roleAssignmen
   params: {
     principalIds: roleAssignment.principalIds
     roleDefinitionIdOrName: roleAssignment.roleDefinitionIdOrName
-    resourceName: serviceBusNamespace.name
+    resourceId: serviceBusNamespace.id
   }
 }]
 
-@description('The resourceId of the deployed service bus namespace')
+@description('The resource ID of the deployed service bus namespace')
 output serviceBusNamespaceResourceId string = serviceBusNamespace.id
 
 @description('The resource group of the deployed service bus namespace')

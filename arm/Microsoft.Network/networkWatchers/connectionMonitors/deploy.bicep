@@ -22,7 +22,7 @@ param testGroups array = []
 @description('Optional. Specify the Log Analytics Workspace Resource ID')
 param workspaceResourceId string = ''
 
-@description('Optional. Customer Usage Attribution id (GUID). This GUID must be previously registered')
+@description('Optional. Customer Usage Attribution ID (GUID). This GUID must be previously registered')
 param cuaId string = ''
 
 var outputs = !empty(workspaceResourceId) ? [
@@ -59,7 +59,7 @@ resource connectionMonitor 'Microsoft.Network/networkWatchers/connectionMonitors
 @description('The name of the deployed connection monitor')
 output connectionMonitorName string = connectionMonitor.name
 
-@description('The resourceId of the deployed connection monitor')
+@description('The resource ID of the deployed connection monitor')
 output connectionMonitorResourceId string = connectionMonitor.id
 
 @description('The resource group the connection monitor was deployed into')

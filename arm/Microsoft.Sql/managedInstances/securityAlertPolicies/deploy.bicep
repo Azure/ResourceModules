@@ -14,7 +14,7 @@ param state string = 'Disabled'
 @description('Optional. Specifies that the schedule scan notification will be is sent to the subscription administrators.')
 param emailAccountAdmins bool = false
 
-@description('Optional. Customer Usage Attribution id (GUID). This GUID must be previously registered')
+@description('Optional. Customer Usage Attribution ID (GUID). This GUID must be previously registered')
 param cuaId string = ''
 
 module pid_cuaId './.bicep/nested_cuaId.bicep' = if (!empty(cuaId)) {
@@ -28,17 +28,17 @@ resource managedInstance 'Microsoft.Sql/managedInstances@2021-05-01-preview' exi
 
 resource securityAlertPolicy 'Microsoft.Sql/managedInstances/securityAlertPolicies@2017-03-01-preview' = {
   name: name
+  parent: managedInstance
   properties: {
     state: state
     emailAccountAdmins: emailAccountAdmins
   }
-  parent: managedInstance
 }
 
 @description('The name of the deployed security alert policy')
 output securityAlertPolicyName string = securityAlertPolicy.name
 
-@description('The resourceId of the deployed security alert policy')
+@description('The resource ID of the deployed security alert policy')
 output securityAlertPolicyResourceId string = securityAlertPolicy.id
 
 @description('The resource group of the deployed security alert policy')

@@ -25,7 +25,7 @@ param roleAssignments array = []
 @description('Optional. Tags for all resources.')
 param tags object = {}
 
-@description('Optional. Customer Usage Attribution id (GUID). This GUID must be previously registered')
+@description('Optional. Customer Usage Attribution ID (GUID). This GUID must be previously registered')
 param cuaId string = ''
 
 module pidName '.bicep/nested_cuaId.bicep' = if (!empty(cuaId)) {
@@ -57,7 +57,7 @@ module gallery_rbac '.bicep/nested_rbac.bicep' = [for (roleAssignment, index) in
   params: {
     principalIds: roleAssignment.principalIds
     roleDefinitionIdOrName: roleAssignment.roleDefinitionIdOrName
-    resourceName: gallery.name
+    resourceId: gallery.id
   }
 }]
 
@@ -91,7 +91,7 @@ module galleries_images 'images/deploy.bicep' = [for (image, index) in images: {
   }
 }]
 
-@description('The resource id of the deployed image gallery')
+@description('The resource ID of the deployed image gallery')
 output galleryResourceId string = gallery.id
 
 @description('The resource group of the deployed image gallery')

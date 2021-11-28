@@ -1,5 +1,5 @@
 @description('Required. The name of Cognitive Services account')
-param accountName string
+param name string
 
 @description('Required. Kind of the Cognitive Services. Use \'Get-AzCognitiveServicesAccountSku\' to determine a valid combinations of \'kind\' and \'sku\' for your Azure region.')
 @allowed([
@@ -58,10 +58,10 @@ param location string = resourceGroup().location
 @maxValue(365)
 param diagnosticLogsRetentionInDays int = 365
 
-@description('Optional. Resource identifier of the Diagnostic Storage Account.')
+@description('Optional. Resource ID of the diagnostic storage account.')
 param diagnosticStorageAccountId string = ''
 
-@description('Optional. Resource identifier of Log Analytics.')
+@description('Optional. Resource identifier of log analytics.')
 param workspaceId string = ''
 
 @description('Optional. Resource ID of the event hub authorization rule for the Event Hubs namespace in which the event hub should be created or streamed to.')
@@ -106,7 +106,7 @@ param roleAssignments array = []
 @description('Optional. Tags of the resource.')
 param tags object = {}
 
-@description('Optional. Customer Usage Attribution id (GUID). This GUID must be previously registered')
+@description('Optional. Customer Usage Attribution ID (GUID). This GUID must be previously registered')
 param cuaId string = ''
 
 @description('Optional. The name of logs that will be streamed.')
@@ -164,8 +164,8 @@ module pid_cuaId '.bicep/nested_cuaId.bicep' = if (!empty(cuaId)) {
   params: {}
 }
 
-resource cognitiveServices 'Microsoft.CognitiveServices/accounts@2021-04-30' = {
-  name: accountName
+resource cognitiveServices 'Microsoft.CognitiveServices/accounts@2017-04-18' = {
+  name: name
   kind: kind
   identity: identity
   location: location
@@ -217,14 +217,21 @@ module cognitiveServices_rbac '.bicep/nested_rbac.bicep' = [for (roleAssignment,
   params: {
     principalIds: roleAssignment.principalIds
     roleDefinitionIdOrName: roleAssignment.roleDefinitionIdOrName
-    resourceName: cognitiveServices.name
+    resourceId: cognitiveServices.id
   }
 }]
 
+@description('The name of the cognitive services account')
 output cognitiveServicesName string = cognitiveServices.name
+
+@description('The resource ID of the cognitive services account')
 output cognitiveServicesResourceId string = cognitiveServices.id
+
+@description('The resource group the cognitive services account was deployed into')
 output cognitiveServicesResourceGroup string = resourceGroup().name
+
+@description('The service endpoint of the cognitive services account')
 output cognitiveServicesEndpoint string = cognitiveServices.properties.endpoint
 
-@description('The resource ID of the assigned identity.')
-output assignedIdentityID string = systemAssignedIdentity ? cognitiveServices.identity.principalId : ''
+@description('The principal ID of the system assigned identity.')
+output principalId string = systemAssignedIdentity ? cognitiveServices.identity.principalId : ''

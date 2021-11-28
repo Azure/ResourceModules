@@ -17,7 +17,7 @@ param shareDeleteRetentionPolicy object = {
 @description('Optional. File shares to create.')
 param shares array = []
 
-@description('Optional. Customer Usage Attribution id (GUID). This GUID must be previously registered')
+@description('Optional. Customer Usage Attribution ID (GUID). This GUID must be previously registered')
 param cuaId string = ''
 
 module pid_cuaId '.bicep/nested_cuaId.bicep' = if (!empty(cuaId)) {
@@ -50,7 +50,7 @@ module fileServices_shares 'shares/deploy.bicep' = [for (share, index) in shares
 @description('The name of the deployed file share service')
 output fileServicesName string = storageAccount::fileServices.name
 
-@description('The id of the deployed file share service')
+@description('The resource ID of the deployed file share service')
 output fileServicesResourceId string = storageAccount::fileServices.id
 
 @description('The resource group of the deployed file share service')
