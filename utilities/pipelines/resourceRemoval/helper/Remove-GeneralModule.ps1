@@ -70,7 +70,7 @@ Requires the resource in question to be tagged with 'removeModule = <moduleName>
 .PARAMETER ModuleName
 Mandatory. The name of the module to remove
 
-.PARAMETER resourceGroupName
+.PARAMETER ResourceGroupName
 Mandatory. The resource group of the resource to remove
 
 .PARAMETER searchRetryLimit
