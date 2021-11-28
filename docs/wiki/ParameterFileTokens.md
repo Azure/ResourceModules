@@ -52,29 +52,40 @@ These are tokens defined in the Git Repository inside a [Settings.json](https://
 
 ---
 
+The below image compares the different token types that can be used for parameter file tokens:
+
+<img src="./media/tokenTypes.png" alt="tokenTypes">
+
 ### How Tokens are replaced in a Parameter File
 
 The below diagram illustrates the Token Replacement Functionality via the [Validate](https://github.com/Azure/ResourceModules/blob/main/.github/actions/templates/validateModuleDeploy/action.yml) and [Deploy](https://github.com/Azure/ResourceModules/blob/main/.github/actions/templates/deployModule/action.yml) Actions/Templates.
 
-<img src="./media/paramFileTokenGetTokens.jpg" alt="paramFileTokenGet">
+<img src="./media/tokenReplacement.png" alt="tokenReplacement">
 
-1- The user creates local custom Parameter File Tokens in the [Settings.json](https://github.com/Azure/ResourceModules/blob/main/settings.json) under the `localTokens` - `tokens` property.
+1A. The user creates default tokens as [GitHub Secrets](https://docs.github.com/en/actions/security-guides/encrypted-secrets#creating-encrypted-secrets-for-a-repository) or [Azure DevOps Pipeline Variables](https://docs.microsoft.com/en-us/azure/devops/pipelines/library/?view=azure-devops), which can be fed into workflows and pipelines as environment variables. </br>
+1B. The user can also create local custom Parameter File Tokens in the [Settings.json](https://github.com/Azure/ResourceModules/blob/main/settings.json) under the `localTokens` - `tokens` property. </br>
+2. The parameter files can now be tokenized as per required value. And the token format can look like `<<tokenName>>`. Example:
 
-2- The parameter files can now be tokenized as per required value. And the token format can look like `<<tokenName>>`. Example:
-
-  ```json
-  "adminPassword": {
-    "reference": {
-        "keyVault": {
-            "id": "/subscriptions/<<subscriptionId>>/resourceGroups/platform-core-rg/providers/Microsoft.KeyVault/vaults/<<exampleLocalToken>>-keyVault"
-        },
-        "secretName": "<<exampleLocalToken>>"
-    }
+```json
+"adminPassword": {
+  "reference": {
+      "keyVault": {
+          "id": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.KeyVault/vaults/<<exampleLocalToken>>-keyVault"
+      },
+      "secretName": "<<exampleLocalToken>>"
   }
-  ```
+}
+```
+3A. The Replace Tokens function gets the default tokens from the environment variables. </br>
+> Default Tokens are explicitly defined in the task to which environment variables are retrieved, and requires updating this task for new tokens. </br>
 
-3- The user runs the modules workflow/pipeline, either from their remote branch or main branch so that it triggers the regular module deployment process.
+3B. The Replace Tokens function gets local custom tokens from the [Settings.json](https://github.com/Azure/ResourceModules/blob/main/settings.json).  </br>
+> Local Tokens are easier to scale as you just need to define them in this file without adding new environment variables or modifying workflows or tasks. </br>
 
-4- The tokens will be retrieved at runtime and replaced with the original values before handed over to the validation or deployment task/step.
+3C. The Replace Tokens function gets the Module Parameter file (tokenized and not deployable) and then all tokens are processed for replacement. </br>
 
-5- The Validate/Deploy task will consume the modified parameter files with the required values in order to validate/deploy the Azure resource.
+3D. The updated Module Parameter file is then saved, replacing the tokenized version. This file is now 'deployable'. </br>
+
+4A- The Validate/Deploy function retrieves the latest updated module Parameter file. </br>
+
+4B- The Validate/Deploy function validates the deployment artifacts for the module before deploying it to the Azure Sandbox Subscription. </br>
