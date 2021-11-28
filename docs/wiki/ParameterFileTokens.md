@@ -62,30 +62,30 @@ The below diagram illustrates the Token Replacement Functionality via the [Valid
 
 <img src="./media/tokenReplacement.png" alt="tokenReplacement">
 
-1A. The user creates default tokens as [GitHub Secrets](https://docs.github.com/en/actions/security-guides/encrypted-secrets#creating-encrypted-secrets-for-a-repository) or [Azure DevOps Pipeline Variables](https://docs.microsoft.com/en-us/azure/devops/pipelines/library/?view=azure-devops), which can be fed into workflows and pipelines as environment variables. </br>
-1B. The user can also create local custom Parameter File Tokens in the [Settings.json](https://github.com/Azure/ResourceModules/blob/main/settings.json) under the `localTokens` - `tokens` property. </br>
-2. The parameter files can now be tokenized as per required value. And the token format can look like `<<tokenName>>`. Example:
+- **1A.** The user creates default tokens as [GitHub Secrets](https://docs.github.com/en/actions/security-guides/encrypted-secrets#creating-encrypted-secrets-for-a-repository) or [Azure DevOps Pipeline Variables](https://docs.microsoft.com/en-us/azure/devops/pipelines/library/?view=azure-devops), that are injected as environment variables.
+- **1B.** The user can also create local custom Parameter File Tokens in the [Settings.json](https://github.com/Azure/ResourceModules/blob/main/settings.json) under the `localTokens` - `tokens` property.
+- **2.** The parameter files can now be tokenized as per required value. And the token format can look like `<<tokenName>>`. Example:
 
-```json
-"adminPassword": {
-  "reference": {
-      "keyVault": {
-          "id": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.KeyVault/vaults/<<exampleLocalToken>>-keyVault"
-      },
-      "secretName": "<<exampleLocalToken>>"
+  ```json
+  "adminPassword": {
+    "reference": {
+        "keyVault": {
+            "id": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.KeyVault/vaults/<<exampleLocalToken>>-keyVault"
+        },
+        "secretName": "<<exampleLocalToken>>"
+    }
   }
-}
-```
-3A. The Replace Tokens function gets the default tokens from the environment variables. </br>
-> Default Tokens are explicitly defined in the task to which environment variables are retrieved, and requires updating this task for new tokens. </br>
+  ```
+- **3A.** The Replace Tokens function gets the default tokens from the environment variables.
+  > Default Tokens are explicitly defined in the task to which environment variables are retrieved, and requires updating this task for new tokens.
 
-3B. The Replace Tokens function gets local custom tokens from the [Settings.json](https://github.com/Azure/ResourceModules/blob/main/settings.json).  </br>
-> Local Tokens are easier to scale as you just need to define them in this file without adding new environment variables or modifying workflows or tasks. </br>
+- **3B.** The Replace Tokens function gets local custom tokens from the [Settings.json](https://github.com/Azure/ResourceModules/blob/main/settings.json).
+  > Local Tokens are easier to scale as you just need to define them in this file without adding new environment variables or modifying workflows or tasks.
 
-3C. The Replace Tokens function gets the Module Parameter file (tokenized and not deployable) and then all tokens are processed for replacement. </br>
+- **3C.** The Replace Tokens function gets the Module Parameter file (tokenized and not deployable) and then all tokens are processed for replacement.
 
-3D. The updated Module Parameter file is then saved, replacing the tokenized version. This file is now 'deployable'. </br>
+- **3D.** The updated Module Parameter file is then saved, replacing the tokenized version. This file is now 'deployable'.
 
-4A- The Validate/Deploy function retrieves the latest updated module Parameter file. </br>
+- **4A.** The Validate/Deploy function retrieves the latest updated module Parameter file.
 
-4B- The Validate/Deploy function validates the deployment artifacts for the module before deploying it to the Azure Sandbox Subscription. </br>
+- **4B.** The Validate/Deploy function validates the deployment artifacts for the module before deploying it to the Azure Sandbox Subscription.
