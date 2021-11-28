@@ -34,7 +34,7 @@ The following resources are required to be able to deploy this resource:
 | `roleAssignments` | array | `[]` |  | Optional. Array of role assignment objects that contain the 'roleDefinitionIdOrName' and 'principalId' to define RBAC role assignments on this resource. In the roleDefinitionIdOrName attribute, you can provide either the display name of the role definition, or its fully qualified ID in the following format: '/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11' |
 | `serviceResourceId` | string |  |  | Required. Resource ID of the resource that needs to be connected to the network. |
 | `tags` | object | `{object}` |  | Optional. Tags to be applied on all resources/resource groups in this deployment. |
-| `targetSubnetId` | string |  |  | Required. Resource ID of the subnet where the endpoint needs to be created. |
+| `targetSubnetResourceId` | string |  |  | Required. Resource ID of the subnet where the endpoint needs to be created. |
 
 ### Parameter Usage: `tags`
 

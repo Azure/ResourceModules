@@ -12,7 +12,7 @@ This module deploys a private endpoint private DNS zone group
 
 | Parameter Name | Type | Default Value | Possible Values | Description |
 | :-- | :-- | :-- | :-- | :-- |
-| `privateDNSIds` | array |  |  | Required. List of private DNS IDs |
+| `privateDNSResourceIds` | array |  |  | Required. List of private DNS resource IDs |
 | `privateDnsZoneGroupName` | string | `default` |  | The name of the private DNS Zone Group |
 | `privateEndpointName` | string |  |  | Required. The name of the private endpoint |
 

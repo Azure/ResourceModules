@@ -5,7 +5,7 @@
         "name": {
             "value": "iacs-keyvault-endpoint"
         },
-        "targetSubnetId": {
+        "targetSubnetResourceId": {
             "value": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/virtualNetworks/adp-sxx-az-vnet-x-001/subnets/sxx-az-subnet-x-005-privateEndpoints"
         },
         "serviceResourceId": {
@@ -19,7 +19,7 @@
         "privateDnsZoneGroups": {
             "value": [
                 {
-                    "privateDNSIds": [
+                    "privateDNSResourceIds": [
                         "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/privateDnsZones/privatelink.vaultcore.azure.net"
                     ]
                 }

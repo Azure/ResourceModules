@@ -1,16 +1,16 @@
 @description('Required. The name of the private endpoint')
 param privateEndpointName string
 
-@description('Required. List of private DNS IDs')
-param privateDNSIds array
+@description('Required. List of private DNS resource IDs')
+param privateDNSResourceIds array
 
 @description('The name of the private DNS Zone Group')
 param privateDnsZoneGroupName string = 'default'
 
-var privateDnsZoneConfigs = [for privateDNSId in privateDNSIds: {
+var privateDnsZoneConfigs = [for privateDNSResourceId in privateDNSResourceIds: {
   name: privateEndpointName
   properties: {
-    privateDnsZoneId: privateDNSId
+    privateDnsZoneId: privateDNSResourceId
   }
 }]
 

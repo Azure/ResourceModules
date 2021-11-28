@@ -54,7 +54,7 @@ resource privateEndpoint 'Microsoft.Network/privateEndpoints@2021-03-01' = {
     ]
     manualPrivateLinkServiceConnections: []
     subnet: {
-      id: targetSubnetId
+      id: targetSubnetResourceId
     }
     customDnsConfigs: []
   }
@@ -63,7 +63,7 @@ resource privateEndpoint 'Microsoft.Network/privateEndpoints@2021-03-01' = {
 module privateEndpoint_privateDnsZoneGroups 'privateDnsZoneGroups/deploy.bicep' = [for (privateDnsZoneGroup, index) in privateDnsZoneGroups: {
   name: '${deployment().name}-privateDnsZoneGroup-${index}'
   params: {
-    privateDNSIds: privateDnsZoneGroup.privateDNSIds
+    privateDNSResourceIds: privateDnsZoneGroup.privateDNSResourceIds
     privateEndpointName: privateEndpoint.name
   }
 }]
