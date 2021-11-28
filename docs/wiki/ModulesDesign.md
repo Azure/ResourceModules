@@ -206,7 +206,7 @@ module <mainResource>_rbac '.bicep/nested_rbac.bicep' = [for (roleAssignment, in
 }]
 ```
 
-#### 2nd Element as nested `.bicep/nested_rbac.bicep` file
+##### 2nd Element as nested `.bicep/nested_rbac.bicep` file
 
 Here you specify the platform roles available for the main resource. You can find further information in the [variables](#variables) section.
 
