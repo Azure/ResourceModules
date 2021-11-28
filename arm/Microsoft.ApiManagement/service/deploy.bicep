@@ -100,7 +100,7 @@ param tags object = {}
 ])
 param virtualNetworkType string = 'None'
 
-@description('Optional. Resource identifier of Log Analytics.')
+@description('Optional. Resource identifier of log analytics.')
 param workspaceId string = ''
 
 @description('Optional. A list of availability zones denoting where the resource needs to come from.')

@@ -57,7 +57,7 @@ param diagnosticLogsRetentionInDays int = 365
 @description('Optional. Resource ID of the diagnostic storage account.')
 param diagnosticStorageAccountId string = ''
 
-@description('Optional. Resource identifier of Log Analytics.')
+@description('Optional. Resource identifier of log analytics.')
 param workspaceId string = ''
 
 @allowed([

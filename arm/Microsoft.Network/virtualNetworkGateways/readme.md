@@ -43,7 +43,7 @@ This module deploys a Virtual Network Gateway.
 | `vNetResourceId` | string |  |  | Required. Virtual Network resource ID |
 | `vpnClientAddressPoolPrefix` | string |  |  | Optional. The IP address range from which VPN clients will receive an IP address when connected. Range specified must not overlap with on-premise network. |
 | `vpnType` | string | `RouteBased` | `[PolicyBased, RouteBased]` | Required. Specifies the VPN type |
-| `workspaceId` | string |  |  | Required. Resource ID of log analytics. |
+| `workspaceId` | string |  |  | Optional. Resource ID of log analytics. |
 
 ### Parameter Usage: `subnets`
 
