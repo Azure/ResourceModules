@@ -49,7 +49,7 @@ param virtualNetworkGatewaySku string
 param vpnType string = 'RouteBased'
 
 @description('Required. Virtual Network resource ID')
-param vNetId string
+param vNetResourceId string
 
 @description('Optional. Value to specify if the Gateway should be deployed in active-active or active-passive configuration')
 param activeActive bool = true
