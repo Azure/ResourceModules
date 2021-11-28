@@ -38,16 +38,21 @@ module pid_cuaId '.bicep/nested_cuaId.bicep' = if (!empty(cuaId)) {
   params: {}
 }
 
+resource server 'Microsoft.Sql/servers@2021-05-01-preview' existing = {
+  name: serverName
+}
+
 resource securityAlertPolicy 'Microsoft.Sql/servers/securityAlertPolicies@2021-05-01-preview' = {
-  name: '${serverName}/${name}'
+  name: name
+  parent: server
   properties: {
     disabledAlerts: disabledAlerts
     emailAccountAdmins: emailAccountAdmins
     emailAddresses: emailAddresses
     retentionDays: retentionDays
     state: state
-    storageAccountAccessKey: (empty(storageAccountAccessKey) ? null : storageAccountAccessKey)
-    storageEndpoint: (empty(storageEndpoint) ? null : storageEndpoint)
+    storageAccountAccessKey: empty(storageAccountAccessKey) ? null : storageAccountAccessKey
+    storageEndpoint: empty(storageEndpoint) ? null : storageEndpoint
   }
 }
 

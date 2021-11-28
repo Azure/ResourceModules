@@ -1,6 +1,6 @@
-# Api Management Service Cache   `[Microsoft.ApiManagement/service/caches]`
+# API Management Service Cache   `[Microsoft.ApiManagement/service/caches]`
 
-This module deploys an Api Management Service Cache.
+This module deploys an API Management Service Cache.
 
 ## Resource types
 
@@ -18,7 +18,7 @@ The following resources are required to be able to deploy this resource.
 
 | Parameter Name | Type | Default Value | Possible Values | Description |
 | :-- | :-- | :-- | :-- | :-- |
-| `apiManagementServiceName` | string |  |  | Required. The name of the of the Api Management service. |
+| `apiManagementServiceName` | string |  |  | Required. The name of the of the API Management service. |
 | `cacheDescription` | string |  |  | Optional. Cache description |
 | `connectionString` | string |  |  | Required. Runtime connection string to cache. Can be referenced by a named value like so, {{<named-value>}} |
 | `cuaId` | string |  |  | Optional. Customer Usage Attribution id (GUID). This GUID must be previously registered |
@@ -31,7 +31,7 @@ The following resources are required to be able to deploy this resource.
 | Output Name | Type | Description |
 | :-- | :-- | :-- |
 | `cacheResourceGroup` | string | The resource group the API management service cache was deployed into |
-| `cacheResourceId` | string | The resourceId of the API management service cache |
+| `cacheResourceId` | string | The resource ID of the API management service cache |
 | `cacheResourceName` | string | The name of the API management service cache |
 
 ## Template references

@@ -23,7 +23,10 @@ param schedules array = []
 @description('Optional. List of jobSchedules to be created in the automation account.')
 param jobSchedules array = []
 
-@description('Optional. Id of the log analytics workspace to be linked to the deployed automation account.')
+@description('Optional. List of variables to be created in the automation account.')
+param variables array = []
+
+@description('Optional. ID of the log analytics workspace to be linked to the deployed automation account.')
 param linkedWorkspaceId string = ''
 
 @description('Optional. List of gallerySolutions to be created in the linked log analytics workspace')
@@ -52,6 +55,12 @@ param eventHubAuthorizationRuleId string = ''
 @description('Optional. Name of the event hub within the namespace to which logs are streamed. Without this, an event hub is created for each log category.')
 param eventHubName string = ''
 
+@description('Optional. Enables system assigned managed identity on the resource.')
+param systemAssignedIdentity bool = false
+
+@description('Optional. The ID(s) to assign to the resource.')
+param userAssignedIdentities object = {}
+
 @allowed([
   'CanNotDelete'
   'NotSpecified'
@@ -66,7 +75,7 @@ param roleAssignments array = []
 @description('Optional. Tags of the Automation Account resource.')
 param tags object = {}
 
-@description('Optional. Customer Usage Attribution id (GUID). This GUID must be previously registered.')
+@description('Optional. Customer Usage Attribution ID (GUID). This GUID must be previously registered.')
 param cuaId string = ''
 
 @description('Optional. The name of logs that will be streamed.')
@@ -108,6 +117,13 @@ var diagnosticsMetrics = [for metric in metricsToEnable: {
   }
 }]
 
+var identityType = systemAssignedIdentity ? (!empty(userAssignedIdentities) ? 'SystemAssigned,UserAssigned' : 'SystemAssigned') : (!empty(userAssignedIdentities) ? 'UserAssigned' : 'None')
+
+var identity = identityType != 'None' ? {
+  type: identityType
+  userAssignedIdentities: !empty(userAssignedIdentities) ? userAssignedIdentities : null
+} : null
+
 module pid_cuaId '.bicep/nested_cuaId.bicep' = if (!empty(cuaId)) {
   name: 'pid-${cuaId}'
   params: {}
@@ -122,6 +138,7 @@ resource automationAccount 'Microsoft.Automation/automationAccounts@2020-01-13-p
       name: skuName
     }
   }
+  identity: identity
 }
 
 module automationAccount_modules 'modules/deploy.bicep' = [for (module, index) in modules: {
@@ -178,6 +195,17 @@ module automationAccount_jobSchedules 'jobSchedules/deploy.bicep' = [for (jobSch
     automationAccount_schedules
     automationAccount_runbooks
   ]
+}]
+
+module automationAccount_variables 'variables/deploy.bicep' = [for (variable, index) in variables: {
+  name: '${uniqueString(deployment().name, location)}-AutoAccount-variable-${index}'
+  params: {
+    automationAccountName: automationAccount.name
+    name: variable.name
+    description: contains(variable, 'description') ? variable.description : ''
+    value: variable.value
+    isEncrypted: contains(variable, 'isEncrypted') ? variable.isEncrypted : false
+  }
 }]
 
 module automationAccount_linkedService '.bicep/nested_linkedService.bicep' = if (!empty(linkedWorkspaceId)) {
@@ -306,8 +334,11 @@ module automationAccount_rbac '.bicep/nested_rbac.bicep' = [for (roleAssignment,
 @description('The name of the deployed automation account')
 output automationAccountName string = automationAccount.name
 
-@description('The id of the deployed automation account')
+@description('The resource ID of the deployed automation account')
 output automationAccountResourceId string = automationAccount.id
 
 @description('The resource group of the deployed automation account')
 output automationAccountResourceGroup string = resourceGroup().name
+
+@description('The principal ID of the system assigned identity.')
+output principalID string = systemAssignedIdentity ? automationAccount.identity.principalId : ''

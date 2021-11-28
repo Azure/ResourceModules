@@ -106,7 +106,12 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        parameterFilePaths: ['parameters.json']
+        parameterFilePaths:
+          [
+            'min.parameters.json',
+            'nfs3.parameters.json',
+            'nfs41.parameters.json',
+          ]
     steps:
       - name: 'Checkout'
         uses: actions/checkout@v2
@@ -141,7 +146,12 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        parameterFilePaths: ['parameters.json']
+        parameterFilePaths:
+          [
+            'min.parameters.json',
+            'nfs3.parameters.json',
+            'nfs41.parameters.json',
+          ]
     steps:
       - name: 'Checkout'
         uses: actions/checkout@v2

@@ -1,6 +1,9 @@
 @description('Required. Name of the Log Analytics workspace.')
 param logAnalyticsWorkspaceName string
 
+@description('The name of the storage insights config')
+param name string = last(split(storageAccountId, '/'))
+
 @description('Required. The Azure Resource Manager ID of the storage account resource.')
 param storageAccountId string
 
@@ -21,14 +24,17 @@ module pid_cuaId '.bicep/nested_cuaId.bicep' = if (!empty(cuaId)) {
   params: {}
 }
 
-var storageAccountName = last(split(storageAccountId, '/'))
-
 resource storageAccount 'Microsoft.Storage/storageAccounts@2021-06-01' existing = {
-  name: storageAccountName
+  name: last(split(storageAccountId, '/'))
+}
+
+resource workspace 'Microsoft.OperationalInsights/workspaces@2021-06-01' existing = {
+  name: logAnalyticsWorkspaceName
 }
 
 resource storageinsightconfig 'Microsoft.OperationalInsights/workspaces/storageInsightConfigs@2020-08-01' = {
-  name: '${logAnalyticsWorkspaceName}/${storageAccountName}'
+  name: name
+  parent: workspace
   tags: tags
   properties: {
     containers: containers
@@ -40,9 +46,11 @@ resource storageinsightconfig 'Microsoft.OperationalInsights/workspaces/storageI
   }
 }
 
-@description('The resource Id of the deployed storage insights configuration')
+@description('The resource ID of the deployed storage insights configuration')
 output storageinsightconfigResourceId string = storageinsightconfig.id
+
 @description('The resource group where the storage insight configuration is deployed')
 output storageinsightconfigResourceGroup string = resourceGroup().name
+
 @description('The name of the storage insights configuration')
 output storageinsightconfigName string = storageinsightconfig.name

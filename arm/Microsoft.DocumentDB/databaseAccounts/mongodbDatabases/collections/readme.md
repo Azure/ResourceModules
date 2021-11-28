@@ -1,4 +1,4 @@
-# DocumentDB Database Account MongoDB databases Collections `[Microsoft.DocumentDB/databaseAccount/mongodbDatabases/collections]`
+# DocumentDB Database Account MongoDB databases Collections  `[Microsoft.DocumentDB/databaseAccounts/mongodbDatabases/collections]`
 
 This module deploys a collection within a MongoDB.
 
@@ -83,8 +83,8 @@ The shard key and partition kind pair, only support "Hash" partition kind.
 | Output Name | Type | Description |
 | :-- | :-- | :-- |
 | `collectionName` | string | The name of the mongodb database. |
-| `collectionResourceGroup` | string | The name of the Resource Group the mongodb database was created in. |
-| `collectionResourceId` | string | The Resource Id of the mongodb database. |
+| `collectionResourceGroup` | string | The name of the resource group the mongodb database was created in. |
+| `collectionResourceId` | string | The resource ID of the mongodb database. |
 
 ## Template references
 
