@@ -32,7 +32,7 @@ param policyRule object
 @description('Optional. The group ID of the Management Group (Scope). Cannot be used with subscriptionId and does not support tenant level deployment (i.e. \'/\')')
 param managementGroupId string = ''
 
-@description('Optional. The resource ID of the Azure Subscription (Scope). Cannot be used with managementGroupId')
+@description('Optional. The subscription ID of the subscription (Scope). Cannot be used with managementGroupId')
 param subscriptionId string = ''
 
 @description('Optional. Location for all resources.')
