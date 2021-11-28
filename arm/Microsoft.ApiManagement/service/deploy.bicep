@@ -430,11 +430,11 @@ module apiManagementService_rbac '.bicep/nested_rbac.bicep' = [for (roleAssignme
 @description('The name of the api management service')
 output serviceName string = apiManagementService.name
 
-@description('The resourceId of the api management service')
+@description('The resource ID of the api management service')
 output serviceResourceId string = apiManagementService.id
 
 @description('The resource group the api management service was deployed into')
 output serviceResourceGroup string = resourceGroup().name
 
-@description('The resource ID of the assigned identity.')
-output assignedIdentityID string = systemAssignedIdentity ? apiManagementService.identity.principalId : ''
+@description('The principal ID of the system assigned identity.')
+output principalID string = systemAssignedIdentity ? apiManagementService.identity.principalId : ''

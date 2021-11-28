@@ -134,10 +134,10 @@ Tag names and tag values can be provided as needed. A tag can be left without a 
 
 | Output Name | Type | Description |
 | :-- | :-- | :-- |
-| `assignedIdentityID` | string | The resource ID of the assigned identity. |
+| `principalID` | string | The principal ID of the system assigned identity. |
 | `serviceName` | string | The name of the api management service |
 | `serviceResourceGroup` | string | The resource group the api management service was deployed into |
-| `serviceResourceId` | string | The resourceId of the api management service |
+| `serviceResourceId` | string | The Resource ID of the api management service |
 
 ## Considerations
 
