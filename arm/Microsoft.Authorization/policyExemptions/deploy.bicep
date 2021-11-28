@@ -32,7 +32,7 @@ param expiresOn string = ''
 @description('Optional. The group ID of the management group to be exempted from the policy assignment. Cannot use with subscription ID parameter.')
 param managementGroupId string = ''
 
-@description('Optional. The resource ID of the azure subscription to be exempted from the policy assignment. Cannot use with management group ID parameter.')
+@description('Optional. The subscription ID of the subscription to be exempted from the policy assignment. Cannot use with management group ID parameter.')
 param subscriptionId string = ''
 
 @description('Optional. The name of the resource group to be exempted from the policy assignment. Must also use the subscription ID parameter.')
