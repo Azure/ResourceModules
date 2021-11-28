@@ -48,11 +48,15 @@ function Remove-vWan {
         # Identify resources
         # ------------------
         $searchRetryCount = 1
-        while (-not ($deployments = Get-AzResourceGroupDeploymentOperation -DeploymentName $deploymentName -ResourceGroupName $resourceGroupName -ErrorAction 'SilentlyContinue') -and $searchRetryCount -le $searchRetryLimit) {
+        do {
+            $deployments = Get-AzResourceGroupDeploymentOperation -DeploymentName $deploymentName -ResourceGroupName $resourceGroupName -ErrorAction 'SilentlyContinue'
+            if ($deployments) {
+                break
+            }
             Write-Verbose ('Did not to find vWAN deployment resources by name [{0}] in scope [{1}]. Retrying in [{2}] seconds [{3}/{4}]' -f $deploymentName, $deploymentScope, $searchRetryInterval, $searchRetryCount, $searchRetryLimit) -Verbose
             Start-Sleep $searchRetryInterval
             $searchRetryCount++
-        }
+        } while ($searchRetryCount -le $searchRetryLimit)
 
         if (-not $deployments) {
             throw "No deployment found for [$deploymentName]"

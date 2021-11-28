@@ -75,21 +75,26 @@ function Remove-Resource {
         [int] $removalRetryInterval = 15
     )
 
-    $currentRetry = 1
+    $removalRetryCount = 1
     $resourcesToRetry = $resourceToRemove
-    if ($PSCmdlet.ShouldProcess(("[{0}] Resource(s) with a maximum of [$removalRetryLimit] attempts." -f $resourcesToRetry.Count), 'Remove')) {
 
-        while (($resourcesToRetry = Remove-ResourceInner -resourceToRemove $resourcesToRetry -Verbose) -and $currentRetry -le $removalRetryLimit) {
-            Write-Verbose ('Re-try removal of remaining [{0}] resources. Waiting [{1}] seconds. Round [{2}|{3}]' -f (($resourcesToRetry -is [array]) ? $resourcesToRetry.Count : 1), $removalRetryInterval, $currentRetry, $removalRetryLimit)
-            $currentRetry++
-            Start-Sleep $removalRetryInterval
+    do {
+        if ($PSCmdlet.ShouldProcess(("[{0}] Resource(s) with a maximum of [$removalRetryLimit] attempts." -f $resourcesToRetry.Count), 'Remove')) {
+            $resourcesToRetry = Remove-ResourceInner -resourceToRemove $resourcesToRetry -Verbose
         }
 
-        if ($resourcesToRetry.Count -gt 0) {
-            throw ('The removal failed for resources [{0}]' -f ($resourcesToRetry.Name -join ', '))
-        } else {
-            Write-Verbose 'The removal completed successfully'
+        if ($resourcesToRetry) {
+            break
         }
+        Write-Verbose ('Re-try removal of remaining [{0}] resources. Waiting [{1}] seconds. Round [{2}|{3}]' -f (($resourcesToRetry -is [array]) ? $resourcesToRetry.Count : 1), $removalRetryInterval, $removalRetryCount, $removalRetryLimit)
+        $removalRetryCount++
+        Start-Sleep $removalRetryInterval
+    } while ($removalRetryCount -le $removalRetryLimit)
+
+    if ($resourcesToRetry.Count -gt 0) {
+        throw ('The removal failed for resources [{0}]' -f ($resourcesToRetry.Name -join ', '))
+    } else {
+        Write-Verbose 'The removal completed successfully'
     } else {
         Remove-ResourceInner -resourceToRemove $resourceToRemove -WhatIf
     }
