@@ -81,9 +81,11 @@ function Remove-Resource {
     do {
         if ($PSCmdlet.ShouldProcess(("[{0}] Resource(s) with a maximum of [$removalRetryLimit] attempts." -f $resourcesToRetry.Count), 'Remove')) {
             $resourcesToRetry = Remove-ResourceInner -resourceToRemove $resourcesToRetry -Verbose
+        } else {
+            Remove-ResourceInner -resourceToRemove $resourceToRemove -WhatIf
         }
 
-        if ($resourcesToRetry) {
+        if (-not $resourcesToRetry) {
             break
         }
         Write-Verbose ('Re-try removal of remaining [{0}] resources. Waiting [{1}] seconds. Round [{2}|{3}]' -f (($resourcesToRetry -is [array]) ? $resourcesToRetry.Count : 1), $removalRetryInterval, $removalRetryCount, $removalRetryLimit)
@@ -95,7 +97,5 @@ function Remove-Resource {
         throw ('The removal failed for resources [{0}]' -f ($resourcesToRetry.Name -join ', '))
     } else {
         Write-Verbose 'The removal completed successfully'
-    } else {
-        Remove-ResourceInner -resourceToRemove $resourceToRemove -WhatIf
     }
 }
