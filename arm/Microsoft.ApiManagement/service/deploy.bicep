@@ -121,7 +121,7 @@ param logsToEnable array = [
 param metricsToEnable array = [
   'AllMetrics'
 ]
-@description('Optional. Necessary to create a new guid.')
+@description('Optional. Necessary to create a new GUID.')
 param newGuidValue string = newGuid()
 
 @description('Optional. APIs.')
