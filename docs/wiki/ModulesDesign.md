@@ -337,7 +337,7 @@ module <mainResource>_privateEndpoints '.bicep/nested_privateEndpoint.bicep' = [
 }]
 ```
 
-#### 2nd Element as nested `.bicep/nested_privateEndpoint.bicep` file
+##### 2nd Element as nested `.bicep/nested_privateEndpoint.bicep` file
 
 ```bicep
 param privateEndpointResourceId string
