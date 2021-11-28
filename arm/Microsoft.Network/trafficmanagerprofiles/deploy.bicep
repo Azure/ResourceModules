@@ -51,7 +51,7 @@ param maxReturn int = 1
 @maxValue(365)
 param diagnosticLogsRetentionInDays int = 365
 
-@description('Optional. Resource identifier of the Diagnostic Storage Account.')
+@description('Optional. Resource ID of the Diagnostic Storage Account.')
 param diagnosticStorageAccountId string = ''
 
 @description('Optional. Resource identifier of Log Analytics.')

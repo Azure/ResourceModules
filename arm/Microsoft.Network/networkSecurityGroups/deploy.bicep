@@ -7,7 +7,7 @@ param location string = resourceGroup().location
 @description('Optional. Array of Security Rules to deploy to the Network Security Group. When not provided, an NSG including only the built-in roles will be deployed.')
 param networkSecurityGroupSecurityRules array = []
 
-@description('Optional. Resource identifier of the Diagnostic Storage Account.')
+@description('Optional. Resource ID of the Diagnostic Storage Account.')
 param diagnosticStorageAccountId string = ''
 
 @description('Optional. Specifies the number of days that logs will be kept for; a value of 0 will retain data indefinitely.')

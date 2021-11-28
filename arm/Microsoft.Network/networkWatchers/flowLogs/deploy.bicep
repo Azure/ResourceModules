@@ -13,7 +13,7 @@ param location string = resourceGroup().location
 @description('Required. Resource ID of the NSG that must be enabled for Flow Logs.')
 param targetResourceId string
 
-@description('Required. Resource identifier of the Diagnostic Storage Account.')
+@description('Required. Resource ID of the Diagnostic Storage Account.')
 param storageId string
 
 @description('Optional. If the flow log should be enabled')

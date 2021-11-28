@@ -38,7 +38,7 @@ The following resources are required to be able to deploy this resource.
 | `customData` | string |  |  | Optional. Custom data associated to the VM, this value will be automatically converted into base64 to account for the expected VM format. |
 | `dataDisks` | array | `[]` |  | Optional. Specifies the data disks. |
 | `diagnosticLogsRetentionInDays` | int | `365` |  | Optional. Specifies the number of days that logs will be kept for; a value of 0 will retain data indefinitely. |
-| `diagnosticStorageAccountId` | string |  |  | Optional. Resource identifier of the Diagnostic Storage Account. |
+| `diagnosticStorageAccountId` | string |  |  | Optional. Resource ID of the Diagnostic Storage Account. |
 | `disableAutomaticRollback` | bool |  |  | Optional. Whether OS image rollback feature should be disabled. |
 | `disablePasswordAuthentication` | bool |  |  | Optional. Specifies whether password authentication should be disabled. |
 | `diskEncryptionVolumeType` | string | `All` | `[OS, Data, All]` | Optional. Type of the volume OS or Data to perform encryption operation |

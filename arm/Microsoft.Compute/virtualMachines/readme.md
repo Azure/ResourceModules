@@ -41,7 +41,7 @@ This module deploys one Virtual Machine with one or multiple nics and optionally
 | `desiredStateConfigurationProtectedSettings` | secureObject | `{object}` |  | Optional. The DSC configuration Protected Settings Object |
 | `desiredStateConfigurationSettings` | object | `{object}` |  | Optional. The DSC configuration Settings Object |
 | `diagnosticLogsRetentionInDays` | int | `365` |  | Optional. Specifies the number of days that logs will be kept for; a value of 0 will retain data indefinitely. |
-| `diagnosticStorageAccountId` | string |  |  | Optional. Resource identifier of the Diagnostic Storage Account. |
+| `diagnosticStorageAccountId` | string |  |  | Optional. Resource ID of the Diagnostic Storage Account. |
 | `diskEncryptionSettings` | object | `{object}` |  | Optional. Settings for Azure Disk Encription extension. |
 | `domainJoinPassword` | secureString |  |  | Optional. Required if domainName is specified. Password of the user specified in domainJoinUser parameter |
 | `domainJoinSettings` | object | `{object}` |  | Optional. The Domain Join configuration object |

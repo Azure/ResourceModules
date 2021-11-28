@@ -148,7 +148,7 @@ param autoScalerProfileUtilizationThreshold string = '0.5'
 @description('Optional. Specifies the max graceful termination time interval in seconds for the auto-scaler of the AKS cluster.')
 param autoScalerProfileMaxGracefulTerminationSec string = '600'
 
-@description('Optional. Resource identifier of the Diagnostic Storage Account.')
+@description('Optional. Resource ID of the Diagnostic Storage Account.')
 param diagnosticStorageAccountId string = ''
 
 @description('Optional. Resource identifier of Log Analytics.')
