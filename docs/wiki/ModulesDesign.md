@@ -330,7 +330,7 @@ module <mainResource>_privateEndpoints '.bicep/nested_privateEndpoint.bicep' = [
   name: '${uniqueString(deployment().name, location)}-PrivateEndpoint-${index}'
   params: {
     privateEndpointResourceId: <mainResource>.id
-    privateEndpointVnetLocation: empty(privateEndpoints) ? 'dummy' : reference(split(privateEndpoint.subnetResourceId, '/subnets/')[0], '2020-06-01', 'Full').location
+    privateEndpointVnetLocation: reference(split(privateEndpoint.subnetResourceId, '/subnets/')[0], '2020-06-01', 'Full').location
     privateEndpointObj: privateEndpoint
     tags: tags
   }
