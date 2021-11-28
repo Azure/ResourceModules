@@ -73,7 +73,7 @@ Mandatory. The name of the module to remove
 .PARAMETER ResourceGroupName
 Mandatory. The resource group of the resource to remove
 
-.PARAMETER searchRetryLimit
+.PARAMETER SearchRetryLimit
 Optional. The maximum times to retry the search for resources via their removal tag
 
 .PARAMETER searchRetryInterval
