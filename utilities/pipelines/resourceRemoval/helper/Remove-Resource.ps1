@@ -83,7 +83,7 @@ function Remove-Resource {
             $resourcesToRetry = Remove-ResourceInner -resourceToRemove $resourcesToRetry -Verbose
         }
 
-        if ($resourcesToRetry) {
+        if (-not $resourcesToRetry) {
             break
         }
         Write-Verbose ('Re-try removal of remaining [{0}] resources. Waiting [{1}] seconds. Round [{2}|{3}]' -f (($resourcesToRetry -is [array]) ? $resourcesToRetry.Count : 1), $removalRetryInterval, $removalRetryCount, $removalRetryLimit)
