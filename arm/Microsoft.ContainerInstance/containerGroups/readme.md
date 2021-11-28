@@ -15,7 +15,6 @@ The top-level resource in Azure Container Instances is the container group. A co
 
 | Parameter Name | Type | Default Value | Possible Values | Description |
 | :-- | :-- | :-- | :-- | :-- |
-| `containergroupname` | string |  |  | Required. Name for the container group. |
 | `containername` | string |  |  | Required. Name for the container. |
 | `cpuCores` | int | `2` |  | Optional. The number of CPU cores to allocate to the container. |
 | `cuaId` | string |  |  | Optional. Customer Usage Attribution id (GUID). This GUID must be previously registered |
@@ -26,6 +25,7 @@ The top-level resource in Azure Container Instances is the container group. A co
 | `location` | string | `[resourceGroup().location]` |  | Optional. Location for all Resources. |
 | `lock` | string | `NotSpecified` | `[CanNotDelete, NotSpecified, ReadOnly]` | Optional. Specify the type of lock. |
 | `memoryInGB` | int | `2` |  | Optional. The amount of memory to allocate to the container in gigabytes. |
+| `name` | string |  |  | Required. Name for the container group. |
 | `osType` | string | `Linux` |  | Optional. The operating system type required by the containers in the container group. - Windows or Linux. |
 | `ports` | array | `[System.Collections.Hashtable]` |  | Optional. Port to open on the container and the public IP address. |
 | `restartPolicy` | string | `Always` |  | Optional. Restart policy for all containers within the container group. - Always: Always restart. OnFailure: Restart on failure. Never: Never restart. - Always, OnFailure, Never |
@@ -65,12 +65,12 @@ Tag names and tag values can be provided as needed. A tag can be left without a 
 
 ## Outputs
 
-| Output Name | Type |
-| :-- | :-- |
-| `containerGroupIPv4Address` | string |
-| `containerGroupName` | string |
-| `containerGroupResourceGroup` | string |
-| `containerGroupResourceId` | string |
+| Output Name | Type | Description |
+| :-- | :-- | :-- |
+| `containerGroupIPv4Address` | string | The IPv4 address of the container group |
+| `containerGroupName` | string | The name of the container group |
+| `containerGroupResourceGroup` | string | The resource group the container group was deployed into |
+| `containerGroupResourceId` | string | The resource ID of the container group |
 
 ## Template references
 
