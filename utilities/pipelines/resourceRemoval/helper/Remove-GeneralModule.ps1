@@ -98,7 +98,7 @@ function Remove-GeneralModule {
         [string] $ResourceGroupName,
 
         [Parameter(Mandatory = $true)]
-        [string] $deploymentName,
+        [string] $DeploymentName,
 
         [Parameter(Mandatory = $true)]
         [string] $TemplateFilePath,
