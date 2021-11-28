@@ -5,7 +5,7 @@
         "administratorLogin": {
             "reference": {
                 "keyVault": {
-                    "id": "/subscriptions/<<subscriptionId>>/resourceGroups/<<resourceGroupName>>/providers/Microsoft.KeyVault/vaults/adp-<<namePrefix>>-az-kv-x-001"
+                    "id": "/subscriptions/<<subscriptionId>>/resourceGroups/<<resourceGroupName>>/providers/Microsoft.KeyVault/vaults/adp-sxx-az-kv-x-001"
                 },
                 "secretName": "administratorLogin"
             }
@@ -13,7 +13,7 @@
         "administratorLoginPassword": {
             "reference": {
                 "keyVault": {
-                    "id": "/subscriptions/<<subscriptionId>>/resourceGroups/<<resourceGroupName>>/providers/Microsoft.KeyVault/vaults/adp-<<namePrefix>>-az-kv-x-001"
+                    "id": "/subscriptions/<<subscriptionId>>/resourceGroups/<<resourceGroupName>>/providers/Microsoft.KeyVault/vaults/adp-sxx-az-kv-x-001"
                 },
                 "secretName": "administratorLoginPassword"
             }
@@ -22,7 +22,7 @@
             "value": "westeurope"
         },
         "name": {
-            "value": "<<namePrefix>>-az-sqlsrv-x-001"
+            "value": "sxx-az-sqlsrv-x-001"
         },
         "roleAssignments": {
             "value": [
@@ -37,7 +37,7 @@
         "databases": {
             "value": [
                 {
-                    "name": "<<namePrefix>>-az-sqldb-x-001",
+                    "name": "sxx-az-sqldb-x-001",
                     "collation": "SQL_Latin1_General_CP1_CI_AS",
                     "tier": "GeneralPurpose",
                     "skuName": "GP_Gen5_2",
