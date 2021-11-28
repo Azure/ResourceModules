@@ -155,7 +155,7 @@ module server_databases 'databases/deploy.bicep' = [for (database, index) in dat
 
 Each module should come with a `.bicep` folder with a least the `nested_cuaId.bicep` file in it
 
-### Patterns
+## Patterns
 
 This sections shows you a few common patterns among resources that are usually very similar (e.g. providers)
 
@@ -164,7 +164,7 @@ This sections shows you a few common patterns among resources that are usually v
 - [Diagnostic Settings](#diagnostic-settings)
 - [Private Endpoints](#private-endpoints)
 
-#### Locks
+### Locks
 
 The locks provider can be added as a `resource` to the resource template directly.
 
@@ -187,11 +187,11 @@ resource <mainResource>_lock 'Microsoft.Authorization/locks@2016-09-01' = if (lo
 }
 ```
 
-#### RBAC
+### RBAC
 
 The RBAC deployment has 2 elements to it. A module that contains the implementation, and a module reference in the parent resource - each with it's own loop to enable you to deploy n-amount of role assignments to n-amount of principals.
 
-##### 1st Element in main resource
+#### 1st Element in main resource
 ```bicep
 @description('Optional. Array of role assignment objects that contain the \'roleDefinitionIdOrName\' and \'principalId\' to define RBAC role assignments on this resource. In the roleDefinitionIdOrName attribute, you can provide either the display name of the role definition, or its fully qualified ID in the following format: \'/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11\'')
 param roleAssignments array = []
@@ -206,7 +206,7 @@ module <mainResource>_rbac '.bicep/nested_rbac.bicep' = [for (roleAssignment, in
 }]
 ```
 
-##### 2nd Element as nested `.bicep/nested_rbac.bicep` file
+#### 2nd Element as nested `.bicep/nested_rbac.bicep` file
 
 Here you specify the platform roles available for the main resource. You can find further information in the [variables](#variables) section.
 
@@ -245,7 +245,7 @@ resource roleAssignment 'Microsoft.Authorization/roleAssignments@2020-04-01-prev
 }]
 ```
 
-#### Diagnostic settings
+### Diagnostic settings
 
 The diagnostic settings may differ slightly depending from resource to resource. Most notably, the `<LogsIfAny>` as well as `<MetricsIfAny>` may be different and have to be added by you. However, it may just as well be the case they no metrics or no logs are existing. You can then remove the parameter and property from the resource itself.
 
@@ -316,11 +316,11 @@ resource <mainResource>_diagnosticSettings 'Microsoft.Insights/diagnosticsetting
 }
 ```
 
-#### Private Endpoints
+### Private Endpoints
 
 The Private Endpoint deployment has 2 elements to it. A module that contains the implementation, and a module reference in the parent resource. The first loops through the endpoints we want to create, the second processes them.
 
-##### 1st element in main resource
+#### 1st element in main resource
 
 ```bicep
 @description('Optional. Configuration Details for private endpoints.')
@@ -337,7 +337,7 @@ module <mainResource>_privateEndpoints '.bicep/nested_privateEndpoint.bicep' = [
 }]
 ```
 
-##### 2nd Element as nested `.bicep/nested_privateEndpoint.bicep` file
+#### 2nd Element as nested `.bicep/nested_privateEndpoint.bicep` file
 
 ```bicep
 param privateEndpointResourceId string
