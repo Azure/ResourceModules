@@ -13,7 +13,7 @@ Mandatory. The deployment name to search for
 .PARAMETER ResourceGroupName
 Optional. The name of the resource group for scope 'resourceGroup'
 
-.PARAMETER scope
+.PARAMETER Scope
 Mandatory. The scope to search in
 
 .EXAMPLE
