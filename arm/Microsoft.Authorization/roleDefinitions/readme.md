@@ -15,7 +15,7 @@ This module deploys custom RBAC Role Definitions.
 | `actions` | array | `[]` |  | Optional. List of allowed actions. |
 | `dataActions` | array | `[]` |  | Optional. List of allowed data actions. |
 | `location` | string | `[deployment().location]` |  | Optional. Location for all resources. |
-| `managementGroupId` | string |  |  | Optional. The ID of the Management Group where the Role Definition and Target Scope will be applied to. Cannot use when Subscription or Resource Groups Parameters are used. |
+| `managementGroupId` | string |  |  | Optional. The group ID of the Management Group where the Role Definition and Target Scope will be applied to. Cannot use when Subscription or Resource Groups Parameters are used. |
 | `notActions` | array | `[]` |  | Optional. List of denied actions. |
 | `notDataActions` | array | `[]` |  | Optional. List of denied data actions. |
 | `resourceGroupName` | string |  |  | Optional. The name of the Resource Group where the Role Definition and Target Scope will be applied to. |
