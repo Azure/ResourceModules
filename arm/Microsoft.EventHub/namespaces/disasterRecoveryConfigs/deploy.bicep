@@ -4,7 +4,7 @@ param namespaceName string
 @description('Required. The name of the disaster recovery config')
 param name string
 
-@description('Optional. ARM ID of the Primary/Secondary eventhub namespace name, which is part of GEO DR pairing')
+@description('Optional. Resource ID of the Primary/Secondary event hub namespace name, which is part of GEO DR pairing')
 param partnerNamespaceId string = ''
 
 @description('Optional. Customer Usage Attribution ID (GUID). This GUID must be previously registered')
