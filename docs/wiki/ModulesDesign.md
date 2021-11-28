@@ -318,7 +318,7 @@ resource <mainResource>_diagnosticSettings 'Microsoft.Insights/diagnosticsetting
 
 The Private Endpoint deployment has 2 elements to it. A module that contains the implementation, and a module reference in the parent resource. The first loops through the endpoints we want to create, the second processes them.
 
-***1st element in main resource***
+#### 1st element in main resource
 
 ```bicep
 @description('Optional. Configuration Details for private endpoints.')
