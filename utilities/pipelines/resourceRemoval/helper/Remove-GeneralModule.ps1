@@ -67,7 +67,7 @@ Invoke the removal of a deployed module
 Invoke the removal of a deployed module.
 Requires the resource in question to be tagged with 'removeModule = <moduleName>'
 
-.PARAMETER moduleName
+.PARAMETER ModuleName
 Mandatory. The name of the module to remove
 
 .PARAMETER resourceGroupName
