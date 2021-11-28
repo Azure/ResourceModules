@@ -15,13 +15,13 @@ This module deploys custom RBAC Role Definitions.
 | `actions` | array | `[]` |  | Optional. List of allowed actions. |
 | `dataActions` | array | `[]` |  | Optional. List of allowed data actions. |
 | `location` | string | `[deployment().location]` |  | Optional. Location for all resources. |
-| `managementGroupId` | string |  |  | Optional. The resource ID of the Management Group where the Role Definition and Target Scope will be applied to. Cannot use when Subscription or Resource Groups Parameters are used. |
+| `managementGroupId` | string |  |  | Optional. The ID of the Management Group where the Role Definition and Target Scope will be applied to. Cannot use when Subscription or Resource Groups Parameters are used. |
 | `notActions` | array | `[]` |  | Optional. List of denied actions. |
 | `notDataActions` | array | `[]` |  | Optional. List of denied data actions. |
 | `resourceGroupName` | string |  |  | Optional. The name of the Resource Group where the Role Definition and Target Scope will be applied to. |
 | `roleDescription` | string |  |  | Optional. Description of the custom RBAC role to be created. |
 | `roleName` | string |  |  | Required. Name of the custom RBAC role to be created. |
-| `subscriptionId` | string |  |  | Optional. The Subscription ID where the Role Definition and Target Scope will be applied to. Use for both Subscription level and Resource Group Level. |
+| `subscriptionId` | string |  |  | Optional. The subscription ID where the Role Definition and Target Scope will be applied to. Use for both Subscription level and Resource Group Level. |
 
 ### Parameter Usage: `managementGroupId`
 
