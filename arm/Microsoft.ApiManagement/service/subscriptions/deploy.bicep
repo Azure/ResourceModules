@@ -1,7 +1,7 @@
 @description('Optional. Determines whether tracing can be enabled.')
 param allowTracing bool = true
 
-@description('Required. The name of the of the Api Management service.')
+@description('Required. The name of the of the API Management service.')
 param apiManagementServiceName string
 
 @description('Optional. Customer Usage Attribution id (GUID). This GUID must be previously registered')
@@ -30,8 +30,13 @@ module pid_cuaId '.bicep/nested_cuaId.bicep' = if (!empty(cuaId)) {
   params: {}
 }
 
+resource service 'Microsoft.ApiManagement/service@2021-04-01-preview' existing = {
+  name: apiManagementServiceName
+}
+
 resource subscription 'Microsoft.ApiManagement/service/subscriptions@2020-06-01-preview' = {
-  name: '${apiManagementServiceName}/${name}'
+  name: name
+  parent: service
   properties: {
     scope: scope
     displayName: name
@@ -43,7 +48,7 @@ resource subscription 'Microsoft.ApiManagement/service/subscriptions@2020-06-01-
   }
 }
 
-@description('The resourceId of the API management service subscription')
+@description('The resource ID of the API management service subscription')
 output subscriptionResourceId string = subscription.id
 
 @description('The name of the API management service subscription')
