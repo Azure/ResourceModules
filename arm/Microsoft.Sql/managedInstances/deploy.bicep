@@ -64,7 +64,7 @@ param publicDataEndpointEnabled bool = false
 param timezoneId string = 'UTC'
 
 @description('Optional. The resource ID of the instance pool this managed server belongs to.')
-param instancePoolId string = ''
+param instancePoolResourceId string = ''
 
 @description('Optional. Specifies the point in time (ISO8601 format) of the source database that will be restored to create the new database.')
 param restorePointInTime string = ''
