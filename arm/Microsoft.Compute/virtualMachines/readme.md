@@ -90,7 +90,7 @@ This module deploys one Virtual Machine with one or multiple nics and optionally
 | `windowsConfiguration` | object | `{object}` |  | Optional. Specifies Windows operating system settings on the virtual machine. |
 | `windowsScriptExtensionCommandToExecute` | secureString |  |  | Optional. Specifies the command that should be run on a Windows VM. |
 | `windowsScriptExtensionFileData` | array | `[]` |  | Optional. Array of objects that specifies URIs and the storageAccountId of the scripts that need to be downloaded and run by the Custom Script Extension on a Windows VM. |
-| `workspaceId` | string |  |  | Optional. Resource ID of log analytics. |
+| `workspaceId` | string |  |  | Optional. Resource identifier of log analytics. |
 
 ### Parameter Usage: `imageReference`
 

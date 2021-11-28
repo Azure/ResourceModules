@@ -85,6 +85,7 @@ The following resources are required to be able to deploy this resource.
 | `maxUnhealthyUpgradedInstancePercent` | int | `20` |  | Optional. The maximum percentage of the total virtual machine instances in the scale set that can be simultaneously unhealthy, either as a result of being upgraded, or by being found in an unhealthy state by the virtual machine health checks before the rolling upgrade aborts. This constraint will be checked prior to starting any batch. |
 | `metricsToEnable` | array | `[AllMetrics]` | `[AllMetrics]` | Optional. The name of metrics that will be streamed. |
 | `microsoftAntiMalwareSettings` | object | `{object}` |  | Optional. Settings for Microsoft Windows Defender AV extension. |
+| `name` | string |  |  | Optional. Name of the VMSS. |
 | `nicConfigurations` | array | `[]` |  | Required. Configures NICs and PIPs. |
 | `osDisk` | object |  |  | Required. Specifies the OS disk. |
 | `osType` | string |  | `[Windows, Linux]` | Optional. The chosen OS type |
@@ -104,16 +105,15 @@ The following resources are required to be able to deploy this resource.
 | `secrets` | array | `[]` |  | Optional. Specifies set of certificates that should be installed onto the virtual machines in the scale set. |
 | `singlePlacementGroup` | bool | `True` |  | Optional. When true this limits the scale set to a single placement group, of max size 100 virtual machines. NOTE: If singlePlacementGroup is true, it may be modified to false. However, if singlePlacementGroup is false, it may not be modified to true. |
 | `tags` | object | `{object}` |  | Optional. Tags of the resource. |
-| `timeZone` | string |  |  | Optional. Specifies the time zone of the virtual machine. e.g. 'Pacific Standard Time'. Possible values can be TimeZoneInfo.ID value from time zones returned by TimeZoneInfo.GetSystemTimeZones. |
+| `timeZone` | string |  |  | Optional. Specifies the time zone of the virtual machine. e.g. 'Pacific Standard Time'. Possible values can be TimeZoneInfo.id value from time zones returned by TimeZoneInfo.GetSystemTimeZones. |
 | `ultraSSDEnabled` | bool |  |  | Optional. The flag that enables or disables a capability to have one or more managed data disks with UltraSSD_LRS storage account type on the VM or VMSS. Managed disks with storage account type UltraSSD_LRS can be added to a virtual machine or virtual machine scale set only if this property is enabled. |
 | `upgradePolicyMode` | string | `Manual` | `[Manual, Automatic, Rolling]` | Optional. Specifies the mode of an upgrade to virtual machines in the scale set.' Manual - You control the application of updates to virtual machines in the scale set. You do this by using the manualUpgrade action. ; Automatic - All virtual machines in the scale set are automatically updated at the same time. - Automatic, Manual, Rolling |
 | `vmNamePrefix` | string | `vmssvm` |  | Optional. Specifies the computer name prefix for all of the virtual machines in the scale set. |
 | `vmPriority` | string | `Regular` | `[Regular, Low, Spot]` | Optional. Specifies the priority for the virtual machine. |
-| `vmssName` | string |  |  | Optional. Name of the VMSS. |
 | `windowsScriptExtensionCommandToExecute` | secureString |  |  | Optional. Specifies the command that should be run on a Windows VM. |
 | `windowsScriptExtensionFileData` | array | `[]` |  | Optional. Array of objects that specifies URIs and the storageAccountId of the scripts that need to be downloaded and run by the Custom Script Extension on a Windows VM. |
 | `winRMListeners` | object | `{object}` |  | Optional. Specifies the Windows Remote Management listeners. This enables remote Windows PowerShell. - WinRMConfiguration object. |
-| `workspaceId` | string |  |  | Optional. Resource ID of log analytics. |
+| `workspaceId` | string |  |  | Optional. Resource identifier of log analytics. |
 | `zoneBalance` | bool |  |  | Optional. Whether to force strictly even Virtual Machine distribution cross x-zones in case there is zone outage. |
 
 #### Marketplace images
