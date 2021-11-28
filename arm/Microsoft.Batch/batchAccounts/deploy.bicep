@@ -1,5 +1,5 @@
 @description('Required. Name of the Azure Batch')
-param batchAccountName string
+param name string
 
 @description('Optional. Location for all Resources.')
 param location string = resourceGroup().location
@@ -76,7 +76,7 @@ module pid_cuaId '.bicep/nested_cuaId.bicep' = if (!empty(cuaId)) {
 }
 
 resource batchAccount 'Microsoft.Batch/batchAccounts@2020-09-01' = {
-  name: batchAccountName
+  name: name
   location: location
   tags: tags
   properties: {}
@@ -104,7 +104,11 @@ resource batchAccount_diagnosticSettings 'Microsoft.Insights/diagnosticsettings@
   scope: batchAccount
 }
 
+@description('The name of the batch account')
 output batchAccountName string = batchAccount.name
+
+@description('The resource ID of the batch account')
 output batchAccountResourceId string = batchAccount.id
+
+@description('The resource group the batch account was deployed into')
 output batchAccountResourceGroup string = resourceGroup().name
-output batchAccountPrimaryKey string = 'listkeys(variables(\'resourceId\'), variables(\'apiVersion\')).primaryKey]'
