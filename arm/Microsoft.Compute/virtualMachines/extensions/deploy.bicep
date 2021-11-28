@@ -63,7 +63,7 @@ resource extension 'Microsoft.Compute/virtualMachines/extensions@2021-07-01' = {
 output extensionName string = extension.name
 
 @description('The resource ID of the extension')
-output extensionId string = extension.id
+output extensionResourceId string = extension.id
 
 @description('The name of the Resource Group the extension was created in.')
 output extensionResourceGroup string = resourceGroup().name
