@@ -107,7 +107,7 @@ function Remove-GeneralModule {
         [string] $TemplateFilePath,
 
         [Parameter(Mandatory = $false)]
-        [int] $searchRetryLimit = 40,
+        [int] $SearchRetryLimit = 40,
 
         [Parameter(Mandatory = $false)]
         [int] $searchRetryInterval = 60
