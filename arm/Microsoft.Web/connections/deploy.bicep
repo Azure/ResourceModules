@@ -8,9 +8,9 @@ param connectionApi object = {}
 param connectionKind string
 
 @description('Required. Connection name for connection. Example: \'azureblob\' when using blobs.  It can change depending on the resource.')
-param connectionName string
+param name string
 
-@description('Optional. Customer Usage Attribution id (GUID). This GUID must be previously registered.')
+@description('Optional. Customer Usage Attribution ID (GUID). This GUID must be previously registered.')
 param cuaId string = ''
 
 @description('Optional. Customized parameter values for specific connections.')
@@ -58,7 +58,7 @@ module pid_cuaId '.bicep/nested_cuaId.bicep' = if (!empty(cuaId)) {
 }
 
 resource connection 'Microsoft.Web/connections@2016-06-01' = {
-  name: connectionName
+  name: name
   location: location
   kind: connectionKind
   tags: tags
@@ -93,7 +93,7 @@ module connection_rbac '.bicep/nested_rbac.bicep' = [for (roleAssignment, index)
   }
 }]
 
-@description('The resourceId of the connection')
+@description('The resource ID of the connection')
 output connectionResourceId string = connection.id
 
 @description('The resource group the connection was deployed into')

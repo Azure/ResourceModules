@@ -1,5 +1,5 @@
 @description('Required. The name of the key vault')
-param vaultName string
+param keyVaultName string
 
 @description('Required. The name of the key')
 param name string
@@ -49,7 +49,7 @@ param keySize int = -1
 ])
 param kty string = 'EC'
 
-@description('Optional. Customer Usage Attribution id (GUID). This GUID must be previously registered')
+@description('Optional. Customer Usage Attribution ID (GUID). This GUID must be previously registered')
 param cuaId string = ''
 
 module pid_cuaId './.bicep/nested_cuaId.bicep' = if (!empty(cuaId)) {
@@ -57,8 +57,13 @@ module pid_cuaId './.bicep/nested_cuaId.bicep' = if (!empty(cuaId)) {
   params: {}
 }
 
+resource keyVault 'Microsoft.KeyVault/vaults@2021-06-01-preview' existing = {
+  name: keyVaultName
+}
+
 resource key 'Microsoft.KeyVault/vaults/keys@2019-09-01' = {
-  name: '${vaultName}/${name}'
+  name: name
+  parent: keyVault
   tags: tags
   properties: {
     attributes: {
@@ -73,10 +78,10 @@ resource key 'Microsoft.KeyVault/vaults/keys@2019-09-01' = {
   }
 }
 
-@description('The Name of the key.')
+@description('The name of the key.')
 output keyName string = key.name
 
-@description('The Resource Id of the key.')
+@description('The Resource ID of the key.')
 output keyResourceId string = key.id
 
 @description('The name of the Resource Group the key was created in.')

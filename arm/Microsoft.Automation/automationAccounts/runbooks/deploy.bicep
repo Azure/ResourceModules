@@ -23,7 +23,7 @@ param uri string = ''
 @description('Optional. The version of the runbook content.')
 param version string = ''
 
-@description('Optional. Id of the runbook storage account.')
+@description('Optional. ID of the runbook storage account.')
 param scriptStorageAccountId string = ''
 
 @description('Optional. Time used as a basis for e.g. the schedule start date.')
@@ -38,7 +38,7 @@ param location string = resourceGroup().location
 @description('Optional. Tags of the Automation Account resource.')
 param tags object = {}
 
-@description('Optional. Customer Usage Attribution id (GUID). This GUID must be previously registered.')
+@description('Optional. Customer Usage Attribution ID (GUID). This GUID must be previously registered.')
 param cuaId string = ''
 
 var accountSasProperties = {
@@ -58,14 +58,14 @@ resource automationAccount 'Microsoft.Automation/automationAccounts@2020-01-13-p
   name: automationAccountName
 }
 
-resource storageAccount 'Microsoft.Storage/storageAccounts@2021-06-01' existing = if (!empty(scriptStorageAccountId)){
+resource storageAccount 'Microsoft.Storage/storageAccounts@2021-06-01' existing = if (!empty(scriptStorageAccountId)) {
   name: last(split(scriptStorageAccountId, '/'))
   scope: resourceGroup(split(scriptStorageAccountId, '/')[2], split(scriptStorageAccountId, '/')[4])
 }
 
 var publishContentLink = empty(uri) ? null : {
-  uri: (empty(uri) ? null : (empty(scriptStorageAccountId) ? '${uri}' : '${uri}${storageAccount.listAccountSas('2021-04-01', accountSasProperties).accountSasToken}'))
-  version: (empty(version) ? null : version)
+  uri: !empty(uri) ? (empty(scriptStorageAccountId) ? uri : '${uri}${storageAccount.listAccountSas('2021-04-01', accountSasProperties).accountSasToken}') : null
+  version: !empty(version) ? version : null
 }
 
 resource runbook 'Microsoft.Automation/automationAccounts/runbooks@2019-06-01' = {
@@ -76,14 +76,14 @@ resource runbook 'Microsoft.Automation/automationAccounts/runbooks@2019-06-01' =
   properties: {
     runbookType: runbookType
     description: runbookDescription
-    publishContentLink: empty(uri) ? null : publishContentLink
+    publishContentLink: !empty(uri) ? publishContentLink : null
   }
 }
 
 @description('The name of the deployed runbook')
 output runbookName string = runbook.name
 
-@description('The id of the deployed runbook')
+@description('The resource ID of the deployed runbook')
 output runbookResourceId string = runbook.id
 
 @description('The resource group of the deployed runbook')

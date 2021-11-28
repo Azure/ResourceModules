@@ -10,7 +10,7 @@ param startIpAddress string = '0.0.0.0'
 @description('Required. The Name of SQL Server')
 param serverName string
 
-@description('Optional. Customer Usage Attribution id (GUID). This GUID must be previously registered')
+@description('Optional. Customer Usage Attribution ID (GUID). This GUID must be previously registered')
 param cuaId string = ''
 
 module pid_cuaId '.bicep/nested_cuaId.bicep' = if (!empty(cuaId)) {
@@ -18,8 +18,13 @@ module pid_cuaId '.bicep/nested_cuaId.bicep' = if (!empty(cuaId)) {
   params: {}
 }
 
+resource server 'Microsoft.Sql/servers@2021-05-01-preview' existing = {
+  name: serverName
+}
+
 resource firewallRule 'Microsoft.Sql/servers/firewallRules@2021-05-01-preview' = {
-  name: '${serverName}/${name}'
+  name: name
+  parent: server
   properties: {
     endIpAddress: endIpAddress
     startIpAddress: startIpAddress

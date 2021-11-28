@@ -1,10 +1,10 @@
-@description('Required. The name of the EventHub namespace')
+@description('Required. The name of the event hub namespace')
 param namespaceName string
 
-@description('Required. The name of the EventHub')
+@description('Required. The name of the event hub')
 param name string
 
-@description('Optional. Authorization Rules for the Event Hub')
+@description('Optional. Authorization Rules for the event hub')
 param authorizationRules array = [
   {
     name: 'RootManageSharedAccessKey'
@@ -67,7 +67,7 @@ param captureDescriptionDestinationArchiveNameFormat string = '{Namespace}/{Even
 @description('Optional. Blob container Name')
 param captureDescriptionDestinationBlobContainer string = ''
 
-@description('Optional. Resource id of the storage account to be used to create the blobs')
+@description('Optional. Resource ID of the storage account to be used to create the blobs')
 param captureDescriptionDestinationStorageAccountResourceId string = ''
 
 @description('Optional. A value that indicates whether capture description is enabled.')
@@ -93,7 +93,7 @@ param captureDescriptionSizeLimitInBytes int = 314572800
 @description('Optional. A value that indicates whether to Skip Empty Archives')
 param captureDescriptionSkipEmptyArchives bool = false
 
-@description('Optional. Customer Usage Attribution id (GUID). This GUID must be previously registered')
+@description('Optional. Customer Usage Attribution ID (GUID). This GUID must be previously registered')
 param cuaId string = ''
 
 var eventHubPropertiesSimple = {
@@ -127,13 +127,18 @@ module pid_cuaId '.bicep/nested_cuaId.bicep' = if (!empty(cuaId)) {
   params: {}
 }
 
+resource namespace 'Microsoft.EventHub/namespaces@2021-06-01-preview' existing = {
+  name: namespaceName
+}
+
 resource eventHub 'Microsoft.EventHub/namespaces/eventhubs@2021-06-01-preview' = {
-  name: '${namespaceName}/${name}'
+  name: name
+  parent: namespace
   properties: captureDescriptionEnabled ? eventHubPropertiesWithCapture : eventHubPropertiesSimple
 }
 
 resource eventHub_lock 'Microsoft.Authorization/locks@2016-09-01' = if (lock != 'NotSpecified') {
-  name: '${last(split(eventHub.name, '/'))}-${lock}-lock'
+  name: '${eventHub.name}-${lock}-lock'
   properties: {
     level: lock
     notes: lock == 'CanNotDelete' ? 'Cannot delete resource or child resources.' : 'Cannot modify the resource or child resources.'
@@ -145,7 +150,7 @@ module eventHub_consumergroups 'consumergroups/deploy.bicep' = [for (consumerGro
   name: '${deployment().name}-consumergroup-${index}'
   params: {
     namespaceName: namespaceName
-    eventHubName: last(split(eventHub.name, '/'))
+    eventHubName: eventHub.name
     name: consumerGroup.name
     userMetadata: contains(consumerGroup, 'userMetadata') ? consumerGroup.userMetadata : ''
   }
@@ -155,7 +160,7 @@ module eventHub_authorizationRules 'authorizationRules/deploy.bicep' = [for (aut
   name: '${deployment().name}-authorizationRule-${index}'
   params: {
     namespaceName: namespaceName
-    eventHubName: last(split(eventHub.name, '/'))
+    eventHubName: eventHub.name
     name: authorizationRule.name
     rights: contains(authorizationRule, 'rights') ? authorizationRule.rights : []
   }
@@ -170,14 +175,14 @@ module eventHub_rbac '.bicep/nested_rbac.bicep' = [for (roleAssignment, index) i
   }
 }]
 
-@description('The Name of the Event Hub.')
+@description('The name of the event hub.')
 output eventhubName string = eventHub.name
 
-@description('The Resource ID of the Event Hub.')
+@description('The resource ID of the event hub.')
 output eventHubId string = eventHub.id
 
-@description('The Resource Group Name of the Event Hub.')
+@description('The resource group the event hub was deployed into.')
 output eventHubResourceGroup string = resourceGroup().name
 
-@description('The AuthRuleResourceId of the Event Hub.')
+@description('The authentication rule resource ID of the event hub.')
 output authRuleResourceId string = resourceId('Microsoft.EventHub/namespaces/authorizationRules', namespaceName, 'RootManageSharedAccessKey')

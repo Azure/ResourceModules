@@ -4,7 +4,7 @@ This module deploys an encryption protector for a SQL managed instance.
 
 ## Resource Types
 
-| Resource Type | Api Version |
+| Resource Type | API Version |
 | :-- | :-- |
 | `Microsoft.Sql/managedInstances/encryptionProtector` | 2021-05-01-preview |
 
@@ -13,7 +13,7 @@ This module deploys an encryption protector for a SQL managed instance.
 | Parameter Name | Type | Default Value | Possible Values | Description |
 | :-- | :-- | :-- | :-- | :-- |
 | `autoRotationEnabled` | bool |  |  | Optional. Key auto rotation opt-in flag |
-| `cuaId` | string |  |  | Optional. Customer Usage Attribution id (GUID). This GUID must be previously registered |
+| `cuaId` | string |  |  | Optional. Customer Usage Attribution ID (GUID). This GUID must be previously registered |
 | `managedInstanceName` | string |  |  | Required. Name of the SQL managed instance. |
 | `name` | string | `current` |  | Required. The name of the encryptionProtector |
 | `serverKeyName` | string |  |  | Required. The name of the SQL managed instance key. |
@@ -25,7 +25,7 @@ This module deploys an encryption protector for a SQL managed instance.
 | :-- | :-- | :-- |
 | `encryptionProtectorName` | string | The name of the deployed managed instance |
 | `encryptionProtectorResourceGroup` | string | The resource group of the deployed managed instance |
-| `encryptionProtectorResourceId` | string | The resourceId of the deployed managed instance |
+| `encryptionProtectorResourceId` | string | The resource ID of the deployed managed instance |
 
 ## Template references
 

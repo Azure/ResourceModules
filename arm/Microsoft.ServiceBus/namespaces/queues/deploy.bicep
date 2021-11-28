@@ -80,7 +80,7 @@ param lock string = 'NotSpecified'
 @description('Optional. Array of role assignment objects that contain the \'roleDefinitionIdOrName\' and \'principalId\' to define RBAC role assignments on this resource. In the roleDefinitionIdOrName attribute, you can provide either the display name of the role definition, or its fully qualified ID in the following format: \'/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11\'')
 param roleAssignments array = []
 
-@description('Optional. Customer Usage Attribution id (GUID). This GUID must be previously registered')
+@description('Optional. Customer Usage Attribution ID (GUID). This GUID must be previously registered')
 param cuaId string = ''
 
 module pid_cuaId '.bicep/nested_cuaId.bicep' = if (!empty(cuaId)) {
@@ -88,8 +88,13 @@ module pid_cuaId '.bicep/nested_cuaId.bicep' = if (!empty(cuaId)) {
   params: {}
 }
 
+resource namespace 'Microsoft.ServiceBus/namespaces@2021-06-01-preview' existing = {
+  name: namespaceName
+}
+
 resource queue 'Microsoft.ServiceBus/namespaces/queues@2021-06-01-preview' = {
-  name: '${namespaceName}/${name}'
+  name: name
+  parent: namespace
   properties: {
     lockDuration: lockDuration
     maxSizeInMegabytes: maxSizeInMegabytes
@@ -110,17 +115,14 @@ module queue_authorizationRules 'authorizationRules/deploy.bicep' = [for (author
   name: '${deployment().name}-AuthRule-${index}'
   params: {
     namespaceName: namespaceName
-    queueName: last(split(queue.name, '/'))
+    queueName: queue.name
     name: authorizationRule.name
     rights: contains(authorizationRule, 'rights') ? authorizationRule.rights : []
   }
-  dependsOn: [
-    queue
-  ]
 }]
 
 resource queue_lock 'Microsoft.Authorization/locks@2016-09-01' = if (lock != 'NotSpecified') {
-  name: '${split(queue.name, '/')[1]}-${lock}-lock'
+  name: '${queue.name}-${lock}-lock'
   properties: {
     level: lock
     notes: lock == 'CanNotDelete' ? 'Cannot delete resource or child resources.' : 'Cannot modify the resource or child resources.'
@@ -140,7 +142,7 @@ module queue_rbac '.bicep/nested_rbac.bicep' = [for (roleAssignment, index) in r
 @description('The name of the deployed queue')
 output queueName string = queue.name
 
-@description('The resourceId of the deployed queue')
+@description('The resource ID of the deployed queue')
 output queueResourceId string = queue.id
 
 @description('The resource group of the deployed queue')

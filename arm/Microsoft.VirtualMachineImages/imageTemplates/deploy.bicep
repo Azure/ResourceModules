@@ -1,5 +1,5 @@
 @description('Required. Name of the Image Template to be built by the Azure Image Builder service.')
-param imageTemplateName string
+param name string
 
 @description('Required. Name of the User Assigned Identity to be used to deploy Image Templates in Azure Image Builder.')
 param userMsiName string
@@ -21,7 +21,7 @@ param vmSize string = 'Standard_D2s_v3'
 @description('Optional. Specifies the size of OS disk.')
 param osDiskSizeGB int = 128
 
-@description('Optional. Resource Id of an already existing subnet, e.g. \'/subscriptions/<subscriptionId>/resourceGroups/<resourceGroupName>/providers/Microsoft.Network/virtualNetworks/<vnetName>/subnets/<subnetName>\'. If no value is provided, a new VNET will be created in the target Resource Group.')
+@description('Optional. Resource ID of an already existing subnet, e.g. \'/subscriptions/<subscriptionId>/resourceGroups/<resourceGroupName>/providers/Microsoft.Network/virtualNetworks/<vnetName>/subnets/<subnetName>\'. If no value is provided, a new VNET will be created in the target Resource Group.')
 param subnetId string = ''
 
 @description('Required. Image source definition in object format.')
@@ -36,7 +36,7 @@ param managedImageName string = ''
 @description('Optional. Name of the unmanaged image that will be created in the AIB resourcegroup.')
 param unManagedImageName string = ''
 
-@description('Optional. Resource Id of Shared Image Gallery to distribute image to, e.g.: /subscriptions/<subscriptionID>/resourceGroups/<SIG resourcegroup>/providers/Microsoft.Compute/galleries/<SIG name>/images/<image definition>')
+@description('Optional. Resource ID of Shared Image Gallery to distribute image to, e.g.: /subscriptions/<subscriptionID>/resourceGroups/<SIG resourcegroup>/providers/Microsoft.Compute/galleries/<SIG name>/images/<image definition>')
 param sigImageDefinitionId string = ''
 
 @description('Optional. List of the regions the image produced by this solution should be stored in the Shared Image Gallery. When left empty, the deployment\'s location will be taken as a default value.')
@@ -56,7 +56,7 @@ param tags object = {}
 @description('Generated. Do not provide a value! This date value is used to generate a unique image template name.')
 param baseTime string = utcNow('yyyy-MM-dd-HH-mm-ss')
 
-@description('Optional. Customer Usage Attribution id (GUID). This GUID must be previously registered')
+@description('Optional. Customer Usage Attribution ID (GUID). This GUID must be previously registered')
 param cuaId string = ''
 
 @description('Optional. Array of role assignment objects that contain the \'roleDefinitionIdOrName\' and \'principalId\' to define RBAC role assignments on this resource. In the roleDefinitionIdOrName attribute, you can provide either the display name of the role definition, or its fully qualified ID in the following format: \'/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11\'')
@@ -64,8 +64,8 @@ param roleAssignments array = []
 
 var managedImageName_var = '${managedImageName}-${baseTime}'
 var managedImageId = '/subscriptions/${subscription().subscriptionId}/resourceGroups/${resourceGroup().name}/providers/Microsoft.Compute/images/${managedImageName_var}'
-var imageReplicationRegions_var = (empty(imageReplicationRegions) ? array(location) : imageReplicationRegions)
-var emptyArray = []
+var imageReplicationRegions_var = empty(imageReplicationRegions) ? array(location) : imageReplicationRegions
+
 var managedImage = {
   type: 'ManagedImage'
   imageId: managedImageId
@@ -73,48 +73,48 @@ var managedImage = {
   runOutputName: '${managedImageName_var}-ManagedImage'
   artifactTags: {
     sourceType: imageSource.type
-    sourcePublisher: (contains(imageSource, 'publisher') ? imageSource.publisher : null)
-    sourceOffer: (contains(imageSource, 'offer') ? imageSource.offer : null)
-    sourceSku: (contains(imageSource, 'sku') ? imageSource.sku : null)
-    sourceVersion: (contains(imageSource, 'version') ? imageSource.version : null)
-    sourceImageId: (contains(imageSource, 'imageId') ? imageSource.imageId : null)
-    sourceImageVersionID: (contains(imageSource, 'imageVersionID') ? imageSource.imageVersionID : null)
+    sourcePublisher: contains(imageSource, 'publisher') ? imageSource.publisher : null
+    sourceOffer: contains(imageSource, 'offer') ? imageSource.offer : null
+    sourceSku: contains(imageSource, 'sku') ? imageSource.sku : null
+    sourceVersion: contains(imageSource, 'version') ? imageSource.version : null
+    sourceImageId: contains(imageSource, 'imageId') ? imageSource.imageId : null
+    sourceImageVersionID: contains(imageSource, 'imageVersionID') ? imageSource.imageVersionID : null
     creationTime: baseTime
   }
 }
-var conditionalManagedImage = (empty(managedImageName) ? emptyArray : array(managedImage))
+var conditionalManagedImage = empty(managedImageName) ? [] : array(managedImage)
 var sharedImage = {
   type: 'SharedImage'
   galleryImageId: sigImageDefinitionId
-  runOutputName: ((!empty(sigImageDefinitionId)) ? '${split(sigImageDefinitionId, '/')[10]}-SharedImage' : 'SharedImage')
+  runOutputName: !empty(sigImageDefinitionId) ? '${split(sigImageDefinitionId, '/')[10]}-SharedImage' : 'SharedImage'
   artifactTags: {
     sourceType: imageSource.type
-    sourcePublisher: (contains(imageSource, 'publisher') ? imageSource.publisher : null)
-    sourceOffer: (contains(imageSource, 'offer') ? imageSource.offer : null)
-    sourceSku: (contains(imageSource, 'sku') ? imageSource.sku : null)
-    sourceVersion: (contains(imageSource, 'version') ? imageSource.version : null)
-    sourceImageId: (contains(imageSource, 'imageId') ? imageSource.imageId : null)
-    sourceImageVersionID: (contains(imageSource, 'imageVersionID') ? imageSource.imageVersionID : null)
+    sourcePublisher: contains(imageSource, 'publisher') ? imageSource.publisher : null
+    sourceOffer: contains(imageSource, 'offer') ? imageSource.offer : null
+    sourceSku: contains(imageSource, 'sku') ? imageSource.sku : null
+    sourceVersion: contains(imageSource, 'version') ? imageSource.version : null
+    sourceImageId: contains(imageSource, 'imageId') ? imageSource.imageId : null
+    sourceImageVersionID: contains(imageSource, 'imageVersionID') ? imageSource.imageVersionID : null
     creationTime: baseTime
   }
   replicationRegions: imageReplicationRegions_var
 }
-var conditionalSharedImage = (empty(sigImageDefinitionId) ? emptyArray : array(sharedImage))
+var conditionalSharedImage = empty(sigImageDefinitionId) ? [] : array(sharedImage)
 var unManagedImage = {
   type: 'VHD'
   runOutputName: '${unManagedImageName}-VHD'
   artifactTags: {
     sourceType: imageSource.type
-    sourcePublisher: (contains(imageSource, 'publisher') ? imageSource.publisher : null)
-    sourceOffer: (contains(imageSource, 'offer') ? imageSource.offer : null)
-    sourceSku: (contains(imageSource, 'sku') ? imageSource.sku : null)
-    sourceVersion: (contains(imageSource, 'version') ? imageSource.version : null)
-    sourceImageId: (contains(imageSource, 'imageId') ? imageSource.imageId : null)
-    sourceImageVersionID: (contains(imageSource, 'imageVersionID') ? imageSource.imageVersionID : null)
+    sourcePublisher: contains(imageSource, 'publisher') ? imageSource.publisher : null
+    sourceOffer: contains(imageSource, 'offer') ? imageSource.offer : null
+    sourceSku: contains(imageSource, 'sku') ? imageSource.sku : null
+    sourceVersion: contains(imageSource, 'version') ? imageSource.version : null
+    sourceImageId: contains(imageSource, 'imageId') ? imageSource.imageId : null
+    sourceImageVersionID: contains(imageSource, 'imageVersionID') ? imageSource.imageVersionID : null
     creationTime: baseTime
   }
 }
-var conditionalUnManagedImage = (empty(unManagedImageName) ? emptyArray : array(unManagedImage))
+var conditionalUnManagedImage = empty(unManagedImageName) ? [] : array(unManagedImage)
 var distribute = concat(conditionalManagedImage, conditionalSharedImage, conditionalUnManagedImage)
 var vnetConfig = {
   subnetId: subnetId
@@ -126,7 +126,7 @@ module pid_cuaId '.bicep/nested_cuaId.bicep' = if (!empty(cuaId)) {
 }
 
 resource imageTemplate 'Microsoft.VirtualMachineImages/imageTemplates@2020-02-14' = {
-  name: '${imageTemplateName}-${baseTime}'
+  name: '${name}-${baseTime}'
   location: location
   tags: tags
   identity: {
@@ -140,20 +140,19 @@ resource imageTemplate 'Microsoft.VirtualMachineImages/imageTemplates@2020-02-14
     vmProfile: {
       vmSize: vmSize
       osDiskSizeGB: osDiskSizeGB
-      vnetConfig: (empty(subnetId) ? null : vnetConfig)
+      vnetConfig: !empty(subnetId) ? vnetConfig : null
     }
     source: imageSource
     customize: customizationSteps
     distribute: distribute
   }
-  dependsOn: []
 }
 
 resource imageTemplate_lock 'Microsoft.Authorization/locks@2016-09-01' = if (lock != 'NotSpecified') {
   name: '${imageTemplate.name}-${lock}-lock'
   properties: {
     level: lock
-    notes: (lock == 'CanNotDelete') ? 'Cannot delete resource or child resources.' : 'Cannot modify the resource or child resources.'
+    notes: lock == 'CanNotDelete' ? 'Cannot delete resource or child resources.' : 'Cannot modify the resource or child resources.'
   }
   scope: imageTemplate
 }
@@ -167,7 +166,14 @@ module imageTemplate_rbac '.bicep/nested_rbac.bicep' = [for (roleAssignment, ind
   }
 }]
 
+@description('The resource ID of the image template')
 output imageTemplateResourceId string = imageTemplate.id
+
+@description('The resource group the image template was deployed into')
 output imageTemplateResourceGroup string = resourceGroup().name
+
+@description('The name of the image template')
 output imageTemplateName string = imageTemplate.name
+
+@description('The command to run in order to trigger the image build')
 output runThisCommand string = 'Invoke-AzResourceAction -ResourceName ${imageTemplate.name} -ResourceGroupName ${resourceGroup().name} -ResourceType Microsoft.VirtualMachineImages/imageTemplates -Action Run -Force'

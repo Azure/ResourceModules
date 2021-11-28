@@ -4,7 +4,7 @@ This module deploys a backup long-term retention policies for SQL Managed Instan
 
 ## Resource Types
 
-| Resource Type | Api Version |
+| Resource Type | API Version |
 | :-- | :-- |
 | `Microsoft.Sql/managedInstances/databases/backupLongTermRetentionPolicies` | 2021-02-01-preview |
 
@@ -26,8 +26,8 @@ This module deploys a backup long-term retention policies for SQL Managed Instan
 | :-- | :-- | :-- |
 | `backupLongTermRetentionPolicyName` | string | The name of the deployed database backup long-term retention policy |
 | `backupLongTermRetentionPolicyResourceGroup` | string | The resource group of the deployed database backup long-term retention policy |
-| `backupLongTermRetentionPolicyResourceId` | string | The resourceId of the deployed database backup long-term retention policy |
+| `backupLongTermRetentionPolicyResourceId` | string | The resource ID of the deployed database backup long-term retention policy |
 
 ## Template references
 
-- [Managedinstances/Databases/BackupLongTermRetentionPolicies](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Sql/2021-02-01-preview/managedInstances/databases/backupLongTermRetentionPolicies)
+- [Managedinstances/Databases/Backuplongtermretentionpolicies](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Sql/2021-02-01-preview/managedInstances/databases/backupLongTermRetentionPolicies)

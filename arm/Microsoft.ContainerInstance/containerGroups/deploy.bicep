@@ -1,5 +1,5 @@
 @description('Required. Name for the container group.')
-param containergroupname string
+param name string
 
 @description('Required. Name for the container.')
 param containername string
@@ -50,7 +50,7 @@ param lock string = 'NotSpecified'
 @description('Optional. Tags of the resource.')
 param tags object = {}
 
-@description('Optional. Customer Usage Attribution id (GUID). This GUID must be previously registered')
+@description('Optional. Customer Usage Attribution ID (GUID). This GUID must be previously registered')
 param cuaId string = ''
 
 module pid_cuaId '.bicep/nested_cuaId.bicep' = if (!empty(cuaId)) {
@@ -59,7 +59,7 @@ module pid_cuaId '.bicep/nested_cuaId.bicep' = if (!empty(cuaId)) {
 }
 
 resource containergroup 'Microsoft.ContainerInstance/containerGroups@2021-03-01' = {
-  name: containergroupname
+  name: name
   location: location
   tags: tags
   properties: {
@@ -99,7 +99,14 @@ resource containergroup_lock 'Microsoft.Authorization/locks@2016-09-01' = if (lo
   scope: containergroup
 }
 
+@description('The name of the container group')
 output containerGroupName string = containergroup.name
+
+@description('The resource ID of the container group')
 output containerGroupResourceId string = containergroup.id
+
+@description('The resource group the container group was deployed into')
 output containerGroupResourceGroup string = resourceGroup().name
+
+@description('The IPv4 address of the container group')
 output containerGroupIPv4Address string = containergroup.properties.ipAddress.ip
