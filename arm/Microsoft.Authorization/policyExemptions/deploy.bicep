@@ -29,7 +29,7 @@ param policyDefinitionReferenceIds array = []
 @description('Optional. The expiration date and time (in UTC ISO 8601 format yyyy-MM-ddTHH:mm:ssZ) of the policy exemption. e.g. 2021-10-02T03:57:00.000Z ')
 param expiresOn string = ''
 
-@description('Optional. The resource ID of the management group to be exempted from the policy assignment. Cannot use with subscription ID parameter.')
+@description('Optional. The group ID of the management group to be exempted from the policy assignment. Cannot use with subscription ID parameter.')
 param managementGroupId string = ''
 
 @description('Optional. The resource ID of the azure subscription to be exempted from the policy assignment. Cannot use with management group ID parameter.')
