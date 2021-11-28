@@ -4,7 +4,7 @@ This Function Helps with Testing A Module Locally
 
 .DESCRIPTION
 This Function Helps with Testing A Module Locally. Use this Function To perform Pester Testing for a Module and then attempting to deploy it. It Also allows you to use your own
-subscription Id, Principal Id, tenant ID and other parameters that need to be tokenized.
+subscription ID, Principal ID, tenant ID and other parameters that need to be tokenized.
 
 .PARAMETER ParameterFilePath
 Mandatory. The Path to the Parameter File that contains tokens to be replaced.
@@ -19,7 +19,7 @@ Optional. An object containing the local parameter file tokens to be injected fo
 Optional. A string for the Key Vault Name that contains the remote tokens
 
 .PARAMETER TokensKeyVaultSubscriptionId
-Optional. A string for the subscription Id where the Key Vault exists
+Optional. A string for the subscription ID where the Key Vault exists
 
 .PARAMETER TokensKeyVaultSecretNamePrefix
 Optional. A string for the prefix that can be used to filter for secrets in an Azure key Vault

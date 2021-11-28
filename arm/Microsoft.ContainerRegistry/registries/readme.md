@@ -4,7 +4,7 @@ Azure Container Registry is a managed, private Docker registry service based on 
 
 ## Resource types
 
-| Resource Type | Api Version |
+| Resource Type | API Version |
 | :-- | :-- |
 | `Microsoft.Authorization/locks` | 2016-09-01 |
 | `Microsoft.Authorization/roleAssignments` | 2020-04-01-preview |
@@ -18,9 +18,8 @@ Azure Container Registry is a managed, private Docker registry service based on 
 | Parameter Name | Type | Default Value | Possible Values | Description |
 | :-- | :-- | :-- | :-- | :-- |
 | `acrAdminUserEnabled` | bool |  |  | Optional. Enable admin user that have push / pull permission to the registry. |
-| `acrName` | string |  |  | Required. Name of your Azure Container Registry |
-| `acrSku` | string | `Basic` | `[Basic, Standard, Premium]` | Optional. Tier of your Azure Container Registry. |
-| `cuaId` | string |  |  | Optional. Customer Usage Attribution id (GUID). This GUID must be previously registered |
+| `acrSku` | string | `Basic` | `[Basic, Standard, Premium]` | Optional. Tier of your Azure container registry. |
+| `cuaId` | string |  |  | Optional. Customer Usage Attribution ID (GUID). This GUID must be previously registered |
 | `dataEndpointEnabled` | bool |  |  | Optional. Enable a single data endpoint per region for serving data. Not relevant in case of disabled public access. |
 | `diagnosticLogsRetentionInDays` | int | `365` |  | Optional. Specifies the number of days that logs will be kept for; a value of 0 will retain data indefinitely. |
 | `diagnosticStorageAccountId` | string |  |  | Optional. Resource identifier of the Diagnostic Storage Account. |
@@ -30,6 +29,7 @@ Azure Container Registry is a managed, private Docker registry service based on 
 | `lock` | string | `NotSpecified` | `[CanNotDelete, NotSpecified, ReadOnly]` | Optional. Specify the type of lock. |
 | `logsToEnable` | array | `[ContainerRegistryRepositoryEvents, ContainerRegistryLoginEvents]` | `[ContainerRegistryRepositoryEvents, ContainerRegistryLoginEvents]` | Optional. The name of logs that will be streamed. |
 | `metricsToEnable` | array | `[AllMetrics]` | `[AllMetrics]` | Optional. The name of metrics that will be streamed. |
+| `name` | string |  |  | Required. Name of your Azure container registry |
 | `networkRuleBypassOptions` | string | `AzureServices` |  | Optional. Whether to allow trusted Azure services to access a network restricted registry. Not relevant in case of public access. - AzureServices or None |
 | `privateEndpoints` | array | `[]` |  | Optional. Configuration Details for private endpoints. |
 | `publicNetworkAccess` | string | `Enabled` |  | Optional. Whether or not public network access is allowed for the container registry. - Enabled or Disabled |
@@ -109,10 +109,10 @@ Tag names and tag values can be provided as needed. A tag can be left without a 
 
 | Output Name | Type | Description |
 | :-- | :-- | :-- |
-| `acrLoginServer` | string | The reference to the Azure Container Registry. |
-| `acrName` | string | The Name of the Azure Container Registry. |
-| `acrResourceGroup` | string | The Name of the Azure Container Registry. |
-| `acrResourceId` | string | The Resource Id of the Azure Container Registry. |
+| `acrLoginServer` | string | The reference to the Azure container registry. |
+| `acrName` | string | The Name of the Azure container registry. |
+| `acrResourceGroup` | string | The name of the Azure container registry. |
+| `acrResourceId` | string | The resource ID of the Azure container registry. |
 
 ## Template references
 

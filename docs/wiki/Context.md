@@ -3,7 +3,7 @@
 This section will give on an overview of the idea and approach of this platform.
 Note, it will not elaborate every aspect of the subject but is intended to help you understand the design on a fundamental level.
 
-Also, while we describe an entire end-2-end setup, CARML focuses only on a **[specific area](#where-does-this-platform-fit-in)** of it, i.e. phases 1 & 2 of the described deployment [model](#what-is-the-intended-the-deployment-model)/[flow](#what-is-the-intended-deployment-flow).
+Also, while we describe an entire end-to-end setup, CARML focuses only on a **[specific area](#where-does-this-platform-fit-in)** of it, i.e. phases 1 & 2 of the described deployment [model](#what-is-the-intended-the-deployment-model)/[flow](#what-is-the-intended-deployment-flow).
 
 ---
 

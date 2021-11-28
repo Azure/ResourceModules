@@ -2,7 +2,7 @@ targetScope = 'managementGroup'
 
 param principalIds array
 param roleDefinitionIdOrName string
-param managementGroupName string
+param resourceName string
 
 var builtInRoleNames = {
   'AcrPush': '/providers/Microsoft.Authorization/roleDefinitions/8311e382-0749-4cb8-b61a-304f252e45ec'
@@ -289,7 +289,7 @@ var builtInRoleNames = {
 }
 
 resource roleAssignment 'Microsoft.Authorization/roleAssignments@2020-04-01-preview' = [for principalId in principalIds: {
-  name: guid(managementGroupName, principalId, roleDefinitionIdOrName)
+  name: guid(resourceName, principalId, roleDefinitionIdOrName)
   properties: {
     roleDefinitionId: contains(builtInRoleNames, roleDefinitionIdOrName) ? builtInRoleNames[roleDefinitionIdOrName] : roleDefinitionIdOrName
     principalId: principalId

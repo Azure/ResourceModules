@@ -17,7 +17,7 @@ param automaticSnapshotPolicyEnabled bool = false
 @description('Optional. Blob containers to create.')
 param containers array = []
 
-@description('Optional. Customer Usage Attribution id (GUID). This GUID must be previously registered')
+@description('Optional. Customer Usage Attribution ID (GUID). This GUID must be previously registered')
 param cuaId string = ''
 
 module pid_cuaId '.bicep/nested_cuaId.bicep' = if (!empty(cuaId)) {
@@ -55,7 +55,7 @@ module blobServices_container 'containers/deploy.bicep' = [for (container, index
 @description('The name of the deployed blob service')
 output blobServicesName string = storageAccount::blobServices.name
 
-@description('The id of the deployed blob service')
+@description('The resource ID of the deployed blob service')
 output blobServicesResourceId string = storageAccount::blobServices.id
 
 @description('The name of the deployed blob service')

@@ -4,7 +4,7 @@ This module deploys AVD Workspaces, with resource lock and diagnostic configurat
 
 ## Resource types
 
-| Resource Type | Api Version |
+| Resource Type | API Version |
 | :-- | :-- |
 | `Microsoft.Authorization/locks` | 2016-09-01 |
 | `Microsoft.Authorization/roleAssignments` | 2020-04-01-preview |
@@ -16,7 +16,7 @@ This module deploys AVD Workspaces, with resource lock and diagnostic configurat
 | Parameter Name | Type | Default Value | Possible Values | Description |
 | :-- | :-- | :-- | :-- | :-- |
 | `appGroupResourceIds` | array | `[]` |  | Required. Resource IDs fo the existing Application groups this workspace will group together. |
-| `cuaId` | string |  |  | Optional. Customer Usage Attribution id (GUID). This GUID must be previously registered |
+| `cuaId` | string |  |  | Optional. Customer Usage Attribution ID (GUID). This GUID must be previously registered |
 | `diagnosticLogsRetentionInDays` | int | `365` |  | Optional. Specifies the number of days that logs will be kept for; a value of 0 will retain data indefinitely. |
 | `diagnosticStorageAccountId` | string |  |  | Optional. Resource identifier of the Diagnostic Storage Account. |
 | `eventHubAuthorizationRuleId` | string |  |  | Optional. Resource ID of the event hub authorization rule for the Event Hubs namespace in which the event hub should be created or streamed to. |
@@ -80,11 +80,11 @@ Tag names and tag values can be provided as needed. A tag can be left without a 
 
 ## Outputs
 
-| Output Name | Type |
-| :-- | :-- |
-| `workspaceName` | string |
-| `workspaceResourceGroup` | string |
-| `workspaceResourceId` | string |
+| Output Name | Type | Description |
+| :-- | :-- | :-- |
+| `workspaceName` | string | The name of the AVD workspace |
+| `workspaceResourceGroup` | string | The resource group the AVD workspace was deployed into |
+| `workspaceResourceId` | string | The resource ID of the AVD workspace |
 
 ## Template references
 

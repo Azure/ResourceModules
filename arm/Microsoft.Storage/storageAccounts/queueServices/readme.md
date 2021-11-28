@@ -4,7 +4,7 @@ This module can be used to deploy a file share service into a storage account.
 
 ## Resource Types
 
-| Resource Type | Api Version |
+| Resource Type | API Version |
 | :-- | :-- |
 | `Microsoft.Authorization/roleAssignments` | 2020-04-01-preview |
 | `Microsoft.Storage/storageAccounts/queueServices` | 2021-04-01 |
@@ -14,7 +14,7 @@ This module can be used to deploy a file share service into a storage account.
 
 | Parameter Name | Type | Default Value | Possible Values | Description |
 | :-- | :-- | :-- | :-- | :-- |
-| `cuaId` | string |  |  | Optional. Customer Usage Attribution id (GUID). This GUID must be previously registered |
+| `cuaId` | string |  |  | Optional. Customer Usage Attribution ID (GUID). This GUID must be previously registered |
 | `name` | string | `default` |  | Optional. The name of the queue service |
 | `queues` | _[queues](queues/readme.md)_ array | `[]` |  | Optional. Queues to create. |
 | `storageAccountName` | string |  |  | Required. Name of the Storage Account. |
@@ -25,7 +25,7 @@ This module can be used to deploy a file share service into a storage account.
 | :-- | :-- | :-- |
 | `queueServicesName` | string | The name of the deployed file share service |
 | `queueServicesResourceGroup` | string | The resource group of the deployed file share service |
-| `queueServicesResourceId` | string | The id of the deployed file share service |
+| `queueServicesResourceId` | string | The resource ID of the deployed file share service |
 
 ## Template references
 

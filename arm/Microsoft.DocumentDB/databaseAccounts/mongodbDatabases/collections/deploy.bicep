@@ -16,7 +16,7 @@ param indexes array
 @description('Required. ShardKey for the collection')
 param shardKey object
 
-@description('Optional. Customer Usage Attribution id (GUID). This GUID must be previously registered')
+@description('Optional. Customer Usage Attribution ID (GUID). This GUID must be previously registered')
 param cuaId string = ''
 
 module pid_cuaId '.bicep/nested_cuaId.bicep' = if (!empty(cuaId)) {
@@ -24,8 +24,17 @@ module pid_cuaId '.bicep/nested_cuaId.bicep' = if (!empty(cuaId)) {
   params: {}
 }
 
+resource databaseAccount 'Microsoft.DocumentDB/databaseAccounts@2021-07-01-preview' existing = {
+  name: databaseAccountName
+
+  resource mongodbDatabase 'mongodbDatabases@2021-07-01-preview' existing = {
+    name: mongodbDatabaseName
+  }
+}
+
 resource collection 'Microsoft.DocumentDB/databaseAccounts/mongodbDatabases/collections@2021-07-01-preview' = {
-  name: '${databaseAccountName}/${mongodbDatabaseName}/${name}'
+  name: name
+  parent: databaseAccount::mongodbDatabase
   properties: {
     options: {
       throughput: throughput
@@ -41,8 +50,8 @@ resource collection 'Microsoft.DocumentDB/databaseAccounts/mongodbDatabases/coll
 @description('The name of the mongodb database.')
 output collectionName string = collection.name
 
-@description('The Resource Id of the mongodb database.')
+@description('The resource ID of the mongodb database.')
 output collectionResourceId string = collection.id
 
-@description('The name of the Resource Group the mongodb database was created in.')
+@description('The name of the resource group the mongodb database was created in.')
 output collectionResourceGroup string = resourceGroup().name

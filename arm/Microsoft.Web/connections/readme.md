@@ -4,7 +4,7 @@ This module deploys an Azure API Connection.
 
 ## Resource types
 
-| Resource Type | Api Version |
+| Resource Type | API Version |
 | :-- | :-- |
 | `Microsoft.Authorization/locks` | 2016-09-01 |
 | `Microsoft.Authorization/roleAssignments` | 2020-04-01-preview |
@@ -18,7 +18,7 @@ This module deploys an Azure API Connection.
 | `connectionApi` | object | `{object}` |  | Optional. Specific values for some API connections. |
 | `connectionKind` | string |  |  | Required. Connection Kind. Example: 'V1' when using blobs. It can change depending on the resource. |
 | `connectionName` | string |  |  | Required. Connection name for connection. Example: 'azureblob' when using blobs.  It can change depending on the resource. |
-| `cuaId` | string |  |  | Optional. Customer Usage Attribution id (GUID). This GUID must be previously registered. |
+| `cuaId` | string |  |  | Optional. Customer Usage Attribution ID (GUID). This GUID must be previously registered. |
 | `customParameterValues` | object | `{object}` |  | Optional. Customized parameter values for specific connections. |
 | `displayName` | string |  |  | Required. Display name connection. Example: 'blobconnection' when using blobs. It can change depending on the resource. |
 | `location` | string | `[resourceGroup().location]` |  | Optional. Location of the deployment. |
@@ -105,7 +105,7 @@ Tag names and tag values can be provided as needed. A tag can be left without a 
 | :-- | :-- | :-- |
 | `connectionName` | string | The name of the connection |
 | `connectionResourceGroup` | string | The resource group the connection was deployed into |
-| `connectionResourceId` | string | The resourceId of the connection |
+| `connectionResourceId` | string | The resource ID of the connection |
 
 ## Template references
 

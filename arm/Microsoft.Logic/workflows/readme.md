@@ -4,7 +4,7 @@ This module deploys Logic App resource.
 
 ## Resource types
 
-| Resource Type | Api Version |
+| Resource Type | API Version |
 | :-- | :-- |
 | `Microsoft.Authorization/locks` | 2016-09-01 |
 | `Microsoft.Authorization/roleAssignments` | 2020-04-01-preview |
@@ -18,7 +18,7 @@ This module deploys Logic App resource.
 | `actionsAccessControlConfiguration` | object | `{object}` |  | Optional. The access control configuration for workflow actions. |
 | `connectorEndpointsConfiguration` | object | `{object}` |  | Optional. The endpoints configuration:  Access endpoint and outgoing IP addresses for the connector. |
 | `contentsAccessControlConfiguration` | object | `{object}` |  | Optional. The access control configuration for accessing workflow run contents. |
-| `cuaId` | string |  |  | Optional. Customer Usage Attribution id (GUID). This GUID must be previously registered. |
+| `cuaId` | string |  |  | Optional. Customer Usage Attribution ID (GUID). This GUID must be previously registered. |
 | `definitionParameters` | object | `{object}` |  | Optional. Parameters for the definition template. |
 | `diagnosticLogsRetentionInDays` | int | `365` |  | Optional. Specifies the number of days that logs will be kept for; a value of 0 will retain data indefinitely. |
 | `diagnosticStorageAccountId` | string |  |  | Optional. Resource identifier of the Diagnostic Storage Account. |
@@ -29,9 +29,9 @@ This module deploys Logic App resource.
 | `integrationServiceEnvironment` | object | `{object}` |  | Optional. The integration service environment. |
 | `location` | string | `[resourceGroup().location]` |  | Optional. Location for all resources. |
 | `lock` | string | `NotSpecified` | `[CanNotDelete, NotSpecified, ReadOnly]` | Optional. Specify the type of lock. |
-| `logicAppName` | string |  |  | Required. The logic app workflow name. |
 | `logsToEnable` | array | `[WorkflowRuntime]` | `[WorkflowRuntime]` | Optional. The name of logs that will be streamed. |
 | `metricsToEnable` | array | `[AllMetrics]` | `[AllMetrics]` | Optional. The name of metrics that will be streamed. |
+| `name` | string |  |  | Required. The logic app workflow name. |
 | `roleAssignments` | array | `[]` |  | Optional. Array of role assignment objects that contain the 'roleDefinitionIdOrName' and 'principalId' to define RBAC role assignments on this resource. In the roleDefinitionIdOrName attribute, you can provide either the display name of the role definition, or its fully qualified ID in the following format: '/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11'. |
 | `sku` | object | `{object}` |  | Optional. Sku of Logic App. Only to be set when integrating with ISE. |
 | `state` | string | `Enabled` | `[NotSpecified, Completed, Enabled, Disabled, Deleted, Suspended]` | Optional. The state. - NotSpecified, Completed, Enabled, Disabled, Deleted, Suspended. |
@@ -171,11 +171,11 @@ Tag names and tag values can be provided as needed. A tag can be left without a 
 
 ## Outputs
 
-| Output Name | Type |
-| :-- | :-- |
-| `logicAppName` | string |
-| `logicAppResourceGroup` | string |
-| `logicAppResourceId` | string |
+| Output Name | Type | Description |
+| :-- | :-- | :-- |
+| `logicAppName` | string | The name of the logic app |
+| `logicAppResourceGroup` | string | The resource group the logic app was deployed into |
+| `logicAppResourceId` | string | The resource ID of the logic app |
 
 ## Template references
 

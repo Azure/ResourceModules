@@ -16,13 +16,13 @@ param endpoints array = []
 @description('Optional. List of connection monitor test configurations.')
 param testConfigurations array = []
 
-@description('Optional.	List of connection monitor test groups.')
+@description('Optional. List of connection monitor test groups.')
 param testGroups array = []
 
 @description('Optional. Specify the Log Analytics Workspace Resource ID')
 param workspaceResourceId string = ''
 
-@description('Optional. Customer Usage Attribution id (GUID). This GUID must be previously registered')
+@description('Optional. Customer Usage Attribution ID (GUID). This GUID must be previously registered')
 param cuaId string = ''
 
 var outputs = !empty(workspaceResourceId) ? [
@@ -39,8 +39,13 @@ module pid_cuaId '.bicep/nested_cuaId.bicep' = if (!empty(cuaId)) {
   params: {}
 }
 
+resource networkWatcher 'Microsoft.Network/networkWatchers@2021-03-01' existing = {
+  name: networkWatcherName
+}
+
 resource connectionMonitor 'Microsoft.Network/networkWatchers/connectionMonitors@2021-03-01' = {
-  name: '${networkWatcherName}/${name}'
+  name: name
+  parent: networkWatcher
   tags: tags
   location: location
   properties: {
@@ -54,7 +59,7 @@ resource connectionMonitor 'Microsoft.Network/networkWatchers/connectionMonitors
 @description('The name of the deployed connection monitor')
 output connectionMonitorName string = connectionMonitor.name
 
-@description('The resourceId of the deployed connection monitor')
+@description('The resource ID of the deployed connection monitor')
 output connectionMonitorResourceId string = connectionMonitor.id
 
 @description('The resource group the connection monitor was deployed into')

@@ -17,7 +17,7 @@ param parameters object = {}
 ])
 param identity string = 'SystemAssigned'
 
-@description('Required. The IDs Of the Azure Role Definition list that is used to assign permissions to the identity. You need to provide either the fully qualified ID in the following format: \'/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11\'.. See https://docs.microsoft.com/en-us/azure/role-based-access-control/built-in-roles for the list IDs for built in Roles. They must match on what is on the policy definition')
+@description('Required. The IDs Of the Azure Role Definition list that is used to assign permissions to the identity. You need to provide either the fully qualified ID in the following format: \'/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11\'.. See https://docs.microsoft.com/en-us/azure/role-based-access-control/built-in-roles for the list IDs for built-in Roles. They must match on what is on the policy definition')
 param roleDefinitionIds array = []
 
 @description('Optional. This message will be part of response in case of policy violation. If not provided, will be replaced with the Policy Assignment Name')
@@ -26,7 +26,7 @@ param policyAssignmentDescription string = ''
 @description('Optional. The display name of the policy assignment. If not provided, will be replaced with the Policy Assignment Name')
 param displayName string = ''
 
-@description('Optional. The policy assignment metadata. Metadata is an open ended object and is typically a collection of key value pairs.')
+@description('Optional. The policy assignment metadata. Metadata is an open ended object and is typically a collection of key-value pairs.')
 param metadata object = {}
 
 @description('Optional. The messages that describe why a resource is non-compliant with the policy. If not provided will be replaced with empty')
@@ -42,7 +42,7 @@ param enforcementMode string = 'Default'
 @description('Optional. The Target Scope for the Policy. The name of the management group for the policy assignment')
 param managementGroupId string = ''
 
-@description('Optional. The Target Scope for the Policy. The Id of the subscription for the policy assignment')
+@description('Optional. The Target Scope for the Policy. The subscription ID of the subscription for the policy assignment')
 param subscriptionId string = ''
 
 @description('Optional. The Target Scope for the Policy. The name of the resource group for the policy assignment')

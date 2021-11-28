@@ -1,10 +1,10 @@
-@description('Required. The name of the of the Api Management service.')
+@description('Required. The name of the of the API Management service.')
 param apiManagementServiceName string
 
 @description('Required. The name of the of the Product.')
 param productName string
 
-@description('Optional. Customer Usage Attribution id (GUID). This GUID must be previously registered')
+@description('Optional. Customer Usage Attribution ID (GUID). This GUID must be previously registered')
 param cuaId string = ''
 
 @description('Required. Name of the product group.')
@@ -15,11 +15,20 @@ module pid_cuaId '.bicep/nested_cuaId.bicep' = if (!empty(cuaId)) {
   params: {}
 }
 
-resource group 'Microsoft.ApiManagement/service/products/groups@2020-06-01-preview' = {
-  name: '${apiManagementServiceName}/${productName}/${name}'
+resource service 'Microsoft.ApiManagement/service@2021-04-01-preview' existing = {
+  name: apiManagementServiceName
+
+  resource product 'products@2021-04-01-preview' existing = {
+    name: productName
+  }
 }
 
-@description('The resourceId of the product group')
+resource group 'Microsoft.ApiManagement/service/products/groups@2020-06-01-preview' = {
+  name: name
+  parent: service::product
+}
+
+@description('The resource ID of the product group')
 output groupResourceId string = group.id
 
 @description('The name of the product group')

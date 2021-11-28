@@ -8,7 +8,7 @@ param name string = 'default'
 @description('Required. The Storage Account ManagementPolicies Rules')
 param rules array
 
-@description('Optional. Customer Usage Attribution id (GUID). This GUID must be previously registered')
+@description('Optional. Customer Usage Attribution ID (GUID). This GUID must be previously registered')
 param cuaId string = ''
 
 module pid_cuaId '.bicep/nested_cuaId.bicep' = if (!empty(cuaId)) {
@@ -30,7 +30,7 @@ resource storageAccount 'Microsoft.Storage/storageAccounts@2021-06-01' existing 
   }
 }
 
-@description('The resource Id of the deployed management policy')
+@description('The resource ID of the deployed management policy')
 output managementPoliciesResourceId string = storageAccount::managementPolicy.name
 
 @description('The name of the deployed management policy')

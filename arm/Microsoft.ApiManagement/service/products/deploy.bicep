@@ -1,16 +1,16 @@
-@description('Required. The name of the of the Api Management service.')
+@description('Required. The name of the of the API Management service.')
 param apiManagementServiceName string
 
 @description('Optional. Whether subscription approval is required. If false, new subscriptions will be approved automatically enabling developers to call the products APIs immediately after subscribing. If true, administrators must manually approve the subscription before the developer can any of the products APIs. Can be present only if subscriptionRequired property is present and has a value of false.')
 param approvalRequired bool = false
 
-@description('Optional. Customer Usage Attribution id (GUID). This GUID must be previously registered')
+@description('Optional. Customer Usage Attribution ID (GUID). This GUID must be previously registered')
 param cuaId string = ''
 
 @description('Optional. Product description. May include HTML formatting tags.')
 param productDescription string = ''
 
-@description('Optional. Array of Product Apis.')
+@description('Optional. Array of Product APIs.')
 param apis array = []
 
 @description('Optional. Array of Product Groups.')
@@ -35,8 +35,14 @@ module pid_cuaId '.bicep/nested_cuaId.bicep' = if (!empty(cuaId)) {
   name: 'pid-${cuaId}'
   params: {}
 }
+
+resource service 'Microsoft.ApiManagement/service@2021-04-01-preview' existing = {
+  name: apiManagementServiceName
+}
+
 resource product 'Microsoft.ApiManagement/service/products@2020-06-01-preview' = {
-  name: '${apiManagementServiceName}/${name}'
+  name: name
+  parent: service
   properties: {
     description: productDescription
     displayName: name
@@ -66,7 +72,7 @@ module group 'groups/deploy.bicep' = [for group in groups: {
   }
 }]
 
-@description('The resource Id of the API management service product')
+@description('The resource ID of the API management service product')
 output productResourceId string = product.id
 
 @description('The name of the API management service product')
@@ -75,8 +81,8 @@ output productName string = product.name
 @description('The resource group the API management service product was deployed into')
 output productResourceGroup string = resourceGroup().name
 
-@description('The Resources Ids of the API management service product apis')
+@description('The Resources IDs of the API management service product APIs')
 output productApisResourceIds array = [for productApi in apis: resourceId('Microsoft.ApiManagement/service/products/apis', apiManagementServiceName, name, productApi.name)]
 
-@description('The Resources Ids of the API management service product groups')
+@description('The Resources IDs of the API management service product groups')
 output productGroupsResourceIds array = [for productGroup in groups: resourceId('Microsoft.ApiManagement/service/products/groups', apiManagementServiceName, name, productGroup.name)]

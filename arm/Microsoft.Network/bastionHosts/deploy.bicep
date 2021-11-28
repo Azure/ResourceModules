@@ -1,5 +1,5 @@
 @description('Required. Name of the Azure Bastion resource')
-param azureBastionName string
+param name string
 
 @description('Optional. Location for all resources.')
 param location string = resourceGroup().location
@@ -10,7 +10,7 @@ param vNetId string
 @description('Optional. Specifies the name of the Public IP used by Azure Bastion. If it\'s not provided, a \'-pip\' suffix will be appended to the Bastion\'s name.')
 param azureBastionPipName string = ''
 
-@description('Optional. Resource Id of the Public IP Prefix object. This is only needed if you want your Public IPs created in a PIP Prefix.')
+@description('Optional. Resource ID of the Public IP Prefix object. This is only needed if you want your Public IPs created in a PIP Prefix.')
 param publicIPPrefixId string = ''
 
 @description('Optional. DNS name of the Public IP resource. A region specific suffix will be appended to it, e.g.: your-DNS-name.westeurope.cloudapp.azure.com')
@@ -47,7 +47,7 @@ param roleAssignments array = []
 @description('Optional. Tags of the resource.')
 param tags object = {}
 
-@description('Optional. Customer Usage Attribution id (GUID). This GUID must be previously registered')
+@description('Optional. Customer Usage Attribution ID (GUID). This GUID must be previously registered')
 param cuaId string = ''
 
 @description('Optional. The name of public IP logs that will be streamed.')
@@ -116,7 +116,7 @@ module pid_cuaId '.bicep/nested_cuaId.bicep' = if (!empty(cuaId)) {
 }
 
 resource azureBastionPip 'Microsoft.Network/publicIPAddresses@2021-02-01' = {
-  name: empty(azureBastionPipName) ? '${azureBastionName}-pip' : azureBastionPipName
+  name: empty(azureBastionPipName) ? '${name}-pip' : azureBastionPipName
   location: location
   tags: tags
   sku: {
@@ -152,7 +152,7 @@ resource azureBastionPip_diagnosticSettings 'Microsoft.Insights/diagnosticSettin
 }
 
 resource azureBastion 'Microsoft.Network/bastionHosts@2021-02-01' = {
-  name: azureBastionName
+  name: name
   location: location
   tags: tags
   properties: {
@@ -198,7 +198,7 @@ module azureBastion_rbac '.bicep/nested_rbac.bicep' = [for (roleAssignment, inde
   params: {
     principalIds: roleAssignment.principalIds
     roleDefinitionIdOrName: roleAssignment.roleDefinitionIdOrName
-    resourceName: azureBastion.name
+    resourceId: azureBastion.id
   }
 }]
 
@@ -208,5 +208,5 @@ output azureBastionResourceGroup string = resourceGroup().name
 @description('The name the Azure Bastion')
 output azureBastionName string = azureBastion.name
 
-@description('The resourceId the Azure Bastion')
+@description('The resource ID the Azure Bastion')
 output azureBastionResourceId string = azureBastion.id

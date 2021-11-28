@@ -80,7 +80,7 @@ param lock string = 'NotSpecified'
 @description('Optional. Tags of the resource.')
 param tags object = {}
 
-@description('Optional. Customer Usage Attribution id (GUID). This GUID must be previously registered')
+@description('Optional. Customer Usage Attribution ID (GUID). This GUID must be previously registered')
 param cuaId string = ''
 
 @description('Optional. The type of preferred application group type, default to Desktop Application Group')
@@ -185,12 +185,18 @@ module hostPool_rbac '.bicep/nested_rbac.bicep' = [for (roleAssignment, index) i
   params: {
     principalIds: roleAssignment.principalIds
     roleDefinitionIdOrName: roleAssignment.roleDefinitionIdOrName
-    resourceName: hostPool.name
+    resourceId: hostPool.id
   }
 }]
 
+@description('The resource ID of the AVD host pool')
 output hostPoolResourceId string = hostPool.id
+
+@description('The resource group the AVD host pool was deployed into')
 output hostPoolResourceGroup string = resourceGroup().name
+
+@description('The name of the AVD host pool')
 output hostPoolName string = hostPool.name
+
+@description('The expiration time for the registration token')
 output tokenExpirationTime string = dateTimeAdd(baseTime, tokenValidityLength)
-output hostpoolToken string = '${hostPool.properties.registrationInfo.token}'

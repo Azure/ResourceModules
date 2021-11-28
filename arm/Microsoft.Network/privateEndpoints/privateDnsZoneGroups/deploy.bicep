@@ -1,18 +1,26 @@
 @description('Required. The name of the private endpoint')
 param privateEndpointName string
 
-@description('Required. List of private DNS Ids')
-param privateDNSIds array
+@description('Required. List of private DNS resource IDs')
+param privateDNSResourceIds array
 
-var privateDnsZoneConfigs = [for privateDNSId in privateDNSIds: {
+@description('The name of the private DNS Zone Group')
+param privateDnsZoneGroupName string = 'default'
+
+var privateDnsZoneConfigs = [for privateDNSResourceId in privateDNSResourceIds: {
   name: privateEndpointName
   properties: {
-    privateDnsZoneId: privateDNSId
+    privateDnsZoneId: privateDNSResourceId
   }
 }]
 
+resource privateEndpoint 'Microsoft.Network/privateEndpoints@2021-03-01' existing = {
+  name: privateEndpointName
+}
+
 resource privateDnsZoneGroup 'Microsoft.Network/privateEndpoints/privateDnsZoneGroups@2021-03-01' = {
-  name: '${privateEndpointName}/default'
+  name: privateDnsZoneGroupName
+  parent: privateEndpoint
   properties: {
     privateDnsZoneConfigs: privateDnsZoneConfigs
   }
@@ -21,7 +29,7 @@ resource privateDnsZoneGroup 'Microsoft.Network/privateEndpoints/privateDnsZoneG
 @description('The name of the private endpoint DNS zone group')
 output privateDnsZoneGroupName string = privateDnsZoneGroup.name
 
-@description('The resourceId of the private endpoint DNS zone group')
+@description('The resource ID of the private endpoint DNS zone group')
 output privateDnsZoneGroupResourceId string = privateDnsZoneGroup.id
 
 @description('The resource group the private endpoint DNS zone group was deployed into')

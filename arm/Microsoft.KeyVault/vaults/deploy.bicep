@@ -100,7 +100,7 @@ param privateEndpoints array = []
 @description('Optional. Resource tags.')
 param tags object = {}
 
-@description('Optional. Customer Usage Attribution id (GUID). This GUID must be previously registered')
+@description('Optional. Customer Usage Attribution ID (GUID). This GUID must be previously registered')
 param cuaId string = ''
 
 @description('Generated. Do not provide a value! This date value is used to generate a SAS token to access the modules.')
@@ -210,7 +210,7 @@ module keyVault_secrets 'secrets/deploy.bicep' = [for (secret, index) in secrets
   params: {
     name: secret.name
     value: secret.value
-    vaultName: keyVault.name
+    keyVaultName: keyVault.name
     attributesEnabled: contains(secret, 'attributesEnabled') ? secret.attributesEnabled : true
     attributesExp: contains(secret, 'attributesExp') ? secret.attributesExp : -1
     attributesNbf: contains(secret, 'attributesNbf') ? secret.attributesNbf : -1
@@ -226,7 +226,7 @@ module keyVault_keys 'keys/deploy.bicep' = [for (key, index) in keys: {
   name: '${uniqueString(deployment().name, location)}-Key-${index}'
   params: {
     name: key.name
-    vaultName: keyVault.name
+    keyVaultName: keyVault.name
     attributesEnabled: contains(key, 'attributesEnabled') ? key.attributesEnabled : true
     attributesExp: contains(key, 'attributesExp') ? key.attributesExp : -1
     attributesNbf: contains(key, 'attributesNbf') ? key.attributesNbf : -1
@@ -256,11 +256,11 @@ module keyVault_rbac '.bicep/nested_rbac.bicep' = [for (roleAssignment, index) i
   params: {
     principalIds: roleAssignment.principalIds
     roleDefinitionIdOrName: roleAssignment.roleDefinitionIdOrName
-    resourceName: keyVault.name
+    resourceId: keyVault.id
   }
 }]
 
-@description('The Resource Id of the Key Vault.')
+@description('The Resource ID of the Key Vault.')
 output keyVaultResourceId string = keyVault.id
 
 @description('The name of the Resource Group the Key Vault was created in.')

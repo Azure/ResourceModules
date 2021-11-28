@@ -1,10 +1,13 @@
-@description('Required. The name of the of the Api Management service.')
+@description('Required. The name of the of the API Management service.')
 param apiManagementServiceName string
 
-@description('Required. The name of the of the Api.')
+@description('Required. The name of the of the API.')
 param apiName string
 
-@description('Optional. Customer Usage Attribution id (GUID). This GUID must be previously registered')
+@description('Optional. The name of the policy')
+param name string = 'policy'
+
+@description('Optional. Customer Usage Attribution ID (GUID). This GUID must be previously registered')
 param cuaId string = ''
 
 @description('Optional. Format of the policyContent.')
@@ -24,15 +27,24 @@ module pid_cuaId '.bicep/nested_cuaId.bicep' = if (!empty(cuaId)) {
   params: {}
 }
 
+resource service 'Microsoft.ApiManagement/service@2021-04-01-preview' existing = {
+  name: apiManagementServiceName
+
+  resource api 'apis@2020-06-01-preview' existing = {
+    name: apiName
+  }
+}
+
 resource policy 'Microsoft.ApiManagement/service/apis/policies@2020-06-01-preview' = {
-  name: '${apiManagementServiceName}/${apiName}/policy'
+  name: name
+  parent: service::api
   properties: {
     format: format
     value: value
   }
 }
 
-@description('The resourceId of the API policy')
+@description('The resource ID of the API policy')
 output policyResourceId string = policy.id
 
 @description('The name of the API policy')
