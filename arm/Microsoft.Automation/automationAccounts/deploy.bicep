@@ -340,5 +340,5 @@ output automationAccountResourceId string = automationAccount.id
 @description('The resource group of the deployed automation account')
 output automationAccountResourceGroup string = resourceGroup().name
 
-@description('The resource ID of the assigned identity.')
-output assignedIdentityID string = systemAssignedIdentity ? automationAccount.identity.principalId : ''
+@description('The principal ID of the system assigned identity.')
+output principalID string = systemAssignedIdentity ? automationAccount.identity.principalId : ''
