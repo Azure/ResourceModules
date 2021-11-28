@@ -9,8 +9,8 @@ param name string = '$default'
 @description('Required. Name to access Standard Namespace after migration')
 param postMigrationName string
 
-@description('Required. Existing premium Namespace ARM ID name which has no entities, will be used for migration')
-param targetNamespace string
+@description('Required. Existing premium Namespace resource ID which has no entities, will be used for migration')
+param targetNamespaceResourceId string
 
 @description('Optional. Customer Usage Attribution ID (GUID). This GUID must be previously registered')
 param cuaId string = ''
@@ -23,7 +23,7 @@ module pid_cuaId '.bicep/nested_cuaId.bicep' = if (!empty(cuaId)) {
 resource migrationConfiguration 'Microsoft.ServiceBus/namespaces/migrationConfigurations@2017-04-01' = {
   name: '${namespaceName}/${name}'
   properties: {
-    targetNamespace: targetNamespace
+    targetNamespace: targetNamespaceResourceId
     postMigrationName: postMigrationName
   }
 }

@@ -72,7 +72,7 @@ module container_rbac '.bicep/nested_rbac.bicep' = [for (roleAssignment, index) 
 @description('The name of the deployed container')
 output containerName string = container.name
 
-@description('The ID of the deployed container')
+@description('The resource ID of the deployed container')
 output containerResourceId string = container.id
 
 @description('The resource group of the deployed container')

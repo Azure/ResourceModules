@@ -4,7 +4,7 @@ This template deploys capacity pools in an Azure NetApp Files.
 
 ## Resource Types
 
-| Resource Type | Api Version |
+| Resource Type | API Version |
 | :-- | :-- |
 | `Microsoft.Authorization/roleAssignments` | 2020-04-01-preview |
 | `Microsoft.NetApp/netAppAccounts/capacityPools` | 2021-06-01 |

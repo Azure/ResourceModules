@@ -25,7 +25,7 @@ This module deploys an encryption protector for a SQL managed instance.
 | :-- | :-- | :-- |
 | `encryptionProtectorName` | string | The name of the deployed managed instance |
 | `encryptionProtectorResourceGroup` | string | The resource group of the deployed managed instance |
-| `encryptionProtectorResourceId` | string | The resourceId of the deployed managed instance |
+| `encryptionProtectorResourceId` | string | The resource ID of the deployed managed instance |
 
 ## Template references
 

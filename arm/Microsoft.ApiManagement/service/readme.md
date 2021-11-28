@@ -7,8 +7,8 @@ This module deploys an API management.
 | Resource Type | API Version |
 | :-- | :-- |
 | `Microsoft.ApiManagement/service` | 2020-12-01 |
-| `Microsoft.ApiManagement/service/APIs` | 2020-06-01-preview |
-| `Microsoft.ApiManagement/service/APIs/policies` | 2020-06-01-preview |
+| `Microsoft.ApiManagement/service/apis` | 2020-06-01-preview |
+| `Microsoft.ApiManagement/service/apis/policies` | 2020-06-01-preview |
 | `Microsoft.ApiManagement/service/apiVersionSets` | 2020-06-01-preview |
 | `Microsoft.ApiManagement/service/authorizationServers` | 2020-06-01-preview |
 | `Microsoft.ApiManagement/service/backends` | 2020-06-01-preview |
@@ -18,7 +18,7 @@ This module deploys an API management.
 | `Microsoft.ApiManagement/service/policies` | 2020-06-01-preview |
 | `Microsoft.ApiManagement/service/portalsettings` | 2019-12-01 |
 | `Microsoft.ApiManagement/service/products` | 2020-06-01-preview |
-| `Microsoft.ApiManagement/service/products/APIs` | 2020-06-01-preview |
+| `Microsoft.ApiManagement/service/products/apis` | 2020-06-01-preview |
 | `Microsoft.ApiManagement/service/products/groups` | 2020-06-01-preview |
 | `Microsoft.ApiManagement/service/subscriptions` | 2020-06-01-preview |
 | `Microsoft.Authorization/locks` | 2016-09-01 |
@@ -30,7 +30,7 @@ This module deploys an API management.
 | Parameter Name | Type | Default Value | Possible Values | Description |
 | :-- | :-- | :-- | :-- | :-- |
 | `additionalLocations` | array | `[]` |  | Optional. Additional datacenter locations of the API Management service. |
-| `APIs` | _[APIs](APIs/readme.md)_ array | `[]` |  | Optional. APIs. |
+| `apis` | _[apis](apis/readme.md)_ array | `[]` |  | Optional. APIs. |
 | `apiVersionSets` | _[apiVersionSets](apiVersionSets/readme.md)_ array | `[]` |  | Optional. API Version Sets. |
 | `authorizationServers` | _[authorizationServers](authorizationServers/readme.md)_ array | `[]` |  | Optional. Authorization servers. |
 | `backends` | _[backends](backends/readme.md)_ array | `[]` |  | Optional. Backends. |
@@ -135,7 +135,7 @@ Tag names and tag values can be provided as needed. A tag can be left without a 
 | :-- | :-- | :-- |
 | `serviceName` | string | The name of the API management service |
 | `serviceResourceGroup` | string | The resource group the API management service was deployed into |
-| `serviceResourceId` | string | The resourceId of the API management service |
+| `serviceResourceId` | string | The resource ID of the API management service |
 
 ## Considerations
 
@@ -144,8 +144,8 @@ Tag names and tag values can be provided as needed. A tag can be left without a 
 ## Template references
 
 - [Service](https://docs.microsoft.com/en-us/azure/templates/Microsoft.ApiManagement/2020-12-01/service)
-- [Service/APIs](https://docs.microsoft.com/en-us/azure/templates/Microsoft.ApiManagement/2020-06-01-preview/service/APIs)
-- [Service/APIs/Policies](https://docs.microsoft.com/en-us/azure/templates/Microsoft.ApiManagement/2020-06-01-preview/service/APIs/policies)
+- [Service/Apis](https://docs.microsoft.com/en-us/azure/templates/Microsoft.ApiManagement/2020-06-01-preview/service/apis)
+- [Service/Apis/Policies](https://docs.microsoft.com/en-us/azure/templates/Microsoft.ApiManagement/2020-06-01-preview/service/apis/policies)
 - [Service/Apiversionsets](https://docs.microsoft.com/en-us/azure/templates/Microsoft.ApiManagement/2020-06-01-preview/service/apiVersionSets)
 - [Service/Authorizationservers](https://docs.microsoft.com/en-us/azure/templates/Microsoft.ApiManagement/2020-06-01-preview/service/authorizationServers)
 - [Service/Backends](https://docs.microsoft.com/en-us/azure/templates/Microsoft.ApiManagement/2020-06-01-preview/service/backends)
@@ -155,7 +155,7 @@ Tag names and tag values can be provided as needed. A tag can be left without a 
 - [Service/Policies](https://docs.microsoft.com/en-us/azure/templates/Microsoft.ApiManagement/2020-06-01-preview/service/policies)
 - [Service/Portalsettings](https://docs.microsoft.com/en-us/azure/templates/Microsoft.ApiManagement/2019-12-01/service/portalsettings)
 - [Service/Products](https://docs.microsoft.com/en-us/azure/templates/Microsoft.ApiManagement/2020-06-01-preview/service/products)
-- [Service/Products/APIs](https://docs.microsoft.com/en-us/azure/templates/Microsoft.ApiManagement/2020-06-01-preview/service/products/APIs)
+- [Service/Products/Apis](https://docs.microsoft.com/en-us/azure/templates/Microsoft.ApiManagement/2020-06-01-preview/service/products/apis)
 - [Service/Products/Groups](https://docs.microsoft.com/en-us/azure/templates/Microsoft.ApiManagement/2020-06-01-preview/service/products/groups)
 - [Service/Subscriptions](https://docs.microsoft.com/en-us/azure/templates/Microsoft.ApiManagement/2020-06-01-preview/service/subscriptions)
 - [Locks](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2016-09-01/locks)

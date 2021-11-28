@@ -19,7 +19,7 @@ This template deploys a data source for a Log Analytics workspace.
 | `instanceName` | string | `*` |  | Optional. Name of the instance to configure when kind is WindowsPerformanceCounter or LinuxPerformanceObject. |
 | `intervalSeconds` | int | `60` |  | Optional. Interval in seconds to configure when kind is WindowsPerformanceCounter or LinuxPerformanceObject. |
 | `kind` | string | `AzureActivityLog` | `[AzureActivityLog, WindowsEvent, WindowsPerformanceCounter, IISLogs, LinuxSyslog, LinuxSyslogCollection, LinuxPerformanceObject, LinuxPerformanceCollection]` | Required. The kind of the DataSource. |
-| `linkedResourceId` | string |  |  | Optional. ID of the resource to be linked. |
+| `linkedResourceId` | string |  |  | Optional. Resource ID of the resource to be linked. |
 | `logAnalyticsWorkspaceName` | string |  |  | Required. Name of the Log Analytics workspace |
 | `name` | string |  |  | Required. Name of the solution |
 | `objectName` | string |  |  | Optional. Name of the object to configure when kind is WindowsPerformanceCounter or LinuxPerformanceObject. |

@@ -28,7 +28,7 @@ This template deploys Connection Monitors.
 | :-- | :-- | :-- |
 | `connectionMonitorName` | string | The name of the deployed connection monitor |
 | `connectionMonitorResourceGroup` | string | The resource group the connection monitor was deployed into |
-| `connectionMonitorResourceId` | string | The resourceId of the deployed connection monitor |
+| `connectionMonitorResourceId` | string | The resource ID of the deployed connection monitor |
 
 ## Template references
 

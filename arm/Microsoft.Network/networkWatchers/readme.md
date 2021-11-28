@@ -135,7 +135,7 @@ Tag names and tag values can be provided as needed. A tag can be left without a 
 | :-- | :-- | :-- |
 | `networkWatcherName` | string | The name of the deployed network watcher |
 | `networkWatcherResourceGroup` | string | The resource group the network watcher was deployed into |
-| `networkWatcherResourceId` | string | The resourceId of the deployed network watcher |
+| `networkWatcherResourceId` | string | The resource ID of the deployed network watcher |
 
 ## Template references
 

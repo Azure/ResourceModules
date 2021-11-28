@@ -178,7 +178,7 @@ var zoneRedundantSkus = [
 ]
 var gatewayPipSku = contains(zoneRedundantSkus, virtualNetworkGatewaySku) ? 'Standard' : 'Basic'
 var gatewayPipAllocationMethod = contains(zoneRedundantSkus, virtualNetworkGatewaySku) ? 'Static' : 'Dynamic'
-var gatewaySubnetId = '${vNetId}/subnets/GatewaySubnet'
+var gatewaySubnetId = '${vNetResourceId}/subnets/GatewaySubnet'
 var activeActive_var = (virtualNetworkGatewayType == 'ExpressRoute') ? bool('false') : activeActive
 
 // Public IP variables
@@ -202,7 +202,7 @@ var bgpSettings = {
   asn: asn
 }
 var publicIPPrefix = {
-  id: publicIPPrefixId
+  id: publicIPPrefixResourceId
 }
 var activePassiveIpConfiguration = [
   {
@@ -287,7 +287,7 @@ resource virtualGatewayPublicIP 'Microsoft.Network/publicIPAddresses@2021-02-01'
   }
   properties: {
     publicIPAllocationMethod: gatewayPipAllocationMethod
-    publicIPPrefix: !empty(publicIPPrefixId) ? publicIPPrefix : null
+    publicIPPrefix: !empty(publicIPPrefixResourceId) ? publicIPPrefix : null
     dnsSettings: length(virtualGatewayPipName_var) == length(domainNameLabel) ? json('{"domainNameLabel": "${domainNameLabel[index]}"}') : null
   }
   zones: contains(zoneRedundantSkus, virtualNetworkGatewaySku) ? publicIpZones : null

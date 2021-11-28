@@ -1,9 +1,10 @@
 # Data Factory Integration RunTimes  `[Microsoft.DataFactory/factories/integrationRuntime]`
 
 This module deploys a Managed or Self-Hosted Integration Runtime for an Azure Data Factory
+
 ## Resource types
 
-| Resource Type | Api Version |
+| Resource Type | API Version |
 | :-- | :-- |
 | `Microsoft.DataFactory/factories/integrationRuntimes` | 2018-06-01 |
 

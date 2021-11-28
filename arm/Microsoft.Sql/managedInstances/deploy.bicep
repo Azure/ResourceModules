@@ -211,7 +211,7 @@ resource managedInstance 'Microsoft.Sql/managedInstances@2021-05-01-preview' = {
     restorePointInTime: restorePointInTime
     proxyOverride: proxyOverride
     timezoneId: timezoneId
-    instancePoolId: instancePoolId
+    instancePoolId: instancePoolResourceId
     primaryUserAssignedIdentityId: primaryUserAssignedIdentityId
   }
 }

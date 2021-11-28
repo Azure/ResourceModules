@@ -7,7 +7,7 @@ param name string
 @sys.description('Optional. Description of Application..')
 param description string = ''
 
-@sys.description('Mandatory. Friendly name of Application..')
+@sys.description('Required. Friendly name of Application..')
 param friendlyName string
 
 @sys.description('Required. Specifies a path for the executable file for the application.')

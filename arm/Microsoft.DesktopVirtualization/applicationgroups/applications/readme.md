@@ -18,7 +18,7 @@ This module deploys AVD Applications.
 | `cuaId` | string |  |  | Optional. Customer Usage Attribution ID (GUID). This GUID must be previously registered |
 | `description` | string |  |  | Optional. Description of Application.. |
 | `filePath` | string |  |  | Required. Specifies a path for the executable file for the application. |
-| `friendlyName` | string |  |  | Mandatory. Friendly name of Application.. |
+| `friendlyName` | string |  |  | Required. Friendly name of Application.. |
 | `iconIndex` | int |  |  | Optional. Index of the icon. |
 | `iconPath` | string |  |  | Optional. Path to icon. |
 | `name` | string |  |  | Required. Name of the Application to be created in the Application Group. |

@@ -4,7 +4,7 @@ This module deploys an SQL Server Security Alert Policy.
 
 ## Resource Types
 
-| Resource Type | Api Version |
+| Resource Type | API Version |
 | :-- | :-- |
 | `Microsoft.Sql/servers/securityAlertPolicies` | 2021-05-01-preview |
 

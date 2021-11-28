@@ -24,16 +24,12 @@
 | `metricsToEnable` | array | `[AllMetrics]` | `[AllMetrics]` | Optional. The name of metrics that will be streamed. |
 | `name` | string |  |  | Required. The name of the Public IP Address |
 | `publicIPAllocationMethod` | string | `Dynamic` |  | Optional. The public IP address allocation method. - Static or Dynamic. |
-| `publicIPPrefixId` | string |  |  | Optional. Resource ID of the Public IP Prefix object. This is only needed if you want your Public IPs created in a PIP Prefix. |
+| `publicIPPrefixResourceId` | string |  |  | Optional. Resource ID of the Public IP Prefix object. This is only needed if you want your Public IPs created in a PIP Prefix. |
 | `roleAssignments` | array | `[]` |  | Optional. Array of role assignment objects that contain the 'roleDefinitionIdOrName' and 'principalId' to define RBAC role assignments on this resource. In the roleDefinitionIdOrName attribute, you can provide either the display name of the role definition, or its fully qualified ID in the following format: '/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11' |
 | `skuName` | string | `Basic` |  | Optional. Public IP Address sku Name |
 | `skuTier` | string | `Regional` |  | Optional. Public IP Address pricing tier |
 | `tags` | object | `{object}` |  | Optional. Tags of the resource. |
 | `workspaceId` | string |  |  | Optional. Resource identifier of Log Analytics. |
-
-### Parameter Usage: `<ParameterPlaceholder>`
-
-// TODO: Fill in Parameter usage
 
 ### Parameter Usage: `roleAssignments`
 

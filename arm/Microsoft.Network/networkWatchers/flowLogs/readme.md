@@ -49,7 +49,7 @@ Tag names and tag values can be provided as needed. A tag can be left without a 
 | :-- | :-- | :-- |
 | `flowLogName` | string | The name of the flow log |
 | `flowLogResourceGroup` | string | The resource group the flow log was deployed into |
-| `flowLogResourceId` | string | The resourceId of the flow log |
+| `flowLogResourceId` | string | The resource ID of the flow log |
 
 ## Template references
 

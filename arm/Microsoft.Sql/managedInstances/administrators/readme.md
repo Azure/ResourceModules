@@ -25,7 +25,7 @@ This module deploys an administrator for the SQL managed instance
 | :-- | :-- | :-- |
 | `administratorName` | string | The name of the deployed managed instance |
 | `administratorResourceGroup` | string | The resource group of the deployed managed instance |
-| `administratorResourceId` | string | The resourceId of the deployed managed instance |
+| `administratorResourceId` | string | The resource ID of the deployed managed instance |
 
 ## Template references
 

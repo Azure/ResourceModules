@@ -69,7 +69,7 @@ This module deploys a queue for a service bus namespace.
 | :-- | :-- | :-- |
 | `queueName` | string | The name of the deployed queue |
 | `queueResourceGroup` | string | The resource group of the deployed queue |
-| `queueResourceId` | string | The resourceId of the deployed queue |
+| `queueResourceId` | string | The resource ID of the deployed queue |
 
 ## Template references
 

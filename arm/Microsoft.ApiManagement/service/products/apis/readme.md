@@ -27,4 +27,4 @@ This module deploys API Management Service Product APIs.
 
 ## Template references
 
-- [Service/Products/APIs](https://docs.microsoft.com/en-us/azure/templates/Microsoft.ApiManagement/2020-06-01-preview/service/products/apis)
+- [Service/Products/Apis](https://docs.microsoft.com/en-us/azure/templates/Microsoft.ApiManagement/2020-06-01-preview/service/products/apis)

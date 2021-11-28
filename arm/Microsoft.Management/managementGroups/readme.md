@@ -61,8 +61,8 @@ This module has some known **limitations**:
 
 | Output Name | Type | Description |
 | :-- | :-- | :-- |
+| `managementGroupId` | string | The group ID of the management group |
 | `managementGroupName` | string | The name of the management group |
-| `managementGroupResourceId` | string | The resource ID of the management group |
 
 ## Considerations
 

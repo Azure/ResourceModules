@@ -26,7 +26,7 @@ This module deploys a backup long-term retention policies for SQL Managed Instan
 | :-- | :-- | :-- |
 | `backupLongTermRetentionPolicyName` | string | The name of the deployed database backup long-term retention policy |
 | `backupLongTermRetentionPolicyResourceGroup` | string | The resource group of the deployed database backup long-term retention policy |
-| `backupLongTermRetentionPolicyResourceId` | string | The resourceId of the deployed database backup long-term retention policy |
+| `backupLongTermRetentionPolicyResourceId` | string | The resource ID of the deployed database backup long-term retention policy |
 
 ## Template references
 

@@ -107,7 +107,7 @@ Tag names and tag values can be provided as needed. A tag can be left without a 
 | :-- | :-- | :-- |
 | `siteName` | string | The name of the site |
 | `siteResourceGroup` | string | The resource group the site was deployed into |
-| `siteResourceId` | string | The resourceId of the site |
+| `siteResourceId` | string | The resource ID of the site |
 
 ## Template references
 

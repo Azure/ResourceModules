@@ -24,7 +24,7 @@ This module deploys a key for a SQL managed instance.
 | :-- | :-- | :-- |
 | `keyName` | string | The name of the deployed managed instance |
 | `keyResourceGroup` | string | The resource group of the deployed managed instance |
-| `keyResourceId` | string | The resourceId of the deployed managed instance |
+| `keyResourceId` | string | The resource ID of the deployed managed instance |
 
 ## Template references
 

@@ -4,7 +4,7 @@ This module deploys private dns zone virtual network links.
 
 ## Resource Types
 
-| Resource Type | Api Version |
+| Resource Type | API Version |
 | :-- | :-- |
 | `Microsoft.Network/privateDnsZones/virtualNetworkLinks` | 2018-09-01 |
 

@@ -23,7 +23,6 @@ This template deploys private DNS zone.
 | `tags` | object | `{object}` |  | Optional. Tags of the resource. |
 | `virtualNetworkLinks` | _[virtualNetworkLinks](virtualNetworkLinks/readme.md)_ array | `[]` |  | Optional. Array of custom objects describing vNet links of the DNS zone. Each object should contain properties 'vnetResourceId' and 'registrationEnabled'. The 'vnetResourceId' is a resource ID of a vNet to link, 'registrationEnabled' (bool) enables automatic DNS registration in the zone for the linked vNet. |
 
-
 ### Parameter Usage: `roleAssignments`
 
 ```json
@@ -76,7 +75,7 @@ Tag names and tag values can be provided as needed. A tag can be left without a 
 | :-- | :-- | :-- |
 | `privateDnsZoneName` | string | The name of the private DNS zone |
 | `privateDnsZoneResourceGroup` | string | The resource group the private DNS zone was deployed into |
-| `privateDnsZoneResourceId` | string | The resourceId of the private DNS zone |
+| `privateDnsZoneResourceId` | string | The resource ID of the private DNS zone |
 
 ## Template references
 

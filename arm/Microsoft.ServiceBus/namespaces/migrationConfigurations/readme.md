@@ -16,7 +16,7 @@ This module deploys a migration configuration for a service bus namespace
 | `name` | string | `$default` |  | Optional. The name of the migration configuration |
 | `namespaceName` | string |  |  | Required. Name of the parent Service Bus Namespace for the Service Bus Queue. |
 | `postMigrationName` | string |  |  | Required. Name to access Standard Namespace after migration |
-| `targetNamespace` | string |  |  | Required. Existing premium Namespace ARM ID name which has no entities, will be used for migration |
+| `targetNamespaceResourceId` | string |  |  | Required. Existing premium Namespace resource ID which has no entities, will be used for migration |
 
 ## Outputs
 

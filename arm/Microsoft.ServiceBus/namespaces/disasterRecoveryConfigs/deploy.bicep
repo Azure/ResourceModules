@@ -24,7 +24,7 @@ resource disasterRecoveryConfig 'Microsoft.ServiceBus/namespaces/disasterRecover
   name: '${namespaceName}/${name}'
   properties: {
     alternateName: alternateName
-    partnerNamespace: partnerNamespace
+    partnerNamespace: partnerNamespaceResourceID
   }
 }
 

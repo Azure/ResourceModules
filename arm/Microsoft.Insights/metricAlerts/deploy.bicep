@@ -43,7 +43,7 @@ param evaluationFrequency string = 'PT5M'
 ])
 param windowSize string = 'PT15M'
 
-@description('Optional. the list of resource ID\'s that this metric alert is scoped to.')
+@description('Optional. the list of resource IDs that this metric alert is scoped to.')
 param scopes array = [
   subscription().id
 ]

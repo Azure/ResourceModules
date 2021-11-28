@@ -4,7 +4,7 @@ This module deploys an SQL Server Firewall rule.
 
 ## Resource Types
 
-| Resource Type | Api Version |
+| Resource Type | API Version |
 | :-- | :-- |
 | `Microsoft.Sql/servers/firewallRules` | 2021-05-01-preview |
 

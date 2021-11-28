@@ -4,7 +4,7 @@ This module deploys Azure Kubernetes Cluster (AKS).
 
 ## Resource types
 
-| Resource Type | Api Version |
+| Resource Type | API Version |
 | :-- | :-- |
 | `Microsoft.Authorization/locks` | 2016-09-01 |
 | `Microsoft.Authorization/roleAssignments` | 2020-04-01-preview |
@@ -22,7 +22,7 @@ This module deploys Azure Kubernetes Cluster (AKS).
 | `aadProfileManaged` | bool | `True` |  | Optional. Specifies whether to enable managed AAD integration. |
 | `aadProfileServerAppID` | string |  |  | Optional. The server AAD application ID. |
 | `aadProfileServerAppSecret` | string |  |  | Optional. The server AAD application secret. |
-| `aadProfileTenantId` | string | `[subscription().tenantId]` |  | Optional. Specifies the tenant id of the Azure Active Directory used by the AKS cluster for authentication. |
+| `aadProfileTenantId` | string | `[subscription().tenantId]` |  | Optional. Specifies the tenant ID of the Azure Active Directory used by the AKS cluster for authentication. |
 | `aciConnectorLinuxEnabled` | bool |  |  | Optional. Specifies whether the aciConnectorLinux add-on is enabled or not. |
 | `agentPools` | _[agentPools](agentPools/readme.md)_ array | `[]` |  | Optional. Define one or more secondary/additional node pools |
 | `aksClusterAdminUsername` | string | `azureuser` |  | Optional. Specifies the administrator username of Linux virtual machines. |
@@ -50,7 +50,7 @@ This module deploys Azure Kubernetes Cluster (AKS).
 | `autoScalerProfileUtilizationThreshold` | string | `0.5` |  | Optional. Specifies the utilization threshold of the auto-scaler of the AKS cluster. |
 | `azurePolicyEnabled` | bool | `True` |  | Optional. Specifies whether the azurepolicy add-on is enabled or not. |
 | `azurePolicyVersion` | string | `v2` |  | Optional. Specifies the azure policy version to use. |
-| `cuaId` | string |  |  | Optional. Customer Usage Attribution id (GUID). This GUID must be previously registered |
+| `cuaId` | string |  |  | Optional. Customer Usage Attribution ID (GUID). This GUID must be previously registered |
 | `diagnosticLogsRetentionInDays` | int | `365` |  | Optional. Specifies the number of days that logs will be kept for; a value of 0 will retain data indefinitely. |
 | `diagnosticStorageAccountId` | string |  |  | Optional. Resource identifier of the Diagnostic Storage Account. |
 | `eventHubAuthorizationRuleId` | string |  |  | Optional. Resource ID of the event hub authorization rule for the Event Hubs namespace in which the event hub should be created or streamed to. |

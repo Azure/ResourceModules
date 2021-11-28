@@ -105,7 +105,7 @@ Tag names and tag values can be provided as needed. A tag can be left without a 
 | :-- | :-- | :-- |
 | `connectionName` | string | The name of the connection |
 | `connectionResourceGroup` | string | The resource group the connection was deployed into |
-| `connectionResourceId` | string | The resourceId of the connection |
+| `connectionResourceId` | string | The resource ID of the connection |
 
 ## Template references
 

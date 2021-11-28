@@ -95,7 +95,7 @@ Tag names and tag values can be provided as needed. A tag can be left without a 
 | :-- | :-- | :-- |
 | `appServicePlanName` | string | The name of the app service plan |
 | `appServicePlanResourceGroup` | string | The resource group the app service plan was deployed into |
-| `appServicePlanResourceId` | string | The resourceId of the app service plan |
+| `appServicePlanResourceId` | string | The resource ID of the app service plan |
 
 ## Template references
 

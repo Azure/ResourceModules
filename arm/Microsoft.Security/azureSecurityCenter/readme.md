@@ -134,7 +134,6 @@ This template enables Azure Security Center - Standard tier by default, could be
 
 ## Template references
 
-- [Advancedthreatprotectionsettings](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Security/2019-01-01/advancedThreatProtectionSettings)
 - [Autoprovisioningsettings](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Security/2017-08-01-preview/autoProvisioningSettings)
 - [Devicesecuritygroups](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Security/2019-08-01/deviceSecurityGroups)
 - [Iotsecuritysolutions](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Security/2019-08-01/iotSecuritySolutions)

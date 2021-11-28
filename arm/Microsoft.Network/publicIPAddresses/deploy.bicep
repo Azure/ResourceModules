@@ -90,7 +90,7 @@ var diagnosticsMetrics = [for metric in metricsToEnable: {
 }]
 
 var publicIPPrefix = {
-  id: publicIPPrefixId
+  id: publicIPPrefixResourceId
 }
 
 module pid_cuaId '.bicep/nested_cuaId.bicep' = if (!empty(cuaId)) {
@@ -109,7 +109,7 @@ resource publicIpAddress 'Microsoft.Network/publicIPAddresses@2021-02-01' = {
   properties: {
     publicIPAddressVersion: 'IPv4'
     publicIPAllocationMethod: publicIPAllocationMethod
-    publicIPPrefix: !empty(publicIPPrefixId) ? publicIPPrefix : null
+    publicIPPrefix: !empty(publicIPPrefixResourceId) ? publicIPPrefix : null
     idleTimeoutInMinutes: 4
     ipTags: []
   }

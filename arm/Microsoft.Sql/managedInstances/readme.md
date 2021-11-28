@@ -40,7 +40,7 @@ SQL Managed Instance is deployed on a virtual network. This network is required 
 | `eventHubAuthorizationRuleId` | string |  |  | Optional. Resource ID of the event hub authorization rule for the Event Hubs namespace in which the event hub should be created or streamed to. |
 | `eventHubName` | string |  |  | Optional. Name of the event hub within the namespace to which logs are streamed. Without this, an event hub is created for each log category. |
 | `hardwareFamily` | string | `Gen5` |  | Optional. If the service has different generations of hardware, for the same SKU, then that can be captured here. |
-| `instancePoolId` | string |  |  | Optional. The resource ID of the instance pool this managed server belongs to. |
+| `instancePoolResourceId` | string |  |  | Optional. The resource ID of the instance pool this managed server belongs to. |
 | `keys` | _[keys](keys/readme.md)_ array | `[]` |  | Optional. The keys to configure |
 | `licenseType` | string | `LicenseIncluded` | `[LicenseIncluded, BasePrice]` | Optional. The license type. Possible values are 'LicenseIncluded' (regular price inclusive of a new SQL license) and 'BasePrice' (discounted AHB price for bringing your own SQL licenses). |
 | `location` | string | `[resourceGroup().location]` |  | Optional. Location for all resources. |
@@ -130,7 +130,7 @@ Tag names and tag values can be provided as needed. A tag can be left without a 
 | :-- | :-- | :-- |
 | `managedInstanceName` | string | The name of the deployed managed instance |
 | `managedInstanceResourceGroup` | string | The resource group of the deployed managed instance |
-| `managedInstanceResourceId` | string | The resourceId of the deployed managed instance |
+| `managedInstanceResourceId` | string | The resource ID of the deployed managed instance |
 
 ## Template references
 

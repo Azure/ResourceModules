@@ -74,7 +74,7 @@ Tag names and tag values can be provided as needed. A tag can be left without a 
 | :-- | :-- | :-- |
 | `diskEncryptionResourceGroup` | string | The resource group the disk encryption set was deployed into |
 | `diskEncryptionSetName` | string | The name of the disk encryption set |
-| `diskEncryptionSetResourceId` | string | The resourceId of the disk encryption set |
+| `diskEncryptionSetResourceId` | string | The resource ID of the disk encryption set |
 | `keyVaultName` | string | The name of the key vault with the disk encryption key |
 | `principalId` | string | The principal ID of the disk encryption set |
 

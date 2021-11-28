@@ -15,7 +15,7 @@ This module deploys an EventHub Namespace Disaster Recovery Config
 | `cuaId` | string |  |  | Optional. Customer Usage Attribution ID (GUID). This GUID must be previously registered |
 | `name` | string |  |  | Required. The name of the disaster recovery config |
 | `namespaceName` | string |  |  | Required. The name of the event hub namespace |
-| `partnerNamespaceId` | string |  |  | Optional. ARM ID of the Primary/Secondary event hub namespace name, which is part of GEO DR pairing |
+| `partnerNamespaceId` | string |  |  | Optional. Resource ID of the Primary/Secondary event hub namespace name, which is part of GEO DR pairing |
 
 ## Outputs
 

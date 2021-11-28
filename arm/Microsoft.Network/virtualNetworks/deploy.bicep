@@ -185,5 +185,5 @@ output virtualNetworkName string = virtualNetwork.name
 @description('The names of the deployed subnets')
 output subnetNames array = [for subnet in subnets: subnet.name]
 
-@description('The resourceIds of the deployed subnets')
-output subnetIds array = [for subnet in subnets: resourceId('Microsoft.Network/virtualNetworks/subnets', name, subnet.name)]
+@description('The resource IDs of the deployed subnets')
+output subnetResourceIds array = [for subnet in subnets: resourceId('Microsoft.Network/virtualNetworks/subnets', name, subnet.name)]
