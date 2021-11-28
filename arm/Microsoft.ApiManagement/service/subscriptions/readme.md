@@ -19,7 +19,7 @@ The following resources are required to be able to deploy this resource.
 | Parameter Name | Type | Default Value | Possible Values | Description |
 | :-- | :-- | :-- | :-- | :-- |
 | `allowTracing` | bool | `True` |  | Optional. Determines whether tracing can be enabled. |
-| `apiManagementServiceName` | string |  |  | Required. The name of the of the Api Management service. |
+| `apiManagementServiceName` | string |  |  | Required. The name of the of the API Management service. |
 | `cuaId` | string |  |  | Optional. Customer Usage Attribution id (GUID). This GUID must be previously registered |
 | `name` | string |  |  | Required. Subscription name. |
 | `ownerId` | string |  |  | Optional. User (user id path) for whom subscription is being created in form /users/{userId} |
@@ -34,7 +34,7 @@ The following resources are required to be able to deploy this resource.
 | :-- | :-- | :-- |
 | `subscriptionName` | string | The name of the API management service subscription |
 | `subscriptionResourceGroup` | string | The resource group the API management service subscription was deployed into |
-| `subscriptionResourceId` | string | The resourceId of the API management service subscription |
+| `subscriptionResourceId` | string | The resource ID of the API management service subscription |
 
 ## Template references
 

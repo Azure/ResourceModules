@@ -1,3 +1,6 @@
+@description('Required. The logic app workflow name.')
+param name string
+
 @description('Optional. The access control configuration for workflow actions.')
 param actionsAccessControlConfiguration object = {}
 
@@ -49,9 +52,6 @@ param eventHubName string = ''
 ])
 @description('Optional. Specify the type of lock.')
 param lock string = 'NotSpecified'
-
-@description('Required. The logic app workflow name.')
-param logicAppName string
 
 @description('Optional. Array of role assignment objects that contain the \'roleDefinitionIdOrName\' and \'principalId\' to define RBAC role assignments on this resource. In the roleDefinitionIdOrName attribute, you can provide either the display name of the role definition, or its fully qualified ID in the following format: \'/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11\'.')
 param roleAssignments array = []
@@ -138,25 +138,25 @@ module pid_cuaId '.bicep/nested_cuaId.bicep' = if (!empty(cuaId)) {
 }
 
 resource logicApp 'Microsoft.Logic/workflows@2019-05-01' = {
-  name: logicAppName
+  name: name
   location: location
-  tags: (empty(tags) ? null : tags)
-  identity: ((!empty(identity)) ? identity : any(null))
+  tags: !empty(tags) ? tags : null
+  identity: !empty(identity) ? identity : any(null)
   properties: {
     state: state
     endpointsConfiguration: {
       workflow: workflowEndpointsConfiguration
       connector: connectorEndpointsConfiguration
     }
-    sku: ((!empty(sku)) ? sku : null)
+    sku: !empty(sku) ? sku : null
     accessControl: {
-      triggers: ((!empty(triggersAccessControlConfiguration)) ? triggersAccessControlConfiguration : null)
-      contents: ((!empty(contentsAccessControlConfiguration)) ? contentsAccessControlConfiguration : null)
-      actions: ((!empty(actionsAccessControlConfiguration)) ? actionsAccessControlConfiguration : null)
-      workflowManagement: ((!empty(workflowManagementAccessControlConfiguration)) ? workflowManagementAccessControlConfiguration : null)
+      triggers: !empty(triggersAccessControlConfiguration) ? triggersAccessControlConfiguration : null
+      contents: !empty(contentsAccessControlConfiguration) ? contentsAccessControlConfiguration : null
+      actions: !empty(actionsAccessControlConfiguration) ? actionsAccessControlConfiguration : null
+      workflowManagement: !empty(workflowManagementAccessControlConfiguration) ? workflowManagementAccessControlConfiguration : null
     }
-    integrationAccount: ((!empty(integrationAccount)) ? integrationAccount : null)
-    integrationServiceEnvironment: ((!empty(integrationServiceEnvironment)) ? integrationServiceEnvironment : null)
+    integrationAccount: !empty(integrationAccount) ? integrationAccount : null
+    integrationServiceEnvironment: !empty(integrationServiceEnvironment) ? integrationServiceEnvironment : null
     definition: {
       '$schema': 'https://schema.management.azure.com/providers/Microsoft.Logic/schemas/2016-06-01/workflowdefinition.json#'
       actions: workflowActions
@@ -179,8 +179,8 @@ resource logicApp_lock 'Microsoft.Authorization/locks@2016-09-01' = if (lock != 
   scope: logicApp
 }
 
-resource logicApp_diagnosticSettings 'Microsoft.Insights/diagnosticsettings@2017-05-01-preview' = if ((!empty(diagnosticStorageAccountId)) || (!empty(workspaceId)) || (!empty(eventHubAuthorizationRuleId)) || (!empty(eventHubName))) {
-  name: '${logicAppName}-diagnosticsetting'
+resource logicApp_diagnosticSettings 'Microsoft.Insights/diagnosticsettings@2017-05-01-preview' = if (!empty(diagnosticStorageAccountId) || !empty(workspaceId) || !empty(eventHubAuthorizationRuleId) || !empty(eventHubName)) {
+  name: '${logicApp.name}-diagnosticsetting'
   properties: {
     storageAccountId: (empty(diagnosticStorageAccountId) ? null : diagnosticStorageAccountId)
     workspaceId: (empty(workspaceId) ? null : workspaceId)
@@ -197,10 +197,15 @@ module logicApp_rbac '.bicep/nested_rbac.bicep' = [for (roleAssignment, index) i
   params: {
     principalIds: roleAssignment.principalIds
     roleDefinitionIdOrName: roleAssignment.roleDefinitionIdOrName
-    resourceName: logicApp.name
+    resourceId: logicApp.id
   }
 }]
 
+@description('The name of the logic app')
 output logicAppName string = logicApp.name
+
+@description('The resource group the logic app was deployed into')
 output logicAppResourceGroup string = resourceGroup().name
+
+@description('The resource ID of the logic app')
 output logicAppResourceId string = logicApp.id

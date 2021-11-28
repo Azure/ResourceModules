@@ -1,4 +1,4 @@
-@description('Required. The name of the of the Api Management service.')
+@description('Required. The name of the of the API Management service.')
 param apiManagementServiceName string
 
 @description('Optional. Customer Usage Attribution id (GUID). This GUID must be previously registered')
@@ -56,8 +56,13 @@ module pid_cuaId '.bicep/nested_cuaId.bicep' = if (!empty(cuaId)) {
   params: {}
 }
 
+resource service 'Microsoft.ApiManagement/service@2021-04-01-preview' existing = {
+  name: apiManagementServiceName
+}
+
 resource identityProvider 'Microsoft.ApiManagement/service/identityProviders@2020-06-01-preview' = if (enableIdentityProviders) {
-  name: '${apiManagementServiceName}/${name}'
+  name: name
+  parent: service
   properties: {
     type: identityProviderType
     signinTenant: identityProviderSignInTenant
@@ -72,7 +77,7 @@ resource identityProvider 'Microsoft.ApiManagement/service/identityProviders@202
   }
 }
 
-@description('The resourceId of the API management service identity provider')
+@description('The resource ID of the API management service identity provider')
 output identityProviderResourceId string = identityProvider.id
 
 @description('The name of the API management service identity provider')

@@ -29,7 +29,7 @@ This template deploys a saved search for a Log Analytics workspace.
 | :-- | :-- | :-- |
 | `savedSearchName` | string | The name of the deployed saved search |
 | `savedSearchResourceGroup` | string | The resource group where the saved search is deployed |
-| `savedSearchResourceId` | string | The resource Id of the deployed saved search |
+| `savedSearchResourceId` | string | The resource ID of the deployed saved search |
 
 ## Template references
 

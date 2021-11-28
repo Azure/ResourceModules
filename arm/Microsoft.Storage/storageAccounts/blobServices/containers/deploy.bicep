@@ -38,13 +38,14 @@ resource storageAccount 'Microsoft.Storage/storageAccounts@2021-06-01' existing 
 
   resource blobServices 'blobServices@2021-06-01' existing = {
     name: blobServicesName
+  }
+}
 
-    resource container 'containers@2019-06-01' = {
-      name: name
-      properties: {
-        publicAccess: publicAccess
-      }
-    }
+resource container 'Microsoft.Storage/storageAccounts/blobServices/containers@2019-06-01' = {
+  name: name
+  parent: storageAccount::blobServices
+  properties: {
+    publicAccess: publicAccess
   }
 }
 
@@ -53,7 +54,7 @@ module immutabilityPolicy 'immutabilityPolicies/deploy.bicep' = if (!empty(immut
   params: {
     storageAccountName: storageAccountName
     blobServicesName: storageAccount::blobServices.name
-    containerName: storageAccount::blobServices::container.name
+    containerName: container.name
     immutabilityPeriodSinceCreationInDays: contains(immutabilityPolicyProperties, 'immutabilityPeriodSinceCreationInDays') ? immutabilityPolicyProperties.immutabilityPeriodSinceCreationInDays : 365
     allowProtectedAppendWrites: contains(immutabilityPolicyProperties, 'allowProtectedAppendWrites') ? immutabilityPolicyProperties.allowProtectedAppendWrites : true
   }
@@ -64,15 +65,15 @@ module container_rbac '.bicep/nested_rbac.bicep' = [for (roleAssignment, index) 
   params: {
     principalIds: roleAssignment.principalIds
     roleDefinitionIdOrName: roleAssignment.roleDefinitionIdOrName
-    resourceName: '${storageAccount.name}/${storageAccount::blobServices.name}/${storageAccount::blobServices::container.name}'
+    resourceId: container.id
   }
 }]
 
 @description('The name of the deployed container')
-output containerName string = storageAccount::blobServices::container.name
+output containerName string = container.name
 
 @description('The ID of the deployed container')
-output containerResourceId string = storageAccount::blobServices::container.id
+output containerResourceId string = container.id
 
 @description('The resource group of the deployed container')
 output containerResourceGroup string = resourceGroup().name

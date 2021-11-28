@@ -112,10 +112,15 @@ module workspace_rbac '.bicep/nested_rbac.bicep' = [for (roleAssignment, index) 
   params: {
     principalIds: roleAssignment.principalIds
     roleDefinitionIdOrName: roleAssignment.roleDefinitionIdOrName
-    resourceName: workspace.name
+    resourceId: workspace.id
   }
 }]
 
+@description('The resource ID of the AVD workspace')
 output workspaceResourceId string = workspace.id
+
+@description('The resource group the AVD workspace was deployed into')
 output workspaceResourceGroup string = resourceGroup().name
+
+@description('The name of the AVD workspace')
 output workspaceName string = workspace.name

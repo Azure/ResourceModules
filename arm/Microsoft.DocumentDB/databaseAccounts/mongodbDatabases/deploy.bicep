@@ -21,8 +21,13 @@ module pid_cuaId '.bicep/nested_cuaId.bicep' = if (!empty(cuaId)) {
   params: {}
 }
 
+resource databaseAccount 'Microsoft.DocumentDB/databaseAccounts@2021-07-01-preview' existing = {
+  name: databaseAccountName
+}
+
 resource mongodbDatabase 'Microsoft.DocumentDB/databaseAccounts/mongodbDatabases@2021-07-01-preview' = {
-  name: '${databaseAccountName}/${name}'
+  name: name
+  parent: databaseAccount
   tags: tags
   properties: {
     resource: {
@@ -48,8 +53,8 @@ module mongodbDatabase_collections 'collections/deploy.bicep' = [for collection 
 @description('The name of the mongodb database.')
 output mongodbDatabaseName string = mongodbDatabase.name
 
-@description('The Resource Id of the mongodb database.')
+@description('The resource ID of the mongodb database.')
 output mongodbDatabaseResourceId string = mongodbDatabase.id
 
-@description('The name of the Resource Group the mongodb database was created in.')
+@description('The name of the resource group the mongodb database was created in.')
 output mongodbDatabaseResourceGroup string = resourceGroup().name

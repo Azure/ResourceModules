@@ -1,18 +1,18 @@
-@description('Optional. The name of the EventHub namespace. If no name is provided, then unique name will be created.')
+@description('Optional. The name of the event hub namespace. If no name is provided, then unique name will be created.')
 @maxLength(50)
 param name string = ''
 
 @description('Optional. Location for all resources.')
 param location string = resourceGroup().location
 
-@description('Optional. EventHub Plan sku name')
+@description('Optional. event hub plan SKU name')
 @allowed([
   'Basic'
   'Standard'
 ])
 param skuName string = 'Standard'
 
-@description('Optional. Event Hub Plan scale-out capacity of the resource')
+@description('Optional. Event Hub plan scale-out capacity of the resource')
 @minValue(1)
 @maxValue(20)
 param skuCapacity int = 1
@@ -155,7 +155,7 @@ module pid_cuaId '.bicep/nested_cuaId.bicep' = if (!empty(cuaId)) {
   params: {}
 }
 
-resource eventHubNamespace 'Microsoft.EventHub/namespaces@2017-04-01' = {
+resource eventHubNamespace 'Microsoft.EventHub/namespaces@2021-06-01-preview' = {
   name: name_var
   location: location
   tags: tags
@@ -260,7 +260,7 @@ module eventHubNamespace_rbac '.bicep/nested_rbac.bicep' = [for (roleAssignment,
   params: {
     principalIds: roleAssignment.principalIds
     roleDefinitionIdOrName: roleAssignment.roleDefinitionIdOrName
-    resourceName: eventHubNamespace.name
+    resourceId: eventHubNamespace.id
   }
 }]
 

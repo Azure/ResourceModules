@@ -103,14 +103,14 @@ module queryRule_rbac '.bicep/nested_rbac.bicep' = [for (roleAssignment, index) 
   params: {
     principalIds: roleAssignment.principalIds
     roleDefinitionIdOrName: roleAssignment.roleDefinitionIdOrName
-    resourceName: queryRule.name
+    resourceId: queryRule.id
   }
 }]
 
 @description('The Name of the created query rule.')
 output queryAlertName string = queryRule.name
 
-@description('The ID of the created query rule.')
+@description('The resource ID of the created query rule.')
 output queryAlertResourceId string = queryRule.id
 
 @description('The Resource Group of the created query rule.')

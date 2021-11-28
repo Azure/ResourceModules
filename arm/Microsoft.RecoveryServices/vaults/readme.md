@@ -10,16 +10,16 @@ This module deploys Recovery Service Vault, with resource lock.
 | `Microsoft.Authorization/roleAssignments` | 2020-04-01-preview |
 | `Microsoft.Insights/diagnosticSettings` | 2021-05-01-preview |
 | `Microsoft.RecoveryServices/vaults` | 2021-08-01 |
+| `Microsoft.RecoveryServices/vaults/backupFabrics/protectionContainers` | 2021-08-01 |
 | `Microsoft.RecoveryServices/vaults/backupPolicies` | 2021-08-01 |
 | `Microsoft.RecoveryServices/vaults/backupstorageconfig` | 2021-08-01 |
-| `Microsoft.RecoveryServices/vaults/backupFabrics/protectionContainers` | 2021-08-01 |
 
 ## Parameters
 
 | Parameter Name | Type | Default Value | Possible Values | Description |
 | :-- | :-- | :-- | :-- | :-- |
-| `backupPolicies` | array | `[]` |  | Optional. List of all backup policies. |
-| `backupStorageConfig` | object | `{}` |  | Optional. The storage configuration for the Azure Recovery Service Vault |
+| `backupPolicies` | _[backupPolicies](backupPolicies/readme.md)_ array | `[]` |  | Optional. List of all backup policies. |
+| `backupStorageConfig` | _[backupStorageConfig](backupStorageConfig/readme.md)_ object | `{object}` |  | Optional. The storage configuration for the Azure Recovery Service Vault |
 | `cuaId` | string |  |  | Optional. Customer Usage Attribution id (GUID). This GUID must be previously registered |
 | `diagnosticLogsRetentionInDays` | int | `365` |  | Optional. Specifies the number of days that logs will be kept for; a value of 0 will retain data indefinitely. |
 | `diagnosticStorageAccountId` | string |  |  | Optional. Resource identifier of the Diagnostic Storage Account. |
@@ -29,8 +29,8 @@ This module deploys Recovery Service Vault, with resource lock.
 | `lock` | string | `NotSpecified` | `[CanNotDelete, NotSpecified, ReadOnly]` | Optional. Specify the type of lock. |
 | `logsToEnable` | array | `[AzureBackupReport, CoreAzureBackup, AddonAzureBackupJobs, AddonAzureBackupAlerts, AddonAzureBackupPolicy, AddonAzureBackupStorage, AddonAzureBackupProtectedInstance, AzureSiteRecoveryJobs, AzureSiteRecoveryEvents, AzureSiteRecoveryReplicatedItems, AzureSiteRecoveryReplicationStats, AzureSiteRecoveryRecoveryPoints, AzureSiteRecoveryReplicationDataUploadRate, AzureSiteRecoveryProtectedDiskDataChurn]` | `[AzureBackupReport, CoreAzureBackup, AddonAzureBackupJobs, AddonAzureBackupAlerts, AddonAzureBackupPolicy, AddonAzureBackupStorage, AddonAzureBackupProtectedInstance, AzureSiteRecoveryJobs, AzureSiteRecoveryEvents, AzureSiteRecoveryReplicatedItems, AzureSiteRecoveryReplicationStats, AzureSiteRecoveryRecoveryPoints, AzureSiteRecoveryReplicationDataUploadRate, AzureSiteRecoveryProtectedDiskDataChurn]` | Optional. The name of logs that will be streamed. |
 | `metricsToEnable` | array | `[Health]` | `[Health]` | Optional. The name of metrics that will be streamed. |
-| `protectionContainers` | array | `[]` |  | Optional. List of all protection containers. |
 | `name` | string |  |  | Required. Name of the Azure Recovery Service Vault |
+| `protectionContainers` | _[protectionContainers](protectionContainers/readme.md)_ array | `[]` |  | Optional. List of all protection containers. |
 | `roleAssignments` | array | `[]` |  | Optional. Array of role assignment objects that contain the 'roleDefinitionIdOrName' and 'principalId' to define RBAC role assignments on this resource. In the roleDefinitionIdOrName attribute, you can provide either the display name of the role definition, or its fully qualified ID in the following format: '/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11' |
 | `tags` | object | `{object}` |  | Optional. Tags of the Recovery Service Vault resource. |
 | `workspaceId` | string |  |  | Optional. Resource identifier of Log Analytics. |
@@ -336,11 +336,11 @@ Array of backup policies. They need to be properly formatted and can be VM backu
 
 ## Outputs
 
-| Output Name | Type |
-| :-- | :-- |
-| `recoveryServicesVaultName` | string |
-| `recoveryServicesVaultResourceGroup` | string |
-| `recoveryServicesVaultResourceId` | string |
+| Output Name | Type | Description |
+| :-- | :-- | :-- |
+| `recoveryServicesVaultName` | string | The Name of the Recovery Services Vault |
+| `recoveryServicesVaultResourceGroup` | string | The name of the Resource Group the Recovery Services Vault was created in |
+| `recoveryServicesVaultResourceId` | string | The resource ID of the Recovery Services Vault |
 
 ## Template references
 
@@ -348,6 +348,6 @@ Array of backup policies. They need to be properly formatted and can be VM backu
 - [Roleassignments](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2020-04-01-preview/roleAssignments)
 - [Diagnosticsettings](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Insights/2021-05-01-preview/diagnosticSettings)
 - [Vaults](https://docs.microsoft.com/en-us/azure/templates/Microsoft.RecoveryServices/2021-08-01/vaults)
-- [Vaults/Backuppolicies](https://docs.microsoft.com/en-us/azure/templates/Microsoft.RecoveryServices/2019-06-15/vaults/backupPolicies)
-- [Vaults/Backupstorageconfig](https://docs.microsoft.com/en-us/azure/templates/Microsoft.RecoveryServices/2020-02-02/vaults/backupstorageconfig)
-- [Vaults/Protectioncontainers](https://docs.microsoft.com/en-us/azure/templates/microsoft.recoveryservices/2021-08-01/vaults/backupfabrics/protectioncontainers?tabs=bicep)
+- [Vaults/Backupfabrics/Protectioncontainers](https://docs.microsoft.com/en-us/azure/templates/Microsoft.RecoveryServices/2021-08-01/vaults/backupFabrics/protectionContainers)
+- [Vaults/Backuppolicies](https://docs.microsoft.com/en-us/azure/templates/Microsoft.RecoveryServices/2021-08-01/vaults/backupPolicies)
+- [Vaults/Backupstorageconfig](https://docs.microsoft.com/en-us/azure/templates/Microsoft.RecoveryServices/2021-08-01/vaults/backupstorageconfig)

@@ -1,5 +1,5 @@
 @description('Required. The name of the machine learning workspace.')
-param workspaceName string
+param name string
 
 @description('Optional. Location for all resources.')
 param location string = resourceGroup().location
@@ -48,9 +48,6 @@ param tags object = {}
 
 @description('Optional. Customer Usage Attribution id (GUID). This GUID must be previously registered')
 param cuaId string = ''
-
-@description('Optional. The name of the Diagnostic setting.')
-param diagnosticSettingName string = 'service'
 
 @description('Optional. Specifies the number of days that logs will be kept for; a value of 0 will retain data indefinitely.')
 @minValue(0)
@@ -118,7 +115,7 @@ module pid_cuaId '.bicep/nested_cuaId.bicep' = if (!empty(cuaId)) {
 }
 
 resource workspace 'Microsoft.MachineLearningServices/workspaces@2021-04-01' = {
-  name: workspaceName
+  name: name
   location: location
   tags: tags
   sku: {
@@ -129,7 +126,7 @@ resource workspace 'Microsoft.MachineLearningServices/workspaces@2021-04-01' = {
     type: 'SystemAssigned'
   }
   properties: {
-    friendlyName: workspaceName
+    friendlyName: name
     storageAccount: associatedStorageAccountResourceId
     keyVault: associatedKeyVaultResourceId
     applicationInsights: associatedApplicationInsightsResourceId
@@ -149,7 +146,7 @@ resource workspace_lock 'Microsoft.Authorization/locks@2016-09-01' = if (lock !=
 }
 
 resource workspace_diagnosticSettings 'Microsoft.Insights/diagnosticsettings@2017-05-01-preview' = if ((!empty(diagnosticStorageAccountId)) || (!empty(workspaceId)) || (!empty(eventHubAuthorizationRuleId)) || (!empty(eventHubName))) {
-  name: '${workspaceName}-${diagnosticSettingName}'
+  name: '${name}-diagnosticSettings'
   properties: {
     storageAccountId: (empty(diagnosticStorageAccountId) ? null : diagnosticStorageAccountId)
     workspaceId: (empty(workspaceId) ? null : workspaceId)
@@ -176,10 +173,15 @@ module workspace_rbac '.bicep/nested_rbac.bicep' = [for (roleAssignment, index) 
   params: {
     principalIds: roleAssignment.principalIds
     roleDefinitionIdOrName: roleAssignment.roleDefinitionIdOrName
-    resourceName: workspace.name
+    resourceId: workspace.id
   }
 }]
 
+@description('The resource ID of the machine learning service')
 output machineLearningServiceResourceId string = workspace.id
+
+@description('The resource group the machine learning service was deployed into')
 output machineLearningServiceResourceGroup string = resourceGroup().name
+
+@description('The name of the machine learning service')
 output machineLearningServiceName string = workspace.name

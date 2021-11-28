@@ -1,7 +1,7 @@
-@description('Required. The Name of the App Service Plan to deploy.')
+@description('Required. The name of the app service plan to deploy.')
 @minLength(1)
 @maxLength(40)
-param appServicePlanName string
+param name string
 
 @description('Required. Defines the name, tier, size, family and capacity of the App Service Plan.')
 param sku object
@@ -66,7 +66,7 @@ module pid_cuaId '.bicep/nested_cuaId.bicep' = if (!empty(cuaId)) {
 }
 
 resource appServicePlan 'Microsoft.Web/serverfarms@2021-02-01' = {
-  name: appServicePlanName
+  name: name
   kind: serverOS == 'Windows' ? '' : 'linux'
   location: location
   tags: tags
@@ -96,7 +96,7 @@ module appServicePlan_rbac '.bicep/nested_rbac.bicep' = [for (roleAssignment, in
   params: {
     principalIds: roleAssignment.principalIds
     roleDefinitionIdOrName: roleAssignment.roleDefinitionIdOrName
-    resourceName: appServicePlan.name
+    resourceId: appServicePlan.id
   }
 }]
 

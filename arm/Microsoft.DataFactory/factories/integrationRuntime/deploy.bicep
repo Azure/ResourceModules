@@ -30,8 +30,13 @@ var managedVirtualNetwork_var = {
   type: type == 'Managed' ? 'ManagedVirtualNetworkReference' : null
 }
 
+resource dataFactory 'Microsoft.DataFactory/factories@2018-06-01' existing = {
+  name: dataFactoryName
+}
+
 resource integrationRuntime 'Microsoft.DataFactory/factories/integrationRuntimes@2018-06-01' = {
-  name: '${dataFactoryName}/${name}'
+  name: name
+  parent: dataFactory
   properties: {
     type: type
     managedVirtualNetwork: type == 'Managed' ? managedVirtualNetwork_var : null

@@ -183,7 +183,7 @@ module appServiceEnvironment_rbac '.bicep/nested_rbac.bicep' = [for (roleAssignm
   params: {
     principalIds: roleAssignment.principalIds
     roleDefinitionIdOrName: roleAssignment.roleDefinitionIdOrName
-    resourceName: appServiceEnvironment.name
+    resourceId: appServiceEnvironment.id
   }
 }]
 
