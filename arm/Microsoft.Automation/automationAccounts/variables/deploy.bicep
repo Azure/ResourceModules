@@ -38,8 +38,8 @@ resource variable 'Microsoft.Automation/automationAccounts/variables@2020-01-13-
 @sys.description('The name of the deployed variable')
 output variableName string = variable.name
 
-@sys.description('The ID of the deployed variable')
-output variableId string = variable.id
+@sys.description('The resource ID of the deployed variable')
+output variableResourceId string = variable.id
 
 @sys.description('The resource group of the deployed variable')
 output variableResourceGroup string = resourceGroup().name

@@ -18,7 +18,7 @@ The following resources are required to be able to deploy this resource.
 
 | Parameter Name | Type | Default Value | Possible Values | Description |
 | :-- | :-- | :-- | :-- | :-- |
-| `apiManagementServiceName` | string |  |  | Required. The name of the of the Api Management service. |
+| `apiManagementServiceName` | string |  |  | Required. The name of the of the API Management service. |
 | `cuaId` | string |  |  | Optional. Customer Usage Attribution id (GUID). This GUID must be previously registered |
 | `displayName` | string |  |  | Required. Unique name of NamedValue. It may contain only letters, digits, period, dash, and underscore characters. |
 | `keyVault` | object | `{object}` |  | Optional. KeyVault location details of the namedValue.  |
@@ -28,8 +28,6 @@ The following resources are required to be able to deploy this resource.
 | `value` | string | `[newGuid()]` |  | Optional. Value of the NamedValue. Can contain policy expressions. It may not be empty or consist only of whitespace. This property will not be filled on 'GET' operations! Use '/listSecrets' POST request to get the value. |
 
 ### Parameter Usage: `keyVault`
-
-Product API's name list.
 
 ```json
 "keyVault": {
@@ -46,7 +44,7 @@ Product API's name list.
 | :-- | :-- | :-- |
 | `namedValueName` | string | The name of the named value |
 | `namedValueResourceGroup` | string | The resource group the named value was deployed into |
-| `namedValueResourceId` | string | The resourceId of the named value |
+| `namedValueResourceId` | string | The resource ID of the named value |
 
 ## Template references
 

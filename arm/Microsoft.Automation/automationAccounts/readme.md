@@ -140,7 +140,8 @@ To use Private Endpoint the following dependencies must be deployed:
 | `assignedIdentityID` | string | The resource ID of the assigned identity. |
 | `automationAccountName` | string | The name of the deployed automation account |
 | `automationAccountResourceGroup` | string | The resource group of the deployed automation account |
-| `automationAccountResourceId` | string | The ID of the deployed automation account |
+| `automationAccountResourceId` | string | The resource ID of the deployed automation account |
+| `principalID` | string | The principal ID of the system assigned identity. |
 
 ## Template references
 

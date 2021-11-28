@@ -259,7 +259,7 @@ resource softwareUpdateConfiguration 'Microsoft.Automation/automationAccounts/so
 @description('The name of the deployed softwareUpdateConfiguration')
 output softwareUpdateConfigurationName string = softwareUpdateConfiguration.name
 
-@description('The ID of the deployed softwareUpdateConfiguration')
+@description('The resource ID of the deployed softwareUpdateConfiguration')
 output softwareUpdateConfigurationResourceId string = softwareUpdateConfiguration.id
 
 @description('The resource group of the deployed softwareUpdateConfiguration')

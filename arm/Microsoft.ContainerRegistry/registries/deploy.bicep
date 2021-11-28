@@ -1,7 +1,7 @@
-@description('Required. Name of your Azure Container Registry')
+@description('Required. Name of your Azure container registry')
 @minLength(5)
 @maxLength(50)
-param acrName string
+param name string
 
 @description('Optional. Enable admin user that have push / pull permission to the registry.')
 param acrAdminUserEnabled bool = false
@@ -15,7 +15,7 @@ param roleAssignments array = []
 @description('Optional. Configuration Details for private endpoints.')
 param privateEndpoints array = []
 
-@description('Optional. Tier of your Azure Container Registry.')
+@description('Optional. Tier of your Azure container registry.')
 @allowed([
   'Basic'
   'Standard'
@@ -93,8 +93,6 @@ param eventHubAuthorizationRuleId string = ''
 @description('Optional. Name of the event hub within the namespace to which logs are streamed. Without this, an event hub is created for each log category.')
 param eventHubName string = ''
 
-var cleanAcrName_var = replace(toLower(acrName), '-', '')
-
 var diagnosticsLogs = [for log in logsToEnable: {
   category: log
   enabled: true
@@ -120,7 +118,7 @@ module pid_cuaId '.bicep/nested_cuaId.bicep' = if (!empty(cuaId)) {
 }
 
 resource registry 'Microsoft.ContainerRegistry/registries@2020-11-01-preview' = {
-  name: cleanAcrName_var
+  name: name
   location: location
   tags: tags
   sku: {
@@ -174,7 +172,7 @@ module registry_rbac '.bicep/nested_rbac.bicep' = [for (roleAssignment, index) i
   params: {
     principalIds: roleAssignment.principalIds
     roleDefinitionIdOrName: roleAssignment.roleDefinitionIdOrName
-    resourceName: registry.name
+    resourceId: registry.id
   }
 }]
 
@@ -182,17 +180,20 @@ module registry_privateEndpoints '.bicep/nested_privateEndpoints.bicep' = [for p
   name: '${uniqueString(deployment().name, privateEndpoint.name)}-privateEndpoint'
   params: {
     privateEndpointResourceId: registry.id
-    privateEndpointVnetLocation: (empty(privateEndpoints) ? 'dummy' : reference(split(privateEndpoint.subnetResourceId, '/subnets/')[0], '2020-06-01', 'Full').location)
+    privateEndpointVnetLocation: empty(privateEndpoints) ? 'dummy' : reference(split(privateEndpoint.subnetResourceId, '/subnets/')[0], '2020-06-01', 'Full').location
     privateEndpointObj: privateEndpoint
     tags: tags
   }
 }]
 
-@description('The Name of the Azure Container Registry.')
+@description('The Name of the Azure container registry.')
 output acrName string = registry.name
-@description('The reference to the Azure Container Registry.')
+
+@description('The reference to the Azure container registry.')
 output acrLoginServer string = reference(registry.id, '2019-05-01').loginServer
-@description('The Name of the Azure Container Registry.')
+
+@description('The name of the Azure container registry.')
 output acrResourceGroup string = resourceGroup().name
-@description('The Resource Id of the Azure Container Registry.')
+
+@description('The resource ID of the Azure container registry.')
 output acrResourceId string = registry.id

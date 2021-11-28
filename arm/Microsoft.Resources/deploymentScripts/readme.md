@@ -24,11 +24,11 @@ This module deploys Deployment Scripts.
 | `kind` | string | `AzurePowerShell` | `[AzurePowerShell, AzureCLI]` | Optional. Type of the script. AzurePowerShell, AzureCLI. |
 | `location` | string | `[resourceGroup().location]` |  | Optional. Location for all resources. |
 | `lock` | string | `NotSpecified` | `[CanNotDelete, NotSpecified, ReadOnly]` | Optional. Specify the type of lock. |
+| `name` | string |  |  | Required. Display name of the script to be run. |
 | `primaryScriptUri` | string |  |  | Optional. Uri for the external script. This is the entry point for the external script. To run an internal script, use the scriptContent instead. |
 | `retentionInterval` | string | `P1D` |  | Optional. Interval for which the service retains the script resource after it reaches a terminal state. Resource will be deleted when this duration expires. Duration is based on ISO 8601 pattern (for example P7D means one week). |
 | `runOnce` | bool |  |  | Optional. When set to false, script will run every time the template is deployed. When set to true, the script will only run once. |
 | `scriptContent` | string |  |  | Optional. Script body. Max length: 32000 characters. To run an external script, use primaryScriptURI instead. |
-| `scriptName` | string |  |  | Required. Display name of the script to be run. |
 | `supportingScriptUris` | array | `[]` |  | Optional. List of supporting files for the external script (defined in primaryScriptUri). Does not work with internal scripts (code defined in scriptContent). |
 | `tags` | object | `{object}` |  | Optional. Tags of the resource. |
 | `timeout` | string | `PT1H` |  | Optional. Maximum allowed script execution time specified in ISO 8601 format. Default value is PT1H - 1 hour; 'PT30M' - 30 minutes; 'P5D' - 5 days; 'P1Y' 1 year. |
@@ -54,11 +54,11 @@ Tag names and tag values can be provided as needed. A tag can be left without a 
 
 ## Outputs
 
-| Output Name | Type |
-| :-- | :-- |
-| `deploymentScriptName` | string |
-| `deploymentScriptResourceGroup` | string |
-| `deploymentScriptResourceId` | string |
+| Output Name | Type | Description |
+| :-- | :-- | :-- |
+| `deploymentScriptName` | string | The name of the deployment script |
+| `deploymentScriptResourceGroup` | string | The resource group the deployment script was deployed into |
+| `deploymentScriptResourceId` | string | The resource ID of the deployment script |
 
 ## Considerations
 

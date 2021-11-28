@@ -13,7 +13,6 @@ This module deploys an Action Group
 
 | Parameter Name | Type | Default Value | Possible Values | Description |
 | :-- | :-- | :-- | :-- | :-- |
-| `actionGroupName` | string |  |  | Required. The name of the action group. |
 | `armRoleReceivers` | array | `[]` |  | Optional. The list of ARM role receivers that are part of this action group. Roles are Azure RBAC roles and only built-in roles are supported. |
 | `automationRunbookReceivers` | array | `[]` |  | Optional. The list of AutomationRunbook receivers that are part of this action group. |
 | `azureAppPushReceivers` | array | `[]` |  | Optional. The list of AzureAppPush receivers that are part of this action group. |
@@ -25,6 +24,7 @@ This module deploys an Action Group
 | `itsmReceivers` | array | `[]` |  | Optional. The list of ITSM receivers that are part of this action group. |
 | `location` | string | `global` |  | Optional. Location for all resources. |
 | `logicAppReceivers` | array | `[]` |  | Optional. The list of logic app receivers that are part of this action group. |
+| `name` | string |  |  | Required. The name of the action group. |
 | `roleAssignments` | array | `[]` |  | Optional. Array of role assignment objects that contain the 'roleDefinitionIdOrName' and 'principalId' to define RBAC role assignments on this resource. In the roleDefinitionIdOrName attribute, you can provide either the display name of the role definition, or its fully qualified ID in the following format: '/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11' |
 | `smsReceivers` | array | `[]` |  | Optional. The list of SMS receivers that are part of this action group. |
 | `tags` | object | `{object}` |  | Optional. Tags of the resource. |
@@ -123,11 +123,11 @@ Tag names and tag values can be provided as needed. A tag can be left without a 
 
 ## Outputs
 
-| Output Name | Type |
-| :-- | :-- |
-| `actionGroupName` | string |
-| `actionGroupResourceId` | string |
-| `deploymentResourceGroup` | string |
+| Output Name | Type | Description |
+| :-- | :-- | :-- |
+| `actionGroupName` | string | The name of the action group  |
+| `actionGroupResourceGroup` | string | The resource group the action group was deployed into |
+| `actionGroupResourceId` | string | The resource ID of the action group  |
 
 ## Template references
 

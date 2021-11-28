@@ -19,10 +19,10 @@ This module deploys a key vault key.
 | `curveName` | string | `P-256` | `[P-256, P-256K, P-384, P-521]` | Optional. The elliptic curve name. |
 | `keyOps` | array | `[]` | `[decrypt, encrypt, import, sign, unwrapKey, verify, wrapKey]` | Optional. Array of JsonWebKeyOperation |
 | `keySize` | int | `-1` |  | Optional. The key size in bits. For example: 2048, 3072, or 4096 for RSA. |
+| `keyVaultName` | string |  |  | Required. The name of the key vault |
 | `kty` | string | `EC` | `[EC, EC-HSM, RSA, RSA-HSM]` | Optional. The type of the key. |
 | `name` | string |  |  | Required. The name of the key |
 | `tags` | object | `{object}` |  | Optional. Resource tags. |
-| `vaultName` | string |  |  | Required. The name of the key vault |
 
 ### Parameter Usage: `tags`
 
@@ -45,9 +45,9 @@ Tag names and tag values can be provided as needed. A tag can be left without a 
 
 | Output Name | Type | Description |
 | :-- | :-- | :-- |
-| `keyName` | string | The Name of the key. |
+| `keyName` | string | The name of the key. |
 | `keyResourceGroup` | string | The name of the Resource Group the key was created in. |
-| `keyResourceId` | string | The Resource Id of the key. |
+| `keyResourceId` | string | The Resource ID of the key. |
 
 ## Template references
 

@@ -83,7 +83,7 @@ resource runbook 'Microsoft.Automation/automationAccounts/runbooks@2019-06-01' =
 @description('The name of the deployed runbook')
 output runbookName string = runbook.name
 
-@description('The ID of the deployed runbook')
+@description('The resource ID of the deployed runbook')
 output runbookResourceId string = runbook.id
 
 @description('The resource group of the deployed runbook')

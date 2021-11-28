@@ -4,7 +4,7 @@ This module deploys an Alert based on metrics
 
 ## Resource types
 
-| Resource Type | API Version |
+| Resource Type | Api Version |
 | :-- | :-- |
 | `Microsoft.Authorization/roleAssignments` | 2020-04-01-preview |
 | `Microsoft.Insights/scheduledQueryRules` | 2021-02-01-preview |
@@ -85,7 +85,7 @@ Tag names and tag values can be provided as needed. A tag can be left without a 
 | :-- | :-- | :-- |
 | `deploymentResourceGroup` | string | The Resource Group of the created query rule. |
 | `queryAlertName` | string | The Name of the created query rule. |
-| `queryAlertResourceId` | string | The ID of the created query rule. |
+| `queryAlertResourceId` | string | The resource ID of the created query rule. |
 
 ## Template references
 

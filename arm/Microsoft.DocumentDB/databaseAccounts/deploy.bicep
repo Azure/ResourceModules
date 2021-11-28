@@ -237,7 +237,7 @@ module databaseAccount_rbac '.bicep/nested_rbac.bicep' = [for (roleAssignment, i
   params: {
     principalIds: roleAssignment.principalIds
     roleDefinitionIdOrName: roleAssignment.roleDefinitionIdOrName
-    resourceName: databaseAccount.name
+    resourceId: databaseAccount.id
   }
 }]
 
@@ -262,8 +262,8 @@ module mongodbDatabases_resource 'mongodbDatabases/deploy.bicep' = [for mongodbD
 @description('The name of the database account.')
 output databaseAccountName string = databaseAccount.name
 
-@description('The Resource Id of the database account.')
+@description('The resource ID of the database account.')
 output databaseAccountResourceId string = databaseAccount.id
 
-@description('The name of the Resource Group the database account was created in.')
+@description('The name of the resource group the database account was created in.')
 output databaseAccountResourceGroup string = resourceGroup().name

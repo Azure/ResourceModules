@@ -7,7 +7,7 @@ The following table provides you with an outline of all Modules that are current
 | Name | Provider namespace | Resource Type |
 | - | - | - |
 | [Analysis Services](https://github.com/Azure/ResourceModules/tree/main/arm/Microsoft.AnalysisServices/servers) | `MS.AnalysisServices` | [servers](https://github.com/Azure/ResourceModules/tree/main/arm/Microsoft.AnalysisServices/servers) |
-| [Api Management](https://github.com/Azure/ResourceModules/tree/main/arm/Microsoft.ApiManagement/service) | `MS.ApiManagement` | [service](https://github.com/Azure/ResourceModules/tree/main/arm/Microsoft.ApiManagement/service) |
+| [API Management](https://github.com/Azure/ResourceModules/tree/main/arm/Microsoft.ApiManagement/service) | `MS.ApiManagement` | [service](https://github.com/Azure/ResourceModules/tree/main/arm/Microsoft.ApiManagement/service) |
 | [PolicyAssignment](https://github.com/Azure/ResourceModules/tree/main/arm/Microsoft.Authorization/policyAssignments) | `MS.Authorization` | [policyAssignments](https://github.com/Azure/ResourceModules/tree/main/arm/Microsoft.Authorization/policyAssignments) |
 | [PolicyDefinition](https://github.com/Azure/ResourceModules/tree/main/arm/Microsoft.Authorization/policyDefinitions) |  | [policyDefinitions](https://github.com/Azure/ResourceModules/tree/main/arm/Microsoft.Authorization/policyDefinitions) |
 | [PolicyExemption](https://github.com/Azure/ResourceModules/tree/main/arm/Microsoft.Authorization/policyExemptions) |  | [policyExemptions](https://github.com/Azure/ResourceModules/tree/main/arm/Microsoft.Authorization/policyExemptions) |

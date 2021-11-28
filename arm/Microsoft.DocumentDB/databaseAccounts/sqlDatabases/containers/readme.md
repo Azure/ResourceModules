@@ -1,4 +1,4 @@
-# DocumentDB Database Account SQL Databases Containers `[Microsoft.DocumentDB/databaseAccount/sqlDatabases/containers]`
+# DocumentDB Database Account SQL Databases Containers  `[Microsoft.DocumentDB/databaseAccounts/sqlDatabases/containers]`
 
 ## Resource Types
 
@@ -28,8 +28,8 @@
 | Output Name | Type | Description |
 | :-- | :-- | :-- |
 | `containerName` | string | The name of the container. |
-| `containerResourceGroup` | string | The name of the Resource Group the container was created in. |
-| `containerResourceId` | string | The Resource Id of the container. |
+| `containerResourceGroup` | string | The name of the resource group the container was created in. |
+| `containerResourceId` | string | The resource ID of the container. |
 
 ## Template references
 

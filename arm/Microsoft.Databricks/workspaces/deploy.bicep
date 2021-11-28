@@ -1,5 +1,5 @@
 @description('Required. The name of the Azure Databricks workspace to create')
-param workspaceName string
+param name string
 
 @description('Optional. The managed resource group Id')
 param managedResourceGroupId string = ''
@@ -87,7 +87,7 @@ var diagnosticsLogs = [for log in logsToEnable: {
   }
 }]
 
-var managedResourceGroupName = '${workspaceName}-rg'
+var managedResourceGroupName = '${name}-rg'
 var managedResourceGroupId_var = '${subscription().id}/resourceGroups/${managedResourceGroupName}'
 
 module pid_cuaId '.bicep/nested_cuaId.bicep' = if (!empty(cuaId)) {
@@ -96,7 +96,7 @@ module pid_cuaId '.bicep/nested_cuaId.bicep' = if (!empty(cuaId)) {
 }
 
 resource workspace 'Microsoft.Databricks/workspaces@2018-04-01' = {
-  name: workspaceName
+  name: name
   location: location
   tags: tags
   sku: {
@@ -134,7 +134,7 @@ module workspace_rbac '.bicep/nested_rbac.bicep' = [for (roleAssignment, index) 
   params: {
     principalIds: roleAssignment.principalIds
     roleDefinitionIdOrName: roleAssignment.roleDefinitionIdOrName
-    resourceName: workspace.name
+    resourceId: workspace.id
   }
 }]
 

@@ -1,6 +1,6 @@
-# Api Management Service Authorization Servers   `[Microsoft.ApiManagement/service/authorizationServers]`
+# API Management Service Authorization Servers   `[Microsoft.ApiManagement/service/authorizationServers]`
 
-This module deploys Api Management Service Authorization Servers.
+This module deploys API Management Service Authorization Servers.
 
 ## Resource types
 
@@ -18,7 +18,7 @@ The following resources are required to be able to deploy this resource.
 
 | Parameter Name | Type | Default Value | Possible Values | Description |
 | :-- | :-- | :-- | :-- | :-- |
-| `apiManagementServiceName` | string |  |  | Required. The name of the of the Api Management service. |
+| `apiManagementServiceName` | string |  |  | Required. The name of the of the API Management service. |
 | `authorizationEndpoint` | string |  |  | Required. OAuth authorization endpoint. See <http://tools.ietf.org/html/rfc6749#section-3.2>. |
 | `authorizationMethods` | array | `[GET]` |  | Optional. HTTP verbs supported by the authorization endpoint. GET must be always present. POST is optional. - HEAD, OPTIONS, TRACE, GET, POST, PUT, PATCH, DELETE |
 | `bearerTokenSendingMethods` | array | `[authorizationHeader]` |  | Optional. Specifies the mechanism by which access token is passed to the API. - authorizationHeader or query |
@@ -43,7 +43,7 @@ The following resources are required to be able to deploy this resource.
 | :-- | :-- | :-- |
 | `authorizationServerName` | string | The name of the API management service authorization server |
 | `authorizationServerResourceGroup` | string | The resource group the API management service authorization server was deployed into |
-| `authorizationServerResourceId` | string | The resourceId of the API management service authorization server |
+| `authorizationServerResourceId` | string | The resource ID of the API management service authorization server |
 
 ## Template references
 

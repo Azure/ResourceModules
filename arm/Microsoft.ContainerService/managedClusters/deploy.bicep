@@ -1,11 +1,11 @@
 @description('Required. Specifies the name of the AKS cluster.')
-param aksClusterName string
+param name string
 
 @description('Optional. Specifies the location of AKS cluster. It picks up Resource Group\'s location by default.')
 param location string = resourceGroup().location
 
 @description('Optional. Specifies the DNS prefix specified when creating the managed cluster.')
-param aksClusterDnsPrefix string = aksClusterName
+param aksClusterDnsPrefix string = name
 
 @description('Optional. The identity of the managed cluster.')
 param identity object = {
@@ -98,7 +98,7 @@ param aadProfileManaged bool = true
 param aadProfileEnableAzureRBAC bool = true
 
 @description('Optional. Name of the resource group containing agent pool nodes.')
-param nodeResourceGroup string = '${resourceGroup().name}_aks_${aksClusterName}_nodes'
+param nodeResourceGroup string = '${resourceGroup().name}_aks_${name}_nodes'
 
 @description('Optional. Specifies whether to create the cluster as a private cluster or not.')
 param aksClusterEnablePrivateCluster bool = false
@@ -252,7 +252,7 @@ module pid_cuaId '.bicep/nested_cuaId.bicep' = if (!empty(cuaId)) {
 }
 
 resource managedCluster 'Microsoft.ContainerService/managedClusters@2021-07-01' = {
-  name: aksClusterName
+  name: name
   location: location
   tags: (empty(tags) ? null : tags)
   identity: identity
@@ -363,11 +363,18 @@ module managedCluster_rbac '.bicep/nested_rbac.bicep' = [for (roleAssignment, in
   params: {
     principalIds: roleAssignment.principalIds
     roleDefinitionIdOrName: roleAssignment.roleDefinitionIdOrName
-    resourceName: managedCluster.name
+    resourceId: managedCluster.id
   }
 }]
 
+@description('The resource ID of the managed cluster')
 output azureKubernetesServiceResourceId string = managedCluster.id
+
+@description('The resource group the managed cluster was deployed into')
 output azureKubernetesServiceResourceGroup string = resourceGroup().name
+
+@description('The name of the managed cluster')
 output azureKubernetesServiceName string = managedCluster.name
+
+@description('The control plane FQDN of the managed cluster')
 output controlPlaneFQDN string = (aksClusterEnablePrivateCluster ? managedCluster.properties.privateFQDN : managedCluster.properties.fqdn)

@@ -1,19 +1,19 @@
 @description('Required. API revision identifier. Must be unique in the current API Management service instance. Non-current revision has ;rev=n as a suffix where n is the revision number.')
 param name string
 
-@description('Optional. Array of Policies to apply to the Service Api.')
+@description('Optional. Array of Policies to apply to the Service API.')
 param policies array = []
 
-@description('Required. The name of the of the Api Management service.')
+@description('Required. The name of the of the API Management service.')
 param apiManagementServiceName string
 
-@description('Optional. Describes the Revision of the Api. If no value is provided, default revision 1 is created')
+@description('Optional. Describes the Revision of the API. If no value is provided, default revision 1 is created')
 param apiRevision string = ''
 
-@description('Optional. Description of the Api Revision.')
+@description('Optional. Description of the API Revision.')
 param apiRevisionDescription string = ''
 
-@description('Optional. Type of Api to create. * http creates a SOAP to REST API * soap creates a SOAP pass-through API.')
+@description('Optional. Type of API to create. * http creates a SOAP to REST API * soap creates a SOAP pass-through API.')
 @allowed([
   'http'
   'soap'
@@ -26,7 +26,7 @@ param apiVersion string = ''
 @description('Optional. Indicates the Version identifier of the API version set')
 param apiVersionSetId string = ''
 
-@description('Optional. Description of the Api Version.')
+@description('Optional. Description of the API Version.')
 param apiVersionDescription string = ''
 
 @description('Optional. Collection of authentication settings included into this API.')
@@ -57,7 +57,7 @@ param displayName string
 ])
 param format string = 'openapi'
 
-@description('Optional. Indicates if API revision is current api revision.')
+@description('Optional. Indicates if API revision is current API revision.')
 param isCurrent bool = true
 
 @description('Required. Relative URL uniquely identifying this API and all of its resource paths within the API Management service instance. It is appended to the API endpoint base URL specified during the service instance creation to form a public URL for this API.')
@@ -99,8 +99,13 @@ module pid_cuaId '.bicep/nested_cuaId.bicep' = if (!empty(cuaId)) {
   params: {}
 }
 
+resource service 'Microsoft.ApiManagement/service@2021-04-01-preview' existing = {
+  name: apiManagementServiceName
+}
+
 resource api 'Microsoft.ApiManagement/service/apis@2020-06-01-preview' = {
-  name: '${apiManagementServiceName}/${name}'
+  name: name
+  parent: service
   properties: {
     apiRevision: !empty(apiRevision) ? apiRevision : null
     apiRevisionDescription: !empty(apiRevisionDescription) ? apiRevisionDescription : null
@@ -138,7 +143,7 @@ module policy 'policies/deploy.bicep' = [for policy in policies: {
 @description('The name of the API management service api')
 output apiName string = api.name
 
-@description('The resourceId of the API management service api')
+@description('The resource ID of the API management service api')
 output apiResourceId string = api.id
 
 @description('The resource group the API management service api was deployed to')

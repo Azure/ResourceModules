@@ -70,7 +70,7 @@ resource schedule 'Microsoft.Automation/automationAccounts/schedules@2020-01-13-
 @description('The name of the deployed schedule')
 output scheduleName string = schedule.name
 
-@description('The ID of the deployed schedule')
+@description('The resource ID of the deployed schedule')
 output scheduleResourceId string = schedule.id
 
 @description('The resource group of the deployed schedule')
