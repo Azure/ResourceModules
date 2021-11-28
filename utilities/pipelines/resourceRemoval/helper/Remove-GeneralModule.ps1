@@ -76,7 +76,7 @@ Mandatory. The resource group of the resource to remove
 .PARAMETER SearchRetryLimit
 Optional. The maximum times to retry the search for resources via their removal tag
 
-.PARAMETER searchRetryInterval
+.PARAMETER SearchRetryInterval
 Optional. The time to wait in between the search for resources via their remove tags
 
 .PARAMETER deploymentName
