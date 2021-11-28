@@ -67,7 +67,7 @@ resource diagnosticSetting 'Microsoft.Insights/diagnosticSettings@2017-05-01-pre
 @description('The name of the diagnostic settings')
 output diagnosticsName string = diagnosticSetting.name
 
-@description('The Resource ID of the Diagnostic settings')
+@description('The resource ID of the diagnostic settings')
 output diagnosticResourceId string = diagnosticSetting.id
 
 @description('The name of the subscription to deploy into')

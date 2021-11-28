@@ -24,7 +24,7 @@ This module deploys a subscription wide export of the ActivityLog.
 
 | Output Name | Type | Description |
 | :-- | :-- | :-- |
-| `diagnosticResourceId` | string | The Resource ID of the Diagnostic settings |
+| `diagnosticResourceId` | string | The resource ID of the diagnostic settings |
 | `diagnosticsName` | string | The name of the diagnostic settings |
 | `subscriptionName` | string | The name of the subscription to deploy into |
 
