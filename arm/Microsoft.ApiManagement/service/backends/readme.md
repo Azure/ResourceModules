@@ -4,7 +4,7 @@ This module deploys API Management Service Backends.
 
 ## Resource types
 
-| Resource Type | Api Version |
+| Resource Type | API Version |
 | :-- | :-- |
 | `Microsoft.ApiManagement/service/backends` | 2020-06-01-preview |
 
@@ -21,24 +21,24 @@ The following resources are required to be able to deploy this resource.
 | `apiManagementServiceName` | string |  |  | Required. The name of the of the API Management service. |
 | `backendDescription` | string |  |  | Optional. Backend Description. |
 | `credentials` | object | `{object}` |  | Optional. Backend Credentials Contract Properties. |
-| `cuaId` | string |  |  | Optional. Customer Usage Attribution id (GUID). This GUID must be previously registered |
+| `cuaId` | string |  |  | Optional. Customer Usage Attribution ID (GUID). This GUID must be previously registered |
 | `name` | string |  |  | Required. Backend Name. |
 | `protocol` | string | `http` |  | Optional. Backend communication protocol. - http or soap |
 | `proxy` | object | `{object}` |  | Optional. Backend Proxy Contract Properties |
-| `resourceId` | string |  |  | Optional. Management Uri of the Resource in External System. This url can be the Arm Resource Id of Logic Apps, Function Apps or Api Apps. |
+| `resourceId` | string |  |  | Optional. Management Uri of the Resource in External System. This URL can be the Arm Resource ID of Logic Apps, Function Apps or API Apps. |
 | `serviceFabricCluster` | object | `{object}` |  | Optional. Backend Service Fabric Cluster Properties. |
 | `title` | string |  |  | Optional. Backend Title. |
 | `tls` | object | `{object}` |  | Optional. Backend TLS Properties |
-| `url` | string |  |  | Required. Runtime Url of the Backend. |
+| `url` | string |  |  | Required. Runtime URL of the Backend. |
 
 ### Parameters - credentials
 
 | Parameter Name| Type | Default Value  | Possible values | Description |
 | :-- | :-- | :--- | :-- | :- |
-| `certificate` | array | | | Optional. List of Client Certificate Thumbprint. - string|
-| `query`  | object | | | Optional. Query Parameter description.|
-| `header` | object | | | Optional. Header Parameter description.|
-| `authorization` | object | | | Optional. Authorization header authentication|
+| `certificate` | array | | | Optional. List of Client Certificate Thumbprint. - string |
+| `query`  | object | | | Optional. Query Parameter description. |
+| `header` | object | | | Optional. Header Parameter description. |
+| `authorization` | object | | | Optional. Authorization header authentication |
 
 ### Parameter Usage: `credentials`
 
@@ -62,8 +62,8 @@ The following resources are required to be able to deploy this resource.
 
 | Parameter Name | Type | Default Value | Possible values | Description |
 | :- | :- | :- | :- | :- |
-| `url` | string | | | WebProxy Server AbsoluteUri property which includes the entire URI stored in the Uri instance, including all fragments and query strings.|
-| `username` | string | | |Username to connect to the WebProxy server|
+| `url` | string | | | WebProxy Server AbsoluteUri property which includes the entire URI stored in the URI instance, including all fragments and query strings.|
+| `username` | string | | | Username to connect to the WebProxy server|
 | `password`| string | | | Password to connect to the WebProxy Server|
 
 ```json
@@ -81,9 +81,9 @@ The following resources are required to be able to deploy this resource.
 | Parameter Name  | Type | Default Value | Possible values | Description |
 | :-- | :-- | :--- | :-- | :- |
 | `clientCertificatethumbprint` | string | | | Required (if this object is used).The client certificate thumbprint for the management endpoint.|
-| `maxPartitionResolutionRetries` | integer | | | Optional. Maximum number of retries while attempting resolve the partition.|
+| `maxPartitionResolutionRetries` | integer | | | Optional. Maximum number of retries while attempting resolve the partition. |
 | `managementEndpoints` | array | | | Required (if this object is used). The cluster management endpoint. - string|
-| `serverCertificateThumbprints`| array | | | Optional. Thumbprints of certificates cluster management service uses for tls communication - string|
+| `serverCertificateThumbprints`| array | | | Optional. Thumbprints of certificates cluster management service uses for TLS communication - string|
 | `serverX509Names` | array | | | Optional. Server X509 Certificate Names Collection|
 
 ```json

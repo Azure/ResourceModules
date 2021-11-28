@@ -7,7 +7,7 @@ param name string
 @sys.description('Optional. Description of Application..')
 param description string = ''
 
-@sys.description('Mandatory. Friendly name of Application..')
+@sys.description('Required. Friendly name of Application..')
 param friendlyName string
 
 @sys.description('Required. Specifies a path for the executable file for the application.')
@@ -18,10 +18,10 @@ param filePath string
   'DoNotAllow'
   'Require'
 ])
-@sys.description('Optional. Specifies whether this published application can be launched with command line arguments provided by the client, command line arguments specified at publish time, or no command line arguments at all.')
+@sys.description('Optional. Specifies whether this published application can be launched with command-line arguments provided by the client, command-line arguments specified at publish time, or no command-line arguments at all.')
 param commandLineSetting string = 'DoNotAllow'
 
-@sys.description('Optional. Command Line Arguments for Application.')
+@sys.description('Optional. Command-Line Arguments for Application.')
 param commandLineArguments string = ''
 
 @sys.description('Optional. Specifies whether to show the RemoteApp program in the RD Web Access server.')
@@ -33,7 +33,7 @@ param iconPath string = ''
 @sys.description('Optional. Index of the icon.')
 param iconIndex int = 0
 
-@sys.description('Optional. Customer Usage Attribution id (GUID). This GUID must be previously registered')
+@sys.description('Optional. Customer Usage Attribution ID (GUID). This GUID must be previously registered')
 param cuaId string = ''
 
 module pid_cuaId '.bicep/nested_cuaId.bicep' = if (!empty(cuaId)) {
@@ -60,7 +60,7 @@ resource application 'Microsoft.DesktopVirtualization/applicationGroups/applicat
   }
 }
 
-@sys.description('The resource id of the deployed Application.')
+@sys.description('The resource ID of the deployed Application.')
 output applicationResourceIds string = application.id
 
 @sys.description('The name of the Resource Group the AVD Application was created in.')

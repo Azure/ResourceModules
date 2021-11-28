@@ -5,7 +5,7 @@ This module controls the Network Security Group Flow Logs and analytics settings
 
 ## Resource types
 
-| Resource Type | Api Version |
+| Resource Type | API Version |
 | :-- | :-- |
 | `Microsoft.Network/networkWatchers/flowLogs` | 2021-03-01 |
 
@@ -13,7 +13,7 @@ This module controls the Network Security Group Flow Logs and analytics settings
 
 | Parameter Name | Type | Default Value | Possible Values | Description |
 | :-- | :-- | :-- | :-- | :-- |
-| `cuaId` | string |  |  | Optional. Customer Usage Attribution id (GUID). This GUID must be previously registered |
+| `cuaId` | string |  |  | Optional. Customer Usage Attribution ID (GUID). This GUID must be previously registered |
 | `enabled` | bool | `True` |  | Optional. If the flow log should be enabled |
 | `formatVersion` | int | `2` | `[1, 2]` | Optional. The flow log format version |
 | `location` | string | `[resourceGroup().location]` |  | Optional. Location for all resources. |
@@ -49,7 +49,7 @@ Tag names and tag values can be provided as needed. A tag can be left without a 
 | :-- | :-- | :-- |
 | `flowLogName` | string | The name of the flow log |
 | `flowLogResourceGroup` | string | The resource group the flow log was deployed into |
-| `flowLogResourceId` | string | The resourceId of the flow log |
+| `flowLogResourceId` | string | The resource ID of the flow log |
 
 ## Template references
 

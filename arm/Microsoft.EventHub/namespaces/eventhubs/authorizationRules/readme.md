@@ -4,7 +4,7 @@ This module deploys an EventHub Namespace EventHubs Authorization Rule
 
 ## Resource Types
 
-| Resource Type | Api Version |
+| Resource Type | API Version |
 | :-- | :-- |
 | `Microsoft.EventHub/namespaces/eventhubs/authorizationRules` | 2021-06-01-preview |
 
@@ -12,7 +12,7 @@ This module deploys an EventHub Namespace EventHubs Authorization Rule
 
 | Parameter Name | Type | Default Value | Possible Values | Description |
 | :-- | :-- | :-- | :-- | :-- |
-| `cuaId` | string |  |  | Optional. Customer Usage Attribution id (GUID). This GUID must be previously registered |
+| `cuaId` | string |  |  | Optional. Customer Usage Attribution ID (GUID). This GUID must be previously registered |
 | `eventHubName` | string |  |  | Required. The name of the event hub namespace event hub |
 | `name` | string |  |  | Required. The name of the authorization rule |
 | `namespaceName` | string |  |  | Required. The name of the event hub namespace |

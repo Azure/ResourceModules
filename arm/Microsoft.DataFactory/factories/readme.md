@@ -2,7 +2,7 @@
 
 ## Resource types
 
-| Resource Type | Api Version |
+| Resource Type | API Version |
 | :-- | :-- |
 | `Microsoft.Authorization/locks` | 2016-09-01 |
 | `Microsoft.Authorization/roleAssignments` | 2020-04-01-preview |
@@ -23,7 +23,7 @@
 | `gitConfigureLater` | bool | `True` |  | Optional. Boolean to define whether or not to configure git during template deployment. |
 | `gitProjectName` | string |  |  | Optional. The project name. Only relevant for 'FactoryVSTSConfiguration'. |
 | `gitRepositoryName` | string |  |  | Optional. The repository name. |
-| `gitRepoType` | string | `FactoryVSTSConfiguration` |  | Optional. Repo type - can be 'FactoryVSTSConfiguration' or 'FactoryGitHubConfiguration'. Default is 'FactoryVSTSConfiguration'. |
+| `gitRepoType` | string | `FactoryVSTSConfiguration` |  | Optional. Repository type - can be 'FactoryVSTSConfiguration' or 'FactoryGitHubConfiguration'. Default is 'FactoryVSTSConfiguration'. |
 | `gitRootFolder` | string | `/` |  | Optional. The root folder path name. Default is '/'. |
 | `integrationRuntime` | _[integrationRuntime](integrationRuntime/readme.md)_ object | `{object}` |  | Optional. The object for the configuration of a Integration Runtime |
 | `location` | string | `[resourceGroup().location]` |  | Optional. Location for all Resources. |

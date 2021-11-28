@@ -63,9 +63,9 @@ Describes the Management groups to be created. Each management group is represen
 
 | Parameter Name | Type | Default Value | Possible values | Description |
 | :-             | :-   | :-            | :-              | :-          |
-| `name` | string | | | Mandatory. The ID of the Management group |
-| `parentId` | string | | A MG name | Mandatory. The template will concatenate `/providers/Microsoft.Management/managementGroups/` to create the resource ID of the parent management group the deployed one is child of |
-| `displayName` | string | `name` | | Optional. The display name of the management group. If not specified, the id (name) will be used |
+| `name` | string | | | Required. The group ID of the Management group |
+| `parentId` | string | | A MG name | Required. The template will concatenate `/providers/Microsoft.Management/managementGroups/` to create the resource ID of the parent management group the deployed one is child of |
+| `displayName` | string | `name` | | Optional. The display name of the management group. If not specified, the ID (name) will be used |
 | `parentNotManagedInThisTemplate` | bool | `false` | | Optional. `true` if the parent management group is existing and defined elsewhere, `false` if the parent MG is also managed in this template. This parameter is used to define the deployment sequence |
 | `roleAssignments` | array | | | Optional. Array of role assignment objects |
 
@@ -116,8 +116,8 @@ This template is using a **Tenant level deployment**, meaning the user/principal
 > **Management Group Contributor** at the top management group that needs to be managed
 >
 >> Consider using the following script:<br>
->> `$PrincipalID = "<The id of the identity here>"`<br>
->> `$TopMGID = "<The id of the management group here>"`<br>
+>> `$PrincipalID = "<The object ID of the identity here>"`<br>
+>> `$TopMGID = "<The group ID of the management group here>"`<br>
 >> `New-AzRoleAssignment -ObjectId $PrincipalID -Scope "/" -RoleDefinitionName "Automation Job Operator"`<br>
 >> `New-AzRoleAssignment -ObjectId $PrincipalID -Scope "/providers/Microsoft.Management/managementGroups/$TopMGID" -RoleDefinitionName "Management Group Contributor"`
 

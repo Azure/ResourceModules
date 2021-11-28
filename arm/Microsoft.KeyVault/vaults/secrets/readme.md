@@ -4,7 +4,7 @@ This module deploys a key vault secret.
 
 ## Resource Types
 
-| Resource Type | Api Version |
+| Resource Type | API Version |
 | :-- | :-- |
 | `Microsoft.KeyVault/vaults/secrets` | 2019-09-01 |
 
@@ -16,7 +16,7 @@ This module deploys a key vault secret.
 | `attributesExp` | int | `-1` |  | Optional. Expiry date in seconds since 1970-01-01T00:00:00Z. |
 | `attributesNbf` | int | `-1` |  | Optional. Not before date in seconds since 1970-01-01T00:00:00Z. |
 | `contentType` | secureString |  |  | Optional. The content type of the secret. |
-| `cuaId` | string |  |  | Optional. Customer Usage Attribution id (GUID). This GUID must be previously registered |
+| `cuaId` | string |  |  | Optional. Customer Usage Attribution ID (GUID). This GUID must be previously registered |
 | `keyVaultName` | string |  |  | Required. The name of the key vault |
 | `name` | string |  |  | Required. The name of the secret |
 | `tags` | object | `{object}` |  | Optional. Resource tags. |

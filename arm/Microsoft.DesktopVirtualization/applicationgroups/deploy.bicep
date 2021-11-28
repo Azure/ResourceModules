@@ -52,7 +52,7 @@ param lock string = 'NotSpecified'
 @sys.description('Optional. Tags of the resource.')
 param tags object = {}
 
-@sys.description('Optional. Customer Usage Attribution id (GUID). This GUID must be previously registered')
+@sys.description('Optional. Customer Usage Attribution ID (GUID). This GUID must be previously registered')
 param cuaId string = ''
 
 @sys.description('Optional. The name of logs that will be streamed.')

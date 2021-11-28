@@ -4,7 +4,7 @@ param apiManagementServiceName string
 @description('Optional. The name of the policy')
 param name string = 'policy'
 
-@description('Optional. Customer Usage Attribution id (GUID). This GUID must be previously registered')
+@description('Optional. Customer Usage Attribution ID (GUID). This GUID must be previously registered')
 param cuaId string = ''
 
 @description('Optional. Format of the policyContent.')

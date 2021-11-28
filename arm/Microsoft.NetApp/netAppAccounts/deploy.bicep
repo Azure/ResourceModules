@@ -1,5 +1,5 @@
 @description('Required. The name of the NetApp account.')
-param netAppAccountName string
+param name string
 
 @description('Optional. Fully Qualified Active Directory DNS Domain Name (e.g. \'contoso.com\')')
 param domainName string = ''
@@ -40,17 +40,17 @@ param lock string = 'NotSpecified'
 @description('Optional. Tags for all resources.')
 param tags object = {}
 
-@description('Optional. Customer Usage Attribution id (GUID). This GUID must be previously registered')
+@description('Optional. Customer Usage Attribution ID (GUID). This GUID must be previously registered')
 param cuaId string = ''
 
 var activeDirectoryConnectionProperties = [
   {
-    username: (empty(domainName) ? null : domainJoinUser)
-    password: (empty(domainName) ? null : domainJoinPassword)
-    domain: (empty(domainName) ? null : domainName)
-    dns: (empty(domainName) ? null : dnsServers)
-    smbServerName: (empty(domainName) ? null : smbServerNamePrefix)
-    organizationalUnit: (empty(domainJoinOU) ? null : domainJoinOU)
+    username: !empty(domainName) ? domainJoinUser : null
+    password: !empty(domainName) ? domainJoinPassword : null
+    domain: !empty(domainName) ? domainName : null
+    dns: !empty(domainName) ? dnsServers : null
+    smbServerName: !empty(domainName) ? smbServerNamePrefix : null
+    organizationalUnit: !empty(domainJoinOU) ? domainJoinOU : null
   }
 ]
 
@@ -60,11 +60,11 @@ module pid_cuaId '.bicep/nested_cuaId.bicep' = if (!empty(cuaId)) {
 }
 
 resource netAppAccount 'Microsoft.NetApp/netAppAccounts@2021-04-01' = {
-  name: netAppAccountName
+  name: name
   tags: tags
   location: location
   properties: {
-    activeDirectories: (empty(domainName) ? null : activeDirectoryConnectionProperties)
+    activeDirectories: !empty(domainName) ? activeDirectoryConnectionProperties : null
   }
 }
 
@@ -86,15 +86,27 @@ module netAppAccount_rbac '.bicep/nested_rbac.bicep' = [for (roleAssignment, ind
   }
 }]
 
-module netAppAccount_capacityPools '.bicep/nested_capacityPool.bicep' = [for (capacityPool, index) in capacityPools: {
+@batchSize(1)
+module netAppAccount_capacityPools 'capacityPools/deploy.bicep' = [for (capacityPool, index) in capacityPools: {
   name: '${uniqueString(deployment().name, location)}-ANFAccount-CapPool-${index}'
   params: {
-    capacityPoolObj: capacityPool
-    location: location
     netAppAccountName: netAppAccount.name
+    name: capacityPool.name
+    location: location
+    size: capacityPool.size
+    serviceLevel: contains(capacityPool, 'serviceLevel') ? capacityPool.serviceLevel : 'Standard'
+    qosType: contains(capacityPool, 'qosType') ? capacityPool.qosType : 'Auto'
+    volumes: contains(capacityPool, 'volumes') ? capacityPool.volumes : []
+    coolAccess: contains(capacityPool, 'coolAccess') ? capacityPool.coolAccess : false
+    roleAssignments: contains(capacityPool, 'roleAssignments') ? capacityPool.roleAssignments : []
   }
 }]
 
+@description('The name of the NetApp account.')
 output netAppAccountName string = netAppAccount.name
+
+@description('The Resource ID of the NetApp account.')
 output netAppAccountResourceId string = netAppAccount.id
+
+@description('The name of the Resource Group the NetApp account was created in.')
 output netAppAccountResourceGroup string = resourceGroup().name

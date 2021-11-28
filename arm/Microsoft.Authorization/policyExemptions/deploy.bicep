@@ -10,7 +10,7 @@ param displayName string = ''
 @description('Optional. The description of the policy exemption.')
 param policyExemptionDescription string = ''
 
-@description('Optional. The policy exemption metadata. Metadata is an open ended object and is typically a collection of key value pairs.')
+@description('Optional. The policy exemption metadata. Metadata is an open ended object and is typically a collection of key-value pairs.')
 param metadata object = {}
 
 @description('Optional. The policy exemption category. Possible values are Waiver and Mitigated. Default is Mitigated')
@@ -20,7 +20,7 @@ param metadata object = {}
 ])
 param exemptionCategory string = 'Mitigated'
 
-@description('Required. The ID of the policy assignment that is being exempted.')
+@description('Required. The resource ID of the policy assignment that is being exempted.')
 param policyAssignmentId string
 
 @description('Optional. The policy definition reference ID list when the associated policy assignment is an assignment of a policy set definition.')
@@ -29,10 +29,10 @@ param policyDefinitionReferenceIds array = []
 @description('Optional. The expiration date and time (in UTC ISO 8601 format yyyy-MM-ddTHH:mm:ssZ) of the policy exemption. e.g. 2021-10-02T03:57:00.000Z ')
 param expiresOn string = ''
 
-@description('Optional. The ID of the management group to be exempted from the policy assignment. Cannot use with subscription id parameter.')
+@description('Optional. The group ID of the management group to be exempted from the policy assignment. Cannot use with subscription ID parameter.')
 param managementGroupId string = ''
 
-@description('Optional. The ID of the azure subscription to be exempted from the policy assignment. Cannot use with management group id parameter.')
+@description('Optional. The subscription ID of the subscription to be exempted from the policy assignment. Cannot use with management group ID parameter.')
 param subscriptionId string = ''
 
 @description('Optional. The name of the resource group to be exempted from the policy assignment. Must also use the subscription ID parameter.')

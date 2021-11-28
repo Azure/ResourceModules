@@ -8,7 +8,7 @@ remote/managing tenant.
 
 ## Resource types
 
-| Resource Type | Api Version |
+| Resource Type | API Version |
 | :-- | :-- |
 | `Microsoft.ManagedServices/registrationAssignments` | 2019-09-01 |
 | `Microsoft.ManagedServices/registrationDefinitions` | 2019-09-01 |

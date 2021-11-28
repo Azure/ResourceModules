@@ -3,7 +3,7 @@
     "contentVersion": "1.0.0.0",
     "parameters": {
         "name": {
-            "value": "adp-sxx-az-acr-x-001"
+            "value": "adpacrservices001"
         },
         "acrAdminUserEnabled": {
             "value": false

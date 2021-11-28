@@ -43,7 +43,7 @@ param evaluationFrequency string = 'PT5M'
 ])
 param windowSize string = 'PT15M'
 
-@description('Optional. the list of resource id\'s that this metric alert is scoped to.')
+@description('Optional. the list of resource IDs that this metric alert is scoped to.')
 param scopes array = [
   subscription().id
 ]
@@ -77,7 +77,7 @@ param roleAssignments array = []
 @description('Optional. Tags of the resource.')
 param tags object = {}
 
-@description('Optional. Customer Usage Attribution id (GUID). This GUID must be previously registered')
+@description('Optional. Customer Usage Attribution ID (GUID). This GUID must be previously registered')
 param cuaId string = ''
 
 var actionGroups = [for action in actions: {

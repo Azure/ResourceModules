@@ -96,13 +96,13 @@ function Initialize-UniversalArtifactPublish {
             $url = "https://feeds.dev.azure.com/$VstsOrganization/{0}_apis/packaging/Feeds/$VstsFeedName/packages?packageNameQuery=$universalPackageModuleName&api-version=6.0-preview" -f ([String]::IsNullOrEmpty($VstsProject) ? '/' : "$VstsProject/")
             $packages = Invoke-RestMethod -Uri $url -Method Get -Headers $head -ContentType application/json
             if ($packages) {
-                if ($packages.value.id.count -gt 1) {
+                if ($packages.value.ID.count -gt 1) {
                     # Handle the case where multiple modules in the feed start with with the same packageName. In this case we have to filter the result of the REST query even further.
                     $packages.value = $packages.value | Where-Object { $_.Name -eq $universalPackageModuleName }
                 }
 
                 $latestFeedVersion = ($packages.value.versions.Where( { $_.isLatest -eq $True })).version
-                Write-Verbose ('Package Id of [{0}] is [{1}]' -f $universalPackageModuleName, $packages.value.Id) -Verbose
+                Write-Verbose ('Package ID of [{0}] is [{1}]' -f $universalPackageModuleName, $packages.value.ID) -Verbose
                 Write-Verbose "The latest version is [$latestFeedVersion]" -Verbose
             } else {
                 Write-Verbose "No packages via url [$url] found" -Verbose

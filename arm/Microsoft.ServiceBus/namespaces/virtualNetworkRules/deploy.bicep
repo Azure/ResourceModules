@@ -9,7 +9,7 @@ param name string = '${namespaceName}-vnr'
 @description('Required. Resource ID of Virtual Network Subnet')
 param virtualNetworkSubnetId string
 
-@description('Optional. Customer Usage Attribution id (GUID). This GUID must be previously registered')
+@description('Optional. Customer Usage Attribution ID (GUID). This GUID must be previously registered')
 param cuaId string = ''
 
 module pid_cuaId '.bicep/nested_cuaId.bicep' = if (!empty(cuaId)) {
@@ -27,7 +27,7 @@ resource virtualNetworkRule 'Microsoft.ServiceBus/namespaces/virtualNetworkRules
 @description('The name of the virtual network rule.')
 output virtualNetworkRuleName string = virtualNetworkRule.name
 
-@description('The Resource Id of the virtual network rule.')
+@description('The Resource ID of the virtual network rule.')
 output virtualNetworkRuleResourceId string = virtualNetworkRule.id
 
 @description('The name of the Resource Group the virtual network rule was created in.')

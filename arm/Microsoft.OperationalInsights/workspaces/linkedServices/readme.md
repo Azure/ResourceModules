@@ -4,7 +4,7 @@ This template deploys a linked service for a Log Analytics workspace.
 
 ## Resource Types
 
-| Resource Type | Api Version |
+| Resource Type | API Version |
 | :-- | :-- |
 | `Microsoft.OperationalInsights/workspaces/linkedServices` | 2020-08-01 |
 
@@ -12,12 +12,12 @@ This template deploys a linked service for a Log Analytics workspace.
 
 | Parameter Name | Type | Default Value | Possible Values | Description |
 | :-- | :-- | :-- | :-- | :-- |
-| `cuaId` | string |  |  | Optional. Customer Usage Attribution id (GUID). This GUID must be previously registered |
+| `cuaId` | string |  |  | Optional. Customer Usage Attribution ID (GUID). This GUID must be previously registered |
 | `logAnalyticsWorkspaceName` | string |  |  | Required. Name of the Log Analytics workspace |
 | `name` | string |  |  | Required. Name of the link |
-| `resourceId` | string |  |  | Required. The resource id of the resource that will be linked to the workspace. This should be used for linking resources which require read access. |
+| `resourceId` | string |  |  | Required. The resource ID of the resource that will be linked to the workspace. This should be used for linking resources which require read access. |
 | `tags` | object | `{object}` |  | Optional. Tags to configure in the resource. |
-| `writeAccessResourceId` | string |  |  | Optional. The resource id of the resource that will be linked to the workspace. This should be used for linking resources which require write access.  |
+| `writeAccessResourceId` | string |  |  | Optional. The resource ID of the resource that will be linked to the workspace. This should be used for linking resources which require write access.  |
 
 ## Outputs
 

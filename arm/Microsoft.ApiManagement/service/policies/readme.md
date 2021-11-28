@@ -4,7 +4,7 @@ This module deploys API Management Service Policy.
 
 ## Resource Types
 
-| Resource Type | Api Version |
+| Resource Type | API Version |
 | :-- | :-- |
 | `Microsoft.ApiManagement/service/policies` | 2020-06-01-preview |
 
@@ -13,7 +13,7 @@ This module deploys API Management Service Policy.
 | Parameter Name | Type | Default Value | Possible Values | Description |
 | :-- | :-- | :-- | :-- | :-- |
 | `apiManagementServiceName` | string |  |  | Required. The name of the of the API Management service. |
-| `cuaId` | string |  |  | Optional. Customer Usage Attribution id (GUID). This GUID must be previously registered |
+| `cuaId` | string |  |  | Optional. Customer Usage Attribution ID (GUID). This GUID must be previously registered |
 | `format` | string | `xml` | `[rawxml, rawxml-link, xml, xml-link]` | Optional. Format of the policyContent. |
 | `name` | string | `policy` |  | Optional. The name of the policy |
 | `value` | string |  |  | Required. Contents of the Policy as defined by the format. |

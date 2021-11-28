@@ -67,7 +67,7 @@ param captureDescriptionDestinationArchiveNameFormat string = '{Namespace}/{Even
 @description('Optional. Blob container Name')
 param captureDescriptionDestinationBlobContainer string = ''
 
-@description('Optional. Resource id of the storage account to be used to create the blobs')
+@description('Optional. Resource ID of the storage account to be used to create the blobs')
 param captureDescriptionDestinationStorageAccountResourceId string = ''
 
 @description('Optional. A value that indicates whether capture description is enabled.')
@@ -93,7 +93,7 @@ param captureDescriptionSizeLimitInBytes int = 314572800
 @description('Optional. A value that indicates whether to Skip Empty Archives')
 param captureDescriptionSkipEmptyArchives bool = false
 
-@description('Optional. Customer Usage Attribution id (GUID). This GUID must be previously registered')
+@description('Optional. Customer Usage Attribution ID (GUID). This GUID must be previously registered')
 param cuaId string = ''
 
 var eventHubPropertiesSimple = {
