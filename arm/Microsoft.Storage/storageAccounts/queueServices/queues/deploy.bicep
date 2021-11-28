@@ -27,13 +27,14 @@ resource storageAccount 'Microsoft.Storage/storageAccounts@2021-06-01' existing 
 
   resource queueServices 'queueServices@2021-06-01' existing = {
     name: queueServicesName
+  }
+}
 
-    resource queue 'queues@2019-06-01' = {
-      name: name
-      properties: {
-        metadata: metadata
-      }
-    }
+resource queue 'Microsoft.Storage/storageAccounts/queueServices/queues@2019-06-01' = {
+  name: name
+  parent: storageAccount::queueServices
+  properties: {
+    metadata: metadata
   }
 }
 
@@ -42,15 +43,15 @@ module queue_rbac '.bicep/nested_rbac.bicep' = [for (roleAssignment, index) in r
   params: {
     principalIds: roleAssignment.principalIds
     roleDefinitionIdOrName: roleAssignment.roleDefinitionIdOrName
-    resourceId: '${storageAccount::queueServices::queue.id}'
+    resourceId: '${queue.id}'
   }
 }]
 
 @description('The name of the deployed queue')
-output queueName string = storageAccount::queueServices::queue.name
+output queueName string = queue.name
 
 @description('The resource ID of the deployed queue')
-output queueResourceId string = storageAccount::queueServices::queue.id
+output queueResourceId string = queue.id
 
 @description('The resource group of the deployed queue')
 output queueResourceGroup string = resourceGroup().name

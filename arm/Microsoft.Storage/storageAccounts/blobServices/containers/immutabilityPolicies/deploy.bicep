@@ -33,23 +33,24 @@ resource storageAccount 'Microsoft.Storage/storageAccounts@2021-06-01' existing 
 
     resource container 'containers@2019-06-01' existing = {
       name: containerName
-
-      resource immutabilityPolicy 'immutabilityPolicies@2019-06-01' = {
-        name: name
-        properties: {
-          immutabilityPeriodSinceCreationInDays: immutabilityPeriodSinceCreationInDays
-          allowProtectedAppendWrites: allowProtectedAppendWrites
-        }
-      }
     }
   }
 }
 
+resource immutabilityPolicy 'Microsoft.Storage/storageAccounts/blobServices/containers/immutabilityPolicies@2019-06-01' = {
+  name: name
+  parent: storageAccount::blobServices::container
+  properties: {
+    immutabilityPeriodSinceCreationInDays: immutabilityPeriodSinceCreationInDays
+    allowProtectedAppendWrites: allowProtectedAppendWrites
+  }
+}
+
 @description('The name of the deployed immutability policy.')
-output immutabilityPolicyName string = storageAccount::blobServices::container::immutabilityPolicy.name
+output immutabilityPolicyName string = immutabilityPolicy.name
 
 @description('The resource ID of the deployed immutability policy.')
-output immutabilityPolicyResourceId string = storageAccount::blobServices::container::immutabilityPolicy.id
+output immutabilityPolicyResourceId string = immutabilityPolicy.id
 
 @description('The resource group of the deployed immutability policy.')
 output immutabilityPolicyResourceGroup string = resourceGroup().name
