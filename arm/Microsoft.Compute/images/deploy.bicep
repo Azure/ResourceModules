@@ -1,5 +1,5 @@
 @description('Required. The name of the image.')
-param imageName string
+param name string
 
 @description('Optional. Location for all resources.')
 param location string = resourceGroup().location
@@ -37,7 +37,7 @@ module pid_cuaId '.bicep/nested_cuaId.bicep' = if (!empty(cuaId)) {
 }
 
 resource image 'Microsoft.Compute/images@2021-04-01' = {
-  name: imageName
+  name: name
   location: location
   tags: tags
   properties: {

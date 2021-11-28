@@ -1,5 +1,5 @@
 @description('Required. The name of the disk encryption set that is being created.')
-param diskEncryptionSetName string
+param name string
 
 @description('Optional. Resource location.')
 param location string = resourceGroup().location
@@ -46,7 +46,7 @@ resource keyVaultAccessPolicies 'Microsoft.KeyVault/vaults/accessPolicies@2019-0
 }
 
 resource diskEncryptionSet 'Microsoft.Compute/diskEncryptionSets@2020-12-01' = {
-  name: diskEncryptionSetName
+  name: name
   location: location
   tags: tags
   identity: {
@@ -77,11 +77,11 @@ output diskEncryptionSetResourceId string = diskEncryptionSet.id
 @description('The name of the disk encryption set')
 output diskEncryptionSetName string = diskEncryptionSet.name
 
+@description('The resource group the disk encryption set was deployed into')
+output diskEncryptionResourceGroup string = resourceGroup().name
+
 @description('The principal ID of the disk encryption set')
-output principalId string = reference('Microsoft.Compute/diskEncryptionSets/${diskEncryptionSetName}', '2020-12-01', 'Full').identity.principalId
+output principalId string = diskEncryptionSet.identity.principalId
 
 @description('The name of the key vault with the disk encryption key')
 output keyVaultName string = last(split(keyVaultId, '/'))
-
-@description('The resource group the disk encryption set was deployed into')
-output diskEncryptionResourceGroup string = resourceGroup().name
