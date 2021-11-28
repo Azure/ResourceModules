@@ -163,6 +163,7 @@ Last but not least, instead of fetching your own copy of the repository you can 
 
 ## **Option 4:** Simple contribution
 
+In case you would like to do a simple contriubtion
 
 ## Parameter File Tokens
 
