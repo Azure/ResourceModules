@@ -4,7 +4,7 @@ This module deploys a variable to an Azure Automation Account.
 
 ## Resource Types
 
-| Resource Type | API Version |
+| Resource Type | Api Version |
 | :-- | :-- |
 | `Microsoft.Automation/automationAccounts/variables` | 2020-01-13-preview |
 
