@@ -77,7 +77,7 @@ The below diagram illustrates the Token Replacement Functionality via the [Valid
   }
   ```
 - **3A.** The Replace Tokens function gets the default tokens from the environment variables.
-  > Default Tokens are explicitly defined in the task to which environment variables are retrieved, and requires updating this task for new tokens.
+  > Default Tokens are harder to scale as they are explicitly defined in deploy/validate task, workflows and pipelines, and requires updating these components as you create more tokens.
 
 - **3B.** The Replace Tokens function gets local custom tokens from the [Settings.json](https://github.com/Azure/ResourceModules/blob/main/settings.json).
   > Local Tokens are easier to scale as you just need to define them in this file without adding new environment variables or modifying workflows or tasks.
