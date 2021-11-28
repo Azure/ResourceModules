@@ -26,7 +26,7 @@ function Get-DeploymentByName {
     [CmdletBinding()]
     param (
         [Parameter(Mandatory)]
-        [string] $name,
+        [string] $Name,
 
         [Parameter(Mandatory = $false)]
         [string] $resourceGroupName,
