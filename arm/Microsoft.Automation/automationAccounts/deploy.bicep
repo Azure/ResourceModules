@@ -334,7 +334,7 @@ module automationAccount_rbac '.bicep/nested_rbac.bicep' = [for (roleAssignment,
 @description('The name of the deployed automation account')
 output automationAccountName string = automationAccount.name
 
-@description('The ID of the deployed automation account')
+@description('The resource ID of the deployed automation account')
 output automationAccountResourceId string = automationAccount.id
 
 @description('The resource group of the deployed automation account')

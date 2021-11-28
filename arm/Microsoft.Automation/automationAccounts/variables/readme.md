@@ -4,7 +4,7 @@ This module deploys a variable to an Azure Automation Account.
 
 ## Resource Types
 
-| Resource Type | API Version |
+| Resource Type | Api Version |
 | :-- | :-- |
 | `Microsoft.Automation/automationAccounts/variables` | 2020-01-13-preview |
 
@@ -13,9 +13,9 @@ This module deploys a variable to an Azure Automation Account.
 | Parameter Name | Type | Default Value | Possible Values | Description |
 | :-- | :-- | :-- | :-- | :-- |
 | `automationAccountName` | string |  |  | Required. Name of the parent Automation Account |
-| `cuaId` | string |  | '' | Optional. Customer Usage Attribution ID (GUID). This GUID must be previously registered |
-| `description` | string |  | '' | Optional. The description of the variable. |
-| `isEncrypted` | bool |  | false | Optional. If the variable should be encrypted. |
+| `cuaId` | string |  |  | Optional. Customer Usage Attribution ID (GUID). This GUID must be previously registered |
+| `description` | string |  |  | Optional. The description of the variable. |
+| `isEncrypted` | bool |  |  | Optional. If the variable should be encrypted. |
 | `name` | string |  |  | Required. The name of the variable. |
 | `value` | string |  |  | Required. The value of the variable. |
 
@@ -47,7 +47,7 @@ This module deploys a variable to an Azure Automation Account.
 
 | Output Name | Type | Description |
 | :-- | :-- | :-- |
-| `variableId` | string | The ID of the deployed variable |
+| `variableId` | string | The resource ID of the deployed variable |
 | `variableName` | string | The name of the deployed variable |
 | `variableResourceGroup` | string | The resource group of the deployed variable |
 
