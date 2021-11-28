@@ -142,10 +142,15 @@ module appGroup_rbac '.bicep/nested_rbac.bicep' = [for (roleAssignment, index) i
   params: {
     principalIds: roleAssignment.principalIds
     roleDefinitionIdOrName: roleAssignment.roleDefinitionIdOrName
-    resourceName: appGroup.name
+    resourceId: appGroup.id
   }
 }]
 
+@sys.description('The resource ID  of the AVD application group')
 output appGroupResourceId string = appGroup.id
+
+@sys.description('The resource group the AVD application group was deployed into')
 output appGroupResourceGroup string = resourceGroup().name
+
+@sys.description('The name of the AVD application group')
 output appGroupName string = appGroup.name

@@ -23,10 +23,10 @@ This template deploys Virtual Wan
 | `enableBgp` | string | `false` | `[true, false]` | Optional. his needs to be set to true if BGP needs to enabled on the vpn connection. |
 | `location` | string | `[resourceGroup().location]` |  | Optional. Location where all resources will be created. |
 | `lock` | string | `NotSpecified` | `[CanNotDelete, NotSpecified, ReadOnly]` | Optional. Specify the type of lock. |
+| `name` | string |  |  | Required. Name of the Virtual Wan. |
 | `roleAssignments` | array | `[]` |  | Optional. Array of role assignment objects that contain the 'roleDefinitionIdOrName' and 'principalId' to define RBAC role assignments on this resource. In the roleDefinitionIdOrName attribute, you can provide either the display name of the role definition, or its fully qualified ID in the following format: '/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11' |
 | `tags` | object | `{object}` |  | Optional. Tags of the resource. |
 | `virtualHubName` | string | `SampleVirtualHub` |  | Optional. Name of the Virtual Hub. A virtual hub is created inside a virtual wan. |
-| `virtualWanName` | string |  |  | Required. Name of the Virtual Wan. |
 | `virtualWanSku` | string | `Standard` | `[Standard, Basic]` | Optional. Sku of the Virtual Wan. |
 | `vpnGatewayName` | string | `SampleVpnGateway` |  | Optional. Name of the Vpn Gateway. A vpn gateway is created inside a virtual hub. |
 | `vpnsiteAddressspaceList` | array | `[]` |  | Optional. A list of static routes corresponding to the vpn site. These are configured on the vpn gateway. |
@@ -86,8 +86,8 @@ Tag names and tag values can be provided as needed. A tag can be left without a 
 | Output Name | Type | Description |
 | :-- | :-- | :-- |
 | `virtualWanName` | string | The name of the virtual WAN |
-| `virtualWanNameResourceGroup` | string | The resource group the virtual WAN was deployed into |
-| `virtualWanNameResourceId` | string | The resourceId of the virtual WAN |
+| `virtualWanResourceGroup` | string | The resource group the virtual WAN was deployed into |
+| `virtualWanResourceId` | string | The resource ID of the virtual WAN |
 
 ## Template references
 

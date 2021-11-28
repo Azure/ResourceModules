@@ -115,21 +115,21 @@ resource managedInstance 'Microsoft.Sql/managedInstances@2021-05-01-preview' exi
 
 resource database 'Microsoft.Sql/managedInstances/databases@2021-05-01-preview' = {
   name: name
+  parent: managedInstance
   location: location
   tags: tags
   properties: {
-    collation: (empty(collation) ? null : collation)
-    restorePointInTime: (empty(restorePointInTime) ? null : restorePointInTime)
-    catalogCollation: (empty(catalogCollation) ? null : catalogCollation)
-    createMode: (empty(createMode) ? null : createMode)
-    storageContainerUri: (empty(storageContainerUri) ? null : storageContainerUri)
-    sourceDatabaseId: (empty(sourceDatabaseId) ? null : sourceDatabaseId)
-    restorableDroppedDatabaseId: (empty(restorableDroppedDatabaseId) ? null : restorableDroppedDatabaseId)
-    storageContainerSasToken: (empty(storageContainerSasToken) ? null : storageContainerSasToken)
-    recoverableDatabaseId: (empty(recoverableDatabaseId) ? null : recoverableDatabaseId)
-    longTermRetentionBackupResourceId: (empty(longTermRetentionBackupResourceId) ? null : longTermRetentionBackupResourceId)
+    collation: empty(collation) ? null : collation
+    restorePointInTime: empty(restorePointInTime) ? null : restorePointInTime
+    catalogCollation: empty(catalogCollation) ? null : catalogCollation
+    createMode: empty(createMode) ? null : createMode
+    storageContainerUri: empty(storageContainerUri) ? null : storageContainerUri
+    sourceDatabaseId: empty(sourceDatabaseId) ? null : sourceDatabaseId
+    restorableDroppedDatabaseId: empty(restorableDroppedDatabaseId) ? null : restorableDroppedDatabaseId
+    storageContainerSasToken: empty(storageContainerSasToken) ? null : storageContainerSasToken
+    recoverableDatabaseId: empty(recoverableDatabaseId) ? null : recoverableDatabaseId
+    longTermRetentionBackupResourceId: empty(longTermRetentionBackupResourceId) ? null : longTermRetentionBackupResourceId
   }
-  parent: managedInstance
 }
 
 resource database_lock 'Microsoft.Authorization/locks@2016-09-01' = if (lock != 'NotSpecified') {
@@ -144,11 +144,11 @@ resource database_lock 'Microsoft.Authorization/locks@2016-09-01' = if (lock != 
 resource database_diagnosticSettings 'Microsoft.Insights/diagnosticsettings@2017-05-01-preview' = if ((!empty(diagnosticStorageAccountId)) || (!empty(workspaceId)) || (!empty(eventHubAuthorizationRuleId)) || (!empty(eventHubName))) {
   name: '${last(split(database.name, '/'))}-diagnosticSettings'
   properties: {
-    storageAccountId: (empty(diagnosticStorageAccountId) ? null : diagnosticStorageAccountId)
-    workspaceId: (empty(workspaceId) ? null : workspaceId)
-    eventHubAuthorizationRuleId: (empty(eventHubAuthorizationRuleId) ? null : eventHubAuthorizationRuleId)
-    eventHubName: (empty(eventHubName) ? null : eventHubName)
-    logs: ((empty(diagnosticStorageAccountId) && empty(workspaceId) && empty(eventHubAuthorizationRuleId) && empty(eventHubName)) ? null : diagnosticsLogs)
+    storageAccountId: empty(diagnosticStorageAccountId) ? null : diagnosticStorageAccountId
+    workspaceId: empty(workspaceId) ? null : workspaceId
+    eventHubAuthorizationRuleId: empty(eventHubAuthorizationRuleId) ? null : eventHubAuthorizationRuleId
+    eventHubName: empty(eventHubName) ? null : eventHubName
+    logs: (empty(diagnosticStorageAccountId) && empty(workspaceId) && empty(eventHubAuthorizationRuleId) && empty(eventHubName)) ? null : diagnosticsLogs
   }
   scope: database
 }

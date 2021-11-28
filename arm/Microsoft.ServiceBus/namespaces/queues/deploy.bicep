@@ -133,7 +133,7 @@ module queue_rbac '.bicep/nested_rbac.bicep' = [for (roleAssignment, index) in r
   params: {
     principalIds: roleAssignment.principalIds
     roleDefinitionIdOrName: roleAssignment.roleDefinitionIdOrName
-    resourceName: queue.name
+    resourceId: queue.id
   }
 }]
 

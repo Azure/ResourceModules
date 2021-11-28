@@ -15,8 +15,17 @@ module pid_cuaId '.bicep/nested_cuaId.bicep' = if (!empty(cuaId)) {
   params: {}
 }
 
+resource service 'Microsoft.ApiManagement/service@2021-04-01-preview' existing = {
+  name: apiManagementServiceName
+
+  resource product 'products@2021-04-01-preview' existing = {
+    name: productName
+  }
+}
+
 resource api 'Microsoft.ApiManagement/service/products/apis@2020-06-01-preview' = {
-  name: '${apiManagementServiceName}/${productName}/${name}'
+  name: name
+  parent: service::product
 }
 
 @description('The resource ID of the product API')

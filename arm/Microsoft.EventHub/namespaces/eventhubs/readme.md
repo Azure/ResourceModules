@@ -16,7 +16,7 @@ This module deploys an Event Hub.
 
 | Parameter Name | Type | Default Value | Possible Values | Description |
 | :-- | :-- | :-- | :-- | :-- |
-| `authorizationRules` | _[authorizationRules](authorizationRules/readme.md)_ array | `[System.Collections.Hashtable]` |  | Optional. Authorization Rules for the Event Hub |
+| `authorizationRules` | _[authorizationRules](authorizationRules/readme.md)_ array | `[System.Collections.Hashtable]` |  | Optional. Authorization Rules for the event hub |
 | `captureDescriptionDestinationArchiveNameFormat` | string | `{Namespace}/{EventHub}/{PartitionId}/{Year}/{Month}/{Day}/{Hour}/{Minute}/{Second}` |  | Optional. Blob naming convention for archive, e.g. {Namespace}/{EventHub}/{PartitionId}/{Year}/{Month}/{Day}/{Hour}/{Minute}/{Second}. Here all the parameters (Namespace,EventHub .. etc) are mandatory irrespective of order |
 | `captureDescriptionDestinationBlobContainer` | string |  |  | Optional. Blob container Name |
 | `captureDescriptionDestinationName` | string | `EventHubArchive.AzureBlockBlob` |  | Optional. Name for capture destination |
@@ -30,8 +30,8 @@ This module deploys an Event Hub.
 | `cuaId` | string |  |  | Optional. Customer Usage Attribution ID (GUID). This GUID must be previously registered |
 | `lock` | string | `NotSpecified` | `[CanNotDelete, NotSpecified, ReadOnly]` | Optional. Specify the type of lock. |
 | `messageRetentionInDays` | int | `1` |  | Optional. Number of days to retain the events for this Event Hub, value should be 1 to 7 days |
-| `name` | string |  |  | Required. The name of the EventHub |
-| `namespaceName` | string |  |  | Required. The name of the EventHub namespace |
+| `name` | string |  |  | Required. The name of the event hub |
+| `namespaceName` | string |  |  | Required. The name of the event hub namespace |
 | `partitionCount` | int | `2` |  | Optional. Number of partitions created for the Event Hub, allowed values are from 1 to 32 partitions. |
 | `roleAssignments` | array | `[]` |  | Optional. Array of role assignment objects that contain the 'roleDefinitionIdOrName' and 'principalId' to define RBAC role assignments on this resource. In the roleDefinitionIdOrName attribute, you can provide either the display name of the role definition, or its fully qualified ID in the following format: '/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11' |
 | `status` | string | `Active` | `[Active, Creating, Deleting, Disabled, ReceiveDisabled, Renaming, Restoring, SendDisabled, Unknown]` | Optional. Enumerates the possible values for the status of the Event Hub. |
@@ -69,10 +69,10 @@ This module deploys an Event Hub.
 
 | Output Name | Type | Description |
 | :-- | :-- | :-- |
-| `authRuleResourceId` | string | The AuthRuleResourceId of the Event Hub. |
-| `eventHubId` | string | The Resource ID of the Event Hub. |
-| `eventhubName` | string | The Name of the Event Hub. |
-| `eventHubResourceGroup` | string | The Resource Group Name of the Event Hub. |
+| `authRuleResourceId` | string | The authentication rule resource ID of the event hub. |
+| `eventHubId` | string | The resource ID of the event hub. |
+| `eventhubName` | string | The name of the event hub. |
+| `eventHubResourceGroup` | string | The resource group the event hub was deployed into. |
 
 ## Template references
 

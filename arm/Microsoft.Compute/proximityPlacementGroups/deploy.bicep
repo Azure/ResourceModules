@@ -56,7 +56,7 @@ module proximityPlacementGroup_rbac '.bicep/nested_rbac.bicep' = [for (roleAssig
   params: {
     principalIds: roleAssignment.principalIds
     roleDefinitionIdOrName: roleAssignment.roleDefinitionIdOrName
-    resourceName: proximityPlacementGroup.name
+    resourceId: proximityPlacementGroup.id
   }
 }]
 

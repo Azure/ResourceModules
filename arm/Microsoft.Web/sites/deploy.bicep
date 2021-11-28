@@ -289,7 +289,7 @@ module app_rbac '.bicep/nested_rbac.bicep' = [for (roleAssignment, index) in rol
   params: {
     principalIds: roleAssignment.principalIds
     roleDefinitionIdOrName: roleAssignment.roleDefinitionIdOrName
-    resourceName: app.name
+    resourceId: app.id
   }
 }]
 

@@ -2,6 +2,9 @@
 @minLength(1)
 param recoveryVaultName string
 
+@description('Optional. The name of the backup storage config')
+param name string = 'vaultstorageconfig'
+
 @description('Optional. Change Vault Storage Type (Works if vault has not registered any backup instance)')
 @allowed([
   'GeoRedundant'
@@ -22,8 +25,13 @@ module pid_cuaId './.bicep/nested_cuaId.bicep' = if (!empty(cuaId)) {
   params: {}
 }
 
+resource rsv 'Microsoft.RecoveryServices/vaults@2021-08-01' existing = {
+  name: recoveryVaultName
+}
+
 resource backupStorageConfig 'Microsoft.RecoveryServices/vaults/backupstorageconfig@2021-08-01' = {
-  name: '${recoveryVaultName}/vaultstorageconfig'
+  name: name
+  parent: rsv
   properties: {
     storageModelType: storageModelType
     crossRegionRestoreFlag: crossRegionRestoreFlag

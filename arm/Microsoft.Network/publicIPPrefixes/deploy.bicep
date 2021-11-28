@@ -1,6 +1,6 @@
 @description('Required. Name of the Public IP Prefix')
 @minLength(1)
-param publicIpPrefixName string
+param name string
 
 @description('Optional. Location for all resources.')
 param location string = resourceGroup().location
@@ -33,7 +33,7 @@ module pid_cuaId '.bicep/nested_cuaId.bicep' = if (!empty(cuaId)) {
 }
 
 resource publicIpPrefix 'Microsoft.Network/publicIPPrefixes@2021-02-01' = {
-  name: publicIpPrefixName
+  name: name
   location: location
   tags: tags
   sku: {
@@ -59,7 +59,7 @@ module publicIpPrefix_rbac '.bicep/nested_rbac.bicep' = [for (roleAssignment, in
   params: {
     principalIds: roleAssignment.principalIds
     roleDefinitionIdOrName: roleAssignment.roleDefinitionIdOrName
-    resourceName: publicIpPrefix.name
+    resourceId: publicIpPrefix.id
   }
 }]
 

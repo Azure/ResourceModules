@@ -23,7 +23,7 @@ This module deploys API Management Service Product Groups.
 | :-- | :-- | :-- |
 | `groupName` | string | The name of the product group |
 | `groupResourceGroup` | string | The resource group the product group was deployed into |
-| `groupResourceId` | string | The resourceId of the product group |
+| `groupResourceId` | string | The resource ID of the product group |
 
 ## Template references
 

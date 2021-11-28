@@ -32,32 +32,12 @@ The following resources are required to be able to deploy this resource.
 | `subscriptionsLimit` | int | `1` |  | Optional. Whether the number of subscriptions a user can have to this product at the same time. Set to null or omit to allow unlimited per user subscriptions. Can be present only if subscriptionRequired property is present and has a value of false. |
 | `terms` | string |  |  | Optional. Product terms of use. Developers trying to subscribe to the product will be presented and required to accept these terms before they can complete the subscription process. |
 
-### Parameter Usage: `productApis`
-```json
-"productApis": {
-    "value":[
-        "api-1",
-        "api-2"
-    ]
-}
-```
-
-Product groups list.
-
-```json
-"productGroups": {
-    "value":[
-        "developers"
-    ]
-}
-```
-
 ## Outputs
 
 | Output Name | Type | Description |
 | :-- | :-- | :-- |
 | `productApisResourceIds` | array | The Resources IDs of the API management service product APIs |
-| `productGroupsResourceIds` | array | The Resources IDs of the API management service product groups |
+| `productGroupsResourceIds` | array | The Resources IDs of the API management service product groups  |
 | `productName` | string | The name of the API management service product |
 | `productResourceGroup` | string | The resource group the API management service product was deployed into |
 | `productResourceId` | string | The resource ID of the API management service product |

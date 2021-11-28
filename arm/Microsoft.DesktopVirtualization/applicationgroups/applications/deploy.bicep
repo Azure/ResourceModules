@@ -41,8 +41,13 @@ module pid_cuaId '.bicep/nested_cuaId.bicep' = if (!empty(cuaId)) {
   params: {}
 }
 
+resource applicationGroup 'Microsoft.DesktopVirtualization/applicationGroups@2021-09-03-preview' existing = {
+  name: appGroupName
+}
+
 resource application 'Microsoft.DesktopVirtualization/applicationGroups/applications@2021-07-12' = {
-  name: '${appGroupName}/${name}'
+  name: name
+  parent: applicationGroup
   properties: {
     description: description
     friendlyName: friendlyName
@@ -57,7 +62,9 @@ resource application 'Microsoft.DesktopVirtualization/applicationGroups/applicat
 
 @sys.description('The resource ID of the deployed Application.')
 output applicationResourceIds string = application.id
+
 @sys.description('The name of the Resource Group the AVD Application was created in.')
 output applicationResourceGroup string = resourceGroup().name
+
 @sys.description('The Name of the Application Group to register the Application in.')
 output appGroupName string = appGroupName

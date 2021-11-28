@@ -1,5 +1,5 @@
 @description('Required. The name of the Azure Analysis Services server to create.')
-param analysisServicesName string
+param name string
 
 @description('Optional. The sku name of the Azure Analysis Services server to create.')
 param skuName string = 'S0'
@@ -99,7 +99,7 @@ module pid_cuaId '.bicep/nested_cuaId.bicep' = if (!empty(cuaId)) {
 }
 
 resource server 'Microsoft.AnalysisServices/servers@2017-08-01' = {
-  name: analysisServicesName
+  name: name
   location: location
   tags: tags
   sku: {
@@ -138,10 +138,15 @@ module server_rbac '.bicep/nested_rbac.bicep' = [for (roleAssignment, index) in 
   params: {
     principalIds: roleAssignment.principalIds
     roleDefinitionIdOrName: roleAssignment.roleDefinitionIdOrName
-    resourceName: server.name
+    resourceId: server.id
   }
 }]
 
+@description('The name of the analysis service')
 output analysisServicesName string = server.name
+
+@description('The resource ID of the analysis service')
 output analysisServicesResourceId string = server.id
+
+@description('The resource group the analysis service was deployed into')
 output analysisServicesResourceGroup string = resourceGroup().name

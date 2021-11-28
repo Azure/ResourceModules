@@ -5,6 +5,11 @@ param apiManagementServiceName string
 param cuaId string = ''
 
 @description('Required. Portal setting name')
+@allowed([
+  'delegation'
+  'signin'
+  'signup'
+])
 param name string
 
 @description('Optional. Portal setting properties.')
@@ -15,8 +20,13 @@ module pid_cuaId '.bicep/nested_cuaId.bicep' = if (!empty(cuaId)) {
   params: {}
 }
 
+resource service 'Microsoft.ApiManagement/service@2021-04-01-preview' existing = {
+  name: apiManagementServiceName
+}
+
 resource portalSetting 'Microsoft.ApiManagement/service/portalsettings@2019-12-01' = if (!empty(properties)) {
-  name: '${apiManagementServiceName}/${name}'
+  name: any(name)
+  parent: service
   properties: properties
 }
 

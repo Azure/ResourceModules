@@ -61,28 +61,35 @@ module pid_cuaId '.bicep/nested_cuaId.bicep' = if (!empty(cuaId)) {
   params: {}
 }
 
+resource workspace 'Microsoft.OperationalInsights/workspaces@2021-06-01' existing = {
+  name: logAnalyticsWorkspaceName
+}
+
 resource dataSource 'Microsoft.OperationalInsights/workspaces/dataSources@2020-08-01' = {
-  name: '${logAnalyticsWorkspaceName}/${name}'
+  name: name
+  parent: workspace
   kind: kind
   tags: tags
   properties: {
-    linkedResourceId: (!empty(kind) && kind == 'AzureActivityLog') ? linkedResourceId : null
-    eventLogName: (!empty(kind) && kind == 'WindowsEvent') ? eventLogName : null
-    eventTypes: (!empty(kind) && kind == 'WindowsEvent') ? eventTypes : null
-    objectName: (!empty(kind) && (kind == 'WindowsPerformanceCounter' || kind == 'LinuxPerformanceObject')) ? objectName : null
-    instanceName: (!empty(kind) && (kind == 'WindowsPerformanceCounter' || kind == 'LinuxPerformanceObject')) ? instanceName : null
-    intervalSeconds: (!empty(kind) && (kind == 'WindowsPerformanceCounter' || kind == 'LinuxPerformanceObject')) ? intervalSeconds : null
-    counterName: (!empty(kind) && kind == 'WindowsPerformanceCounter') ? counterName : null
-    state: (!empty(kind) && (kind == 'IISLogs' || kind == 'LinuxSyslogCollection' || kind == 'LinuxPerformanceCollection')) ? state : null
-    syslogName: (!empty(kind) && kind == 'LinuxSyslog') ? syslogName : null
-    syslogSeverities: (!empty(kind) && (kind == 'LinuxSyslog' || kind == 'LinuxPerformanceObject')) ? syslogSeverities : null
-    performanceCounters: (!empty(kind) && kind == 'LinuxPerformanceObject') ? performanceCounters : null
+    linkedResourceId: !empty(kind) && kind == 'AzureActivityLog' ? linkedResourceId : null
+    eventLogName: !empty(kind) && kind == 'WindowsEvent' ? eventLogName : null
+    eventTypes: !empty(kind) && kind == 'WindowsEvent' ? eventTypes : null
+    objectName: !empty(kind) && (kind == 'WindowsPerformanceCounter' || kind == 'LinuxPerformanceObject') ? objectName : null
+    instanceName: !empty(kind) && (kind == 'WindowsPerformanceCounter' || kind == 'LinuxPerformanceObject') ? instanceName : null
+    intervalSeconds: !empty(kind) && (kind == 'WindowsPerformanceCounter' || kind == 'LinuxPerformanceObject') ? intervalSeconds : null
+    counterName: !empty(kind) && kind == 'WindowsPerformanceCounter' ? counterName : null
+    state: !empty(kind) && (kind == 'IISLogs' || kind == 'LinuxSyslogCollection' || kind == 'LinuxPerformanceCollection') ? state : null
+    syslogName: !empty(kind) && kind == 'LinuxSyslog' ? syslogName : null
+    syslogSeverities: !empty(kind) && (kind == 'LinuxSyslog' || kind == 'LinuxPerformanceObject') ? syslogSeverities : null
+    performanceCounters: !empty(kind) && kind == 'LinuxPerformanceObject' ? performanceCounters : null
   }
 }
 
 @description('The resource ID of the deployed data source')
 output dataSourceResourceId string = dataSource.id
+
 @description('The resource group where the data source is deployed')
 output dataSourceResourceGroup string = resourceGroup().name
+
 @description('The name of the deployed data source')
 output dataSourceName string = dataSource.name

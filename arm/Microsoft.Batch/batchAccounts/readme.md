@@ -12,7 +12,6 @@
 
 | Parameter Name | Type | Default Value | Possible Values | Description |
 | :-- | :-- | :-- | :-- | :-- |
-| `batchAccountName` | string |  |  | Required. Name of the Azure Batch |
 | `cuaId` | string |  |  | Optional. Customer Usage Attribution ID (GUID). This GUID must be previously registered |
 | `diagnosticLogsRetentionInDays` | int | `365` |  | Optional. Specifies the number of days that logs will be kept for; a value of 0 will retain data indefinitely. |
 | `diagnosticStorageAccountId` | string |  |  | Optional. Resource identifier of the Diagnostic Storage Account. |
@@ -22,6 +21,7 @@
 | `lock` | string | `NotSpecified` | `[CanNotDelete, NotSpecified, ReadOnly]` | Optional. Specify the type of lock. |
 | `logsToEnable` | array | `[ServiceLog]` | `[ServiceLog]` | Optional. The name of logs that will be streamed. |
 | `metricsToEnable` | array | `[AllMetrics]` | `[AllMetrics]` | Optional. The name of metrics that will be streamed. |
+| `name` | string |  |  | Required. Name of the Azure Batch |
 | `tags` | object | `{object}` |  | Optional. Tags of the resource. |
 | `workspaceId` | string |  |  | Optional. Resource identifier of Log Analytics. |
 
@@ -44,12 +44,11 @@ Tag names and tag values can be provided as needed. A tag can be left without a 
 
 ## Outputs
 
-| Output Name | Type |
-| :-- | :-- |
-| `batchAccountName` | string |
-| `batchAccountPrimaryKey` | string |
-| `batchAccountResourceGroup` | string |
-| `batchAccountResourceId` | string |
+| Output Name | Type | Description |
+| :-- | :-- | :-- |
+| `batchAccountName` | string | The name of the batch account |
+| `batchAccountResourceGroup` | string | The resource group the batch account was deployed into |
+| `batchAccountResourceId` | string | The resource ID of the batch account |
 
 ## Template references
 

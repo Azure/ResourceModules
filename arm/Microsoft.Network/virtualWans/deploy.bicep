@@ -2,7 +2,7 @@
 param location string = resourceGroup().location
 
 @description('Required. Name of the Virtual Wan.')
-param virtualWanName string
+param name string
 
 @description('Optional. Sku of the Virtual Wan.')
 @allowed([
@@ -68,7 +68,7 @@ module pid_cuaId '.bicep/nested_cuaId.bicep' = if (!empty(cuaId)) {
 }
 
 resource virtualWan 'Microsoft.Network/virtualWans@2021-05-01' = {
-  name: virtualWanName
+  name: name
   location: location
   tags: tags
   properties: {
@@ -175,7 +175,7 @@ module virtualWan_rbac '.bicep/nested_rbac.bicep' = [for (roleAssignment, index)
   params: {
     principalIds: roleAssignment.principalIds
     roleDefinitionIdOrName: roleAssignment.roleDefinitionIdOrName
-    resourceName: virtualWan.name
+    resourceId: virtualWan.id
   }
 }]
 
@@ -183,7 +183,7 @@ module virtualWan_rbac '.bicep/nested_rbac.bicep' = [for (roleAssignment, index)
 output virtualWanName string = virtualWan.name
 
 @description('The resource ID of the virtual WAN')
-output virtualWanNameResourceId string = virtualWan.id
+output virtualWanResourceId string = virtualWan.id
 
 @description('The resource group the virtual WAN was deployed into')
-output virtualWanNameResourceGroup string = resourceGroup().name
+output virtualWanResourceGroup string = resourceGroup().name

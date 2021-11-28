@@ -165,10 +165,10 @@ param expiryTime string = ''
 @description('Optional. The expiry time\'s offset in minutes.')
 param expiryTimeOffsetMinutes int = 0
 
-@description('Optional. The next runtime of the deployment schedule in ISO 8601 format. YYYY-MM-DDTHH:MM:SS, 2021-12-31T23:00:00')
+@description('Optional. The next time the deployment schedule runs in ISO 8601 format. YYYY-MM-DDTHH:MM:SS, 2021-12-31T23:00:00')
 param nextRun string = ''
 
-@description('Optional. The next runtime\'s offset in minutes.')
+@description('Optional. The next run\'s offset in minutes.')
 param nextRunOffsetMinutes int = 0
 
 @description('Optional. The schedules description.')

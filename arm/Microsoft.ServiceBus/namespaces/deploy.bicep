@@ -273,7 +273,7 @@ module serviceBusNamespace_rbac '.bicep/nested_rbac.bicep' = [for (roleAssignmen
   params: {
     principalIds: roleAssignment.principalIds
     roleDefinitionIdOrName: roleAssignment.roleDefinitionIdOrName
-    resourceName: serviceBusNamespace.name
+    resourceId: serviceBusNamespace.id
   }
 }]
 

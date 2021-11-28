@@ -52,10 +52,10 @@ module pid_cuaId './.bicep/nested_cuaId.bicep' = if (!empty(cuaId)) {
 resource protectionContainer 'Microsoft.RecoveryServices/vaults/backupFabrics/protectionContainers@2021-08-01' = {
   name: '${recoveryVaultName}/Azure/${name}'
   properties: {
-    sourceResourceId: (empty(sourceResourceId) ? null : sourceResourceId)
-    friendlyName: (empty(friendlyName) ? null : friendlyName)
-    backupManagementType: (empty(backupManagementType) ? null : backupManagementType)
-    containerType: (empty(containerType) ? null : containerType)
+    sourceResourceId: !empty(sourceResourceId) ? sourceResourceId : null
+    friendlyName: !empty(friendlyName) ? friendlyName : null
+    backupManagementType: !empty(backupManagementType) ? backupManagementType : null
+    containerType: !empty(containerType) ? containerType : null
   }
 }
 

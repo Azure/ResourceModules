@@ -1,4 +1,4 @@
-@description('Required. The name of the EventHub namespace')
+@description('Required. The name of the event hub namespace')
 param namespaceName string
 
 @description('Required. The name of the disaster recovery config')
@@ -15,8 +15,13 @@ module pid_cuaId '.bicep/nested_cuaId.bicep' = if (!empty(cuaId)) {
   params: {}
 }
 
+resource namespace 'Microsoft.EventHub/namespaces@2021-06-01-preview' existing = {
+  name: namespaceName
+}
+
 resource disasterRecoveryConfig 'Microsoft.EventHub/namespaces/disasterRecoveryConfigs@2017-04-01' = {
-  name: '${namespaceName}/${name}'
+  name: name
+  parent: namespace
   properties: {
     partnerNamespace: partnerNamespaceId
   }
@@ -25,8 +30,8 @@ resource disasterRecoveryConfig 'Microsoft.EventHub/namespaces/disasterRecoveryC
 @description('The name of the disaster recovery config.')
 output disasterRecoveryConfigName string = disasterRecoveryConfig.name
 
-@description('The Resource ID of the disaster recovery config.')
+@description('The resource ID of the disaster recovery config.')
 output disasterRecoveryConfigResourceId string = disasterRecoveryConfig.id
 
-@description('The name of the Resource Group the disaster recovery config was created in.')
+@description('The name of the resource group the disaster recovery config was created in.')
 output disasterRecoveryConfigResourceGroup string = resourceGroup().name

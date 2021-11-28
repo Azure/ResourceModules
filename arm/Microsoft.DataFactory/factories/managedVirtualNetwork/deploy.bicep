@@ -12,8 +12,13 @@ module pid_cuaId '.bicep/nested_cuaId.bicep' = if (!empty(cuaId)) {
   params: {}
 }
 
+resource dataFactory 'Microsoft.DataFactory/factories@2018-06-01' existing = {
+  name: dataFactoryName
+}
+
 resource managedVirtualNetwork 'Microsoft.DataFactory/factories/managedVirtualNetworks@2018-06-01' = {
-  name: '${dataFactoryName}/${name}'
+  name: name
+  parent: dataFactory
   properties: {}
 }
 

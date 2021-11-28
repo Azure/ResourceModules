@@ -56,8 +56,13 @@ module pid_cuaId '.bicep/nested_cuaId.bicep' = if (!empty(cuaId)) {
   params: {}
 }
 
+resource service 'Microsoft.ApiManagement/service@2021-04-01-preview' existing = {
+  name: apiManagementServiceName
+}
+
 resource identityProvider 'Microsoft.ApiManagement/service/identityProviders@2020-06-01-preview' = if (enableIdentityProviders) {
-  name: '${apiManagementServiceName}/${name}'
+  name: name
+  parent: service
   properties: {
     type: identityProviderType
     signinTenant: identityProviderSignInTenant

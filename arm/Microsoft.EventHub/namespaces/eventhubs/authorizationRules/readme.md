@@ -13,9 +13,9 @@ This module deploys an EventHub Namespace EventHubs Authorization Rule
 | Parameter Name | Type | Default Value | Possible Values | Description |
 | :-- | :-- | :-- | :-- | :-- |
 | `cuaId` | string |  |  | Optional. Customer Usage Attribution ID (GUID). This GUID must be previously registered |
-| `eventHubName` | string |  |  | Required. The name of the EventHub namespace eventHub |
+| `eventHubName` | string |  |  | Required. The name of the event hub namespace event hub |
 | `name` | string |  |  | Required. The name of the authorization rule |
-| `namespaceName` | string |  |  | Required. The name of the EventHub namespace |
+| `namespaceName` | string |  |  | Required. The name of the event hub namespace |
 | `rights` | array | `[]` | `[Listen, Manage, Send]` | Optional. The rights associated with the rule. |
 
 ## Outputs
@@ -23,8 +23,8 @@ This module deploys an EventHub Namespace EventHubs Authorization Rule
 | Output Name | Type | Description |
 | :-- | :-- | :-- |
 | `authorizationRuleName` | string | The name of the authorization rule. |
-| `authorizationRuleResourceGroup` | string | The name of the Resource Group the authorization rule was created in. |
-| `authorizationRuleResourceId` | string | The Resource ID of the authorization rule. |
+| `authorizationRuleResourceGroup` | string | The name of the resource group the authorization rule was created in. |
+| `authorizationRuleResourceId` | string | The resource ID of the authorization rule. |
 
 ## Template references
 

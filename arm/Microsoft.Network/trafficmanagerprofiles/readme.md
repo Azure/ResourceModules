@@ -26,11 +26,11 @@ This module deploys Traffic Manager, with resource lock.
 | `maxReturn` | int | `1` |  | Optional. Maximum number of endpoints to be returned for MultiValue routing type. |
 | `metricsToEnable` | array | `[AllMetrics]` | `[AllMetrics]` | Optional. The name of metrics that will be streamed. |
 | `monitorConfig` | object | `{object}` |  | Optional. The endpoint monitoring settings of the Traffic Manager profile. |
+| `name` | string |  |  | Required. Name of the Traffic Manager |
 | `profileStatus` | string | `Enabled` | `[Enabled, Disabled]` | Optional. The status of the Traffic Manager profile. |
 | `relativeName` | string |  |  | Required. The relative DNS name provided by this Traffic Manager profile. This value is combined with the DNS domain name used by Azure Traffic Manager to form the fully-qualified domain name (FQDN) of the profile. |
 | `roleAssignments` | array | `[]` |  | Optional. Array of role assignment objects that contain the 'roleDefinitionIdOrName' and 'principalId' to define RBAC role assignments on this resource. In the roleDefinitionIdOrName attribute, you can provide either the display name of the role definition, or its fully qualified ID in the following format: '/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11' |
 | `tags` | object | `{object}` |  | Optional. Resource tags. |
-| `trafficManagerName` | string |  |  | Required. Name of the Traffic Manager |
 | `trafficRoutingMethod` | string | `Performance` | `[Performance, Priority, Weighted, Geographic, MultiValue, Subnet]` | Optional. The traffic routing method of the Traffic Manager profile. |
 | `trafficViewEnrollmentStatus` | string | `Disabled` | `[Disabled, Enabled]` | Optional. Indicates whether Traffic View is 'Enabled' or 'Disabled' for the Traffic Manager profile. Null, indicates 'Disabled'. Enabling this feature will increase the cost of the Traffic Manage profile. |
 | `ttl` | int | `60` |  | Optional. The DNS Time-To-Live (TTL), in seconds. This informs the local DNS resolvers and DNS clients how long to cache DNS responses provided by this Traffic Manager profile. |
@@ -126,7 +126,7 @@ Tag names and tag values can be provided as needed. A tag can be left without a 
 | :-- | :-- | :-- |
 | `trafficManagerName` | string | The name of the traffix manager was deployed into |
 | `trafficManagerResourceGroup` | string | The resource group the traffix manager was deployed into |
-| `trafficManagerResourceId` | string | The resourceId of the traffix manager |
+| `trafficManagerResourceId` | string | The resource ID of the traffix manager |
 
 ## Template references
 

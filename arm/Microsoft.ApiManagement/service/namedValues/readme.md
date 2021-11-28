@@ -44,7 +44,7 @@ The following resources are required to be able to deploy this resource.
 | :-- | :-- | :-- |
 | `namedValueName` | string | The name of the named value |
 | `namedValueResourceGroup` | string | The resource group the named value was deployed into |
-| `namedValueResourceId` | string | The resourceId of the named value |
+| `namedValueResourceId` | string | The resource ID of the named value |
 
 ## Template references
 

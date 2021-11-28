@@ -5,7 +5,7 @@ param name string
 param location string = resourceGroup().location
 
 @description('Required. An Array of 1 or more IP Address Prefixes for the Virtual Network.')
-param vNetAddressPrefixes array
+param addressPrefixes array
 
 @description('Required. An Array of subnets to deploy to the Virual Network.')
 @minLength(1)
@@ -107,7 +107,7 @@ resource virtualNetwork 'Microsoft.Network/virtualNetworks@2021-05-01' = {
   tags: tags
   properties: {
     addressSpace: {
-      addressPrefixes: vNetAddressPrefixes
+      addressPrefixes: addressPrefixes
     }
     ddosProtectionPlan: !empty(ddosProtectionPlanId) ? ddosProtectionPlan : null
     dhcpOptions: !empty(dnsServers) ? dnsServers_var : null
@@ -169,7 +169,7 @@ module virtualNetwork_rbac '.bicep/nested_rbac.bicep' = [for (roleAssignment, in
   params: {
     principalIds: roleAssignment.principalIds
     roleDefinitionIdOrName: roleAssignment.roleDefinitionIdOrName
-    resourceName: virtualNetwork.name
+    resourceId: virtualNetwork.id
   }
 }]
 

@@ -4,7 +4,7 @@ This module deploys an Alert based on metrics
 
 ## Resource types
 
-| Resource Type | API Version |
+| Resource Type | Api Version |
 | :-- | :-- |
 | `Microsoft.Authorization/roleAssignments` | 2020-04-01-preview |
 | `Microsoft.Insights/scheduledQueryRules` | 2021-02-01-preview |

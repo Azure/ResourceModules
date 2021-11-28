@@ -14,16 +14,16 @@ This module deploys an EventHub Namespace Disaster Recovery Config
 | :-- | :-- | :-- | :-- | :-- |
 | `cuaId` | string |  |  | Optional. Customer Usage Attribution ID (GUID). This GUID must be previously registered |
 | `name` | string |  |  | Required. The name of the disaster recovery config |
-| `namespaceName` | string |  |  | Required. The name of the EventHub namespace |
-| `partnerNamespaceId` | string |  |  | Optional. ARM ID of the Primary/Secondary eventhub namespace name, which is part of GEO DR pairing |
+| `namespaceName` | string |  |  | Required. The name of the event hub namespace |
+| `partnerNamespaceId` | string |  |  | Optional. ARM ID of the Primary/Secondary event hub namespace name, which is part of GEO DR pairing |
 
 ## Outputs
 
 | Output Name | Type | Description |
 | :-- | :-- | :-- |
 | `disasterRecoveryConfigName` | string | The name of the disaster recovery config. |
-| `disasterRecoveryConfigResourceGroup` | string | The name of the Resource Group the disaster recovery config was created in. |
-| `disasterRecoveryConfigResourceId` | string | The Resource ID of the disaster recovery config. |
+| `disasterRecoveryConfigResourceGroup` | string | The name of the resource group the disaster recovery config was created in. |
+| `disasterRecoveryConfigResourceId` | string | The resource ID of the disaster recovery config. |
 
 ## Template references
 

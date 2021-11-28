@@ -33,7 +33,7 @@ This module deploys API Management Service Identity Provider.
 | :-- | :-- | :-- |
 | `identityProviderName` | string | The name of the API management service identity provider |
 | `identityProviderResourceGroup` | string | The resource group the API management service identity provider was deployed into |
-| `identityProviderResourceId` | string | The resourceId of the API management service identity provider |
+| `identityProviderResourceId` | string | The resource ID of the API management service identity provider |
 
 ## Template references
 

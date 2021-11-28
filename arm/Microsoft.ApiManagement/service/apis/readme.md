@@ -67,7 +67,7 @@ The following resources are required to be able to deploy this resource.
 | :-- | :-- | :-- |
 | `apiName` | string | The name of the API management service API |
 | `apiResourceGroup` | string | The resource group the API management service API was deployed to |
-| `apiResourceId` | string | The resourceId of the API management service API |
+| `apiResourceId` | string | The resource ID of the API management service API |
 
 ## Template references
 

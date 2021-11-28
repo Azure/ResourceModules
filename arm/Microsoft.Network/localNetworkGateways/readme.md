@@ -20,10 +20,10 @@ This module deploys Local Network Gateway, with resource lock.
 | `localAsn` | string |  |  | Optional. The BGP speaker's ASN. Not providing this value will automatically disable BGP on this Local Network Gateway resource. |
 | `localBgpPeeringAddress` | string |  |  | Optional. The BGP peering address and BGP identifier of this BGP speaker. Not providing this value will automatically disable BGP on this Local Network Gateway resource. |
 | `localGatewayPublicIpAddress` | string |  |  | Required. Public IP of the local gateway |
-| `localNetworkGatewayName` | string |  |  | Required. Name of the Local Network Gateway |
 | `localPeerWeight` | string |  |  | Optional. The weight added to routes learned from this BGP speaker. This will only take effect if both the localAsn and the localBgpPeeringAddress values are provided. |
 | `location` | string | `[resourceGroup().location]` |  | Optional. Location for all resources. |
 | `lock` | string | `NotSpecified` | `[CanNotDelete, NotSpecified, ReadOnly]` | Optional. Specify the type of lock. |
+| `name` | string |  |  | Required. Name of the Local Network Gateway |
 | `roleAssignments` | array | `[]` |  | Optional. Array of role assignment objects that contain the 'roleDefinitionIdOrName' and 'principalId' to define RBAC role assignments on this resource. In the roleDefinitionIdOrName attribute, you can provide either the display name of the role definition, or its fully qualified ID in the following format: '/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11' |
 | `tags` | object | `{object}` |  | Optional. Tags of the resource. |
 
@@ -79,7 +79,7 @@ Tag names and tag values can be provided as needed. A tag can be left without a 
 | :-- | :-- | :-- |
 | `localNetworkGatewayName` | string | The name of the local network gateway |
 | `localNetworkGatewayResourceGroup` | string | The resource group the local network gateway was deployed into |
-| `localNetworkGatewayResourceId` | string | The resourceId of the local network gateway |
+| `localNetworkGatewayResourceId` | string | The resource ID of the local network gateway |
 
 ## Template references
 

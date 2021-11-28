@@ -1,5 +1,5 @@
 @description('Required. Name of the private endpoint resource to create.')
-param privateEndpointName string
+param name string
 
 @description('Required. Resource ID of the subnet where the endpoint needs to be created.')
 param targetSubnetId string
@@ -39,13 +39,13 @@ module pid_cuaId '.bicep/nested_pid.bicep' = if (!empty(cuaId)) {
 }
 
 resource privateEndpoint 'Microsoft.Network/privateEndpoints@2021-03-01' = {
-  name: privateEndpointName
+  name: name
   location: location
   tags: tags
   properties: {
     privateLinkServiceConnections: [
       {
-        name: privateEndpointName
+        name: name
         properties: {
           privateLinkServiceId: serviceResourceId
           groupIds: groupId
@@ -82,7 +82,7 @@ module privateEndpoint_rbac '.bicep/nested_rbac.bicep' = [for (roleAssignment, i
   params: {
     principalIds: roleAssignment.principalIds
     roleDefinitionIdOrName: roleAssignment.roleDefinitionIdOrName
-    resourceName: privateEndpoint.name
+    resourceId: privateEndpoint.id
   }
 }]
 

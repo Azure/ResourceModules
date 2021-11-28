@@ -1,6 +1,6 @@
 @description('Required. Name of the DDoS protection plan to assign the VNET to.')
 @minLength(1)
-param ddosProtectionPlanName string = ''
+param name string = ''
 
 @description('Optional. Location for all resources.')
 param location string = resourceGroup().location
@@ -28,7 +28,7 @@ module pid_cuaId '.bicep/nested_cuaId.bicep' = if (!empty(cuaId)) {
 }
 
 resource ddosProtectionPlan 'Microsoft.Network/ddosProtectionPlans@2021-02-01' = {
-  name: ddosProtectionPlanName
+  name: name
   location: location
   tags: tags
   properties: {}
@@ -48,7 +48,7 @@ module ddosProtectionPlan_rbac '.bicep/nested_rbac.bicep' = [for (roleAssignment
   params: {
     principalIds: roleAssignment.principalIds
     roleDefinitionIdOrName: roleAssignment.roleDefinitionIdOrName
-    resourceName: ddosProtectionPlan.name
+    resourceId: ddosProtectionPlan.id
   }
 }]
 

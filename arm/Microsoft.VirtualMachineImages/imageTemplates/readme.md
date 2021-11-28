@@ -20,10 +20,10 @@ This module deploys an Image Template (for Azure Image Builder service) that can
 | `customizationSteps` | array |  |  | Required. Customization steps to be run when building the VM image. |
 | `imageReplicationRegions` | array | `[]` |  | Optional. List of the regions the image produced by this solution should be stored in the Shared Image Gallery. When left empty, the deployment's location will be taken as a default value. |
 | `imageSource` | object |  |  | Required. Image source definition in object format. |
-| `imageTemplateName` | string |  |  | Required. Name of the Image Template to be built by the Azure Image Builder service. |
 | `location` | string | `[resourceGroup().location]` |  | Optional. Location for all resources. |
 | `lock` | string | `NotSpecified` | `[CanNotDelete, NotSpecified, ReadOnly]` | Optional. Specify the type of lock. |
 | `managedImageName` | string |  |  | Optional. Name of the managed image that will be created in the AIB resourcegroup. |
+| `name` | string |  |  | Required. Name of the Image Template to be built by the Azure Image Builder service. |
 | `osDiskSizeGB` | int | `128` |  | Optional. Specifies the size of OS disk. |
 | `roleAssignments` | array | `[]` |  | Optional. Array of role assignment objects that contain the 'roleDefinitionIdOrName' and 'principalId' to define RBAC role assignments on this resource. In the roleDefinitionIdOrName attribute, you can provide either the display name of the role definition, or its fully qualified ID in the following format: '/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11' |
 | `sigImageDefinitionId` | string |  |  | Optional. Resource ID of Shared Image Gallery to distribute image to, e.g.: /subscriptions/<subscriptionID>/resourceGroups/<SIG resourcegroup>/providers/Microsoft.Compute/galleries/<SIG name>/images/<image definition> |
@@ -116,12 +116,12 @@ Tag names and tag values can be provided as needed. A tag can be left without a 
 
 ## Outputs
 
-| Output Name | Type |
-| :-- | :-- |
-| `imageTemplateName` | string |
-| `imageTemplateResourceGroup` | string |
-| `imageTemplateResourceId` | string |
-| `runThisCommand` | string |
+| Output Name | Type | Description |
+| :-- | :-- | :-- |
+| `imageTemplateName` | string | The name of the image template |
+| `imageTemplateResourceGroup` | string | The resource group the image template was deployed into |
+| `imageTemplateResourceId` | string | The resource ID of the image template |
+| `runThisCommand` | string | The command to run in order to trigger the image build |
 
 ## Template references
 

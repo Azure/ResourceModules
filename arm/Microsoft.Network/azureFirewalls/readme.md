@@ -18,7 +18,6 @@ This module deploys Azure Firewall.
 | :-- | :-- | :-- | :-- | :-- |
 | `applicationRuleCollections` | array | `[]` |  | Optional. Collection of application rule collections used by Azure Firewall. |
 | `availabilityZones` | array | `[1, 2, 3]` |  | Optional. Zone numbers e.g. 1,2,3. |
-| `azureFirewallName` | string |  |  | Required. Name of the Azure Firewall. |
 | `azureFirewallPipName` | string |  |  | Optional. Specifies the name of the Public IP used by Azure Firewall. If it's not provided, a '-pip' suffix will be appended to the Firewall's name. |
 | `azureSkuName` | string | `AZFW_VNet` | `[AZFW_VNet, AZFW_Hub]` | Optional. Name of an Azure Firewall SKU. |
 | `azureSkuTier` | string | `Standard` | `[Standard, Premium]` | Optional. Tier of an Azure Firewall. |
@@ -32,6 +31,7 @@ This module deploys Azure Firewall.
 | `location` | string | `[resourceGroup().location]` |  | Optional. Location for all resources. |
 | `lock` | string | `NotSpecified` | `[CanNotDelete, NotSpecified, ReadOnly]` | Optional. Specify the type of lock. |
 | `metricsToEnable` | array | `[AllMetrics]` | `[AllMetrics]` | Optional. The name of metrics that will be streamed. |
+| `name` | string |  |  | Required. Name of the Azure Firewall. |
 | `natRuleCollections` | array | `[]` |  | Optional. Collection of NAT rule collections used by Azure Firewall. |
 | `networkRuleCollections` | array | `[]` |  | Optional. Collection of network rule collections used by Azure Firewall. |
 | `publicIPLogsToEnable` | array | `[DDoSProtectionNotifications, DDoSMitigationReports, DDoSMitigationFlowLogs]` | `[DDoSProtectionNotifications, DDoSMitigationReports, DDoSMitigationFlowLogs]` | Optional. The name of public IP logs that will be streamed. |
@@ -97,7 +97,7 @@ Tag names and tag values can be provided as needed. A tag can be left without a 
 | `azureFirewallPrivateIp` | string | The private IP of the Azure Firewall |
 | `azureFirewallPublicIp` | string | The public IP of the Azure Firewall |
 | `azureFirewallResourceGroup` | string | The resource group the azure firewall was deployed into |
-| `azureFirewallResourceId` | string | The resourceId of the Azure firewall |
+| `azureFirewallResourceId` | string | The resource ID of the Azure firewall |
 | `natRuleCollections` | array | Collection of NAT rule collections used by Azure Firewall |
 | `networkRuleCollections` | array | List of Network Rule Collections |
 

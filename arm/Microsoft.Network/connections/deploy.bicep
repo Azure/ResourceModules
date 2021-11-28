@@ -1,5 +1,5 @@
 @description('Required. Remote connection name')
-param connectionName string
+param name string
 
 @description('Optional. Specifies a VPN shared key. The same value has to be specified on both Virtual Network Gateways')
 param vpnSharedKey string = ''
@@ -94,7 +94,7 @@ module pid_cuaId '.bicep/nested_cuaId.bicep' = if (!empty(cuaId)) {
 }
 
 resource connection 'Microsoft.Network/connections@2021-02-01' = {
-  name: connectionName
+  name: name
   location: location
   tags: tags
   properties: {

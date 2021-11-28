@@ -31,12 +31,12 @@ resource managedInstance 'Microsoft.Sql/managedInstances@2021-05-01-preview' exi
 
 resource encryptionProtector 'Microsoft.Sql/managedInstances/encryptionProtector@2021-05-01-preview' = {
   name: name
+  parent: managedInstance
   properties: {
     autoRotationEnabled: autoRotationEnabled
     serverKeyName: serverKeyName
     serverKeyType: serverKeyType
   }
-  parent: managedInstance
 }
 
 @description('The name of the deployed managed instance')

@@ -19,7 +19,6 @@ The following resources are required to be able to deploy this resource.
 
 | Parameter Name | Type | Default Value | Possible Values | Description |
 | :-- | :-- | :-- | :-- | :-- |
-| `analysisServicesName` | string |  |  | Required. The name of the Azure Analysis Services server to create. |
 | `cuaId` | string |  |  | Optional. Customer Usage Attribution ID (GUID). This GUID must be previously registered |
 | `diagnosticLogsRetentionInDays` | int | `365` |  | Optional. Specifies the number of days that logs will be kept for; a value of 0 will retain data indefinitely. |
 | `diagnosticStorageAccountId` | string |  |  | Optional. Resource identifier of the Diagnostic Storage Account. |
@@ -30,6 +29,7 @@ The following resources are required to be able to deploy this resource.
 | `lock` | string | `NotSpecified` | `[CanNotDelete, NotSpecified, ReadOnly]` | Optional. Specify the type of lock. |
 | `logsToEnable` | array | `[Engine, Service]` | `[Engine, Service]` | Optional. The name of logs that will be streamed. |
 | `metricsToEnable` | array | `[AllMetrics]` | `[AllMetrics]` | Optional. The name of metrics that will be streamed. |
+| `name` | string |  |  | Required. The name of the Azure Analysis Services server to create. |
 | `roleAssignments` | array | `[]` |  | Optional. Array of role assignment objects that contain the 'roleDefinitionIdOrName' and 'principalId' to define RBAC role assignments on this resource. In the roleDefinitionIdOrName attribute, you can provide either the display name of the role definition, or its fully qualified ID in the following format: '/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11' |
 | `skuCapacity` | int | `1` |  | Optional. The total number of query replica scale-out instances. |
 | `skuName` | string | `S0` |  | Optional. The sku name of the Azure Analysis Services server to create. |
@@ -84,11 +84,11 @@ Tag names and tag values can be provided as needed. A tag can be left without a 
 
 ## Outputs
 
-| Output Name | Type |
-| :-- | :-- |
-| `analysisServicesName` | string |
-| `analysisServicesResourceGroup` | string |
-| `analysisServicesResourceId` | string |
+| Output Name | Type | Description |
+| :-- | :-- | :-- |
+| `analysisServicesName` | string | The name of the analysis service |
+| `analysisServicesResourceGroup` | string | The resource group the analysis service was deployed into |
+| `analysisServicesResourceId` | string | The resource ID of the analysis service |
 
 ## Template references
 

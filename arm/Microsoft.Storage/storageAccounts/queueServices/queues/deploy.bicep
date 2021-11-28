@@ -42,7 +42,7 @@ module queue_rbac '.bicep/nested_rbac.bicep' = [for (roleAssignment, index) in r
   params: {
     principalIds: roleAssignment.principalIds
     roleDefinitionIdOrName: roleAssignment.roleDefinitionIdOrName
-    resourceName: '${storageAccount.name}/${storageAccount::queueServices.name}/${storageAccount::queueServices::queue.name}'
+    resourceId: '${storageAccount::queueServices::queue.id}'
   }
 }]
 

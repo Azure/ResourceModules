@@ -1,6 +1,6 @@
-# NetworkPrivateendpointsPrivatednszonegroups `[Microsoft.Network/privateEndpoints/privateDnsZoneGroups]`
+# Network Private Endpoint Private DNS Zone Group `[Microsoft.Network/privateEndpoints/privateDnsZoneGroups]`
 
-// TODO: Replace Resource and fill in description
+This module deploys a private endpoint private DNS zone group
 
 ## Resource Types
 
@@ -13,11 +13,8 @@
 | Parameter Name | Type | Default Value | Possible Values | Description |
 | :-- | :-- | :-- | :-- | :-- |
 | `privateDNSIds` | array |  |  | Required. List of private DNS IDs |
+| `privateDnsZoneGroupName` | string | `default` |  | The name of the private DNS Zone Group |
 | `privateEndpointName` | string |  |  | Required. The name of the private endpoint |
-
-### Parameter Usage: `<ParameterPlaceholder>`
-
-// TODO: Fill in Parameter usage
 
 ## Outputs
 
@@ -25,7 +22,7 @@
 | :-- | :-- | :-- |
 | `privateDnsZoneGroupName` | string | The name of the private endpoint DNS zone group |
 | `privateDnsZoneGroupResourceGroup` | string | The resource group the private endpoint DNS zone group was deployed into |
-| `privateDnsZoneGroupResourceId` | string | The resourceId of the private endpoint DNS zone group |
+| `privateDnsZoneGroupResourceId` | string | The resource ID of the private endpoint DNS zone group |
 
 ## Template references
 

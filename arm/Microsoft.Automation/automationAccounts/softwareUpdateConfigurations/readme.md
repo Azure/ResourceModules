@@ -27,8 +27,8 @@ This module deploys an Azure Automation Account Software update Configuration.
 | `monthDays` | array | `[]` | `[1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31]` | Optional. Can be used with frequency 'Month'. Provides the specific days of the month to run the deployment schedule. |
 | `monthlyOccurrences` | array | `[]` |  | Optional. Can be used with frequency 'Month'. Provides the pattern/cadence for running the deployment schedule in a month. Takes objects formed like this {occurance(int),day(string)}. Day is the name of the day to run the deployment schedule, the occurance specifies which occurance of that day to run the deployment schedule. |
 | `name` | string |  |  | Required. The name of the Deployment schedule. |
-| `nextRun` | string |  |  | Optional. The next runtime of the deployment schedule in ISO 8601 format. YYYY-MM-DDTHH:MM:SS, 2021-12-31T23:00:00 |
-| `nextRunOffsetMinutes` | int |  |  | Optional. The next runtime's offset in minutes. |
+| `nextRun` | string |  |  | Optional. The next time the deployment schedule runs in ISO 8601 format. YYYY-MM-DDTHH:MM:SS, 2021-12-31T23:00:00 |
+| `nextRunOffsetMinutes` | int |  |  | Optional. The next run's offset in minutes. |
 | `nonAzureComputerNames` | array | `[]` |  | Optional. List of names of non-azure machines in scope for the deployment schedule. |
 | `nonAzureQueries` | array | `[]` |  | Optional. Array of functions from a Log Analytics workspace, used to scope the deployment schedule. |
 | `operatingSystem` | string |  | `[Windows, Linux]` | Required. The operating system to be configured by the deployment schedule. |

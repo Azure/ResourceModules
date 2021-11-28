@@ -34,7 +34,7 @@ The following resources are required to be able to deploy this resource.
 | :-- | :-- | :-- |
 | `subscriptionName` | string | The name of the API management service subscription |
 | `subscriptionResourceGroup` | string | The resource group the API management service subscription was deployed into |
-| `subscriptionResourceId` | string | The resourceId of the API management service subscription |
+| `subscriptionResourceId` | string | The resource ID of the API management service subscription |
 
 ## Template references
 

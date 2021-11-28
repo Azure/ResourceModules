@@ -28,11 +28,11 @@ resource managedInstance 'Microsoft.Sql/managedInstances@2021-05-01-preview' exi
 
 resource securityAlertPolicy 'Microsoft.Sql/managedInstances/securityAlertPolicies@2017-03-01-preview' = {
   name: name
+  parent: managedInstance
   properties: {
     state: state
     emailAccountAdmins: emailAccountAdmins
   }
-  parent: managedInstance
 }
 
 @description('The name of the deployed security alert policy')

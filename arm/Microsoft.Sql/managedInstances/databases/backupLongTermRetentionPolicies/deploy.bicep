@@ -29,13 +29,13 @@ resource managedInstance 'Microsoft.Sql/managedInstances@2021-05-01-preview' exi
 
 resource backupLongTermRetentionPolicy 'Microsoft.Sql/managedInstances/databases/backupLongTermRetentionPolicies@2021-02-01-preview' = {
   name: name
+  parent: managedInstance::managedInstaceDatabase
   properties: {
     monthlyRetention: monthlyRetention
     weeklyRetention: weeklyRetention
     weekOfYear: weekOfYear
     yearlyRetention: yearlyRetention
   }
-  parent: managedInstance::managedInstaceDatabase
 }
 
 @description('The name of the deployed database backup long-term retention policy')

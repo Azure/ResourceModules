@@ -23,7 +23,7 @@ This module deploys API Management Service APIs Version Set.
 | :-- | :-- | :-- |
 | `apiVersionSetName` | string | The name of the API Version set |
 | `apiVersionSetResourceGroup` | string | The resource group the API Version set was deployed into |
-| `apiVersionSetResourceId` | string | The resourceId of the API Version set |
+| `apiVersionSetResourceId` | string | The resource ID of the API Version set |
 
 ## Template references
 

@@ -80,11 +80,11 @@ Tag names and tag values can be provided as needed. A tag can be left without a 
 
 ## Outputs
 
-| Output Name | Type |
-| :-- | :-- |
-| `workspaceName` | string |
-| `workspaceResourceGroup` | string |
-| `workspaceResourceId` | string |
+| Output Name | Type | Description |
+| :-- | :-- | :-- |
+| `workspaceName` | string | The name of the AVD workspace |
+| `workspaceResourceGroup` | string | The resource group the AVD workspace was deployed into |
+| `workspaceResourceId` | string | The resource ID of the AVD workspace |
 
 ## Template references
 

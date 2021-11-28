@@ -27,13 +27,13 @@ resource managedInstance 'Microsoft.Sql/managedInstances@2021-05-01-preview' exi
 
 resource administrator 'Microsoft.Sql/managedInstances/administrators@2021-02-01-preview' = {
   name: name
+  parent: managedInstance
   properties: {
     administratorType: 'ActiveDirectory'
     login: login
     sid: sid
     tenantId: tenantId
   }
-  parent: managedInstance
 }
 
 @description('The name of the deployed managed instance')

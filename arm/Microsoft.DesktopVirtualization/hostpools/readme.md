@@ -124,13 +124,12 @@ Tag names and tag values can be provided as needed. A tag can be left without a 
 
 ## Outputs
 
-| Output Name | Type |
-| :-- | :-- |
-| `hostPoolName` | string |
-| `hostPoolResourceGroup` | string |
-| `hostPoolResourceId` | string |
-| `hostpoolToken` | string |
-| `tokenExpirationTime` | string |
+| Output Name | Type | Description |
+| :-- | :-- | :-- |
+| `hostPoolName` | string | The name of the AVD host pool |
+| `hostPoolResourceGroup` | string | The resource group the AVD host pool was deployed into |
+| `hostPoolResourceId` | string | The resource ID of the AVD host pool |
+| `tokenExpirationTime` | string | The expiration time for the registration token |
 
 ## Template references
 

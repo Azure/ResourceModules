@@ -14,10 +14,11 @@ This module deploys an Azure Automation Account.
 | `Microsoft.Automation/automationAccounts/runbooks` | 2019-06-01 |
 | `Microsoft.Automation/automationAccounts/schedules` | 2020-01-13-preview |
 | `Microsoft.Automation/automationAccounts/softwareUpdateConfigurations` | 2019-06-01 |
+| `Microsoft.Automation/automationAccounts/variables` | 2020-01-13-preview |
 | `Microsoft.Insights/diagnosticSettings` | 2017-05-01-preview |
 | `Microsoft.Network/privateEndpoints` | 2021-03-01 |
 | `Microsoft.Network/privateEndpoints/privateDnsZoneGroups` | 2021-03-01 |
-| `Microsoft.OperationalInsights/workspaces/linkedServices` | 2020-08-01 |
+| `Microsoft.OperationalInsights/workspaces/linkedServices` | 2020-03-01-preview |
 | `Microsoft.OperationsManagement/solutions` | 2015-11-01-preview |
 
 ## Parameters
@@ -44,7 +45,10 @@ This module deploys an Azure Automation Account.
 | `schedules` | _[schedules](schedules/readme.md)_ array | `[]` |  | Optional. List of schedules to be created in the automation account. |
 | `skuName` | string | `Basic` | `[Free, Basic]` | Optional. SKU name of the account. |
 | `softwareUpdateConfigurations` | _[softwareUpdateConfigurations](softwareUpdateConfigurations/readme.md)_ array | `[]` |  | Optional. List of softwareUpdateConfigurations to be created in the automation account |
+| `systemAssignedIdentity` | bool |  |  | Optional. Enables system assigned managed identity on the resource. |
 | `tags` | object | `{object}` |  | Optional. Tags of the Automation Account resource. |
+| `userAssignedIdentities` | object | `{object}` |  | Optional. The ID(s) to assign to the resource. |
+| `variables` | _[variables](variables/readme.md)_ array | `[]` |  | Optional. List of variables to be created in the automation account. |
 | `workspaceId` | string |  |  | Optional. Resource identifier of Log Analytics. |
 
 ### Parameter Usage: `roleAssignments`
@@ -129,8 +133,6 @@ To use Private Endpoint the following dependencies must be deployed:
 }
 ```
 
-
-
 ## Outputs
 
 | Output Name | Type | Description |
@@ -138,6 +140,7 @@ To use Private Endpoint the following dependencies must be deployed:
 | `automationAccountName` | string | The name of the deployed automation account |
 | `automationAccountResourceGroup` | string | The resource group of the deployed automation account |
 | `automationAccountResourceId` | string | The resource ID of the deployed automation account |
+| `principalID` | string | The principal ID of the system assigned identity. |
 
 ## Template references
 
@@ -149,8 +152,9 @@ To use Private Endpoint the following dependencies must be deployed:
 - [Automationaccounts/Runbooks](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Automation/2019-06-01/automationAccounts/runbooks)
 - [Automationaccounts/Schedules](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Automation/2020-01-13-preview/automationAccounts/schedules)
 - [Automationaccounts/Softwareupdateconfigurations](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Automation/2019-06-01/automationAccounts/softwareUpdateConfigurations)
+- [Automationaccounts/Variables](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Automation/2020-01-13-preview/automationAccounts/variables)
 - [Diagnosticsettings](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Insights/2017-05-01-preview/diagnosticSettings)
 - [Privateendpoints](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Network/2021-03-01/privateEndpoints)
 - [Privateendpoints/Privatednszonegroups](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Network/2021-03-01/privateEndpoints/privateDnsZoneGroups)
-- [Workspaces/Linkedservices](https://docs.microsoft.com/en-us/azure/templates/Microsoft.OperationalInsights/2020-08-01/workspaces/linkedServices)
+- [Workspaces/Linkedservices](https://docs.microsoft.com/en-us/azure/templates/Microsoft.OperationalInsights/2020-03-01-preview/workspaces/linkedServices)
 - [Solutions](https://docs.microsoft.com/en-us/azure/templates/Microsoft.OperationsManagement/2015-11-01-preview/solutions)
