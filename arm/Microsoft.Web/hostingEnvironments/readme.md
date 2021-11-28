@@ -16,7 +16,6 @@ This module deploys App Service Environment, with resource lock.
 | Parameter Name | Type | Default Value | Possible Values | Description |
 | :-- | :-- | :-- | :-- | :-- |
 | `apiManagementAccountId` | string |  |  | Optional. API Management Account associated with the App Service Environment. |
-| `appServiceEnvironmentName` | string |  |  | Required. Name of the App Service Environment |
 | `clusterSettings` | array | `[]` |  | Optional. Custom settings for changing the behavior of the App Service Environment |
 | `cuaId` | string |  |  | Optional. Customer Usage Attribution ID (GUID). This GUID must be previously registered |
 | `diagnosticLogsRetentionInDays` | int | `365` |  | Optional. Specifies the number of days that logs will be kept for; a value of 0 will retain data indefinitely. |
@@ -35,6 +34,7 @@ This module deploys App Service Environment, with resource lock.
 | `logsToEnable` | array | `[AppServiceEnvironmentPlatformLogs]` | `[AppServiceEnvironmentPlatformLogs]` | Optional. The name of logs that will be streamed. |
 | `multiRoleCount` | int | `2` |  | Optional. Number of frontend instances. |
 | `multiSize` | string | `Standard_D1_V2` | `[Medium, Large, ExtraLarge, Standard_D2, Standard_D3, Standard_D4, Standard_D1_V2, Standard_D2_V2, Standard_D3_V2, Standard_D4_V2]` | Optional. Frontend VM size, e.g. Medium, Large |
+| `name` | string |  |  | Required. Name of the App Service Environment |
 | `networkAccessControlList` | array | `[]` |  | Optional. Access control list for controlling traffic to the App Service Environment.. |
 | `roleAssignments` | array | `[]` |  | Optional. Array of role assignment objects that contain the 'roleDefinitionIdOrName' and 'principalId' to define RBAC role assignments on this resource. In the roleDefinitionIdOrName attribute, you can provide either the display name of the role definition, or its fully qualified ID in the following format: '/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11' |
 | `subnetResourceId` | string |  |  | Required. ResourceId for the sub net |
@@ -42,7 +42,7 @@ This module deploys App Service Environment, with resource lock.
 | `tags` | object | `{object}` |  | Optional. Resource tags. |
 | `userWhitelistedIpRanges` | array | `[]` |  | Optional. User added ip ranges to whitelist on ASE db - string |
 | `workerPools` | array | `[]` |  | Optional. Description of worker pools with worker size IDs, VM sizes, and number of workers in each pool.. |
-| `workspaceId` | string |  |  | Optional. Resource ID of log analytics. |
+| `workspaceId` | string |  |  | Optional. Resource identifier of log analytics. |
 
 ### Parameter Usage: `roleAssignments`
 
