@@ -75,7 +75,7 @@ Tag names and tag values can be provided as needed. A tag can be left without a 
 | :-- | :-- | :-- |
 | `netAppAccountName` | string | The name of the NetApp account. |
 | `netAppAccountResourceGroup` | string | The name of the Resource Group the NetApp account was created in. |
-| `netAppAccountResourceId` | string | The Resource Id of the NetApp account. |
+| `netAppAccountResourceId` | string | The Resource ID of the NetApp account. |
 
 ## Template references
 
