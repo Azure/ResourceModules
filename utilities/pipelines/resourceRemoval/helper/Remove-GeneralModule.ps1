@@ -41,7 +41,7 @@ function Get-DeploymentByName {
         [string] $scope
     )
 
-    switch ($deploymentScope) {
+    switch ($Scope) {
         'resourceGroup' {
             return Get-AzResourceGroupDeploymentOperation -DeploymentName $name -ResourceGroupName $resourceGroupName
         }
