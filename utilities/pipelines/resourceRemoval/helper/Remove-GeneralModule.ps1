@@ -17,7 +17,7 @@ Optional. The name of the resource group for scope 'resourceGroup'
 Mandatory. The scope to search in
 
 .EXAMPLE
-Get-DeploymentByName name 'keyvault-12356' -scope 'resourceGroup'
+Get-DeploymentByName -Name 'keyvault-12356' -Scope 'resourceGroup'
 
 Get all deployments that match name 'keyvault-12356' in scope 'resourceGroup'
 #>
