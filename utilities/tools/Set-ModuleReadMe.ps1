@@ -380,12 +380,14 @@ function Set-ModuleReadMe {
         # Create new readme file
 
         # Build resource name
-        $TextInfo = (Get-Culture).TextInfo
-        $serviceIdentifiers = (Split-Path $TemplateFilePath -Parent).Replace('\', '/').split('/arm/')[1].Replace('Microsoft.', '').Replace('/.', '/').Split('/') | ForEach-Object { $TextInfo.ToTitleCase($_) }
-        $assumedResourceName = $serviceIdentifiers -join ''
+        $fullResourcePath = (Split-Path $TemplateFilePath -Parent).Replace('\', '/').split('/arm/')[1]
+        $serviceIdentifiers = $fullResourcePath.Replace('Microsoft.', '').Replace('/.', '/').Split('/')
+        $serviceIdentifiers = $serviceIdentifiers | ForEach-Object {$_.substring(0, 1).toupper() + $_.substring(1)}
+        $serviceIdentifiers = $serviceIdentifiers | ForEach-Object { $_ -creplace '(?<=\w)([A-Z])', '$1'}
+        $assumedResourceName = $serviceIdentifiers -join ' '
 
         $initialContent = @(
-            "# $assumedResourceName",
+            "# $assumedResourceName ``[$fullResourcePath]``",
             '',
             '// TODO: Replace Resource and fill in description',
             ''
@@ -409,13 +411,8 @@ function Set-ModuleReadMe {
 
     # Update title
     if ($TemplateFilePath.Replace('\', '/') -like '*/arm/*') {
-        $fullResourcePath = 'Microsoft.{0}' -f (Split-Path $TemplateFilePath -Parent).Replace('\', '/').Split('/Microsoft.')[1]
+        $fullResourcePath = (Split-Path $TemplateFilePath -Parent).Replace('\', '/').split('/arm/')[1]
 
-        if ($fullResourcePath -clike '*Resources/*') {
-            # Deal with original '*Resources' child-resource folder
-            $cutOutPath = $fullResourcePath -split '/(.*)Resources/(.*)' | Where-Object { -not [String]::IsNullOrEmpty($_) }
-            $fullResourcePath = $cutOutPath -join '/'
-        }
         if ($readMeFileContent[0] -notlike "*``[$fullResourcePath]``") {
             # Cut outdated
             $readMeFileContent[0] = $readMeFileContent[0].Split('`[')[0]
@@ -423,6 +420,8 @@ function Set-ModuleReadMe {
             # Add latest
             $readMeFileContent[0] = '{0} `[{1}]`' -f $readMeFileContent[0], $fullResourcePath
         }
+        # Remove excess whitespace
+        $readMeFileContent[0] = $readMeFileContent[0] -replace '\s+', ' '
     }
 
     if ($SectionsToRefresh -contains 'Resource Types') {
