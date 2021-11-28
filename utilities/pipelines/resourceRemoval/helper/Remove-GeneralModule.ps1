@@ -136,7 +136,7 @@ function Remove-GeneralModule {
             if (-not $bicepScope) {
                 $deploymentScope = 'resourceGroup'
             } else {
-                $deploymentScope = $bicepScope.ToLower().Replace('targetscope = ', '').Replace("'", '').Trim()
+                $deploymentScope = $bicepScope.ToLower().Split('=')[-1].Replace("'", '').Trim()
             }
         } else {
             # ARM
