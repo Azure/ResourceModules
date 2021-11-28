@@ -22,6 +22,56 @@ This template deploys Connection Monitors.
 | `testGroups` | array | `[]` |  | Optional. List of connection monitor test groups. |
 | `workspaceResourceId` | string |  |  | Optional. Specify the Log Analytics Workspace Resource ID |
 
+
+
+### Parameter Usage: `endpoints`
+
+***Note:*** the parameter ``name`` must include the ``resource name`` AND ``resource group`` inside brackets (). e.g ``"name": "myVm01(my-rg-01)"``.
+
+```json
+
+"endpoints": {
+    "value":
+    [
+        {
+            "name": "endpoint01",
+            "resourceId": "/subscriptions/111111-222222-33333-4444-5555555/resourceGroups/my-rg-01/providers/Microsoft.Compute/virtualMachines/myVm01"
+        },
+        {
+            "name": "myonpremvm.contoso.com",
+            "address": "10.10.10.10"
+        }
+    ]
+}
+
+```
+
+### Parameter Usage: `testGroups`
+
+Important note: the parameter ``name`` must include the ``resource name`` AND ``resource group`` inside brackets (). e.g ``"name": "myVm01(my-rg-01)"``.
+
+```json
+"testGroups": {
+    "value": {
+        [
+            {
+                "name": "myTestGroup01",
+                "disable": false,
+                "testConfigurations": [
+                    "ICMP"
+                ],
+                "sources": [
+                    "myVm01(my-rg-01)"
+                ],
+                "destinations": [
+                    "myonpremvm.contoso.com"
+                ]
+            }
+        ]
+    }
+}
+```
+
 ## Outputs
 
 | Output Name | Type | Description |
