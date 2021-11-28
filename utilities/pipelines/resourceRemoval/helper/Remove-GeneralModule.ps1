@@ -29,7 +29,7 @@ function Get-DeploymentByName {
         [string] $Name,
 
         [Parameter(Mandatory = $false)]
-        [string] $resourceGroupName,
+        [string] $ResourceGroupName,
 
         [Parameter(Mandatory)]
         [ValidateSet(
