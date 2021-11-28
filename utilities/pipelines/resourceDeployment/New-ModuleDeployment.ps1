@@ -97,6 +97,7 @@ function New-ModuleDeployment {
             [bool]$Stoploop = $false
             [int]$retryCount = 1
 
+            # Generate a valid deployment name. Must match ^[-\w\._\(\)]+$
             do {
                 $deploymentName = "$moduleName-$(-join (Get-Date -Format yyyyMMddTHHMMssffffZ)[0..63])"
             } while ($deploymentName -notmatch '^[-\w\._\(\)]+$')
