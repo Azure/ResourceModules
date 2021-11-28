@@ -1,6 +1,6 @@
 @description('Required. Name of the App Service Environment')
 @minLength(1)
-param appServiceEnvironmentName string
+param name string
 
 @description('Optional. Location for all resources.')
 param location string = resourceGroup().location
@@ -129,12 +129,12 @@ module pid_cuaId '.bicep/nested_cuaId.bicep' = if (!empty(cuaId)) {
 }
 
 resource appServiceEnvironment 'Microsoft.Web/hostingEnvironments@2021-02-01' = {
-  name: appServiceEnvironmentName
+  name: name
   kind: kind
   location: location
   tags: tags
   properties: {
-    name: appServiceEnvironmentName
+    name: name
     location: location
     virtualNetwork: {
       id: subnetResourceId
