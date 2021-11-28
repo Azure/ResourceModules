@@ -88,8 +88,13 @@ module pid_cuaId '.bicep/nested_cuaId.bicep' = if (!empty(cuaId)) {
   params: {}
 }
 
+resource namespace 'Microsoft.ServiceBus/namespaces@2021-06-01-preview' existing = {
+  name: namespaceName
+}
+
 resource queue 'Microsoft.ServiceBus/namespaces/queues@2021-06-01-preview' = {
-  name: '${namespaceName}/${name}'
+  name: name
+  parent: namespace
   properties: {
     lockDuration: lockDuration
     maxSizeInMegabytes: maxSizeInMegabytes
@@ -110,17 +115,14 @@ module queue_authorizationRules 'authorizationRules/deploy.bicep' = [for (author
   name: '${deployment().name}-AuthRule-${index}'
   params: {
     namespaceName: namespaceName
-    queueName: last(split(queue.name, '/'))
+    queueName: queue.name
     name: authorizationRule.name
     rights: contains(authorizationRule, 'rights') ? authorizationRule.rights : []
   }
-  dependsOn: [
-    queue
-  ]
 }]
 
 resource queue_lock 'Microsoft.Authorization/locks@2016-09-01' = if (lock != 'NotSpecified') {
-  name: '${split(queue.name, '/')[1]}-${lock}-lock'
+  name: '${queue.name}-${lock}-lock'
   properties: {
     level: lock
     notes: lock == 'CanNotDelete' ? 'Cannot delete resource or child resources.' : 'Cannot modify the resource or child resources.'

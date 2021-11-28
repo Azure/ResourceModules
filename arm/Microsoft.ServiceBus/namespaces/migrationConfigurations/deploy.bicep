@@ -20,8 +20,13 @@ module pid_cuaId '.bicep/nested_cuaId.bicep' = if (!empty(cuaId)) {
   params: {}
 }
 
+resource namespace 'Microsoft.ServiceBus/namespaces@2021-06-01-preview' existing = {
+  name: namespaceName
+}
+
 resource migrationConfiguration 'Microsoft.ServiceBus/namespaces/migrationConfigurations@2017-04-01' = {
-  name: '${namespaceName}/${name}'
+  name: name
+  parent: namespace
   properties: {
     targetNamespace: targetNamespaceResourceId
     postMigrationName: postMigrationName

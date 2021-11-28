@@ -20,7 +20,7 @@ This template deploys Application Gateway.
 | `capacity` | int | `2` |  | Optional. The number of Application instances to be configured. |
 | `cuaId` | string |  |  | Optional. Customer Usage Attribution ID (GUID). This GUID must be previously registered. |
 | `diagnosticLogsRetentionInDays` | int | `365` |  | Optional. Specifies the number of days that logs will be kept for; a value of 0 will retain data indefinitely. |
-| `diagnosticStorageAccountId` | string |  |  | Optional. Resource identifier of the Diagnostic Storage Account. |
+| `diagnosticStorageAccountId` | string |  |  | Optional. Resource ID of the diagnostic storage account. |
 | `eventHubAuthorizationRuleId` | string |  |  | Optional. Resource ID of the event hub authorization rule for the Event Hubs namespace in which the event hub should be created or streamed to. |
 | `eventHubName` | string |  |  | Optional. Name of the event hub within the namespace to which logs are streamed. Without this, an event hub is created for each log category. |
 | `frontendHttpListeners` | array | `[]` |  | Required. The frontend http listeners to be configured. |
@@ -47,7 +47,7 @@ This template deploys Application Gateway.
 | `vNetName` | string |  |  | Required. The name of the Virtual Network where the Application Gateway will be deployed. |
 | `vNetResourceGroup` | string | `[resourceGroup().name]` |  | Optional. The name of the Virtual Network Resource Group where the Application Gateway will be deployed. |
 | `vNetSubscriptionId` | string | `[subscription().subscriptionId]` |  | Optional. The Subscription ID of the Virtual Network where the Application Gateway will be deployed. |
-| `workspaceId` | string |  |  | Optional. Resource identifier of Log Analytics. |
+| `workspaceId` | string |  |  | Optional. Resource ID of log analytics. |
 
 ### Parameter Usage: `backendPools`
 

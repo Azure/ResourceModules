@@ -27,8 +27,13 @@ module pid_cuaId '.bicep/nested_cuaId.bicep' = if (!empty(cuaId)) {
   params: {}
 }
 
+resource namespace 'Microsoft.ServiceBus/namespaces@2021-06-01-preview' existing = {
+  name: namespaceName
+}
+
 resource ipFilterRule 'Microsoft.ServiceBus/namespaces/ipFilterRules@2018-01-01-preview' = {
-  name: '${namespaceName}/${name}'
+  name: name
+  parent: namespace
   properties: {
     action: action
     filterName: filterName

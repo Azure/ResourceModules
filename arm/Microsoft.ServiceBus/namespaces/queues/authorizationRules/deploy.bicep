@@ -23,8 +23,17 @@ module pid_cuaId '.bicep/nested_cuaId.bicep' = if (!empty(cuaId)) {
   params: {}
 }
 
+resource namespace 'Microsoft.ServiceBus/namespaces@2021-06-01-preview' existing = {
+  name: namespaceName
+
+  resource queue 'queues@2021-06-01-preview' existing = {
+    name: queueName
+  }
+}
+
 resource authorizationRule 'Microsoft.ServiceBus/namespaces/queues/authorizationRules@2017-04-01' = {
-  name: '${namespaceName}/${queueName}/${name}'
+  name: name
+  parent: namespace::queue
   properties: {
     rights: rights
   }

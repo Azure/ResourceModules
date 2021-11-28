@@ -29,10 +29,10 @@ param roleAssignments array = []
 @maxValue(365)
 param diagnosticLogsRetentionInDays int = 365
 
-@sys.description('Optional. Resource identifier of the Diagnostic Storage Account.')
+@sys.description('Optional. Resource ID of the diagnostic storage account.')
 param diagnosticStorageAccountId string = ''
 
-@sys.description('Optional. Resource identifier of Log Analytics.')
+@sys.description('Optional. Resource identifier of log analytics.')
 param workspaceId string = ''
 
 @sys.description('Optional. Resource ID of the event hub authorization rule for the Event Hubs namespace in which the event hub should be created or streamed to.')

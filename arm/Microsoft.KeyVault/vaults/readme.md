@@ -25,7 +25,7 @@ This module deploys a key vault and it's child resources.
 | `cuaId` | string |  |  | Optional. Customer Usage Attribution ID (GUID). This GUID must be previously registered |
 | `diagnosticLogsRetentionInDays` | int | `365` |  | Optional. Specifies the number of days that logs will be kept for; a value of 0 will retain data indefinitely. |
 | `diagnosticSettingName` | string | `service` |  | Optional. The name of the Diagnostic setting. |
-| `diagnosticStorageAccountId` | string |  |  | Optional. Resource identifier of the Diagnostic Storage Account. |
+| `diagnosticStorageAccountId` | string |  |  | Optional. Resource ID of the diagnostic storage account. |
 | `enablePurgeProtection` | bool |  |  | Optional. Provide 'true' to enable Key Vault's purge protection feature. |
 | `enableRbacAuthorization` | bool |  |  | Optional. Property that controls how data actions are authorized. When true, the key vault will use Role Based Access Control (RBAC) for authorization of data actions, and the access policies specified in vault properties will be ignored (warning: this is a preview feature). When false, the key vault will use the access policies specified in vault properties, and any policy stored on Azure Resource Manager will be ignored. If null or not specified, the vault is created with the default value of false. Note that management actions are always authorized with RBAC. |
 | `enableSoftDelete` | bool | `True` |  | Optional. Switch to enable/disable Key Vault's soft delete feature. |
@@ -48,7 +48,7 @@ This module deploys a key vault and it's child resources.
 | `tags` | object | `{object}` |  | Optional. Resource tags. |
 | `vaultSku` | string | `premium` | `[premium, standard]` | Optional. Specifies the SKU for the vault |
 | `vNetId` | string |  |  | Optional. Virtual Network resource identifier, if networkAcls is passed, this value must be passed as well |
-| `workspaceId` | string |  |  | Optional. Resource identifier of Log Analytics. |
+| `workspaceId` | string |  |  | Optional. Resource ID of log analytics. |
 
 ### Parameter Usage: `roleAssignments`
 
