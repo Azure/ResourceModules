@@ -187,7 +187,7 @@ resource <mainResource>_lock 'Microsoft.Authorization/locks@2016-09-01' = if (lo
 }
 ```
 
-### RBAC
+#### RBAC
 
 The RBAC deployment has 2 elements to it. A module that contains the implementation, and a module reference in the parent resource - each with it's own loop to enable you to deploy n-amount of role assignments to n-amount of principals.
 
