@@ -245,7 +245,7 @@ resource roleAssignment 'Microsoft.Authorization/roleAssignments@2020-04-01-prev
 }]
 ```
 
-### Diagnostic settings
+#### Diagnostic settings
 
 The diagnostic settings may differ slightly depending from resource to resource. Most notably, the `<LogsIfAny>` as well as `<MetricsIfAny>` may be different and have to be added by you. However, it may just as well be the case they no metrics or no logs are existing. You can then remove the parameter and property from the resource itself.
 
