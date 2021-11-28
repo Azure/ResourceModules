@@ -20,7 +20,7 @@ param kind string = 'AzureActivityLog'
 @description('Optional. Tags to configure in the resource.')
 param tags object = {}
 
-@description('Optional. ID of the resource to be linked.')
+@description('Optional. Resource ID of the resource to be linked.')
 param linkedResourceId string = ''
 
 @description('Optional. Windows event log name to configure when kind is WindowsEvent.')
