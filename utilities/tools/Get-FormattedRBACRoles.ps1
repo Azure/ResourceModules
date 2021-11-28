@@ -35,10 +35,12 @@ $rawRoles = @'
 
 $resourceRoles = @()
 $rawRolesArray = $rawRoles -split "`n"
-for ($i = 0; $i -lt $rawRolesArray.Count; $i + 5) {
+for ($i = 0; $i -lt $rawRolesArray.Count; $i += 5) {
     $resourceRoles += $rawRolesArray[$i].Trim()
 }
+
 $allRoles = az role definition list --custom-role-only false --query '[].{roleName:roleName, id:id, roleType:roleType}' | ConvertFrom-Json
+
 $resBicep = [System.Collections.ArrayList]@()
 $resArm = [System.Collections.ArrayList]@()
 foreach ($resourceRole in $resourceRoles) {
