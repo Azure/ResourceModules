@@ -75,7 +75,7 @@ module capacityPool_volumes 'volumes/deploy.bicep' = [for (volume, index) in vol
     creationToken: contains(volume, 'creationToken') ? volume.creationToken : volume.name
     usageThreshold: volume.usageThreshold
     protocolTypes: contains(volume, 'protocolTypes') ? volume.protocolTypes : []
-    subnetId: volume.subnetId
+    subnetResourceId: volume.subnetResourceId
     exportPolicyRules: contains(volume, 'exportPolicyRules') ? volume.exportPolicyRules : []
     roleAssignments: contains(volume, 'roleAssignments') ? volume.roleAssignments : []
   }
