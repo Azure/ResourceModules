@@ -13,7 +13,7 @@ param policySetDescription string = ''
 @description('Optional. The group ID of the Management Group (Scope). Cannot be used with subscriptionId and does not support tenant level deployment (i.e. \'/\')')
 param managementGroupId string = ''
 
-@description('Optional. The resource ID of the Azure Subscription (Scope). Cannot be used with managementGroupId')
+@description('Optional. The subscriptionID of the subscription (Scope). Cannot be used with managementGroupId')
 param subscriptionId string = ''
 
 @description('Optional. The Set Definition (Initiative) metadata. Metadata is an open ended object and is typically a collection of key-value pairs.')
