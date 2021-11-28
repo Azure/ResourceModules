@@ -76,8 +76,8 @@ If owner access is excessive, the following rights roles will grant enough right
 Consider using the following script:
 
 ```powershell
-$PrincipalID = "<The resource ID of the identity here>"
-$TopMGID = "<The resource ID of the management group here>"
+$PrincipalID = "<The object ID of the identity here>"
+$TopMGID = "<The group ID of the management group here>"
 New-AzRoleAssignment -ObjectId $PrincipalID -Scope "/" -RoleDefinitionName "Automation Job Operator"
 New-AzRoleAssignment -ObjectId $PrincipalID -Scope "/providers/Microsoft.Management/managementGroups/$TopMGID" -RoleDefinitionName "Management Group Contributor"
 ```
