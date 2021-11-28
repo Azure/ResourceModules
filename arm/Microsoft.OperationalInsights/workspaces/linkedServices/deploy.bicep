@@ -21,8 +21,13 @@ module pid_cuaId '.bicep/nested_cuaId.bicep' = if (!empty(cuaId)) {
   params: {}
 }
 
+resource workspace 'Microsoft.OperationalInsights/workspaces@2021-06-01' existing = {
+  name: logAnalyticsWorkspaceName
+}
+
 resource linkedService 'Microsoft.OperationalInsights/workspaces/linkedServices@2020-08-01' = {
-  name: '${logAnalyticsWorkspaceName}/${name}'
+  name: name
+  parent: workspace
   tags: tags
   properties: {
     resourceId: resourceId
@@ -30,9 +35,11 @@ resource linkedService 'Microsoft.OperationalInsights/workspaces/linkedServices@
   }
 }
 
-@description('The resource Id of the deployed linked service')
+@description('The resource ID of the deployed linked service')
 output linkedServiceResourceId string = linkedService.id
+
 @description('The resource group where the linked service is deployed')
 output linkedServiceResourceGroup string = resourceGroup().name
+
 @description('The name of the deployed linked service')
 output linkedServiceName string = linkedService.name
