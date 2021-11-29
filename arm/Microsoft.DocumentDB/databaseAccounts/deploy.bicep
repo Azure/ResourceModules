@@ -81,7 +81,7 @@ param diagnosticLogsRetentionInDays int = 365
 @description('Optional. Resource ID of the diagnostic storage account.')
 param diagnosticStorageAccountId string = ''
 
-@description('Optional. Resource identifier of log analytics.')
+@description('Optional. Resource ID of log analytics workspace.')
 param workspaceId string = ''
 
 @description('Optional. Resource ID of the event hub authorization rule for the Event Hubs namespace in which the event hub should be created or streamed to.')
@@ -264,5 +264,5 @@ output databaseAccountResourceId string = databaseAccount.id
 @description('The name of the resource group the database account was created in.')
 output databaseAccountResourceGroup string = resourceGroup().name
 
-@description('The resource ID of the assigned identity.')
-output assignedIdentityID string = systemAssignedIdentity ? databaseAccount.identity.principalId : ''
+@description('The principal ID of the system assigned identity.')
+output principalId string = systemAssignedIdentity ? databaseAccount.identity.principalId : ''

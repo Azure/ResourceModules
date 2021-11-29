@@ -42,7 +42,7 @@ This module deploys a Documentdb database account and its child resources.
 | `systemAssignedIdentity` | bool |  |  | Optional. Enables system assigned managed identity on the resource. |
 | `tags` | object | `{object}` |  | Optional. Tags of the Database Account resource. |
 | `userAssignedIdentities` | object | `{object}` |  | Optional. The ID(s) to assign to the resource. |
-| `workspaceId` | string |  |  | Optional. Resource ID of log analytics. |
+| `workspaceId` | string |  |  | Optional. Resource ID of log analytics workspace. |
 
 ### Parameter Usage: `locations`
 
@@ -101,14 +101,60 @@ This module deploys a Documentdb database account and its child resources.
 
 Please reference the documentation for [mongodbDatabases](./mongodbDatabases/readme.md)
 
+### Parameter Usage: `roleAssignments`
+
+```json
+"roleAssignments": {
+    "value": [
+        {
+            "roleDefinitionIdOrName": "Desktop Virtualization User",
+            "principalIds": [
+                "12345678-1234-1234-1234-123456789012", // object 1
+                "78945612-1234-1234-1234-123456789012" // object 2
+            ]
+        },
+        {
+            "roleDefinitionIdOrName": "Reader",
+            "principalIds": [
+                "12345678-1234-1234-1234-123456789012", // object 1
+                "78945612-1234-1234-1234-123456789012" // object 2
+            ]
+        },
+        {
+            "roleDefinitionIdOrName": "/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11",
+            "principalIds": [
+                "12345678-1234-1234-1234-123456789012" // object 1
+            ]
+        }
+    ]
+}
+```
+
+### Parameter Usage: `tags`
+
+Tag names and tag values can be provided as needed. A tag can be left without a value.
+
+```json
+"tags": {
+    "value": {
+        "Environment": "Non-Prod",
+        "Contact": "test.user@testcompany.com",
+        "PurchaseOrder": "1234",
+        "CostCenter": "7890",
+        "ServiceName": "DeploymentValidation",
+        "Role": "DeploymentValidation"
+    }
+}
+```
+
 ## Outputs
 
 | Output Name | Type | Description |
 | :-- | :-- | :-- |
-| `assignedIdentityID` | string | The resource ID of the assigned identity. |
 | `databaseAccountName` | string | The name of the database account. |
 | `databaseAccountResourceGroup` | string | The name of the resource group the database account was created in. |
 | `databaseAccountResourceId` | string | The resource ID of the database account. |
+| `principalId` | string | The principal ID of the system assigned identity. |
 
 ## Template references
 
