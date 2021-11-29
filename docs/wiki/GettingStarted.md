@@ -163,7 +163,14 @@ Last but not least, instead of fetching your own copy of the repository you can 
 
 ## **Option 4:** Simple contribution
 
-In case you would like to do a simple contriubtion
+In case you would like to simply contribute because you, for example, want to add/update a module or would like to add some notes to the Wiki, you can do this in just a few simple steps:
+1. First check if there is already an issue that matches your initiative. If so, feel free to assign yourself, or, create a new issue if does not exist yet
+1. Fork the repository to the GitHub organization of your choice
+1. (optional but recommended) Create a branch in your fork where you'd like to implement the contribution
+1. Implement your proposed changes
+   1. In case you change module-related code (anything aside the readMe.md, like the template), we'd ask you do perform a test-run in your environment. For more details, please refer to the [setup fork](#fork-the-repository) section.
+1. Open a Pull-Request to the upstream (source) repository with a meaningful description and link the corresponding issue to it
+   1. If you ran a pipeline to validate your changes, please make sure to attach a reference (e.g. as a status badge) to the PR
 
 ## Parameter File Tokens
 
