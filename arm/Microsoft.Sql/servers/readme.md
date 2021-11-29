@@ -1,8 +1,8 @@
-# Azure SQL Server `[Microsoft.Sql/servers]`
+# Sql Servers `[Microsoft.Sql/servers]`
 
-This module deploys a SQL server.
+This module deploys a Sql Server.
 
-## Resource types
+## Resource Types
 
 | Resource Type | API Version |
 | :-- | :-- |

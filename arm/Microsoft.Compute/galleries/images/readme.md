@@ -87,13 +87,11 @@ Tag names and tag values can be provided as needed. A tag can be left without a 
 
 ## Outputs
 
-| Output Name | Type |
-| :-- | :-- |
-| `galleryImageName` | string |
-| `galleryImageResourceId` | string |
-| `galleryName` | string |
-| `galleryResourceGroup` | string |
-| `galleryResourceId` | string |
+| Output Name | Type | Description |
+| :-- | :-- | :-- |
+| `galleryImageName` | string | The name of the image |
+| `galleryImageResourceId` | string | The resource ID of the image |
+| `galleryResourceGroup` | string | The resource group the image was deployed into |
 
 ## Template references
 

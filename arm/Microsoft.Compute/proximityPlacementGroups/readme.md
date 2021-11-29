@@ -17,7 +17,7 @@ This template deploys a proximity placement group.
 | `cuaId` | string |  |  | Optional. Customer Usage Attribution ID (GUID). This GUID must be previously registered |
 | `location` | string | `[resourceGroup().location]` |  | Optional. Resource location. |
 | `lock` | string | `NotSpecified` | `[CanNotDelete, NotSpecified, ReadOnly]` | Optional. Specify the type of lock. |
-| `proximityPlacementGroupName` | string |  |  | Required. The name of the proximity placement group that is being created. |
+| `name` | string |  |  | Required. The name of the proximity placement group that is being created. |
 | `proximityPlacementGroupType` | string | `Standard` | `[Standard, Ultra]` | Optional. Specifies the type of the proximity placement group. |
 | `roleAssignments` | array | `[]` |  | Optional. Array of role assignment objects that contain the 'roleDefinitionIdOrName' and 'principalId' to define RBAC role assignments on this resource. In the roleDefinitionIdOrName attribute, you can provide either the display name of the role definition, or its fully qualified ID in the following format: '/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11' |
 | `tags` | object | `{object}` |  | Optional. Tags of the proximity placement group resource. |
