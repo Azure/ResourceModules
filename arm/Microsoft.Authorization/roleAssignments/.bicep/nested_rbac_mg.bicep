@@ -1,15 +1,30 @@
 targetScope = 'managementGroup'
 
+@sys.description('Required. You can provide either the display name of the role definition, or it\'s fully qualified ID in the following format: \'/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11\'')
 param roleDefinitionIdOrName string
+
+@sys.description('Required. The Principal or Object ID of the Security Principal (User, Group, Service Principal, Managed Identity)')
 param principalId string
+
+@sys.description('Required. Group ID of the Management Group to assign the RBAC role to')
 param managementGroupId string
+
+@sys.description('Optional. Description of role assignment')
 param description string = ''
+
+@sys.description('Optional. Id of the delegated managed identity resource')
 param delegatedManagedIdentityResourceId string = ''
+
+@sys.description('Optional. The conditions on the role assignment. This limits the resources it can be assigned to')
 param condition string = ''
+
+@sys.description('Optional. Version of the condition. Currently accepted value is "2.0"')
 @allowed([
   '2.0'
 ])
 param conditionVersion string = '2.0'
+
+@sys.description('Optional. The principal type of the assigned principal ID. Allowed Values "ServicePrincipal", "Group", "User", "ForeignGroup", "Device"')
 param principalType string = 'ServicePrincipal'
 
 var builtInRoleNames_var = {
@@ -295,6 +310,7 @@ var builtInRoleNames_var = {
   'Azure Maps Search and Render Data Reader': '/providers/Microsoft.Authorization/roleDefinitions/6be48352-4f82-47c9-ad5e-0acacefdb005'
   'Azure Maps Contributor': '/providers/Microsoft.Authorization/roleDefinitions/dba33070-676a-4fb0-87fa-064dc56ff7fb'
 }
+
 var roleDefinitionId_var = (contains(builtInRoleNames_var, roleDefinitionIdOrName) ? builtInRoleNames_var[roleDefinitionIdOrName] : roleDefinitionIdOrName)
 
 resource roleAssignment 'Microsoft.Authorization/roleAssignments@2020-04-01-preview' = {
@@ -310,6 +326,11 @@ resource roleAssignment 'Microsoft.Authorization/roleAssignments@2020-04-01-prev
   }
 }
 
+@sys.description('The GUID of the Role Assignment')
 output roleAssignmentName string = roleAssignment.name
+
+@sys.description('The Resource ID of the Role Assignment')
 output roleAssignmentScope string = tenantResourceId('Microsoft.Management/managementGroups', managementGroupId)
+
+@sys.description('The scope this Role Assignment applies to')
 output roleAssignmentResourceId string = extensionResourceId(tenantResourceId('Microsoft.Management/managementGroups', managementGroupId), 'Microsoft.Authorization/roleAssignments', roleAssignment.name)
