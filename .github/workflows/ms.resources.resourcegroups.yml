@@ -1,4 +1,4 @@
-name: 'Resources: Resourcegroups'
+name: 'Resources: ResourceGroups'
 
 on:
   workflow_dispatch:

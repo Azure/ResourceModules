@@ -1,4 +1,4 @@
-name: 'DesktopVirtualization: Applicationgroups'
+name: 'DesktopVirtualization: ApplicationGroups'
 
 on:
   workflow_dispatch:

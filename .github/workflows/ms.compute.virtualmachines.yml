@@ -1,4 +1,4 @@
-name: 'Compute: Virtualmachines'
+name: 'Compute: VirtualMachines'
 
 on:
   workflow_dispatch:

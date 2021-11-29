@@ -1,4 +1,4 @@
-name: 'Authorization: policyExemptions'
+name: 'Authorization: PolicyExemptions'
 
 on:
   workflow_dispatch:

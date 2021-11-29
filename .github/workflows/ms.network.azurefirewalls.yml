@@ -1,4 +1,4 @@
-name: 'Network: Azurefirewalls'
+name: 'Network: AzureFirewalls'
 
 on:
   workflow_dispatch:

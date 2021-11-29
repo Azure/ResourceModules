@@ -1,4 +1,4 @@
-name: 'ManagedServices: Registrationdefinitions'
+name: 'ManagedServices: RegistrationDefinitions'
 
 on:
   workflow_dispatch:

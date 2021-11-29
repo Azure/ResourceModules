@@ -1,4 +1,4 @@
-name: 'Network: Localnetworkgateways'
+name: 'Network: LocalNetworkGateways'
 
 on:
   workflow_dispatch:

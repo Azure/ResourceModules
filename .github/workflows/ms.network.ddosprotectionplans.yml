@@ -1,4 +1,4 @@
-name: 'Network: Ddosprotectionplans'
+name: 'Network: DdosProtectionPlans'
 
 on:
   workflow_dispatch:

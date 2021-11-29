@@ -1,4 +1,4 @@
-name: 'VirtualMachineImages: Imagetemplates'
+name: 'VirtualMachineImages: ImageTemplates'
 
 on:
   workflow_dispatch:

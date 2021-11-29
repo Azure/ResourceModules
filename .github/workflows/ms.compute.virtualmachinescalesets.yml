@@ -1,4 +1,4 @@
-name: 'Compute: Virtualmachinescalesets'
+name: 'Compute: VirtualMachineScaleSets'
 
 on:
   workflow_dispatch:

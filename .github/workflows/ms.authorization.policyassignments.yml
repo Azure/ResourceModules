@@ -1,4 +1,4 @@
-name: 'Authorization: Policyassignments'
+name: 'Authorization: PolicyAssignments'
 
 on:
   workflow_dispatch:

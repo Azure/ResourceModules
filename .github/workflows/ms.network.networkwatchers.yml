@@ -1,4 +1,4 @@
-name: 'Network: Networkwatchers'
+name: 'Network: NetworkWatchers'
 
 on:
   workflow_dispatch:

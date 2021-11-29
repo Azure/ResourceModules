@@ -1,4 +1,4 @@
-name: 'Network: Ipgroups'
+name: 'Network: IpGroups'
 
 on:
   workflow_dispatch:
