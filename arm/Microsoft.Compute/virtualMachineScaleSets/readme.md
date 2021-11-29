@@ -72,7 +72,7 @@ The following resources are required to be able to deploy this resource.
 | `instanceCount` | int | `1` |  | Optional. The initial instance count of scale set VMs. |
 | `instanceSize` | string |  |  | Optional. The SKU size of the VMs. |
 | `keyEncryptionKeyURL` | string |  |  | Optional. URL of the KeyEncryptionKey used to encrypt the volume encryption key |
-| `keyVaultId` | string |  |  | Optional. Resource identifier of the Key Vault instance where the Key Encryption Key (KEK) resides |
+| `keyVaultId` | string |  |  | Optional. Resource ID of the Key Vault instance where the Key Encryption Key (KEK) resides |
 | `keyVaultUri` | string |  |  | Optional. URL of the Key Vault instance where the Key Encryption Key (KEK) resides |
 | `licenseType` | string |  | `[Windows_Client, Windows_Server, ]` | Optional. Specifies that the image or disk that is being used was licensed on-premises. This element is only used for images that contain the Windows Server operating system. |
 | `location` | string | `[resourceGroup().location]` |  | Optional. Location for all resources. |
