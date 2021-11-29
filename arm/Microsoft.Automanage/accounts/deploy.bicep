@@ -68,6 +68,9 @@ module configurationProfileAssignment '.bicep/nested_configurationProfileAssignm
     configurationProfile: configurationProfile
     autoManageAccountResourceId: autoManageAccount.outputs.accountResourceId
   }
+  dependsOn: [
+    autoManageAccount
+  ]
 }
 
 @description('The resource ID of the auto manage account')
