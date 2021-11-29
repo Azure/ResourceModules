@@ -3,7 +3,14 @@ targetScope = 'managementGroup'
 param roleDefinitionIdOrName string
 param principalId string
 param managementGroupId string
-param location string = deployment().location
+param description string = ''
+param delegatedManagedIdentityResourceId string = ''
+param condition string = ''
+@allowed([
+  '2.0'
+])
+param conditionVersion string = '2.0'
+param principalType string = 'ServicePrincipal'
 
 var builtInRoleNames_var = {
   'AcrPush': '/providers/Microsoft.Authorization/roleDefinitions/8311e382-0749-4cb8-b61a-304f252e45ec'
@@ -291,13 +298,18 @@ var builtInRoleNames_var = {
 var roleDefinitionId_var = (contains(builtInRoleNames_var, roleDefinitionIdOrName) ? builtInRoleNames_var[roleDefinitionIdOrName] : roleDefinitionIdOrName)
 
 resource roleAssignment 'Microsoft.Authorization/roleAssignments@2020-04-01-preview' = {
-  name: guid(managementGroupId, location, roleDefinitionId_var, principalId)
+  name: guid(managementGroupId, roleDefinitionId_var, principalId)
   properties: {
     roleDefinitionId: roleDefinitionId_var
     principalId: principalId
+    description: !empty(description) ? description : null
+    principalType: !empty(principalType) ? principalType : null
+    delegatedManagedIdentityResourceId: !empty(delegatedManagedIdentityResourceId) ? delegatedManagedIdentityResourceId : null
+    conditionVersion: !empty(conditionVersion) && !empty(condition) ? conditionVersion : null
+    condition: !empty(condition) ? condition : null
   }
 }
 
 output roleAssignmentName string = roleAssignment.name
 output roleAssignmentScope string = tenantResourceId('Microsoft.Management/managementGroups', managementGroupId)
-output roleAssignmentId string = extensionResourceId(tenantResourceId('Microsoft.Management/managementGroups', managementGroupId), 'Microsoft.Authorization/roleAssignments', roleAssignment.name)
+output roleAssignmentResourceId string = extensionResourceId(tenantResourceId('Microsoft.Management/managementGroups', managementGroupId), 'Microsoft.Authorization/roleAssignments', roleAssignment.name)

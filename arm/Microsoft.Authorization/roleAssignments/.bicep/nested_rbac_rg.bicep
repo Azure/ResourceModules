@@ -4,7 +4,14 @@ param roleDefinitionIdOrName string
 param principalId string
 param subscriptionId string = subscription().subscriptionId
 param resourceGroupName string = resourceGroup().name
-param location string = resourceGroup().location
+param description string = ''
+param delegatedManagedIdentityResourceId string = ''
+param condition string = ''
+@allowed([
+  '2.0'
+])
+param conditionVersion string = '2.0'
+param principalType string = 'ServicePrincipal'
 
 var builtInRoleNames_var = {
   'AcrPush': '/providers/Microsoft.Authorization/roleDefinitions/8311e382-0749-4cb8-b61a-304f252e45ec'
@@ -292,13 +299,18 @@ var builtInRoleNames_var = {
 var roleDefinitionId_var = (contains(builtInRoleNames_var, roleDefinitionIdOrName) ? builtInRoleNames_var[roleDefinitionIdOrName] : roleDefinitionIdOrName)
 
 resource roleAssignment 'Microsoft.Authorization/roleAssignments@2020-04-01-preview' = {
-  name: guid(subscriptionId, resourceGroupName, location, roleDefinitionId_var, principalId)
+  name: guid(subscriptionId, resourceGroupName, roleDefinitionId_var, principalId)
   properties: {
     roleDefinitionId: roleDefinitionId_var
     principalId: principalId
+    description: !empty(description) ? description : null
+    principalType: !empty(principalType) ? principalType : null
+    delegatedManagedIdentityResourceId: !empty(delegatedManagedIdentityResourceId) ? delegatedManagedIdentityResourceId : null
+    conditionVersion: !empty(conditionVersion) && !empty(condition) ? conditionVersion : null
+    condition: !empty(condition) ? condition : null
   }
 }
 
 output roleAssignmentName string = roleAssignment.name
 output roleAssignmentScope string = resourceGroup().id
-output roleAssignmentId string = resourceId(resourceGroupName, 'Microsoft.Authorization/roleAssignments', roleAssignment.name)
+output roleAssignmentResourceId string = resourceId(resourceGroupName, 'Microsoft.Authorization/roleAssignments', roleAssignment.name)
