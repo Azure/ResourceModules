@@ -1,4 +1,4 @@
-name: 'ManagedIdentity: Userassignedidentities'
+name: 'ManagedIdentity: UserAssignedIdentities'
 
 on:
   workflow_dispatch:

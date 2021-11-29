@@ -1,4 +1,4 @@
-name: 'Network: Loadbalancers'
+name: 'Network: LoadBalancers'
 
 on:
   workflow_dispatch:

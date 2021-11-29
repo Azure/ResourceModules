@@ -1,4 +1,4 @@
-name: 'Network: Privatednszones'
+name: 'Network: PrivateDnsZones'
 
 on:
   workflow_dispatch:

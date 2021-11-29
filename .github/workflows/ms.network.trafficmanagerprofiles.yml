@@ -1,4 +1,4 @@
-name: 'Network: Trafficmanagerprofiles'
+name: 'Network: TrafficManagerProfiles'
 
 on:
   workflow_dispatch:
