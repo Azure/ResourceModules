@@ -1,4 +1,4 @@
-name: 'Insights: Privatelinkscopes'
+name: 'Insights: PrivateLinkScopes'
 
 on:
   workflow_dispatch:

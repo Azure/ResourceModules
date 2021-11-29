@@ -1,4 +1,4 @@
-name: 'Network: Applicationsecuritygroups'
+name: 'Network: ApplicationSecurityGroups'
 
 on:
   workflow_dispatch:

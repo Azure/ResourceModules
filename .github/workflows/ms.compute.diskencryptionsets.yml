@@ -1,4 +1,4 @@
-name: 'Compute: Diskencryptionsets'
+name: 'Compute: DiskEncryptionSets'
 
 on:
   workflow_dispatch:
