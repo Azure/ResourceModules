@@ -1,4 +1,4 @@
-# App Service Environment `[Microsoft.Web/hostingEnvironments]`
+# App Service Environments `[Microsoft.Web/hostingEnvironments]`
 
 This module deploys an app service environment.
 

@@ -1,4 +1,4 @@
-# Traffic Manager `[Microsoft.Network/trafficmanagerprofiles]`
+# Traffic Manager Profiles `[Microsoft.Network/trafficmanagerprofiles]`
 
 This module deploys a traffic manager profile.
 

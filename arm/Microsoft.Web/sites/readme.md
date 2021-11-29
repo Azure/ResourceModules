@@ -1,4 +1,4 @@
-# Web/Function App `[Microsoft.Web/sites]`
+# Web/Function Apps `[Microsoft.Web/sites]`
 
 This module deploys a web or function app.
 
