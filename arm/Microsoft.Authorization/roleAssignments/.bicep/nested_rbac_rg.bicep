@@ -332,7 +332,7 @@ resource roleAssignment 'Microsoft.Authorization/roleAssignments@2020-04-01-prev
 @sys.description('The GUID of the Role Assignment')
 output roleAssignmentName string = roleAssignment.name
 
-@sys.description('The Resource ID of the Role Assignment')
+@sys.description('The resource ID of the Role Assignment')
 output roleAssignmentScope string = resourceGroup().id
 
 @sys.description('The scope this Role Assignment applies to')

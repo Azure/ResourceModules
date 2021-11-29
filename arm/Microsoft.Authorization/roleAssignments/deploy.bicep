@@ -43,11 +43,11 @@ module roleAssignment_mg '.bicep/nested_rbac_mg.bicep' = if (!empty(managementGr
     roleDefinitionIdOrName: roleDefinitionIdOrName
     principalId: principalId
     managementGroupId: managementGroupId
-    description: description
-    principalType: principalType
-    delegatedManagedIdentityResourceId: delegatedManagedIdentityResourceId
+    description: !empty(description) ? description : ''
+    principalType: !empty(principalType) ? principalType : ''
+    delegatedManagedIdentityResourceId: !empty(delegatedManagedIdentityResourceId) ? delegatedManagedIdentityResourceId : ''
     conditionVersion: conditionVersion
-    condition: condition
+    condition: !empty(condition) ? condition : ''
   }
 }
 
@@ -58,11 +58,11 @@ module roleAssignment_sub '.bicep/nested_rbac_sub.bicep' = if (empty(managementG
     roleDefinitionIdOrName: roleDefinitionIdOrName
     principalId: principalId
     subscriptionId: subscriptionId
-    description: description
-    principalType: principalType
-    delegatedManagedIdentityResourceId: delegatedManagedIdentityResourceId
+    description: !empty(description) ? description : ''
+    principalType: !empty(principalType) ? principalType : ''
+    delegatedManagedIdentityResourceId: !empty(delegatedManagedIdentityResourceId) ? delegatedManagedIdentityResourceId : ''
     conditionVersion: conditionVersion
-    condition: condition
+    condition: !empty(condition) ? condition : ''
   }
 }
 
@@ -74,17 +74,17 @@ module roleAssignment_rg '.bicep/nested_rbac_rg.bicep' = if (empty(managementGro
     principalId: principalId
     subscriptionId: subscriptionId
     resourceGroupName: resourceGroupName
-    description: description
-    principalType: principalType
-    delegatedManagedIdentityResourceId: delegatedManagedIdentityResourceId
+    description: !empty(description) ? description : ''
+    principalType: !empty(principalType) ? principalType : ''
+    delegatedManagedIdentityResourceId: !empty(delegatedManagedIdentityResourceId) ? delegatedManagedIdentityResourceId : ''
     conditionVersion: conditionVersion
-    condition: condition
+    condition: !empty(condition) ? condition : ''
   }
 }
 
 @sys.description('The GUID of the Role Assignment')
 output roleAssignmentName string = !empty(managementGroupId) ? roleAssignment_mg.outputs.roleAssignmentName : (!empty(resourceGroupName) ? roleAssignment_rg.outputs.roleAssignmentName : roleAssignment_sub.outputs.roleAssignmentName)
-@sys.description('The Resource ID of the Role Assignment')
+@sys.description('The resource ID of the Role Assignment')
 output roleAssignmentResourceId string = !empty(managementGroupId) ? roleAssignment_mg.outputs.roleAssignmentResourceId : (!empty(resourceGroupName) ? roleAssignment_rg.outputs.roleAssignmentResourceId : roleAssignment_sub.outputs.roleAssignmentResourceId)
 @sys.description('The scope this Role Assignment applies to')
 output roleAssignmentScope string = !empty(managementGroupId) ? roleAssignment_mg.outputs.roleAssignmentScope : (!empty(resourceGroupName) ? roleAssignment_rg.outputs.roleAssignmentScope : roleAssignment_sub.outputs.roleAssignmentScope)

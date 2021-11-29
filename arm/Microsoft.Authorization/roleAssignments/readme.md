@@ -66,7 +66,7 @@ To deploy resource to a Resource Group, provide the `subscriptionId` and `resour
 | Output Name | Type | Description |
 | :-- | :-- | :-- |
 | `roleAssignmentName` | string | The GUID of the Role Assignment |
-| `roleAssignmentResourceId` | string | The Resource ID of the Role Assignment |
+| `roleAssignmentResourceId` | string | The resource ID of the Role Assignment |
 | `roleAssignmentScope` | string | The scope this Role Assignment applies to |
 
 ## Considerations
