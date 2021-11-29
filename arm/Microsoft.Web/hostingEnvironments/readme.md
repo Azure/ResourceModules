@@ -1,6 +1,6 @@
 # App Service Environment `[Microsoft.Web/hostingEnvironments]`
 
-This module deploys App Service Environment, with resource lock.
+This module deploys an app service environment, with resource lock.
 
 ## Resource types
 

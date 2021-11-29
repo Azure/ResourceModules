@@ -1,6 +1,6 @@
-# AppServicePlan `[Microsoft.Web/serverfarms]`
+# App Service Plan `[Microsoft.Web/serverfarms]`
 
-This module deploys an App Service Plan.
+This module deploys an app service plan.
 
 ## Resource Types
 

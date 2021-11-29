@@ -1,6 +1,6 @@
 # SQL Managed Instances `[Microsoft.Sql/managedInstances]`
 
-This template deploys an SQL Managed Instance, with resource lock.
+This template deploys a SQL managed instance, with resource lock.
 
 ## Resource types
 
