@@ -1,6 +1,6 @@
 # User Assigned Identities `[Microsoft.ManagedIdentity/userAssignedIdentities]`
 
-This module deploys a user assigned identity, with resource lock.
+This module deploys a user assigned identity.
 
 ## Resource types
 

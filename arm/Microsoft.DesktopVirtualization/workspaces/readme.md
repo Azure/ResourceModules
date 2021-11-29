@@ -1,6 +1,6 @@
 # AVD Workspaces `[Microsoft.DesktopVirtualization/workspaces]`
 
-This module deploys AVD Workspaces, with resource lock and diagnostic configuration.
+This module deploys an AVD Workspace.
 
 ## Resource types
 

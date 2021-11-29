@@ -1,8 +1,6 @@
 # Storage Accounts `[Microsoft.Storage/storageAccounts]`
 
-This module is used to deploy a storage account, with resource lock and the ability to deploy 1 or more blob containers, file shares, tables and queues. Optional ACLs can be configured on the storage account and optional RBAC can be assigned on the storage account and on each child resource.
-
-The default parameter values are based on the needs of deploying a diagnostic storage account.
+This module is used to deploy a storage account, with the ability to deploy 1 or more blob containers, file shares, tables and queues. Optional ACLs can be configured on the storage account and optional RBAC can be assigned on the storage account and on each child resource.
 
 ## Resource types
 
