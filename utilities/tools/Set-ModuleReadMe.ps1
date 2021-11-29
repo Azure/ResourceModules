@@ -363,6 +363,11 @@ Currently supports: 'Resource Types', 'Parameters', 'Outputs', 'Template referen
 Set-ModuleReadMe -TemplateFilePath 'C:\deploy.bicep'
 
 Update the readme in path 'C:\readme.md' based on the bicep template in path 'C:\deploy.bicep'
+
+.NOTES
+The script autopopulates the Parameter Usage section of the ReadMe with the matching content in path './moduleReadMeSource'.
+The content is added in case the given template has a parameter that matches the suffix of one of the files in that path.
+To account for more parameter, just add another markdown file with the naming pattern 'resourceUsage-<parameterName>'
 #>
 function Set-ModuleReadMe {
 
