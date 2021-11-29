@@ -9,9 +9,6 @@
                     "value": "exampleLocalTokenValue"
                 }
             ]
-        },
-        "remoteTokens": {
-            "keyVaultSecretNamePrefix": "ParameterFileToken-"
         }
     }
 }

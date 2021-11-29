@@ -84,7 +84,6 @@ var publicIPPrefix = {
   id: publicIPPrefixId
 }
 var azureFirewallSubnetId = '${vNetId}/subnets/AzureFirewallSubnet'
-var azureFirewallPipName_var = (empty(azureFirewallPipName) ? '${name}-pip' : azureFirewallPipName)
 var azureFirewallPipId = azureFirewallPip.id
 
 @description('Optional. The name of firewall logs that will be streamed.')
@@ -153,7 +152,7 @@ module pid_cuaId '.bicep/nested_cuaId.bicep' = if (!empty(cuaId)) {
 }
 
 resource azureFirewallPip 'Microsoft.Network/publicIPAddresses@2021-02-01' = {
-  name: azureFirewallPipName_var
+  name: !empty(azureFirewallPipName) ? azureFirewallPipName : '${name}-pip'
   location: location
   tags: tags
   sku: {

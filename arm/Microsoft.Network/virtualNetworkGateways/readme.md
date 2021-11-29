@@ -1,6 +1,6 @@
-# VirtualNetworkGateway `[Microsoft.Network/virtualNetworkGateways]`
+# Virtual Network Gateways `[Microsoft.Network/virtualNetworkGateways]`
 
-This module deploys a Virtual Network Gateway.
+This module deploys a virtual network gateway.
 
 ## Resource types
 

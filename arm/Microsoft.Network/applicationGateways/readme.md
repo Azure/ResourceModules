@@ -1,6 +1,6 @@
-# ApplicationGateway `[Microsoft.Network/applicationGateways]`
+# Application Gateways `[Microsoft.Network/applicationGateways]`
 
-This template deploys Application Gateway.
+This template deploys an application gateway.
 
 ## Resource types
 

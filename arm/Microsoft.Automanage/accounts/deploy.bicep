@@ -42,7 +42,6 @@ module autoManageAccount '.bicep/nested_autoManageAccount.bicep' = {
   }
 }
 
-//principalId: (createAutoManageAccount ? autoManageAccount.outputs.principalId : 'resource not deployed')
 resource autoManageAccount_permissions_contributor 'Microsoft.Authorization/roleAssignments@2020-04-01-preview' = {
   name: guid(autoManageAccountResourceGroupName, name, contributor)
   properties: {
@@ -69,6 +68,9 @@ module configurationProfileAssignment '.bicep/nested_configurationProfileAssignm
     configurationProfile: configurationProfile
     autoManageAccountResourceId: autoManageAccount.outputs.accountResourceId
   }
+  dependsOn: [
+    autoManageAccount
+  ]
 }
 
 @description('The resource ID of the auto manage account')

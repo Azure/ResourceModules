@@ -1,6 +1,6 @@
 @minLength(1)
 @description('Required. Name of the Azure Shared Image Gallery')
-param galleryName string
+param name string
 
 @description('Optional. Location for all resources.')
 param location string = resourceGroup().location
@@ -34,7 +34,7 @@ module pidName '.bicep/nested_cuaId.bicep' = if (!empty(cuaId)) {
 }
 
 resource gallery 'Microsoft.Compute/galleries@2020-09-30' = {
-  name: galleryName
+  name: name
   location: location
   tags: tags
   properties: {
@@ -98,4 +98,4 @@ output galleryResourceId string = gallery.id
 output galleryResourceGroup string = resourceGroup().name
 
 @description('The name of the deployed image gallery')
-output galleryName string = galleryName
+output galleryName string = gallery.name

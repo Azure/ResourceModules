@@ -99,8 +99,13 @@ module pid_cuaId '.bicep/nested_cuaId.bicep' = if (!empty(cuaId)) {
   params: {}
 }
 
-resource galleryImage 'Microsoft.Compute/galleries/images@2020-09-30' = {
-  name: '${galleryName}/${name}'
+resource gallery 'Microsoft.Compute/galleries@2020-09-30' existing = {
+  name: galleryName
+}
+
+resource image 'Microsoft.Compute/galleries/images@2020-09-30' = {
+  name: name
+  parent: gallery
   location: location
   tags: tags
   properties: {
@@ -143,12 +148,15 @@ module galleryImage_rbac '.bicep/nested_rbac.bicep' = [for (roleAssignment, inde
   params: {
     principalIds: roleAssignment.principalIds
     roleDefinitionIdOrName: roleAssignment.roleDefinitionIdOrName
-    resourceId: galleryImage.id
+    resourceId: image.id
   }
 }]
 
-output galleryResourceId string = resourceId('Microsoft.Compute/galleries', galleryName)
+@description('The resource group the image was deployed into')
 output galleryResourceGroup string = resourceGroup().name
-output galleryName string = galleryName
-output galleryImageResourceId string = galleryImage.id
-output galleryImageName string = galleryImage.name
+
+@description('The resource ID of the image')
+output galleryImageResourceId string = image.id
+
+@description('The name of the image')
+output galleryImageName string = image.name
