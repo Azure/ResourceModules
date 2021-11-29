@@ -71,7 +71,7 @@ module policyDefinition_sub '.bicep/nested_policyDefinitions_sub.bicep' = if (em
 }
 
 @sys.description('Policy Definition Name')
-output PolicyDefinitionName string = !empty(managementGroupId) ? policyDefinition_mg.outputs.PolicyDefinitionName : policyDefinition_sub.outputs.PolicyDefinitionName
+output policyDefinitionName string = !empty(managementGroupId) ? policyDefinition_mg.outputs.policyDefinitionName : policyDefinition_sub.outputs.policyDefinitionName
 @sys.description('Policy Definition Resource ID')
 output policyDefinitionResourceId string = !empty(managementGroupId) ? policyDefinition_mg.outputs.policyDefinitionResourceId : policyDefinition_sub.outputs.policyDefinitionResourceId
 @sys.description('Policy Definition Role Definition IDs')

@@ -48,7 +48,7 @@ resource policyDefinition 'Microsoft.Authorization/policyDefinitions@2021-06-01'
 }
 
 @sys.description('Policy Definition Name')
-output PolicyDefinitionName string = policyDefinition.name
+output policyDefinitionName string = policyDefinition.name
 
 @sys.description('Policy Definition Resource ID')
 output policyDefinitionResourceId string = subscriptionResourceId(subscriptionId, 'Microsoft.Authorization/policyDefinitions', policyDefinition.name)
