@@ -13,16 +13,16 @@ This module deploys custom RBAC Role Definitions.
 | Parameter Name | Type | Default Value | Possible Values | Description |
 | :-- | :-- | :-- | :-- | :-- |
 | `actions` | array | `[]` |  | Optional. List of allowed actions. |
+| `assignableScopes` | array | `[]` |  | Optional. Role definition assignable scopes. If not provided, will use the current scope provided. |
 | `dataActions` | array | `[]` |  | Optional. List of allowed data actions. This is not supported if the assignableScopes contains Management Group Scopes |
+| `description` | string |  |  | Optional. Description of the custom RBAC role to be created. |
 | `location` | string | `[deployment().location]` |  | Optional. Location for all resources. |
 | `managementGroupId` | string |  |  | Optional. The group ID of the Management Group where the Role Definition and Target Scope will be applied to. Cannot use when Subscription or Resource Groups Parameters are used. |
 | `notActions` | array | `[]` |  | Optional. List of denied actions. |
 | `notDataActions` | array | `[]` |  | Optional. List of denied data actions. This is not supported if the assignableScopes contains Management Group Scopes |
 | `resourceGroupName` | string |  |  | Optional. The name of the Resource Group where the Role Definition and Target Scope will be applied to. |
-| `description` | string |  |  | Optional. Description of the custom RBAC role to be created. |
 | `roleName` | string |  |  | Required. Name of the custom RBAC role to be created. |
 | `subscriptionId` | string |  |  | Optional. The subscription ID where the Role Definition and Target Scope will be applied to. Use for both Subscription level and Resource Group Level. |
-| `assignableScopes` | array | `[deploymentScope]` |  | Optional. Role definition assignable scopes. If not provided, will use the current scope provided. |
 
 ### Parameter Usage: `managementGroupId`
 
@@ -65,8 +65,8 @@ To deploy resource to a Resource Group, provide the `subscriptionId` and `resour
 
 | Output Name | Type | Description |
 | :-- | :-- | :-- |
-| `roleDefinitionResourceId` | string | The Resource ID of the Role Definition |
 | `roleDefinitionName` | string | The GUID of the Role Definition |
+| `roleDefinitionResourceId` | string | The Resource ID of the Role Definition |
 | `roleDefinitionScope` | string | The scope this Role Definition applies to |
 
 ## Considerations
@@ -79,4 +79,4 @@ This module can be deployed both at subscription or resource group level:
 
 ## Template references
 
-- [Role Definitions](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2018-01-01-preview/roleDefinitions)
+- [Roledefinitions](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2018-01-01-preview/roleDefinitions)
