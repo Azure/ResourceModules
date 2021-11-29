@@ -115,7 +115,7 @@ While exceptions might be needed, the following guidance should be followed as m
 '${uniqueString(deployment().name, location)}-<resource_short_type>'
 ```
 
-- In child-resource templates (e.g. inside for `containers` in the `blobServices` template), use the following naming structure
+- In child-resource templates (for example inside for `containers` in the `blobServices` template), use the following naming structure
 
 ```
 '${deployment().name}-<child_type>[-${index}]'
