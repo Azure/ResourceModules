@@ -30,34 +30,34 @@ env:
   DEPLOYMENT_SP_ID: '${{ secrets.DEPLOYMENT_SP_ID }}'
 
 jobs:
-  job_deploy_rg:
-    runs-on: ubuntu-20.04
-    name: 'Deploy resource group'
-    env:
-      moduleName: resourceGroups
-      namespace: 'Microsoft.Resources\resourceGroups'
-    strategy:
-      fail-fast: false
-      matrix:
-        parameterFilePaths:
-          ['artifacts.parameters.json', 'validation.parameters.json']
-    steps:
-      - name: 'Checkout'
-        uses: actions/checkout@v2
-        with:
-          fetch-depth: 0
-      - name: 'Deploy module'
-        uses: ./.github/actions/templates/deployModule
-        with:
-          moduleName: '${{ env.moduleName }}'
-          templateFilePath: 'arm/${{ env.namespace }}/deploy.bicep'
-          parameterFilePath: '${{ env.dependencyPath }}/${{ env.namespace }}/parameters/${{ matrix.parameterFilePaths }}'
-          location: '${{ env.defaultLocation }}'
-          resourceGroupName: '${{ env.resourceGroupName }}'
-          subscriptionId: '${{ secrets.ARM_SUBSCRIPTION_ID }}'
-          managementGroupId: '${{ secrets.ARM_MGMTGROUP_ID }}'
-          removeDeployment: '${{ env.removeDeployment }}'
-
+  # job_deploy_rg:
+  #   runs-on: ubuntu-20.04
+  #   name: 'Deploy resource group'
+  #   env:
+  #     moduleName: resourceGroups
+  #     namespace: 'Microsoft.Resources\resourceGroups'
+  #   strategy:
+  #     fail-fast: false
+  #     matrix:
+  #       parameterFilePaths:
+  #         ['artifacts.parameters.json', 'validation.parameters.json']
+  #   steps:
+  #     - name: 'Checkout'
+  #       uses: actions/checkout@v2
+  #       with:
+  #         fetch-depth: 0
+  #     - name: 'Deploy module'
+  #       uses: ./.github/actions/templates/deployModule
+  #       with:
+  #         moduleName: '${{ env.moduleName }}'
+  #         templateFilePath: 'arm/${{ env.namespace }}/deploy.bicep'
+  #         parameterFilePath: '${{ env.dependencyPath }}/${{ env.namespace }}/parameters/${{ matrix.parameterFilePaths }}'
+  #         location: '${{ env.defaultLocation }}'
+  #         resourceGroupName: '${{ env.resourceGroupName }}'
+  #         subscriptionId: '${{ secrets.ARM_SUBSCRIPTION_ID }}'
+  #         managementGroupId: '${{ secrets.ARM_MGMTGROUP_ID }}'
+  #         removeDeployment: '${{ env.removeDeployment }}'
+  #
   # job_deploy_msi:
   #   runs-on: ubuntu-20.04
   #   name: 'Deploy user assigned identity'
@@ -173,42 +173,42 @@ jobs:
   #         subscriptionId: '${{ secrets.ARM_SUBSCRIPTION_ID }}'
   #         managementGroupId: '${{ secrets.ARM_MGMTGROUP_ID }}'
   #         removeDeployment: '${{ env.removeDeployment }}'
-
-  job_deploy_sa:
-    runs-on: ubuntu-20.04
-    name: 'Deploy storage account'
-    env:
-      moduleName: storageAccounts
-      namespace: 'Microsoft.Storage\storageAccounts'
-    needs:
-      - job_deploy_rg
-    strategy:
-      fail-fast: false
-      matrix:
-        parameterFilePaths:
-          ['fa.parameters.json', 'law.parameters.json', 'parameters.json']
-    steps:
-      - name: 'Checkout'
-        uses: actions/checkout@v2
-        with:
-          fetch-depth: 0
-      - name: 'Deploy module'
-        uses: ./.github/actions/templates/deployModule
-        with:
-          moduleName: '${{ env.moduleName }}'
-          templateFilePath: 'arm/${{ env.namespace }}/deploy.bicep'
-          parameterFilePath: '${{ env.dependencyPath }}/${{ env.namespace }}/parameters/${{ matrix.parameterFilePaths }}'
-          location: '${{ env.defaultLocation }}'
-          resourceGroupName: '${{ env.resourceGroupName }}'
-          subscriptionId: '${{ secrets.ARM_SUBSCRIPTION_ID }}'
-          managementGroupId: '${{ secrets.ARM_MGMTGROUP_ID }}'
-          removeDeployment: '${{ env.removeDeployment }}'
+  #
+  # job_deploy_sa:
+  #   runs-on: ubuntu-20.04
+  #   name: 'Deploy storage account'
+  #   env:
+  #     moduleName: storageAccounts
+  #     namespace: 'Microsoft.Storage\storageAccounts'
+  #   needs:
+  #     - job_deploy_rg
+  #   strategy:
+  #     fail-fast: false
+  #     matrix:
+  #       parameterFilePaths:
+  #         ['fa.parameters.json', 'law.parameters.json', 'parameters.json']
+  #   steps:
+  #     - name: 'Checkout'
+  #       uses: actions/checkout@v2
+  #       with:
+  #         fetch-depth: 0
+  #     - name: 'Deploy module'
+  #       uses: ./.github/actions/templates/deployModule
+  #       with:
+  #         moduleName: '${{ env.moduleName }}'
+  #         templateFilePath: 'arm/${{ env.namespace }}/deploy.bicep'
+  #         parameterFilePath: '${{ env.dependencyPath }}/${{ env.namespace }}/parameters/${{ matrix.parameterFilePaths }}'
+  #         location: '${{ env.defaultLocation }}'
+  #         resourceGroupName: '${{ env.resourceGroupName }}'
+  #         subscriptionId: '${{ secrets.ARM_SUBSCRIPTION_ID }}'
+  #         managementGroupId: '${{ secrets.ARM_MGMTGROUP_ID }}'
+  #         removeDeployment: '${{ env.removeDeployment }}'
 
   job_upload_storage_files:
     runs-on: ubuntu-20.04
     name: 'Upload files to storage account'
-    needs:
-      - job_deploy_sa
+    # needs:
+    #   - job_deploy_sa
     steps:
       - name: 'Checkout'
         uses: actions/checkout@v2
@@ -227,14 +227,14 @@ jobs:
             . (Join-Path $env:GITHUB_WORKSPACE 'utilities' 'pipelines' 'sharedScripts' 'Export-ContentToBlob.ps1')
 
             # Get storage account name
-            $parameterFilePath = Join-Path '${{ env.dependencyPath }}' 'Microsoft.Storage/storageAccounts' 'parameters' 'parameters.json'
+            $parameterFilePath = Join-Path $env:GITHUB_WORKSPACE '${{ env.dependencyPath }}' 'Microsoft.Storage/storageAccounts' 'parameters' 'parameters.json'
             $storageAccountParameters = (ConvertFrom-Json (Get-Content -path $parameterFilePath -Raw)).parameters
 
             # Upload files of uploads folder to storage account
             $functionInput = @{
-              ResourceGroupName   = '${{ inputs.resourceGroupName }}'
+              ResourceGroupName   = '${{ env.resourceGroupName }}'
               StorageAccountName  = $storageAccountParameters.name.value
-              contentDirectories  = Join-Path '${{ env.dependencyPath }}' 'Microsoft.Storage/storageAccounts' 'uploads'
+              contentDirectories  = Join-Path $env:GITHUB_WORKSPACE '${{ env.dependencyPath }}' 'Microsoft.Storage/storageAccounts' 'uploads'
               targetContainer     = $storageAccountParameters.blobServices.value.containers[0].name
             }
 
