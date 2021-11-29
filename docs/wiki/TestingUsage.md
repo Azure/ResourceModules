@@ -59,21 +59,19 @@ $TestModuleLocallyInput = @{
         ResourceGroupName = 'validation-rg'
         SubscriptionId    = '12345678-1234-1234-1234-123456789123'
         ManagementGroupId = 'mg-contoso'
-        RemoveDeployment  = $false
     }
-    DeployAllModuleParameterFiles = $false
-    GetParameterFileTokens        = $true
-    #TokenKeyVaultName             = 'contoso-platform-kv'
-    OtherCustomParameterFileTokens      = @(
+    AdditionalTokens      = @(
         @{ Name = 'deploymentSpId'; Value = '12345678-1234-1234-1234-123456789123' }
         @{ Name = 'tenantId'; Value = '12345678-1234-1234-1234-123456789123' }
     )
 }
 ```
 
+> You can use the `Get-Help` cmdlet to show more options on how you can use this script.
+
 ---
 
-# Handling Parameters that require or contain a value that should be tokenized
+## Handling Parameters that require or contain a value that should be tokenized
 
 The following scenarios are common to when to use a token value in the parameter file. Refer to [Parameter File Tokens Design](./ParameterFileTokens) for more details.
 
@@ -118,6 +116,6 @@ The following scenarios are common to when to use a token value in the parameter
     ```
 
 ---
-**Note**: There are pester tests that target the use of tokens in parameter files where it detects certain keywords (i.e. /subscriptions/, 'subscriptionId', 'principalId'). Hence ensure you tokenize these values to ensure these tests are successful.
+**Note**: There are pester tests that target the use of tokens in parameter files where it detects certain keywords (i.e. /subscriptions/, 'subscriptionId'). Hence ensure you tokenize these values to ensure these tests are successful.
 
 ---

@@ -116,7 +116,7 @@ module pid_cuaId '.bicep/nested_cuaId.bicep' = if (!empty(cuaId)) {
 }
 
 resource azureBastionPip 'Microsoft.Network/publicIPAddresses@2021-02-01' = {
-  name: empty(azureBastionPipName) ? '${name}-pip' : azureBastionPipName
+  name: !empty(azureBastionPipName) ? azureBastionPipName : '${name}-pip'
   location: location
   tags: tags
   sku: {
