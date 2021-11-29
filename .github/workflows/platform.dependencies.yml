@@ -207,6 +207,8 @@ jobs:
   job_upload_storage_files:
     runs-on: ubuntu-20.04
     name: 'Upload files to storage account'
+    env:
+      namespace: 'Microsoft.Storage\storageAccounts'
     needs:
       - job_deploy_sa
     steps:
