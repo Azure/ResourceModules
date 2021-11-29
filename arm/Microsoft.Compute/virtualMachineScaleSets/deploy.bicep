@@ -294,6 +294,7 @@ var publicKeysFormatted = [for publicKey in publicKeys: {
   path: publicKey.path
   keyData: publicKey.keyData
 }]
+
 var linuxConfiguration = {
   disablePasswordAuthentication: disablePasswordAuthentication
   ssh: {
