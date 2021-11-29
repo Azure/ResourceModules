@@ -10,7 +10,7 @@ param displayName string = ''
 @sys.description('Optional. The Description name of the Set Definition (Initiative)')
 param description string = ''
 
-@sys.description('Required. The subscription ID of the subscription (Scope). Cannot be used with managementGroupId')
+@sys.description('Optional. The subscription ID of the subscription')
 param subscriptionId string = subscription().subscriptionId
 
 @sys.description('Optional. The Set Definition (Initiative) metadata. Metadata is an open ended object and is typically a collection of key-value pairs.')

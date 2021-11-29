@@ -10,7 +10,7 @@ param displayName string = ''
 @sys.description('Optional. The Description name of the Set Definition (Initiative)')
 param description string = ''
 
-@sys.description('Required. The group ID of the Management Group (Scope). Cannot be used with subscriptionId and does not support tenant level deployment (i.e. \'/\')')
+@sys.description('Required. The group ID of the Management Group')
 param managementGroupId string
 
 @sys.description('Optional. The Set Definition (Initiative) metadata. Metadata is an open ended object and is typically a collection of key-value pairs.')
