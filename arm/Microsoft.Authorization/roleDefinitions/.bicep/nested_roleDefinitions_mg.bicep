@@ -1,34 +1,28 @@
 targetScope = 'managementGroup'
 
 param roleName string
-param roleDescription string = ''
+param description string = ''
 param actions array = []
 param notActions array = []
-param dataActions array = []
-param notDataActions array = []
 param managementGroupId string
-param location string = deployment().location
+param assignableScopes array = []
 
 resource roleDefinition 'Microsoft.Authorization/roleDefinitions@2018-01-01-preview' = {
-  name: guid(roleName, managementGroupId, location)
+  name: guid(roleName, managementGroupId)
   properties: {
     roleName: roleName
-    description: roleDescription
+    description: description
     type: 'customRole'
     permissions: [
       {
         actions: actions
         notActions: notActions
-        dataActions: dataActions
-        notDataActions: notDataActions
       }
     ]
-    assignableScopes: [
-      tenantResourceId('Microsoft.Management/managementGroups', managementGroupId)
-    ]
+    assignableScopes: assignableScopes == [] ? array(tenantResourceId('Microsoft.Management/managementGroups', managementGroupId)) : assignableScopes
   }
 }
 
 output roleDefinitionName string = roleDefinition.name
 output roleDefinitionScope string = tenantResourceId('Microsoft.Management/managementGroups', managementGroupId)
-output roleDefinitionId string = extensionResourceId(tenantResourceId('Microsoft.Management/managementGroups', managementGroupId), 'Microsoft.Authorization/roleDefinitions', roleDefinition.name)
+output roleDefinitionResourceId string = extensionResourceId(tenantResourceId('Microsoft.Management/managementGroups', managementGroupId), 'Microsoft.Authorization/roleDefinitions', roleDefinition.name)

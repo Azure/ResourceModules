@@ -1,19 +1,19 @@
 targetScope = 'subscription'
 
 param roleName string
-param roleDescription string = ''
+param description string = ''
 param actions array = []
 param notActions array = []
 param dataActions array = []
 param notDataActions array = []
 param subscriptionId string = subscription().subscriptionId
-param location string = deployment().location
+param assignableScopes array = []
 
 resource roleDefinition 'Microsoft.Authorization/roleDefinitions@2018-01-01-preview' = {
-  name: guid(roleName, subscriptionId, location)
+  name: guid(roleName, subscriptionId)
   properties: {
     roleName: roleName
-    description: roleDescription
+    description: description
     type: 'customRole'
     permissions: [
       {
@@ -23,12 +23,10 @@ resource roleDefinition 'Microsoft.Authorization/roleDefinitions@2018-01-01-prev
         notDataActions: notDataActions
       }
     ]
-    assignableScopes: [
-      subscription().id
-    ]
+    assignableScopes: assignableScopes == [] ? array(subscription().id) : assignableScopes
   }
 }
 
 output roleDefinitionName string = roleDefinition.name
 output roleDefinitionScope string = subscription().id
-output roleDefinitionId string = subscriptionResourceId(subscriptionId, 'Microsoft.Authorization/roleDefinitions', roleDefinition.name)
+output roleDefinitionResourceId string = subscriptionResourceId(subscriptionId, 'Microsoft.Authorization/roleDefinitions', roleDefinition.name)
