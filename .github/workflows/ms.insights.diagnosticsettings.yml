@@ -1,4 +1,4 @@
-name: 'Insights: Diagnosticsettings'
+name: 'Insights: DiagnosticSettings'
 
 on:
   workflow_dispatch:

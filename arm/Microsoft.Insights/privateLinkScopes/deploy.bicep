@@ -38,14 +38,16 @@ resource privateLinkScope 'Microsoft.Insights/privateLinkScopes@2019-10-17-previ
   location: location
   tags: tags
   properties: {}
-
-  resource privateLinkScope_scopedResources 'scopedresources@2019-10-17-preview' = [for (scopedResource, index) in scopedResources: {
-    name: 'scoped-${last(split(scopedResource.linkedResourceId, '/'))}-${guid(uniqueString(privateLinkScope.name, scopedResource.linkedResourceId))}'
-    properties: {
-      linkedResourceId: scopedResource.linkedResourceId
-    }
-  }]
 }
+
+module privateLinkScope_scopedResource 'scopedResources/deploy.bicep' = [for (scopedResource, index) in scopedResources: {
+  name: '${uniqueString(deployment().name, location)}-Insights-ScpdRes-${index}'
+  params: {
+    name: scopedResource.name
+    privateLinkScopeName: privateLinkScope.name
+    linkedResourceId: scopedResource.linkedResourceId
+  }
+}]
 
 resource privateLinkScope_lock 'Microsoft.Authorization/locks@2016-09-01' = if (lock != 'NotSpecified') {
   name: '${privateLinkScope.name}-${lock}-lock'
@@ -56,11 +58,11 @@ resource privateLinkScope_lock 'Microsoft.Authorization/locks@2016-09-01' = if (
   }
 }
 
-module privateLinkScope_privateEndpoints '.bicep/nested_privateEndpoint.bicep' = [for (endpoint, index) in privateEndpoints: if (!empty(privateEndpoints)) {
-  name: '${uniqueString(deployment().name, location)}-Storage-PrivateEndpoints-${index}'
+module privateLinkScope_privateEndpoints '.bicep/nested_privateEndpoint.bicep' = [for (endpoint, index) in privateEndpoints: {
+  name: '${uniqueString(deployment().name, location)}-Insights-PvtEndPnt-${index}'
   params: {
     privateEndpointResourceId: privateLinkScope.id
-    privateEndpointVnetLocation: (empty(privateEndpoints) ? 'dummy' : reference(split(endpoint.subnetResourceId, '/subnets/')[0], '2020-06-01', 'Full').location)
+    privateEndpointVnetLocation: reference(split(endpoint.subnetResourceId, '/subnets/')[0], '2020-06-01', 'Full').location
     privateEndpointObj: endpoint
     tags: tags
   }

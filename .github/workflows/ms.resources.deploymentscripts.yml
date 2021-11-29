@@ -1,4 +1,4 @@
-name: 'Resources: Deploymentscripts'
+name: 'Resources: DeploymentScripts'
 
 on:
   workflow_dispatch:

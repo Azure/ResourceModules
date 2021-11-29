@@ -1,6 +1,6 @@
-# API Management `[Microsoft.ApiManagement/service]`
+# API Management Services `[Microsoft.ApiManagement/service]`
 
-This module deploys an API management.
+This module deploys an API management service.
 
 ## Resource types
 

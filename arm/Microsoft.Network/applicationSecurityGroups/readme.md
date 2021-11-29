@@ -1,6 +1,6 @@
-# ApplicationSecurityGroups `[Microsoft.Network/applicationSecurityGroups]`
+# Application Security Groups `[Microsoft.Network/applicationSecurityGroups]`
 
-This module deploys Application Security Groups.
+This module deploys an application security group.
 
 ## Resource Types
 
