@@ -67,7 +67,7 @@ module pid_cuaId '.bicep/nested_cuaId.bicep' = if (!empty(cuaId)) {
   params: {}
 }
 
-resource virtualWan 'Microsoft.Network/virtualWans@2021-05-01' = {
+resource virtualWan 'Microsoft.Network/virtualWans@2021-03-01' = {
   name: name
   location: location
   tags: tags
@@ -85,7 +85,7 @@ resource virtualWan_lock 'Microsoft.Authorization/locks@2016-09-01' = if (lock !
   scope: virtualWan
 }
 
-resource virtualHub 'Microsoft.Network/virtualHubs@2021-05-01' = {
+resource virtualHub 'Microsoft.Network/virtualHubs@2021-03-01' = {
   name: virtualHubName
   location: location
   properties: {
@@ -105,7 +105,7 @@ resource virtualHub_lock 'Microsoft.Authorization/locks@2016-09-01' = if (lock !
   scope: virtualHub
 }
 
-resource vpnSite 'Microsoft.Network/vpnSites@2021-05-01' = {
+resource vpnSite 'Microsoft.Network/vpnSites@2021-03-01' = {
   name: vpnSiteName
   location: location
   properties: {
@@ -136,7 +136,7 @@ resource vpnSite_lock 'Microsoft.Authorization/locks@2016-09-01' = if (lock != '
   scope: vpnSite
 }
 
-resource vpnGateway 'Microsoft.Network/vpnGateways@2021-05-01' = {
+resource vpnGateway 'Microsoft.Network/vpnGateways@2021-03-01' = {
   name: vpnGatewayName
   location: location
   properties: {
