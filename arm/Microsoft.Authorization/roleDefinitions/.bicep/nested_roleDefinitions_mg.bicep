@@ -40,5 +40,5 @@ output roleDefinitionName string = roleDefinition.name
 @sys.description('The scope this Role Definition applies to')
 output roleDefinitionScope string = tenantResourceId('Microsoft.Management/managementGroups', managementGroupId)
 
-@sys.description('The Resource ID of the Role Definition')
+@sys.description('The resource ID of the Role Definition')
 output roleDefinitionResourceId string = extensionResourceId(tenantResourceId('Microsoft.Management/managementGroups', managementGroupId), 'Microsoft.Authorization/roleDefinitions', roleDefinition.name)

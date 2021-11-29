@@ -38,11 +38,11 @@ module roleDefinition_mg '.bicep/nested_roleDefinitions_mg.bicep' = if (!empty(m
   scope: managementGroup(managementGroupId)
   params: {
     roleName: roleName
-    description: description
-    actions: actions
-    notActions: notActions
+    description: !empty(description) ? description : ''
+    actions: !empty(actions) ? actions : []
+    notActions: !empty(notActions) ? notActions : []
+    assignableScopes: !empty(assignableScopes) ? assignableScopes : []
     managementGroupId: managementGroupId
-    assignableScopes: assignableScopes
   }
 }
 
@@ -51,13 +51,13 @@ module roleDefinition_sub '.bicep/nested_roleDefinitions_sub.bicep' = if (empty(
   scope: subscription(subscriptionId)
   params: {
     roleName: roleName
-    description: description
-    actions: actions
-    notActions: notActions
-    dataActions: dataActions
-    notDataActions: notDataActions
+    description: !empty(description) ? description : ''
+    actions: !empty(actions) ? actions : []
+    notActions: !empty(notActions) ? notActions : []
+    dataActions: !empty(dataActions) ? dataActions : []
+    notDataActions: !empty(notDataActions) ? notDataActions : []
+    assignableScopes: !empty(assignableScopes) ? assignableScopes : []
     subscriptionId: subscriptionId
-    assignableScopes: assignableScopes
   }
 }
 
@@ -66,20 +66,22 @@ module roleDefinition_rg '.bicep/nested_roleDefinitions_rg.bicep' = if (empty(ma
   scope: resourceGroup(subscriptionId, resourceGroupName)
   params: {
     roleName: roleName
-    description: description
-    actions: actions
-    notActions: notActions
-    dataActions: dataActions
-    notDataActions: notDataActions
+    description: !empty(description) ? description : ''
+    actions: !empty(actions) ? actions : []
+    notActions: !empty(notActions) ? notActions : []
+    dataActions: !empty(dataActions) ? dataActions : []
+    notDataActions: !empty(notDataActions) ? notDataActions : []
+    assignableScopes: !empty(assignableScopes) ? assignableScopes : []
     subscriptionId: subscriptionId
     resourceGroupName: resourceGroupName
-    assignableScopes: assignableScopes
   }
 }
 
 @sys.description('The GUID of the Role Definition')
 output roleDefinitionName string = !empty(managementGroupId) ? roleDefinition_mg.outputs.roleDefinitionName : (!empty(resourceGroupName) ? roleDefinition_rg.outputs.roleDefinitionName : roleDefinition_sub.outputs.roleDefinitionName)
-@sys.description('The Resource ID of the Role Definition')
+
+@sys.description('The resource ID of the Role Definition')
 output roleDefinitionResourceId string = !empty(managementGroupId) ? roleDefinition_mg.outputs.roleDefinitionResourceId : (!empty(resourceGroupName) ? roleDefinition_rg.outputs.roleDefinitionResourceId : roleDefinition_sub.outputs.roleDefinitionResourceId)
+
 @sys.description('The scope this Role Definition applies to')
 output roleDefinitionScope string = !empty(managementGroupId) ? roleDefinition_mg.outputs.roleDefinitionScope : (!empty(resourceGroupName) ? roleDefinition_rg.outputs.roleDefinitionScope : roleDefinition_sub.outputs.roleDefinitionScope)

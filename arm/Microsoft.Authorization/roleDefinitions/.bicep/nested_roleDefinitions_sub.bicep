@@ -38,7 +38,7 @@ resource roleDefinition 'Microsoft.Authorization/roleDefinitions@2018-01-01-prev
         notDataActions: notDataActions
       }
     ]
-    assignableScopes: assignableScopes == [] ? array(subscription().id) : assignableScopes
+    assignableScopes: !empty(assignableScopes) ? assignableScopes : array(subscription().id)
   }
 }
 
@@ -48,5 +48,5 @@ output roleDefinitionName string = roleDefinition.name
 @sys.description('The scope this Role Definition applies to')
 output roleDefinitionScope string = subscription().id
 
-@sys.description('The Resource ID of the Role Definition')
+@sys.description('The resource ID of the Role Definition')
 output roleDefinitionResourceId string = subscriptionResourceId(subscriptionId, 'Microsoft.Authorization/roleDefinitions', roleDefinition.name)
