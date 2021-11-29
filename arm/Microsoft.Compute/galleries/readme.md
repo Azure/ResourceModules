@@ -1,6 +1,6 @@
 # Azure Compute Galleries `[Microsoft.Compute/galleries]`
 
-This module deploys an azure compute gallery (formerly known as shared image gallery).
+This module deploys an Azure compute gallery (formerly known as shared image gallery).
 
 ## Resource Types
 
