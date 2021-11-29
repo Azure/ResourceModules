@@ -190,14 +190,15 @@ function Set-ParametersSection {
             foreach ($sourceFile in $resourceUsageSourceFiles.FullName) {
                 $parameterName = (Split-Path $sourceFile -LeafBase).Replace('resourceUsage-', '')
                 if ($templateFileContent.parameters.Keys -contains $parameterName) {
-                    $SectionStartIdentifier = '### Parameter Usage: `{0}`' -f $ParameterName
+                    $subSectionStartIdentifier = '### Parameter Usage: `{0}`' -f $ParameterName
 
                     # Build result
                     if ($PSCmdlet.ShouldProcess(('Original file with new parameter usage [{0}] content' -f $parameterName), 'Merge')) {
                         $updateParameterUsageInputObject = @{
                             OldContent             = $updatedFileContent
-                            NewContent             = Get-Content $sourceFile -Raw
-                            SectionStartIdentifier = $SectionStartIdentifier
+                            NewContent             = (Get-Content $sourceFile -Raw).Trim()
+                            SectionStartIdentifier = $subSectionStartIdentifier
+                            ParentStartIdentifier  = $SectionStartIdentifier
                             ContentType            = 'none'
                         }
                         $updatedFileContent = Merge-FileWithNewContent @updateParameterUsageInputObject

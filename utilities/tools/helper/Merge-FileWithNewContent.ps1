@@ -101,6 +101,9 @@ function Merge-FileWithNewContent {
         [Parameter(Mandatory)]
         [object[]] $NewContent,
 
+        [Parameter(Mandatory = $false)]
+        [string] $ParentStartIdentifier = '',
+
         [Parameter(Mandatory)]
         [string] $SectionStartIdentifier,
 
@@ -110,11 +113,27 @@ function Merge-FileWithNewContent {
     )
 
     $startIndex = 0
-    while (-not ($OldContent[$startIndex] -like "*$SectionStartIdentifier") -and -not ($startIndex -ge $OldContent.Count - 1)) {
+    while (-not ($OldContent[$startIndex] -eq $SectionStartIdentifier) -and -not ($startIndex -ge $OldContent.Count - 1)) {
         $startIndex++
     }
 
-    if ($startIndex -eq $OldContent.Count - 1) {
+    # In case we're processing a child section (indented by one #) we should search until the main section starts / end of file is reached
+    if ($startIndex -eq $OldContent.Count - 1 -and -not [String]::IsNullOrEmpty($ParentStartIdentifier)) {
+        $level = $ParentStartIdentifier.TrimStart().Split(' ')[0]
+
+        $parentSectionStartIndex = 0
+        while (-not ($OldContent[$parentSectionStartIndex] -like "*$ParentStartIdentifier") -and -not ($parentSectionStartIndex -ge $OldContent.Count - 1)) {
+            $parentSectionStartIndex++
+        }
+
+        $startIndex = $parentSectionStartIndex + 1
+        while (-not ($OldContent[$startIndex] -like "$level *") -and -not ($startIndex -ge $OldContent.Count - 1)) {
+            $startIndex++
+        }
+    }
+
+
+    if ($startIndex -eq $OldContent.Count - 1 -and [String]::IsNullOrEmpty($ParentStartIdentifier)) {
         # Section is not existing (end of file)
         $startContent = $OldContent
         if ($OldContent[$startIndex] -ne $SectionStartIdentifier ) {
@@ -176,7 +195,7 @@ function Merge-FileWithNewContent {
                 }
             }
             'none' {
-                $startContent = $OldContent[0..($startIndex - 1)]
+                $startContent = $OldContent[0..($startIndex + 1)]
 
                 if ($startIndex -eq $ReadMeFileContent.Count - 1) {
                     # Not found section until end of file. Assuming it does not exist
@@ -185,7 +204,7 @@ function Merge-FileWithNewContent {
                         $NewContent = @('', $SectionStartIdentifier) + $NewContent
                     }
                 } else {
-                    $endIndex = Get-EndIndex -ReadMeFileContent $OldContent -startIndex $listStartIndex -ContentType $ContentType
+                    $endIndex = Get-EndIndex -ReadMeFileContent $OldContent -startIndex $startIndex -ContentType $ContentType
                     if ($endIndex -ne $OldContent.Count - 1) {
                         $endContent = $OldContent[$endIndex..($OldContent.Count - 1)]
                     }
