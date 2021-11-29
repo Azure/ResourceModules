@@ -9,7 +9,7 @@
             "value": "Custom Role Assignment Sub"
         },
         "principalId": {
-            "value": "4bd90842-f34a-4c10-9f38-1159b9a2e259"
+            "value": "<<deploymentSpId>>"
         },
         "principalType": {
             "value": "ServicePrincipal"
