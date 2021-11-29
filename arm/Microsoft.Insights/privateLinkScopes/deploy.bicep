@@ -58,7 +58,7 @@ resource privateLinkScope_lock 'Microsoft.Authorization/locks@2016-09-01' = if (
   }
 }
 
-module privateLinkScope_privateEndpoints '.bicep/nested_privateEndpoint.bicep' = [for (endpoint, index) in privateEndpoints: if (!empty(privateEndpoints)) {
+module privateLinkScope_privateEndpoints '.bicep/nested_privateEndpoint.bicep' = [for (endpoint, index) in privateEndpoints: {
   name: '${uniqueString(deployment().name, location)}-Insights-PvtEndPnt-${index}'
   params: {
     privateEndpointResourceId: privateLinkScope.id
