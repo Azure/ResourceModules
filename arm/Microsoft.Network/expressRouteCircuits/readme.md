@@ -1,6 +1,6 @@
-# ExpressRoute Circuit `[Microsoft.Network/expressRouteCircuits]`
+# ExpressRoute Circuits `[Microsoft.Network/expressRouteCircuits]`
 
-This template deploys a ExrepressRoute Circuit.
+This template deploys an express route circuit.
 
 ## Resource types
 

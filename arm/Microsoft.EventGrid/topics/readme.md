@@ -1,6 +1,6 @@
-# Event Grid `[Microsoft.EventGrid/topics]`
+# Event Grid Topics `[Microsoft.EventGrid/topics]`
 
-This module deploys Event Grid
+This module deploys an event grid topic.
 
 ## Resource Types
 

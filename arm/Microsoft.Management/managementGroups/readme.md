@@ -1,6 +1,6 @@
-# Management groups `[Microsoft.Management/managementGroups]`
+# Management Groups `[Microsoft.Management/managementGroups]`
 
-This template will prepare the Management group structure based on the provided parameter.
+This template will prepare the management group structure based on the provided parameter.
 
 This module has some known **limitations**:
 

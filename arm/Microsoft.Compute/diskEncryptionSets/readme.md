@@ -1,6 +1,6 @@
-# DiskEncryptionSet `[Microsoft.Compute/diskEncryptionSets]`
+# Disk Encryption Sets `[Microsoft.Compute/diskEncryptionSets]`
 
-This template deploys a Disk Encryption Set
+This template deploys a disk encryption set.
 
 ## Resource types
 

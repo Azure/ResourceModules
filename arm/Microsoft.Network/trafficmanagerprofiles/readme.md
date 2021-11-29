@@ -1,6 +1,6 @@
-# TrafficManager `[Microsoft.Network/trafficmanagerprofiles]`
+# Traffic Manager `[Microsoft.Network/trafficmanagerprofiles]`
 
-This module deploys Traffic Manager, with resource lock.
+This module deploys a traffic manager profile.
 
 ## Resource types
 

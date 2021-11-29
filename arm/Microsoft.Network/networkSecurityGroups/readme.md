@@ -1,6 +1,6 @@
-# NetworkSecurityGroups `[Microsoft.Network/networkSecurityGroups]`
+# Network Security Groups `[Microsoft.Network/networkSecurityGroups]`
 
-This template deploys a Network Security Groups (NSG) with optional security rules.
+This template deploys a network security group (NSG) with optional security rules.
 
 ## Resource Types
 

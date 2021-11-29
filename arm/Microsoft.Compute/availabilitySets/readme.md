@@ -1,6 +1,6 @@
-# AvailabilitySet `[Microsoft.Compute/availabilitySets]`
+# Availability Sets `[Microsoft.Compute/availabilitySets]`
 
-This template deploys an Availability Set
+This template deploys an availability set
 
 ## Resource types
 
