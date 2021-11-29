@@ -13,12 +13,6 @@ param publicIPAddressId string = ''
 @description('Optional. Specifies the properties of the public IP to create and be used by Azure Bastion. If it\'s not provided and publicIPAddressId is empty, a \'-pip\' suffix will be appended to the Bastion\'s name.')
 param publicIPAddressObject object = {}
 
-@description('Optional. Resource ID of the Public IP Prefix object. This is only needed if you want your Public IPs created in a PIP Prefix.')
-param publicIPPrefixId string = ''
-
-@description('Optional. DNS name of the Public IP resource. A region specific suffix will be appended to it, e.g.: your-DNS-name.westeurope.cloudapp.azure.com')
-param domainNameLabel string = ''
-
 @description('Optional. Specifies the number of days that logs will be kept for; a value of 0 will retain data indefinitely.')
 @minValue(0)
 @maxValue(365)
@@ -61,26 +55,8 @@ param azureBastionpLogsToEnable array = [
   'BastionAuditLogs'
 ]
 
-@description('Optional. The name of metrics that will be streamed.')
-@allowed([
-  'AllMetrics'
-])
-param metricsToEnable array = [
-  'AllMetrics'
-]
-
 var azureBastionDiagnosticsLogs = [for log in azureBastionpLogsToEnable: {
   category: log
-  enabled: true
-  retentionPolicy: {
-    enabled: true
-    days: diagnosticLogsRetentionInDays
-  }
-}]
-
-var diagnosticsMetrics = [for metric in metricsToEnable: {
-  category: metric
-  timeGrain: null
   enabled: true
   retentionPolicy: {
     enabled: true
