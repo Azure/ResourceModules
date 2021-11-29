@@ -1,10 +1,21 @@
 targetScope = 'managementGroup'
 
+@sys.description('Required. Name of the custom RBAC role to be created.')
 param roleName string
+
+@sys.description('Optional. Description of the custom RBAC role to be created.')
 param description string = ''
+
+@sys.description('Optional. List of allowed actions.')
 param actions array = []
+
+@sys.description('Optional. List of denied actions.')
 param notActions array = []
+
+@sys.description('Required. The group ID of the Management Group where the Role Definition and Target Scope will be applied to.')
 param managementGroupId string
+
+@sys.description('Optional. Role definition assignable scopes. If not provided, will use the current scope provided.')
 param assignableScopes array = []
 
 resource roleDefinition 'Microsoft.Authorization/roleDefinitions@2018-01-01-preview' = {
@@ -23,6 +34,11 @@ resource roleDefinition 'Microsoft.Authorization/roleDefinitions@2018-01-01-prev
   }
 }
 
+@sys.description('The GUID of the Role Definition')
 output roleDefinitionName string = roleDefinition.name
+
+@sys.description('The scope this Role Definition applies to')
 output roleDefinitionScope string = tenantResourceId('Microsoft.Management/managementGroups', managementGroupId)
+
+@sys.description('The Resource ID of the Role Definition')
 output roleDefinitionResourceId string = extensionResourceId(tenantResourceId('Microsoft.Management/managementGroups', managementGroupId), 'Microsoft.Authorization/roleDefinitions', roleDefinition.name)
