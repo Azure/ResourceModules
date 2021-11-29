@@ -62,7 +62,7 @@ module privateLinkScope_privateEndpoints '.bicep/nested_privateEndpoint.bicep' =
   name: '${uniqueString(deployment().name, location)}-Insights-PvtEndPnt-${index}'
   params: {
     privateEndpointResourceId: privateLinkScope.id
-    privateEndpointVnetLocation: (empty(privateEndpoints) ? 'dummy' : reference(split(endpoint.subnetResourceId, '/subnets/')[0], '2020-06-01', 'Full').location)
+    privateEndpointVnetLocation: reference(split(endpoint.subnetResourceId, '/subnets/')[0], '2020-06-01', 'Full').location
     privateEndpointObj: endpoint
     tags: tags
   }
