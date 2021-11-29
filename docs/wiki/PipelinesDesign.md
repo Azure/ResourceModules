@@ -94,14 +94,9 @@ Note that, for the deployments we have to account for certain [prerequisites](#p
 
 ### Removal
 
-The removal phase is strongly coupled with the previous deployment phase. Fundamentally, we want to remove any test-deployed resource after its test concluded. If we would not, we would generate unnecessary costs and may temper with any subsequent test. Some resources may require a dedicated logic to be removed. This logic should be stored alongside the generally utilized removal script in the `.utilities/pipelines/resourceRemoval` folder and be referenced by the corresponding module pipeline.
+The removal phase is strongly coupled with the previous deployment phase. Fundamentally, we want to remove any test-deployed resource after its test concluded. If we would not, we would generate unnecessary costs and may temper with any subsequent test. Some resources may require a dedicated logic to be removed. This logic should be stored alongside the generally utilized removal script in the `.utilities/pipelines/resourceRemoval` folder and be referenced by the `Remove-DeployedModule.ps1` script that orchestrates the removal.
 
-> **Note:** At the time of this writing, resources to be removed are identified using Azure tags. This means, at deployment time, a specific tag is applied to the resources which is then picked up by the removal phase to remove the same. However, while this solution works for most modules, it does not for all. The main reasons why it would fail are:
-> - Lack of 'Tag' support
-> - Soft-delete
-> - Resource removal must occur in a specific order
->
-> To account for these cases, a new approach is implemented and will succeed the current solution.
+Most of the removal scripts rely on the deployment name used during the preceding deployment step. Based on this name in combination with the template file path, the removal script find the corresponding deployment and removes all contained resources.
 
 ### Publish
 
