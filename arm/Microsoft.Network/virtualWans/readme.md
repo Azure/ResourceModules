@@ -1,6 +1,6 @@
 # Virtual WANs `[Microsoft.Network/virtualWans]`
 
-This template deploys a Virtual WAN.
+This template deploys a virtual WAN.
 
 ## Resource types
 

@@ -1,6 +1,6 @@
 # Azure Security Center `[Microsoft.Security/azureSecurityCenter]`
 
-This template enables Azure Security Center - Standard tier by default, could be overridden.
+This template enables azure security center - Standard tier by default, could be overridden.
 
 ## Resource types
 
