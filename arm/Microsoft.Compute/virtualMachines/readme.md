@@ -31,37 +31,25 @@ This module deploys one Virtual Machine with one or multiple nics and optionally
 | `bootDiagnosticStorageAccountName` | string |  |  | Optional. Storage account used to store boot diagnostic information. Boot diagnostics will be disabled if no value is provided. |
 | `bootDiagnosticStorageAccountUri` | string | `[format('.blob.{0}/', environment().suffixes.storage)]` |  | Optional. Storage account boot diagnostic base URI. |
 | `certificatesToBeInstalled` | array | `[]` |  | Optional. Specifies set of certificates that should be installed onto the virtual machine. |
-| `cseManagedIdentity` | object | `{object}` |  | Optional. A managed identity to use for the CSE. |
-| `cseStorageAccountKey` | string |  |  | Optional. The storage key of the storage account to access for the CSE script(s). |
-| `cseStorageAccountName` | string |  |  | Optional. The name of the storage account to access for the CSE script(s). |
 | `cuaId` | string |  |  | Optional. Customer Usage Attribution ID (GUID). This GUID must be previously registered |
 | `customData` | string |  |  | Optional. Custom data associated to the VM, this value will be automatically converted into base64 to account for the expected VM format. |
 | `dataDisks` | array | `[]` |  | Optional. Specifies the data disks. |
 | `dedicatedHostId` | string |  |  | Optional. Specifies resource ID about the dedicated host that the virtual machine resides in. |
-| `desiredStateConfigurationProtectedSettings` | secureObject | `{object}` |  | Optional. The DSC configuration Protected Settings Object |
-| `desiredStateConfigurationSettings` | object | `{object}` |  | Optional. The DSC configuration Settings Object |
 | `diagnosticLogsRetentionInDays` | int | `365` |  | Optional. Specifies the number of days that logs will be kept for; a value of 0 will retain data indefinitely. |
 | `diagnosticStorageAccountId` | string |  |  | Optional. Resource ID of the diagnostic storage account. |
-| `diskEncryptionSettings` | object | `{object}` |  | Optional. Settings for Azure Disk Encription extension. |
-| `domainJoinPassword` | secureString |  |  | Optional. Required if domainName is specified. Password of the user specified in domainJoinUser parameter |
-| `domainJoinSettings` | object | `{object}` |  | Optional. The Domain Join configuration object |
-| `enableCustomScriptExtension` | bool |  |  | Optional. Specifies if Custom Script Extension should be enabled. |
-| `enableDesiredStateConfiguration` | bool |  |  | Optional. Specifies if Desired State Configuration Extension should be enabled. |
-| `enableDomainJoinExtension` | bool |  |  | Optional. Specifies if the Domain Join Extension should be enabled. |
 | `enableEvictionPolicy` | bool |  |  | Optional. Specifies the eviction policy for the low priority virtual machine. Will result in 'Deallocate' eviction policy. |
-| `enableLinuxDependencyAgent` | bool |  |  | Optional. Specifies if Azure Dependency Agent for Linux VM should be enabled. Requires LinuxMMAAgent to be enabled. |
-| `enableLinuxDiskEncryption` | bool |  |  | Optional. Specifies if Linux VM disks should be encrypted. If enabled, boot diagnostics must be enabled as well. |
-| `enableLinuxMMAAgent` | bool |  |  | Optional. Specifies if MMA agent for Linux VM should be enabled. |
-| `enableMicrosoftAntiMalware` | bool |  |  | Optional. Enables Microsoft Windows Defender AV. |
-| `enableNetworkWatcherLinux` | bool |  |  | Optional. Specifies if Azure Network Watcher Agent for Linux VM should be enabled. |
-| `enableNetworkWatcherWindows` | bool |  |  | Optional. Specifies if Azure Network Watcher Agent for Windows VM should be enabled. |
 | `enableServerSideEncryption` | bool |  |  | Optional. Specifies if Windows VM disks should be encrypted with Server-side encryption + Customer managed Key. |
-| `enableWindowsDependencyAgent` | bool |  |  | Optional. Specifies if Azure Dependency Agent for Windows VM should be enabled. Requires WindowsMMAAgent to be enabled. |
-| `enableWindowsDiskEncryption` | bool |  |  | Optional. Specifies if Windows VM disks should be encrypted. If enabled, boot diagnostics must be enabled as well. |
-| `enableWindowsMMAAgent` | bool |  |  | Optional. Specifies if MMA agent for Windows VM should be enabled. |
 | `eventHubAuthorizationRuleId` | string |  |  | Optional. Resource ID of the event hub authorization rule for the Event Hubs namespace in which the event hub should be created or streamed to. |
 | `eventHubName` | string |  |  | Optional. Name of the event hub within the namespace to which logs are streamed. Without this, an event hub is created for each log category. |
-| `forceUpdateTag` | string | `1.0` |  | Optional. Pass in an unique value like a GUID everytime the operation needs to be force run |
+| `extensionAntiMalwareConfig` | object | `{object}` |  | Optional. The configuration for the [Anti Malware] extension. Must at least contain the ["enabled": true] property to be executed |
+| `extensionCustomScriptConfig` | object | `{object}` |  | Optional. The configuration for the [Custom Script] extension. Must at least contain the ["enabled": true] property to be executed |
+| `extensionDependencyAgentConfig` | object | `{object}` |  | Optional. The configuration for the [Dependency Agent] extension. Must at least contain the ["enabled": true] property to be executed |
+| `extensionDiskEncryptionConfig` | object | `{object}` |  | Optional. The configuration for the [Disk Encryption] extension. Must at least contain the ["enabled": true] property to be executed |
+| `extensionDomainJoinConfig` | object | `{object}` |  | Optional. The configuration for the [Domain Join] extension. Must at least contain the ["enabled": true] property to be executed |
+| `extensionDomainJoinPassword` | secureString |  |  | Optional. Required if domainName is specified. Password of the user specified in domainJoinUser parameter |
+| `extensionDSCConfig` | object | `{object}` |  | Optional. The configuration for the [Desired State Configuration] extension. Must at least contain the ["enabled": true] property to be executed |
+| `extensionMonitoringAgentConfig` | object | `{object}` |  | Optional. The configuration for the [Monitoring Agent] extension. Must at least contain the ["enabled": true] property to be executed |
+| `extensionNetworkWatcherAgentConfig` | object | `{object}` |  | Optional. The configuration for the [Network Watcher Agent] extension. Must at least contain the ["enabled": true] property to be executed |
 | `imageReference` | object |  |  | Required. OS image reference. In case of marketplace images, it's the combination of the publisher, offer, sku, version attributes. In case of custom images it's the resource ID of the custom image. |
 | `licenseType` | string |  | `[Windows_Client, Windows_Server, ]` | Optional. Specifies that the image or disk that is being used was licensed on-premises. This element is only used for images that contain the Windows Server operating system. |
 | `linuxConfiguration` | object | `{object}` |  | Optional. Specifies the Linux operating system settings on the virtual machine. |
@@ -69,7 +57,6 @@ This module deploys one Virtual Machine with one or multiple nics and optionally
 | `lock` | string | `NotSpecified` | `[CanNotDelete, NotSpecified, ReadOnly]` | Optional. Specify the type of lock. |
 | `managedServiceIdentity` | string | `None` | `[None, SystemAssigned, SystemAssigned, UserAssigned, UserAssigned]` | Optional. The type of identity used for the virtual machine. The type 'SystemAssigned, UserAssigned' includes both an implicitly created identity and a set of user assigned identities. The type 'None' (default) will remove any identities from the virtual machine. |
 | `maxPriceForLowPriorityVm` | string |  |  | Optional. Specifies the maximum price you are willing to pay for a low priority VM/VMSS. This price is in US Dollars. |
-| `microsoftAntiMalwareSettings` | object | `{object}` |  | Optional. Settings for Microsoft Windows Defender AV extension. |
 | `name` | string | `[take(toLower(uniqueString(resourceGroup().name)), 10)]` |  | Optional. The name of the virtual machine to be created. You should use a unique prefix to reduce name collisions in Active Directory. If no value is provided, a 10 character long unique string will be generated based on the Resource Group's name. |
 | `nicConfigurations` | array |  |  | Required. Configures NICs and PIPs. |
 | `nicMetricsToEnable` | array | `[AllMetrics]` | `[AllMetrics]` | Optional. The name of metrics that will be streamed. |
@@ -88,8 +75,6 @@ This module deploys one Virtual Machine with one or multiple nics and optionally
 | `vmPriority` | string | `Regular` | `[Regular, Low, Spot]` | Optional. Specifies the priority for the virtual machine. |
 | `vmSize` | string | `Standard_D2s_v3` |  | Optional. Specifies the size for the VMs |
 | `windowsConfiguration` | object | `{object}` |  | Optional. Specifies Windows operating system settings on the virtual machine. |
-| `windowsScriptExtensionCommandToExecute` | secureString |  |  | Optional. Specifies the command that should be run on a Windows VM. |
-| `windowsScriptExtensionFileData` | array | `[]` |  | Optional. Array of objects that specifies URIs and the storageAccountId of the scripts that need to be downloaded and run by the Custom Script Extension on a Windows VM. |
 | `workspaceId` | string |  |  | Optional. Resource ID of log analytics. |
 
 ### Parameter Usage: `imageReference`

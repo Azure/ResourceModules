@@ -442,7 +442,7 @@ resource vmss 'Microsoft.Compute/virtualMachineScaleSets@2021-04-01' = if (!empt
 }
 
 module vmss_domainJoinExtension 'extensions/deploy.bicep' = if (extensionDomainJoinConfig.enabled) {
-  name: '${uniqueString(deployment().name, location)}-vm-DomainJoin'
+  name: '${uniqueString(deployment().name, location)}-vmss-DomainJoin'
   params: {
     virtualMachineScaleSetName: vmss.name
     name: 'DomainJoin'
