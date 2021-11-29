@@ -3,7 +3,7 @@
 This Function Helps with Testing A Module Locally
 
 .DESCRIPTION
-This Function Aggregates all the different token types (Default and Local) and then passes them to the Convert Tokens Script to replace tokens in a parameter file
+This Function aggregates all the different token types (Default and Local) and then passes them to the Convert Tokens Script to replace tokens in a parameter file
 
 .PARAMETER ParameterFilePath
 Mandatory. The Path to the Parameter File that contains tokens to be replaced.
