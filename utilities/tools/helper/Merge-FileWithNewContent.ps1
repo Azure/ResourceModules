@@ -86,6 +86,9 @@ Mandatory. The new content to merge into the original
 .PARAMETER SectionStartIdentifier
 Mandatory. The identifier/header to search for. If not found, the new section is added at the end of the content array
 
+.PARAMETER ParentStartIdentifier
+Optional. Tell the function that you're currently processing a sub-section (indented by one #) by providing the parent identifier
+
 .EXAMPLE
 Merge-FileWithNewContent -OldContent @('# Title', '', '## Section 1', ...) -NewContent @('# Title', '', '## Section 1', ...) -SectionStartIdentifier '## Resource Types'
 
