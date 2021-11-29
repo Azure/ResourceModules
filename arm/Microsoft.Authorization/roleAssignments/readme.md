@@ -19,7 +19,7 @@ This module deploys Role Assignments.
 | `roleDefinitionIdOrName` | string |  |  | Required. You can provide either the display name of the role definition, or it's fully qualified ID in the following format: '/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11' |
 | `subscriptionId` | string |  |  | Optional. Subscription ID of the subscription to assign the RBAC role to. If no Resource Group name is provided, the module deploys at subscription level, therefore assigns the provided RBAC role to the subscription. |
 | `description` | string |  |  | Optional. Description of role assignment. |
-| `delegatedManagedIdentityResourceId` | string |  |  | Optional. Id of the delegated managed identity resource |
+| `delegatedManagedIdentityResourceId` | string |  |  | Optional. ID of the delegated managed identity resource |
 | `condition` | string |  | e.g. `@Resource[Microsoft.Storage/storageAccounts/blobServices/containers:ContainerName] StringEqualsIgnoreCase 'foo_storage_container'` | Optional. The conditions on the role assignment. This limits the resources it can be assigned to. |
 | `conditionVersion` | string | `2.0` | `2.0` | Optional. Version of the condition. Currently accepted value is "2.0". |
 | `principalType` | string | `ServicePrincipal` | `User`,`ForeignGroup`,`Group`,`ServicePrincipal`,`Device` | Optional. The principal type of the assigned principal ID. |
