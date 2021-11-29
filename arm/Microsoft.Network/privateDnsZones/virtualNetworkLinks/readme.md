@@ -18,7 +18,7 @@ This module deploys private dns zone virtual network links.
 | `privateDnsZoneName` | string |  |  | Required. Private DNS zone name. |
 | `registrationEnabled` | bool |  |  | Optional. Is auto-registration of virtual machine records in the virtual network in the Private DNS zone enabled? |
 | `tags` | object | `{object}` |  | Optional. Tags of the resource. |
-| `virtualNetworkResourceId` | string |  |  | Required. Link to another virtual network ID. |
+| `virtualNetworkResourceId` | string |  |  | Required. Link to another virtual network resource ID. |
 
 ### Parameter Usage: `tags`
 
