@@ -1,5 +1,5 @@
 @description('Required. The name of the proximity placement group that is being created.')
-param proximityPlacementGroupName string = ''
+param name string = ''
 
 @description('Optional. Specifies the type of the proximity placement group.')
 @allowed([
@@ -34,7 +34,7 @@ module pid_cuaId '.bicep/nested_cuaId.bicep' = if (!empty(cuaId)) {
 }
 
 resource proximityPlacementGroup 'Microsoft.Compute/proximityPlacementGroups@2021-04-01' = {
-  name: proximityPlacementGroupName
+  name: name
   location: location
   tags: tags
   properties: {
