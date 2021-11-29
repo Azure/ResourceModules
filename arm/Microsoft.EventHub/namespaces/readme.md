@@ -1,6 +1,6 @@
-# EventHub Namespace `[Microsoft.EventHub/namespaces]`
+# EventHub Namespaces `[Microsoft.EventHub/namespaces]`
 
-This module deploys an EventHub namespace
+This module deploys an EventHub namespace.
 
 ## Resource Types
 
