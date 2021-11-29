@@ -121,7 +121,6 @@ var diagnosticsMetrics = [for metric in metricsToEnable: {
 var maxNameLength = 50
 var uniqueServiceBusNamespaceNameUntrim = uniqueString('Service Bus Namespace${baseTime}')
 var uniqueServiceBusNamespaceName = ((length(uniqueServiceBusNamespaceNameUntrim) > maxNameLength) ? substring(uniqueServiceBusNamespaceNameUntrim, 0, maxNameLength) : uniqueServiceBusNamespaceNameUntrim)
-var serviceBusNamespaceName_var = (empty(name) ? uniqueServiceBusNamespaceName : name)
 
 module pid_cuaId '.bicep/nested_cuaId.bicep' = if (!empty(cuaId)) {
   name: 'pid-${cuaId}'
@@ -129,7 +128,7 @@ module pid_cuaId '.bicep/nested_cuaId.bicep' = if (!empty(cuaId)) {
 }
 
 resource serviceBusNamespace 'Microsoft.ServiceBus/namespaces@2021-06-01-preview' = {
-  name: serviceBusNamespaceName_var
+  name: !empty(name) ? name : uniqueServiceBusNamespaceName
   location: location
   tags: empty(tags) ? null : tags
   sku: {
@@ -146,7 +145,7 @@ module serviceBusNamespace_disasterRecoveryConfig 'disasterRecoveryConfigs/deplo
     namespaceName: serviceBusNamespace.name
     name: contains(disasterRecoveryConfigs, 'name') ? disasterRecoveryConfigs.name : 'default'
     alternateName: contains(disasterRecoveryConfigs, 'alternateName') ? disasterRecoveryConfigs.alternateName : ''
-    partnerNamespace: contains(disasterRecoveryConfigs, 'partnerNamespace') ? disasterRecoveryConfigs.partnerNamespace : ''
+    partnerNamespaceResourceID: contains(disasterRecoveryConfigs, 'partnerNamespace') ? disasterRecoveryConfigs.partnerNamespace : ''
   }
 }
 
@@ -156,7 +155,7 @@ module serviceBusNamespace_migrationConfigurations 'migrationConfigurations/depl
     namespaceName: serviceBusNamespace.name
     name: contains(migrationConfigurations, 'name') ? migrationConfigurations.name : '$default'
     postMigrationName: migrationConfigurations.postMigrationName
-    targetNamespace: migrationConfigurations.targetNamespace
+    targetNamespaceResourceId: migrationConfigurations.targetNamespace
   }
 }
 
@@ -272,4 +271,4 @@ output serviceBusNamespaceResourceGroup string = resourceGroup().name
 output serviceBusNamespaceName string = serviceBusNamespace.name
 
 @description('The connection string of the deployed service bus namespace')
-output serviceBusConnectionString string = 'Endpoint=sb://${serviceBusNamespaceName_var}.servicebus.windows.net/;SharedAccessKeyName=${listkeys(resourceId('Microsoft.ServiceBus/namespaces/authorizationRules', serviceBusNamespaceName_var, 'RootManageSharedAccessKey'), '2017-04-01').primaryKey}'
+output serviceBusConnectionString string = 'Endpoint=sb://${serviceBusNamespace.name}.servicebus.windows.net/;SharedAccessKeyName=${listkeys(resourceId('Microsoft.ServiceBus/namespaces/authorizationRules', serviceBusNamespace.name, 'RootManageSharedAccessKey'), '2017-04-01').primaryKey}'

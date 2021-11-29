@@ -7,8 +7,8 @@ This Function Helps with Testing A Module Locally
 This Function Helps with Testing A Module Locally. Use this Function To perform Pester Testing for a Module and then attempting to deploy it. It Also allows you to use your own
 subscription Id, Principal Id, tenant ID and other parameters that need to be tokenized.
 
-.PARAMETER ModuleName
-Mandatory. A String for the name of The module to test. (i.e. 'Microsoft.Authorization/policyExemptions')
+.PARAMETER templateFilePath
+Mandatory. Path to the Bicep/ARM module that is being tested
 
 .PARAMETER PesterTest
 Optional. A Switch Parameter that triggers a Pester Test for the Module
@@ -23,21 +23,18 @@ Optional. A Switch Parameter that triggers the Deployment of the Module
 Optional. A Switch Parameter that triggers the Validation of the Module Only without Deployment
 
 .PARAMETER DeployAllModuleParameterFiles
-Optional. A Switch Parameter that triggers that enables directory based search for parameter files and deploys all of them. If not provided, it will only deploy the 'parameters.json' file
+Optional. A Boolean Parameter that enables directory based search for parameter files and deploys all of them. If not true, it will only deploy the 'parameters.json' file. Default is false.
 
 .PARAMETER GetParameterFileTokens
-Optional. A Switch Parameter that triggers that enables the search for both local custom parameter file tokens (source control) and remote custom parameter file tokens (key vault -if TokenKeyVaultName parameter is provided)
+Optional. A Boolean Parameter that enables the search for local custom parameter file tokens. Default is true.
 
-.PARAMETER TokenKeyVaultName
-Optional. String Parameter that points to the Key Vault Name where remote custom parameter file tokens are created. If not provided then GetParameterFileTokens will only search for local custom parameter file tokens.
-
-.PARAMETER OtherCustomParameterFileTokens
+.PARAMETER AdditionalTokens
 Optional. A Hashtable Parameter that contains custom tokens to be replaced in the paramter files for deployment
 
 .EXAMPLE
 
 $TestModuleLocallyInput = @{
-    ModuleName                    = 'Microsoft.Network\applicationSecurityGroups'
+    templateFilePath                    = 'Microsoft.Network\applicationSecurityGroups'
     PesterTest                    = $true
     DeploymentTest                = $true
     ValidationTest                = $false
@@ -46,12 +43,31 @@ $TestModuleLocallyInput = @{
         ResourceGroupName = 'validation-rg'
         SubscriptionId    = '12345678-1234-1234-1234-123456789123'
         ManagementGroupId = 'mg-contoso'
-        RemoveDeployment  = $false
     }
-    DeployAllModuleParameterFiles = $false
+    AdditionalTokens      = @(
+        @{ Name = 'deploymentSpId'; Value = '12345678-1234-1234-1234-123456789123' }
+        @{ Name = 'tenantId'; Value = '12345678-1234-1234-1234-123456789123' }
+    )
+}
+
+Test-ModuleLocally @TestModuleLocallyInput -Verbose
+
+.EXAMPLE
+
+$TestModuleLocallyInput = @{
+    templateFilePath                    = 'Microsoft.Network\applicationSecurityGroups'
+    PesterTest                    = $true
+    DeploymentTest                = $true
+    ValidationTest                = $false
+    ValidateOrDeployParameters    = @{
+        Location          = 'australiaeast'
+        ResourceGroupName = 'validation-rg'
+        SubscriptionId    = '12345678-1234-1234-1234-123456789123'
+        ManagementGroupId = 'mg-contoso'
+    }
+    DeployAllModuleParameterFiles = $true
     GetParameterFileTokens        = $true
-    #TokenKeyVaultName             = 'contoso-platform-kv'
-    OtherCustomParameterFileTokens      = @(
+    AdditionalTokens      = @(
         @{ Name = 'deploymentSpId'; Value = '12345678-1234-1234-1234-123456789123' }
         @{ Name = 'tenantId'; Value = '12345678-1234-1234-1234-123456789123' }
     )
@@ -62,7 +78,6 @@ Test-ModuleLocally @TestModuleLocallyInput -Verbose
 .NOTES
 - Make sure you provide the right information in the 'ValidateOrDeployParameters' parameter for this function to work.
 - Ensure you have the ability to perform the deployment operations using your account
-- If providing TokenKeyVaultName parameter, ensure you have read access to secrets in the key vault to be able to retrieve the tokens.
 
 #>
 function Test-ModuleLocally {
@@ -84,16 +99,13 @@ function Test-ModuleLocally {
         [switch]$ValidationTest,
 
         [parameter(Mandatory = $false)]
-        [switch]$DeployAllModuleParameterFiles,
+        [bool]$DeployAllModuleParameterFiles = $false,
 
         [parameter(Mandatory = $false)]
-        [switch]$GetParameterFileTokens,
+        [bool]$GetParameterFileTokens = $true,
 
         [parameter(Mandatory = $false)]
-        [string]$TokenKeyVaultName,
-
-        [parameter(Mandatory = $false)]
-        [psobject]$OtherCustomParameterFileTokens
+        [psobject]$AdditionalTokens
     )
 
     begin {
@@ -147,33 +159,21 @@ function Test-ModuleLocally {
             if ($GetParameterFileTokens) {
                 # Get Settings JSON File
                 $Settings = Get-Content -Path (Join-Path $PSScriptRoot '../..' 'settings.json') | ConvertFrom-Json
-                # Get Custom Parameter File Tokens (Local and Remote-If Key Vault Provided)
+                # Get Custom Parameter File Tokens (Local)
                 $ConvertTokensInputs = @{
                     DefaultParameterFileTokens     = $DefaultParameterFileTokens
                     LocalCustomParameterFileTokens = $Settings.parameterFileTokens.localTokens.tokens
                     TokenPrefix                    = $Settings.parameterFileTokens.tokenPrefix
                     TokenSuffix                    = $Settings.parameterFileTokens.tokenSuffix
                 }
-                # Query Key Vault for Remote Tokens
-                if ($TokenKeyVaultName -and "$($ValidateOrDeployParameters.SubscriptionId)") {
-                    $ConvertTokensInputs += @{
-                        TokensKeyVaultName           = $TokenKeyVaultName
-                        TokensKeyVaultSubscriptionId = "$($ValidateOrDeployParameters.SubscriptionId)"
-                    }
-                    if ($Settings.parameterFileTokens.remoteTokens.keyVaultSecretNamePrefix) {
-                        $ConvertTokensInputs += @{ TokensKeyVaultSecretNamePrefix = $Settings.parameterFileTokens.remoteTokens.keyVaultSecretNamePrefix
-                        }
-                    }
-                }
                 #Add Other Parameter File Tokens (For Testing)
-                if ($OtherCustomParameterFileTokens) {
-                    $ConvertTokensInputs += @{ OtherCustomParameterFileTokens = $OtherCustomParameterFileTokens
+                if ($AdditionalTokens) {
+                    $ConvertTokensInputs += @{ OtherCustomParameterFileTokens = $AdditionalTokens
                     }
                 }
             }
             # Invoke Token Replacement Functionality and Convert Tokens in Parameter Files
-            Write-Verbose 'Invoking Convert-TokensInFileList'
-            $ModuleParameterFiles | ForEach-Object { Convert-TokensInParameterFile @ConvertTokensInputs -ParameterFilePath $PSItem.FullName }
+            $ModuleParameterFiles | ForEach-Object { $null = Convert-TokensInParameterFile @ConvertTokensInputs -ParameterFilePath $PSItem.FullName }
             # Build Modules Validation and Deployment Inputs
             $functionInput = @{
                 templateFilePath  = $templateFilePath
@@ -207,10 +207,9 @@ function Test-ModuleLocally {
             } catch {
                 Write-Error $PSItem.Exception
                 # Replace Values with Tokens For Repo Updates and Set Restore Flag to True to Prevent Running Restore Twice
-                # Replace Values with Tokens For Repo Updates and Set Restore Flag to True to Prevent Running Restore Twice
                 $RestoreAlreadyTriggered = $true
                 Write-Verbose 'Restoring Tokens'
-                $ModuleParameterFiles | ForEach-Object { Convert-TokensInParameterFile @ConvertTokensInputs -ParameterFilePath $PSItem.FullName -RestoreTokens $true }
+                $ModuleParameterFiles | ForEach-Object { $null = Convert-TokensInParameterFile @ConvertTokensInputs -ParameterFilePath $PSItem.FullName -SwapValueWithName $true }
             }
         }
     }
@@ -219,7 +218,7 @@ function Test-ModuleLocally {
         if (($ValidationTest -or $DeploymentTest) -and $ValidateOrDeployParameters -and !($RestoreAlreadyTriggered)) {
             # Replace Values with Tokens For Repo Updates
             Write-Verbose 'Restoring Tokens'
-            $ModuleParameterFiles | ForEach-Object { Convert-TokensInParameterFile @ConvertTokensInputs -ParameterFilePath $PSItem.FullName -RestoreTokens $true }
+            $ModuleParameterFiles | ForEach-Object { $null = Convert-TokensInParameterFile @ConvertTokensInputs -ParameterFilePath $PSItem.FullName -SwapValueWithName $true }
         }
     }
 }
