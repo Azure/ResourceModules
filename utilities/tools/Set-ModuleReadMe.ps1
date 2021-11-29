@@ -185,7 +185,7 @@ function Set-ParametersSection {
     }
 
     # Build sub-section 'ParameterUsage'
-    if (Test-Path $PSScriptRoot 'moduleReadMeSource') {
+    if (Test-Path (Join-Path $PSScriptRoot 'moduleReadMeSource')) {
         if ($resourceUsageSourceFiles = Get-ChildItem (Join-Path $PSScriptRoot 'moduleReadMeSource') -Recurse -Filter 'resourceUsage-*') {
             foreach ($sourceFile in $resourceUsageSourceFiles.FullName) {
                 $parameterName = (Split-Path $sourceFile -LeafBase).Replace('resourceUsage-', '')
