@@ -9,15 +9,17 @@ param privateLinkScopeName string
 @description('Required. The resource ID of the scoped Azure monitor resource.')
 param linkedResourceId string
 
+resource privateLinkScope 'microsoft.insights/privateLinkScopes@2021-07-01-preview' existing = {
+  name: privateLinkScopeName
+}
+
 resource scopedResource 'Microsoft.Insights/privateLinkScopes/scopedResources@2021-07-01-preview' = {
-  name: '${privateLinkScopeName}/${name}'
+  name: name
+  parent: privateLinkScope
   properties: {
     linkedResourceId: linkedResourceId
   }
 }
-
-@description('The resource ID of the parent private link scope')
-output privateLinkScopeResourceId string = resourceId('Microsoft.Insights/privateLinkScopes', privateLinkScopeName)
 
 @description('The name of the resource group where the resource has been deployed')
 output scopedResourceResourceGroup string = resourceGroup().name
