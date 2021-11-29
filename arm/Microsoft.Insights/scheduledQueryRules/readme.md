@@ -1,6 +1,6 @@
 # Scheduled Query Rules `[Microsoft.Insights/scheduledQueryRules]`
 
-This module deploys an Alert based on metrics
+This module deploys a scheduled query rule.
 
 ## Resource types
 

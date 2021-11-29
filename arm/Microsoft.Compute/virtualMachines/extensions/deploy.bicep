@@ -43,8 +43,13 @@ module pid_cuaId '.bicep/nested_cuaId.bicep' = if (!empty(cuaId)) {
   params: {}
 }
 
+resource virtualMachine 'Microsoft.Compute/virtualMachines@2021-07-01' existing = {
+  name: virtualMachineName
+}
+
 resource extension 'Microsoft.Compute/virtualMachines/extensions@2021-07-01' = {
-  name: '${virtualMachineName}/${name}'
+  name: name
+  parent: virtualMachine
   location: location
   properties: {
     publisher: publisher

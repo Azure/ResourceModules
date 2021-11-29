@@ -1,5 +1,5 @@
 @description('Required. The name of the availability set that is being created.')
-param availabilitySetName string
+param name string
 
 @description('Optional. The number of fault domains to use.')
 param availabilitySetFaultDomain int = 2
@@ -39,7 +39,7 @@ module pid_cuaId '.bicep/nested_cuaId.bicep' = if (!empty(cuaId)) {
 }
 
 resource availabilitySet 'Microsoft.Compute/availabilitySets@2021-04-01' = {
-  name: availabilitySetName
+  name: name
   location: location
   tags: tags
   properties: {
@@ -75,5 +75,6 @@ output availabilitySetResourceName string = availabilitySet.name
 
 @description('The resource ID of the availability set')
 output availabilitySetResourceId string = availabilitySet.id
+
 @description('The name of the availability set')
 output availabilitySetResourceGroup string = resourceGroup().name

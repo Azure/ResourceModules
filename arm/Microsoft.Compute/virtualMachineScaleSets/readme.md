@@ -1,6 +1,6 @@
 # Virtual Machine Scale Sets `[Microsoft.Compute/virtualMachineScaleSets]`
 
-This module deploys a virtual machine scale set
+This module deploys a virtual machine scale set.
 
 ## Resource types
 
@@ -72,7 +72,7 @@ The following resources are required to be able to deploy this resource.
 | `instanceCount` | int | `1` |  | Optional. The initial instance count of scale set VMs. |
 | `instanceSize` | string |  |  | Optional. The SKU size of the VMs. |
 | `keyEncryptionKeyURL` | string |  |  | Optional. URL of the KeyEncryptionKey used to encrypt the volume encryption key |
-| `keyVaultId` | string |  |  | Optional. Resource identifier of the Key Vault instance where the Key Encryption Key (KEK) resides |
+| `keyVaultId` | string |  |  | Optional. Resource ID of the Key Vault instance where the Key Encryption Key (KEK) resides |
 | `keyVaultUri` | string |  |  | Optional. URL of the Key Vault instance where the Key Encryption Key (KEK) resides |
 | `licenseType` | string |  | `[Windows_Client, Windows_Server, ]` | Optional. Specifies that the image or disk that is being used was licensed on-premises. This element is only used for images that contain the Windows Server operating system. |
 | `location` | string | `[resourceGroup().location]` |  | Optional. Location for all resources. |
@@ -104,7 +104,7 @@ The following resources are required to be able to deploy this resource.
 | `secrets` | array | `[]` |  | Optional. Specifies set of certificates that should be installed onto the virtual machines in the scale set. |
 | `singlePlacementGroup` | bool | `True` |  | Optional. When true this limits the scale set to a single placement group, of max size 100 virtual machines. NOTE: If singlePlacementGroup is true, it may be modified to false. However, if singlePlacementGroup is false, it may not be modified to true. |
 | `tags` | object | `{object}` |  | Optional. Tags of the resource. |
-| `timeZone` | string |  |  | Optional. Specifies the time zone of the virtual machine. e.g. 'Pacific Standard Time'. Possible values can be TimeZoneInfo.ID value from time zones returned by TimeZoneInfo.GetSystemTimeZones. |
+| `timeZone` | string |  |  | Optional. Specifies the time zone of the virtual machine. e.g. 'Pacific Standard Time'. Possible values can be TimeZoneInfo.id value from time zones returned by TimeZoneInfo.GetSystemTimeZones. |
 | `ultraSSDEnabled` | bool |  |  | Optional. The flag that enables or disables a capability to have one or more managed data disks with UltraSSD_LRS storage account type on the VM or VMSS. Managed disks with storage account type UltraSSD_LRS can be added to a virtual machine or virtual machine scale set only if this property is enabled. |
 | `upgradePolicyMode` | string | `Manual` | `[Manual, Automatic, Rolling]` | Optional. Specifies the mode of an upgrade to virtual machines in the scale set.' Manual - You control the application of updates to virtual machines in the scale set. You do this by using the manualUpgrade action. ; Automatic - All virtual machines in the scale set are automatically updated at the same time. - Automatic, Manual, Rolling |
 | `vmNamePrefix` | string | `vmssvm` |  | Optional. Specifies the computer name prefix for all of the virtual machines in the scale set. |

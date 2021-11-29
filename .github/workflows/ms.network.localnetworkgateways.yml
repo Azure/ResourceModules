@@ -1,4 +1,4 @@
-name: 'Network: Localnetworkgateways'
+name: 'Network: LocalNetworkGateways'
 
 on:
   workflow_dispatch:
@@ -38,7 +38,6 @@ env:
   ARM_MGMTGROUP_ID: '${{ secrets.ARM_MGMTGROUP_ID }}'
   ARM_TENANT_ID: '${{ secrets.ARM_TENANT_ID }}'
   DEPLOYMENT_SP_ID: '${{ secrets.DEPLOYMENT_SP_ID }}'
-  PLATFORM_KEYVAULT: '${{ secrets.PLATFORM_KEYVAULT }}'
 
 jobs:
   ############################

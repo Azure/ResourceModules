@@ -122,7 +122,6 @@ var azureFilesIdentityBasedAuthentication_var = azureFilesIdentityBasedAuthentic
 var maxNameLength = 24
 var uniqueStoragenameUntrim = '${uniqueString('Storage Account${basetime}')}'
 var uniqueStoragename = length(uniqueStoragenameUntrim) > maxNameLength ? substring(uniqueStoragenameUntrim, 0, maxNameLength) : uniqueStoragenameUntrim
-var storageAccountName_var = empty(name) ? uniqueStoragename : name
 
 var saBaseProperties = {
   encryption: {
@@ -150,7 +149,7 @@ module pid_cuaId '.bicep/nested_cuaId.bicep' = if (!empty(cuaId)) {
 }
 
 resource storageAccount 'Microsoft.Storage/storageAccounts@2021-06-01' = {
-  name: storageAccountName_var
+  name: !empty(name) ? name : uniqueStoragename
   location: location
   kind: storageAccountKind
   sku: {

@@ -1,4 +1,4 @@
-# PolicyDefinition `[Microsoft.Authorization/policyDefinitions]`
+# Policy Definitions `[Microsoft.Authorization/policyDefinitions]`
 
 ## Resource types
 

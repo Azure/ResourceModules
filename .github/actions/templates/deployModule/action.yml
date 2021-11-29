@@ -58,7 +58,6 @@ runs:
             @{ Name = 'managementGroupId'; Value = '${{ inputs.managementGroupId }}' }
             @{ Name = "tenantId"; Value = '${{ env.ARM_TENANT_ID }}' }
             @{ Name = "deploymentSpId"; Value = '${{ env.DEPLOYMENT_SP_ID }}' }
-            @{ Name = "platformKeyVault"; Value = '${{ env.PLATFORM_KEYVAULT }}' }
         ) | ForEach-Object { [PSCustomObject]$PSItem }
 
         # Construct Token Function Input
@@ -68,14 +67,6 @@ runs:
             LocalCustomParameterFileTokens    = $Settings.parameterFileTokens.localTokens.tokens
             TokenPrefix                       = $Settings.parameterFileTokens.tokenPrefix
             TokenSuffix                       = $Settings.parameterFileTokens.tokenSuffix
-        }
-        # Add Remote Custom Parameter File Tokens
-        if ('${{ env.PLATFORM_KEYVAULT }}' -and '${{ inputs.subscriptionId }}') {
-            $ConvertTokensInputs += @{
-                TokensKeyVaultName                 = '${{ env.PLATFORM_KEYVAULT }}'
-                TokensKeyVaultSubscriptionId       = '${{ inputs.subscriptionId }}'
-                TokensKeyVaultSecretNamePrefix     = $Settings.parameterFileTokens.remoteTokens.keyVaultSecretNamePrefix
-            }
         }
         # Invoke Token Replacement Functionality
         $null = Convert-TokensInParameterFile @ConvertTokensInputs -Verbose

@@ -118,7 +118,7 @@ param keyEncryptionKeyURL string = ''
 @description('Optional. URL of the Key Vault instance where the Key Encryption Key (KEK) resides')
 param keyVaultUri string = ''
 
-@description('Optional. Resource identifier of the Key Vault instance where the Key Encryption Key (KEK) resides')
+@description('Optional. Resource ID of the Key Vault instance where the Key Encryption Key (KEK) resides')
 param keyVaultId string = ''
 
 @description('Optional. Type of the volume OS or Data to perform encryption operation')
@@ -187,7 +187,7 @@ param diagnosticLogsRetentionInDays int = 365
 @description('Optional. Resource ID of the diagnostic storage account.')
 param diagnosticStorageAccountId string = ''
 
-@description('Optional. Resource identifier of log analytics.')
+@description('Optional. Resource ID of log analytics.')
 param workspaceId string = ''
 
 @description('Optional. Resource ID of the event hub authorization rule for the Event Hubs namespace in which the event hub should be created or streamed to.')
