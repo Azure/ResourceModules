@@ -1,6 +1,6 @@
 targetScope = 'managementGroup'
 
-@sys.description('Required. Specifies the name of the policy Set Definition (Initiative). Space characters will be replaced by (-) and converted to lowercase')
+@sys.description('Required. Specifies the name of the policy Set Definition (Initiative).')
 @maxLength(64)
 param name string
 
@@ -31,19 +31,17 @@ param parameters object = {}
 @sys.description('Optional. Location for all resources.')
 param location string = deployment().location
 
-var name_var = replace(name, ' ', '-')
-
 module policySetDefinition_mg '.bicep/nested_policySetDefinition_mg.bicep' = if (empty(subscriptionId) && !empty(managementGroupId)) {
   name: '${uniqueString(deployment().name, location)}-policySetDefinition-mg-Module'
   scope: managementGroup(managementGroupId)
   params: {
-    name: name_var
-    displayName: empty(displayName) ? '' : displayName
-    description: empty(description) ? '' : description
-    metadata: empty(metadata) ? {} : metadata
-    parameters: empty(parameters) ? {} : parameters
+    name: name
+    displayName: !empty(displayName) ? displayName : ''
+    description: !empty(description) ? description : ''
+    metadata: !empty(metadata) ? metadata : {}
+    parameters: !empty(parameters) ? parameters : {}
     policyDefinitions: policyDefinitions
-    policyDefinitionGroups: empty(policyDefinitionGroups) ? [] : policyDefinitionGroups
+    policyDefinitionGroups: !empty(policyDefinitionGroups) ? policyDefinitionGroups : []
     managementGroupId: managementGroupId
   }
 }
@@ -52,13 +50,13 @@ module policySetDefinition_sub '.bicep/nested_policySetDefinition_sub.bicep' = i
   name: '${uniqueString(deployment().name, location)}-policySetDefinition-sub-Module'
   scope: subscription(subscriptionId)
   params: {
-    name: name_var
-    displayName: empty(displayName) ? '' : displayName
-    description: empty(description) ? '' : description
-    metadata: empty(metadata) ? {} : metadata
-    parameters: empty(parameters) ? {} : parameters
+    name: name
+    displayName: !empty(displayName) ? displayName : ''
+    description: !empty(description) ? description : ''
+    metadata: !empty(metadata) ? metadata : {}
+    parameters: !empty(parameters) ? parameters : {}
     policyDefinitions: policyDefinitions
-    policyDefinitionGroups: empty(policyDefinitionGroups) ? [] : policyDefinitionGroups
+    policyDefinitionGroups: !empty(policyDefinitionGroups) ? policyDefinitionGroups : []
     subscriptionId: subscriptionId
   }
 }
@@ -66,5 +64,5 @@ module policySetDefinition_sub '.bicep/nested_policySetDefinition_sub.bicep' = i
 @sys.description('Policy Set Definition Name')
 output policySetDefinitionName string = !empty(managementGroupId) ? policySetDefinition_mg.outputs.policySetDefinitionName : policySetDefinition_sub.outputs.policySetDefinitionName
 
-@sys.description('Policy Set Definition Resource ID')
+@sys.description('Policy Set Definition resource ID')
 output policySetDefinitionResourceId string = !empty(managementGroupId) ? policySetDefinition_mg.outputs.policySetDefinitionResourceId : policySetDefinition_sub.outputs.policySetDefinitionResourceId

@@ -1,6 +1,6 @@
 targetScope = 'subscription'
 
-@sys.description('Required. Specifies the name of the policy Set Definition (Initiative). Space characters will be replaced by (-) and converted to lowercase')
+@sys.description('Required. Specifies the name of the policy Set Definition (Initiative).')
 @maxLength(64)
 param name string
 
@@ -25,23 +25,21 @@ param policyDefinitionGroups array = []
 @sys.description('Optional. The Set Definition (Initiative) parameters that can be used in policy definition references.')
 param parameters object = {}
 
-var name_var = replace(name, ' ', '-')
-
 resource policySetDefinition 'Microsoft.Authorization/policySetDefinitions@2021-06-01' = {
-  name: name_var
+  name: name
   properties: {
     policyType: 'Custom'
-    displayName: empty(displayName) ? null : displayName
-    description: empty(description) ? null : description
-    metadata: empty(metadata) ? null : metadata
-    parameters: empty(parameters) ? null : parameters
+    displayName: !empty(displayName) ? displayName : null
+    description: !empty(description) ? description : null
+    metadata: !empty(metadata) ? metadata : null
+    parameters: !empty(parameters) ? parameters : null
     policyDefinitions: policyDefinitions
-    policyDefinitionGroups: empty(policyDefinitionGroups) ? [] : policyDefinitionGroups
+    policyDefinitionGroups: !empty(policyDefinitionGroups) ? policyDefinitionGroups : []
   }
 }
 
 @sys.description('Policy Set Definition Name')
 output policySetDefinitionName string = policySetDefinition.name
 
-@sys.description('Policy Set Definition Resource ID')
+@sys.description('Policy Set Definition resource ID')
 output policySetDefinitionResourceId string = subscriptionResourceId(subscriptionId, 'Microsoft.Authorization/policySetDefinitions', policySetDefinition.name)
