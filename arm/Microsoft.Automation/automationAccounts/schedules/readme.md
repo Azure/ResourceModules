@@ -12,8 +12,8 @@ This module deploys an Azure Automation Account Schedule.
 
 | Parameter Name | Type | Default Value | Possible Values | Description |
 | :-- | :-- | :-- | :-- | :-- |
-| `automationAccountName` | string |  |  | Required. Name of the parent Automation Account. |
 | `advancedSchedule` | object | `{object}` |  | Optional. The properties of the create Advanced Schedule. |
+| `automationAccountName` | string |  |  | Required. Name of the parent Automation Account. |
 | `baseTime` | string | `[utcNow('u')]` |  | Optional. Time used as a basis for e.g. the schedule start date. |
 | `cuaId` | string |  |  | Optional. Customer Usage Attribution ID (GUID). This GUID must be previously registered. |
 | `expiryTime` | string |  |  | Optional. The end time of the schedule. |
@@ -30,7 +30,7 @@ This module deploys an Azure Automation Account Schedule.
 | :-- | :-- | :-- |
 | `scheduleName` | string | The name of the deployed schedule |
 | `scheduleResourceGroup` | string | The resource group of the deployed schedule |
-| `scheduleResourceId` | string | The ID of the deployed schedule |
+| `scheduleResourceId` | string | The resource ID of the deployed schedule |
 
 ## Template references
 

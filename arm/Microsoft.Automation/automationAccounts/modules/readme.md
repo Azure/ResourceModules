@@ -26,7 +26,7 @@ This module deploys an Azure Automation Account Module.
 | :-- | :-- | :-- |
 | `moduleName` | string | The name of the deployed module |
 | `moduleResourceGroup` | string | The resource group of the deployed module |
-| `moduleResourceId` | string | The ID of the deployed module |
+| `moduleResourceId` | string | The resource ID of the deployed module |
 
 ## Template references
 

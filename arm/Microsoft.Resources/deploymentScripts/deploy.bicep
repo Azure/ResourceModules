@@ -1,5 +1,5 @@
 @description('Required. Display name of the script to be run.')
-param scriptName string
+param name string
 
 @description('Required. Name of the User Assigned Identity to be used to deploy Image Templates in Azure Image Builder.')
 param userMsiName string
@@ -35,7 +35,7 @@ param environmentVariables array = []
 @description('Optional. List of supporting files for the external script (defined in primaryScriptUri). Does not work with internal scripts (code defined in scriptContent).')
 param supportingScriptUris array = []
 
-@description('Optional. Command line arguments to pass to the script. Arguments are separated by spaces.')
+@description('Optional. Command-line arguments to pass to the script. Arguments are separated by spaces.')
 param arguments string = ''
 
 @description('Optional. Interval for which the service retains the script resource after it reaches a terminal state. Resource will be deleted when this duration expires. Duration is based on ISO 8601 pattern (for example P7D means one week).')
@@ -72,7 +72,7 @@ param lock string = 'NotSpecified'
 @description('Optional. Tags of the resource.')
 param tags object = {}
 
-@description('Optional. Customer Usage Attribution id (GUID). This GUID must be previously registered')
+@description('Optional. Customer Usage Attribution ID (GUID). This GUID must be previously registered')
 param cuaId string = ''
 
 var containerSettings = {
@@ -84,8 +84,8 @@ module pid_cuaId '.bicep/nested_cuaId.bicep' = if (!empty(cuaId)) {
   params: {}
 }
 
-resource dpeloymentScript 'Microsoft.Resources/deploymentScripts@2020-10-01' = {
-  name: scriptName
+resource deploymentScript 'Microsoft.Resources/deploymentScripts@2020-10-01' = {
+  name: name
   location: location
   tags: tags
   identity: {
@@ -96,30 +96,35 @@ resource dpeloymentScript 'Microsoft.Resources/deploymentScripts@2020-10-01' = {
   }
   kind: 'AzurePowerShell'
   properties: {
-    azPowerShellVersion: ((kind == 'AzurePowerShell') ? azPowerShellVersion : null)
-    azCliVersion: ((kind == 'AzureCLI') ? azCliVersion : null)
-    containerSettings: (empty(containerGroupName) ? null : containerSettings)
+    azPowerShellVersion: kind == 'AzurePowerShell' ? azPowerShellVersion : null
+    azCliVersion: kind == 'AzureCLI' ? azCliVersion : null
+    containerSettings: empty(containerGroupName) ? null : containerSettings
     arguments: arguments
-    environmentVariables: (empty(environmentVariables) ? null : environmentVariables)
-    scriptContent: (empty(scriptContent) ? null : scriptContent)
-    primaryScriptUri: (empty(primaryScriptUri) ? null : primaryScriptUri)
-    supportingScriptUris: (empty(supportingScriptUris) ? null : supportingScriptUris)
+    environmentVariables: empty(environmentVariables) ? null : environmentVariables
+    scriptContent: empty(scriptContent) ? null : scriptContent
+    primaryScriptUri: empty(primaryScriptUri) ? null : primaryScriptUri
+    supportingScriptUris: empty(supportingScriptUris) ? null : supportingScriptUris
     cleanupPreference: cleanupPreference
-    forceUpdateTag: (runOnce ? resourceGroup().name : baseTime)
+    forceUpdateTag: runOnce ? resourceGroup().name : baseTime
     retentionInterval: retentionInterval
     timeout: timeout
   }
 }
 
-resource dpeloymentScript_lock 'Microsoft.Authorization/locks@2016-09-01' = if (lock != 'NotSpecified') {
-  name: '${dpeloymentScript.name}-${lock}-lock'
+resource deploymentScript_lock 'Microsoft.Authorization/locks@2016-09-01' = if (lock != 'NotSpecified') {
+  name: '${deploymentScript.name}-${lock}-lock'
   properties: {
     level: lock
     notes: (lock == 'CanNotDelete') ? 'Cannot delete resource or child resources.' : 'Cannot modify the resource or child resources.'
   }
-  scope: dpeloymentScript
+  scope: deploymentScript
 }
 
-output deploymentScriptResourceId string = dpeloymentScript.id
+@description('The resource ID of the deployment script')
+output deploymentScriptResourceId string = deploymentScript.id
+
+@description('The resource group the deployment script was deployed into')
 output deploymentScriptResourceGroup string = resourceGroup().name
-output deploymentScriptName string = dpeloymentScript.name
+
+@description('The name of the deployment script')
+output deploymentScriptName string = deploymentScript.name

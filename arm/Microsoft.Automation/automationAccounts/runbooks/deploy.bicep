@@ -64,8 +64,8 @@ resource storageAccount 'Microsoft.Storage/storageAccounts@2021-06-01' existing 
 }
 
 var publishContentLink = empty(uri) ? null : {
-  uri: (empty(uri) ? null : (empty(scriptStorageAccountId) ? '${uri}' : '${uri}${storageAccount.listAccountSas('2021-04-01', accountSasProperties).accountSasToken}'))
-  version: (empty(version) ? null : version)
+  uri: !empty(uri) ? (empty(scriptStorageAccountId) ? uri : '${uri}${storageAccount.listAccountSas('2021-04-01', accountSasProperties).accountSasToken}') : null
+  version: !empty(version) ? version : null
 }
 
 resource runbook 'Microsoft.Automation/automationAccounts/runbooks@2019-06-01' = {
@@ -76,14 +76,14 @@ resource runbook 'Microsoft.Automation/automationAccounts/runbooks@2019-06-01' =
   properties: {
     runbookType: runbookType
     description: runbookDescription
-    publishContentLink: empty(uri) ? null : publishContentLink
+    publishContentLink: !empty(uri) ? publishContentLink : null
   }
 }
 
 @description('The name of the deployed runbook')
 output runbookName string = runbook.name
 
-@description('The ID of the deployed runbook')
+@description('The resource ID of the deployed runbook')
 output runbookResourceId string = runbook.id
 
 @description('The resource group of the deployed runbook')

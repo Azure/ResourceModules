@@ -35,8 +35,8 @@ resource module 'Microsoft.Automation/automationAccounts/modules@2020-01-13-prev
   tags: tags
   properties: {
     contentLink: {
-      uri: version == 'latest' ? '${uri}/${name}' : '${uri}/${name}/${version}'
-      version: version == 'latest' ? null : version
+      uri: version != 'latest' ? '${uri}/${name}/${version}' : '${uri}/${name}'
+      version: version != 'latest' ? version : null
     }
   }
 }
@@ -44,7 +44,7 @@ resource module 'Microsoft.Automation/automationAccounts/modules@2020-01-13-prev
 @description('The name of the deployed module')
 output moduleName string = module.name
 
-@description('The ID of the deployed module')
+@description('The resource ID of the deployed module')
 output moduleResourceId string = module.id
 
 @description('The resource group of the deployed module')

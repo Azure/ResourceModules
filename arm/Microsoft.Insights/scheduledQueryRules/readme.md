@@ -85,7 +85,7 @@ Tag names and tag values can be provided as needed. A tag can be left without a 
 | :-- | :-- | :-- |
 | `deploymentResourceGroup` | string | The Resource Group of the created query rule. |
 | `queryAlertName` | string | The Name of the created query rule. |
-| `queryAlertResourceId` | string | The ID of the created query rule. |
+| `queryAlertResourceId` | string | The resource ID of the created query rule. |
 
 ## Template references
 

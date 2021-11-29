@@ -25,7 +25,7 @@ param roleAssignments array = []
 @description('Optional. Tags of the proximity placement group resource.')
 param tags object = {}
 
-@description('Optional. Customer Usage Attribution id (GUID). This GUID must be previously registered')
+@description('Optional. Customer Usage Attribution ID (GUID). This GUID must be previously registered')
 param cuaId string = ''
 
 module pid_cuaId '.bicep/nested_cuaId.bicep' = if (!empty(cuaId)) {
@@ -56,7 +56,7 @@ module proximityPlacementGroup_rbac '.bicep/nested_rbac.bicep' = [for (roleAssig
   params: {
     principalIds: roleAssignment.principalIds
     roleDefinitionIdOrName: roleAssignment.roleDefinitionIdOrName
-    resourceName: proximityPlacementGroup.name
+    resourceId: proximityPlacementGroup.id
   }
 }]
 

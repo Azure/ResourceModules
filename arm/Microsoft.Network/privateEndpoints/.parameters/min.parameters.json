@@ -5,7 +5,7 @@
         "name": {
             "value": "iacs-keyvault-endpoint-simple"
         },
-        "targetSubnetId": {
+        "targetSubnetResourceId": {
             "value": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/virtualNetworks/adp-sxx-az-vnet-x-001/subnets/sxx-az-subnet-x-005-privateEndpoints"
         },
         "serviceResourceId": {

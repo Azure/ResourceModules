@@ -79,7 +79,7 @@ module publicIpAddress_rbac 'nested_networkInterface_publicIPAddress_rbac.bicep'
   params: {
     principalIds: roleAssignment.principalIds
     roleDefinitionIdOrName: roleAssignment.roleDefinitionIdOrName
-    resourceName: publicIpAddress.name
+    resourceId: publicIpAddress.id
   }
 }]
 

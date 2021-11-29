@@ -45,12 +45,12 @@ The below example can be used on your local environment to load the 'Test-Module
 
 ```powershell
 #########[ Function Test-ModulesLocally.ps1 ]#############
-cd path/to/clonedRepo
-. .\utilities\tools\Test-ModuleLocally.ps1
+$pathToRepository = '<pathToClonedRepo>'
+. "$pathToRepository\utilities\tools\Test-ModuleLocally.ps1"
 
 # REQUIRED INPUT FOR TESTING
 $TestModuleLocallyInput = @{
-    ModuleName                    = 'Microsoft.Network\applicationSecurityGroups'
+    templateFilePath              = "$pathToRepository\arm\Microsoft.Authorization\roleDefinitions\deploy.bicep"
     PesterTest                    = $true
     DeploymentTest                = $true
     ValidationTest                = $false
@@ -69,14 +69,13 @@ $TestModuleLocallyInput = @{
         @{ Name = 'tenantId'; Value = '12345678-1234-1234-1234-123456789123' }
     )
 }
-
 ```
 
 ---
 
 # Handling Parameters that require or contain a value that should be tokenized
 
-The following scenarios are common to when to use a token value in the parameter file. Refer to [Parameter File Tokens Design](./ParameterFileTokens.md) for more details.
+The following scenarios are common to when to use a token value in the parameter file. Refer to [Parameter File Tokens Design](./ParameterFileTokens) for more details.
 
 - Scenarios where resources have dependencies on other resources, which may require to be linked using `resourceId` references.
 

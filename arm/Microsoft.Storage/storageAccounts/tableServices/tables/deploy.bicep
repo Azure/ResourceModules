@@ -8,7 +8,7 @@ param tableServicesName string = 'default'
 @description('Required. Name of the table.')
 param name string
 
-@description('Optional. Customer Usage Attribution id (GUID). This GUID must be previously registered')
+@description('Optional. Customer Usage Attribution ID (GUID). This GUID must be previously registered')
 param cuaId string = ''
 
 module pid_cuaId '.bicep/nested_cuaId.bicep' = if (!empty(cuaId)) {
@@ -31,7 +31,7 @@ resource storageAccount 'Microsoft.Storage/storageAccounts@2021-06-01' existing 
 @description('The name of the deployed file share service')
 output tableName string = storageAccount::tableServices::table.name
 
-@description('The id of the deployed file share service')
+@description('The resource ID of the deployed file share service')
 output tableResourceId string = storageAccount::tableServices::table.id
 
 @description('The resource group of the deployed file share service')

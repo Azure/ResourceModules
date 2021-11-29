@@ -14,7 +14,7 @@ param serverKeyType string = 'ServiceManaged'
 @description('Optional. The URI of the key. If the ServerKeyType is AzureKeyVault, then either the URI or the keyVaultName/keyName combination is required.')
 param uri string = ''
 
-@description('Optional. Customer Usage Attribution id (GUID). This GUID must be previously registered')
+@description('Optional. Customer Usage Attribution ID (GUID). This GUID must be previously registered')
 param cuaId string = ''
 
 var splittedKeyUri = split(uri, '/')
@@ -34,17 +34,17 @@ resource managedInstance 'Microsoft.Sql/managedInstances@2021-05-01-preview' exi
 
 resource key 'Microsoft.Sql/managedInstances/keys@2021-05-01-preview' = {
   name: !empty(name) ? name : serverKeyName
+  parent: managedInstance
   properties: {
     serverKeyType: serverKeyType
     uri: uri
   }
-  parent: managedInstance
 }
 
 @description('The name of the deployed managed instance')
 output keyName string = key.name
 
-@description('The resourceId of the deployed managed instance')
+@description('The resource ID of the deployed managed instance')
 output keyResourceId string = key.id
 
 @description('The resource group of the deployed managed instance')

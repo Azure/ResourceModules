@@ -4,7 +4,7 @@ This module can be used to deploy a blob service into a storage account.
 
 ## Resource Types
 
-| Resource Type | Api Version |
+| Resource Type | API Version |
 | :-- | :-- |
 | `Microsoft.Authorization/roleAssignments` | 2020-04-01-preview |
 | `Microsoft.Storage/storageAccounts/blobServices` | 2021-06-01 |
@@ -17,7 +17,7 @@ This module can be used to deploy a blob service into a storage account.
 | :-- | :-- | :-- | :-- | :-- |
 | `automaticSnapshotPolicyEnabled` | bool |  |  | Optional. Automatic Snapshot is enabled if set to true. |
 | `containers` | _[containers](containers/readme.md)_ array | `[]` |  | Optional. Blob containers to create. |
-| `cuaId` | string |  |  | Optional. Customer Usage Attribution id (GUID). This GUID must be previously registered |
+| `cuaId` | string |  |  | Optional. Customer Usage Attribution ID (GUID). This GUID must be previously registered |
 | `deleteRetentionPolicy` | bool | `True` |  | Optional. Indicates whether DeleteRetentionPolicy is enabled for the Blob service. |
 | `deleteRetentionPolicyDays` | int | `7` |  | Optional. Indicates the number of days that the deleted blob should be retained. The minimum specified value can be 1 and the maximum value can be 365. |
 | `name` | string | `default` |  | Optional. The name of the blob service |
@@ -30,7 +30,7 @@ This module can be used to deploy a blob service into a storage account.
 | :-- | :-- | :-- |
 | `blobServicesName` | string | The name of the deployed blob service |
 | `blobServicesResourceGroup` | string | The name of the deployed blob service |
-| `blobServicesResourceId` | string | The id of the deployed blob service |
+| `blobServicesResourceId` | string | The resource ID of the deployed blob service |
 
 ## Template references
 
