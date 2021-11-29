@@ -20,6 +20,23 @@ This template deploys a storage insights configuration for a Log Analytics works
 | `tables` | array | `[]` |  | Optional. The names of the Azure tables that the workspace should read. |
 | `tags` | object | `{object}` |  | Optional. Tags to configure in the resource. |
 
+### Parameter Usage: `tags`
+
+Tag names and tag values can be provided as needed. A tag can be left without a value.
+
+```json
+"tags": {
+    "value": {
+        "Environment": "Non-Prod",
+        "Contact": "test.user@testcompany.com",
+        "PurchaseOrder": "1234",
+        "CostCenter": "7890",
+        "ServiceName": "DeploymentValidation",
+        "Role": "DeploymentValidation"
+    }
+}
+```
+
 ## Outputs
 
 | Output Name | Type | Description |

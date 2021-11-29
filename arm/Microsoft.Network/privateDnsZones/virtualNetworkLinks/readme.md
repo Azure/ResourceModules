@@ -14,11 +14,11 @@ This module deploys private dns zone virtual network links.
 | :-- | :-- | :-- | :-- | :-- |
 | `cuaId` | string |  |  | Optional. Customer Usage Attribution ID (GUID). This GUID must be previously registered |
 | `location` | string | `global` |  | Optional. The location of the PrivateDNSZone. Should be global. |
-| `name` | string | `[last(split(parameters('virtualNetworkId'), '/'))]` |  | Optional. The name of the virtual network link. |
+| `name` | string | `[last(split(parameters('virtualNetworkResourceId'), '/'))]` |  | Optional. The name of the virtual network link. |
 | `privateDnsZoneName` | string |  |  | Required. Private DNS zone name. |
 | `registrationEnabled` | bool |  |  | Optional. Is auto-registration of virtual machine records in the virtual network in the Private DNS zone enabled? |
 | `tags` | object | `{object}` |  | Optional. Tags of the resource. |
-| `virtualNetworkResourceId` | string |  |  | Required. Link to another virtual network resource ID. |
+| `virtualNetworkResourceId` | string |  |  | Required. Link to another virtual network ID. |
 
 ### Parameter Usage: `tags`
 

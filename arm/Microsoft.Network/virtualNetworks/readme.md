@@ -154,8 +154,8 @@ The network security group and route table resources must reside in the same res
 
 | Output Name | Type | Description |
 | :-- | :-- | :-- |
-| `subnetResourceIds` | array | The resource IDs of the deployed subnets |
-| `subnetNames` | array | The names of the deployed subnets |
+| `subnetNames` | array | The resource IDs of the deployed subnets |
+| `subnetResourceIds` | array | The names of the deployed subnets |
 | `virtualNetworkName` | string | The name of the virtual network |
 | `virtualNetworkResourceGroup` | string | The resource group the virtual network was deployed into |
 | `virtualNetworkResourceId` | string | The resource ID of the virtual network |

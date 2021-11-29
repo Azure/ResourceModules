@@ -53,7 +53,7 @@ This module deploys an API management.
 | `minApiVersion` | string |  |  | Optional. Limit control plane API calls to API Management service with version equal to or newer than this value. |
 | `name` | string |  |  | Required. The name of the of the API Management service. |
 | `namedValues` | _[namedValues](namedValues/readme.md)_ array | `[]` |  | Optional. Named values. |
-| `newGuidValue` | string | `[newGuid()]` |  | Optional. Necessary to create a new guid. |
+| `newGuidValue` | string | `[newGuid()]` |  | Optional. Necessary to create a new GUID. |
 | `notificationSenderEmail` | string | `apimgmt-noreply@mail.windowsazure.com` |  | Optional. The notification sender email address for the service. |
 | `policies` | _[policies](policies/readme.md)_ array | `[]` |  | Optional. Policies. |
 | `portalSettings` | _[portalSettings](portalSettings/readme.md)_ array | `[]` |  | Optional. Portal settings. |

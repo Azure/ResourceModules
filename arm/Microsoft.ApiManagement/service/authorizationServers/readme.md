@@ -1,4 +1,4 @@
-# API Management Service Authorization Servers   `[Microsoft.ApiManagement/service/authorizationServers]`
+# API Management Service Authorization Servers `[Microsoft.ApiManagement/service/authorizationServers]`
 
 This module deploys API Management Service Authorization Servers.
 
