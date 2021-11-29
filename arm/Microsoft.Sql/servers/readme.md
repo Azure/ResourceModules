@@ -1,6 +1,6 @@
-# Sql Servers `[Microsoft.Sql/servers]`
+# SQL Servers `[Microsoft.Sql/servers]`
 
-This module deploys a Sql Server.
+This module deploys a SQL server.
 
 ## Resource Types
 
