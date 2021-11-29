@@ -74,33 +74,49 @@ param licenseType string = ''
 @description('Optional. Specifies if Windows VM disks should be encrypted with Server-side encryption + Customer managed Key.')
 param enableServerSideEncryption bool = false
 
-@description('Optional. The configuration for the [domain join] extension. Must at least contain the ["enabled": true] property to be executed')
-param extensionDomainJoinConfig object = {}
-
 @description('Optional. Required if domainName is specified. Password of the user specified in domainJoinUser parameter')
 @secure()
 param extensionDomainJoinPassword string = ''
 
+@description('Optional. The configuration for the [Domain Join] extension. Must at least contain the ["enabled": true] property to be executed')
+param extensionDomainJoinConfig object = {
+  enabled: false
+}
+
 @description('Optional. The configuration for the [Anti Malware] extension. Must at least contain the ["enabled": true] property to be executed')
-param extensionAntiMalwareConfig object = {}
+param extensionAntiMalwareConfig object = {
+  enabled: false
+}
 
 @description('Optional. The configuration for the [Monitoring Agent] extension. Must at least contain the ["enabled": true] property to be executed')
-param extensionMonitoringAgentConfig object = {}
+param extensionMonitoringAgentConfig object = {
+  enabled: false
+}
 
 @description('Optional. The configuration for the [Dependency Agent] extension. Must at least contain the ["enabled": true] property to be executed')
-param extensionDependencyAgentConfig object = {}
+param extensionDependencyAgentConfig object = {
+  enabled: false
+}
 
 @description('Optional. The configuration for the [Network Watcher Agent] extension. Must at least contain the ["enabled": true] property to be executed')
-param extensionNetworkWatcherAgentConfig object = {}
+param extensionNetworkWatcherAgentConfig object = {
+  enabled: false
+}
 
 @description('Optional. The configuration for the [Disk Encryption] extension. Must at least contain the ["enabled": true] property to be executed')
-param extensionDiskEncryptionConfig object = {}
+param extensionDiskEncryptionConfig object = {
+  enabled: false
+}
 
 @description('Optional. The configuration for the [Desired State Configuration] extension. Must at least contain the ["enabled": true] property to be executed')
-param extensionDSCConfig object = {}
+param extensionDSCConfig object = {
+  enabled: false
+}
 
 @description('Optional. The configuration for the [Custom Script] extension. Must at least contain the ["enabled": true] property to be executed')
-param extensionCustomScriptConfig object = {}
+param extensionCustomScriptConfig object = {
+  enabled: false
+}
 
 @description('Optional. Storage account boot diagnostic base URI.')
 param bootDiagnosticStorageAccountUri string = '.blob.${environment().suffixes.storage}/'

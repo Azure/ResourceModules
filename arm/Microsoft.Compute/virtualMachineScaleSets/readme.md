@@ -49,7 +49,7 @@ The following resources are required to be able to deploy this resource.
 | `extensionCustomScriptConfig` | object | `{object}` |  | Optional. The configuration for the [Custom Script] extension. Must at least contain the ["enabled": true] property to be executed |
 | `extensionDependencyAgentConfig` | object | `{object}` |  | Optional. The configuration for the [Dependency Agent] extension. Must at least contain the ["enabled": true] property to be executed |
 | `extensionDiskEncryptionConfig` | object | `{object}` |  | Optional. The configuration for the [Disk Encryption] extension. Must at least contain the ["enabled": true] property to be executed |
-| `extensionDomainJoinConfig` | object | `{object}` |  | Optional. The configuration for the [domain join] extension. Must at least contain the ["enabled": true] property to be executed |
+| `extensionDomainJoinConfig` | object | `{object}` |  | Optional. The configuration for the [Domain Join] extension. Must at least contain the ["enabled": true] property to be executed |
 | `extensionDomainJoinPassword` | secureString |  |  | Optional. Required if domainName is specified. Password of the user specified in domainJoinUser parameter |
 | `extensionDSCConfig` | object | `{object}` |  | Optional. The configuration for the [Desired State Configuration] extension. Must at least contain the ["enabled": true] property to be executed |
 | `extensionMonitoringAgentConfig` | object | `{object}` |  | Optional. The configuration for the [Monitoring Agent] extension. Must at least contain the ["enabled": true] property to be executed |
