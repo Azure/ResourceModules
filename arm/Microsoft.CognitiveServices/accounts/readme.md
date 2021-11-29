@@ -4,7 +4,7 @@ This module deploys different kinds of Cognitive Services resources
 
 ## Resource types
 
-| Resource Type | Api Version |
+| Resource Type | API Version |
 | :-- | :-- |
 | `Microsoft.Authorization/locks` | 2016-09-01 |
 | `Microsoft.Authorization/roleAssignments` | 2020-04-01-preview |
@@ -17,11 +17,10 @@ This module deploys different kinds of Cognitive Services resources
 
 | Parameter Name | Type | Default Value | Possible Values | Description |
 | :-- | :-- | :-- | :-- | :-- |
-| `accountName` | string |  |  | Required. The name of Cognitive Services account |
-| `cuaId` | string |  |  | Optional. Customer Usage Attribution id (GUID). This GUID must be previously registered |
+| `cuaId` | string |  |  | Optional. Customer Usage Attribution ID (GUID). This GUID must be previously registered |
 | `customSubDomainName` | string |  |  | Optional. Subdomain name used for token-based authentication. Required if 'networkAcls' are set. |
 | `diagnosticLogsRetentionInDays` | int | `365` |  | Optional. Specifies the number of days that logs will be kept for; a value of 0 will retain data indefinitely. |
-| `diagnosticStorageAccountId` | string |  |  | Optional. Resource identifier of the Diagnostic Storage Account. |
+| `diagnosticStorageAccountId` | string |  |  | Optional. Resource ID of the diagnostic storage account. |
 | `eventHubAuthorizationRuleId` | string |  |  | Optional. Resource ID of the event hub authorization rule for the Event Hubs namespace in which the event hub should be created or streamed to. |
 | `eventHubName` | string |  |  | Optional. Name of the event hub within the namespace to which logs are streamed. Without this, an event hub is created for each log category. |
 | `kind` | string |  | `[AnomalyDetector, Bing.Autosuggest.v7, Bing.CustomSearch, Bing.EntitySearch, Bing.Search.v7, Bing.SpellCheck.v7, CognitiveServices, ComputerVision, ContentModerator, CustomVision.Prediction, CustomVision.Training, Face, FormRecognizer, ImmersiveReader, Internal.AllInOne, LUIS, LUIS.Authoring, Personalizer, QnAMaker, SpeechServices, TextAnalytics, TextTranslation]` | Required. Kind of the Cognitive Services. Use 'Get-AzCognitiveServicesAccountSku' to determine a valid combinations of 'kind' and 'sku' for your Azure region. |
@@ -30,13 +29,14 @@ This module deploys different kinds of Cognitive Services resources
 | `logsToEnable` | array | `[Audit, RequestResponse]` | `[Audit, RequestResponse]` | Optional. The name of logs that will be streamed. |
 | `managedIdentity` | string | `None` | `[None, SystemAssigned]` | Optional. Type of managed service identity. |
 | `metricsToEnable` | array | `[AllMetrics]` | `[AllMetrics]` | Optional. The name of metrics that will be streamed. |
+| `name` | string |  |  | Required. The name of Cognitive Services account |
 | `networkAcls` | object | `{object}` |  | Optional. Service endpoint object information |
 | `privateEndpoints` | array | `[]` |  | Optional. Configuration Details for private endpoints. |
 | `publicNetworkAccess` | string | `Enabled` | `[Enabled, Disabled]` | Optional. Subdomain name used for token-based authentication. Must be set if 'networkAcls' are set. |
 | `roleAssignments` | array | `[]` |  | Optional. Array of role assignment objects that contain the 'roleDefinitionIdOrName' and 'principalId' to define RBAC role assignments on this resource. In the roleDefinitionIdOrName attribute, you can provide either the display name of the role definition, or its fully qualified ID in the following format: '/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11' |
 | `sku` | string | `S0` | `[C2, C3, C4, F0, F1, S, S0, S1, S10, S2, S3, S4, S5, S6, S7, S8, S9]` | Optional. SKU of the Cognitive Services resource. Use 'Get-AzCognitiveServicesAccountSku' to determine a valid combinations of 'kind' and 'sku' for your Azure region. |
 | `tags` | object | `{object}` |  | Optional. Tags of the resource. |
-| `workspaceId` | string |  |  | Optional. Resource identifier of Log Analytics. |
+| `workspaceId` | string |  |  | Optional. Resource ID of log analytics. |
 
 ### Parameter Usage: `roleAssignments`
 
@@ -81,10 +81,10 @@ To use Private Endpoint the following dependencies must be deployed:
         // Example showing all available fields
         {
             "name": "sxx-az-sa-cac-y-123-pe", // Optional: Name will be automatically generated if one is not provided here
-            "subnetResourceId": "/subscriptions/8629be3b-96bc-482d-a04b-ffff597c65a2/resourceGroups/validation-rg/providers/Microsoft.Network/virtualNetworks/sxx-az-vnet-x-001/subnets/sxx-az-subnet-x-001",
+            "subnetResourceId": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/virtualNetworks/sxx-az-vnet-x-001/subnets/sxx-az-subnet-x-001",
             "service": "vault",
             "privateDnsZoneResourceIds": [ // Optional: No DNS record will be created if a private DNS zone Resource ID is not specified
-                "/subscriptions/8629be3b-96bc-482d-a04b-ffff597c65a2/resourceGroups/validation-rg/providers/Microsoft.Network/privateDnsZones/privatelink.vaultcore.azure.net"
+                "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/privateDnsZones/privatelink.vaultcore.azure.net"
             ],
             "customDnsConfigs": [ // Optional
                 {
@@ -124,7 +124,7 @@ Tag names and tag values can be provided as needed. A tag can be left without a 
     "defaultAction": "Deny",
     "virtualNetworkRules": [
       {
-        "id": "/subscriptions/<subscription-id>/resourceGroups/resourceGroup/providers/Microsoft.Network/virtualNetworks/<vnet-name>/subnets/<subnet-name>",
+        "id": "/subscriptions/<subscription-ID>/resourceGroups/resourceGroup/providers/Microsoft.Network/virtualNetworks/<vnet-name>/subnets/<subnet-name>",
         "ignoreMissingVnetServiceEndpoint": false
       }
     ],
@@ -142,13 +142,13 @@ Tag names and tag values can be provided as needed. A tag can be left without a 
 
 ## Outputs
 
-| Output Name | Type |
-| :-- | :-- |
-| `cognitiveServicesEndpoint` | string |
-| `cognitiveServicesName` | string |
-| `cognitiveServicesResourceGroup` | string |
-| `cognitiveServicesResourceId` | string |
-| `principalId` | string |
+| Output Name | Type | Description |
+| :-- | :-- | :-- |
+| `cognitiveServicesEndpoint` | string | The service endpoint of the cognitive services account |
+| `cognitiveServicesName` | string | The name of the cognitive services account |
+| `cognitiveServicesResourceGroup` | string | The resource group the cognitive services account was deployed into |
+| `cognitiveServicesResourceId` | string | The resource ID of the cognitive services account |
+| `principalId` | string | The prinicipal ID of the cognitive services account (if any) |
 
 ## Considerations
 

@@ -25,7 +25,7 @@ param roleAssignments array = []
 @description('Optional. Tags of the resource.')
 param tags object = {}
 
-@description('Optional. Customer Usage Attribution id (GUID). This GUID must be previously registered')
+@description('Optional. Customer Usage Attribution ID (GUID). This GUID must be previously registered')
 param cuaId string = ''
 
 @description('Optional. The databases to create in the server')
@@ -67,7 +67,7 @@ module server_rbac '.bicep/nested_rbac.bicep' = [for (roleAssignment, index) in 
   params: {
     principalIds: roleAssignment.principalIds
     roleDefinitionIdOrName: roleAssignment.roleDefinitionIdOrName
-    resourceName: server.name
+    resourceId: server.id
   }
 }]
 

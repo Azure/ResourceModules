@@ -1,6 +1,6 @@
 param principalIds array
 param roleDefinitionIdOrName string
-param resourceName string
+param resourceId string
 
 var builtInRoleNames = {
   'Owner': subscriptionResourceId('Microsoft.Authorization/roleDefinitions', '8e3af657-a8ff-443c-a75c-2fe8c4bcb635')
@@ -18,15 +18,15 @@ var builtInRoleNames = {
   'User Access Administrator': subscriptionResourceId('Microsoft.Authorization/roleDefinitions', '18d7d88d-d35e-4fb5-a5c3-7773c20a72d9')
 }
 
-resource capacityPool 'Microsoft.NetApp/netAppAccounts/capacityPools@2021-04-01' existing = {
-  name: resourceName
+resource volume 'Microsoft.NetApp/netAppAccounts/capacityPools/volumes@2021-04-01' existing = {
+  name: '${split(resourceId, '/')[8]}/${split(resourceId, '/')[10]}/${split(resourceId, '/')[12]}'
 }
 
 resource roleAssignment 'Microsoft.Authorization/roleAssignments@2020-04-01-preview' = [for principalId in principalIds: {
-  name: guid(capacityPool.name, principalId, roleDefinitionIdOrName)
+  name: guid(volume.name, principalId, roleDefinitionIdOrName)
   properties: {
     roleDefinitionId: contains(builtInRoleNames, roleDefinitionIdOrName) ? builtInRoleNames[roleDefinitionIdOrName] : roleDefinitionIdOrName
     principalId: principalId
   }
-  scope: capacityPool
+  scope: volume
 }]

@@ -1,7 +1,7 @@
-@description('Required. The name of the of the Api Management service.')
+@description('Required. The name of the of the API Management service.')
 param apiManagementServiceName string
 
-@description('Optional. Customer Usage Attribution id (GUID). This GUID must be previously registered')
+@description('Optional. Customer Usage Attribution ID (GUID). This GUID must be previously registered')
 param cuaId string = ''
 
 @description('Optional. Used to enable the deployment of the identityProviders child resource.')
@@ -13,7 +13,7 @@ param identityProviderAllowedTenants array = []
 @description('Optional. OpenID Connect discovery endpoint hostname for AAD or AAD B2C.')
 param identityProviderAuthority string = ''
 
-@description('Optional. Client Id of the Application in the external Identity Provider. Required if identity provider is used.')
+@description('Optional. Client ID of the Application in the external Identity Provider. Required if identity provider is used.')
 param identityProviderClientId string = ''
 
 @description('Optional. Client secret of the Application in external Identity Provider, used to authenticate login request. Required if identity provider is used.')
@@ -56,8 +56,13 @@ module pid_cuaId '.bicep/nested_cuaId.bicep' = if (!empty(cuaId)) {
   params: {}
 }
 
+resource service 'Microsoft.ApiManagement/service@2021-04-01-preview' existing = {
+  name: apiManagementServiceName
+}
+
 resource identityProvider 'Microsoft.ApiManagement/service/identityProviders@2020-06-01-preview' = if (enableIdentityProviders) {
-  name: '${apiManagementServiceName}/${name}'
+  name: name
+  parent: service
   properties: {
     type: identityProviderType
     signinTenant: identityProviderSignInTenant
@@ -72,7 +77,7 @@ resource identityProvider 'Microsoft.ApiManagement/service/identityProviders@202
   }
 }
 
-@description('The resourceId of the API management service identity provider')
+@description('The resource ID of the API management service identity provider')
 output identityProviderResourceId string = identityProvider.id
 
 @description('The name of the API management service identity provider')

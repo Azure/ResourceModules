@@ -102,7 +102,7 @@ param lock string = 'NotSpecified'
 @description('Optional. Tags of the resource.')
 param tags object = {}
 
-@description('Optional. Customer Usage Attribution id (GUID). This GUID must be previously registered')
+@description('Optional. Customer Usage Attribution ID (GUID). This GUID must be previously registered')
 param cuaId string = ''
 
 @description('Generated. Do not provide a value! This date value is used to generate a SAS token to access the modules.')
@@ -122,7 +122,6 @@ var azureFilesIdentityBasedAuthentication_var = azureFilesIdentityBasedAuthentic
 var maxNameLength = 24
 var uniqueStoragenameUntrim = '${uniqueString('Storage Account${basetime}')}'
 var uniqueStoragename = length(uniqueStoragenameUntrim) > maxNameLength ? substring(uniqueStoragenameUntrim, 0, maxNameLength) : uniqueStoragenameUntrim
-var storageAccountName_var = empty(name) ? uniqueStoragename : name
 
 var saBaseProperties = {
   encryption: {
@@ -150,7 +149,7 @@ module pid_cuaId '.bicep/nested_cuaId.bicep' = if (!empty(cuaId)) {
 }
 
 resource storageAccount 'Microsoft.Storage/storageAccounts@2021-06-01' = {
-  name: storageAccountName_var
+  name: !empty(name) ? name : uniqueStoragename
   location: location
   kind: storageAccountKind
   sku: {
@@ -178,7 +177,7 @@ module storageAccount_rbac '.bicep/nested_rbac.bicep' = [for (roleAssignment, in
   params: {
     principalIds: roleAssignment.principalIds
     roleDefinitionIdOrName: roleAssignment.roleDefinitionIdOrName
-    resourceName: storageAccount.name
+    resourceId: storageAccount.id
   }
 }]
 
@@ -245,7 +244,7 @@ module storageAccount_tableServices 'tableServices/deploy.bicep' = if (!empty(ta
   }
 }
 
-@description('The resource Id of the deployed storage account')
+@description('The resource ID of the deployed storage account')
 output storageAccountResourceId string = storageAccount.id
 
 @description('The name of the deployed storage account')
@@ -257,5 +256,5 @@ output storageAccountResourceGroup string = resourceGroup().name
 @description('The primary blob endpoint reference if blob services are deployed.')
 output storageAccountPrimaryBlobEndpoint string = (!empty(blobServices) && contains(storageAccount_blobServices, 'blobContainers')) ? '' : reference('Microsoft.Storage/storageAccounts/${storageAccount.name}', '2019-04-01').primaryEndpoints.blob
 
-@description('The resource id of the assigned identity, if any')
+@description('The resource ID of the assigned identity, if any')
 output assignedIdentityID string = (contains(managedServiceIdentity, 'SystemAssigned') ? reference(storageAccount.id, '2019-06-01', 'full').identity.principalId : '')

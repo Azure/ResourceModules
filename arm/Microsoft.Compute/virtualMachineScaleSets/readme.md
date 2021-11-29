@@ -4,7 +4,7 @@ This module deploys a virtual machine scale set
 
 ## Resource types
 
-| Resource Type | Api Version |
+| Resource Type | API Version |
 | :-- | :-- |
 | `Microsoft.Authorization/locks` | 2016-09-01 |
 | `Microsoft.Authorization/roleAssignments` | 2020-04-01-preview |
@@ -34,11 +34,11 @@ The following resources are required to be able to deploy this resource.
 | `cseManagedIdentity` | object | `{object}` |  | Optional. A managed identity to use for the CSE. |
 | `cseStorageAccountKey` | string |  |  | Optional. The storage key of the storage account to access for the CSE script(s). |
 | `cseStorageAccountName` | string |  |  | Optional. The name of the storage account to access for the CSE script(s). |
-| `cuaId` | string |  |  | Optional. Customer Usage Attribution id (GUID). This GUID must be previously registered |
+| `cuaId` | string |  |  | Optional. Customer Usage Attribution ID (GUID). This GUID must be previously registered |
 | `customData` | string |  |  | Optional. Custom data associated to the VM, this value will be automatically converted into base64 to account for the expected VM format. |
 | `dataDisks` | array | `[]` |  | Optional. Specifies the data disks. |
 | `diagnosticLogsRetentionInDays` | int | `365` |  | Optional. Specifies the number of days that logs will be kept for; a value of 0 will retain data indefinitely. |
-| `diagnosticStorageAccountId` | string |  |  | Optional. Resource identifier of the Diagnostic Storage Account. |
+| `diagnosticStorageAccountId` | string |  |  | Optional. Resource ID of the diagnostic storage account. |
 | `disableAutomaticRollback` | bool |  |  | Optional. Whether OS image rollback feature should be disabled. |
 | `disablePasswordAuthentication` | bool |  |  | Optional. Specifies whether password authentication should be disabled. |
 | `diskEncryptionVolumeType` | string | `All` | `[OS, Data, All]` | Optional. Type of the volume OS or Data to perform encryption operation |
@@ -72,12 +72,12 @@ The following resources are required to be able to deploy this resource.
 | `instanceCount` | int | `1` |  | Optional. The initial instance count of scale set VMs. |
 | `instanceSize` | string |  |  | Optional. The SKU size of the VMs. |
 | `keyEncryptionKeyURL` | string |  |  | Optional. URL of the KeyEncryptionKey used to encrypt the volume encryption key |
-| `keyVaultId` | string |  |  | Optional. Resource identifier of the Key Vault instance where the Key Encryption Key (KEK) resides |
+| `keyVaultId` | string |  |  | Optional. Resource ID of the Key Vault instance where the Key Encryption Key (KEK) resides |
 | `keyVaultUri` | string |  |  | Optional. URL of the Key Vault instance where the Key Encryption Key (KEK) resides |
 | `licenseType` | string |  | `[Windows_Client, Windows_Server, ]` | Optional. Specifies that the image or disk that is being used was licensed on-premises. This element is only used for images that contain the Windows Server operating system. |
 | `location` | string | `[resourceGroup().location]` |  | Optional. Location for all resources. |
 | `lock` | string | `NotSpecified` | `[CanNotDelete, NotSpecified, ReadOnly]` | Optional. Specify the type of lock. |
-| `managedIdentityIdentities` | object | `{object}` |  | Optional. The list of user identities associated with the virtual machine scale set. The user identity dictionary key references will be ARM resource ids in the form: '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ManagedIdentity/userAssignedIdentities/{identityName}'. |
+| `managedIdentityIdentities` | object | `{object}` |  | Optional. The list of user identities associated with the virtual machine scale set. The user identity dictionary key references will be ARM resource IDs in the form: '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ManagedIdentity/userAssignedIdentities/{identityName}'. |
 | `managedIdentityType` | string |  | `[SystemAssigned, UserAssigned, None, ]` | Optional. The type of identity used for the virtual machine scale set. The type 'SystemAssigned, UserAssigned' includes both an implicitly created identity and a set of user assigned identities. The type 'None' will remove any identities from the virtual machine scale set. - SystemAssigned, UserAssigned, SystemAssigned, UserAssigned, None |
 | `maxBatchInstancePercent` | int | `20` |  | Optional. The maximum percent of total virtual machine instances that will be upgraded simultaneously by the rolling upgrade in one batch. As this is a maximum, unhealthy instances in previous or future batches can cause the percentage of instances in a batch to decrease to ensure higher reliability. |
 | `maxPriceForLowPriorityVm` | string |  |  | Optional. Specifies the maximum price you are willing to pay for a low priority VM/VMSS. This price is in US Dollars. |
@@ -104,7 +104,7 @@ The following resources are required to be able to deploy this resource.
 | `secrets` | array | `[]` |  | Optional. Specifies set of certificates that should be installed onto the virtual machines in the scale set. |
 | `singlePlacementGroup` | bool | `True` |  | Optional. When true this limits the scale set to a single placement group, of max size 100 virtual machines. NOTE: If singlePlacementGroup is true, it may be modified to false. However, if singlePlacementGroup is false, it may not be modified to true. |
 | `tags` | object | `{object}` |  | Optional. Tags of the resource. |
-| `timeZone` | string |  |  | Optional. Specifies the time zone of the virtual machine. e.g. 'Pacific Standard Time'. Possible values can be TimeZoneInfo.Id value from time zones returned by TimeZoneInfo.GetSystemTimeZones. |
+| `timeZone` | string |  |  | Optional. Specifies the time zone of the virtual machine. e.g. 'Pacific Standard Time'. Possible values can be TimeZoneInfo.id value from time zones returned by TimeZoneInfo.GetSystemTimeZones. |
 | `ultraSSDEnabled` | bool |  |  | Optional. The flag that enables or disables a capability to have one or more managed data disks with UltraSSD_LRS storage account type on the VM or VMSS. Managed disks with storage account type UltraSSD_LRS can be added to a virtual machine or virtual machine scale set only if this property is enabled. |
 | `upgradePolicyMode` | string | `Manual` | `[Manual, Automatic, Rolling]` | Optional. Specifies the mode of an upgrade to virtual machines in the scale set.' Manual - You control the application of updates to virtual machines in the scale set. You do this by using the manualUpgrade action. ; Automatic - All virtual machines in the scale set are automatically updated at the same time. - Automatic, Manual, Rolling |
 | `vmNamePrefix` | string | `vmssvm` |  | Optional. Specifies the computer name prefix for all of the virtual machines in the scale set. |
@@ -113,7 +113,7 @@ The following resources are required to be able to deploy this resource.
 | `windowsScriptExtensionCommandToExecute` | secureString |  |  | Optional. Specifies the command that should be run on a Windows VM. |
 | `windowsScriptExtensionFileData` | array | `[]` |  | Optional. Array of objects that specifies URIs and the storageAccountId of the scripts that need to be downloaded and run by the Custom Script Extension on a Windows VM. |
 | `winRMListeners` | object | `{object}` |  | Optional. Specifies the Windows Remote Management listeners. This enables remote Windows PowerShell. - WinRMConfiguration object. |
-| `workspaceId` | string |  |  | Optional. Resource identifier of Log Analytics. |
+| `workspaceId` | string |  |  | Optional. Resource ID of log analytics. |
 | `zoneBalance` | bool |  |  | Optional. Whether to force strictly even Virtual Machine distribution cross x-zones in case there is zone outage. |
 
 #### Marketplace images
@@ -235,7 +235,7 @@ The following resources are required to be able to deploy this resource.
                     "name": "ipconfig1",
                     "properties": {
                         "subnet": {
-                            "id": "/subscriptions/8629be3b-96bc-482d-a04b-ffff597c65a2/resourceGroups/agents-vmss-rg/providers/Microsoft.Network/virtualNetworks/sxx-az-vnet-x-scaleset/subnets/sxx-az-subnet-scaleset-linux"
+                            "id": "/subscriptions/<<subscriptionId>>/resourceGroups/agents-vmss-rg/providers/Microsoft.Network/virtualNetworks/sxx-az-vnet-x-scaleset/subnets/sxx-az-subnet-scaleset-linux"
                         }
                     }
                 }
@@ -380,7 +380,7 @@ Tag names and tag values can be provided as needed. A tag can be left without a 
 | :-- | :-- | :-- |
 | `vmssName` | string | The name of the virtual machine scale set |
 | `vmssResourceGroup` | string | The resource group of the virtual machine scale set |
-| `vmssResourceIds` | string | The resourceID of the virtual machine scale set |
+| `vmssResourceIds` | string | The resource ID of the virtual machine scale set |
 
 ## Template references
 

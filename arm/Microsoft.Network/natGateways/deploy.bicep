@@ -1,5 +1,5 @@
 @description('Required. Name of the Azure Bastion resource')
-param natGatewayName string
+param name string
 
 @description('Optional. The idle timeout of the nat gateway.')
 param idleTimeoutInMinutes int = 5
@@ -10,7 +10,7 @@ param natGatewayPublicIpAddress bool = false
 @description('Optional. Specifies the name of the Public IP used by the NAT Gateway. If it\'s not provided, a \'-pip\' suffix will be appended to the Bastion\'s name.')
 param natGatewayPipName string = ''
 
-@description('Optional. Resource Id of the Public IP Prefix object. This is only needed if you want your Public IPs created in a PIP Prefix.')
+@description('Optional. Resource ID of the Public IP Prefix object. This is only needed if you want your Public IPs created in a PIP Prefix.')
 param natGatewayPublicIPPrefixId string = ''
 
 @description('Optional. DNS name of the Public IP resource. A region specific suffix will be appended to it, e.g.: your-DNS-name.westeurope.cloudapp.azure.com')
@@ -33,10 +33,10 @@ param location string = resourceGroup().location
 @maxValue(365)
 param diagnosticLogsRetentionInDays int = 365
 
-@description('Optional. Resource identifier of the Diagnostic Storage Account.')
+@description('Optional. Resource ID of the diagnostic storage account.')
 param diagnosticStorageAccountId string = ''
 
-@description('Optional. Resource identifier of Log Analytics.')
+@description('Optional. Resource identifier of log analytics.')
 param workspaceId string = ''
 
 @description('Optional. Resource ID of the event hub authorization rule for the Event Hubs namespace in which the event hub should be created or streamed to.')
@@ -59,7 +59,7 @@ param roleAssignments array = []
 @description('Optional. Tags for the resource.')
 param tags object = {}
 
-@description('Optional. Customer Usage Attribution id (GUID). This GUID must be previously registered')
+@description('Optional. Customer Usage Attribution ID (GUID). This GUID must be previously registered')
 param cuaId string = ''
 
 @description('Optional. The name of logs that will be streamed.')
@@ -101,7 +101,7 @@ var diagnosticsMetrics = [for metric in metricsToEnable: {
   }
 }]
 
-var natGatewayPipName_var = (empty(natGatewayPipName) ? '${natGatewayName}-pip' : natGatewayPipName)
+var natGatewayPipName_var = (empty(natGatewayPipName) ? '${name}-pip' : natGatewayPipName)
 var natGatewayPublicIPPrefix = {
   id: natGatewayPublicIPPrefixId
 }
@@ -164,7 +164,7 @@ resource publicIP_diagnosticSettings 'Microsoft.Insights/diagnosticSettings@2017
 // NAT GATEWAY
 // ===========
 resource natGateway 'Microsoft.Network/natGateways@2021-02-01' = {
-  name: natGatewayName
+  name: name
   location: location
   tags: tags
   sku: {
@@ -188,14 +188,14 @@ module natGateway_rbac '.bicep/nested_rbac.bicep' = [for (roleAssignment, index)
   params: {
     principalIds: roleAssignment.principalIds
     roleDefinitionIdOrName: roleAssignment.roleDefinitionIdOrName
-    resourceName: natGateway.name
+    resourceId: natGateway.id
   }
 }]
 
 @description('The name of the NAT Gateway')
 output natGatewayName string = natGateway.name
 
-@description('The resourceId of the NAT Gateway')
+@description('The resource ID of the NAT Gateway')
 output natGatewayResourceId string = natGateway.id
 
 @description('The resource group the NAT Gateway was deployed into')

@@ -16,7 +16,7 @@ param location string = resourceGroup().location
 @description('Optional. Tags of the Automation Account resource.')
 param tags object = {}
 
-@description('Optional. Customer Usage Attribution id (GUID). This GUID must be previously registered.')
+@description('Optional. Customer Usage Attribution ID (GUID). This GUID must be previously registered.')
 param cuaId string = ''
 
 module pid_cuaId '.bicep/nested_cuaId.bicep' = if (!empty(cuaId)) {
@@ -35,8 +35,8 @@ resource module 'Microsoft.Automation/automationAccounts/modules@2020-01-13-prev
   tags: tags
   properties: {
     contentLink: {
-      uri: version == 'latest' ? '${uri}/${name}' : '${uri}/${name}/${version}'
-      version: version == 'latest' ? null : version
+      uri: version != 'latest' ? '${uri}/${name}/${version}' : '${uri}/${name}'
+      version: version != 'latest' ? version : null
     }
   }
 }
@@ -44,7 +44,7 @@ resource module 'Microsoft.Automation/automationAccounts/modules@2020-01-13-prev
 @description('The name of the deployed module')
 output moduleName string = module.name
 
-@description('The id of the deployed module')
+@description('The resource ID of the deployed module')
 output moduleResourceId string = module.id
 
 @description('The resource group of the deployed module')

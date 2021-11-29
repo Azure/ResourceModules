@@ -2,14 +2,14 @@
     "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
     "contentVersion": "1.0.0.0",
     "parameters": {
-        "containergroupName": {
+        "name": {
             "value": "sxx-az-acg-x-001"
         },
         "containerName": {
             "value": "sxx-az-aci-x-001"
         },
         "image": {
-            "value": "microsoft/aci-helloworld"
+            "value": "mcr.microsoft.com/azuredocs/aci-helloworld"
         },
         "ports": {
             "value": [

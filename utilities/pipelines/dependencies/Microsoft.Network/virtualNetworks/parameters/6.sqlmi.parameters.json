@@ -5,7 +5,7 @@
     "name": {
       "value": "adp-sxx-az-vnet-x-sqlmi"
     },
-    "vnetAddressPrefixes": {
+    "addressPrefixes": {
       "value": [
         "10.6.0.0/16"
       ]

@@ -87,7 +87,7 @@ function Set-ResourceTypesSection {
 
     # Process content
     $sectionContent = [System.Collections.ArrayList]@(
-        '| Resource Type | Api Version |',
+        '| Resource Type | API Version |',
         '| :-- | :-- |'
     )
 
@@ -177,6 +177,115 @@ function Set-ParametersSection {
         $allowed = ($param.allowedValues -is [array]) ? ('[{0}]' -f ($param.allowedValues -join ', ')) : (($param.allowedValues -is [hashtable]) ? '{object}' : $param.allowedValues)
         $description = $param.metadata.description
         $sectionContent += ('| `{0}` | {1} | {2} | {3} | {4} |' -f $paramName, $type, (($defaultValue) ? "``$defaultValue``" : ''), (($allowed) ? "``$allowed``" : ''), $description)
+    }
+
+    # Processing Parameter Usage
+    $ContainsPrivateEndpointParameter = $templateFileContent.parameters.keys -contains 'privateEndpoints'
+    $ContainsRoleAssignmentsParameter = $templateFileContent.parameters.keys -contains 'roleAssignments'
+    $ContainsTagsParameter = $templateFileContent.parameters.keys -contains 'tags'
+
+    $ContainsPrivateEndpointParameterUsage = $readMeFileContent | Select-String -Pattern "parameter usage: ``private endpoint``"
+    $ContainsRoleAssignmentsParameterUsage = $readMeFileContent | Select-String -Pattern "parameter usage: ``roleAssignments``"
+    $ContainsTagsParameterUsage = $readMeFileContent | Select-String -Pattern "parameter usage: ``tags``"
+
+    $ParameterUsagePrivateEndpoint = @'
+### Parameter Usage: `privateEndpoints`
+
+To use Private Endpoint the following dependencies must be deployed:
+
+- Destination subnet must be created with the following configuration option - `"privateEndpointNetworkPolicies": "Disabled"`.  Setting this option acknowledges that NSG rules are not applied to Private Endpoints (this capability is coming soon). A full example is available in the Virtual Network Module.
+- Although not strictly required, it is highly recommended to first create a private DNS Zone to host Private Endpoint DNS records. See [Azure Private Endpoint DNS configuration](https://docs.microsoft.com/en-us/azure/private-link/private-endpoint-dns) for more information.
+
+```json
+"privateEndpoints": {
+    "value": [
+        // Example showing all available fields
+        {
+            "name": "sxx-az-sa-cac-y-123-pe", // Optional: Name will be automatically generated if one is not provided here
+            "subnetResourceId": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/virtualNetworks/sxx-az-vnet-x-001/subnets/sxx-az-subnet-x-001",
+            "service": "blob",
+            "privateDnsZoneResourceIds": [ // Optional: No DNS record will be created if a private DNS zone Resource ID is not specified
+                "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/privateDnsZones/privatelink.blob.core.windows.net"
+            ],
+            "customDnsConfigs": [ // Optional
+                {
+                    "fqdn": "customname.test.local",
+                    "ipAddresses": [
+                        "10.10.10.10"
+                    ]
+                }
+            ]
+        },
+        // Example showing only mandatory fields
+        {
+            "subnetResourceId": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/virtualNetworks/sxx-az-vnet-x-001/subnets/sxx-az-subnet-x-001",
+            "service": "file"
+        }
+    ]
+}
+```
+'@
+
+    $ParameterUsageRoleAssignments = @'
+### Parameter Usage: `roleAssignments`
+
+```json
+"roleAssignments": {
+    "value": [
+        {
+            "roleDefinitionIdOrName": "Desktop Virtualization User",
+            "principalIds": [
+                "12345678-1234-1234-1234-123456789012", // object 1
+                "78945612-1234-1234-1234-123456789012" // object 2
+            ]
+        },
+        {
+            "roleDefinitionIdOrName": "Reader",
+            "principalIds": [
+                "12345678-1234-1234-1234-123456789012", // object 1
+                "78945612-1234-1234-1234-123456789012" // object 2
+            ]
+        },
+        {
+            "roleDefinitionIdOrName": "/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11",
+            "principalIds": [
+                "12345678-1234-1234-1234-123456789012" // object 1
+            ]
+        }
+    ]
+}
+```
+'@
+
+    $ParameterUsageTags = @'
+### Parameter Usage: `tags`
+
+Tag names and tag values can be provided as needed. A tag can be left without a value.
+
+```json
+"tags": {
+    "value": {
+        "Environment": "Non-Prod",
+        "Contact": "test.user@testcompany.com",
+        "PurchaseOrder": "1234",
+        "CostCenter": "7890",
+        "ServiceName": "DeploymentValidation",
+        "Role": "DeploymentValidation"
+    }
+}
+```
+'@
+
+    if ($ContainsPrivateEndpointParameter -and -not $ContainsPrivateEndpointParameterUsage) {
+        $sectionContent += '', $ParameterUsagePrivateEndpoint
+    }
+
+    if ($ContainsRoleAssignmentsParameter -and -not $ContainsRoleAssignmentsParameterUsage) {
+        $sectionContent += '', $ParameterUsageRoleAssignments
+    }
+
+    if ($ContainsTagsParameter -and -not $ContainsTagsParameterUsage) {
+        $sectionContent += '', $ParameterUsageTags
     }
 
     # Build result
@@ -375,18 +484,22 @@ function Set-ModuleReadMe {
         $templateFileContent = ConvertFrom-Json (Get-Content $TemplateFilePath -Encoding 'utf8' -Raw) -ErrorAction Stop -AsHashtable
     }
 
+    $fullResourcePath = (Split-Path $TemplateFilePath -Parent).Replace('\', '/').split('/arm/')[1]
+
     # Check readme
     if (-not (Test-Path $ReadMeFilePath) -or ([String]::IsNullOrEmpty((Get-Content $ReadMeFilePath -Raw)))) {
         # Create new readme file
 
         # Build resource name
-        $TextInfo = (Get-Culture).TextInfo
-        $serviceIdentifiers = (Split-Path $TemplateFilePath -Parent).Replace('\', '/').split('/arm/')[1].Replace('Microsoft.', '').Replace('/.', '/').Split('/') | ForEach-Object { $TextInfo.ToTitleCase($_) }
-        $assumedResourceName = $serviceIdentifiers -join ''
+        $serviceIdentifiers = $fullResourcePath.Replace('Microsoft.', '').Replace('/.', '/').Split('/')
+        $serviceIdentifiers = $serviceIdentifiers | ForEach-Object { $_.substring(0, 1).toupper() + $_.substring(1) }
+        $serviceIdentifiers = $serviceIdentifiers | ForEach-Object { $_ -creplace '(?<=\w)([A-Z])', '$1' }
+        $assumedResourceName = $serviceIdentifiers -join ' '
 
         $initialContent = @(
-            "# $assumedResourceName",
+            "# $assumedResourceName ``[$fullResourcePath]``",
             '',
+            "This module deploys $assumedResourceName."
             '// TODO: Replace Resource and fill in description',
             ''
             '## Resource Types',
@@ -409,13 +522,7 @@ function Set-ModuleReadMe {
 
     # Update title
     if ($TemplateFilePath.Replace('\', '/') -like '*/arm/*') {
-        $fullResourcePath = 'Microsoft.{0}' -f (Split-Path $TemplateFilePath -Parent).Replace('\', '/').Split('/Microsoft.')[1]
 
-        if ($fullResourcePath -clike '*Resources/*') {
-            # Deal with original '*Resources' child-resource folder
-            $cutOutPath = $fullResourcePath -split '/(.*)Resources/(.*)' | Where-Object { -not [String]::IsNullOrEmpty($_) }
-            $fullResourcePath = $cutOutPath -join '/'
-        }
         if ($readMeFileContent[0] -notlike "*``[$fullResourcePath]``") {
             # Cut outdated
             $readMeFileContent[0] = $readMeFileContent[0].Split('`[')[0]
@@ -423,6 +530,8 @@ function Set-ModuleReadMe {
             # Add latest
             $readMeFileContent[0] = '{0} `[{1}]`' -f $readMeFileContent[0], $fullResourcePath
         }
+        # Remove excess whitespace
+        $readMeFileContent[0] = $readMeFileContent[0] -replace '\s+', ' '
     }
 
     if ($SectionsToRefresh -contains 'Resource Types') {

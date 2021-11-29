@@ -1,6 +1,6 @@
 param principalIds array
 param roleDefinitionIdOrName string
-param resourceName string
+param resourceId string
 
 var builtInRoleNames = {
   'Owner': subscriptionResourceId('Microsoft.Authorization/roleDefinitions', '8e3af657-a8ff-443c-a75c-2fe8c4bcb635')
@@ -23,7 +23,7 @@ var builtInRoleNames = {
 }
 
 resource automationAccount 'Microsoft.Automation/automationAccounts@2020-01-13-preview' existing = {
-  name: resourceName
+  name: last(split(resourceId, '/'))
 }
 
 resource roleAssignment 'Microsoft.Authorization/roleAssignments@2020-04-01-preview' = [for principalId in principalIds: {

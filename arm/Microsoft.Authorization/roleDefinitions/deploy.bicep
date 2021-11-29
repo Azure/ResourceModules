@@ -18,10 +18,10 @@ param dataActions array = []
 @description('Optional. List of denied data actions.')
 param notDataActions array = []
 
-@description('Optional. The ID of the Management Group where the Role Definition and Target Scope will be applied to. Cannot use when Subscription or Resource Groups Parameters are used.')
+@description('Optional. The group ID of the Management Group where the Role Definition and Target Scope will be applied to. Cannot use when Subscription or Resource Groups Parameters are used.')
 param managementGroupId string = ''
 
-@description('Optional. The Subscription ID where the Role Definition and Target Scope will be applied to. Use for both Subscription level and Resource Group Level.')
+@description('Optional. The subscription ID where the Role Definition and Target Scope will be applied to. Use for both Subscription level and Resource Group Level.')
 param subscriptionId string = ''
 
 @description('Optional. The name of the Resource Group where the Role Definition and Target Scope will be applied to.')

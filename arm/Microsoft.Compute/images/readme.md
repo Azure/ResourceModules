@@ -4,7 +4,7 @@ This module deploys Images.
 
 ## Resource types
 
-| Resource Type | Api Version |
+| Resource Type | API Version |
 | :-- | :-- |
 | `Microsoft.Authorization/roleAssignments` | 2020-04-01-preview |
 | `Microsoft.Compute/images` | 2021-04-01 |
@@ -13,7 +13,7 @@ This module deploys Images.
 
 | Parameter Name | Type | Default Value | Possible Values | Description |
 | :-- | :-- | :-- | :-- | :-- |
-| `cuaId` | string |  |  | Optional. Customer Usage Attribution id (GUID). This GUID must be previously registered |
+| `cuaId` | string |  |  | Optional. Customer Usage Attribution ID (GUID). This GUID must be previously registered |
 | `hyperVGeneration` | string | `V1` |  | Optional. Gets the HyperVGenerationType of the VirtualMachine created from the image. - V1 or V2 |
 | `imageName` | string |  |  | Required. The name of the image. |
 | `location` | string | `[resourceGroup().location]` |  | Optional. Location for all resources. |
@@ -77,7 +77,7 @@ Tag names and tag values can be provided as needed. A tag can be left without a 
 | :-- | :-- | :-- |
 | `imageName` | string | The name of the image |
 | `imageResourceGroup` | string | The resource group the image was deployed into |
-| `imageResourceId` | string | The resourceId of the image |
+| `imageResourceId` | string | The resource ID of the image |
 
 ## Template references
 

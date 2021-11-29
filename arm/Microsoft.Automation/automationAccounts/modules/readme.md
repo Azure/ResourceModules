@@ -4,7 +4,7 @@ This module deploys an Azure Automation Account Module.
 
 ## Resource Types
 
-| Resource Type | Api Version |
+| Resource Type | API Version |
 | :-- | :-- |
 | `Microsoft.Automation/automationAccounts/modules` | 2020-01-13-preview |
 
@@ -13,7 +13,7 @@ This module deploys an Azure Automation Account Module.
 | Parameter Name | Type | Default Value | Possible Values | Description |
 | :-- | :-- | :-- | :-- | :-- |
 | `automationAccountName` | string |  |  | Required. Name of the parent Automation Account. |
-| `cuaId` | string |  |  | Optional. Customer Usage Attribution id (GUID). This GUID must be previously registered. |
+| `cuaId` | string |  |  | Optional. Customer Usage Attribution ID (GUID). This GUID must be previously registered. |
 | `location` | string | `[resourceGroup().location]` |  | Optional. Location for all resources. |
 | `name` | string |  |  | Required. Name of the Automation Account module. |
 | `tags` | object | `{object}` |  | Optional. Tags of the Automation Account resource. |
@@ -26,7 +26,7 @@ This module deploys an Azure Automation Account Module.
 | :-- | :-- | :-- |
 | `moduleName` | string | The name of the deployed module |
 | `moduleResourceGroup` | string | The resource group of the deployed module |
-| `moduleResourceId` | string | The id of the deployed module |
+| `moduleResourceId` | string | The resource ID of the deployed module |
 
 ## Template references
 

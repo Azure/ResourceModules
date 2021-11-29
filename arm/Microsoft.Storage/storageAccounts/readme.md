@@ -6,7 +6,7 @@ The default parameter values are based on the needs of deploying a diagnostic st
 
 ## Resource types
 
-| Resource Type | Api Version |
+| Resource Type | API Version |
 | :-- | :-- |
 | `Microsoft.Authorization/locks` | 2016-09-01 |
 | `Microsoft.Authorization/roleAssignments` | 2020-04-01-preview |
@@ -32,7 +32,7 @@ The default parameter values are based on the needs of deploying a diagnostic st
 | `azureFilesIdentityBasedAuthentication` | object | `{object}` |  | Optional. Provides the identity based authentication settings for Azure Files. |
 | `basetime` | string | `[utcNow('u')]` |  | Generated. Do not provide a value! This date value is used to generate a SAS token to access the modules. |
 | `blobServices` | _[blobServices](blobServices/readme.md)_ object | `{object}` |  | Optional. Blob service and containers to deploy |
-| `cuaId` | string |  |  | Optional. Customer Usage Attribution id (GUID). This GUID must be previously registered |
+| `cuaId` | string |  |  | Optional. Customer Usage Attribution ID (GUID). This GUID must be previously registered |
 | `enableHierarchicalNamespace` | bool |  |  | Optional. If true, enables Hierarchical Namespace for the storage account |
 | `fileServices` | _[fileServices](fileServices/readme.md)_ object | `{object}` |  | Optional. File service and shares to deploy |
 | `location` | string | `[resourceGroup().location]` |  | Optional. Location for all resources. |
@@ -131,10 +131,10 @@ To use Private Endpoint the following dependencies must be deployed:
         // Example showing all available fields
         {
             "name": "sxx-az-sa-cac-y-123-pe", // Optional: Name will be automatically generated if one is not provided here
-            "subnetResourceId": "/subscriptions/8629be3b-96bc-482d-a04b-ffff597c65a2/resourceGroups/validation-rg/providers/Microsoft.Network/virtualNetworks/sxx-az-vnet-x-001/subnets/sxx-az-subnet-x-001",
+            "subnetResourceId": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/virtualNetworks/sxx-az-vnet-x-001/subnets/sxx-az-subnet-x-001",
             "service": "blob",
             "privateDnsZoneResourceIds": [ // Optional: No DNS record will be created if a private DNS zone Resource ID is not specified
-                "/subscriptions/8629be3b-96bc-482d-a04b-ffff597c65a2/resourceGroups/validation-rg/providers/Microsoft.Network/privateDnsZones/privatelink.blob.core.windows.net"
+                "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/privateDnsZones/privatelink.blob.core.windows.net"
             ],
             "customDnsConfigs": [ // Optional
                 {
@@ -147,7 +147,7 @@ To use Private Endpoint the following dependencies must be deployed:
         },
         // Example showing only mandatory fields
         {
-            "subnetResourceId": "/subscriptions/8629be3b-96bc-482d-a04b-ffff597c65a2/resourceGroups/validation-rg/providers/Microsoft.Network/virtualNetworks/sxx-az-vnet-x-001/subnets/sxx-az-subnet-x-001",
+            "subnetResourceId": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/virtualNetworks/sxx-az-vnet-x-001/subnets/sxx-az-subnet-x-001",
             "service": "file"
         }
     ]
@@ -158,11 +158,11 @@ To use Private Endpoint the following dependencies must be deployed:
 
 | Output Name | Type | Description |
 | :-- | :-- | :-- |
-| `assignedIdentityID` | string | The resource id of the assigned identity, if any |
+| `assignedIdentityID` | string | The resource ID of the assigned identity, if any |
 | `storageAccountName` | string | The name of the deployed storage account |
 | `storageAccountPrimaryBlobEndpoint` | string | The primary blob endpoint reference if blob services are deployed. |
 | `storageAccountResourceGroup` | string | The resource group of the deployed storage account |
-| `storageAccountResourceId` | string | The resource Id of the deployed storage account |
+| `storageAccountResourceId` | string | The resource ID of the deployed storage account |
 
 ## Considerations
 

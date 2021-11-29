@@ -1,10 +1,10 @@
-# AzureSQLServer `[Microsoft.Sql/servers]`
+# Sql Servers `[Microsoft.Sql/servers]`
 
-This module deploys an Azure SQL Server.
+This module deploys Sql Servers.
 
-## Resource types
+## Resource Types
 
-| Resource Type | Api Version |
+| Resource Type | API Version |
 | :-- | :-- |
 | `Microsoft.Authorization/locks` | 2016-09-01 |
 | `Microsoft.Authorization/roleAssignments` | 2020-04-01-preview |
@@ -19,7 +19,7 @@ This module deploys an Azure SQL Server.
 | :-- | :-- | :-- | :-- | :-- |
 | `administratorLogin` | string |  |  | Required. Administrator username for the server. |
 | `administratorLoginPassword` | secureString |  |  | Required. The administrator login password. |
-| `cuaId` | string |  |  | Optional. Customer Usage Attribution id (GUID). This GUID must be previously registered |
+| `cuaId` | string |  |  | Optional. Customer Usage Attribution ID (GUID). This GUID must be previously registered |
 | `databases` | _[databases](databases/readme.md)_ array | `[]` |  | Optional. The databases to create in the server |
 | `firewallRules` | _[firewallRules](firewallRules/readme.md)_ array | `[]` |  | Optional. The firewall rules to create in the server |
 | `location` | string | `[resourceGroup().location]` |  | Optional. Location for all resources. |

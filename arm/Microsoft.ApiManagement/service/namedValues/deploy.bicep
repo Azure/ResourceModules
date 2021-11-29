@@ -1,7 +1,7 @@
-@description('Required. The name of the of the Api Management service.')
+@description('Required. The name of the of the API Management service.')
 param apiManagementServiceName string = ''
 
-@description('Optional. Customer Usage Attribution id (GUID). This GUID must be previously registered')
+@description('Optional. Customer Usage Attribution ID (GUID). This GUID must be previously registered')
 param cuaId string = ''
 
 @description('Required. Unique name of NamedValue. It may contain only letters, digits, period, dash, and underscore characters.')
@@ -29,8 +29,13 @@ module pid_cuaId '.bicep/nested_cuaId.bicep' = if (!empty(cuaId)) {
   params: {}
 }
 
+resource service 'Microsoft.ApiManagement/service@2021-04-01-preview' existing = {
+  name: apiManagementServiceName
+}
+
 resource namedValue 'Microsoft.ApiManagement/service/namedValues@2020-06-01-preview' = {
-  name: '${apiManagementServiceName}/${name}'
+  name: name
+  parent: service
   properties: {
     tags: !empty(namedValueTags) ? namedValueTags : null
     secret: secret
@@ -40,7 +45,7 @@ resource namedValue 'Microsoft.ApiManagement/service/namedValues@2020-06-01-prev
   }
 }
 
-@description('The resourceId of the named value')
+@description('The resource ID of the named value')
 output namedValueResourceId string = namedValue.id
 
 @description('The name of the named value')

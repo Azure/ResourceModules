@@ -1,5 +1,11 @@
 @description('Required. The name of the Azure Factory to create')
-param dataFactoryName string
+param name string
+
+@description('Optional. The name of the Managed Virtual Network')
+param managedVirtualNetworkName string = ''
+
+@description('Optional. The object for the configuration of a Integration Runtime')
+param integrationRuntime object = {}
 
 @description('Optional. Location for all Resources.')
 param location string = resourceGroup().location
@@ -10,7 +16,7 @@ param publicNetworkAccess bool = true
 @description('Optional. Boolean to define whether or not to configure git during template deployment.')
 param gitConfigureLater bool = true
 
-@description('Optional. Repo type - can be \'FactoryVSTSConfiguration\' or \'FactoryGitHubConfiguration\'. Default is \'FactoryVSTSConfiguration\'.')
+@description('Optional. Repository type - can be \'FactoryVSTSConfiguration\' or \'FactoryGitHubConfiguration\'. Default is \'FactoryVSTSConfiguration\'.')
 param gitRepoType string = 'FactoryVSTSConfiguration'
 
 @description('Optional. The account name.')
@@ -33,10 +39,10 @@ param gitRootFolder string = '/'
 @maxValue(365)
 param diagnosticLogsRetentionInDays int = 365
 
-@description('Optional. Resource identifier of the Diagnostic Storage Account.')
+@description('Optional. Resource ID of the diagnostic storage account.')
 param diagnosticStorageAccountId string = ''
 
-@description('Optional. Resource identifier of Log Analytics.')
+@description('Optional. Resource identifier of log analytics.')
 param workspaceId string = ''
 
 @allowed([
@@ -104,7 +110,7 @@ param roleAssignments array = []
 @description('Optional. Tags of the resource.')
 param tags object = {}
 
-@description('Optional. Customer Usage Attribution id (GUID). This GUID must be previously registered')
+@description('Optional. Customer Usage Attribution ID (GUID). This GUID must be previously registered')
 param cuaId string = ''
 
 module pid_cuaId '.bicep/nested_cuaId.bicep' = if (!empty(cuaId)) {
@@ -113,38 +119,34 @@ module pid_cuaId '.bicep/nested_cuaId.bicep' = if (!empty(cuaId)) {
 }
 
 resource dataFactory 'Microsoft.DataFactory/factories@2018-06-01' = {
-  name: dataFactoryName
+  name: name
   location: location
   tags: tags
   identity: {
     type: 'SystemAssigned'
   }
   properties: {
-    repoConfiguration: (bool(gitConfigureLater) ? null : json('{"type": "${gitRepoType}","accountName": "${gitAccountName}","repositoryName": "${gitRepositoryName}",${((gitRepoType == 'FactoryVSTSConfiguration') ? '"projectName": "${gitProjectName}",' : '')}"collaborationBranch": "${gitCollaborationBranch}","rootFolder": "${gitRootFolder}"}'))
-    publicNetworkAccess: (bool(publicNetworkAccess) ? 'Enabled' : 'Disabled')
+    repoConfiguration: bool(gitConfigureLater) ? null : json('{"type": "${gitRepoType}","accountName": "${gitAccountName}","repositoryName": "${gitRepositoryName}",${((gitRepoType == 'FactoryVSTSConfiguration') ? '"projectName": "${gitProjectName}",' : '')}"collaborationBranch": "${gitCollaborationBranch}","rootFolder": "${gitRootFolder}"}')
+    publicNetworkAccess: bool(publicNetworkAccess) ? 'Enabled' : 'Disabled'
   }
 }
 
-resource dataFactory_managedVirtualNetwork 'Microsoft.DataFactory/factories/managedVirtualNetworks@2018-06-01' = {
-  parent: dataFactory
-  name: 'default'
-  properties: {}
+module dataFactory_managedVirtualNetwork 'managedVirtualNetwork/deploy.bicep' = if (!empty(managedVirtualNetworkName)) {
+  name: '${uniqueString(deployment().name, location)}-ManagedVirtualNetwork'
+  params: {
+    name: managedVirtualNetworkName
+    dataFactoryName: dataFactory.name
+  }
 }
 
-resource dataFactory_integrationRuntime 'Microsoft.DataFactory/factories/integrationRuntimes@2018-06-01' = {
-  parent: dataFactory
-  name: 'AutoResolveIntegrationRuntime'
-  properties: {
-    type: 'Managed'
-    managedVirtualNetwork: {
-      referenceName: 'default'
-      type: 'ManagedVirtualNetworkReference'
-    }
-    typeProperties: {
-      computeProperties: {
-        location: 'AutoResolve'
-      }
-    }
+module dataFactory_integrationRuntime 'integrationRuntime/deploy.bicep' = if (!empty(integrationRuntime)) {
+  name: '${uniqueString(deployment().name, location)}-IntegrationRuntime'
+  params: {
+    dataFactoryName: dataFactory.name
+    name: integrationRuntime.name
+    type: integrationRuntime.type
+    managedVirtualNetworkName: contains(integrationRuntime, 'managedVirtualNetworkName') ? integrationRuntime.managedVirtualNetworkName : ''
+    typeProperties: integrationRuntime.typeProperties
   }
   dependsOn: [
     dataFactory_managedVirtualNetwork
@@ -163,10 +165,10 @@ resource dataFactory_lock 'Microsoft.Authorization/locks@2016-09-01' = if (lock 
 resource dataFactory_diagnosticSettings 'Microsoft.Insights/diagnosticsettings@2017-05-01-preview' = if ((!empty(diagnosticStorageAccountId)) || (!empty(workspaceId))) {
   name: '${dataFactory.name}-diagnosticSettings'
   properties: {
-    storageAccountId: (empty(diagnosticStorageAccountId) ? null : diagnosticStorageAccountId)
-    workspaceId: (empty(workspaceId) ? null : workspaceId)
-    metrics: ((empty(diagnosticStorageAccountId) && empty(workspaceId)) ? null : diagnosticsMetrics)
-    logs: ((empty(diagnosticStorageAccountId) && empty(workspaceId)) ? null : diagnosticsLogs)
+    storageAccountId: empty(diagnosticStorageAccountId) ? null : diagnosticStorageAccountId
+    workspaceId: empty(workspaceId) ? null : workspaceId
+    metrics: (empty(diagnosticStorageAccountId) && empty(workspaceId)) ? null : diagnosticsMetrics
+    logs: (empty(diagnosticStorageAccountId) && empty(workspaceId)) ? null : diagnosticsLogs
   }
   scope: dataFactory
 }
@@ -176,14 +178,14 @@ module dataFactory_rbac '.bicep/nested_rbac.bicep' = [for (roleAssignment, index
   params: {
     principalIds: roleAssignment.principalIds
     roleDefinitionIdOrName: roleAssignment.roleDefinitionIdOrName
-    resourceName: dataFactory.name
+    resourceId: dataFactory.id
   }
 }]
 
 @description('The Name of the Azure Data Factory instance.')
 output dataFactoryName string = dataFactory.name
 
-@description('The Resource Id of the Data factory.')
+@description('The Resource ID of the Data factory.')
 output dataFactoryResourceId string = dataFactory.id
 
 @description('The name of the Resource Group with the Data factory.')
