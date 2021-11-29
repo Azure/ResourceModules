@@ -36,10 +36,6 @@ Tag names and tag values can be provided as needed. A tag can be left without a 
 }
 ```
 
-### Parameter Usage: `<ParameterPlaceholder>`
-
-// TODO: Fill in Parameter usage
-
 ## Outputs
 
 | Output Name | Type | Description |
