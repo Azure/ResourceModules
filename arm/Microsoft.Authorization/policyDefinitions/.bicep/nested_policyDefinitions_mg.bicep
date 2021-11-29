@@ -39,10 +39,10 @@ resource policyDefinition 'Microsoft.Authorization/policyDefinitions@2021-06-01'
   properties: {
     policyType: 'Custom'
     mode: mode
-    displayName: empty(displayName) ? null : displayName
-    description: empty(description) ? null : description
-    metadata: empty(metadata) ? null : metadata
-    parameters: empty(parameters) ? null : parameters
+    displayName: !empty(displayName) ? displayName : null
+    description: !empty(description) ? description : null
+    metadata: !empty(metadata) ? metadata : null
+    parameters: !empty(parameters) ? parameters : null
     policyRule: policyRule
   }
 }

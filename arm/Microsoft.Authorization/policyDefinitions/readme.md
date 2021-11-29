@@ -16,7 +16,7 @@
 | `managementGroupId` | string |  |  | Optional. The group ID of the Management Group (Scope). Cannot be used with subscriptionId and does not support tenant level deployment (i.e. '/') |
 | `metadata` | object | `{object}` |  | Optional. The policy Definition metadata. Metadata is an open ended object and is typically a collection of key-value pairs. |
 | `mode` | string | `All` | `[All, Indexed, Microsoft.KeyVault.Data, Microsoft.ContainerService.Data, Microsoft.Kubernetes.Data]` | Optional. The policy definition mode. Default is All, Some examples are All, Indexed, Microsoft.KeyVault.Data. |
-| `name` | string |  |  | Required. Specifies the name of the policy definition. Space characters will be replaced by (-) and converted to lowercase |
+| `name` | string |  |  | Required. Specifies the name of the policy definition. |
 | `parameters` | object | `{object}` |  | Optional. The policy definition parameters that can be used in policy definition references. |
 | `policyRule` | object |  |  | Required. The Policy Rule details for the Policy Definition |
 | `subscriptionId` | string |  |  | Optional. The subscription ID of the subscription (Scope). Cannot be used with managementGroupId |
@@ -47,8 +47,8 @@ To deploy resource to an Azure Subscription, provide the `subscriptionId` as an 
 
 | Output Name | Type | Description |
 | :-- | :-- | :-- |
-| `PolicyDefinitionName` | string | Policy Definition Name |
-| `policyDefinitionResourceId` | string | Policy Definition Resource ID |
+| `policyDefinitionName` | string | Policy Definition Name |
+| `policyDefinitionResourceId` | string | Policy Definition resource ID |
 | `roleDefinitionIds` | array | Policy Definition Role Definition IDs |
 
 ## Template references

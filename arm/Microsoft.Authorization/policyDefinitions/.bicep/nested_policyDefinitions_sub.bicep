@@ -1,6 +1,6 @@
 targetScope = 'subscription'
 
-@sys.description('Required. Specifies the name of the policy definition. Space characters will be replaced by (-) and converted to lowercase')
+@sys.description('Required. Specifies the name of the policy definition.')
 @maxLength(64)
 param name string
 
@@ -32,17 +32,15 @@ param policyRule object
 @sys.description('Optional. The subscription ID of the subscription')
 param subscriptionId string = subscription().subscriptionId
 
-var name_var = toLower(replace(name, ' ', '-'))
-
 resource policyDefinition 'Microsoft.Authorization/policyDefinitions@2021-06-01' = {
-  name: name_var
+  name: name
   properties: {
     policyType: 'Custom'
     mode: mode
-    displayName: empty(displayName) ? null : displayName
-    description: empty(description) ? null : description
-    metadata: empty(metadata) ? null : metadata
-    parameters: empty(parameters) ? null : parameters
+    displayName: !empty(displayName) ? displayName : null
+    description: !empty(description) ? description : null
+    metadata: !empty(metadata) ? metadata : null
+    parameters: !empty(parameters) ? parameters : null
     policyRule: policyRule
   }
 }
@@ -50,7 +48,7 @@ resource policyDefinition 'Microsoft.Authorization/policyDefinitions@2021-06-01'
 @sys.description('Policy Definition Name')
 output policyDefinitionName string = policyDefinition.name
 
-@sys.description('Policy Definition Resource ID')
+@sys.description('Policy Definition resource ID')
 output policyDefinitionResourceId string = subscriptionResourceId(subscriptionId, 'Microsoft.Authorization/policyDefinitions', policyDefinition.name)
 
 @sys.description('Policy Definition Role Definition IDs')

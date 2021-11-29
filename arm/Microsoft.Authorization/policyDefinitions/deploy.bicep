@@ -1,6 +1,6 @@
 targetScope = 'managementGroup'
 
-@sys.description('Required. Specifies the name of the policy definition. Space characters will be replaced by (-) and converted to lowercase')
+@sys.description('Required. Specifies the name of the policy definition.')
 @maxLength(64)
 param name string
 
@@ -38,19 +38,17 @@ param subscriptionId string = ''
 @sys.description('Optional. Location for all resources.')
 param location string = deployment().location
 
-var name_var = toLower(replace(name, ' ', '-'))
-
 module policyDefinition_mg '.bicep/nested_policyDefinitions_mg.bicep' = if (empty(subscriptionId) && !empty(managementGroupId)) {
   name: '${uniqueString(deployment().name, location)}-policyDefinition-mg-Module'
   scope: managementGroup(managementGroupId)
   params: {
-    name: name_var
+    name: name
     managementGroupId: managementGroupId
     mode: mode
-    displayName: empty(displayName) ? '' : displayName
-    description: empty(description) ? '' : description
-    metadata: empty(metadata) ? {} : metadata
-    parameters: empty(parameters) ? {} : parameters
+    displayName: !empty(displayName) ? displayName : ''
+    description: !empty(description) ? description : ''
+    metadata: !empty(metadata) ? metadata : {}
+    parameters: !empty(parameters) ? parameters : {}
     policyRule: policyRule
   }
 }
@@ -59,20 +57,20 @@ module policyDefinition_sub '.bicep/nested_policyDefinitions_sub.bicep' = if (em
   name: '${uniqueString(deployment().name, location)}-policyDefinition-sub-Module'
   scope: subscription(subscriptionId)
   params: {
-    name: name_var
+    name: name
     subscriptionId: subscriptionId
     mode: mode
-    displayName: empty(displayName) ? '' : displayName
-    description: empty(description) ? '' : description
-    metadata: empty(metadata) ? {} : metadata
-    parameters: empty(parameters) ? {} : parameters
+    displayName: !empty(displayName) ? displayName : ''
+    description: !empty(description) ? description : ''
+    metadata: !empty(metadata) ? metadata : {}
+    parameters: !empty(parameters) ? parameters : {}
     policyRule: policyRule
   }
 }
 
 @sys.description('Policy Definition Name')
 output policyDefinitionName string = !empty(managementGroupId) ? policyDefinition_mg.outputs.policyDefinitionName : policyDefinition_sub.outputs.policyDefinitionName
-@sys.description('Policy Definition Resource ID')
+@sys.description('Policy Definition resource ID')
 output policyDefinitionResourceId string = !empty(managementGroupId) ? policyDefinition_mg.outputs.policyDefinitionResourceId : policyDefinition_sub.outputs.policyDefinitionResourceId
 @sys.description('Policy Definition Role Definition IDs')
 output roleDefinitionIds array = !empty(managementGroupId) ? policyDefinition_mg.outputs.roleDefinitionIds : policyDefinition_sub.outputs.roleDefinitionIds
