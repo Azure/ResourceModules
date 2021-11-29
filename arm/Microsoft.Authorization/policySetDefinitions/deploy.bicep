@@ -64,7 +64,7 @@ module policySetDefinition_sub '.bicep/nested_policySetDefinition_sub.bicep' = i
 }
 
 @sys.description('Policy Set Definition Name')
-output policySetDefinitionName string = !empty(managementGroupId) ? policySetDefinition_mg.outputs.name : policySetDefinition_sub.outputs.name
+output policySetDefinitionName string = !empty(managementGroupId) ? policySetDefinition_mg.outputs.policySetDefinitionName : policySetDefinition_sub.outputs.policySetDefinitionName
 
 @sys.description('Policy Set Definition Resource ID')
 output policySetDefinitionResourceId string = !empty(managementGroupId) ? policySetDefinition_mg.outputs.policySetDefinitionResourceId : policySetDefinition_sub.outputs.policySetDefinitionResourceId

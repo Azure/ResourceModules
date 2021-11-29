@@ -23,5 +23,5 @@ resource policySetDefinition 'Microsoft.Authorization/policySetDefinitions@2021-
   }
 }
 
-output name string = policySetDefinition.name
+output policySetDefinitionName string = policySetDefinition.name
 output policySetDefinitionResourceId string = extensionResourceId(tenantResourceId('Microsoft.Management/managementGroups', managementGroupId), 'Microsoft.Authorization/policySetDefinitions', policySetDefinition.name)
