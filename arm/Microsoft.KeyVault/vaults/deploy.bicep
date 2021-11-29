@@ -63,9 +63,6 @@ param networkAcls object = {}
 @description('Optional. Virtual Network resource identifier, if networkAcls is passed, this value must be passed as well')
 param vNetId string = ''
 
-@description('Optional. The name of the Diagnostic setting.')
-param diagnosticSettingName string = 'service'
-
 @description('Optional. Specifies the number of days that logs will be kept for; a value of 0 will retain data indefinitely.')
 @minValue(0)
 @maxValue(365)
@@ -193,7 +190,7 @@ resource keyVault_lock 'Microsoft.Authorization/locks@2016-09-01' = if (lock != 
 }
 
 resource keyVault_diagnosticSettings 'Microsoft.Insights/diagnosticsettings@2017-05-01-preview' = if ((!empty(diagnosticStorageAccountId)) || (!empty(workspaceId)) || (!empty(eventHubAuthorizationRuleId)) || (!empty(eventHubName))) {
-  name: '${name_var}-${diagnosticSettingName}'
+  name: '${name_var}-diagnosticSettingName'
   properties: {
     storageAccountId: (empty(diagnosticStorageAccountId) ? null : diagnosticStorageAccountId)
     workspaceId: (empty(workspaceId) ? null : workspaceId)
