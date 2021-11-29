@@ -1,6 +1,6 @@
 targetScope = 'managementGroup'
 
-@sys.description('Required. Specifies the name of the policy definition. Space characters will be replaced by (-) and converted to lowercase')
+@sys.description('Required. Specifies the name of the policy definition.')
 @maxLength(64)
 param name string
 
@@ -32,10 +32,8 @@ param policyRule object
 @sys.description('Required. The group ID of the Management Group')
 param managementGroupId string
 
-var name_var = toLower(replace(name, ' ', '-'))
-
 resource policyDefinition 'Microsoft.Authorization/policyDefinitions@2021-06-01' = {
-  name: name_var
+  name: name
   properties: {
     policyType: 'Custom'
     mode: mode
