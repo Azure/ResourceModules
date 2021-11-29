@@ -28,8 +28,8 @@ function Get-EndIndex {
         [int] $startIndex,
 
         [Parameter(Mandatory = $false)]
-        [ValidateSet('table', 'list')]
-        [string] $ContentType = 'table'
+        [ValidateSet('table', 'list', 'none')]
+        [string] $ContentType = 'none'
     )
 
     # shift one further
@@ -105,8 +105,8 @@ function Merge-FileWithNewContent {
         [string] $SectionStartIdentifier,
 
         [Parameter(Mandatory = $false)]
-        [ValidateSet('table', 'list')]
-        [string] $ContentType = 'table'
+        [ValidateSet('table', 'list', 'none')]
+        [string] $ContentType = 'none'
     )
 
     $startIndex = 0
@@ -161,6 +161,22 @@ function Merge-FileWithNewContent {
 
 
                 $startContent = $OldContent[0..($listStartIndex - 1)]
+
+                if ($startIndex -eq $ReadMeFileContent.Count - 1) {
+                    # Not found section until end of file. Assuming it does not exist
+                    $endContent = @()
+                    if ($ReadMeFileContent[$startIndex] -notcontains $SectionStartIdentifier) {
+                        $NewContent = @('', $SectionStartIdentifier) + $NewContent
+                    }
+                } else {
+                    $endIndex = Get-EndIndex -ReadMeFileContent $OldContent -startIndex $listStartIndex -ContentType $ContentType
+                    if ($endIndex -ne $OldContent.Count - 1) {
+                        $endContent = $OldContent[$endIndex..($OldContent.Count - 1)]
+                    }
+                }
+            }
+            'none' {
+                $startContent = $OldContent[0..($startIndex - 1)]
 
                 if ($startIndex -eq $ReadMeFileContent.Count - 1) {
                     # Not found section until end of file. Assuming it does not exist

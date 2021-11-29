@@ -101,7 +101,7 @@ function Set-ResourceTypesSection {
 
     # Build result
     if ($PSCmdlet.ShouldProcess('Original file with new resource type content', 'Merge')) {
-        $updatedFileContent = Merge-FileWithNewContent -oldContent $ReadMeFileContent -newContent $sectionContent -SectionStartIdentifier $SectionStartIdentifier
+        $updatedFileContent = Merge-FileWithNewContent -oldContent $ReadMeFileContent -newContent $sectionContent -SectionStartIdentifier $SectionStartIdentifier -contentType 'table'
     }
     return $updatedFileContent
 }
@@ -181,7 +181,7 @@ function Set-ParametersSection {
 
     # Build result
     if ($PSCmdlet.ShouldProcess('Original file with new parameters content', 'Merge')) {
-        $updatedFileContent = Merge-FileWithNewContent -oldContent $ReadMeFileContent -newContent $sectionContent -SectionStartIdentifier $SectionStartIdentifier
+        $updatedFileContent = Merge-FileWithNewContent -oldContent $ReadMeFileContent -newContent $sectionContent -SectionStartIdentifier $SectionStartIdentifier -contentType 'table'
     }
 
     # Build sub-section 'ParameterUsage'
@@ -195,9 +195,10 @@ function Set-ParametersSection {
                     # Build result
                     if ($PSCmdlet.ShouldProcess(('Original file with new parameter usage [{0}] content' -f $parameterName), 'Merge')) {
                         $updateParameterUsageInputObject = @{
-                            OldContent             = $sectionContent
+                            OldContent             = $updatedFileContent
                             NewContent             = Get-Content $sourceFile -Raw
                             SectionStartIdentifier = $SectionStartIdentifier
+                            ContentType            = 'none'
                         }
                         $updatedFileContent = Merge-FileWithNewContent @updateParameterUsageInputObject
                     }
@@ -270,7 +271,7 @@ function Set-OutputsSection {
 
     # Build result
     if ($PSCmdlet.ShouldProcess('Original file with new output content', 'Merge')) {
-        $updatedFileContent = Merge-FileWithNewContent -oldContent $ReadMeFileContent -newContent $sectionContent -SectionStartIdentifier $SectionStartIdentifier
+        $updatedFileContent = Merge-FileWithNewContent -oldContent $ReadMeFileContent -newContent $sectionContent -SectionStartIdentifier $SectionStartIdentifier -contentType 'table'
     }
     return $updatedFileContent
 }
