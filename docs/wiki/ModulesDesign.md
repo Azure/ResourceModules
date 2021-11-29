@@ -109,13 +109,13 @@ There are some constraints that needs to be considered when naming the deploymen
 
 While exceptions might be needed, the following guidance should be followed as much as possible:
 
-- For child-resources of the top-level resource use the following naming structure
+- For child-resources of the top-level resource inside the top-level template (for example the `blobServices` deployment inside the `storageAccount` template) use the following naming structure
 
 ```
 '${uniqueString(deployment().name, location)}-<resource_short_type>'
 ```
 
-- For child-resources, use the following naming structure
+- In child-resource templates (e.g. inside for `containers` in the `blobServices` template), use the following naming structure
 
 ```
 '${deployment().name}-<child_type>[-${index}]'
