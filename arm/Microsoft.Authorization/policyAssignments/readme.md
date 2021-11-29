@@ -1,4 +1,4 @@
-# PolicyAssignment `[Microsoft.Authorization/policyAssignments]`
+# Policy Assignments `[Microsoft.Authorization/policyAssignments]`
 
 ## Resource types
 

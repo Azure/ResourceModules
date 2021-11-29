@@ -1,4 +1,4 @@
-# PolicyExemption `[Microsoft.Authorization/policyExemptions]`
+# Policy Exemptions `[Microsoft.Authorization/policyExemptions]`
 
 ## Resource types
 

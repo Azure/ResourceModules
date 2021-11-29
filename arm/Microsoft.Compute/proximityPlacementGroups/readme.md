@@ -1,6 +1,6 @@
-# ProximityPlacementGroup `[Microsoft.Compute/proximityPlacementGroups]`
+# Proximity Placement Groups `[Microsoft.Compute/proximityPlacementGroups]`
 
-This template deploys a Proximity Placement Group
+This template deploys a proximity placement group.
 
 ## Resource types
 
