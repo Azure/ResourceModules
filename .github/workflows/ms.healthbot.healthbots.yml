@@ -1,4 +1,4 @@
-name: 'HealthBot: Healthbots'
+name: 'HealthBot: HealthBots'
 
 on:
   workflow_dispatch:
