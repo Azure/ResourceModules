@@ -3,24 +3,10 @@
     "contentVersion": "1.0.0.0",
     "parameters": {
         "name": {
-            "value": "test-policy-exempt"
-        },
-        "displayName": {
-            "value": "[Test] policy exempt"
+            "value": "test-policy-exempt-min"
         },
         "policyAssignmentId": {
             "value": "/subscriptions/<<subscriptionId>>/providers/Microsoft.Authorization/policyAssignments/Add-a-tag-to-resources"
-        },
-        "exemptionCategory": {
-            "value": "Waiver"
-        },
-        "metadata": {
-            "value": {
-                "category": "Security"
-            }
-        },
-        "expiresOn": {
-            "value": "2025-10-02T03:57:00.000Z"
         },
         "subscriptionId": {
             "value": "<<subscriptionId>>"
