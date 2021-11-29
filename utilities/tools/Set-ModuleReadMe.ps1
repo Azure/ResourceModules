@@ -179,120 +179,43 @@ function Set-ParametersSection {
         $sectionContent += ('| `{0}` | {1} | {2} | {3} | {4} |' -f $paramName, $type, (($defaultValue) ? "``$defaultValue``" : ''), (($allowed) ? "``$allowed``" : ''), $description)
     }
 
-    # Processing Parameter Usage
-    $ContainsPrivateEndpointParameter = $templateFileContent.parameters.keys -contains 'privateEndpoints'
-    $ContainsRoleAssignmentsParameter = $templateFileContent.parameters.keys -contains 'roleAssignments'
-    $ContainsTagsParameter = $templateFileContent.parameters.keys -contains 'tags'
+    # Build result
+    if ($PSCmdlet.ShouldProcess('Original file with new parameters content', 'Merge')) {
+        $updatedFileContent = Merge-FileWithNewContent -oldContent $ReadMeFileContent -newContent $sectionContent -SectionStartIdentifier $SectionStartIdentifier
+    }
 
-    $ContainsPrivateEndpointParameterUsage = $readMeFileContent | Select-String -Pattern "parameter usage: ``private endpoint``"
-    $ContainsRoleAssignmentsParameterUsage = $readMeFileContent | Select-String -Pattern "parameter usage: ``roleAssignments``"
-    $ContainsTagsParameterUsage = $readMeFileContent | Select-String -Pattern "parameter usage: ``tags``"
+    # Build sub-section 'ParameterUsage'
+    $updatedFileContent = Set-ParametersUsageSection -TemplateFileContent $TemplateFileContent -CurrentContent $updatedFileContent -ParameterName 'tags'
+    $updatedFileContent = Set-ParametersUsageSection -TemplateFileContent $TemplateFileContent -CurrentContent $updatedFileContent -ParameterName '### Parameter Usage: `tags`'
+    $updatedFileContent = Set-ParametersUsageSection -TemplateFileContent $TemplateFileContent -CurrentContent $updatedFileContent -ParameterName '### Parameter Usage: `tags`'
 
-    $ParameterUsagePrivateEndpoint = @'
-### Parameter Usage: `privateEndpoints`
 
-To use Private Endpoint the following dependencies must be deployed:
-
-- Destination subnet must be created with the following configuration option - `"privateEndpointNetworkPolicies": "Disabled"`.  Setting this option acknowledges that NSG rules are not applied to Private Endpoints (this capability is coming soon). A full example is available in the Virtual Network Module.
-- Although not strictly required, it is highly recommended to first create a private DNS Zone to host Private Endpoint DNS records. See [Azure Private Endpoint DNS configuration](https://docs.microsoft.com/en-us/azure/private-link/private-endpoint-dns) for more information.
-
-```json
-"privateEndpoints": {
-    "value": [
-        // Example showing all available fields
-        {
-            "name": "sxx-az-sa-cac-y-123-pe", // Optional: Name will be automatically generated if one is not provided here
-            "subnetResourceId": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/virtualNetworks/sxx-az-vnet-x-001/subnets/sxx-az-subnet-x-001",
-            "service": "blob",
-            "privateDnsZoneResourceIds": [ // Optional: No DNS record will be created if a private DNS zone Resource ID is not specified
-                "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/privateDnsZones/privatelink.blob.core.windows.net"
-            ],
-            "customDnsConfigs": [ // Optional
-                {
-                    "fqdn": "customname.test.local",
-                    "ipAddresses": [
-                        "10.10.10.10"
-                    ]
-                }
-            ]
-        },
-        // Example showing only mandatory fields
-        {
-            "subnetResourceId": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/virtualNetworks/sxx-az-vnet-x-001/subnets/sxx-az-subnet-x-001",
-            "service": "file"
-        }
-    ]
+    return $updatedFileContent
 }
-```
-'@
 
-    $ParameterUsageRoleAssignments = @'
-### Parameter Usage: `roleAssignments`
+function Set-ParametersUsageSection {
 
-```json
-"roleAssignments": {
-    "value": [
-        {
-            "roleDefinitionIdOrName": "Desktop Virtualization User",
-            "principalIds": [
-                "12345678-1234-1234-1234-123456789012", // object 1
-                "78945612-1234-1234-1234-123456789012" // object 2
-            ]
-        },
-        {
-            "roleDefinitionIdOrName": "Reader",
-            "principalIds": [
-                "12345678-1234-1234-1234-123456789012", // object 1
-                "78945612-1234-1234-1234-123456789012" // object 2
-            ]
-        },
-        {
-            "roleDefinitionIdOrName": "/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11",
-            "principalIds": [
-                "12345678-1234-1234-1234-123456789012" // object 1
-            ]
-        }
-    ]
-}
-```
-'@
+    [CmdletBinding(SupportsShouldProcess)]
+    param (
+        [Parameter(Mandatory)]
+        [hashtable] $TemplateFileContent,
 
-    $ParameterUsageTags = @'
-### Parameter Usage: `tags`
+        [Parameter(Mandatory)]
+        [object[]] $CurrentContent,
 
-Tag names and tag values can be provided as needed. A tag can be left without a value.
+        [Parameter(Mandatory)]
+        [string] $CurrentFolderPath,
 
-```json
-"tags": {
-    "value": {
-        "Environment": "Non-Prod",
-        "Contact": "test.user@testcompany.com",
-        "PurchaseOrder": "1234",
-        "CostCenter": "7890",
-        "ServiceName": "DeploymentValidation",
-        "Role": "DeploymentValidation"
-    }
-}
-```
-'@
+        [Parameter(Mandatory = $false)]
+        [string] $ParameterName
+    )
 
-    if ($ContainsPrivateEndpointParameter -and -not $ContainsPrivateEndpointParameterUsage) {
-        $sectionContent += '', $ParameterUsagePrivateEndpoint
-    }
-
-    if ($ContainsRoleAssignmentsParameter -and -not $ContainsRoleAssignmentsParameterUsage) {
-        $sectionContent += '', $ParameterUsageRoleAssignments
-    }
-
-    if ($ContainsTagsParameter -and -not $ContainsTagsParameterUsage) {
-        $sectionContent += '', $ParameterUsageTags
-    }
+    $sectionIdentifier = '### Parameter Usage: `{0}`' -f $ParameterName.ToLower()
 
     # Build result
     if ($PSCmdlet.ShouldProcess('Original file with new parameters content', 'Merge')) {
         $updatedFileContent = Merge-FileWithNewContent -oldContent $ReadMeFileContent -newContent $sectionContent -SectionStartIdentifier $SectionStartIdentifier
     }
-    return $updatedFileContent
 }
 
 <#
