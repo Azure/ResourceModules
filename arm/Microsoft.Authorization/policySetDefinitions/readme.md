@@ -17,8 +17,8 @@
 | `parameters` | object | `{object}` |  | Optional. The Set Definition (Initiative) parameters that can be used in policy definition references. |
 | `policyDefinitionGroups` | array | `[]` |  | Optional. The metadata describing groups of policy definition references within the Policy Set Definition (Initiative). |
 | `policyDefinitions` | array |  |  | Required. The array of Policy definitions object to include for this policy set. Each object must include the Policy definition ID, and optionally other properties like parameters |
-| `policySetDefinitionName` | string |  |  | Required. Specifies the name of the policy Set Definition (Initiative). Space characters will be replaced by (-) and converted to lowercase |
-| `policySetDescription` | string |  |  | Optional. The Description name of the Set Definition (Initiative) |
+| `name` | string |  |  | Required. Specifies the name of the policy Set Definition (Initiative). Space characters will be replaced by (-) and converted to lowercase |
+| `description` | string |  |  | Optional. The Description name of the Set Definition (Initiative) |
 | `subscriptionId` | string |  |  | Optional. The subscription ID of the subscription (Scope). Cannot be used with managementGroupId |
 
 ### Parameter Usage: `managementGroupId`
@@ -45,10 +45,10 @@ To deploy resource to an Azure Subscription, provide the `subscriptionId` as an 
 
 ## Outputs
 
-| Output Name | Type |
-| :-- | :-- |
-| `policySetDefinitionId` | string |
-| `policySetDefinitionName` | string |
+| Output Name | Type | Description |
+| :-- | :-- | :-- |
+| `policySetDefinitionId` | string | Policy Set Definition Resource ID
+| `policySetDefinitionName` | string | Policy Set Definition Name
 
 ## Considerations
 
@@ -56,4 +56,4 @@ To deploy resource to an Azure Subscription, provide the `subscriptionId` as an 
 
 ## Template references
 
-- [Policysetdefinitions](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2020-09-01/policySetDefinitions)
+- [Policy Set Definitions](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2020-09-01/policySetDefinitions)
