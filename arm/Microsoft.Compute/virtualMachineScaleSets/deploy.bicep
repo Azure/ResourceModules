@@ -486,7 +486,7 @@ module vmss_microsoftMonitoringAgentExtension 'extensions/deploy.bicep' = if (ex
     virtualMachineScaleSetName: vmss.name
     name: 'MicrosoftMonitoringAgent'
     publisher: 'Microsoft.EnterpriseCloud.Monitoring'
-    type: (osType == 'Windows' ? 'MicrosoftMonitoringAgent' : 'OmsAgentForLinux')
+    type: osType == 'Windows' ? 'MicrosoftMonitoringAgent' : 'OmsAgentForLinux'
     typeHandlerVersion: contains(extensionMonitoringAgentConfig, 'typeHandlerVersion') ? extensionMonitoringAgentConfig.typeHandlerVersion : (osType == 'Windows' ? '1.0' : '1.7')
     autoUpgradeMinorVersion: contains(extensionMonitoringAgentConfig, 'autoUpgradeMinorVersion') ? extensionMonitoringAgentConfig.autoUpgradeMinorVersion : true
     enableAutomaticUpgrade: contains(extensionMonitoringAgentConfig, 'enableAutomaticUpgrade') ? extensionMonitoringAgentConfig.enableAutomaticUpgrade : false
@@ -508,7 +508,7 @@ module vmss_dependencyAgentExtension 'extensions/deploy.bicep' = if (extensionDe
     virtualMachineScaleSetName: vmss.name
     name: 'DependencyAgent'
     publisher: 'Microsoft.Azure.Monitoring.DependencyAgent'
-    type: (osType == 'Windows' ? 'DependencyAgentWindows' : 'DependencyAgentLinux')
+    type: osType == 'Windows' ? 'DependencyAgentWindows' : 'DependencyAgentLinux'
     typeHandlerVersion: contains(extensionDependencyAgentConfig, 'typeHandlerVersion') ? extensionDependencyAgentConfig.typeHandlerVersion : '9.5'
     autoUpgradeMinorVersion: contains(extensionDependencyAgentConfig, 'autoUpgradeMinorVersion') ? extensionDependencyAgentConfig.autoUpgradeMinorVersion : true
     enableAutomaticUpgrade: contains(extensionDependencyAgentConfig, 'enableAutomaticUpgrade') ? extensionDependencyAgentConfig.enableAutomaticUpgrade : true
@@ -562,8 +562,8 @@ module vmss_desiredStateConfigurationExtension 'extensions/deploy.bicep' = if (e
     typeHandlerVersion: contains(extensionDSCConfig, 'typeHandlerVersion') ? extensionDSCConfig.typeHandlerVersion : '2.77'
     autoUpgradeMinorVersion: contains(extensionDSCConfig, 'autoUpgradeMinorVersion') ? extensionDSCConfig.autoUpgradeMinorVersion : true
     enableAutomaticUpgrade: contains(extensionDSCConfig, 'enableAutomaticUpgrade') ? extensionDSCConfig.enableAutomaticUpgrade : false
-    settings: contains(extensionDSCConfig, 'settings') ? extensionDSCConfig.settings : null
-    protectedSettings: contains(extensionDSCConfig, 'protectedSettings') ? extensionDSCConfig.protectedSettings : null
+    settings: contains(extensionDSCConfig, 'settings') ? extensionDSCConfig.settings : {}
+    protectedSettings: contains(extensionDSCConfig, 'protectedSettings') ? extensionDSCConfig.protectedSettings : {}
   }
   dependsOn: [
     vmss_diskEncryptionExtension
@@ -583,7 +583,7 @@ module vmss_customScriptExtension 'extensions/deploy.bicep' = if (extensionCusto
     settings: {
       fileUris: [for fileData in extensionCustomScriptConfig.fileData: contains(fileData, 'storageAccountId') ? '${fileData.uri}?${listAccountSas(fileData.storageAccountId, '2019-04-01', accountSasProperties).accountSasToken}' : fileData.uri]
     }
-    protectedSettings: contains(extensionCustomScriptConfig, 'protectedSettings') ? extensionCustomScriptConfig.protectedSettings : null
+    protectedSettings: contains(extensionCustomScriptConfig, 'protectedSettings') ? extensionCustomScriptConfig.protectedSettings : {}
   }
   dependsOn: [
     vmss_desiredStateConfigurationExtension
