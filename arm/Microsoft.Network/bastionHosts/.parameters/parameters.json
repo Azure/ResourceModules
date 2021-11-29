@@ -8,14 +8,9 @@
         "vNetId": {
             "value": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/virtualNetworks/adp-sxx-az-vnet-x-001"
         },
-        "publicIPAddressObject": {
-            "value": {
-                "name": "sxx-az-bas-x-001-pip"
-            }
+        "publicIPAddressId": {
+            "value": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/publicIPAddresses/adp-sxx-az-pip-x-bas"
         },
-        // "publicIPAddressId": {
-        //     "value": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/publicIPAddresses/adp-sxx-az-pip-x-bas"
-        // },
         "roleAssignments": {
             "value": [
                 {
