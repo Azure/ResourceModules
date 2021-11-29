@@ -185,9 +185,16 @@ function Set-ParametersSection {
     }
 
     # Build sub-section 'ParameterUsage'
+    if (Test-Path $PSScriptRoot 'moduleReadMeSource') {
+        if ($resourceUsageSourceFiles = Get-ChildItem (Join-Path $PSScriptRoot 'moduleReadMeSource') -Recurse -Filter 'resourceUsage-*') {
+            foreach ($sourceFile in $resourceUsageSourceFiles.FullName) {
+                $parameterName = (Split-Path $sourceFile -LeafBase).Replace('resourceUsage-', '')
+            }
+        }
+    }
     $updatedFileContent = Set-ParametersUsageSection -TemplateFileContent $TemplateFileContent -CurrentContent $updatedFileContent -ParameterName 'tags'
-    $updatedFileContent = Set-ParametersUsageSection -TemplateFileContent $TemplateFileContent -CurrentContent $updatedFileContent -ParameterName '### Parameter Usage: `tags`'
-    $updatedFileContent = Set-ParametersUsageSection -TemplateFileContent $TemplateFileContent -CurrentContent $updatedFileContent -ParameterName '### Parameter Usage: `tags`'
+    $updatedFileContent = Set-ParametersUsageSection -TemplateFileContent $TemplateFileContent -CurrentContent $updatedFileContent -ParameterName 'privateEndpoints'
+    $updatedFileContent = Set-ParametersUsageSection -TemplateFileContent $TemplateFileContent -CurrentContent $updatedFileContent -ParameterName 'roleAssignments'
 
 
     return $updatedFileContent
