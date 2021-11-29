@@ -189,41 +189,26 @@ function Set-ParametersSection {
         if ($resourceUsageSourceFiles = Get-ChildItem (Join-Path $PSScriptRoot 'moduleReadMeSource') -Recurse -Filter 'resourceUsage-*') {
             foreach ($sourceFile in $resourceUsageSourceFiles.FullName) {
                 $parameterName = (Split-Path $sourceFile -LeafBase).Replace('resourceUsage-', '')
+                if ($templateFileContent.parameters.Keys -contains $parameterName) {
+                    $SectionStartIdentifier = '### Parameter Usage: `{0}`' -f $ParameterName
+
+                    # Build result
+                    if ($PSCmdlet.ShouldProcess(('Original file with new parameter usage [{0}] content' -f $parameterName), 'Merge')) {
+                        $updateParameterUsageInputObject = @{
+                            OldContent             = $sectionContent
+                            NewContent             = Get-Content $sourceFile -Raw
+                            SectionStartIdentifier = $SectionStartIdentifier
+                        }
+                        $updatedFileContent = Merge-FileWithNewContent @updateParameterUsageInputObject
+                    }
+                }
             }
         }
     }
-    $updatedFileContent = Set-ParametersUsageSection -TemplateFileContent $TemplateFileContent -CurrentContent $updatedFileContent -ParameterName 'tags'
-    $updatedFileContent = Set-ParametersUsageSection -TemplateFileContent $TemplateFileContent -CurrentContent $updatedFileContent -ParameterName 'privateEndpoints'
-    $updatedFileContent = Set-ParametersUsageSection -TemplateFileContent $TemplateFileContent -CurrentContent $updatedFileContent -ParameterName 'roleAssignments'
-
 
     return $updatedFileContent
 }
 
-function Set-ParametersUsageSection {
-
-    [CmdletBinding(SupportsShouldProcess)]
-    param (
-        [Parameter(Mandatory)]
-        [hashtable] $TemplateFileContent,
-
-        [Parameter(Mandatory)]
-        [object[]] $CurrentContent,
-
-        [Parameter(Mandatory)]
-        [string] $CurrentFolderPath,
-
-        [Parameter(Mandatory = $false)]
-        [string] $ParameterName
-    )
-
-    $sectionIdentifier = '### Parameter Usage: `{0}`' -f $ParameterName.ToLower()
-
-    # Build result
-    if ($PSCmdlet.ShouldProcess('Original file with new parameters content', 'Merge')) {
-        $updatedFileContent = Merge-FileWithNewContent -oldContent $ReadMeFileContent -newContent $sectionContent -SectionStartIdentifier $SectionStartIdentifier
-    }
-}
 
 <#
 .SYNOPSIS
