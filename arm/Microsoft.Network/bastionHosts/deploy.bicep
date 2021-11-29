@@ -7,8 +7,11 @@ param location string = resourceGroup().location
 @description('Required. Shared services Virtual Network resource identifier')
 param vNetId string
 
-@description('Optional. Specifies the name of the Public IP used by Azure Bastion. If it\'s not provided, a \'-pip\' suffix will be appended to the Bastion\'s name.')
-param azureBastionPipName string = ''
+@description('Optional. Specifies the resource ID of the existing public IP to be leveraged by Azure Bastion.')
+param publicIPAddressId string = ''
+
+@description('Optional. Specifies the properties of the public IP to create and be used by Azure Bastion. If it\'s not provided and publicIPAddressId is empty, a \'-pip\' suffix will be appended to the Bastion\'s name.')
+param publicIPAddressObject object = {}
 
 @description('Optional. Resource ID of the Public IP Prefix object. This is only needed if you want your Public IPs created in a PIP Prefix.')
 param publicIPPrefixId string = ''
@@ -115,41 +118,47 @@ module pid_cuaId '.bicep/nested_cuaId.bicep' = if (!empty(cuaId)) {
   params: {}
 }
 
-resource azureBastionPip 'Microsoft.Network/publicIPAddresses@2021-02-01' = {
-  name: !empty(azureBastionPipName) ? azureBastionPipName : '${name}-pip'
-  location: location
-  tags: tags
-  sku: {
-    name: 'Standard'
-  }
-  properties: {
-    publicIPAllocationMethod: 'Static'
-    publicIPPrefix: !empty(publicIPPrefixId) ? publicIPPrefix : null
-    dnsSettings: !empty(domainNameLabel) ? json('{"domainNameLabel": "${domainNameLabel}"}') : null
-  }
+resource publicIP 'Microsoft.Network/publicIPAddresses@2021-02-01' existing = if (!empty(publicIPAddressId)) {
+  name: last(split(publicIPAddressId, '/'))
+  scope: resourceGroup(split(publicIPAddressId, '/')[2], split(publicIPAddressId, '/')[4])
 }
 
-resource azureBastionPip_lock 'Microsoft.Authorization/locks@2016-09-01' = if (lock != 'NotSpecified') {
-  name: '${azureBastionPip.name}-${lock}-lock'
-  properties: {
-    level: lock
-    notes: lock == 'CanNotDelete' ? 'Cannot delete resource or child resources.' : 'Cannot modify the resource or child resources.'
-  }
-  scope: azureBastionPip
-}
 
-resource azureBastionPip_diagnosticSettings 'Microsoft.Insights/diagnosticSettings@2017-05-01-preview' = if (!empty(diagnosticStorageAccountId) || !empty(workspaceId) || !empty(eventHubAuthorizationRuleId) || !empty(eventHubName)) {
-  name: '${azureBastionPip.name}-diagnosticSettings'
-  properties: {
-    storageAccountId: empty(diagnosticStorageAccountId) ? null : diagnosticStorageAccountId
-    workspaceId: empty(workspaceId) ? null : workspaceId
-    eventHubAuthorizationRuleId: empty(eventHubAuthorizationRuleId) ? null : eventHubAuthorizationRuleId
-    eventHubName: empty(eventHubName) ? null : eventHubName
-    metrics: empty(diagnosticStorageAccountId) && empty(workspaceId) && empty(eventHubAuthorizationRuleId) && empty(eventHubName) ? null : diagnosticsMetrics
-    logs: empty(diagnosticStorageAccountId) && empty(workspaceId) && empty(eventHubAuthorizationRuleId) && empty(eventHubName) ? null : publicIpDiagnosticsLogs
-  }
-  scope: azureBastionPip
-}
+// resource azureBastionPip 'Microsoft.Network/publicIPAddresses@2021-02-01' = {
+//   name: !empty(azureBastionPipName) ? azureBastionPipName : '${name}-pip'
+//   location: location
+//   tags: tags
+//   sku: {
+//     name: 'Standard'
+//   }
+//   properties: {
+//     publicIPAllocationMethod: 'Static'
+//     publicIPPrefix: !empty(publicIPPrefixId) ? publicIPPrefix : null
+//     dnsSettings: !empty(domainNameLabel) ? json('{"domainNameLabel": "${domainNameLabel}"}') : null
+//   }
+// }
+
+// resource azureBastionPip_lock 'Microsoft.Authorization/locks@2016-09-01' = if (lock != 'NotSpecified') {
+//   name: '${azureBastionPip.name}-${lock}-lock'
+//   properties: {
+//     level: lock
+//     notes: lock == 'CanNotDelete' ? 'Cannot delete resource or child resources.' : 'Cannot modify the resource or child resources.'
+//   }
+//   scope: azureBastionPip
+// }
+
+// resource azureBastionPip_diagnosticSettings 'Microsoft.Insights/diagnosticSettings@2017-05-01-preview' = if (!empty(diagnosticStorageAccountId) || !empty(workspaceId) || !empty(eventHubAuthorizationRuleId) || !empty(eventHubName)) {
+//   name: '${azureBastionPip.name}-diagnosticSettings'
+//   properties: {
+//     storageAccountId: empty(diagnosticStorageAccountId) ? null : diagnosticStorageAccountId
+//     workspaceId: empty(workspaceId) ? null : workspaceId
+//     eventHubAuthorizationRuleId: empty(eventHubAuthorizationRuleId) ? null : eventHubAuthorizationRuleId
+//     eventHubName: empty(eventHubName) ? null : eventHubName
+//     metrics: empty(diagnosticStorageAccountId) && empty(workspaceId) && empty(eventHubAuthorizationRuleId) && empty(eventHubName) ? null : diagnosticsMetrics
+//     logs: empty(diagnosticStorageAccountId) && empty(workspaceId) && empty(eventHubAuthorizationRuleId) && empty(eventHubName) ? null : publicIpDiagnosticsLogs
+//   }
+//   scope: azureBastionPip
+// }
 
 resource azureBastion 'Microsoft.Network/bastionHosts@2021-02-01' = {
   name: name
@@ -164,7 +173,7 @@ resource azureBastion 'Microsoft.Network/bastionHosts@2021-02-01' = {
             id: '${vNetId}/subnets/AzureBastionSubnet'
           }
           publicIPAddress: {
-            id: azureBastionPip.id
+            id: publicIP.id
           }
         }
       }
