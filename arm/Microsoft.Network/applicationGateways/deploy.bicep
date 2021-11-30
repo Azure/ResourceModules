@@ -42,9 +42,6 @@ param vNetResourceGroup string = resourceGroup().name
 @description('Optional. The Subscription ID of the Virtual Network where the Application Gateway will be deployed.')
 param vNetSubscriptionId string = subscription().subscriptionId
 
-@description('Optional. Enables system assigned managed identity on the resource.')
-param systemAssignedIdentity bool = false
-
 @description('Optional. The ID(s) to assign to the resource.')
 param userAssignedIdentities object = {}
 
@@ -196,7 +193,7 @@ var httpListeners = concat((empty(frontendHttpListeners) ? frontendHttpListeners
 var redirectConfigurations = (empty(frontendHttpRedirects) ? frontendHttpRedirects : httpRedirectConfigurations)
 var requestRoutingRules = concat(httpsRequestRoutingRules, (empty(frontendHttpRedirects) ? frontendHttpRedirects : httpRequestRoutingRules))
 
-var identityType = systemAssignedIdentity ? (!empty(userAssignedIdentities) ? 'SystemAssigned,UserAssigned' : 'SystemAssigned') : (!empty(userAssignedIdentities) ? 'UserAssigned' : 'None')
+var identityType = !empty(userAssignedIdentities) ? 'UserAssigned' : 'None'
 
 var identity = identityType != 'None' ? {
   type: identityType
@@ -434,6 +431,3 @@ output applicationGatewayResourceId string = applicationGateway.id
 
 @description('The resource group the application gateway was deployed into')
 output applicationGatewayResourceGroup string = resourceGroup().name
-
-@description('The principal ID of the system assigned identity.')
-output principalId string = systemAssignedIdentity ? applicationGateway.identity.principalId : ''
