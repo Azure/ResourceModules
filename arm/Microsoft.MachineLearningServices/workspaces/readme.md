@@ -36,6 +36,7 @@ This module deploys a Machine Learning Services Workspace.
 | `privateEndpoints` | array | `[]` |  | Optional. Configuration Details for private endpoints. |
 | `roleAssignments` | array | `[]` |  | Optional. Array of role assignment objects that contain the 'roleDefinitionIdOrName' and 'principalId' to define RBAC role assignments on this resource. In the roleDefinitionIdOrName attribute, you can provide either the display name of the role definition, or its fully qualified ID in the following format: '/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11' |
 | `sku` | string |  | `[Basic, Enterprise]` | Required. Specifies the sku, also referred as 'edition' of the Azure Machine Learning workspace. |
+| `systemAssignedIdentity` | bool |  |  | Optional. Enables system assigned managed identity on the resource. |
 | `tags` | object | `{object}` |  | Optional. Resource tags. |
 | `workspaceId` | string |  |  | Optional. Resource ID of log analytics. |
 
@@ -83,8 +84,7 @@ Tag names and tag values can be provided as needed. A tag can be left without a 
 To use Private Endpoint the following dependencies must be deployed:
 
 - Destination subnet must be created with the following configuration option - `"privateEndpointNetworkPolicies": "Disabled"`.  Setting this option acknowledges that NSG rules are not applied to Private Endpoints (this capability is coming soon). A full example is available in the Virtual Network Module.
-
-- Although not strictly required, it is highly recommened to first create a private DNS Zone to host Private Endpoint DNS records. See [Azure Private Endpoint DNS configuration](https://docs.microsoft.com/en-us/azure/private-link/private-endpoint-dns) for more information.
+- Although not strictly required, it is highly recommended to first create a private DNS Zone to host Private Endpoint DNS records. See [Azure Private Endpoint DNS configuration](https://docs.microsoft.com/en-us/azure/private-link/private-endpoint-dns) for more information.
 
 ```json
 "privateEndpoints": {
@@ -93,10 +93,9 @@ To use Private Endpoint the following dependencies must be deployed:
         {
             "name": "sxx-az-pe", // Optional: Name will be automatically generated if one is not provided here
             "subnetResourceId": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/virtualNetworks/sxx-az-vnet-x-001/subnets/sxx-az-subnet-x-001",
-            "service": "amlworkspace",
+            "service": "blob",
             "privateDnsZoneResourceIds": [ // Optional: No DNS record will be created if a private DNS zone Resource ID is not specified
-                "/subscriptions/xxx-xxx-xxx-xxx-xxx/resourcegroups/iacs/providers/Microsoft.Network/privateDnsZones/privatelink.api.azureml.ms",
-                "/subscriptions/xxx-xxx-xxx-xxx-xxx/resourcegroups/iacs/providers/Microsoft.Network/privateDnsZones/privatelink.notebooks.azure.net"
+                "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/privateDnsZones/privatelink.blob.core.windows.net"
             ],
             "customDnsConfigs": [ // Optional
                 {
@@ -106,6 +105,11 @@ To use Private Endpoint the following dependencies must be deployed:
                     ]
                 }
             ]
+        },
+        // Example showing only mandatory fields
+        {
+            "subnetResourceId": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/virtualNetworks/sxx-az-vnet-x-001/subnets/sxx-az-subnet-x-001",
+            "service": "file"
         }
     ]
 }
@@ -118,6 +122,7 @@ To use Private Endpoint the following dependencies must be deployed:
 | `machineLearningServiceName` | string | The name of the machine learning service |
 | `machineLearningServiceResourceGroup` | string | The resource group the machine learning service was deployed into |
 | `machineLearningServiceResourceId` | string | The resource ID of the machine learning service |
+| `principalId` | string | The principal ID of the system assigned identity. |
 
 ## Template references
 
