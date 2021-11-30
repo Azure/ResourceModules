@@ -22,7 +22,7 @@
         "appInsightObject": {
             "value": {
                 "name": "sxx-az-wa-x-001-appi",
-                "workspaceResourceId": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.OperationalInsights/workspaces/adp-sxx-az-la-x-001"
+                "workspaceResourceId": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.OperationalInsights/workspaces/adp-sxx-az-law-x-002"
             }
         },
         "siteConfig": {
@@ -64,7 +64,7 @@
             "value": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Storage/storageAccounts/adpsxxazsaweux001"
         },
         "workspaceId": {
-            "value": "/subscriptions/<<subscriptionId>>/resourcegroups/validation-rg/providers/microsoft.operationalinsights/workspaces/adp-sxx-az-la-x-001"
+            "value": "/subscriptions/<<subscriptionId>>/resourcegroups/validation-rg/providers/microsoft.operationalinsights/workspaces/adp-sxx-az-law-x-001"
         },
         "eventHubAuthorizationRuleId": {
             "value": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.EventHub/namespaces/adp-sxx-az-evhns-x-001/AuthorizationRules/RootManageSharedAccessKey"
