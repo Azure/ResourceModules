@@ -1,6 +1,6 @@
 # Public IP Prefixes `[Microsoft.Network/publicIPPrefixes]`
 
-This template deploys Public IP Prefixes.
+This template deploys a public IP prefix.
 
 ## Resource types
 

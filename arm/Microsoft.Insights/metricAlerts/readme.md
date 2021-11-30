@@ -1,6 +1,6 @@
-# Metric Alert `[Microsoft.Insights/metricAlerts]`
+# Metric Alerts `[Microsoft.Insights/metricAlerts]`
 
-This module deploys an Alert based on metrics
+This module deploys an alert based on metrics.
 
 ## Resource types
 

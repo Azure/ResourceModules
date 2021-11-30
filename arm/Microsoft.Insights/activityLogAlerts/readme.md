@@ -1,6 +1,6 @@
-# Activity Log Alert `[Microsoft.Insights/activityLogAlerts]`
+# Activity Log Alerts `[Microsoft.Insights/activityLogAlerts]`
 
-This module deploys an Alert based on Activity Log
+This module deploys an Alert based on Activity Log.
 
 ## Resource Types
 

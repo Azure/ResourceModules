@@ -1,6 +1,6 @@
 # SQL Managed Instances `[Microsoft.Sql/managedInstances]`
 
-This template deploys an SQL Managed Instance, with resource lock.
+This template deploys a SQL managed instance.
 
 ## Resource types
 
@@ -47,7 +47,6 @@ SQL Managed Instance is deployed on a virtual network. This network is required 
 | `lock` | string | `NotSpecified` | `[CanNotDelete, NotSpecified, ReadOnly]` | Optional. Specify the type of lock. |
 | `logsToEnable` | array | `[ResourceUsageStats, SQLSecurityAuditEvents]` | `[ResourceUsageStats, SQLSecurityAuditEvents]` | Optional. The name of logs that will be streamed. |
 | `managedInstanceCreateMode` | string | `Default` | `[Default, PointInTimeRestore]` | Optional. Specifies the mode of database creation. Default: Regular instance creation. Restore: Creates an instance by restoring a set of backups to specific point in time. RestorePointInTime and SourceManagedInstanceId must be specified. |
-| `managedServiceIdentity` | string | `SystemAssigned` | `[None, SystemAssigned, UserAssigned, SystemAssigned,UserAssigned]` | Optional. The type of identity used for the managed instance. The type "None" (default) will remove any identities from the managed instance. |
 | `metricsToEnable` | array | `[AllMetrics]` | `[AllMetrics]` | Optional. The name of metrics that will be streamed. |
 | `name` | string |  |  | Required. The name of the SQL managed instance. |
 | `primaryUserAssignedIdentityId` | string |  |  | Optional. Mandatory if "managedServiceIdentity" contains UserAssigned. The resource ID of a user assigned identity to be used by default. |
@@ -61,14 +60,16 @@ SQL Managed Instance is deployed on a virtual network. This network is required 
 | `sourceManagedInstanceId` | string |  |  | Optional. The resource identifier of the source managed instance associated with create operation of this instance. |
 | `storageSizeInGB` | int | `32` |  | Optional. Storage size in GB. Minimum value: 32. Maximum value: 8192. Increments of 32 GB allowed only. |
 | `subnetId` | string |  |  | Required. The fully qualified resource ID of the subnet on which the SQL managed instance will be placed. |
+| `systemAssignedIdentity` | bool |  |  | Optional. Enables system assigned managed identity on the resource. |
 | `tags` | object | `{object}` |  | Optional. Tags of the resource. |
 | `timezoneId` | string | `UTC` |  | Optional. ID of the timezone. Allowed values are timezones supported by Windows. |
-| `userAssignedIdentities` | object | `{object}` |  | Optional. Mandatory if "managedServiceIdentity" contains UserAssigned. The list of user identities associated with the managed instance. |
+| `userAssignedIdentities` | object | `{object}` |  | Optional. The ID(s) to assign to the resource. |
 | `vCores` | int | `4` |  | Optional. The number of vCores. Allowed values: 8, 16, 24, 32, 40, 64, 80. |
 | `vulnerabilityAssessmentsObj` | _[vulnerabilityAssessments](vulnerabilityAssessments/readme.md)_ object | `{object}` |  | Optional. The vulnerability assessment configuration |
-| `workspaceId` | string |  |  | Optional. Resource ID of log analytics. |
+| `workspaceId` | string |  |  | Optional. Resource ID of a log analytics workspace. |
 
-### Parameter Usage : `userAssignedIdentities
+### Parameter Usage : `userAssignedIdentities`
+
 ```json
 "userAssignedIdentities": {
     "value": {
@@ -83,13 +84,6 @@ SQL Managed Instance is deployed on a virtual network. This network is required 
 ```json
 "roleAssignments": {
     "value": [
-        {
-            "roleDefinitionIdOrName": "Desktop Virtualization User",
-            "principalIds": [
-                "12345678-1234-1234-1234-123456789012", // object 1
-                "78945612-1234-1234-1234-123456789012" // object 2
-            ]
-        },
         {
             "roleDefinitionIdOrName": "Reader",
             "principalIds": [
@@ -131,6 +125,7 @@ Tag names and tag values can be provided as needed. A tag can be left without a 
 | `managedInstanceName` | string | The name of the deployed managed instance |
 | `managedInstanceResourceGroup` | string | The resource group of the deployed managed instance |
 | `managedInstanceResourceId` | string | The resource ID of the deployed managed instance |
+| `principalId` | string | The principal ID of the system assigned identity. |
 
 ## Template references
 

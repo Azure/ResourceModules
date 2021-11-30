@@ -58,11 +58,11 @@ resource privateLinkScope_lock 'Microsoft.Authorization/locks@2016-09-01' = if (
   }
 }
 
-module privateLinkScope_privateEndpoints '.bicep/nested_privateEndpoint.bicep' = [for (endpoint, index) in privateEndpoints: if (!empty(privateEndpoints)) {
+module privateLinkScope_privateEndpoints '.bicep/nested_privateEndpoint.bicep' = [for (endpoint, index) in privateEndpoints: {
   name: '${uniqueString(deployment().name, location)}-Insights-PvtEndPnt-${index}'
   params: {
     privateEndpointResourceId: privateLinkScope.id
-    privateEndpointVnetLocation: (empty(privateEndpoints) ? 'dummy' : reference(split(endpoint.subnetResourceId, '/subnets/')[0], '2020-06-01', 'Full').location)
+    privateEndpointVnetLocation: reference(split(endpoint.subnetResourceId, '/subnets/')[0], '2020-06-01', 'Full').location
     privateEndpointObj: endpoint
     tags: tags
   }

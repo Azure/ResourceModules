@@ -1,4 +1,4 @@
-# DataFactory `[Microsoft.DataFactory/factories]`
+# Data Factories `[Microsoft.DataFactory/factories]`
 
 ## Resource types
 
