@@ -52,6 +52,12 @@ param networkRuleBypassOptions string = 'AzureServices'
 @description('Optional. Specify the type of lock.')
 param lock string = 'NotSpecified'
 
+@description('Optional. Enables system assigned managed identity on the resource.')
+param systemAssignedIdentity bool = false
+
+@description('Optional. The ID(s) to assign to the resource.')
+param userAssignedIdentities object = {}
+
 @description('Optional. Tags of the resource.')
 param tags object = {}
 
@@ -112,6 +118,13 @@ var diagnosticsMetrics = [for metric in metricsToEnable: {
   }
 }]
 
+var identityType = systemAssignedIdentity ? (!empty(userAssignedIdentities) ? 'SystemAssigned,UserAssigned' : 'SystemAssigned') : (!empty(userAssignedIdentities) ? 'UserAssigned' : 'None')
+
+var identity = identityType != 'None' ? {
+  type: identityType
+  userAssignedIdentities: !empty(userAssignedIdentities) ? userAssignedIdentities : null
+} : null
+
 module pid_cuaId '.bicep/nested_cuaId.bicep' = if (!empty(cuaId)) {
   name: 'pid-${cuaId}'
   params: {}
@@ -120,6 +133,7 @@ module pid_cuaId '.bicep/nested_cuaId.bicep' = if (!empty(cuaId)) {
 resource registry 'Microsoft.ContainerRegistry/registries@2020-11-01-preview' = {
   name: name
   location: location
+  identity: identity
   tags: tags
   sku: {
     name: acrSku
@@ -197,3 +211,6 @@ output acrResourceGroup string = resourceGroup().name
 
 @description('The resource ID of the Azure container registry.')
 output acrResourceId string = registry.id
+
+@description('The principal ID of the system assigned identity.')
+output principalId string = systemAssignedIdentity ? registry.identity.principalId : ''
