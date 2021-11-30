@@ -55,7 +55,7 @@ The following resources are required to be able to deploy this resource.
 | `extensionMonitoringAgentConfig` | object | `{object}` |  | Optional. The configuration for the [Monitoring Agent] extension. Must at least contain the ["enabled": true] property to be executed |
 | `extensionNetworkWatcherAgentConfig` | object | `{object}` |  | Optional. The configuration for the [Network Watcher Agent] extension. Must at least contain the ["enabled": true] property to be executed |
 | `gracePeriod` | string | `PT30M` |  | Optional. The amount of time for which automatic repairs are suspended due to a state change on VM. The grace time starts after the state change has completed. This helps avoid premature or accidental repairs. The time duration should be specified in ISO 8601 format. The minimum allowed grace period is 30 minutes (PT30M). The maximum allowed grace period is 90 minutes (PT90M). |
-| `imageReference` | object | `{object}` |  | Optional. OS image reference. In case of marketplace images, it's the combination of the publisher, offer, sku, version attributes. In case of custom images it's the resource ID of the custom image. |
+| `imageReference` | object | |  | Required. OS image reference. In case of marketplace images, it's the combination of the publisher, offer, sku, version attributes. In case of custom images it's the resource ID of the custom image. |
 | `instanceCount` | int | `1` |  | Optional. The initial instance count of scale set VMs. |
 | `instanceSize` | string |  |  | Optional. The SKU size of the VMs. |
 | `licenseType` | string |  | `[Windows_Client, Windows_Server, ]` | Optional. Specifies that the image or disk that is being used was licensed on-premises. This element is only used for images that contain the Windows Server operating system. |
@@ -68,7 +68,7 @@ The following resources are required to be able to deploy this resource.
 | `maxUnhealthyInstancePercent` | int | `20` |  | Optional. The maximum percentage of the total virtual machine instances in the scale set that can be simultaneously unhealthy, either as a result of being upgraded, or by being found in an unhealthy state by the virtual machine health checks before the rolling upgrade aborts. This constraint will be checked prior to starting any batch |
 | `maxUnhealthyUpgradedInstancePercent` | int | `20` |  | Optional. The maximum percentage of the total virtual machine instances in the scale set that can be simultaneously unhealthy, either as a result of being upgraded, or by being found in an unhealthy state by the virtual machine health checks before the rolling upgrade aborts. This constraint will be checked prior to starting any batch. |
 | `metricsToEnable` | array | `[AllMetrics]` | `[AllMetrics]` | Optional. The name of metrics that will be streamed. |
-| `name` | string |  |  | Optional. Name of the VMSS. |
+| `name` | string |  |  | Required. Name of the VMSS. |
 | `nicConfigurations` | array | `[]` |  | Required. Configures NICs and PIPs. |
 | `osDisk` | object |  |  | Required. Specifies the OS disk. |
 | `osType` | string |  | `[Windows, Linux]` | Optional. The chosen OS type |

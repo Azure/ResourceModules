@@ -1,11 +1,11 @@
-@description('Optional. Name of the VMSS.')
+@description('Required. Name of the VMSS.')
 param name string
 
 @description('Optional. Location for all resources.')
 param location string = resourceGroup().location
 
-@description('Optional. OS image reference. In case of marketplace images, it\'s the combination of the publisher, offer, sku, version attributes. In case of custom images it\'s the resource ID of the custom image.')
-param imageReference object = {}
+@description('Required. OS image reference. In case of marketplace images, it\'s the combination of the publisher, offer, sku, version attributes. In case of custom images it\'s the resource ID of the custom image.')
+param imageReference object
 
 @description('Optional. Specifies information about the marketplace image used to create the virtual machine. This element is only used for marketplace images. Before you can use a marketplace image from an API, you must enable the image for programmatic use.')
 param plan object = {}
