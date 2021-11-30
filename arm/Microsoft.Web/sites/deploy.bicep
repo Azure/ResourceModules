@@ -52,16 +52,10 @@ param appInsightObject object = {}
 @description('Optional. The resource ID of the app service environment to use for this resource.')
 param appServiceEnvironmentId string = ''
 
-@description('Optional. Type of managed service identity.')
-@allowed([
-  'None'
-  'SystemAssigned'
-  'SystemAssigned, UserAssigned'
-  'UserAssigned'
-])
-param managedServiceIdentity string = 'None'
+@description('Optional. Enables system assigned managed identity on the resource.')
+param systemAssignedIdentity bool = false
 
-@description('Optional. Mandatory \'managedServiceIdentity\' contains UserAssigned. The identity to assign to the resource.')
+@description('Optional. The ID(s) to assign to the resource.')
 param userAssignedIdentities object = {}
 
 @allowed([
@@ -144,6 +138,13 @@ var diagnosticsMetrics = [for metric in metricsToEnable: {
   }
 }]
 
+var identityType = systemAssignedIdentity ? (!empty(userAssignedIdentities) ? 'SystemAssigned,UserAssigned' : 'SystemAssigned') : (!empty(userAssignedIdentities) ? 'UserAssigned' : 'None')
+
+var identity = identityType != 'None' ? {
+  type: identityType
+  userAssignedIdentities: !empty(userAssignedIdentities) ? userAssignedIdentities : null
+} : null
+
 module pid_cuaId '.bicep/nested_cuaId.bicep' = if (!empty(cuaId)) {
   name: 'pid-${cuaId}'
   params: {}
@@ -188,10 +189,7 @@ resource app 'Microsoft.Web/sites@2020-12-01' = {
   location: location
   kind: kind
   tags: tags
-  identity: {
-    type: managedServiceIdentity
-    userAssignedIdentities: !empty(userAssignedIdentities) ? userAssignedIdentities : null
-  }
+  identity: identity
   properties: {
     serverFarmId: !empty(appServicePlanId) ? appServicePlanExisting.id : appServicePlan.outputs.appServicePlanResourceId
     httpsOnly: httpsOnly
@@ -264,3 +262,6 @@ output siteResourceId string = app.id
 
 @description('The resource group the site was deployed into.')
 output siteResourceGroup string = resourceGroup().name
+
+@description('The principal ID of the system assigned identity.')
+output principalId string = systemAssignedIdentity ? app.identity.principalId : ''

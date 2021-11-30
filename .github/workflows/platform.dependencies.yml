@@ -798,6 +798,7 @@ jobs:
       matrix:
         parameterFilePaths:
           [
+            '1.bastion.parameters.json',
             '2.vnetpeer01.parameters.json',
             '3.vnetpeer02.parameters.json',
             '4.azfw.parameters.json',

@@ -43,7 +43,9 @@ This module deploys a service bus namespace resource.
 | `queues` | _[queues](queues/readme.md)_ array | `[]` |  | Optional. The queues to create in the service bus namespace |
 | `roleAssignments` | array | `[]` |  | Optional. Array of role assignment objects that contain the 'roleDefinitionIdOrName' and 'principalId' to define RBAC role assignments on this resource. In the roleDefinitionIdOrName attribute, you can provide either the display name of the role definition, or its fully qualified ID in the following format: '/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11' |
 | `skuName` | string | `Basic` | `[Basic, Standard, Premium]` | Required. Name of this SKU. - Basic, Standard, Premium |
+| `systemAssignedIdentity` | bool |  |  | Optional. Enables system assigned managed identity on the resource. |
 | `tags` | object | `{object}` |  | Optional. Tags of the resource. |
+| `userAssignedIdentities` | object | `{object}` |  | Optional. The ID(s) to assign to the resource. |
 | `virtualNetworkRules` | _[virtualNetworkRules](virtualNetworkRules/readme.md)_ array | `[]` |  | Optional. vNet Rules SubnetIds for the Service Bus namespace. |
 | `workspaceId` | string |  |  | Optional. Resource ID of log analytics. |
 | `zoneRedundant` | bool |  |  | Optional. Enabling this property creates a Premium Service Bus Namespace in regions supported availability zones. |
@@ -75,8 +77,7 @@ This module deploys a service bus namespace resource.
 To use Private Endpoint the following dependencies must be deployed:
 
 - Destination subnet must be created with the following configuration option - `"privateEndpointNetworkPolicies": "Disabled"`.  Setting this option acknowledges that NSG rules are not applied to Private Endpoints (this capability is coming soon). A full example is available in the Virtual Network Module.
-
-- Although not strictly required, it is highly recommened to first create a private DNS Zone to host Private Endpoint DNS records. See [Azure Private Endpoint DNS configuration](https://docs.microsoft.com/en-us/azure/private-link/private-endpoint-dns) for more information.
+- Although not strictly required, it is highly recommended to first create a private DNS Zone to host Private Endpoint DNS records. See [Azure Private Endpoint DNS configuration](https://docs.microsoft.com/en-us/azure/private-link/private-endpoint-dns) for more information.
 
 ```json
 "privateEndpoints": {
@@ -85,9 +86,9 @@ To use Private Endpoint the following dependencies must be deployed:
         {
             "name": "sxx-az-pe", // Optional: Name will be automatically generated if one is not provided here
             "subnetResourceId": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/virtualNetworks/sxx-az-vnet-x-001/subnets/sxx-az-subnet-x-001",
-            "service": "vault",
+            "service": "blob",
             "privateDnsZoneResourceIds": [ // Optional: No DNS record will be created if a private DNS zone Resource ID is not specified
-                "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/privateDnsZones/privatelink.vaultcore.azure.net"
+                "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/privateDnsZones/privatelink.blob.core.windows.net"
             ],
             "customDnsConfigs": [ // Optional
                 {
@@ -97,6 +98,11 @@ To use Private Endpoint the following dependencies must be deployed:
                     ]
                 }
             ]
+        },
+        // Example showing only mandatory fields
+        {
+            "subnetResourceId": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/virtualNetworks/sxx-az-vnet-x-001/subnets/sxx-az-subnet-x-001",
+            "service": "file"
         }
     ]
 }
@@ -123,6 +129,7 @@ Tag names and tag values can be provided as needed. A tag can be left without a 
 
 | Output Name | Type | Description |
 | :-- | :-- | :-- |
+| `principalId` | string | The principal ID of the system assigned identity. |
 | `serviceBusConnectionString` | string | The connection string of the deployed service bus namespace |
 | `serviceBusNamespaceName` | string | The name of the deployed service bus namespace |
 | `serviceBusNamespaceResourceGroup` | string | The resource group of the deployed service bus namespace |

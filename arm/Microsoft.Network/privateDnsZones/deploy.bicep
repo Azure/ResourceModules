@@ -40,7 +40,7 @@ module privateDnsZone_virtualNetworkLinks 'virtualNetworkLinks/deploy.bicep' = [
   params: {
     privateDnsZoneName: privateDnsZone.name
     name: contains(virtualNetworkLinks, 'name') ? virtualNetworkLinks.name : last(split(virtualNetworkLinks.virtualNetworkId, '/'))
-    virtualNetworkId: virtualNetworkLinks.virtualNetworkId
+    virtualNetworkResourceId: virtualNetworkLinks.virtualNetworkResourceId
     location: contains(virtualNetworkLinks, 'location') ? virtualNetworkLinks.location : 'global'
     registrationEnabled: contains(virtualNetworkLinks, 'registrationEnabled') ? virtualNetworkLinks.registrationEnabled : false
     tags: contains(virtualNetworkLinks, 'tags') ? virtualNetworkLinks.tags : {}
