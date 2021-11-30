@@ -32,7 +32,7 @@ param expiresOn string = ''
 @sys.description('Required. The group ID of the management group to be exempted from the policy assignment.')
 param managementGroupId string
 
-resource policyExemption 'Microsoft.Authorization/policyExemptions@2021-07-01' = {
+resource policyExemption 'Microsoft.Authorization/policyExemptions@2020-07-01-preview' = {
   name: name
   properties: {
     displayName: !empty(displayName) ? displayName : null

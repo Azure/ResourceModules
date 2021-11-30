@@ -32,7 +32,7 @@ param expiresOn string = ''
 @sys.description('Optional. The subscription ID of the subscription to be exempted from the policy assignment.')
 param subscriptionId string = subscription().subscriptionId
 
-resource policyExemption 'Microsoft.Authorization/policyExemptions@2021-07-01' = {
+resource policyExemption 'Microsoft.Authorization/policyExemptions@2020-07-01-preview' = {
   name: name
   properties: {
     displayName: !empty(displayName) ? displayName : null

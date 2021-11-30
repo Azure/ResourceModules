@@ -35,7 +35,7 @@ param subscriptionId string = subscription().subscriptionId
 @sys.description('Optional. The name of the resource group to be exempted from the policy assignment.')
 param resourceGroupName string = resourceGroup().name
 
-resource policyExemption 'Microsoft.Authorization/policyExemptions@2021-07-01' = {
+resource policyExemption 'Microsoft.Authorization/policyExemptions@2020-07-01-preview' = {
   name: name
   properties: {
     displayName: !empty(displayName) ? displayName : null

@@ -4,7 +4,7 @@
 
 | Resource Type | API Version |
 | :-- | :-- |
-| `Microsoft.Authorization/policyExemptions` | 2021-07-01 |
+| `Microsoft.Authorization/policyExemptions` | 2020-07-01-preview |
 
 ## Parameters
 
@@ -74,4 +74,4 @@ To deploy resource to a Resource Group, provide the `subscriptionId` and `resour
 
 ## Template references
 
-- [Policyexemptions](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2021-07-01/policyExemptions)
+- [Policyexemptions](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2020-07-01-preview/policyExemptions)
