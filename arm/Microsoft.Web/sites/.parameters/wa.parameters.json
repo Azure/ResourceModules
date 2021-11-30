@@ -25,9 +25,6 @@
                 "workspaceResourceId": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.OperationalInsights/workspaces/adp-sxx-az-la-x-001"
             }
         },
-        "managedServiceIdentity": {
-            "value": "SystemAssigned"
-        },
         "siteConfig": {
             "value": {
                 "metadata": [
@@ -41,6 +38,14 @@
         },
         "httpsOnly": {
             "value": true
+        },
+        "systemAssignedIdentity": {
+            "value": true
+        },
+        "userAssignedIdentities": {
+            "value": {
+                "/subscriptions/<<subscriptionId>>/resourcegroups/validation-rg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/adp-sxx-az-msi-x-001": {}
+            }
         },
         "roleAssignments": {
             "value": [
