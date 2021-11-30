@@ -42,7 +42,7 @@ This module deploys an app service environment.
 | `tags` | object | `{object}` |  | Optional. Resource tags. |
 | `userWhitelistedIpRanges` | array | `[]` |  | Optional. User added ip ranges to whitelist on ASE db - string |
 | `workerPools` | array | `[]` |  | Optional. Description of worker pools with worker size IDs, VM sizes, and number of workers in each pool.. |
-| `workspaceId` | string |  |  | Optional. Resource identifier of log analytics. |
+| `workspaceId` | string |  |  | Optional. Resource ID of log analytics. |
 
 ### Parameter Usage: `roleAssignments`
 

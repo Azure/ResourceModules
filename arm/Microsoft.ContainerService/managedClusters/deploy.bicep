@@ -151,7 +151,7 @@ param autoScalerProfileMaxGracefulTerminationSec string = '600'
 @description('Optional. Resource ID of the diagnostic storage account.')
 param diagnosticStorageAccountId string = ''
 
-@description('Optional. Resource identifier of log analytics.')
+@description('Optional. Resource ID of log analytics.')
 param workspaceId string = ''
 
 @description('Optional. Specifies whether the OMS agent is enabled.')
