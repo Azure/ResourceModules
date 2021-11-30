@@ -115,7 +115,7 @@
                     "AntimalwareEnabled": true,
                     "Exclusions": {
                         "Extensions": ".log;.ldf",
-                        "Paths": "D:\\IISlogs;D:\\DatabaseLogs",
+                        "Paths": "D:/IISlogs;D:/DatabaseLogs",
                         "Processes": "mssence.svc"
                     },
                     "RealtimeProtectionEnabled": true,
@@ -128,11 +128,11 @@
                 }
             }
         },
-        "extensionMonitoringAgentConfig": {
-            "value": {
-                "enabled": true
-            }
-        },
+        // "extensionMonitoringAgentConfig": {
+        //     "value": {
+        //         "enabled": true
+        //     }
+        // },
         "extensionDependencyAgentConfig": {
             "value": {
                 "enabled": true

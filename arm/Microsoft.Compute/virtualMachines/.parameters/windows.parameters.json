@@ -125,11 +125,11 @@
                 }
             }
         },
-        "extensionMonitoringAgentConfig": {
-            "value": {
-                "enabled": true
-            }
-        },
+        // "extensionMonitoringAgentConfig": {
+        //     "value": {
+        //         "enabled": true
+        //     }
+        // },
         "extensionDependencyAgentConfig": {
             "value": {
                 "enabled": true
