@@ -2,8 +2,6 @@ In this section you can find useful information regarding the Modules that are c
 
 # Available Resource Modules
 
-The following table provides you with an outline of all Modules that are currently available for use. Several sub-resources may be their own Modules and are hence displayed as a child path (e.g. `service/caches`).
-
 | Name | Provider namespace | Resource Type |
 | - | - | - |
 | [Analysis Services](https://github.com/Azure/ResourceModules/tree/main/arm/Microsoft.AnalysisServices/servers) | `MS.AnalysisServices` | [servers](https://github.com/Azure/ResourceModules/tree/main/arm/Microsoft.AnalysisServices/servers) |
