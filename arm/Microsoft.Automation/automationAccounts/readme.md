@@ -49,7 +49,7 @@ This module deploys an Azure Automation Account.
 | `tags` | object | `{object}` |  | Optional. Tags of the Automation Account resource. |
 | `userAssignedIdentities` | object | `{object}` |  | Optional. The ID(s) to assign to the resource. |
 | `variables` | _[variables](variables/readme.md)_ array | `[]` |  | Optional. List of variables to be created in the automation account. |
-| `workspaceId` | string |  |  | Optional. Resource identifier of log analytics. |
+| `workspaceId` | string |  |  | Optional. Resource ID of log analytics. |
 
 ### Parameter Usage: `privateEndpoints`
 

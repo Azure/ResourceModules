@@ -47,7 +47,7 @@ This module deploys a key vault and it's child resources.
 | `tags` | object | `{object}` |  | Optional. Resource tags. |
 | `vaultSku` | string | `premium` | `[premium, standard]` | Optional. Specifies the SKU for the vault |
 | `vNetId` | string |  |  | Optional. Virtual Network resource identifier, if networkAcls is passed, this value must be passed as well |
-| `workspaceId` | string |  |  | Optional. Resource identifier of log analytics. |
+| `workspaceId` | string |  |  | Optional. Resource ID of log analytics. |
 
 ### Parameter Usage: `roleAssignments`
 

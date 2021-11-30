@@ -45,7 +45,7 @@ This module deploys an EventHub namespace
 | `skuName` | string | `Standard` | `[Basic, Standard]` | Optional. event hub plan SKU name |
 | `tags` | object | `{object}` |  | Optional. Tags of the resource. |
 | `vNetId` | string |  |  | Optional. Virtual Network ID to lock down the Event Hub. |
-| `workspaceId` | string |  |  | Optional. Resource identifier of log analytics. |
+| `workspaceId` | string |  |  | Optional. Resource ID of log analytics. |
 | `zoneRedundant` | bool |  |  | Optional. Switch to make the Event Hub Namespace zone redundant. |
 
 ### Parameter Usage: `privateEndpoints`

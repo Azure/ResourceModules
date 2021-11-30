@@ -37,7 +37,7 @@
 | `publicNetworkAccess` | bool | `True` |  | Optional. Enable or disable public network access. |
 | `roleAssignments` | array | `[]` |  | Optional. Array of role assignment objects that contain the 'roleDefinitionIdOrName' and 'principalId' to define RBAC role assignments on this resource. In the roleDefinitionIdOrName attribute, you can provide either the display name of the role definition, or it's fully qualified ID in the following format: '/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11'. |
 | `tags` | object | `{object}` |  | Optional. Tags of the resource. |
-| `workspaceId` | string |  |  | Optional. Resource identifier of log analytics. |
+| `workspaceId` | string |  |  | Optional. Resource ID of log analytics. |
 
 ### Parameter Usage: `roleAssignments`
 
