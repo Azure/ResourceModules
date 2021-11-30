@@ -13,7 +13,7 @@ param location string = resourceGroup().location
 @description('Required. Resource ID of the NSG that must be enabled for Flow Logs.')
 param targetResourceId string
 
-@description('Required. Resource identifier of the Diagnostic Storage Account.')
+@description('Required. Resource ID of the diagnostic storage account.')
 param storageId string
 
 @description('Optional. If the flow log should be enabled')
@@ -41,7 +41,7 @@ param trafficAnalyticsInterval int = 60
 @maxValue(365)
 param retentionInDays int = 365
 
-@description('Optional. Customer Usage Attribution id (GUID). This GUID must be previously registered')
+@description('Optional. Customer Usage Attribution ID (GUID). This GUID must be previously registered')
 param cuaId string = ''
 
 var flowAnalyticsConfiguration = !empty(workspaceResourceId) && enabled == true ? {
@@ -88,7 +88,7 @@ resource flowLog 'Microsoft.Network/networkWatchers/flowLogs@2021-03-01' = {
 @description('The name of the flow log')
 output flowLogName string = flowLog.name
 
-@description('The resourceId of the flow log')
+@description('The resource ID of the flow log')
 output flowLogResourceId string = flowLog.id
 
 @description('The resource group the flow log was deployed into')

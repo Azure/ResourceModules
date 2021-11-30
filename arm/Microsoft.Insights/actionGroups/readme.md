@@ -1,10 +1,10 @@
-# Action Group `[Microsoft.Insights/actionGroups]`
+# Action Groups `[Microsoft.Insights/actionGroups]`
 
-This module deploys an Action Group
+This module deploys an Action Group.
 
 ## Resource Types
 
-| Resource Type | Api Version |
+| Resource Type | API Version |
 | :-- | :-- |
 | `Microsoft.Authorization/roleAssignments` | 2020-04-01-preview |
 | `microsoft.insights/actionGroups` | 2019-06-01 |
@@ -17,7 +17,7 @@ This module deploys an Action Group
 | `automationRunbookReceivers` | array | `[]` |  | Optional. The list of AutomationRunbook receivers that are part of this action group. |
 | `azureAppPushReceivers` | array | `[]` |  | Optional. The list of AzureAppPush receivers that are part of this action group. |
 | `azureFunctionReceivers` | array | `[]` |  | Optional. The list of function receivers that are part of this action group. |
-| `cuaId` | string |  |  | Optional. Customer Usage Attribution id (GUID). This GUID must be previously registered |
+| `cuaId` | string |  |  | Optional. Customer Usage Attribution ID (GUID). This GUID must be previously registered |
 | `emailReceivers` | array | `[]` |  | Optional. The list of email receivers that are part of this action group. |
 | `enabled` | bool | `True` |  | Optional. Indicates whether this action group is enabled. If an action group is not enabled, then none of its receivers will receive communications. |
 | `groupShortName` | string |  |  | Required. The short name of the action group. |
@@ -68,13 +68,6 @@ Example:
 ```json
 "roleAssignments": {
     "value": [
-        {
-            "roleDefinitionIdOrName": "Desktop Virtualization User",
-            "principalIds": [
-                "12345678-1234-1234-1234-123456789012", // object 1
-                "78945612-1234-1234-1234-123456789012" // object 2
-            ]
-        },
         {
             "roleDefinitionIdOrName": "Reader",
             "principalIds": [

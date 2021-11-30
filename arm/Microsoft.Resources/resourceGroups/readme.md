@@ -1,10 +1,10 @@
-# Resource Group `[Microsoft.Resources/resourceGroups]`
+# Resource Groups `[Microsoft.Resources/resourceGroups]`
 
-This module deploys Resource Groups.
+This module deploys a resource group.
 
 ## Resource types
 
-| Resource Type | Api Version |
+| Resource Type | API Version |
 | :-- | :-- |
 | `Microsoft.Authorization/locks` | 2016-09-01 |
 | `Microsoft.Authorization/roleAssignments` | 2020-04-01-preview |
@@ -25,13 +25,6 @@ This module deploys Resource Groups.
 ```json
 "roleAssignments": {
     "value": [
-        {
-            "roleDefinitionIdOrName": "Desktop Virtualization User",
-            "principalIds": [
-                "12345678-1234-1234-1234-123456789012", // object 1
-                "78945612-1234-1234-1234-123456789012" // object 2
-            ]
-        },
         {
             "roleDefinitionIdOrName": "Reader",
             "principalIds": [

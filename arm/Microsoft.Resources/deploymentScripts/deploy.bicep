@@ -1,11 +1,8 @@
 @description('Required. Display name of the script to be run.')
 param name string
 
-@description('Required. Name of the User Assigned Identity to be used to deploy Image Templates in Azure Image Builder.')
-param userMsiName string
-
-@description('Optional. Resource group of the user assigned identity.')
-param userMsiResourceGroup string = resourceGroup().name
+@description('Optional. The ID(s) to assign to the resource.')
+param userAssignedIdentities object = {}
 
 @description('Optional. Location for all resources.')
 param location string = resourceGroup().location
@@ -35,7 +32,7 @@ param environmentVariables array = []
 @description('Optional. List of supporting files for the external script (defined in primaryScriptUri). Does not work with internal scripts (code defined in scriptContent).')
 param supportingScriptUris array = []
 
-@description('Optional. Command line arguments to pass to the script. Arguments are separated by spaces.')
+@description('Optional. Command-line arguments to pass to the script. Arguments are separated by spaces.')
 param arguments string = ''
 
 @description('Optional. Interval for which the service retains the script resource after it reaches a terminal state. Resource will be deleted when this duration expires. Duration is based on ISO 8601 pattern (for example P7D means one week).')
@@ -72,12 +69,20 @@ param lock string = 'NotSpecified'
 @description('Optional. Tags of the resource.')
 param tags object = {}
 
-@description('Optional. Customer Usage Attribution id (GUID). This GUID must be previously registered')
+@description('Optional. Customer Usage Attribution ID (GUID). This GUID must be previously registered')
 param cuaId string = ''
 
 var containerSettings = {
   containerGroupName: containerGroupName
 }
+
+var identityType = !empty(userAssignedIdentities) ? 'UserAssigned' : 'None'
+
+var identity = identityType != 'None' ? {
+  type: identityType
+  userAssignedIdentities: !empty(userAssignedIdentities) ? userAssignedIdentities : null
+} : null
+
 
 module pid_cuaId '.bicep/nested_cuaId.bicep' = if (!empty(cuaId)) {
   name: 'pid-${cuaId}'
@@ -88,12 +93,7 @@ resource deploymentScript 'Microsoft.Resources/deploymentScripts@2020-10-01' = {
   name: name
   location: location
   tags: tags
-  identity: {
-    type: 'UserAssigned'
-    userAssignedIdentities: {
-      '${resourceId(userMsiResourceGroup, 'Microsoft.ManagedIdentity/userAssignedIdentities', userMsiName)}': {}
-    }
-  }
+  identity: identity
   kind: 'AzurePowerShell'
   properties: {
     azPowerShellVersion: kind == 'AzurePowerShell' ? azPowerShellVersion : null

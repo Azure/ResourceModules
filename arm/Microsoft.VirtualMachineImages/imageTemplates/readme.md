@@ -1,10 +1,10 @@
 # Image Templates `[Microsoft.VirtualMachineImages/imageTemplates]`
 
-This module deploys an Image Template (for Azure Image Builder service) that can be consumed by the Azure Image Builder service
+This module deploys an image template that can be consumed by the Azure Image Builder (AIB) service.
 
 ## Resource types
 
-| Resource Type | Api Version |
+| Resource Type | API Version |
 | :-- | :-- |
 | `Microsoft.Authorization/locks` | 2016-09-01 |
 | `Microsoft.Authorization/roleAssignments` | 2020-04-01-preview |
@@ -16,7 +16,7 @@ This module deploys an Image Template (for Azure Image Builder service) that can
 | :-- | :-- | :-- | :-- | :-- |
 | `baseTime` | string | `[utcNow('yyyy-MM-dd-HH-mm-ss')]` |  | Generated. Do not provide a value! This date value is used to generate a unique image template name. |
 | `buildTimeoutInMinutes` | int |  |  | Optional. Image build timeout in minutes. Allowed values: 0-960. 0 means the default 240 minutes |
-| `cuaId` | string |  |  | Optional. Customer Usage Attribution id (GUID). This GUID must be previously registered |
+| `cuaId` | string |  |  | Optional. Customer Usage Attribution ID (GUID). This GUID must be previously registered |
 | `customizationSteps` | array |  |  | Required. Customization steps to be run when building the VM image. |
 | `imageReplicationRegions` | array | `[]` |  | Optional. List of the regions the image produced by this solution should be stored in the Shared Image Gallery. When left empty, the deployment's location will be taken as a default value. |
 | `imageSource` | object |  |  | Required. Image source definition in object format. |
@@ -26,8 +26,8 @@ This module deploys an Image Template (for Azure Image Builder service) that can
 | `name` | string |  |  | Required. Name of the Image Template to be built by the Azure Image Builder service. |
 | `osDiskSizeGB` | int | `128` |  | Optional. Specifies the size of OS disk. |
 | `roleAssignments` | array | `[]` |  | Optional. Array of role assignment objects that contain the 'roleDefinitionIdOrName' and 'principalId' to define RBAC role assignments on this resource. In the roleDefinitionIdOrName attribute, you can provide either the display name of the role definition, or its fully qualified ID in the following format: '/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11' |
-| `sigImageDefinitionId` | string |  |  | Optional. Resource Id of Shared Image Gallery to distribute image to, e.g.: /subscriptions/<subscriptionID>/resourceGroups/<SIG resourcegroup>/providers/Microsoft.Compute/galleries/<SIG name>/images/<image definition> |
-| `subnetId` | string |  |  | Optional. Resource Id of an already existing subnet, e.g. '/subscriptions/<subscriptionId>/resourceGroups/<resourceGroupName>/providers/Microsoft.Network/virtualNetworks/<vnetName>/subnets/<subnetName>'. If no value is provided, a new VNET will be created in the target Resource Group. |
+| `sigImageDefinitionId` | string |  |  | Optional. Resource ID of Shared Image Gallery to distribute image to, e.g.: /subscriptions/<subscriptionID>/resourceGroups/<SIG resourcegroup>/providers/Microsoft.Compute/galleries/<SIG name>/images/<image definition> |
+| `subnetId` | string |  |  | Optional. Resource ID of an already existing subnet, e.g. '/subscriptions/<subscriptionId>/resourceGroups/<resourceGroupName>/providers/Microsoft.Network/virtualNetworks/<vnetName>/subnets/<subnetName>'. If no value is provided, a new VNET will be created in the target Resource Group. |
 | `tags` | object | `{object}` |  | Optional. Tags of the resource. |
 | `unManagedImageName` | string |  |  | Optional. Name of the unmanaged image that will be created in the AIB resourcegroup. |
 | `userMsiName` | string |  |  | Required. Name of the User Assigned Identity to be used to deploy Image Templates in Azure Image Builder. |

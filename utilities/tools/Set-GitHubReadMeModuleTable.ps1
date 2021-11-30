@@ -72,7 +72,7 @@ function Set-GitHubReadMeModuleTable {
     }
     $tableString = Get-ModulesAsMarkdownTable @tableStringInputObject
 
-    $newContent = Merge-FileWithNewContent -oldContent $contentArray -newContent $tableString -sectionStartIdentifier '# Available Resource Modules'
+    $newContent = Merge-FileWithNewContent -oldContent $contentArray -newContent $tableString -sectionStartIdentifier '## Available Resource Modules' -contentType 'table'
 
     Write-Verbose 'New content:'
     Write-Verbose '============'

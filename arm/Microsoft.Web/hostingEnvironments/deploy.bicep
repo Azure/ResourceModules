@@ -1,6 +1,6 @@
 @description('Required. Name of the App Service Environment')
 @minLength(1)
-param appServiceEnvironmentName string
+param name string
 
 @description('Optional. Location for all resources.')
 param location string = resourceGroup().location
@@ -19,7 +19,7 @@ param subnetResourceId string
 ])
 param internalLoadBalancingMode string = 'None'
 
-@description('Optional. Front-end VM size, e.g. Medium, Large')
+@description('Optional. Frontend VM size, e.g. Medium, Large')
 @allowed([
   'Medium'
   'Large'
@@ -34,7 +34,7 @@ param internalLoadBalancingMode string = 'None'
 ])
 param multiSize string = 'Standard_D1_V2'
 
-@description('Optional. Number of front-end instances.')
+@description('Optional. Number of frontend instances.')
 param multiRoleCount int = 2
 
 @description('Optional. Number of IP SSL addresses reserved for the App Service Environment.')
@@ -49,7 +49,7 @@ param dnsSuffix string = ''
 @description('Optional. Access control list for controlling traffic to the App Service Environment..')
 param networkAccessControlList array = []
 
-@description('Optional. Scale factor for front-ends.')
+@description('Optional. Scale factor for frontends.')
 param frontEndScaleFactor int = 15
 
 @description('Optional. API Management Account associated with the App Service Environment.')
@@ -75,10 +75,10 @@ param clusterSettings array = []
 @maxValue(365)
 param diagnosticLogsRetentionInDays int = 365
 
-@description('Optional. Resource identifier of the Diagnostic Storage Account.')
+@description('Optional. Resource ID of the diagnostic storage account.')
 param diagnosticStorageAccountId string = ''
 
-@description('Optional. Resource identifier of Log Analytics.')
+@description('Optional. Resource ID of log analytics.')
 param workspaceId string = ''
 
 @description('Optional. Resource ID of the event hub authorization rule for the Event Hubs namespace in which the event hub should be created or streamed to.')
@@ -101,7 +101,7 @@ param roleAssignments array = []
 @description('Optional. Resource tags.')
 param tags object = {}
 
-@description('Optional. Customer Usage Attribution id (GUID). This GUID must be previously registered')
+@description('Optional. Customer Usage Attribution ID (GUID). This GUID must be previously registered')
 param cuaId string = ''
 
 @description('Optional. The name of logs that will be streamed.')
@@ -129,12 +129,12 @@ module pid_cuaId '.bicep/nested_cuaId.bicep' = if (!empty(cuaId)) {
 }
 
 resource appServiceEnvironment 'Microsoft.Web/hostingEnvironments@2021-02-01' = {
-  name: appServiceEnvironmentName
+  name: name
   kind: kind
   location: location
   tags: tags
   properties: {
-    name: appServiceEnvironmentName
+    name: name
     location: location
     virtualNetwork: {
       id: subnetResourceId
@@ -187,7 +187,7 @@ module appServiceEnvironment_rbac '.bicep/nested_rbac.bicep' = [for (roleAssignm
   }
 }]
 
-@description('The resourceID of the app service environment')
+@description('The resource ID of the app service environment')
 output appServiceEnvironmentResourceId string = appServiceEnvironment.id
 
 @description('The resource group the app service environment was deployed into')

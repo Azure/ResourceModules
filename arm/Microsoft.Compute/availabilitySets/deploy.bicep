@@ -1,5 +1,5 @@
 @description('Required. The name of the availability set that is being created.')
-param availabilitySetName string
+param name string
 
 @description('Optional. The number of fault domains to use.')
 param availabilitySetFaultDomain int = 2
@@ -10,7 +10,7 @@ param availabilitySetUpdateDomain int = 5
 @description('Optional. Sku of the availability set. Use \'Aligned\' for virtual machines with managed disks and \'Classic\' for virtual machines with unmanaged disks.')
 param availabilitySetSku string = 'Aligned'
 
-@description('Optional. Resource Id of a proximity placement group.')
+@description('Optional. Resource ID of a proximity placement group.')
 param proximityPlacementGroupId string = ''
 
 @description('Optional. Resource location.')
@@ -30,7 +30,7 @@ param roleAssignments array = []
 @description('Optional. Tags of the availability set resource.')
 param tags object = {}
 
-@description('Optional. Customer Usage Attribution id (GUID). This GUID must be previously registered')
+@description('Optional. Customer Usage Attribution ID (GUID). This GUID must be previously registered')
 param cuaId string = ''
 
 module pid_cuaId '.bicep/nested_cuaId.bicep' = if (!empty(cuaId)) {
@@ -39,7 +39,7 @@ module pid_cuaId '.bicep/nested_cuaId.bicep' = if (!empty(cuaId)) {
 }
 
 resource availabilitySet 'Microsoft.Compute/availabilitySets@2021-04-01' = {
-  name: availabilitySetName
+  name: name
   location: location
   tags: tags
   properties: {
@@ -73,7 +73,8 @@ module availabilitySet_rbac '.bicep/nested_rbac.bicep' = [for (roleAssignment, i
 @description('The resource group the availability set was deployed into')
 output availabilitySetResourceName string = availabilitySet.name
 
-@description('The resourceId of the availability set')
+@description('The resource ID of the availability set')
 output availabilitySetResourceId string = availabilitySet.id
+
 @description('The name of the availability set')
 output availabilitySetResourceGroup string = resourceGroup().name

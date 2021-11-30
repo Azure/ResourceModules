@@ -6,9 +6,6 @@ Run a template deployment using a given parameter file
 Run a template deployment using a given parameter file.
 Works on a resource group, subscription, managementgroup and tenant level
 
-.PARAMETER moduleName
-Mandatory. The name of the module to deploy
-
 .PARAMETER templateFilePath
 Mandatory. The path to the deployment file
 
@@ -22,13 +19,10 @@ Mandatory. Location to test in. E.g. WestEurope
 Optional. Name of the resource group to deploy into. Mandatory if deploying into a resource group (resource group level)
 
 .PARAMETER subscriptionId
-Optional. Id of the subscription to deploy into. Mandatory if deploying into a subscription (subscription level) using a Management groups service connection
+Optional. ID of the subscription to deploy into. Mandatory if deploying into a subscription (subscription level) using a Management groups service connection
 
 .PARAMETER managementGroupId
 Optional. Name of the management group to deploy into. Mandatory if deploying into a management group (management group level)
-
-.PARAMETER removeDeployment
-Optional. Set to 'true' to add the tag 'removeModule = <ModuleName>' to the deployment. Is picked up by the removal stage to remove the resource again.
 
 .PARAMETER additionalTags
 Optional. Provde a Key Value Pair (Object) that will be appended to the Parameter file tags. Example: @{myKey = 'myValue',myKey2 = 'myValue2'}.
@@ -36,13 +30,16 @@ Optional. Provde a Key Value Pair (Object) that will be appended to the Paramete
 .PARAMETER retryLimit
 Optional. Maximum retry limit if the deployment fails. Default is 3.
 
+.PARAMETER doNotThrow
+Optional. Do not throw an exception if it failed. Still returns the error message though
+
 .EXAMPLE
-New-ModuleDeployment -ModuleName 'KeyVault' -templateFilePath 'C:/KeyVault/deploy.json' -parameterFilePath 'C:/KeyVault/.parameters/parameters.json' -location 'WestEurope' -resourceGroupName 'aLegendaryRg'
+New-ModuleDeployment -templateFilePath 'C:/KeyVault/deploy.json' -parameterFilePath 'C:/KeyVault/.parameters/parameters.json' -location 'WestEurope' -resourceGroupName 'aLegendaryRg'
 
 Deploy the deploy.json of the KeyVault module with the parameter file 'parameters.json' using the resource group 'aLegendaryRg' in location 'WestEurope'
 
 .EXAMPLE
-New-ModuleDeployment -ModuleName 'KeyVault' -templateFilePath 'C:/ResourceGroup/deploy.json' -parameterFilePath 'C:/ResourceGroup/.parameters/parameters.json' -location 'WestEurope'
+New-ModuleDeployment -templateFilePath 'C:/ResourceGroup/deploy.json' -parameterFilePath 'C:/ResourceGroup/.parameters/parameters.json' -location 'WestEurope'
 
 Deploy the deploy.json of the ResourceGroup module with the parameter file 'parameters.json' in location 'WestEurope'
 #>
@@ -50,9 +47,6 @@ function New-ModuleDeployment {
 
     [CmdletBinding(SupportsShouldProcess)]
     param (
-        [Parameter(Mandatory)]
-        [string] $moduleName,
-
         [Parameter(Mandatory)]
         [string] $templateFilePath,
 
@@ -72,10 +66,10 @@ function New-ModuleDeployment {
         [string] $managementGroupId,
 
         [Parameter(Mandatory = $false)]
-        [bool] $removeDeployment,
+        [PSCustomObject]$additionalTags,
 
         [Parameter(Mandatory = $false)]
-        [PSCustomObject]$additionalTags,
+        [switch] $doNotThrow,
 
         [Parameter(Mandatory = $false)]
         [int]$retryLimit = 3
@@ -86,6 +80,8 @@ function New-ModuleDeployment {
     }
 
     process {
+
+        $moduleName = Split-Path -Path (Split-Path $templateFilePath -Parent) -LeafBase
 
         ## Assess Provided Parameter Path
         if ((Test-Path -Path $parameterFilePath -PathType Container) -and $parameterFilePath.Length -eq 1) {
@@ -101,8 +97,15 @@ function New-ModuleDeployment {
             [bool]$Stoploop = $false
             [int]$retryCount = 1
 
+            # Generate a valid deployment name. Must match ^[-\w\._\(\)]+$
+            do {
+                $deploymentName = "$moduleName-$(-join (Get-Date -Format yyyyMMddTHHMMssffffZ)[0..63])"
+            } while ($deploymentName -notmatch '^[-\w\._\(\)]+$')
+
+            Write-Verbose "Deploying with deployment name [$deploymentName]" -Verbose
+
             $DeploymentInputs = @{
-                DeploymentName        = "$moduleName-$(-join (Get-Date -Format yyyyMMddTHHMMssffffZ)[0..63])"
+                DeploymentName        = $deploymentName
                 TemplateFile          = $templateFilePath
                 TemplateParameterFile = $parameterFile
                 Verbose               = $true
@@ -110,7 +113,7 @@ function New-ModuleDeployment {
             }
 
             ## Append Tags to Parameters if Resource supports them (all tags must be in one object)
-            if ($removeDeployment -or $additionalTags) {
+            if ($additionalTags) {
 
                 # Parameter tags
                 $parameterFileTags = (ConvertFrom-Json (Get-Content -Raw -Path $parameterFile) -AsHashtable).parameters.tags.value
@@ -119,10 +122,8 @@ function New-ModuleDeployment {
                 # Pipeline tags
                 if ($additionalTags) { $parameterFileTags += $additionalTags } # If additionalTags object is provided, append tag to the resource
 
-                # Removal tags
-                if ($removeDeployment) { $parameterFileTags += @{removeModule = $moduleName } } # If removeDeployment is set to true, append removeMoule tag to the resource
                 # Overwrites parameter file tags parameter
-                Write-Verbose ("removeDeployment for $moduleName= $removeDeployment `nadditionalTags:`n $($additionalTags | ConvertTo-Json)")
+                Write-Verbose ("additionalTags: $(($additionalTags) ? ($additionalTags | ConvertTo-Json) : '[]')")
                 $DeploymentInputs += @{Tags = $parameterFileTags }
             }
 
@@ -157,7 +158,7 @@ function New-ModuleDeployment {
                             if ($subscriptionId) {
                                 $Context = Get-AzContext -ListAvailable | Where-Object Subscription -Match $subscriptionId
                                 if ($Context) {
-                                    $Context | Set-AzContext
+                                    $null = $Context | Set-AzContext
                                 }
                             }
                             if (-not (Get-AzResourceGroup -Name $resourceGroupName -ErrorAction 'SilentlyContinue')) {
@@ -174,7 +175,7 @@ function New-ModuleDeployment {
                             if ($subscriptionId) {
                                 $Context = Get-AzContext -ListAvailable | Where-Object Subscription -Match $subscriptionId
                                 if ($Context) {
-                                    $Context | Set-AzContext
+                                    $null = $Context | Set-AzContext
                                 }
                             }
                             if ($PSCmdlet.ShouldProcess('Subscription level deployment', 'Create')) {
@@ -202,7 +203,14 @@ function New-ModuleDeployment {
                     $Stoploop = $true
                 } catch {
                     if ($retryCount -ge $retryLimit) {
-                        throw $PSitem.Exception.Message
+                        if ($doNotThrow) {
+                            return @{
+                                DeploymentName = $deploymentName
+                                Exception      = $PSitem.Exception.Message
+                            }
+                        } else {
+                            throw $PSitem.Exception.Message
+                        }
                         $Stoploop = $true
                     } else {
                         Write-Verbose "Resource deployment Failed.. ($retryCount/$retryLimit) Retrying in 5 Seconds.. `n"
@@ -217,6 +225,7 @@ function New-ModuleDeployment {
             Write-Verbose 'Result' -Verbose
             Write-Verbose '------' -Verbose
             Write-Verbose ($res | Out-String) -Verbose
+            return $deploymentName
         }
     }
 

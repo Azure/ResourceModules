@@ -5,9 +5,6 @@ inputs:
   modulePath:
     description: 'The path to the module folder'
     required: true
-  moduleName:
-    description: 'The name of the module to process'
-    required: true
 
 runs:
   using: 'composite'
@@ -28,7 +25,7 @@ runs:
 
     # [Module Pester Test] task(s)
     #-----------------------------
-    - name: 'Run [${{ inputs.moduleName }}] API tests via (Pester)'
+    - name: 'Run API tests via (Pester)'
       shell: pwsh
       run: |
         # --------------------- #

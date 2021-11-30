@@ -7,8 +7,8 @@ param location string = resourceGroup().location
 @description('Optional. Specifies the name of the Public IP used by the Virtual Network Gateway. If it\'s not provided, a \'-pip\' suffix will be appended to the gateway\'s name.')
 param gatewayPipName array = []
 
-@description('Optional. Resource Id of the Public IP Prefix object. This is only needed if you want your Public IPs created in a PIP Prefix.')
-param publicIPPrefixId string = ''
+@description('Optional. Resource ID of the Public IP Prefix object. This is only needed if you want your Public IPs created in a PIP Prefix.')
+param publicIPPrefixResourceId string = ''
 
 @description('Optional. Specifies the zones of the Public IP address. Basic IP SKU does not support Availability Zones.')
 param publicIpZones array = []
@@ -48,8 +48,8 @@ param virtualNetworkGatewaySku string
 ])
 param vpnType string = 'RouteBased'
 
-@description('Required. Virtual Network resource Id')
-param vNetId string
+@description('Required. Virtual Network resource ID')
+param vNetResourceId string
 
 @description('Optional. Value to specify if the Gateway should be deployed in active-active or active-passive configuration')
 param activeActive bool = true
@@ -74,10 +74,10 @@ param clientRevokedCertThumbprint string = ''
 @maxValue(365)
 param diagnosticLogsRetentionInDays int = 365
 
-@description('Required. Resource identifier of the Diagnostic Storage Account.')
+@description('Optional. Resource ID of the diagnostic storage account.')
 param diagnosticStorageAccountId string = ''
 
-@description('Required. Resource identifier of Log Analytics.')
+@description('Optional. Resource ID of log analytics.')
 param workspaceId string = ''
 
 @description('Optional. Resource ID of the event hub authorization rule for the Event Hubs namespace in which the event hub should be created or streamed to.')
@@ -100,7 +100,7 @@ param lock string = 'NotSpecified'
 @description('Optional. Tags of the resource.')
 param tags object = {}
 
-@description('Optional. Customer Usage Attribution id (GUID). This GUID must be previously registered')
+@description('Optional. Customer Usage Attribution ID (GUID). This GUID must be previously registered')
 param cuaId string = ''
 
 @description('Optional. The name of logs that will be streamed.')
@@ -178,7 +178,7 @@ var zoneRedundantSkus = [
 ]
 var gatewayPipSku = contains(zoneRedundantSkus, virtualNetworkGatewaySku) ? 'Standard' : 'Basic'
 var gatewayPipAllocationMethod = contains(zoneRedundantSkus, virtualNetworkGatewaySku) ? 'Static' : 'Dynamic'
-var gatewaySubnetId = '${vNetId}/subnets/GatewaySubnet'
+var gatewaySubnetId = '${vNetResourceId}/subnets/GatewaySubnet'
 var activeActive_var = (virtualNetworkGatewayType == 'ExpressRoute') ? bool('false') : activeActive
 
 // Public IP variables
@@ -202,7 +202,7 @@ var bgpSettings = {
   asn: asn
 }
 var publicIPPrefix = {
-  id: publicIPPrefixId
+  id: publicIPPrefixResourceId
 }
 var activePassiveIpConfiguration = [
   {
@@ -287,7 +287,7 @@ resource virtualGatewayPublicIP 'Microsoft.Network/publicIPAddresses@2021-02-01'
   }
   properties: {
     publicIPAllocationMethod: gatewayPipAllocationMethod
-    publicIPPrefix: !empty(publicIPPrefixId) ? publicIPPrefix : null
+    publicIPPrefix: !empty(publicIPPrefixResourceId) ? publicIPPrefix : null
     dnsSettings: length(virtualGatewayPipName_var) == length(domainNameLabel) ? json('{"domainNameLabel": "${domainNameLabel[index]}"}') : null
   }
   zones: contains(zoneRedundantSkus, virtualNetworkGatewaySku) ? publicIpZones : null

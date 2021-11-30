@@ -7,24 +7,21 @@ param location string = resourceGroup().location
 @description('Required. Shared services Virtual Network resource identifier')
 param vNetId string
 
-@description('Optional. Specifies the name of the Public IP used by Azure Bastion. If it\'s not provided, a \'-pip\' suffix will be appended to the Bastion\'s name.')
-param azureBastionPipName string = ''
+@description('Optional. Specifies the resource ID of the existing public IP to be leveraged by Azure Bastion.')
+param publicIPAddressId string = ''
 
-@description('Optional. Resource Id of the Public IP Prefix object. This is only needed if you want your Public IPs created in a PIP Prefix.')
-param publicIPPrefixId string = ''
-
-@description('Optional. DNS name of the Public IP resource. A region specific suffix will be appended to it, e.g.: your-DNS-name.westeurope.cloudapp.azure.com')
-param domainNameLabel string = ''
+@description('Optional. Specifies the properties of the public IP to create and be used by Azure Bastion. If it\'s not provided and publicIPAddressId is empty, a \'-pip\' suffix will be appended to the Bastion\'s name.')
+param publicIPAddressObject object = {}
 
 @description('Optional. Specifies the number of days that logs will be kept for; a value of 0 will retain data indefinitely.')
 @minValue(0)
 @maxValue(365)
 param diagnosticLogsRetentionInDays int = 365
 
-@description('Optional. Resource identifier of the Diagnostic Storage Account.')
+@description('Optional. Resource ID of the diagnostic storage account.')
 param diagnosticStorageAccountId string = ''
 
-@description('Optional. Resource identifier of Log Analytics.')
+@description('Optional. Resource ID of log analytics.')
 param workspaceId string = ''
 
 @description('Optional. Resource ID of the event hub authorization rule for the Event Hubs namespace in which the event hub should be created or streamed to.')
@@ -47,20 +44,8 @@ param roleAssignments array = []
 @description('Optional. Tags of the resource.')
 param tags object = {}
 
-@description('Optional. Customer Usage Attribution id (GUID). This GUID must be previously registered')
+@description('Optional. Customer Usage Attribution ID (GUID). This GUID must be previously registered')
 param cuaId string = ''
-
-@description('Optional. The name of public IP logs that will be streamed.')
-@allowed([
-  'DDoSProtectionNotifications'
-  'DDoSMitigationFlowLogs'
-  'DDoSMitigationReports'
-])
-param publicIpLogsToEnable array = [
-  'DDoSProtectionNotifications'
-  'DDoSMitigationFlowLogs'
-  'DDoSMitigationReports'
-]
 
 @description('Optional. Optional. The name of bastion logs that will be streamed.')
 @allowed([
@@ -69,23 +54,6 @@ param publicIpLogsToEnable array = [
 param azureBastionpLogsToEnable array = [
   'BastionAuditLogs'
 ]
-
-@description('Optional. The name of metrics that will be streamed.')
-@allowed([
-  'AllMetrics'
-])
-param metricsToEnable array = [
-  'AllMetrics'
-]
-
-var publicIpDiagnosticsLogs = [for log in publicIpLogsToEnable: {
-  category: log
-  enabled: true
-  retentionPolicy: {
-    enabled: true
-    days: diagnosticLogsRetentionInDays
-  }
-}]
 
 var azureBastionDiagnosticsLogs = [for log in azureBastionpLogsToEnable: {
   category: log
@@ -96,59 +64,48 @@ var azureBastionDiagnosticsLogs = [for log in azureBastionpLogsToEnable: {
   }
 }]
 
-var diagnosticsMetrics = [for metric in metricsToEnable: {
-  category: metric
-  timeGrain: null
-  enabled: true
-  retentionPolicy: {
-    enabled: true
-    days: diagnosticLogsRetentionInDays
-  }
-}]
-
-var publicIPPrefix = {
-  id: publicIPPrefixId
-}
-
 module pid_cuaId '.bicep/nested_cuaId.bicep' = if (!empty(cuaId)) {
   name: 'pid-${cuaId}'
   params: {}
 }
 
-resource azureBastionPip 'Microsoft.Network/publicIPAddresses@2021-02-01' = {
-  name: empty(azureBastionPipName) ? '${name}-pip' : azureBastionPipName
-  location: location
-  tags: tags
-  sku: {
-    name: 'Standard'
-  }
-  properties: {
-    publicIPAllocationMethod: 'Static'
-    publicIPPrefix: !empty(publicIPPrefixId) ? publicIPPrefix : null
-    dnsSettings: !empty(domainNameLabel) ? json('{"domainNameLabel": "${domainNameLabel}"}') : null
-  }
+resource publicIPAddressExisting 'Microsoft.Network/publicIPAddresses@2021-02-01' existing = if (!empty(publicIPAddressId)) {
+  name: last(split(publicIPAddressId, '/'))
+  scope: resourceGroup(split(publicIPAddressId, '/')[2], split(publicIPAddressId, '/')[4])
 }
 
-resource azureBastionPip_lock 'Microsoft.Authorization/locks@2016-09-01' = if (lock != 'NotSpecified') {
-  name: '${azureBastionPip.name}-${lock}-lock'
-  properties: {
-    level: lock
-    notes: lock == 'CanNotDelete' ? 'Cannot delete resource or child resources.' : 'Cannot modify the resource or child resources.'
+module publicIPAddress '.bicep/nested_publicIPAddress.bicep' = if (empty(publicIPAddressId)) {
+  name: '${uniqueString(deployment().name, location)}-bastion-pip'
+  params: {
+    name: contains(publicIPAddressObject, 'name') ? (!(empty(publicIPAddressObject.name)) ? publicIPAddressObject.name : '${name}-pip') : '${name}-pip'
+    publicIPPrefixResourceId: contains(publicIPAddressObject, 'publicIPPrefixResourceId') ? (!(empty(publicIPAddressObject.publicIPPrefixResourceId)) ? publicIPAddressObject.publicIPPrefixResourceId : '') : ''
+    publicIPAllocationMethod: contains(publicIPAddressObject, 'publicIPAllocationMethod') ? (!(empty(publicIPAddressObject.publicIPAllocationMethod)) ? publicIPAddressObject.publicIPAllocationMethod : 'Static') : 'Static'
+    skuName: contains(publicIPAddressObject, 'skuName') ? (!(empty(publicIPAddressObject.skuName)) ? publicIPAddressObject.skuName : 'Standard') : 'Standard'
+    skuTier: contains(publicIPAddressObject, 'skuTier') ? (!(empty(publicIPAddressObject.skuTier)) ? publicIPAddressObject.skuTier : 'Regional') : 'Regional'
+    roleAssignments: contains(publicIPAddressObject, 'roleAssignments') ? (!empty(publicIPAddressObject.roleAssignments) ? publicIPAddressObject.roleAssignments : []) : []
+    metricsToEnable: contains(publicIPAddressObject, 'metricsToEnable') ? (!(empty(publicIPAddressObject.metricsToEnable)) ? publicIPAddressObject.metricsToEnable : [
+      'AllMetrics'
+    ]) : [
+      'AllMetrics'
+    ]
+    logsToEnable: contains(publicIPAddressObject, 'logsToEnable') ? (!(empty(publicIPAddressObject.logsToEnable)) ? publicIPAddressObject.logsToEnable : [
+      'DDoSProtectionNotifications'
+      'DDoSMitigationFlowLogs'
+      'DDoSMitigationReports'
+    ]) : [
+      'DDoSProtectionNotifications'
+      'DDoSMitigationFlowLogs'
+      'DDoSMitigationReports'
+    ]
+    location: location
+    diagnosticStorageAccountId: diagnosticStorageAccountId
+    diagnosticLogsRetentionInDays: diagnosticLogsRetentionInDays
+    workspaceId: workspaceId
+    eventHubAuthorizationRuleId: eventHubAuthorizationRuleId
+    eventHubName: eventHubName
+    lock: lock
+    tags: tags
   }
-  scope: azureBastionPip
-}
-
-resource azureBastionPip_diagnosticSettings 'Microsoft.Insights/diagnosticSettings@2017-05-01-preview' = if (!empty(diagnosticStorageAccountId) || !empty(workspaceId) || !empty(eventHubAuthorizationRuleId) || !empty(eventHubName)) {
-  name: '${azureBastionPip.name}-diagnosticSettings'
-  properties: {
-    storageAccountId: empty(diagnosticStorageAccountId) ? null : diagnosticStorageAccountId
-    workspaceId: empty(workspaceId) ? null : workspaceId
-    eventHubAuthorizationRuleId: empty(eventHubAuthorizationRuleId) ? null : eventHubAuthorizationRuleId
-    eventHubName: empty(eventHubName) ? null : eventHubName
-    metrics: empty(diagnosticStorageAccountId) && empty(workspaceId) && empty(eventHubAuthorizationRuleId) && empty(eventHubName) ? null : diagnosticsMetrics
-    logs: empty(diagnosticStorageAccountId) && empty(workspaceId) && empty(eventHubAuthorizationRuleId) && empty(eventHubName) ? null : publicIpDiagnosticsLogs
-  }
-  scope: azureBastionPip
 }
 
 resource azureBastion 'Microsoft.Network/bastionHosts@2021-02-01' = {
@@ -164,7 +121,7 @@ resource azureBastion 'Microsoft.Network/bastionHosts@2021-02-01' = {
             id: '${vNetId}/subnets/AzureBastionSubnet'
           }
           publicIPAddress: {
-            id: azureBastionPip.id
+            id: !(empty(publicIPAddressId)) ? publicIPAddressId : publicIPAddress.outputs.publicIPAddressResourceId
           }
         }
       }
@@ -194,7 +151,7 @@ resource azureBastion_diagnosticSettings 'Microsoft.Insights/diagnosticSettings@
 }
 
 module azureBastion_rbac '.bicep/nested_rbac.bicep' = [for (roleAssignment, index) in roleAssignments: {
-  name: '${deployment().name}-rbac-${index}'
+  name: '${uniqueString(deployment().name, location)}-bastion-rbac-${index}'
   params: {
     principalIds: roleAssignment.principalIds
     roleDefinitionIdOrName: roleAssignment.roleDefinitionIdOrName

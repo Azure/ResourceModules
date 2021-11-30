@@ -57,7 +57,7 @@ param enableEvictionPolicy bool = false
 @description('Optional. Specifies the maximum price you are willing to pay for a low priority VM/VMSS. This price is in US Dollars.')
 param maxPriceForLowPriorityVm string = ''
 
-@description('Optional. Specifies resource Id about the dedicated host that the virtual machine resides in.')
+@description('Optional. Specifies resource ID about the dedicated host that the virtual machine resides in.')
 param dedicatedHostId string = ''
 
 @description('Optional. Specifies that the image or disk that is being used was licensed on-premises. This element is only used for images that contain the Windows Server operating system.')
@@ -252,10 +252,10 @@ param location string = resourceGroup().location
 @maxValue(365)
 param diagnosticLogsRetentionInDays int = 365
 
-@description('Optional. Resource identifier of the Diagnostic Storage Account.')
+@description('Optional. Resource ID of the diagnostic storage account.')
 param diagnosticStorageAccountId string = ''
 
-@description('Optional. Resource identifier of Log Analytics.')
+@description('Optional. Resource ID of log analytics.')
 param workspaceId string = ''
 
 @description('Optional. Resource ID of the event hub authorization rule for the Event Hubs namespace in which the event hub should be created or streamed to.')
@@ -278,7 +278,7 @@ param roleAssignments array = []
 @description('Optional. Tags of the resource.')
 param tags object = {}
 
-@description('Optional. Customer Usage Attribution id (GUID). This GUID must be previously registered')
+@description('Optional. Customer Usage Attribution ID (GUID). This GUID must be previously registered')
 param cuaId string = ''
 
 @description('Generated. Do not provide a value! This date value is used to generate a registration token.')
@@ -588,7 +588,7 @@ module virtualMachine_rbac '.bicep/nested_rbac.bicep' = [for (roleAssignment, in
 @description('The name of the VM.')
 output virtualMachineName string = virtualMachine.name
 
-@description('The Resource Id of the VM.')
+@description('The Resource ID of the VM.')
 output virtualMachineResourceId string = virtualMachine.id
 
 @description('The name of the Resource Group the VM was created in.')

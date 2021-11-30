@@ -1,29 +1,29 @@
-# Azure Monitor Private Link Scope `[Microsoft.Insights/privateLinkScopes]`
+# Azure Monitor Private Link Scopes `[Microsoft.Insights/privateLinkScopes]`
 
-This module deploys Azure Monitor Private Link Scope
+This module deploys an Azure Monitor Private Link Scope.
 
 ## Resource types
 
-| Resource Type | Api Version |
+| Resource Type | API Version |
 | :-- | :-- |
 | `Microsoft.Authorization/locks` | 2016-09-01 |
 | `Microsoft.Authorization/roleAssignments` | 2020-04-01-preview |
 | `microsoft.insights/privateLinkScopes` | 2019-10-17-preview |
-| `Microsoft.Insights/privateLinkScopes/scopedResources` | 2019-10-17-preview |
-| `Microsoft.Network/privateEndpoints` | 2021-05-01 |
+| `Microsoft.Insights/privateLinkScopes/scopedResources` | 2021-07-01-preview |
+| `Microsoft.Network/privateEndpoints` | 2021-03-01 |
 | `Microsoft.Network/privateEndpoints/privateDnsZoneGroups` | 2020-05-01 |
 
 ## Parameters
 
 | Parameter Name | Type | Default Value | Possible Values | Description |
 | :-- | :-- | :-- | :-- | :-- |
-| `cuaId` | string |  |  | Optional. Customer Usage Attribution id (GUID). This GUID must be previously registered |
+| `cuaId` | string |  |  | Optional. Customer Usage Attribution ID (GUID). This GUID must be previously registered |
 | `location` | string | `global` |  | Optional. The location of the private link scope. Should be global. |
 | `lock` | string | `NotSpecified` | `[CanNotDelete, NotSpecified, ReadOnly]` | Optional. Specify the type of lock. |
 | `name` | string |  |  | Required. Name of the private link scope. |
 | `privateEndpoints` | array | `[]` |  | Optional. Configuration Details for private endpoints. |
 | `roleAssignments` | array | `[]` |  | Optional. Array of role assignment objects that contain the 'roleDefinitionIdOrName' and 'principalId' to define RBAC role assignments on this resource. In the roleDefinitionIdOrName attribute, you can provide either the display name of the role definition, or its fully qualified ID in the following format: '/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11' |
-| `scopedResources` | array | `[]` |  | Optional. Configuration Details for Azure Monitor Resources. |
+| `scopedResources` | _[scopedResources](scopedResources/readme.md)_ array | `[]` |  | Optional. Configuration Details for Azure Monitor Resources. |
 | `tags` | object | `{object}` |  | Optional. Resource tags. |
 
 ### Parameter Usage: `roleAssignments`
@@ -31,13 +31,6 @@ This module deploys Azure Monitor Private Link Scope
 ```json
 "roleAssignments": {
     "value": [
-        {
-            "roleDefinitionIdOrName": "Desktop Virtualization User",
-            "principalIds": [
-                "12345678-1234-1234-1234-123456789012", // object 1
-                "78945612-1234-1234-1234-123456789012" // object 2
-            ]
-        },
         {
             "roleDefinitionIdOrName": "Reader",
             "principalIds": [
@@ -50,18 +43,6 @@ This module deploys Azure Monitor Private Link Scope
             "principalIds": [
                 "12345678-1234-1234-1234-123456789012" // object 1
             ]
-        }
-    ]
-}
-```
-
-### Parameter Usage: `scopedResources`
-
-```json
-"scopedResources": {
-    "value": [
-        {
-            "linkedResourceId": "/subscriptions/<<subscriptionId>>/resourcegroups/prd-monitoring-rg/providers/microsoft.operationalinsights/workspaces/z1-prd-law-01"
         }
     ]
 }
@@ -80,7 +61,7 @@ To use Private Endpoints the following dependencies must be deployed:
     "value": [
         // Example showing all available fields
         {
-            "name": "sxx-az-sa-cac-y-123-pe", // Optional: Name will be automatically generated if one is not provided here
+            "name": "sxx-az-pe", // Optional: Name will be automatically generated if one is not provided here
             "subnetResourceId": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/virtualNetworks/sxx-az-vnet-x-001/subnets/sxx-az-subnet-x-001",
             "service": "azuremonitor",
             "privateDnsZoneResourceIds": [ // Optional: No DNS record will be created if a private DNS zone Resource ID is not specified
@@ -137,6 +118,6 @@ Tag names and tag values can be provided as needed. A tag can be left without a 
 - [Locks](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2016-09-01/locks)
 - [Roleassignments](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2020-04-01-preview/roleAssignments)
 - [Privatelinkscopes](https://docs.microsoft.com/en-us/azure/templates/microsoft.insights/2019-10-17-preview/privateLinkScopes)
-- [Privatelinkscopes/Scopedresources](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Insights/2019-10-17-preview/privateLinkScopes/scopedResources)
-- [Privateendpoints](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Network/2021-05-01/privateEndpoints)
+- [Privatelinkscopes/Scopedresources](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Insights/2021-07-01-preview/privateLinkScopes/scopedResources)
+- [Privateendpoints](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Network/2021-03-01/privateEndpoints)
 - [Privateendpoints/Privatednszonegroups](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Network/2020-05-01/privateEndpoints/privateDnsZoneGroups)

@@ -5,6 +5,14 @@
         "name": {
             "value": "sxx-az-pls-x-001"
         },
+        "scopedResources": {
+            "value": [
+                {
+                    "name": "scoped1",
+                    "linkedResourceId": "/subscriptions/<<subscriptionId>>/resourcegroups/validation-rg/providers/microsoft.operationalinsights/workspaces/adp-sxx-az-la-x-001"
+                }
+            ]
+        },
         "roleAssignments": {
             "value": [
                 {

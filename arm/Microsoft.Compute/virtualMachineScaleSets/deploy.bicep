@@ -1,5 +1,5 @@
 @description('Optional. Name of the VMSS.')
-param vmssName string
+param name string
 
 @description('Optional. Location for all resources.')
 param location string = resourceGroup().location
@@ -118,7 +118,7 @@ param keyEncryptionKeyURL string = ''
 @description('Optional. URL of the Key Vault instance where the Key Encryption Key (KEK) resides')
 param keyVaultUri string = ''
 
-@description('Optional. Resource identifier of the Key Vault instance where the Key Encryption Key (KEK) resides')
+@description('Optional. Resource ID of the Key Vault instance where the Key Encryption Key (KEK) resides')
 param keyVaultId string = ''
 
 @description('Optional. Type of the volume OS or Data to perform encryption operation')
@@ -184,10 +184,10 @@ param bootDiagnosticStorageAccountName string = ''
 @maxValue(365)
 param diagnosticLogsRetentionInDays int = 365
 
-@description('Optional. Resource identifier of the Diagnostic Storage Account.')
+@description('Optional. Resource ID of the diagnostic storage account.')
 param diagnosticStorageAccountId string = ''
 
-@description('Optional. Resource identifier of Log Analytics.')
+@description('Optional. Resource ID of log analytics.')
 param workspaceId string = ''
 
 @description('Optional. Resource ID of the event hub authorization rule for the Event Hubs namespace in which the event hub should be created or streamed to.')
@@ -247,7 +247,7 @@ param provisionVMAgent bool = true
 @description('Optional. Indicates whether Automatic Updates is enabled for the Windows virtual machine. Default value is true. For virtual machine scale sets, this property can be updated and updates will take effect on OS reprovisioning.')
 param enableAutomaticUpdates bool = true
 
-@description('Optional. Specifies the time zone of the virtual machine. e.g. \'Pacific Standard Time\'. Possible values can be TimeZoneInfo.Id value from time zones returned by TimeZoneInfo.GetSystemTimeZones.')
+@description('Optional. Specifies the time zone of the virtual machine. e.g. \'Pacific Standard Time\'. Possible values can be TimeZoneInfo.id value from time zones returned by TimeZoneInfo.GetSystemTimeZones.')
 param timeZone string = ''
 
 @description('Optional. Specifies additional base-64 encoded XML formatted information that can be included in the Unattend.xml file, which is used by Windows Setup. - AdditionalUnattendContent object')
@@ -299,7 +299,7 @@ param availabilityZones array = []
 @description('Optional. Tags of the resource.')
 param tags object = {}
 
-@description('Optional. Customer Usage Attribution id (GUID). This GUID must be previously registered')
+@description('Optional. Customer Usage Attribution ID (GUID). This GUID must be previously registered')
 param cuaId string = ''
 
 @description('Optional. The chosen OS type')
@@ -324,7 +324,7 @@ param sasTokenValidityLength string = 'PT8H'
 ])
 param managedIdentityType string = ''
 
-@description('Optional. The list of user identities associated with the virtual machine scale set. The user identity dictionary key references will be ARM resource ids in the form: \'/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ManagedIdentity/userAssignedIdentities/{identityName}\'.')
+@description('Optional. The list of user identities associated with the virtual machine scale set. The user identity dictionary key references will be ARM resource IDs in the form: \'/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ManagedIdentity/userAssignedIdentities/{identityName}\'.')
 param managedIdentityIdentities object = {}
 
 @description('Optional. The name of metrics that will be streamed.')
@@ -387,8 +387,8 @@ resource proximityPlacementGroup 'Microsoft.Compute/proximityPlacementGroups@202
   }
 }
 
-resource vmss 'Microsoft.Compute/virtualMachineScaleSets@2021-04-01' = if (!empty(vmssName)) {
-  name: vmssName
+resource vmss 'Microsoft.Compute/virtualMachineScaleSets@2021-04-01' = {
+  name: name
   location: location
   tags: tags
   identity: !empty(managedIdentityType) ? json('{"type":"${managedIdentityType}${((!empty(managedIdentityIdentities)) ? ',"userAssignedIdentities":"${managedIdentityIdentities}' : '')}"}') : null
@@ -456,7 +456,7 @@ resource vmss 'Microsoft.Compute/virtualMachineScaleSets@2021-04-01' = if (!empt
       }
       networkProfile: {
         networkInterfaceConfigurations: [for (item, j) in nicConfigurations: {
-          name: '${vmssName}${item.nicSuffix}configuration-${j}'
+          name: '${name}${item.nicSuffix}configuration-${j}'
           properties: {
             primary: (j == 0) ? true : any(null)
             enableAcceleratedNetworking: contains(nicConfigurations, 'enableAcceleratedNetworking') ? item.enableAcceleratedNetworking : null
@@ -726,7 +726,7 @@ resource vmss_WindowsCustomScriptExtension 'Microsoft.Compute/virtualMachineScal
 }
 
 resource vmss_diagnosticSettings 'Microsoft.Insights/diagnosticSettings@2021-05-01-preview' = if ((!empty(diagnosticStorageAccountId)) || (!empty(workspaceId)) || (!empty(eventHubAuthorizationRuleId)) || (!empty(eventHubName))) {
-  name: '${vmssName}-diagnosticSettings'
+  name: '${vmss.name}-diagnosticSettings'
   properties: {
     storageAccountId: empty(diagnosticStorageAccountId) ? null : diagnosticStorageAccountId
     workspaceId: empty(workspaceId) ? null : workspaceId
@@ -746,11 +746,11 @@ module vmss_rbac '.bicep/nested_rbac.bicep' = [for (roleAssignment, index) in ro
   }
 }]
 
-@description('The resourceID of the virtual machine scale set')
+@description('The resource ID of the virtual machine scale set')
 output vmssResourceIds string = vmss.id
 
 @description('The resource group of the virtual machine scale set')
 output vmssResourceGroup string = resourceGroup().name
 
 @description('The name of the virtual machine scale set')
-output vmssName string = vmssName
+output vmssName string = vmss.name

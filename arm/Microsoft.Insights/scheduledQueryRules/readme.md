@@ -1,10 +1,10 @@
 # Scheduled Query Rules `[Microsoft.Insights/scheduledQueryRules]`
 
-This module deploys an Alert based on metrics
+This module deploys a scheduled query rule.
 
 ## Resource types
 
-| Resource Type | Api Version |
+| Resource Type | API Version |
 | :-- | :-- |
 | `Microsoft.Authorization/roleAssignments` | 2020-04-01-preview |
 | `Microsoft.Insights/scheduledQueryRules` | 2021-02-01-preview |
@@ -38,13 +38,6 @@ This module deploys an Alert based on metrics
 ```json
 "roleAssignments": {
     "value": [
-        {
-            "roleDefinitionIdOrName": "Desktop Virtualization User",
-            "principalIds": [
-                "12345678-1234-1234-1234-123456789012", // object 1
-                "78945612-1234-1234-1234-123456789012" // object 2
-            ]
-        },
         {
             "roleDefinitionIdOrName": "Reader",
             "principalIds": [

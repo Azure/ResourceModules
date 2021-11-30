@@ -4,7 +4,7 @@ This template deploys capacity pools in an Azure NetApp Files.
 
 ## Resource Types
 
-| Resource Type | Api Version |
+| Resource Type | API Version |
 | :-- | :-- |
 | `Microsoft.Authorization/roleAssignments` | 2020-04-01-preview |
 | `Microsoft.NetApp/netAppAccounts/capacityPools` | 2021-06-01 |
@@ -15,7 +15,7 @@ This template deploys capacity pools in an Azure NetApp Files.
 | Parameter Name | Type | Default Value | Possible Values | Description |
 | :-- | :-- | :-- | :-- | :-- |
 | `coolAccess` | bool |  |  | Optional. If enabled (true) the pool can contain cool Access enabled volumes. |
-| `cuaId` | string |  |  | Optional. Customer Usage Attribution id (GUID). This GUID must be previously registered |
+| `cuaId` | string |  |  | Optional. Customer Usage Attribution ID (GUID). This GUID must be previously registered |
 | `location` | string | `[resourceGroup().location]` |  | Optional. Location of the pool volume. |
 | `name` | string |  |  | Required. The name of the capacity pool. |
 | `netAppAccountName` | string |  |  | Required. The name of the NetApp account. |
@@ -25,6 +25,23 @@ This template deploys capacity pools in an Azure NetApp Files.
 | `size` | int |  |  | Required. Provisioned size of the pool (in bytes). Allowed values are in 4TiB chunks (value must be multiply of 4398046511104). |
 | `tags` | object | `{object}` |  | Optional. Tags for all resources. |
 | `volumes` | _[volumes](volumes/readme.md)_ array | `[]` |  | Optional. List of volumnes to create in the capacity pool. |
+
+### Parameter Usage: `tags`
+
+Tag names and tag values can be provided as needed. A tag can be left without a value.
+
+```json
+"tags": {
+    "value": {
+        "Environment": "Non-Prod",
+        "Contact": "test.user@testcompany.com",
+        "PurchaseOrder": "1234",
+        "CostCenter": "7890",
+        "ServiceName": "DeploymentValidation",
+        "Role": "DeploymentValidation"
+    }
+}
+```
 
 ### Parameter Usage: `roleAssignments`
 

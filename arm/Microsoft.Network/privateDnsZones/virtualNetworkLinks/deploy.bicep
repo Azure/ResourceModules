@@ -2,7 +2,7 @@
 param privateDnsZoneName string
 
 @description('Optional. The name of the virtual network link.')
-param name string = last(split(virtualNetworkId, '/'))
+param name string = last(split(virtualNetworkResourceId, '/'))
 
 @description('Optional. The location of the PrivateDNSZone. Should be global.')
 param location string = 'global'
@@ -13,10 +13,10 @@ param tags object = {}
 @description('Optional. Is auto-registration of virtual machine records in the virtual network in the Private DNS zone enabled?')
 param registrationEnabled bool = false
 
-@description('Required. Link to another virtual network Id.')
-param virtualNetworkId string
+@description('Required. Link to another virtual network resource ID.')
+param virtualNetworkResourceId string
 
-@description('Optional. Customer Usage Attribution id (GUID). This GUID must be previously registered')
+@description('Optional. Customer Usage Attribution ID (GUID). This GUID must be previously registered')
 param cuaId string = ''
 
 module pid_cuaId '.bicep/nested_cuaId.bicep' = if (!empty(cuaId)) {
@@ -36,7 +36,7 @@ resource virtualNetworkLink 'Microsoft.Network/privateDnsZones/virtualNetworkLin
   properties: {
     registrationEnabled: registrationEnabled
     virtualNetwork: {
-      id: virtualNetworkId
+      id: virtualNetworkResourceId
     }
   }
 }
@@ -44,7 +44,7 @@ resource virtualNetworkLink 'Microsoft.Network/privateDnsZones/virtualNetworkLin
 @description('The name of the deployed virtual network link')
 output virtualNetworkLinkName string = virtualNetworkLink.name
 
-@description('The id of the deployed virtual network link')
+@description('The resource ID of the deployed virtual network link')
 output virtualNetworkLinkResourceId string = virtualNetworkLink.id
 
 @description('The resource group of the deployed virtual network link')

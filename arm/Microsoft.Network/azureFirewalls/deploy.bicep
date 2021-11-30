@@ -27,13 +27,13 @@ param networkRuleCollections array = []
 @description('Optional. Collection of NAT rule collections used by Azure Firewall.')
 param natRuleCollections array = []
 
-@description('Required. Shared services Virtual Network resource Id')
+@description('Required. Shared services Virtual Network resource ID')
 param vNetId string
 
 @description('Optional. Specifies the name of the Public IP used by Azure Firewall. If it\'s not provided, a \'-pip\' suffix will be appended to the Firewall\'s name.')
 param azureFirewallPipName string = ''
 
-@description('Optional. Resource Id of the Public IP Prefix object. This is only needed if you want your Public IPs created in a PIP Prefix.')
+@description('Optional. Resource ID of the Public IP Prefix object. This is only needed if you want your Public IPs created in a PIP Prefix.')
 param publicIPPrefixId string = ''
 
 @description('Optional. Diagnostic Storage Account resource identifier')
@@ -77,14 +77,13 @@ param roleAssignments array = []
 @description('Optional. Tags of the Automation Account resource.')
 param tags object = {}
 
-@description('Optional. Customer Usage Attribution id (GUID). This GUID must be previously registered')
+@description('Optional. Customer Usage Attribution ID (GUID). This GUID must be previously registered')
 param cuaId string = ''
 
 var publicIPPrefix = {
   id: publicIPPrefixId
 }
 var azureFirewallSubnetId = '${vNetId}/subnets/AzureFirewallSubnet'
-var azureFirewallPipName_var = (empty(azureFirewallPipName) ? '${name}-pip' : azureFirewallPipName)
 var azureFirewallPipId = azureFirewallPip.id
 
 @description('Optional. The name of firewall logs that will be streamed.')
@@ -153,7 +152,7 @@ module pid_cuaId '.bicep/nested_cuaId.bicep' = if (!empty(cuaId)) {
 }
 
 resource azureFirewallPip 'Microsoft.Network/publicIPAddresses@2021-02-01' = {
-  name: azureFirewallPipName_var
+  name: !empty(azureFirewallPipName) ? azureFirewallPipName : '${name}-pip'
   location: location
   tags: tags
   sku: {

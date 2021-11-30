@@ -7,7 +7,7 @@ param name string
 @description('Required. Runtime connection string to cache. Can be referenced by a named value like so, {{<named-value>}}')
 param connectionString string
 
-@description('Optional. Customer Usage Attribution id (GUID). This GUID must be previously registered')
+@description('Optional. Customer Usage Attribution ID (GUID). This GUID must be previously registered')
 param cuaId string = ''
 
 @description('Optional. Cache description')

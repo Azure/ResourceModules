@@ -1,10 +1,10 @@
-# Virtual Network `[Microsoft.Network/virtualNetworks]`
+# Virtual Networks `[Microsoft.Network/virtualNetworks]`
 
-This template deploys a Virtual Network (vNet) with 2 optional Subnets.
+This template deploys a virtual network (vNet).
 
 ## Resource types
 
-| Resource Type | Api Version |
+| Resource Type | API Version |
 | :-- | :-- |
 | `Microsoft.Authorization/locks` | 2016-09-01 |
 | `Microsoft.Authorization/roleAssignments` | 2020-04-01-preview |
@@ -17,10 +17,10 @@ This template deploys a Virtual Network (vNet) with 2 optional Subnets.
 | Parameter Name | Type | Default Value | Possible Values | Description |
 | :-- | :-- | :-- | :-- | :-- |
 | `addressPrefixes` | array |  |  | Required. An Array of 1 or more IP Address Prefixes for the Virtual Network. |
-| `cuaId` | string |  |  | Optional. Customer Usage Attribution id (GUID). This GUID must be previously registered |
-| `ddosProtectionPlanId` | string |  |  | Optional. Resource Id of the DDoS protection plan to assign the VNET to. If it's left blank, DDoS protection will not be configured. If it's provided, the VNET created by this template will be attached to the referenced DDoS protection plan. The DDoS protection plan can exist in the same or in a different subscription. |
+| `cuaId` | string |  |  | Optional. Customer Usage Attribution ID (GUID). This GUID must be previously registered |
+| `ddosProtectionPlanId` | string |  |  | Optional. Resource ID of the DDoS protection plan to assign the VNET to. If it's left blank, DDoS protection will not be configured. If it's provided, the VNET created by this template will be attached to the referenced DDoS protection plan. The DDoS protection plan can exist in the same or in a different subscription. |
 | `diagnosticLogsRetentionInDays` | int | `365` |  | Optional. Specifies the number of days that logs will be kept for; a value of 0 will retain data indefinitely. |
-| `diagnosticStorageAccountId` | string |  |  | Optional. Resource identifier of the Diagnostic Storage Account. |
+| `diagnosticStorageAccountId` | string |  |  | Optional. Resource ID of the diagnostic storage account. |
 | `dnsServers` | array | `[]` |  | Optional. DNS Servers associated to the Virtual Network. |
 | `eventHubAuthorizationRuleId` | string |  |  | Optional. Resource ID of the event hub authorization rule for the Event Hubs namespace in which the event hub should be created or streamed to. |
 | `eventHubName` | string |  |  | Optional. Name of the event hub within the namespace to which logs are streamed. Without this, an event hub is created for each log category. |
@@ -33,7 +33,7 @@ This template deploys a Virtual Network (vNet) with 2 optional Subnets.
 | `subnets` | array |  |  | Required. An Array of subnets to deploy to the Virual Network. |
 | `tags` | object | `{object}` |  | Optional. Tags of the resource. |
 | `virtualNetworkPeerings` | _[virtualNetworkPeerings](virtualNetworkPeerings/readme.md)_ array | `[]` |  | Optional. Virtual Network Peerings configurations |
-| `workspaceId` | string |  |  | Optional. Resource identifier of Log Analytics. |
+| `workspaceId` | string |  |  | Optional. Resource ID of log analytics. |
 
 ### Parameter Usage: `addressPrefixes`
 
@@ -104,13 +104,6 @@ Here's an example of specifying a couple Subnets to deploy:
 "roleAssignments": {
     "value": [
         {
-            "roleDefinitionIdOrName": "Desktop Virtualization User",
-            "principalIds": [
-                "12345678-1234-1234-1234-123456789012", // object 1
-                "78945612-1234-1234-1234-123456789012" // object 2
-            ]
-        },
-        {
             "roleDefinitionIdOrName": "Reader",
             "principalIds": [
                 "12345678-1234-1234-1234-123456789012", // object 1
@@ -154,11 +147,11 @@ The network security group and route table resources must reside in the same res
 
 | Output Name | Type | Description |
 | :-- | :-- | :-- |
-| `subnetIds` | array | The resourceIds of the deployed subnets |
 | `subnetNames` | array | The names of the deployed subnets |
+| `subnetResourceIds` | array | The resource IDs of the deployed subnets |
 | `virtualNetworkName` | string | The name of the virtual network |
 | `virtualNetworkResourceGroup` | string | The resource group the virtual network was deployed into |
-| `virtualNetworkResourceId` | string | The resourceId of the virtual network |
+| `virtualNetworkResourceId` | string | The resource ID of the virtual network |
 
 ## Template references
 

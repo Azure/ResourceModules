@@ -1,10 +1,10 @@
-# VirtualNetworkGatewayConnection `[Microsoft.Network/connections]`
+# Virtual Network Gateway Connections `[Microsoft.Network/connections]`
 
-This template deploys Virtual Network Gateway Connection.
+This template deploys a virtual network gateway connection.
 
 ## Resource types
 
-| Resource Type | Api Version |
+| Resource Type | API Version |
 | :-- | :-- |
 | `Microsoft.Authorization/locks` | 2016-09-01 |
 | `Microsoft.Network/connections` | 2021-02-01 |
@@ -13,7 +13,7 @@ This template deploys Virtual Network Gateway Connection.
 
 | Parameter Name | Type | Default Value | Possible Values | Description |
 | :-- | :-- | :-- | :-- | :-- |
-| `cuaId` | string |  |  | Optional. Customer Usage Attribution id (GUID). This GUID must be previously registered |
+| `cuaId` | string |  |  | Optional. Customer Usage Attribution ID (GUID). This GUID must be previously registered |
 | `customIPSecPolicy` | object | `{object}` |  | Optional. The IPSec Policies to be considered by this connection |
 | `enableBgp` | bool |  |  | Optional. Value to specify if BGP is enabled or not |
 | `localVirtualNetworkGatewayName` | string |  |  | Required. Specifies the local Virtual Network Gateway name |
@@ -22,7 +22,7 @@ This template deploys Virtual Network Gateway Connection.
 | `name` | string |  |  | Required. Remote connection name |
 | `remoteEntityName` | string |  |  | Required. Specifies the remote Virtual Network Gateway/ExpressRoute |
 | `remoteEntityResourceGroup` | string |  |  | Optional. Remote Virtual Network Gateway/ExpressRoute resource group name |
-| `remoteEntitySubscriptionId` | string |  |  | Optional. Remote Virtual Network Gateway/ExpressRoute Subscription Id |
+| `remoteEntitySubscriptionId` | string |  |  | Optional. Remote Virtual Network Gateway/ExpressRoute Subscription ID |
 | `routingWeight` | string |  |  | Optional. The weight added to routes learned from this BGP speaker. |
 | `tags` | object | `{object}` |  | Optional. Tags of the resource. |
 | `usePolicyBasedTrafficSelectors` | bool |  |  | Optional. Enable policy-based traffic selectors |

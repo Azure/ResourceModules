@@ -4,7 +4,7 @@ This template deploys volumes in a capacity pool of an Azure NetApp files.
 
 ## Resource Types
 
-| Resource Type | Api Version |
+| Resource Type | API Version |
 | :-- | :-- |
 | `Microsoft.Authorization/roleAssignments` | 2020-04-01-preview |
 | `Microsoft.NetApp/netAppAccounts/capacityPools/volumes` | 2021-06-01 |
@@ -15,7 +15,7 @@ This template deploys volumes in a capacity pool of an Azure NetApp files.
 | :-- | :-- | :-- | :-- | :-- |
 | `capacityPoolName` | string |  |  | Required. The name of the capacity pool. |
 | `creationToken` | string | `[parameters('name')]` |  | Optional. A unique file path for the volume. This is the name of the volume export. A volume is mounted using the export path. File path must start with an alphabetical character and be unique within the subscription. |
-| `cuaId` | string |  |  | Optional. Customer Usage Attribution id (GUID). This GUID must be previously registered |
+| `cuaId` | string |  |  | Optional. Customer Usage Attribution ID (GUID). This GUID must be previously registered |
 | `exportPolicyRules` | array | `[]` |  | Optional. Export policy rules. |
 | `location` | string | `[resourceGroup().location]` |  | Optional. Location of the pool volume. |
 | `name` | string |  |  | Required. The name of the pool volume. |
@@ -23,7 +23,7 @@ This template deploys volumes in a capacity pool of an Azure NetApp files.
 | `protocolTypes` | array | `[]` |  | Optional. Set of protocol types. |
 | `roleAssignments` | array | `[]` |  | Optional. Array of role assignment objects that contain the 'roleDefinitionIdOrName' and 'principalId' to define RBAC role assignments on this resource. In the roleDefinitionIdOrName attribute, you can provide either the display name of the role definition, or it's fully qualified ID in the following format: '/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11' |
 | `serviceLevel` | string | `Standard` | `[Premium, Standard, StandardZRS, Ultra]` | Optional. The pool service level. Must match the one of the parent capacity pool. |
-| `subnetId` | string |  |  | Required. The Azure Resource URI for a delegated subnet. Must have the delegation Microsoft.NetApp/volumes. |
+| `subnetResourceId` | string |  |  | Required. The Azure Resource URI for a delegated subnet. Must have the delegation Microsoft.NetApp/volumes. |
 | `usageThreshold` | int |  |  | Required. Maximum storage quota allowed for a file system in bytes. |
 
 ### Parameter Usage: `roleAssignments`

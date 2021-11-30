@@ -40,7 +40,7 @@ param lock string = 'NotSpecified'
 @description('Optional. Tags for all resources.')
 param tags object = {}
 
-@description('Optional. Customer Usage Attribution id (GUID). This GUID must be previously registered')
+@description('Optional. Customer Usage Attribution ID (GUID). This GUID must be previously registered')
 param cuaId string = ''
 
 var activeDirectoryConnectionProperties = [
@@ -105,7 +105,7 @@ module netAppAccount_capacityPools 'capacityPools/deploy.bicep' = [for (capacity
 @description('The name of the NetApp account.')
 output netAppAccountName string = netAppAccount.name
 
-@description('The Resource Id of the NetApp account.')
+@description('The Resource ID of the NetApp account.')
 output netAppAccountResourceId string = netAppAccount.id
 
 @description('The name of the Resource Group the NetApp account was created in.')

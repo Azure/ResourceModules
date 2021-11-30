@@ -1,10 +1,10 @@
-# API Management Service Products   `[Microsoft.ApiManagement/service/products]`
+# API Management Service Products `[Microsoft.ApiManagement/service/products]`
 
 This module deploys API Management Service Products.
 
 ## Resource types
 
-| Resource Type | Api Version |
+| Resource Type | API Version |
 | :-- | :-- |
 | `Microsoft.ApiManagement/service/products` | 2020-06-01-preview |
 | `Microsoft.ApiManagement/service/products/apis` | 2020-06-01-preview |
@@ -23,7 +23,7 @@ The following resources are required to be able to deploy this resource.
 | `apiManagementServiceName` | string |  |  | Required. The name of the of the API Management service. |
 | `apis` | _[apis](apis/readme.md)_ array | `[]` |  | Optional. Array of Product APIs. |
 | `approvalRequired` | bool |  |  | Optional. Whether subscription approval is required. If false, new subscriptions will be approved automatically enabling developers to call the products APIs immediately after subscribing. If true, administrators must manually approve the subscription before the developer can any of the products APIs. Can be present only if subscriptionRequired property is present and has a value of false. |
-| `cuaId` | string |  |  | Optional. Customer Usage Attribution id (GUID). This GUID must be previously registered |
+| `cuaId` | string |  |  | Optional. Customer Usage Attribution ID (GUID). This GUID must be previously registered |
 | `groups` | _[groups](groups/readme.md)_ array | `[]` |  | Optional. Array of Product Groups. |
 | `name` | string |  |  | Required. Product Name. |
 | `productDescription` | string |  |  | Optional. Product description. May include HTML formatting tags. |
@@ -36,8 +36,8 @@ The following resources are required to be able to deploy this resource.
 
 | Output Name | Type | Description |
 | :-- | :-- | :-- |
-| `productApisResourceIds` | array |  |
-| `productGroupsResourceIds` | array |  |
+| `productApisResourceIds` | array | The Resources IDs of the API management service product APIs |
+| `productGroupsResourceIds` | array | The Resources IDs of the API management service product groups |
 | `productName` | string | The name of the API management service product |
 | `productResourceGroup` | string | The resource group the API management service product was deployed into |
 | `productResourceId` | string | The resource ID of the API management service product |

@@ -1,8 +1,8 @@
-# DocumentDB Database Account SQL Databases  `[Microsoft.DocumentDB/databaseAccounts/sqlDatabases]`
+# DocumentDB Database Account SQL Databases `[Microsoft.DocumentDB/databaseAccounts/sqlDatabases]`
 
 ## Resource Types
 
-| Resource Type | Api Version |
+| Resource Type | API Version |
 | :-- | :-- |
 | `Microsoft.DocumentDB/databaseAccounts/sqlDatabases` | 2021-06-15 |
 | `Microsoft.DocumentDB/databaseAccounts/sqlDatabases/containers` | 2021-07-01-preview |
@@ -17,6 +17,23 @@
 | `name` | string |  |  | Required. Name of the SQL database  |
 | `tags` | object | `{object}` |  | Optional. Tags of the SQL database resource. |
 | `throughput` | int | `400` |  | Optional. Request units per second |
+
+### Parameter Usage: `tags`
+
+Tag names and tag values can be provided as needed. A tag can be left without a value.
+
+```json
+"tags": {
+    "value": {
+        "Environment": "Non-Prod",
+        "Contact": "test.user@testcompany.com",
+        "PurchaseOrder": "1234",
+        "CostCenter": "7890",
+        "ServiceName": "DeploymentValidation",
+        "Role": "DeploymentValidation"
+    }
+}
+```
 
 ## Outputs
 

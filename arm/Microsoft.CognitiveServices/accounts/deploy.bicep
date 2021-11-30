@@ -58,10 +58,10 @@ param location string = resourceGroup().location
 @maxValue(365)
 param diagnosticLogsRetentionInDays int = 365
 
-@description('Optional. Resource identifier of the Diagnostic Storage Account.')
+@description('Optional. Resource ID of the diagnostic storage account.')
 param diagnosticStorageAccountId string = ''
 
-@description('Optional. Resource identifier of Log Analytics.')
+@description('Optional. Resource ID of log analytics.')
 param workspaceId string = ''
 
 @description('Optional. Resource ID of the event hub authorization rule for the Event Hubs namespace in which the event hub should be created or streamed to.')
@@ -83,12 +83,11 @@ param publicNetworkAccess string = 'Enabled'
 @description('Optional. Service endpoint object information')
 param networkAcls object = {}
 
-@description('Optional. Type of managed service identity.')
-@allowed([
-  'None'
-  'SystemAssigned'
-])
-param managedIdentity string = 'None'
+@description('Optional. Enables system assigned managed identity on the resource.')
+param systemAssignedIdentity bool = false
+
+@description('Optional. The ID(s) to assign to the resource.')
+param userAssignedIdentities object = {}
 
 @allowed([
   'CanNotDelete'
@@ -107,7 +106,7 @@ param roleAssignments array = []
 @description('Optional. Tags of the resource.')
 param tags object = {}
 
-@description('Optional. Customer Usage Attribution id (GUID). This GUID must be previously registered')
+@description('Optional. Customer Usage Attribution ID (GUID). This GUID must be previously registered')
 param cuaId string = ''
 
 @description('Optional. The name of logs that will be streamed.')
@@ -147,6 +146,13 @@ var diagnosticsMetrics = [for metric in metricsToEnable: {
   }
 }]
 
+var identityType = systemAssignedIdentity ? (!empty(userAssignedIdentities) ? 'SystemAssigned,UserAssigned' : 'SystemAssigned') : (!empty(userAssignedIdentities) ? 'UserAssigned' : 'None')
+
+var identity = identityType != 'None' ? {
+  type: identityType
+  userAssignedIdentities: !empty(userAssignedIdentities) ? userAssignedIdentities : null
+} : null
+
 var networkAcls_var = {
   defaultAction: ((empty(networkAcls)) ? null : networkAcls.defaultAction)
   virtualNetworkRules: ((empty(networkAcls)) ? null : ((length(networkAcls.virtualNetworkRules) == 0) ? [] : networkAcls.virtualNetworkRules))
@@ -161,9 +167,7 @@ module pid_cuaId '.bicep/nested_cuaId.bicep' = if (!empty(cuaId)) {
 resource cognitiveServices 'Microsoft.CognitiveServices/accounts@2017-04-18' = {
   name: name
   kind: kind
-  identity: {
-    type: managedIdentity
-  }
+  identity: identity
   location: location
   tags: tags
   sku: {
@@ -229,5 +233,5 @@ output cognitiveServicesResourceGroup string = resourceGroup().name
 @description('The service endpoint of the cognitive services account')
 output cognitiveServicesEndpoint string = cognitiveServices.properties.endpoint
 
-@description('The prinicipal ID of the cognitive services account (if any)')
-output principalId string = managedIdentity != 'None' ? cognitiveServices.identity.principalId : ''
+@description('The principal ID of the system assigned identity.')
+output principalId string = systemAssignedIdentity ? cognitiveServices.identity.principalId : ''

@@ -5,7 +5,7 @@ This module deploys a backup short-term retention policies for SQL Managed Insta
 
 ## Resource Types
 
-| Resource Type | Api Version |
+| Resource Type | API Version |
 | :-- | :-- |
 | `Microsoft.Sql/managedInstances/databases/backupShortTermRetentionPolicies` | 2017-03-01-preview |
 
@@ -24,7 +24,7 @@ This module deploys a backup short-term retention policies for SQL Managed Insta
 | :-- | :-- | :-- |
 | `backupShortTermRetentionPolicyName` | string | The name of the deployed database backup short-term retention policy |
 | `backupShortTermRetentionPolicyResourceGroup` | string | The resource group of the deployed database backup short-term retention policy |
-| `backupShortTermRetentionPolicyResourceId` | string | The resourceId of the deployed database backup short-term retention policy |
+| `backupShortTermRetentionPolicyResourceId` | string | The resource ID of the deployed database backup short-term retention policy |
 
 ## Template references
 

@@ -1,7 +1,7 @@
 @description('Required. Name of the image definition.')
 param name string
 
-@description('Optional. Customer Usage Attribution id (GUID). This GUID must be previously registered')
+@description('Optional. Customer Usage Attribution ID (GUID). This GUID must be previously registered')
 param cuaId string = ''
 
 @description('Optional. Location for all resources.')
@@ -99,8 +99,13 @@ module pid_cuaId '.bicep/nested_cuaId.bicep' = if (!empty(cuaId)) {
   params: {}
 }
 
-resource galleryImage 'Microsoft.Compute/galleries/images@2020-09-30' = {
-  name: '${galleryName}/${name}'
+resource gallery 'Microsoft.Compute/galleries@2020-09-30' existing = {
+  name: galleryName
+}
+
+resource image 'Microsoft.Compute/galleries/images@2020-09-30' = {
+  name: name
+  parent: gallery
   location: location
   tags: tags
   properties: {
@@ -143,12 +148,15 @@ module galleryImage_rbac '.bicep/nested_rbac.bicep' = [for (roleAssignment, inde
   params: {
     principalIds: roleAssignment.principalIds
     roleDefinitionIdOrName: roleAssignment.roleDefinitionIdOrName
-    resourceId: galleryImage.id
+    resourceId: image.id
   }
 }]
 
-output galleryResourceId string = resourceId('Microsoft.Compute/galleries', galleryName)
-output galleryResourceGroup string = resourceGroup().name
-output galleryName string = galleryName
-output galleryImageResourceId string = galleryImage.id
-output galleryImageName string = galleryImage.name
+@description('The resource group the image was deployed into')
+output imageResourceGroup string = resourceGroup().name
+
+@description('The resource ID of the image')
+output imageResourceId string = image.id
+
+@description('The name of the image')
+output imageName string = image.name

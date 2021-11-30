@@ -1,10 +1,10 @@
-# Data Factory Managed Virtual Network  `[Microsoft.DataFactory/factories/managedVirtualNetwork]`
+# Data Factory Managed Virtual Network `[Microsoft.DataFactory/factories/managedVirtualNetwork]`
 
 This module deploys a Managed Virtual Network for an Azure Data Factory
 
 ## Resource types
 
-| Resource Type | Api Version |
+| Resource Type | API Version |
 | :-- | :-- |
 | `Microsoft.DataFactory/factories/managedVirtualNetworks` | 2018-06-01 |
 

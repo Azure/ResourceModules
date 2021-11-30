@@ -14,7 +14,7 @@ param subnets array
 @description('Optional. DNS Servers associated to the Virtual Network.')
 param dnsServers array = []
 
-@description('Optional. Resource Id of the DDoS protection plan to assign the VNET to. If it\'s left blank, DDoS protection will not be configured. If it\'s provided, the VNET created by this template will be attached to the referenced DDoS protection plan. The DDoS protection plan can exist in the same or in a different subscription.')
+@description('Optional. Resource ID of the DDoS protection plan to assign the VNET to. If it\'s left blank, DDoS protection will not be configured. If it\'s provided, the VNET created by this template will be attached to the referenced DDoS protection plan. The DDoS protection plan can exist in the same or in a different subscription.')
 param ddosProtectionPlanId string = ''
 
 @description('Optional. Virtual Network Peerings configurations')
@@ -25,10 +25,10 @@ param virtualNetworkPeerings array = []
 @maxValue(365)
 param diagnosticLogsRetentionInDays int = 365
 
-@description('Optional. Resource identifier of the Diagnostic Storage Account.')
+@description('Optional. Resource ID of the diagnostic storage account.')
 param diagnosticStorageAccountId string = ''
 
-@description('Optional. Resource identifier of Log Analytics.')
+@description('Optional. Resource ID of log analytics.')
 param workspaceId string = ''
 
 @description('Optional. Resource ID of the event hub authorization rule for the Event Hubs namespace in which the event hub should be created or streamed to.')
@@ -51,7 +51,7 @@ param roleAssignments array = []
 @description('Optional. Tags of the resource.')
 param tags object = {}
 
-@description('Optional. Customer Usage Attribution id (GUID). This GUID must be previously registered')
+@description('Optional. Customer Usage Attribution ID (GUID). This GUID must be previously registered')
 param cuaId string = ''
 
 @description('Optional. The name of logs that will be streamed.')
@@ -176,7 +176,7 @@ module virtualNetwork_rbac '.bicep/nested_rbac.bicep' = [for (roleAssignment, in
 @description('The resource group the virtual network was deployed into')
 output virtualNetworkResourceGroup string = resourceGroup().name
 
-@description('The resourceId of the virtual network')
+@description('The resource ID of the virtual network')
 output virtualNetworkResourceId string = virtualNetwork.id
 
 @description('The name of the virtual network')
@@ -185,5 +185,5 @@ output virtualNetworkName string = virtualNetwork.name
 @description('The names of the deployed subnets')
 output subnetNames array = [for subnet in subnets: subnet.name]
 
-@description('The resourceIds of the deployed subnets')
-output subnetIds array = [for subnet in subnets: resourceId('Microsoft.Network/virtualNetworks/subnets', name, subnet.name)]
+@description('The resource IDs of the deployed subnets')
+output subnetResourceIds array = [for subnet in subnets: resourceId('Microsoft.Network/virtualNetworks/subnets', name, subnet.name)]

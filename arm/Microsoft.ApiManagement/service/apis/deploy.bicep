@@ -32,7 +32,7 @@ param apiVersionDescription string = ''
 @description('Optional. Collection of authentication settings included into this API.')
 param authenticationSettings object = {}
 
-@description('Optional. Customer Usage Attribution id (GUID). This GUID must be previously registered')
+@description('Optional. Customer Usage Attribution ID (GUID). This GUID must be previously registered')
 param cuaId string = ''
 
 @description('Optional. Description of the API. May include HTML formatting tags.')
@@ -63,7 +63,7 @@ param isCurrent bool = true
 @description('Required. Relative URL uniquely identifying this API and all of its resource paths within the API Management service instance. It is appended to the API endpoint base URL specified during the service instance creation to form a public URL for this API.')
 param path string
 
-@description('Optional. Describes on which protocols the operations in this API can be invoked. - http or https')
+@description('Optional. Describes on which protocols the operations in this API can be invoked. - HTTP or HTTPS')
 param protocols array = [
   'https'
 ]
@@ -140,11 +140,11 @@ module policy 'policies/deploy.bicep' = [for policy in policies: {
   }
 }]
 
-@description('The name of the API management service api')
+@description('The name of the API management service API')
 output apiName string = api.name
 
-@description('The resource ID of the API management service api')
+@description('The resource ID of the API management service API')
 output apiResourceId string = api.id
 
-@description('The resource group the API management service api was deployed to')
+@description('The resource group the API management service API was deployed to')
 output apiResourceGroup string = resourceGroup().name

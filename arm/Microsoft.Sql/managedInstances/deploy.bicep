@@ -43,7 +43,7 @@ param hardwareFamily string = 'Gen5'
 ])
 param managedInstanceCreateMode string = 'Default'
 
-@description('Optional. The resource id of another managed instance whose DNS zone this managed instance will share after creation.')
+@description('Optional. The resource ID of another managed instance whose DNS zone this managed instance will share after creation.')
 param dnsZonePartner string = ''
 
 @description('Optional. Collation of the managed instance.')
@@ -60,11 +60,11 @@ param proxyOverride string = 'Proxy'
 @description('Optional. Whether or not the public data endpoint is enabled.')
 param publicDataEndpointEnabled bool = false
 
-@description('Optional. Id of the timezone. Allowed values are timezones supported by Windows.')
+@description('Optional. ID of the timezone. Allowed values are timezones supported by Windows.')
 param timezoneId string = 'UTC'
 
-@description('Optional. The Id of the instance pool this managed server belongs to.')
-param instancePoolId string = ''
+@description('Optional. The resource ID of the instance pool this managed server belongs to.')
+param instancePoolResourceId string = ''
 
 @description('Optional. Specifies the point in time (ISO8601 format) of the source database that will be restored to create the new database.')
 param restorePointInTime string = ''
@@ -77,10 +77,10 @@ param sourceManagedInstanceId string = ''
 @maxValue(365)
 param diagnosticLogsRetentionInDays int = 365
 
-@description('Optional. Resource identifier of the Diagnostic Storage Account.')
+@description('Optional. Resource ID of the diagnostic storage account.')
 param diagnosticStorageAccountId string = ''
 
-@description('Optional. Resource identifier of Log Analytics.')
+@description('Optional. Resource ID of a log analytics workspace.')
 param workspaceId string = ''
 
 @description('Optional. Resource ID of the event hub authorization rule for the Event Hubs namespace in which the event hub should be created or streamed to.')
@@ -103,22 +103,16 @@ param roleAssignments array = []
 @description('Optional. Tags of the resource.')
 param tags object = {}
 
-@description('Optional. Customer Usage Attribution id (GUID). This GUID must be previously registered')
+@description('Optional. Customer Usage Attribution ID (GUID). This GUID must be previously registered')
 param cuaId string = ''
 
-@description('Optional. The type of identity used for the managed instance. The type "None" (default) will remove any identities from the managed instance.')
-@allowed([
-  'None'
-  'SystemAssigned'
-  'UserAssigned'
-  'SystemAssigned,UserAssigned'
-])
-param managedServiceIdentity string = 'SystemAssigned'
+@description('Optional. Enables system assigned managed identity on the resource.')
+param systemAssignedIdentity bool = false
 
-@description('Optional. Mandatory if "managedServiceIdentity" contains UserAssigned. The list of user identities associated with the managed instance.')
+@description('Optional. The ID(s) to assign to the resource.')
 param userAssignedIdentities object = {}
 
-@description('Optional. Mandatory if "managedServiceIdentity" contains UserAssigned. The resource id of a user assigned identity to be used by default.')
+@description('Optional. Mandatory if "managedServiceIdentity" contains UserAssigned. The resource ID of a user assigned identity to be used by default.')
 param primaryUserAssignedIdentityId string = ''
 
 @description('Optional. Databases to create in this server.')
@@ -176,10 +170,12 @@ var diagnosticsMetrics = [for metric in metricsToEnable: {
   }
 }]
 
-var identity = {
-  type: managedServiceIdentity
+var identityType = systemAssignedIdentity ? (!empty(userAssignedIdentities) ? 'SystemAssigned,UserAssigned' : 'SystemAssigned') : (!empty(userAssignedIdentities) ? 'UserAssigned' : 'None')
+
+var identity = identityType != 'None' ? {
+  type: identityType
   userAssignedIdentities: !empty(userAssignedIdentities) ? userAssignedIdentities : null
-}
+} : null
 
 module pid_cuaId '.bicep/nested_cuaId.bicep' = if (!empty(cuaId)) {
   name: 'pid-${cuaId}'
@@ -211,7 +207,7 @@ resource managedInstance 'Microsoft.Sql/managedInstances@2021-05-01-preview' = {
     restorePointInTime: restorePointInTime
     proxyOverride: proxyOverride
     timezoneId: timezoneId
-    instancePoolId: instancePoolId
+    instancePoolId: instancePoolResourceId
     primaryUserAssignedIdentityId: primaryUserAssignedIdentityId
   }
 }
@@ -334,8 +330,11 @@ module managedInstance_administrator 'administrators/deploy.bicep' = if (!empty(
 @description('The name of the deployed managed instance')
 output managedInstanceName string = managedInstance.name
 
-@description('The resourceId of the deployed managed instance')
+@description('The resource ID of the deployed managed instance')
 output managedInstanceResourceId string = managedInstance.id
 
 @description('The resource group of the deployed managed instance')
 output managedInstanceResourceGroup string = resourceGroup().name
+
+@description('The principal ID of the system assigned identity.')
+output principalId string = systemAssignedIdentity ? managedInstance.identity.principalId : ''

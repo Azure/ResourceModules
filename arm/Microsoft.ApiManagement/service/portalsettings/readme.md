@@ -4,7 +4,7 @@ This module deploys API Management Service Portal Setting.
 
 ## Resource Types
 
-| Resource Type | Api Version |
+| Resource Type | API Version |
 | :-- | :-- |
 | `Microsoft.ApiManagement/service/portalsettings` | 2019-12-01 |
 

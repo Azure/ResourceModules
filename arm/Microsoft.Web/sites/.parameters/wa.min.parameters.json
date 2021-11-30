@@ -1,0 +1,22 @@
+{
+    "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "name": {
+            "value": "sxx-az-wa-x-002"
+        },
+        "kind": {
+            "value": "app"
+        },
+        "appServicePlanObject": {
+            "value": {
+                "serverOS": "Linux",
+                "skuName": "P1v2",
+                "skuCapacity": 2,
+                "skuTier": "PremiumV2",
+                "skuSize": "P1v2",
+                "skuFamily": "Pv2"
+            }
+        }
+    }
+}

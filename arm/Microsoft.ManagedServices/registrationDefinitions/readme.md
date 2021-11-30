@@ -1,4 +1,4 @@
-# registrationDefinitions `[Microsoft.ManagedServices/registrationDefinitions]`
+# Registration Definitions `[Microsoft.ManagedServices/registrationDefinitions]`
 
 This module deploys `registrationDefinitions` and `registrationAssignments` (often refered to as 'Lighthouse' or 'resource delegation')
 on subscription or resource group scopes. This type of delegation is very similar to role assignments but here the principal that is
@@ -8,7 +8,7 @@ remote/managing tenant.
 
 ## Resource types
 
-| Resource Type | Api Version |
+| Resource Type | API Version |
 | :-- | :-- |
 | `Microsoft.ManagedServices/registrationAssignments` | 2019-09-01 |
 | `Microsoft.ManagedServices/registrationDefinitions` | 2019-09-01 |

@@ -87,7 +87,7 @@ function Set-ResourceTypesSection {
 
     # Process content
     $sectionContent = [System.Collections.ArrayList]@(
-        '| Resource Type | Api Version |',
+        '| Resource Type | API Version |',
         '| :-- | :-- |'
     )
 
@@ -101,7 +101,7 @@ function Set-ResourceTypesSection {
 
     # Build result
     if ($PSCmdlet.ShouldProcess('Original file with new resource type content', 'Merge')) {
-        $updatedFileContent = Merge-FileWithNewContent -oldContent $ReadMeFileContent -newContent $sectionContent -SectionStartIdentifier $SectionStartIdentifier
+        $updatedFileContent = Merge-FileWithNewContent -oldContent $ReadMeFileContent -newContent $sectionContent -SectionStartIdentifier $SectionStartIdentifier -contentType 'table'
     }
     return $updatedFileContent
 }
@@ -181,10 +181,36 @@ function Set-ParametersSection {
 
     # Build result
     if ($PSCmdlet.ShouldProcess('Original file with new parameters content', 'Merge')) {
-        $updatedFileContent = Merge-FileWithNewContent -oldContent $ReadMeFileContent -newContent $sectionContent -SectionStartIdentifier $SectionStartIdentifier
+        $updatedFileContent = Merge-FileWithNewContent -oldContent $ReadMeFileContent -newContent $sectionContent -SectionStartIdentifier $SectionStartIdentifier -contentType 'table'
     }
+
+    # Build sub-section 'ParameterUsage'
+    if (Test-Path (Join-Path $PSScriptRoot 'moduleReadMeSource')) {
+        if ($resourceUsageSourceFiles = Get-ChildItem (Join-Path $PSScriptRoot 'moduleReadMeSource') -Recurse -Filter 'resourceUsage-*') {
+            foreach ($sourceFile in $resourceUsageSourceFiles.FullName) {
+                $parameterName = (Split-Path $sourceFile -LeafBase).Replace('resourceUsage-', '')
+                if ($templateFileContent.parameters.Keys -contains $parameterName) {
+                    $subSectionStartIdentifier = '### Parameter Usage: `{0}`' -f $ParameterName
+
+                    # Build result
+                    $updateParameterUsageInputObject = @{
+                        OldContent             = $updatedFileContent
+                        NewContent             = (Get-Content $sourceFile -Raw).Trim()
+                        SectionStartIdentifier = $subSectionStartIdentifier
+                        ParentStartIdentifier  = $SectionStartIdentifier
+                        ContentType            = 'none'
+                    }
+                    if ($PSCmdlet.ShouldProcess(('Original file with new parameter usage [{0}] content' -f $parameterName), 'Merge')) {
+                        $updatedFileContent = Merge-FileWithNewContent @updateParameterUsageInputObject
+                    }
+                }
+            }
+        }
+    }
+
     return $updatedFileContent
 }
+
 
 <#
 .SYNOPSIS
@@ -246,7 +272,7 @@ function Set-OutputsSection {
 
     # Build result
     if ($PSCmdlet.ShouldProcess('Original file with new output content', 'Merge')) {
-        $updatedFileContent = Merge-FileWithNewContent -oldContent $ReadMeFileContent -newContent $sectionContent -SectionStartIdentifier $SectionStartIdentifier
+        $updatedFileContent = Merge-FileWithNewContent -oldContent $ReadMeFileContent -newContent $sectionContent -SectionStartIdentifier $SectionStartIdentifier -contentType 'table'
     }
     return $updatedFileContent
 }
@@ -337,6 +363,11 @@ Currently supports: 'Resource Types', 'Parameters', 'Outputs', 'Template referen
 Set-ModuleReadMe -TemplateFilePath 'C:\deploy.bicep'
 
 Update the readme in path 'C:\readme.md' based on the bicep template in path 'C:\deploy.bicep'
+
+.NOTES
+The script autopopulates the Parameter Usage section of the ReadMe with the matching content in path './moduleReadMeSource'.
+The content is added in case the given template has a parameter that matches the suffix of one of the files in that path.
+To account for more parameter, just add another markdown file with the naming pattern 'resourceUsage-<parameterName>'
 #>
 function Set-ModuleReadMe {
 
@@ -375,18 +406,22 @@ function Set-ModuleReadMe {
         $templateFileContent = ConvertFrom-Json (Get-Content $TemplateFilePath -Encoding 'utf8' -Raw) -ErrorAction Stop -AsHashtable
     }
 
+    $fullResourcePath = (Split-Path $TemplateFilePath -Parent).Replace('\', '/').split('/arm/')[1]
+
     # Check readme
     if (-not (Test-Path $ReadMeFilePath) -or ([String]::IsNullOrEmpty((Get-Content $ReadMeFilePath -Raw)))) {
         # Create new readme file
 
         # Build resource name
-        $TextInfo = (Get-Culture).TextInfo
-        $serviceIdentifiers = (Split-Path $TemplateFilePath -Parent).Replace('\', '/').split('/arm/')[1].Replace('Microsoft.', '').Replace('/.', '/').Split('/') | ForEach-Object { $TextInfo.ToTitleCase($_) }
-        $assumedResourceName = $serviceIdentifiers -join ''
+        $serviceIdentifiers = $fullResourcePath.Replace('Microsoft.', '').Replace('/.', '/').Split('/')
+        $serviceIdentifiers = $serviceIdentifiers | ForEach-Object { $_.substring(0, 1).toupper() + $_.substring(1) }
+        $serviceIdentifiers = $serviceIdentifiers | ForEach-Object { $_ -creplace '(?<=\w)([A-Z])', '$1' }
+        $assumedResourceName = $serviceIdentifiers -join ' '
 
         $initialContent = @(
-            "# $assumedResourceName",
+            "# $assumedResourceName ``[$fullResourcePath]``",
             '',
+            "This module deploys $assumedResourceName."
             '// TODO: Replace Resource and fill in description',
             ''
             '## Resource Types',
@@ -409,13 +444,7 @@ function Set-ModuleReadMe {
 
     # Update title
     if ($TemplateFilePath.Replace('\', '/') -like '*/arm/*') {
-        $fullResourcePath = 'Microsoft.{0}' -f (Split-Path $TemplateFilePath -Parent).Replace('\', '/').Split('/Microsoft.')[1]
 
-        if ($fullResourcePath -clike '*Resources/*') {
-            # Deal with original '*Resources' child-resource folder
-            $cutOutPath = $fullResourcePath -split '/(.*)Resources/(.*)' | Where-Object { -not [String]::IsNullOrEmpty($_) }
-            $fullResourcePath = $cutOutPath -join '/'
-        }
         if ($readMeFileContent[0] -notlike "*``[$fullResourcePath]``") {
             # Cut outdated
             $readMeFileContent[0] = $readMeFileContent[0].Split('`[')[0]
@@ -423,6 +452,8 @@ function Set-ModuleReadMe {
             # Add latest
             $readMeFileContent[0] = '{0} `[{1}]`' -f $readMeFileContent[0], $fullResourcePath
         }
+        # Remove excess whitespace
+        $readMeFileContent[0] = $readMeFileContent[0] -replace '\s+', ' '
     }
 
     if ($SectionsToRefresh -contains 'Resource Types') {

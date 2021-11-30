@@ -1,8 +1,8 @@
 @description('Required. The name of the Public IP Address')
 param name string
 
-@description('Optional. Resource Id of the Public IP Prefix object. This is only needed if you want your Public IPs created in a PIP Prefix.')
-param publicIPPrefixId string = ''
+@description('Optional. Resource ID of the Public IP Prefix object. This is only needed if you want your Public IPs created in a PIP Prefix.')
+param publicIPPrefixResourceId string = ''
 
 @description('Optional. The public IP address allocation method. - Static or Dynamic.')
 param publicIPAllocationMethod string = 'Dynamic'
@@ -18,10 +18,10 @@ param skuTier string = 'Regional'
 @maxValue(365)
 param diagnosticLogsRetentionInDays int = 365
 
-@description('Optional. Resource identifier of the Diagnostic Storage Account.')
+@description('Optional. Resource ID of the diagnostic storage account.')
 param diagnosticStorageAccountId string = ''
 
-@description('Optional. Resource identifier of Log Analytics.')
+@description('Optional. Resource ID of log analytics.')
 param workspaceId string = ''
 
 @description('Optional. Resource ID of the event hub authorization rule for the Event Hubs namespace in which the event hub should be created or streamed to.')
@@ -44,7 +44,7 @@ param location string = resourceGroup().location
 @description('Optional. Array of role assignment objects that contain the \'roleDefinitionIdOrName\' and \'principalId\' to define RBAC role assignments on this resource. In the roleDefinitionIdOrName attribute, you can provide either the display name of the role definition, or its fully qualified ID in the following format: \'/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11\'')
 param roleAssignments array = []
 
-@description('Optional. Customer Usage Attribution id (GUID). This GUID must be previously registered')
+@description('Optional. Customer Usage Attribution ID (GUID). This GUID must be previously registered')
 param cuaId string = ''
 
 @description('Optional. Tags of the resource.')
@@ -90,7 +90,7 @@ var diagnosticsMetrics = [for metric in metricsToEnable: {
 }]
 
 var publicIPPrefix = {
-  id: publicIPPrefixId
+  id: publicIPPrefixResourceId
 }
 
 module pid_cuaId '.bicep/nested_cuaId.bicep' = if (!empty(cuaId)) {
@@ -109,7 +109,7 @@ resource publicIpAddress 'Microsoft.Network/publicIPAddresses@2021-02-01' = {
   properties: {
     publicIPAddressVersion: 'IPv4'
     publicIPAllocationMethod: publicIPAllocationMethod
-    publicIPPrefix: !empty(publicIPPrefixId) ? publicIPPrefix : null
+    publicIPPrefix: !empty(publicIPPrefixResourceId) ? publicIPPrefix : null
     idleTimeoutInMinutes: 4
     ipTags: []
   }
