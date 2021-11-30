@@ -1,6 +1,6 @@
-# AVD HostPools `[Microsoft.DesktopVirtualization/hostpools]`
+# AVD Host Pools `[Microsoft.DesktopVirtualization/hostpools]`
 
-This module deploys AVD Host Pools, with resource lock and diagnostics configuration.
+This module deploys an Azure virtual desktop host pool.
 
 ## Resource types
 
@@ -47,13 +47,6 @@ This module deploys AVD Host Pools, with resource lock and diagnostics configura
 ```json
 "roleAssignments": {
     "value": [
-        {
-            "roleDefinitionIdOrName": "Desktop Virtualization User",
-            "principalIds": [
-                "12345678-1234-1234-1234-123456789012", // object 1
-                "78945612-1234-1234-1234-123456789012" // object 2
-            ]
-        },
         {
             "roleDefinitionIdOrName": "Reader",
             "principalIds": [

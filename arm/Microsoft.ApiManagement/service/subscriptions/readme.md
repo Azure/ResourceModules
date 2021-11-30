@@ -1,4 +1,4 @@
-# API Management Subscriptions   `[Microsoft.ApiManagement/service/subscriptions]`
+# API Management Subscriptions `[Microsoft.ApiManagement/service/subscriptions]`
 
 This module deploys API Management Subscriptions.
 

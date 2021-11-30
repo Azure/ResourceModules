@@ -1,6 +1,6 @@
-# ApplicationGateway `[Microsoft.Network/applicationGateways]`
+# Application Gateways `[Microsoft.Network/applicationGateways]`
 
-This template deploys Application Gateway.
+This template deploys an application gateway.
 
 ## Resource types
 
@@ -184,13 +184,6 @@ This template deploys Application Gateway.
 ```json
 "roleAssignments": {
     "value": [
-        {
-            "roleDefinitionIdOrName": "Desktop Virtualization User",
-            "principalIds": [
-                "12345678-1234-1234-1234-123456789012", // object 1
-                "78945612-1234-1234-1234-123456789012" // object 2
-            ]
-        },
         {
             "roleDefinitionIdOrName": "Reader",
             "principalIds": [

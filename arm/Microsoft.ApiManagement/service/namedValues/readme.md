@@ -1,4 +1,4 @@
-# API Management Service Named Values   `[Microsoft.ApiManagement/service/namedValues]`
+# API Management Service Named Values `[Microsoft.ApiManagement/service/namedValues]`
 
 This module deploys API Management Service Named Values.
 

@@ -1,6 +1,6 @@
-# Activity Log Alert `[Microsoft.Insights/activityLogAlerts]`
+# Activity Log Alerts `[Microsoft.Insights/activityLogAlerts]`
 
-This module deploys an Alert based on Activity Log
+This module deploys an Alert based on Activity Log.
 
 ## Resource Types
 
@@ -134,13 +134,6 @@ Each condition can specify only one field between `equals` and `containsAny`.
 ```json
 "roleAssignments": {
     "value": [
-        {
-            "roleDefinitionIdOrName": "Desktop Virtualization User",
-            "principalIds": [
-                "12345678-1234-1234-1234-123456789012", // object 1
-                "78945612-1234-1234-1234-123456789012" // object 2
-            ]
-        },
         {
             "roleDefinitionIdOrName": "Reader",
             "principalIds": [

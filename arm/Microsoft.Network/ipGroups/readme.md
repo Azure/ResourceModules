@@ -1,6 +1,6 @@
 # IP Groups `[Microsoft.Network/ipGroups]`
 
-This module deploys an IP Group, with resource lock.
+This module deploys an IP group.
 
 ## Resource types
 
@@ -27,13 +27,6 @@ This module deploys an IP Group, with resource lock.
 ```json
 "roleAssignments": {
     "value": [
-        {
-            "roleDefinitionIdOrName": "Desktop Virtualization User",
-            "principalIds": [
-                "12345678-1234-1234-1234-123456789012", // object 1
-                "78945612-1234-1234-1234-123456789012" // object 2
-            ]
-        },
         {
             "roleDefinitionIdOrName": "Reader",
             "principalIds": [

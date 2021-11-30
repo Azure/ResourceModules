@@ -1,6 +1,6 @@
-# LoadBalancer `[Microsoft.Network/loadBalancers]`
+# Load Balancers `[Microsoft.Network/loadBalancers]`
 
-This module deploys a Load Balancer
+This module deploys a load balancer.
 
 ## Resource types
 
@@ -168,13 +168,6 @@ This module deploys a Load Balancer
 ```json
 "roleAssignments": {
     "value": [
-        {
-            "roleDefinitionIdOrName": "Desktop Virtualization User",
-            "principalIds": [
-                "12345678-1234-1234-1234-123456789012", // object 1
-                "78945612-1234-1234-1234-123456789012" // object 2
-            ]
-        },
         {
             "roleDefinitionIdOrName": "Reader",
             "principalIds": [

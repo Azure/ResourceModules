@@ -1,6 +1,6 @@
-# ActivityLog `[Microsoft.Insights/diagnosticSettings]`
+# Activity Logs `[Microsoft.Insights/diagnosticSettings]`
 
-This module deploys a subscription wide export of the ActivityLog.
+This module deploys a subscription wide export of the activity log.
 
 ## Resource Types
 

@@ -26,6 +26,23 @@ This template deploys capacity pools in an Azure NetApp Files.
 | `tags` | object | `{object}` |  | Optional. Tags for all resources. |
 | `volumes` | _[volumes](volumes/readme.md)_ array | `[]` |  | Optional. List of volumnes to create in the capacity pool. |
 
+### Parameter Usage: `tags`
+
+Tag names and tag values can be provided as needed. A tag can be left without a value.
+
+```json
+"tags": {
+    "value": {
+        "Environment": "Non-Prod",
+        "Contact": "test.user@testcompany.com",
+        "PurchaseOrder": "1234",
+        "CostCenter": "7890",
+        "ServiceName": "DeploymentValidation",
+        "Role": "DeploymentValidation"
+    }
+}
+```
+
 ### Parameter Usage: `roleAssignments`
 
 ```json

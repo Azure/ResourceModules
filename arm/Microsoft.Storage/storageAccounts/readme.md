@@ -1,8 +1,6 @@
-# StorageAccounts `[Microsoft.Storage/storageAccounts]`
+# Storage Accounts `[Microsoft.Storage/storageAccounts]`
 
-This module is used to deploy an Azure Storage Account, with resource lock and the ability to deploy 1 or more Blob Containers and 1 or more File Shares. Optional ACLs can be configured on the Storage Account and optional RBAC can be assigned on the Storage Account and on each Blob Container and File Share.
-
-The default parameter values are based on the needs of deploying a diagnostic storage account.
+This module is used to deploy a storage account, with the ability to deploy 1 or more blob containers, file shares, tables and queues. Optional ACLs can be configured on the storage account and optional RBAC can be assigned on the storage account and on each child resource.
 
 ## Resource types
 
@@ -130,7 +128,7 @@ To use Private Endpoint the following dependencies must be deployed:
     "value": [
         // Example showing all available fields
         {
-            "name": "sxx-az-sa-cac-y-123-pe", // Optional: Name will be automatically generated if one is not provided here
+            "name": "sxx-az-pe", // Optional: Name will be automatically generated if one is not provided here
             "subnetResourceId": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/virtualNetworks/sxx-az-vnet-x-001/subnets/sxx-az-subnet-x-001",
             "service": "blob",
             "privateDnsZoneResourceIds": [ // Optional: No DNS record will be created if a private DNS zone Resource ID is not specified

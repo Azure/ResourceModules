@@ -1,6 +1,6 @@
-# PrivateEndpoints `[Microsoft.Network/privateEndpoints]`
+# Private Endpoints `[Microsoft.Network/privateEndpoints]`
 
-This template deploys private Endpoint for a generic service.
+This template deploys a private endpoint for a generic service.
 
 ## Resource types
 
@@ -58,13 +58,6 @@ Tag names and tag values can be provided as needed. A tag can be left without a 
 ```json
 "roleAssignments": {
     "value": [
-        {
-            "roleDefinitionIdOrName": "Desktop Virtualization User",
-            "principalIds": [
-                "12345678-1234-1234-1234-123456789012", // object 1
-                "78945612-1234-1234-1234-123456789012" // object 2
-            ]
-        },
         {
             "roleDefinitionIdOrName": "Reader",
             "principalIds": [

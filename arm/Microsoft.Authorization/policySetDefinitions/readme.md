@@ -1,4 +1,4 @@
-# policySetDefinition `[Microsoft.Authorization/policySetDefinitions]`
+# Policy Set Definitions `[Microsoft.Authorization/policySetDefinitions]`
 
 ## Resource types
 

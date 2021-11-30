@@ -1,6 +1,6 @@
 # Public IP Prefixes `[Microsoft.Network/publicIPPrefixes]`
 
-This template deploys Public IP Prefixes.
+This template deploys a public IP prefix.
 
 ## Resource types
 
@@ -27,13 +27,6 @@ This template deploys Public IP Prefixes.
 ```json
 "roleAssignments": {
     "value": [
-        {
-            "roleDefinitionIdOrName": "Desktop Virtualization User",
-            "principalIds": [
-                "12345678-1234-1234-1234-123456789012", // object 1
-                "78945612-1234-1234-1234-123456789012" // object 2
-            ]
-        },
         {
             "roleDefinitionIdOrName": "Reader",
             "principalIds": [

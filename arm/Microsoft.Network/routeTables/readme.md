@@ -1,6 +1,6 @@
-# RouteTables `[Microsoft.Network/routeTables]`
+# Route Tables `[Microsoft.Network/routeTables]`
 
-This template deploys User Defined Route Tables.
+This module deploys a user defined route table.
 
 ## Resource types
 
@@ -70,13 +70,6 @@ Here's an example of specifying a few routes:
 ```json
 "roleAssignments": {
     "value": [
-        {
-            "roleDefinitionIdOrName": "Desktop Virtualization User",
-            "principalIds": [
-                "12345678-1234-1234-1234-123456789012", // object 1
-                "78945612-1234-1234-1234-123456789012" // object 2
-            ]
-        },
         {
             "roleDefinitionIdOrName": "Reader",
             "principalIds": [

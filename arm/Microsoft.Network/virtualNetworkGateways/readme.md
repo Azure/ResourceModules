@@ -1,6 +1,6 @@
-# VirtualNetworkGateway `[Microsoft.Network/virtualNetworkGateways]`
+# Virtual Network Gateways `[Microsoft.Network/virtualNetworkGateways]`
 
-This module deploys a Virtual Network Gateway.
+This module deploys a virtual network gateway.
 
 ## Resource types
 
@@ -81,13 +81,6 @@ Here's an example of specifying a couple Subnets to deploy:
 ```json
 "roleAssignments": {
     "value": [
-        {
-            "roleDefinitionIdOrName": "Desktop Virtualization User",
-            "principalIds": [
-                "12345678-1234-1234-1234-123456789012", // object 1
-                "78945612-1234-1234-1234-123456789012" // object 2
-            ]
-        },
         {
             "roleDefinitionIdOrName": "Reader",
             "principalIds": [

@@ -1,6 +1,6 @@
-# VirtualNetworkGatewayConnection `[Microsoft.Network/connections]`
+# Virtual Network Gateway Connections `[Microsoft.Network/connections]`
 
-This template deploys Virtual Network Gateway Connection.
+This template deploys a virtual network gateway connection.
 
 ## Resource types
 

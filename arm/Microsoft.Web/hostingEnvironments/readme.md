@@ -1,6 +1,6 @@
-# App Service Environment `[Microsoft.Web/hostingEnvironments]`
+# App Service Environments `[Microsoft.Web/hostingEnvironments]`
 
-This module deploys App Service Environment, with resource lock.
+This module deploys an app service environment.
 
 ## Resource types
 
@@ -42,7 +42,7 @@ This module deploys App Service Environment, with resource lock.
 | `tags` | object | `{object}` |  | Optional. Resource tags. |
 | `userWhitelistedIpRanges` | array | `[]` |  | Optional. User added ip ranges to whitelist on ASE db - string |
 | `workerPools` | array | `[]` |  | Optional. Description of worker pools with worker size IDs, VM sizes, and number of workers in each pool.. |
-| `workspaceId` | string |  |  | Optional. Resource identifier of log analytics. |
+| `workspaceId` | string |  |  | Optional. Resource ID of log analytics. |
 
 ### Parameter Usage: `roleAssignments`
 

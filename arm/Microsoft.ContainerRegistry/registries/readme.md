@@ -1,4 +1,4 @@
-# ContainerRegistry `[Microsoft.ContainerRegistry/registries]`
+# Container Registries `[Microsoft.ContainerRegistry/registries]`
 
 Azure Container Registry is a managed, private Docker registry service based on the open-source Docker Registry 2.0. Create and maintain Azure container registries to store and manage your private Docker container images and related artifacts.
 
@@ -41,6 +41,28 @@ Azure Container Registry is a managed, private Docker registry service based on 
 | `trustPolicyStatus` | string |  |  | Optional. The value that indicates whether the policy is enabled or not. |
 | `workspaceId` | string |  |  | Optional. Resource ID of log analytics. |
 
+### Parameter Usage: `roleAssignments`
+
+```json
+"roleAssignments": {
+    "value": [
+        {
+            "roleDefinitionIdOrName": "Reader",
+            "principalIds": [
+                "12345678-1234-1234-1234-123456789012", // object 1
+                "78945612-1234-1234-1234-123456789012" // object 2
+            ]
+        },
+        {
+            "roleDefinitionIdOrName": "/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11",
+            "principalIds": [
+                "12345678-1234-1234-1234-123456789012" // object 1
+            ]
+        }
+    ]
+}
+```
+
 ### Parameter Usage: `imageRegistryCredentials`
 
 The image registry credentials by which the container group is created from.
@@ -69,7 +91,7 @@ To use Private Endpoint the following dependencies must be deployed:
     "value": [
         // Example showing all available fields
         {
-            "name": "sxx-az-sa-cac-y-123-pe", // Optional: Name will be automatically generated if one is not provided here
+            "name": "sxx-az-pe", // Optional: Name will be automatically generated if one is not provided here
             "subnetResourceId": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/virtualNetworks/sxx-az-vnet-x-001/subnets/sxx-az-subnet-x-001",
             "service": "vault",
             "privateDnsZoneResourceIds": [ // Optional: No DNS record will be created if a private DNS zone Resource ID is not specified

@@ -1,6 +1,6 @@
-# Metric Alert `[Microsoft.Insights/metricAlerts]`
+# Metric Alerts `[Microsoft.Insights/metricAlerts]`
 
-This module deploys an Alert based on metrics
+This module deploys an alert based on metrics.
 
 ## Resource types
 
@@ -118,13 +118,6 @@ The following sample can be use both for Single and Multiple criterias. The othe
 ```json
 "roleAssignments": {
     "value": [
-        {
-            "roleDefinitionIdOrName": "Desktop Virtualization User",
-            "principalIds": [
-                "12345678-1234-1234-1234-123456789012", // object 1
-                "78945612-1234-1234-1234-123456789012" // object 2
-            ]
-        },
         {
             "roleDefinitionIdOrName": "Reader",
             "principalIds": [

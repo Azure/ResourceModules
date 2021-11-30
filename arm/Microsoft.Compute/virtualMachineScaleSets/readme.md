@@ -1,6 +1,6 @@
 # Virtual Machine Scale Sets `[Microsoft.Compute/virtualMachineScaleSets]`
 
-This module deploys a virtual machine scale set
+This module deploys a virtual machine scale set.
 
 ## Resource types
 
@@ -68,6 +68,7 @@ The following resources are required to be able to deploy this resource.
 | `maxUnhealthyInstancePercent` | int | `20` |  | Optional. The maximum percentage of the total virtual machine instances in the scale set that can be simultaneously unhealthy, either as a result of being upgraded, or by being found in an unhealthy state by the virtual machine health checks before the rolling upgrade aborts. This constraint will be checked prior to starting any batch |
 | `maxUnhealthyUpgradedInstancePercent` | int | `20` |  | Optional. The maximum percentage of the total virtual machine instances in the scale set that can be simultaneously unhealthy, either as a result of being upgraded, or by being found in an unhealthy state by the virtual machine health checks before the rolling upgrade aborts. This constraint will be checked prior to starting any batch. |
 | `metricsToEnable` | array | `[AllMetrics]` | `[AllMetrics]` | Optional. The name of metrics that will be streamed. |
+| `name` | string |  |  | Optional. Name of the VMSS. |
 | `nicConfigurations` | array | `[]` |  | Required. Configures NICs and PIPs. |
 | `osDisk` | object |  |  | Required. Specifies the OS disk. |
 | `osType` | string |  | `[Windows, Linux]` | Optional. The chosen OS type |
@@ -91,7 +92,6 @@ The following resources are required to be able to deploy this resource.
 | `upgradePolicyMode` | string | `Manual` | `[Manual, Automatic, Rolling]` | Optional. Specifies the mode of an upgrade to virtual machines in the scale set.' Manual - You control the application of updates to virtual machines in the scale set. You do this by using the manualUpgrade action. ; Automatic - All virtual machines in the scale set are automatically updated at the same time. - Automatic, Manual, Rolling |
 | `vmNamePrefix` | string | `vmssvm` |  | Optional. Specifies the computer name prefix for all of the virtual machines in the scale set. |
 | `vmPriority` | string | `Regular` | `[Regular, Low, Spot]` | Optional. Specifies the priority for the virtual machine. |
-| `vmssName` | string |  |  | Optional. Name of the VMSS. |
 | `winRMListeners` | object | `{object}` |  | Optional. Specifies the Windows Remote Management listeners. This enables remote Windows PowerShell. - WinRMConfiguration object. |
 | `workspaceId` | string |  |  | Optional. Resource ID of log analytics. |
 | `zoneBalance` | bool |  |  | Optional. Whether to force strictly even Virtual Machine distribution cross x-zones in case there is zone outage. |
@@ -371,13 +371,6 @@ Should be configured alongside:
 ```json
 "roleAssignments": {
     "value": [
-        {
-            "roleDefinitionIdOrName": "Desktop Virtualization User",
-            "principalIds": [
-                "12345678-1234-1234-1234-123456789012", // object 1
-                "78945612-1234-1234-1234-123456789012" // object 2
-            ]
-        },
         {
             "roleDefinitionIdOrName": "Reader",
             "principalIds": [

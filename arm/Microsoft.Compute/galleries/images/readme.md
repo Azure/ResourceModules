@@ -1,4 +1,4 @@
-# Shared Image Definition  `[Microsoft.Compute/galleries/images]`
+# Shared Image Definition `[Microsoft.Compute/galleries/images]`
 
 This module deploys an Image Definition in a Shared Image Gallery.
 
@@ -45,13 +45,6 @@ This module deploys an Image Definition in a Shared Image Gallery.
 "roleAssignments": {
     "value": [
         {
-            "roleDefinitionIdOrName": "Desktop Virtualization User",
-            "principalIds": [
-                "12345678-1234-1234-1234-123456789012", // object 1
-                "78945612-1234-1234-1234-123456789012" // object 2
-            ]
-        },
-        {
             "roleDefinitionIdOrName": "Reader",
             "principalIds": [
                 "12345678-1234-1234-1234-123456789012", // object 1
@@ -89,9 +82,9 @@ Tag names and tag values can be provided as needed. A tag can be left without a 
 
 | Output Name | Type | Description |
 | :-- | :-- | :-- |
-| `galleryImageName` | string | The name of the image |
-| `galleryImageResourceId` | string | The resource ID of the image |
-| `galleryResourceGroup` | string | The resource group the image was deployed into |
+| `imageName` | string | The name of the image |
+| `imageResourceGroup` | string | The resource group the image was deployed into |
+| `imageResourceId` | string | The resource ID of the image |
 
 ## Template references
 

@@ -1,6 +1,6 @@
 # User Assigned Identities `[Microsoft.ManagedIdentity/userAssignedIdentities]`
 
-This module deploys User Assigned Identities, with resource lock.
+This module deploys a user assigned identity.
 
 ## Resource types
 
@@ -26,13 +26,6 @@ This module deploys User Assigned Identities, with resource lock.
 ```json
 "roleAssignments": {
     "value": [
-        {
-            "roleDefinitionIdOrName": "Desktop Virtualization User",
-            "principalIds": [
-                "12345678-1234-1234-1234-123456789012", // object 1
-                "78945612-1234-1234-1234-123456789012" // object 2
-            ]
-        },
         {
             "roleDefinitionIdOrName": "Reader",
             "principalIds": [

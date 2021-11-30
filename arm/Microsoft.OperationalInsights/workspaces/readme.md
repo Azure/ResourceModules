@@ -1,6 +1,6 @@
-# LogAnalytics `[Microsoft.OperationalInsights/workspaces]`
+# Log Analytics Workspaces `[Microsoft.OperationalInsights/workspaces]`
 
-This template deploys Log Analytics.
+This template deploys a log analytics workspace.
 
 ## Resource types
 
@@ -76,13 +76,6 @@ This template deploys Log Analytics.
 ```json
 "roleAssignments": {
     "value": [
-        {
-            "roleDefinitionIdOrName": "Desktop Virtualization User",
-            "principalIds": [
-                "12345678-1234-1234-1234-123456789012", // object 1
-                "78945612-1234-1234-1234-123456789012" // object 2
-            ]
-        },
         {
             "roleDefinitionIdOrName": "Reader",
             "principalIds": [

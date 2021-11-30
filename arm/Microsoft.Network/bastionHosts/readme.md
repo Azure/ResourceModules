@@ -1,6 +1,6 @@
-# AzureBastion `[Microsoft.Network/bastionHosts]`
+# Bastion Hosts `[Microsoft.Network/bastionHosts]`
 
-This module deploys an Azure Bastion.
+This module deploys a bastion host.
 
 ## Resource Types
 
@@ -57,13 +57,6 @@ Tag names and tag values can be provided as needed. A tag can be left without a 
 ```json
 "roleAssignments": {
     "value": [
-        {
-            "roleDefinitionIdOrName": "Desktop Virtualization User",
-            "principalIds": [
-                "12345678-1234-1234-1234-123456789012", // object 1
-                "78945612-1234-1234-1234-123456789012" // object 2
-            ]
-        },
         {
             "roleDefinitionIdOrName": "Reader",
             "principalIds": [

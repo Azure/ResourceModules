@@ -1,6 +1,6 @@
-# Management groups `[Microsoft.Management/managementGroups]`
+# Management Groups `[Microsoft.Management/managementGroups]`
 
-This template will prepare the Management group structure based on the provided parameter.
+This template will prepare the management group structure based on the provided parameter.
 
 This module has some known **limitations**:
 
@@ -28,13 +28,6 @@ This module has some known **limitations**:
 ```json
 "roleAssignments": {
     "value": [
-        {
-            "roleDefinitionIdOrName": "Desktop Virtualization User",
-            "principalIds": [
-                "12345678-1234-1234-1234-123456789012", // object 1
-                "78945612-1234-1234-1234-123456789012" // object 2
-            ]
-        },
         {
             "roleDefinitionIdOrName": "Reader",
             "principalIds": [

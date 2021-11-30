@@ -1,6 +1,6 @@
-# AzureFirewall `[Microsoft.Network/azureFirewalls]`
+# Azure Firewalls `[Microsoft.Network/azureFirewalls]`
 
-This module deploys Azure Firewall.
+This module deploys a firewall.
 
 ## Resource types
 
@@ -46,13 +46,6 @@ This module deploys Azure Firewall.
 ```json
 "roleAssignments": {
     "value": [
-        {
-            "roleDefinitionIdOrName": "Desktop Virtualization User",
-            "principalIds": [
-                "12345678-1234-1234-1234-123456789012", // object 1
-                "78945612-1234-1234-1234-123456789012" // object 2
-            ]
-        },
         {
             "roleDefinitionIdOrName": "Reader",
             "principalIds": [

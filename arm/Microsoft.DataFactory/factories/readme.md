@@ -1,4 +1,4 @@
-# DataFactory `[Microsoft.DataFactory/factories]`
+# Data Factories `[Microsoft.DataFactory/factories]`
 
 ## Resource types
 
@@ -18,6 +18,8 @@
 | `cuaId` | string |  |  | Optional. Customer Usage Attribution ID (GUID). This GUID must be previously registered |
 | `diagnosticLogsRetentionInDays` | int | `365` |  | Optional. Specifies the number of days that logs will be kept for; a value of 0 will retain data indefinitely. |
 | `diagnosticStorageAccountId` | string |  |  | Optional. Resource ID of the diagnostic storage account. |
+| `eventHubAuthorizationRuleId` | string |  |  | Optional. Resource ID of the event hub authorization rule for the Event Hubs namespace in which the event hub should be created or streamed to. |
+| `eventHubName` | string |  |  | Optional. Name of the event hub within the namespace to which logs are streamed. Without this, an event hub is created for each log category. |
 | `gitAccountName` | string |  |  | Optional. The account name. |
 | `gitCollaborationBranch` | string | `main` |  | Optional. The collaboration branch name. Default is 'main'. |
 | `gitConfigureLater` | bool | `True` |  | Optional. Boolean to define whether or not to configure git during template deployment. |

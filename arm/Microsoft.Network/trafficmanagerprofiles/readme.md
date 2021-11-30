@@ -1,6 +1,6 @@
-# TrafficManager `[Microsoft.Network/trafficmanagerprofiles]`
+# Traffic Manager Profiles `[Microsoft.Network/trafficmanagerprofiles]`
 
-This module deploys Traffic Manager, with resource lock.
+This module deploys a traffic manager profile.
 
 ## Resource types
 
@@ -79,13 +79,6 @@ This module deploys Traffic Manager, with resource lock.
 ```json
 "roleAssignments": {
     "value": [
-        {
-            "roleDefinitionIdOrName": "Desktop Virtualization User",
-            "principalIds": [
-                "12345678-1234-1234-1234-123456789012", // object 1
-                "78945612-1234-1234-1234-123456789012" // object 2
-            ]
-        },
         {
             "roleDefinitionIdOrName": "Reader",
             "principalIds": [

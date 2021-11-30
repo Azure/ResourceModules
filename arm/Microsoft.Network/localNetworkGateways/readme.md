@@ -1,6 +1,6 @@
-# Local Network Gateway `[Microsoft.Network/localNetworkGateways]`
+# Local Network Gateways `[Microsoft.Network/localNetworkGateways]`
 
-This module deploys Local Network Gateway, with resource lock.
+This module deploys a local network gateway.
 
 ## Resource types
 
@@ -32,13 +32,6 @@ This module deploys Local Network Gateway, with resource lock.
 ```json
 "roleAssignments": {
     "value": [
-        {
-            "roleDefinitionIdOrName": "Desktop Virtualization User",
-            "principalIds": [
-                "12345678-1234-1234-1234-123456789012", // object 1
-                "78945612-1234-1234-1234-123456789012" // object 2
-            ]
-        },
         {
             "roleDefinitionIdOrName": "Reader",
             "principalIds": [

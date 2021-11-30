@@ -1,6 +1,6 @@
-# Virtual Wan `[Microsoft.Network/virtualWans]`
+# Virtual WANs `[Microsoft.Network/virtualWans]`
 
-This template deploys Virtual Wan
+This template deploys a virtual WAN.
 
 ## Resource types
 
@@ -40,13 +40,6 @@ This template deploys Virtual Wan
 ```json
 "roleAssignments": {
     "value": [
-        {
-            "roleDefinitionIdOrName": "Desktop Virtualization User",
-            "principalIds": [
-                "12345678-1234-1234-1234-123456789012", // object 1
-                "78945612-1234-1234-1234-123456789012" // object 2
-            ]
-        },
         {
             "roleDefinitionIdOrName": "Reader",
             "principalIds": [

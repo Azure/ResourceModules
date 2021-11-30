@@ -1,6 +1,6 @@
 # AVD Application Groups `[Microsoft.DesktopVirtualization/applicationgroups]`
 
-This module deploys AVD Application Groups, with resource lock and diagnostics configuration.
+This module deploys an Azure virtual desktop application group.
 
 ## Resource types
 
@@ -39,13 +39,6 @@ This module deploys AVD Application Groups, with resource lock and diagnostics c
 ```json
 "roleAssignments": {
     "value": [
-        {
-            "roleDefinitionIdOrName": "Desktop Virtualization User",
-            "principalIds": [
-                "12345678-1234-1234-1234-123456789012", // object 1
-                "78945612-1234-1234-1234-123456789012" // object 2
-            ]
-        },
         {
             "roleDefinitionIdOrName": "Reader",
             "principalIds": [

@@ -1,6 +1,6 @@
-# Network Watcher `[Microsoft.Network/networkWatchers]`
+# Network Watchers `[Microsoft.Network/networkWatchers]`
 
-This template deploys Network Watcher.
+This template deploys a network watcher.
 
 ## Resource types
 
@@ -31,13 +31,6 @@ This template deploys Network Watcher.
 ```json
 "roleAssignments": {
     "value": [
-        {
-            "roleDefinitionIdOrName": "Desktop Virtualization User",
-            "principalIds": [
-                "12345678-1234-1234-1234-123456789012", // object 1
-                "78945612-1234-1234-1234-123456789012" // object 2
-            ]
-        },
         {
             "roleDefinitionIdOrName": "Reader",
             "principalIds": [

@@ -109,13 +109,13 @@ There are some constraints that needs to be considered when naming the deploymen
 
 While exceptions might be needed, the following guidance should be followed as much as possible:
 
-- For child-resources of the top-level resource use the following naming structure
+- For child-resources of the top-level resource inside the top-level template (for example the `blobServices` deployment inside the `storageAccount` template) use the following naming structure
 
 ```
 '${uniqueString(deployment().name, location)}-<resource_short_type>'
 ```
 
-- For child-resources, use the following naming structure
+- In child-resource templates (for example inside for `containers` in the `blobServices` template), use the following naming structure
 
 ```
 '${deployment().name}-<child_type>[-${index}]'
@@ -258,7 +258,7 @@ param diagnosticLogsRetentionInDays int = 365
 @description('Optional. Resource ID of the diagnostic storage account.')
 param diagnosticStorageAccountId string = ''
 
-@description('Optional. Resource identifier of log analytics.')
+@description('Optional. Resource ID of log analytics.')
 param workspaceId string = ''
 
 @description('Optional. Resource ID of the event hub authorization rule for the Event Hubs namespace in which the event hub should be created or streamed to.')
