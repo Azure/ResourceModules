@@ -27,7 +27,9 @@ This module deploys a SQL server.
 | `name` | string |  |  | Required. The name of the server. |
 | `roleAssignments` | array | `[]` |  | Optional. Array of role assignment objects that contain the 'roleDefinitionIdOrName' and 'principalId' to define RBAC role assignments on this resource. In the roleDefinitionIdOrName attribute, you can provide either the display name of the role definition, or its fully qualified ID in the following format: '/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11' |
 | `securityAlertPolicies` | _[securityAlertPolicies](securityAlertPolicies/readme.md)_ array | `[]` |  | Optional. The security alert policies to create in the server |
+| `systemAssignedIdentity` | bool |  |  | Optional. Enables system assigned managed identity on the resource. |
 | `tags` | object | `{object}` |  | Optional. Tags of the resource. |
+| `userAssignedIdentities` | object | `{object}` |  | Optional. The ID(s) to assign to the resource. |
 
 ### Parameter Usage: `roleAssignments`
 
@@ -72,6 +74,7 @@ Tag names and tag values can be provided as needed. A tag can be left without a 
 
 | Output Name | Type | Description |
 | :-- | :-- | :-- |
+| `principalId` | string | The principal ID of the system assigned identity. |
 | `serverName` | string | The name of the deployed SQL server |
 | `serverResourceGroup` | string | The resourceGroup of the deployed SQL server |
 | `serverResourceId` | string | The resource ID of the deployed SQL server |
