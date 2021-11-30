@@ -43,7 +43,9 @@ This module deploys an event hub namespace.
 | `roleAssignments` | array | `[]` |  | Optional. Array of role assignment objects that contain the 'roleDefinitionIdOrName' and 'principalId' to define RBAC role assignments on this resource. In the roleDefinitionIdOrName attribute, you can provide either the display name of the role definition, or its fully qualified ID in the following format: '/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11' |
 | `skuCapacity` | int | `1` |  | Optional. Event Hub plan scale-out capacity of the resource |
 | `skuName` | string | `Standard` | `[Basic, Standard]` | Optional. event hub plan SKU name |
+| `systemAssignedIdentity` | bool |  |  | Optional. Enables system assigned managed identity on the resource. |
 | `tags` | object | `{object}` |  | Optional. Tags of the resource. |
+| `userAssignedIdentities` | object | `{object}` |  | Optional. The ID(s) to assign to the resource. |
 | `vNetId` | string |  |  | Optional. Virtual Network ID to lock down the Event Hub. |
 | `workspaceId` | string |  |  | Optional. Resource ID of log analytics. |
 | `zoneRedundant` | bool |  |  | Optional. Switch to make the Event Hub Namespace zone redundant. |
@@ -125,13 +127,14 @@ Tag names and tag values can be provided as needed. A tag can be left without a 
 
 ## Outputs
 
-| Output Name | Type |
-| :-- | :-- |
-| `namespace` | string |
-| `namespaceConnectionString` | string |
-| `namespaceResourceGroup` | string |
-| `namespaceResourceId` | string |
-| `sharedAccessPolicyPrimaryKey` | string |
+| Output Name | Type | Description |
+| :-- | :-- | :-- |
+| `namespace` | string | The name of the eventspace. |
+| `namespaceConnectionString` | string | The connection string to the namespace. |
+| `namespaceResourceGroup` | string | The resource group where the namespace is deployed. |
+| `namespaceResourceId` | string | The resource ID of the eventspace. |
+| `principalId` | string | The principal ID of the system assigned identity. |
+| `sharedAccessPolicyPrimaryKey` | string | The shared access policy primary key. |
 
 ## Template references
 
