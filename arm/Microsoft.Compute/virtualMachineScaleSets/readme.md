@@ -24,7 +24,7 @@ The following resources are required to be able to deploy this resource.
 | Parameter Name | Type | Default Value | Possible Values | Description |
 | :-- | :-- | :-- | :-- | :-- |
 | `additionalUnattendContent` | array | `[]` |  | Optional. Specifies additional base-64 encoded XML formatted information that can be included in the Unattend.xml file, which is used by Windows Setup. - AdditionalUnattendContent object |
-| `adminPassword` | secureString |  |  | Required. When specifying a Windows Virtual Machine, this value should be passed |
+| `adminPassword` | secureString |  |  | Optional. When specifying a Windows Virtual Machine, this value should be passed |
 | `adminUsername` | secureString |  |  | Required. Administrator username |
 | `automaticRepairsPolicyEnabled` | bool |  |  | Optional. Specifies whether automatic repairs should be enabled on the virtual machine scale set. |
 | `availabilityZones` | array | `[]` |  | Optional. The virtual machine scale set zones. NOTE: Availability zones can only be set when you create the scale set. |
@@ -56,8 +56,6 @@ The following resources are required to be able to deploy this resource.
 | `extensionNetworkWatcherAgentConfig` | object | `{object}` |  | Optional. The configuration for the [Network Watcher Agent] extension. Must at least contain the ["enabled": true] property to be executed |
 | `gracePeriod` | string | `PT30M` |  | Optional. The amount of time for which automatic repairs are suspended due to a state change on VM. The grace time starts after the state change has completed. This helps avoid premature or accidental repairs. The time duration should be specified in ISO 8601 format. The minimum allowed grace period is 30 minutes (PT30M). The maximum allowed grace period is 90 minutes (PT90M). |
 | `imageReference` | object |  |  | Required. OS image reference. In case of marketplace images, it's the combination of the publisher, offer, sku, version attributes. In case of custom images it's the resource ID of the custom image. |
-| `instanceCount` | int | `1` |  | Optional. The initial instance count of scale set VMs. |
-| `instanceSize` | string |  |  | Optional. The SKU size of the VMs. |
 | `licenseType` | string |  | `[Windows_Client, Windows_Server, ]` | Optional. Specifies that the image or disk that is being used was licensed on-premises. This element is only used for images that contain the Windows Server operating system. |
 | `location` | string | `[resourceGroup().location]` |  | Optional. Location for all resources. |
 | `lock` | string | `NotSpecified` | `[CanNotDelete, NotSpecified, ReadOnly]` | Optional. Specify the type of lock. |
@@ -86,6 +84,8 @@ The following resources are required to be able to deploy this resource.
 | `scheduledEventsProfile` | object | `{object}` |  | Optional. Specifies Scheduled Event related configurations |
 | `secrets` | array | `[]` |  | Optional. Specifies set of certificates that should be installed onto the virtual machines in the scale set. |
 | `singlePlacementGroup` | bool | `True` |  | Optional. When true this limits the scale set to a single placement group, of max size 100 virtual machines. NOTE: If singlePlacementGroup is true, it may be modified to false. However, if singlePlacementGroup is false, it may not be modified to true. |
+| `skuCapacity` | int | `1` |  | Optional. The initial instance count of scale set VMs. |
+| `skuName` | string |  |  | Required. The SKU size of the VMs. |
 | `tags` | object | `{object}` |  | Optional. Tags of the resource. |
 | `timeZone` | string |  |  | Optional. Specifies the time zone of the virtual machine. e.g. 'Pacific Standard Time'. Possible values can be TimeZoneInfo.id value from time zones returned by TimeZoneInfo.GetSystemTimeZones. |
 | `ultraSSDEnabled` | bool |  |  | Optional. The flag that enables or disables a capability to have one or more managed data disks with UltraSSD_LRS storage account type on the VM or VMSS. Managed disks with storage account type UltraSSD_LRS can be added to a virtual machine or virtual machine scale set only if this property is enabled. |

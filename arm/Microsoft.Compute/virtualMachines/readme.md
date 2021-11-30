@@ -20,7 +20,7 @@ This module deploys one Virtual Machine with one or multiple nics and optionally
 | Parameter Name | Type | Default Value | Possible Values | Description |
 | :-- | :-- | :-- | :-- | :-- |
 | `additionalUnattendContent` | array | `[]` |  | Optional. Specifies additional base-64 encoded XML formatted information that can be included in the Unattend.xml file, which is used by Windows Setup. - AdditionalUnattendContent object |
-| `adminPassword` | secureString |  |  | Required. When specifying a Windows Virtual Machine, this value should be passed |
+| `adminPassword` | secureString |  |  | Optional. When specifying a Windows Virtual Machine, this value should be passed |
 | `adminUsername` | secureString |  |  | Required. Administrator username |
 | `allowExtensionOperations` | bool | `True` |  | Optional. Specifies whether extension operations should be allowed on the virtual machine. This may only be set to False when no extensions are present on the virtual machine. |
 | `availabilitySetName` | string |  |  | Optional. Resource name of an availability set. Cannot be used in combination with availability zone nor scale set. |
