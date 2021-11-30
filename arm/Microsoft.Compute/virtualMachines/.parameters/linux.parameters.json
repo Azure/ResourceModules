@@ -145,7 +145,7 @@
         },
         "extensionDSCConfig": {
             "value": {
-                "enabled": true
+                "enabled": false
             }
         },
         "extensionCustomScriptConfig": {
