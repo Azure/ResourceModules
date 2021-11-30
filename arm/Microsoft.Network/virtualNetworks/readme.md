@@ -104,13 +104,6 @@ Here's an example of specifying a couple Subnets to deploy:
 "roleAssignments": {
     "value": [
         {
-            "roleDefinitionIdOrName": "Desktop Virtualization User",
-            "principalIds": [
-                "12345678-1234-1234-1234-123456789012", // object 1
-                "78945612-1234-1234-1234-123456789012" // object 2
-            ]
-        },
-        {
             "roleDefinitionIdOrName": "Reader",
             "principalIds": [
                 "12345678-1234-1234-1234-123456789012", // object 1
@@ -154,8 +147,8 @@ The network security group and route table resources must reside in the same res
 
 | Output Name | Type | Description |
 | :-- | :-- | :-- |
-| `subnetResourceIds` | array | The resource IDs of the deployed subnets |
 | `subnetNames` | array | The names of the deployed subnets |
+| `subnetResourceIds` | array | The resource IDs of the deployed subnets |
 | `virtualNetworkName` | string | The name of the virtual network |
 | `virtualNetworkResourceGroup` | string | The resource group the virtual network was deployed into |
 | `virtualNetworkResourceId` | string | The resource ID of the virtual network |

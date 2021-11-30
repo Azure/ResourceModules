@@ -28,13 +28,6 @@ This template deploys a disk encryption set.
 "roleAssignments": {
     "value": [
         {
-            "roleDefinitionIdOrName": "Desktop Virtualization User",
-            "principalIds": [
-                "12345678-1234-1234-1234-123456789012", // object 1
-                "78945612-1234-1234-1234-123456789012" // object 2
-            ]
-        },
-        {
             "roleDefinitionIdOrName": "Reader",
             "principalIds": [
                 "12345678-1234-1234-1234-123456789012", // object 1
@@ -76,7 +69,7 @@ Tag names and tag values can be provided as needed. A tag can be left without a 
 | `diskEncryptionSetName` | string | The name of the disk encryption set |
 | `diskEncryptionSetResourceId` | string | The resource ID of the disk encryption set |
 | `keyVaultName` | string | The name of the key vault with the disk encryption key |
-| `principalId` | string | The principal ID of the disk encryption set |
+| `systemAssignedPrincipalId` | string | The principal ID of the disk encryption set |
 
 ## Template references
 

@@ -77,11 +77,11 @@ output diskEncryptionSetResourceId string = diskEncryptionSet.id
 @description('The name of the disk encryption set')
 output diskEncryptionSetName string = diskEncryptionSet.name
 
+@description('The resource group the disk encryption set was deployed into')
+output diskEncryptionResourceGroup string = resourceGroup().name
+
 @description('The principal ID of the disk encryption set')
-output principalId string = diskEncryptionSet.identity.principalId
+output systemAssignedPrincipalId string = diskEncryptionSet.identity.principalId
 
 @description('The name of the key vault with the disk encryption key')
 output keyVaultName string = last(split(keyVaultId, '/'))
-
-@description('The resource group the disk encryption set was deployed into')
-output diskEncryptionResourceGroup string = resourceGroup().name

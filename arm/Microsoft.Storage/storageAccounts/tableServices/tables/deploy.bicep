@@ -21,18 +21,19 @@ resource storageAccount 'Microsoft.Storage/storageAccounts@2021-06-01' existing 
 
   resource tableServices 'tableServices@2021-04-01' existing = {
     name: tableServicesName
-
-    resource table 'tables@2021-06-01' = {
-      name: name
-    }
   }
 }
 
+resource table 'Microsoft.Storage/storageAccounts/tableServices/tables@2021-06-01' = {
+  name: name
+  parent: storageAccount::tableServices
+}
+
 @description('The name of the deployed file share service')
-output tableName string = storageAccount::tableServices::table.name
+output tableName string = table.name
 
 @description('The resource ID of the deployed file share service')
-output tableResourceId string = storageAccount::tableServices::table.id
+output tableResourceId string = table.id
 
 @description('The resource group of the deployed file share service')
 output tableResourceGroup string = resourceGroup().name

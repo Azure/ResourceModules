@@ -1,4 +1,4 @@
-# SQL Managed Instances Database  `[Microsoft.Sql/managedInstances/databases]`
+# SQL Managed Instances Database `[Microsoft.Sql/managedInstances/databases]`
 
 This template deploys a SQL Managed Instances Database.
 
@@ -49,7 +49,7 @@ The SQL Managed Instance Database is deployed on a SQL Managed Instance.
 
 Tag names and tag values can be provided as needed. A tag can be left without a value.
 
-""`json
+```json
 "tags": {
     "value": {
         "Environment": "Non-Prod",
@@ -60,7 +60,7 @@ Tag names and tag values can be provided as needed. A tag can be left without a 
         "Role": "DeploymentValidation"
     }
 }
-""`
+```
 
 ## Outputs
 

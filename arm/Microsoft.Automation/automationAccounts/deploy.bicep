@@ -46,7 +46,7 @@ param diagnosticLogsRetentionInDays int = 365
 @description('Optional. Resource ID of the diagnostic storage account.')
 param diagnosticStorageAccountId string = ''
 
-@description('Optional. Resource identifier of log analytics.')
+@description('Optional. Resource ID of log analytics.')
 param workspaceId string = ''
 
 @description('Optional. Resource ID of the event hub authorization rule for the Event Hubs namespace in which the event hub should be created or streamed to.')
@@ -288,7 +288,7 @@ module automationAccount_softwareUpdateConfigurations 'softwareUpdateConfigurati
 }]
 
 resource automationAccount_lock 'Microsoft.Authorization/locks@2016-09-01' = if (lock != 'NotSpecified') {
-  name: '${uniqueString(deployment().name, location)}-AutoAccount-${lock}-lock'
+  name: '${automationAccount.name}-AutoAccount-${lock}-lock'
   properties: {
     level: lock
     notes: (lock == 'CanNotDelete') ? 'Cannot delete resource or child resources.' : 'Cannot modify the resource or child resources.'
@@ -297,7 +297,7 @@ resource automationAccount_lock 'Microsoft.Authorization/locks@2016-09-01' = if 
 }
 
 resource automationAccount_diagnosticSettings 'Microsoft.Insights/diagnosticSettings@2017-05-01-preview' = if ((!empty(diagnosticStorageAccountId)) || (!empty(workspaceId)) || (!empty(eventHubAuthorizationRuleId)) || (!empty(eventHubName))) {
-  name: '${uniqueString(deployment().name, location)}-AutoAccount-diagnosticSettings'
+  name: '${automationAccount.name}-AutoAccount-diagnosticSettings'
   properties: {
     storageAccountId: (empty(diagnosticStorageAccountId) ? null : diagnosticStorageAccountId)
     workspaceId: (empty(workspaceId) ? null : workspaceId)
@@ -341,4 +341,4 @@ output automationAccountResourceId string = automationAccount.id
 output automationAccountResourceGroup string = resourceGroup().name
 
 @description('The principal ID of the system assigned identity.')
-output principalId string = systemAssignedIdentity ? automationAccount.identity.principalId : ''
+output systemAssignedPrincipalId string = systemAssignedIdentity ? automationAccount.identity.principalId : ''

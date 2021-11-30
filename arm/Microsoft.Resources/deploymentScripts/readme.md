@@ -32,8 +32,7 @@ This module deploys a deployment script.
 | `supportingScriptUris` | array | `[]` |  | Optional. List of supporting files for the external script (defined in primaryScriptUri). Does not work with internal scripts (code defined in scriptContent). |
 | `tags` | object | `{object}` |  | Optional. Tags of the resource. |
 | `timeout` | string | `PT1H` |  | Optional. Maximum allowed script execution time specified in ISO 8601 format. Default value is PT1H - 1 hour; 'PT30M' - 30 minutes; 'P5D' - 5 days; 'P1Y' 1 year. |
-| `userMsiName` | string |  |  | Required. Name of the User Assigned Identity to be used to deploy Image Templates in Azure Image Builder. |
-| `userMsiResourceGroup` | string | `[resourceGroup().name]` |  | Optional. Resource group of the user assigned identity. |
+| `userAssignedIdentities` | object | `{object}` |  | Optional. The ID(s) to assign to the resource. |
 
 ### Parameter Usage: `tags`
 
@@ -50,6 +49,19 @@ Tag names and tag values can be provided as needed. A tag can be left without a 
         "Role": "DeploymentValidation"
     }
 }
+```
+
+### Parameter Usage: `userAssignedIdentities`
+
+You can specify multiple user assigned identities to a resource by providing additional resource IDs using the following format:
+
+```json
+"userAssignedIdentities": {
+    "value": {
+        "/subscriptions/12345678-1234-1234-1234-123456789012/resourcegroups/validation-rg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/adp-sxx-az-msi-x-001": {},
+        "/subscriptions/12345678-1234-1234-1234-123456789012/resourcegroups/validation-rg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/adp-sxx-az-msi-x-002": {}
+    }
+},
 ```
 
 ## Outputs

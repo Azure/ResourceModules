@@ -7,10 +7,11 @@ param location string = resourceGroup().location
 @description('Optional. Specifies the DNS prefix specified when creating the managed cluster.')
 param aksClusterDnsPrefix string = name
 
-@description('Optional. The identity of the managed cluster.')
-param identity object = {
-  type: 'SystemAssigned'
-}
+@description('Optional. Enables system assigned managed identity on the resource.')
+param systemAssignedIdentity bool = false
+
+@description('Optional. The ID(s) to assign to the resource.')
+param userAssignedIdentities object = {}
 
 @description('Optional. Specifies the network plugin used for building Kubernetes network. - azure or kubenet.')
 @allowed([
@@ -151,7 +152,7 @@ param autoScalerProfileMaxGracefulTerminationSec string = '600'
 @description('Optional. Resource ID of the diagnostic storage account.')
 param diagnosticStorageAccountId string = ''
 
-@description('Optional. Resource identifier of log analytics.')
+@description('Optional. Resource ID of log analytics.')
 param workspaceId string = ''
 
 @description('Optional. Specifies whether the OMS agent is enabled.')
@@ -227,6 +228,13 @@ var diagnosticsMetrics = [for metric in metricsToEnable: {
     days: diagnosticLogsRetentionInDays
   }
 }]
+
+var identityType = systemAssignedIdentity ? 'SystemAssigned' : (!empty(userAssignedIdentities) ? 'UserAssigned' : 'None')
+
+var identity = identityType != 'None' ? {
+  type: identityType
+  userAssignedIdentities: !empty(userAssignedIdentities) ? userAssignedIdentities : null
+} : null
 
 var aksClusterLinuxProfile = {
   adminUsername: aksClusterAdminUsername
@@ -378,3 +386,6 @@ output azureKubernetesServiceName string = managedCluster.name
 
 @description('The control plane FQDN of the managed cluster')
 output controlPlaneFQDN string = (aksClusterEnablePrivateCluster ? managedCluster.properties.privateFQDN : managedCluster.properties.fqdn)
+
+@description('The principal ID of the system assigned identity.')
+output systemAssignedPrincipalId string = systemAssignedIdentity ? managedCluster.identity.principalId : ''

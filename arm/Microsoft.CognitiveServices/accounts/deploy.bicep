@@ -234,4 +234,4 @@ output cognitiveServicesResourceGroup string = resourceGroup().name
 output cognitiveServicesEndpoint string = cognitiveServices.properties.endpoint
 
 @description('The principal ID of the system assigned identity.')
-output principalId string = systemAssignedIdentity ? cognitiveServices.identity.principalId : ''
+output systemAssignedPrincipalId string = systemAssignedIdentity ? cognitiveServices.identity.principalId : ''

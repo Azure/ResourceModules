@@ -29,13 +29,6 @@ This module has some known **limitations**:
 "roleAssignments": {
     "value": [
         {
-            "roleDefinitionIdOrName": "Desktop Virtualization User",
-            "principalIds": [
-                "12345678-1234-1234-1234-123456789012", // object 1
-                "78945612-1234-1234-1234-123456789012" // object 2
-            ]
-        },
-        {
             "roleDefinitionIdOrName": "Reader",
             "principalIds": [
                 "12345678-1234-1234-1234-123456789012", // object 1
@@ -51,11 +44,6 @@ This module has some known **limitations**:
     ]
 }
 ```
-
-| Parameter Name           | Type   | Default Value | Possible values | Description                                                                 |
-| :----------------------- | :----- | :------------ | :-------------- | :-------------------------------------------------------------------------- |
-| `roleDefinitionIdOrName` | string |               |                 | Mandatory. The name or the ID of the role to assign to the management group |
-| `principalIds`           | array  |               |                 | Mandatory. An array of principal IDs                                        |
 
 ## Outputs
 

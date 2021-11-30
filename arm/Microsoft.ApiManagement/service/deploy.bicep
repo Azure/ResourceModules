@@ -103,7 +103,7 @@ param tags object = {}
 ])
 param virtualNetworkType string = 'None'
 
-@description('Optional. Resource identifier of log analytics.')
+@description('Optional. Resource ID of log analytics.')
 param workspaceId string = ''
 
 @description('Optional. A list of availability zones denoting where the resource needs to come from.')
@@ -437,4 +437,4 @@ output serviceResourceId string = apiManagementService.id
 output serviceResourceGroup string = resourceGroup().name
 
 @description('The principal ID of the system assigned identity.')
-output principalId string = systemAssignedIdentity ? apiManagementService.identity.principalId : ''
+output systemAssignedPrincipalId string = systemAssignedIdentity ? apiManagementService.identity.principalId : ''

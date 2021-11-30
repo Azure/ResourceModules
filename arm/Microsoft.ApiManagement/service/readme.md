@@ -53,7 +53,7 @@ This module deploys an API management service.
 | `minApiVersion` | string |  |  | Optional. Limit control plane API calls to API Management service with version equal to or newer than this value. |
 | `name` | string |  |  | Required. The name of the of the API Management service. |
 | `namedValues` | _[namedValues](namedValues/readme.md)_ array | `[]` |  | Optional. Named values. |
-| `newGuidValue` | string | `[newGuid()]` |  | Optional. Necessary to create a new guid. |
+| `newGuidValue` | string | `[newGuid()]` |  | Optional. Necessary to create a new GUID. |
 | `notificationSenderEmail` | string | `apimgmt-noreply@mail.windowsazure.com` |  | Optional. The notification sender email address for the service. |
 | `policies` | _[policies](policies/readme.md)_ array | `[]` |  | Optional. Policies. |
 | `portalSettings` | _[portalSettings](portalSettings/readme.md)_ array | `[]` |  | Optional. Portal settings. |
@@ -79,13 +79,6 @@ This module deploys an API management service.
 "roleAssignments": {
     "value": [
         {
-            "roleDefinitionIdOrName": "Desktop Virtualization User",
-            "principalIds": [
-                "12345678-1234-1234-1234-123456789012", // object 1
-                "78945612-1234-1234-1234-123456789012" // object 2
-            ]
-        },
-        {
             "roleDefinitionIdOrName": "Reader",
             "principalIds": [
                 "12345678-1234-1234-1234-123456789012", // object 1
@@ -106,7 +99,7 @@ This module deploys an API management service.
 
 Tag names and tag values can be provided as needed. A tag can be left without a value.
 
-```Json
+```json
 "tags": {
     "value": {
         "Environment": "Non-Prod",
@@ -130,14 +123,27 @@ Tag names and tag values can be provided as needed. A tag can be left without a 
 }
 ```
 
+### Parameter Usage: `userAssignedIdentities`
+
+You can specify multiple user assigned identities to a resource by providing additional resource IDs using the following format:
+
+```json
+"userAssignedIdentities": {
+    "value": {
+        "/subscriptions/12345678-1234-1234-1234-123456789012/resourcegroups/validation-rg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/adp-sxx-az-msi-x-001": {},
+        "/subscriptions/12345678-1234-1234-1234-123456789012/resourcegroups/validation-rg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/adp-sxx-az-msi-x-002": {}
+    }
+},
+```
+
 ## Outputs
 
 | Output Name | Type | Description |
 | :-- | :-- | :-- |
-| `principalId` | string | The principal ID of the system assigned identity. |
 | `serviceName` | string | The name of the API management service |
 | `serviceResourceGroup` | string | The resource group the API management service was deployed into |
 | `serviceResourceId` | string | The resource ID of the API management service |
+| `systemAssignedPrincipalId` | string | The principal ID of the system assigned identity. |
 
 ## Considerations
 

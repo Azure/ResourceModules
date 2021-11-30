@@ -1,4 +1,4 @@
-# DocumentDB Database Account SQL Databases Containers  `[Microsoft.DocumentDB/databaseAccounts/sqlDatabases/containers]`
+# DocumentDB Database Account SQL Databases Containers `[Microsoft.DocumentDB/databaseAccounts/sqlDatabases/containers]`
 
 ## Resource Types
 
@@ -19,9 +19,22 @@
 | `tags` | object | `{object}` |  | Optional. Tags of the SQL Database resource. |
 | `throughput` | int | `400` |  | Optional. Request Units per second |
 
-### Parameter Usage: `<ParameterPlaceholder>`
+### Parameter Usage: `tags`
 
-// TODO: Fill in Parameter usage
+Tag names and tag values can be provided as needed. A tag can be left without a value.
+
+```json
+"tags": {
+    "value": {
+        "Environment": "Non-Prod",
+        "Contact": "test.user@testcompany.com",
+        "PurchaseOrder": "1234",
+        "CostCenter": "7890",
+        "ServiceName": "DeploymentValidation",
+        "Role": "DeploymentValidation"
+    }
+}
+```
 
 ## Outputs
 

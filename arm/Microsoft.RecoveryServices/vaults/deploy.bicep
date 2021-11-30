@@ -26,7 +26,7 @@ param diagnosticLogsRetentionInDays int = 365
 @description('Optional. Resource ID of the diagnostic storage account.')
 param diagnosticStorageAccountId string = ''
 
-@description('Optional. Resource identifier of log analytics.')
+@description('Optional. Resource ID of log analytics.')
 param workspaceId string = ''
 
 @description('Optional. Resource ID of the event hub authorization rule for the Event Hubs namespace in which the event hub should be created or streamed to.')
@@ -45,6 +45,12 @@ param roleAssignments array = []
 ])
 @description('Optional. Specify the type of lock.')
 param lock string = 'NotSpecified'
+
+@description('Optional. Enables system assigned managed identity on the resource.')
+param systemAssignedIdentity bool = false
+
+@description('Optional. The ID(s) to assign to the resource.')
+param userAssignedIdentities object = {}
 
 @description('Optional. Tags of the Recovery Service Vault resource.')
 param tags object = {}
@@ -110,6 +116,13 @@ var diagnosticsMetrics = [for metric in metricsToEnable: {
   }
 }]
 
+var identityType = systemAssignedIdentity ? (!empty(userAssignedIdentities) ? 'SystemAssigned,UserAssigned' : 'SystemAssigned') : (!empty(userAssignedIdentities) ? 'UserAssigned' : 'None')
+
+var identity = identityType != 'None' ? {
+  type: identityType
+  userAssignedIdentities: !empty(userAssignedIdentities) ? userAssignedIdentities : null
+} : null
+
 module pid_cuaId '.bicep/nested_cuaId.bicep' = if (!empty(cuaId)) {
   name: 'pid-${cuaId}'
   params: {}
@@ -119,6 +132,7 @@ resource rsv 'Microsoft.RecoveryServices/vaults@2021-08-01' = {
   name: name
   location: location
   tags: tags
+  identity: identity
   sku: {
     name: 'RS0'
     tier: 'Standard'
@@ -195,3 +209,6 @@ output recoveryServicesVaultResourceGroup string = resourceGroup().name
 
 @description('The Name of the Recovery Services Vault')
 output recoveryServicesVaultName string = rsv.name
+
+@description('The principal ID of the system assigned identity.')
+output systemAssignedPrincipalId string = systemAssignedIdentity ? rsv.identity.principalId : ''
