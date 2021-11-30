@@ -345,7 +345,7 @@ module pid_cuaId '.bicep/nested_cuaId.bicep' = if (!empty(cuaId)) {
   params: {}
 }
 
-resource applicationGateway 'Microsoft.Network/applicationGateways@2021-02-01' = {
+resource applicationGateway 'Microsoft.Network/applicationGateways@2021-03-01' = {
   name: name
   location: location
   identity: identity
