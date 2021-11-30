@@ -29,7 +29,9 @@ The top-level resource in Azure Container Instances is the container group. A co
 | `osType` | string | `Linux` |  | Optional. The operating system type required by the containers in the container group. - Windows or Linux. |
 | `ports` | array | `[System.Collections.Hashtable]` |  | Optional. Port to open on the container and the public IP address. |
 | `restartPolicy` | string | `Always` |  | Optional. Restart policy for all containers within the container group. - Always: Always restart. OnFailure: Restart on failure. Never: Never restart. - Always, OnFailure, Never |
+| `systemAssignedIdentity` | bool |  |  | Optional. Enables system assigned managed identity on the resource. |
 | `tags` | object | `{object}` |  | Optional. Tags of the resource. |
+| `userAssignedIdentities` | object | `{object}` |  | Optional. The ID(s) to assign to the resource. |
 
 ### Parameter Usage: `imageRegistryCredentials`
 
@@ -71,6 +73,7 @@ Tag names and tag values can be provided as needed. A tag can be left without a 
 | `containerGroupName` | string | The name of the container group |
 | `containerGroupResourceGroup` | string | The resource group the container group was deployed into |
 | `containerGroupResourceId` | string | The resource ID of the container group |
+| `principalId` | string | The principal ID of the system assigned identity. |
 
 ## Template references
 

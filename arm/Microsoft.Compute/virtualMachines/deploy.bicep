@@ -62,19 +62,10 @@ param dedicatedHostId string = ''
 ])
 param licenseType string = ''
 
-@description('Optional. The list of SSH public keys used to authenticate with linux based VMs')
-param publicKeys array = []
+@description('Optional. Enables system assigned managed identity on the resource.')
+param systemAssignedIdentity bool = false
 
-@description('Optional. The type of identity used for the virtual machine. The type \'SystemAssigned, UserAssigned\' includes both an implicitly created identity and a set of user assigned identities. The type \'None\' (default) will remove any identities from the virtual machine.')
-@allowed([
-  'None'
-  'SystemAssigned'
-  'SystemAssigned, UserAssigned'
-  'UserAssigned'
-])
-param managedServiceIdentity string = 'None'
-
-@description('Optional. Mandatory if \'managedServiceIdentity\' contains UserAssigned. The list of user identities associated with the Virtual Machine.')
+@description('Optional. The ID(s) to assign to the resource.')
 param userAssignedIdentities object = {}
 
 @description('Optional. Storage account used to store boot diagnostic information. Boot diagnostics will be disabled if no value is provided.')
@@ -296,6 +287,13 @@ var accountSasProperties = {
   signedProtocol: 'https'
 }
 
+var identityType = systemAssignedIdentity ? (!empty(userAssignedIdentities) ? 'SystemAssigned,UserAssigned' : 'SystemAssigned') : (!empty(userAssignedIdentities) ? 'UserAssigned' : 'None')
+
+var identity = identityType != 'None' ? {
+  type: identityType
+  userAssignedIdentities: !empty(userAssignedIdentities) ? userAssignedIdentities : null
+} : null
+
 module pid_cuaId '.bicep/nested_cuaId.bicep' = if (!empty(cuaId)) {
   name: 'pid-${cuaId}'
   params: {}
@@ -329,10 +327,7 @@ module virtualMachine_nic '.bicep/nested_networkInterface.bicep' = [for (nicConf
 resource virtualMachine 'Microsoft.Compute/virtualMachines@2021-07-01' = {
   name: name
   location: location
-  identity: {
-    type: managedServiceIdentity
-    userAssignedIdentities: !empty(userAssignedIdentities) ? userAssignedIdentities : null
-  }
+  identity: identity
   tags: tags
   zones: useAvailabilityZone ? array(availabilityZone) : null
   plan: !empty(plan) ? plan : null
@@ -600,3 +595,6 @@ output virtualMachineResourceId string = virtualMachine.id
 
 @description('The name of the Resource Group the VM was created in.')
 output virtualMachineResourceGroup string = resourceGroup().name
+
+@description('The principal ID of the system assigned identity.')
+output principalId string = systemAssignedIdentity ? virtualMachine.identity.principalId : ''
