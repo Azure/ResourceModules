@@ -54,8 +54,8 @@
         "proxyOverride": {
             "value": "Proxy"
         },
-        "managedServiceIdentity": {
-            "value": "UserAssigned"
+        "systemAssignedIdentity": {
+            "value": true
         },
         "userAssignedIdentities": {
             "value": {
