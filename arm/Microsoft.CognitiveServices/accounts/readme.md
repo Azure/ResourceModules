@@ -191,7 +191,7 @@ You can specify multiple user assigned identities to a resource by providing add
 | `cognitiveServicesName` | string | The name of the cognitive services account |
 | `cognitiveServicesResourceGroup` | string | The resource group the cognitive services account was deployed into |
 | `cognitiveServicesResourceId` | string | The resource ID of the cognitive services account |
-| `principalId` | string | The principal ID of the system assigned identity. |
+| `systemAssignedPrincipalId` | string | The principal ID of the system assigned identity. |
 
 ## Considerations
 

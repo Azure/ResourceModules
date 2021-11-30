@@ -346,10 +346,10 @@ You can specify multiple user assigned identities to a resource by providing add
 
 | Output Name | Type | Description |
 | :-- | :-- | :-- |
-| `principalId` | string | The principal ID of the system assigned identity. |
 | `recoveryServicesVaultName` | string | The Name of the Recovery Services Vault |
 | `recoveryServicesVaultResourceGroup` | string | The name of the Resource Group the Recovery Services Vault was created in |
 | `recoveryServicesVaultResourceId` | string | The resource ID of the Recovery Services Vault |
+| `systemAssignedPrincipalId` | string | The principal ID of the system assigned identity. |
 
 ## Template references
 

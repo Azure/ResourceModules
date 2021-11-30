@@ -154,7 +154,7 @@ You can specify multiple user assigned identities to a resource by providing add
 | `acrName` | string | The Name of the Azure container registry. |
 | `acrResourceGroup` | string | The name of the Azure container registry. |
 | `acrResourceId` | string | The resource ID of the Azure container registry. |
-| `principalId` | string | The principal ID of the system assigned identity. |
+| `systemAssignedPrincipalId` | string | The principal ID of the system assigned identity. |
 
 ## Template references
 

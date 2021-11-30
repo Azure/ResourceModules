@@ -512,7 +512,7 @@ You can specify multiple user assigned identities to a resource by providing add
 
 | Output Name | Type | Description |
 | :-- | :-- | :-- |
-| `principalId` | string | The principal ID of the system assigned identity. |
+| `systemAssignedPrincipalId` | string | The principal ID of the system assigned identity. |
 | `virtualMachineName` | string | The name of the VM. |
 | `virtualMachineResourceGroup` | string | The name of the Resource Group the VM was created in. |
 | `virtualMachineResourceId` | string | The Resource ID of the VM. |

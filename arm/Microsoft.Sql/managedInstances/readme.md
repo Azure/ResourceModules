@@ -138,7 +138,7 @@ You can specify multiple user assigned identities to a resource by providing add
 | `managedInstanceName` | string | The name of the deployed managed instance |
 | `managedInstanceResourceGroup` | string | The resource group of the deployed managed instance |
 | `managedInstanceResourceId` | string | The resource ID of the deployed managed instance |
-| `principalId` | string | The principal ID of the system assigned identity. |
+| `systemAssignedPrincipalId` | string | The principal ID of the system assigned identity. |
 
 ## Template references
 

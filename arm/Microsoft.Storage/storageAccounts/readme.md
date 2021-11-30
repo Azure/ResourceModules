@@ -160,11 +160,11 @@ You can specify multiple user assigned identities to a resource by providing add
 
 | Output Name | Type | Description |
 | :-- | :-- | :-- |
-| `principalId` | string | The principal ID of the system assigned identity. |
 | `storageAccountName` | string | The name of the deployed storage account |
 | `storageAccountPrimaryBlobEndpoint` | string | The primary blob endpoint reference if blob services are deployed. |
 | `storageAccountResourceGroup` | string | The resource group of the deployed storage account |
 | `storageAccountResourceId` | string | The resource ID of the deployed storage account |
+| `systemAssignedPrincipalId` | string | The principal ID of the system assigned identity. |
 
 ## Considerations
 

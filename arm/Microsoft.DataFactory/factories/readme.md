@@ -100,7 +100,7 @@ You can specify multiple user assigned identities to a resource by providing add
 | `dataFactoryName` | string | The Name of the Azure Data Factory instance. |
 | `dataFactoryResourceGroup` | string | The name of the Resource Group with the Data factory. |
 | `dataFactoryResourceId` | string | The Resource ID of the Data factory. |
-| `principalId` | string | The principal ID of the system assigned identity. |
+| `systemAssignedPrincipalId` | string | The principal ID of the system assigned identity. |
 
 ## Template references
 

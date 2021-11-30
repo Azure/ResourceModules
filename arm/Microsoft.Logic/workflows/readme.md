@@ -158,7 +158,7 @@ You can specify multiple user assigned identities to a resource by providing add
 | `logicAppName` | string | The name of the logic app |
 | `logicAppResourceGroup` | string | The resource group the logic app was deployed into |
 | `logicAppResourceId` | string | The resource ID of the logic app |
-| `principalId` | string | The principal ID of the system assigned identity. |
+| `systemAssignedPrincipalId` | string | The principal ID of the system assigned identity. |
 
 ## Template references
 

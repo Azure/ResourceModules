@@ -146,8 +146,8 @@ You can specify multiple user assigned identities to a resource by providing add
 | `namespaceConnectionString` | string | The connection string to the namespace. |
 | `namespaceResourceGroup` | string | The resource group where the namespace is deployed. |
 | `namespaceResourceId` | string | The resource ID of the eventspace. |
-| `principalId` | string | The principal ID of the system assigned identity. |
 | `sharedAccessPolicyPrimaryKey` | string | The shared access policy primary key. |
+| `systemAssignedPrincipalId` | string | The principal ID of the system assigned identity. |
 
 ## Template references
 

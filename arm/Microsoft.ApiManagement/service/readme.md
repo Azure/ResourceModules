@@ -140,10 +140,10 @@ You can specify multiple user assigned identities to a resource by providing add
 
 | Output Name | Type | Description |
 | :-- | :-- | :-- |
-| `principalId` | string | The principal ID of the system assigned identity. |
 | `serviceName` | string | The name of the API management service |
 | `serviceResourceGroup` | string | The resource group the API management service was deployed into |
 | `serviceResourceId` | string | The resource ID of the API management service |
+| `systemAssignedPrincipalId` | string | The principal ID of the system assigned identity. |
 
 ## Considerations
 

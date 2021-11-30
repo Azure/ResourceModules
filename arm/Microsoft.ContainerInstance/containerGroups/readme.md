@@ -86,7 +86,7 @@ You can specify multiple user assigned identities to a resource by providing add
 | `containerGroupName` | string | The name of the container group |
 | `containerGroupResourceGroup` | string | The resource group the container group was deployed into |
 | `containerGroupResourceId` | string | The resource ID of the container group |
-| `principalId` | string | The principal ID of the system assigned identity. |
+| `systemAssignedPrincipalId` | string | The principal ID of the system assigned identity. |
 
 ## Template references
 

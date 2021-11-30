@@ -384,7 +384,7 @@ You can specify multiple user assigned identities to a resource by providing add
 
 | Output Name | Type | Description |
 | :-- | :-- | :-- |
-| `principalId` | string | The principal ID of the system assigned identity. |
+| `systemAssignedPrincipalId` | string | The principal ID of the system assigned identity. |
 | `vmssName` | string | The name of the virtual machine scale set |
 | `vmssResourceGroup` | string | The resource group of the virtual machine scale set |
 | `vmssResourceIds` | string | The resource ID of the virtual machine scale set |

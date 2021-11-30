@@ -206,7 +206,7 @@ You can specify multiple user assigned identities to a resource by providing add
 | `databaseAccountName` | string | The name of the database account. |
 | `databaseAccountResourceGroup` | string | The name of the resource group the database account was created in. |
 | `databaseAccountResourceId` | string | The resource ID of the database account. |
-| `principalId` | string | The principal ID of the system assigned identity. |
+| `systemAssignedPrincipalId` | string | The principal ID of the system assigned identity. |
 
 ## Template references
 

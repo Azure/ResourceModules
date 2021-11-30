@@ -253,7 +253,7 @@ You can specify multiple user assigned identities to a resource by providing add
 | `azureKubernetesServiceResourceGroup` | string | The resource group the managed cluster was deployed into |
 | `azureKubernetesServiceResourceId` | string | The resource ID of the managed cluster |
 | `controlPlaneFQDN` | string | The control plane FQDN of the managed cluster |
-| `principalId` | string | The principal ID of the system assigned identity. |
+| `systemAssignedPrincipalId` | string | The principal ID of the system assigned identity. |
 
 ## Template references
 

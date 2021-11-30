@@ -146,7 +146,7 @@ You can specify multiple user assigned identities to a resource by providing add
 | `automationAccountName` | string | The name of the deployed automation account |
 | `automationAccountResourceGroup` | string | The resource group of the deployed automation account |
 | `automationAccountResourceId` | string | The resource ID of the deployed automation account |
-| `principalId` | string | The principal ID of the system assigned identity. |
+| `systemAssignedPrincipalId` | string | The principal ID of the system assigned identity. |
 
 ## Template references
 

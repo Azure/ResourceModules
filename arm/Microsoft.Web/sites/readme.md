@@ -177,10 +177,10 @@ You can specify multiple user assigned identities to a resource by providing add
 
 | Output Name | Type | Description |
 | :-- | :-- | :-- |
-| `principalId` | string | The principal ID of the system assigned identity. |
 | `siteName` | string | The name of the site. |
 | `siteResourceGroup` | string | The resource group the site was deployed into. |
 | `siteResourceId` | string | The resource ID of the site. |
+| `systemAssignedPrincipalId` | string | The principal ID of the system assigned identity. |
 
 ## Template references
 

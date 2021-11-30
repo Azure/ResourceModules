@@ -69,7 +69,7 @@ Tag names and tag values can be provided as needed. A tag can be left without a 
 | `diskEncryptionSetName` | string | The name of the disk encryption set |
 | `diskEncryptionSetResourceId` | string | The resource ID of the disk encryption set |
 | `keyVaultName` | string | The name of the key vault with the disk encryption key |
-| `principalId` | string | The principal ID of the disk encryption set |
+| `systemAssignedPrincipalId` | string | The principal ID of the disk encryption set |
 
 ## Template references
 

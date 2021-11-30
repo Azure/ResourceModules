@@ -87,10 +87,10 @@ You can specify multiple user assigned identities to a resource by providing add
 
 | Output Name | Type | Description |
 | :-- | :-- | :-- |
-| `principalId` | string | The principal ID of the system assigned identity. |
 | `serverName` | string | The name of the deployed SQL server |
 | `serverResourceGroup` | string | The resourceGroup of the deployed SQL server |
 | `serverResourceId` | string | The resource ID of the deployed SQL server |
+| `systemAssignedPrincipalId` | string | The principal ID of the system assigned identity. |
 
 ## Template references
 
