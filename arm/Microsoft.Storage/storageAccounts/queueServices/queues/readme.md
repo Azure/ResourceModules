@@ -26,13 +26,6 @@ This module deployes a storage account queue
 "roleAssignments": {
     "value": [
         {
-            "roleDefinitionIdOrName": "Storage File Data SMB Share Contributor",
-            "principalIds": [
-                "12345678-1234-1234-1234-123456789012", // object 1
-                "78945612-1234-1234-1234-123456789012" // object 2
-            ]
-        },
-        {
             "roleDefinitionIdOrName": "Reader",
             "principalIds": [
                 "12345678-1234-1234-1234-123456789012", // object 1

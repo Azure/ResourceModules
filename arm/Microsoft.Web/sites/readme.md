@@ -160,14 +160,27 @@ To use Private Endpoint the following dependencies must be deployed:
 }
 ```
 
+### Parameter Usage: `userAssignedIdentities`
+
+You can specify multiple user assigned identities to a resource by providing additional resource IDs using the following format:
+
+```json
+"userAssignedIdentities": {
+    "value": {
+        "/subscriptions/12345678-1234-1234-1234-123456789012/resourcegroups/validation-rg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/adp-sxx-az-msi-x-001": {},
+        "/subscriptions/12345678-1234-1234-1234-123456789012/resourcegroups/validation-rg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/adp-sxx-az-msi-x-002": {}
+    }
+},
+```
+
 ## Outputs
 
 | Output Name | Type | Description |
 | :-- | :-- | :-- |
-| `principalId` | string | The principal ID of the system assigned identity. |
 | `siteName` | string | The name of the site. |
 | `siteResourceGroup` | string | The resource group the site was deployed into. |
 | `siteResourceId` | string | The resource ID of the site. |
+| `systemAssignedPrincipalId` | string | The principal ID of the system assigned identity. |
 
 ## Template references
 

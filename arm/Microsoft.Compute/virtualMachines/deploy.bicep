@@ -586,4 +586,4 @@ output virtualMachineResourceId string = virtualMachine.id
 output virtualMachineResourceGroup string = resourceGroup().name
 
 @description('The principal ID of the system assigned identity.')
-output principalId string = systemAssignedIdentity ? virtualMachine.identity.principalId : ''
+output systemAssignedPrincipalId string = systemAssignedIdentity ? virtualMachine.identity.principalId : ''

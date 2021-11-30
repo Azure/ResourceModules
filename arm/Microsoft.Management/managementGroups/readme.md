@@ -45,11 +45,6 @@ This module has some known **limitations**:
 }
 ```
 
-| Parameter Name           | Type   | Default Value | Possible values | Description                                                                 |
-| :----------------------- | :----- | :------------ | :-------------- | :-------------------------------------------------------------------------- |
-| `roleDefinitionIdOrName` | string |               |                 | Mandatory. The name or the ID of the role to assign to the management group |
-| `principalIds`           | array  |               |                 | Mandatory. An array of principal IDs                                        |
-
 ## Outputs
 
 | Output Name | Type | Description |

@@ -170,6 +170,19 @@ Tag names and tag values can be provided as needed. A tag can be left without a 
 },
 ```
 
+### Parameter Usage: `userAssignedIdentities`
+
+You can specify multiple user assigned identities to a resource by providing additional resource IDs using the following format:
+
+```json
+"userAssignedIdentities": {
+    "value": {
+        "/subscriptions/12345678-1234-1234-1234-123456789012/resourcegroups/validation-rg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/adp-sxx-az-msi-x-001": {},
+        "/subscriptions/12345678-1234-1234-1234-123456789012/resourcegroups/validation-rg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/adp-sxx-az-msi-x-002": {}
+    }
+},
+```
+
 ## Outputs
 
 | Output Name | Type | Description |
@@ -178,7 +191,7 @@ Tag names and tag values can be provided as needed. A tag can be left without a 
 | `cognitiveServicesName` | string | The name of the cognitive services account |
 | `cognitiveServicesResourceGroup` | string | The resource group the cognitive services account was deployed into |
 | `cognitiveServicesResourceId` | string | The resource ID of the cognitive services account |
-| `principalId` | string | The principal ID of the system assigned identity. |
+| `systemAssignedPrincipalId` | string | The principal ID of the system assigned identity. |
 
 ## Considerations
 

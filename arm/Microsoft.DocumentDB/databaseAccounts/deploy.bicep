@@ -265,4 +265,4 @@ output databaseAccountResourceId string = databaseAccount.id
 output databaseAccountResourceGroup string = resourceGroup().name
 
 @description('The principal ID of the system assigned identity.')
-output principalId string = systemAssignedIdentity ? databaseAccount.identity.principalId : ''
+output systemAssignedPrincipalId string = systemAssignedIdentity ? databaseAccount.identity.principalId : ''

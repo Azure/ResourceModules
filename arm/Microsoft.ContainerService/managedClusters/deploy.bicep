@@ -13,7 +13,6 @@ param systemAssignedIdentity bool = false
 @description('Optional. The ID(s) to assign to the resource.')
 param userAssignedIdentities object = {}
 
-
 @description('Optional. Specifies the network plugin used for building Kubernetes network. - azure or kubenet.')
 @allowed([
   ''
@@ -389,4 +388,4 @@ output azureKubernetesServiceName string = managedCluster.name
 output controlPlaneFQDN string = (aksClusterEnablePrivateCluster ? managedCluster.properties.privateFQDN : managedCluster.properties.fqdn)
 
 @description('The principal ID of the system assigned identity.')
-output principalId string = systemAssignedIdentity ? managedCluster.identity.principalId : ''
+output systemAssignedPrincipalId string = systemAssignedIdentity ? managedCluster.identity.principalId : ''

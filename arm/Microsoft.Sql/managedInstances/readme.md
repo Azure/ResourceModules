@@ -118,6 +118,19 @@ Tag names and tag values can be provided as needed. A tag can be left without a 
 }
 ```
 
+### Parameter Usage: `userAssignedIdentities`
+
+You can specify multiple user assigned identities to a resource by providing additional resource IDs using the following format:
+
+```json
+"userAssignedIdentities": {
+    "value": {
+        "/subscriptions/12345678-1234-1234-1234-123456789012/resourcegroups/validation-rg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/adp-sxx-az-msi-x-001": {},
+        "/subscriptions/12345678-1234-1234-1234-123456789012/resourcegroups/validation-rg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/adp-sxx-az-msi-x-002": {}
+    }
+},
+```
+
 ## Outputs
 
 | Output Name | Type | Description |
@@ -125,7 +138,7 @@ Tag names and tag values can be provided as needed. A tag can be left without a 
 | `managedInstanceName` | string | The name of the deployed managed instance |
 | `managedInstanceResourceGroup` | string | The resource group of the deployed managed instance |
 | `managedInstanceResourceId` | string | The resource ID of the deployed managed instance |
-| `principalId` | string | The principal ID of the system assigned identity. |
+| `systemAssignedPrincipalId` | string | The principal ID of the system assigned identity. |
 
 ## Template references
 

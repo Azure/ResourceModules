@@ -341,4 +341,4 @@ output automationAccountResourceId string = automationAccount.id
 output automationAccountResourceGroup string = resourceGroup().name
 
 @description('The principal ID of the system assigned identity.')
-output principalId string = systemAssignedIdentity ? automationAccount.identity.principalId : ''
+output systemAssignedPrincipalId string = systemAssignedIdentity ? automationAccount.identity.principalId : ''
