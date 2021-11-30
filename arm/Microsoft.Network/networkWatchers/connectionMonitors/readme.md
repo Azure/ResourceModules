@@ -22,52 +22,19 @@ This template deploys Connection Monitors.
 | `testGroups` | array | `[]` |  | Optional. List of connection monitor test groups. |
 | `workspaceResourceId` | string |  |  | Optional. Specify the Log Analytics Workspace Resource ID |
 
+### Parameter Usage: `tags`
 
-
-### Parameter Usage: `endpoints`
-
-***Note:*** the parameter ``name`` must include the ``resource name`` AND ``resource group`` inside brackets (). e.g ``"name": "myVm01(my-rg-01)"``.
+Tag names and tag values can be provided as needed. A tag can be left without a value.
 
 ```json
-
-"endpoints": {
-    "value":
-    [
-        {
-            "name": "endpoint1(my-rg-01)",
-            "resourceId": "/subscriptions/111111-222222-33333-4444-5555555/resourceGroups/my-rg-01/providers/Microsoft.Compute/virtualMachines/myVm01"
-        },
-        {
-            "name": "myonpremvm.contoso.com",
-            "address": "10.10.10.10"
-        }
-    ]
-}
-
-```
-
-### Parameter Usage: `testGroups`
-
-Important note: the parameter ``name`` must include the ``resource name`` AND ``resource group`` inside brackets (). e.g ``"name": "myVm01(my-rg-01)"``.
-
-```json
-"testGroups": {
+"tags": {
     "value": {
-        [
-            {
-                "name": "testGroup1(my-rg-01)",
-                "disable": false,
-                "testConfigurations": [
-                    "ICMP"
-                ],
-                "sources": [
-                    "myVm01(my-rg-01)"
-                ],
-                "destinations": [
-                    "myonpremvm.contoso.com"
-                ]
-            }
-        ]
+        "Environment": "Non-Prod",
+        "Contact": "test.user@testcompany.com",
+        "PurchaseOrder": "1234",
+        "CostCenter": "7890",
+        "ServiceName": "DeploymentValidation",
+        "Role": "DeploymentValidation"
     }
 }
 ```

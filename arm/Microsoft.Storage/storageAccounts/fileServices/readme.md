@@ -1,4 +1,4 @@
-# Storage Account file share services  `[Microsoft.Storage/storageAccounts/fileServices]`
+# Storage Account file share services `[Microsoft.Storage/storageAccounts/fileServices]`
 
 This module can be used to deploy a file share service into a storage account.
 

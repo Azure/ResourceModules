@@ -71,6 +71,28 @@ This module deploys Azure Kubernetes Cluster (AKS).
 | `tags` | object | `{object}` |  | Optional. Tags of the resource. |
 | `workspaceId` | string |  |  | Optional. Resource ID of log analytics. |
 
+### Parameter Usage: `roleAssignments`
+
+```json
+"roleAssignments": {
+    "value": [
+        {
+            "roleDefinitionIdOrName": "Reader",
+            "principalIds": [
+                "12345678-1234-1234-1234-123456789012", // object 1
+                "78945612-1234-1234-1234-123456789012" // object 2
+            ]
+        },
+        {
+            "roleDefinitionIdOrName": "/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11",
+            "principalIds": [
+                "12345678-1234-1234-1234-123456789012" // object 1
+            ]
+        }
+    ]
+}
+```
+
 ### Parameter Usage: `tags`
 
 Tag names and tag values can be provided as needed. A tag can be left without a value.

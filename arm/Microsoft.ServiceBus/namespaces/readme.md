@@ -50,7 +50,6 @@ This module deploys a service bus namespace resource.
 | `workspaceId` | string |  |  | Optional. Resource ID of log analytics. |
 | `zoneRedundant` | bool |  |  | Optional. Enabling this property creates a Premium Service Bus Namespace in regions supported availability zones. |
 
-
 ### Parameter Usage: `roleAssignments`
 
 ```json

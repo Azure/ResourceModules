@@ -19,6 +19,23 @@ This template deploys a linked service for a Log Analytics workspace.
 | `tags` | object | `{object}` |  | Optional. Tags to configure in the resource. |
 | `writeAccessResourceId` | string |  |  | Optional. The resource ID of the resource that will be linked to the workspace. This should be used for linking resources which require write access.  |
 
+### Parameter Usage: `tags`
+
+Tag names and tag values can be provided as needed. A tag can be left without a value.
+
+```json
+"tags": {
+    "value": {
+        "Environment": "Non-Prod",
+        "Contact": "test.user@testcompany.com",
+        "PurchaseOrder": "1234",
+        "CostCenter": "7890",
+        "ServiceName": "DeploymentValidation",
+        "Role": "DeploymentValidation"
+    }
+}
+```
+
 ## Outputs
 
 | Output Name | Type | Description |

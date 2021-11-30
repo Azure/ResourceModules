@@ -128,7 +128,7 @@ To use Private Endpoint the following dependencies must be deployed:
     "value": [
         // Example showing all available fields
         {
-            "name": "sxx-az-sa-cac-y-123-pe", // Optional: Name will be automatically generated if one is not provided here
+            "name": "sxx-az-pe", // Optional: Name will be automatically generated if one is not provided here
             "subnetResourceId": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/virtualNetworks/sxx-az-vnet-x-001/subnets/sxx-az-subnet-x-001",
             "service": "blob",
             "privateDnsZoneResourceIds": [ // Optional: No DNS record will be created if a private DNS zone Resource ID is not specified

@@ -45,13 +45,6 @@ This module deploys a Machine Learning Services Workspace.
 "roleAssignments": {
     "value": [
         {
-            "roleDefinitionIdOrName": "Desktop Virtualization User",
-            "principalIds": [
-                "12345678-1234-1234-1234-123456789012", // object 1
-                "78945612-1234-1234-1234-123456789012" // object 2
-            ]
-        },
-        {
             "roleDefinitionIdOrName": "Reader",
             "principalIds": [
                 "12345678-1234-1234-1234-123456789012", // object 1
@@ -98,7 +91,7 @@ To use Private Endpoint the following dependencies must be deployed:
     "value": [
         // Example showing all available fields
         {
-            "name": "sxx-az-sa-cac-y-123-pe", // Optional: Name will be automatically generated if one is not provided here
+            "name": "sxx-az-pe", // Optional: Name will be automatically generated if one is not provided here
             "subnetResourceId": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/virtualNetworks/sxx-az-vnet-x-001/subnets/sxx-az-subnet-x-001",
             "service": "amlworkspace",
             "privateDnsZoneResourceIds": [ // Optional: No DNS record will be created if a private DNS zone Resource ID is not specified
