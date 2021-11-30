@@ -11,6 +11,12 @@ param location string = resourceGroup().location
 @description('Required. The name of the server.')
 param name string
 
+@description('Optional. Enables system assigned managed identity on the resource.')
+param systemAssignedIdentity bool = false
+
+@description('Optional. The ID(s) to assign to the resource.')
+param userAssignedIdentities object = {}
+
 @allowed([
   'CanNotDelete'
   'NotSpecified'
@@ -37,6 +43,13 @@ param firewallRules array = []
 @description('Optional. The security alert policies to create in the server')
 param securityAlertPolicies array = []
 
+var identityType = systemAssignedIdentity ? (!empty(userAssignedIdentities) ? 'SystemAssigned,UserAssigned' : 'SystemAssigned') : (!empty(userAssignedIdentities) ? 'UserAssigned' : 'None')
+
+var identity = identityType != 'None' ? {
+  type: identityType
+  userAssignedIdentities: !empty(userAssignedIdentities) ? userAssignedIdentities : null
+} : null
+
 module pid_cuaId '.bicep/nested_cuaId.bicep' = if (!empty(cuaId)) {
   name: 'pid-${cuaId}'
   params: {}
@@ -46,6 +59,7 @@ resource server 'Microsoft.Sql/servers@2021-05-01-preview' = {
   location: location
   name: name
   tags: tags
+  identity: identity
   properties: {
     administratorLogin: administratorLogin
     administratorLoginPassword: administratorLoginPassword
@@ -128,3 +142,6 @@ output serverResourceId string = server.id
 
 @description('The resourceGroup of the deployed SQL server')
 output serverResourceGroup string = resourceGroup().name
+
+@description('The principal ID of the system assigned identity.')
+output principalId string = systemAssignedIdentity ? server.identity.principalId : ''
