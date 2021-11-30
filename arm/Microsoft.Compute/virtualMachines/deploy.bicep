@@ -483,21 +483,6 @@ module vm_networkWatcherAgentExtension 'extensions/deploy.bicep' = if (extension
   }
 }
 
-module vm_diskEncryptionExtension 'extensions/deploy.bicep' = if (extensionDiskEncryptionConfig.enabled) {
-  name: '${uniqueString(deployment().name, location)}-vm-DiskEncryption'
-  params: {
-    virtualMachineName: virtualMachine.name
-    name: 'DiskEncryption'
-    publisher: 'Microsoft.Azure.Security'
-    type: osType == 'Windows' ? 'AzureDiskEncryption' : 'AzureDiskEncryptionForLinux'
-    typeHandlerVersion: contains(extensionDiskEncryptionConfig, 'typeHandlerVersion') ? extensionDiskEncryptionConfig.typeHandlerVersion : (osType == 'Windows' ? '2.2' : '1.1')
-    autoUpgradeMinorVersion: contains(extensionDiskEncryptionConfig, 'autoUpgradeMinorVersion') ? extensionDiskEncryptionConfig.autoUpgradeMinorVersion : true
-    enableAutomaticUpgrade: contains(extensionDiskEncryptionConfig, 'enableAutomaticUpgrade') ? extensionDiskEncryptionConfig.enableAutomaticUpgrade : false
-    forceUpdateTag: contains(extensionDiskEncryptionConfig, 'forceUpdateTag') ? extensionDiskEncryptionConfig.forceUpdateTag : '1.0'
-    settings: extensionDiskEncryptionConfig.settings
-  }
-}
-
 module vm_desiredStateConfigurationExtension 'extensions/deploy.bicep' = if (extensionDSCConfig.enabled) {
   name: '${uniqueString(deployment().name, location)}-vm-DesiredStateConfiguration'
   params: {
@@ -530,6 +515,24 @@ module vm_customScriptExtension 'extensions/deploy.bicep' = if (extensionCustomS
   }
   dependsOn: [
     vm_desiredStateConfigurationExtension
+  ]
+}
+
+module vm_diskEncryptionExtension 'extensions/deploy.bicep' = if (extensionDiskEncryptionConfig.enabled) {
+  name: '${uniqueString(deployment().name, location)}-vm-DiskEncryption'
+  params: {
+    virtualMachineName: virtualMachine.name
+    name: 'DiskEncryption'
+    publisher: 'Microsoft.Azure.Security'
+    type: osType == 'Windows' ? 'AzureDiskEncryption' : 'AzureDiskEncryptionForLinux'
+    typeHandlerVersion: contains(extensionDiskEncryptionConfig, 'typeHandlerVersion') ? extensionDiskEncryptionConfig.typeHandlerVersion : (osType == 'Windows' ? '2.2' : '1.1')
+    autoUpgradeMinorVersion: contains(extensionDiskEncryptionConfig, 'autoUpgradeMinorVersion') ? extensionDiskEncryptionConfig.autoUpgradeMinorVersion : true
+    enableAutomaticUpgrade: contains(extensionDiskEncryptionConfig, 'enableAutomaticUpgrade') ? extensionDiskEncryptionConfig.enableAutomaticUpgrade : false
+    forceUpdateTag: contains(extensionDiskEncryptionConfig, 'forceUpdateTag') ? extensionDiskEncryptionConfig.forceUpdateTag : '1.0'
+    settings: extensionDiskEncryptionConfig.settings
+  }
+  dependsOn: [
+    vm_customScriptExtension
   ]
 }
 
