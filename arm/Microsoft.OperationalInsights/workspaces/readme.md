@@ -1,6 +1,6 @@
-# LogAnalytics `[Microsoft.OperationalInsights/workspaces]`
+# Log Analytics Workspaces `[Microsoft.OperationalInsights/workspaces]`
 
-This template deploys Log Analytics.
+This template deploys a log analytics workspace.
 
 ## Resource types
 

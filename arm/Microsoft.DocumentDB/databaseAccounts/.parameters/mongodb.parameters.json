@@ -217,6 +217,9 @@
                     ]
                 }
             ]
+        },
+        "systemAssignedIdentity": {
+            "value": true
         }
     }
 }

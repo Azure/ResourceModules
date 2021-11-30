@@ -1,6 +1,6 @@
-# Image `[Microsoft.Compute/images]`
+# Images `[Microsoft.Compute/images]`
 
-This module deploys Images.
+This module deploys a compute image.
 
 ## Resource types
 

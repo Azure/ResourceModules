@@ -1,6 +1,6 @@
-# AzureFirewall `[Microsoft.Network/azureFirewalls]`
+# Azure Firewalls `[Microsoft.Network/azureFirewalls]`
 
-This module deploys Azure Firewall.
+This module deploys a firewall.
 
 ## Resource types
 

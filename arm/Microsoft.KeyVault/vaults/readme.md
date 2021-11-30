@@ -1,4 +1,4 @@
-# KeyVault `[Microsoft.KeyVault/vaults]`
+# Key Vaults `[Microsoft.KeyVault/vaults]`
 
 This module deploys a key vault and it's child resources.
 

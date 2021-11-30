@@ -1,6 +1,6 @@
-# Action Group `[Microsoft.Insights/actionGroups]`
+# Action Groups `[Microsoft.Insights/actionGroups]`
 
-This module deploys an Action Group
+This module deploys an Action Group.
 
 ## Resource Types
 

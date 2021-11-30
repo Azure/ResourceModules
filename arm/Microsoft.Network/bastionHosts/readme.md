@@ -1,6 +1,6 @@
-# AzureBastion `[Microsoft.Network/bastionHosts]`
+# Bastion Hosts `[Microsoft.Network/bastionHosts]`
 
-This module deploys an Azure Bastion.
+This module deploys a bastion host.
 
 ## Resource Types
 

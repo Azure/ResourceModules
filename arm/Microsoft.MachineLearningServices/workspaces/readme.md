@@ -1,4 +1,4 @@
-# Machine Learning Services `[Microsoft.MachineLearningServices/workspaces]`
+# Machine Learning Workspaces `[Microsoft.MachineLearningServices/workspaces]`
 
 This module deploys a Machine Learning Services Workspace.
 

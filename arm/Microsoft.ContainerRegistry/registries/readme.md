@@ -1,4 +1,4 @@
-# ContainerRegistry `[Microsoft.ContainerRegistry/registries]`
+# Container Registries `[Microsoft.ContainerRegistry/registries]`
 
 Azure Container Registry is a managed, private Docker registry service based on the open-source Docker Registry 2.0. Create and maintain Azure container registries to store and manage your private Docker container images and related artifacts.
 

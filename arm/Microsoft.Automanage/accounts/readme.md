@@ -1,6 +1,6 @@
-# AutoManage `[Microsoft.Automanage/accounts]`
+# Automanage Accounts `[Microsoft.Automanage/accounts]`
 
-This module deploys an AutoManage account and associates VM with it.
+This module deploys an Automanage account and associates VM with it.
 
 ## Resource Types
 

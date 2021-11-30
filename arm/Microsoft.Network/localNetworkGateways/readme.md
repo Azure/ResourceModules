@@ -1,6 +1,6 @@
-# Local Network Gateway `[Microsoft.Network/localNetworkGateways]`
+# Local Network Gateways `[Microsoft.Network/localNetworkGateways]`
 
-This module deploys Local Network Gateway, with resource lock.
+This module deploys a local network gateway.
 
 ## Resource types
 

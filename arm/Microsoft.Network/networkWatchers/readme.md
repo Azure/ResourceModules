@@ -1,6 +1,6 @@
-# Network Watcher `[Microsoft.Network/networkWatchers]`
+# Network Watchers `[Microsoft.Network/networkWatchers]`
 
-This template deploys Network Watcher.
+This template deploys a network watcher.
 
 ## Resource types
 

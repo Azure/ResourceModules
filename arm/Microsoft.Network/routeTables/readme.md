@@ -1,6 +1,6 @@
-# RouteTables `[Microsoft.Network/routeTables]`
+# Route Tables `[Microsoft.Network/routeTables]`
 
-This template deploys User Defined Route Tables.
+This module deploys a user defined route table.
 
 ## Resource types
 

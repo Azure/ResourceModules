@@ -7,16 +7,10 @@ param location string = resourceGroup().location
 @description('Optional. Tags of the Database Account resource.')
 param tags object = {}
 
-@description('Optional. The type of identity used for the database account. The type \'SystemAssigned, UserAssigned\' includes both an implicitly created identity and a set of user assigned identities. The type \'None\' (default) will remove any identities from the database account.')
-@allowed([
-  'None'
-  'SystemAssigned'
-  'SystemAssigned, UserAssigned'
-  'UserAssigned'
-])
-param managedServiceIdentity string = 'None'
+@description('Optional. Enables system assigned managed identity on the resource.')
+param systemAssignedIdentity bool = false
 
-@description('Optional. Mandatory if \'managedServiceIdentity\' contains UserAssigned. The list of user identities associated with the database account.')
+@description('Optional. The ID(s) to assign to the resource.')
 param userAssignedIdentities object = {}
 
 @description('Optional. The offer type for the Cosmos DB database account.')
@@ -87,7 +81,7 @@ param diagnosticLogsRetentionInDays int = 365
 @description('Optional. Resource ID of the diagnostic storage account.')
 param diagnosticStorageAccountId string = ''
 
-@description('Optional. Resource ID of log analytics.')
+@description('Optional. Resource ID of the log analytics workspace.')
 param workspaceId string = ''
 
 @description('Optional. Resource ID of the event hub authorization rule for the Event Hubs namespace in which the event hub should be created or streamed to.')
@@ -147,10 +141,12 @@ var diagnosticsMetrics = [for metric in metricsToEnable: {
   }
 }]
 
-var identity = {
-  type: managedServiceIdentity
-  userAssignedIdentities: (empty(userAssignedIdentities) ? null : userAssignedIdentities)
-}
+var identityType = systemAssignedIdentity ? (!empty(userAssignedIdentities) ? 'SystemAssigned, UserAssigned' : 'SystemAssigned') : (!empty(userAssignedIdentities) ? 'UserAssigned' : 'None')
+
+var identity = identityType != 'None' ? {
+  type: identityType
+  userAssignedIdentities: !empty(userAssignedIdentities) ? userAssignedIdentities : null
+} : null
 
 var consistencyPolicy = {
   Eventual: {
@@ -267,3 +263,6 @@ output databaseAccountResourceId string = databaseAccount.id
 
 @description('The name of the resource group the database account was created in.')
 output databaseAccountResourceGroup string = resourceGroup().name
+
+@description('The principal ID of the system assigned identity.')
+output principalId string = systemAssignedIdentity ? databaseAccount.identity.principalId : ''

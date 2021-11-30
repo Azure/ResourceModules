@@ -1,6 +1,6 @@
-# LoadBalancer `[Microsoft.Network/loadBalancers]`
+# Load Balancers `[Microsoft.Network/loadBalancers]`
 
-This module deploys a Load Balancer
+This module deploys a load balancer.
 
 ## Resource types
 

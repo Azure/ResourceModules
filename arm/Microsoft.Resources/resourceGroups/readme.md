@@ -1,6 +1,6 @@
-# Resource Group `[Microsoft.Resources/resourceGroups]`
+# Resource Groups `[Microsoft.Resources/resourceGroups]`
 
-This module deploys Resource Groups.
+This module deploys a resource group.
 
 ## Resource types
 

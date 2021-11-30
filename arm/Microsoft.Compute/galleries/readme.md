@@ -1,6 +1,6 @@
-# Shared Image Gallery `[Microsoft.Compute/galleries]`
+# Azure Compute Galleries `[Microsoft.Compute/galleries]`
 
-This module deploys Share Image Gallery, with resource lock.
+This module deploys an Azure compute gallery (formerly known as shared image gallery).
 
 ## Resource Types
 
