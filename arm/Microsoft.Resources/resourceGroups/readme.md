@@ -1,10 +1,10 @@
-# Resource Group `[Microsoft.Resources/resourceGroups]`
+# Resource Groups `[Microsoft.Resources/resourceGroups]`
 
-This module deploys Resource Groups.
+This module deploys a resource group.
 
 ## Resource types
 
-| Resource Type | Api Version |
+| Resource Type | API Version |
 | :-- | :-- |
 | `Microsoft.Authorization/locks` | 2016-09-01 |
 | `Microsoft.Authorization/roleAssignments` | 2020-04-01-preview |
@@ -16,7 +16,7 @@ This module deploys Resource Groups.
 | :-- | :-- | :-- | :-- | :-- |
 | `location` | string | `[deployment().location]` |  | Optional. Location of the Resource Group. It uses the deployment's location when not provided. |
 | `lock` | string | `NotSpecified` | `[CanNotDelete, NotSpecified, ReadOnly]` | Optional. Specify the type of lock. |
-| `resourceGroupName` | string |  |  | Required. The name of the Resource Group |
+| `name` | string |  |  | Required. The name of the Resource Group |
 | `roleAssignments` | array | `[]` |  | Optional. Array of role assignment objects that contain the 'roleDefinitionIdOrName' and 'principalId' to define RBAC role assignments on this resource. In the roleDefinitionIdOrName attribute, you can provide either the display name of the role definition, or its fully qualified ID in the following format: '/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11' |
 | `tags` | object | `{object}` |  | Optional. Tags of the storage account resource. |
 
@@ -25,13 +25,6 @@ This module deploys Resource Groups.
 ```json
 "roleAssignments": {
     "value": [
-        {
-            "roleDefinitionIdOrName": "Desktop Virtualization User",
-            "principalIds": [
-                "12345678-1234-1234-1234-123456789012", // object 1
-                "78945612-1234-1234-1234-123456789012" // object 2
-            ]
-        },
         {
             "roleDefinitionIdOrName": "Reader",
             "principalIds": [
@@ -72,10 +65,10 @@ This module requires a User Assigned Identity (MSI, managed service identity) to
 
 ## Outputs
 
-| Output Name | Type |
-| :-- | :-- |
-| `resourceGroupName` | string |
-| `resourceGroupResourceId` | string |
+| Output Name | Type | Description |
+| :-- | :-- | :-- |
+| `resourceGroupName` | string | The name of the resource group |
+| `resourceGroupResourceId` | string | The resource ID of the resource group |
 
 ## Template references
 

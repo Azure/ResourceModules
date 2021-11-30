@@ -2,13 +2,13 @@
     "$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentParameters.json#",
     "contentVersion": "1.0.0.0",
     "parameters": {
-        "privateDnsZoneName": {
+        "name": {
             "value": "privatelink.vaultcore.azure.net"
         },
-        "vnetLinks": {
+        "virtualNetworkLinks": {
             "value": [
                 {
-                    "vnetResourceId": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/virtualNetworks/adp-sxx-az-vnet-x-001",
+                    "virtualNetworkResourceId": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/virtualNetworks/adp-sxx-az-vnet-x-001",
                     "registrationEnabled": false
                 }
             ]

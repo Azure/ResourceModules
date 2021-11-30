@@ -4,7 +4,7 @@ This template deploys Connection Monitors.
 
 ## Resource Types
 
-| Resource Type | Api Version |
+| Resource Type | API Version |
 | :-- | :-- |
 | `Microsoft.Network/networkWatchers/connectionMonitors` | 2021-03-01 |
 
@@ -12,7 +12,7 @@ This template deploys Connection Monitors.
 
 | Parameter Name | Type | Default Value | Possible Values | Description |
 | :-- | :-- | :-- | :-- | :-- |
-| `cuaId` | string |  |  | Optional. Customer Usage Attribution id (GUID). This GUID must be previously registered |
+| `cuaId` | string |  |  | Optional. Customer Usage Attribution ID (GUID). This GUID must be previously registered |
 | `endpoints` | array | `[]` |  | Optional. List of connection monitor endpoints. |
 | `location` | string | `[resourceGroup().location]` |  | Optional. Location for all resources. |
 | `name` | string |  |  | Optional. Name of the resource. |
@@ -22,13 +22,30 @@ This template deploys Connection Monitors.
 | `testGroups` | array | `[]` |  | Optional. List of connection monitor test groups. |
 | `workspaceResourceId` | string |  |  | Optional. Specify the Log Analytics Workspace Resource ID |
 
+### Parameter Usage: `tags`
+
+Tag names and tag values can be provided as needed. A tag can be left without a value.
+
+```json
+"tags": {
+    "value": {
+        "Environment": "Non-Prod",
+        "Contact": "test.user@testcompany.com",
+        "PurchaseOrder": "1234",
+        "CostCenter": "7890",
+        "ServiceName": "DeploymentValidation",
+        "Role": "DeploymentValidation"
+    }
+}
+```
+
 ## Outputs
 
 | Output Name | Type | Description |
 | :-- | :-- | :-- |
 | `connectionMonitorName` | string | The name of the deployed connection monitor |
 | `connectionMonitorResourceGroup` | string | The resource group the connection monitor was deployed into |
-| `connectionMonitorResourceId` | string | The resourceId of the deployed connection monitor |
+| `connectionMonitorResourceId` | string | The resource ID of the deployed connection monitor |
 
 ## Template references
 

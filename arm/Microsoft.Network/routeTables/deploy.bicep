@@ -1,5 +1,5 @@
 @description('Required. Name given for the hub route table.')
-param routeTableName string
+param name string
 
 @description('Optional. Location for all resources.')
 param location string = resourceGroup().location
@@ -24,7 +24,7 @@ param roleAssignments array = []
 @description('Optional. Tags of the resource.')
 param tags object = {}
 
-@description('Optional. Customer Usage Attribution id (GUID). This GUID must be previously registered')
+@description('Optional. Customer Usage Attribution ID (GUID). This GUID must be previously registered')
 param cuaId string = ''
 
 module pid_cuaId '.bicep/nested_cuaId.bicep' = if (!empty(cuaId)) {
@@ -33,7 +33,7 @@ module pid_cuaId '.bicep/nested_cuaId.bicep' = if (!empty(cuaId)) {
 }
 
 resource routeTable 'Microsoft.Network/routeTables@2021-02-01' = {
-  name: routeTableName
+  name: name
   location: location
   tags: tags
   properties: {
@@ -54,16 +54,17 @@ resource routeTable_lock 'Microsoft.Authorization/locks@2016-09-01' = if (lock !
 module routeTable_rbac '.bicep/nested_rbac.bicep' = [for (roleAssignment, index) in roleAssignments: {
   name: '${deployment().name}-rbac-${index}'
   params: {
-    roleAssignmentObj: roleAssignment
-    resourceName: routeTable.name
+    principalIds: roleAssignment.principalIds
+    roleDefinitionIdOrName: roleAssignment.roleDefinitionIdOrName
+    resourceId: routeTable.id
   }
 }]
 
 @description('The resource group the route table was deployed into')
-output routeTablesResourceGroup string = resourceGroup().name
+output routeTableResourceGroup string = resourceGroup().name
 
 @description('The name of the route table')
-output routeTablesName string = routeTable.name
+output routeTableName string = routeTable.name
 
-@description('The resourceId of the route table')
-output routeTablesResourceId string = routeTable.id
+@description('The resource ID of the route table')
+output routeTableResourceId string = routeTable.id

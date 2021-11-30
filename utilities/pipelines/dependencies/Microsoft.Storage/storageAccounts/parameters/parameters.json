@@ -16,6 +16,16 @@
     },
     "allowBlobPublicAccess": {
       "value": false
+    },
+    "blobServices": {
+      "value": {
+        "containers": [
+          {
+            "name": "scripts",
+            "publicAccess": "None"
+          }
+        ]
+      }
     }
   }
 }

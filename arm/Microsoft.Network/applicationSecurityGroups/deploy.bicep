@@ -1,5 +1,5 @@
 @description('Required. Name of the Application Security Group.')
-param applicationSecurityGroupName string
+param name string
 
 @description('Optional. Location for all resources.')
 param location string = resourceGroup().location
@@ -18,7 +18,7 @@ param roleAssignments array = []
 @description('Optional. Tags of the resource.')
 param tags object = {}
 
-@description('Optional. Customer Usage Attribution id (GUID). This GUID must be previously registered')
+@description('Optional. Customer Usage Attribution ID (GUID). This GUID must be previously registered')
 param cuaId string = ''
 
 module pid_cuaId '.bicep/nested_cuaId.bicep' = if (!empty(cuaId)) {
@@ -27,7 +27,7 @@ module pid_cuaId '.bicep/nested_cuaId.bicep' = if (!empty(cuaId)) {
 }
 
 resource applicationSecurityGroup 'Microsoft.Network/applicationSecurityGroups@2021-02-01' = {
-  name: applicationSecurityGroupName
+  name: name
   location: location
   tags: tags
   properties: {}
@@ -45,16 +45,17 @@ resource applicationSecurityGroup_lock 'Microsoft.Authorization/locks@2016-09-01
 module applicationSecurityGroup_rbac '.bicep/nested_rbac.bicep' = [for (roleAssignment, index) in roleAssignments: {
   name: '${deployment().name}-rbac-${index}'
   params: {
-    roleAssignmentObj: roleAssignment
-    resourceName: applicationSecurityGroup.name
+    principalIds: roleAssignment.principalIds
+    roleDefinitionIdOrName: roleAssignment.roleDefinitionIdOrName
+    resourceId: applicationSecurityGroup.id
   }
 }]
 
 @description('The resource group the application security group was deployed into')
-output applicationSecurityGroupsResourceGroup string = resourceGroup().name
+output applicationSecurityGroupResourceGroup string = resourceGroup().name
 
-@description('The resourceId of the application security group')
-output applicationSecurityGroupsResourceId string = applicationSecurityGroup.id
+@description('The resource ID of the application security group')
+output applicationSecurityGroupResourceId string = applicationSecurityGroup.id
 
 @description('The name of the application security group')
-output applicationSecurityGroupsName string = applicationSecurityGroup.name
+output applicationSecurityGroupName string = applicationSecurityGroup.name

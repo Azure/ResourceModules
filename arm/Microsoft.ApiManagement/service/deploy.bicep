@@ -1,14 +1,14 @@
 @description('Optional. Additional datacenter locations of the API Management service.')
 param additionalLocations array = []
 
-@description('Required. The name of the of the Api Management service.')
+@description('Required. The name of the of the API Management service.')
 param name string
 
 @description('Optional. List of Certificates that need to be installed in the API Management service. Max supported certificates that can be installed is 10.')
 @maxLength(10)
 param certificates array = []
 
-@description('Optional. Customer Usage Attribution id (GUID). This GUID must be previously registered')
+@description('Optional. Customer Usage Attribution ID (GUID). This GUID must be previously registered')
 param cuaId string = ''
 
 @description('Optional. Custom properties of the API Management service.')
@@ -19,10 +19,10 @@ param customProperties object = {}
 @maxValue(365)
 param diagnosticLogsRetentionInDays int = 365
 
-@description('Optional. Resource identifier of the Diagnostic Storage Account.')
+@description('Optional. Resource ID of the diagnostic storage account.')
 param diagnosticStorageAccountId string = ''
 
-@description('Optional. Property only valid for an Api Management service deployed in multiple locations. This can be used to disable the gateway in master region.')
+@description('Optional. Property only valid for an API Management service deployed in multiple locations. This can be used to disable the gateway in master region.')
 param disableGateway bool = false
 
 @description('Optional. Property only meant to be used for Consumption SKU Service. This enforces a client certificate to be presented on each request to the gateway. This also enables the ability to authenticate the certificate in the policy on the gateway.')
@@ -37,8 +37,11 @@ param eventHubName string = ''
 @description('Optional. Custom hostname configuration of the API Management service.')
 param hostnameConfigurations array = []
 
-@description('Optional. Managed service identity of the Api Management service.')
-param identity object = {}
+@description('Optional. Enables system assigned managed identity on the resource.')
+param systemAssignedIdentity bool = false
+
+@description('Optional. The ID(s) to assign to the resource.')
+param userAssignedIdentities object = {}
 
 @description('Optional. Location for all Resources.')
 param location string = resourceGroup().location
@@ -63,13 +66,13 @@ param publisherEmail string
 @description('Required. The name of the owner of the service.')
 param publisherName string
 
-@description('Optional. Undelete Api Management Service if it was previously soft-deleted. If this flag is specified and set to True all other properties will be ignored.')
+@description('Optional. Undelete API Management Service if it was previously soft-deleted. If this flag is specified and set to True all other properties will be ignored.')
 param restore bool = false
 
 @description('Optional. Array of role assignment objects that contain the \'roleDefinitionIdOrName\' and \'principalId\' to define RBAC role assignments on this resource. In the roleDefinitionIdOrName attribute, you can provide either the display name of the role definition, or its fully qualified ID in the following format: \'/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11\'')
 param roleAssignments array = []
 
-@description('Optional. The pricing tier of this Api Management service.')
+@description('Optional. The pricing tier of this API Management service.')
 @allowed([
   'Consumption'
   'Developer'
@@ -79,7 +82,7 @@ param roleAssignments array = []
 ])
 param sku string = 'Developer'
 
-@description('Optional. The instance size of this Api Management service.')
+@description('Optional. The instance size of this API Management service.')
 @allowed([
   1
   2
@@ -92,7 +95,7 @@ param subnetResourceId string = ''
 @description('Optional. Tags of the resource.')
 param tags object = {}
 
-@description('Optional. The type of VPN in which API Management service needs to be configured in. None (Default Value) means the API Management service is not part of any Virtual Network, External means the API Management deployment is set up inside a Virtual Network having an Internet Facing Endpoint, and Internal means that API Management deployment is setup inside a Virtual Network having an Intranet Facing Endpoint only.')
+@description('Optional. The type of VPN in which API Management service needs to be configured in. None (Default Value) means the API Management service is not part of any Virtual Network, External means the API Management deployment is set up inside a Virtual Network having an internet Facing Endpoint, and Internal means that API Management deployment is setup inside a Virtual Network having an Intranet Facing Endpoint only.')
 @allowed([
   'None'
   'External'
@@ -100,7 +103,7 @@ param tags object = {}
 ])
 param virtualNetworkType string = 'None'
 
-@description('Optional. Resource identifier of Log Analytics.')
+@description('Optional. Resource ID of log analytics.')
 param workspaceId string = ''
 
 @description('Optional. A list of availability zones denoting where the resource needs to come from.')
@@ -121,7 +124,7 @@ param logsToEnable array = [
 param metricsToEnable array = [
   'AllMetrics'
 ]
-@description('Optional. Necessary to create a new guid.')
+@description('Optional. Necessary to create a new GUID.')
 param newGuidValue string = newGuid()
 
 @description('Optional. APIs.')
@@ -166,6 +169,13 @@ var diagnosticsMetrics = [for metric in metricsToEnable: {
   }
 }]
 
+var identityType = systemAssignedIdentity ? (!empty(userAssignedIdentities) ? 'SystemAssigned,UserAssigned' : 'SystemAssigned') : (!empty(userAssignedIdentities) ? 'UserAssigned' : 'None')
+
+var identity = identityType != 'None' ? {
+  type: identityType
+  userAssignedIdentities: !empty(userAssignedIdentities) ? userAssignedIdentities : null
+} : null
+
 module pid_cuaId '.bicep/nested_cuaId.bicep' = if (!empty(cuaId)) {
   name: 'pid-${cuaId}'
   params: {}
@@ -180,7 +190,7 @@ resource apiManagementService 'Microsoft.ApiManagement/service@2020-12-01' = {
     capacity: skuCount
   }
   zones: zones
-  identity: !empty(identity) ? identity : json('{"type": "None"}')
+  identity: identity
   properties: {
     publisherEmail: publisherEmail
     publisherName: publisherName
@@ -357,11 +367,11 @@ module products_resource 'products/deploy.bicep' = [for (product, index) in prod
   name: '${uniqueString(deployment().name, location)}-product-${index}'
   params: {
     apiManagementServiceName: apiManagementService.name
+    apis: contains(product, 'apis') ? product.apis : []
     approvalRequired: contains(product, 'approvalRequired') ? product.approvalRequired : false
+    groups: contains(product, 'groups') ? product.groups : []
     name: product.name
-    productApis: contains(product, 'productApis') ? product.productApis : []
     productDescription: contains(product, 'productDescription') ? product.productDescription : ''
-    productGroups: contains(product, 'productGroups') ? product.productGroups : []
     state: contains(product, 'state') ? product.state : 'published'
     subscriptionRequired: contains(product, 'subscriptionRequired') ? product.subscriptionRequired : false
     subscriptionsLimit: contains(product, 'subscriptionsLimit') ? product.subscriptionsLimit : 1
@@ -411,16 +421,20 @@ resource apiManagementService_diagnosticSettings 'Microsoft.Insights/diagnosticS
 module apiManagementService_rbac '.bicep/nested_rbac.bicep' = [for (roleAssignment, index) in roleAssignments: {
   name: '${deployment().name}-rbac-${index}'
   params: {
-    roleAssignmentObj: roleAssignment
-    resourceName: apiManagementService.name
+    principalIds: roleAssignment.principalIds
+    roleDefinitionIdOrName: roleAssignment.roleDefinitionIdOrName
+    resourceId: apiManagementService.id
   }
 }]
 
-@description('The name of the api management service')
+@description('The name of the API management service')
 output serviceName string = apiManagementService.name
 
-@description('The resourceId of the api management service')
+@description('The resource ID of the API management service')
 output serviceResourceId string = apiManagementService.id
 
-@description('The resource group the api management service was deployed into')
+@description('The resource group the API management service was deployed into')
 output serviceResourceGroup string = resourceGroup().name
+
+@description('The principal ID of the system assigned identity.')
+output systemAssignedPrincipalId string = systemAssignedIdentity ? apiManagementService.identity.principalId : ''

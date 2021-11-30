@@ -1,5 +1,5 @@
 @description('Required. Name of the resource')
-param azureHealthBotName string
+param name string
 
 @description('Optional. The resource model definition representing SKU.')
 param sku string = 'F0'
@@ -21,7 +21,7 @@ param roleAssignments array = []
 @description('Optional. Tags of the resource.')
 param tags object = {}
 
-@description('Optional. Customer Usage Attribution id (GUID). This GUID must be previously registered')
+@description('Optional. Customer Usage Attribution ID (GUID). This GUID must be previously registered')
 param cuaId string = ''
 
 module pid_cuaId '.bicep/nested_cuaId.bicep' = if (!empty(cuaId)) {
@@ -30,7 +30,7 @@ module pid_cuaId '.bicep/nested_cuaId.bicep' = if (!empty(cuaId)) {
 }
 
 resource azureHealthBot 'Microsoft.HealthBot/healthBots@2020-12-08' = {
-  name: azureHealthBotName
+  name: name
   location: location
   tags: tags
   sku: {
@@ -51,11 +51,17 @@ resource azureHealthBot_lock 'Microsoft.Authorization/locks@2016-09-01' = if (lo
 module healthBot_rbac '.bicep/nested_rbac.bicep' = [for (roleAssignment, index) in roleAssignments: {
   name: '${deployment().name}-rbac-${index}'
   params: {
-    roleAssignmentObj: roleAssignment
-    resourceName: azureHealthBot.name
+    principalIds: roleAssignment.principalIds
+    roleDefinitionIdOrName: roleAssignment.roleDefinitionIdOrName
+    resourceId: azureHealthBot.id
   }
 }]
 
+@description('The resource group the health bot was deployed into')
 output azureHealthBotResourceGroup string = resourceGroup().name
+
+@description('The name of the health bot')
 output azureHealthBotName string = azureHealthBot.name
+
+@description('The resource ID of the health bot')
 output azureHealthBotResourceId string = azureHealthBot.id

@@ -1,6 +1,6 @@
 @description('Required. Name of the Public IP Prefix')
 @minLength(1)
-param publicIpPrefixName string
+param name string
 
 @description('Optional. Location for all resources.')
 param location string = resourceGroup().location
@@ -24,7 +24,7 @@ param roleAssignments array = []
 @description('Optional. Tags of the resource.')
 param tags object = {}
 
-@description('Optional. Customer Usage Attribution id (GUID). This GUID must be previously registered')
+@description('Optional. Customer Usage Attribution ID (GUID). This GUID must be previously registered')
 param cuaId string = ''
 
 module pid_cuaId '.bicep/nested_cuaId.bicep' = if (!empty(cuaId)) {
@@ -33,7 +33,7 @@ module pid_cuaId '.bicep/nested_cuaId.bicep' = if (!empty(cuaId)) {
 }
 
 resource publicIpPrefix 'Microsoft.Network/publicIPPrefixes@2021-02-01' = {
-  name: publicIpPrefixName
+  name: name
   location: location
   tags: tags
   sku: {
@@ -57,12 +57,13 @@ resource publicIpPrefix_lock 'Microsoft.Authorization/locks@2016-09-01' = if (lo
 module publicIpPrefix_rbac '.bicep/nested_rbac.bicep' = [for (roleAssignment, index) in roleAssignments: {
   name: '${deployment().name}-rbac-${index}'
   params: {
-    roleAssignmentObj: roleAssignment
-    resourceName: publicIpPrefix.name
+    principalIds: roleAssignment.principalIds
+    roleDefinitionIdOrName: roleAssignment.roleDefinitionIdOrName
+    resourceId: publicIpPrefix.id
   }
 }]
 
-@description('The resourceId of the public IP prefix')
+@description('The resource ID of the public IP prefix')
 output publicIpPrefixResourceId string = publicIpPrefix.id
 
 @description('The resource group the public IP prefix was deployed into')

@@ -17,7 +17,7 @@ param immutabilityPeriodSinceCreationInDays int = 365
 @description('This property can only be changed for unlocked time-based retention policies. When enabled, new blocks can be written to an append blob while maintaining immutability protection and compliance. Only new blocks can be added and any existing blocks cannot be modified or deleted. This property cannot be changed with ExtendImmutabilityPolicy API')
 param allowProtectedAppendWrites bool = true
 
-@description('Optional. Customer Usage Attribution id (GUID). This GUID must be previously registered')
+@description('Optional. Customer Usage Attribution ID (GUID). This GUID must be previously registered')
 param cuaId string = ''
 
 module pid_cuaId '.bicep/nested_cuaId.bicep' = if (!empty(cuaId)) {
@@ -49,7 +49,7 @@ resource immutabilityPolicy 'Microsoft.Storage/storageAccounts/blobServices/cont
 @description('The name of the deployed immutability policy.')
 output immutabilityPolicyName string = immutabilityPolicy.name
 
-@description('The id of the deployed immutability policy.')
+@description('The resource ID of the deployed immutability policy.')
 output immutabilityPolicyResourceId string = immutabilityPolicy.id
 
 @description('The resource group of the deployed immutability policy.')
