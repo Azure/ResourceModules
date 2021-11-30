@@ -42,8 +42,8 @@ param vNetResourceGroup string = resourceGroup().name
 @description('Optional. The Subscription ID of the Virtual Network where the Application Gateway will be deployed.')
 param vNetSubscriptionId string = subscription().subscriptionId
 
-@description('Optional. Resource ID of an User assigned managed identity which will be associated with the App Gateway.')
-param managedIdentityResourceId string = ''
+@description('Optional. The ID(s) to assign to the resource.')
+param userAssignedIdentities object = {}
 
 @description('Optional. Application Gateway IP configuration name.')
 param gatewayIpConfigurationName string = 'gatewayIpConfiguration01'
@@ -192,12 +192,14 @@ var frontendPorts = concat((empty(frontendHttpListeners) ? frontendHttpListeners
 var httpListeners = concat((empty(frontendHttpListeners) ? frontendHttpListeners : frontendHttpListeners_var), (empty(frontendHttpsListeners) ? frontendHttpsListeners : frontendHttpsListeners_var), (empty(frontendHttpRedirects) ? frontendHttpRedirects : frontendHttpRedirects_var))
 var redirectConfigurations = (empty(frontendHttpRedirects) ? frontendHttpRedirects : httpRedirectConfigurations)
 var requestRoutingRules = concat(httpsRequestRoutingRules, (empty(frontendHttpRedirects) ? frontendHttpRedirects : httpRequestRoutingRules))
-var identity = {
-  type: 'UserAssigned'
-  userAssignedIdentities: {
-    '${managedIdentityResourceId}': {}
-  }
-}
+
+var identityType = !empty(userAssignedIdentities) ? 'UserAssigned' : 'None'
+
+var identity = identityType != 'None' ? {
+  type: identityType
+  userAssignedIdentities: !empty(userAssignedIdentities) ? userAssignedIdentities : null
+} : null
+
 
 var backendAddressPools = [for backendPool in backendPools: {
   name: backendPool.backendPoolName
@@ -340,10 +342,10 @@ module pid_cuaId '.bicep/nested_cuaId.bicep' = if (!empty(cuaId)) {
   params: {}
 }
 
-resource applicationGateway 'Microsoft.Network/applicationGateways@2021-02-01' = {
+resource applicationGateway 'Microsoft.Network/applicationGateways@2021-03-01' = {
   name: name
   location: location
-  identity: empty(managedIdentityResourceId) ? null : identity
+  identity: identity
   tags: tags
   properties: {
     sku: {

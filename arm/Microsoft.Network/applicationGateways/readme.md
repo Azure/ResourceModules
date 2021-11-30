@@ -9,7 +9,7 @@ This template deploys an application gateway.
 | `Microsoft.Authorization/locks` | 2016-09-01 |
 | `Microsoft.Authorization/roleAssignments` | 2020-04-01-preview |
 | `Microsoft.Insights/diagnosticSettings` | 2017-05-01-preview |
-| `Microsoft.Network/applicationGateways` | 2021-02-01 |
+| `Microsoft.Network/applicationGateways` | 2021-03-01 |
 
 ## Parameters
 
@@ -33,7 +33,6 @@ This template deploys an application gateway.
 | `location` | string | `[resourceGroup().location]` |  | Optional. Location for all Resources. |
 | `lock` | string | `NotSpecified` | `[CanNotDelete, NotSpecified, ReadOnly]` | Optional. Specify the type of lock. |
 | `logsToEnable` | array | `[ApplicationGatewayAccessLog, ApplicationGatewayPerformanceLog, ApplicationGatewayFirewallLog]` | `[ApplicationGatewayAccessLog, ApplicationGatewayPerformanceLog, ApplicationGatewayFirewallLog]` | Optional. The name of logs that will be streamed. |
-| `managedIdentityResourceId` | string |  |  | Optional. Resource ID of an User assigned managed identity which will be associated with the App Gateway. |
 | `metricsToEnable` | array | `[AllMetrics]` | `[AllMetrics]` | Optional. The name of metrics that will be streamed. |
 | `name` | string |  |  | Required. The name to be used for the Application Gateway. |
 | `probes` | array | `[]` |  | Optional. The backend HTTP settings probes to be configured. |
@@ -44,6 +43,7 @@ This template deploys an application gateway.
 | `sslCertificateName` | string | `sslCertificate01` |  | Optional. SSL certificate reference name for a certificate stored in the Key Vault to configure the HTTPS listeners. |
 | `subnetName` | string |  |  | Required. The name of Gateway Subnet Name where the Application Gateway will be deployed. |
 | `tags` | object | `{object}` |  | Optional. Tags of the resource. |
+| `userAssignedIdentities` | object | `{object}` |  | Optional. The ID(s) to assign to the resource. |
 | `vNetName` | string |  |  | Required. The name of the Virtual Network where the Application Gateway will be deployed. |
 | `vNetResourceGroup` | string | `[resourceGroup().name]` |  | Optional. The name of the Virtual Network Resource Group where the Application Gateway will be deployed. |
 | `vNetSubscriptionId` | string | `[subscription().subscriptionId]` |  | Optional. The Subscription ID of the Virtual Network where the Application Gateway will be deployed. |
@@ -231,4 +231,4 @@ Tag names and tag values can be provided as needed. A tag can be left without a 
 - [Locks](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2016-09-01/locks)
 - [Roleassignments](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2020-04-01-preview/roleAssignments)
 - [Diagnosticsettings](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Insights/2017-05-01-preview/diagnosticSettings)
-- [Applicationgateways](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Network/2021-02-01/applicationGateways)
+- [Applicationgateways](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Network/2021-03-01/applicationGateways)
