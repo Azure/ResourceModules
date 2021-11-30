@@ -109,13 +109,13 @@
             "value": {
                 "enabled": true,
                 "settings": {
-                    "AntimalwareEnabled": true,
+                    "AntimalwareEnabled": "true",
                     "Exclusions": {
-                        "Extensions": ".log;.ldf",
-                        "Paths": "D:\\IISlogs;D:\\DatabaseLogs",
-                        "Processes": "mssence.svc"
+                        "Extensions": ".ext1;.ext2",
+                        "Paths": "c:\\excluded-path-1;c:\\excluded-path-2",
+                        "Processes": "excludedproc1.exe;excludedproc2.exe"
                     },
-                    "RealtimeProtectionEnabled": true,
+                    "RealtimeProtectionEnabled": "true",
                     "ScheduledScanSettings": {
                         "isEnabled": "true",
                         "scanType": "Quick",
