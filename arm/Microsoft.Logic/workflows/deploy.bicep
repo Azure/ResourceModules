@@ -16,8 +16,11 @@ param cuaId string = ''
 @description('Optional. Parameters for the definition template.')
 param definitionParameters object = {}
 
-@description('Optional. Type of managed identity for resource. SystemAssigned or UserAssigned.')
-param identity object = {}
+@description('Optional. Enables system assigned managed identity on the resource.')
+param systemAssignedIdentity bool = false
+
+@description('Optional. The ID(s) to assign to the resource.')
+param userAssignedIdentities object = {}
 
 @description('Optional. The integration account.')
 param integrationAccount object = {}
@@ -132,6 +135,13 @@ var diagnosticsMetrics = [for metric in metricsToEnable: {
   }
 }]
 
+var identityType = systemAssignedIdentity ? 'SystemAssigned' : (!empty(userAssignedIdentities) ? 'UserAssigned' : 'None')
+
+var identity = identityType != 'None' ? {
+  type: identityType
+  userAssignedIdentities: !empty(userAssignedIdentities) ? userAssignedIdentities : null
+} : null
+
 module pid_cuaId '.bicep/nested_cuaId.bicep' = if (!empty(cuaId)) {
   name: 'pid-${cuaId}'
   params: {}
@@ -141,7 +151,7 @@ resource logicApp 'Microsoft.Logic/workflows@2019-05-01' = {
   name: name
   location: location
   tags: !empty(tags) ? tags : null
-  identity: !empty(identity) ? identity : any(null)
+  identity: identity
   properties: {
     state: state
     endpointsConfiguration: {
@@ -209,3 +219,6 @@ output logicAppResourceGroup string = resourceGroup().name
 
 @description('The resource ID of the logic app')
 output logicAppResourceId string = logicApp.id
+
+@description('The principal ID of the system assigned identity.')
+output principalId string = systemAssignedIdentity ? logicApp.identity.principalId : ''

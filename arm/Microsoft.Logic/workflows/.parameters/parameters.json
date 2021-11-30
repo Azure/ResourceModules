@@ -67,6 +67,9 @@
         },
         "eventHubName": {
             "value": "adp-sxx-az-evh-x-001"
+        },
+        "systemAssignedIdentity": {
+            "value": true
         }
     }
 }
