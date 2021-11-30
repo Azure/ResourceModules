@@ -35,8 +35,8 @@ Not all modules are removed after their test deployment.
 
 In general, the current approach works for about 80-90% of the modules. That said, there are several different reasons why some of the modules are currently not auto-removed:
 
-- The module does not support tags: The current test implementation heavily relies on tags to find and remove a test-deployed resource. However, as not all resources support tags (for example Role Assignments), these must be removed in a different way that is yet to be implemented.
-- The module's resources must be removed in a specific order: Some resources like Azure NetAppFiles & VirtualWan, while supporting tags, cannot be removed as is. Due to their nature they deploy several child-resources that must be removed first. However, the current implementation of the removal is not aware of these limitations.
+- The module's resources must be removed in a specific order: Some resources like Azure NetAppFiles & VirtualWan cannot be removed as is. Due to their nature they deploy several child-resources that must be removed first. However, the current implementation of the removal is not aware of these limitations.
+- Modules have soft-delete enabled and have be purged
 
 ## Limited parameter file set
 
