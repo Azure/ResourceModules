@@ -17,6 +17,9 @@
         "osType": {
             "value": "Linux"
         },
+        "instanceSize": {
+            "value": "Standard_B2s"
+        },
         "imageReference": {
             "value": {
                 "publisher": "Canonical",

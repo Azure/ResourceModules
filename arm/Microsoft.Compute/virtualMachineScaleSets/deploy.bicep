@@ -233,8 +233,8 @@ param scaleInPolicy object = {
   ]
 }
 
-@description('Optional. The SKU size of the VMs.')
-param instanceSize string = ''
+@description('Required. The SKU size of the VMs.')
+param instanceSize string
 
 @description('Optional. The initial instance count of scale set VMs.')
 param instanceCount int = 1
