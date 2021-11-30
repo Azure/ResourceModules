@@ -93,7 +93,7 @@ function Set-ResourceTypesSection {
 
     $relevantResourceTypes = Get-NestedResourceList $TemplateFileContent | Where-Object {
         $_.type -notin $ResourceTypesToExclude -and $_
-    } | Select-Object 'Type', 'ApiVersion' -Unique | Sort-Object Type
+    } | Select-Object 'Type', 'ApiVersion' -Unique | Sort-Object Type -Culture en-US
 
     foreach ($resourceType in $relevantResourceTypes) {
         $sectionContent += ('| `{0}` | {1} |' -f $resourceType.type, $resourceType.apiVersion)
@@ -157,7 +157,7 @@ function Set-ParametersSection {
     $currentLevelFolders = Get-ChildItem -Path $currentFolderPath -Directory -Depth 0
     $folderNames = ($null -ne $currentLevelFolders) ? ($currentLevelFolders.FullName | ForEach-Object { Split-Path $_ -Leaf }) : @()
 
-    foreach ($paramName in ($templateFileContent.parameters.Keys | Sort-Object)) {
+    foreach ($paramName in ($templateFileContent.parameters.Keys | Sort-Object -Culture en-US)) {
         $param = $TemplateFileContent.parameters[$paramName]
 
         # Check for local readme references
@@ -255,7 +255,7 @@ function Set-OutputsSection {
             '| Output Name | Type | Description |',
             '| :-- | :-- | :-- |'
         )
-        foreach ($outputName in ($templateFileContent.outputs.Keys | Sort-Object)) {
+        foreach ($outputName in ($templateFileContent.outputs.Keys | Sort-Object -Culture en-US)) {
             $output = $TemplateFileContent.outputs[$outputName]
             $sectionContent += ("| ``{0}`` | {1} | {2} |" -f $outputName, $output.type, $output.metadata.description)
         }
@@ -264,7 +264,7 @@ function Set-OutputsSection {
             '| Output Name | Type |',
             '| :-- | :-- |'
         )
-        foreach ($outputName in ($templateFileContent.outputs.Keys | Sort-Object)) {
+        foreach ($outputName in ($templateFileContent.outputs.Keys | Sort-Object -Culture en-US)) {
             $output = $TemplateFileContent.outputs[$outputName]
             $sectionContent += ("| ``{0}`` | {1} |" -f $outputName, $output.type)
         }
@@ -325,7 +325,7 @@ function Set-TemplateReferencesSection {
 
     $relevantResourceTypes = Get-NestedResourceList $TemplateFileContent | Where-Object {
         $_.type -notin $ResourceTypesToExclude -and $_ -and $_.type -notlike '*/providers/*'
-    } | Select-Object 'Type', 'ApiVersion' -Unique | Sort-Object Type
+    } | Select-Object 'Type', 'ApiVersion' -Unique | Sort-Object Type -Culture en-US
 
     $TextInfo = (Get-Culture).TextInfo
     foreach ($resourceType in $relevantResourceTypes) {
