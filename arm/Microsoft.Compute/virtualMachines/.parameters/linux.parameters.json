@@ -108,26 +108,6 @@
         "eventHubName": {
             "value": "adp-sxx-az-evh-x-001"
         },
-        "extensionAntiMalwareConfig": {
-            "value": {
-                "enabled": true,
-                "settings": {
-                    "AntimalwareEnabled": true,
-                    "Exclusions": {
-                        "Extensions": ".log;.ldf",
-                        "Paths": "D:/IISlogs;D:/DatabaseLogs",
-                        "Processes": "mssence.svc"
-                    },
-                    "RealtimeProtectionEnabled": true,
-                    "ScheduledScanSettings": {
-                        "isEnabled": "true",
-                        "scanType": "Quick",
-                        "day": "7",
-                        "time": "120"
-                    }
-                }
-            }
-        },
         // "extensionMonitoringAgentConfig": {
         //     "value": {
         //         "enabled": true
