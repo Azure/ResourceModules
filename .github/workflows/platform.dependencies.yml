@@ -230,7 +230,7 @@ jobs:
             $parameterFilePath = Join-Path $env:GITHUB_WORKSPACE '${{ env.dependencyPath }}' 'Microsoft.Storage/storageAccounts' 'parameters' 'parameters.json'
             $storageAccountParameters = (ConvertFrom-Json (Get-Content -path $parameterFilePath -Raw)).parameters
 
-            # Upload files of uploads folder to storage account
+            # Upload files to storage account
             $functionInput = @{
               ResourceGroupName   = '${{ env.resourceGroupName }}'
               StorageAccountName  = $storageAccountParameters.name.value
