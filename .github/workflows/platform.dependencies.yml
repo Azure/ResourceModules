@@ -204,6 +204,46 @@ jobs:
           managementGroupId: '${{ secrets.ARM_MGMTGROUP_ID }}'
           removeDeployment: '${{ env.removeDeployment }}'
 
+  job_upload_storage_files:
+    runs-on: ubuntu-20.04
+    name: 'Upload files to storage account'
+    needs:
+      - job_deploy_sa
+    steps:
+      - name: 'Checkout'
+        uses: actions/checkout@v2
+        with:
+          fetch-depth: 0
+      - name: Azure Login
+        uses: azure/login@v1
+        with:
+          creds: ${{ secrets.AZURE_CREDENTIALS }}
+          enable-AzPSSession: true
+      - name: Run PowerShell
+        uses: azure/powershell@v1
+        with:
+          inlineScript: |
+            # Load used functions
+            . (Join-Path $env:GITHUB_WORKSPACE 'utilities' 'pipelines' 'sharedScripts' 'Export-ContentToBlob.ps1')
+
+            # Get storage account name
+            $parameterFilePath = Join-Path $env:GITHUB_WORKSPACE '${{ env.dependencyPath }}' 'Microsoft.Storage/storageAccounts' 'parameters' 'parameters.json'
+            $storageAccountParameters = (ConvertFrom-Json (Get-Content -path $parameterFilePath -Raw)).parameters
+
+            # Upload files to storage account
+            $functionInput = @{
+              ResourceGroupName   = '${{ env.resourceGroupName }}'
+              StorageAccountName  = $storageAccountParameters.name.value
+              contentDirectories  = Join-Path $env:GITHUB_WORKSPACE '${{ env.dependencyPath }}' 'Microsoft.Storage/storageAccounts' 'uploads'
+              targetContainer     = $storageAccountParameters.blobServices.value.containers[0].name
+            }
+
+            Write-Verbose "Invoke task with" -Verbose
+            Write-Verbose ($functionInput | ConvertTo-Json | Out-String) -Verbose
+
+            Export-ContentToBlob @functionInput -Verbose
+          azPSVersion: 'latest'
+
   job_deploy_sig:
     runs-on: ubuntu-20.04
     name: 'Deploy shared image gallery and definition'

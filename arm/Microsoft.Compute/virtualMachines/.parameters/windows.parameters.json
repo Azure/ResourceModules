@@ -3,7 +3,7 @@
     "contentVersion": "1.0.0.0",
     "parameters": {
         "name": {
-            "value": "sxx-vm-001"
+            "value": "sxx-vm-win-001"
         },
         "imageReference": {
             "value": {
@@ -12,6 +12,9 @@
                 "sku": "2016-Datacenter",
                 "version": "latest"
             }
+        },
+        "osType": {
+            "value": "Windows"
         },
         "osDisk": {
             "value": {
@@ -65,47 +68,6 @@
                 }
             ]
         },
-        "enableMicrosoftAntiMalware": {
-            "value": true
-        },
-        "microsoftAntiMalwareSettings": {
-            "value": {
-                "AntimalwareEnabled": "true"
-            }
-        },
-        "enableWindowsMMAAgent": {
-            "value": true
-        },
-        "enableWindowsDependencyAgent": {
-            "value": true
-        },
-        "enableNetworkWatcherWindows": {
-            "value": true
-        },
-        "enableWindowsDiskEncryption": {
-            "value": true
-        },
-        "diskEncryptionSettings": {
-            "value": {
-                "EncryptionOperation": "EnableEncryption",
-                "KeyVaultURL": "https://adp-sxx-az-kv-x-001.vault.azure.net/",
-                "KeyVaultResourceId": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.KeyVault/vaults/adp-sxx-az-kv-x-001",
-                "KeyEncryptionKeyURL": "https://adp-sxx-az-kv-x-001.vault.azure.net/keys/keyEncryptionKey/c263cf982a8442f69c3a0ece5e345b6c",
-                "KekVaultResourceId": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.KeyVault/vaults/adp-sxx-az-kv-x-001",
-                "KeyEncryptionAlgorithm": "RSA-OAEP", //'RSA-OAEP'/'RSA-OAEP-256'/'RSA1_5'
-                "VolumeType": "All", //'OS'/'Data'/'All'
-                "ResizeOSDisk": "false"
-            }
-        },
-        "enableDesiredStateConfiguration": {
-            "value": true
-        },
-        "desiredStateConfigurationSettings": {
-            "value": {}
-        },
-        "desiredStateConfigurationProtectedSettings": {
-            "value": {}
-        },
         "backupVaultName": {
             "value": "adp-sxx-az-rsv-x-001"
         },
@@ -132,7 +94,7 @@
             "value": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Storage/storageAccounts/adpsxxazsaweux001"
         },
         "workspaceId": {
-            "value": "/subscriptions/<<subscriptionId>>/resourcegroups/validation-rg/providers/microsoft.operationalinsights/workspaces/adp-sxx-az-la-x-001"
+            "value": "/subscriptions/<<subscriptionId>>/resourcegroups/validation-rg/providers/microsoft.operationalinsights/workspaces/adp-sxx-az-law-x-001"
         },
         "eventHubAuthorizationRuleId": {
             "value": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.EventHub/namespaces/adp-sxx-az-evhns-x-001/AuthorizationRules/RootManageSharedAccessKey"
@@ -146,6 +108,75 @@
         "userAssignedIdentities": {
             "value": {
                 "/subscriptions/<<subscriptionId>>/resourcegroups/validation-rg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/adp-sxx-az-msi-x-001": {}
+            }
+        },
+        "extensionAntiMalwareConfig": {
+            "value": {
+                "enabled": true,
+                "settings": {
+                    "AntimalwareEnabled": "true",
+                    "Exclusions": {
+                        "Extensions": ".ext1;.ext2",
+                        "Paths": "c:\\excluded-path-1;c:\\excluded-path-2",
+                        "Processes": "excludedproc1.exe;excludedproc2.exe"
+                    },
+                    "RealtimeProtectionEnabled": "true",
+                    "ScheduledScanSettings": {
+                        "isEnabled": "true",
+                        "scanType": "Quick",
+                        "day": "7",
+                        "time": "120"
+                    }
+                }
+            }
+        },
+        "extensionMonitoringAgentConfig": {
+            "value": {
+                "enabled": true
+            }
+        },
+        "extensionDependencyAgentConfig": {
+            "value": {
+                "enabled": true
+            }
+        },
+        "extensionNetworkWatcherAgentConfig": {
+            "value": {
+                "enabled": true
+            }
+        },
+        "extensionDiskEncryptionConfig": {
+            "value": {
+                "enabled": true,
+                "settings": {
+                    "EncryptionOperation": "EnableEncryption",
+                    "KeyVaultURL": "https://adp-sxx-az-kv-x-001.vault.azure.net/",
+                    "KeyVaultResourceId": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.KeyVault/vaults/adp-sxx-az-kv-x-001",
+                    "KeyEncryptionKeyURL": "https://adp-sxx-az-kv-x-001.vault.azure.net/keys/keyEncryptionKey/1dcaf3e93b44433bba0232e9eec54cc7",
+                    "KekVaultResourceId": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.KeyVault/vaults/adp-sxx-az-kv-x-001",
+                    "KeyEncryptionAlgorithm": "RSA-OAEP",
+                    "VolumeType": "All",
+                    "ResizeOSDisk": "false"
+                }
+            }
+        },
+        "extensionDSCConfig": {
+            "value": {
+                "enabled": true
+            }
+        },
+        "extensionCustomScriptConfig": {
+            "value": {
+                "enabled": true,
+                "fileData": [
+                    {
+                        "uri": "https://adpsxxazsaweux001.blob.core.windows.net/scripts/scriptExtensionMasterInstaller.ps1",
+                        "storageAccountId": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Storage/storageAccounts/adpsxxazsaweux001"
+                    }
+                ],
+                "protectedSettings": {
+                    "commandToExecute": "powershell -ExecutionPolicy Unrestricted -Command \"& .\\scriptExtensionMasterInstaller.ps1\""
+                }
             }
         }
     }

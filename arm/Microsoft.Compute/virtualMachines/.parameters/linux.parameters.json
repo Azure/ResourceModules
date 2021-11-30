@@ -3,22 +3,7 @@
     "contentVersion": "1.0.0.0",
     "parameters": {
         "name": {
-            "value": "sxx-scaleset-win-001"
-        },
-        "vmNamePrefix": {
-            "value": "vmsswinvm"
-        },
-        "skuName": {
-            "value": "Standard_B2s"
-        },
-        "skuCapacity": {
-            "value": 1
-        },
-        "upgradePolicyMode": {
-            "value": "Manual"
-        },
-        "vmPriority": {
-            "value": "Regular"
+            "value": "sxx-vm-linux-001"
         },
         "systemAssignedIdentity": {
             "value": true
@@ -26,6 +11,17 @@
         "userAssignedIdentities": {
             "value": {
                 "/subscriptions/<<subscriptionId>>/resourcegroups/validation-rg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/adp-sxx-az-msi-x-001": {}
+            }
+        },
+        "osType": {
+            "value": "Linux"
+        },
+        "imageReference": {
+            "value": {
+                "publisher": "Canonical",
+                "offer": "UbuntuServer",
+                "sku": "18.04-LTS",
+                "version": "latest"
             }
         },
         "osDisk": {
@@ -37,49 +33,60 @@
                 }
             }
         },
-        "osType": {
-            "value": "Windows"
-        },
-        "imageReference": {
-            "value": {
-                "publisher": "MicrosoftWindowsServer",
-                "offer": "WindowsServer",
-                "sku": "2016-Datacenter",
-                "version": "latest"
-            }
-        },
         "adminUsername": {
-            "reference": {
-                "keyVault": {
-                    "id": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.KeyVault/vaults/adp-sxx-az-kv-x-001"
-                },
-                "secretName": "adminUsername"
-            }
+            "value": "localAdminUser"
         },
-        "adminPassword": {
-            "reference": {
-                "keyVault": {
-                    "id": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.KeyVault/vaults/adp-sxx-az-kv-x-001"
-                },
-                "secretName": "adminPassword"
-            }
+        "disablePasswordAuthentication": {
+            "value": true
+        },
+        "publicKeys": {
+            "value": [
+                {
+                    "path": "/home/localAdminUser/.ssh/authorized_keys",
+                    "keyData": "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABgQDdOir5eO28EBwxU0Dyra7g9h0HUXDyMNFp2z8PhaTUQgHjrimkMxjYRwEOG/lxnYL7+TqZk+HcPTfbZOunHBw0Wx2CITzILt6531vmIYZGfq5YyYXbxZa5MON7L/PVivoRlPj5Z/t4RhqMhyfR7EPcZ516LJ8lXPTo8dE/bkOCS+kFBEYHvPEEKAyLs19sRcK37SeHjpX04zdg62nqtuRr00Tp7oeiTXA1xn5K5mxeAswotmd8CU0lWUcJuPBWQedo649b+L2cm52kTncOBI6YChAeyEc1PDF0Tn9FmpdOWKtI9efh+S3f8qkcVEtSTXoTeroBd31nzjAunMrZeM8Ut6dre+XeQQIjT7I8oEm+ZkIuIyq0x2fls8JXP2YJDWDqu8v1+yLGTQ3Z9XVt2lMti/7bIgYxS0JvwOr5n5L4IzKvhb4fm13LLDGFa3o7Nsfe3fPb882APE0bLFCmfyIeiPh7go70WqZHakpgIr6LCWTyePez9CsI/rfWDb6eAM8= generated-by-azure"
+                }
+            ]
         },
         "nicConfigurations": {
             "value": [
                 {
-                    "nicSuffix": "-nic01",
+                    "nicSuffix": "-nic-01",
                     "ipConfigurations": [
                         {
-                            "name": "ipconfig1",
-                            "properties": {
-                                "subnet": {
-                                    "id": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/virtualNetworks/adp-sxx-az-vnet-x-001/subnets/sxx-az-subnet-x-002"
-                                }
+                            "name": "ipconfig01",
+                            "subnetId": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/virtualNetworks/adp-sxx-az-vnet-x-001/subnets/sxx-az-subnet-x-001",
+                            "pipConfiguration": {
+                                "publicIpNameSuffix": "-pip-01",
+                                "roleAssignments": [
+                                    {
+                                        "roleDefinitionIdOrName": "Reader",
+                                        "principalIds": [
+                                            "<<deploymentSpId>>"
+                                        ]
+                                    }
+                                ]
                             }
+                        }
+                    ],
+                    "roleAssignments": [
+                        {
+                            "roleDefinitionIdOrName": "Reader",
+                            "principalIds": [
+                                "<<deploymentSpId>>"
+                            ]
                         }
                     ]
                 }
             ]
+        },
+        "backupVaultName": {
+            "value": "adp-sxx-az-rsv-x-001"
+        },
+        "backupVaultResourceGroup": {
+            "value": "validation-rg"
+        },
+        "backupPolicyName": {
+            "value": "VMpolicy"
         },
         "roleAssignments": {
             "value": [
@@ -105,26 +112,6 @@
         },
         "eventHubName": {
             "value": "adp-sxx-az-evh-x-001"
-        },
-        "extensionAntiMalwareConfig": {
-            "value": {
-                "enabled": true,
-                "settings": {
-                    "AntimalwareEnabled": true,
-                    "Exclusions": {
-                        "Extensions": ".log;.ldf",
-                        "Paths": "D:\\IISlogs;D:\\DatabaseLogs",
-                        "Processes": "mssence.svc"
-                    },
-                    "RealtimeProtectionEnabled": true,
-                    "ScheduledScanSettings": {
-                        "isEnabled": "true",
-                        "scanType": "Quick",
-                        "day": "7",
-                        "time": "120"
-                    }
-                }
-            }
         },
         "extensionMonitoringAgentConfig": {
             "value": {
@@ -158,7 +145,7 @@
         },
         "extensionDSCConfig": {
             "value": {
-                "enabled": true
+                "enabled": false
             }
         },
         "extensionCustomScriptConfig": {
@@ -171,7 +158,7 @@
                     }
                 ],
                 "protectedSettings": {
-                    "commandToExecute": "powershell -ExecutionPolicy Unrestricted -Command \"& .\\scriptExtensionMasterInstaller.ps1\""
+                    "commandToExecute": "sudo apt-get update"
                 }
             }
         }
