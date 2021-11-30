@@ -1,8 +1,6 @@
 In this section you can find useful information regarding the Modules that are contained in this repository.
 
-# Available Resource Modules
-
-The following table provides you with an outline of all Modules that are currently available for use. Several sub-resources may be their own Modules and are hence displayed as a child path (e.g. `service/caches`).
+## Available Resource Modules
 
 | Name | Provider namespace | Resource Type |
 | - | - | - |

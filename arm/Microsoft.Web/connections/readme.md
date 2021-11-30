@@ -31,6 +31,28 @@ This module deploys an Azure API connection.
 | `tags` | object | `{object}` |  | Optional. Tags of the resource. |
 | `testLinks` | array | `[]` |  | Optional. Links to test the API connection. |
 
+### Parameter Usage: `roleAssignments`
+
+```json
+"roleAssignments": {
+    "value": [
+        {
+            "roleDefinitionIdOrName": "Reader",
+            "principalIds": [
+                "12345678-1234-1234-1234-123456789012", // object 1
+                "78945612-1234-1234-1234-123456789012" // object 2
+            ]
+        },
+        {
+            "roleDefinitionIdOrName": "/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11",
+            "principalIds": [
+                "12345678-1234-1234-1234-123456789012" // object 1
+            ]
+        }
+    ]
+}
+```
+
 ### Parameter Usage: `connectionApi`
 
 ```json

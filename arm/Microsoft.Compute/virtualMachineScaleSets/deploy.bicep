@@ -1,5 +1,5 @@
 @description('Optional. Name of the VMSS.')
-param vmssName string
+param name string
 
 @description('Optional. Location for all resources.')
 param location string = resourceGroup().location
@@ -387,8 +387,8 @@ resource proximityPlacementGroup 'Microsoft.Compute/proximityPlacementGroups@202
   }
 }
 
-resource vmss 'Microsoft.Compute/virtualMachineScaleSets@2021-04-01' = if (!empty(vmssName)) {
-  name: vmssName
+resource vmss 'Microsoft.Compute/virtualMachineScaleSets@2021-04-01' = {
+  name: name
   location: location
   tags: tags
   identity: !empty(managedIdentityType) ? json('{"type":"${managedIdentityType}${((!empty(managedIdentityIdentities)) ? ',"userAssignedIdentities":"${managedIdentityIdentities}' : '')}"}') : null
@@ -456,7 +456,7 @@ resource vmss 'Microsoft.Compute/virtualMachineScaleSets@2021-04-01' = if (!empt
       }
       networkProfile: {
         networkInterfaceConfigurations: [for (item, j) in nicConfigurations: {
-          name: '${vmssName}${item.nicSuffix}configuration-${j}'
+          name: '${name}${item.nicSuffix}configuration-${j}'
           properties: {
             primary: (j == 0) ? true : any(null)
             enableAcceleratedNetworking: contains(nicConfigurations, 'enableAcceleratedNetworking') ? item.enableAcceleratedNetworking : null
@@ -726,7 +726,7 @@ resource vmss_WindowsCustomScriptExtension 'Microsoft.Compute/virtualMachineScal
 }
 
 resource vmss_diagnosticSettings 'Microsoft.Insights/diagnosticSettings@2021-05-01-preview' = if ((!empty(diagnosticStorageAccountId)) || (!empty(workspaceId)) || (!empty(eventHubAuthorizationRuleId)) || (!empty(eventHubName))) {
-  name: '${vmssName}-diagnosticSettings'
+  name: '${vmss.name}-diagnosticSettings'
   properties: {
     storageAccountId: empty(diagnosticStorageAccountId) ? null : diagnosticStorageAccountId
     workspaceId: empty(workspaceId) ? null : workspaceId
@@ -753,4 +753,4 @@ output vmssResourceIds string = vmss.id
 output vmssResourceGroup string = resourceGroup().name
 
 @description('The name of the virtual machine scale set')
-output vmssName string = vmssName
+output vmssName string = vmss.name

@@ -1,4 +1,4 @@
-# SQL Managed Instances Database  `[Microsoft.Sql/managedInstances/databases]`
+# SQL Managed Instances Database `[Microsoft.Sql/managedInstances/databases]`
 
 This template deploys a SQL Managed Instances Database.
 

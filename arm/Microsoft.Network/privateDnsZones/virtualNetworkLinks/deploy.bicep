@@ -13,7 +13,7 @@ param tags object = {}
 @description('Optional. Is auto-registration of virtual machine records in the virtual network in the Private DNS zone enabled?')
 param registrationEnabled bool = false
 
-@description('Required. Link to another virtual network ID.')
+@description('Required. Link to another virtual network resource ID.')
 param virtualNetworkResourceId string
 
 @description('Optional. Customer Usage Attribution ID (GUID). This GUID must be previously registered')

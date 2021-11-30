@@ -1,4 +1,4 @@
-# API Management Service APIs   `[Microsoft.ApiManagement/service/apis]`
+# API Management Service APIs `[Microsoft.ApiManagement/service/apis]`
 
 This module deploys API Management Service APIs.
 
