@@ -62,6 +62,9 @@ param dedicatedHostId string = ''
 ])
 param licenseType string = ''
 
+@description('Optional. The list of SSH public keys used to authenticate with linux based VMs')
+param publicKeys array = []
+
 @description('Optional. Enables system assigned managed identity on the resource.')
 param systemAssignedIdentity bool = false
 
