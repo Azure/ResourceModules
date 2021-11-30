@@ -115,6 +115,7 @@ function Remove-GeneralModule {
 
         # Load helper
         . (Join-Path $PSScriptRoot 'Remove-Resource.ps1')
+        . (Join-Path $PSScriptRoot 'Get-DependencyResourceNames.ps1')
     }
 
     process {
@@ -225,6 +226,10 @@ function Remove-GeneralModule {
                 $resourcesToRemove = $resourcesToRemove | Where-Object { $_.ResourceId -notin $intermediateResources.resourceId }
             }
         }
+
+        # Filter all dependency resources
+        $dependencyResourceNames = Get-DependencyResourceNames
+        $resourcesToRemove = $resourcesToRemove | Where-Object { $_.Name -notin $dependencyResourceNames }
 
         # Remove resources
         # ----------------

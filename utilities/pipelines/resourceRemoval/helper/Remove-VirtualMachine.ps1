@@ -41,6 +41,7 @@ function Remove-VirtualMachine {
 
         # Load helper
         . (Join-Path $PSScriptRoot 'Remove-Resource.ps1')
+        . (Join-Path $PSScriptRoot 'Get-DependencyResourceNames.ps1')
     }
 
     process {
@@ -95,10 +96,16 @@ function Remove-VirtualMachine {
             }
         }
 
+        # Filter all dependency resources
+        $dependencyResourceNames = Get-DependencyResourceNames
+        $resourcesToRemove = $resourcesToRemove | Where-Object { $_.Name -notin $dependencyResourceNames }
+
         # Remove resources
         # ----------------
-        if ($PSCmdlet.ShouldProcess(('[{0}] resources' -f $resourcesToRemove.Count), 'Remove')) {
-            Remove-Resource -resourceToRemove $resourcesToRemove -Verbose
+        if ($resourcesToRemove.count -gt 0) {
+            if ($PSCmdlet.ShouldProcess(('[{0}] resources' -f $resourcesToRemove.Count), 'Remove')) {
+                Remove-Resource -resourceToRemove $resourcesToRemove -Verbose
+            }
         }
     }
 
