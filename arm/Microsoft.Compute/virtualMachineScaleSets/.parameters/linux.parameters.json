@@ -160,11 +160,6 @@
                 }
             }
         },
-        "extensionDSCConfig": {
-            "value": {
-                "enabled": true
-            }
-        },
         "extensionCustomScriptConfig": {
             "value": {
                 "enabled": true,
