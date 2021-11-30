@@ -47,6 +47,7 @@ This template deploys volumes in a capacity pool of an Azure NetApp files.
     ]
 }
 ```
+
 ## Outputs
 
 | Output Name | Type | Description |

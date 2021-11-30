@@ -757,4 +757,4 @@ output vmssResourceGroup string = resourceGroup().name
 output vmssName string = vmss.name
 
 @description('The principal ID of the system assigned identity.')
-output principalId string = systemAssignedIdentity ? vmss.identity.principalId : ''
+output systemAssignedPrincipalId string = systemAssignedIdentity ? vmss.identity.principalId : ''

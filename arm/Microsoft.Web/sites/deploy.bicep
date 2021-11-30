@@ -264,4 +264,4 @@ output siteResourceId string = app.id
 output siteResourceGroup string = resourceGroup().name
 
 @description('The principal ID of the system assigned identity.')
-output principalId string = systemAssignedIdentity ? app.identity.principalId : ''
+output systemAssignedPrincipalId string = systemAssignedIdentity ? app.identity.principalId : ''
