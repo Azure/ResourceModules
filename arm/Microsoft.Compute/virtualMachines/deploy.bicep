@@ -431,9 +431,6 @@ module vm_microsoftAntiMalwareExtension 'extensions/deploy.bicep' = if (extensio
     enableAutomaticUpgrade: contains(extensionAntiMalwareConfig, 'enableAutomaticUpgrade') ? extensionAntiMalwareConfig.enableAutomaticUpgrade : false
     settings: extensionAntiMalwareConfig.settings
   }
-  dependsOn: [
-    vm_domainJoinExtension
-  ]
 }
 
 resource vm_logAnalyticsWorkspace 'Microsoft.OperationalInsights/workspaces@2021-06-01' existing = if (!empty(workspaceId)) {
@@ -442,7 +439,7 @@ resource vm_logAnalyticsWorkspace 'Microsoft.OperationalInsights/workspaces@2021
 }
 
 module vm_microsoftMonitoringAgentExtension 'extensions/deploy.bicep' = if (extensionMonitoringAgentConfig.enabled) {
-  name: '${uniqueString(deployment().name, location)}-vmss-MicrosoftMonitoringAgent'
+  name: '${uniqueString(deployment().name, location)}-vm-MicrosoftMonitoringAgent'
   params: {
     virtualMachineName: virtualMachine.name
     name: 'MicrosoftMonitoringAgent'
@@ -458,13 +455,10 @@ module vm_microsoftMonitoringAgentExtension 'extensions/deploy.bicep' = if (exte
       workspaceKey: !empty(workspaceId) ? vm_logAnalyticsWorkspace.listKeys().primarySharedKey : ''
     }
   }
-  dependsOn: [
-    vm_microsoftAntiMalwareExtension
-  ]
 }
 
 module vm_dependencyAgentExtension 'extensions/deploy.bicep' = if (extensionDependencyAgentConfig.enabled) {
-  name: '${uniqueString(deployment().name, location)}-vmss-DependencyAgent'
+  name: '${uniqueString(deployment().name, location)}-vm-DependencyAgent'
   params: {
     virtualMachineName: virtualMachine.name
     name: 'DependencyAgent'
@@ -474,13 +468,10 @@ module vm_dependencyAgentExtension 'extensions/deploy.bicep' = if (extensionDepe
     autoUpgradeMinorVersion: contains(extensionDependencyAgentConfig, 'autoUpgradeMinorVersion') ? extensionDependencyAgentConfig.autoUpgradeMinorVersion : true
     enableAutomaticUpgrade: contains(extensionDependencyAgentConfig, 'enableAutomaticUpgrade') ? extensionDependencyAgentConfig.enableAutomaticUpgrade : true
   }
-  dependsOn: [
-    vm_microsoftMonitoringAgentExtension
-  ]
 }
 
 module vm_networkWatcherAgentExtension 'extensions/deploy.bicep' = if (extensionNetworkWatcherAgentConfig.enabled) {
-  name: '${uniqueString(deployment().name, location)}-vmss-NetworkWatcherAgent'
+  name: '${uniqueString(deployment().name, location)}-vm-NetworkWatcherAgent'
   params: {
     virtualMachineName: virtualMachine.name
     name: 'NetworkWatcherAgent'
@@ -490,13 +481,10 @@ module vm_networkWatcherAgentExtension 'extensions/deploy.bicep' = if (extension
     autoUpgradeMinorVersion: contains(extensionNetworkWatcherAgentConfig, 'autoUpgradeMinorVersion') ? extensionNetworkWatcherAgentConfig.autoUpgradeMinorVersion : true
     enableAutomaticUpgrade: contains(extensionNetworkWatcherAgentConfig, 'enableAutomaticUpgrade') ? extensionNetworkWatcherAgentConfig.enableAutomaticUpgrade : false
   }
-  dependsOn: [
-    vm_dependencyAgentExtension
-  ]
 }
 
 module vm_diskEncryptionExtension 'extensions/deploy.bicep' = if (extensionDiskEncryptionConfig.enabled) {
-  name: '${uniqueString(deployment().name, location)}-vmss-DiskEncryption'
+  name: '${uniqueString(deployment().name, location)}-vm-DiskEncryption'
   params: {
     virtualMachineName: virtualMachine.name
     name: 'DiskEncryption'
@@ -508,13 +496,10 @@ module vm_diskEncryptionExtension 'extensions/deploy.bicep' = if (extensionDiskE
     forceUpdateTag: contains(extensionDiskEncryptionConfig, 'forceUpdateTag') ? extensionDiskEncryptionConfig.forceUpdateTag : '1.0'
     settings: extensionDiskEncryptionConfig.settings
   }
-  dependsOn: [
-    vm_networkWatcherAgentExtension
-  ]
 }
 
 module vm_desiredStateConfigurationExtension 'extensions/deploy.bicep' = if (extensionDSCConfig.enabled) {
-  name: '${uniqueString(deployment().name, location)}-vmss-DesiredStateConfiguration'
+  name: '${uniqueString(deployment().name, location)}-vm-DesiredStateConfiguration'
   params: {
     virtualMachineName: virtualMachine.name
     name: 'DesiredStateConfiguration'
@@ -526,13 +511,10 @@ module vm_desiredStateConfigurationExtension 'extensions/deploy.bicep' = if (ext
     settings: contains(extensionDSCConfig, 'settings') ? extensionDSCConfig.settings : {}
     protectedSettings: contains(extensionDSCConfig, 'protectedSettings') ? extensionDSCConfig.protectedSettings : {}
   }
-  dependsOn: [
-    vm_diskEncryptionExtension
-  ]
 }
 
 module vm_customScriptExtension 'extensions/deploy.bicep' = if (extensionCustomScriptConfig.enabled) {
-  name: '${uniqueString(deployment().name, location)}-vmss-CustomScriptExtension'
+  name: '${uniqueString(deployment().name, location)}-vm-CustomScriptExtension'
   params: {
     virtualMachineName: virtualMachine.name
     name: 'CustomScriptExtension'
