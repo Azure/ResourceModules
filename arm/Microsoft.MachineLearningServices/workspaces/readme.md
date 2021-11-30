@@ -36,6 +36,7 @@ This module deploys a Machine Learning Services Workspace.
 | `privateEndpoints` | array | `[]` |  | Optional. Configuration Details for private endpoints. |
 | `roleAssignments` | array | `[]` |  | Optional. Array of role assignment objects that contain the 'roleDefinitionIdOrName' and 'principalId' to define RBAC role assignments on this resource. In the roleDefinitionIdOrName attribute, you can provide either the display name of the role definition, or its fully qualified ID in the following format: '/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11' |
 | `sku` | string |  | `[Basic, Enterprise]` | Required. Specifies the sku, also referred as 'edition' of the Azure Machine Learning workspace. |
+| `systemAssignedIdentity` | bool |  |  | Optional. Enables system assigned managed identity on the resource. |
 | `tags` | object | `{object}` |  | Optional. Resource tags. |
 | `workspaceId` | string |  |  | Optional. Resource ID of log analytics. |
 
@@ -121,6 +122,7 @@ To use Private Endpoint the following dependencies must be deployed:
 | `machineLearningServiceName` | string | The name of the machine learning service |
 | `machineLearningServiceResourceGroup` | string | The resource group the machine learning service was deployed into |
 | `machineLearningServiceResourceId` | string | The resource ID of the machine learning service |
+| `principalId` | string | The principal ID of the system assigned identity. |
 
 ## Template references
 
