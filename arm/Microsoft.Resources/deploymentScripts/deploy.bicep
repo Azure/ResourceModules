@@ -1,11 +1,8 @@
 @description('Required. Display name of the script to be run.')
 param name string
 
-@description('Required. Name of the User Assigned Identity to be used to deploy Image Templates in Azure Image Builder.')
-param userMsiName string
-
-@description('Optional. Resource group of the user assigned identity.')
-param userMsiResourceGroup string = resourceGroup().name
+@description('Optional. The ID(s) to assign to the resource.')
+param userAssignedIdentities object = {}
 
 @description('Optional. Location for all resources.')
 param location string = resourceGroup().location
@@ -79,6 +76,14 @@ var containerSettings = {
   containerGroupName: containerGroupName
 }
 
+var identityType = !empty(userAssignedIdentities) ? 'UserAssigned' : 'None'
+
+var identity = identityType != 'None' ? {
+  type: identityType
+  userAssignedIdentities: !empty(userAssignedIdentities) ? userAssignedIdentities : null
+} : null
+
+
 module pid_cuaId '.bicep/nested_cuaId.bicep' = if (!empty(cuaId)) {
   name: 'pid-${cuaId}'
   params: {}
@@ -88,12 +93,7 @@ resource deploymentScript 'Microsoft.Resources/deploymentScripts@2020-10-01' = {
   name: name
   location: location
   tags: tags
-  identity: {
-    type: 'UserAssigned'
-    userAssignedIdentities: {
-      '${resourceId(userMsiResourceGroup, 'Microsoft.ManagedIdentity/userAssignedIdentities', userMsiName)}': {}
-    }
-  }
+  identity: identity
   kind: 'AzurePowerShell'
   properties: {
     azPowerShellVersion: kind == 'AzurePowerShell' ? azPowerShellVersion : null
