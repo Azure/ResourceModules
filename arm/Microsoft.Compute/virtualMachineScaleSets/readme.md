@@ -234,6 +234,8 @@ Should be configured alongside:
 
 ### Parameter Usage: `microsoftAntiMalwareSettings`
 
+Only for OSType Windows
+
 ```json
 "extensionAntiMalwareConfig": {
     "value": {

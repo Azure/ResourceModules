@@ -309,6 +309,8 @@ The field `nicSuffix` and `subnetId` are mandatory. If `enablePublicIP` is set t
 
 ### Parameter Usage: `microsoftAntiMalwareSettings`
 
+Only for OSType Windows
+
 ```json
 "enableMicrosoftAntiMalware": {
   "value": true
