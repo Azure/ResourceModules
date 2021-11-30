@@ -194,6 +194,7 @@ param extensionDSCConfig object = {
 @description('Optional. The configuration for the [Custom Script] extension. Must at least contain the ["enabled": true] property to be executed')
 param extensionCustomScriptConfig object = {
   enabled: false
+  fileData: []
 }
 
 // Shared parameters
@@ -487,7 +488,7 @@ module vm_desiredStateConfigurationExtension 'extensions/deploy.bicep' = if (ext
   ]
 }
 
-module vm_customScriptExtension 'extensions/deploy.bicep' = if (extensionCustomScriptConfig.enabled && contains(extensionCustomScriptConfig, 'fileData')) {
+module vm_customScriptExtension 'extensions/deploy.bicep' = if (extensionCustomScriptConfig.enabled) {
   name: '${uniqueString(deployment().name, location)}-vmss-CustomScriptExtension'
   params: {
     virtualMachineName: virtualMachine.name

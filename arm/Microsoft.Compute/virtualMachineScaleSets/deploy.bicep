@@ -116,6 +116,7 @@ param extensionDSCConfig object = {
 @description('Optional. The configuration for the [Custom Script] extension. Must at least contain the ["enabled": true] property to be executed')
 param extensionCustomScriptConfig object = {
   enabled: false
+  fileData: []
 }
 
 @description('Optional. Storage account boot diagnostic base URI.')
