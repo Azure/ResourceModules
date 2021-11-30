@@ -28,7 +28,7 @@
             Remove-vWan @inputObject -Verbose
         }
         'virtualMachines' {
-            Write-Verbose 'Run vWAN removal script' -Verbose
+            Write-Verbose 'Run virtual machine removal script' -Verbose
             # Load function
             . (Join-Path $PSScriptRoot 'helper' 'Remove-VirtualMachine.ps1')
 
