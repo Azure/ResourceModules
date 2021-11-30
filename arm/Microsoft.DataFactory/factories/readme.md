@@ -36,7 +36,9 @@
 | `name` | string |  |  | Required. The name of the Azure Factory to create |
 | `publicNetworkAccess` | bool | `True` |  | Optional. Enable or disable public network access. |
 | `roleAssignments` | array | `[]` |  | Optional. Array of role assignment objects that contain the 'roleDefinitionIdOrName' and 'principalId' to define RBAC role assignments on this resource. In the roleDefinitionIdOrName attribute, you can provide either the display name of the role definition, or it's fully qualified ID in the following format: '/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11'. |
+| `systemAssignedIdentity` | bool |  |  | Optional. Enables system assigned managed identity on the resource. |
 | `tags` | object | `{object}` |  | Optional. Tags of the resource. |
+| `userAssignedIdentities` | object | `{object}` |  | Optional. The ID(s) to assign to the resource. |
 | `workspaceId` | string |  |  | Optional. Resource ID of log analytics. |
 
 ### Parameter Usage: `roleAssignments`
@@ -45,19 +47,18 @@
 "roleAssignments": {
     "value": [
         {
-            "roleDefinitionIdOrName": "Contributor",
-            "principalIds": [
-                "12345678-1234-1234-1234-123456789012", // object 1
-                "78945612-1234-1234-1234-123456789012" // object 2
-            ]
-        },
-        {
             "roleDefinitionIdOrName": "Reader",
             "principalIds": [
                 "12345678-1234-1234-1234-123456789012", // object 1
                 "78945612-1234-1234-1234-123456789012" // object 2
             ]
         },
+        {
+            "roleDefinitionIdOrName": "/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11",
+            "principalIds": [
+                "12345678-1234-1234-1234-123456789012" // object 1
+            ]
+        }
     ]
 }
 ```
@@ -86,6 +87,7 @@ Tag names and tag values can be provided as needed. A tag can be left without a 
 | `dataFactoryName` | string | The Name of the Azure Data Factory instance. |
 | `dataFactoryResourceGroup` | string | The name of the Resource Group with the Data factory. |
 | `dataFactoryResourceId` | string | The Resource ID of the Data factory. |
+| `principalId` | string | The principal ID of the system assigned identity. |
 
 ## Template references
 

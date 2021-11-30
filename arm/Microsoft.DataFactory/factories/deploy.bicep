@@ -59,6 +59,12 @@ param eventHubName string = ''
 @description('Optional. Specify the type of lock.')
 param lock string = 'NotSpecified'
 
+@description('Optional. Enables system assigned managed identity on the resource.')
+param systemAssignedIdentity bool = false
+
+@description('Optional. The ID(s) to assign to the resource.')
+param userAssignedIdentities object = {}
+
 @description('Optional. The name of logs that will be streamed.')
 @allowed([
   'ActivityRuns'
@@ -119,6 +125,13 @@ param tags object = {}
 @description('Optional. Customer Usage Attribution ID (GUID). This GUID must be previously registered')
 param cuaId string = ''
 
+var identityType = systemAssignedIdentity ? (!empty(userAssignedIdentities) ? 'SystemAssigned,UserAssigned' : 'SystemAssigned') : (!empty(userAssignedIdentities) ? 'UserAssigned' : 'None')
+
+var identity = identityType != 'None' ? {
+  type: identityType
+  userAssignedIdentities: !empty(userAssignedIdentities) ? userAssignedIdentities : null
+} : null
+
 module pid_cuaId '.bicep/nested_cuaId.bicep' = if (!empty(cuaId)) {
   name: 'pid-${cuaId}'
   params: {}
@@ -128,9 +141,7 @@ resource dataFactory 'Microsoft.DataFactory/factories@2018-06-01' = {
   name: name
   location: location
   tags: tags
-  identity: {
-    type: 'SystemAssigned'
-  }
+  identity: identity
   properties: {
     repoConfiguration: bool(gitConfigureLater) ? null : json('{"type": "${gitRepoType}","accountName": "${gitAccountName}","repositoryName": "${gitRepositoryName}",${((gitRepoType == 'FactoryVSTSConfiguration') ? '"projectName": "${gitProjectName}",' : '')}"collaborationBranch": "${gitCollaborationBranch}","rootFolder": "${gitRootFolder}"}')
     publicNetworkAccess: bool(publicNetworkAccess) ? 'Enabled' : 'Disabled'
@@ -198,3 +209,6 @@ output dataFactoryResourceId string = dataFactory.id
 
 @description('The name of the Resource Group with the Data factory.')
 output dataFactoryResourceGroup string = resourceGroup().name
+
+@description('The principal ID of the system assigned identity.')
+output principalId string = systemAssignedIdentity ? dataFactory.identity.principalId : ''
