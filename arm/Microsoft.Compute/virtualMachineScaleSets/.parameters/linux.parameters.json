@@ -175,7 +175,7 @@
                     }
                 ],
                 "protectedSettings": {
-                    "commandToExecute": "powershell -ExecutionPolicy Unrestricted -Command \"& .\\scriptExtensionMasterInstaller.ps1\""
+                    "commandToExecute": "sudo apt-get update"
                 }
             }
         }
