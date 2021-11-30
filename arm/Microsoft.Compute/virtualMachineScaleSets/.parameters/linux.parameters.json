@@ -3,7 +3,7 @@
     "contentVersion": "1.0.0.0",
     "parameters": {
         "name": {
-            "value": "linux-scaleset"
+            "value": "sxx-scaleset-linux-001"
         },
         "vmNamePrefix": {
             "value": "vmsslinvm"

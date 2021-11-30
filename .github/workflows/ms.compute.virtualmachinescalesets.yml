@@ -110,8 +110,9 @@ jobs:
         parameterFilePaths:
           [
             'linux.parameters.json',
-            'windows.parameters.json',
             'linux.min.parameters.json',
+            'windows.parameters.json',
+            'windows.min.parameters.json',
           ]
     steps:
       - name: 'Checkout'

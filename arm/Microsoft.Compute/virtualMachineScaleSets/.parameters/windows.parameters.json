@@ -3,7 +3,7 @@
     "contentVersion": "1.0.0.0",
     "parameters": {
         "name": {
-            "value": "windows-scaleset"
+            "value": "sxx-scaleset-win-001"
         },
         "vmNamePrefix": {
             "value": "vmsswinvm"

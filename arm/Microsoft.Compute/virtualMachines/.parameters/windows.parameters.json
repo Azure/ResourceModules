@@ -3,7 +3,7 @@
     "contentVersion": "1.0.0.0",
     "parameters": {
         "name": {
-            "value": "sxx-vm-001"
+            "value": "sxx-vm-win-001"
         },
         "managedServiceIdentity": {
             "value": "SystemAssigned"
