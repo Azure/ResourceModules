@@ -102,8 +102,11 @@ param eventHubName string = ''
   'AppServiceAppLogs'
   'AppServiceFileAuditLogs'
   'AppServiceAuditLogs'
+  'FunctionAppLogs'
 ])
-param logsToEnable array = [
+param logsToEnable array = kind == 'functionapp' ? [
+  'FunctionAppLogs'
+] : [
   'AppServiceHTTPLogs'
   'AppServiceConsoleLogs'
   'AppServiceAppLogs'
