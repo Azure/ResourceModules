@@ -55,7 +55,7 @@ The following resources are required to be able to deploy this resource.
 | `extensionMonitoringAgentConfig` | object | `{object}` |  | Optional. The configuration for the [Monitoring Agent] extension. Must at least contain the ["enabled": true] property to be executed |
 | `extensionNetworkWatcherAgentConfig` | object | `{object}` |  | Optional. The configuration for the [Network Watcher Agent] extension. Must at least contain the ["enabled": true] property to be executed |
 | `gracePeriod` | string | `PT30M` |  | Optional. The amount of time for which automatic repairs are suspended due to a state change on VM. The grace time starts after the state change has completed. This helps avoid premature or accidental repairs. The time duration should be specified in ISO 8601 format. The minimum allowed grace period is 30 minutes (PT30M). The maximum allowed grace period is 90 minutes (PT90M). |
-| `imageReference` | object | |  | Required. OS image reference. In case of marketplace images, it's the combination of the publisher, offer, sku, version attributes. In case of custom images it's the resource ID of the custom image. |
+| `imageReference` | object |  |  | Required. OS image reference. In case of marketplace images, it's the combination of the publisher, offer, sku, version attributes. In case of custom images it's the resource ID of the custom image. |
 | `instanceCount` | int | `1` |  | Optional. The initial instance count of scale set VMs. |
 | `instanceSize` | string |  |  | Optional. The SKU size of the VMs. |
 | `licenseType` | string |  | `[Windows_Client, Windows_Server, ]` | Optional. Specifies that the image or disk that is being used was licensed on-premises. This element is only used for images that contain the Windows Server operating system. |
@@ -92,7 +92,7 @@ The following resources are required to be able to deploy this resource.
 | `upgradePolicyMode` | string | `Manual` | `[Manual, Automatic, Rolling]` | Optional. Specifies the mode of an upgrade to virtual machines in the scale set.' Manual - You control the application of updates to virtual machines in the scale set. You do this by using the manualUpgrade action. ; Automatic - All virtual machines in the scale set are automatically updated at the same time. - Automatic, Manual, Rolling |
 | `vmNamePrefix` | string | `vmssvm` |  | Optional. Specifies the computer name prefix for all of the virtual machines in the scale set. |
 | `vmPriority` | string | `Regular` | `[Regular, Low, Spot]` | Optional. Specifies the priority for the virtual machine. |
-| `winRMListeners` | object | `{object}` |  | Optional. Specifies the Windows Remote Management listeners. This enables remote Windows PowerShell. - WinRMConfiguration object. |
+| `winRM` | object | `{object}` |  | Optional. Specifies the Windows Remote Management listeners. This enables remote Windows PowerShell. - WinRMConfiguration object. |
 | `workspaceId` | string |  |  | Optional. Resource ID of log analytics. |
 | `zoneBalance` | bool |  |  | Optional. Whether to force strictly even Virtual Machine distribution cross x-zones in case there is zone outage. |
 

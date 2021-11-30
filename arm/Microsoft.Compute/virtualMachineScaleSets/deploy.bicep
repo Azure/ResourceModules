@@ -200,7 +200,7 @@ param timeZone string = ''
 param additionalUnattendContent array = []
 
 @description('Optional. Specifies the Windows Remote Management listeners. This enables remote Windows PowerShell. - WinRMConfiguration object.')
-param winRMListeners object = {}
+param winRM object = {}
 
 @description('Optional. Specifies whether password authentication should be disabled.')
 param disablePasswordAuthentication bool = false
@@ -309,7 +309,9 @@ var windowsConfiguration = {
   enableAutomaticUpdates: enableAutomaticUpdates
   timeZone: empty(timeZone) ? null : timeZone
   additionalUnattendContent: empty(additionalUnattendContent) ? null : additionalUnattendContent
-  winRM: empty(winRMListeners) ? null : json('{"listeners": "${winRMListeners}"}')
+  winRM: !empty(winRM) ? {
+    listeners: winRM
+  } : null
 }
 
 var accountSasProperties = {

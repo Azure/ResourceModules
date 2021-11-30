@@ -19,6 +19,7 @@ This module deploys one Virtual Machine with one or multiple nics and optionally
 
 | Parameter Name | Type | Default Value | Possible Values | Description |
 | :-- | :-- | :-- | :-- | :-- |
+| `additionalUnattendContent` | array | `[]` |  | Optional. Specifies additional base-64 encoded XML formatted information that can be included in the Unattend.xml file, which is used by Windows Setup. - AdditionalUnattendContent object |
 | `adminPassword` | secureString |  |  | Required. When specifying a Windows Virtual Machine, this value should be passed |
 | `adminUsername` | secureString |  |  | Required. Administrator username |
 | `allowExtensionOperations` | bool | `True` |  | Optional. Specifies whether extension operations should be allowed on the virtual machine. This may only be set to False when no extensions are present on the virtual machine. |
@@ -37,6 +38,8 @@ This module deploys one Virtual Machine with one or multiple nics and optionally
 | `dedicatedHostId` | string |  |  | Optional. Specifies resource ID about the dedicated host that the virtual machine resides in. |
 | `diagnosticLogsRetentionInDays` | int | `365` |  | Optional. Specifies the number of days that logs will be kept for; a value of 0 will retain data indefinitely. |
 | `diagnosticStorageAccountId` | string |  |  | Optional. Resource ID of the diagnostic storage account. |
+| `disablePasswordAuthentication` | bool |  |  | Optional. Specifies whether password authentication should be disabled. |
+| `enableAutomaticUpdates` | bool | `True` |  | Optional. Indicates whether Automatic Updates is enabled for the Windows virtual machine. Default value is true. For virtual machine scale sets, this property can be updated and updates will take effect on OS reprovisioning. |
 | `enableEvictionPolicy` | bool |  |  | Optional. Specifies the eviction policy for the low priority virtual machine. Will result in 'Deallocate' eviction policy. |
 | `enableServerSideEncryption` | bool |  |  | Optional. Specifies if Windows VM disks should be encrypted with Server-side encryption + Customer managed Key. |
 | `eventHubAuthorizationRuleId` | string |  |  | Optional. Resource ID of the event hub authorization rule for the Event Hubs namespace in which the event hub should be created or streamed to. |
@@ -52,7 +55,6 @@ This module deploys one Virtual Machine with one or multiple nics and optionally
 | `extensionNetworkWatcherAgentConfig` | object | `{object}` |  | Optional. The configuration for the [Network Watcher Agent] extension. Must at least contain the ["enabled": true] property to be executed |
 | `imageReference` | object |  |  | Required. OS image reference. In case of marketplace images, it's the combination of the publisher, offer, sku, version attributes. In case of custom images it's the resource ID of the custom image. |
 | `licenseType` | string |  | `[Windows_Client, Windows_Server, ]` | Optional. Specifies that the image or disk that is being used was licensed on-premises. This element is only used for images that contain the Windows Server operating system. |
-| `linuxConfiguration` | object | `{object}` |  | Optional. Specifies the Linux operating system settings on the virtual machine. |
 | `location` | string | `[resourceGroup().location]` |  | Optional. Location for all resources. |
 | `lock` | string | `NotSpecified` | `[CanNotDelete, NotSpecified, ReadOnly]` | Optional. Specify the type of lock. |
 | `managedServiceIdentity` | string | `None` | `[None, SystemAssigned, SystemAssigned, UserAssigned, UserAssigned]` | Optional. The type of identity used for the virtual machine. The type 'SystemAssigned, UserAssigned' includes both an implicitly created identity and a set of user assigned identities. The type 'None' (default) will remove any identities from the virtual machine. |
@@ -61,20 +63,24 @@ This module deploys one Virtual Machine with one or multiple nics and optionally
 | `nicConfigurations` | array |  |  | Required. Configures NICs and PIPs. |
 | `nicMetricsToEnable` | array | `[AllMetrics]` | `[AllMetrics]` | Optional. The name of metrics that will be streamed. |
 | `osDisk` | object |  |  | Required. Specifies the OS disk. |
+| `osType` | string |  | `[Windows, Linux]` | Optional. The chosen OS type |
 | `pipLogsToEnable` | array | `[DDoSProtectionNotifications, DDoSMitigationFlowLogs, DDoSMitigationReports]` | `[DDoSProtectionNotifications, DDoSMitigationFlowLogs, DDoSMitigationReports]` | Optional. The name of logs that will be streamed. |
 | `pipMetricsToEnable` | array | `[AllMetrics]` | `[AllMetrics]` | Optional. The name of metrics that will be streamed. |
 | `plan` | object | `{object}` |  | Optional. Specifies information about the marketplace image used to create the virtual machine. This element is only used for marketplace images. Before you can use a marketplace image from an API, you must enable the image for programmatic use. |
+| `provisionVMAgent` | bool | `True` |  | Optional. Indicates whether virtual machine agent should be provisioned on the virtual machine. When this property is not specified in the request body, default behavior is to set it to true. This will ensure that VM Agent is installed on the VM so that extensions can be added to the VM later. |
 | `proximityPlacementGroupName` | string |  |  | Optional. Resource name of a proximity placement group. |
+| `publicKeys` | array | `[]` |  | Optional. The list of SSH public keys used to authenticate with linux based VMs |
 | `roleAssignments` | array | `[]` |  | Optional. Array of role assignment objects that contain the 'roleDefinitionIdOrName' and 'principalId' to define RBAC role assignments on this resource. In the roleDefinitionIdOrName attribute, you can provide either the display name of the role definition, or its fully qualified ID in the following format: '/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11' |
 | `sasTokenValidityLength` | string | `PT8H` |  | Optional. SAS token validity length to use to download files from storage accounts. Usage: 'PT8H' - valid for 8 hours; 'P5D' - valid for 5 days; 'P1Y' - valid for 1 year. When not provided, the SAS token will be valid for 8 hours. |
 | `tags` | object | `{object}` |  | Optional. Tags of the resource. |
+| `timeZone` | string |  |  | Optional. Specifies the time zone of the virtual machine. e.g. 'Pacific Standard Time'. Possible values can be TimeZoneInfo.id value from time zones returned by TimeZoneInfo.GetSystemTimeZones. |
 | `ultraSSDEnabled` | bool |  |  | Optional. The flag that enables or disables a capability to have one or more managed data disks with UltraSSD_LRS storage account type on the VM or VMSS. Managed disks with storage account type UltraSSD_LRS can be added to a virtual machine or virtual machine scale set only if this property is enabled. |
 | `useAvailabilityZone` | bool |  |  | Optional. Creates an availability zone and adds the VMs to it. Cannot be used in combination with availability set nor scale set. |
 | `userAssignedIdentities` | object | `{object}` |  | Optional. Mandatory if 'managedServiceIdentity' contains UserAssigned. The list of user identities associated with the Virtual Machine. |
 | `vmComputerNamesTransformation` | string | `none` |  | Optional. Specifies whether the computer names should be transformed. The transformation is performed on all computer names. Available transformations are 'none' (Default), 'uppercase' and 'lowercase'. |
 | `vmPriority` | string | `Regular` | `[Regular, Low, Spot]` | Optional. Specifies the priority for the virtual machine. |
 | `vmSize` | string | `Standard_D2s_v3` |  | Optional. Specifies the size for the VMs |
-| `windowsConfiguration` | object | `{object}` |  | Optional. Specifies Windows operating system settings on the virtual machine. |
+| `winRM` | object | `{object}` |  | Optional. Specifies the Windows Remote Management listeners. This enables remote Windows PowerShell. - WinRMConfiguration object. |
 | `workspaceId` | string |  |  | Optional. Resource ID of log analytics. |
 
 ### Parameter Usage: `imageReference`

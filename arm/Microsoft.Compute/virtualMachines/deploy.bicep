@@ -34,12 +34,6 @@ param adminPassword string
 @description('Optional. Custom data associated to the VM, this value will be automatically converted into base64 to account for the expected VM format.')
 param customData string = ''
 
-@description('Optional. Specifies Windows operating system settings on the virtual machine.')
-param windowsConfiguration object = {}
-
-@description('Optional. Specifies the Linux operating system settings on the virtual machine.')
-param linuxConfiguration object = {}
-
 @description('Optional. Specifies set of certificates that should be installed onto the virtual machine.')
 param certificatesToBeInstalled array = []
 
@@ -67,6 +61,9 @@ param dedicatedHostId string = ''
   ''
 ])
 param licenseType string = ''
+
+@description('Optional. The list of SSH public keys used to authenticate with linux based VMs')
+param publicKeys array = []
 
 @description('Optional. The type of identity used for the virtual machine. The type \'SystemAssigned, UserAssigned\' includes both an implicitly created identity and a set of user assigned identities. The type \'None\' (default) will remove any identities from the virtual machine.')
 @allowed([
@@ -241,7 +238,55 @@ param baseTime string = utcNow('u')
 @description('Optional. SAS token validity length to use to download files from storage accounts. Usage: \'PT8H\' - valid for 8 hours; \'P5D\' - valid for 5 days; \'P1Y\' - valid for 1 year. When not provided, the SAS token will be valid for 8 hours.')
 param sasTokenValidityLength string = 'PT8H'
 
+@description('Optional. The chosen OS type')
+@allowed([
+  'Windows'
+  'Linux'
+])
+param osType string
+
+@description('Optional. Specifies whether password authentication should be disabled.')
+param disablePasswordAuthentication bool = false
+
+@description('Optional. Indicates whether virtual machine agent should be provisioned on the virtual machine. When this property is not specified in the request body, default behavior is to set it to true. This will ensure that VM Agent is installed on the VM so that extensions can be added to the VM later.')
+param provisionVMAgent bool = true
+
+@description('Optional. Indicates whether Automatic Updates is enabled for the Windows virtual machine. Default value is true. For virtual machine scale sets, this property can be updated and updates will take effect on OS reprovisioning.')
+param enableAutomaticUpdates bool = true
+
+@description('Optional. Specifies the time zone of the virtual machine. e.g. \'Pacific Standard Time\'. Possible values can be TimeZoneInfo.id value from time zones returned by TimeZoneInfo.GetSystemTimeZones.')
+param timeZone string = ''
+
+@description('Optional. Specifies additional base-64 encoded XML formatted information that can be included in the Unattend.xml file, which is used by Windows Setup. - AdditionalUnattendContent object')
+param additionalUnattendContent array = []
+
+@description('Optional. Specifies the Windows Remote Management listeners. This enables remote Windows PowerShell. - WinRMConfiguration object.')
+param winRM object = {}
+
 var vmComputerNameTransformed = vmComputerNamesTransformation == 'uppercase' ? toUpper(name) : (vmComputerNamesTransformation == 'lowercase' ? toLower(name) : name)
+
+var publicKeysFormatted = [for publicKey in publicKeys: {
+  path: publicKey.path
+  keyData: publicKey.keyData
+}]
+
+var linuxConfiguration = {
+  disablePasswordAuthentication: disablePasswordAuthentication
+  ssh: {
+    publicKeys: publicKeysFormatted
+  }
+  provisionVMAgent: provisionVMAgent
+}
+
+var windowsConfiguration = {
+  provisionVMAgent: provisionVMAgent
+  enableAutomaticUpdates: enableAutomaticUpdates
+  timeZone: empty(timeZone) ? null : timeZone
+  additionalUnattendContent: empty(additionalUnattendContent) ? null : additionalUnattendContent
+  winRM: !empty(winRM) ? {
+    listeners: winRM
+  } : null
+}
 
 var accountSasProperties = {
   signedServices: 'b'
@@ -327,8 +372,8 @@ resource virtualMachine 'Microsoft.Compute/virtualMachines@2021-07-01' = {
       adminUsername: adminUsername
       adminPassword: adminPassword
       customData: !empty(customData) ? base64(customData) : null
-      windowsConfiguration: !empty(windowsConfiguration) ? windowsConfiguration : null
-      linuxConfiguration: !empty(linuxConfiguration) ? linuxConfiguration : null
+      windowsConfiguration: osType == 'Windows' ? windowsConfiguration : null
+      linuxConfiguration: osType == 'Linux' ? linuxConfiguration : null
       secrets: certificatesToBeInstalled
       allowExtensionOperations: allowExtensionOperations
     }
@@ -404,8 +449,8 @@ module vm_microsoftMonitoringAgentExtension 'extensions/deploy.bicep' = if (exte
     virtualMachineName: virtualMachine.name
     name: 'MicrosoftMonitoringAgent'
     publisher: 'Microsoft.EnterpriseCloud.Monitoring'
-    type: !empty(windowsConfiguration) ? 'MicrosoftMonitoringAgent' : 'OmsAgentForLinux'
-    typeHandlerVersion: contains(extensionMonitoringAgentConfig, 'typeHandlerVersion') ? extensionMonitoringAgentConfig.typeHandlerVersion : (!empty(windowsConfiguration) ? '1.0' : '1.7')
+    type: osType == 'Windows' ? 'MicrosoftMonitoringAgent' : 'OmsAgentForLinux'
+    typeHandlerVersion: contains(extensionMonitoringAgentConfig, 'typeHandlerVersion') ? extensionMonitoringAgentConfig.typeHandlerVersion : (osType == 'Windows' ? '1.0' : '1.7')
     autoUpgradeMinorVersion: contains(extensionMonitoringAgentConfig, 'autoUpgradeMinorVersion') ? extensionMonitoringAgentConfig.autoUpgradeMinorVersion : true
     enableAutomaticUpgrade: contains(extensionMonitoringAgentConfig, 'enableAutomaticUpgrade') ? extensionMonitoringAgentConfig.enableAutomaticUpgrade : false
     settings: {
@@ -426,7 +471,7 @@ module vm_dependencyAgentExtension 'extensions/deploy.bicep' = if (extensionDepe
     virtualMachineName: virtualMachine.name
     name: 'DependencyAgent'
     publisher: 'Microsoft.Azure.Monitoring.DependencyAgent'
-    type: !empty(windowsConfiguration) ? 'DependencyAgentWindows' : 'DependencyAgentLinux'
+    type: osType == 'Windows' ? 'DependencyAgentWindows' : 'DependencyAgentLinux'
     typeHandlerVersion: contains(extensionDependencyAgentConfig, 'typeHandlerVersion') ? extensionDependencyAgentConfig.typeHandlerVersion : '9.5'
     autoUpgradeMinorVersion: contains(extensionDependencyAgentConfig, 'autoUpgradeMinorVersion') ? extensionDependencyAgentConfig.autoUpgradeMinorVersion : true
     enableAutomaticUpgrade: contains(extensionDependencyAgentConfig, 'enableAutomaticUpgrade') ? extensionDependencyAgentConfig.enableAutomaticUpgrade : true
@@ -442,7 +487,7 @@ module vm_networkWatcherAgentExtension 'extensions/deploy.bicep' = if (extension
     virtualMachineName: virtualMachine.name
     name: 'NetworkWatcherAgent'
     publisher: 'Microsoft.Azure.NetworkWatcher'
-    type: !empty(windowsConfiguration) ? 'NetworkWatcherAgentWindows' : 'NetworkWatcherAgentLinux'
+    type: osType == 'Windows' ? 'NetworkWatcherAgentWindows' : 'NetworkWatcherAgentLinux'
     typeHandlerVersion: contains(extensionNetworkWatcherAgentConfig, 'typeHandlerVersion') ? extensionNetworkWatcherAgentConfig.typeHandlerVersion : '1.4'
     autoUpgradeMinorVersion: contains(extensionNetworkWatcherAgentConfig, 'autoUpgradeMinorVersion') ? extensionNetworkWatcherAgentConfig.autoUpgradeMinorVersion : true
     enableAutomaticUpgrade: contains(extensionNetworkWatcherAgentConfig, 'enableAutomaticUpgrade') ? extensionNetworkWatcherAgentConfig.enableAutomaticUpgrade : false
@@ -458,8 +503,8 @@ module vm_diskEncryptionExtension 'extensions/deploy.bicep' = if (extensionDiskE
     virtualMachineName: virtualMachine.name
     name: 'DiskEncryption'
     publisher: 'Microsoft.Azure.Security'
-    type: !empty(windowsConfiguration) ? 'AzureDiskEncryption' : 'AzureDiskEncryptionForLinux'
-    typeHandlerVersion: contains(extensionDiskEncryptionConfig, 'typeHandlerVersion') ? extensionDiskEncryptionConfig.typeHandlerVersion : (!empty(windowsConfiguration) ? '2.2' : '1.1')
+    type: osType == 'Windows' ? 'AzureDiskEncryption' : 'AzureDiskEncryptionForLinux'
+    typeHandlerVersion: contains(extensionDiskEncryptionConfig, 'typeHandlerVersion') ? extensionDiskEncryptionConfig.typeHandlerVersion : (osType == 'Windows' ? '2.2' : '1.1')
     autoUpgradeMinorVersion: contains(extensionDiskEncryptionConfig, 'autoUpgradeMinorVersion') ? extensionDiskEncryptionConfig.autoUpgradeMinorVersion : true
     enableAutomaticUpgrade: contains(extensionDiskEncryptionConfig, 'enableAutomaticUpgrade') ? extensionDiskEncryptionConfig.enableAutomaticUpgrade : false
     forceUpdateTag: contains(extensionDiskEncryptionConfig, 'forceUpdateTag') ? extensionDiskEncryptionConfig.forceUpdateTag : '1.0'
