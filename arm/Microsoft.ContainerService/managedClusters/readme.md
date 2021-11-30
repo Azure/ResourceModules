@@ -56,7 +56,6 @@ This module deploys Azure Kubernetes Cluster (AKS).
 | `eventHubAuthorizationRuleId` | string |  |  | Optional. Resource ID of the event hub authorization rule for the Event Hubs namespace in which the event hub should be created or streamed to. |
 | `eventHubName` | string |  |  | Optional. Name of the event hub within the namespace to which logs are streamed. Without this, an event hub is created for each log category. |
 | `httpApplicationRoutingEnabled` | bool |  |  | Optional. Specifies whether the httpApplicationRouting add-on is enabled or not. |
-| `identity` | object | `{object}` |  | Optional. The identity of the managed cluster. |
 | `kubeDashboardEnabled` | bool |  |  | Optional. Specifies whether the kubeDashboard add-on is enabled or not. |
 | `location` | string | `[resourceGroup().location]` |  | Optional. Specifies the location of AKS cluster. It picks up Resource Group's location by default. |
 | `lock` | string | `NotSpecified` | `[CanNotDelete, NotSpecified, ReadOnly]` | Optional. Specify the type of lock. |
@@ -68,7 +67,9 @@ This module deploys Azure Kubernetes Cluster (AKS).
 | `omsAgentEnabled` | bool | `True` |  | Optional. Specifies whether the OMS agent is enabled. |
 | `primaryAgentPoolProfile` | array |  |  | Required. Properties of the primary agent pool. |
 | `roleAssignments` | array | `[]` |  | Optional. Array of role assignment objects that contain the 'roleDefinitionIdOrName' and 'principalId' to define RBAC role assignments on this resource. In the roleDefinitionIdOrName attribute, you can provide either the display name of the role definition, or its fully qualified ID in the following format: '/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11' |
+| `systemAssignedIdentity` | bool |  |  | Optional. Enables system assigned managed identity on the resource. |
 | `tags` | object | `{object}` |  | Optional. Tags of the resource. |
+| `userAssignedIdentities` | object | `{object}` |  | Optional. The ID(s) to assign to the resource. |
 | `workspaceId` | string |  |  | Optional. Resource ID of log analytics. |
 
 ### Parameter Usage: `roleAssignments`
@@ -239,6 +240,7 @@ For available properties check <https://docs.microsoft.com/en-us/azure/templates
 | `azureKubernetesServiceResourceGroup` | string | The resource group the managed cluster was deployed into |
 | `azureKubernetesServiceResourceId` | string | The resource ID of the managed cluster |
 | `controlPlaneFQDN` | string | The control plane FQDN of the managed cluster |
+| `principalId` | string | The principal ID of the system assigned identity. |
 
 ## Template references
 
