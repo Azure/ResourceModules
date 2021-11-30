@@ -20,6 +20,14 @@
         "vmPriority": {
             "value": "Regular"
         },
+        "systemAssignedIdentity": {
+            "value": true
+        },
+        "userAssignedIdentities": {
+            "value": {
+                "/subscriptions/<<subscriptionId>>/resourcegroups/validation-rg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/adp-sxx-az-msi-x-001": {}
+            }
+        },
         "osDisk": {
             "value": {
                 "createOption": "fromImage",

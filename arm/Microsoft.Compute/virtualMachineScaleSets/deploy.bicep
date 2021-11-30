@@ -261,17 +261,11 @@ param baseTime string = utcNow('u')
 @description('Optional. SAS token validity length to use to download files from storage accounts. Usage: \'PT8H\' - valid for 8 hours; \'P5D\' - valid for 5 days; \'P1Y\' - valid for 1 year. When not provided, the SAS token will be valid for 8 hours.')
 param sasTokenValidityLength string = 'PT8H'
 
-@description('Optional. The type of identity used for the virtual machine scale set. The type \'SystemAssigned, UserAssigned\' includes both an implicitly created identity and a set of user assigned identities. The type \'None\' will remove any identities from the virtual machine scale set. - SystemAssigned, UserAssigned, SystemAssigned, UserAssigned, None')
-@allowed([
-  'SystemAssigned'
-  'UserAssigned'
-  'None'
-  ''
-])
-param managedIdentityType string = ''
+@description('Optional. Enables system assigned managed identity on the resource.')
+param systemAssignedIdentity bool = false
 
-@description('Optional. The list of user identities associated with the virtual machine scale set. The user identity dictionary key references will be ARM resource IDs in the form: \'/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ManagedIdentity/userAssignedIdentities/{identityName}\'.')
-param managedIdentityIdentities object = {}
+@description('Optional. The ID(s) to assign to the resource.')
+param userAssignedIdentities object = {}
 
 @description('Optional. The name of metrics that will be streamed.')
 @allowed([
@@ -322,6 +316,13 @@ var accountSasProperties = {
   signedProtocol: 'https'
 }
 
+var identityType = systemAssignedIdentity ? (!empty(userAssignedIdentities) ? 'SystemAssigned,UserAssigned' : 'SystemAssigned') : (!empty(userAssignedIdentities) ? 'UserAssigned' : 'None')
+
+var identity = identityType != 'None' ? {
+  type: identityType
+  userAssignedIdentities: !empty(userAssignedIdentities) ? userAssignedIdentities : null
+} : null
+
 module pid_cuaId '.bicep/nested_cuaId.bicep' = if (!empty(cuaId)) {
   name: 'pid-${cuaId}'
   params: {}
@@ -340,7 +341,7 @@ resource vmss 'Microsoft.Compute/virtualMachineScaleSets@2021-04-01' = {
   name: name
   location: location
   tags: tags
-  identity: !empty(managedIdentityType) ? json('{"type":"${managedIdentityType}${((!empty(managedIdentityIdentities)) ? ',"userAssignedIdentities":"${managedIdentityIdentities}' : '')}"}') : null
+  identity: identity
   zones: availabilityZones
   properties: {
     proximityPlacementGroup: !empty(proximityPlacementGroupName) ? json('{"id":"${resourceId('Microsoft.Compute/proximityPlacementGroups', proximityPlacementGroup.name)}"}') : null
@@ -632,3 +633,6 @@ output vmssResourceGroup string = resourceGroup().name
 
 @description('The name of the virtual machine scale set')
 output vmssName string = vmss.name
+
+@description('The principal ID of the system assigned identity.')
+output principalId string = systemAssignedIdentity ? vmss.identity.principalId : ''

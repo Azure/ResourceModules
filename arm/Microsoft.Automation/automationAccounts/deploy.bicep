@@ -288,7 +288,7 @@ module automationAccount_softwareUpdateConfigurations 'softwareUpdateConfigurati
 }]
 
 resource automationAccount_lock 'Microsoft.Authorization/locks@2016-09-01' = if (lock != 'NotSpecified') {
-  name: '${uniqueString(deployment().name, location)}-AutoAccount-${lock}-lock'
+  name: '${automationAccount.name}-AutoAccount-${lock}-lock'
   properties: {
     level: lock
     notes: (lock == 'CanNotDelete') ? 'Cannot delete resource or child resources.' : 'Cannot modify the resource or child resources.'
@@ -297,7 +297,7 @@ resource automationAccount_lock 'Microsoft.Authorization/locks@2016-09-01' = if 
 }
 
 resource automationAccount_diagnosticSettings 'Microsoft.Insights/diagnosticSettings@2017-05-01-preview' = if ((!empty(diagnosticStorageAccountId)) || (!empty(workspaceId)) || (!empty(eventHubAuthorizationRuleId)) || (!empty(eventHubName))) {
-  name: '${uniqueString(deployment().name, location)}-AutoAccount-diagnosticSettings'
+  name: '${automationAccount.name}-AutoAccount-diagnosticSettings'
   properties: {
     storageAccountId: (empty(diagnosticStorageAccountId) ? null : diagnosticStorageAccountId)
     workspaceId: (empty(workspaceId) ? null : workspaceId)
