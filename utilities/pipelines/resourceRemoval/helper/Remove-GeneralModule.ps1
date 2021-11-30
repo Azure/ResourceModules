@@ -233,7 +233,7 @@ function Remove-GeneralModule {
 
         # Remove resources
         # ----------------
-        if ($PSCmdlet.ShouldProcess(('[{0}] resources' -f $resourcesToRemove.Count), 'Remove')) {
+        if ($PSCmdlet.ShouldProcess(('[{0}] resources' -f (($resourcesToRemove -is [array]) ? $resourcesToRemove.Count : 1)), 'Remove')) {
             Remove-Resource -resourceToRemove $resourcesToRemove -Verbose
         }
     }
