@@ -533,6 +533,7 @@ module vm_diskEncryptionExtension 'extensions/deploy.bicep' = if (extensionDiskE
   }
   dependsOn: [
     vm_customScriptExtension
+    vm_microsoftMonitoringAgentExtension
   ]
 }
 
