@@ -23,6 +23,23 @@ This template deploys a saved search for a Log Analytics workspace.
 | `tags` | array | `[]` |  | Optional. Tags to configure in the resource. |
 | `version` | int | `2` |  | Optional. The version number of the query language. |
 
+### Parameter Usage: `tags`
+
+Tag names and tag values can be provided as needed. A tag can be left without a value.
+
+```json
+"tags": {
+    "value": {
+        "Environment": "Non-Prod",
+        "Contact": "test.user@testcompany.com",
+        "PurchaseOrder": "1234",
+        "CostCenter": "7890",
+        "ServiceName": "DeploymentValidation",
+        "Role": "DeploymentValidation"
+    }
+}
+```
+
 ## Outputs
 
 | Output Name | Type | Description |

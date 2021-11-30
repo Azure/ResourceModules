@@ -81,7 +81,7 @@ param diagnosticLogsRetentionInDays int = 365
 @description('Optional. Resource ID of the diagnostic storage account.')
 param diagnosticStorageAccountId string = ''
 
-@description('Optional. Resource ID of log analytics workspace.')
+@description('Optional. Resource ID of the log analytics workspace.')
 param workspaceId string = ''
 
 @description('Optional. Resource ID of the event hub authorization rule for the Event Hubs namespace in which the event hub should be created or streamed to.')

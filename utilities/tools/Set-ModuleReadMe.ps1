@@ -193,14 +193,14 @@ function Set-ParametersSection {
                     $subSectionStartIdentifier = '### Parameter Usage: `{0}`' -f $ParameterName
 
                     # Build result
+                    $updateParameterUsageInputObject = @{
+                        OldContent             = $updatedFileContent
+                        NewContent             = (Get-Content $sourceFile -Raw).Trim()
+                        SectionStartIdentifier = $subSectionStartIdentifier
+                        ParentStartIdentifier  = $SectionStartIdentifier
+                        ContentType            = 'none'
+                    }
                     if ($PSCmdlet.ShouldProcess(('Original file with new parameter usage [{0}] content' -f $parameterName), 'Merge')) {
-                        $updateParameterUsageInputObject = @{
-                            OldContent             = $updatedFileContent
-                            NewContent             = (Get-Content $sourceFile -Raw).Trim()
-                            SectionStartIdentifier = $subSectionStartIdentifier
-                            ParentStartIdentifier  = $SectionStartIdentifier
-                            ContentType            = 'none'
-                        }
                         $updatedFileContent = Merge-FileWithNewContent @updateParameterUsageInputObject
                     }
                 }

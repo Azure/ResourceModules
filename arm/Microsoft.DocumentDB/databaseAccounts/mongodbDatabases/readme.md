@@ -1,4 +1,4 @@
-# DocumentDB Database Account MongoDB databases  `[Microsoft.DocumentDB/databaseAccounts/mongodbDatabases]`
+# DocumentDB Database Account MongoDB databases `[Microsoft.DocumentDB/databaseAccounts/mongodbDatabases]`
 
 This module deploys a MongoDB within a CosmosDB account.
 
@@ -19,6 +19,23 @@ This module deploys a MongoDB within a CosmosDB account.
 | `name` | string |  |  | Required. Name of the mongodb database |
 | `tags` | object | `{object}` |  | Optional. Tags of the resource. |
 | `throughput` | int | `400` |  | Optional. Name of the mongodb database |
+
+### Parameter Usage: `tags`
+
+Tag names and tag values can be provided as needed. A tag can be left without a value.
+
+```json
+"tags": {
+    "value": {
+        "Environment": "Non-Prod",
+        "Contact": "test.user@testcompany.com",
+        "PurchaseOrder": "1234",
+        "CostCenter": "7890",
+        "ServiceName": "DeploymentValidation",
+        "Role": "DeploymentValidation"
+    }
+}
+```
 
 ### Parameter Usage: `collections`
 
