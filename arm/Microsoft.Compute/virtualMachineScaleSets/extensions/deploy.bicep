@@ -1,7 +1,7 @@
 @description('Required. The name of the virtual machine scale set that extension is provisioned for')
 param virtualMachineScaleSetName string
 
-@description('Required. The name of the virtual machine extension')
+@description('Required. The name of the virtual machine scale set extension')
 param name string
 
 @description('Required. The name of the extension handler publisher')
@@ -40,8 +40,13 @@ module pid_cuaId '.bicep/nested_cuaId.bicep' = if (!empty(cuaId)) {
   params: {}
 }
 
+resource virtualMachineScaleSet 'Microsoft.Compute/virtualMachineScaleSets@2021-07-01' existing = {
+  name: virtualMachineScaleSetName
+}
+
 resource extension 'Microsoft.Compute/virtualMachineScaleSets/extensions@2021-07-01' = {
-  name: '${virtualMachineScaleSetName}/${name}'
+  name: name
+  parent: virtualMachineScaleSet
   properties: {
     publisher: publisher
     type: type
