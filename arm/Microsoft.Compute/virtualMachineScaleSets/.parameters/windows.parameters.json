@@ -8,10 +8,10 @@
         "vmNamePrefix": {
             "value": "vmsswinvm"
         },
-        "instanceSize": {
+        "skuName": {
             "value": "Standard_B2s"
         },
-        "instanceCount": {
+        "skuCapacity": {
             "value": 1
         },
         "upgradePolicyMode": {

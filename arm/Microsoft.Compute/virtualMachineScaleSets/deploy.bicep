@@ -234,10 +234,10 @@ param scaleInPolicy object = {
 }
 
 @description('Required. The SKU size of the VMs.')
-param instanceSize string
+param skuName string
 
 @description('Optional. The initial instance count of scale set VMs.')
-param instanceCount int = 1
+param skuCapacity int = 1
 
 @description('Optional. The virtual machine scale set zones. NOTE: Availability zones can only be set when you create the scale set.')
 param availabilityZones array = []
@@ -439,8 +439,8 @@ resource vmss 'Microsoft.Compute/virtualMachineScaleSets@2021-04-01' = {
     scaleInPolicy: scaleInPolicy
   }
   sku: {
-    name: instanceSize
-    capacity: instanceCount
+    name: skuName
+    capacity: skuCapacity
   }
   plan: !empty(plan) ? plan : null
 }

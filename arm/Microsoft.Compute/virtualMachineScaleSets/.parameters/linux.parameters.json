@@ -8,10 +8,10 @@
         "vmNamePrefix": {
             "value": "vmsslinvm"
         },
-        "instanceSize": {
+        "skuName": {
             "value": "Standard_B2s"
         },
-        "instanceCount": {
+        "skuCapacity": {
             "value": 1
         },
         "upgradePolicyMode": {

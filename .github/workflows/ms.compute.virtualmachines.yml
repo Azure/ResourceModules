@@ -107,10 +107,9 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        parameterFilePaths:
-          [
+        parameterFilePaths: [
             'linux.parameters.json',
-            'windows.min.parameters.json',
+            #   'windows.min.parameters.json',
             'windows.parameters.json',
           ]
     steps:

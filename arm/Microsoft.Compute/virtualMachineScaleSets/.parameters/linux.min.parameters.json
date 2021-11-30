@@ -17,7 +17,7 @@
         "osType": {
             "value": "Linux"
         },
-        "instanceSize": {
+        "skuSize": {
             "value": "Standard_B2s"
         },
         "imageReference": {
