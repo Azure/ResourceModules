@@ -49,7 +49,6 @@ jobs:
       - name: 'Deploy module'
         uses: ./.github/actions/templates/deployModule
         with:
-          moduleName: '${{ env.moduleName }}'
           templateFilePath: 'arm/${{ env.namespace }}/deploy.bicep'
           parameterFilePath: '${{ env.dependencyPath }}/${{ env.namespace }}/parameters/${{ matrix.parameterFilePaths }}'
           location: '${{ env.defaultLocation }}'
@@ -78,7 +77,6 @@ jobs:
       - name: 'Deploy module'
         uses: ./.github/actions/templates/deployModule
         with:
-          moduleName: '${{ env.moduleName }}'
           templateFilePath: 'arm/${{ env.namespace }}/deploy.bicep'
           parameterFilePath: '${{ env.dependencyPath }}/${{ env.namespace }}/parameters/${{ matrix.parameterFilePaths }}'
           location: '${{ env.defaultLocation }}'
@@ -107,7 +105,6 @@ jobs:
       - name: 'Deploy module'
         uses: ./.github/actions/templates/deployModule
         with:
-          moduleName: '${{ env.moduleName }}'
           templateFilePath: 'arm/${{ env.namespace }}/deploy.bicep'
           parameterFilePath: '${{ env.dependencyPath }}/${{ env.namespace }}/parameters/${{ matrix.parameterFilePaths }}'
           location: '${{ env.defaultLocation }}'
@@ -136,7 +133,6 @@ jobs:
       - name: 'Deploy module'
         uses: ./.github/actions/templates/deployModule
         with:
-          moduleName: '${{ env.moduleName }}'
           templateFilePath: 'arm/${{ env.namespace }}/deploy.bicep'
           parameterFilePath: '${{ env.dependencyPath }}/${{ env.namespace }}/parameters/${{ matrix.parameterFilePaths }}'
           location: '${{ env.defaultLocation }}'
@@ -165,7 +161,6 @@ jobs:
       - name: 'Deploy module'
         uses: ./.github/actions/templates/deployModule
         with:
-          moduleName: '${{ env.moduleName }}'
           templateFilePath: 'arm/${{ env.namespace }}/deploy.bicep'
           parameterFilePath: '${{ env.dependencyPath }}/${{ env.namespace }}/parameters/${{ matrix.parameterFilePaths }}'
           location: '${{ env.defaultLocation }}'
@@ -195,7 +190,6 @@ jobs:
       - name: 'Deploy module'
         uses: ./.github/actions/templates/deployModule
         with:
-          moduleName: '${{ env.moduleName }}'
           templateFilePath: 'arm/${{ env.namespace }}/deploy.bicep'
           parameterFilePath: '${{ env.dependencyPath }}/${{ env.namespace }}/parameters/${{ matrix.parameterFilePaths }}'
           location: '${{ env.defaultLocation }}'
@@ -264,7 +258,6 @@ jobs:
       - name: 'Deploy module'
         uses: ./.github/actions/templates/deployModule
         with:
-          moduleName: '${{ env.moduleName }}'
           templateFilePath: 'arm/${{ env.namespace }}/deploy.bicep'
           parameterFilePath: '${{ env.dependencyPath }}/${{ env.namespace }}/parameters/${{ matrix.parameterFilePaths }}'
           location: '${{ env.defaultLocation }}'
@@ -293,7 +286,6 @@ jobs:
       - name: 'Deploy module'
         uses: ./.github/actions/templates/deployModule
         with:
-          moduleName: '${{ env.moduleName }}'
           templateFilePath: 'arm/${{ env.namespace }}/deploy.bicep'
           parameterFilePath: '${{ env.dependencyPath }}/${{ env.namespace }}/parameters/${{ matrix.parameterFilePaths }}'
           location: '${{ env.defaultLocation }}'
@@ -322,7 +314,6 @@ jobs:
       - name: 'Deploy module'
         uses: ./.github/actions/templates/deployModule
         with:
-          moduleName: '${{ env.moduleName }}'
           templateFilePath: 'arm/${{ env.namespace }}/deploy.bicep'
           parameterFilePath: '${{ env.dependencyPath }}/${{ env.namespace }}/parameters/${{ matrix.parameterFilePaths }}'
           location: '${{ env.defaultLocation }}'
@@ -352,7 +343,6 @@ jobs:
       - name: 'Deploy module'
         uses: ./.github/actions/templates/deployModule
         with:
-          moduleName: '${{ env.moduleName }}'
           templateFilePath: 'arm/${{ env.namespace }}/deploy.bicep'
           parameterFilePath: '${{ env.dependencyPath }}/${{ env.namespace }}/parameters/${{ matrix.parameterFilePaths }}'
           location: '${{ env.defaultLocation }}'
@@ -389,7 +379,6 @@ jobs:
       - name: 'Deploy module'
         uses: ./.github/actions/templates/deployModule
         with:
-          moduleName: '${{ env.moduleName }}'
           templateFilePath: 'arm/${{ env.namespace }}/deploy.bicep'
           parameterFilePath: '${{ env.dependencyPath }}/${{ env.namespace }}/parameters/${{ matrix.parameterFilePaths }}'
           location: '${{ env.defaultLocation }}'
@@ -421,7 +410,6 @@ jobs:
       - name: 'Deploy module'
         uses: ./.github/actions/templates/deployModule
         with:
-          moduleName: '${{ env.moduleName }}'
           templateFilePath: 'arm/${{ env.namespace }}/deploy.bicep'
           parameterFilePath: '${{ env.dependencyPath }}/${{ env.namespace }}/parameters/${{ matrix.parameterFilePaths }}'
           location: '${{ env.defaultLocation }}'
@@ -453,7 +441,6 @@ jobs:
       - name: 'Deploy module'
         uses: ./.github/actions/templates/deployModule
         with:
-          moduleName: '${{ env.moduleName }}'
           templateFilePath: 'arm/${{ env.namespace }}/deploy.bicep'
           parameterFilePath: '${{ env.dependencyPath }}/${{ env.namespace }}/parameters/${{ matrix.parameterFilePaths }}'
           location: '${{ env.defaultLocation }}'
@@ -484,7 +471,6 @@ jobs:
       - name: 'Deploy module'
         uses: ./.github/actions/templates/deployModule
         with:
-          moduleName: '${{ env.moduleName }}'
           templateFilePath: 'arm/${{ env.namespace }}/deploy.bicep'
           parameterFilePath: '${{ env.dependencyPath }}/${{ env.namespace }}/parameters/${{ matrix.parameterFilePaths }}'
           location: '${{ env.defaultLocation }}'
@@ -515,7 +501,6 @@ jobs:
       - name: 'Deploy module'
         uses: ./.github/actions/templates/deployModule
         with:
-          moduleName: '${{ env.moduleName }}'
           templateFilePath: 'arm/${{ env.namespace }}/deploy.bicep'
           parameterFilePath: '${{ env.dependencyPath }}/${{ env.namespace }}/parameters/${{ matrix.parameterFilePaths }}'
           location: '${{ env.defaultLocation }}'
@@ -546,7 +531,6 @@ jobs:
       - name: 'Deploy module'
         uses: ./.github/actions/templates/deployModule
         with:
-          moduleName: '${{ env.moduleName }}'
           templateFilePath: 'arm/${{ env.namespace }}/deploy.bicep'
           parameterFilePath: '${{ env.dependencyPath }}/${{ env.namespace }}/parameters/${{ matrix.parameterFilePaths }}'
           location: '${{ env.defaultLocation }}'
@@ -577,7 +561,6 @@ jobs:
       - name: 'Deploy module'
         uses: ./.github/actions/templates/deployModule
         with:
-          moduleName: '${{ env.moduleName }}'
           templateFilePath: 'arm/${{ env.namespace }}/deploy.bicep'
           parameterFilePath: '${{ env.dependencyPath }}/${{ env.namespace }}/parameters/${{ matrix.parameterFilePaths }}'
           location: '${{ env.defaultLocation }}'
@@ -608,7 +591,6 @@ jobs:
       - name: 'Deploy module'
         uses: ./.github/actions/templates/deployModule
         with:
-          moduleName: '${{ env.moduleName }}'
           templateFilePath: 'arm/${{ env.namespace }}/deploy.bicep'
           parameterFilePath: '${{ env.dependencyPath }}/${{ env.namespace }}/parameters/${{ matrix.parameterFilePaths }}'
           location: '${{ env.defaultLocation }}'
@@ -684,7 +666,6 @@ jobs:
       - name: 'Deploy module'
         uses: ./.github/actions/templates/deployModule
         with:
-          moduleName: '${{ env.moduleName }}'
           templateFilePath: 'arm/${{ env.namespace }}/deploy.bicep'
           parameterFilePath: '${{ env.dependencyPath }}/${{ env.namespace }}/parameters/${{ matrix.parameterFilePaths }}'
           location: '${{ env.defaultLocation }}'
@@ -747,7 +728,6 @@ jobs:
       - name: 'Deploy module'
         uses: ./.github/actions/templates/deployModule
         with:
-          moduleName: '${{ env.moduleName }}'
           templateFilePath: 'arm/${{ env.namespace }}/deploy.bicep'
           parameterFilePath: '${{ env.dependencyPath }}/${{ env.namespace }}/parameters/${{ matrix.parameterFilePaths }}'
           location: '${{ env.defaultLocation }}'
@@ -776,7 +756,6 @@ jobs:
       - name: 'Deploy module'
         uses: ./.github/actions/templates/deployModule
         with:
-          moduleName: '${{ env.moduleName }}'
           templateFilePath: 'arm/${{ env.namespace }}/.bicep/nested_rbac_sub.bicep'
           parameterFilePath: '${{ env.dependencyPath }}/${{ env.namespace }}/parameters/${{ matrix.parameterFilePaths }}'
           location: '${{ env.defaultLocation }}'
@@ -813,7 +792,6 @@ jobs:
       - name: 'Deploy module'
         uses: ./.github/actions/templates/deployModule
         with:
-          moduleName: '${{ env.moduleName }}'
           templateFilePath: 'arm/${{ env.namespace }}/deploy.bicep'
           parameterFilePath: '${{ env.dependencyPath }}/${{ env.namespace }}/parameters/${{ matrix.parameterFilePaths }}'
           location: '${{ env.defaultLocation }}'
@@ -844,7 +822,6 @@ jobs:
       - name: 'Deploy module'
         uses: ./.github/actions/templates/deployModule
         with:
-          moduleName: '${{ env.moduleName }}'
           templateFilePath: 'arm/${{ env.namespace }}/deploy.bicep'
           parameterFilePath: '${{ env.dependencyPath }}/${{ env.namespace }}/parameters/${{ matrix.parameterFilePaths }}'
           location: '${{ env.defaultLocation }}'
@@ -873,7 +850,6 @@ jobs:
       - name: 'Deploy module'
         uses: ./.github/actions/templates/deployModule
         with:
-          moduleName: '${{ env.moduleName }}'
           templateFilePath: 'arm/${{ env.namespace }}/deploy.bicep'
           parameterFilePath: '${{ env.dependencyPath }}/${{ env.namespace }}/parameters/${{ matrix.parameterFilePaths }}'
           location: '${{ env.defaultLocation }}'
@@ -904,7 +880,6 @@ jobs:
       - name: 'Deploy module'
         uses: ./.github/actions/templates/deployModule
         with:
-          moduleName: '${{ env.moduleName }}'
           templateFilePath: 'arm/${{ env.namespace }}/deploy.bicep'
           parameterFilePath: '${{ env.dependencyPath }}/${{ env.namespace }}/parameters/${{ matrix.parameterFilePaths }}'
           location: '${{ env.defaultLocation }}'
