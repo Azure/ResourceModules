@@ -3,32 +3,38 @@
     "contentVersion": "1.0.0.0",
     "parameters": {
         "roleName": {
-            "value": "sxx-az-testRole-01"
+            "value": "sxx-az-testRole-sub"
         },
-        "roleDescription": {
-            "value": "Test Custom Role Definition 1"
+        "description": {
+            "value": "Test Custom Role Definition Standard"
         },
         "actions": {
             "value": [
-                "Microsoft.Compute/galleries/read",
-                "Microsoft.Compute/galleries/images/read",
-                "Microsoft.Compute/galleries/images/versions/read",
-                "Microsoft.Compute/galleries/images/versions/write",
-                "Microsoft.Compute/images/write",
-                "Microsoft.Compute/images/read",
-                "Microsoft.Compute/images/delete",
-                "Microsoft.Network/virtualNetworks/read",
-                "Microsoft.Network/virtualNetworks/subnets/join/action"
+                "Microsoft.Compute/galleries/*",
+                "Microsoft.Network/virtualNetworks/read"
             ]
         },
         "notActions": {
-            "value": []
+            "value": [
+                "Microsoft.Compute/images/write",
+                "Microsoft.Compute/images/delete",
+                "Microsoft.Network/virtualNetworks/subnets/join/action"
+            ]
         },
         "dataActions": {
-            "value": []
+            "value": [
+                "Microsoft.Storage/storageAccounts/blobServices/*/read"
+            ]
         },
         "notDataActions": {
-            "value": []
+            "value": [
+                "Microsoft.Storage/storageAccounts/blobServices/containers/blobs/read"
+            ]
+        },
+        "assignableScopes": {
+            "value": [
+                "/subscriptions/<<subscriptionId>>"
+            ]
         },
         "subscriptionId": {
             "value": "<<subscriptionId>>"

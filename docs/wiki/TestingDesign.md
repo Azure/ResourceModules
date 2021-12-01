@@ -83,7 +83,7 @@ The template validation tests execute a dry-run with each parameter file provide
 
 If all other tests passed, the deployment tests are the ultimate module validation. Using the available & configured parameter files for a module, each is deployed to Azure (in parallel) and verifies if the deployment works end to end.
 
-Most of the resources are deleted by default after their deployment, to keep costs down and to be able to retest resource modules from scratch in the next run. However, the removal step can be skipped in case further investigation on the deployed resource is needed. For further details, please refer to the (.\PipelinesUsage.md) section.
+Most of the resources are deleted by default after their deployment, to keep costs down and to be able to retest resource modules from scratch in the next run. However, the removal step can be skipped in case further investigation on the deployed resource is needed. For further details, please refer to the (./PipelinesUsage) section.
 
 This happens using the `.github/actions/templates/validateModuleDeploy/scripts/Test-TemplateWithParameterFile.ps1` script.
 
@@ -129,6 +129,7 @@ Since also dependency resources are in turn subject to dependencies with each ot
 
 **Third level resources**: This group of resources has a dependency on one or more resources in the group above. Resources in this group can be deployed in parallel.
 
+  1. Storage Account Upload: An upload job to populate the storage account configured in `parameters.json` with a test script that can be referenced
   1. AVD host pool: This resource supports monitoring, hence it has a dependency on the [storage account], [log analytics workspace] and [event hub] deployed in the group above. This resource is leveraged by the [AVD application group] resource.
   1. Key vault: This resource supports monitoring, hence it has a dependency on the [storage account], [log analytics workspace] and [event hub] deployed in the group above. Multiple instances are deployed:
       - '_adp-sxx-az-kv-x-001_': KV with required secrets, keys, certificates and access policies to be leveraged by all resources requiring access to a key vault key, secret and/or certificate, i.e. [application gateway], [azure NetApp file], [azure SQL server], [disk encryption set], [machine learning service], [virtual machine], [virtual machine scale set], [virtual network gateway connection].

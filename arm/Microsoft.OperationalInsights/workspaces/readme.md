@@ -1,10 +1,10 @@
-# LogAnalytics `[Microsoft.OperationalInsights/workspaces]`
+# Log Analytics Workspaces `[Microsoft.OperationalInsights/workspaces]`
 
-This template deploys Log Analytics.
+This template deploys a log analytics workspace.
 
 ## Resource types
 
-| Resource Type | Api Version |
+| Resource Type | API Version |
 | :-- | :-- |
 | `Microsoft.Authorization/locks` | 2016-09-01 |
 | `Microsoft.Authorization/roleAssignments` | 2020-04-01-preview |
@@ -19,7 +19,7 @@ This template deploys Log Analytics.
 
 | Parameter Name | Type | Default Value | Possible Values | Description |
 | :-- | :-- | :-- | :-- | :-- |
-| `cuaId` | string |  |  | Optional. Customer Usage Attribution id (GUID). This GUID must be previously registered |
+| `cuaId` | string |  |  | Optional. Customer Usage Attribution ID (GUID). This GUID must be previously registered |
 | `dailyQuotaGb` | int | `-1` |  | Optional. The workspace daily quota for ingestion. |
 | `dataRetention` | int | `365` |  | Required. Number of days data will be retained for |
 | `dataSources` | _[dataSources](dataSources/readme.md)_ array | `[]` |  | Optional. LAW data sources to configure. |
@@ -27,7 +27,7 @@ This template deploys Log Analytics.
 | `linkedServices` | _[linkedServices](linkedServices/readme.md)_ array | `[]` |  | Optional. List of services to be linked. |
 | `location` | string | `[resourceGroup().location]` |  | Optional. Location for all resources. |
 | `lock` | string | `NotSpecified` | `[CanNotDelete, NotSpecified, ReadOnly]` | Optional. Specify the type of lock. |
-| `logAnalyticsWorkspaceName` | string |  |  | Required. Name of the Log Analytics workspace |
+| `name` | string |  |  | Required. Name of the Log Analytics workspace |
 | `publicNetworkAccessForIngestion` | string | `Enabled` | `[Enabled, Disabled]` | Optional. The network access type for accessing Log Analytics ingestion. |
 | `publicNetworkAccessForQuery` | string | `Enabled` | `[Enabled, Disabled]` | Optional. The network access type for accessing Log Analytics query. |
 | `roleAssignments` | array | `[]` |  | Optional. Array of role assignment objects that contain the 'roleDefinitionIdOrName' and 'principalId' to define RBAC role assignments on this resource. In the roleDefinitionIdOrName attribute, you can provide either the display name of the role definition, or its fully qualified ID in the following format: '/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11' |
@@ -77,13 +77,6 @@ This template deploys Log Analytics.
 "roleAssignments": {
     "value": [
         {
-            "roleDefinitionIdOrName": "Desktop Virtualization User",
-            "principalIds": [
-                "12345678-1234-1234-1234-123456789012", // object 1
-                "78945612-1234-1234-1234-123456789012" // object 2
-            ]
-        },
-        {
             "roleDefinitionIdOrName": "Reader",
             "principalIds": [
                 "12345678-1234-1234-1234-123456789012", // object 1
@@ -123,7 +116,7 @@ Tag names and tag values can be provided as needed. A tag can be left without a 
 | :-- | :-- | :-- |
 | `logAnalyticsName` | string | The name of the deployed log analytics workspace |
 | `logAnalyticsResourceGroup` | string | The resource group where the log analytics will be deployed |
-| `logAnalyticsResourceId` | string | The resource Id of the deployed log analytics workspace |
+| `logAnalyticsResourceId` | string | The resource ID of the deployed log analytics workspace |
 | `logAnalyticsWorkspaceId` | string | The ID associated with the workspace |
 
 ## Template references

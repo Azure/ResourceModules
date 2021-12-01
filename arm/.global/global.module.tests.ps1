@@ -6,6 +6,7 @@ param (
         })
 )
 
+$script:Settings = Get-Content -Path (Join-Path $PSScriptRoot '..\..\settings.json') | ConvertFrom-Json
 $script:RGdeployment = 'https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#'
 $script:Subscriptiondeployment = 'https://schema.management.azure.com/schemas/2018-05-01/subscriptionDeploymentTemplate.json#'
 $script:MGdeployment = 'https://schema.management.azure.com/schemas/2019-08-01/managementGroupDeploymentTemplate.json#'
@@ -410,6 +411,7 @@ Describe 'Deployment template tests' -Tag Template {
                     parameterFile_AllParameterNames      = $parameterFile_AllParameterNames
                     templateFile_AllParameterNames       = $TemplateFile_AllParameterNames
                     templateFile_RequiredParametersNames = $TemplateFile_RequiredParametersNames
+                    tokenSettings                        = $Settings.parameterFileTokens
                 }
             }
 
@@ -477,13 +479,13 @@ Describe 'Deployment template tests' -Tag Template {
             )
             $ApiVersion = $templateContent.resources.apiVersion
             $ApiVersionArray = @()
-            foreach ($Api in $ApiVersion) {
-                if ($Api.Substring(0, 2) -eq '20') {
+            foreach ($API in $ApiVersion) {
+                if ($API.Substring(0, 2) -eq '20') {
                     $ApiVersionOutput = $true
-                } elseif ($Api.substring(1, 10) -eq 'parameters') {
+                } elseif ($API.substring(1, 10) -eq 'parameters') {
                     # An API version should not be referenced as a parameter
                     $ApiVersionOutput = $false
-                } elseif ($Api.substring(1, 10) -eq 'variables') {
+                } elseif ($API.substring(1, 10) -eq 'variables') {
                     # An API version should not be referenced as a variable
                     $ApiVersionOutput = $false
                 } else {
@@ -728,22 +730,35 @@ Describe 'Deployment template tests' -Tag Template {
             }
         }
 
-        It '[<moduleFolderName>] Parameter files should not contain the subscriptionId guid' -TestCases $deploymentFolderTestCases {
+        It '[<moduleFolderName>] [Tokens] Parameter files should not contain the default Subscription ID guid' -TestCases $deploymentFolderTestCases {
             param (
-                [hashtable[]] $parameterFileTestCases
+                [hashtable[]] $ParameterFileTestCases
             )
-
-            foreach ($parameterFileTestCase in $parameterFileTestCases) {
-                $ParameterFileContent = Get-Content -Path $parameterFileTestCase.parameterFile_Path
+            foreach ($ParameterFileTestCase in $ParameterFileTestCases) {
+                $ParameterFileTokenName = -join ($ParameterFileTestCase.tokenSettings.tokenPrefix, 'subscriptionId', $ParameterFileTestCase.tokenSettings.tokenSuffix)
+                $ParameterFileContent = Get-Content -Path $ParameterFileTestCase.parameterFile_Path
                 $SubscriptionIdKeyCount = ($ParameterFileContent | Select-String -Pattern '"subscriptionId"', "'subscriptionId'", '/subscriptions/' -AllMatches).Matches.Count
-                $SubscriptionIdValueCount = ($ParameterFileContent | Select-String -Pattern '<<subscriptionId' -AllMatches).Matches.Count
-                $SubscriptionIdKeyCount | Should -Be $SubscriptionIdValueCount -Because ('Parameter file should not contain the subscription Id guid, instead should reference a token value "<<subscriptionId(n)>> (i.e. <<subscriptionId1>>)"')
+                $SubscriptionIdValueCount = ($ParameterFileContent | Select-String -Pattern "$ParameterFileTokenName" -AllMatches).Matches.Count
+                $SubscriptionIdKeyCount -eq $SubscriptionIdValueCount | Should -Be $true -Because ("Parameter file should not contain the Subscription ID guid, instead should reference a token value '$ParameterFileTokenName'")
+            }
+        }
+
+        It '[<moduleFolderName>] [Tokens] Parameter files should not contain the default Tenant ID' -TestCases $deploymentFolderTestCases {
+            param (
+                [hashtable[]] $ParameterFileTestCases
+            )
+            foreach ($ParameterFileTestCase in $ParameterFileTestCases) {
+                $ParameterFileTokenName = -join ($ParameterFileTestCase.tokenSettings.tokenPrefix, 'tenantId', $ParameterFileTestCase.tokenSettings.tokenSuffix)
+                $ParameterFileContent = Get-Content -Path $ParameterFileTestCase.parameterFile_Path
+                $TenantIdKeyCount = ($ParameterFileContent | Select-String -Pattern '"tenantId"', "'tenantId'" -AllMatches).Matches.Count
+                $TenantIdValueCount = ($ParameterFileContent | Select-String -Pattern "$ParameterFileTokenName" -AllMatches).Matches.Count
+                $TenantIdKeyCount -eq $TenantIdValueCount | Should -Be $true -Because ("Parameter file should not contain the Tenant ID guid, instead should reference a token value '$ParameterFileTokenName'")
             }
         }
     }
 }
 
-Describe "Api version tests [All apiVersions in the template should be 'recent']" -Tag ApiCheck {
+Describe "API version tests [All apiVersions in the template should be 'recent']" -Tag ApiCheck {
 
     $testCases = @()
     $ApiVersions = Get-AzResourceProvider -ListAvailable
@@ -834,7 +849,7 @@ Describe "Api version tests [All apiVersions in the template should be 'recent']
         $resourceTypeApiVersions = ($namespaceResourceTypes | Where-Object { $_.ResourceTypeName -eq $resourceType }).ApiVersions
 
         if (-not $resourceTypeApiVersions) {
-            Write-Warning ('[Api Test] We are currently unable to determine the available API versions for resource type [{0}/{1}]' -f $ProviderNamespace, $resourceType)
+            Write-Warning ('[API Test] We are currently unable to determine the available API versions for resource type [{0}/{1}]' -f $ProviderNamespace, $resourceType)
             continue
         }
 

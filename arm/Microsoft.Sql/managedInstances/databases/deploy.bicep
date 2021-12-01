@@ -32,7 +32,7 @@ param storageContainerUri string = ''
 @description('Optional. Conditional. The resource identifier of the source database associated with create operation of this database.')
 param sourceDatabaseId string = ''
 
-@description('Optional. Conditional. The restorable dropped database resource id to restore when creating this database.')
+@description('Optional. Conditional. The restorable dropped database resource ID to restore when creating this database.')
 param restorableDroppedDatabaseId string = ''
 
 @description('Optional. Conditional. If createMode is RestoreExternalBackup, this value is required. Specifies the storage container sas token.')
@@ -49,10 +49,10 @@ param longTermRetentionBackupResourceId string = ''
 @maxValue(365)
 param diagnosticLogsRetentionInDays int = 365
 
-@description('Optional. Resource identifier of the Diagnostic Storage Account.')
+@description('Optional. Resource ID of the diagnostic storage account.')
 param diagnosticStorageAccountId string = ''
 
-@description('Optional. Resource identifier of Log Analytics.')
+@description('Optional. Resource ID of log analytics.')
 param workspaceId string = ''
 
 @description('Optional. Resource ID of the event hub authorization rule for the Event Hubs namespace in which the event hub should be created or streamed to.')
@@ -78,7 +78,7 @@ param backupLongTermRetentionPoliciesObj object = {}
 @description('Optional. Tags of the resource.')
 param tags object = {}
 
-@description('Optional. Customer Usage Attribution id (GUID). This GUID must be previously registered')
+@description('Optional. Customer Usage Attribution ID (GUID). This GUID must be previously registered')
 param cuaId string = ''
 
 @description('Optional. The name of logs that will be streamed.')
@@ -115,21 +115,21 @@ resource managedInstance 'Microsoft.Sql/managedInstances@2021-05-01-preview' exi
 
 resource database 'Microsoft.Sql/managedInstances/databases@2021-05-01-preview' = {
   name: name
+  parent: managedInstance
   location: location
   tags: tags
   properties: {
-    collation: (empty(collation) ? null : collation)
-    restorePointInTime: (empty(restorePointInTime) ? null : restorePointInTime)
-    catalogCollation: (empty(catalogCollation) ? null : catalogCollation)
-    createMode: (empty(createMode) ? null : createMode)
-    storageContainerUri: (empty(storageContainerUri) ? null : storageContainerUri)
-    sourceDatabaseId: (empty(sourceDatabaseId) ? null : sourceDatabaseId)
-    restorableDroppedDatabaseId: (empty(restorableDroppedDatabaseId) ? null : restorableDroppedDatabaseId)
-    storageContainerSasToken: (empty(storageContainerSasToken) ? null : storageContainerSasToken)
-    recoverableDatabaseId: (empty(recoverableDatabaseId) ? null : recoverableDatabaseId)
-    longTermRetentionBackupResourceId: (empty(longTermRetentionBackupResourceId) ? null : longTermRetentionBackupResourceId)
+    collation: empty(collation) ? null : collation
+    restorePointInTime: empty(restorePointInTime) ? null : restorePointInTime
+    catalogCollation: empty(catalogCollation) ? null : catalogCollation
+    createMode: empty(createMode) ? null : createMode
+    storageContainerUri: empty(storageContainerUri) ? null : storageContainerUri
+    sourceDatabaseId: empty(sourceDatabaseId) ? null : sourceDatabaseId
+    restorableDroppedDatabaseId: empty(restorableDroppedDatabaseId) ? null : restorableDroppedDatabaseId
+    storageContainerSasToken: empty(storageContainerSasToken) ? null : storageContainerSasToken
+    recoverableDatabaseId: empty(recoverableDatabaseId) ? null : recoverableDatabaseId
+    longTermRetentionBackupResourceId: empty(longTermRetentionBackupResourceId) ? null : longTermRetentionBackupResourceId
   }
-  parent: managedInstance
 }
 
 resource database_lock 'Microsoft.Authorization/locks@2016-09-01' = if (lock != 'NotSpecified') {
@@ -144,11 +144,11 @@ resource database_lock 'Microsoft.Authorization/locks@2016-09-01' = if (lock != 
 resource database_diagnosticSettings 'Microsoft.Insights/diagnosticsettings@2017-05-01-preview' = if ((!empty(diagnosticStorageAccountId)) || (!empty(workspaceId)) || (!empty(eventHubAuthorizationRuleId)) || (!empty(eventHubName))) {
   name: '${last(split(database.name, '/'))}-diagnosticSettings'
   properties: {
-    storageAccountId: (empty(diagnosticStorageAccountId) ? null : diagnosticStorageAccountId)
-    workspaceId: (empty(workspaceId) ? null : workspaceId)
-    eventHubAuthorizationRuleId: (empty(eventHubAuthorizationRuleId) ? null : eventHubAuthorizationRuleId)
-    eventHubName: (empty(eventHubName) ? null : eventHubName)
-    logs: ((empty(diagnosticStorageAccountId) && empty(workspaceId) && empty(eventHubAuthorizationRuleId) && empty(eventHubName)) ? null : diagnosticsLogs)
+    storageAccountId: empty(diagnosticStorageAccountId) ? null : diagnosticStorageAccountId
+    workspaceId: empty(workspaceId) ? null : workspaceId
+    eventHubAuthorizationRuleId: empty(eventHubAuthorizationRuleId) ? null : eventHubAuthorizationRuleId
+    eventHubName: empty(eventHubName) ? null : eventHubName
+    logs: (empty(diagnosticStorageAccountId) && empty(workspaceId) && empty(eventHubAuthorizationRuleId) && empty(eventHubName)) ? null : diagnosticsLogs
   }
   scope: database
 }
@@ -179,7 +179,7 @@ module database_backupLongTermRetentionPolicy 'backupLongTermRetentionPolicies/d
 @description('The name of the deployed database')
 output databaseName string = database.name
 
-@description('The resource Id of the deployed database')
+@description('The resource ID of the deployed database')
 output databaseResourceId string = database.id
 
 @description('The resource group the database was deployed into')

@@ -1,10 +1,10 @@
-# Api Management Service Identity Providers `[Microsoft.ApiManagement/service/identityProviders]`
+# API Management Service Identity Providers `[Microsoft.ApiManagement/service/identityProviders]`
 
-This module deploys Api Management Service Identity Provider.
+This module deploys API Management Service Identity Provider.
 
 ## Resource Types
 
-| Resource Type | Api Version |
+| Resource Type | API Version |
 | :-- | :-- |
 | `Microsoft.ApiManagement/service/identityProviders` | 2020-06-01-preview |
 
@@ -12,12 +12,12 @@ This module deploys Api Management Service Identity Provider.
 
 | Parameter Name | Type | Default Value | Possible Values | Description |
 | :-- | :-- | :-- | :-- | :-- |
-| `apiManagementServiceName` | string |  |  | Required. The name of the of the Api Management service. |
-| `cuaId` | string |  |  | Optional. Customer Usage Attribution id (GUID). This GUID must be previously registered |
+| `apiManagementServiceName` | string |  |  | Required. The name of the of the API Management service. |
+| `cuaId` | string |  |  | Optional. Customer Usage Attribution ID (GUID). This GUID must be previously registered |
 | `enableIdentityProviders` | bool |  |  | Optional. Used to enable the deployment of the identityProviders child resource. |
 | `identityProviderAllowedTenants` | array | `[]` |  | Optional. List of Allowed Tenants when configuring Azure Active Directory login. - string |
 | `identityProviderAuthority` | string |  |  | Optional. OpenID Connect discovery endpoint hostname for AAD or AAD B2C. |
-| `identityProviderClientId` | string |  |  | Optional. Client Id of the Application in the external Identity Provider. Required if identity provider is used. |
+| `identityProviderClientId` | string |  |  | Optional. Client ID of the Application in the external Identity Provider. Required if identity provider is used. |
 | `identityProviderClientSecret` | secureString |  |  | Optional. Client secret of the Application in external Identity Provider, used to authenticate login request. Required if identity provider is used. |
 | `identityProviderPasswordResetPolicyName` | string |  |  | Optional. Password Reset Policy Name. Only applies to AAD B2C Identity Provider. |
 | `identityProviderProfileEditingPolicyName` | string |  |  | Optional. Profile Editing Policy Name. Only applies to AAD B2C Identity Provider. |
@@ -33,7 +33,7 @@ This module deploys Api Management Service Identity Provider.
 | :-- | :-- | :-- |
 | `identityProviderName` | string | The name of the API management service identity provider |
 | `identityProviderResourceGroup` | string | The resource group the API management service identity provider was deployed into |
-| `identityProviderResourceId` | string | The resourceId of the API management service identity provider |
+| `identityProviderResourceId` | string | The resource ID of the API management service identity provider |
 
 ## Template references
 

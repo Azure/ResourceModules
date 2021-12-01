@@ -6,16 +6,16 @@ param roleAssignments array = []
 @description('Optional. Name of the Resource Group to assign the RBAC role to. If no Resource Group name is provided, and Subscription ID is provided, the module deploys at subscription level, therefore assigns the provided RBAC role to the subscription.')
 param resourceGroupName string = ''
 
-@description('Optional. ID of the Subscription to assign the RBAC role to. If no Resource Group name is provided, the module deploys at subscription level, therefore assigns the provided RBAC role to the subscription.')
+@description('Optional. Subscription ID of the subscription to assign the RBAC role to. If no Resource Group name is provided, the module deploys at subscription level, therefore assigns the provided RBAC role to the subscription.')
 param subscriptionId string = ''
 
-@description('Optional. ID of the Management Group to assign the RBAC role to. If no Subscription is provided, the module deploys at management group level, therefore assigns the provided RBAC role to the management group.')
+@description('Optional. Group ID of the Management Group to assign the RBAC role to. If no Subscription is provided, the module deploys at management group level, therefore assigns the provided RBAC role to the management group.')
 param managementGroupId string = ''
 
 @description('Optional. Location for all resources.')
 param location string = deployment().location
 
-@description('Optional. Customer Usage Attribution id (GUID). This GUID must be previously registered')
+@description('Optional. Customer Usage Attribution ID (GUID). This GUID must be previously registered')
 param cuaId string = ''
 
 module pid_cuaId '.bicep/nested_cuaId.bicep' = if (!empty(cuaId)) {
@@ -26,7 +26,8 @@ module pid_cuaId '.bicep/nested_cuaId.bicep' = if (!empty(cuaId)) {
 module nested_rbac_mg '.bicep/nested_rbac.bicep' = [for (roleAssignment, index) in roleAssignments: if (!empty(managementGroupId) && empty(subscriptionId) && empty(resourceGroupName)) {
   name: 'roleAssignment-mg-${guid(roleAssignment.roleDefinitionIdOrName)}-${index}'
   params: {
-    roleAssignmentObj: roleAssignment
+    principalIds: roleAssignment.principalIds
+    roleDefinitionIdOrName: roleAssignment.roleDefinitionIdOrName
     managementGroupId: managementGroupId
     location: location
   }
@@ -35,7 +36,8 @@ module nested_rbac_mg '.bicep/nested_rbac.bicep' = [for (roleAssignment, index) 
 module nested_rbac_sub '.bicep/nested_rbac.bicep' = [for (roleAssignment, index) in roleAssignments: if (empty(managementGroupId) && !empty(subscriptionId) && empty(resourceGroupName)) {
   name: 'roleAssignment-sub-${guid(roleAssignment.roleDefinitionIdOrName)}-${index}'
   params: {
-    roleAssignmentObj: roleAssignment
+    principalIds: roleAssignment.principalIds
+    roleDefinitionIdOrName: roleAssignment.roleDefinitionIdOrName
     subscriptionId: subscriptionId
     location: location
   }
@@ -44,7 +46,8 @@ module nested_rbac_sub '.bicep/nested_rbac.bicep' = [for (roleAssignment, index)
 module nested_rbac_rg '.bicep/nested_rbac.bicep' = [for (roleAssignment, index) in roleAssignments: if (empty(managementGroupId) && !empty(resourceGroupName) && !empty(subscriptionId)) {
   name: 'roleAssignment-rg-${guid(roleAssignment.roleDefinitionIdOrName)}-${index}'
   params: {
-    roleAssignmentObj: roleAssignment
+    principalIds: roleAssignment.principalIds
+    roleDefinitionIdOrName: roleAssignment.roleDefinitionIdOrName
     subscriptionId: subscriptionId
     resourceGroupName: resourceGroupName
     location: location

@@ -4,7 +4,7 @@ This module deploys an Azure Automation Account Software update Configuration.
 
 ## Resource Types
 
-| Resource Type | Api Version |
+| Resource Type | API Version |
 | :-- | :-- |
 | `Microsoft.Automation/automationAccounts/softwareUpdateConfigurations` | 2019-06-01 |
 
@@ -13,9 +13,9 @@ This module deploys an Azure Automation Account Software update Configuration.
 | Parameter Name | Type | Default Value | Possible Values | Description |
 | :-- | :-- | :-- | :-- | :-- |
 | `automationAccountName` | string |  |  | Required. Name of the parent Automation Account |
-| `azureVirtualMachines` | array | `[]` |  | Optional. List of azure resource Ids for azure virtual machines in scope for the deployment schedule. |
+| `azureVirtualMachines` | array | `[]` |  | Optional. List of azure resource IDs for azure virtual machines in scope for the deployment schedule. |
 | `baseTime` | string | `[utcNow('u')]` |  | Generated. Do not touch. Is used to provide the base time for time comparison for startTime. If startTime is specified in HH:MM format, baseTime is used to check if the provided startTime has passed, adding one day before setting the deployment schedule. |
-| `cuaId` | string |  |  | Optional. Customer Usage Attribution id (GUID). This GUID must be previously registered |
+| `cuaId` | string |  |  | Optional. Customer Usage Attribution ID (GUID). This GUID must be previously registered |
 | `excludeUpdates` | array | `[]` |  | Optional. KB numbers or Linux packages excluded in the deployment schedule. |
 | `expiryTime` | string |  |  | Optional. The end time of the deployment schedule in ISO 8601 format. YYYY-MM-DDTHH:MM:SS, 2021-12-31T23:00:00 |
 | `expiryTimeOffsetMinutes` | int |  |  | Optional. The expiry time's offset in minutes. |
@@ -27,8 +27,8 @@ This module deploys an Azure Automation Account Software update Configuration.
 | `monthDays` | array | `[]` | `[1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31]` | Optional. Can be used with frequency 'Month'. Provides the specific days of the month to run the deployment schedule. |
 | `monthlyOccurrences` | array | `[]` |  | Optional. Can be used with frequency 'Month'. Provides the pattern/cadence for running the deployment schedule in a month. Takes objects formed like this {occurance(int),day(string)}. Day is the name of the day to run the deployment schedule, the occurance specifies which occurance of that day to run the deployment schedule. |
 | `name` | string |  |  | Required. The name of the Deployment schedule. |
-| `nextRun` | string |  |  | Optional. The next run time of the deployment schedule in ISO 8601 format. YYYY-MM-DDTHH:MM:SS, 2021-12-31T23:00:00 |
-| `nextRunOffsetMinutes` | int |  |  | Optional. The next run time's offset in minutes. |
+| `nextRun` | string |  |  | Optional. The next time the deployment schedule runs in ISO 8601 format. YYYY-MM-DDTHH:MM:SS, 2021-12-31T23:00:00 |
+| `nextRunOffsetMinutes` | int |  |  | Optional. The next run's offset in minutes. |
 | `nonAzureComputerNames` | array | `[]` |  | Optional. List of names of non-azure machines in scope for the deployment schedule. |
 | `nonAzureQueries` | array | `[]` |  | Optional. Array of functions from a Log Analytics workspace, used to scope the deployment schedule. |
 | `operatingSystem` | string |  | `[Windows, Linux]` | Required. The operating system to be configured by the deployment schedule. |
@@ -98,7 +98,7 @@ Occurrences of days within a month.
 | :-- | :-- | :-- |
 | `softwareUpdateConfigurationName` | string | The name of the deployed softwareUpdateConfiguration |
 | `softwareUpdateConfigurationResourceGroup` | string | The resource group of the deployed softwareUpdateConfiguration |
-| `softwareUpdateConfigurationResourceId` | string | The Id of the deployed softwareUpdateConfiguration |
+| `softwareUpdateConfigurationResourceId` | string | The resource ID of the deployed softwareUpdateConfiguration |
 
 ## Template references
 

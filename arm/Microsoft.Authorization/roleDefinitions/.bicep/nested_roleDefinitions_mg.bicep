@@ -1,34 +1,44 @@
 targetScope = 'managementGroup'
 
+@sys.description('Required. Name of the custom RBAC role to be created.')
 param roleName string
-param roleDescription string = ''
+
+@sys.description('Optional. Description of the custom RBAC role to be created.')
+param description string = ''
+
+@sys.description('Optional. List of allowed actions.')
 param actions array = []
+
+@sys.description('Optional. List of denied actions.')
 param notActions array = []
-param dataActions array = []
-param notDataActions array = []
+
+@sys.description('Required. The group ID of the Management Group where the Role Definition and Target Scope will be applied to.')
 param managementGroupId string
-param location string = deployment().location
+
+@sys.description('Optional. Role definition assignable scopes. If not provided, will use the current scope provided.')
+param assignableScopes array = []
 
 resource roleDefinition 'Microsoft.Authorization/roleDefinitions@2018-01-01-preview' = {
-  name: guid(roleName, managementGroupId, location)
+  name: guid(roleName, managementGroupId)
   properties: {
     roleName: roleName
-    description: roleDescription
+    description: description
     type: 'customRole'
     permissions: [
       {
         actions: actions
         notActions: notActions
-        dataActions: dataActions
-        notDataActions: notDataActions
       }
     ]
-    assignableScopes: [
-      tenantResourceId('Microsoft.Management/managementGroups', managementGroupId)
-    ]
+    assignableScopes: assignableScopes == [] ? array(tenantResourceId('Microsoft.Management/managementGroups', managementGroupId)) : assignableScopes
   }
 }
 
+@sys.description('The GUID of the Role Definition')
 output roleDefinitionName string = roleDefinition.name
+
+@sys.description('The scope this Role Definition applies to')
 output roleDefinitionScope string = tenantResourceId('Microsoft.Management/managementGroups', managementGroupId)
-output roleDefinitionId string = extensionResourceId(tenantResourceId('Microsoft.Management/managementGroups', managementGroupId), 'Microsoft.Authorization/roleDefinitions', roleDefinition.name)
+
+@sys.description('The resource ID of the Role Definition')
+output roleDefinitionResourceId string = extensionResourceId(tenantResourceId('Microsoft.Management/managementGroups', managementGroupId), 'Microsoft.Authorization/roleDefinitions', roleDefinition.name)

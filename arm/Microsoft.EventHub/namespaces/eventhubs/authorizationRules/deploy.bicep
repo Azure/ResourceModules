@@ -1,7 +1,7 @@
-@description('Required. The name of the EventHub namespace')
+@description('Required. The name of the event hub namespace')
 param namespaceName string
 
-@description('Required. The name of the EventHub namespace eventHub')
+@description('Required. The name of the event hub namespace event hub')
 param eventHubName string
 
 @description('Required. The name of the authorization rule')
@@ -15,7 +15,7 @@ param name string
 ])
 param rights array = []
 
-@description('Optional. Customer Usage Attribution id (GUID). This GUID must be previously registered')
+@description('Optional. Customer Usage Attribution ID (GUID). This GUID must be previously registered')
 param cuaId string = ''
 
 module pid_cuaId '.bicep/nested_cuaId.bicep' = if (!empty(cuaId)) {
@@ -23,8 +23,17 @@ module pid_cuaId '.bicep/nested_cuaId.bicep' = if (!empty(cuaId)) {
   params: {}
 }
 
+resource namespace 'Microsoft.EventHub/namespaces@2021-06-01-preview' existing = {
+  name: namespaceName
+
+  resource eventhub 'eventHubs@2021-06-01-preview' existing = {
+    name: eventHubName
+  }
+}
+
 resource authorizationRule 'Microsoft.EventHub/namespaces/eventhubs/authorizationRules@2021-06-01-preview' = {
-  name: '${namespaceName}/${eventHubName}/${name}'
+  name: name
+  parent: namespace::eventhub
   properties: {
     rights: rights
   }
@@ -33,8 +42,8 @@ resource authorizationRule 'Microsoft.EventHub/namespaces/eventhubs/authorizatio
 @description('The name of the authorization rule.')
 output authorizationRuleName string = authorizationRule.name
 
-@description('The Resource Id of the authorization rule.')
+@description('The resource ID of the authorization rule.')
 output authorizationRuleResourceId string = authorizationRule.id
 
-@description('The name of the Resource Group the authorization rule was created in.')
+@description('The name of the resource group the authorization rule was created in.')
 output authorizationRuleResourceGroup string = resourceGroup().name

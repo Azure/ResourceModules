@@ -21,7 +21,6 @@ env:
   defaultLocation: 'WestEurope'
   resourceGroupName: 'validation-rg'
   resourceGroupNameArtifacts: 'artifacts-rg'
-  resourceGroupNamePlatform: 'platform-core-rg'
   removeDeployment: 'false'
   dependencyPath: 'utilities/pipelines/dependencies'
   AZURE_CREDENTIALS: ${{ secrets.AZURE_CREDENTIALS }}
@@ -29,7 +28,6 @@ env:
   ARM_MGMTGROUP_ID: '${{ secrets.ARM_MGMTGROUP_ID }}'
   ARM_TENANT_ID: '${{ secrets.ARM_TENANT_ID }}'
   DEPLOYMENT_SP_ID: '${{ secrets.DEPLOYMENT_SP_ID }}'
-  PLATFORM_KEYVAULT: '${{ secrets.PLATFORM_KEYVAULT }}'
 
 jobs:
   job_deploy_rg:
@@ -42,11 +40,7 @@ jobs:
       fail-fast: false
       matrix:
         parameterFilePaths:
-          [
-            'artifacts.parameters.json',
-            'validation.parameters.json',
-            'platform-core.parameters.json',
-          ]
+          ['artifacts.parameters.json', 'validation.parameters.json']
     steps:
       - name: 'Checkout'
         uses: actions/checkout@v2
@@ -60,37 +54,6 @@ jobs:
           parameterFilePath: '${{ env.dependencyPath }}/${{ env.namespace }}/parameters/${{ matrix.parameterFilePaths }}'
           location: '${{ env.defaultLocation }}'
           resourceGroupName: '${{ env.resourceGroupName }}'
-          subscriptionId: '${{ secrets.ARM_SUBSCRIPTION_ID }}'
-          managementGroupId: '${{ secrets.ARM_MGMTGROUP_ID }}'
-          removeDeployment: '${{ env.removeDeployment }}'
-
-  job_deploy_kv_platform:
-    runs-on: ubuntu-20.04
-    name: 'Deploy Platform Key Vault'
-    env:
-      moduleName: vaults
-      namespace: 'Microsoft.KeyVault\vaults'
-    needs:
-      - job_deploy_rg
-    strategy:
-      fail-fast: false
-      matrix:
-        parameterFilePaths: ['platform.parameters.json']
-    steps:
-      - name: 'Checkout'
-        if: '${{ env.PLATFORM_KEYVAULT }}'
-        uses: actions/checkout@v2
-        with:
-          fetch-depth: 0
-      - name: 'Deploy module'
-        if: '${{ env.PLATFORM_KEYVAULT }}'
-        uses: ./.github/actions/templates/deployModule
-        with:
-          moduleName: '${{ env.moduleName }}'
-          templateFilePath: 'arm/${{ env.namespace }}/deploy.bicep'
-          parameterFilePath: '${{ env.dependencyPath }}/${{ env.namespace }}/parameters/${{ matrix.parameterFilePaths }}'
-          location: '${{ env.defaultLocation }}'
-          resourceGroupName: '${{ env.resourceGroupNamePlatform }}'
           subscriptionId: '${{ secrets.ARM_SUBSCRIPTION_ID }}'
           managementGroupId: '${{ secrets.ARM_MGMTGROUP_ID }}'
           removeDeployment: '${{ env.removeDeployment }}'
@@ -193,7 +156,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        parameterFilePaths: ['parameters.json']
+        parameterFilePaths: ['appi.parameters.json', 'parameters.json']
     steps:
       - name: 'Checkout'
         uses: actions/checkout@v2
@@ -240,6 +203,46 @@ jobs:
           subscriptionId: '${{ secrets.ARM_SUBSCRIPTION_ID }}'
           managementGroupId: '${{ secrets.ARM_MGMTGROUP_ID }}'
           removeDeployment: '${{ env.removeDeployment }}'
+
+  job_upload_storage_files:
+    runs-on: ubuntu-20.04
+    name: 'Upload files to storage account'
+    needs:
+      - job_deploy_sa
+    steps:
+      - name: 'Checkout'
+        uses: actions/checkout@v2
+        with:
+          fetch-depth: 0
+      - name: Azure Login
+        uses: azure/login@v1
+        with:
+          creds: ${{ secrets.AZURE_CREDENTIALS }}
+          enable-AzPSSession: true
+      - name: Run PowerShell
+        uses: azure/powershell@v1
+        with:
+          inlineScript: |
+            # Load used functions
+            . (Join-Path $env:GITHUB_WORKSPACE 'utilities' 'pipelines' 'sharedScripts' 'Export-ContentToBlob.ps1')
+
+            # Get storage account name
+            $parameterFilePath = Join-Path $env:GITHUB_WORKSPACE '${{ env.dependencyPath }}' 'Microsoft.Storage/storageAccounts' 'parameters' 'parameters.json'
+            $storageAccountParameters = (ConvertFrom-Json (Get-Content -path $parameterFilePath -Raw)).parameters
+
+            # Upload files to storage account
+            $functionInput = @{
+              ResourceGroupName   = '${{ env.resourceGroupName }}'
+              StorageAccountName  = $storageAccountParameters.name.value
+              contentDirectories  = Join-Path $env:GITHUB_WORKSPACE '${{ env.dependencyPath }}' 'Microsoft.Storage/storageAccounts' 'uploads'
+              targetContainer     = $storageAccountParameters.blobServices.value.containers[0].name
+            }
+
+            Write-Verbose "Invoke task with" -Verbose
+            Write-Verbose ($functionInput | ConvertTo-Json | Out-String) -Verbose
+
+            Export-ContentToBlob @functionInput -Verbose
+          azPSVersion: 'latest'
 
   job_deploy_sig:
     runs-on: ubuntu-20.04
@@ -795,6 +798,7 @@ jobs:
       matrix:
         parameterFilePaths:
           [
+            '1.bastion.parameters.json',
             '2.vnetpeer01.parameters.json',
             '3.vnetpeer02.parameters.json',
             '4.azfw.parameters.json',

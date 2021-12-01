@@ -28,8 +28,8 @@ function Get-EndIndex {
         [int] $startIndex,
 
         [Parameter(Mandatory = $false)]
-        [ValidateSet('table', 'list')]
-        [string] $ContentType = 'table'
+        [ValidateSet('table', 'list', 'none')]
+        [string] $ContentType = 'none'
     )
 
     # shift one further
@@ -86,6 +86,9 @@ Mandatory. The new content to merge into the original
 .PARAMETER SectionStartIdentifier
 Mandatory. The identifier/header to search for. If not found, the new section is added at the end of the content array
 
+.PARAMETER ParentStartIdentifier
+Optional. Tell the function that you're currently processing a sub-section (indented by one #) by providing the parent identifier
+
 .EXAMPLE
 Merge-FileWithNewContent -OldContent @('# Title', '', '## Section 1', ...) -NewContent @('# Title', '', '## Section 1', ...) -SectionStartIdentifier '## Resource Types'
 
@@ -99,22 +102,45 @@ function Merge-FileWithNewContent {
         [object[]] $OldContent,
 
         [Parameter(Mandatory)]
-        [object[]] $NewContent,
+        [object[]] $newContent,
+
+        [Parameter(Mandatory = $false)]
+        [string] $ParentStartIdentifier = '',
 
         [Parameter(Mandatory)]
         [string] $SectionStartIdentifier,
 
         [Parameter(Mandatory = $false)]
-        [ValidateSet('table', 'list')]
-        [string] $ContentType = 'table'
+        [ValidateSet('table', 'list', 'none')]
+        [string] $ContentType = 'none'
     )
 
     $startIndex = 0
-    while (-not ($OldContent[$startIndex] -like "*$SectionStartIdentifier") -and -not ($startIndex -ge $OldContent.Count - 1)) {
+    while (-not ($OldContent[$startIndex] -eq $SectionStartIdentifier) -and -not ($startIndex -ge $OldContent.Count - 1)) {
         $startIndex++
     }
 
-    if ($startIndex -eq $OldContent.Count - 1) {
+    # In case we're processing a child section (indented by one #) we should search until the main section starts / end of file is reached
+    if ($startIndex -eq $OldContent.Count - 1 -and -not [String]::IsNullOrEmpty($ParentStartIdentifier)) {
+        $level = $ParentStartIdentifier.TrimStart().Split(' ')[0]
+
+        $parentSectionStartIndex = 0
+        while (-not ($OldContent[$parentSectionStartIndex] -like "*$ParentStartIdentifier") -and -not ($parentSectionStartIndex -ge $OldContent.Count - 1)) {
+            $parentSectionStartIndex++
+        }
+
+        $startIndex = $parentSectionStartIndex + 1
+        while (-not ($OldContent[$startIndex] -like "$level *") -and -not ($startIndex -ge $OldContent.Count - 1)) {
+            $startIndex++
+        }
+
+        if ($OldContent[$startIndex] -like "$level *") {
+            $startIndex--
+        }
+    }
+
+
+    if ($startIndex -eq $OldContent.Count - 1 -and [String]::IsNullOrEmpty($ParentStartIdentifier)) {
         # Section is not existing (end of file)
         $startContent = $OldContent
         if ($OldContent[$startIndex] -ne $SectionStartIdentifier ) {
@@ -140,7 +166,7 @@ function Merge-FileWithNewContent {
                     # Not found section until end of file. Assuming it does not exist
                     $endContent = @()
                     if ($ReadMeFileContent[$startIndex] -notcontains $SectionStartIdentifier) {
-                        $NewContent = @('', $SectionStartIdentifier) + $NewContent
+                        $newContent = @('', $SectionStartIdentifier) + $newContent
                     }
                 } else {
                     $endIndex = Get-EndIndex -ReadMeFileContent $OldContent -startIndex $tableStartIndex -ContentType $ContentType
@@ -159,17 +185,31 @@ function Merge-FileWithNewContent {
                     $listStartIndex = $listStartIndex + 1
                 }
 
-
                 $startContent = $OldContent[0..($listStartIndex - 1)]
 
                 if ($startIndex -eq $ReadMeFileContent.Count - 1) {
                     # Not found section until end of file. Assuming it does not exist
                     $endContent = @()
                     if ($ReadMeFileContent[$startIndex] -notcontains $SectionStartIdentifier) {
-                        $NewContent = @('', $SectionStartIdentifier) + $NewContent
+                        $newContent = @('', $SectionStartIdentifier) + $newContent
                     }
                 } else {
                     $endIndex = Get-EndIndex -ReadMeFileContent $OldContent -startIndex $listStartIndex -ContentType $ContentType
+                    if ($endIndex -ne $OldContent.Count - 1) {
+                        $endContent = $OldContent[$endIndex..($OldContent.Count - 1)]
+                    }
+                }
+            }
+            'none' {
+                if ($OldContent[$startIndex + 1] -like "$level *" -and -not [String]::IsNullOrEmpty($ParentStartIdentifier)) {
+                    # section was not found - let's insert it at the end of the sub-section
+                    $startContent = $OldContent[0..($startIndex)]
+                    $newContent = @($SectionStartIdentifier, '') + $newContent
+                    $endContent = $OldContent[($startIndex + 1)..($OldContent.Count - 1)]
+                } else {
+                    # section was found
+                    $startContent = $OldContent[0..($startIndex)]
+                    $endIndex = Get-EndIndex -ReadMeFileContent $OldContent -startIndex $startIndex -ContentType $ContentType
                     if ($endIndex -ne $OldContent.Count - 1) {
                         $endContent = $OldContent[$endIndex..($OldContent.Count - 1)]
                     }
@@ -184,6 +224,6 @@ function Merge-FileWithNewContent {
     if ($endContent -and (-not [String]::IsNullOrEmpty($endContent[0]))) { $endContent = @('') + $endContent }
 
     # Build result
-    $NewContent = (($startContent + $NewContent + $endContent) | Out-String).TrimEnd().Replace("`r", '').Split("`n")
-    return $NewContent
+    $newContent = (($startContent + $newContent + $endContent) | Out-String).TrimEnd().Replace("`r", '').Split("`n")
+    return $newContent
 }

@@ -1,4 +1,4 @@
-@description('Required. The name of the of the Api Management service.')
+@description('Required. The name of the of the API Management service.')
 param apiManagementServiceName string
 
 @description('Required. Backend Name.')
@@ -7,7 +7,7 @@ param name string
 @description('Optional. Backend Credentials Contract Properties.')
 param credentials object = {}
 
-@description('Optional. Customer Usage Attribution id (GUID). This GUID must be previously registered')
+@description('Optional. Customer Usage Attribution ID (GUID). This GUID must be previously registered')
 param cuaId string = ''
 
 @description('Optional. Backend Description.')
@@ -19,7 +19,7 @@ param protocol string = 'http'
 @description('Optional. Backend Proxy Contract Properties')
 param proxy object = {}
 
-@description('Optional. Management Uri of the Resource in External System. This url can be the Arm Resource Id of Logic Apps, Function Apps or Api Apps.')
+@description('Optional. Management Uri of the Resource in External System. This URL can be the Arm Resource ID of Logic Apps, Function Apps or API Apps.')
 param resourceId string = ''
 
 @description('Optional. Backend Service Fabric Cluster Properties.')
@@ -34,7 +34,7 @@ param tls object = {
   validateCertificateName: false
 }
 
-@description('Required. Runtime Url of the Backend.')
+@description('Required. Runtime URL of the Backend.')
 param url string
 
 module pid_cuaId '.bicep/nested_cuaId.bicep' = if (!empty(cuaId)) {
@@ -42,8 +42,13 @@ module pid_cuaId '.bicep/nested_cuaId.bicep' = if (!empty(cuaId)) {
   params: {}
 }
 
+resource service 'Microsoft.ApiManagement/service@2021-04-01-preview' existing = {
+  name: apiManagementServiceName
+}
+
 resource backend 'Microsoft.ApiManagement/service/backends@2020-06-01-preview' = {
-  name: '${apiManagementServiceName}/${name}'
+  name: name
+  parent: service
   properties: {
     title: !empty(title) ? title : null
     description: !empty(backendDescription) ? backendDescription : null
@@ -59,7 +64,7 @@ resource backend 'Microsoft.ApiManagement/service/backends@2020-06-01-preview' =
   }
 }
 
-@description('The resourceId of the API management service backend')
+@description('The resource ID of the API management service backend')
 output backendResourceId string = backend.id
 
 @description('The name of the API management service backend')

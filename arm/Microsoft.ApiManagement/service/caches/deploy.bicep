@@ -1,4 +1,4 @@
-@description('Required. The name of the of the Api Management service.')
+@description('Required. The name of the of the API Management service.')
 param apiManagementServiceName string
 
 @description('Required. Identifier of the Cache entity. Cache identifier (should be either \'default\' or valid Azure region identifier).')
@@ -7,7 +7,7 @@ param name string
 @description('Required. Runtime connection string to cache. Can be referenced by a named value like so, {{<named-value>}}')
 param connectionString string
 
-@description('Optional. Customer Usage Attribution id (GUID). This GUID must be previously registered')
+@description('Optional. Customer Usage Attribution ID (GUID). This GUID must be previously registered')
 param cuaId string = ''
 
 @description('Optional. Cache description')
@@ -24,8 +24,13 @@ module pid_cuaId '.bicep/nested_cuaId.bicep' = if (!empty(cuaId)) {
   params: {}
 }
 
+resource service 'Microsoft.ApiManagement/service@2021-04-01-preview' existing = {
+  name: apiManagementServiceName
+}
+
 resource cache 'Microsoft.ApiManagement/service/caches@2020-06-01-preview' = {
-  name: '${apiManagementServiceName}/${name}'
+  name: name
+  parent: service
   properties: {
     description: !empty(cacheDescription) ? cacheDescription : null
     connectionString: connectionString
@@ -34,7 +39,7 @@ resource cache 'Microsoft.ApiManagement/service/caches@2020-06-01-preview' = {
   }
 }
 
-@description('The resourceId of the API management service cache')
+@description('The resource ID of the API management service cache')
 output cacheResourceId string = cache.id
 
 @description('The name of the API management service cache')
