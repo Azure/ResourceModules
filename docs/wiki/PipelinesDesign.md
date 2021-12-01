@@ -19,9 +19,9 @@ This section gives you an overview of the design principals the pipelines follow
     - [Publish](#publish)
   - [Shared concepts](#shared-concepts)
     - [Pipeline variables](#pipeline-variables)
-      - [***General***](#general)
-      - [***Template-specs specific (publishing)***](#template-specs-specific-publishing)
-      - [***Private bicep registry specific (publishing)***](#private-bicep-registry-specific-publishing)
+      - [General](#general)
+      - [Template-specs specific (publishing)](#template-specs-specific-publishing)
+      - [Private bicep registry specific (publishing)](#private-bicep-registry-specific-publishing)
     - [Prerequisites](#prerequisites)
     - [Tokens Replacement](#tokens-replacement)
 - [Platform pipelines](#platform-pipelines)
@@ -31,10 +31,13 @@ This section gives you an overview of the design principals the pipelines follow
   - [Wiki pipeline](#wiki-pipeline)
 - [DevOps-Tool-specific considerations](#devops-tool-specific-considerations)
   - [GitHub Workflows](#github-workflows)
-    - [**Component:** Variable file(s)](#component-variable-files)
-    - [**Component:** Composite Actions**](#component-composite-actions)
-    - [**Component:** Workflows](#component-workflows)
-
+    - [Component: Variable files](#github-component-variable-files)
+    - [Component: Composite Actions](#github-component-composite-actions)
+    - [Component: Workflows](#github-component-workflows)
+  - [Azure DevOps Pipelines](#azure-devops-pipelines)
+    - [Component: Variable files](#azure-devops-component-variable-files)
+    - [Component: Pipeline Templates](#azure-devops-component-pipeline-templates)
+    - [Component: Pipelines](#azure-devops-component-pipelines)
 ---
 
 # Module Pipelines
@@ -200,21 +203,22 @@ The purpose of this pipeline is to sync any files from the `docs/wiki` folder to
 Depending on what DevOps tool you want to use to host the platform you will find the corresponding code in different locations. This section will give you an overview of these locations and what they are used for.
 
 - [GitHub Workflows](#github-workflows)
+- [Azure DevOps Pipelines](#azure-devops-pipelines)
 
 ## GitHub Workflows
 
 GitHub actions & workflows are the CI/CD solution provided by GitHub. To get the platform going, we use the following three elements:
-- **Variable Files:** These file(s) contain the configuration for all module pipelines in this repository.
-- **Composite Actions:** Composite actions bundle a set of actions for a specific purpose together. They are referenced by module pipelines.
-- **Workflows:** GitHub workflows make up all our pipelines and leverage the _composite actions_. We have one workflow per module, plus several platform pipelines.
+- **[Variable files:](#github-component-variable-files)** These file(s) contain the configuration for all module pipelines in this repository.
+- **[Composite actions:](#github-component-composite-actions)** Composite actions bundle a set of actions for a specific purpose together. They are referenced by module pipelines.
+- **[Workflows:](#github-component-workflows)** GitHub workflows make up all our pipelines and leverage the _composite actions_. We have one workflow per module, plus several platform pipelines.
 
 In the following sub-sections we will take a deeper look into each element.
 
-### **Component:** Variable file(s)
+### **GitHub Component:** Variable files
 
 The [pipeline configuration file](#pipeline-variables) can be found at `.github/variables/variables.module.json`.
 
-### **Component:** Composite Actions**
+### **GitHub Component:** Composite Actions**
 
 We use several composite actions to perform various tasks shared by our module workflows:
 
@@ -231,7 +235,7 @@ We use several composite actions to perform various tasks shared by our module w
 - **getWorkflowInput:** <p>
   This action implements allows us to fetch workflow input values from the module's workflow file, even if the pipeline was not triggered via a `workflow_dispatch` action. Without it we would not be able to process the contained information and would need to duplicate the configuration as workflow variables.
 
-### **Component:** Workflows
+### **GitHub Component:** Workflows
 
 These are the individual end-to-end workflows we have for each module. Leveraging the [composite actions](#component-composite-actions) described before, they orchestrate the testing & publishing of their module.
 
@@ -273,3 +277,15 @@ Comparing multiple workflows you'll notice they are almost identically, yet diff
       resourceGroupName: '${{ env.resourceGroupName }}'
       relativePathOfRemovalScript: 'utilities/pipelines/resourceRemoval/Remove-vWan.ps1'
   ```
+
+## Azure DevOps Pipelines
+
+Azure DevOps pipelines are the CI/CD solution provided by Azure DevOps. To get the platform going, we use the following three elements:
+
+- **[Variable files:](#azure-devops-component-variable-files)** ...
+- **[Pipeline templates:](#azure-devops-component-pipeline-templates)** ...
+- **[Pipelines:](#azure-devops-component-pipelines)** ...
+
+### **Azure DevOps Component:** Variable files
+### **Azure DevOps Component:** Pipeline templates
+### **Azure DevOps Component:** Pipelines
