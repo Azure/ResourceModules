@@ -41,7 +41,7 @@ param timeZone string = ''
 @description('Optional. Time used as a basis for e.g. the schedule start date.')
 param baseTime string = utcNow('u')
 
-@description('Optional. Customer Usage Attribution id (GUID). This GUID must be previously registered.')
+@description('Optional. Customer Usage Attribution ID (GUID). This GUID must be previously registered.')
 param cuaId string = ''
 
 module pid_cuaId '.bicep/nested_cuaId.bicep' = if (!empty(cuaId)) {
@@ -57,20 +57,20 @@ resource schedule 'Microsoft.Automation/automationAccounts/schedules@2020-01-13-
   name: name
   parent: automationAccount
   properties: {
-    advancedSchedule: (empty(advancedSchedule) ? null : advancedSchedule)
-    description: (empty(scheduleDescription) ? null : scheduleDescription)
-    expiryTime: (empty(expiryTime) ? null : expiryTime)
-    frequency: (empty(frequency) ? 'OneTime' : frequency)
-    interval: ((0 == interval) ? null : interval)
-    startTime: (empty(startTime) ? dateTimeAdd(baseTime, 'PT10M') : startTime)
-    timeZone: (empty(timeZone) ? null : timeZone)
+    advancedSchedule: !empty(advancedSchedule) ? advancedSchedule : null
+    description: !empty(scheduleDescription) ? scheduleDescription : null
+    expiryTime: !empty(expiryTime) ? expiryTime : null
+    frequency: !empty(frequency) ? frequency : 'OneTime'
+    interval: (interval != 0) ? interval : null
+    startTime: !empty(startTime) ? startTime : dateTimeAdd(baseTime, 'PT10M')
+    timeZone: !empty(timeZone) ? timeZone : null
   }
 }
 
 @description('The name of the deployed schedule')
 output scheduleName string = schedule.name
 
-@description('The id of the deployed schedule')
+@description('The resource ID of the deployed schedule')
 output scheduleResourceId string = schedule.id
 
 @description('The resource group of the deployed schedule')

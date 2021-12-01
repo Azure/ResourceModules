@@ -1,10 +1,10 @@
-# DocumentDB Database Account MongoDB databases Collections `[Microsoft.DocumentDB/databaseAccount/mongodbDatabases/collections]`
+# DocumentDB Database Account MongoDB databases Collections `[Microsoft.DocumentDB/databaseAccounts/mongodbDatabases/collections]`
 
 This module deploys a collection within a MongoDB.
 
 ## Resource Types
 
-| Resource Type | Api Version |
+| Resource Type | API Version |
 | :-- | :-- |
 | `Microsoft.DocumentDB/databaseAccounts/mongodbDatabases/collections` | 2021-07-01-preview |
 
@@ -12,7 +12,7 @@ This module deploys a collection within a MongoDB.
 
 | Parameter Name | Type | Default Value | Possible Values | Description |
 | :-- | :-- | :-- | :-- | :-- |
-| `cuaId` | string |  |  | Optional. Customer Usage Attribution id (GUID). This GUID must be previously registered |
+| `cuaId` | string |  |  | Optional. Customer Usage Attribution ID (GUID). This GUID must be previously registered |
 | `databaseAccountName` | string |  |  | Required. Name of the Cosmos DB database account. |
 | `indexes` | array |  |  | Required. Indexes for the collection |
 | `mongodbDatabaseName` | string |  |  | Required. Name of the mongodb database |
@@ -83,8 +83,8 @@ The shard key and partition kind pair, only support "Hash" partition kind.
 | Output Name | Type | Description |
 | :-- | :-- | :-- |
 | `collectionName` | string | The name of the mongodb database. |
-| `collectionResourceGroup` | string | The name of the Resource Group the mongodb database was created in. |
-| `collectionResourceId` | string | The Resource Id of the mongodb database. |
+| `collectionResourceGroup` | string | The name of the resource group the mongodb database was created in. |
+| `collectionResourceId` | string | The resource ID of the mongodb database. |
 
 ## Template references
 

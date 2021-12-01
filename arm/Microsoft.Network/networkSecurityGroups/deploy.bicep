@@ -1,5 +1,5 @@
 @description('Required. Name of the Network Security Group.')
-param networkSecurityGroupName string
+param name string
 
 @description('Optional. Location for all resources.')
 param location string = resourceGroup().location
@@ -7,7 +7,7 @@ param location string = resourceGroup().location
 @description('Optional. Array of Security Rules to deploy to the Network Security Group. When not provided, an NSG including only the built-in roles will be deployed.')
 param networkSecurityGroupSecurityRules array = []
 
-@description('Optional. Resource identifier of the Diagnostic Storage Account.')
+@description('Optional. Resource ID of the diagnostic storage account.')
 param diagnosticStorageAccountId string = ''
 
 @description('Optional. Specifies the number of days that logs will be kept for; a value of 0 will retain data indefinitely.')
@@ -15,7 +15,7 @@ param diagnosticStorageAccountId string = ''
 @maxValue(365)
 param diagnosticLogsRetentionInDays int = 365
 
-@description('Optional. Resource identifier of Log Analytics.')
+@description('Optional. Resource ID of log analytics.')
 param workspaceId string = ''
 
 @description('Optional. Resource ID of the event hub authorization rule for the Event Hubs namespace in which the event hub should be created or streamed to.')
@@ -38,7 +38,7 @@ param roleAssignments array = []
 @description('Optional. Tags of the NSG resource.')
 param tags object = {}
 
-@description('Optional. Customer Usage Attribution id (GUID). This GUID must be previously registered')
+@description('Optional. Customer Usage Attribution ID (GUID). This GUID must be previously registered')
 param cuaId string = ''
 
 @description('Optional. The name of logs that will be streamed.')
@@ -66,7 +66,7 @@ module pid_cuaId '.bicep/nested_cuaId.bicep' = if (!empty(cuaId)) {
 }
 
 resource networkSecurityGroup 'Microsoft.Network/networkSecurityGroups@2021-02-01' = {
-  name: networkSecurityGroupName
+  name: name
   location: location
   tags: tags
   properties: {
@@ -119,15 +119,15 @@ module networkSecurityGroup_rbac '.bicep/nested_rbac.bicep' = [for (roleAssignme
   params: {
     principalIds: roleAssignment.principalIds
     roleDefinitionIdOrName: roleAssignment.roleDefinitionIdOrName
-    resourceName: networkSecurityGroup.name
+    resourceId: networkSecurityGroup.id
   }
 }]
 
 @description('The resource group the network security group was deployed into')
-output networkSecurityGroupsResourceGroup string = resourceGroup().name
+output networkSecurityGroupResourceGroup string = resourceGroup().name
 
-@description('The resourceId of the network security group')
-output networkSecurityGroupsResourceId string = networkSecurityGroup.id
+@description('The resource ID of the network security group')
+output networkSecurityGroupResourceId string = networkSecurityGroup.id
 
 @description('The name of the network security group')
-output networkSecurityGroupsName string = networkSecurityGroup.name
+output networkSecurityGroupName string = networkSecurityGroup.name

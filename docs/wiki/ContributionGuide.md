@@ -19,7 +19,7 @@ The preferred method of contribution requires you to create your own fork and cr
 
 You can contribute to the Wiki in different ways depending on your own interests, bugs you see or IP you want to add.
 
-For starters it is highly recommended to consult and understand the ['Modules Design'](.\ModulesDesign.md) section of the wiki.
+For starters it is highly recommended to consult and understand the ['Modules Design'](./ModulesDesign) section of the wiki.
 
 How you proceed from here depends on your particular situation:
 
@@ -36,4 +36,4 @@ To contribute to the modules, set your environment up, test the updated/added mo
 
 <img src="./media/statusBadge.jpg" alt="Status Badge" height="178" width="422">
 
-Please make sure to set your environment up and also consult the ['Pipeline Design'](.\PipelinesDesign.md) and ['Pipeline Usage'](.\PipelinesUsage.md) sections.
+Please make sure to set your environment up and also consult the ['Pipeline Design'](./PipelinesDesign) and ['Pipeline Usage'](.\PipelinesUsage) sections.

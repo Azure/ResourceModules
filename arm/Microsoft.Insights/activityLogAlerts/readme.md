@@ -1,10 +1,10 @@
-# Activity Log Alert `[Microsoft.Insights/activityLogAlerts]`
+# Activity Log Alerts `[Microsoft.Insights/activityLogAlerts]`
 
-This module deploys an Alert based on Activity Log
+This module deploys an Alert based on Activity Log.
 
 ## Resource Types
 
-| Resource Type | Api Version |
+| Resource Type | API Version |
 | :-- | :-- |
 | `Microsoft.Authorization/roleAssignments` | 2020-04-01-preview |
 | `Microsoft.Insights/activityLogAlerts` | 2020-10-01 |
@@ -15,13 +15,13 @@ This module deploys an Alert based on Activity Log
 | :-- | :-- | :-- | :-- | :-- |
 | `actions` | array | `[]` |  | Optional. The list of actions to take when alert triggers. |
 | `alertDescription` | string |  |  | Optional. Description of the alert. |
-| `alertName` | string |  |  | Required. The name of the Alert. |
 | `conditions` | array |  |  | Required. The condition that will cause this alert to activate. Array of objects |
-| `cuaId` | string |  |  | Optional. Customer Usage Attribution id (GUID). This GUID must be previously registered |
+| `cuaId` | string |  |  | Optional. Customer Usage Attribution ID (GUID). This GUID must be previously registered |
 | `enabled` | bool | `True` |  | Optional. Indicates whether this alert is enabled. |
 | `location` | string | `global` |  | Optional. Location for all resources. |
+| `name` | string |  |  | Required. The name of the alert. |
 | `roleAssignments` | array | `[]` |  | Optional. Array of role assignment objects that contain the 'roleDefinitionIdOrName' and 'principalId' to define RBAC role assignments on this resource. In the roleDefinitionIdOrName attribute, you can provide either the display name of the role definition, or its fully qualified ID in the following format: '/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11' |
-| `scopes` | array | `[[subscription().id]]` |  | Required. the list of resource id's that this metric alert is scoped to. |
+| `scopes` | array | `[[subscription().id]]` |  | Required. the list of resource IDs that this metric alert is scoped to. |
 | `tags` | object | `{object}` |  | Optional. Tags of the resource. |
 
 ### Parameter Usage: actions
@@ -135,13 +135,6 @@ Each condition can specify only one field between `equals` and `containsAny`.
 "roleAssignments": {
     "value": [
         {
-            "roleDefinitionIdOrName": "Desktop Virtualization User",
-            "principalIds": [
-                "12345678-1234-1234-1234-123456789012", // object 1
-                "78945612-1234-1234-1234-123456789012" // object 2
-            ]
-        },
-        {
             "roleDefinitionIdOrName": "Reader",
             "principalIds": [
                 "12345678-1234-1234-1234-123456789012", // object 1
@@ -177,11 +170,11 @@ Tag names and tag values can be provided as needed. A tag can be left without a 
 
 ## Outputs
 
-| Output Name | Type |
-| :-- | :-- |
-| `activityLogAlertName` | string |
-| `activityLogAlertResourceGroup` | string |
-| `activityLogAlertResourceId` | string |
+| Output Name | Type | Description |
+| :-- | :-- | :-- |
+| `activityLogAlertName` | string | The name of the activity log alert |
+| `activityLogAlertResourceGroup` | string | The resource group the activity log alert was deployed into |
+| `activityLogAlertResourceId` | string | The resource ID of the activity log alert |
 
 ## Template references
 

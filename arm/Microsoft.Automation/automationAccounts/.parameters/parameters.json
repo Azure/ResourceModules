@@ -46,6 +46,36 @@
                 }
             ]
         },
+        "variables": {
+            "value": [
+                {
+                    "name": "TestString",
+                    "value": "\"TestString\"",
+                    "description": "TestStringDescription"
+                },
+                {
+                    "name": "TestInteger",
+                    "value": "500",
+                    "description": "TestIntegerDescription"
+                },
+                {
+                    "name": "TestBoolean",
+                    "value": "false",
+                    "description": "TestBooleanDescription"
+                },
+                {
+                    "name": "TestDateTime",
+                    "value": "\"\\/Date(1637934042656)\\/\"",
+                    "description": "TestDateTimeDescription"
+                },
+                {
+                    "name": "TestEncryptedVariable",
+                    "value": "\"TestEncryptedValue\"",
+                    "description": "TestEncryptedDescription",
+                    "isEncrypted": true
+                }
+            ]
+        },
         // "linkedWorkspaceId": {
         //     "value": "/subscriptions/<<subscriptionId>>/resourcegroups/test-rg/providers/Microsoft.OperationalInsights/workspaces/test-law"
         // },
@@ -125,6 +155,14 @@
         //         }
         //     ]
         // },
+        "systemAssignedIdentity": {
+            "value": true
+        },
+        "userAssignedIdentities": {
+            "value": {
+                "/subscriptions/<<subscriptionId>>/resourcegroups/validation-rg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/adp-sxx-az-msi-x-001": {}
+            }
+        },
         "roleAssignments": {
             "value": [
                 {
@@ -134,6 +172,21 @@
                     ]
                 }
             ]
+        },
+        "diagnosticLogsRetentionInDays": {
+            "value": 7
+        },
+        "diagnosticStorageAccountId": {
+            "value": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Storage/storageAccounts/adpsxxazsaweux001"
+        },
+        "workspaceId": {
+            "value": "/subscriptions/<<subscriptionId>>/resourcegroups/validation-rg/providers/microsoft.operationalinsights/workspaces/adp-sxx-az-law-x-001"
+        },
+        "eventHubAuthorizationRuleId": {
+            "value": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.EventHub/namespaces/adp-sxx-az-evhns-x-001/AuthorizationRules/RootManageSharedAccessKey"
+        },
+        "eventHubName": {
+            "value": "adp-sxx-az-evh-x-001"
         }
     }
 }

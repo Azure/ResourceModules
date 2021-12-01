@@ -29,10 +29,10 @@ param roleAssignments array = []
 @maxValue(365)
 param diagnosticLogsRetentionInDays int = 365
 
-@sys.description('Optional. Resource identifier of the Diagnostic Storage Account.')
+@sys.description('Optional. Resource ID of the diagnostic storage account.')
 param diagnosticStorageAccountId string = ''
 
-@sys.description('Optional. Resource identifier of Log Analytics.')
+@sys.description('Optional. Resource ID of log analytics.')
 param workspaceId string = ''
 
 @sys.description('Optional. Resource ID of the event hub authorization rule for the Event Hubs namespace in which the event hub should be created or streamed to.')
@@ -52,7 +52,7 @@ param lock string = 'NotSpecified'
 @sys.description('Optional. Tags of the resource.')
 param tags object = {}
 
-@sys.description('Optional. Customer Usage Attribution id (GUID). This GUID must be previously registered')
+@sys.description('Optional. Customer Usage Attribution ID (GUID). This GUID must be previously registered')
 param cuaId string = ''
 
 @sys.description('Optional. The name of logs that will be streamed.')
@@ -142,10 +142,15 @@ module appGroup_rbac '.bicep/nested_rbac.bicep' = [for (roleAssignment, index) i
   params: {
     principalIds: roleAssignment.principalIds
     roleDefinitionIdOrName: roleAssignment.roleDefinitionIdOrName
-    resourceName: appGroup.name
+    resourceId: appGroup.id
   }
 }]
 
+@sys.description('The resource ID  of the AVD application group')
 output appGroupResourceId string = appGroup.id
+
+@sys.description('The resource group the AVD application group was deployed into')
 output appGroupResourceGroup string = resourceGroup().name
+
+@sys.description('The name of the AVD application group')
 output appGroupName string = appGroup.name

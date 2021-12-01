@@ -1,6 +1,7 @@
-# Data Factory Integration RunTimes `[Microsoft.DataFactory/factories/integrationRuntimes]`
+# Data Factory Integration RunTimes `[Microsoft.DataFactory/factories/integrationRuntime]`
 
 This module deploys a Managed or Self-Hosted Integration Runtime for an Azure Data Factory
+
 ## Resource types
 
 | Resource Type | API Version |
@@ -11,11 +12,11 @@ This module deploys a Managed or Self-Hosted Integration Runtime for an Azure Da
 
 | Parameter Name | Type | Default Value | Possible Values | Description |
 | :-- | :-- | :-- | :-- | :-- |
-| `cuaId` | string |  |  | Optional. Customer Usage Attribution ID (GUID). This GUID must be previously registered|
-| `name` | string |  |  | Required. The name of the Integration Runtime. |
+| `cuaId` | string |  |  | Optional. Customer Usage Attribution ID (GUID). This GUID must be previously registered |
 | `dataFactoryName` | string |  |  | Required. The name of the Azure Data Factory |
-| `type` | string |  | `[Managed, Self-Hosted]`  | Required. The type of Integration Runtime |
-| `managedVirtualNetworkName` | string |  |  | Optional. The name of the Managed Virtual Network if using type "Managed". |
+| `managedVirtualNetworkName` | string |  |  | Optional. The name of the Managed Virtual Network if using type "Managed"  |
+| `name` | string |  |  | Required. The name of the Integration Runtime |
+| `type` | string |  | `[Managed, SelfHosted]` | Required. The type of Integration Runtime |
 | `typeProperties` | object |  |  | Required. Integration Runtime type properties. |
 
 ### Parameter Usage: [`typeProperties`](https://docs.microsoft.com/en-us/azure/templates/microsoft.datafactory/factories/integrationruntimes?tabs=bicep#integrationruntime-objects)
@@ -35,9 +36,9 @@ This module deploys a Managed or Self-Hosted Integration Runtime for an Azure Da
 
 | Output Name | Type | Description |
 | :-- | :-- | :-- |
-| `integrationRuntimeResourceGroup` | string | The name of the Resource Group the Integration Runtime was created in. |
-| `integrationRuntimeName` | string | The name of the Integration Runtime. |
 | `integrationRuntimeId` | string | The resource ID of the Integration Runtime. |
+| `integrationRuntimeName` | string | The name of the Integration Runtime. |
+| `integrationRuntimeResourceGroup` | string | The name of the Resource Group the Integration Runtime was created in. |
 
 ## Template references
 

@@ -1,4 +1,4 @@
-# Data Factory Managed Virtual Network `[Microsoft.DataFactory/factories/managedVirtualNetworks]`
+# Data Factory Managed Virtual Network `[Microsoft.DataFactory/factories/managedVirtualNetwork]`
 
 This module deploys a Managed Virtual Network for an Azure Data Factory
 
@@ -12,17 +12,17 @@ This module deploys a Managed Virtual Network for an Azure Data Factory
 
 | Parameter Name | Type | Default Value | Possible Values | Description |
 | :-- | :-- | :-- | :-- | :-- |
-| `dataFactoryName` | string |  |  | Required. The name of the Azure Factory|
-| `name` | string |  |  | Required. The name of the Managed Virtual Network|
 | `cuaId` | string |  |  | Optional. Customer Usage Attribution ID (GUID). This GUID must be previously registered |
+| `dataFactoryName` | string |  |  | Required. The name of the Azure Data Factory |
+| `name` | string |  |  | Required. The name of the Managed Virtual Network |
 
 ## Outputs
 
 | Output Name | Type | Description |
 | :-- | :-- | :-- |
+| `managedVirtualNetworkId` | string | The resource ID of the Managed Virtual Network. |
+| `managedVirtualNetworkName` | string | The name of the Managed Virtual Network. |
 | `managedVirtualNetworkResourceGroup` | string | The name of the Resource Group the Managed Virtual Network was created in. |
-| `managedVirtualNetworkName` | string | The name of the Managed Virtual Network.|
-| `managedVirtualNetworkId` | string | The resource ID of the Managed Virtual Network.|
 
 ## Template references
 

@@ -1,5 +1,5 @@
 @description('Required. The name of the machine learning workspace.')
-param workspaceName string
+param name string
 
 @description('Optional. Location for all resources.')
 param location string = resourceGroup().location
@@ -11,16 +11,16 @@ param location string = resourceGroup().location
 ])
 param sku string
 
-@description('Required. The resource id of the associated Storage Account.')
+@description('Required. The resource ID of the associated Storage Account.')
 param associatedStorageAccountResourceId string
 
-@description('Required. The resource id of the associated Key Vault.')
+@description('Required. The resource ID of the associated Key Vault.')
 param associatedKeyVaultResourceId string
 
-@description('Required. The resource id of the associated Application Insights.')
+@description('Required. The resource ID of the associated Application Insights.')
 param associatedApplicationInsightsResourceId string
 
-@description('Optional. The resource id of the associated Container Registry.')
+@description('Optional. The resource ID of the associated Container Registry.')
 param associatedContainerRegistryResourceId string = ''
 
 @allowed([
@@ -30,6 +30,9 @@ param associatedContainerRegistryResourceId string = ''
 ])
 @description('Optional. Specify the type of lock.')
 param lock string = 'NotSpecified'
+
+@description('Optional. Enables system assigned managed identity on the resource.')
+param systemAssignedIdentity bool = false
 
 @description('Optional. The flag to signal HBI data in the workspace and reduce diagnostic data collected by the service.')
 param hbiWorkspace bool = false
@@ -46,21 +49,18 @@ param privateEndpoints array = []
 @description('Optional. Resource tags.')
 param tags object = {}
 
-@description('Optional. Customer Usage Attribution id (GUID). This GUID must be previously registered')
+@description('Optional. Customer Usage Attribution ID (GUID). This GUID must be previously registered')
 param cuaId string = ''
-
-@description('Optional. The name of the Diagnostic setting.')
-param diagnosticSettingName string = 'service'
 
 @description('Optional. Specifies the number of days that logs will be kept for; a value of 0 will retain data indefinitely.')
 @minValue(0)
 @maxValue(365)
 param diagnosticLogsRetentionInDays int = 365
 
-@description('Optional. Resource identifier of the Diagnostic Storage Account.')
+@description('Optional. Resource ID of the diagnostic storage account.')
 param diagnosticStorageAccountId string = ''
 
-@description('Optional. Resource identifier of Log Analytics.')
+@description('Optional. Resource ID of log analytics.')
 param workspaceId string = ''
 
 @description('Optional. Resource ID of the event hub authorization rule for the Event Hubs namespace in which the event hub should be created or streamed to.')
@@ -112,24 +112,28 @@ var diagnosticsMetrics = [for metric in metricsToEnable: {
   }
 }]
 
+var identityType = systemAssignedIdentity ? 'SystemAssigned' : 'None'
+
+var identity = identityType != 'None' ? {
+  type: identityType
+} : null
+
 module pid_cuaId '.bicep/nested_cuaId.bicep' = if (!empty(cuaId)) {
   name: 'pid-${cuaId}'
   params: {}
 }
 
 resource workspace 'Microsoft.MachineLearningServices/workspaces@2021-04-01' = {
-  name: workspaceName
+  name: name
   location: location
   tags: tags
   sku: {
     name: sku
     tier: sku
   }
-  identity: {
-    type: 'SystemAssigned'
-  }
+  identity: identity
   properties: {
-    friendlyName: workspaceName
+    friendlyName: name
     storageAccount: associatedStorageAccountResourceId
     keyVault: associatedKeyVaultResourceId
     applicationInsights: associatedApplicationInsightsResourceId
@@ -149,7 +153,7 @@ resource workspace_lock 'Microsoft.Authorization/locks@2016-09-01' = if (lock !=
 }
 
 resource workspace_diagnosticSettings 'Microsoft.Insights/diagnosticsettings@2017-05-01-preview' = if ((!empty(diagnosticStorageAccountId)) || (!empty(workspaceId)) || (!empty(eventHubAuthorizationRuleId)) || (!empty(eventHubName))) {
-  name: '${workspaceName}-${diagnosticSettingName}'
+  name: '${name}-diagnosticSettings'
   properties: {
     storageAccountId: (empty(diagnosticStorageAccountId) ? null : diagnosticStorageAccountId)
     workspaceId: (empty(workspaceId) ? null : workspaceId)
@@ -176,10 +180,18 @@ module workspace_rbac '.bicep/nested_rbac.bicep' = [for (roleAssignment, index) 
   params: {
     principalIds: roleAssignment.principalIds
     roleDefinitionIdOrName: roleAssignment.roleDefinitionIdOrName
-    resourceName: workspace.name
+    resourceId: workspace.id
   }
 }]
 
+@description('The resource ID of the machine learning service')
 output machineLearningServiceResourceId string = workspace.id
+
+@description('The resource group the machine learning service was deployed into')
 output machineLearningServiceResourceGroup string = resourceGroup().name
+
+@description('The name of the machine learning service')
 output machineLearningServiceName string = workspace.name
+
+@description('The principal ID of the system assigned identity.')
+output principalId string = systemAssignedIdentity ? workspace.identity.principalId : ''

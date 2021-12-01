@@ -6,24 +6,34 @@ This section gives you an overview of the design principals the pipelines follow
 
 ### _Navigation_
 
+- [Pipelines Design](#pipelines-design)
+    - [_Navigation_](#navigation)
 - [Module Pipelines](#module-pipelines)
-  - [Inputs](#module-pipeline-inputs)
+  - [Module pipeline inputs](#module-pipeline-inputs)
   - [Pipeline phases](#pipeline-phases)
     - [Validate](#validate)
+      - [Static module validation](#static-module-validation)
+      - [Simulated deployment validation](#simulated-deployment-validation)
     - [Test deploy](#test-deploy)
     - [Removal](#removal)
-    - [Publish](#Publish)
+    - [Publish](#publish)
   - [Shared concepts](#shared-concepts)
-    - [Variable file(s)](#pipeline-variables)
-    - [Validation prerequisites](#validation-prerequisites)
+    - [Pipeline variables](#pipeline-variables)
+      - [***General***](#general)
+      - [***Template-specs specific (publishing)***](#template-specs-specific-publishing)
+      - [***Private bicep registry specific (publishing)***](#private-bicep-registry-specific-publishing)
+    - [Prerequisites](#prerequisites)
     - [Tokens Replacement](#tokens-replacement)
-- [Platform pipelines](#Platform-pipelines)
+- [Platform pipelines](#platform-pipelines)
   - [Dependencies pipeline](#dependencies-pipeline)
-    - [Inputs](#dependencies-pipeline-inputs)
+    - [Dependencies pipeline inputs](#dependencies-pipeline-inputs)
   - [ReadMe pipeline](#readme-pipeline)
   - [Wiki pipeline](#wiki-pipeline)
 - [DevOps-Tool-specific considerations](#devops-tool-specific-considerations)
   - [GitHub Workflows](#github-workflows)
+    - [**Component:** Variable file(s)](#component-variable-files)
+    - [**Component:** Composite Actions**](#component-composite-actions)
+    - [**Component:** Workflows](#component-workflows)
 
 ---
 
@@ -50,7 +60,7 @@ To "build"/"bake" the modules, a dedicated pipeline is used for each module to v
 1. **Validate**:
    1. Running a set of static Pester tests against the template
    1. Validating the template by invoking Azure’s validation API (Test-AzResourceGroupDeployment – or the same for other scopes)
-1. **Test deploy**: we deploy each module by using a pre-defined set of parameters to a ‘sandbox’ subscription in Azure to see if it’s really working
+1. **Test deploy**: we deploy each module by using a predefined set of parameters to a ‘sandbox’ subscription in Azure to see if it’s really working
    1. **Removal**: The test suite is cleaned up by removing all deployed test resources again
 1. **Publish**: the proven results are copied/published to a configured location such as template specs, the bicep registry, Azure DevOps artifacts, etc.
 
@@ -66,7 +76,7 @@ The validation phase performs all test outside of a test deployment. This includ
 
 #### Static module validation
 
-This static validation executes the tests documented in the [testing](./Testing.md) section. Without diving into to much detail, we test aspects like a proper ReadMe documentation, a proper module folder structure, a minimum number of refresh of the leveraged of API versions and the like.
+This static validation executes the tests documented in the [testing](./Testing) section. Without diving into to much detail, we test aspects like a proper ReadMe documentation, a proper module folder structure, a minimum number of refresh of the leveraged of API versions and the like.
 
 #### Simulated deployment validation
 
@@ -84,14 +94,9 @@ Note that, for the deployments we have to account for certain [prerequisites](#p
 
 ### Removal
 
-The removal phase is strongly coupled with the previous deployment phase. Fundamentally, we want to remove any test-deployed resource after its test concluded. If we would not, we would generate unnecessary costs and may temper with any subsequent test. Some resources may require a dedicated logic to be removed. This logic should be stored alongside the generally utilized removal script in the `.utilities/pipelines/resourceRemoval` folder and be referenced by the corresponding module pipeline.
+The removal phase is strongly coupled with the previous deployment phase. Fundamentally, we want to remove any test-deployed resource after its test concluded. If we would not, we would generate unnecessary costs and may temper with any subsequent test. Some resources may require a dedicated logic to be removed. This logic should be stored alongside the generally utilized removal script in the `.utilities/pipelines/resourceRemoval` folder and be referenced by the `Remove-DeployedModule.ps1` script that orchestrates the removal.
 
-> **Note:** At the time of this writing, resources to be removed are identified using Azure tags. This means, at deployment time, a specific tag is applied to the resources which is then picked up by the removal phase to remove the same. However, while this solution works for most modules, it does not for all. The main reasons why it would fail are:
-> - Lack of 'Tag' support
-> - Soft-delete
-> - Resource removal must occur in a specific order
->
-> To account for these cases, a new approach is implemented and will succeed the current solution.
+Most of the removal scripts rely on the deployment name used during the preceding deployment step. Based on this name in combination with the template file path, the removal script find the corresponding deployment and removes all contained resources.
 
 ### Publish
 
@@ -220,9 +225,7 @@ We use several composite actions to perform various tasks shared by our module w
 - **validateModuleDeploy:** <p>
   This action performs the [simulated deployment](#simulated-deployment-validation) using a provided parameter file.
 - **deployModule:** <p>
-  This action performs an [actual deployment](#test-deploy) to Azure using a provided parameter file.
-- **removeModule:** <p>
-  This actual is responsible to [remove](#removal) a resource following it's [test deployment](#test-deploy)
+  This action performs an [actual deployment](#test-deploy) to Azure using a provided parameter file. Once a deployment ran it [removes](#removal) the resource
 - **publishModule:** <p>
   This action is capable of [publishing](#publish) the given template to a location specified in the pipeline [variable file](#component-variable-files).
 - **getWorkflowInput:** <p>
@@ -230,7 +233,7 @@ We use several composite actions to perform various tasks shared by our module w
 
 ### **Component:** Workflows
 
-These are the individual end-2-end workflows we have for each module. Leveraging the [composite actions](#component-composite-actions) described before, they orchestrate the testing & publishing of their module.
+These are the individual end-to-end workflows we have for each module. Leveraging the [composite actions](#component-composite-actions) described before, they orchestrate the testing & publishing of their module.
 
 Comparing multiple workflows you'll notice they are almost identically, yet differ in a few important areas:
 

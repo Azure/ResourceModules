@@ -1,5 +1,5 @@
 @description('Required. This is the name of the ExpressRoute circuit')
-param circuitName string
+param name string
 
 @description('Required. This is the name of the ExpressRoute Service Provider. It must exactly match one of the Service Providers from List ExpressRoute Service Providers API call.')
 param serviceProviderName string
@@ -62,10 +62,10 @@ param location string = resourceGroup().location
 @maxValue(365)
 param diagnosticLogsRetentionInDays int = 365
 
-@description('Optional. Resource identifier of the Diagnostic Storage Account.')
+@description('Optional. Resource ID of the diagnostic storage account.')
 param diagnosticStorageAccountId string = ''
 
-@description('Optional. Resource identifier of Log Analytics.')
+@description('Optional. Resource ID of log analytics.')
 param workspaceId string = ''
 
 @description('Optional. Resource ID of the event hub authorization rule for the Event Hubs namespace in which the event hub should be created or streamed to.')
@@ -88,7 +88,7 @@ param roleAssignments array = []
 @description('Optional. Tags of the resource.')
 param tags object = {}
 
-@description('Optional. Customer Usage Attribution id (GUID). This GUID must be previously registered')
+@description('Optional. Customer Usage Attribution ID (GUID). This GUID must be previously registered')
 param cuaId string = ''
 
 @description('Optional. The name of logs that will be streamed.')
@@ -146,7 +146,7 @@ module pid_cuaId '.bicep/nested_cuaId.bicep' = if (!empty(cuaId)) {
 }
 
 resource expressRouteCircuits 'Microsoft.Network/expressRouteCircuits@2021-02-01' = {
-  name: circuitName
+  name: name
   location: location
   tags: tags
   sku: {
@@ -191,11 +191,11 @@ module expressRouteCircuits_rbac '.bicep/nested_rbac.bicep' = [for (roleAssignme
   params: {
     principalIds: roleAssignment.principalIds
     roleDefinitionIdOrName: roleAssignment.roleDefinitionIdOrName
-    resourceName: expressRouteCircuits.name
+    resourceId: expressRouteCircuits.id
   }
 }]
 
-@description('The resourceId of express route curcuit')
+@description('The resource ID of express route curcuit')
 output expressRouteCircuitResourceId string = expressRouteCircuits.id
 
 @description('The resource group the express route curcuit was deployed into')

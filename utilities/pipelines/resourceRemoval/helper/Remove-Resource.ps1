@@ -32,6 +32,10 @@ function Remove-ResourceInner {
             if ($PSCmdlet.ShouldProcess(('Resource [{0}]' -f $resource.resourceId), 'Remove')) {
                 $null = Remove-AzResource -ResourceId $resource.resourceId -Force -ErrorAction 'Stop'
             }
+
+            # If we removed a parent remove its children
+            $resourceToRemove = $resourceToRemove | Where-Object { $_.resourceId -notmatch $resource.resourceId }
+            $resourcesToRetry = $resourcesToRetry | Where-Object { $_.resourceId -notmatch $resource.resourceId }
         } catch {
             Write-Warning ('Removal moved back for re-try. Reason: [{0}]' -f $_.Exception.Message)
             $resourcesToRetry += $resource
@@ -55,7 +59,7 @@ Optional. The array of resources to remove. Has to contain objects with at least
 .EXAMPLE
 Remove-Resource @( @{ 'Name' = 'resourceName'; Type = 'Microsoft.Storage/storageAccounts'; ResourceId = 'subscriptions/.../storageAccounts/resourceName' } )
 
-Remove resource with id 'subscriptions/.../storageAccounts/resourceName'.
+Remove resource with ID 'subscriptions/.../storageAccounts/resourceName'.
 #>
 function Remove-Resource {
 
@@ -71,23 +75,27 @@ function Remove-Resource {
         [int] $removalRetryInterval = 15
     )
 
-    $currentRetry = 1
+    $removalRetryCount = 1
     $resourcesToRetry = $resourceToRemove
-    if ($PSCmdlet.ShouldProcess(("[{0}] Resource(s) with a maximum of [$removalRetryLimit] attempts." -f $resourcesToRetry.Count), 'Remove')) {
 
-        while ($resourcesToRetry.Count -gt 0 -and $currentRetry -le $removalRetryLimit) {
+    do {
+        if ($PSCmdlet.ShouldProcess(("[{0}] Resource(s) with a maximum of [$removalRetryLimit] attempts." -f (($resourcesToRetry -is [array]) ? $resourcesToRetry.Count : 1)), 'Remove')) {
             $resourcesToRetry = Remove-ResourceInner -resourceToRemove $resourcesToRetry -Verbose
-            Write-Verbose ('Re-try removal of remaining [{0}] resources. Waiting [{1}] seconds. Round [{2}|{3}]' -f $resourcesToRetry.Count, $removalRetryInterval, $currentRetry, $removalRetryLimit)
-            $currentRetry++
-            Start-Sleep $removalRetryInterval
+        } else {
+            Remove-ResourceInner -resourceToRemove $resourceToRemove -WhatIf
         }
 
-        if ($resourcesToRetry.Count -gt 0) {
-            throw ('The removal failed for resources [{0}]' -f ($resourcesToRetry.Name -join ', '))
-        } else {
-            Write-Verbose 'The removal completed successfully'
+        if (-not $resourcesToRetry) {
+            break
         }
+        Write-Verbose ('Re-try removal of remaining [{0}] resources. Waiting [{1}] seconds. Round [{2}|{3}]' -f (($resourcesToRetry -is [array]) ? $resourcesToRetry.Count : 1), $removalRetryInterval, $removalRetryCount, $removalRetryLimit)
+        $removalRetryCount++
+        Start-Sleep $removalRetryInterval
+    } while ($removalRetryCount -le $removalRetryLimit)
+
+    if ($resourcesToRetry.Count -gt 0) {
+        throw ('The removal failed for resources [{0}]' -f ($resourcesToRetry.Name -join ', '))
     } else {
-        Remove-ResourceInner -resourceToRemove $resourceToRemove -WhatIf
+        Write-Verbose 'The removal completed successfully'
     }
 }

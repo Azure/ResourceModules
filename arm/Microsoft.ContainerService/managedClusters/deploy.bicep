@@ -1,16 +1,17 @@
 @description('Required. Specifies the name of the AKS cluster.')
-param aksClusterName string
+param name string
 
 @description('Optional. Specifies the location of AKS cluster. It picks up Resource Group\'s location by default.')
 param location string = resourceGroup().location
 
 @description('Optional. Specifies the DNS prefix specified when creating the managed cluster.')
-param aksClusterDnsPrefix string = aksClusterName
+param aksClusterDnsPrefix string = name
 
-@description('Optional. The identity of the managed cluster.')
-param identity object = {
-  type: 'SystemAssigned'
-}
+@description('Optional. Enables system assigned managed identity on the resource.')
+param systemAssignedIdentity bool = false
+
+@description('Optional. The ID(s) to assign to the resource.')
+param userAssignedIdentities object = {}
 
 @description('Optional. Specifies the network plugin used for building Kubernetes network. - azure or kubenet.')
 @allowed([
@@ -85,7 +86,7 @@ param aadProfileServerAppID string = ''
 @description('Optional. The server AAD application secret.')
 param aadProfileServerAppSecret string = ''
 
-@description('Optional. Specifies the tenant id of the Azure Active Directory used by the AKS cluster for authentication.')
+@description('Optional. Specifies the tenant ID of the Azure Active Directory used by the AKS cluster for authentication.')
 param aadProfileTenantId string = subscription().tenantId
 
 @description('Optional. Specifies the AAD group object IDs that will have admin role of the cluster.')
@@ -98,7 +99,7 @@ param aadProfileManaged bool = true
 param aadProfileEnableAzureRBAC bool = true
 
 @description('Optional. Name of the resource group containing agent pool nodes.')
-param nodeResourceGroup string = '${resourceGroup().name}_aks_${aksClusterName}_nodes'
+param nodeResourceGroup string = '${resourceGroup().name}_aks_${name}_nodes'
 
 @description('Optional. Specifies whether to create the cluster as a private cluster or not.')
 param aksClusterEnablePrivateCluster bool = false
@@ -106,7 +107,7 @@ param aksClusterEnablePrivateCluster bool = false
 @description('Required. Properties of the primary agent pool.')
 param primaryAgentPoolProfile array
 
-@description('Optional. Define one or more secondary/additional node pools')
+@description('Optional. Define one or more secondary/additional agent pools')
 param agentPools array = []
 
 @description('Optional. Specifies whether the httpApplicationRouting add-on is enabled or not.')
@@ -148,10 +149,10 @@ param autoScalerProfileUtilizationThreshold string = '0.5'
 @description('Optional. Specifies the max graceful termination time interval in seconds for the auto-scaler of the AKS cluster.')
 param autoScalerProfileMaxGracefulTerminationSec string = '600'
 
-@description('Optional. Resource identifier of the Diagnostic Storage Account.')
+@description('Optional. Resource ID of the diagnostic storage account.')
 param diagnosticStorageAccountId string = ''
 
-@description('Optional. Resource identifier of Log Analytics.')
+@description('Optional. Resource ID of log analytics.')
 param workspaceId string = ''
 
 @description('Optional. Specifies whether the OMS agent is enabled.')
@@ -168,7 +169,7 @@ param eventHubName string = ''
 @maxValue(365)
 param diagnosticLogsRetentionInDays int = 365
 
-@description('Optional. Customer Usage Attribution id (GUID). This GUID must be previously registered')
+@description('Optional. Customer Usage Attribution ID (GUID). This GUID must be previously registered')
 param cuaId string = ''
 
 @description('Optional. Array of role assignment objects that contain the \'roleDefinitionIdOrName\' and \'principalId\' to define RBAC role assignments on this resource. In the roleDefinitionIdOrName attribute, you can provide either the display name of the role definition, or its fully qualified ID in the following format: \'/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11\'')
@@ -228,6 +229,13 @@ var diagnosticsMetrics = [for metric in metricsToEnable: {
   }
 }]
 
+var identityType = systemAssignedIdentity ? 'SystemAssigned' : (!empty(userAssignedIdentities) ? 'UserAssigned' : 'None')
+
+var identity = identityType != 'None' ? {
+  type: identityType
+  userAssignedIdentities: !empty(userAssignedIdentities) ? userAssignedIdentities : null
+} : null
+
 var aksClusterLinuxProfile = {
   adminUsername: aksClusterAdminUsername
   ssh: {
@@ -252,7 +260,7 @@ module pid_cuaId '.bicep/nested_cuaId.bicep' = if (!empty(cuaId)) {
 }
 
 resource managedCluster 'Microsoft.ContainerService/managedClusters@2021-07-01' = {
-  name: aksClusterName
+  name: name
   location: location
   tags: (empty(tags) ? null : tags)
   identity: identity
@@ -363,11 +371,21 @@ module managedCluster_rbac '.bicep/nested_rbac.bicep' = [for (roleAssignment, in
   params: {
     principalIds: roleAssignment.principalIds
     roleDefinitionIdOrName: roleAssignment.roleDefinitionIdOrName
-    resourceName: managedCluster.name
+    resourceId: managedCluster.id
   }
 }]
 
+@description('The resource ID of the managed cluster')
 output azureKubernetesServiceResourceId string = managedCluster.id
+
+@description('The resource group the managed cluster was deployed into')
 output azureKubernetesServiceResourceGroup string = resourceGroup().name
+
+@description('The name of the managed cluster')
 output azureKubernetesServiceName string = managedCluster.name
+
+@description('The control plane FQDN of the managed cluster')
 output controlPlaneFQDN string = (aksClusterEnablePrivateCluster ? managedCluster.properties.privateFQDN : managedCluster.properties.fqdn)
+
+@description('The principal ID of the system assigned identity.')
+output systemAssignedPrincipalId string = systemAssignedIdentity ? managedCluster.identity.principalId : ''

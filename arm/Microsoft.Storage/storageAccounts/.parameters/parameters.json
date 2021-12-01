@@ -5,9 +5,6 @@
         "name": {
             "value": "sxxazsaweux001"
         },
-        "managedServiceIdentity": {
-            "value": "SystemAssigned"
-        },
         "storageAccountSku": {
             "value": "Standard_LRS"
         },
@@ -89,6 +86,14 @@
                         "metadata": {}
                     }
                 ]
+            }
+        },
+        "systemAssignedIdentity": {
+            "value": true
+        },
+        "userAssignedIdentities": {
+            "value": {
+                "/subscriptions/<<subscriptionId>>/resourcegroups/validation-rg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/adp-sxx-az-msi-x-001": {}
             }
         },
         "roleAssignments": {
