@@ -88,6 +88,7 @@ Depending on how you want to use this repositories content you may go down diffe
 - [**Option 1**: Use it as a basis to set up your own inner-source project](#option-1-use-it-as-a-basis-to-set-up-your-own-inner-source-project)
 - [**Option 2**: Use it as a local reference to build bicep templates](#option-2-use-it-as-a-local-reference-to-build-bicep-templates)
 - [**Option 3**: Use it as remote reference to reference the bicep templates](#option-3-use-it-as-remote-reference-to-reference-the-bicep-templates)
+- [**Option 4:** Simple contribution](#option-4-simple-contribution)
 
 Also there are some general aspects to take note of
 - [Parameter File Tokens](#parameter-file-tokens)
