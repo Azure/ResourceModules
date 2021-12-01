@@ -21,7 +21,6 @@ Currently supported are:
 - removeFlag
 - versionFlag
 - pipelineFileName
-- moduleName
 - relativeModuleFolderPath
 - pipelineParamterPaths (should be set behind the 'deploymentBlocks: <...>')
 - relativePathOfRemovalScript (should bet set right under the removal template)
@@ -44,7 +43,7 @@ function Set-DevOpsPipelineFiles {
         [string] $devOpsPipelineFolderPath = (Join-Path (Split-Path (Split-Path (Split-Path $PSScriptRoot))) '.azuredevops' 'modulePipelines'),
 
         [Parameter(Mandatory = $false)]
-        [string] $devOpsPipelineTemplatePath = (Join-Path $PSScriptRoot 'devOpsPipelineTemplate.yml'),
+        [string] $devOpsPipelineTemplatePath = (Join-Path $PSScriptRoot 'src' 'devOpsPipelineTemplate.yml'),
 
         [Parameter(Mandatory = $false)]
         [string] $GitHubWorkflowFolderPath = (Join-Path (Split-Path (Split-Path (Split-Path $PSScriptRoot))) '.github' 'workflows')
@@ -92,16 +91,6 @@ function Set-DevOpsPipelineFiles {
         ## ========================
         $PipelineFileName = Split-Path $workflowPath -Leaf
 
-        ## Fetch Module Name
-        ## =================
-        $moduleNameVarIndex = 0
-        for ($moduleNameVarIndex = 0; $moduleNameVarIndex -lt $workFlowContent.Count; $moduleNameVarIndex++) {
-            if ($workFlowContent[$moduleNameVarIndex] -match 'moduleName: ') {
-                break
-            }
-        }
-        $ModuleName = $workFlowContent[$moduleNameVarIndex].Split(':')[1].Replace("'", '').Trim()
-
         ## Fetch Relative Module Folder Path
         ## =================================
         $relativePathVarIndex = 0
@@ -138,7 +127,6 @@ function Set-DevOpsPipelineFiles {
             removeFlag                  = $removeFlag
             versionFlag                 = $versionFlag
             PipelineFileName            = $PipelineFileName
-            ModuleName                  = $ModuleName
             RelativeModuleFolderPath    = $RelativeModuleFolderPath
             PipelineParamterFileNames   = $PipelineParamterFileNames
             relativePathOfRemovalScript = $relativePathOfRemovalScript

@@ -1,10 +1,10 @@
-name: 'Insights - Diagnosticsettings'
+name: 'Insights - DiagnosticSettings'
 
 parameters:
   - name: removeDeployment
     displayName: Remove deployed module
     type: boolean
-    default: false # Deployment does not support tags
+    default: false # Needs custom removals script
   - name: versioningOption
     displayName: The mode to handle the version increments [major|minor|patch]
     type: string
@@ -34,8 +34,6 @@ trigger:
 variables:
   - template: '/.azuredevops/pipelineVariables/global.variables.yml'
   - group: 'Platform-Tokens'
-  - name: moduleName
-    value: 'diagnosticSettings'
   - name: modulePath
     value: '/arm/Microsoft.Insights/diagnosticSettings'
 
@@ -62,9 +60,3 @@ stages:
         parameters:
           versioningOption: '${{ parameters.versioningOption }}'
           customVersion: '${{ parameters.customVersion }}'
-
-  - stage: Removal
-    dependsOn: Deployment
-    condition: and(in(dependencies.Deployment.result, 'Succeeded', 'Failed'),  eq( '${{ parameters.removeDeployment }}', 'true'))
-    jobs:
-      - template: /.azuredevops/pipelineTemplates/module.jobs.remove.yml

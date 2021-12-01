@@ -1,10 +1,10 @@
-name: 'Authorization - Policyassignments'
+name: 'Authorization - PolicyAssignments'
 
 parameters:
   - name: removeDeployment
     displayName: Remove deployed module
     type: boolean
-    default: false # Deployment does not support tags
+    default: true
   - name: versioningOption
     displayName: The mode to handle the version increments [major|minor|patch]
     type: string
@@ -34,8 +34,6 @@ trigger:
 variables:
   - template: '/.azuredevops/pipelineVariables/global.variables.yml'
   - group: 'Platform-Tokens'
-  - name: moduleName
-    value: 'policyAssignments'
   - name: modulePath
     value: '/arm/Microsoft.Authorization/policyAssignments'
 
@@ -45,8 +43,7 @@ stages:
       - template: /.azuredevops/pipelineTemplates/module.jobs.validate.yml
         parameters:
           deploymentBlocks: 
-            - path: $(modulePath)/.parameters/allowedLocations.parameters.json
-            - path: $(modulePath)/.parameters/listOfAllowedSKUs.parameters.json
+            - path: $(modulePath)/.parameters/min.parameters.json
             - path: $(modulePath)/.parameters/parameters.json
 
   - stage: Deployment
@@ -55,8 +52,7 @@ stages:
         parameters:
           removeDeployment: '${{ parameters.removeDeployment }}'
           deploymentBlocks: 
-            - path: $(modulePath)/.parameters/allowedLocations.parameters.json
-            - path: $(modulePath)/.parameters/listOfAllowedSKUs.parameters.json
+            - path: $(modulePath)/.parameters/min.parameters.json
             - path: $(modulePath)/.parameters/parameters.json
 
   - stage: Publishing
@@ -66,9 +62,3 @@ stages:
         parameters:
           versioningOption: '${{ parameters.versioningOption }}'
           customVersion: '${{ parameters.customVersion }}'
-
-  - stage: Removal
-    dependsOn: Deployment
-    condition: and(in(dependencies.Deployment.result, 'Succeeded', 'Failed'),  eq( '${{ parameters.removeDeployment }}', 'true'))
-    jobs:
-      - template: /.azuredevops/pipelineTemplates/module.jobs.remove.yml

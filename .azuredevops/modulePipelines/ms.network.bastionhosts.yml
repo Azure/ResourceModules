@@ -1,4 +1,4 @@
-name: 'Network - Bastionhosts'
+name: 'Network - BastionHosts'
 
 parameters:
   - name: removeDeployment
@@ -34,8 +34,6 @@ trigger:
 variables:
   - template: '/.azuredevops/pipelineVariables/global.variables.yml'
   - group: 'Platform-Tokens'
-  - name: moduleName
-    value: 'bastionHosts'
   - name: modulePath
     value: '/arm/Microsoft.Network/bastionHosts'
 
@@ -45,6 +43,7 @@ stages:
       - template: /.azuredevops/pipelineTemplates/module.jobs.validate.yml
         parameters:
           deploymentBlocks: 
+            - path: $(modulePath)/.parameters/min.parameters.json
             - path: $(modulePath)/.parameters/parameters.json
 
   - stage: Deployment
@@ -53,6 +52,7 @@ stages:
         parameters:
           removeDeployment: '${{ parameters.removeDeployment }}'
           deploymentBlocks: 
+            - path: $(modulePath)/.parameters/min.parameters.json
             - path: $(modulePath)/.parameters/parameters.json
 
   - stage: Publishing
@@ -62,9 +62,3 @@ stages:
         parameters:
           versioningOption: '${{ parameters.versioningOption }}'
           customVersion: '${{ parameters.customVersion }}'
-
-  - stage: Removal
-    dependsOn: Deployment
-    condition: and(in(dependencies.Deployment.result, 'Succeeded', 'Failed'),  eq( '${{ parameters.removeDeployment }}', 'true'))
-    jobs:
-      - template: /.azuredevops/pipelineTemplates/module.jobs.remove.yml

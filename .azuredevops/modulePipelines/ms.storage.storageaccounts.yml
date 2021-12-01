@@ -1,4 +1,4 @@
-name: 'Storage - Storage Account'
+name: 'Storage - StorageAccounts'
 
 parameters:
   - name: removeDeployment
@@ -34,8 +34,6 @@ trigger:
 variables:
   - template: '/.azuredevops/pipelineVariables/global.variables.yml'
   - group: 'Platform-Tokens'
-  - name: moduleName
-    value: 'storageAccounts'
   - name: modulePath
     value: '/arm/Microsoft.Storage/storageAccounts'
 
@@ -47,6 +45,7 @@ stages:
           deploymentBlocks: 
             - path: $(modulePath)/.parameters/min.parameters.json
             - path: $(modulePath)/.parameters/parameters.json
+            - path: $(modulePath)/.parameters/v1.parameters.json
 
   - stage: Deployment
     jobs:
@@ -56,6 +55,7 @@ stages:
           deploymentBlocks: 
             - path: $(modulePath)/.parameters/min.parameters.json
             - path: $(modulePath)/.parameters/parameters.json
+            - path: $(modulePath)/.parameters/v1.parameters.json
 
   - stage: Publishing
     condition: and(succeeded(), eq(variables['Build.SourceBranch'], 'refs/heads/main'))
@@ -64,9 +64,3 @@ stages:
         parameters:
           versioningOption: '${{ parameters.versioningOption }}'
           customVersion: '${{ parameters.customVersion }}'
-
-  - stage: Removal
-    dependsOn: Deployment
-    condition: and(in(dependencies.Deployment.result, 'Succeeded', 'Failed'),  eq( '${{ parameters.removeDeployment }}', 'true'))
-    jobs:
-      - template: /.azuredevops/pipelineTemplates/module.jobs.remove.yml

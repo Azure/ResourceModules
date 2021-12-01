@@ -1,10 +1,10 @@
-name: 'Insights - PrivateLinkScopes'
+name: '<PipelineName>'
 
 parameters:
   - name: removeDeployment
     displayName: Remove deployed module
     type: boolean
-    default: true
+    default: <removeFlag>
   - name: versioningOption
     displayName: The mode to handle the version increments [major|minor|patch]
     type: string
@@ -16,7 +16,7 @@ parameters:
   - name: customVersion
     displayName: Custom version to apply. Used only if higher than latest
     type: string
-    default: '0.0.1'
+    default: '<versionFlag>'
 
 trigger:
   batch: true
@@ -25,9 +25,9 @@ trigger:
       - main
   paths:
     include:
-      - '/.azuredevops/modulePipelines/ms.insights.privatelinkscopes.yml'
+      - '/.azuredevops/modulePipelines/<PipelineFileName>'
       - '/.azuredevops/pipelineTemplates/module.*.yml'
-      - '/arm/Microsoft.Insights/privateLinkScopes/*'
+      - '/<RelativeModuleFolderPath>/*'
     exclude:
       - '/**/*.md'
 
@@ -35,23 +35,21 @@ variables:
   - template: '/.azuredevops/pipelineVariables/global.variables.yml'
   - group: 'Platform-Tokens'
   - name: modulePath
-    value: '/arm/Microsoft.Insights/privateLinkScopes'
+    value: '/<RelativeModuleFolderPath>'
 
 stages:
   - stage: Validation
     jobs:
       - template: /.azuredevops/pipelineTemplates/module.jobs.validate.yml
         parameters:
-          deploymentBlocks: 
-            - path: $(modulePath)/.parameters/parameters.json
+          deploymentBlocks: <PipelineParamterPaths>
 
   - stage: Deployment
     jobs:
       - template: /.azuredevops/pipelineTemplates/module.jobs.deploy.yml
         parameters:
           removeDeployment: '${{ parameters.removeDeployment }}'
-          deploymentBlocks: 
-            - path: $(modulePath)/.parameters/parameters.json
+          deploymentBlocks: <PipelineParamterPaths>
 
   - stage: Publishing
     condition: and(succeeded(), eq(variables['Build.SourceBranch'], 'refs/heads/main'))

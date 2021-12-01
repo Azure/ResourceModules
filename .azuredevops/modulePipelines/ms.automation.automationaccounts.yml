@@ -1,4 +1,4 @@
-name: 'Automation - Automationaccounts'
+name: 'Automation - AutomationAccounts'
 
 parameters:
   - name: removeDeployment
@@ -34,8 +34,6 @@ trigger:
 variables:
   - template: '/.azuredevops/pipelineVariables/global.variables.yml'
   - group: 'Platform-Tokens'
-  - name: moduleName
-    value: 'automationAccounts'
   - name: modulePath
     value: '/arm/Microsoft.Automation/automationAccounts'
 
@@ -64,9 +62,3 @@ stages:
         parameters:
           versioningOption: '${{ parameters.versioningOption }}'
           customVersion: '${{ parameters.customVersion }}'
-
-  - stage: Removal
-    dependsOn: Deployment
-    condition: and(in(dependencies.Deployment.result, 'Succeeded', 'Failed'),  eq( '${{ parameters.removeDeployment }}', 'true'))
-    jobs:
-      - template: /.azuredevops/pipelineTemplates/module.jobs.remove.yml
