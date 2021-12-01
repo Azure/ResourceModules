@@ -37,11 +37,11 @@ Array containing multiple objects for different VNETs to peer with.
 
 ## Outputs
 
-| Output Name | Type |
-| :-- | :-- |
-| `localVirtualNetworkPeeringResourceIds` | array |
-| `virtualNetworkPeeringNames` | array |
-| `virtualNetworkPeeringResourceGroup` | string |
+| Output Name | Type | Description |
+| :-- | :-- | :-- |
+| `localVirtualNetworkPeeringResourceIds` | array | The names of the deployed virtual network peerings |
+| `virtualNetworkPeeringNames` | array | The resource IDs of the deployed virtual network peerings |
+| `virtualNetworkPeeringResourceGroup` | string | The resource group of the deployed virtual network peerings |
 
 ## Template references
 
