@@ -158,31 +158,16 @@ jobs:
                     @{ Name = 'managementGroupId'; Value = '${{ parameters.managementGroupId }}' }
                     @{ Name = "tenantId";          Value = '$(ARM_TENANT_ID)' }
                     @{ Name = "deploymentSpId";    Value = '$(DEPLOYMENT_SP_ID)' }
-                    @{ Name = "platformKeyVault";  Value = '$(PLATFORM_KEYVAULT)' }
                 ) | ForEach-Object { [PSCustomObject]$PSItem }
 
                 # Construct Token Function Input
                 $ConvertTokensInputs = @{
-                    ParameterFilePath              = Join-Path '$(parametersRepoRoot)' '${{ deploymentBlock.path }}'
-                    DefaultParameterFileTokens     = $DefaultParameterFileTokens
-                    LocalCustomParameterFileTokens = $Settings.parameterFileTokens.localTokens.tokens
-                    TokenPrefix                    = $Settings.parameterFileTokens.tokenPrefix
-                    TokenSuffix                    = $Settings.parameterFileTokens.tokenSuffix
-                    verbose                        = $true
+                    ParameterFilePath                 = Join-Path '$(parametersRepoRoot)' '${{ deploymentBlock.path }}'
+                    DefaultParameterFileTokens        = $DefaultParameterFileTokens
+                    LocalCustomParameterFileTokens    = $Settings.parameterFileTokens.localTokens.tokens
+                    TokenPrefix                       = $Settings.parameterFileTokens.tokenPrefix
+                    TokenSuffix                       = $Settings.parameterFileTokens.tokenSuffix
                 }
-                # Add Remote Custom Parameter File Tokens
-                # Note: if parameter is like "`$(PLATFORM_KEYVAULT*" it was not set as the variable was not resolved
-                if ('${{ parameters.subscriptionId }}' -and -not [String]::IsNullOrEmpty('$(PLATFORM_KEYVAULT)') -and '$(PLATFORM_KEYVAULT)' -notlike "`$(PLATFORM_KEYVAULT*") {
-                    $ConvertTokensInputs += @{
-                        TokensKeyVaultName                 = '$(PLATFORM_KEYVAULT)'
-                        TokensKeyVaultSubscriptionId       = '${{ parameters.subscriptionId }}'
-                        TokensKeyVaultSecretNamePrefix     = $Settings.parameterFileTokens.remoteTokens.keyVaultSecretNamePrefix
-                    }
-                }
-
-                Write-Verbose "Invoke task with" -Verbose
-                Write-Verbose ($ConvertTokensInputs | ConvertTo-Json | Out-String) -Verbose
-
                 # Invoke Token Replacement Functionality
                 $null = Convert-TokensInParameterFile @ConvertTokensInputs -Verbose
 
