@@ -24,5 +24,7 @@ resource lock 'Microsoft.Authorization/locks@2016-09-01' = if (level != 'NotSpec
   }
 }
 
+@description('The resource ID of the lock')
 output lockResourceId string = lock.id
+@description('The name of the lock')
 output lockName string = lock.name
