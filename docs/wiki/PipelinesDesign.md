@@ -225,7 +225,7 @@ Depending on what DevOps tool you want to use to host the platform you will find
 
 ## GitHub Workflows
 
-GitHub actions & workflows are the CI/CD solution provided by GitHub. To get the platform going, we use the following three elements:
+GitHub actions & workflows are the CI/CD solution provided by GitHub. To get the platform going, we use the following elements:
 - **[GitHub secrets:](#github-component-github-secrets)** We leverage GitHub repository secrets to store central and potentially sensitive information we need to perform deployments and other platform specific actions
 - **[Variable file:](#github-component-variable-file)** This file contains the configuration for all module pipelines in this repository.
 - **[Composite actions:](#github-component-composite-actions)** Composite actions bundle a set of actions for a specific purpose together. They are referenced by module pipelines.
@@ -299,7 +299,7 @@ Comparing multiple workflows you'll notice they are almost identically, yet diff
 
 ## Azure DevOps Pipelines
 
-Azure DevOps pipelines are the CI/CD solution provided by Azure DevOps. To get the platform going, we use the following three elements:
+Azure DevOps pipelines are the CI/CD solution provided by Azure DevOps. To get the platform going, we use the following elements:
 
 - **[Service connection:](#azure-devops-component-service-connection)** The service connection is a wrapper for the [deployment principal](./GettingStarted#platform-principal) that performs all actions in the target SBX/DEV/TEST subscription
 - **[Variable group:](#azure-devops-component-variable-group)** Variable groups allow us to store both sensitive as well configuration data securely in Azure DevOps.
@@ -328,14 +328,16 @@ The variable file is a source controlled configuration file to control the behav
 
 This file is divided in multiple categories of variables used in the pipelines:
 
-- **Agent settings:** Contains information of the agent and service connection to use
-- **Source:** Contains information about the Azure DevOps instance itself, including some important folder paths
-- **Validation deployment settings:** Contains the default deployment information to use in the pipeline. For example, the default location to deploy resources to
-- **Publish: Template-Spec settings:** Contains the required information to publish to template-specs, including a switch to toggle the feature on or off
-- **Publish: Universal packages settings:** Contains the required information to publish to universal packages, including a switch to toggle the feature on or off
-- **Publish: Nuget Packages settings:** Contains the required information to publish to nuget packages, including a switch to toggle the feature on or off
-- **Publish: Private Bicep Registry settings:** Contains the required information to publish to the private bicep registry, including a switch to toggle the feature on or off
-- **Azure PowerShell Version:** Contains information about the default PowerShell version to use in the pipeline.
+| Section | Description |
+| - | - |
+| **Agent settings** | Contains information of the agent and service connection to use |
+| **Source** | Contains information about the Azure DevOps instance itself, including some important folder paths |
+| **Validation deployment settings** | Contains the default deployment information to use in the pipeline. For example, the default location to deploy resources to |
+| **Publish: Template-Spec settings** | Contains the required information to publish to template-specs, including a switch to toggle the feature on or off |
+| **Publish: Universal packages settings** | Contains the required information to publish to universal packages, including a switch to toggle the feature on or off |
+|**Publish: Nuget Packages settings** | Contains the required information to publish to nuget packages, including a switch to toggle the feature on or off |
+| **Publish: Private Bicep Registry settings** | Contains the required information to publish to the private bicep registry, including a switch to toggle the feature on or off |
+| **Azure PowerShell Version** | Contains information about the default PowerShell version to use in the pipeline |
 
 ### **Azure DevOps Component:** Pipeline templates
 
