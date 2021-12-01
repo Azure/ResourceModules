@@ -3,7 +3,7 @@
     "contentVersion": "1.0.0.0",
     "parameters": {
         "serviceFabricClusterName": {
-            "value": "sxx-az-sfc-weu-x-666"
+            "value": "sxx-az-sfc-weu-x-001"
         },
         "location": {
             "value": "centralIndia"
@@ -11,7 +11,7 @@
         "tags": {
             "value": {
                 "resourceType": "Service Fabric",
-                "clusterName": "sxx-az-sfc-weu-x-666"
+                "clusterName": "sxx-az-sfc-weu-x-001"
             }
         },
         "lock": {
@@ -23,57 +23,57 @@
         "maxUnusedVersionsToKeep": {
             "value": 2
         },
-        "azureActiveDirectory": {
-            "value": {
-                "clientApplication": "",
-                "clusterApplication": "",
-                "tenantId": ""
-            }
-        },
+        // "azureActiveDirectory": {
+        //     "value": {
+        //         "clientApplication": "",
+        //         "clusterApplication": "",
+        //         "tenantId": ""
+        //     }
+        // },
         "certificate": {
             "value": {
-                "thumbprint": "154813CEE741AEC28CAE17FC16FB30888FACF3",
-                "thumbprintSecondary": "",
+                "thumbprint": "0AC113D5E1D94C401DDEB0EE1E8EE2B1B96CC130",
+                //"thumbprintSecondary": "",
                 "x509StoreName": "My"
             }
         },
-        "certificateCommonNames": {
-            "value": {
-                "commonNames": [
-                    {
-                        "certificateCommonName": "",
-                        "certificateIssuerThumbprint": ""
-                    }
-                ],
-                "x509StoreName": ""
-            }
-        },
-        "clientCertificateCommonNames": {
-            "value": [{
-                "certificateCommonName": "",
-                "certificateIssuerThumbprint": "",
-                "isAdmin": ""
-            }]
-        },
-        "clientCertificateThumbprints": {
-            "value": [{
-                "certificateThumbprint": "",
-                "isAdmin": ""
-            }]
-        },
-        "clusterCodeVersion": {
-            "value": "8.1.329.9590"
-        },
-        "diagnosticsStorageAccountConfig": {
-            "value": {
-                "blobEndpoint": "",
-                "protectedAccountKeyName": "",
-                "protectedAccountKeyName2": "",
-                "queueEndpoint": "",
-                "storageAccountName": "",
-                "tableEndpoint": ""
-            }
-        },
+        // "certificateCommonNames": {
+        //     "value": {
+        //         "commonNames": [
+        //             {
+        //                 "certificateCommonName": "",
+        //                 "certificateIssuerThumbprint": ""
+        //             }
+        //         ],
+        //         "x509StoreName": ""
+        //     }
+        // },
+        // "clientCertificateCommonNames": {
+        //     "value": [{
+        //         "certificateCommonName": "",
+        //         "certificateIssuerThumbprint": "",
+        //         "isAdmin": ""
+        //     }]
+        // },
+        // "clientCertificateThumbprints": {
+        //     "value": [{
+        //         "certificateThumbprint": "",
+        //         "isAdmin": ""
+        //     }]
+        // },
+        // "clusterCodeVersion": {
+        //     "value": "8.1.329.9590"
+        // },
+        // "diagnosticsStorageAccountConfig": {
+        //     "value": {
+        //         "blobEndpoint": "",
+        //         "protectedAccountKeyName": "",
+        //         "protectedAccountKeyName2": "",
+        //         "queueEndpoint": "",
+        //         "storageAccountName": "",
+        //         "tableEndpoint": ""
+        //     }
+        // },
         "fabricSettings": {
             "value": [
                 {
@@ -88,7 +88,7 @@
             ]
         },
         "managementEndpoint": {
-            "value": "https://sxx-az-sfc-weu-x-666.centralindia.cloudapp.azure.com:19080"
+            "value": "https://sxx-az-sfc-weu-x-001.centralindia.cloudapp.azure.com:19080"
         },
         "nodeTypes": {
             "value": [
@@ -108,24 +108,24 @@
                     "isPrimary": true,
                     "isStateless": false,
                     "multipleAvailabilityZones": false,
-                    "name": "666Node01",
+                    "name": "001Node01",
                     "placementProperties": {},
                     "reverseProxyEndpointPort": "",
                     "vmInstanceCount": 5
                 }
             ]
         },
-        "notifications": {
-            "value": [{
-                "isEnabled": "",
-                "notificationCategory": "",
-                "notificationLevel": "",
-                "notificationTargets": [{
-                    "notificationChannel": "",
-                    "receivers": ""
-                }]
-            }]
-        },
+        // "notifications": {
+        //     "value": [{
+        //         "isEnabled": "",
+        //         "notificationCategory": "",
+        //         "notificationLevel": "",
+        //         "notificationTargets": [{
+        //             "notificationChannel": "",
+        //             "receivers": ""
+        //         }]
+        //     }]
+        // },
         "reliabilityLevel": {
             "value": "Silver"
         },
@@ -141,98 +141,98 @@
                     ]
                 }
             ]
-        },
-        "serviceFabricClusterApplications": {
-            "value": [
-                {
-                    "name": "serviceFabricClusterApplication01",
-                    "identity": {
-                        "type": "None",
-                        "userAssignedIdentities": {}
-                    },
-                    "properties": {
-                        "managedIdentities": [
-                            {
-                                "name": "Identity_Friendly_Name",
-                                "principalId": "6bffd5f5-80d9-435c-903e-78354538a902"
-                            }
-                        ],
-                        "maximumNodes": 2,
-                            "metrics": [
-                                {
-                                    "maximumCapacity": null,
-                                    "name": null,
-                                    "reservationCapacity": null,
-                                    "totalApplicationCapacity": null
-                                }
-                            ],
-                        "minimumNodes": null,
-                        "parameters": {},
-                        "removeApplicationCapacity": "",
-                        "typeName": "DotNetCore",
-                        "typeVersion": "VersionOne",
-                        "upgradePolicy": {
-                            "applicationHealthPolicy": {
-                                "considerWarningAsError": "",
-                                "defaultServiceTypeHealthPolicy": {
-                                    "maxPercentUnhealthyPartitionsPerService": null,
-                                    "maxPercentUnhealthyReplicasPerPartition": null,
-                                    "maxPercentUnhealthyServices": null
-                                },
-                                "maxPercentUnhealthyDeployedApplications": null,
-                                "serviceTypeHealthPolicyMap": {}
-                            },
-                            "forceRestart": "",
-                            "recreateApplication": "",
-                            "rollingUpgradeMonitoringPolicy": {
-                                "failureAction": null,
-                                "healthCheckRetryTimeout": null,
-                                "healthCheckStableDuration": null,
-                                "healthCheckWaitDuration": null,
-                                "upgradeDomainTimeout": null,
-                                "upgradeTimeout": null
-                            },
-                            "upgradeMode": "UnmonitoredAuto",
-                            "upgradeReplicaSetCheckTimeout": null
-                        }
-                    },
-                    "applicationsServices": {
-                        "value": [
-                            {
-                                "name": "Service01",
-                                "properties": {
-                                    "provisioningState": "Default",
-                                    "correlationScheme": [
-                                        {
-                                            "scheme": "Invalid",
-                                            "serviceName": "fabric:service01"
-                                        }
-                                    ]
-                                }
-                            }
-                        ]
-                    }
-                }
-            ]
-        },
-        "serviceFabricApplicationTypes": {
-            "value": [
-                {
-                    "name": "DotNetCore",
-                    "properties": {
-                        "provisioningState": "Default"
-                    },
-                    "applicationTypesVersions": [
-                        {
-                            "name": "VersionOne",
-                            "properties": {
-                                "provisioningState": "Default",
-                                "appPackageUrl": "https://github.com/Azure-Samples/service-fabric-wordcount/blob/master/WordCountV1.sfpkg"
-                            }
-                        }
-                    ]
-                }
-            ]
-        }
+        }//,
+        // "serviceFabricClusterApplications": {
+        //     "value": [
+        //         {
+        //             "name": "serviceFabricClusterApplication01",
+        //             "identity": {
+        //                 "type": "None",
+        //                 "userAssignedIdentities": {}
+        //             },
+        //             "properties": {
+        //                 "managedIdentities": [
+        //                     {
+        //                         "name": "Identity_Friendly_Name",
+        //                         "principalId": "6bffd5f5-80d9-435c-903e-78354538a902"
+        //                     }
+        //                 ],
+        //                 "maximumNodes": 2,
+        //                     "metrics": [
+        //                         {
+        //                             "maximumCapacity": null,
+        //                             "name": null,
+        //                             "reservationCapacity": null,
+        //                             "totalApplicationCapacity": null
+        //                         }
+        //                     ],
+        //                 "minimumNodes": null,
+        //                 "parameters": {},
+        //                 "removeApplicationCapacity": "",
+        //                 "typeName": "DotNetCore",
+        //                 "typeVersion": "VersionOne",
+        //                 "upgradePolicy": {
+        //                     "applicationHealthPolicy": {
+        //                         "considerWarningAsError": "",
+        //                         "defaultServiceTypeHealthPolicy": {
+        //                             "maxPercentUnhealthyPartitionsPerService": null,
+        //                             "maxPercentUnhealthyReplicasPerPartition": null,
+        //                             "maxPercentUnhealthyServices": null
+        //                         },
+        //                         "maxPercentUnhealthyDeployedApplications": null,
+        //                         "serviceTypeHealthPolicyMap": {}
+        //                     },
+        //                     "forceRestart": "",
+        //                     "recreateApplication": "",
+        //                     "rollingUpgradeMonitoringPolicy": {
+        //                         "failureAction": null,
+        //                         "healthCheckRetryTimeout": null,
+        //                         "healthCheckStableDuration": null,
+        //                         "healthCheckWaitDuration": null,
+        //                         "upgradeDomainTimeout": null,
+        //                         "upgradeTimeout": null
+        //                     },
+        //                     "upgradeMode": "UnmonitoredAuto",
+        //                     "upgradeReplicaSetCheckTimeout": null
+        //                 }
+        //             },
+        //             "applicationsServices": {
+        //                 "value": [
+        //                     {
+        //                         "name": "Service01",
+        //                         "properties": {
+        //                             "provisioningState": "Default",
+        //                             "correlationScheme": [
+        //                                 {
+        //                                     "scheme": "Invalid",
+        //                                     "serviceName": "fabric:service01"
+        //                                 }
+        //                             ]
+        //                         }
+        //                     }
+        //                 ]
+        //             }
+        //         }
+        //     ]
+        // },
+        // "serviceFabricClusterApplicationTypes": {
+        //     "value": [
+        //         {
+        //             "name": "DotNetCore",
+        //             "properties": {
+        //                 "provisioningState": "Default"
+        //             },
+        //             "applicationTypesVersions": [
+        //                 {
+        //                     "name": "VersionOne",
+        //                     "properties": {
+        //                         "provisioningState": "Default",
+        //                         "appPackageUrl": "https://github.com/Azure-Samples/service-fabric-wordcount/blob/master/WordCountV1.sfpkg"
+        //                     }
+        //                 }
+        //             ]
+        //         }
+        //     ]
+        // }
     }
 }
