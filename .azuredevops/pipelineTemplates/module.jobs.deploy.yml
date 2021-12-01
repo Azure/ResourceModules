@@ -224,6 +224,7 @@ jobs:
                   resourceGroupName  = '${{ parameters.resourceGroupName }}'
                   subscriptionId     = '${{ parameters.subscriptionId }}'
                   managementGroupId  = '${{ parameters.managementGroupId }}'
+                  doNotThrow         = $true
                 }
 
                 Write-Verbose "Invoke task with" -Verbose
