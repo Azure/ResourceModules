@@ -252,18 +252,14 @@ The [pipeline configuration file](#pipeline-variables) can be found at `.github/
 
 We use several composite actions to perform various tasks shared by our module workflows:
 
-- **validateModuleGeneral** <p>
-  This action perform all [static tests](#static-module-validation) for a module using Pester.
-- **validateModuleApis** <p>
-  This action performs further [static tests](#static-module-validation), focused on API version tests for a module to ensure we notice if a version becomes stale. Each resource's API version is compared with those currently available on Azure. Accepted are both the latest 5 versions (including preview versions) as well as the latest 5 non-preview versions.
-- **validateModuleDeploy:** <p>
-  This action performs the [simulated deployment](#simulated-deployment-validation) using a provided parameter file.
-- **deployModule:** <p>
-  This action performs an [actual deployment](#test-deploy) to Azure using a provided parameter file. Once a deployment ran it [removes](#removal) the resource
-- **publishModule:** <p>
-  This action is capable of [publishing](#publish) the given template to a location specified in the pipeline [variable file](#github-component-variable-file).
-- **getWorkflowInput:** <p>
-  This action implements allows us to fetch workflow input values from the module's workflow file, even if the pipeline was not triggered via a `workflow_dispatch` action. Without it we would not be able to process the contained information and would need to duplicate the configuration as workflow variables.
+| Composite Action | Description |
+| - | - |
+| **validateModuleGeneral** | This action perform all [static tests](#static-module-validation) for a module using Pester. |
+| **validateModuleApis** | This action performs further [static tests](#static-module-validation), focused on API version tests for a module to ensure we notice if a version becomes stale. Each resource's API version is compared with those currently available on Azure. Accepted are both the latest 5 versions (including preview versions) as well as the latest 5 non-preview versions. |
+| **validateModuleDeploy:** | This action performs the [simulated deployment](#simulated-deployment-validation) using a provided parameter file. |
+| **deployModule:** | This action performs an [actual deployment](#test-deploy) to Azure using a provided parameter file. Once a deployment ran it [removes](#removal) the resource |
+| **publishModule:** | This action is capable of [publishing](#publish) the given template to a location specified in the pipeline [variable file](#github-component-variable-file). |
+| **getWorkflowInput:** | This action implements allows us to fetch workflow input values from the module's workflow file, even if the pipeline was not triggered via a `workflow_dispatch` action. Without it we would not be able to process the contained information and would need to duplicate the configuration as workflow variables. |
 
 ### **GitHub Component:** Workflows
 
@@ -272,10 +268,14 @@ These are the individual end-to-end workflows we have for each module. Leveragin
 Comparing multiple workflows you'll notice they are almost identically, yet differ in a few important areas:
 
 - The ***path filters*** of the workflow trigger:
-  - 1 for the composite actions
-  - 1 should be the relative path to the workflow itself
-  - 1 should be the relative path to the module folder
-  - 1 should exclude the readme
+  | Purpose | Example |
+  | - | - |
+  | Include the composite actions | `- '.github/actions/templates/**'` |
+  | Include the relative path to the workflow itself | `- '.github/workflows/ms.network.virtualwans.yml'` |
+  | Include the relative path to the module folder | `- 'arm/Microsoft.Network/virtualWans/**'` |
+  | Exclude any ReadMe | `- '!*/**/readme.md'` |
+
+  Full example
   ```yaml
     push:
       branches:
@@ -288,11 +288,14 @@ Comparing multiple workflows you'll notice they are almost identically, yet diff
   ```
 - The ***environment variables***
   The environment variables are leveraged by the workflow to fundamentally process the module. We need:
-  - 1 variable with the relative path to the module folder
-  - 1 variable with the relative path to the workflow itself
+  | Variable | Example |
+  | - | - |
+  | Relative path to the module folder | `modulePath: 'arm/Microsoft.Network/virtualWans'` |
+  | Relative path to the workflow itself | `'.github/workflows/ms.network.virtualwans.yml'` |
+
+  Full example
   ```yaml
   env:
-    moduleName: 'virtualWans'
     modulePath: 'arm/Microsoft.Network/virtualWans'
     workflowPath: '.github/workflows/ms.network.virtualwans.yml'
   ```
@@ -343,12 +346,11 @@ This file is divided in multiple categories of variables used in the pipelines:
 
 To keep the amount of pipeline code at a minimum we make heavy use of pipeline templates. Following you can find an overview of the ones we use and what they are used for:
 
-- **module.jobs.validate.yml** <p>
-  This template perform all [static tests](#static-module-validation) for a module using Pester.
-- **module.jobs.deploy.yml** <p>
-  This template performs a [test deployment](#simulated-deployment-validation) followed by an [actual deployment](#test-deploy) to Azure using a provided parameter file. Once a deployment ran it [removes](#removal) the resource
-- **module.jobs.publish.yml** <p>
-  This template is capable of [publishing](#publish) the given template to a location specified in the pipeline [variable file](#azure-devops-component-variable-file).
+| Template Name | Description |
+| - | - |
+| **module.jobs.validate.yml** | This template perform all [static tests](#static-module-validation) for a module using Pester. |
+| **module.jobs.deploy.yml** | This template performs a [test deployment](#simulated-deployment-validation) followed by an [actual deployment](#test-deploy) to Azure using a provided parameter file. Once a deployment ran it [removes](#removal) the resource |
+| **module.jobs.publish.yml** | This template is capable of [publishing](#publish) the given template to a location specified in the pipeline [variable file](#azure-devops-component-variable-file) |
 
 Each file can be found in path `.azuredevops/pipelineTemplates`.
 
@@ -359,22 +361,13 @@ These are the individual end-to-end pipelines we have for each module. Leveragin
 While they look very similar they have specific areas in which they differ:
 
 - The ***path filters*** of the pipeline trigger:
-  - 1 for the templates
-    ```yaml
-      - '/.azuredevops/pipelineTemplates/module.*.yml'
-    ```
-  - 1 should be the relative path to the pipeline itself
-    ```yaml
-      - '/.azuredevops/modulePipelines/ms.analysisservices.servers.yml'
-    ```
-  - 1 should be the relative path to the module folder
-    ```yaml
-      - '/arm/Microsoft.AnalysisServices/servers/*'
-    ```
-  - 1 should exclude the readme.
-    ```yaml
-      - '/**/*.md'
-    ```
+   Purpose | Example |
+  | - | - |
+  | Include the templates | `- '/.azuredevops/pipelineTemplates/module.*.yml'` |
+  | Include the relative path to the pipeline itself | `- '/.azuredevops/modulePipelines/ms.analysisservices.servers.yml' ` |
+  | Include the relative path to the module folder | `- '/arm/Microsoft.AnalysisServices/servers/*'` |
+  | Exclude any readme | `- '/**/*.md'` |
+
   Full example:
   ```yaml
     trigger:
@@ -393,19 +386,12 @@ While they look very similar they have specific areas in which they differ:
   > ***Note:*** By the time of this writing, wildcards are temporarily not supported by Azure DevOps
 - The ***variables***
   The variables are leveraged by the pipelines to fundamentally process the module. We need:
-  - 1 reference to the [shared variable file](#azure-devops-component-variable-file). For example:
-    ```yaml
-      - template: '/.azuredevops/pipelineVariables/global.variables.yml'
-    ```
-  - 1 reference to the [variable group](#azure-devops-component-variable-group) with the platform secrets. For example:
-    ```yaml
-      - group: Platform-Tokens
-    ```
-  - 1 variable with the relative path to the module folder. For example:
-    ```yaml
-      - name: modulePath
-        value: '/arm/Microsoft.AnalysisServices/servers'
-    ```
+  | Variable | Example |
+  | - | - |
+  | Reference to the [shared variable file](#azure-devops-component-variable-file) | `- template: '/.azuredevops/pipelineVariables/global.variables.yml'` |
+  | Reference to the [variable group](#azure-devops-component-variable-group) with the platform secrets | `- group: Platform-Tokens` |
+  | Relative path to the module folder | <code>- name: modulePath<p>&nbsp;&nbsp;value: '/arm/Microsoft.AnalysisServices/servers'</code> |
+
   Full example:
   ```yaml
     variables:
