@@ -16,9 +16,9 @@ This section gives you an overview of the design principals the pipelines follow
     - [Removal](#removal)
     - [Publish](#publish)
   - [Shared concepts](#shared-concepts)
+    - [Prerequisites](#prerequisites)
     - [Pipeline secrets](#pipeline-secrets)
     - [Pipeline variables](#pipeline-variables)
-    - [Prerequisites](#prerequisites)
     - [Tokens Replacement](#tokens-replacement)
 - [Platform pipelines](#platform-pipelines)
   - [Dependencies pipeline](#dependencies-pipeline)
@@ -117,10 +117,16 @@ By the time of this writing, the publishing experience works as follows:
 ## Shared concepts
 
 There are several concepts that are shared among the phases. Most notably
+- [Prerequisites](#prerequisites)
 - [Pipeline secrets](#pipeline-serets)
 - [Pipeline variables](#pipeline-variables)
-- [Prerequisites](#prerequisites)
 - [Tokens Replacement](#tokens-replacement)
+
+### Prerequisites
+
+For both the [simulated deployment validation](#simulated-deployment-validation) as well as the [test deployment](#test-deployment) we should account for the following prerequisites:
+- A _"Sandbox"_ or _"Engineering"_ **validation subscription** (in Azure) has to be used to test if the modules (or other components) are deployable. This subscription must not have connectivity to any on-premises or other Azure networks.
+- An Azure Active Directory Service Principal (AAD SPN) to authenticate to the validation subscription and run the test deployments of the modules.
 
 ### Pipeline secrets
 
@@ -159,12 +165,6 @@ The primary pipeline variable file hosts the fundamental pipeline configuration 
 | `bicepRegistryName` | "adpsxxazacrx001" | The container registry to publish bicep templates to |
 | `bicepRegistryRGName` | "artifacts-rg" | The resource group of the container registry to publish bicep templates to. Is used to create a new container registry if not yet existing |
 | `bicepRegistryDoPublish` | "true" | A central switch to enable/disable publishing to the private bicep registry |
-
-### Prerequisites
-
-For both the [simulated deployment validation](#simulated-deployment-validation) as well as the [test deployment](#test-deployment) we should account for the following prerequisites:
-- A _"Sandbox"_ or _"Engineering"_ **validation subscription** (in Azure) has to be used to test if the modules (or other components) are deployable. This subscription must not have connectivity to any on-premises or other Azure networks.
-- An Azure Active Directory Service Principal (AAD SPN) to authenticate to the validation subscription and run the test deployments of the modules.
 
 ### Tokens Replacement
 
