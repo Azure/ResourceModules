@@ -170,7 +170,7 @@ jobs:
           eq(variables['artifactsFeedDoPublish'], true),
           succeeded()
           )
-        displayName: Publish Universal Package $(universalPackageModuleName)
+        displayName: Publish Universal Package
         inputs:
           command: publish
           publishDirectory: '$(ENVMODULEPATH)'
