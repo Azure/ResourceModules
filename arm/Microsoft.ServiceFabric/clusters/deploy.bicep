@@ -146,7 +146,7 @@ var azureActiveDirectory_var = {
 
 var certificate_var = {
   thumbprint: !empty(certificate) ? certificate.thumbprint : null
-  thumbprintSecondary: !empty(certificate) ? certificate.thumbprintSecondary : null
+  //thumbprintSecondary: !empty(certificate) ? certificate.thumbprintSecondary : null
   x509StoreName: !empty(certificate) ? certificate.x509StoreName : null
 }
 
@@ -314,7 +314,7 @@ module serviceFabricCluster_rbac '.bicep/nested_rbac.bicep' = [for (roleAssignme
 
 // Service Fabric cluster application types
 module serviceFabricCluster_applicationTypes 'applicationTypes/deploy.bicep' = [for applicationType in serviceFabricClusterApplicationTypes: {
-  name: '${uniqueString(deployment().name, location)}-ServiceFabricCluster-${applicationType.name}'
+  name: '${uniqueString(deployment().name, location)}-SFC-${applicationType.name}'
   params: {
     applicationTypeName: applicationType.name
     serviceFabricClusterName: serviceFabricCluster.name
@@ -326,10 +326,10 @@ module serviceFabricCluster_applicationTypes 'applicationTypes/deploy.bicep' = [
 
 // Service Fabric cluster applications
 module serviceFabricCluster_applications 'applications/deploy.bicep' = [for application in serviceFabricClusterApplications: {
-  name: '${uniqueString(deployment().name, location)}-ServiceFabricCluster-${application.name}'
+  name: '${uniqueString(deployment().name, location)}-SFC-${application.name}'
   params: {
     serviceFabricClusterName: serviceFabricCluster.name
-    applicationName: application.name
+    applicationName: contains(application, 'name') ? application.name : 'defaultApplication'
     identity: contains(application, 'identity') ? application.identity : {}
     properties: contains(application, 'properties') ? application.properties : {}
     tags: tags
@@ -342,7 +342,9 @@ module serviceFabricCluster_applications 'applications/deploy.bicep' = [for appl
 // Outputs section
 @description('The Service Fabric Cluster Object.')
 output serviceFabricCluster object = serviceFabricCluster
+
 @description('The Service Fabric Cluster resource group.')
 output serviceFabricClusterResourceGroup string = resourceGroup().name
+
 @description('The Service Fabric Cluster endpoint.')
 output clusterEndpoint string = serviceFabricCluster.properties.clusterEndpoint

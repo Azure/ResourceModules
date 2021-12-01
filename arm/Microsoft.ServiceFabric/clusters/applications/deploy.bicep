@@ -24,16 +24,16 @@ var identity_var = {
   userAssignedIdentities: !empty(identity) ? identity.userAssignedIdentities : null
 }
 
-var propertiesManagedIdentities_var = [for index in properties.managedIdentities :{
-  name: contains(properties, 'managedIdentities') ? properties.managedIdentities[index].name : null
-  principalId: contains(properties, 'managedIdentities') ? properties.managedIdentities[index].principalId : null
+var propertiesManagedIdentities_var = [for managedIdentity in properties.managedIdentities :{
+  name: contains(managedIdentity, 'name') ? managedIdentity.name : null
+  principalId: contains(managedIdentity, 'principalId') ? managedIdentity.principalId : null
 }]
 
-var propertiesMetrics_var = [for index in range(0, length(properties.metrics)): {
-  maximumCapacity: contains(properties.metrics, 'maximumCapacity') ? properties.metrics.maximumCapacity : 0
-  name: !empty(properties.metrics.name) ? properties.metrics.name : null
-  reservationCapacity: contains(properties.metrics, 'reservationCapacity') ? properties.metrics.reservationCapacity : 0
-  totalApplicationCapacity: contains(properties.metrics, 'totalApplicationCapacity') ? properties.metrics.totalApplicationCapacity : 1
+var propertiesMetrics_var = [for metric in properties.metrics: {
+  maximumCapacity: contains(metric, 'maximumCapacity') ? metric.maximumCapacity : 0
+  name: !empty(metric.name) ? metric.name : null
+  reservationCapacity: contains(metric, 'reservationCapacity') ? metric.reservationCapacity : 0
+  totalApplicationCapacity: contains(metric, 'totalApplicationCapacity') ? metric.totalApplicationCapacity : 1
 }]
 
 var upgradePolicy_var = {
