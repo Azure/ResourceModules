@@ -246,7 +246,7 @@ For _GitHub_ in particular we need the following secrets in addition to those de
 
 ### **GitHub Component:** Variable file
 
-The [pipeline configuration file](#pipeline-variables) can be found at `.github/variables/variables.module.json`.
+The [pipeline configuration file](#pipeline-variables) can be found at `.github/variables/global.variables.json`.
 
 ### **GitHub Component:** Composite Actions**
 
