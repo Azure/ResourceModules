@@ -1,4 +1,3 @@
-// Params
 @description('Required. Name of the Serivce Fabric cluster.')
 param serviceFabricClusterName string = ''
 
@@ -137,9 +136,8 @@ param roleAssignments array = []
 param serviceFabricClusterApplications array = []
 
 @description('Optional. Array of Service Fabric cluster application types.')
-param serviceFabricApplicationTypes array = []
+param serviceFabricClusterApplicationTypes array = []
 
-// Var section
 var azureActiveDirectory_var = {
   clientApplication: !empty(azureActiveDirectory) ? azureActiveDirectory.clientApplication : null
   clusterApplication: !empty(azureActiveDirectory) ? azureActiveDirectory.clusterApplication : null
@@ -148,7 +146,7 @@ var azureActiveDirectory_var = {
 
 var certificate_var = {
   thumbprint: !empty(certificate) ? certificate.thumbprint : null
-  //thumbprintSecondary: !empty(certificate) ? certificate.thumbprintSecondary : null
+  thumbprintSecondary: !empty(certificate) ? certificate.thumbprintSecondary : null
   x509StoreName: !empty(certificate) ? certificate.x509StoreName : null
 }
 
@@ -171,6 +169,15 @@ var clientCertificateThumbprints_var = [for index in range(0, (!empty(clientCert
   certificateThumbprint: !empty(clientCertificateThumbprints) ? '${clientCertificateThumbprints[index].certificateThumbprint}' : null
   isAdmin: !empty(clientCertificateThumbprints) ? clientCertificateThumbprints[index].isAdmin : null
 }]
+
+var diagnosticsStorageAccountConfig_var = {
+  blobEndpoint: !empty(diagnosticsStorageAccountConfig) ? diagnosticsStorageAccountConfig.blobEndpoint : null
+  protectedAccountKeyName: !empty(diagnosticsStorageAccountConfig) ? diagnosticsStorageAccountConfig.protectedAccountKeyName : null
+  protectedAccountKeyName2: !empty(diagnosticsStorageAccountConfig) ? diagnosticsStorageAccountConfig.protectedAccountKeyName2 : null
+  queueEndpoint: !empty(diagnosticsStorageAccountConfig) ? diagnosticsStorageAccountConfig.queueEndpoint : null
+  storageAccountName: !empty(diagnosticsStorageAccountConfig) ? diagnosticsStorageAccountConfig.storageAccountName : null
+  tableEndpoint: !empty(diagnosticsStorageAccountConfig) ? diagnosticsStorageAccountConfig.tableEndpoint : null
+}
 
 var fabricSettings_var = [for index in range(0, (!empty(fabricSettings) ? length(fabricSettings) : 0)): {
   name: !empty(fabricSettings) ? fabricSettings[index].name : null
@@ -242,47 +249,9 @@ var upgradeDescription_var = {
   }
 }
 
-var builtInRoleNames = {
-  'Owner': subscriptionResourceId('Microsoft.Authorization/roleDefinitions', '8e3af657-a8ff-443c-a75c-2fe8c4bcb635')
-  'Contributor': subscriptionResourceId('Microsoft.Authorization/roleDefinitions', 'b24988ac-6180-42a0-ab88-20f7382dd24c')
-  'Reader': subscriptionResourceId('Microsoft.Authorization/roleDefinitions', 'acdd72a7-3385-48ef-bd42-f606fba81ae7')
-  'Log Analytics Contributor': subscriptionResourceId('Microsoft.Authorization/roleDefinitions', '92aaf0da-9dab-42b6-94a3-d43ce8d16293')
-  'Log Analytics Reader': subscriptionResourceId('Microsoft.Authorization/roleDefinitions', '73c42c96-874c-492b-b04d-ab87d138a893')
-  'Managed Application Contributor Role': subscriptionResourceId('Microsoft.Authorization/roleDefinitions', '641177b8-a67a-45b9-a033-47bc880bb21e')
-  'Managed Application Operator Role': subscriptionResourceId('Microsoft.Authorization/roleDefinitions', 'c7393b34-138c-406f-901b-d8cf2b17e6ae')
-  'Managed Applications Reader': subscriptionResourceId('Microsoft.Authorization/roleDefinitions', 'b9331d33-8a36-4f8c-b097-4f54124fdb44')
-  'Monitoring Contributor': subscriptionResourceId('Microsoft.Authorization/roleDefinitions', '749f88d5-cbae-40b8-bcfc-e573ddc772fa')
-  'Monitoring Metrics Publisher': subscriptionResourceId('Microsoft.Authorization/roleDefinitions', '3913510d-42f4-4e42-8a64-420c390055eb')
-  'Monitoring Reader': subscriptionResourceId('Microsoft.Authorization/roleDefinitions', '43d0d8ad-25c7-4714-9337-8ba259a9fe05')
-  'Resource Policy Contributor': subscriptionResourceId('Microsoft.Authorization/roleDefinitions', '36243c78-bf99-498c-9df9-86d9f8d28608')
-  'User Access Administrator': subscriptionResourceId('Microsoft.Authorization/roleDefinitions', '18d7d88d-d35e-4fb5-a5c3-7773c20a72d9')
-}
-
 module pid_cuaId './.bicep/nested_cuaId.bicep' = if (!empty(cuaId)) {
   name: 'pid-${cuaId}'
   params: {}
-}
-
-// Prereq resources for testing from https://github.com/Azure/azure-quickstart-templates/blob/master/quickstarts/microsoft.servicefabric/service-fabric-secure-cluster-5-node-1-nodetype/azuredeploy.json
-
-resource supportLogStorageAccount 'Microsoft.Storage/storageAccounts@2021-06-01' = {
-  kind: 'Storage'
-    location: location
-  name: 'suprtlogstrg01'
-  sku: {
-    name: 'Standard_LRS'
-  }
-    tags: tags
-  }
-
-var diagnosticsStorageAccountConfig_var = {
-  blobEndpoint: !empty(diagnosticsStorageAccountConfig) ? diagnosticsStorageAccountConfig.blobEndpoint : (!empty(supportLogStorageAccount) ? supportLogStorageAccount.properties.primaryEndpoints.blob : null)
-  // Comment: Update the logic below to make to more robust
-  protectedAccountKeyName: !empty(diagnosticsStorageAccountConfig) ? diagnosticsStorageAccountConfig.protectedAccountKeyName : 'StorageAccountKey1'
-  protectedAccountKeyName2: !empty(diagnosticsStorageAccountConfig) ? diagnosticsStorageAccountConfig.protectedAccountKeyName2 : 'StorageAccountKey2'
-  queueEndpoint: !empty(diagnosticsStorageAccountConfig) ? diagnosticsStorageAccountConfig.queueEndpoint : (!empty(supportLogStorageAccount) ? supportLogStorageAccount.properties.primaryEndpoints.queue : null)
-  storageAccountName: !empty(diagnosticsStorageAccountConfig) ? diagnosticsStorageAccountConfig.storageAccountName : (!empty(supportLogStorageAccount) ? supportLogStorageAccount.name : null)
-  tableEndpoint: !empty(diagnosticsStorageAccountConfig) ? diagnosticsStorageAccountConfig.tableEndpoint : (!empty(supportLogStorageAccount) ? supportLogStorageAccount.properties.primaryEndpoints.table : null)
 }
 
 // Service Fabric cluster resource
@@ -323,17 +292,6 @@ resource serviceFabricCluster 'Microsoft.ServiceFabric/clusters@2021-06-01' = {
   }
 }
 
-// Other Service fabric post requisites
-module serviceFabricPrerequisites '.bicep/nested_postrequisites.bicep' = {
-  name: '${serviceFabricCluster.name}-Postreqs'
-  params: {
-    serviceFabricClusterObj: serviceFabricCluster
-    supportLogStorageAccountKeys: supportLogStorageAccount.listKeys()
-    location: location
-    tags: tags
-  }
-}
-
 // Service Fabric cluster resource lock
 resource serviceFabricCluster_lock 'Microsoft.Authorization/locks@2016-09-01' = if (lock != 'NotSpecified') {
   name: '${serviceFabricCluster.name}-${lock}-lock'
@@ -346,53 +304,45 @@ resource serviceFabricCluster_lock 'Microsoft.Authorization/locks@2016-09-01' = 
 
 // Service Fabric cluster RBAC assignment
 module serviceFabricCluster_rbac '.bicep/nested_rbac.bicep' = [for (roleAssignment, index) in roleAssignments: {
-  name: '${serviceFabricCluster.name}-${uniqueString(deployment().name, location)}-Rbac-${index}'
+  name: '${uniqueString(deployment().name, location)}-ServiceFabric-Rbac-${index}'
   params: {
-    roleAssignmentObj: roleAssignment
-    builtInRoleNames: builtInRoleNames
-    resourceName: serviceFabricCluster.name
+    principalIds: roleAssignment.principalIds
+    roleDefinitionIdOrName: roleAssignment.roleDefinitionIdOrName
+    resourceId: serviceFabricCluster.id
   }
 }]
 
 // Service Fabric cluster application types
-// module serviceFabricCluster_applicationTypes '.bicep/nested_applicationTypes.bicep' = [for applicationType in serviceFabricApplicationTypes: {
-//   name: '${serviceFabricCluster.name}-${applicationType.name}'
-//   params: {
-//     applicationTypeObj: applicationType
-//     clusterName: serviceFabricCluster.name
-//     location: location
-//     tags: tags
-//     properties: !empty(applicationType.properties) ? applicationType.properties : null
-//   }
-// }]
+module serviceFabricCluster_applicationTypes 'applicationTypes/deploy.bicep' = [for applicationType in serviceFabricClusterApplicationTypes: {
+  name: '${uniqueString(deployment().name, location)}-ServiceFabricCluster-${applicationType.name}'
+  params: {
+    applicationTypeName: applicationType.name
+    serviceFabricClusterName: serviceFabricCluster.name
+    properties: contains(applicationType, 'properties') ? applicationType.properties : {}
+    tags: tags
+    versions: contains(applicationType, 'versions') ? applicationType.versions : []
+  }
+}]
 
-// // Service Fabric cluster applications
-// module serviceFabricCluster_applications '.bicep/nested_applications.bicep' = [for application in serviceFabricClusterApplications: {
-//   name: '${serviceFabricCluster.name}-${application.name}'
-//   params: {
-//     applicationObj: application
-//     clusterName: serviceFabricCluster.name
-//     location: location
-//     tags: tags
-//     identity: !empty(application.identity) ? application.identity : null
-//     properties: {
-//       managedIdentities: !empty(application.managedIdentities) ? application.managedIdentities : null
-//       maximumNodes: contains(application, 'maximumNodes') ? application.maximumNodes : 1
-//       metrics: !empty(application.metrics) ? application.metrics : null
-//       minimumNodes: contains(application, 'minimumNodes') ? application.minimumNodes : 0
-//       parameters: !empty(application.parameters) ? application.parameters : null
-//       removeApplicationCapacity: contains(application, 'removeApplicationCapacity') ? application.removeApplicationCapacity : false
-//       typeName: !empty(application.typeName) ? application.typeName : null
-//       typeVersion: !empty(application.typeVersion) ? application.typeVersion : null
-//       upgradePolicy: !empty(application.upgradePolicy) ? application.upgradePolicy : null
-//     }
-//   }
-//   dependsOn: [
-//     serviceFabricCluster_applicationTypes
-//   ]
-// }]
+// Service Fabric cluster applications
+module serviceFabricCluster_applications 'applications/deploy.bicep' = [for application in serviceFabricClusterApplications: {
+  name: '${uniqueString(deployment().name, location)}-ServiceFabricCluster-${application.name}'
+  params: {
+    serviceFabricClusterName: serviceFabricCluster.name
+    applicationName: application.name
+    identity: contains(application, 'identity') ? application.identity : {}
+    properties: contains(application, 'properties') ? application.properties : {}
+    tags: tags
+  }
+  dependsOn: [
+    serviceFabricCluster_applicationTypes
+  ]
+}]
 
 // Outputs section
+@description('The Service Fabric Cluster Object.')
 output serviceFabricCluster object = serviceFabricCluster
+@description('The Service Fabric Cluster resource group.')
 output serviceFabricClusterResourceGroup string = resourceGroup().name
+@description('The Service Fabric Cluster endpoint.')
 output clusterEndpoint string = serviceFabricCluster.properties.clusterEndpoint

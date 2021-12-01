@@ -14,72 +14,72 @@
                 "clusterName": "sxx-az-sfc-weu-x-666"
             }
         },
-        // "lock": {
-        //     "value": "CanNotDelete"
-        // },
+        "lock": {
+            "value": "CanNotDelete"
+        },
         "addOnFeatures": {
             "value": ["DnsService", "RepairManager"]
         },
-        // "maxUnusedVersionsToKeep": {
-        //     "value": 2
-        // },
-        // "azureActiveDirectory": {
-        //     "value": {
-        //         "clientApplication": "",
-        //         "clusterApplication": "",
-        //         "tenantId": ""
-        //     }
-        // },
-        "certificate": {
+        "maxUnusedVersionsToKeep": {
+            "value": 2
+        },
+        "azureActiveDirectory": {
             "value": {
-                "thumbprint": "154813CEE741AE4FC28CAE17FC16FB30888FACF3", // If 'certificate' is provided then this is mandatory
-                //"thumbprintSecondary": "",
-                "x509StoreName": "My" // Possible values are 'AddressBook', 'AuthRoot', 'CertificateAuthority', 'Disallowed', 'My', 'Root', 'TrustedPeople', 'TrustedPublisher'
+                "clientApplication": "",
+                "clusterApplication": "",
+                "tenantId": ""
             }
         },
-        // "certificateCommonNames": {
-        //     "value": {
-        //         "commonNames": [ // The list of server certificates referenced by common name that are used to secure the cluster.
-        //             {
-        //                 "certificateCommonName": "", // If 'certificateCommonNames' is provided then this is mandatory
-        //                 "certificateIssuerThumbprint": "" // If 'certificateCommonNames' is provided then this is mandatory
-        //             }
-        //         ],
-        //         "x509StoreName": "" // Possible values are 'AddressBook', 'AuthRoot', 'CertificateAuthority', 'Disallowed', 'My', 'Root', 'TrustedPeople', 'TrustedPublisher'
-        //     }
-        // },
-        // "clientCertificateCommonNames": {
-        //     "value": [{
-        //         "certificateCommonName": "", // If 'clientCertificateCommonNames' is passed then this is mandatory
-        //         "certificateIssuerThumbprint": "", // If 'clientCertificateCommonNames' is passed then this is mandatory
-        //         "isAdmin": "" // Bool. If 'clientCertificateCommonNames' is passed then this is mandatory
-        //     }]
-        // },
-        // "clientCertificateThumbprints": {
-        //     "value": [{
-        //         "certificateThumbprint": "", // If 'clientCertificateThumbprints' is passed then this is mandatory
-        //         "isAdmin": "" // If 'clientCertificateThumbprints' is passed then this is mandatory
-        //     }]
-        // },
-        // "clusterCodeVersion": {
-        //     "value": "8.1.329.9590"
-        // },
-        // "diagnosticsStorageAccountConfig": {
-        //     "value": {
-        //         "blobEndpoint": "", // If 'diagnosticsStorageAccountConfig' is passed then this is mandatory
-        //         "protectedAccountKeyName": "", // If 'diagnosticsStorageAccountConfig' is passed then this is mandatory
-        //         "protectedAccountKeyName2": "",
-        //         "queueEndpoint": "", // If 'diagnosticsStorageAccountConfig' is passed then this is mandatory
-        //         "storageAccountName": "", // If 'diagnosticsStorageAccountConfig' is passed then this is mandatory
-        //         "tableEndpoint": "" // If 'diagnosticsStorageAccountConfig' is passed then this is mandatory
-        //     }
-        // },
+        "certificate": {
+            "value": {
+                "thumbprint": "154813CEE741AEC28CAE17FC16FB30888FACF3",
+                "thumbprintSecondary": "",
+                "x509StoreName": "My"
+            }
+        },
+        "certificateCommonNames": {
+            "value": {
+                "commonNames": [
+                    {
+                        "certificateCommonName": "",
+                        "certificateIssuerThumbprint": ""
+                    }
+                ],
+                "x509StoreName": ""
+            }
+        },
+        "clientCertificateCommonNames": {
+            "value": [{
+                "certificateCommonName": "",
+                "certificateIssuerThumbprint": "",
+                "isAdmin": ""
+            }]
+        },
+        "clientCertificateThumbprints": {
+            "value": [{
+                "certificateThumbprint": "",
+                "isAdmin": ""
+            }]
+        },
+        "clusterCodeVersion": {
+            "value": "8.1.329.9590"
+        },
+        "diagnosticsStorageAccountConfig": {
+            "value": {
+                "blobEndpoint": "",
+                "protectedAccountKeyName": "",
+                "protectedAccountKeyName2": "",
+                "queueEndpoint": "",
+                "storageAccountName": "",
+                "tableEndpoint": ""
+            }
+        },
         "fabricSettings": {
             "value": [
                 {
-                    "name": "Security", // The section name of the fabric settings.
+                    "name": "Security",
                     "parameters": [
-                        { // The collection of parameters in the section.
+                        {
                             "name": "ClusterProtectionLevel",
                             "value": "EncryptAndSign"
                         }
@@ -88,60 +88,60 @@
             ]
         },
         "managementEndpoint": {
-            "value": "https://sxx-az-sfc-weu-x-666.centralindia.cloudapp.azure.com:19080" // Mandatory
+            "value": "https://sxx-az-sfc-weu-x-666.centralindia.cloudapp.azure.com:19080"
         },
-        "nodeTypes": { // The list of node types in the cluster.
+        "nodeTypes": {
             "value": [
                 {
                     "applicationPorts": {
                         "endPort": 30000,
                         "startPort": 20000
                     },
-                    //"capacities": {},
+                    "capacities": {},
                     "clientConnectionEndpointPort": 19000,
-                    "durabilityLevel": "Silver", // One of 'Bronze', 'Gold', 'Silver'
+                    "durabilityLevel": "Silver",
                     "ephemeralPorts": {
                         "endPort": 65534,
                         "startPort": 49152
                     },
                     "httpGatewayEndpointPort": 19080,
                     "isPrimary": true,
-                    // "isStateless": false,
-                    // "multipleAvailabilityZones": false,
+                    "isStateless": false,
+                    "multipleAvailabilityZones": false,
                     "name": "666Node01",
-                    // "placementProperties": {},
-                    // "reverseProxyEndpointPort": "",
+                    "placementProperties": {},
+                    "reverseProxyEndpointPort": "",
                     "vmInstanceCount": 5
                 }
             ]
         },
-        // "notifications": {
-        //     "value": [{
-        //         "isEnabled": "",
-        //         "notificationCategory": "", // 'WaveProgress'
-        //         "notificationLevel": "", // One of 'All', 'Critical'
-        //         "notificationTargets": [{
-        //             "notificationChannel": "", // One of 'EmailSubscription', 'EmailUser'
-        //             "receivers": ""
-        //         }]
-        //     }]
-        // },
+        "notifications": {
+            "value": [{
+                "isEnabled": "",
+                "notificationCategory": "",
+                "notificationLevel": "",
+                "notificationTargets": [{
+                    "notificationChannel": "",
+                    "receivers": ""
+                }]
+            }]
+        },
         "reliabilityLevel": {
             "value": "Silver"
         },
         "vmImage": {
             "value": "Linux"
         },
-        // "roleAssignments": {
-        //     "value": [
-        //         {
-        //             "roleDefinitionIdOrName": "Reader",
-        //             "principalIds": [
-        //                 "6bffd5f5-80d9-435c-903e-78354538a902"
-        //             ]
-        //         }
-        //     ]
-        // },
+        "roleAssignments": {
+            "value": [
+                {
+                    "roleDefinitionIdOrName": "Reader",
+                    "principalIds": [
+                        "6bffd5f5-80d9-435c-903e-78354538a902"
+                    ]
+                }
+            ]
+        },
         "serviceFabricClusterApplications": {
             "value": [
                 {
@@ -179,8 +179,8 @@
                                     "maxPercentUnhealthyReplicasPerPartition": null,
                                     "maxPercentUnhealthyServices": null
                                 },
-                                "maxPercentUnhealthyDeployedApplications": null //,
-                                //"serviceTypeHealthPolicyMap": {}
+                                "maxPercentUnhealthyDeployedApplications": null,
+                                "serviceTypeHealthPolicyMap": {}
                             },
                             "forceRestart": "",
                             "recreateApplication": "",
