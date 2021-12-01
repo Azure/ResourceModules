@@ -254,7 +254,7 @@ jobs:
           #------------------
           - task: AzurePowerShell@5
             displayName: 'Remove [${{ parameters.moduleName }}] in [${{ parameters.resourceGroupName }}] via [${{ parameters.serviceConnection }}]'
-            condition: and(succeededOrFailed(),  eq( '${{ parameters.removeDeployment }}', 'true'))
+            condition: and(eq( '${{ parameters.removeDeployment }}', 'true'), not(eq(variables['deploymentName'],'')))
             inputs:
               azureSubscription: ${{ parameters.serviceConnection }}
               azurePowerShellVersion: ${{ parameters.azurePowerShellVersion }}
