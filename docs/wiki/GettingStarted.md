@@ -137,7 +137,7 @@ As the modules we test often times have dependencies to other services, we creat
 
 ### Platform variables & secrets
 
-Several fundamental variables are shared among all pipelines and are stored in a pipeline variable file. In case you want to not only leverage the module templates but actually re-use the implemented pipelines & testing framework as well, you need to set up a few additional [variables](./PipelinesDesign#pipeline-variables) & [secrets](./PipelinesDesign#pipeline-secrets) in your environment.
+Several fundamental variables are shared among all pipelines and are stored in a pipeline variable file. In case you want to not only leverage the module templates but actually re-use the implemented pipelines & testing framework as well, you need to set up several [variables](./PipelinesDesign#pipeline-variables) & [secrets](./PipelinesDesign#pipeline-secrets) in your environment.
 
 ## **Option 2:** Use it as a local reference to build bicep templates
 
