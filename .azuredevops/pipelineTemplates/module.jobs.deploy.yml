@@ -220,7 +220,6 @@ jobs:
                 # INVOKE DEPLOYMENT #
                 # ----------------- #
                 $functionInput = @{
-                  moduleName         = '${{ parameters.moduleName }}'
                   templateFilePath   = Join-Path '$(ModuleRepoRoot)' '$(modulePath)' 'deploy.bicep'
                   parameterFilePath  = Join-Path '$(parametersRepoRoot)' '${{ deploymentBlock.path }}'
                   location           = '${{ parameters.location }}'
