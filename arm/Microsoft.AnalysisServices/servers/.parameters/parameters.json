@@ -8,7 +8,7 @@
         "skuName": {
             "value": "D1"
         },
-        "roleAssignments": {
+        "roleAssignmentss": {
             "value": [
                 {
                     "roleDefinitionIdOrName": "Reader",

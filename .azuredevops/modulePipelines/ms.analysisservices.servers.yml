@@ -38,13 +38,13 @@ variables:
     value: '/arm/Microsoft.AnalysisServices/servers'
 
 stages:
-  - stage: Validation
-    jobs:
-      - template: /.azuredevops/pipelineTemplates/module.jobs.validate.yml
-        parameters:
-          deploymentBlocks:
-            - path: $(modulePath)/.parameters/min.parameters.json
-            - path: $(modulePath)/.parameters/parameters.json
+  # - stage: Validation
+  #   jobs:
+  #     - template: /.azuredevops/pipelineTemplates/module.jobs.validate.yml
+  #       parameters:
+  #         deploymentBlocks:
+  #           - path: $(modulePath)/.parameters/min.parameters.json
+  #           - path: $(modulePath)/.parameters/parameters.json
 
   - stage: Deployment
     jobs:
