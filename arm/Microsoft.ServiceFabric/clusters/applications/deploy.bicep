@@ -24,9 +24,9 @@ var identity_var = {
   userAssignedIdentities: !empty(identity) ? identity.userAssignedIdentities : null
 }
 
-var propertiesManagedIdentities_var = [for index in range(0, length(properties.managedIdentities)): {
-  name: properties.managedIdentities.name[index]
-  principalId: properties.managedIdentities.principalId[index]
+var propertiesManagedIdentities_var = [for index in properties.managedIdentities :{
+  name: contains(properties, 'managedIdentities') ? properties.managedIdentities[index].name : null
+  principalId: contains(properties, 'managedIdentities') ? properties.managedIdentities[index].principalId : null
 }]
 
 var propertiesMetrics_var = [for index in range(0, length(properties.metrics)): {
@@ -38,14 +38,14 @@ var propertiesMetrics_var = [for index in range(0, length(properties.metrics)): 
 
 var upgradePolicy_var = {
   applicationHealthPolicy: {
-    considerWarningAsError: contains(properties.upgradePolicy, 'considerWarningAsError') ? properties.upgradePolicy.considerWarningAsError : false
+    considerWarningAsError: contains(properties.upgradePolicy.applicationHealthPolicy, 'considerWarningAsError') ? properties.upgradePolicy.applicationHealthPolicy.considerWarningAsError : false
     defaultServiceTypeHealthPolicy: {
-      maxPercentUnhealthyPartitionsPerService: contains(properties.upgradePolicy.defaultServiceTypeHealthPolicy, 'maxPercentUnhealthyPartitionsPerService') ? properties.upgradePolicy.defaultServiceTypeHealthPolicy.maxPercentUnhealthyPartitionsPerService : 0
-      maxPercentUnhealthyReplicasPerPartition: contains(properties.upgradePolicy.defaultServiceTypeHealthPolicy, 'maxPercentUnhealthyReplicasPerPartition') ? properties.upgradePolicy.defaultServiceTypeHealthPolicy.maxPercentUnhealthyReplicasPerPartition : 0
-      maxPercentUnhealthyServices: contains(properties.upgradePolicy.defaultServiceTypeHealthPolicy, 'maxPercentUnhealthyServices') ? properties.upgradePolicy.defaultServiceTypeHealthPolicy.maxPercentUnhealthyServices : 0
+      maxPercentUnhealthyPartitionsPerService: contains(properties.upgradePolicy.applicationHealthPolicy.defaultServiceTypeHealthPolicy, 'maxPercentUnhealthyPartitionsPerService') ? properties.upgradePolicy.applicationHealthPolicy.defaultServiceTypeHealthPolicy.maxPercentUnhealthyPartitionsPerService : 0
+      maxPercentUnhealthyReplicasPerPartition: contains(properties.upgradePolicy.applicationHealthPolicy.defaultServiceTypeHealthPolicy, 'maxPercentUnhealthyReplicasPerPartition') ? properties.upgradePolicy.applicationHealthPolicy.defaultServiceTypeHealthPolicy.maxPercentUnhealthyReplicasPerPartition : 0
+      maxPercentUnhealthyServices: contains(properties.upgradePolicy.applicationHealthPolicy.defaultServiceTypeHealthPolicy, 'maxPercentUnhealthyServices') ? properties.upgradePolicy.applicationHealthPolicy.defaultServiceTypeHealthPolicy.maxPercentUnhealthyServices : 0
     }
-    maxPercentUnhealthyDeployedApplications: contains(properties.upgradePolicy, 'maxPercentUnhealthyDeployedApplications') ? properties.upgradePolicy.maxPercentUnhealthyDeployedApplications : 0
-    serviceTypeHealthPolicyMap: !empty(properties.upgradePolicy.serviceTypeHealthPolicyMap) ? properties.upgradePolicy.serviceTypeHealthPolicyMap : null
+    maxPercentUnhealthyDeployedApplications: contains(properties.upgradePolicy.applicationHealthPolicy, 'maxPercentUnhealthyDeployedApplications') ? properties.upgradePolicy.applicationHealthPolicy.maxPercentUnhealthyDeployedApplications : 0
+    serviceTypeHealthPolicyMap: !empty(properties.upgradePolicy.applicationHealthPolicy.serviceTypeHealthPolicyMap) ? properties.upgradePolicy.applicationHealthPolicy.serviceTypeHealthPolicyMap : null
   }
   forceRestart: contains(properties.upgradePolicy, 'forceRestart') ? properties.upgradePolicy.forceRestart : false
   recreateApplication: contains(properties.upgradePolicy, 'recreateApplication') ? properties.upgradePolicy.recreateApplication : false
