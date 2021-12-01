@@ -83,6 +83,9 @@ module publicIpAddress_rbac 'nested_networkInterface_publicIPAddress_rbac.bicep'
   }
 }]
 
+@description('The name of the Resource Group the public IP address was deployed.')
 output publicIPAddressResourceGroup string = resourceGroup().name
+@description('The name of the public IP address.')
 output publicIPAddressName string = publicIpAddress.name
+@description('The Resource ID of the public IP address.')
 output publicIPAddressResourceId string = publicIpAddress.id

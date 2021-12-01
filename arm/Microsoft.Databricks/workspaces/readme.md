@@ -103,11 +103,11 @@ Tag names and tag values can be provided as needed. A tag can be left without a 
 
 ## Outputs
 
-| Output Name | Type |
-| :-- | :-- |
-| `databrickName` | string |
-| `databrickResourceGroup` | string |
-| `databrickResourceId` | string |
+| Output Name | Type | Description |
+| :-- | :-- | :-- |
+| `databrickName` | string | The name of the deployed databricks workspace |
+| `databrickResourceGroup` | string | The resource group of the deployed databricks workspace |
+| `databrickResourceId` | string | The resource ID of the deployed databricks workspace |
 
 ## Template references
 

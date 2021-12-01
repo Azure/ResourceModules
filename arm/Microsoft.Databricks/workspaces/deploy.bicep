@@ -138,6 +138,9 @@ module workspace_rbac '.bicep/nested_rbac.bicep' = [for (roleAssignment, index) 
   }
 }]
 
+@description('The name of the deployed databricks workspace')
 output databrickName string = workspace.name
+@description('The resource ID of the deployed databricks workspace')
 output databrickResourceId string = workspace.id
+@description('The resource group of the deployed databricks workspace')
 output databrickResourceGroup string = resourceGroup().name

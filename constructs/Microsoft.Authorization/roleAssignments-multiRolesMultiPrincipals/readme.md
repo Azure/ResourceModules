@@ -87,10 +87,10 @@ To deploy resource to a Resource Group, provide the `subscriptionId` and `resour
 
 ## Outputs
 
-| Output Name | Type |
-| :-- | :-- |
-| `roleAssignments` | array |
-| `roleAssignmentScope` | string |
+| Output Name | Type | Description |
+| :-- | :-- | :-- |
+| `roleAssignments` | array | The scope of the deployed role assignments |
+| `roleAssignmentScope` | string | The names of the deployed role assignments |
 
 ## Considerations
 
