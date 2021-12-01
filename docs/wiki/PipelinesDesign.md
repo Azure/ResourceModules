@@ -31,12 +31,14 @@ This section gives you an overview of the design principals the pipelines follow
   - [Wiki pipeline](#wiki-pipeline)
 - [DevOps-Tool-specific considerations](#devops-tool-specific-considerations)
   - [GitHub Workflows](#github-workflows)
+    - [Component: GitHub secrets](#github-component-github-secrets)
     - [Component: Variable files](#github-component-variable-files)
-    - [Component: Composite Actions](#github-component-composite-actions)
+    - [Component: Composite actions](#github-component-composite-actions)
     - [Component: Workflows](#github-component-workflows)
   - [Azure DevOps Pipelines](#azure-devops-pipelines)
+    - [Component: Variable groups](#azure-devops-component-variable-groups)
     - [Component: Variable files](#azure-devops-component-variable-files)
-    - [Component: Pipeline Templates](#azure-devops-component-pipeline-templates)
+    - [Component: Pipeline templates](#azure-devops-component-pipeline-templates)
     - [Component: Pipelines](#azure-devops-component-pipelines)
 ---
 
@@ -208,11 +210,16 @@ Depending on what DevOps tool you want to use to host the platform you will find
 ## GitHub Workflows
 
 GitHub actions & workflows are the CI/CD solution provided by GitHub. To get the platform going, we use the following three elements:
+- **[GitHub secrets:](#github-component-github-secrets)** TODO: Fill
 - **[Variable files:](#github-component-variable-files)** These file(s) contain the configuration for all module pipelines in this repository.
 - **[Composite actions:](#github-component-composite-actions)** Composite actions bundle a set of actions for a specific purpose together. They are referenced by module pipelines.
 - **[Workflows:](#github-component-workflows)** GitHub workflows make up all our pipelines and leverage the _composite actions_. We have one workflow per module, plus several platform pipelines.
 
 In the following sub-sections we will take a deeper look into each element.
+
+### **GitHub Component:** GitHub secrets
+
+TODO: Fill
 
 ### **GitHub Component:** Variable files
 
@@ -282,10 +289,23 @@ Comparing multiple workflows you'll notice they are almost identically, yet diff
 
 Azure DevOps pipelines are the CI/CD solution provided by Azure DevOps. To get the platform going, we use the following three elements:
 
-- **[Variable files:](#azure-devops-component-variable-files)** ...
-- **[Pipeline templates:](#azure-devops-component-pipeline-templates)** ...
-- **[Pipelines:](#azure-devops-component-pipelines)** ...
+- **[Variable groups:](#azure-devops-component-variable-groups)** TODO: Fill
+- **[Variable files:](#azure-devops-component-variable-files)** TODO: Fill
+- **[Pipeline templates:](#azure-devops-component-pipeline-templates)** TODO: Fill
+- **[Pipelines:](#azure-devops-component-pipelines)** TODO: Fill
+
+### **Azure DevOps Component:** Variable groups
+
+TODO: Fill
 
 ### **Azure DevOps Component:** Variable files
+
+TODO: Fill
+
 ### **Azure DevOps Component:** Pipeline templates
+
+TODO: Fill
+
 ### **Azure DevOps Component:** Pipelines
+
+TODO: Fill
