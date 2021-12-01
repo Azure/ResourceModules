@@ -44,7 +44,7 @@ stages:
     jobs:
       - template: /.azuredevops/pipelineTemplates/module.jobs.validate.yml
         parameters:
-          deploymentBlocks: 
+          deploymentBlocks:
             - path: $(modulePath)/.parameters/min.parameters.json
             - path: $(modulePath)/.parameters/parameters.json
 
@@ -53,7 +53,7 @@ stages:
       - template: /.azuredevops/pipelineTemplates/module.jobs.deploy.yml
         parameters:
           removeDeployment: '${{ parameters.removeDeployment }}'
-          deploymentBlocks: 
+          deploymentBlocks:
             - path: $(modulePath)/.parameters/min.parameters.json
             - path: $(modulePath)/.parameters/parameters.json
 
@@ -65,8 +65,8 @@ stages:
           versioningOption: '${{ parameters.versioningOption }}'
           customVersion: '${{ parameters.customVersion }}'
 
-  - stage: Removal
-    dependsOn: Deployment
-    condition: and(in(dependencies.Deployment.result, 'Succeeded', 'Failed'),  eq( '${{ parameters.removeDeployment }}', 'true'))
-    jobs:
-      - template: /.azuredevops/pipelineTemplates/module.jobs.remove.yml
+  # - stage: Removal
+  #   dependsOn: Deployment
+  #   condition: and(in(dependencies.Deployment.result, 'Succeeded', 'Failed'),  eq( '${{ parameters.removeDeployment }}', 'true'))
+  #   jobs:
+  #     - template: /.azuredevops/pipelineTemplates/module.jobs.remove.yml

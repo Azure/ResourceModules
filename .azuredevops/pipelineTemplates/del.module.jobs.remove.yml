@@ -72,20 +72,17 @@ jobs:
           failOnStandardError: false
           pwsh: true
           inline: |
-            # Load used functions
-            $functionPath = Join-Path $(System.DefaultWorkingDirectory) '${{ parameters.relativePathOfRemovalScript }}'
-            . $functionPath
+            # Load used function
+            . (Join-Path '$(System.DefaultWorkingDirectory)' 'utilities' 'pipelines' 'resourceRemoval' 'Remove-DeployedModule.ps1')
 
-            # -------------- #
-            # INVOKE REMOVAL #
-            # -------------- #
             $functionInput = @{
-              moduleName        = '${{ parameters.moduleName }}'
-              resourceGroupName = '${{ parameters.resourceGroupName }}'
-              verbose           = $true
+                deploymentName    = '${{ steps.deploy_step.outputs.deploymentName }}' // TODO: UPDATE
+                templateFilePath  = Join-Path '$(System.DefaultWorkingDirectory)' '${{ inputs.templateFilePath }}' // TODO: UPDATE
+                resourceGroupName = '${{ parameters.resourceGroupName }}'
+                verbose           = $true
             }
 
             Write-Verbose 'Invoke task with' -Verbose
             Write-Verbose ($functionInput | ConvertTo-Json | Out-String) -Verbose
 
-            Invoke-Expression ('{0} @functionInput' -f (Split-Path $functionPath -LeafBase))
+            Remove-DeployedModule @functionInput
