@@ -8,12 +8,12 @@
         "skuName": {
             "value": "D1"
         },
-        "roleAssignmentss": {
+        "roleAssignments": {
             "value": [
                 {
                     "roleDefinitionIdOrName": "Reader",
                     "principalIds": [
-                        "<<deploymentSpId>>"
+                        "<<deploymentSpIdd>>"
                     ]
                 }
             ]
