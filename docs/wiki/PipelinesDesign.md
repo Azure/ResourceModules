@@ -143,7 +143,7 @@ The location where to set these secrets up depends on the DevOps platform you us
 
 ### Pipeline variables
 
-The primary pipeline variable file hosts the fundamental pipeline configuration. In here you will find and can configure information such as:
+The primary pipeline variable file hosts the fundamental pipeline configuration and is stored in a different location, based on the [DevOps platform](#devops-tool-specific-considerations). In here you will find and can configure information such as:
 
 #### ***General***
 | Variable Name | Example Value | Description |
@@ -241,7 +241,7 @@ For _GitHub_ in particular we need the following secrets in addition to those de
 
 | Secret Name | Example | Description |
 | - | - | - |
-| `AZURE_CREDENTIALS` |  `{"clientId": "4ce8ce4c-cac0-48eb-b815-65e5763e2929", "clientSecret": "<placeholder>", "subscriptionId": "d0312b25-9160-4550-914f-8738d9b5caf5", "tenantId": "9734cec9-4384-445b-bbb6-767e7be6e5ec" }` | The login credentials to use to log into the target Azure environment to test in. The format is described [here](https://github.com/Azure/login#configure-deployment-credentials). |
+| `AZURE_CREDENTIALS` |  `{"clientId": "4ce8ce4c-cac0-48eb-b815-65e5763e2929", "clientSecret": "<placeholder>", "subscriptionId": "d0312b25-9160-4550-914f-8738d9b5caf5", "tenantId": "9734cec9-4384-445b-bbb6-767e7be6e5ec" }` | The login credentials of the [deployment principal](./GettingStarted#platform-principal) to use to log into the target Azure environment to test in. The format is described [here](https://github.com/Azure/login#configure-deployment-credentials). |
 | `PLATFORM_REPO_UPDATE_PAT` | `<placeholder>` | A PAT with enough permissions assigned to it to push into the main branch. This PAT is leveraged by pipelines that automatically generate ReadMe files to keep them up to date |
 
 ### **GitHub Component:** Variable file
@@ -261,19 +261,19 @@ We use several composite actions to perform various tasks shared by our module w
 - **deployModule:** <p>
   This action performs an [actual deployment](#test-deploy) to Azure using a provided parameter file. Once a deployment ran it [removes](#removal) the resource
 - **publishModule:** <p>
-  This action is capable of [publishing](#publish) the given template to a location specified in the pipeline [variable file](#component-variable-files).
+  This action is capable of [publishing](#publish) the given template to a location specified in the pipeline [variable file](#github-component-variable-file).
 - **getWorkflowInput:** <p>
   This action implements allows us to fetch workflow input values from the module's workflow file, even if the pipeline was not triggered via a `workflow_dispatch` action. Without it we would not be able to process the contained information and would need to duplicate the configuration as workflow variables.
 
 ### **GitHub Component:** Workflows
 
-These are the individual end-to-end workflows we have for each module. Leveraging the [composite actions](#component-composite-actions) described before, they orchestrate the testing & publishing of their module.
+These are the individual end-to-end workflows we have for each module. Leveraging the [composite actions](#github-component-composite-actions) described before, they orchestrate the testing & publishing of their module.
 
 Comparing multiple workflows you'll notice they are almost identically, yet differ in a few important areas:
 
 - The ***path filters*** of the workflow trigger:
   - 1 for the composite actions
-  - 1 of the path filters should be the relative path to the workflow itself
+  - 1 should be the relative path to the workflow itself
   - 1 should be the relative path to the module folder
   - 1 should exclude the readme
   ```yaml
@@ -288,7 +288,6 @@ Comparing multiple workflows you'll notice they are almost identically, yet diff
   ```
 - The ***environment variables***
   The environment variables are leveraged by the workflow to fundamentally process the module. We need:
-  - 1 variable with the module name
   - 1 variable with the relative path to the module folder
   - 1 variable with the relative path to the workflow itself
   ```yaml
@@ -297,22 +296,12 @@ Comparing multiple workflows you'll notice they are almost identically, yet diff
     modulePath: 'arm/Microsoft.Network/virtualWans'
     workflowPath: '.github/workflows/ms.network.virtualwans.yml'
   ```
-- (optionally) The relative path to a ***removal script***
-  As described [previously](#removal), some scripts may require custom logic to be removed. This logic should be stored in a script and be referenced by the corresponding module's workflow. To reference this script you can use the `relativePathOfRemovalScript` parameter of the `removeModule` composite action as shown below.
-  ```yaml
-  - name: 'Remove module'
-    uses: ./.github/actions/templates/removeModule
-    with:
-      moduleName: '${{ env.moduleName }}'
-      resourceGroupName: '${{ env.resourceGroupName }}'
-      relativePathOfRemovalScript: 'utilities/pipelines/resourceRemoval/Remove-vWan.ps1'
-  ```
 
 ## Azure DevOps Pipelines
 
 Azure DevOps pipelines are the CI/CD solution provided by Azure DevOps. To get the platform going, we use the following three elements:
 
-- **[Service connection:](#azure-devops-component-service-connection)** The service connection is a wrapper for the deployment principal that performs all actions in the target SBX/DEV/TEST subscription
+- **[Service connection:](#azure-devops-component-service-connection)** The service connection is a wrapper for the [deployment principal](./GettingStarted#platform-principal) that performs all actions in the target SBX/DEV/TEST subscription
 - **[Variable group:](#azure-devops-component-variable-group)** Variable groups allow us to store both sensitive as well configuration data securely in Azure DevOps.
 - **[Variable file:](#azure-devops-component-variable-file)** The variable file is a version controlled variable file that hosts pipeline configuration data such as the agent pool to use.
 - **[Pipeline templates:](#azure-devops-component-pipeline-templates)** Pipeline templates allow us to re-use pipeline logic across multiple referencing pipelines
@@ -320,20 +309,106 @@ Azure DevOps pipelines are the CI/CD solution provided by Azure DevOps. To get t
 
 ### **Azure DevOps Component:** Service Connection
 
-TODO: Fill
+The service connection must be set up in the project's settings under _Pipelines: Service connections_ (a step by step guide can be found [here](https://docs.microsoft.com/en-us/azure/devops/pipelines/library/service-endpoints?view=azure-devops&tabs=yaml)).
+
+It's name must match the one configured as `serviceConnection` in the [variable file](#azure-devops-component-variable-file).
 
 ### **Azure DevOps Component:** Variable group
 
-TODO: Fill
+The variable group can be set up under _Pipelines: Library_ as described [here](https://docs.microsoft.com/en-us/azure/devops/pipelines/library/variable-groups?view=azure-devops&tabs=classic#create-a-variable-group). Make sure you set up all secrets described [here](#pipeline-secrets) and that its name matches the `group` reference used in the [module pipelines](#azure-devops-component-pipelines). For example
+
+```yaml
+variables:
+  - group: 'Platform-Tokens'
+```
 
 ### **Azure DevOps Component:** Variable file
 
-TODO: Fill
+The variable file is a source controlled configuration file to control the behavior of the pipeline. The file is stored in path `.azuredevops/pipelineVariables/global.variables.yml`.
+
+This file is divided in multiple categories of variables used in the pipelines:
+
+- **Agent settings:** Contains information of the agent and service connection to use
+- **Source:** Contains information about the Azure DevOps instance itself, including some important folder paths
+- **Validation deployment settings:** Contains the default deployment information to use in the pipeline. For example, the default location to deploy resources to
+- **Publish: Template-Spec settings:** Contains the required information to publish to template-specs, including a switch to toggle the feature on or off
+- **Publish: Universal packages settings:** Contains the required information to publish to universal packages, including a switch to toggle the feature on or off
+- **Publish: Nuget Packages settings:** Contains the required information to publish to nuget packages, including a switch to toggle the feature on or off
+- **Publish: Private Bicep Registry settings:** Contains the required information to publish to the private bicep registry, including a switch to toggle the feature on or off
+- **Azure PowerShell Version:** Contains information about the default PowerShell version to use in the pipeline.
 
 ### **Azure DevOps Component:** Pipeline templates
 
-TODO: Fill
+To keep the amount of pipeline code at a minimum we make heavy use of pipeline templates. Following you can find an overview of the ones we use and what they are used for:
+
+- **module.jobs.validate.yml** <p>
+  This template perform all [static tests](#static-module-validation) for a module using Pester.
+- **module.jobs.deploy.yml** <p>
+  This template performs a [test deployment](#simulated-deployment-validation) followed by an [actual deployment](#test-deploy) to Azure using a provided parameter file. Once a deployment ran it [removes](#removal) the resource
+- **module.jobs.publish.yml** <p>
+  This template is capable of [publishing](#publish) the given template to a location specified in the pipeline [variable file](#azure-devops-component-variable-file).
+
+Each file can be found in path `.azuredevops/pipelineTemplates`.
 
 ### **Azure DevOps Component:** Pipelines
 
-TODO: Fill
+These are the individual end-to-end pipelines we have for each module. Leveraging the [templates](#azure-devops-component-pipeline-templates) described before, they orchestrate the testing & publishing of their module.
+
+While they look very similar they have specific areas in which they differ:
+
+- The ***path filters*** of the pipeline trigger:
+  - 1 for the templates
+    ```yaml
+      - '/.azuredevops/pipelineTemplates/module.*.yml'
+    ```
+  - 1 should be the relative path to the pipeline itself
+    ```yaml
+      - '/.azuredevops/modulePipelines/ms.analysisservices.servers.yml'
+    ```
+  - 1 should be the relative path to the module folder
+    ```yaml
+      - '/arm/Microsoft.AnalysisServices/servers/*'
+    ```
+  - 1 should exclude the readme.
+    ```yaml
+      - '/**/*.md'
+    ```
+  Full example:
+  ```yaml
+    trigger:
+      batch: true
+      branches:
+        include:
+          - main
+      paths:
+        include:
+          - '/.azuredevops/modulePipelines/ms.analysisservices.servers.yml'
+          - '/.azuredevops/pipelineTemplates/module.*.yml'
+          - '/arm/Microsoft.AnalysisServices/servers/*'
+        exclude:
+          - '/**/*.md'
+  ```
+  > ***Note:*** By the time of this writing, wildcards are temporarily not supported by Azure DevOps
+- The ***variables***
+  The variables are leveraged by the pipelines to fundamentally process the module. We need:
+  - 1 reference to the [shared variable file](#azure-devops-component-variable-file). For example:
+    ```yaml
+      - template: '/.azuredevops/pipelineVariables/global.variables.yml'
+    ```
+  - 1 reference to the [variable group](#azure-devops-component-variable-group) with the platform secrets. For example:
+    ```yaml
+      - group: Platform-Tokens
+    ```
+  - 1 variable with the relative path to the module folder. For example:
+    ```yaml
+      - name: modulePath
+        value: '/arm/Microsoft.AnalysisServices/servers'
+    ```
+  Full example:
+  ```yaml
+    variables:
+      - template: '/.azuredevops/pipelineVariables/global.variables.yml'
+      - group: 'Platform-Tokens'
+      - name: modulePath
+        value: '/arm/Microsoft.AnalysisServices/servers'
+  ```

@@ -129,6 +129,10 @@ If you want to be on the save side you can assign _Owner_ permissions to your pr
 
 As the modules we test often times have dependencies to other services, we created a pipeline to deploys several standard services like VirtualNetworks and KeyVaults (alongside dummy secrets) for the modules to use. This _dependency_ pipeline should be prepared and executed before you start running any pipelines on your own. In case you need to rename any services there (for example because a certain globally unique resource name was already taken) make sure to update any references to this name in the module parameter files. You can find further details about this pipeline [here](.\TestingDesign#Module-Dependencies).
 
+### Platform variables
+
+Several fundamental variables are shared among all pipelines and are stored in a pipeline variable file. Make sure you check the values of these variables based on the [DevOps platform](./PipelinesDesign#pipeline-variables) you use.
+
 ### Platform secrets
 
 In case you want to not only leverage the module templates but actually re-use the implemented pipelines & testing framework as well, you need to set up a few additional variables in your environment. For further information please refer to this [section](./PipelinesDesign#pipeline-secrets).
