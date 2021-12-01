@@ -18,6 +18,7 @@ This section gives you an overview of the design principals the pipelines follow
     - [Removal](#removal)
     - [Publish](#publish)
   - [Shared concepts](#shared-concepts)
+    - [Pipeline secrets](#pipeline-secrets)
     - [Pipeline variables](#pipeline-variables)
       - [General](#general)
       - [Template-specs specific (publishing)](#template-specs-specific-publishing)
@@ -31,13 +32,14 @@ This section gives you an overview of the design principals the pipelines follow
   - [Wiki pipeline](#wiki-pipeline)
 - [DevOps-Tool-specific considerations](#devops-tool-specific-considerations)
   - [GitHub Workflows](#github-workflows)
-    - [Component: GitHub secrets](#github-component-github-secrets)
-    - [Component: Variable files](#github-component-variable-files)
+    - [Component: GitHub secret](#github-component-github-secret)
+    - [Component: Variable file](#github-component-variable-file)
     - [Component: Composite actions](#github-component-composite-actions)
     - [Component: Workflows](#github-component-workflows)
   - [Azure DevOps Pipelines](#azure-devops-pipelines)
-    - [Component: Variable groups](#azure-devops-component-variable-groups)
-    - [Component: Variable files](#azure-devops-component-variable-files)
+    - [Component: Service connection](#azure-devops-component-service-connection)
+    - [Component: Variable group](#azure-devops-component-variable-group)
+    - [Component: Variable file](#azure-devops-component-variable-file)
     - [Component: Pipeline templates](#azure-devops-component-pipeline-templates)
     - [Component: Pipelines](#azure-devops-component-pipelines)
 ---
@@ -121,9 +123,23 @@ By the time of this writing, the publishing experience works as follows:
 ## Shared concepts
 
 There are several concepts that are shared among the phases. Most notably
+- [Pipeline secrets](#pipeline-serets)
 - [Pipeline variables](#pipeline-variables)
 - [Prerequisites](#prerequisites)
 - [Tokens Replacement](#tokens-replacement)
+
+### Pipeline secrets
+
+To use the platform pipelines you need several secrets set up in your DevOps platform. Contrary to the pipeline variables we describe in the [subsequent section](#pipeline-variables) these following variables are considered sensitive.
+
+| Secret Name | Example | Description |
+| - | - | - |
+| `ARM_MGMTGROUP_ID` | `de33a0e7-64d9-4a94-8fe9-b018cedf1e05` | The group ID of the management group to test deploy modules of that level in. |
+| `ARM_SUBSCRIPTION_ID` | `d0312b25-9160-4550-914f-8738d9b5caf5` | The subscription ID of the subscription to test deploy modules of that level in. |
+| `ARM_TENANT_ID` | `9734cec9-4384-445b-bbb6-767e7be6e5ec` | The tenant ID of the tenant to test deploy modules of that level in. |
+| `DEPLOYMENT_SP_ID` | `de33a0e7-64d9-4a94-8fe9-b018cedf1e05` | This is the Principal (Object ID) for the Service Principal used as the Azure service connection. It is used for Default Role Assignments when Modules are being deployed into Azure |
+
+The location where to set these secrets up depends on the DevOps platform you use. Also, there may be additional platform-specific secrets to set up. For further information please refer to [this section](#devops-tool-specific-considerations).
 
 ### Pipeline variables
 
@@ -210,8 +226,8 @@ Depending on what DevOps tool you want to use to host the platform you will find
 ## GitHub Workflows
 
 GitHub actions & workflows are the CI/CD solution provided by GitHub. To get the platform going, we use the following three elements:
-- **[GitHub secrets:](#github-component-github-secrets)** TODO: Fill
-- **[Variable files:](#github-component-variable-files)** These file(s) contain the configuration for all module pipelines in this repository.
+- **[GitHub secrets:](#github-component-github-secrets)** We leverage GitHub repository secrets to store central and potentially sensitive information we need to perform deployments and other platform specific actions
+- **[Variable file:](#github-component-variable-file)** This file contains the configuration for all module pipelines in this repository.
 - **[Composite actions:](#github-component-composite-actions)** Composite actions bundle a set of actions for a specific purpose together. They are referenced by module pipelines.
 - **[Workflows:](#github-component-workflows)** GitHub workflows make up all our pipelines and leverage the _composite actions_. We have one workflow per module, plus several platform pipelines.
 
@@ -219,9 +235,16 @@ In the following sub-sections we will take a deeper look into each element.
 
 ### **GitHub Component:** GitHub secrets
 
-TODO: Fill
+The GitHub repository secrets can be set up in the repositories _'Settings'_ as described [here](https://docs.github.com/en/actions/security-guides/encrypted-secret).
 
-### **GitHub Component:** Variable files
+For _GitHub_ in particular we need the following secrets in addition to those described in the shared [pipeline secrets](#pipeline-secrets) section:
+
+| Secret Name | Example | Description |
+| - | - | - |
+| `AZURE_CREDENTIALS` |  `{"clientId": "4ce8ce4c-cac0-48eb-b815-65e5763e2929", "clientSecret": "<placeholder>", "subscriptionId": "d0312b25-9160-4550-914f-8738d9b5caf5", "tenantId": "9734cec9-4384-445b-bbb6-767e7be6e5ec" }` | The login credentials to use to log into the target Azure environment to test in. The format is described [here](https://github.com/Azure/login#configure-deployment-credentials). |
+| `PLATFORM_REPO_UPDATE_PAT` | `<placeholder>` | A PAT with enough permissions assigned to it to push into the main branch. This PAT is leveraged by pipelines that automatically generate ReadMe files to keep them up to date |
+
+### **GitHub Component:** Variable file
 
 The [pipeline configuration file](#pipeline-variables) can be found at `.github/variables/variables.module.json`.
 
@@ -289,16 +312,21 @@ Comparing multiple workflows you'll notice they are almost identically, yet diff
 
 Azure DevOps pipelines are the CI/CD solution provided by Azure DevOps. To get the platform going, we use the following three elements:
 
-- **[Variable groups:](#azure-devops-component-variable-groups)** TODO: Fill
-- **[Variable files:](#azure-devops-component-variable-files)** TODO: Fill
-- **[Pipeline templates:](#azure-devops-component-pipeline-templates)** TODO: Fill
-- **[Pipelines:](#azure-devops-component-pipelines)** TODO: Fill
+- **[Service connection:](#azure-devops-component-service-connection)** The service connection is a wrapper for the deployment principal that performs all actions in the target SBX/DEV/TEST subscription
+- **[Variable group:](#azure-devops-component-variable-group)** Variable groups allow us to store both sensitive as well configuration data securely in Azure DevOps.
+- **[Variable file:](#azure-devops-component-variable-file)** The variable file is a version controlled variable file that hosts pipeline configuration data such as the agent pool to use.
+- **[Pipeline templates:](#azure-devops-component-pipeline-templates)** Pipeline templates allow us to re-use pipeline logic across multiple referencing pipelines
+- **[Pipelines:](#azure-devops-component-pipelines)** The pipelines contain all logic we execute as part of our platform and leverage the _pipeline templates_.
 
-### **Azure DevOps Component:** Variable groups
+### **Azure DevOps Component:** Service Connection
 
 TODO: Fill
 
-### **Azure DevOps Component:** Variable files
+### **Azure DevOps Component:** Variable group
+
+TODO: Fill
+
+### **Azure DevOps Component:** Variable file
 
 TODO: Fill
 

@@ -12,7 +12,8 @@ This section will give on an overview on how to get started using this repositor
     - [Fork the repository](#fork-the-repository)
     - [Service Names](#service-names)
     - [Dependencies](#dependencies)
-    - [GitHub-specific prerequisites](#github-specific-prerequisites)
+    - [Platform secrets](#platform-secrets)
+    - [AzureDevOps-specific prerequisites](#azuredevops-specific-prerequisites)
   - [**Option 2:** Use it as a local reference to build bicep templates](#option-2-use-it-as-a-local-reference-to-build-bicep-templates)
     - [Clone / download the repository](#clone--download-the-repository)
   - [**Option 3:** Use it as remote reference to reference the bicep templates](#option-3-use-it-as-remote-reference-to-reference-the-bicep-templates)
@@ -115,24 +116,22 @@ On of the most important actions you should take from the beginning is to update
 
 Please refer to [this list][AzureNames] to check which services have a global scope and must be updated.
 
+### Platform principal
+
+The platform principal is used to perform actions in Azure using a service principal. Depending on what you want to want to execute, different permissions will be required. For example:
+- To test the **Management Group** module, your principal needs at least Contributor permissions on a management group
+- To test **RBAC** with any of the modules you need at least _User Access Administrator_ permissions on the target scope
+- To test **subscription-level deployments** you need at least _Contributor_ permissions on the target scope
+
+If you want to be on the save side you can assign _Owner_ permissions to your principal on the management group scope.
+
 ### Dependencies
 
 As the modules we test often times have dependencies to other services, we created a pipeline to deploys several standard services like VirtualNetworks and KeyVaults (alongside dummy secrets) for the modules to use. This _dependency_ pipeline should be prepared and executed before you start running any pipelines on your own. In case you need to rename any services there (for example because a certain globally unique resource name was already taken) make sure to update any references to this name in the module parameter files. You can find further details about this pipeline [here](.\TestingDesign#Module-Dependencies).
 
-### GitHub-specific prerequisites
+### Platform secrets
 
-In case you want to not only leverage the module templates but actually re-use the implemented pipelines & testing framework as well, you need to set up a few additional secrets in your GitHub environment:
-
-| Secret Name | Example | Description |
-| - | - | - |
-| `ARM_MGMTGROUP_ID` | `de33a0e7-64d9-4a94-8fe9-b018cedf1e05` | The group ID of the management group to test deploy modules of that level in. |
-| `ARM_SUBSCRIPTION_ID` | `d0312b25-9160-4550-914f-8738d9b5caf5` | The subscription ID of the subscription to test deploy modules of that level in. |
-| `ARM_TENANT_ID` | `9734cec9-4384-445b-bbb6-767e7be6e5ec` | The tenant ID of the tenant to test deploy modules of that level in. |
-| `AZURE_CREDENTIALS` |  `{"clientId": "4ce8ce4c-cac0-48eb-b815-65e5763e2929", "clientSecret": "<placeholder>", "subscriptionId": "d0312b25-9160-4550-914f-8738d9b5caf5", "tenantId": "9734cec9-4384-445b-bbb6-767e7be6e5ec" }` | The login credentials to use to log into the target Azure environment to test in. |
-| `PLATFORM_REPO_UPDATE_PAT` | `<placeholder>` | A PAT with enough permissions assigned to it to push into the main branch. This PAT is leveraged by pipelines that automatically generate ReadMe files to keep them up to date |
-| `DEPLOYMENT_SP_ID` | `de33a0e7-64d9-4a94-8fe9-b018cedf1e05` | This is the Principal (Object ID) for the Service Principal used as the `AZURE_CREDENTIALS`. It is used for Default Role Assignments when Modules are being deployed into Azure |
-
-The permissions that the principal needs differ between modules. Required permissions are in some cases documented in the modules readme. See [Azure/login](https://github.com/Azure/login) for more info about the secret creation.
+In case you want to not only leverage the module templates but actually re-use the implemented pipelines & testing framework as well, you need to set up a few additional variables in your environment. For further information please refer to this [section](./PipelinesDesign#pipeline-secrets).
 
 ## **Option 2:** Use it as a local reference to build bicep templates
 
