@@ -30,8 +30,7 @@
 ##   | vmImage                         | '$(vmImage)'                         | You can provide either a [poolname] or [vmImage] to run the job on                                        | 'ubuntu20.04'                              |
 ##   | defaultJobTimeoutInMinutes      | 120                                  | The timeout for the job in this pipeline                                                                  | 120                                        |
 ##   | checkoutRepositories            | ''                                   | An optional list of repositories to check out at the beginning of this job in addition to the source      | 'Components'                               |
-##   | moduleName                      | '$(moduleName)'                      | The name of the module to deploy                                                                          | 'KeyVault'                                 |
-##   | modulePath                      | '$(modulePath)'                      | The path to the module to deploy. E.g. [c:/$(moduleName)]                                                 | 'c:/$(moduleName)'                         |
+##   | modulePath                      | '$(modulePath)'                      | The path to the module to deploy. E.g. [c:/KeyVault]                                                      | 'c:/KeyVault'                              |
 ##   | deploymentBlocks                |                                      | The parameter file(s) to deploy with. Must be provided                                                    | path: 'C:/parameters.json'                 |
 ##   | location                        | '$(defaultLocation)'                 | The location to deploy with                                                                               | 'EastUs2'                                  |
 ##   | resourceGroupName               | '$(defaultResourceGroupName)'        | The resourcegroup to deploy into. Required only for Resource-Group-Level deployments                      | 'validation-rg'                            |
@@ -55,7 +54,6 @@ parameters:
   dependsOn: []
   # Logic-related parameters
   removeDeployment: false
-  moduleName: '$(moduleName)'
   modulePath: '$(modulePath)'
   deploymentBlocks: ''
   location: '$(defaultLocation)'
@@ -174,7 +172,7 @@ jobs:
           # [Validation] task(s)
           #---------------------
           - task: AzurePowerShell@5
-            displayName: 'Validate [${{ parameters.moduleName }}] via connection [${{ parameters.serviceConnection }}]'
+            displayName: 'Validate [${{ deploymentBlock.path }}] via connection [${{ parameters.serviceConnection }}]'
             inputs:
               azureSubscription: ${{ parameters.serviceConnection }}
               azurePowerShellVersion: ${{ parameters.azurePowerShellVersion }}
@@ -205,7 +203,7 @@ jobs:
           # [Deployment] task(s)
           #---------------------
           - task: AzurePowerShell@5
-            displayName: 'Deploy [${{ parameters.moduleName }}] via connection [${{ parameters.serviceConnection }}]'
+            displayName: 'Deploy [${{ deploymentBlock.path }}] via connection [${{ parameters.serviceConnection }}]'
             inputs:
               azureSubscription: ${{ parameters.serviceConnection }}
               azurePowerShellVersion: ${{ parameters.azurePowerShellVersion }}
@@ -252,7 +250,7 @@ jobs:
           # [Removal] task(s)
           #------------------
           - task: AzurePowerShell@5
-            displayName: 'Remove [${{ parameters.moduleName }}] in [${{ parameters.resourceGroupName }}] via [${{ parameters.serviceConnection }}]'
+            displayName: 'Remove deployed resources via [${{ parameters.serviceConnection }}]'
             condition: and(eq( '${{ parameters.removeDeployment }}', 'true'), not(eq(variables['deploymentName'],'')))
             inputs:
               azureSubscription: ${{ parameters.serviceConnection }}

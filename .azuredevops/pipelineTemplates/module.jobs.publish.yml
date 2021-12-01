@@ -26,10 +26,9 @@
 ##   | poolName                        | '$(poolName)'                        | You can provide either a [poolname] or [vmImage] to run the job on                                  | 'Custom Deployment Pool'          |
 ##   | vmImage                         | '$(vmImage)'                         | You can provide either a [poolname] or [vmImage] to run the job on                                  | 'ubuntu20.04'                     |
 ##   | defaultJobTimeoutInMinutes      | 120                                  | The timeout for the job in this pipeline                                                            | 120                               |
-##   | moduleName                      | '$(moduleName)'                      | The name of the module to publish. If publishing to an artifacts feed, must be lower case.          | 'keyvault'                        |
 ##   | versionOption                   | '$(versionOption)'                   | The mode to handle the version increments [major|minor|patch|custom].                               | 'patch'                           |
 ##   | moduleVersion                   | '$(moduleVersion)'                   | The version to enforce if [versionOption] is set to [custom]                                        | '1.0.0'                           |
-##   | modulePath                      | '$(modulePath)'                      | The path to the module to deploy. E.g. [c:/$(moduleName)]                                           | 'c:/$(moduleName)'                |
+##   | modulePath                      | '$(modulePath)'                      | The path to the module to deploy. E.g. [c:/KeyVault]                                                | 'c:/KeyVault'                     |
 ##   | templateSpecsRGName             | '$(templateSpecsRGName)'             | Required to publish to template spec. ResourceGroup of the template spec to publish to              | 'mgmt-rg'                         |
 ##   | templateSpecsRGLocation         | '$(templateSpecsRGLocation)'         | Required to publish to template spec. Location of the template spec resource group                  | 'West Europe'                     |
 ##   | templateSpecsDescription        | '$(templateSpecsDescription)'        | Required to publish to template spec. Description of the template spec to publish to                | 'IaCs module'                     |
@@ -56,7 +55,6 @@ parameters:
 
   # Logic-related parameters
   ## Module-related
-  moduleName: '$(moduleName)'
   versionOption: '$(versionOption)'
   moduleVersion: '$(moduleVersion)'
   modulePath: '$(modulePath)'
@@ -172,7 +170,7 @@ jobs:
           eq(variables['artifactsFeedDoPublish'], true),
           succeeded()
           )
-        displayName: Publish Universal Package ${{ parameters.moduleName }}
+        displayName: Publish Universal Package $(universalPackageModuleName)
         inputs:
           command: publish
           publishDirectory: '$(ENVMODULEPATH)'
@@ -183,7 +181,7 @@ jobs:
           vstsFeedPackagePublish: '$(universalPackageModuleName)' # Published via [Initialize-UniversalArtifactPublish] invocation
           versionOption: '$(publishingMode)' # Published via [Initialize-UniversalArtifactPublish] invocation
           versionPublish: '$(newVersionObject)' # Published via [Initialize-UniversalArtifactPublish] invocation
-          packagePublishDescription: '${{ parameters.moduleName }} Module'
+          packagePublishDescription: '$(universalPackageModuleName) Module'
           verbosity: 'error'
         enabled: true
 
