@@ -98,6 +98,12 @@ The repository is set up in a way that you can essentially create your own priva
 
 Depending on the pipelines you use (e.g. GitHub workflows vs. Azure DevOps pipelines) make sure you also account for the specific requirements outlined below.
 
+- [Fork the repository](#fork-the-repository)
+- [Service Names](#service-names)
+- [Platform principal](#platform-principal)
+- [Dependencies](#dependencies)
+- [Platform variables & secrets](#platform-variables--secrets)
+
 ### Fork the repository
 
 If you want to have a linked clone of the source repository in your own GitHub account, you can fork the repository instead. Still is also the preferred method to contribute back to this repository.
