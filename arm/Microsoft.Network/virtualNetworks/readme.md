@@ -9,7 +9,8 @@ This template deploys a virtual network (vNet).
 | `Microsoft.Authorization/locks` | 2016-09-01 |
 | `Microsoft.Authorization/roleAssignments` | 2020-04-01-preview |
 | `Microsoft.Insights/diagnosticSettings` | 2017-05-01-preview |
-| `Microsoft.Network/virtualNetworks` | 2021-05-01 |
+| `Microsoft.Network/virtualNetworks` | 2021-03-01 |
+| `Microsoft.Network/virtualNetworks/subnets` | 2021-03-01 |
 | `Microsoft.Network/virtualNetworks/virtualNetworkPeerings` | 2021-02-01 |
 
 ## Parameters
@@ -30,7 +31,7 @@ This template deploys a virtual network (vNet).
 | `metricsToEnable` | array | `[AllMetrics]` | `[AllMetrics]` | Optional. The name of metrics that will be streamed. |
 | `name` | string |  |  | Required. The Virtual Network (vNet) Name. |
 | `roleAssignments` | array | `[]` |  | Optional. Array of role assignment objects that contain the 'roleDefinitionIdOrName' and 'principalId' to define RBAC role assignments on this resource. In the roleDefinitionIdOrName attribute, you can provide either the display name of the role definition, or its fully qualified ID in the following format: '/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11' |
-| `subnets` | array |  |  | Required. An Array of subnets to deploy to the Virual Network. |
+| `subnets` | _[subnets](subnets/readme.md)_ array |  |  | Required. An Array of subnets to deploy to the Virual Network. |
 | `tags` | object | `{object}` |  | Optional. Tags of the resource. |
 | `virtualNetworkPeerings` | _[virtualNetworkPeerings](virtualNetworkPeerings/readme.md)_ array | `[]` |  | Optional. Virtual Network Peerings configurations |
 | `workspaceId` | string |  |  | Optional. Resource ID of log analytics. |
@@ -45,55 +46,6 @@ Here's an example of specifying a single Address Prefix:
 "addressPrefixes": {
     "value": [
         "10.1.0.0/16"
-    ]
-}
-```
-
-### Parameter Usage: `subnets`
-
-The `subnets` parameter accepts a JSON Array of `subnet` objects to deploy to the Virtual Network.
-
-Here's an example of specifying a couple Subnets to deploy:
-
-```json
-"subnets": {
-    "value": [
-    {
-        "name": "GatewaySubnet",
-        "addressPrefix": "10.0.255.0/24",
-        "networkSecurityGroupName": "nsgName1",
-        "routeTableName": "UdrName1",
-        "delegations": [],
-        "natGateway": "", // Name of the NAT Gateway to use for the subnet.
-        "serviceEndpoints": [
-            {
-                "service": "Microsoft.EventHub"
-            },
-            {
-                "service": "Microsoft.Sql"
-            },
-            {
-                "service": "Microsoft.Storage"
-            },
-            {
-                "service": "Microsoft.KeyVault"
-            }
-        ]
-    },
-    {
-        "name": "examplePrivateEndpointSubnet",
-        "addressPrefix": "10.0.200.0/24",
-        "networkSecurityGroupName": "nsgName2",
-        "routeTableName": "UdrName2",
-        "delegations": [],
-        "natGateway": "", // Name of the NAT Gateway to use for the subnet.
-        "serviceEndpoints": [],
-        "privateEndpointNetworkPolicies": "Disabled" // This property must be set to disabled for subnets that contain private endpoints. Default Value when not specified is "Enabled".
-    },
-    {
-        "name": "data",
-        "addressPrefix": "10.1.1.0/24"
-    }
     ]
 }
 ```
@@ -139,16 +91,14 @@ Tag names and tag values can be provided as needed. A tag can be left without a 
 
 ## Considerations
 
-When defining the Subnets to deploy using the `subnets` parameter, the JSON format to pass it must match the Subnet object that is normally passed in to the `subnets` property of a `virtualNetwork` within an ARM Template.
-
 The network security group and route table resources must reside in the same resource group as the virtual network.
 
 ## Outputs
 
 | Output Name | Type | Description |
 | :-- | :-- | :-- |
-| `subnetNames` | array | The names of the deployed subnets |
-| `subnetResourceIds` | array | The resource IDs of the deployed subnets |
+| `subnetNames` | array |  |
+| `subnetResourceIds` | array |  |
 | `virtualNetworkName` | string | The name of the virtual network |
 | `virtualNetworkResourceGroup` | string | The resource group the virtual network was deployed into |
 | `virtualNetworkResourceId` | string | The resource ID of the virtual network |
@@ -158,5 +108,6 @@ The network security group and route table resources must reside in the same res
 - [Locks](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2016-09-01/locks)
 - [Roleassignments](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2020-04-01-preview/roleAssignments)
 - [Diagnosticsettings](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Insights/2017-05-01-preview/diagnosticSettings)
-- [Virtualnetworks](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Network/2021-05-01/virtualNetworks)
+- [Virtualnetworks](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Network/2021-03-01/virtualNetworks)
+- [Virtualnetworks/Subnets](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Network/2021-03-01/virtualNetworks/subnets)
 - [Virtualnetworks/Virtualnetworkpeerings](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Network/2021-02-01/virtualNetworks/virtualNetworkPeerings)

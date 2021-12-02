@@ -22,18 +22,10 @@
                     "networkSecurityGroupName": "",
                     "routeTableName": "",
                     "serviceEndpoints": [
-                        {
-                            "service": "Microsoft.EventHub"
-                        },
-                        {
-                            "service": "Microsoft.Sql"
-                        },
-                        {
-                            "service": "Microsoft.Storage"
-                        },
-                        {
-                            "service": "Microsoft.KeyVault"
-                        }
+                        "Microsoft.EventHub",
+                        "Microsoft.Sql",
+                        "Microsoft.Storage",
+                        "Microsoft.KeyVault"
                     ],
                     "delegations": []
                 },
@@ -43,18 +35,10 @@
                     "networkSecurityGroupName": "",
                     "routeTableName": "",
                     "serviceEndpoints": [
-                        {
-                            "service": "Microsoft.EventHub"
-                        },
-                        {
-                            "service": "Microsoft.Sql"
-                        },
-                        {
-                            "service": "Microsoft.Storage"
-                        },
-                        {
-                            "service": "Microsoft.KeyVault"
-                        }
+                        "Microsoft.EventHub",
+                        "Microsoft.Sql",
+                        "Microsoft.Storage",
+                        "Microsoft.KeyVault"
                     ],
                     "delegations": []
                 },

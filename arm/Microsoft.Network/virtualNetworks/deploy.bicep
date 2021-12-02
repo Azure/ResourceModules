@@ -101,7 +101,7 @@ module pid_cuaId '.bicep/nested_cuaId.bicep' = if (!empty(cuaId)) {
   params: {}
 }
 
-resource virtualNetwork 'Microsoft.Network/virtualNetworks@2021-05-01' = {
+resource virtualNetwork 'Microsoft.Network/virtualNetworks@2021-03-01' = {
   name: name
   location: location
   tags: tags
@@ -112,18 +112,18 @@ resource virtualNetwork 'Microsoft.Network/virtualNetworks@2021-05-01' = {
     ddosProtectionPlan: !empty(ddosProtectionPlanId) ? ddosProtectionPlan : null
     dhcpOptions: !empty(dnsServers) ? dnsServers_var : null
     enableDdosProtection: !empty(ddosProtectionPlanId)
-    subnets: [for item in subnets: {
-      name: item.name
-      properties: {
-        addressPrefix: item.addressPrefix
-        networkSecurityGroup: contains(item, 'networkSecurityGroupName') ? (empty(item.networkSecurityGroupName) ? null : json('{"id": "${resourceId('Microsoft.Network/networkSecurityGroups', item.networkSecurityGroupName)}"}')) : null
-        routeTable: contains(item, 'routeTableName') ? (empty(item.routeTableName) ? null : json('{"id": "${resourceId('Microsoft.Network/routeTables', item.routeTableName)}"}')) : null
-        serviceEndpoints: contains(item, 'serviceEndpoints') ? (empty(item.serviceEndpoints) ? null : item.serviceEndpoints) : null
-        delegations: contains(item, 'delegations') ? (empty(item.delegations) ? null : item.delegations) : null
-        natGateway: contains(item, 'natGatewayName') ? (empty(item.natGatewayName) ? null : json('{"id": "${resourceId('Microsoft.Network/natGateways', item.natGatewayName)}"}')) : null
-        privateEndpointNetworkPolicies: contains(item, 'privateEndpointNetworkPolicies') ? (empty(item.privateEndpointNetworkPolicies) ? null : item.privateEndpointNetworkPolicies) : null
-        privateLinkServiceNetworkPolicies: contains(item, 'privateLinkServiceNetworkPolicies') ? (empty(item.privateLinkServiceNetworkPolicies) ? null : item.privateLinkServiceNetworkPolicies) : null
-      }
+    subnets: [for subnet in subnets: {
+      name: subnet.name
+      properties: contains(subnet, 'addressPrefix') ? {
+        addressPrefix: subnet.addressPrefix
+      } : {}
+      // networkSecurityGroup: contains(item, 'networkSecurityGroupName') ? (empty(item.networkSecurityGroupName) ? null : json('{"id": "${resourceId('Microsoft.Network/networkSecurityGroups', item.networkSecurityGroupName)}"}')) : null
+      // routeTable: contains(item, 'routeTableName') ? (empty(item.routeTableName) ? null : json('{"id": "${resourceId('Microsoft.Network/routeTables', item.routeTableName)}"}')) : null
+      // serviceEndpoints: contains(item, 'serviceEndpoints') ? (empty(item.serviceEndpoints) ? null : item.serviceEndpoints) : null
+      // delegations: contains(item, 'delegations') ? (empty(item.delegations) ? null : item.delegations) : null
+      // natGateway: contains(item, 'natGatewayName') ? (empty(item.natGatewayName) ? null : json('{"id": "${resourceId('Microsoft.Network/natGateways', item.natGatewayName)}"}')) : null
+      // privateEndpointNetworkPolicies: contains(item, 'privateEndpointNetworkPolicies') ? (empty(item.privateEndpointNetworkPolicies) ? null : item.privateEndpointNetworkPolicies) : null
+      // privateLinkServiceNetworkPolicies: contains(item, 'privateLinkServiceNetworkPolicies') ? (empty(item.privateLinkServiceNetworkPolicies) ? null : item.privateLinkServiceNetworkPolicies) : null
     }]
   }
 }
@@ -139,6 +139,26 @@ module virtualNetworkPeerings_resource 'virtualNetworkPeerings/deploy.bicep' = [
     allowVirtualNetworkAccess: contains(virtualNetworkPeering, 'allowVirtualNetworkAccess') ? virtualNetworkPeering.allowVirtualNetworkAccess : true
     doNotVerifyRemoteGateways: contains(virtualNetworkPeering, 'doNotVerifyRemoteGateways') ? virtualNetworkPeering.doNotVerifyRemoteGateways : true
     useRemoteGateways: contains(virtualNetworkPeering, 'useRemoteGateways') ? virtualNetworkPeering.useRemoteGateways : false
+  }
+}]
+
+module virtualNetwork_subnets 'subnets/deploy.bicep' = [for (subnet, index) in subnets: {
+  name: '${uniqueString(deployment().name, location)}-subnet-${index}'
+  params: {
+    virtualNetworkName: virtualNetwork.name
+    name: subnet.name
+    addressPrefix: contains(subnet, 'addressPrefix') ? subnet.addressPrefix : ''
+    addressPrefixes: contains(subnet, 'addressPrefixes') ? subnet.addressPrefixes : []
+    applicationGatewayIpConfigurations: contains(subnet, 'applicationGatewayIpConfigurations') ? subnet.applicationGatewayIpConfigurations : []
+    delegations: contains(subnet, 'delegations') ? subnet.delegations : []
+    ipAllocations: contains(subnet, 'ipAllocations') ? subnet.ipAllocations : []
+    natGatewayName: contains(subnet, 'natGatewayName') ? subnet.natGatewayName : ''
+    networkSecurityGroupName: contains(subnet, 'networkSecurityGroupName') ? subnet.networkSecurityGroupName : ''
+    privateEndpointNetworkPolicies: contains(subnet, 'privateEndpointNetworkPolicies') ? subnet.privateEndpointNetworkPolicies : ''
+    privateLinkServiceNetworkPolicies: contains(subnet, 'privateLinkServiceNetworkPolicies') ? subnet.privateLinkServiceNetworkPolicies : ''
+    routeTableName: contains(subnet, 'routeTableName') ? subnet.routeTableName : ''
+    serviceEndpointPolicies: contains(subnet, 'serviceEndpointPolicies') ? subnet.serviceEndpointPolicies : []
+    serviceEndpoints: contains(subnet, 'serviceEndpoints') ? subnet.serviceEndpoints : []
   }
 }]
 
