@@ -118,6 +118,18 @@ jobs:
         with:
           # Name of variable file
           variableFileName: 'variables.module' # Don't write .json here
+      # ---------------------- #
+      ##  Deploy Dependencies ##
+      # ---------------------- #
+      - name: 'Test module with parameter file [${{ matrix.parameterFilePaths }}]'
+        uses: ./.github/actions/templates/deployDependencies
+        with:
+          templateFilePath: '${{ env.modulePath }}/deploy.bicep'
+          parameterFilePath: '${{ env.modulePath }}/.parameters/${{ matrix.parameterFilePaths }}'
+          location: '${{ env.defaultLocation }}'
+          resourceGroupName: '${{ env.resourceGroupName }}'
+          subscriptionId: '${{ secrets.ARM_SUBSCRIPTION_ID }}'
+          managementGroupId: '${{ secrets.ARM_MGMTGROUP_ID }}'
       # ----------- #
       ##  Dry Run  ##
       # ----------- #
