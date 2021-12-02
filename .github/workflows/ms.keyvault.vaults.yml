@@ -102,8 +102,8 @@ jobs:
     name: 'Run deployment validation module tests'
     needs:
       - job_set_workflow_param
-      - job_tests_module_global
-      - job_tests_module_global_api
+      # - job_tests_module_global
+      # - job_tests_module_global_api
     strategy:
       fail-fast: false
       matrix:
