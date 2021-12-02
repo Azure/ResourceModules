@@ -25,7 +25,7 @@ variables:
   defaultResourceGroupName: 'validation-rg' # validation-resourcegroup-name
 
   ######################################
-  # Components template spec settings
+  # Publish: Template-Spec settings
   ######################################
 
   # Set to true, if you would like to publish modules as template specs
@@ -35,7 +35,7 @@ variables:
   templateSpecsDescription: components
 
   ######################################
-  # Universal Packages
+  # Publish: Universal packages settings
   ######################################
 
   # Set to true, if you would like to publish modules as Universal Packages (in ADO Artifacts)
@@ -45,7 +45,7 @@ variables:
   vstsFeedProject: '$(System.TeamProject)'
 
   ######################################
-  # Nuget Packages
+  # Publish: Nuget Packages settings
   ######################################
 
   # Set to true, if you would like to publish modules as Nuget Packages (in ADO Artifacts)
@@ -55,7 +55,7 @@ variables:
   vstNugetFeedUrl: 'https://pkgs.dev.azure.com/$(vstsOrganization)/$(vstsProject)/_packaging/Nuget-Modules/nuget/v2'
 
   ######################################
-  # Private Bicep Registry
+  # Publish: Private Bicep Registry settings
   ######################################
 
   bicepRegistryDoPublish: true
