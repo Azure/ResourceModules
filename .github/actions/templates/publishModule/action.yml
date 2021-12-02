@@ -14,7 +14,7 @@ inputs:
   templateSpecsDescription:
     description: 'Required to publish to template spec. Description of the template spec to publish to'
     required: false
-  publishToTemplateSpecs:
+  templateSpecsDoPublish:
     description: 'Flag to indicate whether or not to publish to template specs'
     default: 'false'
     required: false
@@ -24,7 +24,7 @@ inputs:
   bicepRegistryRgName:
     description: 'Required to publish to private bicep registry. Location of the container registry resource group'
     required: false
-  publishToBicepRegistry:
+  bicepRegistryDoPublish:
     description: 'Flag to indicate whether or not to publish to the private bicep registry'
     default: 'false'
     required: false
@@ -68,11 +68,11 @@ runs:
 
     - name: 'Publish module to template specs'
       shell: pwsh
-      # if: ${{ inputs.publishToTemplateSpecs == 'true' }}
+      # if: ${{ inputs.templateSpecsDoPublish == 'true' }}
       run: |
         # Workaround until composite actions support conditions
         # Once available, remove this if and enable the step condition
-        if('${{ inputs.publishToTemplateSpecs }}' -eq 'true') {
+        if('${{ inputs.templateSpecsDoPublish }}' -eq 'true') {
 
           # Load used functions
           . (Join-Path $env:GITHUB_WORKSPACE 'utilities' 'pipelines' 'resourcePublish' 'Publish-ModuleToTemplateSpec.ps1')
@@ -95,11 +95,11 @@ runs:
 
     - name: 'Publish module to private bicep registry'
       shell: pwsh
-      # if: ${{ inputs.publishToBicepRegistry == 'true' }}
+      # if: ${{ inputs.bicepRegistryDoPublish == 'true' }}
       run: |
         # Workaround until composite actions support conditions
         # Once available, remove this if and enable the step condition
-        if('${{ inputs.publishToBicepRegistry }}' -eq 'true') {
+        if('${{ inputs.bicepRegistryDoPublish }}' -eq 'true') {
 
           # Load used functions
           . (Join-Path $env:GITHUB_WORKSPACE 'utilities' 'pipelines' 'resourcePublish' 'Publish-ModuleToPrivateBicepRegistry.ps1')
