@@ -1,10 +1,10 @@
 @description('Required. Name of the private endpoint resource to create.')
-param privateEndpointName string
+param name string
 
-@description('Required. Resource Id of the subnet where the endpoint needs to be created.')
-param targetSubnetId string
+@description('Required. Resource ID of the subnet where the endpoint needs to be created.')
+param targetSubnetResourceId string
 
-@description('Required. Resource Id of the resource that needs to be connected to the network.')
+@description('Required. Resource ID of the resource that needs to be connected to the network.')
 param serviceResourceId string
 
 @description('Required. Subtype(s) of the connection to be created. The allowed values depend on the type serviceResourceId refers to.')
@@ -30,7 +30,7 @@ param roleAssignments array = []
 @description('Optional. Tags to be applied on all resources/resource groups in this deployment.')
 param tags object = {}
 
-@description('Optional. Customer Usage Attribution id (GUID). This GUID must be previously registered')
+@description('Optional. Customer Usage Attribution ID (GUID). This GUID must be previously registered')
 param cuaId string = ''
 
 module pid_cuaId '.bicep/nested_pid.bicep' = if (!empty(cuaId)) {
@@ -39,13 +39,13 @@ module pid_cuaId '.bicep/nested_pid.bicep' = if (!empty(cuaId)) {
 }
 
 resource privateEndpoint 'Microsoft.Network/privateEndpoints@2021-03-01' = {
-  name: privateEndpointName
+  name: name
   location: location
   tags: tags
   properties: {
     privateLinkServiceConnections: [
       {
-        name: privateEndpointName
+        name: name
         properties: {
           privateLinkServiceId: serviceResourceId
           groupIds: groupId
@@ -54,7 +54,7 @@ resource privateEndpoint 'Microsoft.Network/privateEndpoints@2021-03-01' = {
     ]
     manualPrivateLinkServiceConnections: []
     subnet: {
-      id: targetSubnetId
+      id: targetSubnetResourceId
     }
     customDnsConfigs: []
   }
@@ -63,7 +63,7 @@ resource privateEndpoint 'Microsoft.Network/privateEndpoints@2021-03-01' = {
 module privateEndpoint_privateDnsZoneGroups 'privateDnsZoneGroups/deploy.bicep' = [for (privateDnsZoneGroup, index) in privateDnsZoneGroups: {
   name: '${deployment().name}-privateDnsZoneGroup-${index}'
   params: {
-    privateDNSIds: privateDnsZoneGroup.privateDNSIds
+    privateDNSResourceIds: privateDnsZoneGroup.privateDNSResourceIds
     privateEndpointName: privateEndpoint.name
   }
 }]
@@ -80,15 +80,16 @@ resource privateEndpoint_lock 'Microsoft.Authorization/locks@2016-09-01' = if (l
 module privateEndpoint_rbac '.bicep/nested_rbac.bicep' = [for (roleAssignment, index) in roleAssignments: {
   name: '${deployment().name}-rbac-${index}'
   params: {
-    roleAssignmentObj: roleAssignment
-    resourceName: privateEndpoint.name
+    principalIds: roleAssignment.principalIds
+    roleDefinitionIdOrName: roleAssignment.roleDefinitionIdOrName
+    resourceId: privateEndpoint.id
   }
 }]
 
 @description('The resource group the private endpoint was deployed into')
 output privateEndpointResourceGroup string = resourceGroup().name
 
-@description('The resourceId of the private endpoint')
+@description('The resource ID of the private endpoint')
 output privateEndpointResourceId string = privateEndpoint.id
 
 @description('The name of the private endpoint')

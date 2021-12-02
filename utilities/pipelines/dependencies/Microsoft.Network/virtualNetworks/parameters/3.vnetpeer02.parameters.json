@@ -1,0 +1,23 @@
+{
+  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    "name": {
+      "value": "adp-sxx-az-vnet-x-peer02"
+    },
+    "addressPrefixes": {
+      "value": [
+        "10.3.0.0/16"
+      ]
+    },
+    "subnets": {
+      "value": [
+        {
+          "name": "sxx-az-subnet-x-001",
+          "addressPrefix": "10.3.0.0/24",
+          "networkSecurityGroupName": "adp-sxx-az-nsg-x-001"
+        }
+      ]
+    }
+  }
+}

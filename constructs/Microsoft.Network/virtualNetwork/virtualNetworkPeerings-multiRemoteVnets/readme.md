@@ -4,7 +4,7 @@ This template deploys Virtual Network Peering.
 
 ## Resource types
 
-| Resource Type | Api Version |
+| Resource Type | API Version |
 | :-- | :-- |
 | `Microsoft.Network/virtualNetworks/virtualNetworkPeerings` | 2021-02-01 |
 
@@ -12,7 +12,7 @@ This template deploys Virtual Network Peering.
 
 | Parameter Name | Type | Default Value | Possible Values | Description |
 | :-- | :-- | :-- | :-- | :-- |
-| `cuaId` | string |  |  | Optional. Customer Usage Attribution id (GUID). This GUID must be previously registered |
+| `cuaId` | string |  |  | Optional. Customer Usage Attribution ID (GUID). This GUID must be previously registered |
 | `localVnetName` | string |  |  | Required. The Name of the Virtual Network to add the peering to. |
 | `peeringConfigurations` | array | `[]` |  | Optional. Optional. The list of remote networks to peering peer with, including the configuration. |
 
@@ -37,11 +37,11 @@ Array containing multiple objects for different VNETs to peer with.
 
 ## Outputs
 
-| Output Name | Type |
-| :-- | :-- |
-| `localVirtualNetworkPeeringResourceIds` | array |
-| `virtualNetworkPeeringNames` | array |
-| `virtualNetworkPeeringResourceGroup` | string |
+| Output Name | Type | Description |
+| :-- | :-- | :-- |
+| `localVirtualNetworkPeeringResourceIds` | array | The names of the deployed virtual network peerings |
+| `virtualNetworkPeeringNames` | array | The resource IDs of the deployed virtual network peerings |
+| `virtualNetworkPeeringResourceGroup` | string | The resource group of the deployed virtual network peerings |
 
 ## Template references
 

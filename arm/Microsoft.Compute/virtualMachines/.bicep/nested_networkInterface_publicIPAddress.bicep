@@ -38,7 +38,7 @@ var publicIPPrefix = {
   id: publicIPPrefixId
 }
 
-resource publicIpAddress 'Microsoft.Network/publicIPAddresses@2021-02-01' = {
+resource publicIpAddress 'Microsoft.Network/publicIPAddresses@2021-03-01' = {
   name: publicIPAddressName
   location: location
   tags: tags
@@ -77,11 +77,15 @@ resource publicIpAddress_diagnosticSettings 'Microsoft.Insights/diagnosticsettin
 module publicIpAddress_rbac 'nested_networkInterface_publicIPAddress_rbac.bicep' = [for (roleAssignment, index) in roleAssignments: {
   name: '${deployment().name}-rbac-${index}'
   params: {
-    roleAssignmentObj: roleAssignment
-    resourceName: publicIpAddress.name
+    principalIds: roleAssignment.principalIds
+    roleDefinitionIdOrName: roleAssignment.roleDefinitionIdOrName
+    resourceId: publicIpAddress.id
   }
 }]
 
+@description('The name of the Resource Group the public IP address was deployed.')
 output publicIPAddressResourceGroup string = resourceGroup().name
+@description('The name of the public IP address.')
 output publicIPAddressName string = publicIpAddress.name
+@description('The Resource ID of the public IP address.')
 output publicIPAddressResourceId string = publicIpAddress.id

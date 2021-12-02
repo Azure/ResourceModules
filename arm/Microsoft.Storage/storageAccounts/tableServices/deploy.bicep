@@ -2,10 +2,13 @@
 @description('Required. Name of the Storage Account.')
 param storageAccountName string
 
+@description('Optional. The name of the table service')
+param name string = 'default'
+
 @description('Optional. tables to create.')
 param tables array = []
 
-@description('Optional. Customer Usage Attribution id (GUID). This GUID must be previously registered')
+@description('Optional. Customer Usage Attribution ID (GUID). This GUID must be previously registered')
 param cuaId string = ''
 
 module pid_cuaId '.bicep/nested_cuaId.bicep' = if (!empty(cuaId)) {
@@ -13,27 +16,30 @@ module pid_cuaId '.bicep/nested_cuaId.bicep' = if (!empty(cuaId)) {
   params: {}
 }
 
-resource tableService 'Microsoft.Storage/storageAccounts/tableServices@2021-04-01' = {
-  name: '${storageAccountName}/default'
+resource storageAccount 'Microsoft.Storage/storageAccounts@2021-06-01' existing = {
+  name: storageAccountName
+}
+
+resource tableServices 'Microsoft.Storage/storageAccounts/tableServices@2021-04-01' = {
+  name: name
+  parent: storageAccount
   properties: {}
 }
 
-module tableService_tables 'tables/deploy.bicep' = [for (tableName, index) in tables: {
+module tableServices_tables 'tables/deploy.bicep' = [for (tableName, index) in tables: {
   name: '${deployment().name}-Storage-Table-${index}'
   params: {
-    storageAccountName: storageAccountName
+    storageAccountName: storageAccount.name
+    tableServicesName: tableServices.name
     name: tableName
   }
-  dependsOn: [
-    tableService
-  ]
 }]
 
 @description('The name of the deployed table service')
-output tableServiceName string = tableService.name
+output tableServicesName string = tableServices.name
 
-@description('The id of the deployed table service')
-output tableServiceResourceId string = tableService.id
+@description('The resource ID of the deployed table service')
+output tableServicesResourceId string = tableServices.id
 
 @description('The resource group of the deployed table service')
-output tableServiceResourceGroup string = resourceGroup().name
+output tableServicesResourceGroup string = resourceGroup().name

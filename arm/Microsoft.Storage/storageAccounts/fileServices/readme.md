@@ -1,10 +1,10 @@
-# Storage Account file share services  `[Microsoft.Storage/storageAccounts/fileServices]`
+# Storage Account file share services `[Microsoft.Storage/storageAccounts/fileServices]`
 
 This module can be used to deploy a file share service into a storage account.
 
 ## Resource Types
 
-| Resource Type | Api Version |
+| Resource Type | API Version |
 | :-- | :-- |
 | `Microsoft.Authorization/roleAssignments` | 2020-04-01-preview |
 | `Microsoft.Storage/storageAccounts/fileServices` | 2021-04-01 |
@@ -14,7 +14,8 @@ This module can be used to deploy a file share service into a storage account.
 
 | Parameter Name | Type | Default Value | Possible Values | Description |
 | :-- | :-- | :-- | :-- | :-- |
-| `cuaId` | string |  |  | Optional. Customer Usage Attribution id (GUID). This GUID must be previously registered |
+| `cuaId` | string |  |  | Optional. Customer Usage Attribution ID (GUID). This GUID must be previously registered |
+| `name` | string | `default` |  | Optional. The name of the file service |
 | `protocolSettings` | object | `{object}` |  | Protocol settings for file service |
 | `shareDeleteRetentionPolicy` | object | `{object}` |  | The service properties for soft delete. |
 | `shares` | _[shares](shares/readme.md)_ array | `[]` |  | Optional. File shares to create. |
@@ -24,9 +25,9 @@ This module can be used to deploy a file share service into a storage account.
 
 | Output Name | Type | Description |
 | :-- | :-- | :-- |
-| `fileServiceName` | string | The name of the deployed file share service |
-| `fileServiceResourceGroup` | string | The resource group of the deployed file share service |
-| `fileServiceResourceId` | string | The id of the deployed file share service |
+| `fileServicesName` | string | The name of the deployed file share service |
+| `fileServicesResourceGroup` | string | The resource group of the deployed file share service |
+| `fileServicesResourceId` | string | The resource ID of the deployed file share service |
 
 ## Template references
 

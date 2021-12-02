@@ -1,10 +1,10 @@
-# AVD HostPools `[Microsoft.DesktopVirtualization/hostpools]`
+# AVD Host Pools `[Microsoft.DesktopVirtualization/hostpools]`
 
-This module deploys AVD Host Pools, with resource lock and diagnostics configuration.
+This module deploys an Azure virtual desktop host pool.
 
 ## Resource types
 
-| Resource Type | Api Version |
+| Resource Type | API Version |
 | :-- | :-- |
 | `Microsoft.Authorization/locks` | 2016-09-01 |
 | `Microsoft.Authorization/roleAssignments` | 2020-04-01-preview |
@@ -16,10 +16,10 @@ This module deploys AVD Host Pools, with resource lock and diagnostics configura
 | Parameter Name | Type | Default Value | Possible Values | Description |
 | :-- | :-- | :-- | :-- | :-- |
 | `baseTime` | string | `[utcNow('u')]` |  | Generated. Do not provide a value! This date value is used to generate a registration token. |
-| `cuaId` | string |  |  | Optional. Customer Usage Attribution id (GUID). This GUID must be previously registered |
+| `cuaId` | string |  |  | Optional. Customer Usage Attribution ID (GUID). This GUID must be previously registered |
 | `customRdpProperty` | string | `audiocapturemode:i:1;audiomode:i:0;drivestoredirect:s:;redirectclipboard:i:1;redirectcomports:i:1;redirectprinters:i:1;redirectsmartcards:i:1;screen mode id:i:2;` |  | Optional. Host Pool RDP properties |
 | `diagnosticLogsRetentionInDays` | int | `365` |  | Optional. Specifies the number of days that logs will be kept for; a value of 0 will retain data indefinitely. |
-| `diagnosticStorageAccountId` | string |  |  | Optional. Resource identifier of the Diagnostic Storage Account. |
+| `diagnosticStorageAccountId` | string |  |  | Optional. Resource ID of the diagnostic storage account. |
 | `eventHubAuthorizationRuleId` | string |  |  | Optional. Resource ID of the event hub authorization rule for the Event Hubs namespace in which the event hub should be created or streamed to. |
 | `eventHubName` | string |  |  | Optional. Name of the event hub within the namespace to which logs are streamed. Without this, an event hub is created for each log category. |
 | `hostpoolDescription` | string |  |  | Optional. The description of the Host Pool to be created. |
@@ -40,20 +40,13 @@ This module deploys AVD Host Pools, with resource lock and diagnostics configura
 | `validationEnviroment` | bool |  |  | Optional. Whether to use validation enviroment. When set to true, the Host Pool will be deployed in a validation 'ring' (environment) that receives all the new features (might be less stable). Ddefaults to false that stands for the stable, production-ready environment. |
 | `validationEnvironment` | bool |  |  | Optional. Validation host pool allows you to test service changes before they are deployed to production. |
 | `vmTemplate` | object | `{object}` |  | Optional. The necessary information for adding more VMs to this Host Pool. |
-| `workspaceId` | string |  |  | Optional. Resource identifier of Log Analytics. |
+| `workspaceId` | string |  |  | Optional. Resource ID of log analytics. |
 
 ### Parameter Usage: `roleAssignments`
 
 ```json
 "roleAssignments": {
     "value": [
-        {
-            "roleDefinitionIdOrName": "Desktop Virtualization User",
-            "principalIds": [
-                "12345678-1234-1234-1234-123456789012", // object 1
-                "78945612-1234-1234-1234-123456789012" // object 2
-            ]
-        },
         {
             "roleDefinitionIdOrName": "Reader",
             "principalIds": [
@@ -101,7 +94,7 @@ The below parameter object is converted to an in-line string when handed over to
 
 ```json
 "customRdpProperty": {
-    "value": "audiocapturemode:i:1;audiomode:i:0;drivestoredirect:s:;redirectclipboard:i:1;redirectcomports:i:1;redirectprinters:i:1;redirectsmartcards:i:1;screen mode id:i:2;"
+    "value": "audiocapturemode:i:1;audiomode:i:0;drivestoredirect:s:;redirectclipboard:i:1;redirectcomports:i:1;redirectprinters:i:1;redirectsmartcards:i:1;screen mode ID:i:2;"
 }
 ```
 
@@ -124,13 +117,12 @@ Tag names and tag values can be provided as needed. A tag can be left without a 
 
 ## Outputs
 
-| Output Name | Type |
-| :-- | :-- |
-| `hostPoolName` | string |
-| `hostPoolResourceGroup` | string |
-| `hostPoolResourceId` | string |
-| `hostpoolToken` | string |
-| `tokenExpirationTime` | string |
+| Output Name | Type | Description |
+| :-- | :-- | :-- |
+| `hostPoolName` | string | The name of the AVD host pool |
+| `hostPoolResourceGroup` | string | The resource group the AVD host pool was deployed into |
+| `hostPoolResourceId` | string | The resource ID of the AVD host pool |
+| `tokenExpirationTime` | string | The expiration time for the registration token |
 
 ## Template references
 

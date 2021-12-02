@@ -2,6 +2,9 @@
 @description('Required. Name of the Storage Account.')
 param storageAccountName string
 
+@description('Optional. The name of the blob service')
+param name string = 'default'
+
 @description('Optional. Indicates whether DeleteRetentionPolicy is enabled for the Blob service.')
 param deleteRetentionPolicy bool = true
 
@@ -14,7 +17,7 @@ param automaticSnapshotPolicyEnabled bool = false
 @description('Optional. Blob containers to create.')
 param containers array = []
 
-@description('Optional. Customer Usage Attribution id (GUID). This GUID must be previously registered')
+@description('Optional. Customer Usage Attribution ID (GUID). This GUID must be previously registered')
 param cuaId string = ''
 
 module pid_cuaId '.bicep/nested_cuaId.bicep' = if (!empty(cuaId)) {
@@ -22,8 +25,13 @@ module pid_cuaId '.bicep/nested_cuaId.bicep' = if (!empty(cuaId)) {
   params: {}
 }
 
-resource blobServices 'Microsoft.Storage/storageAccounts/blobServices@2021-08-01' = {
-  name: '${storageAccountName}/default'
+resource storageAccount 'Microsoft.Storage/storageAccounts@2021-06-01' existing = {
+  name: storageAccountName
+}
+
+resource blobServices 'Microsoft.Storage/storageAccounts/blobServices@2021-06-01' = {
+  name: name
+  parent: storageAccount
   properties: {
     deleteRetentionPolicy: {
       enabled: deleteRetentionPolicy
@@ -36,22 +44,20 @@ resource blobServices 'Microsoft.Storage/storageAccounts/blobServices@2021-08-01
 module blobServices_container 'containers/deploy.bicep' = [for (container, index) in containers: {
   name: '${deployment().name}-Storage-Container-${index}'
   params: {
-    storageAccountName: storageAccountName
+    storageAccountName: storageAccount.name
+    blobServicesName: blobServices.name
     name: container.name
     publicAccess: contains(container, 'publicAccess') ? container.publicAccess : 'None'
     roleAssignments: contains(container, 'roleAssignments') ? container.roleAssignments : []
     immutabilityPolicyProperties: contains(container, 'immutabilityPolicyProperties') ? container.immutabilityPolicyProperties : {}
   }
-  dependsOn: [
-    blobServices
-  ]
 }]
 
 @description('The name of the deployed blob service')
-output blobServiceName string = blobServices.name
+output blobServicesName string = blobServices.name
 
-@description('The id of the deployed blob service')
-output blobServiceResourceId string = blobServices.id
+@description('The resource ID of the deployed blob service')
+output blobServicesResourceId string = blobServices.id
 
 @description('The name of the deployed blob service')
-output blobServiceResourceGroup string = resourceGroup().name
+output blobServicesResourceGroup string = resourceGroup().name

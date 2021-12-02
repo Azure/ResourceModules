@@ -1,17 +1,14 @@
 @description('Optional. Additional datacenter locations of the API Management service.')
 param additionalLocations array = []
 
-@description('Required. The name of the of the Api Management service.')
-param apiManagementServiceName string
-
-@description('Optional. Policy content for the Api Management Service. Format: Format of the policyContent. - xml, xml-link, rawxml, rawxml-link. Value: Contents of the Policy as defined by the format.')
-param apiManagementServicePolicy object = {}
+@description('Required. The name of the of the API Management service.')
+param name string
 
 @description('Optional. List of Certificates that need to be installed in the API Management service. Max supported certificates that can be installed is 10.')
 @maxLength(10)
 param certificates array = []
 
-@description('Optional. Customer Usage Attribution id (GUID). This GUID must be previously registered')
+@description('Optional. Customer Usage Attribution ID (GUID). This GUID must be previously registered')
 param cuaId string = ''
 
 @description('Optional. Custom properties of the API Management service.')
@@ -22,10 +19,10 @@ param customProperties object = {}
 @maxValue(365)
 param diagnosticLogsRetentionInDays int = 365
 
-@description('Optional. Resource identifier of the Diagnostic Storage Account.')
+@description('Optional. Resource ID of the diagnostic storage account.')
 param diagnosticStorageAccountId string = ''
 
-@description('Optional. Property only valid for an Api Management service deployed in multiple locations. This can be used to disable the gateway in master region.')
+@description('Optional. Property only valid for an API Management service deployed in multiple locations. This can be used to disable the gateway in master region.')
 param disableGateway bool = false
 
 @description('Optional. Property only meant to be used for Consumption SKU Service. This enforces a client certificate to be presented on each request to the gateway. This also enables the ability to authenticate the certificate in the policy on the gateway.')
@@ -40,50 +37,11 @@ param eventHubName string = ''
 @description('Optional. Custom hostname configuration of the API Management service.')
 param hostnameConfigurations array = []
 
-@description('Optional. Managed service identity of the Api Management service.')
-param identity object = {}
+@description('Optional. Enables system assigned managed identity on the resource.')
+param systemAssignedIdentity bool = false
 
-@description('Optional. Used to enable the deployment of the identityProviders child resource.')
-param enableIdentityProviders bool = false
-
-@description('Optional. List of Allowed Tenants when configuring Azure Active Directory login. - string')
-param identityProviderAllowedTenants array = []
-
-@description('Optional. OpenID Connect discovery endpoint hostname for AAD or AAD B2C.')
-param identityProviderAuthority string = ''
-
-@description('Optional. Client Id of the Application in the external Identity Provider. Required if identity provider is used.')
-param identityProviderClientId string = ''
-
-@description('Optional. Client secret of the Application in external Identity Provider, used to authenticate login request. Required if identity provider is used.')
-@secure()
-param identityProviderClientSecret string = ''
-
-@description('Optional. Password Reset Policy Name. Only applies to AAD B2C Identity Provider.')
-param identityProviderPasswordResetPolicyName string = ''
-
-@description('Optional. Profile Editing Policy Name. Only applies to AAD B2C Identity Provider.')
-param identityProviderProfileEditingPolicyName string = ''
-
-@description('Optional. Signin Policy Name. Only applies to AAD B2C Identity Provider.')
-param identityProviderSignInPolicyName string = ''
-
-@description('Optional. The TenantId to use instead of Common when logging into Active Directory')
-param identityProviderSignInTenant string = ''
-
-@description('Optional. Signup Policy Name. Only applies to AAD B2C Identity Provider.')
-param identityProviderSignUpPolicyName string = ''
-
-@description('Optional. Identity Provider Type identifier.')
-@allowed([
-  'aad'
-  'aadB2C'
-  'facebook'
-  'google'
-  'microsoft'
-  'twitter'
-])
-param identityProviderType string = 'aad'
+@description('Optional. The ID(s) to assign to the resource.')
+param userAssignedIdentities object = {}
 
 @description('Optional. Location for all Resources.')
 param location string = resourceGroup().location
@@ -102,25 +60,19 @@ param minApiVersion string = ''
 @description('Optional. The notification sender email address for the service.')
 param notificationSenderEmail string = 'apimgmt-noreply@mail.windowsazure.com'
 
-@description('Optional. Portal sign in settings.')
-param portalSignIn object = {}
-
-@description('Optional. Portal sign up settings.')
-param portalSignUp object = {}
-
 @description('Required. The email address of the owner of the service.')
 param publisherEmail string
 
 @description('Required. The name of the owner of the service.')
 param publisherName string
 
-@description('Optional. Undelete Api Management Service if it was previously soft-deleted. If this flag is specified and set to True all other properties will be ignored.')
+@description('Optional. Undelete API Management Service if it was previously soft-deleted. If this flag is specified and set to True all other properties will be ignored.')
 param restore bool = false
 
 @description('Optional. Array of role assignment objects that contain the \'roleDefinitionIdOrName\' and \'principalId\' to define RBAC role assignments on this resource. In the roleDefinitionIdOrName attribute, you can provide either the display name of the role definition, or its fully qualified ID in the following format: \'/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11\'')
 param roleAssignments array = []
 
-@description('Optional. The pricing tier of this Api Management service.')
+@description('Optional. The pricing tier of this API Management service.')
 @allowed([
   'Consumption'
   'Developer'
@@ -130,7 +82,7 @@ param roleAssignments array = []
 ])
 param sku string = 'Developer'
 
-@description('Optional. The instance size of this Api Management service.')
+@description('Optional. The instance size of this API Management service.')
 @allowed([
   1
   2
@@ -143,7 +95,7 @@ param subnetResourceId string = ''
 @description('Optional. Tags of the resource.')
 param tags object = {}
 
-@description('Optional. The type of VPN in which API Management service needs to be configured in. None (Default Value) means the API Management service is not part of any Virtual Network, External means the API Management deployment is set up inside a Virtual Network having an Internet Facing Endpoint, and Internal means that API Management deployment is setup inside a Virtual Network having an Intranet Facing Endpoint only.')
+@description('Optional. The type of VPN in which API Management service needs to be configured in. None (Default Value) means the API Management service is not part of any Virtual Network, External means the API Management deployment is set up inside a Virtual Network having an internet Facing Endpoint, and Internal means that API Management deployment is setup inside a Virtual Network having an Intranet Facing Endpoint only.')
 @allowed([
   'None'
   'External'
@@ -151,7 +103,7 @@ param tags object = {}
 ])
 param virtualNetworkType string = 'None'
 
-@description('Optional. Resource identifier of Log Analytics.')
+@description('Optional. Resource ID of log analytics.')
 param workspaceId string = ''
 
 @description('Optional. A list of availability zones denoting where the resource needs to come from.')
@@ -172,6 +124,31 @@ param logsToEnable array = [
 param metricsToEnable array = [
   'AllMetrics'
 ]
+@description('Optional. Necessary to create a new GUID.')
+param newGuidValue string = newGuid()
+
+@description('Optional. APIs.')
+param apis array = []
+@description('Optional. API Version Sets.')
+param apiVersionSets array = []
+@description('Optional. Authorization servers.')
+param authorizationServers array = []
+@description('Optional. Backends.')
+param backends array = []
+@description('Optional. Caches.')
+param caches array = []
+@description('Optional. Identity providers.')
+param identityProviders array = []
+@description('Optional. Named values.')
+param namedValues array = []
+@description('Optional. Policies.')
+param policies array = []
+@description('Optional. Portal settings.')
+param portalSettings array = []
+@description('Optional. Products.')
+param products array = []
+@description('Optional. Subscriptions.')
+param subscriptions array = []
 
 var diagnosticsLogs = [for log in logsToEnable: {
   category: log
@@ -192,7 +169,12 @@ var diagnosticsMetrics = [for metric in metricsToEnable: {
   }
 }]
 
-var isAadB2C = (identityProviderType == 'aadB2C')
+var identityType = systemAssignedIdentity ? (!empty(userAssignedIdentities) ? 'SystemAssigned,UserAssigned' : 'SystemAssigned') : (!empty(userAssignedIdentities) ? 'UserAssigned' : 'None')
+
+var identity = identityType != 'None' ? {
+  type: identityType
+  userAssignedIdentities: !empty(userAssignedIdentities) ? userAssignedIdentities : null
+} : null
 
 module pid_cuaId '.bicep/nested_cuaId.bicep' = if (!empty(cuaId)) {
   name: 'pid-${cuaId}'
@@ -200,7 +182,7 @@ module pid_cuaId '.bicep/nested_cuaId.bicep' = if (!empty(cuaId)) {
 }
 
 resource apiManagementService 'Microsoft.ApiManagement/service@2020-12-01' = {
-  name: apiManagementServiceName
+  name: name
   location: location
   tags: tags
   sku: {
@@ -208,7 +190,7 @@ resource apiManagementService 'Microsoft.ApiManagement/service@2020-12-01' = {
     capacity: skuCount
   }
   zones: zones
-  identity: !empty(identity) ? identity : json('{"type": "None"}')
+  identity: identity
   properties: {
     publisherEmail: publisherEmail
     publisherName: publisherName
@@ -224,34 +206,195 @@ resource apiManagementService 'Microsoft.ApiManagement/service@2020-12-01' = {
     apiVersionConstraint: !empty(minApiVersion) ? json('{"minApiVersion": "${minApiVersion}"}') : null
     restore: restore
   }
-  resource apiManagementService_signin 'portalsettings@2019-12-01' = if (!empty(portalSignIn)) {
-    name: 'signin'
-    properties: portalSignIn
+}
+
+module apis_resource 'apis/deploy.bicep' = [for (api, index) in apis: {
+  name: '${uniqueString(deployment().name, location)}-api-${index}'
+  params: {
+    apiManagementServiceName: apiManagementService.name
+    displayName: api.displayName
+    name: api.name
+    path: api.path
+    apiDescription: contains(api, 'apiDescription') ? api.apiDescription : ''
+    apiRevision: contains(api, 'apiRevision') ? api.apiRevision : ''
+    apiRevisionDescription: contains(api, 'apiRevisionDescription') ? api.apiRevisionDescription : ''
+    apiType: contains(api, 'apiType') ? api.apiType : 'http'
+    apiVersion: contains(api, 'apiVersion') ? api.apiVersion : ''
+    apiVersionDescription: contains(api, 'apiVersionDescription') ? api.apiVersionDescription : ''
+    apiVersionSetId: contains(api, 'apiVersionSetId') ? api.apiVersionSetId : ''
+    authenticationSettings: contains(api, 'authenticationSettings') ? api.authenticationSettings : {}
+    format: contains(api, 'format') ? api.format : 'openapi'
+    isCurrent: contains(api, 'isCurrent') ? api.isCurrent : true
+    protocols: contains(api, 'protocols') ? api.protocols : [
+      'https'
+    ]
+    policies: contains(api, 'policies') ? api.policies : []
+    serviceUrl: contains(api, 'serviceUrl') ? api.serviceUrl : ''
+    sourceApiId: contains(api, 'sourceApiId') ? api.sourceApiId : ''
+    subscriptionKeyParameterNames: contains(api, 'subscriptionKeyParameterNames') ? api.subscriptionKeyParameterNames : {}
+    subscriptionRequired: contains(api, 'subscriptionRequired') ? api.subscriptionRequired : false
+    type: contains(api, 'type') ? api.type : 'http'
+    value: contains(api, 'value') ? api.value : ''
+    wsdlSelector: contains(api, 'wsdlSelector') ? api.wsdlSelector : {}
   }
-  resource apiManagementService_signup 'portalsettings@2019-12-01' = if (!empty(portalSignUp)) {
-    name: 'signup'
-    properties: portalSignUp
+  dependsOn: [
+    apiVersionSet_resource
+  ]
+}]
+
+module apiVersionSet_resource 'apiVersionSets/deploy.bicep' = [for (apiVersionSet, index) in apiVersionSets: {
+  name: '${uniqueString(deployment().name, location)}-apiVersionSet-${index}'
+  params: {
+    apiManagementServiceName: apiManagementService.name
+    name: apiVersionSet.name
+    properties: contains(apiVersionSet, 'properties') ? apiVersionSet.properties : {}
   }
-  resource apiManagementService_policy 'policies@2020-06-01-preview' = if (!empty(apiManagementServicePolicy)) {
-    name: 'policy'
-    properties: apiManagementServicePolicy
+}]
+
+module authorizationServers_resource '.bicep/nested_authorizationServers.bicep' = [for (authorizationServer, index) in authorizationServers: {
+  name: '${uniqueString(deployment().name, location)}-authorizationServer-${index}'
+  params: {
+    apiManagementServiceName: apiManagementService.name
+    name: authorizationServer.name
+    authorizationEndpoint: authorizationServer.authorizationEndpoint
+    authorizationMethods: contains(authorizationServer, 'authorizationMethods') ? authorizationServer.authorizationMethods : [
+      'GET'
+    ]
+    bearerTokenSendingMethods: contains(authorizationServer, 'bearerTokenSendingMethods') ? authorizationServer.bearerTokenSendingMethods : [
+      'authorizationHeader'
+    ]
+    clientAuthenticationMethod: contains(authorizationServer, 'clientAuthenticationMethod') ? authorizationServer.clientAuthenticationMethod : [
+      'Basic'
+    ]
+    clientCredentialsKeyVaultId: authorizationServer.clientCredentialsKeyVaultId
+    clientIdSecretName: authorizationServer.clientIdSecretName
+    clientSecretSecretName: authorizationServer.clientSecretSecretName
+    clientRegistrationEndpoint: contains(authorizationServer, 'clientRegistrationEndpoint') ? authorizationServer.clientRegistrationEndpoint : ''
+    defaultScope: contains(authorizationServer, 'defaultScope') ? authorizationServer.defaultScope : ''
+    grantTypes: authorizationServer.grantTypes
+    resourceOwnerPassword: contains(authorizationServer, 'resourceOwnerPassword') ? authorizationServer.resourceOwnerPassword : ''
+    resourceOwnerUsername: contains(authorizationServer, 'resourceOwnerUsername') ? authorizationServer.resourceOwnerUsername : ''
+    serverDescription: contains(authorizationServer, 'serverDescription') ? authorizationServer.serverDescription : ''
+    supportState: contains(authorizationServer, 'supportState') ? authorizationServer.supportState : false
+    tokenBodyParameters: contains(authorizationServer, 'tokenBodyParameters') ? authorizationServer.tokenBodyParameters : []
+    tokenEndpoint: contains(authorizationServer, 'tokenEndpoint') ? authorizationServer.tokenEndpoint : ''
   }
-  resource apiManagementService_identityProvider 'identityProviders@2020-06-01-preview' = if (enableIdentityProviders) {
-    name: identityProviderType
-    properties: {
-      type: identityProviderType
-      signinTenant: identityProviderSignInTenant
-      allowedTenants: identityProviderAllowedTenants
-      authority: identityProviderAuthority
-      signupPolicyName: isAadB2C ? identityProviderSignUpPolicyName : null
-      signinPolicyName: isAadB2C ? identityProviderSignInPolicyName : null
-      profileEditingPolicyName: isAadB2C ? identityProviderProfileEditingPolicyName : null
-      passwordResetPolicyName: isAadB2C ? identityProviderPasswordResetPolicyName : null
-      clientId: identityProviderClientId
-      clientSecret: identityProviderClientSecret
+}]
+
+module backends_resource 'backends/deploy.bicep' = [for (backend, index) in backends: {
+  name: '${uniqueString(deployment().name, location)}-backend-${index}'
+  params: {
+    apiManagementServiceName: apiManagementService.name
+    url: contains(backend, 'url') ? backend.url : ''
+    backendDescription: contains(backend, 'backendDescription') ? backend.backendDescription : ''
+    credentials: contains(backend, 'credentials') ? backend.credentials : {}
+    name: backend.name
+    protocol: contains(backend, 'protocol') ? backend.protocol : 'http'
+    proxy: contains(backend, 'proxy') ? backend.proxy : {}
+    resourceId: contains(backend, 'resourceId') ? backend.resourceId : ''
+    serviceFabricCluster: contains(backend, 'serviceFabricCluster') ? backend.serviceFabricCluster : {}
+    title: contains(backend, 'title') ? backend.title : ''
+    tls: contains(backend, 'tls') ? backend.tls : {
+      validateCertificateChain: false
+      validateCertificateName: false
     }
   }
-}
+}]
+
+module caches_resource 'caches/deploy.bicep' = [for (cache, index) in caches: {
+  name: '${uniqueString(deployment().name, location)}-cache-${index}'
+  params: {
+    apiManagementServiceName: apiManagementService.name
+    cacheDescription: contains(cache, 'cacheDescription') ? cache.cacheDescription : ''
+    connectionString: cache.connectionString
+    name: cache.name
+    resourceId: contains(cache, 'resourceId') ? cache.resourceId : ''
+    useFromLocation: cache.useFromLocation
+  }
+}]
+
+module identityProvider_resource 'identityProviders/deploy.bicep' = [for (identityProvider, index) in identityProviders: {
+  name: '${uniqueString(deployment().name, location)}-identityProvider-${index}'
+  params: {
+    apiManagementServiceName: apiManagementService.name
+    name: identityProvider.name
+    enableIdentityProviders: contains(identityProvider, 'enableIdentityProviders') ? identityProvider.enableIdentityProviders : false
+    identityProviderAllowedTenants: contains(identityProvider, 'identityProviderAllowedTenants') ? identityProvider.identityProviderAllowedTenants : []
+    identityProviderAuthority: contains(identityProvider, 'identityProviderAuthority') ? identityProvider.identityProviderAuthority : ''
+    identityProviderClientId: contains(identityProvider, 'identityProviderClientId') ? identityProvider.identityProviderClientId : ''
+    identityProviderClientSecret: contains(identityProvider, 'identityProviderClientSecret') ? identityProvider.identityProviderClientSecret : ''
+    identityProviderPasswordResetPolicyName: contains(identityProvider, 'identityProviderPasswordResetPolicyName') ? identityProvider.identityProviderPasswordResetPolicyName : ''
+    identityProviderProfileEditingPolicyName: contains(identityProvider, 'identityProviderProfileEditingPolicyName') ? identityProvider.identityProviderProfileEditingPolicyName : ''
+    identityProviderSignInPolicyName: contains(identityProvider, 'identityProviderSignInPolicyName') ? identityProvider.identityProviderSignInPolicyName : ''
+    identityProviderSignInTenant: contains(identityProvider, 'identityProviderSignInTenant') ? identityProvider.identityProviderSignInTenant : ''
+    identityProviderSignUpPolicyName: contains(identityProvider, 'identityProviderSignUpPolicyName') ? identityProvider.identityProviderSignUpPolicyName : ''
+    identityProviderType: contains(identityProvider, 'identityProviderType') ? identityProvider.identityProviderType : 'aad'
+  }
+}]
+
+module namedValues_resource 'namedValues/deploy.bicep' = [for (namedValue, index) in namedValues: {
+  name: '${uniqueString(deployment().name, location)}-namedValue-${index}'
+  params: {
+    apiManagementServiceName: apiManagementService.name
+    displayName: namedValue.displayName
+    keyVault: contains(namedValue, 'keyVault') ? namedValue.keyVault : {}
+    name: namedValue.name
+    namedValueTags: contains(namedValue, 'namedValueTags') ? namedValue.namedValueTags : []
+    secret: contains(namedValue, 'secret') ? namedValue.secret : false
+    value: contains(namedValue, 'value') ? namedValue.value : newGuidValue
+  }
+}]
+
+module portalSettings_resource 'portalsettings/deploy.bicep' = [for (portalSetting, index) in portalSettings: {
+  name: '${uniqueString(deployment().name, location)}-portalSetting-${index}'
+  params: {
+    apiManagementServiceName: apiManagementService.name
+    name: portalSetting.name
+    properties: contains(portalSetting, 'properties') ? portalSetting.properties : {}
+  }
+}]
+
+module policy_resource 'policies/deploy.bicep' = [for (policy, index) in policies: {
+  name: '${uniqueString(deployment().name, location)}-policy-${index}'
+  params: {
+    apiManagementServiceName: apiManagementService.name
+    value: policy.value
+    format: contains(policy, 'format') ? policy.format : 'xml'
+  }
+}]
+
+module products_resource 'products/deploy.bicep' = [for (product, index) in products: {
+  name: '${uniqueString(deployment().name, location)}-product-${index}'
+  params: {
+    apiManagementServiceName: apiManagementService.name
+    apis: contains(product, 'apis') ? product.apis : []
+    approvalRequired: contains(product, 'approvalRequired') ? product.approvalRequired : false
+    groups: contains(product, 'groups') ? product.groups : []
+    name: product.name
+    productDescription: contains(product, 'productDescription') ? product.productDescription : ''
+    state: contains(product, 'state') ? product.state : 'published'
+    subscriptionRequired: contains(product, 'subscriptionRequired') ? product.subscriptionRequired : false
+    subscriptionsLimit: contains(product, 'subscriptionsLimit') ? product.subscriptionsLimit : 1
+    terms: contains(product, 'terms') ? product.terms : ''
+  }
+  dependsOn: [
+    apis_resource
+  ]
+}]
+
+module subscriptions_resource 'subscriptions/deploy.bicep' = [for (subscription, index) in subscriptions: {
+  name: '${uniqueString(deployment().name, location)}-subscription-${index}'
+  params: {
+    apiManagementServiceName: apiManagementService.name
+    name: contains(subscription, 'name') ? subscription.name : ''
+    allowTracing: contains(subscription, 'allowTracing') ? subscription.allowTracing : false
+    ownerId: contains(subscription, 'ownerId') ? subscription.ownerId : ''
+    primaryKey: contains(subscription, 'primaryKey') ? subscription.primaryKey : ''
+    scope: contains(subscription, 'scope') ? subscription.scope : '/apis'
+    secondaryKey: contains(subscription, 'secondaryKey') ? subscription.secondaryKey : ''
+    state: contains(subscription, 'state') ? subscription.state : ''
+  }
+}]
 
 resource apiManagementService_lock 'Microsoft.Authorization/locks@2016-09-01' = if (lock != 'NotSpecified') {
   name: '${apiManagementService.name}-${lock}-lock'
@@ -278,16 +421,20 @@ resource apiManagementService_diagnosticSettings 'Microsoft.Insights/diagnosticS
 module apiManagementService_rbac '.bicep/nested_rbac.bicep' = [for (roleAssignment, index) in roleAssignments: {
   name: '${deployment().name}-rbac-${index}'
   params: {
-    roleAssignmentObj: roleAssignment
-    resourceName: apiManagementService.name
+    principalIds: roleAssignment.principalIds
+    roleDefinitionIdOrName: roleAssignment.roleDefinitionIdOrName
+    resourceId: apiManagementService.id
   }
 }]
 
-@description('The name of the api management service')
+@description('The name of the API management service')
 output serviceName string = apiManagementService.name
 
-@description('The resourceId of the api management service')
+@description('The resource ID of the API management service')
 output serviceResourceId string = apiManagementService.id
 
-@description('The resource group the api management service was deployed into')
+@description('The resource group the API management service was deployed into')
 output serviceResourceGroup string = resourceGroup().name
+
+@description('The principal ID of the system assigned identity.')
+output systemAssignedPrincipalId string = systemAssignedIdentity ? apiManagementService.identity.principalId : ''

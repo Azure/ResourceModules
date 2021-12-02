@@ -24,11 +24,12 @@ inputs:
 runs:
   using: 'composite'
   steps:
-    - name: 'Setup agent & login'
+    - name: 'Setup agent'
       shell: pwsh
       run: |
         # Load used functions
-        . ".github/actions/sharedScripts/Set-EnvironmentOnAgent.ps1"
+        . (Join-Path $env:GITHUB_WORKSPACE 'utilities' 'pipelines' 'sharedScripts' 'Set-EnvironmentOnAgent.ps1')
+
         # Set agent up
         Set-EnvironmentOnAgent
 
@@ -42,7 +43,8 @@ runs:
       shell: pwsh
       run: |
         # Load used functions
-        . "utilities/tokensReplacement/Convert-TokensInParameterFile.ps1"
+        . (Join-Path $env:GITHUB_WORKSPACE 'utilities' 'pipelines' 'tokensReplacement' 'Convert-TokensInParameterFile.ps1')
+
         # Load Settings File
         $Settings = Get-Content -Path "settings.json" | ConvertFrom-Json
         # Initialize Default Parameter File Tokens
@@ -52,7 +54,6 @@ runs:
             @{ Name = 'managementGroupId'; Value = '${{ inputs.managementGroupId }}' }
             @{ Name = "tenantId"; Value = '${{ env.ARM_TENANT_ID }}' }
             @{ Name = "deploymentSpId"; Value = '${{ env.DEPLOYMENT_SP_ID }}' }
-            @{ Name = "platformKeyVault"; Value = '${{ env.PLATFORM_KEYVAULT }}' }
         ) | ForEach-Object { [PSCustomObject]$PSItem }
 
         # Construct Token Function Input
@@ -63,24 +64,15 @@ runs:
             TokenPrefix                       = $Settings.parameterFileTokens.tokenPrefix
             TokenSuffix                       = $Settings.parameterFileTokens.tokenSuffix
         }
-        # Add Remote Custom Parameter File Tokens
-        if ('${{ env.PLATFORM_KEYVAULT }}' -and '${{ inputs.subscriptionId }}') {
-            $ConvertTokensInputs += @{
-                TokensKeyVaultName                 = '${{ env.PLATFORM_KEYVAULT }}'
-                TokensKeyVaultSubscriptionId       = '${{ inputs.subscriptionId }}'
-                TokensKeyVaultSecretNamePrefix     = $Settings.parameterFileTokens.remoteTokens.keyVaultSecretNamePrefix
-            }
-        }
         # Invoke Token Replacement Functionality
-        Convert-TokensInParameterFile @ConvertTokensInputs -Verbose
-
+        $null = Convert-TokensInParameterFile @ConvertTokensInputs -Verbose
       # [Test Deployment] task(s)
       #--------------------------
     - name: 'Validate [${{ inputs.templateFilePath }}]'
       shell: pwsh
       run: |
         # Load used functions
-        . "$env:GITHUB_ACTION_PATH/scripts/Test-TemplateWithParameterFile.ps1"
+        . (Join-Path $env:GITHUB_WORKSPACE 'utilities' 'pipelines' 'resourceValidation' 'Test-TemplateWithParameterFile.ps1')
 
         # ----------- #
         # INVOKE TEST #

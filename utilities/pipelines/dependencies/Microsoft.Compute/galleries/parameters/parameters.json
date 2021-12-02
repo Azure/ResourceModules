@@ -1,0 +1,26 @@
+{
+    "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "name": {
+            "value": "adpsxxazsigweux001"
+        },
+        "images": {
+            "value": [
+                {
+                    "name": "adp-sxx-az-imgd-x-001",
+                    "osType": "Windows",
+                    "osState": "Generalized",
+                    "publisher": "MicrosoftWindowsServer",
+                    "offer": "WindowsServer",
+                    "sku": "2019-Datacenter",
+                    "minRecommendedvCPUs": 2,
+                    "maxRecommendedvCPUs": 8,
+                    "minRecommendedMemory": 4,
+                    "maxRecommendedMemory": 16,
+                    "hyperVGeneration": "V1"
+                }
+            ]
+        }
+    }
+}

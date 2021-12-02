@@ -44,7 +44,8 @@ runs:
       shell: pwsh
       run: |
         # Load used functions
-        . ".github/actions/sharedScripts/Set-EnvironmentOnAgent.ps1"
+        . (Join-Path $env:GITHUB_WORKSPACE 'utilities' 'pipelines' 'sharedScripts' 'Set-EnvironmentOnAgent.ps1')
+
         # Set agent up
         Set-EnvironmentOnAgent
 
@@ -54,7 +55,7 @@ runs:
         creds: ${{ env.AZURE_CREDENTIALS }}
         enable-AzPSSession: true
 
-    - name: 'Publish module to template spec'
+    - name: 'Publish module to template specs'
       shell: pwsh
       # if: ${{ inputs.templateSpecsDoPublish == 'true' }}
       run: |
@@ -63,7 +64,7 @@ runs:
         if('${{ inputs.templateSpecsDoPublish }}' -eq 'true') {
 
           # Load used functions
-          . "$env:GITHUB_ACTION_PATH/scripts/Publish-ModuleToTemplateSpec.ps1"
+          . (Join-Path $env:GITHUB_WORKSPACE 'utilities' 'pipelines' 'resourcePublish' 'Publish-ModuleToTemplateSpec.ps1')
 
           $functionInput = @{
             templateFilePath         = Join-Path $env:GITHUB_WORKSPACE "${{ inputs.templateFilePath }}"
@@ -89,7 +90,7 @@ runs:
         if('${{ inputs.bicepRegistryDoPublish }}' -eq 'true') {
 
           # Load used functions
-          . "$env:GITHUB_ACTION_PATH/scripts/Publish-ModuleToPrivateBicepRegistry.ps1"
+          . (Join-Path $env:GITHUB_WORKSPACE 'utilities' 'pipelines' 'resourcePublish' 'Publish-ModuleToPrivateBicepRegistry.ps1')
 
           $functionInput = @{
             templateFilePath    = Join-Path $env:GITHUB_WORKSPACE "${{ inputs.templateFilePath }}"

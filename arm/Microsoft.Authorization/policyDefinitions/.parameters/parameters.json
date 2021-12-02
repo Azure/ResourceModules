@@ -2,45 +2,61 @@
     "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
     "contentVersion": "1.0.0.0",
     "parameters": {
-        "policyDefinitionName": {
-            "value": "test-deny-keyvault-public-access"
+        "name": {
+            "value": "sxx-add-tag-to-sub-policy"
         },
         "displayName": {
-            "value": "[Test] This policy denies creation of Key Vaults with IP Firewall exposed to all public endpoints"
+            "value": "[Test] This policy adds tags to a subscription"
+        },
+        "description": {
+            "value": "This is the description of a policy that adds tags to a subscription"
         },
         "policyRule": {
             "value": {
                 "if": {
                     "allOf": [
                         {
-                            "equals": "Microsoft.KeyVault/vaults",
-                            "field": "type"
+                            "field": "type",
+                            "equals": "Microsoft.Resources/subscriptions"
                         },
                         {
-                            "field": "Microsoft.KeyVault/vaults/networkAcls.defaultAction",
-                            "notequals": "Deny"
+                            "field": "[concat('tags[', parameters('tagName'), ']')]",
+                            "exists": "false"
                         }
                     ]
                 },
                 "then": {
-                    "effect": "[parameters('effect')]"
+                    "effect": "modify",
+                    "details": {
+                        "roleDefinitionIds": [
+                            "/providers/microsoft.authorization/roleDefinitions/4a9ae827-6dc8-4573-8ac7-8239d42aa03f"
+                        ],
+                        "operations": [
+                            {
+                                "operation": "add",
+                                "field": "[concat('tags[', parameters('tagName'), ']')]",
+                                "value": "[parameters('tagValue')]"
+                            }
+                        ]
+                    }
                 }
             }
         },
         "parameters": {
             "value": {
-                "effect": {
-                    "allowedValues": [
-                        "Audit",
-                        "Deny",
-                        "Disabled"
-                    ],
-                    "defaultValue": "Deny",
+                "tagName": {
+                    "type": "String",
                     "metadata": {
-                        "description": "Enable or disable the execution of the policy",
-                        "displayName": "Effect"
-                    },
-                    "type": "String"
+                        "displayName": "Tag Name",
+                        "description": "Name of the tag, such as 'environment'"
+                    }
+                },
+                "tagValue": {
+                    "type": "String",
+                    "metadata": {
+                        "displayName": "Tag Value",
+                        "description": "Value of the tag, such as 'production'"
+                    }
                 }
             }
         },

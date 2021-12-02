@@ -1,8 +1,8 @@
-# DocumentDB Database Account SQL Databases Containers `[Microsoft.DocumentDB/databaseAccount/sqlDatabases/containers]`
+# DocumentDB Database Account SQL Databases Containers `[Microsoft.DocumentDB/databaseAccounts/sqlDatabases/containers]`
 
 ## Resource Types
 
-| Resource Type | Api Version |
+| Resource Type | API Version |
 | :-- | :-- |
 | `Microsoft.DocumentDB/databaseAccounts/sqlDatabases/containers` | 2021-07-01-preview |
 
@@ -10,7 +10,7 @@
 
 | Parameter Name | Type | Default Value | Possible Values | Description |
 | :-- | :-- | :-- | :-- | :-- |
-| `cuaId` | string |  |  | Optional. Customer Usage Attribution id (GUID). This GUID must be previously registered |
+| `cuaId` | string |  |  | Optional. Customer Usage Attribution ID (GUID). This GUID must be previously registered |
 | `databaseAccountName` | string |  |  | Required. Name of the Database Account |
 | `kind` | string | `Hash` | `[Hash, MultiHash, Range]` | Optional. Indicates the kind of algorithm used for partitioning |
 | `name` | string |  |  | Required. Name of the container. |
@@ -19,17 +19,30 @@
 | `tags` | object | `{object}` |  | Optional. Tags of the SQL Database resource. |
 | `throughput` | int | `400` |  | Optional. Request Units per second |
 
-### Parameter Usage: `<ParameterPlaceholder>`
+### Parameter Usage: `tags`
 
-// TODO: Fill in Parameter usage
+Tag names and tag values can be provided as needed. A tag can be left without a value.
+
+```json
+"tags": {
+    "value": {
+        "Environment": "Non-Prod",
+        "Contact": "test.user@testcompany.com",
+        "PurchaseOrder": "1234",
+        "CostCenter": "7890",
+        "ServiceName": "DeploymentValidation",
+        "Role": "DeploymentValidation"
+    }
+}
+```
 
 ## Outputs
 
 | Output Name | Type | Description |
 | :-- | :-- | :-- |
 | `containerName` | string | The name of the container. |
-| `containerResourceGroup` | string | The name of the Resource Group the container was created in. |
-| `containerResourceId` | string | The Resource Id of the container. |
+| `containerResourceGroup` | string | The name of the resource group the container was created in. |
+| `containerResourceId` | string | The resource ID of the container. |
 
 ## Template references
 

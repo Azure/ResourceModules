@@ -1,7 +1,7 @@
 targetScope = 'subscription'
 
 @description('Optional. The name of the budget.')
-param budgetName string = ''
+param name string = ''
 
 @allowed([
   'Cost'
@@ -49,7 +49,7 @@ param contactRoles array = []
 @description('Optional. List of action group resource IDs that will receive the alert.')
 param actionGroups array = []
 
-var budgetNameVar = empty(budgetName) ? '${resetPeriod}-${category}-Budget' : budgetName
+var budgetNameVar = empty(name) ? '${resetPeriod}-${category}-Budget' : name
 var notificationsArray = [for threshold in thresholds: {
   'Actual_GreaterThan_${threshold}_Percentage': {
     enabled: true
@@ -79,5 +79,11 @@ resource budget 'Microsoft.Consumption/budgets@2019-05-01' = {
   }
 }
 
+@description('The name of the budget')
 output budgetName string = budget.name
+
+@description('The resource ID of the budget')
 output budgetResourceId string = budget.id
+
+@description('The subscription the budget was deployed into')
+output subscriptionName string = subscription().displayName

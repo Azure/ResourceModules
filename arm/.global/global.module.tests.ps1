@@ -6,6 +6,7 @@ param (
         })
 )
 
+$script:Settings = Get-Content -Path (Join-Path $PSScriptRoot '..\..\settings.json') | ConvertFrom-Json
 $script:RGdeployment = 'https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#'
 $script:Subscriptiondeployment = 'https://schema.management.azure.com/schemas/2018-05-01/subscriptionDeploymentTemplate.json#'
 $script:MGdeployment = 'https://schema.management.azure.com/schemas/2019-08-01/managementGroupDeploymentTemplate.json#'
@@ -246,34 +247,44 @@ Describe 'Readme tests' -Tag Readme {
             ($ComparisonFlag -gt 2) | Should -Be $false
         }
 
-        It '[<moduleFolderName>] parameters section should contain all parameters from the deploy.json file' -TestCases $readmeFolderTestCases {
+        It '[<moduleFolderName>] parameters section should contain all parameters from the template file' -TestCases $readmeFolderTestCases {
             param(
                 $moduleFolderName,
                 $templateContent,
                 $readMeContent
             )
 
-            $ReadmeHTML = ($readMeContent | ConvertFrom-Markdown -ErrorAction SilentlyContinue).Html
-            $parameters = Get-Member -InputObject $templateContent.parameters -MemberType NoteProperty
-            $Headings = @(@())
-            foreach ($H in $ReadmeHTML) {
-                if ($H.Contains('<h')) {
-                    $StartingIndex = $H.IndexOf('>') + 1
-                    $EndIndex = $H.LastIndexof('<')
-                    $Headings += , (@($H.Substring($StartingIndex, $EndIndex - $StartingIndex), $ReadmeHTML.IndexOf($H)))
-                }
+            # Get Template data
+            $parameters = $templateContent.parameters.Keys
+
+            # Get ReadMe data
+            $parametersSectionStartIndex = 0
+            while ($readMeContent[$parametersSectionStartIndex] -notlike '*# Parameters' -and -not ($parametersSectionStartIndex -ge $readMeContent.count)) {
+                $parametersSectionStartIndex++
             }
-            ##get param from readme.md
-            $HeadingIndex = $Headings | Where-Object { $_ -eq 'parameters' }
-            if ($HeadingIndex -eq $null) {
-                Write-Verbose "[parameters section should contain all parameters from the deploy.json file] Error At ($moduleFolderName)" -Verbose
-                $true | Should -Be $false
+
+            $parametersTableStartIndex = $parametersSectionStartIndex + 1
+            while ($readMeContent[$parametersTableStartIndex] -notlike '*|*' -and -not ($parametersTableStartIndex -ge $readMeContent.count)) {
+                $parametersTableStartIndex++
             }
-            $parametersList = @()
-            for ($j = $HeadingIndex[1] + 4; $ReadmeHTML[$j] -ne ''; $j++) {
-                $parametersList += $ReadmeHTML[$j].Replace('<p>| <code>', '').Replace('|</p>', '').Replace('</code>', '').Split('|')[0].Trim()
+
+            if ($parametersSectionStartIndex -ge $readMeContent.count) {
+                throw 'Parameters section is missing in the Readme. Please add and re-run the tests.'
             }
-            $differentiatingItems = $parameters.Name | Where-Object { $parametersList -notcontains $_ }
+
+            $parametersTableEndIndex = $parametersTableStartIndex + 2 # Header row + table separator row
+            while ($readMeContent[$parametersTableEndIndex] -like '*|*' -and -not ($parametersTableEndIndex -ge $readMeContent.count)) {
+                $parametersTableEndIndex++
+            }
+            $parametersTableEndIndex-- # remove one index as the while loop will move one index past the last table row
+
+            $parametersList = [System.Collections.ArrayList]@()
+            for ($index = $parametersTableStartIndex + 2; $index -le $parametersTableEndIndex; $index++) {
+                $parametersList += $readMeContent[$index].Split('|')[1].Replace('`', '').Trim()
+            }
+
+            # Test
+            $differentiatingItems = $parameters | Where-Object { $parametersList -notcontains $_ }
             $differentiatingItems.Count | Should -Be 0 -Because ('list of template parameters missing in the ReadMe file [{0}] should be empty' -f ($differentiatingItems -join ','))
         }
 
@@ -302,7 +313,7 @@ Describe 'Readme tests' -Tag Readme {
             $differentiatingItems.Count | Should -Be 0 -Because ('list of "Outputs" table columns missing in the ReadMe file [{0}] should be empty' -f ($differentiatingItems -join ','))
         }
 
-        It '[<moduleFolderName>] Output section should contain all outputs defined in the deploy.json file' -TestCases $readmeFolderTestCases {
+        It '[<moduleFolderName>] Output section should contain all outputs defined in the template file' -TestCases $readmeFolderTestCases {
             param(
                 $moduleFolderName,
                 $templateContent,
@@ -400,6 +411,7 @@ Describe 'Deployment template tests' -Tag Template {
                     parameterFile_AllParameterNames      = $parameterFile_AllParameterNames
                     templateFile_AllParameterNames       = $TemplateFile_AllParameterNames
                     templateFile_RequiredParametersNames = $TemplateFile_RequiredParametersNames
+                    tokenSettings                        = $Settings.parameterFileTokens
                 }
             }
 
@@ -413,11 +425,11 @@ Describe 'Deployment template tests' -Tag Template {
         foreach ($moduleFolderPath in $moduleFolderPathsFiltered) {
             $deploymentFolderTestCasesException += @{
                 moduleFolderNameException = $moduleFolderPath.Replace('\', '/').Split('/arm/')[1]
-                templateContentException  = $templateContent
+                templateContent           = $templateContent
             }
         }
 
-        It '[<moduleFolderName>] The deploy.json file should not be empty' -TestCases $deploymentFolderTestCases {
+        It '[<moduleFolderName>] the template file should not be empty' -TestCases $deploymentFolderTestCases {
             param(
                 $moduleFolderName,
                 $templateContent
@@ -467,13 +479,13 @@ Describe 'Deployment template tests' -Tag Template {
             )
             $ApiVersion = $templateContent.resources.apiVersion
             $ApiVersionArray = @()
-            foreach ($Api in $ApiVersion) {
-                if ($Api.Substring(0, 2) -eq '20') {
+            foreach ($API in $ApiVersion) {
+                if ($API.Substring(0, 2) -eq '20') {
                     $ApiVersionOutput = $true
-                } elseif ($Api.substring(1, 10) -eq 'parameters') {
+                } elseif ($API.substring(1, 10) -eq 'parameters') {
                     # An API version should not be referenced as a parameter
                     $ApiVersionOutput = $false
-                } elseif ($Api.substring(1, 10) -eq 'variables') {
+                } elseif ($API.substring(1, 10) -eq 'variables') {
                     # An API version should not be referenced as a variable
                     $ApiVersionOutput = $false
                 } else {
@@ -484,7 +496,7 @@ Describe 'Deployment template tests' -Tag Template {
             $ApiVersionArray | Should -Not -Contain $false
         }
 
-        It '[<moduleFolderName>] The deploy.json file should contain required elements: schema, contentVersion, resources' -TestCases $deploymentFolderTestCases {
+        It '[<moduleFolderName>] the template file should contain required elements: schema, contentVersion, resources' -TestCases $deploymentFolderTestCases {
             param(
                 $moduleFolderName,
                 $templateContent
@@ -517,7 +529,7 @@ Describe 'Deployment template tests' -Tag Template {
             }
 
             $CamelCasingFlag = @()
-            $Parameter = ($templateContent.parameters | Get-Member | Where-Object { $_.MemberType -eq 'NoteProperty' }).Name
+            $Parameter = $templateContent.parameters.Keys
             foreach ($Param in $Parameter) {
                 if ($Param.substring(0, 1) -cnotmatch '[a-z]' -or $Param -match '-' -or $Param -match '_') {
                     $CamelCasingFlag += $false
@@ -540,7 +552,7 @@ Describe 'Deployment template tests' -Tag Template {
             }
 
             $CamelCasingFlag = @()
-            $Variable = ($templateContent.variables | Get-Member | Where-Object { $_.MemberType -eq 'NoteProperty' }).Name
+            $Variable = $templateContent.variables.Keys
 
             foreach ($Variab in $Variable) {
                 if ($Variab.substring(0, 1) -cnotmatch '[a-z]' -or $Variab -match '-') {
@@ -558,7 +570,7 @@ Describe 'Deployment template tests' -Tag Template {
                 $templateContent
             )
             $CamelCasingFlag = @()
-            $Outputs = ($templateContent.outputs | Get-Member | Where-Object { $_.MemberType -eq 'NoteProperty' }).Name
+            $Outputs = $templateContent.outputs.Keys
 
             foreach ($Output in $Outputs) {
                 if ($Output.substring(0, 1) -cnotmatch '[a-z]' -or $Output -match '-' -or $Output -match '_') {
@@ -595,8 +607,8 @@ Describe 'Deployment template tests' -Tag Template {
             $LocationFlag = $true
             $Schemaverion = $templateContent.'$schema'
             if ((($Schemaverion.Split('/')[5]).Split('.')[0]) -eq (($RGdeployment.Split('/')[5]).Split('.')[0])) {
-                $Locationparamoutputvalue = $templateContent.parameters.Location.defaultValue
-                $Locationparamoutput = ($templateContent.parameters | Get-Member | Where-Object { $_.MemberType -eq 'NoteProperty' }).Name
+                $Locationparamoutputvalue = $templateContent.parameters.location.defaultValue
+                $Locationparamoutput = $templateContent.parameters.Keys
                 if ($Locationparamoutput -contains 'Location') {
                     if ($Locationparamoutputvalue -eq '[resourceGroup().Location]' -or $Locationparamoutputvalue -eq 'global') {
                         $LocationFlag = $true
@@ -612,24 +624,24 @@ Describe 'Deployment template tests' -Tag Template {
         It "[<moduleFolderNameException>] All resources that have a Location property should refer to the Location parameter 'parameters('Location')'" -TestCases $deploymentFolderTestCasesException {
             param(
                 $moduleFolderNameException,
-                $templateContentException
+                $templateContent
             )
             $LocationParamFlag = @()
             $Locmandoutput = $templateContent.resources
             foreach ($Locmand in $Locmandoutput) {
-                if (($Locmand | Get-Member | Where-Object { $_.MemberType -eq 'NoteProperty' }).Name -contains 'Location' -and $Locmand.Location -eq "[parameters('Location')]") {
+                if ($Locmand.Keys -contains 'Location' -and $Locmand.Location -eq "[parameters('Location')]") {
                     $LocationParamFlag += $true
-                } elseif (($Locmand | Get-Member | Where-Object { $_.MemberType -eq 'NoteProperty' }).Name -notcontains 'Location') {
+                } elseif ($Locmand.Keys -notcontains 'Location') {
                     $LocationParamFlag += $true
-                } elseif (($Locmand | Get-Member | Where-Object { $_.MemberType -eq 'NoteProperty' }).Name -notcontains 'resourceGroup') {
+                } elseif ($Locmand.Keys -notcontains 'resourceGroup') {
                     $LocationParamFlag += $true
                 } else {
                     $LocationParamFlag += $false
                 }
                 foreach ($Locm in $Locmand.resources) {
-                    if (($Locm | Get-Member | Where-Object { $_.MemberType -eq 'NoteProperty' }).Name -contains 'Location' -and $Locm.Location -eq "[parameters('Location')]") {
+                    if ($Locm.Keys -contains 'Location' -and $Locm.Location -eq "[parameters('Location')]") {
                         $LocationParamFlag += $true
-                    } elseif (($Locm | Get-Member | Where-Object { $_.MemberType -eq 'NoteProperty' }).Name -notcontains 'Location') {
+                    } elseif ($Locm.Keys -notcontains 'Location') {
                         $LocationParamFlag += $true
                     } else {
                         $LocationParamFlag += $false
@@ -676,7 +688,7 @@ Describe 'Deployment template tests' -Tag Template {
             }
 
             $ParamDescriptionFlag = @()
-            $Paramdescoutput = ($templateContent.parameters | Get-Member | Where-Object { $_.MemberType -eq 'NoteProperty' }).Name
+            $Paramdescoutput = $templateContent.parameters.Keys
             foreach ($Param in $Paramdescoutput) {
                 $Data = ($templateContent.parameters.$Param.metadata).description
                 if ($Data -like 'Optional. [a-zA-Z]*' -or $Data -like 'Required. [a-zA-Z]*' -or $Data -like 'Generated. [a-zA-Z]*') {
@@ -718,22 +730,35 @@ Describe 'Deployment template tests' -Tag Template {
             }
         }
 
-        It '[<moduleFolderName>] Parameter files should not contain the subscriptionId guid' -TestCases $deploymentFolderTestCases {
+        It '[<moduleFolderName>] [Tokens] Parameter files should not contain the default Subscription ID guid' -TestCases $deploymentFolderTestCases {
             param (
-                [hashtable[]] $parameterFileTestCases
+                [hashtable[]] $ParameterFileTestCases
             )
-
-            foreach ($parameterFileTestCase in $parameterFileTestCases) {
-                $ParameterFileContent = Get-Content -Path $parameterFileTestCase.parameterFile_Path
+            foreach ($ParameterFileTestCase in $ParameterFileTestCases) {
+                $ParameterFileTokenName = -join ($ParameterFileTestCase.tokenSettings.tokenPrefix, 'subscriptionId', $ParameterFileTestCase.tokenSettings.tokenSuffix)
+                $ParameterFileContent = Get-Content -Path $ParameterFileTestCase.parameterFile_Path
                 $SubscriptionIdKeyCount = ($ParameterFileContent | Select-String -Pattern '"subscriptionId"', "'subscriptionId'", '/subscriptions/' -AllMatches).Matches.Count
-                $SubscriptionIdValueCount = ($ParameterFileContent | Select-String -Pattern '<<subscriptionId' -AllMatches).Matches.Count
-                $SubscriptionIdKeyCount | Should -Be $SubscriptionIdValueCount -Because ('Parameter file should not contain the subscription Id guid, instead should reference a token value "<<subscriptionId(n)>> (i.e. <<subscriptionId1>>)"')
+                $SubscriptionIdValueCount = ($ParameterFileContent | Select-String -Pattern "$ParameterFileTokenName" -AllMatches).Matches.Count
+                $SubscriptionIdKeyCount -eq $SubscriptionIdValueCount | Should -Be $true -Because ("Parameter file should not contain the Subscription ID guid, instead should reference a token value '$ParameterFileTokenName'")
+            }
+        }
+
+        It '[<moduleFolderName>] [Tokens] Parameter files should not contain the default Tenant ID' -TestCases $deploymentFolderTestCases {
+            param (
+                [hashtable[]] $ParameterFileTestCases
+            )
+            foreach ($ParameterFileTestCase in $ParameterFileTestCases) {
+                $ParameterFileTokenName = -join ($ParameterFileTestCase.tokenSettings.tokenPrefix, 'tenantId', $ParameterFileTestCase.tokenSettings.tokenSuffix)
+                $ParameterFileContent = Get-Content -Path $ParameterFileTestCase.parameterFile_Path
+                $TenantIdKeyCount = ($ParameterFileContent | Select-String -Pattern '"tenantId"', "'tenantId'" -AllMatches).Matches.Count
+                $TenantIdValueCount = ($ParameterFileContent | Select-String -Pattern "$ParameterFileTokenName" -AllMatches).Matches.Count
+                $TenantIdKeyCount -eq $TenantIdValueCount | Should -Be $true -Because ("Parameter file should not contain the Tenant ID guid, instead should reference a token value '$ParameterFileTokenName'")
             }
         }
     }
 }
 
-Describe "Api version tests [All apiVersions in the template should be 'recent']" -Tag ApiCheck {
+Describe "API version tests [All apiVersions in the template should be 'recent']" -Tag ApiCheck {
 
     $testCases = @()
     $ApiVersions = Get-AzResourceProvider -ListAvailable
@@ -824,7 +849,7 @@ Describe "Api version tests [All apiVersions in the template should be 'recent']
         $resourceTypeApiVersions = ($namespaceResourceTypes | Where-Object { $_.ResourceTypeName -eq $resourceType }).ApiVersions
 
         if (-not $resourceTypeApiVersions) {
-            Write-Warning ('[Api Test] We are currently unable to determine the available API versions for resource type [{0}/{1}]' -f $ProviderNamespace, $resourceType)
+            Write-Warning ('[API Test] We are currently unable to determine the available API versions for resource type [{0}/{1}]' -f $ProviderNamespace, $resourceType)
             continue
         }
 

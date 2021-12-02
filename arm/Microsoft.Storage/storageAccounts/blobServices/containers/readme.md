@@ -4,7 +4,7 @@ This module deployes a blob container
 
 ## Resource Types
 
-| Resource Type | Api Version |
+| Resource Type | API Version |
 | :-- | :-- |
 | `Microsoft.Authorization/roleAssignments` | 2020-04-01-preview |
 | `Microsoft.Storage/storageAccounts/blobServices/containers` | 2019-06-01 |
@@ -14,7 +14,9 @@ This module deployes a blob container
 
 | Parameter Name | Type | Default Value | Possible Values | Description |
 | :-- | :-- | :-- | :-- | :-- |
-| `cuaId` | string |  |  | Optional. Customer Usage Attribution id (GUID). This GUID must be previously registered |
+| `blobServicesName` | string | `default` |  | Optional. Name of the blob service. |
+| `cuaId` | string |  |  | Optional. Customer Usage Attribution ID (GUID). This GUID must be previously registered |
+| `immutabilityPolicyName` | string | `default` |  | Optional. Name of the immutable policy. |
 | `immutabilityPolicyProperties` | object | `{object}` |  | Configure immutability policy. |
 | `name` | string |  |  | The name of the storage container to deploy |
 | `publicAccess` | string | `None` | `[Container, Blob, None]` | Specifies whether data in the container may be accessed publicly and the level of access. |
@@ -26,13 +28,6 @@ This module deployes a blob container
 ```json
 "roleAssignments": {
     "value": [
-        {
-            "roleDefinitionIdOrName": "Storage File Data SMB Share Contributor",
-            "principalIds": [
-                "12345678-1234-1234-1234-123456789012", // object 1
-                "78945612-1234-1234-1234-123456789012" // object 2
-            ]
-        },
         {
             "roleDefinitionIdOrName": "Reader",
             "principalIds": [
@@ -56,7 +51,7 @@ This module deployes a blob container
 | :-- | :-- | :-- |
 | `containerName` | string | The name of the deployed container |
 | `containerResourceGroup` | string | The resource group of the deployed container |
-| `containerResourceId` | string | The ID of the deployed container |
+| `containerResourceId` | string | The resource ID of the deployed container |
 
 ## Template references
 

@@ -1,5 +1,5 @@
 @description('Required. The name of the proximity placement group that is being created.')
-param proximityPlacementGroupName string = ''
+param name string = ''
 
 @description('Optional. Specifies the type of the proximity placement group.')
 @allowed([
@@ -25,7 +25,7 @@ param roleAssignments array = []
 @description('Optional. Tags of the proximity placement group resource.')
 param tags object = {}
 
-@description('Optional. Customer Usage Attribution id (GUID). This GUID must be previously registered')
+@description('Optional. Customer Usage Attribution ID (GUID). This GUID must be previously registered')
 param cuaId string = ''
 
 module pid_cuaId '.bicep/nested_cuaId.bicep' = if (!empty(cuaId)) {
@@ -34,7 +34,7 @@ module pid_cuaId '.bicep/nested_cuaId.bicep' = if (!empty(cuaId)) {
 }
 
 resource proximityPlacementGroup 'Microsoft.Compute/proximityPlacementGroups@2021-04-01' = {
-  name: proximityPlacementGroupName
+  name: name
   location: location
   tags: tags
   properties: {
@@ -54,8 +54,9 @@ resource proximityPlacementGroup_lock 'Microsoft.Authorization/locks@2016-09-01'
 module proximityPlacementGroup_rbac '.bicep/nested_rbac.bicep' = [for (roleAssignment, index) in roleAssignments: {
   name: '${deployment().name}-rbac-${index}'
   params: {
-    roleAssignmentObj: roleAssignment
-    resourceName: proximityPlacementGroup.name
+    principalIds: roleAssignment.principalIds
+    roleDefinitionIdOrName: roleAssignment.roleDefinitionIdOrName
+    resourceId: proximityPlacementGroup.id
   }
 }]
 
