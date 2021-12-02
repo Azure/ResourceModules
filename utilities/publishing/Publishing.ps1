@@ -7,7 +7,7 @@
         [Parameter(Position = 1)]
         [string] $CompareCommit = 'HEAD'
     )
-    $Diff = git diff --name-only $Commit $CompareCommit
+    $Diff = git diff --diff-filter=AM --name-only $Commit $CompareCommit
     $ChangedFiles = $Diff | Get-Item
     return $ChangedFiles
 }
@@ -71,11 +71,26 @@ function Get-ParentModule {
     return $ParentModules
 }
 
+function Get-GitDistance {
+    [CmdletBinding()]
+    param (
+        [Parameter(ValueFromPipeline)]
+        [string]
+        $Commit,
+
+        [Parameter(ValueFromPipeline)]
+        [string]
+        $CompareCommit
+    )
+    $Distance = (git rev-list $Commit ^$CompareCommit | wc -l) - 1
+    return $Distance
+}
+
 function Update-ChangedModule {
     [CmdletBinding(SupportsShouldProcess)]
     param (
         [Parameter(ValueFromPipelineByPropertyName)]
-        [string] $Path = 'C:\Repos\Azure\ResourceModules\arm\Microsoft.Storage\storageAccounts\tableServices\tables\deploy.bicep',
+        [string] $Path = 'C:\Repos\Azure\ResourceModules\arm\Microsoft.Storage\storageAccounts\tableServices\tables\deploy.bicep'
     )
 
     $ModulePath = $Path
