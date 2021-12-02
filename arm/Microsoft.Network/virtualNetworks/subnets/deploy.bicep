@@ -86,10 +86,14 @@ resource subnet 'Microsoft.Network/virtualNetworks/subnets@2021-03-01' = {
     networkSecurityGroup: !empty(networkSecurityGroupName) ? {
       id: networkSecurityGroup.id
     } : null
-    routeTable: !empty(routeTableName) ? routeTable : null
+    routeTable: !empty(routeTableName) ? {
+      id: routeTable.id
+    } : null
+    natGateway: !empty(natGatewayName) ? {
+      id: natGateway.id
+    } : null
     serviceEndpoints: !empty(formattedServiceEndpoints) ? formattedServiceEndpoints : []
     delegations: delegations
-    natGateway: !empty(natGatewayName) ? natGateway : null
     privateEndpointNetworkPolicies: !empty(privateEndpointNetworkPolicies) ? any(privateEndpointNetworkPolicies) : null
     privateLinkServiceNetworkPolicies: !empty(privateLinkServiceNetworkPolicies) ? any(privateLinkServiceNetworkPolicies) : null
     addressPrefixes: addressPrefixes
