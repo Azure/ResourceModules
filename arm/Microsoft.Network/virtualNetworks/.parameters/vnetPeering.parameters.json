@@ -7,72 +7,14 @@
         },
         "addressPrefixes": {
             "value": [
-                "10.0.0.0/16"
+                "10.0.0.0/24"
             ]
         },
         "subnets": {
             "value": [
                 {
                     "name": "GatewaySubnet",
-                    "addressPrefix": "10.0.255.0/24"
-                },
-                {
-                    "name": "sxx-az-subnet-x-001",
-                    "addressPrefix": "10.0.0.0/24",
-                    "serviceEndpoints": [
-                        "Microsoft.EventHub",
-                        "Microsoft.Sql",
-                        "Microsoft.Storage",
-                        "Microsoft.KeyVault"
-                    ]
-                },
-                {
-                    "name": "sxx-az-subnet-x-002",
-                    "addressPrefix": "10.0.1.0/24",
-                    "serviceEndpoints": [
-                        "Microsoft.EventHub",
-                        "Microsoft.Sql",
-                        "Microsoft.Storage",
-                        "Microsoft.KeyVault"
-                    ]
-                },
-                {
-                    "name": "sxx-az-subnet-x-003",
-                    "addressPrefix": "10.0.2.0/24",
-                    "delegations": [
-                        {
-                            "name": "sqlMiDel",
-                            "properties": {
-                                "serviceName": "Microsoft.Sql/managedInstances"
-                            }
-                        }
-                    ]
-                },
-                {
-                    "name": "sxx-az-subnet-x-004",
-                    "addressPrefix": "10.0.3.0/24",
-                    "delegations": [
-                        {
-                            "name": "netappDel",
-                            "properties": {
-                                "serviceName": "Microsoft.Netapp/volumes"
-                            }
-                        }
-                    ]
-                },
-                {
-                    "name": "AzureFirewallSubnet",
-                    "addressPrefix": "10.0.4.0/24"
-                },
-                {
-                    "name": "AzureBastionSubnet",
-                    "addressPrefix": "10.0.5.0/24"
-                },
-                {
-                    "name": "sxx-az-subnet-x-005",
-                    "addressPrefix": "10.0.6.0/24",
-                    "privateEndpointNetworkPolicies": "Disabled", // This property must be set to disabled for subnets that contain private endpoints. It confirms that NSGs rules will not apply to private endpoints (currently not supported). Default Value when not specified is "Enabled".
-                    "privateLinkServiceNetworkPolicies": "Enabled"
+                    "addressPrefix": "10.0.0.42/26"
                 }
             ]
         },
