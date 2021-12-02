@@ -188,7 +188,7 @@ jobs:
           . (Join-Path $env:GITHUB_WORKSPACE 'utilities' 'pipelines' 'resourcePublish' 'Get-ChangedModules.ps1')
 
           $functionInput = @{
-            ModuleFilePath = Join-Path $env:GITHUB_WORKSPACE "${{ inputs.templateFilePath }}"
+            ModuleFilePath = '${{ env.modulePath }}/deploy.bicep'
           }
 
           Write-Output "Invoke task with"
