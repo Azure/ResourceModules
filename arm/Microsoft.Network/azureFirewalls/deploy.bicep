@@ -56,6 +56,9 @@ param eventHubName string = ''
 @description('Optional. Location for all resources.')
 param location string = resourceGroup().location
 
+@description('Optional. Resource ID of an existing firewall policy.')
+param firewallPolicyIResourceId string = ''
+
 @description('Optional. Zone numbers e.g. 1,2,3.')
 param availabilityZones array = [
   '1'
@@ -188,7 +191,7 @@ resource azureFirewallPip_diagnosticSettings 'Microsoft.Insights/diagnosticSetti
   scope: azureFirewallPip
 }
 
-resource azureFirewall 'Microsoft.Network/azureFirewalls@2021-02-01' = {
+resource azureFirewall 'Microsoft.Network/azureFirewalls@2021-03-01' = {
   name: name
   location: location
   zones: length(availabilityZones) == 0 ? null : availabilityZones
@@ -214,6 +217,9 @@ resource azureFirewall 'Microsoft.Network/azureFirewalls@2021-02-01' = {
     }
     additionalProperties: {
       'Network.DNS.EnableProxy': string(enableDnsProxy)
+    }
+    firewallPolicy: {
+      id: empty(firewallPolicyIResourceId) ? null : firewallPolicyIResourceId
     }
     applicationRuleCollections: applicationRuleCollections
     natRuleCollections: natRuleCollections
