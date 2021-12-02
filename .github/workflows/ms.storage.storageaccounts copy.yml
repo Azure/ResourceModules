@@ -15,7 +15,7 @@ on:
     paths:
       - '.github/actions/templates/**'
       - 'utilities/pipelines/**'
-      - '.github/workflows/ms.storage.storageaccounts.yml'
+      - '.github/workflows/ms.storage.storageaccounts copy.yml'
       - 'arm/Microsoft.Storage/storageAccounts/**'
       - '!*/**/readme.md'
 
