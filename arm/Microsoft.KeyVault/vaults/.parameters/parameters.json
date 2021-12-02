@@ -27,7 +27,17 @@
                     "name": "secretName",
                     "value": "secretValue",
                     "contentType": "Something",
-                    "attributesNbf": 10000
+                    "attributesNbf": 10000,
+                    "roleAssignments": {
+                        "value": [
+                            {
+                                "roleDefinitionIdOrName": "Reader",
+                                "principalIds": [
+                                    "<<deploymentSpId>>"
+                                ]
+                            }
+                        ]
+                    }
                 }
             ]
         },
@@ -35,7 +45,52 @@
             "value": [
                 {
                     "name": "keyName",
-                    "attributesNbf": 10000
+                    "attributesNbf": 10000,
+                    "roleAssignments": {
+                        "value": [
+                            {
+                                "roleDefinitionIdOrName": "Reader",
+                                "principalIds": [
+                                    "<<deploymentSpId>>"
+                                ]
+                            }
+                        ]
+                    }
+                }
+            ]
+        },
+        "accessPolicies": {
+            "value": [
+                {
+                    "applicationId": "<<deploymentSpId>>",
+                    "permissions": [
+                        {
+                            "keys": [
+                                "backup",
+                                "backup",
+                                "backup"
+                            ],
+                            "secrets": [
+                                "all"
+                            ]
+                        }
+                    ]
+                },
+                {
+                    "applicationId": "<<deploymentSpId>>",
+                    "permissions": [
+                        {
+                            "certificates": [
+                                "backup",
+                                "create",
+                                "delete"
+                            ],
+                            "secrets": [
+                                "all"
+                            ]
+                        }
+                    ],
+                    "tenantId": "<<tenantId>>"
                 }
             ]
         },

@@ -1,0 +1,38 @@
+@description('Required. The name of the key vault')
+param keyVaultName string
+
+@description('Optional. The access policy deployment')
+param name string = 'add'
+
+@description('Optional. An array of 0 to 16 identities that have access to the key vault. All identities in the array must use the same tenant ID as the key vault\'s tenant ID.')
+param accessPolicies array = []
+
+@description('Optional. Customer Usage Attribution ID (GUID). This GUID must be previously registered')
+param cuaId string = ''
+
+var processedAccessPolicies = [for accessPolicy in accessPolicies: {
+  applicationId: contains(accessPolicy, 'applicationId') ? accessPolicy.applicationId : null
+  objectId: contains(accessPolicy, 'objectId') ? accessPolicy.objectId : null
+  permissions: accessPolicy.permissions
+  tenantId: contains(accessPolicy, 'tenantId') ? accessPolicy.tenantId : tenant().tenantId
+}]
+
+module pid_cuaId './.bicep/nested_cuaId.bicep' = if (!empty(cuaId)) {
+  name: 'pid-${cuaId}'
+  params: {}
+}
+
+resource keyVault 'Microsoft.KeyVault/vaults@2021-06-01-preview' existing = {
+  name: keyVaultName
+}
+
+resource policies 'Microsoft.KeyVault/vaults/accessPolicies@2021-06-01-preview' = {
+  name: name
+  parent: keyVault
+  properties: {
+    accessPolicies: processedAccessPolicies
+  }
+}
+
+@description('The name of the Resource Group the secret was created in.')
+output secretResourceGroup string = resourceGroup().name
