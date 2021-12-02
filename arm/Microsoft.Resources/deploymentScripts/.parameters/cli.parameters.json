@@ -3,7 +3,7 @@
     "contentVersion": "1.0.0.0",
     "parameters": {
         "name": {
-            "value": "sxx-az-ds-x-001"
+            "value": "sxx-az-ds-cli-x-001"
         },
         "userAssignedIdentities": {
             "value": {
@@ -11,13 +11,13 @@
             }
         },
         "kind": {
-            "value": "AzurePowerShell"
+            "value": "AzureCLI"
         },
-        "azPowerShellVersion": {
-            "value": "3.0"
+        "azCliVersion": {
+            "value": "2.15.0"
         },
         "scriptContent": {
-            "value": "Write-Host 'Running PowerShell from template'"
+            "value": "echo \"Hello from inside the script\""
         },
         "retentionInterval": {
             "value": "P1D"
