@@ -114,16 +114,9 @@ resource virtualNetwork 'Microsoft.Network/virtualNetworks@2021-03-01' = {
     enableDdosProtection: !empty(ddosProtectionPlanId)
     subnets: [for subnet in subnets: {
       name: subnet.name
-      properties: contains(subnet, 'addressPrefix') ? {
+      properties: {
         addressPrefix: subnet.addressPrefix
-      } : {}
-      // networkSecurityGroup: contains(item, 'networkSecurityGroupName') ? (empty(item.networkSecurityGroupName) ? null : json('{"id": "${resourceId('Microsoft.Network/networkSecurityGroups', item.networkSecurityGroupName)}"}')) : null
-      // routeTable: contains(item, 'routeTableName') ? (empty(item.routeTableName) ? null : json('{"id": "${resourceId('Microsoft.Network/routeTables', item.routeTableName)}"}')) : null
-      // serviceEndpoints: contains(item, 'serviceEndpoints') ? (empty(item.serviceEndpoints) ? null : item.serviceEndpoints) : null
-      // delegations: contains(item, 'delegations') ? (empty(item.delegations) ? null : item.delegations) : null
-      // natGateway: contains(item, 'natGatewayName') ? (empty(item.natGatewayName) ? null : json('{"id": "${resourceId('Microsoft.Network/natGateways', item.natGatewayName)}"}')) : null
-      // privateEndpointNetworkPolicies: contains(item, 'privateEndpointNetworkPolicies') ? (empty(item.privateEndpointNetworkPolicies) ? null : item.privateEndpointNetworkPolicies) : null
-      // privateLinkServiceNetworkPolicies: contains(item, 'privateLinkServiceNetworkPolicies') ? (empty(item.privateLinkServiceNetworkPolicies) ? null : item.privateLinkServiceNetworkPolicies) : null
+      }
     }]
   }
 }
@@ -142,12 +135,13 @@ module virtualNetworkPeerings_resource 'virtualNetworkPeerings/deploy.bicep' = [
   }
 }]
 
+@batchSize(1)
 module virtualNetwork_subnets 'subnets/deploy.bicep' = [for (subnet, index) in subnets: {
   name: '${uniqueString(deployment().name, location)}-subnet-${index}'
   params: {
     virtualNetworkName: virtualNetwork.name
     name: subnet.name
-    addressPrefix: contains(subnet, 'addressPrefix') ? subnet.addressPrefix : ''
+    addressPrefix: subnet.addressPrefix
     addressPrefixes: contains(subnet, 'addressPrefixes') ? subnet.addressPrefixes : []
     applicationGatewayIpConfigurations: contains(subnet, 'applicationGatewayIpConfigurations') ? subnet.applicationGatewayIpConfigurations : []
     delegations: contains(subnet, 'delegations') ? subnet.delegations : []

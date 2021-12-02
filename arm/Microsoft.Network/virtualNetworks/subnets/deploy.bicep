@@ -4,8 +4,8 @@ param name string
 @description('Required. The name of the parent virtual network')
 param virtualNetworkName string
 
-@description('Optional. The address prefix for the subnet.')
-param addressPrefix string = ''
+@description('Required. The address prefix for the subnet.')
+param addressPrefix string
 
 @description('Optional. The network security group to assign to the subnet')
 param networkSecurityGroupName string = ''
@@ -83,11 +83,13 @@ resource subnet 'Microsoft.Network/virtualNetworks/subnets@2021-03-01' = {
   parent: virtualNetwork
   properties: {
     addressPrefix: addressPrefix
-    networkSecurityGroup: networkSecurityGroup
-    routeTable: routeTable
+    networkSecurityGroup: !empty(networkSecurityGroupName) ? {
+      id: networkSecurityGroup.id
+    } : null
+    routeTable: !empty(routeTableName) ? routeTable : null
     serviceEndpoints: !empty(formattedServiceEndpoints) ? formattedServiceEndpoints : []
     delegations: delegations
-    natGateway: natGateway
+    natGateway: !empty(natGatewayName) ? natGateway : null
     privateEndpointNetworkPolicies: !empty(privateEndpointNetworkPolicies) ? any(privateEndpointNetworkPolicies) : null
     privateLinkServiceNetworkPolicies: !empty(privateLinkServiceNetworkPolicies) ? any(privateLinkServiceNetworkPolicies) : null
     addressPrefixes: addressPrefixes

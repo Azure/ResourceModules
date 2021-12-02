@@ -12,7 +12,7 @@ This module deploys a virtual network subnet.
 
 | Parameter Name | Type | Default Value | Possible Values | Description |
 | :-- | :-- | :-- | :-- | :-- |
-| `addressPrefix` | string |  |  | Optional. The address prefix for the subnet. |
+| `addressPrefix` | string |  |  | Required. The address prefix for the subnet. |
 | `addressPrefixes` | array | `[]` |  | Optional. List of address prefixes for the subnet. |
 | `applicationGatewayIpConfigurations` | array | `[]` |  | Optional. Application gateway IP configurations of virtual network resource. |
 | `cuaId` | string |  |  | Optional. Customer Usage Attribution ID (GUID). This GUID must be previously registered |
