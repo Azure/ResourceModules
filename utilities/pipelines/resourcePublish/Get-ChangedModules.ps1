@@ -8,6 +8,7 @@
         [string] $CompareCommit = 'HEAD'
     )
     $Diff = git diff --name-only --diff-filter=AM $Commit $CompareCommit
+    $Diff
     $ChangedFiles = $Diff | Get-Item
     return $ChangedFiles
 }
@@ -114,8 +115,16 @@ function Get-NewModuleVersion {
 }
 
 function Get-ChangedModules {
+    [CmdletBinding()]
+    param (
+        [Parameter()]
+        [string] $ModuleFilePath
+    )
     # Read version file
-    Get-ChangedModuleFiles | ForEach-Object {
+    $ChangedModuleFiles = Get-ChangedModuleFiles
+    $ChangedModuleFiles
+
+    $ChangedModuleFiles | ForEach-Object {
         $ModuleName = Get-ModuleName -$_.FullName | Get-ModuleName
         $ModuleVersion = Get-NewModuleVersion -ModuleFilePath $_.FullName
 
