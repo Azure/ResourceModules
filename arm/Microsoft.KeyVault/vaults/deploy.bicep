@@ -152,6 +152,13 @@ var networkAcls_var = {
   ipRules: (empty(networkAcls) ? null : ((length(networkAcls.ipRules) == 0) ? [] : networkAcls.ipRules))
 }
 
+var formattedAccessPolicies = [for accessPolicy in accessPolicies: {
+  applicationId: contains(accessPolicy, 'applicationId') ? accessPolicy.applicationId : ''
+  objectId: contains(accessPolicy, 'objectId') ? accessPolicy.objectId : ''
+  permissions: accessPolicy.permissions
+  tenantId: contains(accessPolicy, 'tenantId') ? accessPolicy.tenantId : tenant().tenantId
+}]
+
 module pid_cuaId '.bicep/nested_cuaId.bicep' = if (!empty(cuaId)) {
   name: 'pid-${cuaId}'
   params: {}
@@ -171,6 +178,7 @@ resource keyVault 'Microsoft.KeyVault/vaults@2019-09-01' = {
     createMode: createMode
     enablePurgeProtection: ((!enablePurgeProtection) ? null : enablePurgeProtection)
     tenantId: subscription().tenantId
+    accessPolicies: formattedAccessPolicies
     sku: {
       name: vaultSku
       family: 'A'
@@ -205,7 +213,7 @@ module keyVault_accessPolicies 'accessPolicies/deploy.bicep' = if (!empty(access
   name: '${uniqueString(deployment().name, location)}-AccessPolicies'
   params: {
     keyVaultName: keyVault.name
-    accessPolicies: accessPolicies
+    accessPolicies: formattedAccessPolicies
   }
 }
 

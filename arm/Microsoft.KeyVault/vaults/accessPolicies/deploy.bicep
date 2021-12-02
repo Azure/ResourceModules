@@ -10,9 +10,9 @@ param accessPolicies array = []
 @description('Optional. Customer Usage Attribution ID (GUID). This GUID must be previously registered')
 param cuaId string = ''
 
-var processedAccessPolicies = [for accessPolicy in accessPolicies: {
-  applicationId: contains(accessPolicy, 'applicationId') ? accessPolicy.applicationId : null
-  objectId: contains(accessPolicy, 'objectId') ? accessPolicy.objectId : null
+var formattedAccessPolicies = [for accessPolicy in accessPolicies: {
+  applicationId: contains(accessPolicy, 'applicationId') ? accessPolicy.applicationId : ''
+  objectId: contains(accessPolicy, 'objectId') ? accessPolicy.objectId : ''
   permissions: accessPolicy.permissions
   tenantId: contains(accessPolicy, 'tenantId') ? accessPolicy.tenantId : tenant().tenantId
 }]
@@ -30,7 +30,7 @@ resource policies 'Microsoft.KeyVault/vaults/accessPolicies@2021-06-01-preview' 
   name: name
   parent: keyVault
   properties: {
-    accessPolicies: processedAccessPolicies
+    accessPolicies: formattedAccessPolicies
   }
 }
 

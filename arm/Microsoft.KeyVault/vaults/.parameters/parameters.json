@@ -16,7 +16,7 @@
                 {
                     "roleDefinitionIdOrName": "Reader",
                     "principalIds": [
-                        "<<deploymentSpId>>"
+                        "e58511af-4da2-449c-a5cd-6a10271cfb83"
                     ]
                 }
             ]
@@ -32,7 +32,7 @@
                         {
                             "roleDefinitionIdOrName": "Reader",
                             "principalIds": [
-                                "<<deploymentSpId>>"
+                                "e58511af-4da2-449c-a5cd-6a10271cfb83"
                             ]
                         }
                     ]
@@ -48,7 +48,7 @@
                         {
                             "roleDefinitionIdOrName": "Reader",
                             "principalIds": [
-                                "<<deploymentSpId>>"
+                                "e58511af-4da2-449c-a5cd-6a10271cfb83"
                             ]
                         }
                     ]
@@ -58,35 +58,31 @@
         "accessPolicies": {
             "value": [
                 {
-                    "applicationId": "<<deploymentSpId>>",
-                    "permissions": [
-                        {
-                            "keys": [
-                                "backup",
-                                "backup",
-                                "backup"
-                            ],
-                            "secrets": [
-                                "all"
-                            ]
-                        }
-                    ]
+                    "objectId": "e58511af-4da2-449c-a5cd-6a10271cfb83",
+                    "permissions": {
+                        "keys": [
+                            "backup",
+                            "backup",
+                            "backup"
+                        ],
+                        "secrets": [
+                            "all"
+                        ]
+                    },
+                    "tenantId": "449fbe1d-9c99-4509-9014-4fd5cf25b014"
                 },
                 {
-                    "applicationId": "<<deploymentSpId>>",
-                    "permissions": [
-                        {
-                            "certificates": [
-                                "backup",
-                                "create",
-                                "delete"
-                            ],
-                            "secrets": [
-                                "all"
-                            ]
-                        }
-                    ],
-                    "tenantId": "<<tenantId>>"
+                    "objectId": "e58511af-4da2-449c-a5cd-6a10271cfb83",
+                    "permissions": {
+                        "certificates": [
+                            "backup",
+                            "create",
+                            "delete"
+                        ],
+                        "secrets": [
+                            "all"
+                        ]
+                    }
                 }
             ]
         },
@@ -94,13 +90,13 @@
             "value": 7
         },
         "diagnosticStorageAccountId": {
-            "value": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Storage/storageAccounts/adpsxxazsaweux001"
+            "value": "/subscriptions/a7439831-1cd9-435d-a091-4aa863c96556/resourceGroups/validation-rg/providers/Microsoft.Storage/storageAccounts/adpsxxazsaweux001"
         },
         "workspaceId": {
-            "value": "/subscriptions/<<subscriptionId>>/resourcegroups/validation-rg/providers/microsoft.operationalinsights/workspaces/adp-sxx-az-law-x-001"
+            "value": "/subscriptions/a7439831-1cd9-435d-a091-4aa863c96556/resourcegroups/validation-rg/providers/microsoft.operationalinsights/workspaces/adp-sxx-az-law-x-001"
         },
         "eventHubAuthorizationRuleId": {
-            "value": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.EventHub/namespaces/adp-sxx-az-evhns-x-001/AuthorizationRules/RootManageSharedAccessKey"
+            "value": "/subscriptions/a7439831-1cd9-435d-a091-4aa863c96556/resourceGroups/validation-rg/providers/Microsoft.EventHub/namespaces/adp-sxx-az-evhns-x-001/AuthorizationRules/RootManageSharedAccessKey"
         },
         "eventHubName": {
             "value": "adp-sxx-az-evh-x-001"
