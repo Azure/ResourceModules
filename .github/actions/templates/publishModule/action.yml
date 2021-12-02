@@ -47,25 +47,6 @@ runs:
         creds: ${{ env.AZURE_CREDENTIALS }}
         enable-AzPSSession: true
 
-    - name: 'Generate version number'
-      id: 'versionNumber'
-      shell: pwsh
-      run: |
-        # Load used functions
-        . (Join-Path $env:GITHUB_WORKSPACE 'utilities' 'pipelines' 'resourcePublish' 'Set-VersionNumber.ps1')
-
-        $functionInput = @{
-          ModuleFilePath         = Join-Path $env:GITHUB_WORKSPACE "${{ inputs.templateFilePath }}"
-        }
-
-        Write-Verbose "Invoke task with" -Verbose
-        Write-Verbose ($functionInput | ConvertTo-Json | Out-String) -Verbose
-
-        $ModuleVersion = Get-ModuleVersion @functionInput -Verbose
-
-        Write-Output "Module version is: $ModuleVersion"
-        Write-Output "::set-output name=versionNumber::$ModuleVersion"
-
     - name: 'Publish module to template specs'
       shell: pwsh
       # if: ${{ inputs.templateSpecsDoPublish == 'true' }}
