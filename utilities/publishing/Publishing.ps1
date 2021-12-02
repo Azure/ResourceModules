@@ -7,7 +7,7 @@
         [Parameter(Position = 1)]
         [string] $CompareCommit = 'HEAD'
     )
-    $Diff = git diff --diff-filter=AM --name-only $Commit $CompareCommit
+    $Diff = git diff --name-only --diff-filter=AM $Commit $CompareCommit
     $ChangedFiles = $Diff | Get-Item
     return $ChangedFiles
 }
@@ -82,7 +82,7 @@ function Get-GitDistance {
         [string]
         $CompareCommit
     )
-    $Distance = (git rev-list $Commit ^$CompareCommit | wc -l) - 1
+    $Distance = (git rev-list $Commit ^$CompareCommit).count - 1
     return $Distance
 }
 
