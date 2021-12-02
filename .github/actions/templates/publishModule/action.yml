@@ -5,14 +5,6 @@ inputs:
   templateFilePath:
     description: 'The path to the template file to publish'
     required: true
-  versioningOption:
-    description: 'The mode to handle the version increments [major|minor|patch].'
-    default: 'patch'
-    required: false
-  customVersion:
-    description: 'Custom version to apply. Used only if higher than latest'
-    default: '0.0.1'
-    required: false
   templateSpecsRgName:
     description: 'Required to publish to template spec. ResourceGroup of the template spec to publish to'
     required: false
@@ -22,7 +14,7 @@ inputs:
   templateSpecsDescription:
     description: 'Required to publish to template spec. Description of the template spec to publish to'
     required: false
-  templateSpecsDoPublish:
+  publishToTemplateSpecs:
     description: 'Flag to indicate whether or not to publish to template specs'
     default: 'false'
     required: false
@@ -32,7 +24,7 @@ inputs:
   bicepRegistryRgName:
     description: 'Required to publish to private bicep registry. Location of the container registry resource group'
     required: false
-  bicepRegistryDoPublish:
+  publishToBicepRegistry:
     description: 'Flag to indicate whether or not to publish to the private bicep registry'
     default: 'false'
     required: false
@@ -55,13 +47,32 @@ runs:
         creds: ${{ env.AZURE_CREDENTIALS }}
         enable-AzPSSession: true
 
+    - name: 'Generate version number'
+      id: 'versionNumber'
+      shell: pwsh
+      run: |
+        # Load used functions
+        . (Join-Path $env:GITHUB_WORKSPACE 'utilities' 'pipelines' 'resourcePublish' 'Set-VersionNumber.ps1')
+
+        $functionInput = @{
+          ModuleFilePath         = Join-Path $env:GITHUB_WORKSPACE "${{ inputs.templateFilePath }}"
+        }
+
+        Write-Verbose "Invoke task with" -Verbose
+        Write-Verbose ($functionInput | ConvertTo-Json | Out-String) -Verbose
+
+        $ModuleVersion = Get-ModuleVersion @functionInput -Verbose
+
+        Write-Output "Module version is: $ModuleVersion"
+        Write-Output "::set-output name=versionNumber::$ModuleVersion"
+
     - name: 'Publish module to template specs'
       shell: pwsh
-      # if: ${{ inputs.templateSpecsDoPublish == 'true' }}
+      # if: ${{ inputs.publishToTemplateSpecs == 'true' }}
       run: |
         # Workaround until composite actions support conditions
         # Once available, remove this if and enable the step condition
-        if('${{ inputs.templateSpecsDoPublish }}' -eq 'true') {
+        if('${{ inputs.publishToTemplateSpecs }}' -eq 'true') {
 
           # Load used functions
           . (Join-Path $env:GITHUB_WORKSPACE 'utilities' 'pipelines' 'resourcePublish' 'Publish-ModuleToTemplateSpec.ps1')
@@ -71,6 +82,7 @@ runs:
             templateSpecsRgName      = '${{ inputs.templateSpecsRgName }}'
             templateSpecsRgLocation  = '${{ inputs.templateSpecsRgLocation }}'
             templateSpecsDescription = '${{ inputs.templateSpecsDescription }}'
+            ModuleVersion            = '${{ steps.versionNumber.outputs.versionNumber }}'
           }
 
           Write-Verbose "Invoke task with" -Verbose
@@ -83,11 +95,11 @@ runs:
 
     - name: 'Publish module to private bicep registry'
       shell: pwsh
-      # if: ${{ inputs.bicepRegistryDoPublish == 'true' }}
+      # if: ${{ inputs.publishToBicepRegistry == 'true' }}
       run: |
         # Workaround until composite actions support conditions
         # Once available, remove this if and enable the step condition
-        if('${{ inputs.bicepRegistryDoPublish }}' -eq 'true') {
+        if('${{ inputs.publishToBicepRegistry }}' -eq 'true') {
 
           # Load used functions
           . (Join-Path $env:GITHUB_WORKSPACE 'utilities' 'pipelines' 'resourcePublish' 'Publish-ModuleToPrivateBicepRegistry.ps1')
@@ -96,6 +108,7 @@ runs:
             templateFilePath    = Join-Path $env:GITHUB_WORKSPACE "${{ inputs.templateFilePath }}"
             bicepRegistryName   = '${{ inputs.bicepRegistryName }}'
             bicepRegistryRgName = '${{ inputs.bicepRegistryRgName }}'
+            ModuleVersion       = '${{ steps.versionNumber.outputs.versionNumber }}'
           }
 
           Write-Verbose "Invoke task with" -Verbose

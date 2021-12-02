@@ -30,23 +30,6 @@ function Get-ModuleName {
     return $ModuleName
 }
 
-function Get-ModuleVersion {
-    [CmdletBinding()]
-    param (
-        [Parameter(ValueFromPipeline)]
-        [string]
-        $Path
-    )
-    $FolderPath = Split-Path -Path $Path -Parent
-    $VersionFilePath = Join-Path $FolderPath 'version.json'
-    if (-not (Test-Path -Path $VersionFilePath)) {
-        throw "No version file found at: $VersionFilePath"
-    }
-    $VersionFileContent = Get-Content $VersionFilePath | ConvertFrom-Json
-    $Version = $VersionFileContent.version
-    return $Version
-}
-
 function Get-ParentModule {
     param (
         [Parameter(ValueFromPipeline)]
@@ -71,36 +54,16 @@ function Get-ParentModule {
     return $ParentModules
 }
 
-function Get-GitDistance {
+function Update-ChangedModule {
     [CmdletBinding()]
     param (
-        [Parameter(ValueFromPipeline)]
-        [string]
-        $Commit,
-
-        [Parameter(ValueFromPipeline)]
-        [string]
-        $CompareCommit
-    )
-    $Distance = (git rev-list $Commit ^$CompareCommit).count - 1
-    return $Distance
-}
-
-function Update-ChangedModule {
-    [CmdletBinding(SupportsShouldProcess)]
-    param (
         [Parameter(ValueFromPipelineByPropertyName)]
-        [string] $Path = 'C:\Repos\Azure\ResourceModules\arm\Microsoft.Storage\storageAccounts\tableServices\tables\deploy.bicep'
+        [string] $ModulePath = 'C:\Repos\Azure\ResourceModules\arm\Microsoft.Storage\storageAccounts\tableServices\tables\deploy.bicep'
     )
 
     $ModulePath = $Path
     $ModuleName = Get-ModuleName -Path $ModulePath
-    $ModuleVersion = Get-ModuleVersion -Path $ModulePath -ErrorAction Stop
-    $SourceReadMeFileName = Get-ModuleReadme -Path $ModulePath
-    $DestinationReadmeFileName = "$ModuleName-$ModuleVersion.md"
-    if ($PSCmdlet.ShouldProcess("$ReadmeFileName", 'Copy')) {
-        $ReadmeFileName # Export/Copy it?
-    }
+
     $ParentModules = Get-ParentModule $ModulePath
     Update-ChangedModule $ParentModules
 }
@@ -110,11 +73,7 @@ Get-ChangedModuleFiles | ForEach-Object {
     $ModuleName = $_.FullName | Get-ModuleName
     $ModuleVersion = $_.FullName | Get-ModuleVersion
 
-    Write-Output "Version file found for module: $ModuleName - $ModuleVersion"
+    Write-Output "Update: $ModuleName - $ModuleVersion"
     $ParentModules = $_.FullName | Get-ParentModule
     Update-ChangedModule $ParentModules
-
-    # Publish module and/or readme file
-
-    # Gather info on modules to publish
 }
