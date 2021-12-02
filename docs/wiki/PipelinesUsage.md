@@ -136,7 +136,7 @@ The previous action will open a new blade that asks you for the branch you store
 
 <img src="./media/pipelineNew5.png" alt="Register new pipeline step 5" height="240">
 
-Finally, _Azure DevOps_ should show you the pipeline fil you created. The last thing you have to do is to either select 'Run' on the top right (which will save & run the pipeline), or click the little arrow next to it and just save the pipeline.
+Finally, _Azure DevOps_ should show you the pipeline file you created. The last thing you have to do is to either select 'Run' on the top right (which will save & run the pipeline), or click the little arrow next to it and just save the pipeline.
 
 Once saved you can also re-name / move the pipeline in the same view. However, this only works once you saved the pipeline at least once.
 
