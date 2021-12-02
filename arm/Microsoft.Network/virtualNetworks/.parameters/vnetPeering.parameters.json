@@ -14,28 +14,22 @@
             "value": [
                 {
                     "name": "GatewaySubnet",
-                    "addressPrefix": "10.0.0.42/26"
+                    "addressPrefix": "10.0.0.0/26"
                 }
             ]
         },
         "virtualNetworkPeerings": {
             "value": [
                 {
-                    "remoteVirtualNetworkId": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/virtualNetworks/adp-sxx-az-vnet-x-peer01",
+                    "remoteVirtualNetworkId": "/subscriptions/a7439831-1cd9-435d-a091-4aa863c96556/resourceGroups/validation-rg/providers/Microsoft.Network/virtualNetworks/adp-sxx-az-vnet-x-peer01",
                     "allowForwardedTraffic": true,
                     "allowGatewayTransit": false,
                     "allowVirtualNetworkAccess": true,
-                    "useRemoteGateways": false
-                }
-            ]
-        },
-        "roleAssignments": {
-            "value": [
-                {
-                    "roleDefinitionIdOrName": "Reader",
-                    "principalIds": [
-                        "<<deploymentSpId>>"
-                    ]
+                    "useRemoteGateways": false,
+                    "reversePeeringEnabled": true,
+                    "reversePeeringName": "customName",
+                    "reversePeeringAllowVirtualNetworkAccess": true,
+                    "reversePeeringAllowForwardedTraffic": true
                 }
             ]
         },
@@ -43,13 +37,13 @@
             "value": 7
         },
         "diagnosticStorageAccountId": {
-            "value": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Storage/storageAccounts/adpsxxazsaweux001"
+            "value": "/subscriptions/a7439831-1cd9-435d-a091-4aa863c96556/resourceGroups/validation-rg/providers/Microsoft.Storage/storageAccounts/adpsxxazsaweux001"
         },
         "workspaceId": {
-            "value": "/subscriptions/<<subscriptionId>>/resourcegroups/validation-rg/providers/microsoft.operationalinsights/workspaces/adp-sxx-az-law-x-001"
+            "value": "/subscriptions/a7439831-1cd9-435d-a091-4aa863c96556/resourcegroups/validation-rg/providers/microsoft.operationalinsights/workspaces/adp-sxx-az-law-x-001"
         },
         "eventHubAuthorizationRuleId": {
-            "value": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.EventHub/namespaces/adp-sxx-az-evhns-x-001/AuthorizationRules/RootManageSharedAccessKey"
+            "value": "/subscriptions/a7439831-1cd9-435d-a091-4aa863c96556/resourceGroups/validation-rg/providers/Microsoft.EventHub/namespaces/adp-sxx-az-evhns-x-001/AuthorizationRules/RootManageSharedAccessKey"
         },
         "eventHubName": {
             "value": "adp-sxx-az-evh-x-001"

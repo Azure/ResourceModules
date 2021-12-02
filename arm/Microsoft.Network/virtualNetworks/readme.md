@@ -36,6 +36,20 @@ This template deploys a virtual network (vNet).
 | `virtualNetworkPeerings` | _[virtualNetworkPeerings](virtualNetworkPeerings/readme.md)_ array | `[]` |  | Optional. Virtual Network Peerings configurations |
 | `workspaceId` | string |  |  | Optional. Resource ID of log analytics. |
 
+### Parameter Usage: `virtualNetworkPeerings`
+
+As the virtual network peering array allows you to deploy not only a one-way but also two-way peering (i.e reverse), you can use the following ***additional*** properties on top of what is documented in _[virtualNetworkPeerings](virtualNetworkPeerings/readme.md)_.
+
+| Parameter Name | Type | Default Value | Possible Values | Description |
+| :-- | :-- | :-- | :-- | :-- |
+| `reversePeeringEnabled` | bool | `false` |  | Optional. Set to true to also deploy the reverse peering for the configured remote virtual networks to the local network |
+| `reversePeeringName` | string | `'${last(split(peering.remoteVirtualNetworkId, '/'))}-${name}'` | | Optional. The Name of Vnet Peering resource. If not provided, default value will be <remoteVnetName>-<localVnetName> |
+| `reversePeeringAllowForwardedTraffic` | bool | `true` | | Optional. Whether the forwarded traffic from the VMs in the local virtual network will be allowed/disallowed in remote virtual network. |
+| `reversePeeringAllowGatewayTransit` | bool | `false` | | Optional. If gateway links can be used in remote virtual networking to link to this virtual network. |
+| `reversePeeringAllowVirtualNetworkAccess` | bool | `true` | | Optional. Whether the VMs in the local virtual network space would be able to access the VMs in remote virtual network space. |
+| `reversePeeringDoNotVerifyRemoteGateways` | bool | `true` | | Optional. If we need to verify the provisioning state of the remote gateway. |
+| `reversePeeringUseRemoteGateways` | bool | `false` | |  Optional. If remote gateways can be used on this virtual network. If the flag is set to `true`, and allowGatewayTransit on local peering is also `true`, virtual network will use gateways of local virtual network for transit. Only one peering can have this flag set to `true`. This flag cannot be set if virtual network already has a gateway.  |
+
 ### Parameter Usage: `addressPrefixes`
 
 The `addressPrefixes` parameter accepts a JSON Array of string values containing the IP Address Prefixes for the Virtual Network (vNet).

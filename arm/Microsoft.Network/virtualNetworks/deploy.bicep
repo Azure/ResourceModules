@@ -121,20 +121,6 @@ resource virtualNetwork 'Microsoft.Network/virtualNetworks@2021-03-01' = {
   }
 }
 
-module virtualNetworkPeerings_resource 'virtualNetworkPeerings/deploy.bicep' = [for (virtualNetworkPeering, index) in virtualNetworkPeerings: {
-  name: '${uniqueString(deployment().name, location)}-virtualNetworkPeering-${index}'
-  params: {
-    localVnetName: name
-    remoteVirtualNetworkId: virtualNetworkPeering.remoteVirtualNetworkId
-    name: contains(virtualNetworkPeering, 'name') ? virtualNetworkPeering.name : '${name}-${last(split(virtualNetworkPeering.remoteVirtualNetworkId, '/'))}'
-    allowForwardedTraffic: contains(virtualNetworkPeering, 'allowForwardedTraffic') ? virtualNetworkPeering.allowForwardedTraffic : true
-    allowGatewayTransit: contains(virtualNetworkPeering, 'allowGatewayTransit') ? virtualNetworkPeering.allowGatewayTransit : false
-    allowVirtualNetworkAccess: contains(virtualNetworkPeering, 'allowVirtualNetworkAccess') ? virtualNetworkPeering.allowVirtualNetworkAccess : true
-    doNotVerifyRemoteGateways: contains(virtualNetworkPeering, 'doNotVerifyRemoteGateways') ? virtualNetworkPeering.doNotVerifyRemoteGateways : true
-    useRemoteGateways: contains(virtualNetworkPeering, 'useRemoteGateways') ? virtualNetworkPeering.useRemoteGateways : false
-  }
-}]
-
 @batchSize(1)
 module virtualNetwork_subnets 'subnets/deploy.bicep' = [for (subnet, index) in subnets: {
   name: '${uniqueString(deployment().name, location)}-subnet-${index}'
@@ -154,6 +140,43 @@ module virtualNetwork_subnets 'subnets/deploy.bicep' = [for (subnet, index) in s
     serviceEndpointPolicies: contains(subnet, 'serviceEndpointPolicies') ? subnet.serviceEndpointPolicies : []
     serviceEndpoints: contains(subnet, 'serviceEndpoints') ? subnet.serviceEndpoints : []
   }
+}]
+
+// Local to Remote peering
+module virtualNetwork_peering_local 'virtualNetworkPeerings/deploy.bicep' = [for (peering, index) in virtualNetworkPeerings: {
+  name: '${uniqueString(deployment().name, location)}-virtualNetworkPeering-local-${index}'
+  params: {
+    localVnetName: name
+    remoteVirtualNetworkId: peering.remoteVirtualNetworkId
+    name: contains(peering, 'name') ? peering.name : '${name}-${last(split(peering.remoteVirtualNetworkId, '/'))}'
+    allowForwardedTraffic: contains(peering, 'allowForwardedTraffic') ? peering.allowForwardedTraffic : true
+    allowGatewayTransit: contains(peering, 'allowGatewayTransit') ? peering.allowGatewayTransit : false
+    allowVirtualNetworkAccess: contains(peering, 'allowVirtualNetworkAccess') ? peering.allowVirtualNetworkAccess : true
+    doNotVerifyRemoteGateways: contains(peering, 'doNotVerifyRemoteGateways') ? peering.doNotVerifyRemoteGateways : true
+    useRemoteGateways: contains(peering, 'useRemoteGateways') ? peering.useRemoteGateways : false
+  }
+  dependsOn: [
+    virtualNetwork_subnets
+  ]
+}]
+
+// Remote to local peering (reverse)
+module virtualNetwork_peering_remote 'virtualNetworkPeerings/deploy.bicep' = [for (peering, index) in virtualNetworkPeerings: if (contains(peering, 'reversePeeringEnabled') ? peering.reversePeeringEnabled == true : false) {
+  name: '${uniqueString(deployment().name, location)}-virtualNetworkPeering-remote-${index}'
+  scope: resourceGroup(split(peering.remoteVirtualNetworkId, '/')[4])
+  params: {
+    localVnetName: last(split(peering.remoteVirtualNetworkId, '/'))
+    remoteVirtualNetworkId: virtualNetwork.id
+    name: contains(peering, 'reversePeeringName') ? peering.reversePeeringName : '${last(split(peering.remoteVirtualNetworkId, '/'))}-${name}'
+    allowForwardedTraffic: contains(peering, 'reversePeeringAllowForwardedTraffic') ? peering.reversePeeringAllowForwardedTraffic : true
+    allowGatewayTransit: contains(peering, 'reversePeeringAllowGatewayTransit') ? peering.reversePeeringAllowGatewayTransit : false
+    allowVirtualNetworkAccess: contains(peering, 'reversePeeringAllowVirtualNetworkAccess') ? peering.reversePeeringAllowVirtualNetworkAccess : true
+    doNotVerifyRemoteGateways: contains(peering, 'reversePeeringDoNotVerifyRemoteGateways') ? peering.reversePeeringDoNotVerifyRemoteGateways : true
+    useRemoteGateways: contains(peering, 'reversePeeringUseRemoteGateways') ? peering.reversePeeringUseRemoteGateways : false
+  }
+  dependsOn: [
+    virtualNetwork_subnets
+  ]
 }]
 
 resource virtualNetwork_lock 'Microsoft.Authorization/locks@2016-09-01' = if (lock != 'NotSpecified') {
