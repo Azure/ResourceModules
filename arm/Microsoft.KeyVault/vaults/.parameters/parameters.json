@@ -28,16 +28,14 @@
                     "value": "secretValue",
                     "contentType": "Something",
                     "attributesNbf": 10000,
-                    "roleAssignments": {
-                        "value": [
-                            {
-                                "roleDefinitionIdOrName": "Reader",
-                                "principalIds": [
-                                    "<<deploymentSpId>>"
-                                ]
-                            }
-                        ]
-                    }
+                    "roleAssignments": [
+                        {
+                            "roleDefinitionIdOrName": "Reader",
+                            "principalIds": [
+                                "<<deploymentSpId>>"
+                            ]
+                        }
+                    ]
                 }
             ]
         },
@@ -46,16 +44,14 @@
                 {
                     "name": "keyName",
                     "attributesNbf": 10000,
-                    "roleAssignments": {
-                        "value": [
-                            {
-                                "roleDefinitionIdOrName": "Reader",
-                                "principalIds": [
-                                    "<<deploymentSpId>>"
-                                ]
-                            }
-                        ]
-                    }
+                    "roleAssignments": [
+                        {
+                            "roleDefinitionIdOrName": "Reader",
+                            "principalIds": [
+                                "<<deploymentSpId>>"
+                            ]
+                        }
+                    ]
                 }
             ]
         },
