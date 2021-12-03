@@ -87,7 +87,7 @@ runs:
 
         if ($res.ContainsKey('exception')) {
             # Happens only if there is an exception
-            throw $res.exception
+            Write-Output ('::set-output name={0}::{1}' -f 'dependencyDeploymentException', (ConvertTo-Json $res.exception -Compress))
         }
 
     # [Token Replacement] task(s)
@@ -182,15 +182,14 @@ runs:
 
         if ($res.ContainsKey('exception')) {
           # Happens only if there is an exception
-          throw $res.exception
+          Write-Output ('::set-output name={0}::{1}' -f 'deploymentException', (ConvertTo-Json $res.exception -Compress))
         }
-      continue-on-error: true
 
     # [Removal] task(s)
     #--------------------------
     - name: 'Remove [${{ inputs.templateFilePath }}] from parameters [${{ inputs.parameterFilePath }}]'
       shell: pwsh
-      if: steps.deploy_step.outcome == 'success' || steps.deploy_step.outcome == 'failure' || steps.dependencies_step.outcome == 'success' || steps.dependencies_step.outcome == 'failure'
+      if: always()
       run: |
         if('${{ inputs.removeDeployment }}' -eq 'true') {
           # Load used function
@@ -205,6 +204,10 @@ runs:
             $deploymentNames += '${{ steps.dependencies_step.outputs.deploymentName }}'
           }
 
+          if($deploymentNames.Count -eq 0) {
+            Write-Verbose "No deployments to remove"
+          }
+
           $functionInput = @{
               deploymentName    = $deploymentNames
               templateFilePath  = Join-Path $env:GITHUB_WORKSPACE '${{ inputs.templateFilePath }}'
@@ -216,4 +219,22 @@ runs:
           Write-Verbose ($functionInput | ConvertTo-Json | Out-String) -Verbose
 
           Remove-DeployedModule @functionInput
+        }
+
+    # [Report Failure] task(s)
+    #--------------------------
+    - name: 'Report status'
+      shell: pwsh
+      if: always()
+      run: |
+        $dependenciesDeploymentException = ConvertFrom-Json '${{ steps.dependencies_step.outputs.dependencyDeploymentException }}'
+        if($dependenciesDeploymentException) {
+          Write-Verbose "Dependencies deployment failed" -Verbose
+          throw $dependenciesDeploymentException
+        }
+
+        $deploymentException = ConvertFrom-Json '${{ steps.dependencies_step.outputs.deploymentException }}'
+        if($deploymentException) {
+          Write-Verbose "Test deployment failed" -Verbose
+          throw $deploymentException
         }
