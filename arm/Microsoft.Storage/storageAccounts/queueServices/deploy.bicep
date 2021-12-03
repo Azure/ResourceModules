@@ -27,7 +27,7 @@ resource queueServices 'Microsoft.Storage/storageAccounts/queueServices@2021-04-
 }
 
 module queueServices_queues 'queues/deploy.bicep' = [for (queue, index) in queues: {
-  name: '${deployment().name}-Storage-Queue-${index}'
+  name: '${deployment().name}-Queue-${index}'
   params: {
     storageAccountName: storageAccount.name
     queueServicesName: queueServices.name
