@@ -104,6 +104,8 @@ jobs:
       - job_set_workflow_param
       # - job_tests_module_global
       # - job_tests_module_global_api
+    env:
+      rgPattern: 'test-{0}-{1}-rg'
     strategy:
       fail-fast: false
       matrix:
@@ -118,6 +120,19 @@ jobs:
         with:
           # Name of variable file
           variableFileName: 'variables.module' # Don't write .json here
+      - name: 'Setup agent'
+        shell: pwsh
+        run: |
+          # Load used functions
+          . (Join-Path $env:GITHUB_WORKSPACE 'utilities' 'pipelines' 'sharedScripts' 'Set-EnvironmentOnAgent.ps1')
+
+          # Set agent up
+          Set-EnvironmentOnAgent
+      - name: Azure Login
+        uses: Azure/login@v1
+        with:
+          creds: ${{ env.AZURE_CREDENTIALS }}
+          enable-AzPSSession: true
       # ---------------------- #
       ##  Deploy Dependencies ##
       # ---------------------- #
@@ -127,35 +142,35 @@ jobs:
           templateFilePath: '${{ env.modulePath }}/deploy.bicep'
           parameterFilePath: '${{ env.modulePath }}/.parameters/${{ matrix.parameterFilePaths }}'
           location: '${{ env.defaultLocation }}'
-          resourceGroupName: '${{ env.resourceGroupName }}'
+          resourceGroupName: '${{ format(env.rgPattern, env.modulePath, matrix.parameterFilePaths) }}'
           subscriptionId: '${{ secrets.ARM_SUBSCRIPTION_ID }}'
           managementGroupId: '${{ secrets.ARM_MGMTGROUP_ID }}'
-      # ----------- #
-      ##  Dry Run  ##
-      # ----------- #
-      - name: 'Test module with parameter file [${{ matrix.parameterFilePaths }}]'
-        uses: ./.github/actions/templates/validateModuleDeploy
-        with:
-          templateFilePath: '${{ env.modulePath }}/deploy.bicep'
-          parameterFilePath: '${{ env.modulePath }}/.parameters/${{ matrix.parameterFilePaths }}'
-          location: '${{ env.defaultLocation }}'
-          resourceGroupName: '${{ env.resourceGroupName }}'
-          subscriptionId: '${{ secrets.ARM_SUBSCRIPTION_ID }}'
-          managementGroupId: '${{ secrets.ARM_MGMTGROUP_ID }}'
-      # ------------------- #
-      ##  Deploy & Remove  ##
-      # ------------------- #
-      - name: 'Deploy module with parameter file [${{ matrix.parameterFilePaths }}]'
-        id: step_deploy
-        uses: ./.github/actions/templates/deployModule
-        with:
-          templateFilePath: '${{ env.modulePath }}/deploy.bicep'
-          parameterFilePath: '${{ env.modulePath }}/.parameters/${{ matrix.parameterFilePaths }}'
-          location: '${{ env.defaultLocation }}'
-          resourceGroupName: '${{ env.resourceGroupName }}'
-          subscriptionId: '${{ secrets.ARM_SUBSCRIPTION_ID }}'
-          managementGroupId: '${{ secrets.ARM_MGMTGROUP_ID }}'
-          removeDeployment: '${{ needs.job_set_workflow_param.outputs.removeDeployment }}'
+      # # ----------- #
+      # ##  Dry Run  ##
+      # # ----------- #
+      # - name: 'Test module with parameter file [${{ matrix.parameterFilePaths }}]'
+      #   uses: ./.github/actions/templates/validateModuleDeploy
+      #   with:
+      #     templateFilePath: '${{ env.modulePath }}/deploy.bicep'
+      #     parameterFilePath: '${{ env.modulePath }}/.parameters/${{ matrix.parameterFilePaths }}'
+      #     location: '${{ env.defaultLocation }}'
+      #     resourceGroupName: '${{ format(env.rgPattern, env.modulePath, matrix.parameterFilePaths) }}'
+      #     subscriptionId: '${{ secrets.ARM_SUBSCRIPTION_ID }}'
+      #     managementGroupId: '${{ secrets.ARM_MGMTGROUP_ID }}'
+      # # ------------------- #
+      # ##  Deploy & Remove  ##
+      # # ------------------- #
+      # - name: 'Deploy module with parameter file [${{ matrix.parameterFilePaths }}]'
+      #   id: step_deploy
+      #   uses: ./.github/actions/templates/deployModule
+      #   with:
+      #     templateFilePath: '${{ env.modulePath }}/deploy.bicep'
+      #     parameterFilePath: '${{ env.modulePath }}/.parameters/${{ matrix.parameterFilePaths }}'
+      #     location: '${{ env.defaultLocation }}'
+      #     resourceGroupName: '${{ format(env.rgPattern, env.modulePath, matrix.parameterFilePaths) }}'
+      #     subscriptionId: '${{ secrets.ARM_SUBSCRIPTION_ID }}'
+      #     managementGroupId: '${{ secrets.ARM_MGMTGROUP_ID }}'
+      #     removeDeployment: '${{ needs.job_set_workflow_param.outputs.removeDeployment }}'
 
   ###############
   #   PUBLISH   #

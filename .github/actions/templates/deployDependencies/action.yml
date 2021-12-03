@@ -41,7 +41,7 @@ runs:
 
     - name: 'Deploy dependencies for template [${{ inputs.templateFilePath }}]'
       shell: pwsh
-      id: deploy_step
+      id: dependencies_step
       run: |
         # Load used functions
         . (Join-Path $env:GITHUB_WORKSPACE 'utilities' 'pipelines' 'resourceDeployment' 'New-ModuleDeployment.ps1')
@@ -58,6 +58,7 @@ runs:
         $functionInput = @{
           templateFilePath  = $dependencyTemplateFilePath
           location          = '${{ inputs.location }}'
+          resourceGroupName = '${{ inputs.resourceGroupName }}'.Replace('arm/Microsoft.','').Replace('\','/').Replace('/','.')
           subscriptionId    = '${{ inputs.subscriptionId }}'
           managementGroupId = '${{ inputs.managementGroupId }}'
         }
