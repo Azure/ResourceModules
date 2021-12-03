@@ -3,7 +3,40 @@
     "contentVersion": "1.0.0.0",
     "parameters": {
         "name": {
-            "value": "sxx-az-fwpol-x-001"
+            "value": "sxx-az-fwpol-x-002"
+        },
+        "ruleGroups": {
+            "value": [
+                {
+                    "name": "sxx-rule-001",
+                    "priority": 5000,
+                    // "action": {
+                    //     "type": "Allow"
+                    // },
+                    "rules": [
+                        {
+                            "name": "344",
+                            "ipProtocols": [
+                                "TCP"
+                            ],
+                            "destinationPorts": [
+                                "3389"
+                            ],
+                            "sourceAddresses": [
+                                "192.168.1.1"
+                            ],
+                            "sourceIpGroups": [],
+                            "ruleType": "NetworkRule",
+                            "destinationIpGroups": [],
+                            "destinationAddresses": [
+                                "192.168.1.1"
+                            ],
+                            "destinationFqdns": []
+                        }
+                    ] //,
+                    // "ruleCollectionType": "FirewallPolicyFilterRuleCollection"
+                }
+            ]
         }
     }
 }
