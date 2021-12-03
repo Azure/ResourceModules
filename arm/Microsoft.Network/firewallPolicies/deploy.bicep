@@ -136,13 +136,13 @@ resource firewallPolicy 'Microsoft.Network/firewallPolicies@2021-03-01' = {
       requireProxyForNetworkRules: requireProxyForNetworkRules
       servers: servers
     }
-    explicitProxySettings: {
-      enableExplicitProxy: enableExplicitProxy
-      httpPort: (httpPort > 0) ? httpPort : null
-      httpsPort: (httpsPort > 0) ? httpsPort : null
-      pacFile: !empty(pacFile) ? pacFile : null
-      pacFilePort: (pacFilePort > 0) ? pacFilePort : null
-    }
+    // explicitProxySettings: {
+    //   enableExplicitProxy: enableExplicitProxy
+    //   httpPort: (httpPort > 0) ? httpPort : null
+    //   httpsPort: (httpsPort > 0) ? httpsPort : null
+    //   pacFile: !empty(pacFile) ? pacFile : null
+    //   pacFilePort: (pacFilePort > 0) ? pacFilePort : null
+    // }
     insights: {
       isEnabled: isEnabled
       logAnalyticsResources: {
