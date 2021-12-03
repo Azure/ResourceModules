@@ -4,14 +4,17 @@ targetScope = 'subscription'
 // Parameters //
 // ========== //
 
+// Resource Group
+param resourceGroupName string
+
 // Shared
-var deploymentPrefix = 'analysisServicesServersParameters'
+// var deploymentPrefix = 'analysisServicesServersParameters'
 var location = deployment().location
 
 // Resource Group
-var resourceGroupParameters = {
-  name: 'test-${deploymentPrefix}-rg'
-}
+// var resourceGroupParameters = {
+//   name: 'test-${deploymentPrefix}-rg'
+// }
 
 // Diagnostic Storage Account
 var storageAccountParameters = {
@@ -62,7 +65,7 @@ module resourceGroup '../../../../../arm/Microsoft.Resources/resourceGroups/depl
   name: '${uniqueString(deployment().name, location)}-rg'
   // scope: subscription()
   params: {
-    name: resourceGroupParameters.name
+    name: resourceGroupName
     location: location
   }
 }
@@ -70,7 +73,7 @@ module resourceGroup '../../../../../arm/Microsoft.Resources/resourceGroups/depl
 // Storage Accounts
 module storageAccount '../../../../../arm/Microsoft.Storage/storageAccounts/deploy.bicep' = {
   name: '${uniqueString(deployment().name, location)}-sa'
-  scope: az.resourceGroup(resourceGroupParameters.name)
+  scope: az.resourceGroup(resourceGroupName)
   params: {
     name: storageAccountParameters.name
     storageAccountKind: storageAccountParameters.storageAccountKind
@@ -85,7 +88,7 @@ module storageAccount '../../../../../arm/Microsoft.Storage/storageAccounts/depl
 // Log Analytics Workspace
 module logAnalyticsWorkspace '../../../../../arm/Microsoft.OperationalInsights/workspaces/deploy.bicep' = {
   name: '${uniqueString(deployment().name, location)}-oms'
-  scope: az.resourceGroup(resourceGroupParameters.name)
+  scope: az.resourceGroup(resourceGroupName)
   params: {
     name: logAnalyticsWorkspaceParameters.name
   }
@@ -97,7 +100,7 @@ module logAnalyticsWorkspace '../../../../../arm/Microsoft.OperationalInsights/w
 // Log Analytics Workspace
 module eventHubNamespace '../../../../../arm/Microsoft.EventHub/namespaces/deploy.bicep' = {
   name: '${uniqueString(deployment().name, location)}-ehn'
-  scope: az.resourceGroup(resourceGroupParameters.name)
+  scope: az.resourceGroup(resourceGroupName)
   params: {
     name: eventHubNamespaceParameters.name
     eventHubs: eventHubNamespaceParameters.eventHubs
@@ -108,4 +111,4 @@ module eventHubNamespace '../../../../../arm/Microsoft.EventHub/namespaces/deplo
 }
 
 @description('The name of the resource group the resources are deployed into')
-output resourceGroupName string = resourceGroupParameters.name
+output resourceGroupName string = resourceGroup.outputs.resourceGroupName

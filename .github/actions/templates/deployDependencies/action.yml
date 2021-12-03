@@ -56,11 +56,17 @@ runs:
         }
 
         $functionInput = @{
-          templateFilePath  = $dependencyTemplateFilePath
-          location          = '${{ inputs.location }}'
-          resourceGroupName = '${{ inputs.resourceGroupName }}'.Replace('arm/Microsoft.','').Replace('\','/').Replace('/','.')
-          subscriptionId    = '${{ inputs.subscriptionId }}'
-          managementGroupId = '${{ inputs.managementGroupId }}'
+          templateFilePath     = $dependencyTemplateFilePath
+          location             = '${{ inputs.location }}'
+          subscriptionId       = '${{ inputs.subscriptionId }}'
+          managementGroupId    = '${{ inputs.managementGroupId }}'
+        }
+
+        if(-not [String]::IsNullOrEmpty('${{ inputs.resourceGroupName }}')) {
+          $resourceGroupName = '${{ inputs.resourceGroupName }}'.Replace('arm/Microsoft.','').Replace('\','/').Replace('/','.')
+          $functionInput['additionalParameters'] = @{
+            resourceGroupName = $resourceGroupName
+          }
         }
 
         Write-Verbose 'Invoke task with' -Verbose

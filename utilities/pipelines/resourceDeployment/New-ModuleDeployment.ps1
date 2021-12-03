@@ -70,6 +70,9 @@ function New-Deployment {
         [PSCustomObject]$additionalTags,
 
         [Parameter(Mandatory = $false)]
+        [Hashtable]$additionalParameters,
+
+        [Parameter(Mandatory = $false)]
         [switch] $doNotThrow,
 
         [Parameter(Mandatory = $false)]
@@ -93,6 +96,10 @@ function New-Deployment {
         TemplateFile   = $templateFilePath
         Verbose        = $true
         ErrorAction    = 'Stop'
+    }
+
+    if ($additionalParameters) {
+        $DeploymentInputs += $additionalParameters
     }
 
     if (-not [String]::IsNullOrEmpty($parameterFilePath)) {
@@ -293,6 +300,9 @@ function New-ModuleDeployment {
         [string] $managementGroupId,
 
         [Parameter(Mandatory = $false)]
+        [Hashtable]$additionalParameters,
+
+        [Parameter(Mandatory = $false)]
         [PSCustomObject]$additionalTags,
 
         [Parameter(Mandatory = $false)]
@@ -316,14 +326,15 @@ function New-ModuleDeployment {
 
         ## Iterate through each file
         $deploymentInputObject = @{
-            templateFilePath  = $templateFilePath
-            additionalTags    = $additionalTags
-            location          = $location
-            resourceGroupName = $resourceGroupName
-            subscriptionId    = $subscriptionId
-            managementGroupId = $managementGroupId
-            doNotThrow        = $doNotThrow
-            retryLimit        = $retryLimit
+            templateFilePath     = $templateFilePath
+            additionalTags       = $additionalTags
+            additionalParameters = $additionalParameters
+            location             = $location
+            resourceGroupName    = $resourceGroupName
+            subscriptionId       = $subscriptionId
+            managementGroupId    = $managementGroupId
+            doNotThrow           = $doNotThrow
+            retryLimit           = $retryLimit
         }
         if ($parameterFilePath) {
             foreach ($parameterFile in $parameterFilePath) {
