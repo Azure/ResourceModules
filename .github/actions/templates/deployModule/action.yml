@@ -195,30 +195,36 @@ runs:
           # Load used function
           . (Join-Path $env:GITHUB_WORKSPACE 'utilities' 'pipelines' 'resourceRemoval' 'Remove-DeployedModule.ps1')
 
-          # Fetch all available deployment names
-          $deploymentNames = @()
-          if(-not [String]::IsNullOrEmpty('${{ steps.deploy_step.outputs.deploymentName }}')) {
-            $deploymentNames += '${{ steps.deploy_step.outputs.deploymentName }}'
-          }
           if(-not [String]::IsNullOrEmpty('${{ steps.dependencies_step.outputs.deploymentName }}')) {
-            $deploymentNames += '${{ steps.dependencies_step.outputs.deploymentName }}'
+            $templateFileName = '{0}.bicep' -f (Split-Path '${{ inputs.parameterFilePath }}' -LeafBase)
+            $dependencyTemplateFilePath = Join-Path $env:GITHUB_WORKSPACE 'utilities' 'pipelines' 'moduleDependencies' $namespacePath $templateFileName
+
+            $functionInput = @{
+              deploymentNames   = '${{ steps.dependencies_step.outputs.deploymentName }}'
+              templateFilePath  = $dependencyTemplateFilePath
+              resourceGroupName = '${{ inputs.resourceGroupName }}'
+              verbose           = $true
+            }
+
+            Write-Verbose 'Invoke task with' -Verbose
+            Write-Verbose ($functionInput | ConvertTo-Json | Out-String) -Verbose
+
+            Remove-DeployedModule @functionInput
           }
 
-          if($deploymentNames.Count -eq 0) {
-            Write-Verbose "No deployments to remove"
-          }
-
-          $functionInput = @{
-              deploymentNames   = $deploymentNames
+          if(-not [String]::IsNullOrEmpty('${{ steps.deploy_step.outputs.deploymentName }}')) {
+            $functionInput = @{
+              deploymentNames   = '${{ steps.deploy_step.outputs.deploymentName }}'
               templateFilePath  = Join-Path $env:GITHUB_WORKSPACE '${{ inputs.templateFilePath }}'
               resourceGroupName = '${{ inputs.resourceGroupName }}'
               verbose           = $true
+            }
+
+            Write-Verbose 'Invoke task with' -Verbose
+            Write-Verbose ($functionInput | ConvertTo-Json | Out-String) -Verbose
+
+            Remove-DeployedModule @functionInput
           }
-
-          Write-Verbose 'Invoke task with' -Verbose
-          Write-Verbose ($functionInput | ConvertTo-Json | Out-String) -Verbose
-
-          Remove-DeployedModule @functionInput
         }
 
     # [Report Failure] task(s)
