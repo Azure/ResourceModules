@@ -218,7 +218,7 @@ function New-Deployment {
     Write-Verbose ($res | Out-String) -Verbose
     return @{
         deploymentName   = $deploymentName
-        deploymentOutput = $res
+        deploymentOutput = $res.Outputs
     }
 }
 

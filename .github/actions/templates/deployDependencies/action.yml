@@ -73,11 +73,11 @@ runs:
 
         # Populate further outputs
         foreach ($outputKey in $res.deploymentOutput.Keys) {
-          Write-Verbose ('Exporting output [{0}] with value [{1}]' -f $outputKey, $res.deploymentOutput[$outputKey])
-          Write-Output ('::set-output name={0}::{1}' -f $outputKey, $res.deploymentOutput[$outputKey])
+            Write-Verbose ('Exporting output [{0}] with value [{1}]' -f $outputKey, $res.deploymentOutput[$outputKey].Value) -Verbose
+            Write-Output ('::set-output name={0}::{1}' -f $outputKey, $res.deploymentOutput[$outputKey].Value)
         }
 
         if ($res.ContainsKey('exception')) {
-          # Happens only if there is an exception
-          throw $res.exception
+            # Happens only if there is an exception
+            throw $res.exception
         }
