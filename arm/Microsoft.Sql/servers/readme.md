@@ -8,6 +8,7 @@ This module deploys a SQL server.
 | :-- | :-- |
 | `Microsoft.Authorization/locks` | 2016-09-01 |
 | `Microsoft.Authorization/roleAssignments` | 2020-04-01-preview |
+| `Microsoft.Insights/diagnosticSettings` | 2017-05-01-preview |
 | `Microsoft.Sql/servers` | 2021-05-01-preview |
 | `Microsoft.Sql/servers/databases` | 2021-02-01-preview |
 | `Microsoft.Sql/servers/firewallRules` | 2021-05-01-preview |
