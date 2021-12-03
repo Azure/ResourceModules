@@ -15,7 +15,7 @@ param tags object = {}
 @description('Optional. Specify the type of lock.')
 param lock string = 'NotSpecified'
 
-@description('Optional. Customer Usage Attribution id (GUID). This GUID must be previously registered')
+@description('Optional. Customer Usage Attribution ID (GUID). This GUID must be previously registered')
 param cuaId string = ''
 
 @allowed([
@@ -30,7 +30,7 @@ param addOnFeatures array = []
 @description('Required. Number of unused versions per application type to keep.')
 param maxUnusedVersionsToKeep int = 3
 
-@description('Optional. Object containing Azure active directory client application id, cluster application id and tenant id.')
+@description('Optional. Object containing Azure active directory client application ID, cluster application ID and tenant ID.')
 param azureActiveDirectory object = {}
 
 @description('Optional. Describes the certificate details like thumbprint of the primary certificate, thumbprint of the secondary certificate and the local certificate store location')
