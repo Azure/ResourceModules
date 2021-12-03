@@ -50,35 +50,34 @@ runs:
         $templateFileName = '{0}.bicep' -f (Split-Path '${{ inputs.parameterFilePath }}' -LeafBase)
         $dependencyTemplateFilePath = Join-Path $env:GITHUB_WORKSPACE 'utilities' 'pipelines' 'moduleDependencies' $namespacePath $templateFileName
 
-        if(-not (Test-Path $dependencyTemplateFilePath)) {
+        if (-not (Test-Path $dependencyTemplateFilePath)) {
           Write-Verbose "No dependency deployment found in path [$dependencyTemplateFilePath]. Skipping deployment" -Verbose
           return
         }
 
         $functionInput = @{
-          templateFilePath   = $dependencyTemplateFilePath
-          location           = '${{ inputs.location }}'
-          resourceGroupName  = '${{ inputs.resourceGroupName }}'
-          subscriptionId     = '${{ inputs.subscriptionId }}'
-          managementGroupId  = '${{ inputs.managementGroupId }}'
+          templateFilePath  = $dependencyTemplateFilePath
+          location          = '${{ inputs.location }}'
+          resourceGroupName = '${{ inputs.resourceGroupName }}'
+          subscriptionId    = '${{ inputs.subscriptionId }}'
+          managementGroupId = '${{ inputs.managementGroupId }}'
         }
 
-        Write-Verbose "Invoke task with" -Verbose
+        Write-Verbose 'Invoke task with' -Verbose
         Write-Verbose ($functionInput | ConvertTo-Json | Out-String) -Verbose
 
         # Invoke deployment
         $res = New-ModuleDeployment @functionInput -Verbose
 
         # Get deployment name
-        $deploymentName = $res.deploymentName
-        Write-Output ('::set-output name=deploymentName::{0}' -f $deploymentName)
+        Write-Output ('::set-output name={0}::{1}' -f 'deploymentName', $res.deploymentName)
 
         # Populate further outputs
-        foreach($outputKey in $res.deploymentOutput.Keys) {
-          Write-Output ('::set-output name={0}::{1}' -f $outputKey, $output[$outputKey])
+        foreach ($outputKey in $res.deploymentOutput.Keys) {
+          Write-Output ('::set-output name={0}::{1}' -f $outputKey, $res.deploymentOutput[$outputKey])
         }
 
-        if($res.Exception) {
+        if ($res.ContainsKey('exception')) {
           # Happens only if there is an exception
-          throw $res['Exception']
+          throw $res.exception
         }
