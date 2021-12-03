@@ -4,21 +4,23 @@ This module deploys a service fabric cluster
 
 ## Resource Types
 
-| Resource Type | Api Version |
+| Resource Type | API Version |
 | :-- | :-- |
 | `Microsoft.Authorization/locks` | 2016-09-01 |
+| `Microsoft.Authorization/roleAssignments` | 2020-04-01-preview |
 | `Microsoft.ServiceFabric/clusters` | 2021-06-01 |
 | `Microsoft.ServiceFabric/clusters/applications` | 2021-06-01 |
 | `Microsoft.ServiceFabric/clusters/applications/services` | 2021-06-01 |
 | `Microsoft.ServiceFabric/clusters/applicationTypes` | 2021-06-01 |
 | `Microsoft.ServiceFabric/clusters/applicationTypes/versions` | 2021-06-01 |
-| `Microsoft.ServiceFabric/clusters/providers/roleAssignments` | 2020-04-01-preview |
 
 ## Parameters
 
 | Parameter Name | Type | Default Value | Possible Values | Description |
 | :-- | :-- | :-- | :-- | :-- |
 | `addOnFeatures` | array | `[]` | `[BackupRestoreService, DnsService, RepairManager, ResourceMonitorService]` | Optional. The list of add-on features to enable in the cluster. |
+| `applications` | _[applications](applications/readme.md)_ array | `[]` |  | Optional. Array of Service Fabric cluster applications. |
+| `applicationTypes` | _[applicationTypes](applicationTypes/readme.md)_ array | `[]` |  | Optional. Array of Service Fabric cluster application types. |
 | `azureActiveDirectory` | object | `{object}` |  | Optional. Object containing Azure active directory client application id, cluster application id and tenant id. |
 | `certificate` | object | `{object}` |  | Optional. Describes the certificate details like thumbprint of the primary certificate, thumbprint of the secondary certificate and the local certificate store location |
 | `certificateCommonNames` | object | `{object}` |  | Optional. Describes a list of server certificates referenced by common name that are used to secure the cluster. |
@@ -34,15 +36,13 @@ This module deploys a service fabric cluster
 | `lock` | string | `NotSpecified` | `[CanNotDelete, NotSpecified, ReadOnly]` | Optional. Specify the type of lock. |
 | `managementEndpoint` | string |  |  | Required. The http management endpoint of the cluster. |
 | `maxUnusedVersionsToKeep` | int | `3` |  | Required. Number of unused versions per application type to keep. |
+| `name` | string |  |  | Required. Name of the Serivce Fabric cluster. |
 | `nodeTypes` | array | `[]` |  | Required. The list of node types in the cluster. |
 | `notifications` | array | `[]` |  | Optional. Indicates a list of notification channels for cluster events. |
 | `reliabilityLevel` | string | `None` | `[Bronze, Gold, None, Platinum, Silver]` | Optional. The reliability level sets the replica set size of system services. Learn about ReliabilityLevel (https://docs.microsoft.com/en-us/azure/service-fabric/service-fabric-cluster-capacity). - None - Run the System services with a target replica set count of 1. This should only be used for test clusters. - Bronze - Run the System services with a target replica set count of 3. This should only be used for test clusters. - Silver - Run the System services with a target replica set count of 5. - Gold - Run the System services with a target replica set count of 7. - Platinum - Run the System services with a target replica set count of 9. |
 | `reverseProxyCertificate` | object | `{object}` |  | Optional. Describes the certificate details. |
 | `reverseProxyCertificateCommonNames` | object | `{object}` |  | Optional. Describes a list of server certificates referenced by common name that are used to secure the cluster. |
 | `roleAssignments` | array | `[]` |  | Optional. Array of role assignment objects that contain the 'roleDefinitionIdOrName' and 'principalId' to define RBAC role assignments on this resource. In the roleDefinitionIdOrName attribute, you can provide either the display name of the role definition, or it's fully qualified ID in the following format: '/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11' |
-| `serviceFabricApplicationTypes` | array | `[]` |  | Optional. Array of Service Fabric cluster application types. |
-| `serviceFabricClusterApplications` | array | `[]` |  | Optional. Array of Service Fabric cluster applications. |
-| `serviceFabricClusterName` | string |  |  | Required. Name of the Serivce Fabric cluster. |
 | `sfZonalUpgradeMode` | string | `Hierarchical` | `[Hierarchical, Parallel]` | Optional. This property controls the logical grouping of VMs in upgrade domains (UDs). This property cannot be modified if a node type with multiple Availability Zones is already present in the cluster. |
 | `tags` | object | `{object}` |  | Optional. Tags of the resource. |
 | `upgradeDescription` | object | `{object}` |  | Optional. Describes the policy used when upgrading the cluster. |
@@ -61,13 +61,6 @@ This module deploys a service fabric cluster
 "roleAssignments": {
     "value": [
         {
-            "roleDefinitionIdOrName": "Storage File Data SMB Share Contributor",
-            "principalIds": [
-                "12345678-1234-1234-1234-123456789012", // object 1
-                "78945612-1234-1234-1234-123456789012" // object 2
-            ]
-        },
-        {
             "roleDefinitionIdOrName": "Reader",
             "principalIds": [
                 "12345678-1234-1234-1234-123456789012", // object 1
@@ -84,17 +77,37 @@ This module deploys a service fabric cluster
 }
 ```
 
+### Parameter Usage: `tags`
+
+Tag names and tag values can be provided as needed. A tag can be left without a value.
+
+```json
+"tags": {
+    "value": {
+        "Environment": "Non-Prod",
+        "Contact": "test.user@testcompany.com",
+        "PurchaseOrder": "1234",
+        "CostCenter": "7890",
+        "ServiceName": "DeploymentValidation",
+        "Role": "DeploymentValidation"
+    }
+}
+```
+
 ## Outputs
 
-| Output Name | Type |
-| :-- | :-- |
-| `serviceFabricClusterName` | string |
-| `serviceFabricClusterResourceGroup` | string |
-| `serviceFabricClusterResourceId` | string |
+| Output Name | Type | Description |
+| :-- | :-- | :-- |
+| `clusterEndpoint` | string | The Service Fabric Cluster endpoint. |
+| `clusterId` | string | The Service Fabric Cluster resource ID. |
+| `clusterName` | string | The Service Fabric Cluster name. |
+| `clusterObject` | object | The Service Fabric Cluster object. |
+| `clusterResourceGroup` | string | The Service Fabric Cluster resource group. |
 
 ## Template references
 
 - [Locks](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2016-09-01/locks)
+- [Roleassignments](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2020-04-01-preview/roleAssignments)
 - [Clusters](https://docs.microsoft.com/en-us/azure/templates/Microsoft.ServiceFabric/2021-06-01/clusters)
 - [Clusters/Applications](https://docs.microsoft.com/en-us/azure/templates/Microsoft.ServiceFabric/2021-06-01/clusters/applications)
 - [Clusters/Applications/Services](https://docs.microsoft.com/en-us/azure/templates/Microsoft.ServiceFabric/2021-06-01/clusters/applications/services)

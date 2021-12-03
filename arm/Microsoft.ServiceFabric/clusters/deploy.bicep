@@ -341,15 +341,15 @@ module serviceFabricCluster_applications 'applications/deploy.bicep' = [for appl
 }]
 
 @description('The Service Fabric Cluster name.')
-output serviceFabricClusterName string = serviceFabricCluster.name
+output clusterName string = serviceFabricCluster.name
 @description('The Service Fabric Cluster object.')
-output serviceFabricCluster object = serviceFabricCluster
+output clusterObject object = serviceFabricCluster
 
 @description('The Service Fabric Cluster resource group.')
-output serviceFabricClusterResourceGroup string = resourceGroup().name
+output clusterResourceGroup string = resourceGroup().name
 
 @description('The Service Fabric Cluster resource ID.')
-output serviceFabricClusterId string = serviceFabricCluster.id
+output clusterId string = serviceFabricCluster.id
 
 @description('The Service Fabric Cluster endpoint.')
 output clusterEndpoint string = serviceFabricCluster.properties.clusterEndpoint
