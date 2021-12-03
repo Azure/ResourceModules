@@ -58,7 +58,6 @@ runs:
         $functionInput = @{
           templateFilePath  = $dependencyTemplateFilePath
           location          = '${{ inputs.location }}'
-          resourceGroupName = '${{ inputs.resourceGroupName }}'
           subscriptionId    = '${{ inputs.subscriptionId }}'
           managementGroupId = '${{ inputs.managementGroupId }}'
         }

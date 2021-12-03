@@ -55,7 +55,7 @@ function New-Deployment {
         [string] $parameterFilePath,
 
         [Parameter(Mandatory = $false)]
-        [string] $resourceGroupName,
+        [string] $resourceGroupName = '',
 
         [Parameter(Mandatory)]
         [string] $location,
@@ -284,7 +284,7 @@ function New-ModuleDeployment {
         [string] $location,
 
         [Parameter(Mandatory = $false)]
-        [string] $resourceGroupName,
+        [string] $resourceGroupName = '',
 
         [Parameter(Mandatory = $false)]
         [string] $subscriptionId,
