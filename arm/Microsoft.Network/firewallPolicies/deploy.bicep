@@ -171,8 +171,8 @@ resource firewallPolicy 'Microsoft.Network/firewallPolicies@2021-03-01' = {
     }
     threatIntelMode: threatIntelMode
     threatIntelWhitelist: {
-      fqdns: !empty(fqdns) ? fqdns : null
-      ipAddresses: !empty(ipAddresses) ? ipAddresses : null
+      fqdns: fqdns
+      ipAddresses: ipAddresses
     }
     // transportSecurity: {
     //   certificateAuthority: {
