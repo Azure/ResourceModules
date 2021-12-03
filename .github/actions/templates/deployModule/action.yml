@@ -58,7 +58,15 @@ runs:
             @{ Name = 'managementGroupId'; Value = '${{ inputs.managementGroupId }}' }
             @{ Name = "tenantId"; Value = '${{ env.ARM_TENANT_ID }}' }
             @{ Name = "deploymentSpId"; Value = '${{ env.DEPLOYMENT_SP_ID }}' }
-        ) | ForEach-Object { [PSCustomObject]$PSItem }
+        ) |
+
+        $rgName = '${{ steps.dependencies_step.outputs.resourceGroupName }}'
+        if(-not [String]::IsNullOrEmpty($rgName)) {
+          Write-Verbose ("Using resource group [$rgName]") -Verbose
+          $DefaultParameterFileTokens['resourcegroup'] = $rgName
+        }
+
+        $DefaultParameterFileTokens = $DefaultParameterFileTokens | ForEach-Object { [PSCustomObject]$PSItem }
 
         # Construct Token Function Input
         $ConvertTokensInputs = @{
