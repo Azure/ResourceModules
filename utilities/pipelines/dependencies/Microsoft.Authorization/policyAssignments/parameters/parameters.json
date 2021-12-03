@@ -3,10 +3,13 @@
     "contentVersion": "1.0.0.0",
     "parameters": {
         "name": {
-            "value": "sxx-pass-vm-disk"
+            "value": "adp-sxx-pass-loc-rg"
+        },
+        "displayName": {
+            "value": "Audit resource location matches resource group location"
         },
         "policyDefinitionID": {
-            "value": "/providers/Microsoft.Authorization/policyDefinitions/06a78e20-9358-41c9-923c-fb736d382a4d"
+            "value": "/providers/Microsoft.Authorization/policyDefinitions/0a914e76-4921-4c19-b460-a2d36003525a"
         },
         "subscriptionId": {
             "value": "<<subscriptionId>>"
