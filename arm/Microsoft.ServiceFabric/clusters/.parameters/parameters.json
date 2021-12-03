@@ -2,7 +2,7 @@
     "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
     "contentVersion": "1.0.0.0",
     "parameters": {
-        "serviceFabricClusterName": {
+        "name": {
             "value": "sxx-az-sfc-weu-x-001"
         },
         "location": {
@@ -32,7 +32,7 @@
         // },
         "certificate": {
             "value": {
-                "thumbprint": "0AC113D5E1D94C401DDEB0EE1E8EE2B1B96CC130",
+                "thumbprint": "0AC113D5E1D94C401DDEB0EE2B1B96CC130",
                 //"thumbprintSecondary": "",
                 "x509StoreName": "My"
             }
@@ -75,45 +75,39 @@
         //     }
         // },
         "fabricSettings": {
-            "value": [
-                {
-                    "name": "Security",
-                    "parameters": [
-                        {
-                            "name": "ClusterProtectionLevel",
-                            "value": "EncryptAndSign"
-                        }
-                    ]
-                }
-            ]
+            "value": [{
+                "name": "Security",
+                "parameters": [{
+                    "name": "ClusterProtectionLevel",
+                    "value": "EncryptAndSign"
+                }]
+            }]
         },
         "managementEndpoint": {
             "value": "https://sxx-az-sfc-weu-x-001.centralindia.cloudapp.azure.com:19080"
         },
         "nodeTypes": {
-            "value": [
-                {
-                    "applicationPorts": {
-                        "endPort": 30000,
-                        "startPort": 20000
-                    },
-                    "capacities": {},
-                    "clientConnectionEndpointPort": 19000,
-                    "durabilityLevel": "Silver",
-                    "ephemeralPorts": {
-                        "endPort": 65534,
-                        "startPort": 49152
-                    },
-                    "httpGatewayEndpointPort": 19080,
-                    "isPrimary": true,
-                    "isStateless": false,
-                    "multipleAvailabilityZones": false,
-                    "name": "001Node01",
-                    "placementProperties": {},
-                    "reverseProxyEndpointPort": "",
-                    "vmInstanceCount": 5
-                }
-            ]
+            "value": [{
+                "applicationPorts": {
+                    "endPort": 30000,
+                    "startPort": 20000
+                },
+                "capacities": {},
+                "clientConnectionEndpointPort": 19000,
+                "durabilityLevel": "Silver",
+                "ephemeralPorts": {
+                    "endPort": 65534,
+                    "startPort": 49152
+                },
+                "httpGatewayEndpointPort": 19080,
+                "isPrimary": true,
+                "isStateless": false,
+                "multipleAvailabilityZones": false,
+                "name": "001Node01",
+                "placementProperties": {},
+                "reverseProxyEndpointPort": "",
+                "vmInstanceCount": 5
+            }]
         },
         // "notifications": {
         //     "value": [{
@@ -133,16 +127,14 @@
             "value": "Linux"
         },
         "roleAssignments": {
-            "value": [
-                {
-                    "roleDefinitionIdOrName": "Reader",
-                    "principalIds": [
-                        "6bffd5f5-80d9-435c-903e-78354538a902"
-                    ]
-                }
-            ]
-        }//,
-        // "serviceFabricClusterApplications": {
+            "value": [{
+                "roleDefinitionIdOrName": "Reader",
+                "principalIds": [
+                    "6bffd5f5-80d9-435c-903e-78354538a902"
+                ]
+            }]
+        } //,
+        // "applications": {
         //     "value": [
         //         {
         //             "name": "serviceFabricClusterApplication01",
@@ -196,7 +188,7 @@
         //                     "upgradeReplicaSetCheckTimeout": null
         //                 }
         //             },
-        //             "applicationsServices": {
+        //             "services": {
         //                 "value": [
         //                     {
         //                         "name": "Service01",
@@ -215,14 +207,14 @@
         //         }
         //     ]
         // },
-        // "serviceFabricClusterApplicationTypes": {
+        // "applicationTypes": {
         //     "value": [
         //         {
         //             "name": "DotNetCore",
         //             "properties": {
         //                 "provisioningState": "Default"
         //             },
-        //             "applicationTypesVersions": [
+        //             "versions": [
         //                 {
         //                     "name": "VersionOne",
         //                     "properties": {

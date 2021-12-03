@@ -2,10 +2,13 @@
 param serviceFabricClusterName string = ''
 
 @description('Optional. Application name.')
-param applicationName string = 'defaultApplication'
+param name string = 'defaultApplication'
 
 @description('Optional. Location for all resources.')
 param location string = resourceGroup().location
+
+@description('Optional. List of Services to be created in the Application.')
+param services array = []
 
 @description('Optional. Tags of the resource.')
 param tags object = {}
@@ -24,7 +27,7 @@ var identity_var = {
   userAssignedIdentities: !empty(identity) ? identity.userAssignedIdentities : null
 }
 
-var propertiesManagedIdentities_var = [for managedIdentity in properties.managedIdentities :{
+var propertiesManagedIdentities_var = [for managedIdentity in properties.managedIdentities: {
   name: contains(managedIdentity, 'name') ? managedIdentity.name : null
   principalId: contains(managedIdentity, 'principalId') ? managedIdentity.principalId : null
 }]
@@ -71,9 +74,9 @@ resource serviceFabricCluster 'Microsoft.ServiceFabric/clusters@2021-06-01' exis
 }
 
 resource applications 'Microsoft.ServiceFabric/clusters/applications@2021-06-01' = {
-  name: applicationName
-  location: location
+  name: name
   parent: serviceFabricCluster
+  location: location
   tags: tags
   identity: !empty(identity) ? identity_var : null
   properties: {
@@ -89,6 +92,21 @@ resource applications 'Microsoft.ServiceFabric/clusters/applications@2021-06-01'
   }
 }
 
-// Output
-@description('The resource Id of the application.')
+module applications_services 'services/deploy.bicep' = [for (service, index) in services: {
+  name: '${deployment().name}-SFC-Services-${index}'
+  params: {
+    serviceFabricClusterName: serviceFabricCluster.name
+    applicationName: applications.name
+    name: contains(service, 'name') ? service.name : 'defaultService'
+    properties: contains(service, 'properties') ? service.properties : {}
+  }
+}]
+
+@description('The resource name of the Application.')
+output applicationName string = applications.name
+
+@description('The resource group of the Application.')
+output applicationResourceGroup string = resourceGroup().name
+
+@description('The resource ID of the Application.')
 output applicationResourceId string = applications.id

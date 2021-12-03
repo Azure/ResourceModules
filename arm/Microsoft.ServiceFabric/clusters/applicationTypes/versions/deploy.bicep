@@ -5,7 +5,7 @@ param serviceFabricClusterName string = ''
 param applicationTypeName string = 'default'
 
 @description('The name of the application type version')
-param applicationTypeVersionName string
+param name string = 'defaultVersion'
 
 @description('Optional. Location for all resources.')
 param location string = resourceGroup().location
@@ -33,11 +33,20 @@ resource serviceFabricCluster 'Microsoft.ServiceFabric/clusters@2021-06-01' exis
 }
 
 resource versions 'Microsoft.ServiceFabric/clusters/applicationTypes/versions@2021-06-01' = {
-  name: applicationTypeVersionName
+  name: name
+  parent: serviceFabricCluster::applicationTypes
   location: location
   tags: tags
-  parent: serviceFabricCluster::applicationTypes
   properties: {
     appPackageUrl: appPackageUrl
   }
 }
+
+@description('The name of the Version.')
+output versionName string = versions.name
+
+@description('The resource group of the Version.')
+output versionResourceGroup string = resourceGroup().name
+
+@description('The resource ID of the Version.')
+output versionResourceId string = versions.id

@@ -2,7 +2,7 @@
 param serviceFabricClusterName string = ''
 
 @description('Optional. Application type name.')
-param applicationTypeName string = 'defaultApplicationType'
+param name string = 'defaultApplicationType'
 
 @description('Optional. Array of Versions to create.')
 param versions array = []
@@ -29,20 +29,26 @@ resource serviceFabricCluster 'Microsoft.ServiceFabric/clusters@2021-06-01' exis
 }
 
 resource applicationTypes 'Microsoft.ServiceFabric/clusters/applicationTypes@2021-06-01' = {
-  name: applicationTypeName
+  name: name
+  parent: serviceFabricCluster
   location: location
   tags: tags
   properties: !empty(properties) ? properties : null
-  parent: serviceFabricCluster
 }
 
 module applicationTypes_versions 'versions/deploy.bicep' = [for (version, index) in versions: {
-  name: '${deployment().name}-ServiceFabricCluster-Versions-${index}'
+  name: '${deployment().name}-SFC-Versions-${index}'
   params: {
     appPackageUrl: contains(versions, 'appPackageUrl') ? version.appPackageUrl : null
-    applicationTypeVersionName: contains(versions, 'applicationTypeVersionName') ? version.applicationTypeVersionName : null
+    name: contains(versions, 'applicationTypeVersionName') ? version.applicationTypeVersionName : null
   }
 }]
 
-@description('The resource Id of the application type.')
-output applicationTypeResourceId string = applicationTypes.id
+@description('The resource name of the Application type.')
+output applicationTypeName string = applicationTypes.name
+
+@description('The resource group of the Application type.')
+output applicationTypeResourceGroup string = resourceGroup().name
+
+@description('The resource ID of the Application type.')
+output applicationTypeResourceID string = applicationTypes.id

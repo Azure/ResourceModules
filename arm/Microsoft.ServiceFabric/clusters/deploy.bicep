@@ -1,5 +1,5 @@
 @description('Required. Name of the Serivce Fabric cluster.')
-param serviceFabricClusterName string = ''
+param name string = ''
 
 @description('Optional. Location for all resources.')
 param location string = resourceGroup().location
@@ -133,10 +133,10 @@ param waveUpgradePaused bool = false
 param roleAssignments array = []
 
 @description('Optional. Array of Service Fabric cluster applications.')
-param serviceFabricClusterApplications array = []
+param applications array = []
 
 @description('Optional. Array of Service Fabric cluster application types.')
-param serviceFabricClusterApplicationTypes array = []
+param applicationTypes array = []
 
 var azureActiveDirectory_var = {
   clientApplication: !empty(azureActiveDirectory) ? azureActiveDirectory.clientApplication : null
@@ -150,8 +150,8 @@ var certificate_var = {
   x509StoreName: !empty(certificate) ? certificate.x509StoreName : null
 }
 
-var certificateCommonNamesList_var = [for index in range(0, (!empty(certificateCommonNames) ? length(certificateCommonNames.commonNames) : 0)): {
-  commonNames: certificateCommonNames.commonNames[index]
+var certificateCommonNamesList_var = [for certificateCommonName in items(certificateCommonNames): {
+  commonNames: !empty(certificateCommonName.value.commonNames) ? certificateCommonName.value.commonNames : []
 }]
 
 var certificateCommonNames_var = {
@@ -159,15 +159,15 @@ var certificateCommonNames_var = {
   x509StoreName: !empty(certificateCommonNames) ? certificateCommonNames.x509StoreName : null
 }
 
-var clientCertificateCommonNames_var = [for index in range(0, (!empty(clientCertificateCommonNames) ? length(clientCertificateCommonNames) : 0)): {
-  certificateCommonName: !empty(clientCertificateCommonNames) ? '${clientCertificateCommonNames[index].certificateCommonName}' : null
-  certificateIssuerThumbprint: !empty(clientCertificateCommonNames) ? '${clientCertificateCommonNames[index].certificateIssuerThumbprint}' : null
-  isAdmin: !empty(clientCertificateCommonNames) ? clientCertificateCommonNames[index].isAdmin : null
+var clientCertificateCommonNames_var = [for clientCertificateCommonName in clientCertificateCommonNames: {
+  certificateCommonName: !empty(clientCertificateCommonName.certificateCommonName) ? '${clientCertificateCommonName.certificateCommonName}' : null
+  certificateIssuerThumbprint: !empty(clientCertificateCommonName.certificateIssuerThumbprint) ? '${clientCertificateCommonName.certificateIssuerThumbprint}' : null
+  isAdmin: contains(clientCertificateCommonName, 'isAdmin') ? clientCertificateCommonName.isAdmin : false
 }]
 
-var clientCertificateThumbprints_var = [for index in range(0, (!empty(clientCertificateThumbprints) ? length(clientCertificateThumbprints) : 0)): {
-  certificateThumbprint: !empty(clientCertificateThumbprints) ? '${clientCertificateThumbprints[index].certificateThumbprint}' : null
-  isAdmin: !empty(clientCertificateThumbprints) ? clientCertificateThumbprints[index].isAdmin : null
+var clientCertificateThumbprints_var = [for clientCertificateThumbprint in clientCertificateThumbprints: {
+  certificateThumbprint: !empty(clientCertificateThumbprint.certificateThumbprint) ? '${clientCertificateThumbprint.certificateThumbprint}' : null
+  isAdmin: contains(clientCertificateThumbprint, 'isAdmin') ? clientCertificateThumbprint.isAdmin : false
 }]
 
 var diagnosticsStorageAccountConfig_var = {
@@ -179,9 +179,9 @@ var diagnosticsStorageAccountConfig_var = {
   tableEndpoint: !empty(diagnosticsStorageAccountConfig) ? diagnosticsStorageAccountConfig.tableEndpoint : null
 }
 
-var fabricSettings_var = [for index in range(0, (!empty(fabricSettings) ? length(fabricSettings) : 0)): {
-  name: !empty(fabricSettings) ? fabricSettings[index].name : null
-  parameters: !empty(fabricSettings) ? fabricSettings[index].parameters : null
+var fabricSettings_var = [for fabricSetting in fabricSettings: {
+  name: !empty(fabricSetting.name) ? fabricSetting.name : null
+  parameters: !empty(fabricSetting.parameters) ? fabricSetting.parameters : null
 }]
 
 var nodeTypes_var = [for nodeType in nodeTypes: {
@@ -206,11 +206,11 @@ var nodeTypes_var = [for nodeType in nodeTypes: {
   vmInstanceCount: contains(nodeType, 'vmInstanceCount') ? nodeType.vmInstanceCount : 1
 }]
 
-var notifications_var = [for index in range(0, (!empty(notifications) ? length(notifications) : 0)): {
-  isEnabled: !empty(notifications) ? notifications[index].isEnabled : null
-  notificationCategory: !empty(notifications) ? notifications[index].notificationCategory : null
-  notificationLevel: !empty(notifications) ? notifications[index].notificationLevel : null
-  notificationTargets: !empty(notifications) ? notifications[index].notificationTargets : null
+var notifications_var = [for notification in notifications: {
+  isEnabled: contains(notification, 'isEnabled') ? notification.isEnabled : false
+  notificationCategory: !empty(notification.notificationCategory) ? notification.notificationCategory : 'WaveProgress'
+  notificationLevel: !empty(notification.notificationLevel) ? notification.notificationLevel : 'All'
+  notificationTargets: !empty(notification.notificationTargets) ? notification.notificationTargets : []
 }]
 
 var reverseProxyCertificate_var = {
@@ -219,8 +219,8 @@ var reverseProxyCertificate_var = {
   x509StoreName: !empty(reverseProxyCertificate) ? reverseProxyCertificate.x509StoreName : null
 }
 
-var reverseProxyCertificateCommonNamesList_var = [for index in range(0, (!empty(reverseProxyCertificateCommonNames) ? length(reverseProxyCertificateCommonNames.commonNames) : 0)): {
-  commonNames: reverseProxyCertificateCommonNames.commonNames[index]
+var reverseProxyCertificateCommonNamesList_var = [for reverseProxyCertificateCommonName in items(reverseProxyCertificateCommonNames): {
+  commonNames: reverseProxyCertificateCommonName.value.commonNames
 }]
 
 var reverseProxyCertificateCommonNames_var = {
@@ -235,7 +235,7 @@ var upgradeDescription_var = {
     maxPercentDeltaUnhealthyNodes: !empty(upgradeDescription) ? upgradeDescription.maxPercentDeltaUnhealthyNodes : null
     maxPercentUpgradeDomainDeltaUnhealthyNodes: !empty(upgradeDescription) ? upgradeDescription.maxPercentUpgradeDomainDeltaUnhealthyNodes : null
   }
-  forceRestart: '${!empty(upgradeDescription) ? upgradeDescription.forceRestart : null}'
+  forceRestart: !empty(upgradeDescription) ? upgradeDescription.forceRestart : null
   healthCheckRetryTimeout: '${!empty(upgradeDescription) ? upgradeDescription.healthCheckRetryTimeout : null}'
   healthCheckStableDuration: '${!empty(upgradeDescription) ? upgradeDescription.healthCheckStableDuration : null}'
   healthCheckWaitDuration: '${!empty(upgradeDescription) ? upgradeDescription.healthCheckWaitDuration : null}'
@@ -256,7 +256,7 @@ module pid_cuaId './.bicep/nested_cuaId.bicep' = if (!empty(cuaId)) {
 
 // Service Fabric cluster resource
 resource serviceFabricCluster 'Microsoft.ServiceFabric/clusters@2021-06-01' = {
-  name: serviceFabricClusterName
+  name: name
   location: location
   tags: tags
   properties: {
@@ -297,7 +297,7 @@ resource serviceFabricCluster_lock 'Microsoft.Authorization/locks@2016-09-01' = 
   name: '${serviceFabricCluster.name}-${lock}-lock'
   properties: {
     level: lock
-    notes: (lock == 'CanNotDelete') ? 'Cannot delete resource or child resources.' : 'Cannot modify the resource or child resources.'
+    notes: lock == 'CanNotDelete' ? 'Cannot delete resource or child resources.' : 'Cannot modify the resource or child resources.'
   }
   scope: serviceFabricCluster
 }
@@ -313,10 +313,10 @@ module serviceFabricCluster_rbac '.bicep/nested_rbac.bicep' = [for (roleAssignme
 }]
 
 // Service Fabric cluster application types
-module serviceFabricCluster_applicationTypes 'applicationTypes/deploy.bicep' = [for applicationType in serviceFabricClusterApplicationTypes: {
+module serviceFabricCluster_applicationTypes 'applicationTypes/deploy.bicep' = [for applicationType in applicationTypes: {
   name: '${uniqueString(deployment().name, location)}-SFC-${applicationType.name}'
   params: {
-    applicationTypeName: applicationType.name
+    name: applicationType.name
     serviceFabricClusterName: serviceFabricCluster.name
     properties: contains(applicationType, 'properties') ? applicationType.properties : {}
     tags: tags
@@ -325,13 +325,14 @@ module serviceFabricCluster_applicationTypes 'applicationTypes/deploy.bicep' = [
 }]
 
 // Service Fabric cluster applications
-module serviceFabricCluster_applications 'applications/deploy.bicep' = [for application in serviceFabricClusterApplications: {
+module serviceFabricCluster_applications 'applications/deploy.bicep' = [for application in applications: {
   name: '${uniqueString(deployment().name, location)}-SFC-${application.name}'
   params: {
     serviceFabricClusterName: serviceFabricCluster.name
-    applicationName: contains(application, 'name') ? application.name : 'defaultApplication'
+    name: contains(application, 'name') ? application.name : 'defaultApplication'
     identity: contains(application, 'identity') ? application.identity : {}
     properties: contains(application, 'properties') ? application.properties : {}
+    services: contains(application, 'applicationsServices') ? application.applicationsServices : []
     tags: tags
   }
   dependsOn: [
@@ -339,12 +340,16 @@ module serviceFabricCluster_applications 'applications/deploy.bicep' = [for appl
   ]
 }]
 
-// Outputs section
-@description('The Service Fabric Cluster Object.')
+@description('The Service Fabric Cluster name.')
+output serviceFabricClusterName string = serviceFabricCluster.name
+@description('The Service Fabric Cluster object.')
 output serviceFabricCluster object = serviceFabricCluster
 
 @description('The Service Fabric Cluster resource group.')
 output serviceFabricClusterResourceGroup string = resourceGroup().name
+
+@description('The Service Fabric Cluster resource ID.')
+output serviceFabricClusterId string = serviceFabricCluster.id
 
 @description('The Service Fabric Cluster endpoint.')
 output clusterEndpoint string = serviceFabricCluster.properties.clusterEndpoint
