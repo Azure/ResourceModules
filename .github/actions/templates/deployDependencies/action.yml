@@ -57,10 +57,6 @@ runs:
           managementGroupId  = '${{ inputs.managementGroupId }}'
         }
 
-        if(-not [String]::IsNullOrEmpty('${{ inputs.parameterFilePath }}')) {
-          $functionInput['parameterFilePath'] = Join-Path $env:GITHUB_WORKSPACE '${{ inputs.parameterFilePath }}'
-        }
-
         Write-Verbose "Invoke task with" -Verbose
         Write-Verbose ($functionInput | ConvertTo-Json | Out-String) -Verbose
 
