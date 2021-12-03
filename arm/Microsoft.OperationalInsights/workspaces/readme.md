@@ -23,6 +23,12 @@ This template deploys a log analytics workspace.
 | `dailyQuotaGb` | int | `-1` |  | Optional. The workspace daily quota for ingestion. |
 | `dataRetention` | int | `365` |  | Required. Number of days data will be retained for |
 | `dataSources` | _[dataSources](dataSources/readme.md)_ array | `[]` |  | Optional. LAW data sources to configure. |
+| `diagnosticLogsRetentionInDays` | int | `365` |  | Optional. Specifies the number of days that logs will be kept for; a value of 0 will retain data indefinitely. |
+| `diagnosticStorageAccountId` | string |  |  | Optional. Resource ID of the diagnostic storage account. |
+| `eventHubAuthorizationRuleId` | string |  |  | Optional. Resource ID of the event hub authorization rule for the Event Hubs namespace in which the event hub should be created or streamed to. |
+| `eventHubName` | string |  |  | Optional. Name of the event hub within the namespace to which logs are streamed. Without this, an event hub is created for each log category. |
+| `logsToEnable` | array | `[Audit]` | `[Audit]` | Optional. The name of logs that will be streamed. |
+| `metricsToEnable` | array | `[AllMetrics]` | `[AllMetrics]` | Optional. The name of metrics that will be streamed. |
 | `gallerySolutions` | array | `[]` |  | Optional. LAW gallerySolutions from the gallery. |
 | `linkedServices` | _[linkedServices](linkedServices/readme.md)_ array | `[]` |  | Optional. List of services to be linked. |
 | `location` | string | `[resourceGroup().location]` |  | Optional. Location for all resources. |
@@ -36,6 +42,7 @@ This template deploys a log analytics workspace.
 | `storageInsightsConfigs` | array | `[]` |  | Optional. List of storage accounts to be read by the workspace. |
 | `tags` | object | `{object}` |  | Optional. Tags of the resource. |
 | `useResourcePermissions` | bool |  |  | Optional. Set to 'true' to use resource or workspace permissions and 'false' (or leave empty) to require workspace permissions. |
+| `workspaceId` | string |  |  | Optional. Resource ID of log analytics. |
 
 ### Parameter Usage: `gallerySolutions`
 
