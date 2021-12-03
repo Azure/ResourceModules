@@ -1,4 +1,4 @@
-@description('Required. Name of the Serivce Fabric cluster.')
+@description('Required. Name of the Service Fabric cluster.')
 param name string = ''
 
 @description('Optional. Location for all resources.')

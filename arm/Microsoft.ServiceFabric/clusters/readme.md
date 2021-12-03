@@ -21,13 +21,13 @@ This module deploys a service fabric cluster
 | `addOnFeatures` | array | `[]` | `[BackupRestoreService, DnsService, RepairManager, ResourceMonitorService]` | Optional. The list of add-on features to enable in the cluster. |
 | `applications` | _[applications](applications/readme.md)_ array | `[]` |  | Optional. Array of Service Fabric cluster applications. |
 | `applicationTypes` | _[applicationTypes](applicationTypes/readme.md)_ array | `[]` |  | Optional. Array of Service Fabric cluster application types. |
-| `azureActiveDirectory` | object | `{object}` |  | Optional. Object containing Azure active directory client application id, cluster application id and tenant id. |
+| `azureActiveDirectory` | object | `{object}` |  | Optional. Object containing Azure active directory client application ID, cluster application ID and tenant ID. |
 | `certificate` | object | `{object}` |  | Optional. Describes the certificate details like thumbprint of the primary certificate, thumbprint of the secondary certificate and the local certificate store location |
 | `certificateCommonNames` | object | `{object}` |  | Optional. Describes a list of server certificates referenced by common name that are used to secure the cluster. |
 | `clientCertificateCommonNames` | array | `[]` |  | Optional. The list of client certificates referenced by common name that are allowed to manage the cluster. |
 | `clientCertificateThumbprints` | array | `[]` |  | Optional. The list of client certificates referenced by thumbprint that are allowed to manage the cluster. |
 | `clusterCodeVersion` | string |  |  | Optional. The Service Fabric runtime version of the cluster. This property can only by set the user when upgradeMode is set to "Manual". To get list of available Service Fabric versions for new clusters use ClusterVersion API. To get the list of available version for existing clusters use availableClusterVersions. |
-| `cuaId` | string |  |  | Optional. Customer Usage Attribution id (GUID). This GUID must be previously registered |
+| `cuaId` | string |  |  | Optional. Customer Usage Attribution ID (GUID). This GUID must be previously registered |
 | `diagnosticsStorageAccountConfig` | object | `{object}` |  | Optional. The storage account information for storing Service Fabric diagnostic logs. |
 | `eventStoreServiceEnabled` | bool |  |  | Optional. Indicates if the event store service is enabled. |
 | `fabricSettings` | array | `[]` |  | Optional. The list of custom fabric settings to configure the cluster. |
@@ -36,7 +36,7 @@ This module deploys a service fabric cluster
 | `lock` | string | `NotSpecified` | `[CanNotDelete, NotSpecified, ReadOnly]` | Optional. Specify the type of lock. |
 | `managementEndpoint` | string |  |  | Required. The http management endpoint of the cluster. |
 | `maxUnusedVersionsToKeep` | int | `3` |  | Required. Number of unused versions per application type to keep. |
-| `name` | string |  |  | Required. Name of the Serivce Fabric cluster. |
+| `name` | string |  |  | Required. Name of the Service Fabric cluster. |
 | `nodeTypes` | array | `[]` |  | Required. The list of node types in the cluster. |
 | `notifications` | array | `[]` |  | Optional. Indicates a list of notification channels for cluster events. |
 | `reliabilityLevel` | string | `None` | `[Bronze, Gold, None, Platinum, Silver]` | Optional. The reliability level sets the replica set size of system services. Learn about ReliabilityLevel (https://docs.microsoft.com/en-us/azure/service-fabric/service-fabric-cluster-capacity). - None - Run the System services with a target replica set count of 1. This should only be used for test clusters. - Bronze - Run the System services with a target replica set count of 3. This should only be used for test clusters. - Silver - Run the System services with a target replica set count of 5. - Gold - Run the System services with a target replica set count of 7. - Platinum - Run the System services with a target replica set count of 9. |
