@@ -73,7 +73,7 @@ param mode string = 'Off'
   'Premium'
   'Standard'
 ])
-param tier string = 'Standard'
+param tier string = 'Premium'
 
 @description('Optional. List of private IP addresses/IP address ranges to not be SNAT.')
 param privateRanges array = []
