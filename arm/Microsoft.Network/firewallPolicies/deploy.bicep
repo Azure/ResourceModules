@@ -73,7 +73,7 @@ param mode string = 'Off'
   'Premium'
   'Standard'
 ])
-param tier string = 'Premium'
+param tier string = 'Standard'
 
 @description('Optional. List of private IP addresses/IP address ranges to not be SNAT.')
 param privateRanges array = []
@@ -136,13 +136,13 @@ resource firewallPolicy 'Microsoft.Network/firewallPolicies@2021-03-01' = {
       requireProxyForNetworkRules: requireProxyForNetworkRules
       servers: servers
     } : null
-    explicitProxySettings: enableExplicitProxy ? {
+    explicitProxySettings: {
       enableExplicitProxy: enableExplicitProxy
       httpPort: (httpPort > 0) ? httpPort : null
       httpsPort: (httpsPort > 0) ? httpsPort : null
       pacFile: !empty(pacFile) ? pacFile : null
       pacFilePort: (pacFilePort > 0) ? pacFilePort : null
-    } : {}
+    }
     insights: isEnabled ? {
       isEnabled: isEnabled
       logAnalyticsResources: {
@@ -166,9 +166,9 @@ resource firewallPolicy 'Microsoft.Network/firewallPolicies@2021-03-01' = {
     snat: !empty(privateRanges) ? {
       privateRanges: privateRanges
     } : null
-    sql: allowSqlRedirect ? {
+    sql: {
       allowSqlRedirect: allowSqlRedirect
-    } : {}
+    }
     threatIntelMode: threatIntelMode
     threatIntelWhitelist: {
       fqdns: fqdns
