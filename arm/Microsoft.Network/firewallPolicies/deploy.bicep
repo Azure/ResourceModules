@@ -166,9 +166,9 @@ resource firewallPolicy 'Microsoft.Network/firewallPolicies@2021-03-01' = {
     snat: !empty(privateRanges) ? {
       privateRanges: privateRanges
     } : null
-    sql: allowSqlRedirect ? {
-      allowSqlRedirect: allowSqlRedirect
-    } : null
+    // sql: allowSqlRedirect ? {
+    //   allowSqlRedirect: allowSqlRedirect
+    // } : null
     threatIntelMode: threatIntelMode
     threatIntelWhitelist: {
       fqdns: fqdns
