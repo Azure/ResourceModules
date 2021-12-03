@@ -325,7 +325,7 @@ function New-ModuleDeployment {
         if ($parameterFilePath) {
             foreach ($parameterFile in $parameterFilePath) {
                 if ($PSCmdlet.ShouldProcess("Deployment for parameter file [$parameterFilePath]", 'Trigger')) {
-                    return New-Deployment @deploymentInputObject -parameterFilePath $parameterFilePath
+                    return New-Deployment @deploymentInputObject -parameterFilePath $parameterFile
                 }
             }
         } else {
