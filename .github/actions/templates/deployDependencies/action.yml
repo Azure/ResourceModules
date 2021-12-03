@@ -47,7 +47,7 @@ runs:
         . (Join-Path $env:GITHUB_WORKSPACE 'utilities' 'pipelines' 'resourceDeployment' 'New-ModuleDeployment.ps1')
 
         $namespacePath = Split-Path '${{ inputs.templateFilePath }}'.TrimStart('arm') -Parent
-        $templateFileName = '{0}.bicep' -f Split-Path '${{ inputs.parameterFilePath }}' -LeafBase
+        $templateFileName = '{0}.bicep' -f (Split-Path '${{ inputs.parameterFilePath }}' -LeafBase)
         $dependencyTemplateFilePath = Join-Path 'utilities' 'pipelines' 'moduleDependencies' $namespacePath $templateFileName
 
         $functionInput = @{
