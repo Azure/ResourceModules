@@ -33,6 +33,7 @@ on:
 env:
   modulePath: 'arm/Microsoft.AnalysisServices/servers'
   workflowPath: '.github/workflows/ms.analysisservices.servers.yml'
+  rgPattern: 'test-analysisServices-{1}-rg'
   AZURE_CREDENTIALS: ${{ secrets.AZURE_CREDENTIALS }}
   ARM_SUBSCRIPTION_ID: '${{ secrets.ARM_SUBSCRIPTION_ID }}'
   ARM_MGMTGROUP_ID: '${{ secrets.ARM_MGMTGROUP_ID }}'
@@ -104,8 +105,6 @@ jobs:
       - job_set_workflow_param
       # - job_tests_module_global
       # - job_tests_module_global_api
-    env:
-      rgPattern: 'test-{0}-{1}-rg'
     strategy:
       fail-fast: false
       matrix:
@@ -142,35 +141,35 @@ jobs:
           templateFilePath: '${{ env.modulePath }}/deploy.bicep'
           parameterFilePath: '${{ env.modulePath }}/.parameters/${{ matrix.parameterFilePaths }}'
           location: '${{ env.defaultLocation }}'
-          resourceGroupName: '${{ format(env.rgPattern, env.modulePath, matrix.parameterFilePaths) }}'
+          resourceGroupName: '${{ format(env.rgPattern, matrix.parameterFilePaths) }}'
           subscriptionId: '${{ secrets.ARM_SUBSCRIPTION_ID }}'
           managementGroupId: '${{ secrets.ARM_MGMTGROUP_ID }}'
-      # # ----------- #
-      # ##  Dry Run  ##
-      # # ----------- #
-      # - name: 'Test module with parameter file [${{ matrix.parameterFilePaths }}]'
-      #   uses: ./.github/actions/templates/validateModuleDeploy
-      #   with:
-      #     templateFilePath: '${{ env.modulePath }}/deploy.bicep'
-      #     parameterFilePath: '${{ env.modulePath }}/.parameters/${{ matrix.parameterFilePaths }}'
-      #     location: '${{ env.defaultLocation }}'
-      #     resourceGroupName: '${{ format(env.rgPattern, env.modulePath, matrix.parameterFilePaths) }}'
-      #     subscriptionId: '${{ secrets.ARM_SUBSCRIPTION_ID }}'
-      #     managementGroupId: '${{ secrets.ARM_MGMTGROUP_ID }}'
-      # # ------------------- #
-      # ##  Deploy & Remove  ##
-      # # ------------------- #
-      # - name: 'Deploy module with parameter file [${{ matrix.parameterFilePaths }}]'
-      #   id: step_deploy
-      #   uses: ./.github/actions/templates/deployModule
-      #   with:
-      #     templateFilePath: '${{ env.modulePath }}/deploy.bicep'
-      #     parameterFilePath: '${{ env.modulePath }}/.parameters/${{ matrix.parameterFilePaths }}'
-      #     location: '${{ env.defaultLocation }}'
-      #     resourceGroupName: '${{ format(env.rgPattern, env.modulePath, matrix.parameterFilePaths) }}'
-      #     subscriptionId: '${{ secrets.ARM_SUBSCRIPTION_ID }}'
-      #     managementGroupId: '${{ secrets.ARM_MGMTGROUP_ID }}'
-      #     removeDeployment: '${{ needs.job_set_workflow_param.outputs.removeDeployment }}'
+      # ----------- #
+      ##  Dry Run  ##
+      # ----------- #
+      - name: 'Test module with parameter file [${{ matrix.parameterFilePaths }}]'
+        uses: ./.github/actions/templates/validateModuleDeploy
+        with:
+          templateFilePath: '${{ env.modulePath }}/deploy.bicep'
+          parameterFilePath: '${{ env.modulePath }}/.parameters/${{ matrix.parameterFilePaths }}'
+          location: '${{ env.defaultLocation }}'
+          resourceGroupName: '${{ format(env.rgPattern, matrix.parameterFilePaths) }}'
+          subscriptionId: '${{ secrets.ARM_SUBSCRIPTION_ID }}'
+          managementGroupId: '${{ secrets.ARM_MGMTGROUP_ID }}'
+      # ------------------- #
+      ##  Deploy & Remove  ##
+      # ------------------- #
+      - name: 'Deploy module with parameter file [${{ matrix.parameterFilePaths }}]'
+        id: step_deploy
+        uses: ./.github/actions/templates/deployModule
+        with:
+          templateFilePath: '${{ env.modulePath }}/deploy.bicep'
+          parameterFilePath: '${{ env.modulePath }}/.parameters/${{ matrix.parameterFilePaths }}'
+          location: '${{ env.defaultLocation }}'
+          resourceGroupName: '${{ format(env.rgPattern, matrix.parameterFilePaths) }}'
+          subscriptionId: '${{ secrets.ARM_SUBSCRIPTION_ID }}'
+          managementGroupId: '${{ secrets.ARM_MGMTGROUP_ID }}'
+          removeDeployment: '${{ needs.job_set_workflow_param.outputs.removeDeployment }}'
 
   ###############
   #   PUBLISH   #

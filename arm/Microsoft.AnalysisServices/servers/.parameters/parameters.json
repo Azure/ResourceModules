@@ -22,13 +22,13 @@
             "value": 7
         },
         "diagnosticStorageAccountId": {
-            "value": "/subscriptions/<<subscriptionId>>/resourceGroups/<<resourcegroup>>/providers/Microsoft.Storage/storageAccounts/adpsxxazsaaspar01"
+            "value": "/subscriptions/<<subscriptionId>>/resourceGroups/<<resourceGroupName>>/providers/Microsoft.Storage/storageAccounts/adpsxxazsaaspar01"
         },
         "workspaceId": {
-            "value": "/subscriptions/<<subscriptionId>>/resourcegroups/<<resourcegroup>>/providers/microsoft.operationalinsights/workspaces/adp-sxx-az-law-aspar-001"
+            "value": "/subscriptions/<<subscriptionId>>/resourcegroups/<<resourceGroupName>>/providers/microsoft.operationalinsights/workspaces/adp-sxx-az-law-aspar-001"
         },
         "eventHubAuthorizationRuleId": {
-            "value": "/subscriptions/<<subscriptionId>>/resourceGroups/<<resourcegroup>>/providers/Microsoft.EventHub/namespaces/adp-sxx-az-evhns-aspar-001/AuthorizationRules/RootManageSharedAccessKey"
+            "value": "/subscriptions/<<subscriptionId>>/resourceGroups/<<resourceGroupName>>/providers/Microsoft.EventHub/namespaces/adp-sxx-az-evhns-aspar-001/AuthorizationRules/RootManageSharedAccessKey"
         },
         "eventHubName": {
             "value": "adp-sxx-az-evh-aspar-001"

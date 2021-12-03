@@ -63,7 +63,7 @@ runs:
         }
 
         if(-not [String]::IsNullOrEmpty('${{ inputs.resourceGroupName }}')) {
-          $resourceGroupName = '${{ inputs.resourceGroupName }}'.Replace('arm/Microsoft.','').Replace('\','/').Replace('/','.')
+          $resourceGroupName = '${{ inputs.resourceGroupName }}'
           $functionInput['additionalParameters'] = @{
             resourceGroupName = $resourceGroupName
           }

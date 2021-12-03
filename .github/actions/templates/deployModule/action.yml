@@ -51,6 +51,12 @@ runs:
           $DefaultParameterFileTokens['resourcegroup'] = $rgName
         }
 
+        if(-not [String]::IsNullOrEmpty('${{ inputs.resourceGroupName }}')) {
+          $resourceGroupName = '${{ inputs.resourceGroupName }}'
+          Write-Verbose ("Using resource group [$resourceGroupName] for token replacement") -Verbose
+          $DefaultParameterFileTokens['resourceGroupName'] = $resourceGroupName
+        }
+
         $DefaultParameterFileTokens = $DefaultParameterFileTokens | ForEach-Object { [PSCustomObject]$PSItem }
 
         # Construct Token Function Input
