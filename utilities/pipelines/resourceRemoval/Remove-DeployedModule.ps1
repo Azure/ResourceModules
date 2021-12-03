@@ -3,7 +3,8 @@
     [CmdletBinding()]
     param (
         [Parameter(Mandatory = $true)]
-        [string] $deploymentName,
+        [Alias('deploymentName')]
+        [string[]] $deploymentNames,
 
         [Parameter(Mandatory = $true)]
         [string] $templateFilePath,
@@ -14,43 +15,46 @@
 
     $moduleName = Split-Path (Split-Path $templateFilePath -Parent) -LeafBase
 
-    switch ($moduleName) {
-        'virtualWans' {
-            Write-Verbose 'Run vWAN removal script' -Verbose
-            # Load function
-            . (Join-Path $PSScriptRoot 'helper' 'Remove-vWan.ps1')
+    foreach ($deploymentName in $deploymentNames) {
 
-            # Invoke removal
-            $inputObject = @{
-                deploymentName    = $deploymentName
-                ResourceGroupName = $ResourceGroupName
-            }
-            Remove-vWan @inputObject -Verbose
-        }
-        'virtualMachines' {
-            Write-Verbose 'Run virtual machine removal script' -Verbose
-            # Load function
-            . (Join-Path $PSScriptRoot 'helper' 'Remove-VirtualMachine.ps1')
+        switch ($moduleName) {
+            'virtualWans' {
+                Write-Verbose 'Run vWAN removal script' -Verbose
+                # Load function
+                . (Join-Path $PSScriptRoot 'helper' 'Remove-vWan.ps1')
 
-            # Invoke removal
-            $inputObject = @{
-                deploymentName    = $deploymentName
-                ResourceGroupName = $ResourceGroupName
+                # Invoke removal
+                $inputObject = @{
+                    deploymentName    = $deploymentName
+                    ResourceGroupName = $ResourceGroupName
+                }
+                Remove-vWan @inputObject -Verbose
             }
-            Remove-VirtualMachine @inputObject -Verbose
-        }
-        default {
-            Write-Verbose 'Run default removal script' -Verbose
-            # Load function
-            . (Join-Path $PSScriptRoot 'helper' 'Remove-GeneralModule.ps1')
+            'virtualMachines' {
+                Write-Verbose 'Run virtual machine removal script' -Verbose
+                # Load function
+                . (Join-Path $PSScriptRoot 'helper' 'Remove-VirtualMachine.ps1')
 
-            # Invoke removal
-            $inputObject = @{
-                deploymentName    = $deploymentName
-                ResourceGroupName = $ResourceGroupName
-                templateFilePath  = $templateFilePath
+                # Invoke removal
+                $inputObject = @{
+                    deploymentName    = $deploymentName
+                    ResourceGroupName = $ResourceGroupName
+                }
+                Remove-VirtualMachine @inputObject -Verbose
             }
-            Remove-GeneralModule @inputObject -Verbose
+            default {
+                Write-Verbose 'Run default removal script' -Verbose
+                # Load function
+                . (Join-Path $PSScriptRoot 'helper' 'Remove-GeneralModule.ps1')
+
+                # Invoke removal
+                $inputObject = @{
+                    deploymentName    = $deploymentName
+                    ResourceGroupName = $ResourceGroupName
+                    templateFilePath  = $templateFilePath
+                }
+                Remove-GeneralModule @inputObject -Verbose
+            }
         }
     }
 }

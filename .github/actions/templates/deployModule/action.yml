@@ -209,7 +209,7 @@ runs:
           }
 
           $functionInput = @{
-              deploymentName    = $deploymentNames
+              deploymentNames   = $deploymentNames
               templateFilePath  = Join-Path $env:GITHUB_WORKSPACE '${{ inputs.templateFilePath }}'
               resourceGroupName = '${{ inputs.resourceGroupName }}'
               verbose           = $true
