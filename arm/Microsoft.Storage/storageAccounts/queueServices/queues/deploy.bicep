@@ -5,10 +5,10 @@ param storageAccountName string
 @description('Optional. The name of the queue service')
 param queueServicesName string = 'default'
 
-@description('The name of the storage queue to deploy')
+@description('Required. The name of the storage queue to deploy')
 param name string
 
-@description('A name-value pair that represents queue metadata.')
+@description('Required. A name-value pair that represents queue metadata.')
 param metadata object = {}
 
 @description('Optional. Array of role assignment objects that contain the \'roleDefinitionIdOrName\' and \'principalId\' to define RBAC role assignments on this resource. In the roleDefinitionIdOrName attribute, you can provide either the display name of the role definition, or it\'s fully qualified ID in the following format: \'/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11\'')
