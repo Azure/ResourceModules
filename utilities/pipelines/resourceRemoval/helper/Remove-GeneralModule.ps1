@@ -190,7 +190,7 @@ function Remove-GeneralModule {
                     }
                 }
             }
-        } else {
+        } elseif ($deploymentScope -eq 'resourceGroup') {
             $allResources = Get-AzResource -ResourceGroupName $resourceGroupName -Name '*'
             # Get all child resources and sort from child to parent
             foreach ($topLevelResource in $rawResourceIdsToRemove) {
@@ -207,29 +207,22 @@ function Remove-GeneralModule {
             if ($resourcesToRemove.Count -gt 1) {
                 $resourcesToRemove = $resourcesToRemove | Sort-Object -Descending -Property 'ResourceId' -Unique
             }
-
-            # If VMs are available, delete those first
-            if ($vmsContained = $resourcesToRemove | Where-Object { $_.type -eq 'Microsoft.Compute/virtualMachines' }) {
-
-                $intermediateResources = @()
-                foreach ($vmInstance in $vmsContained) {
-                    $intermediateResources += @{
-                        resourceId = $vmInstance.ResourceId
-                        name       = $vmInstance.Name
-                        type       = $vmInstance.Type
-                    }
-                }
-                if ($PSCmdlet.ShouldProcess(('[{0}] VM resources' -f $intermediateResources.Count), 'Remove')) {
-                    Remove-Resource -resourceToRemove $intermediateResources -Verbose
-                }
-                # refresh
-                $resourcesToRemove = $resourcesToRemove | Where-Object { $_.ResourceId -notin $intermediateResources.resourceId }
-            }
         }
 
         # Filter all dependency resources
         $dependencyResourceNames = Get-DependencyResourceNames
         $resourcesToRemove = $resourcesToRemove | Where-Object { $_.Name -notin $dependencyResourceNames }
+
+        # Order resources
+        # If virutal machines are contained, remove them next
+        if ($vmsContained = $resourcesToRemove | Where-Object { $_.type -eq 'Microsoft.Compute/virtualMachines' }) {
+            $resourcesToRemove = $vmsContained + ($resourcesToRemove | Where-Object { $_.type -ne 'Microsoft.Compute/virtualMachines' })
+        }
+
+        # If resource groups are contained, remove them first
+        if ($rgsContained = $resourcesToRemove | Where-Object { $_.type -eq 'Microsoft.Resources/resourceGroups' }) {
+            $resourcesToRemove = $rgsContained + ($resourcesToRemove | Where-Object { $_.type -ne 'Microsoft.Resources/resourceGroups' })
+        }
 
         # Remove resources
         # ----------------
