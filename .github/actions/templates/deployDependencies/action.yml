@@ -48,10 +48,15 @@ runs:
 
         $namespacePath = Split-Path '${{ inputs.templateFilePath }}'.TrimStart('arm') -Parent
         $templateFileName = '{0}.bicep' -f (Split-Path '${{ inputs.parameterFilePath }}' -LeafBase)
-        $dependencyTemplateFilePath = Join-Path 'utilities' 'pipelines' 'moduleDependencies' $namespacePath $templateFileName
+        $dependencyTemplateFilePath = Join-Path $env:GITHUB_WORKSPACE 'utilities' 'pipelines' 'moduleDependencies' $namespacePath $templateFileName
+
+        if(-not (Test-Path $dependencyTemplateFilePath)) {
+          Write-Verbose "No dependency deployment found in path [$dependencyTemplateFilePath]. Skipping deployment" -Verbose
+          return
+        }
 
         $functionInput = @{
-          templateFilePath   = Join-Path $env:GITHUB_WORKSPACE $dependencyTemplateFilePath
+          templateFilePath   = $dependencyTemplateFilePath
           location           = '${{ inputs.location }}'
           resourceGroupName  = '${{ inputs.resourceGroupName }}'
           subscriptionId     = '${{ inputs.subscriptionId }}'
