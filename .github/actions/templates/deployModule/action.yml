@@ -45,16 +45,10 @@ runs:
             @{ Name = "deploymentSpId"; Value = '${{ env.DEPLOYMENT_SP_ID }}' }
         )
 
-        $rgName = '${{ steps.dependencies_step.outputs.resourceGroupName }}'
-        if(-not [String]::IsNullOrEmpty($rgName)) {
-          Write-Verbose ("Using resource group [$rgName]") -Verbose
-          $DefaultParameterFileTokens['resourcegroup'] = $rgName
-        }
-
         if(-not [String]::IsNullOrEmpty('${{ inputs.resourceGroupName }}')) {
           $resourceGroupName = '${{ inputs.resourceGroupName }}'
           Write-Verbose ("Using resource group [$resourceGroupName] for token replacement") -Verbose
-          $DefaultParameterFileTokens['resourceGroupName'] = $resourceGroupName
+          $DefaultParameterFileTokens += @{ Name = 'resourceGroupName'; Value = $resourceGroupName }
         }
 
         $DefaultParameterFileTokens = $DefaultParameterFileTokens | ForEach-Object { [PSCustomObject]$PSItem }
