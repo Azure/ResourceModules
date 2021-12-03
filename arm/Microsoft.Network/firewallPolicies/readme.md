@@ -79,8 +79,11 @@ You can specify multiple user assigned identities to a resource by providing add
 
 ## Outputs
 
-| Output Name | Type |
-| :-- | :-- |
+| Output Name | Type | Description |
+| :-- | :-- | :-- |
+| `firewallPolicyName` | string | The name of the deployed firewall policy |
+| `firewallPolicyResourceGroup` | string | The resource group of the deployed firewall policy |
+| `firewallPolicyResourceId` | string | The resource ID of the deployed firewall policy |
 
 ## Template references
 
