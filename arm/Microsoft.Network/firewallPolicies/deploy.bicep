@@ -174,12 +174,12 @@ resource firewallPolicy 'Microsoft.Network/firewallPolicies@2021-03-01' = {
       fqdns: !empty(fqdns) ? fqdns : null
       ipAddresses: !empty(ipAddresses) ? ipAddresses : null
     }
-    transportSecurity: {
-      certificateAuthority: {
-        keyVaultSecretId: !empty(keyVaultSecretId) ? keyVaultSecretId : null
-        name: !empty(certificateName) ? certificateName : null
-      }
-    }
+    // transportSecurity: {
+    //   certificateAuthority: {
+    //     keyVaultSecretId: !empty(keyVaultSecretId) ? keyVaultSecretId : null
+    //     name: !empty(certificateName) ? certificateName : null
+    //   }
+    // }
   }
 }
 
