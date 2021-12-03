@@ -121,7 +121,7 @@ jobs:
       # ---------------------- #
       ##  Deploy Dependencies ##
       # ---------------------- #
-      - name: 'Test module with parameter file [${{ matrix.parameterFilePaths }}]'
+      - name: 'Deploying dependencies for parameter file [${{ matrix.parameterFilePaths }}]'
         uses: ./.github/actions/templates/deployDependencies
         with:
           templateFilePath: '${{ env.modulePath }}/deploy.bicep'
