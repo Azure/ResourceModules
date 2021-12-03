@@ -3,7 +3,7 @@
 Remove a deployed module along with its child resources.
 
 .DESCRIPTION
-Remove a deployed module along with its child resources.
+The script will fetch the resources deployed by a deployment and will also fetch any associated resources of the deployed resources like OS and data disks of a VM. Then all the resources will be removed.
 
 .PARAMETER ResourceGroupName
 Mandatory. Name of the Resource Group.
@@ -104,8 +104,6 @@ function Get-DeployedModuleWithChildResources {
             }
         }
         Return ($resourceIdsToRemove | Select-Object -Unique)
-        $resourceIdsToRemove = $resourceIdsToRemove | Select-Object -Unique
-        $resourceIdsToRemove
 
     } else {
         Write-Verbose "No child resources found in the deployment: $($DeploymentName)."
