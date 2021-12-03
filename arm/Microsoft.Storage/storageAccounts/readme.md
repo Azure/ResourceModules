@@ -8,6 +8,7 @@ This module is used to deploy a storage account, with the ability to deploy 1 or
 | :-- | :-- |
 | `Microsoft.Authorization/locks` | 2016-09-01 |
 | `Microsoft.Authorization/roleAssignments` | 2020-04-01-preview |
+| `Microsoft.Insights/diagnosticSettings` | 2017-05-01-preview |
 | `Microsoft.Network/privateEndpoints` | 2021-05-01 |
 | `Microsoft.Network/privateEndpoints/privateDnsZoneGroups` | 2021-02-01 |
 | `Microsoft.Storage/storageAccounts` | 2021-06-01 |

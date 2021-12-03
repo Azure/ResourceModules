@@ -6,6 +6,7 @@ This module deploys a storage account table service
 
 | Resource Type | API Version |
 | :-- | :-- |
+| `Microsoft.Insights/diagnosticSettings` | 2017-05-01-preview |
 | `Microsoft.Storage/storageAccounts/tableServices` | 2021-04-01 |
 | `Microsoft.Storage/storageAccounts/tableServices/tables` | 2021-06-01 |
 

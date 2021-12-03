@@ -6,6 +6,7 @@ This module deploys an Azure SQL Server.
 
 | Resource Type | API Version |
 | :-- | :-- |
+| `Microsoft.Insights/diagnosticSettings` | 2017-05-01-preview |
 | `Microsoft.Sql/servers/databases` | 2021-02-01-preview |
 
 ## Parameters

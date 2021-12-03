@@ -7,6 +7,7 @@ This module can be used to deploy a file share service into a storage account.
 | Resource Type | API Version |
 | :-- | :-- |
 | `Microsoft.Authorization/roleAssignments` | 2020-04-01-preview |
+| `Microsoft.Insights/diagnosticSettings` | 2017-05-01-preview |
 | `Microsoft.Storage/storageAccounts/queueServices` | 2021-04-01 |
 | `Microsoft.Storage/storageAccounts/queueServices/queues` | 2019-06-01 |
 
