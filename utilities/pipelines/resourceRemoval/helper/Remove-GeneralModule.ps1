@@ -41,20 +41,42 @@ function Get-DeploymentByName {
         [string] $Scope
     )
 
+    $resultSet = [System.Collections.ArrayList]@()
     switch ($Scope) {
         'resourceGroup' {
-            return Get-AzResourceGroupDeploymentOperation -DeploymentName $name -ResourceGroupName $resourceGroupName
+            $resultSet += Get-AzResourceGroupDeploymentOperation -DeploymentName $name -ResourceGroupName $resourceGroupName
         }
         'subscription' {
-            return Get-AzDeploymentOperation -DeploymentName $name
+            $resultSet += Get-AzDeploymentOperation -DeploymentName $name
+            foreach ($deployment in ($resultSet | Where-Object { $_.TargetResource -match '/deployments/' } )) {
+                $resultSet = $resultSet | Where-Object { $_.Id -ne $deployment.Id }
+                if ($deployment.TargetResource -match '/resourceGroups/') {
+                    # Resource Group Level Child Deployments
+                    $name = Split-Path $deployment.TargetResource -Leaf
+                    $resourceGroupName = $deployment.TargetResource.split('/')[6]
+                    $resultSet += Get-DeploymentByName -Name $name -ResourceGroupName $ResourceGroupName -Scope 'resourceGroup'
+                } else {
+                    # Subscription Level Deployments
+                    $resultSet += Get-AzDeploymentOperation -DeploymentName (Split-Path $deployment.TargetResource -Leaf)
+                }
+            }
         }
         'managementGroup' {
-            return Get-AzManagementGroupDeploymentOperation` -DeploymentName $name
+            $resultSet += Get-AzManagementGroupDeploymentOperation -DeploymentName $name
+            foreach ($deployment in ($resultSet | Where-Object { $_.TargetResource -match '/deployments/' } )) {
+                $resultSet = $resultSet | Where-Object { $_.Id -ne $deployment.Id }
+                $resultSet += Get-DeploymentByName -Name (Split-Path $deployment.TargetResource -Leaf) -Scope 'subscription'
+            }
         }
         'tenant' {
-            return Get-AzTenantDeploymentOperation -DeploymentName $name
+            $resultSet = Get-AzTenantDeploymentOperation -DeploymentName $name
+            foreach ($deployment in ($resultSet | Where-Object { $_.TargetResource -match '/deployments/' } )) {
+                $resultSet = $resultSet | Where-Object { $_.Id -ne $deployment.Id }
+                $resultSet += Get-DeploymentByName -Name (Split-Path $deployment.TargetResource -Leaf) -scope 'managementGroup'
+            }
         }
     }
+    return $resultSet
 }
 
 #endregion
@@ -226,8 +248,12 @@ function Remove-GeneralModule {
 
         # Remove resources
         # ----------------
-        if ($PSCmdlet.ShouldProcess(('[{0}] resources' -f (($resourcesToRemove -is [array]) ? $resourcesToRemove.Count : 1)), 'Remove')) {
-            Remove-Resource -resourceToRemove $resourcesToRemove -Verbose
+        if ($resourcesToRemove.Count -gt 0) {
+            if ($PSCmdlet.ShouldProcess(('[{0}] resources' -f (($resourcesToRemove -is [array]) ? $resourcesToRemove.Count : 1)), 'Remove')) {
+                Remove-Resource -resourceToRemove $resourcesToRemove -Verbose
+            }
+        } else {
+            Write-Verbose 'Found [0] resources to remove'
         }
     }
 
