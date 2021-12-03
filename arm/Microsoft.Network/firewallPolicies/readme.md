@@ -1,7 +1,6 @@
-# Network FirewallPolicies `[Microsoft.Network/firewallPolicies]`
+# Network Firewall Policies `[Microsoft.Network/firewallPolicies]`
 
-This module deploys Network FirewallPolicies.
-// TODO: Replace Resource and fill in description
+This module deploys Network Firewall Policies.
 
 ## Resource Types
 
@@ -47,10 +46,6 @@ This module deploys Network FirewallPolicies.
 | `tier` | string | `Standard` | `[Premium, Standard]` | Optional. Tier of Firewall Policy. |
 | `userAssignedIdentities` | object | `{object}` |  | Optional. The ID(s) to assign to the resource. |
 | `workspaces` | array | `[]` |  | Optional. List of workspaces for Firewall Policy Insights. |
-
-### Parameter Usage: `<ParameterPlaceholder>`
-
-// TODO: Fill in Parameter usage
 
 ### Parameter Usage: `tags`
 
