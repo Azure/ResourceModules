@@ -128,22 +128,22 @@ resource firewallPolicy 'Microsoft.Network/firewallPolicies@2021-03-01' = {
   tags: tags
   identity: identity
   properties: {
-    basePolicy: {
-      id: !empty(basePolicyResourceId) ? basePolicyResourceId : null
-    }
-    dnsSettings: {
+    basePolicy: !empty(basePolicyResourceId) ? {
+      id: basePolicyResourceId
+    } : null
+    dnsSettings: enableProxy ? {
       enableProxy: enableProxy
       requireProxyForNetworkRules: requireProxyForNetworkRules
       servers: servers
-    }
-    // explicitProxySettings: {
-    //   enableExplicitProxy: enableExplicitProxy
-    //   httpPort: (httpPort > 0) ? httpPort : null
-    //   httpsPort: (httpsPort > 0) ? httpsPort : null
-    //   pacFile: !empty(pacFile) ? pacFile : null
-    //   pacFilePort: (pacFilePort > 0) ? pacFilePort : null
-    // }
-    insights: {
+    } : null
+    explicitProxySettings: enableExplicitProxy ? {
+      enableExplicitProxy: enableExplicitProxy
+      httpPort: (httpPort > 0) ? httpPort : null
+      httpsPort: (httpsPort > 0) ? httpsPort : null
+      pacFile: !empty(pacFile) ? pacFile : null
+      pacFilePort: (pacFilePort > 0) ? pacFilePort : null
+    } : null
+    insights: isEnabled ? {
       isEnabled: isEnabled
       logAnalyticsResources: {
         defaultWorkspaceId: {
@@ -152,34 +152,34 @@ resource firewallPolicy 'Microsoft.Network/firewallPolicies@2021-03-01' = {
         workspaces: !empty(workspaces) ? workspaces : null
       }
       retentionDays: retentionDays
-    }
-    intrusionDetection: {
+    } : null
+    intrusionDetection: (mode != 'Off') ? {
       configuration: {
         bypassTrafficSettings: !empty(bypassTrafficSettings) ? bypassTrafficSettings : null
         signatureOverrides: !empty(signatureOverrides) ? signatureOverrides : null
       }
       mode: mode
-    }
+    } : null
     sku: {
       tier: tier
     }
-    snat: {
-      privateRanges: !empty(privateRanges) ? privateRanges : null
-    }
-    sql: {
+    snat: !empty(privateRanges) ? {
+      privateRanges: privateRanges
+    } : null
+    sql: allowSqlRedirect ? {
       allowSqlRedirect: allowSqlRedirect
-    }
+    } : null
     threatIntelMode: threatIntelMode
     threatIntelWhitelist: {
       fqdns: fqdns
       ipAddresses: ipAddresses
     }
-    // transportSecurity: {
-    //   certificateAuthority: {
-    //     keyVaultSecretId: !empty(keyVaultSecretId) ? keyVaultSecretId : null
-    //     name: !empty(certificateName) ? certificateName : null
-    //   }
-    // }
+    transportSecurity: (!empty(keyVaultSecretId) || !empty(certificateName)) ? {
+      certificateAuthority: {
+        keyVaultSecretId: !empty(keyVaultSecretId) ? keyVaultSecretId : null
+        name: !empty(certificateName) ? certificateName : null
+      }
+    } : null
   }
 }
 
