@@ -216,7 +216,10 @@ function New-Deployment {
     Write-Verbose 'Result' -Verbose
     Write-Verbose '------' -Verbose
     Write-Verbose ($res | Out-String) -Verbose
-    return $deploymentName
+    return @{
+        deploymentName   = $deploymentName
+        deploymentOutput = $res
+    }
 }
 
 #endregion

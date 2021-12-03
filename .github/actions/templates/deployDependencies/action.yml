@@ -70,16 +70,15 @@ runs:
         $res = New-ModuleDeployment @functionInput -Verbose
 
         # Get deployment name
-        if($res -is [hashtable]) {
-          $deploymentName = $res['DeploymentName']
-        } elseif($res -is [string]) {
-          $deploymentName = $res
-        } else {
-          throw ("Output-Type of New-ModuleDeployment invocation has invalid type [{0}]" -f $res.GetType())
-        }
+        $deploymentName = $res.deploymentName
         Write-Output ('::set-output name=deploymentName::{0}' -f $deploymentName)
 
-        if($res -is [hashtable]) {
+        # Populate further outputs
+        foreach($outputKey in $res.deploymentOutput.Keys) {
+          Write-Output ('::set-output name={0}::{1}' -f $outputKey, $output[$outputKey])
+        }
+
+        if($res.Exception) {
           # Happens only if there is an exception
           throw $res['Exception']
         }
