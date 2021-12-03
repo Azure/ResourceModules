@@ -119,48 +119,35 @@ jobs:
         with:
           # Name of variable file
           variableFileName: 'variables.module' # Don't write .json here
-      - name: 'Setup agent'
-        shell: pwsh
-        run: |
-          # Load used functions
-          . (Join-Path $env:GITHUB_WORKSPACE 'utilities' 'pipelines' 'sharedScripts' 'Set-EnvironmentOnAgent.ps1')
-
-          # Set agent up
-          Set-EnvironmentOnAgent
-      - name: Azure Login
-        uses: Azure/login@v1
-        with:
-          creds: ${{ env.AZURE_CREDENTIALS }}
-          enable-AzPSSession: true
-      # ---------------------- #
-      ##  Deploy Dependencies ##
-      # ---------------------- #
-      - name: 'Deploying dependencies for parameter file [${{ matrix.parameterFilePaths }}]'
-        uses: ./.github/actions/templates/deployDependencies
-        with:
-          templateFilePath: '${{ env.modulePath }}/deploy.bicep'
-          parameterFilePath: '${{ env.modulePath }}/.parameters/${{ matrix.parameterFilePaths }}'
-          location: '${{ env.defaultLocation }}'
-          resourceGroupName: '${{ format(env.rgPattern, matrix.parameterFilePaths) }}'
-          subscriptionId: '${{ secrets.ARM_SUBSCRIPTION_ID }}'
-          managementGroupId: '${{ secrets.ARM_MGMTGROUP_ID }}'
-      # ----------- #
-      ##  Dry Run  ##
-      # ----------- #
-      - name: 'Test module with parameter file [${{ matrix.parameterFilePaths }}]'
-        uses: ./.github/actions/templates/validateModuleDeploy
-        with:
-          templateFilePath: '${{ env.modulePath }}/deploy.bicep'
-          parameterFilePath: '${{ env.modulePath }}/.parameters/${{ matrix.parameterFilePaths }}'
-          location: '${{ env.defaultLocation }}'
-          resourceGroupName: '${{ format(env.rgPattern, matrix.parameterFilePaths) }}'
-          subscriptionId: '${{ secrets.ARM_SUBSCRIPTION_ID }}'
-          managementGroupId: '${{ secrets.ARM_MGMTGROUP_ID }}'
+      # # ---------------------- #
+      # ##  Deploy Dependencies ##
+      # # ---------------------- #
+      # - name: 'Deploying dependencies for parameter file [${{ matrix.parameterFilePaths }}]'
+      #   id: dependenciesDeployment
+      #   uses: ./.github/actions/templates/deployDependencies
+      #   with:
+      #     templateFilePath: '${{ env.modulePath }}/deploy.bicep'
+      #     parameterFilePath: '${{ env.modulePath }}/.parameters/${{ matrix.parameterFilePaths }}'
+      #     location: '${{ env.defaultLocation }}'
+      #     resourceGroupName: '${{ format(env.rgPattern, matrix.parameterFilePaths) }}'
+      #     subscriptionId: '${{ secrets.ARM_SUBSCRIPTION_ID }}'
+      #     managementGroupId: '${{ secrets.ARM_MGMTGROUP_ID }}'
+      # # ----------- #
+      # ##  Dry Run  ##
+      # # ----------- #
+      # - name: 'Test module with parameter file [${{ matrix.parameterFilePaths }}]'
+      #   uses: ./.github/actions/templates/validateModuleDeploy
+      #   with:
+      #     templateFilePath: '${{ env.modulePath }}/deploy.bicep'
+      #     parameterFilePath: '${{ env.modulePath }}/.parameters/${{ matrix.parameterFilePaths }}'
+      #     location: '${{ env.defaultLocation }}'
+      #     resourceGroupName: '${{ format(env.rgPattern, matrix.parameterFilePaths) }}'
+      #     subscriptionId: '${{ secrets.ARM_SUBSCRIPTION_ID }}'
+      #     managementGroupId: '${{ secrets.ARM_MGMTGROUP_ID }}'
       # ------------------- #
       ##  Deploy & Remove  ##
       # ------------------- #
       - name: 'Deploy module with parameter file [${{ matrix.parameterFilePaths }}]'
-        id: step_deploy
         uses: ./.github/actions/templates/deployModule
         with:
           templateFilePath: '${{ env.modulePath }}/deploy.bicep'
@@ -171,36 +158,36 @@ jobs:
           managementGroupId: '${{ secrets.ARM_MGMTGROUP_ID }}'
           removeDeployment: '${{ needs.job_set_workflow_param.outputs.removeDeployment }}'
 
-  ###############
-  #   PUBLISH   #
-  ###############
-  job_publish_module:
-    name: 'Publish module'
-    if: contains(fromJson('["refs/heads/main", "refs/heads/master"]'), github.ref)
-    runs-on: ubuntu-20.04
-    needs:
-      - job_set_workflow_param
-      - job_module_deploy_validation
-    steps:
-      - name: 'Checkout'
-        uses: actions/checkout@v2
-        with:
-          fetch-depth: 0
-      - name: Set environment variables
-        uses: deep-mm/set-variables@v1.0
-        with:
-          # Name of variable file
-          variableFileName: 'variables.module' # Don't write .json here
-      - name: 'Publish module'
-        uses: ./.github/actions/templates/publishModule
-        with:
-          templateFilePath: '${{ env.modulePath }}/deploy.bicep'
-          versioningOption: '${{ needs.job_set_workflow_param.outputs.versioningOption }}'
-          customVersion: '${{ needs.job_set_workflow_param.outputs.customVersion }}'
-          templateSpecsRGName: '${{ env.templateSpecsRGName }}'
-          templateSpecsRGLocation: '${{ env.templateSpecsRGLocation }}'
-          templateSpecsDescription: '${{ env.templateSpecsDescription }}'
-          templateSpecsDoPublish: '${{ env.templateSpecsDoPublish }}'
-          bicepRegistryName: '${{ env.bicepRegistryName }}'
-          bicepRegistryRGName: '${{ env.bicepRegistryRGName }}'
-          bicepRegistryDoPublish: '${{ env.bicepRegistryDoPublish }}'
+  # ###############
+  # #   PUBLISH   #
+  # ###############
+  # job_publish_module:
+  #   name: 'Publish module'
+  #   if: contains(fromJson('["refs/heads/main", "refs/heads/master"]'), github.ref)
+  #   runs-on: ubuntu-20.04
+  #   needs:
+  #     - job_set_workflow_param
+  #     - job_module_deploy_validation
+  #   steps:
+  #     - name: 'Checkout'
+  #       uses: actions/checkout@v2
+  #       with:
+  #         fetch-depth: 0
+  #     - name: Set environment variables
+  #       uses: deep-mm/set-variables@v1.0
+  #       with:
+  #         # Name of variable file
+  #         variableFileName: 'variables.module' # Don't write .json here
+  #     - name: 'Publish module'
+  #       uses: ./.github/actions/templates/publishModule
+  #       with:
+  #         templateFilePath: '${{ env.modulePath }}/deploy.bicep'
+  #         versioningOption: '${{ needs.job_set_workflow_param.outputs.versioningOption }}'
+  #         customVersion: '${{ needs.job_set_workflow_param.outputs.customVersion }}'
+  #         templateSpecsRGName: '${{ env.templateSpecsRGName }}'
+  #         templateSpecsRGLocation: '${{ env.templateSpecsRGLocation }}'
+  #         templateSpecsDescription: '${{ env.templateSpecsDescription }}'
+  #         templateSpecsDoPublish: '${{ env.templateSpecsDoPublish }}'
+  #         bicepRegistryName: '${{ env.bicepRegistryName }}'
+  #         bicepRegistryRGName: '${{ env.bicepRegistryRGName }}'
+  #         bicepRegistryDoPublish: '${{ env.bicepRegistryDoPublish }}'

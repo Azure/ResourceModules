@@ -20,6 +20,10 @@ inputs:
   managementGroupId:
     description: 'The managementGroupId to deploy to'
     required: false
+outputs:
+  dependenciesDeploymentName:
+    description: 'The name of the dependencies deployment'
+    value: ${{ steps.dependencies_step.outputs.dependenciesDeploymentName }}
 
 runs:
   using: 'composite'
@@ -76,13 +80,7 @@ runs:
         $res = New-ModuleDeployment @functionInput -Verbose
 
         # Get deployment name
-        Write-Output ('::set-output name={0}::{1}' -f 'deploymentName', $res.deploymentName)
-
-        # Populate further outputs
-        foreach ($outputKey in $res.deploymentOutput.Keys) {
-            Write-Verbose ('Exporting output [{0}] with value [{1}]' -f $outputKey, $res.deploymentOutput[$outputKey].Value) -Verbose
-            Write-Output ('::set-output name={0}::{1}' -f $outputKey, $res.deploymentOutput[$outputKey].Value)
-        }
+        Write-Output ('::set-output name={0}::{1}' -f 'dependenciesDeploymentName', $res.deploymentName)
 
         if ($res.ContainsKey('exception')) {
             # Happens only if there is an exception

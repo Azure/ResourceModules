@@ -214,12 +214,12 @@ function Remove-GeneralModule {
         $resourcesToRemove = $resourcesToRemove | Where-Object { $_.Name -notin $dependencyResourceNames }
 
         # Order resources
-        # If virutal machines are contained, remove them next
+        # If virutal machines are contained, remove them first
         if ($vmsContained = $resourcesToRemove | Where-Object { $_.type -eq 'Microsoft.Compute/virtualMachines' }) {
             $resourcesToRemove = $vmsContained + ($resourcesToRemove | Where-Object { $_.type -ne 'Microsoft.Compute/virtualMachines' })
         }
 
-        # If resource groups are contained, remove them first
+        # If resource groups are contained, remove them second
         if ($rgsContained = $resourcesToRemove | Where-Object { $_.type -eq 'Microsoft.Resources/resourceGroups' }) {
             $resourcesToRemove = $rgsContained + ($resourcesToRemove | Where-Object { $_.type -ne 'Microsoft.Resources/resourceGroups' })
         }
