@@ -305,7 +305,7 @@ function New-ModuleDeployment {
 
     process {
         ## Assess Provided Parameter Path
-        if ((Test-Path -Path $parameterFilePath -PathType Container) -and $parameterFilePath.Length -eq 1) {
+        if ((-not [String]::IsNullOrEmpty($parameterFilePath)) -and (Test-Path -Path $parameterFilePath -PathType 'Container') -and $parameterFilePath.Length -eq 1) {
             ## Transform Path to Files
             $parameterFilePath = Get-ChildItem $parameterFilePath -Recurse -Filter *.json | Select-Object -ExpandProperty FullName
             Write-Verbose "Detected Parameter File(s)/Directory - Count: `n $($parameterFilePath.Count)"
