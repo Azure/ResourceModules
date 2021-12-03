@@ -39,15 +39,16 @@ runs:
         creds: ${{ env.AZURE_CREDENTIALS }}
         enable-AzPSSession: true
 
-    - name: 'Deploy [${{ inputs.templateFilePath }}] with parameters [${{ inputs.parameterFilePath }}]'
+    - name: 'Deploy dependencies for template [${{ inputs.templateFilePath }}]'
       shell: pwsh
       id: deploy_step
       run: |
         # Load used functions
         . (Join-Path $env:GITHUB_WORKSPACE 'utilities' 'pipelines' 'resourceDeployment' 'New-ModuleDeployment.ps1')
 
-        $namespace = Split-Path '${{ inputs.templateFilePath }}'.TrimStart('arm') -Parent
-        $dependencyTemplateFilePath = Join-Path 'utilities' 'pipelines' 'moduleDependencies' $namespace
+        $namespacePath = Split-Path '${{ inputs.templateFilePath }}'.TrimStart('arm') -Parent
+        $templateFileName = Split-Path '${{ inputs.parameterFilePath }}' -LeafBase
+        $dependencyTemplateFilePath = Join-Path 'utilities' 'pipelines' 'moduleDependencies' $namespacePath $templateFileName
 
         $functionInput = @{
           templateFilePath   = Join-Path $env:GITHUB_WORKSPACE $dependencyTemplateFilePath
