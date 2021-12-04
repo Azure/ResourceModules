@@ -242,7 +242,7 @@ runs:
           throw $dependenciesDeploymentException
         }
 
-        $deploymentException = "${{ steps.deploy_step.outputs.deploymentException }}""
+        $deploymentException = "${{ steps.deploy_step.outputs.deploymentException }}"
         if($deploymentException) {
           Write-Verbose "Test deployment failed" -Verbose
           throw $deploymentException

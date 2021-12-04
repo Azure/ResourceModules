@@ -30,18 +30,6 @@
             #     }
             #     Remove-vWan @inputObject -Verbose
             # }
-            # 'virtualMachines' {
-            #     Write-Verbose 'Run virtual machine removal script' -Verbose
-            #     # Load function
-            #     . (Join-Path $PSScriptRoot 'helper' 'Remove-VirtualMachine.ps1')
-
-            #     # Invoke removal
-            #     $inputObject = @{
-            #         deploymentName    = $deploymentName
-            #         ResourceGroupName = $ResourceGroupName
-            #     }
-            #     Remove-VirtualMachine @inputObject -Verbose
-            # }
             default {
                 Write-Verbose 'Run default removal script' -Verbose
                 # Load function
