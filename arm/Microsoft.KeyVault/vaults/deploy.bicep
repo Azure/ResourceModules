@@ -210,7 +210,7 @@ resource keyVault_diagnosticSettings 'Microsoft.Insights/diagnosticsettings@2017
 }
 
 module keyVault_accessPolicies 'accessPolicies/deploy.bicep' = if (!empty(accessPolicies)) {
-  name: '${uniqueString(deployment().name, location)}-AccessPolicies'
+  name: '${uniqueString(deployment().name, location)}-KeyVault-AccessPolicies'
   params: {
     keyVaultName: keyVault.name
     accessPolicies: formattedAccessPolicies
@@ -218,7 +218,7 @@ module keyVault_accessPolicies 'accessPolicies/deploy.bicep' = if (!empty(access
 }
 
 module keyVault_secrets 'secrets/deploy.bicep' = [for (secret, index) in secrets: {
-  name: '${uniqueString(deployment().name, location)}-Secret-${index}'
+  name: '${uniqueString(deployment().name, location)}-KeyVault-Secret-${index}'
   params: {
     name: secret.name
     value: secret.value
@@ -233,7 +233,7 @@ module keyVault_secrets 'secrets/deploy.bicep' = [for (secret, index) in secrets
 }]
 
 module keyVault_keys 'keys/deploy.bicep' = [for (key, index) in keys: {
-  name: '${uniqueString(deployment().name, location)}-Key-${index}'
+  name: '${uniqueString(deployment().name, location)}-KeyVault-Key-${index}'
   params: {
     name: key.name
     keyVaultName: keyVault.name
@@ -250,7 +250,7 @@ module keyVault_keys 'keys/deploy.bicep' = [for (key, index) in keys: {
 }]
 
 module keyVault_privateEndpoints '.bicep/nested_privateEndpoint.bicep' = [for (privateEndpoint, index) in privateEndpoints: {
-  name: '${uniqueString(deployment().name, location)}-PrivateEndpoint-${index}'
+  name: '${uniqueString(deployment().name, location)}-KeyVault-PrivateEndpoint-${index}'
   params: {
     privateEndpointResourceId: keyVault.id
     privateEndpointVnetLocation: (empty(privateEndpoints) ? 'dummy' : reference(split(privateEndpoint.subnetResourceId, '/subnets/')[0], '2020-06-01', 'Full').location)
@@ -260,7 +260,7 @@ module keyVault_privateEndpoints '.bicep/nested_privateEndpoint.bicep' = [for (p
 }]
 
 module keyVault_rbac '.bicep/nested_rbac.bicep' = [for (roleAssignment, index) in roleAssignments: {
-  name: '${deployment().name}-rbac-${index}'
+  name: '${uniqueString(deployment().name, location)}-KeyVault-Rbac-${index}'
   params: {
     principalIds: roleAssignment.principalIds
     roleDefinitionIdOrName: roleAssignment.roleDefinitionIdOrName
@@ -278,4 +278,4 @@ output keyVaultResourceGroup string = resourceGroup().name
 output keyVaultName string = keyVault.name
 
 @description('The URL of the Key Vault.')
-output keyVaultUrl string = reference(keyVault.id, '2016-10-01').vaultUri
+output keyVaultUrl string = keyVault.properties.vaultUri
