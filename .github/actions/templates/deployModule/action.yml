@@ -248,4 +248,4 @@ runs:
           throw $deploymentException
         }
 
-        Write-Verbose "All deployments successful" -Verbose
+        Write-Verbose "All deployments were successful" -Verbose
