@@ -140,7 +140,7 @@ resource rsv 'Microsoft.RecoveryServices/vaults@2021-08-01' = {
   properties: {}
 }
 
-module rsv_backupStorageConfiguration 'backupStorageConfig/deploy.bicep' = {
+module rsv_backupStorageConfiguration 'backupStorageConfig/deploy.bicep' = if (!empty(backupStorageConfig)) {
   name: '${uniqueString(deployment().name, location)}-RSV-BackupStorageConfig'
   params: {
     recoveryVaultName: rsv.name
