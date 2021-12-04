@@ -53,7 +53,7 @@ resource gallery_lock 'Microsoft.Authorization/locks@2016-09-01' = if (lock != '
 }
 
 module gallery_rbac '.bicep/nested_rbac.bicep' = [for (roleAssignment, index) in roleAssignments: {
-  name: '${uniqueString(deployment().name, location)}-rbac-${index}'
+  name: '${uniqueString(deployment().name, location)}-Gallery-Rbac-${index}'
   params: {
     principalIds: roleAssignment.principalIds
     roleDefinitionIdOrName: roleAssignment.roleDefinitionIdOrName
@@ -63,7 +63,7 @@ module gallery_rbac '.bicep/nested_rbac.bicep' = [for (roleAssignment, index) in
 
 // Images
 module galleries_images 'images/deploy.bicep' = [for (image, index) in images: {
-  name: '${uniqueString(deployment().name, location)}-Image-${index}'
+  name: '${uniqueString(deployment().name, location)}-Gallery-Image-${index}'
   params: {
     name: image.name
     galleryName: gallery.name

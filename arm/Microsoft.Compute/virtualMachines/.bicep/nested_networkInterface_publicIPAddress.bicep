@@ -75,7 +75,7 @@ resource publicIpAddress_diagnosticSettings 'Microsoft.Insights/diagnosticsettin
 }
 
 module publicIpAddress_rbac 'nested_networkInterface_publicIPAddress_rbac.bicep' = [for (roleAssignment, index) in roleAssignments: {
-  name: '${deployment().name}-rbac-${index}'
+  name: '${deployment().name}-Rbac-${index}'
   params: {
     principalIds: roleAssignment.principalIds
     roleDefinitionIdOrName: roleAssignment.roleDefinitionIdOrName
