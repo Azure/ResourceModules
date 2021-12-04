@@ -33,8 +33,16 @@ param condition string = ''
 ])
 param conditionVersion string = '2.0'
 
-@sys.description('Optional. The principal type of the assigned principal ID. Allowed Values "ServicePrincipal", "Group", "User", "ForeignGroup", "Device"')
-param principalType string = 'ServicePrincipal'
+@sys.description('Optional. The principal type of the assigned principal ID.')
+@allowed([
+  'ServicePrincipal'
+  'Group'
+  'User'
+  'ForeignGroup'
+  'Device'
+  ''
+])
+param principalType string = ''
 
 module roleAssignment_mg '.bicep/nested_rbac_mg.bicep' = if (!empty(managementGroupId) && empty(subscriptionId) && empty(resourceGroupName)) {
   name: '${uniqueString(deployment().name, location)}-roleAssignment-mg-Module'
@@ -44,7 +52,7 @@ module roleAssignment_mg '.bicep/nested_rbac_mg.bicep' = if (!empty(managementGr
     principalId: principalId
     managementGroupId: managementGroupId
     description: !empty(description) ? description : ''
-    principalType: !empty(principalType) ? principalType : ''
+    principalType: principalType
     delegatedManagedIdentityResourceId: !empty(delegatedManagedIdentityResourceId) ? delegatedManagedIdentityResourceId : ''
     conditionVersion: conditionVersion
     condition: !empty(condition) ? condition : ''
@@ -59,7 +67,7 @@ module roleAssignment_sub '.bicep/nested_rbac_sub.bicep' = if (empty(managementG
     principalId: principalId
     subscriptionId: subscriptionId
     description: !empty(description) ? description : ''
-    principalType: !empty(principalType) ? principalType : ''
+    principalType: principalType
     delegatedManagedIdentityResourceId: !empty(delegatedManagedIdentityResourceId) ? delegatedManagedIdentityResourceId : ''
     conditionVersion: conditionVersion
     condition: !empty(condition) ? condition : ''
