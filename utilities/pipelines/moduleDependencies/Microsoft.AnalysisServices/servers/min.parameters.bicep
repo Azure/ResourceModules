@@ -5,10 +5,10 @@ targetScope = 'subscription'
 // ========== //
 
 // Resource Group
+@description('Required. The name of the resource group to deploy for a testing purposes')
 param resourceGroupName string
 
 // Shared
-// var deploymentPrefix = 'analysisServicesServersParameters'
 var location = deployment().location
 
 // =========== //
@@ -18,7 +18,6 @@ var location = deployment().location
 // Resource Group
 module resourceGroup '../../../../../arm/Microsoft.Resources/resourceGroups/deploy.bicep' = {
   name: '${uniqueString(deployment().name, location)}-rg'
-  // scope: subscription()
   params: {
     name: resourceGroupName
     location: location
