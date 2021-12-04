@@ -43,7 +43,7 @@
                 {
                     "name": "sxx-az-subnet-x-003",
                     "addressPrefix": "10.0.6.0/24",
-                    "privateEndpointNetworkPolicies": "Disabled", // This property must be set to disabled for subnets that contain private endpoints. It confirms that NSGs rules will not apply to private endpoints (currently not supported). Default Value when not specified is "Enabled".
+                    "privateEndpointNetworkPolicies": "Disabled",
                     "privateLinkServiceNetworkPolicies": "Enabled"
                 }
             ]
