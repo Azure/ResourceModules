@@ -161,18 +161,18 @@ module virtualNetwork_peering_local 'virtualNetworkPeerings/deploy.bicep' = [for
 }]
 
 // Remote to local peering (reverse)
-module virtualNetwork_peering_remote 'virtualNetworkPeerings/deploy.bicep' = [for (peering, index) in virtualNetworkPeerings: if (contains(peering, 'reversePeeringEnabled') ? peering.reversePeeringEnabled == true : false) {
+module virtualNetwork_peering_remote 'virtualNetworkPeerings/deploy.bicep' = [for (peering, index) in virtualNetworkPeerings: if (contains(peering, 'remotePeeringEnabled') ? peering.remotePeeringEnabled == true : false) {
   name: '${uniqueString(deployment().name, location)}-virtualNetworkPeering-remote-${index}'
   scope: resourceGroup(split(peering.remoteVirtualNetworkId, '/')[4])
   params: {
     localVnetName: last(split(peering.remoteVirtualNetworkId, '/'))
     remoteVirtualNetworkId: virtualNetwork.id
-    name: contains(peering, 'reversePeeringName') ? peering.reversePeeringName : '${last(split(peering.remoteVirtualNetworkId, '/'))}-${name}'
-    allowForwardedTraffic: contains(peering, 'reversePeeringAllowForwardedTraffic') ? peering.reversePeeringAllowForwardedTraffic : true
-    allowGatewayTransit: contains(peering, 'reversePeeringAllowGatewayTransit') ? peering.reversePeeringAllowGatewayTransit : false
-    allowVirtualNetworkAccess: contains(peering, 'reversePeeringAllowVirtualNetworkAccess') ? peering.reversePeeringAllowVirtualNetworkAccess : true
-    doNotVerifyRemoteGateways: contains(peering, 'reversePeeringDoNotVerifyRemoteGateways') ? peering.reversePeeringDoNotVerifyRemoteGateways : true
-    useRemoteGateways: contains(peering, 'reversePeeringUseRemoteGateways') ? peering.reversePeeringUseRemoteGateways : false
+    name: contains(peering, 'remotePeeringName') ? peering.remotePeeringName : '${last(split(peering.remoteVirtualNetworkId, '/'))}-${name}'
+    allowForwardedTraffic: contains(peering, 'remotePeeringAllowForwardedTraffic') ? peering.remotePeeringAllowForwardedTraffic : true
+    allowGatewayTransit: contains(peering, 'remotePeeringAllowGatewayTransit') ? peering.remotePeeringAllowGatewayTransit : false
+    allowVirtualNetworkAccess: contains(peering, 'remotePeeringAllowVirtualNetworkAccess') ? peering.remotePeeringAllowVirtualNetworkAccess : true
+    doNotVerifyRemoteGateways: contains(peering, 'remotePeeringDoNotVerifyRemoteGateways') ? peering.remotePeeringDoNotVerifyRemoteGateways : true
+    useRemoteGateways: contains(peering, 'remotePeeringUseRemoteGateways') ? peering.remotePeeringUseRemoteGateways : false
   }
   dependsOn: [
     virtualNetwork_subnets

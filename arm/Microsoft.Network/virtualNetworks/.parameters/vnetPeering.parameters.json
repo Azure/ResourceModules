@@ -26,10 +26,10 @@
                     "allowGatewayTransit": false,
                     "allowVirtualNetworkAccess": true,
                     "useRemoteGateways": false,
-                    "reversePeeringEnabled": true,
-                    "reversePeeringName": "customName",
-                    "reversePeeringAllowVirtualNetworkAccess": true,
-                    "reversePeeringAllowForwardedTraffic": true
+                    "remotePeeringEnabled": true,
+                    "remotePeeringName": "customName",
+                    "remotePeeringAllowVirtualNetworkAccess": true,
+                    "remotePeeringAllowForwardedTraffic": true
                 }
             ]
         },
