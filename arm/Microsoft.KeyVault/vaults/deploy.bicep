@@ -152,6 +152,13 @@ var networkAcls_var = {
   ipRules: (empty(networkAcls) ? null : ((length(networkAcls.ipRules) == 0) ? [] : networkAcls.ipRules))
 }
 
+var formattedAccessPolicies = [for accessPolicy in accessPolicies: {
+  applicationId: contains(accessPolicy, 'applicationId') ? accessPolicy.applicationId : ''
+  objectId: contains(accessPolicy, 'objectId') ? accessPolicy.objectId : ''
+  permissions: accessPolicy.permissions
+  tenantId: contains(accessPolicy, 'tenantId') ? accessPolicy.tenantId : tenant().tenantId
+}]
+
 module pid_cuaId '.bicep/nested_cuaId.bicep' = if (!empty(cuaId)) {
   name: 'pid-${cuaId}'
   params: {}
@@ -171,7 +178,7 @@ resource keyVault 'Microsoft.KeyVault/vaults@2019-09-01' = {
     createMode: createMode
     enablePurgeProtection: ((!enablePurgeProtection) ? null : enablePurgeProtection)
     tenantId: subscription().tenantId
-    accessPolicies: accessPolicies
+    accessPolicies: formattedAccessPolicies
     sku: {
       name: vaultSku
       family: 'A'
@@ -202,6 +209,14 @@ resource keyVault_diagnosticSettings 'Microsoft.Insights/diagnosticsettings@2017
   scope: keyVault
 }
 
+module keyVault_accessPolicies 'accessPolicies/deploy.bicep' = if (!empty(accessPolicies)) {
+  name: '${uniqueString(deployment().name, location)}-AccessPolicies'
+  params: {
+    keyVaultName: keyVault.name
+    accessPolicies: formattedAccessPolicies
+  }
+}
+
 module keyVault_secrets 'secrets/deploy.bicep' = [for (secret, index) in secrets: {
   name: '${uniqueString(deployment().name, location)}-Secret-${index}'
   params: {
@@ -213,10 +228,8 @@ module keyVault_secrets 'secrets/deploy.bicep' = [for (secret, index) in secrets
     attributesNbf: contains(secret, 'attributesNbf') ? secret.attributesNbf : -1
     contentType: contains(secret, 'contentType') ? secret.contentType : ''
     tags: contains(secret, 'tags') ? secret.tags : {}
+    roleAssignments: contains(secret, 'roleAssignments') ? secret.roleAssignments : []
   }
-  dependsOn: [
-    keyVault
-  ]
 }]
 
 module keyVault_keys 'keys/deploy.bicep' = [for (key, index) in keys: {
@@ -232,10 +245,8 @@ module keyVault_keys 'keys/deploy.bicep' = [for (key, index) in keys: {
     keySize: contains(key, 'keySize') ? key.keySize : -1
     kty: contains(key, 'kty') ? key.kty : 'EC'
     tags: contains(key, 'tags') ? key.tags : {}
+    roleAssignments: contains(key, 'roleAssignments') ? key.roleAssignments : []
   }
-  dependsOn: [
-    keyVault
-  ]
 }]
 
 module keyVault_privateEndpoints '.bicep/nested_privateEndpoint.bicep' = [for (privateEndpoint, index) in privateEndpoints: {
