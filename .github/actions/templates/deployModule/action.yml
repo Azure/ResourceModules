@@ -63,10 +63,11 @@ runs:
         }
 
         $functionInput = @{
-          templateFilePath     = $dependencyTemplateFilePath
-          location             = '${{ inputs.location }}'
-          subscriptionId       = '${{ inputs.subscriptionId }}'
-          managementGroupId    = '${{ inputs.managementGroupId }}'
+          templateFilePath   = $dependencyTemplateFilePath
+          location           = '${{ inputs.location }}'
+          subscriptionId     = '${{ inputs.subscriptionId }}'
+          managementGroupId  = '${{ inputs.managementGroupId }}'
+          doNotThrow         = $true
         }
 
         if(-not [String]::IsNullOrEmpty('${{ inputs.resourceGroupName }}')) {
