@@ -45,7 +45,7 @@ function Get-DeploymentByName {
     switch ($Scope) {
         'resourceGroup' {
             if (Get-AzResourceGroup -Name $resourceGroupName -ErrorAction 'SilentlyContinue') {
-                $resultSet += (Get-AzResourceGroupDeploymentOperation -DeploymentName $name -ResourceGroupName $resourceGroupName).TargetResource
+                $resultSet += (Get-AzResourceGroupDeploymentOperation -DeploymentName $name -ResourceGroupName $resourceGroupName).TargetResource | Where-Object { $_ -ne $null }
             } else {
                 # In case the resource group itself was already deleted, there is no need to try and fetch deployments from it
                 # In case we already have any such resources in the list, we should remove them
@@ -53,7 +53,7 @@ function Get-DeploymentByName {
             }
         }
         'subscription' {
-            $resultSet += (Get-AzDeploymentOperation -DeploymentName $name).TargetResource
+            $resultSet += (Get-AzDeploymentOperation -DeploymentName $name).TargetResource | Where-Object { $_ -ne $null }
             foreach ($deployment in ($resultSet | Where-Object { $_ -match '/deployments/' } )) {
                 $resultSet = $resultSet | Where-Object { $_ -ne $deployment }
                 if ($deployment -match '/resourceGroups/') {
@@ -68,7 +68,7 @@ function Get-DeploymentByName {
             }
         }
         'managementGroup' {
-            $resultSet += (Get-AzManagementGroupDeploymentOperation -DeploymentName $name).TargetResource
+            $resultSet += (Get-AzManagementGroupDeploymentOperation -DeploymentName $name).TargetResource | Where-Object { $_ -ne $null }
             foreach ($deployment in ($resultSet | Where-Object { $_ -match '/deployments/' } )) {
                 $resultSet = $resultSet | Where-Object { $_ -ne $deployment }
                 if ($deployment -match '/managementGroup/') {
@@ -81,7 +81,7 @@ function Get-DeploymentByName {
             }
         }
         'tenant' {
-            $resultSet = (Get-AzTenantDeploymentOperation -DeploymentName $name).TargetResource
+            $resultSet = (Get-AzTenantDeploymentOperation -DeploymentName $name).TargetResource | Where-Object { $_ -ne $null }
             foreach ($deployment in ($resultSet | Where-Object { $_ -match '/deployments/' } )) {
                 $resultSet = $resultSet | Where-Object { $_ -ne $deployment }
                 if ($deployment -match '/tenant/') {
@@ -171,7 +171,7 @@ function Get-FormattedResources {
             }
             { $PSItem -ge 8 } {
                 # child-resource level
-                $indexOfResourceType = $parts.IndexOf(($parts -like 'Microsoft.**')[0])
+                $indexOfResourceType = $idElements.IndexOf(($idElements -like 'Microsoft.**')[0])
                 $type = $idElements[$indexOfResourceType, ($indexOfResourceType + 1)] -join '/'
 
                 # Concat rest of resource type along the ID
@@ -284,8 +284,8 @@ function Remove-GeneralModule {
         }
 
         # Fundamental checks
-        if ($scope -eq 'resourceGroup' -and -not (Get-AzResourceGroup -Name $resourceGroupName -ErrorAction 'SilentlyContinue')) {
-            Write-Verbose "Resource group [$ResourceGroupName] does not exist (anymore). Skipping removal of its contained resources"
+        if ($deploymentScope -eq 'resourceGroup' -and -not (Get-AzResourceGroup -Name $resourceGroupName -ErrorAction 'SilentlyContinue')) {
+            Write-Verbose "Resource group [$ResourceGroupName] does not exist (anymore). Skipping removal of its contained resources" -Verbose
             return
         }
 
