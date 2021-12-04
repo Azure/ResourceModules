@@ -327,7 +327,7 @@ resource roleAssignment 'Microsoft.Authorization/roleAssignments@2021-04-01-prev
     roleDefinitionId: roleDefinitionId_var
     principalId: principalId
     description: !empty(description) ? description : null
-    principalType: !empty(principalType) ? principalType : null
+    principalType: any(!empty(principalType) ? principalType : null)
     delegatedManagedIdentityResourceId: !empty(delegatedManagedIdentityResourceId) ? delegatedManagedIdentityResourceId : null
     conditionVersion: !empty(conditionVersion) && !empty(condition) ? conditionVersion : null
     condition: !empty(condition) ? condition : null
