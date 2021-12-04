@@ -234,14 +234,18 @@ runs:
       shell: pwsh
       if: always()
       run: |
+        Write-Verbose "Reporting pipeline status" -Verbose
+
         $dependenciesDeploymentException = ConvertFrom-Json '${{ steps.dependencies_step.outputs.dependencyDeploymentException }}'
         if($dependenciesDeploymentException) {
           Write-Verbose "Dependencies deployment failed" -Verbose
           throw $dependenciesDeploymentException
         }
 
-        $deploymentException = ConvertFrom-Json '${{ steps.dependencies_step.outputs.deploymentException }}'
+        $deploymentException = ConvertFrom-Json '${{ steps.deploy_step.outputs.deploymentException }}'
         if($deploymentException) {
           Write-Verbose "Test deployment failed" -Verbose
           throw $deploymentException
         }
+
+        Write-Verbose "All deployments successful" -Verbose

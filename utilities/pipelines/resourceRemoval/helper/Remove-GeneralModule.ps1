@@ -5,7 +5,7 @@
 Get all deployments that match a given deployment name in a given scope
 
 .DESCRIPTION
-Get all deployments that match a given deployment name in a given scope
+Get all deployments that match a given deployment name in a given scope. Works recursively through the deployment tree.
 
 .PARAMETER Name
 Mandatory. The deployment name to search for
