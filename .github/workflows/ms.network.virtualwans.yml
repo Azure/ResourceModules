@@ -33,6 +33,7 @@ on:
 env:
   modulePath: 'arm/Microsoft.Network/virtualWans'
   workflowPath: '.github/workflows/ms.network.virtualwans.yml'
+  rgPattern: 'test-virtualWan-{0}-rg'
   AZURE_CREDENTIALS: ${{ secrets.AZURE_CREDENTIALS }}
   ARM_SUBSCRIPTION_ID: '${{ secrets.ARM_SUBSCRIPTION_ID }}'
   ARM_MGMTGROUP_ID: '${{ secrets.ARM_MGMTGROUP_ID }}'
@@ -116,35 +117,20 @@ jobs:
       - name: Set environment variables
         uses: deep-mm/set-variables@v1.0
         with:
-          # Name of variable file
-          variableFileName: 'variables.module' # Don't write .json here
-      # ----------- #
-      ##  Dry Run  ##
-      # ----------- #
-      - name: 'Test module with parameter file [${{ matrix.parameterFilePaths }}]'
-        uses: ./.github/actions/templates/validateModuleDeploy
-        with:
-          templateFilePath: '${{ env.modulePath }}/deploy.bicep'
-          parameterFilePath: '${{ env.modulePath }}/.parameters/${{ matrix.parameterFilePaths }}'
-          location: '${{ env.defaultLocation }}'
-          resourceGroupName: '${{ env.resourceGroupName }}'
-          subscriptionId: '${{ secrets.ARM_SUBSCRIPTION_ID }}'
-          managementGroupId: '${{ secrets.ARM_MGMTGROUP_ID }}'
+          variableFileName: 'variables.module'
       # ------------------- #
       ##  Deploy & Remove  ##
       # ------------------- #
       - name: 'Deploy module with parameter file [${{ matrix.parameterFilePaths }}]'
-        id: step_deploy
         uses: ./.github/actions/templates/deployModule
         with:
           templateFilePath: '${{ env.modulePath }}/deploy.bicep'
           parameterFilePath: '${{ env.modulePath }}/.parameters/${{ matrix.parameterFilePaths }}'
           location: '${{ env.defaultLocation }}'
-          resourceGroupName: '${{ env.resourceGroupName }}'
+          resourceGroupName: '${{ format(env.rgPattern, matrix.parameterFilePaths) }}'
           subscriptionId: '${{ secrets.ARM_SUBSCRIPTION_ID }}'
           managementGroupId: '${{ secrets.ARM_MGMTGROUP_ID }}'
           removeDeployment: '${{ needs.job_set_workflow_param.outputs.removeDeployment }}'
-
   ###############
   #   PUBLISH   #
   ###############
@@ -163,8 +149,7 @@ jobs:
       - name: Set environment variables
         uses: deep-mm/set-variables@v1.0
         with:
-          # Name of variable file
-          variableFileName: 'variables.module' # Don't write .json here
+          variableFileName: 'variables.module'
       - name: 'Publish module'
         uses: ./.github/actions/templates/publishModule
         with:
