@@ -55,7 +55,7 @@ resource publicIpPrefix_lock 'Microsoft.Authorization/locks@2016-09-01' = if (lo
 }
 
 module publicIpPrefix_rbac '.bicep/nested_rbac.bicep' = [for (roleAssignment, index) in roleAssignments: {
-  name: '${deployment().name}-rbac-${index}'
+  name: '${uniqueString(deployment().name, location)}-PIPPrefix-Rbac-${index}'
   params: {
     principalIds: roleAssignment.principalIds
     roleDefinitionIdOrName: roleAssignment.roleDefinitionIdOrName
