@@ -28,7 +28,7 @@ function Remove-ResourceInner {
 
     foreach ($resource in $resourceToRemove) {
 
-        if ($processedResources | Where-Object { $resource.resourceId -match $_.resourceId }) {
+        if (($processedResources | Where-Object { $resource.resourceId -match $_.resourceId }) -and -not (Get-AzResource -ResourceId $resource.resourceId -ErrorAction 'SilentlyContinue')) {
             # Skipping
             Write-Verbose ('Skipping resource [{0}] of type [{1}] as parent resource was already processed' -f $resource.name, $resource.type) -Verbose
             $processedResources += $resource.resourceId
