@@ -289,6 +289,7 @@ function Remove-GeneralModule {
             return
         }
 
+        # Fetch deployments
         $searchRetryCount = 1
         do {
             $deployments = Get-DeploymentByName -name $deploymentName -scope $deploymentScope -resourceGroupName $resourceGroupName -ErrorAction 'SilentlyContinue'
