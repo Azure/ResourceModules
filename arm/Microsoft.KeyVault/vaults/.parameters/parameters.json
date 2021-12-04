@@ -61,9 +61,9 @@
                     "objectId": "<<deploymentSpId>>",
                     "permissions": {
                         "keys": [
-                            "backup",
-                            "backup",
-                            "backup"
+                            "get",
+                            "list",
+                            "update"
                         ],
                         "secrets": [
                             "all"
