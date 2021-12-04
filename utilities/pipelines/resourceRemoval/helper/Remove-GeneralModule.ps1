@@ -97,6 +97,105 @@ function Get-DeploymentByName {
     return $resultSet
 }
 
+
+<#
+.SYNOPSIS
+Format the provide resource IDs into objects of resourceID, name & type
+
+.DESCRIPTION
+Format the provide resource IDs into objects of resourceID, name & type
+
+.PARAMETER resourceIds
+Optional. The resource IDs to process
+
+.EXAMPLE
+Get-FormattedResources -resourceIds @('/subscriptions/<subscriptionID>/resourceGroups/test-analysisServices-parameters.json-rg/providers/Microsoft.Storage/storageAccounts/adpsxxazsaaspar01')
+
+Returns an object @{
+    resourceId = '/subscriptions/<subscriptionID>/resourceGroups/test-analysisServices-parameters.json-rg/providers/Microsoft.Storage/storageAccounts/adpsxxazsaaspar01'
+    type       = 'Microsoft.Storage/storageAccounts'
+    name       = 'adpsxxazsaaspar01'
+}
+#>
+function Get-FormattedResources {
+
+    [CmdletBinding()]
+    param (
+        [Parameter(Mandatory = $false)]
+        [string[]] $resourceIds = @()
+    )
+
+    $formattedResources = [System.Collections.ArrayList]@()
+
+    # Optional resourceGroup-level resources to identify implicitly deployed child-resources
+    $allResourceGroupResources = @()
+
+    foreach ($resourceId in $resourceIds) {
+
+        $idElements = $resourceId.Split('/')
+
+        switch ($idElements.Count) {
+            { $PSItem -eq 5 } {
+                # subscription level resource group
+                $formattedResources += @{
+                    resourceId = $resourceId
+                    name       = $idElements[-1]
+                    type       = 'Microsoft.Resources/resourceGroups'
+                }
+                break
+            }
+            { $PSItem -eq 6 } {
+                # subscription level resource
+                $formattedResources += @{
+                    resourceId = $resourceId
+                    name       = $idElements[-1]
+                    type       = $idElements[4, 5] -join '/'
+                }
+                break
+            }
+            { $PSItem -eq 7 } {
+                # resource group level
+                if ($allResourceGroupResources.Count -eq 0) {
+                    $allResourceGroupResources = Get-AzResource -ResourceGroupName $resourceGroupName -Name '*'
+                }
+                $expandedResources = $allResources | Where-Object { $_.ResourceId.startswith($resourceId) }
+                $expandedResources = $expandedResources | Sort-Object -Descending -Property { $_.ResourceId.Split('/').Count }
+                foreach ($resource in $expandedResources) {
+                    $formattedResources += @{
+                        resourceId = $resource.ResourceId
+                        name       = $resource.Name
+                        type       = $resource.Type
+                    }
+                }
+                break
+            }
+            { $PSItem -ge 8 } {
+                # child-resource level
+                $indexOfResourceType = $parts.IndexOf(($parts -like 'Microsoft.**')[0])
+                $type = $idElements[$indexOfResourceType, ($indexOfResourceType + 1)] -join '/'
+
+                # Concat rest of resource type along the ID
+                $partCounter = $indexOfResourceType + 1
+                while (-not ($partCounter + 2 -gt $idElements.Count - 1)) {
+                    $type += ('/{0}' -f $idElements[($partCounter + 2)])
+                    $partCounter = $partCounter + 2
+                }
+
+                $formattedResources += @{
+                    resourceId = $resourceId
+                    name       = $idElements[-1]
+                    type       = $type
+                }
+                break
+            }
+            Default {
+                throw "Failed to process resource ID [$resourceId]"
+            }
+        }
+    }
+
+    return $formattedResources
+}
 #endregion
 
 <#
@@ -159,10 +258,6 @@ function Remove-GeneralModule {
     }
 
     process {
-
-        #####################
-        ## Process Removal ##
-        #####################
         Write-Verbose ('Handling resource removal with deployment name [{0}]' -f $deploymentName) -Verbose
 
         # Gather deployments
@@ -188,8 +283,6 @@ function Remove-GeneralModule {
             }
         }
 
-        # Identify resources
-        # ------------------
         $searchRetryCount = 1
         do {
             $deployments = Get-DeploymentByName -name $deploymentName -scope $deploymentScope -resourceGroupName $resourceGroupName -ErrorAction 'SilentlyContinue'
@@ -205,55 +298,22 @@ function Remove-GeneralModule {
             throw "No deployment found for [$deploymentName]"
         }
 
-        $resourcesToRemove = @()
+        # Pre-Filter & order items
+        # ========================
         $rawResourceIdsToRemove = $deployments | Where-Object { $_ -and $_ -notmatch '/deployments/' }
         $rawResourceIdsToRemove = $rawResourceIdsToRemove | Sort-Object -Descending -Unique
 
-        # Process removal
-        # ===============
-        if ($deploymentScope -eq 'subscription') {
-            Write-Verbose 'Handle subscription level removal'
-
-            foreach ($rawResourceIdsToRemove in $rawResourceIdsToRemove) {
-                if ($rawResourceIdsToRemove.Split('/').count -lt 7) {
-                    # resource group
-                    $resourcesToRemove += @{
-                        resourceId = $rawResourceIdsToRemove
-                        name       = $rawResourceIdsToRemove.Split('/')[-1]
-                        type       = 'Microsoft.Resources/resourceGroups'
-                    }
-                } else {
-                    $resourcesToRemove += @{
-                        resourceId = $rawResourceIdsToRemove
-                        name       = $rawResourceIdsToRemove.Split('/')[-1]
-                        type       = $rawResourceIdsToRemove.Split('/')[4, 5] -join '/'
-                    }
-                }
-            }
-        } elseif ($deploymentScope -eq 'resourceGroup') {
-            $allResources = Get-AzResource -ResourceGroupName $resourceGroupName -Name '*'
-            # Get all child resources and sort from child to parent
-            foreach ($topLevelResource in $rawResourceIdsToRemove) {
-                $expandedResources = $allResources | Where-Object { $_.ResourceId.startswith($topLevelResource) }
-                $expandedResources = $expandedResources | Sort-Object -Descending -Property { $_.ResourceId.Split('/').Count }
-                foreach ($resource in $expandedResources) {
-                    $resourcesToRemove += @{
-                        resourceId = $resource.ResourceId
-                        name       = $resource.Name
-                        type       = $resource.Type
-                    }
-                }
-            }
-            if ($resourcesToRemove.Count -gt 1) {
-                $resourcesToRemove = $resourcesToRemove | Sort-Object -Descending -Property 'ResourceId' -Unique
-            }
-        }
+        # Format items
+        # ============
+        $resourcesToRemove = Get-FormattedResources -resourceIds $rawResourceIdsToRemove
 
         # Filter all dependency resources
+        # ===============================
         $dependencyResourceNames = Get-DependencyResourceNames
         $resourcesToRemove = $resourcesToRemove | Where-Object { $_.Name -notin $dependencyResourceNames }
 
         # Order resources
+        # ===============
         # If virutal machines are contained, remove them first
         if ($vmsContained = $resourcesToRemove | Where-Object { $_.type -eq 'Microsoft.Compute/virtualMachines' }) {
             $resourcesToRemove = @() + $vmsContained + ($resourcesToRemove | Where-Object { $_.type -ne 'Microsoft.Compute/virtualMachines' })
@@ -265,7 +325,7 @@ function Remove-GeneralModule {
         }
 
         # Remove resources
-        # ----------------
+        # ================
         if ($resourcesToRemove.Count -gt 0) {
             if ($PSCmdlet.ShouldProcess(('[{0}] resources' -f (($resourcesToRemove -is [array]) ? $resourcesToRemove.Count : 1)), 'Remove')) {
                 Remove-Resource -resourceToRemove $resourcesToRemove -Verbose
