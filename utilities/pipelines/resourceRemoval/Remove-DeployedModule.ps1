@@ -5,7 +5,7 @@ Remove deployed resources based on their deploymentName(s)
 .DESCRIPTION
 Remove deployed resources based on their deploymentName(s)
 
-.PARAMETER deploymentName
+.PARAMETER deploymentName(s)
 Mandatory. The name(s) of the deployment(s)
 
 .PARAMETER templateFilePath
@@ -24,8 +24,8 @@ function Remove-DeployedModule {
     [CmdletBinding()]
     param (
         [Parameter(Mandatory = $true)]
-        [Alias('deploymentNames')]
-        [string[]] $deploymentName,
+        [Alias('deploymentName')]
+        [string[]] $deploymentNames,
 
         [Parameter(Mandatory = $true)]
         [string] $templateFilePath,
