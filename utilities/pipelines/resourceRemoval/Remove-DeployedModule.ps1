@@ -18,30 +18,30 @@
     foreach ($deploymentName in $deploymentNames) {
 
         switch ($moduleName) {
-            'virtualWans' {
-                Write-Verbose 'Run vWAN removal script' -Verbose
-                # Load function
-                . (Join-Path $PSScriptRoot 'helper' 'Remove-vWan.ps1')
+            # 'virtualWans' {
+            #     Write-Verbose 'Run vWAN removal script' -Verbose
+            #     # Load function
+            #     . (Join-Path $PSScriptRoot 'helper' 'Remove-vWan.ps1')
 
-                # Invoke removal
-                $inputObject = @{
-                    deploymentName    = $deploymentName
-                    ResourceGroupName = $ResourceGroupName
-                }
-                Remove-vWan @inputObject -Verbose
-            }
-            'virtualMachines' {
-                Write-Verbose 'Run virtual machine removal script' -Verbose
-                # Load function
-                . (Join-Path $PSScriptRoot 'helper' 'Remove-VirtualMachine.ps1')
+            #     # Invoke removal
+            #     $inputObject = @{
+            #         deploymentName    = $deploymentName
+            #         ResourceGroupName = $ResourceGroupName
+            #     }
+            #     Remove-vWan @inputObject -Verbose
+            # }
+            # 'virtualMachines' {
+            #     Write-Verbose 'Run virtual machine removal script' -Verbose
+            #     # Load function
+            #     . (Join-Path $PSScriptRoot 'helper' 'Remove-VirtualMachine.ps1')
 
-                # Invoke removal
-                $inputObject = @{
-                    deploymentName    = $deploymentName
-                    ResourceGroupName = $ResourceGroupName
-                }
-                Remove-VirtualMachine @inputObject -Verbose
-            }
+            #     # Invoke removal
+            #     $inputObject = @{
+            #         deploymentName    = $deploymentName
+            #         ResourceGroupName = $ResourceGroupName
+            #     }
+            #     Remove-VirtualMachine @inputObject -Verbose
+            # }
             default {
                 Write-Verbose 'Run default removal script' -Verbose
                 # Load function
