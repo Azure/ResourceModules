@@ -26,7 +26,7 @@ resource keyVault 'Microsoft.KeyVault/vaults@2021-06-01-preview' existing = {
   name: keyVaultName
 }
 
-resource accessPolicy 'Microsoft.KeyVault/vaults/accessPolicies@2021-06-01-preview' = {
+resource policies 'Microsoft.KeyVault/vaults/accessPolicies@2021-06-01-preview' = {
   name: name
   parent: keyVault
   properties: {
@@ -34,11 +34,11 @@ resource accessPolicy 'Microsoft.KeyVault/vaults/accessPolicies@2021-06-01-previ
   }
 }
 
-@description('The name of the Resource Group the secret was created in.')
+@description('The name of the resource group the access policies assignment was created in.')
 output accessPolicyResourceGroup string = resourceGroup().name
 
-@description('The name of the access policy')
-output accessPolicyName string = accessPolicy.name
+@description('The name of the access policies assignment')
+output accessPolicyName string = policies.name
 
-@description('The resource ID of the access policy')
-output accessPolicyResourceId string = accessPolicy.id
+@description('The resource ID of the access policies assignment')
+output accessPolicyResourceId string = policies.id
