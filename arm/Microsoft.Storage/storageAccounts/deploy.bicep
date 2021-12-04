@@ -330,4 +330,4 @@ output storageAccountResourceGroup string = resourceGroup().name
 output storageAccountPrimaryBlobEndpoint string = (!empty(blobServices) && contains(storageAccount_blobServices, 'blobContainers')) ? '' : reference('Microsoft.Storage/storageAccounts/${storageAccount.name}', '2019-04-01').primaryEndpoints.blob
 
 @description('The principal ID of the system assigned identity.')
-output systemAssignedPrincipalId string = systemAssignedIdentity ? storageAccount.identity.userAssignedIdentities : ''
+output systemAssignedPrincipalId string = systemAssignedIdentity ? storageAccount.identity.principalId : ''
