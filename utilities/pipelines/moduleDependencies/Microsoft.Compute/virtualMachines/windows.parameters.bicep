@@ -64,7 +64,7 @@ var virtualNetworkParameters = {
     {
       name: 'sxx-az-subnet-x-001'
       addressPrefix: '10.0.0.0/24'
-      networkSecurityGroupName: networkSecurityGroup.name
+      networkSecurityGroupName: networkSecurityGroupParameters.name
     }
   ]
 }
@@ -184,6 +184,7 @@ module virtualNetwork '../../../../../arm/Microsoft.Network/virtualNetworks/depl
   }
   dependsOn: [
     resourceGroup
+    networkSecurityGroup
   ]
 }
 
