@@ -23,3 +23,9 @@ module resourceGroup '../../../../../arm/Microsoft.Resources/resourceGroups/depl
     location: location
   }
 }
+
+@description('The name of the resource group')
+output resourceGroupName string = resourceGroup.outputs.resourceGroupName
+
+@description('The resource ID of the resource group')
+output resourceGroupResourceId string = resourceGroup.outputs.resourceGroupResourceId
