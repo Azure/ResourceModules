@@ -103,6 +103,3 @@ module eventHubNamespace '../../../../../arm/Microsoft.EventHub/namespaces/deplo
     resourceGroup
   ]
 }
-
-@description('The name of the resource group the resources are deployed into')
-output resourceGroupName string = resourceGroup.outputs.resourceGroupName
