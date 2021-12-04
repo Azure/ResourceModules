@@ -67,9 +67,9 @@ Tag names and tag values can be provided as needed. A tag can be left without a 
 
 | Output Name | Type | Description |
 | :-- | :-- | :-- |
-| `secretName` | string | The Name of the secret. |
-| `secretResourceGroup` | string | The name of the Resource Group the secret was created in. |
-| `secretResourceId` | string | The Resource ID of the secret. |
+| `secretName` | string | The name of the secret. |
+| `secretResourceGroup` | string | The name of the resource group the secret was created in. |
+| `secretResourceId` | string | The resource ID of the secret. |
 
 ## Template references
 

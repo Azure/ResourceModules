@@ -63,11 +63,11 @@ module secret_rbac '.bicep/nested_rbac.bicep' = [for (roleAssignment, index) in 
   }
 }]
 
-@description('The Name of the secret.')
+@description('The name of the secret.')
 output secretName string = secret.name
 
-@description('The Resource ID of the secret.')
+@description('The resource ID of the secret.')
 output secretResourceId string = secret.id
 
-@description('The name of the Resource Group the secret was created in.')
+@description('The name of the resource group the secret was created in.')
 output secretResourceGroup string = resourceGroup().name
