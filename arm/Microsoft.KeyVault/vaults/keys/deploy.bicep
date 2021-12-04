@@ -82,7 +82,7 @@ resource key 'Microsoft.KeyVault/vaults/keys@2019-09-01' = {
 }
 
 module key_rbac '.bicep/nested_rbac.bicep' = [for (roleAssignment, index) in roleAssignments: {
-  name: '${deployment().name}-rbac-${index}'
+  name: '${deployment().name}-Rbac-${index}'
   params: {
     principalIds: roleAssignment.principalIds
     roleDefinitionIdOrName: roleAssignment.roleDefinitionIdOrName
