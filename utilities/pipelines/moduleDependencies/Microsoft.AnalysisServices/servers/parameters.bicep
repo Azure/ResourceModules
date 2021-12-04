@@ -10,10 +10,11 @@ param resourceGroupName string
 
 // Shared
 var location = deployment().location
+var serviceShort = 'aspar'
 
 // Diagnostic Storage Account
 var storageAccountParameters = {
-  name: 'adpsxxazsaaspar01'
+  name: 'adpsxxazsa${serviceShort}01'
   storageAccountKind: 'StorageV2'
   storageAccountSku: 'Standard_LRS'
   allowBlobPublicAccess: false
@@ -21,28 +22,21 @@ var storageAccountParameters = {
 
 // Log Analytics
 var logAnalyticsWorkspaceParameters = {
-  name: 'adp-sxx-az-law-aspar-001'
+  name: 'adp-sxx-az-law-${serviceShort}-001'
 }
 
 // Event Hub Namespace
 var eventHubNamespaceParameters = {
-  name: 'adp-sxx-az-evhns-aspar-001'
+  name: 'adp-sxx-az-evhns-${serviceShort}-001'
   eventHubs: [
     {
-      name: 'adp-sxx-az-evh-aspar-001'
+      name: 'adp-sxx-az-evh-${serviceShort}-001'
       authorizationRules: [
         {
           name: 'RootManageSharedAccessKey'
           rights: [
             'Listen'
             'Manage'
-            'Send'
-          ]
-        }
-        {
-          name: 'SendListenAccess'
-          rights: [
-            'Listen'
             'Send'
           ]
         }
@@ -91,7 +85,7 @@ module logAnalyticsWorkspace '../../../../../arm/Microsoft.OperationalInsights/w
   ]
 }
 
-// Log Analytics Workspace
+// Event Hub Namespace
 module eventHubNamespace '../../../../../arm/Microsoft.EventHub/namespaces/deploy.bicep' = {
   name: '${uniqueString(deployment().name, location)}-ehn'
   scope: az.resourceGroup(resourceGroupName)

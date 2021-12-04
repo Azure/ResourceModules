@@ -31,7 +31,7 @@
         "adminPassword": {
             "reference": {
                 "keyVault": {
-                    "id": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.KeyVault/vaults/adp-sxx-az-kv-x-001"
+                    "id": "/subscriptions/<<subscriptionId>>/resourceGroups/<<resourceGroupName>>/providers/Microsoft.KeyVault/vaults/adp-sxx-az-kv-x-001"
                 },
                 "secretName": "adminPassword"
             }
@@ -43,7 +43,7 @@
                     "ipConfigurations": [
                         {
                             "name": "ipconfig01",
-                            "subnetId": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/virtualNetworks/adp-sxx-az-vnet-x-001/subnets/sxx-az-subnet-x-001",
+                            "subnetId": "/subscriptions/<<subscriptionId>>/resourceGroups/<<resourceGroupName>>/providers/Microsoft.Network/virtualNetworks/adp-sxx-az-vnet-vmwinpar-001/subnets/sxx-az-subnet-x-001",
                             "pipConfiguration": {
                                 "publicIpNameSuffix": "-pip-01",
                                 "roleAssignments": [
@@ -69,10 +69,10 @@
             ]
         },
         "backupVaultName": {
-            "value": "adp-sxx-az-rsv-x-001"
+            "value": "adp-sxx-az-rsv-vmwinpar-001"
         },
         "backupVaultResourceGroup": {
-            "value": "validation-rg"
+            "value": "<<resourceGroupName>>"
         },
         "backupPolicyName": {
             "value": "VMpolicy"
@@ -91,23 +91,23 @@
             "value": 7
         },
         "diagnosticStorageAccountId": {
-            "value": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Storage/storageAccounts/adpsxxazsaweux001"
+            "value": "/subscriptions/<<subscriptionId>>/resourceGroups/<<resourceGroupName>>/providers/Microsoft.Storage/storageAccounts/adpsxxazsavmwinpar01"
         },
         "workspaceId": {
-            "value": "/subscriptions/<<subscriptionId>>/resourcegroups/validation-rg/providers/microsoft.operationalinsights/workspaces/adp-sxx-az-law-x-001"
+            "value": "/subscriptions/<<subscriptionId>>/resourcegroups/<<resourceGroupName>>/providers/microsoft.operationalinsights/workspaces/adpsxxazsavmwinpar01"
         },
         "eventHubAuthorizationRuleId": {
-            "value": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.EventHub/namespaces/adp-sxx-az-evhns-x-001/AuthorizationRules/RootManageSharedAccessKey"
+            "value": "/subscriptions/<<subscriptionId>>/resourceGroups/<<resourceGroupName>>/providers/Microsoft.EventHub/namespaces/adpsxxazsavmwinpar01/AuthorizationRules/RootManageSharedAccessKey"
         },
         "eventHubName": {
-            "value": "adp-sxx-az-evh-x-001"
+            "value": "adp-sxx-az-evh-vmwinpar-001"
         },
         "systemAssignedIdentity": {
             "value": true
         },
         "userAssignedIdentities": {
             "value": {
-                "/subscriptions/<<subscriptionId>>/resourcegroups/validation-rg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/adp-sxx-az-msi-x-001": {}
+                "/subscriptions/<<subscriptionId>>/resourcegroups/<<resourceGroupName>>/providers/Microsoft.ManagedIdentity/userAssignedIdentities/adp-sxx-az-msi-vmwinpar-001": {}
             }
         },
         "extensionAntiMalwareConfig": {
