@@ -23,18 +23,27 @@ function Remove-ResourceInner {
 
     $resourceToRemove | ForEach-Object { Write-Verbose ('- Remove [{0}]' -f $_.resourceId) -Verbose }
     $resourcesToRetry = @()
+    $processedResources = @()
     Write-Verbose '----------------------------------' -Verbose
 
     foreach ($resource in $resourceToRemove) {
 
-        Write-Verbose ('Trying to remove resource [{0}] of type [{1}]' -f $resource.name, $resource.type) -Verbose
+        if ($processedResources | Where-Object { $resource.resourceId -match $_.resourceId }) {
+            # Skipping
+            Write-Verbose ('Skipping resource [{0}] of type [{1}] as parent resource was already processed' -f $resource.name, $resource.type) -Verbose
+            $processedResources += $resource.resourceId
+            $resourcesToRetry = $resourcesToRetry | Where-Object { $_.resourceId -notmatch $resource.resourceId }
+            break
+        }
+
+        Write-Verbose ('Removing resource [{0}] of type [{1}]' -f $resource.name, $resource.type) -Verbose
         try {
             if ($PSCmdlet.ShouldProcess(('Resource [{0}]' -f $resource.resourceId), 'Remove')) {
                 $null = Remove-AzResource -ResourceId $resource.resourceId -Force -ErrorAction 'Stop'
             }
 
             # If we removed a parent remove its children
-            $resourceToRemove = $resourceToRemove | Where-Object { $_.resourceId -notmatch $resource.resourceId }
+            $processedResources += $resource.resourceId
             $resourcesToRetry = $resourcesToRetry | Where-Object { $_.resourceId -notmatch $resource.resourceId }
         } catch {
             Write-Warning ('Removal moved back for re-try. Reason: [{0}]' -f $_.Exception.Message)

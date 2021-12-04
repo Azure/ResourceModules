@@ -45,51 +45,51 @@ function Get-DeploymentByName {
     switch ($Scope) {
         'resourceGroup' {
             if (Get-AzResourceGroup -Name $resourceGroupName -ErrorAction 'SilentlyContinue') {
-                $resultSet += (Get-AzResourceGroupDeploymentOperation -DeploymentName $name -ResourceGroupName $resourceGroupName).TargetResource | Where-Object { $_ -ne $null }
+                [array]$resultSet += (Get-AzResourceGroupDeploymentOperation -DeploymentName $name -ResourceGroupName $resourceGroupName).TargetResource | Where-Object { $_ -ne $null }
             } else {
                 # In case the resource group itself was already deleted, there is no need to try and fetch deployments from it
                 # In case we already have any such resources in the list, we should remove them
-                $resultSet = $resultSet | Where-Object { $_ -notmatch "/resourceGroups/$resourceGroupName/" }
+                [array]$resultSet = $resultSet | Where-Object { $_ -notmatch "/resourceGroups/$resourceGroupName/" }
             }
         }
         'subscription' {
-            $resultSet += (Get-AzDeploymentOperation -DeploymentName $name).TargetResource | Where-Object { $_ -ne $null }
+            [array]$resultSet += (Get-AzDeploymentOperation -DeploymentName $name).TargetResource | Where-Object { $_ -ne $null }
             foreach ($deployment in ($resultSet | Where-Object { $_ -match '/deployments/' } )) {
-                $resultSet = $resultSet | Where-Object { $_ -ne $deployment }
+                [array]$resultSet = $resultSet | Where-Object { $_ -ne $deployment }
                 if ($deployment -match '/resourceGroups/') {
                     # Resource Group Level Child Deployments
                     $name = Split-Path $deployment -Leaf
                     $resourceGroupName = $deployment.split('/resourceGroups/')[1].Split('/')[0]
-                    $resultSet += Get-DeploymentByName -Name $name -ResourceGroupName $ResourceGroupName -Scope 'resourceGroup'
+                    [array]$resultSet += Get-DeploymentByName -Name $name -ResourceGroupName $ResourceGroupName -Scope 'resourceGroup'
                 } else {
                     # Subscription Level Deployments
-                    $resultSet += Get-DeploymentByName -name (Split-Path $deployment -Leaf) -Scope 'subscription'
+                    [array]$resultSet += Get-DeploymentByName -name (Split-Path $deployment -Leaf) -Scope 'subscription'
                 }
             }
         }
         'managementGroup' {
-            $resultSet += (Get-AzManagementGroupDeploymentOperation -DeploymentName $name).TargetResource | Where-Object { $_ -ne $null }
+            [array]$resultSet += (Get-AzManagementGroupDeploymentOperation -DeploymentName $name).TargetResource | Where-Object { $_ -ne $null }
             foreach ($deployment in ($resultSet | Where-Object { $_ -match '/deployments/' } )) {
-                $resultSet = $resultSet | Where-Object { $_ -ne $deployment }
+                [array]$resultSet = $resultSet | Where-Object { $_ -ne $deployment }
                 if ($deployment -match '/managementGroup/') {
                     # Subscription Level Child Deployments
-                    $resultSet += Get-DeploymentByName -Name (Split-Path $deployment -Leaf) -Scope 'subscription'
+                    [array]$resultSet += Get-DeploymentByName -Name (Split-Path $deployment -Leaf) -Scope 'subscription'
                 } else {
                     # Management Group Level Deployments
-                    $resultSet += Get-DeploymentByName -name (Split-Path $deployment -Leaf) -scope 'managementGroup'
+                    [array]$resultSet += Get-DeploymentByName -name (Split-Path $deployment -Leaf) -scope 'managementGroup'
                 }
             }
         }
         'tenant' {
-            $resultSet = (Get-AzTenantDeploymentOperation -DeploymentName $name).TargetResource | Where-Object { $_ -ne $null }
+            [array]$resultSet = (Get-AzTenantDeploymentOperation -DeploymentName $name).TargetResource | Where-Object { $_ -ne $null }
             foreach ($deployment in ($resultSet | Where-Object { $_ -match '/deployments/' } )) {
-                $resultSet = $resultSet | Where-Object { $_ -ne $deployment }
+                [array]$resultSet = $resultSet | Where-Object { $_ -ne $deployment }
                 if ($deployment -match '/tenant/') {
                     # Management Group Level Child Deployments
-                    $resultSet += Get-DeploymentByName -Name (Split-Path $deployment -Leaf) -scope 'managementGroup'
+                    [array]$resultSet += Get-DeploymentByName -Name (Split-Path $deployment -Leaf) -scope 'managementGroup'
                 } else {
                     # Tenant Level Deployments
-                    $resultSet += Get-DeploymentByName -name (Split-Path $deployment -Leaf)
+                    [array]$resultSet += Get-DeploymentByName -name (Split-Path $deployment -Leaf)
                 }
             }
         }
