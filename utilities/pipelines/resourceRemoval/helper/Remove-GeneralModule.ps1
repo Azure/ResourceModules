@@ -44,7 +44,12 @@ function Get-DeploymentByName {
     $resultSet = [System.Collections.ArrayList]@()
     switch ($Scope) {
         'resourceGroup' {
-            $resultSet += (Get-AzResourceGroupDeploymentOperation -DeploymentName $name -ResourceGroupName $resourceGroupName).TargetResource
+            if (Get-AzResourceGroup -Name $resourceGroupName -ErrorAction 'SilentlyContinue') {
+                $resultSet += (Get-AzResourceGroupDeploymentOperation -DeploymentName $name -ResourceGroupName $resourceGroupName).TargetResource
+            } else {
+                # In case the resource group itself was already deleted, there is no need to try and fetch deployments from it
+                $resultSet = $resultSet | Where-Object { $_ -notmatch "/resourceGroups/$resourceGroupName/" }
+            }
         }
         'subscription' {
             $resultSet += (Get-AzDeploymentOperation -DeploymentName $name).TargetResource
