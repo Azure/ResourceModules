@@ -33,7 +33,7 @@ function Remove-ResourceInner {
             Write-Verbose ('Skipping resource [{0}] of type [{1}] as parent resource was already processed' -f $resource.name, $resource.type) -Verbose
             $processedResources += $resource.resourceId
             $resourcesToRetry = $resourcesToRetry | Where-Object { $_.resourceId -notmatch $resource.resourceId }
-            break
+            continue
         }
 
         Write-Verbose ('Removing resource [{0}] of type [{1}]' -f $resource.name, $resource.type) -Verbose
