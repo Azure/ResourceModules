@@ -282,6 +282,7 @@ function Remove-GeneralModule {
                 Default { throw "[$armSchema] is a non-supported ARM template schema" }
             }
         }
+        Write-Verbose "Determined deployment scope [$deploymentScope]" -Verbose
 
         # Fundamental checks
         if ($deploymentScope -eq 'resourceGroup' -and -not (Get-AzResourceGroup -Name $resourceGroupName -ErrorAction 'SilentlyContinue')) {
