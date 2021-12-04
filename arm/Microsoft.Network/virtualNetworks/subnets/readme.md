@@ -57,6 +57,8 @@ This module deploys a virtual network subnet.
 
 | Output Name | Type | Description |
 | :-- | :-- | :-- |
+| `subnetAddressPrefix` | string | The address prefix for the subnet |
+| `subnetAddressPrefixes` | array | List of address prefixes for the subnet |
 | `subnetName` | string | The name of the virtual network peering |
 | `subnetResourceGroup` | string | The resource group the virtual network peering was deployed into |
 | `subnetResourceId` | string | The resource ID of the virtual network peering |

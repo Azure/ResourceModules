@@ -111,3 +111,9 @@ output subnetName string = subnet.name
 
 @description('The resource ID of the virtual network peering')
 output subnetResourceId string = subnet.id
+
+@description('The address prefix for the subnet')
+output subnetAddressPrefix string = subnet.properties.addressPrefix
+
+@description('List of address prefixes for the subnet')
+output subnetAddressPrefixes array = subnet.properties.addressPrefixes
