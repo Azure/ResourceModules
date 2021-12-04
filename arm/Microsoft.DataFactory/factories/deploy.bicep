@@ -149,7 +149,7 @@ resource dataFactory 'Microsoft.DataFactory/factories@2018-06-01' = {
 }
 
 module dataFactory_managedVirtualNetwork 'managedVirtualNetwork/deploy.bicep' = if (!empty(managedVirtualNetworkName)) {
-  name: '${uniqueString(deployment().name, location)}-ManagedVirtualNetwork'
+  name: '${uniqueString(deployment().name, location)}-DataFactory-ManagedVNet'
   params: {
     name: managedVirtualNetworkName
     dataFactoryName: dataFactory.name
@@ -157,7 +157,7 @@ module dataFactory_managedVirtualNetwork 'managedVirtualNetwork/deploy.bicep' = 
 }
 
 module dataFactory_integrationRuntime 'integrationRuntime/deploy.bicep' = if (!empty(integrationRuntime)) {
-  name: '${uniqueString(deployment().name, location)}-IntegrationRuntime'
+  name: '${uniqueString(deployment().name, location)}-DataFactory-IntegrationRuntime'
   params: {
     dataFactoryName: dataFactory.name
     name: integrationRuntime.name
@@ -193,7 +193,7 @@ resource dataFactory_diagnosticSettings 'Microsoft.Insights/diagnosticsettings@2
 }
 
 module dataFactory_rbac '.bicep/nested_rbac.bicep' = [for (roleAssignment, index) in roleAssignments: {
-  name: '${deployment().name}-rbac-${index}'
+  name: '${uniqueString(deployment().name, location)}-DataFactory-Rbac-${index}'
   params: {
     principalIds: roleAssignment.principalIds
     roleDefinitionIdOrName: roleAssignment.roleDefinitionIdOrName
