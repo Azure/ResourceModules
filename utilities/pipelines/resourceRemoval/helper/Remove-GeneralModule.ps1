@@ -283,7 +283,7 @@ function Remove-GeneralModule {
             }
         }
 
-        # Fundamental check
+        # Fundamental checks
         if ($scope -eq 'resourceGroup' -and -not (Get-AzResourceGroup -Name $resourceGroupName -ErrorAction 'SilentlyContinue')) {
             Write-Verbose "Resource group [$ResourceGroupName] does not exist (anymore). Skipping removal of its contained resources"
             return
