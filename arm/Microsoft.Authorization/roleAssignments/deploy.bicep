@@ -52,7 +52,7 @@ module roleAssignment_mg '.bicep/nested_rbac_mg.bicep' = if (!empty(managementGr
     principalId: principalId
     managementGroupId: managementGroupId
     description: !empty(description) ? description : ''
-    principalType: principalType
+    principalType: !empty(principalType) ? principalType : ''
     delegatedManagedIdentityResourceId: !empty(delegatedManagedIdentityResourceId) ? delegatedManagedIdentityResourceId : ''
     conditionVersion: conditionVersion
     condition: !empty(condition) ? condition : ''
@@ -67,7 +67,7 @@ module roleAssignment_sub '.bicep/nested_rbac_sub.bicep' = if (empty(managementG
     principalId: principalId
     subscriptionId: subscriptionId
     description: !empty(description) ? description : ''
-    principalType: principalType
+    principalType: !empty(principalType) ? principalType : ''
     delegatedManagedIdentityResourceId: !empty(delegatedManagedIdentityResourceId) ? delegatedManagedIdentityResourceId : ''
     conditionVersion: conditionVersion
     condition: !empty(condition) ? condition : ''
