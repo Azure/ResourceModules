@@ -283,6 +283,12 @@ function Remove-GeneralModule {
             }
         }
 
+        # Fundamental check
+        if ($scope -eq 'resourceGroup' -and -not (Get-AzResourceGroup -Name $resourceGroupName -ErrorAction 'SilentlyContinue')) {
+            Write-Verbose "Resource group [$ResourceGroupName] does not exist (anymore). Skipping removal of its contained resources"
+            return
+        }
+
         $searchRetryCount = 1
         do {
             $deployments = Get-DeploymentByName -name $deploymentName -scope $deploymentScope -resourceGroupName $resourceGroupName -ErrorAction 'SilentlyContinue'
@@ -302,6 +308,11 @@ function Remove-GeneralModule {
         # ========================
         $rawResourceIdsToRemove = $deployments | Where-Object { $_ -and $_ -notmatch '/deployments/' }
         $rawResourceIdsToRemove = $rawResourceIdsToRemove | Sort-Object -Descending -Unique
+
+        if ($rawResourceIdsToRemove.Count -eq 0) {
+            Write-Verbose 'Found no relevant resources to remove' -Verbose
+            return
+        }
 
         # Format items
         # ============
