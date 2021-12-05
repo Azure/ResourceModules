@@ -99,10 +99,10 @@
             "value": "/subscriptions/<<subscriptionId>>/resourceGroups/<<resourceGroupName>>/providers/Microsoft.Storage/storageAccounts/adpsxxazsavmwinpar01"
         },
         "workspaceId": {
-            "value": "/subscriptions/<<subscriptionId>>/resourcegroups/<<resourceGroupName>>/providers/microsoft.operationalinsights/workspaces/adpsxxazsavmwinpar01"
+            "value": "/subscriptions/<<subscriptionId>>/resourcegroups/<<resourceGroupName>>/providers/microsoft.operationalinsights/workspaces/adp-sxx-law-vmwinpar-01"
         },
         "eventHubAuthorizationRuleId": {
-            "value": "/subscriptions/<<subscriptionId>>/resourceGroups/<<resourceGroupName>>/providers/Microsoft.EventHub/namespaces/adpsxxazsavmwinpar01/AuthorizationRules/RootManageSharedAccessKey"
+            "value": "/subscriptions/<<subscriptionId>>/resourceGroups/<<resourceGroupName>>/providers/Microsoft.EventHub/namespaces/adp-sxx-evhns-vmwinpar-01/AuthorizationRules/RootManageSharedAccessKey"
         },
         "eventHubName": {
             "value": "adp-sxx-az-evh-vmwinpar-01"
