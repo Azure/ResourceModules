@@ -50,19 +50,53 @@ function Remove-ResourceInner {
             }
         }
 
+
         # Process purge
-        if ($resource.type -eq 'Microsoft.KeyVault/vaults') {
+        Assert-PurgeProtection -resourceToRemove $resource
+    }
+    Write-Verbose '----------------------------------' -Verbose
+    return $resourcesToRetry
+}
+
+<#
+.SYNOPSIS
+Purge the given resource if possible
+
+.DESCRIPTION
+Purge the given resource if possible and no protection is enabled
+
+.PARAMETER resourceToRemove
+Mandatory. The resource to purge. Should have format
+@{
+    name        = '...'
+    resoourceID = '...'
+    type        = '...'
+}
+
+.EXAMPLE
+Assert-PurgeProtection -resourceToRemove @{ name = 'myVault'; resourceId '(..)/Microsoft.KeyVault/vaults/myVault'; type = 'Microsoft.KeyVault/vaults'}
+
+Purge resource 'myVault' of type 'Microsoft.KeyVault/vaults' if no purge protection is enabled
+#>
+function Assert-PurgeProtection {
+
+    [CmdletBinding(SupportsShouldProcess)]
+    param (
+        [Parameter(Mandatory)]
+        [hashtable] $resourceToRemove
+    )
+
+    switch ($resource.type) {
+        'Microsoft.KeyVault/vaults' {
             $keyVault = Get-AzKeyVault -VaultName $resource.name -ResourceGroupName $resource.resourceId.Split('/')[4]
             if (-not $keyVault.EnablePurgeProtection) {
+                Write-Verbose ('Purging key vault [{0}]' -f $resource.name, $resource.type) -Verbose
                 if ($PSCmdlet.ShouldProcess(('Key Vault [{0}]' -f $resource.resourceId), 'Purge')) {
-                    Write-Verbose ('Purging key vault [{0}]' -f $resource.name, $resource.type) -Verbose
                     $null = Remove-AzKeyVault -ResourceId $resource.resourceId -InRemovedState -Force -Location $keyVault.Location
                 }
             }
         }
     }
-    Write-Verbose '----------------------------------' -Verbose
-    return $resourcesToRetry
 }
 #endregion
 
