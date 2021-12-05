@@ -26,12 +26,17 @@
             }
         },
         "adminUsername": {
-            "value": "localAdminUser"
+            "reference": {
+                "keyVault": {
+                    "id": "/subscriptions/<<subscriptionId>>/resourceGroups/<<resourceGroupName>>/providers/Microsoft.KeyVault/vaults/adp-sxx-az-kv-vmwinpar-01"
+                },
+                "secretName": "adminUsername"
+            }
         },
         "adminPassword": {
             "reference": {
                 "keyVault": {
-                    "id": "/subscriptions/<<subscriptionId>>/resourceGroups/<<resourceGroupName>>/providers/Microsoft.KeyVault/vaults/adp-sxx-az-kv-x-001"
+                    "id": "/subscriptions/<<subscriptionId>>/resourceGroups/<<resourceGroupName>>/providers/Microsoft.KeyVault/vaults/adp-sxx-az-kv-vmwinpar-01"
                 },
                 "secretName": "adminPassword"
             }
@@ -43,7 +48,7 @@
                     "ipConfigurations": [
                         {
                             "name": "ipconfig01",
-                            "subnetId": "/subscriptions/<<subscriptionId>>/resourceGroups/<<resourceGroupName>>/providers/Microsoft.Network/virtualNetworks/adp-sxx-az-vnet-vmwinpar-001/subnets/sxx-az-subnet-x-001",
+                            "subnetId": "/subscriptions/<<subscriptionId>>/resourceGroups/<<resourceGroupName>>/providers/Microsoft.Network/virtualNetworks/adp-sxx-az-vnet-vmwinpar-01/subnets/sxx-az-subnet-x-001",
                             "pipConfiguration": {
                                 "publicIpNameSuffix": "-pip-01",
                                 "roleAssignments": [
@@ -69,7 +74,7 @@
             ]
         },
         "backupVaultName": {
-            "value": "adp-sxx-az-rsv-vmwinpar-001"
+            "value": "adp-sxx-az-rsv-vmwinpar-01"
         },
         "backupVaultResourceGroup": {
             "value": "<<resourceGroupName>>"
@@ -100,14 +105,14 @@
             "value": "/subscriptions/<<subscriptionId>>/resourceGroups/<<resourceGroupName>>/providers/Microsoft.EventHub/namespaces/adpsxxazsavmwinpar01/AuthorizationRules/RootManageSharedAccessKey"
         },
         "eventHubName": {
-            "value": "adp-sxx-az-evh-vmwinpar-001"
+            "value": "adp-sxx-az-evh-vmwinpar-01"
         },
         "systemAssignedIdentity": {
             "value": true
         },
         "userAssignedIdentities": {
             "value": {
-                "/subscriptions/<<subscriptionId>>/resourcegroups/<<resourceGroupName>>/providers/Microsoft.ManagedIdentity/userAssignedIdentities/adp-sxx-az-msi-vmwinpar-001": {}
+                "/subscriptions/<<subscriptionId>>/resourcegroups/<<resourceGroupName>>/providers/Microsoft.ManagedIdentity/userAssignedIdentities/adp-sxx-az-msi-vmwinpar-01": {}
             }
         },
         "extensionAntiMalwareConfig": {

@@ -42,7 +42,7 @@ module logAnalyticsWorkspace '../../../../../arm/Microsoft.OperationalInsights/w
   name: '${uniqueString(deployment().name, location)}-oms'
   scope: az.resourceGroup(resourceGroupName)
   params: {
-    name: 'adp-sxx-az-law-${serviceShort}-001'
+    name: 'adp-sxx-law-${serviceShort}-01'
   }
   dependsOn: [
     resourceGroup
@@ -53,10 +53,10 @@ module eventHubNamespace '../../../../../arm/Microsoft.EventHub/namespaces/deplo
   name: '${uniqueString(deployment().name, location)}-ehn'
   scope: az.resourceGroup(resourceGroupName)
   params: {
-    name: 'adp-sxx-az-evhns-${serviceShort}-001'
+    name: 'adp-sxx-evhns-${serviceShort}-01'
     eventHubs: [
       {
-        name: 'adp-sxx-az-evh-${serviceShort}-001'
+        name: 'adp-sxx-evh-${serviceShort}-01'
         authorizationRules: [
           {
             name: 'RootManageSharedAccessKey'
@@ -79,7 +79,7 @@ module managedIdentity '../../../../../arm/Microsoft.ManagedIdentity/userAssigne
   scope: az.resourceGroup(resourceGroupName)
   name: '${uniqueString(deployment().name, location)}-mi'
   params: {
-    name: 'adp-sxx-az-msi-${serviceShort}-001'
+    name: 'adp-sxx-msi-${serviceShort}-01'
   }
   dependsOn: [
     resourceGroup
@@ -90,7 +90,7 @@ module networkSecurityGroup '../../../../../arm/Microsoft.Network/networkSecurit
   scope: az.resourceGroup(resourceGroupName)
   name: '${uniqueString(deployment().name, location)}-nsg'
   params: {
-    name: 'adp-sxx-az-nsg-${serviceShort}-001'
+    name: 'adp-sxx-nsg-${serviceShort}-01'
   }
   dependsOn: [
     resourceGroup
@@ -101,13 +101,13 @@ module virtualNetwork '../../../../../arm/Microsoft.Network/virtualNetworks/depl
   scope: az.resourceGroup(resourceGroupName)
   name: '${uniqueString(deployment().name, location)}-vnet'
   params: {
-    name: 'adp-sxx-az-vnet-${serviceShort}-001'
+    name: 'adp-sxx-vnet-${serviceShort}-01'
     addressPrefixes: [
       '10.0.0.0/16'
     ]
     subnets: [
       {
-        name: 'sxx-az-subnet-x-001'
+        name: 'sxx-subnet-x-01'
         addressPrefix: '10.0.0.0/24'
         networkSecurityGroupName: networkSecurityGroup.outputs.networkSecurityGroupName
       }
@@ -122,7 +122,7 @@ module recoveryServicesVault '../../../../../arm/Microsoft.RecoveryServices/vaul
   scope: az.resourceGroup(resourceGroupName)
   name: '${uniqueString(deployment().name, location)}-rsv'
   params: {
-    name: 'adp-sxx-az-rsv-${serviceShort}-001'
+    name: 'adp-sxx-rsv-${serviceShort}-01'
     backupPolicies: [
       {
         name: 'VMpolicy'
@@ -133,7 +133,7 @@ module recoveryServicesVault '../../../../../arm/Microsoft.RecoveryServices/vaul
             schedulePolicyType: 'SimpleSchedulePolicy'
             scheduleRunFrequency: 'Daily'
             scheduleRunTimes: [
-              '2019-11-07T07:00:00Z'
+              '2019-11-07T07:0:0Z'
             ]
             scheduleWeeklyFrequency: 0
           }
@@ -141,7 +141,7 @@ module recoveryServicesVault '../../../../../arm/Microsoft.RecoveryServices/vaul
             retentionPolicyType: 'LongTermRetentionPolicy'
             dailySchedule: {
               retentionTimes: [
-                '2019-11-07T04:30:00Z'
+                '2019-11-07T04:30:0Z'
               ]
               retentionDuration: {
                 count: 30

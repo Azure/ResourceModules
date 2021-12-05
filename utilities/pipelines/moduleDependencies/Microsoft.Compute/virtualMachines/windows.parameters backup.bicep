@@ -10,7 +10,7 @@ param resourceGroupName string
 
 // Shared
 var location = deployment().location
-var serviceShort = 'vmlinpar'
+var serviceShort = 'vmwinpar'
 
 // Diagnostic Storage Account
 var storageAccountParameters = {
@@ -101,6 +101,17 @@ var recoveryServicesVaultParameters = {
       }
     }
   ]
+}
+
+// Key Vault
+var keyVaultParameters = {
+  name: 'adp-sxx-kv-${serviceShort}-01'
+  enablePurgeProtection: false
+}
+
+// Deployment Script
+var deploymentScriptParameters = {
+  name: 'sxx-ds-ps-${serviceShort}-01'
 }
 
 // =========== //
@@ -198,6 +209,28 @@ module recoveryServicesVault '../../../../../arm/Microsoft.RecoveryServices/vaul
   dependsOn: [
     resourceGroup
   ]
+}
+
+module keyVault '../../../../../arm/Microsoft.KeyVault/vaults/deploy.bicep' = {
+  scope: az.resourceGroup(resourceGroupName)
+  name: '${uniqueString(deployment().name, location)}-kv'
+  params: {
+    name: keyVaultParameters.name
+    enablePurgeProtection: keyVaultParameters.enablePurgeProtection
+  }
+}
+
+resource managedIdentityReference 'Microsoft.ManagedIdentity/userAssignedIdentities@2018-11-30' existing = {
+  scope: az.resourceGroup(resourceGroupName)
+  name: managedIdentityParameters.name
+}
+
+module deploymentScript '../../../../../arm/Microsoft.Resources/deploymentScripts/deploy.bicep' = {
+  scope: az.resourceGroup(resourceGroupName)
+  name: '${uniqueString(deployment().name, location)}-ds'
+  params: {
+    name: deploymentScriptParameters.name
+  }
 }
 
 @description('The name of the resource group')

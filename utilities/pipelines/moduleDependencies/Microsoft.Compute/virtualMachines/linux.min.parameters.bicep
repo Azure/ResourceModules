@@ -14,17 +14,17 @@ var serviceShort = 'vmlinmin'
 
 // Virtual Network
 var networkSecurityGroupParameters = {
-  name: 'adp-sxx-az-nsg-${serviceShort}-001'
+  name: 'adp-sxx-nsg-${serviceShort}-01'
 }
 
 var virtualNetworkParameters = {
-  name: 'adp-sxx-az-vnet-${serviceShort}-001'
+  name: 'adp-sxx-vnet-${serviceShort}-01'
   addressPrefix: [
     '10.0.0.0/16'
   ]
   subnets: [
     {
-      name: 'sxx-az-subnet-x-001'
+      name: 'sxx-subnet-x-01'
       addressPrefix: '10.0.0.0/24'
       networkSecurityGroupName: networkSecurityGroupParameters.name
     }
