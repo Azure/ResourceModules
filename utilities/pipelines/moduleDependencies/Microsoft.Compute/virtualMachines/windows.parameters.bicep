@@ -35,6 +35,7 @@ var storageAccountParameters = {
     ]
   }
   roleAssignments: [
+    // Required to allow the MSI to upload files to fetch the storage account context to upload files to the container
     {
       roleDefinitionIdOrName: 'Owner'
       principalIds: [
@@ -114,6 +115,7 @@ var keyVaultParameters = {
   name: 'adp-sxx-kv-${serviceShort}-01'
   enablePurgeProtection: false
   accessPolicies: [
+    // Required so that the MSI can add secrets to the key vault
     {
       objectId: miRef.properties.principalId
       permissions: {
@@ -161,7 +163,7 @@ var recoveryServicesVaultParameters = {
           schedulePolicyType: 'SimpleSchedulePolicy'
           scheduleRunFrequency: 'Daily'
           scheduleRunTimes: [
-            '2020-03-09T11:00:00Z'
+            '2019-11-07T07:00:00Z'
           ]
           scheduleWeeklyFrequency: 0
         }
