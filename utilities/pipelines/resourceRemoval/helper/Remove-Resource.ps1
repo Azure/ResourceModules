@@ -42,6 +42,12 @@ function Remove-ResourceInner {
                 $null = Remove-AzResource -ResourceId $resource.resourceId -Force -ErrorAction 'Stop'
             }
 
+            if ($resource.type -eq 'Microsoft.KeyVault/vaults') {
+                if ($PSCmdlet.ShouldProcess(('Key Vault [{0}]' -f $resource.resourceId), 'Purge')) {
+                    $null = Remove-AzKeyVault -ResourceId $resource.resourceId -InRemovedState -Force
+                }
+            }
+
             # If we removed a parent remove its children
             $processedResources += $resource.resourceId
             $resourcesToRetry = $resourcesToRetry | Where-Object { $_.resourceId -notmatch $resource.resourceId }
