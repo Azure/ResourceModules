@@ -29,6 +29,14 @@ var storageAccountParameters = {
       }
     ]
   }
+  roleAssignments: [
+    {
+      roleDefinitionIdOrName: 'Owner'
+      principalIds: [
+        managedIdentity.outputs.msiPrincipalId
+      ]
+    }
+  ]
 }
 
 var storageAccountDeploymentScriptParameters = {
@@ -37,24 +45,22 @@ var storageAccountDeploymentScriptParameters = {
     '${managedIdentity.outputs.msiResourceId}': {}
   }
   cleanupPreference: 'OnSuccess'
-  arguments: ' -StorageAccountName ${storageAccount.outputs.storageAccountName} -ResourceGroupName ${resourceGroup.outputs.resourceGroupName} -ContainerName "scripts" -FileName "scriptExtensionMasterInstaller.ps1"  -StorageAccountKey ${storageAccountReference.listKeys().keys[0].value}'
+  arguments: ' -StorageAccountName ${storageAccountParameters.name} -ResourceGroupName ${resourceGroupName} -ContainerName "scripts" -FileName "scriptExtensionMasterInstaller.ps1"'
   scriptContent: '''
       param(
         [string] $StorageAccountName,
-        [string] $StorageAccountKey,
         [string] $ResourceGroupName,
         [string] $ContainerName,
-        [string] $FileName,
-        [string] $SubscriptionId
+        [string] $FileName
       )
       Write-Verbose "Create file [$FileName]" -Verbose
-      $file = New-Item -Value "Write-Host 'I am content'" -Path $FileName -force
+      $file = New-Item -Value "Write-Host 'I am content'" -Path $FileName -Force
 
       Write-Verbose "Getting storage account [$StorageAccountName|$ResourceGroupName] context." -Verbose
-      $ctx = New-AzStorageContext -StorageAccountName $StorageAccountName -StorageAccountKey $StorageAccountKey
+      $storageAccount = Get-AzStorageAccount -ResourceGroupName $ResourceGroupName -StorageAccountName $StorageAccountName -ErrorAction 'Stop'
 
       Write-Verbose 'Uploading file [$fileName]' -Verbose
-      Set-AzStorageBlobContent -File $file.FullName -Container $ContainerName -Context $ctx -Force -ErrorAction 'Stop' | Out-Null
+      Set-AzStorageBlobContent -File $file.FullName -Container $ContainerName -Context $storageAccount.Context -Force -ErrorAction 'Stop' | Out-Null
     '''
 }
 
@@ -203,15 +209,11 @@ module storageAccount '../../../../../arm/Microsoft.Storage/storageAccounts/depl
     storageAccountSku: storageAccountParameters.storageAccountSku
     allowBlobPublicAccess: storageAccountParameters.allowBlobPublicAccess
     blobServices: storageAccountParameters.blobServices
+    roleAssignments: storageAccountParameters.roleAssignments
   }
   dependsOn: [
     resourceGroup
   ]
-}
-
-resource storageAccountReference 'Microsoft.Storage/storageAccounts@2021-06-01' existing = {
-  scope: az.resourceGroup(resourceGroupName)
-  name: storageAccountParameters.name
 }
 
 module storageAccountDeploymentScript '../../../../../arm/Microsoft.Resources/deploymentScripts/deploy.bicep' = {
