@@ -209,8 +209,8 @@ module managedIdentity '../../../../../arm/Microsoft.ManagedIdentity/userAssigne
 }
 
 module storageAccount '../../../../../arm/Microsoft.Storage/storageAccounts/deploy.bicep' = {
-  name: '${uniqueString(deployment().name, location)}-sa'
   scope: az.resourceGroup(resourceGroupName)
+  name: '${uniqueString(deployment().name, location)}-sa'
   params: {
     name: storageAccountParameters.name
     storageAccountKind: storageAccountParameters.storageAccountKind
@@ -243,8 +243,8 @@ module storageAccountDeploymentScript '../../../../../arm/Microsoft.Resources/de
 }
 
 module logAnalyticsWorkspace '../../../../../arm/Microsoft.OperationalInsights/workspaces/deploy.bicep' = {
-  name: '${uniqueString(deployment().name, location)}-oms'
   scope: az.resourceGroup(resourceGroupName)
+  name: '${uniqueString(deployment().name, location)}-oms'
   params: {
     name: logAnalyticsWorkspaceParameters.name
   }
@@ -254,8 +254,8 @@ module logAnalyticsWorkspace '../../../../../arm/Microsoft.OperationalInsights/w
 }
 
 module eventHubNamespace '../../../../../arm/Microsoft.EventHub/namespaces/deploy.bicep' = {
-  name: '${uniqueString(deployment().name, location)}-ehn'
   scope: az.resourceGroup(resourceGroupName)
+  name: '${uniqueString(deployment().name, location)}-ehn'
   params: {
     name: eventHubParameters.name
     eventHubs: eventHubParameters.eventHubs
