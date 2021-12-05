@@ -234,7 +234,7 @@ module storageAccountDeploymentScript '../../../../../arm/Microsoft.Resources/de
         [string] $StorageAccountName,
         [string] $ResourceGroupName,
         [string] $ContainerName,
-        [string] $FileName,
+        [string] $FileName
       )
       Write-Verbose "Create file [$FileName]" -Verbose
       $file = New-Item -Value "Write-Host 'I am content'" -Path $FileName -force
