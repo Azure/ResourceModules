@@ -175,8 +175,8 @@
                 "enabled": true,
                 "fileData": [
                     {
-                        "uri": "https://adpsxxazsaweux001.blob.core.windows.net/scripts/scriptExtensionMasterInstaller.ps1",
-                        "storageAccountId": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Storage/storageAccounts/adpsxxazsaweux001"
+                        "uri": "https://adpsxxazsavmwinpar01.blob.core.windows.net/scripts/scriptExtensionMasterInstaller.ps1",
+                        "storageAccountId": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Storage/storageAccounts/adpsxxazsavmwinpar01"
                     }
                 ],
                 "protectedSettings": {

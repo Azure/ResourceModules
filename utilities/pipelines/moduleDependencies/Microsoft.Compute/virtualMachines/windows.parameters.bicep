@@ -24,7 +24,7 @@ module resourceGroup '../../../../../arm/Microsoft.Resources/resourceGroups/depl
   }
 }
 
-module diagnoticStorageAccount '../../../../../arm/Microsoft.Storage/storageAccounts/deploy.bicep' = {
+module storageAccount '../../../../../arm/Microsoft.Storage/storageAccounts/deploy.bicep' = {
   name: '${uniqueString(deployment().name, location)}-sa'
   scope: az.resourceGroup(resourceGroupName)
   params: {
@@ -32,6 +32,14 @@ module diagnoticStorageAccount '../../../../../arm/Microsoft.Storage/storageAcco
     storageAccountKind: 'StorageV2'
     storageAccountSku: 'Standard_LRS'
     allowBlobPublicAccess: false
+    blobServices: {
+      containers: [
+        {
+          name: 'scripts'
+          publicAccess: 'None'
+        }
+      ]
+    }
   }
   dependsOn: [
     resourceGroup
@@ -180,9 +188,9 @@ module keyVault '../../../../../arm/Microsoft.KeyVault/vaults/deploy.bicep' = {
   ]
 }
 
-module deploymentScript '../../../../../arm/Microsoft.Resources/deploymentScripts/deploy.bicep' = {
+module keyVaultdeploymentScript '../../../../../arm/Microsoft.Resources/deploymentScripts/deploy.bicep' = {
   scope: az.resourceGroup(resourceGroupName)
-  name: '${uniqueString(deployment().name, location)}-ds'
+  name: '${uniqueString(deployment().name, location)}-kv-ds'
   params: {
     name: 'sxx-ds-ps-${serviceShort}-01'
     userAssignedIdentities: {
@@ -204,6 +212,39 @@ module deploymentScript '../../../../../arm/Microsoft.Resources/deploymentScript
       # VirtualMachines and VMSS
       Set-AzKeyVaultSecret -VaultName $keyVaultName -Name 'adminUsername' -SecretValue $username
       Set-AzKeyVaultSecret -VaultName $keyVaultName -Name 'adminPassword' -SecretValue $password
+    '''
+  }
+  dependsOn: [
+    resourceGroup
+  ]
+}
+
+module storageAccountDeploymentScript '../../../../../arm/Microsoft.Resources/deploymentScripts/deploy.bicep' = {
+  scope: az.resourceGroup(resourceGroupName)
+  name: '${uniqueString(deployment().name, location)}-sa-ds'
+  params: {
+    name: 'sxx-ds-ps-${serviceShort}-01'
+    userAssignedIdentities: {
+      '${managedIdentity.outputs.msiResourceId}': {}
+    }
+    cleanupPreference: 'OnSuccess'
+    arguments: ' -StorageAccountName ${storageAccount.outputs.storageAccountName} -ResourceGroupName ${resourceGroup.outputs.resourceGroupName} -ContainerName "scripts" -FileName "scriptExtensionMasterInstaller.ps1"'
+    scriptContent: '''
+      param(
+        [string] $StorageAccountName,
+        [string] $ResourceGroupName,
+        [string] $ContainerName,
+        [string] $FileName,
+      )
+      Write-Verbose "Create file [$FileName]" -Verbose
+      $file = New-Item -Value "Write-Host 'I am content'" -Path $FileName -force
+
+      Write-Verbose 'Getting storage account context.' -Verbose
+      $storageAccount = Get-AzStorageAccount -ResourceGroupName $ResourceGroupName -StorageAccountName $StorageAccountName -ErrorAction Stop
+      $ctx = $storageAccount.Context
+
+      Write-Verbose 'Upload' -Verbose
+      Set-AzStorageBlobContent -File $file.FullName -Container $targetContainer -Context $ctx -Force -ErrorAction 'Stop' -Verbose:$false | Out-Null
     '''
   }
   dependsOn: [
