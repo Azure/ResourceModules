@@ -164,6 +164,16 @@ module keyVault '../../../../../arm/Microsoft.KeyVault/vaults/deploy.bicep' = {
   params: {
     name: 'adp-sxx-kv-${serviceShort}-01'
     enablePurgeProtection: false
+    accessPolicies: [
+      {
+        objectId: managedIdentity.outputs.msiPrincipalId
+        permissions: {
+          secrets: [
+            'All'
+          ]
+        }
+      }
+    ]
   }
   dependsOn: [
     resourceGroup
