@@ -74,7 +74,7 @@
             ]
         },
         "backupVaultName": {
-            "value": "adp-sxx-az-rsv-vmwinpar-01"
+            "value": "adp-sxx-rsv-vmwinpar-01"
         },
         "backupVaultResourceGroup": {
             "value": "<<resourceGroupName>>"
@@ -105,14 +105,14 @@
             "value": "/subscriptions/<<subscriptionId>>/resourceGroups/<<resourceGroupName>>/providers/Microsoft.EventHub/namespaces/adp-sxx-evhns-vmwinpar-01/AuthorizationRules/RootManageSharedAccessKey"
         },
         "eventHubName": {
-            "value": "adp-sxx-az-evh-vmwinpar-01"
+            "value": "adp-sxx-evh-vmwinpar-01"
         },
         "systemAssignedIdentity": {
             "value": true
         },
         "userAssignedIdentities": {
             "value": {
-                "/subscriptions/<<subscriptionId>>/resourcegroups/<<resourceGroupName>>/providers/Microsoft.ManagedIdentity/userAssignedIdentities/adp-sxx-az-msi-vmwinpar-01": {}
+                "/subscriptions/<<subscriptionId>>/resourcegroups/<<resourceGroupName>>/providers/Microsoft.ManagedIdentity/userAssignedIdentities/adp-sxx-msi-vmwinpar-01": {}
             }
         },
         "extensionAntiMalwareConfig": {
