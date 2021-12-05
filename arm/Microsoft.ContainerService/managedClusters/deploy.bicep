@@ -336,7 +336,7 @@ resource managedCluster 'Microsoft.ContainerService/managedClusters@2021-07-01' 
 }
 
 module managedCluster_agentPools 'agentPools/deploy.bicep' = [for (agentPool, index) in agentPools: {
-  name: '${managedCluster.name}-agentPool-${index}'
+  name: '${uniqueString(deployment().name, location)}-ManagedCluster-AgentPool-${index}'
   params: {
     managedClusterName: managedCluster.name
     name: agentPool.name
@@ -367,7 +367,7 @@ resource managedCluster_diagnosticSettings 'Microsoft.Insights/diagnosticsetting
 }
 
 module managedCluster_rbac '.bicep/nested_rbac.bicep' = [for (roleAssignment, index) in roleAssignments: {
-  name: '${deployment().name}-rbac-${index}'
+  name: '${uniqueString(deployment().name, location)}-ManagedCluster-Rbac-${index}'
   params: {
     principalIds: roleAssignment.principalIds
     roleDefinitionIdOrName: roleAssignment.roleDefinitionIdOrName

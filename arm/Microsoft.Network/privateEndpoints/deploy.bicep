@@ -61,7 +61,7 @@ resource privateEndpoint 'Microsoft.Network/privateEndpoints@2021-03-01' = {
 }
 
 module privateEndpoint_privateDnsZoneGroups 'privateDnsZoneGroups/deploy.bicep' = [for (privateDnsZoneGroup, index) in privateDnsZoneGroups: {
-  name: '${deployment().name}-privateDnsZoneGroup-${index}'
+  name: '${uniqueString(deployment().name, location)}-PrivateEndpoint-PrivateDnsZoneGroup-${index}'
   params: {
     privateDNSResourceIds: privateDnsZoneGroup.privateDNSResourceIds
     privateEndpointName: privateEndpoint.name
@@ -78,7 +78,7 @@ resource privateEndpoint_lock 'Microsoft.Authorization/locks@2016-09-01' = if (l
 }
 
 module privateEndpoint_rbac '.bicep/nested_rbac.bicep' = [for (roleAssignment, index) in roleAssignments: {
-  name: '${deployment().name}-rbac-${index}'
+  name: '${uniqueString(deployment().name, location)}-PrivateEndpoint-Rbac-${index}'
   params: {
     principalIds: roleAssignment.principalIds
     roleDefinitionIdOrName: roleAssignment.roleDefinitionIdOrName

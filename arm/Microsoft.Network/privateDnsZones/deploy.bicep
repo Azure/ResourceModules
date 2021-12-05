@@ -36,7 +36,7 @@ resource privateDnsZone 'Microsoft.Network/privateDnsZones@2018-09-01' = {
 }
 
 module privateDnsZone_virtualNetworkLinks 'virtualNetworkLinks/deploy.bicep' = [for (virtualNetworkLinks, index) in virtualNetworkLinks: {
-  name: '${deployment().name}-virtualNetworkLink-${index}'
+  name: '${uniqueString(deployment().name, location)}-PrivateDnsZone-VirtualNetworkLink-${index}'
   params: {
     privateDnsZoneName: privateDnsZone.name
     name: contains(virtualNetworkLinks, 'name') ? virtualNetworkLinks.name : last(split(virtualNetworkLinks.virtualNetworkResourceId, '/'))
@@ -57,7 +57,7 @@ resource privateDnsZone_lock 'Microsoft.Authorization/locks@2016-09-01' = if (lo
 }
 
 module privateDnsZone_rbac '.bicep/nested_rbac.bicep' = [for (roleAssignment, index) in roleAssignments: {
-  name: '${deployment().name}-rbac-${index}'
+  name: '${uniqueString(deployment().name, location)}-PrivateDnsZone-Rbac-${index}'
   params: {
     principalIds: roleAssignment.principalIds
     roleDefinitionIdOrName: roleAssignment.roleDefinitionIdOrName

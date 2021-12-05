@@ -34,7 +34,7 @@ module pidName '.bicep/nested_cuaId.bicep' = if (!empty(cuaId)) {
 }
 
 module autoManageAccount '.bicep/nested_autoManageAccount.bicep' = {
-  name: 'autoManageAccount-${uniqueString(subscription().subscriptionId, autoManageAccountResourceGroupName, name)}'
+  name: '${uniqueString(deployment().name, location)}-AutoManageAccount'
   scope: resourceGroup(autoManageAccountResourceGroupName)
   params: {
     location: location
@@ -61,7 +61,7 @@ resource autoManageAccount_permissions_resourcePolicyContributor 'Microsoft.Auth
 }
 
 module configurationProfileAssignment '.bicep/nested_configurationProfileAssignment.bicep' = {
-  name: 'configurationProfileAssignment-${uniqueString(vmResourceGroupName, vmName)}'
+  name: '${uniqueString(deployment().name, location)}-ConfigurationProfileAssignment'
   scope: resourceGroup(vmResourceGroupName)
   params: {
     vmName: vmName

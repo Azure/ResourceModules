@@ -120,7 +120,7 @@ module pid_cuaId '.bicep/nested_cuaId.bicep' = if (!empty(cuaId)) {
   params: {}
 }
 
-resource trafficmanagerprofile 'Microsoft.Network/trafficmanagerprofiles@2018-08-01' = {
+resource trafficManagerProfile 'Microsoft.Network/trafficmanagerprofiles@2018-08-01' = {
   name: name
   tags: tags
   location: 'global'
@@ -138,17 +138,17 @@ resource trafficmanagerprofile 'Microsoft.Network/trafficmanagerprofiles@2018-08
   }
 }
 
-resource trafficmanagerprofile_lock 'Microsoft.Authorization/locks@2016-09-01' = if (lock != 'NotSpecified') {
-  name: '${trafficmanagerprofile.name}-${lock}-lock'
+resource trafficManagerProfile_lock 'Microsoft.Authorization/locks@2016-09-01' = if (lock != 'NotSpecified') {
+  name: '${trafficManagerProfile.name}-${lock}-lock'
   properties: {
     level: lock
     notes: lock == 'CanNotDelete' ? 'Cannot delete resource or child resources.' : 'Cannot modify the resource or child resources.'
   }
-  scope: trafficmanagerprofile
+  scope: trafficManagerProfile
 }
 
-resource trafficmanagerprofile_diagnosticSettings 'Microsoft.Insights/diagnosticSettings@2017-05-01-preview' = if (!empty(diagnosticStorageAccountId) || !empty(workspaceId) || !empty(eventHubAuthorizationRuleId) || !empty(eventHubName)) {
-  name: '${trafficmanagerprofile.name}-diagnosticSettings'
+resource trafficManagerProfile_diagnosticSettings 'Microsoft.Insights/diagnosticSettings@2017-05-01-preview' = if (!empty(diagnosticStorageAccountId) || !empty(workspaceId) || !empty(eventHubAuthorizationRuleId) || !empty(eventHubName)) {
+  name: '${trafficManagerProfile.name}-diagnosticSettings'
   properties: {
     storageAccountId: empty(diagnosticStorageAccountId) ? null : diagnosticStorageAccountId
     workspaceId: empty(workspaceId) ? null : workspaceId
@@ -157,23 +157,23 @@ resource trafficmanagerprofile_diagnosticSettings 'Microsoft.Insights/diagnostic
     metrics: empty(diagnosticStorageAccountId) && empty(workspaceId) && empty(eventHubAuthorizationRuleId) && empty(eventHubName) ? null : diagnosticsMetrics
     logs: empty(diagnosticStorageAccountId) && empty(workspaceId) && empty(eventHubAuthorizationRuleId) && empty(eventHubName) ? null : diagnosticsLogs
   }
-  scope: trafficmanagerprofile
+  scope: trafficManagerProfile
 }
 
-module trafficmanagerprofile_rbac '.bicep/nested_rbac.bicep' = [for (roleAssignment, index) in roleAssignments: {
-  name: '${deployment().name}-rbac-${index}'
+module trafficManagerProfile_rbac '.bicep/nested_rbac.bicep' = [for (roleAssignment, index) in roleAssignments: {
+  name: '${uniqueString(deployment().name)}-TrafficManagerProfile-Rbac-${index}'
   params: {
     principalIds: roleAssignment.principalIds
     roleDefinitionIdOrName: roleAssignment.roleDefinitionIdOrName
-    resourceId: trafficmanagerprofile.id
+    resourceId: trafficManagerProfile.id
   }
 }]
 
 @description('The resource ID of the traffix manager')
-output trafficManagerResourceId string = trafficmanagerprofile.id
+output trafficManagerResourceId string = trafficManagerProfile.id
 
 @description('The resource group the traffix manager was deployed into')
 output trafficManagerResourceGroup string = resourceGroup().name
 
 @description('The name of the traffix manager was deployed into')
-output trafficManagerName string = trafficmanagerprofile.name
+output trafficManagerName string = trafficManagerProfile.name
