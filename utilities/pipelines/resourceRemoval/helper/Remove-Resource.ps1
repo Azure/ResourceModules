@@ -33,27 +33,29 @@ function Remove-ResourceInner {
             Write-Verbose ('Skipping resource [{0}] of type [{1}] as parent resource was already processed' -f $resource.name, $resource.type) -Verbose
             $processedResources += $resource.resourceId
             $resourcesToRetry = $resourcesToRetry | Where-Object { $_.resourceId -notmatch $resource.resourceId }
-            continue
+        } else {
+
+            Write-Verbose ('Removing resource [{0}] of type [{1}]' -f $resource.name, $resource.type) -Verbose
+            try {
+                if ($PSCmdlet.ShouldProcess(('Resource [{0}]' -f $resource.resourceId), 'Remove')) {
+                    $null = Remove-AzResource -ResourceId $resource.resourceId -Force -ErrorAction 'Stop'
+                }
+
+                # If we removed a parent remove its children
+                $processedResources += $resource.resourceId
+                $resourcesToRetry = $resourcesToRetry | Where-Object { $_.resourceId -notmatch $resource.resourceId }
+            } catch {
+                Write-Warning ('Removal moved back for re-try. Reason: [{0}]' -f $_.Exception.Message)
+                $resourcesToRetry += $resource
+            }
         }
 
-        Write-Verbose ('Removing resource [{0}] of type [{1}]' -f $resource.name, $resource.type) -Verbose
-        try {
-            if ($PSCmdlet.ShouldProcess(('Resource [{0}]' -f $resource.resourceId), 'Remove')) {
-                $null = Remove-AzResource -ResourceId $resource.resourceId -Force -ErrorAction 'Stop'
+        # Process purge
+        if ($resource.type -eq 'Microsoft.KeyVault/vaults') {
+            if ($PSCmdlet.ShouldProcess(('Key Vault [{0}]' -f $resource.resourceId), 'Purge')) {
+                Write-Verbose ('Purging key vault [{0}]' -f $resource.name, $resource.type) -Verbose
+                $null = Remove-AzKeyVault -ResourceId $resource.resourceId -InRemovedState -Force
             }
-
-            if ($resource.type -eq 'Microsoft.KeyVault/vaults') {
-                if ($PSCmdlet.ShouldProcess(('Key Vault [{0}]' -f $resource.resourceId), 'Purge')) {
-                    $null = Remove-AzKeyVault -ResourceId $resource.resourceId -InRemovedState -Force
-                }
-            }
-
-            # If we removed a parent remove its children
-            $processedResources += $resource.resourceId
-            $resourcesToRetry = $resourcesToRetry | Where-Object { $_.resourceId -notmatch $resource.resourceId }
-        } catch {
-            Write-Warning ('Removal moved back for re-try. Reason: [{0}]' -f $_.Exception.Message)
-            $resourcesToRetry += $resource
         }
     }
     Write-Verbose '----------------------------------' -Verbose
