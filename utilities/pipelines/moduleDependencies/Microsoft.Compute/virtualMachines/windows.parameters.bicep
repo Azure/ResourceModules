@@ -48,7 +48,7 @@ var storageAccountParameters = {
 var storageAccountDeploymentScriptParameters = {
   name: 'sxx-ds-sa-${serviceShort}-01'
   userAssignedIdentities: {
-    '${miRef.properties.principalId}': {}
+    '${miRef.id}': {}
   }
   cleanupPreference: 'OnSuccess'
   arguments: ' -StorageAccountName ${storageAccountParameters.name} -ResourceGroupName ${resourceGroupName} -ContainerName "scripts" -FileName "scriptExtensionMasterInstaller.ps1"'
@@ -130,7 +130,7 @@ var keyVaultParameters = {
 var keyVaultDeploymentScriptParameters = {
   name: 'sxx-ds-kv-${serviceShort}-01'
   userAssignedIdentities: {
-    '${miRef.properties.principalId}': {}
+    '${miRef.id}': {}
   }
   cleanupPreference: 'OnSuccess'
   arguments: ' -keyVaultName ${keyVaultParameters.name}'
@@ -159,6 +159,7 @@ var recoveryServicesVaultParameters = {
       type: 'Microsoft.RecoveryServices/vaults/backupPolicies'
       properties: {
         backupManagementType: 'AzureIaasVM'
+        instantRPDetails: {}
         schedulePolicy: {
           schedulePolicyType: 'SimpleSchedulePolicy'
           scheduleRunFrequency: 'Daily'
@@ -171,10 +172,10 @@ var recoveryServicesVaultParameters = {
           retentionPolicyType: 'LongTermRetentionPolicy'
           dailySchedule: {
             retentionTimes: [
-              '2019-11-07T04:30:0Z'
+              '2019-11-07T07:00:00Z'
             ]
             retentionDuration: {
-              count: 30
+              count: 180
               durationType: 'Days'
             }
           }
