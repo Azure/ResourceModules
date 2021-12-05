@@ -16,6 +16,11 @@ var managedIdentityParameters = {
   name: 'adp-sxx-msi-${serviceShort}-01'
 }
 
+resource miRef 'Microsoft.ManagedIdentity/userAssignedIdentities@2018-11-30' existing = {
+  scope: az.resourceGroup(resourceGroupName)
+  name: managedIdentityParameters.name
+}
+
 var storageAccountParameters = {
   name: 'adpsxxazsa${serviceShort}01'
   storageAccountKind: 'StorageV2'
@@ -33,7 +38,7 @@ var storageAccountParameters = {
     {
       roleDefinitionIdOrName: 'Owner'
       principalIds: [
-        managedIdentity.outputs.msiPrincipalId
+        miRef.properties.principalId
       ]
     }
   ]
@@ -42,7 +47,7 @@ var storageAccountParameters = {
 var storageAccountDeploymentScriptParameters = {
   name: 'sxx-ds-sa-${serviceShort}-01'
   userAssignedIdentities: {
-    '${managedIdentity.outputs.msiResourceId}': {}
+    '${miRef.properties.principalId}': {}
   }
   cleanupPreference: 'OnSuccess'
   arguments: ' -StorageAccountName ${storageAccountParameters.name} -ResourceGroupName ${resourceGroupName} -ContainerName "scripts" -FileName "scriptExtensionMasterInstaller.ps1"'
