@@ -52,9 +52,12 @@ function Remove-ResourceInner {
 
         # Process purge
         if ($resource.type -eq 'Microsoft.KeyVault/vaults') {
-            if ($PSCmdlet.ShouldProcess(('Key Vault [{0}]' -f $resource.resourceId), 'Purge')) {
-                Write-Verbose ('Purging key vault [{0}]' -f $resource.name, $resource.type) -Verbose
-                $null = Remove-AzKeyVault -ResourceId $resource.resourceId -InRemovedState -Force
+            $keyVault = Get-AzKeyVault -VaultName $resource.name -ResourceGroupName $resource.resourceId.Split('/')[4]
+            if (-not $keyVault.EnablePurgeProtection) {
+                if ($PSCmdlet.ShouldProcess(('Key Vault [{0}]' -f $resource.resourceId), 'Purge')) {
+                    Write-Verbose ('Purging key vault [{0}]' -f $resource.name, $resource.type) -Verbose
+                    $null = Remove-AzKeyVault -ResourceId $resource.resourceId -InRemovedState -Force -Location $keyVault.Location
+                }
             }
         }
     }
