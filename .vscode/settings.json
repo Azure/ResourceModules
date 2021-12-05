@@ -23,11 +23,7 @@
     "markdown.extension.orderedList.marker": "one",
     "markdown.extension.tableFormatter.enabled": false,
     "markdownlint.config": {
-        "MD034": true,
-        "MD028": false,
-        "MD025": {
-            "front_matter_title": ""
-        }
+        "MD034": true
     },
     "powershell.codeFormatting.autoCorrectAliases": true,
     "powershell.codeFormatting.newLineAfterCloseBrace": false,
