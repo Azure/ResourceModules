@@ -118,45 +118,45 @@ module virtualNetwork '../../../../../arm/Microsoft.Network/virtualNetworks/depl
   ]
 }
 
-module recoveryServicesVault '../../../../../arm/Microsoft.RecoveryServices/vaults/deploy.bicep' = {
-  scope: az.resourceGroup(resourceGroupName)
-  name: '${uniqueString(deployment().name, location)}-rsv'
-  params: {
-    name: 'adp-sxx-rsv-${serviceShort}-01'
-    backupPolicies: [
-      {
-        name: 'VMpolicy'
-        type: 'Microsoft.RecoveryServices/vaults/backupPolicies'
-        properties: {
-          backupManagementType: 'AzureIaasVM'
-          schedulePolicy: {
-            schedulePolicyType: 'SimpleSchedulePolicy'
-            scheduleRunFrequency: 'Daily'
-            scheduleRunTimes: [
-              '2019-11-07T07:0:0Z'
-            ]
-            scheduleWeeklyFrequency: 0
-          }
-          retentionPolicy: {
-            retentionPolicyType: 'LongTermRetentionPolicy'
-            dailySchedule: {
-              retentionTimes: [
-                '2019-11-07T04:30:0Z'
-              ]
-              retentionDuration: {
-                count: 30
-                durationType: 'Days'
-              }
-            }
-          }
-        }
-      }
-    ]
-  }
-  dependsOn: [
-    resourceGroup
-  ]
-}
+// module recoveryServicesVault '../../../../../arm/Microsoft.RecoveryServices/vaults/deploy.bicep' = {
+//   scope: az.resourceGroup(resourceGroupName)
+//   name: '${uniqueString(deployment().name, location)}-rsv'
+//   params: {
+//     name: 'adp-sxx-rsv-${serviceShort}-01'
+//     backupPolicies: [
+//       {
+//         name: 'VMpolicy'
+//         type: 'Microsoft.RecoveryServices/vaults/backupPolicies'
+//         properties: {
+//           backupManagementType: 'AzureIaasVM'
+//           schedulePolicy: {
+//             schedulePolicyType: 'SimpleSchedulePolicy'
+//             scheduleRunFrequency: 'Daily'
+//             scheduleRunTimes: [
+//               '2019-11-07T07:0:0Z'
+//             ]
+//             scheduleWeeklyFrequency: 0
+//           }
+//           retentionPolicy: {
+//             retentionPolicyType: 'LongTermRetentionPolicy'
+//             dailySchedule: {
+//               retentionTimes: [
+//                 '2019-11-07T04:30:0Z'
+//               ]
+//               retentionDuration: {
+//                 count: 30
+//                 durationType: 'Days'
+//               }
+//             }
+//           }
+//         }
+//       }
+//     ]
+//   }
+//   dependsOn: [
+//     resourceGroup
+//   ]
+// }
 
 module keyVault '../../../../../arm/Microsoft.KeyVault/vaults/deploy.bicep' = {
   scope: az.resourceGroup(resourceGroupName)
@@ -178,7 +178,13 @@ module deploymentScript '../../../../../arm/Microsoft.Resources/deploymentScript
     userAssignedIdentities: {
       '${managedIdentity.outputs.msiResourceId}': {}
     }
-    scriptContent: format('''
+    cleanupPreference: 'OnSuccess'
+    arguments: ' -keyVaultName ${keyVault.outputs.keyVaultName}'
+    scriptContent: '''
+      param(
+        [string] $keyVaultName
+      )
+
       $usernameString = (-join ((65..90) + (97..122) | Get-Random -Count 9 -SetSeed 1 | % {[char]$_ + "$_"})).substring(0,19) # max length
       $passwordString = (New-Guid).Guid.SubString(0,19)
 
@@ -186,9 +192,9 @@ module deploymentScript '../../../../../arm/Microsoft.Resources/deploymentScript
       $password = ConvertTo-SecureString -String $passwordString -AsPlainText -Force
 
       # VirtualMachines and VMSS
-      Set-AzKeyVaultSecret -VaultName {0} -Name 'adminUsername' -SecretValue $username
-      Set-AzKeyVaultSecret -VaultName {0} -Name 'adminPassword' -SecretValue $password
-    ''', keyVault.outputs.keyVaultName)
+      Set-AzKeyVaultSecret -VaultName $keyVaultName -Name 'adminUsername' -SecretValue $username
+      Set-AzKeyVaultSecret -VaultName $keyVaultName -Name 'adminPassword' -SecretValue $password
+    '''
   }
   dependsOn: [
     resourceGroup
