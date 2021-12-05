@@ -115,7 +115,7 @@ var keyVaultParameters = {
   enablePurgeProtection: false
   accessPolicies: [
     {
-      objectId: managedIdentity.outputs.msiPrincipalId
+      objectId: miRef.properties.principalId
       permissions: {
         secrets: [
           'All'
@@ -128,7 +128,7 @@ var keyVaultParameters = {
 var keyVaultDeploymentScriptParameters = {
   name: 'sxx-ds-kv-${serviceShort}-01'
   userAssignedIdentities: {
-    '${managedIdentity.outputs.msiResourceId}': {}
+    '${miRef.properties.principalId}': {}
   }
   cleanupPreference: 'OnSuccess'
   arguments: ' -keyVaultName ${keyVaultParameters.name}'
