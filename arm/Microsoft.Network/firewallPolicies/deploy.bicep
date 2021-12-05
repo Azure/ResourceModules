@@ -136,13 +136,13 @@ resource firewallPolicy 'Microsoft.Network/firewallPolicies@2021-03-01' = {
       requireProxyForNetworkRules: requireProxyForNetworkRules
       servers: servers
     } : null
-    explicitProxySettings: {
-      enableExplicitProxy: enableExplicitProxy
-      httpPort: (httpPort > 0) ? httpPort : null
-      httpsPort: (httpsPort > 0) ? httpsPort : null
-      pacFile: !empty(pacFile) ? pacFile : null
-      pacFilePort: (pacFilePort > 0) ? pacFilePort : null
-    }
+    // explicitProxySettings: !enableExplicitProxy ? {
+    //   enableExplicitProxy: enableExplicitProxy
+    //   httpPort: (httpPort > 0) ? httpPort : null
+    //   httpsPort: (httpsPort > 0) ? httpsPort : null
+    //   pacFile: !empty(pacFile) ? pacFile : null
+    //   pacFilePort: (pacFilePort > 0) ? pacFilePort : null
+    // } : null
     insights: isEnabled ? {
       isEnabled: isEnabled
       logAnalyticsResources: {
@@ -166,9 +166,9 @@ resource firewallPolicy 'Microsoft.Network/firewallPolicies@2021-03-01' = {
     snat: !empty(privateRanges) ? {
       privateRanges: privateRanges
     } : null
-    sql: {
-      allowSqlRedirect: allowSqlRedirect
-    }
+    // sql: !allowSqlRedirect ? {
+    //   allowSqlRedirect: allowSqlRedirect
+    // } : null
     threatIntelMode: threatIntelMode
     threatIntelWhitelist: {
       fqdns: fqdns
