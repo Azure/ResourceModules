@@ -8,19 +8,6 @@ on:
         description: 'Remove deployed module'
         required: false
         default: 'true'
-      versioningOption:
-        type: choice
-        description: 'The mode to handle the version increments [major|minor|patch]'
-        required: false
-        default: 'patch'
-        options:
-          - major
-          - minor
-          - patch
-      customVersion:
-        description: 'Custom version to apply. Used only if higher than latest'
-        required: false
-        default: '0.0.1'
   push:
     branches:
       - main
@@ -149,9 +136,9 @@ jobs:
   ###############
   #   PUBLISH   #
   ###############
-  job_publish_module_templateSpec:
-    name: 'Publish module - Template Spec'
-    if: contains(fromJson('["refs/heads/main", "refs/heads/master"]'), github.ref, eq('${{ env.templateSpecsDoPublish }}', 'true'))
+  job_publish_module:
+    name: 'Publish module'
+    #if: contains(fromJson('["refs/heads/main", "refs/heads/master"]'), github.ref)
     runs-on: ubuntu-20.04
     needs:
       - job_set_workflow_param
@@ -169,31 +156,11 @@ jobs:
       - name: 'Publish module'
         uses: ./.github/actions/templates/publishModule
         with:
+          templateFilePath: '${{ env.modulePath }}/deploy.bicep'
           templateSpecsRGName: '${{ env.templateSpecsRGName }}'
           templateSpecsRGLocation: '${{ env.templateSpecsRGLocation }}'
           templateSpecsDescription: '${{ env.templateSpecsDescription }}'
-
-
-  job_publish_module_bicep:
-    name: 'Publish module - Bicep'
-    if: and(contains(fromJson('["refs/heads/main", "refs/heads/master"]'), github.ref), eq('${{ env.bicepRegistryDoPublish }}', 'true'))
-    runs-on: ubuntu-20.04
-    needs:
-      - job_set_workflow_param
-      - job_deploy_module
-    steps:
-      - name: 'Checkout'
-        uses: actions/checkout@v2
-        with:
-          fetch-depth: 0
-      - name: Set environment variables
-        uses: deep-mm/set-variables@v1.0
-        with:
-          # Name of variable file
-          variableFileName: 'variables.module' # Don't write .json here
-      - name: 'Publish module'
-        uses: ./.github/actions/templates/publishModule
-        with:
+          templateSpecsDoPublish: '${{ env.templateSpecsDoPublish }}'
           bicepRegistryName: '${{ env.bicepRegistryName }}'
           bicepRegistryRGName: '${{ env.bicepRegistryRGName }}'
           bicepRegistryDoPublish: '${{ env.bicepRegistryDoPublish }}'

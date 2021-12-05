@@ -4,29 +4,25 @@ Publish a new version of a given module to a template spec
 
 .DESCRIPTION
 Publish a new version of a given module to a template spec
-The function will take evaluate which version should be published based on the provided input parameters (ModuleVersion, versioningOption) and the version currently deployed to the template spec
-If the customVersion is higher than the current latest, it has the highest priority over the other options
-Otherwise, one of the provided version options is chosen and applied with the default being 'patch'
-
 The template spec is set up if not already existing.
 
-.PARAMETER templateFilePath
+.PARAMETER TemplateFilePath
 Mandatory. Path to the module deployment file from root.
 
-.PARAMETER templateSpecsRgName
+.PARAMETER TemplateSpecsRgName
 Mandatory. ResourceGroup of the template spec to publish to.
 
 .PARAMETER templateSpecsRgLocation
 Mandatory. Location of the template spec resource group.
 
-.PARAMETER templateSpecsDescription
+.PARAMETER TemplateSpecsDescription
 Mandatory. The description of the parent template spec.
 
 .PARAMETER ModuleVersion
-Optional. A custom/generated version for the module.
+Required. Version of the module to publish.
 
 .EXAMPLE
-Publish-ModuleToTemplateSpec -templateFilePath 'C:/KeyVault/deploy.json' -templateSpecsRgName 'artifacts-rg' -templateSpecsRgLocation 'West Europe' -templateSpecsDescription 'iacs key vault' -customVersion '3.0.0'
+Publish-ModuleToTemplateSpec -TemplateFilePath 'C:/KeyVault/deploy.json' -TemplateSpecsRgName 'artifacts-rg' -TemplateSpecsRgLocation 'West Europe' -TemplateSpecsDescription 'iacs key vault' -ModuleVersion '3.0.0-alpha'
 
 Try to publish the KeyVault module with version 3.0.0 to a template spec called KeyVault based on a value provided in the UI
 #>
@@ -35,19 +31,23 @@ function Publish-ModuleToTemplateSpec {
     [CmdletBinding(SupportsShouldProcess)]
     param (
         [Parameter(Mandatory)]
-        [string] $templateFilePath,
+        [string] $TemplateFilePath,
 
         [Parameter(Mandatory)]
-        [string] $templateSpecsRgName,
+        [string] $TemplateSpecsRgName,
 
         [Parameter(Mandatory)]
         [string] $templateSpecsRgLocation,
 
         [Parameter(Mandatory)]
-        [string] $templateSpecsDescription,
+        [string] $TemplateSpecsDescription,
 
-        [Parameter(Mandatory)]
-        [string] $ModuleVersion
+        [Parameter(Mandatory = $false)]
+        [string] $customVersion = '0.0.1',
+
+        [Parameter(Mandatory = $false)]
+        [ValidateSet('Major', 'Minor', 'Patch')]
+        [string] $versioningOption = 'Patch'
     )
 
     begin {
@@ -55,29 +55,29 @@ function Publish-ModuleToTemplateSpec {
     }
 
     process {
-        $moduleIdentifier = (Split-Path $templateFilePath -Parent).Replace('\', '/').Split('/arm/')[1]
+        $moduleIdentifier = (Split-Path $TemplateFilePath -Parent).Replace('\', '/').Split('/arm/')[1]
         $templateSpecIdentifier = $moduleIdentifier.Replace('\', '/').Replace('/', '.').ToLower()
 
         #############################
         ##    EVALUATE RESOURCES   ##
         #############################
-        if (-not (Get-AzResourceGroup -Name $templateSpecsRgName -ErrorAction 'SilentlyContinue')) {
-            if ($PSCmdlet.ShouldProcess("Resource group [$templateSpecsRgName] to location [$templateSpecsRgLocation]", 'Deploy')) {
-                New-AzResourceGroup -Name $templateSpecsRgName -Location $templateSpecsRgLocation
+        if (-not (Get-AzResourceGroup -Name $TemplateSpecsRgName -ErrorAction 'SilentlyContinue')) {
+            if ($PSCmdlet.ShouldProcess("Resource group [$TemplateSpecsRgName] to location [$templateSpecsRgLocation]", 'Deploy')) {
+                New-AzResourceGroup -Name $TemplateSpecsRgName -Location $templateSpecsRgLocation
             }
         }
 
         ################################
         ##    Create template spec    ##
         ################################
-        if ($PSCmdlet.ShouldProcess("Template spec [$templateSpecIdentifier] version [$ModuleVersion]", 'Publish')) {
+        if ($PSCmdlet.ShouldProcess("Template spec [$templateSpecIdentifier] version [$newVersion]", 'Publish')) {
             $templateSpecInputObject = @{
-                ResourceGroupName = $templateSpecsRgName
+                ResourceGroupName = $TemplateSpecsRgName
                 Name              = $templateSpecIdentifier
-                Version           = $ModuleVersion
-                Description       = $templateSpecsDescription
+                Version           = $newVersion
+                Description       = $TemplateSpecsDescription
                 Location          = $templateSpecsRgLocation
-                TemplateFile      = $templateFilePath
+                TemplateFile      = $TemplateFilePath
             }
             New-AzTemplateSpec @templateSpecInputObject -Force
         }

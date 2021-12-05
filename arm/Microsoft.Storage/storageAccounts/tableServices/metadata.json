@@ -1,9 +1,0 @@
-{
-    "$schema": "https://aka.ms/azure-quickstart-templates-metadata-schema#",
-    "type": "Module",
-    "itemDisplayName": "This module deploys a storage account table service",
-    "description": "This module deploys a storage account table service",
-    "summary": "This module deploys a storage account table service using apiVersion 2021-04-01.",
-    "githubUsername": "commitOwner",
-    "dateUpdated": "2021-11-17"
-}
