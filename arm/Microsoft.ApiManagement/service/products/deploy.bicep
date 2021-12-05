@@ -54,8 +54,8 @@ resource product 'Microsoft.ApiManagement/service/products@2020-06-01-preview' =
   }
 }
 
-module api 'apis/deploy.bicep' = [for api in apis: {
-  name: '${uniqueString(deployment().name, name)}-api-${api.name}'
+module api 'apis/deploy.bicep' = [for (api, index) in apis: {
+  name: '${deployment().name}-Api-${index}'
   params: {
     apiManagementServiceName: apiManagementServiceName
     name: api.name
@@ -63,8 +63,8 @@ module api 'apis/deploy.bicep' = [for api in apis: {
   }
 }]
 
-module group 'groups/deploy.bicep' = [for group in groups: {
-  name: '${uniqueString(deployment().name, name)}-group-${group.name}'
+module group 'groups/deploy.bicep' = [for (group, index) in groups: {
+  name: '${deployment().name}-Group-${index}'
   params: {
     apiManagementServiceName: apiManagementServiceName
     name: group.name
