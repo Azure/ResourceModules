@@ -28,7 +28,7 @@
         "adminUsername": {
             "reference": {
                 "keyVault": {
-                    "id": "/subscriptions/<<subscriptionId>>/resourceGroups/<<resourceGroupName>>/providers/Microsoft.KeyVault/vaults/adp-sxx-az-kv-vmwinpar-01"
+                    "id": "/subscriptions/<<subscriptionId>>/resourceGroups/<<resourceGroupName>>/providers/Microsoft.KeyVault/vaults/adp-sxx-kv-vmwinpar-01"
                 },
                 "secretName": "adminUsername"
             }
@@ -36,7 +36,7 @@
         "adminPassword": {
             "reference": {
                 "keyVault": {
-                    "id": "/subscriptions/<<subscriptionId>>/resourceGroups/<<resourceGroupName>>/providers/Microsoft.KeyVault/vaults/adp-sxx-az-kv-vmwinpar-01"
+                    "id": "/subscriptions/<<subscriptionId>>/resourceGroups/<<resourceGroupName>>/providers/Microsoft.KeyVault/vaults/adp-sxx-kv-vmwinpar-01"
                 },
                 "secretName": "adminPassword"
             }
