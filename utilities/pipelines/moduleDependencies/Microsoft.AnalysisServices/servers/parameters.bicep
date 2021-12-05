@@ -59,7 +59,7 @@ module resourceGroup '../../../../../arm/Microsoft.Resources/resourceGroups/depl
 }
 
 // Storage Accounts
-module storageAccount '../../../../../arm/Microsoft.Storage/storageAccounts/deploy.bicep' = {
+module diagnoticStorageAccount '../../../../../arm/Microsoft.Storage/storageAccounts/deploy.bicep' = {
   name: '${uniqueString(deployment().name, location)}-sa'
   scope: az.resourceGroup(resourceGroupName)
   params: {
