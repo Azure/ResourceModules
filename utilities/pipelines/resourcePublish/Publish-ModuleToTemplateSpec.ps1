@@ -42,12 +42,8 @@ function Publish-ModuleToTemplateSpec {
         [Parameter(Mandatory)]
         [string] $TemplateSpecsDescription,
 
-        [Parameter(Mandatory = $false)]
-        [string] $customVersion = '0.0.1',
-
-        [Parameter(Mandatory = $false)]
-        [ValidateSet('Major', 'Minor', 'Patch')]
-        [string] $versioningOption = 'Patch'
+        [Parameter(Mandatory)]
+        [string] $ModuleVersion
     )
 
     begin {
@@ -70,11 +66,11 @@ function Publish-ModuleToTemplateSpec {
         ################################
         ##    Create template spec    ##
         ################################
-        if ($PSCmdlet.ShouldProcess("Template spec [$templateSpecIdentifier] version [$newVersion]", 'Publish')) {
+        if ($PSCmdlet.ShouldProcess("Template spec [$templateSpecIdentifier] version [$ModuleVersion]", 'Publish')) {
             $templateSpecInputObject = @{
                 ResourceGroupName = $TemplateSpecsRgName
                 Name              = $templateSpecIdentifier
-                Version           = $newVersion
+                Version           = $ModuleVersion
                 Description       = $TemplateSpecsDescription
                 Location          = $templateSpecsRgLocation
                 TemplateFile      = $TemplateFilePath

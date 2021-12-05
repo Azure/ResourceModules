@@ -119,10 +119,11 @@ runs:
               ModuleVersion       = $UpdatedModule.Version
             }
 
-          Write-Verbose "Invoke task with" -Verbose
-          Write-Verbose ($functionInput | ConvertTo-Json | Out-String) -Verbose
+            Write-Verbose "Invoke task with" -Verbose
+            Write-Verbose ($functionInput | ConvertTo-Json | Out-String) -Verbose
 
-          Publish-ModuleToPrivateBicepRegistry @functionInput -Verbose
+            Publish-ModuleToPrivateBicepRegistry @functionInput -Verbose
+          }
         } else {
           Write-Output "Pipeline is configured to not publish to TemplateSpecs"
         }

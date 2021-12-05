@@ -58,6 +58,10 @@ function Publish-ModuleToPrivateBicepRegistry {
             }
         }
 
+        # Extracts Microsoft.KeyVault/vaults from e.g. C:\arm\Microsoft.KeyVault\vaults\deploy.bicep
+        $moduleIdentifier = (Split-Path $templateFilePath -Parent).Replace('\', '/').Split('/arm/')[1]
+        $moduleRegistryIdentifier = 'bicep/modules/{0}' -f $moduleIdentifier.Replace('\', '/').Replace('/', '.').ToLower()
+
         #############################################
         ##    Publish to private bicep registry    ##
         #############################################

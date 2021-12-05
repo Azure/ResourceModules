@@ -132,12 +132,15 @@ function Get-NewModuleVersion {
     )
     $Version = Get-ModuleVersion -ModuleFilePath $ModuleFilePath
     $Patch = Get-GitDistance
+    $NewVersion = "$Version.$Patch"
+
     $CurrentBranch = git branch --show-current
     if ($CurrentBranch -ne 'main') {
-        $Patch = "$Patch-$CurrentBranch".Replace('\','').Replace('/','')
+        $PreRelease = $CurrentBranch -replace '[^a-zA-Z0-9\.\-_]'
+        $NewVersion = "$NewVersion-$PreRelease"
     }
-    $NewVersion = [System.Version]"$Version.$Patch"
-    return $NewVersion.ToString()
+
+    return $NewVersion
 }
 
 function Get-ModifiedModules {
@@ -158,12 +161,11 @@ function Get-ModifiedModules {
             Version = $ModuleVersion
             ModulePath = $_.FullName
         }
-        Write-Output "Update: $ModuleName - $ModuleVersion"
+        Write-Verbose "Update: $ModuleName - $ModuleVersion"
 
-        Write-Output 'Checking for parent modules'
-        $ParentModuleFiles = Get-ParentModule -ModuleFilePath $_ -Recurse
-        Write-Output "Checking for parent modules - Found $($ParentModuleFiles.Count)"
-        $ParentModuleFiles
+        Write-Verbose 'Checking for parent modules'
+        $ParentModuleFiles = Get-ParentModule -ModuleFilePath $_.FullName -Recurse
+        Write-Verbose "Checking for parent modules - Found $($ParentModuleFiles.Count)"
         $ParentModuleFiles | ForEach-Object {
             $ParentModuleVersion = Get-NewModuleVersion -ModuleFilePath $_.FullName
 
@@ -171,11 +173,11 @@ function Get-ModifiedModules {
                 Version    = $ParentModuleVersion
                 ModulePath = $_.FullName
             }
-            Write-Output "Update parent: $ParentModuleName - $ParentModuleVersion"
+            Write-Verbose "Update parent: $($_.FullName) - $ParentModuleVersion"
         }
     }
 
-    $ModulesToUpdate = $ModulesToUpdate | Sort-Object Name -Descending -Unique
+    $ModulesToUpdate = $ModulesToUpdate | Sort-Object ModulePath -Descending -Unique
 
     return $ModulesToUpdate
 }
