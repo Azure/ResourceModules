@@ -192,7 +192,7 @@ module keyVaultdeploymentScript '../../../../../arm/Microsoft.Resources/deployme
   scope: az.resourceGroup(resourceGroupName)
   name: '${uniqueString(deployment().name, location)}-kv-ds'
   params: {
-    name: 'sxx-ds-ps-${serviceShort}-01'
+    name: 'sxx-ds-kv-${serviceShort}-01'
     userAssignedIdentities: {
       '${managedIdentity.outputs.msiResourceId}': {}
     }
@@ -223,7 +223,7 @@ module storageAccountDeploymentScript '../../../../../arm/Microsoft.Resources/de
   scope: az.resourceGroup(resourceGroupName)
   name: '${uniqueString(deployment().name, location)}-sa-ds'
   params: {
-    name: 'sxx-ds-ps-${serviceShort}-01'
+    name: 'sxx-ds-sa-${serviceShort}-01'
     userAssignedIdentities: {
       '${managedIdentity.outputs.msiResourceId}': {}
     }
