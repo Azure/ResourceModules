@@ -126,45 +126,45 @@ module virtualNetwork '../../../../../arm/Microsoft.Network/virtualNetworks/depl
   ]
 }
 
-// module recoveryServicesVault '../../../../../arm/Microsoft.RecoveryServices/vaults/deploy.bicep' = {
-//   scope: az.resourceGroup(resourceGroupName)
-//   name: '${uniqueString(deployment().name, location)}-rsv'
-//   params: {
-//     name: 'adp-sxx-rsv-${serviceShort}-01'
-//     backupPolicies: [
-//       {
-//         name: 'VMpolicy'
-//         type: 'Microsoft.RecoveryServices/vaults/backupPolicies'
-//         properties: {
-//           backupManagementType: 'AzureIaasVM'
-//           schedulePolicy: {
-//             schedulePolicyType: 'SimpleSchedulePolicy'
-//             scheduleRunFrequency: 'Daily'
-//             scheduleRunTimes: [
-//               '2019-11-07T07:0:0Z'
-//             ]
-//             scheduleWeeklyFrequency: 0
-//           }
-//           retentionPolicy: {
-//             retentionPolicyType: 'LongTermRetentionPolicy'
-//             dailySchedule: {
-//               retentionTimes: [
-//                 '2019-11-07T04:30:0Z'
-//               ]
-//               retentionDuration: {
-//                 count: 30
-//                 durationType: 'Days'
-//               }
-//             }
-//           }
-//         }
-//       }
-//     ]
-//   }
-//   dependsOn: [
-//     resourceGroup
-//   ]
-// }
+module recoveryServicesVault '../../../../../arm/Microsoft.RecoveryServices/vaults/deploy.bicep' = {
+  scope: az.resourceGroup(resourceGroupName)
+  name: '${uniqueString(deployment().name, location)}-rsv'
+  params: {
+    name: 'adp-sxx-rsv-${serviceShort}-01'
+    backupPolicies: [
+      {
+        name: 'VMpolicy'
+        type: 'Microsoft.RecoveryServices/vaults/backupPolicies'
+        properties: {
+          backupManagementType: 'AzureIaasVM'
+          schedulePolicy: {
+            schedulePolicyType: 'SimpleSchedulePolicy'
+            scheduleRunFrequency: 'Daily'
+            scheduleRunTimes: [
+              '2019-11-07T07:0:0Z'
+            ]
+            scheduleWeeklyFrequency: 0
+          }
+          retentionPolicy: {
+            retentionPolicyType: 'LongTermRetentionPolicy'
+            dailySchedule: {
+              retentionTimes: [
+                '2019-11-07T04:30:0Z'
+              ]
+              retentionDuration: {
+                count: 30
+                durationType: 'Days'
+              }
+            }
+          }
+        }
+      }
+    ]
+  }
+  dependsOn: [
+    resourceGroup
+  ]
+}
 
 module keyVault '../../../../../arm/Microsoft.KeyVault/vaults/deploy.bicep' = {
   scope: az.resourceGroup(resourceGroupName)
