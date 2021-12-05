@@ -12,6 +12,52 @@ param resourceGroupName string
 var location = deployment().location
 var serviceShort = 'vmwinpar'
 
+var managedIdentityParameters = {
+  name: 'adp-sxx-msi-${serviceShort}-01'
+}
+
+var storageAccountParameters = {
+  name: 'adpsxxazsa${serviceShort}01'
+  storageAccountKind: 'StorageV2'
+  storageAccountSku: 'Standard_LRS'
+  allowBlobPublicAccess: false
+  blobServices: {
+    containers: [
+      {
+        name: 'scripts'
+        publicAccess: 'None'
+      }
+    ]
+  }
+}
+
+var storageAccountDeploymentScriptParameters = {
+  name: 'sxx-ds-sa-${serviceShort}-01'
+  userAssignedIdentities: {
+    '${managedIdentity.outputs.msiResourceId}': {}
+  }
+  cleanupPreference: 'OnSuccess'
+  arguments: ' -StorageAccountName ${storageAccount.outputs.storageAccountName} -ResourceGroupName ${resourceGroup.outputs.resourceGroupName} -ContainerName "scripts" -FileName "scriptExtensionMasterInstaller.ps1"  -StorageAccountKey ${storageAccountReference.listKeys().keys[0].value}'
+  scriptContent: '''
+      param(
+        [string] $StorageAccountName,
+        [string] $StorageAccountKey,
+        [string] $ResourceGroupName,
+        [string] $ContainerName,
+        [string] $FileName,
+        [string] $SubscriptionId
+      )
+      Write-Verbose "Create file [$FileName]" -Verbose
+      $file = New-Item -Value "Write-Host 'I am content'" -Path $FileName -force
+
+      Write-Verbose "Getting storage account [$StorageAccountName|$ResourceGroupName] context." -Verbose
+      $ctx = New-AzStorageContext -StorageAccountName $StorageAccountName -StorageAccountKey $StorageAccountKey
+
+      Write-Verbose 'Uploading file [$fileName]' -Verbose
+      Set-AzStorageBlobContent -File $file.FullName -Container $ContainerName -Context $ctx -Force -ErrorAction 'Stop' | Out-Null
+    '''
+}
+
 var logAnalyticsWorkspaceParameters = {
   name: 'adp-sxx-law-${serviceShort}-01'
 }
@@ -51,53 +97,6 @@ var virtualNetworkInputParameters = {
       networkSecurityGroupName: networkSecurityGroupParameters.name
     }
   ]
-}
-
-var storageAccountParameters = {
-  name: 'adpsxxazsa${serviceShort}01'
-  storageAccountKind: 'StorageV2'
-  storageAccountSku: 'Standard_LRS'
-  allowBlobPublicAccess: false
-  blobServices: {
-    containers: [
-      {
-        name: 'scripts'
-        publicAccess: 'None'
-      }
-    ]
-  }
-}
-
-var storageAccountDeploymentScriptParameters = {
-  name: 'sxx-ds-sa-${serviceShort}-01'
-  userAssignedIdentities: {
-    '${managedIdentity.outputs.msiResourceId}': {}
-  }
-  cleanupPreference: 'OnSuccess'
-  arguments: ' -StorageAccountName ${storageAccount.outputs.storageAccountName} -ResourceGroupName ${resourceGroup.outputs.resourceGroupName} -ContainerName "scripts" -FileName "scriptExtensionMasterInstaller.ps1" -subscriptionId ${subscription().subscriptionId} -StorageAccountKey ${storageAccountReference.listKeys().keys[0].value}'
-  scriptContent: '''
-      param(
-        [string] $StorageAccountName,
-        [string] $StorageAccountKey,
-        [string] $ResourceGroupName,
-        [string] $ContainerName,
-        [string] $FileName,
-        [string] $SubscriptionId
-      )
-      # Write-Verbose "Set subscription" -Verbose
-      # Select-AzSubscription -SubscriptionId $SubscriptionId
-
-      Write-Verbose "Create file [$FileName]" -Verbose
-      $file = New-Item -Value "Write-Host 'I am content'" -Path $FileName -force
-
-      Write-Verbose "Getting storage account [$StorageAccountName|$ResourceGroupName] context." -Verbose
-      #$storageAccount = Get-AzStorageAccount -ResourceGroupName $ResourceGroupName -StorageAccountName $StorageAccountName -ErrorAction 'Stop'
-      #$ctx = $storageAccount.Context
-      $ctx = New-AzStorageContext -StorageAccountName $StorageAccountName -StorageAccountKey $StorageAccountKey
-
-      Write-Verbose 'Uploading file [$fileName]' -Verbose
-      Set-AzStorageBlobContent -File $file.FullName -Container $ContainerName -Context $ctx -Force -ErrorAction 'Stop' | Out-Null
-    '''
 }
 
 var keyVaultParameters = {
@@ -188,7 +187,7 @@ module managedIdentity '../../../../../arm/Microsoft.ManagedIdentity/userAssigne
   scope: az.resourceGroup(resourceGroupName)
   name: '${uniqueString(deployment().name, location)}-mi'
   params: {
-    name: 'adp-sxx-msi-${serviceShort}-01'
+    name: managedIdentityParameters.name
   }
   dependsOn: [
     resourceGroup
