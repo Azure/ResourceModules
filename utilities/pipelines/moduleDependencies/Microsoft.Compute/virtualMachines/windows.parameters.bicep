@@ -161,7 +161,7 @@ var recoveryServicesVaultParameters = {
           schedulePolicyType: 'SimpleSchedulePolicy'
           scheduleRunFrequency: 'Daily'
           scheduleRunTimes: [
-            '2019-11-07T07:0:0Z'
+            '2020-03-09T11:00:00Z'
           ]
           scheduleWeeklyFrequency: 0
         }
@@ -218,6 +218,7 @@ module storageAccount '../../../../../arm/Microsoft.Storage/storageAccounts/depl
   }
   dependsOn: [
     resourceGroup
+    managedIdentity
   ]
 }
 
