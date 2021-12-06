@@ -476,7 +476,7 @@ Within a bicep file, follow the following conventions:
       ```
 - Bicep `modules`:
   - camel_Snake_Case, i.e `resourceGroup_rbac` ?
-  - File name for nested module is structured as follows: `nested_<resourceName>.bicep` i.e:
+  - Filename for nested module is structured as follows: `nested_<resourceName>.bicep` i.e:
     - `nested_rbac.bicep`
 
 
@@ -493,7 +493,7 @@ Within a bicep file, follow the following conventions:
 
 # ReadMe
 
-Each module must come with a ReadMe markdown file that outlines what the module contains and 'how' it can be used.
+Each module must come with a ReadMe Markdown file that outlines what the module contains and 'how' it can be used.
 It primary components are
 - A title with a reference to the primary resource (for example <code>KeyVault `[Microsoft.KeyVault/vaults]`</code>)
 - A description
