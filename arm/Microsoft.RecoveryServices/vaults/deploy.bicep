@@ -1,5 +1,4 @@
 @description('Required. Name of the Azure Recovery Service Vault')
-@minLength(1)
 param name string
 
 @description('Optional. The storage configuration for the Azure Recovery Service Vault')
@@ -13,6 +12,9 @@ param location string = resourceGroup().location
 
 @description('Optional. List of all backup policies.')
 param backupPolicies array = []
+
+@description('Optional. The backup configuration.')
+param backupConfig object = {}
 
 @description('Optional. List of all protection containers.')
 @minLength(0)
@@ -170,6 +172,20 @@ module rsv_backupPolicies 'backupPolicies/deploy.bicep' = [for (backupPolicy, in
   }
 }]
 
+module rsv_backupConfig 'backupConfig/deploy.bicep' = if (!empty(backupConfig)) {
+  name: '${uniqueString(deployment().name, location)}-RSV-BackupConfig'
+  params: {
+    recoveryVaultName: rsv.name
+    name: contains(backupConfig, 'name') ? backupConfig.name : 'vaultconfig'
+    enhancedSecurityState: contains(backupConfig, 'enhancedSecurityState') ? backupConfig.enhancedSecurityState : 'Enabled'
+    resourceGuardOperationRequests: contains(backupConfig, 'resourceGuardOperationRequests') ? backupConfig.resourceGuardOperationRequests : []
+    softDeleteFeatureState: contains(backupConfig, 'softDeleteFeatureState') ? backupConfig.softDeleteFeatureState : 'Enabled'
+    storageModelType: contains(backupConfig, 'storageModelType') ? backupConfig.storageModelType : 'GeoRedundant'
+    storageType: contains(backupConfig, 'storageType') ? backupConfig.storageType : 'GeoRedundant'
+    storageTypeState: contains(backupConfig, 'storageTypeState') ? backupConfig.storageTypeState : 'Locked'
+  }
+}
+
 resource rsv_lock 'Microsoft.Authorization/locks@2016-09-01' = if (lock != 'NotSpecified') {
   name: '${rsv.name}-${lock}-lock'
   properties: {
@@ -201,13 +217,13 @@ module rsv_rbac '.bicep/nested_rbac.bicep' = [for (roleAssignment, index) in rol
   }
 }]
 
-@description('The resource ID of the Recovery Services Vault')
+@description('The resource ID of the recovery services vault')
 output recoveryServicesVaultResourceId string = rsv.id
 
-@description('The name of the Resource Group the Recovery Services Vault was created in')
+@description('The name of the resource group the recovery services vault was created in')
 output recoveryServicesVaultResourceGroup string = resourceGroup().name
 
-@description('The Name of the Recovery Services Vault')
+@description('The Name of the recovery services vault')
 output recoveryServicesVaultName string = rsv.name
 
 @description('The principal ID of the system assigned identity.')
