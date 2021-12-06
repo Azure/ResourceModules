@@ -14,6 +14,9 @@ param location string = resourceGroup().location
 @description('Optional. List of all backup policies.')
 param backupPolicies array = []
 
+@description('Optional. The backup configuration.')
+param backupConfig object = {}
+
 @description('Optional. List of all protection containers.')
 @minLength(0)
 param protectionContainers array = []
@@ -169,6 +172,20 @@ module rsv_backupPolicies 'backupPolicies/deploy.bicep' = [for (backupPolicy, in
     backupPolicyProperties: backupPolicy.properties
   }
 }]
+
+module rsv_backupConfig 'backupConfig/deploy.bicep' = if (!empty(backupConfig)) {
+  name: '${uniqueString(deployment().name, location)}-RSV-BackupConfig'
+  params: {
+    recoveryVaultName: rsv.name
+    name: contains(backupConfig, 'name') ? backupConfig.name : 'vaultconfig'
+    enhancedSecurityState: contains(backupConfig, 'enhancedSecurityState') ? backupConfig.enhancedSecurityState : 'Enabled'
+    resourceGuardOperationRequests: contains(backupConfig, 'resourceGuardOperationRequests') ? backupConfig.resourceGuardOperationRequests : []
+    softDeleteFeatureState: contains(backupConfig, 'softDeleteFeatureState') ? backupConfig.softDeleteFeatureState : 'Enabled'
+    storageModelType: contains(backupConfig, 'storageModelType') ? backupConfig.storageModelType : 'GeoRedundant'
+    storageType: contains(backupConfig, 'storageType') ? backupConfig.storageType : 'GeoRedundant'
+    storageTypeState: contains(backupConfig, 'storageTypeState') ? backupConfig.storageTypeState : 'Locked'
+  }
+}
 
 resource rsv_lock 'Microsoft.Authorization/locks@2016-09-01' = if (lock != 'NotSpecified') {
   name: '${rsv.name}-${lock}-lock'
