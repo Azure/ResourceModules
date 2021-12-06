@@ -29,8 +29,12 @@ jobs:
       #    FILTER_REGEX_EXCLUDE: '[global.module.tests.ps1|Get\-ModulesAsMarkdownTable.ps1]'
 
       - name: Link Checker
+        id: checker
         uses: lycheeverse/lychee-action@v1.1.1
         with:
           args: --verbose --no-progress **/*.md --exclude-file .lycheeignore
         env:
           GITHUB_TOKEN: ${{secrets.GITHUB_TOKEN}}
+
+      - name: Fail if there were link errors
+        run: exit ${{ steps.checker.outputs.exit_code }}

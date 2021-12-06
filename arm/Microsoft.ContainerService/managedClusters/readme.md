@@ -148,7 +148,7 @@ For available properties check <https://docs.microsoft.com/en-us/azure/templates
       "mode": "System",
       "vnetSubnetID": "/subscriptions/XXXXXXXX-XXXX-XXXX-XXXX-XXXXXXXXXXXX/resourceGroups/myRg/providers/Microsoft.Network/virtualNetworks/myVnet/subnets/mySubnet",
       "tags": {
-        "Owner": "abc.def@contoso.com",
+        "Owner": "test.user@testcompany.com",
         "BusinessUnit": "IaCs",
         "Environment": "PROD",
         "Region": "USEast"
@@ -192,7 +192,7 @@ For available properties check <https://docs.microsoft.com/en-us/azure/templates
                 "mode": "System",
                 "vnetSubnetID": "/subscriptions/XXXXXXXX-XXXX-XXXX-XXXX-XXXXXXXXXXXX/resourceGroups/myRg/providers/Microsoft.Network/virtualNetworks/myVnet/subnets/mySubnet",
                 "tags": {
-                    "Owner": "abc.def@contoso.com",
+                    "Owner": "test.user@testcompany.com",
                     "BusinessUnit": "IaCs",
                     "Environment": "PROD",
                     "Region": "USEast"

@@ -1,6 +1,5 @@
 https://foo.psd1/
 file:///github
-abc.def@contoso.com
 https://mystorageaccount.blob.core.windows.net
 https://mykeyvault.vault.azure.net
 https://www.powershellgallery.com
