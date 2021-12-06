@@ -447,7 +447,7 @@ resource vmss 'Microsoft.Compute/virtualMachineScaleSets@2021-04-01' = {
 }
 
 module vmss_domainJoinExtension 'extensions/deploy.bicep' = if (extensionDomainJoinConfig.enabled) {
-  name: '${uniqueString(deployment().name, location)}-vmss-DomainJoin'
+  name: '${uniqueString(deployment().name, location)}-VMSS-DomainJoin'
   params: {
     virtualMachineScaleSetName: vmss.name
     name: 'DomainJoin'
@@ -464,7 +464,7 @@ module vmss_domainJoinExtension 'extensions/deploy.bicep' = if (extensionDomainJ
 }
 
 module vmss_microsoftAntiMalwareExtension 'extensions/deploy.bicep' = if (extensionAntiMalwareConfig.enabled) {
-  name: '${uniqueString(deployment().name, location)}-vmss-MicrosoftAntiMalware'
+  name: '${uniqueString(deployment().name, location)}-VMSS-MicrosoftAntiMalware'
   params: {
     virtualMachineScaleSetName: vmss.name
     name: 'MicrosoftAntiMalware'
@@ -483,7 +483,7 @@ resource vmss_logAnalyticsWorkspace 'Microsoft.OperationalInsights/workspaces@20
 }
 
 module vmss_microsoftMonitoringAgentExtension 'extensions/deploy.bicep' = if (extensionMonitoringAgentConfig.enabled) {
-  name: '${uniqueString(deployment().name, location)}-vmss-MicrosoftMonitoringAgent'
+  name: '${uniqueString(deployment().name, location)}-VMSS-MicrosoftMonitoringAgent'
   params: {
     virtualMachineScaleSetName: vmss.name
     name: 'MicrosoftMonitoringAgent'
@@ -502,7 +502,7 @@ module vmss_microsoftMonitoringAgentExtension 'extensions/deploy.bicep' = if (ex
 }
 
 module vmss_dependencyAgentExtension 'extensions/deploy.bicep' = if (extensionDependencyAgentConfig.enabled) {
-  name: '${uniqueString(deployment().name, location)}-vmss-DependencyAgent'
+  name: '${uniqueString(deployment().name, location)}-VMSS-DependencyAgent'
   params: {
     virtualMachineScaleSetName: vmss.name
     name: 'DependencyAgent'
@@ -515,7 +515,7 @@ module vmss_dependencyAgentExtension 'extensions/deploy.bicep' = if (extensionDe
 }
 
 module vmss_networkWatcherAgentExtension 'extensions/deploy.bicep' = if (extensionNetworkWatcherAgentConfig.enabled) {
-  name: '${uniqueString(deployment().name, location)}-vmss-NetworkWatcherAgent'
+  name: '${uniqueString(deployment().name, location)}-VMSS-NetworkWatcherAgent'
   params: {
     virtualMachineScaleSetName: vmss.name
     name: 'NetworkWatcherAgent'
@@ -528,7 +528,7 @@ module vmss_networkWatcherAgentExtension 'extensions/deploy.bicep' = if (extensi
 }
 
 module vmss_desiredStateConfigurationExtension 'extensions/deploy.bicep' = if (extensionDSCConfig.enabled) {
-  name: '${uniqueString(deployment().name, location)}-vmss-DesiredStateConfiguration'
+  name: '${uniqueString(deployment().name, location)}-VMSS-DesiredStateConfiguration'
   params: {
     virtualMachineScaleSetName: vmss.name
     name: 'DesiredStateConfiguration'
@@ -543,7 +543,7 @@ module vmss_desiredStateConfigurationExtension 'extensions/deploy.bicep' = if (e
 }
 
 module vmss_customScriptExtension 'extensions/deploy.bicep' = if (extensionCustomScriptConfig.enabled) {
-  name: '${uniqueString(deployment().name, location)}-vmss-CustomScriptExtension'
+  name: '${uniqueString(deployment().name, location)}-VMSS-CustomScriptExtension'
   params: {
     virtualMachineScaleSetName: vmss.name
     name: 'CustomScriptExtension'
@@ -563,7 +563,7 @@ module vmss_customScriptExtension 'extensions/deploy.bicep' = if (extensionCusto
 }
 
 module vmss_diskEncryptionExtension 'extensions/deploy.bicep' = if (extensionDiskEncryptionConfig.enabled) {
-  name: '${uniqueString(deployment().name, location)}-vmss-DiskEncryption'
+  name: '${uniqueString(deployment().name, location)}-VMSS-DiskEncryption'
   params: {
     virtualMachineScaleSetName: vmss.name
     name: 'DiskEncryption'
@@ -603,7 +603,7 @@ resource vmss_diagnosticSettings 'Microsoft.Insights/diagnosticSettings@2021-05-
 }
 
 module vmss_rbac '.bicep/nested_rbac.bicep' = [for (roleAssignment, index) in roleAssignments: {
-  name: '${deployment().name}-rbac-${index}'
+  name: '${uniqueString(deployment().name, location)}-VMSS-Rbac-${index}'
   params: {
     principalIds: roleAssignment.principalIds
     roleDefinitionIdOrName: roleAssignment.roleDefinitionIdOrName
