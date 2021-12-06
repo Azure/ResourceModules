@@ -348,9 +348,9 @@ You can specify multiple user assigned identities to a resource by providing add
 
 | Output Name | Type | Description |
 | :-- | :-- | :-- |
-| `recoveryServicesVaultName` | string | The Name of the Recovery Services Vault |
-| `recoveryServicesVaultResourceGroup` | string | The name of the Resource Group the Recovery Services Vault was created in |
-| `recoveryServicesVaultResourceId` | string | The resource ID of the Recovery Services Vault |
+| `recoveryServicesVaultName` | string | The Name of the recovery services vault |
+| `recoveryServicesVaultResourceGroup` | string | The name of the resource group the recovery services vault was created in |
+| `recoveryServicesVaultResourceId` | string | The resource ID of the recovery services vault |
 | `systemAssignedPrincipalId` | string | The principal ID of the system assigned identity. |
 
 ## Template references

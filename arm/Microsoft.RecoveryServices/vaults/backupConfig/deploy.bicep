@@ -1,5 +1,4 @@
 @description('Required. Name of the Azure Recovery Service Vault')
-@minLength(1)
 param recoveryVaultName string
 
 @description('Optional. Name of the Azure Recovery Service Vault Backup Policy')
@@ -75,8 +74,8 @@ resource backupConfig 'Microsoft.RecoveryServices/vaults/backupconfig@2021-08-01
 @description('The name of the backup config')
 output backupConfigName string = backupConfig.name
 
-@description('The Resource ID of the backup config')
+@description('The resource ID of the backup config')
 output backupConfigResourceId string = backupConfig.id
 
-@description('The name of the Resource Group the backup config was created in.')
+@description('The name of the resource group the backup config was created in.')
 output backupConfigResourceGroup string = resourceGroup().name

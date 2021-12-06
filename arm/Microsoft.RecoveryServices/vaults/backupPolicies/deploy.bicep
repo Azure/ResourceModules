@@ -29,8 +29,8 @@ resource backupPolicy 'Microsoft.RecoveryServices/vaults/backupPolicies@2021-08-
 @description('The name of the backup policy')
 output backupPolicyName string = backupPolicy.name
 
-@description('The Resource ID of the backup policy')
+@description('The resource ID of the backup policy')
 output backupPolicyResourceId string = backupPolicy.id
 
-@description('The name of the Resource Group the backup policy was created in.')
+@description('The name of the resource group the backup policy was created in.')
 output backupPolicyResourceGroup string = resourceGroup().name

@@ -27,8 +27,8 @@ This module deploys recovery services vault backup config.
 | Output Name | Type | Description |
 | :-- | :-- | :-- |
 | `backupConfigName` | string | The name of the backup config |
-| `backupConfigResourceGroup` | string | The name of the Resource Group the backup config was created in. |
-| `backupConfigResourceId` | string | The Resource ID of the backup config |
+| `backupConfigResourceGroup` | string | The name of the resource group the backup config was created in. |
+| `backupConfigResourceId` | string | The resource ID of the backup config |
 
 ## Template references
 
