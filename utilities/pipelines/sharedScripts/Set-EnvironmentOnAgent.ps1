@@ -102,6 +102,7 @@ function Set-EnvironmentOnAgent {
             @{ Name = 'Az.Network' },
             @{ Name = 'Az.ContainerRegistry' },
             @{ Name = 'Az.KeyVault' },
+            @{ Name = 'Az.RecoveryServices' },
             @{ Name = 'Pester'; Version = '5.3.0' }
         )
     )

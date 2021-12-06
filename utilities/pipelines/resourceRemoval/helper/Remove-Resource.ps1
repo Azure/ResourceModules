@@ -37,6 +37,10 @@ function Remove-ResourceInner {
 
             Write-Verbose ('Removing resource [{0}] of type [{1}]' -f $resource.name, $resource.type) -Verbose
             try {
+                if ($PSCmdlet.ShouldProcess(('Pre-resource-removal for [{0}]' -f $resource.resourceId), 'Execute')) {
+                    Initialize-PreResourceRemoval -resourceToRemove $resource
+                }
+
                 if ($PSCmdlet.ShouldProcess(('Resource [{0}]' -f $resource.resourceId), 'Remove')) {
                     $null = Remove-AzResource -ResourceId $resource.resourceId -Force -ErrorAction 'Stop'
                 }
@@ -50,13 +54,35 @@ function Remove-ResourceInner {
             }
         }
 
-        # Process purge
-        Remove-PurgeProtectedResource -resourceToRemove $resource
+        if ($PSCmdlet.ShouldProcess(('Post-resource-removal for [{0}]' -f $resource.resourceId), 'Execute')) {
+            Initialize-PostResourceRemoval -resourceToRemove $resource
+        }
     }
     Write-Verbose '----------------------------------' -Verbose
     return $resourcesToRetry
 }
 
+function Initialize-PreResourceRemoval {
+
+    [CmdletBinding(SupportsShouldProcess)]
+    param (
+        [Parameter(Mandatory)]
+        [hashtable] $resourceToRemove
+    )
+
+    switch ($resourceToRemove.type) {
+        'Microsoft.RecoveryServices/vaults' {
+            # Remove protected VMs
+            $backupItems = Get-AzRecoveryServicesBackupItem -BackupManagementType 'AzureVM' -WorkloadType 'AzureVM' -VaultId $resourceToRemove.resourceId
+            foreach ($backupItem in ($backupItems | Where-Object { $_.DeleteState -eq 'NotDeleted' })) {
+                Write-Verbose ('Removing Backup item [{0}] from RSV [ {1}]' -f $backupItem.Name, $resourceToRemove.name) -Verbose
+                if ($PSCmdlet.ShouldProcess(('Backup item [{0}] from RSV [{1}]' -f $backupItem.Name, $resourceToRemove.name), 'Remove')) {
+                    $null = Disable-AzRecoveryServicesBackupProtection -Item $backupItem -VaultId $resourceToRemove.resourceId -RemoveRecoveryPoints -Force
+                }
+            }
+        }
+    }
+}
 
 <#
 .SYNOPSIS
@@ -74,11 +100,11 @@ Mandatory. The resource to purge. Should have format
 }
 
 .EXAMPLE
-Remove-PurgeProtectedResource -resourceToRemove @{ name = 'myVault'; resourceId '(..)/Microsoft.KeyVault/vaults/myVault'; type = 'Microsoft.KeyVault/vaults'}
+Initialize-PostResourceRemoval -resourceToRemove @{ name = 'myVault'; resourceId '(..)/Microsoft.KeyVault/vaults/myVault'; type = 'Microsoft.KeyVault/vaults'}
 
 Purge resource 'myVault' of type 'Microsoft.KeyVault/vaults' if no purge protection is enabled
 #>
-function Remove-PurgeProtectedResource {
+function Initialize-PostResourceRemoval {
 
     [CmdletBinding(SupportsShouldProcess)]
     param (
