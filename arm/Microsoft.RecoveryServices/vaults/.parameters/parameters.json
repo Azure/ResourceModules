@@ -3,7 +3,7 @@
     "contentVersion": "1.0.0.0",
     "parameters": {
         "name": {
-            "value": "ProfilesBackupVault"
+            "value": "sxx-az-rsv-x-001"
         },
         "backupPolicies": {
             "value": [

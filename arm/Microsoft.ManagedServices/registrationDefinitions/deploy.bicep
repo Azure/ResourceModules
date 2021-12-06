@@ -35,7 +35,7 @@ resource registrationAssignment_sub 'Microsoft.ManagedServices/registrationAssig
 }
 
 module registrationAssignment_rg '.bicep/nested_registrationAssignment.bicep' = if (!empty(resourceGroupName)) {
-  name: 'assignment-${uniqueString(registrationId)}'
+  name: '${uniqueString(deployment().name)}-RegDef-RegAssignment'
   scope: resourceGroup(resourceGroupName)
   params: {
     registrationDefinitionId: registrationDefinition.id
