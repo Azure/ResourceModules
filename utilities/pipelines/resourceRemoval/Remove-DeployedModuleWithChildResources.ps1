@@ -32,10 +32,10 @@ function Get-AssociatedResources {
     $resourceJsonFilePath = (Join-Path $PSScriptRoot $ResourceGroupName) + '.json'
 
     Export-AzResourceGroup -ResourceGroupName $ResourceGroupName `
-                           -Resource $ParentResourceId `
-                           -SkipAllParameterization `
-                           -Path $resourceJsonFilePath `
-                           -Confirm:$false -Force | Out-Null
+        -Resource $ParentResourceId `
+        -SkipAllParameterization `
+        -Path $resourceJsonFilePath `
+        -Confirm:$false -Force | Out-Null
     $filteredIds = (Get-Content -Path $resourceJsonFilePath | Select-String -Pattern '"id"') -replace '\s+'
     if ($filteredIds) {
         Write-Verbose '--------------------------Getting associated resources--------------------------'
@@ -65,11 +65,11 @@ function Get-DeployedModuleWithChildResources {
     $moduleName = $DeploymentName.Split('-')[0]
 
     $childResources = ((Get-AzResourceGroupDeploymentOperation `
-                            -DeploymentName $DeploymentName `
-                            -ResourceGroupName $ResourceGroupName `
-                            -Verbose | `
-                            Where-Object { $null -ne $_.TargetResource }).TargetResource) | `
-                            Select-Object -Unique
+                -DeploymentName $DeploymentName `
+                -ResourceGroupName $ResourceGroupName `
+                -Verbose | `
+                    Where-Object { $null -ne $_.TargetResource }).TargetResource) | `
+                Select-Object -Unique
 
     Write-Verbose "List of all child resources/deployments:`n$($childResources | Out-String)"
 
@@ -81,32 +81,32 @@ function Get-DeployedModuleWithChildResources {
                 Write-Verbose '--------------------------Getting Child deployment details--------------------------'
                 Write-Verbose "Child deployment name: $childDeploymentName"
                 $resourceIdsToRemove += Get-DeployedModuleWithChildResources `
-                                            -ResourceGroupName $ResourceGroupName `
-                                            -DeploymentName $childDeploymentName `
-                                            -Verbose
+                    -ResourceGroupName $ResourceGroupName `
+                    -DeploymentName $childDeploymentName `
+                    -Verbose
             } elseif ($childResource -match 'Microsoft.Authorization/roleAssignments') {
-                Write-Verbose "Found deployment of type 'Microsoft.Authorization/roleAssignments', skipping."
+                Write-Verbose "Found deployment of type 'Microsoft.Authorization/roleAssignments', skipping any action for now."
                 Break
             } else {
                 $resourceIdsToRemove += $childResource
                 if ($childResource -match $moduleName) {
-                    Write-Verbose "Checking for any associated resource ids with the parent resource id: '$childResource'."
+                    Write-Verbose "Checking for any associated resource ids with the parent resource id: '$($childResource)'."
                     $associatedResourceIds = Get-AssociatedResources -ResourceGroupName $ResourceGroupName -ParentResourceId $childResource
                     if ($null -ne $associatedResourceIds) {
                         $resourceIdsToRemove += $associatedResourceIds
                     } else {
-                        Write-Verbose "No associated resources found in resource with Id: '$childResource'."
+                        Write-Verbose "No associated resources found in resource with Id: '$($childResource)'."
                     }
                 } else {
-                    Write-Verbose "Not going to find child resources for the resource with id: $($childResource)."
+                    Write-Verbose "Not going to find child resources for the resource with id: '$($childResource)'."
                 }
-                Write-Verbose "Accumulated resource(s):$($resourceIdsToRemove)."
+                Write-Verbose "Accumulated resource(s): '$($resourceIdsToRemove)."
             }
         }
         Return ($resourceIdsToRemove | Select-Object -Unique)
 
     } else {
-        Write-Verbose "No child resources found in the deployment: $($DeploymentName)."
+        Write-Verbose "No child resources found in the deployment: '$($DeploymentName)'."
     }
 }
 
@@ -121,9 +121,9 @@ function Remove-DeployedModuleWithChildResources {
     )
 
     $resourceIdsToRemove = Get-DeployedModuleWithChildResources `
-                                -ResourceGroupName $ResourceGroupName `
-                                -DeploymentName $DeploymentName `
-                                -Verbose
+        -ResourceGroupName $ResourceGroupName `
+        -DeploymentName $DeploymentName `
+        -Verbose
 
     $resourcesToRemove = @()
     foreach ($resourceIdToRemove in $resourceIdsToRemove) {
@@ -139,5 +139,7 @@ function Remove-DeployedModuleWithChildResources {
     Remove-Resource -resourceToRemove $resourcesToRemove
     # Remove residual json file
     $resourceJsonFilePath = (Join-Path $PSScriptRoot $ResourceGroupName) + '.json'
-    Remove-Item -Path $resourceJsonFilePath -Force
+    if(Get-Content -Path $resourceJsonFilePath){
+        Remove-Item -Path $resourceJsonFilePath -Force
+    }
 }
