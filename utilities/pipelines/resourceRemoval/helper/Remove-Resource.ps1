@@ -33,8 +33,8 @@ function Remove-ResourceInner {
         if (($processedResources | Where-Object { $resource.resourceId -match $_.resourceId }) -and -not (Get-AzResource -ResourceId $resource.resourceId -ErrorAction 'SilentlyContinue')) {
             # Skipping
             Write-Verbose ('Skipping resource [{0}] of type [{1}] as parent resource was already processed' -f $resource.name, $resource.type) -Verbose
-            $processedResources += $resource.resourceId
-            $resourcesToRetry = $resourcesToRetry | Where-Object { $_.resourceId -notmatch $resource.resourceId }
+            [array]$processedResources += $resource.resourceId
+            [array]$resourcesToRetry = $resourcesToRetry | Where-Object { $_.resourceId -notmatch $resource.resourceId }
         } else {
 
             Write-Verbose ('Removing resource [{0}] of type [{1}]' -f $resource.name, $resource.type) -Verbose
@@ -44,11 +44,11 @@ function Remove-ResourceInner {
                 }
 
                 # If we removed a parent remove its children
-                $processedResources += $resource.resourceId
-                $resourcesToRetry = $resourcesToRetry | Where-Object { $_.resourceId -notmatch $resource.resourceId }
+                [array]$processedResources += $resource.resourceId
+                [array]$resourcesToRetry = $resourcesToRetry | Where-Object { $_.resourceId -notmatch $resource.resourceId }
             } catch {
                 Write-Warning ('Removal moved back for re-try. Reason: [{0}]' -f $_.Exception.Message)
-                $resourcesToRetry += $resource
+                [array]$resourcesToRetry += $resource
             }
         }
 
