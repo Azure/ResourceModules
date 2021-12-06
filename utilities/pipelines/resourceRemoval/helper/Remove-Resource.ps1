@@ -28,8 +28,6 @@ function Remove-ResourceInner {
 
     foreach ($resource in $resourceToRemove) {
 
-        $resource = Assert-PurgeProtectedResource -resourceToAssert $resource
-
         if (($processedResources | Where-Object { $resource.resourceId -match $_.resourceId }) -and -not (Get-AzResource -ResourceId $resource.resourceId -ErrorAction 'SilentlyContinue')) {
             # Skipping
             Write-Verbose ('Skipping resource [{0}] of type [{1}] as parent resource was already processed' -f $resource.name, $resource.type) -Verbose
@@ -59,47 +57,6 @@ function Remove-ResourceInner {
     return $resourcesToRetry
 }
 
-<#
-.SYNOPSIS
-Fetch data that is needed to purge the given resource
-
-.DESCRIPTION
-Fetch data that is needed to purge the given resource
-
-.PARAMETER resourceToAssert
-Mandatory. The resource to fetch the data for
-@{
-    name        = '...'
-    resourceID = '...'
-    type        = '...'
-}
-
-.EXAMPLE
-Assert-PurgeProtectedResource -resourceToAssert  @{ name = 'myVault'; resourceId '(..)/Microsoft.KeyVault/vaults/myVault'; type = 'Microsoft.KeyVault/vaults'}
-
-Fetch required data of the given key vault (e.g. its location that is required for its purge command)
-#>
-function Assert-PurgeProtectedResource {
-
-    [CmdletBinding()]
-    param (
-        [Parameter(Mandatory)]
-        [hashtable] $resourceToAssert
-    )
-
-    switch ($resource.type) {
-        'Microsoft.KeyVault/vaults' {
-            $name = $resourceToAssert.resourceId.Split('/')[-1]
-            $resourceGroupName = $resourceToAssert.resourceId.Split('/')[4]
-            Write-Verbose "Fetching key vault [$name] from resource group [$resourceGroupName] to assert properties to enable removal" -Verbose
-            $keyVault = Get-AzKeyVault -VaultName $name -ResourceGroupName $resourceGroupName
-            $resourceToAssert['location'] = $keyVault.Location
-            $resourceToAssert['enablePurgeProtection'] = $keyVault.EnablePurgeProtection
-        }
-    }
-
-    return $resourceToAssert
-}
 
 <#
 .SYNOPSIS
@@ -129,12 +86,16 @@ function Remove-PurgeProtectedResource {
         [hashtable] $resourceToRemove
     )
 
-    switch ($resource.type) {
+    switch ($resourceToRemove.type) {
         'Microsoft.KeyVault/vaults' {
-            if (-not $resource.EnablePurgeProtection) {
-                Write-Verbose ('Purging key vault [{0}]' -f $resource.name, $resource.type) -Verbose
-                if ($PSCmdlet.ShouldProcess(('Key Vault [{0}]' -f $resource.resourceId), 'Purge')) {
-                    $null = Remove-AzKeyVault -ResourceId $resource.resourceId -InRemovedState -Force -Location $resource.Location
+            $name = $resourceToRemove.resourceId.Split('/')[-1]
+            $resourceGroupName = $resourceToRemove.resourceId.Split('/')[4]
+
+            $matchingKeyVault = Get-AzKeyVault -InRemovedState | Where-Object { $_.VaultName -eq $name -and $resourceGroupName -eq $resourceGroupName }
+            if ($matchingKeyVault -and -not $resource.EnablePurgeProtection) {
+                Write-Verbose "Purging key vault [$name]" -Verbose
+                if ($PSCmdlet.ShouldProcess(('Key Vault with ID [{0}]' -f $matchingKeyVault.Id), 'Purge')) {
+                    $null = Remove-AzKeyVault -ResourceId $matchingKeyVault.Id -InRemovedState -Force -Location $matchingKeyVault.Location
                 }
             }
         }
