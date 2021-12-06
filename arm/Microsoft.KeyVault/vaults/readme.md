@@ -10,6 +10,7 @@ This module deploys a key vault and it's child resources.
 | `Microsoft.Authorization/roleAssignments` | 2020-04-01-preview |
 | `Microsoft.Insights/diagnosticSettings` | 2017-05-01-preview |
 | `Microsoft.KeyVault/vaults` | 2019-09-01 |
+| `Microsoft.KeyVault/vaults/accessPolicies` | 2021-06-01-preview |
 | `Microsoft.KeyVault/vaults/keys` | 2019-09-01 |
 | `Microsoft.KeyVault/vaults/secrets` | 2019-09-01 |
 | `Microsoft.Network/privateEndpoints` | 2021-05-01 |
@@ -19,7 +20,7 @@ This module deploys a key vault and it's child resources.
 
 | Parameter Name | Type | Default Value | Possible Values | Description |
 | :-- | :-- | :-- | :-- | :-- |
-| `accessPolicies` | array | `[]` |  | Optional. Array of access policies object |
+| `accessPolicies` | _[accessPolicies](accessPolicies/readme.md)_ array | `[]` |  | Optional. Array of access policies object |
 | `baseTime` | string | `[utcNow('u')]` |  | Generated. Do not provide a value! This date value is used to generate a SAS token to access the modules. |
 | `createMode` | string | `default` |  | Optional. The vault's create mode to indicate whether the vault need to be recovered or not. - recover or default. |
 | `cuaId` | string |  |  | Optional. Customer Usage Attribution ID (GUID). This GUID must be previously registered |
@@ -119,7 +120,8 @@ Tag names and tag values can be provided as needed. A tag can be left without a 
 "accessPolicies": {
     "value": [
         {
-            "tenantId": null,
+            "tenantId": null, // Optional
+            "applicationId": null, // Optional
             "objectId": null,
             "permissions": {
                 "certificates": [
@@ -177,10 +179,10 @@ To use Private Endpoint the following dependencies must be deployed:
 
 | Output Name | Type | Description |
 | :-- | :-- | :-- |
-| `keyVaultName` | string | The Name of the Key Vault. |
-| `keyVaultResourceGroup` | string | The name of the Resource Group the Key Vault was created in. |
-| `keyVaultResourceId` | string | The Resource ID of the Key Vault. |
-| `keyVaultUrl` | string | The URL of the Key Vault. |
+| `keyVaultName` | string | The name of the key vault. |
+| `keyVaultResourceGroup` | string | The name of the resource group the key vault was created in. |
+| `keyVaultResourceId` | string | The resource ID of the key vault. |
+| `keyVaultUrl` | string | The URL of the key vault. |
 
 ## Template references
 
@@ -188,6 +190,7 @@ To use Private Endpoint the following dependencies must be deployed:
 - [Roleassignments](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2020-04-01-preview/roleAssignments)
 - [Diagnosticsettings](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Insights/2017-05-01-preview/diagnosticSettings)
 - [Vaults](https://docs.microsoft.com/en-us/azure/templates/Microsoft.KeyVault/2019-09-01/vaults)
+- [Vaults/Accesspolicies](https://docs.microsoft.com/en-us/azure/templates/Microsoft.KeyVault/2021-06-01-preview/vaults/accessPolicies)
 - [Vaults/Keys](https://docs.microsoft.com/en-us/azure/templates/Microsoft.KeyVault/2019-09-01/vaults/keys)
 - [Vaults/Secrets](https://docs.microsoft.com/en-us/azure/templates/Microsoft.KeyVault/2019-09-01/vaults/secrets)
 - [Privateendpoints](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Network/2021-05-01/privateEndpoints)

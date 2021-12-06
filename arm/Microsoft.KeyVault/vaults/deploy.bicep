@@ -152,6 +152,13 @@ var networkAcls_var = {
   ipRules: (empty(networkAcls) ? null : ((length(networkAcls.ipRules) == 0) ? [] : networkAcls.ipRules))
 }
 
+var formattedAccessPolicies = [for accessPolicy in accessPolicies: {
+  applicationId: contains(accessPolicy, 'applicationId') ? accessPolicy.applicationId : ''
+  objectId: contains(accessPolicy, 'objectId') ? accessPolicy.objectId : ''
+  permissions: accessPolicy.permissions
+  tenantId: contains(accessPolicy, 'tenantId') ? accessPolicy.tenantId : tenant().tenantId
+}]
+
 module pid_cuaId '.bicep/nested_cuaId.bicep' = if (!empty(cuaId)) {
   name: 'pid-${cuaId}'
   params: {}
@@ -171,7 +178,7 @@ resource keyVault 'Microsoft.KeyVault/vaults@2019-09-01' = {
     createMode: createMode
     enablePurgeProtection: ((!enablePurgeProtection) ? null : enablePurgeProtection)
     tenantId: subscription().tenantId
-    accessPolicies: accessPolicies
+    accessPolicies: formattedAccessPolicies
     sku: {
       name: vaultSku
       family: 'A'
@@ -202,8 +209,16 @@ resource keyVault_diagnosticSettings 'Microsoft.Insights/diagnosticsettings@2017
   scope: keyVault
 }
 
+module keyVault_accessPolicies 'accessPolicies/deploy.bicep' = if (!empty(accessPolicies)) {
+  name: '${uniqueString(deployment().name, location)}-KeyVault-AccessPolicies'
+  params: {
+    keyVaultName: keyVault.name
+    accessPolicies: formattedAccessPolicies
+  }
+}
+
 module keyVault_secrets 'secrets/deploy.bicep' = [for (secret, index) in secrets: {
-  name: '${uniqueString(deployment().name, location)}-Secret-${index}'
+  name: '${uniqueString(deployment().name, location)}-KeyVault-Secret-${index}'
   params: {
     name: secret.name
     value: secret.value
@@ -213,14 +228,12 @@ module keyVault_secrets 'secrets/deploy.bicep' = [for (secret, index) in secrets
     attributesNbf: contains(secret, 'attributesNbf') ? secret.attributesNbf : -1
     contentType: contains(secret, 'contentType') ? secret.contentType : ''
     tags: contains(secret, 'tags') ? secret.tags : {}
+    roleAssignments: contains(secret, 'roleAssignments') ? secret.roleAssignments : []
   }
-  dependsOn: [
-    keyVault
-  ]
 }]
 
 module keyVault_keys 'keys/deploy.bicep' = [for (key, index) in keys: {
-  name: '${uniqueString(deployment().name, location)}-Key-${index}'
+  name: '${uniqueString(deployment().name, location)}-KeyVault-Key-${index}'
   params: {
     name: key.name
     keyVaultName: keyVault.name
@@ -232,14 +245,12 @@ module keyVault_keys 'keys/deploy.bicep' = [for (key, index) in keys: {
     keySize: contains(key, 'keySize') ? key.keySize : -1
     kty: contains(key, 'kty') ? key.kty : 'EC'
     tags: contains(key, 'tags') ? key.tags : {}
+    roleAssignments: contains(key, 'roleAssignments') ? key.roleAssignments : []
   }
-  dependsOn: [
-    keyVault
-  ]
 }]
 
 module keyVault_privateEndpoints '.bicep/nested_privateEndpoint.bicep' = [for (privateEndpoint, index) in privateEndpoints: {
-  name: '${uniqueString(deployment().name, location)}-PrivateEndpoint-${index}'
+  name: '${uniqueString(deployment().name, location)}-KeyVault-PrivateEndpoint-${index}'
   params: {
     privateEndpointResourceId: keyVault.id
     privateEndpointVnetLocation: (empty(privateEndpoints) ? 'dummy' : reference(split(privateEndpoint.subnetResourceId, '/subnets/')[0], '2020-06-01', 'Full').location)
@@ -249,7 +260,7 @@ module keyVault_privateEndpoints '.bicep/nested_privateEndpoint.bicep' = [for (p
 }]
 
 module keyVault_rbac '.bicep/nested_rbac.bicep' = [for (roleAssignment, index) in roleAssignments: {
-  name: '${deployment().name}-rbac-${index}'
+  name: '${uniqueString(deployment().name, location)}-KeyVault-Rbac-${index}'
   params: {
     principalIds: roleAssignment.principalIds
     roleDefinitionIdOrName: roleAssignment.roleDefinitionIdOrName
@@ -257,14 +268,14 @@ module keyVault_rbac '.bicep/nested_rbac.bicep' = [for (roleAssignment, index) i
   }
 }]
 
-@description('The Resource ID of the Key Vault.')
+@description('The resource ID of the key vault.')
 output keyVaultResourceId string = keyVault.id
 
-@description('The name of the Resource Group the Key Vault was created in.')
+@description('The name of the resource group the key vault was created in.')
 output keyVaultResourceGroup string = resourceGroup().name
 
-@description('The Name of the Key Vault.')
+@description('The name of the key vault.')
 output keyVaultName string = keyVault.name
 
-@description('The URL of the Key Vault.')
-output keyVaultUrl string = reference(keyVault.id, '2016-10-01').vaultUri
+@description('The URL of the key vault.')
+output keyVaultUrl string = keyVault.properties.vaultUri

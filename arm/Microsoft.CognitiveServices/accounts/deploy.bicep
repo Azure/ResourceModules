@@ -202,8 +202,8 @@ resource cognitiveServices_diagnosticSettingName 'Microsoft.Insights/diagnostics
   scope: cognitiveServices
 }
 
-module cognitiveServices_privateEndpoints '.bicep/nested_privateEndpoints.bicep' = [for privateEndpoint in privateEndpoints: {
-  name: '${uniqueString(deployment().name, privateEndpoint.name)}-privateEndpoint'
+module cognitiveServices_privateEndpoints '.bicep/nested_privateEndpoints.bicep' = [for (privateEndpoint, index) in privateEndpoints: {
+  name: '${uniqueString(deployment().name, location)}-CognitiveServices-PrivateEndpoint-${index}'
   params: {
     privateEndpointResourceId: cognitiveServices.id
     privateEndpointVnetLocation: (empty(privateEndpoints) ? 'dummy' : reference(split(privateEndpoint.subnetResourceId, '/subnets/')[0], '2020-06-01', 'Full').location)
@@ -213,7 +213,7 @@ module cognitiveServices_privateEndpoints '.bicep/nested_privateEndpoints.bicep'
 }]
 
 module cognitiveServices_rbac '.bicep/nested_rbac.bicep' = [for (roleAssignment, index) in roleAssignments: {
-  name: '${deployment().name}-rbac-${index}'
+  name: '${uniqueString(deployment().name, location)}-CognitiveServices-Rbac-${index}'
   params: {
     principalIds: roleAssignment.principalIds
     roleDefinitionIdOrName: roleAssignment.roleDefinitionIdOrName

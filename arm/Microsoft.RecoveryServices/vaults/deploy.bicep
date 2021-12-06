@@ -140,8 +140,8 @@ resource rsv 'Microsoft.RecoveryServices/vaults@2021-08-01' = {
   properties: {}
 }
 
-module rsv_backupStorageConfiguration 'backupStorageConfig/deploy.bicep' = {
-  name: '${uniqueString(deployment().name, location)}-BackupStorageConfig'
+module rsv_backupStorageConfiguration 'backupStorageConfig/deploy.bicep' = if (!empty(backupStorageConfig)) {
+  name: '${uniqueString(deployment().name, location)}-RSV-BackupStorageConfig'
   params: {
     recoveryVaultName: rsv.name
     storageModelType: backupStorageConfig.storageModelType
@@ -150,7 +150,7 @@ module rsv_backupStorageConfiguration 'backupStorageConfig/deploy.bicep' = {
 }
 
 module rsv_protectionContainers 'protectionContainers/deploy.bicep' = [for (protectionContainer, index) in protectionContainers: {
-  name: '${uniqueString(deployment().name, location)}-ProtectionContainers-${index}'
+  name: '${uniqueString(deployment().name, location)}-RSV-ProtectionContainers-${index}'
   params: {
     recoveryVaultName: rsv.name
     name: protectionContainer.name
@@ -162,7 +162,7 @@ module rsv_protectionContainers 'protectionContainers/deploy.bicep' = [for (prot
 }]
 
 module rsv_backupPolicies 'backupPolicies/deploy.bicep' = [for (backupPolicy, index) in backupPolicies: {
-  name: '${uniqueString(deployment().name, location)}-BackupPolicy-${index}'
+  name: '${uniqueString(deployment().name, location)}-RSV-BackupPolicy-${index}'
   params: {
     recoveryVaultName: rsv.name
     name: backupPolicy.name
@@ -193,7 +193,7 @@ resource rsv_diagnosticSettings 'Microsoft.Insights/diagnosticSettings@2021-05-0
 }
 
 module rsv_rbac '.bicep/nested_rbac.bicep' = [for (roleAssignment, index) in roleAssignments: {
-  name: '${deployment().name}-rbac-${index}'
+  name: '${uniqueString(deployment().name, location)}-RSV-Rbac-${index}'
   params: {
     principalIds: roleAssignment.principalIds
     roleDefinitionIdOrName: roleAssignment.roleDefinitionIdOrName

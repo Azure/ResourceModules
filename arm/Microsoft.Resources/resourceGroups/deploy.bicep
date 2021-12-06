@@ -29,7 +29,7 @@ resource resourceGroup 'Microsoft.Resources/resourceGroups@2019-05-01' = {
 
 module resourceGroup_lock '.bicep/nested_lock.bicep' = if (lock != 'NotSpecified') {
   scope: resourceGroup
-  name: '${resourceGroup.name}-${lock}-lock-deployment'
+  name: '${uniqueString(deployment().name, location)}-RG-${lock}-Lock'
   params: {
     name: '${resourceGroup.name}-${lock}-lock'
     level: lock
@@ -37,7 +37,7 @@ module resourceGroup_lock '.bicep/nested_lock.bicep' = if (lock != 'NotSpecified
 }
 
 module resourceGroup_rbac '.bicep/nested_rbac.bicep' = [for (roleAssignment, index) in roleAssignments: {
-  name: '${deployment().name}-rbac-${index}'
+  name: '${uniqueString(deployment().name, location)}-RG-Rbac-${index}'
   params: {
     principalIds: roleAssignment.principalIds
     roleDefinitionIdOrName: roleAssignment.roleDefinitionIdOrName
