@@ -4,5 +4,5 @@ https://mystorageaccount.blob.core.windows.net
 https://mykeyvault.vault.azure.net
 https://www.powershellgallery.com
 https://github.com/myProject
-http://validURLToConfigLocation
-https://myCustomDependencyLocation
+http://validURLToConfigLocation/
+https://myCustomDependencyLocation/

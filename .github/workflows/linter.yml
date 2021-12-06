@@ -37,5 +37,6 @@ jobs:
         env:
           GITHUB_TOKEN: ${{secrets.GITHUB_TOKEN}}
 
-      - name: Fail if there were link errors
+      - name: Link Checker Results
+        if: always()
         run: exit ${{ steps.checker.outputs.exit_code }}
