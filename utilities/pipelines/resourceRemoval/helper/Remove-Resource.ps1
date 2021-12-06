@@ -94,7 +94,7 @@ function Initialize-PreResourceRemoval {
         'Microsoft.RecoveryServices/vaults' {
             # Remove protected VMs
             $backupItems = Get-AzRecoveryServicesBackupItem -BackupManagementType 'AzureVM' -WorkloadType 'AzureVM' -VaultId $resourceToRemove.resourceId
-            foreach ($backupItem in ($backupItems | Where-Object { $_.DeleteState -eq 'NotDeleted' })) {
+            foreach ($backupItem in $backupItems) {
                 Write-Verbose ('Removing Backup item [{0}] from RSV [ {1}]' -f $backupItem.Name, $resourceToRemove.name) -Verbose
                 if ($PSCmdlet.ShouldProcess(('Backup item [{0}] from RSV [{1}]' -f $backupItem.Name, $resourceToRemove.name), 'Remove')) {
                     $null = Disable-AzRecoveryServicesBackupProtection -Item $backupItem -VaultId $resourceToRemove.resourceId -RemoveRecoveryPoints -Force
