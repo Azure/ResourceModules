@@ -252,11 +252,11 @@ The following resources are required to be able to deploy this resource.
     "value": [
         //storage accounts with SAS token requirement
         {
-            "uri": "https://storageAccount.blob.core.windows.net/avdscripts/File1.ps1",
+            "uri": "https://mystorageAccount.blob.core.windows.net/avdscripts/File1.ps1",
             "storageAccountId": "/subscriptions/12345678-1234-1234-1234-123456789012/resourceGroups/rgName/providers/Microsoft.Storage/storageAccounts/storageAccountName"
         },
         {
-            "uri": "https://storageAccount.blob.core.windows.net/avdscripts/File2.ps1",
+            "uri": "https://mystorageAccount.blob.core.windows.net/avdscripts/File2.ps1",
             "storageAccountId": "/subscriptions/12345678-1234-1234-1234-123456789012/resourceGroups/rgName/providers/Microsoft.Storage/storageAccounts/storageAccountName"
         },
         //storage account with public container (no SAS token is required) OR other public URL (not a storage account)

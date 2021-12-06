@@ -5,3 +5,5 @@ https://mykeyvault.vault.azure.net
 https://www.powershellgallery.com
 https://github.com/myProject
 SECURITY.md
+http://validURLToConfigLocation
+https://myCustomDependencyLocation
