@@ -5,36 +5,43 @@
         "name": {
             "value": "sxx-az-fwpol-x-002"
         },
-        "ruleGroups": {
+        "ruleCollectionGroups": {
             "value": [
                 {
                     "name": "sxx-rule-001",
                     "priority": 5000,
-                    // "action": {
-                    //     "type": "Allow"
-                    // },
-                    "rules": [
+                    "ruleCollections": [
                         {
-                            "name": "344",
-                            "ipProtocols": [
-                                "TCP"
+                            "name": "collection002",
+                            "priority": 5555,
+                            "action": {
+                                "type": "Allow"
+                            },
+                            "rules": [
+                                {
+                                    "name": "rule002",
+                                    "ipProtocols": [
+                                        "TCP",
+                                        "UDP"
+                                    ],
+                                    "destinationPorts": [
+                                        "80"
+                                    ],
+                                    "sourceAddresses": [
+                                        "*"
+                                    ],
+                                    "sourceIpGroups": [],
+                                    "ruleType": "NetworkRule",
+                                    "destinationIpGroups": [],
+                                    "destinationAddresses": [
+                                        "*"
+                                    ],
+                                    "destinationFqdns": []
+                                }
                             ],
-                            "destinationPorts": [
-                                "3389"
-                            ],
-                            "sourceAddresses": [
-                                "192.168.1.1"
-                            ],
-                            "sourceIpGroups": [],
-                            "ruleType": "NetworkRule",
-                            "destinationIpGroups": [],
-                            "destinationAddresses": [
-                                "192.168.1.1"
-                            ],
-                            "destinationFqdns": []
+                            "ruleCollectionType": "FirewallPolicyFilterRuleCollection"
                         }
-                    ] //,
-                    // "ruleCollectionType": "FirewallPolicyFilterRuleCollection"
+                    ]
                 }
             ]
         }
