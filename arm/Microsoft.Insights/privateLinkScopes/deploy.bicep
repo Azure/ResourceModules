@@ -1,8 +1,8 @@
-@description('Required. Name of the Private Link Scope.')
+@description('Required. Name of the private link scope.')
 @minLength(1)
-param privateLinkScopeName string
+param name string
 
-@description('Optional. The location of the Private Link Scope. Should be global.')
+@description('Optional. The location of the private link scope. Should be global.')
 param location string = 'global'
 
 @allowed([
@@ -25,7 +25,7 @@ param privateEndpoints array = []
 @description('Optional. Resource tags.')
 param tags object = {}
 
-@description('Optional. Customer Usage Attribution id (GUID). This GUID must be previously registered')
+@description('Optional. Customer Usage Attribution ID (GUID). This GUID must be previously registered')
 param cuaId string = ''
 
 module pid_cuaId '.bicep/nested_cuaId.bicep' = if (!empty(cuaId)) {
@@ -34,33 +34,35 @@ module pid_cuaId '.bicep/nested_cuaId.bicep' = if (!empty(cuaId)) {
 }
 
 resource privateLinkScope 'Microsoft.Insights/privateLinkScopes@2019-10-17-preview' = {
-  name: privateLinkScopeName
+  name: name
   location: location
   tags: tags
   properties: {}
-
-  resource privateLinkScope_scopedResources 'scopedresources@2019-10-17-preview' = [for (scopedResource, index) in scopedResources: {
-    name: 'scoped-${last(split(scopedResource.linkedResourceId, '/'))}-${guid(uniqueString(privateLinkScope.name, scopedResource.linkedResourceId))}'
-    properties: {
-      linkedResourceId: scopedResource.linkedResourceId
-    }
-  }]
 }
+
+module privateLinkScope_scopedResource 'scopedResources/deploy.bicep' = [for (scopedResource, index) in scopedResources: {
+  name: '${uniqueString(deployment().name, location)}-Insights-ScpdRes-${index}'
+  params: {
+    name: scopedResource.name
+    privateLinkScopeName: privateLinkScope.name
+    linkedResourceId: scopedResource.linkedResourceId
+  }
+}]
 
 resource privateLinkScope_lock 'Microsoft.Authorization/locks@2016-09-01' = if (lock != 'NotSpecified') {
   name: '${privateLinkScope.name}-${lock}-lock'
   scope: privateLinkScope
   properties: {
     level: lock
-    notes: (lock == 'CanNotDelete') ? 'Cannot delete resource or child resources.' : 'Cannot modify the resource or child resources.'
+    notes: lock == 'CanNotDelete' ? 'Cannot delete resource or child resources.' : 'Cannot modify the resource or child resources.'
   }
 }
 
-module privateLinkScope_privateEndpoints '.bicep/nested_privateEndpoint.bicep' = [for (endpoint, index) in privateEndpoints: if (!empty(privateEndpoints)) {
-  name: '${uniqueString(deployment().name, location)}-Storage-PrivateEndpoints-${index}'
+module privateLinkScope_privateEndpoints '.bicep/nested_privateEndpoint.bicep' = [for (endpoint, index) in privateEndpoints: {
+  name: '${uniqueString(deployment().name, location)}-Insights-PvtEndPnt-${index}'
   params: {
     privateEndpointResourceId: privateLinkScope.id
-    privateEndpointVnetLocation: (empty(privateEndpoints) ? 'dummy' : reference(split(endpoint.subnetResourceId, '/subnets/')[0], '2020-06-01', 'Full').location)
+    privateEndpointVnetLocation: reference(split(endpoint.subnetResourceId, '/subnets/')[0], '2020-06-01', 'Full').location
     privateEndpointObj: endpoint
     tags: tags
   }
@@ -75,6 +77,11 @@ module privateLinkScope_rbac '.bicep/nested_rbac.bicep' = [for (roleAssignment, 
   }
 }]
 
+@description('The name of the private link scope')
 output privateLinkScopeName string = privateLinkScope.name
+
+@description('The resource ID of the private link scope')
 output privateLinkScopeResourceId string = privateLinkScope.id
+
+@description('The resource group the private link scope was deployed into')
 output privateLinkScopeResourceGroup string = resourceGroup().name

@@ -2,43 +2,44 @@
     "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
     "contentVersion": "1.0.0.0",
     "parameters": {
-        "appName": {
+        "name": {
             "value": "sxx-az-fa-x-001"
         },
-        "appType": {
+        "kind": {
             "value": "functionapp"
         },
-        "appServicePlanName": {
-            "value": "sxx-az-fa-x-001-asp"
+        "appServicePlanObject": {
+            "value": {
+                "name": "sxx-az-fa-x-001-asp",
+                "serverOS": "Linux",
+                "skuName": "P1v2",
+                "skuCapacity": 2,
+                "skuTier": "PremiumV2",
+                "skuSize": "P1v2",
+                "skuFamily": "Pv2"
+            }
         },
-        "appServicePlanSkuName": {
-            "value": "P1v2"
-        },
-        "appServicePlanTier": {
-            "value": "PremiumV2"
-        },
-        "appServicePlanSize": {
-            "value": "P1v2"
-        },
-        "appServicePlanFamily": {
-            "value": "Pv2"
+        "appInsightId": {
+            "value": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Insights/components/adp-sxx-az-appi-x-001"
         },
         "siteConfig": {
             "value": {
                 "alwaysOn": true
             }
         },
-        "storageAccountName": {
-            "value": "adpsxxazsaweux002"
-        },
-        "storageAccountResourceGroupName": {
-            "value": "validation-rg"
+        "storageAccountId": {
+            "value": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Storage/storageAccounts/adpsxxazsaweux002"
         },
         "functionsWorkerRuntime": {
             "value": "powershell"
         },
-        "enableMonitoring": {
-            "value": false
+        "systemAssignedIdentity": {
+            "value": true
+        },
+        "userAssignedIdentities": {
+            "value": {
+                "/subscriptions/<<subscriptionId>>/resourcegroups/validation-rg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/adp-sxx-az-msi-x-001": {}
+            }
         },
         "roleAssignments": {
             "value": [
@@ -49,6 +50,21 @@
                     ]
                 }
             ]
+        },
+        "diagnosticLogsRetentionInDays": {
+            "value": 7
+        },
+        "diagnosticStorageAccountId": {
+            "value": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Storage/storageAccounts/adpsxxazsaweux001"
+        },
+        "workspaceId": {
+            "value": "/subscriptions/<<subscriptionId>>/resourcegroups/validation-rg/providers/microsoft.operationalinsights/workspaces/adp-sxx-az-law-x-001"
+        },
+        "eventHubAuthorizationRuleId": {
+            "value": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.EventHub/namespaces/adp-sxx-az-evhns-x-001/AuthorizationRules/RootManageSharedAccessKey"
+        },
+        "eventHubName": {
+            "value": "adp-sxx-az-evh-x-001"
         }
     }
 }

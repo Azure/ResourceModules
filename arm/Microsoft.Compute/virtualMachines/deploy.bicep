@@ -27,18 +27,12 @@ param ultraSSDEnabled bool = false
 @secure()
 param adminUsername string
 
-@description('Required. When specifying a Windows Virtual Machine, this value should be passed')
+@description('Optional. When specifying a Windows Virtual Machine, this value should be passed')
 @secure()
-param adminPassword string
+param adminPassword string = ''
 
 @description('Optional. Custom data associated to the VM, this value will be automatically converted into base64 to account for the expected VM format.')
 param customData string = ''
-
-@description('Optional. Specifies Windows operating system settings on the virtual machine.')
-param windowsConfiguration object = {}
-
-@description('Optional. Specifies the Linux operating system settings on the virtual machine.')
-param linuxConfiguration object = {}
 
 @description('Optional. Specifies set of certificates that should be installed onto the virtual machine.')
 param certificatesToBeInstalled array = []
@@ -57,7 +51,7 @@ param enableEvictionPolicy bool = false
 @description('Optional. Specifies the maximum price you are willing to pay for a low priority VM/VMSS. This price is in US Dollars.')
 param maxPriceForLowPriorityVm string = ''
 
-@description('Optional. Specifies resource Id about the dedicated host that the virtual machine resides in.')
+@description('Optional. Specifies resource ID about the dedicated host that the virtual machine resides in.')
 param dedicatedHostId string = ''
 
 @description('Optional. Specifies that the image or disk that is being used was licensed on-premises. This element is only used for images that contain the Windows Server operating system.')
@@ -68,16 +62,13 @@ param dedicatedHostId string = ''
 ])
 param licenseType string = ''
 
-@description('Optional. The type of identity used for the virtual machine. The type \'SystemAssigned, UserAssigned\' includes both an implicitly created identity and a set of user assigned identities. The type \'None\' (default) will remove any identities from the virtual machine.')
-@allowed([
-  'None'
-  'SystemAssigned'
-  'SystemAssigned, UserAssigned'
-  'UserAssigned'
-])
-param managedServiceIdentity string = 'None'
+@description('Optional. The list of SSH public keys used to authenticate with linux based VMs')
+param publicKeys array = []
 
-@description('Optional. Mandatory if \'managedServiceIdentity\' contains UserAssigned. The list of user identities associated with the Virtual Machine.')
+@description('Optional. Enables system assigned managed identity on the resource.')
+param systemAssignedIdentity bool = false
+
+@description('Optional. The ID(s) to assign to the resource.')
 param userAssignedIdentities object = {}
 
 @description('Optional. Storage account used to store boot diagnostic information. Boot diagnostics will be disabled if no value is provided.')
@@ -152,96 +143,50 @@ param enableServerSideEncryption bool = false
 @description('Optional. Specifies whether extension operations should be allowed on the virtual machine. This may only be set to False when no extensions are present on the virtual machine.')
 param allowExtensionOperations bool = true
 
-@description('Optional. Specifies if the Domain Join Extension should be enabled.')
-param enableDomainJoinExtension bool = false
-
-@description('Optional. The Domain Join configuration object')
-@metadata({
-  domainName: 'Optional. Mandatory if enableDomainJoinExtension is set to true. Specifies the FQDN the of the domain the VM will be joined to. Currently implemented for Windows VMs only. Example: "contoso.com"'
-  domainJoinUser: 'Optional. Mandatory if enableDomainJoinExtension is set to true. User used for the join to the domain. Example: "username@contoso.com"'
-  domainJoinOU: 'Optional. Specifies an organizational unit (OU) for the domain account. Enter the full distinguished name of the OU in quotation marks. Example: "OU=testOU; DC=domain; DC=com"'
-  domainJoinRestart: 'Optional. Controls the restart of vm after executing domain join'
-  domainJoinOptions: 'Optional. Set of bit flags that define the join options. Example: 3 is a combination of NETSETUP_JOIN_DOMAIN (0x00000001) & NETSETUP_ACCT_CREATE (0x00000002) i.e. will join the domain and create the account on the domain. For more information see https://msdn.microsoft.com/en-us/library/aa392154(v=vs.85).aspx'
-})
-param domainJoinSettings object = {}
 @description('Optional. Required if domainName is specified. Password of the user specified in domainJoinUser parameter')
 @secure()
-param domainJoinPassword string = ''
+param extensionDomainJoinPassword string = ''
 
-@description('Optional. Enables Microsoft Windows Defender AV.')
-param enableMicrosoftAntiMalware bool = false
+@description('Optional. The configuration for the [Domain Join] extension. Must at least contain the ["enabled": true] property to be executed')
+param extensionDomainJoinConfig object = {
+  enabled: false
+}
 
-@description('Optional. Settings for Microsoft Windows Defender AV extension.')
-param microsoftAntiMalwareSettings object = {}
+@description('Optional. The configuration for the [Anti Malware] extension. Must at least contain the ["enabled": true] property to be executed')
+param extensionAntiMalwareConfig object = {
+  enabled: false
+}
 
-@description('Optional. Specifies if MMA agent for Windows VM should be enabled.')
-param enableWindowsMMAAgent bool = false
+@description('Optional. The configuration for the [Monitoring Agent] extension. Must at least contain the ["enabled": true] property to be executed')
+param extensionMonitoringAgentConfig object = {
+  enabled: false
+}
 
-@description('Optional. Specifies if MMA agent for Linux VM should be enabled.')
-param enableLinuxMMAAgent bool = false
+@description('Optional. The configuration for the [Dependency Agent] extension. Must at least contain the ["enabled": true] property to be executed')
+param extensionDependencyAgentConfig object = {
+  enabled: false
+}
 
-@description('Optional. Specifies if Azure Dependency Agent for Windows VM should be enabled. Requires WindowsMMAAgent to be enabled.')
-param enableWindowsDependencyAgent bool = false
+@description('Optional. The configuration for the [Network Watcher Agent] extension. Must at least contain the ["enabled": true] property to be executed')
+param extensionNetworkWatcherAgentConfig object = {
+  enabled: false
+}
 
-@description('Optional. Specifies if Azure Dependency Agent for Linux VM should be enabled. Requires LinuxMMAAgent to be enabled.')
-param enableLinuxDependencyAgent bool = false
+@description('Optional. The configuration for the [Disk Encryption] extension. Must at least contain the ["enabled": true] property to be executed')
+param extensionDiskEncryptionConfig object = {
+  enabled: false
+}
 
-@description('Optional. Specifies if Azure Network Watcher Agent for Windows VM should be enabled.')
-param enableNetworkWatcherWindows bool = false
+@description('Optional. The configuration for the [Desired State Configuration] extension. Must at least contain the ["enabled": true] property to be executed')
+param extensionDSCConfig object = {
+  enabled: false
+}
 
-@description('Optional. Specifies if Azure Network Watcher Agent for Linux VM should be enabled.')
-param enableNetworkWatcherLinux bool = false
-
-@description('Optional. Specifies if Windows VM disks should be encrypted. If enabled, boot diagnostics must be enabled as well.')
-param enableWindowsDiskEncryption bool = false
-
-@description('Optional. Specifies if Linux VM disks should be encrypted. If enabled, boot diagnostics must be enabled as well.')
-param enableLinuxDiskEncryption bool = false
-
-@description('Optional. Settings for Azure Disk Encription extension.')
-@metadata({
-  EncryptionOperation: 'Set to "EnableEncryption" to enable disk encryption'
-  KeyVaultURL: 'Optional. URL of the Key Vault instance where the Key Encryption Key (KEK) resides'
-  KeyVaultResourceId: 'Optional. Resource identifier of the Key Vault instance where the Key Encryption Key (KEK) resides'
-  KeyEncryptionKeyURL: 'Optional. URL of the KeyEncryptionKey used to encrypt the volume encryption key'
-  KekVaultResourceId: 'Optional. Resource identifier of the Key Vault instance where the Key Encryption Key (KEK) resides'
-  KeyEncryptionAlgorithm: 'Optional. Specifies disk key encryption algorithm. Possible values: "RSA-OAEP","RSA-OAEP-256","RSA1_5"'
-  VolumeType: 'Optional. Type of the volume OS or Data to perform encryption operation. Possible values: "OS","Data","All"'
-  ResizeOSDisk: 'Optional. Should the OS partition be resized to occupy full OS VHD before splitting system volume'
-})
-param diskEncryptionSettings object = {}
-
-@description('Optional. Pass in an unique value like a GUID everytime the operation needs to be force run')
-param forceUpdateTag string = '1.0'
-
-@description('Optional. Specifies if Desired State Configuration Extension should be enabled.')
-param enableDesiredStateConfiguration bool = false
-
-@description('Optional. The DSC configuration Settings Object')
-param desiredStateConfigurationSettings object = {}
-
-@description('Optional. The DSC configuration Protected Settings Object')
-@secure()
-param desiredStateConfigurationProtectedSettings object = {}
-
-@description('Optional. Specifies if Custom Script Extension should be enabled.')
-param enableCustomScriptExtension bool = false
-
-@description('Optional. Array of objects that specifies URIs and the storageAccountId of the scripts that need to be downloaded and run by the Custom Script Extension on a Windows VM.')
-param windowsScriptExtensionFileData array = []
-
-@description('Optional. Specifies the command that should be run on a Windows VM.')
-@secure()
-param windowsScriptExtensionCommandToExecute string = ''
-
-@description('Optional. The name of the storage account to access for the CSE script(s).')
-param cseStorageAccountName string = ''
-
-@description('Optional. The storage key of the storage account to access for the CSE script(s).')
-param cseStorageAccountKey string = ''
-
-@description('Optional. A managed identity to use for the CSE.')
-param cseManagedIdentity object = {}
+@description('Optional. The configuration for the [Custom Script] extension. Must at least contain the ["enabled": true] property to be executed')
+param extensionCustomScriptConfig object = {
+  enabled: false
+  fileData: []
+}
 
 // Shared parameters
 @description('Optional. Location for all resources.')
@@ -252,10 +197,10 @@ param location string = resourceGroup().location
 @maxValue(365)
 param diagnosticLogsRetentionInDays int = 365
 
-@description('Optional. Resource identifier of the Diagnostic Storage Account.')
+@description('Optional. Resource ID of the diagnostic storage account.')
 param diagnosticStorageAccountId string = ''
 
-@description('Optional. Resource identifier of Log Analytics.')
+@description('Optional. Resource ID of log analytics.')
 param workspaceId string = ''
 
 @description('Optional. Resource ID of the event hub authorization rule for the Event Hubs namespace in which the event hub should be created or streamed to.')
@@ -278,7 +223,7 @@ param roleAssignments array = []
 @description('Optional. Tags of the resource.')
 param tags object = {}
 
-@description('Optional. Customer Usage Attribution id (GUID). This GUID must be previously registered')
+@description('Optional. Customer Usage Attribution ID (GUID). This GUID must be previously registered')
 param cuaId string = ''
 
 @description('Generated. Do not provide a value! This date value is used to generate a registration token.')
@@ -287,7 +232,55 @@ param baseTime string = utcNow('u')
 @description('Optional. SAS token validity length to use to download files from storage accounts. Usage: \'PT8H\' - valid for 8 hours; \'P5D\' - valid for 5 days; \'P1Y\' - valid for 1 year. When not provided, the SAS token will be valid for 8 hours.')
 param sasTokenValidityLength string = 'PT8H'
 
+@description('Optional. The chosen OS type')
+@allowed([
+  'Windows'
+  'Linux'
+])
+param osType string
+
+@description('Optional. Specifies whether password authentication should be disabled.')
+param disablePasswordAuthentication bool = false
+
+@description('Optional. Indicates whether virtual machine agent should be provisioned on the virtual machine. When this property is not specified in the request body, default behavior is to set it to true. This will ensure that VM Agent is installed on the VM so that extensions can be added to the VM later.')
+param provisionVMAgent bool = true
+
+@description('Optional. Indicates whether Automatic Updates is enabled for the Windows virtual machine. Default value is true. For virtual machine scale sets, this property can be updated and updates will take effect on OS reprovisioning.')
+param enableAutomaticUpdates bool = true
+
+@description('Optional. Specifies the time zone of the virtual machine. e.g. \'Pacific Standard Time\'. Possible values can be TimeZoneInfo.id value from time zones returned by TimeZoneInfo.GetSystemTimeZones.')
+param timeZone string = ''
+
+@description('Optional. Specifies additional base-64 encoded XML formatted information that can be included in the Unattend.xml file, which is used by Windows Setup. - AdditionalUnattendContent object')
+param additionalUnattendContent array = []
+
+@description('Optional. Specifies the Windows Remote Management listeners. This enables remote Windows PowerShell. - WinRMConfiguration object.')
+param winRM object = {}
+
 var vmComputerNameTransformed = vmComputerNamesTransformation == 'uppercase' ? toUpper(name) : (vmComputerNamesTransformation == 'lowercase' ? toLower(name) : name)
+
+var publicKeysFormatted = [for publicKey in publicKeys: {
+  path: publicKey.path
+  keyData: publicKey.keyData
+}]
+
+var linuxConfiguration = {
+  disablePasswordAuthentication: disablePasswordAuthentication
+  ssh: {
+    publicKeys: publicKeysFormatted
+  }
+  provisionVMAgent: provisionVMAgent
+}
+
+var windowsConfiguration = {
+  provisionVMAgent: provisionVMAgent
+  enableAutomaticUpdates: enableAutomaticUpdates
+  timeZone: empty(timeZone) ? null : timeZone
+  additionalUnattendContent: empty(additionalUnattendContent) ? null : additionalUnattendContent
+  winRM: !empty(winRM) ? {
+    listeners: winRM
+  } : null
+}
 
 var accountSasProperties = {
   signedServices: 'b'
@@ -296,6 +289,13 @@ var accountSasProperties = {
   signedResourceTypes: 'o'
   signedProtocol: 'https'
 }
+
+var identityType = systemAssignedIdentity ? (!empty(userAssignedIdentities) ? 'SystemAssigned,UserAssigned' : 'SystemAssigned') : (!empty(userAssignedIdentities) ? 'UserAssigned' : 'None')
+
+var identity = identityType != 'None' ? {
+  type: identityType
+  userAssignedIdentities: !empty(userAssignedIdentities) ? userAssignedIdentities : null
+} : null
 
 module pid_cuaId '.bicep/nested_cuaId.bicep' = if (!empty(cuaId)) {
   name: 'pid-${cuaId}'
@@ -330,10 +330,7 @@ module virtualMachine_nic '.bicep/nested_networkInterface.bicep' = [for (nicConf
 resource virtualMachine 'Microsoft.Compute/virtualMachines@2021-07-01' = {
   name: name
   location: location
-  identity: {
-    type: managedServiceIdentity
-    userAssignedIdentities: !empty(userAssignedIdentities) ? userAssignedIdentities : null
-  }
+  identity: identity
   tags: tags
   zones: useAvailabilityZone ? array(availabilityZone) : null
   plan: !empty(plan) ? plan : null
@@ -373,8 +370,8 @@ resource virtualMachine 'Microsoft.Compute/virtualMachines@2021-07-01' = {
       adminUsername: adminUsername
       adminPassword: adminPassword
       customData: !empty(customData) ? base64(customData) : null
-      windowsConfiguration: !empty(windowsConfiguration) ? windowsConfiguration : null
-      linuxConfiguration: !empty(linuxConfiguration) ? linuxConfiguration : null
+      windowsConfiguration: osType == 'Windows' ? windowsConfiguration : null
+      linuxConfiguration: osType == 'Linux' ? linuxConfiguration : null
       secrets: certificatesToBeInstalled
       allowExtensionOperations: allowExtensionOperations
     }
@@ -405,145 +402,139 @@ resource virtualMachine 'Microsoft.Compute/virtualMachines@2021-07-01' = {
   ]
 }
 
-module virtualMachine_domainJoinExtension './extensions/deploy.bicep' = if (enableDomainJoinExtension) {
+module vm_domainJoinExtension 'extensions/deploy.bicep' = if (extensionDomainJoinConfig.enabled) {
   name: '${uniqueString(deployment().name, location)}-vm-DomainJoin'
   params: {
     virtualMachineName: virtualMachine.name
     name: 'DomainJoin'
-    location: location
     publisher: 'Microsoft.Compute'
     type: 'JsonADDomainExtension'
-    typeHandlerVersion: '1.3'
-    autoUpgradeMinorVersion: true
-    enableAutomaticUpgrade: false
-    settings: domainJoinSettings
+    typeHandlerVersion: contains(extensionDomainJoinConfig, 'typeHandlerVersion') ? extensionDomainJoinConfig.typeHandlerVersion : '1.3'
+    autoUpgradeMinorVersion: contains(extensionDomainJoinConfig, 'autoUpgradeMinorVersion') ? extensionDomainJoinConfig.autoUpgradeMinorVersion : true
+    enableAutomaticUpgrade: contains(extensionDomainJoinConfig, 'enableAutomaticUpgrade') ? extensionDomainJoinConfig.enableAutomaticUpgrade : false
+    settings: extensionDomainJoinConfig.settings
     protectedSettings: {
-      Password: domainJoinPassword
+      Password: extensionDomainJoinPassword
     }
   }
 }
 
-module virtualMachine_microsoftAntiMalwareExtension './extensions/deploy.bicep' = if (enableMicrosoftAntiMalware) {
+module vm_microsoftAntiMalwareExtension 'extensions/deploy.bicep' = if (extensionAntiMalwareConfig.enabled) {
   name: '${uniqueString(deployment().name, location)}-vm-MicrosoftAntiMalware'
   params: {
     virtualMachineName: virtualMachine.name
     name: 'MicrosoftAntiMalware'
-    location: location
     publisher: 'Microsoft.Azure.Security'
     type: 'IaaSAntimalware'
-    typeHandlerVersion: '1.3'
-    autoUpgradeMinorVersion: true
-    enableAutomaticUpgrade: false
-    settings: microsoftAntiMalwareSettings
+    typeHandlerVersion: contains(extensionAntiMalwareConfig, 'typeHandlerVersion') ? extensionAntiMalwareConfig.typeHandlerVersion : '1.3'
+    autoUpgradeMinorVersion: contains(extensionAntiMalwareConfig, 'autoUpgradeMinorVersion') ? extensionAntiMalwareConfig.autoUpgradeMinorVersion : true
+    enableAutomaticUpgrade: contains(extensionAntiMalwareConfig, 'enableAutomaticUpgrade') ? extensionAntiMalwareConfig.enableAutomaticUpgrade : false
+    settings: extensionAntiMalwareConfig.settings
   }
 }
 
-resource virtualMachine_logAnalyticsWorkspace 'Microsoft.OperationalInsights/workspaces@2021-06-01' existing = if (!empty(workspaceId)) {
+resource vm_logAnalyticsWorkspace 'Microsoft.OperationalInsights/workspaces@2021-06-01' existing = if (!empty(workspaceId)) {
   name: last(split(workspaceId, '/'))
   scope: resourceGroup(split(workspaceId, '/')[2], split(workspaceId, '/')[4])
 }
 
-module virtualMachine_microsoftMonitoringAgentExtension './extensions/deploy.bicep' = if (enableWindowsMMAAgent || enableLinuxMMAAgent) {
+module vm_microsoftMonitoringAgentExtension 'extensions/deploy.bicep' = if (extensionMonitoringAgentConfig.enabled) {
   name: '${uniqueString(deployment().name, location)}-vm-MicrosoftMonitoringAgent'
   params: {
     virtualMachineName: virtualMachine.name
     name: 'MicrosoftMonitoringAgent'
-    location: location
     publisher: 'Microsoft.EnterpriseCloud.Monitoring'
-    type: enableWindowsMMAAgent ? 'MicrosoftMonitoringAgent' : 'OmsAgentForLinux'
-    typeHandlerVersion: enableWindowsMMAAgent ? '1.0' : '1.7'
-    autoUpgradeMinorVersion: true
-    enableAutomaticUpgrade: false
+    type: osType == 'Windows' ? 'MicrosoftMonitoringAgent' : 'OmsAgentForLinux'
+    typeHandlerVersion: contains(extensionMonitoringAgentConfig, 'typeHandlerVersion') ? extensionMonitoringAgentConfig.typeHandlerVersion : (osType == 'Windows' ? '1.0' : '1.7')
+    autoUpgradeMinorVersion: contains(extensionMonitoringAgentConfig, 'autoUpgradeMinorVersion') ? extensionMonitoringAgentConfig.autoUpgradeMinorVersion : true
+    enableAutomaticUpgrade: contains(extensionMonitoringAgentConfig, 'enableAutomaticUpgrade') ? extensionMonitoringAgentConfig.enableAutomaticUpgrade : false
     settings: {
-      workspaceId: !empty(workspaceId) ? reference(virtualMachine_logAnalyticsWorkspace.id, virtualMachine_logAnalyticsWorkspace.apiVersion).customerId : ''
+      workspaceId: !empty(workspaceId) ? reference(vm_logAnalyticsWorkspace.id, vm_logAnalyticsWorkspace.apiVersion).customerId : ''
     }
     protectedSettings: {
-      workspaceKey: !empty(workspaceId) ? virtualMachine_logAnalyticsWorkspace.listKeys().primarySharedKey : ''
+      workspaceKey: !empty(workspaceId) ? vm_logAnalyticsWorkspace.listKeys().primarySharedKey : ''
     }
   }
 }
 
-module virtualMachine_dependencyAgentExtension './extensions/deploy.bicep' = if (enableWindowsDependencyAgent || enableLinuxDependencyAgent) {
+module vm_dependencyAgentExtension 'extensions/deploy.bicep' = if (extensionDependencyAgentConfig.enabled) {
   name: '${uniqueString(deployment().name, location)}-vm-DependencyAgent'
   params: {
     virtualMachineName: virtualMachine.name
     name: 'DependencyAgent'
-    location: location
     publisher: 'Microsoft.Azure.Monitoring.DependencyAgent'
-    type: enableWindowsDependencyAgent ? 'DependencyAgentWindows' : 'DependencyAgentLinux'
-    typeHandlerVersion: '9.5'
-    autoUpgradeMinorVersion: true
-    enableAutomaticUpgrade: true
+    type: osType == 'Windows' ? 'DependencyAgentWindows' : 'DependencyAgentLinux'
+    typeHandlerVersion: contains(extensionDependencyAgentConfig, 'typeHandlerVersion') ? extensionDependencyAgentConfig.typeHandlerVersion : '9.5'
+    autoUpgradeMinorVersion: contains(extensionDependencyAgentConfig, 'autoUpgradeMinorVersion') ? extensionDependencyAgentConfig.autoUpgradeMinorVersion : true
+    enableAutomaticUpgrade: contains(extensionDependencyAgentConfig, 'enableAutomaticUpgrade') ? extensionDependencyAgentConfig.enableAutomaticUpgrade : true
   }
 }
 
-module virtualMachine_networkWatcherAgentExtension './extensions/deploy.bicep' = if (enableNetworkWatcherWindows || enableNetworkWatcherLinux) {
+module vm_networkWatcherAgentExtension 'extensions/deploy.bicep' = if (extensionNetworkWatcherAgentConfig.enabled) {
   name: '${uniqueString(deployment().name, location)}-vm-NetworkWatcherAgent'
   params: {
     virtualMachineName: virtualMachine.name
     name: 'NetworkWatcherAgent'
-    location: location
     publisher: 'Microsoft.Azure.NetworkWatcher'
-    type: enableNetworkWatcherWindows ? 'NetworkWatcherAgentWindows' : 'NetworkWatcherAgentLinux'
-    typeHandlerVersion: '1.4'
-    autoUpgradeMinorVersion: true
-    enableAutomaticUpgrade: false
+    type: osType == 'Windows' ? 'NetworkWatcherAgentWindows' : 'NetworkWatcherAgentLinux'
+    typeHandlerVersion: contains(extensionNetworkWatcherAgentConfig, 'typeHandlerVersion') ? extensionNetworkWatcherAgentConfig.typeHandlerVersion : '1.4'
+    autoUpgradeMinorVersion: contains(extensionNetworkWatcherAgentConfig, 'autoUpgradeMinorVersion') ? extensionNetworkWatcherAgentConfig.autoUpgradeMinorVersion : true
+    enableAutomaticUpgrade: contains(extensionNetworkWatcherAgentConfig, 'enableAutomaticUpgrade') ? extensionNetworkWatcherAgentConfig.enableAutomaticUpgrade : false
   }
 }
 
-module virtualMachine_diskEncryptionExtension './extensions/deploy.bicep' = if (enableWindowsDiskEncryption || enableLinuxDiskEncryption) {
-  name: '${uniqueString(deployment().name, location)}-vm-DiskEncryption'
-  params: {
-    virtualMachineName: virtualMachine.name
-    name: 'DiskEncryption'
-    location: location
-    publisher: 'Microsoft.Azure.Security'
-    type: enableWindowsDiskEncryption ? 'AzureDiskEncryption' : 'AzureDiskEncryptionForLinux'
-    typeHandlerVersion: enableWindowsDiskEncryption ? '2.2' : '1.1'
-    autoUpgradeMinorVersion: true
-    enableAutomaticUpgrade: false
-    forceUpdateTag: forceUpdateTag
-    settings: diskEncryptionSettings
-  }
-}
-
-module virtualMachine_desiredStateConfigurationExtension './extensions/deploy.bicep' = if (enableDesiredStateConfiguration) {
+module vm_desiredStateConfigurationExtension 'extensions/deploy.bicep' = if (extensionDSCConfig.enabled) {
   name: '${uniqueString(deployment().name, location)}-vm-DesiredStateConfiguration'
   params: {
     virtualMachineName: virtualMachine.name
     name: 'DesiredStateConfiguration'
-    location: location
     publisher: 'Microsoft.Powershell'
     type: 'DSC'
-    typeHandlerVersion: '2.77'
-    autoUpgradeMinorVersion: true
-    enableAutomaticUpgrade: false
-    settings: desiredStateConfigurationSettings
-    protectedSettings: desiredStateConfigurationProtectedSettings
+    typeHandlerVersion: contains(extensionDSCConfig, 'typeHandlerVersion') ? extensionDSCConfig.typeHandlerVersion : '2.77'
+    autoUpgradeMinorVersion: contains(extensionDSCConfig, 'autoUpgradeMinorVersion') ? extensionDSCConfig.autoUpgradeMinorVersion : true
+    enableAutomaticUpgrade: contains(extensionDSCConfig, 'enableAutomaticUpgrade') ? extensionDSCConfig.enableAutomaticUpgrade : false
+    settings: contains(extensionDSCConfig, 'settings') ? extensionDSCConfig.settings : {}
+    protectedSettings: contains(extensionDSCConfig, 'protectedSettings') ? extensionDSCConfig.protectedSettings : {}
   }
 }
 
-module virtualMachine_customScriptExtension './extensions/deploy.bicep' = if (enableCustomScriptExtension) {
+module vm_customScriptExtension 'extensions/deploy.bicep' = if (extensionCustomScriptConfig.enabled) {
   name: '${uniqueString(deployment().name, location)}-vm-CustomScriptExtension'
   params: {
     virtualMachineName: virtualMachine.name
     name: 'CustomScriptExtension'
-    location: location
-    publisher: 'Microsoft.Compute'
-    type: 'CustomScriptExtension'
-    typeHandlerVersion: '1.9'
-    autoUpgradeMinorVersion: true
-    enableAutomaticUpgrade: true
+    publisher: osType == 'Windows' ? 'Microsoft.Compute' : 'Microsoft.Azure.Extensions'
+    type: osType == 'Windows' ? 'CustomScriptExtension' : 'CustomScript'
+    typeHandlerVersion: contains(extensionCustomScriptConfig, 'typeHandlerVersion') ? extensionCustomScriptConfig.typeHandlerVersion : (osType == 'Windows' ? '1.10' : '2.1')
+    autoUpgradeMinorVersion: contains(extensionCustomScriptConfig, 'autoUpgradeMinorVersion') ? extensionCustomScriptConfig.autoUpgradeMinorVersion : true
+    enableAutomaticUpgrade: contains(extensionCustomScriptConfig, 'enableAutomaticUpgrade') ? extensionCustomScriptConfig.enableAutomaticUpgrade : false
     settings: {
-      fileUris: [for fileData in windowsScriptExtensionFileData: contains(fileData, 'storageAccountId') ? '${fileData.uri}?${listAccountSas(fileData.storageAccountId, '2019-04-01', accountSasProperties).accountSasToken}' : fileData.uri]
+      fileUris: [for fileData in extensionCustomScriptConfig.fileData: contains(fileData, 'storageAccountId') ? '${fileData.uri}?${listAccountSas(fileData.storageAccountId, '2019-04-01', accountSasProperties).accountSasToken}' : fileData.uri]
     }
-    protectedSettings: {
-      commandToExecute: windowsScriptExtensionCommandToExecute
-      storageAccountName: !empty(cseStorageAccountName) ? cseStorageAccountName : null
-      storageAccountKey: !empty(cseStorageAccountKey) ? cseStorageAccountKey : null
-      managedIdentity: !empty(cseManagedIdentity) ? cseManagedIdentity : null
-    }
+    protectedSettings: contains(extensionCustomScriptConfig, 'protectedSettings') ? extensionCustomScriptConfig.protectedSettings : {}
   }
+  dependsOn: [
+    vm_desiredStateConfigurationExtension
+  ]
+}
+
+module vm_diskEncryptionExtension 'extensions/deploy.bicep' = if (extensionDiskEncryptionConfig.enabled) {
+  name: '${uniqueString(deployment().name, location)}-vm-DiskEncryption'
+  params: {
+    virtualMachineName: virtualMachine.name
+    name: 'DiskEncryption'
+    publisher: 'Microsoft.Azure.Security'
+    type: osType == 'Windows' ? 'AzureDiskEncryption' : 'AzureDiskEncryptionForLinux'
+    typeHandlerVersion: contains(extensionDiskEncryptionConfig, 'typeHandlerVersion') ? extensionDiskEncryptionConfig.typeHandlerVersion : (osType == 'Windows' ? '2.2' : '1.1')
+    autoUpgradeMinorVersion: contains(extensionDiskEncryptionConfig, 'autoUpgradeMinorVersion') ? extensionDiskEncryptionConfig.autoUpgradeMinorVersion : true
+    enableAutomaticUpgrade: contains(extensionDiskEncryptionConfig, 'enableAutomaticUpgrade') ? extensionDiskEncryptionConfig.enableAutomaticUpgrade : false
+    forceUpdateTag: contains(extensionDiskEncryptionConfig, 'forceUpdateTag') ? extensionDiskEncryptionConfig.forceUpdateTag : '1.0'
+    settings: extensionDiskEncryptionConfig.settings
+  }
+  dependsOn: [
+    vm_customScriptExtension
+    vm_microsoftMonitoringAgentExtension
+  ]
 }
 
 module virtualMachine_backup '.bicep/nested_backup.bicep' = if (!empty(backupVaultName)) {
@@ -556,14 +547,14 @@ module virtualMachine_backup '.bicep/nested_backup.bicep' = if (!empty(backupVau
   }
   scope: resourceGroup(backupVaultResourceGroup)
   dependsOn: [
-    virtualMachine_domainJoinExtension
-    virtualMachine_microsoftMonitoringAgentExtension
-    virtualMachine_microsoftAntiMalwareExtension
-    virtualMachine_networkWatcherAgentExtension
-    virtualMachine_dependencyAgentExtension
-    virtualMachine_dependencyAgentExtension
-    virtualMachine_desiredStateConfigurationExtension
-    virtualMachine_customScriptExtension
+    vm_domainJoinExtension
+    vm_microsoftMonitoringAgentExtension
+    vm_microsoftAntiMalwareExtension
+    vm_networkWatcherAgentExtension
+    vm_dependencyAgentExtension
+    vm_dependencyAgentExtension
+    vm_desiredStateConfigurationExtension
+    vm_customScriptExtension
   ]
 }
 
@@ -588,8 +579,11 @@ module virtualMachine_rbac '.bicep/nested_rbac.bicep' = [for (roleAssignment, in
 @description('The name of the VM.')
 output virtualMachineName string = virtualMachine.name
 
-@description('The Resource Id of the VM.')
+@description('The Resource ID of the VM.')
 output virtualMachineResourceId string = virtualMachine.id
 
 @description('The name of the Resource Group the VM was created in.')
 output virtualMachineResourceGroup string = resourceGroup().name
+
+@description('The principal ID of the system assigned identity.')
+output systemAssignedPrincipalId string = systemAssignedIdentity ? virtualMachine.identity.principalId : ''

@@ -8,7 +8,7 @@ param name string
 @description('Required. Configuration of the Azure Recovery Service Vault Backup Policy')
 param backupPolicyProperties object
 
-@description('Optional. Customer Usage Attribution id (GUID). This GUID must be previously registered')
+@description('Optional. Customer Usage Attribution ID (GUID). This GUID must be previously registered')
 param cuaId string = ''
 
 module pid_cuaId './.bicep/nested_cuaId.bicep' = if (!empty(cuaId)) {

@@ -8,16 +8,21 @@ param name string
 @description('Required. Properties for the container service agent pool profile.')
 param agentPoolProperties object
 
+resource managedCluster 'Microsoft.ContainerService/managedClusters@2021-08-01' existing = {
+  name: managedClusterName
+}
+
 resource agentPool 'Microsoft.ContainerService/managedClusters/agentPools@2021-05-01' = {
-  name: '${managedClusterName}/${name}'
+  name: name
+  parent: managedCluster
   properties: agentPoolProperties
 }
 
 @description('The name of the agent pool')
 output agentPoolName string = agentPool.name
 
-@description('The ResourceId of the agent pool')
-output agentPoolId string = agentPool.id
+@description('The resource ID of the agent pool')
+output agentPoolResourceId string = agentPool.id
 
-@description('The name of the Resource Group the agent pool was created in.')
+@description('The resource group the agent pool was deployed into.')
 output agentPoolResourceGroup string = resourceGroup().name

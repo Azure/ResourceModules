@@ -222,4 +222,5 @@ resource workspaceSettings 'Microsoft.Security/workspaceSettings@2017-08-01-prev
   ]
 }
 
+@description('The resource IDs of the used log analytics workspace')
 output workspaceId string = workspaceId

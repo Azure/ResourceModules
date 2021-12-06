@@ -3,10 +3,16 @@
     "contentVersion": "1.0.0.0",
     "parameters": {
         "roleDefinitionIdOrName": {
-            "value": "Reader"
+            "value": "Backup Reader"
+        },
+        "description": {
+            "value": "Custom Role Assignment Sub"
         },
         "principalId": {
             "value": "<<deploymentSpId>>"
+        },
+        "principalType": {
+            "value": "ServicePrincipal"
         },
         "subscriptionId": {
             "value": "<<subscriptionId>>"

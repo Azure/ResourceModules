@@ -61,9 +61,9 @@ For available properties check <https://docs.microsoft.com/en-us/azure/templates
 
 | Output Name | Type | Description |
 | :-- | :-- | :-- |
-| `agentPoolId` | string | The ResourceId of the agent pool |
 | `agentPoolName` | string | The name of the agent pool |
-| `agentPoolResourceGroup` | string | The name of the Resource Group the agent pool was created in. |
+| `agentPoolResourceGroup` | string | The resource group the agent pool was deployed into. |
+| `agentPoolResourceId` | string | The resource ID of the agent pool |
 
 ## Template references
 

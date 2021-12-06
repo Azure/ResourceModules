@@ -35,7 +35,7 @@ param supressFailures bool = false
 @description('Required. Indicates whether the extension should be automatically upgraded by the platform if there is a newer version of the extension available')
 param enableAutomaticUpgrade bool
 
-@description('Optional. Customer Usage Attribution id (GUID). This GUID must be previously registered')
+@description('Optional. Customer Usage Attribution ID (GUID). This GUID must be previously registered')
 param cuaId string = ''
 
 module pid_cuaId '.bicep/nested_cuaId.bicep' = if (!empty(cuaId)) {
@@ -43,8 +43,13 @@ module pid_cuaId '.bicep/nested_cuaId.bicep' = if (!empty(cuaId)) {
   params: {}
 }
 
+resource virtualMachine 'Microsoft.Compute/virtualMachines@2021-07-01' existing = {
+  name: virtualMachineName
+}
+
 resource extension 'Microsoft.Compute/virtualMachines/extensions@2021-07-01' = {
-  name: '${virtualMachineName}/${name}'
+  name: name
+  parent: virtualMachine
   location: location
   properties: {
     publisher: publisher
@@ -62,8 +67,8 @@ resource extension 'Microsoft.Compute/virtualMachines/extensions@2021-07-01' = {
 @description('The name of the extension')
 output extensionName string = extension.name
 
-@description('The ResourceId of the extension')
-output extensionId string = extension.id
+@description('The resource ID of the extension')
+output extensionResourceId string = extension.id
 
 @description('The name of the Resource Group the extension was created in.')
 output extensionResourceGroup string = resourceGroup().name

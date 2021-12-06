@@ -1,7 +1,7 @@
 targetScope = 'subscription'
 
 @description('Required. Specify a unique name for your offer/registration. i.e \'<Managing Tenant> - <Remote Tenant> - <ResourceName>\'')
-param registrationDefinitionName string
+param name string
 
 @description('Required. Description of the offer/registration. i.e. \'Managed by <Managing Org Name>\'')
 param registrationDescription string
@@ -20,7 +20,7 @@ var registrationId = empty(resourceGroupName) ? guid(managedByTenantId, subscrip
 resource registrationDefinition 'Microsoft.ManagedServices/registrationDefinitions@2019-09-01' = {
   name: registrationId
   properties: {
-    registrationDefinitionName: registrationDefinitionName
+    registrationDefinitionName: name
     description: registrationDescription
     managedByTenantId: managedByTenantId
     authorizations: authorizations
@@ -35,7 +35,7 @@ resource registrationAssignment_sub 'Microsoft.ManagedServices/registrationAssig
 }
 
 module registrationAssignment_rg '.bicep/nested_registrationAssignment.bicep' = if (!empty(resourceGroupName)) {
-  name: 'assignment-${uniqueString(registrationId)}'
+  name: '${uniqueString(deployment().name)}-RegDef-RegAssignment'
   scope: resourceGroup(resourceGroupName)
   params: {
     registrationDefinitionId: registrationDefinition.id
@@ -43,6 +43,14 @@ module registrationAssignment_rg '.bicep/nested_registrationAssignment.bicep' = 
   }
 }
 
+@description('The name of the registration definition')
 output registrationDefinitionName string = registrationDefinition.name
-output registrationDefinitionId string = registrationDefinition.id
+
+@description('The resource ID of the registration definition')
+output registrationDefinitionResourceId string = registrationDefinition.id
+
+@description('The subscription the registration definition was deployed into')
+output registrationDefinitionSubscription string = subscription().displayName
+
+@description('The registration assignment resource ID')
 output registrationAssignmentId string = empty(resourceGroupName) ? registrationAssignment_sub.id : registrationAssignment_rg.outputs.registrationAssignmentId

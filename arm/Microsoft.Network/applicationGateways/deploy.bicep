@@ -21,7 +21,7 @@ param capacity int = 2
 @description('Optional. Enables HTTP/2 support.')
 param http2Enabled bool = true
 
-@description('Required. PublicIP Resource Id used in Public Frontend.')
+@description('Required. PublicIP Resource ID used in Public Frontend.')
 param frontendPublicIpResourceId string
 
 @metadata({
@@ -39,11 +39,11 @@ param subnetName string
 @description('Optional. The name of the Virtual Network Resource Group where the Application Gateway will be deployed.')
 param vNetResourceGroup string = resourceGroup().name
 
-@description('Optional. The Subscription Id of the Virtual Network where the Application Gateway will be deployed.')
+@description('Optional. The Subscription ID of the Virtual Network where the Application Gateway will be deployed.')
 param vNetSubscriptionId string = subscription().subscriptionId
 
-@description('Optional. Resource Id of an User assigned managed identity which will be associated with the App Gateway.')
-param managedIdentityResourceId string = ''
+@description('Optional. The ID(s) to assign to the resource.')
+param userAssignedIdentities object = {}
 
 @description('Optional. Application Gateway IP configuration name.')
 param gatewayIpConfigurationName string = 'gatewayIpConfiguration01'
@@ -51,7 +51,7 @@ param gatewayIpConfigurationName string = 'gatewayIpConfiguration01'
 @description('Optional. SSL certificate reference name for a certificate stored in the Key Vault to configure the HTTPS listeners.')
 param sslCertificateName string = 'sslCertificate01'
 
-@description('Optional. Secret Id of the SSL certificate stored in the Key Vault that will be used to configure the HTTPS listeners.')
+@description('Optional. Secret ID of the SSL certificate stored in the Key Vault that will be used to configure the HTTPS listeners.')
 param sslCertificateKeyVaultSecretId string = ''
 
 @description('Required. The backend pools to be configured.')
@@ -66,10 +66,10 @@ param probes array = []
 @description('Required. The frontend http listeners to be configured.')
 param frontendHttpListeners array = []
 
-@description('Required. The frontend https listeners to be configured.')
+@description('Required. The frontend HTTPS listeners to be configured.')
 param frontendHttpsListeners array = []
 
-@description('Optional. The http redirects to be configured. Each redirect will route http traffic to a pre-defined frontEnd https listener.')
+@description('Optional. The http redirects to be configured. Each redirect will route http traffic to a predefined frontEnd HTTPS listener.')
 param frontendHttpRedirects array = []
 
 @description('Required. The routing rules to be configured. These rules will be used to route requests from frontend listeners to backend pools using a backend HTTP configuration.')
@@ -83,10 +83,10 @@ param location string = resourceGroup().location
 @maxValue(365)
 param diagnosticLogsRetentionInDays int = 365
 
-@description('Optional. Resource identifier of the Diagnostic Storage Account.')
+@description('Optional. Resource ID of the diagnostic storage account.')
 param diagnosticStorageAccountId string = ''
 
-@description('Optional. Resource identifier of Log Analytics.')
+@description('Optional. Resource ID of log analytics.')
 param workspaceId string = ''
 
 @description('Optional. Resource ID of the event hub authorization rule for the Event Hubs namespace in which the event hub should be created or streamed to.')
@@ -109,7 +109,7 @@ param roleAssignments array = []
 @description('Optional. Tags of the resource.')
 param tags object = {}
 
-@description('Optional. Customer Usage Attribution id (GUID). This GUID must be previously registered.')
+@description('Optional. Customer Usage Attribution ID (GUID). This GUID must be previously registered.')
 param cuaId string = ''
 
 @description('Optional. The name of logs that will be streamed.')
@@ -192,12 +192,14 @@ var frontendPorts = concat((empty(frontendHttpListeners) ? frontendHttpListeners
 var httpListeners = concat((empty(frontendHttpListeners) ? frontendHttpListeners : frontendHttpListeners_var), (empty(frontendHttpsListeners) ? frontendHttpsListeners : frontendHttpsListeners_var), (empty(frontendHttpRedirects) ? frontendHttpRedirects : frontendHttpRedirects_var))
 var redirectConfigurations = (empty(frontendHttpRedirects) ? frontendHttpRedirects : httpRedirectConfigurations)
 var requestRoutingRules = concat(httpsRequestRoutingRules, (empty(frontendHttpRedirects) ? frontendHttpRedirects : httpRequestRoutingRules))
-var identity = {
-  type: 'UserAssigned'
-  userAssignedIdentities: {
-    '${managedIdentityResourceId}': {}
-  }
-}
+
+var identityType = !empty(userAssignedIdentities) ? 'UserAssigned' : 'None'
+
+var identity = identityType != 'None' ? {
+  type: identityType
+  userAssignedIdentities: !empty(userAssignedIdentities) ? userAssignedIdentities : null
+} : null
+
 
 var backendAddressPools = [for backendPool in backendPools: {
   name: backendPool.backendPoolName
@@ -244,14 +246,14 @@ var frontendHttpsListeners_var = [for frontendHttpsListener in frontendHttpsList
   name: frontendHttpsListener.frontendListenerName
   properties: {
     FrontendIPConfiguration: {
-      Id: '${applicationGatewayResourceId}/frontendIPConfigurations/${frontendHttpsListener.frontendIPType}'
+      id: '${applicationGatewayResourceId}/frontendIPConfigurations/${frontendHttpsListener.frontendIPType}'
     }
     FrontendPort: {
-      Id: '${applicationGatewayResourceId}/frontendPorts/port${frontendHttpsListener.port}'
+      id: '${applicationGatewayResourceId}/frontendPorts/port${frontendHttpsListener.port}'
     }
     Protocol: 'https'
     SslCertificate: {
-      Id: '${applicationGatewayResourceId}/sslCertificates/${sslCertificateName}'
+      id: '${applicationGatewayResourceId}/sslCertificates/${sslCertificateName}'
     }
   }
 }]
@@ -265,10 +267,10 @@ var frontendHttpListeners_var = [for frontendHttpListener in frontendHttpListene
   name: frontendHttpListener.frontendListenerName
   properties: {
     FrontendIPConfiguration: {
-      Id: '${applicationGatewayResourceId}/frontendIPConfigurations/${frontendHttpListener.frontendIPType}'
+      id: '${applicationGatewayResourceId}/frontendIPConfigurations/${frontendHttpListener.frontendIPType}'
     }
     FrontendPort: {
-      Id: '${applicationGatewayResourceId}/frontendPorts/port${frontendHttpListener.port}'
+      id: '${applicationGatewayResourceId}/frontendPorts/port${frontendHttpListener.port}'
     }
     Protocol: 'http'
   }
@@ -298,10 +300,10 @@ var frontendHttpRedirects_var = [for frontendHttpRedirect in frontendHttpRedirec
   name: '${httpListenerhttpRedirectNamePrefix}${frontendHttpRedirect.port}'
   properties: {
     FrontendIPConfiguration: {
-      Id: '${applicationGatewayResourceId}/frontendIPConfigurations/${frontendHttpRedirect.frontendIPType}'
+      id: '${applicationGatewayResourceId}/frontendIPConfigurations/${frontendHttpRedirect.frontendIPType}'
     }
     FrontendPort: {
-      Id: '${applicationGatewayResourceId}/frontendPorts/port${frontendHttpRedirect.port}'
+      id: '${applicationGatewayResourceId}/frontendPorts/port${frontendHttpRedirect.port}'
     }
     Protocol: 'http'
   }
@@ -340,10 +342,10 @@ module pid_cuaId '.bicep/nested_cuaId.bicep' = if (!empty(cuaId)) {
   params: {}
 }
 
-resource applicationGateway 'Microsoft.Network/applicationGateways@2021-02-01' = {
+resource applicationGateway 'Microsoft.Network/applicationGateways@2021-03-01' = {
   name: name
   location: location
-  identity: empty(managedIdentityResourceId) ? null : identity
+  identity: identity
   tags: tags
   properties: {
     sku: {
@@ -413,7 +415,7 @@ resource applicationGateway_diagnosticSettingName 'Microsoft.Insights/diagnostic
 }
 
 module applicationGateway_rbac '.bicep/nested_rbac.bicep' = [for (roleAssignment, index) in roleAssignments: {
-  name: '${deployment().name}-rbac-${index}'
+  name: '${uniqueString(deployment().name, location)}-AppGateway-Rbac-${index}'
   params: {
     principalIds: roleAssignment.principalIds
     roleDefinitionIdOrName: roleAssignment.roleDefinitionIdOrName

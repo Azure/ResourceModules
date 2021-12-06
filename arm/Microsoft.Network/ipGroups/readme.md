@@ -1,10 +1,10 @@
 # IP Groups `[Microsoft.Network/ipGroups]`
 
-This module deploys an IP Group, with resource lock.
+This module deploys an IP group.
 
 ## Resource types
 
-| Resource Type | Api Version |
+| Resource Type | API Version |
 | :-- | :-- |
 | `Microsoft.Authorization/locks` | 2016-09-01 |
 | `Microsoft.Authorization/roleAssignments` | 2020-04-01-preview |
@@ -14,7 +14,7 @@ This module deploys an IP Group, with resource lock.
 
 | Parameter Name | Type | Default Value | Possible Values | Description |
 | :-- | :-- | :-- | :-- | :-- |
-| `cuaId` | string |  |  | Optional. Customer Usage Attribution id (GUID). This GUID must be previously registered |
+| `cuaId` | string |  |  | Optional. Customer Usage Attribution ID (GUID). This GUID must be previously registered |
 | `ipAddresses` | array | `[]` |  | Optional. IpAddresses/IpAddressPrefixes in the IpGroups resource. |
 | `location` | string | `[resourceGroup().location]` |  | Optional. Location for all resources. |
 | `lock` | string | `NotSpecified` | `[CanNotDelete, NotSpecified, ReadOnly]` | Optional. Specify the type of lock. |
@@ -27,13 +27,6 @@ This module deploys an IP Group, with resource lock.
 ```json
 "roleAssignments": {
     "value": [
-        {
-            "roleDefinitionIdOrName": "Desktop Virtualization User",
-            "principalIds": [
-                "12345678-1234-1234-1234-123456789012", // object 1
-                "78945612-1234-1234-1234-123456789012" // object 2
-            ]
-        },
         {
             "roleDefinitionIdOrName": "Reader",
             "principalIds": [

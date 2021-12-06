@@ -1,8 +1,8 @@
-# PolicyExemption `[Microsoft.Authorization/policyExemptions]`
+# Policy Exemptions `[Microsoft.Authorization/policyExemptions]`
 
 ## Resource types
 
-| Resource Type | Api Version |
+| Resource Type | API Version |
 | :-- | :-- |
 | `Microsoft.Authorization/policyExemptions` | 2020-07-01-preview |
 
@@ -10,18 +10,18 @@
 
 | Parameter Name | Type | Default Value | Possible Values | Description |
 | :-- | :-- | :-- | :-- | :-- |
+| `description` | string |  |  | Optional. The description of the policy exemption. |
 | `displayName` | string |  |  | Optional. The display name of the policy exemption. |
 | `exemptionCategory` | string | `Mitigated` | `[Mitigated, Waiver]` | Optional. The policy exemption category. Possible values are Waiver and Mitigated. Default is Mitigated |
 | `expiresOn` | string |  |  | Optional. The expiration date and time (in UTC ISO 8601 format yyyy-MM-ddTHH:mm:ssZ) of the policy exemption. e.g. 2021-10-02T03:57:00.000Z  |
 | `location` | string | `[deployment().location]` |  | Optional. Location for all resources. |
-| `managementGroupId` | string |  |  | Optional. The ID of the management group to be exempted from the policy assignment. Cannot use with subscription id parameter. |
-| `metadata` | object | `{object}` |  | Optional. The policy exemption metadata. Metadata is an open ended object and is typically a collection of key value pairs. |
-| `policyAssignmentId` | string |  |  | Required. The ID of the policy assignment that is being exempted. |
+| `managementGroupId` | string |  |  | Optional. The group ID of the management group to be exempted from the policy assignment. Cannot use with subscription ID parameter. |
+| `metadata` | object | `{object}` |  | Optional. The policy exemption metadata. Metadata is an open ended object and is typically a collection of key-value pairs. |
+| `name` | string |  |  | Required. Specifies the name of the policy exemption. |
+| `policyAssignmentId` | string |  |  | Required. The resource ID of the policy assignment that is being exempted. |
 | `policyDefinitionReferenceIds` | array | `[]` |  | Optional. The policy definition reference ID list when the associated policy assignment is an assignment of a policy set definition. |
-| `policyExemptionDescription` | string |  |  | Optional. The description of the policy exemption. |
-| `policyExemptionName` | string |  |  | Required. Specifies the name of the policy exemption. Space characters will be replaced by (-) and converted to lowercase |
 | `resourceGroupName` | string |  |  | Optional. The name of the resource group to be exempted from the policy assignment. Must also use the subscription ID parameter. |
-| `subscriptionId` | string |  |  | Optional. The ID of the azure subscription to be exempted from the policy assignment. Cannot use with management group id parameter. |
+| `subscriptionId` | string |  |  | Optional. The subscription ID of the subscription to be exempted from the policy assignment. Cannot use with management group ID parameter. |
 
 ### Parameter Usage: `managementGroupId`
 
@@ -62,11 +62,11 @@ To deploy resource to a Resource Group, provide the `subscriptionId` and `resour
 
 ## Outputs
 
-| Output Name | Type |
-| :-- | :-- |
-| `policyExemptionId` | string |
-| `policyExemptionName` | string |
-| `policyExemptionScope` | string |
+| Output Name | Type | Description |
+| :-- | :-- | :-- |
+| `policyExemptionName` | string | Policy Exemption Name |
+| `policyExemptionResourceId` | string | Policy Exemption resource ID |
+| `policyExemptionScope` | string | Policy Exemption Scope |
 
 ## Considerations
 

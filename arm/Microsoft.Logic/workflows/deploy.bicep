@@ -10,14 +10,17 @@ param connectorEndpointsConfiguration object = {}
 @description('Optional. The access control configuration for accessing workflow run contents.')
 param contentsAccessControlConfiguration object = {}
 
-@description('Optional. Customer Usage Attribution id (GUID). This GUID must be previously registered.')
+@description('Optional. Customer Usage Attribution ID (GUID). This GUID must be previously registered.')
 param cuaId string = ''
 
 @description('Optional. Parameters for the definition template.')
 param definitionParameters object = {}
 
-@description('Optional. Type of managed identity for resource. SystemAssigned or UserAssigned.')
-param identity object = {}
+@description('Optional. Enables system assigned managed identity on the resource.')
+param systemAssignedIdentity bool = false
+
+@description('Optional. The ID(s) to assign to the resource.')
+param userAssignedIdentities object = {}
 
 @description('Optional. The integration account.')
 param integrationAccount object = {}
@@ -33,10 +36,10 @@ param location string = resourceGroup().location
 @maxValue(365)
 param diagnosticLogsRetentionInDays int = 365
 
-@description('Optional. Resource identifier of the Diagnostic Storage Account.')
+@description('Optional. Resource ID of the diagnostic storage account.')
 param diagnosticStorageAccountId string = ''
 
-@description('Optional. Resource identifier of Log Analytics.')
+@description('Optional. Resource ID of log analytics.')
 param workspaceId string = ''
 
 @description('Optional. Resource ID of the event hub authorization rule for the Event Hubs namespace in which the event hub should be created or streamed to.')
@@ -132,6 +135,13 @@ var diagnosticsMetrics = [for metric in metricsToEnable: {
   }
 }]
 
+var identityType = systemAssignedIdentity ? 'SystemAssigned' : (!empty(userAssignedIdentities) ? 'UserAssigned' : 'None')
+
+var identity = identityType != 'None' ? {
+  type: identityType
+  userAssignedIdentities: !empty(userAssignedIdentities) ? userAssignedIdentities : null
+} : null
+
 module pid_cuaId '.bicep/nested_cuaId.bicep' = if (!empty(cuaId)) {
   name: 'pid-${cuaId}'
   params: {}
@@ -141,7 +151,7 @@ resource logicApp 'Microsoft.Logic/workflows@2019-05-01' = {
   name: name
   location: location
   tags: !empty(tags) ? tags : null
-  identity: !empty(identity) ? identity : any(null)
+  identity: identity
   properties: {
     state: state
     endpointsConfiguration: {
@@ -193,7 +203,7 @@ resource logicApp_diagnosticSettings 'Microsoft.Insights/diagnosticsettings@2017
 }
 
 module logicApp_rbac '.bicep/nested_rbac.bicep' = [for (roleAssignment, index) in roleAssignments: {
-  name: '${deployment().name}-rbac-${index}'
+  name: '${uniqueString(deployment().name, location)}-LogicApp-Rbac-${index}'
   params: {
     principalIds: roleAssignment.principalIds
     roleDefinitionIdOrName: roleAssignment.roleDefinitionIdOrName
@@ -209,3 +219,6 @@ output logicAppResourceGroup string = resourceGroup().name
 
 @description('The resource ID of the logic app')
 output logicAppResourceId string = logicApp.id
+
+@description('The principal ID of the system assigned identity.')
+output systemAssignedPrincipalId string = systemAssignedIdentity ? logicApp.identity.principalId : ''

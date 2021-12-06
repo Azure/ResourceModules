@@ -1,10 +1,10 @@
-# RouteTables `[Microsoft.Network/routeTables]`
+# Route Tables `[Microsoft.Network/routeTables]`
 
-This template deploys User Defined Route Tables.
+This module deploys a user defined route table.
 
 ## Resource types
 
-| Resource Type | Api Version |
+| Resource Type | API Version |
 | :-- | :-- |
 | `Microsoft.Authorization/locks` | 2016-09-01 |
 | `Microsoft.Authorization/roleAssignments` | 2020-04-01-preview |
@@ -14,7 +14,7 @@ This template deploys User Defined Route Tables.
 
 | Parameter Name | Type | Default Value | Possible Values | Description |
 | :-- | :-- | :-- | :-- | :-- |
-| `cuaId` | string |  |  | Optional. Customer Usage Attribution id (GUID). This GUID must be previously registered |
+| `cuaId` | string |  |  | Optional. Customer Usage Attribution ID (GUID). This GUID must be previously registered |
 | `disableBgpRoutePropagation` | bool |  |  | Optional. Switch to disable BGP route propagation. |
 | `location` | string | `[resourceGroup().location]` |  | Optional. Location for all resources. |
 | `lock` | string | `NotSpecified` | `[CanNotDelete, NotSpecified, ReadOnly]` | Optional. Specify the type of lock. |
@@ -70,13 +70,6 @@ Here's an example of specifying a few routes:
 ```json
 "roleAssignments": {
     "value": [
-        {
-            "roleDefinitionIdOrName": "Desktop Virtualization User",
-            "principalIds": [
-                "12345678-1234-1234-1234-123456789012", // object 1
-                "78945612-1234-1234-1234-123456789012" // object 2
-            ]
-        },
         {
             "roleDefinitionIdOrName": "Reader",
             "principalIds": [

@@ -1,5 +1,5 @@
 @description('Required. Name of the Log Analytics workspace')
-param logAnalyticsWorkspaceName string
+param name string
 
 @description('Optional. Location for all resources.')
 param location string = resourceGroup().location
@@ -68,7 +68,7 @@ param roleAssignments array = []
 @description('Optional. Tags of the resource.')
 param tags object = {}
 
-@description('Optional. Customer Usage Attribution id (GUID). This GUID must be previously registered')
+@description('Optional. Customer Usage Attribution ID (GUID). This GUID must be previously registered')
 param cuaId string = ''
 
 var logAnalyticsSearchVersion = 1
@@ -80,7 +80,7 @@ module pid_cuaId '.bicep/nested_cuaId.bicep' = if (!empty(cuaId)) {
 
 resource logAnalyticsWorkspace 'Microsoft.OperationalInsights/workspaces@2020-08-01' = {
   location: location
-  name: logAnalyticsWorkspaceName
+  name: name
   tags: tags
   properties: {
     features: {
@@ -100,7 +100,7 @@ resource logAnalyticsWorkspace 'Microsoft.OperationalInsights/workspaces@2020-08
 }
 
 module logAnalyticsWorkspace_storageInsightConfigs 'storageInsightConfigs/deploy.bicep' = [for (storageInsightsConfig, index) in storageInsightsConfigs: {
-  name: '${deployment().name}-storageInsightsConfig-${index}'
+  name: '${uniqueString(deployment().name, location)}-LAW-StorageInsightsConfig-${index}'
   params: {
     logAnalyticsWorkspaceName: logAnalyticsWorkspace.name
     containers: contains(storageInsightsConfig, 'containers') ? storageInsightsConfig.containers : []
@@ -110,7 +110,7 @@ module logAnalyticsWorkspace_storageInsightConfigs 'storageInsightConfigs/deploy
 }]
 
 module logAnalyticsWorkspace_linkedServices 'linkedServices/deploy.bicep' = [for (linkedService, index) in linkedServices: {
-  name: '${deployment().name}-linkedService-${index}'
+  name: '${uniqueString(deployment().name, location)}-LAW-LinkedService-${index}'
   params: {
     logAnalyticsWorkspaceName: logAnalyticsWorkspace.name
     name: linkedService.name
@@ -120,7 +120,7 @@ module logAnalyticsWorkspace_linkedServices 'linkedServices/deploy.bicep' = [for
 }]
 
 module logAnalyticsWorkspace_savedSearches 'savedSearches/deploy.bicep' = [for (savedSearch, index) in savedSearches: {
-  name: '${deployment().name}-savedSearch-${index}'
+  name: '${uniqueString(deployment().name, location)}-LAW-SavedSearch-${index}'
   params: {
     logAnalyticsWorkspaceName: logAnalyticsWorkspace.name
     name: '${savedSearch.name}${uniqueString(deployment().name)}'
@@ -134,7 +134,7 @@ module logAnalyticsWorkspace_savedSearches 'savedSearches/deploy.bicep' = [for (
 }]
 
 module logAnalyticsWorkspace_dataSources 'dataSources/deploy.bicep' = [for (dataSource, index) in dataSources: {
-  name: '${deployment().name}-datasource-${index}'
+  name: '${uniqueString(deployment().name, location)}-LAW-DataSource-${index}'
   params: {
     logAnalyticsWorkspaceName: logAnalyticsWorkspace.name
     name: dataSource.name
@@ -155,7 +155,7 @@ module logAnalyticsWorkspace_dataSources 'dataSources/deploy.bicep' = [for (data
 
 @batchSize(1) // Serial loop deployment
 module logAnalyticsWorkspace_solutions '.bicep/nested_solutions.bicep' = [for (gallerySolution, index) in gallerySolutions: if (!empty(gallerySolutions)) {
-  name: '${deployment().name}-solution-${index}'
+  name: '${uniqueString(deployment().name, location)}-LAW-Solution-${index}'
   params: {
     gallerySolution: gallerySolution.name
     location: location
@@ -175,7 +175,7 @@ resource logAnalyticsWorkspace_lock 'Microsoft.Authorization/locks@2016-09-01' =
 }
 
 module logAnalyticsWorkspace_rbac '.bicep/nested_rbac.bicep' = [for (roleAssignment, index) in roleAssignments: {
-  name: '${deployment().name}-rbac-${index}'
+  name: '${uniqueString(deployment().name, location)}-LAW-Rbac-${index}'
   params: {
     principalIds: roleAssignment.principalIds
     roleDefinitionIdOrName: roleAssignment.roleDefinitionIdOrName
@@ -183,11 +183,14 @@ module logAnalyticsWorkspace_rbac '.bicep/nested_rbac.bicep' = [for (roleAssignm
   }
 }]
 
-@description('The resource Id of the deployed log analytics workspace')
+@description('The resource ID of the deployed log analytics workspace')
 output logAnalyticsResourceId string = logAnalyticsWorkspace.id
+
 @description('The resource group where the log analytics will be deployed')
 output logAnalyticsResourceGroup string = resourceGroup().name
+
 @description('The name of the deployed log analytics workspace')
 output logAnalyticsName string = logAnalyticsWorkspace.name
+
 @description('The ID associated with the workspace')
 output logAnalyticsWorkspaceId string = logAnalyticsWorkspace.properties.customerId

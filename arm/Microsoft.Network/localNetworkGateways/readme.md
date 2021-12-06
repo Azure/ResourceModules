@@ -1,10 +1,10 @@
-# Local Network Gateway `[Microsoft.Network/localNetworkGateways]`
+# Local Network Gateways `[Microsoft.Network/localNetworkGateways]`
 
-This module deploys Local Network Gateway, with resource lock.
+This module deploys a local network gateway.
 
 ## Resource types
 
-| Resource Type | Api Version |
+| Resource Type | API Version |
 | :-- | :-- |
 | `Microsoft.Authorization/locks` | 2016-09-01 |
 | `Microsoft.Authorization/roleAssignments` | 2020-04-01-preview |
@@ -14,7 +14,7 @@ This module deploys Local Network Gateway, with resource lock.
 
 | Parameter Name | Type | Default Value | Possible Values | Description |
 | :-- | :-- | :-- | :-- | :-- |
-| `cuaId` | string |  |  | Optional. Customer Usage Attribution id (GUID). This GUID must be previously registered |
+| `cuaId` | string |  |  | Optional. Customer Usage Attribution ID (GUID). This GUID must be previously registered |
 | `fqdn` | string |  |  | Optional. FQDN of local network gateway. |
 | `localAddressPrefixes` | array |  |  | Required. List of the local (on-premises) IP address ranges |
 | `localAsn` | string |  |  | Optional. The BGP speaker's ASN. Not providing this value will automatically disable BGP on this Local Network Gateway resource. |
@@ -32,13 +32,6 @@ This module deploys Local Network Gateway, with resource lock.
 ```json
 "roleAssignments": {
     "value": [
-        {
-            "roleDefinitionIdOrName": "Desktop Virtualization User",
-            "principalIds": [
-                "12345678-1234-1234-1234-123456789012", // object 1
-                "78945612-1234-1234-1234-123456789012" // object 2
-            ]
-        },
         {
             "roleDefinitionIdOrName": "Reader",
             "principalIds": [

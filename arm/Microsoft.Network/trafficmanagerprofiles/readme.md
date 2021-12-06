@@ -1,10 +1,10 @@
-# TrafficManager `[Microsoft.Network/trafficmanagerprofiles]`
+# Traffic Manager Profiles `[Microsoft.Network/trafficmanagerprofiles]`
 
-This module deploys Traffic Manager, with resource lock.
+This module deploys a traffic manager profile.
 
 ## Resource types
 
-| Resource Type | Api Version |
+| Resource Type | API Version |
 | :-- | :-- |
 | `Microsoft.Authorization/locks` | 2016-09-01 |
 | `Microsoft.Authorization/roleAssignments` | 2020-04-01-preview |
@@ -15,9 +15,9 @@ This module deploys Traffic Manager, with resource lock.
 
 | Parameter Name | Type | Default Value | Possible Values | Description |
 | :-- | :-- | :-- | :-- | :-- |
-| `cuaId` | string |  |  | Optional. Customer Usage Attribution id (GUID). This GUID must be previously registered |
+| `cuaId` | string |  |  | Optional. Customer Usage Attribution ID (GUID). This GUID must be previously registered |
 | `diagnosticLogsRetentionInDays` | int | `365` |  | Optional. Specifies the number of days that logs will be kept for; a value of 0 will retain data indefinitely. |
-| `diagnosticStorageAccountId` | string |  |  | Optional. Resource identifier of the Diagnostic Storage Account. |
+| `diagnosticStorageAccountId` | string |  |  | Optional. Resource ID of the diagnostic storage account. |
 | `endpoints` | array | `[]` |  | Optional. The list of endpoints in the Traffic Manager profile. |
 | `eventHubAuthorizationRuleId` | string |  |  | Optional. Resource ID of the event hub authorization rule for the Event Hubs namespace in which the event hub should be created or streamed to. |
 | `eventHubName` | string |  |  | Optional. Name of the event hub within the namespace to which logs are streamed. Without this, an event hub is created for each log category. |
@@ -34,7 +34,7 @@ This module deploys Traffic Manager, with resource lock.
 | `trafficRoutingMethod` | string | `Performance` | `[Performance, Priority, Weighted, Geographic, MultiValue, Subnet]` | Optional. The traffic routing method of the Traffic Manager profile. |
 | `trafficViewEnrollmentStatus` | string | `Disabled` | `[Disabled, Enabled]` | Optional. Indicates whether Traffic View is 'Enabled' or 'Disabled' for the Traffic Manager profile. Null, indicates 'Disabled'. Enabling this feature will increase the cost of the Traffic Manage profile. |
 | `ttl` | int | `60` |  | Optional. The DNS Time-To-Live (TTL), in seconds. This informs the local DNS resolvers and DNS clients how long to cache DNS responses provided by this Traffic Manager profile. |
-| `workspaceId` | string |  |  | Optional. Resource identifier of Log Analytics. |
+| `workspaceId` | string |  |  | Optional. Resource ID of log analytics. |
 
 ### Parameter Usage: `monitorConfig`
 
@@ -79,13 +79,6 @@ This module deploys Traffic Manager, with resource lock.
 ```json
 "roleAssignments": {
     "value": [
-        {
-            "roleDefinitionIdOrName": "Desktop Virtualization User",
-            "principalIds": [
-                "12345678-1234-1234-1234-123456789012", // object 1
-                "78945612-1234-1234-1234-123456789012" // object 2
-            ]
-        },
         {
             "roleDefinitionIdOrName": "Reader",
             "principalIds": [

@@ -51,7 +51,7 @@ param roleAssignments array = []
 @description('Optional. Tags of the resource.')
 param tags object = {}
 
-@description('Optional. Customer Usage Attribution id (GUID). This GUID must be previously registered')
+@description('Optional. Customer Usage Attribution ID (GUID). This GUID must be previously registered')
 param cuaId string = ''
 
 @allowed([
@@ -67,7 +67,7 @@ module pid_cuaId '.bicep/nested_cuaId.bicep' = if (!empty(cuaId)) {
   params: {}
 }
 
-resource virtualWan 'Microsoft.Network/virtualWans@2021-05-01' = {
+resource virtualWan 'Microsoft.Network/virtualWans@2021-03-01' = {
   name: name
   location: location
   tags: tags
@@ -85,7 +85,7 @@ resource virtualWan_lock 'Microsoft.Authorization/locks@2016-09-01' = if (lock !
   scope: virtualWan
 }
 
-resource virtualHub 'Microsoft.Network/virtualHubs@2021-05-01' = {
+resource virtualHub 'Microsoft.Network/virtualHubs@2021-03-01' = {
   name: virtualHubName
   location: location
   properties: {
@@ -105,7 +105,7 @@ resource virtualHub_lock 'Microsoft.Authorization/locks@2016-09-01' = if (lock !
   scope: virtualHub
 }
 
-resource vpnSite 'Microsoft.Network/vpnSites@2021-05-01' = {
+resource vpnSite 'Microsoft.Network/vpnSites@2021-03-01' = {
   name: vpnSiteName
   location: location
   properties: {
@@ -136,7 +136,7 @@ resource vpnSite_lock 'Microsoft.Authorization/locks@2016-09-01' = if (lock != '
   scope: vpnSite
 }
 
-resource vpnGateway 'Microsoft.Network/vpnGateways@2021-05-01' = {
+resource vpnGateway 'Microsoft.Network/vpnGateways@2021-03-01' = {
   name: vpnGatewayName
   location: location
   properties: {
@@ -171,7 +171,7 @@ resource vpnGateway_lock 'Microsoft.Authorization/locks@2016-09-01' = if (lock !
 }
 
 module virtualWan_rbac '.bicep/nested_rbac.bicep' = [for (roleAssignment, index) in roleAssignments: {
-  name: '${deployment().name}-rbac-${index}'
+  name: '${uniqueString(deployment().name, location)}-VWan-Rbac-${index}'
   params: {
     principalIds: roleAssignment.principalIds
     roleDefinitionIdOrName: roleAssignment.roleDefinitionIdOrName

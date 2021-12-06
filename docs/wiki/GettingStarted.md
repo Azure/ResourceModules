@@ -8,14 +8,15 @@ This section will give on an overview on how to get started using this repositor
 
 - [General prerequisites](#general-prerequisites)
 - [Where to start](#where-to-start)
-  - [**Option 1**: Use it as a basis to set up your own inner-source project](#option-1-use-it-as-a-basis-to-set-up-your-own-inner-source-project)
+  - [**Option 1:** Use it as a basis to set up your own inner-source project](#option-1-use-it-as-a-basis-to-set-up-your-own-inner-source-project)
     - [Fork the repository](#fork-the-repository)
     - [Service Names](#service-names)
     - [Dependencies](#dependencies)
     - [GitHub-specific prerequisites](#github-specific-prerequisites)
-  - [**Option 2**: Use it as a local reference to build bicep templates](#option-2-use-it-as-a-local-reference-to-build-bicep-templates)
+  - [**Option 2:** Use it as a local reference to build bicep templates](#option-2-use-it-as-a-local-reference-to-build-bicep-templates)
     - [Clone / download the repository](#clone--download-the-repository)
-  - [**Option 3**: Use it as remote reference to reference the bicep templates](#option-3-use-it-as-remote-reference-to-reference-the-bicep-templates)
+  - [**Option 3:** Use it as remote reference to reference the bicep templates](#option-3-use-it-as-remote-reference-to-reference-the-bicep-templates)
+  - [**Option 4:** Simple contribution](#option-4-simple-contribution)
   - [Parameter File Tokens](#parameter-file-tokens)
 
 ---
@@ -90,7 +91,7 @@ Depending on how you want to use this repositories content you may go down diffe
 Also there are some general aspects to take note of
 - [Parameter File Tokens](#parameter-file-tokens)
 
-## **Option 1**: Use it as a basis to set up your own inner-source project
+## **Option 1:** Use it as a basis to set up your own inner-source project
 
 The repository is set up in a way that you can essentially create your own private 1:1 copy and would be able to re-use the same concepts and functionality in your own environment like GitHub. This set up is a 2-step process. First, you have to either 'Form' the repository to you own GitHub account, or move it to your desired location manually. And second you have to configure the environment, that is, you have to update all references to the original source repository to your own and also set up several secrets to point to the Azure environment of your choice.
 
@@ -124,17 +125,16 @@ In case you want to not only leverage the module templates but actually re-use t
 
 | Secret Name | Example | Description |
 | - | - | - |
-| `ARM_MGMTGROUP_ID` | `de33a0e7-64d9-4a94-8fe9-b018cedf1e05` | The ID of the management group to test deploy modules of that level in. |
-| `ARM_SUBSCRIPTION_ID` | `d0312b25-9160-4550-914f-8738d9b5caf5` | The ID of the subscription to test deploy modules of that level in. |
-| `ARM_TENANT_ID` | `9734cec9-4384-445b-bbb6-767e7be6e5ec` | The ID of the tenant to test deploy modules of that level in. |
+| `ARM_MGMTGROUP_ID` | `de33a0e7-64d9-4a94-8fe9-b018cedf1e05` | The group ID of the management group to test deploy modules of that level in. |
+| `ARM_SUBSCRIPTION_ID` | `d0312b25-9160-4550-914f-8738d9b5caf5` | The subscription ID of the subscription to test deploy modules of that level in. |
+| `ARM_TENANT_ID` | `9734cec9-4384-445b-bbb6-767e7be6e5ec` | The tenant ID of the tenant to test deploy modules of that level in. |
 | `AZURE_CREDENTIALS` |  `{"clientId": "4ce8ce4c-cac0-48eb-b815-65e5763e2929", "clientSecret": "<placeholder>", "subscriptionId": "d0312b25-9160-4550-914f-8738d9b5caf5", "tenantId": "9734cec9-4384-445b-bbb6-767e7be6e5ec" }` | The login credentials to use to log into the target Azure environment to test in. |
 | `PLATFORM_REPO_UPDATE_PAT` | `<placeholder>` | A PAT with enough permissions assigned to it to push into the main branch. This PAT is leveraged by pipelines that automatically generate ReadMe files to keep them up to date |
 | `DEPLOYMENT_SP_ID` | `de33a0e7-64d9-4a94-8fe9-b018cedf1e05` | This is the Principal (Object ID) for the Service Principal used as the `AZURE_CREDENTIALS`. It is used for Default Role Assignments when Modules are being deployed into Azure |
-| `PLATFORM_KEYVAULT` | `contoso-keyVault` | This is **OPTIONAL**. This allows the 'Dependency Workflow' to create an Azure Key Vault, that is used to store Remote  Parameter File Tokens and Sync Local Parameter File Tokens. See [Parameter File Tokens](./ParameterFileTokens.md) for details. Key Vault Name must be unique across Azure |
 
 The permissions that the principal needs differ between modules. Required permissions are in some cases documented in the modules readme. See [Azure/login](https://github.com/Azure/login) for more info about the secret creation.
 
-## **Option 2**: Use it as a local reference to build bicep templates
+## **Option 2:** Use it as a local reference to build bicep templates
 
 Instead of re-using the repository as-is you may opt to just save yourself a copy of the code. This may make sense if you want to have the code for a larger setup that you assemble locally, or you may just want to keep it for reference. To do so, you essentially just have to download the repository like presented in the following:
 
@@ -153,41 +153,35 @@ If you instead just want to have a copy of the repository's content you can inst
 
  <img src="./media/cloneDownloadRepo.JPG" alt="How to download repository" height="266">
 
-## **Option 3**: Use it as remote reference to reference the bicep templates
+## **Option 3:** Use it as remote reference to reference the bicep templates
 
 Last but not least, instead of fetching your own copy of the repository you can also choose to reference the content of the repository directly. This works as the repository is public and hence all file URLs are available without any sort of authentication.
 
 > ***Note***: In cases where you want to assemble your own template that references other modules you should not rely on direct links as they referencing files may receive breaking changes. Instead you should rely on published versions instead.
 
-<!-- References -->
 
-<!-- External -->
-[Bicep]: <https://github.com/Azure/bicep/blob/main/docs/installing.md>
-[Az]: <https://img.shields.io/powershellgallery/v/Az.svg?style=flat-square&label=Az>
-[AzGallery]: <https://www.powershellgallery.com/packages/Az/>
-[AzCLI]: <https://docs.microsoft.com/en-us/cli/azure/>
-[PowerShellCore]: <https://github.com/PowerShell/PowerShell/releases/latest>
-[InstallAzPs]: <https://docs.microsoft.com/en-us/powershell/azure/install-az-ps>
-[InstallAzCLI]: <https://docs.microsoft.com/en-us/cli/azure/install-azure-cli>
-[InstallPS]: <https://docs.microsoft.com/en-us/powershell/scripting/install/installing-powershell?view=powershell-7.1>
-[InstallBicep]: <https://docs.microsoft.com/en-us/azure/azure-resource-manager/bicep/install#install-manually>
-[AzureResourceManager]: <https://docs.microsoft.com/en-us/azure/azure-resource-manager/management/overview>
+## **Option 4:** Simple contribution
 
-<!-- Docs -->
-[PowerShellDocs]: <https://docs.microsoft.com/en-us/powershell/>
-[AzureNames]: <https://docs.microsoft.com/en-us/azure/azure-resource-manager/management/resource-name-rules>
+In case you would like to simply contribute because you, for example, want to add/update a module or would like to add some notes to the Wiki, you can do this in just a few simple steps:
+1. First check if there is already an issue that matches your initiative. If so, feel free to assign yourself, or, create a new issue if does not exist yet
+1. Fork the repository to the GitHub organization of your choice
+1. (optional but recommended) Create a branch in your fork where you'd like to implement the contribution
+1. Implement your proposed changes
+   1. In case you change module-related code (anything aside the readMe.md, like the template), we'd ask you do perform a test-run in your environment. For more details, please refer to the [setup fork](#fork-the-repository) section.
+1. Open a Pull-Request to the upstream (source) repository with a meaningful description and link the corresponding issue to it
+   1. If you ran a pipeline to validate your changes, please make sure to attach a reference (e.g. as a status badge) to the PR
 
 ## Parameter File Tokens
 
-If you are forking or cloning the repository, you can use 'tokens' inside your parameter files. Tokens allow you to test deploying modules in your own environment (i.e. using tokens for your naming conventions), or apply other customizations to your resources (i.e. using your own subscription ID inside a Resource ID string). See details in the [Parameter File Tokens Design](./ParameterFileTokens.md).
+If you are forking or cloning the repository, you can use 'tokens' inside your parameter files. Tokens allow you to test deploying modules in your own environment (i.e. using tokens for your naming conventions), or apply other customizations to your resources (i.e. using your own subscription ID inside a Resource ID string). See details in the [Parameter File Tokens Design](./ParameterFileTokens).
 
 The repository contains a [Settings.json](https://github.com/Azure/ResourceModules/blob/main/settings.json) that enables you to define local tokens and store them in source control. The token format is a `name` and `value` pair as shown in the following example:
 
 ```json
 "localTokens": {
-    "tokens": [
-        {
-            "name": "tokenName",
+  "tokens": [
+    {
+      "name": "tokenName",
             "value": "tokenValue"
         }
     ]
@@ -215,9 +209,26 @@ Note: There are default tokens that can be enabled on any resource that leverage
 - `<<managementGroupId>>`: Will point to the Azure an Azure Management Group.
 - `<<tenantId>>`: Will point to the Azure Tenant ID.
 - `<<deploymentSpId>>`: Will point to the Service Principal ID used for deployments.
-- `<<platformKeyVault>>`: Will point to the Platform Azure Key Vault (Optional if enabled as per guidelines)
 - `<<resourceGroupName>>`: Will point to the Azure Resource Group where the resources are being deployed to. (This isn't defined in the secrets section but is injected at runtime)
 
 Review [Parameter File Tokens Design](./ParameterFileTokens.md) for more details.
 
 ---
+
+  <!-- References -->
+
+  <!-- External -->
+  [Bicep]: <https://github.com/Azure/bicep/blob/main/docs/installing.md>
+  [Az]: <https://img.shields.io/powershellgallery/v/Az.svg?style=flat-square&label=Az>
+  [AzGallery]: <https://www.powershellgallery.com/packages/Az/>
+  [AzCLI]: <https://docs.microsoft.com/en-us/cli/azure/>
+  [PowerShellCore]: <https://github.com/PowerShell/PowerShell/releases/latest>
+  [InstallAzPs]: <https://docs.microsoft.com/en-us/powershell/azure/install-az-ps>
+  [InstallAzCLI]: <https://docs.microsoft.com/en-us/cli/azure/install-azure-cli>
+  [InstallPS]: <https://docs.microsoft.com/en-us/powershell/scripting/install/installing-powershell?view=powershell-7.1>
+  [InstallBicep]: <https://docs.microsoft.com/en-us/azure/azure-resource-manager/bicep/install#install-manually>
+  [AzureResourceManager]: <https://docs.microsoft.com/en-us/azure/azure-resource-manager/management/overview>
+
+  <!-- Docs -->
+  [PowerShellDocs]: <https://docs.microsoft.com/en-us/powershell/>
+  [AzureNames]: <https://docs.microsoft.com/en-us/azure/azure-resource-manager/management/resource-name-rules>

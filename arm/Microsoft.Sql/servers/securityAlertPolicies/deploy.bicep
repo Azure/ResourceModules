@@ -7,7 +7,7 @@ param disabledAlerts array = []
 @description('Optional. Specifies that the alert is sent to the account administrators.')
 param emailAccountAdmins bool = false
 
-@description('Optional. Specifies an array of e-mail addresses to which the alert is sent.')
+@description('Optional. Specifies an array of email addresses to which the alert is sent.')
 param emailAddresses array = []
 
 @description('Optional. Specifies the number of days to keep in the Threat Detection audit logs.')
@@ -30,7 +30,7 @@ param storageEndpoint string = ''
 @description('Required. The Name of SQL Server')
 param serverName string
 
-@description('Optional. Customer Usage Attribution id (GUID). This GUID must be previously registered')
+@description('Optional. Customer Usage Attribution ID (GUID). This GUID must be previously registered')
 param cuaId string = ''
 
 module pid_cuaId '.bicep/nested_cuaId.bicep' = if (!empty(cuaId)) {
@@ -38,16 +38,21 @@ module pid_cuaId '.bicep/nested_cuaId.bicep' = if (!empty(cuaId)) {
   params: {}
 }
 
+resource server 'Microsoft.Sql/servers@2021-05-01-preview' existing = {
+  name: serverName
+}
+
 resource securityAlertPolicy 'Microsoft.Sql/servers/securityAlertPolicies@2021-05-01-preview' = {
-  name: '${serverName}/${name}'
+  name: name
+  parent: server
   properties: {
     disabledAlerts: disabledAlerts
     emailAccountAdmins: emailAccountAdmins
     emailAddresses: emailAddresses
     retentionDays: retentionDays
     state: state
-    storageAccountAccessKey: (empty(storageAccountAccessKey) ? null : storageAccountAccessKey)
-    storageEndpoint: (empty(storageEndpoint) ? null : storageEndpoint)
+    storageAccountAccessKey: empty(storageAccountAccessKey) ? null : storageAccountAccessKey
+    storageEndpoint: empty(storageEndpoint) ? null : storageEndpoint
   }
 }
 

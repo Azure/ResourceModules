@@ -25,7 +25,7 @@ param roleAssignments array = []
 @description('Optional. Tags of the resource.')
 param tags object = {}
 
-@description('Optional. Customer Usage Attribution id (GUID). This GUID must be previously registered')
+@description('Optional. Customer Usage Attribution ID (GUID). This GUID must be previously registered')
 param cuaId string = ''
 
 module pid_cuaId '.bicep/nested_cuaId.bicep' = if (!empty(cuaId)) {
@@ -50,7 +50,7 @@ resource networkWatcher_lock 'Microsoft.Authorization/locks@2016-09-01' = if (lo
 }
 
 module networkWatcher_rbac '.bicep/nested_rbac.bicep' = [for (roleAssignment, index) in roleAssignments: {
-  name: '${deployment().name}-rbac-${index}'
+  name: '${uniqueString(deployment().name, location)}-NW-Rbac-${index}'
   params: {
     principalIds: roleAssignment.principalIds
     roleDefinitionIdOrName: roleAssignment.roleDefinitionIdOrName
@@ -58,8 +58,8 @@ module networkWatcher_rbac '.bicep/nested_rbac.bicep' = [for (roleAssignment, in
   }
 }]
 
-module networkWatcher_connectionMonitors 'connectionMonitors/deploy.bicep' = [for connectionMonitor in connectionMonitors: {
-  name: connectionMonitor.name
+module networkWatcher_connectionMonitors 'connectionMonitors/deploy.bicep' = [for (connectionMonitor, index) in connectionMonitors: {
+  name: '${uniqueString(deployment().name, location)}-NW-ConnectionMonitor-${index}'
   params: {
     endpoints: contains(connectionMonitor, 'endpoints') ? connectionMonitor.endpoints : []
     name: connectionMonitor.name
@@ -71,7 +71,7 @@ module networkWatcher_connectionMonitors 'connectionMonitors/deploy.bicep' = [fo
 }]
 
 module networkWatcher_flowLogs 'flowLogs/deploy.bicep' = [for (flowLog, index) in flowLogs: {
-  name: '${deployment().name}-flowLog-${index}'
+  name: '${uniqueString(deployment().name, location)}-NW-FlowLog-${index}'
   params: {
     enabled: contains(flowLog, 'enabled') ? flowLog.enabled : true
     formatVersion: contains(flowLog, 'formatVersion') ? flowLog.formatVersion : 2
@@ -89,7 +89,7 @@ module networkWatcher_flowLogs 'flowLogs/deploy.bicep' = [for (flowLog, index) i
 @description('The name of the deployed network watcher')
 output networkWatcherName string = networkWatcher.name
 
-@description('The resourceId of the deployed network watcher')
+@description('The resource ID of the deployed network watcher')
 output networkWatcherResourceId string = networkWatcher.id
 
 @description('The resource group the network watcher was deployed into')

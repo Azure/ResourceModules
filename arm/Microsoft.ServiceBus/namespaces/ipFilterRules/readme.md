@@ -4,7 +4,7 @@ This module deploys IP filter rules for a service bus namespace
 
 ## Resource Types
 
-| Resource Type | Api Version |
+| Resource Type | API Version |
 | :-- | :-- |
 | `Microsoft.ServiceBus/namespaces/ipfilterrules` | 2018-01-01-preview |
 
@@ -13,7 +13,7 @@ This module deploys IP filter rules for a service bus namespace
 | Parameter Name | Type | Default Value | Possible Values | Description |
 | :-- | :-- | :-- | :-- | :-- |
 | `action` | string |  | `[Accept]` | Required. The IP Filter Action |
-| `cuaId` | string |  |  | Optional. Customer Usage Attribution id (GUID). This GUID must be previously registered |
+| `cuaId` | string |  |  | Optional. Customer Usage Attribution ID (GUID). This GUID must be previously registered |
 | `filterName` | string |  |  | Required. IP Filter name |
 | `ipMask` | string |  |  | Required. IP Mask |
 | `name` | string | `[parameters('filterName')]` |  | Optional. The name of the ip filter rule |
@@ -25,7 +25,7 @@ This module deploys IP filter rules for a service bus namespace
 | :-- | :-- | :-- |
 | `ipFilterRuleName` | string | The name of the IP filter rule. |
 | `ipFilterRuleResourceGroup` | string | The name of the Resource Group the IP filter rule was created in. |
-| `ipFilterRuleResourceId` | string | The Resource Id of the IP filter rule. |
+| `ipFilterRuleResourceId` | string | The Resource ID of the IP filter rule. |
 
 ## Template references
 

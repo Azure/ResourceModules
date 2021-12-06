@@ -4,7 +4,7 @@ This module deploys private dns zone virtual network links.
 
 ## Resource Types
 
-| Resource Type | Api Version |
+| Resource Type | API Version |
 | :-- | :-- |
 | `Microsoft.Network/privateDnsZones/virtualNetworkLinks` | 2018-09-01 |
 
@@ -12,13 +12,13 @@ This module deploys private dns zone virtual network links.
 
 | Parameter Name | Type | Default Value | Possible Values | Description |
 | :-- | :-- | :-- | :-- | :-- |
-| `cuaId` | string |  |  | Optional. Customer Usage Attribution id (GUID). This GUID must be previously registered |
+| `cuaId` | string |  |  | Optional. Customer Usage Attribution ID (GUID). This GUID must be previously registered |
 | `location` | string | `global` |  | Optional. The location of the PrivateDNSZone. Should be global. |
-| `name` | string | `[last(split(parameters('virtualNetworkId'), '/'))]` |  | Optional. The name of the virtual network link. |
+| `name` | string | `[last(split(parameters('virtualNetworkResourceId'), '/'))]` |  | Optional. The name of the virtual network link. |
 | `privateDnsZoneName` | string |  |  | Required. Private DNS zone name. |
 | `registrationEnabled` | bool |  |  | Optional. Is auto-registration of virtual machine records in the virtual network in the Private DNS zone enabled? |
 | `tags` | object | `{object}` |  | Optional. Tags of the resource. |
-| `virtualNetworkId` | string |  |  | Required. Link to another virtual network Id. |
+| `virtualNetworkResourceId` | string |  |  | Required. Link to another virtual network resource ID. |
 
 ### Parameter Usage: `tags`
 
@@ -43,7 +43,7 @@ Tag names and tag values can be provided as needed. A tag can be left without a 
 | :-- | :-- | :-- |
 | `virtualNetworkLinkName` | string | The name of the deployed virtual network link |
 | `virtualNetworkLinkResourceGroup` | string | The resource group of the deployed virtual network link |
-| `virtualNetworkLinkResourceId` | string | The id of the deployed virtual network link |
+| `virtualNetworkLinkResourceId` | string | The resource ID of the deployed virtual network link |
 
 ## Template references
 

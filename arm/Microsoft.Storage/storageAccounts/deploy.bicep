@@ -8,16 +8,10 @@ param location string = resourceGroup().location
 @description('Optional. Array of role assignment objects that contain the \'roleDefinitionIdOrName\' and \'principalId\' to define RBAC role assignments on this resource. In the roleDefinitionIdOrName attribute, you can provide either the display name of the role definition, or it\'s fully qualified ID in the following format: \'/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11\'')
 param roleAssignments array = []
 
-@allowed([
-  'None'
-  'SystemAssigned'
-  'SystemAssigned,UserAssigned'
-  'UserAssigned'
-])
-@description('Optional. Type of managed service identity.')
-param managedServiceIdentity string = 'None'
+@description('Optional. Enables system assigned managed identity on the resource.')
+param systemAssignedIdentity bool = false
 
-@description('Optional. Mandatory \'managedServiceIdentity\' contains UserAssigned. The identy to assign to the resource.')
+@description('Optional. The ID(s) to assign to the resource.')
 param userAssignedIdentities object = {}
 
 @allowed([
@@ -102,7 +96,7 @@ param lock string = 'NotSpecified'
 @description('Optional. Tags of the resource.')
 param tags object = {}
 
-@description('Optional. Customer Usage Attribution id (GUID). This GUID must be previously registered')
+@description('Optional. Customer Usage Attribution ID (GUID). This GUID must be previously registered')
 param cuaId string = ''
 
 @description('Generated. Do not provide a value! This date value is used to generate a SAS token to access the modules.')
@@ -122,7 +116,6 @@ var azureFilesIdentityBasedAuthentication_var = azureFilesIdentityBasedAuthentic
 var maxNameLength = 24
 var uniqueStoragenameUntrim = '${uniqueString('Storage Account${basetime}')}'
 var uniqueStoragename = length(uniqueStoragenameUntrim) > maxNameLength ? substring(uniqueStoragenameUntrim, 0, maxNameLength) : uniqueStoragenameUntrim
-var storageAccountName_var = empty(name) ? uniqueStoragename : name
 
 var saBaseProperties = {
   encryption: {
@@ -144,22 +137,26 @@ var saOptIdBasedAuthProperties = {
 }
 var saProperties = (empty(azureFilesIdentityBasedAuthentication) ? saBaseProperties : union(saBaseProperties, saOptIdBasedAuthProperties))
 
+var identityType = systemAssignedIdentity ? (!empty(userAssignedIdentities) ? 'SystemAssigned,UserAssigned' : 'SystemAssigned') : (!empty(userAssignedIdentities) ? 'UserAssigned' : 'None')
+
+var identity = identityType != 'None' ? {
+  type: identityType
+  userAssignedIdentities: !empty(userAssignedIdentities) ? userAssignedIdentities : null
+} : null
+
 module pid_cuaId '.bicep/nested_cuaId.bicep' = if (!empty(cuaId)) {
   name: 'pid-${cuaId}'
   params: {}
 }
 
 resource storageAccount 'Microsoft.Storage/storageAccounts@2021-06-01' = {
-  name: storageAccountName_var
+  name: !empty(name) ? name : uniqueStoragename
   location: location
   kind: storageAccountKind
   sku: {
     name: storageAccountSku
   }
-  identity: {
-    type: managedServiceIdentity
-    userAssignedIdentities: !empty(userAssignedIdentities) ? userAssignedIdentities : null
-  }
+  identity: identity
   tags: tags
   properties: saProperties
 }
@@ -245,7 +242,7 @@ module storageAccount_tableServices 'tableServices/deploy.bicep' = if (!empty(ta
   }
 }
 
-@description('The resource Id of the deployed storage account')
+@description('The resource ID of the deployed storage account')
 output storageAccountResourceId string = storageAccount.id
 
 @description('The name of the deployed storage account')
@@ -257,5 +254,5 @@ output storageAccountResourceGroup string = resourceGroup().name
 @description('The primary blob endpoint reference if blob services are deployed.')
 output storageAccountPrimaryBlobEndpoint string = (!empty(blobServices) && contains(storageAccount_blobServices, 'blobContainers')) ? '' : reference('Microsoft.Storage/storageAccounts/${storageAccount.name}', '2019-04-01').primaryEndpoints.blob
 
-@description('The resource id of the assigned identity, if any')
-output assignedIdentityID string = (contains(managedServiceIdentity, 'SystemAssigned') ? reference(storageAccount.id, '2019-06-01', 'full').identity.principalId : '')
+@description('The principal ID of the system assigned identity.')
+output systemAssignedPrincipalId string = systemAssignedIdentity ? storageAccount.identity.principalId : ''

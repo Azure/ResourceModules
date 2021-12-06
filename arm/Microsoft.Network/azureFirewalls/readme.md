@@ -1,10 +1,10 @@
-# AzureFirewall `[Microsoft.Network/azureFirewalls]`
+# Azure Firewalls `[Microsoft.Network/azureFirewalls]`
 
-This module deploys Azure Firewall.
+This module deploys a firewall.
 
 ## Resource types
 
-| Resource Type | Api Version |
+| Resource Type | API Version |
 | :-- | :-- |
 | `Microsoft.Authorization/locks` | 2016-09-01 |
 | `Microsoft.Authorization/roleAssignments` | 2020-04-01-preview |
@@ -21,7 +21,7 @@ This module deploys Azure Firewall.
 | `azureFirewallPipName` | string |  |  | Optional. Specifies the name of the Public IP used by Azure Firewall. If it's not provided, a '-pip' suffix will be appended to the Firewall's name. |
 | `azureSkuName` | string | `AZFW_VNet` | `[AZFW_VNet, AZFW_Hub]` | Optional. Name of an Azure Firewall SKU. |
 | `azureSkuTier` | string | `Standard` | `[Standard, Premium]` | Optional. Tier of an Azure Firewall. |
-| `cuaId` | string |  |  | Optional. Customer Usage Attribution id (GUID). This GUID must be previously registered |
+| `cuaId` | string |  |  | Optional. Customer Usage Attribution ID (GUID). This GUID must be previously registered |
 | `diagnosticLogsRetentionInDays` | int | `365` |  | Optional. Specifies the number of days that logs will be kept for; a value of 0 will retain data indefinitely. |
 | `diagnosticStorageAccountId` | string |  |  | Optional. Diagnostic Storage Account resource identifier |
 | `enableDnsProxy` | bool |  |  | Optional. Enable the preview feature for DNS proxy. |
@@ -35,10 +35,10 @@ This module deploys Azure Firewall.
 | `natRuleCollections` | array | `[]` |  | Optional. Collection of NAT rule collections used by Azure Firewall. |
 | `networkRuleCollections` | array | `[]` |  | Optional. Collection of network rule collections used by Azure Firewall. |
 | `publicIPLogsToEnable` | array | `[DDoSProtectionNotifications, DDoSMitigationReports, DDoSMitigationFlowLogs]` | `[DDoSProtectionNotifications, DDoSMitigationReports, DDoSMitigationFlowLogs]` | Optional. The name of public IP logs that will be streamed. |
-| `publicIPPrefixId` | string |  |  | Optional. Resource Id of the Public IP Prefix object. This is only needed if you want your Public IPs created in a PIP Prefix. |
+| `publicIPPrefixId` | string |  |  | Optional. Resource ID of the Public IP Prefix object. This is only needed if you want your Public IPs created in a PIP Prefix. |
 | `roleAssignments` | array | `[]` |  | Optional. Array of role assignment objects that contain the 'roleDefinitionIdOrName' and 'principalId' to define RBAC role assignments on this resource. In the roleDefinitionIdOrName attribute, you can provide either the display name of the role definition, or its fully qualified ID in the following format: '/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11' |
 | `tags` | object | `{object}` |  | Optional. Tags of the Automation Account resource. |
-| `vNetId` | string |  |  | Required. Shared services Virtual Network resource Id |
+| `vNetId` | string |  |  | Required. Shared services Virtual Network resource ID |
 | `workspaceId` | string |  |  | Optional. Log Analytics workspace resource identifier |
 
 ### Parameter Usage: `roleAssignments`
@@ -46,13 +46,6 @@ This module deploys Azure Firewall.
 ```json
 "roleAssignments": {
     "value": [
-        {
-            "roleDefinitionIdOrName": "Desktop Virtualization User",
-            "principalIds": [
-                "12345678-1234-1234-1234-123456789012", // object 1
-                "78945612-1234-1234-1234-123456789012" // object 2
-            ]
-        },
         {
             "roleDefinitionIdOrName": "Reader",
             "principalIds": [
@@ -85,7 +78,6 @@ Tag names and tag values can be provided as needed. A tag can be left without a 
         "Role": "DeploymentValidation"
     }
 }
-
 ```
 
 ## Outputs

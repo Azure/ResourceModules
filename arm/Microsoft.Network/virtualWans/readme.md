@@ -1,17 +1,17 @@
-# Virtual Wan `[Microsoft.Network/virtualWans]`
+# Virtual WANs `[Microsoft.Network/virtualWans]`
 
-This template deploys Virtual Wan
+This template deploys a virtual WAN.
 
 ## Resource types
 
-| Resource Type | Api Version |
+| Resource Type | API Version |
 | :-- | :-- |
 | `Microsoft.Authorization/locks` | 2016-09-01 |
 | `Microsoft.Authorization/roleAssignments` | 2020-04-01-preview |
-| `Microsoft.Network/virtualHubs` | 2021-05-01 |
-| `Microsoft.Network/virtualWans` | 2021-05-01 |
-| `Microsoft.Network/vpnGateways` | 2021-05-01 |
-| `Microsoft.Network/vpnSites` | 2021-05-01 |
+| `Microsoft.Network/virtualHubs` | 2021-03-01 |
+| `Microsoft.Network/virtualWans` | 2021-03-01 |
+| `Microsoft.Network/vpnGateways` | 2021-03-01 |
+| `Microsoft.Network/vpnSites` | 2021-03-01 |
 
 ## Parameters
 
@@ -19,7 +19,7 @@ This template deploys Virtual Wan
 | :-- | :-- | :-- | :-- | :-- |
 | `addressPrefix` | string | `192.168.0.0/24` |  | Optional. The hub address prefix. This address prefix will be used as the address prefix for the hub vnet |
 | `connectionName` | string | `SampleVpnsiteVpnGwConnection` |  | Optional. Name of the vpnconnection. A vpn connection is established between a vpnsite and a vpn gateway. |
-| `cuaId` | string |  |  | Optional. Customer Usage Attribution id (GUID). This GUID must be previously registered |
+| `cuaId` | string |  |  | Optional. Customer Usage Attribution ID (GUID). This GUID must be previously registered |
 | `enableBgp` | string | `false` | `[true, false]` | Optional. his needs to be set to true if BGP needs to enabled on the vpn connection. |
 | `location` | string | `[resourceGroup().location]` |  | Optional. Location where all resources will be created. |
 | `lock` | string | `NotSpecified` | `[CanNotDelete, NotSpecified, ReadOnly]` | Optional. Specify the type of lock. |
@@ -40,13 +40,6 @@ This template deploys Virtual Wan
 ```json
 "roleAssignments": {
     "value": [
-        {
-            "roleDefinitionIdOrName": "Desktop Virtualization User",
-            "principalIds": [
-                "12345678-1234-1234-1234-123456789012", // object 1
-                "78945612-1234-1234-1234-123456789012" // object 2
-            ]
-        },
         {
             "roleDefinitionIdOrName": "Reader",
             "principalIds": [
@@ -93,7 +86,7 @@ Tag names and tag values can be provided as needed. A tag can be left without a 
 
 - [Locks](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2016-09-01/locks)
 - [Roleassignments](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2020-04-01-preview/roleAssignments)
-- [Virtualhubs](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Network/2021-05-01/virtualHubs)
-- [Virtualwans](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Network/2021-05-01/virtualWans)
-- [Vpngateways](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Network/2021-05-01/vpnGateways)
-- [Vpnsites](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Network/2021-05-01/vpnSites)
+- [Virtualhubs](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Network/2021-03-01/virtualHubs)
+- [Virtualwans](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Network/2021-03-01/virtualWans)
+- [Vpngateways](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Network/2021-03-01/vpnGateways)
+- [Vpnsites](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Network/2021-03-01/vpnSites)

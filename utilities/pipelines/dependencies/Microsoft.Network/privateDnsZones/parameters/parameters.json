@@ -5,10 +5,10 @@
         "name": {
             "value": "privatelink.vaultcore.azure.net"
         },
-        "vnetLinks": {
+        "virtualNetworkLinks": {
             "value": [
                 {
-                    "vnetResourceId": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/virtualNetworks/adp-sxx-az-vnet-x-001",
+                    "virtualNetworkResourceId": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/virtualNetworks/adp-sxx-az-vnet-x-001",
                     "registrationEnabled": false
                 }
             ]

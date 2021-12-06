@@ -2,8 +2,16 @@
     "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
     "contentVersion": "1.0.0.0",
     "parameters": {
-        "privateLinkScopeName": {
-            "value": "test-az-pls-x-001"
+        "name": {
+            "value": "sxx-az-pls-x-001"
+        },
+        "scopedResources": {
+            "value": [
+                {
+                    "name": "scoped1",
+                    "linkedResourceId": "/subscriptions/<<subscriptionId>>/resourcegroups/validation-rg/providers/microsoft.operationalinsights/workspaces/adp-sxx-az-law-x-001"
+                }
+            ]
         },
         "roleAssignments": {
             "value": [

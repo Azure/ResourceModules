@@ -1,7 +1,7 @@
-@description('Required. Name of your Azure Container Registry')
+@description('Required. Name of your Azure container registry')
 @minLength(5)
 @maxLength(50)
-param acrName string
+param name string
 
 @description('Optional. Enable admin user that have push / pull permission to the registry.')
 param acrAdminUserEnabled bool = false
@@ -15,7 +15,7 @@ param roleAssignments array = []
 @description('Optional. Configuration Details for private endpoints.')
 param privateEndpoints array = []
 
-@description('Optional. Tier of your Azure Container Registry.')
+@description('Optional. Tier of your Azure container registry.')
 @allowed([
   'Basic'
   'Standard'
@@ -52,10 +52,16 @@ param networkRuleBypassOptions string = 'AzureServices'
 @description('Optional. Specify the type of lock.')
 param lock string = 'NotSpecified'
 
+@description('Optional. Enables system assigned managed identity on the resource.')
+param systemAssignedIdentity bool = false
+
+@description('Optional. The ID(s) to assign to the resource.')
+param userAssignedIdentities object = {}
+
 @description('Optional. Tags of the resource.')
 param tags object = {}
 
-@description('Optional. Customer Usage Attribution id (GUID). This GUID must be previously registered')
+@description('Optional. Customer Usage Attribution ID (GUID). This GUID must be previously registered')
 param cuaId string = ''
 
 @description('Optional. The name of logs that will be streamed.')
@@ -81,10 +87,10 @@ param metricsToEnable array = [
 @maxValue(365)
 param diagnosticLogsRetentionInDays int = 365
 
-@description('Optional. Resource identifier of the Diagnostic Storage Account.')
+@description('Optional. Resource ID of the diagnostic storage account.')
 param diagnosticStorageAccountId string = ''
 
-@description('Optional. Resource identifier of Log Analytics.')
+@description('Optional. Resource ID of log analytics.')
 param workspaceId string = ''
 
 @description('Optional. Resource ID of the event hub authorization rule for the Event Hubs namespace in which the event hub should be created or streamed to.')
@@ -92,8 +98,6 @@ param eventHubAuthorizationRuleId string = ''
 
 @description('Optional. Name of the event hub within the namespace to which logs are streamed. Without this, an event hub is created for each log category.')
 param eventHubName string = ''
-
-var cleanAcrName_var = replace(toLower(acrName), '-', '')
 
 var diagnosticsLogs = [for log in logsToEnable: {
   category: log
@@ -114,14 +118,22 @@ var diagnosticsMetrics = [for metric in metricsToEnable: {
   }
 }]
 
+var identityType = systemAssignedIdentity ? (!empty(userAssignedIdentities) ? 'SystemAssigned,UserAssigned' : 'SystemAssigned') : (!empty(userAssignedIdentities) ? 'UserAssigned' : 'None')
+
+var identity = identityType != 'None' ? {
+  type: identityType
+  userAssignedIdentities: !empty(userAssignedIdentities) ? userAssignedIdentities : null
+} : null
+
 module pid_cuaId '.bicep/nested_cuaId.bicep' = if (!empty(cuaId)) {
   name: 'pid-${cuaId}'
   params: {}
 }
 
 resource registry 'Microsoft.ContainerRegistry/registries@2020-11-01-preview' = {
-  name: cleanAcrName_var
+  name: name
   location: location
+  identity: identity
   tags: tags
   sku: {
     name: acrSku
@@ -182,17 +194,23 @@ module registry_privateEndpoints '.bicep/nested_privateEndpoints.bicep' = [for p
   name: '${uniqueString(deployment().name, privateEndpoint.name)}-privateEndpoint'
   params: {
     privateEndpointResourceId: registry.id
-    privateEndpointVnetLocation: (empty(privateEndpoints) ? 'dummy' : reference(split(privateEndpoint.subnetResourceId, '/subnets/')[0], '2020-06-01', 'Full').location)
+    privateEndpointVnetLocation: empty(privateEndpoints) ? 'dummy' : reference(split(privateEndpoint.subnetResourceId, '/subnets/')[0], '2020-06-01', 'Full').location
     privateEndpointObj: privateEndpoint
     tags: tags
   }
 }]
 
-@description('The Name of the Azure Container Registry.')
+@description('The Name of the Azure container registry.')
 output acrName string = registry.name
-@description('The reference to the Azure Container Registry.')
+
+@description('The reference to the Azure container registry.')
 output acrLoginServer string = reference(registry.id, '2019-05-01').loginServer
-@description('The Name of the Azure Container Registry.')
+
+@description('The name of the Azure container registry.')
 output acrResourceGroup string = resourceGroup().name
-@description('The Resource Id of the Azure Container Registry.')
+
+@description('The resource ID of the Azure container registry.')
 output acrResourceId string = registry.id
+
+@description('The principal ID of the system assigned identity.')
+output systemAssignedPrincipalId string = systemAssignedIdentity ? registry.identity.principalId : ''

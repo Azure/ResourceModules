@@ -4,7 +4,7 @@ This module deploys an SQL Server Security Alert Policy.
 
 ## Resource Types
 
-| Resource Type | Api Version |
+| Resource Type | API Version |
 | :-- | :-- |
 | `Microsoft.Sql/servers/securityAlertPolicies` | 2021-05-01-preview |
 
@@ -12,10 +12,10 @@ This module deploys an SQL Server Security Alert Policy.
 
 | Parameter Name | Type | Default Value | Possible Values | Description |
 | :-- | :-- | :-- | :-- | :-- |
-| `cuaId` | string |  |  | Optional. Customer Usage Attribution id (GUID). This GUID must be previously registered |
+| `cuaId` | string |  |  | Optional. Customer Usage Attribution ID (GUID). This GUID must be previously registered |
 | `disabledAlerts` | array | `[]` |  | Optional. Specifies an array of alerts that are disabled. Allowed values are: Sql_Injection, Sql_Injection_Vulnerability, Access_Anomaly, Data_Exfiltration, Unsafe_Action, Brute_Force. |
 | `emailAccountAdmins` | bool |  |  | Optional. Specifies that the alert is sent to the account administrators. |
-| `emailAddresses` | array | `[]` |  | Optional. Specifies an array of e-mail addresses to which the alert is sent. |
+| `emailAddresses` | array | `[]` |  | Optional. Specifies an array of email addresses to which the alert is sent. |
 | `name` | string |  |  | Required. The name of the Security Alert Policy. |
 | `retentionDays` | int |  |  | Optional. Specifies the number of days to keep in the Threat Detection audit logs. |
 | `serverName` | string |  |  | Required. The Name of SQL Server |

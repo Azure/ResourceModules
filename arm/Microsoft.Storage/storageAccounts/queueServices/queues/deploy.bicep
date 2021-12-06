@@ -14,7 +14,7 @@ param metadata object = {}
 @description('Optional. Array of role assignment objects that contain the \'roleDefinitionIdOrName\' and \'principalId\' to define RBAC role assignments on this resource. In the roleDefinitionIdOrName attribute, you can provide either the display name of the role definition, or it\'s fully qualified ID in the following format: \'/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11\'')
 param roleAssignments array = []
 
-@description('Optional. Customer Usage Attribution id (GUID). This GUID must be previously registered')
+@description('Optional. Customer Usage Attribution ID (GUID). This GUID must be previously registered')
 param cuaId string = ''
 
 module pid_cuaId '.bicep/nested_cuaId.bicep' = if (!empty(cuaId)) {
@@ -27,13 +27,14 @@ resource storageAccount 'Microsoft.Storage/storageAccounts@2021-06-01' existing 
 
   resource queueServices 'queueServices@2021-06-01' existing = {
     name: queueServicesName
+  }
+}
 
-    resource queue 'queues@2019-06-01' = {
-      name: name
-      properties: {
-        metadata: metadata
-      }
-    }
+resource queue 'Microsoft.Storage/storageAccounts/queueServices/queues@2019-06-01' = {
+  name: name
+  parent: storageAccount::queueServices
+  properties: {
+    metadata: metadata
   }
 }
 
@@ -42,15 +43,15 @@ module queue_rbac '.bicep/nested_rbac.bicep' = [for (roleAssignment, index) in r
   params: {
     principalIds: roleAssignment.principalIds
     roleDefinitionIdOrName: roleAssignment.roleDefinitionIdOrName
-    resourceId: '${storageAccount::queueServices::queue.id}'
+    resourceId: '${queue.id}'
   }
 }]
 
 @description('The name of the deployed queue')
-output queueName string = storageAccount::queueServices::queue.name
+output queueName string = queue.name
 
-@description('The ID of the deployed queue')
-output queueResourceId string = storageAccount::queueServices::queue.id
+@description('The resource ID of the deployed queue')
+output queueResourceId string = queue.id
 
 @description('The resource group of the deployed queue')
 output queueResourceGroup string = resourceGroup().name

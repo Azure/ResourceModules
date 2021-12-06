@@ -6,7 +6,7 @@
             "value": "adp-sxx-az-rsv-x-001"
         },
         "diagnosticLogsRetentionInDays": {
-            "value": 365
+            "value": 7
         },
         "backupPolicies": {
             "value": [

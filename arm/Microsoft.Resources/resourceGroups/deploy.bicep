@@ -1,7 +1,7 @@
 targetScope = 'subscription'
 
 @description('Required. The name of the Resource Group')
-param resourceGroupName string
+param name string
 
 @description('Optional. Location of the Resource Group. It uses the deployment\'s location when not provided.')
 param location string = deployment().location
@@ -22,14 +22,14 @@ param tags object = {}
 
 resource resourceGroup 'Microsoft.Resources/resourceGroups@2019-05-01' = {
   location: location
-  name: resourceGroupName
+  name: name
   tags: tags
   properties: {}
 }
 
 module resourceGroup_lock '.bicep/nested_lock.bicep' = if (lock != 'NotSpecified') {
   scope: resourceGroup
-  name: '${resourceGroup.name}-${lock}-lock-deployment'
+  name: '${uniqueString(deployment().name, location)}-RG-${lock}-Lock'
   params: {
     name: '${resourceGroup.name}-${lock}-lock'
     level: lock
@@ -37,7 +37,7 @@ module resourceGroup_lock '.bicep/nested_lock.bicep' = if (lock != 'NotSpecified
 }
 
 module resourceGroup_rbac '.bicep/nested_rbac.bicep' = [for (roleAssignment, index) in roleAssignments: {
-  name: '${deployment().name}-rbac-${index}'
+  name: '${uniqueString(deployment().name, location)}-RG-Rbac-${index}'
   params: {
     principalIds: roleAssignment.principalIds
     roleDefinitionIdOrName: roleAssignment.roleDefinitionIdOrName
@@ -46,5 +46,8 @@ module resourceGroup_rbac '.bicep/nested_rbac.bicep' = [for (roleAssignment, ind
   scope: resourceGroup
 }]
 
+@description('The name of the resource group')
 output resourceGroupName string = resourceGroup.name
+
+@description('The resource ID of the resource group')
 output resourceGroupResourceId string = resourceGroup.id
