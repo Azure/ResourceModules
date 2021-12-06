@@ -14,25 +14,19 @@ This module deploys Network Firewall Policies.
 
 | Parameter Name | Type | Default Value | Possible Values | Description |
 | :-- | :-- | :-- | :-- | :-- |
-| `allowSqlRedirect` | bool |  |  | Optional. A flag to indicate if SQL Redirect traffic filtering is enabled. Turning on the flag requires no rule using port 11000-11999. |
 | `basePolicyResourceId` | string |  |  | Optional. Resource ID of the base policy. |
 | `bypassTrafficSettings` | array | `[]` |  | Optional. List of rules for traffic to bypass. |
 | `certificateName` | string |  |  | Optional. Name of the CA certificate. |
 | `cuaId` | string |  |  | Optional. Customer Usage Attribution ID (GUID). This GUID must be previously registered |
 | `defaultWorkspaceId` | string |  |  | Optional. Default Log Analytics Resource ID for Firewall Policy Insights. |
-| `enableExplicitProxy` | bool |  |  | Optional. When set to true, explicit proxy mode is enabled. |
 | `enableProxy` | bool |  |  | Optional. Enable DNS Proxy on Firewalls attached to the Firewall Policy. |
 | `fqdns` | array | `[]` |  | Optional. List of FQDNs for the ThreatIntel Allowlist. |
-| `httpPort` | int |  |  | Optional. Port number for explicit proxy http protocol, cannot be greater than 64000. |
-| `httpsPort` | int |  |  | Optional. Port number for explicit proxy https protocol, cannot be greater than 64000. |
 | `ipAddresses` | array | `[]` |  | Optional. List of IP addresses for the ThreatIntel Allowlist. |
 | `isEnabled` | bool |  |  | Optional. A flag to indicate if the insights are enabled on the policy. |
 | `keyVaultSecretId` | string |  |  | Optional. Secret Id of (base-64 encoded unencrypted pfx) Secret or Certificate object stored in KeyVault.	 |
 | `location` | string | `[resourceGroup().location]` |  | Optional. Location for all resources. |
 | `mode` | string | `Off` | `[Alert, Deny, Off]` | Optional. The configuring of intrusion detection. |
 | `name` | string |  |  | Required. Name of the Firewall Policy. |
-| `pacFile` | string |  |  | Optional. SAS URL for PAC file. |
-| `pacFilePort` | int |  |  | Optional. Port number for firewall to serve PAC file. |
 | `privateRanges` | array | `[]` |  | Optional. List of private IP addresses/IP address ranges to not be SNAT. |
 | `requireProxyForNetworkRules` | bool |  |  | Optional. FQDNs in Network Rules are supported when set to true. |
 | `retentionDays` | int | `365` |  | Optional. Number of days the insights should be enabled on the policy. |

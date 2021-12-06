@@ -25,23 +25,6 @@ param requireProxyForNetworkRules bool = false
 @description('Optional. List of Custom DNS Servers.')
 param servers array = []
 
-@description('Optional. When set to true, explicit proxy mode is enabled.')
-param enableExplicitProxy bool = false
-
-@description('Optional. Port number for explicit proxy http protocol, cannot be greater than 64000.')
-@maxValue(64000)
-param httpPort int = 0
-
-@description('Optional. Port number for explicit proxy https protocol, cannot be greater than 64000.')
-@maxValue(64000)
-param httpsPort int = 0
-
-@description('Optional. SAS URL for PAC file.')
-param pacFile string = ''
-
-@description('Optional. Port number for firewall to serve PAC file.')
-param pacFilePort int = 0
-
 @description('Optional. A flag to indicate if the insights are enabled on the policy.')
 param isEnabled bool = false
 
@@ -77,9 +60,6 @@ param tier string = 'Standard'
 
 @description('Optional. List of private IP addresses/IP address ranges to not be SNAT.')
 param privateRanges array = []
-
-@description('Optional. A flag to indicate if SQL Redirect traffic filtering is enabled. Turning on the flag requires no rule using port 11000-11999.')
-param allowSqlRedirect bool = false
 
 @description('Optional. The operation mode for Threat Intel.')
 @allowed([
@@ -136,13 +116,6 @@ resource firewallPolicy 'Microsoft.Network/firewallPolicies@2021-03-01' = {
       requireProxyForNetworkRules: requireProxyForNetworkRules
       servers: servers
     } : null
-    // explicitProxySettings: !enableExplicitProxy ? {
-    //   enableExplicitProxy: enableExplicitProxy
-    //   httpPort: (httpPort > 0) ? httpPort : null
-    //   httpsPort: (httpsPort > 0) ? httpsPort : null
-    //   pacFile: !empty(pacFile) ? pacFile : null
-    //   pacFilePort: (pacFilePort > 0) ? pacFilePort : null
-    // } : null
     insights: isEnabled ? {
       isEnabled: isEnabled
       logAnalyticsResources: {
@@ -166,9 +139,6 @@ resource firewallPolicy 'Microsoft.Network/firewallPolicies@2021-03-01' = {
     snat: !empty(privateRanges) ? {
       privateRanges: privateRanges
     } : null
-    // sql: !allowSqlRedirect ? {
-    //   allowSqlRedirect: allowSqlRedirect
-    // } : null
     threatIntelMode: threatIntelMode
     threatIntelWhitelist: {
       fqdns: fqdns
