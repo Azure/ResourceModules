@@ -89,7 +89,10 @@ function Assert-PurgeProtectedResource {
 
     switch ($resource.type) {
         'Microsoft.KeyVault/vaults' {
-            $keyVault = Get-AzKeyVault -VaultName $resource.name -ResourceGroupName $resource.resourceId.Split('/')[4]
+            $name = $resourceToAssert.resourceId.Split('/')[-1]
+            $resourceGroupName = $resourceToAssert.resourceId.Split('/')[4]
+            Write-Verbose "Fetching key vault [$name] from resource group [$resourceGroupName] to assert properties to enable removal"
+            $keyVault = Get-AzKeyVault -VaultName $name -ResourceGroupName $resourceGroupName
             $resourceToAssert['location'] = $keyVault.Location
             $resourceToAssert['enablePurgeProtection'] = $keyVault.EnablePurgeProtection
         }
