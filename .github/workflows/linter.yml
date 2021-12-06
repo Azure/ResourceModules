@@ -1,6 +1,6 @@
 name: '.Platform: Linter'
 
-on: workflow_dispatch
+on: [pull_request]
 
 jobs:
   build:
@@ -27,10 +27,3 @@ jobs:
           DEFAULT_BRANCH: ${{ github.base_ref }}
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           FILTER_REGEX_EXCLUDE: '[global.module.tests.ps1|Get\-ModulesAsMarkdownTable.ps1]'
-
-      - name: Link Checker
-        uses: lycheeverse/lychee-action@v1.1.1
-        with:
-          args: --verbose --no-progress **/*.md **/*.html
-        env:
-          GITHUB_TOKEN: ${{secrets.GITHUB_TOKEN}}
