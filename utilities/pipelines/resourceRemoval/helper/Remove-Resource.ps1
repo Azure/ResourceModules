@@ -83,7 +83,7 @@ function Assert-PurgeProtection {
     [CmdletBinding(SupportsShouldProcess)]
     param (
         [Parameter(Mandatory)]
-        [hashtable] $resourceToRemove
+        [hashtable] $resourceToRemove # location is null
     )
 
     switch ($resource.type) {
