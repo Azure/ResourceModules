@@ -134,7 +134,7 @@ module virtualNetwork_subnets 'subnets/deploy.bicep' = [for (subnet, index) in s
     ipAllocations: contains(subnet, 'ipAllocations') ? subnet.ipAllocations : []
     natGatewayName: contains(subnet, 'natGatewayName') ? subnet.natGatewayName : ''
     networkSecurityGroupName: contains(subnet, 'networkSecurityGroupName') ? subnet.networkSecurityGroupName : ''
-
+    networkSecurityGroupNameResourceGroupName: contains(subnet, 'networkSecurityGroupNameResourceGroupName') ? subnet.networkSecurityGroupNameResourceGroupName : resourceGroup().name
     privateEndpointNetworkPolicies: contains(subnet, 'privateEndpointNetworkPolicies') ? subnet.privateEndpointNetworkPolicies : ''
     privateLinkServiceNetworkPolicies: contains(subnet, 'privateLinkServiceNetworkPolicies') ? subnet.privateLinkServiceNetworkPolicies : ''
     routeTableName: contains(subnet, 'routeTableName') ? subnet.routeTableName : ''

@@ -21,6 +21,7 @@ This module deploys a virtual network subnet.
 | `name` | string |  |  | Optional. The Name of the subnet resource. |
 | `natGatewayName` | string |  |  | Optional. The name of the NAT Gateway to use for the subnet |
 | `networkSecurityGroupName` | string |  |  | Optional. The network security group to assign to the subnet |
+| `networkSecurityGroupNameResourceGroupName` | string | `[resourceGroup().name]` |  | Optional. Resource Group where NSGs are deployed, if different than VNET Resource Group. |
 | `privateEndpointNetworkPolicies` | string |  | `[Disabled, Enabled, ]` | Optional. enable or disable apply network policies on private end point in the subnet. |
 | `privateLinkServiceNetworkPolicies` | string |  | `[Disabled, Enabled, ]` | Optional. enable or disable apply network policies on private link service in the subnet. |
 | `routeTableName` | string |  |  | Optional. The route table to assign to the subnet |

@@ -10,6 +10,10 @@ param addressPrefix string
 @description('Optional. The network security group to assign to the subnet')
 param networkSecurityGroupName string = ''
 
+@description('Optional. Resource Group where NSGs are deployed, if different than VNET Resource Group.')
+@minLength(1)
+param networkSecurityGroupNameResourceGroupName string = resourceGroup().name
+
 @description('Optional. The route table to assign to the subnet')
 param routeTableName string = ''
 
@@ -68,6 +72,7 @@ resource virtualNetwork 'Microsoft.Network/virtualNetworks@2021-03-01' existing 
 
 resource networkSecurityGroup 'Microsoft.Network/networkSecurityGroups@2021-03-01' existing = if (!empty(networkSecurityGroupName)) {
   name: networkSecurityGroupName
+  scope: resourceGroup(networkSecurityGroupNameResourceGroupName)
 }
 
 resource routeTable 'Microsoft.Network/routeTables@2021-03-01' existing = if (!empty(routeTableName)) {
