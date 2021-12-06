@@ -10,6 +10,7 @@ This module deploys a recovery service vault.
 | `Microsoft.Authorization/roleAssignments` | 2020-04-01-preview |
 | `Microsoft.Insights/diagnosticSettings` | 2021-05-01-preview |
 | `Microsoft.RecoveryServices/vaults` | 2021-08-01 |
+| `Microsoft.RecoveryServices/vaults/backupconfig` | 2021-08-01 |
 | `Microsoft.RecoveryServices/vaults/backupFabrics/protectionContainers` | 2021-08-01 |
 | `Microsoft.RecoveryServices/vaults/backupPolicies` | 2021-08-01 |
 | `Microsoft.RecoveryServices/vaults/backupstorageconfig` | 2021-08-01 |
@@ -18,6 +19,7 @@ This module deploys a recovery service vault.
 
 | Parameter Name | Type | Default Value | Possible Values | Description |
 | :-- | :-- | :-- | :-- | :-- |
+| `backupConfig` | _[backupConfig](backupConfig/readme.md)_ object | `{object}` |  | Optional. The backup configuration. |
 | `backupPolicies` | _[backupPolicies](backupPolicies/readme.md)_ array | `[]` |  | Optional. List of all backup policies. |
 | `backupStorageConfig` | _[backupStorageConfig](backupStorageConfig/readme.md)_ object | `{object}` |  | Optional. The storage configuration for the Azure Recovery Service Vault |
 | `cuaId` | string |  |  | Optional. Customer Usage Attribution ID (GUID). This GUID must be previously registered |
@@ -346,9 +348,9 @@ You can specify multiple user assigned identities to a resource by providing add
 
 | Output Name | Type | Description |
 | :-- | :-- | :-- |
-| `recoveryServicesVaultName` | string | The Name of the Recovery Services Vault |
-| `recoveryServicesVaultResourceGroup` | string | The name of the Resource Group the Recovery Services Vault was created in |
-| `recoveryServicesVaultResourceId` | string | The resource ID of the Recovery Services Vault |
+| `recoveryServicesVaultName` | string | The Name of the recovery services vault |
+| `recoveryServicesVaultResourceGroup` | string | The name of the resource group the recovery services vault was created in |
+| `recoveryServicesVaultResourceId` | string | The resource ID of the recovery services vault |
 | `systemAssignedPrincipalId` | string | The principal ID of the system assigned identity. |
 
 ## Template references
@@ -357,6 +359,7 @@ You can specify multiple user assigned identities to a resource by providing add
 - [Roleassignments](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2020-04-01-preview/roleAssignments)
 - [Diagnosticsettings](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Insights/2021-05-01-preview/diagnosticSettings)
 - [Vaults](https://docs.microsoft.com/en-us/azure/templates/Microsoft.RecoveryServices/2021-08-01/vaults)
+- [Vaults/Backupconfig](https://docs.microsoft.com/en-us/azure/templates/Microsoft.RecoveryServices/2021-08-01/vaults/backupconfig)
 - [Vaults/Backupfabrics/Protectioncontainers](https://docs.microsoft.com/en-us/azure/templates/Microsoft.RecoveryServices/2021-08-01/vaults/backupFabrics/protectionContainers)
 - [Vaults/Backuppolicies](https://docs.microsoft.com/en-us/azure/templates/Microsoft.RecoveryServices/2021-08-01/vaults/backupPolicies)
 - [Vaults/Backupstorageconfig](https://docs.microsoft.com/en-us/azure/templates/Microsoft.RecoveryServices/2021-08-01/vaults/backupstorageconfig)
