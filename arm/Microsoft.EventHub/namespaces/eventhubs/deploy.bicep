@@ -147,7 +147,7 @@ resource eventHub_lock 'Microsoft.Authorization/locks@2016-09-01' = if (lock != 
 }
 
 module eventHub_consumergroups 'consumergroups/deploy.bicep' = [for (consumerGroup, index) in consumerGroups: {
-  name: '${deployment().name}-consumergroup-${index}'
+  name: '${deployment().name}-ConsumerGroup-${index}'
   params: {
     namespaceName: namespaceName
     eventHubName: eventHub.name
@@ -157,7 +157,7 @@ module eventHub_consumergroups 'consumergroups/deploy.bicep' = [for (consumerGro
 }]
 
 module eventHub_authorizationRules 'authorizationRules/deploy.bicep' = [for (authorizationRule, index) in authorizationRules: {
-  name: '${deployment().name}-authorizationRule-${index}'
+  name: '${deployment().name}-AuthRule-${index}'
   params: {
     namespaceName: namespaceName
     eventHubName: eventHub.name
@@ -167,7 +167,7 @@ module eventHub_authorizationRules 'authorizationRules/deploy.bicep' = [for (aut
 }]
 
 module eventHub_rbac '.bicep/nested_rbac.bicep' = [for (roleAssignment, index) in roleAssignments: {
-  name: '${deployment().name}-rbac-${index}'
+  name: '${deployment().name}-Rbac-${index}'
   params: {
     principalIds: roleAssignment.principalIds
     roleDefinitionIdOrName: roleAssignment.roleDefinitionIdOrName
