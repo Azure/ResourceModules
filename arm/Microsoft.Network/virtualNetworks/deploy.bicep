@@ -134,6 +134,7 @@ module virtualNetwork_subnets 'subnets/deploy.bicep' = [for (subnet, index) in s
     ipAllocations: contains(subnet, 'ipAllocations') ? subnet.ipAllocations : []
     natGatewayName: contains(subnet, 'natGatewayName') ? subnet.natGatewayName : ''
     networkSecurityGroupName: contains(subnet, 'networkSecurityGroupName') ? subnet.networkSecurityGroupName : ''
+
     privateEndpointNetworkPolicies: contains(subnet, 'privateEndpointNetworkPolicies') ? subnet.privateEndpointNetworkPolicies : ''
     privateLinkServiceNetworkPolicies: contains(subnet, 'privateLinkServiceNetworkPolicies') ? subnet.privateLinkServiceNetworkPolicies : ''
     routeTableName: contains(subnet, 'routeTableName') ? subnet.routeTableName : ''
@@ -202,7 +203,7 @@ resource appServiceEnvironment_diagnosticSettings 'Microsoft.Insights/diagnostic
 }
 
 module virtualNetwork_rbac '.bicep/nested_rbac.bicep' = [for (roleAssignment, index) in roleAssignments: {
-  name: '${uniqueString(deployment().name, location)}-Vnet-Rbac-${index}'
+  name: '${uniqueString(deployment().name, location)}-VNet-Rbac-${index}'
   params: {
     principalIds: roleAssignment.principalIds
     roleDefinitionIdOrName: roleAssignment.roleDefinitionIdOrName

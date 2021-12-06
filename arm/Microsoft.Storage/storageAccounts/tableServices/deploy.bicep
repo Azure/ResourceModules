@@ -27,7 +27,7 @@ resource tableServices 'Microsoft.Storage/storageAccounts/tableServices@2021-04-
 }
 
 module tableServices_tables 'tables/deploy.bicep' = [for (tableName, index) in tables: {
-  name: '${deployment().name}-Storage-Table-${index}'
+  name: '${deployment().name}-Table-${index}'
   params: {
     storageAccountName: storageAccount.name
     tableServicesName: tableServices.name

@@ -77,7 +77,7 @@ resource server_lock 'Microsoft.Authorization/locks@2016-09-01' = if (lock != 'N
 }
 
 module server_rbac '.bicep/nested_rbac.bicep' = [for (roleAssignment, index) in roleAssignments: {
-  name: '${deployment().name}-rbac-${index}'
+  name: '${uniqueString(deployment().name, location)}-Sql-Rbac-${index}'
   params: {
     principalIds: roleAssignment.principalIds
     roleDefinitionIdOrName: roleAssignment.roleDefinitionIdOrName
@@ -86,7 +86,7 @@ module server_rbac '.bicep/nested_rbac.bicep' = [for (roleAssignment, index) in 
 }]
 
 module server_databases 'databases/deploy.bicep' = [for (database, index) in databases: {
-  name: '${deployment().name}-db-${index}'
+  name: '${uniqueString(deployment().name, location)}-Sql-DB-${index}'
   params: {
     name: database.name
     serverName: server.name
@@ -110,7 +110,7 @@ module server_databases 'databases/deploy.bicep' = [for (database, index) in dat
 }]
 
 module server_firewallRules 'firewallRules/deploy.bicep' = [for (firewallRule, index) in firewallRules: {
-  name: '${deployment().name}-firewallRules-${index}'
+  name: '${uniqueString(deployment().name, location)}-Sql-FirewallRules-${index}'
   params: {
     name: firewallRule.name
     serverName: server.name
@@ -120,7 +120,7 @@ module server_firewallRules 'firewallRules/deploy.bicep' = [for (firewallRule, i
 }]
 
 module server_securityAlertPolicies 'securityAlertPolicies/deploy.bicep' = [for (securityAlertPolicy, index) in securityAlertPolicies: {
-  name: '${deployment().name}-securityAlertPolicy-${index}'
+  name: '${uniqueString(deployment().name, location)}-Sql-SecAlertPolicy-${index}'
   params: {
     name: securityAlertPolicy.name
     serverName: server.name
