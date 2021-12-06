@@ -53,7 +53,7 @@ function Remove-automationAccount {
             if ($deployments) {
                 break
             }
-            Write-Verbose ('Did not to find Automation Account deployment resources by name [{0}] in scope [{1}]. Retrying in [{2}] seconds [{3}/{4}]' -f $deploymentName, $deploymentScope, $searchRetryInterval, $searchRetryCount, $searchRetryLimit) -Verbose
+            Write-Verbose ('[Failure] not to find Automation Account deployment resources by name [{0}] in scope [{1}]. Retrying in [{2}] seconds [{3}/{4}]' -f $deploymentName, $deploymentScope, $searchRetryInterval, $searchRetryCount, $searchRetryLimit) -Verbose
             Start-Sleep $searchRetryInterval
             $searchRetryCount++
         } while ($searchRetryCount -le $searchRetryLimit)
@@ -63,7 +63,7 @@ function Remove-automationAccount {
         }
 
         $resourcesToRemove = @()
-        $unorderedResourceIds = @()
+        $unorderedResourceIds = $deployments.TargetResource | Where-Object { $_ -and $_ -notmatch '/deployments/' }
         $childDeploymentsIds = $deployments.TargetResource | Where-Object { $_ -and $_ -match '/deployments/' }
 
         foreach ($childDeploymentId in $childDeploymentsIds) {
@@ -85,7 +85,16 @@ function Remove-automationAccount {
             } while ($searchRetryCount -le $searchRetryLimit)
         }
 
-        $unorderedResourceIds = $unorderedResourceIds | Where-Object { $_ -and ($_ -notmatch '/variables/') -and ($_ -notmatch '/variables/') }
+        $unorderedResourceIds = $unorderedResourceIds | Where-Object { $_ `
+                -and ($_ -notmatch '/Microsoft.Insights/diagnosticSettings/') `
+                -and ($_ -notmatch '/variables/') `
+                -and ($_ -notmatch '/softwareUpdateConfigurations/') `
+                -and ($_ -notmatch '/jobSchedules/') `
+                -and ($_ -notmatch '/schedules/') `
+                -and ($_ -notmatch '/runbooks/') `
+                -and ($_ -notmatch '/modules/') `
+                -and ($_ -notmatch '/Microsoft.Authorization/roleAssignments/') `
+        } | Select-Object -Unique
 
         $orderedResourceIds = @(
             $unorderedResourceIds | Where-Object { $_ -match 'Microsoft.OperationsManagement/solutions/Updates' }
@@ -93,6 +102,7 @@ function Remove-automationAccount {
             $unorderedResourceIds | Where-Object { $_ -match 'Microsoft.Insights/diagnosticSettings' }
             $unorderedResourceIds | Where-Object { $_ -match 'Microsoft.Automation/automationAccounts' }
         )
+
         $resourcesToRemove = $orderedResourceIds | ForEach-Object {
             @{
                 resourceId = $_
