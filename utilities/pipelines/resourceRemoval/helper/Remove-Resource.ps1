@@ -62,6 +62,26 @@ function Remove-ResourceInner {
     return $resourcesToRetry
 }
 
+<#
+.SYNOPSIS
+Prepare the given resource for removal
+
+.DESCRIPTION
+Prepare the given resource for removal. This is required for some resource such as the RSV where we first have to remove its protected items before the RSV itself can be removed
+
+.PARAMETER resourceToRemove
+MAndatory. The resource to prepare.Should have format
+@{
+    name        = '...'
+    resourceID = '...'
+    type        = '...'
+}
+
+.EXAMPLE
+Initialize-PreResourceRemoval -resourceToRemove @{ name = 'myVault'; resourceId '(..)/Microsoft.RecoveryServices/vaults/myVault'; type = 'Microsoft.RecoveryServices/vaults'}
+
+Prepare resource 'myVault' of type 'Microsoft.RecoveryServices/vaults' for removal
+#>
 function Initialize-PreResourceRemoval {
 
     [CmdletBinding(SupportsShouldProcess)]
@@ -86,13 +106,13 @@ function Initialize-PreResourceRemoval {
 
 <#
 .SYNOPSIS
-Purge the given resource if possible
+Remove any artifacts that remain of the given resource
 
 .DESCRIPTION
-Purge the given resource if possible and no protection is enabled
+Remove any artifacts that remain of the given resource. For example, some resources such as key vaults usually go into a soft-delete state from which we want to purge them from.
 
 .PARAMETER resourceToRemove
-Mandatory. The resource to purge. Should have format
+Mandatory. The resource to remove. Should have format
 @{
     name        = '...'
     resourceID = '...'
