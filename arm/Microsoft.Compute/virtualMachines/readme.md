@@ -343,9 +343,9 @@ Only for OSType Windows
 "diskEncryptionSettings": {
   "value": {
       "EncryptionOperation": "EnableEncryption",
-      "KeyVaultURL": "https://adp-sxx-az-kv-x-001.vault.azure.net/",
+      "KeyVaultURL": "https://mykeyvault.vault.azure.net/",
       "KeyVaultResourceId": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.KeyVault/vaults/adp-sxx-az-kv-x-001",
-      "KeyEncryptionKeyURL": "https://adp-sxx-az-kv-x-001.vault.azure.net/keys/keyEncryptionKey/685153483a1140e3856f004a753e1ab4",
+      "KeyEncryptionKeyURL": "https://mykeyvault.vault.azure.net/keys/keyEncryptionKey/685153483a1140e3856f004a753e1ab4",
       "KekVaultResourceId": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.KeyVault/vaults/adp-sxx-az-kv-x-001",
       "KeyEncryptionAlgorithm": "RSA-OAEP", //'RSA-OAEP'/'RSA-OAEP-256'/'RSA1_5'
       "VolumeType": "All", //'OS'/'Data'/'All'
@@ -409,11 +409,11 @@ Only for OSType Windows
   "value": [
     //storage accounts with SAS token requirement
     {
-      "uri": "https://storageAccount.blob.core.windows.net/avdscripts/File1.ps1",
+      "uri": "https://mystorageaccount.blob.core.windows.net/avdscripts/File1.ps1",
       "storageAccountId": "/subscriptions/12345678-1234-1234-1234-123456789012/resourceGroups/rgName/providers/Microsoft.Storage/storageAccounts/storageAccountName"
     },
     {
-      "uri": "https://storageAccount.blob.core.windows.net/avdscripts/File2.ps1",
+      "uri": "https://mystorageaccount.blob.core.windows.net/avdscripts/File2.ps1",
       "storageAccountId": "/subscriptions/12345678-1234-1234-1234-123456789012/resourceGroups/rgName/providers/Microsoft.Storage/storageAccounts/storageAccountName"
     },
     //storage account with public container (no SAS token is required) OR other public URL (not a storage account)
