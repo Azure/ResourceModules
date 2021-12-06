@@ -29,6 +29,7 @@ jobs:
       #    FILTER_REGEX_EXCLUDE: '[global.module.tests.ps1|Get\-ModulesAsMarkdownTable.ps1]'
 
       - name: Link Checker
+        if: always()
         id: checker
         uses: lycheeverse/lychee-action@v1.1.1
         with:
