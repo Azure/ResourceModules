@@ -160,6 +160,10 @@ var keyVaultDeploymentScriptParameters = {
 
 var recoveryServicesVaultParameters = {
   name: 'adp-sxx-rsv-${serviceShort}-01'
+  backupConfig: {
+    enhancedSecurityState: 'Disabled'
+    softDeleteFeatureState: 'Disabled'
+  }
   backupPolicies: [
     {
       name: 'VMpolicy'
