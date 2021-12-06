@@ -3,5 +3,5 @@ file:///github
 https://mystorageaccount.blob.core.windows.net
 https://mykeyvault.vault.azure.net
 https://www.powershellgallery.com
-https://github.com/myProject/File3.ps1
-https://github.com/Azure/ResourceModules.git
+https://github.com/myProject
+SECURITY.md
