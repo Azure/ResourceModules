@@ -91,6 +91,7 @@ function Assert-PurgeProtectedResource {
         'Microsoft.KeyVault/vaults' {
             $keyVault = Get-AzKeyVault -VaultName $resource.name -ResourceGroupName $resource.resourceId.Split('/')[4]
             $resourceToAssert['location'] = $keyVault.Location
+            $resourceToAssert['enablePurgeProtection'] = $keyVault.EnablePurgeProtection
         }
     }
 
@@ -127,7 +128,7 @@ function Remove-PurgeProtectedResource {
 
     switch ($resource.type) {
         'Microsoft.KeyVault/vaults' {
-            if (-not $keyVault.EnablePurgeProtection) {
+            if (-not $resource.EnablePurgeProtection) {
                 Write-Verbose ('Purging key vault [{0}]' -f $resource.name, $resource.type) -Verbose
                 if ($PSCmdlet.ShouldProcess(('Key Vault [{0}]' -f $resource.resourceId), 'Purge')) {
                     $null = Remove-AzKeyVault -ResourceId $resource.resourceId -InRemovedState -Force -Location $resource.Location

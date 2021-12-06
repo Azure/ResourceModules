@@ -21,11 +21,6 @@ var managedIdentityParameters = {
   name: 'adp-sxx-msi-${serviceShort}-01'
 }
 
-resource miRef 'Microsoft.ManagedIdentity/userAssignedIdentities@2018-11-30' existing = {
-  scope: az.resourceGroup(resourceGroupName)
-  name: managedIdentityParameters.name
-}
-
 var storageAccountParameters = {
   name: 'adpsxxazsa${serviceShort}01'
   storageAccountKind: 'StorageV2'
@@ -45,6 +40,7 @@ var storageAccountParameters = {
       roleDefinitionIdOrName: 'Owner'
       principalIds: [
         miRef.properties.principalId
+        //managedIdentity.outputs.msiPrincipalId
       ]
     }
   ]
@@ -53,7 +49,8 @@ var storageAccountParameters = {
 var storageAccountDeploymentScriptParameters = {
   name: 'sxx-ds-sa-${serviceShort}-01'
   userAssignedIdentities: {
-    '${miRef.id}': {}
+    '${managedIdentity.outputs.msiResourceId}': {}
+    //'${miRef.id}': {}
   }
   cleanupPreference: 'OnSuccess'
   arguments: ' -StorageAccountName "${storageAccountParameters.name}" -ResourceGroupName "${resourceGroupName}" -ContainerName "scripts" -FileName "scriptExtensionMasterInstaller.ps1"'
@@ -122,7 +119,8 @@ var keyVaultParameters = {
   accessPolicies: [
     // Required so that the MSI can add secrets to the key vault
     {
-      objectId: miRef.properties.principalId
+      //objectId: miRef.properties.principalId
+      objectId: managedIdentity.outputs.msiPrincipalId
       permissions: {
         secrets: [
           'All'
@@ -135,7 +133,8 @@ var keyVaultParameters = {
 var keyVaultDeploymentScriptParameters = {
   name: 'sxx-ds-kv-${serviceShort}-01'
   userAssignedIdentities: {
-    '${miRef.id}': {}
+    '${managedIdentity.outputs.msiResourceId}': {}
+    //'${miRef.id}': {}
   }
   cleanupPreference: 'OnSuccess'
   arguments: ' -keyVaultName "${keyVaultParameters.name}"'
@@ -213,6 +212,11 @@ module managedIdentity '../../../../../arm/Microsoft.ManagedIdentity/userAssigne
   ]
 }
 
+resource miRef 'Microsoft.ManagedIdentity/userAssignedIdentities@2018-11-30' existing = {
+  scope: az.resourceGroup(resourceGroupName)
+  name: managedIdentityParameters.name
+}
+
 module storageAccount '../../../../../arm/Microsoft.Storage/storageAccounts/deploy.bicep' = {
   scope: az.resourceGroup(resourceGroupName)
   name: '${uniqueString(deployment().name, location)}-sa'
@@ -230,112 +234,112 @@ module storageAccount '../../../../../arm/Microsoft.Storage/storageAccounts/depl
   ]
 }
 
-module storageAccountDeploymentScript '../../../../../arm/Microsoft.Resources/deploymentScripts/deploy.bicep' = {
-  scope: az.resourceGroup(resourceGroupName)
-  name: '${uniqueString(deployment().name, location)}-sa-ds'
-  params: {
-    name: storageAccountDeploymentScriptParameters.name
-    arguments: storageAccountDeploymentScriptParameters.arguments
-    userAssignedIdentities: storageAccountDeploymentScriptParameters.userAssignedIdentities
-    scriptContent: storageAccountDeploymentScriptParameters.scriptContent
-    cleanupPreference: storageAccountDeploymentScriptParameters.cleanupPreference
-  }
-  dependsOn: [
-    resourceGroup
-    storageAccount
-    managedIdentity
-  ]
-}
+// module storageAccountDeploymentScript '../../../../../arm/Microsoft.Resources/deploymentScripts/deploy.bicep' = {
+//   scope: az.resourceGroup(resourceGroupName)
+//   name: '${uniqueString(deployment().name, location)}-sa-ds'
+//   params: {
+//     name: storageAccountDeploymentScriptParameters.name
+//     arguments: storageAccountDeploymentScriptParameters.arguments
+//     userAssignedIdentities: storageAccountDeploymentScriptParameters.userAssignedIdentities
+//     scriptContent: storageAccountDeploymentScriptParameters.scriptContent
+//     cleanupPreference: storageAccountDeploymentScriptParameters.cleanupPreference
+//   }
+//   dependsOn: [
+//     resourceGroup
+//     storageAccount
+//     managedIdentity
+//   ]
+// }
 
-module logAnalyticsWorkspace '../../../../../arm/Microsoft.OperationalInsights/workspaces/deploy.bicep' = {
-  scope: az.resourceGroup(resourceGroupName)
-  name: '${uniqueString(deployment().name, location)}-oms'
-  params: {
-    name: logAnalyticsWorkspaceParameters.name
-  }
-  dependsOn: [
-    resourceGroup
-  ]
-}
+// module logAnalyticsWorkspace '../../../../../arm/Microsoft.OperationalInsights/workspaces/deploy.bicep' = {
+//   scope: az.resourceGroup(resourceGroupName)
+//   name: '${uniqueString(deployment().name, location)}-oms'
+//   params: {
+//     name: logAnalyticsWorkspaceParameters.name
+//   }
+//   dependsOn: [
+//     resourceGroup
+//   ]
+// }
 
-module eventHubNamespace '../../../../../arm/Microsoft.EventHub/namespaces/deploy.bicep' = {
-  scope: az.resourceGroup(resourceGroupName)
-  name: '${uniqueString(deployment().name, location)}-ehn'
-  params: {
-    name: eventHubParameters.name
-    eventHubs: eventHubParameters.eventHubs
-  }
-  dependsOn: [
-    resourceGroup
-  ]
-}
+// module eventHubNamespace '../../../../../arm/Microsoft.EventHub/namespaces/deploy.bicep' = {
+//   scope: az.resourceGroup(resourceGroupName)
+//   name: '${uniqueString(deployment().name, location)}-ehn'
+//   params: {
+//     name: eventHubParameters.name
+//     eventHubs: eventHubParameters.eventHubs
+//   }
+//   dependsOn: [
+//     resourceGroup
+//   ]
+// }
 
-module networkSecurityGroup '../../../../../arm/Microsoft.Network/networkSecurityGroups/deploy.bicep' = {
-  scope: az.resourceGroup(resourceGroupName)
-  name: '${uniqueString(deployment().name, location)}-nsg'
-  params: {
-    name: networkSecurityGroupParameters.name
-  }
-  dependsOn: [
-    resourceGroup
-  ]
-}
+// module networkSecurityGroup '../../../../../arm/Microsoft.Network/networkSecurityGroups/deploy.bicep' = {
+//   scope: az.resourceGroup(resourceGroupName)
+//   name: '${uniqueString(deployment().name, location)}-nsg'
+//   params: {
+//     name: networkSecurityGroupParameters.name
+//   }
+//   dependsOn: [
+//     resourceGroup
+//   ]
+// }
 
-module virtualNetwork '../../../../../arm/Microsoft.Network/virtualNetworks/deploy.bicep' = {
-  scope: az.resourceGroup(resourceGroupName)
-  name: '${uniqueString(deployment().name, location)}-vnet'
-  params: {
-    name: virtualNetworkInputParameters.name
-    addressPrefixes: virtualNetworkInputParameters.addressPrefixes
-    subnets: virtualNetworkInputParameters.subnets
-  }
-  dependsOn: [
-    resourceGroup
-    networkSecurityGroup
-  ]
-}
+// module virtualNetwork '../../../../../arm/Microsoft.Network/virtualNetworks/deploy.bicep' = {
+//   scope: az.resourceGroup(resourceGroupName)
+//   name: '${uniqueString(deployment().name, location)}-vnet'
+//   params: {
+//     name: virtualNetworkInputParameters.name
+//     addressPrefixes: virtualNetworkInputParameters.addressPrefixes
+//     subnets: virtualNetworkInputParameters.subnets
+//   }
+//   dependsOn: [
+//     resourceGroup
+//     networkSecurityGroup
+//   ]
+// }
 
-module recoveryServicesVault '../../../../../arm/Microsoft.RecoveryServices/vaults/deploy.bicep' = {
-  scope: az.resourceGroup(resourceGroupName)
-  name: '${uniqueString(deployment().name, location)}-rsv'
-  params: {
-    name: recoveryServicesVaultParameters.name
-    backupPolicies: recoveryServicesVaultParameters.backupPolicies
-  }
-  dependsOn: [
-    resourceGroup
-  ]
-}
+// module recoveryServicesVault '../../../../../arm/Microsoft.RecoveryServices/vaults/deploy.bicep' = {
+//   scope: az.resourceGroup(resourceGroupName)
+//   name: '${uniqueString(deployment().name, location)}-rsv'
+//   params: {
+//     name: recoveryServicesVaultParameters.name
+//     backupPolicies: recoveryServicesVaultParameters.backupPolicies
+//   }
+//   dependsOn: [
+//     resourceGroup
+//   ]
+// }
 
-module keyVault '../../../../../arm/Microsoft.KeyVault/vaults/deploy.bicep' = {
-  scope: az.resourceGroup(resourceGroupName)
-  name: '${uniqueString(deployment().name, location)}-kv'
-  params: {
-    name: keyVaultParameters.name
-    enablePurgeProtection: keyVaultParameters.enablePurgeProtection
-    accessPolicies: keyVaultParameters.accessPolicies
-  }
-  dependsOn: [
-    resourceGroup
-  ]
-}
+// module keyVault '../../../../../arm/Microsoft.KeyVault/vaults/deploy.bicep' = {
+//   scope: az.resourceGroup(resourceGroupName)
+//   name: '${uniqueString(deployment().name, location)}-kv'
+//   params: {
+//     name: keyVaultParameters.name
+//     enablePurgeProtection: keyVaultParameters.enablePurgeProtection
+//     accessPolicies: keyVaultParameters.accessPolicies
+//   }
+//   dependsOn: [
+//     resourceGroup
+//   ]
+// }
 
-module keyVaultdeploymentScript '../../../../../arm/Microsoft.Resources/deploymentScripts/deploy.bicep' = {
-  scope: az.resourceGroup(resourceGroupName)
-  name: '${uniqueString(deployment().name, location)}-kv-ds'
-  params: {
-    name: keyVaultDeploymentScriptParameters.name
-    arguments: keyVaultDeploymentScriptParameters.arguments
-    userAssignedIdentities: keyVaultDeploymentScriptParameters.userAssignedIdentities
-    scriptContent: keyVaultDeploymentScriptParameters.scriptContent
-    cleanupPreference: keyVaultDeploymentScriptParameters.cleanupPreference
-  }
-  dependsOn: [
-    resourceGroup
-    keyVault
-    managedIdentity
-  ]
-}
+// module keyVaultdeploymentScript '../../../../../arm/Microsoft.Resources/deploymentScripts/deploy.bicep' = {
+//   scope: az.resourceGroup(resourceGroupName)
+//   name: '${uniqueString(deployment().name, location)}-kv-ds'
+//   params: {
+//     name: keyVaultDeploymentScriptParameters.name
+//     arguments: keyVaultDeploymentScriptParameters.arguments
+//     userAssignedIdentities: keyVaultDeploymentScriptParameters.userAssignedIdentities
+//     scriptContent: keyVaultDeploymentScriptParameters.scriptContent
+//     cleanupPreference: keyVaultDeploymentScriptParameters.cleanupPreference
+//   }
+//   dependsOn: [
+//     resourceGroup
+//     keyVault
+//     managedIdentity
+//   ]
+// }
 
 @description('The name of the resource group')
 output resourceGroupName string = resourceGroup.outputs.resourceGroupName
