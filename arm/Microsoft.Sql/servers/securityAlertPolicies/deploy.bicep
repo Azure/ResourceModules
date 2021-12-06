@@ -24,7 +24,7 @@ param state string = 'Disabled'
 @secure()
 param storageAccountAccessKey string = ''
 
-@description('Optional. Specifies the blob storage endpoint (e.g. https://MyAccount.blob.core.windows.net). This blob storage will hold all Threat Detection audit logs.')
+@description('Optional. Specifies the blob storage endpoint (e.g. https://mystorageaccount.blob.core.windows.net). This blob storage will hold all Threat Detection audit logs.')
 param storageEndpoint string = ''
 
 @description('Required. The Name of SQL Server')
