@@ -27,7 +27,15 @@
                     "name": "secretName",
                     "value": "secretValue",
                     "contentType": "Something",
-                    "attributesNbf": 10000
+                    "attributesNbf": 10000,
+                    "roleAssignments": [
+                        {
+                            "roleDefinitionIdOrName": "Reader",
+                            "principalIds": [
+                                "<<deploymentSpId>>"
+                            ]
+                        }
+                    ]
                 }
             ]
         },
@@ -35,7 +43,46 @@
             "value": [
                 {
                     "name": "keyName",
-                    "attributesNbf": 10000
+                    "attributesNbf": 10000,
+                    "roleAssignments": [
+                        {
+                            "roleDefinitionIdOrName": "Reader",
+                            "principalIds": [
+                                "<<deploymentSpId>>"
+                            ]
+                        }
+                    ]
+                }
+            ]
+        },
+        "accessPolicies": {
+            "value": [
+                {
+                    "objectId": "<<deploymentSpId>>",
+                    "permissions": {
+                        "keys": [
+                            "get",
+                            "list",
+                            "update"
+                        ],
+                        "secrets": [
+                            "all"
+                        ]
+                    },
+                    "tenantId": "<<tenantId>>"
+                },
+                {
+                    "objectId": "<<deploymentSpId>>",
+                    "permissions": {
+                        "certificates": [
+                            "backup",
+                            "create",
+                            "delete"
+                        ],
+                        "secrets": [
+                            "all"
+                        ]
+                    }
                 }
             ]
         },
