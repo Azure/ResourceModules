@@ -13,27 +13,27 @@ jobs:
           # Full git history is needed to get a proper list of changed files within `super-linter`
           fetch-depth: 0
 
-      #- name: Lint Code Base
-      #  uses: docker://ghcr.io/github/super-linter:slim-v4
-      #  # uses: github/super-linter@v4
-      #  env:
-      #    VALIDATE_ALL_CODEBASE: false
-      #    VALIDATE_MARKDOWN: false
-      #    VALIDATE_ARM: false
-      #    VALIDATE_JSON: false
-      #    VALIDATE_YAML: false
-      #    VALIDATE_GITHUB_ACTIONS: false
-      #    if: ${{ github.event_name == 'pull_request' }}
-      #    DEFAULT_BRANCH: ${{ github.base_ref }}
-      #    GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      #    FILTER_REGEX_EXCLUDE: '[global.module.tests.ps1|Get\-ModulesAsMarkdownTable.ps1]'
+      - name: Lint Code Base
+        uses: docker://ghcr.io/github/super-linter:slim-v4
+        # uses: github/super-linter@v4
+        env:
+          VALIDATE_ALL_CODEBASE: false
+          VALIDATE_MARKDOWN: false
+          VALIDATE_ARM: false
+          VALIDATE_JSON: false
+          VALIDATE_YAML: false
+          VALIDATE_GITHUB_ACTIONS: false
+          if: ${{ github.event_name == 'pull_request' }}
+          DEFAULT_BRANCH: ${{ github.base_ref }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          FILTER_REGEX_EXCLUDE: '[global.module.tests.ps1|Get\-ModulesAsMarkdownTable.ps1]'
 
       - name: Link Checker
         if: always()
         id: checker
         uses: lycheeverse/lychee-action@v1.1.1
         with:
-          args: --verbose --no-progress **/*.md --exclude-file .lycheeignore --exclude SECURITY.md
+          args: --verbose --no-progress **/*.md --exclude-file .lycheeignore --exclude SECURITY.md --accept 200,201,403,429
         env:
           GITHUB_TOKEN: ${{secrets.GITHUB_TOKEN}}
 
