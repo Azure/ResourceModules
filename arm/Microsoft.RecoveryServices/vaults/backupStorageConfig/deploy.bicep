@@ -1,5 +1,4 @@
 @description('Required. Name of the Azure Recovery Service Vault')
-@minLength(1)
 param recoveryVaultName string
 
 @description('Optional. The name of the backup storage config')
