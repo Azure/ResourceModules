@@ -55,7 +55,7 @@ param notScopes array = []
 param location string = deployment().location
 
 module policyAssignment_mg '.bicep/nested_policyAssignments_mg.bicep' = if (!empty(managementGroupId) && empty(subscriptionId) && empty(resourceGroupName)) {
-  name: '${uniqueString(deployment().name, location)}-policyAssignment-mg-Module'
+  name: '${uniqueString(deployment().name, location)}-PolicyAssignment-MG-Module'
   scope: managementGroup(managementGroupId)
   params: {
     name: name
@@ -75,7 +75,7 @@ module policyAssignment_mg '.bicep/nested_policyAssignments_mg.bicep' = if (!emp
 }
 
 module policyAssignment_sub '.bicep/nested_policyAssignments_sub.bicep' = if (empty(managementGroupId) && !empty(subscriptionId) && empty(resourceGroupName)) {
-  name: '${uniqueString(deployment().name, location)}-policyAssignment-sub-Module'
+  name: '${uniqueString(deployment().name, location)}-PolicyAssignment-Sub-Module'
   scope: subscription(subscriptionId)
   params: {
     name: name
@@ -95,7 +95,7 @@ module policyAssignment_sub '.bicep/nested_policyAssignments_sub.bicep' = if (em
 }
 
 module policyAssignment_rg '.bicep/nested_policyAssignments_rg.bicep' = if (empty(managementGroupId) && !empty(resourceGroupName) && !empty(subscriptionId)) {
-  name: '${uniqueString(deployment().name, location)}-policyAssignment-rg-Module'
+  name: '${uniqueString(deployment().name, location)}-PolicyAssignment-RG-Module'
   scope: resourceGroup(subscriptionId, resourceGroupName)
   params: {
     name: name

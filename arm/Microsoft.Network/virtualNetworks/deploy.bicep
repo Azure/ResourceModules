@@ -129,7 +129,7 @@ resource virtualNetwork 'Microsoft.Network/virtualNetworks@2021-05-01' = {
 }
 
 module virtualNetworkPeerings_resource 'virtualNetworkPeerings/deploy.bicep' = [for (virtualNetworkPeering, index) in virtualNetworkPeerings: {
-  name: '${uniqueString(deployment().name, location)}-virtualNetworkPeering-${index}'
+  name: '${uniqueString(deployment().name, location)}-VNet-VNetPeering-${index}'
   params: {
     localVnetName: name
     remoteVirtualNetworkId: virtualNetworkPeering.remoteVirtualNetworkId
@@ -165,7 +165,7 @@ resource appServiceEnvironment_diagnosticSettings 'Microsoft.Insights/diagnostic
 }
 
 module virtualNetwork_rbac '.bicep/nested_rbac.bicep' = [for (roleAssignment, index) in roleAssignments: {
-  name: '${uniqueString(deployment().name, location)}-Vnet-Rbac-${index}'
+  name: '${uniqueString(deployment().name, location)}-VNet-Rbac-${index}'
   params: {
     principalIds: roleAssignment.principalIds
     roleDefinitionIdOrName: roleAssignment.roleDefinitionIdOrName
