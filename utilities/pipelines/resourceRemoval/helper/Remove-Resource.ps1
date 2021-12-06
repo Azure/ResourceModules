@@ -18,7 +18,7 @@ function Remove-ResourceInner {
     [CmdletBinding(SupportsShouldProcess)]
     param(
         [Parameter(Mandatory = $false)]
-        [PSObject[]] $resourceToRemove = @()
+        [Hashtable[]] $resourceToRemove = @()
     )
 
     $resourceToRemove | ForEach-Object { Write-Verbose ('- Remove [{0}]' -f $_.resourceId) -Verbose }
@@ -27,6 +27,8 @@ function Remove-ResourceInner {
     Write-Verbose '----------------------------------' -Verbose
 
     foreach ($resource in $resourceToRemove) {
+
+        $resource = Assert-PurgeProtectedResource -resourceToAssert $resource
 
         if (($processedResources | Where-Object { $resource.resourceId -match $_.resourceId }) -and -not (Get-AzResource -ResourceId $resource.resourceId -ErrorAction 'SilentlyContinue')) {
             # Skipping
@@ -50,12 +52,49 @@ function Remove-ResourceInner {
             }
         }
 
-
         # Process purge
-        Assert-PurgeProtection -resourceToRemove $resource
+        Remove-PurgeProtectedResource -resourceToRemove $resource
     }
     Write-Verbose '----------------------------------' -Verbose
     return $resourcesToRetry
+}
+
+<#
+.SYNOPSIS
+Fetch data that is needed to purge the given resource
+
+.DESCRIPTION
+Fetch data that is needed to purge the given resource
+
+.PARAMETER resourceToAssert
+Mandatory. The resource to fetch the data for
+@{
+    name        = '...'
+    resourceID = '...'
+    type        = '...'
+}
+
+.EXAMPLE
+Assert-PurgeProtectedResource -resourceToAssert  @{ name = 'myVault'; resourceId '(..)/Microsoft.KeyVault/vaults/myVault'; type = 'Microsoft.KeyVault/vaults'}
+
+Fetch required data of the given key vault (e.g. its location that is required for its purge command)
+#>
+function Assert-PurgeProtectedResource {
+
+    [CmdletBinding()]
+    param (
+        [Parameter(Mandatory)]
+        [hashtable] $resourceToAssert
+    )
+
+    switch ($resource.type) {
+        'Microsoft.KeyVault/vaults' {
+            $keyVault = Get-AzKeyVault -VaultName $resource.name -ResourceGroupName $resource.resourceId.Split('/')[4]
+            $resourceToAssert['location'] = $keyVault.Location
+        }
+    }
+
+    return $resourceToAssert
 }
 
 <#
@@ -69,30 +108,29 @@ Purge the given resource if possible and no protection is enabled
 Mandatory. The resource to purge. Should have format
 @{
     name        = '...'
-    resoourceID = '...'
+    resourceID = '...'
     type        = '...'
 }
 
 .EXAMPLE
-Assert-PurgeProtection -resourceToRemove @{ name = 'myVault'; resourceId '(..)/Microsoft.KeyVault/vaults/myVault'; type = 'Microsoft.KeyVault/vaults'}
+Remove-PurgeProtectedResource -resourceToRemove @{ name = 'myVault'; resourceId '(..)/Microsoft.KeyVault/vaults/myVault'; type = 'Microsoft.KeyVault/vaults'}
 
 Purge resource 'myVault' of type 'Microsoft.KeyVault/vaults' if no purge protection is enabled
 #>
-function Assert-PurgeProtection {
+function Remove-PurgeProtectedResource {
 
     [CmdletBinding(SupportsShouldProcess)]
     param (
         [Parameter(Mandatory)]
-        [hashtable] $resourceToRemove # location is null
+        [hashtable] $resourceToRemove
     )
 
     switch ($resource.type) {
         'Microsoft.KeyVault/vaults' {
-            $keyVault = Get-AzKeyVault -VaultName $resource.name -ResourceGroupName $resource.resourceId.Split('/')[4]
             if (-not $keyVault.EnablePurgeProtection) {
                 Write-Verbose ('Purging key vault [{0}]' -f $resource.name, $resource.type) -Verbose
                 if ($PSCmdlet.ShouldProcess(('Key Vault [{0}]' -f $resource.resourceId), 'Purge')) {
-                    $null = Remove-AzKeyVault -ResourceId $resource.resourceId -InRemovedState -Force -Location $keyVault.Location
+                    $null = Remove-AzKeyVault -ResourceId $resource.resourceId -InRemovedState -Force -Location $resource.Location
                 }
             }
         }
