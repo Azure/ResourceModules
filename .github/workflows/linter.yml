@@ -33,7 +33,7 @@ jobs:
         id: checker
         uses: lycheeverse/lychee-action@v1.1.1
         with:
-          args: --verbose --no-progress **/*.md --exclude-file .lycheeignore --accept 200,201,403,429
+          args: --verbose --no-progress docs/*.md --exclude-file .lycheeignore --accept 200,201,403,429
         env:
           GITHUB_TOKEN: ${{secrets.GITHUB_TOKEN}}
 
