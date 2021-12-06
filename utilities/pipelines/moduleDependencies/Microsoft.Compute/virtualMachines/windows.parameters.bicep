@@ -17,222 +17,223 @@ param serviceShort string = 'vmwinpar'
 // ========= //
 // Variables //
 // ========= //
-var managedIdentityParameters = {
-  name: 'adp-sxx-msi-${serviceShort}-01'
-}
-
-var storageAccountParameters = {
-  name: 'adpsxxazsa${serviceShort}01'
-  storageAccountKind: 'StorageV2'
-  storageAccountSku: 'Standard_LRS'
-  allowBlobPublicAccess: false
-  blobServices: {
-    containers: [
-      {
-        name: 'scripts'
-        publicAccess: 'None'
-      }
-    ]
-  }
-  roleAssignments: [
-    // Required to allow the MSI to upload files to fetch the storage account context to upload files to the container
-    {
-      roleDefinitionIdOrName: 'Owner'
-      principalIds: [
-        miRef.properties.principalId
-        //managedIdentity.outputs.msiPrincipalId
-      ]
-    }
-  ]
-}
-
-var storageAccountDeploymentScriptParameters = {
-  name: 'sxx-ds-sa-${serviceShort}-01'
-  userAssignedIdentities: {
-    '${managedIdentity.outputs.msiResourceId}': {}
-    //'${miRef.id}': {}
-  }
-  cleanupPreference: 'OnSuccess'
-  arguments: ' -StorageAccountName "${storageAccountParameters.name}" -ResourceGroupName "${resourceGroupName}" -ContainerName "scripts" -FileName "scriptExtensionMasterInstaller.ps1"'
-  scriptContent: '''
-      param(
-        [string] $StorageAccountName,
-        [string] $ResourceGroupName,
-        [string] $ContainerName,
-        [string] $FileName
-      )
-      Write-Verbose "Create file [$FileName]" -Verbose
-      $file = New-Item -Value "Write-Host 'I am content'" -Path $FileName -Force
-
-      Write-Verbose "Getting storage account [$StorageAccountName|$ResourceGroupName] context." -Verbose
-      $storageAccount = Get-AzStorageAccount -ResourceGroupName $ResourceGroupName -StorageAccountName $StorageAccountName -ErrorAction 'Stop'
-
-      Write-Verbose 'Uploading file [$fileName]' -Verbose
-      Set-AzStorageBlobContent -File $file.FullName -Container $ContainerName -Context $storageAccount.Context -Force -ErrorAction 'Stop' | Out-Null
-    '''
-}
-
-var logAnalyticsWorkspaceParameters = {
-  name: 'adp-sxx-law-${serviceShort}-01'
-}
-
-var eventHubParameters = {
-  name: 'adp-sxx-evhns-${serviceShort}-01'
-  eventHubs: [
-    {
-      name: 'adp-sxx-evh-${serviceShort}-01'
-      authorizationRules: [
-        {
-          name: 'RootManageSharedAccessKey'
-          rights: [
-            'Listen'
-            'Manage'
-            'Send'
-          ]
-        }
-      ]
-    }
-  ]
-}
-
-var networkSecurityGroupParameters = {
-  name: 'adp-sxx-nsg-${serviceShort}-01'
-}
-
-var virtualNetworkInputParameters = {
-  name: 'adp-sxx-vnet-${serviceShort}-01'
-  addressPrefixes: [
-    '10.0.0.0/16'
-  ]
-  subnets: [
-    {
-      name: 'sxx-subnet-x-01'
-      addressPrefix: '10.0.0.0/24'
-      networkSecurityGroupName: networkSecurityGroupParameters.name
-    }
-  ]
-}
-
-var keyVaultParameters = {
-  name: 'adp-sxx-kv-${serviceShort}-01'
-  enablePurgeProtection: false
-  accessPolicies: [
-    // Required so that the MSI can add secrets to the key vault
-    {
-      //objectId: miRef.properties.principalId
-      objectId: managedIdentity.outputs.msiPrincipalId
-      permissions: {
-        secrets: [
-          'All'
-        ]
-      }
-    }
-  ]
-}
-
-var keyVaultDeploymentScriptParameters = {
-  name: 'sxx-ds-kv-${serviceShort}-01'
-  userAssignedIdentities: {
-    '${managedIdentity.outputs.msiResourceId}': {}
-    //'${miRef.id}': {}
-  }
-  cleanupPreference: 'OnSuccess'
-  arguments: ' -keyVaultName "${keyVaultParameters.name}"'
-  scriptContent: '''
-      param(
-        [string] $keyVaultName
-      )
-
-      $usernameString = (-join ((65..90) + (97..122) | Get-Random -Count 9 -SetSeed 1 | % {[char]$_ + "$_"})).substring(0,19) # max length
-      $passwordString = (New-Guid).Guid.SubString(0,19)
-
-      $userName = ConvertTo-SecureString -String $usernameString -AsPlainText -Force
-      $password = ConvertTo-SecureString -String $passwordString -AsPlainText -Force
-
-      # VirtualMachines and VMSS
-      Set-AzKeyVaultSecret -VaultName $keyVaultName -Name 'adminUsername' -SecretValue $username
-      Set-AzKeyVaultSecret -VaultName $keyVaultName -Name 'adminPassword' -SecretValue $password
-    '''
-}
-
-var recoveryServicesVaultParameters = {
-  name: 'adp-sxx-rsv-${serviceShort}-01'
-  backupPolicies: [
-    {
-      name: 'VMpolicy'
-      type: 'Microsoft.RecoveryServices/vaults/backupPolicies'
-      properties: {
-        backupManagementType: 'AzureIaasVM'
-        instantRPDetails: {}
-        schedulePolicy: {
-          schedulePolicyType: 'SimpleSchedulePolicy'
-          scheduleRunFrequency: 'Daily'
-          scheduleRunTimes: [
-            '2019-11-07T07:00:00Z'
-          ]
-          scheduleWeeklyFrequency: 0
-        }
-        retentionPolicy: {
-          retentionPolicyType: 'LongTermRetentionPolicy'
-          dailySchedule: {
-            retentionTimes: [
-              '2019-11-07T07:00:00Z'
-            ]
-            retentionDuration: {
-              count: 180
-              durationType: 'Days'
-            }
-          }
-        }
-      }
-    }
-  ]
-}
-
-// =========== //
-// Deployments //
-// =========== //
-
-module resourceGroup '../../../../../arm/Microsoft.Resources/resourceGroups/deploy.bicep' = {
-  name: '${uniqueString(deployment().name, location)}-rg'
-  params: {
-    name: resourceGroupName
-    location: location
-  }
-}
-
-module managedIdentity '../../../../../arm/Microsoft.ManagedIdentity/userAssignedIdentities/deploy.bicep' = {
-  scope: az.resourceGroup(resourceGroupName)
-  name: '${uniqueString(deployment().name, location)}-mi'
-  params: {
-    name: managedIdentityParameters.name
-  }
-  dependsOn: [
-    resourceGroup
-  ]
-}
-
 resource miRef 'Microsoft.ManagedIdentity/userAssignedIdentities@2018-11-30' existing = {
   scope: az.resourceGroup(resourceGroupName)
   name: managedIdentityParameters.name
 }
 
-module storageAccount '../../../../../arm/Microsoft.Storage/storageAccounts/deploy.bicep' = {
-  scope: az.resourceGroup(resourceGroupName)
-  name: '${uniqueString(deployment().name, location)}-sa'
-  params: {
-    name: storageAccountParameters.name
-    storageAccountKind: storageAccountParameters.storageAccountKind
-    storageAccountSku: storageAccountParameters.storageAccountSku
-    allowBlobPublicAccess: storageAccountParameters.allowBlobPublicAccess
-    blobServices: storageAccountParameters.blobServices
-    roleAssignments: storageAccountParameters.roleAssignments
-  }
-  dependsOn: [
-    resourceGroup
-    managedIdentity
-  ]
+var managedIdentityParameters = {
+  name: 'adp-sxx-msi-${serviceShort}-01'
 }
+
+// var storageAccountParameters = {
+//   name: 'adpsxxazsa${serviceShort}01'
+//   storageAccountKind: 'StorageV2'
+//   storageAccountSku: 'Standard_LRS'
+//   allowBlobPublicAccess: false
+//   blobServices: {
+//     containers: [
+//       {
+//         name: 'scripts'
+//         publicAccess: 'None'
+//       }
+//     ]
+//   }
+//   roleAssignments: [
+//     // Required to allow the MSI to upload files to fetch the storage account context to upload files to the container
+//     {
+//       roleDefinitionIdOrName: 'Owner'
+//       principalIds: [
+//         reference(extensionResourceId(format('/subscriptions/{0}/resourceGroups/{1}', subscription().subscriptionId, resourceGroupName), 'Microsoft.ManagedIdentity/userAssignedIdentities', managedIdentityParameters.name), '2018-11-30').principalId
+//         miRef.properties.principalId
+//         //managedIdentity.outputs.msiPrincipalId
+//       ]
+//     }
+//   ]
+// }
+
+// var storageAccountDeploymentScriptParameters = {
+//   name: 'sxx-ds-sa-${serviceShort}-01'
+//   userAssignedIdentities: {
+//     '${managedIdentity.outputs.msiResourceId}': {}
+//     //'${miRef.id}': {}
+//   }
+//   cleanupPreference: 'OnSuccess'
+//   arguments: ' -StorageAccountName "${storageAccountParameters.name}" -ResourceGroupName "${resourceGroupName}" -ContainerName "scripts" -FileName "scriptExtensionMasterInstaller.ps1"'
+//   scriptContent: '''
+//       param(
+//         [string] $StorageAccountName,
+//         [string] $ResourceGroupName,
+//         [string] $ContainerName,
+//         [string] $FileName
+//       )
+//       Write-Verbose "Create file [$FileName]" -Verbose
+//       $file = New-Item -Value "Write-Host 'I am content'" -Path $FileName -Force
+
+//       Write-Verbose "Getting storage account [$StorageAccountName|$ResourceGroupName] context." -Verbose
+//       $storageAccount = Get-AzStorageAccount -ResourceGroupName $ResourceGroupName -StorageAccountName $StorageAccountName -ErrorAction 'Stop'
+
+//       Write-Verbose 'Uploading file [$fileName]' -Verbose
+//       Set-AzStorageBlobContent -File $file.FullName -Container $ContainerName -Context $storageAccount.Context -Force -ErrorAction 'Stop' | Out-Null
+//     '''
+// }
+
+// var logAnalyticsWorkspaceParameters = {
+//   name: 'adp-sxx-law-${serviceShort}-01'
+// }
+
+// var eventHubParameters = {
+//   name: 'adp-sxx-evhns-${serviceShort}-01'
+//   eventHubs: [
+//     {
+//       name: 'adp-sxx-evh-${serviceShort}-01'
+//       authorizationRules: [
+//         {
+//           name: 'RootManageSharedAccessKey'
+//           rights: [
+//             'Listen'
+//             'Manage'
+//             'Send'
+//           ]
+//         }
+//       ]
+//     }
+//   ]
+// }
+
+// var networkSecurityGroupParameters = {
+//   name: 'adp-sxx-nsg-${serviceShort}-01'
+// }
+
+// var virtualNetworkInputParameters = {
+//   name: 'adp-sxx-vnet-${serviceShort}-01'
+//   addressPrefixes: [
+//     '10.0.0.0/16'
+//   ]
+//   subnets: [
+//     {
+//       name: 'sxx-subnet-x-01'
+//       addressPrefix: '10.0.0.0/24'
+//       networkSecurityGroupName: networkSecurityGroupParameters.name
+//     }
+//   ]
+// }
+
+// var keyVaultParameters = {
+//   name: 'adp-sxx-kv-${serviceShort}-01'
+//   enablePurgeProtection: false
+//   accessPolicies: [
+//     // Required so that the MSI can add secrets to the key vault
+//     {
+//       //objectId: miRef.properties.principalId
+//       objectId: managedIdentity.outputs.msiPrincipalId
+//       permissions: {
+//         secrets: [
+//           'All'
+//         ]
+//       }
+//     }
+//   ]
+// }
+
+// var keyVaultDeploymentScriptParameters = {
+//   name: 'sxx-ds-kv-${serviceShort}-01'
+//   userAssignedIdentities: {
+//     '${managedIdentity.outputs.msiResourceId}': {}
+//     //'${miRef.id}': {}
+//   }
+//   cleanupPreference: 'OnSuccess'
+//   arguments: ' -keyVaultName "${keyVaultParameters.name}"'
+//   scriptContent: '''
+//       param(
+//         [string] $keyVaultName
+//       )
+
+//       $usernameString = (-join ((65..90) + (97..122) | Get-Random -Count 9 -SetSeed 1 | % {[char]$_ + "$_"})).substring(0,19) # max length
+//       $passwordString = (New-Guid).Guid.SubString(0,19)
+
+//       $userName = ConvertTo-SecureString -String $usernameString -AsPlainText -Force
+//       $password = ConvertTo-SecureString -String $passwordString -AsPlainText -Force
+
+//       # VirtualMachines and VMSS
+//       Set-AzKeyVaultSecret -VaultName $keyVaultName -Name 'adminUsername' -SecretValue $username
+//       Set-AzKeyVaultSecret -VaultName $keyVaultName -Name 'adminPassword' -SecretValue $password
+//     '''
+// }
+
+// var recoveryServicesVaultParameters = {
+//   name: 'adp-sxx-rsv-${serviceShort}-01'
+//   backupPolicies: [
+//     {
+//       name: 'VMpolicy'
+//       type: 'Microsoft.RecoveryServices/vaults/backupPolicies'
+//       properties: {
+//         backupManagementType: 'AzureIaasVM'
+//         instantRPDetails: {}
+//         schedulePolicy: {
+//           schedulePolicyType: 'SimpleSchedulePolicy'
+//           scheduleRunFrequency: 'Daily'
+//           scheduleRunTimes: [
+//             '2019-11-07T07:00:00Z'
+//           ]
+//           scheduleWeeklyFrequency: 0
+//         }
+//         retentionPolicy: {
+//           retentionPolicyType: 'LongTermRetentionPolicy'
+//           dailySchedule: {
+//             retentionTimes: [
+//               '2019-11-07T07:00:00Z'
+//             ]
+//             retentionDuration: {
+//               count: 180
+//               durationType: 'Days'
+//             }
+//           }
+//         }
+//       }
+//     }
+//   ]
+// }
+
+// =========== //
+// Deployments //
+// =========== //
+
+// module resourceGroup '../../../../../arm/Microsoft.Resources/resourceGroups/deploy.bicep' = {
+//   name: '${uniqueString(deployment().name, location)}-rg'
+//   params: {
+//     name: resourceGroupName
+//     location: location
+//   }
+// }
+
+// module managedIdentity '../../../../../arm/Microsoft.ManagedIdentity/userAssignedIdentities/deploy.bicep' = {
+//   scope: az.resourceGroup(resourceGroupName)
+//   name: '${uniqueString(deployment().name, location)}-mi'
+//   params: {
+//     name: managedIdentityParameters.name
+//   }
+//   dependsOn: [
+//     resourceGroup
+//   ]
+// }
+
+// module storageAccount '../../../../../arm/Microsoft.Storage/storageAccounts/deploy.bicep' = {
+//   scope: az.resourceGroup(resourceGroupName)
+//   name: '${uniqueString(deployment().name, location)}-sa'
+//   params: {
+//     name: storageAccountParameters.name
+//     storageAccountKind: storageAccountParameters.storageAccountKind
+//     storageAccountSku: storageAccountParameters.storageAccountSku
+//     allowBlobPublicAccess: storageAccountParameters.allowBlobPublicAccess
+//     blobServices: storageAccountParameters.blobServices
+//     roleAssignments: storageAccountParameters.roleAssignments
+//   }
+//   dependsOn: [
+//     resourceGroup
+//     managedIdentity
+//   ]
+// }
 
 // module storageAccountDeploymentScript '../../../../../arm/Microsoft.Resources/deploymentScripts/deploy.bicep' = {
 //   scope: az.resourceGroup(resourceGroupName)
@@ -341,8 +342,10 @@ module storageAccount '../../../../../arm/Microsoft.Storage/storageAccounts/depl
 //   ]
 // }
 
-@description('The name of the resource group')
-output resourceGroupName string = resourceGroup.outputs.resourceGroupName
+// @description('The name of the resource group')
+// output resourceGroupName string = resourceGroup.outputs.resourceGroupName
 
-@description('The resource ID of the resource group')
-output resourceGroupResourceId string = resourceGroup.outputs.resourceGroupResourceId
+// @description('The resource ID of the resource group')
+// output resourceGroupResourceId string = resourceGroup.outputs.resourceGroupResourceId
+
+output principalRef string = miRef.properties.principalId
