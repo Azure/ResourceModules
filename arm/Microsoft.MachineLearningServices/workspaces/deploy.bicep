@@ -152,7 +152,7 @@ resource workspace_lock 'Microsoft.Authorization/locks@2016-09-01' = if (lock !=
   scope: workspace
 }
 
-resource workspace_diagnosticSettings 'Microsoft.Insights/diagnosticsettings@2017-05-01-preview' = if ((!empty(diagnosticStorageAccountId)) || (!empty(workspaceId)) || (!empty(eventHubAuthorizationRuleId)) || (!empty(eventHubName))) {
+resource workspace_diagnosticSettings 'Microsoft.Insights/diagnosticsettings@2021-05-01-preview' = if ((!empty(diagnosticStorageAccountId)) || (!empty(workspaceId)) || (!empty(eventHubAuthorizationRuleId)) || (!empty(eventHubName))) {
   name: '${name}-diagnosticSettings'
   properties: {
     storageAccountId: (empty(diagnosticStorageAccountId) ? null : diagnosticStorageAccountId)
@@ -166,7 +166,7 @@ resource workspace_diagnosticSettings 'Microsoft.Insights/diagnosticsettings@201
 }
 
 module workspace_privateEndpoints '.bicep/nested_privateEndpoint.bicep' = [for (privateEndpoint, index) in privateEndpoints: {
-  name: '${uniqueString(deployment().name, location)}-Workspace-PrivateEndpoints-${index}'
+  name: '${uniqueString(deployment().name, location)}-MLWorkspace-PrivateEndpoints-${index}'
   params: {
     privateEndpointResourceId: workspace.id
     privateEndpointVnetLocation: (empty(privateEndpoints) ? 'dummy' : reference(split(privateEndpoint.subnetResourceId, '/subnets/')[0], '2020-06-01', 'Full').location)
@@ -176,7 +176,7 @@ module workspace_privateEndpoints '.bicep/nested_privateEndpoint.bicep' = [for (
 }]
 
 module workspace_rbac '.bicep/nested_rbac.bicep' = [for (roleAssignment, index) in roleAssignments: {
-  name: '${deployment().name}-rbac-${index}'
+  name: '${uniqueString(deployment().name, location)}-MLWorkspace-Rbac-${index}'
   params: {
     principalIds: roleAssignment.principalIds
     roleDefinitionIdOrName: roleAssignment.roleDefinitionIdOrName

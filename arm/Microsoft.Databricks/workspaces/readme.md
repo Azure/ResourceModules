@@ -7,7 +7,7 @@
 | `Microsoft.Authorization/locks` | 2016-09-01 |
 | `Microsoft.Authorization/roleAssignments` | 2020-04-01-preview |
 | `Microsoft.Databricks/workspaces` | 2018-04-01 |
-| `Microsoft.Insights/diagnosticSettings` | 2017-05-01-preview |
+| `Microsoft.Insights/diagnosticSettings` | 2021-05-01-preview |
 
 ## Parameters
 
@@ -103,15 +103,15 @@ Tag names and tag values can be provided as needed. A tag can be left without a 
 
 ## Outputs
 
-| Output Name | Type |
-| :-- | :-- |
-| `databrickName` | string |
-| `databrickResourceGroup` | string |
-| `databrickResourceId` | string |
+| Output Name | Type | Description |
+| :-- | :-- | :-- |
+| `databrickName` | string | The name of the deployed databricks workspace |
+| `databrickResourceGroup` | string | The resource group of the deployed databricks workspace |
+| `databrickResourceId` | string | The resource ID of the deployed databricks workspace |
 
 ## Template references
 
 - [Locks](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2016-09-01/locks)
 - [Roleassignments](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2020-04-01-preview/roleAssignments)
 - [Workspaces](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Databricks/2018-04-01/workspaces)
-- [Diagnosticsettings](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Insights/2017-05-01-preview/diagnosticSettings)
+- [Diagnosticsettings](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Insights/2021-05-01-preview/diagnosticSettings)

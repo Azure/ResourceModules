@@ -324,4 +324,5 @@ module roleAssignments_rg '../../../../arm/Microsoft.Authorization/roleAssignmen
   }
 }]
 
+@description('The scope of the role assignments')
 output roleAssignmentScope string = !empty(managementGroupId) ? roleAssignments_mg[0].outputs.roleAssignmentScope : (!empty(resourceGroupName) ? roleAssignments_rg[0].outputs.roleAssignmentScope : roleAssignments_sub[0].outputs.roleAssignmentScope)

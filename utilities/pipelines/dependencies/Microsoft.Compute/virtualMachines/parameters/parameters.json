@@ -16,6 +16,9 @@
                 "version": "latest"
             }
         },
+        "osType": {
+            "value": "Windows"
+        },
         "osDisk": {
             "value": {
                 "createOption": "fromImage",
@@ -49,8 +52,10 @@
                 }
             ]
         },
-        "enableNetworkWatcherWindows": {
-            "value": true
+        "extensionNetworkWatcherAgentConfig": {
+            "value": {
+                "enabled": true
+            }
         }
     }
 }

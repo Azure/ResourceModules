@@ -189,7 +189,7 @@ resource logicApp_lock 'Microsoft.Authorization/locks@2016-09-01' = if (lock != 
   scope: logicApp
 }
 
-resource logicApp_diagnosticSettings 'Microsoft.Insights/diagnosticsettings@2017-05-01-preview' = if (!empty(diagnosticStorageAccountId) || !empty(workspaceId) || !empty(eventHubAuthorizationRuleId) || !empty(eventHubName)) {
+resource logicApp_diagnosticSettings 'Microsoft.Insights/diagnosticsettings@2021-05-01-preview' = if (!empty(diagnosticStorageAccountId) || !empty(workspaceId) || !empty(eventHubAuthorizationRuleId) || !empty(eventHubName)) {
   name: '${logicApp.name}-diagnosticsetting'
   properties: {
     storageAccountId: (empty(diagnosticStorageAccountId) ? null : diagnosticStorageAccountId)
@@ -203,7 +203,7 @@ resource logicApp_diagnosticSettings 'Microsoft.Insights/diagnosticsettings@2017
 }
 
 module logicApp_rbac '.bicep/nested_rbac.bicep' = [for (roleAssignment, index) in roleAssignments: {
-  name: '${deployment().name}-rbac-${index}'
+  name: '${uniqueString(deployment().name, location)}-LogicApp-Rbac-${index}'
   params: {
     principalIds: roleAssignment.principalIds
     roleDefinitionIdOrName: roleAssignment.roleDefinitionIdOrName

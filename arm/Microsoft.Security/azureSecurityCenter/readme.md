@@ -128,9 +128,9 @@ This template enables Azure security center - Standard tier by default, could be
 
 ## Outputs
 
-| Output Name | Type |
-| :-- | :-- |
-| `workspaceId` | string |
+| Output Name | Type | Description |
+| :-- | :-- | :-- |
+| `workspaceId` | string | The resource IDs of the used log analytics workspace |
 
 ## Template references
 

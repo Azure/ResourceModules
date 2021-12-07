@@ -6,7 +6,7 @@ This module deploys a subscription wide export of the activity log.
 
 | Resource Type | API Version |
 | :-- | :-- |
-| `Microsoft.Insights/diagnosticSettings` | 2017-05-01-preview |
+| `Microsoft.Insights/diagnosticSettings` | 2021-05-01-preview |
 
 ## Parameters
 
@@ -30,4 +30,4 @@ This module deploys a subscription wide export of the activity log.
 
 ## Template references
 
-- [Diagnosticsettings](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Insights/2017-05-01-preview/diagnosticSettings)
+- [Diagnosticsettings](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Insights/2021-05-01-preview/diagnosticSettings)

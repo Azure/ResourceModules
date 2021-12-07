@@ -130,8 +130,8 @@ resource api 'Microsoft.ApiManagement/service/apis@2020-06-01-preview' = {
   }
 }
 
-module policy 'policies/deploy.bicep' = [for policy in policies: {
-  name: '${uniqueString(deployment().name, api.name)}-policy-${policy.name}'
+module policy 'policies/deploy.bicep' = [for (policy, index) in policies: {
+  name: '${deployment().name}-Policy-${index}'
   params: {
     apiManagementServiceName: apiManagementServiceName
     apiName: api.name
