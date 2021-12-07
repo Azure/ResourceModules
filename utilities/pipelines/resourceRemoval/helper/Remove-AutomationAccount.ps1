@@ -15,11 +15,11 @@ Optional. The maximum times to retry the search for resources via their removal 
 Optional. The time to wait in between the search for resources via their remove tags
 
 .EXAMPLE
-Remove-automationAccount -deploymentname 'aa-12345'
+Remove-AutomationAccount -deploymentname 'aa-12345'
 
 Remove Automation account, Log analytics link and Update solution deployed starting with the deployment name 'aa-12345'.
 #>
-function Remove-automationAccount {
+function Remove-AutomationAccount {
 
     [Cmdletbinding(SupportsShouldProcess)]
     param(

@@ -49,7 +49,7 @@
                 deploymentName    = $deploymentName
                 ResourceGroupName = $ResourceGroupName
             }
-            Remove-VirtualMachine @inputObject -Verbose
+            Remove-AutomationAccount @inputObject -Verbose
         }
         default {
             Write-Verbose 'Run default removal script' -Verbose
