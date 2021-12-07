@@ -2,10 +2,10 @@
 
 - [Home](./Home)
 - [Context](./Context)
-- [Getting Started](./GettingStarted)
+- [Getting Started](./GettingStarted.md)
 - [Modules](./Modules)
-  - [Design](./ModulesDesign)
-  - [Usage](./ModulesUsage)
+  - [Design](./ModulesDesign.md)
+  - [Usage](./ModulesUsage.md)
 - [Testing](./Testing)
   - [Design](./TestingDesign)
   - [Usage](./TestingUsage)

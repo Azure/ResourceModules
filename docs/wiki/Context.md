@@ -128,4 +128,4 @@ As such, _CARML_ covers the `bottom box` of the [deployment model](#what-is-the-
 
 <img src="media/completeFlowTransp.png" alt="Complete deployment flow filtered" height="500">
 
-As we want to enable any user of this repository's content to not only leverage its modules but actually also re-use the platform, the platform itself is set up so that you can plug it into your own environment with just a few basic steps described in the [Getting Started](./GettingStarted) section. You may choose to add or remove modules, define your own locations you want to publish to and as such create your own open- or inner-source library.
+As we want to enable any user of this repository's content to not only leverage its modules but actually also re-use the platform, the platform itself is set up so that you can plug it into your own environment with just a few basic steps described in the [Getting Started](./GettingStarted.md) section. You may choose to add or remove modules, define your own locations you want to publish to and as such create your own open- or inner-source library.

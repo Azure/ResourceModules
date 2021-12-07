@@ -8,23 +8,23 @@ If you're unfamiliar with Infrastructure as Code, or wonder how you can use the 
 
 ### _Navigation_
 
-- [Context](./Context)
+- [Context](./Context.md)
   - [Infrastructure as Code](./Context#infrastructure-as-code-iac)
-  - [Where does this platform fit in?](./Context#where-does-this-platform-fit-in)
-- [Getting Started](./GettingStarted)
-  - [General prerequisites](./GettingStarted#General-prerequisites)
-  - [Where to start](./GettingStarted#Where-to-start)
-- [Modules](./Modules)
-  - [Design](./ModulesDesign)
-  - [Usage](./ModulesUsage)
-- [Testing](./Testing)
-  - [Design](./TestingDesign)
-  - [Usage](./TestingUsage)
+  - [Where does this platform fit in?](./Context#where-does-this-platform-fit-in.md)
+- [Getting Started](./GettingStarted.md.md)
+  - [General prerequisites](./GettingStarted.md#General-prerequisites.md)
+  - [Where to start](./GettingStarted.md#Where-to-start.md)
+- [Modules](./Modules.md)
+  - [Design](./ModulesDesign.md)
+  - [Usage](./ModulesUsage.md)
+- [Testing](./Testing.md)
+  - [Design](./TestingDesign.md)
+  - [Usage](./TestingUsage.md)
 - [Pipelines](./Pipelines)
-  - [Design](./PipelinesDesign)
-  - [Usage](./PipelinesUsage)
-- [Contribution Guide](./ContributionGuide)
-- [Known Issues](./KnownIssues)
+  - [Design](./PipelinesDesign.md)
+  - [Usage](./PipelinesUsage.md)
+- [Contribution Guide](./ContributionGuide.md)
+- [Known Issues](./KnownIssues.md)
 
 # Scope
 

@@ -30,7 +30,7 @@ There are (2) Token types that can be applied on a Parameter File:
 
 #### 1. Default Tokens (Environment Variables) [Default]
 
-These are tokens constructed from Environment Variables, which are defined in the Workflow (Pipeline). Review [Getting Started - GitHub specific prerequisites](./GettingStarted) for more information on these Environment Variables.
+These are tokens constructed from Environment Variables, which are defined in the Workflow (Pipeline). Review [Getting Started - GitHub specific prerequisites](./GettingStarted.md) for more information on these Environment Variables.
 
 #### 2. Local Custom Tokens (Source Control) [Optional]
 
