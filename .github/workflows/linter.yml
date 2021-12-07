@@ -42,6 +42,7 @@ jobs:
         run: exit ${{ steps.checker.outputs.exit_code }}
 
       - name: 'Checkout2'
+        if: always()
         uses: actions/checkout@v2
 
       - name: Link Checker 2
