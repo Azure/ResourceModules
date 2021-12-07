@@ -354,7 +354,7 @@ module managedCluster_agentPools 'agentPools/deploy.bicep' = [for (agentPool, in
     containerLogMaxSizeMB: contains(agentPool, 'containerLogMaxSizeMB') ? agentPool.containerLogMaxSizeMB: -1
     cpuCfsQuota: contains(agentPool, 'cpuCfsQuota') ? agentPool.cpuCfsQuota: true
     cpuCfsQuotaPeriod: contains(agentPool, 'cpuCfsQuotaPeriod') ? agentPool.cpuCfsQuotaPeriod: ''
-    cpuManagerPolicy: contains(agentPool, 'cpuManagerPolicy') ? agentPool.cpuManagerPolicy: ''
+    cpuManagerPolicy: contains(agentPool, 'cpuManagerPolicy') ? agentPool.cpuManagerPolicy: 'none'
     failSwapOn: contains(agentPool, 'failSwapOn') ? agentPool.failSwapOn: false
     imageGcHighThreshold: contains(agentPool, 'imageGcHighThreshold') ? agentPool.imageGcHighThreshold: -1
     imageGcLowThreshold: contains(agentPool, 'imageGcLowThreshold') ? agentPool.imageGcLowThreshold: -1
