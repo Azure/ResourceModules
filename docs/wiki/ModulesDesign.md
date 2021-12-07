@@ -144,7 +144,7 @@ Microsoft.Sql
 
 In this folder we recommend to place the child-resource-template alongside a ReadMe (that can be generated via the `.github\workflows\scripts\Set-ModuleReadMe.ps1` script) and optionally further nest additional folders for it's child-resources.
 
-The parent template should reference all it's direct child-templates to allow for an end to end deployment experience while allowing any user to also reference 'just' the child-resource itself. In the case of the SQL-server example the server template would reference the database module and encapsulate it it in a loop to allow for the deployment of n-amount of databases. For example
+The parent template should reference all it's direct child-templates to allow for an end-to-end deployment experience while allowing any user to also reference 'just' the child-resource itself. In the case of the SQL-server example the server template would reference the database module and encapsulate it it in a loop to allow for the deployment of n-amount of databases. For example
 
 ```Bicep
 @description('Optional. The databases to create in the server')
@@ -476,7 +476,7 @@ Within a bicep file, follow the following conventions:
       ```
 - Bicep `modules`:
   - camel_Snake_Case, i.e `resourceGroup_rbac` ?
-  - File name for nested module is structured as follows: `nested_<resourceName>.bicep` i.e:
+  - Filename for nested module is structured as follows: `nested_<resourceName>.bicep` i.e:
     - `nested_rbac.bicep`
 
 
@@ -493,7 +493,7 @@ Within a bicep file, follow the following conventions:
 
 # ReadMe
 
-Each module must come with a ReadMe markdown file that outlines what the module contains and 'how' it can be used.
+Each module must come with a ReadMe Markdown file that outlines what the module contains and 'how' it can be used.
 It primary components are
 - A title with a reference to the primary resource (for example <code>KeyVault `[Microsoft.KeyVault/vaults]`</code>)
 - A description

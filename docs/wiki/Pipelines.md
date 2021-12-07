@@ -8,7 +8,7 @@ This section and its sub-sections give you an overview of the principals the pip
 
 ### _Navigation_
 
-- [Pipelines Design](./PipelinesDesign)
-- [Pipelines Usage](./PipelinesUsage)
+- [Pipelines Design](./PipelinesDesign.md)
+- [Pipelines Usage](./PipelinesUsage.md)
 
 ---
