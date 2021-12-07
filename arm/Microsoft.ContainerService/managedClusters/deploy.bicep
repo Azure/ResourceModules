@@ -390,8 +390,8 @@ module managedCluster_agentPools 'agentPools/deploy.bicep' = [for (agentPool, in
     vmMaxMapCount: contains(agentPool, 'vmMaxMapCount') ? agentPool.vmMaxMapCount : -1
     vmSwappiness: contains(agentPool, 'vmSwappiness') ? agentPool.vmSwappiness : -1
     vmVfsCachePressure: contains(agentPool, 'vmVfsCachePressure') ? agentPool.vmVfsCachePressure : -1
-    transparentHugePageDefrag: contains(agentPool, 'transparentHugePageDefrag') ? agentPool.transparentHugePageDefrag: ''
-    transparentHugePageEnabled: contains(agentPool, 'transparentHugePageEnabled') ? agentPool.transparentHugePageEnabled: ''
+    transparentHugePageDefrag: contains(agentPool, 'transparentHugePageDefrag') ? agentPool.transparentHugePageDefrag: 'madvise'
+    transparentHugePageEnabled: contains(agentPool, 'transparentHugePageEnabled') ? agentPool.transparentHugePageEnabled: 'always'
     maxCount: contains(agentPool, 'maxCount') ? agentPool.maxCount: -1
     maxPods: contains(agentPool, 'maxPods') ? agentPool.maxPods: -1
     minCount: contains(agentPool, 'minCount') ? agentPool.minCount: -1
