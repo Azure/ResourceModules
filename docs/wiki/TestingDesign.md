@@ -39,7 +39,7 @@ Tests falls into four categories:
 
 # Static code validation
 
-All Module Unit tests are performed with the help of [Pester](https://github.com/pester/Pester) and are required to have consistent, clean and syntactically correct tests to ensure that our modules are configured correctly, documentation is up to date, and modules don't turn stale.
+All Module Unit tests are performed with the help of [Pester](https://github.com/pester/Pesterx) and are required to have consistent, clean and syntactically correct tests to ensure that our modules are configured correctly, documentation is up to date, and modules don't turn stale.
 
 The following activities are run executing the `arm/.global/global.module.tests.ps1` script.
 
