@@ -41,7 +41,7 @@ resource privateLinkScope 'Microsoft.Insights/privateLinkScopes@2019-10-17-previ
 }
 
 module privateLinkScope_scopedResource 'scopedResources/deploy.bicep' = [for (scopedResource, index) in scopedResources: {
-  name: '${uniqueString(deployment().name, location)}-Insights-ScpdRes-${index}'
+  name: '${uniqueString(deployment().name, location)}-PvtLinkScope-ScopedRes-${index}'
   params: {
     name: scopedResource.name
     privateLinkScopeName: privateLinkScope.name
@@ -59,7 +59,7 @@ resource privateLinkScope_lock 'Microsoft.Authorization/locks@2016-09-01' = if (
 }
 
 module privateLinkScope_privateEndpoints '.bicep/nested_privateEndpoint.bicep' = [for (endpoint, index) in privateEndpoints: {
-  name: '${uniqueString(deployment().name, location)}-Insights-PvtEndPnt-${index}'
+  name: '${uniqueString(deployment().name, location)}-PvtLinkScope-PrivateEndpoint-${index}'
   params: {
     privateEndpointResourceId: privateLinkScope.id
     privateEndpointVnetLocation: reference(split(endpoint.subnetResourceId, '/subnets/')[0], '2020-06-01', 'Full').location
@@ -69,7 +69,7 @@ module privateLinkScope_privateEndpoints '.bicep/nested_privateEndpoint.bicep' =
 }]
 
 module privateLinkScope_rbac '.bicep/nested_rbac.bicep' = [for (roleAssignment, index) in roleAssignments: {
-  name: '${deployment().name}-rbac-${index}'
+  name: '${uniqueString(deployment().name, location)}-PvtLinkScope-Rbac-${index}'
   params: {
     principalIds: roleAssignment.principalIds
     roleDefinitionIdOrName: roleAssignment.roleDefinitionIdOrName

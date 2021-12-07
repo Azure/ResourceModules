@@ -168,7 +168,7 @@ resource registry_lock 'Microsoft.Authorization/locks@2016-09-01' = if (lock != 
   scope: registry
 }
 
-resource registry_diagnosticSettingName 'Microsoft.Insights/diagnosticsettings@2017-05-01-preview' = if ((!empty(diagnosticStorageAccountId)) || (!empty(workspaceId)) || (!empty(eventHubAuthorizationRuleId)) || (!empty(eventHubName))) {
+resource registry_diagnosticSettingName 'Microsoft.Insights/diagnosticsettings@2021-05-01-preview' = if ((!empty(diagnosticStorageAccountId)) || (!empty(workspaceId)) || (!empty(eventHubAuthorizationRuleId)) || (!empty(eventHubName))) {
   name: '${registry.name}-diagnosticSettings'
   properties: {
     storageAccountId: (empty(diagnosticStorageAccountId) ? null : diagnosticStorageAccountId)
@@ -182,7 +182,7 @@ resource registry_diagnosticSettingName 'Microsoft.Insights/diagnosticsettings@2
 }
 
 module registry_rbac '.bicep/nested_rbac.bicep' = [for (roleAssignment, index) in roleAssignments: {
-  name: '${deployment().name}-rbac-${index}'
+  name: '${uniqueString(deployment().name, location)}-ContainerRegistry-Rbac-${index}'
   params: {
     principalIds: roleAssignment.principalIds
     roleDefinitionIdOrName: roleAssignment.roleDefinitionIdOrName
@@ -190,8 +190,8 @@ module registry_rbac '.bicep/nested_rbac.bicep' = [for (roleAssignment, index) i
   }
 }]
 
-module registry_privateEndpoints '.bicep/nested_privateEndpoints.bicep' = [for privateEndpoint in privateEndpoints: {
-  name: '${uniqueString(deployment().name, privateEndpoint.name)}-privateEndpoint'
+module registry_privateEndpoints '.bicep/nested_privateEndpoints.bicep' = [for (privateEndpoint, index) in privateEndpoints: {
+  name: '${uniqueString(deployment().name, location)}-ContainerRegistry-PrivateEndpoint-${index}'
   params: {
     privateEndpointResourceId: registry.id
     privateEndpointVnetLocation: empty(privateEndpoints) ? 'dummy' : reference(split(privateEndpoint.subnetResourceId, '/subnets/')[0], '2020-06-01', 'Full').location

@@ -201,7 +201,7 @@ resource eventHubNamespace_lock 'Microsoft.Authorization/locks@2016-09-01' = if 
   scope: eventHubNamespace
 }
 
-resource eventHubNamespace_diagnosticSettings 'Microsoft.Insights/diagnosticsettings@2017-05-01-preview' = if ((!empty(diagnosticStorageAccountId)) || (!empty(workspaceId))) {
+resource eventHubNamespace_diagnosticSettings 'Microsoft.Insights/diagnosticsettings@2021-05-01-preview' = if ((!empty(diagnosticStorageAccountId)) || (!empty(workspaceId))) {
   name: '${eventHubNamespace.name}-diagnosticSettings'
   properties: {
     storageAccountId: (empty(diagnosticStorageAccountId) ? null : diagnosticStorageAccountId)
@@ -215,7 +215,7 @@ resource eventHubNamespace_diagnosticSettings 'Microsoft.Insights/diagnosticsett
 }
 
 module eventHubNamespace_eventHubs 'eventhubs/deploy.bicep' = [for (eventHub, index) in eventHubs: {
-  name: '${uniqueString(deployment().name, location)}-eventHub-${index}'
+  name: '${uniqueString(deployment().name, location)}-EvhbNamespace-EventHub-${index}'
   params: {
     namespaceName: eventHubNamespace.name
     name: eventHub.name
@@ -250,7 +250,7 @@ module eventHubNamespace_eventHubs 'eventhubs/deploy.bicep' = [for (eventHub, in
 }]
 
 module eventHubNamespace_diasterRecoveryConfig 'disasterRecoveryConfigs/deploy.bicep' = if (!empty(disasterRecoveryConfig)) {
-  name: '${uniqueString(deployment().name, location)}-disasterRecoveryConfig'
+  name: '${uniqueString(deployment().name, location)}-EvhbNamespace-DisRecConfig'
   params: {
     namespaceName: eventHubNamespace.name
     name: disasterRecoveryConfig.name
@@ -259,7 +259,7 @@ module eventHubNamespace_diasterRecoveryConfig 'disasterRecoveryConfigs/deploy.b
 }
 
 module eventHubNamespace_authorizationRules 'authorizationRules/deploy.bicep' = [for (authorizationRule, index) in authorizationRules: {
-  name: '${uniqueString(deployment().name, location)}-authorizationRules-${index}'
+  name: '${uniqueString(deployment().name, location)}-EvhbNamespace-AuthRule-${index}'
   params: {
     namespaceName: eventHubNamespace.name
     name: authorizationRule.name
@@ -268,7 +268,7 @@ module eventHubNamespace_authorizationRules 'authorizationRules/deploy.bicep' = 
 }]
 
 module eventHubNamespace_privateEndpoints '.bicep/nested_privateEndpoint.bicep' = [for (endpoint, index) in privateEndpoints: {
-  name: '${uniqueString(deployment().name, location)}-PrivateEndpoints-${index}'
+  name: '${uniqueString(deployment().name, location)}-EvhbNamespace-PrivateEndpoint-${index}'
   params: {
     privateEndpointResourceId: eventHubNamespace.id
     privateEndpointVnetLocation: (empty(privateEndpoints) ? 'dummy' : reference(split(endpoint.subnetResourceId, '/subnets/')[0], '2020-06-01', 'Full').location)
@@ -278,7 +278,7 @@ module eventHubNamespace_privateEndpoints '.bicep/nested_privateEndpoint.bicep' 
 }]
 
 module eventHubNamespace_rbac '.bicep/nested_rbac.bicep' = [for (roleAssignment, index) in roleAssignments: {
-  name: '${deployment().name}-rbac-${index}'
+  name: '${uniqueString(deployment().name, location)}-EvhbNamespace-Rbac-${index}'
   params: {
     principalIds: roleAssignment.principalIds
     roleDefinitionIdOrName: roleAssignment.roleDefinitionIdOrName

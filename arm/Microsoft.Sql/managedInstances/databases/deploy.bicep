@@ -141,7 +141,7 @@ resource database_lock 'Microsoft.Authorization/locks@2016-09-01' = if (lock != 
   scope: database
 }
 
-resource database_diagnosticSettings 'Microsoft.Insights/diagnosticsettings@2017-05-01-preview' = if ((!empty(diagnosticStorageAccountId)) || (!empty(workspaceId)) || (!empty(eventHubAuthorizationRuleId)) || (!empty(eventHubName))) {
+resource database_diagnosticSettings 'Microsoft.Insights/diagnosticsettings@2021-05-01-preview' = if ((!empty(diagnosticStorageAccountId)) || (!empty(workspaceId)) || (!empty(eventHubAuthorizationRuleId)) || (!empty(eventHubName))) {
   name: '${last(split(database.name, '/'))}-diagnosticSettings'
   properties: {
     storageAccountId: empty(diagnosticStorageAccountId) ? null : diagnosticStorageAccountId
@@ -154,7 +154,7 @@ resource database_diagnosticSettings 'Microsoft.Insights/diagnosticsettings@2017
 }
 
 module database_backupShortTermRetentionPolicy 'backupShortTermRetentionPolicies/deploy.bicep' = if (!empty(backupShortTermRetentionPoliciesObj)) {
-  name: '${deployment().name}-backupShortTRetenPol'
+  name: '${deployment().name}-BackupShortTRetPol'
   params: {
     managedInstanceName: managedInstanceName
     databaseName: last(split(database.name, '/'))
@@ -164,7 +164,7 @@ module database_backupShortTermRetentionPolicy 'backupShortTermRetentionPolicies
 }
 
 module database_backupLongTermRetentionPolicy 'backupLongTermRetentionPolicies/deploy.bicep' = if (!empty(backupLongTermRetentionPoliciesObj)) {
-  name: '${deployment().name}-backupLongTRetenPol'
+  name: '${deployment().name}-BackupLongTRetPol'
   params: {
     managedInstanceName: managedInstanceName
     databaseName: last(split(database.name, '/'))

@@ -303,7 +303,7 @@ module pid_cuaId '.bicep/nested_cuaId.bicep' = if (!empty(cuaId)) {
 }
 
 module virtualMachine_nic '.bicep/nested_networkInterface.bicep' = [for (nicConfiguration, index) in nicConfigurations: {
-  name: '${uniqueString(deployment().name, location)}-vm-nic-${index}'
+  name: '${uniqueString(deployment().name, location)}-VM-Nic-${index}'
   params: {
     networkInterfaceName: '${name}${nicConfiguration.nicSuffix}'
     virtualMachineName: name
@@ -403,7 +403,7 @@ resource virtualMachine 'Microsoft.Compute/virtualMachines@2021-07-01' = {
 }
 
 module vm_domainJoinExtension 'extensions/deploy.bicep' = if (extensionDomainJoinConfig.enabled) {
-  name: '${uniqueString(deployment().name, location)}-vm-DomainJoin'
+  name: '${uniqueString(deployment().name, location)}-VM-DomainJoin'
   params: {
     virtualMachineName: virtualMachine.name
     name: 'DomainJoin'
@@ -420,7 +420,7 @@ module vm_domainJoinExtension 'extensions/deploy.bicep' = if (extensionDomainJoi
 }
 
 module vm_microsoftAntiMalwareExtension 'extensions/deploy.bicep' = if (extensionAntiMalwareConfig.enabled) {
-  name: '${uniqueString(deployment().name, location)}-vm-MicrosoftAntiMalware'
+  name: '${uniqueString(deployment().name, location)}-VM-MicrosoftAntiMalware'
   params: {
     virtualMachineName: virtualMachine.name
     name: 'MicrosoftAntiMalware'
@@ -439,7 +439,7 @@ resource vm_logAnalyticsWorkspace 'Microsoft.OperationalInsights/workspaces@2021
 }
 
 module vm_microsoftMonitoringAgentExtension 'extensions/deploy.bicep' = if (extensionMonitoringAgentConfig.enabled) {
-  name: '${uniqueString(deployment().name, location)}-vm-MicrosoftMonitoringAgent'
+  name: '${uniqueString(deployment().name, location)}-VM-MicrosoftMonitoringAgent'
   params: {
     virtualMachineName: virtualMachine.name
     name: 'MicrosoftMonitoringAgent'
@@ -458,7 +458,7 @@ module vm_microsoftMonitoringAgentExtension 'extensions/deploy.bicep' = if (exte
 }
 
 module vm_dependencyAgentExtension 'extensions/deploy.bicep' = if (extensionDependencyAgentConfig.enabled) {
-  name: '${uniqueString(deployment().name, location)}-vm-DependencyAgent'
+  name: '${uniqueString(deployment().name, location)}-VM-DependencyAgent'
   params: {
     virtualMachineName: virtualMachine.name
     name: 'DependencyAgent'
@@ -471,7 +471,7 @@ module vm_dependencyAgentExtension 'extensions/deploy.bicep' = if (extensionDepe
 }
 
 module vm_networkWatcherAgentExtension 'extensions/deploy.bicep' = if (extensionNetworkWatcherAgentConfig.enabled) {
-  name: '${uniqueString(deployment().name, location)}-vm-NetworkWatcherAgent'
+  name: '${uniqueString(deployment().name, location)}-VM-NetworkWatcherAgent'
   params: {
     virtualMachineName: virtualMachine.name
     name: 'NetworkWatcherAgent'
@@ -484,7 +484,7 @@ module vm_networkWatcherAgentExtension 'extensions/deploy.bicep' = if (extension
 }
 
 module vm_desiredStateConfigurationExtension 'extensions/deploy.bicep' = if (extensionDSCConfig.enabled) {
-  name: '${uniqueString(deployment().name, location)}-vm-DesiredStateConfiguration'
+  name: '${uniqueString(deployment().name, location)}-VM-DesiredStateConfiguration'
   params: {
     virtualMachineName: virtualMachine.name
     name: 'DesiredStateConfiguration'
@@ -499,7 +499,7 @@ module vm_desiredStateConfigurationExtension 'extensions/deploy.bicep' = if (ext
 }
 
 module vm_customScriptExtension 'extensions/deploy.bicep' = if (extensionCustomScriptConfig.enabled) {
-  name: '${uniqueString(deployment().name, location)}-vm-CustomScriptExtension'
+  name: '${uniqueString(deployment().name, location)}-VM-CustomScriptExtension'
   params: {
     virtualMachineName: virtualMachine.name
     name: 'CustomScriptExtension'
@@ -519,7 +519,7 @@ module vm_customScriptExtension 'extensions/deploy.bicep' = if (extensionCustomS
 }
 
 module vm_diskEncryptionExtension 'extensions/deploy.bicep' = if (extensionDiskEncryptionConfig.enabled) {
-  name: '${uniqueString(deployment().name, location)}-vm-DiskEncryption'
+  name: '${uniqueString(deployment().name, location)}-VM-DiskEncryption'
   params: {
     virtualMachineName: virtualMachine.name
     name: 'DiskEncryption'
@@ -538,7 +538,7 @@ module vm_diskEncryptionExtension 'extensions/deploy.bicep' = if (extensionDiskE
 }
 
 module virtualMachine_backup '.bicep/nested_backup.bicep' = if (!empty(backupVaultName)) {
-  name: '${uniqueString(deployment().name, location)}-vm-backup'
+  name: '${uniqueString(deployment().name, location)}-VM-Backup'
   params: {
     backupResourceName: '${backupVaultName}/Azure/iaasvmcontainer;iaasvmcontainerv2;${resourceGroup().name};${virtualMachine.name}/vm;iaasvmcontainerv2;${resourceGroup().name};${virtualMachine.name}'
     protectedItemType: 'Microsoft.Compute/virtualMachines'
@@ -568,7 +568,7 @@ resource virtualMachine_lock 'Microsoft.Authorization/locks@2017-04-01' = if (lo
 }
 
 module virtualMachine_rbac '.bicep/nested_rbac.bicep' = [for (roleAssignment, index) in roleAssignments: {
-  name: '${uniqueString(deployment().name, location)}-vm-rbac-${index}'
+  name: '${uniqueString(deployment().name, location)}-VM-Rbac-${index}'
   params: {
     principalIds: roleAssignment.principalIds
     roleDefinitionIdOrName: roleAssignment.roleDefinitionIdOrName

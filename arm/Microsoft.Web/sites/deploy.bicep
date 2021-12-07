@@ -159,7 +159,7 @@ resource appServicePlanExisting 'Microsoft.Web/serverfarms@2021-02-01' existing 
 }
 
 module appServicePlan '.bicep/nested_serverfarms.bicep' = if (empty(appServicePlanId)) {
-  name: '${deployment().name}-AppServicePlan'
+  name: '${uniqueString(deployment().name, location)}-Site-AppServicePlan'
   params: {
     name: contains(appServicePlanObject, 'name') ? !empty(appServicePlanObject.name) ? appServicePlanObject.name : '${name}-asp' : '${name}-asp'
     location: location
@@ -178,7 +178,7 @@ module appServicePlan '.bicep/nested_serverfarms.bicep' = if (empty(appServicePl
 }
 
 module appInsight '.bicep/nested_components.bicep' = if (!empty(appInsightObject)) {
-  name: '${deployment().name}-AppInsight'
+  name: '${uniqueString(deployment().name, location)}-Site-AppInsight'
   params: {
     name: contains(appInsightObject, 'name') ? !empty(appInsightObject.name) ? appInsightObject.name : '${name}-appi' : '${name}-appi'
     workspaceResourceId: appInsightObject.workspaceResourceId
@@ -205,7 +205,7 @@ resource app 'Microsoft.Web/sites@2020-12-01' = {
 }
 
 module app_appsettings 'config/deploy.bicep' = {
-  name: '${deployment().name}-config'
+  name: '${uniqueString(deployment().name, location)}-Site-Config'
   params: {
     name: 'appsettings'
     appName: app.name
@@ -225,7 +225,7 @@ resource app_lock 'Microsoft.Authorization/locks@2016-09-01' = if (lock != 'NotS
   scope: app
 }
 
-resource app_diagnosticSettings 'Microsoft.Insights/diagnosticSettings@2017-05-01-preview' = if (!empty(diagnosticStorageAccountId) || !empty(workspaceId) || !empty(eventHubAuthorizationRuleId) || !empty(eventHubName)) {
+resource app_diagnosticSettings 'Microsoft.Insights/diagnosticSettings@2021-05-01-preview' = if (!empty(diagnosticStorageAccountId) || !empty(workspaceId) || !empty(eventHubAuthorizationRuleId) || !empty(eventHubName)) {
   name: '${app.name}-diagnosticSettings'
   properties: {
     storageAccountId: empty(diagnosticStorageAccountId) ? null : diagnosticStorageAccountId
@@ -239,7 +239,7 @@ resource app_diagnosticSettings 'Microsoft.Insights/diagnosticSettings@2017-05-0
 }
 
 module app_rbac '.bicep/nested_rbac.bicep' = [for (roleAssignment, index) in roleAssignments: {
-  name: '${uniqueString(deployment().name, location)}-Rbac-${index}'
+  name: '${uniqueString(deployment().name, location)}-Site-Rbac-${index}'
   params: {
     principalIds: roleAssignment.principalIds
     roleDefinitionIdOrName: roleAssignment.roleDefinitionIdOrName
@@ -248,7 +248,7 @@ module app_rbac '.bicep/nested_rbac.bicep' = [for (roleAssignment, index) in rol
 }]
 
 module app_privateEndpoint '.bicep/nested_privateEndpoint.bicep' = [for (privateEndpoint, index) in privateEndpoints: {
-  name: '${uniqueString(deployment().name, location)}-AppService-PrivateEndpoints-${index}'
+  name: '${uniqueString(deployment().name, location)}-Site-PrivateEndpoints-${index}'
   params: {
     privateEndpointResourceId: app.id
     privateEndpointVnetLocation: reference(split(privateEndpoint.subnetResourceId, '/subnets/')[0], '2020-06-01', 'Full').location

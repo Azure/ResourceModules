@@ -198,7 +198,7 @@ module automationAccount_jobSchedules 'jobSchedules/deploy.bicep' = [for (jobSch
 }]
 
 module automationAccount_variables 'variables/deploy.bicep' = [for (variable, index) in variables: {
-  name: '${uniqueString(deployment().name, location)}-AutoAccount-variable-${index}'
+  name: '${uniqueString(deployment().name, location)}-AutoAccount-Variable-${index}'
   params: {
     automationAccountName: automationAccount.name
     name: variable.name
@@ -296,7 +296,7 @@ resource automationAccount_lock 'Microsoft.Authorization/locks@2016-09-01' = if 
   scope: automationAccount
 }
 
-resource automationAccount_diagnosticSettings 'Microsoft.Insights/diagnosticSettings@2017-05-01-preview' = if ((!empty(diagnosticStorageAccountId)) || (!empty(workspaceId)) || (!empty(eventHubAuthorizationRuleId)) || (!empty(eventHubName))) {
+resource automationAccount_diagnosticSettings 'Microsoft.Insights/diagnosticSettings@2021-05-01-preview' = if ((!empty(diagnosticStorageAccountId)) || (!empty(workspaceId)) || (!empty(eventHubAuthorizationRuleId)) || (!empty(eventHubName))) {
   name: '${automationAccount.name}-AutoAccount-diagnosticSettings'
   properties: {
     storageAccountId: (empty(diagnosticStorageAccountId) ? null : diagnosticStorageAccountId)
@@ -310,7 +310,7 @@ resource automationAccount_diagnosticSettings 'Microsoft.Insights/diagnosticSett
 }
 
 module automationAccount_privateEndpoints '.bicep/nested_privateEndpoint.bicep' = [for (endpoint, index) in privateEndpoints: if (!empty(privateEndpoints)) {
-  name: '${uniqueString(deployment().name, location)}-AutoAccount-PrivateEndpoints-${index}'
+  name: '${uniqueString(deployment().name, location)}-AutoAccount-PrivateEndpoint-${index}'
   params: {
     privateEndpointResourceId: automationAccount.id
     privateEndpointVnetLocation: (empty(privateEndpoints) ? 'dummy' : reference(split(endpoint.subnetResourceId, '/subnets/')[0], '2020-06-01', 'Full').location)

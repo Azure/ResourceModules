@@ -27,6 +27,9 @@ param value string
 @description('Optional. Customer Usage Attribution ID (GUID). This GUID must be previously registered')
 param cuaId string = ''
 
+@description('Optional. Array of role assignment objects that contain the \'roleDefinitionIdOrName\' and \'principalId\' to define RBAC role assignments on this resource. In the roleDefinitionIdOrName attribute, you can provide either the display name of the role definition, or its fully qualified ID in the following format: \'/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11\'')
+param roleAssignments array = []
+
 module pid_cuaId './.bicep/nested_cuaId.bicep' = if (!empty(cuaId)) {
   name: 'pid-${cuaId}'
   params: {}
@@ -51,11 +54,20 @@ resource secret 'Microsoft.KeyVault/vaults/secrets@2019-09-01' = {
   }
 }
 
-@description('The Name of the secret.')
+module secret_rbac '.bicep/nested_rbac.bicep' = [for (roleAssignment, index) in roleAssignments: {
+  name: '${deployment().name}-Rbac-${index}'
+  params: {
+    principalIds: roleAssignment.principalIds
+    roleDefinitionIdOrName: roleAssignment.roleDefinitionIdOrName
+    resourceId: secret.id
+  }
+}]
+
+@description('The name of the secret.')
 output secretName string = secret.name
 
-@description('The Resource ID of the secret.')
+@description('The resource ID of the secret.')
 output secretResourceId string = secret.id
 
-@description('The name of the Resource Group the secret was created in.')
+@description('The name of the resource group the secret was created in.')
 output secretResourceGroup string = resourceGroup().name

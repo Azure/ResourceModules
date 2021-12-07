@@ -166,7 +166,7 @@ resource appServiceEnvironment_lock 'Microsoft.Authorization/locks@2016-09-01' =
   scope: appServiceEnvironment
 }
 
-resource appServiceEnvironment_diagnosticSettings 'Microsoft.Insights/diagnosticSettings@2017-05-01-preview' = if (!empty(diagnosticStorageAccountId) || !empty(workspaceId) || !empty(eventHubAuthorizationRuleId) || !empty(eventHubName)) {
+resource appServiceEnvironment_diagnosticSettings 'Microsoft.Insights/diagnosticSettings@2021-05-01-preview' = if (!empty(diagnosticStorageAccountId) || !empty(workspaceId) || !empty(eventHubAuthorizationRuleId) || !empty(eventHubName)) {
   name: '${appServiceEnvironment.name}-diagnosticSettings'
   properties: {
     storageAccountId: !empty(diagnosticStorageAccountId) ? diagnosticStorageAccountId : null
@@ -179,7 +179,7 @@ resource appServiceEnvironment_diagnosticSettings 'Microsoft.Insights/diagnostic
 }
 
 module appServiceEnvironment_rbac '.bicep/nested_rbac.bicep' = [for (roleAssignment, index) in roleAssignments: {
-  name: '${uniqueString(deployment().name, location)}-AppService-Rbac-${index}'
+  name: '${uniqueString(deployment().name, location)}-AppServiceEnv-Rbac-${index}'
   params: {
     principalIds: roleAssignment.principalIds
     roleDefinitionIdOrName: roleAssignment.roleDefinitionIdOrName

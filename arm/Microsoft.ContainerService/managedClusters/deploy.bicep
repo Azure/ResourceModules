@@ -336,7 +336,7 @@ resource managedCluster 'Microsoft.ContainerService/managedClusters@2021-07-01' 
 }
 
 module managedCluster_agentPools 'agentPools/deploy.bicep' = [for (agentPool, index) in agentPools: {
-  name: '${managedCluster.name}-agentPool-${index}'
+  name: '${uniqueString(deployment().name, location)}-ManagedCluster-AgentPool-${index}'
   params: {
     managedClusterName: managedCluster.name
     name: agentPool.name
@@ -427,7 +427,7 @@ resource managedCluster_lock 'Microsoft.Authorization/locks@2016-09-01' = if (lo
   scope: managedCluster
 }
 
-resource managedCluster_diagnosticSettings 'Microsoft.Insights/diagnosticsettings@2017-05-01-preview' = if ((!empty(diagnosticStorageAccountId)) || (!empty(workspaceId)) || (!empty(eventHubAuthorizationRuleId)) || (!empty(eventHubName))) {
+resource managedCluster_diagnosticSettings 'Microsoft.Insights/diagnosticsettings@2021-05-01-preview' = if ((!empty(diagnosticStorageAccountId)) || (!empty(workspaceId)) || (!empty(eventHubAuthorizationRuleId)) || (!empty(eventHubName))) {
   name: '${managedCluster.name}-diagnosticSettings'
   properties: {
     storageAccountId: (empty(diagnosticStorageAccountId) ? null : diagnosticStorageAccountId)
@@ -441,7 +441,7 @@ resource managedCluster_diagnosticSettings 'Microsoft.Insights/diagnosticsetting
 }
 
 module managedCluster_rbac '.bicep/nested_rbac.bicep' = [for (roleAssignment, index) in roleAssignments: {
-  name: '${deployment().name}-rbac-${index}'
+  name: '${uniqueString(deployment().name, location)}-ManagedCluster-Rbac-${index}'
   params: {
     principalIds: roleAssignment.principalIds
     roleDefinitionIdOrName: roleAssignment.roleDefinitionIdOrName
