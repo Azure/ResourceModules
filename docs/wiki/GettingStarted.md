@@ -203,7 +203,7 @@ Once the Key Vault is deployed, you'll notice that the Key Vault name in Azure w
 > The token prefix `<<` and suffix `>>` in the above example are also configurable in the [Settings.json](https://github.com/Azure/ResourceModules/blob/main/settings.json) file. They are however the default used in the CARML main repository.
 
 ---
-Note: There are default tokens that can be enabled on any resource that leverages the [GitHub specific prerequisites](GettingStarted#github-specific-prerequisites) secrets.
+Note: There are default tokens that can be enabled on any resource that leverages the [GitHub specific prerequisites](GettingStarted.md#github-specific-prerequisites) secrets.
 
 - `<<subscriptionId>>`: Will point to the Azure subscription.
 - `<<managementGroupId>>`: Will point to the Azure an Azure Management Group.

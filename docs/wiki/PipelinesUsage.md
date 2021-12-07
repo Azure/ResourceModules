@@ -25,8 +25,8 @@ As described in the [Pipelines Design](./PipelinesDesign.md) section we offer th
 | - | - | - | - |
 | [Module Pipelines](./PipelinesDesign.md#module-pipelines) | Module | Changes to [module\|workflow] files in branch [main\|master] or manual | Used to test & publish modules. This is the most common pipeline you will interact with when working on modules. |
 | [Dependencies pipeline](./PipelinesDesign.md#dependencies-pipeline) | All required dependency resources | Manual | Deploys resources we reference in the module tests. Should be run once before testing modules. |
-| [ReadMe pipeline](./PipelinesDesignreadme-pipeline) | `README.md` in `<root>` & `<root>/arm` | Changes to [template files] in branch [main\|master] | Keeps the target ReadMe files aligned with the modules in the repository.  |
-| [Wiki pipeline](./PipelinesDesignwiki-pipeline) | Wiki | Changes in [docs/wiki] in branch [main\|master] | Keeps the Wiki-repository in sync with the wiki folder in the modules repository |
+| [ReadMe pipeline](./PipelinesDesign.md#readme-pipeline) | `README.md` in `<root>` & `<root>/arm` | Changes to [template files] in branch [main\|master] | Keeps the target ReadMe files aligned with the modules in the repository.  |
+| [Wiki pipeline](./PipelinesDesign.md#wiki-pipeline) | Wiki | Changes in [docs/wiki] in branch [main\|master] | Keeps the Wiki-repository in sync with the wiki folder in the modules repository |
 
 ---
 

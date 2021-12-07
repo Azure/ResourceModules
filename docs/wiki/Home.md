@@ -4,20 +4,20 @@ The objective of this repository is to provide a template library that can be re
 
 This wiki describes the content of this repository, the modules, pipelines, possible options on how to use them and how to contribute to this project.
 
-If you're unfamiliar with Infrastructure as Code, or wonder how you can use the contents of this repository in your deployments please check out the [context](./Context) section of this wiki.
+If you're unfamiliar with Infrastructure as Code, or wonder how you can use the contents of this repository in your deployments please check out the [context](./Context.md) section of this wiki.
 
 ### _Navigation_
 
 - [Context](./Context.md)
-  - [Infrastructure as Code](./Context#infrastructure-as-code-iac)
-  - [Where does this platform fit in?](./Context#where-does-this-platform-fit-in.md)
+  - [Infrastructure as Code](./Context.md#infrastructure-as-code-iac)
+  - [Where does this platform fit in?](./Context.md#where-does-this-platform-fit-in.md)
 - [Getting Started](./GettingStarted.md)
   - [General prerequisites](./GettingStarted.md#General-prerequisites.md)
   - [Where to start](./GettingStarted.md#Where-to-start.md)
 - [Modules](./Modules.md)
   - [Design](./ModulesDesign.md)
   - [Usage](./ModulesUsage.md)
-- [Testing](./Testing.md.md)
+- [Testing](./Testing.md)
   - [Design](./TestingDesign.md)
   - [Usage](./TestingUsage.md)
 - [Pipelines](./Pipelines.md)
@@ -33,7 +33,7 @@ Following you can find an abstract overview of everything in- and out-of-scope o
 ## In Scope
 - **Modules:** Rich library of resource modules - the foundation for workload or entire environments deployments
 - **Platform:** Pipelines to validate modules & publish to those that pass to a location of your choice. Available with GitHub Workflows.
-- **Documentation:** A rich documentation of best practices on [module](./Modules.md) design, the [platforms](./Context) and its [context](./Context), [testing](./Testing.md) and [pipelines](./Pipelines.md)
+- **Documentation:** A rich documentation of best practices on [module](./Modules.md) design, the [platforms](./Context.md) and its [context](./Context.md), [testing](./Testing.md) and [pipelines](./Pipelines.md)
 
 ## Out of Scope
 - **Orchestration:** Orchestrated solutions such as workloads or entire environments intended for production environments
