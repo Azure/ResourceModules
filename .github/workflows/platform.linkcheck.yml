@@ -27,3 +27,7 @@ jobs:
           args: --verbose --no-progress **/docs/**/*.md --accept 200,201,403,429
         env:
           GITHUB_TOKEN: ${{secrets.GITHUB_TOKEN}}
+
+      - name: Publish Results
+        if: always()
+        run: exit ${{ steps.checker.outputs.exit_code }}
