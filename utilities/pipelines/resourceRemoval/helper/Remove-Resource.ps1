@@ -103,8 +103,10 @@ function Initialize-PreResourceRemoval {
             foreach ($backupItem in $backupItems) {
                 Write-Verbose ('Removing Backup item [{0}] from RSV [{1}]' -f $backupItem.Name, $resourceToRemove.resourceId) -Verbose
 
-                if ($PSCmdlet.ShouldProcess('Soft-delete backup data removal', 'Undo')) {
-                    $null = Undo-AzRecoveryServicesBackupItemDeletion -Item $backupItem -VaultId $resourceToRemove.resourceId -Force
+                if ($backupItem.DeleteState -eq 'ToBeDeleted') {
+                    if ($PSCmdlet.ShouldProcess('Soft-deleted backup data removal', 'Undo')) {
+                        $null = Undo-AzRecoveryServicesBackupItemDeletion -Item $backupItem -VaultId $resourceToRemove.resourceId -Force
+                    }
                 }
 
                 if ($PSCmdlet.ShouldProcess(('Backup item [{0}] from RSV [{1}]' -f $backupItem.Name, $resourceToRemove.resourceId), 'Remove')) {
