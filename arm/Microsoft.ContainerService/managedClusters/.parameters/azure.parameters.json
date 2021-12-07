@@ -98,6 +98,9 @@
                     ]
                 }
             ]
+        },
+        "systemAssignedIdentity": {
+            "value": true
         }
     }
 }

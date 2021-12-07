@@ -95,6 +95,9 @@
                     ]
                 }
             ]
+        },
+        "systemAssignedIdentity": {
+            "value": true
         }
     }
 }
