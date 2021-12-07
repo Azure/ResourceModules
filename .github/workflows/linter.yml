@@ -33,7 +33,7 @@ jobs:
         id: checker
         uses: lycheeverse/lychee-action@v1.1.1
         with:
-          args: --verbose --no-progress **/docs/**/*.md --exclude-file .lycheeignore --accept 200,201,403,429
+          args: --verbose --no-progress **/docs/**/*.md --exclude-file .lycheeignore --accept 200,201,403,429 --base
         env:
           GITHUB_TOKEN: ${{secrets.GITHUB_TOKEN}}
 
@@ -41,16 +41,16 @@ jobs:
         if: always()
         run: exit ${{ steps.checker.outputs.exit_code }}
 
-      - name: 'Checkout2'
-        if: always()
-        uses: actions/checkout@v2
-
-      - name: Link Checker 2
-        if: always()
-        id: checker2
-        uses: gaurav-nelson/github-action-markdown-link-check@v1
-        with:
-          use-quiet-mode: 'yes'
-          use-verbose-mode: 'yes'
-          folder-path: 'docs'
-          max-depth: 3
+      #- name: 'Checkout2'
+      #  if: always()
+      #  uses: actions/checkout@v2
+#
+#- name: Link Checker 2
+#  if: always()
+#  id: checker2
+#  uses: gaurav-nelson/github-action-markdown-link-check@v1
+#  with:
+#    use-quiet-mode: 'yes'
+#    use-verbose-mode: 'yes'
+#    folder-path: 'docs'
+#    max-depth: 3
