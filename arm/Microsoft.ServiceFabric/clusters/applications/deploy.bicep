@@ -23,8 +23,8 @@ param properties object = {}
 param cuaId string = ''
 
 var identity_var = {
-  type: !empty(identity) ? identity.type : 'None'
-  userAssignedIdentities: !empty(identity) ? identity.userAssignedIdentities : null
+  type: contains(identity, 'type') ? identity.type : 'None'
+  userAssignedIdentities: contains(identity, 'userAssignedIdentities') ? identity.userAssignedIdentities : {}
 }
 
 var propertiesManagedIdentities_var = [for managedIdentity in properties.managedIdentities: {
@@ -34,7 +34,7 @@ var propertiesManagedIdentities_var = [for managedIdentity in properties.managed
 
 var propertiesMetrics_var = [for metric in properties.metrics: {
   maximumCapacity: contains(metric, 'maximumCapacity') ? metric.maximumCapacity : 0
-  name: !empty(metric.name) ? metric.name : null
+  name: contains(metric, 'name') ? metric.name : null
   reservationCapacity: contains(metric, 'reservationCapacity') ? metric.reservationCapacity : 0
   totalApplicationCapacity: contains(metric, 'totalApplicationCapacity') ? metric.totalApplicationCapacity : 1
 }]
@@ -48,20 +48,20 @@ var upgradePolicy_var = {
       maxPercentUnhealthyServices: contains(properties.upgradePolicy.applicationHealthPolicy.defaultServiceTypeHealthPolicy, 'maxPercentUnhealthyServices') ? properties.upgradePolicy.applicationHealthPolicy.defaultServiceTypeHealthPolicy.maxPercentUnhealthyServices : 0
     }
     maxPercentUnhealthyDeployedApplications: contains(properties.upgradePolicy.applicationHealthPolicy, 'maxPercentUnhealthyDeployedApplications') ? properties.upgradePolicy.applicationHealthPolicy.maxPercentUnhealthyDeployedApplications : 0
-    serviceTypeHealthPolicyMap: !empty(properties.upgradePolicy.applicationHealthPolicy.serviceTypeHealthPolicyMap) ? properties.upgradePolicy.applicationHealthPolicy.serviceTypeHealthPolicyMap : null
+    serviceTypeHealthPolicyMap: contains(properties.upgradePolicy.applicationHealthPolicy, 'serviceTypeHealthPolicyMap') ? properties.upgradePolicy.applicationHealthPolicy.serviceTypeHealthPolicyMap : {}
   }
   forceRestart: contains(properties.upgradePolicy, 'forceRestart') ? properties.upgradePolicy.forceRestart : false
   recreateApplication: contains(properties.upgradePolicy, 'recreateApplication') ? properties.upgradePolicy.recreateApplication : false
   rollingUpgradeMonitoringPolicy: {
-    failureAction: !empty(properties.upgradePolicy.rollingUpgradeMonitoringPolicy.failureAction) ? properties.upgradePolicy.rollingUpgradeMonitoringPolicy.failureAction : 'Manual'
-    healthCheckRetryTimeout: !empty(properties.upgradePolicy.rollingUpgradeMonitoringPolicy.healthCheckRetryTimeout) ? properties.upgradePolicy.rollingUpgradeMonitoringPolicy.healthCheckRetryTimeout : null
-    healthCheckStableDuration: !empty(properties.upgradePolicy.rollingUpgradeMonitoringPolicy.healthCheckStableDuration) ? properties.upgradePolicy.rollingUpgradeMonitoringPolicy.healthCheckStableDuration : null
-    healthCheckWaitDuration: !empty(properties.upgradePolicy.rollingUpgradeMonitoringPolicy.healthCheckWaitDuration) ? properties.upgradePolicy.rollingUpgradeMonitoringPolicy.healthCheckWaitDuration : null
-    upgradeDomainTimeout: !empty(properties.upgradePolicy.rollingUpgradeMonitoringPolicy.upgradeDomainTimeout) ? properties.upgradePolicy.rollingUpgradeMonitoringPolicy.upgradeDomainTimeout : null
-    upgradeTimeout: !empty(properties.upgradePolicy.rollingUpgradeMonitoringPolicy.upgradeTimeout) ? properties.upgradePolicy.rollingUpgradeMonitoringPolicy.upgradeTimeout : null
+    failureAction: contains(properties.upgradePolicy.rollingUpgradeMonitoringPolicy, 'failureAction') ? properties.upgradePolicy.rollingUpgradeMonitoringPolicy.failureAction : 'Manual'
+    healthCheckRetryTimeout: contains(properties.upgradePolicy.rollingUpgradeMonitoringPolicy, 'healthCheckRetryTimeout') ? properties.upgradePolicy.rollingUpgradeMonitoringPolicy.healthCheckRetryTimeout : null
+    healthCheckStableDuration: contains(properties.upgradePolicy.rollingUpgradeMonitoringPolicy, 'healthCheckStableDuration') ? properties.upgradePolicy.rollingUpgradeMonitoringPolicy.healthCheckStableDuration : null
+    healthCheckWaitDuration: contains(properties.upgradePolicy.rollingUpgradeMonitoringPolicy, 'healthCheckWaitDuration') ? properties.upgradePolicy.rollingUpgradeMonitoringPolicy.healthCheckWaitDuration : null
+    upgradeDomainTimeout: contains(properties.upgradePolicy.rollingUpgradeMonitoringPolicy, 'upgradeDomainTimeout') ? properties.upgradePolicy.rollingUpgradeMonitoringPolicy.upgradeDomainTimeout : null
+    upgradeTimeout: contains(properties.upgradePolicy.rollingUpgradeMonitoringPolicy, 'upgradeTimeout') ? properties.upgradePolicy.rollingUpgradeMonitoringPolicy.upgradeTimeout : null
   }
-  upgradeMode: !empty(properties.upgradePolicy.upgradeMode) ? properties.upgradePolicy.upgradeMode : 'Invalid'
-  upgradeReplicaSetCheckTimeout: !empty(properties.upgradePolicy.upgradeReplicaSetCheckTimeout) ? properties.upgradePolicy.upgradeReplicaSetCheckTimeout : null
+  upgradeMode: contains(properties.upgradePolicy, 'upgradeMode') ? properties.upgradePolicy.upgradeMode : 'Invalid'
+  upgradeReplicaSetCheckTimeout: contains(properties.upgradePolicy, 'upgradeReplicaSetCheckTimeout') ? properties.upgradePolicy.upgradeReplicaSetCheckTimeout : null
 }
 
 module pid_cuaId '.bicep/nested_cuaId.bicep' = if (!empty(cuaId)) {
@@ -80,15 +80,15 @@ resource applications 'Microsoft.ServiceFabric/clusters/applications@2021-06-01'
   tags: tags
   identity: !empty(identity) ? identity_var : null
   properties: {
-    managedIdentities: !empty(properties.managedIdentities) ? propertiesManagedIdentities_var : null
+    managedIdentities: contains(properties, 'managedIdentities') ? propertiesManagedIdentities_var : []
     maximumNodes: contains(properties, 'maximumNodes') ? properties.maximumNodes : 0
-    metrics: !empty(properties.metrics) ? propertiesMetrics_var : null
+    metrics: contains(properties, 'metrics') ? propertiesMetrics_var : []
     minimumNodes: contains(properties, 'minimumNodes') ? properties.minimumNodes : 0
-    parameters: !empty(properties.parameters) ? properties.parameters : null
+    parameters: contains(properties, 'parameters') ? properties.parameters : {}
     removeApplicationCapacity: contains(properties, 'removeApplicationCapacity') ? properties.removeApplicationCapacity : false
-    typeName: !empty(properties.typeName) ? properties.typeName : null
-    typeVersion: !empty(properties.typeVersion) ? properties.typeVersion : null
-    upgradePolicy: !empty(properties.upgradePolicy) ? upgradePolicy_var : null
+    typeName: contains(properties, 'typeName') ? properties.typeName : null
+    typeVersion: contains(properties, 'typeVersion') ? properties.typeVersion : null
+    upgradePolicy: contains(properties, 'upgradePolicy') ? upgradePolicy_var : {}
   }
 }
 

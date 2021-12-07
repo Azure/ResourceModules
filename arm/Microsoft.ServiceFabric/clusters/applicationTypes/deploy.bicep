@@ -33,7 +33,7 @@ resource applicationTypes 'Microsoft.ServiceFabric/clusters/applicationTypes@202
   parent: serviceFabricCluster
   location: location
   tags: tags
-  properties: !empty(properties) ? properties : null
+  properties: !empty(properties) ? properties : {}
 }
 
 module applicationTypes_versions 'versions/deploy.bicep' = [for (version, index) in versions: {
