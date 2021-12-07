@@ -97,7 +97,7 @@ resource blobServices 'Microsoft.Storage/storageAccounts/blobServices@2021-06-01
   }
 }
 
-resource blobServices_diagnosticSettings 'Microsoft.Insights/diagnosticsettings@2017-05-01-preview' = if ((!empty(diagnosticStorageAccountId)) || (!empty(workspaceId)) || (!empty(eventHubAuthorizationRuleId)) || (!empty(eventHubName))) {
+resource blobServices_diagnosticSettings 'Microsoft.Insights/diagnosticSettings@2021-05-01-preview' = if ((!empty(diagnosticStorageAccountId)) || (!empty(workspaceId)) || (!empty(eventHubAuthorizationRuleId)) || (!empty(eventHubName))) {
   name: '${blobServices.name}-diagnosticSettings'
   properties: {
     storageAccountId: empty(diagnosticStorageAccountId) ? null : diagnosticStorageAccountId

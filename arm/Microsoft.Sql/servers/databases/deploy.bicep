@@ -167,7 +167,7 @@ resource database 'Microsoft.Sql/servers/databases@2021-02-01-preview' = {
   }
 }
 
-resource database_diagnosticSettings 'Microsoft.Insights/diagnosticsettings@2017-05-01-preview' = if ((!empty(diagnosticStorageAccountId)) || (!empty(workspaceId)) || (!empty(eventHubAuthorizationRuleId)) || (!empty(eventHubName))) {
+resource database_diagnosticSettings 'Microsoft.Insights/diagnosticSettings@2021-05-01-preview' = if ((!empty(diagnosticStorageAccountId)) || (!empty(workspaceId)) || (!empty(eventHubAuthorizationRuleId)) || (!empty(eventHubName))) {
   name: '${last(split(database.name, '/'))}-diagnosticSettings'
   properties: {
     storageAccountId: empty(diagnosticStorageAccountId) ? null : diagnosticStorageAccountId

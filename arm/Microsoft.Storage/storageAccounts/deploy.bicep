@@ -196,7 +196,7 @@ resource storageAccount 'Microsoft.Storage/storageAccounts@2021-06-01' = {
   properties: saProperties
 }
 
-resource storageAccount_diagnosticSettings 'Microsoft.Insights/diagnosticsettings@2017-05-01-preview' = if ((!empty(diagnosticStorageAccountId)) || (!empty(workspaceId)) || (!empty(eventHubAuthorizationRuleId)) || (!empty(eventHubName))) {
+resource storageAccount_diagnosticSettings 'Microsoft.Insights/diagnosticSettings@2021-05-01-preview' = if ((!empty(diagnosticStorageAccountId)) || (!empty(workspaceId)) || (!empty(eventHubAuthorizationRuleId)) || (!empty(eventHubName))) {
   name: '${storageAccount.name}-diagnosticSettings'
   properties: {
     storageAccountId: empty(diagnosticStorageAccountId) ? null : diagnosticStorageAccountId

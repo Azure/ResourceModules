@@ -151,7 +151,7 @@ resource logAnalyticsWorkspace 'Microsoft.OperationalInsights/workspaces@2020-08
   }
 }
 
-resource logAnalyticsWorkspace_diagnosticSettings 'Microsoft.Insights/diagnosticsettings@2017-05-01-preview' = if ((!empty(diagnosticStorageAccountId)) || (!empty(workspaceId)) || (!empty(eventHubAuthorizationRuleId)) || (!empty(eventHubName))) {
+resource logAnalyticsWorkspace_diagnosticSettings 'Microsoft.Insights/diagnosticSettings@2021-05-01-preview' = if ((!empty(diagnosticStorageAccountId)) || (!empty(workspaceId)) || (!empty(eventHubAuthorizationRuleId)) || (!empty(eventHubName))) {
   name: '${logAnalyticsWorkspace.name}-diagnosticSettings'
   properties: {
     storageAccountId: empty(diagnosticStorageAccountId) ? null : diagnosticStorageAccountId

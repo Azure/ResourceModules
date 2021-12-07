@@ -82,7 +82,7 @@ resource queueServices 'Microsoft.Storage/storageAccounts/queueServices@2021-04-
   properties: {}
 }
 
-resource queueServices_diagnosticSettings 'Microsoft.Insights/diagnosticsettings@2017-05-01-preview' = if ((!empty(diagnosticStorageAccountId)) || (!empty(workspaceId)) || (!empty(eventHubAuthorizationRuleId)) || (!empty(eventHubName))) {
+resource queueServices_diagnosticSettings 'Microsoft.Insights/diagnosticSettings@2021-05-01-preview' = if ((!empty(diagnosticStorageAccountId)) || (!empty(workspaceId)) || (!empty(eventHubAuthorizationRuleId)) || (!empty(eventHubName))) {
   name: '${queueServices.name}-diagnosticSettings'
   properties: {
     storageAccountId: empty(diagnosticStorageAccountId) ? null : diagnosticStorageAccountId
