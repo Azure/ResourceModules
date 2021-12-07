@@ -1,16 +1,16 @@
-name: '.Platform: Links Check'
+name: '.Platform: Broken Links Check'
 
 on:
-  push:
+  workflow_dispatch:
+  pull_request:
     branches:
       - main
     paths:
       - 'docs/wiki/**'
-  workflow_dispatch:
 
 jobs:
   build:
-    name: Linter
+    name: Broken Links Check
     runs-on: ubuntu-latest
     steps:
       - name: Checkout Code
@@ -19,7 +19,7 @@ jobs:
           # Full git history is needed to get a proper list of changed files within `super-linter`
           fetch-depth: 0
 
-      - name: Link Checker
+      - name: Check Broken Links
         if: always()
         id: checker
         uses: lycheeverse/lychee-action@v1.1.1
@@ -28,6 +28,6 @@ jobs:
         env:
           GITHUB_TOKEN: ${{secrets.GITHUB_TOKEN}}
 
-      - name: Link Checker Results
+      - name: Publish Results
         if: always()
         run: exit ${{ steps.checker.outputs.exit_code }}
