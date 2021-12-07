@@ -403,7 +403,7 @@ module managedCluster_agentPools 'agentPools/deploy.bicep' = [for (agentPool, in
     osDiskSizeGB: contains(agentPool, 'osDiskSizeGB') ? agentPool.osDiskSizeGB: -1
     osDiskType: contains(agentPool, 'osDiskType') ? agentPool.osDiskType: ''
     osSku: contains(agentPool, 'osSku') ? agentPool.osSku: ''
-    osType: contains(agentPool, 'osType') ? agentPool.osType: ''
+    osType: contains(agentPool, 'osType') ? agentPool.osType: 'Linux'
     podSubnetId: contains(agentPool, 'podSubnetId') ? agentPool.podSubnetId: ''
     proximityPlacementGroupID: contains(agentPool, 'proximityPlacementGroupID') ? agentPool.proximityPlacementGroupID: ''
     scaleDownMode: contains(agentPool, 'scaleDownMode') ? agentPool.scaleDownMode: ''
