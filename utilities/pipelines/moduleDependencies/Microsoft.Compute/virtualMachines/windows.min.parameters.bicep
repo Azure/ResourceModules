@@ -8,11 +8,16 @@ targetScope = 'subscription'
 @description('Required. The name of the resource group to deploy for a testing purposes')
 param resourceGroupName string
 
-// Shared
-var location = deployment().location
-var serviceShort = 'vmwinmin'
+@description('Optional. The location to deploy to')
+param location string = deployment().location
 
-// Virtual Network
+@description('Optional. A short identifier for the kind of deployment. E.g. "vwwinpar". Should be kept short to not run into resource-name length-constraints')
+param serviceShort string = 'vmwinmin'
+
+// ========= //
+// Variables //
+// ========= //
+
 var networkSecurityGroupParameters = {
   name: 'adp-sxx-nsg-${serviceShort}-01'
 }

@@ -8,25 +8,74 @@ targetScope = 'subscription'
 @description('Required. The name of the resource group to deploy for a testing purposes')
 param resourceGroupName string
 
-// Shared
-var location = deployment().location
-var serviceShort = 'vmlinpar'
+@description('Optional. The location to deploy to')
+param location string = deployment().location
 
-// Diagnostic Storage Account
+@description('Optional. A short identifier for the kind of deployment. E.g. "vwwinpar". Should be kept short to not run into resource-name length-constraints')
+param serviceShort string = 'vmlinpar'
+
+// ========= //
+// Variables //
+// ========= //
+
+var managedIdentityParameters = {
+  name: 'adp-sxx-msi-${serviceShort}-01'
+}
+
 var storageAccountParameters = {
   name: 'adpsxxazsa${serviceShort}01'
   storageAccountKind: 'StorageV2'
   storageAccountSku: 'Standard_LRS'
   allowBlobPublicAccess: false
+  blobServices: {
+    containers: [
+      {
+        name: 'scripts'
+        publicAccess: 'None'
+      }
+    ]
+  }
+  roleAssignments: [
+    // Required to allow the MSI to upload files to fetch the storage account context to upload files to the container
+    {
+      roleDefinitionIdOrName: 'Owner'
+      principalIds: [
+        managedIdentity.outputs.msiPrincipalId
+      ]
+    }
+  ]
 }
 
-// Log Analytics
+var storageAccountDeploymentScriptParameters = {
+  name: 'sxx-ds-sa-${serviceShort}-01'
+  userAssignedIdentities: {
+    '${managedIdentity.outputs.msiResourceId}': {}
+  }
+  cleanupPreference: 'OnSuccess'
+  arguments: ' -StorageAccountName "${storageAccountParameters.name}" -ResourceGroupName "${resourceGroupName}" -ContainerName "scripts" -FileName "scriptExtensionMasterInstaller.ps1"'
+  scriptContent: '''
+      param(
+        [string] $StorageAccountName,
+        [string] $ResourceGroupName,
+        [string] $ContainerName,
+        [string] $FileName
+      )
+      Write-Verbose "Create file [$FileName]" -Verbose
+      $file = New-Item -Value "Write-Host 'I am content'" -Path $FileName -Force
+
+      Write-Verbose "Getting storage account [$StorageAccountName|$ResourceGroupName] context." -Verbose
+      $storageAccount = Get-AzStorageAccount -ResourceGroupName $ResourceGroupName -StorageAccountName $StorageAccountName -ErrorAction 'Stop'
+
+      Write-Verbose 'Uploading file [$fileName]' -Verbose
+      Set-AzStorageBlobContent -File $file.FullName -Container $ContainerName -Context $storageAccount.Context -Force -ErrorAction 'Stop' | Out-Null
+    '''
+}
+
 var logAnalyticsWorkspaceParameters = {
   name: 'adp-sxx-law-${serviceShort}-01'
 }
 
-// Event Hub Namespace
-var eventHubNamespaceParameters = {
+var eventHubParameters = {
   name: 'adp-sxx-evhns-${serviceShort}-01'
   eventHubs: [
     {
@@ -45,19 +94,13 @@ var eventHubNamespaceParameters = {
   ]
 }
 
-// Managed Identity
-var managedIdentityParameters = {
-  name: 'adp-sxx-msi-${serviceShort}-01'
-}
-
-// Virtual Network
 var networkSecurityGroupParameters = {
   name: 'adp-sxx-nsg-${serviceShort}-01'
 }
 
 var virtualNetworkParameters = {
   name: 'adp-sxx-vnet-${serviceShort}-01'
-  addressPrefix: [
+  addressPrefixes: [
     '10.0.0.0/16'
   ]
   subnets: [
@@ -69,7 +112,6 @@ var virtualNetworkParameters = {
   ]
 }
 
-// RSV
 var recoveryServicesVaultParameters = {
   name: 'adp-sxx-rsv-${serviceShort}-01'
   backupPolicies: [
@@ -115,23 +157,54 @@ module resourceGroup '../../../../../arm/Microsoft.Resources/resourceGroups/depl
   }
 }
 
-module diagnoticStorageAccount '../../../../../arm/Microsoft.Storage/storageAccounts/deploy.bicep' = {
-  name: '${uniqueString(deployment().name, location)}-sa'
+module managedIdentity '../../../../../arm/Microsoft.ManagedIdentity/userAssignedIdentities/deploy.bicep' = {
   scope: az.resourceGroup(resourceGroupName)
+  name: '${uniqueString(deployment().name, location)}-mi'
   params: {
-    name: storageAccountParameters.name
-    storageAccountKind: storageAccountParameters.storageAccountKind
-    storageAccountSku: storageAccountParameters.storageAccountSku
-    allowBlobPublicAccess: storageAccountParameters.allowBlobPublicAccess
+    name: managedIdentityParameters.name
   }
   dependsOn: [
     resourceGroup
   ]
 }
 
-module logAnalyticsWorkspace '../../../../../arm/Microsoft.OperationalInsights/workspaces/deploy.bicep' = {
-  name: '${uniqueString(deployment().name, location)}-oms'
+module storageAccount '../../../../../arm/Microsoft.Storage/storageAccounts/deploy.bicep' = {
   scope: az.resourceGroup(resourceGroupName)
+  name: '${uniqueString(deployment().name, location)}-sa'
+  params: {
+    name: storageAccountParameters.name
+    storageAccountKind: storageAccountParameters.storageAccountKind
+    storageAccountSku: storageAccountParameters.storageAccountSku
+    allowBlobPublicAccess: storageAccountParameters.allowBlobPublicAccess
+    blobServices: storageAccountParameters.blobServices
+    roleAssignments: storageAccountParameters.roleAssignments
+  }
+  dependsOn: [
+    resourceGroup
+    managedIdentity
+  ]
+}
+
+module storageAccountDeploymentScript '../../../../../arm/Microsoft.Resources/deploymentScripts/deploy.bicep' = {
+  scope: az.resourceGroup(resourceGroupName)
+  name: '${uniqueString(deployment().name, location)}-sa-ds'
+  params: {
+    name: storageAccountDeploymentScriptParameters.name
+    arguments: storageAccountDeploymentScriptParameters.arguments
+    userAssignedIdentities: storageAccountDeploymentScriptParameters.userAssignedIdentities
+    scriptContent: storageAccountDeploymentScriptParameters.scriptContent
+    cleanupPreference: storageAccountDeploymentScriptParameters.cleanupPreference
+  }
+  dependsOn: [
+    resourceGroup
+    storageAccount
+    managedIdentity
+  ]
+}
+
+module logAnalyticsWorkspace '../../../../../arm/Microsoft.OperationalInsights/workspaces/deploy.bicep' = {
+  scope: az.resourceGroup(resourceGroupName)
+  name: '${uniqueString(deployment().name, location)}-oms'
   params: {
     name: logAnalyticsWorkspaceParameters.name
   }
@@ -141,22 +214,11 @@ module logAnalyticsWorkspace '../../../../../arm/Microsoft.OperationalInsights/w
 }
 
 module eventHubNamespace '../../../../../arm/Microsoft.EventHub/namespaces/deploy.bicep' = {
+  scope: az.resourceGroup(resourceGroupName)
   name: '${uniqueString(deployment().name, location)}-ehn'
-  scope: az.resourceGroup(resourceGroupName)
   params: {
-    name: eventHubNamespaceParameters.name
-    eventHubs: eventHubNamespaceParameters.eventHubs
-  }
-  dependsOn: [
-    resourceGroup
-  ]
-}
-
-module managedIdentity '../../../../../arm/Microsoft.ManagedIdentity/userAssignedIdentities/deploy.bicep' = {
-  scope: az.resourceGroup(resourceGroupName)
-  name: '${uniqueString(deployment().name, location)}-mi'
-  params: {
-    name: managedIdentityParameters.name
+    name: eventHubParameters.name
+    eventHubs: eventHubParameters.eventHubs
   }
   dependsOn: [
     resourceGroup
@@ -179,7 +241,7 @@ module virtualNetwork '../../../../../arm/Microsoft.Network/virtualNetworks/depl
   name: '${uniqueString(deployment().name, location)}-vnet'
   params: {
     name: virtualNetworkParameters.name
-    addressPrefixes: virtualNetworkParameters.addressPrefix
+    addressPrefixes: virtualNetworkParameters.addressPrefixes
     subnets: virtualNetworkParameters.subnets
   }
   dependsOn: [

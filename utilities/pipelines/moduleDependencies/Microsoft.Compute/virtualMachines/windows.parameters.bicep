@@ -17,10 +17,6 @@ param serviceShort string = 'vmwinpar'
 // ========= //
 // Variables //
 // ========= //
-// resource miRef 'Microsoft.ManagedIdentity/userAssignedIdentities@2018-11-30' existing = {
-//   scope: az.resourceGroup(resourceGroupName)
-//   name: managedIdentityParameters.name
-// }
 
 var managedIdentityParameters = {
   name: 'adp-sxx-msi-${serviceShort}-01'
@@ -102,7 +98,7 @@ var networkSecurityGroupParameters = {
   name: 'adp-sxx-nsg-${serviceShort}-01'
 }
 
-var virtualNetworkInputParameters = {
+var virtualNetworkParameters = {
   name: 'adp-sxx-vnet-${serviceShort}-01'
   addressPrefixes: [
     '10.0.0.0/16'
@@ -291,9 +287,9 @@ module virtualNetwork '../../../../../arm/Microsoft.Network/virtualNetworks/depl
   scope: az.resourceGroup(resourceGroupName)
   name: '${uniqueString(deployment().name, location)}-vnet'
   params: {
-    name: virtualNetworkInputParameters.name
-    addressPrefixes: virtualNetworkInputParameters.addressPrefixes
-    subnets: virtualNetworkInputParameters.subnets
+    name: virtualNetworkParameters.name
+    addressPrefixes: virtualNetworkParameters.addressPrefixes
+    subnets: virtualNetworkParameters.subnets
   }
   dependsOn: [
     resourceGroup
