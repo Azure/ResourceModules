@@ -5,13 +5,13 @@ variables:
 
   vmImage: 'ubuntu-latest' # Use this for Microsoft-hosted agents
   poolName: '' # Use this for self-hosted agents
-  serviceConnection: 'CARML-Dev'
+  serviceConnection: 'CARML-CSU-Tenant-Connection'
 
   ######################################
   # Source
   ######################################
 
-  vstsOrganization: alsehr
+  vstsOrganization: servicescode
   vstsProject: '$(System.TeamProject)'
   modulesRepository: ResourceModules # The repository hosting the deployment code (i.e. 'Components'). MUST be provided as a variable with every pipeline
   modulePath: arm/$(moduleName) # only use in module pielines
