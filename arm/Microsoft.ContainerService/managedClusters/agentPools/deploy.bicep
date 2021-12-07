@@ -297,7 +297,11 @@ param scaleDownMode string = 'Delete'
 param scaleSetEvictionPolicy string = 'Delete'
 
 @description('Optional. The Virtual Machine Scale Set priority.')
-param scaleSetPriority string = ''
+@allowed([
+  'Regular'
+  'Spot'
+])
+param scaleSetPriority string = 'Regular'
 
 @description('Optional. Possible values are any decimal value greater than zero or -1 which indicates the willingness to pay any on-demand price. For more details on spot pricing, see spot VMs pricing (https://docs.microsoft.com/en-us/azure/virtual-machines/spot-vms#pricing)')
 param spotMaxPrice int = -1

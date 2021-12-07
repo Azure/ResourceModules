@@ -406,9 +406,9 @@ module managedCluster_agentPools 'agentPools/deploy.bicep' = [for (agentPool, in
     osType: contains(agentPool, 'osType') ? agentPool.osType: 'Linux'
     podSubnetId: contains(agentPool, 'podSubnetId') ? agentPool.podSubnetId: ''
     //proximityPlacementGroupId: contains(agentPool, 'proximityPlacementGroupId') ? agentPool.proximityPlacementGroupId: ''
-    scaleDownMode: contains(agentPool, 'scaleDownMode') ? agentPool.scaleDownMode: ''
-    scaleSetEvictionPolicy: contains(agentPool, 'scaleSetEvictionPolicy') ? agentPool.scaleSetEvictionPolicy: ''
-    scaleSetPriority: contains(agentPool, 'scaleSetPriority') ? agentPool.scaleSetPriority: ''
+    scaleDownMode: contains(agentPool, 'scaleDownMode') ? agentPool.scaleDownMode: 'Delete'
+    scaleSetEvictionPolicy: contains(agentPool, 'scaleSetEvictionPolicy') ? agentPool.scaleSetEvictionPolicy: 'Delete'
+    scaleSetPriority: contains(agentPool, 'scaleSetPriority') ? agentPool.scaleSetPriority: 'Regular'
     spotMaxPrice: contains(agentPool, 'spotMaxPrice') ? agentPool.spotMaxPrice: -1
     tags: contains(agentPool, 'tags') ? agentPool.tags: {}
     type: contains(agentPool, 'type') ? agentPool.type: ''
