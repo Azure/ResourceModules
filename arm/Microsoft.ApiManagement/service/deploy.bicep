@@ -209,7 +209,7 @@ resource apiManagementService 'Microsoft.ApiManagement/service@2020-12-01' = {
 }
 
 module apis_resource 'apis/deploy.bicep' = [for (api, index) in apis: {
-  name: '${uniqueString(deployment().name, location)}-api-${index}'
+  name: '${uniqueString(deployment().name, location)}-Apim-Api-${index}'
   params: {
     apiManagementServiceName: apiManagementService.name
     displayName: api.displayName
@@ -243,7 +243,7 @@ module apis_resource 'apis/deploy.bicep' = [for (api, index) in apis: {
 }]
 
 module apiVersionSet_resource 'apiVersionSets/deploy.bicep' = [for (apiVersionSet, index) in apiVersionSets: {
-  name: '${uniqueString(deployment().name, location)}-apiVersionSet-${index}'
+  name: '${uniqueString(deployment().name, location)}-Apim-ApiVersionSet-${index}'
   params: {
     apiManagementServiceName: apiManagementService.name
     name: apiVersionSet.name
@@ -252,7 +252,7 @@ module apiVersionSet_resource 'apiVersionSets/deploy.bicep' = [for (apiVersionSe
 }]
 
 module authorizationServers_resource '.bicep/nested_authorizationServers.bicep' = [for (authorizationServer, index) in authorizationServers: {
-  name: '${uniqueString(deployment().name, location)}-authorizationServer-${index}'
+  name: '${uniqueString(deployment().name, location)}-Apim-AuthorizationServer-${index}'
   params: {
     apiManagementServiceName: apiManagementService.name
     name: authorizationServer.name
@@ -282,7 +282,7 @@ module authorizationServers_resource '.bicep/nested_authorizationServers.bicep' 
 }]
 
 module backends_resource 'backends/deploy.bicep' = [for (backend, index) in backends: {
-  name: '${uniqueString(deployment().name, location)}-backend-${index}'
+  name: '${uniqueString(deployment().name, location)}-Apim-Backend-${index}'
   params: {
     apiManagementServiceName: apiManagementService.name
     url: contains(backend, 'url') ? backend.url : ''
@@ -302,7 +302,7 @@ module backends_resource 'backends/deploy.bicep' = [for (backend, index) in back
 }]
 
 module caches_resource 'caches/deploy.bicep' = [for (cache, index) in caches: {
-  name: '${uniqueString(deployment().name, location)}-cache-${index}'
+  name: '${uniqueString(deployment().name, location)}-Apim-Cache-${index}'
   params: {
     apiManagementServiceName: apiManagementService.name
     cacheDescription: contains(cache, 'cacheDescription') ? cache.cacheDescription : ''
@@ -314,7 +314,7 @@ module caches_resource 'caches/deploy.bicep' = [for (cache, index) in caches: {
 }]
 
 module identityProvider_resource 'identityProviders/deploy.bicep' = [for (identityProvider, index) in identityProviders: {
-  name: '${uniqueString(deployment().name, location)}-identityProvider-${index}'
+  name: '${uniqueString(deployment().name, location)}-Apim-IdentityProvider-${index}'
   params: {
     apiManagementServiceName: apiManagementService.name
     name: identityProvider.name
@@ -333,7 +333,7 @@ module identityProvider_resource 'identityProviders/deploy.bicep' = [for (identi
 }]
 
 module namedValues_resource 'namedValues/deploy.bicep' = [for (namedValue, index) in namedValues: {
-  name: '${uniqueString(deployment().name, location)}-namedValue-${index}'
+  name: '${uniqueString(deployment().name, location)}-Apim-NamedValue-${index}'
   params: {
     apiManagementServiceName: apiManagementService.name
     displayName: namedValue.displayName
@@ -346,7 +346,7 @@ module namedValues_resource 'namedValues/deploy.bicep' = [for (namedValue, index
 }]
 
 module portalSettings_resource 'portalsettings/deploy.bicep' = [for (portalSetting, index) in portalSettings: {
-  name: '${uniqueString(deployment().name, location)}-portalSetting-${index}'
+  name: '${uniqueString(deployment().name, location)}-Apim-PortalSetting-${index}'
   params: {
     apiManagementServiceName: apiManagementService.name
     name: portalSetting.name
@@ -355,7 +355,7 @@ module portalSettings_resource 'portalsettings/deploy.bicep' = [for (portalSetti
 }]
 
 module policy_resource 'policies/deploy.bicep' = [for (policy, index) in policies: {
-  name: '${uniqueString(deployment().name, location)}-policy-${index}'
+  name: '${uniqueString(deployment().name, location)}-Apim-Policy-${index}'
   params: {
     apiManagementServiceName: apiManagementService.name
     value: policy.value
@@ -364,7 +364,7 @@ module policy_resource 'policies/deploy.bicep' = [for (policy, index) in policie
 }]
 
 module products_resource 'products/deploy.bicep' = [for (product, index) in products: {
-  name: '${uniqueString(deployment().name, location)}-product-${index}'
+  name: '${uniqueString(deployment().name, location)}-Apim-Product-${index}'
   params: {
     apiManagementServiceName: apiManagementService.name
     apis: contains(product, 'apis') ? product.apis : []
@@ -383,7 +383,7 @@ module products_resource 'products/deploy.bicep' = [for (product, index) in prod
 }]
 
 module subscriptions_resource 'subscriptions/deploy.bicep' = [for (subscription, index) in subscriptions: {
-  name: '${uniqueString(deployment().name, location)}-subscription-${index}'
+  name: '${uniqueString(deployment().name, location)}-Apim-Subscription-${index}'
   params: {
     apiManagementServiceName: apiManagementService.name
     name: contains(subscription, 'name') ? subscription.name : ''
@@ -405,7 +405,7 @@ resource apiManagementService_lock 'Microsoft.Authorization/locks@2016-09-01' = 
   scope: apiManagementService
 }
 
-resource apiManagementService_diagnosticSettings 'Microsoft.Insights/diagnosticSettings@2017-05-01-preview' = if (!empty(diagnosticStorageAccountId) || !empty(workspaceId) || !empty(eventHubAuthorizationRuleId) || !empty(eventHubName)) {
+resource apiManagementService_diagnosticSettings 'Microsoft.Insights/diagnosticSettings@2021-05-01-preview' = if (!empty(diagnosticStorageAccountId) || !empty(workspaceId) || !empty(eventHubAuthorizationRuleId) || !empty(eventHubName)) {
   name: '${apiManagementService.name}-diagnosticSettings'
   properties: {
     storageAccountId: empty(diagnosticStorageAccountId) ? null : diagnosticStorageAccountId
@@ -419,7 +419,7 @@ resource apiManagementService_diagnosticSettings 'Microsoft.Insights/diagnosticS
 }
 
 module apiManagementService_rbac '.bicep/nested_rbac.bicep' = [for (roleAssignment, index) in roleAssignments: {
-  name: '${deployment().name}-rbac-${index}'
+  name: '${uniqueString(deployment().name, location)}-Apim-Rbac-${index}'
   params: {
     principalIds: roleAssignment.principalIds
     roleDefinitionIdOrName: roleAssignment.roleDefinitionIdOrName

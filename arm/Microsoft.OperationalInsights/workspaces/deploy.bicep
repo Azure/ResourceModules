@@ -165,7 +165,7 @@ resource logAnalyticsWorkspace_diagnosticSettings 'Microsoft.Insights/diagnostic
 }
 
 module logAnalyticsWorkspace_storageInsightConfigs 'storageInsightConfigs/deploy.bicep' = [for (storageInsightsConfig, index) in storageInsightsConfigs: {
-  name: '${deployment().name}-storageInsightsConfig-${index}'
+  name: '${uniqueString(deployment().name, location)}-LAW-StorageInsightsConfig-${index}'
   params: {
     logAnalyticsWorkspaceName: logAnalyticsWorkspace.name
     containers: contains(storageInsightsConfig, 'containers') ? storageInsightsConfig.containers : []
@@ -175,7 +175,7 @@ module logAnalyticsWorkspace_storageInsightConfigs 'storageInsightConfigs/deploy
 }]
 
 module logAnalyticsWorkspace_linkedServices 'linkedServices/deploy.bicep' = [for (linkedService, index) in linkedServices: {
-  name: '${deployment().name}-linkedService-${index}'
+  name: '${uniqueString(deployment().name, location)}-LAW-LinkedService-${index}'
   params: {
     logAnalyticsWorkspaceName: logAnalyticsWorkspace.name
     name: linkedService.name
@@ -185,7 +185,7 @@ module logAnalyticsWorkspace_linkedServices 'linkedServices/deploy.bicep' = [for
 }]
 
 module logAnalyticsWorkspace_savedSearches 'savedSearches/deploy.bicep' = [for (savedSearch, index) in savedSearches: {
-  name: '${deployment().name}-savedSearch-${index}'
+  name: '${uniqueString(deployment().name, location)}-LAW-SavedSearch-${index}'
   params: {
     logAnalyticsWorkspaceName: logAnalyticsWorkspace.name
     name: '${savedSearch.name}${uniqueString(deployment().name)}'
@@ -199,7 +199,7 @@ module logAnalyticsWorkspace_savedSearches 'savedSearches/deploy.bicep' = [for (
 }]
 
 module logAnalyticsWorkspace_dataSources 'dataSources/deploy.bicep' = [for (dataSource, index) in dataSources: {
-  name: '${deployment().name}-datasource-${index}'
+  name: '${uniqueString(deployment().name, location)}-LAW-DataSource-${index}'
   params: {
     logAnalyticsWorkspaceName: logAnalyticsWorkspace.name
     name: dataSource.name
@@ -220,7 +220,7 @@ module logAnalyticsWorkspace_dataSources 'dataSources/deploy.bicep' = [for (data
 
 @batchSize(1) // Serial loop deployment
 module logAnalyticsWorkspace_solutions '.bicep/nested_solutions.bicep' = [for (gallerySolution, index) in gallerySolutions: if (!empty(gallerySolutions)) {
-  name: '${deployment().name}-solution-${index}'
+  name: '${uniqueString(deployment().name, location)}-LAW-Solution-${index}'
   params: {
     gallerySolution: gallerySolution.name
     location: location
@@ -240,7 +240,7 @@ resource logAnalyticsWorkspace_lock 'Microsoft.Authorization/locks@2016-09-01' =
 }
 
 module logAnalyticsWorkspace_rbac '.bicep/nested_rbac.bicep' = [for (roleAssignment, index) in roleAssignments: {
-  name: '${deployment().name}-rbac-${index}'
+  name: '${uniqueString(deployment().name, location)}-LAW-Rbac-${index}'
   params: {
     principalIds: roleAssignment.principalIds
     roleDefinitionIdOrName: roleAssignment.roleDefinitionIdOrName

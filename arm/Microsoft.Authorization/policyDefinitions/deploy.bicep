@@ -39,7 +39,7 @@ param subscriptionId string = ''
 param location string = deployment().location
 
 module policyDefinition_mg '.bicep/nested_policyDefinitions_mg.bicep' = if (empty(subscriptionId) && !empty(managementGroupId)) {
-  name: '${uniqueString(deployment().name, location)}-policyDefinition-mg-Module'
+  name: '${uniqueString(deployment().name, location)}-PolicyDefinition-MG-Module'
   scope: managementGroup(managementGroupId)
   params: {
     name: name
@@ -54,7 +54,7 @@ module policyDefinition_mg '.bicep/nested_policyDefinitions_mg.bicep' = if (empt
 }
 
 module policyDefinition_sub '.bicep/nested_policyDefinitions_sub.bicep' = if (empty(managementGroupId) && !empty(subscriptionId)) {
-  name: '${uniqueString(deployment().name, location)}-policyDefinition-sub-Module'
+  name: '${uniqueString(deployment().name, location)}-PolicyDefinition-Sub-Module'
   scope: subscription(subscriptionId)
   params: {
     name: name

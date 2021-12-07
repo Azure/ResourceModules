@@ -108,7 +108,7 @@ resource eventGrid_lock 'Microsoft.Authorization/locks@2016-09-01' = if (lock !=
   scope: eventGrid
 }
 
-resource eventGrid_diagnosticSettings 'Microsoft.Insights/diagnosticsettings@2017-05-01-preview' = if ((!empty(diagnosticStorageAccountId)) || (!empty(workspaceId)) || (!empty(eventHubAuthorizationRuleId)) || (!empty(eventHubName))) {
+resource eventGrid_diagnosticSettings 'Microsoft.Insights/diagnosticsettings@2021-05-01-preview' = if ((!empty(diagnosticStorageAccountId)) || (!empty(workspaceId)) || (!empty(eventHubAuthorizationRuleId)) || (!empty(eventHubName))) {
   name: '${eventGrid.name}-diagnosticSettings'
   properties: {
     storageAccountId: (empty(diagnosticStorageAccountId) ? null : diagnosticStorageAccountId)
@@ -122,7 +122,7 @@ resource eventGrid_diagnosticSettings 'Microsoft.Insights/diagnosticsettings@201
 }
 
 module eventGrid_privateEndpoints '.bicep/nested_privateEndpoint.bicep' = [for (privateEndpoint, index) in privateEndpoints: if (!empty(privateEndpoints)) {
-  name: '${uniqueString(deployment().name, location)}-EventGrid-PrivateEndpoints-${index}'
+  name: '${uniqueString(deployment().name, location)}-EventGrid-PrivateEndpoint-${index}'
   params: {
     privateEndpointResourceId: eventGrid.id
     privateEndpointVnetLocation: (empty(privateEndpoints) ? 'dummy' : reference(split(privateEndpoint.subnetResourceId, '/subnets/')[0], '2020-06-01', 'Full').location)
@@ -132,7 +132,7 @@ module eventGrid_privateEndpoints '.bicep/nested_privateEndpoint.bicep' = [for (
 }]
 
 module eventGrid_rbac '.bicep/nested_rbac.bicep' = [for (roleAssignment, index) in roleAssignments: {
-  name: '${deployment().name}-rbac-${index}'
+  name: '${uniqueString(deployment().name, location)}-EventGrid-Rbac-${index}'
   params: {
     principalIds: roleAssignment.principalIds
     roleDefinitionIdOrName: roleAssignment.roleDefinitionIdOrName

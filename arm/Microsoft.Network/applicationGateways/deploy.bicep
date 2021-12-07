@@ -200,7 +200,6 @@ var identity = identityType != 'None' ? {
   userAssignedIdentities: !empty(userAssignedIdentities) ? userAssignedIdentities : null
 } : null
 
-
 var backendAddressPools = [for backendPool in backendPools: {
   name: backendPool.backendPoolName
   type: 'Microsoft.Network/applicationGateways/backendAddressPools'
@@ -401,7 +400,7 @@ resource applicationGateway_lock 'Microsoft.Authorization/locks@2016-09-01' = if
   scope: applicationGateway
 }
 
-resource applicationGateway_diagnosticSettingName 'Microsoft.Insights/diagnosticSettings@2017-05-01-preview' = if (!empty(diagnosticStorageAccountId) || !empty(workspaceId) || !empty(eventHubAuthorizationRuleId) || !empty(eventHubName)) {
+resource applicationGateway_diagnosticSettingName 'Microsoft.Insights/diagnosticSettings@2021-05-01-preview' = if (!empty(diagnosticStorageAccountId) || !empty(workspaceId) || !empty(eventHubAuthorizationRuleId) || !empty(eventHubName)) {
   name: '${applicationGateway.name}-diagnosticSettings'
   properties: {
     storageAccountId: empty(diagnosticStorageAccountId) ? null : diagnosticStorageAccountId
@@ -415,7 +414,7 @@ resource applicationGateway_diagnosticSettingName 'Microsoft.Insights/diagnostic
 }
 
 module applicationGateway_rbac '.bicep/nested_rbac.bicep' = [for (roleAssignment, index) in roleAssignments: {
-  name: '${deployment().name}-rbac-${index}'
+  name: '${uniqueString(deployment().name, location)}-AppGateway-Rbac-${index}'
   params: {
     principalIds: roleAssignment.principalIds
     roleDefinitionIdOrName: roleAssignment.roleDefinitionIdOrName

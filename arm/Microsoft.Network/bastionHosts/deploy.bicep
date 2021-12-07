@@ -75,7 +75,7 @@ resource publicIPAddressExisting 'Microsoft.Network/publicIPAddresses@2021-02-01
 }
 
 module publicIPAddress '.bicep/nested_publicIPAddress.bicep' = if (empty(publicIPAddressId)) {
-  name: '${uniqueString(deployment().name, location)}-bastion-pip'
+  name: '${uniqueString(deployment().name, location)}-Bastion-PIP'
   params: {
     name: contains(publicIPAddressObject, 'name') ? (!(empty(publicIPAddressObject.name)) ? publicIPAddressObject.name : '${name}-pip') : '${name}-pip'
     publicIPPrefixResourceId: contains(publicIPAddressObject, 'publicIPPrefixResourceId') ? (!(empty(publicIPAddressObject.publicIPPrefixResourceId)) ? publicIPAddressObject.publicIPPrefixResourceId : '') : ''
@@ -138,7 +138,7 @@ resource azureBastion_lock 'Microsoft.Authorization/locks@2016-09-01' = if (lock
   scope: azureBastion
 }
 
-resource azureBastion_diagnosticSettings 'Microsoft.Insights/diagnosticSettings@2017-05-01-preview' = if (!empty(diagnosticStorageAccountId) || !empty(workspaceId) || !empty(eventHubAuthorizationRuleId) || !empty(eventHubName)) {
+resource azureBastion_diagnosticSettings 'Microsoft.Insights/diagnosticSettings@2021-05-01-preview' = if (!empty(diagnosticStorageAccountId) || !empty(workspaceId) || !empty(eventHubAuthorizationRuleId) || !empty(eventHubName)) {
   name: '${azureBastion.name}-diagnosticSettings'
   properties: {
     storageAccountId: empty(diagnosticStorageAccountId) ? null : diagnosticStorageAccountId
@@ -151,7 +151,7 @@ resource azureBastion_diagnosticSettings 'Microsoft.Insights/diagnosticSettings@
 }
 
 module azureBastion_rbac '.bicep/nested_rbac.bicep' = [for (roleAssignment, index) in roleAssignments: {
-  name: '${uniqueString(deployment().name, location)}-bastion-rbac-${index}'
+  name: '${uniqueString(deployment().name, location)}-Bastion-Rbac-${index}'
   params: {
     principalIds: roleAssignment.principalIds
     roleDefinitionIdOrName: roleAssignment.roleDefinitionIdOrName
