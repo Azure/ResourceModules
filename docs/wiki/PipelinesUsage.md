@@ -23,8 +23,8 @@ As described in the [Pipelines Design](./PipelinesDesign.md) section we offer th
 
 | Pipeline | Target | Trigger | Notes |
 | - | - | - | - |
-| [Module Pipelines](./PipelinesDesignmodule-pipelines) | Module | Changes to [module\|workflow] files in branch [main\|master] or manual | Used to test & publish modules. This is the most common pipeline you will interact with when working on modules. |
-| [Dependencies pipeline](./PipelinesDesigndependencies-pipeline) | All required dependency resources | Manual | Deploys resources we reference in the module tests. Should be run once before testing modules. |
+| [Module Pipelines](./PipelinesDesign.md#module-pipelines) | Module | Changes to [module\|workflow] files in branch [main\|master] or manual | Used to test & publish modules. This is the most common pipeline you will interact with when working on modules. |
+| [Dependencies pipeline](./PipelinesDesign.md#dependencies-pipeline) | All required dependency resources | Manual | Deploys resources we reference in the module tests. Should be run once before testing modules. |
 | [ReadMe pipeline](./PipelinesDesignreadme-pipeline) | `README.md` in `<root>` & `<root>/arm` | Changes to [template files] in branch [main\|master] | Keeps the target ReadMe files aligned with the modules in the repository.  |
 | [Wiki pipeline](./PipelinesDesignwiki-pipeline) | Wiki | Changes in [docs/wiki] in branch [main\|master] | Keeps the Wiki-repository in sync with the wiki folder in the modules repository |
 
@@ -49,7 +49,7 @@ To validate any updates you did to a module template you can perform the followi
 
 Once the pipeline concluded, it will either be in a green (success) or red (failed) state, depending on how the module performed.
 
-If you open the pipeline's run, you should be able to investigate the logs and investigate the execution. In case any of the [validation](./PipelinesDesignValidate) steps failed, the pipeline should give you detailed information of any error. In some cases in which Pester tests failed, you may only see the failed test and need to `expand` the error message. How this looks like depends on the [DevOps platform](#devops-tool-specific-considerations) you use.
+If you open the pipeline's run, you should be able to investigate the logs and investigate the execution. In case any of the [validation](./PipelinesDesign.md#Validate) steps failed, the pipeline should give you detailed information of any error. In some cases in which Pester tests failed, you may only see the failed test and need to `expand` the error message. How this looks like depends on the [DevOps platform](#devops-tool-specific-considerations) you use.
 
 ## Operate the dependency pipeline
 
@@ -63,7 +63,7 @@ Depending on what you want to test in your module pipeline, you may want to add 
 
 ## Add a new module pipeline
 
-To add a new module pipeline we recommend to create a copy of a currently existing module pipeline and adjust all module-specific properties documented [here](./PipelinesDesigncomponent-workflows). The registration of the pipeline will differ depending on the DevOps tool you're using. For further information, please review the [DevOps-Tool-specific guidance](#devops-tool-specific-guidance) below.
+To add a new module pipeline we recommend to create a copy of a currently existing module pipeline and adjust all module-specific properties documented [here](./PipelinesDesign.md#component-workflows). The registration of the pipeline will differ depending on the DevOps tool you're using. For further information, please review the [DevOps-Tool-specific guidance](#devops-tool-specific-guidance) below.
 
 ---
 

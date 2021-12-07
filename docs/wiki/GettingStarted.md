@@ -117,7 +117,7 @@ Please refer to [this list][AzureNames] to check which services have a global sc
 
 ### Dependencies
 
-As the modules we test often times have dependencies to other services, we created a pipeline to deploys several standard services like VirtualNetworks and KeyVaults (alongside dummy secrets) for the modules to use. This _dependency_ pipeline should be prepared and executed before you start running any pipelines on your own. In case you need to rename any services there (for example because a certain globally unique resource name was already taken) make sure to update any references to this name in the module parameter files. You can find further details about this pipeline [here](.\TestingDesign#Module-Dependencies).
+As the modules we test often times have dependencies to other services, we created a pipeline to deploys several standard services like VirtualNetworks and KeyVaults (alongside dummy secrets) for the modules to use. This _dependency_ pipeline should be prepared and executed before you start running any pipelines on your own. In case you need to rename any services there (for example because a certain globally unique resource name was already taken) make sure to update any references to this name in the module parameter files. You can find further details about this pipeline [here](./TestingDesign.md#Module-Dependencies).
 
 ### GitHub-specific prerequisites
 
@@ -211,7 +211,7 @@ Note: There are default tokens that can be enabled on any resource that leverage
 - `<<deploymentSpId>>`: Will point to the Service Principal ID used for deployments.
 - `<<resourceGroupName>>`: Will point to the Azure Resource Group where the resources are being deployed to. (This isn't defined in the secrets section but is injected at runtime)
 
-Review [Parameter File Tokens Design](./ParameterFileTokens.md.md) for more details.
+Review [Parameter File Tokens Design](./ParameterFileTokens.md) for more details.
 
 ---
 
