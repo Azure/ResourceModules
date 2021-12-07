@@ -280,7 +280,7 @@ param osType string = 'Linux'
 param podSubnetId string = ''
 
 @description('Optional. The ID for the Proximity Placement Group.')
-param proximityPlacementGroupID string = ''
+param proximityPlacementGroupId string = ''
 
 @description('Optional. Describes how VMs are added to or removed from Agent Pools. See billing states (https://docs.microsoft.com/en-us/azure/virtual-machines/states-billing).')
 param scaleDownMode string = ''
@@ -405,7 +405,7 @@ resource agentPool 'Microsoft.ContainerService/managedClusters/agentPools@2021-0
     osSKU: osSku
     osType: osType
     podSubnetID: podSubnetId
-    proximityPlacementGroupID: proximityPlacementGroupID
+    proximityPlacementGroupID: proximityPlacementGroupId
     scaleDownMode: scaleDownMode
     scaleSetEvictionPolicy: scaleSetEvictionPolicy
     scaleSetPriority: scaleSetPriority
