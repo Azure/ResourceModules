@@ -40,3 +40,13 @@ jobs:
       - name: Link Checker Results
         if: always()
         run: exit ${{ steps.checker.outputs.exit_code }}
+
+      - name: Link Checker 2
+        if: always()
+        id: checker2
+        uses: gaurav-nelson/github-action-markdown-link-check@v1
+        with:
+          use-quiet-mode: 'yes'
+          use-verbose-mode: 'yes'
+          folder-path: 'docs'
+          max-depth: 3
