@@ -2,8 +2,8 @@
     "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
     "contentVersion": "1.0.0.0",
     "parameters": {
-        "name": {
-            "value": "sxx-az-aks-azure"
+        "aksClusterName": {
+            "value": "lbs-az-aks-azure-01"
         },
         "primaryAgentPoolProfile": {
             "value": [
@@ -19,7 +19,7 @@
                     "storageProfile": "ManagedDisks",
                     "type": "VirtualMachineScaleSets",
                     "mode": "System",
-                    "vnetSubnetID": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/virtualNetworks/adp-sxx-az-vnet-x-aks/subnets/Primary",
+                    "vnetSubnetID": "/subscriptions/<<subscriptionId>>/resourceGroups/DRTestPrimary/providers/Microsoft.Network/virtualNetworks/vnetprimary/subnets/subnet01",
                     "serviceCidr": "",
                     "maxPods": 30,
                     "availabilityZones": [
@@ -57,7 +57,7 @@
                         "maxPods": 30,
                         "storageProfile": "ManagedDisks",
                         "mode": "User",
-                        "vnetSubnetID": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/virtualNetworks/adp-sxx-az-vnet-x-aks/subnets/Secondary"
+                        "vnetSubnetID": "/subscriptions/<<subscriptionId>>/resourceGroups/DRTestPrimary/providers/Microsoft.Network/virtualNetworks/vnetprimary/subnets/subnet02"
                     }
                 },
                 {
@@ -84,7 +84,7 @@
                         "maxPods": 30,
                         "storageProfile": "ManagedDisks",
                         "mode": "User",
-                        "vnetSubnetID": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/virtualNetworks/adp-sxx-az-vnet-x-aks/subnets/Tertiary"
+                        "vnetSubnetID": "/subscriptions/<<subscriptionId>>/resourceGroups/DRTestPrimary/providers/Microsoft.Network/virtualNetworks/vnetprimary/subnets/subnet03"
                     }
                 }
             ]
@@ -94,28 +94,10 @@
                 {
                     "roleDefinitionIdOrName": "Reader",
                     "principalIds": [
-                        "<<deploymentSpId>>"
+                        "a00b0391-e760-4733-8905-36be89001b96"
                     ]
                 }
             ]
-        },
-        "diagnosticLogsRetentionInDays": {
-            "value": 7
-        },
-        "diagnosticStorageAccountId": {
-            "value": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Storage/storageAccounts/adpsxxazsaweux001"
-        },
-        "workspaceId": {
-            "value": "/subscriptions/<<subscriptionId>>/resourcegroups/validation-rg/providers/microsoft.operationalinsights/workspaces/adp-sxx-az-law-x-001"
-        },
-        "eventHubAuthorizationRuleId": {
-            "value": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.EventHub/namespaces/adp-sxx-az-evhns-x-001/AuthorizationRules/RootManageSharedAccessKey"
-        },
-        "eventHubName": {
-            "value": "adp-sxx-az-evh-x-001"
-        },
-        "systemAssignedIdentity": {
-            "value": true
         }
     }
 }
