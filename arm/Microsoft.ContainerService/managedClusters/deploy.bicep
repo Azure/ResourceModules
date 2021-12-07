@@ -350,7 +350,7 @@ module managedCluster_agentPools 'agentPools/deploy.bicep' = [for (agentPool, in
     enableUltraSSD: contains(agentPool, 'enableUltraSSD') ? agentPool.enableUltraSSD : false
     gpuInstanceProfile: contains(agentPool, 'gpuInstanceProfile') ? agentPool.gpuInstanceProfile: ''
     allowedUnsafeSysctls: contains(agentPool, 'allowedUnsafeSysctls') ? agentPool.allowedUnsafeSysctls: []
-    containerLogMaxFiles: contains(agentPool, 'containerLogMaxFiles') ? agentPool.containerLogMaxFiles: -1
+    containerLogMaxFiles: contains(agentPool, 'containerLogMaxFiles') ? agentPool.containerLogMaxFiles: 5
     containerLogMaxSizeMB: contains(agentPool, 'containerLogMaxSizeMB') ? agentPool.containerLogMaxSizeMB: -1
     cpuCfsQuota: contains(agentPool, 'cpuCfsQuota') ? agentPool.cpuCfsQuota: true
     cpuCfsQuotaPeriod: contains(agentPool, 'cpuCfsQuotaPeriod') ? agentPool.cpuCfsQuotaPeriod: ''
