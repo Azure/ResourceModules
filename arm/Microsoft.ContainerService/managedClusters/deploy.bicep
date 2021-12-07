@@ -405,7 +405,7 @@ module managedCluster_agentPools 'agentPools/deploy.bicep' = [for (agentPool, in
     osSku: contains(agentPool, 'osSku') ? agentPool.osSku: ''
     osType: contains(agentPool, 'osType') ? agentPool.osType: 'Linux'
     podSubnetId: contains(agentPool, 'podSubnetId') ? agentPool.podSubnetId: ''
-    proximityPlacementGroupID: contains(agentPool, 'proximityPlacementGroupID') ? agentPool.proximityPlacementGroupID: ''
+    proximityPlacementGroupID: contains(agentPool, 'proximityPlacementGroupID') ? agentPool.proximityPlacementGroupID: null
     scaleDownMode: contains(agentPool, 'scaleDownMode') ? agentPool.scaleDownMode: ''
     scaleSetEvictionPolicy: contains(agentPool, 'scaleSetEvictionPolicy') ? agentPool.scaleSetEvictionPolicy: ''
     scaleSetPriority: contains(agentPool, 'scaleSetPriority') ? agentPool.scaleSetPriority: ''
