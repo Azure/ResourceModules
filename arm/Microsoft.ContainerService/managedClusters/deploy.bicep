@@ -359,7 +359,7 @@ module managedCluster_agentPools 'agentPools/deploy.bicep' = [for (agentPool, in
     imageGcHighThreshold: contains(agentPool, 'imageGcHighThreshold') ? agentPool.imageGcHighThreshold: 85
     imageGcLowThreshold: contains(agentPool, 'imageGcLowThreshold') ? agentPool.imageGcLowThreshold: 80
     podMaxPids: contains(agentPool, 'podMaxPids') ? agentPool.podMaxPids: -1
-    topologyManagerPolicy: contains(agentPool, 'topologyManagerPolicy') ? agentPool.topologyManagerPolicy : ''
+    topologyManagerPolicy: contains(agentPool, 'topologyManagerPolicy') ? agentPool.topologyManagerPolicy : 'none'
     kubeletDiskType: contains(agentPool, 'kubeletDiskType') ? agentPool.kubeletDiskType : ''
     swapFileSizeMB: contains(agentPool, 'swapFileSizeMB') ? agentPool.swapFileSizeMB : -1
     fsAioMaxNr: contains(agentPool, 'fsAioMaxNr') ? agentPool.fsAioMaxNr : -1
