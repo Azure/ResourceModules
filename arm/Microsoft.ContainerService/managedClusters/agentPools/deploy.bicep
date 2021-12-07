@@ -283,9 +283,17 @@ param podSubnetId string = ''
 param proximityPlacementGroupId string = ''
 
 @description('Optional. Describes how VMs are added to or removed from Agent Pools. See billing states (https://docs.microsoft.com/en-us/azure/virtual-machines/states-billing).')
-param scaleDownMode string = ''
+@allowed([
+  'Deallocate'
+  'Delete'
+])
+param scaleDownMode string = 'Delete'
 
 @description('Optional. The eviction policy specifies what to do with the VM when it is evicted. The default is Delete. For more information about eviction see spot VMs	')
+@allowed([
+  'Deallocate'
+  'Delete'
+])
 param scaleSetEvictionPolicy string = 'Delete'
 
 @description('Optional. The Virtual Machine Scale Set priority.')
@@ -405,7 +413,7 @@ resource agentPool 'Microsoft.ContainerService/managedClusters/agentPools@2021-0
     osSKU: osSku
     osType: osType
     podSubnetID: podSubnetId
-    proximityPlacementGroupID: proximityPlacementGroupId
+    //proximityPlacementGroupID: proximityPlacementGroupId
     scaleDownMode: scaleDownMode
     scaleSetEvictionPolicy: scaleSetEvictionPolicy
     scaleSetPriority: scaleSetPriority
