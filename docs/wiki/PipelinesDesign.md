@@ -159,7 +159,7 @@ Dynamic parameters that do not need to be hardcoded in the parameter file, and t
 
 For example, some modules require referencing Azure resources with the Resource ID. This ID typically contains the `subscriptionId` in the format of `/subscriptions/<<subscriptionId>>/...`. This task substitutes the `<<subscriptionId>>` with the correct value, based on the different token types.
 
-Please review the Parameter File Tokens [Design](./ParameterFileTokens) for more details on the different token types and how you can use them to remove hardcoded values from your parameter files.
+Please review the Parameter File Tokens [Design](./ParameterFileTokens.md) for more details on the different token types and how you can use them to remove hardcoded values from your parameter files.
 
 ---
 

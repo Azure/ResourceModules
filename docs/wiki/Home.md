@@ -20,9 +20,9 @@ If you're unfamiliar with Infrastructure as Code, or wonder how you can use the 
 - [Testing](./Testing.md)
   - [Design](./TestingDesign.md)
   - [Usage](./TestingUsage.md)
-- [Pipelines](./Pipelines)
-  - [Design](./PipelinesDesign.md)
-  - [Usage](./PipelinesUsage.md)
+- [Pipelines](./Pipelines.md)
+  - [Design](./PipelinesDesign.md.md)
+  - [Usage](./PipelinesUsage.md.md)
 - [Contribution Guide](./ContributionGuide.md)
 - [Known Issues](./KnownIssues.md)
 
@@ -33,7 +33,7 @@ Following you can find an abstract overview of everything in- and out-of-scope o
 ## In Scope
 - **Modules:** Rich library of resource modules - the foundation for workload or entire environments deployments
 - **Platform:** Pipelines to validate modules & publish to those that pass to a location of your choice. Available with GitHub Workflows.
-- **Documentation:** A rich documentation of best practices on [module](./Modules) design, the [platforms](./Context) and its [context](./Context), [testing](./Testing) and [pipelines](./Pipelines)
+- **Documentation:** A rich documentation of best practices on [module](./Modules) design, the [platforms](./Context) and its [context](./Context), [testing](./Testing) and [pipelines](./Pipelines.md)
 
 ## Out of Scope
 - **Orchestration:** Orchestrated solutions such as workloads or entire environments intended for production environments

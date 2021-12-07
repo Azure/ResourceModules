@@ -173,7 +173,7 @@ In case you would like to simply contribute because you, for example, want to ad
 
 ## Parameter File Tokens
 
-If you are forking or cloning the repository, you can use 'tokens' inside your parameter files. Tokens allow you to test deploying modules in your own environment (i.e. using tokens for your naming conventions), or apply other customizations to your resources (i.e. using your own subscription ID inside a Resource ID string). See details in the [Parameter File Tokens Design](./ParameterFileTokens).
+If you are forking or cloning the repository, you can use 'tokens' inside your parameter files. Tokens allow you to test deploying modules in your own environment (i.e. using tokens for your naming conventions), or apply other customizations to your resources (i.e. using your own subscription ID inside a Resource ID string). See details in the [Parameter File Tokens Design](./ParameterFileTokens.md).
 
 The repository contains a [Settings.json](https://github.com/Azure/ResourceModules/blob/main/settings.json) that enables you to define local tokens and store them in source control. The token format is a `name` and `value` pair as shown in the following example:
 
@@ -211,7 +211,7 @@ Note: There are default tokens that can be enabled on any resource that leverage
 - `<<deploymentSpId>>`: Will point to the Service Principal ID used for deployments.
 - `<<resourceGroupName>>`: Will point to the Azure Resource Group where the resources are being deployed to. (This isn't defined in the secrets section but is injected at runtime)
 
-Review [Parameter File Tokens Design](./ParameterFileTokens.md) for more details.
+Review [Parameter File Tokens Design](./ParameterFileTokens.md.md) for more details.
 
 ---
 

@@ -36,4 +36,4 @@ To contribute to the modules, set your environment up, test the updated/added mo
 
 <img src="./media/statusBadge.jpg" alt="Status Badge" height="178" width="422">
 
-Please make sure to set your environment up and also consult the ['Pipeline Design'](./PipelinesDesign) and ['Pipeline Usage'](.\PipelinesUsage) sections.
+Please make sure to set your environment up and also consult the ['Pipeline Design'](./PipelinesDesign.md) and ['Pipeline Usage'](.\PipelinesUsage) sections.
