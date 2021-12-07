@@ -340,8 +340,8 @@ module managedCluster_agentPools 'agentPools/deploy.bicep' = [for (agentPool, in
   params: {
     managedClusterName: managedCluster.name
     name: agentPool.name
-    availabilityZones: length(agentPool.availabilityZones) == 0 ? null : agentPool.availabilityZones
-    count: agentPool.count
+    availabilityZones: contains(agentPool, 'availabilityZones') ? agentPool.availabilityZones : []
+    count: contains(agentPool, 'count') ? agentPool.count : 1
     sourceResourceId: contains(agentPool, 'sourceResourceId') ? agentPool.sourceResourceId : ''
     enableAutoScaling: contains(agentPool, 'enableAutoScaling') ? agentPool.enableAutoScaling : false
     enableEncryptionAtHost: contains(agentPool, 'enableEncryptionAtHost') ? agentPool.enableEncryptionAtHost : false
@@ -411,6 +411,7 @@ module managedCluster_agentPools 'agentPools/deploy.bicep' = [for (agentPool, in
     scaleSetPriority: contains(agentPool, 'scaleSetPriority') ? agentPool.scaleSetPriority: ''
     spotMaxPrice: contains(agentPool, 'spotMaxPrice') ? agentPool.spotMaxPrice: -1
     tags: contains(agentPool, 'tags') ? agentPool.tags: {}
+    type: contains(agentPool, 'type') ? agentPool.type: ''
     maxSurge: contains(agentPool, 'maxSurge') ? agentPool.maxSurge: ''
     vmSize: contains(agentPool, 'vmSize') ? agentPool.vmSize: ''
     vnetSubnetId: contains(agentPool, 'vnetSubnetId') ? agentPool.vnetSubnetId: ''

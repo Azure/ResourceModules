@@ -6,11 +6,7 @@ param managedClusterName string
 param name string
 
 @description('Optional. The list of Availability zones to use for nodes. This can only be specified if the AgentPoolType property is "VirtualMachineScaleSets".	')
-param availabilityZones array = [
-  '1'
-  '2'
-  '3'
-]
+param availabilityZones array = []
 
 @description('Optional. Desired Number of agents (VMs) specified to host docker containers. Allowed values must be in the range of 0 to 1000 (inclusive) for user pools and in the range of 1 to 1000 (inclusive) for system pools. The default value is 1.')
 @minValue(0)
@@ -301,6 +297,9 @@ param spotMaxPrice int = -1
 @description('Optional. Tags of the resource.')
 param tags object = {}
 
+@description('Optional. The type of Agent Pool.')
+param type string = ''
+
 @description('Optional. This can either be set to an integer (e.g. "5") or a percentage (e.g. "50%"). If a percentage is specified, it is the percentage of the total agent pool size at the time of the upgrade. For percentages, fractional nodes are rounded up. If not specified, the default is 1. For more information, including best practices, see: /azure/aks/upgrade-cluster#customize-node-surge-upgrade')
 param maxSurge string = '1'
 
@@ -412,6 +411,7 @@ resource agentPool 'Microsoft.ContainerService/managedClusters/agentPools@2021-0
     scaleSetPriority: scaleSetPriority
     spotMaxPrice: spotMaxPrice
     tags: tags
+    type: type
     upgradeSettings: upgradeSettings
     vmSize: vmSize
     vnetSubnetID: vnetSubnetId
