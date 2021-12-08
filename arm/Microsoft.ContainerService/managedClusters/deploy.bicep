@@ -367,7 +367,7 @@ module managedCluster_agentPools 'agentPools/deploy.bicep' = [for (agentPool, in
     fsInotifyMaxUserWatches: contains(agentPool, 'fsInotifyMaxUserWatches') ? agentPool.fsInotifyMaxUserWatches : -1
     fsNrOpen: contains(agentPool, 'fsNrOpen') ? agentPool.fsNrOpen : -1
     kernelThreadsMax: contains(agentPool, 'kernelThreadsMax') ? agentPool.kernelThreadsMax : -1
-    netCoreNetdevMaxBacklog: contains(agentPool, 'netCoreNetdevMaxBacklog') ? agentPool.netCoreNetdevMaxBacklog : -1
+    netCoreNetdevMaxBacklog: contains(agentPool, 'netCoreNetdevMaxBacklog') ? agentPool.netCoreNetdevMaxBacklog : 1000
     netCoreOptmemMax: contains(agentPool, 'netCoreOptmemMax') ? agentPool.netCoreOptmemMax : -1
     netCoreRmemDefault: contains(agentPool, 'netCoreRmemDefault') ? agentPool.netCoreRmemDefault : -1
     netCoreRmemMax: contains(agentPool, 'netCoreRmemMax') ? agentPool.netCoreRmemMax : -1

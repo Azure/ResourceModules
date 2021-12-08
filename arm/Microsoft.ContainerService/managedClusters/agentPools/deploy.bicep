@@ -156,7 +156,9 @@ param fsNrOpen int = -1
 param kernelThreadsMax int = -1
 
 @description('Optional. Sysctl setting net.core.netdev_max_backlog.')
-param netCoreNetdevMaxBacklog int = -1
+@minValue(1000)
+@maxValue(3240000)
+param netCoreNetdevMaxBacklog int = 1000
 
 @description('Optional. Sysctl setting net.core.optmem_max.')
 param netCoreOptmemMax int = -1
