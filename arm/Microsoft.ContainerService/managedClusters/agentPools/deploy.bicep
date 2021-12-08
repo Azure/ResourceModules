@@ -274,8 +274,9 @@ param osDiskType string = 'Ephemeral'
 @allowed([
   'CBLMariner'
   'Ubuntu'
+  ''
 ])
-param osSku string = 'Ubuntu'
+param osSku string = ''
 
 @description('Optional. The operating system type. The default is Linux.')
 @allowed([
@@ -308,8 +309,9 @@ param scaleSetEvictionPolicy string = 'Delete'
 @allowed([
   'Regular'
   'Spot'
+  ''
 ])
-param scaleSetPriority string = 'Regular'
+param scaleSetPriority string = ''
 
 @description('Optional. Possible values are any decimal value greater than zero or -1 which indicates the willingness to pay any on-demand price. For more details on spot pricing, see spot VMs pricing (https://docs.microsoft.com/en-us/azure/virtual-machines/spot-vms#pricing)')
 param spotMaxPrice int = -1
@@ -321,7 +323,7 @@ param tags object = {}
 param type string = ''
 
 @description('Optional. This can either be set to an integer (e.g. "5") or a percentage (e.g. "50%"). If a percentage is specified, it is the percentage of the total agent pool size at the time of the upgrade. For percentages, fractional nodes are rounded up. If not specified, the default is 1. For more information, including best practices, see: /azure/aks/upgrade-cluster#customize-node-surge-upgrade')
-param maxSurge string = '1'
+param maxSurge string = ''
 
 @description('Optional. VM size. VM size availability varies by region. If a node contains insufficient compute resources (memory, cpu, etc) pods might fail to run correctly. For more details on restricted VM sizes, see: /azure/aks/quotas-skus-regions')
 param vmSize string = 'Standard_D2s_v3'
@@ -428,7 +430,7 @@ resource agentPool 'Microsoft.ContainerService/managedClusters/agentPools@2021-0
     proximityPlacementGroupID: !empty(proximityPlacementGroupId) ? proximityPlacementGroupId : null
     scaleDownMode: scaleDownMode
     scaleSetEvictionPolicy: scaleSetEvictionPolicy
-    scaleSetPriority: scaleSetPriority
+    scaleSetPriority: !empty(scaleSetPriority) ? scaleSetPriority : null
     spotMaxPrice: spotMaxPrice
     tags: tags
     type: type

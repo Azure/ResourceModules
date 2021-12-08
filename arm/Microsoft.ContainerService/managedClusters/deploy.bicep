@@ -408,7 +408,7 @@ module managedCluster_agentPools 'agentPools/deploy.bicep' = [for (agentPool, in
     proximityPlacementGroupId: contains(agentPool, 'proximityPlacementGroupId') ? agentPool.proximityPlacementGroupId : ''
     scaleDownMode: contains(agentPool, 'scaleDownMode') ? agentPool.scaleDownMode: 'Delete'
     scaleSetEvictionPolicy: contains(agentPool, 'scaleSetEvictionPolicy') ? agentPool.scaleSetEvictionPolicy : 'Delete'
-    scaleSetPriority: contains(agentPool, 'scaleSetPriority') ? agentPool.scaleSetPriority : 'Regular'
+    scaleSetPriority: contains(agentPool, 'scaleSetPriority') ? agentPool.scaleSetPriority : ''
     spotMaxPrice: contains(agentPool, 'spotMaxPrice') ? agentPool.spotMaxPrice : -1
     tags: contains(agentPool, 'tags') ? agentPool.tags : {}
     type: contains(agentPool, 'type') ? agentPool.type : ''
