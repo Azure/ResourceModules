@@ -14,6 +14,8 @@ Since tty is not supported within a pipelune run, az devops login is using the t
 - The '<ProjectName>' Build Service needs 'Edit build pipeline' permissions
 Reference: https://docs.microsoft.com/en-us/azure/devops/pipelines/policies/permissions?view=azure-devops#pipeline-permissions
 
+The script can be run as often as you want without breaking anything. Pipelines that already exist will be skipped.
+
 .PARAMETER OrganizationName
 Required. The name of the Azure DevOps organization.
 
