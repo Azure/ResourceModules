@@ -8,9 +8,14 @@ on:
         description: 'Remove deployed module'
         required: false
         default: 'true'
+      prerelease:
+        type: boolean
+        description: 'Publish prerelease module'
+        required: false
+        default: 'false'
   push:
-    #branches:
-    #  - main
+    branches:
+      - main
     paths:
       - '.github/actions/templates/**'
       - '.github/workflows/ms.storage.storageaccounts.yml'
@@ -45,8 +50,6 @@ jobs:
           workflowPath: '${{ env.workflowPath}}'
     outputs:
       removeDeployment: ${{ steps.get-workflow-param.outputs.removeDeployment }}
-      versioningOption: ${{ steps.get-workflow-param.outputs.versioningOption }}
-      customVersion: ${{ steps.get-workflow-param.outputs.customVersion }}
 
   ##################
   #   UNIT TESTS   #
@@ -138,7 +141,7 @@ jobs:
   ###############
   job_publish_module:
     name: 'Publish module'
-    #if: contains(fromJson('["refs/heads/main", "refs/heads/master"]'), github.ref)
+    if: contains(fromJson('["refs/heads/main", "refs/heads/master"]'), github.ref) || (${{ github.event.inputs.prerelease '}} == 'true')
     runs-on: ubuntu-20.04
     needs:
       - job_set_workflow_param
