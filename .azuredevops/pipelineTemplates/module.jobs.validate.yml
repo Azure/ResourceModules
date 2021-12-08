@@ -149,9 +149,8 @@ jobs:
               Output     = @{
                 Verbosity = 'Detailed'
               }
-            }
-          errorActionPreference: stop
-          continueOnError: true
+            } -ErrorAction 'Stop'
+          errorActionPreference: continue
 
       - task: PublishTestResults@2
         displayName: Publish Test Results
@@ -246,7 +245,7 @@ jobs:
               Output     = @{
                 Verbosity = 'Detailed'
               }
-            }
+            } -ErrorAction 'Stop'
           errorActionPreference: continue
 
       - task: PublishTestResults@2
