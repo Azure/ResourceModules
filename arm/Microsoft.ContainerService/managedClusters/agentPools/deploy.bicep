@@ -240,7 +240,7 @@ param transparentHugePageEnabled string = 'always'
 param maxCount int = -1
 
 @description('Optional. The maximum number of pods that can run on a node.')
-param maxPods int = -1
+param maxPods int = 10
 
 @description('Optional. The minimum number of nodes for auto-scaling')
 param minCount int = -1

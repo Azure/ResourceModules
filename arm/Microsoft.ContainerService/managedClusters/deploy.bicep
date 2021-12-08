@@ -393,7 +393,7 @@ module managedCluster_agentPools 'agentPools/deploy.bicep' = [for (agentPool, in
     transparentHugePageDefrag: contains(agentPool, 'transparentHugePageDefrag') ? agentPool.transparentHugePageDefrag: 'madvise'
     transparentHugePageEnabled: contains(agentPool, 'transparentHugePageEnabled') ? agentPool.transparentHugePageEnabled: 'always'
     maxCount: contains(agentPool, 'maxCount') ? agentPool.maxCount: -1
-    maxPods: contains(agentPool, 'maxPods') ? agentPool.maxPods: -1
+    maxPods: contains(agentPool, 'maxPods') ? agentPool.maxPods: 10
     minCount: contains(agentPool, 'minCount') ? agentPool.minCount: -1
     mode: contains(agentPool, 'mode') ? agentPool.mode: ''
     nodeLabels: contains(agentPool, 'nodeLabels') ? agentPool.nodeLabels: {}
