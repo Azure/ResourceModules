@@ -455,7 +455,7 @@ When using modules from parent resources you will need to specify a name that, w
 There are some constraints that needs to be considered when naming the deployment:
 
 - Deployment name length can't exceed 64 chars.
-- Two deployments with the same name created in different location will fail.
+- Two deployments with the same name created in different Azure locations (e.g. WestEurope & EastUS) will fail.
 - Using the same deployment name more than once, will surface only the most recent deployed one in the Azure Portal.
 - If more than one deployment with the same name runs at the same time, race condition might happen.
 - Human-readable names are preferable, even if not necessary.
