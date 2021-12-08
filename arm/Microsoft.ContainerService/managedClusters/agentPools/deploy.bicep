@@ -14,7 +14,7 @@ param availabilityZones array = []
 param count int = 1
 
 @description('Optional. This is the ARM ID of the source object to be used to create the target object.')
-param sourceResourceId string
+param sourceResourceId string = ''
 
 @description('Optional. Whether to enable auto-scaler')
 @allowed([
@@ -348,7 +348,7 @@ resource managedCluster 'Microsoft.ContainerService/managedClusters@2021-08-01' 
 }
 
 var creationData = {
-  sourceResourceId: sourceResourceId
+  sourceResourceId: !empty(sourceResourceId) ? sourceResourceId : null
 }
 
 var kubeletConfig = {
@@ -413,7 +413,7 @@ resource agentPool 'Microsoft.ContainerService/managedClusters/agentPools@2021-0
   properties: {
     availabilityZones: availabilityZones
     count: count
-    //creationData: creationData
+    creationData: creationData
     enableAutoScaling: enableAutoScaling
     enableEncryptionAtHost: enableEncryptionAtHost
     enableFIPS: enableFIPS
