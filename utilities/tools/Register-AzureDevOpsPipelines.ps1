@@ -68,6 +68,15 @@ Registers all pipelines in the default path in the DevOps project [Contoso/CICD]
 
 .NOTES
 You'll need the 'azure-devops' extension to run this function: `az extension add --upgrade -n azure-devops`
+
+The steps you'd want to follow are
+- (if pipelines are in GitHub) Create a service connection to the target GitHub repository using e.g. oAuth
+- Create a PAT token for the Azure DevOps environment in which you want to register the pipelines in
+- Run this script with the corresponding input parameters
+- Create any required element required to execute the pipelines. For example:
+  - Library group(s) used in the pipeline(s)
+  - Service connection(s) used in the pipeline(s)
+  - Agent pool(s) used in the pipeline(s) if not using the default available agents
 #>
 function Register-AzureDevOpsPipelines {
 
