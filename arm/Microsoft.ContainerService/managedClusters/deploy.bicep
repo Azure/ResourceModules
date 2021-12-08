@@ -371,7 +371,7 @@ module managedCluster_agentPools 'agentPools/deploy.bicep' = [for (agentPool, in
     netCoreOptmemMax: contains(agentPool, 'netCoreOptmemMax') ? agentPool.netCoreOptmemMax : -1
     netCoreRmemDefault: contains(agentPool, 'netCoreRmemDefault') ? agentPool.netCoreRmemDefault : -1
     netCoreRmemMax: contains(agentPool, 'netCoreRmemMax') ? agentPool.netCoreRmemMax : -1
-    netCoreSomaxconn: contains(agentPool, 'netCoreSomaxconn') ? agentPool.netCoreSomaxconn : null
+    netCoreSomaxconn: contains(agentPool, 'netCoreSomaxconn') ? agentPool.netCoreSomaxconn : 4096
     netCoreWmemDefault: contains(agentPool, 'netCoreWmemDefault') ? agentPool.netCoreWmemDefault : -1
     netCoreWmemMax: contains(agentPool, 'netCoreWmemMax') ? agentPool.netCoreWmemMax : -1
     netIpv4IpLocalPortRange: contains(agentPool, 'netIpv4IpLocalPortRange') ? agentPool.netIpv4IpLocalPortRange : ''
