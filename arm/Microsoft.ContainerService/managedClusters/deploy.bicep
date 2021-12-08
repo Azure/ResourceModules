@@ -397,7 +397,7 @@ module managedCluster_agentPools 'agentPools/deploy.bicep' = [for (agentPool, in
     minCount: contains(agentPool, 'minCount') ? agentPool.minCount: -1
     mode: contains(agentPool, 'mode') ? agentPool.mode: ''
     nodeLabels: contains(agentPool, 'nodeLabels') ? agentPool.nodeLabels: {}
-    nodePublicIpPrefixId: contains(agentPool, 'nodePublicIpPrefixId') ? agentPool.nodePublicIpPrefixId: ''
+    nodePublicIpPrefixId: contains(agentPool, 'nodePublicIpPrefixId') ? agentPool.nodePublicIpPrefixId: null
     nodeTaints: contains(agentPool, 'nodeTaints') ? agentPool.nodeTaints: []
     orchestratorVersion: contains(agentPool, 'orchestratorVersion') ? agentPool.orchestratorVersion: ''
     osDiskSizeGB: contains(agentPool, 'osDiskSizeGB') ? agentPool.osDiskSizeGB: -1

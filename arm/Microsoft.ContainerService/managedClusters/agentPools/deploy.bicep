@@ -252,7 +252,7 @@ param mode string = ''
 param nodeLabels object = {}
 
 @description('Optional. ResourceId of the node PublicIPPrefix')
-param nodePublicIpPrefixId string = ''
+param nodePublicIpPrefixId string
 
 @description('Optional. The taints added to new nodes during node pool create and scale. For example, key=value:NoSchedule.	')
 param nodeTaints array = []
