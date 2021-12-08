@@ -14,7 +14,7 @@ param availabilityZones array = []
 param count int = 1
 
 @description('Optional. This is the ARM ID of the source object to be used to create the target object.')
-param sourceResourceId string = ''
+param sourceResourceId string
 
 @description('Optional. Whether to enable auto-scaler')
 @allowed([
