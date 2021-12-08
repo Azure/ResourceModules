@@ -136,6 +136,8 @@ param topologyManagerPolicy string = 'none'
 param kubeletDiskType string = ''
 
 @description('Optional. The size in MB of a swap file that will be created on each node.')
+@minValue(1)
+@maxValue(2147483647)
 param swapFileSizeMB int = -1
 
 @description('Optional. Sysctl setting fs.aio-max-nr.')
@@ -397,7 +399,7 @@ var sysctls = {
 }
 
 var linuxOSConfig = {
-  swapFileSizeMB: swapFileSizeMB
+  swapFileSizeMB: !(swapFileSizeMB == -1) ? swapFileSizeMB : null
   sysctls: sysctls
   transparentHugePageDefrag: transparentHugePageDefrag
   transparentHugePageEnabled: transparentHugePageEnabled
