@@ -52,7 +52,14 @@ param enableNodePublicIP bool = false
 param enableUltraSSD bool = false
 
 @description('Optional. GPUInstanceProfile to be used to specify GPU MIG instance profile for supported GPU VM SKU.')
-param gpuInstanceProfile string = ''
+@allowed([
+  'MIG1g'
+  'MIG2g'
+  'MIG3g'
+  'MIG4g'
+  'MIG7g'
+])
+param gpuInstanceProfile string = 'MIG1g'
 
 @description('Optional. Allowed list of unsafe sysctls or unsafe sysctl patterns (ending in *).')
 @allowed([

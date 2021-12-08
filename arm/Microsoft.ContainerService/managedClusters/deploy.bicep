@@ -348,7 +348,7 @@ module managedCluster_agentPools 'agentPools/deploy.bicep' = [for (agentPool, in
     enableFIPS: contains(agentPool, 'enableFIPS') ? agentPool.enableFIPS : false
     enableNodePublicIP: contains(agentPool, 'enableNodePublicIP') ? agentPool.enableNodePublicIP : false
     enableUltraSSD: contains(agentPool, 'enableUltraSSD') ? agentPool.enableUltraSSD : false
-    gpuInstanceProfile: contains(agentPool, 'gpuInstanceProfile') ? agentPool.gpuInstanceProfile: ''
+    gpuInstanceProfile: contains(agentPool, 'gpuInstanceProfile') ? agentPool.gpuInstanceProfile: 'MIG1g'
     allowedUnsafeSysctls: contains(agentPool, 'allowedUnsafeSysctls') ? agentPool.allowedUnsafeSysctls: []
     containerLogMaxFiles: contains(agentPool, 'containerLogMaxFiles') ? agentPool.containerLogMaxFiles: 5
     containerLogMaxSizeMB: contains(agentPool, 'containerLogMaxSizeMB') ? agentPool.containerLogMaxSizeMB: -1
