@@ -413,7 +413,7 @@ module managedCluster_agentPools 'agentPools/deploy.bicep' = [for (agentPool, in
     tags: contains(agentPool, 'tags') ? agentPool.tags: {}
     type: contains(agentPool, 'type') ? agentPool.type: ''
     maxSurge: contains(agentPool, 'maxSurge') ? agentPool.maxSurge: ''
-    vmSize: contains(agentPool, 'vmSize') ? agentPool.vmSize: ''
+    vmSize: contains(agentPool, 'vmSize') ? agentPool.vmSize: 'Standard_D2s_v3'
     vnetSubnetId: contains(agentPool, 'vnetSubnetId') ? agentPool.vnetSubnetId: ''
     workloadRuntime: contains(agentPool, 'workloadRuntime') ? agentPool.workloadRuntime: ''
   }
