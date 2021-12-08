@@ -252,7 +252,7 @@ param mode string = ''
 param nodeLabels object = {}
 
 @description('Optional. ResourceId of the node PublicIPPrefix')
-param nodePublicIpPrefixId string
+param nodePublicIpPrefixId string = ''
 
 @description('Optional. The taints added to new nodes during node pool create and scale. For example, key=value:NoSchedule.	')
 param nodeTaints array = []
@@ -409,7 +409,7 @@ resource agentPool 'Microsoft.ContainerService/managedClusters/agentPools@2021-0
     minCount: minCount
     mode: mode
     nodeLabels: nodeLabels
-    nodePublicIPPrefixID: nodePublicIpPrefixId
+    nodePublicIPPrefixID: !empty(nodePublicIpPrefixId) ? nodePublicIpPrefixId : null
     nodeTaints: nodeTaints
     orchestratorVersion: orchestratorVersion
     osDiskSizeGB: osDiskSizeGB
