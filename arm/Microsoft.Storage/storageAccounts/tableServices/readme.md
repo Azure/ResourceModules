@@ -6,7 +6,7 @@ This module deploys a storage account table service
 
 | Resource Type | API Version |
 | :-- | :-- |
-| `Microsoft.Insights/diagnosticSettings` | 2017-05-01-preview |
+| `Microsoft.Insights/diagnosticSettings` | 2021-05-01-preview |
 | `Microsoft.Storage/storageAccounts/tableServices` | 2021-04-01 |
 | `Microsoft.Storage/storageAccounts/tableServices/tables` | 2021-06-01 |
 
@@ -24,7 +24,7 @@ This module deploys a storage account table service
 | `name` | string | `default` |  | Optional. The name of the table service |
 | `storageAccountName` | string |  |  | Required. Name of the Storage Account. |
 | `tables` | _[tables](tables/readme.md)_ array | `[]` |  | Optional. tables to create. |
-| `workspaceId` | string |  |  | Optional. Resource ID of log analytics. |
+| `workspaceId` | string |  |  | Optional. Resource ID of a log analytics workspace. |
 
 ## Outputs
 
@@ -36,5 +36,6 @@ This module deploys a storage account table service
 
 ## Template references
 
+- [Diagnosticsettings](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Insights/2021-05-01-preview/diagnosticSettings)
 - [Storageaccounts/Tableservices](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Storage/2021-04-01/storageAccounts/tableServices)
 - [Storageaccounts/Tableservices/Tables](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Storage/2021-06-01/storageAccounts/tableServices/tables)

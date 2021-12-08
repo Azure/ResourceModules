@@ -6,7 +6,7 @@ This module deploys an Azure SQL Server.
 
 | Resource Type | API Version |
 | :-- | :-- |
-| `Microsoft.Insights/diagnosticSettings` | 2017-05-01-preview |
+| `Microsoft.Insights/diagnosticSettings` | 2021-05-01-preview |
 | `Microsoft.Sql/servers/databases` | 2021-02-01-preview |
 
 ## Parameters
@@ -24,7 +24,7 @@ This module deploys an Azure SQL Server.
 | `isLedgerOn` | bool |  |  | Optional. Whether or not this database is a ledger database, which means all tables in the database are ledger tables. Note: the value of this property cannot be changed after the database has been created. |
 | `licenseType` | string |  |  | Optional. The license type to apply for this database. |
 | `location` | string | `[resourceGroup().location]` |  | Optional. Location for all resources. |
-| `logsToEnable` | array | `[SQLInsights,AutomaticTuning, QueryStoreRuntimeStatistics, QueryStoreWaitStatistics, Errors, DatabaseWaitStatistics, Timouts, Blocks, Deadlocks]` | `[SQLInsights,AutomaticTuning, QueryStoreRuntimeStatistics, QueryStoreWaitStatistics, Errors, DatabaseWaitStatistics, Timouts, Blocks, Deadlocks]` | Optional. The name of logs that will be streamed. |
+| `logsToEnable` | array | `[SQLInsights, AutomaticTuning, QueryStoreRuntimeStatistics, QueryStoreWaitStatistics, Errors, DatabaseWaitStatistics, Timouts, Blocks, Deadlocks]` | `[SQLInsights, AutomaticTuning, QueryStoreRuntimeStatistics, QueryStoreWaitStatistics, Errors, DatabaseWaitStatistics, Timouts, Blocks, Deadlocks]` | Optional. The name of logs that will be streamed. |
 | `maintenanceConfigurationId` | string |  |  | Optional. Maintenance configuration ID assigned to the database. This configuration defines the period when the maintenance updates will occur. |
 | `maxSizeBytes` | int |  |  | Optional. The max size of the database expressed in bytes. |
 | `metricsToEnable` | array | `[Basic]` | `[Basic]` | Optional. The name of metrics that will be streamed. |
@@ -67,4 +67,5 @@ Tag names and tag values can be provided as needed. A tag can be left without a 
 
 ## Template references
 
+- [Diagnosticsettings](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Insights/2021-05-01-preview/diagnosticSettings)
 - [Servers/Databases](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Sql/2021-02-01-preview/servers/databases)

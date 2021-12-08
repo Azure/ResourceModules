@@ -7,7 +7,7 @@ This module can be used to deploy a file share service into a storage account.
 | Resource Type | API Version |
 | :-- | :-- |
 | `Microsoft.Authorization/roleAssignments` | 2020-04-01-preview |
-| `Microsoft.Insights/diagnosticSettings` | 2017-05-01-preview |
+| `Microsoft.Insights/diagnosticSettings` | 2021-05-01-preview |
 | `Microsoft.Storage/storageAccounts/fileServices` | 2021-04-01 |
 | `Microsoft.Storage/storageAccounts/fileServices/shares` | 2019-06-01 |
 
@@ -27,7 +27,7 @@ This module can be used to deploy a file share service into a storage account.
 | `shareDeleteRetentionPolicy` | object | `{object}` |  | The service properties for soft delete. |
 | `shares` | _[shares](shares/readme.md)_ array | `[]` |  | Optional. File shares to create. |
 | `storageAccountName` | string |  |  | Required. Name of the Storage Account. |
-| `workspaceId` | string |  |  | Optional. Resource ID of log analytics. |
+| `workspaceId` | string |  |  | Optional. Resource ID of a log analytics workspace. |
 
 ## Outputs
 
@@ -40,5 +40,6 @@ This module can be used to deploy a file share service into a storage account.
 ## Template references
 
 - [Roleassignments](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2020-04-01-preview/roleAssignments)
+- [Diagnosticsettings](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Insights/2021-05-01-preview/diagnosticSettings)
 - [Storageaccounts/Fileservices](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Storage/2021-04-01/storageAccounts/fileServices)
 - [Storageaccounts/Fileservices/Shares](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Storage/2019-06-01/storageAccounts/fileServices/shares)
