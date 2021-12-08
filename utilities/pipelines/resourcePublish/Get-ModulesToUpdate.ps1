@@ -125,7 +125,7 @@ function Get-TemplateFileToUpdate {
 
     $TemplateFilesToUpdate = $ModifiedModuleFiles | ForEach-Object {
         Find-TemplateFile -Path $_.FullName -Verbose
-    } | Sort-Object -Property 'FullName' -Unique -Descending
+    } | Sort-Object -Property FullName -Unique -Descending
 
     if ($TemplateFilesToUpdate.Count -eq 0) {
         throw 'No template file found in the modified module.'
@@ -335,32 +335,33 @@ function Get-ModulesToUpdate {
     )
 
     $ModuleFolderPath = Split-Path $TemplateFilePath -Parent
-    $TemplateFilesToUpdate = Get-TemplateFileToUpdate -ModuleFolderPath $ModuleFolderPath | Sort-Object 'FullName' -Descending
+    $TemplateFilesToUpdate = Get-TemplateFileToUpdate -ModuleFolderPath $ModuleFolderPath | Sort-Object FullName -Descending
 
     $ModulesToUpdate = [System.Collections.ArrayList]@()
-
     foreach ($TemplateFileToUpdate in $TemplateFilesToUpdate) {
-        $ModuleVersion = Get-NewModuleVersion -TemplateFilePath $TemplateFileToUpdate.FullName
+        $ModuleVersion = Get-NewModuleVersion -TemplateFilePath $TemplateFileToUpdate.FullName -Verbose
         $ModulesToUpdate += @{
-            Version      = $ModuleVersion
+            Version          = $ModuleVersion
             TemplateFilePath = $TemplateFileToUpdate.FullName
         }
 
-        $ParentTemplateFilesToUpdate = Get-ParentModuleTemplateFile -TemplateFilePath $_.FullName -Recurse
+        $ParentTemplateFilesToUpdate = Get-ParentModuleTemplateFile -TemplateFilePath $TemplateFileToUpdate.FullName -Recurse
+        Write-Verbose "Found [$($ParentTemplateFilesToUpdate.count)] parent template files to update"
         foreach ($ParentTemplateFileToUpdate in $ParentTemplateFilesToUpdate) {
             $ParentModuleVersion = Get-NewModuleVersion -TemplateFilePath $ParentTemplateFileToUpdate.FullName
 
             $ModulesToUpdate += @{
-                Version      = $ParentModuleVersion
+                Version          = $ParentModuleVersion
                 TemplateFilePath = $ParentTemplateFileToUpdate.FullName
             }
         }
     }
 
-    $ModulesToUpdate = $ModulesToUpdate | Sort-Object 'TemplateFilePath' -Descending -Unique
+    $ModulesToUpdate = $ModulesToUpdate | Sort-Object TemplateFilePath -Descending -Unique
 
+    Write-Verbose 'Update the following modules:'
     $ModulesToUpdate | ForEach-Object {
-        Write-Verbose ('Update module: [{0}] [{1}] ' -f $_.TemplateFilePath, $_.Version)
+        Write-Verbose (' - [{0}] [{1}] ' -f $_.Version, $_.TemplateFilePath)
     }
 
     return $ModulesToUpdate
