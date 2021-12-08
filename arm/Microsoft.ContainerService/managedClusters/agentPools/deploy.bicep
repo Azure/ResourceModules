@@ -353,7 +353,7 @@ var creationData = {
 
 var kubeletConfig = {
   allowedUnsafeSysctls: allowedUnsafeSysctls
-  containerLogMaxFiles: !(containerLogMaxFiles == -1) ? containerLogMaxFiles : null
+  containerLogMaxFiles: containerLogMaxFiles
   containerLogMaxSizeMB: !(containerLogMaxSizeMB == -1) ? containerLogMaxSizeMB : null
   cpuCfsQuota: cpuCfsQuota
   cpuCfsQuotaPeriod: cpuCfsQuotaPeriod
