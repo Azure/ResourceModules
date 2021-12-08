@@ -28,12 +28,9 @@ Defaults to 'Azure/ResourceModules'
 Optional. The type of source repository. Either 'GitHub' or 'tfsgit' (for Azure DevOps).
 Defaults to 'GitHub'.
 
-.PARAMETER GitHubPAT
-Optional. A PAT token for the GitHub soure repository that contains the pipeline files. Only required if files are hosted in GitHub.
-Needs at least the permissions:
-- admin:repo_hook
-- repo
-- user
+.PARAMETER GitHubServiceConnectionName
+Optional. The pre-created service connection to the GitHub source repository if the pipeline files are in GitHub.
+It is recommended to create the service connection using oAuth.
 
 .PARAMETER AzureDevOpsPAT
 Required. The access token whith appropirate permissions to create Azure Pipelines.
@@ -89,11 +86,14 @@ function Register-AzureDevOpsPipelines {
         [string] $SourceRepository = 'Azure/ResourceModules',
 
         [Parameter(Mandatory = $false)]
-        [ValidateSet('GitHub', 'tfsgit')]
-        [string] $SourceRepositoryType = 'GitHub',
+        [ValidateSet('gitHub', 'tfsgit')]
+        [string] $SourceRepositoryType = 'gitHub',
 
         [Parameter(Mandatory = $false)]
         [string] $GitHubPAT,
+
+        [Parameter(Mandatory = $false)]
+        [string] $GitHubServiceConnectionName = $SourceRepository,
 
         [Parameter(Mandatory = $false)]
         [string] $BranchName = 'main',
@@ -112,7 +112,8 @@ function Register-AzureDevOpsPipelines {
     Write-Verbose '# Local Data #'
     Write-Verbose '##############'
     Write-Verbose 'Identify relevant Azure Pipelines to be updated'
-    $RelativePipelinePath = Join-Path (Get-Location).Path $RelativePipelinePath
+    # $RelativePipelinePath = Join-Path (Get-Location).Path $RelativePipelinePath
+    $RelativePipelinePath = $RelativePipelinePath
     $localPipelinePaths = (Get-ChildItem -Path $RelativePipelinePath -Recurse -Filter '*.yml').FullName
     Write-Verbose ('Found [{0}] local Pipeline(s) in folder path [{1}]' -f $localPipelinePaths.Count, $RelativePipelinePath)
 
@@ -156,16 +157,7 @@ function Register-AzureDevOpsPipelines {
     Write-Verbose '# Processing #'
     Write-Verbose '##############'
     if ($SourceRepositoryType -eq 'GitHub') {
-        $env:AZURE_DEVOPS_EXT_GITHUB_PAT = $GitHubPAT
-        $azureDevOpsToGitHubConnection = az devops service-endpoint list -o 'Json' | ConvertFrom-Json | Where-Object { $_.Name -eq $SourceRepository }
-        if (-not $azureDevOpsToGitHubConnection) {
-            Write-Verbose "Create service connection [$SourceRepository]"
-            if ($PSCmdlet.ShouldProcess("GitHub service connection [$SourceRepository]", 'Create')) {
-                $azureDevOpsToGitHubConnection = az devops service-endpoint github create --github-url $organization --name $SourceRepository -o 'Json' | ConvertFrom-Json
-            }
-        } else {
-            Write-Verbose "Service connection [$SourceRepository] already exists"
-        }
+        $azureDevOpsToGitHubConnection = az devops service-endpoint list -o 'Json' | ConvertFrom-Json | Where-Object { $_.Name -eq $GitHubServiceConnectionName }
     }
 
     Write-Verbose '----------------------------------'
