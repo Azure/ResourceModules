@@ -361,7 +361,7 @@ module managedCluster_agentPools 'agentPools/deploy.bicep' = [for (agentPool, in
     podMaxPids: contains(agentPool, 'podMaxPids') ? agentPool.podMaxPids: -1
     topologyManagerPolicy: contains(agentPool, 'topologyManagerPolicy') ? agentPool.topologyManagerPolicy : 'none'
     kubeletDiskType: contains(agentPool, 'kubeletDiskType') ? agentPool.kubeletDiskType : ''
-    swapFileSizeMB: contains(agentPool, 'swapFileSizeMB') ? agentPool.swapFileSizeMB : -1
+    swapFileSizeMB: contains(agentPool, 'swapFileSizeMB') ? agentPool.swapFileSizeMB : 1500
     fsAioMaxNr: contains(agentPool, 'fsAioMaxNr') ? agentPool.fsAioMaxNr : -1
     fsFileMax: contains(agentPool, 'fsFileMax') ? agentPool.fsFileMax : -1
     fsInotifyMaxUserWatches: contains(agentPool, 'fsInotifyMaxUserWatches') ? agentPool.fsInotifyMaxUserWatches : -1
