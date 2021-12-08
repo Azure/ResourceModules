@@ -421,7 +421,7 @@ resource agentPool 'Microsoft.ContainerService/managedClusters/agentPools@2021-0
     nodeTaints: nodeTaints
     orchestratorVersion: orchestratorVersion
     osDiskSizeGB: !(osDiskSizeGB == -1) ? osDiskSizeGB : null
-    osDiskType: !empty(osDiskType) ? osDiskType : null
+    osDiskType: osDiskType
     osSKU: !empty(osSku) ? osSku : null
     osType: osType
     podSubnetID: !empty(podSubnetId) ? podSubnetId : null
