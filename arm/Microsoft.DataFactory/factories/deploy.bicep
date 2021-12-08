@@ -179,7 +179,7 @@ resource dataFactory_lock 'Microsoft.Authorization/locks@2016-09-01' = if (lock 
   scope: dataFactory
 }
 
-resource dataFactory_diagnosticSettings 'Microsoft.Insights/diagnosticsettings@2017-05-01-preview' = if ((!empty(diagnosticStorageAccountId)) || (!empty(workspaceId))) {
+resource dataFactory_diagnosticSettings 'Microsoft.Insights/diagnosticsettings@2021-05-01-preview' = if ((!empty(diagnosticStorageAccountId)) || (!empty(workspaceId))) {
   name: '${dataFactory.name}-diagnosticSettings'
   properties: {
     storageAccountId: (empty(diagnosticStorageAccountId) ? null : diagnosticStorageAccountId)

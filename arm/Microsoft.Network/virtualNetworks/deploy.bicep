@@ -11,6 +11,10 @@ param addressPrefixes array
 @minLength(1)
 param subnets array
 
+@description('Optional. Resource Group where NSGs are deployed, if different than VNET Resource Group.')
+@minLength(1)
+param nsgResourceGroup string = resourceGroup().name
+
 @description('Optional. DNS Servers associated to the Virtual Network.')
 param dnsServers array = []
 
@@ -116,7 +120,7 @@ resource virtualNetwork 'Microsoft.Network/virtualNetworks@2021-05-01' = {
       name: item.name
       properties: {
         addressPrefix: item.addressPrefix
-        networkSecurityGroup: contains(item, 'networkSecurityGroupName') ? (empty(item.networkSecurityGroupName) ? null : json('{"id": "${resourceId('Microsoft.Network/networkSecurityGroups', item.networkSecurityGroupName)}"}')) : null
+        networkSecurityGroup: contains(item, 'networkSecurityGroupName') ? (empty(item.networkSecurityGroupName) ? null : json('{"id": "${resourceId(nsgResourceGroup, 'Microsoft.Network/networkSecurityGroups', item.networkSecurityGroupName)}"}')) : null
         routeTable: contains(item, 'routeTableName') ? (empty(item.routeTableName) ? null : json('{"id": "${resourceId('Microsoft.Network/routeTables', item.routeTableName)}"}')) : null
         serviceEndpoints: contains(item, 'serviceEndpoints') ? (empty(item.serviceEndpoints) ? null : item.serviceEndpoints) : null
         delegations: contains(item, 'delegations') ? (empty(item.delegations) ? null : item.delegations) : null
@@ -151,7 +155,7 @@ resource virtualNetwork_lock 'Microsoft.Authorization/locks@2016-09-01' = if (lo
   scope: virtualNetwork
 }
 
-resource appServiceEnvironment_diagnosticSettings 'Microsoft.Insights/diagnosticSettings@2017-05-01-preview' = if (!empty(diagnosticStorageAccountId) || !empty(workspaceId) || !empty(eventHubAuthorizationRuleId) || !empty(eventHubName)) {
+resource appServiceEnvironment_diagnosticSettings 'Microsoft.Insights/diagnosticSettings@2021-05-01-preview' = if (!empty(diagnosticStorageAccountId) || !empty(workspaceId) || !empty(eventHubAuthorizationRuleId) || !empty(eventHubName)) {
   name: '${virtualNetwork.name}-diagnosticSettings'
   properties: {
     storageAccountId: empty(diagnosticStorageAccountId) ? null : diagnosticStorageAccountId
