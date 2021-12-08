@@ -150,7 +150,8 @@ jobs:
                 Verbosity = 'Detailed'
               }
             }
-          errorActionPreference: continue
+          errorActionPreference: stop
+          continueOnError: true
 
       - task: PublishTestResults@2
         displayName: Publish Test Results
