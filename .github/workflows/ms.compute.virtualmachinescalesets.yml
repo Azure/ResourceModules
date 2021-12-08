@@ -75,22 +75,7 @@ jobs:
         with:
           fetch-depth: 0
       - name: 'Test module'
-        uses: ./.github/actions/templates/validateModuleGeneral
-        with:
-          modulePath: '${{ env.modulePath }}'
-
-  # Global API tests
-  # ----------------
-  job_tests_module_global_api:
-    runs-on: ubuntu-20.04
-    name: 'Run global API module tests'
-    steps:
-      - name: 'Checkout'
-        uses: actions/checkout@v2
-        with:
-          fetch-depth: 0
-      - name: 'Test module'
-        uses: ./.github/actions/templates/validateModuleApis
+        uses: ./.github/actions/templates/validateModuleSetup
         with:
           modulePath: '${{ env.modulePath }}'
 
@@ -169,8 +154,7 @@ jobs:
       - name: Set environment variables
         uses: deep-mm/set-variables@v1.0
         with:
-          # Name of variable file
-          variableFileName: 'variables.module' # Don't write .json here
+          variableFileName: 'variables.module'
       - name: 'Publish module'
         uses: ./.github/actions/templates/publishModule
         with:
