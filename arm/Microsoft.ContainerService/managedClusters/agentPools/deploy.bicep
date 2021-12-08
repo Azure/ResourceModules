@@ -338,9 +338,9 @@ resource managedCluster 'Microsoft.ContainerService/managedClusters@2021-08-01' 
   name: managedClusterName
 }
 
-var creationData = {
-  sourceResourceId: !empty(sourceResourceId) ?  sourceResourceId : null
-}
+var creationData = !empty(sourceResourceId) ? {
+  sourceResourceId: sourceResourceId
+} : null
 
 var kubeletConfig = {
   allowedUnsafeSysctls: allowedUnsafeSysctls
