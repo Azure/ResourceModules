@@ -93,7 +93,7 @@ Each module should come with a `.bicep` folder with a least the `nested_cuaId.bi
 Use the following naming standard for module files and folders:
 
 - Module folders are in camelCase and their name reflects the main resource type of the Bicep module they are hosting (e.g. `storageAccounts`, `virtualMachines`).
-- Cross-referenced and providers resource modules are placed in the `.bicep` subfolder and named `nested_<crossReferencedResourceType>.bicep`
+- Cross-referenced and extension resource modules are placed in the `.bicep` subfolder and named `nested_<crossReferencedResourceType>.bicep`
 
   ``` txt
   Microsoft.<Provider>
@@ -125,7 +125,7 @@ Use the following naming standard for module files and folders:
 
 ## Patterns
 
-This sections shows a few common patterns among resources that are usually very similar (e.g. providers).
+This section details patterns among extension resources that are usually very similar in their structure among all modules supporting them:
 
 - [Locks](#locks)
 - [RBAC](#rbac)
@@ -134,7 +134,7 @@ This sections shows a few common patterns among resources that are usually very 
 
 ### Locks
 
-The locks provider can be added as a `resource` to the resource template directly.
+The locks extension can be added as a `resource` to the resource template directly.
 
 ```bicep
 @allowed([
@@ -446,7 +446,7 @@ Within a bicep file, use the following conventions:
 ## Modules
 
   - Module symbolic names are in camel_Snake_Case, following the schema `<mainResourceType>_<referencedResourceType>` e.g. `storageAccount_fileServices`, `virtualMachine_nic`, `resourceGroup_rbac`.
-  - Modules enable you to reuse code from a Bicep file in other Bicep files. As such they're normally leveraged for deploying child resources (e.g. file services in a storage account), cross referenced resources (e.g. network interface in a virtual machine) or providers (e.g. role assignment in a resource group).
+  - Modules enable you to reuse code from a Bicep file in other Bicep files. As such they're normally leveraged for deploying child resources (e.g. file services in a storage account), cross referenced resources (e.g. network interface in a virtual machine) or extension resources (e.g. role assignment in a resource group).
 
 ### Deployment names
 
@@ -461,6 +461,20 @@ There are some constraints that needs to be considered when naming the deploymen
 - Human-readable names are preferable, even if not necessary.
 
 While exceptions might be needed, the following guidance should be followed as much as possible:
+
+- When deploying more than one resource of the same referenced module is needed, we leverage loops using integer index and items in an array as per [Bicep loop syntax](https://docs.microsoft.com/en-us/azure/azure-resource-manager/bicep/loops#loop-syntax). In this case we also use `-${index}` as a suffix of the deployment name to avoid race condition:
+
+  ```
+  module symbolic_name 'path/to/referenced/module/deploy.bicep' = [for (<item>, <index>) in <collection>: {
+    name: '<deploymentName>-${index}'
+    ...
+  }]
+  ```
+  > **Example**: for the `roleAssignment` deployment in the key vault `secrets` template
+  > ```
+  >   module secret_rbac '.bicep/nested_rbac.bicep' = [for (roleAssignment, index) in roleAssignments: {
+  >     name: '${deployment().name}-Rbac-${index}'
+  > ```
 
 - For referenced resources of the top-level resource inside the top-level template use the following naming structure:
 
@@ -481,6 +495,9 @@ While exceptions might be needed, the following guidance should be followed as m
   > ```
   > name: '${deployment().name}-Table-${index}'
   > ```
+
+
+
 
 ## Outputs
 
