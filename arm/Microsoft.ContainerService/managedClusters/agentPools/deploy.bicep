@@ -275,7 +275,7 @@ param osDiskType string = 'Ephemeral'
   'CBLMariner'
   'Ubuntu'
 ])
-param osSku string
+param osSku string = 'Ubuntu'
 
 @description('Optional. The operating system type. The default is Linux.')
 @allowed([

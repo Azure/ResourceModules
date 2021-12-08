@@ -390,32 +390,32 @@ module managedCluster_agentPools 'agentPools/deploy.bicep' = [for (agentPool, in
     vmMaxMapCount: contains(agentPool, 'vmMaxMapCount') ? agentPool.vmMaxMapCount : -1
     vmSwappiness: contains(agentPool, 'vmSwappiness') ? agentPool.vmSwappiness : -1
     vmVfsCachePressure: contains(agentPool, 'vmVfsCachePressure') ? agentPool.vmVfsCachePressure : -1
-    transparentHugePageDefrag: contains(agentPool, 'transparentHugePageDefrag') ? agentPool.transparentHugePageDefrag: 'madvise'
-    transparentHugePageEnabled: contains(agentPool, 'transparentHugePageEnabled') ? agentPool.transparentHugePageEnabled: 'always'
-    maxCount: contains(agentPool, 'maxCount') ? agentPool.maxCount: -1
-    maxPods: contains(agentPool, 'maxPods') ? agentPool.maxPods: -1
-    minCount: contains(agentPool, 'minCount') ? agentPool.minCount: -1
+    transparentHugePageDefrag: contains(agentPool, 'transparentHugePageDefrag') ? agentPool.transparentHugePageDefrag : 'madvise'
+    transparentHugePageEnabled: contains(agentPool, 'transparentHugePageEnabled') ? agentPool.transparentHugePageEnabled : 'always'
+    maxCount: contains(agentPool, 'maxCount') ? agentPool.maxCount : -1
+    maxPods: contains(agentPool, 'maxPods') ? agentPool.maxPods : -1
+    minCount: contains(agentPool, 'minCount') ? agentPool.minCount : -1
     mode: contains(agentPool, 'mode') ? agentPool.mode: ''
-    nodeLabels: contains(agentPool, 'nodeLabels') ? agentPool.nodeLabels: {}
+    nodeLabels: contains(agentPool, 'nodeLabels') ? agentPool.nodeLabels : {}
     nodePublicIpPrefixId: contains(agentPool, 'nodePublicIpPrefixId') ? agentPool.nodePublicIpPrefixId: ''
-    nodeTaints: contains(agentPool, 'nodeTaints') ? agentPool.nodeTaints: []
+    nodeTaints: contains(agentPool, 'nodeTaints') ? agentPool.nodeTaints : []
     orchestratorVersion: contains(agentPool, 'orchestratorVersion') ? agentPool.orchestratorVersion: ''
     osDiskSizeGB: contains(agentPool, 'osDiskSizeGB') ? agentPool.osDiskSizeGB: -1
     osDiskType: contains(agentPool, 'osDiskType') ? agentPool.osDiskType: 'Ephemeral'
-    osSku: contains(agentPool, 'osSku') ? agentPool.osSku: ''
-    osType: contains(agentPool, 'osType') ? agentPool.osType: 'Linux'
-    podSubnetId: contains(agentPool, 'podSubnetId') ? agentPool.podSubnetId: ''
-    proximityPlacementGroupId: contains(agentPool, 'proximityPlacementGroupId') ? agentPool.proximityPlacementGroupId: ''
+    osSku: contains(agentPool, 'osSku') ? agentPool.osSku : ''
+    osType: contains(agentPool, 'osType') ? agentPool.osType : 'Linux'
+    podSubnetId: contains(agentPool, 'podSubnetId') ? agentPool.podSubnetId : ''
+    proximityPlacementGroupId: contains(agentPool, 'proximityPlacementGroupId') ? agentPool.proximityPlacementGroupId : ''
     scaleDownMode: contains(agentPool, 'scaleDownMode') ? agentPool.scaleDownMode: 'Delete'
-    scaleSetEvictionPolicy: contains(agentPool, 'scaleSetEvictionPolicy') ? agentPool.scaleSetEvictionPolicy: 'Delete'
-    scaleSetPriority: contains(agentPool, 'scaleSetPriority') ? agentPool.scaleSetPriority: 'Regular'
-    spotMaxPrice: contains(agentPool, 'spotMaxPrice') ? agentPool.spotMaxPrice: -1
-    tags: contains(agentPool, 'tags') ? agentPool.tags: {}
-    type: contains(agentPool, 'type') ? agentPool.type: ''
-    maxSurge: contains(agentPool, 'maxSurge') ? agentPool.maxSurge: ''
-    vmSize: contains(agentPool, 'vmSize') ? agentPool.vmSize: 'Standard_D2s_v3'
-    vnetSubnetId: contains(agentPool, 'vnetSubnetId') ? agentPool.vnetSubnetId: ''
-    workloadRuntime: contains(agentPool, 'workloadRuntime') ? agentPool.workloadRuntime: ''
+    scaleSetEvictionPolicy: contains(agentPool, 'scaleSetEvictionPolicy') ? agentPool.scaleSetEvictionPolicy : 'Delete'
+    scaleSetPriority: contains(agentPool, 'scaleSetPriority') ? agentPool.scaleSetPriority : 'Regular'
+    spotMaxPrice: contains(agentPool, 'spotMaxPrice') ? agentPool.spotMaxPrice : -1
+    tags: contains(agentPool, 'tags') ? agentPool.tags : {}
+    type: contains(agentPool, 'type') ? agentPool.type : ''
+    maxSurge: contains(agentPool, 'maxSurge') ? agentPool.maxSurge : ''
+    vmSize: contains(agentPool, 'vmSize') ? agentPool.vmSize : 'Standard_D2s_v3'
+    vnetSubnetId: contains(agentPool, 'vnetSubnetId') ? agentPool.vnetSubnetId : ''
+    workloadRuntime: contains(agentPool, 'workloadRuntime') ? agentPool.workloadRuntime : ''
   }
 }]
 
