@@ -42,18 +42,22 @@ stages:
     jobs:
       - template: /.azuredevops/pipelineTemplates/module.jobs.validate.yml
         parameters:
-          deploymentBlocks: 
+          deploymentBlocks:
             - path: $(modulePath)/.parameters/min.parameters.json
+              templateFilePath: $(modulePath)/.bicep/nested_policyAssignments_sub.bicep
             - path: $(modulePath)/.parameters/parameters.json
+              templateFilePath: $(modulePath)/.bicep/nested_policyAssignments_sub.bicep
 
   - stage: Deployment
     jobs:
       - template: /.azuredevops/pipelineTemplates/module.jobs.deploy.yml
         parameters:
           removeDeployment: '${{ parameters.removeDeployment }}'
-          deploymentBlocks: 
+          deploymentBlocks:
             - path: $(modulePath)/.parameters/min.parameters.json
+              templateFilePath: $(modulePath)/.bicep/nested_policyAssignments_sub.bicep
             - path: $(modulePath)/.parameters/parameters.json
+              templateFilePath: $(modulePath)/.bicep/nested_policyAssignments_sub.bicep
 
   - stage: Publishing
     condition: and(succeeded(), eq(variables['Build.SourceBranch'], 'refs/heads/main'))
