@@ -338,9 +338,9 @@ resource managedCluster 'Microsoft.ContainerService/managedClusters@2021-08-01' 
   name: managedClusterName
 }
 
-var creationData = !empty(sourceResourceId) ? {
+var creationData = {
   sourceResourceId: sourceResourceId
-} : {}
+}
 
 var kubeletConfig = {
   allowedUnsafeSysctls: allowedUnsafeSysctls
@@ -404,7 +404,7 @@ resource agentPool 'Microsoft.ContainerService/managedClusters/agentPools@2021-0
   properties: {
     availabilityZones: availabilityZones
     count: count
-    creationData: creationData
+    //creationData: creationData
     enableAutoScaling: enableAutoScaling
     enableEncryptionAtHost: enableEncryptionAtHost
     enableFIPS: enableFIPS
