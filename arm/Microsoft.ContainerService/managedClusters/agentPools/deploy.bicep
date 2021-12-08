@@ -275,8 +275,9 @@ param osDiskSizeGB int = 0
 @allowed([
   'Ephemeral'
   'Managed'
+  ''
 ])
-param osDiskType string = 'Ephemeral'
+param osDiskType string = ''
 
 @description('Optional. Specifies an OS SKU. This value must not be specified if OSType is Windows.')
 @allowed([
@@ -431,7 +432,7 @@ resource agentPool 'Microsoft.ContainerService/managedClusters/agentPools@2021-0
     nodeTaints: nodeTaints
     orchestratorVersion: orchestratorVersion
     osDiskSizeGB: !(osDiskSizeGB == -1) ? osDiskSizeGB : null
-    osDiskType: osDiskType
+    osDiskType: !empty(osDiskType) ? osDiskType : null
     osSKU: !empty(osSku) ? osSku : null
     osType: osType
     podSubnetID: !empty(podSubnetId) ? podSubnetId : null

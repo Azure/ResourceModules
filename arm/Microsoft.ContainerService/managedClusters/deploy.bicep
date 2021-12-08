@@ -401,7 +401,7 @@ module managedCluster_agentPools 'agentPools/deploy.bicep' = [for (agentPool, in
     nodeTaints: contains(agentPool, 'nodeTaints') ? agentPool.nodeTaints : []
     orchestratorVersion: contains(agentPool, 'orchestratorVersion') ? agentPool.orchestratorVersion: ''
     osDiskSizeGB: contains(agentPool, 'osDiskSizeGB') ? agentPool.osDiskSizeGB: -1
-    osDiskType: contains(agentPool, 'osDiskType') ? agentPool.osDiskType: 'Ephemeral'
+    osDiskType: contains(agentPool, 'osDiskType') ? agentPool.osDiskType: ''
     osSku: contains(agentPool, 'osSku') ? agentPool.osSku : ''
     osType: contains(agentPool, 'osType') ? agentPool.osType : 'Linux'
     podSubnetId: contains(agentPool, 'podSubnetId') ? agentPool.podSubnetId : ''
