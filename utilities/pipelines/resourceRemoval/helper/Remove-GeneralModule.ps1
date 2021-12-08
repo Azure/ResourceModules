@@ -331,8 +331,7 @@ function Remove-GeneralModule {
 
         # Pre-Filter & order items
         # ========================
-        $rawResourceIdsToRemove = $deployments | Where-Object { $_ -and $_ -notmatch '/deployments/' }
-        $rawResourceIdsToRemove = $rawResourceIdsToRemove | Sort-Object -Property { $_.Split('/').Count } -Unique -Descending
+        $rawResourceIdsToRemove = $deployments | Sort-Object -Property { $_.Split('/').Count } -Descending | Select-Object -Unique
 
         if ($rawResourceIdsToRemove.Count -eq 0) {
             Write-Verbose 'Found no relevant resources to remove' -Verbose
@@ -350,7 +349,7 @@ function Remove-GeneralModule {
 
         # Order resources
         # ===============
-        # If virutal machines are contained, remove them first
+        # If virtual machines are contained, remove them first
         if ($vmsContained = $resourcesToRemove | Where-Object { $_.type -eq 'Microsoft.Compute/virtualMachines' }) {
             $resourcesToRemove = @() + $vmsContained + ($resourcesToRemove | Where-Object { $_.type -ne 'Microsoft.Compute/virtualMachines' })
         }
