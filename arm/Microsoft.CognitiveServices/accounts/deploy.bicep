@@ -189,7 +189,7 @@ resource cognitiveServices_lock 'Microsoft.Authorization/locks@2016-09-01' = if 
   scope: cognitiveServices
 }
 
-resource cognitiveServices_diagnosticSettingName 'Microsoft.Insights/diagnosticsettings@2017-05-01-preview' = {
+resource cognitiveServices_diagnosticSettingName 'Microsoft.Insights/diagnosticsettings@2021-05-01-preview' = {
   name: '${cognitiveServices.name}-diagnosticSettings'
   properties: {
     storageAccountId: (empty(diagnosticStorageAccountId) ? null : diagnosticStorageAccountId)
