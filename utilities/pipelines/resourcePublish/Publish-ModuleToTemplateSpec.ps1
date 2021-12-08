@@ -12,7 +12,7 @@ Mandatory. Path to the module deployment file from root.
 .PARAMETER TemplateSpecsRgName
 Mandatory. ResourceGroup of the template spec to publish to.
 
-.PARAMETER templateSpecsRgLocation
+.PARAMETER TemplateSpecsRgLocation
 Mandatory. Location of the template spec resource group.
 
 .PARAMETER TemplateSpecsDescription
@@ -37,7 +37,7 @@ function Publish-ModuleToTemplateSpec {
         [string] $TemplateSpecsRgName,
 
         [Parameter(Mandatory)]
-        [string] $templateSpecsRgLocation,
+        [string] $TemplateSpecsRgLocation,
 
         [Parameter(Mandatory)]
         [string] $TemplateSpecsDescription,
@@ -58,8 +58,8 @@ function Publish-ModuleToTemplateSpec {
         ##    EVALUATE RESOURCES   ##
         #############################
         if (-not (Get-AzResourceGroup -Name $TemplateSpecsRgName -ErrorAction 'SilentlyContinue')) {
-            if ($PSCmdlet.ShouldProcess("Resource group [$TemplateSpecsRgName] to location [$templateSpecsRgLocation]", 'Deploy')) {
-                New-AzResourceGroup -Name $TemplateSpecsRgName -Location $templateSpecsRgLocation
+            if ($PSCmdlet.ShouldProcess("Resource group [$TemplateSpecsRgName] to location [$TemplateSpecsRgLocation]", 'Deploy')) {
+                New-AzResourceGroup -Name $TemplateSpecsRgName -Location $TemplateSpecsRgLocation
             }
         }
 
@@ -72,7 +72,7 @@ function Publish-ModuleToTemplateSpec {
                 Name              = $templateSpecIdentifier
                 Version           = $ModuleVersion
                 Description       = $TemplateSpecsDescription
-                Location          = $templateSpecsRgLocation
+                Location          = $TemplateSpecsRgLocation
                 TemplateFile      = $TemplateFilePath
             }
             New-AzTemplateSpec @templateSpecInputObject -Force
