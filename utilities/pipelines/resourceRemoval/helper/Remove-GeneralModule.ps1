@@ -168,7 +168,7 @@ function Get-FormattedResources {
                 break
             }
             { $PSItem -eq 6 } {
-                # subscription level resource
+                # subscription-level resource group
                 $formattedResources += @{
                     resourceId = $resourceId
                     name       = $idElements[-1]
@@ -177,17 +177,26 @@ function Get-FormattedResources {
                 break
             }
             { $PSItem -eq 7 } {
-                # resource group level
-                if ($allResourceGroupResources.Count -eq 0) {
-                    $allResourceGroupResources = Get-AzResource -ResourceGroupName $resourceGroupName -Name '*'
-                }
-                $expandedResources = $allResources | Where-Object { $_.ResourceId.startswith($resourceId) }
-                $expandedResources = $expandedResources | Sort-Object -Descending -Property { $_.ResourceId.Split('/').Count }
-                foreach ($resource in $expandedResources) {
+                if (($resourceId.Split('/'))[3] -ne 'resourceGroups') {
+                    # subscription-level resource
                     $formattedResources += @{
-                        resourceId = $resource.ResourceId
-                        name       = $resource.Name
-                        type       = $resource.Type
+                        resourceId = $resourceId
+                        name       = Split-Path $resourceId -Leaf
+                        type       = $idElements[4, 5] -join '/'
+                    }
+                } else {
+                    # resource group-level
+                    if ($allResourceGroupResources.Count -eq 0) {
+                        $allResourceGroupResources = Get-AzResource -ResourceGroupName $resourceGroupName -Name '*'
+                    }
+                    $expandedResources = $allResourceGroupResources | Where-Object { $_.ResourceId.startswith($resourceId) }
+                    $expandedResources = $expandedResources | Sort-Object -Descending -Property { $_.ResourceId.Split('/').Count }
+                    foreach ($resource in $expandedResources) {
+                        $formattedResources += @{
+                            resourceId = $resource.ResourceId
+                            name       = $resource.Name
+                            type       = $resource.Type
+                        }
                     }
                 }
                 break
