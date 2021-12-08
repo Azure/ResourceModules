@@ -264,10 +264,18 @@ param orchestratorVersion string = ''
 param osDiskSizeGB int = 0
 
 @description('Optional. The default is "Ephemeral" if the VM supports it and has a cache disk larger than the requested OSDiskSizeGB. Otherwise, defaults to "Managed". May not be changed after creation. For more information see Ephemeral OS (https://docs.microsoft.com/en-us/azure/aks/cluster-configuration#ephemeral-os).')
-param osDiskType string = ''
+@allowed([
+  'Ephemeral'
+  'Managed'
+])
+param osDiskType string = 'Ephemeral'
 
 @description('Optional. Specifies an OS SKU. This value must not be specified if OSType is Windows.')
-param osSku string = ''
+@allowed([
+  'CBLMariner'
+  'Ubuntu'
+])
+param osSku string
 
 @description('Optional. The operating system type. The default is Linux.')
 @allowed([
@@ -404,19 +412,19 @@ resource agentPool 'Microsoft.ContainerService/managedClusters/agentPools@2021-0
     kubeletConfig: kubeletConfig
     kubeletDiskType: kubeletDiskType
     linuxOSConfig: linuxOSConfig
-    maxCount: maxCount
+    maxCount: !(maxCount == -1) ? maxCount : null
     maxPods: !(maxPods == -1) ? maxPods : null
-    minCount: minCount
-    mode: mode
+    minCount: !(minCount == -1) ? minCount : null
+    mode: !empty(mode) ? mode : null
     nodeLabels: nodeLabels
     nodePublicIPPrefixID: !empty(nodePublicIpPrefixId) ? nodePublicIpPrefixId : null
     nodeTaints: nodeTaints
     orchestratorVersion: orchestratorVersion
-    osDiskSizeGB: osDiskSizeGB
-    osDiskType: osDiskType
-    osSKU: osSku
+    osDiskSizeGB: !(osDiskSizeGB == -1) ? osDiskSizeGB : null
+    osDiskType: !empty(osDiskType) ? osDiskType : null
+    osSKU: !empty(osSku) ? osSku : null
     osType: osType
-    podSubnetID: podSubnetId
+    podSubnetID: !empty(podSubnetId) ? podSubnetId : null
     proximityPlacementGroupID: !empty(proximityPlacementGroupId) ? proximityPlacementGroupId : null
     scaleDownMode: scaleDownMode
     scaleSetEvictionPolicy: scaleSetEvictionPolicy
