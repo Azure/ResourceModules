@@ -125,7 +125,7 @@ Use the following naming standard for module files and folders:
 
 ## Patterns
 
-This sections shows a few common patterns among resources that are usually very similar (e.g. providers)
+This sections shows a few common patterns among resources that are usually very similar (e.g. providers).
 
 - [Locks](#locks)
 - [RBAC](#rbac)
