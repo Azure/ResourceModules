@@ -88,7 +88,6 @@ jobs:
     needs:
       - job_set_workflow_param
       - job_tests_module_global
-      - job_tests_module_global_api
     strategy:
       fail-fast: false
       matrix:
@@ -103,24 +102,11 @@ jobs:
         with:
           # Name of variable file
           variableFileName: 'variables.module' # Don't write .json here
-      # ----------- #
-      ##  Dry Run  ##
-      # ----------- #
-      - name: 'Test module with parameter file [${{ matrix.parameterFilePaths }}]'
-        uses: ./.github/actions/templates/validateModuleDeploy
-        with:
-          templateFilePath: '${{ env.modulePath }}/.bicep/nested_policyExemptions_sub.bicep'
-          parameterFilePath: '${{ env.modulePath }}/.parameters/${{ matrix.parameterFilePaths }}'
-          location: '${{ env.defaultLocation }}'
-          resourceGroupName: '${{ env.resourceGroupName }}'
-          subscriptionId: '${{ secrets.ARM_SUBSCRIPTION_ID }}'
-          managementGroupId: '${{ secrets.ARM_MGMTGROUP_ID }}'
       # ------------------- #
       ##  Deploy & Remove  ##
       # ------------------- #
       - name: 'Deploy module with parameter file [${{ matrix.parameterFilePaths }}]'
-        id: step_deploy
-        uses: ./.github/actions/templates/deployModule
+        uses: ./.github/actions/templates/validateModuleDeployment
         with:
           templateFilePath: '${{ env.modulePath }}/.bicep/nested_policyExemptions_sub.bicep'
           parameterFilePath: '${{ env.modulePath }}/.parameters/${{ matrix.parameterFilePaths }}'
