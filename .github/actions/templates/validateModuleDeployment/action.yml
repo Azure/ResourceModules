@@ -151,7 +151,7 @@ runs:
 
           if(-not [String]::IsNullOrEmpty('${{ steps.deploy_step.outputs.deploymentName }}')) {
             $functionInput = @{
-              deploymentNames   = '${{ steps.deploy_step.outputs.deploymentName }}'
+              deploymentName    = '${{ steps.deploy_step.outputs.deploymentName }}'
               templateFilePath  = Join-Path $env:GITHUB_WORKSPACE '${{ inputs.templateFilePath }}'
               resourceGroupName = '${{ inputs.resourceGroupName }}'
               verbose           = $true
