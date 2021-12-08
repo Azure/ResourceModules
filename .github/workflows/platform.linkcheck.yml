@@ -1,0 +1,33 @@
+name: '.Platform: Broken Links Check'
+
+on:
+  workflow_dispatch:
+  pull_request:
+    branches:
+      - main
+    paths:
+      - 'docs/wiki/**'
+
+jobs:
+  build:
+    name: Broken Links Check
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v2
+        with:
+          # Full git history is needed to get a proper list of changed files within `super-linter`
+          fetch-depth: 0
+
+      - name: Check Broken Links
+        if: always()
+        id: checker
+        uses: lycheeverse/lychee-action@v1.1.1
+        with:
+          args: --verbose --no-progress **/docs/**/*.md --accept 200,201,403,429
+        env:
+          GITHUB_TOKEN: ${{secrets.GITHUB_TOKEN}}
+
+      - name: Publish Results
+        if: always()
+        run: exit ${{ steps.checker.outputs.exit_code }}
