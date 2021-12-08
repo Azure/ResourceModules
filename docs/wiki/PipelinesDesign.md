@@ -219,13 +219,12 @@ The [pipeline configuration file](#pipeline-variables) can be found at `.github/
 We use several composite actions to perform various tasks shared by our module workflows:
 
 - **validateModuleGeneral** <p>
-  This action perform all [static tests](#static-module-validation) for a module using Pester.
-- **validateModuleApis** <p>
-  This action performs further [static tests](#static-module-validation), focused on API version tests for a module to ensure we notice if a version becomes stale. Each resource's API version is compared with those currently available on Azure. Accepted are both the latest 5 versions (including preview versions) as well as the latest 5 non-preview versions.
-- **validateModuleDeploy:** <p>
-  This action performs the [simulated deployment](#simulated-deployment-validation) using a provided parameter file.
+  This action perform all [static tests](#static-module-validation) for a module using Pester. It also performs further [static tests](#static-module-validation), focused on API version tests for a module to ensure we notice if a version becomes stale. Each resource's API version is compared with those currently available on Azure. Accepted are both the latest 5 versions (including preview versions) as well as the latest 5 non-preview versions.  T
 - **deployModule:** <p>
-  This action performs an [actual deployment](#test-deploy) to Azure using a provided parameter file. Once a deployment ran it [removes](#removal) the resource
+  This action performs several tasks:
+  1. A [simulated deployment](#simulated-deployment-validation) using a provided parameter file.
+  1. An [actual deployment](#test-deploy) to Azure using a provided parameter file.
+  1. The [removal](#removal) of the test-deployed resources
 - **publishModule:** <p>
   This action is capable of [publishing](#publish) the given template to a location specified in the pipeline [variable file](#component-variable-files).
 - **getWorkflowInput:** <p>
