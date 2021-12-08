@@ -240,7 +240,7 @@ param transparentHugePageEnabled string = 'always'
 param maxCount int = -1
 
 @description('Optional. The maximum number of pods that can run on a node.')
-param maxPods int = 10
+param maxPods int = -1
 
 @description('Optional. The minimum number of nodes for auto-scaling')
 param minCount int = -1
@@ -405,7 +405,7 @@ resource agentPool 'Microsoft.ContainerService/managedClusters/agentPools@2021-0
     kubeletDiskType: kubeletDiskType
     linuxOSConfig: linuxOSConfig
     maxCount: maxCount
-    maxPods: maxPods
+    maxPods: !(maxPods == -1) ? maxPods : null
     minCount: minCount
     mode: mode
     nodeLabels: nodeLabels
