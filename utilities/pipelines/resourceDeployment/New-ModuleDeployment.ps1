@@ -337,13 +337,19 @@ function New-ModuleDeployment {
             retryLimit           = $retryLimit
         }
         if ($parameterFilePath) {
-            $deploymentResult = [System.Collections.ArrayList]@()
-            foreach ($parameterFile in $parameterFilePath) {
+            if ($parameterFilePath.count -gt 1) {
+                $deploymentResult = [System.Collections.ArrayList]@()
+                foreach ($parameterFile in $parameterFilePath) {
+                    if ($PSCmdlet.ShouldProcess("Deployment for parameter file [$parameterFilePath]", 'Trigger')) {
+                        $deploymentResult += New-Deployment @deploymentInputObject -parameterFilePath $parameterFile
+                    }
+                }
+                return $deploymentResult 
+            } else {
                 if ($PSCmdlet.ShouldProcess("Deployment for parameter file [$parameterFilePath]", 'Trigger')) {
-                    $deploymentResult += New-Deployment @deploymentInputObject -parameterFilePath $parameterFile
+                    return New-Deployment @deploymentInputObject -parameterFilePath $parameterFile
                 }
             }
-            return $deploymentResult
         } else {
             if ($PSCmdlet.ShouldProcess('Deployment without paramater file', 'Trigger')) {
                 return New-Deployment @deploymentInputObject
