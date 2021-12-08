@@ -164,7 +164,9 @@ param netCoreNetdevMaxBacklog int = 1000
 param netCoreOptmemMax int = -1
 
 @description('Optional. Sysctl setting net.core.rmem_default.')
-param netCoreRmemDefault int = -1
+@minValue(212992)
+@maxValue(134217728)
+param netCoreRmemDefault int = 212992
 
 @description('Optional. Sysctl setting net.core.rmem_max.')
 param netCoreRmemMax int = -1
