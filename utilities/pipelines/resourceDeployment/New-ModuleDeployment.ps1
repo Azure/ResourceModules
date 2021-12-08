@@ -43,7 +43,7 @@ New-ModuleDeployment -templateFilePath 'C:/ResourceGroup/deploy.json' -parameter
 
 Deploy the deploy.json of the ResourceGroup module with the parameter file 'parameters.json' in location 'WestEurope'
 #>
-function New-ModuleDeployment {
+function New-Deployment {
 
     [CmdletBinding(SupportsShouldProcess)]
     param (
@@ -346,7 +346,7 @@ function New-ModuleDeployment {
                 }
                 return $deploymentResult
             } else {
-                if ($PSCmdlet.ShouldProcess("Deployment for parameter file [$parameterFilePath]", 'Trigger')) {
+                if ($PSCmdlet.ShouldProcess("Deployment for single parameter file [$parameterFilePath]", 'Trigger')) {
                     return New-Deployment @deploymentInputObject -parameterFilePath $parameterFilePath
                 }
             }
