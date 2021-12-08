@@ -168,7 +168,9 @@ param netCoreRmemDefault int = -1
 param netCoreRmemMax int = -1
 
 @description('Optional. Sysctl setting net.core.somaxconn.')
-param netCoreSomaxconn int = -1
+@minValue(4096)
+@maxValue(3240000)
+param netCoreSomaxconn int
 
 @description('Optional. Sysctl setting net.core.wmem_default.')
 param netCoreWmemDefault int = -1
