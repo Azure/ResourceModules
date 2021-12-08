@@ -399,7 +399,7 @@ var sysctls = {
 }
 
 var linuxOSConfig = {
-  swapFileSizeMB: !(swapFileSizeMB == -1) ? swapFileSizeMB : null
+  swapFileSizeMB: (swapFileSizeMB != -1) ? swapFileSizeMB : null
   sysctls: sysctls
   transparentHugePageDefrag: transparentHugePageDefrag
   transparentHugePageEnabled: transparentHugePageEnabled
