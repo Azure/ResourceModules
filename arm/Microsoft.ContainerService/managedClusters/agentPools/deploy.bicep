@@ -329,7 +329,7 @@ resource managedCluster 'Microsoft.ContainerService/managedClusters@2021-08-01' 
 }
 
 var creationData = {
-  sourceResourceId: sourceResourceId
+  sourceResourceId: !empty(sourceResourceId) ?  sourceResourceId : null
 }
 
 var kubeletConfig = {
@@ -417,7 +417,7 @@ resource agentPool 'Microsoft.ContainerService/managedClusters/agentPools@2021-0
     osSKU: osSku
     osType: osType
     podSubnetID: podSubnetId
-    //proximityPlacementGroupID: proximityPlacementGroupId
+    proximityPlacementGroupID: !empty(proximityPlacementGroupId) ? proximityPlacementGroupId : null
     scaleDownMode: scaleDownMode
     scaleSetEvictionPolicy: scaleSetEvictionPolicy
     scaleSetPriority: scaleSetPriority
