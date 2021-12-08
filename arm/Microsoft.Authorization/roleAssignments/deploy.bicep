@@ -33,8 +33,16 @@ param condition string = ''
 ])
 param conditionVersion string = '2.0'
 
-@sys.description('Optional. The principal type of the assigned principal ID. Allowed Values "ServicePrincipal", "Group", "User", "ForeignGroup", "Device"')
-param principalType string = 'ServicePrincipal'
+@sys.description('Optional. The principal type of the assigned principal ID.')
+@allowed([
+  'ServicePrincipal'
+  'Group'
+  'User'
+  'ForeignGroup'
+  'Device'
+  ''
+])
+param principalType string = ''
 
 module roleAssignment_mg '.bicep/nested_rbac_mg.bicep' = if (!empty(managementGroupId) && empty(subscriptionId) && empty(resourceGroupName)) {
   name: '${uniqueString(deployment().name, location)}-RoleAssignment-MG-Module'
