@@ -456,7 +456,7 @@ There are some constraints that needs to be considered when naming the deploymen
 
 - Deployment name length can't exceed 64 chars.
 - Two deployments with the same name created in different location will fail.
-- Using the same deployment name more than once, will surface only the last one in the Azure Portal.
+- Using the same deployment name more than once, will surface only the most recent deployed one in the Azure Portal.
 - If more than one deployment with the same name runs at the same time, race condition might happen.
 - Human-readable names are preferable, even if not necessary.
 
