@@ -343,18 +343,18 @@ function New-ModuleDeployment {
                 $deploymentResult = [System.Collections.ArrayList]@()
                 foreach ($parameterFile in $parameterFilePath) {
                     if ($PSCmdlet.ShouldProcess("Deployment for parameter file [$parameterFilePath]", 'Trigger')) {
-                        $deploymentResult += New-DeploymentWithParameterFileWithParameterFile @deploymentInputObject -parameterFilePath $parameterFile
+                        $deploymentResult += New-DeploymentWithParameterFile @deploymentInputObject -parameterFilePath $parameterFile
                     }
                 }
                 return $deploymentResult
             } else {
                 if ($PSCmdlet.ShouldProcess("Deployment for single parameter file [$parameterFilePath]", 'Trigger')) {
-                    return New-DeploymentWithParameterFileWithParameterFile @deploymentInputObject -parameterFilePath $parameterFilePath
+                    return New-DeploymentWithParameterFile @deploymentInputObject -parameterFilePath $parameterFilePath
                 }
             }
         } else {
             if ($PSCmdlet.ShouldProcess('Deployment without paramater file', 'Trigger')) {
-                return New-DeploymentWithParameterFileWithParameterFile @deploymentInputObject
+                return New-DeploymentWithParameterFile @deploymentInputObject
             }
         }
     }
