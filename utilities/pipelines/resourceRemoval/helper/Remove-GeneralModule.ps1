@@ -332,7 +332,7 @@ function Remove-GeneralModule {
         # Pre-Filter & order items
         # ========================
         $rawResourceIdsToRemove = $deployments | Where-Object { $_ -and $_ -notmatch '/deployments/' }
-        $rawResourceIdsToRemove = $rawResourceIdsToRemove | Sort-Object -Property { $_.Split('/').Count } -Unique
+        $rawResourceIdsToRemove = $rawResourceIdsToRemove | Sort-Object -Property { $_.Split('/').Count } -Unique -Descending
 
         if ($rawResourceIdsToRemove.Count -eq 0) {
             Write-Verbose 'Found no relevant resources to remove' -Verbose
