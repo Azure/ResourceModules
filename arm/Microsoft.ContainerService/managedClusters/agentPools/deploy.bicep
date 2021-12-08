@@ -58,8 +58,9 @@ param enableUltraSSD bool = false
   'MIG3g'
   'MIG4g'
   'MIG7g'
+  ''
 ])
-param gpuInstanceProfile string = 'MIG1g'
+param gpuInstanceProfile string = ''
 
 @description('Optional. Allowed list of unsafe sysctls or unsafe sysctl patterns (ending in *).')
 @allowed([
@@ -417,7 +418,7 @@ resource agentPool 'Microsoft.ContainerService/managedClusters/agentPools@2021-0
     enableFIPS: enableFIPS
     enableNodePublicIP: enableNodePublicIP
     enableUltraSSD: enableUltraSSD
-    gpuInstanceProfile: gpuInstanceProfile
+    gpuInstanceProfile: !empty(gpuInstanceProfile) ? gpuInstanceProfile : null
     kubeletConfig: kubeletConfig
     kubeletDiskType: kubeletDiskType
     linuxOSConfig: linuxOSConfig
