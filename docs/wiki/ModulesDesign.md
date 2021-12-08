@@ -92,7 +92,7 @@ Each module should come with a `.bicep` folder with a least the `nested_cuaId.bi
 
 Use the following naming standard for module files and folders:
 
-- Module folders are in camelCase and their name reflect the main resource type (e.g. `storageAccounts`, `virtualMachines`).
+- Module folders are in camelCase and their name reflects the main resource type of the Bicep module they are hosting (e.g. `storageAccounts`, `virtualMachines`).
 - Cross-referenced and providers resource modules are placed in the `.bicep` subfolder and named `nested_<crossReferencedResourceType>.bicep`
 
   ``` txt
@@ -109,8 +109,8 @@ Use the following naming standard for module files and folders:
 
   >**Example**: `nested_serverfarms.bicep` in the `Microsoft.Web\sites\.bicep` folder contains the cross-referenced `serverfarm` module leveraged by the top level `site` resource.
   >``` txt
-  >Microsoft.DesktopVirtualization
-  >└─ hostpools
+  >Microsoft.Web
+  >└─ sites
   >    ├─ .bicep
   >    |  ├─ nested_components.bicep
   >    |  ├─ nested_cuaId.bicep
