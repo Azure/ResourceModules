@@ -104,8 +104,8 @@ resource blobServices_diagnosticSettings 'Microsoft.Insights/diagnosticSettings@
     workspaceId: empty(workspaceId) ? null : workspaceId
     eventHubAuthorizationRuleId: empty(eventHubAuthorizationRuleId) ? null : eventHubAuthorizationRuleId
     eventHubName: empty(eventHubName) ? null : eventHubName
-    metrics: (empty(diagnosticStorageAccountId) && empty(workspaceId) && empty(eventHubAuthorizationRuleId) && empty(eventHubName)) ? null : diagnosticsMetrics
-    logs: (empty(diagnosticStorageAccountId) && empty(workspaceId) && empty(eventHubAuthorizationRuleId) && empty(eventHubName)) ? null : diagnosticsLogs
+    metrics: diagnosticsMetrics
+    logs: diagnosticsLogs
   }
   scope: blobServices
 }

@@ -203,7 +203,7 @@ resource storageAccount_diagnosticSettings 'Microsoft.Insights/diagnosticSetting
     workspaceId: empty(workspaceId) ? null : workspaceId
     eventHubAuthorizationRuleId: empty(eventHubAuthorizationRuleId) ? null : eventHubAuthorizationRuleId
     eventHubName: empty(eventHubName) ? null : eventHubName
-    metrics: (empty(diagnosticStorageAccountId) && empty(workspaceId) && empty(eventHubAuthorizationRuleId) && empty(eventHubName)) ? null : diagnosticsMetrics
+    metrics: diagnosticsMetrics
   }
   scope: storageAccount
 }

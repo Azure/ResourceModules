@@ -174,8 +174,8 @@ resource database_diagnosticSettings 'Microsoft.Insights/diagnosticSettings@2021
     workspaceId: empty(workspaceId) ? null : workspaceId
     eventHubAuthorizationRuleId: empty(eventHubAuthorizationRuleId) ? null : eventHubAuthorizationRuleId
     eventHubName: empty(eventHubName) ? null : eventHubName
-    logs: (empty(diagnosticStorageAccountId) && empty(workspaceId) && empty(eventHubAuthorizationRuleId) && empty(eventHubName)) ? null : diagnosticsLogs
-    metrics: ((empty(diagnosticStorageAccountId) && empty(workspaceId) && empty(eventHubAuthorizationRuleId) && empty(eventHubName)) ? null : diagnosticsMetrics)
+    metrics: diagnosticsMetrics
+    logs: diagnosticsLogs
   }
   scope: database
 }
