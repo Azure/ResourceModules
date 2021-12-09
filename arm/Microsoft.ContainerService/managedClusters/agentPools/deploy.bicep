@@ -220,7 +220,9 @@ param netIpv4TcpKeepaliveTime int = -1
 param netIpv4TcpMaxSynBacklog int = 128
 
 @description('Optional. Sysctl setting net.ipv4.tcp_max_tw_buckets.')
-param netIpv4TcpMaxTwBuckets int = -1
+@minValue(8000)
+@maxValue(1440000)
+param netIpv4TcpMaxTwBuckets int = 8000
 
 @description('Optional. Sysctl setting net.ipv4.tcp_tw_reuse.')
 @allowed([

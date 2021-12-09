@@ -383,7 +383,7 @@ module managedCluster_agentPools 'agentPools/deploy.bicep' = [for (agentPool, in
     netIpv4TcpKeepaliveProbes: contains(agentPool, 'netIpv4TcpKeepaliveProbes') ? agentPool.netIpv4TcpKeepaliveProbes : -1
     netIpv4TcpKeepaliveTime: contains(agentPool, 'netIpv4TcpKeepaliveTime') ? agentPool.netIpv4TcpKeepaliveTime : -1
     netIpv4TcpMaxSynBacklog: contains(agentPool, 'netIpv4TcpMaxSynBacklog') ? agentPool.netIpv4TcpMaxSynBacklog : 128
-    netIpv4TcpMaxTwBuckets: contains(agentPool, 'netIpv4TcpMaxTwBuckets') ? agentPool.netIpv4TcpMaxTwBuckets : -1
+    netIpv4TcpMaxTwBuckets: contains(agentPool, 'netIpv4TcpMaxTwBuckets') ? agentPool.netIpv4TcpMaxTwBuckets : 8000
     netIpv4TcpTwReuse: contains(agentPool, 'netIpv4TcpTwReuse') ? agentPool.netIpv4TcpTwReuse : false
     netNetfilterNfConntrackBuckets: contains(agentPool, 'netNetfilterNfConntrackBuckets') ? agentPool.netNetfilterNfConntrackBuckets : -1
     netNetfilterNfConntrackMax: contains(agentPool, 'netNetfilterNfConntrackMax') ? agentPool.netNetfilterNfConntrackMax : -1
