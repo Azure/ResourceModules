@@ -25,7 +25,7 @@ Optional. The deployment name to use for the removal
 Optional. The path to the deployment file
 
 .EXAMPLE
-Remove-GeneralModule -DeploymentName 'KeyVault' -ResourceGroupName 'validation-rg'
+Remove-GeneralModule -DeploymentName 'KeyVault' -ResourceGroupName 'validation-rg' -TemplateFilePath 'C:/deploy.json'
 
 Remove a virtual WAN with deployment name 'keyvault-12345' from resource group 'validation-rg'
 #>
@@ -53,38 +53,19 @@ function Remove-GeneralModule {
         Write-Debug ('{0} entered' -f $MyInvocation.MyCommand)
 
         # Load helper
-        . (Join-Path (Split-Path $PSScriptRoot -Parent) 'helper' 'Remove-Resource.ps1')
-        . (Join-Path (Split-Path $PSScriptRoot -Parent) 'helper' 'Get-DependencyResourceNames.ps1')
+        . (Join-Path (Split-Path $PSScriptRoot -Parent) 'helper' 'Get-ScopeOfTemplateFile.ps1')
         . (Join-Path (Split-Path $PSScriptRoot -Parent) 'helper' 'Get-DeploymentByName.ps1')
         . (Join-Path (Split-Path $PSScriptRoot -Parent) 'helper' 'Get-ResourceIdsAsFormattedObjectList.ps1')
+        . (Join-Path (Split-Path $PSScriptRoot -Parent) 'helper' 'Get-DependencyResourceNames.ps1')
+        . (Join-Path (Split-Path $PSScriptRoot -Parent) 'helper' 'Remove-Resource.ps1')
     }
 
     process {
         Write-Verbose ('Handling resource removal with deployment name [{0}]' -f $deploymentName) -Verbose
 
-        # Gather deployments
-        # ==================
-        if ((Split-Path $templateFilePath -Extension) -eq '.bicep') {
-            # Bicep
-            $bicepContent = Get-Content $templateFilePath
-            $bicepScope = $bicepContent | Where-Object { $_ -like '*targetscope =*' }
-            if (-not $bicepScope) {
-                $deploymentScope = 'resourceGroup'
-            } else {
-                $deploymentScope = $bicepScope.ToLower().Split('=')[-1].Replace("'", '').Trim()
-            }
-        } else {
-            # ARM
-            $armSchema = (ConvertFrom-Json (Get-Content -Raw -Path $templateFilePath)).'$schema'
-            switch -regex ($armSchema) {
-                '\/deploymentTemplate.json#$' { $deploymentScope = 'resourceGroup' }
-                '\/subscriptionDeploymentTemplate.json#$' { $deploymentScope = 'subscription' }
-                '\/managementGroupDeploymentTemplate.json#$' { $deploymentScope = 'managementGroup' }
-                '\/tenantDeploymentTemplate.json#$' { $deploymentScope = 'tenant' }
-                Default { throw "[$armSchema] is a non-supported ARM template schema" }
-            }
-        }
-        Write-Verbose "Determined deployment scope [$deploymentScope]" -Verbose
+        # Prepare data
+        # ============
+        $deploymentScope = Get-ScopeOfTemplateFile -TemplateFilePath $TemplateFilePath
 
         # Fundamental checks
         if ($deploymentScope -eq 'resourceGroup' -and -not (Get-AzResourceGroup -Name $resourceGroupName -ErrorAction 'SilentlyContinue')) {
@@ -93,20 +74,13 @@ function Remove-GeneralModule {
         }
 
         # Fetch deployments
-        $searchRetryCount = 1
-        do {
-            $deployments = Get-DeploymentByName -name $deploymentName -scope $deploymentScope -resourceGroupName $resourceGroupName -ErrorAction 'SilentlyContinue'
-            if ($deployments) {
-                break
-            }
-            Write-Verbose ('Did not to find deployments by name [{0}] in scope [{1}]. Retrying in [{2}] seconds [{3}/{4}]' -f $deploymentName, $deploymentScope, $searchRetryInterval, $searchRetryCount, $searchRetryLimit) -Verbose
-            Start-Sleep $searchRetryInterval
-            $searchRetryCount++
-        } while ($searchRetryCount -le $searchRetryLimit)
-
-        if (-not $deployments) {
-            throw "No deployment found for [$deploymentName]"
+        # =================
+        $deploymentsInputObject = @{
+            name              = $deploymentName
+            scope             = $deploymentScope
+            resourceGroupName = $resourceGroupName
         }
+        $deployments = Get-DeploymentByName @deploymentsInputObject
 
         # Pre-Filter & order items
         # ========================

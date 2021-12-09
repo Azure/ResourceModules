@@ -29,6 +29,9 @@ function Remove-AutomationAccount {
         [Parameter(Mandatory = $false)]
         [string] $ResourceGroupName = 'validation-rg',
 
+        [Parameter(Mandatory = $true)]
+        [string] $TemplateFilePath,
+
         [Parameter(Mandatory = $false)]
         [int] $searchRetryLimit = 40,
 
@@ -40,29 +43,28 @@ function Remove-AutomationAccount {
         Write-Debug ('{0} entered' -f $MyInvocation.MyCommand)
 
         # Load helper
-        . (Join-Path (Split-Path $PSScriptRoot -Parent) 'helper' 'Remove-Resource.ps1')
+        . (Join-Path (Split-Path $PSScriptRoot -Parent) 'helper' 'Get-ScopeOfTemplateFile.ps1')
+        . (Join-Path (Split-Path $PSScriptRoot -Parent) 'helper' 'Get-DeploymentByName.ps1')
         . (Join-Path (Split-Path $PSScriptRoot -Parent) 'helper' 'Get-DependencyResourceNames.ps1')
+        . (Join-Path (Split-Path $PSScriptRoot -Parent) 'helper' 'Remove-Resource.ps1')
     }
 
     process {
+        # Prepare data
+        # ============
+        $deploymentScope = Get-ScopeOfTemplateFile -TemplateFilePath $TemplateFilePath
 
-        # Identify resources
-        # ------------------
-        $searchRetryCount = 1
-        do {
-            $deployments = Get-AzResourceGroupDeploymentOperation -DeploymentName $deploymentName -ResourceGroupName $resourceGroupName -ErrorAction 'SilentlyContinue'
-            if ($deployments) {
-                break
-            }
-            Write-Verbose ('[Failure] not to find Automation Account deployment resources by name [{0}] in scope [{1}]. Retrying in [{2}] seconds [{3}/{4}]' -f $deploymentName, $deploymentScope, $searchRetryInterval, $searchRetryCount, $searchRetryLimit) -Verbose
-            Start-Sleep $searchRetryInterval
-            $searchRetryCount++
-        } while ($searchRetryCount -le $searchRetryLimit)
-
-        if (-not $deployments) {
-            throw "No deployment found for [$deploymentName]"
+        # Fetch deployments
+        # =================
+        $deploymentsInputObject = @{
+            name              = $deploymentName
+            scope             = $deploymentScope
+            resourceGroupName = $resourceGroupName
         }
+        $deployments = Get-DeploymentByName @deploymentsInputObject
 
+        # Pre-Filter & order items
+        # ========================
         $resourcesToRemove = @()
         $unorderedResourceIds = $deployments.TargetResource | Where-Object { $_ -and $_ -notmatch '/deployments/' }
         $childDeploymentsIds = $deployments.TargetResource | Where-Object { $_ -and $_ -match '/deployments/' }

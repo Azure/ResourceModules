@@ -42,11 +42,12 @@ function Remove-DeployedModule {
             'virtualWans' {
                 Write-Verbose 'Run vWAN removal script' -Verbose
                 # Load function
-                . (Join-Path $PSScriptRoot 'helper' 'Remove-vWan.ps1')
+                . (Join-Path $PSScriptRoot 'orchestrators' 'Remove-vWan.ps1')
 
                 # Invoke removal
                 $inputObject = @{
                     deploymentName    = $deploymentName
+                    templateFilePath  = $templateFilePath
                     ResourceGroupName = $ResourceGroupName
                 }
                 Remove-vWan @inputObject -Verbose
@@ -54,7 +55,7 @@ function Remove-DeployedModule {
             # 'virtualMachines' {
             #     Write-Verbose 'Run virtual machine removal script' -Verbose
             #     # Load function
-            #     . (Join-Path $PSScriptRoot 'helper' 'Remove-VirtualMachine.ps1')
+            #     . (Join-Path $PSScriptRoot 'orchestrators' 'Remove-VirtualMachine.ps1')
 
             #     # Invoke removal
             #     $inputObject = @{
@@ -66,11 +67,12 @@ function Remove-DeployedModule {
             'automationAccounts' {
                 Write-Verbose 'Run automation account removal script' -Verbose
                 # Load function
-                . (Join-Path $PSScriptRoot 'helper' 'Remove-AutomationAccount.ps1')
+                . (Join-Path $PSScriptRoot 'orchestrators' 'Remove-AutomationAccount.ps1')
 
                 # Invoke removal
                 $inputObject = @{
                     deploymentName    = $deploymentName
+                    templateFilePath  = $templateFilePath
                     ResourceGroupName = $ResourceGroupName
                 }
                 Remove-AutomationAccount @inputObject -Verbose
@@ -78,7 +80,7 @@ function Remove-DeployedModule {
             default {
                 Write-Verbose 'Run default removal script' -Verbose
                 # Load function
-                . (Join-Path $PSScriptRoot 'helper' 'Remove-GeneralModule.ps1')
+                . (Join-Path $PSScriptRoot 'orchestrators' 'Remove-GeneralModule.ps1')
 
                 # Invoke removal
                 $inputObject = @{

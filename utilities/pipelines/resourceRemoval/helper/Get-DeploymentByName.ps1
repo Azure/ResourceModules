@@ -1,4 +1,5 @@
-﻿<#
+﻿#region helper
+<#
 .SYNOPSIS
 Get all deployments that match a given deployment name in a given scope
 
@@ -15,7 +16,7 @@ Optional. The name of the resource group for scope 'resourceGroup'
 Mandatory. The scope to search in
 
 .EXAMPLE
-Get-DeploymentByName -Name 'keyvault-12356' -Scope 'resourceGroup'
+Get-DeploymentByNameInner -Name 'keyvault-12356' -Scope 'resourceGroup'
 
 Get all deployments that match name 'keyvault-12356' in scope 'resourceGroup'
 
@@ -25,7 +26,7 @@ Works after the principal:
 - If any of them are not a deployments, add their target resource to the result set (as they are e.g. a resource)
 - If any of them is are deployments, recursively invoke this function for them to get their contained target resources
 #>
-function Get-DeploymentByName {
+function Get-DeploymentByNameInner {
 
     [CmdletBinding()]
     param (
@@ -116,4 +117,70 @@ function Get-DeploymentByName {
         }
     }
     return $resultSet
+}
+#endregion
+
+<#
+.SYNOPSIS
+Get all deployments that match a given deployment name in a given scope using a retry mechanic
+
+.DESCRIPTION
+Get all deployments that match a given deployment name in a given scope using a retry mechanic.
+
+.PARAMETER ResourceGroupName
+Mandatory. The resource group of the resource to remove
+
+.PARAMETER Name
+Optional. The deployment name to use for the removal
+
+.PARAMETER scope
+Mandatory. The scope to search in
+
+.PARAMETER SearchRetryLimit
+Optional. The maximum times to retry the search for resources via their removal tag
+
+.PARAMETER SearchRetryInterval
+Optional. The time to wait in between the search for resources via their remove tags
+
+.EXAMPLE
+Get-DeploymentByName -name 'KeyVault' -ResourceGroupName 'validation-rg' -scope 'resourceGroup'
+
+Get all deployments that match name 'KeyVault' in scope 'resourceGroup' of resource group 'validation-rg'
+#>
+function Get-DeploymentByName {
+
+    [CmdletBinding()]
+    param (
+        [Parameter(Mandatory = $false)]
+        [string] $ResourceGroupName,
+
+        [Parameter(Mandatory = $true)]
+        [string] $name,
+
+        [Parameter(Mandatory = $true)]
+        [string] $scope,
+
+        [Parameter(Mandatory = $false)]
+        [int] $SearchRetryLimit = 40,
+
+        [Parameter(Mandatory = $false)]
+        [int] $SearchRetryInterval = 60
+    )
+
+    $searchRetryCount = 1
+    do {
+        [array]$deployments = Get-DeploymentByName -name $name -scope $scope -resourceGroupName $resourceGroupName -ErrorAction 'SilentlyContinue'
+        if ($deployments) {
+            break
+        }
+        Write-Verbose ('Did not to find deployments by name [{0}] in scope [{1}]. Retrying in [{2}] seconds [{3}/{4}]' -f $name, $scope, $searchRetryInterval, $searchRetryCount, $searchRetryLimit) -Verbose
+        Start-Sleep $searchRetryInterval
+        $searchRetryCount++
+    } while ($searchRetryCount -le $searchRetryLimit)
+
+    if (-not $deployments) {
+        throw "No deployment found for [$name]"
+    }
+
+    return $deployments
 }
