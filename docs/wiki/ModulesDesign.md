@@ -176,7 +176,10 @@ module <mainResource>_rbac '.bicep/nested_rbac.bicep' = [for (roleAssignment, in
 
 #### 2nd Element as nested `.bicep/nested_rbac.bicep` file
 
-Here you specify the platform roles available for the main resource. You can find further information in the [variables](#variables) section.
+Here you specify the platform roles available for the main resource.
+
+The `builtInRoleNames` variable contains the list of applicable roles for the specific resource to which the nested_rbac.bicep module applies.
+>**Note**: You can find a helper script `Get-FormattedRBACRoles.ps1` in the `utilities\tools` folder of the repository. You can use this script to extract a formatted list of RBAC roles used in the CARML modules based on the RBAC lists in Azure.
 
 The element requires you to provide both the `principalIds` & `roleDefinitionOrIdName` to assign to the principal IDs. Also, the `resourceId` is target resource's resource ID that allows us to reference it as an `existing` resource. Note, the implementation of the `split` in the resource reference becomes longer the deeper you go in the child-resource hierarchy.
 
@@ -384,7 +387,6 @@ Within a bicep file, use the following conventions:
 ## Variables
 
 - Variable names are in camelCase, e.g. `builtInRoleNames`.
-- For modules that manage roleAssignments, typically cross-referenced `nested_rbac.bicep` in the `.bicep` folder, update the list of roles to only be the applicable roles. You can find a helper script `Get-FormattedRBACRoles.ps1` in the `utilities\tools\helper` folder of the repository.
 
 ## Resources
 
