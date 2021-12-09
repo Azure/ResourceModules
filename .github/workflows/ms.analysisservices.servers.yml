@@ -66,18 +66,18 @@ jobs:
   ##################
   # Global tests
   # ------------
-  job_tests_module_global:
-    runs-on: ubuntu-20.04
-    name: 'Run global module tests'
-    steps:
-      - name: 'Checkout'
-        uses: actions/checkout@v2
-        with:
-          fetch-depth: 0
-      - name: 'Test module'
-        uses: ./.github/actions/templates/validateModuleSetup
-        with:
-          modulePath: '${{ env.modulePath }}'
+  # job_tests_module_global:
+  #   runs-on: ubuntu-20.04
+  #   name: 'Run global module tests'
+  #   steps:
+  #     - name: 'Checkout'
+  #       uses: actions/checkout@v2
+  #       with:
+  #         fetch-depth: 0
+  #     - name: 'Test module'
+  #       uses: ./.github/actions/templates/validateModuleSetup
+  #       with:
+  #         modulePath: '${{ env.modulePath }}'
 
   ###########################
   # Deployment module tests #
@@ -87,7 +87,7 @@ jobs:
     name: 'Run deployment validation module tests'
     needs:
       - job_set_workflow_param
-      - job_tests_module_global
+      # - job_tests_module_global
     strategy:
       fail-fast: false
       matrix:
