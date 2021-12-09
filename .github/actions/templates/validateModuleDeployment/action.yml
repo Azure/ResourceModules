@@ -136,7 +136,6 @@ runs:
 
         if ($res.ContainsKey('exception')) {
           # Happens only if there is an exception
-          # Write-Output ('::set-output name={0}::{1}' -f 'deploymentException', (ConvertTo-Json $res.exception -Compress))
           throw $res.exception
         }
 
