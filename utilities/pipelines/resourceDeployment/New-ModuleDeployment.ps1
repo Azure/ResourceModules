@@ -77,6 +77,9 @@ function New-ModuleDeployment {
 
     begin {
         Write-Debug ('{0} entered' -f $MyInvocation.MyCommand)
+
+        # Load helper
+        . (Join-Path (Get-Item -Path $PSScriptRoot).parent.FullName 'sharedScripts' 'Get-ScopeOfTemplateFile.ps1')
     }
 
     process {
@@ -127,26 +130,7 @@ function New-ModuleDeployment {
                 $DeploymentInputs += @{Tags = $parameterFileTags }
             }
 
-            if ((Split-Path $templateFilePath -Extension) -eq '.bicep') {
-                # Bicep
-                $bicepContent = Get-Content $templateFilePath
-                $bicepScope = $bicepContent | Where-Object { $_ -like '*targetscope =*' }
-                if (-not $bicepScope) {
-                    $deploymentScope = 'resourceGroup'
-                } else {
-                    $deploymentScope = $bicepScope.ToLower().Replace('targetscope = ', '').Replace("'", '').Trim()
-                }
-            } else {
-                # ARM
-                $armSchema = (ConvertFrom-Json (Get-Content -Raw -Path $templateFilePath)).'$schema'
-                switch -regex ($armSchema) {
-                    '\/deploymentTemplate.json#$' { $deploymentScope = 'resourceGroup' }
-                    '\/subscriptionDeploymentTemplate.json#$' { $deploymentScope = 'subscription' }
-                    '\/managementGroupDeploymentTemplate.json#$' { $deploymentScope = 'managementGroup' }
-                    '\/tenantDeploymentTemplate.json#$' { $deploymentScope = 'tenant' }
-                    Default { throw "[$armSchema] is a non-supported ARM template schema" }
-                }
-            }
+            $deploymentScope = Get-ScopeOfTemplateFile -TemplateFilePath $templateFilePath
 
             #######################
             ## INVOKE DEPLOYMENT ##
