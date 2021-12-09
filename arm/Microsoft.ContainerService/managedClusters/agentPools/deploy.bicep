@@ -199,9 +199,9 @@ param netIpv4IpLocalPortRange string = ''
 param netIpv4NeighDefaultGcThresh1 int = 128
 
 @description('Optional. Sysctl setting net.ipv4.neigh.default.gc_thresh2.')
-@minValue(128)
-@maxValue(80000)
-param netIpv4NeighDefaultGcThresh2 int = 128
+@minValue(512)
+@maxValue(90000)
+param netIpv4NeighDefaultGcThresh2 int = 512
 
 @description('Optional. Sysctl setting net.ipv4.neigh.default.gc_thresh3.')
 @minValue(128)

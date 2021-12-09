@@ -376,7 +376,7 @@ module managedCluster_agentPools 'agentPools/deploy.bicep' = [for (agentPool, in
     netCoreWmemMax: contains(agentPool, 'netCoreWmemMax') ? agentPool.netCoreWmemMax : 212992
     netIpv4IpLocalPortRange: contains(agentPool, 'netIpv4IpLocalPortRange') ? agentPool.netIpv4IpLocalPortRange : ''
     netIpv4NeighDefaultGcThresh1: contains(agentPool, 'netIpv4NeighDefaultGcThresh1') ? agentPool.netIpv4NeighDefaultGcThresh1 : 128
-    netIpv4NeighDefaultGcThresh2: contains(agentPool, 'netIpv4NeighDefaultGcThresh2') ? agentPool.netIpv4NeighDefaultGcThresh2 : 128
+    netIpv4NeighDefaultGcThresh2: contains(agentPool, 'netIpv4NeighDefaultGcThresh2') ? agentPool.netIpv4NeighDefaultGcThresh2 : 512
     netIpv4NeighDefaultGcThresh3: contains(agentPool, 'netIpv4NeighDefaultGcThresh3') ? agentPool.netIpv4NeighDefaultGcThresh3 : 128
     netIpv4TcpFinTimeout: contains(agentPool, 'netIpv4TcpFinTimeout') ? agentPool.netIpv4TcpFinTimeout : 5
     netIpv4TcpkeepaliveIntvl: contains(agentPool, 'netIpv4TcpkeepaliveIntvl') ? agentPool.netIpv4TcpkeepaliveIntvl : 10
