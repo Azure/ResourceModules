@@ -65,22 +65,16 @@ function Remove-vWan {
 
         # Pre-Filter & order items
         # ========================
-        $resourcesToRemove = @()
-        $unorderedResourceIds = $deployments.TargetResource | Where-Object { $_ -and $_ -notmatch '/deployments/' }
-
         $orderedResourceIds = @(
-            $unorderedResourceIds | Where-Object { $_ -match 'Microsoft.Network/vpnGateways' }
-            $unorderedResourceIds | Where-Object { $_ -match 'Microsoft.Network/virtualHubs' }
-            $unorderedResourceIds | Where-Object { $_ -match 'Microsoft.Network/vpnSites' }
-            $unorderedResourceIds | Where-Object { $_ -match 'Microsoft.Network/virtualWans' }
+            $deployments | Where-Object { $_ -match 'Microsoft.Network/vpnGateways' }
+            $deployments | Where-Object { $_ -match 'Microsoft.Network/virtualHubs' }
+            $deployments | Where-Object { $_ -match 'Microsoft.Network/vpnSites' }
+            $deployments | Where-Object { $_ -match 'Microsoft.Network/virtualWans' }
         )
-        $resourcesToRemove = $orderedResourceIds | ForEach-Object {
-            @{
-                resourceId = $_
-                name       = $_.Split('/')[-1]
-                type       = $_.Split('/')[6..7] -join '/'
-            }
-        }
+
+        # Format items
+        # ============
+        $resourcesToRemove = Get-ResourceIdsAsFormattedObjectLists -resourceIds $orderedResourceIds
 
         # Filter all dependency resources
         $dependencyResourceNames = Get-DependencyResourceNames

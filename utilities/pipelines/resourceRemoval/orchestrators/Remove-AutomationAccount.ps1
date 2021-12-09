@@ -106,13 +106,9 @@ function Remove-AutomationAccount {
             $unorderedResourceIds | Where-Object { $_ -match 'Microsoft.Automation/automationAccounts' }
         )
 
-        $resourcesToRemove = $orderedResourceIds | ForEach-Object {
-            @{
-                resourceId = $_
-                name       = $_.Split('/')[-1]
-                type       = $_.Split('/')[6..7] -join '/'
-            }
-        }
+        # Format items
+        # ============
+        $resourcesToRemove = Get-ResourceIdsAsFormattedObjectLists -resourceIds $orderedResourceIds
 
         # Filter all dependency resources
         $dependencyResourceNames = Get-DependencyResourceNames
