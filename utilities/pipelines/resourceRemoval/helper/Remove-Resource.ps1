@@ -30,7 +30,7 @@ function Remove-ResourceInner {
 
         if ((($processedResources | Where-Object { $resource.resourceId -like ('{0}*' -f $_) }).Count -gt 0) -or -not (Get-AzResource -ResourceId $resource.resourceId -ErrorAction 'SilentlyContinue')) {
             # Skipping
-            Write-Verbose ('Skipping resource [{0}] of type [{1}] as parent resource was already processed' -f $resource.name, $resource.type) -Verbose
+            Write-Verbose ('Skipping resource [{0}] of type [{1}] as itself or parent resource was already processed' -f $resource.name, $resource.type) -Verbose
             [array]$processedResources += $resource.resourceId
             [array]$resourcesToRetry = $resourcesToRetry | Where-Object { $_.resourceId -notmatch $resource.resourceId }
         } else {
