@@ -35,7 +35,7 @@ resource firewallRule 'Microsoft.Sql/servers/firewallRules@2021-05-01-preview' =
 output databaseName string = firewallRule.name
 
 @description('The resource ID of the deployed firewall rule')
-output databaseId string = firewallRule.id
+output databaseResourceId string = firewallRule.id
 
 @description('The resourceGroup of the deployed firewall rule')
 output databaseResourceGroup string = resourceGroup().name
