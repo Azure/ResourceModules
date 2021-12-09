@@ -214,7 +214,9 @@ param netIpv4TcpkeepaliveIntvl int = -1
 param netIpv4TcpKeepaliveProbes int = -1
 
 @description('Optional. Sysctl setting net.ipv4.tcp_keepalive_time.')
-param netIpv4TcpKeepaliveTime int = -1
+@minValue(30)
+@maxValue(432000)
+param netIpv4TcpKeepaliveTime int = 30
 
 @description('Optional. Sysctl setting net.ipv4.tcp_max_syn_backlog')
 @minValue(128)
