@@ -316,7 +316,7 @@ The variable group can be set up under _Pipelines: Library_ as described [here](
 
 ```yaml
 variables:
-  - group: 'Platform-Tokens'
+  - group: 'PLATFORM_VARIABLES'
 ```
 
 ### **Azure DevOps Component:** Variable file
@@ -383,14 +383,14 @@ While they look very similar they have specific areas in which they differ:
   | Variable | Example |
   | - | - |
   | Reference to the [shared variable file](#azure-devops-component-variable-file) | `- template: '/.azuredevops/pipelineVariables/global.variables.yml'` |
-  | Reference to the [variable group](#azure-devops-component-variable-group) with the platform secrets | `- group: Platform-Tokens` |
+  | Reference to the [variable group](#azure-devops-component-variable-group) with the platform secrets | `- group: PLATFORM_VARIABLES` |
   | Relative path to the module folder | <code>- name: modulePath<p>&nbsp;&nbsp;value: '/arm/Microsoft.AnalysisServices/servers'</code> |
 
   Full example:
   ```yaml
     variables:
       - template: '/.azuredevops/pipelineVariables/global.variables.yml'
-      - group: 'Platform-Tokens'
+      - group: 'PLATFORM_VARIABLES'
       - name: modulePath
         value: '/arm/Microsoft.AnalysisServices/servers'
   ```

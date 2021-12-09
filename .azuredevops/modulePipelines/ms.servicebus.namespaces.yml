@@ -33,7 +33,7 @@ trigger:
 
 variables:
   - template: '/.azuredevops/pipelineVariables/global.variables.yml'
-  - group: 'Platform-Tokens'
+  - group: 'PLATFORM_VARIABLES'
   - name: modulePath
     value: '/arm/Microsoft.ServiceBus/namespaces'
 

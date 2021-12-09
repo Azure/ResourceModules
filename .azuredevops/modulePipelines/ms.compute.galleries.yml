@@ -33,7 +33,7 @@ trigger:
 
 variables:
   - template: '/.azuredevops/pipelineVariables/global.variables.yml'
-  - group: 'Platform-Tokens'
+  - group: 'PLATFORM_VARIABLES'
   - name: modulePath
     value: '/arm/Microsoft.Compute/galleries'
 
@@ -42,7 +42,7 @@ stages:
     jobs:
       - template: /.azuredevops/pipelineTemplates/module.jobs.validate.yml
         parameters:
-          deploymentBlocks: 
+          deploymentBlocks:
             - path: $(modulePath)/.parameters/images.parameters.json
             - path: $(modulePath)/.parameters/parameters.json
 
@@ -51,7 +51,7 @@ stages:
       - template: /.azuredevops/pipelineTemplates/module.jobs.deploy.yml
         parameters:
           removeDeployment: '${{ parameters.removeDeployment }}'
-          deploymentBlocks: 
+          deploymentBlocks:
             - path: $(modulePath)/.parameters/images.parameters.json
             - path: $(modulePath)/.parameters/parameters.json
 
