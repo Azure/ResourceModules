@@ -1,59 +1,58 @@
 # NOTE:
-# This pipeline requires a secret 'PLATFORM_REPO_UPDATE_PAT' set up in the GitHub secrets.
+# This pipeline requires a secret 'PAT' set up in a library named 'PLATFORM_REPO_VARIABLES'.
 # The secret's value should be a PAT token with the permissions to push to the repository's main branch.
 
 name: '.Platform: Sync Docs/Wiki'
 
-on:
-  push:
-    branches:
+trigger:
+  branches:
+    include:
       - main
-    paths:
+  paths:
+    include:
       - 'docs/wiki/**'
 
-env:
-  wiki_source_repo: '${{ github.repository }}'
-  wiki_source_repo_dir: '${{ github.repository }}/docs/wiki'
-  wiki_target_repo: '${{ github.repository }}.wiki'
-  github_commit_message: 'Wiki Sync from docs/wiki'
-  pipelinePrincipalGitUserName: 'CARMLPipelinePrincipal'
-  pipelinePrincipalGitUserEmail: 'CARML@noreply.microsoft.com'
+variables:
+  - group: 'PLATFORM_REPO_VARIABLES'
+  - template: '/.azuredevops/pipelineVariables/global.variables.yml'
+  - name: pipelinePrincipalGitUserName
+    value: 'CARMLPipelinePrincipal'
+  - name: pipelinePrincipalGitUserEmail
+    value: 'CARML@noreply.github.com'
 
 jobs:
-  sync-wiki:
-    name: Sync docs/wiki to Wiki
-    runs-on: ubuntu-latest
+  - job: Update_module_tables
+    pool:
+      ${{ if ne('$(vmImage)', '') }}:
+        vmImage: '$(vmImage)'
+      ${{ if ne('$(poolName)', '') }}:
+        name: '$(poolName)'
     steps:
-      - name: Checkout Source Repo
-        uses: actions/checkout@v2
-        with:
-          repository: ${{ env.wiki_source_repo }}
-          path: ${{ env.wiki_source_repo }}
-          token: '${{ secrets.PLATFORM_REPO_UPDATE_PAT }}' # Sets general GIT credentials up
-
-      - name: Checkout Wiki Repo
-        uses: actions/checkout@v2
-        with:
-          repository: ${{ env.wiki_target_repo }}
-          path: ${{ env.wiki_target_repo }}
-          token: '${{ secrets.PLATFORM_REPO_UPDATE_PAT }}' # Sets general GIT credentials up
-
-      - name: Configure Local Git
-        run: |
-          git config --global user.name '${{ env.pipelinePrincipalGitUserName }}'
-          git config --global user.email '${{ env.pipelinePrincipalGitUserEmail }}'
-        working-directory: ${{ env.GITHUB_WORKSPACE }}
-
-      - name: Sync docs/wiki Into Wiki Repo
-        shell: pwsh
-        run: |
-          rsync -avzr --delete --exclude='.git/' "${{ env.wiki_source_repo_dir }}/" "${{ env.wiki_target_repo }}"
-        working-directory: ${{ env.GITHUB_WORKSPACE }}
-
-      - name: Stage & Push Files Into Wiki Repo
-        shell: pwsh
-        run: |
-          git add .
-          git commit -m "$github_commit_message [$GITHUB_ACTOR/${GITHUB_SHA::8}]"
-          git push
-        working-directory: ${{ env.wiki_target_repo }}
+      - checkout: self
+        displayName: Checkout Source Repo
+        persistCredentials: true
+      # Create a variable
+      - task: PowerShell@2
+        displayName: 'Checkout Wiki Repo'
+        inputs:
+          targetType: inline
+          pwsh: true
+          script: |
+            git config --global user.email '$(pipelinePrincipalGitUserEmail)'
+            git config --global user.name '$(pipelinePrincipalGitUserName)'
+            $repositoryEndpoint= 'https://' + '$(PAT)' + '@github.com/' + '$(Build.Repository.Name)' + '.wiki'
+            git clone $repositoryEndpoint
+      - task: PowerShell@2
+        displayName: 'Sync docs/wiki Into Wiki Repo'
+        inputs:
+          targetType: inline
+          pwsh: true
+          script: |
+            $docsPath = Join-Path '$(System.DefaultWorkingDirectory)' 'docs' 'wiki'
+            $wikiPath = ('$(Build.Repository.Name)').split('/')[1] + '.wiki'
+            $wikiRepository = Join-Path '$(System.DefaultWorkingDirectory)' $wikiPath
+            rsync -avzr --delete --exclude='.git/' $docsPath $wikiRepository
+            cd $wikiRepository
+            git add .
+            git commit -m "Push updated Wiki"
+            git push

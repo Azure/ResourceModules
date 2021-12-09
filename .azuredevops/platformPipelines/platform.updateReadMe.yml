@@ -18,9 +18,12 @@ variables:
     value: 'CARML@noreply.github.com'
 
 jobs:
-  - job: Update module tables
+  - job: Update_module_tables
     pool:
-      vmImage: 'ubuntu-latest'
+      ${{ if ne($(vmImage), '') }}:
+        vmImage: '$(vmImage)'
+      ${{ if ne($(poolName), '') }}:
+        name: '$(poolName)'
     steps:
       - checkout: self
         persistCredentials: true
@@ -31,20 +34,51 @@ jobs:
           pwsh: true
           script: |
             # Load used functions
-            Write-Verbose $(System.DefaultWorkingDirectory)
-            Write-Verbose $(Build.Repository.Name)
-            # . (Join-Path '$(System.DefaultWorkingDirectory)' 'utilities' 'tools' 'Set-GitHubReadMeModuleTable.ps1')
+            . (Join-Path '$(System.DefaultWorkingDirectory)' 'utilities' 'tools' 'Set-GitHubReadMeModuleTable.ps1')
 
-            # $functionInput = @{
-            #   ModulesPath    = Join-Path '$(System.DefaultWorkingDirectory)' 'arm'
-            #   FilePath       = Join-Path '$(System.DefaultWorkingDirectory)' 'README.md'
-            #   Organization   = ($(Build.Repository.Name)).split('/')[0]
-            #   RepositoryName = '$(Build.Repository.Name)'
-            #   ColumnsInOrder = @('Name', 'Status')
-            #   SortByColumn   = 'Name'
-            # }
+            $functionInput = @{
+              ModulesPath    = Join-Path '$(System.DefaultWorkingDirectory)' 'arm'
+              FilePath       = Join-Path '$(System.DefaultWorkingDirectory)' 'README.md'
+              Organization   = ('$(Build.Repository.Name)').split('/')[0]
+              RepositoryName = ('$(Build.Repository.Name)').split('/')[1]
+              ColumnsInOrder = @('Name', 'Status')
+              SortByColumn   = 'Name'
+            }
 
-            # Write-Verbose "Invoke task with" -Verbose
-            # Write-Verbose ($functionInput | ConvertTo-Json | Out-String) -Verbose
+            Write-Verbose "Invoke task with" -Verbose
+            Write-Verbose ($functionInput | ConvertTo-Json | Out-String) -Verbose
 
-            # Set-GitHubReadMeModuleTable @functionInput -Verbose
+            Set-GitHubReadMeModuleTable @functionInput -Verbose
+      - task: PowerShell@2
+        displayName: 'Update module folder ReadMe'
+        inputs:
+          targetType: inline
+          pwsh: true
+          script: |
+            # Load used functions
+            . (Join-Path '$(System.DefaultWorkingDirectory)' 'utilities' 'tools' 'Set-GitHubReadMeModuleTable.ps1')
+
+            $functionInput = @{
+              ModulesPath    = Join-Path '$(System.DefaultWorkingDirectory)' 'arm'
+              FilePath       = Join-Path '$(System.DefaultWorkingDirectory)' 'arm/README.md'
+              Organization   = ('$(Build.Repository.Name)').split('/')[0]
+              RepositoryName = ('$(Build.Repository.Name)').split('/')[1]
+              ColumnsInOrder = @('Name', 'ProviderNamespace','ResourceType')
+            }
+
+            Write-Verbose "Invoke task with" -Verbose
+            Write-Verbose ($functionInput | ConvertTo-Json | Out-String) -Verbose
+
+            Set-GitHubReadMeModuleTable @functionInput -Verbose
+      - task: PowerShell@2
+        displayName: 'Push changes'
+        inputs:
+          targetType: inline
+          pwsh: true
+          script: |
+            git config --global user.email '$(pipelinePrincipalGitUserEmail)'
+            git config --global user.name '$(pipelinePrincipalGitUserName)'
+            Write-Verbose '$(Build.SourceBranch)' -Verbose
+            git add .
+            git commit -m "Push updated Readme file(s)"
+            git push $(Build.Repository.Uri) HEAD:$(Build.SourceBranch)
