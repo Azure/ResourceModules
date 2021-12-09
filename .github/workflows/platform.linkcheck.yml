@@ -6,7 +6,7 @@ on:
     branches:
       - main
     paths:
-      - 'docs/wiki/**'
+      - '**/*.md'
 
 jobs:
   build:
@@ -24,7 +24,7 @@ jobs:
         id: checker
         uses: lycheeverse/lychee-action@v1.1.1
         with:
-          args: --verbose --no-progress **/docs/**/*.md --accept 200,201,403,429
+          args: --verbose --no-progress **/*.md --accept 200,201,403,429,401 --exclude-file .lycheeignore
         env:
           GITHUB_TOKEN: ${{secrets.GITHUB_TOKEN}}
 

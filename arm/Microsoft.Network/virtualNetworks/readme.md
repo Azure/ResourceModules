@@ -29,9 +29,9 @@ This template deploys a virtual network (vNet).
 | `logsToEnable` | array | `[VMProtectionAlerts]` | `[VMProtectionAlerts]` | Optional. The name of logs that will be streamed. |
 | `metricsToEnable` | array | `[AllMetrics]` | `[AllMetrics]` | Optional. The name of metrics that will be streamed. |
 | `name` | string |  |  | Required. The Virtual Network (vNet) Name. |
+| `nsgResourceGroup` | string | `[resourceGroup().name]` |  | Optional. Resource Group where NSGs are deployed, if different than VNET Resource Group. |
 | `roleAssignments` | array | `[]` |  | Optional. Array of role assignment objects that contain the 'roleDefinitionIdOrName' and 'principalId' to define RBAC role assignments on this resource. In the roleDefinitionIdOrName attribute, you can provide either the display name of the role definition, or its fully qualified ID in the following format: '/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11' |
 | `subnets` | array |  |  | Required. An Array of subnets to deploy to the Virual Network. |
-| `nsgResourceGroup` | string | `[resourceGroup().name]` |  | Optional. Resource Group where NSGs are deployed, if different than VNET Resource Group. |
 | `tags` | object | `{object}` |  | Optional. Tags of the resource. |
 | `virtualNetworkPeerings` | _[virtualNetworkPeerings](virtualNetworkPeerings/readme.md)_ array | `[]` |  | Optional. Virtual Network Peerings configurations |
 | `workspaceId` | string |  |  | Optional. Resource ID of log analytics. |
@@ -156,8 +156,8 @@ The network security group and route table resources must reside in the same res
 
 ## Template references
 
+- [Diagnosticsettings](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Insights/2021-05-01-preview/diagnosticSettings)
 - [Locks](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2016-09-01/locks)
 - [Roleassignments](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2020-04-01-preview/roleAssignments)
-- [Diagnosticsettings](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Insights/2021-05-01-preview/diagnosticSettings)
-- [Virtualnetworks](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Network/2021-05-01/virtualNetworks)
+- [Virtualnetworks](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Network/virtualNetworks)
 - [Virtualnetworks/Virtualnetworkpeerings](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Network/2021-02-01/virtualNetworks/virtualNetworkPeerings)

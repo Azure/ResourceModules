@@ -293,7 +293,7 @@ The field `nicSuffix` and `subnetId` are mandatory. If `enablePublicIP` is set t
 "domainJoinSettings": {
   "value": {
       "domainName": "contoso.com",
-      "domainJoinUser": "domainJoinUser@contoso.com",
+      "domainJoinUser": "test.user@testcompany.com",
       "domainJoinOU": "OU=testOU; DC=contoso; DC=com",
       "domainJoinRestart": true,
       "domainJoinOptions": 3

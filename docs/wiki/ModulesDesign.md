@@ -20,7 +20,7 @@ This section gives you an overview of the design principals the bicep modules fo
 
 ---
 
-Modules are written in an quite flexible way, therefore you don’t need to modify them from project to project, as the aim is to cover most of the functionality that a given resource type can provide, in a way that you can interact with any module just by sending the required parameters to it – i.e. you don’t have to know how the template of the particular module works inside, just take a look at the `readme.md` file of the given module to consume it.
+Modules are written in a quite flexible way, therefore you don’t need to modify them from project to project, as the aim is to cover most of the functionality that a given resource type can provide, in a way that you can interact with any module just by sending the required parameters to it – i.e. you don’t have to know how the template of the particular module works inside, just take a look at the `readme.md` file of the given module to consume it.
 
 The modules are multi-purpose, therefore contain a lot of dynamic expressions (functions, variables, etc.), so there’s no need to maintain multiple instances for different use cases.
 
@@ -43,15 +43,15 @@ They can be deployed in different configurations just by changing the input para
 
 # File & folder structure
 
-- [Naming](#naming)
 - [Structure](#structure)
+- [Naming](#naming)
 - [Patterns](#patterns)
 
-A **Module** consists of
+A **CARML module** consists of
 
-- the bicep template deployment file (`deploy.bicep`)
-- one or multiple template parameters files (`*parameters.json`) that will be used for testing – located in the `parameters` sub-folder
-- a `readme.md` file which describes the module itself
+- The bicep template deployment file (`deploy.bicep`).
+- One or multiple template parameters files (`*parameters.json`) that will be used for testing, located in the `.parameters` sub-folder.
+- A `readme.md` file which describes the module itself.
 
 A module usually represents a single resource or a set of closely related resources. For example, a storage account and the associated lock or virtual machine and network interfaces. Modules are located in the `arm` folder.
 
@@ -60,73 +60,6 @@ Also, each module should be implemented with all capabilities it and its childre
 - `RBAC`
 - `Diagnostic Settings`
 - and ideally also `Private Endpoints`.
-
-## Naming
-
-Use the following naming standard for module files and folders:
-
-- Modules name reflect the resource type
-- Files and folders within the module folder are all in lower case
-- Child-resource modules (in .bicep sub-folder) are named `nested_<childResourceType>.bicep`
-
-``` txt
-Microsoft.<provider>
-└─ <service>
-    ├─ .bicep
-    |  ├─ nested_providerResource1.bicep
-    |  └─ nested_providerResource2.bicep
-    ├─parameters
-    |  └─ parameters.json
-    ├─ deploy.bicep
-    └─ readme.md
-```
-
-for example
-
-``` txt
-Microsoft.Web
-└─ sites
-    ├─ .bicep
-    |  ├─ nested_rbac.bicep
-    |  └─ nested_cuaId.bicep
-    ├─parameters
-    |  └─ parameters.json
-    ├─ deploy.bicep
-    └─ readme.md
-```
-
-### Child resources naming
-
-When creating child-resources from parent resources you will need to specify a name that, when deployed, will be used to assign the deployment name.
-
-There are some constraints that needs to be considered when naming the deployment:
-
-- Deployment name length can't exceed 64 chars
-- Two deployments with the same name created in different location will fail
-- Using the same deployment name mode than once, will surface only the last one in the Azure Portal
-- If more than one deployment with the same name runs at the same time, race condition might happen
-- Human-readable names would be preferable, even if not necessary
-
-While exceptions might be needed, the following guidance should be followed as much as possible:
-
-- For child-resources of the top-level resource inside the top-level template (for example the `blobServices` deployment inside the `storageAccount` template) use the following naming structure
-
-```
-'${uniqueString(deployment().name, location)}-<resource_short_type>'
-```
-
-- In child-resource templates (for example inside for `containers` in the `blobServices` template), use the following naming structure
-
-```
-'${deployment().name}-<child_type>[-${index}]'
-```
-
-Examples:
-
-```
-name: '${uniqueString(deployment().name, location)}-TableSvc'
-name: '${deployment().name}-Table-${index}'
-```
 
 ## Structure
 
@@ -155,9 +88,44 @@ module server_databases 'databases/deploy.bicep' = [for (database, index) in dat
 
 Each module should come with a `.bicep` folder with a least the `nested_cuaId.bicep` file in it
 
+## Naming
+
+Use the following naming standard for module files and folders:
+
+- Module folders are in camelCase and their name reflects the main resource type of the Bicep module they are hosting (e.g. `storageAccounts`, `virtualMachines`).
+- Cross-referenced and extension resource modules are placed in the `.bicep` subfolder and named `nested_<crossReferencedResourceType>.bicep`
+
+  ``` txt
+  Microsoft.<Provider>
+  └─ <service>
+      ├─ .bicep
+      |  ├─ nested_crossReferencedResource1.bicep
+      |  └─ nested_crossReferencedResource2.bicep
+      ├─ .parameters
+      |  └─ parameters.json
+      ├─ deploy.bicep
+      └─ readme.md
+  ```
+
+  >**Example**: `nested_serverfarms.bicep` in the `Microsoft.Web\sites\.bicep` folder contains the cross-referenced `serverfarm` module leveraged by the top level `site` resource.
+  >``` txt
+  >Microsoft.Web
+  >└─ sites
+  >    ├─ .bicep
+  >    |  ├─ nested_components.bicep
+  >    |  ├─ nested_cuaId.bicep
+  >    |  ├─ nested_privateEndpoint.bicep
+  >    |  ├─ nested_rbac.bicep
+  >    |  └─ nested_serverfarms.bicep
+  >    ├─ .parameters
+  >    |  └─ parameters.json
+  >    ├─ deploy.bicep
+  >    └─ readme.md
+  >```
+
 ## Patterns
 
-This sections shows you a few common patterns among resources that are usually very similar (e.g. providers)
+This section details patterns among extension resources that are usually very similar in their structure among all modules supporting them:
 
 - [Locks](#locks)
 - [RBAC](#rbac)
@@ -166,7 +134,7 @@ This sections shows you a few common patterns among resources that are usually v
 
 ### Locks
 
-The locks provider can be added as a `resource` to the resource template directly.
+The locks extension can be added as a `resource` to the resource template directly.
 
 ```bicep
 @allowed([
@@ -208,7 +176,10 @@ module <mainResource>_rbac '.bicep/nested_rbac.bicep' = [for (roleAssignment, in
 
 #### 2nd Element as nested `.bicep/nested_rbac.bicep` file
 
-Here you specify the platform roles available for the main resource. You can find further information in the [variables](#variables) section.
+Here you specify the platform roles available for the main resource.
+
+The `builtInRoleNames` variable contains the list of applicable roles for the specific resource to which the nested_rbac.bicep module applies.
+>**Note**: You can find a helper script `Get-FormattedRBACRoles.ps1` in the `utilities\tools` folder of the repository. You can use this script to extract a formatted list of RBAC roles used in the CARML modules based on the RBAC lists in Azure.
 
 The element requires you to provide both the `principalIds` & `roleDefinitionOrIdName` to assign to the principal IDs. Also, the `resourceId` is target resource's resource ID that allows us to reference it as an `existing` resource. Note, the implementation of the `split` in the resource reference becomes longer the deeper you go in the child-resource hierarchy.
 
@@ -305,10 +276,10 @@ var diagnosticsMetrics = [for metric in metricsToEnable: {
 resource <mainResource>_diagnosticSettings 'Microsoft.Insights/diagnosticsettings@2021-05-01-preview' = if (!empty(diagnosticStorageAccountId) || !empty(workspaceId) || !empty(eventHubAuthorizationRuleId) || !empty(eventHubName)) {
   name: '${<mainResource>.name}-diagnosticSettings'
   properties: {
-    storageAccountId: empty(diagnosticStorageAccountId) ? null : diagnosticStorageAccountId
-    workspaceId: empty(workspaceId) ? null : workspaceId
-    eventHubAuthorizationRuleId: empty(eventHubAuthorizationRuleId) ? null : eventHubAuthorizationRuleId
-    eventHubName: empty(eventHubName) ? null : eventHubName
+    storageAccountId: !empty(diagnosticStorageAccountId) ? diagnosticStorageAccountId : null
+    workspaceId: !empty(workspaceId) ? workspaceId : null
+    eventHubAuthorizationRuleId: !empty(eventHubAuthorizationRuleId) ? eventHubAuthorizationRuleId : null
+    eventHubName: !empty(eventHubName) ? eventHubName : null
     metrics: diagnosticsMetrics
     logs: diagnosticsLogs
   }
@@ -396,16 +367,17 @@ resource privateDnsZoneGroups 'Microsoft.Network/privateEndpoints/privateDnsZone
 
 # Bicep template guidelines
 
-Within a bicep file, follow the following conventions:
+Within a bicep file, use the following conventions:
 
 - [Parameters](#parameters)
 - [Variables](#variables)
-- [Resource](#resource)
+- [Resources](#resources)
+- [Modules](#modules)
 - [Outputs](#outputs)
 
 ## Parameters
 
-- camelCase, i.e `resourceGroupName`
+- Parameter names are in camelCase, e.g. `allowBlobPublicAccess`.
 - Descriptions contain type of requirement:
   - `Optional` - Is not needed at any point. Module contains default values.
   - `Required` - Is required to be provided. Module does not have a default value and will expect input.
@@ -414,17 +386,16 @@ Within a bicep file, follow the following conventions:
 
 ## Variables
 
-- camelCase, i.e `builtInRoleNames`
-- For modules that manage roleAssignments, update the list of roles to only be the applicable roles. You can find a helper script `Get-FormattedRBACRoles.ps1` in the `tools` folder of the repository.
+- Variable names are in camelCase, e.g. `builtInRoleNames`.
 
-## Resource
+## Resources
 
-- camelCase, i.e `resourceGroup`
+- Resource names are in camelCase, e.g. `resourceGroup`.
 - The name used as a reference is the singular name of the resource that it deploys, i.e:
   - `resource storageAccount 'Microsoft.Storage/storageAccounts@2019-06-01'`
   - `resource virtualMachine 'Microsoft.Compute/virtualMachines@2020-06-01'`
 - Parent reference
-  - If working on a child-resource, refrain from string concatenation and instead us the parent reference via the `existing` keyword.
+  - If working on a child-resource, refrain from string concatenation and instead use the parent reference via the `existing` keyword.
   - The way this is implemented differs slightly the lower you go in the hierarchy. Note the following examples:
     - 1st level child resource (example _storageAccount/blobService_)
       ```bicep
@@ -474,34 +445,85 @@ Within a bicep file, follow the following conventions:
         properties: {...}
       }
       ```
-- Bicep `modules`:
-  - camel_Snake_Case, i.e `resourceGroup_rbac` ?
-  - Filename for nested module is structured as follows: `nested_<resourceName>.bicep` i.e:
-    - `nested_rbac.bicep`
+## Modules
+
+  - Module symbolic names are in camel_Snake_Case, following the schema `<mainResourceType>_<referencedResourceType>` e.g. `storageAccount_fileServices`, `virtualMachine_nic`, `resourceGroup_rbac`.
+  - Modules enable you to reuse code from a Bicep file in other Bicep files. As such they're normally leveraged for deploying child resources (e.g. file services in a storage account), cross referenced resources (e.g. network interface in a virtual machine) or extension resources (e.g. role assignment in a resource group).
+
+### Deployment names
+
+When using modules from parent resources you will need to specify a name that, when deployed, will be used to assign the deployment name.
+
+There are some constraints that needs to be considered when naming the deployment:
+
+- Deployment name length can't exceed 64 chars.
+- Two deployments with the same name created in different Azure locations (e.g. WestEurope & EastUS) in the same scope (e.g. resource group deployments) will fail.
+- Using the same deployment name more than once, will surface only the most recent deployed one in the Azure Portal.
+- If more than one deployment with the same name runs at the same time to the same scope, race condition might happen.
+- Human-readable names are preferable, even if not necessary.
+
+While exceptions might be needed, the following guidance should be followed as much as possible:
+
+- When deploying more than one resource of the same referenced module is needed, we leverage loops using integer index and items in an array as per [Bicep loop syntax](https://docs.microsoft.com/en-us/azure/azure-resource-manager/bicep/loops#loop-syntax). In this case we also use `-${index}` as a suffix of the deployment name to avoid race condition:
+
+  ```
+  module symbolic_name 'path/to/referenced/module/deploy.bicep' = [for (<item>, <index>) in <collection>: {
+    name: '<deploymentName>-${index}'
+    ...
+  }]
+  ```
+  > **Example**: for the `roleAssignment` deployment in the key vault `secrets` template
+  > ```
+  >   module secret_rbac '.bicep/nested_rbac.bicep' = [for (roleAssignment, index) in roleAssignments: {
+  >     name: '${deployment().name}-Rbac-${index}'
+  > ```
+
+- For referenced resources of the top-level resource inside the top-level template use the following naming structure:
+
+  ```
+  '${uniqueString(deployment().name, location)}-<topLevelResourceType>-<referencedResourceType>'
+  ```
+  > **Example**: for the `tableServices` deployment inside the `storageAccount` template
+  > ```
+  > name: '${uniqueString(deployment().name, location)}-Storage-TableServices'
+  > ```
+
+- In the referenced resource template use the following naming structure:
+
+  ```
+  '${deployment().name}-<referencedResourceType>[-${index}]'
+  ```
+  > **Example**: for the `tables` deployment in the `tableServices` template
+  > ```
+  > name: '${deployment().name}-Table-${index}'
+  > ```
+
 
 
 
 ## Outputs
 
-- camelCase, i.e `resourceGroupResourceId`
+- Output names are in camelCase, i.e `storageAccountResourceId`
 - At a minimum, reference the following:
-  - `<resourceReference>Name`, i.e. `resourceGroupName`
-  - `<resourceReference>ResourceId`, i.e. `resourceGroupResourceId`
-- Add a `@description('...')` annotation with meaningful description to each output
+  - `<resourceReference>Name`, e.g. `storageAccountName`.
+  - `<resourceReference>ResourceId`, e.g. `storageAccountResourceId`.
+  - `<resourceReference>ResourceGroup` for resources deployed at resource group scope, e.g. `storageAccountResourceGroup`.
+  - `systemAssignedPrincipalId` for all resources supporting a managed identity.
+- Add a `@description('...')` annotation with meaningful description to each output.
 
 ---
 
 # ReadMe
 
-Each module must come with a ReadMe Markdown file that outlines what the module contains and 'how' it can be used.
-It primary components are
-- A title with a reference to the primary resource (for example <code>KeyVault `[Microsoft.KeyVault/vaults]`</code>)
-- A description
-- A table that outlines all resources that can be deployed as part of the module (Resource Types)
-- A table that shows all parameters, what they are used for, what values they allow, etc. (Parameters)
-- A custom 'Parameter Usage' section that show how to use special types of characters (e.g. roleAssignments)
-- A table that describes all outputs the module template returns
-- A  references table to directly jump to the resources [ARM template reference](https://docs.microsoft.com/en-us/azure/templates)
+Each module must come with a ReadMe markdown file that outlines what the module contains and 'how' it can be used.
+Its primary components are in order:
+- A title with a reference to the primary resource in Start Case followed by the primary resource namespace e.g. <code>Key Vaults `[Microsoft.KeyVault/vaults]`</code>.
+- A short description
+- A **Resource types** section with a table that outlines all resources that can be deployed as part of the module.
+- A **Parameters** section with a table containing all parameters, their type, default and allowed values if any, and their description.
+- Optionally, a **Parameter Usage** section that shows how to use complex structures such as parameter objects or array of objects, e.g. roleAssignments, tags, privateEndpoints.
+- An **Outputs** section with a table that describes all outputs the module template returns.
+- A **Template references** section listing relevant resources [ARM template reference](https://docs.microsoft.com/en-us/azure/templates).
 
 Note the following recommendations
 - Use our module generation script `Set-ModuleReadMe` that will do most of the work for you. Currently you can find it at 'utilities\tools\Set-ModuleReadMe.ps1'. Just load the file and invoke the function like this `Set-ModuleReadMe -TemplateFilePath '<pathToModule>/deploy.bicep'`
