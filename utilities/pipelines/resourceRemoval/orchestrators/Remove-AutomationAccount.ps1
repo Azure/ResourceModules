@@ -68,41 +68,6 @@ function Remove-AutomationAccount {
         # ========================
         $rawResourceIdsToRemove = $deployments | Sort-Object -Property { $_.Split('/').Count } -Descending | Select-Object -Unique
 
-        # Pre-Filter & order items
-        # ========================
-        # $unorderedResourceIds = $deployments.TargetResource | Where-Object { $_ -and $_ -notmatch '/deployments/' }
-        # $childDeploymentsIds = $deployments.TargetResource | Where-Object { $_ -and $_ -match '/deployments/' }
-
-        # foreach ($childDeploymentId in $childDeploymentsIds) {
-        #     $searchRetryCount = 1
-        #     $childDeploymentTokens = $childDeploymentId.Split('/')
-        #     $childDeploymentName = $childDeploymentTokens[8]
-        #     $childDeploymentResourceGroup = $childDeploymentTokens[4]
-        #     do {
-        #         Write-Verbose ('Searching child deployment named [{0}] in resource group [{1}]. Attempt [{2}/{3}]' -f $childDeploymentName, $childDeploymentResourceGroup, $searchRetryCount, $searchRetryLimit) -Verbose
-        #         $childDeployment = Get-AzResourceGroupDeploymentOperation -DeploymentName $childDeploymentName -ResourceGroupName $childDeploymentResourceGroup -ErrorAction 'SilentlyContinue'
-        #         if ($childDeployment) {
-        #             Write-Verbose ('[Success] Child deployment named [{0}] in resource group [{1}] found' -f $childDeploymentName, $childDeploymentResourceGroup) -Verbose
-        #             $unorderedResourceIds += $childDeployment.TargetResource
-        #             break
-        #         }
-        #         Write-Verbose ('[Failure] Did not to find child deployment named [{0}] in resource group [{1}]. Retrying in [{2}] seconds [{3}/{4}]' -f $childDeploymentName, $childDeploymentResourceGroup, $searchRetryInterval, $searchRetryCount, $searchRetryLimit) -Verbose
-        #         Start-Sleep $searchRetryInterval
-        #         $searchRetryCount++
-        #     } while ($searchRetryCount -le $searchRetryLimit)
-        # }
-
-        # $unorderedResourceIds = $deployments | Where-Object { $_ `
-        #         -and ($_ -notmatch '/Microsoft.Insights/diagnosticSettings/') `
-        #         -and ($_ -notmatch '/variables/') `
-        #         -and ($_ -notmatch '/softwareUpdateConfigurations/') `
-        #         -and ($_ -notmatch '/jobSchedules/') `
-        #         -and ($_ -notmatch '/schedules/') `
-        #         -and ($_ -notmatch '/runbooks/') `
-        #         -and ($_ -notmatch '/modules/') `
-        #         -and ($_ -notmatch '/Microsoft.Authorization/roleAssignments/') `
-        # } | Select-Object -Unique
-
         $orderedResourceIds = @(
             $rawResourceIdsToRemove | Where-Object { $_ -match 'Microsoft.OperationsManagement/solutions/Updates' }
             $rawResourceIdsToRemove | Where-Object { $_ -match 'linkedServices/automation' }
