@@ -35,7 +35,7 @@ runs:
         }
         Write-Verbose "Execute tests in path(s):" -Verbose
         foreach($moduleFolderPath in $moduleFolderPaths) {
-          Write-VErbose "- [($moduleFolderPath]"
+          Write-VErbose "- [($moduleFolderPath]" -Verbose
         }
 
         # --------------------- #
