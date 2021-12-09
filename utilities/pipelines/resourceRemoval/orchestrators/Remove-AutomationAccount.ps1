@@ -71,6 +71,8 @@ function Remove-AutomationAccount {
         $orderedResourceIds = @(
             $rawResourceIdsToRemove | Where-Object { $_ -match 'Microsoft.OperationsManagement/solutions/Updates' }
             $rawResourceIdsToRemove | Where-Object { $_ -match 'linkedServices/automation' }
+            $rawResourceIdsToRemove | Where-Object { $_ -match '/privateDnsZoneGroups/' }
+            $rawResourceIdsToRemove | Where-Object { $_ -match '/Microsoft.Network/privateEndpoints/[^/]+$' }
             $rawResourceIdsToRemove | Where-Object { $_ -match 'Microsoft.Insights/diagnosticSettings' }
             $rawResourceIdsToRemove | Where-Object { $_ -match 'Microsoft.Automation/automationAccounts' }
         )
