@@ -27,8 +27,16 @@ param condition string = ''
 ])
 param conditionVersion string = '2.0'
 
-@sys.description('Optional. The principal type of the assigned principal ID. Allowed Values "ServicePrincipal", "Group", "User", "ForeignGroup", "Device"')
-param principalType string = 'ServicePrincipal'
+@sys.description('Optional. The principal type of the assigned principal ID.')
+@allowed([
+  'ServicePrincipal'
+  'Group'
+  'User'
+  'ForeignGroup'
+  'Device'
+  ''
+])
+param principalType string = ''
 
 var builtInRoleNames_var = {
   'AcrPush': '/providers/Microsoft.Authorization/roleDefinitions/8311e382-0749-4cb8-b61a-304f252e45ec'
@@ -316,13 +324,13 @@ var builtInRoleNames_var = {
 
 var roleDefinitionId_var = (contains(builtInRoleNames_var, roleDefinitionIdOrName) ? builtInRoleNames_var[roleDefinitionIdOrName] : roleDefinitionIdOrName)
 
-resource roleAssignment 'Microsoft.Authorization/roleAssignments@2020-04-01-preview' = {
+resource roleAssignment 'Microsoft.Authorization/roleAssignments@2021-04-01-preview' = {
   name: guid(subscriptionId, resourceGroupName, roleDefinitionId_var, principalId)
   properties: {
     roleDefinitionId: roleDefinitionId_var
     principalId: principalId
     description: !empty(description) ? description : null
-    principalType: !empty(principalType) ? principalType : null
+    principalType: !empty(principalType) ? any(principalType) : null
     delegatedManagedIdentityResourceId: !empty(delegatedManagedIdentityResourceId) ? delegatedManagedIdentityResourceId : null
     conditionVersion: !empty(conditionVersion) && !empty(condition) ? conditionVersion : null
     condition: !empty(condition) ? condition : null
