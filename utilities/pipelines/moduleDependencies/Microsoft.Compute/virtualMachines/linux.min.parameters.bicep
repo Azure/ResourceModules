@@ -73,8 +73,10 @@ module virtualNetwork '../../../../../arm/Microsoft.Network/virtualNetworks/depl
   ]
 }
 
-@description('The name of the resource group')
-output resourceGroupName string = resourceGroup.outputs.resourceGroupName
+// ======= //
+// Outputs //
+// ======= //
 
-@description('The resource ID of the resource group')
 output resourceGroupResourceId string = resourceGroup.outputs.resourceGroupResourceId
+output networkSecurityGroupResourceId string = networkSecurityGroup.outputs.networkSecurityGroupResourceId
+output virtualNetworkResourceId string = virtualNetwork.outputs.virtualNetworkResourceId

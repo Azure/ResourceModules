@@ -158,8 +158,13 @@ module keyVaultdeploymentScript '../../../../../arm/Microsoft.Resources/deployme
   ]
 }
 
-@description('The name of the resource group')
-output resourceGroupName string = resourceGroup.outputs.resourceGroupName
+// ======= //
+// Outputs //
+// ======= //
 
-@description('The resource ID of the resource group')
 output resourceGroupResourceId string = resourceGroup.outputs.resourceGroupResourceId
+output managedIdentityResourceId string = managedIdentity.outputs.msiResourceId
+output networkSecurityGroupResourceId string = networkSecurityGroup.outputs.networkSecurityGroupResourceId
+output virtualNetworkResourceId string = virtualNetwork.outputs.virtualNetworkResourceId
+output keyVaultResourceId string = keyVault.outputs.keyVaultResourceId
+output keyVaultdeploymentScriptResourceId string = keyVaultdeploymentScript.outputs.deploymentScriptResourceId
