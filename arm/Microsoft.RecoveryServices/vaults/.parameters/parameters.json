@@ -5,6 +5,12 @@
         "name": {
             "value": "sxx-az-rsv-x-001"
         },
+        "backupConfig": {
+            "value": {
+                "enhancedSecurityState": "Disabled",
+                "softDeleteFeatureState": "Disabled"
+            }
+        },
         "backupPolicies": {
             "value": [
                 {
