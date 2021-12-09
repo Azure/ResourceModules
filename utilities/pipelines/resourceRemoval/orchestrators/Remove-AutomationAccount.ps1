@@ -46,6 +46,7 @@ function Remove-AutomationAccount {
         . (Join-Path (Get-Item -Path $PSScriptRoot).parent.parent.FullName 'sharedScripts' 'Get-ScopeOfTemplateFile.ps1')
         . (Join-Path (Split-Path $PSScriptRoot -Parent) 'helper' 'Get-DeploymentByName.ps1')
         . (Join-Path (Split-Path $PSScriptRoot -Parent) 'helper' 'Get-DependencyResourceNames.ps1')
+        . (Join-Path (Split-Path $PSScriptRoot -Parent) 'helper' 'Get-ResourceIdsAsFormattedObjectList.ps1')
         . (Join-Path (Split-Path $PSScriptRoot -Parent) 'helper' 'Remove-Resource.ps1')
     }
 
@@ -61,49 +62,48 @@ function Remove-AutomationAccount {
             scope             = $deploymentScope
             resourceGroupName = $resourceGroupName
         }
-        $deployments = Get-DeploymentByName @deploymentsInputObject
+        $deployments = Get-DeploymentByName @deploymentsInputObject -Verbose
 
         # Pre-Filter & order items
         # ========================
-        $resourcesToRemove = @()
-        $unorderedResourceIds = $deployments.TargetResource | Where-Object { $_ -and $_ -notmatch '/deployments/' }
-        $childDeploymentsIds = $deployments.TargetResource | Where-Object { $_ -and $_ -match '/deployments/' }
+        # $unorderedResourceIds = $deployments.TargetResource | Where-Object { $_ -and $_ -notmatch '/deployments/' }
+        # $childDeploymentsIds = $deployments.TargetResource | Where-Object { $_ -and $_ -match '/deployments/' }
 
-        foreach ($childDeploymentId in $childDeploymentsIds) {
-            $searchRetryCount = 1
-            $childDeploymentTokens = $childDeploymentId.Split('/')
-            $childDeploymentName = $childDeploymentTokens[8]
-            $childDeploymentResourceGroup = $childDeploymentTokens[4]
-            do {
-                Write-Verbose ('Searching child deployment named [{0}] in resource group [{1}]. Attempt [{2}/{3}]' -f $childDeploymentName, $childDeploymentResourceGroup, $searchRetryCount, $searchRetryLimit) -Verbose
-                $childDeployment = Get-AzResourceGroupDeploymentOperation -DeploymentName $childDeploymentName -ResourceGroupName $childDeploymentResourceGroup -ErrorAction 'SilentlyContinue'
-                if ($childDeployment) {
-                    Write-Verbose ('[Success] Child deployment named [{0}] in resource group [{1}] found' -f $childDeploymentName, $childDeploymentResourceGroup) -Verbose
-                    $unorderedResourceIds += $childDeployment.TargetResource
-                    break
-                }
-                Write-Verbose ('[Failure] Did not to find child deployment named [{0}] in resource group [{1}]. Retrying in [{2}] seconds [{3}/{4}]' -f $childDeploymentName, $childDeploymentResourceGroup, $searchRetryInterval, $searchRetryCount, $searchRetryLimit) -Verbose
-                Start-Sleep $searchRetryInterval
-                $searchRetryCount++
-            } while ($searchRetryCount -le $searchRetryLimit)
-        }
+        # foreach ($childDeploymentId in $childDeploymentsIds) {
+        #     $searchRetryCount = 1
+        #     $childDeploymentTokens = $childDeploymentId.Split('/')
+        #     $childDeploymentName = $childDeploymentTokens[8]
+        #     $childDeploymentResourceGroup = $childDeploymentTokens[4]
+        #     do {
+        #         Write-Verbose ('Searching child deployment named [{0}] in resource group [{1}]. Attempt [{2}/{3}]' -f $childDeploymentName, $childDeploymentResourceGroup, $searchRetryCount, $searchRetryLimit) -Verbose
+        #         $childDeployment = Get-AzResourceGroupDeploymentOperation -DeploymentName $childDeploymentName -ResourceGroupName $childDeploymentResourceGroup -ErrorAction 'SilentlyContinue'
+        #         if ($childDeployment) {
+        #             Write-Verbose ('[Success] Child deployment named [{0}] in resource group [{1}] found' -f $childDeploymentName, $childDeploymentResourceGroup) -Verbose
+        #             $unorderedResourceIds += $childDeployment.TargetResource
+        #             break
+        #         }
+        #         Write-Verbose ('[Failure] Did not to find child deployment named [{0}] in resource group [{1}]. Retrying in [{2}] seconds [{3}/{4}]' -f $childDeploymentName, $childDeploymentResourceGroup, $searchRetryInterval, $searchRetryCount, $searchRetryLimit) -Verbose
+        #         Start-Sleep $searchRetryInterval
+        #         $searchRetryCount++
+        #     } while ($searchRetryCount -le $searchRetryLimit)
+        # }
 
-        $unorderedResourceIds = $unorderedResourceIds | Where-Object { $_ `
-                -and ($_ -notmatch '/Microsoft.Insights/diagnosticSettings/') `
-                -and ($_ -notmatch '/variables/') `
-                -and ($_ -notmatch '/softwareUpdateConfigurations/') `
-                -and ($_ -notmatch '/jobSchedules/') `
-                -and ($_ -notmatch '/schedules/') `
-                -and ($_ -notmatch '/runbooks/') `
-                -and ($_ -notmatch '/modules/') `
-                -and ($_ -notmatch '/Microsoft.Authorization/roleAssignments/') `
-        } | Select-Object -Unique
+        # $unorderedResourceIds = $deployments | Where-Object { $_ `
+        #         -and ($_ -notmatch '/Microsoft.Insights/diagnosticSettings/') `
+        #         -and ($_ -notmatch '/variables/') `
+        #         -and ($_ -notmatch '/softwareUpdateConfigurations/') `
+        #         -and ($_ -notmatch '/jobSchedules/') `
+        #         -and ($_ -notmatch '/schedules/') `
+        #         -and ($_ -notmatch '/runbooks/') `
+        #         -and ($_ -notmatch '/modules/') `
+        #         -and ($_ -notmatch '/Microsoft.Authorization/roleAssignments/') `
+        # } | Select-Object -Unique
 
         $orderedResourceIds = @(
-            $unorderedResourceIds | Where-Object { $_ -match 'Microsoft.OperationsManagement/solutions/Updates' }
-            $unorderedResourceIds | Where-Object { $_ -match 'linkedServices/automation' }
-            $unorderedResourceIds | Where-Object { $_ -match 'Microsoft.Insights/diagnosticSettings' }
-            $unorderedResourceIds | Where-Object { $_ -match 'Microsoft.Automation/automationAccounts' }
+            $deployments | Where-Object { $_ -match 'Microsoft.OperationsManagement/solutions/Updates' }
+            $deployments | Where-Object { $_ -match 'linkedServices/automation' }
+            $deployments | Where-Object { $_ -match 'Microsoft.Insights/diagnosticSettings' }
+            $deployments | Where-Object { $_ -match 'Microsoft.Automation/automationAccounts' }
         )
 
         # Format items

@@ -57,7 +57,7 @@ function Get-DeploymentByNameInner {
                 foreach ($deployment in ($deploymentTargets | Where-Object { $_ -match '/deployments/' } )) {
                     $name = Split-Path $deployment -Leaf
                     $resourceGroupName = $deployment.split('/resourceGroups/')[1].Split('/')[0]
-                    [array]$resultSet += Get-DeploymentByName -Name $name -ResourceGroupName $ResourceGroupName -Scope 'resourceGroup'
+                    [array]$resultSet += Get-DeploymentByNameInner -Name $name -ResourceGroupName $ResourceGroupName -Scope 'resourceGroup'
                 }
             } else {
                 # In case the resource group itself was already deleted, there is no need to try and fetch deployments from it
@@ -76,10 +76,10 @@ function Get-DeploymentByNameInner {
                     # Resource Group Level Child Deployments
                     $name = Split-Path $deployment -Leaf
                     $resourceGroupName = $deployment.split('/resourceGroups/')[1].Split('/')[0]
-                    [array]$resultSet += Get-DeploymentByName -Name $name -ResourceGroupName $ResourceGroupName -Scope 'resourceGroup'
+                    [array]$resultSet += Get-DeploymentByNameInner -Name $name -ResourceGroupName $ResourceGroupName -Scope 'resourceGroup'
                 } else {
                     # Subscription Level Deployments
-                    [array]$resultSet += Get-DeploymentByName -name (Split-Path $deployment -Leaf) -Scope 'subscription'
+                    [array]$resultSet += Get-DeploymentByNameInner -name (Split-Path $deployment -Leaf) -Scope 'subscription'
                 }
             }
         }
@@ -92,10 +92,10 @@ function Get-DeploymentByNameInner {
                 [array]$resultSet = $resultSet | Where-Object { $_ -ne $deployment }
                 if ($deployment -match '/managementGroup/') {
                     # Subscription Level Child Deployments
-                    [array]$resultSet += Get-DeploymentByName -Name (Split-Path $deployment -Leaf) -Scope 'subscription'
+                    [array]$resultSet += Get-DeploymentByNameInner -Name (Split-Path $deployment -Leaf) -Scope 'subscription'
                 } else {
                     # Management Group Level Deployments
-                    [array]$resultSet += Get-DeploymentByName -name (Split-Path $deployment -Leaf) -scope 'managementGroup'
+                    [array]$resultSet += Get-DeploymentByNameInner -name (Split-Path $deployment -Leaf) -scope 'managementGroup'
                 }
             }
         }
@@ -108,10 +108,10 @@ function Get-DeploymentByNameInner {
                 [array]$resultSet = $resultSet | Where-Object { $_ -ne $deployment }
                 if ($deployment -match '/tenant/') {
                     # Management Group Level Child Deployments
-                    [array]$resultSet += Get-DeploymentByName -Name (Split-Path $deployment -Leaf) -scope 'managementGroup'
+                    [array]$resultSet += Get-DeploymentByNameInner -Name (Split-Path $deployment -Leaf) -scope 'managementGroup'
                 } else {
                     # Tenant Level Deployments
-                    [array]$resultSet += Get-DeploymentByName -name (Split-Path $deployment -Leaf)
+                    [array]$resultSet += Get-DeploymentByNameInner -name (Split-Path $deployment -Leaf)
                 }
             }
         }
@@ -169,7 +169,7 @@ function Get-DeploymentByName {
 
     $searchRetryCount = 1
     do {
-        [array]$deployments = Get-DeploymentByName -name $name -scope $scope -resourceGroupName $resourceGroupName -ErrorAction 'SilentlyContinue'
+        [array]$deployments = Get-DeploymentByNameInner -name $name -scope $scope -resourceGroupName $resourceGroupName -ErrorAction 'SilentlyContinue'
         if ($deployments) {
             break
         }

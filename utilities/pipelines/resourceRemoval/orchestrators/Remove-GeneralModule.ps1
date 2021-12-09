@@ -56,6 +56,7 @@ function Remove-GeneralModule {
         . (Join-Path (Get-Item -Path $PSScriptRoot).parent.parent.FullName 'sharedScripts' 'Get-ScopeOfTemplateFile.ps1')
         . (Join-Path (Split-Path $PSScriptRoot -Parent) 'helper' 'Get-DeploymentByName.ps1')
         . (Join-Path (Split-Path $PSScriptRoot -Parent) 'helper' 'Get-ResourceIdsAsFormattedObjectList.ps1')
+        . (Join-Path (Split-Path $PSScriptRoot -Parent) 'helper' 'Get-ResourceIdsAsFormattedObjectList.ps1')
         . (Join-Path (Split-Path $PSScriptRoot -Parent) 'helper' 'Get-DependencyResourceNames.ps1')
         . (Join-Path (Split-Path $PSScriptRoot -Parent) 'helper' 'Remove-Resource.ps1')
     }
@@ -80,7 +81,7 @@ function Remove-GeneralModule {
             scope             = $deploymentScope
             resourceGroupName = $resourceGroupName
         }
-        $deployments = Get-DeploymentByName @deploymentsInputObject
+        $deployments = Get-DeploymentByName @deploymentsInputObject -Verbose
 
         # Pre-Filter & order items
         # ========================
