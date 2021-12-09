@@ -68,7 +68,7 @@ jobs:
   # ------------
   job_tests_module_global:
     runs-on: ubuntu-20.04
-    name: 'Run global module tests'
+    name: 'Static module tests'
     steps:
       - name: 'Checkout'
         uses: actions/checkout@v2
@@ -84,7 +84,7 @@ jobs:
   ###########################
   job_module_deploy_validation:
     runs-on: ubuntu-20.04
-    name: 'Run deployment validation module tests'
+    name: 'Deployment module tests'
     needs:
       - job_set_workflow_param
       - job_tests_module_global
@@ -106,7 +106,7 @@ jobs:
         uses: deep-mm/set-variables@v1.0
         with:
           variableFileName: 'variables.module'
-      - name: 'Validate module template with parameter file [${{ matrix.parameterFilePaths }}]'
+      - name: 'Using parameter file [${{ matrix.parameterFilePaths }}]'
         uses: ./.github/actions/templates/validateModuleDeployment
         with:
           templateFilePath: '${{ env.modulePath }}/deploy.bicep'
