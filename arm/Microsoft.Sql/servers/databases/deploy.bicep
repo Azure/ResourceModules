@@ -50,6 +50,74 @@ param location string = resourceGroup().location
 @description('Optional. Customer Usage Attribution ID (GUID). This GUID must be previously registered')
 param cuaId string = ''
 
+@description('Optional. Specifies the number of days that logs will be kept for; a value of 0 will retain data indefinitely.')
+@minValue(0)
+@maxValue(365)
+param diagnosticLogsRetentionInDays int = 365
+
+@description('Optional. Resource ID of the diagnostic storage account.')
+param diagnosticStorageAccountId string = ''
+
+@description('Optional. Resource ID of log analytics.')
+param workspaceId string = ''
+
+@description('Optional. Resource ID of the event hub authorization rule for the Event Hubs namespace in which the event hub should be created or streamed to.')
+param eventHubAuthorizationRuleId string = ''
+
+@description('Optional. Name of the event hub within the namespace to which logs are streamed. Without this, an event hub is created for each log category.')
+param eventHubName string = ''
+
+@description('Optional. The name of logs that will be streamed.')
+@allowed([
+  'SQLInsights'
+  'AutomaticTuning'
+  'QueryStoreRuntimeStatistics'
+  'QueryStoreWaitStatistics'
+  'Errors'
+  'DatabaseWaitStatistics'
+  'Timouts'
+  'Blocks'
+  'Deadlocks'
+])
+param logsToEnable array = [
+  'SQLInsights'
+  'AutomaticTuning'
+  'QueryStoreRuntimeStatistics'
+  'QueryStoreWaitStatistics'
+  'Errors'
+  'DatabaseWaitStatistics'
+  'Timouts'
+  'Blocks'
+  'Deadlocks'
+]
+
+@description('Optional. The name of metrics that will be streamed.')
+@allowed([
+  'Basic'
+])
+param metricsToEnable array = [
+  'Basic'
+]
+
+var diagnosticsLogs = [for log in logsToEnable: {
+  category: log
+  enabled: true
+  retentionPolicy: {
+    enabled: true
+    days: diagnosticLogsRetentionInDays
+  }
+}]
+
+var diagnosticsMetrics = [for metric in metricsToEnable: {
+  category: metric
+  timeGrain: null
+  enabled: true
+  retentionPolicy: {
+    enabled: true
+    days: diagnosticLogsRetentionInDays
+  }
+}]
+
 @description('Optional. The storage account type to be used to store backups for this database.')
 @allowed([
   'Geo'
@@ -97,6 +165,19 @@ resource database 'Microsoft.Sql/servers/databases@2021-02-01-preview' = {
     name: skuName
     tier: tier
   }
+}
+
+resource database_diagnosticSettings 'Microsoft.Insights/diagnosticSettings@2021-05-01-preview' = if ((!empty(diagnosticStorageAccountId)) || (!empty(workspaceId)) || (!empty(eventHubAuthorizationRuleId)) || (!empty(eventHubName))) {
+  name: '${last(split(database.name, '/'))}-diagnosticSettings'
+  properties: {
+    storageAccountId: !empty(diagnosticStorageAccountId) ? diagnosticStorageAccountId : null
+    workspaceId: !empty(workspaceId) ? workspaceId : null
+    eventHubAuthorizationRuleId: !empty(eventHubAuthorizationRuleId) ? eventHubAuthorizationRuleId : null
+    eventHubName: !empty(eventHubName) ? eventHubName : null
+    metrics: diagnosticsMetrics
+    logs: diagnosticsLogs
+  }
+  scope: database
 }
 
 @description('The name of the deployed database')
