@@ -1,5 +1,5 @@
 # NOTE:
-# This pipeline requires a secret 'PAT' set up in a library named 'PLATFORM_REPO_VARIABLES'.
+# This pipeline requires a secret 'PLATFORM_REPO_UPDATE_PAT' set up in a library named 'PLATFORM_VARIABLES'.
 # The secret's value should be a PAT token with the permissions to push to the repository's main branch.
 
 name: '.Platform: Sync Docs/Wiki'
@@ -13,7 +13,7 @@ trigger:
       - 'docs/wiki/**'
 
 variables:
-  - group: 'PLATFORM_REPO_VARIABLES'
+  - group: 'PLATFORM_VARIABLES'
   - template: '/.azuredevops/pipelineVariables/global.variables.yml'
   - name: pipelinePrincipalGitUserName
     value: 'CARMLPipelinePrincipal'
@@ -40,7 +40,7 @@ jobs:
           script: |
             git config --global user.email '$(pipelinePrincipalGitUserEmail)'
             git config --global user.name '$(pipelinePrincipalGitUserName)'
-            $repositoryEndpoint= 'https://' + '$(PAT)' + '@github.com/' + '$(Build.Repository.Name)' + '.wiki'
+            $repositoryEndpoint= 'https://' + '$(PLATFORM_REPO_UPDATE_PAT)' + '@github.com/' + '$(Build.Repository.Name)' + '.wiki'
             git clone $repositoryEndpoint
       - task: PowerShell@2
         displayName: 'Sync docs/wiki Into Wiki Repo'
