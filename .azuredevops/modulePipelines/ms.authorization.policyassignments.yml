@@ -41,13 +41,6 @@ stages:
   - stage: Validation
     jobs:
       - template: /.azuredevops/pipelineTemplates/module.jobs.validate.yml
-        parameters:
-          deploymentBlocks:
-            - path: $(modulePath)/.parameters/min.parameters.json
-              templateFilePath: $(modulePath)/.bicep/nested_policyAssignments_sub.bicep
-            - path: $(modulePath)/.parameters/parameters.json
-              templateFilePath: $(modulePath)/.bicep/nested_policyAssignments_sub.bicep
-
   - stage: Deployment
     jobs:
       - template: /.azuredevops/pipelineTemplates/module.jobs.deploy.yml

@@ -30,7 +30,6 @@
 ##   | defaultJobTimeoutInMinutes      | 120                                  | The timeout for the job in this pipeline                                                                  | 120                                    |
 ##   | checkoutRepositories            | ''                                   | An optional list of repositories to check out at the beginning of this job in addition to the source      | 'Components'                           |
 ##   | modulePath                      | '$(modulePath)'                      | The path to the module to deploy. E.g. [c:/KeyVault]                                                      | 'c:/KeyVault'                          |
-##   | deploymentBlocks                |                                      | The parameter file(s) to validate with. Must be provided                                                  | 'C:/parameters.json'                   |
 ##   | location                        | '$(defaultLocation)'                 | The location to validate with                                                                             | 'France Central'                       |
 ##   | resourceGroupName               | '$(defaultResourceGroupName)'        | The resourcegroup to validate into. Required only for Resource-Group-Level validations                    | 'validation-rg'                        |
 ##   | subscriptionId                  | '$(ARM_SUBSCRIPTION_ID)'             | The id of the subscription to validate with when using a Management group service connection              | 'aed7c000-6387-412e-bed0-24dfddf4bbc6' |
@@ -52,7 +51,6 @@ parameters:
   checkoutRepositories: ''
   # Logic-related parameters
   modulePath: '$(modulePath)'
-  deploymentBlocks:
   parametersRepository: '$(Build.Repository.Name)'
   location: '$(defaultLocation)'
   resourceGroupName: '$(defaultResourceGroupName)'

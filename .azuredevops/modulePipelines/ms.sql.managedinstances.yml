@@ -41,10 +41,6 @@ stages:
   - stage: Validation
     jobs:
       - template: /.azuredevops/pipelineTemplates/module.jobs.validate.yml
-        parameters:
-          deploymentBlocks:
-            - path: $(modulePath)/.parameters/parameters.json
-          defaultJobTimeoutInMinutes: 360
 
   - stage: Deployment
     jobs:

@@ -41,17 +41,13 @@ stages:
   - stage: Validation
     jobs:
       - template: /.azuredevops/pipelineTemplates/module.jobs.validate.yml
-        parameters:
-          deploymentBlocks: 
-            - path: $(modulePath)/.parameters/min.parameters.json
-            - path: $(modulePath)/.parameters/parameters.json
 
   - stage: Deployment
     jobs:
       - template: /.azuredevops/pipelineTemplates/module.jobs.deploy.yml
         parameters:
           removeDeployment: '${{ parameters.removeDeployment }}'
-          deploymentBlocks: 
+          deploymentBlocks:
             - path: $(modulePath)/.parameters/min.parameters.json
             - path: $(modulePath)/.parameters/parameters.json
 

@@ -41,8 +41,6 @@ stages:
   - stage: Validation
     jobs:
       - template: /.azuredevops/pipelineTemplates/module.jobs.validate.yml
-        parameters:
-          deploymentBlocks: <PipelineParamterPaths>
 
   - stage: Deployment
     jobs:
