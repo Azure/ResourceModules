@@ -215,7 +215,9 @@ param netIpv4TcpKeepaliveProbes int = -1
 param netIpv4TcpKeepaliveTime int = -1
 
 @description('Optional. Sysctl setting net.ipv4.tcp_max_syn_backlog')
-param netIpv4TcpMaxSynBacklog int = -1
+@minValue(128)
+@maxValue(3240000)
+param netIpv4TcpMaxSynBacklog int = 128
 
 @description('Optional. Sysctl setting net.ipv4.tcp_max_tw_buckets.')
 param netIpv4TcpMaxTwBuckets int = -1
