@@ -69,7 +69,7 @@ jobs:
   # ------------
   job_tests_module_global:
     runs-on: ubuntu-20.04
-    name: 'Static module tests'
+    name: 'Static tests'
     steps:
       - name: 'Checkout'
         uses: actions/checkout@v2
@@ -85,7 +85,7 @@ jobs:
   ###########################
   job_module_deploy_validation:
     runs-on: ubuntu-20.04
-    name: 'Run deployment validation module tests'
+    name: 'Deployment tests'
     needs:
       - job_set_workflow_param
       - job_tests_module_global
