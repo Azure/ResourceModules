@@ -114,17 +114,22 @@ var virtualNetworkParameters = {
 
 var recoveryServicesVaultParameters = {
   name: 'adp-sxx-rsv-${serviceShort}-01'
+  backupConfig: {
+    enhancedSecurityState: 'Disabled'
+    softDeleteFeatureState: 'Disabled'
+  }
   backupPolicies: [
     {
       name: 'VMpolicy'
       type: 'Microsoft.RecoveryServices/vaults/backupPolicies'
       properties: {
         backupManagementType: 'AzureIaasVM'
+        instantRPDetails: {}
         schedulePolicy: {
           schedulePolicyType: 'SimpleSchedulePolicy'
           scheduleRunFrequency: 'Daily'
           scheduleRunTimes: [
-            '2019-11-07T07:0:0Z'
+            '2019-11-07T07:00:00Z'
           ]
           scheduleWeeklyFrequency: 0
         }
@@ -132,10 +137,10 @@ var recoveryServicesVaultParameters = {
           retentionPolicyType: 'LongTermRetentionPolicy'
           dailySchedule: {
             retentionTimes: [
-              '2019-11-07T04:30:0Z'
+              '2019-11-07T07:00:00Z'
             ]
             retentionDuration: {
-              count: 30
+              count: 180
               durationType: 'Days'
             }
           }
