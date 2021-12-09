@@ -118,7 +118,6 @@ runs:
           subscriptionId     = '${{ inputs.subscriptionId }}'
           managementGroupId  = '${{ inputs.managementGroupId }}'
           doNotThrow         = $true
-          retryLimit         = 1
         }
 
         Write-Verbose "Invoke task with" -Verbose
