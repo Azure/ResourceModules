@@ -46,7 +46,7 @@ function Remove-vWan {
         . (Join-Path (Get-Item -Path $PSScriptRoot).parent.parent.FullName 'sharedScripts' 'Get-ScopeOfTemplateFile.ps1')
         . (Join-Path (Split-Path $PSScriptRoot -Parent) 'helper' 'Get-DeploymentByName.ps1')
         . (Join-Path (Split-Path $PSScriptRoot -Parent) 'helper' 'Get-ResourceIdsAsFormattedObjectList.ps1')
-        . (Join-Path (Split-Path $PSScriptRoot -Parent) 'helper' 'Get-DependencyResourceNames.ps1')
+        . (Join-Path (Split-Path $PSScriptRoot -Parent) 'helper' 'Get-DependencyResourceNameList.ps1')
         . (Join-Path (Split-Path $PSScriptRoot -Parent) 'helper' 'Remove-Resource.ps1')
     }
 
@@ -66,19 +66,21 @@ function Remove-vWan {
 
         # Pre-Filter & order items
         # ========================
+        $rawResourceIdsToRemove = $deployments | Sort-Object -Property { $_.Split('/').Count } -Descending | Select-Object -Unique
+
         $orderedResourceIds = @(
-            $deployments | Where-Object { $_ -match 'Microsoft.Network/vpnGateways' }
-            $deployments | Where-Object { $_ -match 'Microsoft.Network/virtualHubs' }
-            $deployments | Where-Object { $_ -match 'Microsoft.Network/vpnSites' }
-            $deployments | Where-Object { $_ -match 'Microsoft.Network/virtualWans' }
+            $rawResourceIdsToRemove | Where-Object { $_ -match 'Microsoft.Network/vpnGateways' }
+            $rawResourceIdsToRemove | Where-Object { $_ -match 'Microsoft.Network/virtualHubs' }
+            $rawResourceIdsToRemove | Where-Object { $_ -match 'Microsoft.Network/vpnSites' }
+            $rawResourceIdsToRemove | Where-Object { $_ -match 'Microsoft.Network/virtualWans' }
         )
 
         # Format items
         # ============
-        $resourcesToRemove = Get-ResourceIdsAsFormattedObjectLists -resourceIds $orderedResourceIds
+        $resourcesToRemove = Get-ResourceIdsAsFormattedObjectList -resourceIds $orderedResourceIds
 
         # Filter all dependency resources
-        $dependencyResourceNames = Get-DependencyResourceNames
+        $dependencyResourceNames = Get-DependencyResourceNameList
         $resourcesToRemove = $resourcesToRemove | Where-Object { $_.Name -notin $dependencyResourceNames }
 
         # Remove resources

@@ -57,7 +57,7 @@ function Remove-GeneralModule {
         . (Join-Path (Split-Path $PSScriptRoot -Parent) 'helper' 'Get-DeploymentByName.ps1')
         . (Join-Path (Split-Path $PSScriptRoot -Parent) 'helper' 'Get-ResourceIdsAsFormattedObjectList.ps1')
         . (Join-Path (Split-Path $PSScriptRoot -Parent) 'helper' 'Get-ResourceIdsAsFormattedObjectList.ps1')
-        . (Join-Path (Split-Path $PSScriptRoot -Parent) 'helper' 'Get-DependencyResourceNames.ps1')
+        . (Join-Path (Split-Path $PSScriptRoot -Parent) 'helper' 'Get-DependencyResourceNameList.ps1')
         . (Join-Path (Split-Path $PSScriptRoot -Parent) 'helper' 'Remove-Resource.ps1')
     }
 
@@ -87,18 +87,13 @@ function Remove-GeneralModule {
         # ========================
         $rawResourceIdsToRemove = $deployments | Sort-Object -Property { $_.Split('/').Count } -Descending | Select-Object -Unique
 
-        if ($rawResourceIdsToRemove.Count -eq 0) {
-            Write-Verbose 'Found no relevant resources to remove' -Verbose
-            return
-        }
-
         # Format items
         # ============
-        $resourcesToRemove = Get-ResourceIdsAsFormattedObjectLists -resourceIds $rawResourceIdsToRemove
+        $resourcesToRemove = Get-ResourceIdsAsFormattedObjectList -resourceIds $rawResourceIdsToRemove
 
         # Filter all dependency resources
         # ===============================
-        $dependencyResourceNames = Get-DependencyResourceNames
+        $dependencyResourceNames = Get-DependencyResourceNameList
         $resourcesToRemove = $resourcesToRemove | Where-Object { $_.Name -notin $dependencyResourceNames }
 
         # Order resources

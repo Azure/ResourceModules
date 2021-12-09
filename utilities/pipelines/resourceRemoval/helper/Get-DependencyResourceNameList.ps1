@@ -10,11 +10,11 @@ Note: It only considers resources that use the 'name' parameter
 Optional. The path the the dependency parameters parent folder. Defaults to 'utilities/pipelines/dependencies'
 
 .EXAMPLE
-Get-DependencyResourceNames
+Get-DependencyResourceNameList
 
 Get the list of all dependency names from the current set of parameter files
 #>
-function Get-DependencyResourceNames {
+function Get-DependencyResourceNameList {
 
     [CmdletBinding()]
     param (

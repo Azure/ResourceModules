@@ -45,7 +45,7 @@ function Remove-AutomationAccount {
         # Load helper
         . (Join-Path (Get-Item -Path $PSScriptRoot).parent.parent.FullName 'sharedScripts' 'Get-ScopeOfTemplateFile.ps1')
         . (Join-Path (Split-Path $PSScriptRoot -Parent) 'helper' 'Get-DeploymentByName.ps1')
-        . (Join-Path (Split-Path $PSScriptRoot -Parent) 'helper' 'Get-DependencyResourceNames.ps1')
+        . (Join-Path (Split-Path $PSScriptRoot -Parent) 'helper' 'Get-DependencyResourceNameList.ps1')
         . (Join-Path (Split-Path $PSScriptRoot -Parent) 'helper' 'Get-ResourceIdsAsFormattedObjectList.ps1')
         . (Join-Path (Split-Path $PSScriptRoot -Parent) 'helper' 'Remove-Resource.ps1')
     }
@@ -63,6 +63,10 @@ function Remove-AutomationAccount {
             resourceGroupName = $resourceGroupName
         }
         $deployments = Get-DeploymentByName @deploymentsInputObject -Verbose
+
+        # Pre-Filter & order items
+        # ========================
+        $rawResourceIdsToRemove = $deployments | Sort-Object -Property { $_.Split('/').Count } -Descending | Select-Object -Unique
 
         # Pre-Filter & order items
         # ========================
@@ -100,18 +104,18 @@ function Remove-AutomationAccount {
         # } | Select-Object -Unique
 
         $orderedResourceIds = @(
-            $deployments | Where-Object { $_ -match 'Microsoft.OperationsManagement/solutions/Updates' }
-            $deployments | Where-Object { $_ -match 'linkedServices/automation' }
-            $deployments | Where-Object { $_ -match 'Microsoft.Insights/diagnosticSettings' }
-            $deployments | Where-Object { $_ -match 'Microsoft.Automation/automationAccounts' }
+            $rawResourceIdsToRemove | Where-Object { $_ -match 'Microsoft.OperationsManagement/solutions/Updates' }
+            $rawResourceIdsToRemove | Where-Object { $_ -match 'linkedServices/automation' }
+            $rawResourceIdsToRemove | Where-Object { $_ -match 'Microsoft.Insights/diagnosticSettings' }
+            $rawResourceIdsToRemove | Where-Object { $_ -match 'Microsoft.Automation/automationAccounts' }
         )
 
         # Format items
         # ============
-        $resourcesToRemove = Get-ResourceIdsAsFormattedObjectLists -resourceIds $orderedResourceIds
+        $resourcesToRemove = Get-ResourceIdsAsFormattedObjectList -resourceIds $orderedResourceIds
 
         # Filter all dependency resources
-        $dependencyResourceNames = Get-DependencyResourceNames
+        $dependencyResourceNames = Get-DependencyResourceNameList
         $resourcesToRemove = $resourcesToRemove | Where-Object { $_.Name -notin $dependencyResourceNames }
 
         # Remove resources
