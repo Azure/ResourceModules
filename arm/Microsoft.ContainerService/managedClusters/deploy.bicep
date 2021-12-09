@@ -362,11 +362,11 @@ module managedCluster_agentPools 'agentPools/deploy.bicep' = [for (agentPool, in
     topologyManagerPolicy: contains(agentPool, 'topologyManagerPolicy') ? agentPool.topologyManagerPolicy : 'none'
     kubeletDiskType: contains(agentPool, 'kubeletDiskType') ? agentPool.kubeletDiskType : ''
     swapFileSizeMB: contains(agentPool, 'swapFileSizeMB') ? agentPool.swapFileSizeMB : 1500
-    fsAioMaxNr: contains(agentPool, 'fsAioMaxNr') ? agentPool.fsAioMaxNr : -1
-    fsFileMax: contains(agentPool, 'fsFileMax') ? agentPool.fsFileMax : -1
-    fsInotifyMaxUserWatches: contains(agentPool, 'fsInotifyMaxUserWatches') ? agentPool.fsInotifyMaxUserWatches : -1
-    fsNrOpen: contains(agentPool, 'fsNrOpen') ? agentPool.fsNrOpen : -1
-    kernelThreadsMax: contains(agentPool, 'kernelThreadsMax') ? agentPool.kernelThreadsMax : -1
+    fsAioMaxNr: contains(agentPool, 'fsAioMaxNr') ? agentPool.fsAioMaxNr : 65536
+    fsFileMax: contains(agentPool, 'fsFileMax') ? agentPool.fsFileMax : 8192
+    fsInotifyMaxUserWatches: contains(agentPool, 'fsInotifyMaxUserWatches') ? agentPool.fsInotifyMaxUserWatches : 781250
+    fsNrOpen: contains(agentPool, 'fsNrOpen') ? agentPool.fsNrOpen : 8192
+    kernelThreadsMax: contains(agentPool, 'kernelThreadsMax') ? agentPool.kernelThreadsMax : 20
     netCoreNetdevMaxBacklog: contains(agentPool, 'netCoreNetdevMaxBacklog') ? agentPool.netCoreNetdevMaxBacklog : 1000
     netCoreOptmemMax: contains(agentPool, 'netCoreOptmemMax') ? agentPool.netCoreOptmemMax : 20480
     netCoreRmemDefault: contains(agentPool, 'netCoreRmemDefault') ? agentPool.netCoreRmemDefault : 212992
@@ -377,7 +377,7 @@ module managedCluster_agentPools 'agentPools/deploy.bicep' = [for (agentPool, in
     netIpv4IpLocalPortRange: contains(agentPool, 'netIpv4IpLocalPortRange') ? agentPool.netIpv4IpLocalPortRange : ''
     netIpv4NeighDefaultGcThresh1: contains(agentPool, 'netIpv4NeighDefaultGcThresh1') ? agentPool.netIpv4NeighDefaultGcThresh1 : 128
     netIpv4NeighDefaultGcThresh2: contains(agentPool, 'netIpv4NeighDefaultGcThresh2') ? agentPool.netIpv4NeighDefaultGcThresh2 : 512
-    netIpv4NeighDefaultGcThresh3: contains(agentPool, 'netIpv4NeighDefaultGcThresh3') ? agentPool.netIpv4NeighDefaultGcThresh3 : 128
+    netIpv4NeighDefaultGcThresh3: contains(agentPool, 'netIpv4NeighDefaultGcThresh3') ? agentPool.netIpv4NeighDefaultGcThresh3 : 1024
     netIpv4TcpFinTimeout: contains(agentPool, 'netIpv4TcpFinTimeout') ? agentPool.netIpv4TcpFinTimeout : 5
     netIpv4TcpkeepaliveIntvl: contains(agentPool, 'netIpv4TcpkeepaliveIntvl') ? agentPool.netIpv4TcpkeepaliveIntvl : 10
     netIpv4TcpKeepaliveProbes: contains(agentPool, 'netIpv4TcpKeepaliveProbes') ? agentPool.netIpv4TcpKeepaliveProbes : 1
@@ -385,11 +385,11 @@ module managedCluster_agentPools 'agentPools/deploy.bicep' = [for (agentPool, in
     netIpv4TcpMaxSynBacklog: contains(agentPool, 'netIpv4TcpMaxSynBacklog') ? agentPool.netIpv4TcpMaxSynBacklog : 128
     netIpv4TcpMaxTwBuckets: contains(agentPool, 'netIpv4TcpMaxTwBuckets') ? agentPool.netIpv4TcpMaxTwBuckets : 8000
     netIpv4TcpTwReuse: contains(agentPool, 'netIpv4TcpTwReuse') ? agentPool.netIpv4TcpTwReuse : false
-    netNetfilterNfConntrackBuckets: contains(agentPool, 'netNetfilterNfConntrackBuckets') ? agentPool.netNetfilterNfConntrackBuckets : -1
-    netNetfilterNfConntrackMax: contains(agentPool, 'netNetfilterNfConntrackMax') ? agentPool.netNetfilterNfConntrackMax : -1
-    vmMaxMapCount: contains(agentPool, 'vmMaxMapCount') ? agentPool.vmMaxMapCount : -1
-    vmSwappiness: contains(agentPool, 'vmSwappiness') ? agentPool.vmSwappiness : -1
-    vmVfsCachePressure: contains(agentPool, 'vmVfsCachePressure') ? agentPool.vmVfsCachePressure : -1
+    netNetfilterNfConntrackBuckets: contains(agentPool, 'netNetfilterNfConntrackBuckets') ? agentPool.netNetfilterNfConntrackBuckets : 65536
+    netNetfilterNfConntrackMax: contains(agentPool, 'netNetfilterNfConntrackMax') ? agentPool.netNetfilterNfConntrackMax : 131072
+    vmMaxMapCount: contains(agentPool, 'vmMaxMapCount') ? agentPool.vmMaxMapCount : 65530
+    vmSwappiness: contains(agentPool, 'vmSwappiness') ? agentPool.vmSwappiness : 0
+    vmVfsCachePressure: contains(agentPool, 'vmVfsCachePressure') ? agentPool.vmVfsCachePressure : 0
     transparentHugePageDefrag: contains(agentPool, 'transparentHugePageDefrag') ? agentPool.transparentHugePageDefrag : 'madvise'
     transparentHugePageEnabled: contains(agentPool, 'transparentHugePageEnabled') ? agentPool.transparentHugePageEnabled : 'always'
     maxCount: contains(agentPool, 'maxCount') ? agentPool.maxCount : -1

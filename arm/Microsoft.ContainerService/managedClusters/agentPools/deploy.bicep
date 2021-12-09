@@ -141,19 +141,29 @@ param kubeletDiskType string = ''
 param swapFileSizeMB int = 1500
 
 @description('Optional. Sysctl setting fs.aio-max-nr.')
-param fsAioMaxNr int = -1
+@minValue(65536)
+@maxValue(6553500)
+param fsAioMaxNr int = 65536
 
 @description('Optional. Sysctl setting fs.file-max.')
-param fsFileMax int = -1
+@minValue(8192)
+@maxValue(12000500)
+param fsFileMax int = 8192
 
 @description('Optional. Sysctl setting fs.inotify.max_user_watches.')
-param fsInotifyMaxUserWatches int = -1
+@minValue(781250)
+@maxValue(2097152)
+param fsInotifyMaxUserWatches int = 781250
 
 @description('Optional. Sysctl setting fs.nr_open.')
-param fsNrOpen int = -1
+@minValue(8192)
+@maxValue(20000500)
+param fsNrOpen int = 8192
 
 @description('Optional. Sysctl setting kernel.threads-max.')
-param kernelThreadsMax int = -1
+@minValue(20)
+@maxValue(513785)
+param kernelThreadsMax int = 20
 
 @description('Optional. Sysctl setting net.core.netdev_max_backlog.')
 @minValue(1000)
@@ -204,9 +214,9 @@ param netIpv4NeighDefaultGcThresh1 int = 128
 param netIpv4NeighDefaultGcThresh2 int = 512
 
 @description('Optional. Sysctl setting net.ipv4.neigh.default.gc_thresh3.')
-@minValue(128)
-@maxValue(80000)
-param netIpv4NeighDefaultGcThresh3 int = 128
+@minValue(1024)
+@maxValue(100000)
+param netIpv4NeighDefaultGcThresh3 int = 1024
 
 @description('Optional. Sysctl setting net.ipv4.tcp_fin_timeout.')
 @minValue(5)
@@ -246,19 +256,29 @@ param netIpv4TcpMaxTwBuckets int = 8000
 param netIpv4TcpTwReuse bool = false
 
 @description('Optional. Sysctl setting net.netfilter.nf_conntrack_buckets.')
-param netNetfilterNfConntrackBuckets int = -1
+@minValue(65536)
+@maxValue(147456)
+param netNetfilterNfConntrackBuckets int = 65536
 
 @description('Optional. Sysctl setting net.netfilter.nf_conntrack_max.')
-param netNetfilterNfConntrackMax int = -1
+@minValue(131072)
+@maxValue(589824)
+param netNetfilterNfConntrackMax int = 131072
 
 @description('Optional. Sysctl setting vm.max_map_count.')
-param vmMaxMapCount int = -1
+@minValue(65530)
+@maxValue(262144)
+param vmMaxMapCount int = 65530
 
 @description('Optional. Sysctl setting vm.swappiness.')
-param vmSwappiness int = -1
+@minValue(0)
+@maxValue(100)
+param vmSwappiness int = 0
 
 @description('Optional. Sysctl setting vm.vfs_cache_pressure.')
-param vmVfsCachePressure int = -1
+@minValue(0)
+@maxValue(100)
+param vmVfsCachePressure int = 0
 
 @description('Optional. See Transparent Hugepages (https://www.kernel.org/doc/html/latest/admin-guide/mm/transhuge.html#admin-guide-transhuge)')
 @allowed([
