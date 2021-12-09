@@ -196,14 +196,10 @@ runs:
           # Load used function
           . (Join-Path $env:GITHUB_WORKSPACE 'utilities' 'pipelines' 'resourceRemoval' 'Remove-DeployedModule.ps1')
 
-          if(-not [String]::IsNullOrEmpty('${{ steps.dependencies_step.outputs.deploymentName }}')) {
-            $namespacePath = Split-Path '${{ inputs.templateFilePath }}'.TrimStart('arm') -Parent
-            $templateFileName = '{0}.bicep' -f (Split-Path '${{ inputs.parameterFilePath }}' -LeafBase)
-            $dependencyTemplateFilePath = Join-Path $env:GITHUB_WORKSPACE 'utilities' 'pipelines' 'moduleDependencies' $namespacePath $templateFileName
-
+          if(-not [String]::IsNullOrEmpty('${{ steps.deploy_step.outputs.deploymentName }}')) {
             $functionInput = @{
-              deploymentNames   = '${{ steps.dependencies_step.outputs.deploymentName }}'
-              templateFilePath  = $dependencyTemplateFilePath
+              deploymentName    = '${{ steps.deploy_step.outputs.deploymentName }}'
+              templateFilePath  = Join-Path $env:GITHUB_WORKSPACE '${{ inputs.templateFilePath }}'
               resourceGroupName = '${{ inputs.resourceGroupName }}'
               verbose           = $true
             }
@@ -214,10 +210,14 @@ runs:
             Remove-DeployedModule @functionInput
           }
 
-          if(-not [String]::IsNullOrEmpty('${{ steps.deploy_step.outputs.deploymentName }}')) {
+          if(-not [String]::IsNullOrEmpty('${{ steps.dependencies_step.outputs.deploymentName }}')) {
+            $namespacePath = Split-Path '${{ inputs.templateFilePath }}'.TrimStart('arm') -Parent
+            $templateFileName = '{0}.bicep' -f (Split-Path '${{ inputs.parameterFilePath }}' -LeafBase)
+            $dependencyTemplateFilePath = Join-Path $env:GITHUB_WORKSPACE 'utilities' 'pipelines' 'moduleDependencies' $namespacePath $templateFileName
+
             $functionInput = @{
-              deploymentName    = '${{ steps.deploy_step.outputs.deploymentName }}'
-              templateFilePath  = Join-Path $env:GITHUB_WORKSPACE '${{ inputs.templateFilePath }}'
+              deploymentNames   = '${{ steps.dependencies_step.outputs.deploymentName }}'
+              templateFilePath  = $dependencyTemplateFilePath
               resourceGroupName = '${{ inputs.resourceGroupName }}'
               verbose           = $true
             }
