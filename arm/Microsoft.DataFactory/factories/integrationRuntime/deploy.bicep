@@ -51,4 +51,4 @@ output integrationRuntimeResourceGroup string = resourceGroup().name
 output integrationRuntimeName string = integrationRuntime.name
 
 @description('The resource ID of the Integration Runtime.')
-output integrationRuntimeId string = integrationRuntime.id
+output integrationRuntimeResourceId string = integrationRuntime.id

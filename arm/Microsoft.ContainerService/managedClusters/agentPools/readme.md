@@ -13,6 +13,7 @@ This module deploys an Agent Pool for a Container Service Managed Cluster
 | Parameter Name | Type | Default Value | Possible Values | Description |
 | :-- | :-- | :-- | :-- | :-- |
 | `agentPoolProperties` | object |  |  | Required. Properties for the container service agent pool profile. |
+| `cuaId` | string |  |  | Optional. Customer Usage Attribution ID (GUID). This GUID must be previously registered |
 | `managedClusterName` | string |  |  | Required. Name of the managed cluster |
 | `name` | string |  |  | Required. Name of the agent pool |
 
