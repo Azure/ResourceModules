@@ -186,7 +186,7 @@ param netCoreWmemDefault int = 212992
 @description('Optional. Sysctl setting net.core.wmem_max.')
 @minValue(212992)
 @maxValue(134217728)
-param netCoreWmemMax int = -1
+param netCoreWmemMax int = 212992
 
 @description('Optional. Sysctl setting net.ipv4.ip_local_port_range.')
 param netIpv4IpLocalPortRange string = ''
