@@ -203,7 +203,9 @@ param netIpv4NeighDefaultGcThresh2 int = -1
 param netIpv4NeighDefaultGcThresh3 int = -1
 
 @description('Optional. Sysctl setting net.ipv4.tcp_fin_timeout.')
-param netIpv4TcpFinTimeout int = -1
+@minValue(5)
+@maxValue(120)
+param netIpv4TcpFinTimeout int = 5
 
 @description('Optional. Sysctl setting net.ipv4.tcp_keepalive_intvl.')
 param netIpv4TcpkeepaliveIntvl int = -1
