@@ -18,6 +18,10 @@ param serviceShort string = 'vmwinmin'
 // Variables //
 // ========= //
 
+var managedIdentityParameters = {
+  name: 'adp-sxx-msi-${serviceShort}-01'
+}
+
 var networkSecurityGroupParameters = {
   name: 'adp-sxx-nsg-${serviceShort}-01'
 }
@@ -36,6 +40,46 @@ var virtualNetworkParameters = {
   ]
 }
 
+var keyVaultParameters = {
+  name: 'adp-sxx-kv-${serviceShort}-01'
+  enablePurgeProtection: false
+  accessPolicies: [
+    // Required so that the MSI can add secrets to the key vault
+    {
+      objectId: managedIdentity.outputs.msiPrincipalId
+      permissions: {
+        secrets: [
+          'All'
+        ]
+      }
+    }
+  ]
+}
+
+var keyVaultDeploymentScriptParameters = {
+  name: 'sxx-ds-kv-${serviceShort}-01'
+  userAssignedIdentities: {
+    '${managedIdentity.outputs.msiResourceId}': {}
+  }
+  cleanupPreference: 'OnSuccess'
+  arguments: ' -keyVaultName "${keyVaultParameters.name}"'
+  scriptContent: '''
+      param(
+        [string] $keyVaultName
+      )
+
+      $usernameString = (-join ((65..90) + (97..122) | Get-Random -Count 9 -SetSeed 1 | % {[char]$_ + "$_"})).substring(0,19) # max length
+      $passwordString = (New-Guid).Guid.SubString(0,19)
+
+      $userName = ConvertTo-SecureString -String $usernameString -AsPlainText -Force
+      $password = ConvertTo-SecureString -String $passwordString -AsPlainText -Force
+
+      # VirtualMachines and VMSS
+      Set-AzKeyVaultSecret -VaultName $keyVaultName -Name 'adminUsername' -SecretValue $username
+      Set-AzKeyVaultSecret -VaultName $keyVaultName -Name 'adminPassword' -SecretValue $password
+    '''
+}
+
 // =========== //
 // Deployments //
 // =========== //
@@ -46,6 +90,17 @@ module resourceGroup '../../../../../arm/Microsoft.Resources/resourceGroups/depl
     name: resourceGroupName
     location: location
   }
+}
+
+module managedIdentity '../../../../../arm/Microsoft.ManagedIdentity/userAssignedIdentities/deploy.bicep' = {
+  scope: az.resourceGroup(resourceGroupName)
+  name: '${uniqueString(deployment().name, location)}-mi'
+  params: {
+    name: managedIdentityParameters.name
+  }
+  dependsOn: [
+    resourceGroup
+  ]
 }
 
 module networkSecurityGroup '../../../../../arm/Microsoft.Network/networkSecurityGroups/deploy.bicep' = {
@@ -70,6 +125,36 @@ module virtualNetwork '../../../../../arm/Microsoft.Network/virtualNetworks/depl
   dependsOn: [
     resourceGroup
     networkSecurityGroup
+  ]
+}
+
+module keyVault '../../../../../arm/Microsoft.KeyVault/vaults/deploy.bicep' = {
+  scope: az.resourceGroup(resourceGroupName)
+  name: '${uniqueString(deployment().name, location)}-kv'
+  params: {
+    name: keyVaultParameters.name
+    enablePurgeProtection: keyVaultParameters.enablePurgeProtection
+    accessPolicies: keyVaultParameters.accessPolicies
+  }
+  dependsOn: [
+    resourceGroup
+  ]
+}
+
+module keyVaultdeploymentScript '../../../../../arm/Microsoft.Resources/deploymentScripts/deploy.bicep' = {
+  scope: az.resourceGroup(resourceGroupName)
+  name: '${uniqueString(deployment().name, location)}-kv-ds'
+  params: {
+    name: keyVaultDeploymentScriptParameters.name
+    arguments: keyVaultDeploymentScriptParameters.arguments
+    userAssignedIdentities: keyVaultDeploymentScriptParameters.userAssignedIdentities
+    scriptContent: keyVaultDeploymentScriptParameters.scriptContent
+    cleanupPreference: keyVaultDeploymentScriptParameters.cleanupPreference
+  }
+  dependsOn: [
+    resourceGroup
+    keyVault
+    managedIdentity
   ]
 }
 

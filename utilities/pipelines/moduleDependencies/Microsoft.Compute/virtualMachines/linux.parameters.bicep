@@ -75,7 +75,7 @@ var logAnalyticsWorkspaceParameters = {
   name: 'adp-sxx-law-${serviceShort}-01'
 }
 
-var eventHubParameters = {
+var eventHubNamespaceParameters = {
   name: 'adp-sxx-evhns-${serviceShort}-01'
   eventHubs: [
     {
@@ -217,8 +217,8 @@ module eventHubNamespace '../../../../../arm/Microsoft.EventHub/namespaces/deplo
   scope: az.resourceGroup(resourceGroupName)
   name: '${uniqueString(deployment().name, location)}-ehn'
   params: {
-    name: eventHubParameters.name
-    eventHubs: eventHubParameters.eventHubs
+    name: eventHubNamespaceParameters.name
+    eventHubs: eventHubNamespaceParameters.eventHubs
   }
   dependsOn: [
     resourceGroup

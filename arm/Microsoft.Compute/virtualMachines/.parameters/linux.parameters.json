@@ -10,7 +10,7 @@
         },
         "userAssignedIdentities": {
             "value": {
-                "/subscriptions/<<subscriptionId>>/resourcegroups/<<resourceGroupName>>/providers/Microsoft.ManagedIdentity/userAssignedIdentities/adp-sxx-az-msi-vmlinpar-01": {}
+                "/subscriptions/<<subscriptionId>>/resourcegroups/<<resourceGroupName>>/providers/Microsoft.ManagedIdentity/userAssignedIdentities/adp-sxx-msi-vmlinpar-01": {}
             }
         },
         "osType": {
@@ -54,7 +54,7 @@
                     "ipConfigurations": [
                         {
                             "name": "ipconfig01",
-                            "subnetId": "/subscriptions/<<subscriptionId>>/resourceGroups/<<resourceGroupName>>/providers/Microsoft.Network/virtualNetworks/adp-sxx-az-vnet-vmlinpar-01/subnets/sxx-az-subnet-x-001",
+                            "subnetId": "/subscriptions/<<subscriptionId>>/resourceGroups/<<resourceGroupName>>/providers/Microsoft.Network/virtualNetworks/adp-sxx-vnet-vmlinpar-01/subnets/sxx-subnet-x-01",
                             "pipConfiguration": {
                                 "publicIpNameSuffix": "-pip-01",
                                 "roleAssignments": [
@@ -80,7 +80,7 @@
             ]
         },
         "backupVaultName": {
-            "value": "adp-sxx-az-rsv-vmlinpar-01"
+            "value": "adp-sxx-rsv-vmlinpar-0"
         },
         "backupVaultResourceGroup": {
             "value": "<<resourceGroupName>>"
@@ -105,13 +105,13 @@
             "value": "/subscriptions/<<subscriptionId>>/resourceGroups/<<resourceGroupName>>/providers/Microsoft.Storage/storageAccounts/adpsxxazsavmlinpar01"
         },
         "workspaceId": {
-            "value": "/subscriptions/<<subscriptionId>>/resourcegroups/<<resourceGroupName>>/providers/microsoft.operationalinsights/workspaces/adp-sxx-az-law-vmlinpar-01"
+            "value": "/subscriptions/<<subscriptionId>>/resourcegroups/<<resourceGroupName>>/providers/microsoft.operationalinsights/workspaces/adp-sxx-law-vmlinpar-01"
         },
         "eventHubAuthorizationRuleId": {
-            "value": "/subscriptions/<<subscriptionId>>/resourceGroups/<<resourceGroupName>>/providers/Microsoft.EventHub/namespaces/adp-sxx-az-evhns-vmlinpar-01/AuthorizationRules/RootManageSharedAccessKey"
+            "value": "/subscriptions/<<subscriptionId>>/resourceGroups/<<resourceGroupName>>/providers/Microsoft.EventHub/namespaces/adp-sxx-evhns-vmlinpar-01/AuthorizationRules/RootManageSharedAccessKey"
         },
         "eventHubName": {
-            "value": "adp-sxx-az-evh-vmlinpar-01"
+            "value": "adp-sxx-evh-vmlinpar-01"
         },
         "extensionMonitoringAgentConfig": {
             "value": {
@@ -153,8 +153,8 @@
                 "enabled": true,
                 "fileData": [
                     {
-                        "uri": "https://adpsxxazsaweux001.blob.core.windows.net/scripts/scriptExtensionMasterInstaller.ps1",
-                        "storageAccountId": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Storage/storageAccounts/adpsxxazsaweux001"
+                        "uri": "https://adpsxxazsavmlinpar01.blob.core.windows.net/scripts/scriptExtensionMasterInstaller.ps1",
+                        "storageAccountId": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Storage/storageAccounts/adpsxxazsavmlinpar01"
                     }
                 ],
                 "protectedSettings": {

@@ -46,7 +46,7 @@
                     "ipConfigurations": [
                         {
                             "name": "ipconfig01",
-                            "subnetId": "/subscriptions/<<subscriptionId>>/resourceGroups/<<resourceGroupName>>/providers/Microsoft.Network/virtualNetworks/adp-sxx-az-vnet-vmlinmin-01/subnets/sxx-az-subnet-x-001",
+                            "subnetId": "/subscriptions/<<subscriptionId>>/resourceGroups/<<resourceGroupName>>/providers/Microsoft.Network/virtualNetworks/adp-sxx-vnet-vmlinmin-01/subnets/sxx-subnet-x-01",
                             "pipConfiguration": {
                                 "publicIpNameSuffix": "-pip-01"
                             }

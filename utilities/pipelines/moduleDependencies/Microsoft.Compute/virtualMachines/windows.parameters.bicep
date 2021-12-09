@@ -75,7 +75,7 @@ var logAnalyticsWorkspaceParameters = {
   name: 'adp-sxx-law-${serviceShort}-01'
 }
 
-var eventHubParameters = {
+var eventHubNamespaceParameters = {
   name: 'adp-sxx-evhns-${serviceShort}-01'
   eventHubs: [
     {
@@ -118,7 +118,6 @@ var keyVaultParameters = {
   accessPolicies: [
     // Required so that the MSI can add secrets to the key vault
     {
-      //objectId: miRef.properties.principalId
       objectId: managedIdentity.outputs.msiPrincipalId
       permissions: {
         secrets: [
@@ -133,7 +132,6 @@ var keyVaultDeploymentScriptParameters = {
   name: 'sxx-ds-kv-${serviceShort}-01'
   userAssignedIdentities: {
     '${managedIdentity.outputs.msiResourceId}': {}
-    //'${miRef.id}': {}
   }
   cleanupPreference: 'OnSuccess'
   arguments: ' -keyVaultName "${keyVaultParameters.name}"'
@@ -264,8 +262,8 @@ module eventHubNamespace '../../../../../arm/Microsoft.EventHub/namespaces/deplo
   scope: az.resourceGroup(resourceGroupName)
   name: '${uniqueString(deployment().name, location)}-ehn'
   params: {
-    name: eventHubParameters.name
-    eventHubs: eventHubParameters.eventHubs
+    name: eventHubNamespaceParameters.name
+    eventHubs: eventHubNamespaceParameters.eventHubs
   }
   dependsOn: [
     resourceGroup
