@@ -144,7 +144,7 @@ runs:
     # -----------------
     - name: 'Remove [${{ inputs.templateFilePath }}] from parameters [${{ inputs.parameterFilePath }}]'
       shell: pwsh
-      if: ${{ steps.deploy_step.outputs.deploymentName != '' }}
+      if: ${{ always() && steps.deploy_step.outputs.deploymentName != '' }}
       run: |
         if('${{ inputs.removeDeployment }}' -eq 'true') {
           # Load used function
