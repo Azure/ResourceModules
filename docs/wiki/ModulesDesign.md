@@ -535,4 +535,5 @@ Note the following recommendations
 Parameter files in CARML leverage the common `deploymentParameters.json` schema for ARM deployments. As parameters are usually specific to their corresponding template, we have only very few general recommendations:
 - Parameter file names should ideally relate to the content they deploy. For example, a parameter file `min.parameters.json` should be chosen for a parameter file that contains only the minimum set of parameter to deploy the module.
 - Likewise, the `name` parameter we have in most modules should give some indication of the file it was deployed with. For example, a `min.parameters.json` parameter file for the virtual network module may have a `name` property with the value `sxx-az-vnet-min-001` where `min` relates to the prefix of the parameter file itself.
-- A module should have as many parameter files as it needs to evaluate all parts of the module's functionality
+- A module should have as many parameter files as it needs to evaluate all parts of the module's functionality.
+- Sensitive data should not be stored inside the parameter file but rather be injected by the use of [tokens](./ParameterFileTokens.md) or via a [key vault reference](https://docs.microsoft.com/en-us/azure/azure-resource-manager/templates/key-vault-parameter?tabs=azure-cli#reference-secrets-with-static-id).
