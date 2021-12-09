@@ -31,6 +31,10 @@ runs:
         $moduleFolderPaths = (Get-ChildItem (Join-Path $env:GITHUB_WORKSPACE "${{ inputs.modulePath }}") -Recurse -Directory -Force).FullName | Where-Object {
           (Get-ChildItem $_ -File -Depth 0 -Include @('deploy.json', 'deploy.bicep') -Force).Count -gt 0
         }
+        Write-Verbose "Execute tests in path(s):" -Verbose
+        foreach($moduleFolderPath in $moduleFolderPaths) {
+          Write-VErbose "- [($moduleFolderPath]"
+        }
 
         # --------------------- #
         # INVOKE PESTER TEST(S) #
