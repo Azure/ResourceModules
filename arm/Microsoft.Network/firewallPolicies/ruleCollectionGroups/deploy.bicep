@@ -13,13 +13,13 @@ param ruleCollections array = []
 @description('Optional. Customer Usage Attribution ID (GUID). This GUID must be previously registered')
 param cuaId string = ''
 
-resource firewallPolicy 'Microsoft.Network/firewallPolicies@2021-03-01' existing = {
-  name: firewallPolicyName
-}
-
 module pid_cuaId '.bicep/nested_cuaId.bicep' = if (!empty(cuaId)) {
   name: 'pid-${cuaId}'
   params: {}
+}
+
+resource firewallPolicy 'Microsoft.Network/firewallPolicies@2021-03-01' existing = {
+  name: firewallPolicyName
 }
 
 resource ruleCollectionGroup 'Microsoft.Network/firewallPolicies/ruleCollectionGroups@2021-03-01' = {

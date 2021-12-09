@@ -218,9 +218,9 @@ resource azureFirewall 'Microsoft.Network/azureFirewalls@2021-03-01' = {
     additionalProperties: {
       'Network.DNS.EnableProxy': string(enableDnsProxy)
     }
-    firewallPolicy: {
-      id: empty(firewallPolicyIResourceId) ? null : firewallPolicyIResourceId
-    }
+    firewallPolicy: !empty(firewallPolicyIResourceId) ? {
+      id: firewallPolicyIResourceId
+    } : null
     applicationRuleCollections: applicationRuleCollections
     natRuleCollections: natRuleCollections
     networkRuleCollections: networkRuleCollections

@@ -26,7 +26,7 @@ param requireProxyForNetworkRules bool = false
 param servers array = []
 
 @description('Optional. A flag to indicate if the insights are enabled on the policy.')
-param isEnabled bool = false
+param insightsIsEnabled bool = false
 
 @description('Optional. Default Log Analytics Resource ID for Firewall Policy Insights.')
 param defaultWorkspaceId string = ''
@@ -116,8 +116,8 @@ resource firewallPolicy 'Microsoft.Network/firewallPolicies@2021-03-01' = {
       requireProxyForNetworkRules: requireProxyForNetworkRules
       servers: servers
     } : null
-    insights: isEnabled ? {
-      isEnabled: isEnabled
+    insights: insightsIsEnabled ? {
+      isEnabled: insightsIsEnabled
       logAnalyticsResources: {
         defaultWorkspaceId: {
           id: !empty(defaultWorkspaceId) ? defaultWorkspaceId : null
@@ -153,8 +153,8 @@ resource firewallPolicy 'Microsoft.Network/firewallPolicies@2021-03-01' = {
   }
 }
 
-module ruleCollectionGroups_resource 'ruleCollectionGroups/deploy.bicep' = [for (ruleCollectionGroup, index) in ruleCollectionGroups: {
-  name: '${uniqueString(deployment().name, location)}-ruleCollectionGroup-${index}'
+module firewallPolicy_ruleCollectionGroups 'ruleCollectionGroups/deploy.bicep' = [for (ruleCollectionGroup, index) in ruleCollectionGroups: {
+  name: '${uniqueString(deployment().name, location)}-firewallPolicy_ruleCollectionGroups-${index}'
   params: {
     firewallPolicyName: firewallPolicy.name
     name: ruleCollectionGroup.name
@@ -166,8 +166,8 @@ module ruleCollectionGroups_resource 'ruleCollectionGroups/deploy.bicep' = [for 
   ]
 }]
 
-module ruleGroups_resource 'ruleGroups/deploy.bicep' = [for (ruleGroup, index) in ruleGroups: {
-  name: '${uniqueString(deployment().name, location)}-ruleGroup-${index}'
+module firewallPolicy_ruleGroups 'ruleGroups/deploy.bicep' = [for (ruleGroup, index) in ruleGroups: {
+  name: '${uniqueString(deployment().name, location)}-firewallPolicy_ruleGroups-${index}'
   params: {
     firewallPolicyName: firewallPolicy.name
     name: ruleGroup.name

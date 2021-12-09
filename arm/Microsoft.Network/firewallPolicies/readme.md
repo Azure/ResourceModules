@@ -21,8 +21,8 @@ This module deploys Network Firewall Policies.
 | `defaultWorkspaceId` | string |  |  | Optional. Default Log Analytics Resource ID for Firewall Policy Insights. |
 | `enableProxy` | bool |  |  | Optional. Enable DNS Proxy on Firewalls attached to the Firewall Policy. |
 | `fqdns` | array | `[]` |  | Optional. List of FQDNs for the ThreatIntel Allowlist. |
+| `insightsIsEnabled ` | bool |  |  | Optional. A flag to indicate if the insights are enabled on the policy. |
 | `ipAddresses` | array | `[]` |  | Optional. List of IP addresses for the ThreatIntel Allowlist. |
-| `isEnabled` | bool |  |  | Optional. A flag to indicate if the insights are enabled on the policy. |
 | `keyVaultSecretId` | string |  |  | Optional. Secret Id of (base-64 encoded unencrypted pfx) Secret or Certificate object stored in KeyVault.	 |
 | `location` | string | `[resourceGroup().location]` |  | Optional. Location for all resources. |
 | `mode` | string | `Off` | `[Alert, Deny, Off]` | Optional. The configuring of intrusion detection. |
