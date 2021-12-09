@@ -442,7 +442,7 @@ function Set-ModuleReadMe {
             "# $assumedResourceName ``[$fullResourcePath]``",
             '',
             "This module deploys $assumedResourceName."
-            '/ / TODO: Replace Resource and fill in description',
+            '// TODO: Replace Resource and fill in description',
             ''
             '## Resource Types',
             '',
