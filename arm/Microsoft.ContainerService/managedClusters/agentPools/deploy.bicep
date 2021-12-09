@@ -211,7 +211,9 @@ param netIpv4TcpFinTimeout int = 5
 param netIpv4TcpkeepaliveIntvl int = -1
 
 @description('Optional. Sysctl setting net.ipv4.tcp_keepalive_probes.')
-param netIpv4TcpKeepaliveProbes int = -1
+@minValue(1)
+@maxValue(15)
+param netIpv4TcpKeepaliveProbes int = 1
 
 @description('Optional. Sysctl setting net.ipv4.tcp_keepalive_time.')
 @minValue(30)
