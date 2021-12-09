@@ -28,13 +28,17 @@ runs:
     - name: 'Run API tests via (Pester)'
       shell: pwsh
       run: |
+        $moduleFolderPaths = (Get-ChildItem (Join-Path $env:GITHUB_WORKSPACE "${{ inputs.modulePath }}") -Recurse -Directory -Force).FullName | Where-Object {
+          (Get-ChildItem $_ -File -Depth 0 -Include @('deploy.json', 'deploy.bicep') -Force).Count -gt 0
+        }
+
         # --------------------- #
         # INVOKE PESTER TEST(S) #
         # --------------------- #
         Invoke-Pester -Configuration @{
           Run        = @{
             Container = New-PesterContainer -Path 'arm/.global/global.module.tests.ps1' -Data @{
-              moduleFolderPaths = Join-Path $env:GITHUB_WORKSPACE "${{ inputs.modulePath }}"
+              moduleFolderPaths = $moduleFolderPaths
             }
           }
           Filter     = @{
