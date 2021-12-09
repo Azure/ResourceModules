@@ -53,7 +53,7 @@ function Remove-GeneralModule {
         Write-Debug ('{0} entered' -f $MyInvocation.MyCommand)
 
         # Load helper
-        . (Join-Path (Split-Path $PSScriptRoot -Parent) 'helper' 'Get-ScopeOfTemplateFile.ps1')
+        . (Join-Path (Get-Item -Path $PSScriptRoot).parent.parent.FullName 'sharedScripts' 'Get-ScopeOfTemplateFile.ps1')
         . (Join-Path (Split-Path $PSScriptRoot -Parent) 'helper' 'Get-DeploymentByName.ps1')
         . (Join-Path (Split-Path $PSScriptRoot -Parent) 'helper' 'Get-ResourceIdsAsFormattedObjectList.ps1')
         . (Join-Path (Split-Path $PSScriptRoot -Parent) 'helper' 'Get-DependencyResourceNames.ps1')
