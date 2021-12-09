@@ -52,18 +52,6 @@ function Remove-DeployedModule {
                 }
                 Remove-vWan @inputObject -Verbose
             }
-            # 'virtualMachines' {
-            #     Write-Verbose 'Run virtual machine removal script' -Verbose
-            #     # Load function
-            #     . (Join-Path $PSScriptRoot 'orchestrators' 'Remove-VirtualMachine.ps1')
-
-            #     # Invoke removal
-            #     $inputObject = @{
-            #         deploymentName    = $deploymentName
-            #         ResourceGroupName = $ResourceGroupName
-            #     }
-            #     Remove-VirtualMachine @inputObject -Verbose
-            # }
             'automationAccounts' {
                 Write-Verbose 'Run automation account removal script' -Verbose
                 # Load function
