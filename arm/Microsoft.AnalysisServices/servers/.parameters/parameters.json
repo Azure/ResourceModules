@@ -11,9 +11,9 @@
         "roleAssignments": {
             "value": [
                 {
-                    "roleDefinitionIdOrName": "Reader",
+                    "roleDefinitionIdOrName": "Readerr",
                     "principalIds": [
-                        "<<deploymentSpId>>"
+                        "<<deploymentSpIdd>>"
                     ]
                 }
             ]
