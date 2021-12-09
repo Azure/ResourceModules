@@ -161,7 +161,9 @@ param kernelThreadsMax int = -1
 param netCoreNetdevMaxBacklog int = 1000
 
 @description('Optional. Sysctl setting net.core.optmem_max.')
-param netCoreOptmemMax int = -1
+@minValue(20480)
+@maxValue(4194304)
+param netCoreOptmemMax int = 20480
 
 @description('Optional. Sysctl setting net.core.rmem_default.')
 @minValue(212992)
