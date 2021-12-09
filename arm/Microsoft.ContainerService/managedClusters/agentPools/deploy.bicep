@@ -208,7 +208,9 @@ param netIpv4NeighDefaultGcThresh3 int = -1
 param netIpv4TcpFinTimeout int = 5
 
 @description('Optional. Sysctl setting net.ipv4.tcp_keepalive_intvl.')
-param netIpv4TcpkeepaliveIntvl int = -1
+@minValue(10)
+@maxValue(75)
+param netIpv4TcpkeepaliveIntvl int = 10
 
 @description('Optional. Sysctl setting net.ipv4.tcp_keepalive_probes.')
 @minValue(1)

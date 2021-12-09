@@ -379,7 +379,7 @@ module managedCluster_agentPools 'agentPools/deploy.bicep' = [for (agentPool, in
     netIpv4NeighDefaultGcThresh2: contains(agentPool, 'netIpv4NeighDefaultGcThresh2') ? agentPool.netIpv4NeighDefaultGcThresh2 : -1
     netIpv4NeighDefaultGcThresh3: contains(agentPool, 'netIpv4NeighDefaultGcThresh3') ? agentPool.netIpv4NeighDefaultGcThresh3 : -1
     netIpv4TcpFinTimeout: contains(agentPool, 'netIpv4TcpFinTimeout') ? agentPool.netIpv4TcpFinTimeout : 5
-    netIpv4TcpkeepaliveIntvl: contains(agentPool, 'netIpv4TcpkeepaliveIntvl') ? agentPool.netIpv4TcpkeepaliveIntvl : -1
+    netIpv4TcpkeepaliveIntvl: contains(agentPool, 'netIpv4TcpkeepaliveIntvl') ? agentPool.netIpv4TcpkeepaliveIntvl : 10
     netIpv4TcpKeepaliveProbes: contains(agentPool, 'netIpv4TcpKeepaliveProbes') ? agentPool.netIpv4TcpKeepaliveProbes : 1
     netIpv4TcpKeepaliveTime: contains(agentPool, 'netIpv4TcpKeepaliveTime') ? agentPool.netIpv4TcpKeepaliveTime : 30
     netIpv4TcpMaxSynBacklog: contains(agentPool, 'netIpv4TcpMaxSynBacklog') ? agentPool.netIpv4TcpMaxSynBacklog : 128
