@@ -330,9 +330,29 @@ function Set-TemplateReferencesSection {
     $TextInfo = (Get-Culture).TextInfo
     foreach ($resourceType in $relevantResourceTypes) {
         $Type, $Resource = $resourceType.Type -split '/', 2
-        $sectionContent += ('- [{0}](https://docs.microsoft.com/en-us/azure/templates/{1}/{2}/{3})' -f $TextInfo.ToTitleCase($Resource), $Type, $resourceType.ApiVersion, $Resource)
+        $ResourceReferenceTitle = $TextInfo.ToTitleCase($Resource)
+        # Validate if Reference URL Is working
+        $TemplatesBaseUrl = 'https://docs.microsoft.com/en-us/azure/templates'
+        try {
+            $ResourceReferenceUrl = '{0}/{1}/{2}/{3}' -f $TemplatesBaseUrl, $Type, $resourceType.ApiVersion, $Resource
+            Invoke-WebRequest -Uri $ResourceReferenceUrl | Out-Null
+        } catch {
+            try {
+                $ResourceReferenceUrl = '{0}/{1}/{2}' -f $TemplatesBaseUrl, $Type, $Resource
+                Invoke-WebRequest -Uri $ResourceReferenceUrl | Out-Null
+            } catch {
+                if ($Resource.Split('/').length -gt 1) {
+                    $ResourceReferenceUrl = '{0}/{1}/{2}' -f $TemplatesBaseUrl, $Type, $Resource.Split('/')[0]
+                    $ResourceReferenceTitle = "'$Resource' Parent Documentation"
+                } else {
+                    $ResourceReferenceUrl = '{0}' -f $TemplatesBaseUrl
+                    $ResourceReferenceTitle = 'Define resources with Bicep and ARM templates'
+                }
+            }
+        }
+        $sectionContent += ('- [{0}]({1})' -f $ResourceReferenceTitle, $ResourceReferenceUrl)
     }
-
+    $sectionContent = $sectionContent | Sort-Object -Unique
     # Build result
     if ($PSCmdlet.ShouldProcess('Original file with new template references content', 'Merge')) {
         $updatedFileContent = Merge-FileWithNewContent -oldContent $ReadMeFileContent -newContent $sectionContent -SectionStartIdentifier $SectionStartIdentifier -contentType 'list'

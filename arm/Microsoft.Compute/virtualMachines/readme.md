@@ -293,7 +293,7 @@ The field `nicSuffix` and `subnetId` are mandatory. If `enablePublicIP` is set t
 "domainJoinSettings": {
   "value": {
       "domainName": "contoso.com",
-      "domainJoinUser": "domainJoinUser@contoso.com",
+      "domainJoinUser": "test.user@testcompany.com",
       "domainJoinOU": "OU=testOU; DC=contoso; DC=com",
       "domainJoinRestart": true,
       "domainJoinOptions": 3
@@ -512,7 +512,7 @@ You can specify multiple user assigned identities to a resource by providing add
 
 ## Template references
 
-- [Locks](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2017-04-01/locks)
+- [Locks ](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2017-04-01/locks)
 - [Roleassignments](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2020-04-01-preview/roleAssignments)
 - [Virtualmachines](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Compute/2021-07-01/virtualMachines)
 - [Virtualmachines/Extensions](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Compute/2021-07-01/virtualMachines/extensions)

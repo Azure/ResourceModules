@@ -73,7 +73,7 @@ $TestModuleLocallyInput = @{
 
 ## Handling Parameters that require or contain a value that should be tokenized
 
-The following scenarios are common to when to use a token value in the parameter file. Refer to [Parameter File Tokens Design](./ParameterFileTokens.md) for more details.
+The following scenarios are common to when to use a token value in the parameter file. Refer to [Parameter File Tokens Design](./ParameterFileTokens) for more details.
 
 - Scenarios where resources have dependencies on other resources, which may require to be linked using `resourceId` references.
 

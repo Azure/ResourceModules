@@ -258,9 +258,9 @@ Only for OSType Windows
         "enabled": true,
         "settings": {
             "EncryptionOperation": "EnableEncryption",
-            "KeyVaultURL": "https://devopsbaseline.vault.azure.net/",
+            "KeyVaultURL": "https://mykeyvault.vault.azure.net/",
             "KeyVaultResourceId": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.KeyVault/vaults/adp-sxx-az-kv-x-001",
-            "KeyEncryptionKeyURL": "https://devopsbaseline.vault.azure.net/keys/keyEncryptionKey/3e13110def0d4a26ac38341c73c059bb",
+            "KeyEncryptionKeyURL": "https://mykeyvault.vault.azure.net/keys/keyEncryptionKey/3e13110def0d4a26ac38341c73c059bb",
             "KekVaultResourceId": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.KeyVault/vaults/adp-sxx-az-kv-x-001",
             "KeyEncryptionAlgorithm": "RSA-OAEP",
             "VolumeType": "All",
