@@ -40,7 +40,8 @@ function Remove-vWan {
         Write-Debug ('{0} entered' -f $MyInvocation.MyCommand)
 
         # Load helper
-        . (Join-Path $PSScriptRoot 'Remove-Resource.ps1')
+        . (Join-Path (Split-Path $PSScriptRoot -Parent) 'helper' 'Remove-Resource.ps1')
+        . (Join-Path (Split-Path $PSScriptRoot -Parent) 'helper' 'Get-DependencyResourceNames.ps1')
     }
 
     process {
@@ -78,6 +79,10 @@ function Remove-vWan {
                 type       = $_.Split('/')[6..7] -join '/'
             }
         }
+
+        # Filter all dependency resources
+        $dependencyResourceNames = Get-DependencyResourceNames
+        $resourcesToRemove = $resourcesToRemove | Where-Object { $_.Name -notin $dependencyResourceNames }
 
         # Remove resources
         # ----------------
