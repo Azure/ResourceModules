@@ -63,6 +63,18 @@ function Remove-DeployedModule {
             #     }
             #     Remove-VirtualMachine @inputObject -Verbose
             # }
+            'automationAccounts' {
+                Write-Verbose 'Run automation account removal script' -Verbose
+                # Load function
+                . (Join-Path $PSScriptRoot 'helper' 'Remove-AutomationAccount.ps1')
+
+                # Invoke removal
+                $inputObject = @{
+                    deploymentName    = $deploymentName
+                    ResourceGroupName = $ResourceGroupName
+                }
+                Remove-AutomationAccount @inputObject -Verbose
+            }
             default {
                 Write-Verbose 'Run default removal script' -Verbose
                 # Load function
