@@ -56,9 +56,6 @@ param eventHubName string = ''
 @description('Optional. Location for all resources.')
 param location string = resourceGroup().location
 
-@description('Optional. Resource ID of an existing firewall policy.')
-param firewallPolicyIResourceId string = ''
-
 @description('Optional. Zone numbers e.g. 1,2,3.')
 param availabilityZones array = [
   '1'
@@ -218,9 +215,6 @@ resource azureFirewall 'Microsoft.Network/azureFirewalls@2021-03-01' = {
     additionalProperties: {
       'Network.DNS.EnableProxy': string(enableDnsProxy)
     }
-    firewallPolicy: !empty(firewallPolicyIResourceId) ? {
-      id: firewallPolicyIResourceId
-    } : null
     applicationRuleCollections: applicationRuleCollections
     natRuleCollections: natRuleCollections
     networkRuleCollections: networkRuleCollections
