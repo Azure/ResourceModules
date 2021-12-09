@@ -164,21 +164,3 @@ runs:
             Remove-DeployedModule @functionInput
           }
         }
-
-    # [Report Failure] task(s)
-    # ------------------------
-    # NOTE: This task becomes redundant once 'continue-on-error' is supported in composite actions
-    #       Once available the deployment tasks may actually fail and the removal would still run
-    # - name: 'Report status'
-    #   shell: pwsh
-    #   if: always()
-    #   run: |
-    #     Write-Verbose "Reporting pipeline status" -Verbose
-
-    #     $deploymentException = '${{ steps.deploy_step.outputs.deploymentException }}'
-    #     if($deploymentException) {
-    #       Write-Verbose "Test deployment failed" -Verbose
-    #       throw $deploymentException
-    #     }
-
-    #     Write-Verbose "All deployments were successful" -Verbose
