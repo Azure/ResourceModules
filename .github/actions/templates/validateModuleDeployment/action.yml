@@ -87,8 +87,8 @@ runs:
         Write-Output ('::set-output name={0}::{1}' -f 'deploymentName', $res.deploymentName)
 
         if ($res.ContainsKey('exception')) {
-            # Happens only if there is an exception
-            Write-Output ('::set-output name={0}::{1}' -f 'dependencyDeploymentException', (ConvertTo-Json $res.exception -Compress))
+          # Happens only if there is an exception
+          throw $res.exception
         }
 
     # [Token Replacement] task(s)
@@ -183,14 +183,14 @@ runs:
 
         if ($res.ContainsKey('exception')) {
           # Happens only if there is an exception
-          Write-Output ('::set-output name={0}::{1}' -f 'deploymentException', (ConvertTo-Json $res.exception -Compress))
+          throw $res.exception
         }
 
     # [Removal] task(s)
-    #--------------------------
+    # -----------------
     - name: 'Remove [${{ inputs.templateFilePath }}] from parameters [${{ inputs.parameterFilePath }}]'
       shell: pwsh
-      if: always()
+      if: ${{ always() && (steps.deploy_step.outputs.deploymentName != '' || steps.dependencies_step.outputs.deploymentName != '') }}
       run: |
         if('${{ inputs.removeDeployment }}' -eq 'true') {
           # Load used function
@@ -216,7 +216,7 @@ runs:
 
           if(-not [String]::IsNullOrEmpty('${{ steps.deploy_step.outputs.deploymentName }}')) {
             $functionInput = @{
-              deploymentNames   = '${{ steps.deploy_step.outputs.deploymentName }}'
+              deploymentName    = '${{ steps.deploy_step.outputs.deploymentName }}'
               templateFilePath  = Join-Path $env:GITHUB_WORKSPACE '${{ inputs.templateFilePath }}'
               resourceGroupName = '${{ inputs.resourceGroupName }}'
               verbose           = $true
@@ -228,27 +228,3 @@ runs:
             Remove-DeployedModule @functionInput
           }
         }
-
-    # [Report Failure] task(s)
-    # ------------------------
-    # NOTE: This task becomes redundant once 'continue-on-error' is supported in composite actions
-    #       Once available the deployment tasks may actually fail and the removal would still run
-    - name: 'Report status'
-      shell: pwsh
-      if: always()
-      run: |
-        Write-Verbose "Reporting pipeline status" -Verbose
-
-        $dependenciesDeploymentException = '${{ steps.dependencies_step.outputs.dependencyDeploymentException }}'
-        if($dependenciesDeploymentException) {
-          Write-Verbose "Dependencies deployment failed" -Verbose
-          throw $dependenciesDeploymentException
-        }
-
-        $deploymentException = '${{ steps.deploy_step.outputs.deploymentException }}'
-        if($deploymentException) {
-          Write-Verbose "Test deployment failed" -Verbose
-          throw $deploymentException
-        }
-
-        Write-Verbose "All deployments were successful" -Verbose
