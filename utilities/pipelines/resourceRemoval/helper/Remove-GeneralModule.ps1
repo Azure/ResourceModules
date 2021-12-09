@@ -20,6 +20,12 @@ Mandatory. The scope to search in
 Get-DeploymentByName -Name 'keyvault-12356' -Scope 'resourceGroup'
 
 Get all deployments that match name 'keyvault-12356' in scope 'resourceGroup'
+
+.NOTES
+Works after the principal:
+- Find all deployments for the given deployment name
+- If any of them are not a deployments, add their target resource to the result set (as they are e.g. a resource)
+- If any of them is are deployments, recursively invoke this function for them to get their contained target resources
 #>
 function Get-DeploymentByName {
 
@@ -45,7 +51,15 @@ function Get-DeploymentByName {
     switch ($Scope) {
         'resourceGroup' {
             if (Get-AzResourceGroup -Name $resourceGroupName -ErrorAction 'SilentlyContinue') {
-                [array]$resultSet += (Get-AzResourceGroupDeploymentOperation -DeploymentName $name -ResourceGroupName $resourceGroupName).TargetResource | Where-Object { $_ -ne $null }
+                [array]$deploymentTargets = (Get-AzResourceGroupDeploymentOperation -DeploymentName $name -ResourceGroupName $resourceGroupName).TargetResource | Where-Object { $_ -ne $null }
+                foreach ($deployment in ($deploymentTargets | Where-Object { $_ -notmatch '/deployments/' } )) {
+                    [array]$resultSet += $deployment
+                }
+                foreach ($deployment in ($deploymentTargets | Where-Object { $_ -match '/deployments/' } )) {
+                    $name = Split-Path $deployment -Leaf
+                    $resourceGroupName = $deployment.split('/resourceGroups/')[1].Split('/')[0]
+                    [array]$resultSet += Get-DeploymentByName -Name $name -ResourceGroupName $ResourceGroupName -Scope 'resourceGroup'
+                }
             } else {
                 # In case the resource group itself was already deleted, there is no need to try and fetch deployments from it
                 # In case we already have any such resources in the list, we should remove them
@@ -53,8 +67,11 @@ function Get-DeploymentByName {
             }
         }
         'subscription' {
-            [array]$resultSet += (Get-AzDeploymentOperation -DeploymentName $name).TargetResource | Where-Object { $_ -ne $null }
-            foreach ($deployment in ($resultSet | Where-Object { $_ -match '/deployments/' } )) {
+            [array]$deploymentTargets = (Get-AzDeploymentOperation -DeploymentName $name).TargetResource | Where-Object { $_ -ne $null }
+            foreach ($deployment in ($deploymentTargets | Where-Object { $_ -notmatch '/deployments/' } )) {
+                [array]$resultSet += $deployment
+            }
+            foreach ($deployment in ($deploymentTargets | Where-Object { $_ -match '/deployments/' } )) {
                 [array]$resultSet = $resultSet | Where-Object { $_ -ne $deployment }
                 if ($deployment -match '/resourceGroups/') {
                     # Resource Group Level Child Deployments
@@ -68,8 +85,11 @@ function Get-DeploymentByName {
             }
         }
         'managementGroup' {
-            [array]$resultSet += (Get-AzManagementGroupDeploymentOperation -DeploymentName $name).TargetResource | Where-Object { $_ -ne $null }
-            foreach ($deployment in ($resultSet | Where-Object { $_ -match '/deployments/' } )) {
+            [array]$deploymentTargets = (Get-AzManagementGroupDeploymentOperation -DeploymentName $name).TargetResource | Where-Object { $_ -ne $null }
+            foreach ($deployment in ($deploymentTargets | Where-Object { $_ -notmatch '/deployments/' } )) {
+                [array]$resultSet += $deployment
+            }
+            foreach ($deployment in ($deploymentTargets | Where-Object { $_ -match '/deployments/' } )) {
                 [array]$resultSet = $resultSet | Where-Object { $_ -ne $deployment }
                 if ($deployment -match '/managementGroup/') {
                     # Subscription Level Child Deployments
@@ -81,8 +101,11 @@ function Get-DeploymentByName {
             }
         }
         'tenant' {
-            [array]$resultSet = (Get-AzTenantDeploymentOperation -DeploymentName $name).TargetResource | Where-Object { $_ -ne $null }
-            foreach ($deployment in ($resultSet | Where-Object { $_ -match '/deployments/' } )) {
+            [array]$deploymentTargets = (Get-AzTenantDeploymentOperation -DeploymentName $name).TargetResource | Where-Object { $_ -ne $null }
+            foreach ($deployment in ($deploymentTargets | Where-Object { $_ -notmatch '/deployments/' } )) {
+                [array]$resultSet += $deployment
+            }
+            foreach ($deployment in ($deploymentTargets | Where-Object { $_ -match '/deployments/' } )) {
                 [array]$resultSet = $resultSet | Where-Object { $_ -ne $deployment }
                 if ($deployment -match '/tenant/') {
                     # Management Group Level Child Deployments
@@ -145,7 +168,7 @@ function Get-FormattedResources {
                 break
             }
             { $PSItem -eq 6 } {
-                # subscription level resource
+                # subscription-level resource group
                 $formattedResources += @{
                     resourceId = $resourceId
                     name       = $idElements[-1]
@@ -154,17 +177,26 @@ function Get-FormattedResources {
                 break
             }
             { $PSItem -eq 7 } {
-                # resource group level
-                if ($allResourceGroupResources.Count -eq 0) {
-                    $allResourceGroupResources = Get-AzResource -ResourceGroupName $resourceGroupName -Name '*'
-                }
-                $expandedResources = $allResources | Where-Object { $_.ResourceId.startswith($resourceId) }
-                $expandedResources = $expandedResources | Sort-Object -Descending -Property { $_.ResourceId.Split('/').Count }
-                foreach ($resource in $expandedResources) {
+                if (($resourceId.Split('/'))[3] -ne 'resourceGroups') {
+                    # subscription-level resource
                     $formattedResources += @{
-                        resourceId = $resource.ResourceId
-                        name       = $resource.Name
-                        type       = $resource.Type
+                        resourceId = $resourceId
+                        name       = Split-Path $resourceId -Leaf
+                        type       = $idElements[4, 5] -join '/'
+                    }
+                } else {
+                    # resource group-level
+                    if ($allResourceGroupResources.Count -eq 0) {
+                        $allResourceGroupResources = Get-AzResource -ResourceGroupName $resourceGroupName -Name '*'
+                    }
+                    $expandedResources = $allResourceGroupResources | Where-Object { $_.ResourceId.startswith($resourceId) }
+                    $expandedResources = $expandedResources | Sort-Object -Descending -Property { $_.ResourceId.Split('/').Count }
+                    foreach ($resource in $expandedResources) {
+                        $formattedResources += @{
+                            resourceId = $resource.ResourceId
+                            name       = $resource.Name
+                            type       = $resource.Type
+                        }
                     }
                 }
                 break
@@ -308,8 +340,7 @@ function Remove-GeneralModule {
 
         # Pre-Filter & order items
         # ========================
-        $rawResourceIdsToRemove = $deployments | Where-Object { $_ -and $_ -notmatch '/deployments/' }
-        $rawResourceIdsToRemove = $rawResourceIdsToRemove | Sort-Object -Descending -Unique
+        $rawResourceIdsToRemove = $deployments | Sort-Object -Property { $_.Split('/').Count } -Descending | Select-Object -Unique
 
         if ($rawResourceIdsToRemove.Count -eq 0) {
             Write-Verbose 'Found no relevant resources to remove' -Verbose
@@ -327,7 +358,7 @@ function Remove-GeneralModule {
 
         # Order resources
         # ===============
-        # If virutal machines are contained, remove them first
+        # If virtual machines are contained, remove them first
         if ($vmsContained = $resourcesToRemove | Where-Object { $_.type -eq 'Microsoft.Compute/virtualMachines' }) {
             $resourcesToRemove = @() + $vmsContained + ($resourcesToRemove | Where-Object { $_.type -ne 'Microsoft.Compute/virtualMachines' })
         }
