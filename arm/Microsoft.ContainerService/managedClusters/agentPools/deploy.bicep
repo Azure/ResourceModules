@@ -194,13 +194,19 @@ param netCoreWmemMax int = 212992
 param netIpv4IpLocalPortRange string = ''
 
 @description('Optional. Sysctl setting net.ipv4.neigh.default.gc_thresh1.')
-param netIpv4NeighDefaultGcThresh1 int = -1
+@minValue(128)
+@maxValue(80000)
+param netIpv4NeighDefaultGcThresh1 int = 128
 
 @description('Optional. Sysctl setting net.ipv4.neigh.default.gc_thresh2.')
-param netIpv4NeighDefaultGcThresh2 int = -1
+@minValue(128)
+@maxValue(80000)
+param netIpv4NeighDefaultGcThresh2 int = 128
 
 @description('Optional. Sysctl setting net.ipv4.neigh.default.gc_thresh3.')
-param netIpv4NeighDefaultGcThresh3 int = -1
+@minValue(128)
+@maxValue(80000)
+param netIpv4NeighDefaultGcThresh3 int = 128
 
 @description('Optional. Sysctl setting net.ipv4.tcp_fin_timeout.')
 @minValue(5)
