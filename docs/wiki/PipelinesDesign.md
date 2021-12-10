@@ -26,7 +26,7 @@ This section gives you an overview of the design principals the pipelines follow
   - [Wiki pipeline](#wiki-pipeline)
 - [DevOps-Tool-specific considerations](#devops-tool-specific-considerations)
   - [GitHub Workflows](#github-workflows)
-    - [Component: GitHub secret](#github-component-github-secret)
+    - [Component: GitHub secret](#github-component-github-secrets)
     - [Component: Variable file](#github-component-variable-file)
     - [Component: Composite actions](#github-component-composite-actions)
     - [Component: Workflows](#github-component-workflows)

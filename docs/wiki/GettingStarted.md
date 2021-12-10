@@ -131,6 +131,8 @@ The platform principal is used to perform actions in Azure using a service princ
 
 If you want to be on the save side you can assign _Owner_ permissions to your principal on the management group scope.
 
+> ***Note:*** By default, we're using this service principal's object ID (i.e. principal ID) as the value of the `deploymentSpId` [token](./ParameterFileTokens) to be used to test e.g. RBAC assignments.
+
 ### Dependencies
 
 As the modules we test often times have dependencies to other services, we created a pipeline to deploys several standard services like VirtualNetworks and KeyVaults (alongside dummy secrets) for the modules to use. This _dependency_ pipeline should be prepared and executed before you start running any pipelines on your own. In case you need to rename any services there (for example because a certain globally unique resource name was already taken) make sure to update any references to this name in the module parameter files. You can find further details about this pipeline [here](./TestingDesign#Module-Dependencies).
