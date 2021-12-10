@@ -16,7 +16,7 @@ Optional. The name of the resource group for scope 'resourceGroup'
 Mandatory. The scope to search in
 
 .EXAMPLE
-Get-DeploymentByNameInner -Name 'keyvault-12356' -Scope 'resourceGroup'
+Get-ResourceIdsOfDeploymentInner -Name 'keyvault-12356' -Scope 'resourceGroup'
 
 Get all deployments that match name 'keyvault-12356' in scope 'resourceGroup'
 
@@ -26,7 +26,7 @@ Works after the principal:
 - If any of them are not a deployments, add their target resource to the result set (as they are e.g. a resource)
 - If any of them is are deployments, recursively invoke this function for them to get their contained target resources
 #>
-function Get-DeploymentByNameInner {
+function Get-ResourceIdsOfDeploymentInner {
 
     [CmdletBinding()]
     param (
@@ -57,7 +57,7 @@ function Get-DeploymentByNameInner {
                 foreach ($deployment in ($deploymentTargets | Where-Object { $_ -match '/deployments/' } )) {
                     $name = Split-Path $deployment -Leaf
                     $resourceGroupName = $deployment.split('/resourceGroups/')[1].Split('/')[0]
-                    [array]$resultSet += Get-DeploymentByNameInner -Name $name -ResourceGroupName $ResourceGroupName -Scope 'resourceGroup'
+                    [array]$resultSet += Get-ResourceIdsOfDeploymentInner -Name $name -ResourceGroupName $ResourceGroupName -Scope 'resourceGroup'
                 }
             } else {
                 # In case the resource group itself was already deleted, there is no need to try and fetch deployments from it
@@ -76,10 +76,10 @@ function Get-DeploymentByNameInner {
                     # Resource Group Level Child Deployments
                     $name = Split-Path $deployment -Leaf
                     $resourceGroupName = $deployment.split('/resourceGroups/')[1].Split('/')[0]
-                    [array]$resultSet += Get-DeploymentByNameInner -Name $name -ResourceGroupName $ResourceGroupName -Scope 'resourceGroup'
+                    [array]$resultSet += Get-ResourceIdsOfDeploymentInner -Name $name -ResourceGroupName $ResourceGroupName -Scope 'resourceGroup'
                 } else {
                     # Subscription Level Deployments
-                    [array]$resultSet += Get-DeploymentByNameInner -name (Split-Path $deployment -Leaf) -Scope 'subscription'
+                    [array]$resultSet += Get-ResourceIdsOfDeploymentInner -name (Split-Path $deployment -Leaf) -Scope 'subscription'
                 }
             }
         }
@@ -92,10 +92,10 @@ function Get-DeploymentByNameInner {
                 [array]$resultSet = $resultSet | Where-Object { $_ -ne $deployment }
                 if ($deployment -match '/managementGroup/') {
                     # Subscription Level Child Deployments
-                    [array]$resultSet += Get-DeploymentByNameInner -Name (Split-Path $deployment -Leaf) -Scope 'subscription'
+                    [array]$resultSet += Get-ResourceIdsOfDeploymentInner -Name (Split-Path $deployment -Leaf) -Scope 'subscription'
                 } else {
                     # Management Group Level Deployments
-                    [array]$resultSet += Get-DeploymentByNameInner -name (Split-Path $deployment -Leaf) -scope 'managementGroup'
+                    [array]$resultSet += Get-ResourceIdsOfDeploymentInner -name (Split-Path $deployment -Leaf) -scope 'managementGroup'
                 }
             }
         }
@@ -108,10 +108,10 @@ function Get-DeploymentByNameInner {
                 [array]$resultSet = $resultSet | Where-Object { $_ -ne $deployment }
                 if ($deployment -match '/tenant/') {
                     # Management Group Level Child Deployments
-                    [array]$resultSet += Get-DeploymentByNameInner -Name (Split-Path $deployment -Leaf) -scope 'managementGroup'
+                    [array]$resultSet += Get-ResourceIdsOfDeploymentInner -Name (Split-Path $deployment -Leaf) -scope 'managementGroup'
                 } else {
                     # Tenant Level Deployments
-                    [array]$resultSet += Get-DeploymentByNameInner -name (Split-Path $deployment -Leaf)
+                    [array]$resultSet += Get-ResourceIdsOfDeploymentInner -name (Split-Path $deployment -Leaf)
                 }
             }
         }
@@ -143,11 +143,11 @@ Optional. The maximum times to retry the search for resources via their removal 
 Optional. The time to wait in between the search for resources via their remove tags
 
 .EXAMPLE
-Get-DeploymentByName -name 'KeyVault' -ResourceGroupName 'validation-rg' -scope 'resourceGroup'
+Get-ResourceIdsOfDeployment -name 'KeyVault' -ResourceGroupName 'validation-rg' -scope 'resourceGroup'
 
 Get all deployments that match name 'KeyVault' in scope 'resourceGroup' of resource group 'validation-rg'
 #>
-function Get-DeploymentByName {
+function Get-ResourceIdsOfDeployment {
 
     [CmdletBinding()]
     param (
@@ -169,7 +169,7 @@ function Get-DeploymentByName {
 
     $searchRetryCount = 1
     do {
-        [array]$deployments = Get-DeploymentByNameInner -name $name -scope $scope -resourceGroupName $resourceGroupName -ErrorAction 'SilentlyContinue'
+        [array]$deployments = Get-ResourceIdsOfDeploymentInner -name $name -scope $scope -resourceGroupName $resourceGroupName -ErrorAction 'SilentlyContinue'
         if ($deployments) {
             break
         }
