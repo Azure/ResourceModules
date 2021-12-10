@@ -219,7 +219,7 @@ Depending on what DevOps tool you want to use to host the platform you will find
 
 ## GitHub Workflows
 
-GitHub actions & workflows are the CI/CD solution provided by GitHub. To get the platform going, we use the following elements:
+[GitHub actions & workflows](https://docs.github.com/en/actions) are the CI/CD solution provided by GitHub. To get the platform going, we use the following elements:
 - **[GitHub secrets:](#github-component-github-secrets)** We leverage GitHub repository secrets to store central and potentially sensitive information we need to perform deployments and other platform specific actions
 - **[Variable file:](#github-component-variable-file)** This file contains the configuration for all module pipelines in this repository.
 - **[Composite actions:](#github-component-composite-actions)** Composite actions bundle a set of actions for a specific purpose together. They are referenced by module pipelines.
