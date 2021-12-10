@@ -332,7 +332,6 @@ This file is divided into multiple categories of variables used in the pipelines
 | **Validation deployment settings** | Contains the default deployment information to use in the pipeline. For example, the default location to deploy resources to |
 | **Publish: Template-Spec settings** | Contains the required information to publish to template-specs, including a switch to toggle the feature on or off |
 | **Publish: Universal packages settings** | Contains the required information to publish to universal packages, including a switch to toggle the feature on or off |
-|**Publish: Nuget Packages settings** | Contains the required information to publish to nuget packages, including a switch to toggle the feature on or off |
 | **Publish: Private Bicep Registry settings** | Contains the required information to publish to the private bicep registry, including a switch to toggle the feature on or off |
 | **Azure PowerShell Version** | Contains information about the default PowerShell version to use in the pipeline |
 

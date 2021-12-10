@@ -185,48 +185,6 @@ jobs:
           verbosity: 'error'
         enabled: true
 
-      # [Nuget Artifact-feed publish] task(s)
-      #--------------------------------------
-      - task: NuGetToolInstaller@0
-        displayName: 'Use NuGet 4.x'
-        inputs:
-          versionSpec: 4.x
-        enabled: true
-      - task: AzurePowerShell@5
-        displayName: Publish module to nuget artifacts feed
-        condition: and(
-          eq(variables['nugetArtifactsFeedDoPublish'], true),
-          succeeded()
-          )
-        enabled: true
-        inputs:
-          azureSubscription: '${{ parameters.serviceConnection }}'
-          azurePowerShellVersion: ${{ parameters.azurePowerShellVersion }}
-          preferredAzurePowerShellVersion: ${{ parameters.preferredAzurePowerShellVersion }}
-          pwsh: true
-          ScriptType: InlineScript
-          inline: |
-            # Load used functions
-            . (Join-Path '$(System.DefaultWorkingDirectory)' '$(pipelineFunctionsPath)' 'resourcePublish' 'Publish-ModuleToNuget.ps1')
-
-            $functionInput = @{
-              feedName          = "$(vstsNugetFeedName)"
-              feedurl           = "$(vstNugetFeedUrl)"
-              queueById         = "$(Build.QueuedById)"
-              customVersion     = '${{ parameters.customVersion }}'
-              versioningOption  = '${{ parameters.versioningOption }}'
-              moduleBase        = '$(ENVMODULEPATH)'
-              moduleName        = '${{ parameters.moduleName }}'
-            }
-
-            Write-Verbose "Invoke task with" -Verbose
-            Write-Verbose ($functionInput | ConvertTo-Json | Out-String) -Verbose
-
-            # Separate population to avoid printing secret by accident
-            $functionInput['systemAccessToken'] = "$(system.accesstoken)"
-
-            Publish-ModuleToNuget @functionInput -Verbose
-
       # [template-spec publish] task(s)
       #--------------------------------
       - task: AzurePowerShell@5

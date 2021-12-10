@@ -45,16 +45,6 @@ variables:
   vstsFeedProject: '$(System.TeamProject)'
 
   ######################################
-  # Publish: Nuget Packages settings
-  ######################################
-
-  # Set to true, if you would like to publish modules as Nuget Packages (in ADO Artifacts)
-  # If you provide a name below, you have to create an Artifact Feed in ADO with the same name before using this feed.
-  nugetArtifactsFeedDoPublish: false
-  vstsNugetFeedName: 'Nuget-Modules'
-  vstNugetFeedUrl: 'https://pkgs.dev.azure.com/$(vstsOrganization)/$(vstsProject)/_packaging/Nuget-Modules/nuget/v2'
-
-  ######################################
   # Publish: Private Bicep Registry settings
   ######################################
 
