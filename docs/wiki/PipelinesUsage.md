@@ -90,7 +90,8 @@ Depending on the pipeline you selected you may have additional input parameters 
 
 ### Register a pipeline
 
-To register a workflow in _GitHub_ you have to create the workflow file (`.yml`) and store it inside the folder `.github/workflows`. Once merged to [main\|master], GitHub will automatically list the new workflow in the 'Actions' tab.
+To register a workflow in _GitHub_ you have to create the workflow file (`.yml`) and store it inside the folder `.github/workflows`.
+> ***Note:*** Once merged to [main\|master], GitHub will automatically list the new workflow in the 'Actions' tab.
 
 ## Azure DevOps pipelines
 
