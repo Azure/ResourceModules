@@ -282,10 +282,10 @@ Comparing multiple workflows you'll notice they are almost identical, yet differ
   ```
 - The ***environment variables***
   The environment variables are leveraged by the workflow to fundamentally process the module. We need:
-  | Variable | Example |
-  | - | - |
-  | Relative path to the module folder | `modulePath: 'arm/Microsoft.Network/virtualWans'` |
-  | Relative path to the workflow itself | `'.github/workflows/ms.network.virtualwans.yml'` |
+  | Variable | Description | Example |
+  | - | - | - |
+  | `modulePath` | Relative path to the module folder | `modulePath: 'arm/Microsoft.Network/virtualWans'` |
+  | `workflowPath` | Relative path to the workflow itself | `workflowPath: '.github/workflows/ms.network.virtualwans.yml'` |
 
   Full example
   ```yaml
@@ -380,11 +380,11 @@ While they look very similar they have specific areas in which they differ:
   > ***Note:*** By the time of this writing, wildcards are temporarily not supported by Azure DevOps
 - The ***variables***
   The variables are leveraged by the pipelines to fundamentally process the module. We need:
-  | Variable | Example |
-  | - | - |
-  | Reference to the [shared variable file](#azure-devops-component-variable-file) | `- template: '/.azuredevops/pipelineVariables/global.variables.yml'` |
-  | Reference to the [variable group](#azure-devops-component-variable-group) with the platform secrets | `- group: PLATFORM_VARIABLES` |
-  | Relative path to the module folder | <code>- name: modulePath<p>&nbsp;&nbsp;value: '/arm/Microsoft.AnalysisServices/servers'</code> |
+  | Variable | Description | Example |
+  | - | - | - |
+  | `template: (...)` | Reference to the [shared variable file](#azure-devops-component-variable-file) | `- template: '/.azuredevops/pipelineVariables/global.variables.yml'` |
+  | `group: (...)` | Reference to the [variable group](#azure-devops-component-variable-group) with the platform secrets | `- group: PLATFORM_VARIABLES` |
+  | `modulePath` | Relative path to the module folder | <code>- name: modulePath<p>&nbsp;&nbsp;value: '/arm/Microsoft.AnalysisServices/servers'</code> |
 
   Full example:
   ```yaml
