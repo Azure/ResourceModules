@@ -261,7 +261,7 @@ These are the individual end-to-end workflows we have for each module. Leveragin
 
 Comparing multiple workflows you'll notice they are almost identical, yet differ in a few important areas:
 
-- The ***path filters*** of the workflow trigger:
+- The ***[path filters](https://docs.github.com/en/actions/learn-github-actions/workflow-syntax-for-github-actions)*** of the workflow trigger:
   | Purpose | Example |
   | - | - |
   | Include the composite actions | `- '.github/actions/templates/**'` |
