@@ -1,5 +1,5 @@
-name: 'Execute general module tests'
-description: 'Execute general module tests (if any)'
+name: 'Execute global Pester module tests'
+description: 'Execute global Pester module tests (if any)'
 
 inputs:
   modulePath:
@@ -55,7 +55,7 @@ runs:
 
     - name: Publish Test Results
       uses: EnricoMi/publish-unit-test-result-action@v1
-      # if: always()
+      if: always()
       with:
         files: arm/.global/global-testResults.xml
 
@@ -89,6 +89,6 @@ runs:
 
     - name: Publish Test Results
       uses: EnricoMi/publish-unit-test-result-action@v1
-      # if: always()
+      if: always()
       with:
         files: arm/.global/api-testResults.xml

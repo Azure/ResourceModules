@@ -218,9 +218,9 @@ The [pipeline configuration file](#pipeline-variables) can be found at `.github/
 
 We use several composite actions to perform various tasks shared by our module workflows:
 
-- **validateModuleGeneral** <p>
+- **validateModulePester** <p>
   This action perform all [static tests](#static-module-validation) for a module using Pester. It also performs further [static tests](#static-module-validation), focused on API version tests for a module to ensure we notice if a version becomes stale. Each resource's API version is compared with those currently available on Azure. Accepted are both the latest 5 versions (including preview versions) as well as the latest 5 non-preview versions.
-- **deployModule:** <p>
+- **validateModuleDeployment:** <p>
   This action performs several tasks:
   1. A [simulated deployment](#simulated-deployment-validation) using a provided parameter file.
   1. An [actual deployment](#test-deploy) to Azure using a provided parameter file.

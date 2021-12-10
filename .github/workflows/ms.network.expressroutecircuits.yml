@@ -61,11 +61,9 @@ jobs:
       versioningOption: ${{ steps.get-workflow-param.outputs.versioningOption }}
       customVersion: ${{ steps.get-workflow-param.outputs.customVersion }}
 
-  ##################
-  #   UNIT TESTS   #
-  ##################
-  # Global tests
-  # ------------
+  ####################
+  #   Pester Tests   #
+  ####################
   job_tests_module_global:
     runs-on: ubuntu-20.04
     name: 'Static tests'
@@ -75,7 +73,7 @@ jobs:
         with:
           fetch-depth: 0
       - name: 'Validate module setup'
-        uses: ./.github/actions/templates/validateModuleSetup
+        uses: ./.github/actions/templates/validateModulePester
         with:
           modulePath: '${{ env.modulePath }}'
 
