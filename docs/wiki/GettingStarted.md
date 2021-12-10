@@ -125,11 +125,11 @@ Please refer to [this list][AzureNames] to check which services have a global sc
 ### Platform principal
 
 The platform [service principal](https://docs.microsoft.com/en-us/azure/active-directory/develop/app-objects-and-service-principals#service-principal-object) is used to perform actions in Azure using a service principal. Depending on what you want to want to execute, different permissions will be required. For example:
-- To test the **Management Group** module, your principal needs at least Contributor permissions on a management group
-- To test **RBAC** with any of the modules you need at least _User Access Administrator_ permissions on the target scope
-- To test **subscription-level deployments** you need at least _Contributor_ permissions on the target scope
+- To test the **Management Group** module, your principal needs at least _[Contributor](https://docs.microsoft.com/en-us/azure/role-based-access-control/built-in-roles#contributor)_ permissions on a management group
+- To test **RBAC** with any of the modules you need at least _[User Access Administrator](https://docs.microsoft.com/en-us/azure/role-based-access-control/built-in-roles#user-access-administrator)_ permissions on the target scope
+- To test **subscription-level deployments** you need at least _[Contributor](https://docs.microsoft.com/en-us/azure/role-based-access-control/built-in-roles#contributor)_ permissions on the target scope
 
-If you want to be on the safe side you can assign _Owner_ permissions to your principal on the management group scope.
+If you want to be on the safe side you can assign _[Owner](https://docs.microsoft.com/en-us/azure/role-based-access-control/built-in-roles#owner)_ permissions to your principal on the management group scope.
 
 > ***Note:*** By default, we're using this service principal's object ID (i.e. principal ID) as the value of the `deploymentSpId` [token](./ParameterFileTokens) to be used to test e.g. RBAC assignments.
 
