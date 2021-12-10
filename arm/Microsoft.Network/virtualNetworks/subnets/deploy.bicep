@@ -121,4 +121,4 @@ output subnetResourceId string = subnet.id
 output subnetAddressPrefix string = subnet.properties.addressPrefix
 
 @description('List of address prefixes for the subnet')
-output subnetAddressPrefixes array = subnet.properties.addressPrefixes
+output subnetAddressPrefixes array = !empty(addressPrefixes) ? subnet.properties.addressPrefixes : []
