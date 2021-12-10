@@ -124,7 +124,7 @@ Please refer to [this list][AzureNames] to check which services have a global sc
 
 ### Platform principal
 
-The platform principal is used to perform actions in Azure using a service principal. Depending on what you want to want to execute, different permissions will be required. For example:
+The platform [service principal](https://docs.microsoft.com/en-us/azure/active-directory/develop/app-objects-and-service-principals#service-principal-object) is used to perform actions in Azure using a service principal. Depending on what you want to want to execute, different permissions will be required. For example:
 - To test the **Management Group** module, your principal needs at least Contributor permissions on a management group
 - To test **RBAC** with any of the modules you need at least _User Access Administrator_ permissions on the target scope
 - To test **subscription-level deployments** you need at least _Contributor_ permissions on the target scope
