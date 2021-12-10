@@ -135,7 +135,9 @@ If you want to be on the safe side you can assign _[Owner](https://docs.microsof
 
 ### Dependencies
 
-As the modules we test often times have dependencies to other services, we created a pipeline to deploys several standard services like VirtualNetworks and KeyVaults (alongside dummy secrets) for the modules to use. This _dependency_ pipeline should be prepared and executed before you start running any pipelines on your own. In case you need to rename any services there (for example because a certain globally unique resource name was already taken) make sure to update any references to this name in the module parameter files. You can find further details about this pipeline [here](./TestingDesign#Module-Dependencies).
+As the modules we test oftentimes have dependencies to other services, we created a pipeline to deploys several standard services like VirtualNetworks and KeyVaults (alongside dummy secrets) for the modules to use. This _dependency_ pipeline should be prepared and executed before you start running any pipelines on your own. In case you need to rename any services there (for example because a certain globally unique resource name was already taken) make sure to update any references to this name in the module parameter files. You can find further details about this pipeline [here](./TestingDesign#Module-Dependencies).
+
+> ***Note:*** If you want to contribute back to the _CARML_ repository, make sure to not include your local dependency-names in the PR. Instead, cherry-pick the changes you want to contribute (for example in a dedicated branch) and open a Pull Request for those.
 
 ### Platform variables & secrets
 
