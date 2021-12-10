@@ -323,7 +323,7 @@ variables:
 
 The variable file is a source controlled configuration file to control the behavior of the pipeline. The file is stored in path `.azuredevops/pipelineVariables/global.variables.yml`.
 
-This file is divided in multiple categories of variables used in the pipelines:
+This file is divided into multiple categories of variables used in the pipelines:
 
 | Section | Description |
 | - | - |
