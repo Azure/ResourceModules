@@ -39,5 +39,34 @@ function Initialize-PostResourceRemoval {
                 }
             }
         }
+        'Microsoft.RecoveryServices/vaults/backupFabrics/protectionContainers/protectedItems' {
+            # Remove protected VM
+            # Required if e.g. a VM was listed in an RSV and only that VM is removed
+            if ((Get-AzRecoveryServicesVaultProperty -VaultId $resourceToRemove.resourceId).SoftDeleteFeatureState -ne 'Disabled') {
+                if ($PSCmdlet.ShouldProcess(('Soft-delete on RSV [{0}]' -f $resourceToRemove.resourceId), 'Set')) {
+                    $null = Set-AzRecoveryServicesVaultProperty -VaultId $resourceToRemove.resourceId -SoftDeleteFeatureState 'Disable'
+                }
+            }
+
+            $backupItemInputObject = @{
+                BackupManagementType = 'AzureVM'
+                WorkloadType         = 'AzureVM'
+                VaultId              = $resourceToRemove.resourceId.split('/backupFabrics/')[0]
+                Name                 = $resourceToRemove.name
+            }
+            if ($backupItem = Get-AzRecoveryServicesBackupItem @backupItemInputObject) {
+                Write-Verbose ('Removing Backup item [{0}] from RSV [{1}]' -f $backupItem.Name, $resourceToRemove.resourceId) -Verbose
+
+                if ($backupItem.DeleteState -eq 'ToBeDeleted') {
+                    if ($PSCmdlet.ShouldProcess('Soft-deleted backup data removal', 'Undo')) {
+                        $null = Undo-AzRecoveryServicesBackupItemDeletion -Item $backupItem -VaultId $resourceToRemove.resourceId -Force
+                    }
+                }
+
+                if ($PSCmdlet.ShouldProcess(('Backup item [{0}] from RSV [{1}]' -f $backupItem.Name, $resourceToRemove.resourceId), 'Remove')) {
+                    $null = Disable-AzRecoveryServicesBackupProtection -Item $backupItem -VaultId $resourceToRemove.resourceId -RemoveRecoveryPoints -Force
+                }
+            }
+        }
     }
 }
