@@ -129,7 +129,7 @@ The platform principal is used to perform actions in Azure using a service princ
 - To test **RBAC** with any of the modules you need at least _User Access Administrator_ permissions on the target scope
 - To test **subscription-level deployments** you need at least _Contributor_ permissions on the target scope
 
-If you want to be on the save side you can assign _Owner_ permissions to your principal on the management group scope.
+If you want to be on the safe side you can assign _Owner_ permissions to your principal on the management group scope.
 
 > ***Note:*** By default, we're using this service principal's object ID (i.e. principal ID) as the value of the `deploymentSpId` [token](./ParameterFileTokens) to be used to test e.g. RBAC assignments.
 
