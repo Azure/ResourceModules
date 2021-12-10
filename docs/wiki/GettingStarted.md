@@ -106,7 +106,7 @@ Depending on the pipelines you use (e.g. GitHub workflows vs. Azure DevOps pipel
 
 ### Fork the repository
 
-If you want to have a linked clone of the source repository in your own GitHub account, you can fork the repository instead. Still is also the preferred method to contribute back to this repository.
+If you want to have a linked clone of the source repository in your own GitHub account, you can fork the repository instead. This is also the preferred method if the intent is to contribute back to the CARML repository.
 
 To fork the repository you can simply click on the `Fork` button on the top right of the repository site. You can then select the Account you want to fork the repository to and are good to go.
 
