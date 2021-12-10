@@ -343,7 +343,7 @@ To keep the amount of pipeline code at a minimum we make heavy use of pipeline t
 | Template Name | Description |
 | - | - |
 | **module.jobs.validate.yml** | This template perform all [static tests](#static-module-validation) for a module using Pester. |
-| **module.jobs.deploy.yml** | This template performs a [test deployment](#simulated-deployment-validation) followed by an [actual deployment](#test-deploy) to Azure using a provided parameter file. Once a deployment ran it [removes](#removal) the resource |
+| **module.jobs.deploy.yml** | This template performs a [test deployment](#simulated-deployment-validation) followed by an [actual deployment](#test-deploy) to Azure using a provided parameter file. Once a deployment completed it [removes](#removal) the resource |
 | **module.jobs.publish.yml** | This template is capable of [publishing](#publish) the given template to a location specified in the pipeline [variable file](#azure-devops-component-variable-file) |
 
 Each file can be found in path `.azuredevops/pipelineTemplates`.
