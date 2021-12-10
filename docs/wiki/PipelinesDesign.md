@@ -296,7 +296,7 @@ Comparing multiple workflows you'll notice they are almost identical, yet differ
 
 ## Azure DevOps Pipelines
 
-Azure DevOps pipelines are the CI/CD solution provided by Azure DevOps. To get the platform going, we use the following elements:
+[Azure DevOps pipelines](https://docs.microsoft.com/en-us/azure/devops/pipelines/get-started/what-is-azure-pipelines?view=azure-devops) are the CI/CD solution provided by Azure DevOps. To enable the CARML platform to function, we use the following components in Azure DevOps:
 
 - **[Service connection:](#azure-devops-component-service-connection)** The service connection is a wrapper for the [deployment principal](./GettingStarted#platform-principal) that performs all actions in the target SBX/DEV/TEST subscription
 - **[Variable group:](#azure-devops-component-variable-group)** Variable groups allow us to store both sensitive as well configuration data securely in Azure DevOps.
