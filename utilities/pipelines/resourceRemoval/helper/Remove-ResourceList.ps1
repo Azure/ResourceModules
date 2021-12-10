@@ -10,9 +10,9 @@ Remove the given resource(s). Resources that the script fails to removed are ret
 Mandatory. The resource(s) to remove. Each resource must have a name (optional), type (optional) & resourceId property.
 
 .EXAMPLE
-Remove-ResourceInner -resourceToRemove @( @{ 'Name' = 'resourceName'; Type = 'Microsoft.Storage/storageAccounts'; ResourceId = 'subscriptions/.../storageAccounts/resourceName' } )
+Remove-ResourceListInner -resourceToRemove @( @{ 'Name' = 'resourceName'; Type = 'Microsoft.Storage/storageAccounts'; ResourceId = 'subscriptions/.../storageAccounts/resourceName' } )
 #>
-function Remove-ResourceInner {
+function Remove-ResourceListInner {
 
     [CmdletBinding(SupportsShouldProcess)]
     param(
@@ -31,14 +31,11 @@ function Remove-ResourceInner {
 
     foreach ($resource in $resourceToRemove) {
 
-        $resourceReference = ($resource.resourceId.split('/').count -gt 5) ?
-            (Get-AzResource -ResourceId $resource.resourceId -ErrorAction 'SilentlyContinue') :
-            (Get-AzResourceGroup -Id $resource.resourceId -ErrorAction 'SilentlyContinue')
         $alreadyProcessed = $processedResources.count -gt 0 ? (($processedResources | Where-Object { $resource.resourceId -like ('{0}*' -f $_) }).Count -gt 0) : $false
 
-        if (-not $resourceReference -or $alreadyProcessed) {
+        if ($alreadyProcessed) {
             # Skipping
-            Write-Verbose ('Skipping resource [{0}] of type [{1}] as itself or parent resource was already processed' -f $resource.name, $resource.type) -Verbose
+            Write-Verbose ('Skipping resource [{0}] of type [{1}] as a parent resource was already processed' -f $resource.name, $resource.type) -Verbose
             [array]$processedResources += $resource.resourceId
             [array]$resourcesToRetry = $resourcesToRetry | Where-Object { $_.resourceId -notmatch $resource.resourceId }
         } else {
@@ -81,22 +78,22 @@ Remove all resources in the provided array from Azure. Resources are removed wit
 Optional. The array of resources to remove. Has to contain objects with at least a 'resourceId' property
 
 .EXAMPLE
-Remove-Resource @( @{ 'Name' = 'resourceName'; Type = 'Microsoft.Storage/storageAccounts'; ResourceId = 'subscriptions/.../storageAccounts/resourceName' } )
+Remove-ResourceList @( @{ 'Name' = 'resourceName'; Type = 'Microsoft.Storage/storageAccounts'; ResourceId = 'subscriptions/.../storageAccounts/resourceName' } )
 
 Remove resource with ID 'subscriptions/.../storageAccounts/resourceName'.
 #>
-function Remove-Resource {
+function Remove-ResourceList {
 
     [CmdletBinding(SupportsShouldProcess)]
     param(
         [Parameter(Mandatory = $false)]
-        [PSObject[]] $resourceToRemove = @(),
+        [PSObject[]] $ResourcesToRemove = @(),
 
         [Parameter(Mandatory = $false)]
-        [int] $removalRetryLimit = 3,
+        [int] $RemovalRetryLimit = 3,
 
         [Parameter(Mandatory = $false)]
-        [int] $removalRetryInterval = 15
+        [int] $RemovalRetryInterval = 15
     )
 
     $removalRetryCount = 1
@@ -104,9 +101,9 @@ function Remove-Resource {
 
     do {
         if ($PSCmdlet.ShouldProcess(("[{0}] Resource(s) with a maximum of [$removalRetryLimit] attempts." -f (($resourcesToRetry -is [array]) ? $resourcesToRetry.Count : 1)), 'Remove')) {
-            $resourcesToRetry = Remove-ResourceInner -resourceToRemove $resourcesToRetry -Verbose
+            $resourcesToRetry = Remove-ResourceListInner -resourceToRemove $resourcesToRetry -Verbose
         } else {
-            Remove-ResourceInner -resourceToRemove $resourceToRemove -WhatIf
+            Remove-ResourceListInner -resourceToRemove $resourceToRemove -WhatIf
         }
 
         if (-not $resourcesToRetry) {
