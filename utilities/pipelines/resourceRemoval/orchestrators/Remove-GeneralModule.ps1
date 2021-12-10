@@ -105,7 +105,7 @@ function Remove-GeneralModule {
         # ================
         if ($resourcesToRemove.Count -gt 0) {
             if ($PSCmdlet.ShouldProcess(('[{0}] resources' -f (($resourcesToRemove -is [array]) ? $resourcesToRemove.Count : 1)), 'Remove')) {
-                Remove-ResourceList -resourceToRemove $resourcesToRemove -Verbose
+                Remove-ResourceList -resourcesToRemove $resourcesToRemove -Verbose
             }
         } else {
             Write-Verbose 'Found [0] resources to remove'

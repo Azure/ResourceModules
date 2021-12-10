@@ -6,30 +6,30 @@ Remove the given resource(s)
 .DESCRIPTION
 Remove the given resource(s). Resources that the script fails to removed are returned in an array.
 
-.PARAMETER resourceToRemove
+.PARAMETER resourcesToRemove
 Mandatory. The resource(s) to remove. Each resource must have a name (optional), type (optional) & resourceId property.
 
 .EXAMPLE
-Remove-ResourceListInner -resourceToRemove @( @{ 'Name' = 'resourceName'; Type = 'Microsoft.Storage/storageAccounts'; ResourceId = 'subscriptions/.../storageAccounts/resourceName' } )
+Remove-ResourceListInner -resourcesToRemove @( @{ 'Name' = 'resourceName'; Type = 'Microsoft.Storage/storageAccounts'; ResourceId = 'subscriptions/.../storageAccounts/resourceName' } )
 #>
 function Remove-ResourceListInner {
 
     [CmdletBinding(SupportsShouldProcess)]
     param(
         [Parameter(Mandatory = $false)]
-        [Hashtable[]] $resourceToRemove = @()
+        [Hashtable[]] $resourcesToRemove = @()
     )
 
     # Load functions
     . (Join-Path $PSScriptRoot 'Initialize-PreResourceRemoval.ps1')
     . (Join-Path $PSScriptRoot 'Initialize-PostResourceRemoval.ps1')
 
-    $resourceToRemove | ForEach-Object { Write-Verbose ('- Remove [{0}]' -f $_.resourceId) -Verbose }
+    $resourcesToRemove | ForEach-Object { Write-Verbose ('- Remove [{0}]' -f $_.resourceId) -Verbose }
     $resourcesToRetry = @()
     $processedResources = @()
     Write-Verbose '----------------------------------' -Verbose
 
-    foreach ($resource in $resourceToRemove) {
+    foreach ($resource in $resourcesToRemove) {
 
         $alreadyProcessed = $processedResources.count -gt 0 ? (($processedResources | Where-Object { $resource.resourceId -like ('{0}*' -f $_) }).Count -gt 0) : $false
 
@@ -74,7 +74,7 @@ Remove all resources in the provided array from Azure
 .DESCRIPTION
 Remove all resources in the provided array from Azure. Resources are removed with a retry mechanism.
 
-.PARAMETER resourceToRemove
+.PARAMETER resourcesToRemove
 Optional. The array of resources to remove. Has to contain objects with at least a 'resourceId' property
 
 .EXAMPLE
@@ -97,13 +97,13 @@ function Remove-ResourceList {
     )
 
     $removalRetryCount = 1
-    $resourcesToRetry = $resourceToRemove
+    $resourcesToRetry = $resourcesToRemove
 
     do {
         if ($PSCmdlet.ShouldProcess(("[{0}] Resource(s) with a maximum of [$removalRetryLimit] attempts." -f (($resourcesToRetry -is [array]) ? $resourcesToRetry.Count : 1)), 'Remove')) {
-            $resourcesToRetry = Remove-ResourceListInner -resourceToRemove $resourcesToRetry -Verbose
+            $resourcesToRetry = Remove-ResourceListInner -resourcesToRemove $resourcesToRetry -Verbose
         } else {
-            Remove-ResourceListInner -resourceToRemove $resourceToRemove -WhatIf
+            Remove-ResourceListInner -resourcesToRemove $resourcesToRemove -WhatIf
         }
 
         if (-not $resourcesToRetry) {
