@@ -298,11 +298,11 @@ Comparing multiple workflows you'll notice they are almost identical, yet differ
 
 [Azure DevOps pipelines](https://docs.microsoft.com/en-us/azure/devops/pipelines/get-started/what-is-azure-pipelines?view=azure-devops) are the CI/CD solution provided by Azure DevOps. To enable the CARML platform to function, we use the following components in Azure DevOps:
 
-- **[Service connection:](#azure-devops-component-service-connection)** The service connection is a wrapper for the [deployment principal](./GettingStarted#platform-principal) that performs all actions in the target SBX/DEV/TEST subscription
-- **[Variable group:](#azure-devops-component-variable-group)** Variable groups allow us to store both sensitive as well configuration data securely in Azure DevOps.
-- **[Variable file:](#azure-devops-component-variable-file)** The variable file is a version controlled variable file that hosts pipeline configuration data such as the agent pool to use.
-- **[Pipeline templates:](#azure-devops-component-pipeline-templates)** Pipeline templates allow us to re-use pipeline logic across multiple referencing pipelines
-- **[Pipelines:](#azure-devops-component-pipelines)** The pipelines contain all logic we execute as part of our platform and leverage the _pipeline templates_.
+- **[Service connection:](#azure-devops-component-service-connection)** The [service connection](https://docs.microsoft.com/en-us/azure/devops/pipelines/library/service-endpoints?view=azure-devops&tabs=yaml) is a wrapper for the [deployment principal](./GettingStarted#platform-principal) that performs all actions in the target SBX/DEV/TEST subscription
+- **[Variable group:](#azure-devops-component-variable-group)** [Variable groups](https://docs.microsoft.com/en-us/azure/devops/pipelines/library/variable-groups?view=azure-devops&tabs=yaml) allow us to store both sensitive as well configuration data securely in Azure DevOps.
+- **[Variable file:](#azure-devops-component-variable-file)** The [variable file](https://docs.microsoft.com/en-us/azure/devops/pipelines/yaml-schema?view=azure-devops&tabs=example%2Cparameter-schema#variable-templates) is a version controlled variable file that hosts pipeline configuration data such as the agent pool to use.
+- **[Pipeline templates:](#azure-devops-component-pipeline-templates)** [Pipeline templates](https://docs.microsoft.com/en-us/azure/devops/pipelines/process/templates?view=azure-devops) allow us to re-use pipeline logic across multiple referencing pipelines
+- **[Pipelines:](#azure-devops-component-pipelines)** The [pipelines](https://docs.microsoft.com/en-us/azure/devops/pipelines/?view=azure-devops) contain all logic we execute as part of our platform and leverage the _pipeline templates_.
 
 ### **Azure DevOps Component:** Service Connection
 
