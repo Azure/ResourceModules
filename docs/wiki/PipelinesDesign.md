@@ -335,6 +335,8 @@ This file is divided into multiple categories of variables used in the pipelines
 | **Publish: Private Bicep Registry settings** | Contains the required information to publish to the private bicep registry, including a switch to toggle the publishing to the private bicep registry on or off |
 | **Azure PowerShell Version** | Contains information about the default PowerShell version to use in the pipeline |
 
+More information about the contained variables can be found in the linked file itself.
+
 ### **Azure DevOps Component:** Pipeline templates
 
 To keep the amount of pipeline code at a minimum we make heavy use of pipeline templates. Following you can find an overview of the ones we use and what they are used for:
