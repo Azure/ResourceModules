@@ -37,7 +37,7 @@ function Remove-DeployedModule {
     $moduleName = Split-Path (Split-Path $templateFilePath -Parent) -LeafBase
 
     foreach ($deploymentName in $deploymentNames) {
-
+        Write-Verbose ('Handling resource removal with deployment name [{0}]' -f $deploymentName) -Verbose
         switch ($moduleName) {
             'virtualWans' {
                 Write-Verbose 'Run vWAN removal script' -Verbose

@@ -62,8 +62,6 @@ function Remove-GeneralModule {
     }
 
     process {
-        Write-Verbose ('Handling resource removal with deployment name [{0}]' -f $deploymentName) -Verbose
-
         # Prepare data
         # ============
         $deploymentScope = Get-ScopeOfTemplateFile -TemplateFilePath $TemplateFilePath
@@ -98,7 +96,7 @@ function Remove-GeneralModule {
 
         # Order resources
         # ===============
-        # If virtual machines are contained, remove them first
+        # If virtual machines are contained, remove them third
         if ($vmsContained = $resourcesToRemove | Where-Object { $_.type -eq 'Microsoft.Compute/virtualMachines' }) {
             $resourcesToRemove = @() + $vmsContained + ($resourcesToRemove | Where-Object { $_.type -ne 'Microsoft.Compute/virtualMachines' })
         }
@@ -106,6 +104,11 @@ function Remove-GeneralModule {
         # If resource groups are contained, remove them second
         if ($rgsContained = $resourcesToRemove | Where-Object { $_.type -eq 'Microsoft.Resources/resourceGroups' }) {
             $resourcesToRemove = @() + $rgsContained + ($resourcesToRemove | Where-Object { $_.type -ne 'Microsoft.Resources/resourceGroups' })
+        }
+
+        # If diagnostic settings are contained, remove them first (to clean up)
+        if ($diagContained = $resourcesToRemove | Where-Object { $_.type -eq 'Microsoft.Insights/diagnosticSettings' }) {
+            $resourcesToRemove = @() + $diagContained + ($resourcesToRemove | Where-Object { $_.type -ne 'Microsoft.Insights/diagnosticSettings' })
         }
 
         # Remove resources
