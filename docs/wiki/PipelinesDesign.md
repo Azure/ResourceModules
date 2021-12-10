@@ -253,7 +253,7 @@ We use several composite actions to perform various tasks shared by our module w
 | **validateModuleDeploy:** | This action performs the [simulated deployment](#simulated-deployment-validation) using a provided parameter file. |
 | **deployModule:** | This action performs an [actual deployment](#test-deploy) to Azure using a provided parameter file. Once a deployment ran it [removes](#removal) the resource |
 | **publishModule:** | This action is capable of [publishing](#publish) the given template to a location specified in the pipeline [variable file](#github-component-variable-file). |
-| **getWorkflowInput:** | This action implements allows us to fetch workflow input values from the module's workflow file, even if the pipeline was not triggered via a `workflow_dispatch` action. Without it we would not be able to process the contained information and would need to duplicate the configuration as workflow variables. |
+| **getWorkflowInput:** | This action allows us to fetch workflow input values from the module's workflow file, even if the pipeline was not triggered via a `workflow_dispatch` action. Without it we would not be able to process the contained information and would need to duplicate the configuration as workflow variables. |
 
 ### **GitHub Component:** Workflows
 
