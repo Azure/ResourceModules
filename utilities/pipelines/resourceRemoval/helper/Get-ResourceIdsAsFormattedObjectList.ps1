@@ -27,7 +27,7 @@ function Get-ResourceIdsAsFormattedObjectList {
 
     $formattedResources = [System.Collections.ArrayList]@()
 
-    # Optional resourceGroup-level resources to identify implicitly deployed child-resources
+    # If any resource is deployed at a resource group level, we store all resources in this resource group in this array. Essentially it's a cache.
     $allResourceGroupResources = @()
 
     foreach ($resourceId in $resourceIds) {
@@ -80,7 +80,9 @@ function Get-ResourceIdsAsFormattedObjectList {
             }
             { $PSItem -ge 8 } {
                 # child-resource level
-                $indexOfResourceType = $idElements.IndexOf(($idElements -like 'Microsoft.**')[0])
+                # Find the last resource type reference in the resourceId.
+                # E.g. Microsoft.Automation/automationAccounts/provider/Microsoft.Authorization/roleAssignments/... returns the index of 'Microsoft.Authorization'
+                $indexOfResourceType = $idElements.IndexOf(($idElements -like 'Microsoft.**')[-1])
                 $type = $idElements[$indexOfResourceType, ($indexOfResourceType + 1)] -join '/'
 
                 # Concat rest of resource type along the ID

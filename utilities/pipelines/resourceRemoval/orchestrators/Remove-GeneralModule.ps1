@@ -43,6 +43,9 @@ function Remove-GeneralModule {
         [string] $TemplateFilePath,
 
         [Parameter(Mandatory = $false)]
+        [string[]] $RemovalSequence = @(),
+
+        [Parameter(Mandatory = $false)]
         [int] $SearchRetryLimit = 40,
 
         [Parameter(Mandatory = $false)]
@@ -96,20 +99,7 @@ function Remove-GeneralModule {
 
         # Order resources
         # ===============
-        # If virtual machines are contained, remove them third
-        if ($vmsContained = $resourcesToRemove | Where-Object { $_.type -eq 'Microsoft.Compute/virtualMachines' }) {
-            $resourcesToRemove = @() + $vmsContained + ($resourcesToRemove | Where-Object { $_.type -ne 'Microsoft.Compute/virtualMachines' })
-        }
-
-        # If resource groups are contained, remove them second
-        if ($rgsContained = $resourcesToRemove | Where-Object { $_.type -eq 'Microsoft.Resources/resourceGroups' }) {
-            $resourcesToRemove = @() + $rgsContained + ($resourcesToRemove | Where-Object { $_.type -ne 'Microsoft.Resources/resourceGroups' })
-        }
-
-        # If diagnostic settings are contained, remove them first (to clean up)
-        if ($diagContained = $resourcesToRemove | Where-Object { $_.type -eq 'Microsoft.Insights/diagnosticSettings' }) {
-            $resourcesToRemove = @() + $diagContained + ($resourcesToRemove | Where-Object { $_.type -ne 'Microsoft.Insights/diagnosticSettings' })
-        }
+        $resourcesToRemove = Get-OrderedResourcesList -resourcesToOrder $resourcesToRemove -order $RemovalSequence
 
         # Remove resources
         # ================

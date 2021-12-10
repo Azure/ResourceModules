@@ -34,50 +34,55 @@ function Remove-DeployedModule {
         [string] $ResourceGroupName = 'validation-rg'
     )
 
-    $moduleName = Split-Path (Split-Path $templateFilePath -Parent) -LeafBase
+    begin {
+        Write-Debug ('{0} entered' -f $MyInvocation.MyCommand)
+        # Load functions
+        . (Join-Path $PSScriptRoot 'orchestrators' 'Remove-GeneralModule.ps1')
+    }
 
-    foreach ($deploymentName in $deploymentNames) {
-        Write-Verbose ('Handling resource removal with deployment name [{0}]' -f $deploymentName) -Verbose
-        switch ($moduleName) {
-            'virtualWans' {
-                Write-Verbose 'Run vWAN removal script' -Verbose
-                # Load function
-                . (Join-Path $PSScriptRoot 'orchestrators' 'Remove-vWan.ps1')
+    process {
+        $moduleName = Split-Path (Split-Path $templateFilePath -Parent) -LeafBase
 
-                # Invoke removal
-                $inputObject = @{
-                    deploymentName    = $deploymentName
-                    templateFilePath  = $templateFilePath
-                    ResourceGroupName = $ResourceGroupName
+        $removalSequence = @(
+            'Microsoft.Insights/diagnosticSettings',
+            'Microsoft.Resources/resourceGroups',
+            'Microsoft.Compute/virtualMachines'
+        )
+
+        foreach ($deploymentName in $deploymentNames) {
+            Write-Verbose ('Handling resource removal with deployment name [{0}]' -f $deploymentName) -Verbose
+            switch ($moduleName) {
+                'virtualWans' {
+                    $removalSequence += @(
+                        'Microsoft.Network/vpnGateways',
+                        'Microsoft.Network/virtualHubs',
+                        'Microsoft.Network/vpnSites'
+                    )
+                    break
                 }
-                Remove-vWan @inputObject -Verbose
-            }
-            'automationAccounts' {
-                Write-Verbose 'Run automation account removal script' -Verbose
-                # Load function
-                . (Join-Path $PSScriptRoot 'orchestrators' 'Remove-AutomationAccount.ps1')
-
-                # Invoke removal
-                $inputObject = @{
-                    deploymentName    = $deploymentName
-                    templateFilePath  = $templateFilePath
-                    ResourceGroupName = $ResourceGroupName
+                'automationAccounts' {
+                    $removalSequence += @(
+                        'Microsoft.OperationsManagement/solutions',
+                        'Microsoft.OperationalInsights/workspaces/linkedServices',
+                        'Microsoft.Network/privateEndpoints/privateDnsZoneGroups',
+                        'Microsoft.Network/privateEndpoints'
+                    )
+                    break
                 }
-                Remove-AutomationAccount @inputObject -Verbose
             }
-            default {
-                Write-Verbose 'Run default removal script' -Verbose
-                # Load function
-                . (Join-Path $PSScriptRoot 'orchestrators' 'Remove-GeneralModule.ps1')
 
-                # Invoke removal
-                $inputObject = @{
-                    deploymentName    = $deploymentName
-                    ResourceGroupName = $ResourceGroupName
-                    templateFilePath  = $templateFilePath
-                }
-                Remove-GeneralModule @inputObject -Verbose
+            # Invoke removal
+            $inputObject = @{
+                deploymentName    = $deploymentName
+                ResourceGroupName = $ResourceGroupName
+                templateFilePath  = $templateFilePath
+                removalSequence   = $removalSequence
             }
+            Remove-GeneralModule @inputObject -Verbose
         }
+    }
+
+    end {
+        Write-Debug ('{0} exited' -f $MyInvocation.MyCommand)
     }
 }
