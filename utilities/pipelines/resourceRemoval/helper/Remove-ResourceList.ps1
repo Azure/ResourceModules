@@ -46,7 +46,7 @@ function Remove-ResourceListInner {
                 }
 
                 if ($PSCmdlet.ShouldProcess(('Resource [{0}]' -f $resource.resourceId), 'Remove')) {
-                    $null = Remove-AzResource -ResourceId $resource.resourceId -Force -ErrorAction 'Stop'
+                    Remove-Resource -ResourceId $resource.resourceId -name $resource.name -type $resource.type
                 }
 
                 # If we removed a parent remove its children

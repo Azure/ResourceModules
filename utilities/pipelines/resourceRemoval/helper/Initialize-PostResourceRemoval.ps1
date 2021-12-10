@@ -71,7 +71,7 @@ function Initialize-PostResourceRemoval {
             }
 
             # Undo a potential soft delete state change
-            $null = Set-AzRecoveryServicesVaultProperty -VaultId $vaultId -SoftDeleteFeatureState $softDeleteStatus
+            $null = Set-AzRecoveryServicesVaultProperty -VaultId $vaultId -SoftDeleteFeatureState $softDeleteStatus.TrimEnd('d')
         }
     }
 }
