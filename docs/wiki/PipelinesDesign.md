@@ -259,7 +259,7 @@ We use several composite actions to perform various tasks shared by our module w
 
 These are the individual end-to-end workflows we have for each module. Leveraging the [composite actions](#github-component-composite-actions) described before, they orchestrate the testing & publishing of their module.
 
-Comparing multiple workflows you'll notice they are almost identically, yet differ in a few important areas:
+Comparing multiple workflows you'll notice they are almost identical, yet differ in a few important areas:
 
 - The ***path filters*** of the workflow trigger:
   | Purpose | Example |
