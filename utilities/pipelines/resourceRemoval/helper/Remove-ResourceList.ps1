@@ -20,52 +20,61 @@ function Remove-ResourceListInner {
         [Hashtable[]] $resourcesToRemove = @()
     )
 
-    # Load functions
-    . (Join-Path $PSScriptRoot 'Invoke-ResourcePreRemoval.ps1')
-    . (Join-Path $PSScriptRoot 'Invoke-ResourceRemoval.ps1')
-    . (Join-Path $PSScriptRoot 'Invoke-ResourcePostRemoval.ps1')
+    begin {
+        Write-Debug ('{0} entered' -f $MyInvocation.MyCommand)
 
-    $resourcesToRemove | ForEach-Object { Write-Verbose ('- Remove [{0}]' -f $_.resourceId) -Verbose }
-    $resourcesToRetry = @()
-    $processedResources = @()
-    Write-Verbose '----------------------------------' -Verbose
+        # Load functions
+        . (Join-Path $PSScriptRoot 'Invoke-ResourcePreRemoval.ps1')
+        . (Join-Path $PSScriptRoot 'Invoke-ResourceRemoval.ps1')
+        . (Join-Path $PSScriptRoot 'Invoke-ResourcePostRemoval.ps1')
+    }
 
-    foreach ($resource in $resourcesToRemove) {
+    process {
+        $resourcesToRemove | ForEach-Object { Write-Verbose ('- Remove [{0}]' -f $_.resourceId) -Verbose }
+        $resourcesToRetry = @()
+        $processedResources = @()
+        Write-Verbose '----------------------------------' -Verbose
 
-        $alreadyProcessed = $processedResources.count -gt 0 ? (($processedResources | Where-Object { $resource.resourceId -like ('{0}*' -f $_) }).Count -gt 0) : $false
+        foreach ($resource in $resourcesToRemove) {
 
-        if ($alreadyProcessed) {
-            # Skipping
-            Write-Verbose ('Skipping resource [{0}] of type [{1}] as a parent resource was already processed' -f $resource.name, $resource.type) -Verbose
-            [array]$processedResources += $resource.resourceId
-            [array]$resourcesToRetry = $resourcesToRetry | Where-Object { $_.resourceId -notmatch $resource.resourceId }
-        } else {
-            Write-Verbose ('Removing resource [{0}] of type [{1}]' -f $resource.name, $resource.type) -Verbose
-            try {
-                if ($PSCmdlet.ShouldProcess(('Pre-resource-removal for [{0}]' -f $resource.resourceId), 'Execute')) {
-                    Invoke-ResourcePreRemoval -resourceToRemove $resource
-                }
+            $alreadyProcessed = $processedResources.count -gt 0 ? (($processedResources | Where-Object { $resource.resourceId -like ('{0}*' -f $_) }).Count -gt 0) : $false
 
-                if ($PSCmdlet.ShouldProcess(('Resource [{0}]' -f $resource.resourceId), 'Remove')) {
-                    Invoke-ResourceRemoval -ResourceId $resource.resourceId -name $resource.name -type $resource.type
-                }
-
-                # If we removed a parent remove its children
+            if ($alreadyProcessed) {
+                # Skipping
+                Write-Verbose ('Skipping resource [{0}] of type [{1}] as a parent resource was already processed' -f $resource.name, $resource.type) -Verbose
                 [array]$processedResources += $resource.resourceId
                 [array]$resourcesToRetry = $resourcesToRetry | Where-Object { $_.resourceId -notmatch $resource.resourceId }
-            } catch {
-                Write-Warning ('Removal moved back for re-try. Reason: [{0}]' -f $_.Exception.Message)
-                [array]$resourcesToRetry += $resource
+            } else {
+                Write-Verbose ('Removing resource [{0}] of type [{1}]' -f $resource.name, $resource.type) -Verbose
+                try {
+                    if ($PSCmdlet.ShouldProcess(('Pre-resource-removal for [{0}]' -f $resource.resourceId), 'Execute')) {
+                        Invoke-ResourcePreRemoval -resourceToRemove $resource
+                    }
+
+                    if ($PSCmdlet.ShouldProcess(('Resource [{0}]' -f $resource.resourceId), 'Remove')) {
+                        Invoke-ResourceRemoval -ResourceId $resource.resourceId -name $resource.name -type $resource.type
+                    }
+
+                    # If we removed a parent remove its children
+                    [array]$processedResources += $resource.resourceId
+                    [array]$resourcesToRetry = $resourcesToRetry | Where-Object { $_.resourceId -notmatch $resource.resourceId }
+                } catch {
+                    Write-Warning ('Removal moved back for re-try. Reason: [{0}]' -f $_.Exception.Message)
+                    [array]$resourcesToRetry += $resource
+                }
+            }
+
+            # We want to purge resources even if they were not explictely removed because they were 'alreadyProcessed'
+            if ($PSCmdlet.ShouldProcess(('Post-resource-removal for [{0}]' -f $resource.resourceId), 'Execute')) {
+                Invoke-ResourcePostRemoval -resourceToRemove $resource
             }
         }
-
-        # We want to purge resources even if they were not explictely removed because they were 'alreadyProcessed'
-        if ($PSCmdlet.ShouldProcess(('Post-resource-removal for [{0}]' -f $resource.resourceId), 'Execute')) {
-            Invoke-ResourcePostRemoval -resourceToRemove $resource
-        }
+        Write-Verbose '----------------------------------' -Verbose
+        return $resourcesToRetry
     }
-    Write-Verbose '----------------------------------' -Verbose
-    return $resourcesToRetry
+    end {
+        Write-Debug ('{0} exited' -f $MyInvocation.MyCommand)
+    }
 }
 #endregion
 
