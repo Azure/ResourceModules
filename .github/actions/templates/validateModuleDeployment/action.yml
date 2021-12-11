@@ -76,7 +76,7 @@ runs:
         # Invoke Token Replacement Functionality
         $null = Convert-TokensInParameterFile @ConvertTokensInputs -Verbose
 
-    # [Test Deployment] task(s)
+    # [Deployment validation] task(s)
     # -------------------------
     - name: 'Validate [${{ inputs.templateFilePath }}]'
       shell: pwsh
