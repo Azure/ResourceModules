@@ -76,7 +76,7 @@ The validation phase performs all test outside of a test deployment. This includ
 
 #### Static module validation
 
-This static validation executes the tests documented in the [testing](./Testing) section. Without diving into to much detail, we test aspects like a proper ReadMe documentation, a proper module folder structure, a minimum number of refresh of the leveraged of API versions and the like.
+This static validation executes the tests documented in the [testing](./Testing) section. Without diving into to much detail, we test aspects like a proper ReadMe documentation, a proper module folder structure, a minimum number of refresh of the leveraged of API versions and the like. For example, each resource's API version is compared with those currently available on Azure. Accepted are both the latest 5 versions (including preview versions) as well as the latest 5 non-preview versions.
 
 #### Simulated deployment validation
 
