@@ -101,7 +101,7 @@ runs:
 
         Test-TemplateWithParameterFile @functionInput -Verbose
 
-    # [Deployment] task(s)
+    # [Deployment execution] task(s)
     # --------------------
     - name: 'Deploy [${{ inputs.templateFilePath }}] with parameters [${{ inputs.parameterFilePath }}]'
       shell: pwsh
