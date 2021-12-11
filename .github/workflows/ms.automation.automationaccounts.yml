@@ -65,15 +65,15 @@ jobs:
   ####################
   #   Pester Tests   #
   ####################
-  job_tests_module_global:
+  job_module_pester_validation:
     runs-on: ubuntu-20.04
-    name: 'Static tests'
+    name: 'Pester tests'
     steps:
       - name: 'Checkout'
         uses: actions/checkout@v2
         with:
           fetch-depth: 0
-      - name: 'Validate module setup'
+      - name: 'Validate module with Pester'
         uses: ./.github/actions/templates/validateModulePester
         with:
           modulePath: '${{ env.modulePath }}'
