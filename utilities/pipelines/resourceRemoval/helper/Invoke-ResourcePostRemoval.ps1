@@ -51,6 +51,17 @@ function Invoke-ResourcePostRemoval {
                 }
             }
         }
+        'Microsoft.ApiManagement/service' {
+            $apiManagementService = Get-AzResource -ResourceId $resourceToRemove.resourceId
+            $requestInputObject = @{
+                Method  = 'DELETE'
+                Uri     = 'https://management.azure.com/subscriptions/{0}/providers/Microsoft.ApiManagement/locations/{1}/deletedservices/{2}?api-version=2020-06-01-preview' -f $apiManagementService.SubscriptionId, $apiManagementService.Location, $apiManagementService.Name
+                Headers = @{
+                    Authorization = 'Bearer {0}' -f (Get-AzAccessToken).Token
+                }
+            }
+            Invoke-RestMethod @requestInputObject
+        }
         'Microsoft.RecoveryServices/vaults/backupFabrics/protectionContainers/protectedItems' {
             # Remove protected VM
             # Required if e.g. a VM was listed in an RSV and only that VM is removed

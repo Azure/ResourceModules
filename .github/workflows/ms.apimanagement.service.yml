@@ -7,7 +7,7 @@ on:
         type: boolean
         description: 'Remove deployed module'
         required: false
-        default: 'false' # Soft-delete prevents re-deployment
+        default: 'true'
       versioningOption:
         type: choice
         description: 'The mode to handle the version increments [major|minor|patch]'
