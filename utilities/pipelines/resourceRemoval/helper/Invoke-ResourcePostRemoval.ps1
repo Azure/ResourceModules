@@ -40,11 +40,10 @@ function Invoke-ResourcePostRemoval {
         }
         'Microsoft.CognitiveServices/accounts' {
             $resourceGroupName = $resourceToRemove.resourceId.Split('/')[4]
-
-            $matchingAccount = Get-AzCognitiveServicesAccount -InRemovedState | Where-Object { $_.AccountName -eq $resourceToRemove.name -and $_.resourceGroupName -eq $resourceGroupName }
+            $matchingAccount = Get-AzCognitiveServicesAccount -InRemovedState | Where-Object { $_.AccountName -eq $resourceToRemove.name }
             if ($matchingAccount) {
                 if ($PSCmdlet.ShouldProcess(('Cognitive services account with ID [{0}]' -f $matchingAccount.Id), 'Purge')) {
-                    $null = Remove-AzCognitiveServicesAccount -InRemovedState -Force -Location $matchingAccount.Location
+                    $null = Remove-AzCognitiveServicesAccount -InRemovedState -Force -Location $matchingAccount.Location -ResourceGroupName $resourceGroupName -Name $matchingAccount.AccountName
                 }
             }
         }
