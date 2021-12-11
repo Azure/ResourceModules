@@ -120,6 +120,7 @@ Since also dependency resources are in turn subject to dependencies with each ot
       >**Note**: This resource has a global scope name.
   1. Event hub namespace and Event hub: This resource is leveraged by all resources supporting diagnostic settings on an event hub.
       >**Note**: This resource has a global scope name.
+  1. Route table: This resource is leveraged by a test subnet deployment of the [Virtual Network] module.
   1. Route table: This resource is leveraged by the virtual network subnet dedicated to test [SQL managed instance].
       >**Note**: This resource is deployed and configured only if sqlmi dependency resources are enabled.
   1. Network watcher: This resource is leveraged by the [NSG flow logs] resource.
