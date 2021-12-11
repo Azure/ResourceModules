@@ -47,7 +47,7 @@ function Invoke-ResourcePostRemoval {
             if ($matchingAccount) {
                 Write-Verbose "Purging cognitive services account [$name]" -Verbose
                 if ($PSCmdlet.ShouldProcess(('Cognitive services account with ID [{0}]' -f $matchingAccount.Id), 'Purge')) {
-                    $null = Remove-AzCognitiveServicesAccount -InRemovedState -Force -Location
+                    $null = Remove-AzCognitiveServicesAccount -InRemovedState -Force -Location $matchingAccount.Location
                 }
             }
         }
