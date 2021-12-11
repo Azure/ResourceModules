@@ -10,7 +10,7 @@ Works on a resource group, subscription, managementgroup and tenant level
 Mandatory. The path to the deployment file
 
 .PARAMETER parameterFilePath
-Mandatory. Path to the parameter file from root. Can be a single file, multiple files, or directory that conains (.json) files.
+Mandatory. Path to the parameter file from root. Can be a single file, multiple files, or directory that contains (.json) files.
 
 .PARAMETER location
 Mandatory. Location to test in. E.g. WestEurope
