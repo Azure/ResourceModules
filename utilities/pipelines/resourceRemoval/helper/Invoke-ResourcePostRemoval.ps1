@@ -31,7 +31,7 @@ function Invoke-ResourcePostRemoval {
             $name = $resourceToRemove.resourceId.Split('/')[-1]
             $resourceGroupName = $resourceToRemove.resourceId.Split('/')[4]
 
-            $matchingKeyVault = Get-AzKeyVault -InRemovedState | Where-Object { $_.VaultName -eq $name -and $resourceGroupName -eq $resourceGroupName }
+            $matchingKeyVault = Get-AzKeyVault -InRemovedState | Where-Object { $_.VaultName -eq $name -and $_.resourceGroupName -EQ $resourceGroupName }
             if ($matchingKeyVault -and -not $resource.EnablePurgeProtection) {
                 Write-Verbose "Purging key vault [$name]" -Verbose
                 if ($PSCmdlet.ShouldProcess(('Key Vault with ID [{0}]' -f $matchingKeyVault.Id), 'Purge')) {
@@ -43,7 +43,7 @@ function Invoke-ResourcePostRemoval {
             $name = $resourceToRemove.resourceId.Split('/')[-1]
             $resourceGroupName = $resourceToRemove.resourceId.Split('/')[4]
 
-            $matchingAccount = Get-AzCognitiveServicesAccount -InRemovedState | Where-Object { $_.AccountName -eq $name -and $resourceGroupName -eq $resourceGroupName }
+            $matchingAccount = Get-AzCognitiveServicesAccount -InRemovedState | Where-Object { $_.AccountName -eq $name -and $_.resourceGroupName -eq $resourceGroupName }
             if ($matchingAccount) {
                 Write-Verbose "Purging cognitive services account [$name]" -Verbose
                 if ($PSCmdlet.ShouldProcess(('Cognitive services account with ID [{0}]' -f $matchingAccount.Id), 'Purge')) {
@@ -52,10 +52,12 @@ function Invoke-ResourcePostRemoval {
             }
         }
         'Microsoft.ApiManagement/service' {
-            $apiManagementService = Get-AzResource -ResourceId $resourceToRemove.resourceId
+            $subscriptionId = $resourceToRemove.resourceId.Split('/')[2]
+            $name = $resourceToRemove.resourceId.Split('/')[-1]
+            $uri = 'https://management.azure.com/subscriptions/{0}/providers/Microsoft.ApiManagement/locations/{1}/deletedservices/{2}?api-version=2020-06-01-preview' -f $subscriptionId, $apiManagementService.Location, $name
             $requestInputObject = @{
                 Method  = 'DELETE'
-                Uri     = 'https://management.azure.com/subscriptions/{0}/providers/Microsoft.ApiManagement/locations/{1}/deletedservices/{2}?api-version=2020-06-01-preview' -f $apiManagementService.SubscriptionId, $apiManagementService.Location, $apiManagementService.Name
+                Uri     = $uri
                 Headers = @{
                     Authorization = 'Bearer {0}' -f (Get-AzAccessToken).Token
                 }
