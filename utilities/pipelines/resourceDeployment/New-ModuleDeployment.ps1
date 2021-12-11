@@ -28,6 +28,9 @@ Optional. Name of the management group to deploy into. Mandatory if deploying in
 .PARAMETER additionalTags
 Optional. Provde a Key Value Pair (Object) that will be appended to the Parameter file tags. Example: @{myKey = 'myValue',myKey2 = 'myValue2'}.
 
+.PARAMETER additionalParameters
+Optional. Additional parameters you can provide with the deployment. E.g. @{ resourceGroupName = 'myResourceGroup' }
+
 .PARAMETER retryLimit
 Optional. Maximum retry limit if the deployment fails. Default is 3.
 
@@ -67,10 +70,10 @@ function New-DeploymentWithParameterFile {
         [string] $managementGroupId,
 
         [Parameter(Mandatory = $false)]
-        [PSCustomObject]$additionalTags,
+        [PSCustomObject] $additionalTags,
 
         [Parameter(Mandatory = $false)]
-        [Hashtable]$additionalParameters,
+        [Hashtable] $additionalParameters,
 
         [Parameter(Mandatory = $false)]
         [switch] $doNotThrow,
@@ -88,9 +91,6 @@ function New-DeploymentWithParameterFile {
 
     process {
         $moduleName = Split-Path -Path (Split-Path $templateFilePath -Parent) -LeafBase
-
-        [bool]$Stoploop = $false
-        [int]$retryCount = 1
 
         # Generate a valid deployment name. Must match ^[-\w\._\(\)]+$
         do {
@@ -138,6 +138,9 @@ function New-DeploymentWithParameterFile {
         #######################
         ## INVOKE DEPLOYMENT ##
         #######################
+        [bool]$Stoploop = $false
+        [int]$retryCount = 1
+
         do {
             try {
                 switch ($deploymentScope) {
@@ -253,6 +256,9 @@ Optional. Name of the management group to deploy into. Mandatory if deploying in
 .PARAMETER additionalTags
 Optional. Provde a Key Value Pair (Object) that will be appended to the Parameter file tags. Example: @{myKey = 'myValue',myKey2 = 'myValue2'}.
 
+.PARAMETER additionalParameters
+Optional. Additional parameters you can provide with the deployment. E.g. @{ resourceGroupName = 'myResourceGroup' }
+
 .PARAMETER retryLimit
 Optional. Maximum retry limit if the deployment fails. Default is 3.
 
@@ -292,10 +298,10 @@ function New-ModuleDeployment {
         [string] $managementGroupId,
 
         [Parameter(Mandatory = $false)]
-        [Hashtable]$additionalParameters,
+        [Hashtable] $additionalParameters,
 
         [Parameter(Mandatory = $false)]
-        [PSCustomObject]$additionalTags,
+        [PSCustomObject] $additionalTags,
 
         [Parameter(Mandatory = $false)]
         [switch] $doNotThrow,
