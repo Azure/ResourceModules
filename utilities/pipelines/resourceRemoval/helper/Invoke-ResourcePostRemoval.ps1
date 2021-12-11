@@ -28,10 +28,9 @@ function Invoke-ResourcePostRemoval {
 
     switch ($resourceToRemove.type) {
         'Microsoft.KeyVault/vaults' {
-            $name = $resourceToRemove.resourceId.Split('/')[-1]
             $resourceGroupName = $resourceToRemove.resourceId.Split('/')[4]
 
-            $matchingKeyVault = Get-AzKeyVault -InRemovedState | Where-Object { $_.VaultName -eq $name -and $_.resourceGroupName -EQ $resourceGroupName }
+            $matchingKeyVault = Get-AzKeyVault -InRemovedState | Where-Object { $_.VaultName -eq $resourceToRemove.name -and $_.resourceGroupName -EQ $resourceGroupName }
             if ($matchingKeyVault -and -not $resource.EnablePurgeProtection) {
                 Write-Verbose "Purging key vault [$name]" -Verbose
                 if ($PSCmdlet.ShouldProcess(('Key Vault with ID [{0}]' -f $matchingKeyVault.Id), 'Purge')) {
@@ -40,12 +39,10 @@ function Invoke-ResourcePostRemoval {
             }
         }
         'Microsoft.CognitiveServices/accounts' {
-            $name = $resourceToRemove.resourceId.Split('/')[-1]
             $resourceGroupName = $resourceToRemove.resourceId.Split('/')[4]
 
-            $matchingAccount = Get-AzCognitiveServicesAccount -InRemovedState | Where-Object { $_.AccountName -eq $name -and $_.resourceGroupName -eq $resourceGroupName }
+            $matchingAccount = Get-AzCognitiveServicesAccount -InRemovedState | Where-Object { $_.AccountName -eq $resourceToRemove.name -and $_.resourceGroupName -eq $resourceGroupName }
             if ($matchingAccount) {
-                Write-Verbose "Purging cognitive services account [$name]" -Verbose
                 if ($PSCmdlet.ShouldProcess(('Cognitive services account with ID [{0}]' -f $matchingAccount.Id), 'Purge')) {
                     $null = Remove-AzCognitiveServicesAccount -InRemovedState -Force -Location $matchingAccount.Location
                 }
@@ -53,16 +50,32 @@ function Invoke-ResourcePostRemoval {
         }
         'Microsoft.ApiManagement/service' {
             $subscriptionId = $resourceToRemove.resourceId.Split('/')[2]
-            $name = $resourceToRemove.resourceId.Split('/')[-1]
-            $uri = 'https://management.azure.com/subscriptions/{0}/providers/Microsoft.ApiManagement/locations/{1}/deletedservices/{2}?api-version=2020-06-01-preview' -f $subscriptionId, $apiManagementService.Location, $name
+
+            # Fetch service in soft-delete
+            $getUri = 'https://management.azure.com/subscriptions/{0}/providers/Microsoft.ApiManagement/deletedservices?api-version=2021-08-01' -f $subscriptionId
             $requestInputObject = @{
-                Method  = 'DELETE'
-                Uri     = $uri
+                Method  = 'GET'
+                Uri     = $getUri
                 Headers = @{
                     Authorization = 'Bearer {0}' -f (Get-AzAccessToken).Token
                 }
             }
-            Invoke-RestMethod @requestInputObject
+            $softDeletedService = (Invoke-RestMethod @requestInputObject).value | Where-Object { $_.properties.serviceId -eq $resourceToRemove.resourceId }
+
+            if ($softDeletedService) {
+                # Purge service
+                $purgeUri = 'https://management.azure.com/subscriptions/{0}/providers/Microsoft.ApiManagement/locations/{1}/deletedservices/{2}?api-version=2020-06-01-preview' -f $subscriptionId, $softDeletedService.location, $resourceToRemove.name
+                $requestInputObject = @{
+                    Method  = 'DELETE'
+                    Uri     = $purgeUri
+                    Headers = @{
+                        Authorization = 'Bearer {0}' -f (Get-AzAccessToken).Token
+                    }
+                }
+                if ($PSCmdlet.ShouldProcess(('API management service with ID [{0}]' -f $softDeletedService.properties.serviceId), 'Purge')) {
+                    Invoke-RestMethod @requestInputObject
+                }
+            }
         }
         'Microsoft.RecoveryServices/vaults/backupFabrics/protectionContainers/protectedItems' {
             # Remove protected VM
