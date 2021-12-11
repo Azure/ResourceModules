@@ -44,7 +44,7 @@ runs:
         creds: ${{ env.AZURE_CREDENTIALS }}
         enable-AzPSSession: true
 
-    # [Token Replacement] task(s)
+    # [Token replacement] task(s)
     # ---------------------------
     - name: 'Replace Parameter File Tokens [${{ inputs.parameterFilePath }}] '
       shell: pwsh
