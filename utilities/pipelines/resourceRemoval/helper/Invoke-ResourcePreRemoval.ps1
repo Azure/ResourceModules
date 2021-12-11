@@ -14,11 +14,11 @@ MAndatory. The resource to prepare.Should have format
 }
 
 .EXAMPLE
-Initialize-PreResourceRemoval -resourceToRemove @{ name = 'myVault'; resourceId '(..)/Microsoft.RecoveryServices/vaults/myVault'; type = 'Microsoft.RecoveryServices/vaults'}
+Invoke-ResourcePreRemoval -resourceToRemove @{ name = 'myVault'; resourceId '(..)/Microsoft.RecoveryServices/vaults/myVault'; type = 'Microsoft.RecoveryServices/vaults'}
 
 Prepare resource 'myVault' of type 'Microsoft.RecoveryServices/vaults' for removal
 #>
-function Initialize-PreResourceRemoval {
+function Invoke-ResourcePreRemoval {
 
     [CmdletBinding(SupportsShouldProcess)]
     param (

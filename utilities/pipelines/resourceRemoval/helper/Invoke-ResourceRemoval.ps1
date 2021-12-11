@@ -15,11 +15,11 @@ Mandatory. The name of the resource to remove
 Mandatory. The type of the resource to remove
 
 .EXAMPLE
-Remove-Resource -name 'sxx-vm-linux-001-nic-01-diagnosticSettings' -type 'Microsoft.Insights/diagnosticSettings' -resourceId '/subscriptions/a7439831-1cd9-435d-a091-4aa863c96556/resourceGroups/validation-rg/providers/Microsoft.Network/networkInterfaces/sxx-vm-linux-001-nic-01/providers/Microsoft.Insights/diagnosticSettings/sxx-vm-linux-001-nic-01-diagnosticSettings'
+Invoke-ResourceRemoval -name 'sxx-vm-linux-001-nic-01-diagnosticSettings' -type 'Microsoft.Insights/diagnosticSettings' -resourceId '/subscriptions/a7439831-1cd9-435d-a091-4aa863c96556/resourceGroups/validation-rg/providers/Microsoft.Network/networkInterfaces/sxx-vm-linux-001-nic-01/providers/Microsoft.Insights/diagnosticSettings/sxx-vm-linux-001-nic-01-diagnosticSettings'
 
 Remove the resource 'sxx-vm-linux-001-nic-01-diagnosticSettings' of type 'Microsoft.Insights/diagnosticSettings' from resource '/subscriptions/a7439831-1cd9-435d-a091-4aa863c96556/resourceGroups/validation-rg/providers/Microsoft.Network/networkInterfaces/sxx-vm-linux-001-nic-01'
 #>
-function Remove-Resource {
+function Invoke-ResourceRemoval {
 
     [CmdletBinding()]
     param (

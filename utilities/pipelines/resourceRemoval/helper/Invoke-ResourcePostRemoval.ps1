@@ -14,11 +14,11 @@ Mandatory. The resource to remove. Should have format
 }
 
 .EXAMPLE
-Initialize-PostResourceRemoval -resourceToRemove @{ name = 'myVault'; resourceId '(..)/Microsoft.KeyVault/vaults/myVault'; type = 'Microsoft.KeyVault/vaults'}
+Invoke-ResourcePostRemoval -resourceToRemove @{ name = 'myVault'; resourceId '(..)/Microsoft.KeyVault/vaults/myVault'; type = 'Microsoft.KeyVault/vaults'}
 
 Purge resource 'myVault' of type 'Microsoft.KeyVault/vaults' if no purge protection is enabled
 #>
-function Initialize-PostResourceRemoval {
+function Invoke-ResourcePostRemoval {
 
     [CmdletBinding(SupportsShouldProcess)]
     param (

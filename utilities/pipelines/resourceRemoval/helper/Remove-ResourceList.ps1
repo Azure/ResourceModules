@@ -21,9 +21,9 @@ function Remove-ResourceListInner {
     )
 
     # Load functions
-    . (Join-Path $PSScriptRoot 'Initialize-PreResourceRemoval.ps1')
-    . (Join-Path $PSScriptRoot 'Remove-Resource.ps1')
-    . (Join-Path $PSScriptRoot 'Initialize-PostResourceRemoval.ps1')
+    . (Join-Path $PSScriptRoot 'Invoke-ResourcePreRemoval.ps1')
+    . (Join-Path $PSScriptRoot 'Invoke-ResourceRemoval.ps1')
+    . (Join-Path $PSScriptRoot 'Invoke-ResourcePostRemoval.ps1')
 
     $resourcesToRemove | ForEach-Object { Write-Verbose ('- Remove [{0}]' -f $_.resourceId) -Verbose }
     $resourcesToRetry = @()
@@ -43,11 +43,11 @@ function Remove-ResourceListInner {
             Write-Verbose ('Removing resource [{0}] of type [{1}]' -f $resource.name, $resource.type) -Verbose
             try {
                 if ($PSCmdlet.ShouldProcess(('Pre-resource-removal for [{0}]' -f $resource.resourceId), 'Execute')) {
-                    Initialize-PreResourceRemoval -resourceToRemove $resource
+                    Invoke-ResourcePreRemoval -resourceToRemove $resource
                 }
 
                 if ($PSCmdlet.ShouldProcess(('Resource [{0}]' -f $resource.resourceId), 'Remove')) {
-                    Remove-Resource -ResourceId $resource.resourceId -name $resource.name -type $resource.type
+                    Invoke-ResourceRemoval -ResourceId $resource.resourceId -name $resource.name -type $resource.type
                 }
 
                 # If we removed a parent remove its children
@@ -61,7 +61,7 @@ function Remove-ResourceListInner {
 
         # We want to purge resources even if they were not explictely removed because they were 'alreadyProcessed'
         if ($PSCmdlet.ShouldProcess(('Post-resource-removal for [{0}]' -f $resource.resourceId), 'Execute')) {
-            Initialize-PostResourceRemoval -resourceToRemove $resource
+            Invoke-ResourcePostRemoval -resourceToRemove $resource
         }
     }
     Write-Verbose '----------------------------------' -Verbose

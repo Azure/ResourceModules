@@ -37,7 +37,7 @@ function Remove-DeployedModule {
     begin {
         Write-Debug ('{0} entered' -f $MyInvocation.MyCommand)
         # Load functions
-        . (Join-Path $PSScriptRoot 'orchestrators' 'Remove-GeneralModule.ps1')
+        . (Join-Path $PSScriptRoot 'orchestrators' 'Remove-ModuleDeployment.ps1')
     }
 
     process {
@@ -78,7 +78,7 @@ function Remove-DeployedModule {
                 templateFilePath  = $templateFilePath
                 removalSequence   = $removalSequence
             }
-            Remove-GeneralModule @inputObject -Verbose
+            Remove-ModuleDeployment @inputObject -Verbose
         }
     }
 
