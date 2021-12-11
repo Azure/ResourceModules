@@ -65,7 +65,7 @@ runs:
       shell: pwsh
       run: |
         # --------------------- #
-        # INVOKE PESTER TEST(S) #
+        # Invoke Pester test(s) #
         # --------------------- #
         Invoke-Pester -Configuration @{
           Run        = @{
