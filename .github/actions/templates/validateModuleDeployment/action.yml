@@ -139,7 +139,7 @@ runs:
           throw $res.exception
         }
 
-    # [Removal] task(s)
+    # [Deployment removal] task(s)
     # -----------------
     - name: 'Remove [${{ inputs.templateFilePath }}] from parameters [${{ inputs.parameterFilePath }}]'
       shell: pwsh
