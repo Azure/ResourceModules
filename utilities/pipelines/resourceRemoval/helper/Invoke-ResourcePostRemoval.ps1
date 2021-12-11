@@ -39,6 +39,18 @@ function Invoke-ResourcePostRemoval {
                 }
             }
         }
+        'Microsoft.CognitiveServices/accounts' {
+            $name = $resourceToRemove.resourceId.Split('/')[-1]
+            $resourceGroupName = $resourceToRemove.resourceId.Split('/')[4]
+
+            $matchingAccount = Get-AzCognitiveServicesAccount -InRemovedState | Where-Object { $_.AccountName -eq $name -and $resourceGroupName -eq $resourceGroupName }
+            if ($matchingAccount) {
+                Write-Verbose "Purging cognitive services account [$name]" -Verbose
+                if ($PSCmdlet.ShouldProcess(('Cognitive services account with ID [{0}]' -f $matchingAccount.Id), 'Purge')) {
+                    $null = Remove-AzCognitiveServicesAccount -InRemovedState -Force -Location
+                }
+            }
+        }
         'Microsoft.RecoveryServices/vaults/backupFabrics/protectionContainers/protectedItems' {
             # Remove protected VM
             # Required if e.g. a VM was listed in an RSV and only that VM is removed
