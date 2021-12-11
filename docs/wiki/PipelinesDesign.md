@@ -221,7 +221,7 @@ We use several composite actions to perform various tasks shared by our module w
 - **validateModulePester** <p>
   This action performs [static tests](#static-module-validation) for a module using Pester, including API versions focused tests to avoid those become stale overtime.
 - **validateModuleDeployment:** <p>
-  This action performs several tasks:
+  This action performs the following tasks:
   1. A [simulated deployment](#simulated-deployment-validation) using a provided parameter file.
   1. An [actual deployment](#test-deploy) to Azure using a provided parameter file.
   1. The [removal](#removal) of the test-deployed resources
