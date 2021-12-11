@@ -43,7 +43,7 @@ function Remove-DeployedModule {
     process {
         $moduleName = Split-Path (Split-Path $templateFilePath -Parent) -LeafBase
 
-        # The intial sequenc is a general order-recommendation
+        # The intial sequence is a general order-recommendation
         $removalSequence = @(
             'Microsoft.Insights/diagnosticSettings',
             'Microsoft.Resources/resourceGroups',
