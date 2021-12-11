@@ -94,9 +94,9 @@ jobs:
         with:
           modulePath: '${{ env.modulePath }}'
 
-  ###########################
-  # Deployment module tests #
-  ###########################
+  ####################
+  # Deployment tests #
+  ####################
   job_module_deploy_validation:
     runs-on: ubuntu-20.04
     name: 'Run deployment validation module tests'
