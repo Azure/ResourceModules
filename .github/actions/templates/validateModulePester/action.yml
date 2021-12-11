@@ -1,5 +1,5 @@
-name: 'Execute global Pester module tests'
-description: 'Execute global Pester module tests (if any)'
+name: 'Execute Pester module tests'
+description: 'Execute Pester module tests (if any)'
 
 inputs:
   modulePath:
