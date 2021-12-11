@@ -115,7 +115,7 @@ runs:
       run: |
         if('${{ inputs.removeDeployment }}' -eq 'true') {
           # Load used function
-          . (Join-Path $env:GITHUB_WORKSPACE 'utilities' 'pipelines' 'resourceRemoval' 'Remove-DeployedModule.ps1')
+          . (Join-Path $env:GITHUB_WORKSPACE 'utilities' 'pipelines' 'resourceRemoval' 'Initialize-DeploymentRemoval.ps1')
 
           $functionInput = @{
               deploymentName    = '${{ steps.deploy_step.outputs.deploymentName }}'
@@ -127,5 +127,5 @@ runs:
           Write-Verbose 'Invoke task with' -Verbose
           Write-Verbose ($functionInput | ConvertTo-Json | Out-String) -Verbose
 
-          Remove-DeployedModule @functionInput
+          Initialize-DeploymentRemoval @functionInput
         }

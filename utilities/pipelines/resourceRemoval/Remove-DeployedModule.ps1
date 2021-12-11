@@ -15,11 +15,11 @@ Mandatory. The path to the template used for the deployment. Used to determine t
 Optional. The name of the resource group the deployment was happening in. Relevant for resource-group level deployments.
 
 .EXAMPLE
-Remove-DeployedModule -deploymentName 'virtualWans-20211204T1812029146Z' -templateFilePath "$home/ResourceModules/arm/Microsoft.Network/virtualWans/deploy.bicep" -resourceGroupName 'test-virtualWan-parameters.json-rg'
+Initialize-DeploymentRemoval -deploymentName 'virtualWans-20211204T1812029146Z' -templateFilePath "$home/ResourceModules/arm/Microsoft.Network/virtualWans/deploy.bicep" -resourceGroupName 'test-virtualWan-parameters.json-rg'
 
 Remove the deployment 'virtualWans-20211204T1812029146Z' from resource group 'test-virtualWan-parameters.json-rg' that was executed using template in path "$home/ResourceModules/arm/Microsoft.Network/virtualWans/deploy.bicep"
 #>
-function Remove-DeployedModule {
+function Initialize-DeploymentRemoval {
 
     [CmdletBinding()]
     param (
@@ -37,7 +37,7 @@ function Remove-DeployedModule {
     begin {
         Write-Debug ('{0} entered' -f $MyInvocation.MyCommand)
         # Load functions
-        . (Join-Path $PSScriptRoot 'helper' 'Remove-ModuleDeployment.ps1')
+        . (Join-Path $PSScriptRoot 'helper' 'Remove-Deployment.ps1')
     }
 
     process {
@@ -79,7 +79,7 @@ function Remove-DeployedModule {
                 templateFilePath  = $templateFilePath
                 removalSequence   = $removalSequence
             }
-            Remove-ModuleDeployment @inputObject -Verbose
+            Remove-Deployment @inputObject -Verbose
         }
     }
 

@@ -25,11 +25,11 @@ Optional. The deployment name to use for the removal
 Optional. The path to the deployment file
 
 .EXAMPLE
-Remove-GeneralModule -DeploymentName 'KeyVault' -ResourceGroupName 'validation-rg' -TemplateFilePath 'C:/deploy.json'
+Remove-Deployment -DeploymentName 'KeyVault' -ResourceGroupName 'validation-rg' -TemplateFilePath 'C:/deploy.json'
 
 Remove a virtual WAN with deployment name 'keyvault-12345' from resource group 'validation-rg'
 #>
-function Remove-GeneralModule {
+function Remove-Deployment {
 
     [CmdletBinding(SupportsShouldProcess)]
     param (
