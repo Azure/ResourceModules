@@ -102,7 +102,7 @@ jobs:
     name: 'Run deployment validation module tests'
     needs:
       - job_set_workflow_param
-      - job_tests_module_global
+      - job_module_pester_validation
       - job_tests_module_global_api
     strategy:
       fail-fast: false

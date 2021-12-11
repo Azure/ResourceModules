@@ -85,7 +85,7 @@ jobs:
     name: 'Deployment tests'
     needs:
       - job_set_workflow_param
-      - job_tests_module_global
+      - job_module_pester_validation
     strategy:
       fail-fast: false
       matrix:
