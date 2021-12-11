@@ -349,7 +349,7 @@ function New-ModuleDeployment {
                 }
             }
         } else {
-            if ($PSCmdlet.ShouldProcess('Deployment without paramater file', 'Trigger')) {
+            if ($PSCmdlet.ShouldProcess('Deployment without parameter file', 'Trigger')) {
                 return New-DeploymentWithParameterFile @deploymentInputObject
             }
         }
