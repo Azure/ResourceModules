@@ -112,8 +112,6 @@ function New-DeploymentWithParameterFile {
 
         if (-not [String]::IsNullOrEmpty($parameterFilePath)) {
             $DeploymentInputs['TemplateParameterFile'] = $parameterFile
-            $fileProperties = Get-Item -Path $parameterFile
-            Write-Verbose "Deploying: $($fileProperties.Name)"
         }
 
         # Append tags to parameters if resource supports them (all tags must be in one object)
