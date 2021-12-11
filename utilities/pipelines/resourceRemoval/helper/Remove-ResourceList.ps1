@@ -22,6 +22,7 @@ function Remove-ResourceListInner {
 
     # Load functions
     . (Join-Path $PSScriptRoot 'Initialize-PreResourceRemoval.ps1')
+    . (Join-Path $PSScriptRoot 'Remove-Resource.ps1')
     . (Join-Path $PSScriptRoot 'Initialize-PostResourceRemoval.ps1')
 
     $resourcesToRemove | ForEach-Object { Write-Verbose ('- Remove [{0}]' -f $_.resourceId) -Verbose }
