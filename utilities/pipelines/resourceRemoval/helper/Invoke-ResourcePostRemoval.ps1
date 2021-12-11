@@ -73,7 +73,7 @@ function Invoke-ResourcePostRemoval {
                     }
                 }
                 if ($PSCmdlet.ShouldProcess(('API management service with ID [{0}]' -f $softDeletedService.properties.serviceId), 'Purge')) {
-                    Invoke-RestMethod @requestInputObject
+                    $null = Invoke-RestMethod @requestInputObject
                 }
             }
         }
