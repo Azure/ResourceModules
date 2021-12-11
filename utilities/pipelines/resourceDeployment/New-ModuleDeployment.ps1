@@ -106,14 +106,17 @@ function New-DeploymentWithParameterFile {
             ErrorAction    = 'Stop'
         }
 
-        if ($additionalParameters) {
-            $DeploymentInputs += $additionalParameters
-        }
-
+        # Parameter file provided yes/no
         if (-not [String]::IsNullOrEmpty($parameterFilePath)) {
             $DeploymentInputs['TemplateParameterFile'] = $parameterFile
         }
 
+        # Additional parameter object provided yes/no
+        if ($additionalParameters) {
+            $DeploymentInputs += $additionalParameters
+        }
+
+        # Additional tags provides yes/no
         # Append tags to parameters if resource supports them (all tags must be in one object)
         if ($additionalTags) {
 
@@ -131,11 +134,10 @@ function New-DeploymentWithParameterFile {
             $DeploymentInputs += @{Tags = $parameterFileTags }
         }
 
-        $deploymentScope = Get-ScopeOfTemplateFile -TemplateFilePath $templateFilePath
-
         #######################
         ## INVOKE DEPLOYMENT ##
         #######################
+        $deploymentScope = Get-ScopeOfTemplateFile -TemplateFilePath $templateFilePath
         [bool]$Stoploop = $false
         [int]$retryCount = 1
 
