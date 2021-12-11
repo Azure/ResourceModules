@@ -27,7 +27,7 @@ runs:
 
     # [Module Pester Test] task(s)
     #-----------------------------
-    - name: 'Run tests via (Pester)'
+    - name: 'Run global tests via Pester'
       shell: pwsh
       run: |
         # --------------------- #
@@ -61,7 +61,7 @@ runs:
 
     # [Module Pester Test] task(s)
     #-----------------------------
-    - name: 'Run API tests via (Pester)'
+    - name: 'Run API tests via Pester'
       shell: pwsh
       run: |
         # --------------------- #
