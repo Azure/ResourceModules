@@ -21,7 +21,7 @@ Remove the resource 'sxx-vm-linux-001-nic-01-diagnosticSettings' of type 'Micros
 #>
 function Invoke-ResourceRemoval {
 
-    [CmdletBinding()]
+    [CmdletBinding(SupportsShouldProcess)]
     param (
         [Parameter()]
         [string] $resourceId,
@@ -36,8 +36,39 @@ function Invoke-ResourceRemoval {
     switch ($type) {
         'Microsoft.Insights/diagnosticSettings' {
             $parentResourceId = $resourceId.Split('/providers/{0}' -f $type)[0]
-            $null = Remove-AzDiagnosticSetting -ResourceId $parentResourceId -Name $name
+            if ($PSCmdlet.ShouldProcess("Diagnostic setting [$name]", 'Remove')) {
+                $null = Remove-AzDiagnosticSetting -ResourceId $parentResourceId -Name $name
+            }
             break
+        }
+        'Microsoft.RecoveryServices/vaults' {
+            # Pre-Removal
+            # -----------
+            # Remove protected VMs
+            if ((Get-AzRecoveryServicesVaultProperty -VaultId $resourceId).SoftDeleteFeatureState -ne 'Disabled') {
+                if ($PSCmdlet.ShouldProcess(('Soft-delete on RSV [{0}]' -f $resourceId), 'Set')) {
+                    $null = Set-AzRecoveryServicesVaultProperty -VaultId $resourceId -SoftDeleteFeatureState 'Disable'
+                }
+            }
+
+            $backupItems = Get-AzRecoveryServicesBackupItem -BackupManagementType 'AzureVM' -WorkloadType 'AzureVM' -VaultId $resourceId
+            foreach ($backupItem in $backupItems) {
+                Write-Verbose ('Removing Backup item [{0}] from RSV [{1}]' -f $backupItem.Name, $resourceId) -Verbose
+
+                if ($backupItem.DeleteState -eq 'ToBeDeleted') {
+                    if ($PSCmdlet.ShouldProcess('Soft-deleted backup data removal', 'Undo')) {
+                        $null = Undo-AzRecoveryServicesBackupItemDeletion -Item $backupItem -VaultId $resourceId -Force
+                    }
+                }
+
+                if ($PSCmdlet.ShouldProcess(('Backup item [{0}] from RSV [{1}]' -f $backupItem.Name, $resourceId), 'Remove')) {
+                    $null = Disable-AzRecoveryServicesBackupProtection -Item $backupItem -VaultId $resourceId -RemoveRecoveryPoints -Force
+                }
+            }
+
+            # Actual removal
+            # --------------
+            $null = Remove-AzResource -ResourceId $resourceId -Force -ErrorAction 'Stop'
         }
         Default {
             $null = Remove-AzResource -ResourceId $resourceId -Force -ErrorAction 'Stop'

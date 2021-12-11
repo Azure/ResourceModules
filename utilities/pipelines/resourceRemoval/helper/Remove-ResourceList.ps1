@@ -24,7 +24,6 @@ function Remove-ResourceListInner {
         Write-Debug ('{0} entered' -f $MyInvocation.MyCommand)
 
         # Load functions
-        . (Join-Path $PSScriptRoot 'Invoke-ResourcePreRemoval.ps1')
         . (Join-Path $PSScriptRoot 'Invoke-ResourceRemoval.ps1')
         . (Join-Path $PSScriptRoot 'Invoke-ResourcePostRemoval.ps1')
     }
@@ -47,10 +46,6 @@ function Remove-ResourceListInner {
             } else {
                 Write-Verbose ('Removing resource [{0}] of type [{1}]' -f $resource.name, $resource.type) -Verbose
                 try {
-                    if ($PSCmdlet.ShouldProcess(('Pre-resource-removal for [{0}]' -f $resource.resourceId), 'Execute')) {
-                        Invoke-ResourcePreRemoval -resourceToRemove $resource
-                    }
-
                     if ($PSCmdlet.ShouldProcess(('Resource [{0}]' -f $resource.resourceId), 'Remove')) {
                         Invoke-ResourceRemoval -ResourceId $resource.resourceId -name $resource.name -type $resource.type
                     }
