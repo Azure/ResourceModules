@@ -82,11 +82,11 @@ function Remove-Deployment {
             scope             = $deploymentScope
             resourceGroupName = $resourceGroupName
         }
-        $deployments = Get-ResourceIdsOfDeployment @deploymentsInputObject -Verbose
+        $deploymentResourceIds = Get-ResourceIdsOfDeployment @deploymentsInputObject -Verbose
 
         # Pre-Filter & order items
         # ========================
-        $rawResourceIdsToRemove = $deployments | Sort-Object -Property { $_.Split('/').Count } -Descending | Select-Object -Unique
+        $rawResourceIdsToRemove = $deploymentResourceIds | Sort-Object -Property { $_.Split('/').Count } -Descending | Select-Object -Unique
 
         # Format items
         # ============
