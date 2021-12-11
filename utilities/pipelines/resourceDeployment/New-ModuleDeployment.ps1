@@ -116,7 +116,7 @@ function New-DeploymentWithParameterFile {
             Write-Verbose "Deploying: $($fileProperties.Name)"
         }
 
-        ## Append Tags to Parameters if Resource supports them (all tags must be in one object)
+        # Append tags to parameters if resource supports them (all tags must be in one object)
         if ($additionalTags) {
 
             # Parameter tags
