@@ -360,4 +360,8 @@ function New-ModuleDeployment {
             }
         }
     }
+
+    end {
+        Write-Debug ('{0} exited' -f $MyInvocation.MyCommand)
+    }
 }
