@@ -7,7 +7,7 @@
         },
         "gatewayPipName": {
             "value": [
-                "vsxx-az-gw-er-pip-001"
+                "sxx-az-gw-er-001-pip"
             ]
         },
         "domainNameLabel": {
