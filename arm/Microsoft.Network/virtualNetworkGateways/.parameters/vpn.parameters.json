@@ -7,7 +7,7 @@
         },
         "domainNameLabel": {
             "value": [
-                "sxx-az-gw-vpn-pip-001"
+                "sxx-az-gw-vpn-dm-001"
             ]
         },
         "virtualNetworkGatewayType": {
