@@ -350,13 +350,7 @@ function New-ModuleDeployment {
             }
         } else {
             if ($PSCmdlet.ShouldProcess('Deployment without parameter file', 'Trigger')) {
-
-                end {
-                    Write-Debug ('{0} exited' -f $MyInvocation.MyCommand)
-                }
-            }
-            end {
-                Write-Debug ('{0} exited' -f $MyInvocation.MyCommand)
+                return New-DeploymentWithParameterFile @deploymentInputObject
             }
         }
     }
