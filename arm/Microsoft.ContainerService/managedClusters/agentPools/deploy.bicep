@@ -78,7 +78,7 @@ param allowedUnsafeSysctls array = [
   'net.*'
 ]
 
-@description('Optional. The maximum number of container log files that can be present for a container. The number must be ≥ 2.')
+@description('Optional. The maximum number of container log files that can be present for a container. The number must be >= 2.')
 @minValue(2)
 param containerLogMaxFiles int = 5
 

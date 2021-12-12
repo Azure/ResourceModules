@@ -9,7 +9,7 @@ This module deploys Azure Kubernetes Cluster (AKS).
 | `Microsoft.Authorization/locks` | 2016-09-01 |
 | `Microsoft.Authorization/roleAssignments` | 2020-04-01-preview |
 | `Microsoft.ContainerService/managedClusters` | 2021-07-01 |
-| `Microsoft.ContainerService/managedClusters/agentPools` | 2021-05-01 |
+| `Microsoft.ContainerService/managedClusters/agentPools` | 2021-08-01 |
 | `Microsoft.Insights/diagnosticSettings` | 2021-05-01-preview |
 
 ## Parameters
@@ -183,6 +183,7 @@ For available properties check <https://docs.microsoft.com/en-us/azure/templates
 
 ### Parameter Usage: `agentPools`
 
+Provide values for additional agent pools as needed.
 For available properties check <https://docs.microsoft.com/en-us/azure/templates/microsoft.containerservice/managedclusters/agentpools?tabs=json#managedclusteragentpoolprofileproperties-object>
 
 ```json
@@ -190,43 +191,39 @@ For available properties check <https://docs.microsoft.com/en-us/azure/templates
       "value": [
           {
             "name": "pool1",
-            "properties": {
-                "vmSize": "Standard_DS3_v2",
-                "osDiskSizeGB": 128,
-                "count": 2,
-                "osType": "Linux",
-                "maxCount": 5,
-                "minCount": 1,
-                "enableAutoScaling": true,
-                "scaleSetPriority": "Regular",
-                "scaleSetEvictionPolicy": "Delete",
-                "nodeLabels": {},
-                "nodeTaints": [
-                  "CriticalAddonsOnly=true:NoSchedule"
-                ],
-                "type": "VirtualMachineScaleSets",
-                "availabilityZones": [
-                  "1",
-                  "2",
-                  "3"
-                ],
-                "maxPods": 30,
-                "storageProfile": "ManagedDisks",
-                "mode": "System",
-                "vnetSubnetID": "/subscriptions/XXXXXXXX-XXXX-XXXX-XXXX-XXXXXXXXXXXX/resourceGroups/myRg/providers/Microsoft.Network/virtualNetworks/myVnet/subnets/mySubnet",
-                "tags": {
-                    "Owner": "abc.def@contoso.com",
-                    "BusinessUnit": "IaCs",
-                    "Environment": "PROD",
-                    "Region": "USEast"
-                }
+            "vmSize": "Standard_DS3_v2",
+            "osDiskSizeGB": 128,
+            "count": 2,
+            "osType": "Linux",
+            "maxCount": 5,
+            "minCount": 1,
+            "enableAutoScaling": true,
+            "scaleSetPriority": "Regular",
+            "scaleSetEvictionPolicy": "Delete",
+            "nodeLabels": {},
+            "nodeTaints": [
+              "CriticalAddonsOnly=true:NoSchedule"
+            ],
+            "type": "VirtualMachineScaleSets",
+            "availabilityZones": [
+              "1",
+              "2",
+              "3"
+            ],
+            "maxPods": 30,
+            "storageProfile": "ManagedDisks",
+            "mode": "System",
+            "vnetSubnetID": "/subscriptions/XXXXXXXX-XXXX-XXXX-XXXX-XXXXXXXXXXXX/resourceGroups/myRg/providers/Microsoft.Network/virtualNetworks/myVnet/subnets/mySubnet",
+            "tags": {
+                "Owner": "abc.def@contoso.com",
+                "BusinessUnit": "IaCs",
+                "Environment": "PROD",
+                "Region": "USEast"
             }
         },
         {
             "name": "pool2",
-            "properties": {
-                "..."
-            }
+            "..."
         }
       ]
     }
@@ -260,5 +257,5 @@ You can specify multiple user assigned identities to a resource by providing add
 - [Locks](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2016-09-01/locks)
 - [Roleassignments](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2020-04-01-preview/roleAssignments)
 - [Managedclusters](https://docs.microsoft.com/en-us/azure/templates/Microsoft.ContainerService/2021-07-01/managedClusters)
-- [Managedclusters/Agentpools](https://docs.microsoft.com/en-us/azure/templates/Microsoft.ContainerService/2021-05-01/managedClusters/agentPools)
+- [Managedclusters/Agentpools](https://docs.microsoft.com/en-us/azure/templates/Microsoft.ContainerService/2021-08-01/managedClusters/agentPools)
 - [Diagnosticsettings](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Insights/2021-05-01-preview/diagnosticSettings)
