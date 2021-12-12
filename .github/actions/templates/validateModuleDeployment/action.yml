@@ -28,6 +28,8 @@ inputs:
 runs:
   using: 'composite'
   steps:
+    # [Setup] task(s)
+    # ----------------
     - name: 'Setup agent'
       shell: pwsh
       run: |
@@ -36,13 +38,14 @@ runs:
 
         # Set agent up
         Set-EnvironmentOnAgent
-
     - name: Azure Login
       uses: Azure/login@v1
       with:
         creds: ${{ env.AZURE_CREDENTIALS }}
         enable-AzPSSession: true
 
+    # [Token replacement] task(s)
+    # ---------------------------
     - name: 'Replace Parameter File Tokens [${{ inputs.parameterFilePath }}] '
       shell: pwsh
       run: |
@@ -58,7 +61,9 @@ runs:
             @{ Name = 'managementGroupId'; Value = '${{ inputs.managementGroupId }}' }
             @{ Name = "tenantId"; Value = '${{ env.ARM_TENANT_ID }}' }
             @{ Name = "deploymentSpId"; Value = '${{ env.DEPLOYMENT_SP_ID }}' }
-        ) | ForEach-Object { [PSCustomObject]$PSItem }
+        )
+
+        $DefaultParameterFileTokens = $DefaultParameterFileTokens | ForEach-Object { [PSCustomObject]$PSItem }
 
         # Construct Token Function Input
         $ConvertTokensInputs = @{
@@ -71,6 +76,33 @@ runs:
         # Invoke Token Replacement Functionality
         $null = Convert-TokensInParameterFile @ConvertTokensInputs -Verbose
 
+    # [Deployment validation] task(s)
+    # -------------------------
+    - name: 'Validate [${{ inputs.templateFilePath }}]'
+      shell: pwsh
+      run: |
+        # Load used functions
+        . (Join-Path $env:GITHUB_WORKSPACE 'utilities' 'pipelines' 'resourceValidation' 'Test-TemplateWithParameterFile.ps1')
+
+        # ----------- #
+        # INVOKE TEST #
+        # ----------- #
+        $functionInput = @{
+          templateFilePath   = '${{ inputs.templateFilePath }}'
+          parameterFilePath  = '${{ inputs.parameterFilePath }}'
+          location           = '${{ inputs.location }}'
+          resourceGroupName  = '${{ inputs.resourceGroupName }}'
+          subscriptionId     = '${{ inputs.subscriptionId }}'
+          managementGroupId  = '${{ inputs.managementGroupId }}'
+        }
+
+        Write-Verbose "Invoke task with" -Verbose
+        Write-Verbose ($functionInput | ConvertTo-Json | Out-String) -Verbose
+
+        Test-TemplateWithParameterFile @functionInput -Verbose
+
+    # [Deployment execution] task(s)
+    # --------------------
     - name: 'Deploy [${{ inputs.templateFilePath }}] with parameters [${{ inputs.parameterFilePath }}]'
       shell: pwsh
       id: deploy_step
@@ -95,37 +127,39 @@ runs:
         $res = New-ModuleDeployment @functionInput -Verbose
 
         # Get deployment name
-        if($res -is [hashtable]) {
-          $deploymentName = $res['DeploymentName']
-        } elseif($res -is [string]) {
-          $deploymentName = $res
-        } else {
-          throw ("Output-Type of New-ModuleDeployment invocation has invalid type [{0}]" -f $res.GetType())
-        }
-        Write-Output ('::set-output name=deploymentName::{0}' -f $deploymentName)
+        Write-Output ('::set-output name={0}::{1}' -f 'deploymentName', $res.deploymentName)
 
-        if($res -is [hashtable]) {
+        # Populate further outputs
+        foreach ($outputKey in $res.deploymentOutput.Keys) {
+            Write-Output ('::set-output name={0}::{1}' -f $outputKey, $res.deploymentOutput[$outputKey].Value)
+        }
+
+        if ($res.ContainsKey('exception')) {
           # Happens only if there is an exception
-          throw $res['Exception']
+          throw $res.exception
         }
 
+    # [Deployment removal] task(s)
+    # -----------------
     - name: 'Remove [${{ inputs.templateFilePath }}] from parameters [${{ inputs.parameterFilePath }}]'
       shell: pwsh
-      if: always()
+      if: ${{ always() && steps.deploy_step.outputs.deploymentName != '' }}
       run: |
         if('${{ inputs.removeDeployment }}' -eq 'true') {
           # Load used function
           . (Join-Path $env:GITHUB_WORKSPACE 'utilities' 'pipelines' 'resourceRemoval' 'Remove-DeployedModule.ps1')
 
-          $functionInput = @{
+          if(-not [String]::IsNullOrEmpty('${{ steps.deploy_step.outputs.deploymentName }}')) {
+            $functionInput = @{
               deploymentName    = '${{ steps.deploy_step.outputs.deploymentName }}'
               templateFilePath  = Join-Path $env:GITHUB_WORKSPACE '${{ inputs.templateFilePath }}'
               resourceGroupName = '${{ inputs.resourceGroupName }}'
               verbose           = $true
+            }
+
+            Write-Verbose 'Invoke task with' -Verbose
+            Write-Verbose ($functionInput | ConvertTo-Json | Out-String) -Verbose
+
+            Remove-DeployedModule @functionInput
           }
-
-          Write-Verbose 'Invoke task with' -Verbose
-          Write-Verbose ($functionInput | ConvertTo-Json | Out-String) -Verbose
-
-          Remove-DeployedModule @functionInput
         }
