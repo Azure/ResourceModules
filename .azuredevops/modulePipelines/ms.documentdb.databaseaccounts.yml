@@ -38,11 +38,11 @@ variables:
     value: '/arm/Microsoft.DocumentDB/databaseAccounts'
 
 stages:
-  - stage: Validation
+  - stage: Pester tests
     jobs:
       - template: /.azuredevops/pipelineTemplates/module.jobs.validate.yml
 
-  - stage: Deployment
+  - stage: Deployment tests
     jobs:
       - template: /.azuredevops/pipelineTemplates/module.jobs.deploy.yml
         parameters:
@@ -52,7 +52,7 @@ stages:
             - path: $(modulePath)/.parameters/plain.parameters.json
             - path: $(modulePath)/.parameters/sqldb.parameters.json
 
-  - stage: Publishing
+  - stage: Publish module
     condition: and(succeeded(), eq(variables['Build.SourceBranch'], 'refs/heads/main'))
     jobs:
       - template: /.azuredevops/pipelineTemplates/module.jobs.publish.yml

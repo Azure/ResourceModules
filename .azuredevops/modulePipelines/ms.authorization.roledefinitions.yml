@@ -38,11 +38,11 @@ variables:
     value: '/arm/Microsoft.Authorization/roleDefinitions'
 
 stages:
-  - stage: Validation
+  - stage: Pester tests
     jobs:
       - template: /.azuredevops/pipelineTemplates/module.jobs.validate.yml
 
-  - stage: Deployment
+  - stage: Deployment tests
     jobs:
       - template: /.azuredevops/pipelineTemplates/module.jobs.deploy.yml
         parameters:
@@ -53,7 +53,7 @@ stages:
             - path: $(modulePath)/.parameters/parameters.json
               templateFilePath: $(modulePath)/.bicep/nested_roleDefinitions_sub.bicep
 
-  - stage: Publishing
+  - stage: Publish module
     condition: and(succeeded(), eq(variables['Build.SourceBranch'], 'refs/heads/main'))
     jobs:
       - template: /.azuredevops/pipelineTemplates/module.jobs.publish.yml

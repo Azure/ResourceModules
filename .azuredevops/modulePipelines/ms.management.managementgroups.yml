@@ -38,11 +38,11 @@ variables:
     value: '/arm/Microsoft.Management/managementGroups'
 
 stages:
-  - stage: Validation
+  - stage: Pester tests
     jobs:
       - template: /.azuredevops/pipelineTemplates/module.jobs.validate.yml
 
-  - stage: Deployment
+  - stage: Deployment tests
     jobs:
       - template: /.azuredevops/pipelineTemplates/module.jobs.deploy.yml
         parameters:
@@ -50,7 +50,7 @@ stages:
           deploymentBlocks:
             - path: $(modulePath)/.parameters/parameters.json
 
-  - stage: Publishing
+  - stage: Publish module
     condition: and(succeeded(), eq(variables['Build.SourceBranch'], 'refs/heads/main'))
     jobs:
       - template: /.azuredevops/pipelineTemplates/module.jobs.publish.yml

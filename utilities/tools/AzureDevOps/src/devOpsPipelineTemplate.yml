@@ -38,18 +38,18 @@ variables:
     value: '/<RelativeModuleFolderPath>'
 
 stages:
-  - stage: Validation
+  - stage: Pester tests
     jobs:
       - template: /.azuredevops/pipelineTemplates/module.jobs.validate.yml
 
-  - stage: Deployment
+  - stage: Deployment tests
     jobs:
       - template: /.azuredevops/pipelineTemplates/module.jobs.deploy.yml
         parameters:
           removeDeployment: '${{ parameters.removeDeployment }}'
           deploymentBlocks: <PipelineParamterPaths>
 
-  - stage: Publishing
+  - stage: Publish module
     condition: and(succeeded(), eq(variables['Build.SourceBranch'], 'refs/heads/main'))
     jobs:
       - template: /.azuredevops/pipelineTemplates/module.jobs.publish.yml
