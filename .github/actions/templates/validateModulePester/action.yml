@@ -39,7 +39,7 @@ runs:
         }
 
         # --------------------- #
-        # INVOKE PESTER TEST(S) #
+        # Invoke Pester test(s) #
         # --------------------- #
         Invoke-Pester -Configuration @{
           Run        = @{
@@ -81,7 +81,7 @@ runs:
         }
 
         # --------------------- #
-        # INVOKE PESTER TEST(S) #
+        # Invoke Pester test(s) #
         # --------------------- #
         Invoke-Pester -Configuration @{
           Run        = @{
