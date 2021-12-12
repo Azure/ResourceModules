@@ -262,13 +262,3 @@ Comparing multiple workflows you'll notice they are almost identically, yet diff
     modulePath: 'arm/Microsoft.Network/virtualWans'
     workflowPath: '.github/workflows/ms.network.virtualwans.yml'
   ```
-- (optionally) The relative path to a ***removal script***
-  As described [previously](#removal), some scripts may require custom logic to be removed. This logic should be stored in a script and be referenced by the corresponding module's workflow. To reference this script you can use the `relativePathOfRemovalScript` parameter of the `removeModule` composite action as shown below.
-  ```yaml
-  - name: 'Remove module'
-    uses: ./.github/actions/templates/removeModule
-    with:
-      moduleName: '${{ env.moduleName }}'
-      resourceGroupName: '${{ env.resourceGroupName }}'
-      relativePathOfRemovalScript: 'utilities/pipelines/resourceRemoval/Remove-vWan.ps1'
-  ```
