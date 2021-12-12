@@ -38,11 +38,13 @@ variables:
     value: '/arm/Microsoft.Storage/storageAccounts'
 
 stages:
-  - stage: Pester tests
+  - stage: Validation
+    displayName: Pester tests
     jobs:
       - template: /.azuredevops/pipelineTemplates/module.jobs.validate.yml
 
-  - stage: Deployment tests
+  - stage: Deployment
+    displayName: Deployment tests
     jobs:
       - template: /.azuredevops/pipelineTemplates/module.jobs.deploy.yml
         parameters:
@@ -52,7 +54,8 @@ stages:
             - path: $(modulePath)/.parameters/parameters.json
             - path: $(modulePath)/.parameters/v1.parameters.json
 
-  - stage: Publish module
+  - stage: Publishing
+    displayName: Publish module
     condition: and(succeeded(), eq(variables['Build.SourceBranch'], 'refs/heads/main'))
     jobs:
       - template: /.azuredevops/pipelineTemplates/module.jobs.publish.yml

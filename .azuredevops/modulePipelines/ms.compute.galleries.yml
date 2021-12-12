@@ -38,7 +38,8 @@ variables:
     value: '/arm/Microsoft.Compute/galleries'
 
 stages:
-  - stage: Pester tests
+  - stage: Validation
+    displayName: Pester tests
     jobs:
       - template: /.azuredevops/pipelineTemplates/module.jobs.validate.yml
         parameters:
@@ -46,7 +47,8 @@ stages:
             - path: $(modulePath)/.parameters/images.parameters.json
             - path: $(modulePath)/.parameters/parameters.json
 
-  - stage: Deployment tests
+  - stage: Deployment
+    displayName: Deployment tests
     jobs:
       - template: /.azuredevops/pipelineTemplates/module.jobs.deploy.yml
         parameters:
@@ -55,7 +57,8 @@ stages:
             - path: $(modulePath)/.parameters/images.parameters.json
             - path: $(modulePath)/.parameters/parameters.json
 
-  - stage: Publish module
+  - stage: Publishing
+    displayName: Publish module
     condition: and(succeeded(), eq(variables['Build.SourceBranch'], 'refs/heads/main'))
     jobs:
       - template: /.azuredevops/pipelineTemplates/module.jobs.publish.yml
