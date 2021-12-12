@@ -3,11 +3,11 @@
     "contentVersion": "1.0.0.0",
     "parameters": {
         "name": {
-            "value": "sxx-az-vnet-vpn-gw-p-001"
+            "value": "sxx-az-gw-vpn-001"
         },
         "domainNameLabel": {
             "value": [
-                "sxx-az-vnet-vpn-gw-p-001-pip-99"
+                "sxx-az-gw-vpn-dm-001"
             ]
         },
         "virtualNetworkGatewayType": {
