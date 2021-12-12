@@ -242,18 +242,16 @@ jobs:
                 $res = New-ModuleDeployment @functionInput -Verbose
 
                 # Get deployment name
-                if($res -is [hashtable]) {
-                  $deploymentName = $res['DeploymentName']
-                } elseif($res -is [string]) {
-                  $deploymentName = $res
-                } else {
-                  throw ("Output-Type of New-ModuleDeployment invocation has invalid type [{0}]" -f $res.GetType())
-                }
-                Write-Host "##vso[task.setvariable variable=deploymentName]$deploymentName"
+                Write-Host ('##vso[task.setvariable variable=deploymentName]{0}' -f $res.deploymentName)
 
-                if($res -is [hashtable]) {
+                # Populate further outputs
+                foreach ($outputKey in $res.deploymentOutput.Keys) {
+                    Write-Output ('##vso[task.setvariable variable={0}]{1}' -f $outputKey, $res.deploymentOutput[$outputKey].Value)
+                }
+
+                if ($res.ContainsKey('exception')) {
                   # Happens only if there is an exception
-                  throw $res['Exception']
+                  throw $res.exception
                 }
 
           # [Removal] task(s)
