@@ -355,7 +355,9 @@ function New-ModuleDeployment {
                     Write-Debug ('{0} exited' -f $MyInvocation.MyCommand)
                 }
             }
-    end {
-        Write-Debug ('{0} exited' -f $MyInvocation.MyCommand)
+            end {
+                Write-Debug ('{0} exited' -f $MyInvocation.MyCommand)
+            }
+        }
     }
 }
