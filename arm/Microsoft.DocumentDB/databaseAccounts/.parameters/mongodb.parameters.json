@@ -3,7 +3,7 @@
     "contentVersion": "1.0.0.0",
     "parameters": {
         "name": {
-            "value": "sxx-az-cdb-mngdb-001"
+            "value": "sxx-az-cdb-mongodb-001"
         },
         "location": {
             "value": "West Europe"
