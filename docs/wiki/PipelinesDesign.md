@@ -58,12 +58,12 @@ Note that the pipeline comes with 4 runtime parameters you can provide when you 
 
 To "build"/"bake" the modules, a dedicated pipeline is used for each module to validate their production readiness, by:
 
-1. **Validate**:
+1. **Pester tests**:
    1. Running a set of static Pester tests against the template
    1. Validating the template by invoking Azure’s validation API (Test-AzResourceGroupDeployment – or the same for other scopes)
-1. **Test deploy**: we deploy each module by using a predefined set of parameters to a ‘sandbox’ subscription in Azure to see if it’s really working
+1. **Deployment tests**: we deploy each module by using a predefined set of parameters to a ‘sandbox’ subscription in Azure to see if it’s really working
    1. **Removal**: The test suite is cleaned up by removing all deployed test resources again
-1. **Publish**: the proven results are copied/published to a configured location such as template specs, the bicep registry, Azure DevOps artifacts, etc.
+1. **Publish module**: the proven results are copied/published to a configured location such as template specs, the bicep registry, Azure DevOps artifacts, etc.
 
 <img src="./media/pipelinePhases.png" alt="Pipeline phases" height="150">
 
