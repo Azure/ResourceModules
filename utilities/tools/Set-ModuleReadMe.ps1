@@ -86,22 +86,22 @@ function Set-ResourceTypesSection {
     )
 
     # Process content
-    $sectionContent = [System.Collections.ArrayList]@(
+    $SectionContent = [System.Collections.ArrayList]@(
         '| Resource Type | API Version |',
         '| :-- | :-- |'
     )
 
-    $relevantResourceTypes = Get-NestedResourceList $TemplateFileContent | Where-Object {
+    $RelevantResourceTypes = Get-NestedResourceList $TemplateFileContent | Where-Object {
         $_.type -notin $ResourceTypesToExclude -and $_
     } | Select-Object 'Type', 'ApiVersion' -Unique | Sort-Object Type -Culture en-US
 
-    foreach ($resourceType in $relevantResourceTypes) {
-        $sectionContent += ('| `{0}` | {1} |' -f $resourceType.type, $resourceType.apiVersion)
+    foreach ($resourceType in $RelevantResourceTypes) {
+        $SectionContent += ('| `{0}` | {1} |' -f $resourceType.type, $resourceType.apiVersion)
     }
 
     # Build result
     if ($PSCmdlet.ShouldProcess('Original file with new resource type content', 'Merge')) {
-        $updatedFileContent = Merge-FileWithNewContent -oldContent $ReadMeFileContent -newContent $sectionContent -SectionStartIdentifier $SectionStartIdentifier -contentType 'table'
+        $updatedFileContent = Merge-FileWithNewContent -oldContent $ReadMeFileContent -newContent $SectionContent -SectionStartIdentifier $SectionStartIdentifier -contentType 'table'
     }
     return $updatedFileContent
 }
@@ -149,7 +149,7 @@ function Set-ParametersSection {
     )
 
     # Process content
-    $sectionContent = [System.Collections.ArrayList]@(
+    $SectionContent = [System.Collections.ArrayList]@(
         '| Parameter Name | Type | Default Value | Possible Values | Description |',
         '| :-- | :-- | :-- | :-- | :-- |'
     )
@@ -176,12 +176,12 @@ function Set-ParametersSection {
         $defaultValue = ($param.defaultValue -is [array]) ? ('[{0}]' -f ($param.defaultValue -join ', ')) : (($param.defaultValue -is [hashtable]) ? '{object}' : $param.defaultValue)
         $allowed = ($param.allowedValues -is [array]) ? ('[{0}]' -f ($param.allowedValues -join ', ')) : (($param.allowedValues -is [hashtable]) ? '{object}' : $param.allowedValues)
         $description = $param.metadata.description
-        $sectionContent += ('| `{0}` | {1} | {2} | {3} | {4} |' -f $paramName, $type, (($defaultValue) ? "``$defaultValue``" : ''), (($allowed) ? "``$allowed``" : ''), $description)
+        $SectionContent += ('| `{0}` | {1} | {2} | {3} | {4} |' -f $paramName, $type, (($defaultValue) ? "``$defaultValue``" : ''), (($allowed) ? "``$allowed``" : ''), $description)
     }
 
     # Build result
     if ($PSCmdlet.ShouldProcess('Original file with new parameters content', 'Merge')) {
-        $updatedFileContent = Merge-FileWithNewContent -oldContent $ReadMeFileContent -newContent $sectionContent -SectionStartIdentifier $SectionStartIdentifier -contentType 'table'
+        $updatedFileContent = Merge-FileWithNewContent -oldContent $ReadMeFileContent -newContent $SectionContent -SectionStartIdentifier $SectionStartIdentifier -contentType 'table'
     }
 
     # Build sub-section 'ParameterUsage'
@@ -251,28 +251,28 @@ function Set-OutputsSection {
     # Process content
     if ($TemplateFileContent.outputs.Values.metadata) {
         # Template has output descriptions
-        $sectionContent = [System.Collections.ArrayList]@(
+        $SectionContent = [System.Collections.ArrayList]@(
             '| Output Name | Type | Description |',
             '| :-- | :-- | :-- |'
         )
         foreach ($outputName in ($templateFileContent.outputs.Keys | Sort-Object -Culture en-US)) {
             $output = $TemplateFileContent.outputs[$outputName]
-            $sectionContent += ("| ``{0}`` | {1} | {2} |" -f $outputName, $output.type, $output.metadata.description)
+            $SectionContent += ("| ``{0}`` | {1} | {2} |" -f $outputName, $output.type, $output.metadata.description)
         }
     } else {
-        $sectionContent = [System.Collections.ArrayList]@(
+        $SectionContent = [System.Collections.ArrayList]@(
             '| Output Name | Type |',
             '| :-- | :-- |'
         )
         foreach ($outputName in ($templateFileContent.outputs.Keys | Sort-Object -Culture en-US)) {
             $output = $TemplateFileContent.outputs[$outputName]
-            $sectionContent += ("| ``{0}`` | {1} |" -f $outputName, $output.type)
+            $SectionContent += ("| ``{0}`` | {1} |" -f $outputName, $output.type)
         }
     }
 
     # Build result
     if ($PSCmdlet.ShouldProcess('Original file with new output content', 'Merge')) {
-        $updatedFileContent = Merge-FileWithNewContent -oldContent $ReadMeFileContent -newContent $sectionContent -SectionStartIdentifier $SectionStartIdentifier -contentType 'table'
+        $updatedFileContent = Merge-FileWithNewContent -oldContent $ReadMeFileContent -newContent $SectionContent -SectionStartIdentifier $SectionStartIdentifier -contentType 'table'
     }
     return $updatedFileContent
 }
@@ -321,41 +321,44 @@ function Set-TemplateReferencesSection {
     )
 
     # Process content
-    $sectionContent = [System.Collections.ArrayList]@()
+    $SectionContent = [System.Collections.ArrayList]@()
 
-    $relevantResourceTypes = Get-NestedResourceList $TemplateFileContent | Where-Object {
+    $RelevantResourceTypes = Get-NestedResourceList $TemplateFileContent | Where-Object {
         $_.type -notin $ResourceTypesToExclude -and $_ -and $_.type -notlike '*/providers/*'
     } | Select-Object 'Type', 'ApiVersion' -Unique | Sort-Object Type -Culture en-US
 
     $TextInfo = (Get-Culture).TextInfo
-    foreach ($resourceType in $relevantResourceTypes) {
-        $Type, $Resource = $resourceType.Type -split '/', 2
-        $ResourceReferenceTitle = $TextInfo.ToTitleCase($Resource)
+    foreach ($RelevantResourceType in $RelevantResourceTypes) {
+        $ProviderNamespace, $ResourceType = $RelevantResourceType.Type -split '/', 2
+        $ResourceReferenceTitle = $TextInfo.ToTitleCase($ResourceType)
         # Validate if Reference URL Is working
         $TemplatesBaseUrl = 'https://docs.microsoft.com/en-us/azure/templates'
         try {
-            $ResourceReferenceUrl = '{0}/{1}/{2}/{3}' -f $TemplatesBaseUrl, $Type, $resourceType.ApiVersion, $Resource
-            Invoke-WebRequest -Uri $ResourceReferenceUrl | Out-Null
+            $ResourceReferenceUrl = '{0}/{1}/{2}/{3}' -f $TemplatesBaseUrl, $ProviderNamespace, $RelevantResourceType.ApiVersion, $ResourceType
+            $null = Invoke-WebRequest -Uri $ResourceReferenceUrl
         } catch {
+            # Validate if Reference URL is working using the latest documented API version (with no API version in the URL)
             try {
-                $ResourceReferenceUrl = '{0}/{1}/{2}' -f $TemplatesBaseUrl, $Type, $Resource
-                Invoke-WebRequest -Uri $ResourceReferenceUrl | Out-Null
+                $ResourceReferenceUrl = '{0}/{1}/{2}' -f $TemplatesBaseUrl, $ProviderNamespace, $ResourceType
+                $null = Invoke-WebRequest -Uri $ResourceReferenceUrl
             } catch {
-                if ($Resource.Split('/').length -gt 1) {
-                    $ResourceReferenceUrl = '{0}/{1}/{2}' -f $TemplatesBaseUrl, $Type, $Resource.Split('/')[0]
-                    $ResourceReferenceTitle = "'$Resource' Parent Documentation"
+                # Check if the resource is a child resource
+                if ($ResourceType.Split('/').length -gt 1) {
+                    $ResourceReferenceUrl = '{0}/{1}/{2}' -f $TemplatesBaseUrl, $ProviderNamespace, $ResourceType.Split('/')[0]
+                    $ResourceReferenceTitle = "'$ResourceType' Parent Documentation"
                 } else {
+                    # Use the default Templates URL (Last resort)
                     $ResourceReferenceUrl = '{0}' -f $TemplatesBaseUrl
                     $ResourceReferenceTitle = 'Define resources with Bicep and ARM templates'
                 }
             }
         }
-        $sectionContent += ('- [{0}]({1})' -f $ResourceReferenceTitle, $ResourceReferenceUrl)
+        $SectionContent += ('- [{0}]({1})' -f $ResourceReferenceTitle, $ResourceReferenceUrl)
     }
-    $sectionContent = $sectionContent | Sort-Object -Unique
+    $SectionContent = $SectionContent | Sort-Object -Unique
     # Build result
     if ($PSCmdlet.ShouldProcess('Original file with new template references content', 'Merge')) {
-        $updatedFileContent = Merge-FileWithNewContent -oldContent $ReadMeFileContent -newContent $sectionContent -SectionStartIdentifier $SectionStartIdentifier -contentType 'list'
+        $updatedFileContent = Merge-FileWithNewContent -oldContent $ReadMeFileContent -newContent $SectionContent -SectionStartIdentifier $SectionStartIdentifier -contentType 'list'
     }
     return $updatedFileContent
 }
