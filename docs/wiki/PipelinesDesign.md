@@ -13,7 +13,7 @@ This section gives you an overview of the design principals the pipelines follow
   - [Pipeline phases](#pipeline-phases)
     - [Validate](#validate)
     - [Test deploy](#test-deploy)
-    - [Removal](#removal)
+      - [Removal](#removal)
     - [Publish](#publish)
   - [Shared concepts](#shared-concepts)
     - [Prerequisites](#prerequisites)
@@ -58,12 +58,12 @@ Note that the pipeline comes with 4 runtime parameters you can provide when you 
 
 To "build"/"bake" the modules, a dedicated pipeline is used for each module to validate their production readiness, by:
 
-1. **Pester tests**:
+1. **Validate**:
    1. Running a set of static Pester tests against the template
    1. Validating the template by invoking Azure’s validation API (Test-AzResourceGroupDeployment – or the same for other scopes)
-1. **Deployment tests**: we deploy each module by using a predefined set of parameters to a ‘sandbox’ subscription in Azure to see if it’s really working
+1. **Test deploy**: we deploy each module by using a predefined set of parameters to a ‘sandbox’ subscription in Azure to see if it’s really working
    1. **Removal**: The test suite is cleaned up by removing all deployed test resources again
-1. **Publish module**: the proven results are copied/published to a configured location such as template specs, the bicep registry, Azure DevOps artifacts, etc.
+1. **Publish**: the proven results are copied/published to a configured location such as template specs, the bicep registry, Azure DevOps artifacts, etc.
 
 <img src="./media/pipelinePhases.png" alt="Pipeline phases" height="150">
 
@@ -93,7 +93,7 @@ The parameter files used in this stage should ideally cover as many scenarios as
 
 Note that, for the deployments we have to account for certain [prerequisites](#prerequisites) and also consider the [tokens replacement](#tokens-replacement) logic we leverage on this platform.
 
-### Removal
+#### Removal
 
 The removal phase is strongly coupled with the previous deployment phase. Fundamentally, we want to remove any test-deployed resource after its test concluded. If we would not, we would generate unnecessary costs and may temper with any subsequent test. Some resources may require a dedicated logic to be removed. This logic should be stored alongside the generally utilized removal script in the `.utilities/pipelines/resourceRemoval` folder and be referenced by the `Remove-DeployedModule.ps1` script that orchestrates the removal.
 
