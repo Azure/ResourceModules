@@ -31,6 +31,7 @@ on:
       - '!*/**/readme.md'
 
 env:
+  rgPattern: 'test-ms.compute-galleries-{0}-rg'
   modulePath: 'arm/Microsoft.Compute/galleries'
   workflowPath: '.github/workflows/ms.compute.galleries.yml'
   AZURE_CREDENTIALS: ${{ secrets.AZURE_CREDENTIALS }}
@@ -105,7 +106,7 @@ jobs:
           templateFilePath: '${{ env.modulePath }}/deploy.bicep'
           parameterFilePath: '${{ env.modulePath }}/.parameters/${{ matrix.parameterFilePaths }}'
           location: '${{ env.defaultLocation }}'
-          resourceGroupName: '${{ env.resourceGroupName }}'
+          resourceGroupName: '${{ format(env.rgPattern, matrix.parameterFilePaths) }}'
           subscriptionId: '${{ secrets.ARM_SUBSCRIPTION_ID }}'
           managementGroupId: '${{ secrets.ARM_MGMTGROUP_ID }}'
           removeDeployment: '${{ needs.job_set_workflow_param.outputs.removeDeployment }}'

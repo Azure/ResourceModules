@@ -33,7 +33,7 @@ on:
 env:
   modulePath: 'arm/Microsoft.AnalysisServices/servers'
   workflowPath: '.github/workflows/ms.analysisservices.servers.yml'
-  rgPattern: 'test-analysisServices-{0}-rg'
+  rgPattern: 'test-ms.analysisservices-servers-{0}-rg'
   AZURE_CREDENTIALS: ${{ secrets.AZURE_CREDENTIALS }}
   ARM_SUBSCRIPTION_ID: '${{ secrets.ARM_SUBSCRIPTION_ID }}'
   ARM_MGMTGROUP_ID: '${{ secrets.ARM_MGMTGROUP_ID }}'
