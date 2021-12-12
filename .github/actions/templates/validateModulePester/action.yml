@@ -1,5 +1,5 @@
-name: 'Execute general module tests'
-description: 'Execute general module tests (if any)'
+name: 'Execute Pester module tests'
+description: 'Execute Pester module tests (if any)'
 
 inputs:
   modulePath:
@@ -27,7 +27,7 @@ runs:
 
     # [Module Pester Test] task(s)
     #-----------------------------
-    - name: 'Run tests via (Pester)'
+    - name: 'Run global tests via Pester'
       shell: pwsh
       run: |
         # --------------------- #
@@ -55,17 +55,17 @@ runs:
 
     - name: Publish Test Results
       uses: EnricoMi/publish-unit-test-result-action@v1
-      # if: always()
+      if: always()
       with:
         files: arm/.global/global-testResults.xml
 
     # [Module Pester Test] task(s)
     #-----------------------------
-    - name: 'Run API tests via (Pester)'
+    - name: 'Run API tests via Pester'
       shell: pwsh
       run: |
         # --------------------- #
-        # INVOKE PESTER TEST(S) #
+        # Invoke Pester test(s) #
         # --------------------- #
         Invoke-Pester -Configuration @{
           Run        = @{
@@ -89,6 +89,6 @@ runs:
 
     - name: Publish Test Results
       uses: EnricoMi/publish-unit-test-result-action@v1
-      # if: always()
+      if: always()
       with:
         files: arm/.global/api-testResults.xml

@@ -62,33 +62,31 @@ jobs:
       versioningOption: ${{ steps.get-workflow-param.outputs.versioningOption }}
       customVersion: ${{ steps.get-workflow-param.outputs.customVersion }}
 
-  ##################
-  #   UNIT TESTS   #
-  ##################
-  # Global tests
-  # ------------
-  job_tests_module_global:
+  ####################
+  #   Pester Tests   #
+  ####################
+  job_module_pester_validation:
     runs-on: ubuntu-20.04
-    name: 'Static tests'
+    name: 'Pester tests'
     steps:
       - name: 'Checkout'
         uses: actions/checkout@v2
         with:
           fetch-depth: 0
-      - name: 'Validate module setup'
-        uses: ./.github/actions/templates/validateModuleSetup
+      - name: 'Validate module with Pester'
+        uses: ./.github/actions/templates/validateModulePester
         with:
           modulePath: '${{ env.modulePath }}'
 
-  ###########################
-  # Deployment module tests #
-  ###########################
+  ####################
+  # Deployment tests #
+  ####################
   job_module_deploy_validation:
     runs-on: ubuntu-20.04
     name: 'Deployment tests'
     needs:
       - job_set_workflow_param
-      - job_tests_module_global
+      - job_module_pester_validation
     strategy:
       fail-fast: false
       matrix:

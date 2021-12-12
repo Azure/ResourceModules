@@ -62,49 +62,31 @@ jobs:
       versioningOption: ${{ steps.get-workflow-param.outputs.versioningOption }}
       customVersion: ${{ steps.get-workflow-param.outputs.customVersion }}
 
-  ##################
-  #   UNIT TESTS   #
-  ##################
-  # Global tests
-  # ------------
-  job_tests_module_global:
+  ####################
+  #   Pester Tests   #
+  ####################
+  job_module_pester_validation:
     runs-on: ubuntu-20.04
-    name: 'Run global module tests'
+    name: 'Pester tests'
     steps:
       - name: 'Checkout'
         uses: actions/checkout@v2
         with:
           fetch-depth: 0
-      - name: 'Test module'
-        uses: ./.github/actions/templates/validateModuleGeneral
+      - name: 'Validate module with Pester'
+        uses: ./.github/actions/templates/validateModulePester
         with:
           modulePath: '${{ env.modulePath }}'
 
-  # Global API tests
-  # ----------------
-  job_tests_module_global_api:
-    runs-on: ubuntu-20.04
-    name: 'Run global API module tests'
-    steps:
-      - name: 'Checkout'
-        uses: actions/checkout@v2
-        with:
-          fetch-depth: 0
-      - name: 'Test module'
-        uses: ./.github/actions/templates/validateModuleApis
-        with:
-          modulePath: '${{ env.modulePath }}'
-
-  ###########################
-  # Deployment module tests #
-  ###########################
+  ####################
+  # Deployment tests #
+  ####################
   job_module_deploy_validation:
     runs-on: ubuntu-20.04
-    name: 'Run deployment validation module tests'
+    name: 'Deployment tests'
     needs:
       - job_set_workflow_param
-      - job_tests_module_global
-      - job_tests_module_global_api
+      - job_module_pester_validation
     strategy:
       fail-fast: false
       matrix:
@@ -118,11 +100,8 @@ jobs:
         uses: deep-mm/set-variables@v1.0
         with:
           variableFileName: 'variables.module'
-      # ------------------- #
-      ##  Deploy & Remove  ##
-      # ------------------- #
-      - name: 'Deploy module with parameter file [${{ matrix.parameterFilePaths }}]'
-        uses: ./.github/actions/templates/deployModule
+      - name: 'Using parameter file [${{ matrix.parameterFilePaths }}]'
+        uses: ./.github/actions/templates/validateModuleDeployment
         with:
           templateFilePath: '${{ env.modulePath }}/deploy.bicep'
           parameterFilePath: '${{ env.modulePath }}/.parameters/${{ matrix.parameterFilePaths }}'

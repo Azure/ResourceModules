@@ -29,7 +29,7 @@ runs:
   using: 'composite'
   steps:
     # [Setup] task(s)
-    #-----------------
+    # ---------------
     - name: 'Setup agent'
       shell: pwsh
       run: |
@@ -45,7 +45,7 @@ runs:
         enable-AzPSSession: true
 
     # [Dependency deployment] task(s)
-    #--------------------------------
+    # -------------------------------
     - name: 'Deploy dependencies for template [${{ inputs.templateFilePath }}]'
       shell: pwsh
       id: dependencies_step
@@ -91,8 +91,8 @@ runs:
           throw $res.exception
         }
 
-    # [Token Replacement] task(s)
-    #-------------------==-------
+    # [Token replacement] task(s)
+    # ---------------------------
     - name: 'Replace Parameter File Tokens [${{ inputs.parameterFilePath }}] '
       shell: pwsh
       run: |
@@ -123,8 +123,8 @@ runs:
         # Invoke Token Replacement Functionality
         $null = Convert-TokensInParameterFile @ConvertTokensInputs -Verbose
 
-    # [Test Deployment] task(s)
-    #--------------------------
+    # [Deployment validation] task(s)
+    # -------------------------------
     - name: 'Validate [${{ inputs.templateFilePath }}]'
       shell: pwsh
       run: |
@@ -148,8 +148,8 @@ runs:
 
         Test-TemplateWithParameterFile @functionInput -Verbose
 
-    # [Deployment] task(s)
-    #--------------------------
+    # [Deployment execution] task(s)
+    # ------------------------------
     - name: 'Deploy [${{ inputs.templateFilePath }}] with parameters [${{ inputs.parameterFilePath }}]'
       shell: pwsh
       id: deploy_step
@@ -186,45 +186,43 @@ runs:
           throw $res.exception
         }
 
-    # [Removal] task(s)
-    # -----------------
+    # [Deployment removal] task(s)
+    # ----------------------------
     - name: 'Remove [${{ inputs.templateFilePath }}] from parameters [${{ inputs.parameterFilePath }}]'
       shell: pwsh
-      if: ${{ always() && ((steps.deploy_step.outputs.deploymentName != '') || (steps.dependencies_step.outputs.deploymentName != '')) }}
+      if: ${{ always() && inputs.removeDeployment == 'true' && steps.deploy_step.outputs.deploymentName != '' }}
       run: |
-        if('${{ inputs.removeDeployment }}' -eq 'true') {
-          # Load used function
-          . (Join-Path $env:GITHUB_WORKSPACE 'utilities' 'pipelines' 'resourceRemoval' 'Remove-DeployedModule.ps1')
+        # Load used function
+        . (Join-Path $env:GITHUB_WORKSPACE 'utilities' 'pipelines' 'resourceRemoval' 'Remove-DeployedModule.ps1')
 
-          if(-not [String]::IsNullOrEmpty('${{ steps.deploy_step.outputs.deploymentName }}')) {
-            $functionInput = @{
-              deploymentName    = '${{ steps.deploy_step.outputs.deploymentName }}'
-              templateFilePath  = Join-Path $env:GITHUB_WORKSPACE '${{ inputs.templateFilePath }}'
-              resourceGroupName = '${{ inputs.resourceGroupName }}'
-              verbose           = $true
-            }
-
-            Write-Verbose 'Invoke task with' -Verbose
-            Write-Verbose ($functionInput | ConvertTo-Json | Out-String) -Verbose
-
-            Remove-DeployedModule @functionInput
+        if(-not [String]::IsNullOrEmpty('${{ steps.deploy_step.outputs.deploymentName }}')) {
+          $functionInput = @{
+            deploymentName    = '${{ steps.deploy_step.outputs.deploymentName }}'
+            templateFilePath  = Join-Path $env:GITHUB_WORKSPACE '${{ inputs.templateFilePath }}'
+            resourceGroupName = '${{ inputs.resourceGroupName }}'
+            verbose           = $true
           }
 
-          if(-not [String]::IsNullOrEmpty('${{ steps.dependencies_step.outputs.deploymentName }}')) {
-            $namespacePath = Split-Path '${{ inputs.templateFilePath }}'.TrimStart('arm') -Parent
-            $templateFileName = '{0}.bicep' -f (Split-Path '${{ inputs.parameterFilePath }}' -LeafBase)
-            $dependencyTemplateFilePath = Join-Path $env:GITHUB_WORKSPACE 'utilities' 'pipelines' 'moduleDependencies' $namespacePath $templateFileName
+          Write-Verbose 'Invoke task with' -Verbose
+          Write-Verbose ($functionInput | ConvertTo-Json | Out-String) -Verbose
 
-            $functionInput = @{
-              deploymentNames   = '${{ steps.dependencies_step.outputs.deploymentName }}'
-              templateFilePath  = $dependencyTemplateFilePath
-              resourceGroupName = '${{ inputs.resourceGroupName }}'
-              verbose           = $true
-            }
+          Remove-DeployedModule @functionInput
+        }
 
-            Write-Verbose 'Invoke task with' -Verbose
-            Write-Verbose ($functionInput | ConvertTo-Json | Out-String) -Verbose
+        if(-not [String]::IsNullOrEmpty('${{ steps.dependencies_step.outputs.deploymentName }}')) {
+          $namespacePath = Split-Path '${{ inputs.templateFilePath }}'.TrimStart('arm') -Parent
+          $templateFileName = '{0}.bicep' -f (Split-Path '${{ inputs.parameterFilePath }}' -LeafBase)
+          $dependencyTemplateFilePath = Join-Path $env:GITHUB_WORKSPACE 'utilities' 'pipelines' 'moduleDependencies' $namespacePath $templateFileName
 
-            Remove-DeployedModule @functionInput
+          $functionInput = @{
+            deploymentNames   = '${{ steps.dependencies_step.outputs.deploymentName }}'
+            templateFilePath  = $dependencyTemplateFilePath
+            resourceGroupName = '${{ inputs.resourceGroupName }}'
+            verbose           = $true
           }
+
+          Write-Verbose 'Invoke task with' -Verbose
+          Write-Verbose ($functionInput | ConvertTo-Json | Out-String) -Verbose
+
+          Remove-DeployedModule @functionInput
         }

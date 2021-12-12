@@ -74,7 +74,7 @@ param lock string = 'NotSpecified'
 @description('Optional. Array of role assignment objects that contain the \'roleDefinitionIdOrName\' and \'principalId\' to define RBAC role assignments on this resource. In the roleDefinitionIdOrName attribute, you can provide either the display name of the role definition, or its fully qualified ID in the following format: \'/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11\'')
 param roleAssignments array = []
 
-@description('Optional. Tags of the Automation Account resource.')
+@description('Optional. Tags of the Azure Firewall resource.')
 param tags object = {}
 
 @description('Optional. Customer Usage Attribution ID (GUID). This GUID must be previously registered')
@@ -175,7 +175,7 @@ resource azureFirewallPip_lock 'Microsoft.Authorization/locks@2016-09-01' = if (
   scope: azureFirewallPip
 }
 
-resource azureFirewallPip_diagnosticSettings 'Microsoft.Insights/diagnosticSettings@2017-05-01-preview' = if (!empty(diagnosticStorageAccountId) || !empty(workspaceId) || !empty(eventHubAuthorizationRuleId) || !empty(eventHubName)) {
+resource azureFirewallPip_diagnosticSettings 'Microsoft.Insights/diagnosticSettings@2021-05-01-preview' = if (!empty(diagnosticStorageAccountId) || !empty(workspaceId) || !empty(eventHubAuthorizationRuleId) || !empty(eventHubName)) {
   name: '${azureFirewallPip.name}-diagnosticSettings'
   properties: {
     storageAccountId: empty(diagnosticStorageAccountId) ? null : diagnosticStorageAccountId
@@ -188,7 +188,7 @@ resource azureFirewallPip_diagnosticSettings 'Microsoft.Insights/diagnosticSetti
   scope: azureFirewallPip
 }
 
-resource azureFirewall 'Microsoft.Network/azureFirewalls@2021-02-01' = {
+resource azureFirewall 'Microsoft.Network/azureFirewalls@2021-03-01' = {
   name: name
   location: location
   zones: length(availabilityZones) == 0 ? null : availabilityZones
@@ -230,7 +230,7 @@ resource azureFirewall_lock 'Microsoft.Authorization/locks@2016-09-01' = if (loc
   scope: azureFirewall
 }
 
-resource azureFirewall_diagnosticSettings 'Microsoft.Insights/diagnosticSettings@2017-05-01-preview' = if (!empty(diagnosticStorageAccountId) || !empty(workspaceId) || !empty(eventHubAuthorizationRuleId) || !empty(eventHubName)) {
+resource azureFirewall_diagnosticSettings 'Microsoft.Insights/diagnosticSettings@2021-05-01-preview' = if (!empty(diagnosticStorageAccountId) || !empty(workspaceId) || !empty(eventHubAuthorizationRuleId) || !empty(eventHubName)) {
   name: '${azureFirewall.name}-diagnosticSettings'
   properties: {
     storageAccountId: empty(diagnosticStorageAccountId) ? null : diagnosticStorageAccountId
