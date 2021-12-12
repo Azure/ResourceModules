@@ -190,7 +190,7 @@ runs:
     # ----------------------------
     - name: 'Remove [${{ inputs.templateFilePath }}] from parameters [${{ inputs.parameterFilePath }}]'
       shell: pwsh
-      if: ${{ always() && inputs.removeDeployment == 'true' && steps.deploy_step.outputs.deploymentName != '' }}
+      if: ${{ always() && inputs.removeDeployment == 'true' && ((steps.deploy_step.outputs.deploymentName != '') || (steps.dependencies_step.outputs.deploymentName != '')) }}
       run: |
         # Load used function
         . (Join-Path $env:GITHUB_WORKSPACE 'utilities' 'pipelines' 'resourceRemoval' 'Remove-DeployedModule.ps1')
