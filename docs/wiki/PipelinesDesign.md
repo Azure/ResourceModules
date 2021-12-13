@@ -229,7 +229,7 @@ In the following sub-sections we will take a deeper look into each element.
 
 ### **GitHub Component:** GitHub secrets
 
-The GitHub repository secrets can be set up in the repositories _'Settings'_ as described [here](https://docs.github.com/en/actions/security-guides/encrypted-secret).
+The GitHub repository secrets can be set up in the repositories _'Settings'_ as described [here](https://docs.github.com/en/actions/security-guides/encrypted-secrets).
 
 For _GitHub_ in particular we need the following secrets in addition to those described in the shared [pipeline secrets](#pipeline-secrets) section:
 
