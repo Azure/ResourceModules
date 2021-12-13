@@ -17,6 +17,7 @@ This section gives you an overview of the design principals the bicep modules fo
   - [Resource](#resource)
   - [Outputs](#outputs)
 - [ReadMe](#readme)
+- [Parameter files](#parameter-files)
 
 ---
 
@@ -528,3 +529,11 @@ Its primary components are in order:
 Note the following recommendations
 - Use our module generation script `Set-ModuleReadMe` that will do most of the work for you. Currently you can find it at 'utilities\tools\Set-ModuleReadMe.ps1'. Just load the file and invoke the function like this `Set-ModuleReadMe -TemplateFilePath '<pathToModule>/deploy.bicep'`
 - It is not recommended to describe how to use child resources in the parent readme file (for example 'How to define a [container] entry for the [storage account]'). Instead it is recommended to reference the child resource's ReadMe instead (for example 'container/readme.md').
+
+# Parameter files
+
+Parameter files in CARML leverage the common `deploymentParameters.json` schema for ARM deployments. As parameters are usually specific to their corresponding template, we have only very few general recommendations:
+- Parameter file names should ideally relate to the content they deploy. For example, a parameter file `min.parameters.json` should be chosen for a parameter file that contains only the minimum set of parameter to deploy the module.
+- Likewise, the `name` parameter we have in most modules should give some indication of the file it was deployed with. For example, a `min.parameters.json` parameter file for the virtual network module may have a `name` property with the value `sxx-az-vnet-min-001` where `min` relates to the prefix of the parameter file itself.
+- A module should have as many parameter files as it needs to evaluate all parts of the module's functionality.
+- Sensitive data should not be stored inside the parameter file but rather be injected by the use of [tokens](./ParameterFileTokens.md) or via a [key vault reference](https://docs.microsoft.com/en-us/azure/azure-resource-manager/templates/key-vault-parameter?tabs=azure-cli#reference-secrets-with-static-id).
