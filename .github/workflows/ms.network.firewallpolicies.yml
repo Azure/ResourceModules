@@ -117,7 +117,7 @@ jobs:
         uses: deep-mm/set-variables@v1.0
         with:
           # Name of variable file
-          variableFileName: 'variables.module' # Don't write .json here
+          variableFileName: 'global.variables' # Don't write .json here
       # ----------- #
       ##  Dry Run  ##
       # ----------- #
@@ -164,7 +164,7 @@ jobs:
         uses: deep-mm/set-variables@v1.0
         with:
           # Name of variable file
-          variableFileName: 'variables.module' # Don't write .json here
+          variableFileName: 'global.variables' # Don't write .json here
       - name: 'Publish module'
         uses: ./.github/actions/templates/publishModule
         with:
