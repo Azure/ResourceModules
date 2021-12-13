@@ -81,9 +81,9 @@ function Remove-Deployment {
         # Fetch deployments
         # =================
         $deploymentsInputObject = @{
-            name              = $deploymentName
-            scope             = $deploymentScope
-            resourceGroupName = $resourceGroupName
+            Name              = $deploymentName
+            Scope             = $deploymentScope
+            ResourceGroupName = $resourceGroupName
         }
         $deploymentResourceIds = Get-ResourceIdsOfDeployment @deploymentsInputObject -Verbose
 

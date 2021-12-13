@@ -10,15 +10,15 @@ Get all deployments that match a given deployment name in a given scope. Works r
 Mandatory. The deployment name to search for
 
 .PARAMETER ResourceGroupName
-Optional. The name of the resource group for scope 'resourceGroup'
+Optional. The name of the resource group for scope 'resourcegroup'
 
 .PARAMETER Scope
 Mandatory. The scope to search in
 
 .EXAMPLE
-Get-ResourceIdsOfDeploymentInner -Name 'keyvault-12356' -Scope 'resourceGroup'
+Get-ResourceIdsOfDeploymentInner -Name 'keyvault-12356' -Scope 'resourcegroup'
 
-Get all deployments that match name 'keyvault-12356' in scope 'resourceGroup'
+Get all deployments that match name 'keyvault-12356' in scope 'resourcegroup'
 
 .NOTES
 Works after the principal:
@@ -38,9 +38,9 @@ function Get-ResourceIdsOfDeploymentInner {
 
         [Parameter(Mandatory)]
         [ValidateSet(
-            'resourceGroup',
+            'resourcegroup',
             'subscription',
-            'managementGroup',
+            'managementgroup',
             'tenant'
         )]
         [string] $Scope
@@ -57,7 +57,7 @@ function Get-ResourceIdsOfDeploymentInner {
                 foreach ($deployment in ($deploymentTargets | Where-Object { $_ -match '/deployments/' } )) {
                     $name = Split-Path $deployment -Leaf
                     $resourceGroupName = $deployment.split('/resourceGroups/')[1].Split('/')[0]
-                    [array]$resultSet += Get-ResourceIdsOfDeploymentInner -Name $name -ResourceGroupName $ResourceGroupName -Scope 'resourceGroup'
+                    [array]$resultSet += Get-ResourceIdsOfDeploymentInner -Name $name -ResourceGroupName $ResourceGroupName -Scope 'resourcegroup'
                 }
             } else {
                 # In case the resource group itself was already deleted, there is no need to try and fetch deployments from it
@@ -76,7 +76,7 @@ function Get-ResourceIdsOfDeploymentInner {
                     # Resource Group Level Child Deployments
                     $name = Split-Path $deployment -Leaf
                     $resourceGroupName = $deployment.split('/resourceGroups/')[1].Split('/')[0]
-                    [array]$resultSet += Get-ResourceIdsOfDeploymentInner -Name $name -ResourceGroupName $ResourceGroupName -Scope 'resourceGroup'
+                    [array]$resultSet += Get-ResourceIdsOfDeploymentInner -Name $name -ResourceGroupName $ResourceGroupName -Scope 'resourcegroup'
                 } else {
                     # Subscription Level Deployments
                     [array]$resultSet += Get-ResourceIdsOfDeploymentInner -name (Split-Path $deployment -Leaf) -Scope 'subscription'
@@ -95,7 +95,7 @@ function Get-ResourceIdsOfDeploymentInner {
                     [array]$resultSet += Get-ResourceIdsOfDeploymentInner -Name (Split-Path $deployment -Leaf) -Scope 'subscription'
                 } else {
                     # Management Group Level Deployments
-                    [array]$resultSet += Get-ResourceIdsOfDeploymentInner -name (Split-Path $deployment -Leaf) -scope 'managementGroup'
+                    [array]$resultSet += Get-ResourceIdsOfDeploymentInner -name (Split-Path $deployment -Leaf) -scope 'managementgroup'
                 }
             }
         }
@@ -108,7 +108,7 @@ function Get-ResourceIdsOfDeploymentInner {
                 [array]$resultSet = $resultSet | Where-Object { $_ -ne $deployment }
                 if ($deployment -match '/tenant/') {
                     # Management Group Level Child Deployments
-                    [array]$resultSet += Get-ResourceIdsOfDeploymentInner -Name (Split-Path $deployment -Leaf) -scope 'managementGroup'
+                    [array]$resultSet += Get-ResourceIdsOfDeploymentInner -Name (Split-Path $deployment -Leaf) -scope 'managementgroup'
                 } else {
                     # Tenant Level Deployments
                     [array]$resultSet += Get-ResourceIdsOfDeploymentInner -name (Split-Path $deployment -Leaf)
@@ -133,7 +133,7 @@ Mandatory. The resource group of the resource to remove
 .PARAMETER Name
 Optional. The deployment name to use for the removal
 
-.PARAMETER scope
+.PARAMETER Scope
 Mandatory. The scope to search in
 
 .PARAMETER SearchRetryLimit
@@ -143,9 +143,9 @@ Optional. The maximum times to retry the search for resources via their removal 
 Optional. The time to wait in between the search for resources via their remove tags
 
 .EXAMPLE
-Get-ResourceIdsOfDeployment -name 'KeyVault' -ResourceGroupName 'validation-rg' -scope 'resourceGroup'
+Get-ResourceIdsOfDeployment -name 'KeyVault' -ResourceGroupName 'validation-rg' -scope 'resourcegroup'
 
-Get all deployments that match name 'KeyVault' in scope 'resourceGroup' of resource group 'validation-rg'
+Get all deployments that match name 'KeyVault' in scope 'resourcegroup' of resource group 'validation-rg'
 #>
 function Get-ResourceIdsOfDeployment {
 
@@ -155,10 +155,16 @@ function Get-ResourceIdsOfDeployment {
         [string] $ResourceGroupName,
 
         [Parameter(Mandatory = $true)]
-        [string] $name,
+        [string] $Name,
 
         [Parameter(Mandatory = $true)]
-        [string] $scope,
+        [ValidateSet(
+            'resourcegroup',
+            'subscription',
+            'managementgroup',
+            'tenant'
+        )]
+        [string] $Scope,
 
         [Parameter(Mandatory = $false)]
         [int] $SearchRetryLimit = 40,
@@ -169,7 +175,7 @@ function Get-ResourceIdsOfDeployment {
 
     $searchRetryCount = 1
     do {
-        [array]$deployments = Get-ResourceIdsOfDeploymentInner -name $name -scope $scope -resourceGroupName $resourceGroupName -ErrorAction 'SilentlyContinue'
+        [array]$deployments = Get-ResourceIdsOfDeploymentInner -Name $name -Scope $scope -ResourceGroupName $resourceGroupName -ErrorAction 'SilentlyContinue'
         if ($deployments) {
             break
         }
