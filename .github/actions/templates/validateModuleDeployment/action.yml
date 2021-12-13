@@ -150,10 +150,10 @@ runs:
 
         if (-not [String]::IsNullOrEmpty('${{ steps.deploy_step.outputs.deploymentName }}')) {
           $functionInput = @{
-            deploymentName    = '${{ steps.deploy_step.outputs.deploymentName }}'
-            templateFilePath  = Join-Path $env:GITHUB_WORKSPACE '${{ inputs.templateFilePath }}'
-            resourceGroupName = '${{ inputs.resourceGroupName }}'
-            verbose           = $true
+            DeploymentName    = '${{ steps.deploy_step.outputs.deploymentName }}'
+            TemplateFilePath  = Join-Path $env:GITHUB_WORKSPACE '${{ inputs.templateFilePath }}'
+            ResourceGroupName = '${{ inputs.resourceGroupName }}'
+            Verbose           = $true
           }
 
           Write-Verbose 'Invoke task with' -Verbose

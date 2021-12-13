@@ -5,17 +5,17 @@ Remove deployed resources based on their deploymentName(s)
 .DESCRIPTION
 Remove deployed resources based on their deploymentName(s)
 
-.PARAMETER deploymentName(s)
+.PARAMETER DeploymentName(s)
 Mandatory. The name(s) of the deployment(s)
 
-.PARAMETER templateFilePath
+.PARAMETER TemplateFilePath
 Mandatory. The path to the template used for the deployment. Used to determine the level/scope (e.g. subscription)
 
 .PARAMETER ResourceGroupName
 Optional. The name of the resource group the deployment was happening in. Relevant for resource-group level deployments.
 
 .EXAMPLE
-Initialize-DeploymentRemoval -deploymentName 'virtualWans-20211204T1812029146Z' -templateFilePath "$home/ResourceModules/arm/Microsoft.Network/virtualWans/deploy.bicep" -resourceGroupName 'test-virtualWan-parameters.json-rg'
+Initialize-DeploymentRemoval -DeploymentName 'virtualWans-20211204T1812029146Z' -TemplateFilePath "$home/ResourceModules/arm/Microsoft.Network/virtualWans/deploy.bicep" -resourceGroupName 'test-virtualWan-parameters.json-rg'
 
 Remove the deployment 'virtualWans-20211204T1812029146Z' from resource group 'test-virtualWan-parameters.json-rg' that was executed using template in path "$home/ResourceModules/arm/Microsoft.Network/virtualWans/deploy.bicep"
 #>
@@ -24,11 +24,11 @@ function Initialize-DeploymentRemoval {
     [CmdletBinding()]
     param (
         [Parameter(Mandatory = $true)]
-        [Alias('deploymentName')]
-        [string[]] $deploymentNames,
+        [Alias('DeploymentName')]
+        [string[]] $DeploymentNames,
 
         [Parameter(Mandatory = $true)]
-        [string] $templateFilePath,
+        [string] $TemplateFilePath,
 
         [Parameter(Mandatory = $false)]
         [string] $ResourceGroupName = 'validation-rg'
@@ -41,7 +41,7 @@ function Initialize-DeploymentRemoval {
     }
 
     process {
-        $moduleName = Split-Path (Split-Path $templateFilePath -Parent) -LeafBase
+        $moduleName = Split-Path (Split-Path $TemplateFilePath -Parent) -LeafBase
 
         # The intial sequence is a general order-recommendation
         $removalSequence = @(
@@ -50,7 +50,7 @@ function Initialize-DeploymentRemoval {
             'Microsoft.Compute/virtualMachines'
         )
 
-        foreach ($deploymentName in $deploymentNames) {
+        foreach ($deploymentName in $DeploymentNames) {
             Write-Verbose ('Handling resource removal with deployment name [{0}]' -f $deploymentName) -Verbose
             switch ($moduleName) {
                 'virtualWans' {
@@ -74,10 +74,10 @@ function Initialize-DeploymentRemoval {
 
             # Invoke removal
             $inputObject = @{
-                deploymentName    = $deploymentName
+                DeploymentName    = $deploymentName
                 ResourceGroupName = $ResourceGroupName
-                templateFilePath  = $templateFilePath
-                removalSequence   = $removalSequence
+                TemplateFilePath  = $TemplateFilePath
+                RemovalSequence   = $removalSequence
             }
             Remove-Deployment @inputObject -Verbose
         }

@@ -24,6 +24,9 @@ Optional. The deployment name to use for the removal
 .PARAMETER TemplateFilePath
 Optional. The path to the deployment file
 
+.PARAMETER RemovalSequence
+Optional. The order of resource types to apply for deletion
+
 .EXAMPLE
 Remove-Deployment -DeploymentName 'KeyVault' -ResourceGroupName 'validation-rg' -TemplateFilePath 'C:/deploy.json'
 

@@ -16,7 +16,7 @@ Each item should be in format:
 }
 
 .PARAMETER order
-Optional. The order of resource types to apply. If order is provided, the list is returned as is
+Optional. The order of resource types to apply for deletion. If order is provided, the list is returned as is
 
 .EXAMPLE
 Get-OrderedResourcesList -resourcesToOrder @(@{ name = 'myAccount'; resourceId '(..)/Microsoft.Automation/automationAccounts/myAccount'; type = 'Microsoft.Automation/automationAccounts'}) -order @('Microsoft.Insights/diagnosticSettings','Microsoft.Automation/automationAccounts')

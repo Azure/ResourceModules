@@ -291,10 +291,10 @@ jobs:
 
                 if (-not [String]::IsNullOrEmpty('$(deploymentName)')) {
                   $functionInput = @{
-                      deploymentName    = '$(deploymentName)'
-                      templateFilePath  = $templateFilePath
-                      resourceGroupName = '${{ parameters.resourceGroupName }}'
-                      verbose           = $true
+                      DeploymentName    = '$(deploymentName)'
+                      TemplateFilePath  = $templateFilePath
+                      ResourceGroupName = '${{ parameters.resourceGroupName }}'
+                      Verbose           = $true
                   }
 
                   Write-Verbose 'Invoke task with' -Verbose
