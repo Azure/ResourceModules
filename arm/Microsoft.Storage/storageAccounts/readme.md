@@ -27,6 +27,7 @@ This module is used to deploy a storage account, with the ability to deploy 1 or
 
 | Parameter Name | Type | Default Value | Possible Values | Description |
 | :-- | :-- | :-- | :-- | :-- |
+| `publicNetworkAccess ` | bool | `True` |  | Optional. Allow or disallow public network access to Storage Account. Value is optional but if passed in, must be 'Enabled' or 'Disabled'. |
 | `allowBlobPublicAccess` | bool | `True` |  | Optional. Indicates whether public access is enabled for all blobs or containers in the storage account. |
 | `azureFilesIdentityBasedAuthentication` | object | `{object}` |  | Optional. Provides the identity based authentication settings for Azure Files. |
 | `basetime` | string | `[utcNow('u')]` |  | Generated. Do not provide a value! This date value is used to generate a SAS token to access the modules. |
