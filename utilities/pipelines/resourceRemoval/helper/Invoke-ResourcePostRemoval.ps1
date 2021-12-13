@@ -5,7 +5,7 @@ Remove any artifacts that remain of the given resource
 .DESCRIPTION
 Remove any artifacts that remain of the given resource. For example, some resources such as key vaults usually go into a soft-delete state from which we want to purge them from.
 
-.PARAMETER resourceToRemove
+.PARAMETER ResourceToRemove
 Mandatory. The resource to remove. Should have format
 @{
     name        = '...'
@@ -14,7 +14,7 @@ Mandatory. The resource to remove. Should have format
 }
 
 .EXAMPLE
-Invoke-ResourcePostRemoval -resourceToRemove @{ name = 'myVault'; resourceId '(..)/Microsoft.KeyVault/vaults/myVault'; type = 'Microsoft.KeyVault/vaults'}
+Invoke-ResourcePostRemoval -ResourceToRemove @{ name = 'myVault'; resourceId '(..)/Microsoft.KeyVault/vaults/myVault'; type = 'Microsoft.KeyVault/vaults'}
 
 Purge resource 'myVault' of type 'Microsoft.KeyVault/vaults' if no purge protection is enabled
 #>
@@ -23,7 +23,7 @@ function Invoke-ResourcePostRemoval {
     [CmdletBinding(SupportsShouldProcess)]
     param (
         [Parameter(Mandatory)]
-        [hashtable] $resourceToRemove
+        [hashtable] $ResourceToRemove
     )
 
     switch ($resourceToRemove.type) {
