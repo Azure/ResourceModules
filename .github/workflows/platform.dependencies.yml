@@ -34,6 +34,7 @@ jobs:
     runs-on: ubuntu-20.04
     name: 'Deploy resource group'
     env:
+      moduleName: resourceGroups
       namespace: 'Microsoft.Resources\resourceGroups'
     strategy:
       fail-fast: false
@@ -48,6 +49,7 @@ jobs:
       - name: 'Deploy module'
         uses: ./.github/actions/templates/deployModule
         with:
+          moduleName: '${{ env.moduleName }}'
           templateFilePath: 'arm/${{ env.namespace }}/deploy.bicep'
           parameterFilePath: '${{ env.dependencyPath }}/${{ env.namespace }}/parameters/${{ matrix.parameterFilePaths }}'
           location: '${{ env.defaultLocation }}'
@@ -60,6 +62,7 @@ jobs:
     runs-on: ubuntu-20.04
     name: 'Deploy user assigned identity'
     env:
+      moduleName: userAssignedIdentities
       namespace: 'Microsoft.ManagedIdentity\userAssignedIdentities'
     needs:
       - job_deploy_rg
@@ -75,34 +78,8 @@ jobs:
       - name: 'Deploy module'
         uses: ./.github/actions/templates/deployModule
         with:
+          moduleName: '${{ env.moduleName }}'
           templateFilePath: 'arm/${{ env.namespace }}/deploy.bicep'
-          parameterFilePath: '${{ env.dependencyPath }}/${{ env.namespace }}/parameters/${{ matrix.parameterFilePaths }}'
-          location: '${{ env.defaultLocation }}'
-          resourceGroupName: '${{ env.resourceGroupName }}'
-          subscriptionId: '${{ secrets.ARM_SUBSCRIPTION_ID }}'
-          managementGroupId: '${{ secrets.ARM_MGMTGROUP_ID }}'
-          removeDeployment: '${{ env.removeDeployment }}'
-
-  job_deploy_pa:
-    runs-on: ubuntu-20.04
-    name: 'Deploy policy assignment'
-    env:
-      namespace: 'Microsoft.Authorization\policyAssignments'
-    needs:
-      - job_deploy_rg
-    strategy:
-      fail-fast: false
-      matrix:
-        parameterFilePaths: ['parameters.json']
-    steps:
-      - name: 'Checkout'
-        uses: actions/checkout@v2
-        with:
-          fetch-depth: 0
-      - name: 'Deploy module'
-        uses: ./.github/actions/templates/deployModule
-        with:
-          templateFilePath: 'arm/${{ env.namespace }}/.bicep/nested_policyAssignments_sub.bicep'
           parameterFilePath: '${{ env.dependencyPath }}/${{ env.namespace }}/parameters/${{ matrix.parameterFilePaths }}'
           location: '${{ env.defaultLocation }}'
           resourceGroupName: '${{ env.resourceGroupName }}'
@@ -114,6 +91,7 @@ jobs:
     runs-on: ubuntu-20.04
     name: 'Deploy private bicep registry'
     env:
+      moduleName: registries
       namespace: 'Microsoft.ContainerRegistry\registries'
     needs:
       - job_deploy_rg
@@ -129,6 +107,7 @@ jobs:
       - name: 'Deploy module'
         uses: ./.github/actions/templates/deployModule
         with:
+          moduleName: '${{ env.moduleName }}'
           templateFilePath: 'arm/${{ env.namespace }}/deploy.bicep'
           parameterFilePath: '${{ env.dependencyPath }}/${{ env.namespace }}/parameters/${{ matrix.parameterFilePaths }}'
           location: '${{ env.defaultLocation }}'
@@ -141,6 +120,7 @@ jobs:
     runs-on: ubuntu-20.04
     name: 'Deploy eventhub'
     env:
+      moduleName: namespaces
       namespace: 'Microsoft.EventHub\namespaces'
     needs:
       - job_deploy_rg
@@ -156,6 +136,7 @@ jobs:
       - name: 'Deploy module'
         uses: ./.github/actions/templates/deployModule
         with:
+          moduleName: '${{ env.moduleName }}'
           templateFilePath: 'arm/${{ env.namespace }}/deploy.bicep'
           parameterFilePath: '${{ env.dependencyPath }}/${{ env.namespace }}/parameters/${{ matrix.parameterFilePaths }}'
           location: '${{ env.defaultLocation }}'
@@ -168,6 +149,7 @@ jobs:
     runs-on: ubuntu-20.04
     name: 'Deploy log analytics workspace'
     env:
+      moduleName: workspaces
       namespace: 'Microsoft.OperationalInsights\workspaces'
     needs:
       - job_deploy_rg
@@ -183,6 +165,7 @@ jobs:
       - name: 'Deploy module'
         uses: ./.github/actions/templates/deployModule
         with:
+          moduleName: '${{ env.moduleName }}'
           templateFilePath: 'arm/${{ env.namespace }}/deploy.bicep'
           parameterFilePath: '${{ env.dependencyPath }}/${{ env.namespace }}/parameters/${{ matrix.parameterFilePaths }}'
           location: '${{ env.defaultLocation }}'
@@ -195,6 +178,7 @@ jobs:
     runs-on: ubuntu-20.04
     name: 'Deploy storage account'
     env:
+      moduleName: storageAccounts
       namespace: 'Microsoft.Storage\storageAccounts'
     needs:
       - job_deploy_rg
@@ -211,6 +195,7 @@ jobs:
       - name: 'Deploy module'
         uses: ./.github/actions/templates/deployModule
         with:
+          moduleName: '${{ env.moduleName }}'
           templateFilePath: 'arm/${{ env.namespace }}/deploy.bicep'
           parameterFilePath: '${{ env.dependencyPath }}/${{ env.namespace }}/parameters/${{ matrix.parameterFilePaths }}'
           location: '${{ env.defaultLocation }}'
@@ -263,6 +248,7 @@ jobs:
     runs-on: ubuntu-20.04
     name: 'Deploy shared image gallery and definition'
     env:
+      moduleName: galleries
       namespace: 'Microsoft.Compute\galleries'
     needs:
       - job_deploy_rg
@@ -278,6 +264,7 @@ jobs:
       - name: 'Deploy module'
         uses: ./.github/actions/templates/deployModule
         with:
+          moduleName: '${{ env.moduleName }}'
           templateFilePath: 'arm/${{ env.namespace }}/deploy.bicep'
           parameterFilePath: '${{ env.dependencyPath }}/${{ env.namespace }}/parameters/${{ matrix.parameterFilePaths }}'
           location: '${{ env.defaultLocation }}'
@@ -290,6 +277,7 @@ jobs:
     runs-on: ubuntu-20.04
     name: 'Deploy action groups'
     env:
+      moduleName: actionGroups
       namespace: 'Microsoft.Insights\actionGroups'
     needs:
       - job_deploy_rg
@@ -305,6 +293,7 @@ jobs:
       - name: 'Deploy module'
         uses: ./.github/actions/templates/deployModule
         with:
+          moduleName: '${{ env.moduleName }}'
           templateFilePath: 'arm/${{ env.namespace }}/deploy.bicep'
           parameterFilePath: '${{ env.dependencyPath }}/${{ env.namespace }}/parameters/${{ matrix.parameterFilePaths }}'
           location: '${{ env.defaultLocation }}'
@@ -317,6 +306,7 @@ jobs:
     runs-on: ubuntu-20.04
     name: 'Deploy application security groups'
     env:
+      moduleName: applicationSecurityGroups
       namespace: 'Microsoft.Network\applicationSecurityGroups'
     needs:
       - job_deploy_rg
@@ -332,6 +322,7 @@ jobs:
       - name: 'Deploy module'
         uses: ./.github/actions/templates/deployModule
         with:
+          moduleName: '${{ env.moduleName }}'
           templateFilePath: 'arm/${{ env.namespace }}/deploy.bicep'
           parameterFilePath: '${{ env.dependencyPath }}/${{ env.namespace }}/parameters/${{ matrix.parameterFilePaths }}'
           location: '${{ env.defaultLocation }}'
@@ -340,10 +331,12 @@ jobs:
           managementGroupId: '${{ secrets.ARM_MGMTGROUP_ID }}'
           removeDeployment: '${{ env.removeDeployment }}'
 
-  job_deploy_udr:
+  job_deploy_sqlmi_udr:
     runs-on: ubuntu-20.04
     name: 'Deploy sqlmi route tables'
+    if: github.event.inputs.deploySqlMiDependencies == 'true'
     env:
+      moduleName: routeTables
       namespace: 'Microsoft.Network\routeTables'
     needs:
       - job_deploy_rg
@@ -359,34 +352,7 @@ jobs:
       - name: 'Deploy module'
         uses: ./.github/actions/templates/deployModule
         with:
-          templateFilePath: 'arm/${{ env.namespace }}/deploy.bicep'
-          parameterFilePath: '${{ env.dependencyPath }}/${{ env.namespace }}/parameters/${{ matrix.parameterFilePaths }}'
-          location: '${{ env.defaultLocation }}'
-          resourceGroupName: '${{ env.resourceGroupName }}'
-          subscriptionId: '${{ secrets.ARM_SUBSCRIPTION_ID }}'
-          managementGroupId: '${{ secrets.ARM_MGMTGROUP_ID }}'
-          removeDeployment: '${{ env.removeDeployment }}'
-
-  job_deploy_sqlmi_udr:
-    runs-on: ubuntu-20.04
-    name: 'Deploy sqlmi route tables'
-    if: github.event.inputs.deploySqlMiDependencies == 'true'
-    env:
-      namespace: 'Microsoft.Network\routeTables'
-    needs:
-      - job_deploy_rg
-    strategy:
-      fail-fast: false
-      matrix:
-        parameterFilePaths: ['sqlMi.parameters.json']
-    steps:
-      - name: 'Checkout'
-        uses: actions/checkout@v2
-        with:
-          fetch-depth: 0
-      - name: 'Deploy module'
-        uses: ./.github/actions/templates/deployModule
-        with:
+          moduleName: '${{ env.moduleName }}'
           templateFilePath: 'arm/${{ env.namespace }}/deploy.bicep'
           parameterFilePath: '${{ env.dependencyPath }}/${{ env.namespace }}/parameters/${{ matrix.parameterFilePaths }}'
           location: '${{ env.defaultLocation }}'
@@ -399,6 +365,7 @@ jobs:
     runs-on: ubuntu-20.04
     name: 'Deploy network security groups'
     env:
+      moduleName: networkSecurityGroups
       namespace: 'Microsoft.Network\networkSecurityGroups'
     needs:
       - job_deploy_sa
@@ -422,6 +389,7 @@ jobs:
       - name: 'Deploy module'
         uses: ./.github/actions/templates/deployModule
         with:
+          moduleName: '${{ env.moduleName }}'
           templateFilePath: 'arm/${{ env.namespace }}/deploy.bicep'
           parameterFilePath: '${{ env.dependencyPath }}/${{ env.namespace }}/parameters/${{ matrix.parameterFilePaths }}'
           location: '${{ env.defaultLocation }}'
@@ -435,6 +403,7 @@ jobs:
     name: 'Deploy sqlmi network security group'
     if: github.event.inputs.deploySqlMiDependencies == 'true'
     env:
+      moduleName: networkSecurityGroups
       namespace: 'Microsoft.Network\networkSecurityGroups'
     needs:
       - job_deploy_sa
@@ -452,6 +421,7 @@ jobs:
       - name: 'Deploy module'
         uses: ./.github/actions/templates/deployModule
         with:
+          moduleName: '${{ env.moduleName }}'
           templateFilePath: 'arm/${{ env.namespace }}/deploy.bicep'
           parameterFilePath: '${{ env.dependencyPath }}/${{ env.namespace }}/parameters/${{ matrix.parameterFilePaths }}'
           location: '${{ env.defaultLocation }}'
@@ -464,6 +434,7 @@ jobs:
     runs-on: ubuntu-20.04
     name: 'Deploy public IP addresses'
     env:
+      moduleName: publicIPAddresses
       namespace: 'Microsoft.Network\publicIPAddresses'
     needs:
       - job_deploy_sa
@@ -482,6 +453,7 @@ jobs:
       - name: 'Deploy module'
         uses: ./.github/actions/templates/deployModule
         with:
+          moduleName: '${{ env.moduleName }}'
           templateFilePath: 'arm/${{ env.namespace }}/deploy.bicep'
           parameterFilePath: '${{ env.dependencyPath }}/${{ env.namespace }}/parameters/${{ matrix.parameterFilePaths }}'
           location: '${{ env.defaultLocation }}'
@@ -494,6 +466,7 @@ jobs:
     runs-on: ubuntu-20.04
     name: 'Deploy application insight'
     env:
+      moduleName: components
       namespace: 'Microsoft.Insights\components'
     needs:
       - job_deploy_sa
@@ -511,6 +484,7 @@ jobs:
       - name: 'Deploy module'
         uses: ./.github/actions/templates/deployModule
         with:
+          moduleName: '${{ env.moduleName }}'
           templateFilePath: 'arm/${{ env.namespace }}/deploy.bicep'
           parameterFilePath: '${{ env.dependencyPath }}/${{ env.namespace }}/parameters/${{ matrix.parameterFilePaths }}'
           location: '${{ env.defaultLocation }}'
@@ -523,6 +497,7 @@ jobs:
     runs-on: ubuntu-20.04
     name: 'Deploy automation account'
     env:
+      moduleName: automationAccounts
       namespace: 'Microsoft.Automation\automationAccounts'
     needs:
       - job_deploy_sa
@@ -540,6 +515,7 @@ jobs:
       - name: 'Deploy module'
         uses: ./.github/actions/templates/deployModule
         with:
+          moduleName: '${{ env.moduleName }}'
           templateFilePath: 'arm/${{ env.namespace }}/deploy.bicep'
           parameterFilePath: '${{ env.dependencyPath }}/${{ env.namespace }}/parameters/${{ matrix.parameterFilePaths }}'
           location: '${{ env.defaultLocation }}'
@@ -552,6 +528,7 @@ jobs:
     runs-on: ubuntu-20.04
     name: 'Deploy AVD host pool'
     env:
+      moduleName: hostpools
       namespace: 'Microsoft.DesktopVirtualization\hostpools'
     needs:
       - job_deploy_sa
@@ -569,6 +546,7 @@ jobs:
       - name: 'Deploy module'
         uses: ./.github/actions/templates/deployModule
         with:
+          moduleName: '${{ env.moduleName }}'
           templateFilePath: 'arm/${{ env.namespace }}/deploy.bicep'
           parameterFilePath: '${{ env.dependencyPath }}/${{ env.namespace }}/parameters/${{ matrix.parameterFilePaths }}'
           location: '${{ env.defaultLocation }}'
@@ -581,6 +559,7 @@ jobs:
     runs-on: ubuntu-20.04
     name: 'Deploy recovery services vault'
     env:
+      moduleName: vaults
       namespace: 'Microsoft.RecoveryServices\vaults'
     needs:
       - job_deploy_sa
@@ -598,6 +577,7 @@ jobs:
       - name: 'Deploy module'
         uses: ./.github/actions/templates/deployModule
         with:
+          moduleName: '${{ env.moduleName }}'
           templateFilePath: 'arm/${{ env.namespace }}/deploy.bicep'
           parameterFilePath: '${{ env.dependencyPath }}/${{ env.namespace }}/parameters/${{ matrix.parameterFilePaths }}'
           location: '${{ env.defaultLocation }}'
@@ -610,6 +590,7 @@ jobs:
     runs-on: ubuntu-20.04
     name: 'Deploy key vaults'
     env:
+      moduleName: vaults
       namespace: 'Microsoft.KeyVault\vaults'
     needs:
       - job_deploy_sa
@@ -627,6 +608,7 @@ jobs:
       - name: 'Deploy module'
         uses: ./.github/actions/templates/deployModule
         with:
+          moduleName: '${{ env.moduleName }}'
           templateFilePath: 'arm/${{ env.namespace }}/deploy.bicep'
           parameterFilePath: '${{ env.dependencyPath }}/${{ env.namespace }}/parameters/${{ matrix.parameterFilePaths }}'
           location: '${{ env.defaultLocation }}'
@@ -684,6 +666,7 @@ jobs:
     name: 'Deploy sqlmi key vault'
     if: github.event.inputs.deploySqlMiDependencies == 'true'
     env:
+      moduleName: vaults
       namespace: 'Microsoft.KeyVault\vaults'
     needs:
       - job_deploy_sa
@@ -701,6 +684,7 @@ jobs:
       - name: 'Deploy module'
         uses: ./.github/actions/templates/deployModule
         with:
+          moduleName: '${{ env.moduleName }}'
           templateFilePath: 'arm/${{ env.namespace }}/deploy.bicep'
           parameterFilePath: '${{ env.dependencyPath }}/${{ env.namespace }}/parameters/${{ matrix.parameterFilePaths }}'
           location: '${{ env.defaultLocation }}'
@@ -747,6 +731,7 @@ jobs:
     runs-on: ubuntu-20.04
     name: 'Deploy AVD application group'
     env:
+      moduleName: applicationgroups
       namespace: 'Microsoft.DesktopVirtualization\applicationgroups'
     needs:
       - job_deploy_avdhp
@@ -762,6 +747,7 @@ jobs:
       - name: 'Deploy module'
         uses: ./.github/actions/templates/deployModule
         with:
+          moduleName: '${{ env.moduleName }}'
           templateFilePath: 'arm/${{ env.namespace }}/deploy.bicep'
           parameterFilePath: '${{ env.dependencyPath }}/${{ env.namespace }}/parameters/${{ matrix.parameterFilePaths }}'
           location: '${{ env.defaultLocation }}'
@@ -774,6 +760,7 @@ jobs:
     runs-on: ubuntu-20.04
     name: 'Deploy role assignments'
     env:
+      moduleName: roleAssignments
       namespace: 'Microsoft.Authorization\roleAssignments'
     needs:
       - job_deploy_msi
@@ -789,6 +776,7 @@ jobs:
       - name: 'Deploy module'
         uses: ./.github/actions/templates/deployModule
         with:
+          moduleName: '${{ env.moduleName }}'
           templateFilePath: 'arm/${{ env.namespace }}/.bicep/nested_rbac_sub.bicep'
           parameterFilePath: '${{ env.dependencyPath }}/${{ env.namespace }}/parameters/${{ matrix.parameterFilePaths }}'
           location: '${{ env.defaultLocation }}'
@@ -801,6 +789,7 @@ jobs:
     runs-on: ubuntu-20.04
     name: 'Deploy virtual networks'
     env:
+      moduleName: virtualNetworks
       namespace: 'Microsoft.Network\virtualNetworks'
     needs:
       - job_deploy_nsg
@@ -824,6 +813,7 @@ jobs:
       - name: 'Deploy module'
         uses: ./.github/actions/templates/deployModule
         with:
+          moduleName: '${{ env.moduleName }}'
           templateFilePath: 'arm/${{ env.namespace }}/deploy.bicep'
           parameterFilePath: '${{ env.dependencyPath }}/${{ env.namespace }}/parameters/${{ matrix.parameterFilePaths }}'
           location: '${{ env.defaultLocation }}'
@@ -837,6 +827,7 @@ jobs:
     name: 'Deploy sqlmi virtual network'
     if: github.event.inputs.deploySqlMiDependencies == 'true'
     env:
+      moduleName: virtualNetworks
       namespace: 'Microsoft.Network\virtualNetworks'
     needs:
       - job_deploy_sqlmi_udr
@@ -853,6 +844,7 @@ jobs:
       - name: 'Deploy module'
         uses: ./.github/actions/templates/deployModule
         with:
+          moduleName: '${{ env.moduleName }}'
           templateFilePath: 'arm/${{ env.namespace }}/deploy.bicep'
           parameterFilePath: '${{ env.dependencyPath }}/${{ env.namespace }}/parameters/${{ matrix.parameterFilePaths }}'
           location: '${{ env.defaultLocation }}'
@@ -865,6 +857,7 @@ jobs:
     runs-on: ubuntu-20.04
     name: 'Deploy private DNS zones'
     env:
+      moduleName: privateDnsZones
       namespace: 'Microsoft.Network\privateDnsZones'
     needs:
       - job_deploy_vnet
@@ -880,6 +873,7 @@ jobs:
       - name: 'Deploy module'
         uses: ./.github/actions/templates/deployModule
         with:
+          moduleName: '${{ env.moduleName }}'
           templateFilePath: 'arm/${{ env.namespace }}/deploy.bicep'
           parameterFilePath: '${{ env.dependencyPath }}/${{ env.namespace }}/parameters/${{ matrix.parameterFilePaths }}'
           location: '${{ env.defaultLocation }}'
@@ -892,6 +886,7 @@ jobs:
     runs-on: ubuntu-20.04
     name: 'Deploy virtual machines'
     env:
+      moduleName: virtualMachines
       namespace: 'Microsoft.Compute\virtualMachines'
     needs:
       - job_deploy_kv_secrets
@@ -909,6 +904,7 @@ jobs:
       - name: 'Deploy module'
         uses: ./.github/actions/templates/deployModule
         with:
+          moduleName: '${{ env.moduleName }}'
           templateFilePath: 'arm/${{ env.namespace }}/deploy.bicep'
           parameterFilePath: '${{ env.dependencyPath }}/${{ env.namespace }}/parameters/${{ matrix.parameterFilePaths }}'
           location: '${{ env.defaultLocation }}'
