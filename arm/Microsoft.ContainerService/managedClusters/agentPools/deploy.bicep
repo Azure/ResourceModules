@@ -319,7 +319,7 @@ param nodePublicIpPrefixId string = ''
 @description('Optional. The taints added to new nodes during node pool create and scale. For example, key=value:NoSchedule.	')
 param nodeTaints array = []
 
-@description('Optional. 	As a best practice, you should upgrade all node pools in an AKS cluster to the same Kubernetes version. The node pool version must have the same major version as the control plane. The node pool minor version must be within two minor versions of the control plane version. The node pool version cannot be greater than the control plane version. For more information see upgrading a node pool (https://docs.microsoft.com/en-us/azure/aks/use-multiple-node-pools#upgrade-a-node-pool).')
+@description('Optional. As a best practice, you should upgrade all node pools in an AKS cluster to the same Kubernetes version. The node pool version must have the same major version as the control plane. The node pool minor version must be within two minor versions of the control plane version. The node pool version cannot be greater than the control plane version. For more information see upgrading a node pool (https://docs.microsoft.com/en-us/azure/aks/use-multiple-node-pools#upgrade-a-node-pool).')
 param orchestratorVersion string = ''
 
 @description('Optional. OS Disk Size in GB to be used to specify the disk size for every machine in the master/agent pool. If you specify 0, it will apply the default osDisk size according to the vmSize specified.')
@@ -391,7 +391,7 @@ param maxSurge string = ''
 @description('Optional. VM size. VM size availability varies by region. If a node contains insufficient compute resources (memory, cpu, etc) pods might fail to run correctly. For more details on restricted VM sizes, see: /azure/aks/quotas-skus-regions')
 param vmSize string = 'Standard_D2s_v3'
 
-@description('Optional. Node Subnet IDIf this is not specified, a VNET and subnet will be generated and used. If no podSubnetID is specified, this applies to nodes and pods, otherwise it applies to just nodes. This is of the form: /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/virtualNetworks/{virtualNetworkName}/subnets/{subnetName}	')
+@description('Optional. Node Subnet ID. If this is not specified, a VNET and subnet will be generated and used. If no podSubnetID is specified, this applies to nodes and pods, otherwise it applies to just nodes. This is of the form: /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/virtualNetworks/{virtualNetworkName}/subnets/{subnetName}	')
 param vnetSubnetId string = ''
 
 @description('Optional. Determines the type of workload a node can run.')
@@ -477,15 +477,15 @@ resource agentPool 'Microsoft.ContainerService/managedClusters/agentPools@2021-0
     kubeletConfig: kubeletConfig
     kubeletDiskType: kubeletDiskType
     linuxOSConfig: linuxOSConfig
-    maxCount: !(maxCount == -1) ? maxCount : null
-    maxPods: !(maxPods == -1) ? maxPods : null
-    minCount: !(minCount == -1) ? minCount : null
+    maxCount: (maxCount != -1) ? maxCount : null
+    maxPods: (maxPods != -1) ? maxPods : null
+    minCount: (minCount != -1) ? minCount : null
     mode: !empty(mode) ? mode : null
     nodeLabels: nodeLabels
     nodePublicIPPrefixID: !empty(nodePublicIpPrefixId) ? nodePublicIpPrefixId : null
     nodeTaints: nodeTaints
     orchestratorVersion: orchestratorVersion
-    osDiskSizeGB: !(osDiskSizeGB == -1) ? osDiskSizeGB : null
+    osDiskSizeGB: (osDiskSizeGB != -1) ? osDiskSizeGB : null
     osDiskType: !empty(osDiskType) ? osDiskType : null
     osSKU: !empty(osSku) ? osSku : null
     osType: osType
