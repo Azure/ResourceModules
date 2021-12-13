@@ -7,11 +7,11 @@ Generate all module pipeline files for Azure DevOps based on the ones currently 
 Generate all module pipeline files for Azure DevOps based on the ones currently implement for GitHub workflows
 Note: The parameter file refernces are fetched from the actual module folder. Hence the list may diviate from what is specified in the corrsponding GitHub workflow.
 
-.PARAMETER devOpsPipelineFolderPath
+.PARAMETER DevOpsPipelineFolderPath
 Optional. The path where the Azure DevOps pipelines should be stored
 Defaults to: '.azuredevops/modulePipelines'
 
-.PARAMETER devOpsPipelineTemplatePath
+.PARAMETER DevOpsPipelineTemplatePath
 Optional. The path to the Azure DevOps pipeline template file.
 Defaults to: './devOpsPipelineTemplate.yml'
 
@@ -40,10 +40,10 @@ function Set-DevOpsPipelineFiles {
     [CmdletBinding(SupportsShouldProcess)]
     param (
         [Parameter(Mandatory = $false)]
-        [string] $devOpsPipelineFolderPath = (Join-Path (Split-Path (Split-Path (Split-Path $PSScriptRoot))) '.azuredevops' 'modulePipelines'),
+        [string] $DevOpsPipelineFolderPath = (Join-Path (Split-Path (Split-Path (Split-Path $PSScriptRoot))) '.azuredevops' 'modulePipelines'),
 
         [Parameter(Mandatory = $false)]
-        [string] $devOpsPipelineTemplatePath = (Join-Path $PSScriptRoot 'src' 'devOpsPipelineTemplate.yml'),
+        [string] $DevOpsPipelineTemplatePath = (Join-Path $PSScriptRoot 'src' 'devOpsPipelineTemplate.yml'),
 
         [Parameter(Mandatory = $false)]
         [string] $GitHubWorkflowFolderPath = (Join-Path (Split-Path (Split-Path (Split-Path $PSScriptRoot))) '.github' 'workflows')
@@ -141,7 +141,7 @@ function Set-DevOpsPipelineFiles {
     ##  Create Dev Ops Files  ##
     ############################
     foreach ($tokenSet in $foundDetails) {
-        $newFilePath = Join-Path $devOpsPipelineFolderPath $tokenSet.PipelineFileName
+        $newFilePath = Join-Path $DevOpsPipelineFolderPath $tokenSet.PipelineFileName
 
         if (-not (Test-Path $newFilePath)) {
             if ($PSCmdlet.ShouldProcess("New file in path [$newFilePath]", 'Create')) {
@@ -149,7 +149,7 @@ function Set-DevOpsPipelineFiles {
             }
         }
 
-        $newFileContent = Get-Content -Path $devOpsPipelineTemplatePath -Raw
+        $newFileContent = Get-Content -Path $DevOpsPipelineTemplatePath -Raw
 
         foreach ($key in $tokenSet.Keys) {
             switch ($key) {
