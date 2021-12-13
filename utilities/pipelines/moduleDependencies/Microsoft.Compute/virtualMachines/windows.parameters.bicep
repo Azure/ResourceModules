@@ -4,7 +4,6 @@ targetScope = 'subscription'
 // Parameters //
 // ========== //
 
-// Resource Group
 @description('Required. The name of the resource group to deploy for a testing purposes')
 param resourceGroupName string
 

@@ -282,6 +282,27 @@ function Test-IsResourceContained {
 }
 #endregion
 
+<#
+.SYNOPSIS
+Short description
+
+.DESCRIPTION
+Long description
+
+.PARAMETER templateFilePath
+Parameter description
+
+.PARAMETER includeGitHubWorkflow
+Parameter description
+
+.PARAMETER includeAzureDevOpsPipeline
+Parameter description
+
+.EXAMPLE
+New-DependenciesFile -templateFilePath 'C:\Microsoft.Compute\virtualMachines\deploy.bicep' -includeGitHubWorkflow
+
+
+#>
 function New-DependenciesFile {
 
     [CmdletBinding(SupportsShouldProcess)]
@@ -353,7 +374,3 @@ function New-DependenciesFile {
         Write-Debug ('{0} exited' -f $MyInvocation.MyCommand)
     }
 }
-# New-DependenciesFile -templateFilePath 'C:\dev\ip\Azure-ResourceModules\ResourceModules\arm\Microsoft.Compute\galleries\deploy.bicep' -includeGitHubWorkflow
-# New-DependenciesFile -templateFilePath 'C:\dev\ip\Azure-ResourceModules\ResourceModules\arm\Microsoft.AnalysisServices\servers\deploy.bicep' -includeGitHubWorkflow
-# New-DependenciesFile -templateFilePath 'C:\dev\ip\Azure-ResourceModules\ResourceModules\arm\Microsoft.Compute\virtualMachines\deploy.bicep' -includeGitHubWorkflow
-New-DependenciesFile -templateFilePath 'C:\dev\ip\Azure-ResourceModules\ResourceModules\arm\Microsoft.Sql\servers\deploy.bicep' -includeGitHubWorkflow
