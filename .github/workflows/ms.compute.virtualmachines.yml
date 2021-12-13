@@ -33,7 +33,7 @@ on:
 env:
   modulePath: 'arm/Microsoft.Compute/virtualMachines'
   workflowPath: '.github/workflows/ms.compute.virtualmachines.yml'
-  rgPattern: 'test-virtualMachine-{0}-rg'
+  rgPattern: 'test-ms.compute-virtualMachines-{0}-rg'
   AZURE_CREDENTIALS: ${{ secrets.AZURE_CREDENTIALS }}
   ARM_SUBSCRIPTION_ID: '${{ secrets.ARM_SUBSCRIPTION_ID }}'
   ARM_MGMTGROUP_ID: '${{ secrets.ARM_MGMTGROUP_ID }}'

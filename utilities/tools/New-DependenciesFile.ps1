@@ -129,30 +129,51 @@ function Set-DependencyTemplate {
         $null = New-Item $templateFilePath -ItemType 'File' -Value $initialContent -Force
     }
 
-    $specifiedParameters = Get-Content -Path $parameterFilePath | Select-String -Pattern '"id": "(.*)"'
     $dependencyFileContent = Get-Content -Path $templateFilePath -Raw
 
-    # TODO : Add content
-    foreach ($parameter in $specifiedParameters) {
+    # Process IDs
+    # -----------
+    $specifiedIds = ((Get-Content -Path $parameterFilePath | Select-String -Pattern '"(/subscriptions/.*)"').Matches.Groups.Value | ForEach-Object { $_.Replace('"', '') }) | Select-Object -Unique
 
-        switch ($parameter) {
-            { $PSItem.value -like '/subscriptions/*Microsoft.ManagedIdentity/UserAssignedIdentities/*' } {
+    # TODO : Add content, process other parameters?
+    foreach ($specifiedId in $specifiedIds) {
+
+        switch ($specifiedId) {
+            { $PSItem.value -like '*/Microsoft.ManagedIdentity/UserAssignedIdentities/*' } {
                 break
             }
-            { $PSItem.value -like '/subscriptions/*Microsoft.Storage/StorageAccounts/*' } {
+            { $PSItem.value -like '*/Microsoft.Storage/StorageAccounts/*' } {
 
                 break
             }
-            { $PSItem.value -like '/subscriptions/*Microsoft.OperationalInsights/Workspaces/*' } {
+            { $PSItem.value -like '*/Microsoft.OperationalInsights/Workspaces/*' } {
                 break
             }
-            { $PSItem.value -like '/subscriptions/*Microsoft.EventHub/namespaces/*' } {
+            { $PSItem.value -like '*/Microsoft.EventHub/namespaces/*' } {
+                break
+            }
+            { $PSItem.value -like '*/Microsoft.Network/virtualNetworks/*' } {
+
                 break
             }
         }
     }
 
-    Set-Content $templateFilePath -Value $dependencyFileContent
+    # Set-Content $templateFilePath -Value $dependencyFileContent
+}
+
+function Test-ResourceContained {
+
+    [CmdletBinding()]
+    param (
+        [Parameter(Mandatory = $true)]
+        [string] $resourceTypeToSeachFor,
+
+        [Parameter(Mandatory = $true)]
+        [string[]] $contentToSearchIn
+    )
+
+    $contained = $false
 }
 #endregion
 
@@ -227,5 +248,6 @@ function New-DependenciesFile {
         Write-Debug ('{0} exited' -f $MyInvocation.MyCommand)
     }
 }
-New-DependenciesFile -templateFilePath 'C:\dev\ip\Azure-ResourceModules\ResourceModules\arm\Microsoft.Compute\galleries\deploy.bicep' -includeGitHubWorkflow
+# New-DependenciesFile -templateFilePath 'C:\dev\ip\Azure-ResourceModules\ResourceModules\arm\Microsoft.Compute\galleries\deploy.bicep' -includeGitHubWorkflow
 # New-DependenciesFile -templateFilePath 'C:\dev\ip\Azure-ResourceModules\ResourceModules\arm\Microsoft.AnalysisServices\servers\deploy.bicep' -includeGitHubWorkflow
+New-DependenciesFile -templateFilePath 'C:\dev\ip\Azure-ResourceModules\ResourceModules\arm\Microsoft.Compute\virtualMachines\deploy.bicep' -includeGitHubWorkflow
