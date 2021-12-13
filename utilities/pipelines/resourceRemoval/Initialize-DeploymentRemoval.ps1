@@ -41,7 +41,7 @@ function Initialize-DeploymentRemoval {
     }
 
     process {
-        $moduleName = Split-Path (Split-Path $TemplateFilePath -Parent) -LeafBase
+        $moduleName = Split-Path (Split-Path $templateFilePath -Parent) -LeafBase
 
         # The intial sequence is a general order-recommendation
         $removalSequence = @(
@@ -50,7 +50,7 @@ function Initialize-DeploymentRemoval {
             'Microsoft.Compute/virtualMachines'
         )
 
-        foreach ($deploymentName in $DeploymentNames) {
+        foreach ($deploymentName in $deploymentNames) {
             Write-Verbose ('Handling resource removal with deployment name [{0}]' -f $deploymentName) -Verbose
             switch ($moduleName) {
                 'virtualWans' {
@@ -75,8 +75,8 @@ function Initialize-DeploymentRemoval {
             # Invoke removal
             $inputObject = @{
                 DeploymentName    = $deploymentName
-                ResourceGroupName = $ResourceGroupName
-                TemplateFilePath  = $TemplateFilePath
+                ResourceGroupName = $resourceGroupName
+                TemplateFilePath  = $templateFilePath
                 RemovalSequence   = $removalSequence
             }
             Remove-Deployment @inputObject -Verbose
