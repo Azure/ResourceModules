@@ -3,7 +3,7 @@
     "contentVersion": "1.0.0.0",
     "parameters": {
         "name": {
-            "value": "sxx-az-ds-cli-x-001"
+            "value": "sxx-az-ds-cli-001"
         },
         "userAssignedIdentities": {
             "value": {

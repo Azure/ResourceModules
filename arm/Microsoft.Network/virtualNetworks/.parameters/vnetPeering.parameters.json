@@ -3,7 +3,7 @@
     "contentVersion": "1.0.0.0",
     "parameters": {
         "name": {
-            "value": "sxx-az-vnet-peer-x-002"
+            "value": "sxx-az-vnet-peer-001"
         },
         "addressPrefixes": {
             "value": [
