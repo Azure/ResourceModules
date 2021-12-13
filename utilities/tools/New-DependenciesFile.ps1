@@ -137,44 +137,46 @@ function Set-DependencyTemplate {
 
     foreach ($specifiedId in $specifiedIds) {
 
+        $templateContentInputObject = @{
+            originalContent   = $dependencyFileContent
+            parameterFilePath = $parameterFilePath
+            moduleName        = $moduleName
+            providerName      = $providerName
+        }
+
         switch ($specifiedId) {
             { $PSItem -like '*/Microsoft.ManagedIdentity/UserAssignedIdentities/*' } {
                 if (-not (Test-IsResourceContained -resourceTypeToSeachFor 'Microsoft.ManagedIdentity/UserAssignedIdentities' -contentToSearchIn $dependencyFileContent)) {
-                    # Add content
                     $newContent = Get-Content -Path (Join-Path $PSScriptRoot 'dependencyFileSource' 'managedIdentity.bicep')
-                    $dependencyFileContent = Add-TemplateContent -originalContent $dependencyFileContent -newContent $newContent
+                    $dependencyFileContent = Add-TemplateContent @templateContentInputObject -newContent $newContent
                 }
                 break
             }
             { $PSItem -like '*/Microsoft.Storage/StorageAccounts/*' } {
                 if (-not (Test-IsResourceContained -resourceTypeToSeachFor 'Microsoft.Storage/StorageAccounts' -contentToSearchIn $dependencyFileContent)) {
-                    # Add content
                     $newContent = Get-Content -Path (Join-Path $PSScriptRoot 'dependencyFileSource' 'storageAccount.bicep')
-                    $dependencyFileContent = Add-TemplateContent -originalContent $dependencyFileContent -newContent $newContent
+                    $dependencyFileContent = Add-TemplateContent @templateContentInputObject -newContent $newContent
                 }
                 break
             }
             { $PSItem -like '*/Microsoft.OperationalInsights/Workspaces/*' } {
                 if (-not (Test-IsResourceContained -resourceTypeToSeachFor 'Microsoft.OperationalInsights/Workspaces' -contentToSearchIn $dependencyFileContent)) {
-                    # Add content
                     $newContent = Get-Content -Path (Join-Path $PSScriptRoot 'dependencyFileSource' 'logAnalytics.bicep')
-                    $dependencyFileContent = Add-TemplateContent -originalContent $dependencyFileContent -newContent $newContent
+                    $dependencyFileContent = Add-TemplateContent @templateContentInputObject -newContent $newContent
                 }
                 break
             }
             { $PSItem -like '*/Microsoft.EventHub/namespaces/*' } {
                 if (-not (Test-IsResourceContained -resourceTypeToSeachFor 'Microsoft.EventHub/namespaces' -contentToSearchIn $dependencyFileContent)) {
-                    # Add content
                     $newContent = Get-Content -Path (Join-Path $PSScriptRoot 'dependencyFileSource' 'eventHubNamespace.bicep')
-                    $dependencyFileContent = Add-TemplateContent -originalContent $dependencyFileContent -newContent $newContent
+                    $dependencyFileContent = Add-TemplateContent @templateContentInputObject -newContent $newContent
                 }
                 break
             }
             { $PSItem -like '*/Microsoft.Network/virtualNetworks/*' } {
                 if (-not (Test-IsResourceContained -resourceTypeToSeachFor 'Microsoft.Network/virtualNetworks' -contentToSearchIn $dependencyFileContent)) {
-                    # Add content
                     $newContent = Get-Content -Path (Join-Path $PSScriptRoot 'dependencyFileSource' 'virtualNetwork.bicep')
-                    $dependencyFileContent = Add-TemplateContent -originalContent $dependencyFileContent -newContent $newContent
+                    $dependencyFileContent = Add-TemplateContent @templateContentInputObject -newContent $newContent
                 }
                 break
             }
@@ -188,40 +190,78 @@ function Add-TemplateContent {
 
     [CmdletBinding()]
     param (
-        [Parameter()]
+        [Parameter(Mandatory = $true)]
         [array] $originalContent,
 
-        [Parameter()]
-        [array] $newContent
-    )
+        [Parameter(Mandatory = $true)]
+        [array] $newContent,
 
-    # $newVariable = $newContent.Split('// Module //')[0]#.Trim().Split("`n")
-    $newVariable = $newContent[0..($newContent.IndexOf('// Module //') - 1)]
-    # $newModule = $newContent.Split('// Module //')[1]#.Split('// Output //')[0].Trim().Split("`n")
-    $newModule = $newContent[($newContent.IndexOf('// Module //') + 1)..($newContent.IndexOf('// Output //') - 1)]
-    # $newModule = $newContent.Split('// Output //')[-1]#.Trim().Split("`n")
-    $newOutput = $newContent[($newContent.IndexOf('// Output //') + 1)..($newContent.Count - 1)]
+        [Parameter(Mandatory = $true)]
+        [string] $parameterFilePath,
+
+        [Parameter(Mandatory = $true)]
+        [string] $moduleName,
+
+        [Parameter(Mandatory = $true)]
+        [string] $providerName
+    )
 
     # Check if a variables section already exist
     if (-not ($originalContent | Select-String -Pattern '^var .* = {').Matches.Value) {
         # Add variables header & servicesShort
         $modulesSectionStart = $originalContent.IndexOf('// Deployments //') - 1
         $newVarContent = Get-Content -Path (Join-Path $PSScriptRoot 'dependencyFileSource' 'bootstrap_var.bicep')
+
+        # inject proposed short
+        $generatedName = Get-ServiceShort -moduleName $moduleName -parameterFilePath $parameterFilePath -providerName $providerName
+        $newVarContent[1] = $newVarContent[1].Replace('<updateShort>', $generatedName)
+
+        # set content
         $originalContent = $originalContent[0..($modulesSectionStart - 1)] + $newVarContent + @('') + $originalContent[$modulesSectionStart..($originalContent.Count)]
     }
 
-    # Add variable
+    # Add variable(s)
+    $newVariable = $newContent[0..($newContent.IndexOf('// Module //') - 1)]
     $modulesSectionStart = $originalContent.IndexOf('// Deployments //') - 1
     $originalContent = $originalContent[0..($modulesSectionStart - 1)] + $newVariable + @('') + $originalContent[$modulesSectionStart..($originalContent.Count)]
 
-    # Add module
+    # Add module(s)
+    $newModule = $newContent[($newContent.IndexOf('// Module //') + 1)..($newContent.IndexOf('// Output //') - 1)]
     $outputsSectionStart = $originalContent.IndexOf('// Outputs //') - 1
     $originalContent = $originalContent[0..($outputsSectionStart - 1)] + $newModule + @('') + $originalContent[$outputsSectionStart..($originalContent.Count)]
 
-    # add output
+    # Add output(s)
+    $newOutput = $newContent[($newContent.IndexOf('// Output //') + 1)..($newContent.Count - 1)]
     $originalContent = $originalContent + $newOutput
 
     return $originalContent
+}
+
+function Get-ServiceShort {
+
+    [CmdletBinding()]
+    param (
+        [Parameter(Mandatory = $true)]
+        [string] $providerName,
+
+        [Parameter(Mandatory = $true)]
+        [string] $moduleName,
+
+        [Parameter(Mandatory = $true)]
+        [string] $parameterFilePath
+    )
+
+    [array]$providerParts = ($providerName.Split('.')[1] -creplace '([A-Z\W_]|\d+)(?<![a-z])', ' $&').Trim().Split(' ')
+    $providerShort = ($providerParts.Count -gt 1) ? (($providerParts | ForEach-Object { $_.ToCharArray()[0] }) -join '').ToLower() : $providerParts.SubString(0, 3).ToLower()
+
+    [array]$resourceTypeParts = ($moduleName -creplace '([A-Z\W_]|\d+)(?<![a-z])', ' $&').Trim().Split(' ')
+    $resourceTypeShort = ($resourceTypeParts.Count -gt 1) ? (($resourceTypeParts | ForEach-Object { $_.ToCharArray()[0] }) -join '').ToLower() : $resourceTypeParts.SubString(0, 3).ToLower()
+
+    [array]$paramFileParts = (Split-Path $parameterFilePath -LeafBase).Split('.')
+    $prefixes = ($paramFileParts.Count -gt 1) ? ($paramFileParts[0..($paramFileParts.Count - 2)] | ForEach-Object { $_.Substring(0, 3) }) -join '' : $paramFileParts.SubString(0, 3).ToLower()
+
+    # Build name
+    return '{0}{1}{2}' -f $providerShort, $resourceTypeShort, $prefixes
 }
 
 function Test-IsResourceContained {
