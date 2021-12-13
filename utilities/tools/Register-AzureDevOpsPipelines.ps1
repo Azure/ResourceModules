@@ -123,7 +123,7 @@ function Register-AzureDevOpsPipelines {
     Write-Verbose '# Local Data #'
     Write-Verbose '##############'
     Write-Verbose 'Identify relevant Azure Pipelines to be updated'
-    # $RelativePipelinePath = Join-Path (Get-Location).Path $RelativePipelinePath
+
     $RelativePipelinePath = $RelativePipelinePath
     $localPipelinePaths = (Get-ChildItem -Path $RelativePipelinePath -Recurse -Filter '*.yml').FullName
     Write-Verbose ('Found [{0}] local Pipeline(s) in folder path [{1}]' -f $localPipelinePaths.Count, $RelativePipelinePath)
