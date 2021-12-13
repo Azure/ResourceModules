@@ -28,3 +28,5 @@ module eventHubNamespace '../../../../../arm/Microsoft.EventHub/namespaces/deplo
     resourceGroup
   ]
 }
+// Output //
+output eventHubNamespaceResourceId string = eventHubNamespace.outputs.namespaceResourceId

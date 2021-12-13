@@ -12,3 +12,5 @@ module managedIdentity '../../../../../arm/Microsoft.ManagedIdentity/userAssigne
     resourceGroup
   ]
 }
+// Output //
+output managedIdentityResourceId string = managedIdentity.outputs.msiResourceId

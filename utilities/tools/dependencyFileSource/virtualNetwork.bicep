@@ -1,3 +1,7 @@
+var networkSecurityGroupParameters = {
+  name: 'adp-sxx-nsg-${serviceShort}-01'
+}
+
 var virtualNetworkParameters = {
   name: 'adp-sxx-vnet-${serviceShort}-01'
   addressPrefix: [
@@ -12,6 +16,17 @@ var virtualNetworkParameters = {
   ]
 }
 // Module //
+module networkSecurityGroup '../../../../../arm/Microsoft.Network/networkSecurityGroups/deploy.bicep' = {
+  scope: az.resourceGroup(resourceGroupName)
+  name: '${uniqueString(deployment().name, location)}-nsg'
+  params: {
+    name: networkSecurityGroupParameters.name
+  }
+  dependsOn: [
+    resourceGroup
+  ]
+}
+
 module virtualNetwork '../../../../../arm/Microsoft.Network/virtualNetworks/deploy.bicep' = {
   scope: az.resourceGroup(resourceGroupName)
   name: '${uniqueString(deployment().name, location)}-vnet'
@@ -25,3 +40,6 @@ module virtualNetwork '../../../../../arm/Microsoft.Network/virtualNetworks/depl
     networkSecurityGroup
   ]
 }
+// Output //
+output networkSecurityGroupResourceId string = networkSecurityGroup.outputs.networkSecurityGroupResourceId
+output virtualNetworkResourceId string = virtualNetwork.outputs.virtualNetworkResourceId

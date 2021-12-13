@@ -12,3 +12,5 @@ module logAnalyticsWorkspace '../../../../../arm/Microsoft.OperationalInsights/w
     resourceGroup
   ]
 }
+// Output //
+output logAnalyticsWorkspaceResourceId string = logAnalyticsWorkspace.outputs.logAnalyticsResourceId

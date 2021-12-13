@@ -18,3 +18,5 @@ module storageAccount '../../../../../arm/Microsoft.Storage/storageAccounts/depl
     resourceGroup
   ]
 }
+// Output //
+output storageAccountResourceId string = storageAccount.outputs.storageAccountResourceId

@@ -125,7 +125,7 @@ function Set-DependencyTemplate {
 
     # Check file iteself
     if (-not (Test-Path $templateFilePath)) {
-        $initialContent = Get-Content -Path (Join-Path $PSScriptRoot 'dependencyFileSource' 'bootstrap.bicep')
+        $initialContent = Get-Content -Path (Join-Path $PSScriptRoot 'dependencyFileSource' 'bootstrap.bicep') -Raw
         $null = New-Item $templateFilePath -ItemType 'File' -Value $initialContent -Force
     }
 
@@ -135,14 +135,13 @@ function Set-DependencyTemplate {
     # -----------
     $specifiedIds = ((Get-Content -Path $parameterFilePath | Select-String -Pattern '"(/subscriptions/.*)"').Matches.Groups.Value | ForEach-Object { $_.Replace('"', '') }) | Select-Object -Unique
 
-    # TODO : Add content, process other parameters?
     foreach ($specifiedId in $specifiedIds) {
 
         switch ($specifiedId) {
             { $PSItem -like '*/Microsoft.ManagedIdentity/UserAssignedIdentities/*' } {
                 if (-not (Test-IsResourceContained -resourceTypeToSeachFor 'Microsoft.ManagedIdentity/UserAssignedIdentities' -contentToSearchIn $dependencyFileContent)) {
                     # Add content
-                    $newContent = Get-Content -Path (Join-Path $PSScriptRoot 'dependencyFileSource' 'managedIdentity.bicep') -Raw
+                    $newContent = Get-Content -Path (Join-Path $PSScriptRoot 'dependencyFileSource' 'managedIdentity.bicep')
                     $dependencyFileContent = Add-TemplateContent -originalContent $dependencyFileContent -newContent $newContent
                 }
                 break
@@ -150,7 +149,7 @@ function Set-DependencyTemplate {
             { $PSItem -like '*/Microsoft.Storage/StorageAccounts/*' } {
                 if (-not (Test-IsResourceContained -resourceTypeToSeachFor 'Microsoft.Storage/StorageAccounts' -contentToSearchIn $dependencyFileContent)) {
                     # Add content
-                    $newContent = Get-Content -Path (Join-Path $PSScriptRoot 'dependencyFileSource' 'storageAccount.bicep') -Raw
+                    $newContent = Get-Content -Path (Join-Path $PSScriptRoot 'dependencyFileSource' 'storageAccount.bicep')
                     $dependencyFileContent = Add-TemplateContent -originalContent $dependencyFileContent -newContent $newContent
                 }
                 break
@@ -158,7 +157,7 @@ function Set-DependencyTemplate {
             { $PSItem -like '*/Microsoft.OperationalInsights/Workspaces/*' } {
                 if (-not (Test-IsResourceContained -resourceTypeToSeachFor 'Microsoft.OperationalInsights/Workspaces' -contentToSearchIn $dependencyFileContent)) {
                     # Add content
-                    $newContent = Get-Content -Path (Join-Path $PSScriptRoot 'dependencyFileSource' 'logAnalytics.bicep') -Raw
+                    $newContent = Get-Content -Path (Join-Path $PSScriptRoot 'dependencyFileSource' 'logAnalytics.bicep')
                     $dependencyFileContent = Add-TemplateContent -originalContent $dependencyFileContent -newContent $newContent
                 }
                 break
@@ -166,7 +165,7 @@ function Set-DependencyTemplate {
             { $PSItem -like '*/Microsoft.EventHub/namespaces/*' } {
                 if (-not (Test-IsResourceContained -resourceTypeToSeachFor 'Microsoft.EventHub/namespaces' -contentToSearchIn $dependencyFileContent)) {
                     # Add content
-                    $newContent = Get-Content -Path (Join-Path $PSScriptRoot 'dependencyFileSource' 'eventHubNamespace.bicep') -Raw
+                    $newContent = Get-Content -Path (Join-Path $PSScriptRoot 'dependencyFileSource' 'eventHubNamespace.bicep')
                     $dependencyFileContent = Add-TemplateContent -originalContent $dependencyFileContent -newContent $newContent
                 }
                 break
@@ -174,7 +173,7 @@ function Set-DependencyTemplate {
             { $PSItem -like '*/Microsoft.Network/virtualNetworks/*' } {
                 if (-not (Test-IsResourceContained -resourceTypeToSeachFor 'Microsoft.Network/virtualNetworks' -contentToSearchIn $dependencyFileContent)) {
                     # Add content
-                    $newContent = Get-Content -Path (Join-Path $PSScriptRoot 'dependencyFileSource' 'virtualNetwork.bicep') -Raw
+                    $newContent = Get-Content -Path (Join-Path $PSScriptRoot 'dependencyFileSource' 'virtualNetwork.bicep')
                     $dependencyFileContent = Add-TemplateContent -originalContent $dependencyFileContent -newContent $newContent
                 }
                 break
@@ -182,7 +181,7 @@ function Set-DependencyTemplate {
         }
     }
 
-    # Set-Content $templateFilePath -Value $dependencyFileContent
+    Set-Content $templateFilePath -Value $dependencyFileContent
 }
 
 function Add-TemplateContent {
@@ -193,20 +192,36 @@ function Add-TemplateContent {
         [array] $originalContent,
 
         [Parameter()]
-        [string] $newContent
+        [array] $newContent
     )
 
-    $newVariable = $newContent.Split('// Module //')[0]
-    $newModule = $newContent.Split('// Module //')[1]
+    # $newVariable = $newContent.Split('// Module //')[0]#.Trim().Split("`n")
+    $newVariable = $newContent[0..($newContent.IndexOf('// Module //') - 1)]
+    # $newModule = $newContent.Split('// Module //')[1]#.Split('// Output //')[0].Trim().Split("`n")
+    $newModule = $newContent[($newContent.IndexOf('// Module //') + 1)..($newContent.IndexOf('// Output //') - 1)]
+    # $newModule = $newContent.Split('// Output //')[-1]#.Trim().Split("`n")
+    $newOutput = $newContent[($newContent.IndexOf('// Output //') + 1)..($newContent.Count - 1)]
 
     # Check if a variables section already exist
-    if (-not ($originalContent | Select-String -Pattern "`$var .* = {").Matches.Value) {
-        # Check where the parameters end
+    if (-not ($originalContent | Select-String -Pattern '^var .* = {').Matches.Value) {
+        # Add variables header & servicesShort
         $modulesSectionStart = $originalContent.IndexOf('// Deployments //') - 1
-
-        $variablesHeader = @('// ========= //', '// Variables //', '// ========= //', '')
-        $originalContent = $originalContent[0..($modulesSectionStart - 1)] + $variablesHeader + $originalContent[$modulesSectionStart..($originalContent.Count)]
+        $newVarContent = Get-Content -Path (Join-Path $PSScriptRoot 'dependencyFileSource' 'bootstrap_var.bicep')
+        $originalContent = $originalContent[0..($modulesSectionStart - 1)] + $newVarContent + @('') + $originalContent[$modulesSectionStart..($originalContent.Count)]
     }
+
+    # Add variable
+    $modulesSectionStart = $originalContent.IndexOf('// Deployments //') - 1
+    $originalContent = $originalContent[0..($modulesSectionStart - 1)] + $newVariable + @('') + $originalContent[$modulesSectionStart..($originalContent.Count)]
+
+    # Add module
+    $outputsSectionStart = $originalContent.IndexOf('// Outputs //') - 1
+    $originalContent = $originalContent[0..($outputsSectionStart - 1)] + $newModule + @('') + $originalContent[$outputsSectionStart..($originalContent.Count)]
+
+    # add output
+    $originalContent = $originalContent + $newOutput
+
+    return $originalContent
 }
 
 function Test-IsResourceContained {
@@ -218,9 +233,9 @@ function Test-IsResourceContained {
 
         [Parameter(Mandatory = $true)]
         [array] $contentToSearchIn
-    )   'module.*Microsoft.Network\/virtualNetworks\/.*\.bicep.*'
+    )
 
-    if (($contentToSearchIn | Select-String -Pattern "`$module.*$resourceTypeToSeachFor.*\.bicep.*'").Matches.Value) {
+    if (($contentToSearchIn | Select-String -Pattern "^module.*$resourceTypeToSeachFor.*\.bicep.*'").Matches.Value) {
         return $true
     }
     return $false
