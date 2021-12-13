@@ -2,7 +2,7 @@
 
 ## Description
 
-This repository includes a collection of advanced and curated Modules consisting of [Bicep][Bicep] templates.
+This repository includes a collection of advanced and curated Modules consisting of [Azure Resource Manager (ARM)][AzureResourceManager] and [Bicep][Bicep] templates.
 
 ## Status
 
