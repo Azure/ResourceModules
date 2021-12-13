@@ -4,7 +4,7 @@ var storageAccountParameters = {
   storageAccountSku: 'Standard_LRS'
   allowBlobPublicAccess: false
 }
-// Module //
+// Modules //
 module storageAccount '../../../../../arm/Microsoft.Storage/storageAccounts/deploy.bicep' = {
   scope: az.resourceGroup(resourceGroupName)
   name: '${uniqueString(deployment().name, location)}-sa'

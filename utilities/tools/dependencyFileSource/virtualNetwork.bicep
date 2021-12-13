@@ -15,7 +15,7 @@ var virtualNetworkParameters = {
     }
   ]
 }
-// Module //
+// Modules //
 module networkSecurityGroup '../../../../../arm/Microsoft.Network/networkSecurityGroups/deploy.bicep' = {
   scope: az.resourceGroup(resourceGroupName)
   name: '${uniqueString(deployment().name, location)}-nsg'

@@ -1,22 +1,46 @@
 ﻿#region helper
+<#
+.SYNOPSIS
+Update the GitHub workflow file to leverage the generated dependency file(s)
+
+.DESCRIPTION
+Update the GitHub workflow file to leverage the generated dependency file(s)
+
+.PARAMETER RepoRoot
+Mandatory. The path to the root of the current repository.
+
+.PARAMETER rgPatternEnvName
+Mandatory. The name of the resource group pattern environment variable to add to the pipeline (e.g. 'rgPattern')
+
+.PARAMETER rgPattern
+Mandatory. The value for the [rgPatternEnvName] environment variable that is the naming format of the resource group to deploy into (e.g. 'test-ms.compute-virtualMachines-{0}-rg')
+
+.PARAMETER ProviderNameShort
+Mandatory. The short version of the provider namespace to operate in (e.g. 'ms.compute')
+
+.EXAMPLE
+Set-GitHubWorkflow -RepoRoot 'C:/resourceModules' -RgPatternEnvName 'rgPattern' -RgPattern 'test-ms.compute-virtualMachines-{0}-rg' -ProviderNameShort 'ms.compute'
+
+Update the GitHub workflow to leverage the dependency file(s) by adding the provided resource group pattern environment variable
+#>
 function Set-GitHubWorkflow {
 
     [CmdletBinding(SupportsShouldProcess)]
     param(
         [Parameter(Mandatory = $true)]
-        [string] $repoRoot,
+        [string] $RepoRoot,
 
         [Parameter(Mandatory = $true)]
-        [string] $rgPatternEnvName,
+        [string] $RgPatternEnvName,
 
         [Parameter(Mandatory = $true)]
-        [string] $rgPattern,
+        [string] $RgPattern,
 
         [Parameter(Mandatory = $true)]
-        [string] $providerNameShort
+        [string] $ProviderNameShort
     )
 
-    $gitHubWorkflowFilePath = (Join-Path $repoRoot '.github' 'workflows' ('{0}.{1}.yml' -f $providerNameShort, $moduleName)).ToLower()
+    $gitHubWorkflowFilePath = (Join-Path $RepoRoot '.github' 'workflows' ('{0}.{1}.yml' -f $ProviderNameShort, $ModuleName)).ToLower()
     if (-not (Test-Path $gitHubWorkflowFilePath)) {
         throw "GitHub workflow file in path [$gitHubWorkflowFilePath] not found."
     }
@@ -45,17 +69,17 @@ function Set-GitHubWorkflow {
         throw "[jobs] section not found in workflow file [$gitHubWorkflowFilePath]"
     }
 
-    $rgPatternExists = $false
+    $RgPatternExists = $false
     for ($index = $envIndex + 1; $index -le $envEndIndex; $index++) {
-        if (-not [String]::IsNullOrEmpty($workflowContent[$index]) -and $workflowContent[$index].Split(':')[0].Trim() -eq $rgPatternEnvName) {
+        if (-not [String]::IsNullOrEmpty($workflowContent[$index]) -and $workflowContent[$index].Split(':')[0].Trim() -eq $RgPatternEnvName) {
             # Not rg pattern already in file. Updating
-            $workflowContent[$index] = "{0}: '{1}'" -f $workflowContent[$index].Split(':')[0], $rgPattern
-            $rgPatternExists = $true
+            $workflowContent[$index] = "{0}: '{1}'" -f $workflowContent[$index].Split(':')[0], $RgPattern
+            $RgPatternExists = $true
         }
     }
-    if (-not $rgPatternExists) {
+    if (-not $RgPatternExists) {
         # Not rg pattern not yet in file. Adding new
-        $newLine = "  {0}: '{1}'" -f $rgPatternEnvName, $rgPattern
+        $newLine = "  {0}: '{1}'" -f $RgPatternEnvName, $RgPattern
         $workflowContent = $workflowContent[0..$envIndex] + @($newLine) + $workflowContent[($envIndex + 1)..$workflowContent.Count]
     }
 
@@ -76,21 +100,45 @@ function Set-GitHubWorkflow {
     }
 }
 
+<#
+.SYNOPSIS
+Update the Azure DevOps pipeline file to leverage the generated dependency file(s)
+
+.DESCRIPTION
+Update the Azure DevOps pipeline file to leverage the generated dependency file(s)
+
+.PARAMETER RepoRoot
+Mandatory. The path to the root of the current repository.
+
+.PARAMETER rgPatternEnvName
+Mandatory. The name of the resource group pattern environment variable to add to the pipeline (e.g. 'rgPattern')
+
+.PARAMETER rgPattern
+Mandatory. The value for the [rgPatternEnvName] environment variable that is the naming format of the resource group to deploy into (e.g. 'test-ms.compute-virtualMachines-{0}-rg')
+
+.PARAMETER ProviderNameShort
+Mandatory. The short version of the provider namespace to operate in (e.g. 'ms.compute')
+
+.EXAMPLE
+Set-AzureDevOpsPipeline -RepoRoot 'C:/resourceModules' -RgPatternEnvName 'rgPattern' -RgPattern 'test-ms.compute-virtualMachines-{0}-rg' -ProviderNameShort 'ms.compute'
+
+Update the Azure DevOps pipeline to leverage the dependency file(s) by adding the provided resource group pattern environment variable
+#>
 function Set-AzureDevOpsPipeline {
 
     [CmdletBinding(SupportsShouldProcess)]
     param(
         [Parameter(Mandatory = $true)]
-        [string] $repoRoot,
+        [string] $RepoRoot,
 
         [Parameter(Mandatory = $true)]
-        [string] $rgPatternEnvName,
+        [string] $RgPatternEnvName,
 
         [Parameter(Mandatory = $true)]
-        [string] $rgPattern,
+        [string] $RgPattern,
 
         [Parameter(Mandatory = $true)]
-        [string] $providerNameShort
+        [string] $ProviderNameShort
     )
 
     # TODO: Add once DevOps pipelines are available
@@ -98,25 +146,49 @@ function Set-AzureDevOpsPipeline {
     throw 'Not implemented exception [Azure DevOps pipeline file uodate]'
 }
 
+<#
+.SYNOPSIS
+Update or add a dependency template for a given parameter file
+
+.DESCRIPTION
+Update or add a dependency template for a given parameter file on a best effort basis.
+
+.PARAMETER RepoRoot
+Mandatory. The path to the root of the current repository.
+
+.PARAMETER ProviderName
+Mandatory. The name of the provider namespace to process
+
+.PARAMETER moduleName
+Mandatory. The resource type of the module to process
+
+.PARAMETER parameterFilePath
+Mandatory. The path the the parameter file to generate the dependency file for
+
+.EXAMPLE
+Set-DependencyTemplate -RepoRoot 'C:/resourceModules' -ProviderName 'Microsoft.Compute' -moduleName 'virtualMachines' -ParameterFilePath 'C:/resourceModules/arm/Microsoft.Compute/VirtualMachines/virtualMachines/min.parameters.json'
+
+Update or create a dependency template for the parmeter file 'min.parameter.json' for module 'Microsoft.Compute/virtualMachines'
+#>
 function Set-DependencyTemplate {
 
     [CmdletBinding(SupportsShouldProcess)]
     param (
         [Parameter(Mandatory = $true)]
-        [string] $repoRoot,
+        [string] $RepoRoot,
 
         [Parameter(Mandatory = $true)]
-        [string] $providerName,
+        [string] $ProviderName,
 
         [Parameter(Mandatory = $true)]
-        [string] $moduleName,
+        [string] $ModuleName,
 
         [Parameter(Mandatory = $true)]
-        [string] $parameterFilePath
+        [string] $ParameterFilePath
     )
 
-    $templatesDirectory = Join-Path $repoRoot 'utilities' 'pipelines' 'moduleDependencies' $providerName $moduleName
-    $templateFilePath = Join-Path $templatesDirectory ('{0}.bicep' -f (Split-Path $parameterFilePath -LeafBase))
+    $templatesDirectory = Join-Path $RepoRoot 'utilities' 'pipelines' 'moduleDependencies' $ProviderName $ModuleName
+    $TemplateFilePath = Join-Path $templatesDirectory ('{0}.bicep' -f (Split-Path $ParameterFilePath -LeafBase))
 
     # Check exected folder
     if (-not (Test-Path $templatesDirectory)) {
@@ -124,57 +196,57 @@ function Set-DependencyTemplate {
     }
 
     # Check file iteself
-    if (-not (Test-Path $templateFilePath)) {
+    if (-not (Test-Path $TemplateFilePath)) {
         $initialContent = Get-Content -Path (Join-Path $PSScriptRoot 'dependencyFileSource' 'bootstrap.bicep') -Raw
-        $null = New-Item $templateFilePath -ItemType 'File' -Value $initialContent -Force
+        $null = New-Item $TemplateFilePath -ItemType 'File' -Value $initialContent -Force
     }
 
-    [array]$dependencyFileContent = Get-Content -Path $templateFilePath
+    [array]$dependencyFileContent = Get-Content -Path $TemplateFilePath
 
     # Process IDs
     # -----------
-    $specifiedIds = ((Get-Content -Path $parameterFilePath | Select-String -Pattern '"(/subscriptions/.*)"').Matches.Groups.Value | ForEach-Object { $_.Replace('"', '') }) | Select-Object -Unique
+    $specifiedIds = ((Get-Content -Path $ParameterFilePath | Select-String -Pattern '"(/subscriptions/.*)"').Matches.Groups.Value | ForEach-Object { $_.Replace('"', '') }) | Select-Object -Unique
 
     foreach ($specifiedId in $specifiedIds) {
 
         $templateContentInputObject = @{
             originalContent   = $dependencyFileContent
-            parameterFilePath = $parameterFilePath
-            moduleName        = $moduleName
-            providerName      = $providerName
+            parameterFilePath = $ParameterFilePath
+            moduleName        = $ModuleName
+            providerName      = $ProviderName
         }
 
         switch ($specifiedId) {
             { $PSItem -like '*/Microsoft.ManagedIdentity/UserAssignedIdentities/*' } {
-                if (-not (Test-IsResourceContained -resourceTypeToSeachFor 'Microsoft.ManagedIdentity/UserAssignedIdentities' -contentToSearchIn $dependencyFileContent)) {
+                if (-not (Test-IsModuleContained -ResourceTypeToSeachFor 'Microsoft.ManagedIdentity/UserAssignedIdentities' -ContentToSearchIn $dependencyFileContent)) {
                     $newContent = Get-Content -Path (Join-Path $PSScriptRoot 'dependencyFileSource' 'managedIdentity.bicep')
                     $dependencyFileContent = Add-TemplateContent @templateContentInputObject -newContent $newContent
                 }
                 break
             }
             { $PSItem -like '*/Microsoft.Storage/StorageAccounts/*' } {
-                if (-not (Test-IsResourceContained -resourceTypeToSeachFor 'Microsoft.Storage/StorageAccounts' -contentToSearchIn $dependencyFileContent)) {
+                if (-not (Test-IsModuleContained -ResourceTypeToSeachFor 'Microsoft.Storage/StorageAccounts' -ContentToSearchIn $dependencyFileContent)) {
                     $newContent = Get-Content -Path (Join-Path $PSScriptRoot 'dependencyFileSource' 'storageAccount.bicep')
                     $dependencyFileContent = Add-TemplateContent @templateContentInputObject -newContent $newContent
                 }
                 break
             }
             { $PSItem -like '*/Microsoft.OperationalInsights/Workspaces/*' } {
-                if (-not (Test-IsResourceContained -resourceTypeToSeachFor 'Microsoft.OperationalInsights/Workspaces' -contentToSearchIn $dependencyFileContent)) {
+                if (-not (Test-IsModuleContained -ResourceTypeToSeachFor 'Microsoft.OperationalInsights/Workspaces' -ContentToSearchIn $dependencyFileContent)) {
                     $newContent = Get-Content -Path (Join-Path $PSScriptRoot 'dependencyFileSource' 'logAnalytics.bicep')
                     $dependencyFileContent = Add-TemplateContent @templateContentInputObject -newContent $newContent
                 }
                 break
             }
             { $PSItem -like '*/Microsoft.EventHub/namespaces/*' } {
-                if (-not (Test-IsResourceContained -resourceTypeToSeachFor 'Microsoft.EventHub/namespaces' -contentToSearchIn $dependencyFileContent)) {
+                if (-not (Test-IsModuleContained -ResourceTypeToSeachFor 'Microsoft.EventHub/namespaces' -ContentToSearchIn $dependencyFileContent)) {
                     $newContent = Get-Content -Path (Join-Path $PSScriptRoot 'dependencyFileSource' 'eventHubNamespace.bicep')
                     $dependencyFileContent = Add-TemplateContent @templateContentInputObject -newContent $newContent
                 }
                 break
             }
             { $PSItem -like '*/Microsoft.Network/virtualNetworks/*' } {
-                if (-not (Test-IsResourceContained -resourceTypeToSeachFor 'Microsoft.Network/virtualNetworks' -contentToSearchIn $dependencyFileContent)) {
+                if (-not (Test-IsModuleContained -ResourceTypeToSeachFor 'Microsoft.Network/virtualNetworks' -ContentToSearchIn $dependencyFileContent)) {
                     $newContent = Get-Content -Path (Join-Path $PSScriptRoot 'dependencyFileSource' 'virtualNetwork.bicep')
                     $dependencyFileContent = Add-TemplateContent @templateContentInputObject -newContent $newContent
                 }
@@ -183,9 +255,54 @@ function Set-DependencyTemplate {
         }
     }
 
-    Set-Content $templateFilePath -Value $dependencyFileContent
+    Set-Content $TemplateFilePath -Value $dependencyFileContent
 }
 
+<#
+.SYNOPSIS
+Merge the given template content into the given target file based on their type (variable/module/output)
+
+.DESCRIPTION
+Merge the given template content into the given target file based on their type (variable/module/output).
+If no variables section exists, it will be added
+
+.PARAMETER originalContent
+Mandatory. The content array to add data to
+
+.PARAMETER newContent
+Mandatory. The new content array to take the data from.
+Different pieces of information (e.g. variables) should have a prefix header like:
+- none for variables
+- '// Modules //' for modules
+- '// Outputs //' for outputs
+
+.PARAMETER parameterFilePath
+Optional. The path to the parameter file we're processing.
+Required if the dependency-file does not yet have variables in it.
+Will be used to generate a short service name as a resource identifier.
+
+.PARAMETER moduleName
+Optional. The name of the module we operate in.
+Required if the dependency-file does not yet have variables in it.
+Will be used to generate a short service name as a resource identifier.
+
+.PARAMETER providerName
+Optional. The name of the provider name space we operate in.
+Required if the dependency-file does not yet have variables in it.
+Will be used to generate a short service name as a resource identifier.
+
+.EXAMPLE
+$templateContentInputObject = @{
+    originalContent   = @('targetScope = 'subscription', (...))
+    newContent        = @('var myvar = { key = 'value' }', (...))
+    parameterFilePath = 'C:/Microsoft.Compute/VirtualMachines/virtualMachines/min.parameters.json'
+    moduleName        = 'virtualMachines'
+    providerName      = 'Microsoft.Compute'
+}
+$dependencyFileContent = Add-TemplateContent @templateContentInputObject
+
+Add the given new content @('var myvar = { key = 'value' }', (...)) to the file @('targetScope = 'subscription', (...)) split by their resource type. If no varialbes are pre-existing, a servicesShort name will be generated based on the remaining parameters.
+#>
 function Add-TemplateContent {
 
     [CmdletBinding()]
@@ -196,14 +313,14 @@ function Add-TemplateContent {
         [Parameter(Mandatory = $true)]
         [array] $newContent,
 
-        [Parameter(Mandatory = $true)]
-        [string] $parameterFilePath,
+        [Parameter(Mandatory = $false)]
+        [string] $ParameterFilePath,
 
-        [Parameter(Mandatory = $true)]
-        [string] $moduleName,
+        [Parameter(Mandatory = $false)]
+        [string] $ModuleName,
 
-        [Parameter(Mandatory = $true)]
-        [string] $providerName
+        [Parameter(Mandatory = $false)]
+        [string] $ProviderName
     )
 
     # Check if a variables section already exist
@@ -213,7 +330,7 @@ function Add-TemplateContent {
         $newVarContent = Get-Content -Path (Join-Path $PSScriptRoot 'dependencyFileSource' 'bootstrap_var.bicep')
 
         # inject proposed short
-        $generatedName = Get-ServiceShort -moduleName $moduleName -parameterFilePath $parameterFilePath -providerName $providerName
+        $generatedName = Get-ServiceShort -moduleName $ModuleName -parameterFilePath $ParameterFilePath -providerName $ProviderName
         $newVarContent[1] = $newVarContent[1].Replace('<updateShort>', $generatedName)
 
         # set content
@@ -221,12 +338,12 @@ function Add-TemplateContent {
     }
 
     # Add variable(s)
-    $newVariable = $newContent[0..($newContent.IndexOf('// Module //') - 1)]
+    $newVariable = $newContent[0..($newContent.IndexOf('// Modules //') - 1)]
     $modulesSectionStart = $originalContent.IndexOf('// Deployments //') - 1
     $originalContent = $originalContent[0..($modulesSectionStart - 1)] + $newVariable + @('') + $originalContent[$modulesSectionStart..($originalContent.Count)]
 
     # Add module(s)
-    $newModule = $newContent[($newContent.IndexOf('// Module //') + 1)..($newContent.IndexOf('// Output //') - 1)]
+    $newModule = $newContent[($newContent.IndexOf('// Modules //') + 1)..($newContent.IndexOf('// Output //') - 1)]
     $outputsSectionStart = $originalContent.IndexOf('// Outputs //') - 1
     $originalContent = $originalContent[0..($outputsSectionStart - 1)] + $newModule + @('') + $originalContent[$outputsSectionStart..($originalContent.Count)]
 
@@ -237,45 +354,101 @@ function Add-TemplateContent {
     return $originalContent
 }
 
+<#
+.SYNOPSIS
+Get a proposal for a parameter file specific short-name proposal
+
+.DESCRIPTION
+Get a proposal for a parameter file specific short-name proposal. This name can be used to generate a unique but specific name for deployed dependency services.
+Handles the given parameters as follows:
+- Provider Name: From the provider name remove 'Microsoft.' and if the rest has multiple elements in pascal case, use the first character of each, else create a substring of length 3.
+    For example:
+    - 'Microsoft.Compute' becomes 'com'
+    - 'Microsoft.ContainerInstance' becomes 'ci'
+- ModuleName: If it has multiple elements in pascal case, use the first character of each, else create a substring of length 3.
+    For example:
+    - 'virtualMachines' becomes 'vm'
+    - 'servers' becomes 'ser'
+- ParameterFilePath: From the files base name, if it has mutliple name prefix elements (aside from parameters.json, like 'win.min.parmameters.json') take a substring of length 3 each, otherwise use just a substring of the name.
+    Fore example:
+    - 'windows.min.parameters.json' becomes 'winmin'
+    - 'parameters.json' becomes 'par'
+The result each will be concated into one lowercase string.
+
+.PARAMETER ProviderName
+Mandatory. The service provider of the module to generate a name for (e.g. 'Microsoft.Compute/VirtualMachines').
+
+.PARAMETER ModuleName
+Mandatory. The name of the module to generate a name for (e.g. 'virtualMachines').
+
+.PARAMETER ParameterFilePath
+Mandatory. The path to the parameter file to generate the name for.
+
+.EXAMPLE
+Get-ServiceShort -providerName 'Microsoft.Compute/VirtualMachines' -moduleName 'virtualMachines' -parameterFilePath 'C:/Microsoft.Compute/VirtualMachines/virtualMachines/min.parameters.json'
+
+Generates a short identifier for the given parameter. For example 'comvmwinmin'
+#>
 function Get-ServiceShort {
 
     [CmdletBinding()]
     param (
         [Parameter(Mandatory = $true)]
-        [string] $providerName,
+        [string] $ProviderName,
 
         [Parameter(Mandatory = $true)]
-        [string] $moduleName,
+        [string] $ModuleName,
 
         [Parameter(Mandatory = $true)]
-        [string] $parameterFilePath
+        [string] $ParameterFilePath
     )
 
-    [array]$providerParts = ($providerName.Split('.')[1] -creplace '([A-Z\W_]|\d+)(?<![a-z])', ' $&').Trim().Split(' ')
+    # process provider namespace
+    [array]$providerParts = ($ProviderName.Split('.')[1] -creplace '([A-Z\W_]|\d+)(?<![a-z])', ' $&').Trim().Split(' ')
     $providerShort = ($providerParts.Count -gt 1) ? (($providerParts | ForEach-Object { $_.ToCharArray()[0] }) -join '').ToLower() : $providerParts.SubString(0, 3).ToLower()
 
-    [array]$resourceTypeParts = ($moduleName -creplace '([A-Z\W_]|\d+)(?<![a-z])', ' $&').Trim().Split(' ')
+    # process resource type
+    [array]$resourceTypeParts = ($ModuleName -creplace '([A-Z\W_]|\d+)(?<![a-z])', ' $&').Trim().Split(' ')
     $resourceTypeShort = ($resourceTypeParts.Count -gt 1) ? (($resourceTypeParts | ForEach-Object { $_.ToCharArray()[0] }) -join '').ToLower() : $resourceTypeParts.SubString(0, 3).ToLower()
 
-    [array]$paramFileParts = (Split-Path $parameterFilePath -LeafBase).Split('.')
+    # process parameter file name
+    [array]$paramFileParts = (Split-Path $ParameterFilePath -LeafBase).Split('.')
     $prefixes = ($paramFileParts.Count -gt 1) ? ($paramFileParts[0..($paramFileParts.Count - 2)] | ForEach-Object { $_.Substring(0, 3) }) -join '' : $paramFileParts.SubString(0, 3).ToLower()
 
     # Build name
     return '{0}{1}{2}' -f $providerShort, $resourceTypeShort, $prefixes
 }
 
-function Test-IsResourceContained {
+<#
+.SYNOPSIS
+Test if the given resource type is already specified as a module deployment in the provided content array.
+
+.DESCRIPTION
+Test if the given resource type is already specified as a module deployment in the provided content array. Returns true or false.
+
+.PARAMETER ResourceTypeToSeachFor
+Mandatory. The resource type (e.g. storageAccounts) to search for.
+
+.PARAMETER ContentToSearchIn
+Mandatory. The content array to search in. Usually an array that contents the contents of a .bicep template.
+
+.EXAMPLE
+Test-IsModuleContained -ResourceTypeToSeachFor 'Microsoft.Network/virtualNetworks' -ContentToSearchIn @('targetscope = 'subscription', module vnet 'Microsoft.Network/virtualNetworks' '../deploy.bicep' = {...}')
+
+Search for resource type 'Microsoft.Network/virtualNetworks' in the given array. In this example it would return true.
+#>
+function Test-IsModuleContained {
 
     [CmdletBinding()]
     param (
         [Parameter(Mandatory = $true)]
-        [string] $resourceTypeToSeachFor,
+        [string] $ResourceTypeToSeachFor,
 
         [Parameter(Mandatory = $true)]
-        [array] $contentToSearchIn
+        [array] $ContentToSearchIn
     )
 
-    if (($contentToSearchIn | Select-String -Pattern "^module.*$resourceTypeToSeachFor.*\.bicep.*'").Matches.Value) {
+    if (($ContentToSearchIn | Select-String -Pattern "^module.*$ResourceTypeToSeachFor.*\.bicep.*'").Matches.Value) {
         return $true
     }
     return $false
@@ -284,70 +457,73 @@ function Test-IsResourceContained {
 
 <#
 .SYNOPSIS
-Short description
+Generate an intial proposal of a dependency file (.bicep) for a given module.
 
 .DESCRIPTION
-Long description
+Generate an intial proposal of a dependency file (.bicep) for a given module.
+The function will generate the file on a best-efforts basis based on resourceIDs in the module's parameter file.
+Files will be added to the 'utilities/pipelines/moduleDepenencies' folder as per their provider namespace & resource type.
+The files will have the same name as their corresponding parameter file, but with a [.bicep] extension.
 
-.PARAMETER templateFilePath
-Parameter description
+.PARAMETER TemplateFilePath
+Mandatory. The template file path of the module to generate the dependency file(s) for.
 
-.PARAMETER includeGitHubWorkflow
-Parameter description
+.PARAMETER IncludeGitHubWorkflow
+Optional. A switch to tell the function to also update the GitHub workflow file so that it leverages the dependency file(s).
 
-.PARAMETER includeAzureDevOpsPipeline
-Parameter description
+.PARAMETER IncludeAzureDevOpsPipeline
+Optional. A switch to tell the function to also update the Azure DevOps pipeline file so that it leverages the dependency file(s).
 
 .EXAMPLE
-New-DependenciesFile -templateFilePath 'C:\Microsoft.Compute\virtualMachines\deploy.bicep' -includeGitHubWorkflow
+New-DependenciesFile -TemplateFilePath 'C:\Microsoft.Compute\virtualMachines\deploy.bicep' -IncludeGitHubWorkflow
 
-
+Generate new dependency files for all parameter files of module 'virtualMachines' and update the GitHub workflow pipeline accordingl
 #>
 function New-DependenciesFile {
 
     [CmdletBinding(SupportsShouldProcess)]
     param(
         [Parameter(Mandatory = $true)]
-        [string] $templateFilePath,
+        [string] $TemplateFilePath,
 
         [Parameter(Mandatory = $false)]
-        [switch] $includeGitHubWorkflow,
+        [switch] $IncludeGitHubWorkflow,
 
         [Parameter(Mandatory = $false)]
-        [switch] $includeAzureDevOpsPipeline
+        [switch] $IncludeAzureDevOpsPipeline
     )
 
     begin {
         Write-Debug ('{0} entered' -f $MyInvocation.MyCommand)
     }
     process {
-        $modulePath = Split-Path $templateFilePath -Parent
-        $moduleName = Split-Path $modulePath -Leaf
-        $providerName = Split-Path (Split-Path $modulePath -Parent) -Leaf
-        $providerNameShort = $providerName.Replace('Microsoft', 'MS')
-        $repoRoot = $templateFilePath.Replace('\', '/').Split('/arm/')[0]
-        $rgPatternEnvName = 'rgPattern'
-        $rgPattern = $('test', $providerNameShort.ToLower(), $moduleName, '{0}', 'rg') -join '-'
+        $modulePath = Split-Path $TemplateFilePath -Parent
+        $ModuleName = Split-Path $modulePath -Leaf
+        $ProviderName = Split-Path (Split-Path $modulePath -Parent) -Leaf
+        $ProviderNameShort = $ProviderName.Replace('Microsoft', 'MS')
+        $RepoRoot = $TemplateFilePath.Replace('\', '/').Split('/arm/')[0]
+        $RgPatternEnvName = 'rgPattern'
+        $RgPattern = @('test', $ProviderNameShort.ToLower(), $ModuleName, '{0}', 'rg') -join '-'
 
         # Handle Pipelines
         # ----------------
-        if ($includeGitHubWorkflow) {
+        if ($IncludeGitHubWorkflow) {
             $setGitHubWorkflowInputObject = @{
-                repoRoot          = $repoRoot
-                rgPatternEnvName  = $rgPatternEnvName
-                rgPattern         = $rgPattern
-                providerNameShort = $providerNameShort
+                RepoRoot          = $RepoRoot
+                RgPatternEnvName  = $RgPatternEnvName
+                RgPattern         = $RgPattern
+                ProviderNameShort = $ProviderNameShort
             }
             if ($PSCmdlet.ShouldProcess('GitHub workflow file', 'Update')) {
                 Set-GitHubWorkflow @setGitHubWorkflowInputObject
             }
         }
-        if ($includeAzureDevOpsPipeline) {
+        if ($IncludeAzureDevOpsPipeline) {
             $setAzureDevOpsPipelineInputObject = @{
-                repoRoot          = $repoRoot
-                rgPatternEnvName  = $rgPatternEnvName
-                rgPattern         = $rgPattern
-                providerNameShort = $providerNameShort
+                RepoRoot          = $RepoRoot
+                RgPatternEnvName  = $RgPatternEnvName
+                RgPattern         = $RgPattern
+                ProviderNameShort = $ProviderNameShort
             }
             if ($PSCmdlet.ShouldProcess('Azure DevOps pipeline file', 'Update')) {
                 Set-AzureDevOpsPipeline @setAzureDevOpsPipelineInputObject
@@ -357,14 +533,14 @@ function New-DependenciesFile {
         # Handle dependency file
         # ----------------------
         $parameterFiles = Get-ChildItem (Join-Path $modulePath '.parameters') -Filter '*.json'
-        foreach ($parameterFilePath in $parameterFiles.FullName) {
+        foreach ($ParameterFilePath in $parameterFiles.FullName) {
             $dependencyTemplateInputObject = @{
-                repoRoot          = $repoRoot
-                providerName      = $providerName
-                moduleName        = $moduleName
-                parameterFilePath = $parameterFilePath
+                RepoRoot          = $RepoRoot
+                ProviderName      = $ProviderName
+                ModuleName        = $ModuleName
+                ParameterFilePath = $ParameterFilePath
             }
-            if ($PSCmdlet.ShouldProcess(('Dependency template for parameter file [{0}]' -f (Split-Path $parameterFilePath -Leaf)), 'Set')) {
+            if ($PSCmdlet.ShouldProcess(('Dependency template for parameter file [{0}]' -f (Split-Path $ParameterFilePath -Leaf)), 'Set')) {
                 Set-DependencyTemplate @dependencyTemplateInputObject
             }
         }

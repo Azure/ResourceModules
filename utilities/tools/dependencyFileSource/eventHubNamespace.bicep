@@ -16,7 +16,7 @@ var eventHubNamespaceParameters = {
     }
   ]
 }
-// Module //
+// Modules //
 module eventHubNamespace '../../../../../arm/Microsoft.EventHub/namespaces/deploy.bicep' = {
   scope: az.resourceGroup(resourceGroupName)
   name: '${uniqueString(deployment().name, location)}-ehn'
