@@ -15,7 +15,7 @@ on:
   #   paths:
   #     - '.github/actions/templates/**'
   #     - '.github/workflows/platform.dependencies.yml'
-  #     - 'utilities/pipelines/dependencies/**'
+  #     - 'utilities/pipelines/dependencies/***'
 
 env:
   defaultLocation: 'WestEurope'
