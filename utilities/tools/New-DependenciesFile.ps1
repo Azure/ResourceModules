@@ -129,7 +129,7 @@ function Set-DependencyTemplate {
         $null = New-Item $templateFilePath -ItemType 'File' -Value $initialContent -Force
     }
 
-    $dependencyFileContent = Get-Content -Path $templateFilePath -Raw
+    [array]$dependencyFileContent = Get-Content -Path $templateFilePath
 
     # Process IDs
     # -----------
@@ -139,21 +139,44 @@ function Set-DependencyTemplate {
     foreach ($specifiedId in $specifiedIds) {
 
         switch ($specifiedId) {
-            { $PSItem.value -like '*/Microsoft.ManagedIdentity/UserAssignedIdentities/*' } {
+            { $PSItem -like '*/Microsoft.ManagedIdentity/UserAssignedIdentities/*' } {
+                if (-not (Test-IsResourceContained -resourceTypeToSeachFor 'Microsoft.ManagedIdentity/UserAssignedIdentities' -contentToSearchIn $dependencyFileContent)) {
+                    # Add content
+                    $newContent = Get-Content -Path (Join-Path $PSScriptRoot 'dependencyFileSource' 'managedIdentity.bicep') -Raw
+                    $dependencyFileContent = Add-TemplateContent -originalContent $dependencyFileContent -newContent $newContent
+                }
                 break
             }
-            { $PSItem.value -like '*/Microsoft.Storage/StorageAccounts/*' } {
-
+            { $PSItem -like '*/Microsoft.Storage/StorageAccounts/*' } {
+                if (-not (Test-IsResourceContained -resourceTypeToSeachFor 'Microsoft.Storage/StorageAccounts' -contentToSearchIn $dependencyFileContent)) {
+                    # Add content
+                    $newContent = Get-Content -Path (Join-Path $PSScriptRoot 'dependencyFileSource' 'storageAccount.bicep') -Raw
+                    $dependencyFileContent = Add-TemplateContent -originalContent $dependencyFileContent -newContent $newContent
+                }
                 break
             }
-            { $PSItem.value -like '*/Microsoft.OperationalInsights/Workspaces/*' } {
+            { $PSItem -like '*/Microsoft.OperationalInsights/Workspaces/*' } {
+                if (-not (Test-IsResourceContained -resourceTypeToSeachFor 'Microsoft.OperationalInsights/Workspaces' -contentToSearchIn $dependencyFileContent)) {
+                    # Add content
+                    $newContent = Get-Content -Path (Join-Path $PSScriptRoot 'dependencyFileSource' 'logAnalytics.bicep') -Raw
+                    $dependencyFileContent = Add-TemplateContent -originalContent $dependencyFileContent -newContent $newContent
+                }
                 break
             }
-            { $PSItem.value -like '*/Microsoft.EventHub/namespaces/*' } {
+            { $PSItem -like '*/Microsoft.EventHub/namespaces/*' } {
+                if (-not (Test-IsResourceContained -resourceTypeToSeachFor 'Microsoft.EventHub/namespaces' -contentToSearchIn $dependencyFileContent)) {
+                    # Add content
+                    $newContent = Get-Content -Path (Join-Path $PSScriptRoot 'dependencyFileSource' 'eventHubNamespace.bicep') -Raw
+                    $dependencyFileContent = Add-TemplateContent -originalContent $dependencyFileContent -newContent $newContent
+                }
                 break
             }
-            { $PSItem.value -like '*/Microsoft.Network/virtualNetworks/*' } {
-
+            { $PSItem -like '*/Microsoft.Network/virtualNetworks/*' } {
+                if (-not (Test-IsResourceContained -resourceTypeToSeachFor 'Microsoft.Network/virtualNetworks' -contentToSearchIn $dependencyFileContent)) {
+                    # Add content
+                    $newContent = Get-Content -Path (Join-Path $PSScriptRoot 'dependencyFileSource' 'virtualNetwork.bicep') -Raw
+                    $dependencyFileContent = Add-TemplateContent -originalContent $dependencyFileContent -newContent $newContent
+                }
                 break
             }
         }
@@ -162,7 +185,31 @@ function Set-DependencyTemplate {
     # Set-Content $templateFilePath -Value $dependencyFileContent
 }
 
-function Test-ResourceContained {
+function Add-TemplateContent {
+
+    [CmdletBinding()]
+    param (
+        [Parameter()]
+        [array] $originalContent,
+
+        [Parameter()]
+        [string] $newContent
+    )
+
+    $newVariable = $newContent.Split('// Module //')[0]
+    $newModule = $newContent.Split('// Module //')[1]
+
+    # Check if a variables section already exist
+    if (-not ($originalContent | Select-String -Pattern "`$var .* = {").Matches.Value) {
+        # Check where the parameters end
+        $modulesSectionStart = $originalContent.IndexOf('// Deployments //') - 1
+
+        $variablesHeader = @('// ========= //', '// Variables //', '// ========= //', '')
+        $originalContent = $originalContent[0..($modulesSectionStart - 1)] + $variablesHeader + $originalContent[$modulesSectionStart..($originalContent.Count)]
+    }
+}
+
+function Test-IsResourceContained {
 
     [CmdletBinding()]
     param (
@@ -170,10 +217,13 @@ function Test-ResourceContained {
         [string] $resourceTypeToSeachFor,
 
         [Parameter(Mandatory = $true)]
-        [string[]] $contentToSearchIn
-    )
+        [array] $contentToSearchIn
+    )   'module.*Microsoft.Network\/virtualNetworks\/.*\.bicep.*'
 
-    $contained = $false
+    if (($contentToSearchIn | Select-String -Pattern "`$module.*$resourceTypeToSeachFor.*\.bicep.*'").Matches.Value) {
+        return $true
+    }
+    return $false
 }
 #endregion
 
@@ -250,4 +300,5 @@ function New-DependenciesFile {
 }
 # New-DependenciesFile -templateFilePath 'C:\dev\ip\Azure-ResourceModules\ResourceModules\arm\Microsoft.Compute\galleries\deploy.bicep' -includeGitHubWorkflow
 # New-DependenciesFile -templateFilePath 'C:\dev\ip\Azure-ResourceModules\ResourceModules\arm\Microsoft.AnalysisServices\servers\deploy.bicep' -includeGitHubWorkflow
-New-DependenciesFile -templateFilePath 'C:\dev\ip\Azure-ResourceModules\ResourceModules\arm\Microsoft.Compute\virtualMachines\deploy.bicep' -includeGitHubWorkflow
+# New-DependenciesFile -templateFilePath 'C:\dev\ip\Azure-ResourceModules\ResourceModules\arm\Microsoft.Compute\virtualMachines\deploy.bicep' -includeGitHubWorkflow
+New-DependenciesFile -templateFilePath 'C:\dev\ip\Azure-ResourceModules\ResourceModules\arm\Microsoft.Sql\servers\deploy.bicep' -includeGitHubWorkflow
