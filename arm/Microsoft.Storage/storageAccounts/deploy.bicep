@@ -44,6 +44,13 @@ param storageAccountSku string = 'Standard_GRS'
 @description('Optional. Storage Account Access Tier.')
 param storageAccountAccessTier string = 'Hot'
 
+@allowed([
+  'Enabled'
+  'Disabled'
+])
+@description('Optional. Storage Account Public Network Access.')
+param publicNetworkAccess bool 
+
 @description('Optional. Provides the identity based authentication settings for Azure Files.')
 param azureFilesIdentityBasedAuthentication object = {}
 
@@ -165,7 +172,8 @@ var saBaseProperties = {
   isHnsEnabled: ((!enableHierarchicalNamespace) ? null : enableHierarchicalNamespace)
   minimumTlsVersion: minimumTlsVersion
   networkAcls: (empty(networkAcls) ? null : networkAcls_var)
-  allowBlobPublicAccess: allowBlobPublicAccess
+  allowBlobPublicAccess: (storageAccountKind == 'true') ? null : allowBlobPublicAccess
+  publicNetworkAccess: (empty(publicNetworkAccess) ? null : publicNetworkAccess
 }
 var saOptIdBasedAuthProperties = {
   azureFilesIdentityBasedAuthentication: azureFilesIdentityBasedAuthentication_var
