@@ -397,10 +397,6 @@ param vnetSubnetId string = ''
 @description('Optional. Determines the type of workload a node can run.')
 param workloadRuntime string = ''
 
-resource managedCluster 'Microsoft.ContainerService/managedClusters@2021-08-01' existing = {
-  name: managedClusterName
-}
-
 var creationData = {
   sourceResourceId: !empty(sourceResourceId) ? sourceResourceId : null
 }
@@ -459,6 +455,10 @@ var linuxOSConfig = {
 
 var upgradeSettings = {
   maxSurge: maxSurge
+}
+
+resource managedCluster 'Microsoft.ContainerService/managedClusters@2021-08-01' existing = {
+  name: managedClusterName
 }
 
 resource agentPool 'Microsoft.ContainerService/managedClusters/agentPools@2021-08-01' = {
