@@ -60,7 +60,7 @@ function Remove-ResourceListInner {
                 }
             }
 
-            # We want to purge resources even if they were not explicitely removed because they were 'alreadyProcessed'
+            # We want to purge resources even if they were not explicitly removed because they were 'alreadyProcessed'
             if ($PSCmdlet.ShouldProcess(('Post-resource-removal for [{0}]' -f $resource.resourceId), 'Execute')) {
                 Invoke-ResourcePostRemoval -ResourceToRemove $resource
             }
