@@ -183,9 +183,14 @@ jobs:
                 # Load used functions
                 . (Join-Path '$(moduleRepoRoot)' '$(pipelineFunctionsPath)' 'resourceValidation' 'Test-TemplateWithParameterFile.ps1')
 
-                $templateFilePath = ([String]::IsNullOrEmpty('${{ deploymentBlock.templateFilePath }}')) ?
-                  (Join-Path '$(ModuleRepoRoot)' '$(modulePath)' 'deploy.bicep') :
-                  (Join-Path '$(moduleRepoRoot)' '${{ deploymentBlock.templateFilePath }}')
+                if(-not [String]::IsNullOrEmpty('${{ deploymentBlock.templateFilePath }}')) {
+                  $templateFilePath = Join-Path '$(moduleRepoRoot)' '${{ deploymentBlock.templateFilePath }}'
+                } else {
+                  # Use default path
+                  $templateFilePath = (Test-Path (Join-Path '$(ModuleRepoRoot)' '$(modulePath)' 'deploy.bicep')) ?
+                    (Join-Path '$(ModuleRepoRoot)' '$(modulePath)' 'deploy.bicep') :
+                    (Join-Path '$(ModuleRepoRoot)' '$(modulePath)' 'deploy.json')
+                }
 
                 # ----------- #
                 # INVOKE TEST #
@@ -218,9 +223,14 @@ jobs:
                 # Load used functions
                 . (Join-Path '$(moduleRepoRoot)' '$(pipelineFunctionsPath)' 'resourceDeployment' 'New-ModuleDeployment.ps1')
 
-                $templateFilePath = ([String]::IsNullOrEmpty('${{ deploymentBlock.templateFilePath }}')) ?
-                  (Join-Path '$(ModuleRepoRoot)' '$(modulePath)' 'deploy.bicep') :
-                  (Join-Path '$(moduleRepoRoot)' '${{ deploymentBlock.templateFilePath }}')
+                if(-not [String]::IsNullOrEmpty('${{ deploymentBlock.templateFilePath }}')) {
+                  $templateFilePath = Join-Path '$(moduleRepoRoot)' '${{ deploymentBlock.templateFilePath }}'
+                } else {
+                  # Use default path
+                  $templateFilePath = (Test-Path (Join-Path '$(ModuleRepoRoot)' '$(modulePath)' 'deploy.bicep')) ?
+                    (Join-Path '$(ModuleRepoRoot)' '$(modulePath)' 'deploy.bicep') :
+                    (Join-Path '$(ModuleRepoRoot)' '$(modulePath)' 'deploy.json')
+                }
 
                 # ----------------- #
                 # INVOKE DEPLOYMENT #
@@ -270,9 +280,14 @@ jobs:
                 # Load used function
                 . (Join-Path '$(moduleRepoRoot)' '$(pipelineFunctionsPath)' 'resourceRemoval' 'Remove-DeployedModule.ps1')
 
-                $templateFilePath = ([String]::IsNullOrEmpty('${{ deploymentBlock.templateFilePath }}')) ?
-                  (Join-Path '$(ModuleRepoRoot)' '$(modulePath)' 'deploy.bicep') :
-                  (Join-Path '$(moduleRepoRoot)' '${{ deploymentBlock.templateFilePath }}')
+                if(-not [String]::IsNullOrEmpty('${{ deploymentBlock.templateFilePath }}')) {
+                  $templateFilePath = Join-Path '$(moduleRepoRoot)' '${{ deploymentBlock.templateFilePath }}'
+                } else {
+                  # Use default path
+                  $templateFilePath = (Test-Path (Join-Path '$(ModuleRepoRoot)' '$(modulePath)' 'deploy.bicep')) ?
+                    (Join-Path '$(ModuleRepoRoot)' '$(modulePath)' 'deploy.bicep') :
+                    (Join-Path '$(ModuleRepoRoot)' '$(modulePath)' 'deploy.json')
+                }
 
                 $functionInput = @{
                     deploymentName    = '$(deploymentName)'
