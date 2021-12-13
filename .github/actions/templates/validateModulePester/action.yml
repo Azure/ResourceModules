@@ -1,10 +1,11 @@
-name: 'Execute general module API tests'
-description: 'Execute general module API tests (if any)'
+name: 'Execute Pester module tests'
+description: 'Execute Pester module tests (if any)'
 
 inputs:
   modulePath:
     description: 'The path to the module folder'
     required: true
+    default: ''
 
 runs:
   using: 'composite'
@@ -14,6 +15,7 @@ runs:
       run: |
         # Load used functions
         . (Join-Path $env:GITHUB_WORKSPACE 'utilities' 'pipelines' 'sharedScripts' 'Set-EnvironmentOnAgent.ps1')
+
         # Set agent up
         Set-EnvironmentOnAgent
 
@@ -25,11 +27,45 @@ runs:
 
     # [Module Pester Test] task(s)
     #-----------------------------
-    - name: 'Run API tests via (Pester)'
+    - name: 'Run global tests via Pester'
       shell: pwsh
       run: |
         # --------------------- #
         # INVOKE PESTER TEST(S) #
+        # --------------------- #
+        Invoke-Pester -Configuration @{
+          Run        = @{
+            Container = New-PesterContainer -Path 'arm/.global/global.module.tests.ps1' -Data @{
+              moduleFolderPaths = Join-Path $env:GITHUB_WORKSPACE "${{ inputs.modulePath }}"
+            }
+          }
+          Filter     = @{
+            ExcludeTag = 'ApiCheck'
+          }
+          TestResult = @{
+            TestSuiteName = 'Global Module Tests'
+            OutputPath    = 'arm/.global/global-testResults.xml'
+            OutputFormat  = 'JUnitXml'
+            Enabled       = $true
+          }
+          Output     = @{
+            Verbosity = 'Detailed'
+          }
+        }
+
+    - name: Publish Test Results
+      uses: EnricoMi/publish-unit-test-result-action@v1
+      if: always()
+      with:
+        files: arm/.global/global-testResults.xml
+
+    # [Module Pester Test] task(s)
+    #-----------------------------
+    - name: 'Run API tests via Pester'
+      shell: pwsh
+      run: |
+        # --------------------- #
+        # Invoke Pester test(s) #
         # --------------------- #
         Invoke-Pester -Configuration @{
           Run        = @{
@@ -53,6 +89,6 @@ runs:
 
     - name: Publish Test Results
       uses: EnricoMi/publish-unit-test-result-action@v1
-      # if: always()
+      if: always()
       with:
         files: arm/.global/api-testResults.xml
