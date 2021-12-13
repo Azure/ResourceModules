@@ -48,7 +48,7 @@ function Get-ResourceIdsOfDeploymentInner {
 
     $resultSet = [System.Collections.ArrayList]@()
     switch ($Scope) {
-        'resourceGroup' {
+        'resourcegroup' {
             if (Get-AzResourceGroup -Name $resourceGroupName -ErrorAction 'SilentlyContinue') {
                 [array]$deploymentTargets = (Get-AzResourceGroupDeploymentOperation -DeploymentName $name -ResourceGroupName $resourceGroupName).TargetResource | Where-Object { $_ -ne $null }
                 foreach ($deployment in ($deploymentTargets | Where-Object { $_ -notmatch '/deployments/' } )) {
@@ -83,7 +83,7 @@ function Get-ResourceIdsOfDeploymentInner {
                 }
             }
         }
-        'managementGroup' {
+        'managementgroup' {
             [array]$deploymentTargets = (Get-AzManagementGroupDeploymentOperation -DeploymentName $name).TargetResource | Where-Object { $_ -ne $null }
             foreach ($deployment in ($deploymentTargets | Where-Object { $_ -notmatch '/deployments/' } )) {
                 [array]$resultSet += $deployment

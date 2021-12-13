@@ -32,7 +32,7 @@ function Get-ScopeOfTemplateFile {
         $bicepContent = Get-Content $templateFilePath
         $bicepScope = $bicepContent | Where-Object { $_ -like '*targetscope =*' }
         if (-not $bicepScope) {
-            $deploymentScope = 'resourceGroup'
+            $deploymentScope = 'resourcegroup'
         } else {
             $deploymentScope = $bicepScope.ToLower().Split('=')[-1].Replace("'", '').Trim()
         }
@@ -40,9 +40,9 @@ function Get-ScopeOfTemplateFile {
         # ARM
         $armSchema = (ConvertFrom-Json (Get-Content -Raw -Path $templateFilePath)).'$schema'
         switch -regex ($armSchema) {
-            '\/deploymentTemplate.json#$' { $deploymentScope = 'resourceGroup' }
+            '\/deploymentTemplate.json#$' { $deploymentScope = 'resourcegroup' }
             '\/subscriptionDeploymentTemplate.json#$' { $deploymentScope = 'subscription' }
-            '\/managementGroupDeploymentTemplate.json#$' { $deploymentScope = 'managementGroup' }
+            '\/managementGroupDeploymentTemplate.json#$' { $deploymentScope = 'managementgroup' }
             '\/tenantDeploymentTemplate.json#$' { $deploymentScope = 'tenant' }
             Default { throw "[$armSchema] is a non-supported ARM template schema" }
         }

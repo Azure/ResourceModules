@@ -144,7 +144,7 @@ function New-DeploymentWithParameterFile {
         do {
             try {
                 switch ($deploymentScope) {
-                    'resourceGroup' {
+                    'resourcegroup' {
                         if ($subscriptionId) {
                             $Context = Get-AzContext -ListAvailable | Where-Object Subscription -Match $subscriptionId
                             if ($Context) {
@@ -173,7 +173,7 @@ function New-DeploymentWithParameterFile {
                         }
                         break
                     }
-                    'managementGroup' {
+                    'managementgroup' {
                         if ($PSCmdlet.ShouldProcess('Management group level deployment', 'Create')) {
                             $res = New-AzManagementGroupDeployment @DeploymentInputs -Location $location -ManagementGroupId $managementGroupId
                         }
