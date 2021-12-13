@@ -99,7 +99,7 @@ jobs:
         uses: deep-mm/set-variables@v1.0
         with:
           # Name of variable file
-          variableFileName: 'variables.module' # Don't write .json here
+          variableFileName: 'global.variables' # Don't write .json here
       # ------------------- #
       ##  Deploy & Remove  ##
       # ------------------- #
@@ -132,7 +132,7 @@ jobs:
       - name: Set environment variables
         uses: deep-mm/set-variables@v1.0
         with:
-          variableFileName: 'variables.module'
+          variableFileName: 'global.variables'
       - name: 'Publish module'
         uses: ./.github/actions/templates/publishModule
         with:
