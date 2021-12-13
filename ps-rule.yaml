@@ -1,0 +1,40 @@
+#
+# PSRule configuration
+#
+
+# Please see the documentation for all configuration options:
+# https://microsoft.github.io/PSRule/
+# https://azure.github.io/PSRule.Rules.Azure/setup/configuring-options/
+
+input:
+  pathIgnore:
+  - '.vscode/'
+  - '.github/'
+  - '*.md'
+  - '*.svg'
+  - '*.png'
+  - '**/*.bicep'
+  - '!**/.tests/*.bicep'
+  - '**/parameters/'
+
+include:
+  module:
+  # Allow local testing in Visual Studio Code
+  # https://azure.github.io/PSRule.Rules.Azure/validating-locally/
+  - PSRule.Rules.Azure
+
+rule:
+  exclude:
+  # Ignore rules for policy metadata in this iteration. Can be enabled if needed.
+  - Azure.Policy.AssignmentDescriptors
+  - Azure.Policy.AssignmentAssignedBy
+
+  # Ignore rules for resource tagging in this iteration. Can be enabled if needed.
+  - Azure.Resource.UseTags
+
+configuration:
+  # Enable automatic expansion of Azure parameter files
+  AZURE_PARAMETER_FILE_EXPANSION: true
+
+  # Enable automatic expansion of bicep source files
+  AZURE_BICEP_FILE_EXPANSION: true
