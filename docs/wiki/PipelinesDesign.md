@@ -393,4 +393,3 @@ While they look very similar they have specific areas in which they differ:
       - name: modulePath
         value: '/arm/Microsoft.AnalysisServices/servers'
   ```
->>>>>>> main
