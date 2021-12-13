@@ -6,18 +6,18 @@ Remove the given resource(s)
 .DESCRIPTION
 Remove the given resource(s). Resources that the script fails to removed are returned in an array.
 
-.PARAMETER resourcesToRemove
+.PARAMETER ResourcesToRemove
 Mandatory. The resource(s) to remove. Each resource must have a name (optional), type (optional) & resourceId property.
 
 .EXAMPLE
-Remove-ResourceListInner -resourcesToRemove @( @{ 'Name' = 'resourceName'; Type = 'Microsoft.Storage/storageAccounts'; ResourceId = 'subscriptions/.../storageAccounts/resourceName' } )
+Remove-ResourceListInner -ResourcesToRemove @( @{ 'Name' = 'resourceName'; Type = 'Microsoft.Storage/storageAccounts'; ResourceId = 'subscriptions/.../storageAccounts/resourceName' } )
 #>
 function Remove-ResourceListInner {
 
     [CmdletBinding(SupportsShouldProcess)]
     param(
         [Parameter(Mandatory = $false)]
-        [Hashtable[]] $resourcesToRemove = @()
+        [Hashtable[]] $ResourcesToRemove = @()
     )
 
     begin {
@@ -80,7 +80,7 @@ Remove all resources in the provided array from Azure
 .DESCRIPTION
 Remove all resources in the provided array from Azure. Resources are removed with a retry mechanism.
 
-.PARAMETER resourcesToRemove
+.PARAMETER ResourcesToRemove
 Optional. The array of resources to remove. Has to contain objects with at least a 'resourceId' property
 
 .EXAMPLE
@@ -107,9 +107,9 @@ function Remove-ResourceList {
 
     do {
         if ($PSCmdlet.ShouldProcess(("[{0}] Resource(s) with a maximum of [$removalRetryLimit] attempts." -f (($resourcesToRetry -is [array]) ? $resourcesToRetry.Count : 1)), 'Remove')) {
-            $resourcesToRetry = Remove-ResourceListInner -resourcesToRemove $resourcesToRetry -Verbose
+            $resourcesToRetry = Remove-ResourceListInner -ResourcesToRemove $resourcesToRetry -Verbose
         } else {
-            Remove-ResourceListInner -resourcesToRemove $resourcesToRemove -WhatIf
+            Remove-ResourceListInner -ResourcesToRemove $resourcesToRemove -WhatIf
         }
 
         if (-not $resourcesToRetry) {
