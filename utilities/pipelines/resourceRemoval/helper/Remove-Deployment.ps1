@@ -93,7 +93,7 @@ function Remove-Deployment {
 
         # Format items
         # ============
-        $resourcesToRemove = Get-ResourceIdsAsFormattedObjectList -resourceIds $rawResourceIdsToRemove
+        $resourcesToRemove = Get-ResourceIdsAsFormattedObjectList -ResourceIds $rawResourceIdsToRemove
 
         # Filter all dependency resources
         # ===============================
@@ -102,7 +102,7 @@ function Remove-Deployment {
 
         # Order resources
         # ===============
-        $resourcesToRemove = Get-OrderedResourcesList -resourcesToOrder $resourcesToRemove -order $RemovalSequence
+        $resourcesToRemove = Get-OrderedResourcesList -ResourcesToOrder $resourcesToRemove -Order $RemovalSequence
 
         # Remove resources
         # ================
