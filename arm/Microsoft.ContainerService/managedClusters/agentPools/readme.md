@@ -13,19 +13,19 @@ This module deploys an Agent Pool for a Container Service Managed Cluster
 | Parameter Name | Type | Default Value | Possible Values | Description |
 | :-- | :-- | :-- | :-- | :-- |
 | `allowedUnsafeSysctls` | array | `[kernel.shm*, kernel.msg*, kernel.sem*, fs.mqueue.*, net.*]` | `[kernel.shm*, kernel.msg*, kernel.sem*, fs.mqueue.*, net.*]` | Optional. Allowed list of unsafe sysctls or unsafe sysctl patterns (ending in *). |
-| `availabilityZones` | array | `[]` |  | Optional. The list of Availability zones to use for node(s). This can only be specified if the AgentPoolType property is "VirtualMachineScaleSets". |
+| `availabilityZones` | array | `[]` |  | Optional. The list of Availability zones to use for nodes. This can only be specified if the AgentPoolType property is "VirtualMachineScaleSets". |
 | `containerLogMaxFiles` | int | `5` |  | Optional. The maximum number of container log files that can be present for a container. The number must be >= 2. |
 | `containerLogMaxSizeMB` | int | `10` |  | Optional. The maximum size (e.g. 10 MB) of container log file before it is rotated. |
 | `count` | int | `1` |  | Optional. Desired Number of agents (VMs) specified to host docker containers. Allowed values must be in the range of 0 to 1000 (inclusive) for user pools and in the range of 1 to 1000 (inclusive) for system pools. The default value is 1. |
 | `cpuCfsQuota` | bool | `True` | `[True, False]` | Optional. Enable/Disable CPU CFS quota enforcement for containers that specify CPU limits. |
 | `cpuCfsQuotaPeriod` | string | `100ms` |  | Optional. Sets CPU CFS quota period value. Valid values are a sequence of decimal numbers with an optional fraction and a unit suffix. For example: "300ms", "2h45m". Supported units are "ns", "us", "ms", "s", "m", and "h" . |
-| `cpuManagerPolicy` | string | `none` | `[none, static]` | Optional. The static policy allows containers in Guaranteed pods with integer CPU requests access to exclusive CPUs on the node. See Kubernetes CPU management policies for more info (<https://kubernetes.io/docs/tasks/administer-cluster/cpu-management-policies/#cpu-management-policies>) |
+| `cpuManagerPolicy` | string | `none` | `[none, static]` | Optional. The static policy allows containers in Guaranteed pods with integer CPU requests access to exclusive CPUs on the node(s). See Kubernetes CPU management policies for more info (<https://kubernetes.io/docs/tasks/administer-cluster/cpu-management-policies/#cpu-management-policies>) |
 | `enableAutoScaling` | bool |  | `[True, False]` | Optional. Whether to enable auto-scaler |
 | `enableEncryptionAtHost` | bool |  | `[True, False]` | Optional. This is only supported on certain VM sizes and in certain Azure regions. For more information, see: /azure/aks/enable-host-encryption |
 | `enableFIPS` | bool |  | `[True, False]` | Optional. See Add a FIPS-enabled node-pool (<https://docs.microsoft.com/en-us/azure/aks/use-multiple-node-pools#add-a-fips-enabled-node-pool-preview>) for more details. |
-| `enableNodePublicIP` | bool |  | `[True, False]` | Optional. Some scenarios may require nodes in a node-pool to receive their own dedicated public IP addresses. A common scenario is for gaming workloads, where a console needs to make a direct connection to a cloud virtual machine to minimize hops. For more information see assigning a public IP per node. (<https://docs.microsoft.com/en-us/azure/aks/use-multiple-node-pools#assign-a-public-ip-per-node-for-your-node-pools>). The default is false. |
+| `enableNodePublicIP` | bool |  | `[True, False]` | Optional. Some scenarios may require nodes in a node-pool to receive their own dedicated public IP addresses. A common scenario is for gaming workloads, where a console needs to make a direct connection to a cloud virtual machine to minimize hops. For more information see assigning a public IP per node(s). (<https://docs.microsoft.com/en-us/azure/aks/use-multiple-node-pools#assign-a-public-ip-per-node-for-your-node-pools>). The default is false. |
 | `enableUltraSSD` | bool |  | `[True, False]` | Optional. Whether to enable UltraSSD |
-| `failSwapOn` | bool |  | `[True, False]` | Optional. If set to true it will make the Kubelet fail to start if swap is enabled on the node. |
+| `failSwapOn` | bool |  | `[True, False]` | Optional. If set to true it will make the Kubelet fail to start if swap is enabled on the node(s). |
 | `fsAioMaxNr` | int | `65536` |  | Optional. Sysctl setting fs.aio-max-nr. |
 | `fsFileMax` | int | `8192` |  | Optional. Sysctl setting fs.file-max. |
 | `fsInotifyMaxUserWatches` | int | `781250` |  | Optional. Sysctl setting fs.inotify.max_user_watches. |
@@ -37,7 +37,7 @@ This module deploys an Agent Pool for a Container Service Managed Cluster
 | `kubeletDiskType` | string |  |  | Optional. Determines the placement of emptyDir volumes, container runtime data root, and Kubelet ephemeral storage. |
 | `managedClusterName` | string |  |  | Required. Name of the managed cluster |
 | `maxCount` | int | `-1` |  | Optional. The maximum number of nodes for auto-scaling |
-| `maxPods` | int | `-1` |  | Optional. The maximum number of pods that can run on a node. |
+| `maxPods` | int | `-1` |  | Optional. The maximum number of pods that can run on node(s). |
 | `maxSurge` | string |  |  | Optional. This can either be set to an integer (e.g. "5") or a percentage (e.g. "50%"). If a percentage is specified, it is the percentage of the total agent pool size at the time of the upgrade. For percentages, fractional nodes are rounded up. If not specified, the default is 1. For more information, including best practices, see: /azure/aks/upgrade-cluster#customize-node-surge-upgrade |
 | `minCount` | int | `-1` |  | Optional. The minimum number of nodes for auto-scaling |
 | `mode` | string |  |  | Optional. A cluster must have at least one "System" Agent Pool at all times. For additional information on agent pool restrictions and best practices, see: /azure/aks/use-system-pools |
@@ -78,7 +78,7 @@ This module deploys an Agent Pool for a Container Service Managed Cluster
 | `scaleSetPriority` | string |  | `[Regular, Spot, ]` | Optional. The Virtual Machine Scale Set priority. |
 | `sourceResourceId` | string |  |  | Optional. This is the ARM ID of the source object to be used to create the target object. |
 | `spotMaxPrice` | int | `-1` |  | Optional. Possible values are any decimal value greater than zero or -1 which indicates the willingness to pay any on-demand price. For more details on spot pricing, see spot VMs pricing (https://docs.microsoft.com/en-us/azure/virtual-machines/spot-vms#pricing) |
-| `swapFileSizeMB` | int | `1500` |  | Optional. The size in MB of a swap file that will be created on each node. |
+| `swapFileSizeMB` | int | `1500` |  | Optional. The size in MB of a swap file that will be created on the node(s). |
 | `tags` | object | `{object}` |  | Optional. Tags of the resource. |
 | `topologyManagerPolicy` | string | `none` | `[none, best-effort, restricted, single-numa-node]` | Optional. Optimize NUMA node-alignment. For more information see Kubernetes Topology Manager (https://kubernetes.io/docs/tasks/administer-cluster/topology-manager) |
 | `transparentHugePageDefrag` | string | `madvise` | `[always, defer, defer+madvise, madvise, never]` | Optional. See Transparent Hugepages (https://www.kernel.org/doc/html/latest/admin-guide/mm/transhuge.html#admin-guide-transhuge) |
