@@ -51,11 +51,11 @@ param cuaId string = ''
 @allowed([
   'BastionAuditLogs'
 ])
-param azureBastionpLogsToEnable array = [
+param logsToEnable array = [
   'BastionAuditLogs'
 ]
 
-var diagnosticsLogs = [for log in azureBastionpLogsToEnable: {
+var diagnosticsLogs = [for log in logsToEnable: {
   category: log
   enabled: true
   retentionPolicy: {
