@@ -24,6 +24,9 @@ Optional. The deployment name to use for the removal
 .PARAMETER TemplateFilePath
 Optional. The path to the deployment file
 
+.PARAMETER RemovalSequence
+Optional. The order of resource types to apply for deletion
+
 .EXAMPLE
 Remove-Deployment -DeploymentName 'KeyVault' -ResourceGroupName 'validation-rg' -TemplateFilePath 'C:/deploy.json'
 
@@ -78,9 +81,9 @@ function Remove-Deployment {
         # Fetch deployments
         # =================
         $deploymentsInputObject = @{
-            name              = $deploymentName
-            scope             = $deploymentScope
-            resourceGroupName = $resourceGroupName
+            Name              = $deploymentName
+            Scope             = $deploymentScope
+            ResourceGroupName = $resourceGroupName
         }
         $deploymentResourceIds = Get-ResourceIdsOfDeployment @deploymentsInputObject -Verbose
 
@@ -90,7 +93,7 @@ function Remove-Deployment {
 
         # Format items
         # ============
-        $resourcesToRemove = Get-ResourceIdsAsFormattedObjectList -resourceIds $rawResourceIdsToRemove
+        $resourcesToRemove = Get-ResourceIdsAsFormattedObjectList -ResourceIds $rawResourceIdsToRemove
 
         # Filter all dependency resources
         # ===============================
@@ -99,13 +102,13 @@ function Remove-Deployment {
 
         # Order resources
         # ===============
-        $resourcesToRemove = Get-OrderedResourcesList -resourcesToOrder $resourcesToRemove -order $RemovalSequence
+        $resourcesToRemove = Get-OrderedResourcesList -ResourcesToOrder $resourcesToRemove -Order $RemovalSequence
 
         # Remove resources
         # ================
         if ($resourcesToRemove.Count -gt 0) {
             if ($PSCmdlet.ShouldProcess(('[{0}] resources' -f (($resourcesToRemove -is [array]) ? $resourcesToRemove.Count : 1)), 'Remove')) {
-                Remove-ResourceList -resourcesToRemove $resourcesToRemove -Verbose
+                Remove-ResourceList -ResourcesToRemove $resourcesToRemove -Verbose
             }
         } else {
             Write-Verbose 'Found [0] resources to remove'

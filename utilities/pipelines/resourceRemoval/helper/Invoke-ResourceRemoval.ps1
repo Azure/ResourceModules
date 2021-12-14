@@ -5,17 +5,17 @@ Remove a specific resource
 .DESCRIPTION
 Remove a specific resource. Tries to handle different resource types accordingly
 
-.PARAMETER resourceId
+.PARAMETER ResourceId
 Mandatory. The resourceID of the resource to remove
 
-.PARAMETER name
+.PARAMETER Name
 Mandatory. The name of the resource to remove
 
-.PARAMETER type
+.PARAMETER Type
 Mandatory. The type of the resource to remove
 
 .EXAMPLE
-Invoke-ResourceRemoval -name 'sxx-vm-linux-001-nic-01-diagnosticSettings' -type 'Microsoft.Insights/diagnosticSettings' -resourceId '/subscriptions/.../resourceGroups/validation-rg/providers/Microsoft.Network/networkInterfaces/sxx-vm-linux-001-nic-01/providers/Microsoft.Insights/diagnosticSettings/sxx-vm-linux-001-nic-01-diagnosticSettings'
+Invoke-ResourceRemoval -Name 'sxx-vm-linux-001-nic-01-diagnosticSettings' -Type 'Microsoft.Insights/diagnosticSettings' -ResourceId '/subscriptions/.../resourceGroups/validation-rg/providers/Microsoft.Network/networkInterfaces/sxx-vm-linux-001-nic-01/providers/Microsoft.Insights/diagnosticSettings/sxx-vm-linux-001-nic-01-diagnosticSettings'
 
 Remove the resource 'sxx-vm-linux-001-nic-01-diagnosticSettings' of type 'Microsoft.Insights/diagnosticSettings' from resource '/subscriptions/.../resourceGroups/validation-rg/providers/Microsoft.Network/networkInterfaces/sxx-vm-linux-001-nic-01'
 #>
@@ -24,13 +24,13 @@ function Invoke-ResourceRemoval {
     [CmdletBinding(SupportsShouldProcess)]
     param (
         [Parameter(Mandatory = $true)]
-        [string] $resourceId,
+        [string] $ResourceId,
 
         [Parameter(Mandatory = $true)]
-        [string] $name,
+        [string] $Name,
 
         [Parameter(Mandatory = $true)]
-        [string] $type
+        [string] $Type
     )
 
     switch ($type) {

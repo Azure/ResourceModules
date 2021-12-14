@@ -6,18 +6,18 @@ Remove the given resource(s)
 .DESCRIPTION
 Remove the given resource(s). Resources that the script fails to removed are returned in an array.
 
-.PARAMETER resourcesToRemove
+.PARAMETER ResourcesToRemove
 Mandatory. The resource(s) to remove. Each resource must have a name (optional), type (optional) & resourceId property.
 
 .EXAMPLE
-Remove-ResourceListInner -resourcesToRemove @( @{ 'Name' = 'resourceName'; Type = 'Microsoft.Storage/storageAccounts'; ResourceId = 'subscriptions/.../storageAccounts/resourceName' } )
+Remove-ResourceListInner -ResourcesToRemove @( @{ 'Name' = 'resourceName'; Type = 'Microsoft.Storage/storageAccounts'; ResourceId = 'subscriptions/.../storageAccounts/resourceName' } )
 #>
 function Remove-ResourceListInner {
 
     [CmdletBinding(SupportsShouldProcess)]
     param(
         [Parameter(Mandatory = $false)]
-        [Hashtable[]] $resourcesToRemove = @()
+        [Hashtable[]] $ResourcesToRemove = @()
     )
 
     begin {
@@ -47,7 +47,7 @@ function Remove-ResourceListInner {
                 Write-Verbose ('Removing resource [{0}] of type [{1}]' -f $resource.name, $resource.type) -Verbose
                 try {
                     if ($PSCmdlet.ShouldProcess(('Resource [{0}]' -f $resource.resourceId), 'Remove')) {
-                        Invoke-ResourceRemoval -ResourceId $resource.resourceId -name $resource.name -type $resource.type
+                        Invoke-ResourceRemoval -Name $resource.name -Type $resource.type -ResourceId $resource.resourceId
                     }
 
                     # If we removed a parent remove its children
@@ -59,9 +59,9 @@ function Remove-ResourceListInner {
                 }
             }
 
-            # We want to purge resources even if they were not explictely removed because they were 'alreadyProcessed'
+            # We want to purge resources even if they were not explicitly removed because they were 'alreadyProcessed'
             if ($PSCmdlet.ShouldProcess(('Post-resource-removal for [{0}]' -f $resource.resourceId), 'Execute')) {
-                Invoke-ResourcePostRemoval -name $resource.name -type $resource.type -resourceId $resource.resourceId
+                Invoke-ResourcePostRemoval -Name $resource.name -Type $resource.type -ResourceId $resource.resourceId
             }
         }
         Write-Verbose '----------------------------------' -Verbose
@@ -80,7 +80,7 @@ Remove all resources in the provided array from Azure
 .DESCRIPTION
 Remove all resources in the provided array from Azure. Resources are removed with a retry mechanism.
 
-.PARAMETER resourcesToRemove
+.PARAMETER ResourcesToRemove
 Optional. The array of resources to remove. Has to contain objects with at least a 'resourceId' property
 
 .EXAMPLE
@@ -107,9 +107,9 @@ function Remove-ResourceList {
 
     do {
         if ($PSCmdlet.ShouldProcess(("[{0}] Resource(s) with a maximum of [$removalRetryLimit] attempts." -f (($resourcesToRetry -is [array]) ? $resourcesToRetry.Count : 1)), 'Remove')) {
-            $resourcesToRetry = Remove-ResourceListInner -resourcesToRemove $resourcesToRetry -Verbose
+            $resourcesToRetry = Remove-ResourceListInner -ResourcesToRemove $resourcesToRetry -Verbose
         } else {
-            Remove-ResourceListInner -resourcesToRemove $resourcesToRemove -WhatIf
+            Remove-ResourceListInner -ResourcesToRemove $resourcesToRemove -WhatIf
         }
 
         if (-not $resourcesToRetry) {

@@ -5,17 +5,17 @@ Remove any artifacts that remain of the given resource
 .DESCRIPTION
 Remove any artifacts that remain of the given resource. For example, some resources such as key vaults usually go into a soft-delete state from which we want to purge them from.
 
-.PARAMETER resourceId
+.PARAMETER ResourceId
 Mandatory. The resourceID of the resource to remove
 
-.PARAMETER name
+.PARAMETER Name
 Mandatory. The name of the resource to remove
 
-.PARAMETER type
+.PARAMETER Type
 Mandatory. The type of the resource to remove
 
 .EXAMPLE
-Invoke-ResourcePostRemoval -name 'myVault' -type 'Microsoft.KeyVault/vaults' -resourceId '/subscriptions/.../resourceGroups/validation-rg/providers/Microsoft.KeyVault/vaults/myVault'
+Invoke-ResourcePostRemoval -Name 'myVault' -Type 'Microsoft.KeyVault/vaults' -ResourceId '/subscriptions/.../resourceGroups/validation-rg/providers/Microsoft.KeyVault/vaults/myVault'
 
 Purge the resource 'myVault' of type 'Microsoft.KeyVault/vaults' with ID '/subscriptions/.../resourceGroups/validation-rg/providers/Microsoft.KeyVault/vaults/myVault' if no purge protection is enabled
 #>
@@ -24,13 +24,13 @@ function Invoke-ResourcePostRemoval {
     [CmdletBinding(SupportsShouldProcess)]
     param (
         [Parameter(Mandatory = $true)]
-        [string] $resourceId,
+        [string] $ResourceId,
 
         [Parameter(Mandatory = $true)]
-        [string] $name,
+        [string] $Name,
 
         [Parameter(Mandatory = $true)]
-        [string] $type
+        [string] $Type
     )
 
     switch ($type) {
@@ -58,28 +58,22 @@ function Invoke-ResourcePostRemoval {
             $subscriptionId = $resourceId.Split('/')[2]
 
             # Fetch service in soft-delete
-            $getUri = 'https://management.azure.com/subscriptions/{0}/providers/Microsoft.ApiManagement/deletedservices?api-version=2021-08-01' -f $subscriptionId
-            $requestInputObject = @{
-                Method  = 'GET'
-                Uri     = $getUri
-                Headers = @{
-                    Authorization = 'Bearer {0}' -f (Get-AzAccessToken).Token
-                }
+            $getPath = '/subscriptions/{0}/providers/Microsoft.ApiManagement/deletedservices?api-version=2021-08-01' -f $subscriptionId
+            $getRequestInputObject = @{
+                Method = 'GET'
+                Path   = $getPath
             }
-            $softDeletedService = (Invoke-RestMethod @requestInputObject).value | Where-Object { $_.properties.serviceId -eq $resourceId }
+            $softDeletedService = ((Invoke-AzRestMethod @getRequestInputObject).Content | ConvertFrom-Json).value | Where-Object { $_.properties.serviceId -eq $resourceId }
 
             if ($softDeletedService) {
                 # Purge service
-                $purgeUri = 'https://management.azure.com/subscriptions/{0}/providers/Microsoft.ApiManagement/locations/{1}/deletedservices/{2}?api-version=2020-06-01-preview' -f $subscriptionId, $softDeletedService.location, $name
-                $requestInputObject = @{
-                    Method  = 'DELETE'
-                    Uri     = $purgeUri
-                    Headers = @{
-                        Authorization = 'Bearer {0}' -f (Get-AzAccessToken).Token
-                    }
+                $purgePath = '/subscriptions/{0}/providers/Microsoft.ApiManagement/locations/{1}/deletedservices/{2}?api-version=2020-06-01-preview' -f $subscriptionId, $softDeletedService.location, $name
+                $purgeRequestInputObject = @{
+                    Method = 'DELETE'
+                    Path   = $purgePath
                 }
                 if ($PSCmdlet.ShouldProcess(('API management service with ID [{0}]' -f $softDeletedService.properties.serviceId), 'Purge')) {
-                    $null = Invoke-RestMethod @requestInputObject
+                    $null = Invoke-AzRestMethod @purgeRequestInputObject
                 }
             }
         }

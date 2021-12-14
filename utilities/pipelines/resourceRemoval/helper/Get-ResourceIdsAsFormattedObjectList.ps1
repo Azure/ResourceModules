@@ -5,11 +5,11 @@ Format the provide resource IDs into objects of resourceID, name & type
 .DESCRIPTION
 Format the provide resource IDs into objects of resourceID, name & type
 
-.PARAMETER resourceIds
+.PARAMETER ResourceIds
 Optional. The resource IDs to process
 
 .EXAMPLE
-Get-ResourceIdsAsFormattedObjectList -resourceIds @('/subscriptions/<subscriptionID>/resourceGroups/test-analysisServices-parameters.json-rg/providers/Microsoft.Storage/storageAccounts/adpsxxazsaaspar01')
+Get-ResourceIdsAsFormattedObjectList -ResourceIds @('/subscriptions/<subscriptionID>/resourceGroups/test-analysisServices-parameters.json-rg/providers/Microsoft.Storage/storageAccounts/adpsxxazsaaspar01')
 
 Returns an object @{
     resourceId = '/subscriptions/<subscriptionID>/resourceGroups/test-analysisServices-parameters.json-rg/providers/Microsoft.Storage/storageAccounts/adpsxxazsaaspar01'
@@ -22,7 +22,7 @@ function Get-ResourceIdsAsFormattedObjectList {
     [CmdletBinding()]
     param (
         [Parameter(Mandatory = $false)]
-        [string[]] $resourceIds = @()
+        [string[]] $ResourceIds = @()
     )
 
     $formattedResources = [System.Collections.ArrayList]@()

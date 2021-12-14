@@ -5,9 +5,9 @@ Get the scope of the given template file
 .DESCRIPTION
 Get the scope of the given template file (supports ARM & Bicep)
 Will return either
-- resourceGroup
+- resourcegroup
 - subscription
-- managementGroup
+- managementgroup
 - tenant
 
 .PARAMETER TemplateFilePath
