@@ -5,32 +5,39 @@ Remove a specific resource
 .DESCRIPTION
 Remove a specific resource. Tries to handle different resource types accordingly
 
-.PARAMETER ResourceToRemove
-Mandatory. The resource to remove. Should have format
-@{
-    name        = '...'
-    resourceID = '...'
-    type        = '...'
-}
+.PARAMETER ResourceId
+Mandatory. The resourceID of the resource to remove
+
+.PARAMETER Name
+Mandatory. The name of the resource to remove
+
+.PARAMETER Type
+Mandatory. The type of the resource to remove
 
 .EXAMPLE
-Invoke-ResourceRemoval -ResourceToRemove @{ name = 'sxx-vm-linux-001-nic-01-diagnosticSettings'; resourceId '(..)/Microsoft.Network/networkInterfaces/sxx-vm-linux-001-nic-01/providers/Microsoft.Insights/diagnosticSettings/sxx-vm-linux-001-nic-01-diagnosticSettings'; type = 'Microsoft.Insights/diagnosticSettings'}
+Invoke-ResourceRemoval -Name 'sxx-vm-linux-001-nic-01-diagnosticSettings' -Type 'Microsoft.Insights/diagnosticSettings' -ResourceId '/subscriptions/.../resourceGroups/validation-rg/providers/Microsoft.Network/networkInterfaces/sxx-vm-linux-001-nic-01/providers/Microsoft.Insights/diagnosticSettings/sxx-vm-linux-001-nic-01-diagnosticSettings'
 
-Remove the resource 'sxx-vm-linux-001-nic-01-diagnosticSettings' of type 'Microsoft.Insights/diagnosticSettings' from resource '/subscriptions/a7439831-1cd9-435d-a091-4aa863c96556/resourceGroups/validation-rg/providers/Microsoft.Network/networkInterfaces/sxx-vm-linux-001-nic-01'
+Remove the resource 'sxx-vm-linux-001-nic-01-diagnosticSettings' of type 'Microsoft.Insights/diagnosticSettings' from resource '/subscriptions/.../resourceGroups/validation-rg/providers/Microsoft.Network/networkInterfaces/sxx-vm-linux-001-nic-01'
 #>
 function Invoke-ResourceRemoval {
 
     [CmdletBinding(SupportsShouldProcess)]
     param (
-        [Parameter(Mandatory)]
-        [hashtable] $ResourceToRemove
+        [Parameter(Mandatory = $true)]
+        [string] $ResourceId,
+
+        [Parameter(Mandatory = $true)]
+        [string] $Name,
+
+        [Parameter(Mandatory = $true)]
+        [string] $Type
     )
 
-    switch ($resourceToRemove.type) {
+    switch ($type) {
         'Microsoft.Insights/diagnosticSettings' {
-            $parentResourceId = $resourceToRemove.resourceId.Split('/providers/{0}' -f $resourceToRemove.type)[0]
-            if ($PSCmdlet.ShouldProcess("Diagnostic setting [$resourceToRemove.name]", 'Remove')) {
-                $null = Remove-AzDiagnosticSetting -ResourceId $parentResourceId -Name $resourceToRemove.name
+            $parentResourceId = $resourceId.Split('/providers/{0}' -f $type)[0]
+            if ($PSCmdlet.ShouldProcess("Diagnostic setting [$name]", 'Remove')) {
+                $null = Remove-AzDiagnosticSetting -ResourceId $parentResourceId -Name $name
             }
             break
         }
@@ -38,33 +45,33 @@ function Invoke-ResourceRemoval {
             # Pre-Removal
             # -----------
             # Remove protected VMs
-            if ((Get-AzRecoveryServicesVaultProperty -VaultId $resourceToRemove.resourceId).SoftDeleteFeatureState -ne 'Disabled') {
-                if ($PSCmdlet.ShouldProcess(('Soft-delete on RSV [{0}]' -f $resourceToRemove.resourceId), 'Set')) {
-                    $null = Set-AzRecoveryServicesVaultProperty -VaultId $resourceToRemove.resourceId -SoftDeleteFeatureState 'Disable'
+            if ((Get-AzRecoveryServicesVaultProperty -VaultId $resourceId).SoftDeleteFeatureState -ne 'Disabled') {
+                if ($PSCmdlet.ShouldProcess(('Soft-delete on RSV [{0}]' -f $resourceId), 'Set')) {
+                    $null = Set-AzRecoveryServicesVaultProperty -VaultId $resourceId -SoftDeleteFeatureState 'Disable'
                 }
             }
 
-            $backupItems = Get-AzRecoveryServicesBackupItem -BackupManagementType 'AzureVM' -WorkloadType 'AzureVM' -VaultId $resourceToRemove.resourceId
+            $backupItems = Get-AzRecoveryServicesBackupItem -BackupManagementType 'AzureVM' -WorkloadType 'AzureVM' -VaultId $resourceId
             foreach ($backupItem in $backupItems) {
-                Write-Verbose ('Removing Backup item [{0}] from RSV [{1}]' -f $backupItem.Name, $resourceToRemove.resourceId) -Verbose
+                Write-Verbose ('Removing Backup item [{0}] from RSV [{1}]' -f $backupItem.Name, $resourceId) -Verbose
 
                 if ($backupItem.DeleteState -eq 'ToBeDeleted') {
                     if ($PSCmdlet.ShouldProcess('Soft-deleted backup data removal', 'Undo')) {
-                        $null = Undo-AzRecoveryServicesBackupItemDeletion -Item $backupItem -VaultId $resourceToRemove.resourceId -Force
+                        $null = Undo-AzRecoveryServicesBackupItemDeletion -Item $backupItem -VaultId $resourceId -Force
                     }
                 }
 
-                if ($PSCmdlet.ShouldProcess(('Backup item [{0}] from RSV [{1}]' -f $backupItem.Name, $resourceToRemove.resourceId), 'Remove')) {
-                    $null = Disable-AzRecoveryServicesBackupProtection -Item $backupItem -VaultId $resourceToRemove.resourceId -RemoveRecoveryPoints -Force
+                if ($PSCmdlet.ShouldProcess(('Backup item [{0}] from RSV [{1}]' -f $backupItem.Name, $resourceId), 'Remove')) {
+                    $null = Disable-AzRecoveryServicesBackupProtection -Item $backupItem -VaultId $resourceId -RemoveRecoveryPoints -Force
                 }
             }
 
             # Actual removal
             # --------------
-            $null = Remove-AzResource -ResourceId $resourceToRemove.resourceId -Force -ErrorAction 'Stop'
+            $null = Remove-AzResource -ResourceId $resourceId -Force -ErrorAction 'Stop'
         }
         Default {
-            $null = Remove-AzResource -ResourceId $resourceToRemove.resourceId -Force -ErrorAction 'Stop'
+            $null = Remove-AzResource -ResourceId $resourceId -Force -ErrorAction 'Stop'
         }
     }
 }

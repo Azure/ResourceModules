@@ -73,7 +73,7 @@ function Remove-Deployment {
         $deploymentScope = Get-ScopeOfTemplateFile -TemplateFilePath $TemplateFilePath
 
         # Fundamental checks
-        if ($deploymentScope -eq 'resourceGroup' -and -not (Get-AzResourceGroup -Name $resourceGroupName -ErrorAction 'SilentlyContinue')) {
+        if ($deploymentScope -eq 'resourcegroup' -and -not (Get-AzResourceGroup -Name $resourceGroupName -ErrorAction 'SilentlyContinue')) {
             Write-Verbose "Resource group [$ResourceGroupName] does not exist (anymore). Skipping removal of its contained resources" -Verbose
             return
         }

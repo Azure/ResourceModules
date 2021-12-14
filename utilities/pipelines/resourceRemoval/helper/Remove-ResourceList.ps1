@@ -47,7 +47,7 @@ function Remove-ResourceListInner {
                 Write-Verbose ('Removing resource [{0}] of type [{1}]' -f $resource.name, $resource.type) -Verbose
                 try {
                     if ($PSCmdlet.ShouldProcess(('Resource [{0}]' -f $resource.resourceId), 'Remove')) {
-                        Invoke-ResourceRemoval -ResourceToRemove $resource
+                        Invoke-ResourceRemoval -Name $resource.name -Type $resource.type -ResourceId $resource.resourceId
                     }
 
                     # If we removed a parent remove its children
@@ -61,7 +61,7 @@ function Remove-ResourceListInner {
 
             # We want to purge resources even if they were not explicitly removed because they were 'alreadyProcessed'
             if ($PSCmdlet.ShouldProcess(('Post-resource-removal for [{0}]' -f $resource.resourceId), 'Execute')) {
-                Invoke-ResourcePostRemoval -ResourceToRemove $resource
+                Invoke-ResourcePostRemoval -Name $resource.name -Type $resource.type -ResourceId $resource.resourceId
             }
         }
         Write-Verbose '----------------------------------' -Verbose
