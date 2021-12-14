@@ -14,7 +14,7 @@ Mandatory. The resource to remove. Should have format
 }
 
 .EXAMPLE
-Invoke-ResourcePostRemoval -ResourceToRemove @{ name = 'sxx-vm-linux-001-nic-01-diagnosticSettings'; resourceId '(..)/Microsoft.Network/networkInterfaces/sxx-vm-linux-001-nic-01/providers/Microsoft.Insights/diagnosticSettings/sxx-vm-linux-001-nic-01-diagnosticSettings'; type = 'Microsoft.Insights/diagnosticSettings'}
+Invoke-ResourceRemoval -ResourceToRemove @{ name = 'sxx-vm-linux-001-nic-01-diagnosticSettings'; resourceId '(..)/Microsoft.Network/networkInterfaces/sxx-vm-linux-001-nic-01/providers/Microsoft.Insights/diagnosticSettings/sxx-vm-linux-001-nic-01-diagnosticSettings'; type = 'Microsoft.Insights/diagnosticSettings'}
 
 Remove the resource 'sxx-vm-linux-001-nic-01-diagnosticSettings' of type 'Microsoft.Insights/diagnosticSettings' from resource '/subscriptions/a7439831-1cd9-435d-a091-4aa863c96556/resourceGroups/validation-rg/providers/Microsoft.Network/networkInterfaces/sxx-vm-linux-001-nic-01'
 #>
