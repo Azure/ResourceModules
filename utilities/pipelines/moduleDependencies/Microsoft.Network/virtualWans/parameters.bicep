@@ -6,6 +6,7 @@ targetScope = 'subscription'
 
 // Resource Group
 @description('Required. The name of the resource group to deploy for a testing purposes')
+@maxLength(90)
 param resourceGroupName string
 
 // Shared
