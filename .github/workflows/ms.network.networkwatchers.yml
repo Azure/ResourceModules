@@ -7,7 +7,7 @@ on:
         type: boolean
         description: 'Remove deployed module'
         required: false
-        default: 'false' # Required as a dependency + Only one Network Watcher can exist in the same location. If removed, a default would be created in a dedicated RG
+        default: 'false' # Only one Network Watcher can exist in the same location. If removed, a default would be created in a dedicated RG
       versioningOption:
         type: choice
         description: 'The mode to handle the version increments [major|minor|patch]'
