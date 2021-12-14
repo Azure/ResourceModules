@@ -47,7 +47,6 @@ function Remove-ResourceListInner {
                 Write-Verbose ('Removing resource [{0}] of type [{1}]' -f $resource.name, $resource.type) -Verbose
                 try {
                     if ($PSCmdlet.ShouldProcess(('Resource [{0}]' -f $resource.resourceId), 'Remove')) {
-                        # Invoke-ResourceRemoval -ResourceId $resource.resourceId -name $resource.name -type $resource.type
                         Invoke-ResourceRemoval -ResourceToRemove $resource
                     }
 
