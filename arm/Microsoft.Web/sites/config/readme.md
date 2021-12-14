@@ -30,4 +30,4 @@ This module deploys a site config resource.
 
 ## Template references
 
-- [Sites/Config](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Web/2021-02-01/sites/config)
+- ['sites/config' Parent Documentation](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Web/sites)
