@@ -10,8 +10,8 @@ param tags object = {}
 @description('Optional. Determines whether the object is enabled.')
 param attributesEnabled bool = true
 
-@description('Optional. Expiry date in seconds since 1970-01-01T00:00:00Z.')
-param attributesExp int = -1
+@description('Required. Expiry date in seconds since 1970-01-01T00:00:00Z.')
+param attributesExp int
 
 @description('Optional. Not before date in seconds since 1970-01-01T00:00:00Z.')
 param attributesNbf int = -1
