@@ -197,25 +197,16 @@ The following resources are required to be able to deploy this resource.
 
 
 ```json
-"extensionDomainJoinConfig": {
-    "value": {
-        "settings": {
-            "Name": "<domain>.onmicrosoft.com",
-            "User": "domainJoinUser02@<domain>.onmicrosoft.com",
-            "OUPath": "OU=Template-Test; DC=<domain>; DC=onmicrosoft; DC=com",
-            "Restart": true,
-            "Options": ""
-        }
-    }
-}
-```
-
-Should be configured alongside:
-```json
-"extensionDomainJoinPassword": {
-    "reference": {
-        "keyVault": {
-            "id": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.KeyVault/vaults/<keyVault>"
+"windowsScriptExtensionFileData": {
+    "value": [
+        //storage accounts with SAS token requirement
+        {
+            "uri": "https://mystorageAccount.blob.core.windows.net/avdscripts/File1.ps1",
+            "storageAccountId": "/subscriptions/12345678-1234-1234-1234-123456789012/resourceGroups/rgName/providers/Microsoft.Storage/storageAccounts/storageAccountName"
+        },
+        {
+            "uri": "https://mystorageAccount.blob.core.windows.net/avdscripts/File2.ps1",
+            "storageAccountId": "/subscriptions/12345678-1234-1234-1234-123456789012/resourceGroups/rgName/providers/Microsoft.Storage/storageAccounts/storageAccountName"
         },
         "secretName": "domainJoinUser-Password"
     }
@@ -267,9 +258,9 @@ Only for OSType Windows
         "enabled": true,
         "settings": {
             "EncryptionOperation": "EnableEncryption",
-            "KeyVaultURL": "https://devopsbaseline.vault.azure.net/",
+            "KeyVaultURL": "https://mykeyvault.vault.azure.net/",
             "KeyVaultResourceId": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.KeyVault/vaults/adp-sxx-az-kv-x-001",
-            "KeyEncryptionKeyURL": "https://devopsbaseline.vault.azure.net/keys/keyEncryptionKey/3e13110def0d4a26ac38341c73c059bb",
+            "KeyEncryptionKeyURL": "https://mykeyvault.vault.azure.net/keys/keyEncryptionKey/3e13110def0d4a26ac38341c73c059bb",
             "KekVaultResourceId": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.KeyVault/vaults/adp-sxx-az-kv-x-001",
             "KeyEncryptionAlgorithm": "RSA-OAEP",
             "VolumeType": "All",
