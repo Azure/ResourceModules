@@ -30,8 +30,9 @@ function Invoke-ResourcePostRemoval {
     switch ($type) {
         'Microsoft.KeyVault/vaults' {
             $resourceGroupName = $resourceId.Split('/')[4]
+            $resourceName = Split-Path $ResourceId -Leaf
 
-            $matchingKeyVault = Get-AzKeyVault -InRemovedState | Where-Object { $_.VaultName -eq (Split-Path $ResourceId -Leaf) -and $_.resourceGroupName -EQ $resourceGroupName }
+            $matchingKeyVault = Get-AzKeyVault -InRemovedState | Where-Object { $_.VaultName -eq $resourceName -and $_.resourceGroupName -EQ $resourceGroupName }
             if ($matchingKeyVault -and -not $resource.EnablePurgeProtection) {
                 Write-Verbose ('Purging key vault [{0}]' -f (Split-Path $ResourceId -Leaf)) -Verbose
                 if ($PSCmdlet.ShouldProcess(('Key Vault with ID [{0}]' -f $matchingKeyVault.Id), 'Purge')) {
