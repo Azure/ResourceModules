@@ -8,14 +8,11 @@ Remove a specific resource. Tries to handle different resource types accordingly
 .PARAMETER ResourceId
 Mandatory. The resourceID of the resource to remove
 
-.PARAMETER Name
-Mandatory. The name of the resource to remove
-
 .PARAMETER Type
 Mandatory. The type of the resource to remove
 
 .EXAMPLE
-Invoke-ResourceRemoval -Name 'sxx-vm-linux-001-nic-01-diagnosticSettings' -Type 'Microsoft.Insights/diagnosticSettings' -ResourceId '/subscriptions/.../resourceGroups/validation-rg/providers/Microsoft.Network/networkInterfaces/sxx-vm-linux-001-nic-01/providers/Microsoft.Insights/diagnosticSettings/sxx-vm-linux-001-nic-01-diagnosticSettings'
+Invoke-ResourceRemoval -Type 'Microsoft.Insights/diagnosticSettings' -ResourceId '/subscriptions/.../resourceGroups/validation-rg/providers/Microsoft.Network/networkInterfaces/sxx-vm-linux-001-nic-01/providers/Microsoft.Insights/diagnosticSettings/sxx-vm-linux-001-nic-01-diagnosticSettings'
 
 Remove the resource 'sxx-vm-linux-001-nic-01-diagnosticSettings' of type 'Microsoft.Insights/diagnosticSettings' from resource '/subscriptions/.../resourceGroups/validation-rg/providers/Microsoft.Network/networkInterfaces/sxx-vm-linux-001-nic-01'
 #>
@@ -27,17 +24,14 @@ function Invoke-ResourceRemoval {
         [string] $ResourceId,
 
         [Parameter(Mandatory = $true)]
-        [string] $Name,
-
-        [Parameter(Mandatory = $true)]
         [string] $Type
     )
 
     switch ($type) {
         'Microsoft.Insights/diagnosticSettings' {
             $parentResourceId = $resourceId.Split('/providers/{0}' -f $type)[0]
-            if ($PSCmdlet.ShouldProcess("Diagnostic setting [$name]", 'Remove')) {
-                $null = Remove-AzDiagnosticSetting -ResourceId $parentResourceId -Name $name
+            if ($PSCmdlet.ShouldProcess(('Diagnostic setting [{0}]' -f (Split-Path $ResourceId -Leaf)), 'Remove')) {
+                $null = Remove-AzDiagnosticSetting -ResourceId $parentResourceId -Name (Split-Path $ResourceId -Leaf)
             }
             break
         }

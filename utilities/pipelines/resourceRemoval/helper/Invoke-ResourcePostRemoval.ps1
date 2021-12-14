@@ -8,14 +8,11 @@ Remove any artifacts that remain of the given resource. For example, some resour
 .PARAMETER ResourceId
 Mandatory. The resourceID of the resource to remove
 
-.PARAMETER Name
-Mandatory. The name of the resource to remove
-
 .PARAMETER Type
 Mandatory. The type of the resource to remove
 
 .EXAMPLE
-Invoke-ResourcePostRemoval -Name 'myVault' -Type 'Microsoft.KeyVault/vaults' -ResourceId '/subscriptions/.../resourceGroups/validation-rg/providers/Microsoft.KeyVault/vaults/myVault'
+Invoke-ResourcePostRemoval -Type 'Microsoft.KeyVault/vaults' -ResourceId '/subscriptions/.../resourceGroups/validation-rg/providers/Microsoft.KeyVault/vaults/myVault'
 
 Purge the resource 'myVault' of type 'Microsoft.KeyVault/vaults' with ID '/subscriptions/.../resourceGroups/validation-rg/providers/Microsoft.KeyVault/vaults/myVault' if no purge protection is enabled
 #>
@@ -27,9 +24,6 @@ function Invoke-ResourcePostRemoval {
         [string] $ResourceId,
 
         [Parameter(Mandatory = $true)]
-        [string] $Name,
-
-        [Parameter(Mandatory = $true)]
         [string] $Type
     )
 
@@ -37,9 +31,9 @@ function Invoke-ResourcePostRemoval {
         'Microsoft.KeyVault/vaults' {
             $resourceGroupName = $resourceId.Split('/')[4]
 
-            $matchingKeyVault = Get-AzKeyVault -InRemovedState | Where-Object { $_.VaultName -eq $name -and $_.resourceGroupName -EQ $resourceGroupName }
+            $matchingKeyVault = Get-AzKeyVault -InRemovedState | Where-Object { $_.VaultName -eq (Split-Path $ResourceId -Leaf) -and $_.resourceGroupName -EQ $resourceGroupName }
             if ($matchingKeyVault -and -not $resource.EnablePurgeProtection) {
-                Write-Verbose "Purging key vault [$name]" -Verbose
+                Write-Verbose ('Purging key vault [{0}]' -f (Split-Path $ResourceId -Leaf)) -Verbose
                 if ($PSCmdlet.ShouldProcess(('Key Vault with ID [{0}]' -f $matchingKeyVault.Id), 'Purge')) {
                     $null = Remove-AzKeyVault -ResourceId $matchingKeyVault.Id -InRemovedState -Force -Location $matchingKeyVault.Location
                 }
@@ -47,7 +41,7 @@ function Invoke-ResourcePostRemoval {
         }
         'Microsoft.CognitiveServices/accounts' {
             $resourceGroupName = $resourceId.Split('/')[4]
-            $matchingAccount = Get-AzCognitiveServicesAccount -InRemovedState | Where-Object { $_.AccountName -eq $name }
+            $matchingAccount = Get-AzCognitiveServicesAccount -InRemovedState | Where-Object { $_.AccountName -eq (Split-Path $ResourceId -Leaf) }
             if ($matchingAccount) {
                 if ($PSCmdlet.ShouldProcess(('Cognitive services account with ID [{0}]' -f $matchingAccount.Id), 'Purge')) {
                     $null = Remove-AzCognitiveServicesAccount -InRemovedState -Force -Location $matchingAccount.Location -ResourceGroupName $resourceGroupName -Name $matchingAccount.AccountName
@@ -67,7 +61,7 @@ function Invoke-ResourcePostRemoval {
 
             if ($softDeletedService) {
                 # Purge service
-                $purgePath = '/subscriptions/{0}/providers/Microsoft.ApiManagement/locations/{1}/deletedservices/{2}?api-version=2020-06-01-preview' -f $subscriptionId, $softDeletedService.location, $name
+                $purgePath = '/subscriptions/{0}/providers/Microsoft.ApiManagement/locations/{1}/deletedservices/{2}?api-version=2020-06-01-preview' -f $subscriptionId, $softDeletedService.location, (Split-Path $ResourceId -Leaf)
                 $purgeRequestInputObject = @{
                     Method = 'DELETE'
                     Path   = $purgePath
@@ -92,7 +86,7 @@ function Invoke-ResourcePostRemoval {
                 BackupManagementType = 'AzureVM'
                 WorkloadType         = 'AzureVM'
                 VaultId              = $vaultId
-                Name                 = $name
+                Name                 = Split-Path $ResourceId -Leaf
             }
             if ($backupItem = Get-AzRecoveryServicesBackupItem @backupItemInputObject -ErrorAction 'SilentlyContinue') {
                 Write-Verbose ('Removing Backup item [{0}] from RSV [{1}]' -f $backupItem.Name, $vaultId) -Verbose

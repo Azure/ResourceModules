@@ -39,7 +39,6 @@ function Get-ResourceIdsAsFormattedObjectList {
                 # subscription level resource group
                 $formattedResources += @{
                     resourceId = $resourceId
-                    name       = $idElements[-1]
                     type       = 'Microsoft.Resources/resourceGroups'
                 }
                 break
@@ -48,7 +47,6 @@ function Get-ResourceIdsAsFormattedObjectList {
                 # subscription-level resource group
                 $formattedResources += @{
                     resourceId = $resourceId
-                    name       = $idElements[-1]
                     type       = $idElements[4, 5] -join '/'
                 }
                 break
@@ -58,7 +56,6 @@ function Get-ResourceIdsAsFormattedObjectList {
                     # subscription-level resource
                     $formattedResources += @{
                         resourceId = $resourceId
-                        name       = Split-Path $resourceId -Leaf
                         type       = $idElements[4, 5] -join '/'
                     }
                 } else {
@@ -71,7 +68,6 @@ function Get-ResourceIdsAsFormattedObjectList {
                     foreach ($resource in $expandedResources) {
                         $formattedResources += @{
                             resourceId = $resource.ResourceId
-                            name       = $resource.Name
                             type       = $resource.Type
                         }
                     }
@@ -94,7 +90,6 @@ function Get-ResourceIdsAsFormattedObjectList {
 
                 $formattedResources += @{
                     resourceId = $resourceId
-                    name       = $idElements[-1]
                     type       = $type
                 }
                 break
