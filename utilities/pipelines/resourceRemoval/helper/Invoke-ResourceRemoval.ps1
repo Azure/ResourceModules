@@ -23,13 +23,13 @@ function Invoke-ResourceRemoval {
 
     [CmdletBinding(SupportsShouldProcess)]
     param (
-        [Parameter()]
+        [Parameter(Mandatory = $true)]
         [string] $resourceId,
 
-        [Parameter()]
+        [Parameter(Mandatory = $true)]
         [string] $name,
 
-        [Parameter()]
+        [Parameter(Mandatory = $true)]
         [string] $type
     )
 
