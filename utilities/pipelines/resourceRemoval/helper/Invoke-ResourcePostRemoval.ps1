@@ -34,7 +34,7 @@ function Invoke-ResourcePostRemoval {
 
             $matchingKeyVault = Get-AzKeyVault -InRemovedState | Where-Object { $_.VaultName -eq $resourceName -and $_.resourceGroupName -EQ $resourceGroupName }
             if ($matchingKeyVault -and -not $resource.EnablePurgeProtection) {
-                Write-Verbose ('Purging key vault [{0}]' -f (Split-Path $ResourceId -Leaf)) -Verbose
+                Write-Verbose ("Purging key vault [$resourceName]") -Verbose
                 if ($PSCmdlet.ShouldProcess(('Key Vault with ID [{0}]' -f $matchingKeyVault.Id), 'Purge')) {
                     $null = Remove-AzKeyVault -ResourceId $matchingKeyVault.Id -InRemovedState -Force -Location $matchingKeyVault.Location
                 }
@@ -42,7 +42,9 @@ function Invoke-ResourcePostRemoval {
         }
         'Microsoft.CognitiveServices/accounts' {
             $resourceGroupName = $resourceId.Split('/')[4]
-            $matchingAccount = Get-AzCognitiveServicesAccount -InRemovedState | Where-Object { $_.AccountName -eq (Split-Path $ResourceId -Leaf) }
+            $resourceName = Split-Path $ResourceId -Leaf
+
+            $matchingAccount = Get-AzCognitiveServicesAccount -InRemovedState | Where-Object { $_.AccountName -eq $resourceName }
             if ($matchingAccount) {
                 if ($PSCmdlet.ShouldProcess(('Cognitive services account with ID [{0}]' -f $matchingAccount.Id), 'Purge')) {
                     $null = Remove-AzCognitiveServicesAccount -InRemovedState -Force -Location $matchingAccount.Location -ResourceGroupName $resourceGroupName -Name $matchingAccount.AccountName
