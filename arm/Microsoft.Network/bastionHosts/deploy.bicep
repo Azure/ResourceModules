@@ -51,11 +51,11 @@ param cuaId string = ''
 @allowed([
   'BastionAuditLogs'
 ])
-param azureBastionpLogsToEnable array = [
+param logsToEnable array = [
   'BastionAuditLogs'
 ]
 
-var azureBastionDiagnosticsLogs = [for log in azureBastionpLogsToEnable: {
+var diagnosticsLogs = [for log in logsToEnable: {
   category: log
   enabled: true
   retentionPolicy: {
@@ -141,11 +141,11 @@ resource azureBastion_lock 'Microsoft.Authorization/locks@2016-09-01' = if (lock
 resource azureBastion_diagnosticSettings 'Microsoft.Insights/diagnosticSettings@2021-05-01-preview' = if (!empty(diagnosticStorageAccountId) || !empty(workspaceId) || !empty(eventHubAuthorizationRuleId) || !empty(eventHubName)) {
   name: '${azureBastion.name}-diagnosticSettings'
   properties: {
-    storageAccountId: empty(diagnosticStorageAccountId) ? null : diagnosticStorageAccountId
-    workspaceId: empty(workspaceId) ? null : workspaceId
-    eventHubAuthorizationRuleId: empty(eventHubAuthorizationRuleId) ? null : eventHubAuthorizationRuleId
-    eventHubName: empty(eventHubName) ? null : eventHubName
-    logs: empty(diagnosticStorageAccountId) && empty(workspaceId) && empty(eventHubAuthorizationRuleId) && empty(eventHubName) ? null : azureBastionDiagnosticsLogs
+    storageAccountId: !empty(diagnosticStorageAccountId) ? diagnosticStorageAccountId : null
+    workspaceId: !empty(workspaceId) ? workspaceId : null
+    eventHubAuthorizationRuleId: !empty(eventHubAuthorizationRuleId) ? eventHubAuthorizationRuleId : null
+    eventHubName: !empty(eventHubName) ? eventHubName : null
+    logs: diagnosticsLogs
   }
   scope: azureBastion
 }

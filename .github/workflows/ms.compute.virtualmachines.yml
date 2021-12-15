@@ -73,7 +73,7 @@ jobs:
         uses: actions/checkout@v2
         with:
           fetch-depth: 0
-      - name: 'Validate module with Pester'
+      - name: 'Run tests'
         uses: ./.github/actions/templates/validateModulePester
         with:
           modulePath: '${{ env.modulePath }}'
@@ -105,7 +105,7 @@ jobs:
       - name: Set environment variables
         uses: deep-mm/set-variables@v1.0
         with:
-          variableFileName: 'variables.module'
+          variableFileName: 'global.variables'
       - name: 'Using parameter file [${{ matrix.parameterFilePaths }}]'
         uses: ./.github/actions/templates/validateModuleDeployment
         with:
@@ -135,7 +135,7 @@ jobs:
       - name: Set environment variables
         uses: deep-mm/set-variables@v1.0
         with:
-          variableFileName: 'variables.module'
+          variableFileName: 'global.variables'
       - name: 'Publish module'
         uses: ./.github/actions/templates/publishModule
         with:

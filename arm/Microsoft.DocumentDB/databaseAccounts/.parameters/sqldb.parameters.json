@@ -3,7 +3,7 @@
     "contentVersion": "1.0.0.0",
     "parameters": {
         "name": {
-            "value": "sxx-az-cdb-x-001"
+            "value": "sxx-az-cdb-sqldb-001"
         },
         "location": {
             "value": "West Europe"

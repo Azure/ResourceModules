@@ -3,7 +3,7 @@
     "contentVersion": "1.0.0.0",
     "parameters": {
         "name": {
-            "value": "sxx-az-fwpol-x-001"
+            "value": "sxx-az-fwpol-min-001"
         }
     }
 }
