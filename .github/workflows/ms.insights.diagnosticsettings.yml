@@ -7,7 +7,7 @@ on:
         type: boolean
         description: 'Remove deployed module'
         required: false
-        default: 'false' # Needs custom removals script
+        default: 'true'
       versioningOption:
         type: choice
         description: 'The mode to handle the version increments [major|minor|patch]'

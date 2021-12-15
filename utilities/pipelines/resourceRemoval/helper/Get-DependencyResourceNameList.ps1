@@ -6,20 +6,20 @@ Get a list of all dependency resources specified in the dependencies parameter f
 Get a list of all dependency resources specified in the dependencies parameter files
 Note: It only considers resources that use the 'name' parameter
 
-.PARAMETER dependencyParameterPath
+.PARAMETER DependencyParameterPath
 Optional. The path the the dependency parameters parent folder. Defaults to 'utilities/pipelines/dependencies'
 
 .EXAMPLE
-Get-DependencyResourceNames
+Get-DependencyResourceNameList
 
 Get the list of all dependency names from the current set of parameter files
 #>
-function Get-DependencyResourceNames {
+function Get-DependencyResourceNameList {
 
     [CmdletBinding()]
     param (
         [Parameter(Mandatory = $false)]
-        [string] $dependencyParameterPath = (Join-Path (Split-Path (Split-Path $PSScriptRoot -Parent) -Parent) 'dependencies')
+        [string] $DependencyParameterPath = (Join-Path (Split-Path (Split-Path $PSScriptRoot -Parent) -Parent) 'dependencies')
     )
 
     $parameterFolders = Get-ChildItem -Path $dependencyParameterPath -Recurse -Filter 'parameters' -Directory
