@@ -29,6 +29,8 @@ on:
       - '.github/workflows/ms.insights.components.yml'
       - 'arm/Microsoft.Insights/components/**'
       - '!*/**/readme.md'
+      - 'utilities/pipelines/**'
+      - '!utilities/pipelines/dependencies/**'
 
 env:
   modulePath: 'arm/Microsoft.Insights/components'

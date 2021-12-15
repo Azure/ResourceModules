@@ -29,6 +29,8 @@ on:
       - '.github/workflows/ms.network.firewallpolicies.yml'
       - 'arm/Microsoft.Network/firewallPolicies/**'
       - '!*/**/readme.md'
+      - 'utilities/pipelines/**'
+      - '!utilities/pipelines/dependencies/**'
 
 env:
   modulePath: 'arm/Microsoft.Network/firewallPolicies'

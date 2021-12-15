@@ -29,6 +29,8 @@ on:
       - '.github/workflows/ms.healthbot.healthbots.yml'
       - 'arm/Microsoft.HealthBot/healthBots/**'
       - '!*/**/readme.md'
+      - 'utilities/pipelines/**'
+      - '!utilities/pipelines/dependencies/**'
 
 env:
   modulePath: 'arm/Microsoft.HealthBot/healthBots'
