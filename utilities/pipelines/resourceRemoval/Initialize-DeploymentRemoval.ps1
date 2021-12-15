@@ -12,7 +12,7 @@ Mandatory. The name(s) of the deployment(s)
 Mandatory. The path to the template used for the deployment. Used to determine the level/scope (e.g. subscription)
 
 .PARAMETER ResourceGroupName
-Optional. The name of the resource group the deployment was happening in. Relevant for resource-group level deployments
+Optional. The name of the resource group the deployment was happening in. Relevant for resource-group level deployments.
 
 .EXAMPLE
 Initialize-DeploymentRemoval -DeploymentName 'virtualWans-20211204T1812029146Z' -TemplateFilePath "$home/ResourceModules/arm/Microsoft.Network/virtualWans/deploy.bicep" -resourceGroupName 'test-virtualWan-parameters.json-rg'
@@ -52,17 +52,25 @@ function Initialize-DeploymentRemoval {
 
         foreach ($deploymentName in $deploymentNames) {
             Write-Verbose ('Handling resource removal with deployment name [{0}]' -f $deploymentName) -Verbose
-            # switch ($moduleName) {
-            #     '<moduleName>' {
-            #         $removalSequence += @(
-            #             '<providerNamespace1>/<resourceType1>'
-            #             '<providerNamespace1>/<resourceType2>'
-            #             '<providerNamespace2>/<resourceType1>'
-            #             '<providerNamespace2>/<resourceType2>'
-            #         )
-            #         break
-            #     }
-            # }
+            switch ($moduleName) {
+                'virtualWans' {
+                    $removalSequence += @(
+                        'Microsoft.Network/vpnGateways',
+                        'Microsoft.Network/virtualHubs',
+                        'Microsoft.Network/vpnSites'
+                    )
+                    break
+                }
+                'automationAccounts' {
+                    $removalSequence += @(
+                        'Microsoft.OperationsManagement/solutions',
+                        'Microsoft.OperationalInsights/workspaces/linkedServices',
+                        'Microsoft.Network/privateEndpoints/privateDnsZoneGroups',
+                        'Microsoft.Network/privateEndpoints'
+                    )
+                    break
+                }
+            }
 
             # Invoke removal
             $inputObject = @{
@@ -71,14 +79,6 @@ function Initialize-DeploymentRemoval {
                 TemplateFilePath  = $templateFilePath
                 RemovalSequence   = $removalSequence
             }
-            Remove-Deployment @inputObject -Verbose
-        }
-    }
-
-    end {
-        Write-Debug ('{0} exited' -f $MyInvocation.MyCommand)
-    }
-}
             Remove-Deployment @inputObject -Verbose
         }
     }
