@@ -479,7 +479,7 @@ resource agentPool 'Microsoft.ContainerService/managedClusters/agentPools@2021-0
     linuxOSConfig: linuxOSConfig
     maxCount: maxCount != -1 ? maxCount : null
     maxPods: maxPods != -1 ? maxPods : null
-    minCount: (minCount != -1) ? minCount : null
+    minCount: minCount != -1 ? minCount : null
     mode: !empty(mode) ? mode : null
     nodeLabels: nodeLabels
     nodePublicIPPrefixID: !empty(nodePublicIpPrefixId) ? nodePublicIpPrefixId : null
