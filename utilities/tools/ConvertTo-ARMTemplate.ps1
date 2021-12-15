@@ -50,7 +50,7 @@ Write-Verbose 'Removing existing deploy.json files - Done'
 
 #region Convert bicep files to json
 Write-Verbose "Convert bicep files to json - Processing [$($BicepFilesToConvert.count)] files"
-if ($PSCmdlet.ShouldProcess("[$($BicepFilesToConvert.count)] bicep file(s) in path [$armFolderPath]", 'Convert')) {
+if ($PSCmdlet.ShouldProcess("[$($BicepFilesToConvert.count)] bicep file(s) in path [$armFolderPath]", 'az bicep build')) {
     $BicepFilesToConvert | ForEach-Object -ThrottleLimit $env:NUMBER_OF_PROCESSORS -Parallel {
         Invoke-Expression -Command "az bicep build --file '$_'"
     }
@@ -100,27 +100,32 @@ if ($PSCmdlet.ShouldProcess("[$($BicepFilesToConvert.count)] file(s) in path [$a
             $JSONObj = $JSONFileContent | ConvertFrom-Json
             Remove-JSONMetadata -TemplateObject $JSONObj
             $JSONFileContent = $JSONObj | ConvertTo-Json -Depth 100
-            Set-Content -Value $JSONFileContent -Path $JSONFilePath -WhatIf:$WhatIfPreference
+            Set-Content -Value $JSONFileContent -Path $JSONFilePath
             Write-Verbose "$bicepModuleName - Remove Bicep metadata from json - Done"
         } else {
             Write-Verbose "$bicepModuleName - Remove Bicep metadata from json - Skipped - File not found (deploy.json)"
         }
     }
 }
+Write-Verbose "$bicepModuleName - Remove Bicep metadata from json - Done"
 #endregion
 
 #region Remove bicep files and folders
 if ($CleanUp) {
     Write-Verbose 'Remove bicep files and folders'
 
-    Write-Verbose 'Remove bicep files and folders - Remove .bicep folders'
     $dotBicepFolders = Get-ChildItem -Path $armFolderPath -Filter '.bicep' -Recurse -Force -Directory
-    $dotBicepFolders | Remove-Item -Recurse -Force
+    Write-Verbose "Remove bicep files and folders - Remove [$($dotBicepFolders.count)] .bicep folders"
+    if ($PSCmdlet.ShouldProcess("[$($dotBicepFolders.count)] .bicep folder(s) in path [$armFolderPath]", 'Remove')) {
+        $dotBicepFolders | Remove-Item -Recurse -Force
+    }
     Write-Verbose 'Remove bicep files and folders - Remove .bicep folders - Done'
 
-    Write-Verbose 'Remove bicep files and folders - Remove all *.bicep files'
     $BicepFilesToRemove = Get-ChildItem -Path $armFolderPath -Filter '*.bicep' -Recurse -Force -File
-    $BicepFilesToRemove | Remove-Item -Force
+    Write-Verbose "Remove bicep files and folders - Remove [$($BicepFilesToRemove.count)] *.bicep files"
+    if ($PSCmdlet.ShouldProcess("[$($BicepFilesToRemove.count)] *.bicep file(s) in path [$armFolderPath]", 'Remove')) {
+        $BicepFilesToRemove | Remove-Item -Force
+    }
     Write-Verbose 'Remove bicep files and folders - Remove all *.bicep files - Done'
 }
 #endregion
@@ -133,12 +138,9 @@ $workflowFiles = Get-ChildItem -Path $workflowFolderPath -Filter 'ms.*.yml' -Fil
 Write-Verbose ('Update workflow files - Processing [{0}] files' -f $workflowFiles.count)
 if ($PSCmdlet.ShouldProcess("[$($workflowFiles.count)] yml file(s) in path [$armFolderPath]", 'Set Content')) {
     $workflowFiles | ForEach-Object -ThrottleLimit $env:NUMBER_OF_PROCESSORS -Parallel {
-        $workflowFile = $_
-        Write-Verbose "$workflowFile - Processing"
-        $content = Get-Content -Path $workflowFile
-        $content = $content.Replace("deploy.bicep'", "deploy.json'")
-        Set-Content -Value $content -Path $workflowFile -WhatIf:$WhatIfPreference
-        Write-Verbose "$workflowFile - Processing - Done"
+        $content = $_ | Get-Content
+        $content = $content.Replace("deploy.bicep", "deploy.json")
+        $_ | Set-Content -Value $content
     }
 }
 Write-Verbose "Update workflow files - $($workflowFiles.count) files - Done"
