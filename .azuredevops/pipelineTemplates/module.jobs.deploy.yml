@@ -278,7 +278,7 @@ jobs:
               pwsh: true
               inline: |
                 # Load used function
-                . (Join-Path '$(moduleRepoRoot)' '$(pipelineFunctionsPath)' 'resourceRemoval' 'Remove-DeployedModule.ps1')
+                . (Join-Path '$(moduleRepoRoot)' '$(pipelineFunctionsPath)' 'resourceRemoval' 'Initialize-DeploymentRemoval.ps1')
 
                 if(-not [String]::IsNullOrEmpty('${{ deploymentBlock.templateFilePath }}')) {
                   $templateFilePath = Join-Path '$(moduleRepoRoot)' '${{ deploymentBlock.templateFilePath }}'
@@ -289,14 +289,16 @@ jobs:
                     (Join-Path '$(ModuleRepoRoot)' '$(modulePath)' 'deploy.json')
                 }
 
-                $functionInput = @{
-                    deploymentName    = '$(deploymentName)'
-                    templateFilePath  = $templateFilePath
-                    resourceGroupName = '${{ parameters.resourceGroupName }}'
-                    verbose           = $true
+                if (-not [String]::IsNullOrEmpty('$(deploymentName)')) {
+                  $functionInput = @{
+                      DeploymentName    = '$(deploymentName)'
+                      TemplateFilePath  = $templateFilePath
+                      ResourceGroupName = '${{ parameters.resourceGroupName }}'
+                      Verbose           = $true
+                  }
+
+                  Write-Verbose 'Invoke task with' -Verbose
+                  Write-Verbose ($functionInput | ConvertTo-Json | Out-String) -Verbose
+
+                  Initialize-DeploymentRemoval @functionInput
                 }
-
-                Write-Verbose 'Invoke task with' -Verbose
-                Write-Verbose ($functionInput | ConvertTo-Json | Out-String) -Verbose
-
-                Remove-DeployedModule @functionInput
