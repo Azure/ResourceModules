@@ -477,7 +477,7 @@ resource agentPool 'Microsoft.ContainerService/managedClusters/agentPools@2021-0
     kubeletConfig: kubeletConfig
     kubeletDiskType: kubeletDiskType
     linuxOSConfig: linuxOSConfig
-    maxCount: (maxCount != -1) ? maxCount : null
+    maxCount: maxCount != -1 ? maxCount : null
     maxPods: (maxPods != -1) ? maxPods : null
     minCount: (minCount != -1) ? minCount : null
     mode: !empty(mode) ? mode : null
