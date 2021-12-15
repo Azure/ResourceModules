@@ -53,6 +53,7 @@ function Invoke-ResourcePostRemoval {
         }
         'Microsoft.ApiManagement/service' {
             $subscriptionId = $resourceId.Split('/')[2]
+            $resourceName = Split-Path $ResourceId -Leaf
 
             # Fetch service in soft-delete
             $getPath = '/subscriptions/{0}/providers/Microsoft.ApiManagement/deletedservices?api-version=2021-08-01' -f $subscriptionId
@@ -64,7 +65,7 @@ function Invoke-ResourcePostRemoval {
 
             if ($softDeletedService) {
                 # Purge service
-                $purgePath = '/subscriptions/{0}/providers/Microsoft.ApiManagement/locations/{1}/deletedservices/{2}?api-version=2020-06-01-preview' -f $subscriptionId, $softDeletedService.location, (Split-Path $ResourceId -Leaf)
+                $purgePath = '/subscriptions/{0}/providers/Microsoft.ApiManagement/locations/{1}/deletedservices/{2}?api-version=2020-06-01-preview' -f $subscriptionId, $softDeletedService.location, $resourceName
                 $purgeRequestInputObject = @{
                     Method = 'DELETE'
                     Path   = $purgePath
@@ -78,6 +79,7 @@ function Invoke-ResourcePostRemoval {
             # Remove protected VM
             # Required if e.g. a VM was listed in an RSV and only that VM is removed
             $vaultId = $resourceId.split('/backupFabrics/')[0]
+            $resourceName = Split-Path $ResourceId -Leaf
             $softDeleteStatus = (Get-AzRecoveryServicesVaultProperty -VaultId $vaultId).SoftDeleteFeatureState
             if ($softDeleteStatus -ne 'Disabled') {
                 if ($PSCmdlet.ShouldProcess(('Soft-delete on RSV [{0}]' -f $vaultId), 'Set')) {
@@ -89,7 +91,7 @@ function Invoke-ResourcePostRemoval {
                 BackupManagementType = 'AzureVM'
                 WorkloadType         = 'AzureVM'
                 VaultId              = $vaultId
-                Name                 = Split-Path $ResourceId -Leaf
+                Name                 = $resourceName
             }
             if ($backupItem = Get-AzRecoveryServicesBackupItem @backupItemInputObject -ErrorAction 'SilentlyContinue') {
                 Write-Verbose ('Removing Backup item [{0}] from RSV [{1}]' -f $backupItem.Name, $vaultId) -Verbose
