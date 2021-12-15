@@ -98,7 +98,7 @@ function Remove-Deployment {
         # Filter all dependency resources
         # ===============================
         $dependencyResourceNames = Get-DependencyResourceNameList
-        $resourcesToRemove = $resourcesToRemove | Where-Object { $_.Name -notin $dependencyResourceNames }
+        $resourcesToRemove = $resourcesToRemove | Where-Object { (Split-Path $_.resourceId -Leaf) -notin $dependencyResourceNames }
 
         # Order resources
         # ===============
