@@ -35,16 +35,16 @@ function Remove-ResourceListInner {
         Write-Verbose '----------------------------------' -Verbose
 
         foreach ($resource in $resourcesToRemove) {
-
+            $resourceName = Split-Path $resource.resourceId -Leaf
             $alreadyProcessed = $processedResources.count -gt 0 ? (($processedResources | Where-Object { $resource.resourceId -like ('{0}*' -f $_) }).Count -gt 0) : $false
 
             if ($alreadyProcessed) {
                 # Skipping
-                Write-Verbose ('Skipping resource [{0}] of type [{1}] as a parent resource was already processed' -f (Split-Path $resource.resourceId -Leaf), $resource.type) -Verbose
+                Write-Verbose ('Skipping resource [{0}] of type [{1}] as a parent resource was already processed' -f $resourceName, $resource.type) -Verbose
                 [array]$processedResources += $resource.resourceId
                 [array]$resourcesToRetry = $resourcesToRetry | Where-Object { $_.resourceId -notmatch $resource.resourceId }
             } else {
-                Write-Verbose ('Removing resource [{0}] of type [{1}]' -f (Split-Path $resource.resourceId -Leaf), $resource.type) -Verbose
+                Write-Verbose ('Removing resource [{0}] of type [{1}]' -f $resourceName, $resource.type) -Verbose
                 try {
                     if ($PSCmdlet.ShouldProcess(('Resource [{0}]' -f $resource.resourceId), 'Remove')) {
                         Invoke-ResourceRemoval -Type $resource.type -ResourceId $resource.resourceId

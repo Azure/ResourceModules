@@ -31,8 +31,7 @@ function Invoke-ResourceRemoval {
         'Microsoft.Insights/diagnosticSettings' {
             $parentResourceId = $resourceId.Split('/providers/{0}' -f $type)[0]
             $resourceName = Split-Path $ResourceId -Leaf
-
-            if ($PSCmdlet.ShouldProcess(('Diagnostic setting [{0}]' -f $resourceName), 'Remove')) {
+            if ($PSCmdlet.ShouldProcess("Diagnostic setting [$resourceName]", 'Remove')) {
                 $null = Remove-AzDiagnosticSetting -ResourceId $parentResourceId -Name $resourceName
             }
             break
