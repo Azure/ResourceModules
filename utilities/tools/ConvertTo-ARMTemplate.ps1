@@ -31,153 +31,106 @@ param (
     [switch] $CleanUp,
 
     [Parameter()]
-    [switch] $SkipChildResources
+    [switch] $KeepChildResources
 )
-
-#region Helper functions
-
-<#
-.SYNOPSIS
-A function to recursively remove 'metadata' property from a provided object.
-This object is expected to be an ARM template converted to a PowerShell custom object.
-The function uses the object reference rather than recreating/copying the object.
-
-.PARAMETER TemplateObject
-Mandatory. The ARM template converted to a PowerShell custom object.
-
-.EXAMPLE
-$JSONFileContent = Get-Content -Path $JSONFilePath
-$JSONObj = $JSONFileContent | ConvertFrom-Json
-Remove-JSONMetadata -TemplateObject $JSONObj
-
-Reads content from a ARM/JSON file, converts it to a PSCustomObject and removes 'metadata' property under the template and recursively on all nested deployments.
-
-#>
-function Remove-JSONMetadata {
-    [CmdletBinding()]
-    param (
-        [Parameter(Mandatory)]
-        [psobject] $TemplateObject
-    )
-    $TemplateObject.PSObject.Properties.Remove('metadata')
-    $TemplateObject.resources | Where-Object { $_.type -eq 'Microsoft.Resources/deployments' } | ForEach-Object {
-        Remove-JSONMetadata -TemplateObject $_.properties.template
-    }
-}
-
-<#
-.SYNOPSIS
-Gets the folder objects for the child resources of the provided parent folder.
-
-.DESCRIPTION
-Gets the folder objects for the child resources of the provided parent folder.
-This will check for the existence of the child resources and if found, will return the folder objects.
-The criteria for the child resource folder is that the folder contains a 'deploy.json' file.
-
-.PARAMETER Path
-Path to the parent resource folder.
-
-.EXAMPLE
-Get-ChildResourceFolder -Path 'C:\Repos\Azure\ResourceModules\arm\Microsoft.Storage\storageAccounts'
-
-Mode                 LastWriteTime         Length Name
-----                 -------------         ------ ----
-l----          15.12.2021    15:27                blobServices
-l----          15.12.2021    15:27                fileServices
-l----          15.12.2021    15:27                managementPolicies
-l----          15.12.2021    15:27                queueServices
-l----          15.12.2021    15:27                tableServices
-
-Gets the folder objects for the child resources of the provided parent folder.
-
-#>
-function Get-ChildResourceFolder {
-
-    [CmdletBinding()]
-    param (
-        [Parameter(Mandatory = $true)]
-        [string] $Path
-    )
-
-    return Get-ChildItem -Path $Path -Filter 'deploy.json' -Recurse -Depth 1 -Force | Select-Object -ExpandProperty 'Directory' | Get-Item
-
-}
-
-#endregion
 
 $rootPath = Get-Item -Path $Path | Select-Object -ExpandProperty 'FullName'
 $armFolderPath = Join-Path -Path $rootPath -ChildPath 'arm'
 
-
-# Remove existing json files
-Write-Verbose "Removing existing deploy.json files"
+#region Remove existing json files
+Write-Verbose 'Removing existing deploy.json files'
 Get-ChildItem -Path $armFolderPath -Filter 'deploy.json' -Recurse -Force | ForEach-Object {
     if ($PSCmdlet.ShouldProcess("File in path [$($_.FullName)]", 'Remove')) {
         Remove-Item -Path $_.FullName -Force
     }
 }
-Write-Verbose "$bicepFilePath - Removing existing deploy.json files - Done"
+Write-Verbose 'Removing existing deploy.json files - Done'
+#endregion
 
-# Process all deploy.bicep files
-$bicepFiles = Get-ChildItem -Path $armFolderPath -Filter 'deploy.bicep' -Recurse -Force -Depth 2
-Write-Verbose "Convert bicep to json - $($bicepFiles.count) files"
-foreach ($bicepFile in $bicepFiles) {
-    $bicepFilePath = $bicepFile.FullName
-    Write-Verbose "$bicepFilePath - Processing"
-    $moduleFolderPath = $bicepFile.Directory.FullName
-    Write-Verbose "$bicepFilePath - ModuleFolderPath - $moduleFolderPath"
-    $bicepFolderPath = Join-Path -Path $moduleFolderPath -ChildPath '.bicep'
-    $JSONFilePath = Join-Path -Path $moduleFolderPath -ChildPath 'deploy.json'
-    Write-Verbose "$bicepFilePath - JSONFilePath - $JSONFilePath"
+if ($KeepChildResources) {
+    $BicepFilesToConvert = Get-ChildItem -Path $armFolderPath -Filter 'deploy.bicep' -Recurse -Force
+} else {
+    $BicepFilesToConvert = Get-ChildItem -Path $armFolderPath -Filter 'deploy.bicep' -Recurse -Force -Depth 2
+}
 
-
-    # Convert bicep to json
-    Write-Verbose "$bicepFilePath - Convert bicep to json"
-    $BicepFilesToConvert = $bicepFile
-    if ($SkipChildResources) {
-
-    } else {
-        Get-ChildItem -Path $bicepFolderPath -Filter 'deploy.bicep' -Recurse -Force
+#region Convert bicep files to json
+Write-Verbose "Convert bicep files to json - Processing [$($BicepFilesToConvert.count)] files"
+if ($PSCmdlet.ShouldProcess("[$($BicepFilesToConvert.count)] file(s) in path [$armFolderPath]", 'Convert')) {
+    $BicepFilesToConvert | ForEach-Object -ThrottleLimit $env:NUMBER_OF_PROCESSORS -Parallel {
+        Invoke-Expression "az bicep build --file '$_'"
     }
+}
+Write-Verbose 'Convert bicep files to json - Done'
+#endregion
 
-    if ($PSCmdlet.ShouldProcess("File in path [$bicepFilePath]", 'Convert')) {
-        Invoke-Expression "az bicep build --file '$bicepFilePath' --outfile '$JSONFilePath'"
-    }
-    Write-Verbose "$bicepFilePath - Convert bicep to json - Done"
+#region Remove Bicep metadata from json
+Write-Verbose "$bicepModuleName - Remove Bicep metadata from json - Processing [$($BicepFilesToConvert.count)] files"
+if ($PSCmdlet.ShouldProcess("[$($BicepFilesToConvert.count)] file(s) in path [$armFolderPath]", 'Modify')) {
+    $BicepFilesToConvert | ForEach-Object -ThrottleLimit $env:NUMBER_OF_PROCESSORS -Parallel {
 
+        function Remove-JSONMetadata {
+            <#
+            .SYNOPSIS
+            A function to recursively remove 'metadata' property from a provided object.
+            This object is expected to be an ARM template converted to a PowerShell custom object.
+            The function uses the object reference rather than recreating/copying the object.
 
-    # Remove Bicep metadata from json
-    Write-Verbose "$bicepFilePath - Remove Bicep metadata from json"
-    if (Test-Path -Path $JSONFilePath) {
-        $JSONFileContent = Get-Content -Path $JSONFilePath
-        $JSONObj = $JSONFileContent | ConvertFrom-Json
-        Remove-JSONMetadata -TemplateObject $JSONObj
-        $JSONFileContent = $JSONObj | ConvertTo-Json -Depth 100
-        if ($PSCmdlet.ShouldProcess("File in path [$JSONFilePath]", 'Overwrite')) {
-            Set-Content -Value $JSONFileContent -Path $JSONFilePath
-        }
-        Write-Verbose "$bicepFilePath - Remove Bicep metadata from json - Done"
-    } else {
-        Write-Verbose "$bicepFilePath - Remove Bicep metadata from json - Skipped - File not found (deploy.json)"
-    }
+            .PARAMETER TemplateObject
+            Mandatory. The ARM template converted to a PowerShell custom object.
 
-    # Remove bicep files and folders
-    if ($CleanUp) {
-        Write-Verbose "$bicepFilePath - Clean up bicep files"
-        if ($PSCmdlet.ShouldProcess("File in path [$bicepFilePath]", 'Remove')) {
-            Remove-Item -Path $bicepFilePath -Force
-        }
-        Write-Verbose "$bicepFilePath - Clean up bicep files - Removed deploy.bicep"
-        if (Test-Path -Path $bicepFolderPath) {
-            if ($PSCmdlet.ShouldProcess("File in path [$bicepFolderPath]", 'Remove')) {
-                Remove-Item -Path $bicepFolderPath -Recurse -Force
+            .EXAMPLE
+            $JSONFileContent = Get-Content -Path $JSONFilePath
+            $JSONObj = $JSONFileContent | ConvertFrom-Json
+            Remove-JSONMetadata -TemplateObject $JSONObj
+
+            Reads content from a ARM/JSON file, converts it to a PSCustomObject and removes 'metadata' property under the template and recursively on all nested deployments.
+
+            #>
+
+            [CmdletBinding()]
+            param (
+                [Parameter(Mandatory)]
+                [psobject] $TemplateObject
+            )
+            $TemplateObject.PSObject.Properties.Remove('metadata')
+            $TemplateObject.resources | Where-Object { $_.type -eq 'Microsoft.Resources/deployments' } | ForEach-Object {
+                Remove-JSONMetadata -TemplateObject $_.properties.template
             }
-            Write-Verbose "$bicepFilePath - Clean up bicep files - Removed .bicep folder"
+        }
+
+        $moduleFolderPath = $_.Directory.FullName
+        $JSONFilePath = Join-Path -Path $moduleFolderPath -ChildPath 'deploy.json'
+        if (Test-Path -Path $JSONFilePath) {
+            $JSONFileContent = Get-Content -Path $JSONFilePath
+            $JSONObj = $JSONFileContent | ConvertFrom-Json
+            Remove-JSONMetadata -TemplateObject $JSONObj
+            $JSONFileContent = $JSONObj | ConvertTo-Json -Depth 100
+            Set-Content -Value $JSONFileContent -Path $JSONFilePath
+            Write-Verbose "$bicepModuleName - Remove Bicep metadata from json - Done"
+        } else {
+            Write-Verbose "$bicepModuleName - Remove Bicep metadata from json - Skipped - File not found (deploy.json)"
         }
     }
 }
+#endregion
 
-# Replace .bicep with .json in workflow files
+#region Remove bicep files and folders
+if ($CleanUp) {
+    Write-Verbose 'Remove bicep files and folders'
+
+    Write-Verbose 'Remove bicep files and folders - Remove .bicep folders'
+    $dotBicepFolders = Get-ChildItem -Path $armFolderPath -Filter '.bicep' -Recurse -Force -Directory
+    $dotBicepFolders | Remove-Item -Recurse -Force -WhatIf:$WhatIfPreference
+    Write-Verbose 'Remove bicep files and folders - Remove .bicep folders - Done'
+
+    Write-Verbose 'Remove bicep files and folders - Remove all *.bicep files'
+    $BicepFilesToRemove = Get-ChildItem -Path $armFolderPath -Filter '*.bicep' -Recurse -Force
+    $BicepFilesToRemove | Remove-Item -Force -WhatIf:$WhatIfPreference
+    Write-Verbose 'Remove bicep files and folders - Remove all *.bicep files - Done'
+}
+#endregion
+
+#region Replace .bicep with .json in workflow files
 $workflowFolderPath = Join-Path -Path $rootPath -ChildPath '.github\workflows'
 $workflowFiles = Get-ChildItem -Path $workflowFolderPath -Filter 'ms.*.yml' -File -Force
 Write-Verbose "Update workflow files - $($workflowFiles.count) files"
@@ -191,3 +144,4 @@ foreach ($workflowFile in $workflowFiles) {
     Write-Verbose "$workflowFile - Processing - Done"
 }
 Write-Verbose "Update workflow files - $($workflowFiles.count) files - Done"
+#endregion
