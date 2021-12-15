@@ -36,28 +36,23 @@ param (
 
 $rootPath = Get-Item -Path $Path | Select-Object -ExpandProperty 'FullName'
 $armFolderPath = Join-Path -Path $rootPath -ChildPath 'arm'
-
-#region Remove existing json files
-Write-Verbose 'Removing existing deploy.json files'
-Get-ChildItem -Path $armFolderPath -Filter 'deploy.json' -Recurse -Force | ForEach-Object {
-    if ($PSCmdlet.ShouldProcess("File in path [$($_.FullName)]", 'Remove')) {
-        Remove-Item -Path $_.FullName -Force
-    }
-}
-Write-Verbose 'Removing existing deploy.json files - Done'
-#endregion
-
 if ($KeepChildResources) {
     $BicepFilesToConvert = Get-ChildItem -Path $armFolderPath -Filter 'deploy.bicep' -Recurse -Force
 } else {
     $BicepFilesToConvert = Get-ChildItem -Path $armFolderPath -Filter 'deploy.bicep' -Recurse -Force -Depth 2
 }
 
+#region Remove existing json files
+Write-Verbose 'Removing existing deploy.json files'
+Get-ChildItem -Path $armFolderPath -Filter 'deploy.json' -Recurse -Force | Remove-Item -Force
+Write-Verbose 'Removing existing deploy.json files - Done'
+#endregion
+
 #region Convert bicep files to json
 Write-Verbose "Convert bicep files to json - Processing [$($BicepFilesToConvert.count)] files"
-if ($PSCmdlet.ShouldProcess("[$($BicepFilesToConvert.count)] file(s) in path [$armFolderPath]", 'Convert')) {
+if ($PSCmdlet.ShouldProcess("[$($BicepFilesToConvert.count)] bicep file(s) in path [$armFolderPath]", 'Convert')) {
     $BicepFilesToConvert | ForEach-Object -ThrottleLimit $env:NUMBER_OF_PROCESSORS -Parallel {
-        Invoke-Expression "az bicep build --file '$_'"
+        Invoke-Expression -Command "az bicep build --file '$_'"
     }
 }
 Write-Verbose 'Convert bicep files to json - Done'
@@ -65,7 +60,7 @@ Write-Verbose 'Convert bicep files to json - Done'
 
 #region Remove Bicep metadata from json
 Write-Verbose "$bicepModuleName - Remove Bicep metadata from json - Processing [$($BicepFilesToConvert.count)] files"
-if ($PSCmdlet.ShouldProcess("[$($BicepFilesToConvert.count)] file(s) in path [$armFolderPath]", 'Modify')) {
+if ($PSCmdlet.ShouldProcess("[$($BicepFilesToConvert.count)] file(s) in path [$armFolderPath]", 'Set Content')) {
     $BicepFilesToConvert | ForEach-Object -ThrottleLimit $env:NUMBER_OF_PROCESSORS -Parallel {
 
         function Remove-JSONMetadata {
@@ -105,7 +100,7 @@ if ($PSCmdlet.ShouldProcess("[$($BicepFilesToConvert.count)] file(s) in path [$a
             $JSONObj = $JSONFileContent | ConvertFrom-Json
             Remove-JSONMetadata -TemplateObject $JSONObj
             $JSONFileContent = $JSONObj | ConvertTo-Json -Depth 100
-            Set-Content -Value $JSONFileContent -Path $JSONFilePath
+            Set-Content -Value $JSONFileContent -Path $JSONFilePath -WhatIf:$WhatIfPreference
             Write-Verbose "$bicepModuleName - Remove Bicep metadata from json - Done"
         } else {
             Write-Verbose "$bicepModuleName - Remove Bicep metadata from json - Skipped - File not found (deploy.json)"
@@ -120,28 +115,31 @@ if ($CleanUp) {
 
     Write-Verbose 'Remove bicep files and folders - Remove .bicep folders'
     $dotBicepFolders = Get-ChildItem -Path $armFolderPath -Filter '.bicep' -Recurse -Force -Directory
-    $dotBicepFolders | Remove-Item -Recurse -Force -WhatIf:$WhatIfPreference
+    $dotBicepFolders | Remove-Item -Recurse -Force
     Write-Verbose 'Remove bicep files and folders - Remove .bicep folders - Done'
 
     Write-Verbose 'Remove bicep files and folders - Remove all *.bicep files'
-    $BicepFilesToRemove = Get-ChildItem -Path $armFolderPath -Filter '*.bicep' -Recurse -Force
-    $BicepFilesToRemove | Remove-Item -Force -WhatIf:$WhatIfPreference
+    $BicepFilesToRemove = Get-ChildItem -Path $armFolderPath -Filter '*.bicep' -Recurse -Force -File
+    $BicepFilesToRemove | Remove-Item -Force
     Write-Verbose 'Remove bicep files and folders - Remove all *.bicep files - Done'
 }
 #endregion
 
 #region Replace .bicep with .json in workflow files
+Write-Verbose 'Update workflow files'
+
 $workflowFolderPath = Join-Path -Path $rootPath -ChildPath '.github\workflows'
 $workflowFiles = Get-ChildItem -Path $workflowFolderPath -Filter 'ms.*.yml' -File -Force
-Write-Verbose "Update workflow files - $($workflowFiles.count) files"
-foreach ($workflowFile in $workflowFiles) {
-    Write-Verbose "$workflowFile - Processing"
-    $content = Get-Content -Path $workflowFile
-    $content = $content.Replace("deploy.bicep'", "deploy.json'")
-    if ($PSCmdlet.ShouldProcess("File in path [$workflowFile]", 'Overwrite')) {
-        Set-Content -Value $content -Path $workflowFile
+Write-Verbose ('Update workflow files - Processing [{0}] files' -f $workflowFiles.count)
+if ($PSCmdlet.ShouldProcess("[$($workflowFiles.count)] yml file(s) in path [$armFolderPath]", 'Set Content')) {
+    $workflowFiles | ForEach-Object -ThrottleLimit $env:NUMBER_OF_PROCESSORS -Parallel {
+        $workflowFile = $_
+        Write-Verbose "$workflowFile - Processing"
+        $content = Get-Content -Path $workflowFile
+        $content = $content.Replace("deploy.bicep'", "deploy.json'")
+        Set-Content -Value $content -Path $workflowFile -WhatIf:$WhatIfPreference
+        Write-Verbose "$workflowFile - Processing - Done"
     }
-    Write-Verbose "$workflowFile - Processing - Done"
 }
 Write-Verbose "Update workflow files - $($workflowFiles.count) files - Done"
 #endregion
