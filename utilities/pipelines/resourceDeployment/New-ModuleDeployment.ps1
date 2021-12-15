@@ -108,7 +108,7 @@ function New-DeploymentWithParameterFile {
 
         # Parameter file provided yes/no
         if (-not [String]::IsNullOrEmpty($parameterFilePath)) {
-            $DeploymentInputs['TemplateParameterFile'] = $parameterFile
+            $DeploymentInputs['TemplateParameterFile'] = $parameterFilePath
         }
 
         # Additional parameter object provided yes/no
@@ -122,7 +122,7 @@ function New-DeploymentWithParameterFile {
 
             # Parameter tags
             if (-not [String]::IsNullOrEmpty($parameterFilePath)) {
-                $parameterFileTags = (ConvertFrom-Json (Get-Content -Raw -Path $parameterFile) -AsHashtable).parameters.tags.value
+                $parameterFileTags = (ConvertFrom-Json (Get-Content -Raw -Path $parameterFilePath) -AsHashtable).parameters.tags.value
             }
             if (-not $parameterFileTags) { $parameterFileTags = @{} }
 
@@ -337,9 +337,9 @@ function New-ModuleDeployment {
         if ($parameterFilePath) {
             if ($parameterFilePath -is [array]) {
                 $deploymentResult = [System.Collections.ArrayList]@()
-                foreach ($parameterFile in $parameterFilePath) {
+                foreach ($path in $parameterFilePath) {
                     if ($PSCmdlet.ShouldProcess("Deployment for parameter file [$parameterFilePath]", 'Trigger')) {
-                        $deploymentResult += New-DeploymentWithParameterFile @deploymentInputObject -parameterFilePath $parameterFile
+                        $deploymentResult += New-DeploymentWithParameterFile @deploymentInputObject -parameterFilePath $path
                     }
                 }
                 return $deploymentResult
