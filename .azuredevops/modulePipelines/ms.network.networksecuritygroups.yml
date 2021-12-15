@@ -1,0 +1,62 @@
+name: 'Network - NetworkSecurityGroups'
+
+parameters:
+  - name: removeDeployment
+    displayName: Remove deployed module
+    type: boolean
+    default: true
+  - name: versioningOption
+    displayName: The mode to handle the version increments [major|minor|patch]
+    type: string
+    default: patch
+    values:
+      - patch
+      - minor
+      - major
+  - name: customVersion
+    displayName: Custom version to apply. Used only if higher than latest
+    type: string
+    default: '0.0.1'
+
+trigger:
+  batch: true
+  branches:
+    include:
+      - main
+  paths:
+    include:
+      - '/.azuredevops/modulePipelines/ms.network.networksecuritygroups.yml'
+      - '/.azuredevops/pipelineTemplates/module.*.yml'
+      - '/arm/Microsoft.Network/networkSecurityGroups/*'
+    exclude:
+      - '/**/*.md'
+
+variables:
+  - template: '/.azuredevops/pipelineVariables/global.variables.yml'
+  - group: 'PLATFORM_VARIABLES'
+  - name: modulePath
+    value: '/arm/Microsoft.Network/networkSecurityGroups'
+
+stages:
+  - stage: Validation
+    displayName: Pester tests
+    jobs:
+      - template: /.azuredevops/pipelineTemplates/module.jobs.validate.yml
+
+  - stage: Deployment
+    displayName: Deployment tests
+    jobs:
+      - template: /.azuredevops/pipelineTemplates/module.jobs.deploy.yml
+        parameters:
+          removeDeployment: '${{ parameters.removeDeployment }}'
+          deploymentBlocks:
+            - path: $(modulePath)/.parameters/parameters.json
+
+  - stage: Publishing
+    displayName: Publish module
+    condition: and(succeeded(), eq(variables['Build.SourceBranch'], 'refs/heads/main'))
+    jobs:
+      - template: /.azuredevops/pipelineTemplates/module.jobs.publish.yml
+        parameters:
+          versioningOption: '${{ parameters.versioningOption }}'
+          customVersion: '${{ parameters.customVersion }}'

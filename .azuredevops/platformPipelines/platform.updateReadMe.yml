@@ -1,0 +1,84 @@
+name: '.Platform: Update ReadMe Module Tables'
+
+trigger:
+  batch: true
+  branches:
+    include:
+      - main
+  paths:
+    include:
+      - 'arm/**/deploy.bicep'
+      - 'arm/**/deploy.json'
+
+variables:
+  - template: '/.azuredevops/pipelineVariables/global.variables.yml'
+  - name: pipelinePrincipalGitUserName
+    value: 'CARMLPipelinePrincipal'
+  - name: pipelinePrincipalGitUserEmail
+    value: 'CARML@noreply.github.com'
+
+jobs:
+  - job: Update_module_tables
+    pool:
+      ${{ if ne($(vmImage), '') }}:
+        vmImage: '$(vmImage)'
+      ${{ if ne($(poolName), '') }}:
+        name: '$(poolName)'
+    steps:
+      - checkout: self
+        persistCredentials: true
+      - task: PowerShell@2
+        displayName: 'Update general ReadMe'
+        inputs:
+          targetType: inline
+          pwsh: true
+          script: |
+            # Load used functions
+            . (Join-Path '$(System.DefaultWorkingDirectory)' 'utilities' 'tools' 'Set-GitHubReadMeModuleTable.ps1')
+
+            $functionInput = @{
+              ModulesPath    = Join-Path '$(System.DefaultWorkingDirectory)' 'arm'
+              FilePath       = Join-Path '$(System.DefaultWorkingDirectory)' 'README.md'
+              Organization   = ('$(Build.Repository.Name)').split('/')[0]
+              RepositoryName = ('$(Build.Repository.Name)').split('/')[1]
+              ColumnsInOrder = @('Name', 'Status')
+              SortByColumn   = 'Name'
+            }
+
+            Write-Verbose "Invoke task with" -Verbose
+            Write-Verbose ($functionInput | ConvertTo-Json | Out-String) -Verbose
+
+            Set-GitHubReadMeModuleTable @functionInput -Verbose
+      - task: PowerShell@2
+        displayName: 'Update module folder ReadMe'
+        inputs:
+          targetType: inline
+          pwsh: true
+          script: |
+            # Load used functions
+            . (Join-Path '$(System.DefaultWorkingDirectory)' 'utilities' 'tools' 'Set-GitHubReadMeModuleTable.ps1')
+
+            $functionInput = @{
+              ModulesPath    = Join-Path '$(System.DefaultWorkingDirectory)' 'arm'
+              FilePath       = Join-Path '$(System.DefaultWorkingDirectory)' 'arm/README.md'
+              Organization   = ('$(Build.Repository.Name)').split('/')[0]
+              RepositoryName = ('$(Build.Repository.Name)').split('/')[1]
+              ColumnsInOrder = @('Name', 'ProviderNamespace','ResourceType')
+            }
+
+            Write-Verbose "Invoke task with" -Verbose
+            Write-Verbose ($functionInput | ConvertTo-Json | Out-String) -Verbose
+
+            Set-GitHubReadMeModuleTable @functionInput -Verbose
+      - task: PowerShell@2
+        displayName: 'Push changes'
+        inputs:
+          targetType: inline
+          pwsh: true
+          script: |
+            git config --global user.email '$(pipelinePrincipalGitUserEmail)'
+            git config --global user.name '$(pipelinePrincipalGitUserName)'
+            Write-Verbose '$(Build.SourceBranch)' -Verbose
+            git add .
+            git commit -m "Push updated Readme file(s)"
+            git push $(Build.Repository.Uri) HEAD:$(Build.SourceBranch)
