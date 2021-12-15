@@ -30,7 +30,8 @@ runs:
     - name: 'Run global tests via Pester'
       shell: pwsh
       run: |
-        $moduleFolderPaths = (Get-ChildItem (Join-Path $env:GITHUB_WORKSPACE "${{ inputs.modulePath }}") -Recurse -Directory -Force).FullName | Where-Object {
+        $moduleFolderPaths = @(Join-Path $env:GITHUB_WORKSPACE "${{ inputs.modulePath }}")
+        $moduleFolderPaths += (Get-ChildItem $moduleFolderPaths -Recurse -Directory -Force).FullName | Where-Object {
           (Get-ChildItem $_ -File -Depth 0 -Include @('deploy.json', 'deploy.bicep') -Force).Count -gt 0
         }
         Write-Verbose "Execute tests in path(s):" -Verbose
@@ -72,7 +73,8 @@ runs:
     - name: 'Run API tests via Pester'
       shell: pwsh
       run: |
-        $moduleFolderPaths = (Get-ChildItem (Join-Path $env:GITHUB_WORKSPACE "${{ inputs.modulePath }}") -Recurse -Directory -Force).FullName | Where-Object {
+        $moduleFolderPaths = @(Join-Path $env:GITHUB_WORKSPACE "${{ inputs.modulePath }}")
+        $moduleFolderPaths += (Get-ChildItem $moduleFolderPaths -Recurse -Directory -Force).FullName | Where-Object {
           (Get-ChildItem $_ -File -Depth 0 -Include @('deploy.json', 'deploy.bicep') -Force).Count -gt 0
         }
         Write-Verbose "Execute tests in path(s):" -Verbose

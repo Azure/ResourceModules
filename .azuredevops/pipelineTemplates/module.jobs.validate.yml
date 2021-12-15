@@ -129,7 +129,8 @@ jobs:
           ScriptType: InlineScript
           pwsh: true
           inline: |
-            $moduleFolderPaths = (Get-ChildItem (Join-Path '$(moduleRepoRoot)' '${{ parameters.modulePath }}') -Recurse -Directory -Force).FullName | Where-Object {
+            $moduleFolderPaths = @(Join-Path '$(moduleRepoRoot)' '${{ parameters.modulePath }}')
+            $moduleFolderPaths += (Get-ChildItem $moduleFolderPaths -Recurse -Directory -Force).FullName | Where-Object {
               (Get-ChildItem $_ -File -Depth 0 -Include @('deploy.json', 'deploy.bicep') -Force).Count -gt 0
             }
             Write-Verbose "Execute tests in path(s):" -Verbose
@@ -233,7 +234,8 @@ jobs:
           ScriptType: InlineScript
           pwsh: true
           inline: |
-            $moduleFolderPaths = (Get-ChildItem (Join-Path '$(moduleRepoRoot)' '${{ parameters.modulePath }}') -Recurse -Directory -Force).FullName | Where-Object {
+            $moduleFolderPaths = @(Join-Path '$(moduleRepoRoot)' '${{ parameters.modulePath }}')
+            $moduleFolderPaths += (Get-ChildItem $moduleFolderPaths -Recurse -Directory -Force).FullName | Where-Object {
               (Get-ChildItem $_ -File -Depth 0 -Include @('deploy.json', 'deploy.bicep') -Force).Count -gt 0
             }
             Write-Verbose "Execute tests in path(s):" -Verbose
