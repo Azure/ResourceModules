@@ -129,10 +129,18 @@ jobs:
           ScriptType: InlineScript
           pwsh: true
           inline: |
+            $moduleFolderPaths = (Get-ChildItem (Join-Path '$(moduleRepoRoot)' '${{ parameters.modulePath }}') -Recurse -Directory -Force).FullName | Where-Object {
+              (Get-ChildItem $_ -File -Depth 0 -Include @('deploy.json', 'deploy.bicep') -Force).Count -gt 0
+            }
+            Write-Verbose "Execute tests in path(s):" -Verbose
+            foreach($moduleFolderPath in $moduleFolderPaths) {
+              Write-Verbose "- [($moduleFolderPath]" -Verbose
+            }
+
             Invoke-Pester -Configuration @{
               Run        = @{
                 Container = New-PesterContainer -Path (Join-Path '$(moduleRepoRoot)' 'arm' '.global' 'global.module.tests.ps1') -Data @{
-                  moduleFolderPaths = Join-Path '$(moduleRepoRoot)' '${{ parameters.modulePath }}'
+                  moduleFolderPaths = $moduleFolderPaths
                 }
               }
               Filter     = @{
@@ -225,10 +233,18 @@ jobs:
           ScriptType: InlineScript
           pwsh: true
           inline: |
+            $moduleFolderPaths = (Get-ChildItem (Join-Path '$(moduleRepoRoot)' '${{ parameters.modulePath }}') -Recurse -Directory -Force).FullName | Where-Object {
+              (Get-ChildItem $_ -File -Depth 0 -Include @('deploy.json', 'deploy.bicep') -Force).Count -gt 0
+            }
+            Write-Verbose "Execute tests in path(s):" -Verbose
+            foreach($moduleFolderPath in $moduleFolderPaths) {
+              Write-Verbose "- [($moduleFolderPath]" -Verbose
+            }
+
             Invoke-Pester -Configuration @{
               Run        = @{
                 Container = New-PesterContainer -Path (Join-Path '$(moduleRepoRoot)' 'arm' '.global' 'global.module.tests.ps1') -Data @{
-                  moduleFolderPaths = Join-Path '$(moduleRepoRoot)' '${{ parameters.modulePath }}'
+                  moduleFolderPaths = $moduleFolderPaths
                 }
               }
               Filter     = @{
