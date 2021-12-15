@@ -485,7 +485,7 @@ resource agentPool 'Microsoft.ContainerService/managedClusters/agentPools@2021-0
     nodePublicIPPrefixID: !empty(nodePublicIpPrefixId) ? nodePublicIpPrefixId : null
     nodeTaints: nodeTaints
     orchestratorVersion: orchestratorVersion
-    osDiskSizeGB: (osDiskSizeGB != -1) ? osDiskSizeGB : null
+    osDiskSizeGB: osDiskSizeGB != -1 ? osDiskSizeGB : null
     osDiskType: !empty(osDiskType) ? osDiskType : null
     osSKU: !empty(osSku) ? osSku : null
     osType: osType
