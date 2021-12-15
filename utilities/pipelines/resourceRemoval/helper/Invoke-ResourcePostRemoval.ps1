@@ -29,40 +29,25 @@ function Invoke-ResourcePostRemoval {
 
     switch ($type) {
         'Microsoft.KeyVault/vaults' {
-            # $resourceGroupName = $resourceId.Split('/')[4]
-            # $resourceName = Split-Path $ResourceId -Leaf
-
-            # $matchingKeyVault = Get-AzKeyVault -InRemovedState | Where-Object { $_.VaultName -eq $resourceName -and $_.resourceGroupName -EQ $resourceGroupName }
-            # if ($matchingKeyVault -and -not $resource.EnablePurgeProtection) {
-            #     Write-Verbose ('Purging key vault [{0}]' -f $resourceName) -Verbose
-            #     if ($PSCmdlet.ShouldProcess(('Key Vault with ID [{0}]' -f $matchingKeyVault.Id), 'Purge')) {
-            #         $null = Remove-AzKeyVault -ResourceId $matchingKeyVault.Id -InRemovedState -Force -Location $matchingKeyVault.Location
-            #     }
-            # }
             $subscriptionId = $resourceId.Split('/')[2]
             $resourceName = Split-Path $ResourceId -Leaf
 
             # Fetch service in soft-delete
             $getPath = '/subscriptions/{0}/providers/Microsoft.KeyVault/deletedVaults?api-version=2019-09-01' -f $subscriptionId
-            Write-Verbose ('path [{0}]' -f $getPath) -Verbose
             $getRequestInputObject = @{
                 Method = 'GET'
                 Path   = $getPath
             }
             $softDeletedService = ((Invoke-AzRestMethod @getRequestInputObject).Content | ConvertFrom-Json).value | Where-Object { $_.properties.vaultId -eq $resourceId }
-            Write-Verbose ('softDeletedService [{0}]' -f $softDeletedService) -Verbose
             if ($softDeletedService) {
                 # Purge service
                 $purgePath = '/subscriptions/{0}/providers/Microsoft.KeyVault/locations/{1}/deletedVaults/{2}/purge?api-version=2019-09-01' -f $subscriptionId, $softDeletedService.properties.location, $resourceName
-                Write-Verbose ('purgePath [{0}]' -f $purgePath) -Verbose
                 $purgeRequestInputObject = @{
                     Method = 'POST'
                     Path   = $purgePath
                 }
                 if ($PSCmdlet.ShouldProcess(('API management service with ID [{0}]' -f $softDeletedService.properties.serviceId), 'Purge')) {
-                    # $null = Invoke-AzRestMethod @purgeRequestInputObject
-                    $return = Invoke-AzRestMethod @purgeRequestInputObject
-                    Write-Verbose ('return [{0}]' -f $return.StatusCode) -Verbose
+                    $null = Invoke-AzRestMethod @purgeRequestInputObject
                 }
             }
         }
