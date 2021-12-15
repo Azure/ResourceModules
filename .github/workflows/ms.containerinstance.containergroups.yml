@@ -29,6 +29,8 @@ on:
       - '.github/workflows/ms.containerinstance.containergroups.yml'
       - 'arm/Microsoft.ContainerInstance/containerGroups/**'
       - '!*/**/readme.md'
+      - 'utilities/pipelines/**'
+      - '!utilities/pipelines/dependencies/**'
 
 env:
   modulePath: 'arm/Microsoft.ContainerInstance/containerGroups'

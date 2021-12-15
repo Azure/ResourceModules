@@ -29,6 +29,8 @@ on:
       - '.github/workflows/ms.servicebus.namespaces.yml'
       - 'arm/Microsoft.ServiceBus/namespaces/**'
       - '!*/**/readme.md'
+      - 'utilities/pipelines/**'
+      - '!utilities/pipelines/dependencies/**'
 
 env:
   modulePath: 'arm/Microsoft.ServiceBus/namespaces'

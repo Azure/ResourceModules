@@ -29,6 +29,8 @@ on:
       - '.github/workflows/ms.logic.workflows.yml'
       - 'arm/Microsoft.Logic/workflows/**'
       - '!*/**/readme.md'
+      - 'utilities/pipelines/**'
+      - '!utilities/pipelines/dependencies/**'
 
 env:
   modulePath: 'arm/Microsoft.Logic/workflows'

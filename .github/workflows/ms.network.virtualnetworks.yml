@@ -29,6 +29,8 @@ on:
       - '.github/workflows/ms.network.virtualnetworks.yml'
       - 'arm/Microsoft.Network/virtualNetworks/**'
       - '!*/**/readme.md'
+      - 'utilities/pipelines/**'
+      - '!utilities/pipelines/dependencies/**'
 
 env:
   modulePath: 'arm/Microsoft.Network/virtualNetworks'

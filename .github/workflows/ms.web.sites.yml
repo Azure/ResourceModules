@@ -29,6 +29,8 @@ on:
       - '.github/workflows/ms.web.sites.yml'
       - 'arm/Microsoft.Web/sites/**'
       - '!*/**/readme.md'
+      - 'utilities/pipelines/**'
+      - '!utilities/pipelines/dependencies/**'
 
 env:
   modulePath: 'arm/Microsoft.Web/sites'

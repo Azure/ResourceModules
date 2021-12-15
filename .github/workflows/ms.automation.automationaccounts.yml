@@ -30,6 +30,8 @@ on:
       - '.github/workflows/ms.automation.automationaccounts.yml'
       - 'arm/Microsoft.Automation/automationAccounts/**'
       - '!*/**/readme.md'
+      - 'utilities/pipelines/**'
+      - '!utilities/pipelines/dependencies/**'
 
 env:
   modulePath: 'arm/Microsoft.Automation/automationAccounts'

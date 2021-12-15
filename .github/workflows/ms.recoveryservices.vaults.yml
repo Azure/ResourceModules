@@ -29,6 +29,8 @@ on:
       - '.github/workflows/ms.recoveryservices.vaults.yml'
       - 'arm/Microsoft.RecoveryServices/vaults/**'
       - '!*/**/readme.md'
+      - 'utilities/pipelines/**'
+      - '!utilities/pipelines/dependencies/**'
 
 env:
   modulePath: 'arm/Microsoft.RecoveryServices/vaults'

@@ -29,6 +29,8 @@ on:
       - '.github/workflows/ms.sql.servers.yml'
       - 'arm/Microsoft.Sql/servers/**'
       - '!*/**/readme.md'
+      - 'utilities/pipelines/**'
+      - '!utilities/pipelines/dependencies/**'
 
 env:
   modulePath: 'arm/Microsoft.Sql/servers'

@@ -29,6 +29,8 @@ on:
       - '.github/workflows/ms.insights.scheduledqueryrules.yml'
       - 'arm/Microsoft.Insights/scheduledQueryRules/**'
       - '!*/**/readme.md'
+      - 'utilities/pipelines/**'
+      - '!utilities/pipelines/dependencies/**'
 
 env:
   modulePath: 'arm/Microsoft.Insights/scheduledQueryRules'
