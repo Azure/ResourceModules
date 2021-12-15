@@ -44,21 +44,25 @@ function Invoke-ResourcePostRemoval {
 
             # Fetch service in soft-delete
             $getPath = '/subscriptions/{0}/providers/Microsoft.KeyVault/deletedVaults?api-version=2019-09-01' -f $subscriptionId
+            Write-Verbose ('path [{0}]' -f $getPath) -Verbose
             $getRequestInputObject = @{
                 Method = 'GET'
                 Path   = $getPath
             }
             $softDeletedService = ((Invoke-AzRestMethod @getRequestInputObject).Content | ConvertFrom-Json).value | Where-Object { $_.properties.vaultId -eq $resourceId }
-
+            Write-Verbose ('softDeletedService [{0}]' -f $softDeletedService) -Verbose
             if ($softDeletedService) {
                 # Purge service
                 $purgePath = '/subscriptions/{0}/providers/Microsoft.KeyVault/locations/{1}/deletedVaults/{2}/purge?api-version=2019-09-01' -f $subscriptionId, $softDeletedService.location, $resourceName
+                Write-Verbose ('purgePath [{0}]' -f $purgePath) -Verbose
                 $purgeRequestInputObject = @{
                     Method = 'POST'
                     Path   = $purgePath
                 }
                 if ($PSCmdlet.ShouldProcess(('API management service with ID [{0}]' -f $softDeletedService.properties.serviceId), 'Purge')) {
-                    $null = Invoke-AzRestMethod @purgeRequestInputObject
+                    # $null = Invoke-AzRestMethod @purgeRequestInputObject
+                    $return = Invoke-AzRestMethod @purgeRequestInputObject
+                    Write-Verbose ('return [{0}]' -f $return.StatusCode) -Verbose
                 }
             }
         }
