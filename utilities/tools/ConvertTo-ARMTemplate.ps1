@@ -24,11 +24,14 @@ Converts bicep modules to json based ARM template, cleaning up all bicep files a
 #>
 [CmdletBinding(SupportsShouldProcess)]
 param (
-    [Parameter(Mandatory)]
-    [string] $Path,
+    [Parameter()]
+    [string] $Path = (Get-Location).Path,
 
     [Parameter()]
-    [switch] $CleanUp
+    [switch] $CleanUp,
+
+    [Parameter()]
+    [switch] $SkipChildResources
 )
 
 #region Helper functions
@@ -62,43 +65,89 @@ function Remove-JSONMetadata {
     }
 }
 
+<#
+.SYNOPSIS
+Gets the folder objects for the child resources of the provided parent folder.
+
+.DESCRIPTION
+Gets the folder objects for the child resources of the provided parent folder.
+This will check for the existence of the child resources and if found, will return the folder objects.
+The criteria for the child resource folder is that the folder contains a 'deploy.json' file.
+
+.PARAMETER Path
+Path to the parent resource folder.
+
+.EXAMPLE
+Get-ChildResourceFolder -Path 'C:\Repos\Azure\ResourceModules\arm\Microsoft.Storage\storageAccounts'
+
+Mode                 LastWriteTime         Length Name
+----                 -------------         ------ ----
+l----          15.12.2021    15:27                blobServices
+l----          15.12.2021    15:27                fileServices
+l----          15.12.2021    15:27                managementPolicies
+l----          15.12.2021    15:27                queueServices
+l----          15.12.2021    15:27                tableServices
+
+Gets the folder objects for the child resources of the provided parent folder.
+
+#>
+function Get-ChildResourceFolder {
+
+    [CmdletBinding()]
+    param (
+        [Parameter(Mandatory = $true)]
+        [string] $Path
+    )
+
+    return Get-ChildItem -Path $Path -Filter 'deploy.json' -Recurse -Depth 1 -Force | Select-Object -ExpandProperty 'Directory' | Get-Item
+
+}
+
 #endregion
 
 $rootPath = Get-Item -Path $Path | Select-Object -ExpandProperty 'FullName'
 $armFolderPath = Join-Path -Path $rootPath -ChildPath 'arm'
 
-# Get all bicep files
-$bicepFiles = Get-ChildItem -Path $armFolderPath -Filter 'deploy.bicep' -Recurse -Force
+
+# Remove existing json files
+Write-Verbose "Removing existing deploy.json files"
+Get-ChildItem -Path $armFolderPath -Filter 'deploy.json' -Recurse -Force | ForEach-Object {
+    if ($PSCmdlet.ShouldProcess("File in path [$($_.FullName)]", 'Remove')) {
+        Remove-Item -Path $_.FullName -Force
+    }
+}
+Write-Verbose "$bicepFilePath - Removing existing deploy.json files - Done"
+
+# Process all deploy.bicep files
+$bicepFiles = Get-ChildItem -Path $armFolderPath -Filter 'deploy.bicep' -Recurse -Force -Depth 2
 Write-Verbose "Convert bicep to json - $($bicepFiles.count) files"
 foreach ($bicepFile in $bicepFiles) {
     $bicepFilePath = $bicepFile.FullName
     Write-Verbose "$bicepFilePath - Processing"
     $moduleFolderPath = $bicepFile.Directory.FullName
     Write-Verbose "$bicepFilePath - ModuleFolderPath - $moduleFolderPath"
+    $bicepFolderPath = Join-Path -Path $moduleFolderPath -ChildPath '.bicep'
     $JSONFilePath = Join-Path -Path $moduleFolderPath -ChildPath 'deploy.json'
     Write-Verbose "$bicepFilePath - JSONFilePath - $JSONFilePath"
-    $bicepFolderPath = Join-Path -Path $moduleFolderPath -ChildPath '.bicep'
 
-    # Remove existing json files
-    Write-Verbose "$bicepFilePath - Removing deploy.json"
-    if (Test-Path -Path $JSONFilePath) {
-        if ($PSCmdlet.ShouldProcess("File in path [$bicepFilePath]", 'Remove')) {
-            Remove-Item -Path $JSONFilePath -Force -Verbose
-        }
-        Write-Verbose "$bicepFilePath - Removing deploy.json - Done"
-    } else {
-        Write-Verbose "$bicepFilePath - Removing deploy.json - Skipped - Nothing to delete"
-    }
 
     # Convert bicep to json
-    Write-Verbose "$bicepFilePath - Convert to json"
-    if ($PSCmdlet.ShouldProcess("File in path [$bicepFilePath]", 'Convert')) {
-        az bicep build --file $bicepFilePath --outfile $JSONFilePath
-    }
-    Write-Verbose "$bicepFilePath - Convert to json - Done"
+    Write-Verbose "$bicepFilePath - Convert bicep to json"
+    $BicepFilesToConvert = $bicepFile
+    if ($SkipChildResources) {
 
-    # Cleanup json, remove metadata property in json
-    Write-Verbose "$bicepFilePath - Clean up json"
+    } else {
+        Get-ChildItem -Path $bicepFolderPath -Filter 'deploy.bicep' -Recurse -Force
+    }
+
+    if ($PSCmdlet.ShouldProcess("File in path [$bicepFilePath]", 'Convert')) {
+        Invoke-Expression "az bicep build --file '$bicepFilePath' --outfile '$JSONFilePath'"
+    }
+    Write-Verbose "$bicepFilePath - Convert bicep to json - Done"
+
+
+    # Remove Bicep metadata from json
+    Write-Verbose "$bicepFilePath - Remove Bicep metadata from json"
     if (Test-Path -Path $JSONFilePath) {
         $JSONFileContent = Get-Content -Path $JSONFilePath
         $JSONObj = $JSONFileContent | ConvertFrom-Json
@@ -107,14 +156,14 @@ foreach ($bicepFile in $bicepFiles) {
         if ($PSCmdlet.ShouldProcess("File in path [$JSONFilePath]", 'Overwrite')) {
             Set-Content -Value $JSONFileContent -Path $JSONFilePath
         }
-        Write-Verbose "$bicepFilePath - Clean up json - Done"
+        Write-Verbose "$bicepFilePath - Remove Bicep metadata from json - Done"
     } else {
-        Write-Verbose "$bicepFilePath - Clean up json - Skipped - File not found (deploy.json)"
+        Write-Verbose "$bicepFilePath - Remove Bicep metadata from json - Skipped - File not found (deploy.json)"
     }
 
     # Remove bicep files and folders
-    Write-Verbose "$bicepFilePath - Clean up bicep files"
     if ($CleanUp) {
+        Write-Verbose "$bicepFilePath - Clean up bicep files"
         if ($PSCmdlet.ShouldProcess("File in path [$bicepFilePath]", 'Remove')) {
             Remove-Item -Path $bicepFilePath -Force
         }
