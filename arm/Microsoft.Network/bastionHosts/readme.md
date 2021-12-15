@@ -16,7 +16,6 @@ This module deploys a bastion host.
 
 | Parameter Name | Type | Default Value | Possible Values | Description |
 | :-- | :-- | :-- | :-- | :-- |
-| `azureBastionpLogsToEnable` | array | `[BastionAuditLogs]` | `[BastionAuditLogs]` | Optional. Optional. The name of bastion logs that will be streamed. |
 | `cuaId` | string |  |  | Optional. Customer Usage Attribution ID (GUID). This GUID must be previously registered |
 | `diagnosticLogsRetentionInDays` | int | `365` |  | Optional. Specifies the number of days that logs will be kept for; a value of 0 will retain data indefinitely. |
 | `diagnosticStorageAccountId` | string |  |  | Optional. Resource ID of the diagnostic storage account. |
@@ -24,6 +23,7 @@ This module deploys a bastion host.
 | `eventHubName` | string |  |  | Optional. Name of the event hub within the namespace to which logs are streamed. Without this, an event hub is created for each log category. |
 | `location` | string | `[resourceGroup().location]` |  | Optional. Location for all resources. |
 | `lock` | string | `NotSpecified` | `[CanNotDelete, NotSpecified, ReadOnly]` | Optional. Specify the type of lock. |
+| `logsToEnable` | array | `[BastionAuditLogs]` | `[BastionAuditLogs]` | Optional. Optional. The name of bastion logs that will be streamed. |
 | `name` | string |  |  | Required. Name of the Azure Bastion resource |
 | `publicIPAddressId` | string |  |  | Optional. Specifies the resource ID of the existing public IP to be leveraged by Azure Bastion. |
 | `publicIPAddressObject` | object | `{object}` |  | Optional. Specifies the properties of the public IP to create and be used by Azure Bastion. If it's not provided and publicIPAddressId is empty, a '-pip' suffix will be appended to the Bastion's name. |
@@ -81,8 +81,8 @@ Tag names and tag values can be provided as needed. A tag can be left without a 
 
 ## Template references
 
-- [Locks](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2016-09-01/locks)
-- [Roleassignments](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2020-04-01-preview/roleAssignments)
-- [Diagnosticsettings](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Insights/2021-05-01-preview/diagnosticSettings)
 - [Bastionhosts](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Network/2021-02-01/bastionHosts)
+- [Diagnosticsettings](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Insights/2021-05-01-preview/diagnosticSettings)
+- [Locks](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2016-09-01/locks)
 - [Publicipaddresses](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Network/2021-02-01/publicIPAddresses)
+- [Roleassignments](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2020-04-01-preview/roleAssignments)

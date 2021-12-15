@@ -173,7 +173,7 @@ resource appServiceEnvironment_diagnosticSettings 'Microsoft.Insights/diagnostic
     workspaceId: !empty(workspaceId) ? workspaceId : null
     eventHubAuthorizationRuleId: !empty(eventHubAuthorizationRuleId) ? eventHubAuthorizationRuleId : null
     eventHubName: !empty(eventHubName) ? eventHubName : null
-    logs: !empty(diagnosticStorageAccountId) || !empty(workspaceId) || !empty(eventHubAuthorizationRuleId) || !empty(eventHubName) ? diagnosticsLogs : null
+    logs: diagnosticsLogs
   }
   scope: appServiceEnvironment
 }
