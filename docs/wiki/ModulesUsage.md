@@ -157,7 +157,7 @@ module vnet 'br:adpsxxazacrx001.azurecr.io/bicep/modules/microsoft.network.virtu
   name: 'registry-vnet'
   params: {
     name: vnetName
-    vNetAddressPrefixes: vNetAddressPrefixes
+    addressPrefixes: vNetAddressPrefixes
     subnets: subnets
   }
   dependsOn: [
@@ -252,7 +252,7 @@ resource vnet 'Microsoft.Resources/deployments@2021-01-01' = {
       name: {
         value: vnetName
       }
-      vNetAddressPrefixes: {
+      addressPrefixes: {
         value: vNetAddressPrefixes
       }
       subnets: {
