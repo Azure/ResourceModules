@@ -149,14 +149,14 @@ param subnets array = [
 module nsg 'br:adpsxxazacrx001.azurecr.io/bicep/modules/microsoft.network.networksecuritygroups:1.0.1' = {
   name: 'registry-nsg'
   params: {
-    networkSecurityGroupName: networkSecurityGroupName
+    name: networkSecurityGroupName
   }
 }
 // Virtual Network
 module vnet 'br:adpsxxazacrx001.azurecr.io/bicep/modules/microsoft.network.virtualnetworks:1.0.0' = {
   name: 'registry-vnet'
   params: {
-    vNetName: vnetName
+    name: vnetName
     vNetAddressPrefixes: vNetAddressPrefixes
     subnets: subnets
   }
@@ -233,7 +233,7 @@ resource nsg 'Microsoft.Resources/deployments@2021-01-01' = {
       id: nsgTemplate.id
     }
     parameters: {
-      networkSecurityGroupName: {
+      name: {
         value: networkSecurityGroupName
       }
     }
@@ -249,7 +249,7 @@ resource vnet 'Microsoft.Resources/deployments@2021-01-01' = {
       id: vnetTemplate.id
     }
     parameters: {
-      vnetName: {
+      name: {
         value: vnetName
       }
       vNetAddressPrefixes: {
