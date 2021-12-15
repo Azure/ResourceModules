@@ -28,6 +28,9 @@ Optional. Name of the management group to deploy into. Mandatory if deploying in
 .PARAMETER additionalTags
 Optional. Provde a Key Value Pair (Object) that will be appended to the Parameter file tags. Example: @{myKey = 'myValue',myKey2 = 'myValue2'}.
 
+.PARAMETER additionalParameters
+Optional. Additional parameters you can provide with the deployment. E.g. @{ resourceGroupName = 'myResourceGroup' }
+
 .PARAMETER retryLimit
 Optional. Maximum retry limit if the deployment fails. Default is 3.
 
@@ -67,10 +70,10 @@ function New-DeploymentWithParameterFile {
         [string] $managementGroupId,
 
         [Parameter(Mandatory = $false)]
-        [PSCustomObject]$additionalTags,
+        [PSCustomObject] $additionalTags,
 
         [Parameter(Mandatory = $false)]
-        [Hashtable]$additionalParameters,
+        [Hashtable] $additionalParameters,
 
         [Parameter(Mandatory = $false)]
         [switch] $doNotThrow,
@@ -79,153 +82,147 @@ function New-DeploymentWithParameterFile {
         [int]$retryLimit = 3
     )
 
-    $moduleName = Split-Path -Path (Split-Path $templateFilePath -Parent) -LeafBase
+    begin {
+        Write-Debug ('{0} entered' -f $MyInvocation.MyCommand)
 
-    [bool]$Stoploop = $false
-    [int]$retryCount = 1
-
-    # Generate a valid deployment name. Must match ^[-\w\._\(\)]+$
-    do {
-        $deploymentName = "$moduleName-$(-join (Get-Date -Format yyyyMMddTHHMMssffffZ)[0..63])"
-    } while ($deploymentName -notmatch '^[-\w\._\(\)]+$')
-
-    Write-Verbose "Deploying with deployment name [$deploymentName]" -Verbose
-
-    $DeploymentInputs = @{
-        DeploymentName = $deploymentName
-        TemplateFile   = $templateFilePath
-        Verbose        = $true
-        ErrorAction    = 'Stop'
+        # Load helper
+        . (Join-Path (Get-Item -Path $PSScriptRoot).parent.FullName 'sharedScripts' 'Get-ScopeOfTemplateFile.ps1')
     }
 
-    if ($additionalParameters) {
-        $DeploymentInputs += $additionalParameters
-    }
+    process {
+        $moduleName = Split-Path -Path (Split-Path $templateFilePath -Parent) -LeafBase
 
-    if (-not [String]::IsNullOrEmpty($parameterFilePath)) {
-        $DeploymentInputs['TemplateParameterFile'] = $parameterFile
-        $fileProperties = Get-Item -Path $parameterFile
-        Write-Verbose "Deploying: $($fileProperties.Name)"
-    }
+        # Generate a valid deployment name. Must match ^[-\w\._\(\)]+$
+        do {
+            $deploymentName = "$moduleName-$(-join (Get-Date -Format yyyyMMddTHHMMssffffZ)[0..63])"
+        } while ($deploymentName -notmatch '^[-\w\._\(\)]+$')
 
-    ## Append Tags to Parameters if Resource supports them (all tags must be in one object)
-    if ($additionalTags) {
+        Write-Verbose "Deploying with deployment name [$deploymentName]" -Verbose
 
-        # Parameter tags
+        $DeploymentInputs = @{
+            DeploymentName = $deploymentName
+            TemplateFile   = $templateFilePath
+            Verbose        = $true
+            ErrorAction    = 'Stop'
+        }
+
+        # Parameter file provided yes/no
         if (-not [String]::IsNullOrEmpty($parameterFilePath)) {
-            $parameterFileTags = (ConvertFrom-Json (Get-Content -Raw -Path $parameterFile) -AsHashtable).parameters.tags.value
+            $DeploymentInputs['TemplateParameterFile'] = $parameterFilePath
         }
-        if (-not $parameterFileTags) { $parameterFileTags = @{} }
 
-        # Pipeline tags
-        if ($additionalTags) { $parameterFileTags += $additionalTags } # If additionalTags object is provided, append tag to the resource
-
-        # Overwrites parameter file tags parameter
-        Write-Verbose ("additionalTags: $(($additionalTags) ? ($additionalTags | ConvertTo-Json) : '[]')")
-        $DeploymentInputs += @{Tags = $parameterFileTags }
-    }
-
-    if ((Split-Path $templateFilePath -Extension) -eq '.bicep') {
-        # Bicep
-        $bicepContent = Get-Content $templateFilePath
-        $bicepScope = $bicepContent | Where-Object { $_ -like '*targetscope =*' }
-        if (-not $bicepScope) {
-            $deploymentScope = 'resourceGroup'
-        } else {
-            $deploymentScope = $bicepScope.ToLower().Replace('targetscope = ', '').Replace("'", '').Trim()
+        # Additional parameter object provided yes/no
+        if ($additionalParameters) {
+            $DeploymentInputs += $additionalParameters
         }
-    } else {
-        # ARM
-        $armSchema = (ConvertFrom-Json (Get-Content -Raw -Path $templateFilePath)).'$schema'
-        switch -regex ($armSchema) {
-            '\/deploymentTemplate.json#$' { $deploymentScope = 'resourceGroup' }
-            '\/subscriptionDeploymentTemplate.json#$' { $deploymentScope = 'subscription' }
-            '\/managementGroupDeploymentTemplate.json#$' { $deploymentScope = 'managementGroup' }
-            '\/tenantDeploymentTemplate.json#$' { $deploymentScope = 'tenant' }
-            Default { throw "[$armSchema] is a non-supported ARM template schema" }
-        }
-    }
 
-    #######################
-    ## INVOKE DEPLOYMENT ##
-    #######################
-    do {
-        try {
-            switch ($deploymentScope) {
-                'resourceGroup' {
-                    if ($subscriptionId) {
-                        $Context = Get-AzContext -ListAvailable | Where-Object Subscription -Match $subscriptionId
-                        if ($Context) {
-                            $null = $Context | Set-AzContext
-                        }
-                    }
-                    if (-not (Get-AzResourceGroup -Name $resourceGroupName -ErrorAction 'SilentlyContinue')) {
-                        if ($PSCmdlet.ShouldProcess("Resource group [$resourceGroupName] in location [$location]", 'Create')) {
-                            New-AzResourceGroup -Name $resourceGroupName -Location $location
-                        }
-                    }
-                    if ($PSCmdlet.ShouldProcess('Resource group level deployment', 'Create')) {
-                        $res = New-AzResourceGroupDeployment @DeploymentInputs -ResourceGroupName $resourceGroupName
-                    }
-                    break
-                }
-                'subscription' {
-                    if ($subscriptionId) {
-                        $Context = Get-AzContext -ListAvailable | Where-Object Subscription -Match $subscriptionId
-                        if ($Context) {
-                            $null = $Context | Set-AzContext
-                        }
-                    }
-                    if ($PSCmdlet.ShouldProcess('Subscription level deployment', 'Create')) {
-                        $res = New-AzSubscriptionDeployment @DeploymentInputs -Location $location
-                    }
-                    break
-                }
-                'managementGroup' {
-                    if ($PSCmdlet.ShouldProcess('Management group level deployment', 'Create')) {
-                        $res = New-AzManagementGroupDeployment @DeploymentInputs -Location $location -ManagementGroupId $managementGroupId
-                    }
-                    break
-                }
-                'tenant' {
-                    if ($PSCmdlet.ShouldProcess('Tenant level deployment', 'Create')) {
-                        $res = New-AzTenantDeployment @DeploymentInputs -Location $location
-                    }
-                    break
-                }
-                default {
-                    throw "[$deploymentScope] is a non-supported template scope"
-                    $Stoploop = $true
-                }
+        # Additional tags provides yes/no
+        # Append tags to parameters if resource supports them (all tags must be in one object)
+        if ($additionalTags) {
+
+            # Parameter tags
+            if (-not [String]::IsNullOrEmpty($parameterFilePath)) {
+                $parameterFileTags = (ConvertFrom-Json (Get-Content -Raw -Path $parameterFilePath) -AsHashtable).parameters.tags.value
             }
-            $Stoploop = $true
-        } catch {
-            if ($retryCount -ge $retryLimit) {
-                if ($doNotThrow) {
-                    return @{
-                        DeploymentName = $deploymentName
-                        Exception      = $PSitem.Exception.Message
+            if (-not $parameterFileTags) { $parameterFileTags = @{} }
+
+            # Pipeline tags
+            if ($additionalTags) { $parameterFileTags += $additionalTags } # If additionalTags object is provided, append tag to the resource
+
+            # Overwrites parameter file tags parameter
+            Write-Verbose ("additionalTags: $(($additionalTags) ? ($additionalTags | ConvertTo-Json) : '[]')")
+            $DeploymentInputs += @{Tags = $parameterFileTags }
+        }
+
+        #######################
+        ## INVOKE DEPLOYMENT ##
+        #######################
+        $deploymentScope = Get-ScopeOfTemplateFile -TemplateFilePath $templateFilePath
+        [bool]$Stoploop = $false
+        [int]$retryCount = 1
+
+        do {
+            try {
+                switch ($deploymentScope) {
+                    'resourcegroup' {
+                        if ($subscriptionId) {
+                            $Context = Get-AzContext -ListAvailable | Where-Object Subscription -Match $subscriptionId
+                            if ($Context) {
+                                $null = $Context | Set-AzContext
+                            }
+                        }
+                        if (-not (Get-AzResourceGroup -Name $resourceGroupName -ErrorAction 'SilentlyContinue')) {
+                            if ($PSCmdlet.ShouldProcess("Resource group [$resourceGroupName] in location [$location]", 'Create')) {
+                                New-AzResourceGroup -Name $resourceGroupName -Location $location
+                            }
+                        }
+                        if ($PSCmdlet.ShouldProcess('Resource group level deployment', 'Create')) {
+                            $res = New-AzResourceGroupDeployment @DeploymentInputs -ResourceGroupName $resourceGroupName
+                        }
+                        break
                     }
-                } else {
-                    throw $PSitem.Exception.Message
+                    'subscription' {
+                        if ($subscriptionId) {
+                            $Context = Get-AzContext -ListAvailable | Where-Object Subscription -Match $subscriptionId
+                            if ($Context) {
+                                $null = $Context | Set-AzContext
+                            }
+                        }
+                        if ($PSCmdlet.ShouldProcess('Subscription level deployment', 'Create')) {
+                            $res = New-AzSubscriptionDeployment @DeploymentInputs -Location $location
+                        }
+                        break
+                    }
+                    'managementgroup' {
+                        if ($PSCmdlet.ShouldProcess('Management group level deployment', 'Create')) {
+                            $res = New-AzManagementGroupDeployment @DeploymentInputs -Location $location -ManagementGroupId $managementGroupId
+                        }
+                        break
+                    }
+                    'tenant' {
+                        if ($PSCmdlet.ShouldProcess('Tenant level deployment', 'Create')) {
+                            $res = New-AzTenantDeployment @DeploymentInputs -Location $location
+                        }
+                        break
+                    }
+                    default {
+                        throw "[$deploymentScope] is a non-supported template scope"
+                        $Stoploop = $true
+                    }
                 }
                 $Stoploop = $true
-            } else {
-                Write-Verbose "Resource deployment Failed.. ($retryCount/$retryLimit) Retrying in 5 Seconds.. `n"
-                Write-Verbose ($PSitem.Exception.Message | Out-String) -Verbose
-                Start-Sleep -Seconds 5
-                $retryCount++
+            } catch {
+                if ($retryCount -ge $retryLimit) {
+                    if ($doNotThrow) {
+                        return @{
+                            DeploymentName = $deploymentName
+                            Exception      = $PSitem.Exception.Message
+                        }
+                    } else {
+                        throw $PSitem.Exception.Message
+                    }
+                    $Stoploop = $true
+                } else {
+                    Write-Verbose "Resource deployment Failed.. ($retryCount/$retryLimit) Retrying in 5 Seconds.. `n"
+                    Write-Verbose ($PSitem.Exception.Message | Out-String) -Verbose
+                    Start-Sleep -Seconds 5
+                    $retryCount++
+                }
             }
         }
-    }
-    until ($Stoploop -eq $true -or $retryCount -gt $retryLimit)
+        until ($Stoploop -eq $true -or $retryCount -gt $retryLimit)
 
-    Write-Verbose 'Result' -Verbose
-    Write-Verbose '------' -Verbose
-    Write-Verbose ($res | Out-String) -Verbose
-    return @{
-        deploymentName   = $deploymentName
-        deploymentOutput = $res.Outputs
+        Write-Verbose 'Result' -Verbose
+        Write-Verbose '------' -Verbose
+        Write-Verbose ($res | Out-String) -Verbose
+        return @{
+            deploymentName   = $deploymentName
+            deploymentOutput = $res.Outputs
+        }
+    }
+
+    end {
+        Write-Debug ('{0} exited' -f $MyInvocation.MyCommand)
     }
 }
 #endregion
@@ -258,6 +255,9 @@ Optional. Name of the management group to deploy into. Mandatory if deploying in
 
 .PARAMETER additionalTags
 Optional. Provde a Key Value Pair (Object) that will be appended to the Parameter file tags. Example: @{myKey = 'myValue',myKey2 = 'myValue2'}.
+
+.PARAMETER additionalParameters
+Optional. Additional parameters you can provide with the deployment. E.g. @{ resourceGroupName = 'myResourceGroup' }
 
 .PARAMETER retryLimit
 Optional. Maximum retry limit if the deployment fails. Default is 3.
@@ -298,10 +298,10 @@ function New-ModuleDeployment {
         [string] $managementGroupId,
 
         [Parameter(Mandatory = $false)]
-        [Hashtable]$additionalParameters,
+        [Hashtable] $additionalParameters,
 
         [Parameter(Mandatory = $false)]
-        [PSCustomObject]$additionalTags,
+        [PSCustomObject] $additionalTags,
 
         [Parameter(Mandatory = $false)]
         [switch] $doNotThrow,
@@ -337,9 +337,9 @@ function New-ModuleDeployment {
         if ($parameterFilePath) {
             if ($parameterFilePath -is [array]) {
                 $deploymentResult = [System.Collections.ArrayList]@()
-                foreach ($parameterFile in $parameterFilePath) {
+                foreach ($path in $parameterFilePath) {
                     if ($PSCmdlet.ShouldProcess("Deployment for parameter file [$parameterFilePath]", 'Trigger')) {
-                        $deploymentResult += New-DeploymentWithParameterFile @deploymentInputObject -parameterFilePath $parameterFile
+                        $deploymentResult += New-DeploymentWithParameterFile @deploymentInputObject -parameterFilePath $path
                     }
                 }
                 return $deploymentResult
