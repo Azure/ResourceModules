@@ -14,7 +14,7 @@
         "privateEndpoints": {
             "value": [
                 {
-                    "subnetResourceId": "/subscriptions/a7439831-1cd9-435d-a091-4aa863c96556/resourceGroups/validation-rg/providers/Microsoft.Network/virtualNetworks/adp-sxx-az-vnet-x-001/subnets/sxx-az-subnet-x-005-privateEndpoints",
+                    "subnetResourceId": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/virtualNetworks/adp-sxx-az-vnet-x-001/subnets/sxx-az-subnet-x-005-privateEndpoints",
                     "service": "vault"
                 }
             ]
@@ -26,7 +26,7 @@
                 "virtualNetworkRules": [],
                 "ipRules": []
             }
-        }
+        },
         // "roleAssignments": {
         //     "value": [
         //         {
@@ -37,40 +37,40 @@
         //         }
         //     ]
         // },
-        // "secrets": {
-        //     "value": [
-        //         {
-        //             "name": "secretName",
-        //             "value": "secretValue",
-        //             "contentType": "Something",
-        //             "attributesNbf": 10000,
-        //             "roleAssignments": [
-        //                 {
-        //                     "roleDefinitionIdOrName": "Reader",
-        //                     "principalIds": [
-        //                         "<<deploymentSpId>>"
-        //                     ]
-        //                 }
-        //             ]
-        //         }
-        //     ]
-        // },
-        // "keys": {
-        //     "value": [
-        //         {
-        //             "name": "keyName",
-        //             "attributesNbf": 10000,
-        //             "roleAssignments": [
-        //                 {
-        //                     "roleDefinitionIdOrName": "Reader",
-        //                     "principalIds": [
-        //                         "<<deploymentSpId>>"
-        //                     ]
-        //                 }
-        //             ]
-        //         }
-        //     ]
-        // },
+        "secrets": {
+            "value": [
+                {
+                    "name": "secretName",
+                    "value": "secretValue",
+                    "contentType": "Something",
+                    "attributesNbf": 10000,
+                    "roleAssignments": [
+                        {
+                            "roleDefinitionIdOrName": "Reader",
+                            "principalIds": [
+                                "<<deploymentSpId>>"
+                            ]
+                        }
+                    ]
+                }
+            ]
+        },
+        "keys": {
+            "value": [
+                {
+                    "name": "keyName",
+                    "attributesNbf": 10000,
+                    "roleAssignments": [
+                        {
+                            "roleDefinitionIdOrName": "Reader",
+                            "principalIds": [
+                                "<<deploymentSpId>>"
+                            ]
+                        }
+                    ]
+                }
+            ]
+        }
         // "accessPolicies": {
         //     "value": [
         //         {
