@@ -46,7 +46,7 @@ jobs:
         with:
           fetch-depth: 0
       - name: 'Deploy module'
-        uses: ./.github/actions/templates/deployModule
+        uses: ./.github/actions/templates/validateModuleDeployment
         with:
           templateFilePath: 'arm/${{ env.namespace }}/deploy.bicep'
           parameterFilePath: '${{ env.dependencyPath }}/${{ env.namespace }}/parameters/${{ matrix.parameterFilePaths }}'
@@ -73,7 +73,7 @@ jobs:
         with:
           fetch-depth: 0
       - name: 'Deploy module'
-        uses: ./.github/actions/templates/deployModule
+        uses: ./.github/actions/templates/validateModuleDeployment
         with:
           templateFilePath: 'arm/${{ env.namespace }}/deploy.bicep'
           parameterFilePath: '${{ env.dependencyPath }}/${{ env.namespace }}/parameters/${{ matrix.parameterFilePaths }}'
@@ -100,7 +100,7 @@ jobs:
         with:
           fetch-depth: 0
       - name: 'Deploy module'
-        uses: ./.github/actions/templates/deployModule
+        uses: ./.github/actions/templates/validateModuleDeployment
         with:
           templateFilePath: 'arm/${{ env.namespace }}/.bicep/nested_policyAssignments_sub.bicep'
           parameterFilePath: '${{ env.dependencyPath }}/${{ env.namespace }}/parameters/${{ matrix.parameterFilePaths }}'
@@ -127,7 +127,7 @@ jobs:
         with:
           fetch-depth: 0
       - name: 'Deploy module'
-        uses: ./.github/actions/templates/deployModule
+        uses: ./.github/actions/templates/validateModuleDeployment
         with:
           templateFilePath: 'arm/${{ env.namespace }}/deploy.bicep'
           parameterFilePath: '${{ env.dependencyPath }}/${{ env.namespace }}/parameters/${{ matrix.parameterFilePaths }}'
@@ -154,7 +154,7 @@ jobs:
         with:
           fetch-depth: 0
       - name: 'Deploy module'
-        uses: ./.github/actions/templates/deployModule
+        uses: ./.github/actions/templates/validateModuleDeployment
         with:
           templateFilePath: 'arm/${{ env.namespace }}/deploy.bicep'
           parameterFilePath: '${{ env.dependencyPath }}/${{ env.namespace }}/parameters/${{ matrix.parameterFilePaths }}'
@@ -181,7 +181,7 @@ jobs:
         with:
           fetch-depth: 0
       - name: 'Deploy module'
-        uses: ./.github/actions/templates/deployModule
+        uses: ./.github/actions/templates/validateModuleDeployment
         with:
           templateFilePath: 'arm/${{ env.namespace }}/deploy.bicep'
           parameterFilePath: '${{ env.dependencyPath }}/${{ env.namespace }}/parameters/${{ matrix.parameterFilePaths }}'
@@ -209,7 +209,7 @@ jobs:
         with:
           fetch-depth: 0
       - name: 'Deploy module'
-        uses: ./.github/actions/templates/deployModule
+        uses: ./.github/actions/templates/validateModuleDeployment
         with:
           templateFilePath: 'arm/${{ env.namespace }}/deploy.bicep'
           parameterFilePath: '${{ env.dependencyPath }}/${{ env.namespace }}/parameters/${{ matrix.parameterFilePaths }}'
@@ -276,7 +276,7 @@ jobs:
         with:
           fetch-depth: 0
       - name: 'Deploy module'
-        uses: ./.github/actions/templates/deployModule
+        uses: ./.github/actions/templates/validateModuleDeployment
         with:
           templateFilePath: 'arm/${{ env.namespace }}/deploy.bicep'
           parameterFilePath: '${{ env.dependencyPath }}/${{ env.namespace }}/parameters/${{ matrix.parameterFilePaths }}'
@@ -303,7 +303,7 @@ jobs:
         with:
           fetch-depth: 0
       - name: 'Deploy module'
-        uses: ./.github/actions/templates/deployModule
+        uses: ./.github/actions/templates/validateModuleDeployment
         with:
           templateFilePath: 'arm/${{ env.namespace }}/deploy.bicep'
           parameterFilePath: '${{ env.dependencyPath }}/${{ env.namespace }}/parameters/${{ matrix.parameterFilePaths }}'
@@ -330,7 +330,7 @@ jobs:
         with:
           fetch-depth: 0
       - name: 'Deploy module'
-        uses: ./.github/actions/templates/deployModule
+        uses: ./.github/actions/templates/validateModuleDeployment
         with:
           templateFilePath: 'arm/${{ env.namespace }}/deploy.bicep'
           parameterFilePath: '${{ env.dependencyPath }}/${{ env.namespace }}/parameters/${{ matrix.parameterFilePaths }}'
@@ -357,7 +357,7 @@ jobs:
         with:
           fetch-depth: 0
       - name: 'Deploy module'
-        uses: ./.github/actions/templates/deployModule
+        uses: ./.github/actions/templates/validateModuleDeployment
         with:
           templateFilePath: 'arm/${{ env.namespace }}/deploy.bicep'
           parameterFilePath: '${{ env.dependencyPath }}/${{ env.namespace }}/parameters/${{ matrix.parameterFilePaths }}'
@@ -385,7 +385,7 @@ jobs:
         with:
           fetch-depth: 0
       - name: 'Deploy module'
-        uses: ./.github/actions/templates/deployModule
+        uses: ./.github/actions/templates/validateModuleDeployment
         with:
           templateFilePath: 'arm/${{ env.namespace }}/deploy.bicep'
           parameterFilePath: '${{ env.dependencyPath }}/${{ env.namespace }}/parameters/${{ matrix.parameterFilePaths }}'
@@ -420,7 +420,7 @@ jobs:
         with:
           fetch-depth: 0
       - name: 'Deploy module'
-        uses: ./.github/actions/templates/deployModule
+        uses: ./.github/actions/templates/validateModuleDeployment
         with:
           templateFilePath: 'arm/${{ env.namespace }}/deploy.bicep'
           parameterFilePath: '${{ env.dependencyPath }}/${{ env.namespace }}/parameters/${{ matrix.parameterFilePaths }}'
@@ -450,7 +450,7 @@ jobs:
         with:
           fetch-depth: 0
       - name: 'Deploy module'
-        uses: ./.github/actions/templates/deployModule
+        uses: ./.github/actions/templates/validateModuleDeployment
         with:
           templateFilePath: 'arm/${{ env.namespace }}/deploy.bicep'
           parameterFilePath: '${{ env.dependencyPath }}/${{ env.namespace }}/parameters/${{ matrix.parameterFilePaths }}'
@@ -480,7 +480,7 @@ jobs:
         with:
           fetch-depth: 0
       - name: 'Deploy module'
-        uses: ./.github/actions/templates/deployModule
+        uses: ./.github/actions/templates/validateModuleDeployment
         with:
           templateFilePath: 'arm/${{ env.namespace }}/deploy.bicep'
           parameterFilePath: '${{ env.dependencyPath }}/${{ env.namespace }}/parameters/${{ matrix.parameterFilePaths }}'
@@ -509,7 +509,7 @@ jobs:
         with:
           fetch-depth: 0
       - name: 'Deploy module'
-        uses: ./.github/actions/templates/deployModule
+        uses: ./.github/actions/templates/validateModuleDeployment
         with:
           templateFilePath: 'arm/${{ env.namespace }}/deploy.bicep'
           parameterFilePath: '${{ env.dependencyPath }}/${{ env.namespace }}/parameters/${{ matrix.parameterFilePaths }}'
@@ -538,7 +538,7 @@ jobs:
         with:
           fetch-depth: 0
       - name: 'Deploy module'
-        uses: ./.github/actions/templates/deployModule
+        uses: ./.github/actions/templates/validateModuleDeployment
         with:
           templateFilePath: 'arm/${{ env.namespace }}/deploy.bicep'
           parameterFilePath: '${{ env.dependencyPath }}/${{ env.namespace }}/parameters/${{ matrix.parameterFilePaths }}'
@@ -567,7 +567,7 @@ jobs:
         with:
           fetch-depth: 0
       - name: 'Deploy module'
-        uses: ./.github/actions/templates/deployModule
+        uses: ./.github/actions/templates/validateModuleDeployment
         with:
           templateFilePath: 'arm/${{ env.namespace }}/deploy.bicep'
           parameterFilePath: '${{ env.dependencyPath }}/${{ env.namespace }}/parameters/${{ matrix.parameterFilePaths }}'
@@ -596,7 +596,7 @@ jobs:
         with:
           fetch-depth: 0
       - name: 'Deploy module'
-        uses: ./.github/actions/templates/deployModule
+        uses: ./.github/actions/templates/validateModuleDeployment
         with:
           templateFilePath: 'arm/${{ env.namespace }}/deploy.bicep'
           parameterFilePath: '${{ env.dependencyPath }}/${{ env.namespace }}/parameters/${{ matrix.parameterFilePaths }}'
@@ -625,7 +625,7 @@ jobs:
         with:
           fetch-depth: 0
       - name: 'Deploy module'
-        uses: ./.github/actions/templates/deployModule
+        uses: ./.github/actions/templates/validateModuleDeployment
         with:
           templateFilePath: 'arm/${{ env.namespace }}/deploy.bicep'
           parameterFilePath: '${{ env.dependencyPath }}/${{ env.namespace }}/parameters/${{ matrix.parameterFilePaths }}'
@@ -699,7 +699,7 @@ jobs:
         with:
           fetch-depth: 0
       - name: 'Deploy module'
-        uses: ./.github/actions/templates/deployModule
+        uses: ./.github/actions/templates/validateModuleDeployment
         with:
           templateFilePath: 'arm/${{ env.namespace }}/deploy.bicep'
           parameterFilePath: '${{ env.dependencyPath }}/${{ env.namespace }}/parameters/${{ matrix.parameterFilePaths }}'
@@ -760,7 +760,7 @@ jobs:
         with:
           fetch-depth: 0
       - name: 'Deploy module'
-        uses: ./.github/actions/templates/deployModule
+        uses: ./.github/actions/templates/validateModuleDeployment
         with:
           templateFilePath: 'arm/${{ env.namespace }}/deploy.bicep'
           parameterFilePath: '${{ env.dependencyPath }}/${{ env.namespace }}/parameters/${{ matrix.parameterFilePaths }}'
@@ -787,7 +787,7 @@ jobs:
         with:
           fetch-depth: 0
       - name: 'Deploy module'
-        uses: ./.github/actions/templates/deployModule
+        uses: ./.github/actions/templates/validateModuleDeployment
         with:
           templateFilePath: 'arm/${{ env.namespace }}/.bicep/nested_rbac_sub.bicep'
           parameterFilePath: '${{ env.dependencyPath }}/${{ env.namespace }}/parameters/${{ matrix.parameterFilePaths }}'
@@ -822,7 +822,7 @@ jobs:
         with:
           fetch-depth: 0
       - name: 'Deploy module'
-        uses: ./.github/actions/templates/deployModule
+        uses: ./.github/actions/templates/validateModuleDeployment
         with:
           templateFilePath: 'arm/${{ env.namespace }}/deploy.bicep'
           parameterFilePath: '${{ env.dependencyPath }}/${{ env.namespace }}/parameters/${{ matrix.parameterFilePaths }}'
@@ -851,7 +851,7 @@ jobs:
         with:
           fetch-depth: 0
       - name: 'Deploy module'
-        uses: ./.github/actions/templates/deployModule
+        uses: ./.github/actions/templates/validateModuleDeployment
         with:
           templateFilePath: 'arm/${{ env.namespace }}/deploy.bicep'
           parameterFilePath: '${{ env.dependencyPath }}/${{ env.namespace }}/parameters/${{ matrix.parameterFilePaths }}'
@@ -878,7 +878,7 @@ jobs:
         with:
           fetch-depth: 0
       - name: 'Deploy module'
-        uses: ./.github/actions/templates/deployModule
+        uses: ./.github/actions/templates/validateModuleDeployment
         with:
           templateFilePath: 'arm/${{ env.namespace }}/deploy.bicep'
           parameterFilePath: '${{ env.dependencyPath }}/${{ env.namespace }}/parameters/${{ matrix.parameterFilePaths }}'
@@ -907,7 +907,7 @@ jobs:
         with:
           fetch-depth: 0
       - name: 'Deploy module'
-        uses: ./.github/actions/templates/deployModule
+        uses: ./.github/actions/templates/validateModuleDeployment
         with:
           templateFilePath: 'arm/${{ env.namespace }}/deploy.bicep'
           parameterFilePath: '${{ env.dependencyPath }}/${{ env.namespace }}/parameters/${{ matrix.parameterFilePaths }}'
