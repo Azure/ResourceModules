@@ -27,22 +27,23 @@
                 "ipRules": []
             }
         },
-        // "roleAssignments": {
-        //     "value": [
-        //         {
-        //             "roleDefinitionIdOrName": "Reader",
-        //             "principalIds": [
-        //                 "<<deploymentSpId>>"
-        //             ]
-        //         }
-        //     ]
-        // },
+        "roleAssignments": {
+            "value": [
+                {
+                    "roleDefinitionIdOrName": "Reader",
+                    "principalIds": [
+                        "<<deploymentSpId>>"
+                    ]
+                }
+            ]
+        },
         "secrets": {
             "value": [
                 {
                     "name": "secretName",
                     "value": "secretValue",
                     "contentType": "Something",
+                    "attributesExp": 10000,
                     "attributesNbf": 10000,
                     "roleAssignments": [
                         {
@@ -59,6 +60,7 @@
             "value": [
                 {
                     "name": "keyName",
+                    "attributesExp": 10000,
                     "attributesNbf": 10000,
                     "roleAssignments": [
                         {
@@ -70,52 +72,52 @@
                     ]
                 }
             ]
+        },
+        "accessPolicies": {
+            "value": [
+                {
+                    "objectId": "<<deploymentSpId>>",
+                    "permissions": {
+                        "keys": [
+                            "get",
+                            "list",
+                            "update"
+                        ],
+                        "secrets": [
+                            "all"
+                        ]
+                    },
+                    "tenantId": "<<tenantId>>"
+                },
+                {
+                    "objectId": "<<deploymentSpId>>",
+                    "permissions": {
+                        "certificates": [
+                            "backup",
+                            "create",
+                            "delete"
+                        ],
+                        "secrets": [
+                            "all"
+                        ]
+                    }
+                }
+            ]
+        },
+        "diagnosticLogsRetentionInDays": {
+            "value": 7
+        },
+        "diagnosticStorageAccountId": {
+            "value": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Storage/storageAccounts/adpsxxazsaweux001"
+        },
+        "workspaceId": {
+            "value": "/subscriptions/<<subscriptionId>>/resourcegroups/validation-rg/providers/microsoft.operationalinsights/workspaces/adp-sxx-az-law-x-001"
+        },
+        "eventHubAuthorizationRuleId": {
+            "value": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.EventHub/namespaces/adp-sxx-az-evhns-x-001/AuthorizationRules/RootManageSharedAccessKey"
+        },
+        "eventHubName": {
+            "value": "adp-sxx-az-evh-x-001"
         }
-        // "accessPolicies": {
-        //     "value": [
-        //         {
-        //             "objectId": "<<deploymentSpId>>",
-        //             "permissions": {
-        //                 "keys": [
-        //                     "get",
-        //                     "list",
-        //                     "update"
-        //                 ],
-        //                 "secrets": [
-        //                     "all"
-        //                 ]
-        //             },
-        //             "tenantId": "<<tenantId>>"
-        //         },
-        //         {
-        //             "objectId": "<<deploymentSpId>>",
-        //             "permissions": {
-        //                 "certificates": [
-        //                     "backup",
-        //                     "create",
-        //                     "delete"
-        //                 ],
-        //                 "secrets": [
-        //                     "all"
-        //                 ]
-        //             }
-        //         }
-        //     ]
-        // },
-        // "diagnosticLogsRetentionInDays": {
-        //     "value": 7
-        // },
-        // "diagnosticStorageAccountId": {
-        //     "value": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Storage/storageAccounts/adpsxxazsaweux001"
-        // },
-        // "workspaceId": {
-        //     "value": "/subscriptions/<<subscriptionId>>/resourcegroups/validation-rg/providers/microsoft.operationalinsights/workspaces/adp-sxx-az-law-x-001"
-        // },
-        // "eventHubAuthorizationRuleId": {
-        //     "value": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.EventHub/namespaces/adp-sxx-az-evhns-x-001/AuthorizationRules/RootManageSharedAccessKey"
-        // },
-        // "eventHubName": {
-        //     "value": "adp-sxx-az-evh-x-001"
-        // }
     }
 }
