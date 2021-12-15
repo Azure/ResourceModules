@@ -53,8 +53,9 @@ function Invoke-ResourcePostRemoval {
             Write-Verbose ('softDeletedService [{0}]' -f $softDeletedService) -Verbose
             if ($softDeletedService) {
                 # Purge service
-                $purgePath = '/subscriptions/{0}/providers/Microsoft.KeyVault/locations/{1}/deletedVaults/{2}/purge?api-version=2019-09-01' -f $subscriptionId, $softDeletedService.location, $resourceName
+                $purgePath = '/subscriptions/{0}/providers/Microsoft.KeyVault/locations/{1}/deletedVaults/{2}/purge?api-version=2019-09-01' -f $subscriptionId, $softDeletedService.properties.location, $resourceName
                 Write-Verbose ('purgePath [{0}]' -f $purgePath) -Verbose
+                /subscriptions/***/providers/Microsoft.KeyVault/locations//deletedVaults/sxx-az-kv-x-001/purge?api-version=2019-09-01]
                 $purgeRequestInputObject = @{
                     Method = 'POST'
                     Path   = $purgePath
