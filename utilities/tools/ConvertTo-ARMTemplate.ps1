@@ -148,10 +148,10 @@ if (-not $SkipMetadataCleanup) {
 if (-not $SkipBicepCleanUp) {
     Write-Verbose 'Remove bicep files and folders'
 
-    $dotBicepFolders = Get-ChildItem -Path $armFolderPath -Filter '.bicep' -Recurse -Force -Directory
-    Write-Verbose "Remove bicep files and folders - Remove [$($dotBicepFolders.count)] .bicep folder(s)"
-    if ($PSCmdlet.ShouldProcess("[$($dotBicepFolders.count)] .bicep folder(s) in path [$armFolderPath]", 'Remove-Item')) {
-        $dotBicepFolders | Remove-Item -Recurse -Force
+    $dotBicepFoldersToRemove = Get-ChildItem -Path $armFolderPath -Filter '.bicep' -Recurse -Force -Directory
+    Write-Verbose "Remove bicep files and folders - Remove [$($dotBicepFoldersToRemove.count)] .bicep folder(s)"
+    if ($PSCmdlet.ShouldProcess("[$($dotBicepFoldersToRemove.count)] .bicep folder(s) in path [$armFolderPath]", 'Remove-Item')) {
+        $dotBicepFoldersToRemove | Remove-Item -Recurse -Force
     }
 
     $BicepFilesToRemove = Get-ChildItem -Path $armFolderPath -Filter '*.bicep' -Recurse -Force -File
