@@ -1,15 +1,17 @@
 ﻿Describe 'Convert bicep files to ARM' {
     BeforeAll {
-        $rootPath = Get-Item -Path $Path | Select-Object -ExpandProperty 'FullName'
-        $armFolderPath = Join-Path -Path $rootPath -ChildPath 'arm'
-        $toolsPath = Join-Path -Path $rootPath -ChildPath 'utilities\tools'
+        # $rootPath = Get-Item -Path $Path | Select-Object -ExpandProperty 'FullName'
+        # $armFolderPath = Join-Path -Path $rootPath -ChildPath 'arm'
+        # $toolsPath = Join-Path -Path $rootPath -ChildPath 'utilities\tools'
+
+        $armFolderPath = 'C:\Users\rahalan\repos\internal\ResourceModules\arm'
 
         $deployBicepFilesCount = (Get-ChildItem -Recurse $armFolderPath | Where-Object { $_.FullName -match 'deploy.bicep' }).Count
         $nestedBicepFilesCount = (Get-ChildItem -Recurse $armFolderPath | Where-Object { $_.FullName -match 'nested_.*bicep' }).Count
         Write-Host "$deployBicepFilesCount deploy.bicep file(s) found"
         Write-Host "$nestedBicepFilesCount nested bicep file(s) found"
         Write-Host 'run ConvertTo-ARMTemplate script'
-        & "$toolsPath\ConvertTo-ARMTemplate.ps1 -Path $armFolderPath"
+        .\utilities\tools\ConvertTo-ARMTemplate.ps1 -Path 'C:\Users\rahalan\repos\internal\ResourceModules'
     }
 
     It 'all deploy.bicep files are converted to deploy.json' {
