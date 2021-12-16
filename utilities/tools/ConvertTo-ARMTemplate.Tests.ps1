@@ -1,6 +1,6 @@
 ﻿Describe 'Convert bicep files to ARM' {
     BeforeAll {
-        $repoRootPath = '.\..\..\'
+        $repoRootPath = '.\..\..\arm\'
         $deployBicepFilesCount = (Get-ChildItem -Recurse $repoRootPath | Where-Object { $_.FullName -match 'deploy.bicep' }).Count
         $nestedBicepFilesCount = (Get-ChildItem -Recurse $repoRootPath | Where-Object { $_.FullName -match 'nested_.*bicep' }).Count
         Write-Host "$deployBicepFilesCount deploy.bicep file(s) found"
@@ -9,15 +9,15 @@
         .\ConvertTo-ARMTemplate.ps1 -Path $repoRootPath
     }
 
-    It 'all deploy bicep files are converted to ARM' {
+    It 'all deploy.bicep files are converted to deploy.json' {
         $deployJsonFilesCount = (Get-ChildItem -Recurse $repoRootPath | Where-Object { $_.FullName -match 'deploy.json' }).Count
         Write-Host "$deployJsonFilesCount deploy.json file(s) found"
-        $deployBicepFilesCount | Should -Be $deployJsonFilesCount
+        $deployJsonFilesCount | Should -Be $deployBicepFilesCount
     }
 
-    It 'all nested bicep files are removed' {
-        $nestedBicepFilesCount = (Get-ChildItem -Recurse $repoRootPath | Where-Object { $_.FullName -match 'nested_.*bicep' }).Count
-        Write-Host "$nestedBicepFilesCount nested bicep file(s) found"
-        $nestedBicepFilesCount | Should -Be 0
+    It 'all bicep files are removed' {
+        $bicepFilesCount = (Get-ChildItem -Recurse $repoRootPath | Where-Object { $_.FullName -match '.*.bicep' }).Count
+        Write-Host "$bicepFilesCount bicep file(s) found"
+        $bicepFilesCount | Should -Be 0
     }
 }
