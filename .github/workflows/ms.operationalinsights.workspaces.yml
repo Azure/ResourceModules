@@ -29,6 +29,8 @@ on:
       - '.github/workflows/ms.operationalinsights.workspaces.yml'
       - 'arm/Microsoft.OperationalInsights/workspaces/**'
       - '!*/**/readme.md'
+      - 'utilities/pipelines/**'
+      - '!utilities/pipelines/dependencies/**'
 
 env:
   modulePath: 'arm/Microsoft.OperationalInsights/workspaces'

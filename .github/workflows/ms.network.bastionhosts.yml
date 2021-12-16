@@ -29,6 +29,8 @@ on:
       - '.github/workflows/ms.network.bastionhosts.yml'
       - 'arm/Microsoft.Network/bastionHosts/**'
       - '!*/**/readme.md'
+      - 'utilities/pipelines/**'
+      - '!utilities/pipelines/dependencies/**'
 
 env:
   modulePath: 'arm/Microsoft.Network/bastionHosts'

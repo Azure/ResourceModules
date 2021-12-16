@@ -29,6 +29,8 @@ on:
       - '.github/workflows/ms.databricks.workspaces.yml'
       - 'arm/Microsoft.Databricks/workspaces/**'
       - '!*/**/readme.md'
+      - 'utilities/pipelines/**'
+      - '!utilities/pipelines/dependencies/**'
 
 env:
   modulePath: 'arm/Microsoft.Databricks/workspaces'

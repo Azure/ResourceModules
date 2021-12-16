@@ -29,6 +29,8 @@ on:
       - '.github/workflows/ms.netapp.netappaccounts.yml'
       - 'arm/Microsoft.NetApp/netAppAccounts/**'
       - '!*/**/readme.md'
+      - 'utilities/pipelines/**'
+      - '!utilities/pipelines/dependencies/**'
 
 env:
   modulePath: 'arm/Microsoft.NetApp/netAppAccounts'

@@ -29,6 +29,8 @@ on:
       - '.github/workflows/ms.network.connections.yml'
       - 'arm/Microsoft.Network/connections/**'
       - '!*/**/readme.md'
+      - 'utilities/pipelines/**'
+      - '!utilities/pipelines/dependencies/**'
 
 env:
   modulePath: 'arm/Microsoft.Network/connections'

@@ -29,6 +29,8 @@ on:
       - '.github/workflows/ms.datafactory.factories.yml'
       - 'arm/Microsoft.DataFactory/factories/**'
       - '!*/**/readme.md'
+      - 'utilities/pipelines/**'
+      - '!utilities/pipelines/dependencies/**'
 
 env:
   modulePath: 'arm/Microsoft.DataFactory/factories'

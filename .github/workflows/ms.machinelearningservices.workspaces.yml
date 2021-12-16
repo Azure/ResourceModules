@@ -29,6 +29,8 @@ on:
       - '.github/workflows/ms.machinelearningservices.workspaces.yml'
       - 'arm/Microsoft.MachineLearningServices/workspaces/**'
       - '!*/**/readme.md'
+      - 'utilities/pipelines/**'
+      - '!utilities/pipelines/dependencies/**'
 
 env:
   modulePath: 'arm/Microsoft.MachineLearningServices/workspaces'

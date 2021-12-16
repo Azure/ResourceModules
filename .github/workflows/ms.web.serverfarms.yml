@@ -29,6 +29,8 @@ on:
       - '.github/workflows/ms.web.serverfarms.yml'
       - 'arm/Microsoft.Web/serverfarms/**'
       - '!*/**/readme.md'
+      - 'utilities/pipelines/**'
+      - '!utilities/pipelines/dependencies/**'
 
 env:
   modulePath: 'arm/Microsoft.Web/serverfarms'
