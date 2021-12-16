@@ -2,13 +2,14 @@
     BeforeAll {
         $rootPath = Get-Item -Path $Path | Select-Object -ExpandProperty 'FullName'
         $armFolderPath = Join-Path -Path $rootPath -ChildPath 'arm'
+        $toolsPath = Join-Path -Path $rootPath -ChildPath 'utilities\tools'
 
         $deployBicepFilesCount = (Get-ChildItem -Recurse $armFolderPath | Where-Object { $_.FullName -match 'deploy.bicep' }).Count
         $nestedBicepFilesCount = (Get-ChildItem -Recurse $armFolderPath | Where-Object { $_.FullName -match 'nested_.*bicep' }).Count
         Write-Host "$deployBicepFilesCount deploy.bicep file(s) found"
         Write-Host "$nestedBicepFilesCount nested bicep file(s) found"
         Write-Host 'run ConvertTo-ARMTemplate script'
-        .\ConvertTo-ARMTemplate.ps1 -Path $rootPath
+        & "$toolsPath\ConvertTo-ARMTemplate.ps1 -Path $armFolderPath"
     }
 
     It 'all deploy.bicep files are converted to deploy.json' {
