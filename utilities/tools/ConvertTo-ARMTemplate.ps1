@@ -169,10 +169,10 @@ if (-not $SkipWorkflowUpdate) {
     Write-Verbose 'Update workflow files'
 
     $workflowFolderPath = Join-Path -Path $rootPath -ChildPath '.github\workflows'
-    $workflowFiles = Get-ChildItem -Path $workflowFolderPath -Filter 'ms.*.yml' -File -Force
-    Write-Verbose "Update workflow files - Processing [$($workflowFiles.count)] file(s)"
-    if ($PSCmdlet.ShouldProcess("[$($workflowFiles.count)] ms.*.yml file(s) in path [$armFolderPath]", 'Set-Content')) {
-        $workflowFiles | ForEach-Object -ThrottleLimit $env:NUMBER_OF_PROCESSORS -Parallel {
+    $workflowFilesToUpdate = Get-ChildItem -Path $workflowFolderPath -Filter 'ms.*.yml' -File -Force
+    Write-Verbose "Update workflow files - Processing [$($workflowFilesToUpdate.count)] file(s)"
+    if ($PSCmdlet.ShouldProcess("[$($workflowFilesToUpdate.count)] ms.*.yml file(s) in path [$armFolderPath]", 'Set-Content')) {
+        $workflowFilesToUpdate | ForEach-Object -ThrottleLimit $env:NUMBER_OF_PROCESSORS -Parallel {
             $content = $_ | Get-Content
             $content = $content.Replace('deploy.bicep', 'deploy.json')
             $_ | Set-Content -Value $content
