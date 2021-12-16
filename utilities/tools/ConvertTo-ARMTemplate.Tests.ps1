@@ -7,23 +7,21 @@
         $armFolderPath = 'C:\Users\rahalan\repos\internal\ResourceModules\arm'
 
         $deployBicepFilesCount = (Get-ChildItem -Recurse $armFolderPath | Where-Object { $_.FullName -match 'deploy.bicep' }).Count
-        $nestedBicepFilesCount = (Get-ChildItem -Recurse $armFolderPath | Where-Object { $_.FullName -match 'nested_.*bicep' }).Count
+        # $nestedBicepFilesCount = (Get-ChildItem -Recurse $armFolderPath | Where-Object { $_.FullName -match 'nested_.*bicep' }).Count
 
         Write-Host "$deployBicepFilesCount deploy.bicep file(s) found"
-        Write-Host "$nestedBicepFilesCount nested bicep file(s) found"
+        # Write-Host "$nestedBicepFilesCount nested bicep file(s) found"
 
         $workflowFolderPath = 'C:\Users\rahalan\repos\internal\ResourceModules\.github\workflows'
         $workflowFiles = Get-ChildItem -Path $workflowFolderPath -Filter 'ms.*.yml' -File -Force
-        Write-Host "Processing workflow files [$($workflowFiles.count)] file(s)"
         $workflowFilesToChange = 0
-        $workflowFiles.count
+
         foreach ($workFlowFile in $workflowFiles) {
             $content = Get-Content -Path $workFlowFile.FullName
 
             foreach ($line in $content) {
                 if ($line.Contains('deploy.bicep')) {
-                    $workflowFilesToChange = workflowFilesToChange + 1
-                    Write-Host $workflowFilesToChange
+                    $workflowFilesToChange = $workflowFilesToChange + 1
                     break
                 }
             }
