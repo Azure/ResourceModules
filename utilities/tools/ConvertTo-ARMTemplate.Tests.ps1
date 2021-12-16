@@ -59,9 +59,7 @@
             }
         }
 
+        Write-Host "$workflowFilesUpdated workflow file(s) updated"
         $workflowFilesUpdated | Should -Be $workflowFilesToChange
     }
-
-    # $workflowFolderPath = Join-Path -Path $rootPath -ChildPath '.github\workflows'
-    # $workflowFiles = Get-ChildItem -Path $workflowFolderPath -Filter 'ms.*.yml' -File -Force
 }
