@@ -1,5 +1,31 @@
-module linux '../deploy.bicep' = {
-  name: 'linux'
+// Module tests
+
+// Test with only required parameters
+module test_required_params '../deploy.bicep' = {
+  name: 'test_required_params'
+  params: {
+    name: 'vmsstest001'
+    osDisk: {
+      createOption: 'fromImage'
+      diskSizeGB: 128
+      managedDisk: {
+        storageAccountType: 'Premium_LRS'
+      }
+    }
+    osType: 'Linux'
+    adminUsername: 'scaleSetAdmin'
+    imageReference: {
+      publisher: 'Canonical'
+      offer: 'UbuntuServer'
+      sku: '20.04-LTS'
+      version: 'latest'
+    }
+    skuName: 'Standard_D2s_v4'
+  }
+}
+
+module test_linux '../deploy.bicep' = {
+  name: 'test_linux'
   params: {
     name: 'linux-scaleset'
     vmNamePrefix: 'vmsslinvm'
@@ -27,7 +53,7 @@ module linux '../deploy.bicep' = {
     imageReference: {
       publisher: 'Canonical'
       offer: 'UbuntuServer'
-      sku: '18.04-LTS'
+      sku: '20.04-LTS'
       version: 'latest'
     }
     adminUsername: 'scaleSetAdmin'

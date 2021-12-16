@@ -4,6 +4,8 @@
 module test_required_params '../deploy.bicep' = {
   name: 'test_required_params'
   params: {
-    name: 'astest001'
+    name: 'sqltest001'
+    administratorLoginPassword: 'n/a'
+    administratorLogin: 'n/a'
   }
 }

@@ -4,6 +4,8 @@
 module test_required_params '../deploy.bicep' = {
   name: 'test_required_params'
   params: {
-    name: 'astest001'
+    name: 'citest001'
+    image: 'mcr.microsoft.com/azuredocs/aci-helloworld'
+    containername: 'container001'
   }
 }
