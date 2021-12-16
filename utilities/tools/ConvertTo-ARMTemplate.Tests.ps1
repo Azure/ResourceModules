@@ -30,7 +30,7 @@
         Write-Host "$workflowFilesToChange workflow files need to change"
 
         Write-Host 'run ConvertTo-ARMTemplate script'
-        # .\utilities\tools\ConvertTo-ARMTemplate.ps1 -Path 'C:\Users\rahalan\repos\internal\ResourceModules' -ConvertChildren
+        .\utilities\tools\ConvertTo-ARMTemplate.ps1 -Path 'C:\Users\rahalan\repos\internal\ResourceModules' -ConvertChildren
     }
 
     It 'all deploy.bicep files are converted to deploy.json' {
