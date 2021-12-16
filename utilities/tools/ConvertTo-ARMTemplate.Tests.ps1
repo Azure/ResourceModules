@@ -2,7 +2,7 @@
     BeforeAll {
         $repoRootPath = '.\..\..\'
         $deployBicepFilesCount = (Get-ChildItem -Recurse $repoRootPath | Where-Object { $_.FullName -match 'deploy.bicep' }).Count
-        $nestedBicepFilesCount = (Get-ChildItem -Recurse $repoRootPath | Where-Object { $_.FullName -match 'nested*.bicep' }).Count
+        $nestedBicepFilesCount = (Get-ChildItem -Recurse $repoRootPath | Where-Object { $_.FullName -match 'nested_.*bicep' }).Count
         Write-Host "$deployBicepFilesCount deploy.bicep file(s) found"
         Write-Host "$nestedBicepFilesCount nested bicep file(s) found"
         Write-Host 'run ConvertTo-ARMTemplate script'
@@ -16,7 +16,7 @@
     }
 
     It 'all nested bicep files are removed' {
-        $nestedBicepFilesCount = (Get-ChildItem -Recurse $repoRootPath | Where-Object { $_.FullName -match 'nested*.bicep' }).Count
+        $nestedBicepFilesCount = (Get-ChildItem -Recurse $repoRootPath | Where-Object { $_.FullName -match 'nested_.*bicep' }).Count
         Write-Host "$nestedBicepFilesCount nested bicep file(s) found"
         $nestedBicepFilesCount | Should -Be 0
     }
