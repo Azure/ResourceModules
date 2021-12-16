@@ -45,6 +45,23 @@
         $bicepFilesCount | Should -Be 0
     }
 
+    It 'all workflow files are updated' {
+        $workflowFilesUpdated = 0
+
+        foreach ($workFlowFile in $workflowFiles) {
+            $content = Get-Content -Path $workFlowFile.FullName
+
+            foreach ($line in $content) {
+                if ($line.Contains('deploy.json')) {
+                    $workflowFilesUpdated = $workflowFilesUpdated + 1
+                    break
+                }
+            }
+        }
+
+        $workflowFilesUpdated | Should -Be $workflowFilesToChange
+    }
+
     # $workflowFolderPath = Join-Path -Path $rootPath -ChildPath '.github\workflows'
     # $workflowFiles = Get-ChildItem -Path $workflowFolderPath -Filter 'ms.*.yml' -File -Force
 }
