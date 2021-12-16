@@ -101,7 +101,7 @@ resource networkInterface_diagnosticSettings 'Microsoft.Insights/diagnosticsetti
     workspaceId: !empty(workspaceId) ? workspaceId : null
     eventHubAuthorizationRuleId: !empty(eventHubAuthorizationRuleId) ? eventHubAuthorizationRuleId : null
     eventHubName: !empty(eventHubName) ? eventHubName : null
-    metrics: !empty(diagnosticStorageAccountId) || !empty(workspaceId) || !empty(eventHubAuthorizationRuleId) || !empty(eventHubName) ? diagnosticsMetrics : null
+    metrics: diagnosticsMetrics
   }
   scope: networkInterface
 }

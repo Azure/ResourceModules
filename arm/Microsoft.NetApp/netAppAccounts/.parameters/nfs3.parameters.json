@@ -3,7 +3,7 @@
     "contentVersion": "1.0.0.0",
     "parameters": {
         "name": {
-            "value": "sxx-az-anf-x-003"
+            "value": "sxx-az-anf-nfs3-001"
         },
         "capacityPools": {
             "value": [

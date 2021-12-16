@@ -3,16 +3,16 @@
     "contentVersion": "1.0.0.0",
     "parameters": {
         "name": {
-            "value": "vnet-validate-01-ergw-01"
+            "value": "sxx-az-gw-er-001"
         },
         "gatewayPipName": {
             "value": [
-                "vnet-validate-01-ergw-01-pip-s-02"
+                "sxx-az-gw-er-001-pip"
             ]
         },
         "domainNameLabel": {
             "value": [
-                "vnet-validate-01-ergw-01-pip-s-02"
+                "sxx-az-gw-er-dm-001"
             ]
         },
         "virtualNetworkGatewayType": {

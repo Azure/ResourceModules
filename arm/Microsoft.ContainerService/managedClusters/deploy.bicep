@@ -340,7 +340,82 @@ module managedCluster_agentPools 'agentPools/deploy.bicep' = [for (agentPool, in
   params: {
     managedClusterName: managedCluster.name
     name: agentPool.name
-    agentPoolProperties: agentPool.properties
+    availabilityZones: contains(agentPool, 'availabilityZones') ? agentPool.availabilityZones : []
+    count: contains(agentPool, 'count') ? agentPool.count : 1
+    sourceResourceId: contains(agentPool, 'sourceResourceId') ? agentPool.sourceResourceId : ''
+    enableAutoScaling: contains(agentPool, 'enableAutoScaling') ? agentPool.enableAutoScaling : false
+    enableEncryptionAtHost: contains(agentPool, 'enableEncryptionAtHost') ? agentPool.enableEncryptionAtHost : false
+    enableFIPS: contains(agentPool, 'enableFIPS') ? agentPool.enableFIPS : false
+    enableNodePublicIP: contains(agentPool, 'enableNodePublicIP') ? agentPool.enableNodePublicIP : false
+    enableUltraSSD: contains(agentPool, 'enableUltraSSD') ? agentPool.enableUltraSSD : false
+    gpuInstanceProfile: contains(agentPool, 'gpuInstanceProfile') ? agentPool.gpuInstanceProfile: ''
+    allowedUnsafeSysctls: contains(agentPool, 'allowedUnsafeSysctls') ? agentPool.allowedUnsafeSysctls: []
+    containerLogMaxFiles: contains(agentPool, 'containerLogMaxFiles') ? agentPool.containerLogMaxFiles: 5
+    containerLogMaxSizeMB: contains(agentPool, 'containerLogMaxSizeMB') ? agentPool.containerLogMaxSizeMB: -1
+    cpuCfsQuota: contains(agentPool, 'cpuCfsQuota') ? agentPool.cpuCfsQuota: true
+    cpuCfsQuotaPeriod: contains(agentPool, 'cpuCfsQuotaPeriod') ? agentPool.cpuCfsQuotaPeriod: ''
+    cpuManagerPolicy: contains(agentPool, 'cpuManagerPolicy') ? agentPool.cpuManagerPolicy: 'none'
+    failSwapOn: contains(agentPool, 'failSwapOn') ? agentPool.failSwapOn: false
+    imageGcHighThreshold: contains(agentPool, 'imageGcHighThreshold') ? agentPool.imageGcHighThreshold: 85
+    imageGcLowThreshold: contains(agentPool, 'imageGcLowThreshold') ? agentPool.imageGcLowThreshold: 80
+    podMaxPids: contains(agentPool, 'podMaxPids') ? agentPool.podMaxPids: -1
+    topologyManagerPolicy: contains(agentPool, 'topologyManagerPolicy') ? agentPool.topologyManagerPolicy : 'none'
+    kubeletDiskType: contains(agentPool, 'kubeletDiskType') ? agentPool.kubeletDiskType : ''
+    swapFileSizeMB: contains(agentPool, 'swapFileSizeMB') ? agentPool.swapFileSizeMB : 1500
+    fsAioMaxNr: contains(agentPool, 'fsAioMaxNr') ? agentPool.fsAioMaxNr : 65536
+    fsFileMax: contains(agentPool, 'fsFileMax') ? agentPool.fsFileMax : 8192
+    fsInotifyMaxUserWatches: contains(agentPool, 'fsInotifyMaxUserWatches') ? agentPool.fsInotifyMaxUserWatches : 781250
+    fsNrOpen: contains(agentPool, 'fsNrOpen') ? agentPool.fsNrOpen : 8192
+    kernelThreadsMax: contains(agentPool, 'kernelThreadsMax') ? agentPool.kernelThreadsMax : 20
+    netCoreNetdevMaxBacklog: contains(agentPool, 'netCoreNetdevMaxBacklog') ? agentPool.netCoreNetdevMaxBacklog : 1000
+    netCoreOptmemMax: contains(agentPool, 'netCoreOptmemMax') ? agentPool.netCoreOptmemMax : 20480
+    netCoreRmemDefault: contains(agentPool, 'netCoreRmemDefault') ? agentPool.netCoreRmemDefault : 212992
+    netCoreRmemMax: contains(agentPool, 'netCoreRmemMax') ? agentPool.netCoreRmemMax : 212992
+    netCoreSomaxconn: contains(agentPool, 'netCoreSomaxconn') ? agentPool.netCoreSomaxconn : 4096
+    netCoreWmemDefault: contains(agentPool, 'netCoreWmemDefault') ? agentPool.netCoreWmemDefault : 212992
+    netCoreWmemMax: contains(agentPool, 'netCoreWmemMax') ? agentPool.netCoreWmemMax : 212992
+    netIpv4IpLocalPortRange: contains(agentPool, 'netIpv4IpLocalPortRange') ? agentPool.netIpv4IpLocalPortRange : ''
+    netIpv4NeighDefaultGcThresh1: contains(agentPool, 'netIpv4NeighDefaultGcThresh1') ? agentPool.netIpv4NeighDefaultGcThresh1 : 128
+    netIpv4NeighDefaultGcThresh2: contains(agentPool, 'netIpv4NeighDefaultGcThresh2') ? agentPool.netIpv4NeighDefaultGcThresh2 : 512
+    netIpv4NeighDefaultGcThresh3: contains(agentPool, 'netIpv4NeighDefaultGcThresh3') ? agentPool.netIpv4NeighDefaultGcThresh3 : 1024
+    netIpv4TcpFinTimeout: contains(agentPool, 'netIpv4TcpFinTimeout') ? agentPool.netIpv4TcpFinTimeout : 5
+    netIpv4TcpkeepaliveIntvl: contains(agentPool, 'netIpv4TcpkeepaliveIntvl') ? agentPool.netIpv4TcpkeepaliveIntvl : 10
+    netIpv4TcpKeepaliveProbes: contains(agentPool, 'netIpv4TcpKeepaliveProbes') ? agentPool.netIpv4TcpKeepaliveProbes : 1
+    netIpv4TcpKeepaliveTime: contains(agentPool, 'netIpv4TcpKeepaliveTime') ? agentPool.netIpv4TcpKeepaliveTime : 30
+    netIpv4TcpMaxSynBacklog: contains(agentPool, 'netIpv4TcpMaxSynBacklog') ? agentPool.netIpv4TcpMaxSynBacklog : 128
+    netIpv4TcpMaxTwBuckets: contains(agentPool, 'netIpv4TcpMaxTwBuckets') ? agentPool.netIpv4TcpMaxTwBuckets : 8000
+    netIpv4TcpTwReuse: contains(agentPool, 'netIpv4TcpTwReuse') ? agentPool.netIpv4TcpTwReuse : false
+    netNetfilterNfConntrackBuckets: contains(agentPool, 'netNetfilterNfConntrackBuckets') ? agentPool.netNetfilterNfConntrackBuckets : 65536
+    netNetfilterNfConntrackMax: contains(agentPool, 'netNetfilterNfConntrackMax') ? agentPool.netNetfilterNfConntrackMax : 131072
+    vmMaxMapCount: contains(agentPool, 'vmMaxMapCount') ? agentPool.vmMaxMapCount : 65530
+    vmSwappiness: contains(agentPool, 'vmSwappiness') ? agentPool.vmSwappiness : 0
+    vmVfsCachePressure: contains(agentPool, 'vmVfsCachePressure') ? agentPool.vmVfsCachePressure : 0
+    transparentHugePageDefrag: contains(agentPool, 'transparentHugePageDefrag') ? agentPool.transparentHugePageDefrag : 'madvise'
+    transparentHugePageEnabled: contains(agentPool, 'transparentHugePageEnabled') ? agentPool.transparentHugePageEnabled : 'always'
+    maxCount: contains(agentPool, 'maxCount') ? agentPool.maxCount : -1
+    maxPods: contains(agentPool, 'maxPods') ? agentPool.maxPods : -1
+    minCount: contains(agentPool, 'minCount') ? agentPool.minCount : -1
+    mode: contains(agentPool, 'mode') ? agentPool.mode: ''
+    nodeLabels: contains(agentPool, 'nodeLabels') ? agentPool.nodeLabels : {}
+    nodePublicIpPrefixId: contains(agentPool, 'nodePublicIpPrefixId') ? agentPool.nodePublicIpPrefixId: ''
+    nodeTaints: contains(agentPool, 'nodeTaints') ? agentPool.nodeTaints : []
+    orchestratorVersion: contains(agentPool, 'orchestratorVersion') ? agentPool.orchestratorVersion: ''
+    osDiskSizeGB: contains(agentPool, 'osDiskSizeGB') ? agentPool.osDiskSizeGB: -1
+    osDiskType: contains(agentPool, 'osDiskType') ? agentPool.osDiskType: ''
+    osSku: contains(agentPool, 'osSku') ? agentPool.osSku : ''
+    osType: contains(agentPool, 'osType') ? agentPool.osType : 'Linux'
+    podSubnetId: contains(agentPool, 'podSubnetId') ? agentPool.podSubnetId : ''
+    proximityPlacementGroupId: contains(agentPool, 'proximityPlacementGroupId') ? agentPool.proximityPlacementGroupId : ''
+    scaleDownMode: contains(agentPool, 'scaleDownMode') ? agentPool.scaleDownMode: 'Delete'
+    scaleSetEvictionPolicy: contains(agentPool, 'scaleSetEvictionPolicy') ? agentPool.scaleSetEvictionPolicy : 'Delete'
+    scaleSetPriority: contains(agentPool, 'scaleSetPriority') ? agentPool.scaleSetPriority : ''
+    spotMaxPrice: contains(agentPool, 'spotMaxPrice') ? agentPool.spotMaxPrice : -1
+    tags: contains(agentPool, 'tags') ? agentPool.tags : {}
+    type: contains(agentPool, 'type') ? agentPool.type : ''
+    maxSurge: contains(agentPool, 'maxSurge') ? agentPool.maxSurge : ''
+    vmSize: contains(agentPool, 'vmSize') ? agentPool.vmSize : 'Standard_D2s_v3'
+    vnetSubnetId: contains(agentPool, 'vnetSubnetId') ? agentPool.vnetSubnetId : ''
+    workloadRuntime: contains(agentPool, 'workloadRuntime') ? agentPool.workloadRuntime : ''
   }
 }]
 
@@ -356,12 +431,12 @@ resource managedCluster_lock 'Microsoft.Authorization/locks@2016-09-01' = if (lo
 resource managedCluster_diagnosticSettings 'Microsoft.Insights/diagnosticsettings@2021-05-01-preview' = if ((!empty(diagnosticStorageAccountId)) || (!empty(workspaceId)) || (!empty(eventHubAuthorizationRuleId)) || (!empty(eventHubName))) {
   name: '${managedCluster.name}-diagnosticSettings'
   properties: {
-    storageAccountId: (empty(diagnosticStorageAccountId) ? null : diagnosticStorageAccountId)
-    workspaceId: (empty(workspaceId) ? null : workspaceId)
-    eventHubAuthorizationRuleId: (empty(eventHubAuthorizationRuleId) ? null : eventHubAuthorizationRuleId)
-    eventHubName: (empty(eventHubName) ? null : eventHubName)
-    metrics: ((empty(diagnosticStorageAccountId) && empty(workspaceId) && empty(eventHubAuthorizationRuleId) && empty(eventHubName)) ? null : diagnosticsMetrics)
-    logs: ((empty(diagnosticStorageAccountId) && empty(workspaceId) && empty(eventHubAuthorizationRuleId) && empty(eventHubName)) ? null : diagnosticsLogs)
+    storageAccountId: !empty(diagnosticStorageAccountId) ? diagnosticStorageAccountId : null
+    workspaceId: !empty(workspaceId) ? workspaceId : null
+    eventHubAuthorizationRuleId: !empty(eventHubAuthorizationRuleId) ? eventHubAuthorizationRuleId : null
+    eventHubName: !empty(eventHubName) ? eventHubName : null
+    metrics: diagnosticsMetrics
+    logs: diagnosticsLogs
   }
   scope: managedCluster
 }

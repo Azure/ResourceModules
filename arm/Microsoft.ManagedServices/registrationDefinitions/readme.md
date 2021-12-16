@@ -118,5 +118,4 @@ There are a couple of limitations that you should be aware of with Lighthouse:
 
 ## Template references
 
-- [Registrationassignments](https://docs.microsoft.com/en-us/azure/templates/Microsoft.ManagedServices/2019-09-01/registrationAssignments)
-- [Registrationdefinitions](https://docs.microsoft.com/en-us/azure/templates/Microsoft.ManagedServices/2019-09-01/registrationDefinitions)
+- [Define resources with Bicep and ARM templates](https://docs.microsoft.com/en-us/azure/templates)

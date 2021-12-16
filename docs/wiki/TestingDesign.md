@@ -63,7 +63,7 @@ The following activities are run executing the `arm/.global/global.module.tests.
 
 - [Pester Wiki](https://github.com/pester/Pester/wiki)
 - [Pester on GitHub](https://github.com/pester/Pester)
-- [Pester Setup and Commands](https://pester.dev/docs/commands/Setup)
+- [Pester Installation and Update](https://pester.dev/docs/introduction/installation)
 
 ---
 
@@ -81,7 +81,7 @@ The template validation tests execute a dry-run with each parameter file provide
 
 # Deployment validation
 
-If all other tests passed, the deployment tests are the ultimate module validation. Using the available & configured parameter files for a module, each is deployed to Azure (in parallel) and verifies if the deployment works end to end.
+If all other tests passed, the deployment tests are the ultimate module validation. Using the available & configured parameter files for a module, each is deployed to Azure (in parallel) and verifies if the deployment works end-to-end.
 
 Most of the resources are deleted by default after their deployment, to keep costs down and to be able to retest resource modules from scratch in the next run. However, the removal step can be skipped in case further investigation on the deployed resource is needed. For further details, please refer to the (./PipelinesUsage) section.
 
@@ -120,6 +120,7 @@ Since also dependency resources are in turn subject to dependencies with each ot
       >**Note**: This resource has a global scope name.
   1. Event hub namespace and Event hub: This resource is leveraged by all resources supporting diagnostic settings on an event hub.
       >**Note**: This resource has a global scope name.
+  1. Route table: This resource is leveraged by a test subnet deployment of the [Virtual Network] module.
   1. Route table: This resource is leveraged by the virtual network subnet dedicated to test [SQL managed instance].
       >**Note**: This resource is deployed and configured only if sqlmi dependency resources are enabled.
   1. Network watcher: This resource is leveraged by the [NSG flow logs] resource.

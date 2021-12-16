@@ -70,7 +70,7 @@ New-AzResourceGroup -Name 'ExampleGroup' -Location "Central US"
 $inputObject = @{
  DeploymentName    = 'ExampleDeployment'
  ResourceGroupName = 'ExampleGroup'
- TemplateUri       = 'https://raw.githubusercontent.com/arm/ResourceModules/main/arm/Microsoft.KeyVault/vaults/deploy.json'
+ TemplateUri       = 'https://raw.githubusercontent.com/Azure/ResourceModules/main/arm/Microsoft.KeyVault/vaults/deploy.bicep'
 }
 New-AzResourceGroupDeployment @inputObject
 ```
@@ -83,7 +83,7 @@ az group create --name 'ExampleGroup' --location "Central US"
 $inputObject = @(
     '--name',           'ExampleDeployment',
     '--resource-group', 'ExampleGroup',
-    '--template-uri',   'https://raw.githubusercontent.com/arm/ResourceModules/main/arm/Microsoft.KeyVault/vaults/deploy.json',
+    '--template-uri',   'https://raw.githubusercontent.com/Azure/ResourceModules/main/arm/Microsoft.KeyVault/vaults/deploy.bicep',
     '--parameters',     'storageAccountType=Standard_GRS',
 )
 az deployment group create @inputObject
@@ -149,15 +149,15 @@ param subnets array = [
 module nsg 'br:adpsxxazacrx001.azurecr.io/bicep/modules/microsoft.network.networksecuritygroups:1.0.1' = {
   name: 'registry-nsg'
   params: {
-    networkSecurityGroupName: networkSecurityGroupName
+    name: networkSecurityGroupName
   }
 }
 // Virtual Network
 module vnet 'br:adpsxxazacrx001.azurecr.io/bicep/modules/microsoft.network.virtualnetworks:1.0.0' = {
   name: 'registry-vnet'
   params: {
-    vNetName: vnetName
-    vNetAddressPrefixes: vNetAddressPrefixes
+    name: vnetName
+    addressPrefixes: vNetAddressPrefixes
     subnets: subnets
   }
   dependsOn: [
@@ -233,7 +233,7 @@ resource nsg 'Microsoft.Resources/deployments@2021-01-01' = {
       id: nsgTemplate.id
     }
     parameters: {
-      networkSecurityGroupName: {
+      name: {
         value: networkSecurityGroupName
       }
     }
@@ -249,10 +249,10 @@ resource vnet 'Microsoft.Resources/deployments@2021-01-01' = {
       id: vnetTemplate.id
     }
     parameters: {
-      vnetName: {
+      name: {
         value: vnetName
       }
-      vNetAddressPrefixes: {
+      addressPrefixes: {
         value: vNetAddressPrefixes
       }
       subnets: {

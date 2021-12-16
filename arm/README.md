@@ -4,7 +4,7 @@ In this section you can find useful information regarding the Modules that are c
 
 | Name | Provider namespace | Resource Type |
 | - | - | - |
-| [Analysis Services](https://github.com/Azure/ResourceModules/tree/main/arm/Microsoft.AnalysisServices/servers) | `MS.AnalysisServices` | [servers](https://github.com/Azure/ResourceModules/tree/main/arm/Microsoft.AnalysisServices/servers) |
+| [Analysis Services Server](https://github.com/Azure/ResourceModules/tree/main/arm/Microsoft.AnalysisServices/servers) | `MS.AnalysisServices` | [servers](https://github.com/Azure/ResourceModules/tree/main/arm/Microsoft.AnalysisServices/servers) |
 | [API Management Services](https://github.com/Azure/ResourceModules/tree/main/arm/Microsoft.ApiManagement/service) | `MS.ApiManagement` | [service](https://github.com/Azure/ResourceModules/tree/main/arm/Microsoft.ApiManagement/service) |
 | [Policy Assignments](https://github.com/Azure/ResourceModules/tree/main/arm/Microsoft.Authorization/policyAssignments) | `MS.Authorization` | [policyAssignments](https://github.com/Azure/ResourceModules/tree/main/arm/Microsoft.Authorization/policyAssignments) |
 | [Policy Definitions](https://github.com/Azure/ResourceModules/tree/main/arm/Microsoft.Authorization/policyDefinitions) |  | [policyDefinitions](https://github.com/Azure/ResourceModules/tree/main/arm/Microsoft.Authorization/policyDefinitions) |
@@ -57,6 +57,7 @@ In this section you can find useful information regarding the Modules that are c
 | [Virtual Network Gateway Connections](https://github.com/Azure/ResourceModules/tree/main/arm/Microsoft.Network/connections) |  | [connections](https://github.com/Azure/ResourceModules/tree/main/arm/Microsoft.Network/connections) |
 | [DDoS Protection Plans](https://github.com/Azure/ResourceModules/tree/main/arm/Microsoft.Network/ddosProtectionPlans) |  | [ddosProtectionPlans](https://github.com/Azure/ResourceModules/tree/main/arm/Microsoft.Network/ddosProtectionPlans) |
 | [ExpressRoute Circuits](https://github.com/Azure/ResourceModules/tree/main/arm/Microsoft.Network/expressRouteCircuits) |  | [expressRouteCircuits](https://github.com/Azure/ResourceModules/tree/main/arm/Microsoft.Network/expressRouteCircuits) |
+| [Network Firewall Policies](https://github.com/Azure/ResourceModules/tree/main/arm/Microsoft.Network/firewallPolicies) |  | [firewallPolicies](https://github.com/Azure/ResourceModules/tree/main/arm/Microsoft.Network/firewallPolicies) |
 | [IP Groups](https://github.com/Azure/ResourceModules/tree/main/arm/Microsoft.Network/ipGroups) |  | [ipGroups](https://github.com/Azure/ResourceModules/tree/main/arm/Microsoft.Network/ipGroups) |
 | [Load Balancers](https://github.com/Azure/ResourceModules/tree/main/arm/Microsoft.Network/loadBalancers) |  | [loadBalancers](https://github.com/Azure/ResourceModules/tree/main/arm/Microsoft.Network/loadBalancers) |
 | [Local Network Gateways](https://github.com/Azure/ResourceModules/tree/main/arm/Microsoft.Network/localNetworkGateways) |  | [localNetworkGateways](https://github.com/Azure/ResourceModules/tree/main/arm/Microsoft.Network/localNetworkGateways) |

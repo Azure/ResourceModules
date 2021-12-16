@@ -9,7 +9,7 @@ This module deploys a firewall.
 | `Microsoft.Authorization/locks` | 2016-09-01 |
 | `Microsoft.Authorization/roleAssignments` | 2020-04-01-preview |
 | `Microsoft.Insights/diagnosticSettings` | 2021-05-01-preview |
-| `Microsoft.Network/azureFirewalls` | 2021-02-01 |
+| `Microsoft.Network/azureFirewalls` | 2021-03-01 |
 | `Microsoft.Network/publicIPAddresses` | 2021-02-01 |
 
 ## Parameters
@@ -103,5 +103,5 @@ The `networkRuleCollections` parameter accepts a JSON Array of AzureFirewallNetw
 - [Locks](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2016-09-01/locks)
 - [Roleassignments](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2020-04-01-preview/roleAssignments)
 - [Diagnosticsettings](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Insights/2021-05-01-preview/diagnosticSettings)
-- [Azurefirewalls](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Network/2021-02-01/azureFirewalls)
+- [Azurefirewalls](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Network/2021-03-01/azureFirewalls)
 - [Publicipaddresses](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Network/2021-02-01/publicIPAddresses)
