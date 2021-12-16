@@ -8,10 +8,31 @@
 
         $deployBicepFilesCount = (Get-ChildItem -Recurse $armFolderPath | Where-Object { $_.FullName -match 'deploy.bicep' }).Count
         $nestedBicepFilesCount = (Get-ChildItem -Recurse $armFolderPath | Where-Object { $_.FullName -match 'nested_.*bicep' }).Count
+
         Write-Host "$deployBicepFilesCount deploy.bicep file(s) found"
         Write-Host "$nestedBicepFilesCount nested bicep file(s) found"
+
+        $workflowFolderPath = 'C:\Users\rahalan\repos\internal\ResourceModules\.github\workflows'
+        $workflowFiles = Get-ChildItem -Path $workflowFolderPath -Filter 'ms.*.yml' -File -Force
+        Write-Host "Processing workflow files [$($workflowFiles.count)] file(s)"
+        $workflowFilesToChange = 0
+        $workflowFiles.count
+        foreach ($workFlowFile in $workflowFiles) {
+            $content = Get-Content -Path $workFlowFile.FullName
+
+            foreach ($line in $content) {
+                if ($line.Contains('deploy.bicep')) {
+                    $workflowFilesToChange = workflowFilesToChange + 1
+                    Write-Host $workflowFilesToChange
+                    break
+                }
+            }
+        }
+
+        Write-Host "$workflowFilesToChange workflow files need to change"
+
         Write-Host 'run ConvertTo-ARMTemplate script'
-        .\utilities\tools\ConvertTo-ARMTemplate.ps1 -Path 'C:\Users\rahalan\repos\internal\ResourceModules'
+        # .\utilities\tools\ConvertTo-ARMTemplate.ps1 -Path 'C:\Users\rahalan\repos\internal\ResourceModules' -ConvertChildren
     }
 
     It 'all deploy.bicep files are converted to deploy.json' {
@@ -27,5 +48,5 @@
     }
 
     # $workflowFolderPath = Join-Path -Path $rootPath -ChildPath '.github\workflows'
-    # $workflowFilesToUpdate = Get-ChildItem -Path $workflowFolderPath -Filter 'ms.*.yml' -File -Force
+    # $workflowFiles = Get-ChildItem -Path $workflowFolderPath -Filter 'ms.*.yml' -File -Force
 }
