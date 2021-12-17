@@ -29,6 +29,8 @@ on:
       - '.github/workflows/ms.network.virtualwans.yml'
       - 'arm/Microsoft.Network/virtualWans/**'
       - '!*/**/readme.md'
+      - 'utilities/pipelines/**'
+      - '!utilities/pipelines/dependencies/**'
 
 env:
   modulePath: 'arm/Microsoft.Network/virtualWans'

@@ -29,6 +29,8 @@ on:
       - '.github/workflows/ms.documentdb.databaseaccounts.yml'
       - 'arm/Microsoft.DocumentDB/databaseAccounts/**'
       - '!*/**/readme.md'
+      - 'utilities/pipelines/**'
+      - '!utilities/pipelines/dependencies/**'
 
 env:
   modulePath: 'arm/Microsoft.DocumentDB/databaseAccounts'

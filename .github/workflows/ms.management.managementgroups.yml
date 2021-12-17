@@ -29,6 +29,8 @@ on:
       - '.github/workflows/ms.management.managementgroups.yml'
       - 'arm/Microsoft.Management/managementGroups/**'
       - '!*/**/readme.md'
+      - 'utilities/pipelines/**'
+      - '!utilities/pipelines/dependencies/**'
 
 env:
   modulePath: 'arm/Microsoft.Management/managementGroups'

@@ -29,6 +29,8 @@ on:
       - '.github/workflows/ms.authorization.policysetdefinitions.yml'
       - 'arm/Microsoft.Authorization/policySetDefinitions/**'
       - '!*/**/readme.md'
+      - 'utilities/pipelines/**'
+      - '!utilities/pipelines/dependencies/**'
 
 env:
   modulePath: 'arm/Microsoft.Authorization/policySetDefinitions'

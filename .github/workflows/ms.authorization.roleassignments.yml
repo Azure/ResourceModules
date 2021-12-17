@@ -29,6 +29,8 @@ on:
       - '.github/workflows/ms.authorization.roleassignments.yml'
       - 'arm/Microsoft.Authorization/roleAssignments/**'
       - '!*/**/readme.md'
+      - 'utilities/pipelines/**'
+      - '!utilities/pipelines/dependencies/**'
 
 env:
   modulePath: 'arm/Microsoft.Authorization/roleAssignments'
