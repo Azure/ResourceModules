@@ -69,6 +69,7 @@ function Get-ResourceIdsOfDeploymentInner {
         'subscription' {
             [array]$deploymentTargets = (Get-AzDeploymentOperation -DeploymentName $name).TargetResource | Where-Object { $_ -ne $null }
             foreach ($deployment in ($deploymentTargets | Where-Object { $_ -notmatch '/deployments/' } )) {
+                Write-Verbose ('Found deployment [{0}]' -f $deployment) -Verbose
                 [array]$resultSet += $deployment
             }
             foreach ($deployment in ($deploymentTargets | Where-Object { $_ -match '/deployments/' } )) {
@@ -87,6 +88,7 @@ function Get-ResourceIdsOfDeploymentInner {
         'managementgroup' {
             [array]$deploymentTargets = (Get-AzManagementGroupDeploymentOperation -DeploymentName $name).TargetResource | Where-Object { $_ -ne $null }
             foreach ($deployment in ($deploymentTargets | Where-Object { $_ -notmatch '/deployments/' } )) {
+                Write-Verbose ('Found deployment [{0}]' -f $deployment) -Verbose
                 [array]$resultSet += $deployment
             }
             foreach ($deployment in ($deploymentTargets | Where-Object { $_ -match '/deployments/' } )) {
@@ -103,6 +105,7 @@ function Get-ResourceIdsOfDeploymentInner {
         'tenant' {
             [array]$deploymentTargets = (Get-AzTenantDeploymentOperation -DeploymentName $name).TargetResource | Where-Object { $_ -ne $null }
             foreach ($deployment in ($deploymentTargets | Where-Object { $_ -notmatch '/deployments/' } )) {
+                Write-Verbose ('Found deployment [{0}]' -f $deployment) -Verbose
                 [array]$resultSet += $deployment
             }
             foreach ($deployment in ($deploymentTargets | Where-Object { $_ -match '/deployments/' } )) {
@@ -188,7 +191,6 @@ function Get-ResourceIdsOfDeployment {
     if (-not $deployments) {
         throw "No deployment found for [$name]"
     }
-    Write-Verbose ('Number of total deployments [{0}]' -f $deployments.Count) -Verbose
 
     return $deployments
 }

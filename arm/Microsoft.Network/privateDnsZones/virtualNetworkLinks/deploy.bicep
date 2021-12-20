@@ -2,7 +2,7 @@
 param privateDnsZoneName string
 
 @description('Optional. The name of the virtual network link.')
-param name string = last(split(virtualNetworkResourceId, '/'))
+param name string = '${last(split(virtualNetworkResourceId, '/'))}-vnetlink'
 
 @description('Optional. The location of the PrivateDNSZone. Should be global.')
 param location string = 'global'
