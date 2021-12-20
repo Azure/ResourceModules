@@ -24,6 +24,23 @@ module pid_cuaId '.bicep/nested_cuaId.bicep' = if (!empty(cuaId)) {
   params: {}
 }
 
+resource diskEncryptionSet 'Microsoft.Compute/diskEncryptionSets@2020-12-01' = {
+  name: name
+  location: location
+  tags: tags
+  identity: {
+    type: 'SystemAssigned'
+  }
+  properties: {
+    activeKey: {
+      sourceVault: {
+        id: keyVaultId
+      }
+      keyUrl: keyUrl
+    }
+  }
+}
+
 resource keyVaultAccessPolicies 'Microsoft.KeyVault/vaults/accessPolicies@2019-09-01' = {
   name: '${last(split(keyVaultId, '/'))}/add'
   properties: {
@@ -42,23 +59,6 @@ resource keyVaultAccessPolicies 'Microsoft.KeyVault/vaults/accessPolicies@2019-0
         }
       }
     ]
-  }
-}
-
-resource diskEncryptionSet 'Microsoft.Compute/diskEncryptionSets@2020-12-01' = {
-  name: name
-  location: location
-  tags: tags
-  identity: {
-    type: 'SystemAssigned'
-  }
-  properties: {
-    activeKey: {
-      sourceVault: {
-        id: keyVaultId
-      }
-      keyUrl: keyUrl
-    }
   }
 }
 
