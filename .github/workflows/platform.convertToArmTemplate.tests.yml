@@ -1,13 +1,13 @@
 name: '.Platform: run pester test for convert to ARM template script'
 
 on:
-  workflow_dispatch:
+  # workflow_dispatch:
   push:
-    branches:
-      - main
-      - 'users/rahalan/TestConversionScript'
-    paths:
-      - 'utilities/tools/**'
+    # branches:
+    #   - main
+    #   - 'users/rahalan/TestConversionScript'
+    # paths:
+    #   - 'utilities/tools/**'
 
 env:
   pipelinePrincipalGitUserName: 'CARMLPipelinePrincipal'
