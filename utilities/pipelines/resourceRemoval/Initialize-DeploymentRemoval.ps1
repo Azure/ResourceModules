@@ -52,6 +52,7 @@ function Initialize-DeploymentRemoval {
 
         foreach ($deploymentName in $deploymentNames) {
             Write-Verbose ('Handling resource removal with deployment name [{0}]' -f $deploymentName) -Verbose
+            Write-Verbose ('Module name: [{0}]' -f $moduleName) -Verbose
             switch ($moduleName) {
                 'virtualWans' {
                     $removalSequence += @(
@@ -71,6 +72,7 @@ function Initialize-DeploymentRemoval {
                     break
                 }
                 'privateDnsZones' {
+
                     $removalSequence += @(
                         'Microsoft.Network/privateDnsZones/virtualNetworkLinks',
                         'Microsoft.Network/privateDnsZones'
