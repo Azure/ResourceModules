@@ -5,7 +5,7 @@ on:
   push:
     branches:
       - main
-      - 'users/rahalan/TestConversionScript'
+      - users/rahalan/TestConversionScript
     paths:
       - 'utilities/tools/*'
 
