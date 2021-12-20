@@ -27,12 +27,26 @@ function Invoke-ResourceRemoval {
         [string] $Type
     )
 
+    Write-Verbose ('Resource ID [{0}]' -f $resourceId) -Verbose
+    Write-Verbose ('Resource Type [{0}]' -f $type) -Verbose
+
     switch ($type) {
         'Microsoft.Insights/diagnosticSettings' {
             $parentResourceId = $resourceId.Split('/providers/{0}' -f $type)[0]
             $resourceName = Split-Path $ResourceId -Leaf
             if ($PSCmdlet.ShouldProcess("Diagnostic setting [$resourceName]", 'Remove')) {
                 $null = Remove-AzDiagnosticSetting -ResourceId $parentResourceId -Name $resourceName
+            }
+            break
+        }
+        'Microsoft.KeyVault/vaults/accessPolicies' {
+            $keyVaultResourceId = $resourceId.Split('/accessPolicies')[0]
+            $keyVaultName = Split-Path $keyVaultResourceId -Leaf
+            $objectId = Split-Path $ResourceId -Leaf
+            Write-Verbose ('keyVaultResourceId [{0}]' -f $keyVaultResourceId) -Verbose
+            Write-Verbose ('objectId [{0}]' -f $objectId) -Verbose
+            if ($PSCmdlet.ShouldProcess("Diagnostic setting [$resourceName]", 'Remove')) {
+                $null = Remove-AzKeyVaultAccessPolicy -VaultName $keyVaultName -ObjectId $objectId
             }
             break
         }

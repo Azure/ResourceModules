@@ -1,11 +1,11 @@
 @description('Required. The name of the key vault')
 param keyVaultName string
 
-@description('Optional. The access policy deployment')
-param name string = 'add'
-
 @description('Optional. An array of 0 to 16 identities that have access to the key vault. All identities in the array must use the same tenant ID as the key vault\'s tenant ID.')
 param accessPolicies array = []
+
+@description('Optional. The access policy name')
+param name string = 'add'
 
 var formattedAccessPolicies = [for accessPolicy in accessPolicies: {
   applicationId: contains(accessPolicy, 'applicationId') ? accessPolicy.applicationId : ''
