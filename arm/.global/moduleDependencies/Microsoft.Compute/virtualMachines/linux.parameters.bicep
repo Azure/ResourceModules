@@ -154,7 +154,7 @@ var recoveryServicesVaultParameters = {
 // Deployments //
 // =========== //
 
-module resourceGroup '../../../../../arm/Microsoft.Resources/resourceGroups/deploy.bicep' = {
+module resourceGroup '../../../../Microsoft.Resources/resourceGroups/deploy.bicep' = {
   name: '${uniqueString(deployment().name, location)}-rg'
   params: {
     name: resourceGroupName
@@ -162,7 +162,7 @@ module resourceGroup '../../../../../arm/Microsoft.Resources/resourceGroups/depl
   }
 }
 
-module managedIdentity '../../../../../arm/Microsoft.ManagedIdentity/userAssignedIdentities/deploy.bicep' = {
+module managedIdentity '../../../../Microsoft.ManagedIdentity/userAssignedIdentities/deploy.bicep' = {
   scope: az.resourceGroup(resourceGroupName)
   name: '${uniqueString(deployment().name, location)}-mi'
   params: {
@@ -173,7 +173,7 @@ module managedIdentity '../../../../../arm/Microsoft.ManagedIdentity/userAssigne
   ]
 }
 
-module storageAccount '../../../../../arm/Microsoft.Storage/storageAccounts/deploy.bicep' = {
+module storageAccount '../../../../Microsoft.Storage/storageAccounts/deploy.bicep' = {
   scope: az.resourceGroup(resourceGroupName)
   name: '${uniqueString(deployment().name, location)}-sa'
   params: {
@@ -190,7 +190,7 @@ module storageAccount '../../../../../arm/Microsoft.Storage/storageAccounts/depl
   ]
 }
 
-module storageAccountDeploymentScript '../../../../../arm/Microsoft.Resources/deploymentScripts/deploy.bicep' = {
+module storageAccountDeploymentScript '../../../../Microsoft.Resources/deploymentScripts/deploy.bicep' = {
   scope: az.resourceGroup(resourceGroupName)
   name: '${uniqueString(deployment().name, location)}-sa-ds'
   params: {
@@ -207,7 +207,7 @@ module storageAccountDeploymentScript '../../../../../arm/Microsoft.Resources/de
   ]
 }
 
-module logAnalyticsWorkspace '../../../../../arm/Microsoft.OperationalInsights/workspaces/deploy.bicep' = {
+module logAnalyticsWorkspace '../../../../Microsoft.OperationalInsights/workspaces/deploy.bicep' = {
   scope: az.resourceGroup(resourceGroupName)
   name: '${uniqueString(deployment().name, location)}-oms'
   params: {
@@ -218,7 +218,7 @@ module logAnalyticsWorkspace '../../../../../arm/Microsoft.OperationalInsights/w
   ]
 }
 
-module eventHubNamespace '../../../../../arm/Microsoft.EventHub/namespaces/deploy.bicep' = {
+module eventHubNamespace '../../../../Microsoft.EventHub/namespaces/deploy.bicep' = {
   scope: az.resourceGroup(resourceGroupName)
   name: '${uniqueString(deployment().name, location)}-ehn'
   params: {
@@ -230,7 +230,7 @@ module eventHubNamespace '../../../../../arm/Microsoft.EventHub/namespaces/deplo
   ]
 }
 
-module networkSecurityGroup '../../../../../arm/Microsoft.Network/networkSecurityGroups/deploy.bicep' = {
+module networkSecurityGroup '../../../../Microsoft.Network/networkSecurityGroups/deploy.bicep' = {
   scope: az.resourceGroup(resourceGroupName)
   name: '${uniqueString(deployment().name, location)}-nsg'
   params: {
@@ -241,7 +241,7 @@ module networkSecurityGroup '../../../../../arm/Microsoft.Network/networkSecurit
   ]
 }
 
-module virtualNetwork '../../../../../arm/Microsoft.Network/virtualNetworks/deploy.bicep' = {
+module virtualNetwork '../../../../Microsoft.Network/virtualNetworks/deploy.bicep' = {
   scope: az.resourceGroup(resourceGroupName)
   name: '${uniqueString(deployment().name, location)}-vnet'
   params: {
@@ -255,7 +255,7 @@ module virtualNetwork '../../../../../arm/Microsoft.Network/virtualNetworks/depl
   ]
 }
 
-module recoveryServicesVault '../../../../../arm/Microsoft.RecoveryServices/vaults/deploy.bicep' = {
+module recoveryServicesVault '../../../../Microsoft.RecoveryServices/vaults/deploy.bicep' = {
   scope: az.resourceGroup(resourceGroupName)
   name: '${uniqueString(deployment().name, location)}-rsv'
   params: {

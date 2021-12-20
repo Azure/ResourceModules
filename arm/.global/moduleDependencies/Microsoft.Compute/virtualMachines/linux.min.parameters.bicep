@@ -40,7 +40,7 @@ var virtualNetworkParameters = {
 // Deployments //
 // =========== //
 
-module resourceGroup '../../../../../arm/Microsoft.Resources/resourceGroups/deploy.bicep' = {
+module resourceGroup '../../../../Microsoft.Resources/resourceGroups/deploy.bicep' = {
   name: '${uniqueString(deployment().name, location)}-rg'
   params: {
     name: resourceGroupName
@@ -48,7 +48,7 @@ module resourceGroup '../../../../../arm/Microsoft.Resources/resourceGroups/depl
   }
 }
 
-module networkSecurityGroup '../../../../../arm/Microsoft.Network/networkSecurityGroups/deploy.bicep' = {
+module networkSecurityGroup '../../../../Microsoft.Network/networkSecurityGroups/deploy.bicep' = {
   scope: az.resourceGroup(resourceGroupName)
   name: '${uniqueString(deployment().name, location)}-nsg'
   params: {
@@ -59,7 +59,7 @@ module networkSecurityGroup '../../../../../arm/Microsoft.Network/networkSecurit
   ]
 }
 
-module virtualNetwork '../../../../../arm/Microsoft.Network/virtualNetworks/deploy.bicep' = {
+module virtualNetwork '../../../../Microsoft.Network/virtualNetworks/deploy.bicep' = {
   scope: az.resourceGroup(resourceGroupName)
   name: '${uniqueString(deployment().name, location)}-vnet'
   params: {

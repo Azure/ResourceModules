@@ -5,7 +5,7 @@ var storageAccountParameters = {
   allowBlobPublicAccess: false
 }
 // Modules //
-module storageAccount '../../../../../arm/Microsoft.Storage/storageAccounts/deploy.bicep' = {
+module storageAccount '../../../../Microsoft.Storage/storageAccounts/deploy.bicep' = {
   scope: az.resourceGroup(resourceGroupName)
   name: '${uniqueString(deployment().name, location)}-sa'
   params: {

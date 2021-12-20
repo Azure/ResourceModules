@@ -2,7 +2,7 @@ var logAnalyticsWorkspaceParameters = {
   name: 'adp-sxx-law-${serviceShort}-01'
 }
 // Modules //
-module logAnalyticsWorkspace '../../../../../arm/Microsoft.OperationalInsights/workspaces/deploy.bicep' = {
+module logAnalyticsWorkspace '../../../../Microsoft.OperationalInsights/workspaces/deploy.bicep' = {
   scope: az.resourceGroup(resourceGroupName)
   name: '${uniqueString(deployment().name, location)}-oms'
   params: {

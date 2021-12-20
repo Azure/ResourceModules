@@ -56,7 +56,7 @@ var managedIdentityParameters = {
 // Deployments //
 // =========== //
 
-module resourceGroup '../../../../../arm/Microsoft.Resources/resourceGroups/deploy.bicep' = {
+module resourceGroup '../../../../Microsoft.Resources/resourceGroups/deploy.bicep' = {
   name: '${uniqueString(deployment().name, location)}-rg'
   params: {
     name: resourceGroupName
@@ -64,7 +64,7 @@ module resourceGroup '../../../../../arm/Microsoft.Resources/resourceGroups/depl
   }
 }
 
-module storageAccount '../../../../../arm/Microsoft.Storage/storageAccounts/deploy.bicep' = {
+module storageAccount '../../../../Microsoft.Storage/storageAccounts/deploy.bicep' = {
   scope: az.resourceGroup(resourceGroupName)
   name: '${uniqueString(deployment().name, location)}-sa'
   params: {
@@ -78,7 +78,7 @@ module storageAccount '../../../../../arm/Microsoft.Storage/storageAccounts/depl
   ]
 }
 
-module logAnalyticsWorkspace '../../../../../arm/Microsoft.OperationalInsights/workspaces/deploy.bicep' = {
+module logAnalyticsWorkspace '../../../../Microsoft.OperationalInsights/workspaces/deploy.bicep' = {
   scope: az.resourceGroup(resourceGroupName)
   name: '${uniqueString(deployment().name, location)}-oms'
   params: {
@@ -89,7 +89,7 @@ module logAnalyticsWorkspace '../../../../../arm/Microsoft.OperationalInsights/w
   ]
 }
 
-module eventHubNamespace '../../../../../arm/Microsoft.EventHub/namespaces/deploy.bicep' = {
+module eventHubNamespace '../../../../Microsoft.EventHub/namespaces/deploy.bicep' = {
   scope: az.resourceGroup(resourceGroupName)
   name: '${uniqueString(deployment().name, location)}-ehn'
   params: {
@@ -101,7 +101,7 @@ module eventHubNamespace '../../../../../arm/Microsoft.EventHub/namespaces/deplo
   ]
 }
 
-module managedIdentity '../../../../../arm/Microsoft.ManagedIdentity/userAssignedIdentities/deploy.bicep' = {
+module managedIdentity '../../../../Microsoft.ManagedIdentity/userAssignedIdentities/deploy.bicep' = {
   scope: az.resourceGroup(resourceGroupName)
   name: '${uniqueString(deployment().name, location)}-mi'
   params: {

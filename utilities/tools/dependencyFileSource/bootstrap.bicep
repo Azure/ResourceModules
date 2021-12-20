@@ -15,7 +15,7 @@ param location string = deployment().location
 // Deployments //
 // =========== //
 
-module resourceGroup '../../../../../arm/Microsoft.Resources/resourceGroups/deploy.bicep' = {
+module resourceGroup '../../../../Microsoft.Resources/resourceGroups/deploy.bicep' = {
   name: '${uniqueString(deployment().name, location)}-rg'
   params: {
     name: resourceGroupName
