@@ -80,7 +80,7 @@ Write-Verbose 'Convert bicep files to json'
 
 Write-Verbose "Convert bicep files to json - Processing [$($BicepFilesToConvert.count)] file(s)"
 if ($PSCmdlet.ShouldProcess("[$($BicepFilesToConvert.count)] deploy.bicep file(s) in path [$armFolderPath]", 'az bicep build')) {
-    $BicepFilesToConvert | ForEach-Object -ThrottleLimit $env:NUMBER_OF_PROCESSORS -Parallel {
+    $BicepFilesToConvert | ForEach-Object -ThrottleLimit 4 -Parallel {
         Invoke-Expression -Command "az bicep build --file '$_'"
     }
 }
@@ -94,7 +94,7 @@ if (-not $SkipMetadataCleanup) {
 
     Write-Verbose "Remove Bicep metadata from json - Processing [$($BicepFilesToConvert.count)] file(s)"
     if ($PSCmdlet.ShouldProcess("[$($BicepFilesToConvert.count)] deploy.bicep file(s) in path [$armFolderPath]", 'Set-Content')) {
-        $BicepFilesToConvert | ForEach-Object -ThrottleLimit $env:NUMBER_OF_PROCESSORS -Parallel {
+        $BicepFilesToConvert | ForEach-Object -ThrottleLimit 4 -Parallel {
 
             function Remove-JSONMetadata {
                 <#
@@ -172,7 +172,7 @@ if (-not $SkipWorkflowUpdate) {
     $workflowFilesToUpdate = Get-ChildItem -Path $workflowFolderPath -Filter 'ms.*.yml' -File -Force
     Write-Verbose "Update workflow files - Processing [$($workflowFilesToUpdate.count)] file(s)"
     if ($PSCmdlet.ShouldProcess("[$($workflowFilesToUpdate.count)] ms.*.yml file(s) in path [$armFolderPath]", 'Set-Content')) {
-        $workflowFilesToUpdate | ForEach-Object -ThrottleLimit $env:NUMBER_OF_PROCESSORS -Parallel {
+        $workflowFilesToUpdate | ForEach-Object -ThrottleLimit 4 -Parallel {
             $content = $_ | Get-Content
             $content = $content.Replace('deploy.bicep', 'deploy.json')
             $_ | Set-Content -Value $content
