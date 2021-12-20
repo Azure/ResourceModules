@@ -14,12 +14,6 @@
         $workflowFiles = Get-ChildItem -Path $workflowFolderPath -Filter 'ms.*.yml' -File -Force
         $workflowFilesToChange = 0
 
-        Write-Host '############'
-        Write-Host $rootPath
-        Write-Host $armFolderPath
-        Write-Host $toolsPath
-        Write-Host $workflowFolderPath
-
         foreach ($workFlowFile in $workflowFiles) {
             $content = Get-Content -Path $workFlowFile.FullName -Raw
 
