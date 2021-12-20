@@ -12,10 +12,10 @@ param vmName string
 
 @description('Optional. The configuration profile of automanage')
 @allowed([
-  'Production'
-  'Dev/Test'
+  '/providers/Microsoft.Automanage/bestPractices/AzureBestPracticesProduction'
+  '/providers/Microsoft.Automanage/bestPractices/AzureBestPracticesDevTest'
 ])
-param configurationProfile string = 'Production'
+param configurationProfile string = '/providers/Microsoft.Automanage/bestPractices/AzureBestPracticesProduction'
 
 @description('Optional. Customer Usage Attribution ID (GUID). This GUID must be previously registered.')
 param cuaId string = ''
