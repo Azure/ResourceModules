@@ -10,6 +10,14 @@ param managedInstanceName string
 @description('Optional. The backup retention period in days. This is how many days Point-in-Time Restore will be supported.')
 param retentionDays int = 35
 
+@description('Optional. Customer Usage Attribution ID (GUID). This GUID must be previously registered')
+param cuaId string = ''
+
+module pid_cuaId '.bicep/nested_cuaId.bicep' = if (!empty(cuaId)) {
+  name: 'pid-${cuaId}'
+  params: {}
+}
+
 resource managedInstance 'Microsoft.Sql/managedInstances@2021-05-01-preview' existing = {
   name: managedInstanceName
 

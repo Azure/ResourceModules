@@ -457,6 +457,14 @@ var upgradeSettings = {
   maxSurge: maxSurge
 }
 
+@description('Optional. Customer Usage Attribution ID (GUID). This GUID must be previously registered')
+param cuaId string = ''
+
+module pid_cuaId '.bicep/nested_cuaId.bicep' = if (!empty(cuaId)) {
+  name: 'pid-${cuaId}'
+  params: {}
+}
+
 resource managedCluster 'Microsoft.ContainerService/managedClusters@2021-08-01' existing = {
   name: managedClusterName
 }

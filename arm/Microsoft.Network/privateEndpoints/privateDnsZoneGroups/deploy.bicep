@@ -7,6 +7,14 @@ param privateDNSResourceIds array
 @description('Optional. The name of the private DNS Zone Group')
 param name string = 'default'
 
+@description('Optional. Customer Usage Attribution ID (GUID). This GUID must be previously registered')
+param cuaId string = ''
+
+module pid_cuaId '.bicep/nested_cuaId.bicep' = if (!empty(cuaId)) {
+  name: 'pid-${cuaId}'
+  params: {}
+}
+
 var privateDnsZoneConfigs = [for privateDNSResourceId in privateDNSResourceIds: {
   name: privateEndpointName
   properties: {
