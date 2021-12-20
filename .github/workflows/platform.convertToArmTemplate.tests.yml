@@ -1,7 +1,6 @@
 name: '.Platform: run pester test for convert to ARM template script'
 
 on:
-  # workflow_dispatch:
   push:
     branches:
       - main
