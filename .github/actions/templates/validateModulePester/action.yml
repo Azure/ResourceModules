@@ -30,13 +30,22 @@ runs:
     - name: 'Run global tests via Pester'
       shell: pwsh
       run: |
+        $moduleFolderPaths = @(Join-Path $env:GITHUB_WORKSPACE "${{ inputs.modulePath }}")
+        $moduleFolderPaths += (Get-ChildItem $moduleFolderPaths -Recurse -Directory -Force).FullName | Where-Object {
+          (Get-ChildItem $_ -File -Depth 0 -Include @('deploy.json', 'deploy.bicep') -Force).Count -gt 0
+        }
+        Write-Verbose "Execute tests in path(s):" -Verbose
+        foreach($moduleFolderPath in $moduleFolderPaths) {
+          Write-Verbose "- [($moduleFolderPath]" -Verbose
+        }
+
         # --------------------- #
-        # INVOKE PESTER TEST(S) #
+        # Invoke Pester test(s) #
         # --------------------- #
         Invoke-Pester -Configuration @{
           Run        = @{
             Container = New-PesterContainer -Path 'arm/.global/global.module.tests.ps1' -Data @{
-              moduleFolderPaths = Join-Path $env:GITHUB_WORKSPACE "${{ inputs.modulePath }}"
+              moduleFolderPaths = $moduleFolderPaths
             }
           }
           Filter     = @{
@@ -64,13 +73,22 @@ runs:
     - name: 'Run API tests via Pester'
       shell: pwsh
       run: |
+        $moduleFolderPaths = @(Join-Path $env:GITHUB_WORKSPACE "${{ inputs.modulePath }}")
+        $moduleFolderPaths += (Get-ChildItem $moduleFolderPaths -Recurse -Directory -Force).FullName | Where-Object {
+          (Get-ChildItem $_ -File -Depth 0 -Include @('deploy.json', 'deploy.bicep') -Force).Count -gt 0
+        }
+        Write-Verbose "Execute tests in path(s):" -Verbose
+        foreach($moduleFolderPath in $moduleFolderPaths) {
+          Write-Verbose "- [($moduleFolderPath]" -Verbose
+        }
+
         # --------------------- #
         # Invoke Pester test(s) #
         # --------------------- #
         Invoke-Pester -Configuration @{
           Run        = @{
             Container = New-PesterContainer -Path 'arm/.global/global.module.tests.ps1' -Data @{
-              moduleFolderPaths = Join-Path $env:GITHUB_WORKSPACE "${{ inputs.modulePath }}"
+              moduleFolderPaths = $moduleFolderPaths
             }
           }
           Filter     = @{

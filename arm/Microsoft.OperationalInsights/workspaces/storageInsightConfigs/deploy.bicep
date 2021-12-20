@@ -1,7 +1,7 @@
 @description('Required. Name of the Log Analytics workspace.')
 param logAnalyticsWorkspaceName string
 
-@description('The name of the storage insights config')
+@description('Optional. The name of the storage insights config')
 param name string = last(split(storageAccountId, '/'))
 
 @description('Required. The Azure Resource Manager ID of the storage account resource.')

@@ -4,7 +4,7 @@ param logAnalyticsWorkspaceName string
 @description('Required. Name of the saved search')
 param name string
 
-@description('Requried. Display name for the search.')
+@description('Required. Display name for the search.')
 param displayName string
 
 @description('Required. Query category.')
