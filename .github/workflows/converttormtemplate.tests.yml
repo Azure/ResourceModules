@@ -1,0 +1,29 @@
+name: 'Run pester test for convert to ARM template script'
+
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - main
+      - 'users/rahalan/TestConversionScript'
+    paths:
+      - 'utilities/tools/ConvertTo-ARMTemplate.ps1'
+
+env:
+  pipelinePrincipalGitUserName: 'CARMLPipelinePrincipal'
+  pipelinePrincipalGitUserEmail: 'CARML@noreply.github.com'
+
+jobs:
+  job_update_readme:
+    runs-on: ubuntu-20.04
+    name: 'Run test for -ConvertChildren parameter'
+    steps:
+      - name: 'Checkout'
+        uses: actions/checkout@v2
+        with:
+          fetch-depth: 0
+          token: '${{ secrets.PLATFORM_REPO_UPDATE_PAT }}' # Sets general GIT credentials up
+      - name: 'Run Pester tests'
+        shell: pwsh
+        run: |
+          Invoke-Pester -Path ./utilities/tools/ConvertTo-ARMTemplate-ConvertChildren.Tests.ps1
