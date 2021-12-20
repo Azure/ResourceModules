@@ -14,10 +14,9 @@ This module deploys an Automanage account and associates VM with it.
 
 | Parameter Name | Type | Default Value | Possible Values | Description |
 | :-- | :-- | :-- | :-- | :-- |
-| `autoManageAccountResourceGroupName` | string | `[format('{0}_group', replace(subscription().displayName, ' ', ''))]` |  | Optional. The resource group name where automanage will be created |
 | `configurationProfile` | string | `Production` | `[Production, Dev/Test]` | Optional. The configuration profile of automanage |
 | `cuaId` | string |  |  | Optional. Customer Usage Attribution ID (GUID). This GUID must be previously registered. |
-| `location` | string | `[deployment().location]` |  | Optional. The location of automanage |
+| `location` | string | `[resourceGroup().location]` |  | Optional. The location of automanage |
 | `name` | string | `[format('{0}-AutoManage', replace(subscription().displayName, ' ', ''))]` |  | Optional. The name of automanage account |
 | `vmName` | string |  |  | Required. The name of the VM to be associated |
 | `vmResourceGroupName` | string |  |  | Required. The name of the VM resource group |
@@ -29,7 +28,9 @@ This module deploys an Automanage account and associates VM with it.
 | `autoManageAccountName` | string | The name of the auto manage account |
 | `autoManageAccountResourceGroup` | string | The resource group the auto manage account was deployed into |
 | `autoManageAccountResourceId` | string | The resource ID of the auto manage account |
+| `principalId` | string | The principal ID of the system assigned identity |
 
 ## Template references
 
 - [Define resources with Bicep and ARM templates](https://docs.microsoft.com/en-us/azure/templates)
+- [Roleassignments](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2020-04-01-preview/roleAssignments)
