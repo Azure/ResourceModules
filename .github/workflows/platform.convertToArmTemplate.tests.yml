@@ -14,7 +14,7 @@ env:
 
 jobs:
   job_test_ConvertChildren:
-    runs-on: ubuntu-20.04
+    runs-on: windows-latest
     name: 'Run test for -ConvertChildren parameter'
     steps:
       - name: 'Checkout'
