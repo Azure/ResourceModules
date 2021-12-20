@@ -7,14 +7,14 @@ on:
       - main
       - 'users/rahalan/TestConversionScript'
     paths:
-      - 'utilities/tools/ConvertTo-ARMTemplate*'
+      - 'utilities/tools/*'
 
 env:
   pipelinePrincipalGitUserName: 'CARMLPipelinePrincipal'
   pipelinePrincipalGitUserEmail: 'CARML@noreply.github.com'
 
 jobs:
-  job_update_readme:
+  job_test_ConvertChildren:
     runs-on: ubuntu-20.04
     name: 'Run test for -ConvertChildren parameter'
     steps:
