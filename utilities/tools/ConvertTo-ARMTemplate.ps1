@@ -81,6 +81,7 @@ Write-Host 'Convert bicep files to json'
 Write-Host "Convert bicep files to json - Processing [$($BicepFilesToConvert.count)] file(s)"
 if ($PSCmdlet.ShouldProcess("[$($BicepFilesToConvert.count)] deploy.bicep file(s) in path [$armFolderPath]", 'az bicep build')) {
     $BicepFilesToConvert | ForEach-Object -ThrottleLimit $env:NUMBER_OF_PROCESSORS -Parallel {
+        Write-Host $_
         Invoke-Expression -Command "az bicep build --file '$_'"
     }
 }
