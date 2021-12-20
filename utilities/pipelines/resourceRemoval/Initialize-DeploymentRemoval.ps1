@@ -72,13 +72,13 @@ function Initialize-DeploymentRemoval {
                     )
                     break
                 }
-                'privateDnsZones' {
-                    $removalSequence += @(
-                        'Microsoft.Network/privateDnsZones/virtualNetworkLinks',
-                        'Microsoft.Network/privateDnsZones'
-                    )
-                    break
-                }
+                # 'privateDnsZones' {
+                #     $removalSequence += @(
+                #         'Microsoft.Network/privateDnsZones/virtualNetworkLinks',
+                #         'Microsoft.Network/privateDnsZones'
+                #     )
+                #     break
+                # }
             }
 
             # Invoke removal
