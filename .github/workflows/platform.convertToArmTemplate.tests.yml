@@ -6,7 +6,7 @@ on:
       - main
       - 'users/rahalan/TestConversionScript'
     paths:
-      - 'utilities/tools/ConvertTo-ARMTemplate*'
+      - 'utilities/tools/ConvertTo-ARMTemplate**'
 
 env:
   pipelinePrincipalGitUserName: 'CARMLPipelinePrincipal'
