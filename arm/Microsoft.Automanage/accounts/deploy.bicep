@@ -4,18 +4,8 @@ param name string = '${replace(subscription().displayName, ' ', '')}-AutoManage'
 @description('Optional. The location of automanage')
 param location string = resourceGroup().location
 
-@description('Required. The name of the VM resource group')
-param vmResourceGroupName string
-
-@description('Required. The name of the VM to be associated')
-param vmName string
-
-@description('Optional. The configuration profile of automanage')
-@allowed([
-  '/providers/Microsoft.Automanage/bestPractices/AzureBestPracticesProduction'
-  '/providers/Microsoft.Automanage/bestPractices/AzureBestPracticesDevTest'
-])
-param configurationProfile string = '/providers/Microsoft.Automanage/bestPractices/AzureBestPracticesProduction'
+@description('Optional. Any VM configuration profile assignments')
+param configurationProfileAssignments array = []
 
 @description('Optional. Customer Usage Attribution ID (GUID). This GUID must be previously registered.')
 param cuaId string = ''
@@ -36,7 +26,7 @@ resource account 'Microsoft.Automanage/accounts@2020-06-30-preview' = {
   }
 }
 
-resource autoManageAccount_permissions_contributor 'Microsoft.Authorization/roleAssignments@2020-04-01-preview' = {
+resource autoManageAccount_roleAssignment_contributor 'Microsoft.Authorization/roleAssignments@2020-04-01-preview' = {
   name: guid(name, contributor)
   properties: {
     roleDefinitionId: contributor
@@ -45,7 +35,7 @@ resource autoManageAccount_permissions_contributor 'Microsoft.Authorization/role
   }
 }
 
-resource autoManageAccount_permissions_resourcePolicyContributor 'Microsoft.Authorization/roleAssignments@2020-04-01-preview' = {
+resource autoManageAccount_roleAssignment_resourcePolicyContributor 'Microsoft.Authorization/roleAssignments@2020-04-01-preview' = {
   name: guid(name, resourcePolicyContributor)
   properties: {
     roleDefinitionId: resourcePolicyContributor
@@ -54,14 +44,14 @@ resource autoManageAccount_permissions_resourcePolicyContributor 'Microsoft.Auth
   }
 }
 
-module configurationProfileAssignment '.bicep/nested_configurationProfileAssignment.bicep' = {
-  name: '${uniqueString(deployment().name, location)}-ConfigurationProfileAssignment'
-  scope: resourceGroup(vmResourceGroupName)
+module autoManageAccount_configurationProfileAssignment '.bicep/nested_configurationProfileAssignment.bicep' = [for (configurationProfileAssignment, index) in configurationProfileAssignments: {
+  name: '${uniqueString(deployment().name, location)}-ConfigurationProfileAssignment-${index}'
+  scope: resourceGroup(configurationProfileAssignment.vmResourceGroupName)
   params: {
-    vmName: vmName
-    configurationProfile: configurationProfile
+    vmName: configurationProfileAssignment.vmName
+    configurationProfile: contains(configurationProfileAssignment, 'configurationProfile') ? configurationProfileAssignment.configurationProfile : '/providers/Microsoft.Automanage/bestPractices/AzureBestPracticesProduction'
   }
-}
+}]
 
 @description('The resource ID of the auto manage account')
 output autoManageAccountResourceId string = account.id

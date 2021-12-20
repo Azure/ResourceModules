@@ -14,12 +14,28 @@ This module deploys an Automanage account and associates VM with it.
 
 | Parameter Name | Type | Default Value | Possible Values | Description |
 | :-- | :-- | :-- | :-- | :-- |
-| `configurationProfile` | string | `/providers/Microsoft.Automanage/bestPractices/AzureBestPracticesProduction` | `[/providers/Microsoft.Automanage/bestPractices/AzureBestPracticesProduction, /providers/Microsoft.Automanage/bestPractices/AzureBestPracticesDevTest]` | Optional. The configuration profile of automanage |
+| `configurationProfileAssignments` | array | `[]` |  | Optional. Any VM configuration profile assignments |
 | `cuaId` | string |  |  | Optional. Customer Usage Attribution ID (GUID). This GUID must be previously registered. |
 | `location` | string | `[resourceGroup().location]` |  | Optional. The location of automanage |
 | `name` | string | `[format('{0}-AutoManage', replace(subscription().displayName, ' ', ''))]` |  | Optional. The name of automanage account |
-| `vmName` | string |  |  | Required. The name of the VM to be associated |
-| `vmResourceGroupName` | string |  |  | Required. The name of the VM resource group |
+
+### Parameter Usage: `configurationProfileAssignments`
+
+```json
+"configurationProfileAssignments": {
+    "value": [
+        {
+            "vmName": "adp-vm-001",
+            "vmResourceGroupName": "validation-rg"
+        },
+        {
+            "vmName": "adp-vm-002",
+            "vmResourceGroupName": "validation-rg",
+            "configurationProfile": "/providers/Microsoft.Automanage/bestPractices/AzureBestPracticesDevTest"
+        }
+    ]
+}
+```
 
 ## Outputs
 

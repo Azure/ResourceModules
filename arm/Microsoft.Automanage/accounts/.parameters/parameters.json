@@ -2,11 +2,13 @@
     "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
     "contentVersion": "1.0.0.0",
     "parameters": {
-        "vmResourceGroupName": {
-            "value": "validation-rg"
-        },
-        "vmName": {
-            "value": "adp-vm-001"
+        "configurationProfileAssignments": {
+            "value": [
+                {
+                    "vmName": "adp-vm-001",
+                    "vmResourceGroupName": "validation-rg"
+                }
+            ]
         }
     }
 }
