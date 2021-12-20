@@ -55,7 +55,7 @@ runs:
 
         $namespacePath = Split-Path '${{ inputs.templateFilePath }}'.TrimStart('arm') -Parent
         $templateFileName = '{0}.bicep' -f (Split-Path '${{ inputs.parameterFilePath }}' -LeafBase)
-        $dependencyTemplateFilePath = Join-Path $env:GITHUB_WORKSPACE 'utilities' 'pipelines' 'moduleDependencies' $namespacePath $templateFileName
+        $dependencyTemplateFilePath = Join-Path $env:GITHUB_WORKSPACE 'arm' '.global' 'moduleDependencies' $namespacePath $templateFileName
 
         if (-not (Test-Path $dependencyTemplateFilePath)) {
           Write-Verbose "No dependency deployment found in path [$dependencyTemplateFilePath]. Skipping deployment" -Verbose
@@ -212,7 +212,7 @@ runs:
         if(-not [String]::IsNullOrEmpty('${{ steps.dependencies_step.outputs.deploymentName }}')) {
           $namespacePath = Split-Path '${{ inputs.templateFilePath }}'.TrimStart('arm') -Parent
           $templateFileName = '{0}.bicep' -f (Split-Path '${{ inputs.parameterFilePath }}' -LeafBase)
-          $dependencyTemplateFilePath = Join-Path $env:GITHUB_WORKSPACE 'utilities' 'pipelines' 'moduleDependencies' $namespacePath $templateFileName
+          $dependencyTemplateFilePath = Join-Path $env:GITHUB_WORKSPACE 'arm' '.global' 'moduleDependencies' $namespacePath $templateFileName
 
           $functionInput = @{
             deploymentNames   = '${{ steps.dependencies_step.outputs.deploymentName }}'
