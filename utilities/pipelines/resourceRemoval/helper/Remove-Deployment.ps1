@@ -101,6 +101,12 @@ function Remove-Deployment {
         # Filter all dependency resources
         # ===============================
         $dependencyResourceNames = Get-DependencyResourceNameList
+
+        if ($resourcesToIgnore = $resourcesToRemove | Where-Object { (Split-Path $_.resourceId -Leaf) -in $dependencyResourceNames }) {
+            Write-Verbose 'Resources excluded from removal:' -Verbose
+            $resourcesToIgnore | ForEach-Object { Write-Verbose ('- [{0}]' -f $_.resourceId) -Verbose }
+        }
+
         $resourcesToRemove = $resourcesToRemove | Where-Object { (Split-Path $_.resourceId -Leaf) -notin $dependencyResourceNames }
         Write-Verbose ('Total number of deployments after filtering all dependency resources [{0}]' -f $resourcesToRemove.Count) -Verbose
 
