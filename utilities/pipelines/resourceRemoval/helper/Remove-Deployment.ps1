@@ -86,23 +86,28 @@ function Remove-Deployment {
             ResourceGroupName = $resourceGroupName
         }
         $deploymentResourceIds = Get-ResourceIdsOfDeployment @deploymentsInputObject -Verbose
+        Write-Verbose ('Total number of deployments after fetching deployments [{0}]' -f $deploymentResourceIds.Count) -Verbose
 
         # Pre-Filter & order items
         # ========================
         $rawResourceIdsToRemove = $deploymentResourceIds | Sort-Object -Property { $_.Split('/').Count } -Descending | Select-Object -Unique
+        Write-Verbose ('Total number of deployments after pre-filtering & ordering items [{0}]' -f $rawResourceIdsToRemove.Count) -Verbose
 
         # Format items
         # ============
         $resourcesToRemove = Get-ResourceIdsAsFormattedObjectList -ResourceIds $rawResourceIdsToRemove
+        Write-Verbose ('Total number of deployments after formatting items [{0}]' -f $resourcesToRemove.Count) -Verbose
 
         # Filter all dependency resources
         # ===============================
         $dependencyResourceNames = Get-DependencyResourceNameList
         $resourcesToRemove = $resourcesToRemove | Where-Object { (Split-Path $_.resourceId -Leaf) -notin $dependencyResourceNames }
+        Write-Verbose ('Total number of deployments after filtering all dependency resources [{0}]' -f $resourcesToRemove.Count) -Verbose
 
         # Order resources
         # ===============
         $resourcesToRemove = Get-OrderedResourcesList -ResourcesToOrder $resourcesToRemove -Order $RemovalSequence
+        Write-Verbose ('Total number of deployments after final ordering of resources [{0}]' -f $resourcesToRemove.Count) -Verbose
 
         # Remove resources
         # ================
