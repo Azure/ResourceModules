@@ -41,13 +41,14 @@ resource diskEncryptionSet 'Microsoft.Compute/diskEncryptionSets@2020-12-01' = {
   }
 }
 
-resource keyVaultAccessPolicies 'Microsoft.KeyVault/vaults/accessPolicies@2019-09-01' = {
-  name: '${last(split(keyVaultId, '/'))}/add'
-  properties: {
+module keyVaultAccessPolicies '.bicep/nested_kvAccessPolicy.bicep' {
+  name: '${uniqueString(deployment().name, location)}-DiskEncrSet-KVAccessPolicies'
+  params: {
+    keyVaultName: '${last(split(keyVaultId, '/'))}'
     accessPolicies: [
       {
         tenantId: subscription().tenantId
-        objectId: reference('Microsoft.Compute/diskEncryptionSets/${diskEncryptionSet.name}', '2020-12-01', 'Full').identity.principalId
+        objectId: diskEncryptionSet.identity.principalId
         permissions: {
           keys: [
             'get'
@@ -61,6 +62,27 @@ resource keyVaultAccessPolicies 'Microsoft.KeyVault/vaults/accessPolicies@2019-0
     ]
   }
 }
+
+// resource keyVaultAccessPolicies 'Microsoft.KeyVault/vaults/accessPolicies@2019-09-01' = {
+//   name: '${last(split(keyVaultId, '/'))}/add'
+//   properties: {
+//     accessPolicies: [
+//       {
+//         tenantId: subscription().tenantId
+//         objectId: reference('Microsoft.Compute/diskEncryptionSets/${diskEncryptionSet.name}', '2020-12-01', 'Full').identity.principalId
+//         permissions: {
+//           keys: [
+//             'get'
+//             'wrapKey'
+//             'unwrapKey'
+//           ]
+//           secrets: []
+//           certificates: []
+//         }
+//       }
+//     ]
+//   }
+// }
 
 module diskEncryptionSet_rbac '.bicep/nested_rbac.bicep' = [for (roleAssignment, index) in roleAssignments: {
   name: '${uniqueString(deployment().name, location)}-DiskEncrSet-Rbac-${index}'
