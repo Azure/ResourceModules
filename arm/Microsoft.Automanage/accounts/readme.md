@@ -8,13 +8,13 @@ This module deploys an Automanage account and associates VM with it.
 | :-- | :-- |
 | `Microsoft.Authorization/roleAssignments` | 2020-04-01-preview |
 | `Microsoft.Automanage/accounts` | 2020-06-30-preview |
-| `Microsoft.Compute/virtualMachines/providers/configurationProfileAssignments` | 2020-06-30-preview |
+| `Microsoft.Compute/virtualMachines/providers/configurationProfileAssignments` | 2021-04-30-preview |
 
 ## Parameters
 
 | Parameter Name | Type | Default Value | Possible Values | Description |
 | :-- | :-- | :-- | :-- | :-- |
-| `configurationProfile` | string | `Production` | `[Production, Dev/Test]` | Optional. The configuration profile of automanage |
+| `configurationProfile` | string | `/providers/Microsoft.Automanage/bestPractices/AzureBestPracticesProduction` | `[/providers/Microsoft.Automanage/bestPractices/AzureBestPracticesProduction, /providers/Microsoft.Automanage/bestPractices/AzureBestPracticesDevTest]` | Optional. The configuration profile of automanage |
 | `cuaId` | string |  |  | Optional. Customer Usage Attribution ID (GUID). This GUID must be previously registered. |
 | `location` | string | `[resourceGroup().location]` |  | Optional. The location of automanage |
 | `name` | string | `[format('{0}-AutoManage', replace(subscription().displayName, ' ', ''))]` |  | Optional. The name of automanage account |
