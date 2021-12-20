@@ -19,6 +19,14 @@ param monthlyRetention string = 'P1Y'
 @description('Optional. The yearly retention policy for an LTR backup in an ISO 8601 format.')
 param yearlyRetention string = 'P5Y'
 
+@description('Optional. Customer Usage Attribution ID (GUID). This GUID must be previously registered')
+param cuaId string = ''
+
+module pid_cuaId '.bicep/nested_cuaId.bicep' = if (!empty(cuaId)) {
+  name: 'pid-${cuaId}'
+  params: {}
+}
+
 resource managedInstance 'Microsoft.Sql/managedInstances@2021-05-01-preview' existing = {
   name: managedInstanceName
 
