@@ -161,8 +161,6 @@ module virtualNetwork_peering_local 'virtualNetworkPeerings/deploy.bicep' = [for
   ]
 }]
 
-
-
 // Remote to local peering (reverse)
 module virtualNetwork_peering_remote 'virtualNetworkPeerings/deploy.bicep' = [for (peering, index) in virtualNetworkPeerings: if (contains(peering, 'remotePeeringEnabled') ? peering.remotePeeringEnabled == true : false) {
   name: '${uniqueString(deployment().name, location)}-virtualNetworkPeering-remote-${index}'
