@@ -20,7 +20,7 @@ This template deploys a disk encryption set.
 | `location` | string | `[resourceGroup().location]` |  | Optional. Resource location. |
 | `name` | string |  |  | Required. The name of the disk encryption set that is being created. |
 | `roleAssignments` | array | `[]` |  | Optional. Array of role assignment objects that contain the 'roleDefinitionIdOrName' and 'principalId' to define RBAC role assignments on this resource. In the roleDefinitionIdOrName attribute, you can provide either the display name of the role definition, or its fully qualified ID in the following format: '/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11' |
-| `tags` | object | `{object}` |  | Optional. Tags of the Automation Account resource. |
+| `tags` | object | `{object}` |  | Optional. Tags of the disk encryption resource. |
 
 ### Parameter Usage: `roleAssignments`
 

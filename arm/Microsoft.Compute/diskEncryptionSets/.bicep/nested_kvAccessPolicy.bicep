@@ -1,4 +1,4 @@
-@description('Required. The resource ID of the key vault')
+@description('Required. The name of the key vault')
 param keyVaultName string
 
 @description('Optional. The access policy deployment')
