@@ -1,6 +1,6 @@
 ﻿Describe 'Convert bicep files to ARM' {
     BeforeAll {
-        $rootPath = Get-Item -Path (Get-Location).toString() | Select-Object -ExpandProperty 'FullName'
+        $rootPath = Get-Location
         $armFolderPath = Join-Path -Path $rootPath -ChildPath 'arm'
         $toolsPath = Join-Path -Path $rootPath -ChildPath 'utilities\tools'
 
