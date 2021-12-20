@@ -104,7 +104,7 @@ function Remove-Deployment {
 
         if ($resourcesToIgnore = $resourcesToRemove | Where-Object { (Split-Path $_.resourceId -Leaf) -in $dependencyResourceNames }) {
             Write-Verbose 'Resources excluded from removal:' -Verbose
-            $resourcesToIgnore | ForEach-Object { Write-Verbose ('- [{0}]' -f $_.resourceId) -Verbose }
+            $resourcesToIgnore | ForEach-Object { Write-Verbose ('- Ignore [{0}]' -f $_.resourceId) -Verbose }
         }
 
         $resourcesToRemove = $resourcesToRemove | Where-Object { (Split-Path $_.resourceId -Leaf) -notin $dependencyResourceNames }
