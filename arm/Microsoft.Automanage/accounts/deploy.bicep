@@ -60,7 +60,6 @@ module configurationProfileAssignment '.bicep/nested_configurationProfileAssignm
   params: {
     vmName: vmName
     configurationProfile: configurationProfile
-    autoManageAccountResourceId: account.id
   }
 }
 
