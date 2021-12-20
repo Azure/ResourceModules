@@ -15,10 +15,10 @@
         $workflowFilesToChange = 0
 
         Write-Host '############'
-        $rootPath
-        $armFolderPath
-        $toolsPath
-        $workflowFolderPath
+        Write-Host $rootPath
+        Write-Host $armFolderPath
+        Write-Host $toolsPath
+        Write-Host $workflowFolderPath
 
         foreach ($workFlowFile in $workflowFiles) {
             $content = Get-Content -Path $workFlowFile.FullName -Raw
