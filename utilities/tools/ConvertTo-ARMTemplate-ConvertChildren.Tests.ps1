@@ -1,5 +1,5 @@
 ﻿param (
-    [string] $repoPath = (Split-Path -Path (Split-Path -Path (Get-Location).toString() -Parent) -Parent)
+    [string] $repoPath = (Get-Location).toString()
 )
 
 Describe 'Convert bicep files to ARM' {
@@ -7,11 +7,6 @@ Describe 'Convert bicep files to ARM' {
         $rootPath = Get-Item -Path $repoPath | Select-Object -ExpandProperty 'FullName'
         $armFolderPath = Join-Path -Path $rootPath -ChildPath 'arm'
         $toolsPath = Join-Path -Path $rootPath -ChildPath 'utilities\tools'
-
-        Write-Host $repoPath
-        Write-Host $rootPath
-        $loc = Get-Location
-        Write-Host $loc
 
         $deployBicepFilesCount = (Get-ChildItem -Recurse $armFolderPath | Where-Object { $_.FullName -match 'deploy.bicep' }).Count
         $nestedBicepFilesCount = (Get-ChildItem -Recurse $armFolderPath | Where-Object { $_.FullName -match 'nested_.*bicep' }).Count
