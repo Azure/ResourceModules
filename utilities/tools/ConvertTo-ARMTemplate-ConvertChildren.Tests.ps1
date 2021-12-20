@@ -4,8 +4,8 @@
         $armFolderPath = Join-Path -Path $rootPath -ChildPath 'arm'
         $toolsPath = Join-Path -Path $rootPath -ChildPath 'utilities\tools'
 
-        $deployBicepFilesCount = (Get-ChildItem -Recurse $armFolderPath | Where-Object { $_.FullName -match 'deploy.bicep' }).Count
-        $nestedBicepFilesCount = (Get-ChildItem -Recurse $armFolderPath | Where-Object { $_.FullName -match 'nested_.*bicep' }).Count
+        $deployBicepFilesCount = (Get-ChildItem -Recurse $armFolderPath | Where-Object { $_.Name -match 'deploy.bicep' }).Count
+        $nestedBicepFilesCount = (Get-ChildItem -Recurse $armFolderPath | Where-Object { $_.Name -like 'nested_*bicep' }).Count
 
         Write-Host "$deployBicepFilesCount deploy.bicep file(s) found"
         Write-Host "$nestedBicepFilesCount nested bicep file(s) found"
