@@ -9,6 +9,14 @@ param privateLinkScopeName string
 @description('Required. The resource ID of the scoped Azure monitor resource.')
 param linkedResourceId string
 
+@description('Optional. Customer Usage Attribution ID (GUID). This GUID must be previously registered')
+param cuaId string = ''
+
+module pid_cuaId '.bicep/nested_cuaId.bicep' = if (!empty(cuaId)) {
+  name: 'pid-${cuaId}'
+  params: {}
+}
+
 resource privateLinkScope 'microsoft.insights/privateLinkScopes@2021-07-01-preview' existing = {
   name: privateLinkScopeName
 }

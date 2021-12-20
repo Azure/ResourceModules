@@ -107,12 +107,21 @@ In an enterprise environment, the recommended approach is to store these templat
 
 ### ***Example with a private bicep registry***
 
-The following example shows how you could orchestrate a deployment of multiple resources using modules from a private bicep registry. In this example we will deploy a NSG and use the same in a subsequent VNET deployment.
+The following example shows how you could orchestrate a deployment of multiple resources using modules from a private bicep registry. In this example we will deploy a resource group with a contained NSG and use the same in a subsequent VNET deployment.
 
 ```bicep
+targetScope = 'subscription'
+
 // ================ //
 // Input Parameters //
 // ================ //
+
+// RG parameters
+@description('Required. The name of the resource group to deploy')
+param resourceGroupName string = 'validation-rg'
+
+@description('Optional. The location to deploy into')
+param location string = deployment().location
 
 // NSG parameters
 @description('Required. The name of the vnet to deploy')
@@ -145,16 +154,31 @@ param subnets array = [
 // Deployments //
 // =========== //
 
+// Resource Group
+module rg 'br:adpsxxazacrx001.azurecr.io/bicep/modules/microsoft.resources.resourcegroups:0.0.23' = {
+  name: 'registry-rg'
+  params: {
+    name: resourceGroupName
+    location: location
+  }
+}
+
 // Network Security Group
-module nsg 'br:adpsxxazacrx001.azurecr.io/bicep/modules/microsoft.network.networksecuritygroups:1.0.1' = {
+module nsg 'br:adpsxxazacrx001.azurecr.io/bicep/modules/microsoft.network.networksecuritygroups:0.0.30' = {
   name: 'registry-nsg'
+  scope: resourceGroup(resourceGroupName)
   params: {
     name: networkSecurityGroupName
   }
+  dependsOn: [
+    rg
+  ]
 }
+
 // Virtual Network
-module vnet 'br:adpsxxazacrx001.azurecr.io/bicep/modules/microsoft.network.virtualnetworks:1.0.0' = {
+module vnet 'br:adpsxxazacrx001.azurecr.io/bicep/modules/microsoft.network.virtualnetworks:0.0.26' = {
   name: 'registry-vnet'
+  scope: resourceGroup(resourceGroupName)
   params: {
     name: vnetName
     addressPrefixes: vNetAddressPrefixes
@@ -162,6 +186,7 @@ module vnet 'br:adpsxxazacrx001.azurecr.io/bicep/modules/microsoft.network.virtu
   }
   dependsOn: [
     nsg
+    rg
   ]
 }
 ```

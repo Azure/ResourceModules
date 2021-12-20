@@ -29,6 +29,8 @@ on:
       - '.github/workflows/ms.automanage.accounts.yml'
       - 'arm/Microsoft.Automanage/accounts/**'
       - '!*/**/readme.md'
+      - 'utilities/pipelines/**'
+      - '!utilities/pipelines/dependencies/**'
 
 env:
   modulePath: 'arm/Microsoft.Automanage/accounts'

@@ -29,6 +29,8 @@ on:
       - '.github/workflows/ms.insights.activitylogalerts.yml'
       - 'arm/Microsoft.Insights/activityLogAlerts/**'
       - '!*/**/readme.md'
+      - 'utilities/pipelines/**'
+      - '!utilities/pipelines/dependencies/**'
 
 env:
   modulePath: 'arm/Microsoft.Insights/activityLogAlerts'

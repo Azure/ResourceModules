@@ -29,6 +29,8 @@ on:
       - '.github/workflows/ms.virtualmachineimages.imagetemplates.yml'
       - 'arm/Microsoft.VirtualMachineImages/imageTemplates/**'
       - '!*/**/readme.md'
+      - 'utilities/pipelines/**'
+      - '!utilities/pipelines/dependencies/**'
 
 env:
   modulePath: 'arm/Microsoft.VirtualMachineImages/imageTemplates'

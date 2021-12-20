@@ -5,10 +5,10 @@ param storageAccountName string
 @description('Optional. The name of the file service')
 param name string = 'default'
 
-@description('Protocol settings for file service')
+@description('Optional. Protocol settings for file service')
 param protocolSettings object = {}
 
-@description('The service properties for soft delete.')
+@description('Optional. The service properties for soft delete.')
 param shareDeleteRetentionPolicy object = {
   enabled: true
   days: 7

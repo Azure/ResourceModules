@@ -29,6 +29,8 @@ on:
       - '.github/workflows/ms.network.networkwatchers.yml'
       - 'arm/Microsoft.Network/networkWatchers/**'
       - '!*/**/readme.md'
+      - 'utilities/pipelines/**'
+      - '!utilities/pipelines/dependencies/**'
 
 env:
   modulePath: 'arm/Microsoft.Network/networkWatchers'

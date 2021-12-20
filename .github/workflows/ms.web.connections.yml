@@ -29,6 +29,8 @@ on:
       - '.github/workflows/ms.web.connections.yml'
       - 'arm/Microsoft.Web/connections/**'
       - '!*/**/readme.md'
+      - 'utilities/pipelines/**'
+      - '!utilities/pipelines/dependencies/**'
 
 env:
   modulePath: 'arm/Microsoft.Web/connections'

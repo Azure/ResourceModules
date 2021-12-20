@@ -29,6 +29,8 @@ on:
       - '.github/workflows/ms.network.publicipaddresses.yml'
       - 'arm/Microsoft.Network/publicIPAddresses/**'
       - '!*/**/readme.md'
+      - 'utilities/pipelines/**'
+      - '!utilities/pipelines/dependencies/**'
 
 env:
   modulePath: 'arm/Microsoft.Network/publicIPAddresses'

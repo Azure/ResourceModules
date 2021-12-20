@@ -29,6 +29,8 @@ on:
       - '.github/workflows/ms.insights.actiongroups.yml'
       - 'arm/Microsoft.Insights/actionGroups/**'
       - '!*/**/readme.md'
+      - 'utilities/pipelines/**'
+      - '!utilities/pipelines/dependencies/**'
 
 env:
   modulePath: 'arm/Microsoft.Insights/actionGroups'
