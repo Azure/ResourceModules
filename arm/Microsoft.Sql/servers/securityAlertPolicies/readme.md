@@ -27,7 +27,7 @@ This module deploys an SQL Server Security Alert Policy.
 
 | Output Name | Type | Description |
 | :-- | :-- | :-- |
-| `databaseResourceId` | string | The resourceId of the deployed security alert policy |
+| `databaseResourceId` | string | The resource ID of the deployed security alert policy |
 | `databaseName` | string | The name of the deployed security alert policy |
 | `databaseResourceGroup` | string | The resourceGroup of the deployed security alert policy |
 
