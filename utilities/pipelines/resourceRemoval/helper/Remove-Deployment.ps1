@@ -91,7 +91,7 @@ function Remove-Deployment {
         # Pre-Filter & order items
         # ========================
         $rawResourceIdsToRemove = $deploymentResourceIds | Sort-Object -Property { $_.Split('/').Count } -Descending | Select-Object -Unique
-        Write-Verbose ('Total number of deployments after pre-filtering & ordering items [{0}]' -f $rawResourceIdsToRemove.Count) -Verbose
+        Write-Verbose ('Total number of deployments after pre-filtering (duplicates) & ordering items [{0}]' -f $rawResourceIdsToRemove.Count) -Verbose
 
         # Format items
         # ============
