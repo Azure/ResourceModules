@@ -8,6 +8,9 @@ Describe 'Convert bicep files to ARM' {
         $armFolderPath = Join-Path -Path $rootPath -ChildPath 'arm'
         $toolsPath = Join-Path -Path $rootPath -ChildPath 'utilities\tools'
 
+        Write-Host $repoPath
+        Write-Host $rootPath
+
         $deployBicepFilesCount = (Get-ChildItem -Recurse $armFolderPath | Where-Object { $_.FullName -match 'deploy.bicep' }).Count
         $nestedBicepFilesCount = (Get-ChildItem -Recurse $armFolderPath | Where-Object { $_.FullName -match 'nested_.*bicep' }).Count
 
