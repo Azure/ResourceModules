@@ -1,23 +1,25 @@
-﻿Describe 'Convert bicep files to ARM' {
-    BeforeAll {
-        # $rootPath = Get-Item -Path $Path | Select-Object -ExpandProperty 'FullName'
-        # $armFolderPath = Join-Path -Path $rootPath -ChildPath 'arm'
-        # $toolsPath = Join-Path -Path $rootPath -ChildPath 'utilities\tools'
+﻿param (
+    [string] $repoPath = (Split-Path -Path (Split-Path -Path (Get-Location).toString() -Parent) -Parent)
+)
 
-        $armFolderPath = 'C:\Users\rahalan\repos\internal\ResourceModules\arm'
+Describe 'Convert bicep files to ARM' {
+    BeforeAll {
+        $rootPath = Get-Item -Path $repoPath | Select-Object -ExpandProperty 'FullName'
+        $armFolderPath = Join-Path -Path $rootPath -ChildPath 'arm'
+        $toolsPath = Join-Path -Path $rootPath -ChildPath 'utilities\tools'
 
         $deployBicepFilesCount = (Get-ChildItem -Recurse $armFolderPath | Where-Object { $_.FullName -match 'deploy.bicep' }).Count
-        # $nestedBicepFilesCount = (Get-ChildItem -Recurse $armFolderPath | Where-Object { $_.FullName -match 'nested_.*bicep' }).Count
+        $nestedBicepFilesCount = (Get-ChildItem -Recurse $armFolderPath | Where-Object { $_.FullName -match 'nested_.*bicep' }).Count
 
         Write-Host "$deployBicepFilesCount deploy.bicep file(s) found"
-        # Write-Host "$nestedBicepFilesCount nested bicep file(s) found"
+        Write-Host "$nestedBicepFilesCount nested bicep file(s) found"
 
-        $workflowFolderPath = 'C:\Users\rahalan\repos\internal\ResourceModules\.github\workflows'
+        $workflowFolderPath = Join-Path -Path $rootPath -ChildPath '.github\workflows'
         $workflowFiles = Get-ChildItem -Path $workflowFolderPath -Filter 'ms.*.yml' -File -Force
         $workflowFilesToChange = 0
 
         foreach ($workFlowFile in $workflowFiles) {
-            $content = Get-Content -Path $workFlowFile.FullName
+            $content = Get-Content -Path $workFlowFile.FullName -Raw
 
             foreach ($line in $content) {
                 if ($line.Contains('deploy.bicep')) {
@@ -30,7 +32,7 @@
         Write-Host "$workflowFilesToChange workflow files need to change"
 
         Write-Host 'run ConvertTo-ARMTemplate script'
-        .\utilities\tools\ConvertTo-ARMTemplate.ps1 -Path 'C:\Users\rahalan\repos\internal\ResourceModules' -ConvertChildren
+        . "$toolsPath\ConvertTo-ARMTemplate.ps1" -Path $rootPath -ConvertChildren
     }
 
     It 'all deploy.bicep files are converted to deploy.json' {
@@ -43,6 +45,23 @@
         $bicepFilesCount = (Get-ChildItem -Recurse $armFolderPath | Where-Object { $_.FullName -match '.*.bicep' }).Count
         Write-Host "$bicepFilesCount bicep file(s) found"
         $bicepFilesCount | Should -Be 0
+    }
+
+    It 'all json files have metadata removed' {
+        $deployJsonFiles = (Get-ChildItem -Recurse $armFolderPath | Where-Object { $_.FullName -match 'deploy.json' })
+        $metadataFound = $false
+
+        foreach ($deployJsonFile in $deployJsonFiles) {
+            $content = Get-Content -Path $deployJsonFile.FullName -Raw
+            $TemplateObject = $content | ConvertFrom-Json
+
+            if ([bool]($TemplateObject.PSobject.Properties.name -match 'metadata')) {
+                $metadataFound = $true;
+                break;
+            }
+        }
+
+        $metadataFound | Should -Be $false
     }
 
     It 'all workflow files are updated' {
