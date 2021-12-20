@@ -10,7 +10,8 @@ Describe 'Convert bicep files to ARM' {
 
         Write-Host $repoPath
         Write-Host $rootPath
-        Write-Host Get-Location
+        $loc = Get-Location
+        Write-Host $loc
 
         $deployBicepFilesCount = (Get-ChildItem -Recurse $armFolderPath | Where-Object { $_.FullName -match 'deploy.bicep' }).Count
         $nestedBicepFilesCount = (Get-ChildItem -Recurse $armFolderPath | Where-Object { $_.FullName -match 'nested_.*bicep' }).Count
