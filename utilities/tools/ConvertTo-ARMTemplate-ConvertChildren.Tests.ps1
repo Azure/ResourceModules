@@ -7,8 +7,8 @@
         $deployBicepFilesCount = (Get-ChildItem -Recurse $armFolderPath | Where-Object { $_.Name -match 'deploy.bicep' }).Count
         $nestedBicepFilesCount = (Get-ChildItem -Recurse $armFolderPath | Where-Object { $_.Name -like 'nested_*bicep' }).Count
 
-        Write-Host "$deployBicepFilesCount deploy.bicep file(s) found"
-        Write-Host "$nestedBicepFilesCount nested bicep file(s) found"
+        Write-Verbose "$deployBicepFilesCount deploy.bicep file(s) found"
+        Write-Verbose "$nestedBicepFilesCount nested bicep file(s) found"
 
         $workflowFolderPath = Join-Path -Path $rootPath -ChildPath '.github\workflows'
         $workflowFiles = Get-ChildItem -Path $workflowFolderPath -Filter 'ms.*.yml' -File -Force
@@ -25,21 +25,21 @@
             }
         }
 
-        Write-Host "$workflowFilesToChange workflow files need to change"
+        Write-Verbose "$workflowFilesToChange workflow files need to change"
 
-        Write-Host 'run ConvertTo-ARMTemplate script'
+        Write-Verbose 'run ConvertTo-ARMTemplate script'
         . "$toolsPath\ConvertTo-ARMTemplate.ps1" -Path $rootPath -ConvertChildren
     }
 
     It 'all deploy.bicep files are converted to deploy.json' {
         $deployJsonFilesCount = (Get-ChildItem -Recurse $armFolderPath | Where-Object { $_.FullName -match 'deploy.json' }).Count
-        Write-Host "$deployJsonFilesCount deploy.json file(s) found"
+        Write-Verbose "$deployJsonFilesCount deploy.json file(s) found"
         $deployJsonFilesCount | Should -Be $deployBicepFilesCount
     }
 
     It 'all bicep files are removed' {
         $bicepFilesCount = (Get-ChildItem -Recurse $armFolderPath | Where-Object { $_.FullName -match '.*.bicep' }).Count
-        Write-Host "$bicepFilesCount bicep file(s) found"
+        Write-Verbose "$bicepFilesCount bicep file(s) found"
         $bicepFilesCount | Should -Be 0
     }
 
@@ -74,7 +74,7 @@
             }
         }
 
-        Write-Host "$workflowFilesUpdated workflow file(s) updated"
+        Write-Verbose "$workflowFilesUpdated workflow file(s) updated"
         $workflowFilesUpdated | Should -Be $workflowFilesToChange
     }
 }

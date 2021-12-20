@@ -64,39 +64,41 @@ if ($ConvertChildren) {
 }
 
 #region Remove existing deploy.json files
-Write-Host 'Remove existing deploy.json files'
+Write-Verbose 'Remove existing deploy.json files'
 
 $JsonFilesToRemove = Get-ChildItem -Path $armFolderPath -Filter 'deploy.json' -Recurse -Force -File
-Write-Host "Remove existing deploy.json files - Remove [$($JsonFilesToRemove.count)] file(s)"
+Write-Verbose "Remove existing deploy.json files - Remove [$($JsonFilesToRemove.count)] file(s)"
 if ($PSCmdlet.ShouldProcess("[$($JsonFilesToRemove.count)] deploy.json files(s) in path [$armFolderPath]", 'Remove-Item')) {
     $JsonFilesToRemove | Remove-Item -Force
 }
 
-Write-Host 'Remove existing deploy.json files - Done'
+Write-Verbose 'Remove existing deploy.json files - Done'
 #endregion
 
 #region Convert bicep files to json
-Write-Host 'Convert bicep files to json'
+Write-Verbose 'Convert bicep files to json'
 
-Write-Host "Convert bicep files to json - Processing [$($BicepFilesToConvert.count)] file(s)"
+Write-Verbose "Convert bicep files to json - Processing [$($BicepFilesToConvert.count)] file(s)"
 if ($PSCmdlet.ShouldProcess("[$($BicepFilesToConvert.count)] deploy.bicep file(s) in path [$armFolderPath]", 'az bicep build')) {
-    $BicepFilesToConvert | ForEach-Object -ThrottleLimit 10 -Parallel {
-        Write-Host $_
+    # parallelism is not supported on GitHub runners
+    #$BicepFilesToConvert | ForEach-Object -ThrottleLimit $env:NUMBER_OF_PROCESSORS -Parallel {
+    $BicepFilesToConvert | ForEach-Object {
         Invoke-Expression -Command "az bicep build --file '$_'"
     }
 }
 
-Write-Host 'Convert bicep files to json - Done'
+Write-Verbose 'Convert bicep files to json - Done'
 #endregion
 
 #region Remove Bicep metadata from json
 if (-not $SkipMetadataCleanup) {
-    Write-Host 'Remove Bicep metadata from json'
+    Write-Verbose 'Remove Bicep metadata from json'
 
-    Write-Host "Remove Bicep metadata from json - Processing [$($BicepFilesToConvert.count)] file(s)"
+    Write-Verbose "Remove Bicep metadata from json - Processing [$($BicepFilesToConvert.count)] file(s)"
     if ($PSCmdlet.ShouldProcess("[$($BicepFilesToConvert.count)] deploy.bicep file(s) in path [$armFolderPath]", 'Set-Content')) {
-        $BicepFilesToConvert | ForEach-Object -ThrottleLimit 10 -Parallel {
-
+        # parallelism is not supported on GitHub runners
+        #$BicepFilesToConvert | ForEach-Object -ThrottleLimit $env:NUMBER_OF_PROCESSORS -Parallel {
+        $BicepFilesToConvert | ForEach-Object {
             function Remove-JSONMetadata {
                 <#
             .SYNOPSIS
@@ -141,45 +143,47 @@ if (-not $SkipMetadataCleanup) {
         }
     }
 
-    Write-Host 'Remove Bicep metadata from json - Done'
+    Write-Verbose 'Remove Bicep metadata from json - Done'
 }
 #endregion
 
 #region Remove bicep files and folders
 if (-not $SkipBicepCleanUp) {
-    Write-Host 'Remove bicep files and folders'
+    Write-Verbose 'Remove bicep files and folders'
 
     $dotBicepFoldersToRemove = Get-ChildItem -Path $armFolderPath -Filter '.bicep' -Recurse -Force -Directory
-    Write-Host "Remove bicep files and folders - Remove [$($dotBicepFoldersToRemove.count)] .bicep folder(s)"
+    Write-Verbose "Remove bicep files and folders - Remove [$($dotBicepFoldersToRemove.count)] .bicep folder(s)"
     if ($PSCmdlet.ShouldProcess("[$($dotBicepFoldersToRemove.count)] .bicep folder(s) in path [$armFolderPath]", 'Remove-Item')) {
         $dotBicepFoldersToRemove | Remove-Item -Recurse -Force
     }
 
     $BicepFilesToRemove = Get-ChildItem -Path $armFolderPath -Filter '*.bicep' -Recurse -Force -File
-    Write-Host "Remove bicep files and folders - Remove [$($BicepFilesToRemove.count)] *.bicep file(s)"
+    Write-Verbose "Remove bicep files and folders - Remove [$($BicepFilesToRemove.count)] *.bicep file(s)"
     if ($PSCmdlet.ShouldProcess("[$($BicepFilesToRemove.count)] *.bicep file(s) in path [$armFolderPath]", 'Remove-Item')) {
         $BicepFilesToRemove | Remove-Item -Force
     }
 
-    Write-Host 'Remove bicep files and folders - Done'
+    Write-Verbose 'Remove bicep files and folders - Done'
 }
 #endregion
 
 #region Update workflow files - Replace .bicep with .json in workflow files
 if (-not $SkipWorkflowUpdate) {
-    Write-Host 'Update workflow files'
+    Write-Verbose 'Update workflow files'
 
     $workflowFolderPath = Join-Path -Path $rootPath -ChildPath '.github\workflows'
     $workflowFilesToUpdate = Get-ChildItem -Path $workflowFolderPath -Filter 'ms.*.yml' -File -Force
-    Write-Host "Update workflow files - Processing [$($workflowFilesToUpdate.count)] file(s)"
+    Write-Verbose "Update workflow files - Processing [$($workflowFilesToUpdate.count)] file(s)"
     if ($PSCmdlet.ShouldProcess("[$($workflowFilesToUpdate.count)] ms.*.yml file(s) in path [$armFolderPath]", 'Set-Content')) {
-        $workflowFilesToUpdate | ForEach-Object -ThrottleLimit 10 -Parallel {
+        # parallelism is not supported on GitHub runners
+        #$workflowFilesToUpdate | ForEach-Object -ThrottleLimit $env:NUMBER_OF_PROCESSORS -Parallel {
+        $workflowFilesToUpdate | ForEach-Object {
             $content = $_ | Get-Content
             $content = $content.Replace('deploy.bicep', 'deploy.json')
             $_ | Set-Content -Value $content
         }
     }
 
-    Write-Host 'Update workflow files - Done'
+    Write-Verbose 'Update workflow files - Done'
 }
 #endregion

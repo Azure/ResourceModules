@@ -25,4 +25,4 @@ jobs:
       - name: 'Run Pester tests'
         shell: pwsh
         run: |
-          Invoke-Pester -Path ./utilities/tools/ConvertTo-ARMTemplate-ConvertChildren.Tests.ps1
+          Invoke-Pester -Path ./utilities/tools/ConvertTo-ARMTemplate-ConvertChildren.Tests.ps1 -Verbose
