@@ -1,1 +1,1 @@
-targetScope = 'subscription'
+

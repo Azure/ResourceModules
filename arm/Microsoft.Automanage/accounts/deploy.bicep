@@ -1,13 +1,8 @@
-targetScope = 'subscription'
-
-@description('Optional. The resource group name where automanage will be created')
-param autoManageAccountResourceGroupName string = '${replace(subscription().displayName, ' ', '')}_group'
-
 @description('Optional. The name of automanage account')
 param name string = '${replace(subscription().displayName, ' ', '')}-AutoManage'
 
 @description('Optional. The location of automanage')
-param location string = deployment().location
+param location string = resourceGroup().location
 
 @description('Required. The name of the VM resource group')
 param vmResourceGroupName string
@@ -33,29 +28,28 @@ module pidName '.bicep/nested_cuaId.bicep' = if (!empty(cuaId)) {
   params: {}
 }
 
-module autoManageAccount '.bicep/nested_autoManageAccount.bicep' = {
-  name: '${uniqueString(deployment().name, location)}-AutoManageAccount'
-  scope: resourceGroup(autoManageAccountResourceGroupName)
-  params: {
-    location: location
-    autoManageAccountName: name
+resource account 'Microsoft.Automanage/accounts@2020-06-30-preview' = {
+  name: name
+  location: location
+  identity: {
+    type: 'SystemAssigned'
   }
 }
 
 resource autoManageAccount_permissions_contributor 'Microsoft.Authorization/roleAssignments@2020-04-01-preview' = {
-  name: guid(autoManageAccountResourceGroupName, name, contributor)
+  name: guid(name, contributor)
   properties: {
     roleDefinitionId: contributor
-    principalId: autoManageAccount.outputs.principalId
+    principalId: account.identity.principalId
     principalType: 'ServicePrincipal'
   }
 }
 
 resource autoManageAccount_permissions_resourcePolicyContributor 'Microsoft.Authorization/roleAssignments@2020-04-01-preview' = {
-  name: guid(autoManageAccountResourceGroupName, name, resourcePolicyContributor)
+  name: guid(name, resourcePolicyContributor)
   properties: {
     roleDefinitionId: resourcePolicyContributor
-    principalId: autoManageAccount.outputs.principalId
+    principalId: account.identity.principalId
     principalType: 'ServicePrincipal'
   }
 }
@@ -66,18 +60,18 @@ module configurationProfileAssignment '.bicep/nested_configurationProfileAssignm
   params: {
     vmName: vmName
     configurationProfile: configurationProfile
-    autoManageAccountResourceId: autoManageAccount.outputs.accountResourceId
+    autoManageAccountResourceId: account.id
   }
-  dependsOn: [
-    autoManageAccount
-  ]
 }
 
 @description('The resource ID of the auto manage account')
-output autoManageAccountResourceId string = autoManageAccount.outputs.accountResourceId
+output autoManageAccountResourceId string = account.id
 
 @description('The name of the auto manage account')
-output autoManageAccountName string = autoManageAccount.outputs.accountName
+output autoManageAccountName string = account.name
 
 @description('The resource group the auto manage account was deployed into')
-output autoManageAccountResourceGroup string = autoManageAccountResourceGroupName
+output autoManageAccountResourceGroup string = resourceGroup().name
+
+@description('The principal ID of the system assigned identity')
+output principalId string = account.identity.principalId
