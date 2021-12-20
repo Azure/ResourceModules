@@ -1,10 +1,6 @@
-﻿param (
-    [string] $repoPath = (Get-Location).toString()
-)
-
-Describe 'Convert bicep files to ARM' {
+﻿Describe 'Convert bicep files to ARM' {
     BeforeAll {
-        $rootPath = Get-Item -Path $repoPath | Select-Object -ExpandProperty 'FullName'
+        $rootPath = Get-Item -Path (Get-Location).toString() | Select-Object -ExpandProperty 'FullName'
         $armFolderPath = Join-Path -Path $rootPath -ChildPath 'arm'
         $toolsPath = Join-Path -Path $rootPath -ChildPath 'utilities\tools'
 
@@ -17,6 +13,12 @@ Describe 'Convert bicep files to ARM' {
         $workflowFolderPath = Join-Path -Path $rootPath -ChildPath '.github\workflows'
         $workflowFiles = Get-ChildItem -Path $workflowFolderPath -Filter 'ms.*.yml' -File -Force
         $workflowFilesToChange = 0
+
+        Write-Host '############'
+        $rootPath
+        $armFolderPath
+        $toolsPath
+        $workflowFolderPath
 
         foreach ($workFlowFile in $workflowFiles) {
             $content = Get-Content -Path $workFlowFile.FullName -Raw
