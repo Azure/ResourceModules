@@ -1,4 +1,4 @@
-name: 'Run pester test for convert to ARM template script'
+name: '.Platform: run pester test for convert to ARM template script'
 
 on:
   workflow_dispatch:
