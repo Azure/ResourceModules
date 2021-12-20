@@ -29,7 +29,7 @@ module pid_cuaId '.bicep/nested_cuaId.bicep' = if (!empty(cuaId)) {
   params: {}
 }
 
-resource privateDnsZone 'Microsoft.Network/privateDnsZones@2018-09-01' = {
+resource privateDnsZone 'Microsoft.Network/privateDnsZones@2020-06-01' = {
   name: name
   location: location
   tags: tags
@@ -39,7 +39,7 @@ module privateDnsZone_virtualNetworkLinks 'virtualNetworkLinks/deploy.bicep' = [
   name: '${uniqueString(deployment().name, location)}-PrivateDnsZone-VirtualNetworkLink-${index}'
   params: {
     privateDnsZoneName: privateDnsZone.name
-    name: contains(virtualNetworkLinks, 'name') ? virtualNetworkLinks.name : last(split(virtualNetworkLinks.virtualNetworkResourceId, '/'))
+    name: contains(virtualNetworkLinks, 'name') ? virtualNetworkLinks.name : '${last(split(virtualNetworkLinks.virtualNetworkResourceId, '/'))}-vnetlink'
     virtualNetworkResourceId: virtualNetworkLinks.virtualNetworkResourceId
     location: contains(virtualNetworkLinks, 'location') ? virtualNetworkLinks.location : 'global'
     registrationEnabled: contains(virtualNetworkLinks, 'registrationEnabled') ? virtualNetworkLinks.registrationEnabled : false
