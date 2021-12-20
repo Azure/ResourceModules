@@ -41,7 +41,7 @@ resource diskEncryptionSet 'Microsoft.Compute/diskEncryptionSets@2020-12-01' = {
   }
 }
 
-module keyVaultAccessPolicies '.bicep/nested_kvAccessPolicy.bicep' {
+module keyVaultAccessPolicies '.bicep/nested_kvAccessPolicy.bicep' = {
   name: '${uniqueString(deployment().name, location)}-DiskEncrSet-KVAccessPolicies'
   params: {
     keyVaultName: '${last(split(keyVaultId, '/'))}'
