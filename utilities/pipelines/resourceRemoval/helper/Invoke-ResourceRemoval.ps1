@@ -40,14 +40,6 @@ function Invoke-ResourceRemoval {
             break
         }
         'Microsoft.KeyVault/vaults/accessPolicies' {
-            # $keyVaultResourceId = $resourceId.Split('/accessPolicies')[0]
-            # $keyVaultName = Split-Path $keyVaultResourceId -Leaf
-            # $objectId = Split-Path $ResourceId -Leaf
-            # Write-Verbose ('keyVaultResourceId [{0}]' -f $keyVaultResourceId) -Verbose
-            # Write-Verbose ('objectId [{0}]' -f $objectId) -Verbose
-            # if ($PSCmdlet.ShouldProcess("Diagnostic setting [$resourceName]", 'Remove')) {
-            #     $null = Remove-AzKeyVaultAccessPolicy -VaultName $keyVaultName -ObjectId $objectId
-            # }
             Write-Verbose ('Skip resource removal for type [{0}]' -f $type) -Verbose
             break
         }
@@ -65,31 +57,9 @@ function Invoke-ResourceRemoval {
 
             Write-Verbose ('keyVaultResourceId [{0}]' -f $keyVaultResourceId) -Verbose
             Write-Verbose ('objectId [{0}]' -f $objectId) -Verbose
-            # if ($PSCmdlet.ShouldProcess("Access policy [$objectId] from key vault [$keyVaultName]", 'Remove')) {
             if ($PSCmdlet.ShouldProcess(('Access policy [{0}] from key vault [{1}]' -f $objectId, $keyVaultName), 'Remove')) {
                 $null = Remove-AzKeyVaultAccessPolicy -VaultName $keyVaultName -ObjectId $objectId
             }
-
-            # if ((Get-AzRecoveryServicesVaultProperty -VaultId $resourceId).SoftDeleteFeatureState -ne 'Disabled') {
-            #     if ($PSCmdlet.ShouldProcess(('Soft-delete on RSV [{0}]' -f $resourceId), 'Set')) {
-            #         $null = Set-AzRecoveryServicesVaultProperty -VaultId $resourceId -SoftDeleteFeatureState 'Disable'
-            #     }
-            # }
-
-            # $backupItems = Get-AzRecoveryServicesBackupItem -BackupManagementType 'AzureVM' -WorkloadType 'AzureVM' -VaultId $resourceId
-            # foreach ($backupItem in $backupItems) {
-            #     Write-Verbose ('Removing Backup item [{0}] from RSV [{1}]' -f $backupItem.Name, $resourceId) -Verbose
-
-            #     if ($backupItem.DeleteState -eq 'ToBeDeleted') {
-            #         if ($PSCmdlet.ShouldProcess('Soft-deleted backup data removal', 'Undo')) {
-            #             $null = Undo-AzRecoveryServicesBackupItemDeletion -Item $backupItem -VaultId $resourceId -Force
-            #         }
-            #     }
-
-            #     if ($PSCmdlet.ShouldProcess(('Backup item [{0}] from RSV [{1}]' -f $backupItem.Name, $resourceId), 'Remove')) {
-            #         $null = Disable-AzRecoveryServicesBackupProtection -Item $backupItem -VaultId $resourceId -RemoveRecoveryPoints -Force
-            #     }
-            # }
 
             # Actual removal
             # --------------
