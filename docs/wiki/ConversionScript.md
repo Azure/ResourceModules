@@ -15,7 +15,7 @@ by using the following steps.
 1. Remove Bicep metadata from json
 1. Remove bicep files and folders
 1. Update workflow files - Replace .bicep with .json in workflow files
-## how to use it
+# How to use it
 
 The script can be called with the following parameters:
 
