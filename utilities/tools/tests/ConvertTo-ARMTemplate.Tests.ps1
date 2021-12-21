@@ -5,7 +5,6 @@
 param ()
 
 BeforeAll {
-
     $rootPath = Get-Location
     $armFolderPath = Join-Path $rootPath 'arm'
     $toolsPath = Join-Path $rootPath 'utilities' 'tools'
