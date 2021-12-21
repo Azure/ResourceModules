@@ -5,7 +5,7 @@
 param ()
 
 BeforeAll {
-    $rootPath = Get-Location
+    $rootPath = (Get-Item $PSScriptRoot).Parent.Parent.Parent.FullName
     $armFolderPath = Join-Path $rootPath 'arm'
     $toolsPath = Join-Path $rootPath 'utilities' 'tools'
 
