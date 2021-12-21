@@ -73,7 +73,7 @@ Describe 'Test default behavior' -Tag 'Default' {
         $metadataFound | Should -Be $false
     }
 
-    It 'All pipeline files are updated' {
+    It 'All GitHub workflow files are updated' {
         $moduleWorkflowFilesUpdated = 0
 
         foreach ($workFlowFile in $moduleWorkflowFiles) {
@@ -86,8 +86,21 @@ Describe 'Test default behavior' -Tag 'Default' {
                 }
             }
         }
-
         $moduleWorkflowFilesUpdated | Should -Be $originalModuleWorkflowWithBicep
+    }
+
+    It 'All Azure DevOps pipeline files are changed' {
+        $modulePipelineFileUpdated = 0
+
+        foreach ($pipelineFile in $adoModulePipelineFiles) {
+            foreach ($line in (Get-Content -Path $pipelineFile.FullName)) {
+                if ($line.Contains('deploy.json')) {
+                    $modulePipelineFileUpdated += 1
+                    break
+                }
+            }
+        }
+        $modulePipelineFileUpdated | Should -Be $originalModulePipelinesWithBicep
     }
 }
 
