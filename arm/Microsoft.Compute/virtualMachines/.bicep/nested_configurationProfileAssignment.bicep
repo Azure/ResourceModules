@@ -1,18 +1,26 @@
-@description('Required. The name of the VM to be associated')
-param vmName string
+@description('Optional. The name of the configuration profile assignment')
+param name string = 'default'
 
-@description('Optional. The configuration profile of automanage')
+@description('Required. The name of the VM to be associated')
+param virtualMachineName string
+
+@description('Required. The configuration profile of automanage')
 @allowed([
   '/providers/Microsoft.Automanage/bestPractices/AzureBestPracticesProduction'
   '/providers/Microsoft.Automanage/bestPractices/AzureBestPracticesDevTest'
 ])
-param configurationProfile string = '/providers/Microsoft.Automanage/bestPractices/AzureBestPracticesProduction'
+param configurationProfile string
 
-resource configurationProfileAssignment 'Microsoft.Compute/virtualMachines/providers/configurationProfileAssignments@2021-04-30-preview' = {
-  name: '${vmName}/Microsoft.Automanage/default'
+resource virtualMachine 'Microsoft.Compute/virtualMachines@2021-07-01' existing = {
+  name: virtualMachineName
+}
+
+resource configurationProfileAssignment 'Microsoft.Automanage/configurationProfileAssignments@2021-04-30-preview' = {
+  name: name
   properties: {
     configurationProfile: configurationProfile
   }
+  scope: virtualMachine
 }
 
 @description('The resource ID of the configuration profile assignment')

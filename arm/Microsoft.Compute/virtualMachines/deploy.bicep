@@ -257,6 +257,9 @@ param additionalUnattendContent array = []
 @description('Optional. Specifies the Windows Remote Management listeners. This enables remote Windows PowerShell. - WinRMConfiguration object.')
 param winRM object = {}
 
+@description('Optional. Any VM configuration profile assignments')
+param configurationProfileAssignments array = []
+
 var vmComputerNameTransformed = vmComputerNamesTransformation == 'uppercase' ? toUpper(name) : (vmComputerNamesTransformation == 'lowercase' ? toLower(name) : name)
 
 var publicKeysFormatted = [for publicKey in publicKeys: {
@@ -401,6 +404,14 @@ resource virtualMachine 'Microsoft.Compute/virtualMachines@2021-07-01' = {
     virtualMachine_nic
   ]
 }
+
+module vm_configurationProfileAssignment '.bicep/nested_configurationProfileAssignment.bicep' = [for (configurationProfileAssignment, index) in configurationProfileAssignments: {
+  name: '${uniqueString(deployment().name, location)}-VM-ConfigurationProfileAssignment-${index}'
+  params: {
+    virtualMachineName: virtualMachine.name
+    configurationProfile: configurationProfileAssignment
+  }
+}]
 
 module vm_domainJoinExtension 'extensions/deploy.bicep' = if (extensionDomainJoinConfig.enabled) {
   name: '${uniqueString(deployment().name, location)}-VM-DomainJoin'

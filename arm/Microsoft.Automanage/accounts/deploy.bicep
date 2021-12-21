@@ -44,15 +44,6 @@ resource autoManageAccount_roleAssignment_resourcePolicyContributor 'Microsoft.A
   }
 }
 
-module autoManageAccount_configurationProfileAssignment '.bicep/nested_configurationProfileAssignment.bicep' = [for (configurationProfileAssignment, index) in configurationProfileAssignments: {
-  name: '${uniqueString(deployment().name, location)}-ConfigurationProfileAssignment-${index}'
-  scope: resourceGroup(configurationProfileAssignment.vmResourceGroupName)
-  params: {
-    vmName: configurationProfileAssignment.vmName
-    configurationProfile: contains(configurationProfileAssignment, 'configurationProfile') ? configurationProfileAssignment.configurationProfile : '/providers/Microsoft.Automanage/bestPractices/AzureBestPracticesProduction'
-  }
-}]
-
 @description('The resource ID of the auto manage account')
 output autoManageAccountResourceId string = account.id
 
