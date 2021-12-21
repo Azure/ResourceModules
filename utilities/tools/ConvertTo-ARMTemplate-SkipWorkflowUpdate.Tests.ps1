@@ -4,10 +4,10 @@
         $armFolderPath = Join-Path -Path $rootPath -ChildPath 'arm'
         $toolsPath = Join-Path -Path $rootPath -ChildPath 'utilities\tools'
 
-        $deployBicepFilesCount = (Get-ChildItem -Recurse $armFolderPath | Where-Object { $_.Name -match 'deploy.bicep' }).Count
+        $deployParentBicepFilesCount = (Get-ChildItem -Recurse $armFolderPath -Depth 2 | Where-Object { $_.Name -match 'deploy.bicep' }).Count
         $nestedBicepFilesCount = (Get-ChildItem -Recurse $armFolderPath | Where-Object { $_.Name -like 'nested_*bicep' }).Count
 
-        Write-Verbose "$deployBicepFilesCount deploy.bicep file(s) found"
+        Write-Verbose "$deployParentBicepFilesCount deploy.bicep file(s) found"
         Write-Verbose "$nestedBicepFilesCount nested bicep file(s) found"
 
         $workflowFolderPath = Join-Path -Path $rootPath -ChildPath '.github\workflows'
@@ -34,7 +34,7 @@
     It 'all deploy.bicep files are converted to deploy.json' {
         $deployJsonFilesCount = (Get-ChildItem -Recurse $armFolderPath | Where-Object { $_.FullName -match 'deploy.json' }).Count
         Write-Verbose "$deployJsonFilesCount deploy.json file(s) found"
-        $deployJsonFilesCount | Should -Be $deployBicepFilesCount
+        $deployJsonFilesCount | Should -Be $deployParentBicepFilesCount
     }
 
     It 'all bicep files are removed' {
