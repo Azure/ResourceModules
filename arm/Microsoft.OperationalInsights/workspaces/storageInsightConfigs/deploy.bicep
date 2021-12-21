@@ -2,7 +2,7 @@
 param logAnalyticsWorkspaceName string
 
 @description('Optional. The name of the storage insights config')
-param name string = last(split(storageAccountId, '/'))
+param name string = '${last(split(storageAccountId, '/'))}-stinsconfig'
 
 @description('Required. The Azure Resource Manager ID of the storage account resource.')
 param storageAccountId string
