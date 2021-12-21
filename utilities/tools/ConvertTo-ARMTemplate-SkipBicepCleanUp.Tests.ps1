@@ -38,7 +38,7 @@
         $deployJsonFilesCount | Should -Be $deployParentBicepFilesCount
     }
 
-    It 'all bicep files are still  there' {
+    It 'all bicep files are still there' {
         $bicepFilesCount = (Get-ChildItem -Recurse $armFolderPath | Where-Object { $_.FullName -match '.*.bicep' }).Count
         Write-Verbose "$bicepFilesCount bicep file(s) found"
         $bicepFilesCount | Should -Be $deployBicepFilesCount
