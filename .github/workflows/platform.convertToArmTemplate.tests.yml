@@ -10,7 +10,7 @@ on:
 
 jobs:
   job_test_convert:
-    runs-on: windows-latest
+    runs-on: ubuntu-latest
     name: 'Test with parameter'
     strategy:
       fail-fast: false
