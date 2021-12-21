@@ -1,4 +1,4 @@
-name: '.Platform: run pester test for convert to ARM template script'
+name: '.Platform: Test - ConvertTo-ARMTemplate.ps1'
 
 on:
   push:
