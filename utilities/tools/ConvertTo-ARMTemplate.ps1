@@ -83,7 +83,7 @@ if ($PSCmdlet.ShouldProcess("[$($BicepFilesToConvert.count)] deploy.bicep file(s
     # parallelism is not supported on GitHub runners
     #$BicepFilesToConvert | ForEach-Object -ThrottleLimit $env:NUMBER_OF_PROCESSORS -Parallel {
     $BicepFilesToConvert | ForEach-Object {
-        az bicep build --file $_
+        #  az bicep build --file $_
     }
 }
 
@@ -180,7 +180,7 @@ if (-not $SkipPipelineUpdate) {
         #$ghWorkflowFilesToUpdate | ForEach-Object -ThrottleLimit $env:NUMBER_OF_PROCESSORS -Parallel {
         $ghWorkflowFilesToUpdate | ForEach-Object {
             $content = $_ | Get-Content
-            $content = $content.Replace('deploy.bicep', 'deploy.json')
+            $content = $content -replace 'templateFilePath:(.*).bicep', 'templateFilePath:$1.json'
             $_ | Set-Content -Value $content
         }
     }
@@ -194,7 +194,7 @@ if (-not $SkipPipelineUpdate) {
         #$adoPipelineFilesToUpdate | ForEach-Object -ThrottleLimit $env:NUMBER_OF_PROCESSORS -Parallel {
         $adoPipelineFilesToUpdate | ForEach-Object {
             $content = $_ | Get-Content
-            $content = $content.Replace('deploy.bicep', 'deploy.json')
+            $content = $content -replace 'templateFilePath:(.*).bicep', 'templateFilePath:$1.json'
             $_ | Set-Content -Value $content
         }
     }
