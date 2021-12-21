@@ -23,7 +23,9 @@ jobs:
         run: |
           Invoke-Pester -Configuration @{
             Run        = @{
-              Path = @('C:\dev\ip\Azure-ResourceModules\ResourceModules\utilities\tools\tests\ConvertTo-ARMTemplate.Tests.ps1')
+              Path = @(
+                Join-Path "$env:GITHUB_WORKSPACE" 'utilities' 'tools' 'tests' 'ConvertTo-ARMTemplate.Tests.ps1'
+              )
             }
             # Filter     = @{
             #   ExcludeTag = '...'
