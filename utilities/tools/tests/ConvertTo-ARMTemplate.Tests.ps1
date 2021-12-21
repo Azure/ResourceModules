@@ -7,7 +7,7 @@ param ()
 BeforeAll {
     # Define paths
     $rootPath = (Get-Item $PSScriptRoot).Parent.Parent.Parent.FullName
-    $armFolderPath = Join-Path $rootPath 'Arm'
+    $armFolderPath = Join-Path $rootPath 'arm'
     $toolsPath = Join-Path $rootPath 'utilities' 'tools'
 
     # Collect original files
@@ -21,7 +21,7 @@ BeforeAll {
     $originalModuleWorkflowWithBicep = 0
     foreach ($workFlowFile in $moduleWorkflowFiles) {
         foreach ($line in (Get-Content -Path $workFlowFile.FullName)) {
-            if ($line.Contains('*.bicep')) {
+            if ($line -like '*.bicep*') {
                 $originalModuleWorkflowWithBicep += 1
                 break
             }
@@ -33,7 +33,7 @@ BeforeAll {
     $originalModulePipelinesWithBicep = 0
     foreach ($adoModulePipelineFile in $adoModulePipelineFiles) {
         foreach ($line in (Get-Content -Path $adoModulePipelineFile.FullName)) {
-            if ($line.Contains('*.bicep')) {
+            if ($line -like '*.bicep*') {
                 $originalModulePipelinesWithBicep += 1
                 break
             }
