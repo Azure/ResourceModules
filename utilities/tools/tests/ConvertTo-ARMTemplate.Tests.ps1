@@ -1,4 +1,4 @@
-﻿Describe 'Convert bicep files to ARM' -Tag 'ConvertChildren' {
+﻿Describe 'Convert bicep files to ARM' -Tag 'Default' {
     BeforeAll {
         $rootPath = Get-Location
         $armFolderPath = Join-Path $rootPath 'arm'
@@ -83,7 +83,7 @@
 }
 
 
-Describe 'Convert bicep files to ARM' {
+Describe 'Convert bicep files to ARM' -Tag 'ConvertChildren' {
     BeforeAll {
         $rootPath = Get-Location
         $armFolderPath = Join-Path $rootPath 'arm'
