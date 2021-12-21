@@ -109,5 +109,6 @@ function Invoke-ResourcePostRemoval {
             # Undo a potential soft delete state change
             $null = Set-AzRecoveryServicesVaultProperty -VaultId $vaultId -SoftDeleteFeatureState $softDeleteStatus.TrimEnd('d')
         }
+        ### CODE LOCATION: Add custom post-removal operation here
     }
 }
