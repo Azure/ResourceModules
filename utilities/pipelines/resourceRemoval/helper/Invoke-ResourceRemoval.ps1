@@ -40,7 +40,7 @@ function Invoke-ResourceRemoval {
             break
         }
         'Microsoft.KeyVault/vaults/accessPolicies' {
-            Write-Verbose ('Skip resource removal for type [{0}]' -f $type) -Verbose
+            Write-Verbose ('Skip resource removal for type [{0}]. Reason: handled by different logic.' -f $type) -Verbose
             break
         }
         'Microsoft.Compute/diskEncryptionSets' {
