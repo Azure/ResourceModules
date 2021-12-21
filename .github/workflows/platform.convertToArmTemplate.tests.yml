@@ -9,9 +9,9 @@ on:
       - 'utilities/tools/tests/ConvertTo-ARMTemplate**'
 
 jobs:
-  job_test_Default:
+  job_test_convert:
     runs-on: windows-latest
-    name: 'Run test for default parameter'
+    name: 'Test with parameter'
     strategy:
       fail-fast: false
       matrix:
@@ -48,68 +48,3 @@ jobs:
         if: always()
         with:
           files: 'utilities/tools/tests/conversion-testResults-${{ matrix.tags }}.xml'
-  # job_test_Default:
-  #   runs-on: windows-latest
-  #   name: 'Run test for default parameter'
-  #   steps:
-  #     - name: 'Checkout'
-  #       uses: actions/checkout@v2
-  #       with:
-  #         fetch-depth: 0
-  #         token: '${{ secrets.PLATFORM_REPO_UPDATE_PAT }}' # Sets general GIT credentials up
-  #     - name: 'Run Pester tests'
-  #       shell: pwsh
-  #       run: |
-  #         Invoke-Pester -Path ./utilities/tools/tests/ConvertTo-ARMTemplate-Default.Tests.ps1 -Verbose
-  # job_test_ConvertChildren:
-  #   runs-on: windows-latest
-  #   name: 'Run test for -ConvertChildren parameter'
-  #   steps:
-  #     - name: 'Checkout'
-  #       uses: actions/checkout@v2
-  #       with:
-  #         fetch-depth: 0
-  #         token: '${{ secrets.PLATFORM_REPO_UPDATE_PAT }}' # Sets general GIT credentials up
-  #     - name: 'Run Pester tests'
-  #       shell: pwsh
-  #       run: |
-  #         Invoke-Pester -Path ./utilities/tools/tests/ConvertTo-ARMTemplate-ConvertChildren.Tests.ps1 -Verbose
-  # job_test_SkipMetadataCleanup:
-  #   runs-on: windows-latest
-  #   name: 'Run test for -SkipMetadataCleanup parameter'
-  #   steps:
-  #     - name: 'Checkout'
-  #       uses: actions/checkout@v2
-  #       with:
-  #         fetch-depth: 0
-  #         token: '${{ secrets.PLATFORM_REPO_UPDATE_PAT }}' # Sets general GIT credentials up
-  #     - name: 'Run Pester tests'
-  #       shell: pwsh
-  #       run: |
-  #         Invoke-Pester -Path ./utilities/tools/tests/ConvertTo-ARMTemplate-SkipMetadataCleanup.Tests.ps1 -Verbose
-  # job_test_SkipBicepCleanUp:
-  #   runs-on: windows-latest
-  #   name: 'Run test for -SkipBicepCleanUp parameter'
-  #   steps:
-  #     - name: 'Checkout'
-  #       uses: actions/checkout@v2
-  #       with:
-  #         fetch-depth: 0
-  #         token: '${{ secrets.PLATFORM_REPO_UPDATE_PAT }}' # Sets general GIT credentials up
-  #     - name: 'Run Pester tests'
-  #       shell: pwsh
-  #       run: |
-  #         Invoke-Pester -Path ./utilities/tools/tests/ConvertTo-ARMTemplate-SkipBicepCleanUp.Tests.ps1 -Verbose
-  # job_test_SkipPipelineUpdate:
-  #   runs-on: windows-latest
-  #   name: 'Run test for -SkipPipelineUpdate parameter'
-  #   steps:
-  #     - name: 'Checkout'
-  #       uses: actions/checkout@v2
-  #       with:
-  #         fetch-depth: 0
-  #         token: '${{ secrets.PLATFORM_REPO_UPDATE_PAT }}' # Sets general GIT credentials up
-  #     - name: 'Run Pester tests'
-  #       shell: pwsh
-  #       run: |
-  #         Invoke-Pester -Path ./utilities/tools/tests/ConvertTo-ARMTemplate-SkipPipelineUpdate.Tests.ps1 -Verbose
