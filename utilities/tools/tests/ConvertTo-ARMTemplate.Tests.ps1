@@ -1,33 +1,27 @@
-﻿Describe 'Convert bicep files to ARM' -Tag 'Default' {
+﻿BeforeAll {
+    $rootPath = Get-Location
+    $armFolderPath = Join-Path $rootPath 'arm'
+    $toolsPath = Join-Path $rootPath 'utilities' 'tools'
+
+    $nestedBicepFilesCount = (Get-ChildItem -Recurse $armFolderPath | Where-Object { $_.Name -like 'nested_*bicep' }).Count
+    $deployBicepFilesCount = (Get-ChildItem -Recurse $armFolderPath | Where-Object { $_.Name -match 'deploy.bicep' }).Count
+    $deployParentBicepFilesCount = (Get-ChildItem -Recurse $armFolderPath -Depth 2 | Where-Object { $_.Name -match 'deploy.bicep' }).Count
+
+    $workflowFolderPath = Join-Path $rootPath '.github' 'workflows'
+    $workflowFiles = Get-ChildItem -Path $workflowFolderPath -Filter 'ms.*.yml' -File -Force
+}
+
+Describe 'Test default behavior' -Tag 'Default' {
     BeforeAll {
-        $rootPath = Get-Location
-        $armFolderPath = Join-Path $rootPath 'arm'
-        $toolsPath = Join-Path $rootPath 'utilities' 'tools'
-
-        $deployParentBicepFilesCount = (Get-ChildItem -Recurse $armFolderPath -Depth 2 | Where-Object { $_.Name -match 'deploy.bicep' }).Count
-        $nestedBicepFilesCount = (Get-ChildItem -Recurse $armFolderPath | Where-Object { $_.Name -like 'nested_*bicep' }).Count
-
-        Write-Host "$deployParentBicepFilesCount deploy.bicep file(s) found"
-        Write-Host "$nestedBicepFilesCount nested bicep file(s) found"
-
-        $workflowFolderPath = Join-Path $rootPath '.github' 'workflows'
-        $workflowFiles = Get-ChildItem -Path $workflowFolderPath -Filter 'ms.*.yml' -File -Force
         $workflowFilesToChange = 0
-
         foreach ($workFlowFile in $workflowFiles) {
-            $content = Get-Content -Path $workFlowFile.FullName -Raw
-
-            foreach ($line in $content) {
+            foreach ($line in (Get-Content -Path $workFlowFile.FullName)) {
                 if ($line.Contains('deploy.bicep')) {
                     $workflowFilesToChange = $workflowFilesToChange + 1
                     break
                 }
             }
         }
-
-        Write-Host "$workflowFilesToChange workflow files need to change"
-
-        Write-Host 'run ConvertTo-ARMTemplate script'
         . "$toolsPath\ConvertTo-ARMTemplate.ps1" -Path $rootPath
     }
 
@@ -83,48 +77,27 @@
 }
 
 
-Describe 'Convert bicep files to ARM' -Tag 'ConvertChildren' {
+Describe 'Test conversion including children' -Tag 'ConvertChildren' {
     BeforeAll {
-        $rootPath = Get-Location
-        $armFolderPath = Join-Path $rootPath 'arm'
-        $toolsPath = Join-Path $rootPath 'utilities' 'tools'
-
-        $deployBicepFilesCount = (Get-ChildItem -Recurse $armFolderPath | Where-Object { $_.Name -match 'deploy.bicep' }).Count
-        $nestedBicepFilesCount = (Get-ChildItem -Recurse $armFolderPath | Where-Object { $_.Name -like 'nested_*bicep' }).Count
-
-        Write-Verbose "$deployBicepFilesCount deploy.bicep file(s) found"
-        Write-Verbose "$nestedBicepFilesCount nested bicep file(s) found"
-
-        $workflowFolderPath = Join-Path $rootPath '.github' 'workflows'
-        $workflowFiles = Get-ChildItem -Path $workflowFolderPath -Filter 'ms.*.yml' -File -Force
         $workflowFilesToChange = 0
-
         foreach ($workFlowFile in $workflowFiles) {
-            $content = Get-Content -Path $workFlowFile.FullName -Raw
-
-            foreach ($line in $content) {
+            foreach ($line in (Get-Content -Path $workFlowFile.FullName)) {
                 if ($line.Contains('deploy.bicep')) {
                     $workflowFilesToChange = $workflowFilesToChange + 1
                     break
                 }
             }
         }
-
-        Write-Verbose "$workflowFilesToChange workflow files need to change"
-
-        Write-Verbose 'run ConvertTo-ARMTemplate script'
         . "$toolsPath\ConvertTo-ARMTemplate.ps1" -Path $rootPath -ConvertChildren
     }
 
     It 'all deploy.bicep files are converted to deploy.json' {
         $deployJsonFilesCount = (Get-ChildItem -Recurse $armFolderPath | Where-Object { $_.FullName -match 'deploy.json' }).Count
-        Write-Verbose "$deployJsonFilesCount deploy.json file(s) found"
         $deployJsonFilesCount | Should -Be $deployBicepFilesCount
     }
 
     It 'all bicep files are removed' {
         $bicepFilesCount = (Get-ChildItem -Recurse $armFolderPath | Where-Object { $_.FullName -match '.*.bicep' }).Count
-        Write-Verbose "$bicepFilesCount bicep file(s) found"
         $bicepFilesCount | Should -Be 0
     }
 
