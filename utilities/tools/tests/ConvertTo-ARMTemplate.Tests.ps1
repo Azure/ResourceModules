@@ -1,4 +1,11 @@
-﻿BeforeAll {
+﻿# TEST FILE for script [ConvertTo-ARMTemplate.ps1]
+
+# Variables are used but not detected as they are not inside the same block
+[Diagnostics.CodeAnalysis.SuppressMessageAttribute("PSUseDeclaredVarsMoreThanAssignments", Scope="Function", Target="*")]
+param ()
+
+BeforeAll {
+
     $rootPath = Get-Location
     $armFolderPath = Join-Path $rootPath 'arm'
     $toolsPath = Join-Path $rootPath 'utilities' 'tools'
