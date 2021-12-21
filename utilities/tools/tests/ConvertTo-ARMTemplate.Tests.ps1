@@ -154,7 +154,7 @@ Describe 'Test flag to including children' -Tag 'ConvertChildren' {
     }
 }
 
-Describe 'Test skip flags' -Tag 'Skip' {
+Describe 'Test flags that skip logic' -Tag 'Skip' {
 
     BeforeAll {
         . (Join-Path $toolsPath 'ConvertTo-ARMTemplate.ps1') -Path $rootPath -SkipBicepCleanUp -SkipMetadataCleanup -SkipPipelineUpdate
