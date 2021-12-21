@@ -77,10 +77,8 @@ Describe 'Test default behavior' -Tag 'Default' {
         $moduleWorkflowFilesUpdated = 0
 
         foreach ($workFlowFile in $moduleWorkflowFiles) {
-            $content = Get-Content -Path $workFlowFile.FullName
-
-            foreach ($line in $content) {
-                if ($line.Contains('deploy.json')) {
+            foreach ($line in (Get-Content -Path $workFlowFile.FullName)) {
+                if ($line -like '*templateFilePath:*.json*') {
                     $moduleWorkflowFilesUpdated += 1
                     break
                 }
@@ -94,7 +92,7 @@ Describe 'Test default behavior' -Tag 'Default' {
 
         foreach ($pipelineFile in $adoModulePipelineFiles) {
             foreach ($line in (Get-Content -Path $pipelineFile.FullName)) {
-                if ($line.Contains('deploy.json')) {
+                if ($line -like '*templateFilePath:*.json*') {
                     $modulePipelineFileUpdated += 1
                     break
                 }
@@ -140,10 +138,8 @@ Describe 'Test flag to including children' -Tag 'ConvertChildren' {
         $moduleWorkflowFilesUpdated = 0
 
         foreach ($workFlowFile in $moduleWorkflowFiles) {
-            $content = Get-Content -Path $workFlowFile.FullName
-
-            foreach ($line in $content) {
-                if ($line.Contains('deploy.json')) {
+            foreach ($line in (Get-Content -Path $workFlowFile.FullName)) {
+                if ($line -like '*templateFilePath:*.json*') {
                     $moduleWorkflowFilesUpdated += 1
                     break
                 }
@@ -157,7 +153,7 @@ Describe 'Test flag to including children' -Tag 'ConvertChildren' {
 
         foreach ($pipelineFile in $adoModulePipelineFiles) {
             foreach ($line in (Get-Content -Path $pipelineFile.FullName)) {
-                if ($line.Contains('deploy.json')) {
+                if ($line -like '*templateFilePath:*.json*') {
                     $modulePipelineFileUpdated += 1
                     break
                 }
@@ -204,7 +200,7 @@ Describe 'Test flags that skip logic' -Tag 'Skip' {
 
         foreach ($workFlowFile in $moduleWorkflowFiles) {
             foreach ($line in (Get-Content -Path $workFlowFile.FullName)) {
-                if ($line.Contains('deploy.json')) {
+                if ($line -like '*templateFilePath:*.json*') {
                     $moduleWorkflowFilesUpdated += 1
                     break
                 }
@@ -218,7 +214,7 @@ Describe 'Test flags that skip logic' -Tag 'Skip' {
 
         foreach ($pipelineFile in $adoModulePipelineFiles) {
             foreach ($line in (Get-Content -Path $pipelineFile.FullName)) {
-                if ($line.Contains('deploy.json')) {
+                if ($line -like '*templateFilePath:*.json*') {
                     $modulePipelineFileUpdated += 1
                     break
                 }
