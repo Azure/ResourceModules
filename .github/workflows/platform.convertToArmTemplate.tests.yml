@@ -3,7 +3,7 @@ name: '.Platform: run pester test for convert to ARM template script'
 on:
   push:
     branches:
-      - main
+      - users/rahalan/TestConversionScript_alsehr
     paths:
       - 'utilities/tools/ConvertTo-ARMTemplate.ps1'
       - 'utilities/tools/tests/ConvertTo-ARMTemplate**'
