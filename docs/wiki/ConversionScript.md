@@ -6,12 +6,6 @@ As Bicep is still in a beta phase and many people are used to ARM, it may make s
 
 You can find the script under /utilities/tools/ConvertTo-ARMTemplate.ps1
 
-└───utilities
-    │
-    └───tools
-        │   ConvertTo-ARMTemplate.ps1
-        |   ConvertTo-ARMTemplate.Tests.ps1
-
 ## what it does
 
 The script finds all 'deploy.bicep' files and tries to convert them to json based ARM templates

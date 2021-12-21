@@ -29,7 +29,7 @@ Optional. Skip replacing .bicep with .json in workflow files
 .EXAMPLE
 . .\utilities\tools\ConvertTo-ARMTemplate.ps1
 
-Converts top level bicep modules to json based ARM template, cleaning up all bicep files and folders and updating the workflow files to use the json files.
+Converts top level bicep modules to json-based ARM template, cleaning up all bicep files and folders and updating the workflow files to use the json files.
 
 .EXAMPLE
 . .\utilities\tools\ConvertTo-ARMTemplate.ps1 -ConvertChildren -SkipMetadataCleanup -SkipBicepCleanUp -SkipWorkflowUpdate

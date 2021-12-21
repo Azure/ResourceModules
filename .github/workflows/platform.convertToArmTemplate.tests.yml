@@ -5,7 +5,8 @@ on:
     branches:
       - main
     paths:
-      - 'utilities/tools/ConvertTo-ARMTemplate**'
+      - 'utilities/tools/ConvertTo-ARMTemplate.ps1'
+      - 'utilities/tools/tests/ConvertTo-ARMTemplate**'
 
 jobs:
   job_test_Default:
@@ -20,7 +21,7 @@ jobs:
       - name: 'Run Pester tests'
         shell: pwsh
         run: |
-          Invoke-Pester -Path ./utilities/tools/ConvertTo-ARMTemplate-Default.Tests.ps1 -Verbose
+          Invoke-Pester -Path ./utilities/tools/tests/ConvertTo-ARMTemplate-Default.Tests.ps1 -Verbose
   job_test_ConvertChildren:
     runs-on: windows-latest
     name: 'Run test for -ConvertChildren parameter'
@@ -33,7 +34,7 @@ jobs:
       - name: 'Run Pester tests'
         shell: pwsh
         run: |
-          Invoke-Pester -Path ./utilities/tools/ConvertTo-ARMTemplate-ConvertChildren.Tests.ps1 -Verbose
+          Invoke-Pester -Path ./utilities/tools/tests/ConvertTo-ARMTemplate-ConvertChildren.Tests.ps1 -Verbose
   job_test_SkipMetadataCleanup:
     runs-on: windows-latest
     name: 'Run test for -SkipMetadataCleanup parameter'
@@ -46,7 +47,7 @@ jobs:
       - name: 'Run Pester tests'
         shell: pwsh
         run: |
-          Invoke-Pester -Path ./utilities/tools/ConvertTo-ARMTemplate-SkipMetadataCleanup.Tests.ps1 -Verbose
+          Invoke-Pester -Path ./utilities/tools/tests/ConvertTo-ARMTemplate-SkipMetadataCleanup.Tests.ps1 -Verbose
   job_test_SkipBicepCleanUp:
     runs-on: windows-latest
     name: 'Run test for -SkipBicepCleanUp parameter'
@@ -59,7 +60,7 @@ jobs:
       - name: 'Run Pester tests'
         shell: pwsh
         run: |
-          Invoke-Pester -Path ./utilities/tools/ConvertTo-ARMTemplate-SkipBicepCleanUp.Tests.ps1 -Verbose
+          Invoke-Pester -Path ./utilities/tools/tests/ConvertTo-ARMTemplate-SkipBicepCleanUp.Tests.ps1 -Verbose
   job_test_SkipWorkflowUpdate:
     runs-on: windows-latest
     name: 'Run test for -SkipWorkflowUpdate parameter'
@@ -72,4 +73,4 @@ jobs:
       - name: 'Run Pester tests'
         shell: pwsh
         run: |
-          Invoke-Pester -Path ./utilities/tools/ConvertTo-ARMTemplate-SkipWorkflowUpdate.Tests.ps1 -Verbose
+          Invoke-Pester -Path ./utilities/tools/tests/ConvertTo-ARMTemplate-SkipWorkflowUpdate.Tests.ps1 -Verbose
