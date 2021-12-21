@@ -14,7 +14,7 @@ As Bicep is still in a beta phase and many people are used to ARM, it may make s
 
 ## what it does
 
-The script finds all 'deploy.bicep' files and tries to convert them to json based ARM templates
+The script finds all 'deploy.bicep' files and tries to convert them to json-based ARM templates
 by using the following steps.
 1. Remove existing deploy.json files
 1. Convert bicep files to json
