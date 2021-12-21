@@ -15,24 +15,34 @@ BeforeAll {
     $deployBicepFilesCount = (Get-ChildItem -Recurse $armFolderPath | Where-Object { $_.Name -match 'deploy.bicep' }).Count
     $deployParentBicepFilesCount = (Get-ChildItem -Recurse $armFolderPath -Depth 2 | Where-Object { $_.Name -match 'deploy.bicep' }).Count
 
-    $workflowFolderPath = Join-Path $rootPath '.github' 'workflows'
-    $moduleWorkflowFiles = Get-ChildItem -Path $workflowFolderPath -Filter 'ms.*.yml' -File
+    # GitHub Workflows
+    $moduleWorkflowFiles = Get-ChildItem -Path (Join-Path $rootPath '.github' 'workflows') -Filter 'ms.*.yml' -File
+    $originalModuleWorkflowWithBicep = 0
+    foreach ($workFlowFile in $moduleWorkflowFiles) {
+        foreach ($line in (Get-Content -Path $workFlowFile.FullName)) {
+            if ($line.Contains('*.bicep')) {
+                $originalModuleWorkflowWithBicep += 1
+                break
+            }
+        }
+    }
 
+    # Azure DevOps pipelines
     $adoModulePipelineFiles = Get-ChildItem -Path (Join-Path $rootPath '.github' 'modulePipelines') -Filter 'ms.*.yml' -File
+    $originalModulePipelinesWithBicep = 0
+    foreach ($adoModulePipelineFile in $adoModulePipelineFiles) {
+        foreach ($line in (Get-Content -Path $adoModulePipelineFile.FullName)) {
+            if ($line.Contains('*.bicep')) {
+                $originalModulePipelinesWithBicep += 1
+                break
+            }
+        }
+    }
 }
 
 Describe 'Test default behavior' -Tag 'Default' {
 
     BeforeAll {
-        $moduleWorkflowFilesToChange = 0
-        foreach ($workFlowFile in $moduleWorkflowFiles) {
-            foreach ($line in (Get-Content -Path $workFlowFile.FullName)) {
-                if ($line.Contains('deploy.bicep')) {
-                    $moduleWorkflowFilesToChange += 1
-                    break
-                }
-            }
-        }
         . "$toolsPath\ConvertTo-ARMTemplate.ps1" -Path $rootPath
     }
 
@@ -76,7 +86,7 @@ Describe 'Test default behavior' -Tag 'Default' {
             }
         }
 
-        $moduleWorkflowFilesUpdated | Should -Be $moduleWorkflowFilesToChange
+        $moduleWorkflowFilesUpdated | Should -Be $originalModuleWorkflowWithBicep
     }
 
     AfterAll {
@@ -89,15 +99,6 @@ Describe 'Test default behavior' -Tag 'Default' {
 Describe 'Test flag to including children' -Tag 'ConvertChildren' {
 
     BeforeAll {
-        $moduleWorkflowFilesToChange = 0
-        foreach ($workFlowFile in $moduleWorkflowFiles) {
-            foreach ($line in (Get-Content -Path $workFlowFile.FullName)) {
-                if ($line.Contains('deploy.bicep')) {
-                    $moduleWorkflowFilesToChange += 1
-                    break
-                }
-            }
-        }
         . "$toolsPath\ConvertTo-ARMTemplate.ps1" -Path $rootPath -ConvertChildren
     }
 
@@ -127,7 +128,7 @@ Describe 'Test flag to including children' -Tag 'ConvertChildren' {
         $metadataFound | Should -Be $false
     }
 
-    It 'all pipeline files are updated' {
+    It 'All GitHub workflow files are updated' {
         $moduleWorkflowFilesUpdated = 0
 
         foreach ($workFlowFile in $moduleWorkflowFiles) {
@@ -140,9 +141,21 @@ Describe 'Test flag to including children' -Tag 'ConvertChildren' {
                 }
             }
         }
+        $moduleWorkflowFilesUpdated | Should -Be $originalModuleWorkflowWithBicep
+    }
 
-        Write-Verbose "$moduleWorkflowFilesUpdated workflow file(s) updated"
-        $moduleWorkflowFilesUpdated | Should -Be $moduleWorkflowFilesToChange
+        It 'All Azure DevOps pipeline files are changed' {
+        $modulePipelineFileUpdated = 0
+
+        foreach ($pipelineFile in $adoModulePipelineFiles) {
+            foreach ($line in (Get-Content -Path $pipelineFile.FullName)) {
+                if ($line.Contains('deploy.json')) {
+                    $modulePipelineFileUpdated += 1
+                    break
+                }
+            }
+        }
+        $modulePipelineFileUpdated | Should -Be $originalModulePipelinesWithBicep
     }
 
     AfterAll {
@@ -155,15 +168,6 @@ Describe 'Test flag to including children' -Tag 'ConvertChildren' {
 Describe 'Test skip flags' -Tag 'Skip' {
 
     BeforeAll {
-        $moduleWorkflowFilesToChange = 0
-        foreach ($workFlowFile in $moduleWorkflowFiles) {
-            foreach ($line in (Get-Content -Path $workFlowFile.FullName)) {
-                if ($line.Contains('deploy.bicep')) {
-                    $moduleWorkflowFilesToChange += 1
-                    break
-                }
-            }
-        }
         . "$toolsPath\ConvertTo-ARMTemplate.ps1" -Path $rootPath -SkipBicepCleanUp
     }
 
