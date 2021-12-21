@@ -7,7 +7,7 @@ param ()
 BeforeAll {
     # Define paths
     $rootPath = (Get-Item $PSScriptRoot).Parent.Parent.Parent.FullName
-    $armFolderPath = Join-Path $rootPath 'arm'
+    $armFolderPath = Join-Path $rootPath 'Arm'
     $toolsPath = Join-Path $rootPath 'utilities' 'tools'
 
     # Collect original files
@@ -44,20 +44,20 @@ BeforeAll {
 Describe 'Test default behavior' -Tag 'Default' {
 
     BeforeAll {
-        . "$toolsPath\ConvertTo-ARMTemplate.ps1" -Path $rootPath
+        . (Join-Path $toolsPath 'ConvertTo-ARMTemplate.ps1') -Path $rootPath
     }
 
-    It 'all deploy.bicep files are converted to deploy.json' {
+    It 'All top-level deploy.bicep files are converted to deploy.json' {
         $deployJsonFilesCount = (Get-ChildItem -Recurse $armFolderPath | Where-Object { $_.FullName -match 'deploy.json' }).Count
         $deployJsonFilesCount | Should -Be $deployParentBicepFilesCount
     }
 
-    It 'all bicep files are removed' {
+    It 'All bicep files are removed' {
         $bicepFilesCount = (Get-ChildItem -Recurse $armFolderPath | Where-Object { $_.FullName -match '.*.bicep' }).Count
         $bicepFilesCount | Should -Be 0
     }
 
-    It 'all json files have metadata removed' {
+    It 'All json files have metadata removed' {
         $deployJsonFiles = (Get-ChildItem -Recurse $armFolderPath | Where-Object { $_.FullName -match 'deploy.json' })
         $metadataFound = $false
 
@@ -73,7 +73,7 @@ Describe 'Test default behavior' -Tag 'Default' {
         $metadataFound | Should -Be $false
     }
 
-    It 'all pipeline files are updated' {
+    It 'All pipeline files are updated' {
         $moduleWorkflowFilesUpdated = 0
 
         foreach ($workFlowFile in $moduleWorkflowFiles) {
@@ -89,31 +89,25 @@ Describe 'Test default behavior' -Tag 'Default' {
 
         $moduleWorkflowFilesUpdated | Should -Be $originalModuleWorkflowWithBicep
     }
-
-    AfterAll {
-        # Set test suite to blank
-        git clean -fd
-        git reset --hard
-    }
 }
 
 Describe 'Test flag to including children' -Tag 'ConvertChildren' {
 
     BeforeAll {
-        . "$toolsPath\ConvertTo-ARMTemplate.ps1" -Path $rootPath -ConvertChildren
+        . (Join-Path $toolsPath 'ConvertTo-ARMTemplate.ps1') -Path $rootPath -ConvertChildren
     }
 
-    It 'all deploy.bicep files are converted to deploy.json' {
+    It 'All deploy.bicep files are converted to deploy.json' {
         $deployJsonFilesCount = (Get-ChildItem -Recurse $armFolderPath | Where-Object { $_.FullName -match 'deploy.json' }).Count
         $deployJsonFilesCount | Should -Be $deployBicepFilesCount
     }
 
-    It 'all bicep files are removed' {
+    It 'All bicep files are removed' {
         $bicepFilesCount = (Get-ChildItem -Recurse $armFolderPath | Where-Object { $_.FullName -match '.*.bicep' }).Count
         $bicepFilesCount | Should -Be 0
     }
 
-    It 'all json files have metadata removed' {
+    It 'All json files have metadata removed' {
         $deployJsonFiles = (Get-ChildItem -Recurse $armFolderPath | Where-Object { $_.FullName -match 'deploy.json' })
         $metadataFound = $false
 
@@ -158,31 +152,25 @@ Describe 'Test flag to including children' -Tag 'ConvertChildren' {
         }
         $modulePipelineFileUpdated | Should -Be $originalModulePipelinesWithBicep
     }
-
-    AfterAll {
-        # Set test suite to blank
-        git clean -fd
-        git reset --hard
-    }
 }
 
 Describe 'Test skip flags' -Tag 'Skip' {
 
     BeforeAll {
-        . "$toolsPath\ConvertTo-ARMTemplate.ps1" -Path $rootPath -SkipBicepCleanUp
+        . (Join-Path $toolsPath 'ConvertTo-ARMTemplate.ps1') -Path $rootPath -SkipBicepCleanUp -SkipMetadataCleanup -SkipPipelineUpdate
     }
 
-    It 'all deploy.bicep files are converted to deploy.json' {
+    It 'All deploy.bicep files are converted to deploy.json' {
         $deployJsonFilesCount = (Get-ChildItem -Recurse $armFolderPath | Where-Object { $_.FullName -match 'deploy.json' }).Count
         $deployJsonFilesCount | Should -Be $deployParentBicepFilesCount
     }
 
-    It 'all bicep files are still there' {
+    It 'All bicep files are still there' {
         $bicepFilesCount = (Get-ChildItem -Recurse $armFolderPath | Where-Object { $_.FullName -match '.*.bicep' }).Count
         $bicepFilesCount | Should -Be $bicepFilesCount
     }
 
-    It 'all json files still have metadata' {
+    It 'All json files still have metadata' {
         $deployJsonFiles = (Get-ChildItem -Recurse $armFolderPath | Where-Object { $_.FullName -match 'deploy.json' })
         $metadataFound = $false
 
@@ -224,11 +212,5 @@ Describe 'Test skip flags' -Tag 'Skip' {
             }
         }
         $modulePipelineFileUpdated | Should -Be 0
-    }
-
-    AfterAll {
-        # Set test suite to blank
-        git clean -fd
-        git reset --hard
     }
 }
