@@ -4,12 +4,9 @@ on:
   push:
     branches:
       - main
+      - 'users/rahalan/TestConversionScript'
     paths:
       - 'utilities/tools/ConvertTo-ARMTemplate**'
-
-env:
-  pipelinePrincipalGitUserName: 'CARMLPipelinePrincipal'
-  pipelinePrincipalGitUserEmail: 'CARML@noreply.github.com'
 
 jobs:
   job_test_Default:
