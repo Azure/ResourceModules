@@ -83,7 +83,7 @@ if ($PSCmdlet.ShouldProcess("[$($BicepFilesToConvert.count)] deploy.bicep file(s
     # parallelism is not supported on GitHub runners
     #$BicepFilesToConvert | ForEach-Object -ThrottleLimit $env:NUMBER_OF_PROCESSORS -Parallel {
     $BicepFilesToConvert | ForEach-Object {
-        Invoke-Expression -Command "az bicep build --file '$_'"
+        az bicep build --file $_
     }
 }
 
