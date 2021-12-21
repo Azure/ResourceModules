@@ -39,3 +39,42 @@ jobs:
         shell: pwsh
         run: |
           Invoke-Pester -Path ./utilities/tools/ConvertTo-ARMTemplate-ConvertChildren.Tests.ps1 -Verbose
+  job_test_SkipMetadataCleanup:
+    runs-on: windows-latest
+    name: 'Run test for -SkipMetadataCleanup parameter'
+    steps:
+      - name: 'Checkout'
+        uses: actions/checkout@v2
+        with:
+          fetch-depth: 0
+          token: '${{ secrets.PLATFORM_REPO_UPDATE_PAT }}' # Sets general GIT credentials up
+      - name: 'Run Pester tests'
+        shell: pwsh
+        run: |
+          Invoke-Pester -Path ./utilities/tools/ConvertTo-ARMTemplate-SkipMetadataCleanup.Tests.ps1 -Verbose
+  job_test_SkipBicepCleanUp:
+    runs-on: windows-latest
+    name: 'Run test for -SkipBicepCleanUp parameter'
+    steps:
+      - name: 'Checkout'
+        uses: actions/checkout@v2
+        with:
+          fetch-depth: 0
+          token: '${{ secrets.PLATFORM_REPO_UPDATE_PAT }}' # Sets general GIT credentials up
+      - name: 'Run Pester tests'
+        shell: pwsh
+        run: |
+          Invoke-Pester -Path ./utilities/tools/ConvertTo-ARMTemplate-SkipBicepCleanUp.Tests.ps1 -Verbose
+  job_test_SkipWorkflowUpdate:
+    runs-on: windows-latest
+    name: 'Run test for -SkipWorkflowUpdate parameter'
+    steps:
+      - name: 'Checkout'
+        uses: actions/checkout@v2
+        with:
+          fetch-depth: 0
+          token: '${{ secrets.PLATFORM_REPO_UPDATE_PAT }}' # Sets general GIT credentials up
+      - name: 'Run Pester tests'
+        shell: pwsh
+        run: |
+          Invoke-Pester -Path ./utilities/tools/ConvertTo-ARMTemplate-SkipWorkflowUpdate.Tests.ps1 -Verbose
