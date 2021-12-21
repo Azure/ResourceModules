@@ -27,6 +27,9 @@ function Invoke-ResourceRemoval {
         [string] $Type
     )
 
+    Write-Verbose ('Resource ID [{0}]' -f $resourceId) -Verbose
+    Write-Verbose ('Resource Type [{0}]' -f $type) -Verbose
+
     switch ($type) {
         'Microsoft.Insights/diagnosticSettings' {
             $parentResourceId = $resourceId.Split('/providers/{0}' -f $type)[0]
@@ -34,6 +37,33 @@ function Invoke-ResourceRemoval {
             if ($PSCmdlet.ShouldProcess("Diagnostic setting [$resourceName]", 'Remove')) {
                 $null = Remove-AzDiagnosticSetting -ResourceId $parentResourceId -Name $resourceName
             }
+            break
+        }
+        'Microsoft.KeyVault/vaults/accessPolicies' {
+            Write-Verbose ('Skip resource removal for type [{0}]. Reason: handled by different logic.' -f $type) -Verbose
+            break
+        }
+        'Microsoft.Compute/diskEncryptionSets' {
+            # Pre-Removal
+            # -----------
+            # Remove access policies on key vault
+            $resourceGroupName = $resourceId.Split('/')[4]
+            $resourceName = Split-Path $resourceId -Leaf
+
+            $diskEncryptionSet = Get-AzDiskEncryptionSet -Name $resourceName -ResourceGroupName $resourceGroupName
+            $keyVaultResourceId = $diskEncryptionSet.ActiveKey.SourceVault.Id
+            $keyVaultName = Split-Path $keyVaultResourceId -Leaf
+            $objectId = $diskEncryptionSet.Identity.PrincipalId
+
+            Write-Verbose ('keyVaultResourceId [{0}]' -f $keyVaultResourceId) -Verbose
+            Write-Verbose ('objectId [{0}]' -f $objectId) -Verbose
+            if ($PSCmdlet.ShouldProcess(('Access policy [{0}] from key vault [{1}]' -f $objectId, $keyVaultName), 'Remove')) {
+                $null = Remove-AzKeyVaultAccessPolicy -VaultName $keyVaultName -ObjectId $objectId
+            }
+
+            # Actual removal
+            # --------------
+            $null = Remove-AzResource -ResourceId $resourceId -Force -ErrorAction 'Stop'
             break
         }
         'Microsoft.RecoveryServices/vaults' {
