@@ -24,7 +24,7 @@ module pid_cuaId '.bicep/nested_cuaId.bicep' = if (!empty(cuaId)) {
   params: {}
 }
 
-resource diskEncryptionSet 'Microsoft.Compute/diskEncryptionSets@2020-12-01' = {
+resource diskEncryptionSet 'Microsoft.Compute/diskEncryptionSets@2021-04-01' = {
   name: name
   location: location
   tags: tags
@@ -61,31 +61,9 @@ module keyVaultAccessPolicies '.bicep/nested_kvAccessPolicy.bicep' = {
       }
     ]
   }
-  // This is to support access policies to kv in different subscription and resource group than the automation account.
-  // The current scope is used by default if no linked service is intended to be created.
+  // This is to support access policies to KV in different subscription and resource group than the disk encryption set.
   scope: resourceGroup(split(keyVaultId, '/')[2], split(keyVaultId, '/')[4])
 }
-
-// resource keyVaultAccessPolicies 'Microsoft.KeyVault/vaults/accessPolicies@2019-09-01' = {
-//   name: '${last(split(keyVaultId, '/'))}/add'
-//   properties: {
-//     accessPolicies: [
-//       {
-//         tenantId: subscription().tenantId
-//         objectId: reference('Microsoft.Compute/diskEncryptionSets/${diskEncryptionSet.name}', '2020-12-01', 'Full').identity.principalId
-//         permissions: {
-//           keys: [
-//             'get'
-//             'wrapKey'
-//             'unwrapKey'
-//           ]
-//           secrets: []
-//           certificates: []
-//         }
-//       }
-//     ]
-//   }
-// }
 
 module diskEncryptionSet_rbac '.bicep/nested_rbac.bicep' = [for (roleAssignment, index) in roleAssignments: {
   name: '${uniqueString(deployment().name, location)}-DiskEncrSet-Rbac-${index}'
