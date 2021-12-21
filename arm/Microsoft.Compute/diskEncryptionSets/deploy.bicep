@@ -45,7 +45,6 @@ module keyVaultAccessPolicies '.bicep/nested_kvAccessPolicy.bicep' = {
   name: '${uniqueString(deployment().name, location)}-DiskEncrSet-KVAccessPolicies'
   params: {
     keyVaultName: last(split(keyVaultId, '/'))
-    name: diskEncryptionSet.identity.principalId
     accessPolicies: [
       {
         tenantId: subscription().tenantId
