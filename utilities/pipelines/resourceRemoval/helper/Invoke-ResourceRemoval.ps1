@@ -59,6 +59,7 @@ function Invoke-ResourceRemoval {
 
             $diskEncryptionSet = Get-AzDiskEncryptionSet -Name $resourceName -ResourceGroupName $resourceGroupName
             $keyVaultResourceId = $diskEncryptionSet.ActiveKey.SourceVault.Id
+            $keyVaultName = Split-Path $keyVaultResourceId -Leaf
             $objectId = $diskEncryptionSet.Identity.PrincipalId
 
             Write-Verbose ('keyVaultResourceId [{0}]' -f $keyVaultResourceId) -Verbose
