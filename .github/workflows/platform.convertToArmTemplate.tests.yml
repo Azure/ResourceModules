@@ -17,11 +17,27 @@ jobs:
         uses: actions/checkout@v2
         with:
           fetch-depth: 0
-          token: '${{ secrets.PLATFORM_REPO_UPDATE_PAT }}' # Sets general GIT credentials up
+          # token: '${{ secrets.PLATFORM_REPO_UPDATE_PAT }}' # Sets general GIT credentials up
       - name: 'Run Pester tests'
         shell: pwsh
         run: |
-          Invoke-Pester -Path "$env:GITHUB_WORKSPACE/utilities/tools/tests/ConvertTo-ARMTemplate.Tests.ps1" -Verbose
+          Invoke-Pester -Configuration @{
+            Run        = @{
+              Container = New-PesterContainer -Path (Join-Path "$env:GITHUB_WORKSPACE" 'utilities' 'tools' 'tests' 'ConvertTo-ARMTemplate.Tests.ps1')
+            }
+            # Filter     = @{
+            #   ExcludeTag = '...'
+            # }
+            TestResult = @{
+              TestSuiteName = 'Conversion Tests'
+              OutputPath    = Join-Path "$env:GITHUB_WORKSPACE" 'utilities' 'tools' 'tests' 'conversion-testResults.xml'
+              OutputFormat  = 'JUnitXml'
+              Enabled       = $true
+            }
+            Output     = @{
+              Verbosity = 'Detailed'
+            }
+          }
   # job_test_Default:
   #   runs-on: windows-latest
   #   name: 'Run test for default parameter'
@@ -74,9 +90,9 @@ jobs:
   #       shell: pwsh
   #       run: |
   #         Invoke-Pester -Path ./utilities/tools/tests/ConvertTo-ARMTemplate-SkipBicepCleanUp.Tests.ps1 -Verbose
-  # job_test_SkipWorkflowUpdate:
+  # job_test_SkipPipelineUpdate:
   #   runs-on: windows-latest
-  #   name: 'Run test for -SkipWorkflowUpdate parameter'
+  #   name: 'Run test for -SkipPipelineUpdate parameter'
   #   steps:
   #     - name: 'Checkout'
   #       uses: actions/checkout@v2
@@ -86,4 +102,4 @@ jobs:
   #     - name: 'Run Pester tests'
   #       shell: pwsh
   #       run: |
-  #         Invoke-Pester -Path ./utilities/tools/tests/ConvertTo-ARMTemplate-SkipWorkflowUpdate.Tests.ps1 -Verbose
+  #         Invoke-Pester -Path ./utilities/tools/tests/ConvertTo-ARMTemplate-SkipPipelineUpdate.Tests.ps1 -Verbose
