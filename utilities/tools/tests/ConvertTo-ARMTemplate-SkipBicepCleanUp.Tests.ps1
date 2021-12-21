@@ -1,8 +1,8 @@
 ﻿Describe 'Convert bicep files to ARM' {
     BeforeAll {
         $rootPath = Get-Location
-        $armFolderPath = Join-Path -Path $rootPath -ChildPath 'arm'
-        $toolsPath = Join-Path -Path $rootPath -ChildPath 'utilities\tools'
+        $armFolderPath = Join-Path $rootPath 'arm'
+        $toolsPath = Join-Path $rootPath 'utilities' 'tools'
 
         $deployParentBicepFilesCount = (Get-ChildItem -Recurse $armFolderPath -Depth 2 | Where-Object { $_.Name -match 'deploy.bicep' }).Count
         $deployBicepFilesCount = (Get-ChildItem -Recurse $armFolderPath | Where-Object { $_.Name -like '*.bicep' }).Count
@@ -11,7 +11,7 @@
         Write-Verbose "$deployParentBicepFilesCount deploy.bicep file(s) found"
         Write-Verbose "$nestedBicepFilesCount nested bicep file(s) found"
 
-        $workflowFolderPath = Join-Path -Path $rootPath -ChildPath '.github\workflows'
+        $workflowFolderPath = Join-Path $rootPath '.github' 'workflows'
         $workflowFiles = Get-ChildItem -Path $workflowFolderPath -Filter 'ms.*.yml' -File -Force
         $workflowFilesToChange = 0
 
