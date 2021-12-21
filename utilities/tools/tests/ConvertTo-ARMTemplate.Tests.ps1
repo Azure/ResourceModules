@@ -1,7 +1,7 @@
 ﻿# TEST FILE for script [ConvertTo-ARMTemplate.ps1]
 
 # Variables are used but not detected as they are not inside the same block
-[Diagnostics.CodeAnalysis.SuppressMessageAttribute("PSUseDeclaredVarsMoreThanAssignments", Scope="Function", Target="*")]
+[Diagnostics.CodeAnalysis.SuppressMessageAttribute('PSUseDeclaredVarsMoreThanAssignments', '')]
 param ()
 
 BeforeAll {
@@ -144,7 +144,7 @@ Describe 'Test flag to including children' -Tag 'ConvertChildren' {
         $moduleWorkflowFilesUpdated | Should -Be $originalModuleWorkflowWithBicep
     }
 
-        It 'All Azure DevOps pipeline files are changed' {
+    It 'All Azure DevOps pipeline files are changed' {
         $modulePipelineFileUpdated = 0
 
         foreach ($pipelineFile in $adoModulePipelineFiles) {
