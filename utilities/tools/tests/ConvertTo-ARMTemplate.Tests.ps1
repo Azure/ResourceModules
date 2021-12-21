@@ -27,7 +27,7 @@ BeforeAll {
     }
 
     # Azure DevOps pipelines
-    $adoModulePipelineFiles = Get-ChildItem -Path (Join-Path $rootPath '.github' 'modulePipelines') -Filter 'ms.*.yml' -File
+    $adoModulePipelineFiles = Get-ChildItem -Path (Join-Path $rootPath '.azuredevops' 'modulePipelines') -Filter 'ms.*.yml' -File
     $originalModulePipelinesWithBicep = 0
     foreach ($adoModulePipelineFile in $adoModulePipelineFiles) {
         foreach ($line in (Get-Content -Path $adoModulePipelineFile.FullName)) {
