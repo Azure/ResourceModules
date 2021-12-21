@@ -27,7 +27,7 @@ The script can be called with the following parameters:
 | -SkipBicepCleanUp | Skip removal of bicep files and folders |
 | -SkipWorkflowUpdate | Skip replacing .bicep with .json in workflow files |
 
-## examples
+## Examples
 
 Converts top level bicep modules to json based ARM template, cleaning up all bicep files and folders and updating the workflow files to use the json files.
 ```powershell
