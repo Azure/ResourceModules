@@ -64,6 +64,7 @@ function Invoke-ResourceRemoval {
             # Actual removal
             # --------------
             $null = Remove-AzResource -ResourceId $resourceId -Force -ErrorAction 'Stop'
+            break
         }
         'Microsoft.RecoveryServices/vaults' {
             # Pre-Removal
