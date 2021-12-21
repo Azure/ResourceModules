@@ -10,6 +10,16 @@ param keyVaultId string
 @description('Required. Key URL (with version) pointing to a key or secret in KeyVault.')
 param keyUrl string
 
+@description('Optional. The type of key used to encrypt the data of the disk.')
+@allowed([
+  'EncryptionAtRestWithCustomerKey'
+  'EncryptionAtRestWithPlatformAndCustomerKeys'
+])
+param encryptionType string = 'EncryptionAtRestWithCustomerKey'
+
+@description('Optional. Set this flag to true to enable auto-updating of this disk encryption set to the latest key version.')
+param rotationToLatestKeyVersionEnabled bool = false
+
 @description('Optional. Array of role assignment objects that contain the \'roleDefinitionIdOrName\' and \'principalId\' to define RBAC role assignments on this resource. In the roleDefinitionIdOrName attribute, you can provide either the display name of the role definition, or its fully qualified ID in the following format: \'/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11\'')
 param roleAssignments array = []
 
@@ -38,6 +48,8 @@ resource diskEncryptionSet 'Microsoft.Compute/diskEncryptionSets@2021-04-01' = {
       }
       keyUrl: keyUrl
     }
+    encryptionType: encryptionType
+    rotationToLatestKeyVersionEnabled: rotationToLatestKeyVersionEnabled
   }
 }
 
