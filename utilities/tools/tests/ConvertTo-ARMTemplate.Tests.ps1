@@ -5,10 +5,12 @@
 param ()
 
 BeforeAll {
+    # Define paths
     $rootPath = (Get-Item $PSScriptRoot).Parent.Parent.Parent.FullName
     $armFolderPath = Join-Path $rootPath 'arm'
     $toolsPath = Join-Path $rootPath 'utilities' 'tools'
 
+    # Collect original files
     $bicepFilesCount = (Get-ChildItem -Recurse $armFolderPath | Where-Object { $_.Name -like '*.bicep' }).Count
     $nestedBicepFilesCount = (Get-ChildItem -Recurse $armFolderPath | Where-Object { $_.Name -like 'nested_*bicep' }).Count
     $deployBicepFilesCount = (Get-ChildItem -Recurse $armFolderPath | Where-Object { $_.Name -match 'deploy.bicep' }).Count
