@@ -15,11 +15,13 @@ This template deploys a disk encryption set.
 | Parameter Name | Type | Default Value | Possible Values | Description |
 | :-- | :-- | :-- | :-- | :-- |
 | `cuaId` | string |  |  | Optional. Customer Usage Attribution ID (GUID). This GUID must be previously registered |
+| `encryptionType` | string | `EncryptionAtRestWithCustomerKey` | `[EncryptionAtRestWithCustomerKey, EncryptionAtRestWithPlatformAndCustomerKeys]` | Optional. The type of key used to encrypt the data of the disk. |
 | `keyUrl` | string |  |  | Required. Key URL (with version) pointing to a key or secret in KeyVault. |
 | `keyVaultId` | string |  |  | Required. Resource ID of the KeyVault containing the key or secret. |
 | `location` | string | `[resourceGroup().location]` |  | Optional. Resource location. |
 | `name` | string |  |  | Required. The name of the disk encryption set that is being created. |
 | `roleAssignments` | array | `[]` |  | Optional. Array of role assignment objects that contain the 'roleDefinitionIdOrName' and 'principalId' to define RBAC role assignments on this resource. In the roleDefinitionIdOrName attribute, you can provide either the display name of the role definition, or its fully qualified ID in the following format: '/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11' |
+| `rotationToLatestKeyVersionEnabled` | bool |  |  | Optional. Set this flag to true to enable auto-updating of this disk encryption set to the latest key version. |
 | `tags` | object | `{object}` |  | Optional. Tags of the disk encryption resource. |
 
 ### Parameter Usage: `roleAssignments`
