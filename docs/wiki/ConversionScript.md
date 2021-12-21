@@ -4,7 +4,7 @@ As Bicep is still in a beta phase and many people are used to ARM, it may make s
 
 ## location
 
-You can find the script under /utilities/tools/ConvertTo-ARMTemplate.ps1
+`You can find the script under /utilities/tools/ConvertTo-ARMTemplate.ps1`
 
 └───utilities
     │
