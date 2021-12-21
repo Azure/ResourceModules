@@ -12,12 +12,15 @@ jobs:
   job_test_Default:
     runs-on: windows-latest
     name: 'Run test for default parameter'
+    strategy:
+      fail-fast: false
+      matrix:
+        tags: ['Default', 'ConvertChildren', 'Skip']
     steps:
       - name: 'Checkout'
         uses: actions/checkout@v2
         with:
           fetch-depth: 0
-          # token: '${{ secrets.PLATFORM_REPO_UPDATE_PAT }}' # Sets general GIT credentials up
       - name: 'Run Pester tests'
         shell: pwsh
         run: |
@@ -27,12 +30,12 @@ jobs:
                 Join-Path "$env:GITHUB_WORKSPACE" 'utilities' 'tools' 'tests' 'ConvertTo-ARMTemplate.Tests.ps1'
               )
             }
-            # Filter     = @{
-            #   ExcludeTag = '...'
-            # }
+            Filter     = @{
+              Tag = '${{ matrix.tags }}'
+            }
             TestResult = @{
               TestSuiteName = 'Conversion Tests'
-              OutputPath    = Join-Path "$env:GITHUB_WORKSPACE" 'utilities' 'tools' 'tests' 'conversion-testResults.xml'
+              OutputPath    = Join-Path "$env:GITHUB_WORKSPACE" 'utilities' 'tools' 'tests' 'conversion-testResults-${{ matrix.tags }}.xml'
               OutputFormat  = 'JUnitXml'
               Enabled       = $true
             }
@@ -40,6 +43,11 @@ jobs:
               Verbosity = 'Detailed'
             }
           }
+      - name: Publish Test Results
+        uses: EnricoMi/publish-unit-test-result-action@v1
+        if: always()
+        with:
+          files: 'utilities/tools/tests/conversion-testResults-${{ matrix.tags }}.xml'
   # job_test_Default:
   #   runs-on: windows-latest
   #   name: 'Run test for default parameter'
