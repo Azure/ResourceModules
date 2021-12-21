@@ -563,7 +563,6 @@ module virtualMachine_backup '.bicep/nested_backup.bicep' = if (!empty(backupVau
     vm_microsoftAntiMalwareExtension
     vm_networkWatcherAgentExtension
     vm_dependencyAgentExtension
-    vm_dependencyAgentExtension
     vm_desiredStateConfigurationExtension
     vm_customScriptExtension
   ]
