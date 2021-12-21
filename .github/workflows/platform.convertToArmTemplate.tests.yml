@@ -13,6 +13,19 @@ env:
   pipelinePrincipalGitUserEmail: 'CARML@noreply.github.com'
 
 jobs:
+  job_test_Default:
+    runs-on: windows-latest
+    name: 'Run test for default parameter'
+    steps:
+      - name: 'Checkout'
+        uses: actions/checkout@v2
+        with:
+          fetch-depth: 0
+          token: '${{ secrets.PLATFORM_REPO_UPDATE_PAT }}' # Sets general GIT credentials up
+      - name: 'Run Pester tests'
+        shell: pwsh
+        run: |
+          Invoke-Pester -Path ./utilities/tools/ConvertTo-ARMTemplate-Default.Tests.ps1 -Verbose
   job_test_ConvertChildren:
     runs-on: windows-latest
     name: 'Run test for -ConvertChildren parameter'
