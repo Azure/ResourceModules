@@ -39,17 +39,18 @@ function Invoke-ResourceRemoval {
             }
             break
         }
-        # 'Microsoft.KeyVault/vaults/accessPolicies' {
-        #     $keyVaultResourceId = $resourceId.Split('/accessPolicies')[0]
-        #     $keyVaultName = Split-Path $keyVaultResourceId -Leaf
-        #     $objectId = Split-Path $ResourceId -Leaf
-        #     Write-Verbose ('keyVaultResourceId [{0}]' -f $keyVaultResourceId) -Verbose
-        #     Write-Verbose ('objectId [{0}]' -f $objectId) -Verbose
-        #     if ($PSCmdlet.ShouldProcess("Diagnostic setting [$resourceName]", 'Remove')) {
-        #         $null = Remove-AzKeyVaultAccessPolicy -VaultName $keyVaultName -ObjectId $objectId
-        #     }
-        #     break
-        # }
+        'Microsoft.KeyVault/vaults/accessPolicies' {
+            # $keyVaultResourceId = $resourceId.Split('/accessPolicies')[0]
+            # $keyVaultName = Split-Path $keyVaultResourceId -Leaf
+            # $objectId = Split-Path $ResourceId -Leaf
+            # Write-Verbose ('keyVaultResourceId [{0}]' -f $keyVaultResourceId) -Verbose
+            # Write-Verbose ('objectId [{0}]' -f $objectId) -Verbose
+            # if ($PSCmdlet.ShouldProcess("Diagnostic setting [$resourceName]", 'Remove')) {
+            #     $null = Remove-AzKeyVaultAccessPolicy -VaultName $keyVaultName -ObjectId $objectId
+            # }
+            Write-Verbose ('Skip resource removal for type [{0}]' -f $type) -Verbose
+            break
+        }
         'Microsoft.Compute/diskEncryptionSets' {
             # Pre-Removal
             # -----------
