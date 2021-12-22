@@ -562,7 +562,7 @@ The procedure is initiated by the script `/utilities/pipelines/resourceRemoval/I
 - (Azure DevOps) `/.azuredevops/pipelineTemplates/module.jobs.deploy.yml`
 - (GitHub) `/.github/actions/templates/validateModuleDeployment/action.yml`
 
-It uses several helper scripts that can be found in `/utilities/pipelines/resourceRemoval`
+It uses several helper scripts that can be found in the `/utilities/pipelines/resourceRemoval/helper` folder
 ## Create a specialized removal procedure
 
 You can define a custom removal procedure by **modifying the resource types removal sequence** and by **defining a custom post-removal action**. The two are independent and you can act on one or both.
