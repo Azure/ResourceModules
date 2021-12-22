@@ -18,7 +18,6 @@ This section gives you an overview of the design principals the bicep modules fo
   - [Outputs](#outputs)
 - [ReadMe](#readme)
 - [Parameter files](#parameter-files)
-- [Resource removal](#resource-removal)
 
 ---
 
@@ -500,9 +499,6 @@ While exceptions might be needed, the following guidance should be followed as m
   > name: '${deployment().name}-Table-${index}'
   > ```
 
-
-
-
 ## Outputs
 
 - Output names are in camelCase, i.e `storageAccountResourceId`
@@ -538,57 +534,3 @@ Parameter files in CARML leverage the common `deploymentParameters.json` schema 
 - Likewise, the `name` parameter we have in most modules should give some indication of the file it was deployed with. For example, a `min.parameters.json` parameter file for the virtual network module may have a `name` property with the value `sxx-az-vnet-min-001` where `min` relates to the prefix of the parameter file itself.
 - A module should have as many parameter files as it needs to evaluate all parts of the module's functionality.
 - Sensitive data should not be stored inside the parameter file but rather be injected by the use of [tokens](./ParameterFileTokens.md) or via a [key vault reference](https://docs.microsoft.com/en-us/azure/azure-resource-manager/templates/key-vault-parameter?tabs=azure-cli#reference-secrets-with-static-id).
-
-# Resource Removal
-
-Removal step is triggered after the deployment completes. This is used for several reasons:
-- Make sure to keep the validation subscription cost as low as possible.
-- Enable testing of the full module deployment at every run.
-
-The default removal procedure works fine for most of the modules created so far, so it's likely you won't have to change anything to make the module you're editing to be removed correctly after deployment.
-
-## How it works
-
-The removal process will remove all resources created during deployment. The list is identified by:
-
-1. Recursively fetching the list of resource IDs created through your deployment (resources created by deployments created by the parent one will be fetched too)
-1. Ordering the list based on resource IDs segment count (ensures child resources are removed first. E.g. `storageAccount/blobServices` comes before `storageAccount` as it has one more segments delimited by `/`)
-1. Filtering out from the list any resource used as dependencies for different modules (e.g. the commonly used Log Analytics workspace)
-1. Moving specific resource types to the top of the list (if a certain order is required). For example `vWAN` requires its `Virtual Hubs` to be removed first, even though they are no child-resources.
-
-After a resource is removed (this happens after each resource in the list), the script will execute, if defined, a **post removal operation**. This can be used for those resource types that requires a post processing, like purging a soft-deleted key vault.
-
-The procedure is initiated by the script `/utilities/pipelines/resourceRemoval/Initialize-DeploymentRemoval.ps1`, run during deployment by:
-- (Azure DevOps) `/.azuredevops/pipelineTemplates/module.jobs.deploy.yml`
-- (GitHub) `/.github/actions/templates/validateModuleDeployment/action.yml`
-
-It uses several helper scripts that can be found in the `/utilities/pipelines/resourceRemoval/helper` folder
-## Create a specialized removal procedure
-
-You can define a custom removal procedure by:
-1. influencing the **sequence** in which resource are removed by prioritizing specific resource types (_Virtual WAN_ and _Automation Account_ are examples of modules that uses this method)
-1. define a **custom removal action** to remove a resource of a _specific resource type_ (_Recovery Services Vault_ is an example of resource type that defines it)
-1. define a custom **post-removal action** to be run after removing a resource of a _specific resource type_ (_Key Vaults_ uses this to purge)
-
-Those methods can be combined independently.
-
-> **Important**: _custom_ and _post-removal_ actions will be executed when a resource of the type you specify is removed **regardless** of which deployment triggered the deployment. Make sure you do not assume the resource is in a particular state defined by your module.
-
-To modify the resource types removal **sequence**:
-1. Open the `/utilities/pipelines/resourceRemoval/Initialize-DeploymentRemoval.ps1` file.
-1. Look for the following comment: `### CODE LOCATION: Add custom removal sequence here`
-1. Add a case value that matches your module name
-1. In the case block, update the `$removalSequence` variable value to accommodate your module requirements
-1. Remember to add the `break` statement.
-
-To defina a **custom removal** action:
-1. Open the `/utilities/pipelines/resourceRemoval/helper/Invoke-ResourceRemoval.ps1` file.
-1. Look for the following comment: `### CODE LOCATION: Add custom removal action here`
-1. Add a case value that matches the resource type you want to modify the removal action for
-1. In the case block, define the resource-type-specific removal action
-
-To add a **post-removal** step:
-1. Open the `/utilities/pipelines/resourceRemoval/helper/Invoke-ResourcePostRemoval.ps1` file.
-1. Look for the following comment: `### CODE LOCATION: Add custom post-removal operation here`
-1. Add a case value that matches the resource type you want to add a post-removal operation for
-1. In the case block, define the resource-type-specific post removal action

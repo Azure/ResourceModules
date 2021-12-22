@@ -12,6 +12,7 @@
 - [Pipelines](./Pipelines)
   - [Design](./PipelinesDesign)
     - [Parameter File Tokens](./ParameterFileTokens)
+    - [Removal action](./PipelineRemovalAction)
   - [Usage](./PipelinesUsage)
 - [Contribution Guide](./ContributionGuide)
 - [Known Issues](./KnownIssues)

@@ -95,9 +95,11 @@ Note that, for the deployments we have to account for certain [prerequisites](#p
 
 #### Removal
 
-The removal phase is strongly coupled with the previous deployment phase. Fundamentally, we want to remove any test-deployed resource after its test concluded. If we would not, we would generate unnecessary costs and may temper with any subsequent test. Some resources may require a dedicated logic to be removed. This logic should be stored alongside the generally utilized removal script in the `.utilities/pipelines/resourceRemoval` folder and be referenced by the `Initialize-DeploymentRemoval.ps1` script that orchestrates the removal.
+The removal phase is strongly coupled with the previous deployment phase. Fundamentally, we want to remove any test-deployed resource after its test concluded. If we would not, we would generate unnecessary costs and may temper with any subsequent test. Some resources may require a dedicated logic to be removed.
 
 Most of the removal scripts rely on the deployment name used during the preceding deployment step. Based on this name in combination with the template file path, the removal script find the corresponding deployment and removes all contained resources.
+
+If the default behaviour doesn't fit the needs for a specific module/resource-type, see the details on how to modify it [custom removal action](PipelineRemovalAction.md) Wiki page.
 
 ### Publish
 
