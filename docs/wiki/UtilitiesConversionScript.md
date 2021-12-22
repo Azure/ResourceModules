@@ -36,7 +36,7 @@ The script can be called with the following parameters:
 | -Path | The path to the root of the repo. |
 | -ConvertChildren | Convert child resource modules to bicep. |
 | -SkipMetadataCleanup | Skip Cleanup of bicep metadata from json files |
-| -SkipbicepCleanUp | Skip removal of bicep files and folders |
+| -SkipBicepCleanUp | Skip removal of bicep files and folders |
 | -SkipPipelineUpdate | Skip replacing .bicep with .json in pipeline files |
 
 ## Examples
