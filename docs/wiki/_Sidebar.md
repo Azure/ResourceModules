@@ -10,7 +10,6 @@
   - [Design](./TestingDesign)
   - [Usage](./TestingUsage)
 - [Utilities](./Utilities.md)
-  - [Bicep to ARM conversion script](./UtilitiesConversionScript.md)
 - [Pipelines](./Pipelines)
   - [Design](./PipelinesDesign)
     - [Parameter File Tokens](./ParameterFileTokens)
