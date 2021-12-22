@@ -8,8 +8,6 @@ This page documents the conversion utility and how to use it.
 
 ### _Navigation_
 
-- [Convert bicep files into ARM helper script](#convert-bicep-files-into-arm-helper-script)
-    - [_Navigation_](#navigation)
 - [Location](#location)
 - [What it does](#what-it-does)
 - [How to use it](#how-to-use-it)
