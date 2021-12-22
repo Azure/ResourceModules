@@ -565,18 +565,30 @@ The procedure is initiated by the script `/utilities/pipelines/resourceRemoval/I
 It uses several helper scripts that can be found in the `/utilities/pipelines/resourceRemoval/helper` folder
 ## Create a specialized removal procedure
 
-You can define a custom removal procedure by **modifying the resource types removal sequence** and by **defining a custom post-removal action**. The two are independent and you can act on one or both.
+You can define a custom removal procedure by:
+1. influencing the **sequence** in which resource are removed by prioritizing specific resource types (_Virtual WAN_ and _Automation Account_ are examples of modules that uses this method)
+1. define a **custom removal action** to remove a resource of a _specific resource type_ (_Recovery Services Vault_ is an example of resource type that defines it)
+1. define a custom **post-removal action** to be run after removing a resource of a _specific resource type_ (_Key Vaults_ uses this to purge)
 
-To modify the resource types removal sequence:
+Those methods can be combined independently.
+
+> **Important**: _custom_ and _post-removal_ actions will be executed when a resource of the type you specify is removed **regardless** of which deployment triggered the deployment. Make sure you do not assume the resource is in a particular state defined by your module.
+
+To modify the resource types removal **sequence**:
 1. Open the `/utilities/pipelines/resourceRemoval/Initialize-DeploymentRemoval.ps1` file.
 1. Look for the following comment: `### CODE LOCATION: Add custom removal sequence here`
 1. Add a case value that matches your module name
 1. In the case block, update the `$removalSequence` variable value to accommodate your module requirements
 1. Remember to add the `break` statement.
 
-To add a post removal step:
+To defina a **custom removal** action:
+1. Open the `/utilities/pipelines/resourceRemoval/helper/Invoke-ResourceRemoval.ps1` file.
+1. Look for the following comment: `### CODE LOCATION: Add custom removal action here`
+1. Add a case value that matches the resource type you want to modify the removal action for
+1. In the case block, define the resource-type-specific removal action
+
+To add a **post-removal** step:
 1. Open the `/utilities/pipelines/resourceRemoval/helper/Invoke-ResourcePostRemoval.ps1` file.
 1. Look for the following comment: `### CODE LOCATION: Add custom post-removal operation here`
 1. Add a case value that matches the resource type you want to add a post-removal operation for
-
-> **Important**: post-removal steps will be executed when a resource of the type you specify is removed **regardless** of which deployment triggered the deployment. Make sure you do not assume the resource is in a particular state defined by your module.
+1. In the case block, define the resource-type-specific post removal action
