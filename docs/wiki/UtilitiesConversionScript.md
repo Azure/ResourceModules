@@ -39,7 +39,7 @@ The script can be called with the following parameters:
 | -ConvertChildren | Convert child resource modules to bicep. |
 | -SkipMetadataCleanup | Skip Cleanup of bicep metadata from json files |
 | -SkipbicepCleanUp | Skip removal of bicep files and folders |
-| -SkipWorkflowUpdate | Skip replacing .bicep with .json in workflow files |
+| -SkipPipelineUpdate | Skip replacing .bicep with .json in pipeline files |
 
 ## Examples
 
