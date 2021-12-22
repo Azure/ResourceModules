@@ -28,7 +28,7 @@ by using the following steps.
 1. Convert bicep files to json
 1. Remove bicep metadata from json
 1. Remove bicep files and folders
-1. Update workflow files - Replace .bicep with .json in workflow files
+1. Update pipeline files - Replace .bicep with .json in pipeline files
 # How to use it
 
 The script can be called with the following parameters:
