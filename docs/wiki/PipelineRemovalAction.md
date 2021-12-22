@@ -12,7 +12,7 @@ This section describes how the removal of resources deployed by a module is perf
 
 ---
 
-## Overview
+# Overview
 
 The Removal action is triggered after the deployment completes. This is used for several reasons:
 - Make sure to keep the validation subscription cost as low as possible.
@@ -20,7 +20,7 @@ The Removal action is triggered after the deployment completes. This is used for
 
 The default removal procedure works fine for most of the modules created so far, so it's likely you won't have to change anything to make the module you're editing to be removed correctly after deployment.
 
-## How it works
+# How it works
 
 The removal process will remove all resources created during deployment. The list is identified by:
 
@@ -36,7 +36,7 @@ The procedure is initiated by the script `/utilities/pipelines/resourceRemoval/I
 - (GitHub) `/.github/actions/templates/validateModuleDeployment/action.yml`
 
 It uses several helper scripts that can be found in the `/utilities/pipelines/resourceRemoval/helper` folder
-## Create a specialized removal procedure
+# Create a specialized removal procedure
 
 You can define a custom removal procedure by:
 1. influencing the **sequence** in which resource are removed by prioritizing specific resource types (_Virtual WAN_ and _Automation Account_ are examples of modules that uses this method)
