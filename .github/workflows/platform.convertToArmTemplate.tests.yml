@@ -9,68 +9,42 @@ on:
       - 'utilities/tools/tests/ConvertTo-ARMTemplate**'
 
 jobs:
-  job_test_Default:
-    runs-on: windows-latest
-    name: 'Run test for default parameter'
+  job_test_convert:
+    runs-on: ubuntu-latest
+    name: 'Test with parameter'
+    strategy:
+      fail-fast: false
+      matrix:
+        tags: ['Default', 'ConvertChildren', 'Skip']
     steps:
       - name: 'Checkout'
         uses: actions/checkout@v2
         with:
           fetch-depth: 0
-          token: '${{ secrets.PLATFORM_REPO_UPDATE_PAT }}' # Sets general GIT credentials up
       - name: 'Run Pester tests'
         shell: pwsh
         run: |
-          Invoke-Pester -Path ./utilities/tools/tests/ConvertTo-ARMTemplate-Default.Tests.ps1 -Verbose
-  job_test_ConvertChildren:
-    runs-on: windows-latest
-    name: 'Run test for -ConvertChildren parameter'
-    steps:
-      - name: 'Checkout'
-        uses: actions/checkout@v2
+          Invoke-Pester -Configuration @{
+            Run        = @{
+              Path = @(
+                Join-Path "$env:GITHUB_WORKSPACE" 'utilities' 'tools' 'tests' 'ConvertTo-ARMTemplate.Tests.ps1'
+              )
+            }
+            Filter     = @{
+              Tag = '${{ matrix.tags }}'
+            }
+            TestResult = @{
+              TestSuiteName = 'Conversion Tests'
+              OutputPath    = Join-Path "$env:GITHUB_WORKSPACE" 'utilities' 'tools' 'tests' 'conversion-testResults-${{ matrix.tags }}.xml'
+              OutputFormat  = 'JUnitXml'
+              Enabled       = $true
+            }
+            Output     = @{
+              Verbosity = 'Detailed'
+            }
+          }
+      - name: Publish Test Results
+        uses: EnricoMi/publish-unit-test-result-action@v1
+        if: always()
         with:
-          fetch-depth: 0
-          token: '${{ secrets.PLATFORM_REPO_UPDATE_PAT }}' # Sets general GIT credentials up
-      - name: 'Run Pester tests'
-        shell: pwsh
-        run: |
-          Invoke-Pester -Path ./utilities/tools/tests/ConvertTo-ARMTemplate-ConvertChildren.Tests.ps1 -Verbose
-  job_test_SkipMetadataCleanup:
-    runs-on: windows-latest
-    name: 'Run test for -SkipMetadataCleanup parameter'
-    steps:
-      - name: 'Checkout'
-        uses: actions/checkout@v2
-        with:
-          fetch-depth: 0
-          token: '${{ secrets.PLATFORM_REPO_UPDATE_PAT }}' # Sets general GIT credentials up
-      - name: 'Run Pester tests'
-        shell: pwsh
-        run: |
-          Invoke-Pester -Path ./utilities/tools/tests/ConvertTo-ARMTemplate-SkipMetadataCleanup.Tests.ps1 -Verbose
-  job_test_SkipBicepCleanUp:
-    runs-on: windows-latest
-    name: 'Run test for -SkipBicepCleanUp parameter'
-    steps:
-      - name: 'Checkout'
-        uses: actions/checkout@v2
-        with:
-          fetch-depth: 0
-          token: '${{ secrets.PLATFORM_REPO_UPDATE_PAT }}' # Sets general GIT credentials up
-      - name: 'Run Pester tests'
-        shell: pwsh
-        run: |
-          Invoke-Pester -Path ./utilities/tools/tests/ConvertTo-ARMTemplate-SkipBicepCleanUp.Tests.ps1 -Verbose
-  job_test_SkipWorkflowUpdate:
-    runs-on: windows-latest
-    name: 'Run test for -SkipWorkflowUpdate parameter'
-    steps:
-      - name: 'Checkout'
-        uses: actions/checkout@v2
-        with:
-          fetch-depth: 0
-          token: '${{ secrets.PLATFORM_REPO_UPDATE_PAT }}' # Sets general GIT credentials up
-      - name: 'Run Pester tests'
-        shell: pwsh
-        run: |
-          Invoke-Pester -Path ./utilities/tools/tests/ConvertTo-ARMTemplate-SkipWorkflowUpdate.Tests.ps1 -Verbose
+          files: 'utilities/tools/tests/conversion-testResults-${{ matrix.tags }}.xml'
