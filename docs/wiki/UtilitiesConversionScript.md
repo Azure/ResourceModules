@@ -1,4 +1,4 @@
-# Convert bicep files into ARM helper script
+# Bicep to ARM conversion script
 
 At the time of writing bicep is still in a beta phase. For this reason, some people may want to wait for bicep's _General Availability_ and prefer to use ARM Templates for the time being.
 For those scenarios, a script is supplied with the CARML library, leveraging the bicep toolkit translator/compiler, to support the conversion from CARML bicep modules to ARM Templates.
