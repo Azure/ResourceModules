@@ -6,6 +6,6 @@ This section and its sub-sections describe tools and utilities provided in this 
 
 ### _Navigation_
 
-- [Bicep to ARM conversion script](./UtilitiesConversionScript.md)
+- [Bicep to ARM conversion script](./UtilitiesConversionScript)
 
 ---
