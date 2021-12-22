@@ -545,18 +545,18 @@ Removal step is triggered after the deployment completes. This is used for sever
 - Make sure to keep the validation subscription cost as low as possible.
 - Enable testing of the full module deployment at every run.
 
-The default removal procedure works fine for most of the modules created so far, so it's likely you won't have to change anything to make your module to be removed correctly after deployment.
+The default removal procedure works fine for most of the modules created so far, so it's likely you won't have to change anything to make the module you're editing to be removed correctly after deployment.
 
 ## How it works
 
 The removal process will remove all resources created during deployment. The list is identified by:
 
-1. Getting the list of resources created by your deployment (even if created by a "nested" deployment - a deployment created by the parent one -)
-1. Ordering the list based on resourceId tokens length (ensures child resources are removed first)
-1. Removing from the list, if any, the resources used as dependencies for different modules (e.g. the commonly used Log Analytics workspace)
-1. If provided, putting on the top of the list of resources to remove specific resource types (as resource id length may not in all cases)
+1. Recursively fetching the list of resource IDs created through your deployment (resources created by deployments created by the parent one will be fetched too)
+1. Ordering the list based on resource IDs segment count (ensures child resources are removed first. E.g. `storageAccount/blobServices` comes before `storageAccount` as it has one more segments delimited by `/`)
+1. Filtering out from the list any resource used as dependencies for different modules (e.g. the commonly used Log Analytics workspace)
+1. Moving specific resource types to the top of the list (if a certain order is required). For example `vWAN` requires its `Virtual Hubs` to be removed first, even though they are no child-resources.
 
-After the removal of each resource, the script will attempt a **post removal operation**. This can be used for those resource types that requires a post processing, like purging a key vault.
+After a resource is removed (this happens after each resource in the list), the script will execute, if defined, a **post removal operation**. This can be used for those resource types that requires a post processing, like purging a soft-deleted key vault.
 
 The procedure is initiated by the script `/utilities/pipelines/resourceRemoval/Initialize-DeploymentRemoval.ps1`, run during deployment by:
 - (Azure DevOps) `/.azuredevops/pipelineTemplates/module.jobs.deploy.yml`
