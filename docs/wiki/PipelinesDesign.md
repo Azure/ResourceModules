@@ -99,10 +99,6 @@ The removal phase takes care of removing all resources deployed as part of the p
 
 For additional details on how removal works please refer to the dedicated [Removal action](PipelineRemovalAction) page.
 
-Most of the removal scripts rely on the deployment name used during the preceding deployment step. Based on this name in combination with the template file path, the removal script find the corresponding deployment and removes all contained resources.
-
-If the default behaviour doesn't fit the needs for a specific module/resource-type, see the details on how to modify it [custom removal action](PipelineRemovalAction) Wiki page.
-
 ### Publish
 
 The publish phase concludes each module's pipeline. If all previous tests succeeded (i.e. no phase failed) and the pipeline was executed in the [main\|master] branch, a new module version is published to all configured target locations. Currently we support
@@ -110,7 +106,7 @@ The publish phase concludes each module's pipeline. If all previous tests succee
 - _private bicep registry_
 
 By the time of this writing, the publishing experience works as follows:
-1. A user can optionally specific a specific version in the module's pipeline file, or during runtime. If the user does not, a default version is used
+1. A user can optionally specify a version in the module's pipeline file, or during runtime. If the user does not, a default version is used
 1. No matter what publishing location we enabled, the corresponding logic will
    1. Fetch the latest version of this module in the target location (if available)
    1. Compare it with any specified custom version the user optionally provided
