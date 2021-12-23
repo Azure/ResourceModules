@@ -94,11 +94,9 @@ function Invoke-ResourcePostRemoval {
                 if ($PSCmdlet.ShouldProcess(('Log analytics workspace [{0}]' -f $resourceId), 'Recover')) {
                     $recoveredWorkspace = New-AzOperationalInsightsWorkspace -ResourceGroupName $resourceGroupName -Name $resourceName -Location $location
                 }
-                if ($recoveredWorkspace) {
-                    # Purge service
-                    if ($PSCmdlet.ShouldProcess(('Log analytics workspace with ID [{0}]' -f $resourceId), 'Purge')) {
-                        $recoveredWorkspace | Remove-AzOperationalInsightsWorkspace -ForceDelete -Force
-                    }
+                # Purge service
+                if ($PSCmdlet.ShouldProcess(('Log analytics workspace with ID [{0}]' -f $resourceId), 'Purge')) {
+                    $recoveredWorkspace | Remove-AzOperationalInsightsWorkspace -ForceDelete -Force
                 }
             }
             break
