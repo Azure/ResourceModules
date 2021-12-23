@@ -30,7 +30,7 @@ This repository includes a collection of advanced and curated Modules consisting
 | [Action Groups](https://github.com/Azure/ResourceModules/tree/main/arm/Microsoft.Insights/actionGroups) | [!['Insights: ActionGroups'](https://github.com/Azure/ResourceModules/actions/workflows/ms.insights.actiongroups.yml/badge.svg)](https://github.com/Azure/ResourceModules/actions/workflows/ms.insights.actiongroups.yml) |
 | [Activity Log Alerts](https://github.com/Azure/ResourceModules/tree/main/arm/Microsoft.Insights/activityLogAlerts) | [!['Insights: ActivityLogAlerts'](https://github.com/Azure/ResourceModules/actions/workflows/ms.insights.activitylogalerts.yml/badge.svg)](https://github.com/Azure/ResourceModules/actions/workflows/ms.insights.activitylogalerts.yml) |
 | [Activity Logs](https://github.com/Azure/ResourceModules/tree/main/arm/Microsoft.Insights/diagnosticSettings) | [!['Insights: DiagnosticSettings'](https://github.com/Azure/ResourceModules/actions/workflows/ms.insights.diagnosticsettings.yml/badge.svg)](https://github.com/Azure/ResourceModules/actions/workflows/ms.insights.diagnosticsettings.yml) |
-| [Analysis Services](https://github.com/Azure/ResourceModules/tree/main/arm/Microsoft.AnalysisServices/servers) | [!['AnalysisServices: Servers'](https://github.com/Azure/ResourceModules/actions/workflows/ms.analysisservices.servers.yml/badge.svg)](https://github.com/Azure/ResourceModules/actions/workflows/ms.analysisservices.servers.yml) |
+| [Analysis Services Server](https://github.com/Azure/ResourceModules/tree/main/arm/Microsoft.AnalysisServices/servers) | [!['AnalysisServices: Servers'](https://github.com/Azure/ResourceModules/actions/workflows/ms.analysisservices.servers.yml/badge.svg)](https://github.com/Azure/ResourceModules/actions/workflows/ms.analysisservices.servers.yml) |
 | [API Connections](https://github.com/Azure/ResourceModules/tree/main/arm/Microsoft.Web/connections) | [!['Web: Connections'](https://github.com/Azure/ResourceModules/actions/workflows/ms.web.connections.yml/badge.svg)](https://github.com/Azure/ResourceModules/actions/workflows/ms.web.connections.yml) |
 | [API Management Services](https://github.com/Azure/ResourceModules/tree/main/arm/Microsoft.ApiManagement/service) | [!['ApiManagement: Service'](https://github.com/Azure/ResourceModules/actions/workflows/ms.apimanagement.service.yml/badge.svg)](https://github.com/Azure/ResourceModules/actions/workflows/ms.apimanagement.service.yml) |
 | [App Service Environments](https://github.com/Azure/ResourceModules/tree/main/arm/Microsoft.Web/hostingEnvironments) | [!['Web: HostingEnvironments'](https://github.com/Azure/ResourceModules/actions/workflows/ms.web.hostingenvironments.yml/badge.svg)](https://github.com/Azure/ResourceModules/actions/workflows/ms.web.hostingenvironments.yml) |
@@ -111,13 +111,11 @@ This repository includes a collection of advanced and curated Modules consisting
 | [Virtual WANs](https://github.com/Azure/ResourceModules/tree/main/arm/Microsoft.Network/virtualWans) | [!['Network: VirtualWans'](https://github.com/Azure/ResourceModules/actions/workflows/ms.network.virtualwans.yml/badge.svg)](https://github.com/Azure/ResourceModules/actions/workflows/ms.network.virtualwans.yml) |
 | [Web/Function Apps](https://github.com/Azure/ResourceModules/tree/main/arm/Microsoft.Web/sites) | [!['Web: Sites'](https://github.com/Azure/ResourceModules/actions/workflows/ms.web.sites.yml/badge.svg)](https://github.com/Azure/ResourceModules/actions/workflows/ms.web.sites.yml) |
 
-<!-- ## Contributors
+## Tooling
 
-Contributors names and contact info
-
-* [@segraef](<https://twitter.com/segraef>)
-
--->
+| Name | Status | Docs |
+| - | - | - |
+| [ConvertTo-ARMTemplate](https://github.com/Azure/ResourceModules/blob/main/utilities/tools/ConvertTo-ARMTemplate.ps1) | [![.Platform: Test - ConvertTo-ARMTemplate.ps1](https://github.com/Azure/ResourceModules/actions/workflows/platform.convertToArmTemplate.tests.yml/badge.svg?branch=main)](https://github.com/Azure/ResourceModules/actions/workflows/platform.convertToArmTemplate.tests.yml) | [link](https://github.com/Azure/ResourceModules/wiki/UtilitiesConversionScript) |
 
 ## Contributing
 

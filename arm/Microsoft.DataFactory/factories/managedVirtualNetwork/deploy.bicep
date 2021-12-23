@@ -29,4 +29,4 @@ output managedVirtualNetworkResourceGroup string = resourceGroup().name
 output managedVirtualNetworkName string = managedVirtualNetwork.name
 
 @description('The resource ID of the Managed Virtual Network.')
-output managedVirtualNetworkId string = managedVirtualNetwork.id
+output managedVirtualNetworkResourceId string = managedVirtualNetwork.id

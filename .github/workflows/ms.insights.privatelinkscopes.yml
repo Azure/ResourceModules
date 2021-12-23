@@ -29,6 +29,8 @@ on:
       - '.github/workflows/ms.insights.privatelinkscopes.yml'
       - 'arm/Microsoft.Insights/privateLinkScopes/**'
       - '!*/**/readme.md'
+      - 'utilities/pipelines/**'
+      - '!utilities/pipelines/dependencies/**'
 
 env:
   modulePath: 'arm/Microsoft.Insights/privateLinkScopes'

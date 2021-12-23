@@ -29,6 +29,8 @@ on:
       - '.github/workflows/ms.network.loadbalancers.yml'
       - 'arm/Microsoft.Network/loadBalancers/**'
       - '!*/**/readme.md'
+      - 'utilities/pipelines/**'
+      - '!utilities/pipelines/dependencies/**'
 
 env:
   modulePath: 'arm/Microsoft.Network/loadBalancers'

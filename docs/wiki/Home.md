@@ -20,6 +20,8 @@ If you're unfamiliar with Infrastructure as Code, or wonder how you can use the 
 - [Testing](./Testing)
   - [Design](./TestingDesign)
   - [Usage](./TestingUsage)
+- [Utilities](./Utilities)
+  - [Bicep to ARM conversion script](./UtilitiesConversionScript)
 - [Pipelines](./Pipelines)
   - [Design](./PipelinesDesign)
   - [Usage](./PipelinesUsage)

@@ -29,7 +29,7 @@ runs:
   using: 'composite'
   steps:
     # [Setup] task(s)
-    # ----------------
+    # ---------------
     - name: 'Setup agent'
       shell: pwsh
       run: |
@@ -77,7 +77,7 @@ runs:
         $null = Convert-TokensInParameterFile @ConvertTokensInputs -Verbose
 
     # [Deployment validation] task(s)
-    # -------------------------
+    # -------------------------------
     - name: 'Validate [${{ inputs.templateFilePath }}]'
       shell: pwsh
       run: |
@@ -102,7 +102,7 @@ runs:
         Test-TemplateWithParameterFile @functionInput -Verbose
 
     # [Deployment execution] task(s)
-    # --------------------
+    # ------------------------------
     - name: 'Deploy [${{ inputs.templateFilePath }}] with parameters [${{ inputs.parameterFilePath }}]'
       shell: pwsh
       id: deploy_step
@@ -140,26 +140,24 @@ runs:
         }
 
     # [Deployment removal] task(s)
-    # -----------------
+    # ----------------------------
     - name: 'Remove [${{ inputs.templateFilePath }}] from parameters [${{ inputs.parameterFilePath }}]'
       shell: pwsh
-      if: ${{ always() && steps.deploy_step.outputs.deploymentName != '' }}
+      if: ${{ always() && inputs.removeDeployment == 'true' && steps.deploy_step.outputs.deploymentName != '' }}
       run: |
-        if('${{ inputs.removeDeployment }}' -eq 'true') {
-          # Load used function
-          . (Join-Path $env:GITHUB_WORKSPACE 'utilities' 'pipelines' 'resourceRemoval' 'Remove-DeployedModule.ps1')
+        # Load used function
+        . (Join-Path $env:GITHUB_WORKSPACE 'utilities' 'pipelines' 'resourceRemoval' 'Initialize-DeploymentRemoval.ps1')
 
-          if(-not [String]::IsNullOrEmpty('${{ steps.deploy_step.outputs.deploymentName }}')) {
-            $functionInput = @{
-              deploymentName    = '${{ steps.deploy_step.outputs.deploymentName }}'
-              templateFilePath  = Join-Path $env:GITHUB_WORKSPACE '${{ inputs.templateFilePath }}'
-              resourceGroupName = '${{ inputs.resourceGroupName }}'
-              verbose           = $true
-            }
-
-            Write-Verbose 'Invoke task with' -Verbose
-            Write-Verbose ($functionInput | ConvertTo-Json | Out-String) -Verbose
-
-            Remove-DeployedModule @functionInput
+        if (-not [String]::IsNullOrEmpty('${{ steps.deploy_step.outputs.deploymentName }}')) {
+          $functionInput = @{
+            DeploymentName    = '${{ steps.deploy_step.outputs.deploymentName }}'
+            TemplateFilePath  = Join-Path $env:GITHUB_WORKSPACE '${{ inputs.templateFilePath }}'
+            ResourceGroupName = '${{ inputs.resourceGroupName }}'
+            Verbose           = $true
           }
+
+          Write-Verbose 'Invoke task with' -Verbose
+          Write-Verbose ($functionInput | ConvertTo-Json | Out-String) -Verbose
+
+          Initialize-DeploymentRemoval @functionInput
         }

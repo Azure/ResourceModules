@@ -97,11 +97,15 @@ function Set-EnvironmentOnAgent {
         [Parameter(Mandatory = $false)]
         [Hashtable[]] $Modules = @(
             @{ Name = 'Az.Accounts' },
+            @{ Name = 'Az.Compute' },
             @{ Name = 'Az.Resources' },
             @{ Name = 'Az.NetAppFiles' },
             @{ Name = 'Az.Network' },
             @{ Name = 'Az.ContainerRegistry' },
             @{ Name = 'Az.KeyVault' },
+            @{ Name = 'Az.RecoveryServices' },
+            @{ Name = 'Az.Monitor' },
+            @{ Name = 'Az.CognitiveServices' },
             @{ Name = 'Pester'; Version = '5.3.0' }
         )
     )

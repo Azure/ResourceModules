@@ -7,7 +7,7 @@ on:
         type: boolean
         description: 'Remove deployed module'
         required: false
-        default: 'false' # Needs custom removals script
+        default: 'true'
       versioningOption:
         type: choice
         description: 'The mode to handle the version increments [major|minor|patch]'
@@ -29,6 +29,8 @@ on:
       - '.github/workflows/ms.insights.diagnosticsettings.yml'
       - 'arm/Microsoft.Insights/diagnosticsettings/**'
       - '!*/**/readme.md'
+      - 'utilities/pipelines/**'
+      - '!utilities/pipelines/dependencies/**'
 
 env:
   modulePath: 'arm/Microsoft.Insights/diagnosticSettings'

@@ -29,6 +29,8 @@ on:
       - '.github/workflows/ms.resources.deploymentscripts.yml'
       - 'arm/Microsoft.Resources/deploymentScripts/**'
       - '!*/**/readme.md'
+      - 'utilities/pipelines/**'
+      - '!utilities/pipelines/dependencies/**'
 
 env:
   modulePath: 'arm/Microsoft.Resources/deploymentScripts'
