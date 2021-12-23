@@ -251,7 +251,7 @@ module logAnalyticsWorkspace_rbac '.bicep/nested_rbac.bicep' = [for (roleAssignm
 @description('The resource ID of the deployed log analytics workspace')
 output logAnalyticsResourceId string = logAnalyticsWorkspace.id
 
-@description('The resource group where the log analytics will be deployed')
+@description('The resource group of the deployed log analytics workspace')
 output logAnalyticsResourceGroup string = resourceGroup().name
 
 @description('The name of the deployed log analytics workspace')
