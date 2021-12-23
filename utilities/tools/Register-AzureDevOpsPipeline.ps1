@@ -64,7 +64,7 @@ $inputObject = @{
     GitHubPAT             = '<Placeholder>'
     AzureDevOpsPAT        = '<Placeholder>'
 }
-Register-AzureDevOpsPipelines @inputObject
+Register-AzureDevOpsPipeline @inputObject
 
 Registers all pipelines in the default path in the DevOps project [Contoso/CICD] by leveraging the given AzureDevOpsPAT and creating a service connection to GitHub using the provided GitHubPAT
 
@@ -80,7 +80,7 @@ The steps you'd want to follow are
   - Service connection(s) used in the pipeline(s)
   - Agent pool(s) used in the pipeline(s) if not using the default available agents
 #>
-function Register-AzureDevOpsPipelines {
+function Register-AzureDevOpsPipeline {
 
     [CmdletBinding(SupportsShouldProcess)]
     param (
