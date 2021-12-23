@@ -38,24 +38,24 @@ variables:
     value: '/arm/Microsoft.AnalysisServices/servers'
 
 stages:
-  #   - stage: Validation
-  #     displayName: Pester tests
-  #     jobs:
-  #       - template: /.azuredevops/pipelineTemplates/module.jobs.validate.yml
+  - stage: Validation
+    displayName: Pester tests
+    jobs:
+      - template: /.azuredevops/pipelineTemplates/module.jobs.validate.yml
 
-  #   - stage: Deployment
-  #     displayName: Deployment tests
-  #     jobs:
-  #       - template: /.azuredevops/pipelineTemplates/module.jobs.deploy.yml
-  #         parameters:
-  #           removeDeployment: '${{ parameters.removeDeployment }}'
-  #           deploymentBlocks:
-  #             - path: $(modulePath)/.parameters/min.parameters.json
-  #             - path: $(modulePath)/.parameters/parameters.json
+  - stage: Deployment
+    displayName: Deployment tests
+    jobs:
+      - template: /.azuredevops/pipelineTemplates/module.jobs.deploy.yml
+        parameters:
+          removeDeployment: '${{ parameters.removeDeployment }}'
+          deploymentBlocks:
+            - path: $(modulePath)/.parameters/min.parameters.json
+            - path: $(modulePath)/.parameters/parameters.json
 
   - stage: Publishing
     displayName: Publish module
-    # condition: and(succeeded(), eq(variables['Build.SourceBranch'], 'refs/heads/main'))
+    condition: and(succeeded(), eq(variables['Build.SourceBranch'], 'refs/heads/main'))
     jobs:
       - template: /.azuredevops/pipelineTemplates/module.jobs.publish.yml
         parameters:
