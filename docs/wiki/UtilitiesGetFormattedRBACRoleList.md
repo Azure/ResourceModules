@@ -7,7 +7,7 @@ Use this script to format a given raw 'Roles' table from Azure to the format req
 ### _Navigation_
 
 - [Location](#location)
-- [What it does](#what-it-does)
+- [How it works](#what-it-does)
 - [How to use it](#how-to-use-it)
   - [Examples](#examples)
 
@@ -16,7 +16,7 @@ Use this script to format a given raw 'Roles' table from Azure to the format req
 
 You can find the script under `/utilities/tools/Get-FormattedRBACRoles.ps1`
 
-# What it does
+# How it works
 
 1. From the provided raw and plain roles list, create a list of only the contained role names
 1. Fetch all available roles from Azure

@@ -7,7 +7,7 @@ Use this script to automatically register all specified Azure DevOps pipelines i
 ### _Navigation_
 
 - [Location](#location)
-- [What it does](#what-it-does)
+- [How it works](#what-it-does)
 - [How to use it](#how-to-use-it)
   - [Examples](#examples)
 
@@ -16,7 +16,7 @@ Use this script to automatically register all specified Azure DevOps pipelines i
 
 You can find the script under `/utilities/tools/Register-AzureDevOpsPipeline.ps1`
 
-# What it does
+# How it works
 
 1. Get all pipelines in a given target folder (for example `.azuredevops/modulePipelines`)
 1. Fetch all currently registered pipelines in the target Azure DevOps project

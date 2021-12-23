@@ -9,7 +9,7 @@ This page documents the conversion utility and how to use it.
 ### _Navigation_
 
 - [Location](#location)
-- [What it does](#what-it-does)
+- [How it works](#what-it-does)
 - [How to use it](#how-to-use-it)
   - [Examples](#examples)
 
@@ -18,7 +18,7 @@ This page documents the conversion utility and how to use it.
 
 You can find the script under `/utilities/tools/ConvertTo-ARMTemplate.ps1`
 
-# What it does
+# How it works
 
 The script finds all 'deploy.bicep' files and tries to convert them to json-based ARM templates
 by using the following steps.

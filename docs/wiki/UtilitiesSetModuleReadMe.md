@@ -9,7 +9,7 @@ For further information about the parameter usage blocks, please refer to the [s
 ### _Navigation_
 
 - [Location](#location)
-- [What it does](#what-it-does)
+- [How it works](#what-it-does)
   - [Special case: 'Parameter Usage' section](#special-case-parameter-usage-section)
 - [How to use it](#how-to-use-it)
   - [Examples](#examples)
@@ -19,7 +19,7 @@ For further information about the parameter usage blocks, please refer to the [s
 
 You can find the script under `/utilities/tools/Set-ModuleReadMe.ps1`
 
-# What it does
+# How it works
 
 1. Using the provided template path, the script first makes sure to convert it to ARM if necessary (i.e. if a path to a bicep file was provided)
 1. If the intended readMe file does not yet exist in the expected path, it is generated with a skeleton (with e.g. a generated header name, etc.)
