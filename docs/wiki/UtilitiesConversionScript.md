@@ -32,7 +32,7 @@ by using the following steps.
 
 The script can be called with the following parameters:
 
-| name | description |
+| Name | Description |
 |-|-|
 | `Path` | The path to the root of the repo. |
 | `ConvertChildren` | Convert child resource modules to bicep. |

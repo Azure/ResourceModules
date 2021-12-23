@@ -50,7 +50,7 @@ For example, the content of file `resourceUsage-roleAssignments.md` in folder `m
 
 The script can be called with the following parameters:
 
-| name | description |
+| Name | Description |
 |-|-|
 | `TemplateFilePath` | The path to the template to update |
 | `ReadMeFilePath` | The path to the readme to update. If not provided assumes a 'readme.md' file in the same folder as the template |
