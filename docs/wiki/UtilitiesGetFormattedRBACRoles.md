@@ -80,7 +80,7 @@ To get the list of roles in the expected format:
     "Contributor": "[subscriptionResourceId('Microsoft.Authorization/roleDefinitions','b24988ac-6180-42a0-ab88-20f7382dd24c')]",
     "Reader": "[subscriptionResourceId('Microsoft.Authorization/roleDefinitions','acdd72a7-3385-48ef-bd42-f606fba81ae7')]",
     ```
-1. Copy the output into the RBAC file into the `buildInRoleNames` variable. Again, for the same example this would be:
+1. Copy the output into the RBAC file into the `buildInRoleNames` variable. Again, for the same example using bicep this would be:
 
    ```bicep
    var builtInRoleNames = {
