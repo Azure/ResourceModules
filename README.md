@@ -115,7 +115,7 @@ This repository includes a collection of advanced and curated Modules consisting
 
 | Name | Status | Docs |
 | - | - | - |
-| [ConvertTo-ARMTemplate](https://github.com/Azure/ResourceModules/blob/main/utilities/tools/ConvertTo-ARMTemplate.ps1) | [![.Platform: Test - ConvertTo-ARMTemplate.ps1](https://github.com/Azure/ResourceModules/actions/workflows/platform.convertToArmTemplate.tests.yml/badge.svg?branch=main)](https://github.com/Azure/ResourceModules/actions/workflows/platform.convertToArmTemplate.tests.yml) | [link](https://github.com/Azure/ResourceModules/wiki/UtilitiesConversionScript) |
+| [ConvertTo-ARMTemplate](https://github.com/Azure/ResourceModules/blob/main/utilities/tools/ConvertTo-ARMTemplate.ps1) | [![.Platform: Test - ConvertTo-ARMTemplate.ps1](https://github.com/Azure/ResourceModules/actions/workflows/platform.convertToArmTemplate.tests.yml/badge.svg?branch=main)](https://github.com/Azure/ResourceModules/actions/workflows/platform.convertToArmTemplate.tests.yml) | [link](https://github.com/Azure/ResourceModules/wiki/UtilitiesConvertToARMTemplate) |
 
 ## Contributing
 
