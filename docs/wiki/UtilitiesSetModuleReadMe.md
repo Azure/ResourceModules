@@ -48,15 +48,6 @@ For example, the content of file `resourceUsage-roleAssignments.md` in folder `m
 
 # How to use it
 
-The script can be called with the following parameters:
-
-| Name | Description |
-|-|-|
-| `TemplateFilePath` | The path to the template to update |
-| `ReadMeFilePath` | The path to the readme to update. If not provided assumes a 'readme.md' file in the same folder as the template |
-| `SectionsToRefresh` | Optional. The sections to update. By default it refreshes all that are supported. <p> Currently supports: 'Resource Types', 'Parameters', 'Outputs', 'Template references' |
-
-
 ## Example 1: Generate the Module ReadMe for the module 'LoadBalancer'
 ```powershell
 . './utilities/tools/Set-ModuleReadMe.ps1'

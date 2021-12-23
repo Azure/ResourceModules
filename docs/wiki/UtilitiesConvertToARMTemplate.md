@@ -30,16 +30,6 @@ by using the following steps.
 
 # How to use it
 
-The script can be called with the following parameters:
-
-| Name | Description |
-|-|-|
-| `Path` | The path to the root of the repo. |
-| `ConvertChildren` | Convert child resource modules to bicep. |
-| `SkipMetadataCleanup` | Skip Cleanup of bicep metadata from json files |
-| `SkipBicepCleanUp` | Skip removal of bicep files and folders |
-| `SkipPipelineUpdate` | Skip replacing .bicep with .json in pipeline files |
-
 ## Example 1: Convert top level bicep modules to json based ARM template, cleaning up all bicep files and folders and updating the workflow files to use the json files
 
 ```powershell
