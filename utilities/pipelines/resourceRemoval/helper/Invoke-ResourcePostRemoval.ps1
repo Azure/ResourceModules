@@ -88,7 +88,7 @@ function Invoke-ResourcePostRemoval {
             if ($softDeletedService) {
                 # Recover service
                 $location = $softDeletedService.location
-                if ($PSCmdlet.ShouldProcess(('Log analytics workspace [{0}]' -f $resourceId), 'New')) {
+                if ($PSCmdlet.ShouldProcess(('Log analytics workspace [{0}]' -f $resourceId), 'Recover')) {
                     $recoveredWorkspace = New-AzOperationalInsightsWorkspace -ResourceGroupName $resourceGroupName -Name $resourceName -Location $location
                 }
                 if ($recoveredWorkspace) {
