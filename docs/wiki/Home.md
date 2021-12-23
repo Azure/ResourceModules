@@ -24,6 +24,7 @@ If you're unfamiliar with Infrastructure as Code, or wonder how you can use the 
   - [Bicep to ARM conversion script](./UtilitiesConvertToARMTemplate)
   - [Register Azure DevOps pipelines script](./UtilitiesRegisterAzureDevOpsPipeline)
   - [Set Module ReadMe script](./UtilitiesSetModuleReadMe)
+  - [Get formatted RBAC roles script](./UtilitiesGetFormattedRBACRoles)
 - [Pipelines](./Pipelines)
   - [Design](./PipelinesDesign)
   - [Usage](./PipelinesUsage)
