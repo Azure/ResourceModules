@@ -67,7 +67,7 @@ To get the list of roles in the expected format:
    ```
 1. Execute the script. The output for the above example would be
 
-    ```bicep
+    ```text
     VERBOSE: Bicep
     VERBOSE: -----
     'Owner': subscriptionResourceId('Microsoft.Authorization/roleDefinitions','8e3af657-a8ff-443c-a75c-2fe8c4bcb635')
