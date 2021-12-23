@@ -9,5 +9,6 @@ This section and its sub-sections describe tools and utilities provided in this 
 - [Bicep to ARM conversion script](./UtilitiesConvertToARMTemplate)
 - [Register Azure DevOps pipelines script](./UtilitiesRegisterAzureDevOpsPipeline)
 - [Set Module ReadMe script](./UtilitiesSetModuleReadMe)
+- [Get formatted RBAC roles script](./UtilitiesGetFormattedRBACRoles)
 
 ---
