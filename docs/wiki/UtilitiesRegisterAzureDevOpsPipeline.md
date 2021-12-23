@@ -53,7 +53,7 @@ The steps you'd want to follow are
   - Service connection(s) used in the pipeline(s)
   - Agent pool(s) used in the pipeline(s) if not using the default available agents
 
-## Example 1: Register all pipelines of the default module pipelines path in a the target project using a pre-created service connection.
+## Example 1: Register all pipelines with default values in a the target project using a pre-created service connection
 ```powershell
 . './utilities/tools/Register-AzureDevOpsPipeline.ps1'
 $inputObject = @{
