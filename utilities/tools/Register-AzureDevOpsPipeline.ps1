@@ -82,6 +82,18 @@ Register-AzureDevOpsPipeline @inputObject
 
 Registers all pipelines in the default path in the DevOps project [Contoso/CICD] by leveraging the given AzureDevOpsPAT and using a pre-created service connection to GitHub
 
+.EXAMPLE
+$inputObject = @{
+    OrganizationName      = 'Contoso'
+    ProjectName           = 'CICD'
+    SourceRepositoryType  = 'tfsgit'
+    SourceRepository      = 'Azure/ResourceModules'
+    AzureDevOpsPAT        = '<Placeholder>'
+}
+Register-AzureDevOpsPipeline @inputObject
+
+Register all pipelines in a DevOps repository with default values in a the target project
+
 .NOTES
 You'll need the 'azure-devops' extension to run this function: `az extension add --upgrade -n azure-devops`
 
@@ -94,7 +106,7 @@ The steps you'd want to follow are
   - Service connection(s) used in the pipeline(s)
   - Agent pool(s) used in the pipeline(s) if not using the default available agents
 #>
-function Register-AzureDevOpsPipeline {
+function Register-AzureDevOpsPipelinesss {
 
     [CmdletBinding(SupportsShouldProcess)]
     param (

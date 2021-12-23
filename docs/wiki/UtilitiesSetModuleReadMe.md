@@ -48,31 +48,5 @@ For example, the content of file `resourceUsage-roleAssignments.md` in folder `m
 
 # How to use it
 
-## Example 1: Generate the Module ReadMe for the module 'LoadBalancer'
-```powershell
-. './utilities/tools/Set-ModuleReadMe.ps1'
-Set-ModuleReadMe -TemplateFilePath 'C:/Microsoft.Network/loadBalancers/deploy.bicep'
-```
-
-## Example 2: Generate the Module ReadMe only for specific sections
-
-```powershell
-. './utilities/tools/Set-ModuleReadMe.ps1'
-Set-ModuleReadMe -TemplateFilePath 'C:/Microsoft.Network/loadBalancers/deploy.bicep' -SectionsToRefresh @('Parameters', 'Outputs')
-```
-Updates only the sections `Parameters` & `Outputs`. Other sections remain untouched.
-
-## Example 3: Generate the Module ReadMe files into a specific folder path
-
-```powershell
-. './utilities/tools/Set-ModuleReadMe.ps1'
-Set-ModuleReadMe -TemplateFilePath 'C:/Microsoft.Network/loadBalancers/deploy.bicep' -ReadMeFilePath 'C:/differentFolder'
-```
-Generates the ReadMe into a folder in path `C:/differentFolder`
-
-## Example 4: Generate the Module ReadMe for any template in a folder path
-```powershell
-. './utilities/tools/Set-ModuleReadMe.ps1'
-$templatePaths = (Get-ChildItem 'C:/Microsoft.Network' -Filter 'deploy.bicep' -Recurse).FullName
-$templatePaths | ForEach-Object { Set-ModuleReadMe -TemplateFilePath $_ }
-```
+For details on how to use the function please refer to the script's local documentation.
+> **Note:** The script must be loaded before the function can be invoked

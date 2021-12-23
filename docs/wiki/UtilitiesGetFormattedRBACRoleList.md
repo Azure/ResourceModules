@@ -90,7 +90,5 @@ To get the list of roles in the expected format:
    }
    ```
 
-## Example 1: Format the roles set in the `rawRoles` variable and print them to the console
-```powershell
-. './utilities/tools/Get-FormattedRBACRoles.ps1'
-```
+For further details on how to use the function please refer to the script's local documentation.
+> **Note:** The script must be loaded before the function can be invoked

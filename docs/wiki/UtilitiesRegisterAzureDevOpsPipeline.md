@@ -37,29 +37,7 @@ The steps you'd want to follow are
    - Service connection(s) used in the pipeline(s)
    - Agent pool(s) used in the pipeline(s) if not using the default available agents
 
-For further details please refer to the script's local documentation.
+For further details on how to use the function please refer to the script's local documentation.
+> **Note:** The script must be loaded before the function can be invoked
 
-## Example 1: Register all pipelines in a GitHub repository with default values in a the target project using a pre-created GitHub service connection
-```powershell
-. './utilities/tools/Register-AzureDevOpsPipeline.ps1'
-$inputObject = @{
-    OrganizationName      = 'Contoso'
-    ProjectName           = 'CICD'
-    SourceRepository      = 'Azure/ResourceModules'
-    AzureDevOpsPAT        = '<Placeholder>'
-}
-Register-AzureDevOpsPipeline @inputObject
-```
 
-## Example 2: Register all pipelines in a DevOps repository with default values in a the target project
-```powershell
-. './utilities/tools/Register-AzureDevOpsPipeline.ps1'
-$inputObject = @{
-    OrganizationName      = 'Contoso'
-    ProjectName           = 'CICD'
-    SourceRepositoryType  = 'tfsgit'
-    SourceRepository      = 'Azure/ResourceModules'
-    AzureDevOpsPAT        = '<Placeholder>'
-}
-Register-AzureDevOpsPipeline @inputObject
-```
