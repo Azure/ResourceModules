@@ -40,7 +40,7 @@ To get the list of roles in the expected format:
 1. Open the `Roles` tab
 1. Set the `Type` in the dropdown to `BuiltInRole`
 
-   <img src="media/rbacRoles.png" alt="Complete deployment flow filtered" height="500">
+   <img src="media/rbacRoles.png" alt="Complete deployment flow filtered" height="400">
 
 1. Select and copy the entire table as is to the PowerShell variable.
 
