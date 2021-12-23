@@ -84,7 +84,7 @@ function Invoke-ResourcePostRemoval {
                 Method = 'GET'
                 Path   = $getPath
             }
-            $softDeletedService = ((Invoke-AzRestMethod @getRequestInputObject).Content | ConvertFrom-Json).value | Where-Object { $_.id -eq $resourceId }
+            $softDeletedService = ((Invoke-AzRestMethod @getRequestInputObject).Content | ConvertFrom-Json).value | Where-Object { $_.id -eq $resourceId -and $_.name -eq $resourceName }
             if ($softDeletedService) {
                 # Recover service
                 $location = $softDeletedService.location
